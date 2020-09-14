@@ -20,18 +20,18 @@ object ExamplesLukio2019 {
       moduulinSuoritus(moduuli("OÄI3").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(8))
     ))),
     oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
-      moduulinSuoritus(moduuli("MAB2")).copy(arviointi = numeerinenArviointi(8)),
-      moduulinSuoritus(moduuli("MAB3")).copy(arviointi = numeerinenArviointi(8)),
-      moduulinSuoritus(moduuli("MAB4")).copy(arviointi = numeerinenArviointi(8))
+      moduulinSuoritus(moduuli("MAB2")).copy(arviointi = sanallinenArviointi("H")),
+      moduulinSuoritus(moduuli("MAB3")).copy(arviointi = sanallinenArviointi("H")),
+      moduulinSuoritus(moduuli("MAB4")).copy(arviointi = sanallinenArviointi("O"))
     ))),
-    oppiaineenSuoritus(Lukio2019ExampleData.lukionUskonto(Some("MU"))).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
-      moduulinSuoritus(moduuli("UE1").copy(laajuus = laajuus(1.5))).copy(arviointi = numeerinenArviointi(7))
+    oppiaineenSuoritus(Lukio2019ExampleData.lukionUskonto(Some("MU"))).copy(arviointi = arviointi("4")).copy(osasuoritukset = Some(List(
+      moduulinSuoritus(moduuli("UE1").copy(laajuus = laajuus(1.5))).copy(arviointi = numeerinenArviointi(4))
     ))),
     oppiaineenSuoritus(lukionKieli2019("AOM", "SV")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("RUA4").copy(laajuus = laajuus(1))).copy(arviointi = numeerinenArviointi(7))
     ))),
     oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("FY")).copy(arviointi = arviointi("10")).copy(osasuoritukset = Some(List(
-      moduulinSuoritus(moduuli("FY1")).copy(arviointi = numeerinenArviointi(10)),
+      moduulinSuoritus(moduuli("FY1")).copy(arviointi = sanallinenArviointi("S")),
       moduulinSuoritus(moduuli("FY2")).copy(arviointi = numeerinenArviointi(10)),
       moduulinSuoritus(moduuli("FY3")).copy(arviointi = numeerinenArviointi(10)),
       paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY123", "Keittiöfysiikka", "Keittiöfysiikan kokeelliset perusteet, kiehumisreaktiot")).copy(arviointi = numeerinenArviointi(10)),

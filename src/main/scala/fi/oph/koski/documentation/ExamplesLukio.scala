@@ -502,7 +502,6 @@ object LukioExampleData {
     case _ => Some(List(new SanallinenLukionArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), kuvaus.map(LocalizedString.finnish), päivä)))
   }
 
-
   def lukionOpiskeluoikeus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu) = LukionOpiskeluoikeus(
     versionumero = None,
     lähdejärjestelmänId = None,

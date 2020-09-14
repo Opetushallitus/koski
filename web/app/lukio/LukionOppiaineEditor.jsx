@@ -9,7 +9,13 @@ import {isPaikallinen} from '../suoritus/Koulutusmoduuli'
 import {saveOrganizationalPreference} from '../virkailija/organizationalPreferences'
 import {paikallinenOppiainePrototype} from '../perusopetus/PerusopetuksenOppiaineEditor'
 import {doActionWhileMounted} from '../util/util'
-import {hylkäämättömätOsasuoritukset, laajuudet, suoritetutKurssit} from './lukio'
+import {
+  arvioidutOsasuoritukset,
+  hylkäämättömätOsasuoritukset,
+  hyväksytystiArvioidutOsasuoritukset,
+  laajuudet,
+  suoritetutKurssit
+} from './lukio'
 import {Arviointi, KoulutusmoduuliPropertiesEditor, Nimi} from './fragments/LukionOppiaine'
 import {numberToString} from '../util/format'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
@@ -45,12 +51,23 @@ export class LukionOppiaineEditor extends React.Component {
       customOsasuoritusTitle,
       customOsasuoritusAlternativesCompletionFn,
       customKurssitSortFn,
-      showKeskiarvo = true
+      showKeskiarvo = true,
+      useHylkäämättömätLaajuus = true,
+      showHyväksytystiArvioitujenLaajuus = false
     } = this.props
 
     const kurssit = modelItems(oppiaine, 'osasuoritukset')
 
     const {edit} = oppiaine.context
+
+    const laajuusArvo = () => {
+      if (useOppiaineLaajuus) {
+        return modelData(oppiaine, 'koulutusmoduuli.laajuus.arvo')
+      } else {
+        return numberToString(laajuudet(
+          useHylkäämättömätLaajuus ? hylkäämättömätOsasuoritukset(kurssit) : arvioidutOsasuoritukset(kurssit)))
+      }
+    }
 
     return (
       <tr className={'oppiaine oppiaine-rivi ' + modelData(oppiaine, 'koulutusmoduuli.tunniste.koodiarvo')}>
@@ -83,10 +100,12 @@ export class LukionOppiaineEditor extends React.Component {
         </td>
         {
           showLaajuus &&
-          (<td className='laajuus'>{
-            useOppiaineLaajuus
-              ? modelData(oppiaine, 'koulutusmoduuli.laajuus.arvo')
-              : numberToString(laajuudet(hylkäämättömätOsasuoritukset(kurssit)))
+          <td className='laajuus'>{laajuusArvo()}</td>
+        }
+        {
+          showHyväksytystiArvioitujenLaajuus &&
+          (<td className='laajuus arvioitu'>{
+              numberToString(laajuudet(hyväksytystiArvioidutOsasuoritukset(kurssit)))
           }</td>)
         }
         {

@@ -19,7 +19,10 @@ const perusteenDiaarinumeroToOppimäärä = diaarinumero => {
 const sallitutRahoituskoodiarvot = ['1', '6']
 
 const suoritetutKurssit = kurssit => kurssit.map(k => modelData(k)).filter(k => k.arviointi)
+
 const hylkäämättömätOsasuoritukset = kurssit => kurssit.filter(k => modelData(k, 'arviointi.-1.arvosana.koodiarvo') !== 'H')
+const arvioidutOsasuoritukset = kurssit => kurssit.filter(k => modelData(k, 'arviointi.-1.arvosana.koodiarvo') !== 'O')
+const hyväksytystiArvioidutOsasuoritukset = osasuoritukset => osasuoritukset.filter(k => !['H', 'O', '4'].includes(modelData(k, 'arviointi.-1.arvosana.koodiarvo')))
 
 const laajuudet = osasuoritukset => osasuoritukset.map(k => {
   const laajuus = modelData(k, 'koulutusmoduuli.laajuus.arvo')
@@ -40,5 +43,7 @@ export {
   hylkäämättömätOsasuoritukset,
   laajuudet,
   isLukioOps2019,
-  isLukionOppiaineidenOppimaarienSuoritus2019
+  isLukionOppiaineidenOppimaarienSuoritus2019,
+  arvioidutOsasuoritukset,
+  hyväksytystiArvioidutOsasuoritukset
 }

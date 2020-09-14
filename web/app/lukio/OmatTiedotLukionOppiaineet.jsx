@@ -3,8 +3,7 @@ import * as R from 'ramda'
 import {modelData, modelItems, modelTitle} from '../editor/EditorModel'
 import {t} from '../i18n/i18n'
 import {
-  arvioidutOsasuoritukset,
-  osasuoritustenLaajuusYhteensäText,
+  OsasuorituksetYhteensa,
   paikallinenOsasuoritusTaiOppiaineText,
   paikallisiaLukionOppiaineitaTaiOsasuorituksia
 } from './LukionOppiaineetEditor'
@@ -40,7 +39,7 @@ export default ({suorituksetModel, suoritusFilter, useOppiaineLaajuus = false}) 
           ))}
         </tbody>
       </table>
-      <div className='kurssit-yhteensä'>{t(osasuoritustenLaajuusYhteensäText(suorituksetModel.context.suoritus)) + ': ' + numberToString(laajuudet(arvioidutOsasuoritukset(oppiaineet)))}</div>
+      <OsasuorituksetYhteensa suorituksetModel={suorituksetModel} oppiaineet={oppiaineet}/>
       {paikallisiaLukionOppiaineitaTaiOsasuorituksia(oppiaineet) && <FootnoteDescriptions data={[{title: paikallinenOsasuoritusTaiOppiaineText(suorituksetModel.context.suoritus), hint: '*'}]}/>}
     </section>
   )
