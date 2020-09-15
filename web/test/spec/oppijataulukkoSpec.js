@@ -125,11 +125,12 @@ describe('Oppijataulukko', function() {
           'Kelalle, Useita',
           'Koululainen, Kaisa',
           'Koululainen, Kaisa',
+          'Lisä-Eskari, Essiina',
           'Lukioaineopiskelija, Aino',
           'Monikoululainen, Miia',
           'Valviralle, Veera'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('9')
+        expect(page.opiskeluoikeudeTotal()).to.equal('10')
       })
     })
   })
@@ -241,8 +242,8 @@ describe('Oppijataulukko', function() {
     before(Authentication().login('esiopetus'), page.openPage, wait.until(page.isReady))
 
     it('ei näytetä kuin oman koulun esiopetusoppijat', function() {
-      expect(page.oppijataulukko.data().map(function(row) { return row[0]})).to.deep.equal([ 'Eskari, Essi', 'Kelalle, Useita' ])
-      expect(page.opiskeluoikeudeTotal()).to.equal('2')
+      expect(page.oppijataulukko.data().map(function(row) { return row[0]})).to.deep.equal([ 'Eskari, Essi', 'Kelalle, Useita', 'Lisä-Eskari, Essiina' ])
+      expect(page.opiskeluoikeudeTotal()).to.equal('3')
     })
   })
 
