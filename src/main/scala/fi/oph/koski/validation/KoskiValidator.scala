@@ -939,6 +939,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuSisältääOsasuorituksia(s"Osasuoritus ${suorituksenTunniste(suoritus)} ei ole sallittu, koska oppiaine on suoritettu erityisenä tutkintona")
       case (s, (_: LukionOppiaineenSuoritus2019) :: (pp: LukionOppimääränSuoritus2019) :: _) if (pp.suoritettuErityisenäTutkintona) =>
         KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuSisältääOsasuorituksia(s"Osasuoritus ${suorituksenTunniste(suoritus)} ei ole sallittu, koska tutkinto on suoritettu erityisenä tutkintona")
+      case (s: LukionModuulinSuoritus2019, (p: MuidenLukioOpintojenSuoritus2019) :: _) if (p.koulutusmoduuli.tunniste.koodiarvo == "TO") =>
+        KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Valtakunnallista moduulia ${suorituksenTunniste(suoritus)} ei voi tallentaa temaattisiin opintoihin")
       case _ =>
         HttpStatus.ok
     }

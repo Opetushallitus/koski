@@ -209,6 +209,19 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
     }
   }
 
+  "Osasuoritustyypit" - {
+    "Temaattisiin opintoihin ei voi siirtää moduuleita" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(suoritettuErityisenäTutkintona = true, osasuoritukset = Some(List(
+        temaattistenOpintojenSuoritus().copy(osasuoritukset = Some(List(
+          paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("KAN200", "Kanteleensoiton perusteet", "Itäsuomalaisen kanteleensoiton perusteet")).copy(arviointi = sanallinenArviointi("S")),
+          moduulinSuoritus(moduuli("MAB2")).copy(arviointi = sanallinenArviointi("H")),
+        )))
+      )))))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia("""Valtakunnallista moduulia moduulikoodistolops2021/MAB2 ei voi tallentaa temaattisiin opintoihin"""))
+      }
+    }
+  }
+
   private def putAndGetOpiskeluoikeus(oo: LukionOpiskeluoikeus): Opiskeluoikeus = putOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
