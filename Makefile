@@ -180,7 +180,7 @@ deploy: check-version
 
 .PHONY: deployaws
 deployaws: check-version
-	./scripts/deploy-aws.sh $(env) $(version)
+	./scripts/deploy.sh $(env) $(version) $(inventory)
 
 .PHONY: check-version
 check-version:

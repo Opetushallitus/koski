@@ -3,6 +3,7 @@ set -euo pipefail
 
 ENV=${1:-}
 VERSION=${2:-}
+INVENTORY=${3:-}
 CLOUD_ENV_DIR=${CLOUD_ENV_DIR:-}
 DIR=$(cd `dirname $0`; pwd)
 BASE_DIR=$(git rev-parse --show-toplevel)
