@@ -24,7 +24,7 @@ object ExamplesEsiopetus {
     koulukoti = Some(List(Aikajakso(date(2011, 8, 14), None)))
   )
 
-  lazy val lisätiedot2 = EsiopetuksenOpiskeluoikeudenLisätiedot(
+  lazy val esiopetusaikaisetLisätiedot = EsiopetuksenOpiskeluoikeudenLisätiedot(
     tukimuodot = Some(List(osaAikainenErityisopetus)),
     pidennettyOppivelvollisuus = Some(Aikajakso(date(2006, 8, 15), Some(date(2016, 6, 4)))),
     vammainen = Some(List(Aikajakso(date(2006, 8, 14), None))),
@@ -48,7 +48,7 @@ object ExamplesEsiopetus {
     lisätiedot = Some(lisätiedot)
   )
 
-  lazy val opiskeluoikeusLisätiedoilla = EsiopetuksenOpiskeluoikeus(
+  lazy val opiskeluoikeusAikaisillaLisätiedoilla = EsiopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
     koulutustoimija = None,
     suoritukset = List(suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = peruskoulunEsiopetuksenTunniste, toimipiste = jyväskylänNormaalikoulu)),
@@ -58,7 +58,7 @@ object ExamplesEsiopetus {
         NuortenPerusopetuksenOpiskeluoikeusjakso(date(2007, 6, 3), opiskeluoikeusValmistunut)
       )
     ),
-    lisätiedot = Some(lisätiedot2)
+    lisätiedot = Some(esiopetusaikaisetLisätiedot)
   )
 
   lazy val ostopalveluOpiskeluoikeus = EsiopetuksenOpiskeluoikeus(
@@ -84,9 +84,9 @@ object ExamplesEsiopetus {
     List(opiskeluoikeus)
   )
 
-  val esioppilasLisätiedoilla = Oppija(
+  val esioppilasAikaisillaLisätiedoilla = Oppija(
     exampleHenkilö,
-    List(opiskeluoikeusLisätiedoilla)
+    List(opiskeluoikeusAikaisillaLisätiedoilla)
   )
 
   val examples = List(

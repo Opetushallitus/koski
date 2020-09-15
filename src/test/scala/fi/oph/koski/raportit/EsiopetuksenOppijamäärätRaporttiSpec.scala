@@ -49,7 +49,7 @@ class EsiopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers wit
       r.viisivuotiaitaEiPidennettyäOppivelvollisuutta should equal(0)
       r.pidennettyOppivelvollisuusJaVaikeastiVammainen should equal(1)
       r.pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen should equal(0)
-      r.virheellisestiSiirretytVaikeastiVammaiset should equal(0)
+      r.virheellisestiSiirretytVaikeastiVammaiset should equal(1)
       r.virheellisestiSiirretytMuutKuinVaikeimminVammaiset should equal(0)
       r.erityiselläTuella should equal(0)
       r.majoitusetu should equal(1)
