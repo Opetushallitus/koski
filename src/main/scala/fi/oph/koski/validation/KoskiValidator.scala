@@ -464,6 +464,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         :: validateTutkinnonosanRyhmä(suoritus)
         :: validateOsaamisenHankkimistavat(suoritus)
         :: validateYhteisetTutkinnonOsat(suoritus, opiskeluoikeus)
+        :: validateLukio2019Osasuoritukset(suoritus, parent)
         :: HttpStatus.validate(!suoritus.isInstanceOf[PäätasonSuoritus])(validateDuplicates(suoritus.osasuoritukset.toList.flatten))
         :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, suoritus :: parent))
     )
@@ -929,6 +930,17 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       }
     } else {
       yhteistenValidaatiot(suoritus)
+    }
+  }
+
+  private def validateLukio2019Osasuoritukset(suoritus: Suoritus, parent: List[Suoritus]): HttpStatus = {
+    (suoritus, parent) match {
+      case (s, (p: LukionOppiaineenSuoritus2019) :: (_: LukionOppimääränSuoritus2019) :: _) if (p.suoritettuErityisenäTutkintona) =>
+        KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuSisältääOsasuorituksia(s"Osasuoritus ${suorituksenTunniste(suoritus)} ei ole sallittu, koska oppiaine on suoritettu erityisenä tutkintona")
+      case (s, (_: LukionOppiaineenSuoritus2019) :: (pp: LukionOppimääränSuoritus2019) :: _) if (pp.suoritettuErityisenäTutkintona) =>
+        KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuSisältääOsasuorituksia(s"Osasuoritus ${suorituksenTunniste(suoritus)} ei ole sallittu, koska tutkinto on suoritettu erityisenä tutkintona")
+      case _ =>
+        HttpStatus.ok
     }
   }
 

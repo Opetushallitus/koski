@@ -114,6 +114,7 @@ object KoskiErrorCategory {
         val yhteiselläOsuudellaEiOsasuorituksia = subcategory("yhteiselläOsuudellaEiOsasuorituksia", "Tutkinnon yhteisellä osalla tulee olla osasuorituksia")
         val vääränKoodinYhteinenOsasuoritus = subcategory("vääränKoodinYhteinenOsasuoritus", "Tutkinnon yhteisellä osalla on epäsopivan suoritustyypin alaisen suorituksen koodi")
         val epäsopiviaSuorituksia = subcategory("epäsopiviaSuorituksia", "Opiskeluoikeudella on epäsopiva lista suorituksia")
+        val erityisenäTutkintonaSuoritettuSisältääOsasuorituksia = subcategory("erityisenäTutkintoaSuoritettuSisältääOsasuorituksia", "Osasuorituksella on osasuorituksia, vaikka se on suoritettu erityisenä tutkintona")
       }
       val rakenne = new Rakenne
 
