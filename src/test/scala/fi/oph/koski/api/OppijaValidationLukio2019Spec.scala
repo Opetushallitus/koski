@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.documentation.ExampleData.vahvistusPaikkakunnalla
+import fi.oph.koski.documentation.ExampleData.{englanti, ruotsinKieli, suomenKieli, vahvistusPaikkakunnalla}
 import fi.oph.koski.documentation.ExamplesLukio2019.{oppiaineidenOppimäärienSuoritus, oppimääränSuoritus}
 import fi.oph.koski.documentation.Lukio2019ExampleData._
 import fi.oph.koski.documentation.LukioExampleData.{arviointi, numeerinenArviointi, sanallinenArviointi}
@@ -332,6 +332,62 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
             exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/MULD6 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
             exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/TALD7 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
             exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/TELD8 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
+          )
+        )
+      }
+    }
+  }
+
+  "Suorituskieli" - {
+    "Ei saa olla oppiainetasolla sama kuin päätason suorituksessa" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(suorituskieli = suomenKieli, osasuoritukset = Some(List(
+        oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", true)).copy(
+          suorituskieli = Some(englanti),
+          arviointi = arviointi("9"),
+          osasuoritukset = None),
+        oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(
+          suorituskieli = Some(suomenKieli),
+          arviointi = arviointi("9"),
+          osasuoritukset = Some(List(
+            moduulinSuoritus(moduuli("MAB2")).copy(arviointi = sanallinenArviointi("H")),
+            moduulinSuoritus(moduuli("MAB3")).copy(arviointi = sanallinenArviointi("H")),
+            moduulinSuoritus(moduuli("MAB4")).copy(arviointi = sanallinenArviointi("O"))
+          ))
+        )
+      )))))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia("""Oppiaineen koskioppiaineetyleissivistava/MA suorituskieli ei saa olla sama kuin päätason suorituksen suorituskieli"""))
+      }
+    }
+
+    "Ei saa olla moduulitasolla sama kuin oppiaineessa tai päätason suorituksessa" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(suorituskieli = suomenKieli, osasuoritukset = Some(List(
+        oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", true)).copy(
+          suorituskieli = Some(englanti),
+          arviointi = arviointi("9"),
+          osasuoritukset = Some(List(
+            moduulinSuoritus(moduuli("ÄI1")).copy(suorituskieli = Some(ruotsinKieli), arviointi = sanallinenArviointi("H")),
+            moduulinSuoritus(moduuli("ÄI2")).copy(suorituskieli = Some(suomenKieli), arviointi = sanallinenArviointi("H")),
+            moduulinSuoritus(moduuli("ÄI3")).copy(suorituskieli = Some(englanti), arviointi = sanallinenArviointi("O")),
+            paikallisenOpintojaksonSuoritus(paikallinenOpintojakso(
+              "KAN200",
+              "Kanteleensoiton perusteet",
+              "Itäsuomalaisen kanteleensoiton perusteet")
+            ).copy(suorituskieli = Some(ruotsinKieli), arviointi = sanallinenArviointi("S")),
+            paikallisenOpintojaksonSuoritus(paikallinenOpintojakso(
+              "KAN201",
+              "Kanteleensoiton jatkokurssi", "Itäsuomalaisen kanteleensoiton jatkokurssi")
+            ).copy(suorituskieli = Some(suomenKieli), arviointi = sanallinenArviointi("S")),
+            paikallisenOpintojaksonSuoritus(paikallinenOpintojakso(
+              "KAN202", "Kanteleensoiton jatkokurssi 2",
+              "Itäsuomalaisen kanteleensoiton jatkokurssi 2")
+            ).copy(suorituskieli = Some(englanti), arviointi = sanallinenArviointi("S")),
+          ))
+        )
+      )))))) {
+        verifyResponseStatus(400,
+          List(
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Osasuorituksen moduulikoodistolops2021/ÄI3 suorituskieli ei saa olla sama kuin oppiaineen suorituskieli"),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Osasuorituksen KAN202 (Kanteleensoiton jatkokurssi 2) suorituskieli ei saa olla sama kuin oppiaineen suorituskieli")
           )
         )
       }
