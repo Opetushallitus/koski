@@ -220,6 +220,122 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia("""Valtakunnallista moduulia moduulikoodistolops2021/MAB2 ei voi tallentaa temaattisiin opintoihin"""))
       }
     }
+
+    "Kaikki lukiodiplomimoduulit voi siirtää lukiodiplomeihin" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(suoritettuErityisenäTutkintona = true, osasuoritukset = Some(List(
+        lukioDiplomienSuoritus().copy(osasuoritukset = Some(List(
+          moduulinSuoritus(moduuli("KOLD1", 2.0f)).copy(arviointi = numeerinenArviointi(5)),
+          moduulinSuoritus(moduuli("KULD2", 2.0f)).copy(arviointi = numeerinenArviointi(6)),
+          moduulinSuoritus(moduuli("KÄLD3", 2.0f)).copy(arviointi = numeerinenArviointi(7)),
+          moduulinSuoritus(moduuli("LILD4", 2.0f)).copy(arviointi = numeerinenArviointi(8)),
+          moduulinSuoritus(moduuli("MELD5", 2.0f)).copy(arviointi = numeerinenArviointi(9)),
+          moduulinSuoritus(moduuli("MULD6", 2.0f)).copy(arviointi = numeerinenArviointi(10)),
+          moduulinSuoritus(moduuli("TALD7", 2.0f)).copy(arviointi = numeerinenArviointi(5)),
+          moduulinSuoritus(moduuli("TELD8", 2.0f)).copy(arviointi = numeerinenArviointi(6))
+        )))
+      )))))) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Lukiodiplomeihin ei voi siirtää paikallisia opintojaksoja tai muita kuin lukiodiplomimoduuleita" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(suoritettuErityisenäTutkintona = true, osasuoritukset = Some(List(
+        lukioDiplomienSuoritus().copy(osasuoritukset = Some(List(
+          moduulinSuoritus(moduuli("MELD5", 2.0f)).copy(arviointi = numeerinenArviointi(7)),
+          paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("KAN200", "Kanteleensoiton perusteet", "Itäsuomalaisen kanteleensoiton perusteet")).copy(arviointi = sanallinenArviointi("S")),
+          moduulinSuoritus(moduuli("MAB2")).copy(arviointi = sanallinenArviointi("H")),
+        )))
+      )))))) {
+        verifyResponseStatus(400,
+          List(
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Osasuoritus KAN200 (Kanteleensoiton perusteet) ei ole sallittu lukiodiplomi"),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Osasuoritus moduulikoodistolops2021/MAB2 ei ole sallittu lukiodiplomi")
+          ))
+      }
+    }
+
+    "Lukiodiplomimoduulien laajuus ei voi olla muuta kuin 2 opintopistettä" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(osasuoritukset = Some(List(
+        lukioDiplomienSuoritus().copy(osasuoritukset = Some(List(
+          moduulinSuoritus(moduuli("KOLD1", 1.0f)).copy(arviointi = numeerinenArviointi(5)),
+        ))),
+        oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("KU")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+          moduulinSuoritus(moduuli("KULD2", 2.5f)).copy(arviointi = numeerinenArviointi(6)),
+        )))
+      )))))) {
+        verifyResponseStatus(400,
+          List(
+            exact(KoskiErrorCategory.badRequest.validation.laajuudet.lukiodiplominLaajuusEiOle2Opintopistettä, "Osasuorituksen moduulikoodistolops2021/KOLD1 laajuus ei ole lukiodiplomille ainoa sallittu 2 opintopistettä"),
+            exact(KoskiErrorCategory.badRequest.validation.laajuudet.lukiodiplominLaajuusEiOle2Opintopistettä, "Osasuorituksen moduulikoodistolops2021/KULD2 laajuus ei ole lukiodiplomille ainoa sallittu 2 opintopistettä")
+          ))
+      }
+    }
+
+    "Oppiainespesifit lukiodiplomit voi siirtää kyseisiin oppiaineisiin" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(osasuoritukset = Some(List(
+        oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("KU")).copy(arviointi = arviointi("6")).copy(osasuoritukset = Some(List(
+          moduulinSuoritus(moduuli("KULD2", 2.0f)).copy(arviointi = numeerinenArviointi(6)),
+        ))),
+        oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("LI")).copy(arviointi = arviointi("6")).copy(osasuoritukset = Some(List(
+          moduulinSuoritus(moduuli("LILD4", 2.0f)).copy(arviointi = numeerinenArviointi(6)),
+        ))),
+        oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("MU")).copy(arviointi = arviointi("6")).copy(osasuoritukset = Some(List(
+          moduulinSuoritus(moduuli("MULD6", 2.0f)).copy(arviointi = numeerinenArviointi(6)),
+        ))),
+        oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("TE")).copy(arviointi = arviointi("6")).copy(osasuoritukset = Some(List(
+          moduulinSuoritus(moduuli("TELD8", 2.0f)).copy(arviointi = numeerinenArviointi(6)),
+        )))
+      )))))) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Yleisesti lukiodiplomimoduuleita ei voi siirtää oppiaineisiin tai muihin suorituksiin" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(osasuoritukset = Some(List(
+        oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("KE")).copy(arviointi = arviointi("6")).copy(osasuoritukset = Some(List(
+          moduulinSuoritus(moduuli("KOLD1", 2.0f)).copy(arviointi = numeerinenArviointi(5)),
+          moduulinSuoritus(moduuli("KULD2", 2.0f)).copy(arviointi = numeerinenArviointi(6)),
+          moduulinSuoritus(moduuli("KÄLD3", 2.0f)).copy(arviointi = numeerinenArviointi(7)),
+          moduulinSuoritus(moduuli("LILD4", 2.0f)).copy(arviointi = numeerinenArviointi(8)),
+          moduulinSuoritus(moduuli("MELD5", 2.0f)).copy(arviointi = numeerinenArviointi(9)),
+          moduulinSuoritus(moduuli("MULD6", 2.0f)).copy(arviointi = numeerinenArviointi(10)),
+          moduulinSuoritus(moduuli("TALD7", 2.0f)).copy(arviointi = numeerinenArviointi(5)),
+          moduulinSuoritus(moduuli("TELD8", 2.0f)).copy(arviointi = numeerinenArviointi(6))
+        ))),
+        muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
+          moduulinSuoritus(moduuli("KOLD1", 2.0f)).copy(arviointi = numeerinenArviointi(5)),
+          moduulinSuoritus(moduuli("KULD2", 2.0f)).copy(arviointi = numeerinenArviointi(6)),
+          moduulinSuoritus(moduuli("KÄLD3", 2.0f)).copy(arviointi = numeerinenArviointi(7)),
+          moduulinSuoritus(moduuli("LILD4", 2.0f)).copy(arviointi = numeerinenArviointi(8)),
+          moduulinSuoritus(moduuli("MELD5", 2.0f)).copy(arviointi = numeerinenArviointi(9)),
+          moduulinSuoritus(moduuli("MULD6", 2.0f)).copy(arviointi = numeerinenArviointi(10)),
+          moduulinSuoritus(moduuli("TALD7", 2.0f)).copy(arviointi = numeerinenArviointi(5)),
+          moduulinSuoritus(moduuli("TELD8", 2.0f)).copy(arviointi = numeerinenArviointi(6))
+        )))
+      )))))) {
+        verifyResponseStatus(400,
+          List(
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/KOLD1 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/KULD2 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/KÄLD3 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/LILD4 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/MELD5 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/MULD6 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/TALD7 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/TELD8 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
+
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/KOLD1 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/KULD2 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/KÄLD3 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/LILD4 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/MELD5 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/MULD6 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/TALD7 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/TELD8 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
+          )
+        )
+      }
+    }
   }
 
   private def putAndGetOpiskeluoikeus(oo: LukionOpiskeluoikeus): Opiskeluoikeus = putOpiskeluoikeus(oo) {
