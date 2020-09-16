@@ -11,3 +11,7 @@ trait SisäoppilaitosmainenMajoitus {
 trait OikeusmaksuttomaanAsuntolapaikkaan {
   def oikeusMaksuttomaanAsuntolapaikkaan: Option[Aikajakso]
 }
+
+trait UlkomainenVaihtoopiskelija {
+  def ulkomainenVaihtoopiskelija: Boolean
+}

@@ -131,6 +131,8 @@ object RaportointiDatabaseSchema {
     val tilaAlkanut = column[Date]("tila_alkanut")
     val opiskeluoikeusPäättynyt = column[Boolean]("opiskeluoikeus_paattynyt")
     val opintojenRahoitus = column[Option[String]]("opintojen_rahoitus", StringIdentifierType)
+    val erityisenKoulutusTehtävänJaksoTehtäväKoodiarvo =  column[Option[String]]("erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo", StringIdentifierType)
+    val ulkomainenVaihtoopiskelija = column[Byte]("ulkomainen_vaihto_opiskelija")
     val majoitus = column[Byte]("majoitus")
     val sisäoppilaitosmainenMajoitus = column[Byte]("sisaoppilaitosmainen_majoitus")
     val vaativanErityisenTuenYhteydessäJärjestettäväMajoitus = column[Byte]("vaativan_erityisen_tuen_yhteydessa_jarjestettäva_majoitus")
@@ -144,7 +146,7 @@ object RaportointiDatabaseSchema {
     val vankilaopetuksessa = column[Byte]("vankilaopetuksessa")
     val oppisopimusJossainPäätasonSuorituksessa = column[Byte]("oppisopimus_jossain_paatason_suorituksessa")
     def * = (opiskeluoikeusOid, alku, loppu, tila, tilaAlkanut, opiskeluoikeusPäättynyt,
-      opintojenRahoitus, majoitus, sisäoppilaitosmainenMajoitus, vaativanErityisenTuenYhteydessäJärjestettäväMajoitus,
+      opintojenRahoitus, erityisenKoulutusTehtävänJaksoTehtäväKoodiarvo, ulkomainenVaihtoopiskelija, majoitus, sisäoppilaitosmainenMajoitus, vaativanErityisenTuenYhteydessäJärjestettäväMajoitus,
       erityinenTuki, vaativanErityisenTuenErityinenTehtävä, hojks, vaikeastiVammainen, vammainenJaAvustaja,
       osaAikaisuus, opiskeluvalmiuksiaTukevatOpinnot, vankilaopetuksessa, oppisopimusJossainPäätasonSuorituksessa, id) <> (ROpiskeluoikeusAikajaksoRow.tupled, ROpiskeluoikeusAikajaksoRow.unapply)
   }
@@ -186,6 +188,8 @@ object RaportointiDatabaseSchema {
     val koulutusmoduuliLaajuusArvo = column[Option[Double]]("koulutusmoduuli_laajuus_arvo", SqlType("numeric"))
     val koulutusmoduuliLaajuusYksikkö = column[Option[String]]("koulutusmoduuli_laajuus_yksikko", StringIdentifierType)
     val koulutusmoduuliNimi = column[Option[String]]("koulutusmoduuli_nimi", StringIdentifierType)
+    val suorituskieliKoodiarvo = column[Option[String]]("suorituskieli_koodiarvo", StringIdentifierType)
+    val oppimääräKoodiarvo = column[Option[String]]("oppimaara_koodiarvo", StringIdentifierType)
     val vahvistusPäivä = column[Option[Date]]("vahvistus_paiva")
     val arviointiArvosanaKoodiarvo = column[Option[String]]("arviointi_arvosana_koodiarvo", StringIdentifierType)
     val arviointiArvosanaKoodisto = column[Option[String]]("arviointi_arvosana_koodisto", StringIdentifierType)
@@ -196,7 +200,7 @@ object RaportointiDatabaseSchema {
     val data = column[JValue]("data")
     def * = (päätasonSuoritusId, opiskeluoikeusOid, suorituksenTyyppi,
       koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutusmoduuliKoulutustyyppi,
-      koulutusmoduuliLaajuusArvo, koulutusmoduuliLaajuusYksikkö, koulutusmoduuliNimi,vahvistusPäivä,
+      koulutusmoduuliLaajuusArvo, koulutusmoduuliLaajuusYksikkö, koulutusmoduuliNimi, suorituskieliKoodiarvo, oppimääräKoodiarvo, vahvistusPäivä,
       arviointiArvosanaKoodiarvo, arviointiArvosanaKoodisto, arviointiHyväksytty, arviointiPäivä,
       toimipisteOid, toimipisteNimi, data) <> (RPäätasonSuoritusRow.tupled, RPäätasonSuoritusRow.unapply)
   }
@@ -358,6 +362,8 @@ case class ROpiskeluoikeusAikajaksoRow(
   tilaAlkanut: Date,
   opiskeluoikeusPäättynyt: Boolean = false,
   opintojenRahoitus: Option[String] = None,
+  erityisenKoulutusTehtävänJaksoTehtäväKoodiarvo: Option[String] = None,
+  ulkomainenVaihtoopiskelija: Byte = 0,
   majoitus: Byte = 0,
   sisäoppilaitosmainenMajoitus: Byte = 0,
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Byte = 0,
@@ -423,6 +429,8 @@ case class RPäätasonSuoritusRow(
   koulutusmoduuliLaajuusArvo: Option[Double],
   koulutusmoduuliLaajuusYksikkö: Option[String],
   koulutusmoduuliNimi: Option[String],
+  suorituskieliKoodiarvo: Option[String],
+  oppimääräKoodiarvo: Option[String],
   vahvistusPäivä: Option[Date],
   arviointiArvosanaKoodiarvo: Option[String],
   arviointiArvosanaKoodisto: Option[String],

@@ -22,7 +22,7 @@ describe('Lukiokoulutus', function( ){
           '1.9.2012 Läsnä (valtionosuusrahoitteinen koulutus)\n' +
           'Lisätiedot\n' +
           'Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa Pikkuvanha yksilö\n' +
-          'Erityisen koulutustehtävän jaksot 1.9.2012 — 1.9.2012 Tehtävä Kieliin painottuva koulutus\n' +
+          'Erityisen koulutustehtävän jaksot 1.9.2012 — 1.9.2013 Tehtävä Kieliin painottuva koulutus\n' +
           'Ulkomaanjaksot 1.9.2012 — 1.9.2013 Maa Ruotsi Kuvaus Harjoittelua ulkomailla\n' +
           'Oikeus maksuttomaan asuntolapaikkaan kyllä\n' +
           'Sisäoppilaitosmainen majoitus 1.9.2012 — 1.9.2013')
