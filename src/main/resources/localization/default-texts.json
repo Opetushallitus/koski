@@ -1382,7 +1382,7 @@
   "Suoritettu erityisenä tutkintona" : "Suoritettu erityisenä tutkintona",
   "description:Merkkijono sisällöllä \"lukionoppiaineidenoppimaarat2019\"" : "Merkkijono sisällöllä \"lukionoppiaineidenoppimaarat2019\"",
   "description:Koodi, jota käytetään lukion oppiaineiden..." : "Koodi, jota käytetään lukion oppiaineiden oppimäärien ryhmittelyssä 2019",
-  "Suoritettujen osasuoritusten laajuus yhteensä": "Suoritettujen osasuoritusten laajuus yhteensä",
+  "Arvioitujen osasuoritusten laajuus yhteensä": "Arvioitujen osasuoritusten laajuus yhteensä",
   "Paikallinen opintojakso tai oppiaine": "Paikallinen opintojakso tai oppiaine",
   "Kela": "Kela",
   "Virheellinen henkilötunnus": "Virheellinen henkilötunnus",
@@ -1393,5 +1393,7 @@
   "Opetuskieli" : "Opetuskieli",
   "Esiopetus-oppilasmäärät-raportti-title": "Esiopetuksen valtionosuusrahoituslaskennan tunnusluvut",
   "Esiopetus-oppilasmäärät-raportti-description": "Raportilla saa tulostettua kaikki esiopetuksen valtionosuusrahoituksen laskennassa käytettävät tunnusluvut per koulutustoimija ja/tai oppilaitos sen hetkisen KOSKI-datan mukaan laskettuna. Syötä ”Päivä”-kenttään se päivämäärä, jolta haluat raportin tulostettavan. ”Päivä”-parametri toimii niin, että se hakee raportille kaikki esiopetuksen opiskeluoikeudet, jotka ovat olleet \"Läsnä\"-tilaisena kyseisenä päivänä. Esimerkiksi, kun halutaan tulostaa raportti, joka laskee tilastointipäivän 20.9.2020 mukaiset esiopetuksen valtionosuusrahoituksen tunnusluvut, valitaan ”Päivä”-kenttään päivämääräksi 20.9.2020. Raportti pohjautuu viime yön tietoihin, eli tietojen päivitys Koskeen ei näy välittömästi raportilla.",
-  "description:Käytä aina merkkijonoa lukionoppiaineidenoppimaarat2019" : "Käytä aina merkkijonoa lukionoppiaineidenoppimaarat2019"
+  "description:Käytä aina merkkijonoa lukionoppiaineidenoppimaarat2019" : "Käytä aina merkkijonoa lukionoppiaineidenoppimaarat2019",
+  "Hyväksytysti arvioitu (opintopistettä)": "Hyväksytysti arvioitu (opintopistettä)",
+  "Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä ": "Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä "
 }

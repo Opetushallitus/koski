@@ -3,15 +3,14 @@ import * as R from 'ramda'
 import {modelData, modelItems, modelTitle} from '../editor/EditorModel'
 import {t} from '../i18n/i18n'
 import {
-  arvioidutOsasuoritukset,
-  osasuoritustenLaajuusYhteensäText,
+  OsasuorituksetYhteensa,
   paikallinenOsasuoritusTaiOppiaineText,
   paikallisiaLukionOppiaineitaTaiOsasuorituksia
 } from './LukionOppiaineetEditor'
 import {FootnoteDescriptions, FootnoteHint} from '../components/footnote'
 import {kurssienKeskiarvo, Nimi} from './fragments/LukionOppiaine'
 import {numberToString} from '../util/format'
-import {hyväksytystiSuoritetutOsasuoritukset, laajuudet, suoritetutKurssit} from './lukio'
+import {hylkäämättömätOsasuoritukset, laajuudet, suoritetutKurssit} from './lukio'
 import {KurssitEditor} from '../kurssi/KurssitEditor'
 import {isMobileAtom} from '../util/isMobileAtom'
 import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
@@ -40,7 +39,7 @@ export default ({suorituksetModel, suoritusFilter, useOppiaineLaajuus = false}) 
           ))}
         </tbody>
       </table>
-      <div className='kurssit-yhteensä'>{t(osasuoritustenLaajuusYhteensäText(suorituksetModel.context.suoritus)) + ': ' + numberToString(laajuudet(arvioidutOsasuoritukset(oppiaineet)))}</div>
+      <OsasuorituksetYhteensa suorituksetModel={suorituksetModel} oppiaineet={oppiaineet}/>
       {paikallisiaLukionOppiaineitaTaiOsasuorituksia(oppiaineet) && <FootnoteDescriptions data={[{title: paikallinenOsasuoritusTaiOppiaineText(suorituksetModel.context.suoritus), hint: '*'}]}/>}
     </section>
   )
@@ -69,7 +68,7 @@ export class OmatTiedotLukionOppiaine extends React.Component {
     const oppiaineenKeskiarvo = kurssienKeskiarvo(suoritetutKurssit(kurssit))
     const laajuusYhteensä = useOppiaineLaajuus
       ? modelData(oppiaine, 'koulutusmoduuli.laajuus.arvo')
-      : numberToString(laajuudet(hyväksytystiSuoritetutOsasuoritukset(kurssit)))
+      : numberToString(laajuudet(hylkäämättömätOsasuoritukset(kurssit)))
     const laajuusYksikkö = useOppiaineLaajuus
       ? modelTitle(oppiaine, 'koulutusmoduuli.laajuus.yksikkö')
       : t('kurssia')

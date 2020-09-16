@@ -6,13 +6,23 @@ import {modelErrorMessages, modelItems, modelLookup, modelTitle} from '../editor
 import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTableHead'
 import {t} from '../i18n/i18n'
 import {flatMapArray} from '../util/util'
-import {hyväksytystiSuoritetutOsasuoritukset, isLukioOps2019, laajuudet} from './lukio'
+import {arvioidutOsasuoritukset, hyväksytystiArvioidutOsasuoritukset, hylkäämättömätOsasuoritukset, isLukioOps2019, laajuudet} from './lukio'
 import {numberToString} from '../util/format.js'
 import {isPaikallinen} from '../suoritus/Koulutusmoduuli'
 import {FootnoteDescriptions} from '../components/footnote'
 import Text from '../i18n/Text'
 
-export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaineenSuoritus, suoritusFilter, additionalOnlyEditableProperties, additionalEditableKoulutusmoduuliProperties, showKeskiarvo = true}) => {
+export const LukionOppiaineetEditor = ({
+    suorituksetModel,
+    classesForUusiOppiaineenSuoritus,
+    suoritusFilter,
+    additionalOnlyEditableProperties,
+    additionalEditableKoulutusmoduuliProperties,
+    showKeskiarvo = true,
+    laajuusHeaderText = 'Laajuus',
+    useHylkäämättömätLaajuus = true,
+    showHyväksytystiArvioitujenLaajuus = false
+  }) => {
   const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context
   const oppiaineet = modelItems(suorituksetModel).filter(suoritusFilter || R.identity)
   if (!edit && R.isEmpty(oppiaineet)) return null
@@ -26,6 +36,8 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaine
       customOsasuoritusTitle='osasuoritus'
       showArviointiEditor={!oppiaine.value.classes.includes('arvioinniton')}
       showKeskiarvo={showKeskiarvo}
+      useHylkäämättömätLaajuus={useHylkäämättömätLaajuus}
+      showHyväksytystiArvioitujenLaajuus={showHyväksytystiArvioitujenLaajuus}
     />
   ))
   const errorRows = oppiaineet.map(oppiaine =>
@@ -43,12 +55,20 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaine
   return (
     <section>
       <table className="suoritukset oppiaineet">
-        {!R.isEmpty(oppiaineet) && <LukionOppiaineetTableHead laajuusyksikkö={laajuusyksikkö} arvosanaHeader={arvosanaHeader} />}
+        {
+          !R.isEmpty(oppiaineet) &&
+          <LukionOppiaineetTableHead
+            laajuusyksikkö={laajuusyksikkö}
+            laajuusHeaderText={laajuusHeaderText}
+            arvosanaHeader={arvosanaHeader}
+            showHyväksytystiArvioitujenLaajuus={showHyväksytystiArvioitujenLaajuus}
+          />
+        }
         <tbody>
         {oppiaineetWithErrorRows}
         </tbody>
       </table>
-      <div className="kurssit-yhteensä">{t(osasuoritustenLaajuusYhteensäText(suorituksetModel.context.suoritus)) + ': ' + numberToString(laajuudet(arvioidutOsasuoritukset(oppiaineet)))}</div>
+      <OsasuorituksetYhteensa suorituksetModel={suorituksetModel} oppiaineet={oppiaineet}/>
       {paikallisiaLukionOppiaineitaTaiOsasuorituksia(oppiaineet) && <FootnoteDescriptions data={[{title: paikallinenOsasuoritusTaiOppiaineText(suorituksetModel.context.suoritus), hint: '*'}]}/>}
       <UusiLukionOppiaineDropdown
         model={päätasonSuoritusModel}
@@ -61,10 +81,20 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaine
 export const paikallisiaLukionOppiaineitaTaiOsasuorituksia = oppiaineet => oppiaineet.some(aine => isPaikallinen(modelLookup(aine, 'koulutusmoduuli')) || paikallisiaOsasuorituksia(aine))
 export const paikallisiaOsasuorituksia = oppiaine => modelItems(oppiaine, 'osasuoritukset').some(osasuoritus => isPaikallinen(modelLookup(osasuoritus, 'koulutusmoduuli')))
 
-export const arvioidutOsasuoritukset = oppiaineet => flatMapArray(oppiaineet, oppiaine => hyväksytystiSuoritetutOsasuoritukset(modelItems(oppiaine, 'osasuoritukset')))
+export const OsasuorituksetYhteensa = ({suorituksetModel, oppiaineet}) => {
+  const isLukio2019 = isLukioOps2019(suorituksetModel.context.suoritus)
 
-export const osasuoritustenLaajuusYhteensäText = päätasonSuoritus => isLukioOps2019(päätasonSuoritus) ?
-  'Suoritettujen osasuoritusten laajuus yhteensä' : 'Suoritettujen kurssien laajuus yhteensä'
+  return isLukio2019 ? (
+    <div className="kurssit-yhteensä">
+      {t('Arvioitujen osasuoritusten laajuus yhteensä') + ': ' + numberToString(laajuudet(flatMapArray(oppiaineet, oppiaine => arvioidutOsasuoritukset(modelItems(oppiaine, 'osasuoritukset')))), 1)}<br/>
+      {t('Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä') + ': ' + numberToString(laajuudet(flatMapArray(oppiaineet, oppiaine => hyväksytystiArvioidutOsasuoritukset(modelItems(oppiaine, 'osasuoritukset')))), 1)}
+    </div>
+  ) : (
+    <div className="kurssit-yhteensä">
+      {t('Suoritettujen kurssien laajuus yhteensä') + ': ' + numberToString(laajuudet(flatMapArray(oppiaineet, oppiaine => hylkäämättömätOsasuoritukset(modelItems(oppiaine, 'osasuoritukset')))))}
+    </div>
+  )
+}
 
 export const paikallinenOsasuoritusTaiOppiaineText = päätasonSuoritus => isLukioOps2019(päätasonSuoritus) ?
   'Paikallinen opintojakso tai oppiaine' : 'Paikallinen kurssi tai oppiaine'
