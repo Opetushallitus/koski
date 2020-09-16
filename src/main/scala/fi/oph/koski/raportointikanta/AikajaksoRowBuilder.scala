@@ -75,6 +75,10 @@ object AikajaksoRowBuilder {
         case l: ErityisenKoulutustehtävänJaksollinen => l.erityisenKoulutustehtävänJaksot.toList.flatten.find(_.contains(päivä)).map(_.tehtävä.koodiarvo)
         case _ => None
       },
+      ulkomainenVaihtoopiskelija = o.lisätiedot.map {
+        case l: UlkomainenVaihtoopiskelija if l.ulkomainenVaihtoopiskelija => 1
+        case _ => 0
+      }.getOrElse(0).toByte,
       majoitus = ammatillinenAikajakso(_.majoitus),
       sisäoppilaitosmainenMajoitus = (
         ammatillinenAikajakso(_.sisäoppilaitosmainenMajoitus) +

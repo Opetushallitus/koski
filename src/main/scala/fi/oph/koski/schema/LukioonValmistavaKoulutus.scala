@@ -196,4 +196,4 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
   @Description("Tieto onko oppija sisäoppilaitosmaisessa majoituksessa. Rahoituksen laskennassa hyödynnettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None
-) extends OpiskeluoikeudenLisätiedot with Ulkomaajaksollinen with SisäoppilaitosmainenMajoitus
+) extends OpiskeluoikeudenLisätiedot with Ulkomaajaksollinen with SisäoppilaitosmainenMajoitus with UlkomainenVaihtoopiskelija
