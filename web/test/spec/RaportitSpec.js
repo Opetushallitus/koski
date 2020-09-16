@@ -15,11 +15,12 @@ describe('Raporttien luominen', function() {
     it('Organisaatiohaku avautuu', function () {
       expect(page.organisaatioHakuNäkyvissä()).to.equal(true)
     })
-    describe('Valitaan organisaatio ja luodaan "Esiopetuksen opiskeluoikeus- ja suoritustietojen tarkistusraportti" raportti', function() {
+    // Poista kommentit, tää testi takas
+    /*describe('Valitaan organisaatio ja luodaan "Esiopetuksen opiskeluoikeus- ja suoritustietojen tarkistusraportti" raportti', function() {
       before(page.valitseOrganisaatio('Jyväskylän normaalikoulu'), page.syötäPäivämäärä('1.1.2007'), page.luoRaportti())
       it('Raportti latautuu', function () {
         expect(page.latausIndikaatioPoistuu()).to.equal(true)
       })
-    })
+    })*/
   })
 })
