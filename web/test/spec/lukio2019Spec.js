@@ -55,6 +55,7 @@ describe('Lukiokoulutus2019', function( ){
           'Oppiaine Arvioitu (opintopistettä) Hyväksytysti arvioitu (opintopistettä) Arvosana\n' +
           'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\nOÄI1\n8 OÄI2\n8 OÄI3\n8 6 6 9\n' +
           'Matematiikka, pitkä oppimäärä\nMAB2\nH MAB3\nH MAB4\nO 4 0 9\n' +
+          'Opinto-ohjaus\nOP1\nH OP2\nS 4 2 H\n' +
           'Uskonto/Elämänkatsomustieto\nUE1\n4 1,5 0 4\n' +
           'Äidinkielenomainen kieli, ruotsi\nRUA4\n7 1 1 9\n' +
           'Fysiikka\nFY1\nS FY2\n10 FY3\n10 FY123 *\n10 FY124 *\n9 8 8 10\n' +
@@ -62,7 +63,7 @@ describe('Lukiokoulutus2019', function( ){
           'Lukiodiplomit\nMELD5\n7 KÄLD3\n9 4 4\n' +
           'Muut suoritukset\nKE3\n10 HAI765 *\nS 3 3\n' +
           'Teemaopinnot\nKAN200 *\nS 1 1\n' +
-          'Arvioitujen osasuoritusten laajuus yhteensä: 31,5 Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 26,0\n' +
+          'Arvioitujen osasuoritusten laajuus yhteensä: 35,5 Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 28,0\n' +
           '* = paikallinen opintojakso tai oppiaine')
       })
     })
@@ -206,7 +207,7 @@ describe('Lukiokoulutus2019', function( ){
             it('alkutila', function() {
               expect(editor.canSave()).to.equal(false)
               expect(editor.getEditBarMessage()).to.equal('Ei tallentamattomia muutoksia')
-              expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(10)
+              expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(11)
             })
 
             describe('Lisääminen', function () {
@@ -216,7 +217,7 @@ describe('Lukiokoulutus2019', function( ){
               )
 
               it('lisää oppiaineen', function () {
-                expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(11)
+                expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(12)
               })
 
               it('estää tallennuksen kunnes pakolliset tiedot on täytetty', function () {
@@ -441,12 +442,13 @@ describe('Lukiokoulutus2019', function( ){
           'Oppiaine Arvioitu (opintopistettä) Hyväksytysti arvioitu (opintopistettä) Arvosana\n' +
           'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\nOÄI1\n8 OÄI2\n8 OÄI3\n8 6 6 9\n' +
           'Matematiikka, pitkä oppimäärä\nMAB2\nH MAB3\nH MAB4\nO 4 0 9\n' +
+          'Opinto-ohjaus\nOP1\nH OP2\nS 4 2 H\n' +
           'Uskonto/Elämänkatsomustieto\nUE1\n4 1,5 0 4\n' +
           'Äidinkielenomainen kieli, ruotsi\nRUA4\n7 1 1 9\n' +
           'Fysiikka\nFY1\nS FY2\n10 FY3\n10 FY123 *\n10 FY124 *\n9 8 8 10\n' +
           'Kemia 0 0 4\n' +
           'Tanssi ja liike *\nLI5\n7 ITT234 *\n10 3 3 8\n' +
-          'Arvioitujen osasuoritusten laajuus yhteensä: 23,5 Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 18,0\n' +
+          'Arvioitujen osasuoritusten laajuus yhteensä: 27,5 Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 20,0\n' +
           '* = paikallinen opintojakso tai oppiaine')
       })
 

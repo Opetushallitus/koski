@@ -24,6 +24,10 @@ object ExamplesLukio2019 {
       moduulinSuoritus(moduuli("MAB3")).copy(arviointi = sanallinenArviointi("H")),
       moduulinSuoritus(moduuli("MAB4")).copy(arviointi = sanallinenArviointi("O"))
     ))),
+    oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("OP")).copy(arviointi = lukionOpintoOhjauksenOppiaineenArviointi("H")).copy(osasuoritukset = Some(List(
+      moduulinSuoritus(moduuli("OP1")).copy(arviointi = sanallinenArviointi("H")),
+      moduulinSuoritus(moduuli("OP2")).copy(arviointi = sanallinenArviointi("S"))
+    ))),
     oppiaineenSuoritus(Lukio2019ExampleData.lukionUskonto(Some("MU"))).copy(arviointi = lukionMuunOppiaineenArviointi("4")).copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("UE1").copy(laajuus = laajuus(1.5))).copy(arviointi = numeerinenArviointi(4))
     ))),
