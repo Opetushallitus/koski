@@ -84,8 +84,6 @@ object LukionOppiaineenArviointi {
   def apply(arvosana: String) = new LukionOppiaineenArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)
 }
 
-// TODO: nimeäminen? "LukionArviointi" on vähän huono, kun on myös ylemmän tason
-// "LukionOppiaineenArvointi". Sitten taas "LukionKurssinModuulinTaiPaikallisenOppiaineenArviointi" on aika kankea nimi...
 trait LukionArviointi extends ArviointiPäivämäärällä
 
 case class NumeerinenLukionArviointi(

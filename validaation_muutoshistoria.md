@@ -1,5 +1,11 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 21.9.2020
+- Validoi lops2021 oppiaineiden arvosanat. Valtakunnallisten oppiaineiden arvosanojen pitää olla pääsääntöisesti numero.
+  Opinto-ohjauksessa ei saa olla numeroarviointia. Liikunnassa H tai S sallitaan numeron sijasta, jos oppiaineen laajuus
+  on korkeintaan 2 op. Vieraissa kielissä H tai S sallitaan numeron sijasta, jos oppiaine on valinnainen ja sen laajuus
+  on korkeintaan 4 op.
+
 ## 20.9.2020
 - Validoi lops2021 suoritettu erityisenä tutkintona. Jos oppiaine tai suoritus on suoritettu erityisenä tutkintona,
   ei erillisiä moduulien tai paikallisten opintojaksojen merkintöjä sallita oppiaineisiin.

@@ -14,31 +14,31 @@ object ExamplesLukio2019 {
   val lops2019perusteenDiaarinumero = Some("OPH-2263-2019")
   val lukionOppimäärä2019: LukionOppimäärä = LukionOppimäärä(perusteenDiaarinumero = lops2019perusteenDiaarinumero)
   val oppiainesuoritukset = List(
-    oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", true)).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+    oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", true)).copy(arviointi = lukionMuunOppiaineenArviointi("9")).copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("OÄI1")).copy(arviointi = numeerinenArviointi(8)),
       moduulinSuoritus(moduuli("OÄI2")).copy(arviointi = numeerinenArviointi(8)),
       moduulinSuoritus(moduuli("OÄI3").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(8))
     ))),
-    oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+    oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(arviointi = lukionMuunOppiaineenArviointi("9")).copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("MAB2")).copy(arviointi = sanallinenArviointi("H")),
       moduulinSuoritus(moduuli("MAB3")).copy(arviointi = sanallinenArviointi("H")),
       moduulinSuoritus(moduuli("MAB4")).copy(arviointi = sanallinenArviointi("O"))
     ))),
-    oppiaineenSuoritus(Lukio2019ExampleData.lukionUskonto(Some("MU"))).copy(arviointi = arviointi("4")).copy(osasuoritukset = Some(List(
+    oppiaineenSuoritus(Lukio2019ExampleData.lukionUskonto(Some("MU"))).copy(arviointi = lukionMuunOppiaineenArviointi("4")).copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("UE1").copy(laajuus = laajuus(1.5))).copy(arviointi = numeerinenArviointi(4))
     ))),
-    oppiaineenSuoritus(lukionKieli2019("AOM", "SV")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+    oppiaineenSuoritus(lukionKieli2019("AOM", "SV")).copy(arviointi = lukionLiikunnanTaiVieraanKielenOppiaineenArviointi("9")).copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("RUA4").copy(laajuus = laajuus(1))).copy(arviointi = numeerinenArviointi(7))
     ))),
-    oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("FY")).copy(arviointi = arviointi("10")).copy(osasuoritukset = Some(List(
+    oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("FY")).copy(arviointi = lukionMuunOppiaineenArviointi("10")).copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("FY1")).copy(arviointi = sanallinenArviointi("S")),
       moduulinSuoritus(moduuli("FY2")).copy(arviointi = numeerinenArviointi(10)),
       moduulinSuoritus(moduuli("FY3")).copy(arviointi = numeerinenArviointi(10)),
       paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY123", "Keittiöfysiikka", "Keittiöfysiikan kokeelliset perusteet, kiehumisreaktiot")).copy(arviointi = numeerinenArviointi(10)),
       paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY124", "Keittiöfysiikka 2", "Haastava kokeellinen keittiöfysiikka, liekitys ja lämpöreaktiot").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(9))
     ))),
-    oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("KE")).copy(arviointi = arviointi("4")),
-    oppiaineenSuoritus(PaikallinenLukionOppiaine2019(PaikallinenKoodi("ITT", "Tanssi ja liike"), "Tanssi ja liike", pakollinen = false)).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
+    oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("KE")).copy(arviointi = lukionMuunOppiaineenArviointi("4")),
+    oppiaineenSuoritus(PaikallinenLukionOppiaine2019(PaikallinenKoodi("ITT", "Tanssi ja liike"), "Tanssi ja liike", pakollinen = false)).copy(arviointi = lukionPaikallisenOppiaineenArviointi("8")).copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("LI5")).copy(arviointi = numeerinenArviointi(7)),
       paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("ITT234", "Tanssin taito", "Perinteiset suomalaiset tanssit, valssi jne")).copy(arviointi = numeerinenArviointi(10))
     )))
@@ -132,6 +132,22 @@ object ExamplesLukio2019 {
 }
 
 object Lukio2019ExampleData {
+  def lukionMuunOppiaineenArviointi(arvosana: String): Some[List[LukionMuunOppiaineenArviointi2019]] = {
+    Some(List(LukionMuunOppiaineenArviointi2019(arvosana)))
+  }
+
+  def lukionOpintoOhjauksenOppiaineenArviointi(arvosana: String): Some[List[LukionOpintoOhjauksenOppiaineenArviointi2019]] = {
+    Some(List(LukionOpintoOhjauksenOppiaineenArviointi2019(arvosana)))
+  }
+
+  def lukionLiikunnanTaiVieraanKielenOppiaineenArviointi(arvosana: String): Some[List[LukionLiikunnanTaiVieraanKielenOppiaineenArviointi2019]] = {
+    Some(List(LukionLiikunnanTaiVieraanKielenOppiaineenArviointi2019(arvosana)))
+  }
+
+  def lukionPaikallisenOppiaineenArviointi(arvosana: String): Some[List[LukionPaikallisenOppiaineenArviointi2019]] = {
+    Some(List(LukionPaikallisenOppiaineenArviointi2019(arvosana)))
+  }
+
   def oppiaineenSuoritus(aine: LukionOppiaine2019): LukionOppiaineenSuoritus2019 = LukionOppiaineenSuoritus2019(
     koulutusmoduuli = aine,
     suorituskieli = None,

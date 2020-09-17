@@ -149,6 +149,7 @@ object KoskiErrorCategory {
         val useitaArviointiasteikoita = subcategory("useitaArviointiAsteikoita", "Ammatillinen päätason suoritus voi käyttää vain yhtä numeerista arviointiasteikkoa")
         val sallittuVainValinnaiselle = subcategory("sallittuVainValinnaiselle", "Arvioinnit 'S' ja 'O' on sallittuja vain valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia")
         val eiSallittuSuppealleValinnaiselle = subcategory("eiSallittuSuppealleValinnaiselle", "Vain arvioinnit 'S' ja 'O' on sallittu valinnaiselle valtakunnalliselle oppiaineelle, jonka laajuus on alle kaksi vuosiviikkotuntia")
+        val sallittuVainSuppealle = subcategory("sallittuVainSuppealle", "Arvioinnit 'S' ja 'H' on sallittu vain riittävän suppealle oppiaineelle")
       }
       val arviointi = new Arviointi
 

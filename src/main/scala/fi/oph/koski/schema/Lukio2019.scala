@@ -103,7 +103,7 @@ case class MuidenLukioOpintojenSuoritus2019(
 @Description("Lukion oppiaineen suoritustiedot 2019")
 case class LukionOppiaineenSuoritus2019(
   koulutusmoduuli: LukionOppiaine2019,
-  arviointi: Option[List[LukionOppiaineenArviointi]] = None,
+  arviointi: Option[List[LukionOppiaineenArviointi2019]] = None,
   suoritettuErityisenäTutkintona: Boolean = false,
   @Title("Suorituskieli, jos muu kuin opetuskieli")
   @Description("Suorituskieli, mikäli opiskelija on opiskellut yli puolet oppiaineen oppimäärän opinnoista muulla kuin koulun varsinaisella opetuskielellä.")
@@ -370,3 +370,125 @@ case class SuullisenKielitaidonKoe2019(
   kuvaus: Option[LocalizedString],
   päivä: LocalDate
 ) extends ArviointiPäivämäärällä with YleissivistävänKoulutuksenArviointi
+
+trait LukionOppiaineenArviointi2019 extends YleissivistävänKoulutuksenArviointi {
+  @Description("Oppiaineen suorituksen arvosana on kokonaisarvosana oppiaineelle")
+  def arvosana: Koodistokoodiviite
+  @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
+  def päivä: Option[LocalDate]
+
+  def arviointipäivä = päivä
+}
+
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "OP")
+@Title("Lukion opinto-ohjauksen oppiaineen arviointi 2019")
+case class LukionOpintoOhjauksenOppiaineenArviointi2019(
+  @KoodistoKoodiarvo("H")
+  @KoodistoKoodiarvo("S")
+  arvosana: Koodistokoodiviite,
+  päivä: Option[LocalDate]
+) extends LukionOppiaineenArviointi2019
+
+object LukionOpintoOhjauksenOppiaineenArviointi2019 {
+  def apply(arvosana: String) = new LukionOpintoOhjauksenOppiaineenArviointi2019(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)
+}
+
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "LI")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "A")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "B1")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "B2")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "B3")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "AOM")
+@Title("Lukion liikunnan tai vieraan kielen oppiaineen arviointi 2019")
+case class LukionLiikunnanTaiVieraanKielenOppiaineenArviointi2019(
+  @Description("H/S sallittu liikunnassa, jos korkeintaan 2 op ja vieraan kielen ollessa valinnainen, jos sen laajuus on korkeintaan 4 op.")
+  @KoodistoKoodiarvo("H")
+  @KoodistoKoodiarvo("S")
+  @KoodistoKoodiarvo("4")
+  @KoodistoKoodiarvo("5")
+  @KoodistoKoodiarvo("6")
+  @KoodistoKoodiarvo("7")
+  @KoodistoKoodiarvo("8")
+  @KoodistoKoodiarvo("9")
+  @KoodistoKoodiarvo("10")
+  arvosana: Koodistokoodiviite,
+  päivä: Option[LocalDate]
+) extends LukionOppiaineenArviointi2019
+
+object LukionLiikunnanTaiVieraanKielenOppiaineenArviointi2019 {
+  def apply(arvosana: String) = new LukionLiikunnanTaiVieraanKielenOppiaineenArviointi2019(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)
+}
+
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodistoUri", None)
+@Title("Lukion paikallisen oppiaineen arviointi 2019")
+case class LukionPaikallisenOppiaineenArviointi2019(
+  @KoodistoKoodiarvo("H")
+  @KoodistoKoodiarvo("S")
+  @KoodistoKoodiarvo("4")
+  @KoodistoKoodiarvo("5")
+  @KoodistoKoodiarvo("6")
+  @KoodistoKoodiarvo("7")
+  @KoodistoKoodiarvo("8")
+  @KoodistoKoodiarvo("9")
+  @KoodistoKoodiarvo("10")
+  arvosana: Koodistokoodiviite,
+  päivä: Option[LocalDate]
+) extends LukionOppiaineenArviointi2019
+
+object LukionPaikallisenOppiaineenArviointi2019 {
+  def apply(arvosana: String) = new LukionPaikallisenOppiaineenArviointi2019(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)
+}
+
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "BI")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "ET")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "FI")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "FY")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "GE")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "HI")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "KE")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "KU")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "MU")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "PS")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "TE")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "YH")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "KT")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "AI")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "MA")
+@Title("Lukion muun oppiaineen arviointi 2019")
+case class LukionMuunOppiaineenArviointi2019(
+  @KoodistoKoodiarvo("4")
+  @KoodistoKoodiarvo("5")
+  @KoodistoKoodiarvo("6")
+  @KoodistoKoodiarvo("7")
+  @KoodistoKoodiarvo("8")
+  @KoodistoKoodiarvo("9")
+  @KoodistoKoodiarvo("10")
+  arvosana: Koodistokoodiviite,
+  päivä: Option[LocalDate]
+) extends LukionOppiaineenArviointi2019
+
+object LukionMuunOppiaineenArviointi2019 {
+  def apply(arvosana: String) = new LukionMuunOppiaineenArviointi2019(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)
+}
+
+trait LukionModuulinTaiPaikallisenOpintojaksonArviointi2019 extends ArviointiPäivämäärällä
+
+case class NumeerinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019(
+  @KoodistoKoodiarvo("4")
+  @KoodistoKoodiarvo("5")
+  @KoodistoKoodiarvo("6")
+  @KoodistoKoodiarvo("7")
+  @KoodistoKoodiarvo("8")
+  @KoodistoKoodiarvo("9")
+  @KoodistoKoodiarvo("10")
+  arvosana: Koodistokoodiviite,
+  päivä: LocalDate
+) extends LukionModuulinTaiPaikallisenOpintojaksonArviointi2019 with YleissivistävänKoulutuksenArviointi
+
+case class SanallinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019(
+  @KoodistoKoodiarvo("H")
+  @KoodistoKoodiarvo("S")
+  arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
+  kuvaus: Option[LocalizedString],
+  päivä: LocalDate
+) extends LukionModuulinTaiPaikallisenOpintojaksonArviointi2019 with YleissivistävänKoulutuksenArviointi
