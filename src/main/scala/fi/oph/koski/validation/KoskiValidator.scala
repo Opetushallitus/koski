@@ -448,7 +448,6 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     val alkamispäivä: (String, Iterable[LocalDate]) = ("suoritus.alkamispäivä", suoritus.alkamispäivä)
     val vahvistuspäivät: Option[LocalDate] = suoritus.vahvistus.map(_.päivä)
     val parentVahvistuspäivät = parent.flatMap(_.vahvistus.map(_.päivä))
-    val lukio2019OsasuoritusValidator = new Lukio2019OsasuoritusValidator(suoritus, parent)
     HttpStatus.fold(
       validateVahvistusAndPäättymispäiväDateOrder(suoritus, opiskeluoikeus, vahvistuspäivät) ::
       validateDateOrder(("osasuoritus.vahvistus.päivä", vahvistuspäivät), ("suoritus.vahvistus.päivä", parentVahvistuspäivät), KoskiErrorCategory.badRequest.validation.date.suorituksenVahvistusEnnenSuorituksenOsanVahvistusta) ::
@@ -465,7 +464,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         :: validateTutkinnonosanRyhmä(suoritus)
         :: validateOsaamisenHankkimistavat(suoritus)
         :: validateYhteisetTutkinnonOsat(suoritus, opiskeluoikeus)
-        :: lukio2019OsasuoritusValidator.validate
+        :: Lukio2019OsasuoritusValidation.validate(suoritus, parent)
         :: HttpStatus.validate(!suoritus.isInstanceOf[PäätasonSuoritus])(validateDuplicates(suoritus.osasuoritukset.toList.flatten))
         :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, suoritus :: parent))
     )
@@ -943,83 +942,5 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
           .forall(hankkimistapa => List("koulutussopimus", "oppilaitosmuotoinenkoulutus").contains(hankkimistapa.tunniste.koodiarvo))
       )(KoskiErrorCategory.badRequest.validation.rakenne.deprekoituOsaamisenHankkimistapa())
     case _ => HttpStatus.ok
-  }
-}
-
-class Lukio2019OsasuoritusValidator(suoritus: Suoritus, parents: List[Suoritus]) {
-
-  val lukiodiplomit = List("KOLD1", "KULD2", "KÄLD3", "LILD4", "MELD5", "MULD6", "TALD7", "TELD8")
-  val lukiodiplomienSallitutOppiaineet = List(("KU", "KULD2"), ("LI", "LILD4"), ("MU", "MULD6"), ("TE", "TELD8"))
-
-  def validate: HttpStatus = {
-    HttpStatus.fold(List(
-      validateErityinenTutkinto,
-      validateTemaattisissaVainPaikallisiaOpintojaksoja,
-      validateLukiodiplomiRakenne,
-      validateLukiodiplomiLaajuus,
-      validateOppiaineenSuorituskieli,
-      validateModuulinJaPaikallisenOpintojaksonSuorituskieli
-    ))
-  }
-
-  private def validateErityinenTutkinto: HttpStatus = (suoritus, parents) match {
-    case (s, (p: LukionOppiaineenSuoritus2019) :: (_: LukionOppimääränSuoritus2019) :: _) if (p.suoritettuErityisenäTutkintona) =>
-      KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuSisältääOsasuorituksia(s"Osasuoritus ${suorituksenTunniste(suoritus)} ei ole sallittu, koska oppiaine on suoritettu erityisenä tutkintona")
-    case (s, (_: LukionOppiaineenSuoritus2019) :: (pp: LukionOppimääränSuoritus2019) :: _) if (pp.suoritettuErityisenäTutkintona) =>
-      KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuSisältääOsasuorituksia(s"Osasuoritus ${suorituksenTunniste(suoritus)} ei ole sallittu, koska tutkinto on suoritettu erityisenä tutkintona")
-    case _ =>
-      HttpStatus.ok
-  }
-
-  private def validateTemaattisissaVainPaikallisiaOpintojaksoja: HttpStatus = (suoritus, parents) match {
-    case (s: LukionModuulinSuoritus2019, (p: MuidenLukioOpintojenSuoritus2019) :: _) if (p.koulutusmoduuli.tunniste.koodiarvo == "TO") =>
-      KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Valtakunnallista moduulia ${suorituksenTunniste(suoritus)} ei voi tallentaa temaattisiin opintoihin")
-    case _ =>
-      HttpStatus.ok
-  }
-
-  private def validateLukiodiplomiRakenne: HttpStatus = (suoritus, parents) match {
-    case (s: LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019, (p: MuidenLukioOpintojenSuoritus2019) :: _)
-      if p.koulutusmoduuli.tunniste.koodiarvo == "LD" &&
-        !lukiodiplomit.contains(s.koulutusmoduuli.tunniste.koodiarvo) =>
-      KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Osasuoritus ${suorituksenTunniste(suoritus)} ei ole sallittu lukiodiplomi")
-    case (s: LukionModuulinSuoritus2019, (p: LukionOppimääränOsasuoritus2019) :: _)
-      if p.koulutusmoduuli.tunniste.koodiarvo != "LD" &&
-        lukiodiplomit.contains(s.koulutusmoduuli.tunniste.koodiarvo) &&
-        !lukiodiplomienSallitutOppiaineet.contains((p.koulutusmoduuli.tunniste.koodiarvo, s.koulutusmoduuli.tunniste.koodiarvo)) =>
-      KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Lukiodiplomi ${suorituksenTunniste(suoritus)} ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus")
-    case _ =>
-      HttpStatus.ok
-  }
-
-  private def validateLukiodiplomiLaajuus: HttpStatus = suoritus match {
-    case s: LukionModuulinSuoritus2019
-      if (lukiodiplomit.contains(s.koulutusmoduuli.tunniste.koodiarvo) && (s.koulutusmoduuli.laajuusArvo(0.0) != 2.0)) =>
-      KoskiErrorCategory.badRequest.validation.laajuudet.lukiodiplominLaajuusEiOle2Opintopistettä(s"Osasuorituksen ${suorituksenTunniste(suoritus)} laajuus ei ole lukiodiplomille ainoa sallittu 2 opintopistettä")
-    case _ =>
-      HttpStatus.ok
-  }
-
-  private def validateOppiaineenSuorituskieli: HttpStatus = (suoritus, parents) match {
-    case (s: LukionOppiaineenSuoritus2019, (p: Suorituskielellinen) :: _)
-      if s.suorituskieli.contains(p.suorituskieli) =>
-      KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Oppiaineen ${suorituksenTunniste(suoritus)} suorituskieli ei saa olla sama kuin päätason suorituksen suorituskieli")
-    case _ =>
-      HttpStatus.ok
-  }
-
-  private def validateModuulinJaPaikallisenOpintojaksonSuorituskieli: HttpStatus = (suoritus, parents) match {
-    case (s: LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019, (p: MahdollisestiSuorituskielellinen) :: _)
-      if s.suorituskieli.exists(p.suorituskieli.contains) =>
-      KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Osasuorituksen ${suorituksenTunniste(suoritus)} suorituskieli ei saa olla sama kuin oppiaineen suorituskieli")
-    case (s: LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019, (p: MahdollisestiSuorituskielellinen) :: (pp: Suorituskielellinen) :: _)
-      if p.suorituskieli.isEmpty && s.suorituskieli.contains(pp.suorituskieli) =>
-      KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Osasuorituksen ${suorituksenTunniste(suoritus)} suorituskieli ei saa olla sama kuin päätason suorituksen suorituskieli")
-    case _ =>
-      HttpStatus.ok
-  }
-
-  private def suorituksenTunniste(suoritus: Suoritus): KoodiViite = {
-    suoritus.koulutusmoduuli.tunniste
   }
 }
