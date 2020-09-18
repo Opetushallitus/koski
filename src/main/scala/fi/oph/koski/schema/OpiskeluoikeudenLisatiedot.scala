@@ -34,6 +34,18 @@ trait UlkomainenVaihtoopiskelija {
   def ulkomainenVaihtoopiskelija: Boolean
 }
 
+trait Vammainen {
+  def vammainen: Option[List[Aikajakso]]
+}
+
 trait VaikeastiVammainen {
   def vaikeastiVammainen: Option[List[Aikajakso]]
+}
+
+trait Majoitusetuinen {
+  def majoitusetu: Option[Aikajakso]
+}
+
+trait Kuljetusetuinen {
+  def kuljetusetu: Option[Aikajakso]
 }

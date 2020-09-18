@@ -161,6 +161,9 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
 ) extends TukimuodollisetLisätiedot
   with SisäoppilaitosmainenMajoitus
   with OikeusmaksuttomaanAsuntolapaikkaan
+  with Majoitusetuinen
+  with Kuljetusetuinen
+  with Vammainen
   with VaikeastiVammainen {
   override def sisältääOsaAikaisenErityisopetuksen: Boolean =
     tukimuodoissaOsaAikainenErityisopetus(tehostetunTuenPäätökset) ||

@@ -81,6 +81,8 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
 ) extends OpiskeluoikeudenLisätiedot
   with SisäoppilaitosmainenMajoitus
   with OikeusmaksuttomaanAsuntolapaikkaan
+  with Majoitusetuinen
+  with Vammainen
   with VaikeastiVammainen
 
 trait AikuistenPerusopetuksenPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with MonikielinenSuoritus with Suorituskielellinen
