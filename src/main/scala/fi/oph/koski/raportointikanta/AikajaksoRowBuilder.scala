@@ -61,7 +61,8 @@ object AikajaksoRowBuilder {
         case _ => None
       },
       erityisenKoulutusTehtävänJaksoTehtäväKoodiarvo = o.lisätiedot.flatMap {
-        case l: ErityisenKoulutustehtävänJaksollinen => l.erityisenKoulutustehtävänJaksot.toList.flatten.find(_.contains(päivä)).map(_.tehtävä.koodiarvo)
+        case l: ErityisenKoulutustehtävänJaksollinen =>
+          l.erityisenKoulutustehtävänJaksot.toList.flatten.find(_.contains(päivä)).map(_.tehtävä.koodiarvo)
         case _ => None
       },
       ulkomainenVaihtoopiskelija = o.lisätiedot.exists {
