@@ -8,6 +8,8 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportit.YleissivistäväRaporttiOppiaineTaiKurssi
 import fi.oph.koski.schema.LocalizedString
 import org.json4s.JValue
+import shapeless.{Generic, HNil}
+import slickless._
 import slick.dbio.DBIO
 import slick.sql.SqlProfile.ColumnOption.SqlType
 
@@ -135,20 +137,54 @@ object RaportointiDatabaseSchema {
     val opiskeluoikeusPäättynyt = column[Boolean]("opiskeluoikeus_paattynyt")
     val ulkomainenVaihtoopiskelija = column[Boolean]("ulkomainen_vaihto_opiskelija")
     val majoitus = column[Boolean]("majoitus")
+    val majoitusetu = column[Boolean]("majoitusetu")
+    val kuljetusetu = column[Boolean]("kuljetusetu")
     val sisäoppilaitosmainenMajoitus = column[Boolean]("sisaoppilaitosmainen_majoitus")
     val vaativanErityisenTuenYhteydessäJärjestettäväMajoitus = column[Boolean]("vaativan_erityisen_tuen_yhteydessa_jarjestettäva_majoitus")
     val erityinenTuki = column[Boolean]("erityinen_tuki")
     val vaativanErityisenTuenErityinenTehtävä = column[Boolean]("vaativan_erityisen_tuen_erityinen_tehtava")
     val hojks = column[Boolean]("hojks")
+    val vammainen = column[Boolean]("vammainen")
     val vaikeastiVammainen = column[Boolean]("vaikeasti_vammainen")
     val vammainenJaAvustaja = column[Boolean]("vammainen_ja_avustaja")
     val opiskeluvalmiuksiaTukevatOpinnot = column[Boolean]("opiskeluvalmiuksia_tukevat_opinnot")
     val vankilaopetuksessa = column[Boolean]("vankilaopetuksessa")
     val oppisopimusJossainPäätasonSuorituksessa = column[Boolean]("oppisopimus_jossain_paatason_suorituksessa")
-    def * = (opiskeluoikeusOid, alku, loppu, tila, tilaAlkanut, opiskeluoikeusPäättynyt,
-      opintojenRahoitus, erityisenKoulutusTehtävänJaksoTehtäväKoodiarvo, ulkomainenVaihtoopiskelija, majoitus, sisäoppilaitosmainenMajoitus, vaativanErityisenTuenYhteydessäJärjestettäväMajoitus,
-      erityinenTuki, vaativanErityisenTuenErityinenTehtävä, hojks, vaikeastiVammainen, vammainenJaAvustaja,
-      osaAikaisuus, opiskeluvalmiuksiaTukevatOpinnot, vankilaopetuksessa, oppisopimusJossainPäätasonSuorituksessa, id) <> (ROpiskeluoikeusAikajaksoRow.tupled, ROpiskeluoikeusAikajaksoRow.unapply)
+    val pidennettyOppivelvollisuus = column[Boolean]("pidennetty_oppivelvollisuus")
+    val joustavaPerusopetus = column[Boolean]("joustava_perusopetus")
+    val koulukoti = column[Boolean]("koulukoti")
+
+    def * = (
+      opiskeluoikeusOid ::
+      alku ::
+      loppu ::
+      tila ::
+      tilaAlkanut ::
+      opiskeluoikeusPäättynyt ::
+      opintojenRahoitus ::
+      erityisenKoulutusTehtävänJaksoTehtäväKoodiarvo ::
+      ulkomainenVaihtoopiskelija ::
+      majoitus ::
+      majoitusetu ::
+      kuljetusetu ::
+      sisäoppilaitosmainenMajoitus ::
+      vaativanErityisenTuenYhteydessäJärjestettäväMajoitus ::
+      erityinenTuki ::
+      vaativanErityisenTuenErityinenTehtävä ::
+      hojks ::
+      vammainen ::
+      vaikeastiVammainen ::
+      vammainenJaAvustaja ::
+      osaAikaisuus ::
+      opiskeluvalmiuksiaTukevatOpinnot ::
+      vankilaopetuksessa ::
+      oppisopimusJossainPäätasonSuorituksessa ::
+      pidennettyOppivelvollisuus ::
+      joustavaPerusopetus ::
+      koulukoti ::
+      id ::
+      HNil
+    ).mappedWith(Generic[ROpiskeluoikeusAikajaksoRow])
   }
   class ROpiskeluoikeusAikajaksoTableTemp(tag: Tag) extends ROpiskeluoikeusAikajaksoTable(tag, Temp)
 
@@ -365,17 +401,23 @@ case class ROpiskeluoikeusAikajaksoRow(
   erityisenKoulutusTehtävänJaksoTehtäväKoodiarvo: Option[String] = None,
   ulkomainenVaihtoopiskelija: Boolean = false,
   majoitus: Boolean = false,
+  majoitusetu: Boolean = false,
+  kuljetusetu: Boolean = false,
   sisäoppilaitosmainenMajoitus: Boolean = false,
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Boolean = false,
   erityinenTuki: Boolean = false,
   vaativanErityisenTuenErityinenTehtävä: Boolean = false,
   hojks: Boolean = false,
+  vammainen: Boolean = false,
   vaikeastiVammainen: Boolean = false,
   vammainenJaAvustaja: Boolean = false,
   osaAikaisuus: Byte = 100,
   opiskeluvalmiuksiaTukevatOpinnot: Boolean = false,
   vankilaopetuksessa: Boolean = false,
   oppisopimusJossainPäätasonSuorituksessa: Boolean = false,
+  pidennettyOppivelvollisuus: Boolean = false,
+  joustavaPerusopetus: Boolean = false,
+  koulukoti: Boolean = false,
   id: Long = 0
 ) extends AikajaksoRow[ROpiskeluoikeusAikajaksoRow] {
   def truncateToDates(start: Date, end: Date): ROpiskeluoikeusAikajaksoRow = this.copy(
