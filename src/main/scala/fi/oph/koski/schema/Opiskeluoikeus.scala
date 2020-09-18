@@ -2,7 +2,6 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 import mojave.Traversal
@@ -105,22 +104,6 @@ object OpiskeluoikeudenTyyppi {
   def kaikkiTyypit: Set[Koodistokoodiviite] = tyypit
 }
 
-trait OpiskeluoikeudenLisätiedot
-
-trait TukimuodollisetLisätiedot extends OpiskeluoikeudenLisätiedot {
-  def sisältääOsaAikaisenErityisopetuksen: Boolean
-}
-
-object TukimuodollisetLisätiedot {
-  def tukimuodoissaOsaAikainenErityisopetus(t: Option[List[Tukimuodollinen]]) = {
-    val tukimuodot = t.getOrElse(List()).flatMap(_.tukimuotoLista)
-    tukimuodot.contains(osaAikainenErityisopetusKoodistokoodiviite)
-  }
-
-  private lazy val osaAikainenErityisopetusKoodistokoodiviite =
-    MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite("1", "perusopetuksentukimuoto"))
-}
-
 trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
   import mojave._
   @Hidden
@@ -195,7 +178,6 @@ trait KoskiOpiskeluoikeusjakso extends Opiskeluoikeusjakso {
   def opiskeluoikeusPäättynyt = KoskiOpiskeluoikeusjakso.päätöstilat.contains(tila.koodiarvo) || tila.koodiarvo == "mitatoity"
   def opintojenRahoitus: Option[Koodistokoodiviite] = None
 }
-
 
 trait Alkupäivällinen {
   @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
