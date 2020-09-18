@@ -135,7 +135,7 @@ case class OpiskeluvalmiuksiaTukevienOpintojenJakso(
   @Description("Opiskeluvalmiuksia tukevien opintojen vapaamuotoinen kuvaus.")
   @Tooltip("Opiskeluvalmiuksia tukevien opintojen vapaamuotoinen kuvaus.")
   kuvaus: LocalizedString
-) {
+) extends DateContaining {
   def contains(d: LocalDate): Boolean = !d.isBefore(alku) && !d.isAfter(loppu)
 }
 
@@ -992,7 +992,7 @@ case class Hojks(
   alku: Option[LocalDate] = None,
   @Description("HOJKS:n voimassaolon loppupäivämäärä.")
   loppu: Option[LocalDate] = None
-) {
+) extends DateContaining {
   def contains(d: LocalDate): Boolean = (alku.isEmpty || !d.isBefore(alku.get)) && (loppu.isEmpty || !d.isAfter(loppu.get))
 }
 

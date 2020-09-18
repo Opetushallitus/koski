@@ -98,8 +98,8 @@ with oppija as (select
     oppilaitos_oid,
     count(case when opintojen_rahoitus = '1' then 1 end) valtionosuus_rahoitteinen,
     count(case when opintojen_rahoitus = '6' then 1 end) muuta_kautta_rahoitettu,
-    sum(ulkomainen_vaihto_opiskelija) ulkomainen_vaihto_opiskelija,
-    sum(sisaoppilaitosmainen_majoitus) sisaoppilaitosmainen_majoitus,
+    count(case when ulkomainen_vaihto_opiskelija then 1 end) ulkomainen_vaihto_opiskelija,
+    count(case when sisaoppilaitosmainen_majoitus then 1 end) sisaoppilaitosmainen_majoitus,
     count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '101' then 1 end) erityinen_koulutustehtava_101,
     count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '102' then 1 end) erityinen_koulutustehtava_102,
     count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '103' then 1 end) erityinen_koulutustehtava_103,
@@ -119,7 +119,7 @@ with oppija as (select
     count(case when opintojen_rahoitus = '1' then 1 end) valtionosuus_rahoitteinen,
     count(case when lasna_paivia_yhteensa > 3 * 365 then 1 end) neljannen_vuoden_opiskelija,
     count(case when opintojen_rahoitus = '6' then 1 end) muuta_kautta_rahoitettu,
-    sum(ulkomainen_vaihto_opiskelija) ulkomainen_vaihto_opiskelija,
+    count(case when ulkomainen_vaihto_opiskelija then 1 end) ulkomainen_vaihto_opiskelija,
     count(case when suorituskieli_koodiarvo = 'FI' then 1 end) opetuskieli_suomi,
     count(case when suorituskieli_koodiarvo = 'SV' then 1 end) opetuskieli_ruotsi,
     count(case when suorituskieli_koodiarvo not in ('FI', 'SV') then 1 end) opetuskieli_muu
@@ -176,7 +176,7 @@ with oppija as (select
       oppilaitos_oid,
       count(case when opintojen_rahoitus = '1' then 1 end) valtionosuus_rahoitteinen,
       count(case when opintojen_rahoitus = '6' then 1 end) muuta_kautta_rahoitettu,
-      sum(ulkomainen_vaihto_opiskelija) ulkomainen_vaihto_opiskelija
+      count(case when ulkomainen_vaihto_opiskelija then 1 end) ulkomainen_vaihto_opiskelija
     from oppija where suorituksen_tyyppi in (
       'lukionoppiaineenoppimaara',
       'lukionoppiaineidenoppimaarat2019'

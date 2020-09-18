@@ -15,3 +15,7 @@ trait OikeusmaksuttomaanAsuntolapaikkaan {
 trait UlkomainenVaihtoopiskelija {
   def ulkomainenVaihtoopiskelija: Boolean
 }
+
+trait VaikeastiVammainen {
+  def vaikeastiVammainen: Option[List[Aikajakso]]
+}
