@@ -78,6 +78,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     writeExcel(raportitService.aikuistenPerusopetus(parsedRequest))
   }
 
+
   get("/muuammatillinen") {
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.ammatillinenkoulutus)
     val parsedRequest = parseAikajaksoRaporttiRequest
@@ -114,6 +115,14 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
 
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=esiopetuksenoppijamaaratraportti&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}")))
     writeExcel(raportitService.esiopetuksenOppijamäärät(parsedRequest))
+  }
+
+  get("/aikuistenperusopetuksenoppijamaaratraportti") {
+    requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.aikuistenperusopetus)
+    val parsedRequest = parseTilastoraporttiPäivältäRequest
+
+    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=aikuistenperusopetuksennoppijamaaratraportti&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}")))
+    writeExcel(raportitService.aikuistenperusopetuksenOppijamäärät(parsedRequest))
   }
 
   private def requireOpiskeluoikeudenKayttooikeudet(opiskeluoikeudenTyyppiViite: Koodistokoodiviite) = {

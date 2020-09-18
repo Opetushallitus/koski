@@ -103,6 +103,21 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
+  def aikuistenperusopetuksenOppijamäärät(request: RaporttiPäivältäRequest)(implicit u: KoskiSession) = {
+    val oppilaitosOids = request.oppilaitosOid match {
+      case application.organisaatioService.ostopalveluRootOid =>
+        application.organisaatioService.omatOstopalveluOrganisaatiot.map(_.oid)
+      case oid =>
+        application.organisaatioService.organisaationAlaisetOrganisaatiot(oid)
+    }
+    OppilaitosRaporttiResponse(
+      sheets = Seq(esiopetuksenOppijamäärätRaportti.build(oppilaitosOids, Date.valueOf(request.paiva))),
+      workbookSettings = WorkbookSettings("Aikuisten perusopetuksen oppijamäärien raportti", Some(request.password)),
+      filename = s"aikuisten_perusopetuksen_oppijamäärät_raportti-${request.paiva}.xlsx",
+      downloadToken = request.downloadToken
+    )
+  }
+
   private def aikajaksoRaportti(request: AikajaksoRaporttiRequest, raporttiBuilder: AikajaksoRaportti) = {
     val rows = raporttiBuilder.buildRaportti(raportointiDatabase, request.oppilaitosOid, request.alku, request.loppu)
     val documentation = DocumentationSheet("Ohjeet", raporttiBuilder.documentation(request.oppilaitosOid, request.alku, request.loppu, raportointiDatabase.status.completionTime.get.toLocalDateTime))
