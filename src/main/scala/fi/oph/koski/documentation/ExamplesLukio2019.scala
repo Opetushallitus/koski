@@ -1,10 +1,11 @@
 package fi.oph.koski.documentation
 
+import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.Lukio2019ExampleData._
-import fi.oph.koski.documentation.LukioExampleData.{laajuus => _, _}
+import fi.oph.koski.documentation.LukioExampleData.{nuortenOpetussuunnitelma, opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt, laajuus => _}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.henkilo.MockOppijat.{asUusiOppija, uusiLukio, uusiLukionAineopiskelija}
 import fi.oph.koski.localization.LocalizedStringImplicits.str2localized
@@ -20,9 +21,9 @@ object ExamplesLukio2019 {
       moduulinSuoritus(moduuli("OÄI3").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(8))
     ))),
     oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(arviointi = lukionMuunOppiaineenArviointi("9")).copy(osasuoritukset = Some(List(
-      moduulinSuoritus(moduuli("MAB2")).copy(arviointi = sanallinenArviointi("H")),
-      moduulinSuoritus(moduuli("MAB3")).copy(arviointi = sanallinenArviointi("H")),
-      moduulinSuoritus(moduuli("MAB4")).copy(arviointi = sanallinenArviointi("O"))
+      moduulinSuoritus(moduuli("MAB2")).copy(arviointi = numeerinenArviointi(8)),
+      moduulinSuoritus(moduuli("MAB3")).copy(arviointi = numeerinenArviointi(8)),
+      moduulinSuoritus(moduuli("MAB4")).copy(arviointi = numeerinenArviointi(9))
     ))),
     oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("OP")).copy(arviointi = lukionOpintoOhjauksenOppiaineenArviointi("H")).copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("OP1")).copy(arviointi = sanallinenArviointi("H")),
@@ -35,11 +36,11 @@ object ExamplesLukio2019 {
       moduulinSuoritus(moduuli("RUA4").copy(laajuus = laajuus(1))).copy(arviointi = numeerinenArviointi(7))
     ))),
     oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("FY")).copy(arviointi = lukionMuunOppiaineenArviointi("10")).copy(osasuoritukset = Some(List(
-      moduulinSuoritus(moduuli("FY1")).copy(arviointi = sanallinenArviointi("S")),
+      moduulinSuoritus(moduuli("FY1")).copy(arviointi = numeerinenArviointi(10)),
       moduulinSuoritus(moduuli("FY2")).copy(arviointi = numeerinenArviointi(10)),
       moduulinSuoritus(moduuli("FY3")).copy(arviointi = numeerinenArviointi(10)),
       paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY123", "Keittiöfysiikka", "Keittiöfysiikan kokeelliset perusteet, kiehumisreaktiot")).copy(arviointi = numeerinenArviointi(10)),
-      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY124", "Keittiöfysiikka 2", "Haastava kokeellinen keittiöfysiikka, liekitys ja lämpöreaktiot").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(9))
+      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY124", "Keittiöfysiikka 2", "Haastava kokeellinen keittiöfysiikka, liekitys ja lämpöreaktiot").copy(pakollinen = false)).copy(arviointi = sanallinenArviointi("S"))
     ))),
     oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("KE")).copy(arviointi = lukionMuunOppiaineenArviointi("4")),
     oppiaineenSuoritus(PaikallinenLukionOppiaine2019(PaikallinenKoodi("ITT", "Tanssi ja liike"), "Tanssi ja liike", pakollinen = false)).copy(arviointi = lukionPaikallisenOppiaineenArviointi("8")).copy(osasuoritukset = Some(List(
@@ -136,6 +137,17 @@ object ExamplesLukio2019 {
 }
 
 object Lukio2019ExampleData {
+  def numeerinenArviointi(arvosana: Int, päivä: LocalDate = date(2021, 9, 4)): Some[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]] = {
+    Some(List(new NumeerinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019(arvosana = Koodistokoodiviite(koodiarvo = arvosana.toString, koodistoUri = "arviointiasteikkoyleissivistava"), päivä)))
+  }
+
+  def sanallinenArviointi(arvosana: String, kuvaus: Option[String] = None, päivä: LocalDate = date(2021, 9, 4)): Some[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]] =
+    (Arviointi.numeerinen(arvosana), kuvaus) match {
+      case (Some(numero), None) => numeerinenArviointi(numero, päivä)
+      case _ => Some(List(new SanallinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019(
+        arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), kuvaus.map(LocalizedString.finnish), päivä)))
+    }
+
   def lukionMuunOppiaineenArviointi(arvosana: String): Some[List[LukionMuunOppiaineenArviointi2019]] = {
     Some(List(LukionMuunOppiaineenArviointi2019(arvosana)))
   }

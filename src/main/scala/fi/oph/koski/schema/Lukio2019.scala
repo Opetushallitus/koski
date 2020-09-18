@@ -117,7 +117,7 @@ case class LukionOppiaineenSuoritus2019(
 
 trait LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019 extends Suoritus with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu with Vahvistukseton {
   @FlattenInUI
-  def arviointi: Option[List[LukionArviointi]]
+  def arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]]
   @ComplexObject
   def tunnustettu: Option[OsaamisenTunnustaminen]
 }
@@ -127,7 +127,7 @@ trait LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019 extends Suoritus with
 case class LukionModuulinSuoritus2019(
   @Description("Lukion moduulin tunnistetiedot")
   koulutusmoduuli: LukionModuuli2019,
-  arviointi: Option[List[LukionArviointi]] = None,
+  arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]] = None,
   // TODO: descriptionin lakiviitteet yms. teksti
   @Description("Jos moduuli on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot. Osaamisen tunnustamisella voidaan opiskelijalle lukea hyväksi ja korvata lukion oppimäärään kuuluvia opintoja. Opiskelijan osaamisen tunnustamisessa noudatetaan, mitä 17 ja 17 a §:ssä säädetään opiskelijan arvioinnista ja siitä päättämisestä. Mikäli opinnot tai muutoin hankittu osaaminen luetaan hyväksi opetussuunnitelman perusteiden mukaan numerolla arvioitavaan moduuliin, tulee moduulista antaa numeroarvosana")
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
@@ -172,7 +172,7 @@ case class LukionPaikallisenOpintojaksonSuoritus2019(
   @Description("Lukion paikallisen opintojakson tunnistetiedot")
   @FlattenInUI
   koulutusmoduuli: LukionPaikallinenOpintojakso2019,
-  arviointi: Option[List[LukionArviointi]] = None,
+  arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]] = None,
   // TODO: Descriptionin lakiviitteet ja teksti
   @Description("Jos opintojakso on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot. Osaamisen tunnustamisella voidaan opiskelijalle lukea hyväksi ja korvata lukion oppimäärään kuuluvia pakollisia tai vapaaehtoisia opintoja. Opiskelijan osaamisen tunnustamisessa noudatetaan, mitä 17 ja 17 a §:ssä säädetään opiskelijan arvioinnista ja siitä päättämisestä. Mikäli opinnot tai muutoin hankittu osaaminen luetaan hyväksi opetussuunnitelman perusteiden mukaan numerolla arvioitavaan opintojaksoon, tulee opintojaksosta antaa numeroarvosana")
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
@@ -473,6 +473,7 @@ object LukionMuunOppiaineenArviointi2019 {
 
 trait LukionModuulinTaiPaikallisenOpintojaksonArviointi2019 extends ArviointiPäivämäärällä
 
+@Title("Numeerinen lukion moduulin tai paikallisen opintojakson arviointi 2019")
 case class NumeerinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019(
   @KoodistoKoodiarvo("4")
   @KoodistoKoodiarvo("5")
@@ -485,6 +486,7 @@ case class NumeerinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019(
   päivä: LocalDate
 ) extends LukionModuulinTaiPaikallisenOpintojaksonArviointi2019 with YleissivistävänKoulutuksenArviointi
 
+@Title("Sanallinen lukion moduulin tai paikallisen opintojakson arviointi 2019")
 case class SanallinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019(
   @KoodistoKoodiarvo("H")
   @KoodistoKoodiarvo("S")

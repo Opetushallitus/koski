@@ -3,7 +3,6 @@ package fi.oph.koski.api
 import fi.oph.koski.documentation.ExampleData.{englanti, ruotsinKieli, suomenKieli, vahvistusPaikkakunnalla}
 import fi.oph.koski.documentation.ExamplesLukio2019.{oppiaineidenOppimäärienSuoritus, oppimääränSuoritus}
 import fi.oph.koski.documentation.Lukio2019ExampleData._
-import fi.oph.koski.documentation.LukioExampleData.{arviointi, numeerinenArviointi, sanallinenArviointi}
 import fi.oph.koski.documentation.{ExamplesLukio2019, Lukio2019ExampleData, LukioExampleData}
 import fi.oph.koski.http.ErrorMatcher.exact
 import fi.oph.koski.http.KoskiErrorCategory
@@ -103,7 +102,7 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(osasuoritukset = Some(List(
         oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", true)).copy(osasuoritukset = Some(List(
           moduulinSuoritus(moduuli("OÄI1")).copy(arviointi = numeerinenArviointi(8)),
-          moduulinSuoritus(moduuli("OÄI2")).copy(arviointi = numeerinenArviointi(8)),
+          moduulinSuoritus(moduuli("OÄI2")).copy(arviointi = numeerinenArviointi(10)),
           moduulinSuoritus(moduuli("OÄI3").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(8))
         ))),
         oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(osasuoritukset = Some(List(
@@ -120,9 +119,9 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(osasuoritukset = Some(List(
         oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", true)).copy(suoritettuErityisenäTutkintona = true, arviointi = lukionMuunOppiaineenArviointi("9")).copy(osasuoritukset = None),
         oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(arviointi = lukionMuunOppiaineenArviointi("9")).copy(osasuoritukset = Some(List(
-          moduulinSuoritus(moduuli("MAB2")).copy(arviointi = sanallinenArviointi("H")),
-          moduulinSuoritus(moduuli("MAB3")).copy(arviointi = sanallinenArviointi("H")),
-          moduulinSuoritus(moduuli("MAB4")).copy(arviointi = sanallinenArviointi("O"))
+          moduulinSuoritus(moduuli("MAB2")).copy(arviointi = numeerinenArviointi(10)),
+          moduulinSuoritus(moduuli("MAB3")).copy(arviointi = numeerinenArviointi(10)),
+          moduulinSuoritus(moduuli("MAB4")).copy(arviointi = numeerinenArviointi(10))
         )))
       )))))) {
         verifyResponseStatusOk()
@@ -138,9 +137,9 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
           paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY123", "Keittiöfysiikka", "Keittiöfysiikan kokeelliset perusteet, kiehumisreaktiot")).copy(arviointi = numeerinenArviointi(10))
         ))),
         oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(arviointi = lukionMuunOppiaineenArviointi("9")).copy(osasuoritukset = Some(List(
-          moduulinSuoritus(moduuli("MAB2")).copy(arviointi = sanallinenArviointi("H")),
-          moduulinSuoritus(moduuli("MAB3")).copy(arviointi = sanallinenArviointi("H")),
-          moduulinSuoritus(moduuli("MAB4")).copy(arviointi = sanallinenArviointi("O"))
+          moduulinSuoritus(moduuli("MAB2")).copy(arviointi = numeerinenArviointi(10)),
+          moduulinSuoritus(moduuli("MAB3")).copy(arviointi = numeerinenArviointi(10)),
+          moduulinSuoritus(moduuli("MAB4")).copy(arviointi = numeerinenArviointi(10))
         )))
       )))))) {
         verifyResponseStatus(400,
@@ -189,9 +188,9 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
           moduulinSuoritus(moduuli("OÄI3").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(8))
         ))),
         oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(arviointi = lukionMuunOppiaineenArviointi("9")).copy(osasuoritukset = Some(List(
-          moduulinSuoritus(moduuli("MAB2")).copy(arviointi = sanallinenArviointi("H")),
-          moduulinSuoritus(moduuli("MAB3")).copy(arviointi = sanallinenArviointi("H")),
-          moduulinSuoritus(moduuli("MAB4")).copy(arviointi = sanallinenArviointi("O")),
+          moduulinSuoritus(moduuli("MAB2")).copy(arviointi = numeerinenArviointi(10)),
+          moduulinSuoritus(moduuli("MAB3")).copy(arviointi = numeerinenArviointi(10)),
+          moduulinSuoritus(moduuli("MAB4")).copy(arviointi = numeerinenArviointi(10)),
           paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY123", "Keittiöfysiikka", "Keittiöfysiikan kokeelliset perusteet, kiehumisreaktiot")).copy(arviointi = numeerinenArviointi(10)),
         )))
       )))))) {
@@ -214,7 +213,7 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(suoritettuErityisenäTutkintona = true, osasuoritukset = Some(List(
         temaattistenOpintojenSuoritus().copy(osasuoritukset = Some(List(
           paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("KAN200", "Kanteleensoiton perusteet", "Itäsuomalaisen kanteleensoiton perusteet")).copy(arviointi = sanallinenArviointi("S")),
-          moduulinSuoritus(moduuli("MAB2")).copy(arviointi = sanallinenArviointi("H")),
+          moduulinSuoritus(moduuli("MAB2")).copy(arviointi = numeerinenArviointi(10)),
         )))
       )))))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia("""Valtakunnallista moduulia moduulikoodistolops2021/MAB2 ei voi tallentaa temaattisiin opintoihin"""))
@@ -243,7 +242,7 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
         lukioDiplomienSuoritus().copy(osasuoritukset = Some(List(
           moduulinSuoritus(moduuli("MELD5", 2.0f)).copy(arviointi = numeerinenArviointi(7)),
           paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("KAN200", "Kanteleensoiton perusteet", "Itäsuomalaisen kanteleensoiton perusteet")).copy(arviointi = sanallinenArviointi("S")),
-          moduulinSuoritus(moduuli("MAB2")).copy(arviointi = sanallinenArviointi("H")),
+          moduulinSuoritus(moduuli("MAB2")).copy(arviointi = numeerinenArviointi(10)),
         )))
       )))))) {
         verifyResponseStatus(400,
@@ -349,9 +348,9 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
           suorituskieli = Some(suomenKieli),
           arviointi = lukionMuunOppiaineenArviointi("9"),
           osasuoritukset = Some(List(
-            moduulinSuoritus(moduuli("MAB2")).copy(arviointi = sanallinenArviointi("H")),
-            moduulinSuoritus(moduuli("MAB3")).copy(arviointi = sanallinenArviointi("H")),
-            moduulinSuoritus(moduuli("MAB4")).copy(arviointi = sanallinenArviointi("O"))
+            moduulinSuoritus(moduuli("MAB2")).copy(arviointi = numeerinenArviointi(10)),
+            moduulinSuoritus(moduuli("MAB3")).copy(arviointi = numeerinenArviointi(10)),
+            moduulinSuoritus(moduuli("MAB4")).copy(arviointi = numeerinenArviointi(10))
           ))
         )
       )))))) {
@@ -365,9 +364,9 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
           suorituskieli = Some(englanti),
           arviointi = lukionMuunOppiaineenArviointi("9"),
           osasuoritukset = Some(List(
-            moduulinSuoritus(moduuli("ÄI1")).copy(suorituskieli = Some(ruotsinKieli), arviointi = sanallinenArviointi("H")),
-            moduulinSuoritus(moduuli("ÄI2")).copy(suorituskieli = Some(suomenKieli), arviointi = sanallinenArviointi("H")),
-            moduulinSuoritus(moduuli("ÄI3")).copy(suorituskieli = Some(englanti), arviointi = sanallinenArviointi("O")),
+            moduulinSuoritus(moduuli("ÄI1")).copy(suorituskieli = Some(ruotsinKieli), arviointi = numeerinenArviointi(10)),
+            moduulinSuoritus(moduuli("ÄI2")).copy(suorituskieli = Some(suomenKieli), arviointi = numeerinenArviointi(10)),
+            moduulinSuoritus(moduuli("ÄI3")).copy(suorituskieli = Some(englanti), arviointi = numeerinenArviointi(10)),
             paikallisenOpintojaksonSuoritus(paikallinenOpintojakso(
               "KAN200",
               "Kanteleensoiton perusteet",
@@ -528,6 +527,72 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
         )))))) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainSuppealle("""Valinnaisen vieraan kielen oppiaineen koskioppiaineetyleissivistava/B2 arvosanan pitää olla numero, jos oppiaineen laajuus on yli 4 op"""))
         }
+      }
+    }
+  }
+
+  "Moduulin tai paikallisen opintojakson arvosana" - {
+    "Saa olla kirjain opinto-ohjauksessa" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(osasuoritukset = Some(List(
+        oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("OP")).copy(
+          arviointi = lukionOpintoOhjauksenOppiaineenArviointi("S"),
+          osasuoritukset = Some(List(
+            moduulinSuoritus(moduuli("OP1")).copy(arviointi = sanallinenArviointi("S")),
+            moduulinSuoritus(moduuli("OP2")).copy(arviointi = sanallinenArviointi("H"))
+         ))
+        )
+      )))))) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Ei saa olla numero opinto-ohjauksessa" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(osasuoritukset = Some(List(
+        muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
+          moduulinSuoritus(moduuli("OP1")).copy(arviointi = numeerinenArviointi(8)),
+          moduulinSuoritus(moduuli("OP2")).copy(arviointi = numeerinenArviointi(8))
+        )))
+      )))))) {
+        verifyResponseStatus(400,
+          List(
+            exact(KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana, "Opinto-ohjauksen moduulin moduulikoodistolops2021/OP1 arvosanan on oltava S tai H"),
+            exact(KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana, "Opinto-ohjauksen moduulin moduulikoodistolops2021/OP2 arvosanan on oltava S tai H")
+          )
+        )
+      }
+    }
+
+    "Ei saa olla kirjain muiden aineiden valtakunnallisissa moduuleissa" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(osasuoritukset = Some(List(
+        oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("KE")).copy(arviointi = lukionMuunOppiaineenArviointi("6")).copy(osasuoritukset = Some(List(
+          moduulinSuoritus(moduuli("KE1", 2.0f)).copy(arviointi = sanallinenArviointi("S")),
+          moduulinSuoritus(moduuli("KE2", 2.0f)).copy(arviointi = sanallinenArviointi("H"))
+        ))),
+        lukioDiplomienSuoritus().copy(osasuoritukset = Some(List(
+          moduulinSuoritus(moduuli("KOLD1", 2.0f)).copy(arviointi = sanallinenArviointi("S")),
+        ))),
+        muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
+          moduulinSuoritus(moduuli("VKB21", 2.0f)).copy(arviointi = sanallinenArviointi("S"))
+        )))
+      )))))) {
+        verifyResponseStatus(400,
+          List(
+            exact(KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana, "Valtakunnallisen moduulin moduulikoodistolops2021/KE1 arvosanan on oltava numero"),
+            exact(KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana, "Valtakunnallisen moduulin moduulikoodistolops2021/KE2 arvosanan on oltava numero"),
+            exact(KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana, "Valtakunnallisen moduulin moduulikoodistolops2021/KOLD1 arvosanan on oltava numero"),
+            exact(KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana, "Valtakunnallisen moduulin moduulikoodistolops2021/VKB21 arvosanan on oltava numero")
+          )
+        )
+      }
+    }
+
+    "Saa olla kirjain paikallisissa opintojaksoissa" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(osasuoritukset = Some(List(
+        muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
+          paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY123", "Keittiöfysiikka", "Keittiöfysiikan kokeelliset perusteet, kiehumisreaktiot")).copy(arviointi = sanallinenArviointi("S"))
+        )))
+      )))))) {
+        verifyResponseStatusOk()
       }
     }
   }

@@ -5,6 +5,9 @@
   Opinto-ohjauksessa ei saa olla numeroarviointia. Liikunnassa H tai S sallitaan numeron sijasta, jos oppiaineen laajuus
   on korkeintaan 2 op. Vieraissa kielissä H tai S sallitaan numeron sijasta, jos oppiaine on valinnainen ja sen laajuus
   on korkeintaan 4 op.
+- Validoi lops2021 moduulien ja paikallisten opintojaksojen arvosanat. Arvosanaa O ei sallita missään. Paikallisissa
+  opintojaksoissa sallitaan arvoasanat 4-10, S ja H. Valtakunnallisissa moduuleissa sallitaan opinto-ohjauksen moduuleita
+  OP1 ja OP2 lukuunottamatta 4-10. Opinto-ohjauksessa taas sallitaan ainoastaan S ja H.
 
 ## 20.9.2020
 - Validoi lops2021 suoritettu erityisenä tutkintona. Jos oppiaine tai suoritus on suoritettu erityisenä tutkintona,

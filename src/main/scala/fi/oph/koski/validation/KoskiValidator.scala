@@ -465,6 +465,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         :: validateOsaamisenHankkimistavat(suoritus)
         :: validateYhteisetTutkinnonOsat(suoritus, opiskeluoikeus)
         :: Lukio2019OsasuoritusValidation.validate(suoritus, parent)
+        :: Lukio2019ArvosanaValidation.validateOsasuoritus(suoritus)
         :: HttpStatus.validate(!suoritus.isInstanceOf[PäätasonSuoritus])(validateDuplicates(suoritus.osasuoritukset.toList.flatten))
         :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, suoritus :: parent))
     )
@@ -650,7 +651,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     case n: NuortenPerusopetuksenOppimääränSuoritus if n.vahvistettu =>
       validatePäättötodistuksenSanallinenArviointi(n)
     case l: LukionPäätasonSuoritus2019 =>
-      Lukio2019ArvosanaValidation.validate(l)
+      Lukio2019ArvosanaValidation.validatePäätasonSuoritus(l)
     case _ => HttpStatus.ok
   }
 

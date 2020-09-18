@@ -5,10 +5,16 @@ import fi.oph.koski.schema._
 
 object Lukio2019ArvosanaValidation {
 
-  def validate(suoritus: LukionPäätasonSuoritus2019): HttpStatus = {
+  def validatePäätasonSuoritus(suoritus: LukionPäätasonSuoritus2019): HttpStatus = {
     HttpStatus.fold(List(
       validateVieraatKielet(suoritus),
       validateLiikunta(suoritus)
+    ))
+  }
+
+  def validateOsasuoritus(suoritus: Suoritus): HttpStatus = {
+    HttpStatus.fold(List(
+      validateValtakunnallinenModuuli(suoritus)
     ))
   }
 
@@ -43,11 +49,26 @@ object Lukio2019ArvosanaValidation {
 
     HttpStatus.fold(statii)
   }
-  
+
+  private def validateValtakunnallinenModuuli(suoritus: Suoritus): HttpStatus = (suoritus) match {
+    case (s: LukionModuulinSuoritus2019)
+      if !opintoOhjausModuulit.contains(s.koulutusmoduuli.tunniste.koodiarvo) &&
+        s.arviointi.toList.flatten.exists(a => kirjainarvosanat.contains(a.arvosana.koodiarvo)) =>
+      KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(s"Valtakunnallisen moduulin ${suorituksenTunniste(s)} arvosanan on oltava numero")
+    case (s: LukionModuulinSuoritus2019)
+      if opintoOhjausModuulit.contains(s.koulutusmoduuli.tunniste.koodiarvo) &&
+        !s.arviointi.toList.flatten.exists(a => kirjainarvosanat.contains(a.arvosana.koodiarvo)) =>
+      KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(s"Opinto-ohjauksen moduulin ${suorituksenTunniste(s)} arvosanan on oltava S tai H")
+    case _ =>
+      HttpStatus.ok
+  }
+
   private def suorituksenTunniste(suoritus: Suoritus): KoodiViite = {
     suoritus.koulutusmoduuli.tunniste
   }
 
   private val vieraatKielet = List("A", "B1", "B2", "B3", "AOM")
   private val kirjainarvosanat = List("H", "S")
+
+  private val opintoOhjausModuulit = List("OP1", "OP2")
 }
