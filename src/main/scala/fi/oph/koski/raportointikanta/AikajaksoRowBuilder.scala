@@ -75,6 +75,12 @@ object AikajaksoRowBuilder {
       majoitus = lisätietoVoimassaPäivänä {
         case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.majoitus
       },
+      majoitusetu = lisätietoVoimassaPäivänä {
+        case l: Majoitusetuinen => Some(l.majoitusetu.toList)
+      },
+      kuljetusetu = lisätietoVoimassaPäivänä {
+        case l: Kuljetusetuinen => Some(l.kuljetusetu.toList)
+      },
       sisäoppilaitosmainenMajoitus = lisätietoVoimassaPäivänä {
         case l: SisäoppilaitosmainenMajoitus => l.sisäoppilaitosmainenMajoitus
       },
@@ -83,12 +89,17 @@ object AikajaksoRowBuilder {
       },
       erityinenTuki = lisätietoVoimassaPäivänä {
         case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.erityinenTuki
+        case l: PerusopetuksenOpiskeluoikeudenLisätiedot =>
+          Some(l.erityisenTuenPäätös.toList ::: l.erityisenTuenPäätökset.toList.flatten)
       },
       vaativanErityisenTuenErityinenTehtävä = lisätietoVoimassaPäivänä {
         case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.vaativanErityisenTuenErityinenTehtävä
       },
       hojks = lisätietoVoimassaPäivänä {
         case l: AmmatillisenOpiskeluoikeudenLisätiedot => Some(l.hojks.toList)
+      },
+      vammainen = lisätietoVoimassaPäivänä {
+        case l: Vammainen => l.vammainen
       },
       vaikeastiVammainen = lisätietoVoimassaPäivänä {
         case l: VaikeastiVammainen => l.vaikeastiVammainen
@@ -101,6 +112,15 @@ object AikajaksoRowBuilder {
       },
       vankilaopetuksessa = lisätietoVoimassaPäivänä {
         case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.vankilaopetuksessa
+      },
+      pidennettyOppivelvollisuus = lisätietoVoimassaPäivänä {
+        case l: PerusopetuksenOpiskeluoikeudenLisätiedot => Some(l.pidennettyOppivelvollisuus.toList)
+      },
+      joustavaPerusopetus = lisätietoVoimassaPäivänä {
+        case l: PerusopetuksenOpiskeluoikeudenLisätiedot => Some(l.joustavaPerusopetus.toList)
+      },
+      koulukoti = lisätietoVoimassaPäivänä {
+        case l: PerusopetuksenOpiskeluoikeudenLisätiedot => l.koulukoti
       },
       oppisopimusJossainPäätasonSuorituksessa = oppisopimusAikajaksot(o).exists(_.contains(päivä))
     )
@@ -193,8 +213,15 @@ object AikajaksoRowBuilder {
       case pol: PerusopetuksenOpiskeluoikeudenLisätiedot =>
         toSeq(
           pol.sisäoppilaitosmainenMajoitus,
-          pol.vaikeastiVammainen
-        )
+          pol.vammainen,
+          pol.vaikeastiVammainen,
+          pol.koulukoti
+        ) ++ Seq(
+          pol.majoitusetu,
+          pol.kuljetusetu,
+          pol.pidennettyOppivelvollisuus,
+          pol.joustavaPerusopetus
+        ).flatten ++ aikajaksotErityisenTuenPäätöksistä(pol.erityisenTuenPäätös, pol.erityisenTuenPäätökset)
       case lol: LukionOpiskeluoikeudenLisätiedot =>
         toSeq(
           lol.sisäoppilaitosmainenMajoitus,
