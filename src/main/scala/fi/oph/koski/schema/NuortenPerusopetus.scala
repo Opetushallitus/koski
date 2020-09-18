@@ -208,9 +208,7 @@ Huom: toiminta-alue arviointeineen on kuvattu oppiaineen suorituksessa.""")
   @Deprecated("Tätä kenttää ei toistaiseksi käytetä.")
   toteutuspaikka: Option[Koodistokoodiviite] = None,
   tukimuodot: Option[List[Koodistokoodiviite]] = None
-) extends MahdollisestiAlkupäivällinenJakso with Tukimuodollinen {
-  def voimassaPäivänä(d: LocalDate): Boolean = (alku.isDefined && !d.isBefore(alku.get)) && (loppu.isEmpty || !d.isAfter(loppu.get))
-}
+) extends MahdollisestiAlkupäivällinenJakso with Tukimuodollinen
 
 case class TehostetunTuenPäätös(
   alku: LocalDate,

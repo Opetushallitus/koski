@@ -112,7 +112,7 @@ object AikajaksoRowBuilder {
       .filterNot(_.alku.isAfter(päivä))
       .lastOption.getOrElse(throw new RuntimeException(s"Opiskeluoikeusjaksoa ei löydy $opiskeluoikeudenOid $päivä"))
     val erityisenTuenPäätökset = o.lisätiedot.map(lt => (lt.erityisenTuenPäätös.toList ++ lt.erityisenTuenPäätökset.toList.flatten)).toList.flatten
-    val päivänäAktiivisetPäätökset = erityisenTuenPäätökset.filter(_.voimassaPäivänä(päivä))
+    val päivänäAktiivisetPäätökset = erityisenTuenPäätökset.filter(_.contains(päivä))
     val aktiivistenErityisenTuenPäätöksienToteutuspaikat = päivänäAktiivisetPäätökset.flatMap(_.toteutuspaikka.map(_.koodiarvo))
 
     EsiopetusOpiskeluoikeusAikajaksoRow(
