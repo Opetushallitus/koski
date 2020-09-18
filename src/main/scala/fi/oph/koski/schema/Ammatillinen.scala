@@ -109,12 +109,6 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   koulutusvienti: Boolean = false
 ) extends OpiskeluoikeudenLisätiedot with Ulkomaajaksollinen with SisäoppilaitosmainenMajoitus
 
-@Description("Aikajakson pituus (alku- ja loppupäivämäärä)")
-case class Aikajakso (
-  alku: LocalDate,
-  loppu: Option[LocalDate]
-) extends Jakso
-
 @Title("Osa-aikaisuusjakso")
 @Description("Osa-aikaisuusjakson kesto ja suuruus")
 case class OsaAikaisuusJakso(

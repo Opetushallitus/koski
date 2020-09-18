@@ -223,6 +223,12 @@ trait Jakso extends Alkupäivällinen with DateContaining {
     contains(other.alku) || other.loppu.exists(contains) || other.contains(alku) || loppu.exists(other.contains)
 }
 
+@Description("Aikajakson pituus (alku- ja loppupäivämäärä)")
+case class Aikajakso (
+  alku: LocalDate,
+  loppu: Option[LocalDate]
+) extends Jakso
+
 trait Läsnäolojakso extends Alkupäivällinen {
   @Description("Läsnäolotila (läsnä, poissa...)")
   def tila: Koodistokoodiviite
