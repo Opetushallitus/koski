@@ -1,7 +1,6 @@
 package fi.oph.koski.raportit
 
 import java.sql.Date
-import java.time.LocalDate
 
 import fi.oph.koski.db.KoskiDatabaseMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._

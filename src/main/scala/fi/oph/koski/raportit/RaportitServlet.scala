@@ -132,6 +132,14 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     writeExcel(raportitService.aikuistenperusopetuksenOppijamäärät(parsedRequest))
   }
 
+  get("/perusopetuksenoppijamaaratraportti") {
+    requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.perusopetus)
+    val parsedRequest = parseTilastoraporttiPäivältäRequest
+
+    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=perusopetuksenoppijamaaratraportti&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}")))
+    writeExcel(raportitService.perusopetuksenOppijamäärät(parsedRequest))
+  }
+
   private def requireOpiskeluoikeudenKayttooikeudet(opiskeluoikeudenTyyppiViite: Koodistokoodiviite) = {
     if (!koskiSession.allowedOpiskeluoikeusTyypit.contains(opiskeluoikeudenTyyppiViite.koodiarvo)) {
       haltWithStatus(KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())

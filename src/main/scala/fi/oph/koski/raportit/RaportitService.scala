@@ -3,8 +3,7 @@ package fi.oph.koski.raportit
 import java.sql.Date
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
-import fi.oph.koski.schema.Organisaatio.Oid
+import fi.oph.koski.koskiuser.KoskiSession
 
 class RaportitService(application: KoskiApplication) {
   private val raportointiDatabase = application.raportointiDatabase
@@ -17,6 +16,7 @@ class RaportitService(application: KoskiApplication) {
   private val muuammatillinenRaportti = MuuAmmatillinenRaporttiBuilder(raportointiDatabase.db)
   private val topksAmmatillinenRaportti = TOPKSAmmatillinenRaporttiBuilder(raportointiDatabase.db)
   private val esiopetuksenOppijamäärätRaportti = EsiopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
+  private val perusopetuksenOppijamäärätRaportti = PerusopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
 
   def opiskelijaVuositiedot(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
     aikajaksoRaportti(request, AmmatillinenOpiskalijavuositiedotRaportti)
@@ -109,6 +109,16 @@ class RaportitService(application: KoskiApplication) {
       sheets = Seq(esiopetuksenOppijamäärätRaportti.build(oppilaitosOids, Date.valueOf(request.paiva))),
       workbookSettings = WorkbookSettings("Esiopetuksen oppijamäärien raportti", Some(request.password)),
       filename = s"esiopetuksen_oppijamäärät_raportti-${request.paiva}.xlsx",
+      downloadToken = request.downloadToken
+    )
+  }
+
+  def perusopetuksenOppijamäärät(request: RaporttiPäivältäRequest)(implicit u: KoskiSession) = {
+    val oppilaitosOids = application.organisaatioService.organisaationAlaisetOrganisaatiot(request.oppilaitosOid)
+    OppilaitosRaporttiResponse(
+      sheets = Seq(perusopetuksenOppijamäärätRaportti.build(oppilaitosOids, Date.valueOf(request.paiva))),
+      workbookSettings = WorkbookSettings("Perusopetuksen oppijamäärien raportti", Some(request.password)),
+      filename = s"perusopetuksen_oppijamäärät_raportti-${request.paiva}.xlsx",
       downloadToken = request.downloadToken
     )
   }
