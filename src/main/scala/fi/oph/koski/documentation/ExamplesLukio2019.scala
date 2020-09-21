@@ -13,6 +13,8 @@ import fi.oph.koski.schema._
 
 object ExamplesLukio2019 {
   val lops2019perusteenDiaarinumero = Some("OPH-2263-2019")
+  val lops2019AikuistenPerusteenDiaarinumero = Some("OPH-2267-2019")
+
   val lukionOppimäärä2019: LukionOppimäärä = LukionOppimäärä(perusteenDiaarinumero = lops2019perusteenDiaarinumero)
   val oppiainesuoritukset = List(
     oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(

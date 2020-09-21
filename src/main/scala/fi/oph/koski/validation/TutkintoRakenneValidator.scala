@@ -61,7 +61,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
         case d: NuortenPerusopetuksenOppiaine =>
           HttpStatus.justStatus(getRakenne(d, Some(List(perusopetus))))
         case d: LukionOppimäärä =>
-          HttpStatus.justStatus(getRakenne(d, Some(lukionKoulutustyypit)))
+          HttpStatus.justStatus(getRakenne(d, Some(lukionKoulutustyypit))).onSuccess(validateLukio2015Diaarinumero(d))
         case d: LukioonValmistavaKoulutus =>
           HttpStatus.justStatus(getRakenne(d, Some(luvaKoulutustyypit)))
         case d: ValmaKoulutus =>
@@ -69,7 +69,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
         case d: TelmaKoulutus =>
           HttpStatus.justStatus(getRakenne(d, Some(List(telma))))
         case d: LukionOppiaine =>
-          HttpStatus.justStatus(getRakenne(d, Some(lukionKoulutustyypit)))
+          HttpStatus.justStatus(getRakenne(d, Some(lukionKoulutustyypit))).onSuccess(validateLukio2015Diaarinumero(d))
         case d: Diaarinumerollinen =>
           HttpStatus.justStatus(getRakenne(d, None))
         case _ => HttpStatus.ok
@@ -216,6 +216,21 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
       HttpStatus.ok
     } else {
       KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari(s"""Väärä diaarinumero "$diaarinumero" suorituksella ${s.tyyppi.koodiarvo}, sallitut arvot: $diaarinumerorajaus""")
+    }
+  }
+
+  private def validateLukio2015Diaarinumero(d: Diaarinumerollinen) = {
+    val diaarinumero = d.perusteenDiaarinumero.getOrElse("")
+
+    val lops2021Diaarinumerot = List(
+      Perusteet.LukionOpetussuunnitelmanPerusteet2019.diaari,
+      Perusteet.AikuistenLukiokoulutuksenOpetussuunnitelmanPerusteet2019.diaari
+    )
+
+    if (lops2021Diaarinumerot.contains(diaarinumero) ) {
+      KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari(s"Lukion aiemman opetusohjelman mukaisessa suorituksessa ei voi käyttää lukion 2019 opetussuunnitelman diaarinumeroa")
+    } else {
+      HttpStatus.ok
     }
   }
 }
