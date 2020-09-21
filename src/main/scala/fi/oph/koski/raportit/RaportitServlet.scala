@@ -31,7 +31,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
 
   get("/mahdolliset-raportit/:oppilaitosOid") {
     getStringParam("oppilaitosOid") match {
-      case organisaatioService.ostopalveluRootOid => Set(EsiopetuksenRaportti.toString)
+      case organisaatioService.ostopalveluRootOid => Set(EsiopetuksenRaportti.toString, EsiopetuksenOppijaMäärienRaportti.toString)
       case oid => accessResolver.mahdollisetRaporttienTyypitOrganisaatiolle(validateOrganisaatioOid(oid)).map(_.toString)
     }
   }
