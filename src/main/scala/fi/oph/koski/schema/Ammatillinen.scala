@@ -990,6 +990,7 @@ case class Hojks(
   @Description("HOJKS:n voimassaolon loppupäivämäärä.")
   loppu: Option[LocalDate] = None
 ) extends DateContaining {
+  // TODO: Onko toteutus oikea alkupäivän puuttuessa?
   def contains(d: LocalDate): Boolean = (alku.isEmpty || !d.isBefore(alku.get)) && (loppu.isEmpty || !d.isAfter(loppu.get))
 }
 
