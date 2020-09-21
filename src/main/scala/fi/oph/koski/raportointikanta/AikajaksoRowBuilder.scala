@@ -159,6 +159,14 @@ object AikajaksoRowBuilder {
     Aikajakso(m.alku.getOrElse(o.alkamispäivä.getOrElse(throw new RuntimeException(s"Alkamispäivä puuttuu ${o.oid}"))), m.loppu)
   }
 
+  private def aikajaksotErityisenTuenPäätöksistä(
+    erityisenTuenPäätös: Option[ErityisenTuenPäätös],
+    erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]]
+  ): List[Aikajakso] = {
+    (erityisenTuenPäätös.toList ++ erityisenTuenPäätökset.toList.flatten)
+      .flatMap(päätös => päätös.alku.map(Aikajakso(_, päätös.loppu)))
+  }
+
   private def mahdollisetAikajaksojenAlkupäivät(o: KoskeenTallennettavaOpiskeluoikeus): Seq[LocalDate] = {
     // logiikka: uusi r_opiskeluoikeus_aikajakso-rivi pitää aloittaa, jos ko. päivänä alkaa joku jakso (erityinen tuki tms),
     // tai jos edellisenä päivänä on loppunut joku jakso.
@@ -213,7 +221,7 @@ object AikajaksoRowBuilder {
           eol.pidennettyOppivelvollisuus,
           eol.majoitusetu,
           eol.kuljetusetu
-        ).flatten ++ (eol.erityisenTuenPäätös.toList ++ eol.erityisenTuenPäätökset.toList.flatten).flatMap(päätös => päätös.alku.map(Aikajakso(_, päätös.loppu)))
+        ).flatten ++ aikajaksotErityisenTuenPäätöksistä(eol.erityisenTuenPäätös, eol.erityisenTuenPäätökset)
     }.getOrElse(Nil)
 
     val jaksot = lisätiedotAikajaksot ++ oppisopimusAikajaksot(o)
