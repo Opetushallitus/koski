@@ -597,6 +597,62 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
     }
   }
 
+  "Kaksi samaa oppiainetta" - {
+    "Lukion oppimäärän suorituksessa" - {
+      "Identtisillä tiedoilla -> HTTP 400" in {
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None),
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None)
+        )))))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Osasuoritus (koskioppiaineetyleissivistava/AI,oppiaineaidinkielijakirjallisuus/AI1) esiintyy useammin kuin kerran"))
+        }
+      }
+      "Eri kielivalinnalla -> HTTP 200" in {
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None),
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI2", true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None)
+        )))))) {
+          verifyResponseStatusOk()
+        }
+      }
+      "Eri matematiikan oppimäärällä -> HTTP 400" in {
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)),
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9))
+        )))))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Osasuoritus koskioppiaineetyleissivistava/MA esiintyy useammin kuin kerran"))
+        }
+      }
+    }
+
+    "Oppiaineiden oppimäärien suorituksessa" - {
+      "Identtisillä tiedoilla -> HTTP 400" in {
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None),
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None)
+        )))))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Osasuoritus (koskioppiaineetyleissivistava/AI,oppiaineaidinkielijakirjallisuus/AI1) esiintyy useammin kuin kerran"))
+        }
+      }
+      "Eri kielivalinnalla -> HTTP 200" in {
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None),
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI2", true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None)
+        )))))) {
+          verifyResponseStatusOk()
+        }
+      }
+      "Eri matematiikan oppimäärällä -> HTTP 400" in {
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)),
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9))
+        )))))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Osasuoritus koskioppiaineetyleissivistava/MA esiintyy useammin kuin kerran"))
+        }
+      }
+    }
+  }
+
   private def putAndGetOpiskeluoikeus(oo: LukionOpiskeluoikeus): Opiskeluoikeus = putOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
