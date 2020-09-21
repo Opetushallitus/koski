@@ -11,6 +11,7 @@ class RaportitService(application: KoskiApplication) {
   private val perusopetusRepository = PerusopetuksenRaportitRepository(raportointiDatabase.db)
   private val accessResolver = RaportitAccessResolver(application)
   private val lukioRepository = LukioRaportitRepository(raportointiDatabase.db)
+  private val lukioDiaIbInternationalOpiskelijaMaaratRaportti = LukioDiaIbInternationalOpiskelijamaaratRaportti(raportointiDatabase.db)
   private val ammatillisenRaportitRepository = AmmatillisenRaportitRepository(raportointiDatabase.db)
   private val aikuistenPerusopetusRepository = AikuistenPerusopetusRaporttiRepository(raportointiDatabase.db)
   private val muuammatillinenRaportti = MuuAmmatillinenRaporttiBuilder(raportointiDatabase.db)
@@ -54,6 +55,15 @@ class RaportitService(application: KoskiApplication) {
       sheets = LukioRaportti(lukioRepository).buildRaportti(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus),
       workbookSettings = WorkbookSettings(s"Suoritustietojen_tarkistus_${request.oppilaitosOid}", Some(request.password)),
       filename = s"lukio_suoritustietojentarkistus_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
+      downloadToken = request.downloadToken
+    )
+  }
+
+  def lukioDiaIbInternationalOpiskelijaMaaratRaportti(request: RaporttiPäivältäRequest): OppilaitosRaporttiResponse = {
+    OppilaitosRaporttiResponse(
+      sheets = Seq(lukioDiaIbInternationalOpiskelijaMaaratRaportti.build(accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toList, request.paiva)),
+      workbookSettings = WorkbookSettings("", Some(request.password)),
+      filename = s"lukiokoulutus_opiskelijamaarat_${request.paiva.toString.replaceAll("-", "")}.xlsx",
       downloadToken = request.downloadToken
     )
   }

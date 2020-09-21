@@ -6,6 +6,7 @@ import fi.oph.koski.schema._
 object YleissivistavakoulutusExampleData {
   lazy val jyväskylänNormaalikoulu: Oppilaitos = oppilaitos(MockOrganisaatiot.jyväskylänNormaalikoulu)
   lazy val ressunLukio: Oppilaitos = oppilaitos(MockOrganisaatiot.ressunLukio)
+  lazy val helsinginMedialukio: Oppilaitos = oppilaitos(MockOrganisaatiot.helsinginMedialukio)
   lazy val kulosaarenAlaAste: Oppilaitos = oppilaitos(MockOrganisaatiot.kulosaarenAlaAste)
   lazy val päiväkotiTouhula: OidOrganisaatio = oidOrganisaatio(MockOrganisaatiot.päiväkotiTouhula)
   lazy val päiväkotiMajakka: OidOrganisaatio = oidOrganisaatio(MockOrganisaatiot.päiväkotiMajakka)

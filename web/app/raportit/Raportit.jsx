@@ -34,6 +34,7 @@ export const raportitContentP = () => {
             {raportit && raportit.includes('topksammatillinen') && <TOPKSAmmatillinenRaportti organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('perusopetuksenvuosiluokka') && <PerusopetuksenVuosiluokka organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('lukionsuoritustietojentarkistus') && <Lukioraportti organisaatioAtom={organisaatioAtom} />}
+            {document.location.search.includes('tilastoraportit=true') && raportit && raportit.includes('lukiodiaibinternationalopiskelijamaarat') && <LukioDiaIBInternationalOpiskelijamaarat organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('aikuistenperusopetussuoritustietojentarkistus') && <AikuistenPerusopetusRaportti organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('esiopetuksenraportti') && <EsiopetusRaportti organisaatioAtom={organisaatioAtom}/>}
             {document.location.search.includes('tilastoraportit=true') && raportit && raportit.includes('esiopetuksenoppijamäärienraportti') && <EsiopetuksenOppijamäärätRaportti organisaatioAtom={organisaatioAtom}/>}
@@ -149,6 +150,18 @@ const Lukioraportti = ({organisaatioAtom}) => {
     title={titleText}
     description={descriptionText}
     osasuoritusType={osasuoritusTypes.KURSSI}
+  />)
+}
+
+const LukioDiaIBInternationalOpiskelijamaarat = ({organisaatioAtom}) => {
+  const titleText = <Text name='Lukiokoulutuksen opiskelijamäärät'/>
+  const descriptionText = <Text name='Lukiokoulutuksen opiskelijamäärät'/>
+
+  return (<RaporttiPaivalta
+    organisaatioAtom={organisaatioAtom}
+    apiEndpoint={'/lukiodiaibinternationalopiskelijamaarat'}
+    title={titleText}
+    description={descriptionText}
   />)
 }
 
