@@ -58,12 +58,13 @@ describe('Lukiokoulutus2019', function( ){
           'Opinto-ohjaus\nOP1\nH OP2\nS 4 2 H\n' +
           'Uskonto/Elämänkatsomustieto\nUE1\n4 1,5 0 4\n' +
           'Äidinkielenomainen kieli, ruotsi\nRUA4\n7 1 1 9\n' +
-          'Fysiikka\nFY1\n10 FY2\n10 FY3\n10 FY123 *\n10 FY124 *\nS 8 8 10\n' +
-          'Kemia 0 0 4\nTanssi ja liike *\nLI5\n7 ITT234 *\n10 3 3 8\n' +
+          'Fysiikka\nFY1\n10 FY2\n10 FY3\n10 FY123 *\n10 FY124 *\nS 87 87 10\n' +
+          'Kemia 0 0 4\n' +
+          'Tanssi ja liike *\nLI5\n7 ITT234 *\n10 52 52 8\n' +
           'Lukiodiplomit\nMELD5\n7 KÄLD3\n9 4 4\n' +
           'Muut suoritukset\nKE3\n10 HAI765 *\nS 3 3\n' +
           'Teemaopinnot\nKAN200 *\nS 1 1\n' +
-          'Arvioitujen osasuoritusten laajuus yhteensä: 37,5 Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 34,0\n' +
+          'Arvioitujen osasuoritusten laajuus yhteensä: 165,5 Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 162,0\n' +
           '* = paikallinen opintojakso tai oppiaine')
       })
     })
@@ -445,10 +446,10 @@ describe('Lukiokoulutus2019', function( ){
           'Opinto-ohjaus\nOP1\nH OP2\nS 4 2 H\n' +
           'Uskonto/Elämänkatsomustieto\nUE1\n4 1,5 0 4\n' +
           'Äidinkielenomainen kieli, ruotsi\nRUA4\n7 1 1 9\n' +
-          'Fysiikka\nFY1\n10 FY2\n10 FY3\n10 FY123 *\n10 FY124 *\nS 8 8 10\n' +
+          'Fysiikka\nFY1\n10 FY2\n10 FY3\n10 FY123 *\n10 FY124 *\nS 87 87 10\n' +
           'Kemia 0 0 4\n' +
-          'Tanssi ja liike *\nLI5\n7 ITT234 *\n10 3 3 8\n' +
-          'Arvioitujen osasuoritusten laajuus yhteensä: 29,5 Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 26,0\n' +
+          'Tanssi ja liike *\nLI5\n7 ITT234 *\n10 52 52 8\n' +
+          'Arvioitujen osasuoritusten laajuus yhteensä: 157,5 Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 154,0\n' +
           '* = paikallinen opintojakso tai oppiaine')
       })
 
