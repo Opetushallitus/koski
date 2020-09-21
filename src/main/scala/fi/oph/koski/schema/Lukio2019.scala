@@ -116,6 +116,7 @@ case class LukionOppiaineenSuoritus2019(
 ) extends OppiaineenSuoritus with Vahvistukseton with LukionOppimääränOsasuoritus2019 with MahdollisestiSuorituskielellinen with SuoritettavissaErityisenäTutkintona2019
 
 trait LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019 extends Suoritus with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu with Vahvistukseton {
+  def koulutusmoduuli: LukionModuuliTaiPaikallinenOpintojakso2019
   @FlattenInUI
   def arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]]
   @ComplexObject
