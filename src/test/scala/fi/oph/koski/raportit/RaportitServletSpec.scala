@@ -65,7 +65,7 @@ class RaportitServletSpec extends FreeSpec with RaportointikantaTestMethods with
           raportit.length should be > 1
         }
         verifyMahdollisetRaportit(helsinginKaupunki, user = esiopetusTallentaja) { raportit =>
-          raportit should equal(List(EsiopetuksenRaportti.toString, EsiopetuksenOppijaMäärienRaportti.toString()))
+          raportit should contain theSameElementsAs (List(EsiopetuksenRaportti.toString, EsiopetuksenOppijaMäärienRaportti.toString()))
         }
       }
     }
