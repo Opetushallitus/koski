@@ -88,6 +88,10 @@ case class LukionOppiaineidenOppimäärätKoodi2019(
 trait LukionOppimääränOsasuoritus2019 extends LukionOppimääränPäätasonOsasuoritus {
   @Title("Moduulit ja paikalliset opintojaksot")
   override def osasuoritukset: Option[List[LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019]] = None
+
+  override def osasuoritusLista: List[LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019] = {
+    osasuoritukset.toList.flatten
+  }
 }
 
 @Title("Muiden lukio-opintojen suoritus 2019")

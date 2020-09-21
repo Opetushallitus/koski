@@ -1,5 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 30.9.2020
+- Validoi riittävä opintojaksojen/moduulien laajuus lops2021:ssä. Jotta lukion lops2021-mukaisen oppimäärän suorituksen
+  voi merkitä valmiiksi, pitää nuorilla olla vähintään 150 op, joista vähintään 20 op valinnaisia. Aikuisilla pitää olla
+  vähintään 88 op.
+
 ## 21.9.2020
 - Validoi lops2021 oppiaineiden arvosanat. Valtakunnallisten oppiaineiden arvosanojen pitää olla pääsääntöisesti numero.
   Opinto-ohjauksessa ei saa olla numeroarviointia. Liikunnassa H tai S sallitaan numeron sijasta, jos oppiaineen laajuus

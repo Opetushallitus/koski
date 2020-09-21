@@ -594,7 +594,35 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
          _:LukionOppiaineidenOppimäärienSuoritus2019
       => true
     case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "9" || s.jääLuokalle => true
+    case s: LukionOppimääränSuoritus2019
+      => osasuorituksetKunnossaLukio2019(s)
     case s => s.osasuoritusLista.nonEmpty
+  }
+
+  private def osasuorituksetKunnossaLukio2019(suoritus: LukionOppimääränSuoritus2019) = {
+    (sisältääErityisenTutkinnonSuorittamisen(suoritus), suoritus.oppimäärä.koodiarvo) match {
+      case (false, "nuortenops") => lukio2019TarpeeksiOsasuorituksia(suoritus.osasuoritukset.getOrElse(List()), 150, 20)
+      case (false, "aikuistenops") => lukio2019TarpeeksiOsasuorituksia(suoritus.osasuoritukset.getOrElse(List()), 88, 0)
+      case _ => suoritus.osasuoritusLista.nonEmpty
+    }
+  }
+
+  private def sisältääErityisenTutkinnonSuorittamisen(suoritus: LukionOppimääränSuoritus2019) = {
+    suoritus.suoritettuErityisenäTutkintona ||
+      suoritus.osasuoritukset.exists(_.exists({
+        case os:LukionOppiaineenSuoritus2019 if os.suoritettuErityisenäTutkintona => true
+        case _ => false
+      }))
+  }
+
+  private def lukio2019TarpeeksiOsasuorituksia(osasuoritukset: List[LukionOppimääränOsasuoritus2019], minimiLaajuus: Double, minimiValinnaistenLaajuus: Double): Boolean = {
+    val kaikki = osasuoritukset.flatMap(_.osasuoritusLista.map(_.koulutusmoduuli.laajuus.arvo))
+    val kaikkiYhteensä = kaikki.map(BigDecimal.decimal).sum
+
+    val valinnaiset = osasuoritukset.flatMap(_.osasuoritusLista.filterNot(_.koulutusmoduuli.pakollinen).map(_.koulutusmoduuli.laajuus.arvo))
+    val valinnaisetYhteensä = valinnaiset.map(BigDecimal.decimal).sum
+
+    kaikkiYhteensä >= BigDecimal.decimal(minimiLaajuus) && valinnaisetYhteensä >= BigDecimal.decimal(minimiValinnaistenLaajuus)
   }
 
   private def ostettuOpiskeluoikeusValmisEnnenVuotta2019(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = opiskeluoikeus match {
@@ -616,6 +644,10 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(suoritus)} on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta tai opiskeluoikeudelta puuttuu linkitys")
     case s: PerusopetuksenOppimääränSuoritus =>
       KoskiErrorCategory.badRequest.validation.tila.oppiaineetPuuttuvat("Suorituksella ei ole osasuorituksena yhtään oppiainetta, vaikka sillä on vahvistus")
+    case s: LukionOppimääränSuoritus2019 if s.oppimäärä.koodiarvo == "nuortenops" =>
+      KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(suoritus)} on merkitty valmiiksi, mutta sillä ei ole 150 op osasuorituksia, joista vähintään 20 op valinnaisia, tai opiskeluoikeudelta puuttuu linkitys")
+    case s: LukionOppimääränSuoritus2019 if s.oppimäärä.koodiarvo == "aikuistenops" =>
+      KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(suoritus)} on merkitty valmiiksi, mutta sillä ei ole 88 op osasuorituksia, tai opiskeluoikeudelta puuttuu linkitys")
     case s =>
       KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(s)} on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai opiskeluoikeudelta puuttuu linkitys")
   }

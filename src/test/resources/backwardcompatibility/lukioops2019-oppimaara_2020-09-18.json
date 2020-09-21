@@ -51,20 +51,6 @@
           "koodiarvo" : "1",
           "koodistoUri" : "opintojenrahoitus"
         }
-      }, {
-        "alku" : "2020-05-15",
-        "tila" : {
-          "koodiarvo" : "valmistunut",
-          "nimi" : {
-            "fi" : "Valmistunut"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        },
-        "opintojenRahoitus" : {
-          "koodiarvo" : "1",
-          "koodistoUri" : "opintojenrahoitus"
-        }
       } ]
     },
     "suoritukset" : [ {
@@ -112,82 +98,6 @@
           },
           "koodistoUri" : "kunta"
         }
-      },
-      "vahvistus" : {
-        "päivä" : "2020-05-15",
-        "paikkakunta" : {
-          "koodiarvo" : "179",
-          "nimi" : {
-            "fi" : "Jyväskylä"
-          },
-          "koodistoUri" : "kunta"
-        },
-        "myöntäjäOrganisaatio" : {
-          "oid" : "1.2.246.562.10.14613773812",
-          "oppilaitosnumero" : {
-            "koodiarvo" : "00204",
-            "nimi" : {
-              "fi" : "Jyväskylän normaalikoulu",
-              "sv" : "Jyväskylän normaalikoulu",
-              "en" : "Jyväskylän normaalikoulu"
-            },
-            "lyhytNimi" : {
-              "fi" : "Jyväskylän normaalikoulu",
-              "sv" : "Jyväskylän normaalikoulu",
-              "en" : "Jyväskylän normaalikoulu"
-            },
-            "koodistoUri" : "oppilaitosnumero"
-          },
-          "nimi" : {
-            "fi" : "Jyväskylän normaalikoulu",
-            "sv" : "Jyväskylän normaalikoulu",
-            "en" : "Jyväskylän normaalikoulu"
-          },
-          "kotipaikka" : {
-            "koodiarvo" : "179",
-            "nimi" : {
-              "fi" : "Jyväskylä",
-              "sv" : "Jyväskylä"
-            },
-            "koodistoUri" : "kunta"
-          }
-        },
-        "myöntäjäHenkilöt" : [ {
-          "nimi" : "Reijo Reksi",
-          "titteli" : {
-            "fi" : "rehtori"
-          },
-          "organisaatio" : {
-            "oid" : "1.2.246.562.10.14613773812",
-            "oppilaitosnumero" : {
-              "koodiarvo" : "00204",
-              "nimi" : {
-                "fi" : "Jyväskylän normaalikoulu",
-                "sv" : "Jyväskylän normaalikoulu",
-                "en" : "Jyväskylän normaalikoulu"
-              },
-              "lyhytNimi" : {
-                "fi" : "Jyväskylän normaalikoulu",
-                "sv" : "Jyväskylän normaalikoulu",
-                "en" : "Jyväskylän normaalikoulu"
-              },
-              "koodistoUri" : "oppilaitosnumero"
-            },
-            "nimi" : {
-              "fi" : "Jyväskylän normaalikoulu",
-              "sv" : "Jyväskylän normaalikoulu",
-              "en" : "Jyväskylän normaalikoulu"
-            },
-            "kotipaikka" : {
-              "koodiarvo" : "179",
-              "nimi" : {
-                "fi" : "Jyväskylä",
-                "sv" : "Jyväskylä"
-              },
-              "koodistoUri" : "kunta"
-            }
-          }
-        } ]
       },
       "suoritettuErityisenäTutkintona" : false,
       "suorituskieli" : {

@@ -75,6 +75,8 @@ object ExamplesLukio2019 {
     ryhmä = Some("AH")
   )
 
+  lazy val vahvistamatonOppimääränSuoritus = oppimääränSuoritus.copy(vahvistus = None)
+
   lazy val oppiaineidenOppimäärienSuoritus = LukionOppiaineidenOppimäärienSuoritus2019(
     koulutusmoduuli = LukionOppiaineidenOppimäärät2019(perusteenDiaarinumero = lops2019perusteenDiaarinumero),
     oppimäärä = nuortenOpetussuunnitelma,
@@ -93,6 +95,17 @@ object ExamplesLukio2019 {
       ),
       oppilaitos = Some(jyväskylänNormaalikoulu),
       suoritukset = List(oppimääränSuoritus)
+    )
+
+  lazy val aktiivinenOpiskeluoikeus: LukionOpiskeluoikeus =
+    LukionOpiskeluoikeus(
+      tila = LukionOpiskeluoikeudenTila(
+        List(
+          LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+        )
+      ),
+      oppilaitos = Some(jyväskylänNormaalikoulu),
+      suoritukset = List(vahvistamatonOppimääränSuoritus)
     )
 
   lazy val oppiaineenOppimääräOpiskeluoikeus: LukionOpiskeluoikeus = opiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus))
