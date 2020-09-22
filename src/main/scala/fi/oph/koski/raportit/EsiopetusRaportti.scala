@@ -9,6 +9,7 @@ import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import fi.oph.koski.schema.Organisaatio.{Oid, isValidOrganisaatioOid}
+import fi.oph.koski.util.SQL
 import slick.jdbc.GetResult
 
 import scala.concurrent.duration._
@@ -93,7 +94,7 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
     join r_henkilo on r_henkilo.oppija_oid = r_opiskeluoikeus.oppija_oid
     join esiopetus_opiskeluoikeus_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
     left join r_paatason_suoritus on r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-    where r_opiskeluoikeus.oppilaitos_oid in (#${toSqlList(oppilaitosOidit)})
+    where r_opiskeluoikeus.oppilaitos_oid in (#${SQL.toSqlListUnsafe(oppilaitosOidit)})
       and r_opiskeluoikeus.koulutusmuoto = 'esiopetus'
       and aikajakso.alku <= $päivä
       and aikajakso.loppu >= $päivä
@@ -101,9 +102,9 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
       and (
         #${(if (u.hasGlobalReadAccess) "true" else "false")}
         or
-        r_opiskeluoikeus.oppilaitos_oid in (#${toSqlList(käyttäjänOrganisaatioOidit)})
+        r_opiskeluoikeus.oppilaitos_oid in (#${SQL.toSqlListUnsafe(käyttäjänOrganisaatioOidit)})
         or
-        (r_opiskeluoikeus.koulutustoimija_oid in (#${toSqlList(käyttäjänKoulutustoimijaOidit)}) and r_opiskeluoikeus.oppilaitos_oid in (#${toSqlList(käyttäjänOstopalveluOidit)}))
+        (r_opiskeluoikeus.koulutustoimija_oid in (#${SQL.toSqlListUnsafe(käyttäjänKoulutustoimijaOidit)}) and r_opiskeluoikeus.oppilaitos_oid in (#${SQL.toSqlListUnsafe(käyttäjänOstopalveluOidit)}))
       )
   """
 
@@ -115,8 +116,6 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
 
   private def käyttäjänOstopalveluOidit(implicit u: KoskiSession) =
     organisaatioService.omatOstopalveluOrganisaatiot.map(_.oid)
-
-  private def toSqlList[T](xs: Iterable[T]) = xs.mkString("'", "','","'")
 
   private def validateOids(oppilaitosOids: List[String]) = {
     val invalidOid = oppilaitosOids.find(oid => !isValidOrganisaatioOid(oid))

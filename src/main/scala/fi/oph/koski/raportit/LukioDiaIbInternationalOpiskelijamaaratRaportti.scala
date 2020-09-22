@@ -89,7 +89,7 @@ with oppija as (select
                   'diatutkinto',
                   'internationalschool'
                 )
-                and r_opiskeluoikeus.oppilaitos_oid in (#${SQL.toSqlList(oppilaitosOids)})
+                and r_opiskeluoikeus.oppilaitos_oid in (#${SQL.toSqlListUnsafe(oppilaitosOids)})
                 and r_opiskeluoikeus_aikajakso.tila = 'lasna'
                 and r_opiskeluoikeus_aikajakso.alku <= $päivä
                 and r_opiskeluoikeus_aikajakso.loppu >= $päivä
@@ -145,7 +145,7 @@ with oppija as (select
     count(case when suorituskieli_koodiarvo = 'SV' then 1 end) opetuskieli_ruotsi,
     count(case when suorituskieli_koodiarvo not in ('FI', 'SV') then 1 end) opetuskieli_muu,
     count(case when kotikunta isnull then 1 end) ei_kotikuntaa,
-    count(case when kotikunta in (#${SQL.toSqlList(ahvenanmaanKunnat)})  then 1 end) kotikunta_ahvenanmaa
+    count(case when kotikunta in (#${SQL.toSqlListUnsafe(ahvenanmaanKunnat)})  then 1 end) kotikunta_ahvenanmaa
   from oppija
   where oppimaara_koodiarvo = 'nuortenops'
     or suorituksen_tyyppi in (
@@ -167,7 +167,7 @@ with oppija as (select
       count(case when suorituskieli_koodiarvo = 'SV' then 1 end) opetuskieli_ruotsi,
       count(case when suorituskieli_koodiarvo not in ('FI', 'SV') then 1 end) opetuskieli_muu,
       count(case when kotikunta isnull then 1 end) ei_kotikuntaa,
-      count(case when kotikunta in (#${SQL.toSqlList(ahvenanmaanKunnat)})  then 1 end) kotikunta_ahvenanmaa
+      count(case when kotikunta in (#${SQL.toSqlListUnsafe(ahvenanmaanKunnat)})  then 1 end) kotikunta_ahvenanmaa
     from oppija
     where oppimaara_koodiarvo = 'aikuistenops'
     group by oppilaitos_oid
