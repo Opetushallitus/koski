@@ -189,7 +189,7 @@
           }
         } ]
       },
-      "suoritettuErityisenäTutkintona" : true,
+      "suoritettuErityisenäTutkintona" : false,
       "suorituskieli" : {
         "koodiarvo" : "FI",
         "nimi" : {
@@ -459,11 +459,11 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "8",
+              "koodiarvo" : "H",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
             "päivä" : "2016-06-04",
-            "hyväksytty" : true
+            "hyväksytty" : false
           } ],
           "tyyppi" : {
             "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
@@ -496,11 +496,11 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "8",
+              "koodiarvo" : "H",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
             "päivä" : "2016-06-04",
-            "hyväksytty" : true
+            "hyväksytty" : false
           } ],
           "tyyppi" : {
             "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
@@ -533,7 +533,7 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "8",
+              "koodiarvo" : "O",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
             "päivä" : "2016-06-04",
@@ -562,10 +562,10 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "9",
+            "koodiarvo" : "4",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "hyväksytty" : true
+          "hyväksytty" : false
         } ],
         "suoritettuErityisenäTutkintona" : false,
         "osasuoritukset" : [ {
@@ -595,11 +595,11 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "7",
+              "koodiarvo" : "4",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
             "päivä" : "2016-06-04",
-            "hyväksytty" : true
+            "hyväksytty" : false
           } ],
           "tyyppi" : {
             "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
@@ -715,7 +715,7 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "10",
+              "koodiarvo" : "S",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
             "päivä" : "2016-06-04",

@@ -28,7 +28,6 @@ describe('Lukiokoulutus2019', function( ){
           'Koulutus Lukion oppimäärä 309902 OPH-2263-2019\n' +
           'Opetussuunnitelma Lukio suoritetaan nuorten opetussuunnitelman mukaan\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
-          'Suoritettu erityisenä tutkintona kyllä\n' +
           'Opetuskieli suomi\n' +
           'Lukion oppimäärää täydentävät oman äidinkielen opinnot Arvosana 8\n' +
           'Kieli saame, lappi\n' +

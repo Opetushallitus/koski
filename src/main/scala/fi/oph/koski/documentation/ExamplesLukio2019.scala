@@ -92,7 +92,6 @@ object ExamplesLukio2019 {
     suorituskieli = suomenKieli,
     vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
     toimipiste = jyväskylänNormaalikoulu,
-    suoritettuErityisenäTutkintona = true,
     omanÄidinkielenOpinnot = omanÄidinkielenOpinnotSaame,
     puhviKoe = puhviKoe,
     suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEnglanti, suullisenKielitaidonKoeEspanja)),

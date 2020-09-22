@@ -1,5 +1,16 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 20.9.2020
+- Validoi lops2021 suoritettu erityisenä tutkintona. Jos oppiaine tai suoritus on suoritettu erityisenä tutkintona,
+  ei erillisiä moduulien tai paikallisten opintojaksojen merkintöjä sallita oppiaineisiin.
+- Validoi lops2021 temaattisten opintojen osasuoritukset. Niihin voi siirtää vain paikallisia opintojaksoja, ei
+  valtakunnallisia moduuleita.
+- Validoi lukiodiplomien suoritukset lops2021:ssä. Lukiodiplomeita voi siirtää vain lukiodiplomioppiaineeseen tai
+  lukiodiplomia vastaavaan erilliseen oppiaineeseen, jos sellainen on olemassa. Lukiodiplomioppiaineeseen voi siirtää
+  vain lukiodiplomeita. Lukiodiplomien laajuus on oltava aina 2 opintopistettä.
+- Validoi suorituskielet lops2021:ssä; Oppiaineen, moduulin tai paikallisen opintojakson suorituskieli ei saa olla sama kuin
+  ylemmän tason suorituskieli: silloin suorituskieli kuuluu jättää asettamatta.
+
 ## 11.9.2020
 - Vahvistetulta perusopetuksen vuosiluokan suoritukselta ei vaadita osasuorituksia, jos oppilas on merkitty jäävän luokalle
 - Lukion opetussuunnitelman 2019 oppiaineiden oppimäärien suorituksen sisältävän opiskeluoikeuden voi merkitä
