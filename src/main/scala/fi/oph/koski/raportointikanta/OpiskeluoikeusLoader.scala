@@ -159,13 +159,17 @@ object OpiskeluoikeusLoader extends Logging {
       data = JsonManipulation.removeFields(data, fieldsToExcludeFromOpiskeluoikeusJson)
     )
 
-  private def buildAikajaksoRows(opiskeluoikeusOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): (Seq[ROpiskeluoikeusAikajaksoRow], Seq[EsiopetusOpiskeluoikeusAikajaksoRow]) = {
+  private def buildAikajaksoRows(opiskeluoikeusOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): (Seq[ROpiskeluoikeusAikajaksoRow], Seq[EsiopetusOpiskeluoikeusAikajaksoRow], Seq[AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow]) = {
     val opiskeluoikeusAikajaksot = AikajaksoRowBuilder.buildROpiskeluoikeusAikajaksoRows(opiskeluoikeusOid, opiskeluoikeus)
     val esiopetusOpiskeluoikeusAikajaksot = opiskeluoikeus match {
       case esiopetus: EsiopetuksenOpiskeluoikeus => AikajaksoRowBuilder.buildEsiopetusOpiskeluoikeusAikajaksoRows(opiskeluoikeusOid, esiopetus)
       case _ => Nil
     }
-    (opiskeluoikeusAikajaksot, esiopetusOpiskeluoikeusAikajaksot)
+    val aikuistenPerusopetuksenOpiskeluoikeusAikajaksot = opiskeluoikeus match {
+      case aikuistenperusopetus: AikuistenPerusopetuksenOpiskeluoikeus => AikajaksoRowBuilder.buildAikuistenPerusopetuksenOpiskeluoikeusAikajaksoRows(opiskeluoikeusOid, aikuistenperusopetus)
+      case _ => Nil
+    }
+    (opiskeluoikeusAikajaksot, esiopetusOpiskeluoikeusAikajaksot, aikuistenPerusopetuksenOpiskeluoikeusAikajaksot)
   }
 
   private val fieldsToExcludeFromPäätasonSuoritusJson = Set("osasuoritukset", "tyyppi", "toimipiste", "koulutustyyppi")

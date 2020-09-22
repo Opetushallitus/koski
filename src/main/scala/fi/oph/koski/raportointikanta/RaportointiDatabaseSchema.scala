@@ -325,6 +325,17 @@ object RaportointiDatabaseSchema {
 
   class TOPKSAmmatillinenOsasuoritusRaportointiTableTemp(tag: Tag) extends TOPKSAmmatillinenOsasuoritusRaportointiTable(tag, Temp)
 
+  class AikuistenPerusopetuksenOpiskeluoikeusAikajaksoTable(tag: Tag, schema: Schema = Public) extends Table[AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow](tag, schema.nameOpt, "aikuisten perusopetus_opiskeluoikeus aikajakso") {
+    val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
+    val alku = column[Date]("alku")
+    val loppu = column[Date]("loppu")
+    val tila = column[String]("tila", StringIdentifierType)
+    val tilaAlkanut = column[Date]("tila_alkanut")
+    val opiskeluoikeusPäättynyt = column[Boolean]("opiskeluoikeus_paattynyt")
+    def * = (opiskeluoikeusOid, alku, loppu, tila, tilaAlkanut, opiskeluoikeusPäättynyt) <> (AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow.tupled, AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow.unapply)
+  }
+  class AikuistenPerusopetuksenOpiskeluoikeusAikajaksoTableTemp(tag: Tag) extends EsiopetusOpiskeluoikeusAikajaksoTable(tag, Temp)
+
   class RHenkilöTable(tag: Tag, schema: Schema = Public) extends Table[RHenkilöRow](tag, schema.nameOpt, "r_henkilo") {
     val oppijaOid = column[String]("oppija_oid", O.PrimaryKey, StringIdentifierType)
     val masterOid = column[String]("master_oid", StringIdentifierType)
@@ -476,6 +487,18 @@ case class EsiopetusOpiskeluoikeusAikajaksoRow(
 ) extends AikajaksoRow[EsiopetusOpiskeluoikeusAikajaksoRow] {
   def withLoppu(d: Date): EsiopetusOpiskeluoikeusAikajaksoRow = this.copy(loppu = d)
   def withTilaAlkanut(d: Date): EsiopetusOpiskeluoikeusAikajaksoRow = this.copy(tilaAlkanut = d)
+}
+
+case class AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow(
+  opiskeluoikeusOid: String,
+  alku: Date,
+  loppu: Date,
+  tila: String,
+  tilaAlkanut: Date,
+  opiskeluoikeusPäättynyt: Boolean = false
+) extends AikajaksoRow[AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow] {
+  def withLoppu(d: Date): AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow = this.copy(loppu = d)
+  def withTilaAlkanut(d: Date): AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow = this.copy(tilaAlkanut = d)
 }
 
 sealed trait RSuoritusRow {

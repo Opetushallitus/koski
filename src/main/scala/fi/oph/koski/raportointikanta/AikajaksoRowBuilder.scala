@@ -16,6 +16,10 @@ object AikajaksoRowBuilder {
     buildAikajaksoRows(buildEsiopetusAikajaksoRowForOneDay, opiskeluoikeusOid, opiskeluoikeus)
   }
 
+  def buildAikuistenPerusopetuksenOpiskeluoikeusAikajaksoRows(opiskeluoikeusOid: String, opiskeluoikeus: AikuistenPerusopetuksenOpiskeluoikeus): Seq[AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow] = {
+    buildAikajaksoRows(buildAikuistenPerusopetusAikajaksoRowForOneDay, opiskeluoikeusOid, opiskeluoikeus)
+  }
+
   private def buildAikajaksoRows[A <: KoskeenTallennettavaOpiskeluoikeus, B <: AikajaksoRow[B]](buildAikajaksoRow: ((String, A, LocalDate) => B), opiskeluoikeusOid: String, opiskeluoikeus: A): Seq[B] = {
     var edellinenTila: Option[String] = None
     var edellinenTilaAlkanut: Option[Date] = None
@@ -154,6 +158,21 @@ object AikajaksoRowBuilder {
       kuljetusetu = o.lisätiedot.exists(_.kuljetusetu.exists(_.contains(päivä))),
       sisäoppilaitosmainenMajoitus = o.lisätiedot.exists(_.sisäoppilaitosmainenMajoitus.exists(_.exists(_.contains(päivä)))),
       koulukoti = o.lisätiedot.exists(_.koulukoti.exists(_.exists(_.contains(päivä))))
+    )
+  }
+
+  private def buildAikuistenPerusopetusAikajaksoRowForOneDay(opiskeluoikeudenOid: String, o: AikuistenPerusopetuksenOpiskeluoikeus, päivä: LocalDate): AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow = {
+    val jakso = o.tila.opiskeluoikeusjaksot
+      .filterNot(_.alku.isAfter(päivä))
+      .lastOption.getOrElse(throw new RuntimeException(s"Opiskeluoikeusjaksoa ei löydy $opiskeluoikeudenOid $päivä"))
+
+    AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow(
+      opiskeluoikeudenOid,
+      alku = Date.valueOf(päivä),
+      loppu = Date.valueOf(päivä),
+      tila = jakso.tila.koodiarvo,
+      tilaAlkanut = Date.valueOf(päivä),
+      opiskeluoikeusPäättynyt = jakso.opiskeluoikeusPäättynyt
     )
   }
 

@@ -118,6 +118,9 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
     val esiopetuksenOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](esiopetuksenJson).right.get.opiskeluoikeudet.head.asInstanceOf[EsiopetuksenOpiskeluoikeus].copy(oid = Some(oid))
     val lukionJson = JsonFiles.readFile("src/test/resources/backwardcompatibility/lukio-paattotodistus_2020-09-10.json")
     val lukionOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](lukionJson).right.get.opiskeluoikeudet.head.asInstanceOf[LukionOpiskeluoikeus].copy(oid = Some(oid))
+    val aikuistenPerusopetuksenJson = JsonFiles.readFile("src/test/resources/backwardcompatibility/aikuistenperusopetuksenoppimaara2017_2020-07-13.json")
+    val aikuistenPerusopetuksenOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](aikuistenPerusopetuksenJson).right.get.opiskeluoikeudet.head.asInstanceOf[AikuistenPerusopetuksenOpiskeluoikeus].copy(oid = Some(oid))
+
 
     val Läsnä = Koodistokoodiviite("lasna", "koskiopiskeluoikeudentila")
     val Loma =  Koodistokoodiviite("loma", "koskiopiskeluoikeudentila")
@@ -356,6 +359,26 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2012-09-01"), Date.valueOf("2013-09-01"), "lasna", Date.valueOf("2012-09-01"), erityisenKoulutusTehtävänJaksoTehtäväKoodiarvo = Some("103"), opintojenRahoitus = Some("1"), sisäoppilaitosmainenMajoitus = true),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2013-09-02"), Date.valueOf("2016-06-07"), "lasna", Date.valueOf("2012-09-01"), opintojenRahoitus = Some("1")),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-06-08"), Date.valueOf("2016-06-08"), "valmistunut", Date.valueOf("2016-06-08"), opintojenRahoitus = Some("1"), opiskeluoikeusPäättynyt = true)
+        ))
+      }
+      "Aikuisten perusopetuksen lisätiedot" in {
+        val aikajakso = Aikajakso(LocalDate.of(2000, 1, 1), Some(LocalDate.of(2000, 2, 2)))
+        val erityisenTuenPäätös = ErityisenTuenPäätös(
+          alku = Some(LocalDate.of(2000, 1, 1)),
+          loppu = Some(LocalDate.of(2000, 2, 2)),
+          opiskeleeToimintaAlueittain = false,
+          erityisryhmässä = None
+        )
+        val opiskeluoikeus = aikuistenPerusopetuksenOpiskeluoikeus.copy(
+          tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(opiskeluoikeusjaksot = List(
+            AikuistenPerusopetuksenOpiskeluoikeusjakso(alku = LocalDate.of(2000, 1, 1), tila = Läsnä)
+          )),
+        )
+
+        val aikajaksoRows = AikajaksoRowBuilder.buildAikuistenPerusopetuksenOpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
+        println(aikajaksoRows)
+        aikajaksoRows should equal(Seq(
+          AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2000-01-01"), Date.valueOf("9999-12-31"), "lasna", Date.valueOf("2000-01-01"), false),
         ))
       }
       "Esiopetuksen opiskeluoikeuden lisätiedot" in {
