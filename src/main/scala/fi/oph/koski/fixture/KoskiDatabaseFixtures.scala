@@ -168,7 +168,13 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
       (MockOppijat.valviraaKiinnostavaTutkinto, AmmatillinenExampleData.sosiaaliJaTerveysalaOpiskeluoikeus()),
       (MockOppijat.valviraaKiinnostavaTutkintoKesken, AmmatillinenExampleData.sosiaaliJaTerveysalaOpiskeluoikeusKesken()),
       (MockOppijat.kelaErityyppisiaOpiskeluoikeuksia, ExamplesEsiopetus.esioppilas.tallennettavatOpiskeluoikeudet.head),
-      (MockOppijat.kelaErityyppisiaOpiskeluoikeuksia, PerusopetusExampleData.päättötodistusOpiskeluoikeus())
+      (MockOppijat.kelaErityyppisiaOpiskeluoikeuksia, PerusopetusExampleData.päättötodistusOpiskeluoikeus()),
+      (MockOppijat.lukioDiaIbInternationalOpiskelijamaaratRaportti_nuortenOppimaara, LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures.lukionOppimaaraNuorten),
+      (MockOppijat.lukioDiaIbInternationalOpiskelijamaaratRaportti_aikuistenOppimaara, LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures.lukionOppimaaraAikuisten),
+      (MockOppijat.lukioDiaIbInternationalOpiskelijamaaratRaportti_aineopiskelija, LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures.lukionAineopiskelija),
+      (MockOppijat.lukioDiaIbInternationalOpiskelijamaaratRaportti_dia, LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures.dia),
+      (MockOppijat.lukioDiaIbInternationalOpiskelijamaaratRaportti_ib, LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures.ib),
+      (MockOppijat.lukioDiaIbInternationalOpiskelijamaaratRaportti_international, LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures.international)
     )
   }
 

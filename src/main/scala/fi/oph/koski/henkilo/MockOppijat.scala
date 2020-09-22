@@ -97,6 +97,12 @@ object MockOppijat {
   val valviraaKiinnostavaTutkinto = oppijat.oppija("Valviralle", "Veera", "120100A2365")
   val valviraaKiinnostavaTutkintoKesken = oppijat.oppija("Valviralle-Kesken", "Ville", "131099-633D")
   val kelaErityyppisiaOpiskeluoikeuksia = oppijat.oppija("Kelalle", "Useita", "100800A057R")
+  val lukioDiaIbInternationalOpiskelijamaaratRaportti_nuortenOppimaara = oppijat.oppija("nuorten", "oppimaara", "180900A955N")
+  val lukioDiaIbInternationalOpiskelijamaaratRaportti_aikuistenOppimaara = oppijat.oppija("aikuisten", "oppimaara", "180900A991U")
+  val lukioDiaIbInternationalOpiskelijamaaratRaportti_aineopiskelija = oppijat.oppija("aine", "opiskelija", "180900A945B")
+  val lukioDiaIbInternationalOpiskelijamaaratRaportti_dia = oppijat.oppija("dia", "opiskelija", "180900A985M")
+  val lukioDiaIbInternationalOpiskelijamaaratRaportti_ib = oppijat.oppija("ib", "opiskelija", "180900A919H")
+  val lukioDiaIbInternationalOpiskelijamaaratRaportti_international = oppijat.oppija("international", "opiskelija", "180900A9074")
 
   val virtaOppija = oppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.57060795845", sukunimi = "Virta", etunimet = "Veikko", kutsumanimi = "Veikko", hetu = Some("270191-4208"), syntymäaika = Some(LocalDate.of(1978, 3, 25)), äidinkieli = None, kansalaisuus = None))
   val virtaOppijaHetuton = oppijat.addOppija(OppijaHenkilöWithMasterInfo(

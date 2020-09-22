@@ -16,6 +16,7 @@ object ExampleData {
   val opiskeluoikeusLäsnä = Koodistokoodiviite("lasna", Some("Läsnä"), "koskiopiskeluoikeudentila", Some(1))
   val opiskeluoikeusValmistunut = Koodistokoodiviite("valmistunut", Some("Valmistunut"), "koskiopiskeluoikeudentila", Some(1))
   val opiskeluoikeusEronnut = Koodistokoodiviite("eronnut", Some("Eronnut"), "koskiopiskeluoikeudentila", Some(1))
+  val opiskeluoikeusValiaikaisestiKeskeytynyt = Koodistokoodiviite("valiaikaisestikeskeytynyt", Some("eronnut"), "koskiopiskeluoikeudentila", Some(1))
   val opiskeluoikeusMitätöity = Koodistokoodiviite("mitatoity", Some("Mitätöity"), "koskiopiskeluoikeudentila", Some(1))
   val opiskeluoikeusLoma = Koodistokoodiviite("loma", Some("Loma"), "koskiopiskeluoikeudentila", Some(1))
   val helsinki = Koodistokoodiviite(koodistoUri = "kunta", koodiarvo = "091", nimi = Some("Helsinki"))
@@ -34,6 +35,7 @@ object ExampleData {
   lazy val laajuusOsaamispisteissä: Koodistokoodiviite = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(koodiarvo = "6", koodistoUri = "opintojenlaajuusyksikko", nimi = Some("osaamispistettä")))
 
   lazy val valtionosuusRahoitteinen: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "1", koodistoUri = "opintojenrahoitus")
+  lazy val muutaKauttaRahoitettu: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "6", koodistoUri = "opintojenrahoitus")
 
   def vahvistusValinnaisellaTittelillä(päivä: LocalDate = date(2016, 6, 4), org: OrganisaatioWithOid = jyväskylänNormaalikoulu, titteli: Option[LocalizedString] = Some("rehtori")) =
     Some(
