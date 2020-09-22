@@ -175,8 +175,13 @@ object AikajaksoRowBuilder {
 
   def toSeq[A <: Jakso](xs: Option[List[A]]*): Seq[Jakso] = xs.flatMap(_.getOrElse(Nil))
 
-  private def aikajaksoMahdollisestiAlkamispäivällisestä(o: KoskeenTallennettavaOpiskeluoikeus) (m: MahdollisestiAlkupäivällinenJakso): Jakso = {
-    Aikajakso(m.alku.getOrElse(o.alkamispäivä.getOrElse(throw new RuntimeException(s"Alkamispäivä puuttuu ${o.oid}"))), m.loppu)
+  private def aikajaksoMahdollisestiAlkamispäivällisestä
+    (o: KoskeenTallennettavaOpiskeluoikeus)
+    (m: MahdollisestiAlkupäivällinenJakso): Option[Jakso] = {
+    List(m.alku, o.alkamispäivä).flatten.headOption match {
+      case Some(alku) => Some(Aikajakso(alku, m.loppu))
+      case None => None
+    }
   }
 
   private def aikajaksotErityisenTuenPäätöksistä(
@@ -204,7 +209,7 @@ object AikajaksoRowBuilder {
         ) ++
           aol.opiskeluvalmiuksiaTukevatOpinnot.map(_.map(j => Aikajakso(j.alku, Some(j.loppu)))).toList.flatten ++
           aol.osaAikaisuusjaksot.map(_.map(j => Aikajakso(j.alku, j.loppu))).toList.flatten ++
-          aol.hojks.toList.map(aikajaksoMahdollisestiAlkamispäivällisestä(o))
+          aol.hojks.toList.flatMap(aikajaksoMahdollisestiAlkamispäivällisestä(o))
       case apol: AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot =>
         toSeq(
           apol.sisäoppilaitosmainenMajoitus,
