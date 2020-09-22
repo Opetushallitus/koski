@@ -71,6 +71,7 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
       left join r_paatason_suoritus on r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
       where r_opiskeluoikeus.oppilaitos_oid in (#${toSqlList(oppilaitosOids)})
         and r_opiskeluoikeus.koulutusmuoto = 'perusopetus'
+        and r_paatason_suoritus.suorituksen_tyyppi = 'perusopetuksenvuosiluokka'
         and aikajakso.alku <= $date
         and aikajakso.loppu >= $date
         and aikajakso.tila = 'lasna'
