@@ -86,8 +86,14 @@ describe('Oppijataulukko', function() {
     describe('toimipisteellä', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tila'), page.oppijataulukko.filterBy('oppilaitos', 'Ressun lukio'))
       it('toimii', function() {
-        expect(page.oppijataulukko.names()).to.deep.equal(['IB-final, Iina', 'IB-predicted, Petteri'])
-        expect(page.opiskeluoikeudeTotal()).to.equal('2')
+        expect(page.oppijataulukko.names()).to.deep.equal([
+          'IB-final, Iina',
+          'IB-predicted, Petteri',
+          'aine, opiskelija',
+          'dia, opiskelija',
+          'ib, opiskelija'
+        ])
+        expect(page.opiskeluoikeudeTotal()).to.equal('5')
       })
     })
 
