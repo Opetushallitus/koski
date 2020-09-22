@@ -2232,11 +2232,16 @@ describe('Perusopetus', function() {
     })
 
     describe('Aikuisten perusopetus, uusi oppija', function() {
+      this.timeout(20000)
+
       before(
+        timeout.overrideWaitTime(20000),
         prepareForNewOppija('kalle', '230872-7258'),
         addOppija.enterValidDataPerusopetus(),
         addOppija.selectOpiskeluoikeudenTyyppi('Aikuisten perusopetus')
       )
+
+      after(timeout.resetDefaultWaitTime())
 
       it('Näytetään opintojen rahoitus-kenttä', function() {
         expect(addOppija.rahoitusIsVisible()).to.equal(true)
@@ -2244,7 +2249,10 @@ describe('Perusopetus', function() {
     })
 
     describe('Aikuisten perusopetus', function() {
+      this.timeout(20000)
+
       before(
+        timeout.overrideWaitTime(20000),
         prepareForNewOppija('kalle', '230872-7258'),
         addOppija.enterValidDataPerusopetus(),
         addOppija.selectOpiskeluoikeudenTyyppi('Aikuisten perusopetus'),
@@ -2252,6 +2260,8 @@ describe('Perusopetus', function() {
         addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
         addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Aikuisten perusopetuksen oppimäärä')
       )
+
+      after(timeout.resetDefaultWaitTime())
 
       describe('Lisäyksen jälkeen', function() {
         it('Näytetään oikein', function() {
