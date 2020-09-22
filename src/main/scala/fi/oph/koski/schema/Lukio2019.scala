@@ -380,65 +380,13 @@ trait LukionOppiaineenArviointi2019 extends YleissivistävänKoulutuksenArvioint
   def arviointipäivä = päivä
 }
 
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "OP")
-@Title("Lukion opinto-ohjauksen oppiaineen arviointi 2019")
-case class LukionOpintoOhjauksenOppiaineenArviointi2019(
-  @KoodistoKoodiarvo("H")
-  @KoodistoKoodiarvo("S")
-  arvosana: Koodistokoodiviite,
-  päivä: Option[LocalDate]
-) extends LukionOppiaineenArviointi2019
-
-object LukionOpintoOhjauksenOppiaineenArviointi2019 {
-  def apply(arvosana: String) = new LukionOpintoOhjauksenOppiaineenArviointi2019(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)
-}
-
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "LI")
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "A")
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "B1")
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "B2")
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "B3")
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "AOM")
-@Title("Lukion liikunnan tai vieraan kielen oppiaineen arviointi 2019")
-case class LukionLiikunnanTaiVieraanKielenOppiaineenArviointi2019(
-  @Description("H/S sallittu liikunnassa, jos korkeintaan 2 op ja vieraan kielen ollessa valinnainen, jos sen laajuus on korkeintaan 4 op.")
-  @KoodistoKoodiarvo("H")
-  @KoodistoKoodiarvo("S")
-  @KoodistoKoodiarvo("4")
-  @KoodistoKoodiarvo("5")
-  @KoodistoKoodiarvo("6")
-  @KoodistoKoodiarvo("7")
-  @KoodistoKoodiarvo("8")
-  @KoodistoKoodiarvo("9")
-  @KoodistoKoodiarvo("10")
-  arvosana: Koodistokoodiviite,
-  päivä: Option[LocalDate]
-) extends LukionOppiaineenArviointi2019
-
-object LukionLiikunnanTaiVieraanKielenOppiaineenArviointi2019 {
-  def apply(arvosana: String) = new LukionLiikunnanTaiVieraanKielenOppiaineenArviointi2019(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)
-}
-
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodistoUri", None)
-@Title("Lukion paikallisen oppiaineen arviointi 2019")
-case class LukionPaikallisenOppiaineenArviointi2019(
-  @KoodistoKoodiarvo("H")
-  @KoodistoKoodiarvo("S")
-  @KoodistoKoodiarvo("4")
-  @KoodistoKoodiarvo("5")
-  @KoodistoKoodiarvo("6")
-  @KoodistoKoodiarvo("7")
-  @KoodistoKoodiarvo("8")
-  @KoodistoKoodiarvo("9")
-  @KoodistoKoodiarvo("10")
-  arvosana: Koodistokoodiviite,
-  päivä: Option[LocalDate]
-) extends LukionOppiaineenArviointi2019
-
-object LukionPaikallisenOppiaineenArviointi2019 {
-  def apply(arvosana: String) = new LukionPaikallisenOppiaineenArviointi2019(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)
-}
-
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "BI")
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "ET")
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "FI")
@@ -454,8 +402,8 @@ object LukionPaikallisenOppiaineenArviointi2019 {
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "KT")
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "AI")
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "MA")
-@Title("Lukion muun oppiaineen arviointi 2019")
-case class LukionMuunOppiaineenArviointi2019(
+@Title("Numeerinen lukion oppiaineen arviointi 2019")
+case class NumeerinenLukionOppiaineenArviointi2019(
   @KoodistoKoodiarvo("4")
   @KoodistoKoodiarvo("5")
   @KoodistoKoodiarvo("6")
@@ -467,8 +415,29 @@ case class LukionMuunOppiaineenArviointi2019(
   päivä: Option[LocalDate]
 ) extends LukionOppiaineenArviointi2019
 
-object LukionMuunOppiaineenArviointi2019 {
-  def apply(arvosana: String) = new LukionMuunOppiaineenArviointi2019(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)
+object NumeerinenLukionOppiaineenArviointi2019 {
+  def apply(arvosana: String) = new NumeerinenLukionOppiaineenArviointi2019(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)
+}
+
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "OP")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "LI")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "A")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "B1")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "B2")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "B3")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "AOM")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodistoUri", None)
+@Title("Sanallinen lukion oppiaineen arviointi 2019")
+case class SanallinenLukionOppiaineenArviointi2019(
+  @Description("H/S sallittu liikunnassa, jos korkeintaan 2 op ja vieraan kielen ollessa valinnainen, jos sen laajuus on korkeintaan 4 op. Opinto-ohjauksessa sallittu ainoastaan H/S.")
+  @KoodistoKoodiarvo("H")
+  @KoodistoKoodiarvo("S")
+  arvosana: Koodistokoodiviite,
+  päivä: Option[LocalDate]
+) extends LukionOppiaineenArviointi2019
+
+object SanallinenLukionOppiaineenArviointi2019 {
+  def apply(arvosana: String) = new SanallinenLukionOppiaineenArviointi2019(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)
 }
 
 trait LukionModuulinTaiPaikallisenOpintojaksonArviointi2019 extends ArviointiPäivämäärällä
