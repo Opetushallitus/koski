@@ -86,7 +86,14 @@ case class EsiopetuksenOpiskeluoikeudenLisätiedot(
   @Tooltip("Tieto siitä, jos oppija on koulukotikorotuksen piirissä (aloituspäivä ja loppupäivä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   koulukoti: Option[List[Aikajakso]] = None
-) extends OpiskeluoikeudenLisätiedot with TukimuodollisetLisätiedot {
+) extends OpiskeluoikeudenLisätiedot
+  with TukimuodollisetLisätiedot
+  with SisäoppilaitosmainenMajoitus
+  with Majoitusetuinen
+  with Kuljetusetuinen
+  with Vammainen
+  with VaikeastiVammainen
+{
   override def sisältääOsaAikaisenErityisopetuksen: Boolean =
     tukimuodoissaOsaAikainenErityisopetus(erityisenTuenPäätökset)
 }

@@ -2,7 +2,6 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 import mojave.Traversal
@@ -105,22 +104,6 @@ object OpiskeluoikeudenTyyppi {
   def kaikkiTyypit: Set[Koodistokoodiviite] = tyypit
 }
 
-trait OpiskeluoikeudenLisätiedot
-
-trait TukimuodollisetLisätiedot extends OpiskeluoikeudenLisätiedot {
-  def sisältääOsaAikaisenErityisopetuksen: Boolean
-}
-
-object TukimuodollisetLisätiedot {
-  def tukimuodoissaOsaAikainenErityisopetus(t: Option[List[Tukimuodollinen]]) = {
-    val tukimuodot = t.getOrElse(List()).flatMap(_.tukimuotoLista)
-    tukimuodot.contains(osaAikainenErityisopetusKoodistokoodiviite)
-  }
-
-  private lazy val osaAikainenErityisopetusKoodistokoodiviite =
-    MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite("1", "perusopetuksentukimuoto"))
-}
-
 trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
   import mojave._
   @Hidden
@@ -196,20 +179,27 @@ trait KoskiOpiskeluoikeusjakso extends Opiskeluoikeusjakso {
   def opintojenRahoitus: Option[Koodistokoodiviite] = None
 }
 
-
 trait Alkupäivällinen {
   @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
   def alku: LocalDate
 }
 
-trait MahdollisestiAlkupäivällinenJakso {
+trait MahdollisestiAlkupäivällinenJakso extends DateContaining {
   @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
   def alku: Option[LocalDate]
   @Description("Jakson loppupäivämäärä. Muoto YYYY-MM-DD")
   def loppu: Option[LocalDate]
+
+  // TODO: Onko toteutus oikea alkupäivän puuttuessa?
+  def contains(d: LocalDate): Boolean =
+    (alku.isDefined && !d.isBefore(alku.get)) && (loppu.isEmpty || !d.isAfter(loppu.get))
 }
 
-trait Jakso extends Alkupäivällinen {
+trait DateContaining {
+  def contains(date: LocalDate): Boolean
+}
+
+trait Jakso extends Alkupäivällinen with DateContaining {
   @Description("Jakson loppupäivämäärä. Muoto YYYY-MM-DD")
   def loppu: Option[LocalDate]
 
@@ -218,6 +208,12 @@ trait Jakso extends Alkupäivällinen {
   def overlaps(other: Jakso): Boolean =
     contains(other.alku) || other.loppu.exists(contains) || other.contains(alku) || loppu.exists(other.contains)
 }
+
+@Description("Aikajakson pituus (alku- ja loppupäivämäärä)")
+case class Aikajakso (
+  alku: LocalDate,
+  loppu: Option[LocalDate]
+) extends Jakso
 
 trait Läsnäolojakso extends Alkupäivällinen {
   @Description("Läsnäolotila (läsnä, poissa...)")

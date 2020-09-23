@@ -57,27 +57,12 @@
    <parameter name="maxTypes">30</parameter>
   </parameters>
  </check>
- <check level="warning" class="org.scalastyle.scalariform.CyclomaticComplexityChecker" enabled="true">
-  <parameters>
-   <parameter name="maximum">11</parameter>
-  </parameters>
- </check>
  <check level="warning" class="org.scalastyle.scalariform.UppercaseLChecker" enabled="true"></check>
  <check level="warning" class="org.scalastyle.scalariform.SimplifyBooleanExpressionChecker" enabled="true"></check>
  <check level="warning" class="org.scalastyle.scalariform.IfBraceChecker" enabled="true">
   <parameters>
    <parameter name="singleLineAllowed">true</parameter>
    <parameter name="doubleLineAllowed">false</parameter>
-  </parameters>
- </check>
- <check level="warning" class="org.scalastyle.scalariform.MethodLengthChecker" enabled="true">
-  <parameters>
-   <parameter name="maxLength">50</parameter>
-  </parameters>
- </check>
- <check level="warning" class="org.scalastyle.scalariform.NumberOfMethodsInTypeChecker" enabled="true">
-  <parameters>
-   <parameter name="maxMethods">30</parameter>
   </parameters>
  </check>
  <check level="warning" class="org.scalastyle.scalariform.RedundantIfChecker" enabled="true"></check>

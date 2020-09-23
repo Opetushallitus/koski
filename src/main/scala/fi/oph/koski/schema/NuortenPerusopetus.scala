@@ -158,7 +158,13 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Tooltip("Tieto siitä, jos oppija on koulukotikorotuksen piirissä (aloituspäivä ja loppupäivä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   koulukoti: Option[List[Aikajakso]] = None
-) extends TukimuodollisetLisätiedot with SisäoppilaitosmainenMajoitus with OikeusmaksuttomaanAsuntolapaikkaan {
+) extends TukimuodollisetLisätiedot
+  with SisäoppilaitosmainenMajoitus
+  with OikeusmaksuttomaanAsuntolapaikkaan
+  with Majoitusetuinen
+  with Kuljetusetuinen
+  with Vammainen
+  with VaikeastiVammainen {
   override def sisältääOsaAikaisenErityisopetuksen: Boolean =
     tukimuodoissaOsaAikainenErityisopetus(tehostetunTuenPäätökset) ||
       tukimuodoissaOsaAikainenErityisopetus(erityisenTuenPäätökset)
@@ -202,9 +208,7 @@ Huom: toiminta-alue arviointeineen on kuvattu oppiaineen suorituksessa.""")
   @Deprecated("Tätä kenttää ei toistaiseksi käytetä.")
   toteutuspaikka: Option[Koodistokoodiviite] = None,
   tukimuodot: Option[List[Koodistokoodiviite]] = None
-) extends MahdollisestiAlkupäivällinenJakso with Tukimuodollinen {
-  def voimassaPäivänä(d: LocalDate): Boolean = (alku.isDefined && !d.isBefore(alku.get)) && (loppu.isEmpty || !d.isAfter(loppu.get))
-}
+) extends MahdollisestiAlkupäivällinenJakso with Tukimuodollinen
 
 case class TehostetunTuenPäätös(
   alku: LocalDate,

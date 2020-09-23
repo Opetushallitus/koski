@@ -1,5 +1,23 @@
 package fi.oph.koski.schema
 
+import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
+
+trait OpiskeluoikeudenLisätiedot
+
+trait TukimuodollisetLisätiedot extends OpiskeluoikeudenLisätiedot {
+  def sisältääOsaAikaisenErityisopetuksen: Boolean
+}
+
+object TukimuodollisetLisätiedot {
+  def tukimuodoissaOsaAikainenErityisopetus(t: Option[List[Tukimuodollinen]]) = {
+    val tukimuodot = t.getOrElse(List()).flatMap(_.tukimuotoLista)
+    tukimuodot.contains(osaAikainenErityisopetusKoodistokoodiviite)
+  }
+
+  private lazy val osaAikainenErityisopetusKoodistokoodiviite =
+    MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite("1", "perusopetuksentukimuoto"))
+}
+
 trait Ulkomaajaksollinen {
   def ulkomaanjaksot: Option[List[Ulkomaanjakso]]
 }
@@ -14,4 +32,20 @@ trait OikeusmaksuttomaanAsuntolapaikkaan {
 
 trait UlkomainenVaihtoopiskelija {
   def ulkomainenVaihtoopiskelija: Boolean
+}
+
+trait Vammainen {
+  def vammainen: Option[List[Aikajakso]]
+}
+
+trait VaikeastiVammainen {
+  def vaikeastiVammainen: Option[List[Aikajakso]]
+}
+
+trait Majoitusetuinen {
+  def majoitusetu: Option[Aikajakso]
+}
+
+trait Kuljetusetuinen {
+  def kuljetusetu: Option[Aikajakso]
 }

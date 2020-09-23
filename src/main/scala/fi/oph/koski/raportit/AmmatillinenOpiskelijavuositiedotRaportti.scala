@@ -195,7 +195,7 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
       päättymispäivä = aikajaksot.lastOption.filter(_.opiskeluoikeusPäättynyt).map(_.alku.toLocalDate), // toimii koska päättävä jakso on aina yhden päivän mittainen, jolloin truncateToDates ei muuta sen alkupäivää
       arvioituPäättymispäivä = arvioituPäättymispäivä,
       opiskelijavuosikertymä = opiskelijavuosikertymä(aikajaksot),
-      läsnäTaiValmistunutPäivät = aikajaksoPäivät(aikajaksot, a => if (a.tila == "lasna" || a.tila == "valmistunut") 1 else 0),
+      läsnäTaiValmistunutPäivät = aikajaksoPäivät(aikajaksot, a => (a.tila == "lasna" || a.tila == "valmistunut")),
       opiskelijavuoteenKuuluvatLomaPäivät = opiskelijavuoteenKuuluvatLomaPäivät,
       muutLomaPäivät = muutLomaPäivät,
       majoitusPäivät = aikajaksoPäivät(aikajaksot, _.majoitus),
@@ -207,7 +207,7 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
       vaikeastiVammainenPäivät = aikajaksoPäivät(aikajaksot, _.vaikeastiVammainen),
       vammainenJaAvustajaPäivät = aikajaksoPäivät(aikajaksot, _.vammainenJaAvustaja),
       osaAikaisuusProsentit = Some(distinctAdjacent(aikajaksot.map(_.osaAikaisuus)).mkString(",")).filter(_ != "100"),
-      osaAikaisuusKeskimäärin = aikajaksoPäivät(aikajaksot, _.osaAikaisuus).toDouble / aikajaksoPäivät(aikajaksot, _ => 1),
+      osaAikaisuusKeskimäärin = aikajaksot.map(a => a.osaAikaisuus * a.lengthInDays).sum.toDouble / aikajaksot.map(_.lengthInDays).sum,
       opiskeluvalmiuksiaTukevatOpinnotPäivät = aikajaksoPäivät(aikajaksot, _.opiskeluvalmiuksiaTukevatOpinnot),
       vankilaopetuksessaPäivät = aikajaksoPäivät(aikajaksot, _.vankilaopetuksessa),
       oppisopimusJossainPäätasonSuorituksessaPäivät = aikajaksoPäivät(aikajaksot, _.oppisopimusJossainPäätasonSuorituksessa),
@@ -225,8 +225,8 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
     }
   }
 
-  private def aikajaksoPäivät(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow], f: ROpiskeluoikeusAikajaksoRow => Byte): Int =
-    aikajaksot.map(j => f(j) * j.lengthInDays).sum
+  private def aikajaksoPäivät(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow], f: ROpiskeluoikeusAikajaksoRow => Boolean): Int =
+    aikajaksot.map(aikajakso => if(f(aikajakso)) aikajakso.lengthInDays else 0).sum
 
   private[raportit] def lomaPäivät(j: ROpiskeluoikeusAikajaksoRow): (Int, Int) = {
     // "opiskelijavuoteen kuuluviksi päiviksi ei lueta koulutuksen järjestäjän päättämää yhtäjaksoisesti vähintään

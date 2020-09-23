@@ -8,6 +8,8 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportit.YleissivistäväRaporttiOppiaineTaiKurssi
 import fi.oph.koski.schema.LocalizedString
 import org.json4s.JValue
+import shapeless.{Generic, HNil}
+import slickless._
 import slick.dbio.DBIO
 import slick.sql.SqlProfile.ColumnOption.SqlType
 
@@ -44,7 +46,7 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(suorituksen_tyyppi)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(ylempi_osasuoritus_id)",
     sqlu"CREATE INDEX ON #${s.name}.esiopetus_opiskeluoikeus_aikajakso(opiskeluoikeus_oid)",
-    sqlu"CREATE INDEX ON #${s.name}.esiopetus_opiskeluoikeus_aikajakso(alku)"
+    sqlu"CREATE INDEX ON #${s.name}.esiopetus_opiskeluoikeus_aikajakso(alku)", // TODO: turha indeksi?
   )
 
   def createOtherIndexes(s: Schema) = DBIO.seq(
@@ -129,26 +131,60 @@ object RaportointiDatabaseSchema {
     val loppu = column[Date]("loppu")
     val tila = column[String]("tila", StringIdentifierType)
     val tilaAlkanut = column[Date]("tila_alkanut")
-    val opiskeluoikeusPäättynyt = column[Boolean]("opiskeluoikeus_paattynyt")
+    val osaAikaisuus = column[Byte]("osa_aikaisuus")
     val opintojenRahoitus = column[Option[String]]("opintojen_rahoitus", StringIdentifierType)
     val erityisenKoulutusTehtävänJaksoTehtäväKoodiarvo =  column[Option[String]]("erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo", StringIdentifierType)
-    val ulkomainenVaihtoopiskelija = column[Byte]("ulkomainen_vaihto_opiskelija")
-    val majoitus = column[Byte]("majoitus")
-    val sisäoppilaitosmainenMajoitus = column[Byte]("sisaoppilaitosmainen_majoitus")
-    val vaativanErityisenTuenYhteydessäJärjestettäväMajoitus = column[Byte]("vaativan_erityisen_tuen_yhteydessa_jarjestettäva_majoitus")
-    val erityinenTuki = column[Byte]("erityinen_tuki")
-    val vaativanErityisenTuenErityinenTehtävä = column[Byte]("vaativan_erityisen_tuen_erityinen_tehtava")
-    val hojks = column[Byte]("hojks")
-    val vaikeastiVammainen = column[Byte]("vaikeasti_vammainen")
-    val vammainenJaAvustaja = column[Byte]("vammainen_ja_avustaja")
-    val osaAikaisuus = column[Byte]("osa_aikaisuus")
-    val opiskeluvalmiuksiaTukevatOpinnot = column[Byte]("opiskeluvalmiuksia_tukevat_opinnot")
-    val vankilaopetuksessa = column[Byte]("vankilaopetuksessa")
-    val oppisopimusJossainPäätasonSuorituksessa = column[Byte]("oppisopimus_jossain_paatason_suorituksessa")
-    def * = (opiskeluoikeusOid, alku, loppu, tila, tilaAlkanut, opiskeluoikeusPäättynyt,
-      opintojenRahoitus, erityisenKoulutusTehtävänJaksoTehtäväKoodiarvo, ulkomainenVaihtoopiskelija, majoitus, sisäoppilaitosmainenMajoitus, vaativanErityisenTuenYhteydessäJärjestettäväMajoitus,
-      erityinenTuki, vaativanErityisenTuenErityinenTehtävä, hojks, vaikeastiVammainen, vammainenJaAvustaja,
-      osaAikaisuus, opiskeluvalmiuksiaTukevatOpinnot, vankilaopetuksessa, oppisopimusJossainPäätasonSuorituksessa, id) <> (ROpiskeluoikeusAikajaksoRow.tupled, ROpiskeluoikeusAikajaksoRow.unapply)
+    val opiskeluoikeusPäättynyt = column[Boolean]("opiskeluoikeus_paattynyt")
+    val ulkomainenVaihtoopiskelija = column[Boolean]("ulkomainen_vaihto_opiskelija")
+    val majoitus = column[Boolean]("majoitus")
+    val majoitusetu = column[Boolean]("majoitusetu")
+    val kuljetusetu = column[Boolean]("kuljetusetu")
+    val sisäoppilaitosmainenMajoitus = column[Boolean]("sisaoppilaitosmainen_majoitus")
+    val vaativanErityisenTuenYhteydessäJärjestettäväMajoitus = column[Boolean]("vaativan_erityisen_tuen_yhteydessa_jarjestettäva_majoitus")
+    val erityinenTuki = column[Boolean]("erityinen_tuki")
+    val vaativanErityisenTuenErityinenTehtävä = column[Boolean]("vaativan_erityisen_tuen_erityinen_tehtava")
+    val hojks = column[Boolean]("hojks")
+    val vammainen = column[Boolean]("vammainen")
+    val vaikeastiVammainen = column[Boolean]("vaikeasti_vammainen")
+    val vammainenJaAvustaja = column[Boolean]("vammainen_ja_avustaja")
+    val opiskeluvalmiuksiaTukevatOpinnot = column[Boolean]("opiskeluvalmiuksia_tukevat_opinnot")
+    val vankilaopetuksessa = column[Boolean]("vankilaopetuksessa")
+    val oppisopimusJossainPäätasonSuorituksessa = column[Boolean]("oppisopimus_jossain_paatason_suorituksessa")
+    val pidennettyOppivelvollisuus = column[Boolean]("pidennetty_oppivelvollisuus")
+    val joustavaPerusopetus = column[Boolean]("joustava_perusopetus")
+    val koulukoti = column[Boolean]("koulukoti")
+
+    def * = (
+      opiskeluoikeusOid ::
+      alku ::
+      loppu ::
+      tila ::
+      tilaAlkanut ::
+      opiskeluoikeusPäättynyt ::
+      opintojenRahoitus ::
+      erityisenKoulutusTehtävänJaksoTehtäväKoodiarvo ::
+      ulkomainenVaihtoopiskelija ::
+      majoitus ::
+      majoitusetu ::
+      kuljetusetu ::
+      sisäoppilaitosmainenMajoitus ::
+      vaativanErityisenTuenYhteydessäJärjestettäväMajoitus ::
+      erityinenTuki ::
+      vaativanErityisenTuenErityinenTehtävä ::
+      hojks ::
+      vammainen ::
+      vaikeastiVammainen ::
+      vammainenJaAvustaja ::
+      osaAikaisuus ::
+      opiskeluvalmiuksiaTukevatOpinnot ::
+      vankilaopetuksessa ::
+      oppisopimusJossainPäätasonSuorituksessa ::
+      pidennettyOppivelvollisuus ::
+      joustavaPerusopetus ::
+      koulukoti ::
+      id ::
+      HNil
+    ).mappedWith(Generic[ROpiskeluoikeusAikajaksoRow])
   }
   class ROpiskeluoikeusAikajaksoTableTemp(tag: Tag) extends ROpiskeluoikeusAikajaksoTable(tag, Temp)
 
@@ -363,19 +399,25 @@ case class ROpiskeluoikeusAikajaksoRow(
   opiskeluoikeusPäättynyt: Boolean = false,
   opintojenRahoitus: Option[String] = None,
   erityisenKoulutusTehtävänJaksoTehtäväKoodiarvo: Option[String] = None,
-  ulkomainenVaihtoopiskelija: Byte = 0,
-  majoitus: Byte = 0,
-  sisäoppilaitosmainenMajoitus: Byte = 0,
-  vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Byte = 0,
-  erityinenTuki: Byte = 0,
-  vaativanErityisenTuenErityinenTehtävä: Byte = 0,
-  hojks: Byte = 0,
-  vaikeastiVammainen: Byte = 0,
-  vammainenJaAvustaja: Byte = 0,
+  ulkomainenVaihtoopiskelija: Boolean = false,
+  majoitus: Boolean = false,
+  majoitusetu: Boolean = false,
+  kuljetusetu: Boolean = false,
+  sisäoppilaitosmainenMajoitus: Boolean = false,
+  vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Boolean = false,
+  erityinenTuki: Boolean = false,
+  vaativanErityisenTuenErityinenTehtävä: Boolean = false,
+  hojks: Boolean = false,
+  vammainen: Boolean = false,
+  vaikeastiVammainen: Boolean = false,
+  vammainenJaAvustaja: Boolean = false,
   osaAikaisuus: Byte = 100,
-  opiskeluvalmiuksiaTukevatOpinnot: Byte = 0,
-  vankilaopetuksessa: Byte = 0,
-  oppisopimusJossainPäätasonSuorituksessa: Byte = 0,
+  opiskeluvalmiuksiaTukevatOpinnot: Boolean = false,
+  vankilaopetuksessa: Boolean = false,
+  oppisopimusJossainPäätasonSuorituksessa: Boolean = false,
+  pidennettyOppivelvollisuus: Boolean = false,
+  joustavaPerusopetus: Boolean = false,
+  koulukoti: Boolean = false,
   id: Long = 0
 ) extends AikajaksoRow[ROpiskeluoikeusAikajaksoRow] {
   def truncateToDates(start: Date, end: Date): ROpiskeluoikeusAikajaksoRow = this.copy(

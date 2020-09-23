@@ -107,13 +107,10 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @Tooltip("Valitse valintaruutu, jos kyseessä on koulutusvientikoulutus.")
   @DefaultValue(false)
   koulutusvienti: Boolean = false
-) extends OpiskeluoikeudenLisätiedot with Ulkomaajaksollinen with SisäoppilaitosmainenMajoitus
-
-@Description("Aikajakson pituus (alku- ja loppupäivämäärä)")
-case class Aikajakso (
-  alku: LocalDate,
-  loppu: Option[LocalDate]
-) extends Jakso
+) extends OpiskeluoikeudenLisätiedot
+  with Ulkomaajaksollinen
+  with SisäoppilaitosmainenMajoitus
+  with VaikeastiVammainen
 
 @Title("Osa-aikaisuusjakso")
 @Description("Osa-aikaisuusjakson kesto ja suuruus")
@@ -135,7 +132,7 @@ case class OpiskeluvalmiuksiaTukevienOpintojenJakso(
   @Description("Opiskeluvalmiuksia tukevien opintojen vapaamuotoinen kuvaus.")
   @Tooltip("Opiskeluvalmiuksia tukevien opintojen vapaamuotoinen kuvaus.")
   kuvaus: LocalizedString
-) {
+) extends DateContaining {
   def contains(d: LocalDate): Boolean = !d.isBefore(alku) && !d.isAfter(loppu)
 }
 
@@ -992,8 +989,9 @@ case class Hojks(
   alku: Option[LocalDate] = None,
   @Description("HOJKS:n voimassaolon loppupäivämäärä.")
   loppu: Option[LocalDate] = None
-) {
-  def contains(d: LocalDate): Boolean = (alku.isEmpty || !d.isBefore(alku.get)) && (loppu.isEmpty || !d.isAfter(loppu.get))
+) extends MahdollisestiAlkupäivällinenJakso {
+  // TODO: Onko toteutus oikea alkupäivän puuttuessa?
+  override def contains(d: LocalDate): Boolean = (alku.isEmpty || !d.isBefore(alku.get)) && (loppu.isEmpty || !d.isAfter(loppu.get))
 }
 
 @Description("Suoritettavan näyttötutkintoon valmistavan koulutuksen osan tiedot")
