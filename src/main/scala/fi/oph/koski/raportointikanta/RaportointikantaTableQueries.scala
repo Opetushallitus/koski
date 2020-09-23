@@ -14,4 +14,5 @@ trait RaportointikantaTableQueries {
   val RKoodistoKoodit = TableQuery[RKoodistoKoodiTable]
   val RaportointikantaStatus = TableQuery[RaportointikantaStatusTable]
   val muuAmmatillinenOsasuoritusRaportointi = TableQuery[MuuAmmatillinenOsasuoritusRaportointiTable]
+  val AikuistenPerusopetusOpiskeluoikeusAikajaksot = TableQuery[AikuistenPerusopetuksenOpiskeluoikeusAikajaksoTable]
 }

@@ -33,12 +33,14 @@ object OpiskeluoikeusLoader extends Logging {
         val osasuoritusRows = outputRows.flatMap(_.right.get.rOsasuoritusRows)
         val muuAmmatillinenRaportointiRows = outputRows.flatMap(_.right.get.muuAmmatillinenOsasuoritusRaportointiRows)
         val topksAmmatillinenRaportointiRows = outputRows.flatMap(_.right.get.topksAmmatillinenRaportointiRows)
+        val aikuistenPerusopetusOpiskeluoikeusAikajaksoRows = outputRows.flatMap(_.right.get.aikuistenPerusopetusOpiskeluoikeusAikajaksoRows)
         db.loadOpiskeluoikeusAikajaksot(aikajaksoRows)
         db.loadEsiopetusOpiskeluoikeusAikajaksot(esiopetusOpiskeluoikeusAikajaksoRows)
         db.loadPäätasonSuoritukset(päätasonSuoritusRows)
         db.loadOsasuoritukset(osasuoritusRows)
         db.loadMuuAmmatillinenRaportointi(muuAmmatillinenRaportointiRows)
         db.loadTOPKSAmmatillinenRaportointi(topksAmmatillinenRaportointiRows)
+        db.loadAikuistenPerusopetusOpiskeluoikeusAikajaksot(aikuistenPerusopetusOpiskeluoikeusAikajaksoRows)
         db.setLastUpdate(statusName)
         db.updateStatusCount(statusName, outputRows.size)
         errors.map(_.left.get) :+ LoadProgressResult(outputRows.size, päätasonSuoritusRows.size + osasuoritusRows.size)
@@ -60,6 +62,7 @@ object OpiskeluoikeusLoader extends Logging {
     raportointiDatabase.deleteOsasuoritukset
     raportointiDatabase.deleteMuuAmmatillinenRaportointi
     raportointiDatabase.deleteTOPKSAmmatillinenRaportointi
+    raportointiDatabase.deleteAikuistenPerusopetusOpiskeluoikeusAikajaksot
   }
 
   private def progressLogger: Subscriber[LoadResult] = new Subscriber[LoadResult] {
@@ -124,7 +127,8 @@ object OpiskeluoikeusLoader extends Logging {
         rPäätasonSuoritusRows = suoritusRows.map(_._1),
         rOsasuoritusRows = suoritusRows.flatMap(_._2),
         muuAmmatillinenOsasuoritusRaportointiRows = suoritusRows.flatMap(_._3),
-        topksAmmatillinenRaportointiRows = suoritusRows.flatMap(_._4)
+        topksAmmatillinenRaportointiRows = suoritusRows.flatMap(_._4),
+        aikuistenPerusopetusOpiskeluoikeusAikajaksoRows = aikajaksoRows._3,
       )
     }.toEither.left.map(t => LoadErrorResult(inputRow.oid, t.toString))
   }
@@ -304,5 +308,6 @@ case class OutputRows(
   rPäätasonSuoritusRows: Seq[RPäätasonSuoritusRow],
   rOsasuoritusRows: Seq[ROsasuoritusRow],
   muuAmmatillinenOsasuoritusRaportointiRows: Seq[MuuAmmatillinenOsasuoritusRaportointiRow],
-  topksAmmatillinenRaportointiRows: Seq[TOPKSAmmatillinenRaportointiRow]
+  topksAmmatillinenRaportointiRows: Seq[TOPKSAmmatillinenRaportointiRow],
+  aikuistenPerusopetusOpiskeluoikeusAikajaksoRows: Seq[AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow],
 )

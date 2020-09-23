@@ -40,7 +40,8 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
     RKoodistoKoodit,
     RaportointikantaStatus,
     MuuAmmatillinenOsasuoritusRaportointi,
-    TOPKSAmmatillinenOsasuoritusRaportointi
+    TOPKSAmmatillinenOsasuoritusRaportointi,
+    AikuistenPerusopetusOpiskeluoikeusAikajaksot
   )
 
   def moveTo(newSchema: Schema): Unit = {
@@ -118,6 +119,11 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
     runDbSync(TOPKSAmmatillinenOsasuoritusRaportointi.schema.truncate)
   def loadTOPKSAmmatillinenRaportointi(rows: Seq[TOPKSAmmatillinenRaportointiRow]): Unit =
     runDbSync(TOPKSAmmatillinenOsasuoritusRaportointi ++= rows, timeout = 5.minutes)
+
+  def deleteAikuistenPerusopetusOpiskeluoikeusAikajaksot: Unit =
+    runDbSync(AikuistenPerusopetusOpiskeluoikeusAikajaksot.schema.truncate)
+  def loadAikuistenPerusopetusOpiskeluoikeusAikajaksot(jaksot: Seq[AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow]): Unit =
+    runDbSync(AikuistenPerusopetusOpiskeluoikeusAikajaksot ++= jaksot)
 
   def deleteHenkilöt: Unit =
     runDbSync(RHenkilöt.schema.truncate)
@@ -281,6 +287,11 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
   lazy val TOPKSAmmatillinenOsasuoritusRaportointi = schema match {
     case Public => TableQuery[TOPKSAmmatillinenOsasuoritusRaportointiTable]
     case Temp => TableQuery[TOPKSAmmatillinenOsasuoritusRaportointiTableTemp]
+  }
+
+  lazy val AikuistenPerusopetusOpiskeluoikeusAikajaksot = schema match {
+    case Public => TableQuery[AikuistenPerusopetuksenOpiskeluoikeusAikajaksoTable]
+    case Temp => TableQuery[AikuistenPerusopetuksenOpiskeluoikeusAikajaksoTableTemp]
   }
 }
 
