@@ -103,7 +103,7 @@ case class MuidenLukioOpintojenSuoritus2019(
 @Description("Lukion oppiaineen suoritustiedot 2019")
 case class LukionOppiaineenSuoritus2019(
   koulutusmoduuli: LukionOppiaine2019,
-  arviointi: Option[List[LukionOppiaineenArviointi]] = None,
+  arviointi: Option[List[LukionOppiaineenArviointi2019]] = None,
   suoritettuErityisenäTutkintona: Boolean = false,
   @Title("Suorituskieli, jos muu kuin opetuskieli")
   @Description("Suorituskieli, mikäli opiskelija on opiskellut yli puolet oppiaineen oppimäärän opinnoista muulla kuin koulun varsinaisella opetuskielellä.")
@@ -117,7 +117,7 @@ case class LukionOppiaineenSuoritus2019(
 
 trait LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019 extends Suoritus with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu with Vahvistukseton {
   @FlattenInUI
-  def arviointi: Option[List[LukionArviointi]]
+  def arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]]
   @ComplexObject
   def tunnustettu: Option[OsaamisenTunnustaminen]
 }
@@ -127,7 +127,7 @@ trait LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019 extends Suoritus with
 case class LukionModuulinSuoritus2019(
   @Description("Lukion moduulin tunnistetiedot")
   koulutusmoduuli: LukionModuuli2019,
-  arviointi: Option[List[LukionArviointi]] = None,
+  arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]] = None,
   // TODO: descriptionin lakiviitteet yms. teksti
   @Description("Jos moduuli on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot. Osaamisen tunnustamisella voidaan opiskelijalle lukea hyväksi ja korvata lukion oppimäärään kuuluvia opintoja. Opiskelijan osaamisen tunnustamisessa noudatetaan, mitä 17 ja 17 a §:ssä säädetään opiskelijan arvioinnista ja siitä päättämisestä. Mikäli opinnot tai muutoin hankittu osaaminen luetaan hyväksi opetussuunnitelman perusteiden mukaan numerolla arvioitavaan moduuliin, tulee moduulista antaa numeroarvosana")
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
@@ -172,7 +172,7 @@ case class LukionPaikallisenOpintojaksonSuoritus2019(
   @Description("Lukion paikallisen opintojakson tunnistetiedot")
   @FlattenInUI
   koulutusmoduuli: LukionPaikallinenOpintojakso2019,
-  arviointi: Option[List[LukionArviointi]] = None,
+  arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]] = None,
   // TODO: Descriptionin lakiviitteet ja teksti
   @Description("Jos opintojakso on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot. Osaamisen tunnustamisella voidaan opiskelijalle lukea hyväksi ja korvata lukion oppimäärään kuuluvia pakollisia tai vapaaehtoisia opintoja. Opiskelijan osaamisen tunnustamisessa noudatetaan, mitä 17 ja 17 a §:ssä säädetään opiskelijan arvioinnista ja siitä päättämisestä. Mikäli opinnot tai muutoin hankittu osaaminen luetaan hyväksi opetussuunnitelman perusteiden mukaan numerolla arvioitavaan opintojaksoon, tulee opintojaksosta antaa numeroarvosana")
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
@@ -370,3 +370,96 @@ case class SuullisenKielitaidonKoe2019(
   kuvaus: Option[LocalizedString],
   päivä: LocalDate
 ) extends ArviointiPäivämäärällä with YleissivistävänKoulutuksenArviointi
+
+trait LukionOppiaineenArviointi2019 extends YleissivistävänKoulutuksenArviointi {
+  @Description("Oppiaineen suorituksen arvosana on kokonaisarvosana oppiaineelle")
+  def arvosana: Koodistokoodiviite
+  @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
+  def päivä: Option[LocalDate]
+
+  def arviointipäivä = päivä
+}
+
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "LI")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "A")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "B1")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "B2")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "B3")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "AOM")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodistoUri", None)
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "BI")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "ET")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "FI")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "FY")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "GE")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "HI")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "KE")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "KU")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "MU")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "PS")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "TE")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "YH")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "KT")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "AI")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "MA")
+@Title("Numeerinen lukion oppiaineen arviointi 2019")
+case class NumeerinenLukionOppiaineenArviointi2019(
+  @KoodistoKoodiarvo("4")
+  @KoodistoKoodiarvo("5")
+  @KoodistoKoodiarvo("6")
+  @KoodistoKoodiarvo("7")
+  @KoodistoKoodiarvo("8")
+  @KoodistoKoodiarvo("9")
+  @KoodistoKoodiarvo("10")
+  arvosana: Koodistokoodiviite,
+  päivä: Option[LocalDate]
+) extends LukionOppiaineenArviointi2019
+
+object NumeerinenLukionOppiaineenArviointi2019 {
+  def apply(arvosana: String) = new NumeerinenLukionOppiaineenArviointi2019(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)
+}
+
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "OP")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "LI")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "A")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "B1")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "B2")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "B3")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "AOM")
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodistoUri", None)
+@Title("Sanallinen lukion oppiaineen arviointi 2019")
+case class SanallinenLukionOppiaineenArviointi2019(
+  @Description("H/S sallittu liikunnassa, jos korkeintaan 2 op ja vieraan kielen ollessa valinnainen, jos sen laajuus on korkeintaan 4 op. Opinto-ohjauksessa sallittu ainoastaan H/S.")
+  @KoodistoKoodiarvo("H")
+  @KoodistoKoodiarvo("S")
+  arvosana: Koodistokoodiviite,
+  päivä: Option[LocalDate]
+) extends LukionOppiaineenArviointi2019
+
+object SanallinenLukionOppiaineenArviointi2019 {
+  def apply(arvosana: String) = new SanallinenLukionOppiaineenArviointi2019(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)
+}
+
+trait LukionModuulinTaiPaikallisenOpintojaksonArviointi2019 extends ArviointiPäivämäärällä
+
+@Title("Numeerinen lukion moduulin tai paikallisen opintojakson arviointi 2019")
+case class NumeerinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019(
+  @KoodistoKoodiarvo("4")
+  @KoodistoKoodiarvo("5")
+  @KoodistoKoodiarvo("6")
+  @KoodistoKoodiarvo("7")
+  @KoodistoKoodiarvo("8")
+  @KoodistoKoodiarvo("9")
+  @KoodistoKoodiarvo("10")
+  arvosana: Koodistokoodiviite,
+  päivä: LocalDate
+) extends LukionModuulinTaiPaikallisenOpintojaksonArviointi2019 with YleissivistävänKoulutuksenArviointi
+
+@Title("Sanallinen lukion moduulin tai paikallisen opintojakson arviointi 2019")
+case class SanallinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019(
+  @KoodistoKoodiarvo("H")
+  @KoodistoKoodiarvo("S")
+  arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
+  kuvaus: Option[LocalizedString],
+  päivä: LocalDate
+) extends LukionModuulinTaiPaikallisenOpintojaksonArviointi2019 with YleissivistävänKoulutuksenArviointi
