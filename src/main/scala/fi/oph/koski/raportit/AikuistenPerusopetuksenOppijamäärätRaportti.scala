@@ -1,14 +1,14 @@
 package fi.oph.koski.raportit
 
 import java.sql.Date
-import java.time.LocalDate
 
 import fi.oph.koski.db.KoskiDatabaseMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
-import fi.oph.koski.schema.Organisaatio.{Oid, isValidOrganisaatioOid}
+import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
+import fi.oph.koski.util.SQL.toSqlListUnsafe
 import slick.jdbc.GetResult
 import java.util.Calendar
 import java.util.GregorianCalendar
@@ -70,7 +70,7 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
     join r_koodisto_koodi on r_koodisto_koodi.koodisto_uri = split_part(split_part(kielikoodi, '#', 1), '_', 1) and r_koodisto_koodi.koodiarvo = split_part(kielikoodi, '#', 2)
     join r_organisaatio on r_organisaatio.organisaatio_oid = oppilaitos_oid
     left join r_paatason_suoritus on r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-    where r_opiskeluoikeus.oppilaitos_oid in (#${toSqlList(oppilaitosOidit)})
+    where r_opiskeluoikeus.oppilaitos_oid in (#${toSqlListUnsafe(oppilaitosOidit)})
       and r_opiskeluoikeus.koulutusmuoto = 'esiopetus'
       and aikajakso.alku <= $päivä
       and aikajakso.loppu >= $päivä
@@ -79,9 +79,9 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
       and (
         #${(if (u.hasGlobalReadAccess) "true" else "false")}
         or
-        r_opiskeluoikeus.oppilaitos_oid in (#${toSqlList(käyttäjänOrganisaatioOidit)})
+        r_opiskeluoikeus.oppilaitos_oid in (#${toSqlListUnsafe(käyttäjänOrganisaatioOidit)})
         or
-        (r_opiskeluoikeus.koulutustoimija_oid in (#${toSqlList(käyttäjänKoulutustoimijaOidit)}) and r_opiskeluoikeus.oppilaitos_oid in (#${toSqlList(käyttäjänOstopalveluOidit)}))
+        (r_opiskeluoikeus.koulutustoimija_oid in (#${toSqlListUnsafe(käyttäjänKoulutustoimijaOidit)}) and r_opiskeluoikeus.oppilaitos_oid in (#${toSqlListUnsafe(käyttäjänOstopalveluOidit)}))
       )
     group by r_opiskeluoikeus.oppilaitos_nimi, r_koodisto_koodi.nimi
   """
@@ -95,8 +95,6 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
 
   private def käyttäjänOstopalveluOidit(implicit u: KoskiSession) =
     organisaatioService.omatOstopalveluOrganisaatiot.map(_.oid)
-
-  private def toSqlList[T](xs: Iterable[T]) = xs.mkString("'", "','","'")
 
   private def validateOids(oppilaitosOids: List[String]) = {
     val invalidOid = oppilaitosOids.find(oid => !isValidOrganisaatioOid(oid))

@@ -8,6 +8,7 @@ import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
+import fi.oph.koski.util.SQL.toSqlListUnsafe
 import slick.jdbc.GetResult
 
 import scala.concurrent.duration._
@@ -69,7 +70,7 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
       join r_koodisto_koodi on r_koodisto_koodi.koodisto_uri = split_part(split_part(kielikoodi, '#', 1), '_', 1) and r_koodisto_koodi.koodiarvo = split_part(kielikoodi, '#', 2)
       join r_organisaatio on r_organisaatio.organisaatio_oid = oppilaitos_oid
       left join r_paatason_suoritus on r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-      where r_opiskeluoikeus.oppilaitos_oid in (#${toSqlList(oppilaitosOids)})
+      where r_opiskeluoikeus.oppilaitos_oid in (#${toSqlListUnsafe(oppilaitosOids)})
         and r_opiskeluoikeus.koulutusmuoto = 'perusopetus'
         and r_paatason_suoritus.suorituksen_tyyppi = 'perusopetuksenvuosiluokka'
         and aikajakso.alku <= $date
@@ -102,8 +103,6 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
     order by oppilaitos_nimi, vuosiluokka
   """
   }
-
-  private def toSqlList[T](xs: Iterable[T]) = xs.mkString("'", "','", "'")
 
   private def validateOids(oppilaitosOids: List[String]) = {
     val invalidOid = oppilaitosOids.find(oid => !isValidOrganisaatioOid(oid))
