@@ -52,6 +52,7 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
     val calendar = new GregorianCalendar
     calendar.setTime(päivä);
     val year = calendar.get(Calendar.YEAR)
+
     sql"""
     select
       r_opiskeluoikeus.oppilaitos_nimi,
@@ -60,8 +61,8 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
       count(case when aidinkieli != 'fi' and aidinkieli != 'sv' and aidinkieli != 'se' and aidinkieli != 'ri' and aidinkieli != 'vk' then 1 end) as vieraskielisiä,
       count(case when koulutusmoduuli_koodiarvo = '001101' then 1 end) as koulunesiopetuksessa,
       count(case when koulutusmoduuli_koodiarvo = '001102' then 1 end) as päiväkodinesiopetuksessa,
-      count(case when ${year} - extract(year from syntymaaika) = 5 then 1 end) as viisivuotiaita,
-      count(case when ${year} - extract(year from syntymaaika) = 5 and pidennetty_oppivelvollisuus = false then 1 end) as viisivuotiaitaEiPidennettyäOppivelvollisuutta,
+      count(case when $year - extract(year from syntymaaika) = 5 then 1 end) as viisivuotiaita,
+      count(case when $year - extract(year from syntymaaika) = 5 and pidennetty_oppivelvollisuus = false then 1 end) as viisivuotiaitaEiPidennettyäOppivelvollisuutta,
       count(case when pidennetty_oppivelvollisuus = true and vaikeasti_vammainen = true then 1 end) as pidennettyOppivelvollisuusJaVaikeastiVammainen,
       count(case when pidennetty_oppivelvollisuus = true and vaikeasti_vammainen = false and vammainen = true then 1 end) as pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen,
       count(case when (pidennetty_oppivelvollisuus = false or erityisen_tuen_paatos = false) and vaikeasti_vammainen = true then 1 end) as virheellisestiSiirretytVaikeastiVammaiset,
@@ -77,7 +78,7 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
     join r_koodisto_koodi on r_koodisto_koodi.koodisto_uri = split_part(split_part(kielikoodi, '#', 1), '_', 1) and r_koodisto_koodi.koodiarvo = split_part(kielikoodi, '#', 2)
     join r_organisaatio on r_organisaatio.organisaatio_oid = oppilaitos_oid
     left join r_paatason_suoritus on r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-    where r_opiskeluoikeus.oppilaitos_oid in (#${toSqlListUnsafe(oppilaitosOidit)})
+    where (r_opiskeluoikeus.oppilaitos_oid in (#${toSqlListUnsafe(oppilaitosOidit)}) or r_opiskeluoikeus.koulutustoimija_oid in (#${toSqlListUnsafe(oppilaitosOidit)}))
       and r_opiskeluoikeus.koulutusmuoto = 'esiopetus'
       and aikajakso.alku <= $päivä
       and aikajakso.loppu >= $päivä
@@ -88,7 +89,7 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
         or
         r_opiskeluoikeus.oppilaitos_oid in (#${toSqlListUnsafe(käyttäjänOrganisaatioOidit)})
         or
-        (r_opiskeluoikeus.koulutustoimija_oid in (#${toSqlListUnsafe(käyttäjänKoulutustoimijaOidit)}) and r_opiskeluoikeus.oppilaitos_oid in (#${toSqlListUnsafe(käyttäjänOstopalveluOidit)}))
+        (r_opiskeluoikeus.koulutustoimija_oid in (#${toSqlListUnsafe(käyttäjänKoulutustoimijaOidit)}))
       )
     group by r_opiskeluoikeus.oppilaitos_nimi, r_koodisto_koodi.nimi
   """
