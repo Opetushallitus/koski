@@ -24,6 +24,17 @@ object ExamplesEsiopetus {
     koulukoti = Some(List(Aikajakso(date(2011, 8, 14), None)))
   )
 
+  lazy val esiopetusaikaisetLisätiedot = EsiopetuksenOpiskeluoikeudenLisätiedot(
+    tukimuodot = Some(List(osaAikainenErityisopetus)),
+    pidennettyOppivelvollisuus = Some(Aikajakso(date(2006, 8, 15), Some(date(2016, 6, 4)))),
+    vammainen = Some(List(Aikajakso(date(2006, 8, 14), None))),
+    vaikeastiVammainen = Some(List(Aikajakso(date(2006, 6, 6), None))),
+    majoitusetu = Some(Aikajakso(date(2006, 8, 14), Some(date(2012, 8, 14)))),
+    kuljetusetu = Some(Aikajakso(date(2006, 8, 14), Some(date(2012, 8, 14)))),
+    sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2006, 9, 1), Some(date(2013, 9, 1))))),
+    koulukoti = Some(List(Aikajakso(date(2006, 8, 14), None)))
+  )
+
   lazy val opiskeluoikeus = EsiopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
     koulutustoimija = None,
@@ -35,6 +46,19 @@ object ExamplesEsiopetus {
       )
     ),
     lisätiedot = Some(lisätiedot)
+  )
+
+  lazy val opiskeluoikeusAikaisillaLisätiedoilla = EsiopetuksenOpiskeluoikeus(
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    koulutustoimija = None,
+    suoritukset = List(suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = peruskoulunEsiopetuksenTunniste, toimipiste = jyväskylänNormaalikoulu)),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2006, 8, 13), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2007, 6, 3), opiskeluoikeusValmistunut)
+      )
+    ),
+    lisätiedot = Some(esiopetusaikaisetLisätiedot)
   )
 
   lazy val ostopalveluOpiskeluoikeus = EsiopetuksenOpiskeluoikeus(
@@ -58,6 +82,11 @@ object ExamplesEsiopetus {
   val esioppilas = Oppija(
     exampleHenkilö,
     List(opiskeluoikeus)
+  )
+
+  val esioppilasAikaisillaLisätiedoilla = Oppija(
+    exampleHenkilö,
+    List(opiskeluoikeusAikaisillaLisätiedoilla)
   )
 
   val examples = List(

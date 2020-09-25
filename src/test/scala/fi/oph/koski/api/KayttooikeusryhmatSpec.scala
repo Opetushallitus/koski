@@ -178,7 +178,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "voi hakea ja katsella esiopetuksen opiskeluoikeuksia omassa organisaatiossa" in {
-      searchForNames(MockOppijat.eskari.etunimet, user) should equal(List(MockOppijat.eskari.etunimet + " " + MockOppijat.eskari.sukunimi))
+      searchForNames(MockOppijat.eskari.etunimet, user) should equal(List(MockOppijat.eskari.etunimet + " " + MockOppijat.eskari.sukunimi, MockOppijat.eskariAikaisillaLisätiedoilla.etunimet + " " + MockOppijat.eskariAikaisillaLisätiedoilla.sukunimi))
       authGet("api/oppija/" + MockOppijat.eskari.oid, user) {
         verifyResponseStatusOk()
       }

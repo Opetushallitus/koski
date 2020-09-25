@@ -100,7 +100,7 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
       (MockOppijat.organisaatioHistoria, validOpiskeluoikeus.copy(organisaatiohistoria = Some(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria))),
       (MockOppijat.tunnisteenKoodiarvoPoistettu, opiskeluoikeusJostaTunnisteenKoodiarvoPoistettu),
       (MockOppijat.eskari, validateOpiskeluoikeus(ostopalveluOpiskeluoikeus, hkiTallentaja)),
-      (MockOppijat.eskari, validateOpiskeluoikeus(ostopalveluOpiskeluoikeus.copy(suoritukset = List(päiväkotisuoritus(oppilaitos(päiväkotiMajakka)))), hkiTallentaja))
+      (MockOppijat.eskari, validateOpiskeluoikeus(ostopalveluOpiskeluoikeus.copy(suoritukset = List(päiväkotisuoritus(oppilaitos(päiväkotiMajakka)))), hkiTallentaja)),
     )
   }
 
@@ -113,6 +113,7 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
       (MockOppijat.syntymäajallinen, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)),
       (MockOppijat.markkanen, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.omnia).copy(ostettu = true)),
       (MockOppijat.eskari, ExamplesEsiopetus.esioppilas.tallennettavatOpiskeluoikeudet.head),
+      (MockOppijat.eskariAikaisillaLisätiedoilla, ExamplesEsiopetus.esioppilasAikaisillaLisätiedoilla.tallennettavatOpiskeluoikeudet.head),
       (MockOppijat.ysiluokkalainen, ysinOpiskeluoikeusKesken),
       (MockOppijat.hetuton, ysinOpiskeluoikeusKesken),
       (MockOppijat.monessaKoulussaOllut, ysinOpiskeluoikeusKesken),
