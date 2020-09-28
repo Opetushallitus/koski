@@ -335,7 +335,9 @@ object RaportointiDatabaseSchema {
     val tila = column[String]("tila", StringIdentifierType)
     val tilaAlkanut = column[Date]("tila_alkanut")
     val opiskeluoikeusPäättynyt = column[Boolean]("opiskeluoikeus_paattynyt")
-    def * = (opiskeluoikeusOid, alku, loppu, tila, tilaAlkanut, opiskeluoikeusPäättynyt) <> (AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow.tupled, AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow.unapply)
+    val rahoitus = column[Option[String]]("rahoitus")
+    val oppimääränSuorittaja = column[Boolean]("oppimaaran_suorittaja")
+    def * = (opiskeluoikeusOid, alku, loppu, tila, tilaAlkanut, opiskeluoikeusPäättynyt, rahoitus, oppimääränSuorittaja) <> (AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow.tupled, AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow.unapply)
   }
   class AikuistenPerusopetuksenOpiskeluoikeusAikajaksoTableTemp(tag: Tag) extends AikuistenPerusopetuksenOpiskeluoikeusAikajaksoTable(tag, Temp)
 
@@ -498,7 +500,9 @@ case class AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow(
   loppu: Date,
   tila: String,
   tilaAlkanut: Date,
-  opiskeluoikeusPäättynyt: Boolean = false
+  opiskeluoikeusPäättynyt: Boolean = false,
+  rahoitus: Option[String] = None,
+  oppimääränSuorittaja: Boolean = false
 ) extends AikajaksoRow[AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow] {
   def withLoppu(d: Date): AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow = this.copy(loppu = d)
   def withTilaAlkanut(d: Date): AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow = this.copy(tilaAlkanut = d)

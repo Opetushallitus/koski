@@ -172,7 +172,12 @@ object AikajaksoRowBuilder {
       loppu = Date.valueOf(päivä),
       tila = jakso.tila.koodiarvo,
       tilaAlkanut = Date.valueOf(päivä),
-      opiskeluoikeusPäättynyt = jakso.opiskeluoikeusPäättynyt
+      opiskeluoikeusPäättynyt = jakso.opiskeluoikeusPäättynyt,
+      rahoitus = jakso.opintojenRahoitus.map(_.koodiarvo),
+      oppimääränSuorittaja = o.suoritukset.exists(o => o match {
+        case _: AikuistenPerusopetuksenOppimääränSuoritus => true
+        case _ => false
+      })
     )
   }
 
