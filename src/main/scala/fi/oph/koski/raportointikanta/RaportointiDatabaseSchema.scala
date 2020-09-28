@@ -83,6 +83,7 @@ object RaportointiDatabaseSchema {
       #${s.name}.r_paatason_suoritus,
       #${s.name}.r_osasuoritus,
       #${s.name}.r_organisaatio,
+      #${s.name}.r_organisaatio_kieli,
       #${s.name}.r_koodisto_koodi,
       #${s.name}.raportointikanta_status
       TO raportointikanta_katselija, raportointikanta_henkilo_katselija""",
