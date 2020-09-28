@@ -36,9 +36,8 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
   }
 
   private def query(oppilaitosOidit: List[String], päivä: Date)(implicit u: KoskiSession) = {
-    val calendar = new GregorianCalendar
-    calendar.setTime(päivä);
-    val year = calendar.get(Calendar.YEAR)
+    println("tätä kutsutaan")
+    println(oppilaitosOidit.toString)
     sql"""
     select
       r_opiskeluoikeus.oppilaitos_nimi,

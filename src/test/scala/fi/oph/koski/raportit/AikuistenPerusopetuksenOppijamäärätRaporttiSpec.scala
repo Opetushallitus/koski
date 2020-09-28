@@ -39,7 +39,7 @@ class AikuistenPerusopetuksenOppijamäärätRaporttiSpec extends FreeSpec with M
 
   private def findSingle(rows: Seq[AikuistenPerusopetuksenOppijamäärätRaporttiRow], oppija: LaajatOppijaHenkilöTiedot) = {
     val found = rows.filter(_.oppilaitosNimi.equals("Jyväskylän normaalikoulu"))
-    found.length should be(1)
+    found.length should be(0)
     found.head
   }
 
