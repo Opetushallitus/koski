@@ -99,12 +99,13 @@ class RaportitService(application: KoskiApplication) {
   )
 
   def esiopetuksenOppijamäärät(request: RaporttiPäivältäRequest)(implicit u: KoskiSession) = {
+
     val oppilaitosOids = request.oppilaitosOid match {
       case application.organisaatioService.ostopalveluRootOid =>
         application.organisaatioService.omatOstopalveluOrganisaatiot.map(_.oid)
-      case oid =>
-        application.organisaatioService.organisaationAlaisetOrganisaatiot(oid)
+      case oid => List(oid)
     }
+
     OppilaitosRaporttiResponse(
       sheets = Seq(esiopetuksenOppijamäärätRaportti.build(oppilaitosOids, Date.valueOf(request.paiva))),
       workbookSettings = WorkbookSettings("Esiopetuksen oppijamäärien raportti", Some(request.password)),

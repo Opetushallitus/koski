@@ -8,7 +8,7 @@ import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat}
 import fi.oph.koski.koskiuser.MockUsers.{helsinkiTallentaja, tornioTallentaja}
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, jyväskylänNormaalikoulu, päiväkotiMajakka, päiväkotiTouhula}
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, tornionKaupunki, jyväskylänNormaalikoulu, päiväkotiMajakka, päiväkotiTouhula}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema.Organisaatio.Oid
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
@@ -22,7 +22,7 @@ class EsiopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers wit
     raporttiBuilder.build(List(jyväskylänNormaalikoulu), sqlDate("2007-01-01"))(session(tornioTallentaja)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
   private lazy val tyhjäVuosiRaportti =
     raporttiBuilder.build(List(jyväskylänNormaalikoulu), sqlDate("2012-01-01"))(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
-
+  private val raporttiService = EsiopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
 
   override def beforeAll(): Unit = loadRaportointikantaFixtures
 
@@ -64,12 +64,50 @@ class EsiopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers wit
     "Ei näe muiden organisaatioiden raporttia" in {
       ilmanOikeuksiaRaportti.length should be(0)
     }
+
+    "Varhaiskasvatuksen järjestäjä" - {
+      "näkee vain omat opiskeluoikeutensa" in {
+        val tornionTekemäRaportti = buildRaportti(tornioTallentaja, päiväkotiTouhula)
+        getOppilaitokset(tornionTekemäRaportti) should be(empty)
+
+        val helsinginTekemäRaportti = buildRaportti(helsinkiTallentaja, päiväkotiTouhula)
+        getOppilaitokset(helsinginTekemäRaportti) should equal(List("Päiväkoti Touhula"))
+      }
+
+      "voi hakea kaikki koulutustoimijan alla olevat tiedot" in {
+        val raportti = buildRaportti(helsinkiTallentaja, helsinginKaupunki)
+        getOppilaitokset(raportti) should equal(List("Kulosaaren ala-aste", "Päiväkoti Majakka", "Päiväkoti Touhula"))
+      }
+
+      "ei näe muiden ostopalvelu/palveluseteli-tietoja" in {
+        val raportti = buildRaportti(tornioTallentaja, tornionKaupunki)
+        getOppilaitokset(raportti) should be(empty)
+      }
+
+      "globaaleilla käyttöoikeuksilla voi tehdä raportin" in {
+        val raportti = buildRaportti(MockUsers.paakayttaja, helsinginKaupunki)
+        getOppilaitokset(raportti) should equal(List("Kulosaaren ala-aste", "Päiväkoti Majakka", "Päiväkoti Touhula"))
+      }
+    }
   }
 
   private def findSingle(rows: Seq[EsiopetuksenOppijamäärätRaporttiRow]) = {
     val found = rows.filter(_.oppilaitosNimi.equals("Jyväskylän normaalikoulu"))
     found.length should be(1)
     found.head
+  }
+
+  private def buildRaportti(user: MockUser, organisaatio: Oid) =
+    raporttiService.build(List(organisaatio), java.sql.Date.valueOf(localDate(2007, 1, 1)))(session(user))
+
+  private def getOppilaitokset(raportti: DataSheet) = {
+    getRows(raportti).map(_.oppilaitosNimi).sorted
+  }
+
+  private def getRows(raportti: DataSheet): List[EsiopetuksenOppijamäärätRaporttiRow] = {
+    raportti.rows.collect {
+      case r: EsiopetuksenOppijamäärätRaporttiRow => r
+    }.toList
   }
 
   private def session(user: MockUser)= user.toKoskiUser(application.käyttöoikeusRepository)
