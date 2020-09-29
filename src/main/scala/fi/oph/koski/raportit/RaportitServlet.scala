@@ -71,6 +71,13 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     writeExcel(raportitService.lukioraportti(parsedRequest))
   }
 
+  get("/lukiokurssikertymat") {
+    requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.lukiokoulutus)
+    val r = parseAikajaksoRaporttiRequest
+    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=lukiokurssikertymat&oppilaitosOid=${r.oppilaitosOid}&alku=${r.alku}&loppu=${r.loppu}")))
+    writeExcel(raportitService.lukioKoulutuksenKurssikertyma(r))
+  }
+
   get("/lukiodiaibinternationalopiskelijamaarat") {
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.lukiokoulutus)
     val r = parseTilastoraporttiPäivältäRequest

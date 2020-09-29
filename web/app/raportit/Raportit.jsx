@@ -36,6 +36,7 @@ export const raportitContentP = () => {
             {document.location.search.includes('tilastoraportit=true') && raportit && raportit.includes('perusopetuksenoppijamääräraportti') && <PerusopetuksenOppijamäärätRaportti organisaatioAtom={organisaatioAtom}/>}
             {document.location.search.includes('tilastoraportit=true') && raportit && raportit.includes('perusopetuksenlisäopetuksenoppijamääräraportti') && <PerusopetuksenLisäopetuksenOppijamäärätRaportti organisaatioAtom={organisaatioAtom}/>}
             {raportit && raportit.includes('lukionsuoritustietojentarkistus') && <Lukioraportti organisaatioAtom={organisaatioAtom} />}
+            {document.location.search.includes('tilastoraportit=true') && raportit && raportit.includes('lukiokurssikertyma') && <LukioKurssikertyma organisaatioAtom={organisaatioAtom}/>}
             {document.location.search.includes('tilastoraportit=true') && raportit && raportit.includes('lukiodiaibinternationalopiskelijamaarat') && <LukioDiaIBInternationalOpiskelijamaarat organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('aikuistenperusopetussuoritustietojentarkistus') && <AikuistenPerusopetusRaportti organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('esiopetuksenraportti') && <EsiopetusRaportti organisaatioAtom={organisaatioAtom}/>}
@@ -153,6 +154,13 @@ const Lukioraportti = ({organisaatioAtom}) => {
     description={descriptionText}
     osasuoritusType={osasuoritusTypes.KURSSI}
   />)
+}
+
+const LukioKurssikertyma = ({organisaatioAtom}) => {
+  return (<AikajaksoRaportti organisaatioAtom={organisaatioAtom}
+                            apiEndpoint={'/lukiokurssikertymat'}
+                            title={<Text name='Lukion kurssikertyma'/>}
+                            description={<Text name='Lukion kurssikertyma'/>}/>)
 }
 
 const LukioDiaIBInternationalOpiskelijamaarat = ({organisaatioAtom}) => {
