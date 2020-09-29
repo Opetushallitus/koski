@@ -175,7 +175,11 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
       (MockOppijat.lukioDiaIbInternationalOpiskelijamaaratRaportti_aineopiskelija, LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures.lukionAineopiskelija),
       (MockOppijat.lukioDiaIbInternationalOpiskelijamaaratRaportti_dia, LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures.dia),
       (MockOppijat.lukioDiaIbInternationalOpiskelijamaaratRaportti_ib, LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures.ib),
-      (MockOppijat.lukioDiaIbInternationalOpiskelijamaaratRaportti_international, LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures.international)
+      (MockOppijat.lukioDiaIbInternationalOpiskelijamaaratRaportti_international, LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures.international),
+      (MockOppijat.perusopetusOppijaMaaratRaportti_tavallinen, PerusopetusOppijaMaaratRaporttiFixtures.tavallinen),
+      (MockOppijat.perusopetusOppijaMaaratRaportti_erikois, PerusopetusOppijaMaaratRaporttiFixtures.erikois),
+      (MockOppijat.perusopetusOppijaMaaratRaportti_virheellisestiSiirretty, PerusopetusOppijaMaaratRaporttiFixtures.virheellisestiSiirrettyVaikeastiVammainen),
+      (MockOppijat.perusopetusOppijaMaaratRaportti_virheellisestiSiirrettyVieraskielinen, PerusopetusOppijaMaaratRaporttiFixtures.virheellisestiSiirrettyVammainen)
     )
   }
 

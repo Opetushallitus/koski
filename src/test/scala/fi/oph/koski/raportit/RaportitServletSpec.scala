@@ -73,7 +73,13 @@ class RaportitServletSpec extends FreeSpec with RaportointikantaTestMethods with
     "Käyttäjä oikeuksien tarkistus" - {
       "sallii koulutustoimijan oikeuksilla hakiessa koulutustoimijan alla olevien oppilaitosten raportit perusopetukselle" in {
         verifyMahdollisetRaportit(helsinginKaupunki, user = helsinginKaupunkiPalvelukäyttäjä) { raportit => {
-           raportit.toSet should equal(Set(EsiopetuksenRaportti.toString, EsiopetuksenOppijaMäärienRaportti.toString, PerusopetuksenVuosiluokka.toString, LukioDiaIbInternationalOpiskelijamaarat.toString))
+           raportit.toSet should equal(Set(
+             EsiopetuksenRaportti.toString,
+             EsiopetuksenOppijaMäärienRaportti.toString,
+             PerusopetuksenVuosiluokka.toString,
+             PerusopetuksenOppijaMääräRaportti.toString,
+             LukioDiaIbInternationalOpiskelijamaarat.toString
+           ))
           }
         }
       }
