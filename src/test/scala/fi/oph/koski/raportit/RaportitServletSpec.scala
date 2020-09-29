@@ -52,6 +52,11 @@ class RaportitServletSpec extends FreeSpec with RaportointikantaTestMethods with
           raportit should contain(PerusopetuksenVuosiluokka.toString)
         }
       }
+      "sallii perusopetuksen lisäopetuksen oppijamäärä raportin perusopetuksen lisäopetusta järjestävälle oppilaitokselle" in {
+        verifyMahdollisetRaportit(jyväskylänNormaalikoulu) { raportit =>
+          raportit should contain(PerusopetuksenLisäopetuksenOppijaMääräRaportti.toString)
+        }
+      }
       "sallii lukion raportin luki-opetusta järjestävälle oppilaitokselle" in {
         verifyMahdollisetRaportit(jyväskylänNormaalikoulu) { raportit =>
           raportit should contain(LukionSuoritustietojenTarkistus.toString)
