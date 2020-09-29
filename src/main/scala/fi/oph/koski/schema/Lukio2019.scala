@@ -85,7 +85,10 @@ case class LukionOppiaineidenOppimäärätKoodi2019(
   override def nimi: LocalizedString = LocalizedString.empty
 }
 
-trait LukionOppimääränOsasuoritus2019 extends LukionOppimääränPäätasonOsasuoritus
+trait LukionOppimääränOsasuoritus2019 extends LukionOppimääränPäätasonOsasuoritus {
+  @Title("Moduulit ja paikalliset opintojaksot")
+  override def osasuoritukset: Option[List[LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019]] = None
+}
 
 @Title("Muiden lukio-opintojen suoritus 2019")
 @Description("Kategoria opintojaksoille, jotka eivät liity suoraan mihinkään yksittäiseen oppiaineeseen. Esim. lukiodiplomit tai temaattiset opinnot.")
@@ -95,7 +98,6 @@ case class MuidenLukioOpintojenSuoritus2019(
   koulutusmoduuli: MuutSuorituksetTaiVastaavat2019,
   @MinItems(1)
   @Description("Moduulien ja paikallisten opintojaksojen suoritukset")
-  @Title("Moduulit ja paikalliset opintojaksot")
   override val osasuoritukset: Option[List[LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019]]
 ) extends LukionOppimääränOsasuoritus2019 with Vahvistukseton with Arvioinniton
 
@@ -109,7 +111,6 @@ case class LukionOppiaineenSuoritus2019(
   @Description("Suorituskieli, mikäli opiskelija on opiskellut yli puolet oppiaineen oppimäärän opinnoista muulla kuin koulun varsinaisella opetuskielellä.")
   suorituskieli: Option[Koodistokoodiviite],
   @Description("Oppiaineeseen kuuluvien moduulien ja paikallisten opintojaksojen suoritukset")
-  @Title("Moduulit ja paikalliset opintojaksot")
   override val osasuoritukset: Option[List[LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019]],
   @KoodistoKoodiarvo("lukionoppiaine2019")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiaine2019", koodistoUri = "suorituksentyyppi")
