@@ -104,6 +104,10 @@ object MockOppijat {
   val lukioDiaIbInternationalOpiskelijamaaratRaportti_dia = oppijat.oppija("dia", "opiskelija", "180900A985M")
   val lukioDiaIbInternationalOpiskelijamaaratRaportti_ib = oppijat.oppija("ib", "opiskelija", "180900A919H")
   val lukioDiaIbInternationalOpiskelijamaaratRaportti_international = oppijat.oppija("international", "opiskelija", "180900A9074")
+  val perusopetusOppijaMaaratRaportti_tavallinen = oppijat.oppija("t", "tavallinen", "241001A8751")
+  val perusopetusOppijaMaaratRaportti_erikois = oppijat.oppija("e", "erikois", "180900A2298")
+  val perusopetusOppijaMaaratRaportti_virheellisestiSiirretty = oppijat.oppija("v", "virheellisestiSiirretty", "050501A093H")
+  val perusopetusOppijaMaaratRaportti_virheellisestiSiirrettyVieraskielinen = oppijat.oppija("v", "virheellisestiSiirrettyVieraskielinen", "131100A355P", äidinkieli = Some("en"))
 
   val virtaOppija = oppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.57060795845", sukunimi = "Virta", etunimet = "Veikko", kutsumanimi = "Veikko", hetu = Some("270191-4208"), syntymäaika = Some(LocalDate.of(1978, 3, 25)), äidinkieli = None, kansalaisuus = None))
   val virtaOppijaHetuton = oppijat.addOppija(OppijaHenkilöWithMasterInfo(
@@ -124,7 +128,18 @@ class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil)
   private var idCounter = oppijat.length
   val äidinkieli: Some[Koodistokoodiviite] = Some(Koodistokoodiviite("FI", None, "kieli", None))
 
-  def oppija(suku: String, etu: String, hetu: String, oid: String = generateId(), kutsumanimi: Option[String] = None, turvakielto: Boolean = false, vanhaHetu: Option[String] = None, sukupuoli: Option[String] = None, kotikunta: Option[String] = None): LaajatOppijaHenkilöTiedot =
+  def oppija(
+    suku: String,
+    etu: String,
+    hetu: String,
+    oid: String = generateId(),
+    kutsumanimi: Option[String] = None,
+    turvakielto: Boolean = false,
+    vanhaHetu: Option[String] = None,
+    sukupuoli: Option[String] = None,
+    kotikunta: Option[String] = None,
+    äidinkieli: Option[String] = Some("fi")
+  ): LaajatOppijaHenkilöTiedot =
     addOppija(henkilo.LaajatOppijaHenkilöTiedot(
       oid = oid,
       sukunimi = suku,
@@ -132,7 +147,7 @@ class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil)
       kutsumanimi = kutsumanimi.getOrElse(etu),
       hetu = Some(hetu),
       syntymäaika = None,
-      äidinkieli = Some("fi"),
+      äidinkieli = äidinkieli,
       turvakielto = turvakielto,
       vanhatHetut = vanhaHetu.toList,
       sukupuoli = sukupuoli,
