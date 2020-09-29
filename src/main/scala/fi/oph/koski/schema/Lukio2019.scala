@@ -283,7 +283,6 @@ case class LukionVieraanKielenModuuliOppiaineissa2019(
 @OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "YH")
 @OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "KT")
 @OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "AI")
-@OnlyWhen("../../../koulutusmoduuli/tunniste/koodistoUri", None)
 case class LukionMuuModuuliOppiaineissa2019(
   tunniste: Koodistokoodiviite,
   laajuus: LaajuusOpintopisteissä,
