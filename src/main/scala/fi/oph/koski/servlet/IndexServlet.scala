@@ -29,7 +29,7 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
   }
 
   get("/virkailija") {
-    if (application.features.kelaui && koskiSessionOption.exists(_.hasKelaAccess)) {
+    if (koskiSessionOption.exists(_.hasKelaAccess)) {
       redirect("/kela")
     } else {
       indexHtml

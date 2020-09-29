@@ -1,6 +1,5 @@
 import React from 'baret'
 import {naviLink} from '../tiedonsiirrot/Tiedonsiirrot'
-import {withFeatureFlag} from '../components/withFeatureFlag'
 
 export default ({location, user}) => {
   if (!user) {
@@ -17,12 +16,10 @@ export default ({location, user}) => {
       <li>{naviLink('/koski/raportit', 'Raportit', location.path, '', (path, loc) => loc.startsWith(path))}</li>
     )}
     <li>{naviLink('/koski/dokumentaatio', 'Dokumentaatio', location.path, '', (path, loc) => loc.startsWith(path))}</li>
-    {user.hasKelaUiAccess && ( <KelaNavLinkWithFeatureFlag location={location} />)}
+    {user.hasKelaUiAccess && ( <KelaNavLink location={location} />)}
   </ul>)
 }
 
 const KelaNavLink = ({location}) => (
   <li>{naviLink('/koski/kela', 'Kela', location.path, '', (path, loc) => loc.startsWith(path))}</li>
 )
-
-const KelaNavLinkWithFeatureFlag = withFeatureFlag('kelaUi', KelaNavLink)
