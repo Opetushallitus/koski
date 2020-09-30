@@ -258,6 +258,10 @@ object OpiskeluoikeusLoader extends Logging {
         case k: Kieliaine => k.kieli.nimi.map(_.get("fi"))
         case _ => None
       },
+      koulutusmoduuliKurssinTyyppi = os.koulutusmoduuli match {
+        case l: LukionKurssi2015 => Some(l.kurssinTyyppi.koodiarvo)
+        case _ => None
+      },
       vahvistusPäivä = os.vahvistus.map(v => Date.valueOf(v.päivä)),
       arviointiArvosanaKoodiarvo = os.viimeisinArviointi.map(_.arvosana.koodiarvo),
       arviointiArvosanaKoodisto = os.viimeisinArviointi.flatMap(a => convertKoodisto(a.arvosana)),
@@ -271,6 +275,10 @@ object OpiskeluoikeusLoader extends Logging {
       },
       tunnustettu = os match {
         case m: MahdollisestiTunnustettu => m.tunnustettu.isDefined
+        case _ => false
+      },
+      tunnustettuRahoituksenPiirissä = os match {
+        case m: MahdollisestiTunnustettu => m.tunnustettu.exists(_.rahoituksenPiirissä)
         case _ => false
       },
       data = JsonManipulation.removeFields(data, fieldsToExcludeFromOsasuoritusJson)

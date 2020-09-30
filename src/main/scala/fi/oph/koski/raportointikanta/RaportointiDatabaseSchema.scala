@@ -258,6 +258,7 @@ object RaportointiDatabaseSchema {
     val koulutusmoduuliNimi = column[Option[String]]("koulutusmoduuli_nimi")
     val koulutusmoduuliOppimääräNimi = column[Option[String]]("koulutusmoduuli_oppimäärä_nimi")
     val koulutusmoduuliKieliaineNimi = column[Option[String]]("koulutusmoduuli_kieliaine_nimi")
+    val koulutusmoduuliKurssinTyyppi = column[Option[String]]("koulutusmoduuli_kurssin_tyyppi")
     val vahvistusPäivä = column[Option[Date]]("vahvistus_paiva")
     val arviointiArvosanaKoodiarvo = column[Option[String]]("arviointi_arvosana_koodiarvo", StringIdentifierType)
     val arviointiArvosanaKoodisto = column[Option[String]]("arviointi_arvosana_koodisto", StringIdentifierType)
@@ -265,13 +266,35 @@ object RaportointiDatabaseSchema {
     val arviointiPäivä = column[Option[Date]]("arviointi_paiva")
     val näytönArviointiPäivä = column[Option[Date]]("nayton_arviointi_paiva")
     val tunnustettu = column[Boolean]("tunnustettu")
+    val tunnustettuRahoituksenPiirissä = column[Boolean]("tunnustettu_rahoituksen_piirissa")
     val data = column[JValue]("data")
-    def * = (osasuoritusId, ylempiOsasuoritusId, päätasonSuoritusId, opiskeluoikeusOid, suorituksenTyyppi,
-      koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutusmoduuliLaajuusArvo, koulutusmoduuliLaajuusYksikkö,
-      koulutusmoduuliPaikallinen, koulutusmoduuliPakollinen, koulutusmoduuliNimi,
-      koulutusmoduuliOppimääräNimi, koulutusmoduuliKieliaineNimi, vahvistusPäivä,
-      arviointiArvosanaKoodiarvo, arviointiArvosanaKoodisto, arviointiHyväksytty, arviointiPäivä,
-      näytönArviointiPäivä, tunnustettu, data) <> (ROsasuoritusRow.tupled, ROsasuoritusRow.unapply)
+    def * = (
+      osasuoritusId ::
+      ylempiOsasuoritusId ::
+      päätasonSuoritusId ::
+      opiskeluoikeusOid ::
+      suorituksenTyyppi ::
+      koulutusmoduuliKoodisto ::
+      koulutusmoduuliKoodiarvo ::
+      koulutusmoduuliLaajuusArvo ::
+      koulutusmoduuliLaajuusYksikkö ::
+      koulutusmoduuliPaikallinen ::
+      koulutusmoduuliPakollinen ::
+      koulutusmoduuliNimi ::
+      koulutusmoduuliOppimääräNimi ::
+      koulutusmoduuliKieliaineNimi ::
+      koulutusmoduuliKurssinTyyppi ::
+      vahvistusPäivä ::
+      arviointiArvosanaKoodiarvo ::
+      arviointiArvosanaKoodisto ::
+      arviointiHyväksytty ::
+      arviointiPäivä ::
+      näytönArviointiPäivä ::
+      tunnustettu ::
+      tunnustettuRahoituksenPiirissä ::
+      data ::
+      HNil
+    ).mappedWith(Generic[ROsasuoritusRow])
   }
 
   class ROsasuoritusTableTemp(tag: Tag) extends ROsasuoritusTable(tag, Temp)
@@ -514,6 +537,7 @@ case class ROsasuoritusRow(
   koulutusmoduuliNimi: Option[String],
   koulutusmoduuliOppimääräNimi: Option[String],
   koulutusmoduuliKieliaineNimi: Option[String],
+  koulutusmoduuliKurssinTyyppi: Option[String],
   vahvistusPäivä: Option[Date],
   arviointiArvosanaKoodiarvo: Option[String],
   arviointiArvosanaKoodisto: Option[String],
@@ -521,6 +545,7 @@ case class ROsasuoritusRow(
   arviointiPäivä: Option[Date],
   näytönArviointiPäivä: Option[Date],
   tunnustettu: Boolean,
+  tunnustettuRahoituksenPiirissä: Boolean,
   data: JValue
 ) extends RSuoritusRow {
   override def matchesWith(x: YleissivistäväRaporttiOppiaineTaiKurssi): Boolean = {

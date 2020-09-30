@@ -226,6 +226,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
       koulutusmoduuliNimi = None,
       koulutusmoduuliOppimääräNimi = None,
       koulutusmoduuliKieliaineNimi = None,
+      koulutusmoduuliKurssinTyyppi = None,
       vahvistusPäivä = None,
       arviointiArvosanaKoodiarvo = None,
       arviointiArvosanaKoodisto = None,
@@ -233,6 +234,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
       arviointiPäivä = None,
       näytönArviointiPäivä = None,
       tunnustettu = false,
+      tunnustettuRahoituksenPiirissä = false,
       data = mockJValueData(tutkinnonOsanRyhmä)
     )
   }
