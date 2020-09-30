@@ -10,7 +10,10 @@ import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class PerusopetuksenLisäopetusOppijamäärätRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll {
-  override def beforeAll(): Unit = loadRaportointikantaFixtures
+  override def beforeAll(): Unit = {
+    resetFixtures
+    loadRaportointikantaFixtures
+  }
 
   private def session(user: MockUser) = user.toKoskiUser(application.käyttöoikeusRepository)
 
