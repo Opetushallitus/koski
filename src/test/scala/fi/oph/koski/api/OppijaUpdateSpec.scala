@@ -30,7 +30,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       putOppija(Oppija(oppija, List(defaultOpiskeluoikeus))) {
         verifyResponseStatusOk()
         val result = JsonSerializer.parse[HenkilönOpiskeluoikeusVersiot](response.body)
-        result.henkilö.oid should startWith("1.2.246.562.24.000000000")
+        result.henkilö.oid should startWith("1.2.246.562.24.00000000")
         result.opiskeluoikeudet.map(_.versionumero) should equal(List(1))
       }
     }
