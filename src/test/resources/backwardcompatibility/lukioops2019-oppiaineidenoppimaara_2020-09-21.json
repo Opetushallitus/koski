@@ -1,9 +1,9 @@
 {
   "henkilö" : {
-    "hetu" : "250605A518Y",
-    "etunimet" : "Ulla",
-    "kutsumanimi" : "Ulla",
-    "sukunimi" : "Uusilukio"
+    "hetu" : "010705A6119",
+    "etunimet" : "Urho",
+    "kutsumanimi" : "Urho",
+    "sukunimi" : "Uusilukionaineopiskelija"
   },
   "opiskeluoikeudet" : [ {
     "oppilaitos" : {
@@ -51,13 +51,26 @@
           "koodiarvo" : "1",
           "koodistoUri" : "opintojenrahoitus"
         }
+      }, {
+        "alku" : "2020-05-15",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "opintojenrahoitus"
+        }
       } ]
     },
     "suoritukset" : [ {
       "koulutusmoduuli" : {
         "tunniste" : {
-          "koodiarvo" : "309902",
-          "koodistoUri" : "koulutus"
+          "koodiarvo" : "lukionoppiaineidenoppimaarat2019"
         },
         "perusteenDiaarinumero" : "OPH-2263-2019"
       },
@@ -99,7 +112,6 @@
           "koodistoUri" : "kunta"
         }
       },
-      "suoritettuErityisenäTutkintona" : false,
       "suorituskieli" : {
         "koodiarvo" : "FI",
         "nimi" : {
@@ -107,85 +119,7 @@
         },
         "koodistoUri" : "kieli"
       },
-      "omanÄidinkielenOpinnot" : {
-        "arvosana" : {
-          "koodiarvo" : "8",
-          "koodistoUri" : "arviointiasteikkoyleissivistava"
-        },
-        "kieli" : {
-          "koodiarvo" : "SE",
-          "nimi" : {
-            "fi" : "saame, lappi"
-          },
-          "koodistoUri" : "kielivalikoima"
-        },
-        "laajuus" : {
-          "arvo" : 3.0,
-          "yksikkö" : {
-            "koodiarvo" : "2",
-            "nimi" : {
-              "fi" : "opintopistettä",
-              "sv" : "studiepoäng",
-              "en" : "ECTS credits"
-            },
-            "lyhytNimi" : {
-              "fi" : "op",
-              "sv" : "sp",
-              "en" : "ECTS cr"
-            },
-            "koodistoUri" : "opintojenlaajuusyksikko"
-          }
-        },
-        "hyväksytty" : true
-      },
-      "puhviKoe" : {
-        "arvosana" : {
-          "koodiarvo" : "7",
-          "koodistoUri" : "arviointiasteikkoyleissivistava"
-        },
-        "päivä" : "2019-08-30",
-        "hyväksytty" : true
-      },
-      "suullisenKielitaidonKokeet" : [ {
-        "kieli" : {
-          "koodiarvo" : "EN",
-          "nimi" : {
-            "fi" : "englanti"
-          },
-          "koodistoUri" : "kieli"
-        },
-        "arvosana" : {
-          "koodiarvo" : "6",
-          "koodistoUri" : "arviointiasteikkoyleissivistava"
-        },
-        "taitotaso" : {
-          "koodiarvo" : "B1.1",
-          "koodistoUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso"
-        },
-        "päivä" : "2019-09-03",
-        "hyväksytty" : true
-      }, {
-        "kieli" : {
-          "koodiarvo" : "ES",
-          "nimi" : {
-            "fi" : "espanja"
-          },
-          "koodistoUri" : "kieli"
-        },
-        "arvosana" : {
-          "koodiarvo" : "S",
-          "koodistoUri" : "arviointiasteikkoyleissivistava"
-        },
-        "taitotaso" : {
-          "koodiarvo" : "yli_C1.1",
-          "koodistoUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso"
-        },
-        "kuvaus" : {
-          "fi" : "Puhetaito äidinkielen tasolla"
-        },
-        "päivä" : "2019-09-03",
-        "hyväksytty" : true
-      } ],
+      "lukionOppimääräSuoritettu" : false,
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -813,7 +747,7 @@
               }
             },
             "laajuus" : {
-              "arvo" : 1.0,
+              "arvo" : 80.0,
               "yksikkö" : {
                 "koodiarvo" : "2",
                 "nimi" : {
@@ -980,7 +914,7 @@
               }
             },
             "laajuus" : {
-              "arvo" : 1.0,
+              "arvo" : 50.0,
               "yksikkö" : {
                 "koodiarvo" : "2",
                 "nimi" : {
@@ -999,7 +933,7 @@
             "kuvaus" : {
               "fi" : "Perinteiset suomalaiset tanssit, valssi jne"
             },
-            "pakollinen" : true
+            "pakollinen" : false
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -1018,253 +952,11 @@
           "koodiarvo" : "lukionoppiaine2019",
           "koodistoUri" : "suorituksentyyppi"
         }
-      }, {
-        "tyyppi" : {
-          "koodiarvo" : "lukionmuuopinto2019",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "LD",
-            "koodistoUri" : "lukionmuutopinnot"
-          }
-        },
-        "osasuoritukset" : [ {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "MELD5",
-              "koodistoUri" : "moduulikoodistolops2021"
-            },
-            "laajuus" : {
-              "arvo" : 2.0,
-              "yksikkö" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "opintopistettä",
-                  "sv" : "studiepoäng",
-                  "en" : "ECTS credits"
-                },
-                "lyhytNimi" : {
-                  "fi" : "op",
-                  "sv" : "sp",
-                  "en" : "ECTS cr"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            },
-            "pakollinen" : true
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "7",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
-            },
-            "päivä" : "2021-09-04",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        }, {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "KÄLD3",
-              "koodistoUri" : "moduulikoodistolops2021"
-            },
-            "laajuus" : {
-              "arvo" : 2.0,
-              "yksikkö" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "opintopistettä",
-                  "sv" : "studiepoäng",
-                  "en" : "ECTS credits"
-                },
-                "lyhytNimi" : {
-                  "fi" : "op",
-                  "sv" : "sp",
-                  "en" : "ECTS cr"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            },
-            "pakollinen" : true
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "9",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
-            },
-            "päivä" : "2021-09-04",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        } ]
-      }, {
-        "tyyppi" : {
-          "koodiarvo" : "lukionmuuopinto2019",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "MS",
-            "koodistoUri" : "lukionmuutopinnot"
-          }
-        },
-        "osasuoritukset" : [ {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "KE3",
-              "koodistoUri" : "moduulikoodistolops2021"
-            },
-            "laajuus" : {
-              "arvo" : 2.0,
-              "yksikkö" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "opintopistettä",
-                  "sv" : "studiepoäng",
-                  "en" : "ECTS credits"
-                },
-                "lyhytNimi" : {
-                  "fi" : "op",
-                  "sv" : "sp",
-                  "en" : "ECTS cr"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            },
-            "pakollinen" : true
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "10",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
-            },
-            "päivä" : "2021-09-04",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        }, {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "HAI765",
-              "nimi" : {
-                "fi" : "Kansanmusiikki haitarilla"
-              }
-            },
-            "laajuus" : {
-              "arvo" : 1.0,
-              "yksikkö" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "opintopistettä",
-                  "sv" : "studiepoäng",
-                  "en" : "ECTS credits"
-                },
-                "lyhytNimi" : {
-                  "fi" : "op",
-                  "sv" : "sp",
-                  "en" : "ECTS cr"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            },
-            "kuvaus" : {
-              "fi" : "Kansamusiikkia 2-rivisellä haitarilla"
-            },
-            "pakollinen" : true
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "S",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
-            },
-            "päivä" : "2021-09-04",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "lukionpaikallinenopintojakso2019",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        } ]
-      }, {
-        "tyyppi" : {
-          "koodiarvo" : "lukionmuuopinto2019",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "TO",
-            "koodistoUri" : "lukionmuutopinnot"
-          }
-        },
-        "osasuoritukset" : [ {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "KAN200",
-              "nimi" : {
-                "fi" : "Kanteleensoiton perusteet"
-              }
-            },
-            "laajuus" : {
-              "arvo" : 1.0,
-              "yksikkö" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "opintopistettä",
-                  "sv" : "studiepoäng",
-                  "en" : "ECTS credits"
-                },
-                "lyhytNimi" : {
-                  "fi" : "op",
-                  "sv" : "sp",
-                  "en" : "ECTS cr"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            },
-            "kuvaus" : {
-              "fi" : "Itäsuomalaisen kanteleensoiton perusteet"
-            },
-            "pakollinen" : true
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "S",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
-            },
-            "päivä" : "2021-09-04",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "lukionpaikallinenopintojakso2019",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        } ]
       } ],
-      "todistuksellaNäkyvätLisätiedot" : {
-        "fi" : "Osallistunut kansalliseen etäopetuskokeiluun"
-      },
       "tyyppi" : {
-        "koodiarvo" : "lukionoppimaara2019",
+        "koodiarvo" : "lukionoppiaineidenoppimaarat2019",
         "koodistoUri" : "suorituksentyyppi"
-      },
-      "ryhmä" : "AH",
-      "koulusivistyskieli" : [ {
-        "koodiarvo" : "FI",
-        "nimi" : {
-          "fi" : "suomi"
-        },
-        "koodistoUri" : "kieli"
-      } ]
+      }
     } ],
     "tyyppi" : {
       "koodiarvo" : "lukiokoulutus",
