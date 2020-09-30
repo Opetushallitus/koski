@@ -8,7 +8,8 @@ import fi.oph.koski.util.PaginationSettings
 case class ElasticSearch(config: Config) extends Logging {
   private val host = config.getString("elasticsearch.host")
   private val port = config.getInt("elasticsearch.port")
-  private val url = s"http://$host:$port"
+  private val protocol = config.getString("elasticsearch.protocol")
+  private val url = s"$protocol://$host:$port"
 
   val http = Http(url, "elasticsearch")
 
