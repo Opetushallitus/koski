@@ -171,6 +171,6 @@ class OpiskeluoikeudenPerustiedotIndexer(
   }
 
   def indexIsLarge: Boolean = {
-    OpiskeluoikeudenPerustiedotStatistics(this).statistics.opiskeluoikeuksienMäärä > 100
+    OpiskeluoikeudenPerustiedotStatistics(this).statistics.opiskeluoikeuksienMäärä > 500
   }
 }

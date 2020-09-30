@@ -111,7 +111,7 @@ class KoskiDatabase(val config: KoskiDatabaseConfig) extends Logging {
   def databaseIsLarge: Boolean = {
     try {
       val count = Futures.await(db.run(sql"select count(id) from opiskeluoikeus".as[Int]))(0)
-      count > 100
+      count > 500
     } catch {
       case e: PSQLException =>
         if (e.getMessage.contains("""relation "opiskeluoikeus" does not exist""")) {
