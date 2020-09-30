@@ -3,6 +3,7 @@ package fi.oph.koski.raportit
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.fixture.LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
@@ -10,6 +11,8 @@ import org.scalatest.{BeforeAndAfterAll, FreeSpec}
 
 class LukioDiaIbInternationalOpiskelijaMaaratRaporttiSpec extends FreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll {
   //Note: Raportin latauspäivä ja raportin fixtuurit käyttävät dynaamista päivämäärää, kts. LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures.scala
+
+  override def defaultUser = MockUsers.helsinginKaupunkiPalvelukäyttäjä
 
   override def beforeAll() = {
     loadRaportointikantaFixtures

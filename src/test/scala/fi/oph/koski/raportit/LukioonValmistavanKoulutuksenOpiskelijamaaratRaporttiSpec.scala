@@ -2,12 +2,15 @@ package fi.oph.koski.raportit
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.fixture.LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import org.scalatest.{BeforeAndAfterAll, FreeSpec}
 
 class LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiSpec extends FreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll {
+
+  override def defaultUser = MockUsers.helsinginKaupunkiPalvelukäyttäjä
 
   override def beforeAll() = {
     loadRaportointikantaFixtures
