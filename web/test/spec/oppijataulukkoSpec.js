@@ -108,6 +108,8 @@ describe('Oppijataulukko', function() {
           'Kurssikertyma, Aineopiskelija',
           'Kurssikertyma, Oppimaara',
           'Liiketalous, Lilli',
+          'Luva, Aikuisten',
+          'Luva, Nuorten',
           'Markkanen-Fagerström, Eéro Jorma-Petteri',
           'Syntynyt, Sylvi',
           'Tekijä, Teija',
