@@ -2,4 +2,7 @@
 version: v1.13.5
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
+    SNYK-JS-NODEFETCH-674311
+    SNYK-JS-UAPARSERJS-610226
+    npm:uglify-js:20151024
 patch: {}
