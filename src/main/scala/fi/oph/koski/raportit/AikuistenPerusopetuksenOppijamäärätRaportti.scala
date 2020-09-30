@@ -20,8 +20,14 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
     AikuistenPerusopetuksenOppijamäärätRaporttiRow(
       oppilaitosNimi = r.<<,
       opetuskieli = r.<<,
-      oppilaidenMäärä = r.<<,
-      vieraskielisiä = r.<<
+      oppilaidenMääräVOS = r.<<,
+      oppilaidenMääräMuuKuinVOS = r.<<,
+      oppimääränSuorittajiaVOS = r.<<,
+      oppimääränSuorittajiaMuuKuinVOS = r.<<,
+      aineopiskelijoitaVOS = r.<<,
+      aineopiskelijoitaMuuKuinVOS = r.<<,
+      vieraskielisiäVOS = r.<<,
+      vieraskielisiäMuuKuinVOS = r.<<
     )
   )
 
@@ -42,8 +48,14 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
     select
       r_opiskeluoikeus.oppilaitos_nimi,
       r_koodisto_koodi.nimi,
-      count(*) as oppilaidenMäärä,
-      count(case when aidinkieli != 'fi' and aidinkieli != 'sv' and aidinkieli != 'se' and aidinkieli != 'ri' and aidinkieli != 'vk' then 1 end) as vieraskielisiä
+      count(case when rahoitus = '1' then 1 end) as oppilaidenMääräVOS,
+      count(case when rahoitus != '1' then 1 end) as oppilaidenMääräMuuKuinVOS,
+      count(case when rahoitus = '1' and oppimaaran_suorittaja = true then 1 end) as oppimääränSuorittajiaVOS,
+      count(case when rahoitus != '1' and oppimaaran_suorittaja = true then 1 end) as oppimääränSuorittajiaMuuKuinVOS,
+      count(case when rahoitus = '1' and oppimaaran_suorittaja = false then 1 end) as aineopiskelijoitaVOS,
+      count(case when rahoitus != '1' and oppimaaran_suorittaja = false then 1 end) as aineopiskelijoitaMuuKuinVOS,
+      count(case when aidinkieli != 'fi' and aidinkieli != 'sv' and aidinkieli != 'se' and aidinkieli != 'ri' and aidinkieli != 'vk' and rahoitus = '1' then 1 end) as vieraskielisiäVOS,
+      count(case when aidinkieli != 'fi' and aidinkieli != 'sv' and aidinkieli != 'se' and aidinkieli != 'ri' and aidinkieli != 'vk' and rahoitus != '1' then 1 end) as vieraskielisiäMuuKuinVOS
     from r_opiskeluoikeus
     join r_henkilo on r_henkilo.oppija_oid = r_opiskeluoikeus.oppija_oid
     join aikuisten_perusopetus_opiskeluoikeus_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
@@ -62,7 +74,7 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
         or
         r_opiskeluoikeus.oppilaitos_oid in (#${toSqlListUnsafe(käyttäjänOrganisaatioOidit)})
         or
-        (r_opiskeluoikeus.koulutustoimija_oid in (#${toSqlListUnsafe(käyttäjänKoulutustoimijaOidit)}) and r_opiskeluoikeus.oppilaitos_oid in (#${toSqlListUnsafe(käyttäjänOstopalveluOidit)}))
+        r_opiskeluoikeus.koulutustoimija_oid in (#${toSqlListUnsafe(käyttäjänKoulutustoimijaOidit)})
       )
     group by r_opiskeluoikeus.oppilaitos_nimi, r_koodisto_koodi.nimi
   """
@@ -88,14 +100,26 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
   val columnSettings: Seq[(String, Column)] = Seq(
     "oppilaitosNimi" -> Column("Oppilaitos"),
     "opetuskieli" -> Column("Opetuskieli"),
-    "oppilaidenMäärä" -> Column("Oppilaiden määrä", comment = Some("\"Läsnä\"-tilaiset aikuisten perusopetuksen opiskeluoikeudet raportin tulostusparametreissa määriteltynä päivänä.")),
-    "vieraskielisiä" -> Column("Oppilaista vieraskielisiä"),
+    "oppilaidenMääräVOS" -> Column("Oppilaiden VOS määrä", comment = Some("\"Läsnä\"-tilaiset aikuisten perusopetuksen opiskeluoikeudet raportin tulostusparametreissa määriteltynä päivänä.")),
+    "oppilaidenMääräMuuKuinVOS" -> Column("Oppilaiden ei-VOS määrä", comment = Some("\"Läsnä\"-tilaiset aikuisten perusopetuksen opiskeluoikeudet raportin tulostusparametreissa määriteltynä päivänä.")),
+    "oppimääränSuorittajiaVOS" -> Column("Oppimäärän suorittajien VOS määrä", comment = Some("\"Läsnä\"-tilaiset aikuisten perusopetuksen opiskeluoikeudet raportin tulostusparametreissa määriteltynä päivänä.")),
+    "oppimääränSuorittajiaMuuKuinVOS" -> Column("Oppimäärän suorittajien ei-VOS määrä", comment = Some("\"Läsnä\"-tilaiset aikuisten perusopetuksen opiskeluoikeudet raportin tulostusparametreissa määriteltynä päivänä.")),
+    "aineopiskelijoitaVOS" -> Column("Aineopiskelijoita VOS määrä", comment = Some("\"Läsnä\"-tilaiset aikuisten perusopetuksen opiskeluoikeudet raportin tulostusparametreissa määriteltynä päivänä.")),
+    "aineopiskelijoitaMuuKuinVOS" -> Column("Aineopiskelijoita ei-VOS määrä", comment = Some("\"Läsnä\"-tilaiset aikuisten perusopetuksen opiskeluoikeudet raportin tulostusparametreissa määriteltynä päivänä.")),
+    "vieraskielisiäVOS" -> Column("Oppilaista VOS-vieraskielisiä"),
+    "vieraskielisiäMuuKuinVOS" -> Column("Oppilaista ei-VOS-vieraskielisiä"),
   )
 }
 
 case class AikuistenPerusopetuksenOppijamäärätRaporttiRow(
   oppilaitosNimi: String,
   opetuskieli: String,
-  oppilaidenMäärä: Int,
-  vieraskielisiä: Int
+  oppilaidenMääräVOS: Int,
+  oppilaidenMääräMuuKuinVOS: Int,
+  oppimääränSuorittajiaVOS: Int,
+  oppimääränSuorittajiaMuuKuinVOS: Int,
+  aineopiskelijoitaVOS: Int,
+  aineopiskelijoitaMuuKuinVOS: Int,
+  vieraskielisiäVOS: Int,
+  vieraskielisiäMuuKuinVOS: Int
 )
