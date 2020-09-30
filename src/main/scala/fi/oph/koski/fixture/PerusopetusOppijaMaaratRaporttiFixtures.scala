@@ -8,16 +8,25 @@ import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.schema._
 
 object PerusopetusOppijaMaaratRaporttiFixtures {
-  val date = LocalDate.of(2012, 1, 1)
+  private val date = LocalDate.of(2012, 1, 1)
 
-  lazy val tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+  private val tilaLäsnä = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
     NuortenPerusopetuksenOpiskeluoikeusjakso(alku = date.minusYears(6), tila = opiskeluoikeusLäsnä)
   ))
-  lazy val aikajakso = Aikajakso(date, Some(date.plusMonths(1)))
-  lazy val etp = ErityisenTuenPäätös(alku = Some(date), loppu = Some(date.plusMonths(1)), erityisryhmässä = None)
+  private val aikajakso = Aikajakso(date, Some(date.plusMonths(1)))
+  private val erityisenTuenPäätös = ErityisenTuenPäätös(alku = Some(date), loppu = Some(date.plusMonths(1)), erityisryhmässä = None)
+  private val lisäopetuksenSuoritukset = List(
+    PerusopetuksenLisäopetuksenSuoritus(
+      koulutusmoduuli = PerusopetuksenLisäopetus(perusteenDiaarinumero = Some("105/011/2014")),
+      luokka = Some("10A"),
+      toimipiste = jyväskylänNormaalikoulu,
+      suorituskieli = suomenKieli,
+      osasuoritukset = None
+    )
+  )
 
   val tavallinen = PerusopetuksenOpiskeluoikeus(
-    tila = tila,
+    tila = tilaLäsnä,
     oppilaitos = Some(jyväskylänNormaalikoulu),
     suoritukset = List(
       PerusopetuksenVuosiluokanSuoritus(
@@ -40,8 +49,27 @@ object PerusopetusOppijaMaaratRaporttiFixtures {
     lisätiedot = None
   )
 
+  val tavallinenLisäopetus = PerusopetuksenLisäopetuksenOpiskeluoikeus(
+    tila = tilaLäsnä,
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    koulutustoimija = None,
+    suoritukset = lisäopetuksenSuoritukset,
+    lisätiedot = None
+  )
+
+  private val erikoisLisätiedot = PerusopetuksenOpiskeluoikeudenLisätiedot(
+    pidennettyOppivelvollisuus = Some(aikajakso),
+    vaikeastiVammainen = Some(List(aikajakso)),
+    erityisenTuenPäätös = Some(erityisenTuenPäätös),
+    majoitusetu = Some(aikajakso),
+    kuljetusetu = Some(aikajakso),
+    sisäoppilaitosmainenMajoitus = Some(List(aikajakso)),
+    koulukoti = Some(List(aikajakso)),
+    joustavaPerusopetus = Some(aikajakso)
+  )
+
   val erikois = PerusopetuksenOpiskeluoikeus(
-    tila = tila,
+    tila = tilaLäsnä,
     oppilaitos = Some(jyväskylänNormaalikoulu),
     suoritukset = List(
       PerusopetuksenVuosiluokanSuoritus(
@@ -52,20 +80,29 @@ object PerusopetusOppijaMaaratRaporttiFixtures {
         alkamispäivä = Some(date)
       )
     ),
-    lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-      pidennettyOppivelvollisuus = Some(aikajakso),
-      vaikeastiVammainen = Some(List(aikajakso)),
-      erityisenTuenPäätös = Some(etp),
-      majoitusetu = Some(aikajakso),
-      kuljetusetu = Some(aikajakso),
-      sisäoppilaitosmainenMajoitus = Some(List(aikajakso)),
-      koulukoti = Some(List(aikajakso)),
-      joustavaPerusopetus = Some(aikajakso)
-    ))
+    lisätiedot = Some(erikoisLisätiedot)
+  )
+
+  val erikoisLisäopetus = PerusopetuksenLisäopetuksenOpiskeluoikeus(
+    tila = tilaLäsnä,
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    koulutustoimija = None,
+    suoritukset = lisäopetuksenSuoritukset,
+    lisätiedot = Some(erikoisLisätiedot)
+  )
+
+  private val virheellisestiSiirrettyVaikeastiVammainenLisätiedot = PerusopetuksenOpiskeluoikeudenLisätiedot(
+    pidennettyOppivelvollisuus = Some(aikajakso),
+    vaikeastiVammainen = Some(List(aikajakso)),
+    majoitusetu = Some(aikajakso),
+    kuljetusetu = Some(aikajakso),
+    sisäoppilaitosmainenMajoitus = Some(List(aikajakso)),
+    koulukoti = Some(List(aikajakso)),
+    joustavaPerusopetus = Some(aikajakso)
   )
 
   val virheellisestiSiirrettyVaikeastiVammainen = PerusopetuksenOpiskeluoikeus(
-    tila = tila,
+    tila = tilaLäsnä,
     oppilaitos = Some(jyväskylänNormaalikoulu),
     suoritukset = List(
       PerusopetuksenVuosiluokanSuoritus(
@@ -76,19 +113,24 @@ object PerusopetusOppijaMaaratRaporttiFixtures {
         alkamispäivä = Some(date)
       )
     ),
-    lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-      pidennettyOppivelvollisuus = Some(aikajakso),
-      vaikeastiVammainen = Some(List(aikajakso)),
-      majoitusetu = Some(aikajakso),
-      kuljetusetu = Some(aikajakso),
-      sisäoppilaitosmainenMajoitus = Some(List(aikajakso)),
-      koulukoti = Some(List(aikajakso)),
-      joustavaPerusopetus = Some(aikajakso)
-    ))
+    lisätiedot = Some(virheellisestiSiirrettyVaikeastiVammainenLisätiedot)
+  )
+
+  val virheellisestiSiirrettyVaikeastiVammainenLisäopetus = PerusopetuksenLisäopetuksenOpiskeluoikeus(
+    tila = tilaLäsnä,
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    koulutustoimija = None,
+    suoritukset = lisäopetuksenSuoritukset,
+    lisätiedot = Some(virheellisestiSiirrettyVaikeastiVammainenLisätiedot)
+  )
+
+  private val virheellisestiSiirrettyVammainenLisätiedot: PerusopetuksenOpiskeluoikeudenLisätiedot = PerusopetuksenOpiskeluoikeudenLisätiedot(
+    pidennettyOppivelvollisuus = Some(aikajakso),
+    vammainen = Some(List(aikajakso))
   )
 
   val virheellisestiSiirrettyVammainen = PerusopetuksenOpiskeluoikeus(
-    tila = tila,
+    tila = tilaLäsnä,
     oppilaitos = Some(jyväskylänNormaalikoulu),
     suoritukset = List(
       PerusopetuksenVuosiluokanSuoritus(
@@ -99,9 +141,14 @@ object PerusopetusOppijaMaaratRaporttiFixtures {
         alkamispäivä = Some(date)
       )
     ),
-    lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-      pidennettyOppivelvollisuus = Some(aikajakso),
-      vammainen = Some(List(aikajakso))
-    ))
+    lisätiedot = Some(virheellisestiSiirrettyVammainenLisätiedot)
+  )
+
+  val virheellisestiSiirrettyVammainenLisäopetus = PerusopetuksenLisäopetuksenOpiskeluoikeus(
+    tila = tilaLäsnä,
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    koulutustoimija = None,
+    suoritukset = lisäopetuksenSuoritukset,
+    lisätiedot = Some(virheellisestiSiirrettyVammainenLisätiedot)
   )
 }

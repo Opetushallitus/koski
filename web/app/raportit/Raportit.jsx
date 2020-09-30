@@ -34,6 +34,7 @@ export const raportitContentP = () => {
             {raportit && raportit.includes('topksammatillinen') && <TOPKSAmmatillinenRaportti organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('perusopetuksenvuosiluokka') && <PerusopetuksenVuosiluokka organisaatioAtom={organisaatioAtom} />}
             {document.location.search.includes('tilastoraportit=true') && raportit && raportit.includes('perusopetuksenoppijamääräraportti') && <PerusopetuksenOppijamäärätRaportti organisaatioAtom={organisaatioAtom}/>}
+            {document.location.search.includes('tilastoraportit=true') && raportit && raportit.includes('perusopetuksenlisäopetuksenoppijamääräraportti') && <PerusopetuksenLisäopetuksenOppijamäärätRaportti organisaatioAtom={organisaatioAtom}/>}
             {raportit && raportit.includes('lukionsuoritustietojentarkistus') && <Lukioraportti organisaatioAtom={organisaatioAtom} />}
             {document.location.search.includes('tilastoraportit=true') && raportit && raportit.includes('lukiodiaibinternationalopiskelijamaarat') && <LukioDiaIBInternationalOpiskelijamaarat organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('aikuistenperusopetussuoritustietojentarkistus') && <AikuistenPerusopetusRaportti organisaatioAtom={organisaatioAtom} />}
@@ -199,6 +200,18 @@ const PerusopetuksenOppijamäärätRaportti = ({organisaatioAtom}) => {
   return (<RaporttiPaivalta
     organisaatioAtom={organisaatioAtom}
     apiEndpoint={'/perusopetuksenoppijamaaratraportti'}
+    title={titleText}
+    description={descriptionText}
+  />)
+}
+
+const PerusopetuksenLisäopetuksenOppijamäärätRaportti = ({organisaatioAtom}) => {
+  const titleText = <Text name='Perusopetus-lisäopetus-oppijamäärät-raportti-title'/>
+  const descriptionText = <Text name='Perusopetus-lisäopetus-oppijamäärät-raportti-description'/>
+
+  return (<RaporttiPaivalta
+    organisaatioAtom={organisaatioAtom}
+    apiEndpoint={'/perusopetuksenlisaopetuksenoppijamaaratraportti'}
     title={titleText}
     description={descriptionText}
   />)

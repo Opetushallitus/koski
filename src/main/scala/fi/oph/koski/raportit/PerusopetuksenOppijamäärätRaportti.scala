@@ -15,21 +15,21 @@ import scala.concurrent.duration._
 case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: OrganisaatioService) extends KoskiDatabaseMethods {
   implicit private val getResult: GetResult[PerusopetuksenOppijamäärätRaporttiRow] = GetResult(r =>
     PerusopetuksenOppijamäärätRaporttiRow(
-      oppilaitosNimi = r.<<,
-      opetuskieli = r.<<,
-      vuosiluokka = r.<<,
-      oppilaita = r.<<,
-      vieraskielisiä = r.<<,
-      pidennettyOppivelvollisuusJaVaikeastiVammainen = r.<<,
-      pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen = r.<<,
-      virheellisestiSiirretytVaikeastiVammaiset = r.<<,
-      virheellisestiSiirretytMuutKuinVaikeimminVammaiset = r.<<,
-      erityiselläTuella = r.<<,
-      majoitusetu = r.<<,
-      kuljetusetu = r.<<,
-      sisäoppilaitosmainenMajoitus = r.<<,
-      koulukoti = r.<<,
-      joustavaPerusopetus = r.<<
+      oppilaitosNimi = r.rs.getString("oppilaitos_nimi"),
+      opetuskieli = r.rs.getString("opetuskieli"),
+      vuosiluokka = r.rs.getString("vuosiluokka"),
+      oppilaita = r.rs.getInt("oppilaita"),
+      vieraskielisiä = r.rs.getInt("vieraskielisiä"),
+      pidennettyOppivelvollisuusJaVaikeastiVammainen = r.rs.getInt("pidennettyOppivelvollisuusJaVaikeastiVammainen"),
+      pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen = r.rs.getInt("pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen"),
+      virheellisestiSiirretytVaikeastiVammaiset = r.rs.getInt("virheellisestiSiirretytVaikeastiVammaiset"),
+      virheellisestiSiirretytMuutKuinVaikeimminVammaiset = r.rs.getInt("virheellisestiSiirretytMuutKuinVaikeimminVammaiset"),
+      erityiselläTuella = r.rs.getInt("erityiselläTuella"),
+      majoitusetu = r.rs.getInt("majoitusetu"),
+      kuljetusetu = r.rs.getInt("kuljetusetu"),
+      sisäoppilaitosmainenMajoitus = r.rs.getInt("sisäoppilaitosmainenMajoitus"),
+      koulukoti = r.rs.getInt("koulukoti"),
+      joustavaPerusopetus = r.rs.getInt("joustava_perusopetus")
     )
   )
 
