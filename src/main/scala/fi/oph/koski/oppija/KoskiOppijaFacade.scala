@@ -228,14 +228,14 @@ class KoskiOppijaFacade(
       }
     }
 
-  private def delete(päätasonSuoritus: PäätasonSuoritus, oo: KoskeenTallennettavaOpiskeluoikeus) = {
-    val poistetullaSuorituksella = oo.suoritukset.filterNot(_ == päätasonSuoritus)
-    if (poistetullaSuorituksella.length == oo.suoritukset.length) {
+  private def delete(poistettavaPäätasonSuoritus: PäätasonSuoritus, oo: KoskeenTallennettavaOpiskeluoikeus) = {
+    val ilmanPoistettavaaSuoritusta = oo.suoritukset.filterNot(_ == poistettavaPäätasonSuoritus)
+    if (ilmanPoistettavaaSuoritusta.length == oo.suoritukset.length) {
       Left(KoskiErrorCategory.notFound())
-    } else if (poistetullaSuorituksella.length != oo.suoritukset.length - 1) {
+    } else if (ilmanPoistettavaaSuoritusta.length != oo.suoritukset.length - 1) {
       Left(KoskiErrorCategory.internalError())
     } else {
-      Right(oo.withSuoritukset(poistetullaSuorituksella))
+      Right(oo.withSuoritukset(ilmanPoistettavaaSuoritusta))
     }
   }
 
