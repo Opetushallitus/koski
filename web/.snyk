@@ -2,7 +2,16 @@
 version: v1.13.5
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
-    SNYK-JS-NODEFETCH-674311
-    SNYK-JS-UAPARSERJS-610226
-    npm:uglify-js:20151024
+  SNYK-JS-NODEFETCH-674311:
+    - '*':
+      reason: vulnerable code not in use
+      expires: 2100-03-18T14:01:55.550Z
+  SNYK-JS-UAPARSERJS-610226:
+    - '*':
+      reason: vulnerable code not in use
+      expires: 2100-03-18T14:01:55.550Z
+  npm:uglify-js:20151024:
+    - '*':
+      reason: vulnerable code not in use
+      expires: 2100-03-18T14:01:55.550Z
 patch: {}

@@ -7,4 +7,7 @@ ignore:
         reason: vulnerable code not in use
         expires: 2021-03-18T14:01:55.550Z
   SNYK-JAVA-LOG4J-572732:
+    - '*':
+        reason: vulnerable code not in use
+        expires: 2100-03-18T14:01:55.550Z
 patch: {}

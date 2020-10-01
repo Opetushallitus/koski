@@ -68,7 +68,7 @@
     "puppeteer": "^1.20.0",
     "q": "^1.5.1",
     "set-value": "^3.0.1",
-    "snyk": "^1.290.1",
+    "snyk": "^1.405.1",
     "style-loader": "^0.21.0",
     "yargs-parser": "^13.1.2",
     "webpack": "^4.42.1",
