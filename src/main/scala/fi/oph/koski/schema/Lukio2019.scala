@@ -446,7 +446,7 @@ case class PuhviKoe2019(
 
 @Title("Suullisen kielitaidon koe 2019")
 case class SuullisenKielitaidonKoe2019(
-  @KoodistoUri("kieli")
+  @KoodistoUri("kielivalikoima")
   kieli: Koodistokoodiviite,
   @KoodistoKoodiarvo("4")
   @KoodistoKoodiarvo("5")

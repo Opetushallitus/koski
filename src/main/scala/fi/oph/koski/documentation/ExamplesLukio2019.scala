@@ -46,7 +46,7 @@ object ExamplesLukio2019 {
   ))
 
   val suullisenKielitaidonKoeEnglanti = SuullisenKielitaidonKoe2019(
-    kieli = Koodistokoodiviite("EN", Some("englanti"), "kieli", None),
+    kieli = Koodistokoodiviite("EN", Some("englanti"), "kielivalikoima", None),
     arvosana = Koodistokoodiviite("6", "arviointiasteikkoyleissivistava"),
     taitotaso = Koodistokoodiviite(koodiarvo = "B1.1", koodistoUri = "arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
     kuvaus = None,
@@ -54,7 +54,7 @@ object ExamplesLukio2019 {
   )
 
   val suullisenKielitaidonKoeEspanja = SuullisenKielitaidonKoe2019(
-    kieli = Koodistokoodiviite("ES", Some("espanja"), "kieli", None),
+    kieli = Koodistokoodiviite("ES", Some("espanja"), "kielivalikoima", None),
     arvosana = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
     taitotaso = Koodistokoodiviite(koodiarvo = "yli_C1.1", koodistoUri = "arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
     kuvaus = Some("Puhetaito äidinkielen tasolla"),

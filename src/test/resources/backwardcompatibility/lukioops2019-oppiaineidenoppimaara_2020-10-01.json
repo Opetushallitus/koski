@@ -747,7 +747,7 @@
               }
             },
             "laajuus" : {
-              "arvo" : 1.0,
+              "arvo" : 80.0,
               "yksikkö" : {
                 "koodiarvo" : "2",
                 "nimi" : {
@@ -871,8 +871,52 @@
         "osasuoritukset" : [ {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "LI5",
-              "koodistoUri" : "moduulikoodistolops2021"
+              "koodiarvo" : "ITT234",
+              "nimi" : {
+                "fi" : "Tanssin taito"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 50.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Perinteiset suomalaiset tanssit, valssi jne"
+            },
+            "pakollinen" : false
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "10",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2021-09-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionpaikallinenopintojakso2019",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ITT235",
+              "nimi" : {
+                "fi" : "Tanssin taito 2"
+              }
             },
             "laajuus" : {
               "arvo" : 2.0,
@@ -891,47 +935,8 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollinen" : true
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "7",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
-            },
-            "päivä" : "2021-09-04",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        }, {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "ITT234",
-              "nimi" : {
-                "fi" : "Tanssin taito"
-              }
-            },
-            "laajuus" : {
-              "arvo" : 1.0,
-              "yksikkö" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "opintopistettä",
-                  "sv" : "studiepoäng",
-                  "en" : "ECTS credits"
-                },
-                "lyhytNimi" : {
-                  "fi" : "op",
-                  "sv" : "sp",
-                  "en" : "ECTS cr"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            },
             "kuvaus" : {
-              "fi" : "Perinteiset suomalaiset tanssit, valssi jne"
+              "fi" : "Uudemmat suomalaiset tanssit"
             },
             "pakollinen" : true
           },
