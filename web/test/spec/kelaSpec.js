@@ -155,8 +155,9 @@ describe('Kela', function () {
 
     describe('Jos opiskeluoikeudesta on vain yksi versio', function () {
       before(
-        Authentication().login('Laaja'),
+        Authentication().login(),
         resetFixtures,
+        Authentication().login('Laaja'),
         kela.openPage,
         kela.searchAndSelect(oppijanHetu),
         openVersiohistoria,

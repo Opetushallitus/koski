@@ -103,7 +103,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport {
         haltWithStatus(KoskiErrorCategory.forbidden.vainVirkailija())
       case Right(user) =>
         val session = createSession(user)
-        if (session.hasLuovutuspalveluAccess || session.hasTilastokeskusAccess) {
+        if (session.hasLuovutuspalveluAccess || session.hasTilastokeskusAccess || session.hasKelaAccess) {
           haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
         }
       case Left(error) =>
