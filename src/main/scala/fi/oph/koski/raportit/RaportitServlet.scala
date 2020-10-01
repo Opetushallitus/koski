@@ -156,7 +156,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
 
   get("/perusopetuksenlisaopetuksenoppijamaaratraportti") {
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.perusopetuksenlisaopetus)
-    val parsedRequest = parseTilastoraporttiPäivältäRequest
+    val parsedRequest = parseRaporttiPäivältäRequest
 
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=perusopetuksenlisaopetuksenoppijamaaratraportti&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}")))
     writeExcel(raportitService.perusopetuksenLisäopetuksenOppijamäärät(parsedRequest))
