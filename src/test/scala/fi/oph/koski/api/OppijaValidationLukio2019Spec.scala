@@ -943,6 +943,50 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
 
         moduulit should equal(odotetutModuulit)
       }
+
+      "Vieraan kielen VK-moduuleita ei voi siirtää ilman kieltä" in {
+        val oo = aktiivinenOpiskeluoikeus.copy(
+          suoritukset = List(vahvistamatonOppimääränSuoritus.copy(
+            osasuoritukset = Some(List(
+              muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
+                moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("VKA1")).copy(arviointi = numeerinenArviointi(10)),
+                moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("VKAAB36")).copy(arviointi = numeerinenArviointi(10))
+              )))
+            ))
+          ))
+        )
+
+        putOpiskeluoikeus(oo) {
+          verifyResponseStatus(400,
+            List(
+              exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Muissa suorituksissa olevalta vieraan kielen moduulilta moduulikoodistolops2021/VKA1 puuttuu kieli"),
+              exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Muissa suorituksissa olevalta vieraan kielen moduulilta moduulikoodistolops2021/VKAAB36 puuttuu kieli")
+            )
+          )
+        }
+      }
+
+      "muita kuin vieraan kielen moduuleita ei voi siirtää kielen kanssa" in {
+        val oo = aktiivinenOpiskeluoikeus.copy(
+          suoritukset = List(vahvistamatonOppimääränSuoritus.copy(
+            osasuoritukset = Some(List(
+              muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
+                moduulinSuoritusMuissaOpinnoissa(vieraanKielenModuuliMuissaOpinnoissa("ÄIS1", 2, "SE")).copy(arviointi = numeerinenArviointi(10)),
+                moduulinSuoritusMuissaOpinnoissa(vieraanKielenModuuliMuissaOpinnoissa("PS2", 2, "FI")).copy(arviointi = numeerinenArviointi(10))
+              )))
+            ))
+          ))
+        )
+
+        putOpiskeluoikeus(oo) {
+          verifyResponseStatus(400,
+            List(
+              exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Suoritukselle moduulikoodistolops2021/ÄIS1 on määritelty kieli, vaikka se ei ole vieraan kielen moduuli"),
+              exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Suoritukselle moduulikoodistolops2021/PS2 on määritelty kieli, vaikka se ei ole vieraan kielen moduuli")
+            )
+          )
+        }
+      }
     }
   }
 

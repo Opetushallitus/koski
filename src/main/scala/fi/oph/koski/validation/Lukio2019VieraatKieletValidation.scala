@@ -8,6 +8,13 @@ object Lukio2019VieraatKieletValidation {
   def fillVieraatKielet(suoritus: LukionPäätasonSuoritus2019): PäätasonSuoritus =
     suoritus.withOsasuoritukset(suoritus.osasuoritukset.map(_.map(fillOsasuoritus)))
 
+  def validate(suoritus: Suoritus, parents: List[Suoritus]): HttpStatus = {
+    HttpStatus.fold(List(
+      validateVKModuulitMuissaOpinnoissa(suoritus),
+      validateMuutModuulitMuissaOpinnoissa(suoritus)
+    ))
+  }
+
   private def fillOsasuoritus(osasuoritus: LukionOppimääränOsasuoritus2019) = (osasuoritus, osasuoritus.koulutusmoduuli) match {
     case (l: LukionOppiaineenSuoritus2019, k:VierasTaiToinenKotimainenKieli2019) => l.withOsasuoritukset(l.osasuoritukset.map(_.map(fillModuulinSuoritusOppiaineissa(k.kieli))))
     case (m: MuidenLukioOpintojenSuoritus2019, _) => m.withOsasuoritukset(m.osasuoritukset.map(_.map(fillModuulinSuoritusMuissaOpinnoissa)))
@@ -45,6 +52,21 @@ object Lukio2019VieraatKieletValidation {
     }
   }
 
+  private def validateVKModuulitMuissaOpinnoissa(suoritus: Suoritus): HttpStatus = (suoritus, suoritus.koulutusmoduuli) match {
+    case (_: LukionModuulinSuoritusMuissaOpinnoissa2019, k: LukionMuuModuuliMuissaOpinnoissa2019) if (k.tunniste.koodiarvo.startsWith("VK")) =>
+      KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Muissa suorituksissa olevalta vieraan kielen moduulilta ${k.tunniste} puuttuu kieli")
+    case _ =>
+      HttpStatus.ok
+  }
+
+  private def validateMuutModuulitMuissaOpinnoissa(suoritus: Suoritus): HttpStatus = (suoritus, suoritus.koulutusmoduuli) match {
+    case (_: LukionModuulinSuoritusMuissaOpinnoissa2019, k: LukionVieraanKielenModuuliMuissaOpinnoissa2019)
+      if !vieraanKielenModuuliPrefixit.exists(k.tunniste.koodiarvo.startsWith(_)) =>
+      KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Suoritukselle ${k.tunniste} on määritelty kieli, vaikka se ei ole vieraan kielen moduuli")
+    case _ =>
+      HttpStatus.ok
+  }
+
   lazy val moduulikoodiPrefixienKielet = List(
     ("RU",  Koodistokoodiviite("SV", "kielivalikoima")),
     ("FIN", Koodistokoodiviite("FI", "kielivalikoima")),
@@ -52,5 +74,15 @@ object Lukio2019VieraatKieletValidation {
     ("LA",  Koodistokoodiviite("LA", "kielivalikoima")),
     ("SM",  Koodistokoodiviite("SE", "kielivalikoima")),
     ("EN",  Koodistokoodiviite("EN", "kielivalikoima"))
+  )
+
+  lazy val vieraanKielenModuuliPrefixit = List(
+    "RU",
+    "FIN",
+    "FIM",
+    "LA",
+    "SM",
+    "EN",
+    "VK"
   )
 }
