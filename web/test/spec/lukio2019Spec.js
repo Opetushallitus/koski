@@ -60,7 +60,7 @@ describe('Lukiokoulutus2019', function( ){
           'Äidinkielenomainen kieli, ruotsi\nRUA4\n7 1 1 9\n' +
           'Fysiikka\nFY1\n10 FY2\n10 FY3\n10 FY123 *\n10 FY124 *\nS 87 87 10\n' +
           'Kemia 0 0 4\n' +
-          'Tanssi ja liike *\nITT234 *\n10 ITT235 *\n10 52 52 8\n' +
+          'Tanssi ja liike, valinnainen *\nITT234 *\n10 ITT235 *\n10 52 52 8\n' +
           'Lukiodiplomit\nMELD5\n7 KÄLD3\n9 4 4\n' +
           'Muut suoritukset\nKE3\n10 HAI765 *\nS 3 3\n' +
           'Teemaopinnot\nKAN200 *\nS 1 1\n' +
@@ -106,7 +106,7 @@ describe('Lukiokoulutus2019', function( ){
           before(editor.edit)
 
           var ai = opinnot.oppiaineet.oppiaine('oppiaine.AI')
-          var kieli = ai.propertyBySelector('.title .properties')
+          var kieli = ai.propertyBySelector('.title .properties .dropdown-wrapper')
           var arvosana = ai.propertyBySelector('td.arvosana')
           var suoritettuErityisenäTutkintona = ai.propertyBySelector('.properties .suoritettuErityisenäTutkintona')
           var suorituskieli = ai.propertyBySelector('.properties .suorituskieli')
@@ -448,7 +448,7 @@ describe('Lukiokoulutus2019', function( ){
           'Äidinkielenomainen kieli, ruotsi\nRUA4\n7 1 1 9\n' +
           'Fysiikka\nFY1\n10 FY2\n10 FY3\n10 FY123 *\n10 FY124 *\nS 87 87 10\n' +
           'Kemia 0 0 4\n' +
-          'Tanssi ja liike *\nITT234 *\n10 ITT235 *\n10 52 52 8\n' +
+          'Tanssi ja liike, valinnainen *\nITT234 *\n10 ITT235 *\n10 52 52 8\n' +
           'Arvioitujen osasuoritusten laajuus yhteensä: 157,5 Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 154,0\n' +
           '* = paikallinen opintojakso tai oppiaine')
       })

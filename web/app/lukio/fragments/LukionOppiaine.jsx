@@ -4,7 +4,7 @@ import * as R from 'ramda'
 import {t} from '../../i18n/i18n'
 import {modelData, modelLookup, modelTitle} from '../../editor/EditorModel.js'
 import {FootnoteHint} from '../../components/footnote'
-import {isKieliaine, isLukionMatematiikka, isPaikallinen} from '../../suoritus/Koulutusmoduuli'
+import {isKieliaine, isLukio2019Oppiaine, isLukionMatematiikka, isPaikallinen} from '../../suoritus/Koulutusmoduuli'
 import {Editor} from '../../editor/Editor'
 import {ArvosanaEditor} from '../../suoritus/ArvosanaEditor'
 import {PropertiesEditor} from '../../editor/PropertiesEditor'
@@ -16,6 +16,7 @@ const Nimi = ({oppiaine}) => {
   const nimi = t(modelData(oppiaine, 'koulutusmoduuli.tunniste.nimi'))
   const nimiJaKieli = modelTitle(oppiaine, 'koulutusmoduuli')
   const hasOptions = isKieliaine(koulutusmoduuli) || isLukionMatematiikka(koulutusmoduuli)
+  const valinnainenLukio2019 = isLukio2019Oppiaine(koulutusmoduuli) && !modelData(koulutusmoduuli, 'pakollinen') ? `, ${t('valinnainen')}` : ''
 
   return (
       [edit && isPaikallinen(koulutusmoduuli)
@@ -27,7 +28,7 @@ const Nimi = ({oppiaine}) => {
       )
       : (
         <span key='nimi' className='nimi'>
-          {edit && hasOptions ? `${nimi}, ` : nimiJaKieli}
+          {edit && hasOptions ? `${nimi}, ` : nimiJaKieli + valinnainenLukio2019}
         </span>
       ),
         isPaikallinen(koulutusmoduuli) && <FootnoteHint key='footnote' title={'Paikallinen oppiaine'} />
