@@ -7,6 +7,7 @@ import fi.oph.koski.raportointikanta.RaportointiDatabase
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import slick.jdbc.GetResult
 import fi.oph.koski.util.SQL
+import fi.oph.koski.raportit.AhvenanmaanKunnat.ahvenanmaanKunnat
 
 object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti {
 
@@ -70,25 +71,6 @@ object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti {
       aikuistenOppimaaranSuorittajia_KotikuntaAhvenanmaa = rs.getInt("aikuisten_kotikunta_ahvenanmaa")
     )
   })
-
-  private lazy val ahvenanmaanKunnat = List(
-    "035",
-    "043",
-    "060",
-    "062",
-    "065",
-    "076",
-    "170",
-    "295",
-    "318",
-    "417",
-    "438",
-    "478",
-    "736",
-    "766",
-    "771",
-    "941"
-  )
 
   val columnSettings: Seq[(String, Column)] = Seq(
     "oppilaitos" -> Column("oppilaitos"),
