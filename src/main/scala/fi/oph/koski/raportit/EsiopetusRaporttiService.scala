@@ -20,9 +20,8 @@ class EsiopetusRaporttiService(application: KoskiApplication) {
   }
 
   def buildOrganisaatioRaportti(organisaatioOid: Oid, date: LocalDate, password: String, downloadToken: Option[String])(implicit session: KoskiSession): OppilaitosRaporttiResponse = {
-    val organisaatioOidit = organisaationAlaisetOrganisaatiot(organisaatioOid)
     auditLog(date, session, organisaatioOid)
-    buildRaportti(date, password, downloadToken, organisaatioOidit, filename(organisaatioOid, date))
+    buildRaportti(date, password, downloadToken, List(organisaatioOid), filename(organisaatioOid, date))
   }
 
   private def auditLog(date: LocalDate, session: KoskiSession, organisaatio: String) = {
