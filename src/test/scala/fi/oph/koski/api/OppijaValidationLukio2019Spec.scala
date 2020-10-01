@@ -736,6 +736,217 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
     }
   }
 
+  "Vieraan kielen moduuli" - {
+    "oppimäärän oppiaineissa" - {
+      "vieraan kielen oppiaineessa oleville moduuleille lisätään tai korjataan kieli tiedonsiirrossa" in {
+        val oo = aktiivinenOpiskeluoikeus.copy(
+          suoritukset = List(vahvistamatonOppimääränSuoritus.copy(
+            osasuoritukset = Some(List(
+              oppiaineenSuoritus(lukionKieli2019("A", "SV")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUA1")).copy(arviointi = numeerinenArviointi(10))
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("B1", "SV")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUB11")).copy(arviointi = numeerinenArviointi(10)),
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("AOM", "SV")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUÄ1")).copy(arviointi = numeerinenArviointi(10)),
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("A", "FI")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("FINA1", 2, Some("FI"))).copy(arviointi = numeerinenArviointi(10)),
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("B1", "FI")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("FINB11")).copy(arviointi = numeerinenArviointi(10)),
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("AOM", "FI")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("FIM1")).copy(arviointi = numeerinenArviointi(10)),
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("A", "SE")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("SMA1")).copy(arviointi = numeerinenArviointi(10)),
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("B3", "SE")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("SMB31")).copy(arviointi = numeerinenArviointi(10)),
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("B2", "LA")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("LAB21", 2, Some("SV"))).copy(arviointi = numeerinenArviointi(10)),
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("B3", "LA")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("LAB31")).copy(arviointi = numeerinenArviointi(10)),
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("A", "EN")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("ENA1")).copy(arviointi = numeerinenArviointi(10))
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("A", "ES")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("VKA1")).copy(arviointi = numeerinenArviointi(10))
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("B2", "PL")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("VKB21", 2, Some("LV"))).copy(arviointi = numeerinenArviointi(10))
+              )))
+            ))
+          ))
+        )
+
+        val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)
+        val moduulit = opiskeluoikeus.suoritukset.head.osasuoritusLista.flatMap(_.osasuoritusLista.map(_.koulutusmoduuli))
+
+        val odotetutModuulit = List(
+          vieraanKielenModuuliOppiaineissa("RUA1"  , 2, Some("SV")),
+          vieraanKielenModuuliOppiaineissa("RUB11" , 2, Some("SV")),
+          vieraanKielenModuuliOppiaineissa("RUÄ1"  , 2, Some("SV")),
+          vieraanKielenModuuliOppiaineissa("FINA1" , 2, Some("FI")),
+          vieraanKielenModuuliOppiaineissa("FINB11", 2, Some("FI")),
+          vieraanKielenModuuliOppiaineissa("FIM1"  , 2, Some("FI")),
+          vieraanKielenModuuliOppiaineissa("SMA1"  , 2, Some("SE")),
+          vieraanKielenModuuliOppiaineissa("SMB31" , 2, Some("SE")),
+          vieraanKielenModuuliOppiaineissa("LAB21" , 2, Some("LA")),
+          vieraanKielenModuuliOppiaineissa("LAB31" , 2, Some("LA")),
+          vieraanKielenModuuliOppiaineissa("ENA1"  , 2, Some("EN")),
+          vieraanKielenModuuliOppiaineissa("VKA1"  , 2, Some("ES")),
+          vieraanKielenModuuliOppiaineissa("VKB21" , 2, Some("PL"))
+        )
+
+        moduulit should equal(odotetutModuulit)
+      }
+    }
+
+    "oppiaineiden suoritusten oppiaineissa" - {
+      "vieraan kielen oppiaineessa oleville moduuleille lisätään tai korjataan kieli tiedonsiirrossa" in {
+        val oo = aktiivinenOpiskeluoikeus.copy(
+          suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(
+            osasuoritukset = Some(List(
+              oppiaineenSuoritus(lukionKieli2019("A", "SV")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUA1")).copy(arviointi = numeerinenArviointi(10))
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("B1", "SV")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUB11")).copy(arviointi = numeerinenArviointi(10)),
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("AOM", "SV")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUÄ1")).copy(arviointi = numeerinenArviointi(10)),
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("A", "FI")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("FINA1", 2, Some("FI"))).copy(arviointi = numeerinenArviointi(10)),
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("B1", "FI")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("FINB11")).copy(arviointi = numeerinenArviointi(10)),
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("AOM", "FI")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("FIM1")).copy(arviointi = numeerinenArviointi(10)),
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("A", "SE")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("SMA1")).copy(arviointi = numeerinenArviointi(10)),
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("B3", "SE")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("SMB31")).copy(arviointi = numeerinenArviointi(10)),
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("B2", "LA")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("LAB21", 2, Some("SV"))).copy(arviointi = numeerinenArviointi(10)),
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("B3", "LA")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("LAB31")).copy(arviointi = numeerinenArviointi(10)),
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("A", "EN")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("ENA1")).copy(arviointi = numeerinenArviointi(10))
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("A", "ES")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("VKA1")).copy(arviointi = numeerinenArviointi(10))
+              ))),
+              oppiaineenSuoritus(lukionKieli2019("B2", "PL")).copy(osasuoritukset = Some(List(
+                moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("VKB21", 2, Some("LV"))).copy(arviointi = numeerinenArviointi(10))
+              )))
+            ))
+          ))
+        )
+
+        val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)
+        val moduulit = opiskeluoikeus.suoritukset.head.osasuoritusLista.flatMap(_.osasuoritusLista.map(_.koulutusmoduuli))
+
+        val odotetutModuulit = List(
+          vieraanKielenModuuliOppiaineissa("RUA1"  , 2, Some("SV")),
+          vieraanKielenModuuliOppiaineissa("RUB11" , 2, Some("SV")),
+          vieraanKielenModuuliOppiaineissa("RUÄ1"  , 2, Some("SV")),
+          vieraanKielenModuuliOppiaineissa("FINA1" , 2, Some("FI")),
+          vieraanKielenModuuliOppiaineissa("FINB11", 2, Some("FI")),
+          vieraanKielenModuuliOppiaineissa("FIM1"  , 2, Some("FI")),
+          vieraanKielenModuuliOppiaineissa("SMA1"  , 2, Some("SE")),
+          vieraanKielenModuuliOppiaineissa("SMB31" , 2, Some("SE")),
+          vieraanKielenModuuliOppiaineissa("LAB21" , 2, Some("LA")),
+          vieraanKielenModuuliOppiaineissa("LAB31" , 2, Some("LA")),
+          vieraanKielenModuuliOppiaineissa("ENA1"  , 2, Some("EN")),
+          vieraanKielenModuuliOppiaineissa("VKA1"  , 2, Some("ES")),
+          vieraanKielenModuuliOppiaineissa("VKB21" , 2, Some("PL"))
+        )
+
+        moduulit should equal(odotetutModuulit)
+      }
+    }
+
+    "muissa suorituksissa" - {
+      "muut kuin vieraan kielen moduulit säilyvät sellaisenaan" in {
+        val oo = aktiivinenOpiskeluoikeus.copy(
+          suoritukset = List(vahvistamatonOppimääränSuoritus.copy(
+            osasuoritukset = Some(List(
+              muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
+                moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("KE1")).copy(arviointi = numeerinenArviointi(10)),
+                moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("FI2")).copy(arviointi = numeerinenArviointi(10))
+              )))
+            ))
+          ))
+        )
+
+        val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)
+        val moduulit = opiskeluoikeus.suoritukset.head.osasuoritusLista.head.osasuoritusLista.map(_.koulutusmoduuli)
+
+        val odotetutModuulit = List(
+          muuModuuliMuissaOpinnoissa("KE1"),
+          muuModuuliMuissaOpinnoissa("FI2")
+        )
+
+        moduulit should equal(odotetutModuulit)
+      }
+
+      "suomen, ruotsin, englannin, latinan ja saamen moduuleille lisätään tai korjataan kieli tiedonsiirrossa" in {
+        val oo = aktiivinenOpiskeluoikeus.copy(
+          suoritukset = List(vahvistamatonOppimääränSuoritus.copy(
+            osasuoritukset = Some(List(
+              muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
+                moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("RUA1")).copy(arviointi = numeerinenArviointi(10)),
+                moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("RUB11")).copy(arviointi = numeerinenArviointi(10)),
+                moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("RUÄ1")).copy(arviointi = numeerinenArviointi(10)),
+                moduulinSuoritusMuissaOpinnoissa(vieraanKielenModuuliMuissaOpinnoissa("FINA1", 2, "FI")).copy(arviointi = numeerinenArviointi(10)),
+                moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("FINB11")).copy(arviointi = numeerinenArviointi(10)),
+                moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("FIM1")).copy(arviointi = numeerinenArviointi(10)),
+                moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("SMA1")).copy(arviointi = numeerinenArviointi(10)),
+                moduulinSuoritusMuissaOpinnoissa(vieraanKielenModuuliMuissaOpinnoissa("SMB31", 2, "FI")).copy(arviointi = numeerinenArviointi(10)),
+                moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("LAB21")).copy(arviointi = numeerinenArviointi(10)),
+                moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("LAB31")).copy(arviointi = numeerinenArviointi(10)),
+                moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("ENA1")).copy(arviointi = numeerinenArviointi(10))
+              )))
+            ))
+          ))
+        )
+
+        val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)
+        val moduulit = opiskeluoikeus.suoritukset.head.osasuoritusLista.head.osasuoritusLista.map(_.koulutusmoduuli)
+
+        val odotetutModuulit = List(
+          vieraanKielenModuuliMuissaOpinnoissa("RUA1"  , 2, "SV"),
+          vieraanKielenModuuliMuissaOpinnoissa("RUB11" , 2, "SV"),
+          vieraanKielenModuuliMuissaOpinnoissa("RUÄ1"  , 2, "SV"),
+          vieraanKielenModuuliMuissaOpinnoissa("FINA1" , 2, "FI"),
+          vieraanKielenModuuliMuissaOpinnoissa("FINB11", 2, "FI"),
+          vieraanKielenModuuliMuissaOpinnoissa("FIM1"  , 2, "FI"),
+          vieraanKielenModuuliMuissaOpinnoissa("SMA1"  , 2, "SE"),
+          vieraanKielenModuuliMuissaOpinnoissa("SMB31" , 2, "SE"),
+          vieraanKielenModuuliMuissaOpinnoissa("LAB21" , 2, "LA"),
+          vieraanKielenModuuliMuissaOpinnoissa("LAB31" , 2, "LA"),
+          vieraanKielenModuuliMuissaOpinnoissa("ENA1"  , 2, "EN")
+        )
+
+        moduulit should equal(odotetutModuulit)
+      }
+    }
+  }
+
+
   private def putAndGetOpiskeluoikeus(oo: LukionOpiskeluoikeus): Opiskeluoikeus = putOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)

@@ -106,6 +106,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       .flatMap(addKoulutustyyppi)
       .map(fillPerusteenNimi)
       .map(fillLaajuudet)
+      .map(fillVieraatKielet)
       .map(clearVahvistukset)
       .map(_.withHistoria(None))
   }
@@ -138,6 +139,12 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       }))
     case _ => suoritus
   }
+
+  private def fillVieraatKielet(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus =
+    oo.withSuoritukset(oo.suoritukset.map({
+      case s: LukionPäätasonSuoritus2019 => Lukio2019VieraatKieletValidation.fillVieraatKielet(s)
+      case s => s
+    }))
 
   private def clearVahvistukset(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus =
     oo.withSuoritukset(oo.suoritukset.map({

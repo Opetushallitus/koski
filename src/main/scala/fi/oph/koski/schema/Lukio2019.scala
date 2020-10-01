@@ -11,6 +11,7 @@ trait LukionPäätasonSuoritus2019 extends LukionPäätasonSuoritus with Todistu
   @Title("Opetussuunnitelma")
   @Description("Tieto siitä, suoritetaanko lukiota nuorten vai aikuisten oppimäärän mukaisesti")
   def oppimäärä: Koodistokoodiviite
+  override def osasuoritukset: Option[List[LukionOppimääränOsasuoritus2019]] = None
 }
 
 @Title("Lukion oppimäärän suoritus 2019")
@@ -91,6 +92,11 @@ trait LukionOppimääränOsasuoritus2019 extends LukionOppimääränPäätasonOs
 
   override def osasuoritusLista: List[LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019] = {
     osasuoritukset.toList.flatten
+  }
+
+  final def withOsasuoritukset(oss: Option[List[Suoritus]]): LukionOppimääränOsasuoritus2019 = {
+    import mojave._
+    shapeless.lens[LukionOppimääränOsasuoritus2019].field[Option[List[Suoritus]]]("osasuoritukset").set(this)(oss)
   }
 }
 
