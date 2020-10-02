@@ -115,7 +115,7 @@ describe('Oppijataulukko', function() {
           'Tekijä, Teija',
           'Tiedonsiirto, Tiina'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('10')
+        expect(page.opiskeluoikeudeTotal()).to.equal('12')
       })
     })
 
