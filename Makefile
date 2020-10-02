@@ -180,7 +180,7 @@ deploy: check-version
 
 .PHONY: deployaws
 deployaws: check-version
-	./scripts/deploy.sh $(env) $(version) $(inventory)
+	./scripts/deploy.sh $(env) $(version) $(CLOUD_ENV_DIR)/aws_ec2.yml
 
 .PHONY: check-version
 check-version:
