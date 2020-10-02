@@ -38,6 +38,7 @@ export const raportitContentP = () => {
             {raportit && raportit.includes('lukionsuoritustietojentarkistus') && <Lukioraportti organisaatioAtom={organisaatioAtom} />}
             {document.location.search.includes('tilastoraportit=true') && raportit && raportit.includes('lukiokurssikertyma') && <LukioKurssikertyma organisaatioAtom={organisaatioAtom}/>}
             {document.location.search.includes('tilastoraportit=true') && raportit && raportit.includes('lukiodiaibinternationalopiskelijamaarat') && <LukioDiaIBInternationalOpiskelijamaarat organisaatioAtom={organisaatioAtom} />}
+            {document.location.search.includes('tilastoraportit=true') && raportit && raportit.includes('luvaopiskelijamaarat') && <LuvaOpiskelijamaaratRaportti organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('aikuistenperusopetussuoritustietojentarkistus') && <AikuistenPerusopetusRaportti organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('esiopetuksenraportti') && <EsiopetusRaportti organisaatioAtom={organisaatioAtom}/>}
             {raportit && raportit.includes('esiopetuksenoppijamäärienraportti') && <EsiopetuksenOppijamäärätRaportti organisaatioAtom={organisaatioAtom}/>}
@@ -170,6 +171,18 @@ const LukioDiaIBInternationalOpiskelijamaarat = ({organisaatioAtom}) => {
   return (<RaporttiPaivalta
     organisaatioAtom={organisaatioAtom}
     apiEndpoint={'/lukiodiaibinternationalopiskelijamaarat'}
+    title={titleText}
+    description={descriptionText}
+  />)
+}
+
+const LuvaOpiskelijamaaratRaportti = ({organisaatioAtom}) => {
+  const titleText = <Text name='Lukioon valmistavan koulutuksen opiskelijamäärät'/>
+  const descriptionText = <Text name='Lukioon valmistavan koulutuksen opiskelijamäärät'/>
+
+  return (<RaporttiPaivalta
+    organisaatioAtom={organisaatioAtom}
+    apiEndpoint={'/luvaopiskelijamaarat'}
     title={titleText}
     description={descriptionText}
   />)

@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
-import fi.oph.koski.documentation.{ExampleData, ExamplesDIA, ExamplesIB, ExamplesInternationalSchool}
+import fi.oph.koski.documentation._
 import fi.oph.koski.schema._
 
 object LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures {
@@ -130,6 +130,42 @@ object LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures {
       )
     ),
     suoritukset = List(ExamplesIB.preIBSuoritus)
+  )
+
+  val fixedDate = LocalDate.of(2000, 1, 1)
+
+  val nuortenOppimaaraLuva = LukioonValmistavanKoulutuksenOpiskeluoikeus(
+    oppilaitos = Some(ressunLukio),
+    koulutustoimija = None,
+    tila = LukionOpiskeluoikeudenTila(
+      List(
+        LukionOpiskeluoikeusjakso(alku = fixedDate, tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+      )
+    ),
+    lisätiedot = Some(LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
+      sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(fixedDate, Some(fixedDate.plusDays(2)))))
+    )),
+    suoritukset = List(
+      ExamplesLukioonValmistavaKoulutus.lukioonValmistavanKoulutuksenSuoritus.copy(
+        vahvistus = None
+      )
+    )
+  )
+
+  val aikuistenOppimaaraLuva = LukioonValmistavanKoulutuksenOpiskeluoikeus(
+    oppilaitos = Some(ressunLukio),
+    koulutustoimija = None,
+    tila = LukionOpiskeluoikeudenTila(
+      List(
+        LukionOpiskeluoikeusjakso(alku = fixedDate, tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.muutaKauttaRahoitettu))
+      )
+    ),
+    suoritukset = List(
+      ExamplesLukioonValmistavaKoulutus.lukioonValmistavanKoulutuksenSuoritus.copy(
+        oppimäärä = aikuistenOpetussuunnitelma,
+        vahvistus = None
+      )
+    )
   )
 
   lazy val erityisenKoulutustehtävänJakso1 = ErityisenKoulutustehtävänJakso(date, Some(date.plusMonths(1)), Koodistokoodiviite("101", "erityinenkoulutustehtava"))

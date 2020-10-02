@@ -135,6 +135,10 @@ case object LukioDiaIbInternationalOpiskelijamaarat extends RaportinTyyppi {
   val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo
 }
 
+case object LuvaOpiskelijamaarat extends RaportinTyyppi {
+  val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.luva.koodiarvo
+}
+
 case object EsiopetuksenOppijaMäärienRaportti extends RaportinTyyppi {
   val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.esiopetus.koodiarvo
 }

@@ -83,6 +83,16 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
+  def lukioonValmistavanKoulutuksenOpiskelijaMaaratRaportti(request: RaporttiPäivältäRequest): OppilaitosRaporttiResponse = {
+    val oidit = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toList
+    OppilaitosRaporttiResponse(
+      sheets = Seq(LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti.dataSheet(oidit, request.paiva, raportointiDatabase)),
+      workbookSettings = WorkbookSettings("", Some(request.password)),
+      filename = s"lukioon_valmistavan_koulutuksen_opiskelijamaarat_${request.paiva.toString.replaceAll("-", "")}.xlsx",
+      downloadToken = request.downloadToken
+    )
+  }
+
   def aikuistenPerusopetus(request: AikuistenPerusopetusRaporttiRequest) = {
     OppilaitosRaporttiResponse(
       sheets = AikuistenPerusopetusRaportti(
