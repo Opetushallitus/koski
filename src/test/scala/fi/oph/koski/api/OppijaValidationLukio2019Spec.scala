@@ -990,6 +990,50 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
     }
   }
 
+  "Vieraan kielen koodia koodia kielivalikoima/97" - {
+    "ei saa käyttää oppiaineessa" in {
+      val oo = aktiivinenOpiskeluoikeus.copy(
+        suoritukset = List(vahvistamatonOppimääränSuoritus.copy(
+          osasuoritukset = Some(List(
+            oppiaineenSuoritus(lukionKieli2019("A", "97")).copy(osasuoritukset = Some(List(
+              moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("VKA1")).copy(arviointi = numeerinenArviointi(10))
+            )))
+          ))
+        ))
+      )
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400,
+          List(
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.deprekoituKielikoodi, "Suorituksessa koskioppiaineetyleissivistava/A käytettyä kielikoodia 97 ei sallita")
+          )
+        )
+      }
+    }
+
+    "ei saa käyttää muissa suorituksissa olevan moduulin suorituksissa" in {
+      val oo = aktiivinenOpiskeluoikeus.copy(
+        suoritukset = List(vahvistamatonOppimääränSuoritus.copy(
+          osasuoritukset = Some(List(
+            muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
+              moduulinSuoritusMuissaOpinnoissa(vieraanKielenModuuliMuissaOpinnoissa("VKA1", 2, "97")).copy(arviointi = numeerinenArviointi(10)),
+              moduulinSuoritusMuissaOpinnoissa(vieraanKielenModuuliMuissaOpinnoissa("VKAAB36", 2, "97")).copy(arviointi = numeerinenArviointi(10))
+            )))
+          ))
+        ))
+      )
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400,
+          List(
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.deprekoituKielikoodi, "Suorituksessa moduulikoodistolops2021/VKA1 käytettyä kielikoodia 97 ei sallita"),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.deprekoituKielikoodi, "Suorituksessa moduulikoodistolops2021/VKAAB36 käytettyä kielikoodia 97 ei sallita")
+          )
+        )
+      }
+    }
+  }
+
 
   private def putAndGetOpiskeluoikeus(oo: LukionOpiskeluoikeus): Opiskeluoikeus = putOpiskeluoikeus(oo) {
     verifyResponseStatusOk()

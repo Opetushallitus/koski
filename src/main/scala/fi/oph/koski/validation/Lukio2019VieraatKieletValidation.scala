@@ -11,7 +11,8 @@ object Lukio2019VieraatKieletValidation {
   def validate(suoritus: Suoritus, parents: List[Suoritus]): HttpStatus = {
     HttpStatus.fold(List(
       validateVKModuulitMuissaOpinnoissa(suoritus),
-      validateMuutModuulitMuissaOpinnoissa(suoritus)
+      validateMuutModuulitMuissaOpinnoissa(suoritus),
+      validateDeprekoituKielikoodi(suoritus)
     ))
   }
 
@@ -65,6 +66,18 @@ object Lukio2019VieraatKieletValidation {
       KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Suoritukselle ${k.tunniste} on määritelty kieli, vaikka se ei ole vieraan kielen moduuli")
     case _ =>
       HttpStatus.ok
+  }
+
+  private def validateDeprekoituKielikoodi(suoritus: Suoritus): HttpStatus = {
+    val kiellettyKielikoodi = "97"
+
+    suoritus.koulutusmoduuli match {
+      case s: VierasTaiToinenKotimainenKieli2019 if s.kieli.koodiarvo == kiellettyKielikoodi =>
+        KoskiErrorCategory.badRequest.validation.rakenne.deprekoituKielikoodi(s"Suorituksessa ${s.tunniste} käytettyä kielikoodia ${kiellettyKielikoodi} ei sallita")
+      case s: LukionVieraanKielenModuuliMuissaOpinnoissa2019 if s.kieli.koodiarvo == kiellettyKielikoodi =>
+        KoskiErrorCategory.badRequest.validation.rakenne.deprekoituKielikoodi(s"Suorituksessa ${s.tunniste} käytettyä kielikoodia ${kiellettyKielikoodi} ei sallita")
+      case _ => HttpStatus.ok
+    }
   }
 
   lazy val moduulikoodiPrefixienKielet = List(
