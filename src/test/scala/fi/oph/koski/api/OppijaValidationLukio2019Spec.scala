@@ -1034,6 +1034,26 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
     }
   }
 
+  "Äidinkielen kieltä oppiaineaidinkielijakirjallisuus/AIAI ei saa käyttää" in {
+    val oo = aktiivinenOpiskeluoikeus.copy(
+      suoritukset = List(vahvistamatonOppimääränSuoritus.copy(
+        osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AIAI", pakollinen = true)).copy(osasuoritukset = None)
+        ))
+      ))
+    )
+
+    putOpiskeluoikeus(oo) {
+      verifyResponseStatus(400,
+        List(
+          exact(
+            KoskiErrorCategory.badRequest.validation.rakenne.deprekoituOppimäärä,
+            "Suorituksessa koskioppiaineetyleissivistava/AI käytettyä kieltä AIAI ei sallita. Oman äidinkielen opinnot kuuluu siirtää vieraana kielenä."
+          )
+        )
+      )
+    }
+  }
 
   private def putAndGetOpiskeluoikeus(oo: LukionOpiskeluoikeus): Opiskeluoikeus = putOpiskeluoikeus(oo) {
     verifyResponseStatusOk()

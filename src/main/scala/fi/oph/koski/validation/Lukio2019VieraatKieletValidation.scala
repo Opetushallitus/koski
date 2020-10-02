@@ -12,7 +12,8 @@ object Lukio2019VieraatKieletValidation {
     HttpStatus.fold(List(
       validateVKModuulitMuissaOpinnoissa(suoritus),
       validateMuutModuulitMuissaOpinnoissa(suoritus),
-      validateDeprekoituKielikoodi(suoritus)
+      validateDeprekoituKielikoodi(suoritus),
+      validateÄidinkielenOmainenKieliÄidinkielessä(suoritus)
     ))
   }
 
@@ -76,6 +77,16 @@ object Lukio2019VieraatKieletValidation {
         KoskiErrorCategory.badRequest.validation.rakenne.deprekoituKielikoodi(s"Suorituksessa ${s.tunniste} käytettyä kielikoodia ${kiellettyKielikoodi} ei sallita")
       case s: LukionVieraanKielenModuuliMuissaOpinnoissa2019 if s.kieli.koodiarvo == kiellettyKielikoodi =>
         KoskiErrorCategory.badRequest.validation.rakenne.deprekoituKielikoodi(s"Suorituksessa ${s.tunniste} käytettyä kielikoodia ${kiellettyKielikoodi} ei sallita")
+      case _ => HttpStatus.ok
+    }
+  }
+
+  private def validateÄidinkielenOmainenKieliÄidinkielessä(suoritus: Suoritus): HttpStatus = {
+    val kiellettyKielikoodi = "AIAI"
+
+    suoritus.koulutusmoduuli match {
+      case s: LukionÄidinkieliJaKirjallisuus2019 if s.kieli.koodiarvo == kiellettyKielikoodi =>
+        KoskiErrorCategory.badRequest.validation.rakenne.deprekoituOppimäärä(s"Suorituksessa ${s.tunniste} käytettyä kieltä ${kiellettyKielikoodi} ei sallita. Oman äidinkielen opinnot kuuluu siirtää vieraana kielenä.")
       case _ => HttpStatus.ok
     }
   }
