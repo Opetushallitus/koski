@@ -22,6 +22,7 @@ object MockOppijat {
   val tero = oppijat.oppija("Tunkkila-Fagerlund", "Tero Petteri Gustaf", "280608-6619")
   val presidentti = oppijat.oppija("Presidentti", "Tasavallan", "")
   val koululainen = oppijat.oppija("Koululainen", "Kaisa", "220109-784L")
+  val suoritusTuplana = oppijat.oppija("Tupla", "Toivo", "270298-533H")
   val luokallejäänyt = oppijat.oppija("Luokallejäänyt", "Lasse", "170186-6520")
   val ysiluokkalainen = oppijat.oppija("Ysiluokkalainen", "Ylermi", "160932-311V")
   val vuosiluokkalainen = oppijat.oppija("Vuosiluokkalainen", "Ville", "010100-325X")

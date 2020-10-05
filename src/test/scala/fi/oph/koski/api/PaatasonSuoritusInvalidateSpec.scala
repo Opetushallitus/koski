@@ -73,6 +73,25 @@ class PaatasonSuoritusInvalidateSpec extends FreeSpec with Matchers with LocalJe
         assert(poistettuVuosiluokanSuoritus.isEmpty)
         assert(jäljelläOlevaVuosiluokanSuoritus.length == 1)
       }
+
+      "kun kaksi identtistä suoritusta" in {
+        val oo = oppija(MockOppijat.suoritusTuplana.oid).tallennettavatOpiskeluoikeudet.head
+        val suoritus = oo.suoritukset
+          .collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
+          .find(_.luokka == "8C")
+          .get
+
+        deletePäätasonSuoritus(oo.oid.get, 1, suoritus) {
+          verifyResponseStatusOk()
+        }
+
+        val updated = getOpiskeluoikeus(MockOppijat.suoritusTuplana.oid, "perusopetus")
+
+        val jäljelläOlevaVuosiluokanSuoritus = updated.suoritukset
+          .collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
+          .filter(_.luokka == "8C")
+        assert(jäljelläOlevaVuosiluokanSuoritus.length == 1)
+      }
     }
 
     "epäonnistuu" - {

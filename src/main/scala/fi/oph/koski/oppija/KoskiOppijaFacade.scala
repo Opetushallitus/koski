@@ -229,13 +229,11 @@ class KoskiOppijaFacade(
     }
 
   private def delete(poistettavaPäätasonSuoritus: PäätasonSuoritus, oo: KoskeenTallennettavaOpiskeluoikeus) = {
-    val ilmanPoistettavaaSuoritusta = oo.suoritukset.filterNot(_ == poistettavaPäätasonSuoritus)
-    if (ilmanPoistettavaaSuoritusta.length == oo.suoritukset.length) {
-      Left(KoskiErrorCategory.notFound())
-    } else if (ilmanPoistettavaaSuoritusta.length != oo.suoritukset.length - 1) {
-      Left(KoskiErrorCategory.internalError())
-    } else {
-      Right(oo.withSuoritukset(ilmanPoistettavaaSuoritusta))
+    oo.suoritukset.find(_ == poistettavaPäätasonSuoritus) match {
+      case None => Left(KoskiErrorCategory.notFound())
+      case Some(poistettavaSuoritus) =>
+        val suorituksetIlmanPoistettavaaSuoritusta = oo.suoritukset diff List(poistettavaSuoritus)
+        Right(oo.withSuoritukset(suorituksetIlmanPoistettavaaSuoritusta))
     }
   }
 
