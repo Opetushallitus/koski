@@ -1386,6 +1386,48 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
     }
   }
 
+  "Valtakunnalliset moduulit paikallisessa oppiaineessa" - {
+    "Estetään yleisesti tietomallitasolla" in {
+      val oo = aktiivinenOpiskeluoikeus.copy(
+        suoritukset = List(vahvistamatonOppimääränSuoritus.copy(
+          osasuoritukset = Some(List(
+            oppiaineenSuoritus(PaikallinenLukionOppiaine2019(PaikallinenKoodi("FYM", "Leikkifysiikka"), "Leikkifysiikka")).copy(
+              arviointi = numeerinenLukionOppiaineenArviointi(10),
+              osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("FY1")).copy(arviointi = numeerinenArviointi(10))))
+            )
+          ))
+        ))
+      )
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*".r))
+      }
+    }
+
+    "Estetään validaatiolla, jos käytetty valtakunnallisen oppiaineen koodia" in {
+      val oo = aktiivinenOpiskeluoikeus.copy(
+        suoritukset = List(vahvistamatonOppimääränSuoritus.copy(
+          osasuoritukset = Some(List(
+            oppiaineenSuoritus(PaikallinenLukionOppiaine2019(PaikallinenKoodi("FY", "Leikkifysiikka"), "Leikkifysiikka")).copy(
+              arviointi = numeerinenLukionOppiaineenArviointi(10),
+              osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("FY1")).copy(arviointi = numeerinenArviointi(10))))
+            )
+          ))
+        ))
+      )
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400,
+          List(
+            exact(
+              KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia,
+              "Paikalliseen oppiaineeseen FY (Leikkifysiikka) ei voi lisätä valtakunnallista moduulia moduulikoodistolops2021/FY1. Paikallisessa oppiaineessa voi olla vain paikallisia opintojaksoja."
+            )
+          )
+        )
+      }
+    }
+  }
 
   private def oppimääränSuoritusIlmanSuullisenKielitaidonKokeita = oppimääränSuoritus.copy(suullisenKielitaidonKokeet = None)
 

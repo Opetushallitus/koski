@@ -14,7 +14,8 @@ object Lukio2019OsasuoritusValidation {
       validateLukiodiplomiRakenne(suoritus, parents),
       validateLukiodiplomiLaajuus(suoritus),
       validateOppiaineenSuorituskieli(suoritus, parents),
-      validateModuulinJaPaikallisenOpintojaksonSuorituskieli(suoritus, parents)
+      validateModuulinJaPaikallisenOpintojaksonSuorituskieli(suoritus, parents),
+      validateModuulitPaikallisessaOppiaineessa(suoritus, parents)
     ))
   }
 
@@ -64,6 +65,13 @@ object Lukio2019OsasuoritusValidation {
     case (s: LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019, (p: MahdollisestiSuorituskielellinen) :: (pp: Suorituskielellinen) :: _)
       if p.suorituskieli.isEmpty && s.suorituskieli.contains(pp.suorituskieli) =>
       KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Osasuorituksen ${suorituksenTunniste(suoritus)} suorituskieli ei saa olla sama kuin päätason suorituksen suorituskieli")
+    case _ =>
+      HttpStatus.ok
+  }
+
+  private def validateModuulitPaikallisessaOppiaineessa(suoritus: Suoritus, parents: List[Suoritus]): HttpStatus = (suoritus, parents) match {
+    case (s: LukionModuulinSuoritus2019, (p : LukionOppiaineenSuoritus2019) :: _) if p.koulutusmoduuli.isInstanceOf[PaikallinenLukionOppiaine2019] =>
+      KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Paikalliseen oppiaineeseen ${p.koulutusmoduuli.tunniste} ei voi lisätä valtakunnallista moduulia ${s.koulutusmoduuli.tunniste}. Paikallisessa oppiaineessa voi olla vain paikallisia opintojaksoja.")
     case _ =>
       HttpStatus.ok
   }
