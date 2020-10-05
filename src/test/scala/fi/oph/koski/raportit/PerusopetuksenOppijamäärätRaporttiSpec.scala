@@ -10,13 +10,18 @@ import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class PerusopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll {
+  override def beforeAll(): Unit = {
+    resetFixtures
+    loadRaportointikantaFixtures
+  }
+
+  private def session(user: MockUser) = user.toKoskiUser(application.käyttöoikeusRepository)
+
   private val application = KoskiApplicationForTests
   private val raporttiBuilder = PerusopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
   private lazy val raportti = raporttiBuilder
     .build(Set(jyväskylänNormaalikoulu), sqlDate("2012-01-01"))(session(defaultUser))
     .rows.map(_.asInstanceOf[PerusopetuksenOppijamäärätRaporttiRow])
-
-  override def beforeAll(): Unit = loadRaportointikantaFixtures
 
   "Perusopetuksen oppijamäärien raportti" - {
     "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
@@ -60,7 +65,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers w
           oppilaitosNimi = "Jyväskylän normaalikoulu",
           opetuskieli = "suomi",
           vuosiluokka = "7",
-          oppilaita = 2,
+          oppilaita = 9,
           vieraskielisiä = 1,
           pidennettyOppivelvollisuusJaVaikeastiVammainen = 1,
           pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen = 1,
@@ -77,7 +82,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers w
           oppilaitosNimi = "Jyväskylän normaalikoulu",
           opetuskieli = "suomi",
           vuosiluokka = "8",
-          oppilaita = 1,
+          oppilaita = 10,
           vieraskielisiä = 0,
           pidennettyOppivelvollisuusJaVaikeastiVammainen = 1,
           pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen = 0,
@@ -94,7 +99,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers w
           oppilaitosNimi = "Jyväskylän normaalikoulu",
           opetuskieli = "suomi",
           vuosiluokka = "9",
-          oppilaita = 3,
+          oppilaita = 9,
           vieraskielisiä = 0,
           pidennettyOppivelvollisuusJaVaikeastiVammainen = 0,
           pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen = 0,
@@ -111,7 +116,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers w
           oppilaitosNimi = "Jyväskylän normaalikoulu",
           opetuskieli = "suomi",
           vuosiluokka = "Kaikki vuosiluokat yhteensä",
-          oppilaita = 7,
+          oppilaita = 29,
           vieraskielisiä = 1,
           pidennettyOppivelvollisuusJaVaikeastiVammainen = 2,
           pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen = 1,
@@ -127,6 +132,4 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers w
       ))
     }
   }
-
-  private def session(user: MockUser) = user.toKoskiUser(application.käyttöoikeusRepository)
 }
