@@ -143,7 +143,7 @@
         "osasuoritukset" : [ {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "OÄI1",
+              "koodiarvo" : "ÄI1",
               "koodistoUri" : "moduulikoodistolops2021"
             },
             "laajuus" : {
@@ -180,7 +180,7 @@
         }, {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "OÄI2",
+              "koodiarvo" : "ÄI2",
               "koodistoUri" : "moduulikoodistolops2021"
             },
             "laajuus" : {
@@ -217,7 +217,7 @@
         }, {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "OÄI3",
+              "koodiarvo" : "ÄI3",
               "koodistoUri" : "moduulikoodistolops2021"
             },
             "laajuus" : {

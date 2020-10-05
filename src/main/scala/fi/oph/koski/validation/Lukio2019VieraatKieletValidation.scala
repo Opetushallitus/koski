@@ -15,7 +15,8 @@ object Lukio2019VieraatKieletValidation {
       validateMuutModuulitMuissaOpinnoissa(suoritus),
       validateDeprekoituKielikoodi(suoritus),
       validateÄidinkielenOmainenKieliÄidinkielessä(suoritus),
-      validateSuullisenKielitaidonKokeet(suoritus, parents)
+      validateSuullisenKielitaidonKokeet(suoritus, parents),
+      validateOmanÄidinkielenOpinnotModuuleina(suoritus)
     ))
   }
 
@@ -119,6 +120,15 @@ object Lukio2019VieraatKieletValidation {
     }
   }
 
+  private def validateOmanÄidinkielenOpinnotModuuleina(suoritus: Suoritus): HttpStatus = {
+    suoritus match {
+      case s: LukionModuulinSuoritus2019
+        if omanÄidinkielenOpinnotPrefixit.exists(s.koulutusmoduuli.tunniste.koodiarvo.startsWith(_)) =>
+        KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Moduuli ${s.koulutusmoduuli.tunniste.koodiarvo} ei ole sallittu oppiaineen osasuoritus. Lukion oppimäärää täydentävän oman äidinkielen opinnoista siirretään vain kokonaisarviointi ja tieto opiskellusta kielestä.")
+      case _ => HttpStatus.ok
+    }
+  }
+
   lazy val moduulikoodiPrefixienKielet = List(
     ("RU",  Koodistokoodiviite("SV", "kielivalikoima")),
     ("FIN", Koodistokoodiviite("FI", "kielivalikoima")),
@@ -150,5 +160,11 @@ object Lukio2019VieraatKieletValidation {
     "ENA8",
     "VKA8",
     "SMA8"
+  )
+
+  lazy val omanÄidinkielenOpinnotPrefixit = List(
+    "OÄI",
+    "RÄI",
+    "SÄI"
   )
 }

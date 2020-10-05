@@ -122,9 +122,9 @@ object ExamplesLukio2019 {
 object Lukio2019ExampleData {
   def oppiainesuorituksetEiRiitäValmistumiseen: List[LukionOppiaineenSuoritus2019] = List(
     oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
-      moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("OÄI1")).copy(arviointi = numeerinenArviointi(8)),
-      moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("OÄI2")).copy(arviointi = numeerinenArviointi(8)),
-      moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("OÄI3").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(8))
+      moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1")).copy(arviointi = numeerinenArviointi(8)),
+      moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI2")).copy(arviointi = numeerinenArviointi(8)),
+      moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(8))
     ))),
     oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
       moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB2")).copy(arviointi = numeerinenArviointi(8)),

@@ -53,7 +53,7 @@ describe('Lukiokoulutus2019', function( ){
       it('näyttää oppiaineiden ja kurssien arvosanat', function() {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
           'Oppiaine Arvioitu (opintopistettä) Hyväksytysti arvioitu (opintopistettä) Arvosana\n' +
-          'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\nOÄI1\n8 OÄI2\n8 OÄI3\n8 6 6 9\n' +
+          'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\nÄI1\n8 ÄI2\n8 ÄI3\n8 6 6 9\n' +
           'Matematiikka, pitkä oppimäärä\nMAB2\n8 MAB3\n8 MAB4\n9 6 6 9\n' +
           'Opinto-ohjaus\nOP1\nH OP2\nS 4 2 H\n' +
           'Uskonto/Elämänkatsomustieto\nUE1\n4 1,5 0 4\n' +
@@ -379,17 +379,17 @@ describe('Lukiokoulutus2019', function( ){
             })
 
             describe('Poistaminen', function () {
-              var oai2 = ai.kurssi('OÄI2')
+              var ai2 = ai.kurssi('ÄI2')
 
               before(
                 editor.edit,
-                oai2.poistaKurssi,
+                ai2.poistaKurssi,
                 editor.saveChanges,
                 wait.until(page.isSavedLabelShown)
               )
 
               it('toimii', function () {
-                expect(extractAsText(S('.oppiaineet .AI'))).to.not.contain('OÄI2')
+                expect(extractAsText(S('.oppiaineet .AI'))).to.not.contain('ÄI2')
               })
             })
           })
@@ -441,7 +441,7 @@ describe('Lukiokoulutus2019', function( ){
       it('näyttää oppiaineiden ja kurssien arvosanat', function() {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
           'Oppiaine Arvioitu (opintopistettä) Hyväksytysti arvioitu (opintopistettä) Arvosana\n' +
-          'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\nOÄI1\n8 OÄI2\n8 OÄI3\n8 6 6 9\n' +
+          'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\nÄI1\n8 ÄI2\n8 ÄI3\n8 6 6 9\n' +
           'Matematiikka, pitkä oppimäärä\nMAB2\n8 MAB3\n8 MAB4\n9 6 6 9\n' +
           'Opinto-ohjaus\nOP1\nH OP2\nS 4 2 H\n' +
           'Uskonto/Elämänkatsomustieto\nUE1\n4 1,5 0 4\n' +
