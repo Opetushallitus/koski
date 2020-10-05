@@ -7,6 +7,8 @@ suorituksissa, ja muille kuin vieraan kielen moduuleille sitä ei saa siirtää.
 - lops2021: Vieraissa kielissä ei saa käyttää kielivalikomakoodia 97 (Ei suoritusta)
 - lops2021: Äidinkielessä ei saa käyttää kielikoodia AIAI: Oman äidinkielen opinnot kuuluu siirtää vieraana
 kielenä eikä äidinkielenä.
+- lops2021: Jos vahvistetuissa opinnoissa on suullisen kielitaidon kokeen sisältävän valtakunnallisen moduulin suoritus,
+validoidaan, että päätason suorituksesta löytyy myös suullisen kielitaidon kokeen suoritusmerkintä.
 
 ## 30.9.2020
 - Validoi riittävä opintojaksojen/moduulien laajuus lops2021:ssä. Jotta lukion lops2021-mukaisen oppimäärän suorituksen

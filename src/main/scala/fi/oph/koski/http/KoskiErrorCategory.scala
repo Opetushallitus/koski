@@ -118,6 +118,7 @@ object KoskiErrorCategory {
         val epäsopiviaOsasuorituksia = subcategory("epäsopiviaOsasuorituksia", "Suorituksella tai sen osasuorituksella on epäsopiva lista osasuorituksia")
         val deprekoituKielikoodi = subcategory("deprekoituKielikoodi", "Suorituksessa on käytetty deprekoitua kielikoodia")
         val deprekoituOppimäärä = subcategory("deprekoituOppimäärä", "Suorituksessa on käytetty deprekoitua oppimäärää")
+        val puuttuvaSuullisenKielitaidonKoe = subcategory("puuttuvaSuullisenKielitaidonKoe", "Suorituksesta puuttuu vaadittava merkintä suullisen kielitaidon kokeesta")
       }
       val rakenne = new Rakenne
 

@@ -1055,6 +1055,359 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
     }
   }
 
+  "Suullisen kielitaidon kokeen merkintä, jos sen sisältäviä moduuleita on suoritettu" - {
+
+    "oppimäärän suorituksessa" - {
+      "ei vaadita, jos ei ole vahvistettu" in {
+        val oo = aktiivinenOpiskeluoikeus.copy(
+          suoritukset = List(vahvistamatonOppimääränSuoritusIlmanSuullisenKielitaidonKokeita.copy(
+            osasuoritukset = Some(List(
+              oppiaineenSuoritus(lukionKieli2019("A", "SV")).copy(
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUA8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("B1", "SV")).copy(
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUB16")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("AOM", "SV")).copy(
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUÄ8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("A", "FI")).copy(
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("FINA8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("B1", "FI")).copy(
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("FINB16")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("AOM", "FI")).copy(
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("FIM8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("A", "EN")).copy(
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("ENA8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("A", "HU")).copy(
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("VKA8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
+                moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("SMA8")).copy(arviointi = numeerinenArviointi(10)),
+              )))
+            ))
+          ))
+        )
+
+        putOpiskeluoikeus(oo) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "ei vaadita, vaikka oppiaine olisi arvioitu" in {
+        val oo = aktiivinenOpiskeluoikeus.copy(
+          suoritukset = List(vahvistamatonOppimääränSuoritusIlmanSuullisenKielitaidonKokeita.copy(
+            osasuoritukset = Some(List(
+              oppiaineenSuoritus(lukionKieli2019("AOM", "SV")).copy(
+                arviointi = numeerinenLukionOppiaineenArviointi(10),
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUÄ8")).copy(arviointi = numeerinenArviointi(10))))
+              )
+            ))
+          ))
+        )
+
+        putOpiskeluoikeus(oo) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "vaaditaan, jos vahvistettu" in {
+        val oo = aktiivinenOpiskeluoikeus.copy(
+          suoritukset = List(oppimääränSuoritusIlmanSuullisenKielitaidonKokeita.copy(
+            osasuoritukset = Some(List(
+              oppiaineenSuoritus(lukionKieli2019("A", "SV")).copy(
+                arviointi = numeerinenLukionOppiaineenArviointi(10),
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUA8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("B1", "SV")).copy(
+                arviointi = numeerinenLukionOppiaineenArviointi(10),
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUB16")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("AOM", "SV")).copy(
+                arviointi = numeerinenLukionOppiaineenArviointi(10),
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUÄ8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("A", "FI")).copy(
+                arviointi = numeerinenLukionOppiaineenArviointi(10),
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("FINA8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("B1", "FI")).copy(
+                arviointi = numeerinenLukionOppiaineenArviointi(10),
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("FINB16")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("AOM", "FI")).copy(
+                arviointi = numeerinenLukionOppiaineenArviointi(10),
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("FIM8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("A", "EN")).copy(
+                arviointi = numeerinenLukionOppiaineenArviointi(10),
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("ENA8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("A", "HU")).copy(
+                arviointi = numeerinenLukionOppiaineenArviointi(10),
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("VKA8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
+                moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("SMA8")).copy(arviointi = numeerinenArviointi(10)),
+              ))),
+              valmistumiseenRiittäväMatematiikanSuoritus
+            ))
+          ))
+        )
+
+        putOpiskeluoikeus(oo) {
+          verifyResponseStatus(400,
+            List(
+              exact(
+                KoskiErrorCategory.badRequest.validation.rakenne.puuttuvaSuullisenKielitaidonKoe,
+                "Suoritus moduulikoodistolops2021/RUA8 vaatii merkinnän suullisesta kielitaidon kokeesta päätason suorituksessa kielellä kielivalikoima/SV",
+              ),
+              exact(
+                KoskiErrorCategory.badRequest.validation.rakenne.puuttuvaSuullisenKielitaidonKoe,
+                "Suoritus moduulikoodistolops2021/RUB16 vaatii merkinnän suullisesta kielitaidon kokeesta päätason suorituksessa kielellä kielivalikoima/SV",
+              ),
+              exact(
+                KoskiErrorCategory.badRequest.validation.rakenne.puuttuvaSuullisenKielitaidonKoe,
+                "Suoritus moduulikoodistolops2021/RUÄ8 vaatii merkinnän suullisesta kielitaidon kokeesta päätason suorituksessa kielellä kielivalikoima/SV",
+              ),
+              exact(
+                KoskiErrorCategory.badRequest.validation.rakenne.puuttuvaSuullisenKielitaidonKoe,
+                "Suoritus moduulikoodistolops2021/FINA8 vaatii merkinnän suullisesta kielitaidon kokeesta päätason suorituksessa kielellä kielivalikoima/FI",
+              ),
+              exact(
+                KoskiErrorCategory.badRequest.validation.rakenne.puuttuvaSuullisenKielitaidonKoe,
+                "Suoritus moduulikoodistolops2021/FINB16 vaatii merkinnän suullisesta kielitaidon kokeesta päätason suorituksessa kielellä kielivalikoima/FI",
+              ),
+              exact(
+                KoskiErrorCategory.badRequest.validation.rakenne.puuttuvaSuullisenKielitaidonKoe,
+                "Suoritus moduulikoodistolops2021/FIM8 vaatii merkinnän suullisesta kielitaidon kokeesta päätason suorituksessa kielellä kielivalikoima/FI",
+              ),
+              exact(
+                KoskiErrorCategory.badRequest.validation.rakenne.puuttuvaSuullisenKielitaidonKoe,
+                "Suoritus moduulikoodistolops2021/ENA8 vaatii merkinnän suullisesta kielitaidon kokeesta päätason suorituksessa kielellä kielivalikoima/EN",
+              ),
+              exact(
+                KoskiErrorCategory.badRequest.validation.rakenne.puuttuvaSuullisenKielitaidonKoe,
+                "Suoritus moduulikoodistolops2021/VKA8 vaatii merkinnän suullisesta kielitaidon kokeesta päätason suorituksessa kielellä kielivalikoima/HU",
+              ),
+              exact(
+                KoskiErrorCategory.badRequest.validation.rakenne.puuttuvaSuullisenKielitaidonKoe,
+                "Suoritus moduulikoodistolops2021/SMA8 vaatii merkinnän suullisesta kielitaidon kokeesta päätason suorituksessa kielellä kielivalikoima/SE",
+              )
+            )
+          )
+        }
+      }
+
+      "väärällä kielellä suoritettu koe ei kelpaa" in {
+        val oo = aktiivinenOpiskeluoikeus.copy(
+          suoritukset = List(oppimääränSuoritusIlmanSuullisenKielitaidonKokeita.copy(
+            suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoe("EN"))),
+            osasuoritukset = Some(List(
+              oppiaineenSuoritus(lukionKieli2019("A", "SV")).copy(
+                arviointi = numeerinenLukionOppiaineenArviointi(10),
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUA8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              valmistumiseenRiittäväMatematiikanSuoritus
+            ))
+          ))
+        )
+
+        putOpiskeluoikeus(oo) {
+          verifyResponseStatus(400,
+            List(
+              exact(
+                KoskiErrorCategory.badRequest.validation.rakenne.puuttuvaSuullisenKielitaidonKoe,
+                "Suoritus moduulikoodistolops2021/RUA8 vaatii merkinnän suullisesta kielitaidon kokeesta päätason suorituksessa kielellä kielivalikoima/SV",
+              )
+            )
+          )
+        }
+      }
+    }
+
+    "oppiaineiden suorituksissa" - {
+      "ei vaadita, jos ei ole arvioitu" in {
+        val oo = aktiivinenOpiskeluoikeus.copy(
+          suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(
+            osasuoritukset = Some(List(
+              oppiaineenSuoritus(lukionKieli2019("A", "SV")).copy(
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUA8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("B1", "SV")).copy(
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUB16")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("AOM", "SV")).copy(
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUÄ8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("A", "FI")).copy(
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("FINA8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("B1", "FI")).copy(
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("FINB16")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("AOM", "FI")).copy(
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("FIM8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("A", "EN")).copy(
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("ENA8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("A", "HU")).copy(
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("VKA8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("A", "SE")).copy(
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("SMA8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+            ))
+          ))
+        )
+
+        putOpiskeluoikeus(oo) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "vaaditaan, jos arvioitu" in {
+        val oo = aktiivinenOpiskeluoikeus.copy(
+          suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(
+            osasuoritukset = Some(List(
+              oppiaineenSuoritus(lukionKieli2019("A", "SV")).copy(
+                arviointi = numeerinenLukionOppiaineenArviointi(10),
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUA8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("B1", "SV")).copy(
+                arviointi = numeerinenLukionOppiaineenArviointi(10),
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUB16")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("AOM", "SV")).copy(
+                arviointi = numeerinenLukionOppiaineenArviointi(10),
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUÄ8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("A", "FI")).copy(
+                arviointi = numeerinenLukionOppiaineenArviointi(10),
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("FINA8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("B1", "FI")).copy(
+                arviointi = numeerinenLukionOppiaineenArviointi(10),
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("FINB16")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("AOM", "FI")).copy(
+                arviointi = numeerinenLukionOppiaineenArviointi(10),
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("FIM8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("A", "EN")).copy(
+                arviointi = numeerinenLukionOppiaineenArviointi(10),
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("ENA8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("A", "HU")).copy(
+                arviointi = numeerinenLukionOppiaineenArviointi(10),
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("VKA8")).copy(arviointi = numeerinenArviointi(10))))
+              ),
+              oppiaineenSuoritus(lukionKieli2019("A", "SE")).copy(
+                arviointi = numeerinenLukionOppiaineenArviointi(10),
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("SMA8")).copy(arviointi = numeerinenArviointi(10))))
+              )
+            ))
+          ))
+        )
+
+        putOpiskeluoikeus(oo) {
+          verifyResponseStatus(400,
+            List(
+              exact(
+                KoskiErrorCategory.badRequest.validation.rakenne.puuttuvaSuullisenKielitaidonKoe,
+                "Suoritus moduulikoodistolops2021/RUA8 vaatii merkinnän suullisesta kielitaidon kokeesta päätason suorituksessa kielellä kielivalikoima/SV",
+              ),
+              exact(
+                KoskiErrorCategory.badRequest.validation.rakenne.puuttuvaSuullisenKielitaidonKoe,
+                "Suoritus moduulikoodistolops2021/RUB16 vaatii merkinnän suullisesta kielitaidon kokeesta päätason suorituksessa kielellä kielivalikoima/SV",
+              ),
+              exact(
+                KoskiErrorCategory.badRequest.validation.rakenne.puuttuvaSuullisenKielitaidonKoe,
+                "Suoritus moduulikoodistolops2021/RUÄ8 vaatii merkinnän suullisesta kielitaidon kokeesta päätason suorituksessa kielellä kielivalikoima/SV",
+              ),
+              exact(
+                KoskiErrorCategory.badRequest.validation.rakenne.puuttuvaSuullisenKielitaidonKoe,
+                "Suoritus moduulikoodistolops2021/FINA8 vaatii merkinnän suullisesta kielitaidon kokeesta päätason suorituksessa kielellä kielivalikoima/FI",
+              ),
+              exact(
+                KoskiErrorCategory.badRequest.validation.rakenne.puuttuvaSuullisenKielitaidonKoe,
+                "Suoritus moduulikoodistolops2021/FINB16 vaatii merkinnän suullisesta kielitaidon kokeesta päätason suorituksessa kielellä kielivalikoima/FI",
+              ),
+              exact(
+                KoskiErrorCategory.badRequest.validation.rakenne.puuttuvaSuullisenKielitaidonKoe,
+                "Suoritus moduulikoodistolops2021/FIM8 vaatii merkinnän suullisesta kielitaidon kokeesta päätason suorituksessa kielellä kielivalikoima/FI",
+              ),
+              exact(
+                KoskiErrorCategory.badRequest.validation.rakenne.puuttuvaSuullisenKielitaidonKoe,
+                "Suoritus moduulikoodistolops2021/ENA8 vaatii merkinnän suullisesta kielitaidon kokeesta päätason suorituksessa kielellä kielivalikoima/EN",
+              ),
+              exact(
+                KoskiErrorCategory.badRequest.validation.rakenne.puuttuvaSuullisenKielitaidonKoe,
+                "Suoritus moduulikoodistolops2021/VKA8 vaatii merkinnän suullisesta kielitaidon kokeesta päätason suorituksessa kielellä kielivalikoima/HU",
+              ),
+              exact(
+                KoskiErrorCategory.badRequest.validation.rakenne.puuttuvaSuullisenKielitaidonKoe,
+                "Suoritus moduulikoodistolops2021/SMA8 vaatii merkinnän suullisesta kielitaidon kokeesta päätason suorituksessa kielellä kielivalikoima/SE",
+              )
+            )
+          )
+        }
+      }
+
+      "väärällä kielellä suoritettu koe ei kelpaa" in {
+        val oo = aktiivinenOpiskeluoikeus.copy(
+          suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(
+            suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoe("EN"))),
+            osasuoritukset = Some(List(
+              oppiaineenSuoritus(lukionKieli2019("A", "SV")).copy(
+                arviointi = numeerinenLukionOppiaineenArviointi(10),
+                osasuoritukset = Some(List(moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUA8")).copy(arviointi = numeerinenArviointi(10))))
+              )
+            ))
+          ))
+        )
+
+        putOpiskeluoikeus(oo) {
+          verifyResponseStatus(400,
+            List(
+              exact(
+                KoskiErrorCategory.badRequest.validation.rakenne.puuttuvaSuullisenKielitaidonKoe,
+                "Suoritus moduulikoodistolops2021/RUA8 vaatii merkinnän suullisesta kielitaidon kokeesta päätason suorituksessa kielellä kielivalikoima/SV",
+              )
+            )
+          )
+        }
+      }
+    }
+  }
+
+
+  private def oppimääränSuoritusIlmanSuullisenKielitaidonKokeita = oppimääränSuoritus.copy(suullisenKielitaidonKokeet = None)
+
+  private def vahvistamatonOppimääränSuoritusIlmanSuullisenKielitaidonKokeita = vahvistamatonOppimääränSuoritus.copy(suullisenKielitaidonKokeet = None)
+
+  private def valmistumiseenRiittäväMatematiikanSuoritus = oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(
+    arviointi = numeerinenLukionOppiaineenArviointi(9),
+    osasuoritukset = Some(List(
+      moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB2", 150)).copy(arviointi = numeerinenArviointi(8)),
+      moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB3", 20).copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(8))
+    ))
+  )
+
+  private def suullisenKielitaidonKoe(kieli: String, arvosana: String = "6", taitotaso: String = "B1.1", kuvaus: Option[LocalizedString] = None) =
+    SuullisenKielitaidonKoe2019(
+      kieli = Koodistokoodiviite(kieli, "kielivalikoima"),
+      arvosana = Koodistokoodiviite(arvosana, "arviointiasteikkoyleissivistava"),
+      taitotaso = Koodistokoodiviite(taitotaso, koodistoUri = "arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
+      kuvaus = kuvaus,
+      päivä = date(2019, 9, 3)
+    )
+
   private def putAndGetOpiskeluoikeus(oo: LukionOpiskeluoikeus): Opiskeluoikeus = putOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)

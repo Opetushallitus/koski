@@ -13,7 +13,8 @@ object Lukio2019VieraatKieletValidation {
       validateVKModuulitMuissaOpinnoissa(suoritus),
       validateMuutModuulitMuissaOpinnoissa(suoritus),
       validateDeprekoituKielikoodi(suoritus),
-      validateÄidinkielenOmainenKieliÄidinkielessä(suoritus)
+      validateÄidinkielenOmainenKieliÄidinkielessä(suoritus),
+      validateSuullisenKielitaidonKokeet(suoritus, parents)
     ))
   }
 
@@ -91,6 +92,33 @@ object Lukio2019VieraatKieletValidation {
     }
   }
 
+  private def validateSuullisenKielitaidonKokeet(suoritus: Suoritus, parents: List[Suoritus]): HttpStatus = {
+
+    (suoritus, suoritus.koulutusmoduuli, parents) match {
+      case (s: LukionModuulinSuoritus2019, k: LukionVieraanKielenModuuliOppiaineissa2019, _ :: (pp: LukionOppimääränSuoritus2019) :: _)
+        if pp.vahvistus.isDefined => validateSuullisenKielitaidonKoe(pp, s.koulutusmoduuli.tunniste, k.kieli)
+      case (s: LukionModuulinSuoritus2019, k: LukionVieraanKielenModuuliMuissaOpinnoissa2019, _ :: (pp: LukionOppimääränSuoritus2019) :: _)
+        if pp.vahvistus.isDefined => validateSuullisenKielitaidonKoe(pp, s.koulutusmoduuli.tunniste, Some(k.kieli))
+      case (s: LukionModuulinSuoritus2019, k: LukionVieraanKielenModuuliOppiaineissa2019, (p: LukionOppiaineenSuoritus2019) :: (pp: LukionOppiaineidenOppimäärienSuoritus2019) :: _)
+        if p.viimeisinArviointi.isDefined => validateSuullisenKielitaidonKoe(pp, s.koulutusmoduuli.tunniste, k.kieli)
+      case _ =>
+        HttpStatus.ok
+    }
+  }
+
+
+  private def validateSuullisenKielitaidonKoe(päätasonSuoritus: SuullisenKielitaidonKokeellinen2019, moduuli: Koodistokoodiviite, kieli: Option[Koodistokoodiviite]) = {
+    (moduuli, kieli) match {
+      case (m, Some(k)) if suullisenKielitaidonKokeenVaativatModuulit.contains(m.koodiarvo) && !päätasonSuoritus.suullisenKielitaidonKokeet.exists(_.exists(_.kieli == k)) =>
+        KoskiErrorCategory.badRequest.validation.rakenne.puuttuvaSuullisenKielitaidonKoe(s"Suoritus ${m} vaatii merkinnän suullisesta kielitaidon kokeesta päätason suorituksessa kielellä ${k}")
+      case (m, None) =>
+        KoskiErrorCategory.internalError(s"Suorituksessa ${m} pitäisi olla edellisten validaatiovaiheiden seurauksena aina kieli määritelty")
+      case _ =>
+        HttpStatus.ok
+    }
+  }
+
+
   lazy val moduulikoodiPrefixienKielet = List(
     ("RU",  Koodistokoodiviite("SV", "kielivalikoima")),
     ("FIN", Koodistokoodiviite("FI", "kielivalikoima")),
@@ -108,5 +136,17 @@ object Lukio2019VieraatKieletValidation {
     "SM",
     "EN",
     "VK"
+  )
+
+  lazy val suullisenKielitaidonKokeenVaativatModuulit = List(
+    "RUA8",
+    "RUB16",
+    "RUÄ8",
+    "FINA8",
+    "FINB16",
+    "FIM8",
+    "ENA8",
+    "VKA8",
+    "SMA8"
   )
 }
