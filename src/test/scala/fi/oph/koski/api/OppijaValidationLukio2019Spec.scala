@@ -107,12 +107,8 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
       }
 
       "Alle 88 op sisältävän aikuisten oppimäärän suorituksen pystyy siirtämään vahvistamatta" in {
-        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
-          tila = LukionOpiskeluoikeudenTila(List(
-            LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
-          )),
-          suoritukset = List(oppimääränSuoritus.copy(
-            vahvistus = None,
+        putOpiskeluoikeus(aktiivinenOpiskeluoikeus.copy(
+          suoritukset = List(vahvistamatonOppimääränSuoritus.copy(
             koulutusmoduuli = LukionOppimäärä(perusteenDiaarinumero = ExamplesLukio2019.lops2019AikuistenPerusteenDiaarinumero),
             oppimäärä = LukioExampleData.aikuistenOpetussuunnitelma,
             osasuoritukset = Some(oppiainesuorituksetEiRiitäValmistumiseen)
