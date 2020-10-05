@@ -1,6 +1,7 @@
 package fi.oph.koski.validation
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.schema._
 
 object Lukio2019VieraatKieletValidation {
@@ -118,7 +119,6 @@ object Lukio2019VieraatKieletValidation {
     }
   }
 
-
   lazy val moduulikoodiPrefixienKielet = List(
     ("RU",  Koodistokoodiviite("SV", "kielivalikoima")),
     ("FIN", Koodistokoodiviite("FI", "kielivalikoima")),
@@ -126,7 +126,9 @@ object Lukio2019VieraatKieletValidation {
     ("LA",  Koodistokoodiviite("LA", "kielivalikoima")),
     ("SM",  Koodistokoodiviite("SE", "kielivalikoima")),
     ("EN",  Koodistokoodiviite("EN", "kielivalikoima"))
-  )
+  ).map({
+    case (k, kv) => (k, MockKoodistoViitePalvelu.validateRequired(kv))
+  })
 
   lazy val vieraanKielenModuuliPrefixit = List(
     "RU",
