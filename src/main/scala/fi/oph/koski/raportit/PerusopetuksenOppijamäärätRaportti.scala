@@ -72,7 +72,7 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
         and opetuskieli_koodisto.koodiarvo = split_part(r_organisaatio_kieli.kielikoodi, '#', 2)
       where oo.oppilaitos_oid in (#${toSqlListUnsafe(oppilaitosOids)})
         and oo.koulutusmuoto = 'perusopetus'
-        and pts.vahvistus_paiva is null
+        and (pts.vahvistus_paiva is null or pts.vahvistus_paiva > $date)
         and pts.koulutusmoduuli_koodiarvo in ('1', '2', '3', '4', '5', '6', '7', '8', '9')
         and aikajakso.alku <= $date
         and aikajakso.loppu >= $date
