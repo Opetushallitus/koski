@@ -16,6 +16,7 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
   implicit private val getResult: GetResult[PerusopetuksenOppijamäärätRaporttiRow] = GetResult(r =>
     PerusopetuksenOppijamäärätRaporttiRow(
       oppilaitosNimi = r.rs.getString("oppilaitos_nimi"),
+      organisaatioOid = r.rs.getString("oppilaitos_oid"),
       opetuskieli = r.rs.getString("opetuskieli"),
       vuosiluokka = r.rs.getString("vuosiluokka"),
       oppilaita = r.rs.getInt("oppilaita"),
@@ -48,6 +49,7 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
     with q as (
       select
         oo.oppilaitos_nimi,
+        oo.oppilaitos_oid,
         opetuskieli_koodisto.nimi as opetuskieli,
         pts.koulutusmoduuli_koodiarvo as vuosiluokka,
         count(distinct oo.opiskeluoikeus_oid) as oppilaita,
@@ -77,12 +79,13 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
         and aikajakso.alku <= $date
         and aikajakso.loppu >= $date
         and aikajakso.tila = 'lasna'
-      group by oo.oppilaitos_nimi, opetuskieli_koodisto.nimi, pts.koulutusmoduuli_koodiarvo
+      group by oo.oppilaitos_nimi, oo.oppilaitos_oid, opetuskieli_koodisto.nimi, pts.koulutusmoduuli_koodiarvo
     ), totals as (
       select * from q
       union all
       select
         oppilaitos_nimi,
+        oppilaitos_oid,
         opetuskieli,
         'Kaikki vuosiluokat yhteensä' as vuosiluokka,
         sum(oppilaita),
@@ -98,15 +101,16 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
         sum(koulukoti),
         sum(joustava_perusopetus)
       from q
-      group by oppilaitos_nimi, opetuskieli
+      group by oppilaitos_nimi, oppilaitos_oid, opetuskieli
     ) select *
     from totals
-    order by oppilaitos_nimi, vuosiluokka
+    order by oppilaitos_nimi, oppilaitos_oid, vuosiluokka
   """
   }
 
   val columnSettings: Seq[(String, Column)] = Seq(
     "oppilaitosNimi" -> Column("Oppilaitos"),
+    "organisaatioOid" -> Column("Organisaation oid"),
     "opetuskieli" -> Column("Opetuskieli", comment = Some("Oppilaitoksen opetuskieli Opintopolun organisaatiopalvelussa")),
     "vuosiluokka" -> Column("Vuosiluokka"),
     "oppilaita" -> Column("Oppilaiden määrä", comment = Some("\"Läsnä\"-tilaiset perusopetuksen opiskeluoikeudet raportin tulostusparametreissa määriteltynä päivänä.")),
@@ -126,6 +130,7 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
 
 case class PerusopetuksenOppijamäärätRaporttiRow(
   oppilaitosNimi: String,
+  organisaatioOid: String,
   opetuskieli: String,
   vuosiluokka: String,
   oppilaita: Int,

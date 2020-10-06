@@ -16,6 +16,7 @@ case class PerusopetuksenLisäopetusOppijamäärätRaportti(db: DB, organisaatio
   implicit private val getResult: GetResult[PerusopetuksenLisäopetusOppijamäärätRaporttiRow] = GetResult(r =>
     PerusopetuksenLisäopetusOppijamäärätRaporttiRow(
       oppilaitosNimi = r.rs.getString("oppilaitos_nimi"),
+      organisaatioOid = r.rs.getString("oppilaitos_oid"),
       opetuskieli = r.rs.getString("opetuskieli"),
       oppilaita = r.rs.getInt("oppilaita"),
       vieraskielisiä = r.rs.getInt("vieraskielisiä"),
@@ -45,6 +46,7 @@ case class PerusopetuksenLisäopetusOppijamäärätRaportti(db: DB, organisaatio
     sql"""
     select
       oo.oppilaitos_nimi,
+      oo.oppilaitos_oid,
       opetuskieli_koodisto.nimi as opetuskieli,
       count(distinct oo.opiskeluoikeus_oid) as oppilaita,
       count(distinct (case when r_henkilo.aidinkieli not in ('fi', 'sv', 'se', 'ri', 'vk') then oo.opiskeluoikeus_oid end)) as vieraskielisiä,
@@ -70,12 +72,13 @@ case class PerusopetuksenLisäopetusOppijamäärätRaportti(db: DB, organisaatio
       and aikajakso.alku <= $date
       and aikajakso.loppu >= $date
       and aikajakso.tila = 'lasna'
-    group by oo.oppilaitos_nimi, opetuskieli_koodisto.nimi, r_paatason_suoritus.koulutusmoduuli_koodiarvo
+    group by oo.oppilaitos_nimi, oo.oppilaitos_oid, opetuskieli_koodisto.nimi, r_paatason_suoritus.koulutusmoduuli_koodiarvo
   """
   }
 
   val columnSettings: Seq[(String, Column)] = Seq(
     "oppilaitosNimi" -> Column("Oppilaitos"),
+    "organisaatioOid" -> Column("Organisaation oid"),
     "opetuskieli" -> Column("Opetuskieli", comment = Some("Oppilaitoksen opetuskieli Opintopolun organisaatiopalvelussa")),
     "oppilaita" -> Column("Oppilaiden määrä", comment = Some("\"Läsnä\"-tilaiset perusopetuksen lisäopetuksen opiskeluoikeudet raportin tulostusparametreissa määriteltynä päivänä.")),
     "vieraskielisiä" -> Column("Oppilaista vieraskielisiä", comment = Some("Oppilaat, joiden äidinkieli on muu kuin suomi, ruotsi, saame, romani tai viittomakieli")),
@@ -93,6 +96,7 @@ case class PerusopetuksenLisäopetusOppijamäärätRaportti(db: DB, organisaatio
 
 case class PerusopetuksenLisäopetusOppijamäärätRaporttiRow(
   oppilaitosNimi: String,
+  organisaatioOid: String,
   opetuskieli: String,
   oppilaita: Int,
   vieraskielisiä: Int,

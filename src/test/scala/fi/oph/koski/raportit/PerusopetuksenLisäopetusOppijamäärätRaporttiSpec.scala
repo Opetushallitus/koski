@@ -46,6 +46,7 @@ class PerusopetuksenLisäopetusOppijamäärätRaporttiSpec extends FreeSpec with
       rows.toList should equal(List(
         PerusopetuksenLisäopetusOppijamäärätRaporttiRow(
           oppilaitosNimi = "Jyväskylän normaalikoulu",
+          organisaatioOid = "1.2.246.562.10.14613773812",
           opetuskieli = "suomi",
           oppilaita = 5,
           vieraskielisiä = 1,

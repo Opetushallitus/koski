@@ -46,6 +46,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers w
       rows.toList should equal(List(
         PerusopetuksenOppijamäärätRaporttiRow(
           oppilaitosNimi = "Jyväskylän normaalikoulu",
+          organisaatioOid = "1.2.246.562.10.14613773812",
           opetuskieli = "suomi",
           vuosiluokka = "6",
           oppilaita = 1,
@@ -63,6 +64,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers w
         ),
         PerusopetuksenOppijamäärätRaporttiRow(
           oppilaitosNimi = "Jyväskylän normaalikoulu",
+          organisaatioOid = "1.2.246.562.10.14613773812",
           opetuskieli = "suomi",
           vuosiluokka = "7",
           oppilaita = 9,
@@ -80,6 +82,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers w
         ),
         PerusopetuksenOppijamäärätRaporttiRow(
           oppilaitosNimi = "Jyväskylän normaalikoulu",
+          organisaatioOid = "1.2.246.562.10.14613773812",
           opetuskieli = "suomi",
           vuosiluokka = "8",
           oppilaita = 10,
@@ -97,6 +100,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers w
         ),
         PerusopetuksenOppijamäärätRaporttiRow(
           oppilaitosNimi = "Jyväskylän normaalikoulu",
+          organisaatioOid = "1.2.246.562.10.14613773812",
           opetuskieli = "suomi",
           vuosiluokka = "9",
           oppilaita = 9,
@@ -114,6 +118,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers w
         ),
         PerusopetuksenOppijamäärätRaporttiRow(
           oppilaitosNimi = "Jyväskylän normaalikoulu",
+          organisaatioOid = "1.2.246.562.10.14613773812",
           opetuskieli = "suomi",
           vuosiluokka = "Kaikki vuosiluokat yhteensä",
           oppilaita = 29,
