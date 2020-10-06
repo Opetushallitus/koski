@@ -11,6 +11,7 @@ trait LukionPäätasonSuoritus2019 extends LukionPäätasonSuoritus with Todistu
   @Title("Opetussuunnitelma")
   @Description("Tieto siitä, suoritetaanko lukiota nuorten vai aikuisten oppimäärän mukaisesti")
   def oppimäärä: Koodistokoodiviite
+  override def osasuoritukset: Option[List[LukionOppimääränOsasuoritus2019]] = None
 }
 
 @Title("Lukion oppimäärän suoritus 2019")
@@ -92,6 +93,11 @@ trait LukionOppimääränOsasuoritus2019 extends LukionOppimääränPäätasonOs
   override def osasuoritusLista: List[LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019] = {
     osasuoritukset.toList.flatten
   }
+
+  final def withOsasuoritukset(oss: Option[List[Suoritus]]): LukionOppimääränOsasuoritus2019 = {
+    import mojave._
+    shapeless.lens[LukionOppimääränOsasuoritus2019].field[Option[List[Suoritus]]]("osasuoritukset").set(this)(oss)
+  }
 }
 
 @Title("Muiden lukio-opintojen suoritus 2019")
@@ -102,7 +108,7 @@ case class MuidenLukioOpintojenSuoritus2019(
   koulutusmoduuli: MuutSuorituksetTaiVastaavat2019,
   @MinItems(1)
   @Description("Moduulien ja paikallisten opintojaksojen suoritukset")
-  override val osasuoritukset: Option[List[LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019]]
+  override val osasuoritukset: Option[List[LukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019]]
 ) extends LukionOppimääränOsasuoritus2019 with Vahvistukseton with Arvioinniton
 
 @Title("Lukion oppiaineen suoritus 2019")
@@ -115,7 +121,7 @@ case class LukionOppiaineenSuoritus2019(
   @Description("Suorituskieli, mikäli opiskelija on opiskellut yli puolet oppiaineen oppimäärän opinnoista muulla kuin koulun varsinaisella opetuskielellä.")
   suorituskieli: Option[Koodistokoodiviite],
   @Description("Oppiaineeseen kuuluvien moduulien ja paikallisten opintojaksojen suoritukset")
-  override val osasuoritukset: Option[List[LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019]],
+  override val osasuoritukset: Option[List[LukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019]],
   @KoodistoKoodiarvo("lukionoppiaine2019")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiaine2019", koodistoUri = "suorituksentyyppi")
 ) extends OppiaineenSuoritus with Vahvistukseton with LukionOppimääränOsasuoritus2019 with MahdollisestiSuorituskielellinen with SuoritettavissaErityisenäTutkintona2019
@@ -128,19 +134,43 @@ trait LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019 extends Suoritus with
   def tunnustettu: Option[OsaamisenTunnustaminen]
 }
 
-@Title("Lukion moduulin suoritus 2019")
-@Description("Lukion moduulin suoritustiedot 2019")
-case class LukionModuulinSuoritus2019(
+trait LukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019 extends LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019
+
+trait LukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019 extends LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019
+
+trait LukionModuulinSuoritus2019 extends ValtakunnallisenModuulinSuoritus with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu {
   @Description("Lukion moduulin tunnistetiedot")
-  koulutusmoduuli: LukionModuuli2019,
-  arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]] = None,
+  def koulutusmoduuli: LukionModuuli2019
+  def arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]]
   // TODO: descriptionin lakiviitteet yms. teksti
   @Description("Jos moduuli on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot. Osaamisen tunnustamisella voidaan opiskelijalle lukea hyväksi ja korvata lukion oppimäärään kuuluvia opintoja. Opiskelijan osaamisen tunnustamisessa noudatetaan, mitä 17 ja 17 a §:ssä säädetään opiskelijan arvioinnista ja siitä päättämisestä. Mikäli opinnot tai muutoin hankittu osaaminen luetaan hyväksi opetussuunnitelman perusteiden mukaan numerolla arvioitavaan moduuliin, tulee moduulista antaa numeroarvosana")
+  def tunnustettu: Option[OsaamisenTunnustaminen]
+  def suorituskieli: Option[Koodistokoodiviite]
+  @KoodistoKoodiarvo("lukionvaltakunnallinenmoduuli2019")
+  def tyyppi: Koodistokoodiviite
+}
+
+@Title("Lukion moduulin suoritus oppiaineissa 2019")
+@Description("Lukion moduulin suoritustiedot oppiaineissa 2019")
+@OnlyWhen("../../tyyppi/koodiarvo", "lukionoppiaine2019")
+case class LukionModuulinSuoritusOppiaineissa2019(
+  koulutusmoduuli: LukionModuuliOppiaineissa2019,
+  arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]] = None,
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   suorituskieli: Option[Koodistokoodiviite],
-  @KoodistoKoodiarvo("lukionvaltakunnallinenmoduuli2019")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionvaltakunnallinenmoduuli2019", koodistoUri = "suorituksentyyppi")
-) extends LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019 with ValtakunnallisenModuulinSuoritus with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu
+) extends LukionModuulinSuoritus2019 with LukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019
+
+@Title("Lukion moduulin suoritus muissa opinnoissa 2019")
+@Description("Lukion moduulin suoritustiedot muissa opinnoissa 2019")
+@OnlyWhen("../../tyyppi/koodiarvo", "lukionmuuopinto2019")
+case class LukionModuulinSuoritusMuissaOpinnoissa2019(
+  koulutusmoduuli: LukionModuuliMuissaOpinnoissa2019,
+  arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]] = None,
+  tunnustettu: Option[OsaamisenTunnustaminen] = None,
+  suorituskieli: Option[Koodistokoodiviite],
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionvaltakunnallinenmoduuli2019", koodistoUri = "suorituksentyyppi")
+) extends LukionModuulinSuoritus2019 with LukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019
 
 trait MuutSuorituksetTaiVastaavat2019 extends KoodistostaLöytyväKoulutusmoduuliValinnainenLaajuus {
   @KoodistoUri("lukionmuutopinnot")
@@ -185,22 +215,85 @@ case class LukionPaikallisenOpintojaksonSuoritus2019(
   suorituskieli: Option[Koodistokoodiviite],
   @KoodistoKoodiarvo("lukionpaikallinenopintojakso2019")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionpaikallinenopintojakso2019", koodistoUri = "suorituksentyyppi")
-) extends LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019 with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu with Vahvistukseton
+) extends LukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019 with LukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019 with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu with Vahvistukseton
 
 trait LukionModuuliTaiPaikallinenOpintojakso2019 extends KoulutusmoduuliPakollinenLaajuus with Valinnaisuus {
   def laajuus: LaajuusOpintopisteissä
 }
 
-@Title("Lukion moduuli 2019")
+
 @Description("Valtakunnallisen lukion/IB-lukion moduulin tunnistetiedot")
-case class LukionModuuli2019(
+trait LukionModuuli2019 extends LukionModuuliTaiPaikallinenOpintojakso2019 with KoodistostaLöytyväKoulutusmoduuliPakollinenLaajuus {
   @Description("Lukion/IB-lukion valtakunnallinen moduuli")
   @KoodistoUri("moduulikoodistolops2021")
   @Title("Nimi")
+  def tunniste: Koodistokoodiviite
+  def laajuus: LaajuusOpintopisteissä
+  def pakollinen: Boolean
+}
+
+trait LukionModuuliOppiaineissa2019 extends LukionModuuli2019
+
+trait LukionModuuliMuissaOpinnoissa2019 extends LukionModuuli2019
+
+@Title("Lukion vieraan kielen moduuli muissa opinnoissa 2019")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "MS")
+case class LukionVieraanKielenModuuliMuissaOpinnoissa2019(
+  tunniste: Koodistokoodiviite,
+  laajuus: LaajuusOpintopisteissä,
+  pakollinen: Boolean,
+  @KoodistoUri("kielivalikoima")
+  @Discriminator
+  kieli: Koodistokoodiviite
+) extends LukionModuuliMuissaOpinnoissa2019
+
+@Title("Lukion muu moduuli muissa opinnoissa 2019")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "MS")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "LD")
+case class LukionMuuModuuliMuissaOpinnoissa2019(
   tunniste: Koodistokoodiviite,
   laajuus: LaajuusOpintopisteissä,
   pakollinen: Boolean
-) extends LukionModuuliTaiPaikallinenOpintojakso2019 with KoodistostaLöytyväKoulutusmoduuliPakollinenLaajuus
+) extends LukionModuuliMuissaOpinnoissa2019
+
+@Title("Lukion vieraan kielen moduuli oppiaineissa 2019")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "A")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "B1")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "B2")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "B3")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "AOM")
+case class LukionVieraanKielenModuuliOppiaineissa2019(
+  tunniste: Koodistokoodiviite,
+  laajuus: LaajuusOpintopisteissä,
+  pakollinen: Boolean,
+  @Description("Täytetään tiedonsiirrossa automaattisesti oppiaineen kielen perusteella.")
+  @KoodistoUri("kielivalikoima")
+  kieli: Option[Koodistokoodiviite] = None
+) extends LukionModuuliOppiaineissa2019
+
+@Title("Lukion muu moduuli oppiaineissa 2019")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "MA")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "BI")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "ET")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "FI")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "FY")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "GE")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "HI")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "KE")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "KU")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "LI")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "MU")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "OP")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "PS")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "TE")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "YH")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "KT")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "AI")
+case class LukionMuuModuuliOppiaineissa2019(
+  tunniste: Koodistokoodiviite,
+  laajuus: LaajuusOpintopisteissä,
+  pakollinen: Boolean
+) extends LukionModuuliOppiaineissa2019
 
 @Title("Lukion paikallinen opintojakso 2019")
 @Description("Paikallisen lukion/IB-lukion opintojakson tunnistetiedot 2019")
@@ -359,7 +452,7 @@ case class PuhviKoe2019(
 
 @Title("Suullisen kielitaidon koe 2019")
 case class SuullisenKielitaidonKoe2019(
-  @KoodistoUri("kieli")
+  @KoodistoUri("kielivalikoima")
   kieli: Koodistokoodiviite,
   @KoodistoKoodiarvo("4")
   @KoodistoKoodiarvo("5")

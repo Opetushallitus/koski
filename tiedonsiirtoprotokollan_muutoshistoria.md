@@ -1,3 +1,9 @@
+## xx.10.2020
+- Lukion 2019 opetussuunnitelmassa suullisen kielitaidon kokeen koodisto vaihdettu kieli-koodistosta
+kielivalikoima-koodistoon
+- Lukion 2019 opetussuunnitelmassa valtakunnallisia moduuleita ei voi enää lisätä temaattisiin opintoihin
+- Lukion 2019 opetussuunnitelmassa valtakunnallisia moduuleita ei voi enää lisätä paikallisiin oppiaineisiin
+
 ## 24.8.2020
 - poistettu toistaiseksi lukion 2019 opetussuunnitelman integraatio osana Pre IB -opintojen suorituksia.
 

@@ -53,14 +53,14 @@ describe('Lukiokoulutus2019', function( ){
       it('näyttää oppiaineiden ja kurssien arvosanat', function() {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
           'Oppiaine Arvioitu (opintopistettä) Hyväksytysti arvioitu (opintopistettä) Arvosana\n' +
-          'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\nOÄI1\n8 OÄI2\n8 OÄI3\n8 6 6 9\n' +
+          'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\nÄI1\n8 ÄI2\n8 ÄI3\n8 6 6 9\n' +
           'Matematiikka, pitkä oppimäärä\nMAB2\n8 MAB3\n8 MAB4\n9 6 6 9\n' +
           'Opinto-ohjaus\nOP1\nH OP2\nS 4 2 H\n' +
           'Uskonto/Elämänkatsomustieto\nUE1\n4 1,5 0 4\n' +
           'Äidinkielenomainen kieli, ruotsi\nRUA4\n7 1 1 9\n' +
           'Fysiikka\nFY1\n10 FY2\n10 FY3\n10 FY123 *\n10 FY124 *\nS 87 87 10\n' +
           'Kemia 0 0 4\n' +
-          'Tanssi ja liike *\nLI5\n7 ITT234 *\n10 52 52 8\n' +
+          'Tanssi ja liike, valinnainen *\nITT234 *\n10 ITT235 *\n10 52 52 8\n' +
           'Lukiodiplomit\nMELD5\n7 KÄLD3\n9 4 4\n' +
           'Muut suoritukset\nKE3\n10 HAI765 *\nS 3 3\n' +
           'Teemaopinnot\nKAN200 *\nS 1 1\n' +
@@ -106,7 +106,7 @@ describe('Lukiokoulutus2019', function( ){
           before(editor.edit)
 
           var ai = opinnot.oppiaineet.oppiaine('oppiaine.AI')
-          var kieli = ai.propertyBySelector('.title .properties')
+          var kieli = ai.propertyBySelector('.title .properties .dropdown-wrapper')
           var arvosana = ai.propertyBySelector('td.arvosana')
           var suoritettuErityisenäTutkintona = ai.propertyBySelector('.properties .suoritettuErityisenäTutkintona')
           var suorituskieli = ai.propertyBySelector('.properties .suorituskieli')
@@ -379,17 +379,17 @@ describe('Lukiokoulutus2019', function( ){
             })
 
             describe('Poistaminen', function () {
-              var oai2 = ai.kurssi('OÄI2')
+              var ai2 = ai.kurssi('ÄI2')
 
               before(
                 editor.edit,
-                oai2.poistaKurssi,
+                ai2.poistaKurssi,
                 editor.saveChanges,
                 wait.until(page.isSavedLabelShown)
               )
 
               it('toimii', function () {
-                expect(extractAsText(S('.oppiaineet .AI'))).to.not.contain('OÄI2')
+                expect(extractAsText(S('.oppiaineet .AI'))).to.not.contain('ÄI2')
               })
             })
           })
@@ -441,14 +441,14 @@ describe('Lukiokoulutus2019', function( ){
       it('näyttää oppiaineiden ja kurssien arvosanat', function() {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
           'Oppiaine Arvioitu (opintopistettä) Hyväksytysti arvioitu (opintopistettä) Arvosana\n' +
-          'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\nOÄI1\n8 OÄI2\n8 OÄI3\n8 6 6 9\n' +
+          'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\nÄI1\n8 ÄI2\n8 ÄI3\n8 6 6 9\n' +
           'Matematiikka, pitkä oppimäärä\nMAB2\n8 MAB3\n8 MAB4\n9 6 6 9\n' +
           'Opinto-ohjaus\nOP1\nH OP2\nS 4 2 H\n' +
           'Uskonto/Elämänkatsomustieto\nUE1\n4 1,5 0 4\n' +
           'Äidinkielenomainen kieli, ruotsi\nRUA4\n7 1 1 9\n' +
           'Fysiikka\nFY1\n10 FY2\n10 FY3\n10 FY123 *\n10 FY124 *\nS 87 87 10\n' +
           'Kemia 0 0 4\n' +
-          'Tanssi ja liike *\nLI5\n7 ITT234 *\n10 52 52 8\n' +
+          'Tanssi ja liike, valinnainen *\nITT234 *\n10 ITT235 *\n10 52 52 8\n' +
           'Arvioitujen osasuoritusten laajuus yhteensä: 157,5 Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 154,0\n' +
           '* = paikallinen opintojakso tai oppiaine')
       })
