@@ -1,4 +1,4 @@
-## xx.10.2020
+## 6.10.2020
 - Lukion 2019 opetussuunnitelmassa suullisen kielitaidon kokeen koodisto vaihdettu kieli-koodistosta
 kielivalikoima-koodistoon
 - Lukion 2019 opetussuunnitelmassa valtakunnallisia moduuleita ei voi enää lisätä temaattisiin opintoihin
