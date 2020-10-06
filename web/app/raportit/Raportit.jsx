@@ -33,8 +33,8 @@ export const raportitContentP = () => {
             {raportit && raportit.includes('muuammatillinenkoulutus') && <MuuAmmatillinenRaportti organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('topksammatillinen') && <TOPKSAmmatillinenRaportti organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('perusopetuksenvuosiluokka') && <PerusopetuksenVuosiluokka organisaatioAtom={organisaatioAtom} />}
-            {document.location.search.includes('tilastoraportit=true') && raportit && raportit.includes('perusopetuksenoppijamääräraportti') && <PerusopetuksenOppijamäärätRaportti organisaatioAtom={organisaatioAtom}/>}
-            {document.location.search.includes('tilastoraportit=true') && raportit && raportit.includes('perusopetuksenlisäopetuksenoppijamääräraportti') && <PerusopetuksenLisäopetuksenOppijamäärätRaportti organisaatioAtom={organisaatioAtom}/>}
+            {raportit && raportit.includes('perusopetuksenoppijamääräraportti') && <PerusopetuksenOppijamäärätRaportti organisaatioAtom={organisaatioAtom}/>}
+            {raportit && raportit.includes('perusopetuksenlisäopetuksenoppijamääräraportti') && <PerusopetuksenLisäopetuksenOppijamäärätRaportti organisaatioAtom={organisaatioAtom}/>}
             {raportit && raportit.includes('lukionsuoritustietojentarkistus') && <Lukioraportti organisaatioAtom={organisaatioAtom} />}
             {document.location.search.includes('tilastoraportit=true') && raportit && raportit.includes('lukiokurssikertyma') && <LukioKurssikertyma organisaatioAtom={organisaatioAtom}/>}
             {document.location.search.includes('tilastoraportit=true') && raportit && raportit.includes('lukiodiaibinternationalopiskelijamaarat') && <LukioDiaIBInternationalOpiskelijamaarat organisaatioAtom={organisaatioAtom} />}
