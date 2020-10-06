@@ -27,7 +27,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers w
     "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
       authGet(s"api/raportit/perusopetuksenoppijamaaratraportti?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2007-01-01&password=salasana") {
         verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="perusopetuksen_oppijamäärät_raportti-2007-01-01.xlsx"""")
+        response.headers("Content-Disposition").head should equal(s"""attachment; filename="perusopetus_vos_raportti-2007-01-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
         AuditLogTester.verifyAuditLogMessage(
           Map(

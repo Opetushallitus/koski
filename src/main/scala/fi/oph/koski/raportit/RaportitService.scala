@@ -159,7 +159,7 @@ class RaportitService(application: KoskiApplication) {
     OppilaitosRaporttiResponse(
       sheets = Seq(perusopetuksenOppijamäärätRaportti.build(oppilaitosOids, Date.valueOf(request.paiva))),
       workbookSettings = WorkbookSettings("Perusopetuksen oppijamäärien raportti", Some(request.password)),
-      filename = s"perusopetuksen_oppijamäärät_raportti-${request.paiva}.xlsx",
+      filename = s"perusopetus_vos_raportti-${request.paiva}.xlsx",
       downloadToken = request.downloadToken
     )
   }
@@ -169,7 +169,7 @@ class RaportitService(application: KoskiApplication) {
     OppilaitosRaporttiResponse(
       sheets = Seq(perusopetuksenLisäopetuksenOppijamäärätRaportti.build(oppilaitosOids, Date.valueOf(request.paiva))),
       workbookSettings = WorkbookSettings("Perusopetuksen oppijamäärien raportti", Some(request.password)),
-      filename = s"perusopetuksen_oppijamäärät_raportti-${request.paiva}.xlsx",
+      filename = s"lisaopetus_vos_raportti-${request.paiva}.xlsx",
       downloadToken = request.downloadToken
     )
   }
