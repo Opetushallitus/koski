@@ -38,6 +38,7 @@ object OpiskeluoikeusChangeMigrator {
     case _: LukionOppiaineenOppimääränSuoritus2015 |
          _: LukionOppiaineidenOppimäärienSuoritus2019 |
          _: LukionOppimääränSuoritus2019 |
+         _: EsiopetuksenSuoritus |
          _: NuortenPerusopetuksenOppiaineenOppimääränSuoritus |
          _: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus => false
     case _ => true
