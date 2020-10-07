@@ -185,7 +185,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
         "Musiikki (tunnustettu)" in {
           val (_, musiikki) = findRowsWithColumnsByTitle("MU v Musiikki", kurssit)
           val musiikinKurssitRow = Map(
-            "Oppijan oid" -> "1.2.246.562.24.00000000012",
+            "Oppijan oid" -> "1.2.246.562.24.00000000013",
             "Sukunimi" -> "Lukiolainen",
             "Etunimet" -> "Liisa",
             "Hetu" -> Some("020655-2479"),

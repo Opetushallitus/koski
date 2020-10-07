@@ -218,20 +218,22 @@ class KoskiOppijaFacade(
       Left(KoskiErrorCategory.forbidden.ainoanPäätasonSuorituksenPoisto())
     } else {
       (oo, päätasonSuoritus) match {
-        case (_: PerusopetuksenOpiskeluoikeus | _: AikuistenPerusopetuksenOpiskeluoikeus | _: AmmatillinenOpiskeluoikeus | _: InternationalSchoolOpiskeluoikeus, _) => delete(päätasonSuoritus, oo)
+        case (_: PerusopetuksenOpiskeluoikeus
+              | _: AikuistenPerusopetuksenOpiskeluoikeus
+              | _: AmmatillinenOpiskeluoikeus
+              | _: InternationalSchoolOpiskeluoikeus
+              | _: EsiopetuksenOpiskeluoikeus, _) => delete(päätasonSuoritus, oo)
         case (_, _: LukionOppiaineenOppimääränSuoritus2015) => delete(päätasonSuoritus, oo)
         case _ => Left(KoskiErrorCategory.forbidden(s"Suoritusten tyyppiä ${päätasonSuoritus.tyyppi.koodiarvo} poisto ei ole sallittu"))
       }
     }
 
-  private def delete(päätasonSuoritus: PäätasonSuoritus, oo: KoskeenTallennettavaOpiskeluoikeus) = {
-    val poistetullaSuorituksella = oo.suoritukset.filterNot(_ == päätasonSuoritus)
-    if (poistetullaSuorituksella.length == oo.suoritukset.length) {
-      Left(KoskiErrorCategory.notFound())
-    } else if (poistetullaSuorituksella.length != oo.suoritukset.length - 1) {
-      Left(KoskiErrorCategory.internalError())
-    } else {
-      Right(oo.withSuoritukset(poistetullaSuorituksella))
+  private def delete(poistettavaPäätasonSuoritus: PäätasonSuoritus, oo: KoskeenTallennettavaOpiskeluoikeus) = {
+    oo.suoritukset.find(_ == poistettavaPäätasonSuoritus) match {
+      case None => Left(KoskiErrorCategory.notFound())
+      case Some(poistettavaSuoritus) =>
+        val suorituksetIlmanPoistettavaaSuoritusta = oo.suoritukset diff List(poistettavaSuoritus)
+        Right(oo.withSuoritukset(suorituksetIlmanPoistettavaaSuoritusta))
     }
   }
 

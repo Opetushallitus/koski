@@ -109,6 +109,14 @@ object PerusopetusExampleData {
       perusopetuksenOppimääränSuoritus.copy(toimipiste = toimipiste))
   )
 
+  def suoritusTuplana() = opiskeluoikeus(
+    oppilaitos = jyväskylänNormaalikoulu,
+    suoritukset = List(
+      kahdeksannenLuokanSuoritus.copy(toimipiste = jyväskylänNormaalikoulu, luokka = "8C"),
+      kahdeksannenLuokanSuoritus.copy(toimipiste = jyväskylänNormaalikoulu, luokka = "8C")
+    )
+  )
+
   def päättötodistusLuokanTuplauksellaOpiskeluoikeus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu, toimipiste: OrganisaatioWithOid = jyväskylänNormaalikoulu,  luokka: String = "C") = opiskeluoikeus(
     oppilaitos = oppilaitos,
     suoritukset = List(
