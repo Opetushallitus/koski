@@ -10,8 +10,6 @@ import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
 import fi.oph.koski.util.SQL.toSqlListUnsafe
 import slick.jdbc.GetResult
-import java.util.Calendar
-import java.util.GregorianCalendar
 
 import scala.concurrent.duration._
 
@@ -42,20 +40,18 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
   }
 
   private def query(oppilaitosOidit: List[String], päivä: Date)(implicit u: KoskiSession) = {
-    println("tätä kutsutaan")
-    println(oppilaitosOidit.toString)
     sql"""
     select
       r_opiskeluoikeus.oppilaitos_nimi,
       r_koodisto_koodi.nimi,
       count(case when opintojen_rahoitus = '1' then 1 end) as oppilaidenMääräVOS,
       count(case when opintojen_rahoitus != '1' then 1 end) as oppilaidenMääräMuuKuinVOS,
-      count(case when opintojen_rahoitus = '1' and oppimaaran_suorittaja = true then 1 end) as oppimääränSuorittajiaVOS,
-      count(case when opintojen_rahoitus != '1' and oppimaaran_suorittaja = true then 1 end) as oppimääränSuorittajiaMuuKuinVOS,
-      count(case when opintojen_rahoitus = '1' and oppimaaran_suorittaja = false then 1 end) as aineopiskelijoitaVOS,
-      count(case when opintojen_rahoitus != '1' and oppimaaran_suorittaja = false then 1 end) as aineopiskelijoitaMuuKuinVOS,
-      count(case when aidinkieli != 'fi' and aidinkieli != 'sv' and aidinkieli != 'se' and aidinkieli != 'ri' and aidinkieli != 'vk' and opintojen_rahoitus = '1' then 1 end) as vieraskielisiäVOS,
-      count(case when aidinkieli != 'fi' and aidinkieli != 'sv' and aidinkieli != 'se' and aidinkieli != 'ri' and aidinkieli != 'vk' and opintojen_rahoitus != '1' then 1 end) as vieraskielisiäMuuKuinVOS
+      count(case when opintojen_rahoitus = '1' and oppimaaran_suorittaja then 1 end) as oppimääränSuorittajiaVOS,
+      count(case when opintojen_rahoitus != '1' and oppimaaran_suorittaja then 1 end) as oppimääränSuorittajiaMuuKuinVOS,
+      count(case when opintojen_rahoitus = '1' and not oppimaaran_suorittaja then 1 end) as aineopiskelijoitaVOS,
+      count(case when opintojen_rahoitus != '1' and not oppimaaran_suorittaja then 1 end) as aineopiskelijoitaMuuKuinVOS,
+      count(case when aidinkieli not in('fi', 'sv', 'se', 'ri', 'vk') and opintojen_rahoitus = '1' then 1 end) as vieraskielisiäVOS,
+      count(case when aidinkieli not in('fi', 'sv', 'se', 'ri', 'vk') and opintojen_rahoitus != '1' then 1 end) as vieraskielisiäMuuKuinVOS
     from r_opiskeluoikeus
     join r_henkilo on r_henkilo.oppija_oid = r_opiskeluoikeus.oppija_oid
     join r_opiskeluoikeus_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid

@@ -3,7 +3,6 @@ package fi.oph.koski.raportit
 import java.sql.Date.{valueOf => sqlDate}
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat}
 import fi.oph.koski.koskiuser.MockUser
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
@@ -22,7 +21,7 @@ class AikuistenPerusopetuksenOppijamäärätRaporttiSpec extends FreeSpec with M
     "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
       authGet(s"api/raportit/aikuistenperusopetuksenoppijamaaratraportti?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2010-01-01&password=salasana") {
         verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="aikuisten_perusopetuksen_oppijamäärät_raportti-2010-01-01.xlsx"""")
+        response.headers("Content-Disposition").head should equal(s"""attachment; filename="aikuisten_perusopetuksen_vos_raportti-2010-01-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=aikuistenperusopetuksenoppijamaaratraportti&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2010-01-01")))
       }

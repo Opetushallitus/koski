@@ -161,27 +161,6 @@ object AikajaksoRowBuilder {
     )
   }
 
-  /*
-  private def buildAikuistenPerusopetusAikajaksoRowForOneDay(opiskeluoikeudenOid: String, o: AikuistenPerusopetuksenOpiskeluoikeus, päivä: LocalDate): AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow = {
-    val jakso = o.tila.opiskeluoikeusjaksot
-      .filterNot(_.alku.isAfter(päivä))
-      .lastOption.getOrElse(throw new RuntimeException(s"Opiskeluoikeusjaksoa ei löydy $opiskeluoikeudenOid $päivä"))
-
-    AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow(
-      opiskeluoikeudenOid,
-      alku = Date.valueOf(päivä),
-      loppu = Date.valueOf(päivä),
-      tila = jakso.tila.koodiarvo,
-      tilaAlkanut = Date.valueOf(päivä),
-      opiskeluoikeusPäättynyt = jakso.opiskeluoikeusPäättynyt,
-      rahoitus = jakso.opintojenRahoitus.map(_.koodiarvo),
-      oppimääränSuorittaja = o.suoritukset.exists(o => o match {
-        case _: AikuistenPerusopetuksenOppimääränSuoritus => true
-        case _ => false
-      })
-    )
-  }*/
-
   val IndefiniteFuture = LocalDate.of(9999, 12, 31) // no special meaning, but must be after any possible real alkamis/päättymispäivä
 
   private def aikajaksot(o: KoskeenTallennettavaOpiskeluoikeus): Seq[(LocalDate, LocalDate)] = {

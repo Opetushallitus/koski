@@ -149,7 +149,7 @@ class RaportitService(application: KoskiApplication) {
     OppilaitosRaporttiResponse(
       sheets = Seq(aikuistenPerusopetuksenOppijamäärätRaportti.build(oppilaitosOids, Date.valueOf(request.paiva))),
       workbookSettings = WorkbookSettings("Aikuisten perusopetuksen oppijamäärien raportti", Some(request.password)),
-      filename = s"aikuisten_perusopetuksen_oppijamäärät_raportti-${request.paiva}.xlsx",
+      filename = s"aikuisten_perusopetuksen_vos_raportti-${request.paiva}.xlsx",
       downloadToken = request.downloadToken
     )
   }
