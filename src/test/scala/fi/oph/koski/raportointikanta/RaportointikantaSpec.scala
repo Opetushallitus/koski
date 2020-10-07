@@ -374,11 +374,6 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
             AikuistenPerusopetuksenOpiskeluoikeusjakso(alku = LocalDate.of(2000, 1, 1), tila = Läsnä)
           )),
         )
-
-        val aikajaksoRows = AikajaksoRowBuilder.buildAikuistenPerusopetuksenOpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
-        aikajaksoRows should equal(Seq(
-          AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2000-01-01"), Date.valueOf("9999-12-31"), "lasna", Date.valueOf("2000-01-01"), false, None, true),
-        ))
       }
       "Esiopetuksen opiskeluoikeuden lisätiedot" in {
         val aikajakso = Aikajakso(LocalDate.of(2000, 1, 1), Some(LocalDate.of(2000, 2, 2)))

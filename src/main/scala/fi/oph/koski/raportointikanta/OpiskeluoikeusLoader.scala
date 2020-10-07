@@ -33,14 +33,12 @@ object OpiskeluoikeusLoader extends Logging {
         val osasuoritusRows = outputRows.flatMap(_.right.get.rOsasuoritusRows)
         val muuAmmatillinenRaportointiRows = outputRows.flatMap(_.right.get.muuAmmatillinenOsasuoritusRaportointiRows)
         val topksAmmatillinenRaportointiRows = outputRows.flatMap(_.right.get.topksAmmatillinenRaportointiRows)
-        val aikuistenPerusopetusOpiskeluoikeusAikajaksoRows = outputRows.flatMap(_.right.get.aikuistenPerusopetusOpiskeluoikeusAikajaksoRows)
         db.loadOpiskeluoikeusAikajaksot(aikajaksoRows)
         db.loadEsiopetusOpiskeluoikeusAikajaksot(esiopetusOpiskeluoikeusAikajaksoRows)
         db.loadPäätasonSuoritukset(päätasonSuoritusRows)
         db.loadOsasuoritukset(osasuoritusRows)
         db.loadMuuAmmatillinenRaportointi(muuAmmatillinenRaportointiRows)
         db.loadTOPKSAmmatillinenRaportointi(topksAmmatillinenRaportointiRows)
-        db.loadAikuistenPerusopetusOpiskeluoikeusAikajaksot(aikuistenPerusopetusOpiskeluoikeusAikajaksoRows)
         db.setLastUpdate(statusName)
         db.updateStatusCount(statusName, outputRows.size)
         errors.map(_.left.get) :+ LoadProgressResult(outputRows.size, päätasonSuoritusRows.size + osasuoritusRows.size)
@@ -62,7 +60,6 @@ object OpiskeluoikeusLoader extends Logging {
     raportointiDatabase.deleteOsasuoritukset
     raportointiDatabase.deleteMuuAmmatillinenRaportointi
     raportointiDatabase.deleteTOPKSAmmatillinenRaportointi
-    raportointiDatabase.deleteAikuistenPerusopetusOpiskeluoikeusAikajaksot
   }
 
   private def progressLogger: Subscriber[LoadResult] = new Subscriber[LoadResult] {
@@ -128,7 +125,6 @@ object OpiskeluoikeusLoader extends Logging {
         rOsasuoritusRows = suoritusRows.flatMap(_._2),
         muuAmmatillinenOsasuoritusRaportointiRows = suoritusRows.flatMap(_._3),
         topksAmmatillinenRaportointiRows = suoritusRows.flatMap(_._4),
-        aikuistenPerusopetusOpiskeluoikeusAikajaksoRows = aikajaksoRows._3,
       )
     }.toEither.left.map(t => LoadErrorResult(inputRow.oid, t.toString))
   }
@@ -163,17 +159,14 @@ object OpiskeluoikeusLoader extends Logging {
       data = JsonManipulation.removeFields(data, fieldsToExcludeFromOpiskeluoikeusJson)
     )
 
-  private def buildAikajaksoRows(opiskeluoikeusOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): (Seq[ROpiskeluoikeusAikajaksoRow], Seq[EsiopetusOpiskeluoikeusAikajaksoRow], Seq[AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow]) = {
+  private def buildAikajaksoRows(opiskeluoikeusOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): (Seq[ROpiskeluoikeusAikajaksoRow], Seq[EsiopetusOpiskeluoikeusAikajaksoRow]) = {
     val opiskeluoikeusAikajaksot = AikajaksoRowBuilder.buildROpiskeluoikeusAikajaksoRows(opiskeluoikeusOid, opiskeluoikeus)
     val esiopetusOpiskeluoikeusAikajaksot = opiskeluoikeus match {
       case esiopetus: EsiopetuksenOpiskeluoikeus => AikajaksoRowBuilder.buildEsiopetusOpiskeluoikeusAikajaksoRows(opiskeluoikeusOid, esiopetus)
       case _ => Nil
     }
-    val aikuistenPerusopetuksenOpiskeluoikeusAikajaksot = opiskeluoikeus match {
-      case aikuistenperusopetus: AikuistenPerusopetuksenOpiskeluoikeus => AikajaksoRowBuilder.buildAikuistenPerusopetuksenOpiskeluoikeusAikajaksoRows(opiskeluoikeusOid, aikuistenperusopetus)
-      case _ => Nil
-    }
-    (opiskeluoikeusAikajaksot, esiopetusOpiskeluoikeusAikajaksot, aikuistenPerusopetuksenOpiskeluoikeusAikajaksot)
+
+    (opiskeluoikeusAikajaksot, esiopetusOpiskeluoikeusAikajaksot)
   }
 
   private val fieldsToExcludeFromPäätasonSuoritusJson = Set("osasuoritukset", "tyyppi", "toimipiste", "koulutustyyppi")
@@ -309,5 +302,4 @@ case class OutputRows(
   rOsasuoritusRows: Seq[ROsasuoritusRow],
   muuAmmatillinenOsasuoritusRaportointiRows: Seq[MuuAmmatillinenOsasuoritusRaportointiRow],
   topksAmmatillinenRaportointiRows: Seq[TOPKSAmmatillinenRaportointiRow],
-  aikuistenPerusopetusOpiskeluoikeusAikajaksoRows: Seq[AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow],
 )

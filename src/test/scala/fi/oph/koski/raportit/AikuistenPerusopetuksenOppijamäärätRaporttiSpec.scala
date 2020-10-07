@@ -14,32 +14,39 @@ class AikuistenPerusopetuksenOppijamäärätRaporttiSpec extends FreeSpec with M
   private val application = KoskiApplicationForTests
   private val raporttiBuilder = AikuistenPerusopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
   private lazy val raportti =
-    raporttiBuilder.build(List(jyväskylänNormaalikoulu), sqlDate("2007-01-01"))(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenOppijamäärätRaporttiRow])
+    raporttiBuilder.build(List(jyväskylänNormaalikoulu), sqlDate("2010-01-01"))(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenOppijamäärätRaporttiRow])
 
   override def beforeAll(): Unit = loadRaportointikantaFixtures
 
   "Aikuisten perusopetuksen oppijamäärien raportti" - {
     "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
-      authGet(s"api/raportit/aikuistenperusopetuksenoppijamaaratraportti?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2007-01-01&password=salasana") {
+      authGet(s"api/raportit/aikuistenperusopetuksenoppijamaaratraportti?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2010-01-01&password=salasana") {
         verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="aikuisten_perusopetuksen_oppijamäärät_raportti-2007-01-01.xlsx"""")
+        response.headers("Content-Disposition").head should equal(s"""attachment; filename="aikuisten_perusopetuksen_oppijamäärät_raportti-2010-01-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=aikuistenperusopetuksenoppijamaaratraportti&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2007-01-01")))
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=aikuistenperusopetuksenoppijamaaratraportti&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2010-01-01")))
       }
     }
 
     "Raportin kolumnit" in {
-      lazy val r = findSingle(raportti, MockOppijat.eskari)
-
-      //r.oppilaitosNimi should equal("Jyväskylän normaalikoulu")
-      //r.opetuskieli should equal("suomi")
-      //r.oppilaidenMääräVOS should equal(0)
+      lazy val r = findSingle(raportti)
+      println(r.toString)
+      r.oppilaitosNimi should equal("Jyväskylän normaalikoulu")
+      r.opetuskieli should equal("suomi")
+      r.oppilaidenMääräVOS should equal(5)
+      r.oppilaidenMääräMuuKuinVOS should equal(0)
+      r.oppimääränSuorittajiaVOS should equal(2)
+      r.oppimääränSuorittajiaMuuKuinVOS should equal(0)
+      r.aineopiskelijoitaVOS should equal(3)
+      r.aineopiskelijoitaMuuKuinVOS should equal(0)
+      r.vieraskielisiäVOS should equal(0)
+      r.vieraskielisiäMuuKuinVOS should equal(0)
     }
   }
 
-  private def findSingle(rows: Seq[AikuistenPerusopetuksenOppijamäärätRaporttiRow], oppija: LaajatOppijaHenkilöTiedot) = {
+  private def findSingle(rows: Seq[AikuistenPerusopetuksenOppijamäärätRaporttiRow]) = {
     val found = rows.filter(_.oppilaitosNimi.equals("Jyväskylän normaalikoulu"))
-    found.length should be(0)
+    found.length should be(1)
     found.head
   }
 

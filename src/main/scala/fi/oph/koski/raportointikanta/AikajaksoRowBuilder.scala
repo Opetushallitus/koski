@@ -16,10 +16,6 @@ object AikajaksoRowBuilder {
     buildAikajaksoRows(buildEsiopetusAikajaksoRowForOneDay, opiskeluoikeusOid, opiskeluoikeus)
   }
 
-  def buildAikuistenPerusopetuksenOpiskeluoikeusAikajaksoRows(opiskeluoikeusOid: String, opiskeluoikeus: AikuistenPerusopetuksenOpiskeluoikeus): Seq[AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow] = {
-    buildAikajaksoRows(buildAikuistenPerusopetusAikajaksoRowForOneDay, opiskeluoikeusOid, opiskeluoikeus)
-  }
-
   private def buildAikajaksoRows[A <: KoskeenTallennettavaOpiskeluoikeus, B <: AikajaksoRow[B]](buildAikajaksoRow: ((String, A, LocalDate) => B), opiskeluoikeusOid: String, opiskeluoikeus: A): Seq[B] = {
     var edellinenTila: Option[String] = None
     var edellinenTilaAlkanut: Option[Date] = None
@@ -126,6 +122,10 @@ object AikajaksoRowBuilder {
       koulukoti = lisätietoVoimassaPäivänä {
         case l: PerusopetuksenOpiskeluoikeudenLisätiedot => l.koulukoti
       },
+      oppimääränSuorittaja = o.suoritukset.exists(o => o match {
+        case _: AikuistenPerusopetuksenOppimääränSuoritus => true
+        case _ => false
+      }),
       oppisopimusJossainPäätasonSuorituksessa = oppisopimusAikajaksot(o).exists(_.contains(päivä))
     )
     // Note: When adding something here, remember to update aikajaksojenAlkupäivät (below), too
@@ -161,6 +161,7 @@ object AikajaksoRowBuilder {
     )
   }
 
+  /*
   private def buildAikuistenPerusopetusAikajaksoRowForOneDay(opiskeluoikeudenOid: String, o: AikuistenPerusopetuksenOpiskeluoikeus, päivä: LocalDate): AikuistenPerusopetuksenOpiskeluoikeusAikajaksoRow = {
     val jakso = o.tila.opiskeluoikeusjaksot
       .filterNot(_.alku.isAfter(päivä))
@@ -179,7 +180,7 @@ object AikajaksoRowBuilder {
         case _ => false
       })
     )
-  }
+  }*/
 
   val IndefiniteFuture = LocalDate.of(9999, 12, 31) // no special meaning, but must be after any possible real alkamis/päättymispäivä
 
