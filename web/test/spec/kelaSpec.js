@@ -154,6 +154,18 @@ describe('Kela', function () {
     })
   })
 
+  describe('Piilotetaan päätason suorituksen vahvistus lops2019 oppiaineen oppimäärän suorituksilta, koska tietomallissa sitä ei ole', function () {
+    before(
+      Authentication().login('Laaja'),
+      kela.openPage,
+      kela.searchAndSelect('010705A6119', 'Urho')
+    )
+
+    it('toimii', function () {
+      expect(extractAsText(S('.suoritukset')).toLowerCase()).to.not.include('suoritus kesken')
+    })
+  })
+
   describe('Versiohistoria', function () {
     var oppijanHetu = '220109-784L'
 
