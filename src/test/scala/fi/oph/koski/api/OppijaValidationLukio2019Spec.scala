@@ -330,8 +330,8 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
       )))))) {
         verifyResponseStatus(400,
           List(
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Osasuoritus KAN200 (Kanteleensoiton perusteet) ei ole sallittu lukiodiplomi"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Osasuoritus moduulikoodistolops2021/MAB2 ei ole sallittu lukiodiplomi")
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Osasuoritus KAN200 (Kanteleensoiton perusteet) ei ole sallittu lukiodiplomisuoritus"),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Osasuoritus moduulikoodistolops2021/MAB2 ei ole sallittu lukiodiplomisuoritus")
           ))
       }
     }
@@ -347,8 +347,8 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
       )))))) {
         verifyResponseStatus(400,
           List(
-            exact(KoskiErrorCategory.badRequest.validation.laajuudet.lukiodiplominLaajuusEiOle2Opintopistettä, "Osasuorituksen moduulikoodistolops2021/KOLD1 laajuus ei ole lukiodiplomille ainoa sallittu 2 opintopistettä"),
-            exact(KoskiErrorCategory.badRequest.validation.laajuudet.lukiodiplominLaajuusEiOle2Opintopistettä, "Osasuorituksen moduulikoodistolops2021/KULD2 laajuus ei ole lukiodiplomille ainoa sallittu 2 opintopistettä")
+            exact(KoskiErrorCategory.badRequest.validation.laajuudet.lukiodiplominLaajuusEiOle2Opintopistettä, "Osasuorituksen moduulikoodistolops2021/KOLD1 laajuus ei ole oikea. Lukiodiplomimoduulin laajuus tulee olla aina 2 opintopistettä."),
+            exact(KoskiErrorCategory.badRequest.validation.laajuudet.lukiodiplominLaajuusEiOle2Opintopistettä, "Osasuorituksen moduulikoodistolops2021/KULD2 laajuus ei ole oikea. Lukiodiplomimoduulin laajuus tulee olla aina 2 opintopistettä.")
           ))
       }
     }
@@ -397,23 +397,23 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
       )))))) {
         verifyResponseStatus(400,
           List(
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/KOLD1 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/KULD2 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/KÄLD3 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/LILD4 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/MELD5 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/MULD6 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/TALD7 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/TELD8 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomimoduuli (moduulikoodistolops2021/KOLD1) ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus."),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomimoduuli (moduulikoodistolops2021/KULD2) ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus."),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomimoduuli (moduulikoodistolops2021/KÄLD3) ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus."),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomimoduuli (moduulikoodistolops2021/LILD4) ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus."),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomimoduuli (moduulikoodistolops2021/MELD5) ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus."),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomimoduuli (moduulikoodistolops2021/MULD6) ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus."),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomimoduuli (moduulikoodistolops2021/TALD7) ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus."),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomimoduuli (moduulikoodistolops2021/TELD8) ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus."),
 
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/KOLD1 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/KULD2 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/KÄLD3 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/LILD4 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/MELD5 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/MULD6 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/TALD7 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomi moduulikoodistolops2021/TELD8 ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus"),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomimoduuli (moduulikoodistolops2021/KOLD1) ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus."),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomimoduuli (moduulikoodistolops2021/KULD2) ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus."),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomimoduuli (moduulikoodistolops2021/KÄLD3) ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus."),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomimoduuli (moduulikoodistolops2021/LILD4) ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus."),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomimoduuli (moduulikoodistolops2021/MELD5) ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus."),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomimoduuli (moduulikoodistolops2021/MULD6) ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus."),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomimoduuli (moduulikoodistolops2021/TALD7) ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus."),
+            exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia, "Lukiodiplomimoduuli (moduulikoodistolops2021/TELD8) ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus."),
           )
         )
       }
@@ -1048,7 +1048,7 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
         List(
           exact(
             KoskiErrorCategory.badRequest.validation.rakenne.deprekoituOppimäärä,
-            "Suorituksessa koskioppiaineetyleissivistava/AI käytettyä kieltä AIAI ei sallita. Oman äidinkielen opinnot kuuluu siirtää vieraana kielenä."
+            "Suorituksessa koskioppiaineetyleissivistava/AI käytettyä kieltä AIAI ei sallita. Oman äidinkielen opinnot kuuluu siirtää vieraan kielen opintoina."
           )
         )
       )
