@@ -30,6 +30,7 @@ case class LukionOppimääränSuoritus2019(
   @Title("Lukion oppimäärää täydentävät oman äidinkielen opinnot")
   omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusOpintopisteinä] = None,
   puhviKoe: Option[PuhviKoe2019] = None,
+  @Description("Vahvistetussa lukion oppimäärän suorituksessa tulee olla suullisen kielitaidon kokeen suoritus niistä kielistä, joissa on suoritettu suullisen kielitaidon kokeen sisältävä valtakunnallinen moduuli. Nämä moduulit ovat ENA8, FIM8, FINA8, FINB16, RUA8, RUB16, RUÄ8, SMA8 ja VKA8.")
   suullisenKielitaidonKokeet: Option[List[SuullisenKielitaidonKoe2019]] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
@@ -55,6 +56,7 @@ case class LukionOppiaineidenOppimäärienSuoritus2019(
   @DefaultValue(false)
   lukionOppimääräSuoritettu: Boolean = false,
   puhviKoe: Option[PuhviKoe2019] = None,
+  @Description("Arvioituun lukion kielioppiainesuoritukseen liittyen tulee aineopintosuorituksen päätasolta löytyä suullisen kielitaidon kokeen suoritus niistä kielistä, joissa on suoritettu suullisen kielitaidon kokeen sisältävä valtakunnallinen moduuli. Nämä moduulit ovat ENA8, FIM8, FINA8, FINB16, RUA8, RUB16, RUÄ8, SMA8 ja VKA8.")
   suullisenKielitaidonKokeet: Option[List[SuullisenKielitaidonKoe2019]] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
@@ -240,6 +242,7 @@ case class LukionVieraanKielenModuuliMuissaOpinnoissa2019(
   tunniste: Koodistokoodiviite,
   laajuus: LaajuusOpintopisteissä,
   pakollinen: Boolean,
+  @Description("Pakollinen tieto VK-alkuisille moduuleille. Muille vieraan kielen moduuleille täytetään moduulin koodin perusteella.")
   @KoodistoUri("kielivalikoima")
   @Discriminator
   kieli: Koodistokoodiviite
