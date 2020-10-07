@@ -29,17 +29,17 @@ class AikuistenPerusopetuksenOppijamäärätRaporttiSpec extends FreeSpec with M
 
     "Raportin kolumnit" in {
       lazy val r = findSingle(raportti)
-      println(r.toString)
+
       r.oppilaitosNimi should equal("Jyväskylän normaalikoulu")
       r.opetuskieli should equal("suomi")
-      r.oppilaidenMääräVOS should equal(5)
-      r.oppilaidenMääräMuuKuinVOS should equal(0)
-      r.oppimääränSuorittajiaVOS should equal(2)
-      r.oppimääränSuorittajiaMuuKuinVOS should equal(0)
+      r.oppilaidenMääräVOS should equal(6)
+      r.oppilaidenMääräMuuKuinVOS should equal(3)
+      r.oppimääränSuorittajiaVOS should equal(3)
+      r.oppimääränSuorittajiaMuuKuinVOS should equal(2)
       r.aineopiskelijoitaVOS should equal(3)
-      r.aineopiskelijoitaMuuKuinVOS should equal(0)
-      r.vieraskielisiäVOS should equal(0)
-      r.vieraskielisiäMuuKuinVOS should equal(0)
+      r.aineopiskelijoitaMuuKuinVOS should equal(1)
+      r.vieraskielisiäVOS should equal(1)
+      r.vieraskielisiäMuuKuinVOS should equal(1)
     }
   }
 

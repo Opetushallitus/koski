@@ -44,10 +44,11 @@ describe('Oppijataulukko', function() {
       before(page.oppijataulukko.filterBy('nimi'), page.oppijataulukko.filterBy('tyyppi', 'Aikuisten perusopetus'), page.oppijataulukko.filterBy('koulutus', 'Perusopetuksen oppiaineen oppimäärä'))
       it('toimii', function() {
         expect(page.oppijataulukko.names()).to.deep.equal([
+          'Aikuinen, AikuisAineOpiskelijaKuuKuinVos',
           'Mervi, Monioppiaineinen',
           'Oppiaineenkorottaja, Olli'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('2')
+        expect(page.opiskeluoikeudeTotal()).to.equal('3')
       })
     })
 
