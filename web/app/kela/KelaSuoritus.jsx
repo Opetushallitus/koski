@@ -32,7 +32,7 @@ const SuoritusTabs = ({suoritukset, selectedIndex, setCurrentIndex}) => {
                 className={'tab' + (index === selectedIndex ? ' selected' : '')}
                 key={index}
             >
-              <span>{suorituksenNimi(suoritus.koulutusmoduuli)}</span>
+              <span>{tabName(suoritus)}</span>
             </li>
           )
         )}
@@ -88,6 +88,8 @@ const OsasuoritustenYhteislaajuus = ({osasuoritukset}) => {
   )
 }
 
-const suorituksenNimi = koulutusmoduuli => {
-  return koulutusmoduuli && koulutusmoduuli.tunniste && t(koulutusmoduuli.tunniste.nimi) || null
+const tabName = suoritus => {
+  const tunnisteenNimi = suoritus.koulutusmoduuli.tunniste && t(suoritus.koulutusmoduuli.tunniste.nimi) || undefined
+  const tyyppi = suoritus.tyyppi.nimi && t(suoritus.tyyppi.nimi) || undefined
+  return tunnisteenNimi || tyyppi || ''
 }
