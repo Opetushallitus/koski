@@ -142,6 +142,18 @@ describe('Kela', function () {
     })
   })
 
+  describe('Jos osasuorituksella ei ole arviointia, käyttöliittymä ei näytä suoritusta hylätyksi', function() {
+    before(
+      Authentication().login('Laaja'),
+      kela.openPage,
+      kela.searchAndSelect('211097-402L', 'Antti')
+    )
+
+    it('toimii', function () {
+      expect(extractAsText(S('table.osasuoritukset'))).to.include('Ulkoilureittien rakentaminen ja hoitaminen\n')
+    })
+  })
+
   describe('Versiohistoria', function () {
     var oppijanHetu = '220109-784L'
 
