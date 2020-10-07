@@ -58,13 +58,14 @@ describe('Lukiokoulutus2019', function( ){
           'Opinto-ohjaus\nOP1\nH OP2\nS 4 2 H\n' +
           'Uskonto/Elämänkatsomustieto\nUE1\n4 1,5 0 4\n' +
           'Äidinkielenomainen kieli, ruotsi\nRUA4\n7 1 1 9\n' +
+          'A-kieli, espanja\nVKA1\n7 VKA8\n7 2 2 9\n' +
           'Fysiikka\nFY1\n10 FY2\n10 FY3\n10 FY123 *\n10 FY124 *\nS 87 87 10\n' +
           'Kemia 0 0 4\n' +
           'Tanssi ja liike, valinnainen *\nITT234 *\n10 ITT235 *\n10 52 52 8\n' +
           'Lukiodiplomit\nMELD5\n7 KÄLD3\n9 4 4\n' +
-          'Muut suoritukset\nKE3\n10 HAI765 *\nS 3 3\n' +
+          'Muut suoritukset\nKE3\n10 HAI765 *\nS VKA1\n10 ENA1\n10 7 7\n' +
           'Teemaopinnot\nKAN200 *\nS 1 1\n' +
-          'Arvioitujen osasuoritusten laajuus yhteensä: 165,5 Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 162,0\n' +
+          'Arvioitujen osasuoritusten laajuus yhteensä: 171,5 Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 168,0\n' +
           '* = paikallinen opintojakso tai oppiaine')
       })
     })
@@ -208,7 +209,7 @@ describe('Lukiokoulutus2019', function( ){
             it('alkutila', function() {
               expect(editor.canSave()).to.equal(false)
               expect(editor.getEditBarMessage()).to.equal('Ei tallentamattomia muutoksia')
-              expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(11)
+              expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(12)
             })
 
             describe('Lisääminen', function () {
@@ -218,7 +219,7 @@ describe('Lukiokoulutus2019', function( ){
               )
 
               it('lisää oppiaineen', function () {
-                expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(12)
+                expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(13)
               })
 
               it('estää tallennuksen kunnes pakolliset tiedot on täytetty', function () {
@@ -435,7 +436,13 @@ describe('Lukiokoulutus2019', function( ){
           'Koulutus Lukion oppiaineet OPH-2263-2019\n' +
           'Opetussuunnitelma Lukio suoritetaan nuorten opetussuunnitelman mukaan\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
-          'Opetuskieli suomi')
+          'Opetuskieli suomi\n' +
+          'Suullisen kielitaidon kokeet Kieli espanja\n' +
+          'Arvosana S\n' +
+          'Taitotaso Yli C1.1\n' +
+          'Kuvaus Puhetaito äidinkielen tasolla\n' +
+          'Arviointipäivä 3.9.2019'
+        )
       })
 
       it('näyttää oppiaineiden ja kurssien arvosanat', function() {
@@ -446,10 +453,11 @@ describe('Lukiokoulutus2019', function( ){
           'Opinto-ohjaus\nOP1\nH OP2\nS 4 2 H\n' +
           'Uskonto/Elämänkatsomustieto\nUE1\n4 1,5 0 4\n' +
           'Äidinkielenomainen kieli, ruotsi\nRUA4\n7 1 1 9\n' +
+          'A-kieli, espanja\nVKA1\n7 VKA8\n7 2 2 9\n' +
           'Fysiikka\nFY1\n10 FY2\n10 FY3\n10 FY123 *\n10 FY124 *\nS 87 87 10\n' +
           'Kemia 0 0 4\n' +
           'Tanssi ja liike, valinnainen *\nITT234 *\n10 ITT235 *\n10 52 52 8\n' +
-          'Arvioitujen osasuoritusten laajuus yhteensä: 157,5 Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 154,0\n' +
+          'Arvioitujen osasuoritusten laajuus yhteensä: 159,5 Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 156,0\n' +
           '* = paikallinen opintojakso tai oppiaine')
       })
 
