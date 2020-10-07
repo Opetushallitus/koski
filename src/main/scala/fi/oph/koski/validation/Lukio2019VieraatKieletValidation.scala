@@ -89,7 +89,7 @@ object Lukio2019VieraatKieletValidation {
 
     suoritus.koulutusmoduuli match {
       case s: LukionÄidinkieliJaKirjallisuus2019 if s.kieli.koodiarvo == kiellettyKielikoodi =>
-        KoskiErrorCategory.badRequest.validation.rakenne.deprekoituOppimäärä(s"Suorituksessa ${s.tunniste} käytettyä kieltä ${kiellettyKielikoodi} ei sallita. Oman äidinkielen opinnot kuuluu siirtää vieraana kielenä.")
+        KoskiErrorCategory.badRequest.validation.rakenne.deprekoituOppimäärä(s"Suorituksessa ${s.tunniste} käytettyä kieltä ${kiellettyKielikoodi} ei sallita. Oman äidinkielen opinnot kuuluu siirtää vieraan kielen opintoina.")
       case _ => HttpStatus.ok
     }
   }

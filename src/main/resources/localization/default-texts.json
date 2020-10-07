@@ -1406,5 +1406,8 @@
   "description:Lukion moduulin suoritustiedot oppiaineissa 2019" : "Lukion moduulin suoritustiedot oppiaineissa 2019",
   "description:Lukion moduulin suoritustiedot muissa opinnoissa..." : "Lukion moduulin suoritustiedot muissa opinnoissa 2019",
   "description:Täytetään tiedonsiirrossa automaattisesti oppiaineen kielen..." : "Täytetään tiedonsiirrossa automaattisesti oppiaineen kielen perusteella.",
-  "valinnainen": "valinnainen"
+  "valinnainen": "valinnainen",
+  "description:Pakollinen tieto VK-alkuisille moduuleille. Muille..." : "Pakollinen tieto VK-alkuisille moduuleille. Muille vieraan kielen moduuleille täytetään moduulin koodin perusteella.",
+  "description:Vahvistetussa lukion oppimäärän suorituksessa tulee..." : "Vahvistetussa lukion oppimäärän suorituksessa tulee olla suullisen kielitaidon kokeen suoritus niistä kielistä, joissa on suoritettu suullisen kielitaidon kokeen sisältävä valtakunnallinen moduuli. Nämä moduulit ovat ENA8, FIM8, FINA8, FINB16, RUA8, RUB16, RUÄ8, SMA8 ja VKA8.",
+  "description:Arvioituun lukion kielioppiainesuoritukseen liittyen tulee..." : "Arvioituun lukion kielioppiainesuoritukseen liittyen tulee aineopintosuorituksen päätasolta löytyä suullisen kielitaidon kokeen suoritus niistä kielistä, joissa on suoritettu suullisen kielitaidon kokeen sisältävä valtakunnallinen moduuli. Nämä moduulit ovat ENA8, FIM8, FINA8, FINB16, RUA8, RUB16, RUÄ8, SMA8 ja VKA8."
 }

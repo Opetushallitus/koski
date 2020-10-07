@@ -30,6 +30,7 @@ case class LukionOppimääränSuoritus2019(
   @Title("Lukion oppimäärää täydentävät oman äidinkielen opinnot")
   omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusOpintopisteinä] = None,
   puhviKoe: Option[PuhviKoe2019] = None,
+  @Description("Vahvistetussa lukion oppimäärän suorituksessa tulee olla suullisen kielitaidon kokeen suoritus niistä kielistä, joissa on suoritettu suullisen kielitaidon kokeen sisältävä valtakunnallinen moduuli. Nämä moduulit ovat ENA8, FIM8, FINA8, FINB16, RUA8, RUB16, RUÄ8, SMA8 ja VKA8.")
   suullisenKielitaidonKokeet: Option[List[SuullisenKielitaidonKoe2019]] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
@@ -55,6 +56,7 @@ case class LukionOppiaineidenOppimäärienSuoritus2019(
   @DefaultValue(false)
   lukionOppimääräSuoritettu: Boolean = false,
   puhviKoe: Option[PuhviKoe2019] = None,
+  @Description("Arvioituun lukion kielioppiainesuoritukseen liittyen tulee aineopintosuorituksen päätasolta löytyä suullisen kielitaidon kokeen suoritus niistä kielistä, joissa on suoritettu suullisen kielitaidon kokeen sisältävä valtakunnallinen moduuli. Nämä moduulit ovat ENA8, FIM8, FINA8, FINB16, RUA8, RUB16, RUÄ8, SMA8 ja VKA8.")
   suullisenKielitaidonKokeet: Option[List[SuullisenKielitaidonKoe2019]] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
@@ -142,7 +144,6 @@ trait LukionModuulinSuoritus2019 extends ValtakunnallisenModuulinSuoritus with M
   @Description("Lukion moduulin tunnistetiedot")
   def koulutusmoduuli: LukionModuuli2019
   def arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]]
-  // TODO: descriptionin lakiviitteet yms. teksti
   @Description("Jos moduuli on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot. Osaamisen tunnustamisella voidaan opiskelijalle lukea hyväksi ja korvata lukion oppimäärään kuuluvia opintoja. Opiskelijan osaamisen tunnustamisessa noudatetaan, mitä 17 ja 17 a §:ssä säädetään opiskelijan arvioinnista ja siitä päättämisestä. Mikäli opinnot tai muutoin hankittu osaaminen luetaan hyväksi opetussuunnitelman perusteiden mukaan numerolla arvioitavaan moduuliin, tulee moduulista antaa numeroarvosana")
   def tunnustettu: Option[OsaamisenTunnustaminen]
   def suorituskieli: Option[Koodistokoodiviite]
@@ -209,7 +210,6 @@ case class LukionPaikallisenOpintojaksonSuoritus2019(
   @FlattenInUI
   koulutusmoduuli: LukionPaikallinenOpintojakso2019,
   arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]] = None,
-  // TODO: Descriptionin lakiviitteet ja teksti
   @Description("Jos opintojakso on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot. Osaamisen tunnustamisella voidaan opiskelijalle lukea hyväksi ja korvata lukion oppimäärään kuuluvia pakollisia tai vapaaehtoisia opintoja. Opiskelijan osaamisen tunnustamisessa noudatetaan, mitä 17 ja 17 a §:ssä säädetään opiskelijan arvioinnista ja siitä päättämisestä. Mikäli opinnot tai muutoin hankittu osaaminen luetaan hyväksi opetussuunnitelman perusteiden mukaan numerolla arvioitavaan opintojaksoon, tulee opintojaksosta antaa numeroarvosana")
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   suorituskieli: Option[Koodistokoodiviite],
@@ -242,6 +242,7 @@ case class LukionVieraanKielenModuuliMuissaOpinnoissa2019(
   tunniste: Koodistokoodiviite,
   laajuus: LaajuusOpintopisteissä,
   pakollinen: Boolean,
+  @Description("Pakollinen tieto VK-alkuisille moduuleille. Muille vieraan kielen moduuleille täytetään moduulin koodin perusteella.")
   @KoodistoUri("kielivalikoima")
   @Discriminator
   kieli: Koodistokoodiviite
@@ -388,7 +389,7 @@ case class VierasTaiToinenKotimainenKieli2019(
   @KoodistoKoodiarvo("B1")
   @KoodistoKoodiarvo("B2")
   @KoodistoKoodiarvo("B3")
-  @KoodistoKoodiarvo("AOM") // TODO: rajoita kielivaihtoehdot suomi+ruotsi? Miksei tätä ole tehty myös perinteisessä 2. kotimaisessa?
+  @KoodistoKoodiarvo("AOM")
   tunniste: Koodistokoodiviite,
   @Description("Mikä kieli on kyseessä")
   @KoodistoUri("kielivalikoima")

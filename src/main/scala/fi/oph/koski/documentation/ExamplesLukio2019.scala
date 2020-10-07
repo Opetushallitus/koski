@@ -26,7 +26,9 @@ object ExamplesLukio2019 {
     ))),
     muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
       moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("KE3")).copy(arviointi = numeerinenArviointi(10)),
-      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("HAI765", "Kansanmusiikki haitarilla", "Kansamusiikkia 2-rivisellä haitarilla")).copy(arviointi = sanallinenArviointi("S"))
+      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("HAI765", "Kansanmusiikki haitarilla", "Kansamusiikkia 2-rivisellä haitarilla")).copy(arviointi = sanallinenArviointi("S")),
+      moduulinSuoritusMuissaOpinnoissa(vieraanKielenModuuliMuissaOpinnoissa("VKA1", 2, "RU")).copy(arviointi = numeerinenArviointi(10)),
+      moduulinSuoritusMuissaOpinnoissa(vieraanKielenModuuliMuissaOpinnoissa("ENA1", 2, "EN")).copy(arviointi = numeerinenArviointi(10))
     ))),
     temaattistenOpintojenSuoritus().copy(osasuoritukset = Some(List(
       paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("KAN200", "Kanteleensoiton perusteet", "Itäsuomalaisen kanteleensoiton perusteet")).copy(arviointi = sanallinenArviointi("S"))
@@ -82,6 +84,7 @@ object ExamplesLukio2019 {
     oppimäärä = nuortenOpetussuunnitelma,
     suorituskieli = suomenKieli,
     toimipiste = jyväskylänNormaalikoulu,
+    suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEspanja)),
     osasuoritukset = Some(oppiainesuoritukset)
   )
 
@@ -140,6 +143,10 @@ object Lukio2019ExampleData {
     ))),
     oppiaineenSuoritus(lukionKieli2019("AOM", "SV")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
       moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUA4").copy(laajuus = laajuus(1))).copy(arviointi = numeerinenArviointi(7))
+    ))),
+    oppiaineenSuoritus(lukionKieli2019("A", "ES")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+      moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("VKA1").copy(laajuus = laajuus(1))).copy(arviointi = numeerinenArviointi(7)),
+      moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("VKA8").copy(laajuus = laajuus(1))).copy(arviointi = numeerinenArviointi(7))
     )))
   )
 

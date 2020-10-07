@@ -32,12 +32,12 @@ object Lukio2019OsasuoritusValidation {
     case (s: LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019, (p: MuidenLukioOpintojenSuoritus2019) :: _)
       if p.koulutusmoduuli.tunniste.koodiarvo == "LD" &&
         !lukiodiplomit.contains(s.koulutusmoduuli.tunniste.koodiarvo) =>
-      KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Osasuoritus ${suorituksenTunniste(suoritus)} ei ole sallittu lukiodiplomi")
+      KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Osasuoritus ${suorituksenTunniste(suoritus)} ei ole sallittu lukiodiplomisuoritus")
     case (s: LukionModuulinSuoritus2019, (p: LukionOppimääränOsasuoritus2019) :: _)
       if p.koulutusmoduuli.tunniste.koodiarvo != "LD" &&
         lukiodiplomit.contains(s.koulutusmoduuli.tunniste.koodiarvo) &&
         !lukiodiplomienSallitutOppiaineet.contains((p.koulutusmoduuli.tunniste.koodiarvo, s.koulutusmoduuli.tunniste.koodiarvo)) =>
-      KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Lukiodiplomi ${suorituksenTunniste(suoritus)} ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus")
+      KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Lukiodiplomimoduuli (${suorituksenTunniste(suoritus)}) ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus.")
     case _ =>
       HttpStatus.ok
   }
@@ -45,7 +45,7 @@ object Lukio2019OsasuoritusValidation {
   private def validateLukiodiplomiLaajuus(suoritus: Suoritus): HttpStatus = suoritus match {
     case s: LukionModuulinSuoritus2019
       if (lukiodiplomit.contains(s.koulutusmoduuli.tunniste.koodiarvo) && (s.koulutusmoduuli.laajuusArvo(0.0) != 2.0)) =>
-      KoskiErrorCategory.badRequest.validation.laajuudet.lukiodiplominLaajuusEiOle2Opintopistettä(s"Osasuorituksen ${suorituksenTunniste(suoritus)} laajuus ei ole lukiodiplomille ainoa sallittu 2 opintopistettä")
+      KoskiErrorCategory.badRequest.validation.laajuudet.lukiodiplominLaajuusEiOle2Opintopistettä(s"Osasuorituksen ${suorituksenTunniste(suoritus)} laajuus ei ole oikea. Lukiodiplomimoduulin laajuus tulee olla aina 2 opintopistettä.")
     case _ =>
       HttpStatus.ok
   }
