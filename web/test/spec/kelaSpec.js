@@ -142,6 +142,38 @@ describe('Kela', function () {
     })
   })
 
+  describe('Jos osasuorituksella ei ole arviointia, käyttöliittymä ei näytä suoritusta hylätyksi', function() {
+    before(
+      Authentication().login('Laaja'),
+      kela.openPage,
+      kela.searchAndSelect('211097-402L', 'Antti')
+    )
+
+    it('toimii', function () {
+      expect(extractAsText(S('table.osasuoritukset'))).to.include('Ulkoilureittien rakentaminen ja hoitaminen\n')
+    })
+  })
+
+  describe('lops2019', function () {
+    before(
+      Authentication().login('Laaja'),
+      kela.openPage,
+      kela.searchAndSelect('010705A6119', 'Urho')
+    )
+
+    describe('Piilotetaan päätason suorituksen vahvistus lops2019 oppiaineen oppimäärän suorituksilta, koska tietomallissa sitä ei ole', function () {
+      it('toimii', function () {
+        expect(extractAsText(S('.suoritukset')).toLowerCase()).to.not.include('suoritus kesken')
+      })
+    })
+
+    describe('Päätason suorituksen välilehdessä näytetään suorituksen tyyppi, jos koulutumoduulin tunnisteella ei ole nimeä (lops2019 oppiaineen oppimäärä', function () {
+      it('toimii', function () {
+        expect(extractAsText(S('.tabs'))).to.equal('Lukion oppiaineet')
+      })
+    })
+  })
+
   describe('Versiohistoria', function () {
     var oppijanHetu = '220109-784L'
 

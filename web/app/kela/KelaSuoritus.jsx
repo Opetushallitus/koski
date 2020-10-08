@@ -32,7 +32,7 @@ const SuoritusTabs = ({suoritukset, selectedIndex, setCurrentIndex}) => {
                 className={'tab' + (index === selectedIndex ? ' selected' : '')}
                 key={index}
             >
-              <span>{suorituksenNimi(suoritus.koulutusmoduuli)}</span>
+              <span>{tabName(suoritus)}</span>
             </li>
           )
         )}
@@ -45,10 +45,11 @@ const SuoritusView = ({suoritus, path}) => {
   const properties = R.omit(['osasuoritukset', 'vahvistus', 'koulutusmoduuli'], suoritus)
   const osasuoritukset = suoritus.osasuoritukset
   const piilotaArviointiSarakkeet = ['diatutkintovaihe', 'diavalmistavavaihe'].includes(suoritus.tyyppi.koodiarvo)
+  const piilotaVahvistus = suoritus.tyyppi.koodiarvo === 'lukionoppiaineidenoppimaarat2019'
   return (
     <>
       <KeyValueTable object={properties} path={path}/>
-      <SuorituksenVahvistus vahvistus={suoritus.vahvistus}/>
+      {!piilotaVahvistus && <SuorituksenVahvistus vahvistus={suoritus.vahvistus}/>}
       {osasuoritukset && <>
         <OsasuoritustenYhteislaajuus osasuoritukset={osasuoritukset} />
         <KelaOsasuorituksetTable osasuoritukset={osasuoritukset}
@@ -87,6 +88,8 @@ const OsasuoritustenYhteislaajuus = ({osasuoritukset}) => {
   )
 }
 
-const suorituksenNimi = koulutusmoduuli => {
-  return koulutusmoduuli && koulutusmoduuli.tunniste && t(koulutusmoduuli.tunniste.nimi) || null
+const tabName = suoritus => {
+  const tunnisteenNimi = suoritus.koulutusmoduuli.tunniste && t(suoritus.koulutusmoduuli.tunniste.nimi) || undefined
+  const tyyppi = suoritus.tyyppi.nimi && t(suoritus.tyyppi.nimi) || undefined
+  return tunnisteenNimi || tyyppi || ''
 }

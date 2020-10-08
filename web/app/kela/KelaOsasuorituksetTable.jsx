@@ -34,7 +34,7 @@ export const KelaOsasuorituksetTable = ({osasuoritukset, path, nested, piilotaAr
 const ExpandableOsasuoritus = ({osasuoritus, path, piilotaArviointiSarakkeet}) => {
   const expandedAtom = Atom(R.length(osasuoritus.osasuoritukset || []) > 0)
   const laajuus = osasuoritus.koulutusmoduuli.laajuus?.arvo || laskeLaajuusOsasuorituksista(osasuoritus)
-  const mahdollinenArviointi = R.last(osasuoritus.arviointi || []) || {}
+  const arviointi = R.last(osasuoritus.arviointi || []) || {}
   const properties = R.omit(['osasuoritukset', 'arviointi', 'koulutusmoduuli'], osasuoritus)
   const isExpandable = !R.isEmpty(properties) || osasuoritus.osasuoritukset
 
@@ -53,10 +53,13 @@ const ExpandableOsasuoritus = ({osasuoritus, path, piilotaArviointiSarakkeet}) =
       </td>
     {!piilotaArviointiSarakkeet && <>
       <td className='arviointi'>
-        <DateView value={mahdollinenArviointi.päivä} />
+        <DateView value={arviointi.päivä} />
       </td>
       <td className='arviointi'>
-        <BooleanView value={mahdollinenArviointi.hyväksytty} />
+        {R.isNil(arviointi.hyväksytty)
+          ? <span>{''}</span>
+          : <BooleanView value={arviointi.hyväksytty} />
+        }
       </td>
     </>}
     </tr>
