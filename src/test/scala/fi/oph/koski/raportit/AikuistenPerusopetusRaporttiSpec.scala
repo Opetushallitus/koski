@@ -554,6 +554,7 @@ class AikuistenPerusopetusRaporttiSpec
           "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)",
           "Yhteislaajuus (tunnustetut kurssit)",
           "AI Suomen kieli ja kirjallisuus valtakunnallinen",
+          "MA Matematiikka valtakunnallinen",
           "YH Yhteiskuntaoppi valtakunnallinen"
         ))
       }
@@ -618,6 +619,7 @@ class AikuistenPerusopetusRaporttiSpec
             "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
             "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 1.0 kurssia",
             "YH Yhteiskuntaoppi valtakunnallinen" -> "",
+            "MA Matematiikka valtakunnallinen" -> "",
             "Tutkintokoodi/koulutusmoduulin koodi" -> "AI",
             "Suorituksen nimi" -> Some("Äidinkieli ja kirjallisuus")
           )
@@ -631,6 +633,7 @@ class AikuistenPerusopetusRaporttiSpec
             "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
             "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "",
             "YH Yhteiskuntaoppi valtakunnallinen" -> "Arvosana 10, 1.0 kurssia",
+            "MA Matematiikka valtakunnallinen" -> "",
             "Tutkintokoodi/koulutusmoduulin koodi" -> "YH",
             "Suorituksen nimi" -> Some("Yhteiskuntaoppi")
           )
@@ -652,6 +655,7 @@ class AikuistenPerusopetusRaporttiSpec
 
           kurssiVälilehtienTitlet should equal(Seq(
             "AI v Suomen kieli ja kirjallisuus",
+            "MA v Matematiikka",
             "YH v Yhteiskuntaoppi"
           ))
         }
