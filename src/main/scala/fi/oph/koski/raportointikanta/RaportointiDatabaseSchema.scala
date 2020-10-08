@@ -46,7 +46,7 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(suorituksen_tyyppi)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(ylempi_osasuoritus_id)",
     sqlu"CREATE INDEX ON #${s.name}.esiopetus_opiskeluoikeus_aikajakso(opiskeluoikeus_oid)",
-    sqlu"CREATE INDEX ON #${s.name}.esiopetus_opiskeluoikeus_aikajakso(alku)", // TODO: turha indeksi?
+    sqlu"CREATE INDEX ON #${s.name}.esiopetus_opiskeluoikeus_aikajakso(alku)" // TODO: turha indeksi?
   )
 
   def createOtherIndexes(s: Schema) = DBIO.seq(
@@ -154,6 +154,7 @@ object RaportointiDatabaseSchema {
     val pidennettyOppivelvollisuus = column[Boolean]("pidennetty_oppivelvollisuus")
     val joustavaPerusopetus = column[Boolean]("joustava_perusopetus")
     val koulukoti = column[Boolean]("koulukoti")
+    val oppimääränSuorittaja = column[Boolean]("oppimaaran_suorittaja")
 
     def * = (
       opiskeluoikeusOid ::
@@ -183,6 +184,7 @@ object RaportointiDatabaseSchema {
       pidennettyOppivelvollisuus ::
       joustavaPerusopetus ::
       koulukoti ::
+      oppimääränSuorittaja ::
       id ::
       HNil
     ).mappedWith(Generic[ROpiskeluoikeusAikajaksoRow])
@@ -442,6 +444,7 @@ case class ROpiskeluoikeusAikajaksoRow(
   pidennettyOppivelvollisuus: Boolean = false,
   joustavaPerusopetus: Boolean = false,
   koulukoti: Boolean = false,
+  oppimääränSuorittaja: Boolean = false,
   id: Long = 0
 ) extends AikajaksoRow[ROpiskeluoikeusAikajaksoRow] {
   def truncateToDates(start: Date, end: Date): ROpiskeluoikeusAikajaksoRow = this.copy(

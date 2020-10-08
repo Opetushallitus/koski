@@ -124,7 +124,7 @@ object OpiskeluoikeusLoader extends Logging {
         rPäätasonSuoritusRows = suoritusRows.map(_._1),
         rOsasuoritusRows = suoritusRows.flatMap(_._2),
         muuAmmatillinenOsasuoritusRaportointiRows = suoritusRows.flatMap(_._3),
-        topksAmmatillinenRaportointiRows = suoritusRows.flatMap(_._4)
+        topksAmmatillinenRaportointiRows = suoritusRows.flatMap(_._4),
       )
     }.toEither.left.map(t => LoadErrorResult(inputRow.oid, t.toString))
   }
@@ -165,6 +165,7 @@ object OpiskeluoikeusLoader extends Logging {
       case esiopetus: EsiopetuksenOpiskeluoikeus => AikajaksoRowBuilder.buildEsiopetusOpiskeluoikeusAikajaksoRows(opiskeluoikeusOid, esiopetus)
       case _ => Nil
     }
+
     (opiskeluoikeusAikajaksot, esiopetusOpiskeluoikeusAikajaksot)
   }
 
@@ -300,5 +301,5 @@ case class OutputRows(
   rPäätasonSuoritusRows: Seq[RPäätasonSuoritusRow],
   rOsasuoritusRows: Seq[ROsasuoritusRow],
   muuAmmatillinenOsasuoritusRaportointiRows: Seq[MuuAmmatillinenOsasuoritusRaportointiRow],
-  topksAmmatillinenRaportointiRows: Seq[TOPKSAmmatillinenRaportointiRow]
+  topksAmmatillinenRaportointiRows: Seq[TOPKSAmmatillinenRaportointiRow],
 )
