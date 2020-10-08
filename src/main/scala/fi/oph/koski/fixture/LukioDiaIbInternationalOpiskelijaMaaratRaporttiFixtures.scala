@@ -113,7 +113,7 @@ object LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures {
     lisätiedot = Some(DIAOpiskeluoikeudenLisätiedot(
     )),
     tila = DIAOpiskeluoikeudenTila(List(
-      DIAOpiskeluoikeusjakso(date, opiskeluoikeusAktiivinen)
+      DIAOpiskeluoikeusjakso(date, opiskeluoikeusAktiivinen, Some(ExampleData.muutaKauttaRahoitettu))
     )),
     suoritukset = List(
       ExamplesDIA.diaValmistavanVaiheenSuoritus.copy(vahvistus = None, toimipiste = ressunLukio),

@@ -26,6 +26,10 @@
           },
           "koodistoUri" : "koskiopiskeluoikeudentila",
           "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "opintojenrahoitus"
         }
       }, {
         "alku" : "2016-06-04",
@@ -36,6 +40,10 @@
           },
           "koodistoUri" : "koskiopiskeluoikeudentila",
           "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "opintojenrahoitus"
         }
       } ]
     },
@@ -1320,6 +1328,16 @@
             "arvo" : 2.5,
             "yksikkö" : {
               "koodiarvo" : "2",
+              "nimi" : {
+                "fi" : "opintopistettä",
+                "sv" : "studiepoäng",
+                "en" : "ECTS credits"
+              },
+              "lyhytNimi" : {
+                "fi" : "op",
+                "sv" : "sp",
+                "en" : "ECTS cr"
+              },
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
           }
@@ -3488,6 +3506,5 @@
     },
     "alkamispäivä" : "2012-09-01",
     "päättymispäivä" : "2016-06-04"
-  } ],
-  "ignoreKoskiValidator" : true
+  } ]
 }

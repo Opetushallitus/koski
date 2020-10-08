@@ -1,9 +1,13 @@
 package fi.oph.koski.api
 
+import java.time.LocalDate
+
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsDIA.tutkintoSuoritus
 import fi.oph.koski.documentation.DIAExampleData._
-import fi.oph.koski.documentation.ExampleData.{vahvistusPaikkakunnalla, helsinki}
+import fi.oph.koski.documentation.ExampleData.{helsinki, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, vahvistusPaikkakunnalla, valtionosuusRahoitteinen}
+import fi.oph.koski.documentation.ExamplesDIA
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
+import fi.oph.koski.schema.{DIAOpiskeluoikeudenTila, DIAOpiskeluoikeusjakso}
 import org.scalatest.FreeSpec
 
 class OppijaValidationDIASpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsDIA {
@@ -133,6 +137,28 @@ class OppijaValidationDIASpec extends FreeSpec with LocalJettyHttpSpecification 
 
       putOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
+      }
+    }
+  }
+
+  "Opintojen rahoitus" - {
+
+    val date = LocalDate.of(2016, 10, 1)
+
+    "lasna -tilalta vaaditaan opintojen rahoitus" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = DIAOpiskeluoikeudenTila(List(DIAOpiskeluoikeusjakso(date, opiskeluoikeusLäsnä, opintojenRahoitus = None))))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta lasna puuttuu rahoitusmuoto"))
+      }
+    }
+
+    "valmistunut -tilalta vaaditaan opintojen rahoitus" in {
+      val tila = DIAOpiskeluoikeudenTila(List(
+        DIAOpiskeluoikeusjakso(date, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+        DIAOpiskeluoikeusjakso(date.plusMonths(1), opiskeluoikeusValmistunut, opintojenRahoitus = None)
+      ))
+
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = tila, suoritukset = List(ExamplesDIA.diaValmistavanVaiheenSuoritus))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta valmistunut puuttuu rahoitusmuoto"))
       }
     }
   }

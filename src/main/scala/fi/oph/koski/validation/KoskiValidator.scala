@@ -277,6 +277,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       case a: AmmatillinenOpiskeluoikeusjakso if List("lasna", "valmistunut", "loma").contains(a.tila.koodiarvo) => a.opintojenRahoitus.isDefined
       case l: LukionOpiskeluoikeusjakso if List("lasna", "valmistunut").contains(l.tila.koodiarvo) => l.opintojenRahoitus.isDefined
       case a: AikuistenPerusopetuksenOpiskeluoikeusjakso if List("lasna", "valmistunut").contains(a.tila.koodiarvo) => a.opintojenRahoitus.isDefined
+      case d: DIAOpiskeluoikeusjakso if List("lasna", "valmistunut").contains(d.tila.koodiarvo) => d.opintojenRahoitus.isDefined
       case _ => true
     }
 
