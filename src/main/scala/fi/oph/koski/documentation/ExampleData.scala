@@ -16,6 +16,8 @@ object ExampleData {
   val opiskeluoikeusLäsnä = Koodistokoodiviite("lasna", Some("Läsnä"), "koskiopiskeluoikeudentila", Some(1))
   val opiskeluoikeusValmistunut = Koodistokoodiviite("valmistunut", Some("Valmistunut"), "koskiopiskeluoikeudentila", Some(1))
   val opiskeluoikeusEronnut = Koodistokoodiviite("eronnut", Some("Eronnut"), "koskiopiskeluoikeudentila", Some(1))
+  val opiskeluoikeusKatsotaanEronneeksi = Koodistokoodiviite("katsotaaneronneeksi", Some("Katsotaan eronneekksi"), "koskiopiskeluoikeudentila", Some(1))
+  val opiskeluoikeusPeruutettu = Koodistokoodiviite("peruutettu", Some("Peruutettu"), "koskiopiskeluoikeudentila", Some(1))
   val opiskeluoikeusValiaikaisestiKeskeytynyt = Koodistokoodiviite("valiaikaisestikeskeytynyt", Some("eronnut"), "koskiopiskeluoikeudentila", Some(1))
   val opiskeluoikeusMitätöity = Koodistokoodiviite("mitatoity", Some("Mitätöity"), "koskiopiskeluoikeudentila", Some(1))
   val opiskeluoikeusLoma = Koodistokoodiviite("loma", Some("Loma"), "koskiopiskeluoikeudentila", Some(1))

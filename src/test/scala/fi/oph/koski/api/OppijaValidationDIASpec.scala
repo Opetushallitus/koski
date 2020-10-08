@@ -4,10 +4,10 @@ import java.time.LocalDate
 
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsDIA.tutkintoSuoritus
 import fi.oph.koski.documentation.DIAExampleData._
-import fi.oph.koski.documentation.ExampleData.{helsinki, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, vahvistusPaikkakunnalla, valtionosuusRahoitteinen}
+import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesDIA
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
-import fi.oph.koski.schema.{DIAOpiskeluoikeudenTila, DIAOpiskeluoikeusjakso}
+import fi.oph.koski.schema.{DIAOpiskeluoikeudenTila, DIAOpiskeluoikeusjakso, Koodistokoodiviite}
 import org.scalatest.FreeSpec
 
 class OppijaValidationDIASpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsDIA {
@@ -160,6 +160,22 @@ class OppijaValidationDIASpec extends FreeSpec with LocalJettyHttpSpecification 
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = tila, suoritukset = List(ExamplesDIA.diaValmistavanVaiheenSuoritus))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta valmistunut puuttuu rahoitusmuoto"))
       }
+    }
+
+    "Opintojen rahoitus on kielletty muilta tiloilta" in {
+      def verifyRahoitusmuotoKielletty(tila: Koodistokoodiviite) = {
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = DIAOpiskeluoikeudenTila(List(DIAOpiskeluoikeusjakso(date, tila, Some(valtionosuusRahoitteinen)))))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilallaEiSaaOllaRahoitusmuotoa(s"Opiskeluoikeuden tilalla ${tila.koodiarvo} ei saa olla rahoitusmuotoa"))
+        }
+      }
+
+      List(
+        opiskeluoikeusEronnut,
+        opiskeluoikeusKatsotaanEronneeksi,
+        opiskeluoikeusValiaikaisestiKeskeytynyt,
+        opiskeluoikeusPeruutettu,
+        opiskeluoikeusMitätöity
+      ).foreach(verifyRahoitusmuotoKielletty)
     }
   }
 }
