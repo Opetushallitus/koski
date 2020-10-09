@@ -11,7 +11,7 @@ import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{evira, korkeakouluViranomainen, perusopetusViranomainen, toinenAsteViranomainen}
-import fi.oph.koski.koskiuser.{KoskiSession, MockUsers, UserWithPassword}
+import fi.oph.koski.koskiuser.{KoskiSession, MockUser, MockUsers, UserWithPassword}
 import fi.oph.koski.luovutuspalvelu.{HetuRequestV1, LuovutuspalveluResponseV1}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
@@ -228,45 +228,6 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
   }
 
-  "viranomainen jolla oikeudet kaikkiin koulutusmuotoihin ja suppeat oikeudet arkaluontoisiin tietoihin" - {
-    "näkee suppeiden oikeuksien mukaisen luottamuksellisen datan, muttei laajoja oikeuksia vaativia tietoja" in {
-      authGet("api/oppija/" + MockOppijat.eero.oid, MockUsers.kelaSuppeatOikeudet) {
-        verifyResponseStatusOk()
-        suppeaSensitiveDataNäkyy()
-        laajaSensitiveDataPiilotettu()
-        erittäinSensitiveDataPiilotettu()
-      }
-    }
-
-    "ei voi muokata opiskeluoikeuksia" in {
-      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(MockUsers.kelaSuppeatOikeudet) ++ jsonContent) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.51720121923"))
-      }
-    }
-
-    "voi hakea kaikkia opiskeluoikeuksia" in {
-      searchForNames("eero", MockUsers.kelaSuppeatOikeudet) should equal(List("Jouni Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
-    }
-
-    "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
-      queryOppijat(user = MockUsers.kelaSuppeatOikeudet).length should equal(koskeenTallennetutOppijatCount)
-      authGet("api/oppija/" + MockOppijat.ammattilainen.oid, MockUsers.kelaSuppeatOikeudet) {
-        verifyResponseStatusOk()
-      }
-    }
-  }
-
-  "viranomainen jolla oikeudet kaikkiin koulutusmuotoihin ja laajat oikeudet vaativiin arkaluontoisiin tietoihin" - {
-    "näkee laajojen oikeuksien mukaisen luottamuksellisen datan, muttei kaikkia luottamuksellisia oikeuksia vaativia tietoja" in {
-      authGet("api/oppija/" + MockOppijat.eero.oid, MockUsers.kelaLaajatOikeudet) {
-        verifyResponseStatusOk()
-        suppeaSensitiveDataNäkyy()
-        laajaSensitiveDataNäkyy()
-        erittäinSensitiveDataPiilotettu()
-      }
-    }
-  }
-
   "viranomainen jolla oikeudet kaikkiin koulutusmuotoihin muttei arkaluontoisiin tietoihin" - {
     "ei näe luottamuksellista dataa" in {
       authGet("api/oppija/" + MockOppijat.eero.oid, evira) {
@@ -375,31 +336,13 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "ei voi kutsua muita apeja" in {
-      authGet("api/henkilo/hetu/010101-123N", MockUsers.luovutuspalveluKäyttäjä) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
-      }
-      authGet("api/oppija/" + MockOppijat.ysiluokkalainen.oid, MockUsers.luovutuspalveluKäyttäjä) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
-      }
-      authGet("api/tiedonsiirrot/yhteenveto", MockUsers.luovutuspalveluKäyttäjä) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
-      }
-      authGet("api/opiskeluoikeus/" + lastOpiskeluoikeus(MockOppijat.eero.oid).oid.get, MockUsers.luovutuspalveluKäyttäjä) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
-      }
-      authGet("api/opiskeluoikeus/perustiedot", MockUsers.luovutuspalveluKäyttäjä) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
-      }
-      authGet("api/opiskeluoikeus/historia/" + lastOpiskeluoikeus(MockOppijat.eero.oid).oid.get, MockUsers.luovutuspalveluKäyttäjä) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
-      }
-      authGet("api/oppilaitos", MockUsers.luovutuspalveluKäyttäjä) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
-      }
-      authGet(s"api/raportit/opiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&password=dummy&downloadToken=test123", MockUsers.luovutuspalveluKäyttäjä) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
-      }
+      verifyMuidenApienKutsuminenEstetty(MockUsers.luovutuspalveluKäyttäjä)
     }
+  }
+
+  "Kela ei voi kutsua muita apeja" in {
+    verifyMuidenApienKutsuminenEstetty(MockUsers.kelaLaajatOikeudet)
+    verifyMuidenApienKutsuminenEstetty(MockUsers.kelaSuppeatOikeudet)
   }
 
   "viranomainen jolla ei ole luovutuspalveluoikeuksia" - {
@@ -408,6 +351,33 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       post("api/luovutuspalvelu/hetu", JsonSerializer.writeWithRoot(body), headers = authHeaders(MockUsers.perusopetusViranomainen) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainViranomainen())
       }
+    }
+  }
+
+  private def verifyMuidenApienKutsuminenEstetty(user: MockUser) = {
+    authGet("api/henkilo/hetu/010101-123N", user) {
+      verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
+    }
+    authGet("api/oppija/" + MockOppijat.ysiluokkalainen.oid, user) {
+      verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
+    }
+    authGet("api/tiedonsiirrot/yhteenveto", user) {
+      verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
+    }
+    authGet("api/opiskeluoikeus/" + lastOpiskeluoikeus(MockOppijat.eero.oid).oid.get, user) {
+      verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
+    }
+    authGet("api/opiskeluoikeus/perustiedot", user) {
+      verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
+    }
+    authGet("api/opiskeluoikeus/historia/" + lastOpiskeluoikeus(MockOppijat.eero.oid).oid.get, user) {
+      verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
+    }
+    authGet("api/oppilaitos", user) {
+      verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
+    }
+    authGet(s"api/raportit/opiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&password=dummy&downloadToken=test123", user) {
+      verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
     }
   }
 
