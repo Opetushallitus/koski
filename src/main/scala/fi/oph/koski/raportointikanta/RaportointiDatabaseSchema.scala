@@ -45,8 +45,8 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(vahvistus_paiva)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(suorituksen_tyyppi)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(ylempi_osasuoritus_id)",
-    sqlu"CREATE INDEX ON #${s.name}.esiopetus_opiskeluoikeus_aikajakso(opiskeluoikeus_oid)",
-    sqlu"CREATE INDEX ON #${s.name}.esiopetus_opiskeluoikeus_aikajakso(alku)" // TODO: turha indeksi?
+    sqlu"CREATE INDEX ON #${s.name}.esiopetus_opiskeluoik_aikajakso(opiskeluoikeus_oid)",
+    sqlu"CREATE INDEX ON #${s.name}.esiopetus_opiskeluoik_aikajakso(alku)" // TODO: turha indeksi?
   )
 
   def createOtherIndexes(s: Schema) = DBIO.seq(
@@ -58,7 +58,8 @@ object RaportointiDatabaseSchema {
   def dropAllIfExists(s: Schema) = DBIO.seq(
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_opiskeluoikeus CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_opiskeluoikeus_aikajakso CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.esiopetus_opiskeluoikeus_aikajakso CASCADE",
+    sqlu"DROP TABLE IF EXISTS #${s.name}.esiopetus_opiskeluoikeus_aikajakso CASCADE", // TODO: Voidaan poistaa kun on ajettu kerran vanha taulu pois kannasta
+    sqlu"DROP TABLE IF EXISTS #${s.name}.esiopetus_opiskeluoik_aikajakso CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_paatason_suoritus CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_osasuoritus CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_henkilo CASCADE",
@@ -89,7 +90,7 @@ object RaportointiDatabaseSchema {
       TO raportointikanta_katselija, raportointikanta_henkilo_katselija""",
     sqlu"""GRANT SELECT ON
       #${s.name}.r_henkilo,
-      #${s.name}.esiopetus_opiskeluoikeus_aikajakso,
+      #${s.name}.esiopetus_opiskeluoik_aikajakso,
       #${s.name}.muu_ammatillinen_raportointi,
       #${s.name}.topks_ammatillinen_raportointi
       TO raportointikanta_henkilo_katselija"""
@@ -191,7 +192,7 @@ object RaportointiDatabaseSchema {
   }
   class ROpiskeluoikeusAikajaksoTableTemp(tag: Tag) extends ROpiskeluoikeusAikajaksoTable(tag, Temp)
 
-  class EsiopetusOpiskeluoikeusAikajaksoTable(tag: Tag, schema: Schema = Public) extends Table[EsiopetusOpiskeluoikeusAikajaksoRow](tag, schema.nameOpt, "esiopetus_opiskeluoikeus_aikajakso") {
+  class EsiopetusOpiskeluoikeusAikajaksoTable(tag: Tag, schema: Schema = Public) extends Table[EsiopetusOpiskeluoikeusAikajaksoRow](tag, schema.nameOpt, "esiopetus_opiskeluoik_aikajakso") {
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
     val alku = column[Date]("alku")
     val loppu = column[Date]("loppu")
