@@ -59,9 +59,9 @@ class LukioDiaIbInternationalOpiskelijaMaaratRaporttiSpec extends FreeSpec with 
       helsinki.aikuistenOppimaaranSuorittajia_MuutaKauttaRahoitettu shouldBe(1)
       helsinki.aineopiskelija_MuutaKauttaRahoitettu shouldBe(0)
 
-      ressu.opiskelijoidenMaara_MuutaKauttaRahoitettu should equal(1)
-      ressu.oppimaaranSuorittajia_MuutaKauttaRahoitettu shouldBe(1)
-      ressu.nuortenOppimaaranSuorittajia_MuutaKauttaRahoitettu shouldBe(1)
+      ressu.opiskelijoidenMaara_MuutaKauttaRahoitettu should equal(2)
+      ressu.oppimaaranSuorittajia_MuutaKauttaRahoitettu shouldBe(2)
+      ressu.nuortenOppimaaranSuorittajia_MuutaKauttaRahoitettu shouldBe(2)
       ressu.aikuistenOppimaaranSuorittajia_MuutaKauttaRahoitettu shouldBe(0)
       ressu.aineopiskelija_MuutaKauttaRahoitettu shouldBe(0)
     }
