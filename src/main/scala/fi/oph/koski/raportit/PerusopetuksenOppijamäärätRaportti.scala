@@ -70,8 +70,8 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
       join r_opiskeluoikeus_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
       left join r_organisaatio_kieli on r_organisaatio_kieli.organisaatio_oid = oo.oppilaitos_oid
       left join r_koodisto_koodi opetuskieli_koodisto
-        on opetuskieli_koodisto.koodisto_uri = split_part(split_part(r_organisaatio_kieli.kielikoodi, '#', 1), '_', 1)
-        and opetuskieli_koodisto.koodiarvo = split_part(r_organisaatio_kieli.kielikoodi, '#', 2)
+        on opetuskieli_koodisto.koodisto_uri = split_part(r_organisaatio_kieli.kielikoodi, '_', 1)
+        and opetuskieli_koodisto.koodiarvo = split_part(split_part(r_organisaatio_kieli.kielikoodi, '_', 2), '#', 1)
       where oo.oppilaitos_oid in (#${toSqlListUnsafe(oppilaitosOids)})
         and oo.koulutusmuoto = 'perusopetus'
         and (pts.vahvistus_paiva is null or pts.vahvistus_paiva > $date)
