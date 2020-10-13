@@ -142,6 +142,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
       pts.koulutusmoduuli_koodiarvo = '9' and
       (pts.data->>'jääLuokalle')::boolean and
       (pts.vahvistus_paiva is null or pts.vahvistus_paiva >= $paiva) and
+      (pts.data->>'alkamispäivä' <= $paiva or pts.data->>'alkamispäivä' is null) and
       aikaj.alku <= $paiva and (aikaj.loppu >= $paiva or aikaj.loppu is null)
     group by
       oo.opiskeluoikeus_oid"""
@@ -169,7 +170,8 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
           not (oo.opiskeluoikeus_oid = any ($luokalleJaavatOidit)) and
           pts.suorituksen_tyyppi = 'perusopetuksenvuosiluokka' and
           pts.koulutusmoduuli_koodiarvo = '9' and
-          (pts.vahvistus_paiva is null or pts.vahvistus_paiva >= $paiva)
+          (pts.vahvistus_paiva is null or pts.vahvistus_paiva >= $paiva) and
+          (pts.data->>'alkamispäivä' <= $paiva or pts.data->>'alkamispäivä' is null)
       )
       select
         oo.opiskeluoikeus_oid,
