@@ -173,7 +173,7 @@ case class LukionModuulinSuoritusMuissaOpinnoissa2019(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionvaltakunnallinenmoduuli2019", koodistoUri = "suorituksentyyppi")
 ) extends LukionModuulinSuoritus2019 with LukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019
 
-trait MuutSuorituksetTaiVastaavat2019 extends KoodistostaLöytyväKoulutusmoduuliValinnainenLaajuus {
+trait MuutSuorituksetTaiVastaavat2019 extends KoodistostaLöytyväKoulutusmoduuliValinnainenLaajuus with PreIBMuutSuorituksetTaiVastaavat2019 {
   @KoodistoUri("lukionmuutopinnot")
   def tunniste: Koodistokoodiviite
 }
@@ -217,13 +217,12 @@ case class LukionPaikallisenOpintojaksonSuoritus2019(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionpaikallinenopintojakso2019", koodistoUri = "suorituksentyyppi")
 ) extends LukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019 with LukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019 with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu with Vahvistukseton
 
-trait LukionModuuliTaiPaikallinenOpintojakso2019 extends KoulutusmoduuliPakollinenLaajuus with Valinnaisuus {
+trait LukionModuuliTaiPaikallinenOpintojakso2019 extends KoulutusmoduuliPakollinenLaajuus with Valinnaisuus with PreIBLukionModuuliTaiPaikallinenOpintojakso2019 {
   def laajuus: LaajuusOpintopisteissä
 }
 
-
 @Description("Valtakunnallisen lukion/IB-lukion moduulin tunnistetiedot")
-trait LukionModuuli2019 extends LukionModuuliTaiPaikallinenOpintojakso2019 with KoodistostaLöytyväKoulutusmoduuliPakollinenLaajuus {
+trait LukionModuuli2019 extends LukionModuuliTaiPaikallinenOpintojakso2019 with KoodistostaLöytyväKoulutusmoduuliPakollinenLaajuus with PreIBLukionModuuli2019 {
   @Description("Lukion/IB-lukion valtakunnallinen moduuli")
   @KoodistoUri("moduulikoodistolops2021")
   @Title("Nimi")
@@ -232,9 +231,9 @@ trait LukionModuuli2019 extends LukionModuuliTaiPaikallinenOpintojakso2019 with 
   def pakollinen: Boolean
 }
 
-trait LukionModuuliOppiaineissa2019 extends LukionModuuli2019
+trait LukionModuuliOppiaineissa2019 extends LukionModuuli2019 with PreIBLukionModuuliOppiaineissa2019
 
-trait LukionModuuliMuissaOpinnoissa2019 extends LukionModuuli2019
+trait LukionModuuliMuissaOpinnoissa2019 extends LukionModuuli2019 with PreIBLukionModuuliMuissaOpinnoissa2019
 
 @Title("Lukion vieraan kielen moduuli muissa opinnoissa 2019")
 @OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "MS")
@@ -304,10 +303,10 @@ case class LukionPaikallinenOpintojakso2019(
   laajuus: LaajuusOpintopisteissä,
   kuvaus: LocalizedString,
   pakollinen: Boolean
-) extends LukionModuuliTaiPaikallinenOpintojakso2019 with PaikallinenKoulutusmoduuli with StorablePreference
+) extends LukionModuuliTaiPaikallinenOpintojakso2019 with PaikallinenKoulutusmoduuli with StorablePreference  with PreIBPaikallinenOpintojakso2019
 
 @Description("Lukion/IB-lukion oppiaineen tunnistetiedot 2019")
-trait LukionOppiaine2019 extends LukionOppiaine with KoulutusmoduuliValinnainenLaajuus {
+trait LukionOppiaine2019 extends LukionOppiaine with KoulutusmoduuliValinnainenLaajuus with PreIBLukionOppiaine2019 {
   def laajuus: Option[LaajuusOpintopisteissä]
   override def perusteenDiaarinumero: Option[String] = None
   def withLaajuus(laajuusArvo: Double): LukionOppiaine2019
@@ -315,6 +314,7 @@ trait LukionOppiaine2019 extends LukionOppiaine with KoulutusmoduuliValinnainenL
 
 @Title("Paikallinen oppiaine 2019")
 @OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaine2019")
+@OnlyWhen("../tyyppi/koodiarvo", "preiblukionoppiaine2019")
 case class PaikallinenLukionOppiaine2019(
   tunniste: PaikallinenKoodi,
   kuvaus: LocalizedString,
@@ -329,6 +329,7 @@ trait LukionValtakunnallinenOppiaine2019 extends LukionOppiaine2019 with Yleissi
 
 @Title("Muu valtakunnallinen oppiaine 2019")
 @OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaine2019")
+@OnlyWhen("../tyyppi/koodiarvo", "preiblukionoppiaine2019")
 case class LukionMuuValtakunnallinenOppiaine2019(
   @KoodistoKoodiarvo("BI")
   @KoodistoKoodiarvo("ET")
@@ -354,6 +355,7 @@ case class LukionMuuValtakunnallinenOppiaine2019(
 
 @Title("Uskonto 2019")
 @OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaine2019")
+@OnlyWhen("../tyyppi/koodiarvo", "preiblukionoppiaine2019")
 case class LukionUskonto2019(
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean = true,
@@ -367,6 +369,7 @@ case class LukionUskonto2019(
 @Title("Äidinkieli ja kirjallisuus 2019")
 @Description("Oppiaineena äidinkieli ja kirjallisuus")
 @OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaine2019")
+@OnlyWhen("../tyyppi/koodiarvo", "preiblukionoppiaine2019")
 case class LukionÄidinkieliJaKirjallisuus2019(
   @KoodistoKoodiarvo("AI")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "AI", koodistoUri = "koskioppiaineetyleissivistava"),
@@ -384,6 +387,7 @@ case class LukionÄidinkieliJaKirjallisuus2019(
 @Title("Vieras tai toinen kotimainen kieli 2019")
 @Description("Oppiaineena vieras tai toinen kotimainen kieli 2019")
 @OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaine2019")
+@OnlyWhen("../tyyppi/koodiarvo", "preiblukionoppiaine2019")
 case class VierasTaiToinenKotimainenKieli2019(
   @KoodistoKoodiarvo("A")
   @KoodistoKoodiarvo("B1")
@@ -405,6 +409,7 @@ case class VierasTaiToinenKotimainenKieli2019(
 @Title("Matematiikka 2019")
 @Description("Oppiaineena matematiikka")
 @OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaine2019")
+@OnlyWhen("../tyyppi/koodiarvo", "preiblukionoppiaine2019")
 case class LukionMatematiikka2019(
   @KoodistoKoodiarvo("MA")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "MA", koodistoUri = "koskioppiaineetyleissivistava"),

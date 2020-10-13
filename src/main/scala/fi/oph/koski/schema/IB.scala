@@ -58,14 +58,14 @@ case class PreIBSuoritus(
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
   @Title("Oppiaineet")
-  override val osasuoritukset: Option[List[PreIBSuorituksenOsasuoritus]],
+  override val osasuoritukset: Option[List[PreIBSuorituksenOsasuoritus2015]],
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("preiboppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("preiboppimaara", koodistoUri = "suorituksentyyppi")
 ) extends IBPäätasonSuoritus
 
 trait IBPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Suorituskielellinen
-trait PreIBSuorituksenOsasuoritus extends Suoritus
+trait PreIBSuorituksenOsasuoritus2015 extends Suoritus
 
 @Title("Pre IB -koulutus")
 @Description("Pre IB-koulutuksen tunnistetiedot")
@@ -150,11 +150,9 @@ case class PreIBOppiaineenSuoritus(
   override val osasuoritukset: Option[List[PreIBKurssinSuoritus]],
   @KoodistoKoodiarvo("preiboppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preiboppiaine", koodistoUri = "suorituksentyyppi")
-) extends IBSuoritus with PreIBSuorituksenOsasuoritus
+) extends IBSuoritus with PreIBSuorituksenOsasuoritus2015
 
 trait PreIBOppiaine extends Koulutusmoduuli
-trait PreIBOppiainePakollinenLaajuus extends KoulutusmoduuliPakollinenLaajuus with PreIBOppiaine
-trait PreIBOppiaineValinnainenLaajuus extends KoulutusmoduuliValinnainenLaajuus with PreIBOppiaine
 
 @Title("IB -oppinaineen arviointi")
 case class IBOppiaineenArviointi(
@@ -219,7 +217,7 @@ case class IBKurssi(
   @Discriminator
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa]
-) extends KoulutusmoduuliValinnainenLaajuus with Valinnaisuus with PreIBKurssi with StorablePreference {
+) extends KoulutusmoduuliValinnainenLaajuus with Valinnaisuus with PreIBKurssi with PreIBKurssi2019 with StorablePreference {
   def nimi: LocalizedString = tunniste.nimi
 }
 
@@ -275,7 +273,7 @@ trait IBTaso {
   def taso: Option[Koodistokoodiviite]
 }
 
-trait IBAineRyhmäOppiaine extends IBOppiaine with PreIBOppiaine with IBTaso with Valinnaisuus {
+trait IBAineRyhmäOppiaine extends IBOppiaine with PreIBOppiaine with PreIBIBOppiaine2019 with IBTaso with Valinnaisuus {
   @KoodistoUri("aineryhmaib")
   def ryhmä: Koodistokoodiviite
 }
