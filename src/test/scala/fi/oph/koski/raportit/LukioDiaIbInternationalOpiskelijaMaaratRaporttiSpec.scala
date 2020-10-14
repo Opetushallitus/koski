@@ -39,6 +39,19 @@ class LukioDiaIbInternationalOpiskelijaMaaratRaporttiSpec extends FreeSpec with 
     "Tiedot jaotellaan oppilaitoksittain" in {
       rivit.map(_.oppilaitos) should contain theSameElementsAs (Seq(hese, resu))
     }
+    "Opiskelijoiden määrä" in {
+      helsinki.opiskelijoidenMaara shouldBe(2)
+      helsinki.oppimaaranSuorittajia shouldBe(2)
+      helsinki.nuortenOppimaaranSuorittajia shouldBe(1)
+      helsinki.aikuistenOppimaaranSuorittajia shouldBe(1)
+      helsinki.aineopiskelija shouldBe(0)
+
+      ressu.opiskelijoidenMaara shouldBe(4)
+      ressu.oppimaaranSuorittajia shouldBe(3)
+      ressu.nuortenOppimaaranSuorittajia shouldBe(3)
+      ressu.aikuistenOppimaaranSuorittajia shouldBe(0)
+      ressu.aineopiskelija shouldBe(1)
+    }
     "Valtionosuus rahoitteisia" in {
       helsinki.opiskelijoidenMaara_VOSRahoitteisia should equal(1)
       helsinki.oppimaaranSuorittajia_VOSRahoitteisia shouldBe(1)
