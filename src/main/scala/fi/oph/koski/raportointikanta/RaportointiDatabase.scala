@@ -43,6 +43,14 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
     TOPKSAmmatillinenOsasuoritusRaportointi
   )
 
+  def vacuumAnalyze(): Unit = {
+    logger.info("Vacuuming and analysing RaportointiDatabase...")
+    val started = System.currentTimeMillis
+    runDbSync(sqlu"""VACUUM ANALYZE""")
+    val duration = (System.currentTimeMillis - started) / 1000
+    logger.info(s"Vacuuming and analysing RaportointiDatabase done in ${duration} s")
+  }
+
   def moveTo(newSchema: Schema): Unit = {
     logger.info(s"Moving ${schema.name} -> ${newSchema.name}")
     runDbSync(DBIO.seq(
@@ -59,6 +67,7 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
       RaportointiDatabaseSchema.createRolesIfNotExists,
       RaportointiDatabaseSchema.grantPermissions(Public)
     ).transactionally)
+    logger.info("RaportointiDatabase schema swapped")
   }
 
   def dropAndCreateObjects: Unit = {
