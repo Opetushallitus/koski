@@ -101,18 +101,7 @@ with oppija as (select
     count(case when opintojen_rahoitus = '1' then 1 end) valtionosuus_rahoitteinen,
     count(case when opintojen_rahoitus = '6' then 1 end) muuta_kautta_rahoitettu,
     count(case when ulkomainen_vaihto_opiskelija then 1 end) ulkomainen_vaihto_opiskelija,
-    count(case when sisaoppilaitosmainen_majoitus then 1 end) sisaoppilaitosmainen_majoitus,
-    count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '101' then 1 end) erityinen_koulutustehtava_101,
-    count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '102' then 1 end) erityinen_koulutustehtava_102,
-    count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '103' then 1 end) erityinen_koulutustehtava_103,
-    count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '104' then 1 end) erityinen_koulutustehtava_104,
-    count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '105' then 1 end) erityinen_koulutustehtava_105,
-    count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '106' then 1 end) erityinen_koulutustehtava_106,
-    count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '107' then 1 end) erityinen_koulutustehtava_107,
-    count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '108' then 1 end) erityinen_koulutustehtava_108,
-    count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '109' then 1 end) erityinen_koulutustehtava_109,
-    count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '208' then 1 end) erityinen_koulutustehtava_208,
-    count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '211' then 1 end) erityinen_koulutustehtava_211
+    count(case when sisaoppilaitosmainen_majoitus then 1 end) sisaoppilaitosmainen_majoitus
   from oppija
   group by oppilaitos_oid
 ), oppimaara as (
@@ -125,7 +114,18 @@ with oppija as (select
     count(case when ulkomainen_vaihto_opiskelija then 1 end) ulkomainen_vaihto_opiskelija,
     count(case when suorituskieli_koodiarvo = 'FI' then 1 end) opetuskieli_suomi,
     count(case when suorituskieli_koodiarvo = 'SV' then 1 end) opetuskieli_ruotsi,
-    count(case when suorituskieli_koodiarvo not in ('FI', 'SV') then 1 end) opetuskieli_muu
+    count(case when suorituskieli_koodiarvo not in ('FI', 'SV') then 1 end) opetuskieli_muu,
+    count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '101' then 1 end) erityinen_koulutustehtava_101,
+    count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '102' then 1 end) erityinen_koulutustehtava_102,
+    count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '103' then 1 end) erityinen_koulutustehtava_103,
+    count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '104' then 1 end) erityinen_koulutustehtava_104,
+    count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '105' then 1 end) erityinen_koulutustehtava_105,
+    count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '106' then 1 end) erityinen_koulutustehtava_106,
+    count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '107' then 1 end) erityinen_koulutustehtava_107,
+    count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '108' then 1 end) erityinen_koulutustehtava_108,
+    count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '109' then 1 end) erityinen_koulutustehtava_109,
+    count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '208' then 1 end) erityinen_koulutustehtava_208,
+    count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '211' then 1 end) erityinen_koulutustehtava_211
   from oppija
   where suorituksen_tyyppi in (
     'lukionoppimaara',
@@ -297,17 +297,17 @@ with oppija as (select
       aineopiskelija_MuutaKauttaRahoitettu = rs.getInt("aineopiskelija_muuta_kautta_rahoitettu"),
       aineopiskeija_UlkomaisiaVaihtoOpiskelijoita = rs.getInt("aineopiskelija_ulkomainen_vaihto_opiskelija"),
 
-      opiskelijoidenMaara_ErityinenKoulutustehtava_101 = rs.getInt("erityinen_koulutustehtava_101"),
-      opiskelijoidenMaara_ErityinenKoulutustehtava_102 = rs.getInt("erityinen_koulutustehtava_102"),
-      opiskelijoidenMaara_ErityinenKoulutustehtava_103 = rs.getInt("erityinen_koulutustehtava_103"),
-      opiskelijoidenMaara_ErityinenKoulutustehtava_104 = rs.getInt("erityinen_koulutustehtava_104"),
-      opiskelijoidenMaara_ErityinenKoulutustehtava_105 = rs.getInt("erityinen_koulutustehtava_105"),
-      opiskelijoidenMaara_ErityinenKoulutustehtava_106 = rs.getInt("erityinen_koulutustehtava_106"),
-      opiskelijoidenMaara_ErityinenKoulutustehtava_107 = rs.getInt("erityinen_koulutustehtava_107"),
-      opiskelijoidenMaara_ErityinenKoulutustehtava_108 = rs.getInt("erityinen_koulutustehtava_108"),
-      opiskelijoidenMaara_ErityinenKoulutustehtava_109 = rs.getInt("erityinen_koulutustehtava_109"),
-      opiskelijoidenMaara_ErityinenKoulutustehtava_208 = rs.getInt("erityinen_koulutustehtava_208"),
-      opiskelijoidenMaara_ErityinenKoulutustehtava_211 = rs.getInt("erityinen_koulutustehtava_211")
+      oppimaaranSuorittajia_ErityinenKoulutustehtava_101 = rs.getInt("erityinen_koulutustehtava_101"),
+      oppimaaranSuorittajia_ErityinenKoulutustehtava_102 = rs.getInt("erityinen_koulutustehtava_102"),
+      oppimaaranSuorittajia_ErityinenKoulutustehtava_103 = rs.getInt("erityinen_koulutustehtava_103"),
+      oppimaaranSuorittajia_ErityinenKoulutustehtava_104 = rs.getInt("erityinen_koulutustehtava_104"),
+      oppimaaranSuorittajia_ErityinenKoulutustehtava_105 = rs.getInt("erityinen_koulutustehtava_105"),
+      oppimaaranSuorittajia_ErityinenKoulutustehtava_106 = rs.getInt("erityinen_koulutustehtava_106"),
+      oppimaaranSuorittajia_ErityinenKoulutustehtava_107 = rs.getInt("erityinen_koulutustehtava_107"),
+      oppimaaranSuorittajia_ErityinenKoulutustehtava_108 = rs.getInt("erityinen_koulutustehtava_108"),
+      oppimaaranSuorittajia_ErityinenKoulutustehtava_109 = rs.getInt("erityinen_koulutustehtava_109"),
+      oppimaaranSuorittajia_ErityinenKoulutustehtava_208 = rs.getInt("erityinen_koulutustehtava_208"),
+      oppimaaranSuorittajia_ErityinenKoulutustehtava_211 = rs.getInt("erityinen_koulutustehtava_211")
     )}
   )
 
@@ -349,17 +349,17 @@ with oppija as (select
     "aineopiskelija_VOSRahoitteisia" -> CompactColumn("aineopiskelija_VOSRahoitteisia"),
     "aineopiskelija_MuutaKauttaRahoitettu" -> CompactColumn("aineopiskelija_MuutaKauttaRahoitettu"),
     "aineopiskeija_UlkomaisiaVaihtoOpiskelijoita" -> CompactColumn("aineopiskeija_UlkomaisiaVaihtoOpiskelijoita"),
-    "opiskelijoidenMaara_ErityinenKoulutustehtava_101" -> CompactColumn("opiskelijoidenMaara_ErityinenKoulutustehtava_101"),
-    "opiskelijoidenMaara_ErityinenKoulutustehtava_102" -> CompactColumn("opiskelijoidenMaara_ErityinenKoulutustehtava_102"),
-    "opiskelijoidenMaara_ErityinenKoulutustehtava_103" -> CompactColumn("opiskelijoidenMaara_ErityinenKoulutustehtava_103"),
-    "opiskelijoidenMaara_ErityinenKoulutustehtava_104" -> CompactColumn("opiskelijoidenMaara_ErityinenKoulutustehtava_104"),
-    "opiskelijoidenMaara_ErityinenKoulutustehtava_105" -> CompactColumn("opiskelijoidenMaara_ErityinenKoulutustehtava_105"),
-    "opiskelijoidenMaara_ErityinenKoulutustehtava_106" -> CompactColumn("opiskelijoidenMaara_ErityinenKoulutustehtava_106"),
-    "opiskelijoidenMaara_ErityinenKoulutustehtava_107" -> CompactColumn("opiskelijoidenMaara_ErityinenKoulutustehtava_107"),
-    "opiskelijoidenMaara_ErityinenKoulutustehtava_108" -> CompactColumn("opiskelijoidenMaara_ErityinenKoulutustehtava_108"),
-    "opiskelijoidenMaara_ErityinenKoulutustehtava_109" -> CompactColumn("opiskelijoidenMaara_ErityinenKoulutustehtava_109"),
-    "opiskelijoidenMaara_ErityinenKoulutustehtava_208" -> CompactColumn("opiskelijoidenMaara_ErityinenKoulutustehtava_208"),
-    "opiskelijoidenMaara_ErityinenKoulutustehtava_211" -> CompactColumn("opiskelijoidenMaara_ErityinenKoulutustehtava_211")
+    "oppimaaranSuorittajia_ErityinenKoulutustehtava_101" -> CompactColumn("opiskelijoidenMaara_ErityinenKoulutustehtava_101"),
+    "oppimaaranSuorittajia_ErityinenKoulutustehtava_102" -> CompactColumn("opiskelijoidenMaara_ErityinenKoulutustehtava_102"),
+    "oppimaaranSuorittajia_ErityinenKoulutustehtava_103" -> CompactColumn("opiskelijoidenMaara_ErityinenKoulutustehtava_103"),
+    "oppimaaranSuorittajia_ErityinenKoulutustehtava_104" -> CompactColumn("opiskelijoidenMaara_ErityinenKoulutustehtava_104"),
+    "oppimaaranSuorittajia_ErityinenKoulutustehtava_105" -> CompactColumn("opiskelijoidenMaara_ErityinenKoulutustehtava_105"),
+    "oppimaaranSuorittajia_ErityinenKoulutustehtava_106" -> CompactColumn("opiskelijoidenMaara_ErityinenKoulutustehtava_106"),
+    "oppimaaranSuorittajia_ErityinenKoulutustehtava_107" -> CompactColumn("opiskelijoidenMaara_ErityinenKoulutustehtava_107"),
+    "oppimaaranSuorittajia_ErityinenKoulutustehtava_108" -> CompactColumn("opiskelijoidenMaara_ErityinenKoulutustehtava_108"),
+    "oppimaaranSuorittajia_ErityinenKoulutustehtava_109" -> CompactColumn("opiskelijoidenMaara_ErityinenKoulutustehtava_109"),
+    "oppimaaranSuorittajia_ErityinenKoulutustehtava_208" -> CompactColumn("opiskelijoidenMaara_ErityinenKoulutustehtava_208"),
+    "oppimaaranSuorittajia_ErityinenKoulutustehtava_211" -> CompactColumn("opiskelijoidenMaara_ErityinenKoulutustehtava_211")
   )
 }
 
@@ -401,15 +401,15 @@ case class LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow(
   aineopiskelija_VOSRahoitteisia: Int,
   aineopiskelija_MuutaKauttaRahoitettu: Int,
   aineopiskeija_UlkomaisiaVaihtoOpiskelijoita: Int,
-  opiskelijoidenMaara_ErityinenKoulutustehtava_101: Int,
-  opiskelijoidenMaara_ErityinenKoulutustehtava_102: Int,
-  opiskelijoidenMaara_ErityinenKoulutustehtava_103: Int,
-  opiskelijoidenMaara_ErityinenKoulutustehtava_104: Int,
-  opiskelijoidenMaara_ErityinenKoulutustehtava_105: Int,
-  opiskelijoidenMaara_ErityinenKoulutustehtava_106: Int,
-  opiskelijoidenMaara_ErityinenKoulutustehtava_107: Int,
-  opiskelijoidenMaara_ErityinenKoulutustehtava_108: Int,
-  opiskelijoidenMaara_ErityinenKoulutustehtava_109: Int,
-  opiskelijoidenMaara_ErityinenKoulutustehtava_208: Int,
-  opiskelijoidenMaara_ErityinenKoulutustehtava_211: Int
+  oppimaaranSuorittajia_ErityinenKoulutustehtava_101: Int,
+  oppimaaranSuorittajia_ErityinenKoulutustehtava_102: Int,
+  oppimaaranSuorittajia_ErityinenKoulutustehtava_103: Int,
+  oppimaaranSuorittajia_ErityinenKoulutustehtava_104: Int,
+  oppimaaranSuorittajia_ErityinenKoulutustehtava_105: Int,
+  oppimaaranSuorittajia_ErityinenKoulutustehtava_106: Int,
+  oppimaaranSuorittajia_ErityinenKoulutustehtava_107: Int,
+  oppimaaranSuorittajia_ErityinenKoulutustehtava_108: Int,
+  oppimaaranSuorittajia_ErityinenKoulutustehtava_109: Int,
+  oppimaaranSuorittajia_ErityinenKoulutustehtava_208: Int,
+  oppimaaranSuorittajia_ErityinenKoulutustehtava_211: Int
 )
