@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 14.10.2020
+- DIA-opiskeluoikeuden tiloilla `lasna` ja `valmistunut` tulee siirtää `opintojenRahoitus`
+- Muille DIA-opiskeluoikeuden tiloille ei voi siirtää `opintojenRahoitus`-kenttää
+
 ## 6.10.2020
 - lops2021: Vieraan kielen moduuleille täytetään tiedonsiirrossa kieli-kenttä oppiaineen tai moduulin
 nimen perusteella silloin kun se on mahdollista. VK-moduuleille on pakollista siirtää kieli-kenttä muissa

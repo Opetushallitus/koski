@@ -27,6 +27,7 @@ import UusiInternationalSchoolSuoritus from './UusiInternationalSchoolSuoritus'
 import {filterTilatByOpiskeluoikeudenTyyppi} from '../opiskeluoikeus/opiskeluoikeus'
 import {userP} from '../util/user'
 import Checkbox from '../components/Checkbox'
+import {autoFillRahoitusmuoto, opiskeluoikeudenTilaVaatiiRahoitusmuodon, defaultRahoitusmuotoP} from '../opiskeluoikeus/opintojenRahoitus'
 
 export default ({opiskeluoikeusAtom}) => {
   const dateAtom = Atom(new Date())
@@ -53,13 +54,20 @@ export default ({opiskeluoikeusAtom}) => {
   const suorituskieletP = Http.cachedGet('/koski/api/editor/koodit/kieli').map(sortLanguages).map(values => values.map(v => v.data))
   suorituskieletP.onValue(kielet => suorituskieliAtom.set(kielet[0]))
   const rahoituksetP = koodistoValues('opintojenrahoitus').map(R.sortBy(R.compose(parseInt, R.prop('koodiarvo'))))
-  const hasRahoituksetAvailable = tyyppiAtom.map(koodiarvoMatch('aikuistenperusopetus', 'ammatillinenkoulutus', 'lukiokoulutus', 'luva','internationalschool', 'ibtutkinto'))
-
   const opiskeluoikeudenTilatP = opiskeluoikeudentTilat(tyyppiAtom)
   opiskeluoikeudenTilatP.onValue(tilat => tilaAtom.set(tilat.find(koodiarvoMatch('lasna'))))
 
   const opiskeluoikeusP = Bacon.combineWith(dateAtom, oppilaitosAtom, tyyppiAtom, suoritusAtom, tilaAtom, rahoitusAtom, varhaiskasvatusOrganisaationUlkopuoleltaAtom, varhaiskasvatusJärjestämismuotoAtom, makeOpiskeluoikeus)
   opiskeluoikeusP.changes().onValue((oo) => opiskeluoikeusAtom.set(oo))
+
+  const rahoitusmuotoChanges = Bacon.combineWith(tyyppiAtom, rahoitusAtom, tilaAtom, defaultRahoitusmuotoP, (ooTyyppi, rahoitus, tila, defaultRahoitus) => ({
+    vaatiiRahoituksen: opiskeluoikeudenTilaVaatiiRahoitusmuodon(ooTyyppi?.koodiarvo, tila?.koodiarvo),
+    rahoitusValittu: rahoitus,
+    setDefaultRahoitus: () => rahoitusAtom.set(defaultRahoitus.data),
+    setRahoitusNone: () => rahoitusAtom.set(undefined)
+  }))
+
+  rahoitusmuotoChanges.onValue(autoFillRahoitusmuoto)
 
   return (<div>
     <VarhaiskasvatuksenJärjestämismuotoPicker varhaiskasvatusAtom={varhaiskasvatusOrganisaationUlkopuoleltaAtom} järjestämismuotoAtom={varhaiskasvatusJärjestämismuotoAtom} />
@@ -87,7 +95,7 @@ export default ({opiskeluoikeusAtom}) => {
     <Aloituspäivä dateAtom={dateAtom} />
     <OpiskeluoikeudenTila tilaAtom={tilaAtom} opiskeluoikeudenTilatP={opiskeluoikeudenTilatP} />
     {
-      ift(hasRahoituksetAvailable, <OpintojenRahoitus tyyppiAtom={tyyppiAtom} rahoitusAtom={rahoitusAtom} opintojenRahoituksetP={rahoituksetP} />)
+      ift(rahoitusmuotoChanges.map(x => x.vaatiiRahoituksen), <OpintojenRahoitus tyyppiAtom={tyyppiAtom} rahoitusAtom={rahoitusAtom} opintojenRahoituksetP={rahoituksetP} />)
     }
   </div>)
 }
@@ -172,7 +180,7 @@ const OpiskeluoikeudenTila = ({tilaAtom, opiskeluoikeudenTilatP}) => {
 
 const OpintojenRahoitus = ({tyyppiAtom, rahoitusAtom, opintojenRahoituksetP}) => {
   const options = Bacon.combineWith(tyyppiAtom, opintojenRahoituksetP, (tyyppi, rahoitukset) =>
-    koodiarvoMatch('aikuistenperusopetus', 'lukiokoulutus', 'internationalschool')(tyyppi)
+    koodiarvoMatch('aikuistenperusopetus', 'lukiokoulutus', 'internationalschool', 'ibtutkinto')(tyyppi)
       ? rahoitukset.filter(v => sallitutRahoituskoodiarvot.includes(v.koodiarvo))
       : rahoitukset
   )

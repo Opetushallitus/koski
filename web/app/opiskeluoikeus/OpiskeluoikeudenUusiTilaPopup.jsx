@@ -5,7 +5,9 @@ import {
   contextualizeSubModel, modelData,
   modelItems,
   modelLookup,
-  modelLookupRequired
+  modelLookupRequired,
+  modelSetValue,
+  pushModel
 } from '../editor/EditorModel'
 import {EnumEditor} from '../editor/EnumEditor'
 import {Editor} from '../editor/Editor'
@@ -13,6 +15,7 @@ import ModalDialog from '../editor/ModalDialog'
 import Text from '../i18n/Text'
 import {ift} from '../util/util'
 import {filterTilatByOpiskeluoikeudenTyyppi} from './opiskeluoikeus'
+import {autoFillRahoitusmuoto, opiskeluoikeudenTilaVaatiiRahoitusmuodon, defaultRahoitusmuotoP} from './opintojenRahoitus'
 
 export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, disabloiValmistunut, tilaListModel, resultCallback}) => {
   const submitBus = Bacon.Bus()
@@ -26,9 +29,19 @@ export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, disabl
   const tilaModel = modelP.map(m => modelLookupRequired(m, 'tila'))
   const rahoitusModel = modelP.map(m => modelLookup(m, 'opintojenRahoitus'))
 
-  const tilaSelectedP = tilaModel.changes().map(true).toProperty(false)
-  const opintojenRahoitusValidP = Bacon.combineWith(validateOpintojenRahoitus, tilaModel, rahoitusModel)
-  const validP = tilaSelectedP.and(opintojenRahoitusValidP).and(errorP.not())
+  const validP = errorP.not()
+
+  const rahoitusmuotoChanges = Bacon.combineWith(tilaModel, rahoitusModel, defaultRahoitusmuotoP, (tilaM, rahoitusM, defaultRahoitus) => ({
+    vaatiiRahoituksen: opiskeluoikeudenTilaVaatiiRahoitusmuodon(
+      modelData(tilaM.context.opiskeluoikeus, 'tyyppi.koodiarvo'),
+      modelData(tilaM, 'koodiarvo')
+    ),
+    rahoitusValittu: modelData(rahoitusM),
+    setDefaultRahoitus: () => pushModel(modelSetValue(rahoitusM, defaultRahoitus)),
+    setRahoitusNone: () => pushModel(modelSetValue(rahoitusM, null))
+  }))
+
+  rahoitusmuotoChanges.onValue(autoFillRahoitusmuoto)
 
   modelP.sampledBy(submitBus.filter(validP)).onValue(resultCallback)
 
@@ -43,7 +56,7 @@ export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, disabl
       <Editor baret-lift asRadiogroup={true} model={tilaModel} disabledValue={disabloiValmistunut && 'koskiopiskeluoikeudentila_valmistunut'} fetchAlternatives={fetchTilat} />
     </div>
     {
-      ift(rahoitusModel, (<div className="property rahoitus" key="rahoitus">
+      ift(rahoitusmuotoChanges.map(x => x.vaatiiRahoituksen), (<div className="property rahoitus" key="rahoitus">
         <label><Text name="Rahoitus"/>{':'}</label>
         <Editor baret-lift asRadiogroup={true} model={rahoitusModel}/>
       </div>))
@@ -56,17 +69,3 @@ const fetchTilat = model => EnumEditor.fetchAlternatives(model).map(alts => {
   const tyyppi = modelData(model.context.opiskeluoikeus, 'tyyppi')
   return filterTilatByOpiskeluoikeudenTyyppi(tyyppi, getKoodiarvo)(alts)
 })
-
-const validateOpintojenRahoitus = (tilaModel, rahoitusModel) => {
-  const tyyppi = tilaModel.parent.value.classes
-  const tila = modelData(tilaModel, 'koodiarvo')
-  const rahoitusValittu = modelData(rahoitusModel)
-
-  if (tyyppi.includes('lukionopiskeluoikeusjakso') || tyyppi.includes('aikuistenperusopetuksenopiskeluoikeusjakso')) {
-    return !(['lasna', 'valmistunut'].includes(tila)) || rahoitusValittu
-  }
-  if (tyyppi.includes('ammatillinenopiskeluoikeusjakso')) {
-    return !(['lasna', 'valmistunut', 'loma'].includes(tila)) || rahoitusValittu
-  }
-  return true
-}

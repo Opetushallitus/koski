@@ -3,7 +3,7 @@ package fi.oph.koski.api
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.LukioExampleData
+import fi.oph.koski.documentation.{ExampleData, LukioExampleData}
 import fi.oph.koski.documentation.DIAExampleData.saksalainenKoulu
 import fi.oph.koski.schema._
 
@@ -26,7 +26,7 @@ object OpiskeluoikeusTestMethodsDIA {
     oppilaitos = Some(saksalainenKoulu),
     tila = DIAOpiskeluoikeudenTila(
       List(
-        DIAOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen)
+        DIAOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen))
       )
     ),
     suoritukset = List(tutkintoSuoritus)
@@ -35,8 +35,8 @@ object OpiskeluoikeusTestMethodsDIA {
   def opiskeluoikeusValmis = opiskeluoikeus.copy(
     tila = DIAOpiskeluoikeudenTila(
       List(
-        DIAOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen),
-        DIAOpiskeluoikeusjakso(date(2016, 6, 4), LukioExampleData.opiskeluoikeusPäättynyt)
+        DIAOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)),
+        DIAOpiskeluoikeusjakso(date(2016, 6, 4), LukioExampleData.opiskeluoikeusPäättynyt, Some(ExampleData.valtionosuusRahoitteinen))
       )
     )
   )

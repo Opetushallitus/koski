@@ -273,17 +273,28 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   private def validateOpintojenrahoitus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
-    def valid(jakso: Opiskeluoikeusjakso) = jakso match {
-      case a: AmmatillinenOpiskeluoikeusjakso if List("lasna", "valmistunut", "loma").contains(a.tila.koodiarvo) => a.opintojenRahoitus.isDefined
-      case l: LukionOpiskeluoikeusjakso if List("lasna", "valmistunut").contains(l.tila.koodiarvo) => l.opintojenRahoitus.isDefined
-      case a: AikuistenPerusopetuksenOpiskeluoikeusjakso if List("lasna", "valmistunut").contains(a.tila.koodiarvo) => a.opintojenRahoitus.isDefined
-      case _ => true
-    }
+    HttpStatus.fold(opiskeluoikeus.tila.opiskeluoikeusjaksot.map {
+      case j: AmmatillinenOpiskeluoikeusjakso => vaadiRahoitusmuotoTiloilta(j, "lasna", "valmistunut", "loma")
+      case j: LukionOpiskeluoikeusjakso => vaadiRahoitusmuotoTiloilta(j, "lasna", "valmistunut")
+      case j: AikuistenPerusopetuksenOpiskeluoikeusjakso => vaadiRahoitusmuotoTiloilta(j, "lasna", "valmistunut")
+      case j: DIAOpiskeluoikeusjakso => HttpStatus.fold(
+        vaadiRahoitusmuotoTiloilta(j, "lasna", "valmistunut"),
+        rahoitusmuotoKiellettyTiloilta(j, "eronnut","katsotaaneronneeksi", "mitatoity", "peruutettu", "valiaikaisestikeskeytynyt")
+      )
+      case _ => HttpStatus.ok
+    })
+  }
 
-    def validate(jakso: Opiskeluoikeusjakso) =
-      HttpStatus.validate(valid(jakso))(KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto(s"Opiskeluoikeuden tilalta ${jakso.tila.koodiarvo} puuttuu rahoitusmuoto"))
+  private def vaadiRahoitusmuotoTiloilta(jakso: KoskiOpiskeluoikeusjakso, tilat: String*)  = {
+    HttpStatus.validate(
+      !tilat.contains(jakso.tila.koodiarvo) || jakso.opintojenRahoitus.isDefined
+    )(KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto(s"Opiskeluoikeuden tilalta ${jakso.tila.koodiarvo} puuttuu rahoitusmuoto"))
+  }
 
-    HttpStatus.fold(opiskeluoikeus.tila.opiskeluoikeusjaksot.map(validate))
+  private def rahoitusmuotoKiellettyTiloilta(jakso: KoskiOpiskeluoikeusjakso, tilat: String*) = {
+    HttpStatus.validate(
+      !tilat.contains(jakso.tila.koodiarvo) || jakso.opintojenRahoitus.isEmpty
+    )(KoskiErrorCategory.badRequest.validation.tila.tilallaEiSaaOllaRahoitusmuotoa(s"Opiskeluoikeuden tilalla ${jakso.tila.koodiarvo} ei saa olla rahoitusmuotoa"))
   }
 
   private def validateSisältyvyys(henkilö: Option[Henkilö], opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSession, accessType: AccessType.Value): HttpStatus = opiskeluoikeus.sisältyyOpiskeluoikeuteen match {
