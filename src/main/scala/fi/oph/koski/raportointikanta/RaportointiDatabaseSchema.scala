@@ -58,7 +58,6 @@ object RaportointiDatabaseSchema {
   def dropAllIfExists(s: Schema) = DBIO.seq(
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_opiskeluoikeus CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_opiskeluoikeus_aikajakso CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.esiopetus_opiskeluoikeus_aikajakso CASCADE", // TODO: Voidaan poistaa kun on ajettu kerran vanha taulu pois kannasta
     sqlu"DROP TABLE IF EXISTS #${s.name}.esiopetus_opiskeluoik_aikajakso CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_paatason_suoritus CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_osasuoritus CASCADE",
