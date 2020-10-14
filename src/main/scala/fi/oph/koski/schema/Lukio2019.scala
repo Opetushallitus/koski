@@ -66,7 +66,7 @@ case class LukionOppiaineidenOppimäärienSuoritus2019(
   @KoodistoKoodiarvo("lukionoppiaineidenoppimaarat2019")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppiaineidenoppimaarat2019", koodistoUri = "suorituksentyyppi"),
   ryhmä: Option[String] = None
-) extends LukionPäätasonSuoritus2019 with Välisuoritus with Oppimäärällinen {
+) extends LukionPäätasonSuoritus2019 with Ryhmällinen with Välisuoritus with Oppimäärällinen {
   override def tarvitseeVahvistuksen: Boolean = false
 }
 
