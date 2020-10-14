@@ -33,11 +33,11 @@ class LukioDiaIbInternationalOpiskelijaMaaratRaporttiSpec extends FreeSpec with 
     }
 
     lazy val rivit: Seq[LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow] = loadRaportti
-    lazy val helsinki = rivit.find(_.oppilaitos == hese).get
-    lazy val ressu = rivit.find(_.oppilaitos == resu).get
+    lazy val helsinki = rivit.find(_.oppilaitosNimi == hese).get
+    lazy val ressu = rivit.find(_.oppilaitosNimi == resu).get
 
     "Tiedot jaotellaan oppilaitoksittain" in {
-      rivit.map(_.oppilaitos) should contain theSameElementsAs (Seq(hese, resu))
+      rivit.map(_.oppilaitosNimi) should contain theSameElementsAs (Seq(hese, resu))
     }
     "Opiskelijoiden määrä" in {
       helsinki.opiskelijoidenMaara shouldBe(2)

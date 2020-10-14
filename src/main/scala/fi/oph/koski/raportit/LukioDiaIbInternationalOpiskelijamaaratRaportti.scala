@@ -189,6 +189,7 @@ with oppija as (select
     )
   group by oppilaitos_oid
 ) select
+    r_organisaatio.organisaatio_oid oppilaitos_oid,
     r_organisaatio.nimi oppilaitos_nimi,
     kaikki.yhteensa kaikki_yhteensa,
     kaikki.valtionosuus_rahoitteinen kaikki_valtionosuus_rahoitteinen,
@@ -254,7 +255,8 @@ with oppija as (select
   implicit private val getResult: GetResult[LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow] = GetResult(r => {
     val rs: ResultSet = r.rs
     LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow(
-      oppilaitos = rs.getString("oppilaitos_nimi"),
+      oppilaitosOid = rs.getString("oppilaitos_oid"),
+      oppilaitosNimi = rs.getString("oppilaitos_nimi"),
       opiskelijoidenMaara = rs.getInt("kaikki_yhteensa"),
       opiskelijoidenMaara_VOSRahoitteisia = rs.getInt("kaikki_valtionosuus_rahoitteinen"),
       opiskelijoidenMaara_MuutaKauttaRahoitettu = rs.getInt("kaikki_muuta_kautta_rahoitettu"),
@@ -310,7 +312,8 @@ with oppija as (select
   )
 
   val columnSettings: Seq[(String, Column)] = Seq(
-    "oppilaitos" -> Column("Oppilaitos oid"),
+    "oppilaitosOid" -> Column("Oppilaitos oid"),
+    "oppilaitosNimi" -> Column("Oppilaitos"),
     "opiskelijoidenMaara" -> CompactColumn("opiskelijoidenMaara"),
     "opiskelijoidenMaara_VOSRahoitteisia" -> CompactColumn("opiskelijoidenMaara_VOSRahoitteisia"),
     "opiskelijoidenMaara_MuutaKauttaRahoitettu" -> CompactColumn("opiskelijoidenMaara_MuutaKauttaRahoitettu"),
@@ -361,7 +364,8 @@ with oppija as (select
 }
 
 case class LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow(
-  oppilaitos: String,
+  oppilaitosOid: String,
+  oppilaitosNimi: String,
   opiskelijoidenMaara: Int,
   opiskelijoidenMaara_VOSRahoitteisia: Int,
   opiskelijoidenMaara_MuutaKauttaRahoitettu: Int,
