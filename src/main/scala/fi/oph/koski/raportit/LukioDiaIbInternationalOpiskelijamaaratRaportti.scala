@@ -100,8 +100,7 @@ with oppija as (select
     count(*) yhteensa,
     count(case when opintojen_rahoitus = '1' then 1 end) valtionosuus_rahoitteinen,
     count(case when opintojen_rahoitus = '6' then 1 end) muuta_kautta_rahoitettu,
-    count(case when ulkomainen_vaihto_opiskelija then 1 end) ulkomainen_vaihto_opiskelija,
-    count(case when sisaoppilaitosmainen_majoitus then 1 end) sisaoppilaitosmainen_majoitus
+    count(case when ulkomainen_vaihto_opiskelija then 1 end) ulkomainen_vaihto_opiskelija
   from oppija
   group by oppilaitos_oid
 ), oppimaara as (
@@ -115,6 +114,7 @@ with oppija as (select
     count(case when suorituskieli_koodiarvo = 'FI' then 1 end) opetuskieli_suomi,
     count(case when suorituskieli_koodiarvo = 'SV' then 1 end) opetuskieli_ruotsi,
     count(case when suorituskieli_koodiarvo not in ('FI', 'SV') then 1 end) opetuskieli_muu,
+    count(case when sisaoppilaitosmainen_majoitus then 1 end) sisaoppilaitosmainen_majoitus,
     count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '101' then 1 end) erityinen_koulutustehtava_101,
     count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '102' then 1 end) erityinen_koulutustehtava_102,
     count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '103' then 1 end) erityinen_koulutustehtava_103,
@@ -195,7 +195,6 @@ with oppija as (select
     kaikki.valtionosuus_rahoitteinen kaikki_valtionosuus_rahoitteinen,
     kaikki.muuta_kautta_rahoitettu kaikki_muuta_kautta_rahoitettu,
     kaikki.ulkomainen_vaihto_opiskelija kaikki_ulkomainen_vaihto_opiskelija,
-    kaikki.sisaoppilaitosmainen_majoitus kaikki_sisaoppilaitosmainen_majoitus,
 
     oppimaara.yhteensa oppimaara_yhteensa,
     oppimaara.valtionosuus_rahoitteinen oppimaara_valtionosuus_rahoitteinen,
@@ -205,6 +204,7 @@ with oppija as (select
     oppimaara.opetuskieli_suomi oppimaara_opetuskieli_suomi,
     oppimaara.opetuskieli_ruotsi oppimaara_opetuskieli_ruotsi,
     oppimaara.opetuskieli_muu oppimaara_opetuskieli_muu,
+    oppimaara.sisaoppilaitosmainen_majoitus oppimaara_sisaoppilaitosmainen_majoitus,
 
     nuorten_oppimaara.yhteensa nuorten_oppimaara_yhteensa,
     nuorten_oppimaara.valtionosuus_rahoitteinen nuorten_oppimaara_valtionosuus_rahoitteinen,
@@ -261,7 +261,6 @@ with oppija as (select
       opiskelijoidenMaara_VOSRahoitteisia = rs.getInt("kaikki_valtionosuus_rahoitteinen"),
       opiskelijoidenMaara_MuutaKauttaRahoitettu = rs.getInt("kaikki_muuta_kautta_rahoitettu"),
       opiskelijoidenMaara_UlkomaisiaVaihtoOpiskelijoita = rs.getInt("kaikki_ulkomainen_vaihto_opiskelija"),
-      opiskelijoidenMaara_SisaoppilaitosmainenMajoitus = rs.getInt("kaikki_sisaoppilaitosmainen_majoitus"),
 
       oppimaaranSuorittajia = rs.getInt("oppimaara_yhteensa"),
       oppimaaranSuorittajia_VOSRahoitteisia = rs.getInt("oppimaara_valtionosuus_rahoitteinen"),
@@ -271,6 +270,7 @@ with oppija as (select
       oppimaaranSuorittajia_OpetuskieliSuomi = rs.getInt("oppimaara_opetuskieli_suomi"),
       oppimaaranSuorittajia_OpetuskieliRuotsi = rs.getInt("oppimaara_opetuskieli_ruotsi"),
       oppimaaranSuorittajia_OpetuskieliMuu = rs.getInt("oppimaara_opetuskieli_muu"),
+      oppimaaranSuorittajia_SisaoppilaitosmainenMajoitus = rs.getInt("oppimaara_sisaoppilaitosmainen_majoitus"),
 
       nuortenOppimaaranSuorittajia = rs.getInt("nuorten_oppimaara_yhteensa"),
       nuortenOppimaaranSuorittajia_VOSRahoitteisia = rs.getInt("nuorten_oppimaara_valtionosuus_rahoitteinen"),
@@ -318,7 +318,6 @@ with oppija as (select
     "opiskelijoidenMaara_VOSRahoitteisia" -> CompactColumn("opiskelijoidenMaara_VOSRahoitteisia"),
     "opiskelijoidenMaara_MuutaKauttaRahoitettu" -> CompactColumn("opiskelijoidenMaara_MuutaKauttaRahoitettu"),
     "opiskelijoidenMaara_UlkomaisiaVaihtoOpiskelijoita" -> CompactColumn("opiskelijoidenMaara_UlkomaisiaVaihtoOpiskelijoita"),
-    "opiskelijoidenMaara_SisaoppilaitosmainenMajoitus" -> CompactColumn("opiskelijoidenMaara_SisaoppilaitosmainenMajoitus"),
     "oppimaaranSuorittajia" -> CompactColumn("oppimaaranSuorittajia"),
     "oppimaaranSuorittajia_VOSRahoitteisia" -> CompactColumn("oppimaaranSuorittajia_VOSRahoitteisia"),
     "oppimaaranSuorittajia_MuutaKauttaRahoitettu" -> CompactColumn("oppimaaranSuorittajia_MuutaKauttaRahoitettu"),
@@ -327,6 +326,7 @@ with oppija as (select
     "oppimaaranSuorittajia_OpetuskieliSuomi" -> CompactColumn("oppimaaranSuorittajia_OpetuskieliSuomi"),
     "oppimaaranSuorittajia_OpetuskieliRuotsi" -> CompactColumn("oppimaaranSuorittajia_OpetuskieliRuotsi"),
     "oppimaaranSuorittajia_OpetuskieliMuu" -> CompactColumn("oppimaaranSuorittajia_OpetuskieliMuu"),
+    "oppimaaranSuorittajia_SisaoppilaitosmainenMajoitus" -> CompactColumn("opiskelijoidenMaara_SisaoppilaitosmainenMajoitus"),
     "nuortenOppimaaranSuorittajia" -> CompactColumn("nuortenOppimaaranSuorittajia"),
     "nuortenOppimaaranSuorittajia_VOSRahoitteisia" -> CompactColumn("nuortenOppimaaranSuorittajia_VOSRahoitteisia"),
     "nuortenOppimaaranSuorittajia_MuutaKauttaRahoitettu" -> CompactColumn("nuortenOppimaaranSuorittajia_MuutaKauttaRahoitettu"),
@@ -370,7 +370,6 @@ case class LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow(
   opiskelijoidenMaara_VOSRahoitteisia: Int,
   opiskelijoidenMaara_MuutaKauttaRahoitettu: Int,
   opiskelijoidenMaara_UlkomaisiaVaihtoOpiskelijoita: Int,
-  opiskelijoidenMaara_SisaoppilaitosmainenMajoitus: Int,
   oppimaaranSuorittajia: Int,
   oppimaaranSuorittajia_VOSRahoitteisia: Int,
   oppimaaranSuorittajia_MuutaKauttaRahoitettu: Int,
@@ -379,6 +378,7 @@ case class LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow(
   oppimaaranSuorittajia_OpetuskieliSuomi: Int,
   oppimaaranSuorittajia_OpetuskieliRuotsi: Int,
   oppimaaranSuorittajia_OpetuskieliMuu: Int,
+  oppimaaranSuorittajia_SisaoppilaitosmainenMajoitus: Int,
   nuortenOppimaaranSuorittajia: Int,
   nuortenOppimaaranSuorittajia_VOSRahoitteisia: Int,
   nuortenOppimaaranSuorittajia_MuutaKauttaRahoitettu: Int,
