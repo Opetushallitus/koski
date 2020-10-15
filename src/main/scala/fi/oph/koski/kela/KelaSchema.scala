@@ -215,9 +215,27 @@ case class Järjestämismuotojakso(
   järjestämismuoto: Järjestämismuoto
 )
 
-case class OsaamisenHankkimistapa (
-  tunniste: Koodistokoodiviite
+case class Oppisopimus(
+  työnantaja: Yritys
 )
+
+case class Yritys(
+  nimi: schema.LocalizedString,
+  yTunnus: String
+)
+
+trait OsaamisenHankkimistapa {
+  def tunniste: Koodistokoodiviite
+}
+
+case class OsaamisenHankkimistapaIlmanLisätietoja (
+  tunniste: Koodistokoodiviite
+) extends OsaamisenHankkimistapa
+
+case class OppisopimuksellinenOsaamisenHankkimistapa (
+  tunniste: Koodistokoodiviite,
+  oppisopimus: Oppisopimus
+) extends OsaamisenHankkimistapa
 
 case class OsaamisenHankkimistapajakso(
   alku: LocalDate,

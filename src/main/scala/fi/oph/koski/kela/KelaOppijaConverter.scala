@@ -242,11 +242,11 @@ object KelaOppijaConverter extends Logging {
         case _ => None
       },
       osaamisenHankkimistavat = suoritus match {
-        case o: schema.OsaamisenHankkimistavallinen => o.osaamisenHankkimistavat.map(_.map(j =>
+        case o: schema.OsaamisenHankkimistavallinen => o.osaamisenHankkimistavat.map(_.map(jakso =>
           OsaamisenHankkimistapajakso(
-            alku = j.alku,
-            loppu = j.loppu,
-            osaamisenHankkimistapa = OsaamisenHankkimistapa(tunniste = convertKoodiviite(j.osaamisenHankkimistapa.tunniste))
+            alku = jakso.alku,
+            loppu = jakso.loppu,
+            osaamisenHankkimistapa = convertOsaamisenHankkimisTapa(jakso.osaamisenHankkimistapa)
           )
         ))
         case _ => None
@@ -292,6 +292,20 @@ object KelaOppijaConverter extends Logging {
         case _ => None
       }
     )
+  }
+
+  private def convertOsaamisenHankkimisTapa(osaamisenHankkimistapa: schema.OsaamisenHankkimistapa) = {
+    osaamisenHankkimistapa match {
+      case schema.OsaamisenHankkimistapaIlmanLisätietoja(tunniste) =>
+        OsaamisenHankkimistapaIlmanLisätietoja(tunniste = convertKoodiviite(tunniste))
+      case schema.OppisopimuksellinenOsaamisenHankkimistapa(tunniste, oppisopimus) =>
+        OppisopimuksellinenOsaamisenHankkimistapa(
+          tunniste = convertKoodiviite(tunniste),
+          oppisopimus = Oppisopimus(
+            työnantaja = Yritys(nimi = oppisopimus.työnantaja.nimi, yTunnus = oppisopimus.työnantaja.yTunnus)
+          )
+        )
+    }
   }
 
   private def convertSuorituksenKoulutusmoduuli(koulutusmoduuli: schema.Koulutusmoduuli) = {
