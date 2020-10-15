@@ -174,6 +174,18 @@ describe('Kela', function () {
     })
   })
 
+  describe('Opiskeluoikeuden tila', function () {
+    before(
+      Authentication().login('Laaja'),
+      kela.openPage,
+      kela.searchAndSelect('280618-402H', 'Aarne')
+    )
+
+    it('Näytetään rahoitusmuoto', function () {
+      expect(extractAsText(S('.opiskeluoikeus.tila'))).to.include('Valmistunut ( Työnantajan kokonaan rahoittama )\n')
+    })
+  })
+
   describe('Versiohistoria', function () {
     var oppijanHetu = '220109-784L'
 
