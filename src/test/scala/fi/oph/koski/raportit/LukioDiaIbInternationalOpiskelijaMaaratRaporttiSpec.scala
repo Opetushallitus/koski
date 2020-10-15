@@ -124,8 +124,8 @@ class LukioDiaIbInternationalOpiskelijaMaaratRaporttiSpec extends FreeSpec with 
       ressu.aikuistenOppimaaranSuorittajia_OpetuskieliMuu shouldBe(0)
     }
     "Sisäoppilaitosmainen majoitus" in {
-      helsinki.oppimaaranSuorittajia_SisaoppilaitosmainenMajoitus shouldBe(1)
-      ressu.oppimaaranSuorittajia_SisaoppilaitosmainenMajoitus shouldBe(0)
+      helsinki.oppimaaranSuorittajia_SisaoppilaitosmainenMajoitus_VOSRahoitteisia shouldBe(1)
+      ressu.oppimaaranSuorittajia_SisaoppilaitosmainenMajoitus_VOSRahoitteisia shouldBe(0)
     }
     "Erityinen koulutustehtävä" in {
       helsinki.oppimaaranSuorittajia_ErityinenKoulutustehtava_101 should equal(0)
