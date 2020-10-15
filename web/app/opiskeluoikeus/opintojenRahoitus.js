@@ -1,9 +1,13 @@
 import Http from '../util/http'
+import Bacon from 'baconjs'
 
 const valtionosuusrahoitteinen = '1'
-export const defaultRahoitusmuotoP = Http.cachedGet('/koski/api/editor/koodit/opintojenrahoitus/1').map(rahoitukset =>
-  rahoitukset.find(rahoitus => rahoitus.data.koodiarvo === valtionosuusrahoitteinen)
-)
+
+export const defaultRahoitusmuotoP = Bacon.constant(valtionosuusrahoitteinen)
+  .flatMap(vos => Http.cachedGet(`/koski/api/editor/koodit/opintojenrahoitus/${vos}`))
+  .map(rahoitukset =>
+    rahoitukset.find(rahoitus => rahoitus.data.koodiarvo === valtionosuusrahoitteinen)
+  )
 
 export const autoFillRahoitusmuoto = ({vaatiiRahoituksen, rahoitusValittu, setDefaultRahoitus, setRahoitusNone}) => {
   if (vaatiiRahoituksen && !rahoitusValittu) {
