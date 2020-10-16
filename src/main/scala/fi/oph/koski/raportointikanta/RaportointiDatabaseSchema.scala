@@ -34,7 +34,6 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(koulutusmuoto)",
     sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(sisaltyy_opiskeluoikeuteen_oid)",
     sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus_aikajakso(opiskeluoikeus_oid)",
-    sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus_aikajakso(alku)",
     sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_paatason_suoritus(paatason_suoritus_id)",
     sqlu"CREATE INDEX ON #${s.name}.r_paatason_suoritus(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON #${s.name}.r_paatason_suoritus(vahvistus_paiva)",
@@ -42,11 +41,8 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_osasuoritus(osasuoritus_id)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(paatason_suoritus_id)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(opiskeluoikeus_oid)",
-    sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(vahvistus_paiva)",
-    sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(suorituksen_tyyppi)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(ylempi_osasuoritus_id)",
     sqlu"CREATE INDEX ON #${s.name}.esiopetus_opiskeluoik_aikajakso(opiskeluoikeus_oid)",
-    sqlu"CREATE INDEX ON #${s.name}.esiopetus_opiskeluoik_aikajakso(alku)" // TODO: turha indeksi?
   )
 
   def createOtherIndexes(s: Schema) = DBIO.seq(
@@ -58,7 +54,6 @@ object RaportointiDatabaseSchema {
   def dropAllIfExists(s: Schema) = DBIO.seq(
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_opiskeluoikeus CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_opiskeluoikeus_aikajakso CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.esiopetus_opiskeluoikeus_aikajakso CASCADE", // TODO: Voidaan poistaa kun on ajettu kerran vanha taulu pois kannasta
     sqlu"DROP TABLE IF EXISTS #${s.name}.esiopetus_opiskeluoik_aikajakso CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_paatason_suoritus CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_osasuoritus CASCADE",

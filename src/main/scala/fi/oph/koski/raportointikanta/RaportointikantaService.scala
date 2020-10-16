@@ -65,6 +65,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     loadOrganisaatiot(loadDatabase)
     loadKoodistot(loadDatabase)
     swapRaportointikanta()
+    raportointiDatabase.vacuumAnalyze()
   }
 
   protected lazy val defaultScheduler: Scheduler = NewThreadScheduler()
