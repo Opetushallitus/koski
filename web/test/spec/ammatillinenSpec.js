@@ -2392,12 +2392,13 @@ describe('Ammatillinen koulutus', function() {
         var clickMuokkaaOpiskeluoikeus = function () { return S('div.opiskeluoikeuden-tiedot button.toggle-edit')[0].click() }
         var täydennäSisältyvänOpiskeluoikeudenOid = function () { return firstEditor.property('oid').setValue(S('ul.opiskeluoikeuksientiedot span.id:eq( 1 ) > span.value').text())() }
         var tallenna = function () { return S('#edit-bar button.koski-button').click() }
-        var odotaTallennusta = function () { return wait.forAjax() }
+        var waitAjax = function () { return wait.forAjax() }
 
         var clickMuokkaaSisällytettyOpiskeluoikeus = function () { return S('.opiskeluoikeuden-tiedot:eq(1) .koski-button').click() }
 
         before(
           clickLisääOpiskeluoikeus,
+          waitAjax,
           clickValitseOppilaitosDropdown,
           addOppija.selectOppilaitos('Omnia'),
           addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen'),
@@ -2412,7 +2413,7 @@ describe('Ammatillinen koulutus', function() {
 
           täydennäSisältyvänOpiskeluoikeudenOid,
           tallenna,
-          odotaTallennusta,
+          waitAjax,
 
           clickMuokkaaSisällytettyOpiskeluoikeus,
           secondEditor.property('tila').removeItem(0),
