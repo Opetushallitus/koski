@@ -34,35 +34,6 @@ object ExamplesLukio2019 {
       paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("KAN200", "Kanteleensoiton perusteet", "Itäsuomalaisen kanteleensoiton perusteet")).copy(arviointi = sanallinenArviointi("S"))
     ))))
 
-  val omanÄidinkielenOpinnotSaame = Some(OmanÄidinkielenOpinnotLaajuusOpintopisteinä(
-    arvosana = Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"),
-    arviointipäivä = None,
-    kieli = Kielivalikoima.saame,
-    laajuus = LaajuusOpintopisteissä(3)
-  ))
-
-  val puhviKoe = Some(PuhviKoe2019(
-    arvosana = Koodistokoodiviite(koodiarvo = "7", koodistoUri = "arviointiasteikkoyleissivistava"),
-    päivä = date(2019, 8, 30),
-    kuvaus = None
-  ))
-
-  val suullisenKielitaidonKoeEnglanti = SuullisenKielitaidonKoe2019(
-    kieli = Koodistokoodiviite("EN", Some("englanti"), "kielivalikoima", None),
-    arvosana = Koodistokoodiviite("6", "arviointiasteikkoyleissivistava"),
-    taitotaso = Koodistokoodiviite(koodiarvo = "B1.1", koodistoUri = "arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
-    kuvaus = None,
-    päivä = date(2019, 9, 3)
-  )
-
-  val suullisenKielitaidonKoeEspanja = SuullisenKielitaidonKoe2019(
-    kieli = Koodistokoodiviite("ES", Some("espanja"), "kielivalikoima", None),
-    arvosana = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
-    taitotaso = Koodistokoodiviite(koodiarvo = "yli_C1.1", koodistoUri = "arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
-    kuvaus = Some("Puhetaito äidinkielen tasolla"),
-    päivä = date(2019, 9, 3)
-  )
-
   lazy val oppimääränSuoritus = LukionOppimääränSuoritus2019(
     koulutusmoduuli = lukionOppimäärä2019,
     oppimäärä = nuortenOpetussuunnitelma,
@@ -280,17 +251,51 @@ object Lukio2019ExampleData {
     pakollinen = true
   )
 
-  def muidenLukioOpintojenSuoritus(): MuidenLukioOpintojenSuoritus2019 = muidenLukioOpintojenSuoritus(MuutLukionSuoritukset2019(Koodistokoodiviite(koodistoUri = "lukionmuutopinnot", koodiarvo= "MS"), None))
+  def muidenLukioOpintojenSuoritus(): MuidenLukioOpintojenSuoritus2019 = muidenLukioOpintojenSuoritus(muutSuoritukset)
 
-  def lukioDiplomienSuoritus(): MuidenLukioOpintojenSuoritus2019 = muidenLukioOpintojenSuoritus(Lukiodiplomit2019(Koodistokoodiviite(koodistoUri = "lukionmuutopinnot", koodiarvo= "LD"), None))
+  def lukioDiplomienSuoritus(): MuidenLukioOpintojenSuoritus2019 = muidenLukioOpintojenSuoritus(lukiodiplomit)
 
-  def temaattistenOpintojenSuoritus(): MuidenLukioOpintojenSuoritus2019 = muidenLukioOpintojenSuoritus(TemaattisetOpinnot2019(Koodistokoodiviite(koodistoUri = "lukionmuutopinnot", koodiarvo= "TO"), None))
+  def temaattistenOpintojenSuoritus(): MuidenLukioOpintojenSuoritus2019 = muidenLukioOpintojenSuoritus(temaattisetOpinnot)
+
+  def muutSuoritukset():MuutLukionSuoritukset2019 = MuutLukionSuoritukset2019(Koodistokoodiviite(koodistoUri = "lukionmuutopinnot", koodiarvo= "MS"), None)
+  def lukiodiplomit(): Lukiodiplomit2019 = Lukiodiplomit2019(Koodistokoodiviite(koodistoUri = "lukionmuutopinnot", koodiarvo= "LD"), None)
+  def temaattisetOpinnot(): TemaattisetOpinnot2019 = TemaattisetOpinnot2019(Koodistokoodiviite(koodistoUri = "lukionmuutopinnot", koodiarvo= "TO"), None)
 
   private def muidenLukioOpintojenSuoritus(koulutusmoduuli: MuutSuorituksetTaiVastaavat2019): MuidenLukioOpintojenSuoritus2019 = MuidenLukioOpintojenSuoritus2019(
     koulutusmoduuli = koulutusmoduuli,
     osasuoritukset = None
   )
 
-  def laajuus(arvo: Double) = LaajuusOpintopisteissä(arvo = arvo, yksikkö = laajuusOpintopisteissä)
+  def laajuus(arvo: Double): LaajuusOpintopisteissä = LaajuusOpintopisteissä(arvo = arvo, yksikkö = laajuusOpintopisteissä)
+
+  def omanÄidinkielenOpinnotSaame(): Some[OmanÄidinkielenOpinnotLaajuusOpintopisteinä] = Some(OmanÄidinkielenOpinnotLaajuusOpintopisteinä(
+    arvosana = Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"),
+    arviointipäivä = None,
+    kieli = Kielivalikoima.saame,
+    laajuus = LaajuusOpintopisteissä(3)
+  ))
+
+  def puhviKoe(): Some[PuhviKoe2019] = Some(PuhviKoe2019(
+    arvosana = Koodistokoodiviite(koodiarvo = "7", koodistoUri = "arviointiasteikkoyleissivistava"),
+    päivä = date(2019, 8, 30),
+    kuvaus = None
+  ))
+
+  def suullisenKielitaidonKoeEnglanti(): SuullisenKielitaidonKoe2019 = SuullisenKielitaidonKoe2019(
+    kieli = Koodistokoodiviite("EN", Some("englanti"), "kielivalikoima", None),
+    arvosana = Koodistokoodiviite("6", "arviointiasteikkoyleissivistava"),
+    taitotaso = Koodistokoodiviite(koodiarvo = "B1.1", koodistoUri = "arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
+    kuvaus = None,
+    päivä = date(2019, 9, 3)
+  )
+
+  def suullisenKielitaidonKoeEspanja(): SuullisenKielitaidonKoe2019 = SuullisenKielitaidonKoe2019(
+    kieli = Koodistokoodiviite("ES", Some("espanja"), "kielivalikoima", None),
+    arvosana = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
+    taitotaso = Koodistokoodiviite(koodiarvo = "yli_C1.1", koodistoUri = "arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
+    kuvaus = Some("Puhetaito äidinkielen tasolla"),
+    päivä = date(2019, 9, 3)
+  )
+
 }
 
