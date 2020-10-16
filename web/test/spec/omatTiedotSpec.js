@@ -1,4 +1,5 @@
 describe('Omat tiedot', function() {
+  var page = KoskiPage()
   var omattiedot = OmatTiedotPage()
   var opinnot = OpinnotPage()
   var authentication = Authentication()
@@ -42,6 +43,10 @@ describe('Omat tiedot', function() {
 
         it('Näytetään virheraportointi-painike', function() {
           expect(!!omattiedot.virheraportointiButton().length).to.equal(true)
+        })
+
+        it('Sivun latauksessa ei tapahdu virheitä', function () {
+          expect(page.getErrorMessage()).to.equal('')
         })
 
         describe('Ruotsinkielinen sisältö', function () {

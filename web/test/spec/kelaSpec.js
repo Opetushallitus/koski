@@ -4,6 +4,17 @@ describe('Kela', function () {
   var editor = opinnot.opiskeluoikeusEditor()
   var page = KoskiPage()
 
+  describe('Sivun latauksessa ei tapahdu virheitä', function () {
+    before(
+      Authentication().login('Laaja'),
+      kela.openPage
+    )
+
+    it('ok', function () {
+      expect(page.getErrorMessage()).to.equal('')
+    })
+  })
+
   describe('Jos oppijahakuun syötetään epävalidi hetu', function () {
     before(
       Authentication().login('Laaja'),
