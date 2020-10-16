@@ -33,11 +33,24 @@ class LukioDiaIbInternationalOpiskelijaMaaratRaporttiSpec extends FreeSpec with 
     }
 
     lazy val rivit: Seq[LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow] = loadRaportti
-    lazy val helsinki = rivit.find(_.oppilaitos == hese).get
-    lazy val ressu = rivit.find(_.oppilaitos == resu).get
+    lazy val helsinki = rivit.find(_.oppilaitosNimi == hese).get
+    lazy val ressu = rivit.find(_.oppilaitosNimi == resu).get
 
     "Tiedot jaotellaan oppilaitoksittain" in {
-      rivit.map(_.oppilaitos) should contain theSameElementsAs (Seq(hese, resu))
+      rivit.map(_.oppilaitosNimi) should contain theSameElementsAs (Seq(hese, resu))
+    }
+    "Opiskelijoiden määrä" in {
+      helsinki.opiskelijoidenMaara shouldBe(2)
+      helsinki.oppimaaranSuorittajia shouldBe(2)
+      helsinki.nuortenOppimaaranSuorittajia shouldBe(1)
+      helsinki.aikuistenOppimaaranSuorittajia shouldBe(1)
+      helsinki.aineopiskelija shouldBe(0)
+
+      ressu.opiskelijoidenMaara shouldBe(4)
+      ressu.oppimaaranSuorittajia shouldBe(3)
+      ressu.nuortenOppimaaranSuorittajia shouldBe(3)
+      ressu.aikuistenOppimaaranSuorittajia shouldBe(0)
+      ressu.aineopiskelija shouldBe(1)
     }
     "Valtionosuus rahoitteisia" in {
       helsinki.opiskelijoidenMaara_VOSRahoitteisia should equal(1)
@@ -75,13 +88,13 @@ class LukioDiaIbInternationalOpiskelijaMaaratRaporttiSpec extends FreeSpec with 
       ressu.aineopiskeija_UlkomaisiaVaihtoOpiskelijoita shouldBe(0)
     }
     "Neljännen vuoden opiskelijoita" in {
-      helsinki.oppimaaranSuorittajia_NeljannenVuodenOpiskelijoita shouldBe(2)
-      helsinki.nuortenOppimaaranSuorittajia_NeljannenVuodenOpiskelijoita shouldBe(1)
-      helsinki.aikuistenOppimaaranSuorittajia_NeljannenVuodenOpiskelijoita shouldBe(1)
+      helsinki.oppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia shouldBe(1)
+      helsinki.nuortenOppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia shouldBe(1)
+      helsinki.aikuistenOppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia shouldBe(0)
 
-      ressu.oppimaaranSuorittajia_NeljannenVuodenOpiskelijoita shouldBe(0)
-      ressu.nuortenOppimaaranSuorittajia_NeljannenVuodenOpiskelijoita shouldBe(0)
-      ressu.aikuistenOppimaaranSuorittajia_NeljannenVuodenOpiskelijoita shouldBe(0)
+      ressu.oppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia shouldBe(0)
+      ressu.nuortenOppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia shouldBe(0)
+      ressu.aikuistenOppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia shouldBe(0)
     }
     "Opetuskieli suomi" in {
       helsinki.oppimaaranSuorittajia_OpetuskieliSuomi shouldBe(1)
@@ -111,33 +124,33 @@ class LukioDiaIbInternationalOpiskelijaMaaratRaporttiSpec extends FreeSpec with 
       ressu.aikuistenOppimaaranSuorittajia_OpetuskieliMuu shouldBe(0)
     }
     "Sisäoppilaitosmainen majoitus" in {
-      helsinki.opiskelijoidenMaara_SisaoppilaitosmainenMajoitus shouldBe(1)
-      ressu.opiskelijoidenMaara_SisaoppilaitosmainenMajoitus shouldBe(0)
+      helsinki.oppimaaranSuorittajia_SisaoppilaitosmainenMajoitus_VOSRahoitteisia shouldBe(1)
+      ressu.oppimaaranSuorittajia_SisaoppilaitosmainenMajoitus_VOSRahoitteisia shouldBe(0)
     }
     "Erityinen koulutustehtävä" in {
-      helsinki.opiskelijoidenMaara_ErityinenKoulutustehtava_101 should equal(0)
-      helsinki.opiskelijoidenMaara_ErityinenKoulutustehtava_102 should equal(0)
-      helsinki.opiskelijoidenMaara_ErityinenKoulutustehtava_103 should equal(0)
-      helsinki.opiskelijoidenMaara_ErityinenKoulutustehtava_104 should equal(0)
-      helsinki.opiskelijoidenMaara_ErityinenKoulutustehtava_105 should equal(0)
-      helsinki.opiskelijoidenMaara_ErityinenKoulutustehtava_106 should equal(0)
-      helsinki.opiskelijoidenMaara_ErityinenKoulutustehtava_107 should equal(0)
-      helsinki.opiskelijoidenMaara_ErityinenKoulutustehtava_108 should equal(0)
-      helsinki.opiskelijoidenMaara_ErityinenKoulutustehtava_109 should equal(0)
-      helsinki.opiskelijoidenMaara_ErityinenKoulutustehtava_208 should equal(0)
-      helsinki.opiskelijoidenMaara_ErityinenKoulutustehtava_211 should equal(0)
+      helsinki.oppimaaranSuorittajia_ErityinenKoulutustehtava_101 should equal(0)
+      helsinki.oppimaaranSuorittajia_ErityinenKoulutustehtava_102 should equal(0)
+      helsinki.oppimaaranSuorittajia_ErityinenKoulutustehtava_103 should equal(0)
+      helsinki.oppimaaranSuorittajia_ErityinenKoulutustehtava_104 should equal(0)
+      helsinki.oppimaaranSuorittajia_ErityinenKoulutustehtava_105 should equal(0)
+      helsinki.oppimaaranSuorittajia_ErityinenKoulutustehtava_106 should equal(0)
+      helsinki.oppimaaranSuorittajia_ErityinenKoulutustehtava_107 should equal(0)
+      helsinki.oppimaaranSuorittajia_ErityinenKoulutustehtava_108 should equal(0)
+      helsinki.oppimaaranSuorittajia_ErityinenKoulutustehtava_109 should equal(0)
+      helsinki.oppimaaranSuorittajia_ErityinenKoulutustehtava_208 should equal(0)
+      helsinki.oppimaaranSuorittajia_ErityinenKoulutustehtava_211 should equal(0)
 
-      ressu.opiskelijoidenMaara_ErityinenKoulutustehtava_101 should equal(1)
-      ressu.opiskelijoidenMaara_ErityinenKoulutustehtava_102 should equal(1)
-      ressu.opiskelijoidenMaara_ErityinenKoulutustehtava_103 should equal(0)
-      ressu.opiskelijoidenMaara_ErityinenKoulutustehtava_104 should equal(0)
-      ressu.opiskelijoidenMaara_ErityinenKoulutustehtava_105 should equal(0)
-      ressu.opiskelijoidenMaara_ErityinenKoulutustehtava_106 should equal(0)
-      ressu.opiskelijoidenMaara_ErityinenKoulutustehtava_107 should equal(0)
-      ressu.opiskelijoidenMaara_ErityinenKoulutustehtava_108 should equal(0)
-      ressu.opiskelijoidenMaara_ErityinenKoulutustehtava_109 should equal(0)
-      ressu.opiskelijoidenMaara_ErityinenKoulutustehtava_208 should equal(0)
-      ressu.opiskelijoidenMaara_ErityinenKoulutustehtava_211 should equal(0)
+      ressu.oppimaaranSuorittajia_ErityinenKoulutustehtava_101 should equal(0)
+      ressu.oppimaaranSuorittajia_ErityinenKoulutustehtava_102 should equal(1)
+      ressu.oppimaaranSuorittajia_ErityinenKoulutustehtava_103 should equal(0)
+      ressu.oppimaaranSuorittajia_ErityinenKoulutustehtava_104 should equal(0)
+      ressu.oppimaaranSuorittajia_ErityinenKoulutustehtava_105 should equal(0)
+      ressu.oppimaaranSuorittajia_ErityinenKoulutustehtava_106 should equal(0)
+      ressu.oppimaaranSuorittajia_ErityinenKoulutustehtava_107 should equal(0)
+      ressu.oppimaaranSuorittajia_ErityinenKoulutustehtava_108 should equal(0)
+      ressu.oppimaaranSuorittajia_ErityinenKoulutustehtava_109 should equal(0)
+      ressu.oppimaaranSuorittajia_ErityinenKoulutustehtava_208 should equal(0)
+      ressu.oppimaaranSuorittajia_ErityinenKoulutustehtava_211 should equal(0)
     }
   }
 

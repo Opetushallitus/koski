@@ -165,8 +165,8 @@ const LukioKurssikertyma = ({organisaatioAtom}) => {
 }
 
 const LukioDiaIBInternationalOpiskelijamaarat = ({organisaatioAtom}) => {
-  const titleText = <Text name='Lukiokoulutuksen opiskelijamäärät'/>
-  const descriptionText = <Text name='Lukiokoulutuksen opiskelijamäärät'/>
+  const titleText = <Text name='lukiokoulutuksen-opiskelijamaarat-title'/>
+  const descriptionText = <Text name='lukiokoulutuksen-opiskelijamaarat-description'/>
 
   return (<RaporttiPaivalta
     organisaatioAtom={organisaatioAtom}
