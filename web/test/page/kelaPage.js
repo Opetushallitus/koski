@@ -63,8 +63,19 @@ function KelaPage() {
         var versio = versiot.find(function (li) { return $(li).text().startsWith(versionumero)})
         return click(versio)()
       }
+    },
+    openVersiohistoria: function() {
+      return click(S('.versiohistoria > span'))()
+    },
+    getValittuVersioVersiohistoriasta: function() {
+      return extractAsText(S('.kela-modal-content > ol > li.selected'))
+    },
+    palaaVersiohistoriastaLinkkiIsVisible: function() {
+      return extractAsText(S('.palaa-versiohistoriasta')) === 'Palaa versiohistoriasta yleisnäkymään'
+    },
+    clickPalaaVersiohistoriasta: function() {
+      return click(S('.palaa-versiohistoriasta > a'))()
     }
-
   }
   return api
 }

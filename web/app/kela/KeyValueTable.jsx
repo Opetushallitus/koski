@@ -143,6 +143,9 @@ const Tilat = ({ value }) => {
                 <label className="tila">
                   <TextView value={item.tila.nimi}/>
                 </label>
+                <label className="rahoitusmuoto">
+                  {item.opintojenRahoitus && <span>{'('}<Koodistoviite value={item.opintojenRahoitus}/>{')'}</span>}
+                </label>
               </div>
             </li>
           )

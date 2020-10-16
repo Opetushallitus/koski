@@ -65,7 +65,7 @@ const KelaOpinnot = ({oppija}) => {
   return (
     <div className='kela'>
       <KelaHenkilo henkilo={henkilo}/>
-      <OpiskeluoikeusTabs opiskeluoikeudet={opiskeluoikeudet} oppijaOid={henkilo.oid}/>
+      <OpiskeluoikeusTabs opiskeluoikeudet={opiskeluoikeudet} henkilo={henkilo}/>
     </div>
   )
 }
