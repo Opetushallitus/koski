@@ -96,6 +96,28 @@
       text-align: left;
     }
 
+    .palaa-versiohistoriasta {
+      float: right;
+
+      > a {
+        font-size: 1.1rem;
+        font-weight: 700;
+        background: @color-dark-blue;
+        border-radius: 3px;
+        padding: 0 20px;
+        height: 40px;
+        font-weight: 600;
+        color: @color-white;
+        letter-spacing: 0;
+        cursor: pointer;
+        display: inline-block;
+        line-height: 40px;
+        text-align: center;
+        border: none;
+        margin-bottom: 4px;
+      }
+    }
+
     h3.otsikko {
       white-space: nowrap;
       margin: 0;
@@ -135,6 +157,7 @@
             box-shadow: 0 1px 5px 0 rgba(0,0,0,0.30);
             border-radius: 2px;
             min-width: 260px;
+            cursor: initial;
 
             .kela-content-close {
               .CloseSymbol;
@@ -247,6 +270,8 @@
     }
 
     .suoritus.yhteislaajuus {
+      margin: 8px 0px;
+
       > span {
         margin: 0.2rem;
       }

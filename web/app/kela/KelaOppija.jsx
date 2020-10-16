@@ -5,7 +5,7 @@ import {yearFromIsoDateString} from '../date/date'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import {DateView, KeyValueTable} from './KeyValueTable'
-import {KelaVersiohistoria} from './KelaVersiohistoria'
+import {KelaVersiohistoria, PalaaVersiohistoriastaLink} from './KelaVersiohistoria'
 
 
 export const KelaHenkilo = ({henkilo}) => {
@@ -23,11 +23,12 @@ export const KelaHenkilo = ({henkilo}) => {
   )
 }
 
-export const KelaOpiskeluoikeus = ({opiskeluoikeus, oppijaOid}) => {
+export const KelaOpiskeluoikeus = ({opiskeluoikeus, henkilo}) => {
   const removeFromTableView = ['suoritukset', 'alkamispäivä', 'päättymispäivä', 'oid', 'versionumero', 'arvioituPäättymispäivä', 'oppilaitos', 'koulutustoimija', 'tyyppi', 'aikaleima']
   return (
     <div className='kela opiskeluoikeus'>
-      <OpiskeluoikeusOtsikko opiskeluoikeus={opiskeluoikeus} oppijaOid={oppijaOid}/>
+      <PalaaVersiohistoriastaLink henkilo={henkilo}/>
+      <OpiskeluoikeusOtsikko opiskeluoikeus={opiskeluoikeus} oppijaOid={henkilo.oid}/>
       <div className='kela opiskeluoikeus content'>
         <Voimassaoloaika opiskeluoikeus={opiskeluoikeus}/>
         <KeyValueTable object={R.omit(removeFromTableView, opiskeluoikeus)} path={'opiskeluoikeus'}/>

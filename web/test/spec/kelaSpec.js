@@ -197,7 +197,27 @@ describe('Kela', function () {
      return extractAsText(S('.kela-modal-content > ol > li.selected'))
     }
 
-    describe('Jos opiskeluoikeudesta on vain yksi versio', function () {
+    var palaaVersiohistoriastaLinkkiIsVisible = function() {
+      return extractAsText(S('.palaa-versiohistoriasta')) === 'Palaa versiohistoriasta yleisnäkymään'
+    }
+
+    var clickPalaaVersiohistoriasta = function() {
+      return click(S('.palaa-versiohistoriasta > a'))()
+    }
+
+    describe('Jos versiohistoriasta ei ole valittu uutta versiota', function () {
+      before(
+        Authentication().login('Laaja'),
+        kela.openPage,
+        kela.searchAndSelect(oppijanHetu)
+      )
+
+      it('Ei näytetä "palaa versiohistoriasta yleisnäkymään"-linkkiä', function () {
+        expect(palaaVersiohistoriastaLinkkiIsVisible()).to.equal(false)
+      })
+    })
+
+    describe('Jos opiskeluoikeudesta on vain yksi versio, valitaan se', function () {
       before(
         Authentication().login(),
         resetFixtures,
@@ -212,6 +232,24 @@ describe('Kela', function () {
 
       it('Toimii versiohistoria oikein', function () {
         expect(getValittuVersioVersiohistoriasta()).to.be.a('string').and.satisfy(str => str.startsWith('1 '))
+      })
+
+      it('Näytetään palaa versiohistoriasta linkki', function () {
+        expect(palaaVersiohistoriastaLinkkiIsVisible()).to.equal(true)
+      })
+
+      describe('Palataan versiohistoriasta', function () {
+        before(
+          clickPalaaVersiohistoriasta
+        )
+
+        it('Linkkiä ei enää näytetä', function () {
+          expect(palaaVersiohistoriastaLinkkiIsVisible()).to.equal(false)
+        })
+        it('Nähdään muut opiskeluoikeudet', function () {
+          expect(extractAsText(S('.opiskeluoikeus-tabs > ul'))).to.include('Perusopetus')
+          expect(extractAsText(S('.opiskeluoikeus-tabs > ul'))).to.include('Perusopetukseen valmistava opetus')
+        })
       })
     })
 

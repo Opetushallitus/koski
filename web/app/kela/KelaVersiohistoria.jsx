@@ -39,3 +39,18 @@ export const KelaVersiohistoria = ({opiskeluoikeus, oppijaOid}) => {
     </div>
   )
 }
+
+export const PalaaVersiohistoriastaLink = ({henkilo}) => {
+  const hetu = henkilo.hetu
+  const showReturnLink = window.location.href.includes('kela/versiohistoria/')
+
+  return (
+    <div className='palaa-versiohistoriasta'>
+      {showReturnLink && (
+        <Link href={`/koski/kela/${hetu}`}>
+          <Text name='Palaa versiohistoriasta yleisnäkymään'/>
+        </Link>
+      )}
+    </div>
+  )
+}
