@@ -164,6 +164,7 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
       (MockOppijat.omattiedotSlave.henkilö, AmmatillinenOldExamples.uusi.tallennettavatOpiskeluoikeudet(0)),
       (MockOppijat.ibFinal, ExamplesIB.opiskeluoikeus),
       (MockOppijat.ibPredicted, ExamplesIB.opiskeluoikeusPredictedGrades),
+      (MockOppijat.ibPreIB2019, ExamplesIB.opiskeluoikeusPreIB2019),
       (MockOppijat.dia, ExamplesDIA.opiskeluoikeus),
       (MockOppijat.master, ExamplesPerusopetus.päättötodistus.tallennettavatOpiskeluoikeudet.head),
       (MockOppijat.slave.henkilö, ExamplesLukio.päättötodistus()),
