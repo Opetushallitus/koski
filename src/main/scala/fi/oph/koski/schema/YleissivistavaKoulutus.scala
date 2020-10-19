@@ -97,7 +97,6 @@ case class OmanÄidinkielenOpinnotLaajuusOpintopisteinä(
   laajuus: LaajuusOpintopisteissä
 ) extends OmanÄidinkielenArviointi
 
-// TODO: Huolehdi lops 2019 täällä myös
 trait KoulusivistyskieliKieliaineesta extends Koulusivistyskieli with PäätasonSuoritus {
   def koulusivistyskieli: Option[List[Koodistokoodiviite]] = OptionalLists.optionalList(osasuoritukset.toList.flatten
     .filter(_.viimeisinArviointi.exists(_.hyväksytty))

@@ -3,13 +3,14 @@ package fi.oph.koski.documentation
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-import fi.oph.koski.documentation.ExampleData.{englanti, helsinki}
+import fi.oph.koski.documentation.ExampleData.{englanti, helsinki, ruotsinKieli}
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.ressunLukio
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
+import fi.oph.koski.localization.LocalizedStringImplicits.str2localized
 
 object ExamplesIB {
   val preIBSuoritus = PreIBSuoritus(
@@ -70,6 +71,84 @@ object ExamplesIB {
 
   val standardLevel = "SL"
   val higherLevel = "HL"
+
+  val preIBSuoritus2019 = PreIBSuoritus2019(
+    toimipiste = ressunLukio,
+    vahvistus = ExampleData.vahvistusPaikkakunnalla(org = ressunLukio, kunta = helsinki),
+    suorituskieli = englanti,
+    omanÄidinkielenOpinnot = Lukio2019ExampleData.omanÄidinkielenOpinnotSaame,
+    puhviKoe = Lukio2019ExampleData.puhviKoe,
+    suullisenKielitaidonKokeet = Some(List(Lukio2019ExampleData.suullisenKielitaidonKoeEnglanti, Lukio2019ExampleData.suullisenKielitaidonKoeEspanja)),
+    ryhmä = Some("AH"),
+    todistuksellaNäkyvätLisätiedot = Some("Suorittanut etäopetuskokeiluna"),
+    osasuoritukset = Some(List(
+      ibOppiaineenPreIBSuoritus2019(ibKieli("A", "FI", standardLevel, 1), List(
+        (ibKurssi("FIN_S1", "A Finnish standard level 1"), "8")
+      )).copy(arviointi = Lukio2019ExampleData.numeerinenLukionOppiaineenArviointi(8)),
+
+      lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionÄidinkieli("AI1", false), List(
+        (Lukio2019ExampleData.muuModuuliOppiaineissa("ÄI1"), "8"),
+        (Lukio2019ExampleData.muuModuuliOppiaineissa("ÄI2").copy(pakollinen = false), "8")
+      )).copy(arviointi = Lukio2019ExampleData.numeerinenLukionOppiaineenArviointi(9)),
+
+      lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.matematiikka("MAA"), List(
+        (Lukio2019ExampleData.muuModuuliOppiaineissa("MAB2"), "10"),
+        (Lukio2019ExampleData.muuModuuliOppiaineissa("MAB3"), "10")
+      )).copy(arviointi = Lukio2019ExampleData.numeerinenLukionOppiaineenArviointi(10)),
+
+      lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionUskonto(Some("KA")), List(
+        (Lukio2019ExampleData.muuModuuliOppiaineissa("UK1"), "H")
+      )).copy(arviointi = Lukio2019ExampleData.numeerinenLukionOppiaineenArviointi(9)),
+
+      lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionOppiaine("LI"), List(
+        (Lukio2019ExampleData.muuModuuliOppiaineissa("LI2"), "8"),
+        (Lukio2019ExampleData.paikallinenOpintojakso("LITT1", "Tanssin liikunnallisuus", "Tanssin liikunnallisuus"), "S")
+      )).copy(arviointi = Lukio2019ExampleData.sanallinenLukionOppiaineenArviointi("S")),
+
+      lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionOppiaine("FY"), List(
+      )).copy(
+        suoritettuErityisenäTutkintona = true,
+        suorituskieli = Some(ruotsinKieli),
+        arviointi = Lukio2019ExampleData.numeerinenLukionOppiaineenArviointi(8)
+      ),
+
+      LukionOppiaineenPreIBSuoritus2019(
+        koulutusmoduuli = Lukio2019ExampleData.lukionOppiaine("KE"),
+        osasuoritukset = Some(List(
+          PreIBLukionModuulinSuoritusOppiaineissa2019(
+            koulutusmoduuli = Lukio2019ExampleData.muuModuuliOppiaineissa("KE1"),
+            arviointi = Lukio2019ExampleData.sanallinenArviointi("S"),
+            tunnustettu = Some(OsaamisenTunnustaminen(None, "Osoittanut osaamisen käytännössä."))
+          )
+        )),
+        arviointi = Lukio2019ExampleData.numeerinenLukionOppiaineenArviointi(7)
+      ),
+
+      lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionKieli2019("A", "EN"), List(
+        (Lukio2019ExampleData.vieraanKielenModuuliOppiaineissa("ENA1", 2, Some("EN")), "10"), // TODO: Poista kieli joistain moduuleista, kun se aletaan täyttää automaattisesti validoinnilla
+        (Lukio2019ExampleData.vieraanKielenModuuliOppiaineissa("ENA2", 2, Some("EN")), "9")
+      )).copy(arviointi = Lukio2019ExampleData.numeerinenLukionOppiaineenArviointi(9)),
+
+      lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionKieli2019("A", "ES"), List(
+        (Lukio2019ExampleData.vieraanKielenModuuliOppiaineissa("VKA1", 2, Some("ES")), "6"),
+        (Lukio2019ExampleData.vieraanKielenModuuliOppiaineissa("VKA2", 2, Some("ES")), "7")
+      )).copy(arviointi = Lukio2019ExampleData.numeerinenLukionOppiaineenArviointi(6)),
+
+      muidenlukioOpintojenPreIBSuoritus2019(Lukio2019ExampleData.muutSuoritukset(), List(
+        (Lukio2019ExampleData.muuModuuliMuissaOpinnoissa("ÄI1"), "S"),
+        (Lukio2019ExampleData.vieraanKielenModuuliMuissaOpinnoissa("VKAAB31", 2, "TH"), "6"),
+        (Lukio2019ExampleData.vieraanKielenModuuliMuissaOpinnoissa("RUB11", 2, "RU"), "6") // TODO: Poista kieli joistain moduuleista, kun se aletaan täyttää automaattisesti validoinnilla
+      )),
+
+      muidenlukioOpintojenPreIBSuoritus2019(Lukio2019ExampleData.lukiodiplomit(), List(
+        (Lukio2019ExampleData.muuModuuliMuissaOpinnoissa("KULD2"), "S")
+      )),
+
+      muidenlukioOpintojenPreIBSuoritus2019(Lukio2019ExampleData.temaattisetOpinnot(), List(
+        (Lukio2019ExampleData.paikallinenOpintojakso("HAI765", "Kansanmusiikki haitarilla", "Kansamusiikkia 2-rivisellä haitarilla"), "S")
+      ))
+    ))
+  )
 
   def osasuoritukset(predicted: Boolean): List[IBOppiaineenSuoritus] = List(
     ibAineSuoritus(ibKieli("A", "FI", standardLevel, 1), ibArviointi("4", predicted = predicted), List(
@@ -165,6 +244,52 @@ object ExamplesIB {
     })
   )
 
+  def ibOppiaineenPreIBSuoritus2019(oppiaine: PreIBIBOppiaine2019, kurssit: List[(PreIBKurssi2019, String)]) = IBOppiaineenPreIBSuoritus2019(
+    koulutusmoduuli = oppiaine,
+    osasuoritukset = Some(kurssit.map { case (kurssi, arvosana) =>
+      PreIBKurssinSuoritus2019(
+        koulutusmoduuli = kurssi,
+        arviointi = Lukio2019ExampleData.sanallinenArviointi(arvosana)
+      )
+    })
+  )
+
+  def lukionOppiaineenPreIBSuoritus2019(oppiaine: PreIBLukionOppiaine2019, osasuoritukset: List[(PreIBLukionModuuliTaiPaikallinenOpintojakso2019, String)]) = LukionOppiaineenPreIBSuoritus2019(
+    koulutusmoduuli = oppiaine,
+    osasuoritukset = Some(osasuoritukset.map {
+      case (moduuli:PreIBLukionModuuliOppiaineissa2019, arvosana) =>
+        PreIBLukionModuulinSuoritusOppiaineissa2019(
+          koulutusmoduuli = moduuli,
+          arviointi = Lukio2019ExampleData.sanallinenArviointi(arvosana)
+        )
+      case (moduuli:PreIBPaikallinenOpintojakso2019, arvosana) =>
+        PreIBLukionPaikallisenOpintojaksonSuoritus2019(
+          koulutusmoduuli = moduuli,
+          arviointi = Lukio2019ExampleData.sanallinenArviointi(arvosana)
+        )
+      case _ =>
+         throw new IllegalArgumentException
+    })
+  )
+
+  def muidenlukioOpintojenPreIBSuoritus2019(koulutusmoduuli: PreIBMuutSuorituksetTaiVastaavat2019, osasuoritukset: List[(PreIBLukionModuuliTaiPaikallinenOpintojakso2019, String)]) = MuidenLukioOpintojenPreIBSuoritus2019(
+    koulutusmoduuli = koulutusmoduuli,
+    osasuoritukset = Some(osasuoritukset.map {
+      case (moduuli:PreIBLukionModuuliMuissaOpinnoissa2019, arvosana) =>
+        PreIBLukionModuulinSuoritusMuissaOpinnoissa2019(
+          koulutusmoduuli = moduuli,
+          arviointi = Lukio2019ExampleData.sanallinenArviointi(arvosana)
+        )
+      case (moduuli:PreIBPaikallinenOpintojakso2019, arvosana) =>
+        PreIBLukionPaikallisenOpintojaksonSuoritus2019(
+          koulutusmoduuli = moduuli,
+          arviointi = Lukio2019ExampleData.sanallinenArviointi(arvosana)
+        )
+      case _ =>
+        throw new IllegalArgumentException
+    })
+  )
+
   def ibAineSuoritus(oppiaine: IBAineRyhmäOppiaine, arviointi: Option[List[IBOppiaineenArviointi]], kurssit: List[(IBKurssi, String, Option[String])] = Nil) = IBOppiaineenSuoritus(
     koulutusmoduuli = oppiaine,
     osasuoritukset = Some(kurssit.map { case (kurssi, kurssinArvosana, effort) =>
@@ -230,8 +355,13 @@ object ExamplesIB {
     suoritukset = List(opiskeluoikeus.suoritukset.head, ibTutkinnonSuoritus(predicted = true))
   )
 
+  val opiskeluoikeusPreIB2019 = opiskeluoikeus.copy(
+    suoritukset = List(preIBSuoritus2019)
+  )
+
   val examples = List(
     Example("ib - final grades", "Oppija on suorittanut pre-IB vuoden ja IB-tutkinnon, IBO on vahvistanut arvosanat", Oppija(asUusiOppija(MockOppijat.ibFinal), List(opiskeluoikeus))),
-    Example("ib - predicted grades", "Oppija on suorittanut pre-IB vuoden ja IB-tutkinnon, IBO ei ole vahvistanut arvosanoja", Oppija(asUusiOppija(MockOppijat.ibPredicted), List(opiskeluoikeusPredictedGrades)))
+    Example("ib - predicted grades", "Oppija on suorittanut pre-IB vuoden ja IB-tutkinnon, IBO ei ole vahvistanut arvosanoja", Oppija(asUusiOppija(MockOppijat.ibPredicted), List(opiskeluoikeusPredictedGrades))),
+    Example("ib - Pre-IB 2019", "Oppija on suorittanut Pre-IB-opintoja lukion 2019 opetussuunnitelman mukaan", Oppija(asUusiOppija(MockOppijat.ibPreIB2019), List(opiskeluoikeusPreIB2019)))
   )
 }

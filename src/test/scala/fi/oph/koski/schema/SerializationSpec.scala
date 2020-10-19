@@ -65,6 +65,7 @@ class SerializationSpec extends FreeSpec with Matchers with Logging {
               case s: YhteisenTutkinnonOsanOsaAlueenSuoritus => s.näyttö.isDefined
               case s: DIASuoritus => s.koulutusmoduuli.isInstanceOf[DIAOppiaine]
               case s: LukionModuulinSuoritus2019 => true
+              case s: PreIBLukionModuulinSuoritus2019 => true
               case _ => false
             }
 

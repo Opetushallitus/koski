@@ -63,7 +63,7 @@ case class MuidenLukioOpintojenSuoritus2015(
   @Description("Kurssien suoritukset")
   @Title("Kurssit")
   override val osasuoritukset: Option[List[LukionKurssinSuoritus2015]]
-) extends LukionOppimääränOsasuoritus2015 with PreIBSuorituksenOsasuoritus with Vahvistukseton
+) extends LukionOppimääränOsasuoritus2015 with PreIBSuorituksenOsasuoritus2015 with Vahvistukseton
 
 @Title("Muu lukio-opinto")
 @Description("Kategoria kursseille, jotka eivät liity suoraan mihinkään yksittäiseen oppiaineeseen. Esimerkiksi lukiodiplomi, taiteiden väliset opinnot, teemaopinnot")

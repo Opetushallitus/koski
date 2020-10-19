@@ -88,6 +88,7 @@ describe('Oppijataulukko', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tila'), page.oppijataulukko.filterBy('oppilaitos', 'Ressun lukio'))
       it('toimii', function() {
         expect(page.oppijataulukko.names()).to.deep.equal([
+          "IB-Pre-IB-uusilukio, Pate",
           'IB-final, Iina',
           'IB-predicted, Petteri',
           'Kurssikertyma, Aineopiskelija',
@@ -95,7 +96,7 @@ describe('Oppijataulukko', function() {
           'dia, opiskelija',
           'ib, opiskelija'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('6')
+        expect(page.opiskeluoikeudeTotal()).to.equal('7')
       })
     })
 

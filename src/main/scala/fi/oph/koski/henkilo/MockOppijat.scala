@@ -76,6 +76,7 @@ object MockOppijat {
   val omattiedot = oppijat.oppija(MockUsers.omattiedot.ldapUser.sukunimi, MockUsers.omattiedot.ldapUser.etunimet, "190751-739W", MockUsers.omattiedot.ldapUser.oid)
   val ibFinal = oppijat.oppija("IB-final", "Iina", "040701-432D")
   val ibPredicted = oppijat.oppija("IB-predicted", "Petteri", "071096-317K")
+  val ibPreIB2019 = oppijat.oppija("IB-Pre-IB-uusilukio", "Pate", "180300A8736")
   val dia = oppijat.oppija("Dia", "Dia", "151013-2195")
   val internationalschool = oppijat.oppija("International", "Ida", "170186-854H")
   val eskari = oppijat.oppija("Eskari", "Essi", "300996-870E")
