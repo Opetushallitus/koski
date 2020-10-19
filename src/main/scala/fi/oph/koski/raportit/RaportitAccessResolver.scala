@@ -53,7 +53,7 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
     case "diatutkinto" => Seq(LukioDiaIbInternationalOpiskelijamaarat)
     case "internationalschool" => Seq(LukioDiaIbInternationalOpiskelijamaarat)
     case "esiopetus" => Seq(EsiopetuksenRaportti, EsiopetuksenOppijaMäärienRaportti)
-    case "aikuistenperusopetus" if !isKoulutustoimija => Seq(AikuistenPerusopetusSuoritustietojenTarkistus)
+    case "aikuistenperusopetus" => Seq(AikuistenPerusopetusSuoritustietojenTarkistus, AikuistenPerusopetusOppijaMäärienRaportti)
     case "luva" => Seq(LuvaOpiskelijamaarat)
     case _ => Seq.empty[RaportinTyyppi]
   }
