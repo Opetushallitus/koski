@@ -13,7 +13,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.localization.LocalizedStringImplicits.str2localized
 
 object ExamplesIB {
-  val preIBSuoritus = PreIBSuoritus(
+  val preIBSuoritus = PreIBSuoritus2015(
     toimipiste = ressunLukio,
     vahvistus = ExampleData.vahvistusPaikkakunnalla(org = ressunLukio, kunta = helsinki),
     suorituskieli = englanti,
@@ -239,10 +239,10 @@ object ExamplesIB {
     lisäpisteet = Some(Koodistokoodiviite(koodiarvo = "3", koodistoUri = "arviointiasteikkolisapisteetib"))
   )
 
-  def preIBAineSuoritus(oppiaine: PreIBOppiaine, kurssit: List[(PreIBKurssi, String)]) = PreIBOppiaineenSuoritus(
+  def preIBAineSuoritus(oppiaine: PreIBOppiaine2015, kurssit: List[(PreIBKurssi2015, String)]) = PreIBOppiaineenSuoritus2015(
     koulutusmoduuli = oppiaine,
     osasuoritukset = Some(kurssit.map { case (kurssi, arvosana) =>
-      PreIBKurssinSuoritus(
+      PreIBKurssinSuoritus2015(
         koulutusmoduuli = kurssi,
         arviointi = LukioExampleData.sanallinenArviointi(arvosana)
       )

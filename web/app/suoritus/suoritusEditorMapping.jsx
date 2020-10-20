@@ -73,11 +73,11 @@ export const resolveOsasuorituksetEditor = (mdl) => {
       />
     )
   }
-  if (oneOf('preibsuoritus')) {
+  if (oneOf('preibsuoritus2015')) {
     return (
       <LukionOppiaineetComponent
         suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
-        classesForUusiOppiaineenSuoritus={['preiboppiaineensuoritus', 'muidenlukioopintojensuoritus']}
+        classesForUusiOppiaineenSuoritus={['preiboppiaineensuoritus2015', 'muidenlukioopintojensuoritus']}
         additionalEditableKoulutusmoduuliProperties={['ryhmä']}
       />
     )

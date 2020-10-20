@@ -105,7 +105,7 @@ case class LukionKurssinSuoritus2015(
 ) extends KurssinSuoritus with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu
 
 @Title("Lukion kurssi")
-sealed trait LukionKurssi2015 extends KoulutusmoduuliValinnainenLaajuus with PreIBKurssi {
+sealed trait LukionKurssi2015 extends KoulutusmoduuliValinnainenLaajuus with PreIBKurssi2015 {
   def laajuus: Option[LaajuusKursseissa]
   @KoodistoUri("lukionkurssintyyppi")
   @Description("Kurssin tyyppi voi olla joko syventävä, soveltava tai pakollinen")
@@ -137,7 +137,7 @@ case class PaikallinenLukionKurssi2015(
 
 trait LukionOppiaineTaiEiTiedossaOppiaine2015 extends Koulutusmoduuli
 
-trait LukionOppiaine2015 extends LukionOppiaine with LukionOppiaineTaiEiTiedossaOppiaine2015 with KoulutusmoduuliValinnainenLaajuus with PreIBOppiaine {
+trait LukionOppiaine2015 extends LukionOppiaine with LukionOppiaineTaiEiTiedossaOppiaine2015 with KoulutusmoduuliValinnainenLaajuus with PreIBOppiaine2015 {
   def laajuus: Option[LaajuusKursseissa]
 }
 

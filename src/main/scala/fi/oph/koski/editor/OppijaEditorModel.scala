@@ -109,7 +109,7 @@ object OppijaEditorModel extends Timing {
   def ibSuoritustenJärjestysKriteeri(s : IBPäätasonSuoritus): Int = {
     s match {
       case _: IBTutkinnonSuoritus => -1
-      case _: PreIBSuoritus => 0
+      case _: PreIBSuoritus2015 => 0
       case _ => 1
     }
   }
