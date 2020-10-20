@@ -1421,5 +1421,7 @@
   "description:Lukion oppiaineen suoritus Pre IB..." : "Lukion oppiaineen suoritus Pre IB -opinnoissa 2019",
   "description:Muiden lukio-opintojen suoritus Pre IB..." : "Muiden lukio-opintojen suoritus Pre IB -opinnoissa 2019",
   "Arvioitu (opintopistettä)": "Arvioitu (opintopistettä)",
-  "Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä": "Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä"
+  "Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä": "Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä",
+  "Arvioitu (kurssia)": "Arvioitu (kurssia)",
+  "Hyväksytysti arvioitu (kurssia)": "Hyväksytysti arvioitu (kurssia)"
 }

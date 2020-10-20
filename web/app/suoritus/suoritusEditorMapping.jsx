@@ -82,6 +82,21 @@ export const resolveOsasuorituksetEditor = (mdl) => {
       />
     )
   }
+  if (oneOf('preibsuoritus2019')) {
+    return (
+      <LukionOppiaineetComponent
+        suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
+        classesForUusiOppiaineenSuoritus={['iboppiaineenpreibsuoritus2019', 'lukionoppiaineenpreibsuoritus2019', 'muidenlukioopintojenpreibsuoritus2019']}
+        useOppiaineLaajuus={true}
+        showKeskiarvo={false}
+        additionalOnlyEditableProperties={['suorituskieli', 'suoritettuErityisenäTutkintona']}
+        additionalEditableKoulutusmoduuliProperties={['pakollinen', 'ryhmä']}
+        laajuusHeaderText={'Arvioitu'}
+        showHyväksytystiArvioitujenLaajuus={true}
+        useHylkäämättömätLaajuus={false}
+      />
+    )
+  }
   if (oneOf('lukionoppiaineenoppimaaransuoritus2015')) {
     const LukionOppiaineenOppimaaranSuoritusComponent = kansalainen
       ? OmatTiedotLukionOppiaineenOppimaaranSuoritus
