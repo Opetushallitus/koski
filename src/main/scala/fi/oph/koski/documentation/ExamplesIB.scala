@@ -134,6 +134,11 @@ object ExamplesIB {
         (Lukio2019ExampleData.vieraanKielenModuuliOppiaineissa("VKA2", 2, Some("ES")), "7")
       )).copy(arviointi = Lukio2019ExampleData.numeerinenLukionOppiaineenArviointi(6)),
 
+      lukionOppiaineenPreIBSuoritus2019(PaikallinenLukionOppiaine2019(PaikallinenKoodi("ITT", "Tanssi ja liike"), "Tanssi ja liike", pakollinen = false), List(
+        (Lukio2019ExampleData.paikallinenOpintojakso("ITT234", "Tanssin taito", "Perinteiset suomalaiset tanssit, valssi jne"), "6"),
+        (Lukio2019ExampleData.paikallinenOpintojakso("ITT235", "Tanssin taito 2", "Uudemmat suomalaiset tanssit"), "7")
+      )).copy(arviointi = Lukio2019ExampleData.numeerinenLukionOppiaineenArviointi(6)),
+
       muidenlukioOpintojenPreIBSuoritus2019(Lukio2019ExampleData.muutSuoritukset(), List(
         (Lukio2019ExampleData.muuModuuliMuissaOpinnoissa("ÄI1"), "S"),
         (Lukio2019ExampleData.vieraanKielenModuuliMuissaOpinnoissa("VKAAB31", 2, "TH"), "6"),
