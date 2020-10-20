@@ -1,17 +1,37 @@
 package fi.oph.koski.raportit
 
+trait ColumnSetting
 
-case class Column(title: String, width: Option[Int] = None, comment: Option[String] = None)
+case class GroupColumnsWithTitle(
+  children: List[(String, Column)]
+) extends ColumnSetting
+
+case class Column(
+  title: String,
+  width: Option[Int] = None,
+  comment: Option[String] = None,
+  groupingTitle: Option[String] = None
+) extends ColumnSetting
 
 object Column {
-  def apply(title: String, width: Option[Int] = None, comment: Option[String] = None): Column = {
+  def apply(title: String, width: Option[Int] = None, comment: Option[String] = None, groupingTitle: Option[String] = None): Column = {
     val titlePrepended = comment.fold(title)(title + ": " + _)
-    new Column(title, width, Some(titlePrepended))
+    new Column(title, width, Some(titlePrepended), groupingTitle)
   }
 }
 
 object CompactColumn {
   def apply(title: String, comment: Option[String] = None): Column = Column(title, width = Some(2000), comment = comment)
+}
+
+object Columns {
+  def flattenGroupingColumns(settings: Seq[(String, ColumnSetting)]): Seq[(String, Column)] = {
+    settings.flatMap {
+      case (title, g: GroupColumnsWithTitle) => g.children.map { case (s, column) => (s, column.copy(groupingTitle = Some(title))) }
+      case (s, c: Column) => List(s -> c)
+      case _ => Nil
+    }
+  }
 }
 
 sealed trait Sheet {
