@@ -15,8 +15,8 @@
     <slick.version>3.3.0</slick.version>
     <scalatra.version>2.6.5</scalatra.version>
     <json4s.version>3.6.8</json4s.version>
-    <awssdk.version>2.13.71</awssdk.version>
-    <jetty.version>9.4.31.v20200723</jetty.version>
+    <awssdk.version>2.15.15</awssdk.version>
+    <jetty.version>9.4.33.v20201020</jetty.version>
     <prometheus.client.version>0.0.17</prometheus.client.version>
     <scoverage.plugin.version>1.1.1</scoverage.plugin.version>
     <finalName>${project.artifactId}-${project.version}</finalName>
@@ -79,7 +79,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>27.0.1-jre</version>
+      <version>30.0-jre</version>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
