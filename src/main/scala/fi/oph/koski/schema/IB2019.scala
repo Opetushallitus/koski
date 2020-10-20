@@ -132,7 +132,6 @@ case class PreIBLukionModuulinSuoritusOppiaineissa2019(
   arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]] = None,
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @KoodistoKoodiarvo("preiblukionvaltakunnallinenmoduuli2019")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preiblukionvaltakunnallinenmoduuli2019", koodistoUri = "suorituksentyyppi")
 ) extends PreIBLukionModuulinSuoritus2019 with PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019
 
@@ -146,7 +145,6 @@ case class PreIBLukionModuulinSuoritusMuissaOpinnoissa2019(
   arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]] = None,
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @KoodistoKoodiarvo("preiblukionvaltakunnallinenmoduuli2019")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preiblukionvaltakunnallinenmoduuli2019", koodistoUri = "suorituksentyyppi")
 ) extends PreIBLukionModuulinSuoritus2019 with PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019
 
