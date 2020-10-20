@@ -3,7 +3,7 @@ package fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
 import fi.oph.scalaschema.annotation._
 
-@Title("Pre IB -opintojen suoritus")
+@Title("Pre-IB-opintojen suoritus")
 case class PreIBSuoritus2015(
   @Title("Koulutus")
   koulutusmoduuli: PreIBKoulutusmoduuli2015 = PreIBKoulutusmoduuli2015(),
@@ -17,17 +17,17 @@ case class PreIBSuoritus2015(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("preiboppimaara", koodistoUri = "suorituksentyyppi")
 ) extends IBPäätasonSuoritus
 
-@Title("Pre IB -koulutus")
-@Description("Pre IB-koulutuksen tunnistetiedot")
+@Title("Pre-IB-koulutus")
+@Description("Pre-IB-koulutuksen tunnistetiedot")
 case class PreIBKoulutusmoduuli2015(
-  @Description("Pre IB-koulutuksen tunniste")
+  @Description("Pre-IB-koulutuksen tunniste")
   @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("preiboppimaara")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("preiboppimaara", koodistoUri = "suorituksentyyppi")
 ) extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton
 
-@Description("Pre IB-oppiaineiden suoritusten tiedot")
-@Title("Pre IB -oppiaineen suoritus")
+@Description("Pre-IB-oppiaineiden suoritusten tiedot")
+@Title("Pre-IB-oppiaineen suoritus")
 case class PreIBOppiaineenSuoritus2015(
   @Title("Oppiaine")
   koulutusmoduuli: PreIBOppiaine2015,
@@ -42,9 +42,9 @@ case class PreIBOppiaineenSuoritus2015(
 
 trait PreIBOppiaine2015 extends Koulutusmoduuli
 
-@Title("Pre IB -kurssin suoritus")
+@Title("Pre-IB-kurssin suoritus")
 case class PreIBKurssinSuoritus2015(
-  @Description("Pre-IB kurssin tunnistetiedot")
+  @Description("Pre-IB-kurssin tunnistetiedot")
   koulutusmoduuli: PreIBKurssi2015,
   arviointi: Option[List[LukionArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,

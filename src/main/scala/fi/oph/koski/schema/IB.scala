@@ -54,7 +54,7 @@ trait IBPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with T
 trait PreIBSuorituksenOsasuoritus2015 extends Suoritus
 
 @Title("IB-tutkinto")
-@Description("IB tutkinnon tunnistetiedot")
+@Description("IB-tutkinnon tunnistetiedot")
 case class IBTutkinto(
   @KoodistoKoodiarvo("301102")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("301102", koodistoUri = "koulutus"),
@@ -115,7 +115,7 @@ case class IBExtendedEssaySuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "iboppiaineee", koodistoUri = "suorituksentyyppi")
 ) extends IBSuoritus
 
-@Title("IB -oppinaineen arviointi")
+@Title("IB-oppiaineen arviointi")
 case class IBOppiaineenArviointi(
   @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa")
   predicted: Boolean = true,
@@ -130,7 +130,7 @@ case class IBOppiaineenArviointi(
   override def arviointipäivä: Option[LocalDate] = päivä
 }
 
-@Title("IB CAS -oppinaineen arviointi")
+@Title("IB CAS -oppiaineen arviointi")
 @OnlyWhen("../tyyppi/koodiarvo","iboppiainecas")
 case class IBCASOppiaineenArviointi(
   @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa")
@@ -201,7 +201,7 @@ trait CoreRequirementsArvionti extends IBArviointi {
   }
 }
 
-@Title("IB Core Requirements-arviointi")
+@Title("IB Core Requirements -arviointi")
 case class IBCoreRequirementsArviointi(
   arvosana: Koodistokoodiviite,
   @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa")
