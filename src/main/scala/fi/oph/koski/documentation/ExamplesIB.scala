@@ -4,8 +4,9 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData.{englanti, helsinki, ruotsinKieli}
+import fi.oph.koski.documentation.IBExampleData._
 import fi.oph.koski.documentation.LukioExampleData._
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.ressunLukio
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, ressunLukio}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.localization.LocalizedStringImplicits._
@@ -259,42 +260,6 @@ object ExamplesIB {
     })
   )
 
-  def lukionOppiaineenPreIBSuoritus2019(oppiaine: PreIBLukionOppiaine2019, osasuoritukset: List[(PreIBLukionModuuliTaiPaikallinenOpintojakso2019, String)]) = LukionOppiaineenPreIBSuoritus2019(
-    koulutusmoduuli = oppiaine,
-    osasuoritukset = Some(osasuoritukset.map {
-      case (moduuli:PreIBLukionModuuliOppiaineissa2019, arvosana) =>
-        PreIBLukionModuulinSuoritusOppiaineissa2019(
-          koulutusmoduuli = moduuli,
-          arviointi = Lukio2019ExampleData.sanallinenArviointi(arvosana)
-        )
-      case (moduuli:PreIBPaikallinenOpintojakso2019, arvosana) =>
-        PreIBLukionPaikallisenOpintojaksonSuoritus2019(
-          koulutusmoduuli = moduuli,
-          arviointi = Lukio2019ExampleData.sanallinenArviointi(arvosana)
-        )
-      case _ =>
-         throw new IllegalArgumentException
-    })
-  )
-
-  def muidenlukioOpintojenPreIBSuoritus2019(koulutusmoduuli: PreIBMuutSuorituksetTaiVastaavat2019, osasuoritukset: List[(PreIBLukionModuuliTaiPaikallinenOpintojakso2019, String)]) = MuidenLukioOpintojenPreIBSuoritus2019(
-    koulutusmoduuli = koulutusmoduuli,
-    osasuoritukset = Some(osasuoritukset.map {
-      case (moduuli:PreIBLukionModuuliMuissaOpinnoissa2019, arvosana) =>
-        PreIBLukionModuulinSuoritusMuissaOpinnoissa2019(
-          koulutusmoduuli = moduuli,
-          arviointi = Lukio2019ExampleData.sanallinenArviointi(arvosana)
-        )
-      case (moduuli:PreIBPaikallinenOpintojakso2019, arvosana) =>
-        PreIBLukionPaikallisenOpintojaksonSuoritus2019(
-          koulutusmoduuli = moduuli,
-          arviointi = Lukio2019ExampleData.sanallinenArviointi(arvosana)
-        )
-      case _ =>
-        throw new IllegalArgumentException
-    })
-  )
-
   def ibAineSuoritus(oppiaine: IBAineRyhmäOppiaine, arviointi: Option[List[IBOppiaineenArviointi]], kurssit: List[(IBKurssi, String, Option[String])] = Nil) = IBOppiaineenSuoritus(
     koulutusmoduuli = oppiaine,
     osasuoritukset = Some(kurssit.map { case (kurssi, kurssinArvosana, effort) =>
@@ -356,6 +321,19 @@ object ExamplesIB {
     suoritukset = List(preIBSuoritus, ibTutkinnonSuoritus(predicted = false))
   )
 
+  lazy val aktiivinenOpiskeluoikeus: IBOpiskeluoikeus =
+    IBOpiskeluoikeus(
+      tila = LukionOpiskeluoikeudenTila(
+        List(
+          LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+        )
+      ),
+      oppilaitos = Some(jyväskylänNormaalikoulu),
+      suoritukset = List(vahvistamatonPreIB2019Suoritus)
+    )
+
+  lazy val vahvistamatonPreIB2019Suoritus = preIBSuoritus2019.copy(vahvistus = None)
+
   val opiskeluoikeusPredictedGrades = opiskeluoikeus.copy(
     suoritukset = List(opiskeluoikeus.suoritukset.head, ibTutkinnonSuoritus(predicted = true))
   )
@@ -369,4 +347,80 @@ object ExamplesIB {
     Example("ib - predicted grades", "Oppija on suorittanut pre-IB vuoden ja IB-tutkinnon, IBO ei ole vahvistanut arvosanoja", Oppija(asUusiOppija(MockOppijat.ibPredicted), List(opiskeluoikeusPredictedGrades))),
     Example("ib - Pre-IB 2019", "Oppija on suorittanut Pre-IB-opintoja lukion 2019 opetussuunnitelman mukaan", Oppija(asUusiOppija(MockOppijat.ibPreIB2019), List(opiskeluoikeusPreIB2019)))
   )
+}
+
+object IBExampleData {
+
+  def lukionOppiaineenPreIBSuoritus2019(oppiaine: PreIBLukionOppiaine2019) = LukionOppiaineenPreIBSuoritus2019(
+    koulutusmoduuli = oppiaine,
+    osasuoritukset = None
+  )
+
+  def lukionOppiaineenPreIBSuoritus2019(oppiaine: PreIBLukionOppiaine2019, osasuoritukset: List[(PreIBLukionModuuliTaiPaikallinenOpintojakso2019, String)]) = LukionOppiaineenPreIBSuoritus2019(
+    koulutusmoduuli = oppiaine,
+    osasuoritukset = Some(osasuoritukset.map {
+      case (moduuli:PreIBLukionModuuliOppiaineissa2019, arvosana) =>
+        PreIBLukionModuulinSuoritusOppiaineissa2019(
+          koulutusmoduuli = moduuli,
+          arviointi = Lukio2019ExampleData.sanallinenArviointi(arvosana)
+        )
+      case (moduuli:PreIBPaikallinenOpintojakso2019, arvosana) =>
+        PreIBLukionPaikallisenOpintojaksonSuoritus2019(
+          koulutusmoduuli = moduuli,
+          arviointi = Lukio2019ExampleData.sanallinenArviointi(arvosana)
+        )
+      case _ =>
+        throw new IllegalArgumentException
+    })
+  )
+
+  def muidenlukioOpintojenPreIBSuoritus2019(koulutusmoduuli: PreIBMuutSuorituksetTaiVastaavat2019) = MuidenLukioOpintojenPreIBSuoritus2019(
+    koulutusmoduuli = koulutusmoduuli,
+    osasuoritukset = None
+  )
+
+  def muidenlukioOpintojenPreIBSuoritus2019(koulutusmoduuli: PreIBMuutSuorituksetTaiVastaavat2019, osasuoritukset: List[(PreIBLukionModuuliTaiPaikallinenOpintojakso2019, String)]) = MuidenLukioOpintojenPreIBSuoritus2019(
+    koulutusmoduuli = koulutusmoduuli,
+    osasuoritukset = Some(osasuoritukset.map {
+      case (moduuli:PreIBLukionModuuliMuissaOpinnoissa2019, arvosana) =>
+        PreIBLukionModuulinSuoritusMuissaOpinnoissa2019(
+          koulutusmoduuli = moduuli,
+          arviointi = Lukio2019ExampleData.sanallinenArviointi(arvosana)
+        )
+      case (moduuli:PreIBPaikallinenOpintojakso2019, arvosana) =>
+        PreIBLukionPaikallisenOpintojaksonSuoritus2019(
+          koulutusmoduuli = moduuli,
+          arviointi = Lukio2019ExampleData.sanallinenArviointi(arvosana)
+        )
+      case _ =>
+        throw new IllegalArgumentException
+    })
+  )
+
+  def moduulinSuoritusOppiaineissa(moduuli: PreIBLukionModuuliOppiaineissa2019) = PreIBLukionModuulinSuoritusOppiaineissa2019(
+    koulutusmoduuli = moduuli,
+    suorituskieli = None
+  )
+
+  def moduulinSuoritusMuissaOpinnoissa(moduuli: PreIBLukionModuuliMuissaOpinnoissa2019) = PreIBLukionModuulinSuoritusMuissaOpinnoissa2019(
+    koulutusmoduuli = moduuli,
+    suorituskieli = None
+  )
+
+  def paikallisenOpintojaksonSuoritus(opintojakso: PreIBPaikallinenOpintojakso2019) = PreIBLukionPaikallisenOpintojaksonSuoritus2019(
+    koulutusmoduuli = opintojakso,
+    suorituskieli = None
+  )
+
+  def muidenLukioOpintojenSuoritus(): MuidenLukioOpintojenPreIBSuoritus2019 = muidenLukioOpintojenSuoritus(Lukio2019ExampleData.muutSuoritukset)
+
+  def lukioDiplomienSuoritus(): MuidenLukioOpintojenPreIBSuoritus2019 = muidenLukioOpintojenSuoritus(Lukio2019ExampleData.lukiodiplomit)
+
+  def temaattistenOpintojenSuoritus(): MuidenLukioOpintojenPreIBSuoritus2019 = muidenLukioOpintojenSuoritus(Lukio2019ExampleData.temaattisetOpinnot)
+
+  private def muidenLukioOpintojenSuoritus(koulutusmoduuli: MuutSuorituksetTaiVastaavat2019): MuidenLukioOpintojenPreIBSuoritus2019 = MuidenLukioOpintojenPreIBSuoritus2019(
+    koulutusmoduuli = koulutusmoduuli,
+    osasuoritukset = None
+  )
+
 }
