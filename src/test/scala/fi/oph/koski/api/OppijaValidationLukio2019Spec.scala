@@ -14,7 +14,7 @@ import java.time.LocalDate.{of => date}
 class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsLukio {
   "Laajuudet" - {
     "Oppiaineen laajuus" - {
-      "Oppiaineen laajuus lasketaan moduleiden laajuuksista" in {
+      "Oppiaineen laajuus lasketaan moduuleiden laajuuksista" in {
         val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
           osasuoritukset = Some(List(
             oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
@@ -29,7 +29,7 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
         opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.laajuusArvo(0) should equal(4.5)
       }
 
-      "Modulin oletuslaajuus on 2" in {
+      "Moduulin oletuslaajuus on 2" in {
         val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
           osasuoritukset = Some(List(oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
             moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1")).copy(arviointi = numeerinenArviointi(8)),
@@ -990,7 +990,7 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
     }
   }
 
-  "Vieraan kielen koodia koodia kielivalikoima/97" - {
+  "Vieraan kielen koodia kielivalikoima/97" - {
     "ei saa käyttää oppiaineessa" in {
       val oo = aktiivinenOpiskeluoikeus.copy(
         suoritukset = List(vahvistamatonOppimääränSuoritus.copy(
