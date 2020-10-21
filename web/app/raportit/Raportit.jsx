@@ -42,7 +42,7 @@ export const raportitContentP = () => {
             {raportit && raportit.includes('aikuistenperusopetussuoritustietojentarkistus') && <AikuistenPerusopetusRaportti organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('esiopetuksenraportti') && <EsiopetusRaportti organisaatioAtom={organisaatioAtom}/>}
             {raportit && raportit.includes('esiopetuksenoppijamäärienraportti') && <EsiopetuksenOppijamäärätRaportti organisaatioAtom={organisaatioAtom}/>}
-            {document.location.search.includes('tilastoraportit=true') && raportit && raportit.includes('aikuistenperusopetussuoritustietojentarkistus') && <AikuistenPerusopetuksenOppijamäärätRaportti organisaatioAtom={organisaatioAtom}/>}
+            {document.location.search.includes('tilastoraportit=true') && raportit && raportit.includes('aikuistenperusopetusoppijamäärienraportti') && <AikuistenPerusopetuksenOppijamäärätRaportti organisaatioAtom={organisaatioAtom}/>}
           </div>
         ))}
       </div>
