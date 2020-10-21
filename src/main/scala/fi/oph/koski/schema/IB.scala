@@ -50,34 +50,11 @@ case class IBTutkinnonSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ibtutkinto", koodistoUri = "suorituksentyyppi")
 ) extends IBPäätasonSuoritus with Todistus
 
-@Title("Pre IB -opintojen suoritus")
-case class PreIBSuoritus(
-  @Title("Koulutus")
-  koulutusmoduuli: PreIBKoulutusmoduuli = PreIBKoulutusmoduuli(),
-  toimipiste: OrganisaatioWithOid,
-  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
-  suorituskieli: Koodistokoodiviite,
-  @Title("Oppiaineet")
-  override val osasuoritukset: Option[List[PreIBSuorituksenOsasuoritus2015]],
-  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
-  @KoodistoKoodiarvo("preiboppimaara")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("preiboppimaara", koodistoUri = "suorituksentyyppi")
-) extends IBPäätasonSuoritus
-
 trait IBPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Suorituskielellinen
 trait PreIBSuorituksenOsasuoritus2015 extends Suoritus
 
-@Title("Pre IB -koulutus")
-@Description("Pre IB-koulutuksen tunnistetiedot")
-case class PreIBKoulutusmoduuli(
-  @Description("Pre IB-koulutuksen tunniste")
-  @KoodistoUri("suorituksentyyppi")
-  @KoodistoKoodiarvo("preiboppimaara")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("preiboppimaara", koodistoUri = "suorituksentyyppi")
-) extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton
-
 @Title("IB-tutkinto")
-@Description("IB tutkinnon tunnistetiedot")
+@Description("IB-tutkinnon tunnistetiedot")
 case class IBTutkinto(
   @KoodistoKoodiarvo("301102")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("301102", koodistoUri = "koulutus"),
@@ -138,23 +115,7 @@ case class IBExtendedEssaySuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "iboppiaineee", koodistoUri = "suorituksentyyppi")
 ) extends IBSuoritus
 
-@Description("Pre IB-oppiaineiden suoritusten tiedot")
-@Title("Pre IB -oppiaineen suoritus")
-case class PreIBOppiaineenSuoritus(
-  @Title("Oppiaine")
-  koulutusmoduuli: PreIBOppiaine,
-  arviointi: Option[List[LukionOppiaineenArviointi]] = None,
-  suorituskieli: Option[Koodistokoodiviite] = None,
-  @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
-  @Title("Kurssit")
-  override val osasuoritukset: Option[List[PreIBKurssinSuoritus]],
-  @KoodistoKoodiarvo("preiboppiaine")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preiboppiaine", koodistoUri = "suorituksentyyppi")
-) extends IBSuoritus with PreIBSuorituksenOsasuoritus2015
-
-trait PreIBOppiaine extends Koulutusmoduuli
-
-@Title("IB -oppinaineen arviointi")
+@Title("IB-oppiaineen arviointi")
 case class IBOppiaineenArviointi(
   @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa")
   predicted: Boolean = true,
@@ -169,7 +130,7 @@ case class IBOppiaineenArviointi(
   override def arviointipäivä: Option[LocalDate] = päivä
 }
 
-@Title("IB CAS -oppinaineen arviointi")
+@Title("IB CAS -oppiaineen arviointi")
 @OnlyWhen("../tyyppi/koodiarvo","iboppiainecas")
 case class IBCASOppiaineenArviointi(
   @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa")
@@ -186,16 +147,6 @@ case class IBCASOppiaineenArviointi(
   override def arviointipäivä: Option[LocalDate] = päivä
 }
 
-@Title("Pre IB -kurssin suoritus")
-case class PreIBKurssinSuoritus(
-  @Description("Pre-IB kurssin tunnistetiedot")
-  koulutusmoduuli: PreIBKurssi,
-  arviointi: Option[List[LukionArviointi]] = None,
-  suorituskieli: Option[Koodistokoodiviite] = None,
-  @KoodistoKoodiarvo("preibkurssi")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preibkurssi", koodistoUri = "suorituksentyyppi")
-) extends IBSuoritus with KurssinSuoritus
-
 @Title("IB-kurssin suoritus")
 case class IBKurssinSuoritus(
   koulutusmoduuli: IBKurssi,
@@ -204,8 +155,6 @@ case class IBKurssinSuoritus(
   @KoodistoKoodiarvo("ibkurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "ibkurssi", koodistoUri = "suorituksentyyppi")
 ) extends IBSuoritus with KurssinSuoritus
-
-trait PreIBKurssi extends Koulutusmoduuli
 
 @Title("IB-kurssi")
 @Description("IB-lukion kurssin tunnistetiedot")
@@ -217,7 +166,7 @@ case class IBKurssi(
   @Discriminator
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa]
-) extends KoulutusmoduuliValinnainenLaajuus with Valinnaisuus with PreIBKurssi with PreIBKurssi2019 with StorablePreference {
+) extends KoulutusmoduuliValinnainenLaajuus with Valinnaisuus with PreIBKurssi2015 with PreIBKurssi2019 with StorablePreference {
   def nimi: LocalizedString = tunniste.nimi
 }
 
@@ -252,7 +201,7 @@ trait CoreRequirementsArvionti extends IBArviointi {
   }
 }
 
-@Title("IB Core Requirements-arviointi")
+@Title("IB Core Requirements -arviointi")
 case class IBCoreRequirementsArviointi(
   arvosana: Koodistokoodiviite,
   @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa")
@@ -273,7 +222,7 @@ trait IBTaso {
   def taso: Option[Koodistokoodiviite]
 }
 
-trait IBAineRyhmäOppiaine extends IBOppiaine with PreIBOppiaine with PreIBIBOppiaine2019 with IBTaso with Valinnaisuus {
+trait IBAineRyhmäOppiaine extends IBOppiaine with PreIBOppiaine2015 with PreIBIBOppiaine2019 with IBTaso with Valinnaisuus {
   @KoodistoUri("aineryhmaib")
   def ryhmä: Koodistokoodiviite
 }
@@ -340,7 +289,6 @@ case class IBOppiaineLanguage(
   ryhmä: Koodistokoodiviite,
   pakollinen: Boolean = true
 ) extends IBAineRyhmäOppiaine with KieliOppiaineIB
-
 
 trait IBCoreElementOppiaine extends IBOppiaine with Valinnaisuus
 

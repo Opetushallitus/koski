@@ -13,7 +13,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.localization.LocalizedStringImplicits.str2localized
 
 object ExamplesIB {
-  val preIBSuoritus = PreIBSuoritus(
+  val preIBSuoritus = PreIBSuoritus2015(
     toimipiste = ressunLukio,
     vahvistus = ExampleData.vahvistusPaikkakunnalla(org = ressunLukio, kunta = helsinki),
     suorituskieli = englanti,
@@ -134,6 +134,11 @@ object ExamplesIB {
         (Lukio2019ExampleData.vieraanKielenModuuliOppiaineissa("VKA2", 2, Some("ES")), "7")
       )).copy(arviointi = Lukio2019ExampleData.numeerinenLukionOppiaineenArviointi(6)),
 
+      lukionOppiaineenPreIBSuoritus2019(PaikallinenLukionOppiaine2019(PaikallinenKoodi("ITT", "Tanssi ja liike"), "Tanssi ja liike", pakollinen = false), List(
+        (Lukio2019ExampleData.paikallinenOpintojakso("ITT234", "Tanssin taito", "Perinteiset suomalaiset tanssit, valssi jne"), "6"),
+        (Lukio2019ExampleData.paikallinenOpintojakso("ITT235", "Tanssin taito 2", "Uudemmat suomalaiset tanssit"), "7")
+      )).copy(arviointi = Lukio2019ExampleData.numeerinenLukionOppiaineenArviointi(6)),
+
       muidenlukioOpintojenPreIBSuoritus2019(Lukio2019ExampleData.muutSuoritukset(), List(
         (Lukio2019ExampleData.muuModuuliMuissaOpinnoissa("ÄI1"), "S"),
         (Lukio2019ExampleData.vieraanKielenModuuliMuissaOpinnoissa("VKAAB31", 2, "TH"), "6"),
@@ -234,10 +239,10 @@ object ExamplesIB {
     lisäpisteet = Some(Koodistokoodiviite(koodiarvo = "3", koodistoUri = "arviointiasteikkolisapisteetib"))
   )
 
-  def preIBAineSuoritus(oppiaine: PreIBOppiaine, kurssit: List[(PreIBKurssi, String)]) = PreIBOppiaineenSuoritus(
+  def preIBAineSuoritus(oppiaine: PreIBOppiaine2015, kurssit: List[(PreIBKurssi2015, String)]) = PreIBOppiaineenSuoritus2015(
     koulutusmoduuli = oppiaine,
     osasuoritukset = Some(kurssit.map { case (kurssi, arvosana) =>
-      PreIBKurssinSuoritus(
+      PreIBKurssinSuoritus2015(
         koulutusmoduuli = kurssi,
         arviointi = LukioExampleData.sanallinenArviointi(arvosana)
       )

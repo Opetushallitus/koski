@@ -20,7 +20,7 @@ export const UusiIBTutkinnonSuoritus = {
 
 export const UusiPreIBSuoritus = {
   createSuoritus: (opiskeluoikeus) => {
-    const proto = newSuoritusProto(opiskeluoikeus, 'preibsuoritus')
+    const proto = newSuoritusProto(opiskeluoikeus, 'preibsuoritus2015')
     const toimipisteellä = copyToimipiste(ibTutkinnonSuoritus(opiskeluoikeus), proto)
     return suoritus(toimipisteellä)
   },

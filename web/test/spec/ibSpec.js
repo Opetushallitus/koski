@@ -495,6 +495,97 @@ describe('IB', function( ) {
     })
   })
 
+  describe('Pre-IB 2019', function () {
+    before(page.openPage, page.oppijaHaku.searchAndSelect('180300A8736'), opinnot.valitseSuoritus(undefined, 'Pre-IB 2019'))
+
+    describe('Oppijan suorituksissa', function () {
+      it('näytetään', function () {
+        expect(opinnot.getTutkinto()).to.equal("Pre-IB 2019")
+        expect(opinnot.getOppilaitos()).to.equal("Ressun lukio")
+      })
+    })
+
+    describe('Kaikki tiedot näkyvissä', function () {
+      it('näyttää suorituksen tiedot', function() {
+        expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+          'Koulutus Pre-IB 2019\n' +
+          'Oppilaitos / toimipiste Ressun lukio\n' +
+          'Suorituskieli englanti\n' +
+          'Lukion oppimäärää täydentävät oman äidinkielen opinnot Arvosana 8\n' +
+          'Kieli saame, lappi\n' +
+          'Laajuus 3 op\n' +
+          'Puhvi-koe Arvosana 7\n' +
+          'Arviointipäivä 30.8.2019\n' +
+          'Suullisen kielitaidon kokeet Kieli englanti\n' +
+          'Arvosana 6\n' +
+          'Taitotaso B1.1\n' +
+          'Arviointipäivä 3.9.2019\n' +
+          'Kieli espanja\n' +
+          'Arvosana S\n' +
+          'Taitotaso Yli C1.1\n' +
+          'Kuvaus Puhetaito äidinkielen tasolla\n' +
+          'Arviointipäivä 3.9.2019\n' +
+          'Todistuksella näkyvät lisätiedot Suorittanut etäopetuskokeiluna\n' +
+          'Ryhmä AH\n' +
+          'Suoritus valmis Vahvistus : 4.6.2016 Helsinki Reijo Reksi , rehtori'
+        )
+      })
+
+      it('näyttää oppiaineiden ja kurssien arvosanat', function() {
+        expect(extractAsText(S('.osasuoritukset'))).to.equal(
+          'Oppiaine Arvioitu (kurssia) Hyväksytysti arvioitu (kurssia) Arvosana\n' +
+          'Language A: literature, suomi\n' +
+          'FIN_S1\n' +
+          '8 1 1 8\n' +
+          'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus, valinnainen\n' +
+          'ÄI1\n' +
+          '8 ÄI2\n' +
+          '8 4 4 9\n' +
+          'Matematiikka, pitkä oppimäärä\n' +
+          'MAB2\n' +
+          '10 MAB3\n' +
+          '10 4 4 10\n' +
+          'Uskonto/Elämänkatsomustieto\n' +
+          'UK1\n' +
+          'H 2 0 9\n' +
+          'Liikunta\n' +
+          'LI2\n' +
+          '8 LITT1 *\n' +
+          'S 3 3 S\n' +
+          'Fysiikka 0 0 8\n' +
+          'Kemia\n' +
+          'KE1\n' +
+          'S 2 2 7\n' +
+          'A-kieli, englanti\n' +
+          'ENA1\n' +
+          '10 ENA2\n' +
+          '9 4 4 9\n' +
+          'A-kieli, espanja\n' +
+          'VKA1\n' +
+          '6 VKA2\n' +
+          '7 4 4 6\n' +
+          'Tanssi ja liike, valinnainen *\n' +
+          'ITT234 *\n' +
+          '6 ITT235 *\n' +
+          '7 2 2 6\n' +
+          'Muut suoritukset\n' +
+          'ÄI1\n' +
+          'S VKAAB31\n' +
+          '6 RUB11\n' +
+          '6 6 6\n' +
+          'Lukiodiplomit\n' +
+          'KULD2\n' +
+          'S 2 2\n' +
+          'Teemaopinnot\n' +
+          'HAI765 *\n' +
+          'S 1 1\n' +
+          'Arvioitujen osasuoritusten laajuus yhteensä: 35,0 Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 33,0\n' +
+          '* = paikallinen opintojakso tai oppiaine'
+        )
+      })
+    })
+  })
+
   describe('IB-tutkinto', function () {
     before(resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('040701-432D'))
     describe('Oppijan suorituksissa', function () {

@@ -33,6 +33,9 @@ const laajuudet = osasuoritukset => osasuoritukset.map(k => {
 const isLukioOps2019 = suoritusModel =>
   [ 'lukionoppimaara2019', 'lukionoppiaineidenoppimaarat2019' ].includes(suorituksenTyyppi(suoritusModel))
 
+const isPreIbLukioOps2019 = suoritusModel =>
+  [ 'preiboppimaara2019' ].includes(suorituksenTyyppi(suoritusModel))
+
 const isLukionOppiaineidenOppimaarienSuoritus2019 = suoritusModel =>
   suorituksenTyyppi(suoritusModel) === 'lukionoppiaineidenoppimaarat2019'
 
@@ -43,6 +46,7 @@ export {
   hylkäämättömätOsasuoritukset,
   laajuudet,
   isLukioOps2019,
+  isPreIbLukioOps2019,
   isLukionOppiaineidenOppimaarienSuoritus2019,
   arvioidutOsasuoritukset,
   hyväksytystiArvioidutOsasuoritukset

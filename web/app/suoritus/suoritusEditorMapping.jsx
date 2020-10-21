@@ -73,12 +73,27 @@ export const resolveOsasuorituksetEditor = (mdl) => {
       />
     )
   }
-  if (oneOf('preibsuoritus')) {
+  if (oneOf('preibsuoritus2015')) {
     return (
       <LukionOppiaineetComponent
         suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
-        classesForUusiOppiaineenSuoritus={['preiboppiaineensuoritus', 'muidenlukioopintojensuoritus']}
+        classesForUusiOppiaineenSuoritus={['preiboppiaineensuoritus2015', 'muidenlukioopintojensuoritus']}
         additionalEditableKoulutusmoduuliProperties={['ryhmä']}
+      />
+    )
+  }
+  if (oneOf('preibsuoritus2019')) {
+    return (
+      <LukionOppiaineetComponent
+        suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
+        classesForUusiOppiaineenSuoritus={['iboppiaineenpreibsuoritus2019', 'lukionoppiaineenpreibsuoritus2019', 'muidenlukioopintojenpreibsuoritus2019']}
+        useOppiaineLaajuus={true}
+        showKeskiarvo={false}
+        additionalOnlyEditableProperties={['suorituskieli', 'suoritettuErityisenäTutkintona']}
+        additionalEditableKoulutusmoduuliProperties={['pakollinen', 'ryhmä']}
+        laajuusHeaderText={'Arvioitu'}
+        showHyväksytystiArvioitujenLaajuus={true}
+        useHylkäämättömätLaajuus={false}
       />
     )
   }
