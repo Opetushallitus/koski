@@ -9,7 +9,7 @@ import org.apache.poi.poifs.crypt.{EncryptionInfo, EncryptionMode, Encryptor}
 import org.apache.poi.poifs.crypt.temp.{EncryptedTempData, SXSSFWorkbookWithCustomZipEntrySource}
 import org.apache.poi.poifs.filesystem.POIFSFileSystem
 import org.apache.poi.ss.usermodel._
-import org.apache.poi.ss.util.CellRangeAddress
+import org.apache.poi.ss.util.{CellRangeAddress, CellUtil, RegionUtil}
 import org.apache.poi.ss.util.WorkbookUtil.createSafeSheetName
 import org.apache.poi.xssf.streaming.{SXSSFCell, SXSSFDrawing, SXSSFSheet, SXSSFWorkbook}
 import org.apache.poi.xssf.usermodel.XSSFSheet
@@ -17,8 +17,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet
 import scala.collection.JavaConverters._
 
 object ExcelWriter {
-
-  private lazy val HEADING_ROW = 0
 
   def writeExcel(workbookSettings: WorkbookSettings, sheets: Seq[Sheet], out: OutputStream): Unit = {
 
@@ -92,24 +90,47 @@ object ExcelWriter {
   private def writeDataSheet(wb: SXSSFWorkbook, sh: SXSSFSheet, dataSheet: SheetWithColumnSettings): Unit = {
     addIgnoredErrors(sh)
 
-    val headingRow = createHeadingRow(sh)
-    val writeToHeadingCell = createHeadingCellWriter(wb, sh)
+    val sheetHasGroupingHeaders = dataSheet.columnSettingsWithIndex.map(_._1).exists(_.groupingTitle.isDefined)
+    val cellHeaderRownumber = if (sheetHasGroupingHeaders) secondRow else firstRow
+
+    val headingRow = createHeadingRow(sh, cellHeaderRownumber)
+    val writeCellHeader = createCellHeaderWriter(wb, sh)
     for (columnAndIndex <- dataSheet.columnSettingsWithIndex) {
       val cell = headingRow.createCell(columnAndIndex._2)
-      writeToHeadingCell(columnAndIndex, cell)
+      writeCellHeader(columnAndIndex, cell)
+    }
+
+    if (sheetHasGroupingHeaders) {
+      val groupingHeaderRow = sh.createRow(firstRow)
+      groupingHeaderRow.setHeightInPoints(25)
+
+      val groupingTitlePositions = dataSheet
+        .columnSettingsWithIndex
+        .flatMap { case (column, index) => column.groupingTitle.map(title => (title, index)) }
+        .groupBy(_._1)
+        .mapValues(_.map(_._2))
+        .map { case (title, indexes) => { (title, indexes.min, indexes.max) }}
+
+      val writeGroupingHeader = createGroupingHeaderWriter(wb, sh)
+      for ((title, start, end) <- groupingTitlePositions) {
+        val region = new CellRangeAddress(0, 0, start, end)
+        sh.addMergedRegion(region)
+        val cell = groupingHeaderRow.createCell(start)
+        writeGroupingHeader(title, cell, region)
+      }
     }
 
     //sets column names visible when user is scrolling through rows
-    sh.createFreezePane(0, 1)
+    sh.createFreezePane(0, cellHeaderRownumber + 1)
 
     val writeDataToCell = createDataCellWriter(wb)
 
     for (rowNumber <- dataSheet.rows.indices) {
-      val row = sh.createRow(rowNumber + 1)
+      val rowInExcel = sh.createRow(rowNumber + cellHeaderRownumber + 1)
       val dataRow = dataSheet.rowIterator(rowNumber)
       var colNumber = 0
       for (data <- dataRow) {
-        val cell = row.createCell(colNumber)
+        val cell = rowInExcel.createCell(colNumber)
         writeDataToCell(data, cell)
         colNumber += 1
       }
@@ -126,7 +147,7 @@ object ExcelWriter {
     val cellsAndColumnsWithIndex = headingRow.cellIterator.asScala.toSeq.zip(dataSheet.columnSettingsWithIndex)
     for ((cell, (column, _)) <- cellsAndColumnsWithIndex) {
       if (column.comment.isDefined) {
-        val anchor = createAnchor(creationHelper, sh, cell, column.comment.get)
+        val anchor = createAnchor(creationHelper, sh, cell, column.comment.get, cellHeaderRownumber)
         val comment = createComment(drawing, anchor, creationHelper, column.comment.get)
         cell.setCellComment(comment)
       }
@@ -141,14 +162,14 @@ object ExcelWriter {
     hiddenShField.get(sh).asInstanceOf[XSSFSheet].addIgnoredErrors(new CellRangeAddress(0, 999999, 0, 999), IgnoredErrorType.NUMBER_STORED_AS_TEXT)
   }
 
-  private def createHeadingRow(sh: SXSSFSheet) = {
-    val headingRow = sh.createRow(HEADING_ROW)
+  private def createHeadingRow(sh: SXSSFSheet, rownumber: Int) = {
+    val headingRow = sh.createRow(rownumber)
     headingRow.setHeightInPoints(25)
     headingRow
   }
 
-  type HeadingCellWriter = ((Column, Int), SXSSFCell) => Unit
-  private def createHeadingCellWriter(wb: SXSSFWorkbook, sh: SXSSFSheet): HeadingCellWriter = {
+  type CellHeaderWriter = ((Column, Int), SXSSFCell) => Unit
+  private def createCellHeaderWriter(wb: SXSSFWorkbook, sh: SXSSFSheet): CellHeaderWriter = {
     val headingStyle = wb.createCellStyle()
     headingStyle.setFillForegroundColor(IndexedColors.LIGHT_TURQUOISE.getIndex)
     headingStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND)
@@ -164,6 +185,24 @@ object ExcelWriter {
     column.width match {
       case None => sh.trackColumnForAutoSizing(columnIndex)
       case Some(w) => sh.setColumnWidth(columnIndex, w)
+    }
+  }
+
+  type GroupingHeaderWriter = (String, SXSSFCell, CellRangeAddress) => Unit
+  private def createGroupingHeaderWriter(wb: SXSSFWorkbook, sh: SXSSFSheet): GroupingHeaderWriter = {
+    val style = wb.createCellStyle()
+    style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex)
+    style.setFillPattern(FillPatternType.SOLID_FOREGROUND)
+
+    (title: String, cell: SXSSFCell, range: CellRangeAddress) => {
+      cell.setCellValue(title)
+      cell.setCellStyle(style)
+      RegionUtil.setBorderTop(BorderStyle.MEDIUM, range, sh)
+      RegionUtil.setBorderRight(BorderStyle.MEDIUM, range, sh)
+      RegionUtil.setBorderBottom(BorderStyle.MEDIUM, range, sh)
+      RegionUtil.setBorderLeft(BorderStyle.MEDIUM, range, sh)
+      CellUtil.setAlignment(cell, HorizontalAlignment.CENTER)
+      CellUtil.setVerticalAlignment(cell, VerticalAlignment.CENTER)
     }
   }
 
@@ -227,12 +266,12 @@ object ExcelWriter {
     comment
   }
 
-  private def createAnchor(creationHelper: CreationHelper, sh: SXSSFSheet, cell: Cell, commentText: String) = {
+  private def createAnchor(creationHelper: CreationHelper, sh: SXSSFSheet, cell: Cell, commentText: String, rownumber: Int) = {
     //Size of an Comment is reserved by allocating cells and rows
     val columnIndex = cell.getColumnIndex
     val anchor = creationHelper.createClientAnchor
-    anchor.setRow1(HEADING_ROW)
-    anchor.setRow2(HEADING_ROW + 5)
+    anchor.setRow1(rownumber)
+    anchor.setRow2(rownumber + 5)
     anchor.setCol1(columnIndex)
     anchor.setCol2(columnIndex + 10)
     anchor
@@ -250,4 +289,7 @@ object ExcelWriter {
     cell.setCellValue(documentationSheet.text)
     sh.autoSizeColumn(0)
   }
+
+  private lazy val firstRow = 0
+  private lazy val secondRow = 1
 }

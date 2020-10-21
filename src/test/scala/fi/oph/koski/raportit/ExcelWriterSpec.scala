@@ -57,6 +57,28 @@ class ExcelWriterSpec extends FreeSpec with Matchers {
       }
     }
 
+    "Ryhmittelevät sarakkeet" - {
+      withExcel(ryhmittelevatSarakkeet) { wb =>
+        val sheet = wb.getSheetAt(0)
+        val rows = sheet.iterator().asScala.toSeq
+
+        "Varsinaisten sarakkeiden nimien yläpuolelle on luoutu ryhmittelevät sarakkeet määriteltyyn kohtaan" in {
+          rows(0).getCell(3) shouldBe(null)
+          rows(0).getCell(4).getStringCellValue shouldBe("Ints")
+          rows(0).getCell(6).getStringCellValue shouldBe("Doubles")
+          rows(0).getCell(8) shouldBe(null)
+        }
+        "Sarakkeiden nimet on toisella rivillä" in {
+          rows(1).getCell(4).getStringCellValue shouldBe("Int")
+          rows(1).getCell(5).getStringCellValue shouldBe("OptionInt")
+        }
+        "Varsinainen data on kolmannella" in {
+          rows(2).getCell(4).getNumericCellValue shouldBe(1)
+          rows(2).getCell(5).getNumericCellValue shouldBe(2)
+        }
+      }
+    }
+
 
     "Excelin luonti, DataSheet ja DocumentationSheet" - {
       withExcel(dataSheetAndDocumentationSheetTestCase()) { wb =>
@@ -339,6 +361,18 @@ class ExcelWriterSpec extends FreeSpec with Matchers {
     (workbookSettings, sheets)
   }
 
+  private def ryhmittelevatSarakkeet = {
+    val workbookSettings = WorkbookSettings(expectedExcelTitle, Some(excelPassword))
+    val mockDataRows = Seq(
+      MockDataRow("foo", Some("bar"), date(2000, 1, 1), Some(date(2000, 2, 2)), 1, Some(2), 2.0, Some(3.0), true, Some(false)),
+      MockDataRow("foo", None, date(2000, 1, 1), None, 1, None, 0.0, None, true, None)
+    )
+
+    val dataSheet = DataSheet("data_sheet_title", mockDataRows, mockDataColumnSettingsWithGrouping)
+
+    (workbookSettings, Seq(dataSheet))
+  }
+
   private def withExcel(params: (WorkbookSettings, Seq[Sheet]))(tests: (Workbook => Unit)): Unit = {
     val (workbookSettings, sheets) = params
     val file = new File("excel_file_for_tests.xlsx")
@@ -381,4 +415,21 @@ class ExcelWriterSpec extends FreeSpec with Matchers {
     "boolean" -> Column("Boolean"),
     "optionBoolean" -> Column("OptionBoolean")
   )
+
+  lazy val mockDataColumnSettingsWithGrouping: Seq[(String, Column)] = Columns.flattenGroupingColumns(List(
+    "str" -> Column("Str", comment = Some("kommentti")),
+    "optionStr" -> Column("OptionStr"),
+    "localdate" -> Column("LocalDate"),
+    "optionLocaldate" -> Column("OptionLocalDate"),
+    "Ints" -> GroupColumnsWithTitle(List(
+      "int" -> Column("Int"),
+      "optionInt" -> Column("OptionInt")
+    )),
+    "Doubles" -> GroupColumnsWithTitle(List(
+      "double" -> Column("Double"),
+      "optionDouble" -> Column("OptionDouble")
+    )),
+    "boolean" -> Column("Boolean"),
+    "optionBoolean" -> Column("OptionBoolean")
+  ))
 }
