@@ -4,6 +4,7 @@ import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
 import fi.oph.scalaschema.annotation._
 
 @Title("Pre-IB-opintojen suoritus")
+@OnlyWhen("koulutusmoduuli/tunniste/koodiarvo", "preiboppimaara")
 case class PreIBSuoritus2015(
   @Title("Koulutus")
   koulutusmoduuli: PreIBKoulutusmoduuli2015 = PreIBKoulutusmoduuli2015(),

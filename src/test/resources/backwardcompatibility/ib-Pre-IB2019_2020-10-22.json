@@ -315,12 +315,12 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "preibkurssi2019",
+            "koodiarvo" : "preibkurssi",
             "koodistoUri" : "suorituksentyyppi"
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "preibiboppiaine2019",
+          "koodiarvo" : "preiboppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -377,7 +377,7 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "preiblukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
             "koodistoUri" : "suorituksentyyppi"
           }
         }, {
@@ -414,12 +414,12 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "preiblukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
             "koodistoUri" : "suorituksentyyppi"
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "preiblukionoppiaine2019",
+          "koodiarvo" : "lukionoppiaine2019",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -476,7 +476,7 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "preiblukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
             "koodistoUri" : "suorituksentyyppi"
           }
         }, {
@@ -513,12 +513,12 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "preiblukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
             "koodistoUri" : "suorituksentyyppi"
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "preiblukionoppiaine2019",
+          "koodiarvo" : "lukionoppiaine2019",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -575,12 +575,12 @@
             "hyväksytty" : false
           } ],
           "tyyppi" : {
-            "koodiarvo" : "preiblukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
             "koodistoUri" : "suorituksentyyppi"
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "preiblukionoppiaine2019",
+          "koodiarvo" : "lukionoppiaine2019",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -633,7 +633,7 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "preiblukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
             "koodistoUri" : "suorituksentyyppi"
           }
         }, {
@@ -675,12 +675,12 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "preiblukionpaikallinenopintojakso2019",
+            "koodiarvo" : "lukionpaikallinenopintojakso2019",
             "koodistoUri" : "suorituksentyyppi"
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "preiblukionoppiaine2019",
+          "koodiarvo" : "lukionoppiaine2019",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -708,7 +708,7 @@
         },
         "osasuoritukset" : [ ],
         "tyyppi" : {
-          "koodiarvo" : "preiblukionoppiaine2019",
+          "koodiarvo" : "lukionoppiaine2019",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -767,12 +767,12 @@
             "rahoituksenPiirissä" : false
           },
           "tyyppi" : {
-            "koodiarvo" : "preiblukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
             "koodistoUri" : "suorituksentyyppi"
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "preiblukionoppiaine2019",
+          "koodiarvo" : "lukionoppiaine2019",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -833,7 +833,7 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "preiblukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
             "koodistoUri" : "suorituksentyyppi"
           }
         }, {
@@ -874,12 +874,12 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "preiblukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
             "koodistoUri" : "suorituksentyyppi"
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "preiblukionoppiaine2019",
+          "koodiarvo" : "lukionoppiaine2019",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -940,7 +940,7 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "preiblukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
             "koodistoUri" : "suorituksentyyppi"
           }
         }, {
@@ -981,12 +981,122 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "preiblukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
             "koodistoUri" : "suorituksentyyppi"
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "preiblukionoppiaine2019",
+          "koodiarvo" : "lukionoppiaine2019",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "ITT",
+            "nimi" : {
+              "fi" : "Tanssi ja liike"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Tanssi ja liike"
+          },
+          "pakollinen" : false
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "suoritettuErityisenäTutkintona" : false,
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ITT234",
+              "nimi" : {
+                "fi" : "Tanssin taito"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Perinteiset suomalaiset tanssit, valssi jne"
+            },
+            "pakollinen" : true
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2021-09-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionpaikallinenopintojakso2019",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ITT235",
+              "nimi" : {
+                "fi" : "Tanssin taito 2"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Uudemmat suomalaiset tanssit"
+            },
+            "pakollinen" : true
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "7",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2021-09-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionpaikallinenopintojakso2019",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine2019",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1030,7 +1140,7 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "preiblukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
             "koodistoUri" : "suorituksentyyppi"
           }
         }, {
@@ -1071,7 +1181,7 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "preiblukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
             "koodistoUri" : "suorituksentyyppi"
           }
         }, {
@@ -1112,12 +1222,12 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "preiblukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
             "koodistoUri" : "suorituksentyyppi"
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "preiblukionmuuopinto2019",
+          "koodiarvo" : "lukionmuuopinto2019",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1161,12 +1271,12 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "preiblukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
             "koodistoUri" : "suorituksentyyppi"
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "preiblukionmuuopinto2019",
+          "koodiarvo" : "lukionmuuopinto2019",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1215,12 +1325,12 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "preiblukionpaikallinenopintojakso2019",
+            "koodiarvo" : "lukionpaikallinenopintojakso2019",
             "koodistoUri" : "suorituksentyyppi"
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "preiblukionmuuopinto2019",
+          "koodiarvo" : "lukionmuuopinto2019",
           "koodistoUri" : "suorituksentyyppi"
         }
       } ],
@@ -1228,7 +1338,7 @@
         "fi" : "Suorittanut etäopetuskokeiluna"
       },
       "tyyppi" : {
-        "koodiarvo" : "preiboppimaara2019",
+        "koodiarvo" : "preiboppimaara",
         "koodistoUri" : "suorituksentyyppi"
       },
       "ryhmä" : "AH"
