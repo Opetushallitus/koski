@@ -29,22 +29,24 @@ object Lukio2019OsasuoritusValidation {
   }
 
   private def validateLukiodiplomiRakenne(suoritus: Suoritus, parents: List[Suoritus]): HttpStatus = (suoritus, parents) match {
-    case (s: LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019, (p: MuidenLukioOpintojenSuoritus2019) :: _)
-      if p.koulutusmoduuli.tunniste.koodiarvo == "LD" &&
-        !lukiodiplomit.contains(s.koulutusmoduuli.tunniste.koodiarvo) =>
+    case (_: LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019, (_: MuidenLukioOpintojenSuoritus2019) :: _) |
+         (_: PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019, (_: MuidenLukioOpintojenPreIBSuoritus2019) :: _)
+      if parents.head.koulutusmoduuli.tunniste.koodiarvo == "LD" &&
+        !lukiodiplomit.contains(suoritus.koulutusmoduuli.tunniste.koodiarvo) =>
       KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Osasuoritus ${suorituksenTunniste(suoritus)} ei ole sallittu lukiodiplomisuoritus")
-    case (s: LukionModuulinSuoritus2019, (p: LukionOppimääränOsasuoritus2019) :: _)
-      if p.koulutusmoduuli.tunniste.koodiarvo != "LD" &&
-        lukiodiplomit.contains(s.koulutusmoduuli.tunniste.koodiarvo) &&
-        !lukiodiplomienSallitutOppiaineet.contains((p.koulutusmoduuli.tunniste.koodiarvo, s.koulutusmoduuli.tunniste.koodiarvo)) =>
+    case (_: LukionModuulinSuoritus2019, (_: LukionOppimääränOsasuoritus2019) :: _) |
+         (_: PreIBLukionModuulinSuoritus2019, (_: PreIBLukionOsasuoritus2019) :: _)
+      if parents.head.koulutusmoduuli.tunniste.koodiarvo != "LD" &&
+        lukiodiplomit.contains(suoritus.koulutusmoduuli.tunniste.koodiarvo) &&
+        !lukiodiplomienSallitutOppiaineet.contains((parents.head.koulutusmoduuli.tunniste.koodiarvo, suoritus.koulutusmoduuli.tunniste.koodiarvo)) =>
       KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Lukiodiplomimoduuli (${suorituksenTunniste(suoritus)}) ei ole sallittu oppiaineen tai muiden lukio-opintojen osasuoritus.")
     case _ =>
       HttpStatus.ok
   }
 
   private def validateLukiodiplomiLaajuus(suoritus: Suoritus): HttpStatus = suoritus match {
-    case s: LukionModuulinSuoritus2019
-      if (lukiodiplomit.contains(s.koulutusmoduuli.tunniste.koodiarvo) && (s.koulutusmoduuli.laajuusArvo(0.0) != 2.0)) =>
+    case _: LukionModuulinSuoritus2019 | _: PreIBLukionModuulinSuoritus2019
+      if (lukiodiplomit.contains(suoritus.koulutusmoduuli.tunniste.koodiarvo) && (suoritus.koulutusmoduuli.laajuusArvo(0.0) != 2.0)) =>
       KoskiErrorCategory.badRequest.validation.laajuudet.lukiodiplominLaajuusEiOle2Opintopistettä(s"Osasuorituksen ${suorituksenTunniste(suoritus)} laajuus ei ole oikea. Lukiodiplomimoduulin laajuus tulee olla aina 2 opintopistettä.")
     case _ =>
       HttpStatus.ok
