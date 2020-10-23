@@ -56,6 +56,9 @@ object Lukio2019OsasuoritusValidation {
     case (s: LukionOppiaineenSuoritus2019, (p: Suorituskielellinen) :: _)
       if s.suorituskieli.contains(p.suorituskieli) =>
       KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Oppiaineen ${suorituksenTunniste(suoritus)} suorituskieli ei saa olla sama kuin päätason suorituksen suorituskieli")
+    case (s: LukionOppiaineenPreIBSuoritus2019, (p: Suorituskielellinen) :: _)
+      if s.suorituskieli.contains(p.suorituskieli) =>
+      KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Oppiaineen ${suorituksenTunniste(suoritus)} suorituskieli ei saa olla sama kuin päätason suorituksen suorituskieli")
     case _ =>
       HttpStatus.ok
   }
@@ -64,7 +67,13 @@ object Lukio2019OsasuoritusValidation {
     case (s: LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019, (p: MahdollisestiSuorituskielellinen) :: _)
       if s.suorituskieli.exists(p.suorituskieli.contains) =>
       KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Osasuorituksen ${suorituksenTunniste(suoritus)} suorituskieli ei saa olla sama kuin oppiaineen suorituskieli")
+    case (s: PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019, (p: MahdollisestiSuorituskielellinen) :: _)
+      if s.suorituskieli.exists(p.suorituskieli.contains) =>
+      KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Osasuorituksen ${suorituksenTunniste(suoritus)} suorituskieli ei saa olla sama kuin oppiaineen suorituskieli")
     case (s: LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019, (p: MahdollisestiSuorituskielellinen) :: (pp: Suorituskielellinen) :: _)
+      if p.suorituskieli.isEmpty && s.suorituskieli.contains(pp.suorituskieli) =>
+      KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Osasuorituksen ${suorituksenTunniste(suoritus)} suorituskieli ei saa olla sama kuin päätason suorituksen suorituskieli")
+    case (s: PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019, (p: MahdollisestiSuorituskielellinen) :: (pp: Suorituskielellinen) :: _)
       if p.suorituskieli.isEmpty && s.suorituskieli.contains(pp.suorituskieli) =>
       KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Osasuorituksen ${suorituksenTunniste(suoritus)} suorituskieli ei saa olla sama kuin päätason suorituksen suorituskieli")
     case _ =>
