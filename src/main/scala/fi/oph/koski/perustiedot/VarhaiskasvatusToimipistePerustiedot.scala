@@ -25,7 +25,10 @@ case class VarhaiskasvatusToimipistePerustiedot(index: ElasticSearchIndex) {
       ),
       "aggs" -> Map(
         "oppilaitokset" -> Map(
-          "terms" -> Map("field" -> "oppilaitos.oid.keyword")
+          "terms" -> Map(
+            "field" -> "oppilaitos.oid.keyword",
+            "size" -> 2147483647
+          )
         )
       )
     ))
