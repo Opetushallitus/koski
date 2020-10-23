@@ -41,6 +41,7 @@ object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti {
           count(*) filter (where opintojen_rahoitus = '1') valtionosuus_rahoitteinen,
           count(*) filter (where opintojen_rahoitus = '6') muuta_kautta_rahoitettu,
           count(*) filter (where sisaoppilaitosmainen_majoitus) sisaoppilaitosmainen_majoitus,
+          count(*) opiskelijoiden_maara,
           count(*) filter (where oppimaara_koodiarvo = 'nuortenops' and opintojen_rahoitus = '1') nuorten_valtionosuus_rahoitteinen,
           count(*) filter (where oppimaara_koodiarvo = 'nuortenops' and opintojen_rahoitus = '6') nuorten_muuta_kautta_rahoitettu,
           count(*) filter (where oppimaara_koodiarvo = 'nuortenops' and kotikunta isnull) nuorten_ei_kotikuntaa,
@@ -58,6 +59,7 @@ object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti {
     val rs: ResultSet = r.rs
     LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiRow(
       oppilaitos = rs.getString("oppilaitos"),
+      opiskelijoidenMaara = rs.getInt("opiskelijoiden_maara"),
       opiskelijoidenMaara_VOSRahoitteisia = rs.getInt("valtionosuus_rahoitteinen"),
       opiskelijoidenMaara_MuutaKauttaRahoitettu = rs.getInt("muuta_kautta_rahoitettu"),
       opiskelijoidenMaara_SisaoppilaitosmainenMajoitus = rs.getInt("sisaoppilaitosmainen_majoitus"),
@@ -74,6 +76,7 @@ object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti {
 
   val columnSettings: Seq[(String, Column)] = Seq(
     "oppilaitos" -> Column("oppilaitos"),
+    "opiskelijoidenMaara" -> Column("opiskelijoidenMaara"),
     "opiskelijoidenMaara_VOSRahoitteisia" -> Column("opiskelijoidenMaara_VOSRahoitteisia"),
     "opiskelijoidenMaara_MuutaKauttaRahoitettu" -> Column("opiskelijoidenMaara_MuutaKauttaRahoitettu"),
     "opiskelijoidenMaara_SisaoppilaitosmainenMajoitus" -> Column("opiskelijoidenMaara_SisaoppilaitosmainenMajoitus"),
@@ -90,6 +93,7 @@ object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti {
 
 case class LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiRow(
   oppilaitos: String,
+  opiskelijoidenMaara: Int,
   opiskelijoidenMaara_VOSRahoitteisia: Int,
   opiskelijoidenMaara_MuutaKauttaRahoitettu: Int,
   opiskelijoidenMaara_SisaoppilaitosmainenMajoitus: Int,

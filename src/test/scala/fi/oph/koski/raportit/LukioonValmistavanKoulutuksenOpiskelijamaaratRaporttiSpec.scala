@@ -31,6 +31,9 @@ class LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiSpec extends FreeSpec
     lazy val rows: Seq[LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiRow] = loadRaportti
     lazy val ressu = rows.find(_.oppilaitos == "Ressun lukio").get
 
+    "Opiskelijoiden lukumäärä" in {
+      ressu.opiskelijoidenMaara shouldBe(2)
+    }
     "Valtionosuus rahoitteisia" in {
       ressu.opiskelijoidenMaara_VOSRahoitteisia shouldBe(1)
       ressu.nuortenOppimaaranSuorittajia_VOSRahoitteisia shouldBe(1)
