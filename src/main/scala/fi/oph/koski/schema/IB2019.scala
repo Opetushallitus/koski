@@ -97,7 +97,7 @@ case class MuidenLukioOpintojenPreIBSuoritus2019(
 trait PreIBMuutSuorituksetTaiVastaavat2019 extends Koulutusmoduuli
 
 trait PreIBIBOppiaine2019 extends Koulutusmoduuli
-trait PreIBLukionOppiaine2019 extends Koulutusmoduuli
+trait PreIBLukionOppiaine2019 extends Koulutusmoduuli with Valinnaisuus
 
 @Title("Pre-IB-kurssin suoritus 2019")
 case class PreIBKurssinSuoritus2019(

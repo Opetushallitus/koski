@@ -701,8 +701,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       )
     case n: NuortenPerusopetuksenOppimääränSuoritus if n.vahvistettu =>
       validatePäättötodistuksenSanallinenArviointi(n)
-    case l: LukionPäätasonSuoritus2019 =>
-      Lukio2019ArvosanaValidation.validatePäätasonSuoritus(l)
+    case _: LukionPäätasonSuoritus2019 | _: PreIBSuoritus2019 =>
+      Lukio2019ArvosanaValidation.validatePäätasonSuoritus(suoritus)
     case _ => HttpStatus.ok
   }
 
