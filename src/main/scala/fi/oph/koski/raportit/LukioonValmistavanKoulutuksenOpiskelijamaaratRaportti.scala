@@ -23,6 +23,7 @@ object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti {
     sql"""
       with oppija as (
         select
+          r_opiskeluoikeus.oppilaitos_oid,
           r_opiskeluoikeus.oppilaitos_nimi,
           r_opiskeluoikeus_aikajakso.opintojen_rahoitus,
           r_opiskeluoikeus_aikajakso.sisaoppilaitosmainen_majoitus,
@@ -38,6 +39,7 @@ object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti {
           and r_opiskeluoikeus_aikajakso.alku <= $paiva
           and r_opiskeluoikeus_aikajakso.loppu >= $paiva
       ) select
+          oppilaitos_oid oppilaitos_oid,
           oppilaitos_nimi oppilaitos,
           count(*) filter (where opintojen_rahoitus = '1') valtionosuus_rahoitteinen,
           count(*) filter (where opintojen_rahoitus = '6') muuta_kautta_rahoitettu,
@@ -54,13 +56,14 @@ object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti {
           count(*) filter (where oppimaara_koodiarvo = 'aikuistenops' and kotikunta isnull) aikuisten_ei_kotikuntaa,
           count(*) filter (where oppimaara_koodiarvo = 'aikuistenops' and kotikunta in (#${SQL.toSqlListUnsafe(ahvenanmaanKunnat)})) aikuisten_kotikunta_ahvenanmaa
       from oppija
-      group by oppilaitos_nimi;
+      group by oppilaitos_oid, oppilaitos_nimi;
       """.as[LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiRow]
   }
 
   implicit private val getResult: GetResult[LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiRow] = GetResult(r => {
     val rs: ResultSet = r.rs
     LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiRow(
+      oppilaitosOid = rs.getString("oppilaitos_oid"),
       oppilaitos = rs.getString("oppilaitos"),
       opiskelijoidenMaara = rs.getInt("opiskelijoiden_maara"),
       opiskelijoidenMaara_VOSRahoitteisia = rs.getInt("valtionosuus_rahoitteinen"),
@@ -80,6 +83,7 @@ object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti {
   })
 
   val columnSettings: Seq[(String, Column)] = Seq(
+    "oppilaitosOid" -> Column("Oppilaitoksen oid-tunniste"),
     "oppilaitos" -> Column("oppilaitos"),
     "opiskelijoidenMaara" -> Column("opiskelijoidenMaara"),
     "opiskelijoidenMaara_VOSRahoitteisia" -> Column("opiskelijoidenMaara_VOSRahoitteisia"),
@@ -99,6 +103,7 @@ object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti {
 }
 
 case class LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiRow(
+  oppilaitosOid: String,
   oppilaitos: String,
   opiskelijoidenMaara: Int,
   opiskelijoidenMaara_VOSRahoitteisia: Int,
