@@ -568,11 +568,11 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "H",
+              "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
             "päivä" : "2021-09-04",
-            "hyväksytty" : false
+            "hyväksytty" : true
           } ],
           "tyyppi" : {
             "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
@@ -593,7 +593,7 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "S",
+            "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
@@ -754,7 +754,7 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "S",
+              "koodiarvo" : "6",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
             "päivä" : "2021-09-04",
@@ -1133,7 +1133,7 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "S",
+              "koodiarvo" : "7",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
             "päivä" : "2021-09-04",
@@ -1264,7 +1264,7 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "S",
+              "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
             "päivä" : "2021-09-04",

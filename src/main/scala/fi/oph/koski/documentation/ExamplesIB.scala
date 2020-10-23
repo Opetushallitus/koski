@@ -98,13 +98,13 @@ object ExamplesIB {
       )).copy(arviointi = Lukio2019ExampleData.numeerinenLukionOppiaineenArviointi(10)),
 
       lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionUskonto(Some("KA")), List(
-        (Lukio2019ExampleData.muuModuuliOppiaineissa("UK1"), "H")
+        (Lukio2019ExampleData.muuModuuliOppiaineissa("UK1"), "9")
       )).copy(arviointi = Lukio2019ExampleData.numeerinenLukionOppiaineenArviointi(9)),
 
       lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionOppiaine("LI"), List(
         (Lukio2019ExampleData.muuModuuliOppiaineissa("LI2"), "8"),
         (Lukio2019ExampleData.paikallinenOpintojakso("LITT1", "Tanssin liikunnallisuus", "Tanssin liikunnallisuus"), "S")
-      )).copy(arviointi = Lukio2019ExampleData.sanallinenLukionOppiaineenArviointi("S")),
+      )).copy(arviointi = Lukio2019ExampleData.numeerinenLukionOppiaineenArviointi(8)),
 
       lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionOppiaine("FY"), List(
       )).copy(
@@ -118,7 +118,7 @@ object ExamplesIB {
         osasuoritukset = Some(List(
           PreIBLukionModuulinSuoritusOppiaineissa2019(
             koulutusmoduuli = Lukio2019ExampleData.muuModuuliOppiaineissa("KE1"),
-            arviointi = Lukio2019ExampleData.sanallinenArviointi("S"),
+            arviointi = Lukio2019ExampleData.numeerinenArviointi(6),
             tunnustettu = Some(OsaamisenTunnustaminen(None, "Osoittanut osaamisen käytännössä."))
           )
         )),
@@ -141,13 +141,13 @@ object ExamplesIB {
       )).copy(arviointi = Lukio2019ExampleData.numeerinenLukionOppiaineenArviointi(6)),
 
       muidenlukioOpintojenPreIBSuoritus2019(Lukio2019ExampleData.muutSuoritukset(), List(
-        (Lukio2019ExampleData.muuModuuliMuissaOpinnoissa("ÄI1"), "S"),
+        (Lukio2019ExampleData.muuModuuliMuissaOpinnoissa("ÄI1"), "7"),
         (Lukio2019ExampleData.vieraanKielenModuuliMuissaOpinnoissa("VKAAB31", 2, "TH"), "6"),
         (Lukio2019ExampleData.vieraanKielenModuuliMuissaOpinnoissa("RUB11", 2, "RU"), "6") // TODO: Poista kieli joistain moduuleista, kun se aletaan täyttää automaattisesti validoinnilla
       )),
 
       muidenlukioOpintojenPreIBSuoritus2019(Lukio2019ExampleData.lukiodiplomit(), List(
-        (Lukio2019ExampleData.muuModuuliMuissaOpinnoissa("KULD2"), "S")
+        (Lukio2019ExampleData.muuModuuliMuissaOpinnoissa("KULD2"), "9")
       )),
 
       muidenlukioOpintojenPreIBSuoritus2019(Lukio2019ExampleData.temaattisetOpinnot(), List(
