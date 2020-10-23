@@ -547,15 +547,15 @@ describe('IB', function( ) {
           '10 4 4 10\n' +
           'Uskonto/Elämänkatsomustieto\n' +
           'UK1\n' +
-          'H 2 0 9\n' +
+          '9 2 2 9\n' +
           'Liikunta\n' +
           'LI2\n' +
           '8 LITT1 *\n' +
-          'S 3 3 S\n' +
+          'S 3 3 8\n' +
           'Fysiikka 0 0 8\n' +
           'Kemia\n' +
           'KE1\n' +
-          'S 2 2 7\n' +
+          '6 2 2 7\n' +
           'A-kieli, englanti\n' +
           'ENA1\n' +
           '10 ENA2\n' +
@@ -570,17 +570,17 @@ describe('IB', function( ) {
           '7 2 2 6\n' +
           'Muut suoritukset\n' +
           'ÄI1\n' +
-          'S VKAAB31\n' +
+          '7 VKAAB31\n' +
           '6 RUB11\n' +
           '6 6 6\n' +
           'Lukiodiplomit\n' +
           'KULD2\n' +
-          'S 2 2\n' +
+          '9 2 2\n' +
           'Teemaopinnot\n' +
           'HAI765 *\n' +
           'S 1 1\n' +
-          'Arvioitujen osasuoritusten laajuus yhteensä: 35,0 Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 33,0\n' +
-          '* = paikallinen opintojakso tai oppiaine'
+          'Suoritettujen kurssien laajuus yhteensä: 35\n' +
+          '* = paikallinen kurssi tai oppiaine'
         )
       })
     })
