@@ -40,6 +40,8 @@ class LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiSpec extends FreeSpec
     }
     "Opiskelijoiden lukumäärä" in {
       ressu.opiskelijoidenMaara shouldBe(2)
+      ressu.nuortenOppimaaranSuorittajia shouldBe(1)
+      ressu.aikuistenOppimaaranSuorittajia shouldBe(1)
     }
     "Valtionosuus rahoitteisia" in {
       ressu.opiskelijoidenMaara_VOSRahoitteisia shouldBe(1)
