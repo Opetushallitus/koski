@@ -33,6 +33,7 @@ object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti {
         join r_henkilo on r_henkilo.oppija_oid = r_opiskeluoikeus.oppija_oid
         join r_paatason_suoritus on r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
         where r_opiskeluoikeus.koulutusmuoto = 'luva'
+          and r_opiskeluoikeus.oppilaitos_oid in (#${SQL.toSqlListUnsafe(oppilaitosOid)})
           and r_paatason_suoritus.suorituksen_tyyppi = 'luva'
           and r_opiskeluoikeus_aikajakso.alku <= $paiva
           and r_opiskeluoikeus_aikajakso.loppu >= $paiva
