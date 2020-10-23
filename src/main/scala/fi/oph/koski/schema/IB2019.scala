@@ -53,6 +53,20 @@ case class IBOppiaineenPreIBSuoritus2019(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preiboppiaine", koodistoUri = "suorituksentyyppi")
 ) extends PreIBOppiaineenSuoritus2019
 
+trait PreIBLukionOsasuoritus2019 extends PreIBSuorituksenOsasuoritus2019 {
+  @Title("Moduulit ja paikalliset opintojaksot")
+  override def osasuoritukset: Option[List[PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019]] = None
+
+  override def osasuoritusLista: List[PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019] = {
+    osasuoritukset.toList.flatten
+  }
+
+  final def withOsasuoritukset(oss: Option[List[Suoritus]]): PreIBLukionOsasuoritus2019 = {
+    import mojave._
+    shapeless.lens[PreIBLukionOsasuoritus2019].field[Option[List[Suoritus]]]("osasuoritukset").set(this)(oss)
+  }
+}
+
 // TODO: Tälle sama kanta-trait kuin LukionOppiaineenSuoritus2019-luokalla, ja käytä sitä traittia käleissä ja yhteisissä validaatioissa
 @Description("Lukion oppiaineen suoritus Pre-IB-opinnoissa 2019")
 @Title("Lukion oppiaineen Pre-IB-suoritus 2019")
@@ -62,12 +76,10 @@ case class LukionOppiaineenPreIBSuoritus2019(
   arviointi: Option[List[LukionOppiaineenArviointi2019]] = None,
   suoritettuErityisenäTutkintona: Boolean = false,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @Description("Oppiaineeseen kuuluvat osasuoritukset")
-  @Title("Osasuoritukset")
   override val osasuoritukset: Option[List[PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019]],
   @KoodistoKoodiarvo("lukionoppiaine2019")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiaine2019", koodistoUri = "suorituksentyyppi")
-) extends PreIBOppiaineenSuoritus2019 with Vahvistukseton with MahdollisestiSuorituskielellinen with SuoritettavissaErityisenäTutkintona2019
+) extends PreIBOppiaineenSuoritus2019 with PreIBLukionOsasuoritus2019 with Vahvistukseton with MahdollisestiSuorituskielellinen with SuoritettavissaErityisenäTutkintona2019
 
 // TODO: Tälle sama kanta-trait kuin MuidenLukioOpintojenSuoritus2019-luokalla, ja käytä sitä traittia käleissä ja yhteisissä validaatioissa
 @Description("Muiden lukio-opintojen suoritus Pre-IB-opinnoissa 2019")
@@ -75,12 +87,10 @@ case class LukionOppiaineenPreIBSuoritus2019(
 case class MuidenLukioOpintojenPreIBSuoritus2019(
   @Title("Oppiaine")
   koulutusmoduuli: PreIBMuutSuorituksetTaiVastaavat2019,
-  @Description("Oppiaineeseen kuuluvat osasuoritukset")
-  @Title("Osasuoritukset")
   override val osasuoritukset: Option[List[PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019]],
   @KoodistoKoodiarvo("lukionmuuopinto2019")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionmuuopinto2019", koodistoUri = "suorituksentyyppi")
-) extends IBSuoritus2019 with PreIBSuorituksenOsasuoritus2019 with Vahvistukseton with Arvioinniton {
+) extends IBSuoritus2019 with PreIBLukionOsasuoritus2019 with Vahvistukseton with Arvioinniton {
   override def suorituskieli: Option[Koodistokoodiviite] = None
 }
 
