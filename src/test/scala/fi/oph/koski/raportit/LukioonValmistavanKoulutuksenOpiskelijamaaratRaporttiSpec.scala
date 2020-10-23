@@ -61,7 +61,7 @@ class LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiSpec extends FreeSpec
       ressu.aikuistenOppimaaranSuorittajia_KotikuntaAhvenanmaa shouldBe(0)
     }
     "Sisäoppilaitosmainen majoitus" in {
-      ressu.opiskelijoidenMaara_SisaoppilaitosmainenMajoitus shouldBe(1)
+      ressu.opiskelijoidenMaara_SisaoppilaitosmainenMajoitus_VOSRahoitteisia shouldBe(1)
     }
   }
 
