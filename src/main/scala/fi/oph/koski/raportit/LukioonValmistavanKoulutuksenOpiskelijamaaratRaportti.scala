@@ -84,21 +84,21 @@ object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti {
 
   val columnSettings: Seq[(String, Column)] = Seq(
     "oppilaitosOid" -> Column("Oppilaitoksen oid-tunniste"),
-    "oppilaitos" -> Column("oppilaitos"),
-    "opiskelijoidenMaara" -> Column("opiskelijoidenMaara"),
-    "opiskelijoidenMaara_VOSRahoitteisia" -> Column("opiskelijoidenMaara_VOSRahoitteisia"),
-    "opiskelijoidenMaara_MuutaKauttaRahoitettu" -> Column("opiskelijoidenMaara_MuutaKauttaRahoitettu"),
-    "opiskelijoidenMaara_SisaoppilaitosmainenMajoitus_VOSRahoitteisia" -> Column("opiskelijoidenMaara_SisaoppilaitosmainenMajoitus_VOSRahoitteisia"),
-    "nuortenOppimaaranSuorittajia" -> Column("nuortenOppimaaranSuorittajia"),
-    "nuortenOppimaaranSuorittajia_VOSRahoitteisia" -> Column("nuortenOppimaaranSuorittajia_VOSRahoitteisia"),
-    "nuortenOppimaaranSuorittajia_MuutaKauttaRahoitettu" -> Column("nuortenOppimaaranSuorittajia_MuutaKauttaRahoitettu"),
-    "nuortenOppimaaranSuorittajia_EiKotikuntaa" -> Column("nuortenOppimaaranSuorittajia_EiKotikuntaa"),
-    "nuortenOppimaaranSuorittajia_KotikuntaAhvenanmaa" -> Column("nuortenOppimaaranSuorittajia_KotikuntaAhvenanmaa"),
-    "aikuistenOppimaaranSuorittajia" -> Column("aikuistenOppimaaranSuorittajia"),
-    "aikuistenOppimaaranSuorittajia_VOSRahoitteisia" -> Column("aikuistenOppimaaranSuorittajia_VOSRahoitteisia"),
-    "aikuistenOppimaaranSuorittajia_MuutaKauttaRahoitettu" -> Column("aikuistenOppimaaranSuorittajia_MuutaKauttaRahoitettu"),
-    "aikuistenOppimaaranSuorittajia_EiKotikuntaa" -> Column("aikuistenOppimaaranSuorittajia_EiKotikuntaa"),
-    "aikuistenOppimaaranSuorittajia_KotikuntaAhvenanmaa" -> Column("aikuistenOppimaaranSuorittajia_KotikuntaAhvenanmaa")
+    "oppilaitos" -> Column("Oppilaitos"),
+    "opiskelijoidenMaara" -> CompactColumn("Opiskelijoiden määrä yhteensä", comment = Some("\"Läsnä\"-tilaiset opiskeluoikeudet raportin tulostusparametreissa määriteltynä päivänä")),
+    "opiskelijoidenMaara_VOSRahoitteisia" -> CompactColumn("Opiskelijoista valtionosuusrahoitteisia", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Valtionosuusrahoitteinen koulutus\"")),
+    "opiskelijoidenMaara_MuutaKauttaRahoitettu" -> CompactColumn("Opiskelijoista muuta kautta rahoitettuja", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Muuta kautta rahoitettu\"")),
+    "opiskelijoidenMaara_SisaoppilaitosmainenMajoitus_VOSRahoitteisia" -> CompactColumn("Opiskelijoista valtionosuusrahoitteisia - sisäoppilaitosmainen majoitus", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Valtionosuusrahoitteinen koulutus\" ja joissa opiskelijalla merkitty raportin tulostusparametreissa valitulle päivälle osuva sisäoppilaitosmaisen majoituksen jakso")),
+    "nuortenOppimaaranSuorittajia" -> CompactColumn("Nuorten opetussuunnitelman mukaan opiskelevat", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa lukiokoulutukseen valmistavaa koulutusta suoritetaan nuorten opetussuunnitelman mukaan")),
+    "nuortenOppimaaranSuorittajia_VOSRahoitteisia" -> CompactColumn("Nuorten opetussuunnitelman mukaan opiskelevista valtionosuusrahoitteisia", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa lukiokoulutukseen valmistavaa koulutusta suoritetaan nuorten opetussuunnitelman mukaan ja joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Valtionosuusrahoitteinen koulutus\"")),
+    "nuortenOppimaaranSuorittajia_MuutaKauttaRahoitettu" -> CompactColumn("Nuorten opetussuunnitelman mukaan opiskelevista muuta kautta rahoitettuja", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa lukiokoulutukseen valmistavaa koulutusta suoritetaan nuorten opetussuunnitelman mukaan ja joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Muuta kautta rahoitettu\"")),
+    "nuortenOppimaaranSuorittajia_EiKotikuntaa" -> CompactColumn("Nuorten opetussuunnitelman mukaan opiskelevat - ei kotikuntaa", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa lukiokoulutukseen valmistavaa koulutusta suoritetaan nuorten opetussuunnitelman mukaan ja joille ei Opintopolun oppijanumerorekisteristä löydy tietoa opiskelijan kotikunnasta")),
+    "nuortenOppimaaranSuorittajia_KotikuntaAhvenanmaa" -> CompactColumn("Nuorten opetussuunnitelman mukaan opiskelevat - kotikunta Ahvenanmaalla", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa lukiokoulutukseen valmistavaa koulutusta suoritetaan nuorten opetussuunnitelman mukaan ja joiden kotikunta Opintopolun oppijanumerorekisterin mukaan Ahvenanmaalla")),
+    "aikuistenOppimaaranSuorittajia" -> CompactColumn("Aikuisten opetussuunnitelman mukaan lukion oppimäärää suorittavat", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa päätason suorituksena lukion oppimäärän suoritus aikuisten opetussuunnitelman mukaan")),
+    "aikuistenOppimaaranSuorittajia_VOSRahoitteisia" -> CompactColumn("Aikuisten opetussuunnitelman mukaan opiskelevista valtionosuusrahoitteisia", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa lukiokoulutukseen valmistavaa koulutusta suoritetaan aikuisten opetussuunnitelman mukaan ja joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Valtionosuusrahoitteinen koulutus\"")),
+    "aikuistenOppimaaranSuorittajia_MuutaKauttaRahoitettu" -> CompactColumn("Aikuisten opetussuunnitelman mukaan opiskelevista muuta kautta rahoitettuja", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa lukiokoulutukseen valmistavaa koulutusta suoritetaan aikuisten opetussuunnitelman mukaan ja joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Muuta kautta rahoitettu\"")),
+    "aikuistenOppimaaranSuorittajia_EiKotikuntaa" -> CompactColumn("Aikuisten opetussuunnitelman mukaan opiskelevat - ei kotikuntaa", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa lukiokoulutukseen valmistavaa koulutusta suoritetaan aikuisten opetussuunnitelman mukaan ja joille ei Opintopolun oppijanumerorekisteristä löydy tietoa opiskelijan kotikunnasta")),
+    "aikuistenOppimaaranSuorittajia_KotikuntaAhvenanmaa" -> CompactColumn("Aikuisten opetussuunnitelman mukaan opiskelevat - kotikunta Ahvenanmaalla", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa lukiokoulutukseen valmistavaa koulutusta suoritetaan aikuisten opetussuunnitelman mukaan ja joiden kotikunta Opintopolun oppijanumerorekisterin mukaan Ahvenanmaalla"))
   )
 }
 
