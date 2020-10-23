@@ -81,8 +81,10 @@ object Lukio2019OsasuoritusValidation {
   }
 
   private def validateModuulitPaikallisessaOppiaineessa(suoritus: Suoritus, parents: List[Suoritus]): HttpStatus = (suoritus, parents) match {
-    case (s: LukionModuulinSuoritus2019, (p : LukionOppiaineenSuoritus2019) :: _) if p.koulutusmoduuli.isInstanceOf[PaikallinenLukionOppiaine2019] =>
-      KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Paikalliseen oppiaineeseen ${p.koulutusmoduuli.tunniste} ei voi lisätä valtakunnallista moduulia ${s.koulutusmoduuli.tunniste}. Paikallisessa oppiaineessa voi olla vain paikallisia opintojaksoja.")
+    case (_: LukionModuulinSuoritus2019, (_ : LukionOppiaineenSuoritus2019) :: _) |
+         (_: PreIBLukionModuulinSuoritus2019, (_ : LukionOppiaineenPreIBSuoritus2019) :: _)
+      if parents.head.koulutusmoduuli.isInstanceOf[PaikallinenLukionOppiaine2019] =>
+      KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Paikalliseen oppiaineeseen ${parents.head.koulutusmoduuli.tunniste} ei voi lisätä valtakunnallista moduulia ${suoritus.koulutusmoduuli.tunniste}. Paikallisessa oppiaineessa voi olla vain paikallisia opintojaksoja.")
     case _ =>
       HttpStatus.ok
   }
