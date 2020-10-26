@@ -217,9 +217,7 @@ case class LukionPaikallisenOpintojaksonSuoritus2019(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionpaikallinenopintojakso2019", koodistoUri = "suorituksentyyppi")
 ) extends LukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019 with LukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019 with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu with Vahvistukseton
 
-trait LukionModuuliTaiPaikallinenOpintojakso2019 extends KoulutusmoduuliPakollinenLaajuus with Valinnaisuus with PreIBLukionModuuliTaiPaikallinenOpintojakso2019 {
-  def laajuus: LaajuusOpintopisteissä
-}
+trait LukionModuuliTaiPaikallinenOpintojakso2019 extends KoulutusmoduuliPakollinenLaajuusOpintopisteissä with Valinnaisuus with PreIBLukionModuuliTaiPaikallinenOpintojakso2019
 
 @Description("Valtakunnallisen lukion/IB-lukion moduulin tunnistetiedot")
 trait LukionModuuli2019 extends LukionModuuliTaiPaikallinenOpintojakso2019 with KoodistostaLöytyväKoulutusmoduuliPakollinenLaajuus with PreIBLukionModuuli2019 {
