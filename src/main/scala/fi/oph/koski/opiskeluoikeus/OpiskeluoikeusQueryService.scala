@@ -12,6 +12,7 @@ import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{SuoritusJsonHaku, _}
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.koski.util.SortOrder.{Ascending, Descending}
+import fi.oph.koski.util.Retry.retryWithInterval
 import fi.oph.koski.util.{PaginationSettings, QueryPagination, SortOrder}
 import rx.Observable.{create => createObservable}
 import rx.Observer
@@ -63,7 +64,9 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
     if (!user.hasGlobalReadAccess) throw new RuntimeException("Query does not make sense without global read access")
     // this approach to pagination ("limit 500 offset 176500") is not perfect (the query gets slower as offset
     // increases), but seems tolerable here (with join to henkilot, as in mkQuery below, it's much slower)
-    runDbSync(defaultPagination.applyPagination(OpiskeluOikeudetWithAccessCheck.sortBy(_.id), pagination).result, timeout = 5.minutes)
+    retryWithInterval(5, intervalMs = 30000) {
+      runDbSync(defaultPagination.applyPagination(OpiskeluOikeudetWithAccessCheck.sortBy(_.id), pagination).result, timeout = 5.minutes)
+    }
   }
 
   private def mkQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder])(implicit user: KoskiSession) = {
