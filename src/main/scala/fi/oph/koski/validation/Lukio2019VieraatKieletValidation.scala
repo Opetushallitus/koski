@@ -6,7 +6,7 @@ import fi.oph.koski.schema._
 
 object Lukio2019VieraatKieletValidation {
 
-  def fillVieraatKielet(suoritus: LukionPäätasonSuoritus2019): PäätasonSuoritus =
+  def fillVieraatKielet(suoritus: PäätasonSuoritus): PäätasonSuoritus =
     suoritus.withOsasuoritukset(suoritus.osasuoritukset.map(_.map(fillOsasuoritus)))
 
   def validate(suoritus: Suoritus, parents: List[Suoritus]): HttpStatus = {
@@ -20,15 +20,25 @@ object Lukio2019VieraatKieletValidation {
     ))
   }
 
-  private def fillOsasuoritus(osasuoritus: LukionOppimääränOsasuoritus2019) = (osasuoritus, osasuoritus.koulutusmoduuli) match {
+  private def fillOsasuoritus(osasuoritus: Suoritus) = (osasuoritus, osasuoritus.koulutusmoduuli) match {
     case (l: LukionOppiaineenSuoritus2019, k:VierasTaiToinenKotimainenKieli2019) => l.withOsasuoritukset(l.osasuoritukset.map(_.map(fillModuulinSuoritusOppiaineissa(k.kieli))))
+    case (l: LukionOppiaineenPreIBSuoritus2019, k:VierasTaiToinenKotimainenKieli2019) => l.withOsasuoritukset(l.osasuoritukset.map(_.map(fillModuulinSuoritusOppiaineissa(k.kieli))))
     case (m: MuidenLukioOpintojenSuoritus2019, _) => m.withOsasuoritukset(m.osasuoritukset.map(_.map(fillModuulinSuoritusMuissaOpinnoissa)))
+    case (m: MuidenLukioOpintojenPreIBSuoritus2019, _) => m.withOsasuoritukset(m.osasuoritukset.map(_.map(fillModuulinSuoritusMuissaOpinnoissa)))
     case _ => osasuoritus
   }
 
-  private def fillModuulinSuoritusOppiaineissa(kieli:Koodistokoodiviite)(osasuoritus: LukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019) =
+  private def fillModuulinSuoritusOppiaineissa(kieli:Koodistokoodiviite)(osasuoritus: Suoritus) =
     osasuoritus match {
       case m: LukionModuulinSuoritusOppiaineissa2019 => m.withKoulutusmoduuli(
+        LukionVieraanKielenModuuliOppiaineissa2019(
+          m.koulutusmoduuli.tunniste,
+          m.koulutusmoduuli.laajuus,
+          m.koulutusmoduuli.pakollinen,
+          Some(kieli)
+        )
+      )
+      case m: PreIBLukionModuulinSuoritusOppiaineissa2019 => m.withKoulutusmoduuli(
         LukionVieraanKielenModuuliOppiaineissa2019(
           m.koulutusmoduuli.tunniste,
           m.koulutusmoduuli.laajuus,
@@ -39,12 +49,13 @@ object Lukio2019VieraatKieletValidation {
       case _ => osasuoritus
     }
 
-  private def fillModuulinSuoritusMuissaOpinnoissa(osasuoritus: LukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019) = osasuoritus match {
+  private def fillModuulinSuoritusMuissaOpinnoissa(osasuoritus: Suoritus) = osasuoritus match {
     case m: LukionModuulinSuoritusMuissaOpinnoissa2019 => m.withKoulutusmoduuli(fillKoulutusmoduuliMuissaOpinnoissa(m.koulutusmoduuli))
+    case m: PreIBLukionModuulinSuoritusMuissaOpinnoissa2019 => m.withKoulutusmoduuli(fillKoulutusmoduuliMuissaOpinnoissa(m.koulutusmoduuli))
     case _ => osasuoritus
   }
 
-  private def fillKoulutusmoduuliMuissaOpinnoissa(koulutusmoduuli: LukionModuuliMuissaOpinnoissa2019) = {
+  private def fillKoulutusmoduuliMuissaOpinnoissa[T <: KoodistostaLöytyväKoulutusmoduuli with KoulutusmoduuliPakollinenLaajuusOpintopisteissä with Valinnaisuus](koulutusmoduuli: T) = {
     moduulikoodiPrefixienKielet.find(t => koulutusmoduuli.tunniste.koodiarvo.startsWith(t._1)) match {
       case Some((_, kieli)) =>
         LukionVieraanKielenModuuliMuissaOpinnoissa2019(
