@@ -28,9 +28,21 @@ class LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiSpec extends FreeSpec
       }
     }
 
-    lazy val rows: Seq[LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiRow] = loadRaportti
-    lazy val ressu = rows.find(_.oppilaitos == "Ressun lukio").get
+    lazy val helsinginRaportti = loadRaportti(MockOrganisaatiot.helsinginKaupunki)
+    lazy val ressunRaportti = loadRaportti(MockOrganisaatiot.ressunLukio)
+    lazy val ressu = ressunRaportti.find(_.oppilaitos == "Ressun lukio").get
 
+    "Jos haetaan koulutustoimijan oidilla, valitaan raportille sen alaiset organisaatiot" in {
+      helsinginRaportti.map(_.oppilaitos) should contain("Ressun lukio")
+    }
+    "Yhdellä organisaatio oidilla haettaessa raportille otetaan vain sen organisaatio" in {
+      ressunRaportti.length shouldBe(1)
+    }
+    "Opiskelijoiden lukumäärä" in {
+      ressu.opiskelijoidenMaara shouldBe(2)
+      ressu.nuortenOppimaaranSuorittajia shouldBe(1)
+      ressu.aikuistenOppimaaranSuorittajia shouldBe(1)
+    }
     "Valtionosuus rahoitteisia" in {
       ressu.opiskelijoidenMaara_VOSRahoitteisia shouldBe(1)
       ressu.nuortenOppimaaranSuorittajia_VOSRahoitteisia shouldBe(1)
@@ -49,13 +61,13 @@ class LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiSpec extends FreeSpec
       ressu.aikuistenOppimaaranSuorittajia_KotikuntaAhvenanmaa shouldBe(0)
     }
     "Sisäoppilaitosmainen majoitus" in {
-      ressu.opiskelijoidenMaara_SisaoppilaitosmainenMajoitus shouldBe(1)
+      ressu.opiskelijoidenMaara_SisaoppilaitosmainenMajoitus_VOSRahoitteisia shouldBe(1)
     }
   }
 
-  private def loadRaportti = {
+  private def loadRaportti(oppilaitosOid: String) = {
     val request = RaporttiPäivältäRequest(
-      oppilaitosOid = MockOrganisaatiot.ressunLukio,
+      oppilaitosOid,
       downloadToken = None,
       password = "bassword",
       paiva = LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures.fixedDate
