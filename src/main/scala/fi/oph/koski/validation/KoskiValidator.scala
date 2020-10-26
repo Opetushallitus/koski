@@ -141,8 +141,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   private def fillVieraatKielet(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus =
-    oo.withSuoritukset(oo.suoritukset.map({
-      case s: LukionPäätasonSuoritus2019 => Lukio2019VieraatKieletValidation.fillVieraatKielet(s)
+    oo.withSuoritukset(oo.suoritukset.map(s => s match {
+      case (_: LukionPäätasonSuoritus2019 | _: PreIBSuoritus2019) => Lukio2019VieraatKieletValidation.fillVieraatKielet(s)
       case s => s
     }))
 
