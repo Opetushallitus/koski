@@ -412,8 +412,8 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
   }
 
   private val toimintaAlueOsasuoritukset = Some(List(
-    toimintaAlueenSuoritus("1").copy(arviointi = arviointi("S")),
-    toimintaAlueenSuoritus("2").copy(arviointi = arviointi("S")),
+    toimintaAlueenSuoritus("1").copy(arviointi = arviointi("S", kuvaus = None)),
+    toimintaAlueenSuoritus("2").copy(arviointi = arviointi("S", kuvaus = None)),
     toimintaAlueenSuoritus("3"),
     toimintaAlueenSuoritus("4")
   ))

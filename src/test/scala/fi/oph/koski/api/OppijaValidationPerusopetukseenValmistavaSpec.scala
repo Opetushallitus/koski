@@ -13,7 +13,7 @@ class OppijaValidationPerusopetukseenValmistavaSpec extends TutkinnonPerusteetTe
     "Luokka-astetta ei vaadita jos arvionti on 'O'" in {
       val suoritus = perusopetukseenValmistavanOpetuksenSuoritus.copy(osasuoritukset = Option(List(NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(
         koulutusmoduuli = oppiaine("FY").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1)),
-        arviointi = PerusopetusExampleData.arviointi("O")
+        arviointi = PerusopetusExampleData.arviointi("O", kuvaus = None)
       ))))
 
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {

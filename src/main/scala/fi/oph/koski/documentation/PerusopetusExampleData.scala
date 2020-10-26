@@ -11,11 +11,11 @@ import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 
 object PerusopetusExampleData {
-  def arviointi(arvosana: Int): Some[List[PerusopetuksenOppiaineenArviointi]] = Some(List(PerusopetuksenOppiaineenArviointi(arvosana)))
-  def arviointi(arvosana: String, kuvaus: Option[LocalizedString] = None): Some[List[PerusopetuksenOppiaineenArviointi]] = Some(List(PerusopetuksenOppiaineenArviointi(arvosana, kuvaus)))
+  def arviointi(arvosana: Int, arviointipäivä: Option[LocalDate] = None): Some[List[PerusopetuksenOppiaineenArviointi]] = Some(List(PerusopetuksenOppiaineenArviointi(arvosana, arviointipäivä)))
+  def arviointi(arvosana: String, kuvaus: Option[LocalizedString]): Some[List[PerusopetuksenOppiaineenArviointi]] = Some(List(PerusopetuksenOppiaineenArviointi(arvosana, kuvaus)))
 
-  val hyväksytty = Some(List(PerusopetuksenOppiaineenArviointi("S")))
-  val osallistunut = Some(List(PerusopetuksenOppiaineenArviointi("O")))
+  val hyväksytty = Some(List(PerusopetuksenOppiaineenArviointi("S", kuvaus = None)))
+  val osallistunut = Some(List(PerusopetuksenOppiaineenArviointi("O", kuvaus = None)))
 
   def suoritus(aine: NuortenPerusopetuksenOppiaine) = NuortenPerusopetuksenOppiaineenSuoritus(
     koulutusmoduuli = aine,
@@ -144,7 +144,7 @@ object PerusopetusExampleData {
       vahvistus = vahvistusPaikkakunnalla(date(2016, 6, 4)),
       suoritustapa = suoritustapaKoulutus,
       suorituskieli = suomenKieli,
-      arviointi = arviointi("S")
+      arviointi = arviointi("S", kuvaus = None)
     )
   }
 
