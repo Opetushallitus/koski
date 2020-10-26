@@ -69,14 +69,15 @@ object Lukio2019VieraatKieletValidation {
   }
 
   private def validateVKModuulitMuissaOpinnoissa(suoritus: Suoritus): HttpStatus = (suoritus, suoritus.koulutusmoduuli) match {
-    case (_: LukionModuulinSuoritusMuissaOpinnoissa2019, k: LukionMuuModuuliMuissaOpinnoissa2019) if (k.tunniste.koodiarvo.startsWith("VK")) =>
+    case (_: LukionModuulinSuoritusMuissaOpinnoissa2019 | _: PreIBLukionModuulinSuoritusMuissaOpinnoissa2019, k: LukionMuuModuuliMuissaOpinnoissa2019)
+      if (k.tunniste.koodiarvo.startsWith("VK")) =>
       KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Muissa suorituksissa olevalta vieraan kielen moduulilta ${k.tunniste} puuttuu kieli")
     case _ =>
       HttpStatus.ok
   }
 
   private def validateMuutModuulitMuissaOpinnoissa(suoritus: Suoritus): HttpStatus = (suoritus, suoritus.koulutusmoduuli) match {
-    case (_: LukionModuulinSuoritusMuissaOpinnoissa2019, k: LukionVieraanKielenModuuliMuissaOpinnoissa2019)
+    case (_: LukionModuulinSuoritusMuissaOpinnoissa2019 | _: PreIBLukionModuulinSuoritusMuissaOpinnoissa2019, k: LukionVieraanKielenModuuliMuissaOpinnoissa2019)
       if !vieraanKielenModuuliPrefixit.exists(k.tunniste.koodiarvo.startsWith(_)) =>
       KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Suoritukselle ${k.tunniste} on määritelty kieli, vaikka se ei ole vieraan kielen moduuli")
     case _ =>
@@ -110,7 +111,11 @@ object Lukio2019VieraatKieletValidation {
     (suoritus, suoritus.koulutusmoduuli, parents) match {
       case (s: LukionModuulinSuoritus2019, k: LukionVieraanKielenModuuliOppiaineissa2019, _ :: (pp: LukionOppimääränSuoritus2019) :: _)
         if pp.vahvistus.isDefined => validateSuullisenKielitaidonKoe(pp, s.koulutusmoduuli.tunniste, k.kieli)
+      case (s: PreIBLukionModuulinSuoritus2019, k: LukionVieraanKielenModuuliOppiaineissa2019, _ :: (pp: PreIBSuoritus2019) :: _)
+        if pp.vahvistus.isDefined => validateSuullisenKielitaidonKoe(pp, s.koulutusmoduuli.tunniste, k.kieli)
       case (s: LukionModuulinSuoritus2019, k: LukionVieraanKielenModuuliMuissaOpinnoissa2019, _ :: (pp: LukionOppimääränSuoritus2019) :: _)
+        if pp.vahvistus.isDefined => validateSuullisenKielitaidonKoe(pp, s.koulutusmoduuli.tunniste, Some(k.kieli))
+      case (s: PreIBLukionModuulinSuoritus2019, k: LukionVieraanKielenModuuliMuissaOpinnoissa2019, _ :: (pp: PreIBSuoritus2019) :: _)
         if pp.vahvistus.isDefined => validateSuullisenKielitaidonKoe(pp, s.koulutusmoduuli.tunniste, Some(k.kieli))
       case (s: LukionModuulinSuoritus2019, k: LukionVieraanKielenModuuliOppiaineissa2019, (p: LukionOppiaineenSuoritus2019) :: (pp: LukionOppiaineidenOppimäärienSuoritus2019) :: _)
         if p.viimeisinArviointi.isDefined => validateSuullisenKielitaidonKoe(pp, s.koulutusmoduuli.tunniste, k.kieli)
@@ -133,9 +138,10 @@ object Lukio2019VieraatKieletValidation {
 
   private def validateOmanÄidinkielenOpinnotModuuleina(suoritus: Suoritus): HttpStatus = {
     suoritus match {
-      case s: LukionModuulinSuoritus2019
-        if omanÄidinkielenOpinnotPrefixit.exists(s.koulutusmoduuli.tunniste.koodiarvo.startsWith(_)) =>
-        KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Moduuli ${s.koulutusmoduuli.tunniste.koodiarvo} ei ole sallittu oppiaineen osasuoritus. Lukion oppimäärää täydentävän oman äidinkielen opinnoista siirretään vain kokonaisarviointi ja tieto opiskellusta kielestä.")
+      case _: LukionModuulinSuoritus2019 | _: PreIBLukionModuulinSuoritus2019
+        if omanÄidinkielenOpinnotPrefixit.exists(suoritus.koulutusmoduuli.tunniste.koodiarvo.startsWith(_)) =>
+        KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(
+          s"Moduuli ${suoritus.koulutusmoduuli.tunniste.koodiarvo} ei ole sallittu oppiaineen osasuoritus. Lukion oppimäärää täydentävän oman äidinkielen opinnoista siirretään vain kokonaisarviointi ja tieto opiskellusta kielestä.")
       case _ => HttpStatus.ok
     }
   }
