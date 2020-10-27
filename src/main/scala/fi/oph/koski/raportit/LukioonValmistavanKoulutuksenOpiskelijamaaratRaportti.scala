@@ -36,6 +36,7 @@ object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti {
         where r_opiskeluoikeus.koulutusmuoto = 'luva'
           and r_opiskeluoikeus.oppilaitos_oid in (#${SQL.toSqlListUnsafe(oppilaitosOid)})
           and r_paatason_suoritus.suorituksen_tyyppi = 'luva'
+          and r_opiskeluoikeus_aikajakso.tila = 'lasna'
           and r_opiskeluoikeus_aikajakso.alku <= $paiva
           and r_opiskeluoikeus_aikajakso.loppu >= $paiva
       ) select
