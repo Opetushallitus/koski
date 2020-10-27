@@ -7,7 +7,7 @@ import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
-import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
@@ -152,6 +152,19 @@ class KelaSpec extends FreeSpec with LocalJettyHttpSpecification with Opiskeluoi
       response.opiskeluoikeudet.headOption.flatMap(_.versionumero) should equal(Some(1))
       AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> MockOppijat.amis.oid)))
     }
+  }
+
+  "Hetu ei päädy lokiin" in {
+    val maskedHetu = "******-****"
+    getHetu(MockOppijat.amis.hetu.get) {
+      verifyResponseStatusOk()
+      Thread.sleep(200) // wait for logging to catch up (there seems to be a slight delay)
+      AccessLogTester.getLogMessages.lastOption.get.getMessage.toString should include(maskedHetu)
+    }
+  }
+
+  private def getHetu[A](hetu: String, user: MockUser = MockUsers.kelaSuppeatOikeudet)(f: => A)= {
+    authGet(s"kela/$hetu", user)(f)
   }
 
   private def postHetu[A](hetu: String, user: MockUser = MockUsers.kelaLaajatOikeudet)(f: => A): A = {
