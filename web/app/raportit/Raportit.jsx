@@ -38,7 +38,7 @@ export const raportitContentP = () => {
             {raportit && raportit.includes('lukionsuoritustietojentarkistus') && <Lukioraportti organisaatioAtom={organisaatioAtom} />}
             {document.location.search.includes('tilastoraportit=true') && raportit && raportit.includes('lukiokurssikertyma') && <LukioKurssikertyma organisaatioAtom={organisaatioAtom}/>}
             {raportit && raportit.includes('lukiodiaibinternationalopiskelijamaarat') && <LukioDiaIBInternationalOpiskelijamaarat organisaatioAtom={organisaatioAtom} />}
-            {document.location.search.includes('tilastoraportit=true') && raportit && raportit.includes('luvaopiskelijamaarat') && <LuvaOpiskelijamaaratRaportti organisaatioAtom={organisaatioAtom} />}
+            {raportit && raportit.includes('luvaopiskelijamaarat') && <LuvaOpiskelijamaaratRaportti organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('aikuistenperusopetussuoritustietojentarkistus') && <AikuistenPerusopetusRaportti organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('esiopetuksenraportti') && <EsiopetusRaportti organisaatioAtom={organisaatioAtom}/>}
             {raportit && raportit.includes('esiopetuksenoppijamäärienraportti') && <EsiopetuksenOppijamäärätRaportti organisaatioAtom={organisaatioAtom}/>}
