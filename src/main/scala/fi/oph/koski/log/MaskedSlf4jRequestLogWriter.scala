@@ -17,5 +17,6 @@ class MaskedSlf4jRequestLogWriter extends Slf4jRequestLogWriter {
       .replaceAll("(/koski/api/henkilo/search\\?query=)(\\S+)", "$1*")
       .replaceAll("(/koski/api/henkilo/search\\?query=)(\\S+)", "$1*")
       .replaceAll("(/koski/api/luovutuspalvelu/valvira/)(\\S+)", "$1******-****")
+      .replaceAll("(/koski/kela/)(\\d\\S+)", "$1******-****")
   }
 }
