@@ -72,6 +72,9 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
       "Suoritettuja valtakunnallisia syventavia" in {
         ressunAineopiskelijat.suoritettujaValtakunnallisiaSyventaviaKursseja shouldBe(1)
       }
+      "Tunnustettuja pakollisia ja tunnustettuja valtakunnallisia syventavia" in {
+        ressunAineopiskelijat.tunnustettujaPakollisia_ja_tunnustettujaValtakunnallisiaSyventavia shouldBe(4)
+      }
       "Tunnustettuja pakollisia" in {
         ressunAineopiskelijat.tunnustettujaPakollisiaKursseja shouldBe(2)
       }
