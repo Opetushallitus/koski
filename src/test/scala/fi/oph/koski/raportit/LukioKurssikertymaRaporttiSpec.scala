@@ -28,6 +28,9 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
 
   "Excel välilehtien sarakkeet, valitaan vain ne kurssit joiden arviointipäivä on aikavälin sisällä" - {
     "Oppimäärän välilehti (lukio ops 2015)" - {
+      "OppilaitosOid" in {
+        helsinkiOppimaara.oppilaitosOid shouldBe(MockOrganisaatiot.helsinginMedialukio)
+      }
       "Suoritettuja" in {
         helsinkiOppimaara.suoritettujaKursseja shouldBe(3)
       }
