@@ -42,6 +42,9 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
       "Oppilaitoksen Oid" in {
         ressunAineopiskelijat.oppilaitosOid shouldBe(MockOrganisaatiot.ressunLukio)
       }
+      "Yhteensä" in {
+        ressunAineopiskelijat.kurssejaYhteensa shouldBe(10)
+      }
       "Suoritettuja" in {
         ressunAineopiskelijat.suoritettujaKursseja shouldBe(4)
       }

@@ -42,6 +42,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
       ) select
           oppilaitos_oid oppilaitos_oid,
           oppilaitos_nimi oppilaitos,
+          count(*) yhteensa,
           count(*) filter (where tunnustettu = false) suoritettuja,
           count(*) filter (where tunnustettu) tunnustettuja,
           count(*) filter (where tunnustettu_rahoituksen_piirissa) tunnustettuja_rahoituksen_piirissa,
@@ -91,6 +92,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
     LukioKurssikertymaAineopiskelijaRow(
       oppilaitosOid = rs.getString("oppilaitos_oid"),
       oppilaitos = rs.getString("oppilaitos"),
+      kurssejaYhteensa = rs.getInt("yhteensa"),
       suoritettujaKursseja = rs.getInt("suoritettuja"),
       tunnustettujaKursseja = rs.getInt("tunnustettuja"),
       tunnustettujaKursseja_rahoituksenPiirissa = rs.getInt("tunnustettuja_rahoituksen_piirissa"),
@@ -108,6 +110,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
   val columnSettings: Seq[(String, Column)] = Seq(
     "oppilaitosOid" -> Column("Oppilaitoksen oid-tunniste"),
     "oppilaitos" -> Column("Oppilaitos"),
+    "kurssejaYhteensa" -> Column("kurssejaYhteensa"),
     "suoritettujaKursseja" -> Column("suoritettujaKursseja"),
     "tunnustettujaKursseja" -> Column("tunnustettujaKursseja"),
     "tunnustettujaKursseja_rahoituksenPiirissa" -> Column("tunnustettujaKursseja_rahoituksenPiirissa"),
@@ -125,6 +128,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
 case class LukioKurssikertymaAineopiskelijaRow(
   oppilaitosOid: String,
   oppilaitos: String,
+  kurssejaYhteensa: Int,
   suoritettujaKursseja: Int,
   tunnustettujaKursseja: Int,
   tunnustettujaKursseja_rahoituksenPiirissa: Int,
