@@ -27,6 +27,7 @@ object OpiskeluoikeusLoader extends Logging {
       if (opiskeluoikeusRows.nonEmpty) {
         val (errors, outputRows) = opiskeluoikeusRows.par.map(buildRow).seq.partition(_.isLeft)
         db.loadOpiskeluoikeudet(outputRows.map(_.right.get.rOpiskeluoikeusRow))
+        db.loadOrganisaatioHistoria(outputRows.flatMap(_.right.get.organisaatioHistoriaRows))
         val aikajaksoRows = outputRows.flatMap(_.right.get.rOpiskeluoikeusAikajaksoRows)
         val esiopetusOpiskeluoikeusAikajaksoRows = outputRows.flatMap(_.right.get.esiopetusOpiskeluoikeusAikajaksoRows)
         val päätasonSuoritusRows = outputRows.flatMap(_.right.get.rPäätasonSuoritusRows)
@@ -119,6 +120,7 @@ object OpiskeluoikeusLoader extends Logging {
       val suoritusRows: List[(RPäätasonSuoritusRow, List[ROsasuoritusRow], List[MuuAmmatillinenOsasuoritusRaportointiRow], List[TOPKSAmmatillinenRaportointiRow])] = oo.suoritukset.zipWithIndex.map { case (ps, i) => buildSuoritusRows(inputRow.oid, oo.getOppilaitos, ps, (inputRow.data \ "suoritukset")(i), suoritusIds.incrementAndGet) }
       OutputRows(
         rOpiskeluoikeusRow = ooRow,
+        organisaatioHistoriaRows = OrganisaatioHistoriaRowBuilder.buildOrganisaatioHistoriaRows(oo),
         rOpiskeluoikeusAikajaksoRows = aikajaksoRows._1,
         esiopetusOpiskeluoikeusAikajaksoRows = aikajaksoRows._2,
         rPäätasonSuoritusRows = suoritusRows.map(_._1),
@@ -296,6 +298,7 @@ case class LoadCompleted(done: Boolean = true) extends LoadResult
 
 case class OutputRows(
   rOpiskeluoikeusRow: ROpiskeluoikeusRow,
+  organisaatioHistoriaRows: Seq[ROrganisaatioHistoriaRow],
   rOpiskeluoikeusAikajaksoRows: Seq[ROpiskeluoikeusAikajaksoRow],
   esiopetusOpiskeluoikeusAikajaksoRows: Seq[EsiopetusOpiskeluoikeusAikajaksoRow],
   rPäätasonSuoritusRows: Seq[RPäätasonSuoritusRow],

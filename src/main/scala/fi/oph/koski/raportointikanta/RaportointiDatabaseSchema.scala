@@ -53,6 +53,7 @@ object RaportointiDatabaseSchema {
 
   def dropAllIfExists(s: Schema) = DBIO.seq(
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_opiskeluoikeus CASCADE",
+    sqlu"DROP TABLE IF EXISTS #${s.name}.r_organisaatiohistoria CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_opiskeluoikeus_aikajakso CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.esiopetus_opiskeluoik_aikajakso CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_paatason_suoritus CASCADE",
@@ -75,6 +76,7 @@ object RaportointiDatabaseSchema {
     sqlu"GRANT USAGE ON SCHEMA #${s.name} TO raportointikanta_katselija, raportointikanta_henkilo_katselija",
     sqlu"""GRANT SELECT ON
       #${s.name}.r_opiskeluoikeus,
+      #${s.name}.r_organisaatiohistoria,
       #${s.name}.r_opiskeluoikeus_aikajakso,
       #${s.name}.r_paatason_suoritus,
       #${s.name}.r_osasuoritus,
@@ -120,6 +122,18 @@ object RaportointiDatabaseSchema {
       lisätiedotHenkilöstökoulutus, lisätiedotKoulutusvienti, lähdejärjestelmäKoodiarvo, lähdejärjestelmäId, data) <> (ROpiskeluoikeusRow.tupled, ROpiskeluoikeusRow.unapply)
   }
   class ROpiskeluoikeusTableTemp(tag: Tag) extends ROpiskeluoikeusTable(tag, Temp)
+
+  class ROrganisaatioHistoriaTable(tag: Tag, schema: Schema = Public) extends Table[ROrganisaatioHistoriaRow](tag, schema.nameOpt, "r_organisaatiohistoria") {
+    val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
+    val oppilaitosOid = column[Option[String]]("oppilaitos_oid", StringIdentifierType)
+    val koulutustoimijaOid = column[Option[String]]("koulutustoimija_oid", StringIdentifierType)
+    val alku = column[Date]("alku")
+    val loppu = column[Date]("loppu")
+
+    def * = (opiskeluoikeusOid, oppilaitosOid, koulutustoimijaOid, alku, loppu) <>
+      (ROrganisaatioHistoriaRow.tupled, ROrganisaatioHistoriaRow.unapply)
+  }
+  class ROrganisaatioHistoriaTableTemp(tag: Tag) extends ROrganisaatioHistoriaTable(tag, Temp)
 
   class ROpiskeluoikeusAikajaksoTable(tag: Tag, schema: Schema = Public) extends Table[ROpiskeluoikeusAikajaksoRow](tag, schema.nameOpt, "r_opiskeluoikeus_aikajakso") {
     val id = column[Long]("id", O.PrimaryKey, O.AutoInc)
@@ -410,6 +424,14 @@ case class ROpiskeluoikeusRow(
   lähdejärjestelmäKoodiarvo: Option[String],
   lähdejärjestelmäId: Option[String],
   data: JValue
+)
+
+case class ROrganisaatioHistoriaRow(
+  opiskeluoikeusOid: String,
+  oppilaitosOid: Option[String],
+  koulutustoimijaOid: Option[String],
+  alku: Date,
+  loppu: Date
 )
 
 case class ROpiskeluoikeusAikajaksoRow(
