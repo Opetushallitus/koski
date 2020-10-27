@@ -57,6 +57,12 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
             koulutusmoduuli_kurssin_tyyppi = 'syventava'
           ) valtakunnallisia_syventavia,
           count(*) filter (where
+            tunnustettu = false and (
+            koulutusmoduuli_kurssin_tyyppi = 'pakollinen'
+              or
+            (koulutusmoduuli_kurssin_tyyppi = 'syventava' and koulutusmoduuli_paikallinen = false))
+          ) suoritettuja_pakollisia_ja_valtakunnallisiaSyventavia,
+          count(*) filter (where
             koulutusmoduuli_kurssin_tyyppi = 'pakollinen' and
             tunnustettu = false
           ) suoritettuja_pakollisia,
@@ -104,6 +110,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
       pakollisia_tai_valtakunnallisiaSyventavia = rs.getInt("pakollisia_tai_valtakunnallisia_syventavia"),
       pakollisiaKursseja = rs.getInt("pakollisia"),
       valtakunnallisestiSyventaviaKursseja = rs.getInt("valtakunnallisia_syventavia"),
+      suoritettujaPakollisia_ja_suoritettujaValtakunnallisiaSyventavia = rs.getInt("suoritettuja_pakollisia_ja_valtakunnallisiaSyventavia"),
       suoritettujaPakollisiaKursseja = rs.getInt("suoritettuja_pakollisia"),
       suoritettujaValtakunnallisiaSyventaviaKursseja = rs.getInt("suoritettuja_valtakunnallisia_syventavia"),
       tunnustettujaPakollisiaKursseja = rs.getInt("tunnustettuja_pakollisia"),
@@ -123,6 +130,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
     "pakollisia_tai_valtakunnallisiaSyventavia" -> Column("pakollisia_tai_valtakunnallisiaSyventavia"),
     "pakollisiaKursseja" -> Column("pakollisiaKursseja"),
     "valtakunnallisestiSyventaviaKursseja" -> Column("valtakunnallisestiSyventaviaKursseja"),
+    "suoritettujaPakollisia_ja_suoritettujaValtakunnallisiaSyventavia" -> Column("suoritettujaPakollisia_ja_suoritettujaValtakunnallisiaSyventavia"),
     "suoritettujaPakollisiaKursseja" -> Column("suoritettujaPakollisiaKursseja"),
     "suoritettujaValtakunnallisiaSyventaviaKursseja" -> Column("suoritettujaValtakunnallisiaSyventaviaKursseja"),
     "tunnustettujaPakollisiaKursseja" -> Column("tunnustettujaPakollisiaKursseja"),
@@ -142,6 +150,7 @@ case class LukioKurssikertymaAineopiskelijaRow(
   pakollisia_tai_valtakunnallisiaSyventavia: Int,
   pakollisiaKursseja: Int,
   valtakunnallisestiSyventaviaKursseja: Int,
+  suoritettujaPakollisia_ja_suoritettujaValtakunnallisiaSyventavia: Int,
   suoritettujaPakollisiaKursseja: Int,
   suoritettujaValtakunnallisiaSyventaviaKursseja: Int,
   tunnustettujaPakollisiaKursseja: Int,
