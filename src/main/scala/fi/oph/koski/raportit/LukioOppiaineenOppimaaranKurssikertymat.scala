@@ -23,6 +23,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
     sql"""
       with oppiaineen_oppimaara as (
         select
+          r_opiskeluoikeus.oppilaitos_oid,
           r_opiskeluoikeus.oppilaitos_nimi,
           r_paatason_suoritus.paatason_suoritus_id
         from r_opiskeluoikeus
@@ -39,6 +40,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
               and r_opiskeluoikeus_aikajakso.loppu >= $aikaisintaan
           )
       ) select
+          oppilaitos_oid oppilaitos_oid,
           oppilaitos_nimi oppilaitos,
           count(*) filter (where tunnustettu = false) suoritettuja,
           count(*) filter (where tunnustettu) tunnustettuja,
@@ -80,13 +82,14 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
         where r_osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
          and  r_osasuoritus.arviointi_paiva >= $aikaisintaan
          and  r_osasuoritus.arviointi_paiva <= $viimeistaan
-        group by oppiaineen_oppimaara.oppilaitos_nimi;
+        group by oppiaineen_oppimaara.oppilaitos_oid, oppiaineen_oppimaara.oppilaitos_nimi;
     """.as[LukioKurssikertymaAineopiskelijaRow]
   }
 
   implicit private val getResult: GetResult[LukioKurssikertymaAineopiskelijaRow] = GetResult(r => {
     val rs: ResultSet = r.rs
     LukioKurssikertymaAineopiskelijaRow(
+      oppilaitosOid = rs.getString("oppilaitos_oid"),
       oppilaitos = rs.getString("oppilaitos"),
       suoritettujaKursseja = rs.getInt("suoritettuja"),
       tunnustettujaKursseja = rs.getInt("tunnustettuja"),
@@ -103,6 +106,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
   })
 
   val columnSettings: Seq[(String, Column)] = Seq(
+    "oppilaitosOid" -> Column("Oppilaitoksen oid-tunniste"),
     "oppilaitos" -> Column("Oppilaitos"),
     "suoritettujaKursseja" -> Column("suoritettujaKursseja"),
     "tunnustettujaKursseja" -> Column("tunnustettujaKursseja"),
@@ -119,6 +123,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
 }
 
 case class LukioKurssikertymaAineopiskelijaRow(
+  oppilaitosOid: String,
   oppilaitos: String,
   suoritettujaKursseja: Int,
   tunnustettujaKursseja: Int,

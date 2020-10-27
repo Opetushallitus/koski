@@ -39,6 +39,9 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
       }
     }
     "Aineopiskelijoiden välilehti" - {
+      "Oppilaitoksen Oid" in {
+        ressunAineopiskelijat.oppilaitosOid shouldBe(MockOrganisaatiot.ressunLukio)
+      }
       "Suoritettuja" in {
         ressunAineopiskelijat.suoritettujaKursseja shouldBe(4)
       }
