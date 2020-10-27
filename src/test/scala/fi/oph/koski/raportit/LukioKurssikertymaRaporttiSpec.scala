@@ -37,6 +37,9 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
       "Tunnustettuja" in {
         helsinkiOppimaara.tunnustettujaKursseja shouldBe(4)
       }
+      "Kursseja yhteensä" in {
+        helsinkiOppimaara.kurssejaYhteensa shouldBe(7)
+      }
       "Tunnustettuja rahoituksen piirissa" in {
         helsinkiOppimaara.tunnustettujaKursseja_rahoituksenPiirissa shouldBe(2)
       }
