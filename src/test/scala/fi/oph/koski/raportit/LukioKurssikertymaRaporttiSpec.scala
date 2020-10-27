@@ -54,6 +54,9 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
       "Tunnustettuja rahoituksen piirissä" in {
         ressunAineopiskelijat.tunnustettujaKursseja_rahoituksenPiirissa shouldBe(3)
       }
+      "Pakollisia tai valtakunnallinen ja syventava" in {
+        ressunAineopiskelijat.pakollisia_tai_valtakunnallisiaSyventavia shouldBe(7)
+      }
       "Pakollisia" in {
         ressunAineopiskelijat.pakollisiaKursseja shouldBe(4)
       }

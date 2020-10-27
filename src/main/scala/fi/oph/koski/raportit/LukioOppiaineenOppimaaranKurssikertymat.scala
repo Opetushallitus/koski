@@ -46,6 +46,11 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
           count(*) filter (where tunnustettu = false) suoritettuja,
           count(*) filter (where tunnustettu) tunnustettuja,
           count(*) filter (where tunnustettu_rahoituksen_piirissa) tunnustettuja_rahoituksen_piirissa,
+          count(*) filter (where
+            koulutusmoduuli_kurssin_tyyppi = 'pakollinen'
+             or
+            (koulutusmoduuli_kurssin_tyyppi = 'syventava' and koulutusmoduuli_paikallinen = false)
+          ) pakollisia_tai_valtakunnallisia_syventavia,
           count(*) filter (where koulutusmoduuli_kurssin_tyyppi = 'pakollinen') pakollisia,
           count(*) filter (where
             koulutusmoduuli_paikallinen = false and
@@ -96,6 +101,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
       suoritettujaKursseja = rs.getInt("suoritettuja"),
       tunnustettujaKursseja = rs.getInt("tunnustettuja"),
       tunnustettujaKursseja_rahoituksenPiirissa = rs.getInt("tunnustettuja_rahoituksen_piirissa"),
+      pakollisia_tai_valtakunnallisiaSyventavia = rs.getInt("pakollisia_tai_valtakunnallisia_syventavia"),
       pakollisiaKursseja = rs.getInt("pakollisia"),
       valtakunnallisestiSyventaviaKursseja = rs.getInt("valtakunnallisia_syventavia"),
       suoritettujaPakollisiaKursseja = rs.getInt("suoritettuja_pakollisia"),
@@ -114,6 +120,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
     "suoritettujaKursseja" -> Column("suoritettujaKursseja"),
     "tunnustettujaKursseja" -> Column("tunnustettujaKursseja"),
     "tunnustettujaKursseja_rahoituksenPiirissa" -> Column("tunnustettujaKursseja_rahoituksenPiirissa"),
+    "pakollisia_tai_valtakunnallisiaSyventavia" -> Column("pakollisia_tai_valtakunnallisiaSyventavia"),
     "pakollisiaKursseja" -> Column("pakollisiaKursseja"),
     "valtakunnallisestiSyventaviaKursseja" -> Column("valtakunnallisestiSyventaviaKursseja"),
     "suoritettujaPakollisiaKursseja" -> Column("suoritettujaPakollisiaKursseja"),
@@ -132,6 +139,7 @@ case class LukioKurssikertymaAineopiskelijaRow(
   suoritettujaKursseja: Int,
   tunnustettujaKursseja: Int,
   tunnustettujaKursseja_rahoituksenPiirissa: Int,
+  pakollisia_tai_valtakunnallisiaSyventavia: Int,
   pakollisiaKursseja: Int,
   valtakunnallisestiSyventaviaKursseja: Int,
   suoritettujaPakollisiaKursseja: Int,
