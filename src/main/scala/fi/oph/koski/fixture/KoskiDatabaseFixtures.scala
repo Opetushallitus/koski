@@ -98,6 +98,18 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
     val hkiTallentaja = MockUsers.helsinkiTallentaja.toKoskiUser(application.käyttöoikeusRepository)
     List(
       (MockOppijat.organisaatioHistoria, validOpiskeluoikeus.copy(organisaatiohistoria = Some(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria))),
+      (
+        MockOppijat.perusopetusOppijaMaaratRaportti_organisaatioHistoriallinen,
+        validateOpiskeluoikeus(PerusopetusOppijaMaaratRaporttiFixtures.eriOppilaitoksessa).copy(
+          organisaatiohistoria = PerusopetusOppijaMaaratRaporttiFixtures.organisaatiohistoria
+        )
+      ),
+      (
+        MockOppijat.perusopetusOppijaMaaratRaportti_organisaatioHistoriallinen,
+        validateOpiskeluoikeus(PerusopetusOppijaMaaratRaporttiFixtures.eriOppilaitoksessaLisäopetus).copy(
+          organisaatiohistoria = PerusopetusOppijaMaaratRaporttiFixtures.organisaatiohistoria
+        )
+      ),
       (MockOppijat.tunnisteenKoodiarvoPoistettu, opiskeluoikeusJostaTunnisteenKoodiarvoPoistettu),
       (MockOppijat.eskari, validateOpiskeluoikeus(ostopalveluOpiskeluoikeus, hkiTallentaja)),
       (MockOppijat.eskari, validateOpiskeluoikeus(ostopalveluOpiskeluoikeus.copy(suoritukset = List(päiväkotisuoritus(oppilaitos(päiväkotiMajakka)))), hkiTallentaja)),

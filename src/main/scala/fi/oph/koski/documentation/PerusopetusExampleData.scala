@@ -89,13 +89,18 @@ object PerusopetusExampleData {
 
   def oppija(henkilö: UusiHenkilö = exampleHenkilö, opiskeluoikeus: Opiskeluoikeus): Oppija = Oppija(henkilö, List(opiskeluoikeus))
 
-  def opiskeluoikeus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu, suoritukset: List[PerusopetuksenPäätasonSuoritus], alkamispäivä: LocalDate = date(2008, 8, 15), päättymispäivä: Option[LocalDate] = Some(date(2016, 6, 4))): PerusopetuksenOpiskeluoikeus = {
+  def opiskeluoikeus(
+    oppilaitos: Oppilaitos = jyväskylänNormaalikoulu,
+    suoritukset: List[PerusopetuksenPäätasonSuoritus],
+    alkamispäivä: LocalDate = date(2008, 8, 15),
+    päättymispäivä: Option[LocalDate] = Some(date(2016, 6, 4))
+  ): PerusopetuksenOpiskeluoikeus = {
     PerusopetuksenOpiskeluoikeus(
       oppilaitos = Some(oppilaitos),
       koulutustoimija = None,
       suoritukset = suoritukset,
       tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
-        List(NuortenPerusopetuksenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä)) ++ päättymispäivä.toList.map (päivä => NuortenPerusopetuksenOpiskeluoikeusjakso(päivä, opiskeluoikeusValmistunut))
+        List(NuortenPerusopetuksenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä)) ++ päättymispäivä.toList.map(päivä => NuortenPerusopetuksenOpiskeluoikeusjakso(päivä, opiskeluoikeusValmistunut))
       )
     )
   }

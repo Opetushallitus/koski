@@ -48,8 +48,8 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
     sql"""
     with q as (
       select
-        oo.oppilaitos_nimi,
-        oo.oppilaitos_oid,
+        oppilaitos.nimi as oppilaitos_nimi,
+        oh.oppilaitos_oid,
         opetuskieli_koodisto.nimi as opetuskieli,
         pts.koulutusmoduuli_koodiarvo as vuosiluokka,
         count(distinct oo.opiskeluoikeus_oid) as oppilaita,
@@ -65,21 +65,25 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
         count(distinct (case when koulukoti then oo.opiskeluoikeus_oid end)) as koulukoti,
         count(distinct (case when joustava_perusopetus then oo.opiskeluoikeus_oid end)) as joustava_perusopetus
       from r_opiskeluoikeus oo
+      join r_organisaatiohistoria oh on oh.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
+      join r_organisaatio oppilaitos on oppilaitos.organisaatio_oid = oh.oppilaitos_oid
       join r_henkilo on r_henkilo.oppija_oid = oo.oppija_oid
       join r_paatason_suoritus pts on pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
       join r_opiskeluoikeus_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-      left join r_organisaatio_kieli on r_organisaatio_kieli.organisaatio_oid = oo.oppilaitos_oid
+      left join r_organisaatio_kieli on r_organisaatio_kieli.organisaatio_oid = oh.oppilaitos_oid
       left join r_koodisto_koodi opetuskieli_koodisto
         on opetuskieli_koodisto.koodisto_uri = split_part(r_organisaatio_kieli.kielikoodi, '_', 1)
         and opetuskieli_koodisto.koodiarvo = split_part(split_part(r_organisaatio_kieli.kielikoodi, '_', 2), '#', 1)
-      where oo.oppilaitos_oid in (#${toSqlListUnsafe(oppilaitosOids)})
+      where oh.oppilaitos_oid in (#${toSqlListUnsafe(oppilaitosOids)})
+        and oh.alku <= $date
+        and oh.loppu >= $date
         and oo.koulutusmuoto = 'perusopetus'
         and (pts.vahvistus_paiva is null or pts.vahvistus_paiva > $date)
         and pts.koulutusmoduuli_koodiarvo in ('1', '2', '3', '4', '5', '6', '7', '8', '9')
         and aikajakso.alku <= $date
         and aikajakso.loppu >= $date
         and aikajakso.tila = 'lasna'
-      group by oo.oppilaitos_nimi, oo.oppilaitos_oid, opetuskieli_koodisto.nimi, pts.koulutusmoduuli_koodiarvo
+      group by oppilaitos.nimi, oh.oppilaitos_oid, opetuskieli_koodisto.nimi, pts.koulutusmoduuli_koodiarvo
     ), totals as (
       select * from q
       union all

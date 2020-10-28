@@ -122,10 +122,10 @@ object AikajaksoRowBuilder {
       koulukoti = lisätietoVoimassaPäivänä {
         case l: PerusopetuksenOpiskeluoikeudenLisätiedot => l.koulukoti
       },
-      oppimääränSuorittaja = o.suoritukset.exists(o => o match {
+      oppimääränSuorittaja = o.suoritukset.exists {
         case _: AikuistenPerusopetuksenOppimääränSuoritus => true
         case _ => false
-      }),
+      },
       oppisopimusJossainPäätasonSuorituksessa = oppisopimusAikajaksot(o).exists(_.contains(päivä))
     )
     // Note: When adding something here, remember to update aikajaksojenAlkupäivät (below), too

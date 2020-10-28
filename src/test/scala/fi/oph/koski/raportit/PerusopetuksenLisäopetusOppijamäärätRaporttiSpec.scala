@@ -48,7 +48,7 @@ class PerusopetuksenLisäopetusOppijamäärätRaporttiSpec extends FreeSpec with
           oppilaitosNimi = "Jyväskylän normaalikoulu",
           organisaatioOid = "1.2.246.562.10.14613773812",
           opetuskieli = "suomi",
-          oppilaita = 5,
+          oppilaita = 6,
           vieraskielisiä = 1,
           pidennettyOppivelvollisuusJaVaikeastiVammainen = 2,
           pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen = 1,

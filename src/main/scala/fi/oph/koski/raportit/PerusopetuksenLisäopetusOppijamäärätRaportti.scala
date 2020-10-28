@@ -45,8 +45,8 @@ case class PerusopetuksenLisäopetusOppijamäärätRaportti(db: DB, organisaatio
   private def query(oppilaitosOids: Set[String], date: Date)(implicit u: KoskiSession) = {
     sql"""
     select
-      oo.oppilaitos_nimi,
-      oo.oppilaitos_oid,
+      oppilaitos.nimi as oppilaitos_nimi,
+      oh.oppilaitos_oid,
       opetuskieli_koodisto.nimi as opetuskieli,
       count(distinct oo.opiskeluoikeus_oid) as oppilaita,
       count(distinct (case when r_henkilo.aidinkieli not in ('fi', 'sv', 'se', 'ri', 'vk') then oo.opiskeluoikeus_oid end)) as vieraskielisiä,
@@ -60,19 +60,23 @@ case class PerusopetuksenLisäopetusOppijamäärätRaportti(db: DB, organisaatio
       count(distinct (case when sisaoppilaitosmainen_majoitus then oo.opiskeluoikeus_oid end)) as sisäoppilaitosmainenMajoitus,
       count(distinct (case when koulukoti then oo.opiskeluoikeus_oid end)) as koulukoti
     from r_opiskeluoikeus oo
+    join r_organisaatiohistoria oh on oh.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
+    join r_organisaatio oppilaitos on oppilaitos.organisaatio_oid = oh.oppilaitos_oid
     join r_henkilo on r_henkilo.oppija_oid = oo.oppija_oid
     join r_paatason_suoritus on r_paatason_suoritus.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
     join r_opiskeluoikeus_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-    left join r_organisaatio_kieli on r_organisaatio_kieli.organisaatio_oid = oo.oppilaitos_oid
+    left join r_organisaatio_kieli on r_organisaatio_kieli.organisaatio_oid = oh.oppilaitos_oid
     left join r_koodisto_koodi opetuskieli_koodisto
       on opetuskieli_koodisto.koodisto_uri = split_part(r_organisaatio_kieli.kielikoodi, '_', 1)
       and opetuskieli_koodisto.koodiarvo = split_part(split_part(r_organisaatio_kieli.kielikoodi, '_', 2), '#', 1)
-    where oo.oppilaitos_oid in (#${toSqlListUnsafe(oppilaitosOids)})
+    where oh.oppilaitos_oid in (#${toSqlListUnsafe(oppilaitosOids)})
+      and oh.alku <= $date
+      and oh.loppu >= $date
       and oo.koulutusmuoto = 'perusopetuksenlisaopetus'
       and aikajakso.alku <= $date
       and aikajakso.loppu >= $date
       and aikajakso.tila = 'lasna'
-    group by oo.oppilaitos_nimi, oo.oppilaitos_oid, opetuskieli_koodisto.nimi, r_paatason_suoritus.koulutusmoduuli_koodiarvo
+    group by oppilaitos.nimi, oh.oppilaitos_oid, opetuskieli_koodisto.nimi, r_paatason_suoritus.koulutusmoduuli_koodiarvo
   """
   }
 

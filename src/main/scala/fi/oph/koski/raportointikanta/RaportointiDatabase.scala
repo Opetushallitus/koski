@@ -30,6 +30,7 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
   val db: DB = config.toSlickDatabase
   val tables = List(
     ROpiskeluoikeudet,
+    ROrganisaatioHistoriat,
     ROpiskeluoikeusAikajaksot,
     EsiopetusOpiskeluoikeusAikajaksot,
     RPäätasonSuoritukset,
@@ -98,9 +99,13 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
     runDbSync(ROpiskeluoikeudet.map(_.oppijaOid).distinct.result, timeout = 15.minutes)
   }
 
+  def deleteOrganisaatioHistoria: Unit =
+    runDbSync(ROrganisaatioHistoriat.schema.truncate)
+  def loadOrganisaatioHistoria(organisaatioHistoriat: Seq[ROrganisaatioHistoriaRow]): Unit =
+    runDbSync(ROrganisaatioHistoriat ++= organisaatioHistoriat)
+
   def deleteOpiskeluoikeusAikajaksot: Unit =
     runDbSync(ROpiskeluoikeusAikajaksot.schema.truncate)
-
   def loadOpiskeluoikeusAikajaksot(jaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Unit =
     runDbSync(ROpiskeluoikeusAikajaksot ++= jaksot)
 
@@ -235,6 +240,11 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
   lazy val ROpiskeluoikeudet = schema match {
     case Public => TableQuery[ROpiskeluoikeusTable]
     case Temp => TableQuery[ROpiskeluoikeusTableTemp]
+  }
+
+  lazy val ROrganisaatioHistoriat = schema match {
+    case Public => TableQuery[ROrganisaatioHistoriaTable]
+    case Temp => TableQuery[ROrganisaatioHistoriaTableTemp]
   }
 
   lazy val ROpiskeluoikeusAikajaksot = schema match {
