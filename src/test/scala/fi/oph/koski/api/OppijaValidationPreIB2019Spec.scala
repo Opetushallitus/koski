@@ -28,6 +28,20 @@ import org.scalatest.FreeSpec
 class OppijaValidationPreIB2019Spec extends FreeSpec with PutOpiskeluoikeusTestMethods[IBOpiskeluoikeus] with LocalJettyHttpSpecification {
   def tag = implicitly[reflect.runtime.universe.TypeTag[IBOpiskeluoikeus]]
 
+  "Vanhaa ja uutta Pre-IB suoritusta ei sallita samassa opiskeluoikeudessa" in {
+    val oo = defaultOpiskeluoikeus.copy(suoritukset = List(
+      ExamplesIB.preIBSuoritus2019,
+      ExamplesIB.preIBSuoritus
+    ))
+
+    putOpiskeluoikeus(oo) {
+      verifyResponseStatus(400,
+        List(
+          exact(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaSuorituksia, "Vanhan ja lukion opetussuunnitelman 2019 mukaisia Pre-IB-opintoja ei sallita samassa opiskeluoikeudessa")
+        ))
+    }
+  }
+
   "Laajuudet" - {
     "Oppiaineen laajuus" - {
       "Oppiaineen laajuus lasketaan moduuleiden laajuuksista" in {
