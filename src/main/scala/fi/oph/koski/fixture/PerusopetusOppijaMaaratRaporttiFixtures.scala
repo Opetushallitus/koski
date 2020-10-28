@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData._
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{helsinki, _}
 import fi.oph.koski.schema._
 
 object PerusopetusOppijaMaaratRaporttiFixtures {
@@ -151,4 +151,34 @@ object PerusopetusOppijaMaaratRaporttiFixtures {
     suoritukset = lisäopetuksenSuoritukset,
     lisätiedot = Some(virheellisestiSiirrettyVammainenLisätiedot)
   )
+
+  val eriOppilaitoksessa = PerusopetuksenOpiskeluoikeus(
+    tila = tilaLäsnä,
+    oppilaitos = Some(kulosaarenAlaAste),
+    suoritukset = List(
+      PerusopetuksenVuosiluokanSuoritus(
+        koulutusmoduuli = PerusopetuksenLuokkaAste(6, perusopetuksenDiaarinumero),
+        luokka = "6C",
+        toimipiste = jyväskylänNormaalikoulu,
+        suorituskieli = suomenKieli,
+        alkamispäivä = Some(date)
+      )
+    )
+  )
+
+  val eriOppilaitoksessaLisäopetus = PerusopetuksenLisäopetuksenOpiskeluoikeus(
+    tila = tilaLäsnä,
+    oppilaitos = Some(kulosaarenAlaAste),
+    koulutustoimija = None,
+    suoritukset = lisäopetuksenSuoritukset,
+    lisätiedot = None
+  )
+
+  val organisaatiohistoria = Some(List(
+    OpiskeluoikeudenOrganisaatiohistoria(
+      muutospäivä = date.plusYears(1),
+      oppilaitos = Some(jyväskylänNormaalikoulu),
+      koulutustoimija = Some(helsinki)
+    )
+  ))
 }

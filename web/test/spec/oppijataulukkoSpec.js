@@ -162,11 +162,11 @@ describe('Oppijataulukko', function() {
       )
 
       it('Oletusjärjestys nouseva nimen mukaan', function() {
-        expect(page.oppijataulukko.names()).to.deep.equal([ 'Hetuton, Heikki', 'Kelalle, Useita', 'Koululainen, Kaisa', 'Lukiolainen, Liisa', 'Luokallejäänyt, Lasse', 'Monikoululainen, Miia', 'Monikoululainen, Miia', 'Oppija, Oili', 'Perusopetuksensiirto, Pertti', 'Toiminta, Tommi', 'Tupla, Toivo', 'Vuosiluokkalainen, Ville', 'Ysiluokkalainen, Ylermi', 'e, erikois', 'of Puppets, Master', 't, tavallinen', 'v, virheellisestiSiirretty', 'v, virheellisestiSiirrettyVieraskielinen' ])
+        expect(page.oppijataulukko.names()).to.deep.equal([ 'Hetuton, Heikki', 'Kelalle, Useita', 'Koululainen, Kaisa', 'Lukiolainen, Liisa', 'Luokallejäänyt, Lasse', 'Monikoululainen, Miia', 'Monikoululainen, Miia', 'Oppija, Oili', 'Perusopetuksensiirto, Pertti', 'Toiminta, Tommi', 'Tupla, Toivo', 'Vuosiluokkalainen, Ville', 'Ysiluokkalainen, Ylermi', 'e, erikois', 'o, organisaatioHistoriallinen', 'of Puppets, Master', 't, tavallinen', 'v, virheellisestiSiirretty', 'v, virheellisestiSiirrettyVieraskielinen' ])
       })
       it('Laskeva järjestys klikkaamalla', function() {
         return page.oppijataulukko.sortBy('nimi')().then(function() {
-          expect(page.oppijataulukko.names()).to.deep.equal([ 'v, virheellisestiSiirrettyVieraskielinen', 'v, virheellisestiSiirretty', 't, tavallinen', 'of Puppets, Master', 'e, erikois', 'Ysiluokkalainen, Ylermi', 'Vuosiluokkalainen, Ville', 'Tupla, Toivo', 'Toiminta, Tommi', 'Perusopetuksensiirto, Pertti', 'Oppija, Oili', 'Monikoululainen, Miia', 'Monikoululainen, Miia', 'Luokallejäänyt, Lasse', 'Lukiolainen, Liisa', 'Koululainen, Kaisa', 'Kelalle, Useita', 'Hetuton, Heikki' ])
+          expect(page.oppijataulukko.names()).to.deep.equal([ 'v, virheellisestiSiirrettyVieraskielinen', 'v, virheellisestiSiirretty', 't, tavallinen', 'of Puppets, Master', 'o, organisaatioHistoriallinen', 'e, erikois', 'Ysiluokkalainen, Ylermi', 'Vuosiluokkalainen, Ville', 'Tupla, Toivo', 'Toiminta, Tommi', 'Perusopetuksensiirto, Pertti', 'Oppija, Oili', 'Monikoululainen, Miia', 'Monikoululainen, Miia', 'Luokallejäänyt, Lasse', 'Lukiolainen, Liisa', 'Koululainen, Kaisa', 'Kelalle, Useita', 'Hetuton, Heikki' ])
         })
       })
     })
