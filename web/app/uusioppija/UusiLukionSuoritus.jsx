@@ -13,7 +13,7 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const oppiaineenSuoritusAtom = Atom()
   const perusteAtom = Atom()
 
-  const suoritustyypitP = koodistoValues('suorituksentyyppi/lukionoppimaara,lukionoppiaineenoppimaara,lukionoppimaara2019,lukionoppiaineidenoppimaarat2019')
+  const suoritustyypitP = koodistoValues('suorituksentyyppi/lukionoppimaara,lukionoppiaineenoppimaara,lukionoppiaineidenoppimaarat2019')
   suoritustyypitP.onValue(tyypit => suoritustyyppiAtom.set(tyypit.find(koodiarvoMatch('lukionoppimaara'))))
 
   const suoritusPrototypeP = suoritustyyppiAtom.map('.koodiarvo').flatMap(suorituksenTyyppi => {

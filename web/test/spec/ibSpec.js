@@ -579,8 +579,8 @@ describe('IB', function( ) {
           'Teemaopinnot\n' +
           'HAI765 *\n' +
           'S 1 1\n' +
-          'Suoritettujen kurssien laajuus yhteensä: 35\n' +
-          '* = paikallinen kurssi tai oppiaine'
+          'Arvioitujen osasuoritusten laajuus yhteensä: 35,0 Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 35,0\n' +
+          '* = paikallinen opintojakso tai oppiaine'
         )
       })
     })

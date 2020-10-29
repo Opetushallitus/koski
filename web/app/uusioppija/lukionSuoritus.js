@@ -5,7 +5,6 @@ export const makeSuoritus = (oppilaitos, suoritustyyppi, peruste, suorituskieli,
 
   switch (suoritustyyppi.koodiarvo) {
     case 'lukionoppimaara':
-    case 'lukionoppimaara2019':
       return {
         suorituskieli : suorituskieli,
         koulutusmoduuli: {

@@ -149,14 +149,24 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
   "Diaarinumero" - {
     "Lukion oppimäärässä" - {
       "Lukion 2019 opetussuunnitelman nuorten diaarinumeron käyttöä ei sallita" in {
-        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(koulutusmoduuli = LukionOppimäärä(perusteenDiaarinumero = lops2019perusteenDiaarinumero))))) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari("Lukion aiemman opetusohjelman mukaisessa suorituksessa ei voi käyttää lukion 2019 opetussuunnitelman diaarinumeroa"))
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
+          koulutusmoduuli = LukionOppimäärä(perusteenDiaarinumero = Some("OPH-2263-2019")),
+          osasuoritukset = Some(List(
+            suoritus(LukioExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = arviointi("9"))
+          ))
+        )))) {
+          verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*".r))
         }
       }
 
       "Lukion 2019 opetussuunnitelman aikuisten diaarinumeron käyttöä ei sallita" in {
-        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(koulutusmoduuli = LukionOppimäärä(perusteenDiaarinumero = lops2019AikuistenPerusteenDiaarinumero))))) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari("Lukion aiemman opetusohjelman mukaisessa suorituksessa ei voi käyttää lukion 2019 opetussuunnitelman diaarinumeroa"))
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
+          koulutusmoduuli = LukionOppimäärä(perusteenDiaarinumero = lops2019AikuistenPerusteenDiaarinumero),
+          osasuoritukset = Some(List(
+            suoritus(LukioExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = arviointi("9"))
+          ))
+        )))) {
+          verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*".r))
         }
       }
     }
