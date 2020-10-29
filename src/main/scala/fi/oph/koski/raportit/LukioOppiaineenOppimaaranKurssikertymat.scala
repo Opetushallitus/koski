@@ -25,20 +25,17 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
         select
           r_opiskeluoikeus.oppilaitos_oid,
           r_opiskeluoikeus.oppilaitos_nimi,
-          r_paatason_suoritus.paatason_suoritus_id
+          r_paatason_suoritus.paatason_suoritus_id,
+          r_opiskeluoikeus_aikajakso.opintojen_rahoitus
         from r_opiskeluoikeus
-        join r_paatason_suoritus on r_opiskeluoikeus.opiskeluoikeus_oid = r_paatason_suoritus.opiskeluoikeus_oid
+          join r_opiskeluoikeus_aikajakso on r_opiskeluoikeus.opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
+          join r_paatason_suoritus on r_opiskeluoikeus.opiskeluoikeus_oid = r_paatason_suoritus.opiskeluoikeus_oid
         where
           oppilaitos_oid = any($oppilaitosOids)
           and r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
-          and exists(
-            select 1
-            from r_opiskeluoikeus_aikajakso
-            where r_opiskeluoikeus.opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
-              and r_opiskeluoikeus_aikajakso.tila = 'lasna'
-              and r_opiskeluoikeus_aikajakso.alku <= $viimeistaan
-              and r_opiskeluoikeus_aikajakso.loppu >= $aikaisintaan
-          )
+          and r_opiskeluoikeus_aikajakso.tila = 'lasna'
+          and r_opiskeluoikeus_aikajakso.alku <= $viimeistaan
+          and r_opiskeluoikeus_aikajakso.loppu >= $aikaisintaan
       ) select
           oppilaitos_oid oppilaitos_oid,
           oppilaitos_nimi oppilaitos,
@@ -100,7 +97,19 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
             koulutusmoduuli_paikallinen = false and
             koulutusmoduuli_kurssin_tyyppi = 'syventava' and
             tunnustettu_rahoituksen_piirissa
-          ) valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa
+          ) valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa,
+          count(*) filter (where
+            koulutusmoduuli_paikallinen = false
+            and (tunnustettu = false or tunnustettu_rahoituksen_piirissa)
+            and suorituksen_tyyppi = 'lukionkurssi'
+            and opintojen_rahoitus = '6'
+          ) suoritetutTaiRahoitetut_muutaKauttaRahoitetut,
+          count(*) filter (where
+            koulutusmoduuli_paikallinen = false
+            and (tunnustettu = false or tunnustettu_rahoituksen_piirissa)
+            and suorituksen_tyyppi = 'lukionkurssi'
+            and opintojen_rahoitus is null
+          ) suoritetutTaiRahoitetut_eiRahoitusmuotoa
         from oppiaineen_oppimaara
         join r_osasuoritus on oppiaineen_oppimaara.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id
         where r_osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
@@ -130,7 +139,8 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
       tunnustettujaValtakunnallisiaSyventaviaKursseja = rs.getInt("tunnustettuja_valtakunnallisia_syventavia"),
       tunnustettujaRahoituksenPiirissa_pakollisia_ja_valtakunnallisiaSyventavia = rs.getInt("tunnustettuja_pakollisia_ja_valtakunnallisiaSyventavia_rahoitus"),
       tunnustettuja_rahoituksenPiirissa_pakollisia = rs.getInt("pakollisia_tunnustettuja_rahoituksen_piirissa"),
-      tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva = rs.getInt("valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa")
+      tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva = rs.getInt("valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa"),
+      suoritetutTaiRahoitetut_muutaKauttaRahoitetut = rs.getInt("suoritetutTaiRahoitetut_muutaKauttaRahoitetut")
     )
   })
 
@@ -152,7 +162,8 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
     "tunnustettujaValtakunnallisiaSyventaviaKursseja" -> Column("tunnustettujaValtakunnallisiaSyventaviaKursseja"),
     "tunnustettujaRahoituksenPiirissa_pakollisia_ja_valtakunnallisiaSyventavia" -> Column("tunnustettujaPakollisia_ja_tunnustettujaValtakunnallisiaSyventavia_rahoituksenPiirissa"),
     "tunnustettuja_rahoituksenPiirissa_pakollisia" -> Column("tunnustettuja_rahoituksenPiirissa_pakollisia"),
-    "tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva" -> Column("tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva")
+    "tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva" -> Column("tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva"),
+    "suoritetutTaiRahoitetut_muutaKauttaRahoitetut" -> Column("Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit - muuta kautta rahoitetut", comment = Some("Aineopintojen suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut pakolliset tai valtakunnalliset syventävät kurssit, joiden arviointipäivä osuu muuta kautta rahoitetun läsnäolojakson sisälle. Kurssien tunnistetiedot löytyvät välilehdeltä ”Muuta kautta rah.”"))
   )
 }
 
@@ -174,5 +185,6 @@ case class LukioKurssikertymaAineopiskelijaRow(
   tunnustettujaValtakunnallisiaSyventaviaKursseja: Int,
   tunnustettujaRahoituksenPiirissa_pakollisia_ja_valtakunnallisiaSyventavia: Int,
   tunnustettuja_rahoituksenPiirissa_pakollisia: Int,
-  tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva: Int
+  tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva: Int,
+  suoritetutTaiRahoitetut_muutaKauttaRahoitetut: Int
 )
