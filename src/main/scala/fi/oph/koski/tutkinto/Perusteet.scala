@@ -13,7 +13,6 @@ object Perusteet {
     perusteetBySuoritus.getOrElse(suorituksenTyyppi, Kaikki)
 
   private lazy val perusteetBySuoritus = Map(
-    SuorituksenTyyppi.lukionoppimaara2019 -> lops2019,
     SuorituksenTyyppi.lukionoppiaineidenoppimaarat2019 -> lops2019
   )
 }

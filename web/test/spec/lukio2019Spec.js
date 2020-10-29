@@ -492,8 +492,8 @@ describe('Lukiokoulutus2019', function( ){
       describe('Nuorten 2019 oppimäärä', function() {
         before(
           prepareForNewOppija('kalle', '140981-334Y'),
-          addOppija.enterValidDataLukio({ oppilaitos: 'Ressun', oppimäärä: 'Lukion oppimäärä 2019 opetussuunnitelman mukaan', peruste: 'OPH-2263-2019', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus' }),
-          addOppija.selectOppimäärä('Lukion oppimäärä 2019 opetussuunnitelman mukaan'),
+          addOppija.enterValidDataLukio({ oppilaitos: 'Ressun', oppimäärä: 'Lukion oppimäärä', peruste: 'OPH-2263-2019', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus' }),
+          addOppija.selectOppimäärä('Lukion oppimäärä'),
           addOppija.submitAndExpectSuccess('Tyhjä, Tero (140981-334Y)', 'Lukion oppimäärä')
         )
 
@@ -521,8 +521,8 @@ describe('Lukiokoulutus2019', function( ){
       describe('Aikuisten 2019 oppimäärä', function() {
         before(
           prepareForNewOppija('kalle', '170491-517B'),
-          addOppija.enterValidDataLukio({ oppilaitos: 'Ressun', oppimäärä: 'Lukion oppimäärä 2019 opetussuunnitelman mukaan', peruste: 'OPH-2263-2019', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus' }),
-          addOppija.selectOppimäärä('Lukion oppimäärä 2019 opetussuunnitelman mukaan'),
+          addOppija.enterValidDataLukio({ oppilaitos: 'Ressun', oppimäärä: 'Lukion oppimäärä', peruste: 'OPH-2263-2019', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus' }),
+          addOppija.selectOppimäärä('Lukion oppimäärä'),
           addOppija.selectPeruste('OPH-2267-2019'),
           addOppija.submitAndExpectSuccess('Tyhjä, Tero (170491-517B)', 'Lukion oppimäärä')
         )

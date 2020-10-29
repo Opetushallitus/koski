@@ -814,21 +814,6 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_lukionoppimaara2019",
-  "koodiArvo" : "lukionoppimaara2019",
-  "metadata" : [ {
-    "nimi" : "Lukion oppimäärä 2019 opetussuunnitelman mukaan",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Gymnasiets lärokurs 2019 TODO-TODO-TODO",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "General upper secondary education  syllabus  2019 TODO-TODO-TODO",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
   "koodiUri" : "suorituksentyyppi_luva",
   "koodiArvo" : "luva",
   "metadata" : [ {

@@ -16,6 +16,8 @@ trait LukionPäätasonSuoritus2019 extends LukionPäätasonSuoritus with Todistu
 
 @Title("Lukion oppimäärän suoritus 2019")
 @Description("Lukion oppimäärän opetussuunnitelman 2019 mukaiset suoritustiedot")
+@OnlyWhen("koulutusmoduuli/perusteenDiaarinumero", "OPH-2263-2019")
+@OnlyWhen("koulutusmoduuli/perusteenDiaarinumero", "OPH-2267-2019")
 case class LukionOppimääränSuoritus2019(
   @Title("Koulutus")
   koulutusmoduuli: LukionOppimäärä,
@@ -37,8 +39,8 @@ case class LukionOppimääränSuoritus2019(
   override val osasuoritukset: Option[List[LukionOppimääränOsasuoritus2019]],
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
-  @KoodistoKoodiarvo("lukionoppimaara2019")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara2019", koodistoUri = "suorituksentyyppi"),
+  @KoodistoKoodiarvo("lukionoppimaara")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"),
   ryhmä: Option[String] = None
 ) extends LukionPäätasonSuoritus2019 with Ryhmällinen with KoulusivistyskieliKieliaineesta with SuoritettavissaErityisenäTutkintona2019 with Oppimäärällinen
 

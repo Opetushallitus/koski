@@ -70,7 +70,6 @@ with oppija as (select
                            'lukionoppiaineenoppimaara',
                            'lukionoppiaineidenoppimaarat2019',
                            'lukionoppimaara',
-                           'lukionoppimaara2019',
                            'ibtutkinto',
                            'preiboppimaara',
                            'diatutkintovaihe',
@@ -129,7 +128,6 @@ with oppija as (select
   from oppija
   where suorituksen_tyyppi in (
     'lukionoppimaara',
-    'lukionoppimaara2019',
     'internationalschooldiplomavuosiluokka',
     'internationalschoolmypvuosiluokka',
     'ibtutkinto',

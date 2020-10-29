@@ -1530,7 +1530,7 @@
         "fi" : "Osallistunut kansalliseen etäopetuskokeiluun"
       },
       "tyyppi" : {
-        "koodiarvo" : "lukionoppimaara2019",
+        "koodiarvo" : "lukionoppimaara",
         "koodistoUri" : "suorituksentyyppi"
       },
       "ryhmä" : "AH",
