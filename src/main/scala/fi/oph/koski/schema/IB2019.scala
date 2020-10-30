@@ -76,8 +76,8 @@ case class LukionOppiaineenPreIBSuoritus2019(
   suoritettuErityisenäTutkintona: Boolean = false,
   suorituskieli: Option[Koodistokoodiviite] = None,
   override val osasuoritukset: Option[List[PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019]],
-  @KoodistoKoodiarvo("lukionoppiaine2019")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiaine2019", koodistoUri = "suorituksentyyppi")
+  @KoodistoKoodiarvo("lukionoppiaine")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiaine", koodistoUri = "suorituksentyyppi")
 ) extends PreIBOppiaineenSuoritus2019 with PreIBLukionOsasuoritus2019 with Vahvistukseton with MahdollisestiSuorituskielellinen with SuoritettavissaErityisenäTutkintona2019
 
 @Description("Muiden lukio-opintojen suoritus Pre-IB-opinnoissa 2019")
@@ -86,8 +86,8 @@ case class MuidenLukioOpintojenPreIBSuoritus2019(
   @Title("Oppiaine")
   koulutusmoduuli: PreIBMuutSuorituksetTaiVastaavat2019,
   override val osasuoritukset: Option[List[PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019]],
-  @KoodistoKoodiarvo("lukionmuuopinto2019")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionmuuopinto2019", koodistoUri = "suorituksentyyppi")
+  @KoodistoKoodiarvo("lukionmuuopinto")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionmuuopinto", koodistoUri = "suorituksentyyppi")
 ) extends IBSuoritus2019 with PreIBLukionOsasuoritus2019 with Vahvistukseton with Arvioinniton {
   override def suorituskieli: Option[Koodistokoodiviite] = None
 }
@@ -131,7 +131,7 @@ trait PreIBLukionModuulinSuoritus2019 extends ValtakunnallisenModuulinSuoritus w
 }
 
 @Title("Pre-IB lukion moduulin suoritus oppiaineissa 2019")
-@OnlyWhen("../../tyyppi/koodiarvo", "lukionoppiaine2019")
+@OnlyWhen("../../tyyppi/koodiarvo", "lukionoppiaine")
 case class PreIBLukionModuulinSuoritusOppiaineissa2019(
   @Description("Pre-IB lukion moduulin tunnistetiedot oppiaineissa 2019")
   @Title("Osasuoritus")
@@ -144,7 +144,7 @@ case class PreIBLukionModuulinSuoritusOppiaineissa2019(
 ) extends PreIBLukionModuulinSuoritus2019 with PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019
 
 @Title("Pre-IB lukion moduulin suoritus muissa opinnoissa 2019")
-@OnlyWhen("../../tyyppi/koodiarvo", "lukionmuuopinto2019")
+@OnlyWhen("../../tyyppi/koodiarvo", "lukionmuuopinto")
 case class PreIBLukionModuulinSuoritusMuissaOpinnoissa2019(
   @Description("Pre-IB lukion moduulin tunnistetiedot muissa opinnoissa 2019")
   @Title("Osasuoritus")

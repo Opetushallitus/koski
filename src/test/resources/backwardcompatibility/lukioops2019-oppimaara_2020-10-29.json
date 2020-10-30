@@ -409,7 +409,7 @@
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "lukionoppiaine2019",
+          "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -545,7 +545,7 @@
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "lukionoppiaine2019",
+          "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -640,7 +640,7 @@
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "lukionoppiaine2019",
+          "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -702,7 +702,7 @@
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "lukionoppiaine2019",
+          "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -764,7 +764,7 @@
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "lukionoppiaine2019",
+          "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -863,7 +863,7 @@
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "lukionoppiaine2019",
+          "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1079,7 +1079,7 @@
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "lukionoppiaine2019",
+          "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1099,7 +1099,7 @@
         } ],
         "suoritettuErityisenäTutkintona" : false,
         "tyyppi" : {
-          "koodiarvo" : "lukionoppiaine2019",
+          "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1209,12 +1209,12 @@
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "lukionoppiaine2019",
+          "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
         "tyyppi" : {
-          "koodiarvo" : "lukionmuuopinto2019",
+          "koodiarvo" : "lukionmuuopinto",
           "koodistoUri" : "suorituksentyyppi"
         },
         "koulutusmoduuli" : {
@@ -1300,7 +1300,7 @@
         } ]
       }, {
         "tyyppi" : {
-          "koodiarvo" : "lukionmuuopinto2019",
+          "koodiarvo" : "lukionmuuopinto",
           "koodistoUri" : "suorituksentyyppi"
         },
         "koulutusmoduuli" : {
@@ -1473,7 +1473,7 @@
         } ]
       }, {
         "tyyppi" : {
-          "koodiarvo" : "lukionmuuopinto2019",
+          "koodiarvo" : "lukionmuuopinto",
           "koodistoUri" : "suorituksentyyppi"
         },
         "koulutusmoduuli" : {
