@@ -7,10 +7,9 @@ import scalaz._
 import syntax.std.list._
 
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, OpiskeluoikeudenOrganisaatiohistoria}
+import fi.oph.koski.util.DateOrdering.sqlDateOrdering
 
 object OrganisaatioHistoriaRowBuilder {
-  private implicit val dateOrdering: scala.math.Ordering[Date] = _ compareTo _
-
   def buildOrganisaatioHistoriaRows(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Seq[ROrganisaatioHistoriaRow] = {
     def latterOf(a: LocalDate, b: LocalDate): LocalDate = if (b.isAfter(a)) b else a
 
@@ -36,6 +35,6 @@ object OrganisaatioHistoriaRowBuilder {
       )
       (organisaatioHistoria.muutospäivä, row)
     })._2
-    organisaatiohistoriat.groupBy(_.alku).values.map(_.last).toList.sortBy(_.alku)
+    organisaatiohistoriat.groupBy(_.alku).values.map(_.last).toList.sortBy(_.alku)(sqlDateOrdering)
   }
 }
