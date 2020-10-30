@@ -1,25 +1,26 @@
 package fi.oph.koski.raportit
 
-import java.sql.{Date, ResultSet}
+import java.sql.ResultSet
 import java.time.LocalDate
 
 import fi.oph.koski.raportointikanta.RaportointiDatabase
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.util.SQL.setLocalDate
 import slick.jdbc.GetResult
 import fi.oph.koski.util.SQL
 import fi.oph.koski.raportit.AhvenanmaanKunnat.ahvenanmaanKunnat
 
 object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti {
 
-  def dataSheet(oppilaitosOid: List[String], paiva: LocalDate, raportointiDatabase: RaportointiDatabase) = {
+  def dataSheet(oppilaitosOid: List[String], päivä: LocalDate, raportointiDatabase: RaportointiDatabase) = {
     DataSheet(
       "Opiskelijamaarat",
-      rows = raportointiDatabase.runDbSync(query(oppilaitosOid, SQL.toSqlDate(paiva))),
+      rows = raportointiDatabase.runDbSync(query(oppilaitosOid, päivä)),
       columnSettings
     )
   }
 
-  private def query(oppilaitosOid: List[String], paiva: Date) = {
+  private def query(oppilaitosOid: List[String], paiva: LocalDate) = {
     sql"""
       with oppija as (
         select

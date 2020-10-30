@@ -1,6 +1,5 @@
 package fi.oph.koski.raportit
 
-import java.sql.Date
 import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
@@ -37,7 +36,7 @@ class EsiopetusRaporttiService(application: KoskiApplication) {
     )
 
   private def buildRaportti(date: LocalDate, oppilaitokset: List[Oid])(implicit session: KoskiSession): Seq[DataSheet] = {
-    Seq(esiopetusRaportti.build(oppilaitokset, Date.valueOf(date)))
+    Seq(esiopetusRaportti.build(oppilaitokset, date))
   }
 
   private def organisaationAlaisetOrganisaatiot(organisaatioOid: Oid)(implicit user: KoskiSession) = {

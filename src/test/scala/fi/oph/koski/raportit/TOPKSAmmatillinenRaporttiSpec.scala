@@ -1,6 +1,5 @@
 package fi.oph.koski.raportit
 
-import java.sql.Date
 import java.time.LocalDate
 
 import fi.oph.koski.KoskiApplicationForTests
@@ -24,8 +23,8 @@ class TOPKSAmmatillinenRaporttiSpec extends FreeSpec with Matchers with Raportoi
 
   lazy val raportti = {
     val raporttiBuilder = TOPKSAmmatillinenRaporttiBuilder(KoskiApplicationForTests.raportointiDatabase.db)
-    val alku = Date.valueOf(LocalDate.of(2018, 1, 1))
-    val loppu = Date.valueOf(LocalDate.of(2019, 1, 1))
+    val alku = LocalDate.of(2018, 1, 1)
+    val loppu = LocalDate.of(2019, 1, 1)
     raporttiBuilder.build(stadinAmmattiopisto, alku, loppu).rows.map(_.asInstanceOf[TOPKSAmmatillinenRaporttiRow])
   }
 

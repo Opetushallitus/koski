@@ -1,9 +1,10 @@
 package fi.oph.koski.raportit
 
-import java.sql.Date
+import java.time.LocalDate
 
 import fi.oph.koski.db.KoskiDatabaseMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.util.SQL.setLocalDate
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
@@ -34,7 +35,7 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
     )
   )
 
-  def build(oppilaitosOids: List[String], päivä: Date)(implicit u: KoskiSession): DataSheet = {
+  def build(oppilaitosOids: List[String], päivä: LocalDate)(implicit u: KoskiSession): DataSheet = {
     val raporttiQuery = query(validateOids(oppilaitosOids), päivä).as[AikuistenPerusopetuksenOppijamäärätRaporttiRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
@@ -44,7 +45,7 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
     )
   }
 
-  private def query(oppilaitosOidit: List[String], päivä: Date)(implicit u: KoskiSession) = {
+  private def query(oppilaitosOidit: List[String], päivä: LocalDate)(implicit u: KoskiSession) = {
     sql"""
     select
       r_opiskeluoikeus.oppilaitos_oid,

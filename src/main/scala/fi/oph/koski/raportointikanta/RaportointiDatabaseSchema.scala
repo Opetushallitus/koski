@@ -1,6 +1,7 @@
 package fi.oph.koski.raportointikanta
 
 import java.sql.{Date, Timestamp}
+import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
@@ -475,6 +476,8 @@ case class ROpiskeluoikeusAikajaksoRow(
     alku = if (alku.after(start)) alku else start,
     loppu = if (loppu.before(end)) loppu else end
   )
+  def truncateToDates(start: LocalDate, end: LocalDate): ROpiskeluoikeusAikajaksoRow =
+    this.truncateToDates(Date.valueOf(start), Date.valueOf(end))
   lazy val lengthInDays: Int = ChronoUnit.DAYS.between(alku.toLocalDate, loppu.toLocalDate).toInt + 1
 
   def withLoppu(d: Date): ROpiskeluoikeusAikajaksoRow = this.copy(loppu = d)

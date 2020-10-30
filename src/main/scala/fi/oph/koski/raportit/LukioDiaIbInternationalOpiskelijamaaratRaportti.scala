@@ -1,10 +1,11 @@
 package fi.oph.koski.raportit
 
-import java.sql.{Date, ResultSet}
+import java.sql.ResultSet
 import java.time.LocalDate
 
 import fi.oph.koski.db.KoskiDatabaseMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.util.SQL.setLocalDate
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import slick.jdbc.GetResult
 import fi.oph.koski.util.SQL
@@ -17,12 +18,12 @@ case class LukioDiaIbInternationalOpiskelijamaaratRaportti(db: DB) extends Koski
   def build(oppilaitosOids: List[String], päivä: LocalDate): DataSheet = {
     DataSheet(
       title = "opiskelijamäärät",
-      rows = runDbSync(query(oppilaitosOids, SQL.toSqlDate(päivä)).as[LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow], timeout = 5.minutes),
+      rows = runDbSync(query(oppilaitosOids, päivä).as[LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow], timeout = 5.minutes),
       columnSettings = columnSettings
     )
   }
 
-  private def query(oppilaitosOids: List[String], päivä: Date)  = {
+  private def query(oppilaitosOids: Seq[String], päivä: LocalDate)  = {
    sql"""
 with oppija as (select
                   r_opiskeluoikeus.opiskeluoikeus_oid,

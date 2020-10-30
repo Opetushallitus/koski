@@ -1,9 +1,10 @@
 package fi.oph.koski.raportit
 
-import java.sql.{Date, ResultSet}
+import java.sql.ResultSet
 import java.time.LocalDate
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.util.SQL.setLocalDate
 import fi.oph.koski.raportointikanta.RaportointiDatabase
 import fi.oph.koski.util.SQL
 import slick.jdbc.GetResult
@@ -14,12 +15,12 @@ object LukioOppimaaranKussikertymat {
   def dataSheet(oppilaitosOids: List[String], jaksonAlku: LocalDate, jaksonLoppu: LocalDate, raportointiDatabase: RaportointiDatabase): DataSheet = {
     DataSheet(
       sheetTitle,
-      rows = raportointiDatabase.runDbSync(queryOppimaara(oppilaitosOids, SQL.toSqlDate(jaksonAlku), SQL.toSqlDate(jaksonLoppu))),
+      rows = raportointiDatabase.runDbSync(queryOppimaara(oppilaitosOids, jaksonAlku, jaksonLoppu)),
       columnSettings
     )
   }
 
-  def queryOppimaara(oppilaitosOids: List[String], aikaisintaan: Date, viimeistaan: Date) = {
+  def queryOppimaara(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate) = {
     sql"""
           with paatason_suoritus as (
             select

@@ -1,12 +1,12 @@
 package fi.oph.koski.raportit
 
-import java.sql.Date
 import java.time.LocalDate
 
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import fi.oph.koski.db.KoskiDatabaseMethods
 import fi.oph.koski.util.DateOrdering.sqlDateOrdering
+import fi.oph.koski.util.SQL.setLocalDate
 
 import scala.concurrent.duration._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
@@ -74,10 +74,10 @@ case class LukioRaportitRepository(db: DB) extends KoskiDatabaseMethods with Rap
   private def opiskeluoikeusAikajaksotPaatasonSuorituksetResult(oppilaitos: String, alku: LocalDate, loppu: LocalDate) = {
     import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
     implicit val getResult = GetResult[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])](pr => (pr.nextString(), pr.nextArray(), pr.nextArray()))
-    runDbSync(opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitos, Date.valueOf(alku), Date.valueOf(loppu)).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])], timeout = defaultTimeout)
+    runDbSync(opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitos, alku, loppu).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])], timeout = defaultTimeout)
   }
 
-  private def opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitos: String, alku: Date, loppu: Date) = {
+  private def opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitos: String, alku: LocalDate, loppu: LocalDate) = {
     sql"""
      select
       oo.opiskeluoikeus_oid,
