@@ -16,14 +16,19 @@ import scala.concurrent.duration._
 case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: OrganisaatioService) extends KoskiDatabaseMethods {
   implicit private val getResult: GetResult[AikuistenPerusopetuksenOppijamäärätRaporttiRow] = GetResult(r =>
     AikuistenPerusopetuksenOppijamäärätRaporttiRow(
+      oppilaitosOid = r.<<,
       oppilaitosNimi = r.<<,
       opetuskieli = r.<<,
+      oppilaidenMääräYhteensä = r.<<,
       oppilaidenMääräVOS = r.<<,
       oppilaidenMääräMuuKuinVOS = r.<<,
+      oppimääränSuorittajiaYhteensä = r.<<,
       oppimääränSuorittajiaVOS = r.<<,
       oppimääränSuorittajiaMuuKuinVOS = r.<<,
+      aineopiskelijoitaYhteensä = r.<<,
       aineopiskelijoitaVOS = r.<<,
       aineopiskelijoitaMuuKuinVOS = r.<<,
+      vieraskielisiäYhteensä = r.<<,
       vieraskielisiäVOS = r.<<,
       vieraskielisiäMuuKuinVOS = r.<<
     )
@@ -42,14 +47,19 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
   private def query(oppilaitosOidit: List[String], päivä: Date)(implicit u: KoskiSession) = {
     sql"""
     select
+      r_opiskeluoikeus.oppilaitos_oid,
       r_opiskeluoikeus.oppilaitos_nimi,
       r_koodisto_koodi.nimi,
+      count(*) as oppilaidenMääräYhteensä,
       count(case when opintojen_rahoitus = '1' then 1 end) as oppilaidenMääräVOS,
       count(case when opintojen_rahoitus != '1' then 1 end) as oppilaidenMääräMuuKuinVOS,
+      count(case when oppimaaran_suorittaja then 1 end) oppimääränSuorittajiaYhteensä,
       count(case when opintojen_rahoitus = '1' and oppimaaran_suorittaja then 1 end) as oppimääränSuorittajiaVOS,
       count(case when opintojen_rahoitus != '1' and oppimaaran_suorittaja then 1 end) as oppimääränSuorittajiaMuuKuinVOS,
+      count(case when not oppimaaran_suorittaja then 1 end) as aineopiskelijoitaYhteensä,
       count(case when opintojen_rahoitus = '1' and not oppimaaran_suorittaja then 1 end) as aineopiskelijoitaVOS,
       count(case when opintojen_rahoitus != '1' and not oppimaaran_suorittaja then 1 end) as aineopiskelijoitaMuuKuinVOS,
+      count(case when aidinkieli not in('fi', 'sv', 'se', 'ri', 'vk') then 1 end) as vieraskielisiäYhteensä,
       count(case when aidinkieli not in('fi', 'sv', 'se', 'ri', 'vk') and opintojen_rahoitus = '1' then 1 end) as vieraskielisiäVOS,
       count(case when aidinkieli not in('fi', 'sv', 'se', 'ri', 'vk') and opintojen_rahoitus != '1' then 1 end) as vieraskielisiäMuuKuinVOS
     from r_opiskeluoikeus
@@ -75,7 +85,7 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
         or
         r_opiskeluoikeus.koulutustoimija_oid in (#${toSqlListUnsafe(käyttäjänKoulutustoimijaOidit)})
       )
-    group by r_opiskeluoikeus.oppilaitos_nimi, r_koodisto_koodi.nimi
+    group by r_opiskeluoikeus.oppilaitos_oid, r_opiskeluoikeus.oppilaitos_nimi, r_koodisto_koodi.nimi
   """
   }
 
@@ -84,9 +94,6 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
   private def käyttäjänKoulutustoimijaOidit(implicit u: KoskiSession) = u.varhaiskasvatusKäyttöoikeudet
     .filter(_.organisaatioAccessType.contains(AccessType.read))
     .map(_.koulutustoimija.oid)
-
-  private def käyttäjänOstopalveluOidit(implicit u: KoskiSession) =
-    organisaatioService.omatOstopalveluOrganisaatiot.map(_.oid)
 
   private def validateOids(oppilaitosOids: List[String]) = {
     val invalidOid = oppilaitosOids.find(oid => !isValidOrganisaatioOid(oid))
@@ -97,28 +104,38 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
   }
 
   val columnSettings: Seq[(String, Column)] = Seq(
+    "oppilaitosOid" -> Column("Oppilaitoksen oid-tunniste"),
     "oppilaitosNimi" -> Column("Oppilaitos"),
-    "opetuskieli" -> Column("Opetuskieli"),
-    "oppilaidenMääräVOS" -> Column("Oppilaiden VOS määrä", comment = Some("\"Läsnä\"-tilaiset aikuisten perusopetuksen opiskeluoikeudet raportin tulostusparametreissa määriteltynä päivänä.")),
-    "oppilaidenMääräMuuKuinVOS" -> Column("Oppilaiden ei-VOS määrä", comment = Some("\"Läsnä\"-tilaiset aikuisten perusopetuksen opiskeluoikeudet raportin tulostusparametreissa määriteltynä päivänä.")),
-    "oppimääränSuorittajiaVOS" -> Column("Oppimäärän suorittajien VOS määrä", comment = Some("\"Läsnä\"-tilaiset aikuisten perusopetuksen opiskeluoikeudet raportin tulostusparametreissa määriteltynä päivänä.")),
-    "oppimääränSuorittajiaMuuKuinVOS" -> Column("Oppimäärän suorittajien ei-VOS määrä", comment = Some("\"Läsnä\"-tilaiset aikuisten perusopetuksen opiskeluoikeudet raportin tulostusparametreissa määriteltynä päivänä.")),
-    "aineopiskelijoitaVOS" -> Column("Aineopiskelijoita VOS määrä", comment = Some("\"Läsnä\"-tilaiset aikuisten perusopetuksen opiskeluoikeudet raportin tulostusparametreissa määriteltynä päivänä.")),
-    "aineopiskelijoitaMuuKuinVOS" -> Column("Aineopiskelijoita ei-VOS määrä", comment = Some("\"Läsnä\"-tilaiset aikuisten perusopetuksen opiskeluoikeudet raportin tulostusparametreissa määriteltynä päivänä.")),
-    "vieraskielisiäVOS" -> Column("Oppilaista VOS-vieraskielisiä"),
-    "vieraskielisiäMuuKuinVOS" -> Column("Oppilaista ei-VOS-vieraskielisiä"),
+    "opetuskieli" -> Column("Opetuskieli", comment = Some("Oppilaitokselle merkityt opetuskielet Opintopolun organisaatiopalvelussa.")),
+    "oppilaidenMääräYhteensä" -> Column("Opiskelijoiden määrä yhteensä", comment = Some("\"Läsnä\"-tilaiset aikuisten perusopetuksen opiskeluoikeudet raportin tulostusparametreissa määriteltynä päivänä.")),
+    "oppilaidenMääräVOS" -> Column("Opiskelijoista valtionosuusrahoitteisia", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Valtionosuusrahoitteinen koulutus\".")),
+    "oppilaidenMääräMuuKuinVOS" -> Column("Opiskelijoista muuta kautta rahoitettuja", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Muuta kautta rahoitettu\".")),
+    "oppimääränSuorittajiaYhteensä" -> Column("Opiskelijoista aikuisten perusopetuksen oppimäärän suorittajia", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa päätason suorituksena aikuisten perusopetuksen oppimäärä ja/tai alkuvaihe.")),
+    "oppimääränSuorittajiaVOS" -> Column("Perusopetuksen oppimäärän suorittajista valtionosuusrahoitteisia", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa päätason suorituksena aikuisten perusopetuksen oppimäärä ja/tai alkuvaihe ja joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Valtionosuusrahoitteinen koulutus\".")),
+    "oppimääränSuorittajiaMuuKuinVOS" -> Column("Perusopetuksen oppimäärän suorittajista muuta kautta rahoitettuja", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa päätason suorituksena aikuisten perusopetuksen oppimäärä ja/tai alkuvaihe ja joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Muuta kautta rahoitettu\".")),
+    "aineopiskelijoitaYhteensä" -> Column("Opiskelijoista aineopiskelijoita", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa suoritetaan aikuisten perusopetuksen aineopintoja.")),
+    "aineopiskelijoitaVOS" -> Column("Aineopiskelijoista valtionosuusrahoitteisia", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa suoritetaan aikuisten perusopetuksen aineopintoja ja joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Valtionosuusrahoitteinen koulutus\".")),
+    "aineopiskelijoitaMuuKuinVOS" -> Column("Aineopiskelijoista muuta kautta rahoitettuja", comment = Some("\"Läsnä\"tilaisista opiskeluoikeuksista ne, joissa suoritetaan aikuisten perusopetuksen aineopintoja ja joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Muuta kautta rahoitettu\".")),
+    "vieraskielisiäYhteensä" -> Column("Opiskelijoista vieraskielisiä", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa oppijan äidinkieli on jokin muu kuin suomi, ruotsi, saame, romani tai viittomakieli.")),
+    "vieraskielisiäVOS" -> Column("Opiskelijoista vieraskielisiä - valtionosuusrahoitteiset", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa oppijan äidinkieli on jokin muu kuin suomi, ruotsi, saame, romani tai viittomakieli ja joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Valtionosuusrahoitteinen koulutus\".")),
+    "vieraskielisiäMuuKuinVOS" -> Column("Opiskelijoista vieraskielisiä - muuta kautta rahoitetut", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa oppijan äidinkieli on jokin muu kuin suomi, ruotsi, saame, romani tai viittomakieli ja joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Muuta kautta rahoitettu\".")),
   )
 }
 
 case class AikuistenPerusopetuksenOppijamäärätRaporttiRow(
+  oppilaitosOid: String,
   oppilaitosNimi: String,
   opetuskieli: String,
+  oppilaidenMääräYhteensä: Int,
   oppilaidenMääräVOS: Int,
   oppilaidenMääräMuuKuinVOS: Int,
+  oppimääränSuorittajiaYhteensä: Int,
   oppimääränSuorittajiaVOS: Int,
   oppimääränSuorittajiaMuuKuinVOS: Int,
+  aineopiskelijoitaYhteensä: Int,
   aineopiskelijoitaVOS: Int,
   aineopiskelijoitaMuuKuinVOS: Int,
+  vieraskielisiäYhteensä: Int,
   vieraskielisiäVOS: Int,
   vieraskielisiäMuuKuinVOS: Int
 )
