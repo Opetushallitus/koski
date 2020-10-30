@@ -29,11 +29,8 @@ const laajuudet = osasuoritukset => osasuoritukset.map(k => {
   return laajuus ? laajuus : 1
 }).reduce((x, y) => x + y, 0)
 
-
-const isLukioOps2019 = suoritusModel => {
-  console.log(modelData(suoritusModel, 'koulutusmoduuli.perusteenDiaarinumero'))
-  return [ 'OPH-2263-2019', 'OPH-2267-2019' ].includes(modelData(suoritusModel, 'koulutusmoduuli.perusteenDiaarinumero'))
-}
+const isLukioOps2019 = suoritusModel =>
+  [ 'OPH-2263-2019', 'OPH-2267-2019' ].includes(modelData(suoritusModel, 'koulutusmoduuli.perusteenDiaarinumero'))
 
 const isPreIbLukioOps2019 = suoritusModel =>
   [ 'preiboppimaara2019' ].includes(modelData(suoritusModel, 'koulutusmoduuli.tunniste.koodiarvo'))
