@@ -49,10 +49,10 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
         ressunAineopiskelijat.oppilaitosOid shouldBe(MockOrganisaatiot.ressunLukio)
       }
       "Yhteensä" in {
-        ressunAineopiskelijat.kurssejaYhteensa shouldBe(10)
+        ressunAineopiskelijat.kurssejaYhteensa shouldBe(11)
       }
       "Suoritettuja" in {
-        ressunAineopiskelijat.suoritettujaKursseja shouldBe(4)
+        ressunAineopiskelijat.suoritettujaKursseja shouldBe(5)
       }
       "Tunnustettuja" in {
         ressunAineopiskelijat.tunnustettujaKursseja shouldBe(6)
@@ -61,19 +61,19 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
         ressunAineopiskelijat.tunnustettujaKursseja_rahoituksenPiirissa shouldBe(3)
       }
       "Pakollisia tai valtakunnallinen ja syventava" in {
-        ressunAineopiskelijat.pakollisia_tai_valtakunnallisiaSyventavia shouldBe(7)
+        ressunAineopiskelijat.pakollisia_tai_valtakunnallisiaSyventavia shouldBe(8)
       }
       "Pakollisia" in {
-        ressunAineopiskelijat.pakollisiaKursseja shouldBe(4)
+        ressunAineopiskelijat.pakollisiaKursseja shouldBe(5)
       }
       "Valtakunnallisia syventavia" in {
         ressunAineopiskelijat.valtakunnallisestiSyventaviaKursseja shouldBe(3)
       }
       "Suoritettuja pakollisia ja suoritettuja valtakunnallisia syventavia" in {
-        ressunAineopiskelijat.suoritettujaPakollisia_ja_suoritettujaValtakunnallisiaSyventavia shouldBe(3)
+        ressunAineopiskelijat.suoritettujaPakollisia_ja_suoritettujaValtakunnallisiaSyventavia shouldBe(4)
       }
       "Suoritettuja pakollisia" in {
-        ressunAineopiskelijat.suoritettujaPakollisiaKursseja shouldBe(2)
+        ressunAineopiskelijat.suoritettujaPakollisiaKursseja shouldBe(3)
       }
       "Suoritettuja valtakunnallisia syventavia" in {
         ressunAineopiskelijat.suoritettujaValtakunnallisiaSyventaviaKursseja shouldBe(1)
@@ -96,6 +96,14 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
       "Tunnustettuja rahoituksen piirissa valtakunnallisesti syventavia" in {
         ressunAineopiskelijat.tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva shouldBe(1)
       }
+      "Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit - muuta kautta rahoitetut" in {
+        ressunAineopiskelijat.suoritetutTaiRahoitetut_muutaKauttaRahoitetut shouldBe 1
+      }
+    }
+    "Muuta kautta rahoitetuttujen välilehti" - {
+      "Listan pituus sama kuin aineopiskelijoiden välilehdellä oleva laskuri" in {
+        ressunMuutaKauttaRahoitetut.length shouldBe 1
+      }
     }
   }
 
@@ -112,6 +120,12 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
       case r: LukioKurssikertymaAineopiskelijaRow => r
     }
   }.get.find(_.oppilaitos == "Ressun lukio").get
+
+  lazy val ressunMuutaKauttaRahoitetut: Seq[MuutaKauttaRahoitetutRow] = raportti.collectFirst {
+    case d: DataSheet if d.title == LukioMuutaKauttaRahoitetut.sheetTitle => d.rows.collect {
+      case r: MuutaKauttaRahoitetutRow => r
+    }
+  }.get
 
   private def loadRaportti = {
     val request = AikajaksoRaporttiRequest(

@@ -17,7 +17,7 @@ object LukioKurssikertymaRaporttiFixtures {
 
   lazy val oppimaara = LukionOpiskeluoikeus(
     tila = LukionOpiskeluoikeudenTila(List(
-        LukionOpiskeluoikeusjakso(alku = date.minusDays(10), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+      LukionOpiskeluoikeusjakso(alku = date.minusDays(10), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
       LukionOpiskeluoikeusjakso(alku = date.plusDays(10), tila = opiskeluoikeusEronnut, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
     )),
     oppilaitos = Some(helsinginMedialukio),
@@ -38,7 +38,8 @@ object LukioKurssikertymaRaporttiFixtures {
     tila = LukionOpiskeluoikeudenTila(
       List(
         LukionOpiskeluoikeusjakso(alku = date, tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
-        LukionOpiskeluoikeusjakso(alku = date.plusDays(10), tila = opiskeluoikeusEronnut, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+        LukionOpiskeluoikeusjakso(alku = date.plusDays(10), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.muutaKauttaRahoitettu)),
+        LukionOpiskeluoikeusjakso(alku = date.plusDays(20), tila = opiskeluoikeusEronnut, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
       )
     ),
     versionumero = None,
@@ -62,7 +63,13 @@ object LukioKurssikertymaRaporttiFixtures {
         suorituskieli = sloveeni,
         toimipiste = ressunLukio,
         osasuoritukset = Some(matematiikanKurssit)
-      )
+      ),
+      LukionOppiaineenOppimääränSuoritus2015(
+        koulutusmoduuli = lukionOppiaine("FI", diaarinumero = Some("60/011/2015")),
+        suorituskieli = sloveeni,
+        toimipiste = ressunLukio,
+        osasuoritukset = Some(filosofianKurssit)
+      ),
     )
   )
 
@@ -77,12 +84,19 @@ object LukioKurssikertymaRaporttiFixtures {
     kurssi(valtakunnallinenKurssi("MAA4")),
     kurssi(valtakunnallinenKurssi("MAA5")),
     kurssi(valtakunnallinenKurssi("MAA6")).copy(arviointi = kurssinArviointiJaksoaEnnen),
-    kurssi(valtakunnallinenKurssi("MAA7")).copy(arviointi = kurssinArviointiJaksonJalkeen)
+    kurssi(valtakunnallinenKurssi("MAA7")).copy(arviointi = kurssinArviointiJaksonJalkeen),
+    kurssi(valtakunnallinenKurssi("MAA8")).copy(arviointi = kurssinArviointiJaksonJalkeen),
   )
 
   lazy val kurssinArviointi = Some(List(NumeerinenLukionArviointi(Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"), date)))
   lazy val kurssinArviointiJaksonJalkeen = Some(List(NumeerinenLukionArviointi(Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"), raportinAikajaksoLoppu.plusDays(1))))
   lazy val kurssinArviointiJaksoaEnnen = Some(List(NumeerinenLukionArviointi(Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"), raportinAikajaksoAlku.minusDays(1))))
+
+  lazy val filosofianKurssit = List(
+    kurssi(valtakunnallinenKurssi("FI1")).copy(arviointi = kurssinArviointiMuutaKauttaRahoitetullaJaksolla),
+  )
+
+  lazy val kurssinArviointiMuutaKauttaRahoitetullaJaksolla = Some(List(NumeerinenLukionArviointi(Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"), date.plusDays(10))))
 
   lazy val mantsanKurssit = List(
     kurssi(valtakunnallinenKurssi("GE1").copy(kurssinTyyppi = syventävä)),

@@ -74,7 +74,8 @@ class RaportitService(application: KoskiApplication) {
     OppilaitosRaporttiResponse(
       sheets = Seq(
         LukioOppimaaranKussikertymat.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase),
-        LukioOppiaineenOppimaaranKurssikertymat.datasheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase)
+        LukioOppiaineenOppimaaranKurssikertymat.datasheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase),
+        LukioMuutaKauttaRahoitetut.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase),
       ),
       workbookSettings = WorkbookSettings("Kurssikertymat", Some(request.password)),
       filename = s"lukion_kurssikertymat_${request.alku.toString.replaceAll("-", "")}-${request.loppu.toString.replaceAll("-", "")}.xlsx",
