@@ -33,15 +33,21 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(oppilaitos_oid)",
     sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(koulutusmuoto)",
     sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(sisaltyy_opiskeluoikeuteen_oid)",
+
+    sqlu"CREATE INDEX ON #${s.name}.r_organisaatiohistoria(opiskeluoikeus_oid, alku, loppu DESC, oppilaitos_oid, koulutustoimija_oid)",
+
     sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus_aikajakso(opiskeluoikeus_oid)",
+
     sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_paatason_suoritus(paatason_suoritus_id)",
     sqlu"CREATE INDEX ON #${s.name}.r_paatason_suoritus(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON #${s.name}.r_paatason_suoritus(vahvistus_paiva)",
     sqlu"CREATE INDEX ON #${s.name}.r_paatason_suoritus(suorituksen_tyyppi)",
+
     sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_osasuoritus(osasuoritus_id)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(paatason_suoritus_id)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(ylempi_osasuoritus_id)",
+
     sqlu"CREATE INDEX ON #${s.name}.esiopetus_opiskeluoik_aikajakso(opiskeluoikeus_oid)",
   )
 
