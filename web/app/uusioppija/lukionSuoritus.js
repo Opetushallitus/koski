@@ -22,12 +22,12 @@ export const makeSuoritus = (oppilaitos, suoritustyyppi, peruste, suorituskieli,
         tyyppi: suoritustyyppi
       }
 
-    case 'lukionoppiaineidenoppimaarat2019':
+    case 'lukionaineopinnot':
       return {
         suorituskieli : suorituskieli,
         koulutusmoduuli: {
           tunniste: {
-            koodiarvo: 'lukionoppiaineidenoppimaarat2019'
+            koodiarvo: 'lukionaineopinnot'
           },
           perusteenDiaarinumero: peruste
         },

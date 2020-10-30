@@ -357,8 +357,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
 
   private def validatePäätasonSuoritukset(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     opiskeluoikeus match {
-      case l: LukionOpiskeluoikeus if l.suoritukset.count(_.tyyppi.koodiarvo == "lukionoppiaineidenoppimaarat2019") > 1 =>
-        KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaSuorituksia("Opiskeluoikeudella on enemmän kuin yksi oppiaineiden oppimäärät ryhmittelevä lukionoppiaineidenoppimaarat2019-tyyppinen suoritus")
+      case l: LukionOpiskeluoikeus if l.suoritukset.count(_.tyyppi.koodiarvo == "lukionaineopinnot") > 1 =>
+        KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaSuorituksia("Opiskeluoikeudella on enemmän kuin yksi oppiaineiden oppimäärät ryhmittelevä lukionaineopinnot-tyyppinen suoritus")
       case p: IBOpiskeluoikeus
         if p.suoritukset.exists(_.isInstanceOf[PreIBSuoritus2019]) && p.suoritukset.exists(_.isInstanceOf[PreIBSuoritus2015]) =>
           KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaSuorituksia("Vanhan ja lukion opetussuunnitelman 2019 mukaisia Pre-IB-opintoja ei sallita samassa opiskeluoikeudessa")

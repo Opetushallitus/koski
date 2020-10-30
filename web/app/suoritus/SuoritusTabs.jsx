@@ -71,7 +71,7 @@ export const assignTabNames = (suoritukset) => {
 
 const resolveTabName = suoritus => {
   switch (suorituksenTyyppi(suoritus)) {
-    case 'lukionoppiaineidenoppimaarat2019': return modelTitle(suoritus, 'tyyppi')
+    case 'lukionaineopinnot': return modelTitle(suoritus, 'tyyppi')
     default: return modelTitle(suoritus, 'koulutusmoduuli.tunniste')
   }
 }

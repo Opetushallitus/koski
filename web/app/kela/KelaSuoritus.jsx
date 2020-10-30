@@ -45,7 +45,7 @@ const SuoritusView = ({suoritus, path}) => {
   const properties = R.omit(['osasuoritukset', 'vahvistus', 'koulutusmoduuli'], suoritus)
   const osasuoritukset = suoritus.osasuoritukset
   const piilotaArviointiSarakkeet = ['diatutkintovaihe', 'diavalmistavavaihe'].includes(suoritus.tyyppi.koodiarvo)
-  const piilotaVahvistus = suoritus.tyyppi.koodiarvo === 'lukionoppiaineidenoppimaarat2019'
+  const piilotaVahvistus = suoritus.tyyppi.koodiarvo === 'lukionaineopinnot'
   return (
     <>
       <KeyValueTable object={properties} path={path}/>

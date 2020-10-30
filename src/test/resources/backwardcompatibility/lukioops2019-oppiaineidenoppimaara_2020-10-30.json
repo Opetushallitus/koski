@@ -70,7 +70,7 @@
     "suoritukset" : [ {
       "koulutusmoduuli" : {
         "tunniste" : {
-          "koodiarvo" : "lukionoppiaineidenoppimaarat2019"
+          "koodiarvo" : "lukionaineopinnot"
         },
         "perusteenDiaarinumero" : "OPH-2263-2019"
       },
@@ -1080,7 +1080,7 @@
         }
       } ],
       "tyyppi" : {
-        "koodiarvo" : "lukionoppiaineidenoppimaarat2019",
+        "koodiarvo" : "lukionaineopinnot",
         "koodistoUri" : "suorituksentyyppi"
       }
     } ],
