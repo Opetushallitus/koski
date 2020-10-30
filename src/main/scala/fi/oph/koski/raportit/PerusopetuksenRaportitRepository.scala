@@ -58,6 +58,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
     val henkilot = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result).groupBy(_.oppijaOid).mapValues(_.head)
     val voimassaOlevatVuosiluokat = runDbSync(voimassaOlevatVuosiluokatQuery(opiskeluoikeusOids).result, timeout = 5.minutes).groupBy(_._1).mapValues(_.map(_._2).toSeq)
     val luokat = runDbSync(luokkatiedotVuosiluokalleQuery(opiskeluoikeusOids, vuosiluokka).result, timeout = 5.minutes).groupBy(_._1).mapValues(_.map(_._2).distinct.sorted.mkString(","))
+    val organisaatiohistoriat = fetchOrganisaatiohistoriat(päivä, opiskeluoikeusOids).groupBy(_.opiskeluoikeusOid)
 
     opiskeluoikeudet.flatMap { oo =>
       paatasonSuoritukset.getOrElse(oo.opiskeluoikeusOid, Nil).map { päätasonSuoritus =>
@@ -66,12 +67,42 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
           henkilo = henkilot(oo.oppijaOid),
           aikajaksot = aikajaksot.getOrElse(oo.opiskeluoikeusOid, Nil).sortBy(_.alku)(sqlDateOrdering),
           päätasonSuoritus = päätasonSuoritus,
-          osasuoritukset.getOrElse(päätasonSuoritus.päätasonSuoritusId, Nil),
-          voimassaOlevatVuosiluokat.getOrElse(oo.opiskeluoikeusOid, Nil),
-          luokat.get(oo.opiskeluoikeusOid)
+          osasuoritukset = osasuoritukset.getOrElse(päätasonSuoritus.päätasonSuoritusId, Nil),
+          voimassaolevatVuosiluokat = voimassaOlevatVuosiluokat.getOrElse(oo.opiskeluoikeusOid, Nil),
+          luokka = luokat.get(oo.opiskeluoikeusOid),
+          organisaatiohistoria = organisaatiohistoriat.getOrElse(oo.opiskeluoikeusOid, Nil).head
         )
       }
     }
+  }
+
+  private def fetchOrganisaatiohistoriat(päivä: LocalDate, opiskeluoikeusOids: Seq[String]) = {
+    implicit val getResult: GetResult[OrganisaatiohistoriaResult] = GetResult(r => OrganisaatiohistoriaResult(
+      opiskeluoikeusOid = r.rs.getString("opiskeluoikeus_oid"),
+      alku = r.rs.getDate("alku"),
+      loppu = r.rs.getDate("loppu"),
+      oppilaitosOid = r.rs.getString("oppilaitos_oid"),
+      oppilaitosNimi = r.rs.getString("oppilaitos_nimi"),
+      koulutustoimijaOid = r.rs.getString("koulutustoimija_oid"),
+      koulutustoimijaNimi = r.rs.getString("koulutustoimija_nimi")
+    ))
+    val query = sql"""
+      select
+        oh.opiskeluoikeus_oid,
+        alku,
+        loppu,
+        oppilaitos.organisaatio_oid as oppilaitos_oid,
+        oppilaitos.nimi as oppilaitos_nimi,
+        koulutustoimija.organisaatio_oid as koulutustoimija_oid,
+        koulutustoimija.nimi as koulutustoimija_nimi
+      from r_organisaatiohistoria oh
+      join r_organisaatio oppilaitos on oppilaitos_oid = oppilaitos.organisaatio_oid
+      join r_organisaatio koulutustoimija on koulutustoimija_oid = koulutustoimija.organisaatio_oid
+      where opiskeluoikeus_oid = any($opiskeluoikeusOids)
+        and alku <= $päivä
+        and loppu >= $päivä
+    """
+    runDbSync(query.as[OrganisaatiohistoriaResult])
   }
 
   private def voimassaOlevatVuosiluokatQuery(opiskeluoikeusOids: Seq[String]) = {
@@ -270,6 +301,16 @@ case class VuosiluokanTiedot(
    vuosiluokka: String
 )
 
+case class OrganisaatiohistoriaResult(
+  opiskeluoikeusOid: String,
+  alku: Date,
+  loppu: Date,
+  oppilaitosOid: String,
+  oppilaitosNimi: String,
+  koulutustoimijaOid: String,
+  koulutustoimijaNimi: String
+)
+
 case class PerusopetuksenRaporttiRows(
   opiskeluoikeus: ROpiskeluoikeusRow,
   henkilo: RHenkilöRow,
@@ -277,5 +318,6 @@ case class PerusopetuksenRaporttiRows(
   päätasonSuoritus: RPäätasonSuoritusRow,
   osasuoritukset: Seq[ROsasuoritusRow],
   voimassaolevatVuosiluokat: Seq[String],
-  luokka: Option[String]
+  luokka: Option[String],
+  organisaatiohistoria: OrganisaatiohistoriaResult
 )

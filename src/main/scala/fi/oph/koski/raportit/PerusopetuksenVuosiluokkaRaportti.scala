@@ -32,6 +32,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
     PerusopetusRow(
       opiskeluoikeusOid = row.opiskeluoikeus.opiskeluoikeusOid,
       oppilaitoksenNimi = row.opiskeluoikeus.oppilaitosNimi,
+      organisaatioHistoria = oppilaitosRaportointiPäivänä(row),
       lähdejärjestelmä = lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
       lähdejärjestelmänId = lähdejärjestelmänId.flatMap(_.id),
       yksiloity = row.henkilo.yksiloity,
@@ -104,6 +105,17 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
       erityisenTuenPaatosToteutuspaikat = voimassaOlevatErityisenTuenPäätökset.flatMap(_.toteutuspaikka.map(_.koodiarvo)).sorted.map(eritysopetuksentoteutuspaikkaKoodisto.getOrElse(_, "")).mkString(","),
       tukimuodot = tukimuodot(opiskeluoikeudenLisätiedot)
     )
+  }
+
+  private def oppilaitosRaportointiPäivänä(data: PerusopetuksenRaporttiRows): Option[String] = {
+    val oh = data.organisaatiohistoria
+    val oppilaitosRaportointiPäivänä = oh.oppilaitosOid
+    val oppilaitosNyt = data.opiskeluoikeus.oppilaitosOid
+    if (oppilaitosNyt == oppilaitosRaportointiPäivänä) {
+      None
+    } else {
+      Some(s"${oh.alku}-${oh.loppu}: ${oh.oppilaitosNimi} (${oh.koulutustoimijaNimi})")
+    }
   }
 
   private val yleissivistäväkoodisto = Seq(
@@ -269,7 +281,8 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
 
   val columnSettings: Seq[(String, Column)] = Seq(
     "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),
-    "oppilaitoksenNimi" -> Column("Oppilaitoksen nimi"),
+    "oppilaitoksenNimi" -> Column("Oppilaitoksen nimi", comment = Some("Oppilaitos, joka opiskeluoikeudella on nyt. Mahdollisesti eri kuin todellinen oppilaitos raportin tulostusparametrin \"Päivä\"- kenttään syötettynä päivämääränä.")),
+    "organisaatioHistoria" -> Column("Organisaatio raportointipäivänä", comment = Some("Organisaatio, joka opiskeluoikeudella oli raportin tulostusparametrin \"Päivä\"- kenttään syötettynä päivämääränä, jos eri kuin viereisen sarakkeen oppilaitos.")),
     "lähdejärjestelmä" -> Column("Lähdejärjestelmä"),
     "lähdejärjestelmänId" -> CompactColumn("Opiskeluoikeuden tunniste lähdejärjestelmässä"),
     "yksiloity" -> Column("Yksilöity", comment = Some("Jos tässä on arvo 'ei', tulee oppija yksilöidä oppijanumerorekisterissä")),
@@ -347,6 +360,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
 private[raportit] case class PerusopetusRow(
   opiskeluoikeusOid: String,
   oppilaitoksenNimi: String,
+  organisaatioHistoria: Option[String],
   lähdejärjestelmä: Option[String],
   lähdejärjestelmänId: Option[String],
   yksiloity: Boolean,
