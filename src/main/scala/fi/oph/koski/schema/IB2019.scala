@@ -126,7 +126,7 @@ trait PreIBLukionModuulinSuoritus2019 extends ValtakunnallisenModuulinSuoritus w
   def arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]]
   def tunnustettu: Option[OsaamisenTunnustaminen]
   def suorituskieli: Option[Koodistokoodiviite]
-  @KoodistoKoodiarvo("lukionvaltakunnallinenmoduuli2019")
+  @KoodistoKoodiarvo("lukionvaltakunnallinenmoduuli")
   def tyyppi: Koodistokoodiviite
 }
 
@@ -140,7 +140,7 @@ case class PreIBLukionModuulinSuoritusOppiaineissa2019(
   arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]] = None,
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionvaltakunnallinenmoduuli2019", koodistoUri = "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionvaltakunnallinenmoduuli", koodistoUri = "suorituksentyyppi")
 ) extends PreIBLukionModuulinSuoritus2019 with PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019
 
 @Title("Pre-IB lukion moduulin suoritus muissa opinnoissa 2019")
@@ -153,7 +153,7 @@ case class PreIBLukionModuulinSuoritusMuissaOpinnoissa2019(
   arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]] = None,
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionvaltakunnallinenmoduuli2019", koodistoUri = "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionvaltakunnallinenmoduuli", koodistoUri = "suorituksentyyppi")
 ) extends PreIBLukionModuulinSuoritus2019 with PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019
 
 @Title("Pre-IB lukion paikallisen opintojakson suoritus 2019")
@@ -165,8 +165,8 @@ case class PreIBLukionPaikallisenOpintojaksonSuoritus2019(
   arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]] = None,
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @KoodistoKoodiarvo("lukionpaikallinenopintojakso2019")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionpaikallinenopintojakso2019", koodistoUri = "suorituksentyyppi")
+  @KoodistoKoodiarvo("lukionpaikallinenopintojakso")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionpaikallinenopintojakso", koodistoUri = "suorituksentyyppi")
 ) extends PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019 with PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019
 
 trait PreIBLukionModuuliTaiPaikallinenOpintojakso2019 extends Koulutusmoduuli with KoulutusmoduuliPakollinenLaajuusOpintopisteissä with Valinnaisuus

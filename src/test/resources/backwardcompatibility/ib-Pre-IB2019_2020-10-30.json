@@ -1,44 +1,44 @@
 {
   "henkilö" : {
-    "hetu" : "250605A518Y",
-    "etunimet" : "Ulla",
-    "kutsumanimi" : "Ulla",
-    "sukunimi" : "Uusilukio"
+    "hetu" : "180300A8736",
+    "etunimet" : "Pate",
+    "kutsumanimi" : "Pate",
+    "sukunimi" : "IB-Pre-IB-uusilukio"
   },
   "opiskeluoikeudet" : [ {
     "oppilaitos" : {
-      "oid" : "1.2.246.562.10.14613773812",
+      "oid" : "1.2.246.562.10.62858797335",
       "oppilaitosnumero" : {
-        "koodiarvo" : "00204",
+        "koodiarvo" : "00082",
         "nimi" : {
-          "fi" : "Jyväskylän normaalikoulu",
-          "sv" : "Jyväskylän normaalikoulu",
-          "en" : "Jyväskylän normaalikoulu"
+          "fi" : "Ressun lukio",
+          "sv" : "Ressun lukio",
+          "en" : "Ressun lukio"
         },
         "lyhytNimi" : {
-          "fi" : "Jyväskylän normaalikoulu",
-          "sv" : "Jyväskylän normaalikoulu",
-          "en" : "Jyväskylän normaalikoulu"
+          "fi" : "Ressun lukio",
+          "sv" : "Ressun lukio",
+          "en" : "Ressun lukio"
         },
         "koodistoUri" : "oppilaitosnumero"
       },
       "nimi" : {
-        "fi" : "Jyväskylän normaalikoulu",
-        "sv" : "Jyväskylän normaalikoulu",
-        "en" : "Jyväskylän normaalikoulu"
+        "fi" : "Ressun lukio",
+        "sv" : "Ressun lukio",
+        "en" : "Ressun lukio"
       },
       "kotipaikka" : {
-        "koodiarvo" : "179",
+        "koodiarvo" : "091",
         "nimi" : {
-          "fi" : "Jyväskylä",
-          "sv" : "Jyväskylä"
+          "fi" : "Helsinki",
+          "sv" : "Helsingfors"
         },
         "koodistoUri" : "kunta"
       }
     },
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
-        "alku" : "2019-08-01",
+        "alku" : "2012-09-01",
         "tila" : {
           "koodiarvo" : "lasna",
           "nimi" : {
@@ -52,7 +52,7 @@
           "koodistoUri" : "opintojenrahoitus"
         }
       }, {
-        "alku" : "2020-05-15",
+        "alku" : "2016-06-04",
         "tila" : {
           "koodiarvo" : "valmistunut",
           "nimi" : {
@@ -70,84 +70,75 @@
     "suoritukset" : [ {
       "koulutusmoduuli" : {
         "tunniste" : {
-          "koodiarvo" : "309902",
-          "koodistoUri" : "koulutus"
-        },
-        "perusteenDiaarinumero" : "OPH-2263-2019"
-      },
-      "oppimäärä" : {
-        "koodiarvo" : "nuortenops",
-        "nimi" : {
-          "fi" : "Nuorten ops"
-        },
-        "koodistoUri" : "lukionoppimaara",
-        "koodistoVersio" : 1
+          "koodiarvo" : "preiboppimaara2019",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       },
       "toimipiste" : {
-        "oid" : "1.2.246.562.10.14613773812",
+        "oid" : "1.2.246.562.10.62858797335",
         "oppilaitosnumero" : {
-          "koodiarvo" : "00204",
+          "koodiarvo" : "00082",
           "nimi" : {
-            "fi" : "Jyväskylän normaalikoulu",
-            "sv" : "Jyväskylän normaalikoulu",
-            "en" : "Jyväskylän normaalikoulu"
+            "fi" : "Ressun lukio",
+            "sv" : "Ressun lukio",
+            "en" : "Ressun lukio"
           },
           "lyhytNimi" : {
-            "fi" : "Jyväskylän normaalikoulu",
-            "sv" : "Jyväskylän normaalikoulu",
-            "en" : "Jyväskylän normaalikoulu"
+            "fi" : "Ressun lukio",
+            "sv" : "Ressun lukio",
+            "en" : "Ressun lukio"
           },
           "koodistoUri" : "oppilaitosnumero"
         },
         "nimi" : {
-          "fi" : "Jyväskylän normaalikoulu",
-          "sv" : "Jyväskylän normaalikoulu",
-          "en" : "Jyväskylän normaalikoulu"
+          "fi" : "Ressun lukio",
+          "sv" : "Ressun lukio",
+          "en" : "Ressun lukio"
         },
         "kotipaikka" : {
-          "koodiarvo" : "179",
+          "koodiarvo" : "091",
           "nimi" : {
-            "fi" : "Jyväskylä",
-            "sv" : "Jyväskylä"
+            "fi" : "Helsinki",
+            "sv" : "Helsingfors"
           },
           "koodistoUri" : "kunta"
         }
       },
       "vahvistus" : {
-        "päivä" : "2020-05-15",
+        "päivä" : "2016-06-04",
         "paikkakunta" : {
-          "koodiarvo" : "179",
+          "koodiarvo" : "091",
           "nimi" : {
-            "fi" : "Jyväskylä"
+            "fi" : "Helsinki"
           },
           "koodistoUri" : "kunta"
         },
         "myöntäjäOrganisaatio" : {
-          "oid" : "1.2.246.562.10.14613773812",
+          "oid" : "1.2.246.562.10.62858797335",
           "oppilaitosnumero" : {
-            "koodiarvo" : "00204",
+            "koodiarvo" : "00082",
             "nimi" : {
-              "fi" : "Jyväskylän normaalikoulu",
-              "sv" : "Jyväskylän normaalikoulu",
-              "en" : "Jyväskylän normaalikoulu"
+              "fi" : "Ressun lukio",
+              "sv" : "Ressun lukio",
+              "en" : "Ressun lukio"
             },
             "lyhytNimi" : {
-              "fi" : "Jyväskylän normaalikoulu",
-              "sv" : "Jyväskylän normaalikoulu",
-              "en" : "Jyväskylän normaalikoulu"
+              "fi" : "Ressun lukio",
+              "sv" : "Ressun lukio",
+              "en" : "Ressun lukio"
             },
             "koodistoUri" : "oppilaitosnumero"
           },
           "nimi" : {
-            "fi" : "Jyväskylän normaalikoulu",
-            "sv" : "Jyväskylän normaalikoulu",
-            "en" : "Jyväskylän normaalikoulu"
+            "fi" : "Ressun lukio",
+            "sv" : "Ressun lukio",
+            "en" : "Ressun lukio"
           },
           "kotipaikka" : {
-            "koodiarvo" : "179",
+            "koodiarvo" : "091",
             "nimi" : {
-              "fi" : "Jyväskylä",
-              "sv" : "Jyväskylä"
+              "fi" : "Helsinki",
+              "sv" : "Helsingfors"
             },
             "koodistoUri" : "kunta"
           }
@@ -158,42 +149,41 @@
             "fi" : "rehtori"
           },
           "organisaatio" : {
-            "oid" : "1.2.246.562.10.14613773812",
+            "oid" : "1.2.246.562.10.62858797335",
             "oppilaitosnumero" : {
-              "koodiarvo" : "00204",
+              "koodiarvo" : "00082",
               "nimi" : {
-                "fi" : "Jyväskylän normaalikoulu",
-                "sv" : "Jyväskylän normaalikoulu",
-                "en" : "Jyväskylän normaalikoulu"
+                "fi" : "Ressun lukio",
+                "sv" : "Ressun lukio",
+                "en" : "Ressun lukio"
               },
               "lyhytNimi" : {
-                "fi" : "Jyväskylän normaalikoulu",
-                "sv" : "Jyväskylän normaalikoulu",
-                "en" : "Jyväskylän normaalikoulu"
+                "fi" : "Ressun lukio",
+                "sv" : "Ressun lukio",
+                "en" : "Ressun lukio"
               },
               "koodistoUri" : "oppilaitosnumero"
             },
             "nimi" : {
-              "fi" : "Jyväskylän normaalikoulu",
-              "sv" : "Jyväskylän normaalikoulu",
-              "en" : "Jyväskylän normaalikoulu"
+              "fi" : "Ressun lukio",
+              "sv" : "Ressun lukio",
+              "en" : "Ressun lukio"
             },
             "kotipaikka" : {
-              "koodiarvo" : "179",
+              "koodiarvo" : "091",
               "nimi" : {
-                "fi" : "Jyväskylä",
-                "sv" : "Jyväskylä"
+                "fi" : "Helsinki",
+                "sv" : "Helsingfors"
               },
               "koodistoUri" : "kunta"
             }
           }
         } ]
       },
-      "suoritettuErityisenäTutkintona" : false,
       "suorituskieli" : {
-        "koodiarvo" : "FI",
+        "koodiarvo" : "EN",
         "nimi" : {
-          "fi" : "suomi"
+          "fi" : "englanti"
         },
         "koodistoUri" : "kieli"
       },
@@ -279,6 +269,63 @@
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
+            "koodiarvo" : "A",
+            "koodistoUri" : "oppiaineetib"
+          },
+          "taso" : {
+            "koodiarvo" : "SL",
+            "koodistoUri" : "oppiaineentasoib"
+          },
+          "kieli" : {
+            "koodiarvo" : "FI",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "ryhmä" : {
+            "koodiarvo" : "1",
+            "koodistoUri" : "aineryhmaib"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "kuvaus" : {
+              "fi" : "A Finnish standard level 1"
+            },
+            "tunniste" : {
+              "koodiarvo" : "FIN_S1",
+              "nimi" : {
+                "en" : "FIN_S1"
+              }
+            },
+            "pakollinen" : true
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2021-09-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "preibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "preiboppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
             "koodiarvo" : "AI",
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
@@ -286,7 +333,7 @@
             "koodiarvo" : "AI1",
             "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
           },
-          "pakollinen" : true
+          "pakollinen" : false
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -330,50 +377,13 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli",
             "koodistoUri" : "suorituksentyyppi"
           }
         }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "ÄI2",
-              "koodistoUri" : "moduulikoodistolops2021"
-            },
-            "laajuus" : {
-              "arvo" : 2.0,
-              "yksikkö" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "opintopistettä",
-                  "sv" : "studiepoäng",
-                  "en" : "ECTS credits"
-                },
-                "lyhytNimi" : {
-                  "fi" : "op",
-                  "sv" : "sp",
-                  "en" : "ECTS cr"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            },
-            "pakollinen" : true
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "8",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
-            },
-            "päivä" : "2021-09-04",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        }, {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "ÄI3",
               "koodistoUri" : "moduulikoodistolops2021"
             },
             "laajuus" : {
@@ -404,7 +414,7 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli",
             "koodistoUri" : "suorituksentyyppi"
           }
         } ],
@@ -426,7 +436,7 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "9",
+            "koodiarvo" : "10",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
@@ -459,14 +469,14 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "8",
+              "koodiarvo" : "10",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
             "päivä" : "2021-09-04",
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli",
             "koodistoUri" : "suorituksentyyppi"
           }
         }, {
@@ -496,20 +506,45 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "8",
+              "koodiarvo" : "10",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
             "päivä" : "2021-09-04",
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli",
             "koodistoUri" : "suorituksentyyppi"
           }
-        }, {
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KT",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true,
+          "uskonnonOppimäärä" : {
+            "koodiarvo" : "KA",
+            "koodistoUri" : "uskonnonoppimaara"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "suoritettuErityisenäTutkintona" : false,
+        "osasuoritukset" : [ {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "MAB4",
+              "koodiarvo" : "UK1",
               "koodistoUri" : "moduulikoodistolops2021"
             },
             "laajuus" : {
@@ -540,7 +575,7 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli",
             "koodistoUri" : "suorituksentyyppi"
           }
         } ],
@@ -551,175 +586,14 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "OP",
+            "koodiarvo" : "LI",
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "H",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          },
-          "hyväksytty" : false
-        } ],
-        "suoritettuErityisenäTutkintona" : false,
-        "osasuoritukset" : [ {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "OP1",
-              "koodistoUri" : "moduulikoodistolops2021"
-            },
-            "laajuus" : {
-              "arvo" : 2.0,
-              "yksikkö" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "opintopistettä",
-                  "sv" : "studiepoäng",
-                  "en" : "ECTS credits"
-                },
-                "lyhytNimi" : {
-                  "fi" : "op",
-                  "sv" : "sp",
-                  "en" : "ECTS cr"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            },
-            "pakollinen" : true
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "H",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
-            },
-            "päivä" : "2021-09-04",
-            "hyväksytty" : false
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        }, {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "OP2",
-              "koodistoUri" : "moduulikoodistolops2021"
-            },
-            "laajuus" : {
-              "arvo" : 2.0,
-              "yksikkö" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "opintopistettä",
-                  "sv" : "studiepoäng",
-                  "en" : "ECTS credits"
-                },
-                "lyhytNimi" : {
-                  "fi" : "op",
-                  "sv" : "sp",
-                  "en" : "ECTS cr"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            },
-            "pakollinen" : true
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "S",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
-            },
-            "päivä" : "2021-09-04",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        } ],
-        "tyyppi" : {
-          "koodiarvo" : "lukionoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "KT",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
-          },
-          "pakollinen" : true,
-          "uskonnonOppimäärä" : {
-            "koodiarvo" : "MU",
-            "koodistoUri" : "uskonnonoppimaara"
-          }
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "4",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          },
-          "hyväksytty" : false
-        } ],
-        "suoritettuErityisenäTutkintona" : false,
-        "osasuoritukset" : [ {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "UE1",
-              "koodistoUri" : "moduulikoodistolops2021"
-            },
-            "laajuus" : {
-              "arvo" : 1.5,
-              "yksikkö" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "opintopistettä",
-                  "sv" : "studiepoäng",
-                  "en" : "ECTS credits"
-                },
-                "lyhytNimi" : {
-                  "fi" : "op",
-                  "sv" : "sp",
-                  "en" : "ECTS cr"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            },
-            "pakollinen" : true
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "4",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
-            },
-            "päivä" : "2021-09-04",
-            "hyväksytty" : false
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        } ],
-        "tyyppi" : {
-          "koodiarvo" : "lukionoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "AOM",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
-          },
-          "kieli" : {
-            "koodiarvo" : "SV",
-            "koodistoUri" : "kielivalikoima"
-          },
-          "pakollinen" : true
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "9",
+            "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
@@ -728,8 +602,47 @@
         "osasuoritukset" : [ {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "RUA4",
+              "koodiarvo" : "LI2",
               "koodistoUri" : "moduulikoodistolops2021"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "pakollinen" : true
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2021-09-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LITT1",
+              "nimi" : {
+                "fi" : "Tanssin liikunnallisuus"
+              }
             },
             "laajuus" : {
               "arvo" : 1.0,
@@ -748,18 +661,220 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
+            "kuvaus" : {
+              "fi" : "Tanssin liikunnallisuus"
+            },
             "pakollinen" : true
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "7",
+              "koodiarvo" : "S",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
             "päivä" : "2021-09-04",
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionpaikallinenopintojakso",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "FY",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "suoritettuErityisenäTutkintona" : true,
+        "suorituskieli" : {
+          "koodiarvo" : "SV",
+          "nimi" : {
+            "fi" : "ruotsi"
+          },
+          "koodistoUri" : "kieli"
+        },
+        "osasuoritukset" : [ ],
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KE",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "suoritettuErityisenäTutkintona" : false,
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "KE1",
+              "koodistoUri" : "moduulikoodistolops2021"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "pakollinen" : true
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2021-09-04",
+            "hyväksytty" : true
+          } ],
+          "tunnustettu" : {
+            "selite" : {
+              "fi" : "Osoittanut osaamisen käytännössä."
+            },
+            "rahoituksenPiirissä" : false
+          },
+          "tyyppi" : {
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "A",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "kieli" : {
+            "koodiarvo" : "EN",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "suoritettuErityisenäTutkintona" : false,
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ENA1",
+              "koodistoUri" : "moduulikoodistolops2021"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "pakollinen" : true,
+            "kieli" : {
+              "koodiarvo" : "EN",
+              "koodistoUri" : "kielivalikoima"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "10",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2021-09-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ENA2",
+              "koodistoUri" : "moduulikoodistolops2021"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "pakollinen" : true,
+            "kieli" : {
+              "koodiarvo" : "EN",
+              "koodistoUri" : "kielivalikoima"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2021-09-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli",
             "koodistoUri" : "suorituksentyyppi"
           }
         } ],
@@ -781,7 +896,7 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "9",
+            "koodiarvo" : "6",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
@@ -794,7 +909,7 @@
               "koodistoUri" : "moduulikoodistolops2021"
             },
             "laajuus" : {
-              "arvo" : 1.0,
+              "arvo" : 2.0,
               "yksikkö" : {
                 "koodiarvo" : "2",
                 "nimi" : {
@@ -810,7 +925,52 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollinen" : true
+            "pakollinen" : true,
+            "kieli" : {
+              "koodiarvo" : "ES",
+              "koodistoUri" : "kielivalikoima"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2021-09-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "VKA2",
+              "koodistoUri" : "moduulikoodistolops2021"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "pakollinen" : true,
+            "kieli" : {
+              "koodiarvo" : "ES",
+              "koodistoUri" : "kielivalikoima"
+            }
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -821,283 +981,10 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        }, {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "VKA8",
-              "koodistoUri" : "moduulikoodistolops2021"
-            },
-            "laajuus" : {
-              "arvo" : 1.0,
-              "yksikkö" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "opintopistettä",
-                  "sv" : "studiepoäng",
-                  "en" : "ECTS credits"
-                },
-                "lyhytNimi" : {
-                  "fi" : "op",
-                  "sv" : "sp",
-                  "en" : "ECTS cr"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            },
-            "pakollinen" : true
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "7",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
-            },
-            "päivä" : "2021-09-04",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli",
             "koodistoUri" : "suorituksentyyppi"
           }
         } ],
-        "tyyppi" : {
-          "koodiarvo" : "lukionoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "FY",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
-          },
-          "pakollinen" : true
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "10",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          },
-          "hyväksytty" : true
-        } ],
-        "suoritettuErityisenäTutkintona" : false,
-        "osasuoritukset" : [ {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "FY1",
-              "koodistoUri" : "moduulikoodistolops2021"
-            },
-            "laajuus" : {
-              "arvo" : 2.0,
-              "yksikkö" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "opintopistettä",
-                  "sv" : "studiepoäng",
-                  "en" : "ECTS credits"
-                },
-                "lyhytNimi" : {
-                  "fi" : "op",
-                  "sv" : "sp",
-                  "en" : "ECTS cr"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            },
-            "pakollinen" : true
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "10",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
-            },
-            "päivä" : "2021-09-04",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        }, {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "FY2",
-              "koodistoUri" : "moduulikoodistolops2021"
-            },
-            "laajuus" : {
-              "arvo" : 2.0,
-              "yksikkö" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "opintopistettä",
-                  "sv" : "studiepoäng",
-                  "en" : "ECTS credits"
-                },
-                "lyhytNimi" : {
-                  "fi" : "op",
-                  "sv" : "sp",
-                  "en" : "ECTS cr"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            },
-            "pakollinen" : true
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "10",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
-            },
-            "päivä" : "2021-09-04",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        }, {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "FY3",
-              "koodistoUri" : "moduulikoodistolops2021"
-            },
-            "laajuus" : {
-              "arvo" : 2.0,
-              "yksikkö" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "opintopistettä",
-                  "sv" : "studiepoäng",
-                  "en" : "ECTS credits"
-                },
-                "lyhytNimi" : {
-                  "fi" : "op",
-                  "sv" : "sp",
-                  "en" : "ECTS cr"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            },
-            "pakollinen" : true
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "10",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
-            },
-            "päivä" : "2021-09-04",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        }, {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "FY123",
-              "nimi" : {
-                "fi" : "Keittiöfysiikka"
-              }
-            },
-            "laajuus" : {
-              "arvo" : 80.0,
-              "yksikkö" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "opintopistettä",
-                  "sv" : "studiepoäng",
-                  "en" : "ECTS credits"
-                },
-                "lyhytNimi" : {
-                  "fi" : "op",
-                  "sv" : "sp",
-                  "en" : "ECTS cr"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            },
-            "kuvaus" : {
-              "fi" : "Keittiöfysiikan kokeelliset perusteet, kiehumisreaktiot"
-            },
-            "pakollinen" : true
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "10",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
-            },
-            "päivä" : "2021-09-04",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "lukionpaikallinenopintojakso2019",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        }, {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "FY124",
-              "nimi" : {
-                "fi" : "Keittiöfysiikka 2"
-              }
-            },
-            "laajuus" : {
-              "arvo" : 1.0,
-              "yksikkö" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "opintopistettä",
-                  "sv" : "studiepoäng",
-                  "en" : "ECTS credits"
-                },
-                "lyhytNimi" : {
-                  "fi" : "op",
-                  "sv" : "sp",
-                  "en" : "ECTS cr"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            },
-            "kuvaus" : {
-              "fi" : "Haastava kokeellinen keittiöfysiikka, liekitys ja lämpöreaktiot"
-            },
-            "pakollinen" : false
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "S",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
-            },
-            "päivä" : "2021-09-04",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "lukionpaikallinenopintojakso2019",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        } ],
-        "tyyppi" : {
-          "koodiarvo" : "lukionoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "KE",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
-          },
-          "pakollinen" : true
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "4",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          },
-          "hyväksytty" : false
-        } ],
-        "suoritettuErityisenäTutkintona" : false,
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -1117,7 +1004,7 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "8",
+            "koodiarvo" : "6",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
@@ -1132,7 +1019,7 @@
               }
             },
             "laajuus" : {
-              "arvo" : 50.0,
+              "arvo" : 1.0,
               "yksikkö" : {
                 "koodiarvo" : "2",
                 "nimi" : {
@@ -1151,18 +1038,18 @@
             "kuvaus" : {
               "fi" : "Perinteiset suomalaiset tanssit, valssi jne"
             },
-            "pakollinen" : false
+            "pakollinen" : true
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "10",
+              "koodiarvo" : "6",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
             "päivä" : "2021-09-04",
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "lukionpaikallinenopintojakso2019",
+            "koodiarvo" : "lukionpaikallinenopintojakso",
             "koodistoUri" : "suorituksentyyppi"
           }
         }, {
@@ -1174,7 +1061,7 @@
               }
             },
             "laajuus" : {
-              "arvo" : 2.0,
+              "arvo" : 1.0,
               "yksikkö" : {
                 "koodiarvo" : "2",
                 "nimi" : {
@@ -1197,14 +1084,14 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "10",
+              "koodiarvo" : "7",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
             "päivä" : "2021-09-04",
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "lukionpaikallinenopintojakso2019",
+            "koodiarvo" : "lukionpaikallinenopintojakso",
             "koodistoUri" : "suorituksentyyppi"
           }
         } ],
@@ -1213,20 +1100,16 @@
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
-        "tyyppi" : {
-          "koodiarvo" : "lukionmuuopinto",
-          "koodistoUri" : "suorituksentyyppi"
-        },
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "LD",
+            "koodiarvo" : "MS",
             "koodistoUri" : "lukionmuutopinnot"
           }
         },
         "osasuoritukset" : [ {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "MELD5",
+              "koodiarvo" : "ÄI1",
               "koodistoUri" : "moduulikoodistolops2021"
             },
             "laajuus" : {
@@ -1257,13 +1140,107 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli",
             "koodistoUri" : "suorituksentyyppi"
           }
         }, {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "KÄLD3",
+              "koodiarvo" : "VKAAB31",
+              "koodistoUri" : "moduulikoodistolops2021"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "pakollinen" : true,
+            "kieli" : {
+              "koodiarvo" : "TH",
+              "koodistoUri" : "kielivalikoima"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2021-09-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "RUB11",
+              "koodistoUri" : "moduulikoodistolops2021"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "pakollinen" : true,
+            "kieli" : {
+              "koodiarvo" : "RU",
+              "koodistoUri" : "kielivalikoima"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2021-09-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "lukionmuuopinto",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LD",
+            "koodistoUri" : "lukionmuutopinnot"
+          }
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "KULD2",
               "koodistoUri" : "moduulikoodistolops2021"
             },
             "laajuus" : {
@@ -1294,59 +1271,22 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli",
             "koodistoUri" : "suorituksentyyppi"
           }
-        } ]
-      }, {
+        } ],
         "tyyppi" : {
           "koodiarvo" : "lukionmuuopinto",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "MS",
+            "koodiarvo" : "TO",
             "koodistoUri" : "lukionmuutopinnot"
           }
         },
         "osasuoritukset" : [ {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "KE3",
-              "koodistoUri" : "moduulikoodistolops2021"
-            },
-            "laajuus" : {
-              "arvo" : 2.0,
-              "yksikkö" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "opintopistettä",
-                  "sv" : "studiepoäng",
-                  "en" : "ECTS credits"
-                },
-                "lyhytNimi" : {
-                  "fi" : "op",
-                  "sv" : "sp",
-                  "en" : "ECTS cr"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            },
-            "pakollinen" : true
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "10",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
-            },
-            "päivä" : "2021-09-04",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "HAI765",
@@ -1385,168 +1325,29 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "lukionpaikallinenopintojakso2019",
+            "koodiarvo" : "lukionpaikallinenopintojakso",
             "koodistoUri" : "suorituksentyyppi"
           }
-        }, {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "VKA1",
-              "koodistoUri" : "moduulikoodistolops2021"
-            },
-            "laajuus" : {
-              "arvo" : 2.0,
-              "yksikkö" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "opintopistettä",
-                  "sv" : "studiepoäng",
-                  "en" : "ECTS credits"
-                },
-                "lyhytNimi" : {
-                  "fi" : "op",
-                  "sv" : "sp",
-                  "en" : "ECTS cr"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            },
-            "pakollinen" : true,
-            "kieli" : {
-              "koodiarvo" : "RU",
-              "koodistoUri" : "kielivalikoima"
-            }
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "10",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
-            },
-            "päivä" : "2021-09-04",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        }, {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "ENA1",
-              "koodistoUri" : "moduulikoodistolops2021"
-            },
-            "laajuus" : {
-              "arvo" : 2.0,
-              "yksikkö" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "opintopistettä",
-                  "sv" : "studiepoäng",
-                  "en" : "ECTS credits"
-                },
-                "lyhytNimi" : {
-                  "fi" : "op",
-                  "sv" : "sp",
-                  "en" : "ECTS cr"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            },
-            "pakollinen" : true,
-            "kieli" : {
-              "koodiarvo" : "EN",
-              "koodistoUri" : "kielivalikoima"
-            }
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "10",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
-            },
-            "päivä" : "2021-09-04",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "lukionvaltakunnallinenmoduuli2019",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        } ]
-      }, {
+        } ],
         "tyyppi" : {
           "koodiarvo" : "lukionmuuopinto",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "TO",
-            "koodistoUri" : "lukionmuutopinnot"
-          }
-        },
-        "osasuoritukset" : [ {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "KAN200",
-              "nimi" : {
-                "fi" : "Kanteleensoiton perusteet"
-              }
-            },
-            "laajuus" : {
-              "arvo" : 1.0,
-              "yksikkö" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "opintopistettä",
-                  "sv" : "studiepoäng",
-                  "en" : "ECTS credits"
-                },
-                "lyhytNimi" : {
-                  "fi" : "op",
-                  "sv" : "sp",
-                  "en" : "ECTS cr"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            },
-            "kuvaus" : {
-              "fi" : "Itäsuomalaisen kanteleensoiton perusteet"
-            },
-            "pakollinen" : true
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "S",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
-            },
-            "päivä" : "2021-09-04",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "lukionpaikallinenopintojakso2019",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        } ]
+        }
       } ],
       "todistuksellaNäkyvätLisätiedot" : {
-        "fi" : "Osallistunut kansalliseen etäopetuskokeiluun"
+        "fi" : "Suorittanut etäopetuskokeiluna"
       },
       "tyyppi" : {
-        "koodiarvo" : "lukionoppimaara",
+        "koodiarvo" : "preiboppimaara",
         "koodistoUri" : "suorituksentyyppi"
       },
-      "ryhmä" : "AH",
-      "koulusivistyskieli" : [ {
-        "koodiarvo" : "FI",
-        "nimi" : {
-          "fi" : "suomi"
-        },
-        "koodistoUri" : "kieli"
-      } ]
+      "ryhmä" : "AH"
     } ],
     "tyyppi" : {
-      "koodiarvo" : "lukiokoulutus",
+      "koodiarvo" : "ibtutkinto",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
-    "alkamispäivä" : "2019-08-01",
-    "päättymispäivä" : "2020-05-15"
+    "alkamispäivä" : "2012-09-01",
+    "päättymispäivä" : "2016-06-04"
   } ]
 }
