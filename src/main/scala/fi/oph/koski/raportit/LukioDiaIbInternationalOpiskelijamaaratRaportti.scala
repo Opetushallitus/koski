@@ -68,7 +68,7 @@ with oppija as (select
                          from r_paatason_suoritus
                          where r_paatason_suoritus.suorituksen_tyyppi in (
                            'lukionoppiaineenoppimaara',
-                           'lukionoppiaineidenoppimaarat2019',
+                           'lukionaineopinnot',
                            'lukionoppimaara',
                            'ibtutkinto',
                            'preiboppimaara',
@@ -183,7 +183,7 @@ with oppija as (select
       count(case when ulkomainen_vaihto_opiskelija then 1 end) ulkomainen_vaihto_opiskelija
     from oppija where suorituksen_tyyppi in (
       'lukionoppiaineenoppimaara',
-      'lukionoppiaineidenoppimaarat2019'
+      'lukionaineopinnot'
     )
   group by oppilaitos_oid
 ) select

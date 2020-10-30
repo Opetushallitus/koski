@@ -13,19 +13,19 @@ class OppijaValidationLukionOppiaineidenOppimaarat2019Spec extends TutkinnonPeru
 
     "Vanha diaarinumero aiheuttaa virheen" in {
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(koulutusmoduuli = suorituksenKoulutusmoduuliVanhallaPerusteella)))) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari("""Väärä diaarinumero "60/011/2015" suorituksella lukionoppiaineidenoppimaarat2019, sallitut arvot: OPH-2263-2019"""))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari("""Väärä diaarinumero "60/011/2015" suorituksella lukionaineopinnot, sallitut arvot: OPH-2263-2019"""))
       }
     }
 
     "Väärä nuorten diaarinumero aiheuttaa virheen" in {
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(koulutusmoduuli = suorituksenKoulutusmoduuliAikuistenPerusteella)))) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari("""Väärä diaarinumero "OPH-2267-2019" suorituksella lukionoppiaineidenoppimaarat2019, sallitut arvot: OPH-2263-2019"""))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari("""Väärä diaarinumero "OPH-2267-2019" suorituksella lukionaineopinnot, sallitut arvot: OPH-2263-2019"""))
       }
     }
 
     "Väärä aikuisten diaarinumero aiheuttaa virheen" in {
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(oppimäärä = aikuistenOpetussuunnitelma, koulutusmoduuli = suorituksenKoulutusmoduuliNuortenPerusteella)))) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari("""Väärä diaarinumero "OPH-2263-2019" suorituksella lukionoppiaineidenoppimaarat2019, sallitut arvot: OPH-2267-2019"""))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari("""Väärä diaarinumero "OPH-2263-2019" suorituksella lukionaineopinnot, sallitut arvot: OPH-2267-2019"""))
       }
     }
 
@@ -43,11 +43,11 @@ class OppijaValidationLukionOppiaineidenOppimaarat2019Spec extends TutkinnonPeru
   }
 
   "Suoritukset" - {
-    "Useampi ryhmittelevä lukionoppiaineidenoppimaarat2019-suoritus aiheuttaa virheen" in {
+    "Useampi ryhmittelevä lukionaineopinnot-suoritus aiheuttaa virheen" in {
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus, oppiaineidenOppimäärienSuoritus))) {
         verifyResponseStatus(400,
           KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaSuorituksia(
-          """Opiskeluoikeudella on enemmän kuin yksi oppiaineiden oppimäärät ryhmittelevä lukionoppiaineidenoppimaarat2019-tyyppinen suoritus"""
+          """Opiskeluoikeudella on enemmän kuin yksi oppiaineiden oppimäärät ryhmittelevä lukionaineopinnot-tyyppinen suoritus"""
           )
         )
       }

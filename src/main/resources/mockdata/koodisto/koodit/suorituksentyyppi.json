@@ -754,8 +754,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 },{
-  "koodiUri" : "suorituksentyyppi_lukionoppiaineidenoppimaarat2019",
-  "koodiArvo" : "lukionoppiaineidenoppimaarat2019",
+  "koodiUri" : "suorituksentyyppi_lukionaineopinnot",
+  "koodiArvo" : "lukionaineopinnot",
   "metadata" : [ {
     "nimi" : "Lukion oppiaineet",
     "kieli" : "FI"

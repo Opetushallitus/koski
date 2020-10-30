@@ -65,8 +65,8 @@ case class LukionOppiaineidenOppimäärienSuoritus2019(
   override val osasuoritukset: Option[List[LukionOppiaineenSuoritus2019]],
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
-  @KoodistoKoodiarvo("lukionoppiaineidenoppimaarat2019")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppiaineidenoppimaarat2019", koodistoUri = "suorituksentyyppi"),
+  @KoodistoKoodiarvo("lukionaineopinnot")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionaineopinnot", koodistoUri = "suorituksentyyppi"),
   ryhmä: Option[String] = None
 ) extends LukionPäätasonSuoritus2019 with Ryhmällinen with Välisuoritus with Oppimäärällinen {
   override def tarvitseeVahvistuksen: Boolean = false
@@ -83,9 +83,9 @@ case class LukionOppiaineidenOppimäärät2019(
 
 @Description("Koodi, jota käytetään lukion oppiaineiden oppimäärien ryhmittelyssä 2019.")
 case class LukionOppiaineidenOppimäärätKoodi2019(
-  @Description("Käytä aina merkkijonoa lukionoppiaineidenoppimaarat2019")
-  @DefaultValue("lukionoppiaineidenoppimaarat2019")
-  koodiarvo: String = "lukionoppiaineidenoppimaarat2019"
+  @Description("Käytä aina merkkijonoa lukionaineopinnot")
+  @DefaultValue("lukionaineopinnot")
+  koodiarvo: String = "lukionaineopinnot"
 ) extends PaikallinenKoodiviite {
   override def nimi: LocalizedString = LocalizedString.empty
 }
