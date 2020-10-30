@@ -16,21 +16,21 @@ import scala.concurrent.duration._
 case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: OrganisaatioService) extends KoskiDatabaseMethods {
   implicit private val getResult: GetResult[AikuistenPerusopetuksenOppijamäärätRaporttiRow] = GetResult(r =>
     AikuistenPerusopetuksenOppijamäärätRaporttiRow(
-      oppilaitosOid = r.<<,
-      oppilaitosNimi = r.<<,
-      opetuskieli = r.<<,
-      oppilaidenMääräYhteensä = r.<<,
-      oppilaidenMääräVOS = r.<<,
-      oppilaidenMääräMuuKuinVOS = r.<<,
-      oppimääränSuorittajiaYhteensä = r.<<,
-      oppimääränSuorittajiaVOS = r.<<,
-      oppimääränSuorittajiaMuuKuinVOS = r.<<,
-      aineopiskelijoitaYhteensä = r.<<,
-      aineopiskelijoitaVOS = r.<<,
-      aineopiskelijoitaMuuKuinVOS = r.<<,
-      vieraskielisiäYhteensä = r.<<,
-      vieraskielisiäVOS = r.<<,
-      vieraskielisiäMuuKuinVOS = r.<<
+      oppilaitosOid = r.rs.getString("oppilaitos_oid"),
+      oppilaitosNimi = r.rs.getString("oppilaitos_nimi"),
+      opetuskieli = r.rs.getString("nimi"),
+      oppilaidenMääräYhteensä = r.rs.getInt("oppilaidenMääräYhteensä"),
+      oppilaidenMääräVOS = r.rs.getInt("oppilaidenMääräVOS"),
+      oppilaidenMääräMuuKuinVOS = r.rs.getInt("oppilaidenMääräMuuKuinVOS"),
+      oppimääränSuorittajiaYhteensä = r.rs.getInt("oppimääränSuorittajiaYhteensä"),
+      oppimääränSuorittajiaVOS = r.rs.getInt("oppimääränSuorittajiaVOS"),
+      oppimääränSuorittajiaMuuKuinVOS = r.rs.getInt("oppimääränSuorittajiaMuuKuinVOS"),
+      aineopiskelijoitaYhteensä = r.rs.getInt("aineopiskelijoitaYhteensä"),
+      aineopiskelijoitaVOS = r.rs.getInt("aineopiskelijoitaVOS"),
+      aineopiskelijoitaMuuKuinVOS = r.rs.getInt("aineopiskelijoitaMuuKuinVOS"),
+      vieraskielisiäYhteensä = r.rs.getInt("vieraskielisiäYhteensä"),
+      vieraskielisiäVOS = r.rs.getInt("vieraskielisiäVOS"),
+      vieraskielisiäMuuKuinVOS = r.rs.getInt("vieraskielisiäMuuKuinVOS")
     )
   )
 
