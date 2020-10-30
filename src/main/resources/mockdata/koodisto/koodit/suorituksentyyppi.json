@@ -679,8 +679,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_lukionvaltakunnallinenmoduuli2019",
-  "koodiArvo" : "lukionvaltakunnallinenmoduuli2019",
+  "koodiUri" : "suorituksentyyppi_lukionvaltakunnallinenmoduuli",
+  "koodiArvo" : "lukionvaltakunnallinenmoduuli",
   "metadata" : [ {
     "nimi" : "Lukion valtakunnallinen moduuli 2019",
     "kieli" : "FI"
@@ -694,8 +694,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 },{
-  "koodiUri" : "suorituksentyyppi_lukionpaikallinenopintojakso2019",
-  "koodiArvo" : "lukionpaikallinenopintojakso2019",
+  "koodiUri" : "suorituksentyyppi_lukionpaikallinenopintojakso",
+  "koodiArvo" : "lukionpaikallinenopintojakso",
   "metadata" : [ {
     "nimi" : "Lukion paikallinen opintojakso 2019",
     "kieli" : "FI"
