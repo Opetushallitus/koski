@@ -3,10 +3,9 @@ package fi.oph.koski.raportit
 import java.sql.ResultSet
 import java.time.LocalDate
 
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.util.SQL.setLocalDate
 import fi.oph.koski.raportointikanta.RaportointiDatabase
-import fi.oph.koski.util.SQL
 import slick.jdbc.GetResult
 
 object LukioOppiaineenOppimaaranKurssikertymat {
@@ -29,7 +28,7 @@ object LukioOppiaineenOppimaaranKurssikertymat {
         from r_opiskeluoikeus
         join r_paatason_suoritus on r_opiskeluoikeus.opiskeluoikeus_oid = r_paatason_suoritus.opiskeluoikeus_oid
         where
-          oppilaitos_oid in (#${SQL.toSqlListUnsafe(oppilaitosOids)})
+          oppilaitos_oid = any($oppilaitosOids)
           and r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
           and exists(
             select 1
