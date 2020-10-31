@@ -3,13 +3,13 @@ package fi.oph.koski.raportit
 import java.sql.ResultSet
 import java.time.LocalDate
 
+import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.raportointikanta.RaportointiDatabase
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.util.SQL.setLocalDate
 import slick.jdbc.GetResult
 import fi.oph.koski.raportit.AhvenanmaanKunnat.ahvenanmaanKunnat
 
-object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti {
+object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti extends DatabaseConverters {
 
   def dataSheet(oppilaitosOid: List[String], päivä: LocalDate, raportointiDatabase: RaportointiDatabase) = {
     DataSheet(

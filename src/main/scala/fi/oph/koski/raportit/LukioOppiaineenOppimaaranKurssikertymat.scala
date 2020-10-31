@@ -3,12 +3,12 @@ package fi.oph.koski.raportit
 import java.sql.ResultSet
 import java.time.LocalDate
 
+import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.util.SQL.setLocalDate
 import fi.oph.koski.raportointikanta.RaportointiDatabase
 import slick.jdbc.GetResult
 
-object LukioOppiaineenOppimaaranKurssikertymat {
+object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
   val sheetTitle = "Aineopiskelijat"
 
   def datasheet(oppilaitosOids: List[String], jaksonAlku: LocalDate, jaksonLoppu: LocalDate, raportointiDatabase: RaportointiDatabase): DataSheet = {

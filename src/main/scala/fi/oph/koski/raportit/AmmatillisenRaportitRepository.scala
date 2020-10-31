@@ -9,8 +9,6 @@ import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio
 import slick.jdbc.GetResult
 import fi.oph.koski.util.DateOrdering.sqlDateOrdering
-import fi.oph.koski.util.SQL.setLocalDate
-
 import scala.concurrent.duration._
 
 case class AmmatillisenRaportitRepository(db: DB) extends KoskiDatabaseMethods with RaportointikantaTableQueries {

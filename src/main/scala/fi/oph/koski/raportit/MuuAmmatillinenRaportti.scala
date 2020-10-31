@@ -6,7 +6,6 @@ import fi.oph.koski.db.KoskiDatabaseMethods
 
 import scala.concurrent.duration._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.util.SQL.setLocalDate
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import slick.jdbc.GetResult
 

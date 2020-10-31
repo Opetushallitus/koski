@@ -6,8 +6,6 @@ import fi.oph.koski.raportointikanta._
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import fi.oph.koski.db.KoskiDatabaseMethods
 import fi.oph.koski.util.DateOrdering.sqlDateOrdering
-import fi.oph.koski.util.SQL.setLocalDate
-
 import scala.concurrent.duration._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.raportit.RaporttiUtils.arvioituAikavälillä
