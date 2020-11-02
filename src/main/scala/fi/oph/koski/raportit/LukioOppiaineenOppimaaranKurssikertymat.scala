@@ -137,7 +137,8 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
       tunnustettujaRahoituksenPiirissa_pakollisia_ja_valtakunnallisiaSyventavia = rs.getInt("tunnustut_pakolliset_ja_valtakunnalliset_syventavat_rahoitus"),
       tunnustettuja_rahoituksenPiirissa_pakollisia = rs.getInt("pakollisia_tunnustettuja_rahoituksen_piirissa"),
       tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva = rs.getInt("valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa"),
-      suoritetutTaiRahoitetut_muutaKauttaRahoitetut = rs.getInt("suoritetut_tai_rahoitetut_muuta_kautta_rahoitetut")
+      suoritetutTaiRahoitetut_muutaKauttaRahoitetut = rs.getInt("suoritetut_tai_rahoitetut_muuta_kautta_rahoitetut"),
+      suoritetutTaiRahoitetut_rahoitusmuotoEiTiedossa = rs.getInt("suoritetut_tai_rahoitetut_rahoitusmuoto_ei_tiedossa")
     )
   })
 
@@ -160,7 +161,8 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
     "tunnustettujaRahoituksenPiirissa_pakollisia_ja_valtakunnallisiaSyventavia" -> Column("Tunnustetuista pakollisista ja valtakunnallisista syventävistä kursseista rahoituksen piirissä", comment = Some("Kaikki pakolliset ja valtakunnalliset syventävät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja jotka on merkitty sekä tunnustetuiksi että rahoituksen piirissä oleviksi.")),
     "tunnustettuja_rahoituksenPiirissa_pakollisia" -> Column("Tunnustetuista pakollisista kursseista rahoituksen piirissä", comment = Some("Kaikki pakolliset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja jotka on merkitty sekä tunnustetuiksi että rahoituksen piirissä oleviksi.")),
     "tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva" -> Column("Tunnustetuista valtakunnallisista syventävistä kursseista rahoituksen piirissä", comment = Some("Kaikki valtakunnalliset syventävät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja jotka on merkitty sekä tunnustetuiksi että rahoituksen piirissä oleviksi.")),
-    "suoritetutTaiRahoitetut_muutaKauttaRahoitetut" -> Column("Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit - muuta kautta rahoitetut", comment = Some("Aineopintojen suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut pakolliset tai valtakunnalliset syventävät kurssit, joiden arviointipäivä osuu muuta kautta rahoitetun läsnäolojakson sisälle. Kurssien tunnistetiedot löytyvät välilehdeltä ”Muuta kautta rah.”"))
+    "suoritetutTaiRahoitetut_muutaKauttaRahoitetut" -> Column("Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit - muuta kautta rahoitetut", comment = Some("Aineopintojen suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut pakolliset tai valtakunnalliset syventävät kurssit, joiden arviointipäivä osuu muuta kautta rahoitetun läsnäolojakson sisälle. Kurssien tunnistetiedot löytyvät välilehdeltä ”Muuta kautta rah.”")),
+    "suoritetutTaiRahoitetut_rahoitusmuotoEiTiedossa" -> Column("Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit, joilla ei rahoitustietoa", comment = Some("Aineopintojen suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut pakolliset tai valtakunnalliset syventävät kurssit, joiden arviointipäivä osuus sellaiselle tilajaksolle, jolta ei löydy tietoa rahoitusmuodosta. Kurssien tunnistetiedot löytyvät välilehdeltä ”Ei rahoitusmuotoa”."))
   )
 }
 
@@ -183,5 +185,6 @@ case class LukioKurssikertymaAineopiskelijaRow(
   tunnustettujaRahoituksenPiirissa_pakollisia_ja_valtakunnallisiaSyventavia: Int,
   tunnustettuja_rahoituksenPiirissa_pakollisia: Int,
   tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva: Int,
-  suoritetutTaiRahoitetut_muutaKauttaRahoitetut: Int
+  suoritetutTaiRahoitetut_muutaKauttaRahoitetut: Int,
+  suoritetutTaiRahoitetut_rahoitusmuotoEiTiedossa: Int
 )
