@@ -14,12 +14,34 @@ object LukioMuutaKauttaRahoitetut {
   def dataSheet(oppilaitosOids: List[String], jaksonAlku: LocalDate, jaksonLoppu: LocalDate, raportointiDatabase: RaportointiDatabase): DataSheet = {
     DataSheet(
       sheetTitle,
-      rows = raportointiDatabase.runDbSync(queryMuutaKauttaRahoitetut(oppilaitosOids, SQL.toSqlDate(jaksonAlku), SQL.toSqlDate(jaksonLoppu))),
-      columnSettings
+      rows = raportointiDatabase.runDbSync(LukioOppiaineRahoitusmuodonMukaan.queryMuutaKauttaRahoitetut(
+        oppilaitosOids,
+        SQL.toSqlDate(jaksonAlku),
+        SQL.toSqlDate(jaksonLoppu),
+        Some("6"))),
+      LukioOppiaineRahoitusmuodonMukaan.columnSettings
     )
   }
+}
 
-  def queryMuutaKauttaRahoitetut(oppilaitosOids: List[String], aikaisintaan: Date, viimeistaan: Date) = {
+object LukioRahoitusmuotoEiTiedossa {
+  val sheetTitle = "Ei rahoitusmuotoa"
+
+  def dataSheet(oppilaitosOids: List[String], jaksonAlku: LocalDate, jaksonLoppu: LocalDate, raportointiDatabase: RaportointiDatabase): DataSheet = {
+    DataSheet(
+      sheetTitle,
+      rows = raportointiDatabase.runDbSync(LukioOppiaineRahoitusmuodonMukaan.queryMuutaKauttaRahoitetut(
+        oppilaitosOids,
+        SQL.toSqlDate(jaksonAlku),
+        SQL.toSqlDate(jaksonLoppu),
+        None)),
+      LukioOppiaineRahoitusmuodonMukaan.columnSettings
+    )
+  }
+}
+
+object LukioOppiaineRahoitusmuodonMukaan {
+  def queryMuutaKauttaRahoitetut(oppilaitosOids: List[String], aikaisintaan: Date, viimeistaan: Date, rahoitusmuoto: Option[String]) = {
     sql"""
       with muuta_kautta_rahoitetut_lasna_jaksot as (
           select
@@ -35,7 +57,7 @@ object LukioMuutaKauttaRahoitetut {
             and r_opiskeluoikeus_aikajakso.tila = 'lasna'
             and r_opiskeluoikeus_aikajakso.alku <= $viimeistaan
             and r_opiskeluoikeus_aikajakso.loppu >= $aikaisintaan
-            and r_opiskeluoikeus_aikajakso.opintojen_rahoitus = '6'
+            and r_opiskeluoikeus_aikajakso.opintojen_rahoitus #${SQL.toNullableEqUnsafe(rahoitusmuoto)}
       ) select
           r_osasuoritus.opiskeluoikeus_oid,
           koulutusmoduuli_koodiarvo,
