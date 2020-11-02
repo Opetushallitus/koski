@@ -5,7 +5,7 @@ import java.nio.file.{Files, Paths}
 
 import com.typesafe.config.ConfigFactory
 import fi.oph.koski.cache.JMXCacheManager
-import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.config.{AppConfig, Environment, KoskiApplication}
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.log.{LogConfiguration, Logging, MaskedSlf4jRequestLogWriter}
 import io.prometheus.client.exporter.MetricsServlet
@@ -23,6 +23,7 @@ import org.eclipse.jetty.webapp.WebAppContext
 
 object JettyLauncher extends App with Logging {
   lazy val globalPort = System.getProperty("koski.port","7021").toInt
+  if (Environment.usesAwsAppConfig) AppConfig.writeConfiguration
   try {
     val application = new KoskiApplication(KoskiApplication.defaultConfig, new JMXCacheManager)
     new JettyLauncher(globalPort, application).start.join
