@@ -39,7 +39,7 @@ object ExamplesPerusopetuksenLisaopetus {
         suoritus(oppiaine("LI")).copy(arviointi = arviointi(7), korotus = true, yksilöllistettyOppimäärä = true),
         MuuPerusopetuksenLisäopetuksenSuoritus(
           MuuPerusopetuksenLisäopetuksenKoulutusmoduuli(PaikallinenKoodi("xxx", "Monialainen oppimiskokonaisuus"), "Tehtiin ryhmätyönä webbisivusto, jossa kerrotaan tupakoinnin haitoista"),
-          arviointi("S")
+          arviointi("S", kuvaus = None)
         )
       )
     )
@@ -65,7 +65,7 @@ object ExamplesPerusopetuksenLisaopetus {
   private def toimintaAlueenSuoritus(alue: String) = {
     PerusopetuksenLisäopetuksenToiminta_AlueenSuoritus(
       koulutusmoduuli = new PerusopetuksenToiminta_Alue(Koodistokoodiviite(alue, "perusopetuksentoimintaalue")),
-      arviointi = arviointi("S")
+      arviointi = arviointi("S", kuvaus = None)
     )
   }
 

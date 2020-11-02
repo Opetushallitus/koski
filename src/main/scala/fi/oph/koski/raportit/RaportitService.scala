@@ -17,6 +17,7 @@ class RaportitService(application: KoskiApplication) {
   private val topksAmmatillinenRaportti = TOPKSAmmatillinenRaporttiBuilder(raportointiDatabase.db)
   private val esiopetuksenOppijamäärätRaportti = EsiopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val aikuistenPerusopetuksenOppijamäärätRaportti = AikuistenPerusopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
+  private val aikuistenPerusopetuksenKurssikertymäRaportti = AikuistenPerusopetuksenKurssikertymäRaportti(raportointiDatabase.db, application.organisaatioService)
   private val perusopetuksenOppijamäärätRaportti = PerusopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val perusopetuksenLisäopetuksenOppijamäärätRaportti = PerusopetuksenLisäopetusOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
 
@@ -135,6 +136,21 @@ class RaportitService(application: KoskiApplication) {
       sheets = Seq(esiopetuksenOppijamäärätRaportti.build(oppilaitosOids, Date.valueOf(request.paiva))),
       workbookSettings = WorkbookSettings("Esiopetuksen oppijamäärien raportti", Some(request.password)),
       filename = s"esiopetuksen_oppijamäärät_raportti-${request.paiva}.xlsx",
+      downloadToken = request.downloadToken
+    )
+  }
+
+  def aikuistenperusopetuksenKurssikertymä(request: AikajaksoRaporttiRequest)(implicit u: KoskiSession) = {
+    val oppilaitosOids = request.oppilaitosOid match {
+      case application.organisaatioService.ostopalveluRootOid =>
+        application.organisaatioService.omatOstopalveluOrganisaatiot.map(_.oid)
+      case oid =>
+        application.organisaatioService.organisaationAlaisetOrganisaatiot(oid)
+    }
+    OppilaitosRaporttiResponse(
+      sheets = Seq(aikuistenPerusopetuksenKurssikertymäRaportti.build(oppilaitosOids, Date.valueOf(request.alku), Date.valueOf(request.loppu))),
+      workbookSettings = WorkbookSettings("Aikuisten perusopetuksen kurssikertymien raportti", Some(request.password)),
+      filename = s"aikuisten_perusopetuksen_kurssikertymät_raportti-${request.alku.toString.replaceAll("-", "")}-${request.loppu.toString.replaceAll("-", "")}.xlsx",
       downloadToken = request.downloadToken
     )
   }

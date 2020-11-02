@@ -442,14 +442,14 @@ case class PerusopetuksenKäyttäytymisenArviointi(
 }
 
 object PerusopetuksenOppiaineenArviointi {
-  def apply(arvosana: String, kuvaus: Option[LocalizedString] = None) = new SanallinenPerusopetuksenOppiaineenArviointi(
+  def apply(arvosana: String, kuvaus: Option[LocalizedString]) = new SanallinenPerusopetuksenOppiaineenArviointi(
     arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"),
     päivä = None,
     kuvaus = kuvaus
   )
-  def apply(arvosana: Int) = new NumeerinenPerusopetuksenOppiaineenArviointi(
+  def apply(arvosana: Int, arviointipäivä: Option[LocalDate] = None) = new NumeerinenPerusopetuksenOppiaineenArviointi(
     arvosana = Koodistokoodiviite(koodiarvo = arvosana.toString, koodistoUri = "arviointiasteikkoyleissivistava"),
-    päivä = None
+    päivä = arviointipäivä
   )
 }
 

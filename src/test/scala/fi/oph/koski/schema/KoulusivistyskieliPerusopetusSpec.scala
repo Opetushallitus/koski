@@ -53,7 +53,7 @@ class KoulusivistyskieliPerusopetusSpec extends FreeSpec with LocalJettyHttpSpec
     }
   }
 
-  def äidinkieliJaKirjallisuus(kieli: String, arvosana: String, pakollinen: Boolean = true) = suoritus(äidinkieli(kieli).copy(pakollinen = pakollinen)).copy(arviointi = arviointi(arvosana))
+  def äidinkieliJaKirjallisuus(kieli: String, arvosana: String, pakollinen: Boolean = true) = suoritus(äidinkieli(kieli).copy(pakollinen = pakollinen)).copy(arviointi = arviointi(arvosana, kuvaus = None))
 
   def oppimääränOpiskeluoikeusOppiaineilla(oppiaineet: OppiaineenTaiToiminta_AlueenSuoritus*) = defaultOpiskeluoikeus.copy(
     suoritukset = List(perusopetuksenOppimääränSuoritus.copy(

@@ -1,5 +1,6 @@
 package fi.oph.koski.documentation
 
+import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
@@ -179,7 +180,7 @@ object ExamplesAikuistenPerusopetus {
         arviointi = arviointi(9),
         osasuoritukset = Some(List(
           kurssinSuoritus2017("ÄI1").copy(tunnustettu = Some(OsaamisenTunnustaminen(None, "Osoittanut osaamisen käytännössä."))),
-          kurssinSuoritus2017("ÄI2"),
+          kurssinSuoritus2017("ÄI2").copy(tunnustettu = Some(OsaamisenTunnustaminen(None, "Osoittanut osaamisen käytännössä.", true))),
           kurssinSuoritus2017("ÄI3", laajuus = LaajuusVuosiviikkotunneissa(1)),
           kurssinSuoritus2017("ÄI4").copy(arviointi = arviointi(4)),
           kurssinSuoritusPaikallinen("ÄI10", "Paikallinen äidinkielen kurssi")
@@ -215,7 +216,7 @@ object ExamplesAikuistenPerusopetus {
 
   def kurssinSuoritus2017(koodiarvo: String, laajuus: LaajuusVuosiviikkotunneissaTaiKursseissa = LaajuusKursseissa(1)) = AikuistenPerusopetuksenKurssinSuoritus(
     ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017(Koodistokoodiviite(koodiarvo, "aikuistenperusopetuksenpaattovaiheenkurssit2017"), Some(laajuus)),
-    arviointi = arviointi(9)
+    arviointi = arviointi(9, arviointipäivä = Some(LocalDate.parse("2016-01-09")))
   )
 
   def kurssinSuoritusPaikallinen(koodiarvo: String, kuvaus: String, laajuus: LaajuusVuosiviikkotunneissaTaiKursseissa = LaajuusKursseissa(1)) = AikuistenPerusopetuksenKurssinSuoritus(
@@ -258,7 +259,7 @@ object ExamplesAikuistenPerusopetus {
   def alkuvaiheenOppiaineet = Some(List(
     alkuvaiheenOppiaineenSuoritus(AikuistenPerusopetuksenAlkuvaiheenÄidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = "AI1", koodistoUri = "oppiaineaidinkielijakirjallisuus"))).copy(arviointi = arviointi(9), osasuoritukset = Some(List(
       alkuvaiheenKurssinSuoritus("LÄI1").copy(tunnustettu = Some(OsaamisenTunnustaminen(None, "Osoittanut osaamisen käytännössä."))),
-      alkuvaiheenKurssinSuoritus("LÄI2"),
+      alkuvaiheenKurssinSuoritus("LÄI2").copy(tunnustettu = Some(OsaamisenTunnustaminen(None, "Osoittanut osaamisen käytännössä.", true))),
       alkuvaiheenKurssinSuoritus("LÄI3"),
       alkuvaiheenKurssinSuoritus("LÄI4"),
       alkuvaiheenKurssinSuoritus("LÄI5"),
@@ -300,7 +301,7 @@ object ExamplesAikuistenPerusopetus {
       alkuvaiheenKurssinSuoritus("ATE1")
     ))),
     // Opinto-ohjaus
-    alkuvaiheenOppiaineenSuoritus(alkuvaiheenOppiaine("OP")).copy(arviointi = arviointi("S"))
+    alkuvaiheenOppiaineenSuoritus(alkuvaiheenOppiaine("OP")).copy(arviointi = arviointi("S", kuvaus = None))
   ))
 
   def alkuvaiheenOppiaine(aine: String) = MuuAikuistenPerusopetuksenAlkuvaiheenOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "aikuistenperusopetuksenalkuvaiheenoppiaineet", koodiarvo = aine))
@@ -313,7 +314,7 @@ object ExamplesAikuistenPerusopetus {
 
   def alkuvaiheenKurssinSuoritus(koodiarvo: String, laajuus: LaajuusVuosiviikkotunneissaTaiKursseissa = LaajuusKursseissa(1)) = AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
     ValtakunnallinenAikuistenPerusopetuksenAlkuvaiheenKurssi2017(Koodistokoodiviite(koodiarvo, "aikuistenperusopetuksenalkuvaiheenkurssit2017"), Some(laajuus)),
-    arviointi = arviointi(9)
+    arviointi = arviointi(arvosana = 9, arviointipäivä = Some(LocalDate.parse("2016-01-09")))
   )
 
   def alkuvaiheenPaikallisenKurssinSuoritus(koodiarvo: String, nimi: String, laajuus: LaajuusVuosiviikkotunneissaTaiKursseissa = LaajuusKursseissa(1)) = AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
