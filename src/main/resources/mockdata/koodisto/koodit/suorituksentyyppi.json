@@ -679,8 +679,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_lukionvaltakunnallinenmoduuli2019",
-  "koodiArvo" : "lukionvaltakunnallinenmoduuli2019",
+  "koodiUri" : "suorituksentyyppi_lukionvaltakunnallinenmoduuli",
+  "koodiArvo" : "lukionvaltakunnallinenmoduuli",
   "metadata" : [ {
     "nimi" : "Lukion valtakunnallinen moduuli 2019",
     "kieli" : "FI"
@@ -694,8 +694,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 },{
-  "koodiUri" : "suorituksentyyppi_lukionpaikallinenopintojakso2019",
-  "koodiArvo" : "lukionpaikallinenopintojakso2019",
+  "koodiUri" : "suorituksentyyppi_lukionpaikallinenopintojakso",
+  "koodiArvo" : "lukionpaikallinenopintojakso",
   "metadata" : [ {
     "nimi" : "Lukion paikallinen opintojakso 2019",
     "kieli" : "FI"
@@ -724,21 +724,6 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_lukionmuuopinto2019",
-  "koodiArvo" : "lukionmuuopinto2019",
-  "metadata" : [ {
-    "nimi" : "Lukion muu opinto 2019",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Annan studieprestation i gymnasiet 2019",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Other studies in general upper secondary education 2019",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-},{
   "koodiUri" : "suorituksentyyppi_lukionoppiaine",
   "koodiArvo" : "lukionoppiaine",
   "metadata" : [ {
@@ -754,21 +739,6 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_lukionoppiaine2019",
-  "koodiArvo" : "lukionoppiaine2019",
-  "metadata" : [ {
-    "nimi" : "Lukion oppiaine 2019",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Läroämne i gymnasiet 2019",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "General upper secondary education subject 2019",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-},{
   "koodiUri" : "suorituksentyyppi_lukionoppiaineenoppimaara",
   "koodiArvo" : "lukionoppiaineenoppimaara",
   "metadata" : [ {
@@ -784,8 +754,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 },{
-  "koodiUri" : "suorituksentyyppi_lukionoppiaineidenoppimaarat2019",
-  "koodiArvo" : "lukionoppiaineidenoppimaarat2019",
+  "koodiUri" : "suorituksentyyppi_lukionaineopinnot",
+  "koodiArvo" : "lukionaineopinnot",
   "metadata" : [ {
     "nimi" : "Lukion oppiaineet",
     "kieli" : "FI"
@@ -809,21 +779,6 @@
     "kieli" : "SV"
   }, {
     "nimi" : "General upper secondary education  syllabus",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_lukionoppimaara2019",
-  "koodiArvo" : "lukionoppimaara2019",
-  "metadata" : [ {
-    "nimi" : "Lukion oppimäärä 2019 opetussuunnitelman mukaan",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Gymnasiets lärokurs 2019 TODO-TODO-TODO",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "General upper secondary education  syllabus  2019 TODO-TODO-TODO",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -1189,51 +1144,6 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_preibkurssi2019",
-  "koodiArvo" : "preibkurssi2019",
-  "metadata" : [ {
-    "nimi" : "Pre-IB-kurssi 2019",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Pre-IB-kurs 2019",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Pre-IB upper secondary education course 2019",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_preiblukionvaltakunnallinenmoduuli2019",
-  "koodiArvo" : "preiblukionvaltakunnallinenmoduuli2019",
-  "metadata" : [ {
-    "nimi" : "Pre-IB lukion valtakunnallinen moduuli 2019",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Pre-IB lukion valtakunnallinen moduuli 2019",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Pre-IB lukion valtakunnallinen moduuli 2019",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_preiblukionpaikallinenopintojakso2019",
-  "koodiArvo" : "preiblukionpaikallinenopintojakso2019",
-  "metadata" : [ {
-    "nimi" : "Pre-IB lukion paikallinen opintojakso 2019",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Pre-IB lukion paikallinen opintojakso 2019",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Pre-IB lukion paikallinen opintojakso 2019",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
   "koodiUri" : "suorituksentyyppi_preiboppiaine",
   "koodiArvo" : "preiboppiaine",
   "metadata" : [ {
@@ -1244,51 +1154,6 @@
     "kieli" : "SV"
   }, {
     "nimi" : "Pre-IB upper secondary education subject",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_preibiboppiaine2019",
-  "koodiArvo" : "preibiboppiaine2019",
-  "metadata" : [ {
-    "nimi" : "Pre-IB IB-oppiaine 2019",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Pre-IB IB-oppiaine 2019",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Pre-IB IB-oppiaine 2019",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_preiblukionoppiaine2019",
-  "koodiArvo" : "preiblukionoppiaine2019",
-  "metadata" : [ {
-    "nimi" : "Pre-IB lukion oppiaine 2019",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Pre-IB lukion oppiaine 2019",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Pre-IB lukion oppiaine 2019",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_preiblukionmuuopinto2019",
-  "koodiArvo" : "preiblukionmuuopinto2019",
-  "metadata" : [ {
-    "nimi" : "Pre-IB lukion muut opinnot 2019",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Pre-IB lukion muut opinnot 2019",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Pre-IB lukion muut opinnot 2019",
     "kieli" : "EN"
   } ],
   "versio" : 1,

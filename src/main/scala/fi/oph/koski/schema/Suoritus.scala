@@ -79,8 +79,7 @@ object Suoritus {
 object SuorituksenTyyppi {
   type SuorituksenTyyppi = Koodistokoodiviite
 
-  val lukionoppiaineidenoppimaarat2019 = apply("lukionoppiaineidenoppimaarat2019")
-  val lukionoppimaara2019 = apply("lukionoppimaara2019")
+  val lukionaineopinnot = apply("lukionaineopinnot")
   val perusopetuksenoppimaara = apply("perusopetuksenoppimaara")
   val perusopetuksenvuosiluokka = apply("perusopetuksenvuosiluokka")
   val nuortenperusopetuksenoppiaineenoppimaara = apply("nuortenperusopetuksenoppiaineenoppimaara")

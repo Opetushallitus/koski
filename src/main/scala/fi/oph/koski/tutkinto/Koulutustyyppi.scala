@@ -53,7 +53,7 @@ object Koulutustyyppi {
         Set(valma)
       case SuorituksenTyyppi.telma =>
         Set(telma)
-      case SuorituksenTyyppi.lukionoppimaara | SuorituksenTyyppi.lukionoppiaineenoppimaara | SuorituksenTyyppi.lukionoppimaara2019 | SuorituksenTyyppi.lukionoppiaineidenoppimaarat2019 =>
+      case SuorituksenTyyppi.lukionoppimaara | SuorituksenTyyppi.lukionoppiaineenoppimaara | SuorituksenTyyppi.lukionaineopinnot =>
         lukionKoulutustyypit.toSet
       case _ => Set.empty[Koulutustyyppi]
     }

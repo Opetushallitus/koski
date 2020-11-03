@@ -23,6 +23,10 @@ trait KoulutusmoduuliPakollinenLaajuus extends Koulutusmoduuli {
   override def getLaajuus: Option[Laajuus] = Some(laajuus)
 }
 
+trait KoulutusmoduuliPakollinenLaajuusOpintopisteissä extends KoulutusmoduuliPakollinenLaajuus {
+  def laajuus: LaajuusOpintopisteissä
+}
+
 trait KoulutusmoduuliValinnainenLaajuus extends Koulutusmoduuli {
   def laajuus: Option[Laajuus]
   override def getLaajuus: Option[Laajuus] = laajuus

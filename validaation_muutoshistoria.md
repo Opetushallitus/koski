@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 29.10.2020
+- Pre-IB-opinnoissa lukion opetussuunnitelman 2019 mukaan validoidaan samat asiat kuin lukiossa.
+
 ## 14.10.2020
 - DIA-opiskeluoikeuden tiloilla `lasna` ja `valmistunut` tulee siirtää `opintojenRahoitus`
 - Muille DIA-opiskeluoikeuden tiloille ei voi siirtää `opintojenRahoitus`-kenttää

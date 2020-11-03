@@ -4,6 +4,7 @@ import fi.oph.koski.schema.annotation.{ComplexObject, FlattenInUI, KoodistoKoodi
 import fi.oph.scalaschema.annotation._
 
 @Title("Pre-IB-opintojen suoritus 2019")
+@OnlyWhen("koulutusmoduuli/tunniste/koodiarvo", "preiboppimaara2019")
 case class PreIBSuoritus2019(
   @Title("Koulutus")
   koulutusmoduuli: PreIBKoulutusmoduuli2019 = PreIBKoulutusmoduuli2019(),
@@ -17,8 +18,8 @@ case class PreIBSuoritus2019(
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[PreIBSuorituksenOsasuoritus2019]],
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
-  @KoodistoKoodiarvo("preiboppimaara2019")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("preiboppimaara2019", koodistoUri = "suorituksentyyppi"),
+  @KoodistoKoodiarvo("preiboppimaara")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("preiboppimaara", koodistoUri = "suorituksentyyppi"),
   ryhmä: Option[String] = None
 ) extends IBPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen with Todistus with Arvioinniton with PuhviKokeellinen2019 with SuullisenKielitaidonKokeellinen2019 with Ryhmällinen
 
@@ -39,19 +40,33 @@ trait PreIBOppiaineenSuoritus2019 extends IBSuoritus2019 with PreIBSuorituksenOs
 
 @Description("IB-oppiaineen suoritus Pre-IB-opinnoissa 2019")
 @Title("IB-oppiaineen Pre-IB-suoritus 2019")
+@OnlyWhen("koulutusmoduuli/tunniste/koodistoUri", "oppiaineetib")
 case class IBOppiaineenPreIBSuoritus2019(
   @Title("Oppiaine")
   koulutusmoduuli: PreIBIBOppiaine2019,
-  arviointi: Option[List[LukionOppiaineenArviointi2019]] = None, // TODO: mitä arviointeja tässä pitäisi voida käyttää? Vanhassa Pre IB:ssä nämä IB-lukion omat oppiaineet arvioidaan lukion oppiaineina, vaikka arvioidaan eri tavalla ollessaan varsinaisissa IB-opinnoissa...
+  arviointi: Option[List[LukionOppiaineenArviointi2019]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
   @Title("Kurssit")
   override val osasuoritukset: Option[List[PreIBKurssinSuoritus2019]],
-  @KoodistoKoodiarvo("preibiboppiaine2019")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preibiboppiaine2019", koodistoUri = "suorituksentyyppi")
+  @KoodistoKoodiarvo("preiboppiaine")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preiboppiaine", koodistoUri = "suorituksentyyppi")
 ) extends PreIBOppiaineenSuoritus2019
 
-// TODO: Tälle sama kanta-trait kuin LukionOppiaineenSuoritus2019-luokalla, ja käytä sitä traittia käleissä ja yhteisissä validaatioissa
+trait PreIBLukionOsasuoritus2019 extends PreIBSuorituksenOsasuoritus2019 {
+  @Title("Moduulit ja paikalliset opintojaksot")
+  override def osasuoritukset: Option[List[PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019]] = None
+
+  override def osasuoritusLista: List[PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019] = {
+    osasuoritukset.toList.flatten
+  }
+
+  final def withOsasuoritukset(oss: Option[List[Suoritus]]): PreIBLukionOsasuoritus2019 = {
+    import mojave._
+    shapeless.lens[PreIBLukionOsasuoritus2019].field[Option[List[Suoritus]]]("osasuoritukset").set(this)(oss)
+  }
+}
+
 @Description("Lukion oppiaineen suoritus Pre-IB-opinnoissa 2019")
 @Title("Lukion oppiaineen Pre-IB-suoritus 2019")
 case class LukionOppiaineenPreIBSuoritus2019(
@@ -60,46 +75,40 @@ case class LukionOppiaineenPreIBSuoritus2019(
   arviointi: Option[List[LukionOppiaineenArviointi2019]] = None,
   suoritettuErityisenäTutkintona: Boolean = false,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @Description("Oppiaineeseen kuuluvat osasuoritukset")
-  @Title("Osasuoritukset")
   override val osasuoritukset: Option[List[PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019]],
-  @KoodistoKoodiarvo("preiblukionoppiaine2019")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preiblukionoppiaine2019", koodistoUri = "suorituksentyyppi")
-) extends PreIBOppiaineenSuoritus2019 with Vahvistukseton with MahdollisestiSuorituskielellinen with SuoritettavissaErityisenäTutkintona2019
+  @KoodistoKoodiarvo("lukionoppiaine")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiaine", koodistoUri = "suorituksentyyppi")
+) extends PreIBOppiaineenSuoritus2019 with PreIBLukionOsasuoritus2019 with Vahvistukseton with MahdollisestiSuorituskielellinen with SuoritettavissaErityisenäTutkintona2019
 
-// TODO: Tälle sama kanta-trait kuin MuidenLukioOpintojenSuoritus2019-luokalla, ja käytä sitä traittia käleissä ja yhteisissä validaatioissa
 @Description("Muiden lukio-opintojen suoritus Pre-IB-opinnoissa 2019")
 @Title("Muiden lukio-opintojen PreIB-suoritus 2019")
 case class MuidenLukioOpintojenPreIBSuoritus2019(
   @Title("Oppiaine")
   koulutusmoduuli: PreIBMuutSuorituksetTaiVastaavat2019,
-  @Description("Oppiaineeseen kuuluvat osasuoritukset")
-  @Title("Osasuoritukset")
   override val osasuoritukset: Option[List[PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019]],
-  @KoodistoKoodiarvo("preiblukionmuuopinto2019")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preiblukionmuuopinto2019", koodistoUri = "suorituksentyyppi")
-) extends IBSuoritus2019 with PreIBSuorituksenOsasuoritus2019 with Vahvistukseton with Arvioinniton {
+  @KoodistoKoodiarvo("lukionmuuopinto")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionmuuopinto", koodistoUri = "suorituksentyyppi")
+) extends IBSuoritus2019 with PreIBLukionOsasuoritus2019 with Vahvistukseton with Arvioinniton {
   override def suorituskieli: Option[Koodistokoodiviite] = None
 }
 
 trait PreIBMuutSuorituksetTaiVastaavat2019 extends Koulutusmoduuli
 
 trait PreIBIBOppiaine2019 extends Koulutusmoduuli
-trait PreIBLukionOppiaine2019 extends Koulutusmoduuli
+trait PreIBLukionOppiaine2019 extends Koulutusmoduuli with Valinnaisuus
 
 @Title("Pre-IB-kurssin suoritus 2019")
 case class PreIBKurssinSuoritus2019(
   @Description("Pre-IB-kurssin tunnistetiedot 2019")
   koulutusmoduuli: PreIBKurssi2019,
-  arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]] = None, // TODO: mikä tässä pitäisi olla arviointina? Vanhassa Pre-IB:ssä oli lukion kurssin arviointi, mutta onko tässä uuden lukion osalta järkeä?
+  arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @KoodistoKoodiarvo("preibkurssi2019")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preibkurssi2019", koodistoUri = "suorituksentyyppi")
+  @KoodistoKoodiarvo("preibkurssi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preibkurssi", koodistoUri = "suorituksentyyppi")
 ) extends IBSuoritus with KurssinSuoritus
 
 trait PreIBKurssi2019 extends Koulutusmoduuli
 
-// TODO: Yhteinen kanta-trait LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019 kanssa?
 trait PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019 extends IBSuoritus with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu with Vahvistukseton {
   def koulutusmoduuli: PreIBLukionModuuliTaiPaikallinenOpintojakso2019
   @FlattenInUI
@@ -111,19 +120,18 @@ trait PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019 extends IBSuorit
 trait PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019 extends PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019
 trait PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019 extends PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019
 
-// TODO: Tälle sama kanta-trait kuin LukionModuulinSuoritus2019-traitilla, ja käytä sitä traittia käleissä ja yhteisissä validaatioissa
 trait PreIBLukionModuulinSuoritus2019 extends ValtakunnallisenModuulinSuoritus with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu {
   @Description("Lukion moduulin tunnistetiedot")
   def koulutusmoduuli: PreIBLukionModuuli2019
   def arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]]
   def tunnustettu: Option[OsaamisenTunnustaminen]
   def suorituskieli: Option[Koodistokoodiviite]
-  @KoodistoKoodiarvo("preiblukionvaltakunnallinenmoduuli2019")
+  @KoodistoKoodiarvo("lukionvaltakunnallinenmoduuli")
   def tyyppi: Koodistokoodiviite
 }
 
 @Title("Pre-IB lukion moduulin suoritus oppiaineissa 2019")
-@OnlyWhen("../../tyyppi/koodiarvo", "preiblukionoppiaine2019")
+@OnlyWhen("../../tyyppi/koodiarvo", "lukionoppiaine")
 case class PreIBLukionModuulinSuoritusOppiaineissa2019(
   @Description("Pre-IB lukion moduulin tunnistetiedot oppiaineissa 2019")
   @Title("Osasuoritus")
@@ -132,11 +140,11 @@ case class PreIBLukionModuulinSuoritusOppiaineissa2019(
   arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]] = None,
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preiblukionvaltakunnallinenmoduuli2019", koodistoUri = "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionvaltakunnallinenmoduuli", koodistoUri = "suorituksentyyppi")
 ) extends PreIBLukionModuulinSuoritus2019 with PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019
 
 @Title("Pre-IB lukion moduulin suoritus muissa opinnoissa 2019")
-@OnlyWhen("../../tyyppi/koodiarvo", "preiblukionmuuopinto2019")
+@OnlyWhen("../../tyyppi/koodiarvo", "lukionmuuopinto")
 case class PreIBLukionModuulinSuoritusMuissaOpinnoissa2019(
   @Description("Pre-IB lukion moduulin tunnistetiedot muissa opinnoissa 2019")
   @Title("Osasuoritus")
@@ -145,7 +153,7 @@ case class PreIBLukionModuulinSuoritusMuissaOpinnoissa2019(
   arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]] = None,
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preiblukionvaltakunnallinenmoduuli2019", koodistoUri = "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionvaltakunnallinenmoduuli", koodistoUri = "suorituksentyyppi")
 ) extends PreIBLukionModuulinSuoritus2019 with PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019
 
 @Title("Pre-IB lukion paikallisen opintojakson suoritus 2019")
@@ -157,13 +165,13 @@ case class PreIBLukionPaikallisenOpintojaksonSuoritus2019(
   arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]] = None,
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @KoodistoKoodiarvo("preiblukionpaikallinenopintojakso2019")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preiblukionpaikallinenopintojakso2019", koodistoUri = "suorituksentyyppi")
+  @KoodistoKoodiarvo("lukionpaikallinenopintojakso")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionpaikallinenopintojakso", koodistoUri = "suorituksentyyppi")
 ) extends PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019 with PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019
 
-trait PreIBLukionModuuliTaiPaikallinenOpintojakso2019 extends Koulutusmoduuli
+trait PreIBLukionModuuliTaiPaikallinenOpintojakso2019 extends Koulutusmoduuli with KoulutusmoduuliPakollinenLaajuusOpintopisteissä with Valinnaisuus
 
-trait PreIBLukionModuuli2019 extends PreIBLukionModuuliTaiPaikallinenOpintojakso2019
+trait PreIBLukionModuuli2019 extends PreIBLukionModuuliTaiPaikallinenOpintojakso2019 with KoodistostaLöytyväKoulutusmoduuli
 
 trait PreIBLukionModuuliOppiaineissa2019 extends PreIBLukionModuuli2019
 trait PreIBLukionModuuliMuissaOpinnoissa2019 extends PreIBLukionModuuli2019

@@ -1,3 +1,8 @@
+## 29.10.2020
+- Lisätty tietomalli Pre-IB-opinnoille lukion opetussuunnitelman 2019 mukaan
+- Poistettu Lukion opetussuunnitelman 2019 suorituksentyyppikoodistosta 2019 jälkiliite. Eri vuosien opetussuunnitelmat
+erotellaan vain koulutusmoduulin sisällöllä.
+
 ## 6.10.2020
 - Lukion 2019 opetussuunnitelmassa suullisen kielitaidon kokeen koodisto vaihdettu kieli-koodistosta
 kielivalikoima-koodistoon
