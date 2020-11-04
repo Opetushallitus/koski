@@ -104,6 +104,66 @@ describe('Omat tiedot - lukio', function() {
         })
       })
     })
+
+    describe('Lukiosta valmistunut 2019', function () {
+      before(authentication.logout, etusivu.openMobilePage, etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('250605A518Y'), wait.until(omattiedot.isVisible))
+
+      describe('Kun opiskeluoikeus avataan', function () {
+        before(opinnot.valitseOmatTiedotOpiskeluoikeus('Lukion oppimäärä (2019—2020, valmistunut)'))
+
+        it('Näytetään taulukko oppiaineista', function () {
+          expect(extractAsText(S('table.omattiedot-suoritukset'))).to.equal(
+            'Oppiaine Arvosana\n' +
+            '+\n' +
+            'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\n' +
+            '(6 opintopistettä) 9\n' +
+            '+\n' +
+            'Matematiikka, pitkä oppimäärä\n' +
+            '(6 opintopistettä) 9\n' +
+            '+\n' +
+            'Opinto-ohjaus\n' +
+            '(4 opintopistettä) H\n' +
+            '+\n' +
+            'Uskonto/Elämänkatsomustieto\n' +
+            '(1.5 opintopistettä) 4\n' +
+            '+\n' +
+            'Äidinkielenomainen kieli, ruotsi\n' +
+            '(1 opintopistettä) 9\n' +
+            '+\n' +
+            'A-kieli, espanja\n' +
+            '(2 opintopistettä) 9\n' +
+            '+\n' +
+            'Fysiikka\n' +
+            '(87 opintopistettä) 10\n' +
+            'Kemia 4\n' +
+            '+\n' +
+            'Tanssi ja liike, valinnainen *\n' +
+            '(52 opintopistettä) 8\n' +
+            '+\n' +
+            'Lukiodiplomit -\n' +
+            '+\n' +
+            'Muut suoritukset -\n' +
+            '+\n' +
+            'Teemaopinnot -'
+          )
+        })
+
+        describe('Kun oppiainetta klikataan', function () {
+          before(opinnot.valitseOmatTiedotOpiskeluoikeudenLukionSuoritus('Lukion oppimäärä (2019—2020, valmistunut)', 'Äidinkieli ja kirjallisuus'))
+
+          it('Näytetään oppiaineen kurssit', function () {
+            expect(extractAsText(S('table.omattiedot-suoritukset tr.oppiaine-kurssit table.kurssilista-mobile'))).to.equal(
+              'Kurssi Arvosana Lisätiedot\n' +
+              'ÄI1 8 Avaa\n' +
+              'ÄI2 8 Avaa\n' +
+              'ÄI3 8 Avaa\n' +
+              '(Keskiarvo 8,0)'
+            )
+          })
+        })
+      })
+    })
+
   })
 
   describe('Työpöytänäkymä', function () {
@@ -293,6 +353,91 @@ describe('Omat tiedot - lukio', function() {
             'Oman äidinkielen opinnot\n' +
             '(1 kurssia) S\n' +
             'OA1 *\n' +
+            'S'
+          )
+        })
+      })
+    })
+
+    describe('Lukiosta valmistunut 2019', function () {
+      before(authentication.logout, etusivu.openPage)
+      before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('250605A518Y'), wait.until(omattiedot.isVisible))
+
+      it('Opiskeluoikeus näytetään listassa', function () {
+        expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()).to.contain('Lukion oppimäärä (2019—2020, valmistunut)')
+      })
+
+      describe('Kun opiskeluoikeus avataan', function () {
+        before(opinnot.valitseOmatTiedotOpiskeluoikeus('Lukion oppimäärä (2019—2020, valmistunut)'))
+        it('Näytetään taulukko oppiaineista sekä kurssisuorituksista', function () {
+          expect(extractAsText(S('table.omattiedot-suoritukset'))).to.equal(
+            'Oppiaine Arvosana\n' +
+            'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\n' +
+            '(6 opintopistettä) 9\n' +
+            'ÄI1\n' +
+            '8 ÄI2\n' +
+            '8 ÄI3\n' +
+            '8 Keskiarvo 8,0\n' +
+            '(8,0)\n' +
+            'Matematiikka, pitkä oppimäärä\n' +
+            '(6 opintopistettä) 9\n' +
+            'MAB2\n' +
+            '8 MAB3\n' +
+            '8 MAB4\n' +
+            '9 Keskiarvo 8,3\n' +
+            '(8,3)\n' +
+            'Opinto-ohjaus\n' +
+            '(4 opintopistettä) H\n' +
+            'OP1\n' +
+            'H OP2\n' +
+            'S\n' +
+            'Uskonto/Elämänkatsomustieto\n' +
+            '(1.5 opintopistettä) 4\n' +
+            'UE1\n' +
+            '4 Keskiarvo 4,0\n' +
+            '(4,0)\n' +
+            'Äidinkielenomainen kieli, ruotsi\n' +
+            '(1 opintopistettä) 9\n' +
+            'RUA4\n' +
+            '7 Keskiarvo 7,0\n' +
+            '(7,0)\n' +
+            'A-kieli, espanja\n' +
+            '(2 opintopistettä) 9\n' +
+            'VKA1\n' +
+            '7 VKA8\n' +
+            '7 Keskiarvo 7,0\n' +
+            '(7,0)\n' +
+            'Fysiikka\n' +
+            '(87 opintopistettä) 10\n' +
+            'FY1\n' +
+            '10 FY2\n' +
+            '10 FY3\n' +
+            '10 FY123 *\n' +
+            '10 FY124 *\n' +
+            'S Keskiarvo 10,0\n' +
+            '(10,0)\n' +
+            'Kemia 4\n' +
+            'Tanssi ja liike, valinnainen\n' +
+            '*\n' +
+            '(52 opintopistettä) 8\n' +
+            'ITT234 *\n' +
+            '10 ITT235 *\n' +
+            '10 Keskiarvo 10,0\n' +
+            '(10,0)\n' +
+            'Lukiodiplomit -\n' +
+            'MELD5\n' +
+            '7 KÄLD3\n' +
+            '9 Keskiarvo 8,0\n' +
+            '(8,0)\n' +
+            'Muut suoritukset -\n' +
+            'KE3\n' +
+            '10 HAI765 *\n' +
+            'S VKA1\n' +
+            '10 ENA1\n' +
+            '10 Keskiarvo 10,0\n' +
+            '(10,0)\n' +
+            'Teemaopinnot -\n' +
+            'KAN200 *\n' +
             'S'
           )
         })
