@@ -146,7 +146,7 @@ class RaportitService(application: KoskiApplication) {
         application.organisaatioService.organisaationAlaisetOrganisaatiot(oid)
     }
     OppilaitosRaporttiResponse(
-      sheets = Seq(aikuistenPerusopetuksenKurssikertymäRaportti.build(oppilaitosOids, Date.valueOf(request.alku), Date.valueOf(request.loppu))),
+      sheets = Seq(aikuistenPerusopetuksenKurssikertymäRaportti.build(oppilaitosOids, request.alku, request.loppu)),
       workbookSettings = WorkbookSettings("Aikuisten perusopetuksen kurssikertymien raportti", Some(request.password)),
       filename = s"aikuisten_perusopetuksen_kurssikertymät_raportti-${request.alku.toString.replaceAll("-", "")}-${request.loppu.toString.replaceAll("-", "")}.xlsx",
       downloadToken = request.downloadToken
