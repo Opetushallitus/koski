@@ -134,8 +134,8 @@ object RaportointiDatabaseSchema {
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
     val oppilaitosOid = column[Option[String]]("oppilaitos_oid", StringIdentifierType)
     val koulutustoimijaOid = column[Option[String]]("koulutustoimija_oid", StringIdentifierType)
-    val alku = column[Date]("alku")
-    val loppu = column[Date]("loppu")
+    val alku = column[LocalDate]("alku")
+    val loppu = column[LocalDate]("loppu")
 
     def * = (opiskeluoikeusOid, oppilaitosOid, koulutustoimijaOid, alku, loppu) <>
       (ROrganisaatioHistoriaRow.tupled, ROrganisaatioHistoriaRow.unapply)
@@ -437,8 +437,8 @@ case class ROrganisaatioHistoriaRow(
   opiskeluoikeusOid: String,
   oppilaitosOid: Option[String],
   koulutustoimijaOid: Option[String],
-  alku: Date,
-  loppu: Date
+  alku: LocalDate,
+  loppu: LocalDate
 )
 
 case class ROpiskeluoikeusAikajaksoRow(

@@ -1,13 +1,12 @@
 package fi.oph.koski.raportointikanta
 
-import java.sql.Date
 import java.time.LocalDate
 
 import scalaz._
 import syntax.std.list._
 
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, OpiskeluoikeudenOrganisaatiohistoria}
-import fi.oph.koski.util.DateOrdering.sqlDateOrdering
+import fi.oph.koski.util.DateOrdering.localDateOrdering
 
 object OrganisaatioHistoriaRowBuilder {
   def buildOrganisaatioHistoriaRows(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Seq[ROrganisaatioHistoriaRow] = {
@@ -28,13 +27,13 @@ object OrganisaatioHistoriaRowBuilder {
       val loppu = latterOf(organisaatioHistoria.muutospäivä.minusDays(1), previousMuutospäivä)
       val row = ROrganisaatioHistoriaRow(
         opiskeluoikeusOid = opiskeluoikeus.oid.get,
-        alku = Date.valueOf(previousMuutospäivä),
-        loppu = Date.valueOf(loppu),
+        alku = previousMuutospäivä,
+        loppu = loppu,
         oppilaitosOid = organisaatioHistoria.oppilaitos.map(_.oid),
         koulutustoimijaOid = organisaatioHistoria.koulutustoimija.map(_.oid)
       )
       (organisaatioHistoria.muutospäivä, row)
     })._2
-    organisaatiohistoriat.groupBy(_.alku).values.map(_.last).toList.sortBy(_.alku)(sqlDateOrdering)
+    organisaatiohistoriat.groupBy(_.alku).values.map(_.last).toList.sortBy(_.alku)(localDateOrdering)
   }
 }

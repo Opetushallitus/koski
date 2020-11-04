@@ -206,7 +206,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
   val defaultYnjeviExpectedKasiLuokkaRow = PerusopetusRow(
     opiskeluoikeusOid = "",
     oppilaitoksenNimi = "Jyväskylän normaalikoulu",
-    organisaatioHistoria = None,
+    oppilaitosRaportointipäivänä = None,
     lähdejärjestelmä = None,
     lähdejärjestelmänId = None,
     yksiloity = true,

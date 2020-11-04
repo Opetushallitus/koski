@@ -1,6 +1,5 @@
 package fi.oph.koski.raportit
 
-import java.sql.Date
 import java.time.LocalDate
 
 import fi.oph.koski.raportointikanta._
@@ -12,6 +11,7 @@ import scala.concurrent.duration._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema.Organisaatio
+import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
 import org.json4s.jackson.JsonMethods
 import slick.jdbc.GetResult
 
@@ -69,7 +69,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
           osasuoritukset = osasuoritukset.getOrElse(päätasonSuoritus.päätasonSuoritusId, Nil),
           voimassaolevatVuosiluokat = voimassaOlevatVuosiluokat.getOrElse(oo.opiskeluoikeusOid, Nil),
           luokka = luokat.get(oo.opiskeluoikeusOid),
-          organisaatiohistoria = organisaatiohistoriat.getOrElse(oo.opiskeluoikeusOid, Nil).head
+          organisaatiohistoriaResult = organisaatiohistoriat.getOrElse(oo.opiskeluoikeusOid, Nil)
         )
       }
     }
@@ -78,8 +78,8 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
   private def fetchOrganisaatiohistoriat(päivä: LocalDate, opiskeluoikeusOids: Seq[String]) = {
     implicit val getResult: GetResult[OrganisaatiohistoriaResult] = GetResult(r => OrganisaatiohistoriaResult(
       opiskeluoikeusOid = r.rs.getString("opiskeluoikeus_oid"),
-      alku = r.rs.getDate("alku"),
-      loppu = r.rs.getDate("loppu"),
+      alku = r.rs.getObject("alku", classOf[LocalDate]),
+      loppu = r.rs.getObject("loppu", classOf[LocalDate]),
       oppilaitosOid = r.rs.getString("oppilaitos_oid"),
       oppilaitosNimi = r.rs.getString("oppilaitos_nimi"),
       koulutustoimijaOid = r.rs.getString("koulutustoimija_oid"),
@@ -302,13 +302,17 @@ case class VuosiluokanTiedot(
 
 case class OrganisaatiohistoriaResult(
   opiskeluoikeusOid: String,
-  alku: Date,
-  loppu: Date,
+  alku: LocalDate,
+  loppu: LocalDate,
   oppilaitosOid: String,
   oppilaitosNimi: String,
   koulutustoimijaOid: String,
   koulutustoimijaNimi: String
-)
+) {
+  override def toString: String = (
+    s"${finnishDateFormat.format(alku)}-${finnishDateFormat.format(loppu)}: ${oppilaitosNimi} (${koulutustoimijaNimi})"
+  )
+}
 
 case class PerusopetuksenRaporttiRows(
   opiskeluoikeus: ROpiskeluoikeusRow,
@@ -318,5 +322,5 @@ case class PerusopetuksenRaporttiRows(
   osasuoritukset: Seq[ROsasuoritusRow],
   voimassaolevatVuosiluokat: Seq[String],
   luokka: Option[String],
-  organisaatiohistoria: OrganisaatiohistoriaResult
+  organisaatiohistoriaResult: Seq[OrganisaatiohistoriaResult]
 )
