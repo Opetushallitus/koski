@@ -111,6 +111,16 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
         ressunMuutaKauttaRahoitetut.length shouldBe 1
       }
     }
+    "Rahoitusmuoto ei tiedossa -välilehti" - {
+      "Listan pituus sama kuin aineopiskelijoiden välilehdellä oleva laskuri" in {
+        ressunRahoitusmuotoEiTiedossa.length shouldBe 0
+      }
+    }
+    "Arviointipäivä opiskeluoikeuden ulkopuolella -välilehti" - {
+      "Listan pituus sama kuin aineopiskelijoiden välilehdellä oleva laskuri" in {
+        ressunOpiskeluoikeudenUlkopuolisetArvionnit.length shouldBe 1
+      }
+    }
   }
 
   lazy val raportti = loadRaportti
@@ -127,9 +137,21 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
     }
   }.get.find(_.oppilaitos == "Ressun lukio").get
 
-  lazy val ressunMuutaKauttaRahoitetut: Seq[MuutaKauttaRahoitetutRow] = raportti.collectFirst {
+  lazy val ressunMuutaKauttaRahoitetut: Seq[LukioKurssinRahoitusmuotoRow] = raportti.collectFirst {
     case d: DataSheet if d.title == LukioMuutaKauttaRahoitetut.sheetTitle => d.rows.collect {
-      case r: MuutaKauttaRahoitetutRow => r
+      case r: LukioKurssinRahoitusmuotoRow => r
+    }
+  }.get
+
+  lazy val ressunRahoitusmuotoEiTiedossa: Seq[LukioKurssinRahoitusmuotoRow] = raportti.collectFirst {
+    case d: DataSheet if d.title == LukioRahoitusmuotoEiTiedossa.sheetTitle => d.rows.collect {
+      case r: LukioKurssinRahoitusmuotoRow => r
+    }
+  }.get
+
+  lazy val ressunOpiskeluoikeudenUlkopuolisetArvionnit: Seq[LukioOppiaineOpiskeluoikeudenUlkopuolisetRow] = raportti.collectFirst {
+    case d: DataSheet if d.title == LukioOppiaineOpiskeluoikeudenUlkopuoliset.sheetTitle => d.rows.collect {
+      case r: LukioOppiaineOpiskeluoikeudenUlkopuolisetRow => r
     }
   }.get
 

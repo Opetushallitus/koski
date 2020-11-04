@@ -3,9 +3,9 @@ package fi.oph.koski.raportit
 import java.sql.Date
 import java.time.LocalDate
 
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
+import fi.oph.koski.db.DatabaseConverters
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.raportointikanta.RaportointiDatabase
-import fi.oph.koski.util.SQL
 import slick.jdbc.GetResult
 
 object LukioMuutaKauttaRahoitetut {
@@ -16,8 +16,8 @@ object LukioMuutaKauttaRahoitetut {
       sheetTitle,
       rows = raportointiDatabase.runDbSync(LukioOppiaineRahoitusmuodonMukaan.queryMuutaKauttaRahoitetut(
         oppilaitosOids,
-        SQL.toSqlDate(jaksonAlku),
-        SQL.toSqlDate(jaksonLoppu),
+        jaksonAlku,
+        jaksonLoppu,
         Some("6"))),
       LukioOppiaineRahoitusmuodonMukaan.columnSettings
     )
@@ -32,16 +32,16 @@ object LukioRahoitusmuotoEiTiedossa {
       sheetTitle,
       rows = raportointiDatabase.runDbSync(LukioOppiaineRahoitusmuodonMukaan.queryMuutaKauttaRahoitetut(
         oppilaitosOids,
-        SQL.toSqlDate(jaksonAlku),
-        SQL.toSqlDate(jaksonLoppu),
+        jaksonAlku,
+        jaksonLoppu,
         None)),
       LukioOppiaineRahoitusmuodonMukaan.columnSettings
     )
   }
 }
 
-object LukioOppiaineRahoitusmuodonMukaan {
-  def queryMuutaKauttaRahoitetut(oppilaitosOids: List[String], aikaisintaan: Date, viimeistaan: Date, rahoitusmuoto: Option[String]) = {
+object LukioOppiaineRahoitusmuodonMukaan extends DatabaseConverters {
+  def queryMuutaKauttaRahoitetut(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate, rahoitusmuoto: Option[String]) = {
     sql"""
       with muuta_kautta_rahoitetut_lasna_jaksot as (
           select
@@ -52,12 +52,15 @@ object LukioOppiaineRahoitusmuodonMukaan {
             join r_opiskeluoikeus_aikajakso on r_opiskeluoikeus.opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
             join r_paatason_suoritus on r_opiskeluoikeus.opiskeluoikeus_oid = r_paatason_suoritus.opiskeluoikeus_oid
           where
-            oppilaitos_oid in (#${SQL.toSqlListUnsafe(oppilaitosOids)})
+            oppilaitos_oid = any($oppilaitosOids)
             and r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
             and r_opiskeluoikeus_aikajakso.tila = 'lasna'
             and r_opiskeluoikeus_aikajakso.alku <= $viimeistaan
             and r_opiskeluoikeus_aikajakso.loppu >= $aikaisintaan
-            and r_opiskeluoikeus_aikajakso.opintojen_rahoitus #${SQL.toNullableEqUnsafe(rahoitusmuoto)}
+            and r_opiskeluoikeus_aikajakso.opintojen_rahoitus #${rahoitusmuoto match {
+              case Some(rahoitusmuoto) => s"= '$rahoitusmuoto'"
+              case None => "is null"
+            }}
       ) select
           r_osasuoritus.opiskeluoikeus_oid,
           koulutusmoduuli_koodiarvo,
@@ -70,12 +73,12 @@ object LukioOppiaineRahoitusmuodonMukaan {
         where koulutusmoduuli_paikallinen = false
               and (tunnustettu = false or tunnustettu_rahoituksen_piirissa)
               and suorituksen_tyyppi = 'lukionkurssi';
-    """.as[MuutaKauttaRahoitetutRow]
+    """.as[LukioKurssinRahoitusmuotoRow]
   }
 
-  implicit private val getResult: GetResult[MuutaKauttaRahoitetutRow] = GetResult(r => {
+  implicit private val getResult: GetResult[LukioKurssinRahoitusmuotoRow] = GetResult(r => {
     val rs = r.rs
-    MuutaKauttaRahoitetutRow(
+    LukioKurssinRahoitusmuotoRow(
       opiskeluoikeusOid = rs.getString("opiskeluoikeus_oid"),
       koulutusmoduuliKoodiarvo = rs.getString("koulutusmoduuli_koodiarvo"),
       koulutusmoduuliNimi = rs.getString("koulutusmoduuli_nimi")
@@ -89,7 +92,7 @@ object LukioOppiaineRahoitusmuodonMukaan {
   )
 }
 
-case class MuutaKauttaRahoitetutRow(
+case class LukioKurssinRahoitusmuotoRow(
   opiskeluoikeusOid: String,
   koulutusmoduuliKoodiarvo: String,
   koulutusmoduuliNimi: String,

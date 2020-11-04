@@ -36,7 +36,7 @@ object LukioKurssikertymaRaporttiFixtures {
 
   lazy val dateMuutaKauttaRahoitettu = date.plusDays(10)
   lazy val dateEronnut = date.plusDays(20)
-  lazy val aineopiskelija = LukionOpiskeluoikeus(
+  lazy val aineopiskelijaEronnut = LukionOpiskeluoikeus(
     tila = LukionOpiskeluoikeudenTila(
       List(
         LukionOpiskeluoikeusjakso(alku = date, tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
@@ -71,6 +71,29 @@ object LukioKurssikertymaRaporttiFixtures {
         suorituskieli = sloveeni,
         toimipiste = ressunLukio,
         osasuoritukset = Some(filosofianKurssit)
+      ),
+    )
+  )
+
+  lazy val dateValmistunut = dateMuutaKauttaRahoitettu
+  lazy val aineopiskelijaValmistunut = LukionOpiskeluoikeus(
+    tila = LukionOpiskeluoikeudenTila(
+      List(
+        LukionOpiskeluoikeusjakso(alku = date, tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+        LukionOpiskeluoikeusjakso(alku = dateValmistunut, tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+      )
+    ),
+    versionumero = None,
+    lähdejärjestelmänId = None,
+    oppilaitos = Some(ressunLukio),
+    suoritukset = List(
+      LukionOppiaineenOppimääränSuoritus2015(
+        koulutusmoduuli = lukionOppiaine("FI", diaarinumero = Some("60/011/2015")),
+        suorituskieli = sloveeni,
+        toimipiste = ressunLukio,
+        vahvistus = vahvistusPaikkakunnalla(päivä = dateValmistunut),
+        arviointi = arviointi("8"),
+        osasuoritukset = Some(filosofianKurssit),
       ),
     )
   )

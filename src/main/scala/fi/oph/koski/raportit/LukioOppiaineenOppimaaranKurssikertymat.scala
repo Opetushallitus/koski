@@ -77,7 +77,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
             on r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid = r_osasuoritus.opiskeluoikeus_oid
             and r_opiskeluoikeus_aikajakso.alku <= r_osasuoritus.arviointi_paiva
             and r_opiskeluoikeus_aikajakso.loppu >= r_osasuoritus.arviointi_paiva
-          where r_opiskeluoikeus.oppilaitos_oid in (#${SQL.toSqlListUnsafe(oppilaitosOids)})
+          where r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOids)
             -- lukion aineoppimäärä
             and r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
             and r_osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
@@ -101,7 +101,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
           on r_paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id
         join r_opiskeluoikeus
           on r_opiskeluoikeus.opiskeluoikeus_oid = r_osasuoritus.opiskeluoikeus_oid
-        where r_opiskeluoikeus.oppilaitos_oid in (#${SQL.toSqlListUnsafe(oppilaitosOids)})
+        where r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOids)
           -- lukion aineoppimäärä
           and r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
           and r_osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
@@ -109,7 +109,13 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
           and r_osasuoritus.arviointi_paiva >= $aikaisintaan
           and r_osasuoritus.arviointi_paiva <= $viimeistaan
           -- mutta kurssi jää opiskeluoikeuden ulkopuolelle
-          and (r_osasuoritus.arviointi_paiva < r_opiskeluoikeus.alkamispaiva or r_osasuoritus.arviointi_paiva > r_opiskeluoikeus.paattymispaiva)
+          and (
+            r_osasuoritus.arviointi_paiva < r_opiskeluoikeus.alkamispaiva
+            or (
+              r_osasuoritus.arviointi_paiva > r_opiskeluoikeus.paattymispaiva
+              and r_opiskeluoikeus.viimeisin_tila = 'valmistunut'
+            )
+          )
           -- pakolliset tai valtakunnalliset syventävät kurssit, jotka ovat joko suoritettuja tai tunnustettuja ja rahoituksen piirissä olevia
           and (
             koulutusmoduuli_kurssin_tyyppi = 'pakollinen'
@@ -169,7 +175,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
     "tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva" -> Column("Tunnustetuista valtakunnallisista syventävistä kursseista rahoituksen piirissä", comment = Some("Kaikki valtakunnalliset syventävät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja jotka on merkitty sekä tunnustetuiksi että rahoituksen piirissä oleviksi.")),
     "suoritetutTaiRahoitetut_muutaKauttaRahoitetut" -> Column("Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit - muuta kautta rahoitetut", comment = Some("Aineopintojen suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut pakolliset tai valtakunnalliset syventävät kurssit, joiden arviointipäivä osuu muuta kautta rahoitetun läsnäolojakson sisälle. Kurssien tunnistetiedot löytyvät välilehdeltä ”Muuta kautta rah.”")),
     "suoritetutTaiRahoitetut_rahoitusmuotoEiTiedossa" -> Column("Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit, joilla ei rahoitustietoa", comment = Some("Aineopintojen suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut pakolliset tai valtakunnalliset syventävät kurssit, joiden arviointipäivä osuus sellaiselle tilajaksolle, jolta ei löydy tietoa rahoitusmuodosta. Kurssien tunnistetiedot löytyvät välilehdeltä ”Ei rahoitusmuotoa”.")),
-    "suoritetutTaiRahoitetut_eiOpiskeluoikeudenSisalla" -> Column("Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit – arviointipäivä ei opiskeluoikeuden sisällä", comment = Some("Aineopintojen suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut pakolliset tai valtakunnalliset syventävät kurssit, joiden arviointipäivä ei opiskeluoikeuden voimassaolon (alkupäivä - päättymispäivä) sisällä. Kurssien tunnistetiedot löytyvät välilehdeltä ”Opiskeluoikeuden ulkop.”."))
+    "suoritetutTaiRahoitetut_eiOpiskeluoikeudenSisalla" -> Column("Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit – arviointipäivä ei opiskeluoikeuden sisällä", comment = Some("Aineopintojen suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut pakolliset tai valtakunnalliset syventävät kurssit, joiden arviointipäivä on aikaisemmin kuin opiskeluoikeuden alkamispäivä, joiden arviointipäivä on myöhemmin kuin ”Valmistunut”-tilan päivä. Kurssien tunnistetiedot löytyvät välilehdeltä ”Opiskeluoikeuden ulkop.”.")),
   )
 }
 
