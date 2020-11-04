@@ -1,16 +1,14 @@
 package fi.oph.koski.raportit
 
-import java.sql.Date
 import java.time.LocalDate
 
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import fi.oph.koski.db.KoskiDatabaseMethods
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio
 import slick.jdbc.GetResult
 import fi.oph.koski.util.DateOrdering.sqlDateOrdering
-
 import scala.concurrent.duration._
 
 case class AmmatillisenRaportitRepository(db: DB) extends KoskiDatabaseMethods with RaportointikantaTableQueries {
@@ -24,7 +22,7 @@ case class AmmatillisenRaportitRepository(db: DB) extends KoskiDatabaseMethods w
   private type OppijaOid = String
 
   def suoritustiedot(oppilaitos: Organisaatio.Oid, koulutusmuoto: String, suorituksenTyyppi: String, alku: LocalDate, loppu: LocalDate) = {
-    val opiskeluoikeusAikajaksotPäätasonSuoritukset = opiskeluoikeusAikajaksotPäätasonSuorituksetQuery(oppilaitos, koulutusmuoto, suorituksenTyyppi, Date.valueOf(alku), Date.valueOf(loppu))
+    val opiskeluoikeusAikajaksotPäätasonSuoritukset = opiskeluoikeusAikajaksotPäätasonSuorituksetQuery(oppilaitos, koulutusmuoto, suorituksenTyyppi, alku, loppu)
     val masterOpiskeluoikeusOids = opiskeluoikeusAikajaksotPäätasonSuoritukset.map(_._1)
 
     val sisältyvätOpiskeluoikeusAikajaksotPäätasonSuoritukset = sisältyvätOpiskeluoikeusAikajaksotPäätasonSuorituksetQuery(masterOpiskeluoikeusOids)
@@ -46,7 +44,7 @@ case class AmmatillisenRaportitRepository(db: DB) extends KoskiDatabaseMethods w
         (
           opiskeluoikeus,
           henkilöt(opiskeluoikeus.oppijaOid),
-          aikajaksot.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty).map(_.truncateToDates(Date.valueOf(alku), Date.valueOf(loppu))).sortBy(_.alku)(sqlDateOrdering),
+          aikajaksot.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty).map(_.truncateToDates(alku, loppu)).sortBy(_.alku)(sqlDateOrdering),
           päätasonSuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty),
           sisältyvätOpiskeluoikeudetGrouped.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty),
           osasuoritukset.getOrElse(päätasonSuoritus.päätasonSuoritusId, Seq.empty)
@@ -55,13 +53,12 @@ case class AmmatillisenRaportitRepository(db: DB) extends KoskiDatabaseMethods w
     }
 }
 
-  private def opiskeluoikeusAikajaksotPäätasonSuorituksetQuery(oppilaitosOid: String, koulutusmuoto: String, suorituksenTyyppi: String, alku: Date, loppu: Date) = {
-    import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+  private def opiskeluoikeusAikajaksotPäätasonSuorituksetQuery(oppilaitosOid: String, koulutusmuoto: String, suorituksenTyyppi: String, alku: LocalDate, loppu: LocalDate) = {
     implicit val getResult = GetResult[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])](r => (r.nextString(), r.nextArray(), r.nextArray()))
     runDbSync(opiskeluoikeusAikajaksotPäätasonSuorituksetSQL(oppilaitosOid, koulutusmuoto, suorituksenTyyppi, alku, loppu).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])], timeout = defaultTimeout)
   }
 
-  private def opiskeluoikeusAikajaksotPäätasonSuorituksetSQL(oppilaitosOid: String, koulutusmuoto: String, suorituksenTyyppi: String, alku: Date, loppu: Date) = {
+  private def opiskeluoikeusAikajaksotPäätasonSuorituksetSQL(oppilaitosOid: String, koulutusmuoto: String, suorituksenTyyppi: String, alku: LocalDate, loppu: LocalDate) = {
     sql"""
       select
         oo.opiskeluoikeus_oid,
@@ -82,7 +79,6 @@ case class AmmatillisenRaportitRepository(db: DB) extends KoskiDatabaseMethods w
   }
 
   private def sisältyvätOpiskeluoikeusAikajaksotPäätasonSuorituksetQuery(masterOids: Seq[OpiskeluoikeusOid]) = {
-    import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
     implicit val getResult = GetResult[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])](r => (r.nextString(), r.nextArray(), r.nextArray()))
     runDbSync(sisältyvätOpiskeluoikeusAikajaksotPäätasonSuorituksetSQL(masterOids).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])], timeout = defaultTimeout)
   }

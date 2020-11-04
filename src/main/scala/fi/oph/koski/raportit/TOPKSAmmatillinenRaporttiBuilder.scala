@@ -1,6 +1,5 @@
 package fi.oph.koski.raportit
 
-import java.sql.Date
 import java.time.LocalDate
 
 import fi.oph.koski.db.KoskiDatabaseMethods
@@ -39,7 +38,7 @@ case class TOPKSAmmatillinenRaporttiBuilder(db: DB) extends KoskiDatabaseMethods
     )
   )
 
-  def build(oppilaitosOid: String, alku: Date, loppu: Date): DataSheet = {
+  def build(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): DataSheet = {
     val rows = runDbSync(queryTOPKSSuoritukset(oppilaitosOid, alku, loppu).as[TOPKSAmmatillinenRaporttiRow], timeout = 5.minutes)
     DataSheet(
       title = "topksammatillinen",
@@ -48,7 +47,7 @@ case class TOPKSAmmatillinenRaporttiBuilder(db: DB) extends KoskiDatabaseMethods
     )
   }
 
-  private def queryTOPKSSuoritukset(oppilaitosOid: String, alku: Date, loppu: Date) =sql"""
+  private def queryTOPKSSuoritukset(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate) =sql"""
     with oppilaitoksen_opiskeluoikeudet_ja_paatason_suoritukset as (
       select
         oo.opiskeluoikeus_oid,

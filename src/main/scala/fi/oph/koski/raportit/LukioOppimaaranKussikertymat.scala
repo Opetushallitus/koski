@@ -1,25 +1,25 @@
 package fi.oph.koski.raportit
 
-import java.sql.{Date, ResultSet}
+import java.sql.ResultSet
 import java.time.LocalDate
 
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.DatabaseConverters
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.raportointikanta.RaportointiDatabase
-import fi.oph.koski.util.SQL
 import slick.jdbc.GetResult
 
-object LukioOppimaaranKussikertymat {
+object LukioOppimaaranKussikertymat extends DatabaseConverters {
   val sheetTitle = "Oppimaara"
 
   def dataSheet(oppilaitosOids: List[String], jaksonAlku: LocalDate, jaksonLoppu: LocalDate, raportointiDatabase: RaportointiDatabase): DataSheet = {
     DataSheet(
       sheetTitle,
-      rows = raportointiDatabase.runDbSync(queryOppimaara(oppilaitosOids, SQL.toSqlDate(jaksonAlku), SQL.toSqlDate(jaksonLoppu))),
+      rows = raportointiDatabase.runDbSync(queryOppimaara(oppilaitosOids, jaksonAlku, jaksonLoppu)),
       columnSettings
     )
   }
 
-  def queryOppimaara(oppilaitosOids: List[String], aikaisintaan: Date, viimeistaan: Date) = {
+  def queryOppimaara(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate) = {
     sql"""
           with paatason_suoritus as (
             select
@@ -28,7 +28,7 @@ object LukioOppimaaranKussikertymat {
             from r_opiskeluoikeus
             join r_paatason_suoritus on r_opiskeluoikeus.opiskeluoikeus_oid = r_paatason_suoritus.opiskeluoikeus_oid
             where
-              oppilaitos_oid in (#${SQL.toSqlListUnsafe(oppilaitosOids)})
+              oppilaitos_oid = any($oppilaitosOids)
               and r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppimaara'
               and exists (
                 select 1 from r_opiskeluoikeus_aikajakso

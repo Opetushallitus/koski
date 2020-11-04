@@ -1,7 +1,5 @@
 package fi.oph.koski.raportit
 
-import java.sql.Date
-
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.KoskiSession
 
@@ -111,14 +109,14 @@ class RaportitService(application: KoskiApplication) {
   }
 
   def muuAmmatillinen(request: AikajaksoRaporttiRequest) = OppilaitosRaporttiResponse(
-    sheets = Seq(muuammatillinenRaportti.build(request.oppilaitosOid, Date.valueOf(request.alku), Date.valueOf(request.loppu))),
+    sheets = Seq(muuammatillinenRaportti.build(request.oppilaitosOid, request.alku, request.loppu)),
     workbookSettings = WorkbookSettings("Muu ammatillinen suoritustietojen tarkistus", Some(request.password)),
     filename = s"muu_ammatillinen_koski_raportti_${request.oppilaitosOid}_${request.alku.toString.replaceAll("-","")}-${request.loppu.toString.replaceAll("-","")}.xlsx",
     downloadToken = request.downloadToken
   )
 
   def topksAmmatillinen(request: AikajaksoRaporttiRequest) = OppilaitosRaporttiResponse(
-    sheets = Seq(topksAmmatillinenRaportti.build(request.oppilaitosOid, Date.valueOf(request.alku), Date.valueOf(request.loppu))),
+    sheets = Seq(topksAmmatillinenRaportti.build(request.oppilaitosOid, request.alku, request.loppu)),
     workbookSettings = WorkbookSettings("TOPKS ammatillinen suoritustietojen tarkistus", Some(request.password)),
     filename = s"topks_ammatillinen_koski_raportti_${request.oppilaitosOid}_${request.alku.toString.replaceAll("-","")}-${request.loppu.toString.replaceAll("-","")}.xlsx",
     downloadToken = request.downloadToken
@@ -133,7 +131,7 @@ class RaportitService(application: KoskiApplication) {
     }
 
     OppilaitosRaporttiResponse(
-      sheets = Seq(esiopetuksenOppijamäärätRaportti.build(oppilaitosOids, Date.valueOf(request.paiva))),
+      sheets = Seq(esiopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva)),
       workbookSettings = WorkbookSettings("Esiopetuksen oppijamäärien raportti", Some(request.password)),
       filename = s"esiopetuksen_oppijamäärät_raportti-${request.paiva}.xlsx",
       downloadToken = request.downloadToken
@@ -148,7 +146,7 @@ class RaportitService(application: KoskiApplication) {
         application.organisaatioService.organisaationAlaisetOrganisaatiot(oid)
     }
     OppilaitosRaporttiResponse(
-      sheets = Seq(aikuistenPerusopetuksenKurssikertymäRaportti.build(oppilaitosOids, Date.valueOf(request.alku), Date.valueOf(request.loppu))),
+      sheets = Seq(aikuistenPerusopetuksenKurssikertymäRaportti.build(oppilaitosOids, request.alku, request.loppu)),
       workbookSettings = WorkbookSettings("Aikuisten perusopetuksen kurssikertymien raportti", Some(request.password)),
       filename = s"aikuisten_perusopetuksen_kurssikertymät_raportti-${request.alku.toString.replaceAll("-", "")}-${request.loppu.toString.replaceAll("-", "")}.xlsx",
       downloadToken = request.downloadToken
@@ -163,7 +161,7 @@ class RaportitService(application: KoskiApplication) {
         application.organisaatioService.organisaationAlaisetOrganisaatiot(oid)
     }
     OppilaitosRaporttiResponse(
-      sheets = Seq(aikuistenPerusopetuksenOppijamäärätRaportti.build(oppilaitosOids, Date.valueOf(request.paiva))),
+      sheets = Seq(aikuistenPerusopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva)),
       workbookSettings = WorkbookSettings("Aikuisten perusopetuksen oppijamäärien raportti", Some(request.password)),
       filename = s"aikuisten_perusopetuksen_vos_raportti-${request.paiva}.xlsx",
       downloadToken = request.downloadToken
@@ -173,7 +171,7 @@ class RaportitService(application: KoskiApplication) {
   def perusopetuksenOppijamäärät(request: RaporttiPäivältäRequest)(implicit u: KoskiSession) = {
     val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid)
     OppilaitosRaporttiResponse(
-      sheets = Seq(perusopetuksenOppijamäärätRaportti.build(oppilaitosOids, Date.valueOf(request.paiva))),
+      sheets = Seq(perusopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva)),
       workbookSettings = WorkbookSettings("Perusopetuksen oppijamäärien raportti", Some(request.password)),
       filename = s"perusopetus_vos_raportti-${request.paiva}.xlsx",
       downloadToken = request.downloadToken
@@ -183,7 +181,7 @@ class RaportitService(application: KoskiApplication) {
   def perusopetuksenLisäopetuksenOppijamäärät(request: RaporttiPäivältäRequest)(implicit u: KoskiSession) = {
     val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid)
     OppilaitosRaporttiResponse(
-      sheets = Seq(perusopetuksenLisäopetuksenOppijamäärätRaportti.build(oppilaitosOids, Date.valueOf(request.paiva))),
+      sheets = Seq(perusopetuksenLisäopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva)),
       workbookSettings = WorkbookSettings("Perusopetuksen oppijamäärien raportti", Some(request.password)),
       filename = s"lisaopetus_vos_raportti-${request.paiva}.xlsx",
       downloadToken = request.downloadToken

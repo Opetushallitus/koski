@@ -1,13 +1,11 @@
 package fi.oph.koski.raportit
 
-import java.sql.Date
 import java.time.LocalDate
 
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import fi.oph.koski.db.KoskiDatabaseMethods
 import fi.oph.koski.util.DateOrdering.sqlDateOrdering
-
 import scala.concurrent.duration._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.schema.Organisaatio
@@ -88,17 +86,14 @@ case class AikuistenPerusopetusRaporttiRepository(
       AikuistenPerusopetusRaporttiDbResultRow(r.<<, r.<<, r.<<, r.<<, r.<<)
     )
     runDbSync(opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(
-      oppilaitos,
-      Date.valueOf(alku),
-      Date.valueOf(loppu),
-      päätasonSuorituksenTyyppi
+      oppilaitos, alku, loppu, päätasonSuorituksenTyyppi
     ).as[AikuistenPerusopetusRaporttiDbResultRow], timeout = defaultTimeout)
   }
 
   private def opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(
     oppilaitos: String,
-    alku: Date,
-    loppu: Date,
+    alku: LocalDate,
+    loppu: LocalDate,
     päätasonSuorituksenTyyppi: String
   ) = {
     sql"""

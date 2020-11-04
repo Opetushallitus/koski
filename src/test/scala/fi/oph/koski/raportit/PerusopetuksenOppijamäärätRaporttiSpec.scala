@@ -1,6 +1,6 @@
 package fi.oph.koski.raportit
 
-import java.sql.Date.{valueOf => sqlDate}
+import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.koskiuser.MockUser
@@ -20,7 +20,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers w
   private val application = KoskiApplicationForTests
   private val raporttiBuilder = PerusopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
   private lazy val raportti = raporttiBuilder
-    .build(Set(jyväskylänNormaalikoulu), sqlDate("2012-01-01"))(session(defaultUser))
+    .build(Set(jyväskylänNormaalikoulu), date(2012, 1, 1))(session(defaultUser))
     .rows.map(_.asInstanceOf[PerusopetuksenOppijamäärätRaporttiRow])
 
   "Perusopetuksen oppijamäärien raportti" - {

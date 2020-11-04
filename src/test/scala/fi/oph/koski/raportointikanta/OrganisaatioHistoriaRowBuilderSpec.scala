@@ -21,8 +21,8 @@ class OrganisaatioHistoriaRowBuilderSpec extends FreeSpec with Matchers {
       result should equal(List(
         ROrganisaatioHistoriaRow(
           opiskeluoikeusOid = opiskeluoikeusIlmanHistoriaa.oid.get,
-          alku = Date.valueOf(LocalDate.of(2008, 8, 15)),
-          loppu = Date.valueOf(LocalDate.of(9999, 12, 30)),
+          alku = LocalDate.of(2008, 8, 15),
+          loppu = LocalDate.of(9999, 12, 30),
           oppilaitosOid = opiskeluoikeusIlmanHistoriaa.oppilaitos.map(_.oid),
           koulutustoimijaOid = opiskeluoikeusIlmanHistoriaa.koulutustoimija.map(_.oid)
         )
@@ -46,22 +46,22 @@ class OrganisaatioHistoriaRowBuilderSpec extends FreeSpec with Matchers {
       result should equal(List(
         ROrganisaatioHistoriaRow(
           opiskeluoikeusOid = opiskeluoikeusIlmanHistoriaa.oid.get,
-          alku = Date.valueOf(LocalDate.of(2008, 8, 15)),
-          loppu = Date.valueOf(LocalDate.of(2018, 6, 30)),
+          alku = LocalDate.of(2008, 8, 15),
+          loppu = LocalDate.of(2018, 6, 30),
           oppilaitosOid = Some(kulosaarenAlaAste.oid),
           koulutustoimijaOid = Some(helsinki.oid)
         ),
         ROrganisaatioHistoriaRow(
           opiskeluoikeusOid = opiskeluoikeusIlmanHistoriaa.oid.get,
-          alku = Date.valueOf(LocalDate.of(2018, 7, 1)),
-          loppu = Date.valueOf(LocalDate.of(2018, 12, 31)),
+          alku = LocalDate.of(2018, 7, 1),
+          loppu = LocalDate.of(2018, 12, 31),
           oppilaitosOid = Some(ressunLukio.oid),
           koulutustoimijaOid = Some(tornio.oid)
         ),
         ROrganisaatioHistoriaRow(
           opiskeluoikeusOid = opiskeluoikeusIlmanHistoriaa.oid.get,
-          alku = Date.valueOf(LocalDate.of(2019, 1, 1)),
-          loppu = Date.valueOf(LocalDate.of(9999, 12, 30)),
+          alku = LocalDate.of(2019, 1, 1),
+          loppu = LocalDate.of(9999, 12, 30),
           oppilaitosOid = opiskeluoikeusIlmanHistoriaa.oppilaitos.map(_.oid),
           koulutustoimijaOid = opiskeluoikeusIlmanHistoriaa.koulutustoimija.map(_.oid)
         )
@@ -112,29 +112,29 @@ class OrganisaatioHistoriaRowBuilderSpec extends FreeSpec with Matchers {
       result should equal(List(
         ROrganisaatioHistoriaRow(
           opiskeluoikeusOid = opiskeluoikeusIlmanHistoriaa.oid.get,
-          alku = Date.valueOf(LocalDate.of(2008, 8, 15)),
-          loppu = Date.valueOf(LocalDate.of(2016, 9, 30)),
+          alku = LocalDate.of(2008, 8, 15),
+          loppu = LocalDate.of(2016, 9, 30),
           oppilaitosOid = Some(ressunLukio.oid),
           koulutustoimijaOid = Some(tornio.oid)
         ),
         ROrganisaatioHistoriaRow(
           opiskeluoikeusOid = opiskeluoikeusIlmanHistoriaa.oid.get,
-          alku = Date.valueOf(LocalDate.of(2016, 10, 1)),
-          loppu = Date.valueOf(LocalDate.of(2018, 6, 30)),
+          alku = LocalDate.of(2016, 10, 1),
+          loppu = LocalDate.of(2018, 6, 30),
           oppilaitosOid = Some(kulosaarenAlaAste.oid),
           koulutustoimijaOid = Some(helsinki.oid)
         ),
         ROrganisaatioHistoriaRow(
           opiskeluoikeusOid = opiskeluoikeusIlmanHistoriaa.oid.get,
-          alku = Date.valueOf(LocalDate.of(2018, 7, 1)),
-          loppu = Date.valueOf(LocalDate.of(2018, 12, 31)),
+          alku = LocalDate.of(2018, 7, 1),
+          loppu = LocalDate.of(2018, 12, 31),
           oppilaitosOid = Some(ressunLukio.oid),
           koulutustoimijaOid = Some(helsinki.oid)
         ),
         ROrganisaatioHistoriaRow(
           opiskeluoikeusOid = opiskeluoikeusIlmanHistoriaa.oid.get,
-          alku = Date.valueOf(LocalDate.of(2019, 1, 1)),
-          loppu = Date.valueOf(LocalDate.of(9999, 12, 30)),
+          alku = LocalDate.of(2019, 1, 1),
+          loppu = LocalDate.of(9999, 12, 30),
           oppilaitosOid = opiskeluoikeusIlmanHistoriaa.oppilaitos.map(_.oid),
           koulutustoimijaOid = opiskeluoikeusIlmanHistoriaa.koulutustoimija.map(_.oid)
         )

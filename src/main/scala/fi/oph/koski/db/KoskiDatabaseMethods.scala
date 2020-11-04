@@ -1,18 +1,26 @@
 package fi.oph.koski.db
 
+import java.sql.Date
+import java.time.LocalDate
+
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.util.Futures
 import fi.oph.koski.util.ReactiveStreamsToRx.publisherToObservable
 import slick.dbio.{DBIOAction, NoStream}
+import slick.jdbc.SetParameter
 import slick.lifted.Query
 
 import scala.concurrent.duration._
 import scala.concurrent.duration.Duration
 import scala.language.higherKinds
 
-trait KoskiDatabaseMethods {
+trait DatabaseConverters {
+  implicit val setLocalDate: SetParameter[LocalDate] = (localDate, params) => params.setDate(Date.valueOf(localDate))
+}
+
+trait KoskiDatabaseMethods extends DatabaseConverters {
   protected def db: DB
 
   def runDbSync[R](a: DBIOAction[R, NoStream, Nothing], skipCheck: Boolean = false, timeout: Duration = 60.seconds): R = {

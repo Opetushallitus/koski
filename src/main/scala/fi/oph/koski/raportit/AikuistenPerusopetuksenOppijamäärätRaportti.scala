@@ -1,14 +1,13 @@
 package fi.oph.koski.raportit
 
-import java.sql.Date
+import java.time.LocalDate
 
 import fi.oph.koski.db.KoskiDatabaseMethods
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
-import fi.oph.koski.util.SQL.toSqlListUnsafe
 import slick.jdbc.GetResult
 
 import scala.concurrent.duration._
@@ -34,7 +33,7 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
     )
   )
 
-  def build(oppilaitosOids: List[String], päivä: Date)(implicit u: KoskiSession): DataSheet = {
+  def build(oppilaitosOids: List[String], päivä: LocalDate)(implicit u: KoskiSession): DataSheet = {
     val raporttiQuery = query(validateOids(oppilaitosOids), päivä).as[AikuistenPerusopetuksenOppijamäärätRaporttiRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
@@ -44,7 +43,7 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
     )
   }
 
-  private def query(oppilaitosOidit: List[String], päivä: Date)(implicit u: KoskiSession) = {
+  private def query(oppilaitosOidit: List[String], päivä: LocalDate)(implicit u: KoskiSession) = {
     sql"""
     select
       r_opiskeluoikeus.oppilaitos_oid,
@@ -71,7 +70,7 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
       and r_koodisto_koodi.koodiarvo = split_part(split_part(r_organisaatio_kieli.kielikoodi, '_', 2), '#', 1)
     join r_organisaatio on r_organisaatio.organisaatio_oid = oppilaitos_oid
     left join r_paatason_suoritus on r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-    where r_opiskeluoikeus.oppilaitos_oid in (#${toSqlListUnsafe(oppilaitosOidit)})
+    where r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOidit)
       and r_opiskeluoikeus.koulutusmuoto = 'aikuistenperusopetus'
       and aikajakso.alku <= $päivä
       and aikajakso.loppu >= $päivä
@@ -81,17 +80,17 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
       and (
         #${(if (u.hasGlobalReadAccess) "true" else "false")}
         or
-        r_opiskeluoikeus.oppilaitos_oid in (#${toSqlListUnsafe(käyttäjänOrganisaatioOidit)})
+        r_opiskeluoikeus.oppilaitos_oid = any($käyttäjänOrganisaatioOidit)
         or
-        r_opiskeluoikeus.koulutustoimija_oid in (#${toSqlListUnsafe(käyttäjänKoulutustoimijaOidit)})
+        r_opiskeluoikeus.koulutustoimija_oid = any($käyttäjänKoulutustoimijaOidit)
       )
     group by r_opiskeluoikeus.oppilaitos_oid, r_opiskeluoikeus.oppilaitos_nimi, r_koodisto_koodi.nimi
   """
   }
 
-  private def käyttäjänOrganisaatioOidit(implicit u: KoskiSession) = u.organisationOids(AccessType.read)
+  private def käyttäjänOrganisaatioOidit(implicit u: KoskiSession) = u.organisationOids(AccessType.read).toSeq
 
-  private def käyttäjänKoulutustoimijaOidit(implicit u: KoskiSession) = u.varhaiskasvatusKäyttöoikeudet
+  private def käyttäjänKoulutustoimijaOidit(implicit u: KoskiSession) = u.varhaiskasvatusKäyttöoikeudet.toSeq
     .filter(_.organisaatioAccessType.contains(AccessType.read))
     .map(_.koulutustoimija.oid)
 

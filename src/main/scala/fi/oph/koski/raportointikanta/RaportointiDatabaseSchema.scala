@@ -1,6 +1,7 @@
 package fi.oph.koski.raportointikanta
 
 import java.sql.{Date, Timestamp}
+import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
@@ -33,15 +34,21 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(oppilaitos_oid)",
     sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(koulutusmuoto)",
     sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(sisaltyy_opiskeluoikeuteen_oid)",
+
+    sqlu"CREATE INDEX ON #${s.name}.r_organisaatiohistoria(opiskeluoikeus_oid, alku, loppu DESC, oppilaitos_oid, koulutustoimija_oid)",
+
     sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus_aikajakso(opiskeluoikeus_oid)",
+
     sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_paatason_suoritus(paatason_suoritus_id)",
     sqlu"CREATE INDEX ON #${s.name}.r_paatason_suoritus(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON #${s.name}.r_paatason_suoritus(vahvistus_paiva)",
     sqlu"CREATE INDEX ON #${s.name}.r_paatason_suoritus(suorituksen_tyyppi)",
+
     sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_osasuoritus(osasuoritus_id)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(paatason_suoritus_id)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(ylempi_osasuoritus_id)",
+
     sqlu"CREATE INDEX ON #${s.name}.esiopetus_opiskeluoik_aikajakso(opiskeluoikeus_oid)",
   )
 
@@ -127,8 +134,8 @@ object RaportointiDatabaseSchema {
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
     val oppilaitosOid = column[Option[String]]("oppilaitos_oid", StringIdentifierType)
     val koulutustoimijaOid = column[Option[String]]("koulutustoimija_oid", StringIdentifierType)
-    val alku = column[Date]("alku")
-    val loppu = column[Date]("loppu")
+    val alku = column[LocalDate]("alku")
+    val loppu = column[LocalDate]("loppu")
 
     def * = (opiskeluoikeusOid, oppilaitosOid, koulutustoimijaOid, alku, loppu) <>
       (ROrganisaatioHistoriaRow.tupled, ROrganisaatioHistoriaRow.unapply)
@@ -430,8 +437,8 @@ case class ROrganisaatioHistoriaRow(
   opiskeluoikeusOid: String,
   oppilaitosOid: Option[String],
   koulutustoimijaOid: Option[String],
-  alku: Date,
-  loppu: Date
+  alku: LocalDate,
+  loppu: LocalDate
 )
 
 case class ROpiskeluoikeusAikajaksoRow(
@@ -469,6 +476,8 @@ case class ROpiskeluoikeusAikajaksoRow(
     alku = if (alku.after(start)) alku else start,
     loppu = if (loppu.before(end)) loppu else end
   )
+  def truncateToDates(start: LocalDate, end: LocalDate): ROpiskeluoikeusAikajaksoRow =
+    this.truncateToDates(Date.valueOf(start), Date.valueOf(end))
   lazy val lengthInDays: Int = ChronoUnit.DAYS.between(alku.toLocalDate, loppu.toLocalDate).toInt + 1
 
   def withLoppu(d: Date): ROpiskeluoikeusAikajaksoRow = this.copy(loppu = d)

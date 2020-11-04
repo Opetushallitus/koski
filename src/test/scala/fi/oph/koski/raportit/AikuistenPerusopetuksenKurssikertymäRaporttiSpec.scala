@@ -1,6 +1,5 @@
 package fi.oph.koski.raportit
 
-import java.sql.Date.{valueOf => sqlDate}
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
@@ -22,7 +21,7 @@ class AikuistenPerusopetuksenKurssikertymäRaporttiSpec extends FreeSpec with Ma
   private val application = KoskiApplicationForTests
   private val raporttiBuilder = AikuistenPerusopetuksenKurssikertymäRaportti(application.raportointiDatabase.db, application.organisaatioService)
   private lazy val raportti =
-    raporttiBuilder.build(List(jyväskylänNormaalikoulu), sqlDate("2006-01-01"), sqlDate("2016-12-30"))(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenKurssikertymäRaporttiRow])
+    raporttiBuilder.build(List(jyväskylänNormaalikoulu), date(2006, 1, 1), date(2016, 12, 30))(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenKurssikertymäRaporttiRow])
 
   override def beforeAll(): Unit = loadRaportointikantaFixtures
 

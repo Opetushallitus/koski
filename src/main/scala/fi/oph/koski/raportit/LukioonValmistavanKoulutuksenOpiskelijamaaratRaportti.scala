@@ -1,25 +1,25 @@
 package fi.oph.koski.raportit
 
-import java.sql.{Date, ResultSet}
+import java.sql.ResultSet
 import java.time.LocalDate
 
+import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.raportointikanta.RaportointiDatabase
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import slick.jdbc.GetResult
-import fi.oph.koski.util.SQL
 import fi.oph.koski.raportit.AhvenanmaanKunnat.ahvenanmaanKunnat
 
-object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti {
+object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti extends DatabaseConverters {
 
-  def dataSheet(oppilaitosOid: List[String], paiva: LocalDate, raportointiDatabase: RaportointiDatabase) = {
+  def dataSheet(oppilaitosOid: List[String], päivä: LocalDate, raportointiDatabase: RaportointiDatabase) = {
     DataSheet(
       "Opiskelijamaarat",
-      rows = raportointiDatabase.runDbSync(query(oppilaitosOid, SQL.toSqlDate(paiva))),
+      rows = raportointiDatabase.runDbSync(query(oppilaitosOid, päivä)),
       columnSettings
     )
   }
 
-  private def query(oppilaitosOid: List[String], paiva: Date) = {
+  private def query(oppilaitosOid: List[String], paiva: LocalDate) = {
     sql"""
       with oppija as (
         select
@@ -34,7 +34,7 @@ object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti {
         join r_henkilo on r_henkilo.oppija_oid = r_opiskeluoikeus.oppija_oid
         join r_paatason_suoritus on r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
         where r_opiskeluoikeus.koulutusmuoto = 'luva'
-          and r_opiskeluoikeus.oppilaitos_oid in (#${SQL.toSqlListUnsafe(oppilaitosOid)})
+          and r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOid)
           and r_paatason_suoritus.suorituksen_tyyppi = 'luva'
           and r_opiskeluoikeus_aikajakso.tila = 'lasna'
           and r_opiskeluoikeus_aikajakso.alku <= $paiva
@@ -50,12 +50,12 @@ object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti {
           count(*) filter (where oppimaara_koodiarvo = 'nuortenops' and opintojen_rahoitus = '1') nuorten_valtionosuus_rahoitteinen,
           count(*) filter (where oppimaara_koodiarvo = 'nuortenops' and opintojen_rahoitus = '6') nuorten_muuta_kautta_rahoitettu,
           count(*) filter (where oppimaara_koodiarvo = 'nuortenops' and kotikunta isnull) nuorten_ei_kotikuntaa,
-          count(*) filter (where oppimaara_koodiarvo = 'nuortenops' and kotikunta in (#${SQL.toSqlListUnsafe(ahvenanmaanKunnat)})) nuorten_kotikunta_ahvenanmaa,
+          count(*) filter (where oppimaara_koodiarvo = 'nuortenops' and kotikunta = any($ahvenanmaanKunnat)) nuorten_kotikunta_ahvenanmaa,
           count(*) filter (where oppimaara_koodiarvo = 'aikuistenops') opiskelijoiden_maara_aikuistenops,
           count(*) filter (where oppimaara_koodiarvo = 'aikuistenops' and opintojen_rahoitus = '1') aikuisten_valtionosuus_rahoitteinen,
           count(*) filter (where oppimaara_koodiarvo = 'aikuistenops' and opintojen_rahoitus = '6') aikuisten_muuta_kautta_rahoitettu,
           count(*) filter (where oppimaara_koodiarvo = 'aikuistenops' and kotikunta isnull) aikuisten_ei_kotikuntaa,
-          count(*) filter (where oppimaara_koodiarvo = 'aikuistenops' and kotikunta in (#${SQL.toSqlListUnsafe(ahvenanmaanKunnat)})) aikuisten_kotikunta_ahvenanmaa
+          count(*) filter (where oppimaara_koodiarvo = 'aikuistenops' and kotikunta = any($ahvenanmaanKunnat)) aikuisten_kotikunta_ahvenanmaa
       from oppija
       group by oppilaitos_oid, oppilaitos_nimi;
       """.as[LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiRow]

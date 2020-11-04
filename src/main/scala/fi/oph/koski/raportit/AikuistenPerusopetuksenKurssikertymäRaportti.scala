@@ -1,15 +1,13 @@
 package fi.oph.koski.raportit
 
-import java.sql.Date
+import java.time.LocalDate
 
 import fi.oph.koski.db.KoskiDatabaseMethods
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
-import fi.oph.koski.util.SQL
-import fi.oph.koski.util.SQL.toSqlListUnsafe
 import slick.jdbc.GetResult
 
 import scala.concurrent.duration._
@@ -30,7 +28,7 @@ case class AikuistenPerusopetuksenKurssikertymäRaportti(db: DB, organisaatioSer
     )
   )
 
-  def build(oppilaitosOids: List[String], aikaisintaan: Date, viimeistaan: Date)(implicit u: KoskiSession): DataSheet = {
+  def build(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate)(implicit u: KoskiSession): DataSheet = {
     val raporttiQuery = query(validateOids(oppilaitosOids), aikaisintaan, viimeistaan).as[AikuistenPerusopetuksenKurssikertymäRaporttiRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
@@ -40,7 +38,7 @@ case class AikuistenPerusopetuksenKurssikertymäRaportti(db: DB, organisaatioSer
     )
   }
 
-  private def query(oppilaitosOidit: List[String], aikaisintaan: Date, viimeistaan: Date)(implicit u: KoskiSession) = {
+  private def query(oppilaitosOidit: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate)(implicit u: KoskiSession) = {
     sql"""
 SELECT oo.oppilaitos_nimi,
 	count(*) filter(WHERE tunnustettu = false) yhteensä_suoritettuja,
@@ -94,8 +92,8 @@ WHERE oo.koulutusmuoto = 'aikuistenperusopetus'
 	AND osasuoritukset.arviointi_paiva BETWEEN $aikaisintaan
 		AND $viimeistaan
 	AND (
-		oo.oppilaitos_oid IN (#${SQL.toSqlListUnsafe(oppilaitosOidit) })
-		OR oo.koulutustoimija_oid IN (#${SQL.toSqlListUnsafe(oppilaitosOidit) })
+		oo.oppilaitos_oid = any($oppilaitosOidit)
+		OR oo.koulutustoimija_oid = any($oppilaitosOidit)
 		)
 GROUP BY oo.oppilaitos_nimi
 ORDER BY oo.oppilaitos_nimi

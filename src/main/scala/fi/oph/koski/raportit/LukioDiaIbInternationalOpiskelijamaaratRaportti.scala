@@ -1,13 +1,12 @@
 package fi.oph.koski.raportit
 
-import java.sql.{Date, ResultSet}
+import java.sql.ResultSet
 import java.time.LocalDate
 
 import fi.oph.koski.db.KoskiDatabaseMethods
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import slick.jdbc.GetResult
-import fi.oph.koski.util.SQL
 import fi.oph.koski.raportit.AhvenanmaanKunnat.ahvenanmaanKunnat
 
 import scala.concurrent.duration._
@@ -17,12 +16,12 @@ case class LukioDiaIbInternationalOpiskelijamaaratRaportti(db: DB) extends Koski
   def build(oppilaitosOids: List[String], päivä: LocalDate): DataSheet = {
     DataSheet(
       title = "opiskelijamäärät",
-      rows = runDbSync(query(oppilaitosOids, SQL.toSqlDate(päivä)).as[LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow], timeout = 5.minutes),
+      rows = runDbSync(query(oppilaitosOids, päivä).as[LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow], timeout = 5.minutes),
       columnSettings = columnSettings
     )
   }
 
-  private def query(oppilaitosOids: List[String], päivä: Date)  = {
+  private def query(oppilaitosOids: Seq[String], päivä: LocalDate)  = {
    sql"""
 with oppija as (select
                   r_opiskeluoikeus.opiskeluoikeus_oid,
@@ -89,7 +88,7 @@ with oppija as (select
                   'diatutkinto',
                   'internationalschool'
                 )
-                and r_opiskeluoikeus.oppilaitos_oid in (#${SQL.toSqlListUnsafe(oppilaitosOids)})
+                and r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOids)
                 and r_opiskeluoikeus_aikajakso.tila = 'lasna'
                 and r_opiskeluoikeus_aikajakso.alku <= $päivä
                 and r_opiskeluoikeus_aikajakso.loppu >= $päivä
@@ -147,7 +146,7 @@ with oppija as (select
     count(case when suorituskieli_koodiarvo = 'SV' then 1 end) opetuskieli_ruotsi,
     count(case when suorituskieli_koodiarvo not in ('FI', 'SV') then 1 end) opetuskieli_muu,
     count(case when kotikunta isnull then 1 end) ei_kotikuntaa,
-    count(case when kotikunta in (#${SQL.toSqlListUnsafe(ahvenanmaanKunnat)})  then 1 end) kotikunta_ahvenanmaa
+    count(case when kotikunta = any($ahvenanmaanKunnat) then 1 end) kotikunta_ahvenanmaa
   from oppija
   where oppimaara_koodiarvo = 'nuortenops'
     or suorituksen_tyyppi in (
@@ -170,7 +169,7 @@ with oppija as (select
       count(case when suorituskieli_koodiarvo = 'SV' then 1 end) opetuskieli_ruotsi,
       count(case when suorituskieli_koodiarvo not in ('FI', 'SV') then 1 end) opetuskieli_muu,
       count(case when kotikunta isnull then 1 end) ei_kotikuntaa,
-      count(case when kotikunta in (#${SQL.toSqlListUnsafe(ahvenanmaanKunnat)})  then 1 end) kotikunta_ahvenanmaa
+      count(case when kotikunta = any($ahvenanmaanKunnat) then 1 end) kotikunta_ahvenanmaa
     from oppija
     where oppimaara_koodiarvo = 'aikuistenops'
     group by oppilaitos_oid

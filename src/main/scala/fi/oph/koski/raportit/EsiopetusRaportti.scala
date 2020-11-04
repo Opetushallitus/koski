@@ -1,15 +1,13 @@
 package fi.oph.koski.raportit
 
-import java.sql.Date
 import java.time.LocalDate
 
 import fi.oph.koski.db.KoskiDatabaseMethods
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
-import fi.oph.koski.schema.Organisaatio.{Oid, isValidOrganisaatioOid}
-import fi.oph.koski.util.SQL
+import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
 import slick.jdbc.GetResult
 
 import scala.concurrent.duration._
@@ -49,7 +47,7 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
     )
   )
 
-  def build(oppilaitosOids: List[String], päivä: Date)(implicit u: KoskiSession): DataSheet = {
+  def build(oppilaitosOids: List[String], päivä: LocalDate)(implicit u: KoskiSession): DataSheet = {
     val raporttiQuery = query(validateOids(oppilaitosOids), päivä).as[EsiopetusRaporttiRow]
     DataSheet(
       title = "Suoritukset",
@@ -58,7 +56,7 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
     )
   }
 
-  private def query(oppilaitosOidit: List[String], päivä: Date)(implicit u: KoskiSession) =
+  private def query(oppilaitosOidit: List[String], päivä: LocalDate)(implicit u: KoskiSession) =
     sql"""
     select
       r_opiskeluoikeus.opiskeluoikeus_oid,
@@ -94,7 +92,7 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
     join r_henkilo on r_henkilo.oppija_oid = r_opiskeluoikeus.oppija_oid
     join esiopetus_opiskeluoik_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
     left join r_paatason_suoritus on r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-    where (r_opiskeluoikeus.oppilaitos_oid in (#${SQL.toSqlListUnsafe(oppilaitosOidit)}) or r_opiskeluoikeus.koulutustoimija_oid in (#${SQL.toSqlListUnsafe(oppilaitosOidit)}))
+    where (r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOidit) or r_opiskeluoikeus.koulutustoimija_oid = any($oppilaitosOidit))
       and r_opiskeluoikeus.koulutusmuoto = 'esiopetus'
       and aikajakso.alku <= $päivä
       and aikajakso.loppu >= $päivä
@@ -102,15 +100,15 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
       and (
         #${(if (u.hasGlobalReadAccess) "true" else "false")}
         or
-        r_opiskeluoikeus.oppilaitos_oid in (#${SQL.toSqlListUnsafe(käyttäjänOrganisaatioOidit)})
+        r_opiskeluoikeus.oppilaitos_oid = any($käyttäjänOrganisaatioOidit)
         or
-        (r_opiskeluoikeus.koulutustoimija_oid in (#${SQL.toSqlListUnsafe(käyttäjänKoulutustoimijaOidit)}) and r_opiskeluoikeus.oppilaitos_oid in (#${SQL.toSqlListUnsafe(käyttäjänOstopalveluOidit)}))
+        (r_opiskeluoikeus.koulutustoimija_oid = any($käyttäjänKoulutustoimijaOidit) and r_opiskeluoikeus.oppilaitos_oid = any($käyttäjänOstopalveluOidit))
       )
   """
 
-  private def käyttäjänOrganisaatioOidit(implicit u: KoskiSession) = u.organisationOids(AccessType.read)
+  private def käyttäjänOrganisaatioOidit(implicit u: KoskiSession) = u.organisationOids(AccessType.read).toSeq
 
-  private def käyttäjänKoulutustoimijaOidit(implicit u: KoskiSession) = u.varhaiskasvatusKäyttöoikeudet
+  private def käyttäjänKoulutustoimijaOidit(implicit u: KoskiSession) = u.varhaiskasvatusKäyttöoikeudet.toSeq
     .filter(_.organisaatioAccessType.contains(AccessType.read))
     .map(_.koulutustoimija.oid)
 
