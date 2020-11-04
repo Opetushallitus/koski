@@ -125,7 +125,7 @@ describe('Omat tiedot - lukio', function() {
             '(4 opintopistettä) H\n' +
             '+\n' +
             'Uskonto/Elämänkatsomustieto\n' +
-            '(1.5 opintopistettä) 4\n' +
+            '(1,5 opintopistettä) 4\n' +
             '+\n' +
             'Äidinkielenomainen kieli, ruotsi\n' +
             '(1 opintopistettä) 9\n' +
@@ -389,7 +389,7 @@ describe('Omat tiedot - lukio', function() {
             'H OP2\n' +
             'S\n' +
             'Uskonto/Elämänkatsomustieto\n' +
-            '(1.5 opintopistettä) 4\n' +
+            '(1,5 opintopistettä) 4\n' +
             'UE1\n' +
             '4\n' +
             'Äidinkielenomainen kieli, ruotsi\n' +

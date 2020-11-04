@@ -67,9 +67,9 @@ export class OmatTiedotLukionOppiaine extends React.Component {
     const kurssit = modelItems(oppiaine, 'osasuoritukset')
     const arviointi = modelData(oppiaine, 'arviointi')
     const oppiaineenKeskiarvo = kurssienKeskiarvo(suoritetutKurssit(kurssit))
-    const laajuusYhteensä = useOppiaineLaajuus
+    const laajuusYhteensä = numberToString(useOppiaineLaajuus
       ? modelData(oppiaine, 'koulutusmoduuli.laajuus.arvo')
-      : numberToString(laajuudet(hylkäämättömätOsasuoritukset(kurssit)))
+      : laajuudet(hylkäämättömätOsasuoritukset(kurssit)))
     const laajuusYksikkö = useOppiaineLaajuus
       ? modelTitle(oppiaine, 'koulutusmoduuli.laajuus.yksikkö')
       : t('kurssia')
