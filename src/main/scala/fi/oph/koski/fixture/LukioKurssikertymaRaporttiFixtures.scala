@@ -34,12 +34,14 @@ object LukioKurssikertymaRaporttiFixtures {
     )
   )
 
+  lazy val dateMuutaKauttaRahoitettu = date.plusDays(10)
+  lazy val dateEronnut = date.plusDays(20)
   lazy val aineopiskelija = LukionOpiskeluoikeus(
     tila = LukionOpiskeluoikeudenTila(
       List(
         LukionOpiskeluoikeusjakso(alku = date, tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
-        LukionOpiskeluoikeusjakso(alku = date.plusDays(10), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.muutaKauttaRahoitettu)),
-        LukionOpiskeluoikeusjakso(alku = date.plusDays(20), tila = opiskeluoikeusEronnut, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+        LukionOpiskeluoikeusjakso(alku = dateMuutaKauttaRahoitettu, tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.muutaKauttaRahoitettu)),
+        LukionOpiskeluoikeusjakso(alku = dateEronnut, tila = opiskeluoikeusEronnut, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
       )
     ),
     versionumero = None,
@@ -88,15 +90,16 @@ object LukioKurssikertymaRaporttiFixtures {
     kurssi(valtakunnallinenKurssi("MAA8")).copy(arviointi = kurssinArviointiJaksonJalkeen),
   )
 
+  lazy val filosofianKurssit = List(
+    kurssi(valtakunnallinenKurssi("FI1")).copy(arviointi = kurssinArviointiMuutaKauttaRahoitetullaJaksolla),
+    kurssi(valtakunnallinenKurssi("FI2")).copy(arviointi = kurssinArviointiOpintooikeudenJalkeen),
+  )
+
   lazy val kurssinArviointi = Some(List(NumeerinenLukionArviointi(Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"), date)))
   lazy val kurssinArviointiJaksonJalkeen = Some(List(NumeerinenLukionArviointi(Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"), raportinAikajaksoLoppu.plusDays(1))))
   lazy val kurssinArviointiJaksoaEnnen = Some(List(NumeerinenLukionArviointi(Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"), raportinAikajaksoAlku.minusDays(1))))
-
-  lazy val filosofianKurssit = List(
-    kurssi(valtakunnallinenKurssi("FI1")).copy(arviointi = kurssinArviointiMuutaKauttaRahoitetullaJaksolla),
-  )
-
-  lazy val kurssinArviointiMuutaKauttaRahoitetullaJaksolla = Some(List(NumeerinenLukionArviointi(Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"), date.plusDays(10))))
+  lazy val kurssinArviointiMuutaKauttaRahoitetullaJaksolla = Some(List(NumeerinenLukionArviointi(Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"), dateMuutaKauttaRahoitettu)))
+  lazy val kurssinArviointiOpintooikeudenJalkeen = Some(List(NumeerinenLukionArviointi(Koodistokoodiviite(koodiarvo = "7", koodistoUri = "arviointiasteikkoyleissivistava"), dateEronnut.plusDays(1))))
 
   lazy val mantsanKurssit = List(
     kurssi(valtakunnallinenKurssi("GE1").copy(kurssinTyyppi = syventävä)),

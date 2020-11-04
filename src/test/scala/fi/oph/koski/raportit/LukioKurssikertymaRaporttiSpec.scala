@@ -102,6 +102,9 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
       "Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit - rahoitusmuoto ei tiedossa" in {
         ressunAineopiskelijat.suoritetutTaiRahoitetut_rahoitusmuotoEiTiedossa shouldBe 0
       }
+      "Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit – arviointipäivä ei opiskeluoikeuden sisällä" in {
+        ressunAineopiskelijat.suoritetutTaiRahoitetut_eiOpiskeluoikeudenSisalla shouldBe 1
+      }
     }
     "Muuta kautta rahoitetuttujen välilehti" - {
       "Listan pituus sama kuin aineopiskelijoiden välilehdellä oleva laskuri" in {
