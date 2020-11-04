@@ -18,7 +18,7 @@ import {OmatTiedotLukionOppiaineetTableHead} from './fragments/LukionOppiaineetT
 import {KurssitListMobile} from '../kurssi/OmatTiedotKurssit'
 
 
-export default ({suorituksetModel, suoritusFilter, useOppiaineLaajuus = false}) => {
+export default ({suorituksetModel, suoritusFilter, useOppiaineLaajuus = false, showKeskiarvo = true}) => {
   const oppiaineet = modelItems(suorituksetModel).filter(suoritusFilter || R.identity)
 
   if (R.isEmpty(oppiaineet)) return null
@@ -35,6 +35,7 @@ export default ({suorituksetModel, suoritusFilter, useOppiaineLaajuus = false}) 
               oppiaine={oppiaine}
               isMobile={isMobileAtom}
               useOppiaineLaajuus={useOppiaineLaajuus}
+              showKeskiarvo={showKeskiarvo}
             />
           ))}
         </tbody>

@@ -156,8 +156,7 @@ describe('Omat tiedot - lukio', function() {
               'Kurssi Arvosana Lisätiedot\n' +
               'ÄI1 8 Avaa\n' +
               'ÄI2 8 Avaa\n' +
-              'ÄI3 8 Avaa\n' +
-              '(Keskiarvo 8,0)'
+              'ÄI3 8 Avaa'
             )
           })
         })
@@ -377,15 +376,13 @@ describe('Omat tiedot - lukio', function() {
             'ÄI1\n' +
             '8 ÄI2\n' +
             '8 ÄI3\n' +
-            '8 Keskiarvo 8,0\n' +
-            '(8,0)\n' +
+            '8\n' +
             'Matematiikka, pitkä oppimäärä\n' +
             '(6 opintopistettä) 9\n' +
             'MAB2\n' +
             '8 MAB3\n' +
             '8 MAB4\n' +
-            '9 Keskiarvo 8,3\n' +
-            '(8,3)\n' +
+            '9\n' +
             'Opinto-ohjaus\n' +
             '(4 opintopistettä) H\n' +
             'OP1\n' +
@@ -394,19 +391,16 @@ describe('Omat tiedot - lukio', function() {
             'Uskonto/Elämänkatsomustieto\n' +
             '(1.5 opintopistettä) 4\n' +
             'UE1\n' +
-            '4 Keskiarvo 4,0\n' +
-            '(4,0)\n' +
+            '4\n' +
             'Äidinkielenomainen kieli, ruotsi\n' +
             '(1 opintopistettä) 9\n' +
             'RUA4\n' +
-            '7 Keskiarvo 7,0\n' +
-            '(7,0)\n' +
+            '7\n' +
             'A-kieli, espanja\n' +
             '(2 opintopistettä) 9\n' +
             'VKA1\n' +
             '7 VKA8\n' +
-            '7 Keskiarvo 7,0\n' +
-            '(7,0)\n' +
+            '7\n' +
             'Fysiikka\n' +
             '(87 opintopistettä) 10\n' +
             'FY1\n' +
@@ -414,28 +408,24 @@ describe('Omat tiedot - lukio', function() {
             '10 FY3\n' +
             '10 FY123 *\n' +
             '10 FY124 *\n' +
-            'S Keskiarvo 10,0\n' +
-            '(10,0)\n' +
+            'S\n' +
             'Kemia 4\n' +
             'Tanssi ja liike, valinnainen\n' +
             '*\n' +
             '(52 opintopistettä) 8\n' +
             'ITT234 *\n' +
             '10 ITT235 *\n' +
-            '10 Keskiarvo 10,0\n' +
-            '(10,0)\n' +
+            '10\n' +
             'Lukiodiplomit -\n' +
             'MELD5\n' +
             '7 KÄLD3\n' +
-            '9 Keskiarvo 8,0\n' +
-            '(8,0)\n' +
+            '9\n' +
             'Muut suoritukset -\n' +
             'KE3\n' +
             '10 HAI765 *\n' +
             'S VKA1\n' +
             '10 ENA1\n' +
-            '10 Keskiarvo 10,0\n' +
-            '(10,0)\n' +
+            '10\n' +
             'Teemaopinnot -\n' +
             'KAN200 *\n' +
             'S'
@@ -664,66 +654,55 @@ describe('Omat tiedot - lukio', function() {
             'Oppiaine Arvosana\n' +
             'Language A: literature, suomi 8\n' +
             'FIN_S1\n' +
-            '8 Keskiarvo 8,0\n' +
-            '(8,0)\n' +
+            '8\n' +
             'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus, valinnainen\n' +
             '(4 opintopistettä) 9\n' +
             'ÄI1\n' +
             '8 ÄI2\n' +
-            '8 Keskiarvo 8,0\n' +
-            '(8,0)\n' +
+            '8\n' +
             'Matematiikka, pitkä oppimäärä\n' +
             '(4 opintopistettä) 10\n' +
             'MAB2\n' +
             '10 MAB3\n' +
-            '10 Keskiarvo 10,0\n' +
-            '(10,0)\n' +
+            '10\n' +
             'Uskonto/Elämänkatsomustieto\n' +
             '(2 opintopistettä) 9\n' +
             'UK1\n' +
-            '9 Keskiarvo 9,0\n' +
-            '(9,0)\n' +
+            '9\n' +
             'Liikunta\n' +
             '(3 opintopistettä) 8\n' +
             'LI2\n' +
             '8 LITT1 *\n' +
-            'S Keskiarvo 8,0\n' +
-            '(8,0)\n' +
+            'S\n' +
             'Fysiikka 8\n' +
             'Kemia\n' +
             '(2 opintopistettä) 7\n' +
             'KE1\n' +
-            '6 Keskiarvo 6,0\n' +
-            '(6,0)\n' +
+            '6\n' +
             'A-kieli, englanti\n' +
             '(4 opintopistettä) 9\n' +
             'ENA1\n' +
             '10 ENA2\n' +
-            '9 Keskiarvo 9,5\n' +
-            '(9,5)\n' +
+            '9\n' +
             'A-kieli, espanja\n' +
             '(4 opintopistettä) 6\n' +
             'VKA1\n' +
             '6 VKA2\n' +
-            '7 Keskiarvo 6,5\n' +
-            '(6,5)\n' +
+            '7\n' +
             'Tanssi ja liike, valinnainen\n' +
             '*\n' +
             '(2 opintopistettä) 6\n' +
             'ITT234 *\n' +
             '6 ITT235 *\n' +
-            '7 Keskiarvo 6,5\n' +
-            '(6,5)\n' +
+            '7\n' +
             'Muut suoritukset -\n' +
             'ÄI1\n' +
             '7 VKAAB31\n' +
             '6 RUB11\n' +
-            '6 Keskiarvo 6,3\n' +
-            '(6,3)\n' +
+            '6\n' +
             'Lukiodiplomit -\n' +
             'KULD2\n' +
-            '9 Keskiarvo 9,0\n' +
-            '(9,0)\n' +
+            '9\n' +
             'Teemaopinnot -\n' +
             'HAI765 *\n' +
             'S'
