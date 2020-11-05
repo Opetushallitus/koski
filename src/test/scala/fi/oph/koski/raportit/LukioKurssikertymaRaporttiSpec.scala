@@ -28,19 +28,31 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
 
   "Excel välilehtien sarakkeet, valitaan vain ne kurssit joiden arviointipäivä on aikavälin sisällä" - {
     "Oppimäärän välilehti (lukio ops 2015)" - {
+      "OppilaitosOid" in {
+        helsinkiOppimaara.oppilaitosOid shouldBe(MockOrganisaatiot.helsinginMedialukio)
+      }
       "Suoritettuja" in {
         helsinkiOppimaara.suoritettujaKursseja shouldBe(3)
       }
       "Tunnustettuja" in {
         helsinkiOppimaara.tunnustettujaKursseja shouldBe(4)
       }
+      "Kursseja yhteensä" in {
+        helsinkiOppimaara.kurssejaYhteensa shouldBe(7)
+      }
       "Tunnustettuja rahoituksen piirissa" in {
         helsinkiOppimaara.tunnustettujaKursseja_rahoituksenPiirissa shouldBe(2)
       }
     }
     "Aineopiskelijoiden välilehti" - {
+      "Oppilaitoksen Oid" in {
+        ressunAineopiskelijat.oppilaitosOid shouldBe(MockOrganisaatiot.ressunLukio)
+      }
+      "Yhteensä" in {
+        ressunAineopiskelijat.kurssejaYhteensa shouldBe(11)
+      }
       "Suoritettuja" in {
-        ressunAineopiskelijat.suoritettujaKursseja shouldBe(4)
+        ressunAineopiskelijat.suoritettujaKursseja shouldBe(5)
       }
       "Tunnustettuja" in {
         ressunAineopiskelijat.tunnustettujaKursseja shouldBe(6)
@@ -48,17 +60,26 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
       "Tunnustettuja rahoituksen piirissä" in {
         ressunAineopiskelijat.tunnustettujaKursseja_rahoituksenPiirissa shouldBe(3)
       }
+      "Pakollisia tai valtakunnallinen ja syventava" in {
+        ressunAineopiskelijat.pakollisia_tai_valtakunnallisiaSyventavia shouldBe(8)
+      }
       "Pakollisia" in {
-        ressunAineopiskelijat.pakollisiaKursseja shouldBe(4)
+        ressunAineopiskelijat.pakollisiaKursseja shouldBe(5)
       }
       "Valtakunnallisia syventavia" in {
         ressunAineopiskelijat.valtakunnallisestiSyventaviaKursseja shouldBe(3)
       }
+      "Suoritettuja pakollisia ja suoritettuja valtakunnallisia syventavia" in {
+        ressunAineopiskelijat.suoritettujaPakollisia_ja_suoritettujaValtakunnallisiaSyventavia shouldBe(4)
+      }
       "Suoritettuja pakollisia" in {
-        ressunAineopiskelijat.suoritettujaPakollisiaKursseja shouldBe(2)
+        ressunAineopiskelijat.suoritettujaPakollisiaKursseja shouldBe(3)
       }
       "Suoritettuja valtakunnallisia syventavia" in {
         ressunAineopiskelijat.suoritettujaValtakunnallisiaSyventaviaKursseja shouldBe(1)
+      }
+      "Tunnustettuja pakollisia ja tunnustettuja valtakunnallisia syventavia" in {
+        ressunAineopiskelijat.tunnustettujaPakollisia_ja_tunnustettujaValtakunnallisiaSyventavia shouldBe(4)
       }
       "Tunnustettuja pakollisia" in {
         ressunAineopiskelijat.tunnustettujaPakollisiaKursseja shouldBe(2)
@@ -66,11 +87,38 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
       "Tunnustettuja valtakunnallisia syventavia" in {
         ressunAineopiskelijat.tunnustettujaValtakunnallisiaSyventaviaKursseja shouldBe(2)
       }
+      "Tunnustettuja rahoituksen piirissä pakollisista ja valtakunnallisesti syventävistä kursseista" in {
+        ressunAineopiskelijat.tunnustettujaRahoituksenPiirissa_pakollisia_ja_valtakunnallisiaSyventavia shouldBe(2)
+      }
       "Tunnustettuja rahoituksen piirissa pakollisia" in {
         ressunAineopiskelijat.tunnustettuja_rahoituksenPiirissa_pakollisia shouldBe(1)
       }
       "Tunnustettuja rahoituksen piirissa valtakunnallisesti syventavia" in {
         ressunAineopiskelijat.tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva shouldBe(1)
+      }
+      "Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit - muuta kautta rahoitetut" in {
+        ressunAineopiskelijat.suoritetutTaiRahoitetut_muutaKauttaRahoitetut shouldBe 1
+      }
+      "Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit - rahoitusmuoto ei tiedossa" in {
+        ressunAineopiskelijat.suoritetutTaiRahoitetut_rahoitusmuotoEiTiedossa shouldBe 0
+      }
+      "Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit – arviointipäivä ei opiskeluoikeuden sisällä" in {
+        ressunAineopiskelijat.suoritetutTaiRahoitetut_eiOpiskeluoikeudenSisalla shouldBe 1
+      }
+    }
+    "Muuta kautta rahoitetuttujen välilehti" - {
+      "Listan pituus sama kuin aineopiskelijoiden välilehdellä oleva laskuri" in {
+        ressunMuutaKauttaRahoitetut.length shouldBe 1
+      }
+    }
+    "Rahoitusmuoto ei tiedossa -välilehti" - {
+      "Listan pituus sama kuin aineopiskelijoiden välilehdellä oleva laskuri" in {
+        ressunRahoitusmuotoEiTiedossa.length shouldBe 0
+      }
+    }
+    "Arviointipäivä opiskeluoikeuden ulkopuolella -välilehti" - {
+      "Listan pituus sama kuin aineopiskelijoiden välilehdellä oleva laskuri" in {
+        ressunOpiskeluoikeudenUlkopuolisetArvionnit.length shouldBe 1
       }
     }
   }
@@ -88,6 +136,24 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
       case r: LukioKurssikertymaAineopiskelijaRow => r
     }
   }.get.find(_.oppilaitos == "Ressun lukio").get
+
+  lazy val ressunMuutaKauttaRahoitetut: Seq[LukioKurssinRahoitusmuotoRow] = raportti.collectFirst {
+    case d: DataSheet if d.title == LukioMuutaKauttaRahoitetut.sheetTitle => d.rows.collect {
+      case r: LukioKurssinRahoitusmuotoRow => r
+    }
+  }.get
+
+  lazy val ressunRahoitusmuotoEiTiedossa: Seq[LukioKurssinRahoitusmuotoRow] = raportti.collectFirst {
+    case d: DataSheet if d.title == LukioRahoitusmuotoEiTiedossa.sheetTitle => d.rows.collect {
+      case r: LukioKurssinRahoitusmuotoRow => r
+    }
+  }.get
+
+  lazy val ressunOpiskeluoikeudenUlkopuolisetArvionnit: Seq[LukioOppiaineOpiskeluoikeudenUlkopuolisetRow] = raportti.collectFirst {
+    case d: DataSheet if d.title == LukioOppiaineOpiskeluoikeudenUlkopuoliset.sheetTitle => d.rows.collect {
+      case r: LukioOppiaineOpiskeluoikeudenUlkopuolisetRow => r
+    }
+  }.get
 
   private def loadRaportti = {
     val request = AikajaksoRaporttiRequest(

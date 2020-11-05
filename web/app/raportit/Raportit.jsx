@@ -161,8 +161,8 @@ const Lukioraportti = ({organisaatioAtom}) => {
 const LukioKurssikertyma = ({organisaatioAtom}) => {
   return (<AikajaksoRaportti organisaatioAtom={organisaatioAtom}
                             apiEndpoint={'/lukiokurssikertymat'}
-                            title={<Text name='Lukion kurssikertyma'/>}
-                            description={<Text name='Lukion kurssikertyma'/>}/>)
+                            title={<Text name='lukion-kurssikertyma-title'/>}
+                            description={<Text name='lukion-kurssikertyma-description'/>}/>)
 }
 
 const LukioDiaIBInternationalOpiskelijamaarat = ({organisaatioAtom}) => {

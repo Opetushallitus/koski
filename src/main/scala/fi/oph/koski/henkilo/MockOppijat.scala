@@ -116,7 +116,8 @@ object MockOppijat {
   val perusopetusOppijaMaaratRaportti_virheellisestiSiirrettyVieraskielinen = oppijat.oppija("v", "virheellisestiSiirrettyVieraskielinen", "131100A355P", äidinkieli = Some("en"))
   val perusopetusOppijaMaaratRaportti_organisaatioHistoriallinen = oppijat.oppija("o", "organisaatioHistoriallinen", "210728-156E")
   val lukioKurssikertymaRaportti_oppimaara = oppijat.oppija("Kurssikertyma", "Oppimaara", "280900A945T")
-  val lukioKurssikertymaRaportti_aineopiskelija = oppijat.oppija("Kurssikertyma", "Aineopiskelija", "280900A9554")
+  val lukioKurssikertymaRaportti_aineopiskelija_eronnut = oppijat.oppija("Kurssikertyma", "Eronnut Aineopiskelija", "280900A9554")
+  val lukioKurssikertymaRaportti_aineopiskelija_valmistunut = oppijat.oppija("Kurssikertyma", "Valmistunut Aineopiskelija", "140802A010A")
   val luvaOpiskelijamaaratRaportti_nuortenOppimaara = oppijat.oppija("Luva", "Nuorten", "300900A9818", kotikunta = Some("035"))
   val luvaOpiskelijamaaratRaportti_aikuistenOppimaara = oppijat.oppija("Luva", "Aikuisten", "300900A9774")
 

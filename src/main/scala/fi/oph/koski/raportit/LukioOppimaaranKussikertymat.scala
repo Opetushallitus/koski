@@ -24,6 +24,7 @@ object LukioOppimaaranKussikertymat extends DatabaseConverters {
           with paatason_suoritus as (
             select
               r_opiskeluoikeus.oppilaitos_nimi,
+              r_opiskeluoikeus.oppilaitos_oid,
               r_paatason_suoritus.paatason_suoritus_id
             from r_opiskeluoikeus
             join r_paatason_suoritus on r_opiskeluoikeus.opiskeluoikeus_oid = r_paatason_suoritus.opiskeluoikeus_oid
@@ -39,39 +40,47 @@ object LukioOppimaaranKussikertymat extends DatabaseConverters {
               )
       ) select
           oppilaitos_nimi oppilaitos,
+          oppilaitos_oid,
           count(*) filter (where tunnustettu = false) suoritettuja,
           count(*) filter (where tunnustettu) tunnustettuja,
+          count(*) yhteensa,
           count(*) filter (where tunnustettu_rahoituksen_piirissa) tunnustettuja_rahoituksen_piirissa
         from paatason_suoritus
         join r_osasuoritus on paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id
         where r_osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
           and r_osasuoritus.arviointi_paiva >= $aikaisintaan
           and r_osasuoritus.arviointi_paiva <= $viimeistaan
-        group by paatason_suoritus.oppilaitos_nimi;
+        group by paatason_suoritus.oppilaitos_nimi, oppilaitos_oid;
     """.as[LukioKurssikertymaOppimaaraRow]
   }
 
   implicit private val getResult: GetResult[LukioKurssikertymaOppimaaraRow] = GetResult(r => {
     val rs: ResultSet = r.rs
     LukioKurssikertymaOppimaaraRow(
+      oppilaitosOid = rs.getString("oppilaitos_oid"),
       oppilaitos = rs.getString("oppilaitos"),
       suoritettujaKursseja = rs.getInt("suoritettuja"),
       tunnustettujaKursseja = rs.getInt("tunnustettuja"),
+      kurssejaYhteensa = rs.getInt("yhteensa"),
       tunnustettujaKursseja_rahoituksenPiirissa = rs.getInt(("tunnustettuja_rahoituksen_piirissa"))
     )
   })
 
   val columnSettings: Seq[(String, Column)] = Seq(
+    "oppilaitosOid" -> Column("Oppilaitoksen oid-tunniste"),
     "oppilaitos" -> Column("Oppilaitos"),
-    "suoritettujaKursseja" -> Column("suoritettujaKursseja"),
-    "tunnustettujaKursseja" -> Column("tunnustettujaKursseja"),
-    "tunnustettujaKursseja_rahoituksenPiirissa" -> Column("tunnustettujaKursseja_rahoituksenPiirissa")
+    "suoritettujaKursseja" -> Column("Suoritetut kurssit", comment = Some("Kaikki sellaiset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja joita ei ole merkitty tunnustetuiksi.")),
+    "tunnustettujaKursseja" -> Column("Tunnustetut kurssit", comment = Some("Kaikki sellaiset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja jotka on merkitty tunnustetuiksi.")),
+    "kurssejaYhteensa" -> Column("Kursseja yhteensä", comment = Some("Kaikki sellaiset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään.")),
+    "tunnustettujaKursseja_rahoituksenPiirissa" -> Column("Tunnustetut kurssit - rahoituksen piirissä", comment = Some("Kaikki sellaiset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään, jotka on merkitty tunnustetuiksi ja jotka on merkitty rahoituksen piirissä oleviksi."))
   )
 }
 
 case class LukioKurssikertymaOppimaaraRow(
+  oppilaitosOid: String,
   oppilaitos: String,
   suoritettujaKursseja: Int,
   tunnustettujaKursseja: Int,
+  kurssejaYhteensa: Int,
   tunnustettujaKursseja_rahoituksenPiirissa: Int
 )

@@ -21,114 +21,184 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
 
   private def queryAineopiskelija(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate) = {
     sql"""
-      with oppiaineen_oppimaara as (
+      select
+        oppimaaran_kurssikertymat.*,
+        coalesce(opiskeluoikeuden_ulkopuoliset.yhteensa, 0) as opiskeluoikeuden_ulkopuoliset
+
+      -- oppimaaran_kurssikertymat
+      from (
         select
-          r_opiskeluoikeus.oppilaitos_nimi,
-          r_paatason_suoritus.paatason_suoritus_id
-        from r_opiskeluoikeus
-        join r_paatason_suoritus on r_opiskeluoikeus.opiskeluoikeus_oid = r_paatason_suoritus.opiskeluoikeus_oid
-        where
-          oppilaitos_oid = any($oppilaitosOids)
-          and r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
-          and exists(
-            select 1
-            from r_opiskeluoikeus_aikajakso
-            where r_opiskeluoikeus.opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
-              and r_opiskeluoikeus_aikajakso.tila = 'lasna'
-              and r_opiskeluoikeus_aikajakso.alku <= $viimeistaan
-              and r_opiskeluoikeus_aikajakso.loppu >= $aikaisintaan
-          )
-      ) select
+          oppilaitos_oid,
           oppilaitos_nimi oppilaitos,
-          count(*) filter (where tunnustettu = false) suoritettuja,
+          count(*) yhteensa,
+          count(*) filter (where suoritettu) suoritettuja,
           count(*) filter (where tunnustettu) tunnustettuja,
           count(*) filter (where tunnustettu_rahoituksen_piirissa) tunnustettuja_rahoituksen_piirissa,
-          count(*) filter (where koulutusmoduuli_kurssin_tyyppi = 'pakollinen') pakollisia,
+          count(*) filter (where pakollinen or (valtakunnallinen and syventava)) pakollisia_tai_valtakunnallisia_syventavia,
+          count(*) filter (where pakollinen) pakollisia,
+          count(*) filter (where valtakunnallinen and syventava) valtakunnallisia_syventavia,
+          count(*) filter (where suoritettu and (pakollinen or (valtakunnallinen and syventava))) suoritettuja_pakollisia_ja_valtakunnallisia_syventavia,
+          count(*) filter (where pakollinen and suoritettu) suoritettuja_pakollisia,
+          count(*) filter (where suoritettu and valtakunnallinen and syventava) suoritettuja_valtakunnallisia_syventavia,
+          count(*) filter (where tunnustettu and (pakollinen or (syventava and valtakunnallinen))) tunnustettuja_pakollisia_ja_valtakunnallisia_syventavia,
+          count(*) filter (where tunnustettu and pakollinen) tunnustettuja_pakollisia,
+          count(*) filter (where tunnustettu and valtakunnallinen and syventava) tunnustettuja_valtakunnallisia_syventavia,
+          count(*) filter (where tunnustettu_rahoituksen_piirissa and (pakollinen or (valtakunnallinen and syventava))) tunnustut_pakolliset_ja_valtakunnalliset_syventavat_rahoitus,
+          count(*) filter (where tunnustettu_rahoituksen_piirissa and pakollinen) pakollisia_tunnustettuja_rahoituksen_piirissa,
+          count(*) filter (where valtakunnallinen and syventava and tunnustettu_rahoituksen_piirissa) "valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa",
           count(*) filter (where
-            koulutusmoduuli_paikallinen = false and
-            koulutusmoduuli_kurssin_tyyppi = 'syventava'
-          ) valtakunnallisia_syventavia,
+            valtakunnallinen
+            and (suoritettu or tunnustettu_rahoituksen_piirissa)
+            and opintojen_rahoitus = '6'
+          ) suoritetut_tai_rahoitetut_muuta_kautta_rahoitetut,
           count(*) filter (where
-            koulutusmoduuli_kurssin_tyyppi = 'pakollinen' and
-            tunnustettu = false
-          ) suoritettuja_pakollisia,
-          count(*) filter (where
-            koulutusmoduuli_paikallinen = false and
-            koulutusmoduuli_kurssin_tyyppi = 'syventava' and
-            tunnustettu = false
-          ) suoritettuja_valtakunnallisia_syventavia,
-          count(*) filter (where
-            koulutusmoduuli_kurssin_tyyppi = 'pakollinen' and
-            tunnustettu
-          ) tunnustettuja_pakollisia,
-          count(*) filter (where
-            koulutusmoduuli_paikallinen = false and
-            koulutusmoduuli_kurssin_tyyppi = 'syventava' and
-            tunnustettu
-          ) tunnustettuja_valtakunnallisia_syventavia,
-          count(*) filter (where
-            tunnustettu_rahoituksen_piirissa and
+            valtakunnallinen
+            and (tunnustettu = false or tunnustettu_rahoituksen_piirissa)
+            and opintojen_rahoitus is null
+          ) suoritetut_tai_rahoitetut_rahoitusmuoto_ei_tiedossa
+        from (
+          select
+            r_opiskeluoikeus.oppilaitos_oid,
+            r_opiskeluoikeus.oppilaitos_nimi,
+            tunnustettu,
+            tunnustettu = false as suoritettu,
+            tunnustettu_rahoituksen_piirissa,
+            koulutusmoduuli_kurssin_tyyppi,
+            koulutusmoduuli_kurssin_tyyppi = 'pakollinen' as pakollinen,
+            koulutusmoduuli_kurssin_tyyppi = 'syventava' as syventava,
+            koulutusmoduuli_paikallinen = false as valtakunnallinen,
+            opintojen_rahoitus
+          from r_osasuoritus
+          join r_paatason_suoritus
+            on r_paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id
+          join r_opiskeluoikeus
+            on r_opiskeluoikeus.opiskeluoikeus_oid = r_osasuoritus.opiskeluoikeus_oid
+          join r_opiskeluoikeus_aikajakso
+            on r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid = r_osasuoritus.opiskeluoikeus_oid
+            and r_opiskeluoikeus_aikajakso.alku <= r_osasuoritus.arviointi_paiva
+            and r_opiskeluoikeus_aikajakso.loppu >= r_osasuoritus.arviointi_paiva
+          where r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOids)
+            -- lukion aineoppimäärä
+            and r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
+            and r_osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
+            and r_opiskeluoikeus_aikajakso.tila = 'lasna'
+            -- kurssi menee parametrien sisään
+            and r_osasuoritus.arviointi_paiva >= $aikaisintaan
+            and r_osasuoritus.arviointi_paiva <= $viimeistaan
+          ) kurssit
+        group by
+          oppilaitos_oid,
+          oppilaitos_nimi
+      ) oppimaaran_kurssikertymat
+
+      -- opiskeluoikeuden_ulkopuoliset
+      left join (
+        select
+          r_opiskeluoikeus.oppilaitos_oid,
+          count(*) yhteensa
+        from r_osasuoritus
+        join r_paatason_suoritus
+          on r_paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id
+        join r_opiskeluoikeus
+          on r_opiskeluoikeus.opiskeluoikeus_oid = r_osasuoritus.opiskeluoikeus_oid
+        where r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOids)
+          -- lukion aineoppimäärä
+          and r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
+          and r_osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
+          -- kurssi menee parametrien sisään
+          and r_osasuoritus.arviointi_paiva >= $aikaisintaan
+          and r_osasuoritus.arviointi_paiva <= $viimeistaan
+          -- mutta kurssi jää opiskeluoikeuden ulkopuolelle
+          and (
+            r_osasuoritus.arviointi_paiva < r_opiskeluoikeus.alkamispaiva
+            or (
+              r_osasuoritus.arviointi_paiva > r_opiskeluoikeus.paattymispaiva
+              and r_opiskeluoikeus.viimeisin_tila = 'valmistunut'
+            )
+          )
+          -- pakolliset tai valtakunnalliset syventävät kurssit, jotka ovat joko suoritettuja tai tunnustettuja ja rahoituksen piirissä olevia
+          and (
             koulutusmoduuli_kurssin_tyyppi = 'pakollinen'
-          ) pakollisia_tunnustettuja_rahoituksen_piirissa,
-          count(*) filter (where
-            koulutusmoduuli_paikallinen = false and
-            koulutusmoduuli_kurssin_tyyppi = 'syventava' and
-            tunnustettu_rahoituksen_piirissa
-          ) valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa
-        from oppiaineen_oppimaara
-        join r_osasuoritus on oppiaineen_oppimaara.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id
-        where r_osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
-         and  r_osasuoritus.arviointi_paiva >= $aikaisintaan
-         and  r_osasuoritus.arviointi_paiva <= $viimeistaan
-        group by oppiaineen_oppimaara.oppilaitos_nimi;
+            or (koulutusmoduuli_kurssin_tyyppi = 'syventava' and koulutusmoduuli_paikallinen = false)
+          )
+        group by oppilaitos_oid
+      ) opiskeluoikeuden_ulkopuoliset
+        on opiskeluoikeuden_ulkopuoliset.oppilaitos_oid = oppimaaran_kurssikertymat.oppilaitos_oid;
     """.as[LukioKurssikertymaAineopiskelijaRow]
   }
 
   implicit private val getResult: GetResult[LukioKurssikertymaAineopiskelijaRow] = GetResult(r => {
     val rs: ResultSet = r.rs
     LukioKurssikertymaAineopiskelijaRow(
+      oppilaitosOid = rs.getString("oppilaitos_oid"),
       oppilaitos = rs.getString("oppilaitos"),
+      kurssejaYhteensa = rs.getInt("yhteensa"),
       suoritettujaKursseja = rs.getInt("suoritettuja"),
       tunnustettujaKursseja = rs.getInt("tunnustettuja"),
       tunnustettujaKursseja_rahoituksenPiirissa = rs.getInt("tunnustettuja_rahoituksen_piirissa"),
+      pakollisia_tai_valtakunnallisiaSyventavia = rs.getInt("pakollisia_tai_valtakunnallisia_syventavia"),
       pakollisiaKursseja = rs.getInt("pakollisia"),
       valtakunnallisestiSyventaviaKursseja = rs.getInt("valtakunnallisia_syventavia"),
+      suoritettujaPakollisia_ja_suoritettujaValtakunnallisiaSyventavia = rs.getInt("suoritettuja_pakollisia_ja_valtakunnallisia_syventavia"),
       suoritettujaPakollisiaKursseja = rs.getInt("suoritettuja_pakollisia"),
       suoritettujaValtakunnallisiaSyventaviaKursseja = rs.getInt("suoritettuja_valtakunnallisia_syventavia"),
+      tunnustettujaPakollisia_ja_tunnustettujaValtakunnallisiaSyventavia = rs.getInt("tunnustettuja_pakollisia_ja_valtakunnallisia_syventavia"),
       tunnustettujaPakollisiaKursseja = rs.getInt("tunnustettuja_pakollisia"),
       tunnustettujaValtakunnallisiaSyventaviaKursseja = rs.getInt("tunnustettuja_valtakunnallisia_syventavia"),
+      tunnustettujaRahoituksenPiirissa_pakollisia_ja_valtakunnallisiaSyventavia = rs.getInt("tunnustut_pakolliset_ja_valtakunnalliset_syventavat_rahoitus"),
       tunnustettuja_rahoituksenPiirissa_pakollisia = rs.getInt("pakollisia_tunnustettuja_rahoituksen_piirissa"),
-      tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva = rs.getInt("valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa")
+      tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva = rs.getInt("valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa"),
+      suoritetutTaiRahoitetut_muutaKauttaRahoitetut = rs.getInt("suoritetut_tai_rahoitetut_muuta_kautta_rahoitetut"),
+      suoritetutTaiRahoitetut_rahoitusmuotoEiTiedossa = rs.getInt("suoritetut_tai_rahoitetut_rahoitusmuoto_ei_tiedossa"),
+      suoritetutTaiRahoitetut_eiOpiskeluoikeudenSisalla = rs.getInt("opiskeluoikeuden_ulkopuoliset")
     )
   })
 
   val columnSettings: Seq[(String, Column)] = Seq(
+    "oppilaitosOid" -> Column("Oppilaitoksen oid-tunniste"),
     "oppilaitos" -> Column("Oppilaitos"),
-    "suoritettujaKursseja" -> Column("suoritettujaKursseja"),
-    "tunnustettujaKursseja" -> Column("tunnustettujaKursseja"),
-    "tunnustettujaKursseja_rahoituksenPiirissa" -> Column("tunnustettujaKursseja_rahoituksenPiirissa"),
-    "pakollisiaKursseja" -> Column("pakollisiaKursseja"),
-    "valtakunnallisestiSyventaviaKursseja" -> Column("valtakunnallisestiSyventaviaKursseja"),
-    "suoritettujaPakollisiaKursseja" -> Column("suoritettujaPakollisiaKursseja"),
-    "suoritettujaValtakunnallisiaSyventaviaKursseja" -> Column("suoritettujaValtakunnallisiaSyventaviaKursseja"),
-    "tunnustettujaPakollisiaKursseja" -> Column("tunnustettujaPakollisiaKursseja"),
-    "tunnustettujaValtakunnallisiaSyventaviaKursseja" -> Column("tunnustettujaValtakunnallisiaSyventaviaKursseja"),
-    "tunnustettuja_rahoituksenPiirissa_pakollisia" -> Column("tunnustettuja_rahoituksenPiirissa_pakollisia"),
-    "tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva" -> Column("tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva")
+    "kurssejaYhteensa" -> Column("Kursseja yhteensä", comment = Some("Kaikki sellaiset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään")),
+    "suoritettujaKursseja" -> Column("Suoritetut kurssit", comment = Some("Kaikki sellaiset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja joita ei ole merkitty tunnustetuiksi.")),
+    "tunnustettujaKursseja" -> Column("Tunnustetut kurssit", comment = Some("Kaikki sellaiset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja jotka on merkitty tunnustetuiksi.")),
+    "tunnustettujaKursseja_rahoituksenPiirissa" -> Column("Tunnustetut kurssit - rahoituksen piirissä", comment = Some("Kaikki sellaiset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään, jotka on merkitty tunnustetuiksi ja jotka on merkitty rahoituksen piirissä oleviksi.")),
+    "pakollisia_tai_valtakunnallisiaSyventavia" -> Column("Pakollisia ja valtakunnallisia syventäviä kursseja yhteensä", comment = Some("Kaikki pakolliset ja valtakunnalliset syventävät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään.")),
+    "pakollisiaKursseja" -> Column("Pakollisia kursseja yhteensä", comment = Some("Kaikki pakolliset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään.")),
+    "valtakunnallisestiSyventaviaKursseja" -> Column("Valtakunnallisia syventäviä kursseja yhteensä", comment = Some("Kaikki valtakunnalliset syventävät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään.")),
+    "suoritettujaPakollisia_ja_suoritettujaValtakunnallisiaSyventavia" -> Column("Suoritettuja pakollisia ja valtakunnallisia syventäviä kursseja", comment = Some("Kaikki pakolliset ja valtakunnalliset syventävät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja joita ei ole merkitty tunnustetuiksi.")),
+    "suoritettujaPakollisiaKursseja" -> Column("Suoritettuja pakollisia kursseja", comment = Some("Kaikki pakolliset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja joita ei ole merkitty tunnustetuiksi.")),
+    "suoritettujaValtakunnallisiaSyventaviaKursseja" -> Column("Suoritettuja valtakunnallisia syventäviä kursseja", comment = Some("Kaikki valtakunnalliset syventävät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja joita ei ole merkitty tunnustetuiksi.")),
+    "tunnustettujaPakollisia_ja_tunnustettujaValtakunnallisiaSyventavia" -> Column("Tunnustettuja pakollisia ja valtakunnallisia syventäviä kursseja", comment = Some("Kaikki pakolliset ja valtakunnalliset syventävät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja jotka on merkitty tunnustetuiksi.")),
+    "tunnustettujaPakollisiaKursseja" -> Column("Tunnustettuja pakollisia kursseja", comment = Some("Kaikki pakolliset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja jotka on merkitty tunnustetuiksi.")),
+    "tunnustettujaValtakunnallisiaSyventaviaKursseja" -> Column("Tunnustettuja valtakunnallisia syventäviä kursseja", comment = Some("Kaikki valtakunnalliset syventävät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja jotka on merkitty tunnustetuiksi.")),
+    "tunnustettujaRahoituksenPiirissa_pakollisia_ja_valtakunnallisiaSyventavia" -> Column("Tunnustetuista pakollisista ja valtakunnallisista syventävistä kursseista rahoituksen piirissä", comment = Some("Kaikki pakolliset ja valtakunnalliset syventävät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja jotka on merkitty sekä tunnustetuiksi että rahoituksen piirissä oleviksi.")),
+    "tunnustettuja_rahoituksenPiirissa_pakollisia" -> Column("Tunnustetuista pakollisista kursseista rahoituksen piirissä", comment = Some("Kaikki pakolliset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja jotka on merkitty sekä tunnustetuiksi että rahoituksen piirissä oleviksi.")),
+    "tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva" -> Column("Tunnustetuista valtakunnallisista syventävistä kursseista rahoituksen piirissä", comment = Some("Kaikki valtakunnalliset syventävät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja jotka on merkitty sekä tunnustetuiksi että rahoituksen piirissä oleviksi.")),
+    "suoritetutTaiRahoitetut_muutaKauttaRahoitetut" -> Column("Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit - muuta kautta rahoitetut", comment = Some("Aineopintojen suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut pakolliset tai valtakunnalliset syventävät kurssit, joiden arviointipäivä osuu muuta kautta rahoitetun läsnäolojakson sisälle. Kurssien tunnistetiedot löytyvät välilehdeltä ”Muuta kautta rah.”")),
+    "suoritetutTaiRahoitetut_rahoitusmuotoEiTiedossa" -> Column("Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit, joilla ei rahoitustietoa", comment = Some("Aineopintojen suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut pakolliset tai valtakunnalliset syventävät kurssit, joiden arviointipäivä osuus sellaiselle tilajaksolle, jolta ei löydy tietoa rahoitusmuodosta. Kurssien tunnistetiedot löytyvät välilehdeltä ”Ei rahoitusmuotoa”.")),
+    "suoritetutTaiRahoitetut_eiOpiskeluoikeudenSisalla" -> Column("Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit – arviointipäivä ei opiskeluoikeuden sisällä", comment = Some("Aineopintojen suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut pakolliset tai valtakunnalliset syventävät kurssit, joiden arviointipäivä on aikaisemmin kuin opiskeluoikeuden alkamispäivä, joiden arviointipäivä on myöhemmin kuin ”Valmistunut”-tilan päivä. Kurssien tunnistetiedot löytyvät välilehdeltä ”Opiskeluoikeuden ulkop.”.")),
   )
 }
 
 case class LukioKurssikertymaAineopiskelijaRow(
+  oppilaitosOid: String,
   oppilaitos: String,
+  kurssejaYhteensa: Int,
   suoritettujaKursseja: Int,
   tunnustettujaKursseja: Int,
   tunnustettujaKursseja_rahoituksenPiirissa: Int,
+  pakollisia_tai_valtakunnallisiaSyventavia: Int,
   pakollisiaKursseja: Int,
   valtakunnallisestiSyventaviaKursseja: Int,
+  suoritettujaPakollisia_ja_suoritettujaValtakunnallisiaSyventavia: Int,
   suoritettujaPakollisiaKursseja: Int,
   suoritettujaValtakunnallisiaSyventaviaKursseja: Int,
+  tunnustettujaPakollisia_ja_tunnustettujaValtakunnallisiaSyventavia: Int,
   tunnustettujaPakollisiaKursseja: Int,
   tunnustettujaValtakunnallisiaSyventaviaKursseja: Int,
+  tunnustettujaRahoituksenPiirissa_pakollisia_ja_valtakunnallisiaSyventavia: Int,
   tunnustettuja_rahoituksenPiirissa_pakollisia: Int,
-  tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva: Int
+  tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva: Int,
+  suoritetutTaiRahoitetut_muutaKauttaRahoitetut: Int,
+  suoritetutTaiRahoitetut_rahoitusmuotoEiTiedossa: Int,
+  suoritetutTaiRahoitetut_eiOpiskeluoikeudenSisalla: Int
 )
