@@ -412,7 +412,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   }
 
   private def nimi(suoritus: Node): LocalizedString = {
-    sanitize((suoritus \\ "Nimi" map (nimi => ((nimi \ "@kieli").text, nimi.text))).toMap).getOrElse(finnish("Suoritus: " + avain(suoritus)))
+    sanitize((suoritus \ "Nimi" map { nimi => (nimi \ "@kieli").text -> nimi.text }).toMap).getOrElse(finnish("Suoritus: " + avain(suoritus)))
   }
 
   private def oppilaitos(node: Node, vahvistusPäivä: Option[LocalDate]): Oppilaitos =
