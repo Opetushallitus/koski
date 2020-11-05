@@ -91,12 +91,13 @@ describe('Oppijataulukko', function() {
           "IB-Pre-IB-uusilukio, Pate",
           'IB-final, Iina',
           'IB-predicted, Petteri',
-          'Kurssikertyma, Aineopiskelija',
+          'Kurssikertyma, Eronnut Aineopiskelija',
+          'Kurssikertyma, Valmistunut Aineopiskelija',
           'aine, opiskelija',
           'dia, opiskelija',
           'ib, opiskelija'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('7')
+        expect(page.opiskeluoikeudeTotal()).to.equal('8')
       })
     })
 
@@ -107,8 +108,9 @@ describe('Oppijataulukko', function() {
           'Eerola, Jouni',
           'Eiperusteissa, Erkki',
           'Esimerkki, Eero',
-          'Kurssikertyma, Aineopiskelija',
+          'Kurssikertyma, Eronnut Aineopiskelija',
           'Kurssikertyma, Oppimaara',
+          'Kurssikertyma, Valmistunut Aineopiskelija',
           'Liiketalous, Lilli',
           'Luva, Aikuisten',
           'Luva, Nuorten',
@@ -117,7 +119,7 @@ describe('Oppijataulukko', function() {
           'Tekijä, Teija',
           'Tiedonsiirto, Tiina'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('12')
+        expect(page.opiskeluoikeudeTotal()).to.equal('13')
       })
     })
 
@@ -138,14 +140,15 @@ describe('Oppijataulukko', function() {
           'Kelalle, Useita',
           'Koululainen, Kaisa',
           'Koululainen, Kaisa',
-          'Kurssikertyma, Aineopiskelija',
+          'Kurssikertyma, Eronnut Aineopiskelija',
           'Kurssikertyma, Oppimaara',
+          'Kurssikertyma, Valmistunut Aineopiskelija',
           'Lisä-Eskari, Essiina',
           'Lukioaineopiskelija, Aino',
           'Monikoululainen, Miia',
           'Valviralle, Veera'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('12')
+        expect(page.opiskeluoikeudeTotal()).to.equal('13')
       })
     })
   })
