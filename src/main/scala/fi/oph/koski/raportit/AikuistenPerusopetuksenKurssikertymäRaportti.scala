@@ -15,16 +15,16 @@ import scala.concurrent.duration._
 case class AikuistenPerusopetuksenKurssikertymäRaportti(db: DB, organisaatioService: OrganisaatioService) extends KoskiDatabaseMethods {
   implicit private val getResult: GetResult[AikuistenPerusopetuksenKurssikertymäRaporttiRow] = GetResult(r =>
     AikuistenPerusopetuksenKurssikertymäRaporttiRow(
-      oppilaitos = r.<<,
-      yhteensäSuorituksia = r.<<,
-      yhteensäTunnistettujaSuorituksia = r.<<,
-      yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä = r.<<,
-      päättövaiheenSuorituksia = r.<<,
-      päättövaiheenTunnistettujaSuorituksia = r.<<,
-      päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä = r.<<,
-      alkuvaiheenSuorituksia = r.<<,
-      alkuvaiheenTunnistettujaSuorituksia = r.<<,
-      alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä = r.<<
+      oppilaitos =  r.rs.getString("oppilaitos_nimi"),
+      yhteensäSuorituksia = r.rs.getInt("yhteensäSuorituksia"),
+      yhteensäTunnistettujaSuorituksia = r.rs.getInt("yhteensäTunnistettujaSuorituksia"),
+      yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä = r.rs.getInt("yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä"),
+      päättövaiheenSuorituksia = r.rs.getInt("päättövaiheenSuorituksia"),
+      päättövaiheenTunnistettujaSuorituksia = r.rs.getInt("päättövaiheenTunnistettujaSuorituksia"),
+      päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä = r.rs.getInt("päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä"),
+      alkuvaiheenSuorituksia = r.rs.getInt("alkuvaiheenSuorituksia"),
+      alkuvaiheenTunnistettujaSuorituksia = r.rs.getInt("alkuvaiheenTunnistettujaSuorituksia"),
+      alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä = r.rs.getInt("alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä")
     )
   )
 
@@ -58,16 +58,16 @@ case class AikuistenPerusopetuksenKurssikertymäRaportti(db: DB, organisaatioSer
                   and r_opiskeluoikeus_aikajakso.loppu >= $aikaisintaan
               )
       ) select
-          oppilaitos_nimi oppilaitos,
-          count(*) filter (where tunnustettu = false) suoritettuja,
-          count(*) filter (where tunnustettu) tunnustettuja,
-          count(*) filter (where tunnustettu_rahoituksen_piirissa) tunnustettuja_rahoituksen_piirissa,
-          count(*) filter (where tunnustettu = false and suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi') suoritettuja,
-          count(*) filter (where tunnustettu and suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi') tunnustettuja,
-          count(*) filter (where tunnustettu_rahoituksen_piirissa and suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi') tunnustettuja_rahoituksen_piirissa,
-          count(*) filter (where tunnustettu = false and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi') suoritettuja,
-          count(*) filter (where tunnustettu and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi') tunnustettuja,
-          count(*) filter (where tunnustettu_rahoituksen_piirissa and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi') tunnustettuja_rahoituksen_piirissa
+          oppilaitos_nimi oppilaitos_nimi,
+          count(*) filter (where tunnustettu = false) yhteensäSuorituksia,
+          count(*) filter (where tunnustettu) yhteensäTunnistettujaSuorituksia,
+          count(*) filter (where tunnustettu_rahoituksen_piirissa) yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä,
+          count(*) filter (where tunnustettu = false and suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi') päättövaiheenSuorituksia,
+          count(*) filter (where tunnustettu and suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi') päättövaiheenTunnistettujaSuorituksia,
+          count(*) filter (where tunnustettu_rahoituksen_piirissa and suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi') päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä,
+          count(*) filter (where tunnustettu = false and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi') alkuvaiheenSuorituksia,
+          count(*) filter (where tunnustettu and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi') alkuvaiheenTunnistettujaSuorituksia,
+          count(*) filter (where tunnustettu_rahoituksen_piirissa and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi') alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä
         from paatason_suoritus
         join r_osasuoritus on (paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id or opiskeluoikeus_oid = r_osasuoritus.sisaltyy_opiskeluoikeuteen_oid)
         where (r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi')
