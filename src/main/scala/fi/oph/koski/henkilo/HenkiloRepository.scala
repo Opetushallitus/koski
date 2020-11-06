@@ -46,8 +46,6 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
   def findByOid(oid: String, findMasterIfSlaveOid: Boolean = false): Option[LaajatOppijaHenkilöTiedot] = oidCache(HenkilöCacheKey(oid, findMasterIfSlaveOid))
   // Other methods just call the non-cached implementation
 
-  def findByOidsNoSlaveOids(oids: List[String]): List[OppijaHenkilö] = opintopolku.findByOidsNoSlaveOids(oids)
-
   def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, OppijaHenkilö] = opintopolku.findOrCreate(henkilö)
 
   // Etsii oppija-henkilön hetun perusteella oppijanumerorekisteristä. Jos henkilöä ei löydy oppijanumerorekisteristä,
@@ -94,8 +92,8 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
     }
   }
 
-  def findHenkilötiedotNoSlaveOids(query: String)(implicit user: KoskiSession): List[OppijaHenkilö] =
-    findByOidsNoSlaveOids(perustiedotRepository.findOids(query))
+  def findByOids(query: String)(implicit session: KoskiSession): List[LaajatOppijaHenkilöTiedot] =
+    opintopolku.findMastersByOids(perustiedotRepository.findOids(query))
 
   def oppijaHenkilöToTäydellisetHenkilötiedot(henkilö: OppijaHenkilö): TäydellisetHenkilötiedot =
     opintopolku.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö)

@@ -105,13 +105,12 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
     henkilöt.findMasterOppija(oid)
   }
 
-  def findByOid(oid: String): Option[LaajatOppijaHenkilöTiedot] = {
-    henkilöt.findOppijaByOid(oid)
+  def findMastersByOids(oids: List[String]): List[LaajatOppijaHenkilöTiedot] = {
+    henkilöt.findMasterOppijat(oids).values.toList
   }
 
-  def findByOidsNoSlaveOids(oids: List[String]): List[OppijaHenkilö] = oids match {
-    case Nil => Nil // <- authentication-service fails miserably with empty input list
-    case _ => henkilöt.findOppijatNoSlaveOids(oids)
+  def findByOid(oid: String): Option[LaajatOppijaHenkilöTiedot] = {
+    henkilöt.findOppijaByOid(oid)
   }
 
   // Hakee master-henkilön, jos eri kuin tämä henkilö
