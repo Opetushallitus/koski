@@ -235,7 +235,8 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
       näytönArviointiPäivä = None,
       tunnustettu = false,
       tunnustettuRahoituksenPiirissä = false,
-      data = mockJValueData(tutkinnonOsanRyhmä)
+      data = mockJValueData(tutkinnonOsanRyhmä),
+      sisältyyOpiskeluoikeuteenOid = None
     )
   }
 

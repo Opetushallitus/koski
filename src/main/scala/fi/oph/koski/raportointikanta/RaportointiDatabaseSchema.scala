@@ -259,7 +259,7 @@ object RaportointiDatabaseSchema {
       koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutusmoduuliKoulutustyyppi,
       koulutusmoduuliLaajuusArvo, koulutusmoduuliLaajuusYksikkö, koulutusmoduuliNimi, suorituskieliKoodiarvo, oppimääräKoodiarvo, vahvistusPäivä,
       arviointiArvosanaKoodiarvo, arviointiArvosanaKoodisto, arviointiHyväksytty, arviointiPäivä,
-      toimipisteOid, toimipisteNimi, data) <> (RPäätasonSuoritusRow.tupled, RPäätasonSuoritusRow.unapply)
+      toimipisteOid, toimipisteNimi, data, sisältyyOpiskeluoikeuteenOid) <> (RPäätasonSuoritusRow.tupled, RPäätasonSuoritusRow.unapply)
   }
   class RPäätasonSuoritusTableTemp(tag: Tag) extends RPäätasonSuoritusTable(tag, Temp)
 
@@ -314,6 +314,7 @@ object RaportointiDatabaseSchema {
       tunnustettu ::
       tunnustettuRahoituksenPiirissä ::
       data ::
+      sisältyyOpiskeluoikeuteenOid ::
       HNil
     ).mappedWith(Generic[ROsasuoritusRow])
   }
