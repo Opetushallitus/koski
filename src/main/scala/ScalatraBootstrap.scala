@@ -1,5 +1,5 @@
 import fi.oph.koski.cache.CacheServlet
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{AppConfig, Environment, KoskiApplication}
 import fi.oph.koski.db._
 import fi.oph.koski.documentation.{DocumentationApiServlet, DocumentationServlet, KoodistoServlet}
 import fi.oph.koski.editor.{EditorKooditServlet, EditorServlet}

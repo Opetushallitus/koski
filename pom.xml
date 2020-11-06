@@ -280,6 +280,11 @@
       <artifactId>sts</artifactId>
       <version>${awssdk.version}</version>
     </dependency>
+    <dependency>
+      <groupId>software.amazon.awssdk</groupId>
+      <version>${awssdk.version}</version>
+      <artifactId>appconfig</artifactId>
+    </dependency>
     <!-- test deps -->
     <dependency>
       <groupId>org.scalatest</groupId>
