@@ -26,7 +26,15 @@ import org.json4s.{JArray, JValue}
 // scalastyle:off line.size.limit
 // scalastyle:off number.of.methods
 
-class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoViitePalvelu, val organisaatioRepository: OrganisaatioRepository, koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository, henkilöRepository: HenkilöRepository, ePerusteet: EPerusteetRepository, config: Config) extends Timing {
+class KoskiValidator(
+  tutkintoRepository: TutkintoRepository,
+  val koodistoPalvelu: KoodistoViitePalvelu,
+  val organisaatioRepository: OrganisaatioRepository,
+  koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository,
+  henkilöRepository: HenkilöRepository,
+  ePerusteet: EPerusteetRepository,
+  config: Config
+) extends Timing {
   def validateAsJson(oppija: Oppija)(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
     extractAndValidateOppija(JsonSerializer.serialize(oppija))
   }
@@ -40,11 +48,11 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   def extractAndValidateOppija(parsedJson: JValue)(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
-    timed("extractAndValidateOppija"){
-      val extractionResult: Either[HttpStatus, Oppija] = timed("extract")(ValidatingAndResolvingExtractor.extract[Oppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository)))
-      extractionResult.right.flatMap { oppija =>
-        validateOpiskeluoikeudet(oppija)
+    timed("extractAndValidateOppija") {
+      val extractionResult: Either[HttpStatus, Oppija] = {
+        ValidatingAndResolvingExtractor.extract[Oppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository))
       }
+      extractionResult.right.flatMap(validateOpiskeluoikeudet)
     }
   }
 
@@ -57,7 +65,9 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   def extractOpiskeluoikeus(parsedJson: JValue): Either[HttpStatus, Opiskeluoikeus] = {
-    timed("extract")(ValidatingAndResolvingExtractor.extract[Opiskeluoikeus](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository)))
+    timed("extract")(
+      ValidatingAndResolvingExtractor.extract[Opiskeluoikeus](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository))
+    )
   }
 
   private def validateOpiskeluoikeudet(oppija: Oppija)(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
