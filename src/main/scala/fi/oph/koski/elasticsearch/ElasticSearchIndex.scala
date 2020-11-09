@@ -27,6 +27,7 @@ class ElasticSearchIndex(
 
   lazy val init: Future[Any] = {
     val indexChanged = if (indexExists) {
+      logger.info("ElasticSearch index exists")
       timed("Migrating index")(migrateIndex)
     } else {
       createIndex
@@ -51,7 +52,6 @@ class ElasticSearchIndex(
 
   private def migrateIndex: Boolean = {
     // TODO: Pitäisi myös käsitellä mappingin muuttuminen
-    logger.info("ElasticSearch index exists")
     val serverSettings = Http.runTask(http.get(uri"/${name}/_settings")(Http.parseJson[JValue])) \ name \ "settings" \ "index"
     val mergedSettings = serverSettings.merge(settings)
     val alreadyApplied = mergedSettings == serverSettings
