@@ -4,6 +4,7 @@ import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.koodisto.{KoodistoResolvingCustomDeserializer, KoodistoViitePalvelu}
 import fi.oph.koski.organisaatio.{OrganisaatioRepository, OrganisaatioResolvingCustomDeserializer}
 import fi.oph.koski.schema.JaksoCustomDeserializer
+import fi.oph.koski.schema.KoskiSchema.deserializationContext
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import fi.oph.scalaschema.extraction.ValidationError
 import org.json4s._
@@ -11,7 +12,6 @@ import org.json4s._
 import scala.reflect.runtime.universe.TypeTag
 
 object ValidatingAndResolvingExtractor {
-  import fi.oph.koski.schema.KoskiSchema.deserializationContext
   /**
    *  Extracts object from json value, and validates/resolves all KoodistoKoodiViite objects on the way.
    */
