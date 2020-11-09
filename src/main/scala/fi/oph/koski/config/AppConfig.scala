@@ -1,11 +1,9 @@
 package fi.oph.koski.config
 
+import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.http.Http
 import fi.oph.koski.http.Http._
 import fi.oph.koski.log.Logging
-import java.nio.file.{Files, Paths, StandardOpenOption}
-import java.nio.charset.StandardCharsets
-
 import software.amazon.awssdk.services.appconfig.AppConfigClient
 import software.amazon.awssdk.services.appconfig.model._
 
@@ -33,13 +31,10 @@ object AppConfig extends Logging {
     .clientId(clientId)
     .build
 
-  def writeConfiguration: Any = {
-      val configFilePath = sys.props.getOrElse("config.file", "koski.conf")
-
-      val configContent = appConfigClient.getConfiguration(appConfigClientRequest)
+  def createConfig: Config = {
+    val configContent = appConfigClient.getConfiguration(appConfigClientRequest)
         .content()
         .asUtf8String()
-
-      Files.write(Paths.get(configFilePath), configContent.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE)
+    ConfigFactory.parseString(configContent)
     }
 }

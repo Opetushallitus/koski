@@ -3,7 +3,7 @@ package fi.oph.koski.jettylauncher
 import java.lang.management.ManagementFactory
 import java.nio.file.{Files, Paths}
 
-import com.typesafe.config.ConfigFactory
+import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.cache.JMXCacheManager
 import fi.oph.koski.config.{AppConfig, Environment, KoskiApplication}
 import fi.oph.koski.executors.Pools
@@ -23,9 +23,13 @@ import org.eclipse.jetty.webapp.WebAppContext
 
 object JettyLauncher extends App with Logging {
   lazy val globalPort = System.getProperty("koski.port","7021").toInt
-  if (Environment.usesAwsAppConfig) AppConfig.writeConfiguration
+  def config: Config = if (Environment.usesAwsAppConfig) {
+    ConfigFactory.load(AppConfig.createConfig)
+  } else {
+    ConfigFactory.load
+  }
   try {
-    val application = new KoskiApplication(KoskiApplication.defaultConfig, new JMXCacheManager)
+    val application = new KoskiApplication(config, new JMXCacheManager)
     new JettyLauncher(globalPort, application).start.join
   } catch {
     case e: Throwable =>
