@@ -69,7 +69,6 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
       on r_koodisto_koodi.koodisto_uri = split_part(r_organisaatio_kieli.kielikoodi, '_', 1)
       and r_koodisto_koodi.koodiarvo = split_part(split_part(r_organisaatio_kieli.kielikoodi, '_', 2), '#', 1)
     join r_organisaatio on r_organisaatio.organisaatio_oid = oppilaitos_oid
-    left join r_paatason_suoritus on r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
     where r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOidit)
       and r_opiskeluoikeus.koulutusmuoto = 'aikuistenperusopetus'
       and aikajakso.alku <= $päivä
