@@ -16,7 +16,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
     application.henkilöRepository.opintopolku.henkilöt.asInstanceOf[MockOpintopolkuHenkilöFacade].resetFixtures
     application.localizationRepository.asInstanceOf[MockLocalizationRepository].reset
     application.tiedonsiirtoService.deleteAll
-    logger.info("Reset application fixtures")
+    logger.info("Reloaded application fixtures")
   }
 
   def shouldUseFixtures = {
@@ -27,13 +27,13 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
       KoskiDatabaseConfig(config).isLocal && config.getString("opintopolku.virkailija.url") == "mock"
     }
     if (useFixtures && !Environment.isLocalDevelopmentEnvironment) {
-      throw new RuntimeException("Trying to use fixtures when running in a server environment")
+      throw new RuntimeException("Using fixtures is only allowed in local development environment")
     }
     if (useFixtures && application.masterDatabase.databaseIsLarge) {
-      throw new RuntimeException("Trying to use fixtures against a database with more than 100 rows")
+      throw new RuntimeException("Using fixtures not allowed with a large database (make sure you are using a local database)")
     }
     if (useFixtures && application.perustiedotIndexer.indexIsLarge) {
-      throw new RuntimeException("Trying to use fixtures against an ElasticSearch index with more than 100 rows")
+      throw new RuntimeException("Using fixtures not allowed with a large ElasticSearch index (make sure you are using local Elasticsearch)")
     }
     useFixtures
   }
