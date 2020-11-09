@@ -2,6 +2,7 @@ package fi.oph.koski.elasticsearch
 
 import com.typesafe.config.Config
 import fi.oph.koski.db.BackgroundExecutionContext
+import fi.oph.koski.util.Timing
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatusException}
 import fi.oph.koski.json.JsonSerializer.extract
@@ -11,6 +12,7 @@ import org.http4s.EntityEncoder
 import org.json4s.jackson.JsonMethods
 import org.json4s._
 import rx.lang.scala.Observable
+
 import scala.concurrent.Future
 
 class ElasticSearchIndex(
@@ -20,12 +22,12 @@ class ElasticSearchIndex(
   val mappingType: String,
   val mapping: JValue,
   val settings: JValue
-) extends Logging with BackgroundExecutionContext {
+) extends Logging with Timing with BackgroundExecutionContext {
   protected def http: Http = elastic.http
 
   lazy val init: Future[Any] = {
     val indexChanged = if (indexExists) {
-      migrateIndex
+      timed("Migrating index")(migrateIndex)
     } else {
       createIndex
     }
@@ -50,7 +52,7 @@ class ElasticSearchIndex(
   private def migrateIndex: Boolean = {
     // TODO: Pitäisi myös käsitellä mappingin muuttuminen
     logger.info("ElasticSearch index exists")
-    val serverSettings = (Http.runTask(http.get(uri"/${name}/_settings")(Http.parseJson[JValue])) \ name \ "settings" \ "index")
+    val serverSettings = Http.runTask(http.get(uri"/${name}/_settings")(Http.parseJson[JValue])) \ name \ "settings" \ "index"
     val mergedSettings = serverSettings.merge(settings)
     val alreadyApplied = mergedSettings == serverSettings
     if (alreadyApplied) {

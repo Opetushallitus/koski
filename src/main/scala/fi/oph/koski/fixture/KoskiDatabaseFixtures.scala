@@ -78,10 +78,16 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
 
   private lazy val opiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = validatedOpiskeluoikeudet ++ invalidOpiskeluoikeudet
 
-  private lazy val validatedOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = defaultOpiskeluOikeudet.map { case (henkilö, oikeus) =>
-    validator.validateAsJson(Oppija(henkilö.toHenkilötiedotJaOid, List(oikeus))) match {
-      case Right(oppija) => (henkilö, oppija.tallennettavatOpiskeluoikeudet(0))
-      case Left(status) => throw new RuntimeException("Fixture insert failed for " + henkilö.etunimet + " " + henkilö.sukunimi +  " with data " + JsonSerializer.write(oikeus) + ": " + status)
+  private lazy val validatedOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
+    defaultOpiskeluOikeudet.zipWithIndex.map { case ((henkilö, oikeus), index) =>
+      timed(s"Validating fixture ${index}", 500) {
+        validator.validateAsJson(Oppija(henkilö.toHenkilötiedotJaOid, List(oikeus))) match {
+          case Right(oppija) => (henkilö, oppija.tallennettavatOpiskeluoikeudet.head)
+          case Left(status) => throw new RuntimeException(
+            s"Fixture insert failed for ${henkilö.etunimet} ${henkilö.sukunimi} with data ${JsonSerializer.write(oikeus)}: ${status}"
+          )
+        }
+      }
     }
   }
 

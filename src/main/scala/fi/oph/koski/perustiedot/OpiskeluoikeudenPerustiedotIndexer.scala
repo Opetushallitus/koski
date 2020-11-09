@@ -2,6 +2,7 @@ package fi.oph.koski.perustiedot
 
 import com.typesafe.config.Config
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.util.Timing.timed
 import fi.oph.koski.elasticsearch.{ElasticSearch, ElasticSearchIndex}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer.extract
@@ -63,7 +64,9 @@ class OpiskeluoikeudenPerustiedotIndexer(
 ) {
 
   def updatePerustiedot(items: Seq[OpiskeluoikeudenOsittaisetTiedot], upsert: Boolean): Either[HttpStatus, Int] = {
-    updatePerustiedotRaw(items.map(OpiskeluoikeudenPerustiedot.serializePerustiedot), upsert)
+    timed("Updating perustiedot index", 500) {
+      updatePerustiedotRaw(items.map(OpiskeluoikeudenPerustiedot.serializePerustiedot), upsert)
+    }
   }
 
   def updatePerustiedotRaw(items: Seq[JValue], upsert: Boolean): Either[HttpStatus, Int] = {

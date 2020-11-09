@@ -2,6 +2,7 @@ import fi.oph.koski.cache.CacheServlet
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db._
 import fi.oph.koski.documentation.{DocumentationApiServlet, DocumentationServlet, KoodistoServlet}
+import fi.oph.koski.util.Timing
 import fi.oph.koski.editor.{EditorKooditServlet, EditorServlet}
 import fi.oph.koski.etk.ElaketurvakeskusServlet
 import fi.oph.koski.fixture.FixtureServlet
@@ -37,7 +38,7 @@ import fi.oph.koski.ytr.{YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
 import javax.servlet.ServletContext
 import org.scalatra._
 
-class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionContext {
+class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalExecutionContext {
   override def init(context: ServletContext) = try {
     def mount(path: String, handler: Handler) = context.mount(handler, path)
 
@@ -109,7 +110,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
 
     if (application.fixtureCreator.shouldUseFixtures) {
       context.mount(new FixtureServlet, "/fixtures")
-      application.fixtureCreator.resetFixtures
+      timed("Loading fixtures")(application.fixtureCreator.resetFixtures)
     }
   } catch {
     case e: Exception =>

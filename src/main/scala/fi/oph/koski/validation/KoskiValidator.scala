@@ -36,7 +36,8 @@ class KoskiValidator(
   config: Config
 ) extends Timing {
   def validateAsJson(oppija: Oppija)(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
-    extractAndValidateOppija(JsonSerializer.serialize(oppija))
+    val serialized = timed("Oppija serialization", 500) {JsonSerializer.serialize(oppija)}
+    extractAndValidateOppija(serialized)
   }
 
   def extractAndValidateBatch(oppijatJson: JArray)(implicit user: KoskiSession, accessType: AccessType.Value): List[(Either[HttpStatus, Oppija], JValue)] = {
