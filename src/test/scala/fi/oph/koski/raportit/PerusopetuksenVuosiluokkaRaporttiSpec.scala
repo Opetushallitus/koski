@@ -15,7 +15,14 @@ import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema._
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
-class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with OpiskeluoikeusTestMethodsPerusopetus with BeforeAndAfterAll {
+class PerusopetuksenVuosiluokkaRaporttiSpec
+  extends FreeSpec
+    with Matchers
+    with RaportointikantaTestMethods
+    with OpiskeluoikeusTestMethodsPerusopetus
+    with BeforeAndAfterAll {
+
+  override def beforeAll(): Unit = loadRaportointikantaFixtures
 
   lazy val repository = PerusopetuksenRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
 
