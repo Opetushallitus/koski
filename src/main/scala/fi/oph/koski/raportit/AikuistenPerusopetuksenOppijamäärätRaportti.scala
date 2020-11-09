@@ -49,18 +49,18 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
       r_opiskeluoikeus.oppilaitos_oid,
       r_opiskeluoikeus.oppilaitos_nimi,
       r_koodisto_koodi.nimi,
-      count(*) as oppilaidenMääräYhteensä,
-      count(case when opintojen_rahoitus = '1' then 1 end) as oppilaidenMääräVOS,
-      count(case when opintojen_rahoitus != '1' then 1 end) as oppilaidenMääräMuuKuinVOS,
-      count(case when oppimaaran_suorittaja then 1 end) oppimääränSuorittajiaYhteensä,
-      count(case when opintojen_rahoitus = '1' and oppimaaran_suorittaja then 1 end) as oppimääränSuorittajiaVOS,
-      count(case when opintojen_rahoitus != '1' and oppimaaran_suorittaja then 1 end) as oppimääränSuorittajiaMuuKuinVOS,
-      count(case when not oppimaaran_suorittaja then 1 end) as aineopiskelijoitaYhteensä,
-      count(case when opintojen_rahoitus = '1' and not oppimaaran_suorittaja then 1 end) as aineopiskelijoitaVOS,
-      count(case when opintojen_rahoitus != '1' and not oppimaaran_suorittaja then 1 end) as aineopiskelijoitaMuuKuinVOS,
-      count(case when aidinkieli not in('fi', 'sv', 'se', 'ri', 'vk') then 1 end) as vieraskielisiäYhteensä,
-      count(case when aidinkieli not in('fi', 'sv', 'se', 'ri', 'vk') and opintojen_rahoitus = '1' then 1 end) as vieraskielisiäVOS,
-      count(case when aidinkieli not in('fi', 'sv', 'se', 'ri', 'vk') and opintojen_rahoitus != '1' then 1 end) as vieraskielisiäMuuKuinVOS
+      count(distinct r_opiskeluoikeus.opiskeluoikeus_oid) as oppilaidenMääräYhteensä,
+      count(distinct (case when opintojen_rahoitus = '1' then r_opiskeluoikeus.opiskeluoikeus_oid end)) as oppilaidenMääräVOS,
+      count(distinct (case when opintojen_rahoitus != '1' then r_opiskeluoikeus.opiskeluoikeus_oid end)) as oppilaidenMääräMuuKuinVOS,
+      count(distinct (case when oppimaaran_suorittaja then r_opiskeluoikeus.opiskeluoikeus_oid end)) oppimääränSuorittajiaYhteensä,
+      count(distinct (case when opintojen_rahoitus = '1' and oppimaaran_suorittaja then r_opiskeluoikeus.opiskeluoikeus_oid end)) as oppimääränSuorittajiaVOS,
+      count(distinct (case when opintojen_rahoitus != '1' and oppimaaran_suorittaja then r_opiskeluoikeus.opiskeluoikeus_oid end)) as oppimääränSuorittajiaMuuKuinVOS,
+      count(distinct (case when not oppimaaran_suorittaja then r_opiskeluoikeus.opiskeluoikeus_oid end)) as aineopiskelijoitaYhteensä,
+      count(distinct (case when opintojen_rahoitus = '1' and not oppimaaran_suorittaja then r_opiskeluoikeus.opiskeluoikeus_oid end)) as aineopiskelijoitaVOS,
+      count(distinct (case when opintojen_rahoitus != '1' and not oppimaaran_suorittaja then r_opiskeluoikeus.opiskeluoikeus_oid end)) as aineopiskelijoitaMuuKuinVOS,
+      count(distinct (case when aidinkieli not in('fi', 'sv', 'se', 'ri', 'vk') then r_opiskeluoikeus.opiskeluoikeus_oid end)) as vieraskielisiäYhteensä,
+      count(distinct (case when aidinkieli not in('fi', 'sv', 'se', 'ri', 'vk') and opintojen_rahoitus = '1' then r_opiskeluoikeus.opiskeluoikeus_oid end)) as vieraskielisiäVOS,
+      count(distinct (case when aidinkieli not in('fi', 'sv', 'se', 'ri', 'vk') and opintojen_rahoitus != '1' then r_opiskeluoikeus.opiskeluoikeus_oid end)) as vieraskielisiäMuuKuinVOS
     from r_opiskeluoikeus
     join r_henkilo on r_henkilo.oppija_oid = r_opiskeluoikeus.oppija_oid
     join r_opiskeluoikeus_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
@@ -69,7 +69,6 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
       on r_koodisto_koodi.koodisto_uri = split_part(r_organisaatio_kieli.kielikoodi, '_', 1)
       and r_koodisto_koodi.koodiarvo = split_part(split_part(r_organisaatio_kieli.kielikoodi, '_', 2), '#', 1)
     join r_organisaatio on r_organisaatio.organisaatio_oid = oppilaitos_oid
-    left join r_paatason_suoritus on r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
     where r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOidit)
       and r_opiskeluoikeus.koulutusmuoto = 'aikuistenperusopetus'
       and aikajakso.alku <= $päivä
