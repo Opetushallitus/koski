@@ -39,7 +39,9 @@ class Timer(blockname: String, thresholdMs: Int, clazz: Class[_]) {
       val t1 = System.nanoTime()
       val time: Long = (t1 - t0) / 1000000
       TimerMonitoring.record(clazz.getSimpleName, blockname, time)
-      if (time >= thresholdMs) Timer.logger.info(s"${clazz.getSimpleName} - $blockname" + s" took $time ms")
+      if (time >= thresholdMs) {
+        Timer.logger.info(s"${clazz.getSimpleName} - $blockname" + s" took $time ms")
+      }
     }
     result
   }
