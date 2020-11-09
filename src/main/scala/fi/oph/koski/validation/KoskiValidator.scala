@@ -48,7 +48,7 @@ class KoskiValidator(
   }
 
   def extractAndValidateOppija(parsedJson: JValue)(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
-    timed("extractAndValidateOppija") {
+    timed("extractAndValidateOppija", 200) {
       val extractionResult: Either[HttpStatus, Oppija] = {
         ValidatingAndResolvingExtractor.extract[Oppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository))
       }
