@@ -13,4 +13,12 @@ class SecretsManager extends SecretCache with Logging {
     logger.info(s"Searching for secret $secretId")
     JsonSerializer.extract[T](parse(getSecretString(secretId)), ignoreExtras = true)
   }
+
+  def getSecretId(secretName: String, envVar: String): String = {
+    sys.env.get(envVar) match {
+      case Some(envVar) => envVar
+      case _ => throw new RuntimeException(
+        s"Secrets manager enabled for $secretName but environment variable $envVar not set!")
+    }
+  }
 }

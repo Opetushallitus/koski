@@ -1,6 +1,7 @@
 package fi.oph.koski.virta
 
 import com.typesafe.config.Config
+import fi.oph.koski.config.{Environment, SecretsManager}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpConnectionException}
 import fi.oph.koski.log.{Logging, TimedProxy}
@@ -9,17 +10,26 @@ import fi.oph.koski.util.Files
 import scala.xml.{Elem, Node}
 
 object VirtaClient extends Logging {
-  def apply(config: Config) = config.getString("virta.serviceUrl") match {
-    case "mock" =>
-      logger.info("Using mock Virta integration")
-      MockVirtaClient(config)
-    case "" =>
-      logger.info("Virta integration disabled")
-      EmptyVirtaClient
-    case _ =>
-      val virtaConfig = VirtaConfig.fromConfig(config)
-      logger.info("Using Virta integration endpoint " + virtaConfig.serviceUrl)
-      TimedProxy[VirtaClient](RemoteVirtaClient(virtaConfig))
+  def apply(config: Config) = {
+    val serviceUrl = {
+      if (Environment.usesAwsSecretsManager) {
+        VirtaConfig.fromSecretsManager.serviceUrl
+      } else {
+        config.getString("virta.serviceUrl")
+      }
+    }
+    serviceUrl match {
+      case "mock" =>
+        logger.info("Using mock Virta integration")
+        MockVirtaClient(config)
+      case "" =>
+        logger.info("Virta integration disabled")
+        EmptyVirtaClient
+      case _ =>
+        val virtaConfig = if (Environment.usesAwsSecretsManager) VirtaConfig.fromSecretsManager else VirtaConfig.fromConfig(config)
+        logger.info("Using Virta integration endpoint " + virtaConfig.serviceUrl)
+        TimedProxy[VirtaClient](RemoteVirtaClient(virtaConfig))
+    }
   }
 }
 
@@ -152,5 +162,14 @@ case class VirtaConfig(serviceUrl: String, jarjestelma: String, tunnus: String, 
 object VirtaConfig {
   // Virta test environment config, see http://virtawstesti.csc.fi/
   val virtaTestEnvironment = VirtaConfig("http://virtawstesti.csc.fi/luku106/OpiskelijanTiedot", "", "", "salaisuus")
-  def fromConfig(config: Config) = VirtaConfig(config.getString("virta.serviceUrl"), config.getString("virta.jarjestelma"), config.getString("virta.tunnus"), config.getString("virta.avain"))
+  def fromConfig(config: Config) = VirtaConfig(
+    config.getString("virta.serviceUrl"),
+    config.getString("virta.jarjestelma"),
+    config.getString("virta.tunnus"),
+    config.getString("virta.avain"))
+  def fromSecretsManager: VirtaConfig = {
+    val cachedSecretsClient = new SecretsManager
+    val secretId = cachedSecretsClient.getSecretId("Virta secrets", "VIRTA_SECRET_ID")
+    cachedSecretsClient.getStructuredSecret[VirtaConfig](secretId)
+  }
 }
