@@ -114,7 +114,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val indexManager = new IndexManager(List(perustiedotIndexer, tiedonsiirtoService))
 
   lazy val init: Future[Unit] = {
-    perustiedotIndexer.init // This one will not be awaited for; it's ok that indexing continues while application is running
+    Future { perustiedotIndexer.init } // This one will not be awaited for; it's ok that indexing continues while application is running
     AuditLog.startHeartbeat() // No need to await this one either
     tryCatch("Koodistojen luonti") {
       if (config.getString("opintopolku.virkailija.url") != "mock") {
