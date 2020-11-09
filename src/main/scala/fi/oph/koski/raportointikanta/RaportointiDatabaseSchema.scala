@@ -254,11 +254,12 @@ object RaportointiDatabaseSchema {
     val toimipisteOid = column[String]("toimipiste_oid", StringIdentifierType)
     val toimipisteNimi = column[String]("toimipiste_nimi")
     val data = column[JValue]("data")
+    val sisältyyOpiskeluoikeuteenOid = column[Option[String]]("sisaltyy_opiskeluoikeuteen_oid", StringIdentifierType)
     def * = (päätasonSuoritusId, opiskeluoikeusOid, suorituksenTyyppi,
       koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutusmoduuliKoulutustyyppi,
       koulutusmoduuliLaajuusArvo, koulutusmoduuliLaajuusYksikkö, koulutusmoduuliNimi, suorituskieliKoodiarvo, oppimääräKoodiarvo, vahvistusPäivä,
       arviointiArvosanaKoodiarvo, arviointiArvosanaKoodisto, arviointiHyväksytty, arviointiPäivä,
-      toimipisteOid, toimipisteNimi, data) <> (RPäätasonSuoritusRow.tupled, RPäätasonSuoritusRow.unapply)
+      toimipisteOid, toimipisteNimi, data, sisältyyOpiskeluoikeuteenOid) <> (RPäätasonSuoritusRow.tupled, RPäätasonSuoritusRow.unapply)
   }
   class RPäätasonSuoritusTableTemp(tag: Tag) extends RPäätasonSuoritusTable(tag, Temp)
 
@@ -287,6 +288,7 @@ object RaportointiDatabaseSchema {
     val tunnustettu = column[Boolean]("tunnustettu")
     val tunnustettuRahoituksenPiirissä = column[Boolean]("tunnustettu_rahoituksen_piirissa")
     val data = column[JValue]("data")
+    val sisältyyOpiskeluoikeuteenOid = column[Option[String]]("sisaltyy_opiskeluoikeuteen_oid", StringIdentifierType)
     def * = (
       osasuoritusId ::
       ylempiOsasuoritusId ::
@@ -312,6 +314,7 @@ object RaportointiDatabaseSchema {
       tunnustettu ::
       tunnustettuRahoituksenPiirissä ::
       data ::
+      sisältyyOpiskeluoikeuteenOid ::
       HNil
     ).mappedWith(Generic[ROsasuoritusRow])
   }
@@ -534,7 +537,8 @@ case class RPäätasonSuoritusRow(
   arviointiPäivä: Option[Date],
   toimipisteOid: String,
   toimipisteNimi: String,
-  data: JValue
+  data: JValue,
+  sisältyyOpiskeluoikeuteenOid: Option[String]
 ) extends RSuoritusRow {
   override def matchesWith(x: YleissivistäväRaporttiOppiaineTaiKurssi): Boolean = {
     val isPaikallinen = !koulutusmoduuliKoodisto.contains("koskioppiaineetyleissivistava")
@@ -576,7 +580,8 @@ case class ROsasuoritusRow(
   näytönArviointiPäivä: Option[Date],
   tunnustettu: Boolean,
   tunnustettuRahoituksenPiirissä: Boolean,
-  data: JValue
+  data: JValue,
+  sisältyyOpiskeluoikeuteenOid: Option[String]
 ) extends RSuoritusRow {
   override def matchesWith(x: YleissivistäväRaporttiOppiaineTaiKurssi): Boolean = {
     suorituksestaKäytettäväNimi.contains(x.nimi) &&

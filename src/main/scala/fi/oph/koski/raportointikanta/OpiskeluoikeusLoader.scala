@@ -117,7 +117,7 @@ object OpiskeluoikeusLoader extends Logging {
       val oo = inputRow.toOpiskeluoikeus
       val ooRow = buildROpiskeluoikeusRow(inputRow.oppijaOid, inputRow.aikaleima, oo, inputRow.data)
       val aikajaksoRows = buildAikajaksoRows(inputRow.oid, oo)
-      val suoritusRows: List[(RPäätasonSuoritusRow, List[ROsasuoritusRow], List[MuuAmmatillinenOsasuoritusRaportointiRow], List[TOPKSAmmatillinenRaportointiRow])] = oo.suoritukset.zipWithIndex.map { case (ps, i) => buildSuoritusRows(inputRow.oid, oo.getOppilaitos, ps, (inputRow.data \ "suoritukset")(i), suoritusIds.incrementAndGet) }
+      val suoritusRows: List[(RPäätasonSuoritusRow, List[ROsasuoritusRow], List[MuuAmmatillinenOsasuoritusRaportointiRow], List[TOPKSAmmatillinenRaportointiRow])] = oo.suoritukset.zipWithIndex.map { case (ps, i) => buildSuoritusRows(inputRow.oid, inputRow.sisältäväOpiskeluoikeusOid, oo.getOppilaitos, ps, (inputRow.data \ "suoritukset")(i), suoritusIds.incrementAndGet) }
       OutputRows(
         rOpiskeluoikeusRow = ooRow,
         organisaatioHistoriaRows = OrganisaatioHistoriaRowBuilder.buildOrganisaatioHistoriaRows(oo),
@@ -174,11 +174,11 @@ object OpiskeluoikeusLoader extends Logging {
   private val fieldsToExcludeFromPäätasonSuoritusJson = Set("osasuoritukset", "tyyppi", "toimipiste", "koulutustyyppi")
   private val fieldsToExcludeFromOsasuoritusJson = Set("osasuoritukset", "tyyppi")
 
-  private[raportointikanta] def buildSuoritusRows(opiskeluoikeusOid: String, oppilaitos: OrganisaatioWithOid, ps: PäätasonSuoritus, data: JValue, idGenerator: => Long) = {
+  private[raportointikanta] def buildSuoritusRows(opiskeluoikeusOid: String, sisältyyOpiskeluoikeuteenOid: Option[String], oppilaitos: OrganisaatioWithOid, ps: PäätasonSuoritus, data: JValue, idGenerator: => Long) = {
     val päätasonSuoritusId: Long = idGenerator
-    val päätaso = buildRPäätasonSuoritusRow(opiskeluoikeusOid, oppilaitos, ps, data, päätasonSuoritusId)
+    val päätaso = buildRPäätasonSuoritusRow(opiskeluoikeusOid, sisältyyOpiskeluoikeuteenOid, oppilaitos, ps, data, päätasonSuoritusId)
     val osat = ps.osasuoritukset.getOrElse(List.empty).zipWithIndex.flatMap {
-      case (os, i) => buildROsasuoritusRow(päätasonSuoritusId, None, opiskeluoikeusOid, os, (data \ "osasuoritukset")(i), idGenerator)
+      case (os, i) => buildROsasuoritusRow(päätasonSuoritusId, None, opiskeluoikeusOid, sisältyyOpiskeluoikeuteenOid, os, (data \ "osasuoritukset")(i), idGenerator)
     }
     val muuAmmatillinenRaportointi = ps match {
       case s: MuunAmmatillisenKoulutuksenSuoritus => s.rekursiivisetOsasuoritukset.map(MuuAmmatillinenRaporttiRowBuilder.build(opiskeluoikeusOid, päätasonSuoritusId, _))
@@ -191,7 +191,7 @@ object OpiskeluoikeusLoader extends Logging {
     (päätaso, osat, muuAmmatillinenRaportointi, topksAmmatillinenRaportointi)
   }
 
-  private def buildRPäätasonSuoritusRow(opiskeluoikeusOid: String, oppilaitos: OrganisaatioWithOid, ps: PäätasonSuoritus, data: JValue, päätasonSuoritusId: Long) = {
+  private def buildRPäätasonSuoritusRow(opiskeluoikeusOid: String, sisältyyOpiskeluoikeuteenOid: Option[String], oppilaitos: OrganisaatioWithOid, ps: PäätasonSuoritus, data: JValue, päätasonSuoritusId: Long) = {
     val toimipiste = ps match {
       case tp: Toimipisteellinen => tp.toimipiste
       case stp: MahdollisestiToimipisteellinen if stp.toimipiste.nonEmpty => stp.toimipiste.get
@@ -226,12 +226,13 @@ object OpiskeluoikeusLoader extends Logging {
       arviointiPäivä = ps.viimeisinArviointi.flatMap(_.arviointipäivä).map(v => Date.valueOf(v)),
       toimipisteOid = toimipiste.oid,
       toimipisteNimi = convertLocalizedString(toimipiste.nimi),
-      data = JsonManipulation.removeFields(data, fieldsToExcludeFromPäätasonSuoritusJson)
+      data = JsonManipulation.removeFields(data, fieldsToExcludeFromPäätasonSuoritusJson),
+      sisältyyOpiskeluoikeuteenOid = sisältyyOpiskeluoikeuteenOid
     )
     päätaso
   }
 
-  private def buildROsasuoritusRow(päätasonSuoritusId: Long, ylempiOsasuoritusId: Option[Long], opiskeluoikeusOid: String, os: Suoritus, data: JValue, idGenerator: => Long): Seq[ROsasuoritusRow] = {
+  private def buildROsasuoritusRow(päätasonSuoritusId: Long, ylempiOsasuoritusId: Option[Long], opiskeluoikeusOid: String, sisältyyOpiskeluoikeuteenOid: Option[String], os: Suoritus, data: JValue, idGenerator: => Long): Seq[ROsasuoritusRow] = {
     val osasuoritusId: Long = idGenerator
     ROsasuoritusRow(
       osasuoritusId = osasuoritusId,
@@ -284,9 +285,10 @@ object OpiskeluoikeusLoader extends Logging {
         case m: MahdollisestiTunnustettu => m.tunnustettu.exists(_.rahoituksenPiirissä)
         case _ => false
       },
-      data = JsonManipulation.removeFields(data, fieldsToExcludeFromOsasuoritusJson)
+      data = JsonManipulation.removeFields(data, fieldsToExcludeFromOsasuoritusJson),
+      sisältyyOpiskeluoikeuteenOid = sisältyyOpiskeluoikeuteenOid
     ) +: os.osasuoritukset.getOrElse(List.empty).zipWithIndex.flatMap {
-      case (os2, i) => buildROsasuoritusRow(päätasonSuoritusId, Some(osasuoritusId), opiskeluoikeusOid, os2, (data \ "osasuoritukset")(i), idGenerator)
+      case (os2, i) => buildROsasuoritusRow(päätasonSuoritusId, Some(osasuoritusId), opiskeluoikeusOid, sisältyyOpiskeluoikeuteenOid, os2, (data \ "osasuoritukset")(i), idGenerator)
     }
   }
 }

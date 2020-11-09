@@ -15,16 +15,16 @@ import scala.concurrent.duration._
 case class AikuistenPerusopetuksenKurssikertymäRaportti(db: DB, organisaatioService: OrganisaatioService) extends KoskiDatabaseMethods {
   implicit private val getResult: GetResult[AikuistenPerusopetuksenKurssikertymäRaporttiRow] = GetResult(r =>
     AikuistenPerusopetuksenKurssikertymäRaporttiRow(
-      oppilaitos = r.<<,
-      yhteensäSuorituksia = r.<<,
-      yhteensäTunnistettujaSuorituksia = r.<<,
-      yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä = r.<<,
-      päättövaiheenSuorituksia = r.<<,
-      päättövaiheenTunnistettujaSuorituksia = r.<<,
-      päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä = r.<<,
-      alkuvaiheenSuorituksia = r.<<,
-      alkuvaiheenTunnistettujaSuorituksia = r.<<,
-      alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä = r.<<
+      oppilaitos =  r.rs.getString("oppilaitos_nimi"),
+      yhteensäSuorituksia = r.rs.getInt("yhteensäSuorituksia"),
+      yhteensäTunnistettujaSuorituksia = r.rs.getInt("yhteensäTunnistettujaSuorituksia"),
+      yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä = r.rs.getInt("yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä"),
+      päättövaiheenSuorituksia = r.rs.getInt("päättövaiheenSuorituksia"),
+      päättövaiheenTunnistettujaSuorituksia = r.rs.getInt("päättövaiheenTunnistettujaSuorituksia"),
+      päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä = r.rs.getInt("päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä"),
+      alkuvaiheenSuorituksia = r.rs.getInt("alkuvaiheenSuorituksia"),
+      alkuvaiheenTunnistettujaSuorituksia = r.rs.getInt("alkuvaiheenTunnistettujaSuorituksia"),
+      alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä = r.rs.getInt("alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä")
     )
   )
 
@@ -40,63 +40,40 @@ case class AikuistenPerusopetuksenKurssikertymäRaportti(db: DB, organisaatioSer
 
   private def query(oppilaitosOidit: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate)(implicit u: KoskiSession) = {
     sql"""
-SELECT oo.oppilaitos_nimi,
-	count(*) filter(WHERE tunnustettu = false) yhteensä_suoritettuja,
-	count(*) filter(WHERE tunnustettu) yhteensä_tunnustettuja,
-	count(*) filter(WHERE tunnustettu_rahoituksen_piirissa) yhteensä_tunnustettuja_rahoituksen_piirissa,
-	count(*) filter(WHERE tunnustettu = false
-		AND osasuoritukset.suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi') päättövaiheen_suoritettuja,
-	count(*) filter(WHERE tunnustettu
-		AND osasuoritukset.suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi') päättövaiheen_tunnustettuja,
-	count(*) filter(WHERE tunnustettu_rahoituksen_piirissa
-		AND osasuoritukset.suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi') päättövaiheen_tunnustettuja_rahoituksen_piirissa,
-	count(*) filter(WHERE tunnustettu = false
-		AND osasuoritukset.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi') alkuvaiheen_suoritettuja,
-	count(*) filter(WHERE tunnustettu
-		AND osasuoritukset.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi') alkuvaiheen_tunnustettuja,
-	count(*) filter(WHERE tunnustettu_rahoituksen_piirissa
-		AND osasuoritukset.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi') alkuvaiheen_tunnustettuja_rahoituksen_piirissa
-FROM r_opiskeluoikeus AS oo
-JOIN r_opiskeluoikeus_aikajakso AS ooa ON ooa.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-JOIN r_paatason_suoritus AS pts ON oo.opiskeluoikeus_oid = pts.opiskeluoikeus_oid
-LEFT JOIN lateral(SELECT DISTINCT * FROM (
-		SELECT DISTINCT CASE
-				WHEN os_oo.sisaltyy_opiskeluoikeuteen_oid IS NULL
-					AND NOT EXISTS (
-						SELECT DISTINCT b.sisaltyy_opiskeluoikeuteen_oid
-						FROM r_opiskeluoikeus AS b
-						WHERE b.sisaltyy_opiskeluoikeuteen_oid IS NOT NULL
-							AND b.sisaltyy_opiskeluoikeuteen_oid = os_oo.opiskeluoikeus_oid
-						)
-					THEN os_oo.opiskeluoikeus_oid
-				WHEN os_oo.sisaltyy_opiskeluoikeuteen_oid IS NOT NULL
-					THEN os_oo.sisaltyy_opiskeluoikeuteen_oid
-				END AS oo_oid,
-			os_oo_os.osasuoritus_id,
-			os_oo_os.suorituksen_tyyppi,
-			os_oo_os.arviointi_paiva,
-			os_oo_os.tunnustettu,
-			os_oo_os.tunnustettu_rahoituksen_piirissa,
-			os_oo_os.arviointi_hyvaksytty
-		FROM r_opiskeluoikeus AS os_oo
-		JOIN r_osasuoritus AS os_oo_os ON os_oo.opiskeluoikeus_oid = os_oo_os.opiskeluoikeus_oid
-		WHERE os_oo.koulutusmuoto = 'aikuistenperusopetus'
-		) AS osasuoritukset1 WHERE osasuoritukset1.oo_oid = oo.opiskeluoikeus_oid) AS osasuoritukset ON true
-JOIN r_organisaatio AS org ON oo.koulutustoimija_oid = org.organisaatio_oid
-WHERE oo.koulutusmuoto = 'aikuistenperusopetus'
-	AND pts.suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaara'
-	AND (
-		osasuoritukset.suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi'
-		OR osasuoritukset.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi'
-		)
-	AND osasuoritukset.arviointi_paiva BETWEEN $aikaisintaan
-		AND $viimeistaan
-	AND (
-		oo.oppilaitos_oid = any($oppilaitosOidit)
-		OR oo.koulutustoimija_oid = any($oppilaitosOidit)
-		)
-GROUP BY oo.oppilaitos_nimi
-ORDER BY oo.oppilaitos_nimi
+      with paatason_suoritus as (
+            select
+              r_opiskeluoikeus.oppilaitos_nimi,
+              r_paatason_suoritus.paatason_suoritus_id,
+              r_opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid
+            from r_opiskeluoikeus
+            join r_paatason_suoritus on r_opiskeluoikeus.opiskeluoikeus_oid = r_paatason_suoritus.opiskeluoikeus_oid
+            where
+              oppilaitos_oid = any($oppilaitosOidit)
+              and (r_paatason_suoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaara' or r_paatason_suoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaaranalkuvaihe')
+              and exists (
+                select 1 from r_opiskeluoikeus_aikajakso
+                where r_opiskeluoikeus.opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
+                  and r_opiskeluoikeus_aikajakso.tila = 'lasna'
+                  and r_opiskeluoikeus_aikajakso.alku <= $viimeistaan
+                  and r_opiskeluoikeus_aikajakso.loppu >= $aikaisintaan
+              )
+      ) select
+          oppilaitos_nimi oppilaitos_nimi,
+          count(*) filter (where tunnustettu = false) yhteensäSuorituksia,
+          count(*) filter (where tunnustettu) yhteensäTunnistettujaSuorituksia,
+          count(*) filter (where tunnustettu_rahoituksen_piirissa) yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä,
+          count(*) filter (where tunnustettu = false and suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi') päättövaiheenSuorituksia,
+          count(*) filter (where tunnustettu and suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi') päättövaiheenTunnistettujaSuorituksia,
+          count(*) filter (where tunnustettu_rahoituksen_piirissa and suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi') päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä,
+          count(*) filter (where tunnustettu = false and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi') alkuvaiheenSuorituksia,
+          count(*) filter (where tunnustettu and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi') alkuvaiheenTunnistettujaSuorituksia,
+          count(*) filter (where tunnustettu_rahoituksen_piirissa and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi') alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä
+        from paatason_suoritus
+        join r_osasuoritus on (paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id or opiskeluoikeus_oid = r_osasuoritus.sisaltyy_opiskeluoikeuteen_oid)
+        where (r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi')
+          and r_osasuoritus.arviointi_paiva >= $aikaisintaan
+          and r_osasuoritus.arviointi_paiva <= $viimeistaan
+        group by paatason_suoritus.oppilaitos_nimi;
   """
   }
 
