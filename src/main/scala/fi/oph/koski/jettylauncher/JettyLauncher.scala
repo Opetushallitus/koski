@@ -8,6 +8,8 @@ import fi.oph.koski.cache.JMXCacheManager
 import fi.oph.koski.config.{AppConfig, Environment, KoskiApplication}
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.log.{LogConfiguration, Logging, MaskedSlf4jRequestLogWriter}
+import fi.oph.koski.schema.KoskiSchema
+import fi.oph.koski.util.Timing
 import io.prometheus.client.exporter.MetricsServlet
 import org.eclipse.jetty.client.HttpClient
 import org.eclipse.jetty.jmx.MBeanContainer
@@ -20,6 +22,9 @@ import org.eclipse.jetty.util.resource.Resource
 import org.eclipse.jetty.util.ssl.SslContextFactory
 import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.eclipse.jetty.webapp.WebAppContext
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 object JettyLauncher extends App with Logging {
   lazy val globalPort = System.getProperty("koski.port","7021").toInt
@@ -38,7 +43,12 @@ object JettyLauncher extends App with Logging {
   }
 }
 
-class JettyLauncher(val port: Int, val application: KoskiApplication) extends Logging {
+class JettyLauncher(val port: Int, val application: KoskiApplication) extends Logging with Timing {
+  Future {
+    logger.info("Start warming up schema")
+    timed("Warming up schema", 0)(KoskiSchema.schema)
+  }
+
   private val config = application.config
 
   private val threadPool = new ManagedQueuedThreadPool(Pools.jettyThreads, 10)
@@ -46,6 +56,7 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
   private val server = new Server(threadPool)
 
   application.masterDatabase // <- force evaluation to make sure DB is up
+  application.elasticSearch
 
   configureLogging
   setupConnector
