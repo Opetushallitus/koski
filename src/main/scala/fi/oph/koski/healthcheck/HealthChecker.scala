@@ -2,9 +2,10 @@ package fi.oph.koski.healthcheck
 
 import java.util.concurrent.TimeoutException
 
+import com.typesafe.config.Config
 import fi.oph.koski.cache.RefreshingCache.Params
 import fi.oph.koski.cache._
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication, SecretsManager}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.eperusteet.ERakenneOsa
 import fi.oph.koski.http.{ErrorDetail, HttpStatus, HttpStatusException, KoskiErrorCategory}
@@ -21,6 +22,22 @@ import scalaz.concurrent.Task
 
 import scala.concurrent.duration._
 import scala.language.postfixOps
+
+case class VirkailijaCredentials(username: String, password: Password)
+
+object VirkailijaCredentials {
+  def fromSecretsManager: VirkailijaCredentials = {
+    val cachedSecretsClient = new SecretsManager
+    val secretId = cachedSecretsClient.getSecretId("Opintopolku virkailija credentials", "OPINTOPOLKU_VIRKAILIJA_SECRET_ID")
+    cachedSecretsClient.getStructuredSecret[VirkailijaCredentials](secretId)
+  }
+  def fromConfig(config: Config): VirkailijaCredentials = {
+    VirkailijaCredentials(
+      config.getString("opintopolku.virkailija.username"),
+      Password(config.getString("opintopolku.virkailija.password"))
+    )
+  }
+}
 
 trait HealthCheck extends Logging {
   private implicit val user = systemUser
@@ -75,8 +92,11 @@ trait HealthCheck extends Logging {
   }
 
   def casCheck: HttpStatus = {
-    val username = application.config.getString("opintopolku.virkailija.username")
-    val password = Password(application.config.getString("opintopolku.virkailija.password"))
+    val VirkailijaCredentials(username, password) = if (Environment.usesAwsSecretsManager) {
+      VirkailijaCredentials.fromSecretsManager
+    } else {
+      VirkailijaCredentials.fromConfig(application.config)
+    }
     def authenticate = try {
       Some(application.directoryClient.authenticate(username, password))
     } catch {
