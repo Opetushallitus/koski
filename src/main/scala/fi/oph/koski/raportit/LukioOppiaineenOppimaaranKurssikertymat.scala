@@ -81,7 +81,6 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
             -- lukion aineoppimäärä
             and r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
             and r_osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
-            and r_opiskeluoikeus_aikajakso.tila = 'lasna'
             -- kurssi menee parametrien sisään
             and r_osasuoritus.arviointi_paiva >= $aikaisintaan
             and r_osasuoritus.arviointi_paiva <= $viimeistaan

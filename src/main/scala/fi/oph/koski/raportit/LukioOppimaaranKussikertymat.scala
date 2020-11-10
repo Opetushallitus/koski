@@ -21,36 +21,24 @@ object LukioOppimaaranKussikertymat extends DatabaseConverters {
 
   def queryOppimaara(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate) = {
     sql"""
-          with paatason_suoritus as (
-            select
-              r_opiskeluoikeus.oppilaitos_nimi,
-              r_opiskeluoikeus.oppilaitos_oid,
-              r_paatason_suoritus.paatason_suoritus_id
-            from r_opiskeluoikeus
-            join r_paatason_suoritus on r_opiskeluoikeus.opiskeluoikeus_oid = r_paatason_suoritus.opiskeluoikeus_oid
-            where
-              oppilaitos_oid = any($oppilaitosOids)
-              and r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppimaara'
-              and exists (
-                select 1 from r_opiskeluoikeus_aikajakso
-                where r_opiskeluoikeus.opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
-                  and r_opiskeluoikeus_aikajakso.tila = 'lasna'
-                  and r_opiskeluoikeus_aikajakso.alku <= $viimeistaan
-                  and r_opiskeluoikeus_aikajakso.loppu >= $aikaisintaan
-              )
-      ) select
-          oppilaitos_nimi oppilaitos,
-          oppilaitos_oid,
-          count(*) filter (where tunnustettu = false) suoritettuja,
-          count(*) filter (where tunnustettu) tunnustettuja,
-          count(*) yhteensa,
-          count(*) filter (where tunnustettu_rahoituksen_piirissa) tunnustettuja_rahoituksen_piirissa
-        from paatason_suoritus
-        join r_osasuoritus on paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id
-        where r_osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
-          and r_osasuoritus.arviointi_paiva >= $aikaisintaan
-          and r_osasuoritus.arviointi_paiva <= $viimeistaan
-        group by paatason_suoritus.oppilaitos_nimi, oppilaitos_oid;
+      select
+        oppilaitos_nimi oppilaitos,
+        oppilaitos_oid,
+        count(*) filter (where tunnustettu = false) suoritettuja,
+        count(*) filter (where tunnustettu) tunnustettuja,
+        count(*) yhteensa,
+        count(*) filter (where tunnustettu_rahoituksen_piirissa) tunnustettuja_rahoituksen_piirissa
+      from r_osasuoritus
+      join r_paatason_suoritus
+        on r_paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id
+      join r_opiskeluoikeus
+        on r_opiskeluoikeus.opiskeluoikeus_oid = r_paatason_suoritus.opiskeluoikeus_oid
+      where r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOids)
+        and r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppimaara'
+        and r_osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
+        and r_osasuoritus.arviointi_paiva >= $aikaisintaan
+        and r_osasuoritus.arviointi_paiva <= $viimeistaan
+      group by r_opiskeluoikeus.oppilaitos_nimi, r_opiskeluoikeus.oppilaitos_oid;
     """.as[LukioKurssikertymaOppimaaraRow]
   }
 
@@ -69,9 +57,9 @@ object LukioOppimaaranKussikertymat extends DatabaseConverters {
   val columnSettings: Seq[(String, Column)] = Seq(
     "oppilaitosOid" -> Column("Oppilaitoksen oid-tunniste"),
     "oppilaitos" -> Column("Oppilaitos"),
+    "kurssejaYhteensa" -> Column("Kursseja yhteensä", comment = Some("Kaikki sellaiset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään.")),
     "suoritettujaKursseja" -> Column("Suoritetut kurssit", comment = Some("Kaikki sellaiset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja joita ei ole merkitty tunnustetuiksi.")),
     "tunnustettujaKursseja" -> Column("Tunnustetut kurssit", comment = Some("Kaikki sellaiset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja jotka on merkitty tunnustetuiksi.")),
-    "kurssejaYhteensa" -> Column("Kursseja yhteensä", comment = Some("Kaikki sellaiset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään.")),
     "tunnustettujaKursseja_rahoituksenPiirissa" -> Column("Tunnustetut kurssit - rahoituksen piirissä", comment = Some("Kaikki sellaiset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään, jotka on merkitty tunnustetuiksi ja jotka on merkitty rahoituksen piirissä oleviksi."))
   )
 }
@@ -79,8 +67,8 @@ object LukioOppimaaranKussikertymat extends DatabaseConverters {
 case class LukioKurssikertymaOppimaaraRow(
   oppilaitosOid: String,
   oppilaitos: String,
+  kurssejaYhteensa: Int,
   suoritettujaKursseja: Int,
   tunnustettujaKursseja: Int,
-  kurssejaYhteensa: Int,
   tunnustettujaKursseja_rahoituksenPiirissa: Int
 )

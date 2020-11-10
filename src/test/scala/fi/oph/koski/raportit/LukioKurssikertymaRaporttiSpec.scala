@@ -49,10 +49,10 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
         ressunAineopiskelijat.oppilaitosOid shouldBe(MockOrganisaatiot.ressunLukio)
       }
       "Yhteensä" in {
-        ressunAineopiskelijat.kurssejaYhteensa shouldBe(11)
+        ressunAineopiskelijat.kurssejaYhteensa shouldBe(12)
       }
       "Suoritettuja" in {
-        ressunAineopiskelijat.suoritettujaKursseja shouldBe(5)
+        ressunAineopiskelijat.suoritettujaKursseja shouldBe(6)
       }
       "Tunnustettuja" in {
         ressunAineopiskelijat.tunnustettujaKursseja shouldBe(6)
@@ -61,19 +61,19 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
         ressunAineopiskelijat.tunnustettujaKursseja_rahoituksenPiirissa shouldBe(3)
       }
       "Pakollisia tai valtakunnallinen ja syventava" in {
-        ressunAineopiskelijat.pakollisia_tai_valtakunnallisiaSyventavia shouldBe(8)
+        ressunAineopiskelijat.pakollisia_tai_valtakunnallisiaSyventavia shouldBe(9)
       }
       "Pakollisia" in {
-        ressunAineopiskelijat.pakollisiaKursseja shouldBe(5)
+        ressunAineopiskelijat.pakollisiaKursseja shouldBe(6)
       }
       "Valtakunnallisia syventavia" in {
         ressunAineopiskelijat.valtakunnallisestiSyventaviaKursseja shouldBe(3)
       }
       "Suoritettuja pakollisia ja suoritettuja valtakunnallisia syventavia" in {
-        ressunAineopiskelijat.suoritettujaPakollisia_ja_suoritettujaValtakunnallisiaSyventavia shouldBe(4)
+        ressunAineopiskelijat.suoritettujaPakollisia_ja_suoritettujaValtakunnallisiaSyventavia shouldBe(5)
       }
       "Suoritettuja pakollisia" in {
-        ressunAineopiskelijat.suoritettujaPakollisiaKursseja shouldBe(3)
+        ressunAineopiskelijat.suoritettujaPakollisiaKursseja shouldBe(4)
       }
       "Suoritettuja valtakunnallisia syventavia" in {
         ressunAineopiskelijat.suoritettujaValtakunnallisiaSyventaviaKursseja shouldBe(1)
