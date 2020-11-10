@@ -54,7 +54,6 @@ object LukioOppiaineRahoitusmuodonMukaan extends DatabaseConverters {
           where
             oppilaitos_oid = any($oppilaitosOids)
             and r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
-            and r_opiskeluoikeus_aikajakso.tila = 'lasna'
             and r_opiskeluoikeus_aikajakso.alku <= $viimeistaan
             and r_opiskeluoikeus_aikajakso.loppu >= $aikaisintaan
             and r_opiskeluoikeus_aikajakso.opintojen_rahoitus #${rahoitusmuoto match {
