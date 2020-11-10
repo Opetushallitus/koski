@@ -59,7 +59,7 @@ case class RemoteYtrClient(rootUrl: String, user: String, password: String, inse
 case class YtrConfig(insecure: Boolean, username: String, password: String, url: String)
 
 object YtrConfig {
-  def fromConfig(config: Config) = YtrConfig(
+  def fromConfig(config: Config): YtrConfig = YtrConfig(
     config.hasPath("ytr.insecure") && config.getBoolean("ytr.insecure"),
     config.getString("ytr.username"),
     config.getString("ytr.password"),
