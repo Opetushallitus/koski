@@ -10,9 +10,68 @@ import {VuosiluokkaRaporttiPaivalta} from './VuosiluokkaRaporttiPaivalta'
 import {AikajaksoRaporttiAikarajauksella, osasuoritusTypes} from './AikajaksoRaporttiAikarajauksella'
 import {RaporttiPaivalta} from './RaporttiPaivalta'
 import {AikuistenPerusopetuksenRaportit} from './AikuistenPerusopetuksenRaportit'
+import {Tabs} from '../components/Tabs'
+
+// const defaultTabs = {
+//   esi: 'Esiopetus',
+//   perus: 'Perusopetus',
+//   aikuistenPerus: 'Aikuisten perusopetus',
+//   ammatillinen: 'Ammatillinen koulutus',
+//   lukio: 'Lukiokoulutus',
+//   muut: 'Muut',
+// }
+
+const raportitKategorioittain = [
+  {
+    tab: 'Esiopetus',
+    heading: 'Esiopetuksen raportit',
+    raportit: [
+      {
+        id: 'esiopetuksenraportti',
+        name: 'Esiopetuksen raportti',
+        compactName: 'Esiopetuksen raportti'
+      },
+      {
+        id: 'esiopetuksenoppijamäärienraportti',
+        name: 'Esiopetuksen oppijamäärien raportti',
+        compactName: 'Oppijamäärät'
+      }
+    ]
+  },
+  {
+    tab: 'Perusopetus',
+    heading: 'Perusopetuksen raportit',
+    raportit: [
+      {
+        id: 'perusopetuksenvuosiluokka',
+        name: 'Perusopetuksen vuosiluokan raportti',
+        compactName: 'Vuosiluokka'
+      }
+    ]
+  }
+]
 
 export const raportitContentP = () => {
-  const organisaatioAtom = Atom()
+  const organisaatioAtom = Atom() // TODO: Siirrä tämäkin samaan stateen
+
+  const tabIdE = new Bacon.Bus()
+  const raporttiIdE = new Bacon.Bus()
+
+  const stateP = Bacon.update(
+    { tabId: 0, raporttiId: 0 },
+    tabIdE, (state, tabId) => ({
+      ...state,
+      tabId,
+      raporttiId: 0
+    }),
+    raporttiIdE, (state, raporttiId) => ({
+      ...state,
+      raporttiId
+    })
+  )
+
+  const tabP = stateP.map(state => raportitKategorioittain[state.tabId])
+  const raporttiP = stateP.map(state => raportitKategorioittain[state.tabId].raportit[state.raporttiId])
 
   const mahdollisetRaportitP = organisaatioAtom
     .flatMapLatest(oppilaitos => oppilaitos ? Http.cachedGet(`/koski/api/raportit/mahdolliset-raportit/${oppilaitos.oid}`) : undefined)
@@ -21,7 +80,18 @@ export const raportitContentP = () => {
   return Bacon.constant({
     content: (<div className='content-area raportit'>
       <div className='main-content'>
-        <h2><Text name='Raportit'/></h2>
+        <Tabs
+          options={raportitKategorioittain.map((r, index) => ({ id: index, name: r.tab }))}
+          selectedP={stateP.map(state => state.tabId)}
+          onSelect={id => tabIdE.push(id)}
+        />
+        {tabP.map(tab => <h2>{tab.heading}</h2>)}
+        <RaporttiValitsin
+          raportitP={tabP.map(tab => tab.raportit)}
+          selectedP={stateP.map(state => state.raporttiId)}
+          onSelect={id => raporttiIdE.push(id)}
+        />
+        {raporttiP.map(raportti => <h3>{raportti.name}</h3>)}
         <Organisaatio organisaatioAtom={organisaatioAtom} />
         {mahdollisetRaportitP.map(raportit => (
           <div>
@@ -52,6 +122,24 @@ export const raportitContentP = () => {
     title: 'Raportit'
   })
 }
+
+const RaporttiValitsin = ({ raportitP, selectedP, onSelect }) => (
+  <div>
+    {raportitP.map(raportit => raportit.length < 2 ? null : (
+      <ul className="pills-container">
+        {raportit.map((raportti, index) => (
+          <li
+            key={raportti.id}
+            onClick={() => onSelect(index)}
+            className={selectedP.map(selectedIdx => index === selectedIdx ? 'pills-item pills-item-selected' : 'pills-item')}
+          >
+            {raportti.compactName || raportti.name}
+          </li>
+        ))}
+      </ul>
+    ))}
+  </div>
+)
 
 const Organisaatio = ({organisaatioAtom}) => {
   const selectableOrgTypes = ['OPPILAITOS', 'OPPISOPIMUSTOIMIPISTE', 'KOULUTUSTOIMIJA', 'VARHAISKASVATUKSEN_TOIMIPAIKKA', 'OSTOPALVELUTAIPALVELUSETELI']
