@@ -69,9 +69,9 @@ object LukioOppimaaranKussikertymat extends DatabaseConverters {
   val columnSettings: Seq[(String, Column)] = Seq(
     "oppilaitosOid" -> Column("Oppilaitoksen oid-tunniste"),
     "oppilaitos" -> Column("Oppilaitos"),
+    "kurssejaYhteensa" -> Column("Kursseja yhteensä", comment = Some("Kaikki sellaiset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään.")),
     "suoritettujaKursseja" -> Column("Suoritetut kurssit", comment = Some("Kaikki sellaiset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja joita ei ole merkitty tunnustetuiksi.")),
     "tunnustettujaKursseja" -> Column("Tunnustetut kurssit", comment = Some("Kaikki sellaiset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja jotka on merkitty tunnustetuiksi.")),
-    "kurssejaYhteensa" -> Column("Kursseja yhteensä", comment = Some("Kaikki sellaiset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään.")),
     "tunnustettujaKursseja_rahoituksenPiirissa" -> Column("Tunnustetut kurssit - rahoituksen piirissä", comment = Some("Kaikki sellaiset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään, jotka on merkitty tunnustetuiksi ja jotka on merkitty rahoituksen piirissä oleviksi."))
   )
 }
@@ -79,8 +79,8 @@ object LukioOppimaaranKussikertymat extends DatabaseConverters {
 case class LukioKurssikertymaOppimaaraRow(
   oppilaitosOid: String,
   oppilaitos: String,
+  kurssejaYhteensa: Int,
   suoritettujaKursseja: Int,
   tunnustettujaKursseja: Int,
-  kurssejaYhteensa: Int,
   tunnustettujaKursseja_rahoituksenPiirissa: Int
 )
