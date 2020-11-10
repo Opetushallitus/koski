@@ -159,7 +159,7 @@ object PerusopetusOppijaMaaratRaporttiFixtures {
       PerusopetuksenVuosiluokanSuoritus(
         koulutusmoduuli = PerusopetuksenLuokkaAste(6, perusopetuksenDiaarinumero),
         luokka = "6C",
-        toimipiste = jyväskylänNormaalikoulu,
+        toimipiste = kulosaarenAlaAste,
         suorituskieli = suomenKieli,
         alkamispäivä = Some(date)
       )

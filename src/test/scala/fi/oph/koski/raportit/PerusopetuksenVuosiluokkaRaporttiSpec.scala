@@ -7,7 +7,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsPerusopetus
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesPerusopetus._
-import fi.oph.koski.documentation.{ExamplesPerusopetus, PerusopetusExampleData}
+import fi.oph.koski.documentation.PerusopetusExampleData
 import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -200,6 +200,18 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
         val rows = raportitService.perusopetuksenVuosiluokka(request).sheets.collect { case dSheet: DataSheet => dSheet }
         rows.flatMap(_.rows.map(_.asInstanceOf[PerusopetusRow])).map(_.oppilaitoksenNimi).toSet should equal(Set("Stadin ammatti- ja aikuisopisto"))
       }
+    }
+
+    "Näyttää raportin tulostushetken oppilaitoksen jos eri kuin nykyinen" in {
+      lazy val raportti = PerusopetuksenVuosiluokkaRaportti.buildRaportti(
+        repository,
+        Set(MockOrganisaatiot.kulosaarenAlaAste),
+        LocalDate.of(2012, 8, 15),
+        vuosiluokka = "6"
+      )
+      val oppijaOid = MockOppijat.organisaatioHistoriallinen.oid
+      val rivi = raportti.find(_.oppijaOid == oppijaOid).get
+      rivi.oppilaitosRaportointipäivänä should equal(Some("1.1.2006-31.12.2012: Jyväskylän normaalikoulu (Helsingin kaupunki)"))
     }
   }
 

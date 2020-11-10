@@ -99,13 +99,13 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
     List(
       (MockOppijat.organisaatioHistoria, validOpiskeluoikeus.copy(organisaatiohistoria = Some(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria))),
       (
-        MockOppijat.perusopetusOppijaMaaratRaportti_organisaatioHistoriallinen,
+        MockOppijat.organisaatioHistoriallinen,
         validateOpiskeluoikeus(PerusopetusOppijaMaaratRaporttiFixtures.eriOppilaitoksessa).copy(
           organisaatiohistoria = PerusopetusOppijaMaaratRaporttiFixtures.organisaatiohistoria
         )
       ),
       (
-        MockOppijat.perusopetusOppijaMaaratRaportti_organisaatioHistoriallinen,
+        MockOppijat.organisaatioHistoriallinen,
         validateOpiskeluoikeus(PerusopetusOppijaMaaratRaporttiFixtures.eriOppilaitoksessaLisäopetus).copy(
           organisaatiohistoria = PerusopetusOppijaMaaratRaporttiFixtures.organisaatiohistoria
         )
