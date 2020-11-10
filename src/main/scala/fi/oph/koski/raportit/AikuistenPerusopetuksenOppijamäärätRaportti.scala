@@ -51,20 +51,21 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
       r_koodisto_koodi.nimi,
       count(distinct r_opiskeluoikeus.opiskeluoikeus_oid) as oppilaidenMääräYhteensä,
       count(distinct (case when opintojen_rahoitus = '1' then r_opiskeluoikeus.opiskeluoikeus_oid end)) as oppilaidenMääräVOS,
-      count(distinct (case when opintojen_rahoitus != '1' then r_opiskeluoikeus.opiskeluoikeus_oid end)) as oppilaidenMääräMuuKuinVOS,
-      count(distinct (case when oppimaaran_suorittaja then r_opiskeluoikeus.opiskeluoikeus_oid end)) oppimääränSuorittajiaYhteensä,
-      count(distinct (case when opintojen_rahoitus = '1' and oppimaaran_suorittaja then r_opiskeluoikeus.opiskeluoikeus_oid end)) as oppimääränSuorittajiaVOS,
-      count(distinct (case when opintojen_rahoitus != '1' and oppimaaran_suorittaja then r_opiskeluoikeus.opiskeluoikeus_oid end)) as oppimääränSuorittajiaMuuKuinVOS,
-      count(distinct (case when not oppimaaran_suorittaja then r_opiskeluoikeus.opiskeluoikeus_oid end)) as aineopiskelijoitaYhteensä,
-      count(distinct (case when opintojen_rahoitus = '1' and not oppimaaran_suorittaja then r_opiskeluoikeus.opiskeluoikeus_oid end)) as aineopiskelijoitaVOS,
-      count(distinct (case when opintojen_rahoitus != '1' and not oppimaaran_suorittaja then r_opiskeluoikeus.opiskeluoikeus_oid end)) as aineopiskelijoitaMuuKuinVOS,
+      count(distinct (case when opintojen_rahoitus = '6' then r_opiskeluoikeus.opiskeluoikeus_oid end)) as oppilaidenMääräMuuKuinVOS,
+      count(distinct (case when r_paatason_suoritus.suorituksen_tyyppi in ('aikuistenperusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaaranalkuvaihe') then r_opiskeluoikeus.opiskeluoikeus_oid end)) oppimääränSuorittajiaYhteensä,
+      count(distinct (case when opintojen_rahoitus = '1' and r_paatason_suoritus.suorituksen_tyyppi in ('aikuistenperusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaaranalkuvaihe') then r_opiskeluoikeus.opiskeluoikeus_oid end)) as oppimääränSuorittajiaVOS,
+      count(distinct (case when opintojen_rahoitus = '6' and r_paatason_suoritus.suorituksen_tyyppi in ('aikuistenperusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaaranalkuvaihe') then r_opiskeluoikeus.opiskeluoikeus_oid end)) as oppimääränSuorittajiaMuuKuinVOS,
+      count(distinct (case when r_paatason_suoritus.suorituksen_tyyppi = 'perusopetuksenoppiaineenoppimaara' then r_opiskeluoikeus.opiskeluoikeus_oid end)) as aineopiskelijoitaYhteensä,
+      count(distinct (case when opintojen_rahoitus = '1' and r_paatason_suoritus.suorituksen_tyyppi = 'perusopetuksenoppiaineenoppimaara' then r_opiskeluoikeus.opiskeluoikeus_oid end)) as aineopiskelijoitaVOS,
+      count(distinct (case when opintojen_rahoitus = '6' and r_paatason_suoritus.suorituksen_tyyppi = 'perusopetuksenoppiaineenoppimaara' then r_opiskeluoikeus.opiskeluoikeus_oid end)) as aineopiskelijoitaMuuKuinVOS,
       count(distinct (case when aidinkieli not in('fi', 'sv', 'se', 'ri', 'vk') then r_opiskeluoikeus.opiskeluoikeus_oid end)) as vieraskielisiäYhteensä,
       count(distinct (case when aidinkieli not in('fi', 'sv', 'se', 'ri', 'vk') and opintojen_rahoitus = '1' then r_opiskeluoikeus.opiskeluoikeus_oid end)) as vieraskielisiäVOS,
-      count(distinct (case when aidinkieli not in('fi', 'sv', 'se', 'ri', 'vk') and opintojen_rahoitus != '1' then r_opiskeluoikeus.opiskeluoikeus_oid end)) as vieraskielisiäMuuKuinVOS
+      count(distinct (case when aidinkieli not in('fi', 'sv', 'se', 'ri', 'vk') and opintojen_rahoitus = '6' then r_opiskeluoikeus.opiskeluoikeus_oid end)) as vieraskielisiäMuuKuinVOS
     from r_opiskeluoikeus
     join r_henkilo on r_henkilo.oppija_oid = r_opiskeluoikeus.oppija_oid
     join r_opiskeluoikeus_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
     join r_organisaatio_kieli on r_organisaatio_kieli.organisaatio_oid = oppilaitos_oid
+    join r_paatason_suoritus on r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
     join r_koodisto_koodi
       on r_koodisto_koodi.koodisto_uri = split_part(r_organisaatio_kieli.kielikoodi, '_', 1)
       and r_koodisto_koodi.koodiarvo = split_part(split_part(r_organisaatio_kieli.kielikoodi, '_', 2), '#', 1)

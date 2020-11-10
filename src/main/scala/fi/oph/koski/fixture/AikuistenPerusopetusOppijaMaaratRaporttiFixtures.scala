@@ -37,8 +37,8 @@ object AikuistenPerusopetusOppijaMaaratRaporttiFixtures {
     tila = tilaLäsnäMuuKuinVos,
     oppilaitos = Some(jyväskylänNormaalikoulu),
     suoritukset = List(
-      AikuistenPerusopetuksenOppimääränSuoritus(
-        koulutusmoduuli = AikuistenPerusopetus(Some("19/011/2015")),
+      AikuistenPerusopetuksenAlkuvaiheenSuoritus(
+        koulutusmoduuli = AikuistenPerusopetuksenAlkuvaihe(Some("19/011/2015")),
         luokka = Some("6C"),
         toimipiste = jyväskylänNormaalikoulu,
         suorituskieli = suomenKieli,
