@@ -181,6 +181,7 @@ object ExamplesInternationalSchool {
   )
 
   val opiskeluoikeus = InternationalSchoolOpiskeluoikeus(
+    oppilaitos = Some(internationalSchoolOfHelsinki),
     lisätiedot = Some(lisätiedot),
     tila = InternationalSchoolOpiskeluoikeudenTila(
       List(
