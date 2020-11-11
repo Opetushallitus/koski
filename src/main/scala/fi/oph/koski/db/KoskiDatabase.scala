@@ -13,8 +13,6 @@ import org.postgresql.util.PSQLException
 import slick.jdbc.PostgresProfile
 import slick.jdbc.PostgresProfile.api._
 
-import scala.sys.process._
-
 object KoskiDatabase {
   type DB = PostgresProfile.backend.DatabaseDef
 
@@ -56,37 +54,10 @@ case class KoskiDatabaseConfig(c: Config, readOnly: Boolean = false, raportointi
 
 
 class KoskiDatabase(val config: KoskiDatabaseConfig) extends Logging {
-  val serverProcess = startLocalDatabaseServerIfNotRunning
-
-  if (!config.isRemote && !config.readOnly) {
-    createDatabase
-    createUser
-  }
-
   val db: DB = config.toSlickDatabase
 
   if (!config.readOnly) {
     migrateSchema
-  }
-
-  private def startLocalDatabaseServerIfNotRunning: Option[PostgresRunner] = {
-    if (config.isLocal && !config.readOnly) {
-      Some(new PostgresRunner("postgresql/data", "postgresql/postgresql.conf", config.port).start)
-    } else {
-      None
-    }
-  }
-
-  private def createDatabase = {
-    val dbName = config.dbName
-    val port = config.port
-    s"createdb -p $port -T template0 -E UTF-8 $dbName".!
-  }
-
-  private def createUser = {
-    val user = config.user
-    val port = config.port
-    s"createuser -p $port -s $user -w".!
   }
 
   private def migrateSchema = {
@@ -122,7 +93,3 @@ class KoskiDatabase(val config: KoskiDatabaseConfig) extends Logging {
     }
   }
 }
-
-
-
-

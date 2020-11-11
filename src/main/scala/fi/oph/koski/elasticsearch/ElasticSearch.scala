@@ -10,15 +10,7 @@ case class ElasticSearch(config: Config) extends Logging {
   private val port = config.getInt("elasticsearch.port")
   private val protocol = config.getString("elasticsearch.protocol")
   private val url = s"$protocol://$host:$port"
-
   val http = Http(url, "elasticsearch")
-
-  val init_ = synchronized {
-    if (host == "localhost") {
-      new ElasticSearchRunner("./elasticsearch", port, port + 100).start
-    }
-    logger.info(s"Using elasticsearch at $host:$port")
-  }
 }
 
 object ElasticSearch {
