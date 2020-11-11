@@ -9,6 +9,7 @@ import fi.oph.koski.config.{AppConfig, Environment, KoskiApplication}
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.log.{LogConfiguration, Logging, MaskedSlf4jRequestLogWriter}
 import fi.oph.koski.schema.KoskiSchema
+import fi.oph.koski.util.Futures.await
 import fi.oph.koski.util.Timing
 import io.prometheus.client.exporter.MetricsServlet
 import org.eclipse.jetty.client.HttpClient
@@ -48,6 +49,12 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
     logger.info("Start warming up schema")
     timed("Warming up schema", 0)(KoskiSchema.schema)
   }
+  private val loadFixtures = Future {
+    if (application.fixtureCreator.shouldUseFixtures) {
+      logger.info("Start loading fixtures")
+      timed("Loading fixtures")(application.fixtureCreator.resetFixtures)
+    }
+  }
 
   private val config = application.config
 
@@ -79,6 +86,7 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
   handlers.addHandler(rootContext)
 
   def start = {
+    await(loadFixtures)
     server.start
     server
   }

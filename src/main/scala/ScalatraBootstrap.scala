@@ -110,7 +110,6 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
 
     if (application.fixtureCreator.shouldUseFixtures) {
       context.mount(new FixtureServlet, "/fixtures")
-      timed("Loading fixtures")(application.fixtureCreator.resetFixtures)
     }
   } catch {
     case e: Exception =>
