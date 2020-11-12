@@ -2,12 +2,10 @@ package fi.oph.koski.perustiedot
 
 import java.time.LocalDate
 
-import fi.oph.koski.elasticsearch.{ElasticSearch, ElasticSearchIndex}
 import fi.oph.koski.elasticsearch.ElasticSearch.anyFilter
+import fi.oph.koski.elasticsearch.{ElasticSearch, ElasticSearchIndex}
 import fi.oph.koski.henkilo.TestingException
-import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
-import fi.oph.koski.json.Json4sHttp4s
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, KäyttöoikeusVarhaiskasvatusToimipiste}
@@ -19,7 +17,6 @@ import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.koski.util.SortOrder.{Ascending, Descending}
 import fi.oph.koski.util._
 import org.json4s.JValue
-import org.json4s.JsonAST.{JObject, JString}
 
 class OpiskeluoikeudenPerustiedotRepository(index: ElasticSearchIndex, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging {
 
