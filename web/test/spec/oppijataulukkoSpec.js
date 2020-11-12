@@ -88,14 +88,14 @@ describe('Oppijataulukko', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tila'), page.oppijataulukko.filterBy('oppilaitos', 'Ressun lukio'))
       it('toimii', function() {
         expect(page.oppijataulukko.names()).to.deep.equal([
-          "IB-Pre-IB-uusilukio, Pate",
-          'IB-final, Iina',
-          'IB-predicted, Petteri',
-          'Kurssikertyma, Eronnut Aineopiskelija',
-          'Kurssikertyma, Valmistunut Aineopiskelija',
           'aine, opiskelija',
           'dia, opiskelija',
-          'ib, opiskelija'
+          'ib, opiskelija',
+          'IB-final, Iina',
+          "IB-Pre-IB-uusilukio, Pate",
+          'IB-predicted, Petteri',
+          'Kurssikertyma, Eronnut Aineopiskelija',
+          'Kurssikertyma, Valmistunut Aineopiskelija'
         ])
         expect(page.opiskeluoikeudeTotal()).to.equal('8')
       })
@@ -165,11 +165,51 @@ describe('Oppijataulukko', function() {
       )
 
       it('Oletusjärjestys nouseva nimen mukaan', function() {
-        expect(page.oppijataulukko.names()).to.deep.equal([ 'Hetuton, Heikki', 'Kelalle, Useita', 'Koululainen, Kaisa', 'Lukiolainen, Liisa', 'Luokallejäänyt, Lasse', 'Monikoululainen, Miia', 'Monikoululainen, Miia', 'Oppija, Oili', 'Perusopetuksensiirto, Pertti', 'Toiminta, Tommi', 'Tupla, Toivo', 'Vuosiluokkalainen, Ville', 'Ysiluokkalainen, Ylermi', 'e, erikois', 'o, organisaatioHistoriallinen', 'of Puppets, Master', 't, tavallinen', 'v, virheellisestiSiirretty', 'v, virheellisestiSiirrettyVieraskielinen' ])
+        expect(page.oppijataulukko.names()).to.deep.equal([
+          'e, erikois',
+          'Hetuton, Heikki',
+          'Kelalle, Useita',
+          'Koululainen, Kaisa',
+          'Lukiolainen, Liisa',
+          'Luokallejäänyt, Lasse',
+          'Monikoululainen, Miia',
+          'Monikoululainen, Miia',
+          'o, organisaatioHistoriallinen',
+          'of Puppets, Master',
+          'Oppija, Oili',
+          'Perusopetuksensiirto, Pertti',
+          't, tavallinen',
+          'Toiminta, Tommi',
+          'Tupla, Toivo',
+          'v, virheellisestiSiirretty',
+          'v, virheellisestiSiirrettyVieraskielinen',
+          'Vuosiluokkalainen, Ville',
+          'Ysiluokkalainen, Ylermi',
+        ])
       })
       it('Laskeva järjestys klikkaamalla', function() {
         return page.oppijataulukko.sortBy('nimi')().then(function() {
-          expect(page.oppijataulukko.names()).to.deep.equal([ 'v, virheellisestiSiirrettyVieraskielinen', 'v, virheellisestiSiirretty', 't, tavallinen', 'of Puppets, Master', 'o, organisaatioHistoriallinen', 'e, erikois', 'Ysiluokkalainen, Ylermi', 'Vuosiluokkalainen, Ville', 'Tupla, Toivo', 'Toiminta, Tommi', 'Perusopetuksensiirto, Pertti', 'Oppija, Oili', 'Monikoululainen, Miia', 'Monikoululainen, Miia', 'Luokallejäänyt, Lasse', 'Lukiolainen, Liisa', 'Koululainen, Kaisa', 'Kelalle, Useita', 'Hetuton, Heikki' ])
+          expect(page.oppijataulukko.names()).to.deep.equal([
+            'Ysiluokkalainen, Ylermi',
+            'Vuosiluokkalainen, Ville',
+            'v, virheellisestiSiirrettyVieraskielinen',
+            'v, virheellisestiSiirretty',
+            'Tupla, Toivo',
+            'Toiminta, Tommi',
+            't, tavallinen',
+            'Perusopetuksensiirto, Pertti',
+            'Oppija, Oili',
+            'of Puppets, Master',
+            'o, organisaatioHistoriallinen',
+            'Monikoululainen, Miia',
+            'Monikoululainen, Miia',
+            'Luokallejäänyt, Lasse',
+            'Lukiolainen, Liisa',
+            'Koululainen, Kaisa',
+            'Kelalle, Useita',
+            'Hetuton, Heikki',
+            'e, erikois'
+          ])
         })
       })
     })
