@@ -36,8 +36,8 @@ class OpiskeluoikeudenPerustiedotRepository(
 
   private def findFromIndex(filters: List[OpiskeluoikeusQueryFilter], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): OpiskeluoikeudenPerustiedotResponse = {
     def nimi(order: String) = List(
-      Map("henkilö.sukunimi.keyword" -> order),
-      Map("henkilö.etunimet.keyword" -> order)
+      Map("henkilö.sukunimi.sort" -> order),
+      Map("henkilö.etunimet.sort" -> order)
     )
     def luokka(order: String) = Map("luokka.keyword" -> order) :: nimi(order)
     def alkamispäivä(order: String) = Map("alkamispäivä" -> order):: nimi(order)
