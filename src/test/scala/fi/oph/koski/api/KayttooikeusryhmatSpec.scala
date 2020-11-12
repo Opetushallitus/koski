@@ -29,7 +29,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "voi hakea kaikkia opiskeluoikeuksia" in {
-      searchForNames("eero", user) should equal(List("Jouni Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
+      searchForNames("eero", user) should equal(List("Jouni Çelik-Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
     }
 
     "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
@@ -245,7 +245,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "voi hakea kaikkia opiskeluoikeuksia" in {
-      searchForNames("eero", evira) should equal(List("Jouni Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
+      searchForNames("eero", evira) should equal(List("Jouni Çelik-Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
     }
 
     "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
@@ -278,7 +278,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       searchForNames("ylermi", toinenAsteViranomainen) should be(empty)
       searchForNames(MockOppijat.dippainssi.hetu.get, toinenAsteViranomainen) should be(empty)
       searchForNames(MockOppijat.ylioppilas.hetu.get, toinenAsteViranomainen) should equal(List("Ynjevi Ylioppilas"))
-      searchForNames("eero", toinenAsteViranomainen) should equal(List("Jouni Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
+      searchForNames("eero", toinenAsteViranomainen) should equal(List("Jouni Çelik-Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
     }
 
     "näkee vain toisen asteen opiskeluoikeudet" in {

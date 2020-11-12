@@ -4,8 +4,7 @@ describe('Oppijahaku', function() {
   var eero = 'Esimerkki, Eero (010101-123N)'
   var eivastaa = 'Virtanen, Eivastaa (250390-680P)'
   var markkanen = 'Markkanen-Fagerström, Eéro Jorma-Petteri (080154-770R)'
-  var eerola = 'Eerola, Jouni (081165-793C)'
-  var teija = 'Tekijä, Teija (251019-039B)'
+  var eerola = 'Çelik-Eerola, Jouni (081165-793C)'
 
   before(Authentication().login(), resetFixtures, page.openPage)
 
