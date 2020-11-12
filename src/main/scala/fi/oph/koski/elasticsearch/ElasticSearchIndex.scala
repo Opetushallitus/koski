@@ -25,7 +25,9 @@ class ElasticSearchIndex(
 
   lazy val init: Future[Any] = {
     val indexChanged = if (indexExists) {
-      migrateIndex
+      logger.info("ElasticSearch index exists")
+      val settingsChanged = verifySettings()
+      settingsChanged
     } else {
       createIndex
     }
@@ -42,14 +44,11 @@ class ElasticSearchIndex(
     Http.runTask(http.get(uri"/${name}")(Http.statusCode)) match {
       case 200 => true
       case 404 => false
-      case statusCode =>
-        throw new RuntimeException("Unexpected status code from elasticsearch: " + statusCode)
+      case statusCode => throw new RuntimeException("Unexpected status code from elasticsearch: " + statusCode)
     }
   }
 
-  private def migrateIndex: Boolean = {
-    // TODO: Pitäisi myös käsitellä mappingin muuttuminen
-    logger.info("ElasticSearch index exists")
+  private def verifySettings(): Boolean = {
     val serverSettings = (Http.runTask(http.get(uri"/${name}/_settings")(Http.parseJson[JValue])) \ name \ "settings" \ "index")
     val mergedSettings = serverSettings.merge(settings)
     val alreadyApplied = mergedSettings == serverSettings
@@ -82,7 +81,7 @@ class ElasticSearchIndex(
     throw new NotImplementedError("Reindexing not implemented")
   }
 
-  def refreshIndex = {
+  def refreshIndex(): Unit = {
     Http.runTask(http.post(uri"/${name}/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
   }
 
@@ -100,7 +99,7 @@ class ElasticSearchIndex(
     (extract[Boolean](response \ "errors"), response)
   }
 
-  def deleteAll: Unit = {
+  def deleteAll(): Unit = {
     val query: JValue = JObject("query" -> JObject("match_all" -> JObject()))
     val deleted = deleteByQuery(query)
     logger.info(s"Deleted ($deleted) documents")
