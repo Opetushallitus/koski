@@ -31,7 +31,7 @@ trait VuosiluokkaRaporttiPaivalta extends Raportti {
 
   def filename(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String
 
-  def buildRaportti(raportointiDatabase: PerusopetuksenRaportitRepository, oppilaitosOid: Set[Organisaatio.Oid], paiva: LocalDate, vuosiluokka: String): Seq[Product]
+  def buildRaportti(raportointiDatabase: PerusopetuksenRaportitRepository, oppilaitosOid: Seq[Organisaatio.Oid], paiva: LocalDate, vuosiluokka: String): Seq[Product]
 }
 
 trait RaporttiRequest {

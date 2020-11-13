@@ -122,7 +122,7 @@ case class AikuistenPerusopetusRaporttiRepository(
       oo.oppilaitos_oid = $oppilaitos
       and oo.koulutusmuoto = 'aikuistenperusopetus'
       and pts.suorituksen_tyyppi = $päätasonSuorituksenTyyppi
-      and aikaj.alku <= $loppu and (aikaj.loppu >= $alku or aikaj.loppu is null)
+      and aikaj.alku <= $loppu and aikaj.loppu >= $alku
     group by oo.opiskeluoikeus_oid"""
   }
 

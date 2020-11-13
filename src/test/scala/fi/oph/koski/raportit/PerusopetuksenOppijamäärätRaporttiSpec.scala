@@ -20,7 +20,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers w
   private val application = KoskiApplicationForTests
   private val raporttiBuilder = PerusopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
   private lazy val raportti = raporttiBuilder
-    .build(Set(jyväskylänNormaalikoulu), date(2012, 1, 1))(session(defaultUser))
+    .build(Seq(jyväskylänNormaalikoulu), date(2012, 1, 1))(session(defaultUser))
     .rows.map(_.asInstanceOf[PerusopetuksenOppijamäärätRaporttiRow])
 
   "Perusopetuksen oppijamäärien raportti" - {

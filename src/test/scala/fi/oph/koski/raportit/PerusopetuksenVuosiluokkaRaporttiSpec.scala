@@ -31,7 +31,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
 
     "Tuottaa oikeat tiedot" in {
       withLisätiedotFixture(MockOppijat.ysiluokkalainen, perusopetuksenOpiskeluoikeudenLisätiedot) {
-        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Set(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2014, 8, 15), vuosiluokka = "8")
+        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2014, 8, 15), vuosiluokka = "8")
         val ynjevinOpiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.ysiluokkalainen.oid).oid.get
         val rivi = result.find(_.opiskeluoikeusOid == ynjevinOpiskeluoikeusOid)
 
@@ -43,7 +43,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
 
     "Monta saman vuosiluokan suoritusta eritellään omiksi riveiksi" in {
       withAdditionalSuoritukset(MockOppijat.ysiluokkalainen, List(kahdeksannenLuokanLuokalleJääntiSuoritus.copy(luokka = "8C"))) {
-        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Set(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2014, 8, 15), vuosiluokka = "8")
+        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2014, 8, 15), vuosiluokka = "8")
         val ynjevinOpiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.ysiluokkalainen.oid).oid.get
         val rivit = result.filter(_.opiskeluoikeusOid == ynjevinOpiskeluoikeusOid)
 
@@ -55,7 +55,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
 
     "Raportille ei päädy vuosiluokkien suorituksia joiden vahvistuspäivä on menneisyydessä" in {
       val hakuDate = date(2015, 5, 30)
-      val rows = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Set(MockOrganisaatiot.jyväskylänNormaalikoulu), hakuDate, "7")
+      val rows = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), hakuDate, "7")
       rows.map(_.suorituksenVahvistuspaiva).foreach(paivaStr => {
         if (!paivaStr.isEmpty) {
           val paiva = LocalDate.parse(paivaStr)
@@ -67,7 +67,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
     "Toiminta alueiden suoritukset joilla on arvosana näytetään omassa kolumnissaan" in {
       val suoritusToimintaAlueenOsasuorituksilla = yhdeksännenLuokanSuoritus.copy(osasuoritukset = toimintaAlueOsasuoritukset, vahvistus = None)
       withAdditionalSuoritukset(MockOppijat.toimintaAlueittainOpiskelija, List(suoritusToimintaAlueenOsasuorituksilla)) {
-        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Set(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2015, 9, 1), "9")
+        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2015, 9, 1), "9")
         val rows = result.filter(_.oppijaOid == MockOppijat.toimintaAlueittainOpiskelija.oid)
         rows.length should equal(1)
         val row = rows.head
@@ -83,7 +83,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
     "Elämänkatsomustiedon opiskelijoille ei yritetä hakea uskonnon oppimäärää" in {
       val suoritusElämänkatsomustiedolla = kahdeksannenLuokanSuoritus.copy(osasuoritukset = Some(List(suoritus(uskonto(oppiaineenKoodiarvo = "ET")).copy(arviointi = arviointi(5)))), vahvistus = None)
       withAdditionalSuoritukset(MockOppijat.vuosiluokkalainen, List(suoritusElämänkatsomustiedolla)) {
-        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Set(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 1, 1), "8")
+        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 1, 1), "8")
         val rows = result.filter(_.oppijaOid == MockOppijat.vuosiluokkalainen.oid)
         rows.length should equal(1)
         val row = rows.head
@@ -96,7 +96,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
     "Peruskoulun päättävät" - {
 
       "Hakee tiedot peruskoulun oppimäärän suorituksesta" in {
-        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Set(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2016, 1, 1), "9")
+        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2016, 1, 1), "9")
         val kaisanOpiskeluoikeusOid = getOpiskeluoikeudet(MockOppijat.koululainen.oid).find(_.tyyppi.koodiarvo == "perusopetus").get.oid.get
         val rivit = result.filter(_.opiskeluoikeusOid == kaisanOpiskeluoikeusOid)
         rivit.length should equal(1)
@@ -107,7 +107,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
 
       "Jos oppilas on jäämässä luokalle käytetään yhdeksännen luokan vuosiluokka suoritusta" in {
         withAdditionalSuoritukset(MockOppijat.vuosiluokkalainen, List(perusopetuksenOppimääränSuoritus, yhdeksännenLuokanLuokallejääntiSuoritus, kahdeksannenLuokanSuoritus)) {
-          val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Set(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 1, 1), "9")
+          val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 1, 1), "9")
           val opiskeluoikeusOid = getOpiskeluoikeudet(MockOppijat.vuosiluokkalainen.oid).find(_.tyyppi.koodiarvo == "perusopetus").get.oid.get
           val rows = result.filter(_.opiskeluoikeusOid == opiskeluoikeusOid)
           rows.length should equal(1)
@@ -117,7 +117,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
 
       "Jos oppilas on jäämässä luokalle käytetään yhdeksännen luokan vuosiluokka suoritusta (ei vahvistusta luokalle jäänti suorituksella)" in {
         withAdditionalSuoritukset(MockOppijat.vuosiluokkalainen, List(perusopetuksenOppimääränSuoritus.copy(vahvistus = None), yhdeksännenLuokanLuokallejääntiSuoritus.copy(vahvistus = None), kahdeksannenLuokanSuoritus)) {
-          val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Set(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 1, 1), "9")
+          val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 1, 1), "9")
           val opiskeluoikeusOid = getOpiskeluoikeudet(MockOppijat.vuosiluokkalainen.oid).find(_.tyyppi.koodiarvo == "perusopetus").get.oid.get
           val rows = result.filter(_.opiskeluoikeusOid == opiskeluoikeusOid)
           rows.length should equal(1)
@@ -127,7 +127,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
 
       "Jos oppilas on jäänyt aikaisemmin luokalle mutta nyt suorittanut perusopetuksen oppimäärän" in {
         withAdditionalSuoritukset(MockOppijat.vuosiluokkalainen, List(perusopetuksenOppimääränSuoritus.copy(vahvistus = None), yhdeksännenLuokanSuoritus, yhdeksännenLuokanLuokallejääntiSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(date(2015, 1, 1))), kahdeksannenLuokanSuoritus)) {
-          val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Set(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 1, 1), "9")
+          val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 1, 1), "9")
           val opiskeluoikeusOid = getOpiskeluoikeudet(MockOppijat.vuosiluokkalainen.oid).find(_.tyyppi.koodiarvo == "perusopetus").get.oid.get
           val rows = result.filter(_.opiskeluoikeusOid == opiskeluoikeusOid)
           rows.length should equal(1)
@@ -137,7 +137,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
 
       "Ei tulosta tulosta päättötodistusta oppijoilla joilla ei ole yhdeksännen luokan opintoja" in {
         withAdditionalSuoritukset(MockOppijat.vuosiluokkalainen, List(perusopetuksenOppimääränSuoritus)) {
-          val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Set(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 6, 1), "9")
+          val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 6, 1), "9")
           result.map(_.oppijaOid) shouldNot contain(MockOppijat.vuosiluokkalainen.oid)
         }
       }
@@ -151,11 +151,11 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
           )
         ) {
           PerusopetuksenVuosiluokkaRaportti
-            .buildRaportti(repository, Set(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2015, 9, 1), "9")
+            .buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2015, 9, 1), "9")
             .map(_.oppijaOid) shouldNot contain(MockOppijat.vuosiluokkalainen.oid)
 
           PerusopetuksenVuosiluokkaRaportti
-            .buildRaportti(repository, Set(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2015, 11, 1), "9")
+            .buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2015, 11, 1), "9")
             .map(_.oppijaOid) should contain(MockOppijat.vuosiluokkalainen.oid)
         }
       }
@@ -164,7 +164,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
     "Raportilla näytettävien vuosiluokan suoritusten valinta" - {
       lazy val raportti = {
         insertTestData
-        PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Set(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2015, 2, 2), "8")
+        PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2015, 2, 2), "8")
       }
       "Viimeisin suoritus on vahvistettu suoritus haetulta vuosiluokalta" - {
         "Näytetään, vaikka hakupäivä ei osu alku- ja vahvistuspäivän väliin" in {
@@ -205,7 +205,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
     "Näyttää raportin tulostushetken oppilaitoksen jos eri kuin nykyinen" in {
       lazy val raportti = PerusopetuksenVuosiluokkaRaportti.buildRaportti(
         repository,
-        Set(MockOrganisaatiot.kulosaarenAlaAste),
+        Seq(MockOrganisaatiot.kulosaarenAlaAste),
         LocalDate.of(2012, 8, 15),
         vuosiluokka = "6"
       )

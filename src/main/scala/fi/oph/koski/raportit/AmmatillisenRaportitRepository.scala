@@ -73,7 +73,7 @@ case class AmmatillisenRaportitRepository(db: DB) extends KoskiDatabaseMethods w
         oo.oppilaitos_oid = $oppilaitosOid and
         oo.koulutusmuoto = $koulutusmuoto and
         pts.suorituksen_tyyppi = $suorituksenTyyppi and
-        aikaj.alku <= $loppu and (aikaj.loppu >= $alku or aikaj.loppu is null)
+        aikaj.alku <= $loppu and aikaj.loppu >= $alku
       group by oo.opiskeluoikeus_oid
        """
   }

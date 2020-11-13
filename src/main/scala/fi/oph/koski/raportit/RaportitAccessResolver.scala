@@ -2,6 +2,7 @@ package fi.oph.koski.raportit
 
 import com.typesafe.config.Config
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.raportointikanta.RaportointiDatabase
@@ -24,9 +25,13 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
       .getOrElse(Set.empty[Oid])
   }
 
+  def kyselyOiditOrganisaatiolle(organisaatioOid: Organisaatio.Oid, koulutusmuoto: String): Seq[Organisaatio.Oid] = {
+    filterOppilaitosOidsByKoulutusmuoto(kyselyOiditOrganisaatiolle(organisaatioOid).toSeq, koulutusmuoto)
+  }
+
   def mahdollisetRaporttienTyypitOrganisaatiolle(organisaatioOid: Organisaatio.Oid)(implicit session: KoskiSession): Set[RaportinTyyppi] = {
     val organisaatio = organisaatioRepository.getOrganisaatio(organisaatioOid)
-    val isKoulutustoimija = organisaatio.map(_.isInstanceOf[Koulutustoimija]).getOrElse(false)
+    val isKoulutustoimija = organisaatio.exists(_.isInstanceOf[Koulutustoimija])
 
     organisaatio
       .flatMap(organisaatioWithOid => organisaatioRepository.getChildOids(organisaatioWithOid.oid))
@@ -35,6 +40,18 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
       .map(_.filter(checkRaporttiAccessIfAccessIsLimited(_)))
       .map(_.filter(raportti => session.allowedOpiskeluoikeusTyypit.contains(raportti.opiskeluoikeudenTyyppi)))
       .getOrElse(Set.empty[RaportinTyyppi])
+  }
+
+  private def filterOppilaitosOidsByKoulutusmuoto(oppilaitosOids: Seq[String], koulutusmuoto: String): Seq[String] = {
+    val query =
+      sql"""
+        select distinct organisaatio_oid
+        from r_organisaatio o
+        join r_opiskeluoikeus oo
+          on o.organisaatio_oid = oo.oppilaitos_oid
+          and oo.koulutusmuoto = $koulutusmuoto
+        where organisaatio_oid = any($oppilaitosOids)"""
+    raportointiDatabase.runDbSync(query.as[Organisaatio.Oid])
   }
 
   private def raportinTyypitKoulutusmuodolle(koulutusmuoto: String, isKoulutustoimija: Boolean) = koulutusmuoto match {

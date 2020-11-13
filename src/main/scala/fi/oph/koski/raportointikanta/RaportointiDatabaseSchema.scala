@@ -31,18 +31,20 @@ object RaportointiDatabaseSchema {
   def createOpiskeluoikeusIndexes(s: Schema) = DBIO.seq(
     sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_opiskeluoikeus(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(oppija_oid)",
-    sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(oppilaitos_oid)",
+    sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(oppilaitos_oid, koulutusmuoto)",
     sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(koulutusmuoto)",
     sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(sisaltyy_opiskeluoikeuteen_oid)",
+    sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(opiskeluoikeus_oid, koulutusmuoto, oppija_oid)",
 
-    sqlu"CREATE INDEX ON #${s.name}.r_organisaatiohistoria(opiskeluoikeus_oid, alku, loppu DESC, oppilaitos_oid, koulutustoimija_oid)",
+    sqlu"CREATE INDEX ON #${s.name}.r_organisaatiohistoria(opiskeluoikeus_oid, loppu, alku, oppilaitos_oid, koulutustoimija_oid)",
+    sqlu"CREATE INDEX ON #${s.name}.r_organisaatiohistoria(oppilaitos_oid, loppu, alku, opiskeluoikeus_oid)",
 
-    sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus_aikajakso(opiskeluoikeus_oid)",
+    sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus_aikajakso(opiskeluoikeus_oid, loppu, alku, tila)",
+    sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus_aikajakso(loppu, alku, opiskeluoikeus_oid)",
 
     sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_paatason_suoritus(paatason_suoritus_id)",
-    sqlu"CREATE INDEX ON #${s.name}.r_paatason_suoritus(opiskeluoikeus_oid)",
+    sqlu"CREATE INDEX ON #${s.name}.r_paatason_suoritus(opiskeluoikeus_oid, suorituksen_tyyppi)",
     sqlu"CREATE INDEX ON #${s.name}.r_paatason_suoritus(vahvistus_paiva)",
-    sqlu"CREATE INDEX ON #${s.name}.r_paatason_suoritus(suorituksen_tyyppi)",
 
     sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_osasuoritus(osasuoritus_id)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(paatason_suoritus_id)",
@@ -55,7 +57,10 @@ object RaportointiDatabaseSchema {
 
   def createOtherIndexes(s: Schema) = DBIO.seq(
     sqlu"CREATE INDEX ON #${s.name}.r_henkilo(hetu)",
+    sqlu"CREATE INDEX ON #${s.name}.r_henkilo(oppija_oid, aidinkieli)",
+
     sqlu"CREATE INDEX ON #${s.name}.r_organisaatio(oppilaitosnumero)",
+
     sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_koodisto_koodi(koodisto_uri, koodiarvo)"
   )
 

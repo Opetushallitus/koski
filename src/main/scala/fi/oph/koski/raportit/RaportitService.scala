@@ -172,7 +172,7 @@ class RaportitService(application: KoskiApplication) {
   }
 
   def perusopetuksenOppijamäärät(request: RaporttiPäivältäRequest)(implicit u: KoskiSession) = {
-    val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid)
+    val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid, "perusopetus")
     OppilaitosRaporttiResponse(
       sheets = Seq(perusopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva)),
       workbookSettings = WorkbookSettings("Perusopetuksen oppijamäärien raportti", Some(request.password)),
@@ -184,7 +184,7 @@ class RaportitService(application: KoskiApplication) {
   def perusopetuksenLisäopetuksenOppijamäärät(request: RaporttiPäivältäRequest)(implicit u: KoskiSession) = {
     val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid)
     OppilaitosRaporttiResponse(
-      sheets = Seq(perusopetuksenLisäopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva)),
+      sheets = Seq(perusopetuksenLisäopetuksenOppijamäärätRaportti.build(oppilaitosOids.toSeq, request.paiva)),
       workbookSettings = WorkbookSettings("Perusopetuksen oppijamäärien raportti", Some(request.password)),
       filename = s"lisaopetus_vos_raportti-${request.paiva}.xlsx",
       downloadToken = request.downloadToken
@@ -205,7 +205,8 @@ class RaportitService(application: KoskiApplication) {
   }
 
   private def perusopetuksenVuosiluokka(request: PerusopetuksenVuosiluokkaRequest, raporttiBuilder: VuosiluokkaRaporttiPaivalta) = {
-    val rows = raporttiBuilder.buildRaportti(perusopetusRepository, accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid), request.paiva, request.vuosiluokka)
+    val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid, "perusopetus")
+    val rows = raporttiBuilder.buildRaportti(perusopetusRepository, oppilaitosOids, request.paiva, request.vuosiluokka)
     val documentation = DocumentationSheet("Ohjeet", raporttiBuilder.documentation(request.oppilaitosOid, request.paiva, request.vuosiluokka, raportointiDatabase.status.completionTime.get.toLocalDateTime))
     val data = DataSheet("Opiskeluoikeudet", rows, raporttiBuilder.columnSettings)
 

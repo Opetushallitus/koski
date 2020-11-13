@@ -31,7 +31,7 @@ case class PerusopetuksenLisäopetusOppijamäärätRaportti(db: DB, organisaatio
     )
   )
 
-  def build(oppilaitosOids: Set[String], date: LocalDate)(implicit u: KoskiSession): DataSheet = {
+  def build(oppilaitosOids: Seq[String], date: LocalDate)(implicit u: KoskiSession): DataSheet = {
     val raporttiQuery = query(oppilaitosOids, date).as[PerusopetuksenLisäopetusOppijamäärätRaporttiRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
@@ -41,7 +41,7 @@ case class PerusopetuksenLisäopetusOppijamäärätRaportti(db: DB, organisaatio
     )
   }
 
-  private def query(oppilaitosOids: Set[String], date: LocalDate)(implicit u: KoskiSession) = {
+  private def query(oppilaitosOids: Seq[String], date: LocalDate)(implicit u: KoskiSession) = {
     sql"""
     select
       oppilaitos.nimi as oppilaitos_nimi,
@@ -68,7 +68,7 @@ case class PerusopetuksenLisäopetusOppijamäärätRaportti(db: DB, organisaatio
     left join r_koodisto_koodi opetuskieli_koodisto
       on opetuskieli_koodisto.koodisto_uri = split_part(r_organisaatio_kieli.kielikoodi, '_', 1)
       and opetuskieli_koodisto.koodiarvo = split_part(split_part(r_organisaatio_kieli.kielikoodi, '_', 2), '#', 1)
-    where oh.oppilaitos_oid = any(${oppilaitosOids.toSeq})
+    where oh.oppilaitos_oid = any(${oppilaitosOids})
       and oh.alku <= $date
       and oh.loppu >= $date
       and oo.koulutusmuoto = 'perusopetuksenlisaopetus'
