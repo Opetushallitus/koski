@@ -171,12 +171,24 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
   def status: RaportointikantaStatusResponse =
     RaportointikantaStatusResponse(schema.name, queryStatus)
 
-  private def queryStatus = try {
-    runDbSync(RaportointikantaStatus.result)
-  } catch {
-    case e: PSQLException =>
-      logger.debug(s"status unavailable for ${schema.name}, ${e.getMessage.replace("\n", "")}")
+  private def queryStatus = {
+    if (statusTableExists) {
+      try {
+        runDbSync(RaportointikantaStatus.result)
+      } catch {
+        case e: PSQLException =>
+          logger.debug(s"status unavailable for ${schema.name}, ${e.getMessage.replace("\n", "")}")
+          Nil
+      }
+    } else {
+      logger.debug(s"status table does not exist in schema ${schema.name}")
       Nil
+    }
+  }
+
+  private def statusTableExists: Boolean = {
+    val query = sql"SELECT EXISTS(SELECT * FROM information_schema.tables WHERE table_schema = ${schema.name} AND table_name = 'raportointikanta_status')"
+    runDbSync(query.as[Boolean]).headOption.getOrElse(false)
   }
 
   def oppilaitoksenKielet(organisaatioOid: Organisaatio.Oid): Set[RKoodistoKoodiRow] = {
