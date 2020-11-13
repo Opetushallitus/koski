@@ -89,7 +89,7 @@ case class LukioRaportitRepository(db: DB) extends KoskiDatabaseMethods with Rap
     where
       oo.oppilaitos_oid = $oppilaitos and
       oo.koulutusmuoto = 'lukiokoulutus' and
-      aikaj.alku <= $loppu and (aikaj.loppu >= $alku or aikaj.loppu is null)
+      aikaj.alku <= $loppu and aikaj.loppu >= $alku
     group by oo.opiskeluoikeus_oid"""
   }
 }

@@ -145,7 +145,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
       pts.koulutusmoduuli_koodiarvo = $vuosiluokka and
       (pts.vahvistus_paiva >= $päivä or pts.vahvistus_paiva is null) and
       (pts.data->>'alkamispäivä' <= $päivä or pts.data->>'alkamispäivä' is null) and
-      aikaj.alku <= $päivä and (aikaj.loppu >= $päivä or aikaj.loppu is null)
+      aikaj.alku <= $päivä and aikaj.loppu >= $päivä
     group by oo.opiskeluoikeus_oid"""
 
     runDbSync(query.as[Tunnisteet], timeout = 5.minutes)
@@ -177,7 +177,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
       (pts.data->>'jääLuokalle')::boolean and
       (pts.vahvistus_paiva is null or pts.vahvistus_paiva >= $päivä) and
       (pts.data->>'alkamispäivä' <= $päivä or pts.data->>'alkamispäivä' is null) and
-      aikaj.alku <= $päivä and (aikaj.loppu >= $päivä or aikaj.loppu is null)
+      aikaj.alku <= $päivä and aikaj.loppu >= $päivä
     group by
       oo.opiskeluoikeus_oid"""
 
@@ -223,7 +223,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
       where
         pts.suorituksen_tyyppi = 'perusopetuksenoppimaara' and
         (pts.vahvistus_paiva is null or pts.vahvistus_paiva >= $päivä) and
-        aikaj.alku <= $päivä and (aikaj.loppu >= $päivä or aikaj.loppu is null)
+        aikaj.alku <= $päivä and aikaj.loppu >= $päivä
       group by
         oo.opiskeluoikeus_oid"""
 
@@ -287,7 +287,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
         oo.oppilaitos_oid = any($oppilaitokset) and
         oo.koulutusmuoto = 'perusopetus' and
         pts.suorituksen_tyyppi = 'perusopetuksenvuosiluokka' and
-        aikaj.alku <= $päivä and (aikaj.loppu >= $päivä or aikaj.loppu is null)
+        aikaj.alku <= $päivä and aikaj.loppu >= $päivä
       group by oo.opiskeluoikeus_oid"""
 
     runDbSync(query.as[(OpiskeluoikeusOid, Seq[String], Seq[AikajaksoId])], timeout = 5.minutes)
