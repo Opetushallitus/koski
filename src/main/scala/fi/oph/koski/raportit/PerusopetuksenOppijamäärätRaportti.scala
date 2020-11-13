@@ -35,7 +35,7 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
 
   def build(oppilaitosOids: Seq[String], date: LocalDate)(implicit u: KoskiSession): DataSheet = {
     val raporttiQuery = query(oppilaitosOids, date).as[PerusopetuksenOppijamäärätRaporttiRow]
-    val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
+    val rows = runDbSync(raporttiQuery, timeout = 10.minutes)
     DataSheet(
       title = "Suoritukset",
       rows = rows,
