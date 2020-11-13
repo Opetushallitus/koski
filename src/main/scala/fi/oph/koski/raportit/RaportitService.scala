@@ -15,7 +15,8 @@ class RaportitService(application: KoskiApplication) {
   private val topksAmmatillinenRaportti = TOPKSAmmatillinenRaporttiBuilder(raportointiDatabase.db)
   private val esiopetuksenOppijamäärätRaportti = EsiopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val aikuistenPerusopetuksenOppijamäärätRaportti = AikuistenPerusopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
-  private val aikuistenPerusopetuksenKurssikertymäRaportti = AikuistenPerusopetuksenKurssikertymäRaportti(raportointiDatabase.db, application.organisaatioService)
+  private val aikuistenPerusopetuksenOppimääränKurssikertymätRaportti = AikuistenPerusopetuksenOppimääränKurssikertymät(raportointiDatabase.db, application.organisaatioService)
+  private val aikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRaportti = AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(raportointiDatabase.db, application.organisaatioService)
   private val perusopetuksenOppijamäärätRaportti = PerusopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val perusopetuksenLisäopetuksenOppijamäärätRaportti = PerusopetuksenLisäopetusOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
 
@@ -148,7 +149,10 @@ class RaportitService(application: KoskiApplication) {
       case oid => List(oid)
     }
     OppilaitosRaporttiResponse(
-      sheets = Seq(aikuistenPerusopetuksenKurssikertymäRaportti.build(oppilaitosOids, request.alku, request.loppu)),
+      sheets = Seq(
+        aikuistenPerusopetuksenOppimääränKurssikertymätRaportti.build(oppilaitosOids, request.alku, request.loppu),
+        aikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRaportti.build(oppilaitosOids, request.alku, request.loppu),
+      ),
       workbookSettings = WorkbookSettings("Aikuisten perusopetuksen kurssikertymien raportti", Some(request.password)),
       filename = s"aikuisten_perusopetuksen_kurssikertymät_raportti-${request.alku.toString.replaceAll("-", "")}-${request.loppu.toString.replaceAll("-", "")}.xlsx",
       downloadToken = request.downloadToken

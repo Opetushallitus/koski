@@ -8,20 +8,20 @@ import fi.oph.koski.api.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, valtionosuusRahoitteinen}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetuksenAlkuvaiheenSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
 import fi.oph.koski.koskiuser.MockUser
-import fi.oph.koski.koskiuser.MockUsers.{paakayttaja}
+import fi.oph.koski.koskiuser.MockUsers.paakayttaja
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema.Organisaatio.Oid
-import fi.oph.koski.schema.{Aikajakso, AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot, AikuistenPerusopetuksenOpiskeluoikeudenTila, AikuistenPerusopetuksenOpiskeluoikeus, AikuistenPerusopetuksenOpiskeluoikeusjakso, Oppilaitos, SisältäväOpiskeluoikeus}
+import fi.oph.koski.schema._
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
-class AikuistenPerusopetuksenKurssikertymäRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll with PutOpiskeluoikeusTestMethods[AikuistenPerusopetuksenOpiskeluoikeus] {
+class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll with PutOpiskeluoikeusTestMethods[AikuistenPerusopetuksenOpiskeluoikeus] {
   private val application = KoskiApplicationForTests
-  private val raporttiBuilder = AikuistenPerusopetuksenKurssikertymäRaportti(application.raportointiDatabase.db, application.organisaatioService)
+  private val raporttiBuilder = AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(application.raportointiDatabase.db, application.organisaatioService)
   private lazy val raportti =
-    raporttiBuilder.build(List(jyväskylänNormaalikoulu), date(2006, 1, 1), date(2016, 12, 30))(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenKurssikertymäRaporttiRow])
+    raporttiBuilder.build(List(jyväskylänNormaalikoulu), date(2006, 1, 1), date(2016, 12, 30))(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRow])
 
   override def beforeAll(): Unit = loadRaportointikantaFixtures
 
@@ -88,7 +88,7 @@ class AikuistenPerusopetuksenKurssikertymäRaporttiSpec extends FreeSpec with Ma
     }
   }
 
-  private def findSingle(rows: Seq[AikuistenPerusopetuksenKurssikertymäRaporttiRow]) = {
+  private def findSingle(rows: Seq[AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRow]) = {
     val found = rows.filter(_.oppilaitos.equals("Jyväskylän normaalikoulu"))
     found.length should be(1)
     found.head

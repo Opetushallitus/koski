@@ -12,9 +12,9 @@ import slick.jdbc.GetResult
 
 import scala.concurrent.duration._
 
-case class AikuistenPerusopetuksenKurssikertymäRaportti(db: DB, organisaatioService: OrganisaatioService) extends KoskiDatabaseMethods {
-  implicit private val getResult: GetResult[AikuistenPerusopetuksenKurssikertymäRaporttiRow] = GetResult(r =>
-    AikuistenPerusopetuksenKurssikertymäRaporttiRow(
+case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB, organisaatioService: OrganisaatioService) extends KoskiDatabaseMethods {
+  implicit private val getResult: GetResult[AikuistenPerusopetuksenOppimääränKurssikertymätRow] = GetResult(r =>
+    AikuistenPerusopetuksenOppimääränKurssikertymätRow(
       oppilaitosOid = r.rs.getString("oppilaitos_oid"),
       oppilaitos =  r.rs.getString("oppilaitos_nimi"),
       yhteensäSuorituksia = r.rs.getInt("yhteensäSuorituksia"),
@@ -36,10 +36,10 @@ case class AikuistenPerusopetuksenKurssikertymäRaportti(db: DB, organisaatioSer
   )
 
   def build(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate)(implicit u: KoskiSession): DataSheet = {
-    val raporttiQuery = query(validateOids(oppilaitosOids), aikaisintaan, viimeistaan).as[AikuistenPerusopetuksenKurssikertymäRaporttiRow]
+    val raporttiQuery = query(validateOids(oppilaitosOids), aikaisintaan, viimeistaan).as[AikuistenPerusopetuksenOppimääränKurssikertymätRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
-      title = "Suoritukset",
+      title = "Aineopiskelijat",
       rows = rows,
       columnSettings = columnSettings
     )
@@ -153,7 +153,7 @@ case class AikuistenPerusopetuksenKurssikertymäRaportti(db: DB, organisaatioSer
   )
 }
 
-case class AikuistenPerusopetuksenKurssikertymäRaporttiRow(
+case class AikuistenPerusopetuksenOppimääränKurssikertymätRow(
    oppilaitosOid: String,
    oppilaitos: String,
    yhteensäSuorituksia: Int,
