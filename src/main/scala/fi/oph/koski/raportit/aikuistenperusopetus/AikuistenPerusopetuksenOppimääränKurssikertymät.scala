@@ -1,4 +1,4 @@
-package fi.oph.koski.raportit
+package fi.oph.koski.raportit.aikuistenperusopetus
 
 import java.time.LocalDate
 
@@ -6,6 +6,7 @@ import fi.oph.koski.db.KoskiDatabaseMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.organisaatio.OrganisaatioService
+import fi.oph.koski.raportit.{Column, DataSheet}
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
 import slick.jdbc.GetResult
@@ -97,11 +98,12 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB, organisaa
           and r_osasuoritus.arviointi_paiva <= $viimeistaan
         group by paatason_suoritus.oppilaitos_nimi, paatason_suoritus.oppilaitos_oid
       ) kurssikertymat
+      --- aikajaksojen ulkopuoliset kurssit
       left join (
         select
           oppilaitos_oid oppilaitos_oid,
           oppilaitos_nimi oppilaitos_nimi,
-          count(distinct (case when (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true) and r_opiskeluoikeus_aikajakso.opintojen_rahoitus is null then r_osasuoritus.osasuoritus_id end)) suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa
+          count(distinct (case when (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true) then r_osasuoritus.osasuoritus_id end)) suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa
         from paatason_suoritus
         join r_opiskeluoikeus_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = oo_opiskeluoikeus_oid
         join r_opiskeluoikeus_aikajakso on oo_opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid

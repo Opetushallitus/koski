@@ -8,10 +8,11 @@ import fi.oph.koski.api.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, valtionosuusRahoitteinen}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetuksenAlkuvaiheenSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
 import fi.oph.koski.koskiuser.MockUser
-import fi.oph.koski.koskiuser.MockUsers.{paakayttaja}
+import fi.oph.koski.koskiuser.MockUsers.paakayttaja
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
+import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenOppimääränKurssikertymät, AikuistenPerusopetuksenOppimääränKurssikertymätRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.{Aikajakso, AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot, AikuistenPerusopetuksenOpiskeluoikeudenTila, AikuistenPerusopetuksenOpiskeluoikeus, AikuistenPerusopetuksenOpiskeluoikeusjakso, Oppilaitos, SisältäväOpiskeluoikeus}
@@ -68,7 +69,7 @@ class AikuistenPerusopetuksenOppimääränKurssikertymätSpec extends FreeSpec w
 
     "Raportin kolumnit" in {
       lazy val r = findSingle(raportti)
-      println(r.toString)
+
       r.oppilaitos should equal("Jyväskylän normaalikoulu")
       r.yhteensäSuorituksia should equal(29)
       r.yhteensäSuoritettujaSuorituksia(24)

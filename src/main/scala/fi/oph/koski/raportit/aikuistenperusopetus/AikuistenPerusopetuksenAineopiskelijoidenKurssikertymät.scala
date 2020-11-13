@@ -1,4 +1,4 @@
-package fi.oph.koski.raportit
+package fi.oph.koski.raportit.aikuistenperusopetus
 
 import java.time.LocalDate
 
@@ -6,6 +6,7 @@ import fi.oph.koski.db.KoskiDatabaseMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.organisaatio.OrganisaatioService
+import fi.oph.koski.raportit.{Column, DataSheet}
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
 import slick.jdbc.GetResult
@@ -59,7 +60,8 @@ case class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(db: DB, orga
         join r_paatason_suoritus on r_opiskeluoikeus.opiskeluoikeus_oid = r_paatason_suoritus.opiskeluoikeus_oid
           and r_opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid is null
         where (oppilaitos_oid = any($oppilaitosOidit) or koulutustoimija_oid = any($oppilaitosOidit))
-          and (r_paatason_suoritus.suorituksen_tyyppi = 'perusopetuksenoppiaineenoppimaara')
+          --- Pitäisi ehkä olla and (r_paatason_suoritus.suorituksen_tyyppi = 'perusopetuksenoppiaineenoppimaara') , mutta silloin tulee 0 mätsiä? Varmista Juholta
+          and (r_paatason_suoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaara' or r_paatason_suoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaaranalkuvaihe')
           and exists (
             select 1
             from r_opiskeluoikeus_aikajakso
@@ -76,14 +78,14 @@ case class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(db: DB, orga
           count(distinct (case when tunnustettu = false then r_osasuoritus.osasuoritus_id end)) yhteensäSuoritettujaSuorituksia,
           count(distinct (case when tunnustettu then r_osasuoritus.osasuoritus_id end)) yhteensäTunnistettujaSuorituksia,
           count(distinct (case when tunnustettu_rahoituksen_piirissa then r_osasuoritus.osasuoritus_id end)) yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä,
-          count(distinct (case when suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' then r_osasuoritus.osasuoritus_id end)) päättövaiheenSuorituksia,
-          count(distinct (case when tunnustettu = false and suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' then r_osasuoritus.osasuoritus_id end)) päättövaiheenSuoritettujaSuorituksia,
-          count(distinct (case when tunnustettu and suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' then r_osasuoritus.osasuoritus_id end)) päättövaiheenTunnistettujaSuorituksia,
-          count(distinct (case when tunnustettu_rahoituksen_piirissa and suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' then r_osasuoritus.osasuoritus_id end)) päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä,
-          count(distinct (case when suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi' then r_osasuoritus.osasuoritus_id end)) alkuvaiheenSuorituksia,
-          count(distinct (case when tunnustettu = false and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi' then r_osasuoritus.osasuoritus_id end)) alkuvaiheenSuoritettujaSuorituksia,
-          count(distinct (case when tunnustettu and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi' then r_osasuoritus.osasuoritus_id end)) alkuvaiheenTunnistettujaSuorituksia,
-          count(distinct (case when tunnustettu_rahoituksen_piirissa and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi' then r_osasuoritus.osasuoritus_id end)) alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä,
+          count(distinct (case when suorituksen_tyyppi = 'aikuistenperusopetuksenoppiaine' then r_osasuoritus.osasuoritus_id end)) päättövaiheenSuorituksia,
+          count(distinct (case when tunnustettu = false and suorituksen_tyyppi = 'aikuistenperusopetuksenoppiaine' then r_osasuoritus.osasuoritus_id end)) päättövaiheenSuoritettujaSuorituksia,
+          count(distinct (case when tunnustettu and suorituksen_tyyppi = 'aikuistenperusopetuksenoppiaine' then r_osasuoritus.osasuoritus_id end)) päättövaiheenTunnistettujaSuorituksia,
+          count(distinct (case when tunnustettu_rahoituksen_piirissa and suorituksen_tyyppi = 'aikuistenperusopetuksenoppiaine' then r_osasuoritus.osasuoritus_id end)) päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä,
+          count(distinct (case when suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenoppiaine' then r_osasuoritus.osasuoritus_id end)) alkuvaiheenSuorituksia,
+          count(distinct (case when tunnustettu = false and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenoppiaine' then r_osasuoritus.osasuoritus_id end)) alkuvaiheenSuoritettujaSuorituksia,
+          count(distinct (case when tunnustettu and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenoppiaine' then r_osasuoritus.osasuoritus_id end)) alkuvaiheenTunnistettujaSuorituksia,
+          count(distinct (case when tunnustettu_rahoituksen_piirissa and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenoppiaine' then r_osasuoritus.osasuoritus_id end)) alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä,
           count(distinct (case when (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true) and r_opiskeluoikeus_aikajakso.opintojen_rahoitus = '6' then r_osasuoritus.osasuoritus_id end)) suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitetut,
           count(distinct (case when (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true) and r_opiskeluoikeus_aikajakso.opintojen_rahoitus is null then r_osasuoritus.osasuoritus_id end)) suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa
         from paatason_suoritus
@@ -92,21 +94,22 @@ case class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(db: DB, orga
         join r_osasuoritus on (paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id or oo_opiskeluoikeus_oid = r_osasuoritus.sisaltyy_opiskeluoikeuteen_oid)
           and r_opiskeluoikeus_aikajakso.alku >= $aikaisintaan
           and r_opiskeluoikeus_aikajakso.loppu <= $viimeistaan
-        where (r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi')
+        where (r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenoppiaine' or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenoppiaine')
           and r_osasuoritus.arviointi_paiva >= $aikaisintaan
           and r_osasuoritus.arviointi_paiva <= $viimeistaan
         group by paatason_suoritus.oppilaitos_nimi, paatason_suoritus.oppilaitos_oid
       ) kurssikertymat
+      --- aikajaksojen ulkopuoliset suoritukset
       left join (
         select
           oppilaitos_oid oppilaitos_oid,
           oppilaitos_nimi oppilaitos_nimi,
-          count(distinct (case when (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true) and r_opiskeluoikeus_aikajakso.opintojen_rahoitus is null then r_osasuoritus.osasuoritus_id end)) suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa
+          count(distinct (case when (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true) then r_osasuoritus.osasuoritus_id end)) suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa
         from paatason_suoritus
         join r_opiskeluoikeus_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = oo_opiskeluoikeus_oid
         join r_opiskeluoikeus_aikajakso on oo_opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
         join r_osasuoritus on paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id or oo_opiskeluoikeus_oid = r_osasuoritus.sisaltyy_opiskeluoikeuteen_oid
-        where (r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi')
+        where (r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenoppiaine' or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenoppiaine')
           and r_osasuoritus.arviointi_paiva >= $aikaisintaan
           and r_osasuoritus.arviointi_paiva <= $viimeistaan
           and viimeisin_tila = 'valmistunut'
