@@ -22,9 +22,9 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
   type AikajaksoId = Long
   type Tunnisteet = (OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])
 
-  def perusopetuksenvuosiluokka(organisaatioOidit: Set[Organisaatio.Oid], päivä: LocalDate, vuosiluokka: String): Seq[PerusopetuksenRaporttiRows] = {
+  def perusopetuksenvuosiluokka(organisaatioOidit: Seq[Organisaatio.Oid], päivä: LocalDate, vuosiluokka: String): Seq[PerusopetuksenRaporttiRows] = {
     val potentiaalisestiKeskeyttäneet = mahdollisestiKeskeyttäneet(organisaatioOidit, päivä, vuosiluokka)
-    val tunnisteet = opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(organisaatioOidit.toSeq, päivä, vuosiluokka).union(potentiaalisestiKeskeyttäneet)
+    val tunnisteet = opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(organisaatioOidit, päivä, vuosiluokka).union(potentiaalisestiKeskeyttäneet)
     val opiskeluoikeusOids = tunnisteet.map(_._1)
     val paatasonSuoritusIds = tunnisteet.flatMap(_._2)
     val aikajaksoIds = tunnisteet.flatMap(_._3)
@@ -32,10 +32,10 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
     suoritustiedot(päivä, opiskeluoikeusOids, paatasonSuoritusIds, aikajaksoIds, vuosiluokka)
   }
 
-  def peruskoulunPaattavatJaLuokalleJääneet(organisaatioOidit: Set[Organisaatio.Oid], päivä: LocalDate, vuosiluokka: String): Seq[PerusopetuksenRaporttiRows] = {
-    val luokalleJäävienTunnisteet = queryLuokalleJäävienTunnisteet(organisaatioOidit.toSeq, päivä)
+  def peruskoulunPaattavatJaLuokalleJääneet(organisaatioOidit: Seq[Organisaatio.Oid], päivä: LocalDate, vuosiluokka: String): Seq[PerusopetuksenRaporttiRows] = {
+    val luokalleJäävienTunnisteet = queryLuokalleJäävienTunnisteet(organisaatioOidit, päivä)
     val luokalleJaavienOidit = luokalleJäävienTunnisteet.map(_._1)
-    val peruskoulunPäättävienTunnisteet = queryPeruskoulunPäättäneidenTunnisteet(organisaatioOidit.toSeq, päivä, luokalleJaavienOidit.distinct)
+    val peruskoulunPäättävienTunnisteet = queryPeruskoulunPäättäneidenTunnisteet(organisaatioOidit, päivä, luokalleJaavienOidit.distinct)
     val opiskeluoikeusOids = luokalleJaavienOidit.union(peruskoulunPäättävienTunnisteet.map(_._1))
     val paatasonSuoritusIds = luokalleJäävienTunnisteet.flatMap(_._2).union(peruskoulunPäättävienTunnisteet.flatMap(_._2))
     val aikajaksoIds = luokalleJäävienTunnisteet.flatMap(_._3).union(peruskoulunPäättävienTunnisteet.flatMap(_._3))
@@ -232,8 +232,8 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
 
   // Tarkoituksena hakea tapauksia joilla on vuosiluokka valmiina, ei ole merkitty seuraavalle luokalle, eikä niiden opintoja ole merkitty päättyviksi.
   // Nämä mahdollisesti keskeyttäneet halutaan saada näkyviin oppilaitoksille, koska ne ovat potentiaalisesti virheellisiä.
-  private def mahdollisestiKeskeyttäneet(oppilaitokset: Set[Organisaatio.Oid], päivä: LocalDate, vuosiluokka: String): Seq[Tunnisteet] = {
-    aktiivistenSuoritukset(oppilaitokset.toSeq, päivä).flatMap {
+  private def mahdollisestiKeskeyttäneet(oppilaitokset: Seq[Organisaatio.Oid], päivä: LocalDate, vuosiluokka: String): Seq[Tunnisteet] = {
+    aktiivistenSuoritukset(oppilaitokset, päivä).flatMap {
       case (opiskeluoikeusOid, vuosiluokkienTiedot, aikajaksoIds) => {
         val vahvistettujenVuosiluokkienIds = vuosiluokkienTiedot
           .takeWhile { x => x.vuosiluokka == vuosiluokka && x.vahvistuspäivä.isDefined }
