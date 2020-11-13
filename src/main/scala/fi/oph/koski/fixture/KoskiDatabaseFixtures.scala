@@ -206,7 +206,10 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
       (MockOppijat.lukioKurssikertymaRaportti_aineopiskelija_eronnut, LukioKurssikertymaRaporttiFixtures.aineopiskelijaEronnut),
       (MockOppijat.lukioKurssikertymaRaportti_aineopiskelija_valmistunut, LukioKurssikertymaRaporttiFixtures.aineopiskelijaValmistunut),
       (MockOppijat.luvaOpiskelijamaaratRaportti_nuortenOppimaara, LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures.nuortenOppimaaraLuva),
-      (MockOppijat.luvaOpiskelijamaaratRaportti_aikuistenOppimaara, LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures.aikuistenOppimaaraLuva)
+      (MockOppijat.luvaOpiskelijamaaratRaportti_aikuistenOppimaara, LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures.aikuistenOppimaaraLuva),
+      (MockOppijat.paallekkaisiOpiskeluoikeuksia, PaallekkaisetOpiskeluoikeudetFixtures.ensimmainenOpiskeluoikeus),
+      (MockOppijat.paallekkaisiOpiskeluoikeuksia, PaallekkaisetOpiskeluoikeudetFixtures.keskimmainenOpiskeluoikeus),
+      (MockOppijat.paallekkaisiOpiskeluoikeuksia, PaallekkaisetOpiskeluoikeudetFixtures.viimeinenOpiskeluoikeus)
     )
   }
 

@@ -36,6 +36,12 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     }
   }
 
+  get("/paallekkaisetopiskeluoikeudet") {
+    val req = parseAikajaksoRaporttiRequest
+    auditLogRaportinLataus("paallekkaisetopiskeluoikeudet", req)
+    writeExcel(raportitService.paallekkaisetOpiskeluoikeudet(req))
+  }
+
   get("/ammatillinenopiskelijavuositiedot") {
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.ammatillinenkoulutus)
     val parsedRequest = parseAikajaksoRaporttiRequest
@@ -269,4 +275,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
       case e: DateTimeParseException => haltWithStatus(KoskiErrorCategory.badRequest.format.pvm())
     }
   }
+
+  private def auditLogRaportinLataus(raportti: String, request: RaporttiAikajaksoltaRequest) =
+    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> request.auditlogHakuehto(raportti))))
 }

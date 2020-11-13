@@ -27,6 +27,7 @@ export const raportitContentP = () => {
           <div>
             {raportit && raportit.length === 0 && <Text name='Tälle organisaatiolle ei löydy raportteja'/>}
             {raportit && raportit.length > 0 && <hr/>}
+            {raportit && <PaallekkaisetOpiskeluoikeudet organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('ammatillinenopiskelijavuositiedot') && <Opiskelijavuositiedot organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('ammatillinentutkintosuoritustietojentarkistus') && <SuoritustietojenTarkistus organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('ammatillinenosittainensuoritustietojentarkistus') && <AmmatillinenOsittainenSuoritustietojenTarkistus organisaatioAtom={organisaatioAtom} />}
@@ -70,6 +71,15 @@ const Organisaatio = ({organisaatioAtom}) => {
     }
   </label>)
 }
+
+const PaallekkaisetOpiskeluoikeudet = ({organisaatioAtom}) =>
+  <AikajaksoRaportti
+    organisaatioAtom={organisaatioAtom}
+    apiEndpoint={'/paallekkaisetopiskeluoikeudet'}
+    title={<Text name='paallekkaiset-opiskeluoikeudet'/>}
+    description={<Text name='paallekkaiset-opiskeluoikeudet'/>}
+  />
+
 
 const Opiskelijavuositiedot = ({organisaatioAtom}) => {
   const titleText = <Text name='Opiskelijavuositiedot'/>
