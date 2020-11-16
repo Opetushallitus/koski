@@ -3,6 +3,7 @@ package fi.oph.koski.raportit
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät, AikuistenPerusopetuksenEiRahoitustietoaKurssit, AikuistenPerusopetuksenMuutaKauttaRahoitetutKurssit, AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit, AikuistenPerusopetuksenOppijamäärätRaportti, AikuistenPerusopetuksenOppimääränKurssikertymät, AikuistenPerusopetusRaportti, AikuistenPerusopetusRaporttiRepository}
+import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
 
 class RaportitService(application: KoskiApplication) {
   private val raportointiDatabase = application.raportointiDatabase
@@ -147,11 +148,8 @@ class RaportitService(application: KoskiApplication) {
   }
 
   def aikuistenperusopetuksenKurssikertymä(request: AikajaksoRaporttiRequest)(implicit u: KoskiSession) = {
-    val oppilaitosOids = request.oppilaitosOid match {
-      case application.organisaatioService.ostopalveluRootOid =>
-        application.organisaatioService.omatOstopalveluOrganisaatiot.map(_.oid)
-      case oid => List(oid)
-    }
+    val oppilaitosOids = validateOids(List(request.oppilaitosOid))
+
     OppilaitosRaporttiResponse(
       sheets = Seq(
         aikuistenPerusopetuksenOppimääränKurssikertymätRaportti.build(oppilaitosOids, request.alku, request.loppu),
@@ -226,6 +224,14 @@ class RaportitService(application: KoskiApplication) {
       filename = raporttiBuilder.filename(request.oppilaitosOid, request.paiva, request.vuosiluokka),
       downloadToken = request.downloadToken
     )
+  }
+
+  private def validateOids(oppilaitosOids: List[String]) = {
+    val invalidOid = oppilaitosOids.find(oid => !isValidOrganisaatioOid(oid))
+    if (invalidOid.isDefined) {
+      throw new IllegalArgumentException(s"Invalid oppilaitos oid ${invalidOid.get}")
+    }
+    oppilaitosOids
   }
 }
 

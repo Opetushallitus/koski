@@ -25,7 +25,7 @@ case class AikuistenPerusopetuksenMuutaKauttaRahoitetutKurssit(db: DB, organisaa
   )
 
   def build(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate)(implicit u: KoskiSession): DataSheet = {
-    val raporttiQuery = query(validateOids(oppilaitosOids), aikaisintaan, viimeistaan).as[AikuistenPerusopetuksenMuutaKauttaRahoitetutKurssitRow]
+    val raporttiQuery = query(oppilaitosOids, aikaisintaan, viimeistaan).as[AikuistenPerusopetuksenMuutaKauttaRahoitetutKurssitRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
       title = "Muuta kautta rah.",
@@ -49,11 +49,6 @@ case class AikuistenPerusopetuksenMuutaKauttaRahoitetutKurssit(db: DB, organisaa
               and r_opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid is null
             where (oppilaitos_oid = any($oppilaitosOidit) or koulutustoimija_oid = any($oppilaitosOidit))
               and (r_paatason_suoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaara' or r_paatason_suoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaaranalkuvaihe')
-              and exists (
-                select 1
-                from r_opiskeluoikeus_aikajakso
-                where r_opiskeluoikeus.opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
-              )
             )
             select distinct on (r_osasuoritus.osasuoritus_id)
               oo_opiskeluoikeus_oid opiskeluoikeuden_oid,
@@ -76,14 +71,6 @@ case class AikuistenPerusopetuksenMuutaKauttaRahoitetutKurssit(db: DB, organisaa
               and (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true)
                 and r_opiskeluoikeus_aikajakso.opintojen_rahoitus = '6'
   """
-  }
-
-  private def validateOids(oppilaitosOids: List[String]) = {
-    val invalidOid = oppilaitosOids.find(oid => !isValidOrganisaatioOid(oid))
-    if (invalidOid.isDefined) {
-      throw new IllegalArgumentException(s"Invalid oppilaitos oid ${invalidOid.get}")
-    }
-    oppilaitosOids
   }
 
   val columnSettings: Seq[(String, Column)] = Seq(

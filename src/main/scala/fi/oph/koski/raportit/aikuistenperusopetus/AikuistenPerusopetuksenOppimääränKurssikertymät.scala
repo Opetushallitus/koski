@@ -18,26 +18,26 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB, organisaa
     AikuistenPerusopetuksenOppimääränKurssikertymätRow(
       oppilaitosOid = r.rs.getString("oppilaitos_oid"),
       oppilaitos =  r.rs.getString("oppilaitos_nimi"),
-      yhteensäSuorituksia = r.rs.getInt("yhteensäSuorituksia"),
-      yhteensäSuoritettujaSuorituksia = r.rs.getInt("yhteensäSuoritettujaSuorituksia"),
-      yhteensäTunnistettujaSuorituksia = r.rs.getInt("yhteensäTunnistettujaSuorituksia"),
-      yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä = r.rs.getInt("yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä"),
-      päättövaiheenSuorituksia = r.rs.getInt("päättövaiheenSuorituksia"),
-      päättövaiheenSuoritettujaSuorituksia = r.rs.getInt("päättövaiheenSuoritettujaSuorituksia"),
-      päättövaiheenTunnistettujaSuorituksia = r.rs.getInt("päättövaiheenTunnistettujaSuorituksia"),
-      päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä = r.rs.getInt("päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä"),
-      alkuvaiheenSuorituksia = r.rs.getInt("alkuvaiheenSuorituksia"),
-      alkuvaiheenSuoritettujaSuorituksia = r.rs.getInt("alkuvaiheenSuoritettujaSuorituksia"),
-      alkuvaiheenTunnistettujaSuorituksia = r.rs.getInt("alkuvaiheenTunnistettujaSuorituksia"),
-      alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä = r.rs.getInt("alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä"),
-      suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitetut = r.rs.getInt("suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitet"),
-      suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa = r.rs.getInt("suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa"),
-      suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa = r.rs.getInt("suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiT"),
+      yhteensäSuorituksia = r.rs.getInt("yhteensä_suorituksia"),
+      yhteensäSuoritettujaSuorituksia = r.rs.getInt("yhteensä_suoritettuja_suorituksia"),
+      yhteensäTunnistettujaSuorituksia = r.rs.getInt("yhteensä_tunnistettuja_suorituksia"),
+      yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä = r.rs.getInt("yhteensä_tunnistettuja_suorituksia_rahoituksen_piirissä"),
+      päättövaiheenSuorituksia = r.rs.getInt("päättövaiheen_suorituksia"),
+      päättövaiheenSuoritettujaSuorituksia = r.rs.getInt("päättövaiheen_suoritettuja_suorituksia"),
+      päättövaiheenTunnistettujaSuorituksia = r.rs.getInt("päättövaiheen_tunnistettuja_suorituksia"),
+      päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä = r.rs.getInt("päättövaiheen_tunnistettuja_suorituksia_rahoituksen_piiriss"),
+      alkuvaiheenSuorituksia = r.rs.getInt("alkuvaiheen_suorituksia"),
+      alkuvaiheenSuoritettujaSuorituksia = r.rs.getInt("alkuvaiheen_suoritettuja_suorituksia"),
+      alkuvaiheenTunnistettujaSuorituksia = r.rs.getInt("alkuvaiheen_tunnistettuja_suorituksia"),
+      alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä = r.rs.getInt("alkuvaiheen_tunnistettuja_suorituksia_rahoituksen_piirissä"),
+      suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitetut = r.rs.getInt("muuta_kautta_rahoitetut"),
+      suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa = r.rs.getInt("ei_rahoitustietoa"),
+      suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa = r.rs.getInt("arviointipäivä_ei_tiedossa"),
     )
   )
 
   def build(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate)(implicit u: KoskiSession): DataSheet = {
-    val raporttiQuery = query(validateOids(oppilaitosOids), aikaisintaan, viimeistaan).as[AikuistenPerusopetuksenOppimääränKurssikertymätRow]
+    val raporttiQuery = query(oppilaitosOids, aikaisintaan, viimeistaan).as[AikuistenPerusopetuksenOppimääränKurssikertymätRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
       title = "Aineopiskelijat",
@@ -68,25 +68,25 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB, organisaa
           )
       )
       select kurssikertymat.*,
-      coalesce(opiskeluoikeuden_ulkopuoliset.suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa, 0) as suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa
+      coalesce(opiskeluoikeuden_ulkopuoliset.arviointipäivä_ei_tiedossa, 0) as arviointipäivä_ei_tiedossa
       from (
         select
           oppilaitos_oid oppilaitos_oid,
           oppilaitos_nimi oppilaitos_nimi,
-          count(distinct r_osasuoritus.osasuoritus_id) yhteensäSuorituksia,
-          count(distinct (case when tunnustettu = false then r_osasuoritus.osasuoritus_id end)) yhteensäSuoritettujaSuorituksia,
-          count(distinct (case when tunnustettu then r_osasuoritus.osasuoritus_id end)) yhteensäTunnistettujaSuorituksia,
-          count(distinct (case when tunnustettu_rahoituksen_piirissa then r_osasuoritus.osasuoritus_id end)) yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä,
-          count(distinct (case when suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' then r_osasuoritus.osasuoritus_id end)) päättövaiheenSuorituksia,
-          count(distinct (case when tunnustettu = false and suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' then r_osasuoritus.osasuoritus_id end)) päättövaiheenSuoritettujaSuorituksia,
-          count(distinct (case when tunnustettu and suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' then r_osasuoritus.osasuoritus_id end)) päättövaiheenTunnistettujaSuorituksia,
-          count(distinct (case when tunnustettu_rahoituksen_piirissa and suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' then r_osasuoritus.osasuoritus_id end)) päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä,
-          count(distinct (case when suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi' then r_osasuoritus.osasuoritus_id end)) alkuvaiheenSuorituksia,
-          count(distinct (case when tunnustettu = false and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi' then r_osasuoritus.osasuoritus_id end)) alkuvaiheenSuoritettujaSuorituksia,
-          count(distinct (case when tunnustettu and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi' then r_osasuoritus.osasuoritus_id end)) alkuvaiheenTunnistettujaSuorituksia,
-          count(distinct (case when tunnustettu_rahoituksen_piirissa and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi' then r_osasuoritus.osasuoritus_id end)) alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä,
-          count(distinct (case when (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true) and r_opiskeluoikeus_aikajakso.opintojen_rahoitus = '6' then r_osasuoritus.osasuoritus_id end)) suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitetut,
-          count(distinct (case when (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true) and r_opiskeluoikeus_aikajakso.opintojen_rahoitus is null then r_osasuoritus.osasuoritus_id end)) suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa
+          count(distinct r_osasuoritus.osasuoritus_id) yhteensä_suorituksia,
+          count(distinct (case when tunnustettu = false then r_osasuoritus.osasuoritus_id end)) yhteensä_suoritettuja_suorituksia,
+          count(distinct (case when tunnustettu then r_osasuoritus.osasuoritus_id end)) yhteensä_tunnistettuja_suorituksia,
+          count(distinct (case when tunnustettu_rahoituksen_piirissa then r_osasuoritus.osasuoritus_id end)) yhteensä_tunnistettuja_suorituksia_rahoituksen_piirissä,
+          count(distinct (case when suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' then r_osasuoritus.osasuoritus_id end)) päättövaiheen_suorituksia,
+          count(distinct (case when tunnustettu = false and suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' then r_osasuoritus.osasuoritus_id end)) päättövaiheen_suoritettuja_suorituksia,
+          count(distinct (case when tunnustettu and suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' then r_osasuoritus.osasuoritus_id end)) päättövaiheen_tunnistettuja_suorituksia,
+          count(distinct (case when tunnustettu_rahoituksen_piirissa and suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' then r_osasuoritus.osasuoritus_id end)) päättövaiheen_tunnistettuja_suorituksia_rahoituksen_piirissä,
+          count(distinct (case when suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi' then r_osasuoritus.osasuoritus_id end)) alkuvaiheen_suorituksia,
+          count(distinct (case when tunnustettu = false and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi' then r_osasuoritus.osasuoritus_id end)) alkuvaiheen_suoritettuja_suorituksia,
+          count(distinct (case when tunnustettu and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi' then r_osasuoritus.osasuoritus_id end)) alkuvaiheen_tunnistettuja_suorituksia,
+          count(distinct (case when tunnustettu_rahoituksen_piirissa and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi' then r_osasuoritus.osasuoritus_id end)) alkuvaiheen_tunnistettuja_suorituksia_rahoituksen_piirissä,
+          count(distinct (case when (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true) and r_opiskeluoikeus_aikajakso.opintojen_rahoitus = '6' then r_osasuoritus.osasuoritus_id end)) muuta_kautta_rahoitetut,
+          count(distinct (case when (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true) and r_opiskeluoikeus_aikajakso.opintojen_rahoitus is null then r_osasuoritus.osasuoritus_id end)) ei_rahoitustietoa
         from paatason_suoritus
         join r_opiskeluoikeus_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = oo_opiskeluoikeus_oid
         join r_opiskeluoikeus_aikajakso on oo_opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
@@ -103,7 +103,7 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB, organisaa
         select
           oppilaitos_oid oppilaitos_oid,
           oppilaitos_nimi oppilaitos_nimi,
-          count(distinct (case when (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true) then r_osasuoritus.osasuoritus_id end)) suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa
+          count(distinct (case when (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true) then r_osasuoritus.osasuoritus_id end)) arviointipäivä_ei_tiedossa
         from paatason_suoritus
         join r_opiskeluoikeus_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = oo_opiskeluoikeus_oid
         join r_opiskeluoikeus_aikajakso on oo_opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
@@ -122,16 +122,7 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB, organisaa
         group by paatason_suoritus.oppilaitos_nimi, paatason_suoritus.oppilaitos_oid
       ) opiskeluoikeuden_ulkopuoliset
       on opiskeluoikeuden_ulkopuoliset.oppilaitos_oid = kurssikertymat.oppilaitos_oid;
-
   """
-  }
-
-  private def validateOids(oppilaitosOids: List[String]) = {
-    val invalidOid = oppilaitosOids.find(oid => !isValidOrganisaatioOid(oid))
-    if (invalidOid.isDefined) {
-      throw new IllegalArgumentException(s"Invalid oppilaitos oid ${invalidOid.get}")
-    }
-    oppilaitosOids
   }
 
   val columnSettings: Seq[(String, Column)] = Seq(

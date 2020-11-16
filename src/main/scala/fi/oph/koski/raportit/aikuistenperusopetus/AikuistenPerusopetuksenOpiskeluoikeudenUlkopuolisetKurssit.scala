@@ -25,7 +25,7 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit(db: DB, or
   )
 
   def build(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate)(implicit u: KoskiSession): DataSheet = {
-    val raporttiQuery = query(validateOids(oppilaitosOids), aikaisintaan, viimeistaan).as[AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitRow]
+    val raporttiQuery = query(oppilaitosOids, aikaisintaan, viimeistaan).as[AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
       title = "Opiskeluoikeuden ulkop.",
@@ -49,11 +49,6 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit(db: DB, or
               and r_opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid is null
             where (oppilaitos_oid = any($oppilaitosOidit) or koulutustoimija_oid = any($oppilaitosOidit))
               and (r_paatason_suoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaara' or r_paatason_suoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaaranalkuvaihe')
-              and exists (
-                select 1
-                from r_opiskeluoikeus_aikajakso
-                where r_opiskeluoikeus.opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
-              )
             )
             select distinct on (r_osasuoritus.osasuoritus_id)
               oo_opiskeluoikeus_oid opiskeluoikeuden_oid,
@@ -62,7 +57,6 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit(db: DB, or
               r_osasuoritus.koulutusmoduuli_nimi kurssin_nimi,
               coalesce(r_osasuoritus.koulutusmoduuli_kurssin_tyyppi, '') as suorituksen_tyyppi
             from paatason_suoritus
-            join r_opiskeluoikeus_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = oo_opiskeluoikeus_oid
             join r_opiskeluoikeus_aikajakso on oo_opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
             join r_osasuoritus on (paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id or oo_opiskeluoikeus_oid = r_osasuoritus.sisaltyy_opiskeluoikeuteen_oid)
             where (r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi'
@@ -81,14 +75,6 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit(db: DB, or
               )
               and (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true)
   """
-  }
-
-  private def validateOids(oppilaitosOids: List[String]) = {
-    val invalidOid = oppilaitosOids.find(oid => !isValidOrganisaatioOid(oid))
-    if (invalidOid.isDefined) {
-      throw new IllegalArgumentException(s"Invalid oppilaitos oid ${invalidOid.get}")
-    }
-    oppilaitosOids
   }
 
   val columnSettings: Seq[(String, Column)] = Seq(

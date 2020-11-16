@@ -45,7 +45,7 @@ class AikuistenPerusopetuksenOppimääränKurssikertymätSpec extends FreeSpec w
     lisätiedot = Some(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(vaikeastiVammainen = Some(List(Aikajakso(date(2014, 6, 6), None)))))
   )
 
-  "Aikuisten perusopetuksen oppijamäärien raportti" - {
+  "Aikuisten perusopetuksen oppimääräopiskelijoiden kurssikertymien raportti" - {
       "Syötetään pihvi ja kuori" in {
         val jyväskylänOpiskeluoikeus: AikuistenPerusopetuksenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = paakayttaja, resetFixtures = false)
         val kuoriOpiskeluoikeus = createLinkitetytOpiskeluoikeudet(jyväskylänOpiskeluoikeus, MockOrganisaatiot.jyväskylänNormaalikoulu).copy(

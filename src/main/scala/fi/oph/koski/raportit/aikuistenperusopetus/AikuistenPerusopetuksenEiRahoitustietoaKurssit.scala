@@ -25,7 +25,7 @@ case class AikuistenPerusopetuksenEiRahoitustietoaKurssit(db: DB, organisaatioSe
   )
 
   def build(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate)(implicit u: KoskiSession): DataSheet = {
-    val raporttiQuery = query(validateOids(oppilaitosOids), aikaisintaan, viimeistaan).as[AikuistenPerusopetuksenEiRahoitustietoaKurssitRow]
+    val raporttiQuery = query(oppilaitosOids, aikaisintaan, viimeistaan).as[AikuistenPerusopetuksenEiRahoitustietoaKurssitRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
       title = "Ei rahoitustietoa",
@@ -63,7 +63,6 @@ case class AikuistenPerusopetuksenEiRahoitustietoaKurssit(db: DB, organisaatioSe
               r_osasuoritus.koulutusmoduuli_nimi kurssin_nimi,
               coalesce(r_osasuoritus.koulutusmoduuli_kurssin_tyyppi, '') as suorituksen_tyyppi
             from paatason_suoritus
-            join r_opiskeluoikeus_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = oo_opiskeluoikeus_oid
             join r_opiskeluoikeus_aikajakso on oo_opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
             join r_osasuoritus on (paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id or oo_opiskeluoikeus_oid = r_osasuoritus.sisaltyy_opiskeluoikeuteen_oid)
               and r_opiskeluoikeus_aikajakso.alku <= $viimeistaan
@@ -76,14 +75,6 @@ case class AikuistenPerusopetuksenEiRahoitustietoaKurssit(db: DB, organisaatioSe
               and (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true)
                 and r_opiskeluoikeus_aikajakso.opintojen_rahoitus is null
   """
-  }
-
-  private def validateOids(oppilaitosOids: List[String]) = {
-    val invalidOid = oppilaitosOids.find(oid => !isValidOrganisaatioOid(oid))
-    if (invalidOid.isDefined) {
-      throw new IllegalArgumentException(s"Invalid oppilaitos oid ${invalidOid.get}")
-    }
-    oppilaitosOids
   }
 
   val columnSettings: Seq[(String, Column)] = Seq(
