@@ -84,8 +84,28 @@ describe('Oppijataulukko', function() {
       })
     })
 
+    describe('luokkatiedolla', function() {
+      describe('jossa väliviiva', function() {
+        before(
+          page.oppijataulukko.filterBy('tyyppi'),
+          page.oppijataulukko.filterBy('koulutus'),
+          page.oppijataulukko.filterBy('tila'),
+          page.oppijataulukko.filterBy('oppilaitos'),
+          page.oppijataulukko.filterBy('luokka', '6-7')
+        )
+        it('toimii', function() {
+          expect(page.oppijataulukko.data().map(function(row) { return row[8]})).to.deep.equal(['6-7C'])
+        })
+      })
+    })
+
     describe('toimipisteellä', function() {
-      before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tila'), page.oppijataulukko.filterBy('oppilaitos', 'Ressun lukio'))
+      before(
+        page.oppijataulukko.filterBy('tyyppi'),
+        page.oppijataulukko.filterBy('tila'),
+        page.oppijataulukko.filterBy('luokka'),
+        page.oppijataulukko.filterBy('oppilaitos', 'Ressun lukio')
+      )
       it('toimii', function() {
         expect(page.oppijataulukko.names()).to.deep.equal([
           'aine, opiskelija',
