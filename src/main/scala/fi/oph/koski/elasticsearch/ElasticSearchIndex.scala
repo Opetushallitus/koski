@@ -6,6 +6,7 @@ import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatusException}
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.{Json4sHttp4s, JsonDiff}
+import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.log.Logging
 import org.http4s.EntityEncoder
 import org.json4s.jackson.JsonMethods
@@ -18,8 +19,8 @@ class ElasticSearchIndex(
   val config: Config,
   val name: String,
   val mappingType: String,
-  val mapping: JValue,
-  val settings: JValue
+  val mapping: Map[String, Any],
+  val settings: Map[String, Any]
 ) extends Logging with BackgroundExecutionContext {
   protected def http: Http = elastic.http
 
@@ -50,7 +51,7 @@ class ElasticSearchIndex(
 
   private def verifySettings(): Boolean = {
     val serverSettings = (Http.runTask(http.get(uri"/${name}/_settings")(Http.parseJson[JValue])) \ name \ "settings" \ "index")
-    val mergedSettings = serverSettings.merge(settings)
+    val mergedSettings = serverSettings.merge(toJValue(settings))
     val alreadyApplied = mergedSettings == serverSettings
     if (alreadyApplied) {
       logger.info("Elasticsearch index settings are up to date")
@@ -64,7 +65,7 @@ class ElasticSearchIndex(
   private def updateIndexSettings(newSettings: JValue) = {
     logger.info(s"Updating Elasticsearch index settings (diff: ${JsonMethods.pretty(newSettings)})")
     Http.runTask(http.post(uri"/${name}/_close", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
-    Http.runTask(http.put(uri"/${name}/_settings", settings)(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+    Http.runTask(http.put(uri"/${name}/_settings", toJValue(settings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
     Http.runTask(http.post(uri"/${name}/_open", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
     logger.info("Updated Elasticsearch index settings. Re-indexing is needed.")
     true
@@ -72,8 +73,8 @@ class ElasticSearchIndex(
 
   private def createIndex: Boolean = {
     logger.info("Creating Elasticsearch index")
-    Http.runTask(http.put(uri"/${name}", JObject("settings" -> settings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
-    Http.runTask(http.put(uri"/${name}/_mapping/${mappingType}", mapping)(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+    Http.runTask(http.put(uri"/${name}", JObject("settings" -> toJValue(settings)))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+    Http.runTask(http.put(uri"/${name}/_mapping/${mappingType}", toJValue(mapping))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
     true
   }
 
