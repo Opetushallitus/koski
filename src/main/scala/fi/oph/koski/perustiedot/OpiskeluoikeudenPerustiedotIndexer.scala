@@ -41,8 +41,27 @@ object OpiskeluoikeudenPerustiedotIndexer {
         }
     }""")
 
+  private val finnishSortedTextField = Map(
+    "type" -> "text",
+    "fields" -> Map(
+      "keyword" -> Map(
+        "type" -> "keyword"
+      ),
+      "sort" -> Map(
+        "type" -> "icu_collation_keyword",
+        "language" -> "fi",
+        "country" -> "FI"
+      )
+    )
+  )
+
   private val mapping = toJValue(Map(
     "properties" -> Map(
+      "henkilö" -> Map("properties" -> Map(
+        "etunimet" -> finnishSortedTextField,
+        "kutsumanimi" -> finnishSortedTextField,
+        "sukunimi" -> finnishSortedTextField
+      )),
       "tilat" -> Map("type" -> "nested"),
       "suoritukset" -> Map("type" -> "nested")
     )))
