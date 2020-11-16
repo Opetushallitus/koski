@@ -36,6 +36,12 @@ object OpiskeluoikeudenPerustiedotIndexer {
           "tokenizer" -> "icu_tokenizer",
           "filter" -> Array("finnish_folding", "lowercase")
         )
+      ),
+      "normalizer" -> Map(
+        "keyword_lowercase" -> Map(
+          "type" -> "custom",
+          "filter" -> Array("lowercase")
+        )
       )
     )
   )
@@ -61,6 +67,15 @@ object OpiskeluoikeudenPerustiedotIndexer {
           "etunimet" -> finnishSortedTextField,
           "kutsumanimi" -> finnishSortedTextField,
           "sukunimi" -> finnishSortedTextField
+        )
+      ),
+      "luokka" -> Map(
+        "type" -> "text",
+        "fields" -> Map(
+          "keyword" -> Map(
+            "type" -> "keyword",
+            "normalizer" -> "keyword_lowercase"
+          )
         )
       ),
       "tilat" -> Map("type" -> "nested"),
