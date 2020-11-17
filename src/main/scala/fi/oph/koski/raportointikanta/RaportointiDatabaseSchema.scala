@@ -44,13 +44,14 @@ object RaportointiDatabaseSchema {
 
     sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_paatason_suoritus(paatason_suoritus_id)",
     sqlu"CREATE INDEX ON #${s.name}.r_paatason_suoritus(opiskeluoikeus_oid, suorituksen_tyyppi)",
+    sqlu"CREATE INDEX ON #${s.name}.r_paatason_suoritus(suorituksen_tyyppi)",
     sqlu"CREATE INDEX ON #${s.name}.r_paatason_suoritus(vahvistus_paiva)",
 
     sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_osasuoritus(osasuoritus_id)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(paatason_suoritus_id)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(ylempi_osasuoritus_id)",
-    sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(arviointi_paiva, paatason_suoritus_id)",
+    sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(arviointi_paiva, paatason_suoritus_id, suorituksen_tyyppi)",
 
     sqlu"CREATE INDEX ON #${s.name}.esiopetus_opiskeluoik_aikajakso(opiskeluoikeus_oid)",
   )
