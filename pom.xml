@@ -16,7 +16,8 @@
     <scalatra.version>2.6.5</scalatra.version>
     <json4s.version>3.6.8</json4s.version>
     <awssdk.version>2.15.28</awssdk.version>
-    <jetty.version>9.4.33.v20201020</jetty.version>
+    <jetty.version>9.4.34.v20201102</jetty.version>
+    <org.http4s.version>0.16.6a</org.http4s.version>
     <prometheus.client.version>0.0.17</prometheus.client.version>
     <scoverage.plugin.version>1.1.1</scoverage.plugin.version>
     <finalName>${project.artifactId}-${project.version}</finalName>
@@ -74,7 +75,7 @@
     <dependency>
       <groupId>org.reflections</groupId>
       <artifactId>reflections</artifactId>
-      <version>0.9.11</version>
+      <version>0.9.12</version>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
@@ -125,7 +126,7 @@
     <dependency>
       <groupId>com.github.java-json-tools</groupId>
       <artifactId>json-patch</artifactId>
-      <version>1.11</version>
+      <version>1.13</version>
     </dependency>
     <dependency>
       <groupId>com.typesafe.slick</groupId>
@@ -205,12 +206,12 @@
     <dependency>
       <groupId>org.http4s</groupId>
       <artifactId>http4s-blaze-client_2.12</artifactId>
-      <version>0.16.6a</version>
+      <version>${org.http4s.version}</version>
     </dependency>
     <dependency>
       <groupId>org.http4s</groupId>
       <artifactId>http4s-dsl_2.12</artifactId>
-      <version>0.16.6a</version>
+      <version>${org.http4s.version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
