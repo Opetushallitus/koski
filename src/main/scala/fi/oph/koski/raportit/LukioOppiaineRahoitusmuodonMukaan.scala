@@ -44,6 +44,7 @@ object LukioOppiaineRahoitusmuodonMukaan extends DatabaseConverters {
     sql"""
         select
           r_osasuoritus.opiskeluoikeus_oid,
+          r_opiskeluoikeus.oppija_oid,
           r_osasuoritus.koulutusmoduuli_koodiarvo,
           r_osasuoritus.koulutusmoduuli_nimi
         from r_osasuoritus
@@ -81,6 +82,7 @@ object LukioOppiaineRahoitusmuodonMukaan extends DatabaseConverters {
     val rs = r.rs
     LukioKurssinRahoitusmuotoRow(
       opiskeluoikeusOid = rs.getString("opiskeluoikeus_oid"),
+      oppijaOid = rs.getString("oppija_oid"),
       koulutusmoduuliKoodiarvo = rs.getString("koulutusmoduuli_koodiarvo"),
       koulutusmoduuliNimi = rs.getString("koulutusmoduuli_nimi")
     )
@@ -88,6 +90,7 @@ object LukioOppiaineRahoitusmuodonMukaan extends DatabaseConverters {
 
   val columnSettings: Seq[(String, Column)] = Seq(
     "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),
+    "oppijaOid" -> Column("Oppijan oid"),
     "koulutusmoduuliKoodiarvo" -> Column("Kurssikoodi"),
     "koulutusmoduuliNimi" -> Column("Kurssin nimi"),
   )
@@ -95,6 +98,7 @@ object LukioOppiaineRahoitusmuodonMukaan extends DatabaseConverters {
 
 case class LukioKurssinRahoitusmuotoRow(
   opiskeluoikeusOid: String,
+  oppijaOid: String,
   koulutusmoduuliKoodiarvo: String,
   koulutusmoduuliNimi: String,
 )

@@ -23,6 +23,7 @@ object LukioOppiaineOpiskeluoikeudenUlkopuoliset extends DatabaseConverters {
     sql"""
       select
         r_opiskeluoikeus.opiskeluoikeus_oid,
+        r_opiskeluoikeus.oppija_oid,
         r_osasuoritus.koulutusmoduuli_koodiarvo as kurssikoodi,
         r_osasuoritus.koulutusmoduuli_nimi as kurssin_nimi
       from r_osasuoritus
@@ -61,6 +62,7 @@ object LukioOppiaineOpiskeluoikeudenUlkopuoliset extends DatabaseConverters {
     val rs: ResultSet = r.rs
     LukioOppiaineOpiskeluoikeudenUlkopuolisetRow(
       opiskeluoikeusOid = rs.getString("opiskeluoikeus_oid"),
+      oppijaOid = rs.getString("oppija_oid"),
       kurssikoodi = rs.getString("kurssikoodi"),
       kurssinNimi = rs.getString("kurssin_nimi")
     )
@@ -68,6 +70,7 @@ object LukioOppiaineOpiskeluoikeudenUlkopuoliset extends DatabaseConverters {
 
   val columnSettings: Seq[(String, Column)] = Seq(
     "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),
+    "oppijaOid" -> Column("Oppijan oid"),
     "kurssikoodi" -> Column("Kurssikoodi"),
     "kurssinNimi" -> Column("Kurssin nimi")
   )
@@ -75,6 +78,7 @@ object LukioOppiaineOpiskeluoikeudenUlkopuoliset extends DatabaseConverters {
 
 case class LukioOppiaineOpiskeluoikeudenUlkopuolisetRow(
   opiskeluoikeusOid: String,
+  oppijaOid: String,
   kurssikoodi: String,
   kurssinNimi: String
 )
