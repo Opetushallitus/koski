@@ -49,10 +49,10 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
         ressunAineopiskelijat.oppilaitosOid shouldBe(MockOrganisaatiot.ressunLukio)
       }
       "Yhteensä" in {
-        ressunAineopiskelijat.kurssejaYhteensa shouldBe(12)
+        ressunAineopiskelijat.kurssejaYhteensa shouldBe(14)
       }
       "Suoritettuja" in {
-        ressunAineopiskelijat.suoritettujaKursseja shouldBe(6)
+        ressunAineopiskelijat.suoritettujaKursseja shouldBe(8)
       }
       "Tunnustettuja" in {
         ressunAineopiskelijat.tunnustettujaKursseja shouldBe(6)
@@ -61,19 +61,19 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
         ressunAineopiskelijat.tunnustettujaKursseja_rahoituksenPiirissa shouldBe(3)
       }
       "Pakollisia tai valtakunnallinen ja syventava" in {
-        ressunAineopiskelijat.pakollisia_tai_valtakunnallisiaSyventavia shouldBe(9)
+        ressunAineopiskelijat.pakollisia_tai_valtakunnallisiaSyventavia shouldBe(11)
       }
       "Pakollisia" in {
-        ressunAineopiskelijat.pakollisiaKursseja shouldBe(6)
+        ressunAineopiskelijat.pakollisiaKursseja shouldBe(8)
       }
       "Valtakunnallisia syventavia" in {
         ressunAineopiskelijat.valtakunnallisestiSyventaviaKursseja shouldBe(3)
       }
       "Suoritettuja pakollisia ja suoritettuja valtakunnallisia syventavia" in {
-        ressunAineopiskelijat.suoritettujaPakollisia_ja_suoritettujaValtakunnallisiaSyventavia shouldBe(5)
+        ressunAineopiskelijat.suoritettujaPakollisia_ja_suoritettujaValtakunnallisiaSyventavia shouldBe(7)
       }
       "Suoritettuja pakollisia" in {
-        ressunAineopiskelijat.suoritettujaPakollisiaKursseja shouldBe(4)
+        ressunAineopiskelijat.suoritettujaPakollisiaKursseja shouldBe(6)
       }
       "Suoritettuja valtakunnallisia syventavia" in {
         ressunAineopiskelijat.suoritettujaValtakunnallisiaSyventaviaKursseja shouldBe(1)
@@ -100,7 +100,7 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
         ressunAineopiskelijat.suoritetutTaiRahoitetut_muutaKauttaRahoitetut shouldBe 1
       }
       "Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit - rahoitusmuoto ei tiedossa" in {
-        ressunAineopiskelijat.suoritetutTaiRahoitetut_rahoitusmuotoEiTiedossa shouldBe 0
+        ressunAineopiskelijat.suoritetutTaiRahoitetut_rahoitusmuotoEiTiedossa shouldBe 2
       }
       "Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit – arviointipäivä ei opiskeluoikeuden sisällä" in {
         ressunAineopiskelijat.suoritetutTaiRahoitetut_eiOpiskeluoikeudenSisalla shouldBe 1
@@ -108,12 +108,12 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
     }
     "Muuta kautta rahoitetuttujen välilehti" - {
       "Listan pituus sama kuin aineopiskelijoiden välilehdellä oleva laskuri" in {
-        ressunMuutaKauttaRahoitetut.length shouldBe 1
+        ressunMuutaKauttaRahoitetut.length shouldBe ressunAineopiskelijat.suoritetutTaiRahoitetut_muutaKauttaRahoitetut
       }
     }
     "Rahoitusmuoto ei tiedossa -välilehti" - {
       "Listan pituus sama kuin aineopiskelijoiden välilehdellä oleva laskuri" in {
-        ressunRahoitusmuotoEiTiedossa.length shouldBe 0
+        ressunRahoitusmuotoEiTiedossa.length shouldBe ressunAineopiskelijat.suoritetutTaiRahoitetut_rahoitusmuotoEiTiedossa
       }
     }
     "Arviointipäivä opiskeluoikeuden ulkopuolella -välilehti" - {

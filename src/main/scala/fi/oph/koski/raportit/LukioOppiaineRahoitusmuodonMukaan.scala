@@ -1,6 +1,5 @@
 package fi.oph.koski.raportit
 
-import java.sql.Date
 import java.time.LocalDate
 
 import fi.oph.koski.db.DatabaseConverters
@@ -43,35 +42,38 @@ object LukioRahoitusmuotoEiTiedossa {
 object LukioOppiaineRahoitusmuodonMukaan extends DatabaseConverters {
   def queryMuutaKauttaRahoitetut(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate, rahoitusmuoto: Option[String]) = {
     sql"""
-      with muuta_kautta_rahoitetut_lasna_jaksot as (
-          select
-            paatason_suoritus_id,
-            r_opiskeluoikeus_aikajakso.alku,
-            r_opiskeluoikeus_aikajakso.loppu
-          from r_opiskeluoikeus
-            join r_opiskeluoikeus_aikajakso on r_opiskeluoikeus.opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
-            join r_paatason_suoritus on r_opiskeluoikeus.opiskeluoikeus_oid = r_paatason_suoritus.opiskeluoikeus_oid
-          where
-            oppilaitos_oid = any($oppilaitosOids)
-            and r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
-            and r_opiskeluoikeus_aikajakso.alku <= $viimeistaan
-            and r_opiskeluoikeus_aikajakso.loppu >= $aikaisintaan
+        select
+          r_osasuoritus.opiskeluoikeus_oid,
+          r_osasuoritus.koulutusmoduuli_koodiarvo,
+          r_osasuoritus.koulutusmoduuli_nimi
+        from r_osasuoritus
+          join r_paatason_suoritus
+            on r_paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id
+          join r_opiskeluoikeus
+            on r_opiskeluoikeus.opiskeluoikeus_oid = r_osasuoritus.opiskeluoikeus_oid
+          left join r_opiskeluoikeus_aikajakso
+            on r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid = r_osasuoritus.opiskeluoikeus_oid
+            and (r_osasuoritus.arviointi_paiva between r_opiskeluoikeus_aikajakso.alku and r_opiskeluoikeus_aikajakso.loppu)
+          where r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOids)
+            -- rahoitusmuoto
             and r_opiskeluoikeus_aikajakso.opintojen_rahoitus #${rahoitusmuoto match {
               case Some(rahoitusmuoto) => s"= '$rahoitusmuoto'"
               case None => "is null"
             }}
-      ) select
-          r_osasuoritus.opiskeluoikeus_oid,
-          koulutusmoduuli_koodiarvo,
-          koulutusmoduuli_nimi
-        from muuta_kautta_rahoitetut_lasna_jaksot
-          join r_osasuoritus
-            on r_osasuoritus.paatason_suoritus_id = muuta_kautta_rahoitetut_lasna_jaksot.paatason_suoritus_id
-               and r_osasuoritus.arviointi_paiva >= muuta_kautta_rahoitetut_lasna_jaksot.alku
-               and r_osasuoritus.arviointi_paiva <= muuta_kautta_rahoitetut_lasna_jaksot.loppu
-        where koulutusmoduuli_paikallinen = false
-              and (tunnustettu = false or tunnustettu_rahoituksen_piirissa)
-              and suorituksen_tyyppi = 'lukionkurssi';
+            -- lukion aineoppimäärä
+            and r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
+            and r_osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
+            -- kurssi menee parametrien sisään
+            and (r_osasuoritus.arviointi_paiva between $aikaisintaan and $viimeistaan)
+            -- suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut pakolliset tai valtakunnalliset syventävät kurssit, joiden arviointipäivä osuu muuta kautta rahoitetun läsnäolojakson sisälle. Kurssien
+            and (
+                tunnustettu = false
+                or tunnustettu_rahoituksen_piirissa
+            )
+            and (
+                koulutusmoduuli_kurssin_tyyppi = 'pakollinen'
+                or (koulutusmoduuli_kurssin_tyyppi = 'syventava' and koulutusmoduuli_paikallinen = false)
+            );
     """.as[LukioKurssinRahoitusmuotoRow]
   }
 
