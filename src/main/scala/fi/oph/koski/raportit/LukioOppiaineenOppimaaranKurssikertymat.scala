@@ -53,7 +53,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
           ) suoritetut_tai_rahoitetut_muuta_kautta_rahoitetut,
           count(*) filter (where
             valtakunnallinen
-            and (tunnustettu = false or tunnustettu_rahoituksen_piirissa)
+            and (suoritettu or tunnustettu_rahoituksen_piirissa)
             and opintojen_rahoitus is null
           ) suoritetut_tai_rahoitetut_rahoitusmuoto_ei_tiedossa
         from (
@@ -67,23 +67,21 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
             koulutusmoduuli_kurssin_tyyppi = 'pakollinen' as pakollinen,
             koulutusmoduuli_kurssin_tyyppi = 'syventava' as syventava,
             koulutusmoduuli_paikallinen = false as valtakunnallinen,
-            opintojen_rahoitus
+            r_opiskeluoikeus_aikajakso.opintojen_rahoitus
           from r_osasuoritus
           join r_paatason_suoritus
             on r_paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id
           join r_opiskeluoikeus
             on r_opiskeluoikeus.opiskeluoikeus_oid = r_osasuoritus.opiskeluoikeus_oid
-          join r_opiskeluoikeus_aikajakso
+          left join r_opiskeluoikeus_aikajakso
             on r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid = r_osasuoritus.opiskeluoikeus_oid
-            and r_opiskeluoikeus_aikajakso.alku <= r_osasuoritus.arviointi_paiva
-            and r_opiskeluoikeus_aikajakso.loppu >= r_osasuoritus.arviointi_paiva
+            and (r_osasuoritus.arviointi_paiva between r_opiskeluoikeus_aikajakso.alku and r_opiskeluoikeus_aikajakso.loppu)
           where r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOids)
             -- lukion aineoppimäärä
             and r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
             and r_osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
             -- kurssi menee parametrien sisään
-            and r_osasuoritus.arviointi_paiva >= $aikaisintaan
-            and r_osasuoritus.arviointi_paiva <= $viimeistaan
+            and (r_osasuoritus.arviointi_paiva between $aikaisintaan and $viimeistaan)
           ) kurssit
         group by
           oppilaitos_oid,
@@ -105,8 +103,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
           and r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
           and r_osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
           -- kurssi menee parametrien sisään
-          and r_osasuoritus.arviointi_paiva >= $aikaisintaan
-          and r_osasuoritus.arviointi_paiva <= $viimeistaan
+          and (r_osasuoritus.arviointi_paiva between $aikaisintaan and $viimeistaan)
           -- mutta kurssi jää opiskeluoikeuden ulkopuolelle
           and (
             r_osasuoritus.arviointi_paiva < r_opiskeluoikeus.alkamispaiva
@@ -115,10 +112,15 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
               and r_opiskeluoikeus.viimeisin_tila = 'valmistunut'
             )
           )
-          -- pakolliset tai valtakunnalliset syventävät kurssit, jotka ovat joko suoritettuja tai tunnustettuja ja rahoituksen piirissä olevia
+          -- pakolliset tai valtakunnalliset syventävät kurssit
           and (
             koulutusmoduuli_kurssin_tyyppi = 'pakollinen'
             or (koulutusmoduuli_kurssin_tyyppi = 'syventava' and koulutusmoduuli_paikallinen = false)
+          )
+          -- jotka ovat joko suoritettuja tai tunnustettuja ja rahoituksen piirissä olevia
+          and (
+              tunnustettu = false
+              or tunnustettu_rahoituksen_piirissa
           )
         group by oppilaitos_oid
       ) opiskeluoikeuden_ulkopuoliset
