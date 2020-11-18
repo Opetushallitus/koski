@@ -27,7 +27,7 @@ export const raportitContentP = () => {
           <div>
             {raportit && raportit.length === 0 && <Text name='Tälle organisaatiolle ei löydy raportteja'/>}
             {raportit && raportit.length > 0 && <hr/>}
-            {raportit && <PaallekkaisetOpiskeluoikeudet organisaatioAtom={organisaatioAtom} />}
+            {document.location.search.includes('tilastoraportit=true') && raportit && <PaallekkaisetOpiskeluoikeudet organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('ammatillinenopiskelijavuositiedot') && <Opiskelijavuositiedot organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('ammatillinentutkintosuoritustietojentarkistus') && <SuoritustietojenTarkistus organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('ammatillinenosittainensuoritustietojentarkistus') && <AmmatillinenOsittainenSuoritustietojenTarkistus organisaatioAtom={organisaatioAtom} />}
