@@ -3,7 +3,7 @@ package fi.oph.koski.sso
 import java.net.URLEncoder.encode
 import java.nio.charset.StandardCharsets
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication, ShibbolethSecret}
 import fi.oph.koski.henkilo.{Hetu, OppijaHenkilö}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.huoltaja.HuollettavienHakuOnnistui
@@ -106,7 +106,7 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
       .filter(_.nonEmpty)
 
   private def passwordOk(password: String) = {
-    val security = application.config.getString("shibboleth.security")
+    val security = if (Environment.usesAwsSecretsManager) ShibbolethSecret.fromSecretsManager else ShibbolethSecret.fromConfig(application.config)
     if (security.isEmpty) {
       false
     } else {

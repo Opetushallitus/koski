@@ -10,5 +10,9 @@ object Environment {
     sys.env.getOrElse("CONFIG_SOURCE", "") == "appconfig"
   }
 
+  def usesAwsSecretsManager: Boolean = {
+    sys.env.getOrElse("USE_SECRETS_MANAGER", "") == "true"
+  }
+
   def currentEnvironment(config: Config): String = config.getString("env")
 }

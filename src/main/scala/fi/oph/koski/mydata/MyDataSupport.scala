@@ -4,7 +4,8 @@ import java.net.URLEncoder
 
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.servlet.InvalidRequestException
-import com.typesafe.config.{Config => TypeSafeConfig}
+import com.typesafe.config.{ConfigFactory, Config => TypeSafeConfig}
+import fi.oph.koski.config.{Environment, ShibbolethSecret}
 import org.scalatra.ScalatraServlet
 
 trait MyDataSupport extends ScalatraServlet with MyDataConfig {
@@ -29,7 +30,13 @@ trait MyDataSupport extends ScalatraServlet with MyDataConfig {
   }
 
   def getKorhopankkiRedirectURLParameter(target: String): String = {
-    if(application.config.getString("shibboleth.security") == "mock") {
+    val security = if (Environment.usesAwsSecretsManager) {
+      ShibbolethSecret.fromSecretsManager
+    } else {
+      ShibbolethSecret.fromConfig(application.config)
+    }
+
+    if(security == "mock") {
       s"&redirect=${urlEncode(target)}"
     } else {
       ""

@@ -1,16 +1,21 @@
 package fi.oph.koski.servlet
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication, ShibbolethSecret}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.sso.SSOSupport
-import org.scalatra.ScalatraServlet
+import org.scalatra.{EnvironmentKey, ScalatraServlet}
 
 import scala.xml.Unparsed
 
 class OppijaLoginPageServlet(implicit val application: KoskiApplication) extends ScalatraServlet with OppijaHtmlServlet with SSOSupport {
   get("/") {
-    if (application.features.shibboleth && application.config.getString("shibboleth.security") == "mock") {
+    val shibbolethSecurity = if (Environment.usesAwsSecretsManager) {
+      ShibbolethSecret.fromSecretsManager
+    } else {
+      ShibbolethSecret.fromConfig(application.config)
+    }
+    if (application.features.shibboleth && shibbolethSecurity == "mock") {
       htmlIndex(
         scriptBundleName = "koski-korhopankki.js",
         scripts = <script id="auth">{Unparsed(s"window.mockUsers=$oppijat")}</script>,

@@ -285,6 +285,21 @@
       <version>${awssdk.version}</version>
       <artifactId>appconfig</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.amazonaws.secretsmanager</groupId>
+      <artifactId>aws-secretsmanager-jdbc</artifactId>
+      <version>1.0.6</version>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws.secretsmanager</groupId>
+      <artifactId>aws-secretsmanager-caching-java</artifactId>
+      <version>1.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-sts</artifactId>
+      <version>1.11.894</version>
+    </dependency>
     <!-- test deps -->
     <dependency>
       <groupId>org.scalatest</groupId>
