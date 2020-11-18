@@ -13,7 +13,7 @@ import slick.jdbc.GetResult
 
 import scala.concurrent.duration._
 
-case class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit(db: DB, organisaatioService: OrganisaatioService) extends KoskiDatabaseMethods {
+case class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit(db: DB) extends KoskiDatabaseMethods {
   implicit private val getResult: GetResult[AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitRow] = GetResult(r =>
     AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitRow(
       opiskeluoikeudenOid = r.rs.getString("opiskeluoikeuden_oid"),
@@ -60,9 +60,9 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit(db: DB, or
             join r_opiskeluoikeus_aikajakso on oo_opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
             join r_osasuoritus on (paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id or oo_opiskeluoikeus_oid = r_osasuoritus.sisaltyy_opiskeluoikeuteen_oid)
             where (r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi'
-                  or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi'
-                  or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenoppiaine'
-                  or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenoppiaine')
+              or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi'
+              or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenoppiaine'
+              or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenoppiaine')
               and r_osasuoritus.arviointi_paiva >= $aikaisintaan
               and r_osasuoritus.arviointi_paiva <= $viimeistaan
               and viimeisin_tila = 'valmistunut'

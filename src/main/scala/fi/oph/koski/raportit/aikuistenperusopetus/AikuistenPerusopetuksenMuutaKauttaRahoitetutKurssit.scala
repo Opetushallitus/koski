@@ -13,7 +13,7 @@ import slick.jdbc.GetResult
 
 import scala.concurrent.duration._
 
-case class AikuistenPerusopetuksenMuutaKauttaRahoitetutKurssit(db: DB, organisaatioService: OrganisaatioService) extends KoskiDatabaseMethods {
+case class AikuistenPerusopetuksenMuutaKauttaRahoitetutKurssit(db: DB) extends KoskiDatabaseMethods {
   implicit private val getResult: GetResult[AikuistenPerusopetuksenMuutaKauttaRahoitetutKurssitRow] = GetResult(r =>
     AikuistenPerusopetuksenMuutaKauttaRahoitetutKurssitRow(
       opiskeluoikeudenOid = r.rs.getString("opiskeluoikeuden_oid"),
@@ -57,7 +57,6 @@ case class AikuistenPerusopetuksenMuutaKauttaRahoitetutKurssit(db: DB, organisaa
               r_osasuoritus.koulutusmoduuli_nimi kurssin_nimi,
               coalesce(r_osasuoritus.koulutusmoduuli_kurssin_tyyppi, '') as suorituksen_tyyppi
             from paatason_suoritus
-            join r_opiskeluoikeus_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = oo_opiskeluoikeus_oid
             join r_opiskeluoikeus_aikajakso on oo_opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
             join r_osasuoritus on (paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id or oo_opiskeluoikeus_oid = r_osasuoritus.sisaltyy_opiskeluoikeuteen_oid)
               and r_opiskeluoikeus_aikajakso.alku <= $viimeistaan

@@ -21,7 +21,7 @@ import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll with PutOpiskeluoikeusTestMethods[AikuistenPerusopetuksenOpiskeluoikeus] {
   private val application = KoskiApplicationForTests
-  private val raporttiBuilder = AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(application.raportointiDatabase.db, application.organisaatioService)
+  private val raporttiBuilder = AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(application.raportointiDatabase.db)
   private lazy val raportti =
     raporttiBuilder.build(List(jyväskylänNormaalikoulu), date(2006, 1, 1), date(2016, 12, 30))(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRow])
 

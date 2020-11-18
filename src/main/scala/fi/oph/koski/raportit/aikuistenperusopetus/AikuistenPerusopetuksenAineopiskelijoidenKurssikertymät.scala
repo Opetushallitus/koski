@@ -13,7 +13,7 @@ import slick.jdbc.GetResult
 
 import scala.concurrent.duration._
 
-case class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(db: DB, organisaatioService: OrganisaatioService) extends KoskiDatabaseMethods {
+case class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(db: DB) extends KoskiDatabaseMethods {
   implicit private val getResult: GetResult[AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRow] = GetResult(r =>
     AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRow(
       oppilaitosOid = r.rs.getString("oppilaitos_oid"),
