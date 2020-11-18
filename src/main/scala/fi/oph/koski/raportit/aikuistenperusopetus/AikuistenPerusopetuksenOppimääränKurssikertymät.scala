@@ -32,7 +32,7 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends K
       alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä = r.rs.getInt("alkuvaiheen_tunnistettuja_suorituksia_rahoituksen_piirissä"),
       suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitetut = r.rs.getInt("muuta_kautta_rahoitetut"),
       suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa = r.rs.getInt("ei_rahoitustietoa"),
-      suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa = r.rs.getInt("arviointipäivä_ei_tiedossa"),
+      suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa = r.rs.getInt("arviointipäivä_ei_opiskeluoikeuden_sisällä"),
     )
   )
 
@@ -65,7 +65,7 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends K
           and (r_paatason_suoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaara' or r_paatason_suoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaaranalkuvaihe')
       )
       select kurssikertymat.*,
-      coalesce(opiskeluoikeuden_ulkopuoliset.arviointipäivä_ei_tiedossa, 0) as arviointipäivä_ei_tiedossa
+      coalesce(opiskeluoikeuden_ulkopuoliset.arviointipäivä_ei_opiskeluoikeuden_sisällä, 0) as arviointipäivä_ei_opiskeluoikeuden_sisällä
       from (
         select
           oppilaitos_oid oppilaitos_oid,
@@ -87,8 +87,8 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends K
         from paatason_suoritus
         join r_opiskeluoikeus_aikajakso on oo_opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
         join r_osasuoritus on (paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id or oo_opiskeluoikeus_oid = r_osasuoritus.sisaltyy_opiskeluoikeuteen_oid)
-          and r_opiskeluoikeus_aikajakso.alku >= $aikaisintaan
-          and r_opiskeluoikeus_aikajakso.loppu <= $viimeistaan
+          and r_opiskeluoikeus_aikajakso.alku <= r_osasuoritus.arviointi_paiva
+          and (r_opiskeluoikeus_aikajakso.loppu >= r_osasuoritus.arviointi_paiva or r_opiskeluoikeus_aikajakso.loppu = '9999-12-30')
         where (r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi')
           and r_osasuoritus.arviointi_paiva >= $aikaisintaan
           and r_osasuoritus.arviointi_paiva <= $viimeistaan
@@ -98,7 +98,8 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends K
       left join (
         select
           oppilaitos_oid oppilaitos_oid,
-          count(distinct (case when (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true) then r_osasuoritus.osasuoritus_id end)) arviointipäivä_ei_tiedossa
+          oppilaitos_nimi oppilaitos_nimi,
+          count(distinct (case when (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true) then r_osasuoritus.osasuoritus_id end)) arviointipäivä_ei_opiskeluoikeuden_sisällä
         from paatason_suoritus
         join r_opiskeluoikeus_aikajakso on oo_opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
         join r_osasuoritus on paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id or oo_opiskeluoikeus_oid = r_osasuoritus.sisaltyy_opiskeluoikeuteen_oid

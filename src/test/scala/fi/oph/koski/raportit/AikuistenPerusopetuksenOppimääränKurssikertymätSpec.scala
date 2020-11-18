@@ -71,7 +71,7 @@ class AikuistenPerusopetuksenOppimääränKurssikertymätSpec extends FreeSpec w
       lazy val r = findSingle(raportti)
 
       r.oppilaitos should equal("Jyväskylän normaalikoulu")
-      r.yhteensäSuorituksia should equal(29)
+      r.yhteensäSuorituksia should equal(28)
       r.yhteensäSuoritettujaSuorituksia(24)
       r.yhteensäTunnistettujaSuorituksia should equal(4)
       r.yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä should equal(2)
@@ -79,13 +79,13 @@ class AikuistenPerusopetuksenOppimääränKurssikertymätSpec extends FreeSpec w
       r.päättövaiheenSuoritettujaSuorituksia(1)
       r.päättövaiheenTunnistettujaSuorituksia should equal(2)
       r.päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä should equal(1)
-      r.alkuvaiheenSuorituksia should equal(26)
-      r.alkuvaiheenSuoritettujaSuorituksia(24)
+      r.alkuvaiheenSuorituksia should equal(25)
+      r.alkuvaiheenSuoritettujaSuorituksia(23)
       r.alkuvaiheenTunnistettujaSuorituksia should equal(2)
       r.alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä should equal(1)
       r.suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitetut(0)
       r.suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa(0)
-      r.suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa(0)
+      r.suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa(1)
     }
   }
 

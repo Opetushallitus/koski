@@ -122,7 +122,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
           )
         group by oppilaitos_oid
       ) opiskeluoikeuden_ulkopuoliset
-        on opiskeluoikeuden_ulkopuoliset.oppilaitos_oid = oppimaaran_kurssikertymat.oppilaitosOid;
+        on opiskeluoikeuden_ulkopuoliset.oppilaitos_oid = oppimaaran_kurssikertymat.oppilaitos_oid;
     """.as[LukioKurssikertymaAineopiskelijaRow]
   }
 
