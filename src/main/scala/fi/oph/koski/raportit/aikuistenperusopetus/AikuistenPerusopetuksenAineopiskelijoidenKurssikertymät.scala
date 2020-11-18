@@ -109,8 +109,8 @@ case class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(db: DB) exte
             select 1
             from r_opiskeluoikeus
             where oo_opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-              and r_opiskeluoikeus.alkamispaiva >= $aikaisintaan
-              and r_opiskeluoikeus.paattymispaiva <= $viimeistaan
+              and r_opiskeluoikeus.alkamispaiva >= r_osasuoritus.arviointi_paiva
+              and r_opiskeluoikeus.paattymispaiva <= r_osasuoritus.arviointi_paiva
           )
         group by paatason_suoritus.oppilaitos_nimi, paatason_suoritus.oppilaitos_oid
       ) opiskeluoikeuden_ulkopuoliset

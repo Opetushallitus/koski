@@ -99,7 +99,6 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends K
           oppilaitos_nimi oppilaitos_nimi,
           count(distinct (case when (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true) then r_osasuoritus.osasuoritus_id end)) arviointipäivä_ei_tiedossa
         from paatason_suoritus
-        join r_opiskeluoikeus_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = oo_opiskeluoikeus_oid
         join r_opiskeluoikeus_aikajakso on oo_opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
         join r_osasuoritus on paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id or oo_opiskeluoikeus_oid = r_osasuoritus.sisaltyy_opiskeluoikeuteen_oid
         where (r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi')
@@ -110,8 +109,8 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends K
             select 1
             from r_opiskeluoikeus
             where oo_opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-              and r_opiskeluoikeus.alkamispaiva >= $aikaisintaan
-              and r_opiskeluoikeus.paattymispaiva <= $viimeistaan
+              and r_opiskeluoikeus.alkamispaiva >= r_osasuoritus.arviointi_paiva
+              and r_opiskeluoikeus.paattymispaiva <= r_osasuoritus.arviointi_paiva
           )
         group by paatason_suoritus.oppilaitos_nimi, paatason_suoritus.oppilaitos_oid
       ) opiskeluoikeuden_ulkopuoliset

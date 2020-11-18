@@ -70,8 +70,8 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit(db: DB) ex
                 select 1
                 from r_opiskeluoikeus
                 where oo_opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-                  and r_opiskeluoikeus.alkamispaiva >= $aikaisintaan
-                  and r_opiskeluoikeus.paattymispaiva <= $viimeistaan
+                  and r_opiskeluoikeus.alkamispaiva >= r_osasuoritus.arviointi_paiva
+                  and r_opiskeluoikeus.paattymispaiva <= r_osasuoritus.arviointi_paiva
               )
               and (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true)
   """
