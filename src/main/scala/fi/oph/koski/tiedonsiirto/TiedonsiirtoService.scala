@@ -26,46 +26,45 @@ import org.json4s.jackson.JsonMethods
 import org.json4s.{JValue, _}
 
 object TiedonsiirtoService {
-  private val settings = Map(
-    "analysis" -> Map(
-      "filter" -> Map(
-        "finnish_folding" -> Map(
-          "type" -> "icu_folding",
-          "unicodeSetFilter" -> "[^åäöÅÄÖ]"
-        )
-      ),
-      "analyzer" -> Map(
-        "default" -> Map(
-          "tokenizer" -> "icu_tokenizer",
-          "filter" -> Array("finnish_folding", "lowercase")
-        )
-      )
-    )
-  )
+  private val settings = JsonMethods.parse("""
+    {
+        "analysis": {
+          "filter": {
+            "finnish_folding": {
+              "type": "icu_folding",
+              "unicodeSetFilter": "[^åäöÅÄÖ]"
+            }
+          },
+          "analyzer": {
+            "default": {
+              "tokenizer": "icu_tokenizer",
+              "filter":  [ "finnish_folding", "lowercase" ]
+            }
+          }
+        }
+    }""")
 
-  private val mapping = Map(
-    "properties" -> Map(
-      "virheet" -> Map(
-        "properties" -> Map(
-          "key" -> Map(
-            "type" -> "text",
-            "fields" -> Map(
-              "keyword" -> Map(
-                "ignore_above" -> 256,
-                "type" -> "keyword"
-              )
+  private val mapping = toJValue(Map("properties" -> Map(
+    "virheet" -> Map(
+      "properties" -> Map(
+        "key" -> Map(
+          "type" -> "text",
+          "fields" -> Map(
+            "keyword" -> Map(
+              "ignore_above" -> 256,
+              "type" -> "keyword"
             )
           )
-        ),
-        "dynamic" -> false
+        )
       ),
-      "data" -> Map(
-        "properties" -> Map(
-        ),
-        "dynamic" -> false
-      )
+      "dynamic" -> false
+    ),
+    "data" -> Map(
+      "properties" -> Map(
+      ),
+      "dynamic" -> false
     )
-  )
+  )))
 }
 
 class TiedonsiirtoService(

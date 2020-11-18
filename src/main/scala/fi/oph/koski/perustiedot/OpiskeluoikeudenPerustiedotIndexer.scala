@@ -23,65 +23,29 @@ object PerustiedotIndexUpdater extends App with Timing {
 }
 
 object OpiskeluoikeudenPerustiedotIndexer {
-  private val settings = Map(
-    "analysis" -> Map(
-      "filter" -> Map(
-        "finnish_folding" -> Map(
-          "type" -> "icu_folding",
-          "unicodeSetFilter" -> "[^åäöÅÄÖ]"
-        )
-      ),
-      "analyzer" -> Map(
-        "default" -> Map(
-          "tokenizer" -> "icu_tokenizer",
-          "filter" -> Array("finnish_folding", "lowercase")
-        )
-      ),
-      "normalizer" -> Map(
-        "keyword_lowercase" -> Map(
-          "type" -> "custom",
-          "filter" -> Array("lowercase")
-        )
-      )
-    )
-  )
+  private val settings = JsonMethods.parse("""
+    {
+        "analysis": {
+          "filter": {
+            "finnish_folding": {
+              "type": "icu_folding",
+              "unicodeSetFilter": "[^åäöÅÄÖ]"
+            }
+          },
+          "analyzer": {
+            "default": {
+              "tokenizer": "icu_tokenizer",
+              "filter":  [ "finnish_folding", "lowercase" ]
+            }
+          }
+        }
+    }""")
 
-  private val finnishSortedTextField = Map(
-    "type" -> "text",
-    "fields" -> Map(
-      "keyword" -> Map(
-        "type" -> "keyword"
-      ),
-      "sort" -> Map(
-        "type" -> "icu_collation_keyword",
-        "language" -> "fi",
-        "country" -> "FI"
-      )
-    )
-  )
-
-  private val mapping = Map(
+  private val mapping = toJValue(Map(
     "properties" -> Map(
-      "henkilö" -> Map(
-        "properties" -> Map(
-          "etunimet" -> finnishSortedTextField,
-          "kutsumanimi" -> finnishSortedTextField,
-          "sukunimi" -> finnishSortedTextField
-        )
-      ),
-      "luokka" -> Map(
-        "type" -> "text",
-        "fields" -> Map(
-          "keyword" -> Map(
-            "type" -> "keyword",
-            "normalizer" -> "keyword_lowercase"
-          )
-        )
-      ),
       "tilat" -> Map("type" -> "nested"),
       "suoritukset" -> Map("type" -> "nested")
-    )
-  )
+    )))
 }
 
 class OpiskeluoikeudenPerustiedotIndexer(
