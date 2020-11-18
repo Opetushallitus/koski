@@ -55,7 +55,9 @@ case class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(db: DB) exte
           r_paatason_suoritus.paatason_suoritus_id,
           r_opiskeluoikeus.opiskeluoikeus_oid oo_opiskeluoikeus_oid,
           r_opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid,
-          r_opiskeluoikeus.viimeisin_tila
+          r_opiskeluoikeus.viimeisin_tila,
+          r_opiskeluoikeus.alkamispaiva oo_alkamisaiva,
+          r_opiskeluoikeus.paattymispaiva oo_paattymispaiva
         from r_opiskeluoikeus
         join r_paatason_suoritus on r_opiskeluoikeus.opiskeluoikeus_oid = r_paatason_suoritus.opiskeluoikeus_oid
           and r_opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid is null
@@ -96,7 +98,6 @@ case class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(db: DB) exte
       left join (
         select
           oppilaitos_oid oppilaitos_oid,
-          oppilaitos_nimi oppilaitos_nimi,
           count(distinct (case when (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true) then r_osasuoritus.osasuoritus_id end)) arviointipäivä_ei_tiedossa
         from paatason_suoritus
         join r_opiskeluoikeus_aikajakso on oo_opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
@@ -105,13 +106,8 @@ case class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(db: DB) exte
           and r_osasuoritus.arviointi_paiva >= $aikaisintaan
           and r_osasuoritus.arviointi_paiva <= $viimeistaan
           and viimeisin_tila = 'valmistunut'
-          and not exists (
-            select 1
-            from r_opiskeluoikeus
-            where oo_opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-              and r_opiskeluoikeus.alkamispaiva >= r_osasuoritus.arviointi_paiva
-              and r_opiskeluoikeus.paattymispaiva <= r_osasuoritus.arviointi_paiva
-          )
+          and (oo_alkamisaiva >= r_osasuoritus.arviointi_paiva
+            or (oo_paattymispaiva <= r_osasuoritus.arviointi_paiva and viimeisin_tila = 'valmistunut'))
         group by paatason_suoritus.oppilaitos_nimi, paatason_suoritus.oppilaitos_oid
       ) opiskeluoikeuden_ulkopuoliset
       on opiskeluoikeuden_ulkopuoliset.oppilaitos_oid = kurssikertymat.oppilaitos_oid;

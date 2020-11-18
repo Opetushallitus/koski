@@ -43,7 +43,9 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit(db: DB) ex
               r_paatason_suoritus.paatason_suoritus_id,
               r_opiskeluoikeus.opiskeluoikeus_oid oo_opiskeluoikeus_oid,
               r_opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid,
-              r_opiskeluoikeus.viimeisin_tila
+              r_opiskeluoikeus.viimeisin_tila,
+              r_opiskeluoikeus.alkamispaiva oo_alkamisaiva,
+              r_opiskeluoikeus.paattymispaiva oo_paattymispaiva
             from r_opiskeluoikeus
             join r_paatason_suoritus on r_opiskeluoikeus.opiskeluoikeus_oid = r_paatason_suoritus.opiskeluoikeus_oid
               and r_opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid is null
@@ -65,15 +67,9 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit(db: DB) ex
               or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenoppiaine')
               and r_osasuoritus.arviointi_paiva >= $aikaisintaan
               and r_osasuoritus.arviointi_paiva <= $viimeistaan
-              and viimeisin_tila = 'valmistunut'
-              and not exists (
-                select 1
-                from r_opiskeluoikeus
-                where oo_opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-                  and r_opiskeluoikeus.alkamispaiva >= r_osasuoritus.arviointi_paiva
-                  and r_opiskeluoikeus.paattymispaiva <= r_osasuoritus.arviointi_paiva
-              )
               and (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true)
+              and (oo_alkamisaiva >= r_osasuoritus.arviointi_paiva
+                or (oo_paattymispaiva <= r_osasuoritus.arviointi_paiva and viimeisin_tila = 'valmistunut'))
   """
   }
 
