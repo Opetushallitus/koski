@@ -9,14 +9,14 @@ import {generateRandomPassword} from '../util/password'
 import {downloadExcel} from './downloadExcel'
 import RaporttiDownloadButton from './RaporttiDownloadButton'
 
-export const TilastoRaporttiPaivalta = ({organisaatioAtom, apiEndpoint, title, description, example}) => {
+export const TilastoRaporttiPaivalta = ({organisaatioP, apiEndpoint, title, description, example}) => {
   const paivaAtom = Atom()
   const submitBus = Bacon.Bus()
 
   const password = generateRandomPassword()
 
   const downloadExcelP = Bacon.combineWith(
-    organisaatioAtom, paivaAtom,
+    organisaatioP, paivaAtom,
     (o, p) => o && p && ({paiva: formatISODate(p), password, baseUrl: `/koski/api/raportit${apiEndpoint}`})
   )
   const downloadExcelE = submitBus.map(downloadExcelP)

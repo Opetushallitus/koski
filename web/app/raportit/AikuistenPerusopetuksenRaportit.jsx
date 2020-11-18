@@ -15,7 +15,7 @@ const reportTypes = {
   oppiaineenoppimäärä: 'oppiaineenoppimäärä'
 }
 
-export const AikuistenPerusopetuksenRaportit = ({organisaatioAtom, apiEndpoint, title, description}) => {
+export const AikuistenPerusopetuksenRaportit = ({organisaatioP, apiEndpoint, title, description}) => {
   const alkuAtom = Atom()
   const loppuAtom = Atom()
   const osasuoritustenAikarajausAtom = Atom(false)
@@ -25,7 +25,7 @@ export const AikuistenPerusopetuksenRaportit = ({organisaatioAtom, apiEndpoint, 
   const password = generateRandomPassword()
 
   const downloadExcelP = Bacon.combineWith(
-    organisaatioAtom, alkuAtom, loppuAtom, osasuoritustenAikarajausAtom, raportinTyyppiAtom,
+    organisaatioP, alkuAtom, loppuAtom, osasuoritustenAikarajausAtom, raportinTyyppiAtom,
     (o, a, l, r, t) => o && a && l && (l.valueOf() >= a.valueOf()) && t && {
       oppilaitosOid: o.oid,
       alku: formatISODate(a),

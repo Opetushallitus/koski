@@ -2,12 +2,12 @@ import React from 'baret'
 import * as R from 'ramda'
 
 export const Tabs = ({
-    options,
+    optionsP,
     selectedP,
     onSelect
 }) => (
     <div className="tabs-container">
-        {options.map(({ id, name }) => (
+        {optionsP.map(options => options && options.filter(o => !o.hidden).map(({ id, name }) => (
             <Tab
                 key={id}
                 isSelectedAtom={selectedP.map(R.equals(id))}
@@ -15,7 +15,7 @@ export const Tabs = ({
             >
                 {name}
             </Tab>
-        ))}
+        )))}
     </div>
 )
 

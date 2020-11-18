@@ -10,7 +10,7 @@ import {downloadExcel} from './downloadExcel'
 import Dropdown from '../components/Dropdown'
 import RaporttiDownloadButton from './RaporttiDownloadButton'
 
-export const VuosiluokkaRaporttiPaivalta = ({organisaatioAtom, apiEndpoint, title, description, example}) => {
+export const VuosiluokkaRaporttiPaivalta = ({organisaatioP, apiEndpoint, title, description, example}) => {
   const paivaAtom = Atom()
   const vuosiluokkaAtom = Atom('')
   const submitBus = Bacon.Bus()
@@ -18,7 +18,7 @@ export const VuosiluokkaRaporttiPaivalta = ({organisaatioAtom, apiEndpoint, titl
   const password = generateRandomPassword()
 
   const downloadExcelP = Bacon.combineWith(
-    organisaatioAtom, paivaAtom, vuosiluokkaAtom,
+    organisaatioP, paivaAtom, vuosiluokkaAtom,
     (o, p, v) => o && p && v && ({oppilaitosOid: o.oid, paiva: formatISODate(p), vuosiluokka:(v), password, baseUrl: `/koski/api/raportit${apiEndpoint}`})
   )
   const downloadExcelE = submitBus.map(downloadExcelP)

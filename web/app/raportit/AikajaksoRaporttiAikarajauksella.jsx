@@ -33,7 +33,7 @@ const AikarajatutSuorituksetLabel = ({ osasuoritusType }) => {
 }
 
 export const AikajaksoRaporttiAikarajauksella = ({
-  organisaatioAtom,
+  organisaatioP,
   apiEndpoint,
   title,
   description,
@@ -47,7 +47,7 @@ export const AikajaksoRaporttiAikarajauksella = ({
   const password = generateRandomPassword()
 
   const downloadExcelP = Bacon.combineWith(
-    organisaatioAtom, alkuAtom, loppuAtom, osasuoritustenAikarajausAtom,
+    organisaatioP, alkuAtom, loppuAtom, osasuoritustenAikarajausAtom,
     (o, a, l, r) => o && a && l && (l.valueOf() >= a.valueOf()) && {
       oppilaitosOid: o.oid,
       alku: formatISODate(a),
