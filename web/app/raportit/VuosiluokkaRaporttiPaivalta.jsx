@@ -2,17 +2,16 @@ import React from 'baret'
 import Text from '../i18n/Text'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import DateInput from '../date/DateInput'
 import {showError} from '../util/location'
 import {formatISODate} from '../date/date'
 import {generateRandomPassword} from '../util/password'
 import {downloadExcel} from './downloadExcel'
 import Dropdown from '../components/Dropdown'
-import RaporttiDownloadButton from './RaporttiDownloadButton'
+import { LyhytKuvaus, PaivaValinta, RaportinLataus, Vinkit } from './raporttiComponents'
 
-export const VuosiluokkaRaporttiPaivalta = ({organisaatioP, apiEndpoint, title, description, example}) => {
+export const VuosiluokkaRaporttiPaivalta = ({organisaatioP, apiEndpoint, description, example}) => {
   const paivaAtom = Atom()
-  const vuosiluokkaAtom = Atom('')
+  const vuosiluokkaAtom = Atom('1')
   const submitBus = Bacon.Bus()
 
   const password = generateRandomPassword()
@@ -30,21 +29,35 @@ export const VuosiluokkaRaporttiPaivalta = ({organisaatioP, apiEndpoint, title, 
   const submitEnabledP = downloadExcelP.map(x => !!x).and(inProgressP.not())
   const vuosiluokat = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-  return (<section>
-    <h2>{title}</h2>
-    <p>{description}</p>
-    <p>{example}</p>
-      <div className='parametri'>
-        <label><Text name='Päivä'/></label>
-        <DateInput value={paivaAtom.get()} valueCallback={(value) => paivaAtom.set(value)} validityCallback={(valid) => !valid && paivaAtom.set(undefined)} />
+  return (
+    <section>
+      <LyhytKuvaus>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam porttitor libero dictum sem rhoncus, at euismod ex finibus. Morbi tortor purus, vehicula ut purus eget, blandit laoreet eros. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Proin tellus ipsum, mattis non purus sed, mattis rutrum arcu.
+      </LyhytKuvaus>
+
+      <PaivaValinta paivaAtom={paivaAtom} />
+
+      <div className="dropdown-selection parametri vuosiluokka">
+        <label><Text name="Valitse vuosiluokka"/></label>
+        <VuosiluokkaDropdown
+          value={vuosiluokkaAtom}
+          vuosiluokat={vuosiluokat}
+        />
       </div>
-    <div className='dropdown-selection parametri'>
-      <label><Text name='Vuosiluokka'/></label>
-      <VuosiluokkaDropdown value={vuosiluokkaAtom} vuosiluokat={vuosiluokat}/>
-    </div>
-    <div className='password'><Text name='Excel-tiedosto on suojattu salasanalla'/> {password}</div>
-    <RaporttiDownloadButton inProgressP={inProgressP} disabled={submitEnabledP.not()} onSubmit={e => { e.preventDefault(); submitBus.push(); return false }} />
-  </section>)
+
+      <RaportinLataus
+        password={password}
+        inProgressP={inProgressP}
+        submitEnabledP={submitEnabledP}
+        submitBus={submitBus}
+      />
+
+      <Vinkit>
+        <p>{description}</p>
+        <p>{example}</p>
+      </Vinkit>
+    </section>
+  )
 }
 
 const VuosiluokkaDropdown = ({value, vuosiluokat}) => (

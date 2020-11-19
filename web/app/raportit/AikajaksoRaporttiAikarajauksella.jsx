@@ -2,12 +2,11 @@ import React from 'baret'
 import Text from '../i18n/Text'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import DateInput from '../date/DateInput'
 import {showError} from '../util/location'
 import {formatISODate} from '../date/date'
 import {generateRandomPassword} from '../util/password'
 import {downloadExcel} from './downloadExcel'
-import RaporttiDownloadButton from './RaporttiDownloadButton'
+import { AikajaksoValinta, Listavalinta, LyhytKuvaus, RaportinLataus, Vinkit } from './raporttiComponents'
 
 export const osasuoritusTypes = {
   TUTKINNON_OSA: 'tutkinnon osat',
@@ -35,7 +34,6 @@ const AikarajatutSuorituksetLabel = ({ osasuoritusType }) => {
 export const AikajaksoRaporttiAikarajauksella = ({
   organisaatioP,
   apiEndpoint,
-  title,
   description,
   osasuoritusType = osasuoritusTypes.TUTKINNON_OSA
 }) => {
@@ -66,30 +64,31 @@ export const AikajaksoRaporttiAikarajauksella = ({
 
   return (
     <section>
-      <h2>{title}</h2>
-      <p>{description}</p>
-      <div className='parametri'>
-        <label><Text name='Aikajakso'/></label>
-        <div className='date-range'>
-          <DateInput value={alkuAtom.get()} valueCallback={(value) => alkuAtom.set(value)} validityCallback={(valid) => !valid && alkuAtom.set(undefined)}/>
-          {' — '}
-          <DateInput value={loppuAtom.get()} valueCallback={(value) => loppuAtom.set(value)} validityCallback={(valid) => !valid && loppuAtom.set(undefined)}/>
-        </div>
-      </div>
-      {osasuoritustenAikarajausAtom.map(v => (
-        <React.Fragment>
-          <label className='radio-option-container'>
-            <input className='radio-option' type='radio' checked={!v} onChange={() => osasuoritustenAikarajausAtom.set(false)}/>
-            <KaikkiSuorituksetLabel osasuoritusType={osasuoritusType}/>
-          </label>
-          <label className='radio-option-container'>
-            <input className='radio-option' type='radio' checked={v} onChange={() => osasuoritustenAikarajausAtom.set(true)}/>
-            <AikarajatutSuorituksetLabel osasuoritusType={osasuoritusType}/>
-          </label>
-        </React.Fragment>
-      ))}
-      <div className='password'><Text name='Excel-tiedosto on suojattu salasanalla'/> {password}</div>
-      <RaporttiDownloadButton inProgressP={inProgressP} disabled={submitEnabledP.not()} onSubmit={e => { e.preventDefault(); submitBus.push(); return false }} />
+      <LyhytKuvaus>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam porttitor libero dictum sem rhoncus, at euismod ex finibus. Morbi tortor purus, vehicula ut purus eget, blandit laoreet eros. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Proin tellus ipsum, mattis non purus sed, mattis rutrum arcu.
+      </LyhytKuvaus>
+
+      <AikajaksoValinta alkuAtom={alkuAtom} loppuAtom={loppuAtom} />
+
+      <Listavalinta
+        label="Valitse osasuoritusten aikarajaus"
+        atom={osasuoritustenAikarajausAtom}
+        options={[
+          { key: false, value: <KaikkiSuorituksetLabel osasuoritusType={osasuoritusType} /> },
+          { key: true, value: <AikarajatutSuorituksetLabel osasuoritusType={osasuoritusType} /> }
+        ]}
+      />
+
+      <RaportinLataus
+        password={password}
+        inProgressP={inProgressP}
+        submitEnabledP={submitEnabledP}
+        submitBus={submitBus}
+      />
+
+      <Vinkit>
+        <p>{description}</p>
+      </Vinkit>
     </section>
   )
 }

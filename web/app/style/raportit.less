@@ -1,55 +1,83 @@
 .raportit {
-  label {
-    display: block;
+  padding: 0 32px;
+
+  h2 {
+    margin-top: 42px;
   }
 
-  .raportit-organisaatio {
-    width: 500px;
-    .organisaatio {
-      margin-top: 5px;
-      margin-bottom: 18px;
-      .organisaatio-selection {
-        line-height: 35px;
+  .raportti-valitsin {
+    margin-bottom: 16px;
+  }
+
+  .organisaatio-valitsin {
+    max-width: 450px;
+    margin-bottom: 16px;
+  }
+
+  .lyhyt-kuvaus {
+    max-width: 550px;
+    color: #666666;
+  }
+
+  .parametri {
+    margin-bottom: 20px;
+    // max-width: 550px;
+
+    & > label {
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .calendar-input {
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    .ohje {
+      display: inline-block;
+      vertical-align: top;
+      margin-left: 16px;
+      max-width: 300px;
+      font-size: 90%;
+      color: #666666;
+    }
+
+    &.vuosiluokka {
+      .dropdown {
+        max-width: 100px;
       }
     }
-  }
 
-  p {
-    max-width: 500px;
-  }
+    .parametrit-kentat {
+      display: inline-block;
+    }
 
-  .parametri > label {
-    padding: 0.7em 0 0 0;
-    margin-bottom: 10px;
-  }
-
-  .dropdown-selection {
-    height: 35px;
-    width: 174px;
-    padding: 0 0 0.7em;
-    margin-bottom: 64px;
-
-    .select {
-      height: 35px;
+    .parametri-aikajakso-viiva {
+      display: inline-block;
+      vertical-align: bottom;
+      padding: 0 10px 10px;
     }
   }
 
-  .radio-option-container {
-    margin: 0.7em 0;
-    .radio-option {
-      margin-right: 0.7em;
-    }
-  }
-
-  .password, button {
-    margin-top: 20px;
-  }
-
-  .raportti-download-button {
+  .password {
+    color: #666666;
     margin-bottom: 20px;
+  }
 
-    > .axaj-indicator-bg {
-      margin-top: 20px;
+  .vinkit {
+    color: #666666;
+    max-width: 550px;
+    margin-top: 30px;
+
+    h3 {
+      vertical-align: center;
+
+      svg {
+        width: 20px;
+        height: 20px;
+        vertical-align: bottom;
+        margin-right: 5px;
+      }
     }
   }
 }

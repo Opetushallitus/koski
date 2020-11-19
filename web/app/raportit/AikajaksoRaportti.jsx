@@ -1,15 +1,13 @@
 import React from 'baret'
-import Text from '../i18n/Text'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import DateInput from '../date/DateInput'
 import {showError} from '../util/location'
 import {formatISODate} from '../date/date'
 import {generateRandomPassword} from '../util/password'
 import {downloadExcel} from './downloadExcel'
-import RaporttiDownloadButton from './RaporttiDownloadButton'
+import { AikajaksoValinta, LyhytKuvaus, RaportinLataus, Vinkit } from './raporttiComponents'
 
-export const AikajaksoRaportti = ({organisaatioP, apiEndpoint, title, description}) => {
+export const AikajaksoRaportti = ({organisaatioP, apiEndpoint, description}) => {
   const alkuAtom = Atom()
   const loppuAtom = Atom()
   const submitBus = Bacon.Bus()
@@ -28,18 +26,22 @@ export const AikajaksoRaportti = ({organisaatioP, apiEndpoint, title, descriptio
 
   return (
     <section>
-      <h2>{title}</h2>
-      <p>{description}</p>
-      <div className='parametri'>
-        <label><Text name='Aikajakso'/></label>
-        <div className='date-range'>
-          <DateInput value={alkuAtom.get()} valueCallback={(value) => alkuAtom.set(value)} validityCallback={(valid) => !valid && alkuAtom.set(undefined)}/>
-          {' — '}
-          <DateInput value={loppuAtom.get()} valueCallback={(value) => loppuAtom.set(value)} validityCallback={(valid) => !valid && loppuAtom.set(undefined)}/>
-        </div>
-      </div>
-      <div className='password'><Text name='Excel-tiedosto on suojattu salasanalla'/> {password}</div>
-      <RaporttiDownloadButton inProgressP={inProgressP} disabled={submitEnabledP.not()} onSubmit={e => { e.preventDefault(); submitBus.push(); return false }} />
+      <LyhytKuvaus>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam porttitor libero dictum sem rhoncus, at euismod ex finibus. Morbi tortor purus, vehicula ut purus eget, blandit laoreet eros. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Proin tellus ipsum, mattis non purus sed, mattis rutrum arcu.
+      </LyhytKuvaus>
+
+      <AikajaksoValinta alkuAtom={alkuAtom} loppuAtom={loppuAtom} />
+
+      <RaportinLataus
+        password={password}
+        inProgressP={inProgressP}
+        submitEnabledP={submitEnabledP}
+        submitBus={submitBus}
+      />
+
+      <Vinkit>
+        <p>{description}</p>
+      </Vinkit>
     </section>
   )
 }

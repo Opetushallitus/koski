@@ -2,7 +2,6 @@ import React from 'baret'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import Bacon from 'baconjs'
-import OrganisaatioPicker from '../virkailija/OrganisaatioPicker'
 import Http from '../util/http'
 import {AikajaksoRaportti} from './AikajaksoRaportti'
 import {VuosiluokkaRaporttiPaivalta} from './VuosiluokkaRaporttiPaivalta'
@@ -10,6 +9,7 @@ import {AikajaksoRaporttiAikarajauksella, osasuoritusTypes} from './AikajaksoRap
 import {RaporttiPaivalta} from './RaporttiPaivalta'
 import {AikuistenPerusopetuksenRaportit} from './AikuistenPerusopetuksenRaportit'
 import {Tabs} from '../components/Tabs'
+import Dropdown from '../components/Dropdown'
 
 const kaikkiRaportitKategorioittain = [
   {
@@ -18,13 +18,12 @@ const kaikkiRaportitKategorioittain = [
     raportit: [
       {
         id: 'esiopetuksenraportti',
-        name: 'Esiopetuksen raportti',
+        name: 'Opiskeluoikeudet ja suoritustiedot',
         component: EsiopetusRaportti
       },
       {
         id: 'esiopetuksenoppijamäärienraportti',
-        name: 'Esiopetuksen oppijamäärien raportti',
-        compactName: 'Oppijamäärät',
+        name: 'VOS-rahoituslaskennan tunnusluvut',
         component: EsiopetuksenOppijamäärätRaportti
       }
     ]
@@ -35,20 +34,17 @@ const kaikkiRaportitKategorioittain = [
     raportit: [
       {
         id: 'perusopetuksenvuosiluokka',
-        name: 'Nuorten perusopetuksen opiskeluoikeus- ja suoritustietojen tarkistusraportti',
-        compactName: 'Tarkistusraportti',
+        name: 'Opiskeluoikeudet ja suoritustiedot',
         component: PerusopetuksenVuosiluokka
       },
       {
         id: 'perusopetuksenoppijamääräraportti',
-        name: 'Perusopetus-oppijamäärät-raportti-title',
-        compactName: 'Oppijamäärät',
+        name: 'VOS-rahoituslaskennan tunnusluvut',
         component: PerusopetuksenOppijamäärätRaportti
       },
       {
         id: 'perusopetuksenlisäopetuksenoppijamääräraportti',
-        name: 'Perusopetus-lisäopetus-oppijamäärät-raportti-title',
-        compactName: 'Lisäopetuksen oppijamäärät',
+        name: 'Lisäopetuksen VOS-rahoituslaskennan tunnusluvut',
         component: PerusopetuksenLisäopetuksenOppijamäärätRaportti
       }
     ]
@@ -59,17 +55,17 @@ const kaikkiRaportitKategorioittain = [
     raportit: [
       {
         id: 'aikuistenperusopetussuoritustietojentarkistus',
-        name: 'aikuisten-perusopetus-raportti-title',
+        name: 'Tarkistusraportti',
         component: AikuistenPerusopetusRaportti
       },
       {
         id: 'aikuistenperusopetusoppijamäärienraportti',
-        name: 'Aikuisten-perusopetus-oppilasmäärät-raportti-title',
+        name: 'VOS-rahoituslaskennan tunnusluvut',
         component: AikuistenPerusopetuksenOppijamäärätRaportti
       },
       {
         id: 'aikuistenperusopetuskurssikertymänraportti',
-        name: 'Aikuisten-perusopetus-kurssikertymä-raportti-title',
+        name: 'Kurssikertymä',
         component: AikuistenPerusopetuksenKurssikertymäRaportti
       }
     ]
@@ -85,14 +81,12 @@ const kaikkiRaportitKategorioittain = [
       },
       {
         id: 'ammatillinentutkintosuoritustietojentarkistus',
-        name: 'Suoritustiedot (ammatillinen koulutus, koko tutkinto)',
-        compactName: 'Suoritustiedot (koko tutkinto)',
+        name: 'Suoritustiedot (koko tutkinto)',
         component: SuoritustietojenTarkistus
       },
       {
         id: 'ammatillinenosittainensuoritustietojentarkistus',
-        name: 'Suoritustiedot (ammatillinen koulutus, tutkinnon osa/osia)',
-        compactName: 'Suoritustiedot (tutk. osia)',
+        name: 'Suoritustiedot (tutk. osia)',
         component: AmmatillinenOsittainenSuoritustietojenTarkistus
       },
       {
@@ -113,22 +107,22 @@ const kaikkiRaportitKategorioittain = [
     raportit: [
       {
         id: 'lukionsuoritustietojentarkistus',
-        name: 'Lukioraportti-title',
+        name: 'Tarkistusraportti',
         component: Lukioraportti
       },
       {
         id: 'lukiokurssikertyma',
-        name: 'lukion-kurssikertyma-title',
+        name: 'VOS-tunnusluvut: Kurssikertymät',
         component: LukioKurssikertyma
       },
       {
         id: 'lukiodiaibinternationalopiskelijamaarat',
-        name: 'lukiokoulutuksen-opiskelijamaarat-title',
+        name: 'VOS-tunnusluvut: Opiskelijamäärät',
         component: LukioDiaIBInternationalOpiskelijamaarat
       },
       {
         id: 'luvaopiskelijamaarat',
-        name: 'luva-opiskelijamaarat-title',
+        name: 'VOS-tunnusluvut: Valmistavan koulutuksen opiskelijamäärät',
         component: LuvaOpiskelijamaaratRaportti
       }
     ]
@@ -181,13 +175,16 @@ export const raportitContentP = () => {
         organisaatiot
       }
     },
-    selectedTabIdxE, (state, selectedTabIdx) => ({
-      ...state,
-      selectedTabIdx,
-      selectedRaporttiIdx: 0,
-      selectedOrganisaatio: state.tabs[selectedTabIdx].raportit[0].organisaatiot[0]
-    }),
-    selectedRaporttiIdxE, (state, selectedRaporttiIdx) => {
+    selectedTabIdxE.skipDuplicates(), (state, selectedTabIdx) => {
+      const organisaatiot = state.tabs[selectedTabIdx].raportit[0].organisaatiot
+      return {
+        ...state,
+        selectedTabIdx,
+        selectedRaporttiIdx: 0,
+        selectedOrganisaatio: organisaatiot.find(org => org.oid === state.selectedOrganisaatio.oid) || organisaatiot[0]
+      }
+    },
+    selectedRaporttiIdxE.skipDuplicates(), (state, selectedRaporttiIdx) => {
       const organisaatiot = state.tabs[state.selectedTabIdx].raportit[selectedRaporttiIdx].organisaatiot
       return {
         ...state,
@@ -195,16 +192,14 @@ export const raportitContentP = () => {
         selectedOrganisaatio: organisaatiot.find(org => org.oid === state.selectedOrganisaatio.oid) || organisaatiot[0]
       }
     },
-    selectedOrganisaatioOidE, (state, selectedOrganisaatioOid) => ({
+    selectedOrganisaatioOidE.skipDuplicates(), (state, selectedOrganisaatioOid) => ({
       ...state,
       selectedOrganisaatio: state.organisaatiot.find(org => org.oid === selectedOrganisaatioOid)
     })
   )
 
-  stateP.forEach(x => console.log('State', x))
-
-  const tabP = stateP.map(state => state.tabs[state.selectedTabIdx])
-  const raporttiP = Bacon.combineWith(stateP, tabP, (state, tab) => tab && tab.raportit[state.selectedRaporttiIdx])
+  const tabP = stateP.map(state => state.tabs[state.selectedTabIdx]).skipDuplicates()
+  const raporttiP = Bacon.combineWith(stateP, tabP, (state, tab) => tab && tab.raportit[state.selectedRaporttiIdx]).skipDuplicates()
   const raporttiComponentP = raporttiP.map(raportti => raportti && raportti.component)
 
   return Bacon.constant({
@@ -229,11 +224,12 @@ export const raportitContentP = () => {
           <OrganisaatioValitsin
             organisaatiotP={raporttiP.map(raportti => raportti ? raportti.organisaatiot : [])}
             selectedP={stateP.map(state => state.selectedOrganisaatio)}
-            onSelect={oid => selectedOrganisaatioOidE.push(oid)}
+            onSelect={org => selectedOrganisaatioOidE.push(org.oid)}
           />
-          {Bacon.combineWith(raporttiComponentP, stateP, (RC, state) => RC
-            ? <RC organisaatioP={stateP.map(state.selectedOrganisaatio)} />
-            : null)}
+          {raporttiComponentP.map(RC => RC
+            ? <RC organisaatioP={stateP.map(state => state.selectedOrganisaatio)} />
+            : null
+          )}
         </div>
       </div>
     ),
@@ -242,7 +238,7 @@ export const raportitContentP = () => {
 }
 
 const RaporttiValitsin = ({ raportitP, selectedP, onSelect }) => (
-  <div>
+  <div className="raportti-valitsin">
     {raportitP.map(raportit => raportit.length < 2 ? null : (
       <ul className="pills-container">
         {raportit.map((raportti, index) => (
@@ -263,42 +259,18 @@ const RaporttiValitsin = ({ raportitP, selectedP, onSelect }) => (
 )
 
 const OrganisaatioValitsin = ({ organisaatiotP, selectedP, onSelect }) => (
-  <div>
-    {organisaatiotP.map(organisaatiot => (
-      <ul className="pills-container">
-        {organisaatiot.map(organisaatio => (
-            <li
-              key={organisaatio.oid}
-              onClick={() => onSelect(organisaatio.oid)}
-              className={selectedP.map(selected => (selected && selected.oid === organisaatio.oid) ? 'pills-item pills-item-selected' : 'pills-item')}
-            >
-              {t(organisaatio.nimi)}
-            </li>
-        ))}
-      </ul>
-    ))}
+  <div className="organisaatio-valitsin">
+    <p><Text name="Valitse organisaatio" /></p>
+    <Dropdown
+      options={organisaatiotP}
+      keyValue={org => org.oid}
+      displayValue={org => t(org.nimi)}
+      onSelectionChanged={onSelect}
+      selected={selectedP}
+      enableFilter
+    />
   </div>
 )
-
-const Organisaatio = ({organisaatioP}) => {
-  // TODO: Siirrä selectableOrgTypesillä filtteröinti backendin puolelle ja poista tämä komponentti
-  const selectableOrgTypes = ['OPPILAITOS', 'OPPISOPIMUSTOIMIPISTE', 'KOULUTUSTOIMIJA', 'VARHAISKASVATUKSEN_TOIMIPAIKKA', 'OSTOPALVELUTAIPALVELUSETELI']
-  return (<label className='raportit-organisaatio'><Text name='Organisaatio'/>
-    {
-      organisaatioP.map(organisaatio => (
-        <OrganisaatioPicker
-          preselectSingleOption={true}
-          selectedOrg={{ oid: organisaatio && organisaatio.oid, nimi: organisaatio && organisaatio.nimi && t(organisaatio.nimi) }}
-          onSelectionChanged={org => organisaatioP.set({oid: org && org.oid, nimi: org && org.nimi})}
-          shouldShowOrg={org => !org.organisaatiotyypit.some(tyyppi => tyyppi === 'TOIMIPISTE')}
-          canSelectOrg={(org) => org.organisaatiotyypit.some(ot => selectableOrgTypes.includes(ot))}
-          clearText='tyhjennä'
-          noSelectionText='Valitse...'
-        />
-      ))
-    }
-  </label>)
-}
 
 function PaallekkaisetOpiskeluoikeudet({ organisaatioP }) {
   return (

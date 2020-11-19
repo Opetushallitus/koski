@@ -1,15 +1,13 @@
 import React from 'baret'
-import Text from '../i18n/Text'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import DateInput from '../date/DateInput'
 import {showError} from '../util/location'
 import {formatISODate} from '../date/date'
 import {generateRandomPassword} from '../util/password'
 import {downloadExcel} from './downloadExcel'
-import RaporttiDownloadButton from './RaporttiDownloadButton'
+import { LyhytKuvaus, PaivaValinta, RaportinLataus, Vinkit } from './raporttiComponents'
 
-export const RaporttiPaivalta = ({organisaatioP, apiEndpoint, title, description, example}) => {
+export const RaporttiPaivalta = ({organisaatioP, apiEndpoint, description, example}) => {
   const paivaAtom = Atom()
   const submitBus = Bacon.Bus()
 
@@ -27,15 +25,25 @@ export const RaporttiPaivalta = ({organisaatioP, apiEndpoint, title, description
   const inProgressP = submitBus.awaiting(downloadExcelE.mapError())
   const submitEnabledP = downloadExcelP.map(x => !!x).and(inProgressP.not())
 
-  return (<section>
-    <h2>{title}</h2>
-    <p>{description}</p>
-    <p>{example}</p>
-    <div className='parametri'>
-      <label><Text name='Päivä'/></label>
-      <DateInput value={paivaAtom.get()} valueCallback={(value) => paivaAtom.set(value)} validityCallback={(valid) => !valid && paivaAtom.set(undefined)} />
-    </div>
-    <div className='password'><Text name='Excel-tiedosto on suojattu salasanalla'/> {password}</div>
-    <RaporttiDownloadButton inProgressP={inProgressP} disabled={submitEnabledP.not()} onSubmit={e => { e.preventDefault(); submitBus.push(); return false }} />
-  </section>)
+  return (
+    <section>
+      <LyhytKuvaus>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam porttitor libero dictum sem rhoncus, at euismod ex finibus. Morbi tortor purus, vehicula ut purus eget, blandit laoreet eros. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Proin tellus ipsum, mattis non purus sed, mattis rutrum arcu.
+      </LyhytKuvaus>
+
+      <PaivaValinta paivaAtom={paivaAtom} />
+
+      <RaportinLataus
+        password={password}
+        inProgressP={inProgressP}
+        submitEnabledP={submitEnabledP}
+        submitBus={submitBus}
+      />
+
+      <Vinkit>
+        <p>{description}</p>
+        <p>{example}</p>
+      </Vinkit>
+    </section>
+  )
 }
