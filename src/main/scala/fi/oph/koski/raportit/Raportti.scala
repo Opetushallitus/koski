@@ -43,6 +43,8 @@ trait RaporttiRequest {
 trait RaporttiAikajaksoltaRequest extends RaporttiRequest {
   def alku: LocalDate
   def loppu: LocalDate
+  def auditlogHakuehto(raportti: String): String =
+    s"raportti=$raportti&oppilaitosOid=$oppilaitosOid&alku=$alku&loppu=$loppu"
 }
 
 case class AikajaksoRaporttiRequest

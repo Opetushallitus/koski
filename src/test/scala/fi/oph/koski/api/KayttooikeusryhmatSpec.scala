@@ -96,7 +96,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "voi hakea opiskeluoikeuksia kyselyrajapinnasta" in {
-      queryOppijat(user = user).map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].sukunimi) should equal(List("Markkanen-Fagerström"))
+      queryOppijat(user = user).map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].sukunimi) should equal(List("Markkanen-Fagerström", "Paallekkaisia"))
     }
 
     "ei voi muokata opiskeluoikeuksia muussa organisaatiossa" in {

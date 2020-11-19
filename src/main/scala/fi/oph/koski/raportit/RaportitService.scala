@@ -19,6 +19,18 @@ class RaportitService(application: KoskiApplication) {
   private val perusopetuksenOppijamäärätRaportti = PerusopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val perusopetuksenLisäopetuksenOppijamäärätRaportti = PerusopetuksenLisäopetusOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
 
+  def paallekkaisetOpiskeluoikeudet(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
+    val oidit = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toSeq
+    OppilaitosRaporttiResponse(
+      sheets = Seq(
+        PaallekkaisetOpiskeluoikeudet.datasheet(oidit, request.alku, request.loppu, raportointiDatabase)
+      ),
+      workbookSettings = WorkbookSettings("", Some(request.password)),
+      filename = s"paallekkaiset_opiskeluoikeudet_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
+      downloadToken = request.downloadToken
+    )
+  }
+
   def opiskelijaVuositiedot(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
     aikajaksoRaportti(request, AmmatillinenOpiskalijavuositiedotRaportti)
   }

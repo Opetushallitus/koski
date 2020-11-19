@@ -120,6 +120,7 @@ object MockOppijat {
   val lukioKurssikertymaRaportti_aineopiskelija_valmistunut = oppijat.oppija("Kurssikertyma", "Valmistunut Aineopiskelija", "140802A010A")
   val luvaOpiskelijamaaratRaportti_nuortenOppimaara = oppijat.oppija("Luva", "Nuorten", "300900A9818", kotikunta = Some("035"))
   val luvaOpiskelijamaaratRaportti_aikuistenOppimaara = oppijat.oppija("Luva", "Aikuisten", "300900A9774")
+  val paallekkaisiOpiskeluoikeuksia = oppijat.oppija("Paallekkaisia", "Pekka", "171100A9438")
 
   val virtaOppija = oppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.57060795845", sukunimi = "Virta", etunimet = "Veikko", kutsumanimi = "Veikko", hetu = Some("270191-4208"), syntymäaika = Some(LocalDate.of(1978, 3, 25)), äidinkieli = None, kansalaisuus = None))
   val virtaOppijaHetuton = oppijat.addOppija(OppijaHenkilöWithMasterInfo(

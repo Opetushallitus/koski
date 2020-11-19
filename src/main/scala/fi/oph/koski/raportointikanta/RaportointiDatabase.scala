@@ -9,6 +9,7 @@ import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{KoskiDatabaseConfig, KoskiDatabaseMethods}
 import fi.oph.koski.log.Logging
+import fi.oph.koski.raportit.PaallekkaisetOpiskeluoikeudet
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.util.DateOrdering.{sqlDateOrdering, sqlTimestampOrdering}
@@ -86,6 +87,15 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
 
   def createOpiskeluoikeusIndexes: Unit = {
     runDbSync(RaportointiDatabaseSchema.createOpiskeluoikeusIndexes(schema), timeout = 120.minutes)
+  }
+
+  def createMaterializedViews: Unit = {
+    logger.info("Creating materialized views")
+    runDbSync(DBIO.seq(
+      PaallekkaisetOpiskeluoikeudet.createMaterializedView,
+      PaallekkaisetOpiskeluoikeudet.createIndex
+    ), timeout = 10.minutes)
+    logger.info("Materialized views created")
   }
 
   def deleteOpiskeluoikeudet =
