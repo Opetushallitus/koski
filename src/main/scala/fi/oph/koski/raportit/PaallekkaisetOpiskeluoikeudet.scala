@@ -201,26 +201,30 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
 
   private def optional(str: String) = if (str == null) None else Some(str)
 
-  val columnSettings = Seq(
-    "oppijaOid" -> Column("oppijaOid", comment = Some("")),
-    "opiskeluoikeusOid" -> Column("opiskeluoikeusOid", comment = Some("")),
-    "oppilaitosNimi" -> Column("Oppilaitoksen nimi"),
-    "koulutusmuoto" -> Column("Koulutusmuoto"),
-    "alkamispaiva" -> Column("alkamispaiva", comment = Some("")),
-    "viimeisinTila" -> Column("viimeisinTila", comment = Some("")),
-    "rahoitusmuodot" -> Column("rahoitusmuodot"),
-    "rahoitusmuodotParametrienSisalla" -> Column("rahoitusmuodotParametrienSisalla"),
-    "paallekkainenOpiskeluoikeusOid" -> Column("paallekkainenOpiskeluoikeusOid", comment = Some("")),
-    "paallekkainenOppilaitosNimi" -> Column("paallekkainenOppilaitosNimi", comment = Some("")),
-    "paallekkainenKoulutusmuoto" -> Column("paallekkainenKoulutusmuoto", comment = Some("")),
-    "paallekkainenSuoritusTyyppi" -> Column("paallekkainenSuoritusTyyppi", comment = Some("")),
-    "paallekkainenViimeisinTila" -> Column("paallekkainenViimeisinTila", comment = Some("")),
-    "paallekkainenAlkamispaiva" -> Column("paallekkainenAlkamispaiva", comment = Some("")),
-    "paallekkainenAlkanutEka" -> Column("paallekkainenAlkanutEka", comment = Some("")),
-    "paallekkainenRahoitusmuodot" -> Column("paallekkainenRahoitusmuodot", comment = Some("")),
-    "paallekkainenRahoitusmuodotParametrienSisalla" -> Column("paallekkainenRahoitusmuodotParametrienSisalla", comment = Some("")),
-    "paallekkainenVoimassaParametrienSisalla" -> Column("paallekkainenVoimassaParametrienSisalla")
-  )
+  val columnSettings = Columns.flattenGroupingColumns(Seq(
+    "Opiskeluoikeus" -> GroupColumnsWithTitle(List(
+      "oppijaOid" -> Column("oppijaOid", comment = Some("")),
+      "opiskeluoikeusOid" -> Column("opiskeluoikeusOid", comment = Some("")),
+      "oppilaitosNimi" -> Column("Oppilaitoksen nimi"),
+      "koulutusmuoto" -> Column("Koulutusmuoto"),
+      "alkamispaiva" -> Column("alkamispaiva", comment = Some("")),
+      "viimeisinTila" -> Column("viimeisinTila", comment = Some("")),
+      "rahoitusmuodot" -> Column("rahoitusmuodot"),
+      "rahoitusmuodotParametrienSisalla" -> Column("rahoitusmuodotParametrienSisalla"),
+    )),
+    "Päällekkäinen opiskeluoikeus" -> GroupColumnsWithTitle(List(
+      "paallekkainenOpiskeluoikeusOid" -> Column("paallekkainenOpiskeluoikeusOid", comment = Some("")),
+      "paallekkainenOppilaitosNimi" -> Column("paallekkainenOppilaitosNimi", comment = Some("")),
+      "paallekkainenKoulutusmuoto" -> Column("paallekkainenKoulutusmuoto", comment = Some("")),
+      "paallekkainenSuoritusTyyppi" -> Column("paallekkainenSuoritusTyyppi", comment = Some("")),
+      "paallekkainenViimeisinTila" -> Column("paallekkainenViimeisinTila", comment = Some("")),
+      "paallekkainenAlkamispaiva" -> Column("paallekkainenAlkamispaiva", comment = Some("")),
+      "paallekkainenAlkanutEka" -> Column("paallekkainenAlkanutEka", comment = Some("")),
+      "paallekkainenRahoitusmuodot" -> Column("paallekkainenRahoitusmuodot", comment = Some("")),
+      "paallekkainenRahoitusmuodotParametrienSisalla" -> Column("paallekkainenRahoitusmuodotParametrienSisalla", comment = Some("")),
+      "paallekkainenVoimassaParametrienSisalla" -> Column("paallekkainenVoimassaParametrienSisalla")
+    ))
+  ))
 }
 
 case class PaallekkaisetOpiskeluoikeudetRow(
