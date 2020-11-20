@@ -75,3 +75,11 @@ export const RaportinLataus = ({
         <RaporttiDownloadButton inProgressP={inProgressP} disabled={submitEnabledP.not()} onSubmit={e => { e.preventDefault(); submitBus.push(); return false }} />
     </div>
 )
+
+export const filterOrgTreeByRaporttityyppi = (raporttityyppi, orgs) =>
+  (orgs || []).flatMap(org => {
+      const children = filterOrgTreeByRaporttityyppi(raporttityyppi, org.children)
+      return org.raportit.includes(raporttityyppi)
+          ? [{ ...org, children }]
+          : children
+  })

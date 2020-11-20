@@ -1,5 +1,4 @@
 import React from 'baret'
-import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import Bacon from 'baconjs'
 import Http from '../util/http'
@@ -9,7 +8,8 @@ import {AikajaksoRaporttiAikarajauksella, osasuoritusTypes} from './AikajaksoRap
 import {RaporttiPaivalta} from './RaporttiPaivalta'
 import {AikuistenPerusopetuksenRaportit} from './AikuistenPerusopetuksenRaportit'
 import {Tabs} from '../components/Tabs'
-import Dropdown from '../components/Dropdown'
+import { OrganisaatioDropdown } from './OrganisaatioDropdown'
+import {filterOrgTreeByRaporttityyppi} from './raporttiComponents'
 
 const kaikkiRaportitKategorioittain = [
   {
@@ -126,32 +126,55 @@ const kaikkiRaportitKategorioittain = [
         component: LuvaOpiskelijamaaratRaportti
       }
     ]
+  },
+  {
+    tab: 'Muut',
+    heading: 'Päällekkäiset opiskeluoikeudet',
+    raportit: [
+      {
+        id: 'paallekkaisetopiskeluoikeudet',
+        name: 'Päällekkäiset opiskeluoikeudet',
+        component: PaallekkaisetOpiskeluoikeudet,
+        visible: true,
+        guard: () => document.location.search.includes('tilastoraportit=true')
+      }
+    ]
   }
 ]
 
 const getEnrichedRaportitKategorioittain = (organisaatiot) =>
   kaikkiRaportitKategorioittain.map(tab => {
-    const visibleRaportit = tab.raportit.map(raportti => {
+    const raportit = tab.raportit.map(raportti => {
       const visibleOrganisaatiot = organisaatiot.filter(org => org.raportit.includes(raportti.id))
       return {
         ...raportti,
-        visible: visibleOrganisaatiot.length > 0,
+        visible: (raportti.visible === undefined ? visibleOrganisaatiot.length > 0 : raportti.visible) && (raportti.guard ? raportti.guard() : true),
         organisaatiot: visibleOrganisaatiot
       }
     })
 
     return {
       ...tab,
-      raportit: visibleRaportit,
-      visible: visibleRaportit.length > 0
+      raportit: raportit,
+      visible: raportit.filter(r => r.visible).length > 0
     }
   })
+
+const organiaatiotTreeIncludes = (organisaatiot, oid) =>
+  organisaatiot.some(org => org.oid === oid || organiaatiotTreeIncludes(org.children, oid))
+
+const preselectOrganisaatio = (raportti, selectedOrganisaatio) => {
+  const filteredOrganisaatiot = filterOrgTreeByRaporttityyppi(raportti.id, raportti.organisaatiot)
+  return organiaatiotTreeIncludes(filteredOrganisaatiot, selectedOrganisaatio.oid)
+          ? selectedOrganisaatio
+          : filteredOrganisaatiot[0]
+}
 
 export const raportitContentP = () => {
   const organisaatiotP = Http.cachedGet('/koski/api/raportit/organisaatiot-ja-raporttityypit')
   const selectedTabIdxE = new Bacon.Bus()
   const selectedRaporttiIdxE = new Bacon.Bus()
-  const selectedOrganisaatioOidE = new Bacon.Bus()
+  const selectedOrganisaatioE = new Bacon.Bus()
 
   const stateP = Bacon.update(
     {
@@ -163,38 +186,40 @@ export const raportitContentP = () => {
     },
     organisaatiotP.toEventStream(), (state, organisaatiot) => {
       const tabs = getEnrichedRaportitKategorioittain(organisaatiot)
-      const selectedTabIdx = tabs.findIndex(r => r.visible) || 0
+      const selectedTabIdx = tabs.findIndex(r => r.visible)
       const selectedRaporttiIdx = 0
 
       return {
         ...state,
         selectedTabIdx,
         selectedRaporttiIdx,
-        selectedOrganisaatio: tabs[selectedTabIdx].raportit[selectedRaporttiIdx].organisaatiot[0],
+        selectedOrganisaatio: selectedTabIdx >= 0
+          ? tabs[selectedTabIdx].raportit[selectedRaporttiIdx].organisaatiot[0]
+          : null,
         tabs,
         organisaatiot
       }
     },
     selectedTabIdxE.skipDuplicates(), (state, selectedTabIdx) => {
-      const organisaatiot = state.tabs[selectedTabIdx].raportit[0].organisaatiot
+      const tab = state.tabs[selectedTabIdx]
+      const selectedRaporttiIdx = tab.raportit.findIndex(r => r.visible)
       return {
         ...state,
         selectedTabIdx,
-        selectedRaporttiIdx: 0,
-        selectedOrganisaatio: organisaatiot.find(org => org.oid === state.selectedOrganisaatio.oid) || organisaatiot[0]
+        selectedRaporttiIdx,
+        selectedOrganisaatio: preselectOrganisaatio(tab.raportit[selectedRaporttiIdx], state.selectedOrganisaatio)
       }
     },
-    selectedRaporttiIdxE.skipDuplicates(), (state, selectedRaporttiIdx) => {
-      const organisaatiot = state.tabs[state.selectedTabIdx].raportit[selectedRaporttiIdx].organisaatiot
+    selectedRaporttiIdxE, (state, selectedRaporttiIdx) => {
       return {
         ...state,
         selectedRaporttiIdx,
-        selectedOrganisaatio: organisaatiot.find(org => org.oid === state.selectedOrganisaatio.oid) || organisaatiot[0]
+        selectedOrganisaatio: preselectOrganisaatio(state.tabs[state.selectedTabIdx].raportit[selectedRaporttiIdx], state.selectedOrganisaatio)
       }
     },
-    selectedOrganisaatioOidE.skipDuplicates(), (state, selectedOrganisaatioOid) => ({
+    selectedOrganisaatioE.skipDuplicates(), (state, selectedOrganisaatio) => ({
       ...state,
-      selectedOrganisaatio: state.organisaatiot.find(org => org.oid === selectedOrganisaatioOid)
+      selectedOrganisaatio
     })
   )
 
@@ -223,8 +248,9 @@ export const raportitContentP = () => {
           />
           <OrganisaatioValitsin
             organisaatiotP={raporttiP.map(raportti => raportti ? raportti.organisaatiot : [])}
+            raporttityyppiP={raporttiP.map(raportti => raportti ? raportti.id : null)}
             selectedP={stateP.map(state => state.selectedOrganisaatio)}
-            onSelect={org => selectedOrganisaatioOidE.push(org.oid)}
+            onSelect={org => selectedOrganisaatioE.push(org)}
           />
           {raporttiComponentP.map(RC => RC
             ? <RC organisaatioP={stateP.map(state => state.selectedOrganisaatio)} />
@@ -258,16 +284,13 @@ const RaporttiValitsin = ({ raportitP, selectedP, onSelect }) => (
   </div>
 )
 
-const OrganisaatioValitsin = ({ organisaatiotP, selectedP, onSelect }) => (
+const OrganisaatioValitsin = ({ organisaatiotP, raporttityyppiP, selectedP, onSelect }) => (
   <div className="organisaatio-valitsin">
-    <p><Text name="Valitse organisaatio" /></p>
-    <Dropdown
-      options={organisaatiotP}
-      keyValue={org => org.oid}
-      displayValue={org => t(org.nimi)}
-      onSelectionChanged={onSelect}
-      selected={selectedP}
-      enableFilter
+    <OrganisaatioDropdown
+      organisaatiotP={organisaatiotP}
+      raporttityyppiP={raporttityyppiP}
+      selectedP={selectedP}
+      onSelect={onSelect}
     />
   </div>
 )
