@@ -24,6 +24,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
         select
           opiskeluoikeus.oppija_oid,
           opiskeluoikeus.opiskeluoikeus_oid,
+          opiskeluoikeus.oppilaitos_nimi,
           opiskeluoikeus.alkamispaiva,
           opiskeluoikeus.viimeisin_tila,
           paallekkainen.opiskeluoikeus_oid paallekkainen_opiskeluoikeus_oid,
@@ -103,7 +104,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
           from r_paatason_suoritus
             where opiskeluoikeus_oid = paallekkainen_opiskeluoikeus_oid
             group by opiskeluoikeus_oid
-        ) paatason_suoritukset on paallekkainen_opiskeluoikeus_oid = paatason_suoritukset.opiskeluoikeus_oid;
+        ) paatason_suoritukset on paallekkainen_opiskeluoikeus_oid = paatason_suoritukset.opiskeluoikeus_oid
+      order by paallekkaiset_opiskeluoikeudet.oppilaitos_nimi
     """
 
   implicit private val getResult: GetResult[PaallekkaisetOpiskeluoikeudetRow] = GetResult(r => {
@@ -111,6 +113,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
     PaallekkaisetOpiskeluoikeudetRow(
       oppijaOid = rs.getString("oppija_oid"),
       opiskeluoikeusOid = rs.getString("opiskeluoikeus_oid"),
+      oppilaitosNimi = rs.getString("oppilaitos_nimi"),
       alkamispaiva = rs.getDate("alkamispaiva").toLocalDate,
       viimeisinTila = rs.getString("viimeisin_tila"),
       paallekkainenOpiskeluoikeusOid = rs.getString("paallekkainen_opiskeluoikeus_oid"),
@@ -169,6 +172,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
   val columnSettings = Seq(
     "oppijaOid" -> Column("oppijaOid", comment = Some("")),
     "opiskeluoikeusOid" -> Column("opiskeluoikeusOid", comment = Some("")),
+    "oppilaitosNimi" -> Column("Oppilaitoksen nimi"),
     "alkamispaiva" -> Column("alkamispaiva", comment = Some("")),
     "viimeisinTila" -> Column("viimeisinTila", comment = Some("")),
     "paallekkainenOpiskeluoikeusOid" -> Column("paallekkainenOpiskeluoikeusOid", comment = Some("")),
@@ -186,6 +190,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
 case class PaallekkaisetOpiskeluoikeudetRow(
   oppijaOid: String,
   opiskeluoikeusOid: String,
+  oppilaitosNimi: String,
   alkamispaiva: LocalDate,
   viimeisinTila: String,
   paallekkainenOpiskeluoikeusOid: String,
