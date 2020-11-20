@@ -42,6 +42,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
                and coalesce(paallekkainen.paattymispaiva, '9999-12-31'::date) >= opiskeluoikeus.alkamispaiva
                and paallekkainen.alkamispaiva <= coalesce(opiskeluoikeus.paattymispaiva, '9999-12-31'::date)
         ) paallekkainen on paallekkainen.oppija_oid = opiskeluoikeus.oppija_oid
+        where opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid is null
     """
 
   def createIndex =
