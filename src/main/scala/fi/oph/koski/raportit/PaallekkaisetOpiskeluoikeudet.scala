@@ -53,9 +53,11 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
     sql"""
       select
         paallekkaiset_opiskeluoikeudet.*,
+        rahoitusmuodot.koodiarvot rahoitusmuodot,
+        rahoitusmuodot_osuu_parametreille.koodiarvot rahoitusmuodot_osuu_parametreille,
         paallekkaiset_opiskeluoikeudet.paallekkainen_alkamispaiva < paallekkaiset_opiskeluoikeudet.alkamispaiva paallekkainen_alkanut_eka,
-        rahoitusmuodot.koodiarvot paallekkainen_rahoitusmuodot,
-        rahoitusmuodot_osuu_parametreille.koodiarvot paallekkainen_rahoitusmuodot_parametrien_sisalla,
+        paallekkainen_rahoitusmuodot.koodiarvot paallekkainen_rahoitusmuodot,
+        paallekkainen_rahoitusmuodot_osuu_parametreille.koodiarvot paallekkainen_rahoitusmuodot_parametrien_sisalla,
         haetun_opiskeluoikeuden_tilat_parametrien_sisalla.tilat haetun_tilat_parametrien_sisalla,
         paatason_suoritukset.tyyppi_ja_koodiarvo paallekkainen_paatason_suoritukset,
         paallekkainen_alkamispaiva <= $viimeistaan and paallekkainen_paattymispaiva >= $aikaisintaan paallekkainen_voimassa_aikajaksolla
@@ -75,9 +77,27 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
             opiskeluoikeus_oid,
             string_agg(opintojen_rahoitus, ',' order by alku) koodiarvot
           from r_opiskeluoikeus_aikajakso aikajakso
+            where opiskeluoikeus_oid = haetun_organisaation_opiskeluoikeudet.opiskeluoikeus_oid
+            group by opiskeluoikeus_oid
+        ) rahoitusmuodot on haetun_organisaation_opiskeluoikeudet.opiskeluoikeus_oid = rahoitusmuodot.opiskeluoikeus_oid
+        left join lateral (
+          select
+            opiskeluoikeus_oid,
+            string_agg(opintojen_rahoitus, ',' order by alku) koodiarvot
+          from r_opiskeluoikeus_aikajakso aikajakso
+            where opiskeluoikeus_oid = haetun_organisaation_opiskeluoikeudet.opiskeluoikeus_oid
+              and aikajakso.alku <= $viimeistaan
+              and aikajakso.loppu >= $aikaisintaan
+            group by opiskeluoikeus_oid
+        ) rahoitusmuodot_osuu_parametreille on haetun_organisaation_opiskeluoikeudet.opiskeluoikeus_oid = rahoitusmuodot_osuu_parametreille.opiskeluoikeus_oid
+        left join lateral (
+          select
+            opiskeluoikeus_oid,
+            string_agg(opintojen_rahoitus, ',' order by alku) koodiarvot
+          from r_opiskeluoikeus_aikajakso aikajakso
             where opiskeluoikeus_oid = paallekkainen_opiskeluoikeus_oid
             group by opiskeluoikeus_oid
-        ) rahoitusmuodot on paallekkainen_opiskeluoikeus_oid = rahoitusmuodot.opiskeluoikeus_oid
+        ) paallekkainen_rahoitusmuodot on paallekkainen_opiskeluoikeus_oid = paallekkainen_rahoitusmuodot.opiskeluoikeus_oid
         left join lateral (
           select
             opiskeluoikeus_oid,
@@ -87,7 +107,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
               and aikajakso.alku <= $viimeistaan
               and aikajakso.loppu >= $aikaisintaan
             group by opiskeluoikeus_oid
-        ) rahoitusmuodot_osuu_parametreille on paallekkainen_opiskeluoikeus_oid = rahoitusmuodot_osuu_parametreille.opiskeluoikeus_oid
+        ) paallekkainen_rahoitusmuodot_osuu_parametreille on paallekkainen_opiskeluoikeus_oid = paallekkainen_rahoitusmuodot_osuu_parametreille.opiskeluoikeus_oid
         join lateral (
           select
             opiskeluoikeus_oid,
@@ -117,6 +137,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       oppilaitosNimi = rs.getString("oppilaitos_nimi"),
       alkamispaiva = rs.getDate("alkamispaiva").toLocalDate,
       viimeisinTila = rs.getString("viimeisin_tila"),
+      rahoitusmuodot = optional(rs.getString("rahoitusmuodot")).map(removeConsecutiveDuplicates),
+      rahoitusmuodotParametrienSisalla = optional(rs.getString("rahoitusmuodot_osuu_parametreille")).map(removeConsecutiveDuplicates),
       paallekkainenOpiskeluoikeusOid = rs.getString("paallekkainen_opiskeluoikeus_oid"),
       paallekkainenOppilaitosNimi = rs.getString("paallekkainen_oppilaitos_nimi"),
       paallekkainenKoulutusmuoto = rs.getString("paallekkainen_koulutusmuoto"),
@@ -182,6 +204,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
     "oppilaitosNimi" -> Column("Oppilaitoksen nimi"),
     "alkamispaiva" -> Column("alkamispaiva", comment = Some("")),
     "viimeisinTila" -> Column("viimeisinTila", comment = Some("")),
+    "rahoitusmuodot" -> Column("rahoitusmuodot"),
+    "rahoitusmuodotParametrienSisalla" -> Column("rahoitusmuodotParametrienSisalla"),
     "paallekkainenOpiskeluoikeusOid" -> Column("paallekkainenOpiskeluoikeusOid", comment = Some("")),
     "paallekkainenOppilaitosNimi" -> Column("paallekkainenOppilaitosNimi", comment = Some("")),
     "paallekkainenKoulutusmuoto" -> Column("paallekkainenKoulutusmuoto", comment = Some("")),
@@ -201,6 +225,8 @@ case class PaallekkaisetOpiskeluoikeudetRow(
   oppilaitosNimi: String,
   alkamispaiva: LocalDate,
   viimeisinTila: String,
+  rahoitusmuodot: Option[String],
+  rahoitusmuodotParametrienSisalla: Option[String],
   paallekkainenOpiskeluoikeusOid: String,
   paallekkainenOppilaitosNimi: String,
   paallekkainenKoulutusmuoto: String,
