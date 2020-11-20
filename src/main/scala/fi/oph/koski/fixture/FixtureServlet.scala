@@ -23,7 +23,7 @@ class FixtureServlet(implicit val application: KoskiApplication) extends ApiServ
 
   post("/sync-perustiedot") {
     application.perustiedotSyncScheduler.sync
-    application.perustiedotIndexer.refreshIndex
+    application.perustiedotIndexer.index.refreshIndex()
     "ok"
   }
 }

@@ -7,13 +7,15 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedot.docId
 import fi.oph.koski.schema.Henkilö._
 import fi.oph.koski.util.Timing
 import org.json4s._
 import org.json4s.jackson.JsonMethods
-import rx.lang.scala.Observable
+
+import scala.concurrent.Future
 
 object PerustiedotIndexUpdater extends App with Timing {
   val perustiedotIndexer = KoskiApplication.apply.perustiedotIndexer
@@ -89,14 +91,22 @@ class OpiskeluoikeudenPerustiedotIndexer(
   elastic: ElasticSearch,
   opiskeluoikeusQueryService: OpiskeluoikeusQueryService,
   perustiedotSyncRepository: PerustiedotSyncRepository
-) extends ElasticSearchIndex(
-  config = config,
-  elastic = elastic,
-  name = "perustiedot",
-  mappingType = "perustiedot",
-  mapping = OpiskeluoikeudenPerustiedotIndexer.mapping,
-  settings = OpiskeluoikeudenPerustiedotIndexer.settings
-) {
+) extends Logging {
+
+  var index = new ElasticSearchIndex(
+    config = config,
+    elastic = elastic,
+    name = "perustiedot",
+    mappingType = "perustiedot",
+    mapping = OpiskeluoikeudenPerustiedotIndexer.mapping,
+    settings = OpiskeluoikeudenPerustiedotIndexer.settings
+  )
+
+  def init(): Future[Any] = {
+    index.init
+  }
+
+  def statistics(): OpiskeluoikeudenPerustiedotStatistics = OpiskeluoikeudenPerustiedotStatistics(index)
 
   def updatePerustiedot(items: Seq[OpiskeluoikeudenOsittaisetTiedot], upsert: Boolean): Either[HttpStatus, Int] = {
     updatePerustiedotRaw(items.map(OpiskeluoikeudenPerustiedot.serializePerustiedot), upsert)
@@ -106,7 +116,8 @@ class OpiskeluoikeudenPerustiedotIndexer(
     if (items.isEmpty) {
       return Right(0)
     }
-    val (errors, response) = updateBulk(generateUpdateJson(items, upsert))
+    val docsAndIds = generateUpdates(items)
+    val (errors, response) = index.updateBulk(docsAndIds, upsert)
     if (errors) {
       val failedOpiskeluoikeusIds: List[Int] = extract[List[JValue]](response \ "items" \ "update")
         .flatMap { item =>
@@ -129,8 +140,8 @@ class OpiskeluoikeudenPerustiedotIndexer(
     }
   }
 
-  private def generateUpdateJson(serializedItems: Seq[JValue], upsert: Boolean) = {
-    serializedItems.flatMap { (perustiedot: JValue) =>
+  private def generateUpdates(serializedItems: Seq[JValue]): Seq[(JValue, String)] = {
+    serializedItems.map { (perustiedot: JValue) =>
       val doc = perustiedot.asInstanceOf[JObject] match {
         case JObject(fields) => JObject(
           fields.filter {
@@ -140,19 +151,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
           }
         )
       }
-      List(
-        JObject(
-          "update" -> JObject(
-            "_id" -> (doc \ "id"),
-            "_index" -> JString(name),
-            "_type" -> JString(mappingType)
-          )
-        ),
-        JObject(
-          "doc_as_upsert" -> JBool(upsert),
-          "doc" -> doc
-        )
-      )
+      (doc, (doc \ "id").toString)
     }
   }
 
@@ -163,11 +162,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
           "should" -> Map(
             "terms" -> Map(
               "henkilö.oid" -> oids))))))
-    deleteByQuery(query)
-  }
-
-  override protected def reindex: Observable[Any] = {
-    indexAllDocuments
+    index.deleteByQuery(query)
   }
 
   def indexAllDocuments = {
@@ -207,6 +202,6 @@ class OpiskeluoikeudenPerustiedotIndexer(
   }
 
   def indexIsLarge: Boolean = {
-    OpiskeluoikeudenPerustiedotStatistics(this).statistics.opiskeluoikeuksienMäärä > 500
+    statistics().statistics.opiskeluoikeuksienMäärä > 500
   }
 }
