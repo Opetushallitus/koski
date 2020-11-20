@@ -4,11 +4,12 @@ import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
+import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample, ExampleData}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.raportointikanta.{ROsasuoritusRow, RaportointikantaTestMethods}
-import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, Koodistokoodiviite, SisältäväOpiskeluoikeus}
+import fi.oph.koski.schema._
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with OpiskeluoikeusTestMethodsAmmatillinen with BeforeAndAfterAll {
@@ -113,8 +114,129 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
         rivi.valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm should equal(1)
       }
     }
+
+    "Näyttötutkintoon valmistava koulutus" - {
+      "Näytetään erillinen rivi, jolla tutkintokoodi luetaan tutkintokentästä" in {
+        val rivit = testiHenkilöRaporttiRows(defaultRequest, MockOppijat.erikoisammattitutkinto.hetu.get)
+
+        rivit.length should equal(2)
+
+        rivit(0).opiskeluoikeudenAlkamispäivä should equal(Some(date(2012, 9, 1)))
+        rivit(0).koulutusmoduulit should equal("357305")
+        rivit(0).osaamisalat should equal(None)
+        rivit(0).tutkintonimikkeet should equal("")
+        rivit(0).päätasonSuorituksenNimi should equal("Näyttötutkintoon valmistava koulutus")
+        rivit(0).päätasonSuorituksenSuoritusTapa should equal("")
+        rivit(0).päätasonSuoritustenTilat should equal(Some("Valmis"))
+        rivit(0).viimeisinOpiskeluoikeudenTila should equal(Some("valmistunut"))
+        rivit(0).viimeisinOpiskeluoikeudenTilaAikajaksonLopussa should equal("lasna")
+        rivit(0).opintojenRahoitukset should equal("1")
+        rivit(0).ostettu should equal(false)
+
+        rivit(0).suoritettujenOpintojenYhteislaajuus should equal(0)
+
+        rivit(0).valmiitAmmatillisetTutkinnonOsatLkm should equal(0)
+        rivit(0).pakollisetAmmatillisetTutkinnonOsatLkm should equal(0)
+        rivit(0).valinnaisetAmmatillisetTutkinnonOsatLkm should equal(0)
+        rivit(0).näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm should equal(0)
+        rivit(0).tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm should equal(0)
+        rivit(0).rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm should equal(0)
+        rivit(0).suoritetutAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
+        rivit(0).pakollisetAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
+        rivit(0).valinnaisetAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
+
+        rivit(0).valmiitYhteistenTutkinnonOsatLkm should equal(0)
+        rivit(0).pakollisetYhteistenTutkinnonOsienOsaalueidenLkm should equal(0)
+        rivit(0).valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm should equal(0)
+        rivit(0).tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm should equal(0)
+        rivit(0).rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm should equal(0)
+        rivit(0).tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm should equal(0)
+        rivit(0).rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm should equal(0)
+        rivit(0).suoritettujenYhteistenTutkinnonOsienYhteislaajuus should equal(0)
+        rivit(0).suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal(0)
+        rivit(0).pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal(0)
+        rivit(0).valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus should equal(0)
+
+        rivit(0).valmiitVapaaValintaisetTutkinnonOsatLkm should equal(0)
+        rivit(0).valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm should equal(0)
+
+        rivit(1).opiskeluoikeudenAlkamispäivä should equal(Some(date(2012, 9, 1)))
+        rivit(1).koulutusmoduulit should equal("357305")
+        rivit(1).osaamisalat should equal(None)
+        rivit(1).tutkintonimikkeet should equal("")
+        rivit(1).päätasonSuorituksenNimi should equal("Autoalan työnjohdon erikoisammattitutkinto")
+        rivit(1).päätasonSuorituksenSuoritusTapa should equal("Näyttötutkinto")
+        rivit(1).päätasonSuoritustenTilat should equal(Some("Valmis"))
+        rivit(1).viimeisinOpiskeluoikeudenTila should equal(Some("valmistunut"))
+        rivit(1).viimeisinOpiskeluoikeudenTilaAikajaksonLopussa should equal("lasna")
+        rivit(1).opintojenRahoitukset should equal("1")
+        rivit(1).ostettu should equal(false)
+
+        rivit(1).suoritettujenOpintojenYhteislaajuus should equal(0)
+
+        rivit(1).valmiitAmmatillisetTutkinnonOsatLkm should equal(5)
+        rivit(1).pakollisetAmmatillisetTutkinnonOsatLkm should equal(5)
+        rivit(1).valinnaisetAmmatillisetTutkinnonOsatLkm should equal(0)
+        rivit(1).näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm should equal(0)
+        rivit(1).tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm should equal(0)
+        rivit(1).rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm should equal(0)
+        rivit(1).suoritetutAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
+        rivit(1).pakollisetAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
+        rivit(1).valinnaisetAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
+
+        rivit(1).valmiitYhteistenTutkinnonOsatLkm should equal(0)
+        rivit(1).pakollisetYhteistenTutkinnonOsienOsaalueidenLkm should equal(0)
+        rivit(1).valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm should equal(0)
+        rivit(1).tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm should equal(0)
+        rivit(1).rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm should equal(0)
+        rivit(1).tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm should equal(0)
+        rivit(1).rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm should equal(0)
+        rivit(1).suoritettujenYhteistenTutkinnonOsienYhteislaajuus should equal(0)
+        rivit(1).suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal(0)
+        rivit(1).pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal(0)
+        rivit(1).valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus should equal(0)
+
+        rivit(1).valmiitVapaaValintaisetTutkinnonOsatLkm should equal(0)
+        rivit(1).valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm should equal(0)
+      }
+
+      "Näytetään, vaikka pääsuoritus olisi sisältyvässä opiskeluoikeudessa" in {
+        withNewVäärinSiirrettyNäyttötutkintoonValmistavanSisällytettyOpiskeluoikeus {
+          val omnia = MockOrganisaatioRepository.findByOppilaitosnumero("10054").get
+
+          val rivit = testiHenkilöRaporttiRows(defaultRequest.copy(oppilaitosOid = omnia.oid), MockOppijat.erikoisammattitutkinto.hetu.get)
+
+          rivit.length should equal(2)
+
+          rivit(0).opiskeluoikeudenAlkamispäivä should equal(Some(date(2012, 9, 1)))
+          rivit(0).koulutusmoduulit should equal("357305")
+          rivit(0).osaamisalat should equal(None)
+          rivit(0).tutkintonimikkeet should equal("")
+          rivit(0).päätasonSuorituksenNimi should equal("Näyttötutkintoon valmistava koulutus")
+          rivit(0).päätasonSuorituksenSuoritusTapa should equal("")
+          rivit(0).päätasonSuoritustenTilat should equal(Some("Valmis"))
+          rivit(0).viimeisinOpiskeluoikeudenTila should equal(Some("valmistunut"))
+          rivit(0).viimeisinOpiskeluoikeudenTilaAikajaksonLopussa should equal("lasna")
+          rivit(0).opintojenRahoitukset should equal("1")
+          rivit(0).ostettu should equal(false)
+
+          rivit(1).opiskeluoikeudenAlkamispäivä should equal(Some(date(2012, 9, 1)))
+          rivit(1).koulutusmoduulit should equal("357305")
+          rivit(1).osaamisalat should equal(None)
+          rivit(1).tutkintonimikkeet should equal("")
+          rivit(1).päätasonSuorituksenNimi should equal("Autoalan työnjohdon erikoisammattitutkinto")
+          rivit(1).päätasonSuorituksenSuoritusTapa should equal("Näyttötutkinto")
+          rivit(1).päätasonSuoritustenTilat should equal(Some("Valmis"))
+          rivit(1).viimeisinOpiskeluoikeudenTila should equal(Some("valmistunut"))
+          rivit(1).viimeisinOpiskeluoikeudenTilaAikajaksonLopussa should equal("valmistunut")
+          rivit(1).opintojenRahoitukset should equal("1")
+          rivit(1).ostettu should equal(false)
+        }
+      }
+    }
+
     "Sisällytetyt opiskeluoikeudet" - {
-      "Opiskeluoikeuteen sisältyvät opiskeluioikeudet toistesta oppilaitoksesta" in {
+      "Opiskeluoikeuteen sisältyvät opiskeluoikeudet toisesta oppilaitoksesta" in {
         withNewSisällytettyOpiskeluoikeus {
           val aarnenRivit = testiHenkilöRaporttiRows(defaultRequest.copy(oppilaitosOid = MockOrganisaatiot.omnia))
           aarnenRivit.length should equal(2)
@@ -191,8 +313,8 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
     password = ""
   )
 
-  private def testiHenkilöRaporttiRows(request: AikajaksoRaporttiAikarajauksellaRequest): Seq[SuoritustiedotTarkistusRow] =
-    AmmatillinenTutkintoRaportti.buildRaportti(request, repository).filter(_.hetu.contains(defaultHetu)).toList
+  private def testiHenkilöRaporttiRows(request: AikajaksoRaporttiAikarajauksellaRequest, hetu: String = defaultHetu): Seq[SuoritustiedotTarkistusRow] =
+    AmmatillinenTutkintoRaportti.buildRaportti(request, repository).filter(_.hetu.contains(hetu)).toList
 
   private def withNewSisällytettyOpiskeluoikeus(f: => Unit) = {
     resetFixtures
@@ -204,6 +326,50 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
 
     val stadinOpiskeluoikeus = getOpiskeluoikeudet(oppija.oid).find(_.oppilaitos.map(_.oid).contains(MockOrganisaatiot.stadinAmmattiopisto)).map{case oo: AmmatillinenOpiskeluoikeus => oo}.get
     val omnianOpiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.ammattilainen.oid).oid.get
+
+    putOpiskeluoikeus(sisällytäOpiskeluoikeus(stadinOpiskeluoikeus, SisältäväOpiskeluoikeus(omnia, omnianOpiskeluoikeusOid)), oppija){}
+    loadRaportointikantaFixtures
+    (f)
+  }
+
+  private def withNewVäärinSiirrettyNäyttötutkintoonValmistavanSisällytettyOpiskeluoikeus(f: => Unit) = {
+    // Stadin opiskeluoikeus (jossa päätutkinto) sisältyy omnian opiskeluoikeuteen (jossa pelkkä näyttötutkintoon valmistava)
+    resetFixtures
+    val omnia = MockOrganisaatioRepository.findByOppilaitosnumero("10054").get
+
+    val omnianOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
+      arvioituPäättymispäivä = Some(date(2015, 5, 31)),
+      tila = AmmatillinenOpiskeluoikeudenTila(List(
+        AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), ExampleData.opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+        AmmatillinenOpiskeluoikeusjakso(date(2016, 5, 31), ExampleData.opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
+      )),
+      oppilaitos = Some(omnia),
+      suoritukset = List(
+        AmmattitutkintoExample.näyttötutkintoonValmistavanKoulutuksenSuoritus
+      )
+    )
+
+    val oppija = MockOppijat.erikoisammattitutkinto
+
+    putOpiskeluoikeus(omnianOpiskeluoikeus, oppija){}
+
+    val stadinOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
+      arvioituPäättymispäivä = Some(date(2015, 5, 31)),
+      tila = AmmatillinenOpiskeluoikeudenTila(List(
+        AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), ExampleData.opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+        AmmatillinenOpiskeluoikeusjakso(date(2016, 5, 31), ExampleData.opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
+      )),
+      oppilaitos = Some(AmmatillinenExampleData.stadinAmmattiopisto),
+      suoritukset = List(
+        AmmattitutkintoExample.ammatillisenTutkinnonSuoritus.copy(osasuoritukset = Some(List(
+          AmmatillinenExampleData.tutkinnonOsanSuoritus("104054", "Työnsuunnittelu ja organisointi", None, AmmatillinenExampleData.hyväksytty),
+          AmmatillinenExampleData.tutkinnonOsanSuoritus("104055", "Taloudellinen toiminta", None, AmmatillinenExampleData.hyväksytty),
+          AmmatillinenExampleData.tutkinnonOsanSuoritus("104059", "Yrittäjyys", None, AmmatillinenExampleData.hyväksytty)
+        )))
+      )
+    )
+
+    val omnianOpiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.erikoisammattitutkinto.oid).oid.get
 
     putOpiskeluoikeus(sisällytäOpiskeluoikeus(stadinOpiskeluoikeus, SisältäväOpiskeluoikeus(omnia, omnianOpiskeluoikeusOid)), oppija){}
     loadRaportointikantaFixtures

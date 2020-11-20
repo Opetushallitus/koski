@@ -18,10 +18,10 @@ object AmmatillinenOsittainenRaportti {
     data.map(buildRow(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus))
   }
 
-  private def buildRow(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, osasuoritustenAikarajaus: Boolean)(data: (ROpiskeluoikeusRow, RHenkilöRow, Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])) = {
-    val (opiskeluoikeus, henkilö, aikajaksot, päätasonSuoritukset, sisältyvätOpiskeluoikeudet, unFilteredosasuoritukset) = data
+  private def buildRow(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, osasuoritustenAikarajaus: Boolean)(data: (ROpiskeluoikeusRow, RHenkilöRow, Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])) = {
+    val (opiskeluoikeus, henkilö, aikajaksot, päätasonSuoritus, sisältyvätOpiskeluoikeudet, unFilteredosasuoritukset) = data
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
-    val osaamisalat = extractOsaamisalatAikavalilta(päätasonSuoritukset, alku, loppu)
+    val osaamisalat = extractOsaamisalatAikavalilta(List(päätasonSuoritus), alku, loppu)
 
     val osasuoritukset = if (osasuoritustenAikarajaus) unFilteredosasuoritukset.filter(arvioituAikavälillä(alku, loppu)) else unFilteredosasuoritukset
 
@@ -41,18 +41,22 @@ object AmmatillinenOsittainenRaportti {
       sisältyvätOpiskeluoikeudetOppilaitokset = sisältyvätOpiskeluoikeudet.map(_.oppilaitosNimi).mkString(","),
       linkitetynOpiskeluoikeudenOppilaitos = if (opiskeluoikeus.oppilaitosOid != oppilaitosOid) opiskeluoikeus.oppilaitosNimi else "",
       aikaleima = opiskeluoikeus.aikaleima.toLocalDateTime.toLocalDate,
-      toimipisteOidit = päätasonSuoritukset.map(_.toimipisteOid).sorted.distinct.mkString(","),
+      toimipisteOidit = päätasonSuoritus.toimipisteOid,
       yksiloity = henkilö.yksiloity,
       oppijaOid = opiskeluoikeus.oppijaOid,
       hetu = henkilö.hetu,
       sukunimi = henkilö.sukunimi,
       etunimet = henkilö.etunimet,
-      koulutusmoduulit = päätasonSuoritukset.map(_.koulutusmoduuliKoodiarvo).sorted.mkString(","),
+      koulutusmoduulit = if (päätasonSuoritus.suorituksenTyyppi == "nayttotutkintoonvalmistavakoulutus") {
+        JsonSerializer.extract[String](päätasonSuoritus.data \ "tutkinto" \ "tunniste" \ "koodiarvo")
+      } else {
+        päätasonSuoritus.koulutusmoduuliKoodiarvo
+      },
       osaamisalat = if (osaamisalat.isEmpty) None else Some(osaamisalat.mkString(",")),
-      tutkintonimikkeet = päätasonSuoritukset.flatMap(tutkintonimike(_)).mkString(","),
-      päätasonSuorituksenNimi = päätasonSuoritukset.flatMap(_.koulutusmoduuliNimi).mkString(","),
-      päätasonSuorituksenSuoritustapa = suoritusTavat(päätasonSuoritukset),
-      päätasonSuoritustenTilat = Some(päätasonSuoritustenTilat(päätasonSuoritukset)),
+      tutkintonimikkeet = tutkintonimike(päätasonSuoritus).getOrElse(""),
+      päätasonSuorituksenNimi = päätasonSuoritus.koulutusmoduuliNimi.getOrElse(""),
+      päätasonSuorituksenSuoritustapa = suoritusTavat(List(päätasonSuoritus)),
+      päätasonSuoritustenTilat = Some(päätasonSuoritustenTilat(List(päätasonSuoritus))),
       opiskeluoikeudenAlkamispäivä = opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
       viimeisinOpiskeluoikeudenTila = opiskeluoikeus.viimeisinTila,
       viimeisinOpiskeluoikeudenTilaAikajaksonLopussa = aikajaksot.last.tila,

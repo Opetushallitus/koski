@@ -39,6 +39,12 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
         rows.map(_.suoritettujenOpintojenYhteislaajuus) should equal(List(91))
       }
     }
+
+    "Ei näytetä riviä näyttötutkintoon valmistavalle koulutukselle, jos sen parina oleva pääsuoritus ei ole osittainen" in {
+      val rivit = testiHenkilöRaporttiRows(alku = date(2016, 1, 1), loppu = date(2016, 5, 30), osasuoritustenAikarajaus = false, hetu = MockOppijat.erikoisammattitutkinto.hetu.get)
+
+      rivit.length should equal(0)
+    }
   }
 
   val defaultExpectedRow = AmmatillinenOsittainRaporttiRow(
@@ -88,8 +94,7 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
     valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm = 0
   )
 
-  private val hetu = defaultTestiHenkilö.hetu.get
-  private def testiHenkilöRaporttiRows(alku: LocalDate, loppu: LocalDate, osasuoritustenAikarajaus: Boolean) = {
+  private def testiHenkilöRaporttiRows(alku: LocalDate, loppu: LocalDate, osasuoritustenAikarajaus: Boolean, hetu:String = defaultTestiHenkilö.hetu.get) = {
     val request = AikajaksoRaporttiAikarajauksellaRequest(MockOrganisaatiot.stadinAmmattiopisto, None, "", alku, loppu, osasuoritustenAikarajaus)
     AmmatillinenOsittainenRaportti.buildRaportti(request, repository).filter(_.hetu.contains(hetu)).toList
   }

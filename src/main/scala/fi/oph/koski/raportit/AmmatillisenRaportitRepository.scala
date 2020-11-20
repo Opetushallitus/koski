@@ -22,13 +22,21 @@ case class AmmatillisenRaportitRepository(db: DB) extends KoskiDatabaseMethods w
   private type OppijaOid = String
 
   def suoritustiedot(oppilaitos: Organisaatio.Oid, koulutusmuoto: String, suorituksenTyyppi: String, alku: LocalDate, loppu: LocalDate) = {
-    val opiskeluoikeusAikajaksotPäätasonSuoritukset = opiskeluoikeusAikajaksotPäätasonSuorituksetQuery(oppilaitos, koulutusmuoto, suorituksenTyyppi, alku, loppu)
-    val masterOpiskeluoikeusOids = opiskeluoikeusAikajaksotPäätasonSuoritukset.map(_._1)
+    val opiskeluoikeusAikajaksotVarsinaisetPäätasonSuoritukset = opiskeluoikeusAikajaksotPäätasonSuorituksetQuery(oppilaitos, koulutusmuoto, suorituksenTyyppi, alku, loppu)
+    val opiskeluoikeusAikajaksotNäyttötutkintoonValmistavatPäätasonSuoritukset = opiskeluoikeusAikajaksotPäätasonSuorituksetQuery(oppilaitos, koulutusmuoto, "nayttotutkintoonvalmistavakoulutus", alku, loppu)
+    val masterOpiskeluoikeusOids = opiskeluoikeusAikajaksotVarsinaisetPäätasonSuoritukset.union(opiskeluoikeusAikajaksotNäyttötutkintoonValmistavatPäätasonSuoritukset).map(_._1)
 
     val sisältyvätOpiskeluoikeusAikajaksotPäätasonSuoritukset = sisältyvätOpiskeluoikeusAikajaksotPäätasonSuorituksetQuery(masterOpiskeluoikeusOids)
     val sisältyvätOpiskeluoikeusOids = sisältyvätOpiskeluoikeusAikajaksotPäätasonSuoritukset.map(_._1)
     val sisältyvätOpiskeluoikeudet = runDbSync(ROpiskeluoikeudet.filter(_.opiskeluoikeusOid inSet sisältyvätOpiskeluoikeusOids).result, timeout = defaultTimeout)
     val sisältyvätOpiskeluoikeudetGrouped = sisältyvätOpiskeluoikeudet.groupBy(_.sisältyyOpiskeluoikeuteenOid.get)
+
+    val opiskeluoikeusAikajaksotNäyttötutkintoonValmistavatPäätasonSuorituksetJoillaPariPäätasonSuorituksissaTaiSisältyvissäOpiskeluoikeuksissa =
+      opiskeluoikeusAikajaksotNäyttötutkintoonValmistavatPäätasonSuoritukset.filter(nvp => {
+        opiskeluoikeusAikajaksotVarsinaisetPäätasonSuoritukset.exists(_._1 == nvp._1) || sisältyvätOpiskeluoikeudetGrouped.contains(nvp._1)
+      }
+    )
+    val opiskeluoikeusAikajaksotPäätasonSuoritukset = opiskeluoikeusAikajaksotVarsinaisetPäätasonSuoritukset.union(opiskeluoikeusAikajaksotNäyttötutkintoonValmistavatPäätasonSuorituksetJoillaPariPäätasonSuorituksissaTaiSisältyvissäOpiskeluoikeuksissa)
 
     val päätasonSuoritusIds = opiskeluoikeusAikajaksotPäätasonSuoritukset.flatMap(_._2).union(sisältyvätOpiskeluoikeusAikajaksotPäätasonSuoritukset.flatMap(_._2))
     val aikajaksoIds = opiskeluoikeusAikajaksotPäätasonSuoritukset.flatMap(_._3).union(sisältyvätOpiskeluoikeusAikajaksotPäätasonSuoritukset.flatMap(_._3))
@@ -45,7 +53,7 @@ case class AmmatillisenRaportitRepository(db: DB) extends KoskiDatabaseMethods w
           opiskeluoikeus,
           henkilöt(opiskeluoikeus.oppijaOid),
           aikajaksot.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty).map(_.truncateToDates(alku, loppu)).sortBy(_.alku)(sqlDateOrdering),
-          päätasonSuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty),
+          päätasonSuoritus,
           sisältyvätOpiskeluoikeudetGrouped.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty),
           osasuoritukset.getOrElse(päätasonSuoritus.päätasonSuoritusId, Seq.empty)
         )
