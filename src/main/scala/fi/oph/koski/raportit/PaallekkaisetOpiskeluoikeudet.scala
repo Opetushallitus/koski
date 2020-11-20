@@ -31,7 +31,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
           paallekkainen.oppilaitos_nimi    paallekkainen_oppilaitos_nimi,
           paallekkainen.koulutusmuoto      paallekkainen_koulutusmuoto,
           paallekkainen.viimeisin_tila     paallekkainen_viimeisin_tila,
-          paallekkainen.alkamispaiva       paallekkainen_alkamispaiva
+          paallekkainen.alkamispaiva       paallekkainen_alkamispaiva,
+          paallekkainen.paattymispaiva     paallekkainen_paattymispaiva
       from r_opiskeluoikeus opiskeluoikeus
         join lateral (
           select *
@@ -56,7 +57,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
         rahoitusmuodot.koodiarvot paallekkainen_rahoitusmuodot,
         rahoitusmuodot_osuu_parametreille.koodiarvot paallekkainen_rahoitusmuodot_parametrien_sisalla,
         haetun_opiskeluoikeuden_tilat_parametrien_sisalla.tilat haetun_tilat_parametrien_sisalla,
-        paatason_suoritukset.tyyppi_ja_koodiarvo paallekkainen_paatason_suoritukset
+        paatason_suoritukset.tyyppi_ja_koodiarvo paallekkainen_paatason_suoritukset,
+        paallekkainen_alkamispaiva <= $viimeistaan and paallekkainen_paattymispaiva >= $aikaisintaan paallekkainen_voimassa_aikajaksolla
       from (
         select
           distinct r_opiskeluoikeus.opiskeluoikeus_oid
@@ -123,7 +125,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       paallekkainenAlkamispaiva = rs.getDate("paallekkainen_alkamispaiva").toLocalDate,
       paallekkainenAlkanutEka = rs.getBoolean("paallekkainen_alkanut_eka"),
       paallekkainenRahoitusmuodot = optional(rs.getString("paallekkainen_rahoitusmuodot")).map(removeConsecutiveDuplicates),
-      paallekkainenRahoitusmuodotParametrienSisalla = optional(rs.getString("paallekkainen_rahoitusmuodot_parametrien_sisalla")).map(removeConsecutiveDuplicates)
+      paallekkainenRahoitusmuodotParametrienSisalla = optional(rs.getString("paallekkainen_rahoitusmuodot_parametrien_sisalla")).map(removeConsecutiveDuplicates),
+      paallekkainenVoimassaParametrienSisalla = rs.getBoolean("paallekkainen_voimassa_aikajaksolla")
     )
   })
 
@@ -187,7 +190,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
     "paallekkainenAlkamispaiva" -> Column("paallekkainenAlkamispaiva", comment = Some("")),
     "paallekkainenAlkanutEka" -> Column("paallekkainenAlkanutEka", comment = Some("")),
     "paallekkainenRahoitusmuodot" -> Column("paallekkainenRahoitusmuodot", comment = Some("")),
-    "paallekkainenRahoitusmuodotParametrienSisalla" -> Column("paallekkainenRahoitusmuodotParametrienSisalla", comment = Some(""))
+    "paallekkainenRahoitusmuodotParametrienSisalla" -> Column("paallekkainenRahoitusmuodotParametrienSisalla", comment = Some("")),
+    "paallekkainenVoimassaParametrienSisalla" -> Column("paallekkainenVoimassaParametrienSisalla")
   )
 }
 
@@ -205,5 +209,6 @@ case class PaallekkaisetOpiskeluoikeudetRow(
   paallekkainenAlkamispaiva: LocalDate,
   paallekkainenAlkanutEka: Boolean,
   paallekkainenRahoitusmuodot: Option[String],
-  paallekkainenRahoitusmuodotParametrienSisalla: Option[String]
+  paallekkainenRahoitusmuodotParametrienSisalla: Option[String],
+  paallekkainenVoimassaParametrienSisalla: Boolean
 )

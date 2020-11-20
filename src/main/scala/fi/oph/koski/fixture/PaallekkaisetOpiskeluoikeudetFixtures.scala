@@ -40,11 +40,11 @@ object PaallekkaisetOpiskeluoikeudetFixtures {
   val viimeinenOpiskeluoikeus = AmmatillinenExampleData.opiskeluoikeus().copy(
     oppilaitos = Some(Oppilaitos(MockOrganisaatiot.omnia)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(
-      AmmatillinenOpiskeluoikeusjakso(date(2020, 11, 11), ExampleData.opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+      AmmatillinenOpiskeluoikeusjakso(date(2020, 12, 31), ExampleData.opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
     )),
     suoritukset = List(
       AmmatillinenExampleData.ympäristöalanPerustutkintoValmis().copy(
-        alkamispäivä = Some(date(2020, 11, 11)),
+        alkamispäivä = Some(date(2020, 12, 31)),
         vahvistus = None
       )
     ),

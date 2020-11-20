@@ -75,12 +75,19 @@ class PaallekkaisetOpiskeluoikeudetSpec extends FreeSpec with RaportointikantaTe
       ))
       pekanRivit(keskuksenRaportti).map(withOppilaitos(_.paallekkainenRahoitusmuodotParametrienSisalla)) should contain theSameElementsAs(Seq(
         ("Stadin ammatti- ja aikuisopisto", Some("1")),
-        ("Omnia", Some("1"))
+        ("Omnia", None)
       ))
     }
     "Päällekkäinen opiskeluoikeus alkanut aikasemmin" in {
       pekanRivit(stadinRaportti).map(_.paallekkainenAlkanutEka) shouldBe(Seq(false))
       pekanRivit(keskuksenRaportti).map(withOppilaitos(_.paallekkainenAlkanutEka)) should contain theSameElementsAs(Seq(
+        ("Stadin ammatti- ja aikuisopisto", true),
+        ("Omnia", false)
+      ))
+    }
+
+    "Päällekkäinen opiskeluoikeus voimassa raportille valitun aikajakson sisällä" in {
+      pekanRivit(keskuksenRaportti).map(withOppilaitos(_.paallekkainenVoimassaParametrienSisalla)) should contain theSameElementsAs(Seq(
         ("Stadin ammatti- ja aikuisopisto", true),
         ("Omnia", false)
       ))
