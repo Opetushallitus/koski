@@ -65,17 +65,17 @@ class PaallekkaisetOpiskeluoikeudetSpec extends FreeSpec with RaportointikantaTe
         ("Omnia","Ammatillisen tutkinnon suoritus")
       ))
     }
-    "Päällekkäisen opiskeluoikeuden valtionosuusrahoitteiset jaksot" in {
-      pekanRivit(stadinRaportti).map(_.paallekkaisellaVOSJaksoja) shouldBe(Seq(true))
-      pekanRivit(stadinRaportti).map(_.paallekkaisellaVOSJaksojaParametrienSisalla) shouldBe(Seq(false))
+    "Päällekkäisen opiskeluoikeuden rahoitusmuodot, luotellaan ilman peräkkäisiä duplikaatteja" in {
+      pekanRivit(stadinRaportti).map(_.paallekkainenRahoitusmuodot) shouldBe(Seq(Some("6,1")))
+      pekanRivit(stadinRaportti).map(_.paallekkainenRahoitusmuodotParametrienSisalla) shouldBe(Seq(Some("6")))
 
-      pekanRivit(keskuksenRaportti).map(withOppilaitos(_.paallekkaisellaVOSJaksoja)) should contain theSameElementsAs(Seq(
-        ("Stadin ammatti- ja aikuisopisto", true),
-        ("Omnia", true)
+      pekanRivit(keskuksenRaportti).map(withOppilaitos(_.paallekkainenRahoitusmuodot)) should contain theSameElementsAs(Seq(
+        ("Stadin ammatti- ja aikuisopisto", Some("1")),
+        ("Omnia", Some("1"))
       ))
-      pekanRivit(keskuksenRaportti).map(withOppilaitos(_.paallekkaisellaVOSJaksojaParametrienSisalla)) should contain theSameElementsAs(Seq(
-        ("Stadin ammatti- ja aikuisopisto", true),
-        ("Omnia", true)
+      pekanRivit(keskuksenRaportti).map(withOppilaitos(_.paallekkainenRahoitusmuodotParametrienSisalla)) should contain theSameElementsAs(Seq(
+        ("Stadin ammatti- ja aikuisopisto", Some("1")),
+        ("Omnia", Some("1"))
       ))
     }
     "Päällekkäinen opiskeluoikeus alkanut aikasemmin" in {

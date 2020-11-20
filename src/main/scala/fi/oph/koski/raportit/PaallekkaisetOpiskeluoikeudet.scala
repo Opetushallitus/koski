@@ -53,8 +53,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       select
         paallekkaiset_opiskeluoikeudet.*,
         paallekkaiset_opiskeluoikeudet.paallekkainen_alkamispaiva < paallekkaiset_opiskeluoikeudet.alkamispaiva paallekkainen_alkanut_eka,
-        vos_rahoitus.onko_jaksoja paallekkaisella_vos_jaksoja,
-        vos_rahoitus_osuu_parametreille.onko_jaksoja paallekkaisella_vos_jaksoja_parametrien_sisalla,
+        rahoitusmuodot.koodiarvot paallekkainen_rahoitusmuodot,
+        rahoitusmuodot_osuu_parametreille.koodiarvot paallekkainen_rahoitusmuodot_parametrien_sisalla,
         haetun_opiskeluoikeuden_tilat_parametrien_sisalla.tilat haetun_tilat_parametrien_sisalla,
         paatason_suoritukset.tyyppi_ja_koodiarvo paallekkainen_paatason_suoritukset
       from (
@@ -71,23 +71,21 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
         left join lateral (
           select
             opiskeluoikeus_oid,
-            true onko_jaksoja
+            string_agg(opintojen_rahoitus, ',' order by alku) koodiarvot
           from r_opiskeluoikeus_aikajakso aikajakso
-            where opintojen_rahoitus = '1'
-              and opiskeluoikeus_oid = paallekkainen_opiskeluoikeus_oid
+            where opiskeluoikeus_oid = paallekkainen_opiskeluoikeus_oid
             group by opiskeluoikeus_oid
-        ) vos_rahoitus on paallekkainen_opiskeluoikeus_oid = vos_rahoitus.opiskeluoikeus_oid
+        ) rahoitusmuodot on paallekkainen_opiskeluoikeus_oid = rahoitusmuodot.opiskeluoikeus_oid
         left join lateral (
           select
             opiskeluoikeus_oid,
-            true onko_jaksoja
+            string_agg(opintojen_rahoitus, ',' order by alku) koodiarvot
           from r_opiskeluoikeus_aikajakso aikajakso
-            where opintojen_rahoitus = '1'
-              and opiskeluoikeus_oid = paallekkainen_opiskeluoikeus_oid
+            where opiskeluoikeus_oid = paallekkainen_opiskeluoikeus_oid
               and aikajakso.alku <= $viimeistaan
               and aikajakso.loppu >= $aikaisintaan
             group by opiskeluoikeus_oid
-        ) vos_rahoitus_osuu_parametreille on paallekkainen_opiskeluoikeus_oid = vos_rahoitus_osuu_parametreille.opiskeluoikeus_oid
+        ) rahoitusmuodot_osuu_parametreille on paallekkainen_opiskeluoikeus_oid = rahoitusmuodot_osuu_parametreille.opiskeluoikeus_oid
         join lateral (
           select
             opiskeluoikeus_oid,
@@ -124,8 +122,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       paallekkainenViimeisinTila = rs.getString("paallekkainen_viimeisin_tila"),
       paallekkainenAlkamispaiva = rs.getDate("paallekkainen_alkamispaiva").toLocalDate,
       paallekkainenAlkanutEka = rs.getBoolean("paallekkainen_alkanut_eka"),
-      paallekkaisellaVOSJaksoja = rs.getBoolean("paallekkaisella_vos_jaksoja"),
-      paallekkaisellaVOSJaksojaParametrienSisalla = rs.getBoolean("paallekkaisella_vos_jaksoja_parametrien_sisalla")
+      paallekkainenRahoitusmuodot = optional(rs.getString("paallekkainen_rahoitusmuodot")).map(removeConsecutiveDuplicates),
+      paallekkainenRahoitusmuodotParametrienSisalla = optional(rs.getString("paallekkainen_rahoitusmuodot_parametrien_sisalla")).map(removeConsecutiveDuplicates)
     )
   })
 
@@ -170,6 +168,11 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
     nimi
   }
 
+  private def removeConsecutiveDuplicates(str: String) =
+    str.split(",").foldRight(List.empty[String])((current, result) => if (result.headOption.contains(current)) result else current :: result).mkString(",")
+
+  private def optional(str: String) = if (str == null) None else Some(str)
+
   val columnSettings = Seq(
     "oppijaOid" -> Column("oppijaOid", comment = Some("")),
     "opiskeluoikeusOid" -> Column("opiskeluoikeusOid", comment = Some("")),
@@ -183,8 +186,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
     "paallekkainenViimeisinTila" -> Column("paallekkainenViimeisinTila", comment = Some("")),
     "paallekkainenAlkamispaiva" -> Column("paallekkainenAlkamispaiva", comment = Some("")),
     "paallekkainenAlkanutEka" -> Column("paallekkainenAlkanutEka", comment = Some("")),
-    "paallekkaisellaVOSJaksoja" -> Column("paallekkaisellaVOSJaksoja", comment = Some("")),
-    "paallekkaisellaVOSJaksojaParametrienSisalla" -> Column("paallekkaisellaVOSJaksojaParametrienSisalla", comment = Some(""))
+    "paallekkainenRahoitusmuodot" -> Column("paallekkainenRahoitusmuodot", comment = Some("")),
+    "paallekkainenRahoitusmuodotParametrienSisalla" -> Column("paallekkainenRahoitusmuodotParametrienSisalla", comment = Some(""))
   )
 }
 
@@ -201,6 +204,6 @@ case class PaallekkaisetOpiskeluoikeudetRow(
   paallekkainenViimeisinTila: String,
   paallekkainenAlkamispaiva: LocalDate,
   paallekkainenAlkanutEka: Boolean,
-  paallekkaisellaVOSJaksoja: Boolean,
-  paallekkaisellaVOSJaksojaParametrienSisalla: Boolean
+  paallekkainenRahoitusmuodot: Option[String],
+  paallekkainenRahoitusmuodotParametrienSisalla: Option[String]
 )
