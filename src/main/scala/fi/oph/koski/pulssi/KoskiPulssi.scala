@@ -2,11 +2,11 @@ package fi.oph.koski.pulssi
 
 import fi.oph.koski.cache._
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.userdirectory.KäyttöoikeusServiceClient
 import fi.oph.koski.http.Http
 import fi.oph.koski.koskiuser.MockUsers
-import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotStatistics, OpiskeluoikeusTilasto}
-import fi.oph.koski.tiedonsiirto.{TiedonsiirtoStatistics, TiedonsiirtoTilasto}
+import fi.oph.koski.perustiedot.OpiskeluoikeusTilasto
+import fi.oph.koski.tiedonsiirto.TiedonsiirtoTilasto
+import fi.oph.koski.userdirectory.KäyttöoikeusServiceClient
 
 import scala.concurrent.duration._
 
@@ -22,8 +22,8 @@ trait KoskiPulssi {
 }
 
 class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
-  private val perustiedotStats = OpiskeluoikeudenPerustiedotStatistics(application.perustiedotIndexer)
-  private val tiedonsiirtoStats = TiedonsiirtoStatistics(application.tiedonsiirtoService)
+  private val perustiedotStats = application.perustiedotIndexer.statistics()
+  private val tiedonsiirtoStats = application.tiedonsiirtoService.statistics()
 
   def opiskeluoikeusTilasto: OpiskeluoikeusTilasto = perustiedotStats.statistics
   def tiedonsiirtoTilasto: TiedonsiirtoTilasto = tiedonsiirtoStats.statistics

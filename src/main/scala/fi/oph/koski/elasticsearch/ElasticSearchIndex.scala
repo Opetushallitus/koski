@@ -22,7 +22,8 @@ class ElasticSearchIndex(
   val mapping: Map[String, Any],
   val settings: Map[String, Any]
 ) extends Logging with BackgroundExecutionContext {
-  protected def http: Http = elastic.http
+
+  private def http: Http = elastic.http
 
   lazy val init: Future[Any] = {
     val indexChanged = if (indexExists) {
@@ -94,10 +95,29 @@ class ElasticSearchIndex(
       None
   }
 
-  def updateBulk(jsonLines: Seq[JValue], refreshIndex: Boolean = false): (Boolean, JValue) = {
-    val url = if (refreshIndex) uri"/${name}/_bulk?refresh=wait_for" else uri"/${name}/_bulk"
-    val response: JValue = Http.runTask(http.post(url, jsonLines)(Json4sHttp4s.multiLineJson4sEncoderOf[JValue])(Http.parseJson[JValue]))
+  def updateBulk(docsAndIds: Seq[(JValue, String)], upsert: Boolean): (Boolean, JValue) = {
+    val queries = docsAndIds
+      .flatMap { case(doc, id) => buildUpdateQuery(doc, id, upsert) }
+      .map(q => toJValue(q))
+    val url = uri"/${name}/_bulk"
+    val response: JValue = Http.runTask(http.post(url, queries)(Json4sHttp4s.multiLineJson4sEncoderOf[JValue])(Http.parseJson[JValue]))
     (extract[Boolean](response \ "errors"), response)
+  }
+
+  private def buildUpdateQuery(doc: JValue, id: String, upsert: Boolean): Seq[Map[String, Any]] = {
+    List(
+      Map(
+        "update" -> Map(
+          "_id" -> id,
+          "_index" -> name,
+          "_type" -> mappingType
+        )
+      ),
+      Map(
+        "doc_as_upsert" -> upsert,
+        "doc" -> doc
+      )
+    )
   }
 
   def deleteAll(): Unit = {

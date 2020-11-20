@@ -53,6 +53,6 @@ class VarhaiskasvatusPerustiedotSpec extends FreeSpec with BeforeAndAfterAll wit
       verifyResponseStatusOk()
     }
     KoskiApplicationForTests.perustiedotSyncScheduler.sync
-    KoskiApplicationForTests.perustiedotIndexer.refreshIndex
+    KoskiApplicationForTests.perustiedotIndexer.index.refreshIndex()
   }
 }
