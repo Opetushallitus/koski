@@ -8,13 +8,14 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 import fi.oph.koski.raportointikanta.RaportointiDatabase
 import slick.jdbc.GetResult
+import scala.concurrent.duration._
 
 object PaallekkaisetOpiskeluoikeudet extends Logging {
 
   def datasheet(oids: Seq[String], aikaisintaan: LocalDate, viimeistaan: LocalDate, db: RaportointiDatabase) =
     DataSheet(
       title = "Päällekäiset opiskeluoikeudet",
-      rows = db.runDbSync(query(oids, Date.valueOf(aikaisintaan), Date.valueOf(viimeistaan)).as[PaallekkaisetOpiskeluoikeudetRow]),
+      rows = db.runDbSync(query(oids, Date.valueOf(aikaisintaan), Date.valueOf(viimeistaan)).as[PaallekkaisetOpiskeluoikeudetRow], timeout = 5.minutes),
       columnSettings
     )
 
