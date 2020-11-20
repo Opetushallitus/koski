@@ -127,6 +127,26 @@ object AmmattitutkintoExample {
       )
     ))
   )
+  lazy val ammatillisenTutkinnonSuoritus = AmmatillisenTutkinnonSuoritus(
+    koulutusmoduuli = tutkinto,
+    suoritustapa = suoritustapaNäyttö,
+    järjestämismuodot = Some(List(
+      Järjestämismuotojakso(date(2014, 8, 1), None, järjestämismuotoOppilaitos),
+      Järjestämismuotojakso(date(2015, 5, 31), None, järjestämismuotoOppisopimus),
+      Järjestämismuotojakso(date(2016, 3, 31), None, järjestämismuotoOppilaitos)
+    )),
+    suorituskieli = suomenKieli,
+    alkamispäivä = None,
+    toimipiste = stadinToimipiste,
+    vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, Some(helsinki)),
+    osasuoritukset = Some(List(
+      tutkinnonOsanSuoritus("104052", "Johtaminen ja henkilöstön kehittäminen", None, hyväksytty),
+      tutkinnonOsanSuoritus("104053", "Asiakaspalvelu ja korjaamopalvelujen markkinointi", None, hyväksytty),
+      tutkinnonOsanSuoritus("104054", "Työnsuunnittelu ja organisointi", None, hyväksytty),
+      tutkinnonOsanSuoritus("104055", "Taloudellinen toiminta", None, hyväksytty),
+      tutkinnonOsanSuoritus("104059", "Yrittäjyys", None, hyväksytty)
+    ))
+  )
   lazy val opiskeluoikeus = AmmatillinenOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(
@@ -136,26 +156,7 @@ object AmmattitutkintoExample {
     oppilaitos = Some(stadinAmmattiopisto),
     suoritukset = List(
       näyttötutkintoonValmistavanKoulutuksenSuoritus,
-      AmmatillisenTutkinnonSuoritus(
-        koulutusmoduuli = tutkinto,
-        suoritustapa = suoritustapaNäyttö,
-        järjestämismuodot = Some(List(
-          Järjestämismuotojakso(date(2014, 8, 1), None, järjestämismuotoOppilaitos),
-          Järjestämismuotojakso(date(2015, 5, 31), None, järjestämismuotoOppisopimus),
-          Järjestämismuotojakso(date(2016, 3, 31), None, järjestämismuotoOppilaitos)
-        )),
-        suorituskieli = suomenKieli,
-        alkamispäivä = None,
-        toimipiste = stadinToimipiste,
-        vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, Some(helsinki)),
-        osasuoritukset = Some(List(
-          tutkinnonOsanSuoritus("104052", "Johtaminen ja henkilöstön kehittäminen", None, hyväksytty),
-          tutkinnonOsanSuoritus("104053", "Asiakaspalvelu ja korjaamopalvelujen markkinointi", None, hyväksytty),
-          tutkinnonOsanSuoritus("104054", "Työnsuunnittelu ja organisointi", None, hyväksytty),
-          tutkinnonOsanSuoritus("104055", "Taloudellinen toiminta", None, hyväksytty),
-          tutkinnonOsanSuoritus("104059", "Yrittäjyys", None, hyväksytty)
-        ))
-      )
+      ammatillisenTutkinnonSuoritus
     )
   )
 
