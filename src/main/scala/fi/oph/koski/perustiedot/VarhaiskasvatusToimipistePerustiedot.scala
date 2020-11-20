@@ -1,13 +1,12 @@
 package fi.oph.koski.perustiedot
 
-import fi.oph.koski.elasticsearch.ElasticSearchIndex
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.LegacyJsonSerialization
 
-case class VarhaiskasvatusToimipistePerustiedot(index: ElasticSearchIndex) {
+case class VarhaiskasvatusToimipistePerustiedot(indexer: OpiskeluoikeudenPerustiedotIndexer) {
   def haeVarhaiskasvatustoimipisteet(koulutustoimijaOidit: Set[String]): Set[String] = {
     val query = varhaiskasvatustoimipisteetQuery(koulutustoimijaOidit)
-    index.runSearch(query).toList.flatMap { r =>
+    indexer.index.runSearch(query).toList.flatMap { r =>
       extract[List[PäiväkotiBucket]](r \ "aggregations" \ "oppilaitokset" \ "buckets", ignoreExtras = true)
     }.map(_.key).toSet
   }

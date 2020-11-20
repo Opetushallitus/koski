@@ -104,7 +104,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val oidGenerator = OidGenerator(config)
   lazy val hetu = new Hetu(config.getBoolean("acceptSyntheticHetus"))
   lazy val features = Features(config)
-  lazy val indexManager = new IndexManager(List(perustiedotIndexer, tiedonsiirtoService))
+  lazy val indexManager = new IndexManager(List(perustiedotIndexer.index, tiedonsiirtoService.index))
 
   lazy val init: Future[Unit] = {
     perustiedotIndexer.init // This one will not be awaited for; it's ok that indexing continues while application is running
