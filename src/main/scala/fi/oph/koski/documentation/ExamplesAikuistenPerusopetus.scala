@@ -203,7 +203,7 @@ object ExamplesAikuistenPerusopetus {
       oppiaineenSuoritus(aikuistenOppiaine("KO").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
       oppiaineenSuoritus(aikuistenOppiaine("TE")).copy(arviointi = arviointi(8)),
       oppiaineenSuoritus(aikuistenOppiaine("KS")).copy(arviointi = arviointi(9)),
-      oppiaineenSuoritus(aikuistenOppiaine("LI")).copy(arviointi = arviointi(9)),
+      oppiaineenSuoritus(aikuistenOppiaine("LI")).copy(arviointi = arviointi(9, Some(date(2016, 12, 29)))),
       oppiaineenSuoritus(aikuistenOppiaine("LI").copy(pakollinen = false, laajuus = vuosiviikkotuntia(0.5))).copy(arviointi = hyväksytty),
       oppiaineenSuoritus(aikuistenPerusopetuksenKieli("B2", "DE").copy(pakollinen = false, laajuus = vuosiviikkotuntia(4))).copy(arviointi = arviointi(9)),
       oppiaineenSuoritus(valinnainenAikuistenOppiaine("TH", "Tietokoneen hyötykäyttö", "Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.")).copy(arviointi = arviointi(9))
@@ -211,7 +211,7 @@ object ExamplesAikuistenPerusopetus {
 
   def kurssinSuoritus2015(koodiarvo: String, laajuus: LaajuusVuosiviikkotunneissaTaiKursseissa = LaajuusKursseissa(1)) = AikuistenPerusopetuksenKurssinSuoritus(
     ValtakunnallinenAikuistenPerusopetuksenKurssi2015(Koodistokoodiviite(koodiarvo, "aikuistenperusopetuksenkurssit2015"), Some(laajuus)),
-    arviointi = arviointi(9)
+    arviointi = arviointi(9, Some(LocalDate.parse("2016-01-09")))
   )
 
   def kurssinSuoritus2017(koodiarvo: String, laajuus: LaajuusVuosiviikkotunneissaTaiKursseissa = LaajuusKursseissa(1)) = AikuistenPerusopetuksenKurssinSuoritus(
@@ -257,7 +257,7 @@ object ExamplesAikuistenPerusopetus {
 
 
   def alkuvaiheenOppiaineet = Some(List(
-    alkuvaiheenOppiaineenSuoritus(AikuistenPerusopetuksenAlkuvaiheenÄidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = "AI1", koodistoUri = "oppiaineaidinkielijakirjallisuus"))).copy(arviointi = arviointi(9), osasuoritukset = Some(List(
+    alkuvaiheenOppiaineenSuoritus(AikuistenPerusopetuksenAlkuvaiheenÄidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = "AI1", koodistoUri = "oppiaineaidinkielijakirjallisuus"))).copy(arviointi = arviointi(9, Some(date(2016, 12, 29))), osasuoritukset = Some(List(
       alkuvaiheenKurssinSuoritus("LÄI1").copy(tunnustettu = Some(OsaamisenTunnustaminen(None, "Osoittanut osaamisen käytännössä."))),
       alkuvaiheenKurssinSuoritus("LÄI2").copy(tunnustettu = Some(OsaamisenTunnustaminen(None, "Osoittanut osaamisen käytännössä.", true))),
       alkuvaiheenKurssinSuoritus("LÄI3"),
@@ -267,7 +267,7 @@ object ExamplesAikuistenPerusopetus {
       alkuvaiheenKurssinSuoritus("LÄI7"),
       alkuvaiheenKurssinSuoritus("LÄI8"),
       alkuvaiheenKurssinSuoritus("LÄI9"),
-      alkuvaiheenKurssinSuoritus("AÄI1"),
+      alkuvaiheenKurssinSuoritus("AÄI1").copy(arviointi = arviointi(9, Some(date(2016, 12, 29)))),
       alkuvaiheenKurssinSuoritus("AÄI2"),
       alkuvaiheenKurssinSuoritus("AÄI3"),
       alkuvaiheenKurssinSuoritus("AÄI4"),

@@ -1,15 +1,17 @@
-package fi.oph.koski.raportit
+package fi.oph.koski.raportit.aikuistenperusopetus
 
 import java.time.LocalDate
 
-import fi.oph.koski.raportointikanta._
-import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import fi.oph.koski.db.KoskiDatabaseMethods
-import fi.oph.koski.util.DateOrdering.sqlDateOrdering
-import scala.concurrent.duration._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.raportit.YleissivistäväRaporttiRows
+import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
+import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio
+import fi.oph.koski.util.DateOrdering.sqlDateOrdering
 import slick.jdbc.GetResult
+
+import scala.concurrent.duration._
 
 case class AikuistenPerusopetusRaporttiRepository(
   db: DB

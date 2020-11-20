@@ -62,7 +62,9 @@ object RaportointiDatabaseSchema {
 
     sqlu"CREATE INDEX ON #${s.name}.r_organisaatio(oppilaitosnumero)",
 
-    sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_koodisto_koodi(koodisto_uri, koodiarvo)"
+    sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_koodisto_koodi(koodisto_uri, koodiarvo)",
+
+    sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(sisaltyy_opiskeluoikeuteen_oid)"
   )
 
   def dropAllIfExists(s: Schema) = DBIO.seq(

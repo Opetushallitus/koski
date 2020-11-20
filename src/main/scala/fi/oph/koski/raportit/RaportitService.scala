@@ -2,6 +2,8 @@ package fi.oph.koski.raportit
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät, AikuistenPerusopetuksenEiRahoitustietoaKurssit, AikuistenPerusopetuksenMuutaKauttaRahoitetutKurssit, AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit, AikuistenPerusopetuksenOppijamäärätRaportti, AikuistenPerusopetuksenOppimääränKurssikertymät, AikuistenPerusopetusRaportti, AikuistenPerusopetusRaporttiRepository}
+import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
 
 class RaportitService(application: KoskiApplication) {
   private val raportointiDatabase = application.raportointiDatabase
@@ -15,7 +17,11 @@ class RaportitService(application: KoskiApplication) {
   private val topksAmmatillinenRaportti = TOPKSAmmatillinenRaporttiBuilder(raportointiDatabase.db)
   private val esiopetuksenOppijamäärätRaportti = EsiopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val aikuistenPerusopetuksenOppijamäärätRaportti = AikuistenPerusopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
-  private val aikuistenPerusopetuksenKurssikertymäRaportti = AikuistenPerusopetuksenKurssikertymäRaportti(raportointiDatabase.db, application.organisaatioService)
+  private val aikuistenPerusopetuksenOppimääränKurssikertymätRaportti = AikuistenPerusopetuksenOppimääränKurssikertymät(raportointiDatabase.db)
+  private val aikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRaportti = AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(raportointiDatabase.db)
+  private val aikuistenPerusopetuksenMuutaKauttaRahoitetutKurssitRaportti = AikuistenPerusopetuksenMuutaKauttaRahoitetutKurssit(raportointiDatabase.db)
+  private val aikuistenPerusopetuksenEiRahoitustietoaKurssitRaportti = AikuistenPerusopetuksenEiRahoitustietoaKurssit(raportointiDatabase.db)
+  private val aikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetRaportti = AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit(raportointiDatabase.db)
   private val perusopetuksenOppijamäärätRaportti = PerusopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val perusopetuksenLisäopetuksenOppijamäärätRaportti = PerusopetuksenLisäopetusOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
 
@@ -154,14 +160,16 @@ class RaportitService(application: KoskiApplication) {
   }
 
   def aikuistenperusopetuksenKurssikertymä(request: AikajaksoRaporttiRequest)(implicit u: KoskiSession) = {
-    val oppilaitosOids = request.oppilaitosOid match {
-      case application.organisaatioService.ostopalveluRootOid =>
-        application.organisaatioService.omatOstopalveluOrganisaatiot.map(_.oid)
-      case oid =>
-        application.organisaatioService.organisaationAlaisetOrganisaatiot(oid)
-    }
+    val oppilaitosOids = validateOids(List(request.oppilaitosOid))
+
     OppilaitosRaporttiResponse(
-      sheets = Seq(aikuistenPerusopetuksenKurssikertymäRaportti.build(oppilaitosOids, request.alku, request.loppu)),
+      sheets = Seq(
+        aikuistenPerusopetuksenOppimääränKurssikertymätRaportti.build(oppilaitosOids, request.alku, request.loppu),
+        aikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRaportti.build(oppilaitosOids, request.alku, request.loppu),
+        aikuistenPerusopetuksenMuutaKauttaRahoitetutKurssitRaportti.build(oppilaitosOids, request.alku, request.loppu),
+        aikuistenPerusopetuksenEiRahoitustietoaKurssitRaportti.build(oppilaitosOids, request.alku, request.loppu),
+        aikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetRaportti.build(oppilaitosOids, request.alku, request.loppu),
+      ),
       workbookSettings = WorkbookSettings("Aikuisten perusopetuksen kurssikertymien raportti", Some(request.password)),
       filename = s"aikuisten_perusopetuksen_kurssikertymät_raportti-${request.alku.toString.replaceAll("-", "")}-${request.loppu.toString.replaceAll("-", "")}.xlsx",
       downloadToken = request.downloadToken
@@ -228,6 +236,14 @@ class RaportitService(application: KoskiApplication) {
       filename = raporttiBuilder.filename(request.oppilaitosOid, request.paiva, request.vuosiluokka),
       downloadToken = request.downloadToken
     )
+  }
+
+  private def validateOids(oppilaitosOids: List[String]) = {
+    val invalidOid = oppilaitosOids.find(oid => !isValidOrganisaatioOid(oid))
+    if (invalidOid.isDefined) {
+      throw new IllegalArgumentException(s"Invalid oppilaitos oid ${invalidOid.get}")
+    }
+    oppilaitosOids
   }
 }
 
