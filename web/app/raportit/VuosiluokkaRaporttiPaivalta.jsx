@@ -9,7 +9,7 @@ import {downloadExcel} from './downloadExcel'
 import Dropdown from '../components/Dropdown'
 import { LyhytKuvaus, PaivaValinta, RaportinLataus, Vinkit } from './raporttiComponents'
 
-export const VuosiluokkaRaporttiPaivalta = ({organisaatioP, apiEndpoint, description, example}) => {
+export const VuosiluokkaRaporttiPaivalta = ({organisaatioP, apiEndpoint, shortDescription, dateInputHelp, help, example}) => {
   const paivaAtom = Atom()
   const vuosiluokkaAtom = Atom('1')
   const submitBus = Bacon.Bus()
@@ -31,14 +31,15 @@ export const VuosiluokkaRaporttiPaivalta = ({organisaatioP, apiEndpoint, descrip
 
   return (
     <section>
-      <LyhytKuvaus>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam porttitor libero dictum sem rhoncus, at euismod ex finibus. Morbi tortor purus, vehicula ut purus eget, blandit laoreet eros. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Proin tellus ipsum, mattis non purus sed, mattis rutrum arcu.
-      </LyhytKuvaus>
+      <LyhytKuvaus>{shortDescription}</LyhytKuvaus>
 
-      <PaivaValinta paivaAtom={paivaAtom} />
+      <PaivaValinta
+        paivaAtom={paivaAtom}
+        ohje={dateInputHelp}
+      />
 
       <div className="dropdown-selection parametri vuosiluokka">
-        <label><Text name="Valitse vuosiluokka"/></label>
+        <label><Text name="select-class"/></label>
         <VuosiluokkaDropdown
           value={vuosiluokkaAtom}
           vuosiluokat={vuosiluokat}
@@ -53,7 +54,7 @@ export const VuosiluokkaRaporttiPaivalta = ({organisaatioP, apiEndpoint, descrip
       />
 
       <Vinkit>
-        <p>{description}</p>
+        <p>{help}</p>
         <p>{example}</p>
       </Vinkit>
     </section>

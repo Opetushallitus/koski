@@ -13,127 +13,127 @@ import {filterOrgTreeByRaporttityyppi} from './raporttiComponents'
 
 const kaikkiRaportitKategorioittain = [
   {
-    tab: 'Esiopetus',
-    heading: 'Esiopetuksen raportit',
+    tab: 'raporttikategoria-tab-esiopetus',
+    heading: 'raporttikategoria-heading-esiopetus',
     raportit: [
       {
         id: 'esiopetuksenraportti',
-        name: 'Opiskeluoikeudet ja suoritustiedot',
+        name: 'raportti-tab-esiopetuksenraportti',
         component: EsiopetusRaportti
       },
       {
         id: 'esiopetuksenoppijamäärienraportti',
-        name: 'VOS-rahoituslaskennan tunnusluvut',
+        name: 'raportti-tab-esiopetuksenoppijamäärienraportti',
         component: EsiopetuksenOppijamäärätRaportti
       }
     ]
   },
   {
-    tab: 'Perusopetus',
-    heading: 'Perusopetuksen raportit',
+    tab: 'raporttikategoria-tab-perusopetus',
+    heading: 'raporttikategoria-heading-perusopetus',
     raportit: [
       {
         id: 'perusopetuksenvuosiluokka',
-        name: 'Opiskeluoikeudet ja suoritustiedot',
+        name: 'raportti-tab-perusopetuksenvuosiluokka',
         component: PerusopetuksenVuosiluokka
       },
       {
         id: 'perusopetuksenoppijamääräraportti',
-        name: 'VOS-rahoituslaskennan tunnusluvut',
+        name: 'raportti-tab-perusopetuksenoppijamääräraportti',
         component: PerusopetuksenOppijamäärätRaportti
       },
       {
         id: 'perusopetuksenlisäopetuksenoppijamääräraportti',
-        name: 'Lisäopetuksen VOS-rahoituslaskennan tunnusluvut',
+        name: 'raportti-tab-perusopetuksenlisäopetuksenoppijamääräraportti',
         component: PerusopetuksenLisäopetuksenOppijamäärätRaportti
       }
     ]
   },
   {
-    tab: 'Aikuisten perusopetus',
-    heading: 'Aikuisten perusopetuksen raportit',
+    tab: 'raporttikategoria-tab-aikuisten-perusopetus',
+    heading: 'raporttikategoria-heading-aikuisten-perusopetus',
     raportit: [
       {
         id: 'aikuistenperusopetussuoritustietojentarkistus',
-        name: 'Tarkistusraportti',
+        name: 'raportti-tab-aikuistenperusopetussuoritustietojentarkistus',
         component: AikuistenPerusopetusRaportti
       },
       {
         id: 'aikuistenperusopetusoppijamäärienraportti',
-        name: 'VOS-rahoituslaskennan tunnusluvut',
+        name: 'raportti-tab-aikuistenperusopetusoppijamäärienraportti',
         component: AikuistenPerusopetuksenOppijamäärätRaportti
       },
       {
         id: 'aikuistenperusopetuskurssikertymänraportti',
-        name: 'Kurssikertymä',
+        name: 'raportti-tab-aikuistenperusopetuskurssikertymänraportti',
         component: AikuistenPerusopetuksenKurssikertymäRaportti
       }
     ]
   },
   {
-    tab: 'Ammatillinen',
-    heading: 'Ammatillisen koulutuksen raportit',
+    tab: 'raporttikategoria-tab-ammatillinen-koulutus',
+    heading: 'raporttikategoria-heading-ammatillinen-koulutus',
     raportit: [
       {
         id: 'ammatillinenopiskelijavuositiedot',
-        name: 'Opiskelijavuositiedot',
+        name: 'raportti-tab-ammatillinenopiskelijavuositiedot',
         component: Opiskelijavuositiedot
       },
       {
         id: 'ammatillinentutkintosuoritustietojentarkistus',
-        name: 'Suoritustiedot (koko tutkinto)',
+        name: 'raportti-tab-ammatillinentutkintosuoritustietojentarkistus',
         component: SuoritustietojenTarkistus
       },
       {
         id: 'ammatillinenosittainensuoritustietojentarkistus',
-        name: 'Suoritustiedot (tutk. osia)',
+        name: 'raportti-tab-ammatillinenosittainensuoritustietojentarkistus',
         component: AmmatillinenOsittainenSuoritustietojenTarkistus
       },
       {
         id: 'muuammatillinenkoulutus',
-        name: 'Suoritustiedot (muu ammatillinen)',
+        name: 'raportti-tab-muuammatillinenkoulutus',
         component: MuuAmmatillinenRaportti
       },
       {
         id: 'topksammatillinen',
-        name: 'Suoritustiedot (TOPKS)',
+        name: 'raportti-tab-topksammatillinen',
         component: TOPKSAmmatillinenRaportti
       }
     ]
   },
   {
-    tab: 'Lukio',
-    heading: 'Lukion raportit',
+    tab: 'raporttikategoria-tab-lukio',
+    heading: 'raporttikategoria-heading-lukio',
     raportit: [
       {
         id: 'lukionsuoritustietojentarkistus',
-        name: 'Tarkistusraportti',
+        name: 'raportti-tab-lukionsuoritustietojentarkistus',
         component: Lukioraportti
       },
       {
         id: 'lukiokurssikertyma',
-        name: 'VOS-tunnusluvut: Kurssikertymät',
+        name: 'raportti-tab-lukiokurssikertyma',
         component: LukioKurssikertyma
       },
       {
         id: 'lukiodiaibinternationalopiskelijamaarat',
-        name: 'VOS-tunnusluvut: Opiskelijamäärät',
+        name: 'raportti-tab-lukiodiaibinternationalopiskelijamaarat',
         component: LukioDiaIBInternationalOpiskelijamaarat
       },
       {
         id: 'luvaopiskelijamaarat',
-        name: 'VOS-tunnusluvut: Valmistavan koulutuksen opiskelijamäärät',
+        name: 'raportti-tab-luvaopiskelijamaarat',
         component: LuvaOpiskelijamaaratRaportti
       }
     ]
   },
   {
-    tab: 'Muut',
-    heading: 'Päällekkäiset opiskeluoikeudet',
+    tab: 'raporttikategoria-tab-muut',
+    name: 'raportti-tab-paallekkaisetopiskeluoikeudet',
     raportit: [
       {
         id: 'paallekkaisetopiskeluoikeudet',
-        name: 'Päällekkäiset opiskeluoikeudet',
+        name: 'raportti-tab-paallekkaisetopiskeluoikeudet',
         component: PaallekkaisetOpiskeluoikeudet,
         visible: true,
         guard: () => document.location.search.includes('tilastoraportit=true')
@@ -234,13 +234,13 @@ export const raportitContentP = () => {
           <Tabs
             optionsP={stateP.map(state => state.tabs.map((r, index) => ({
               id: index,
-              name: r.tab,
+              name: <Text name={r.tab} />,
               hidden: !r.visible
             })))}
             selectedP={stateP.map(state => state.selectedTabIdx)}
             onSelect={id => selectedTabIdxE.push(id)}
           />
-          {tabP.map(tab => tab && <h2>{tab.heading}</h2>)}
+          {tabP.map(tab => tab && <h2><Text name={tab.heading} /></h2>)}
           <RaporttiValitsin
             raportitP={tabP.map(tab => tab ? tab.raportit : [])}
             selectedP={stateP.map(state => state.selectedRaporttiIdx)}
@@ -310,187 +310,286 @@ function Opiskelijavuositiedot({ organisaatioP }) {
   const titleText = <Text name='Opiskelijavuositiedot' />
   const descriptionText = <Text name='Opiskelijavuositiedot-description' />
 
-  return (<AikajaksoRaportti
-    organisaatioP={organisaatioP}
-    apiEndpoint={'/ammatillinenopiskelijavuositiedot'}
-    title={titleText}
-    description={descriptionText} />)
+  return (
+    <AikajaksoRaportti
+      organisaatioP={organisaatioP}
+      apiEndpoint={'/ammatillinenopiskelijavuositiedot'}
+      title={titleText}
+      shortDescription={descriptionText}
+    />
+  )
 }
 
 function SuoritustietojenTarkistus({ organisaatioP }) {
   const titleText = <Text name='Suoritustiedot (ammatillinen koulutus, koko tutkinto)'/>
-  const descriptionText = <Text name='SuoritustietojenTarkistus-description'/>
+  const shortDescriptionText = <Text name='SuoritustietojenTarkistus-short-description'/>
+  const exampleText = <Text name='SuoritustietojenTarkistus-example'/>
 
-  return (<AikajaksoRaporttiAikarajauksella
-    organisaatioP={organisaatioP}
-    apiEndpoint={'/ammatillinentutkintosuoritustietojentarkistus'}
-    title={titleText}
-    description={descriptionText}
-  />)
+  return (
+    <AikajaksoRaporttiAikarajauksella
+      organisaatioP={organisaatioP}
+      apiEndpoint={'/ammatillinentutkintosuoritustietojentarkistus'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      example={exampleText}
+    />
+  )
 }
 
 function AmmatillinenOsittainenSuoritustietojenTarkistus({ organisaatioP }) {
   const titleText = <Text name='Suoritustiedot (ammatillinen koulutus, tutkinnon osa/osia)' />
-  const descriptionText = <Text name='AmmatillinenOsittainenSuoritustietojenTarkistus-description' />
+  const shortDescriptionText = <Text name='AmmatillinenOsittainenSuoritustietojenTarkistus-short-description' />
+  const exampleText = <Text name='AmmatillinenOsittainenSuoritustietojenTarkistus-example' />
 
-  return (<AikajaksoRaporttiAikarajauksella
-    organisaatioP={organisaatioP}
-    apiEndpoint={'/ammatillinenosittainensuoritustietojentarkistus'}
-    title={titleText}
-    description={descriptionText} />)
+  return (
+    <AikajaksoRaporttiAikarajauksella
+      organisaatioP={organisaatioP}
+      apiEndpoint={'/ammatillinenosittainensuoritustietojentarkistus'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      example={exampleText}
+    />
+  )
 }
 
 function MuuAmmatillinenRaportti({ organisaatioP }) {
   const titleText = <Text name='Suoritustiedot (muu ammatillinen koulutus)' />
   const descriptionText = <Text name='muuammatillinenraportti-description' />
 
-  return (<AikajaksoRaportti
-    organisaatioP={organisaatioP}
-    apiEndpoint={'/muuammatillinen'}
-    title={titleText}
-    description={descriptionText} />)
+  return (
+    <AikajaksoRaportti
+      organisaatioP={organisaatioP}
+      apiEndpoint={'/muuammatillinen'}
+      title={titleText}
+      shortDescription={descriptionText}
+    />
+  )
 }
 
 function TOPKSAmmatillinenRaportti({ organisaatioP }) {
   const titleText = <Text name='Suoritustiedot (TOPKS ammatillinen koulutus)' />
   const descriptionText = <Text name='topksammatillinen-description' />
 
-  return (<AikajaksoRaportti
-    organisaatioP={organisaatioP}
-    apiEndpoint={'/topksammatillinen'}
-    title={titleText}
-    description={descriptionText} />)
+  return (
+    <AikajaksoRaportti
+      organisaatioP={organisaatioP}
+      apiEndpoint={'/topksammatillinen'}
+      title={titleText}
+      shortDescription={descriptionText}
+    />
+  )
 }
 
 function PerusopetuksenVuosiluokka({ organisaatioP }) {
   const titleText = <Text name='Nuorten perusopetuksen opiskeluoikeus- ja suoritustietojen tarkistusraportti' />
-  const descriptionText = <Text name='PerusopetuksenVuosiluokka-description' />
+  const shortDescriptionText = <Text name='PerusopetuksenVuosiluokka-short-description' />
+  const dateInputHelpText = <Text name='PerusopetuksenVuosiluokka-date-input-help' />
+  const helpText = <Text name='PerusopetuksenVuosiluokka-help' />
   const exampleText = <Text name='PerusopetuksenVuosiluokka-example' />
 
-  return (<VuosiluokkaRaporttiPaivalta
-    organisaatioP={organisaatioP}
-    apiEndpoint={'/perusopetuksenvuosiluokka'}
-    title={titleText}
-    description={descriptionText}
-    example={exampleText} />)
+  return (
+    <VuosiluokkaRaporttiPaivalta
+      organisaatioP={organisaatioP}
+      apiEndpoint={'/perusopetuksenvuosiluokka'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      dateInputHelp={dateInputHelpText}
+      help={helpText}
+      example={exampleText}
+    />
+  )
 }
 
 function Lukioraportti({ organisaatioP }) {
   const titleText = <Text name='Lukioraportti-title' />
-  const descriptionText = <Text name='Lukioraportti-description' />
+  const shortDescriptionText = <Text name='Lukioraportti-short-description' />
+  const exampleText = <Text name='Lukioraportti-example' />
 
-  return (<AikajaksoRaporttiAikarajauksella
-    organisaatioP={organisaatioP}
-    apiEndpoint={'/lukionsuoritustietojentarkistus'}
-    title={titleText}
-    description={descriptionText}
-    osasuoritusType={osasuoritusTypes.KURSSI} />)
+  return (
+    <AikajaksoRaporttiAikarajauksella
+      organisaatioP={organisaatioP}
+      apiEndpoint={'/lukionsuoritustietojentarkistus'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      example={exampleText}
+      osasuoritusType={osasuoritusTypes.KURSSI}
+    />
+  )
 }
 
 function LukioKurssikertyma({ organisaatioP }) {
-  return (<AikajaksoRaportti organisaatioP={organisaatioP}
-    apiEndpoint={'/lukiokurssikertymat'}
-    title={<Text name='lukion-kurssikertyma-title' />}
-    description={<Text name='lukion-kurssikertyma-description' />} />)
+  const title = <Text name='lukion-kurssikertyma-title' />
+  const shortDescriptionText = <Text name='lukion-kurssikertyma-short-description' />
+  const dateInputHelpText = <Text name='lukion-kurssikertyma-date-input-help' />
+  const exampleText = <Text name='Lukioraportti-example' />
+
+  return (
+    <AikajaksoRaportti organisaatioP={organisaatioP}
+      apiEndpoint={'/lukiokurssikertymat'}
+      title={title}
+      shortDescription={shortDescriptionText}
+      dateInputHelp={dateInputHelpText}
+      example={exampleText}
+    />
+  )
 }
 
 function LukioDiaIBInternationalOpiskelijamaarat({ organisaatioP }) {
   const titleText = <Text name='lukiokoulutuksen-opiskelijamaarat-title' />
-  const descriptionText = <Text name='lukiokoulutuksen-opiskelijamaarat-description' />
+  const shortDescriptionText = <Text name='lukiokoulutuksen-opiskelijamaarat-short-description' />
+  const dateInputHelpText = <Text name='lukiokoulutuksen-opiskelijamaarat-date-input-help' />
+  const exampleText = <Text name='lukiokoulutuksen-opiskelijamaarat-example' />
 
-  return (<RaporttiPaivalta
-    organisaatioP={organisaatioP}
-    apiEndpoint={'/lukiodiaibinternationalopiskelijamaarat'}
-    title={titleText}
-    description={descriptionText} />)
+  return (
+    <RaporttiPaivalta
+      organisaatioP={organisaatioP}
+      apiEndpoint={'/lukiodiaibinternationalopiskelijamaarat'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      dateInputHelp={dateInputHelpText}
+      example={exampleText}
+    />
+  )
 }
 
 function LuvaOpiskelijamaaratRaportti({ organisaatioP }) {
   const titleText = <Text name='luva-opiskelijamaarat-title' />
-  const descriptionText = <Text name='luva-opiskelijamaarat-description' />
+  const shortDescriptionText = <Text name='luva-opiskelijamaarat-short-description' />
+  const dateInputHelpText = <Text name='luva-opiskelijamaarat-date-input-help' />
+  const exampleText = <Text name='luva-opiskelijamaarat-example' />
 
-  return (<RaporttiPaivalta
-    organisaatioP={organisaatioP}
-    apiEndpoint={'/luvaopiskelijamaarat'}
-    title={titleText}
-    description={descriptionText} />)
+  return (
+    <RaporttiPaivalta
+      organisaatioP={organisaatioP}
+      apiEndpoint={'/luvaopiskelijamaarat'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      dateInputHelp={dateInputHelpText}
+      example={exampleText}
+    />
+  )
 }
 
 function EsiopetusRaportti({ organisaatioP }) {
   const titleText = <Text name='esiopetusraportti-title' />
-  const descriptionText = <Text name='esiopetusraportti-description' />
+  const shortDescriptionText = <Text name="esiopetusraportti-short-description" />
+  const dateInputHelpText = <Text name="esiopetusraportti-date-input-help" />
   const exampleText = <Text name='esiopetusraportti-example' />
 
-  return (<RaporttiPaivalta
-    organisaatioP={organisaatioP}
-    apiEndpoint={'/esiopetus'}
-    title={titleText}
-    description={descriptionText}
-    example={exampleText} />)
+  return (
+    <RaporttiPaivalta
+      organisaatioP={organisaatioP}
+      apiEndpoint={'/esiopetus'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      dateInputHelp={dateInputHelpText}
+      example={exampleText}
+    />
+  )
 }
 
 function EsiopetuksenOppijamäärätRaportti({ organisaatioP }) {
   const titleText = <Text name='Esiopetus-oppilasmäärät-raportti-title' />
-  const descriptionText = <Text name='Esiopetus-oppilasmäärät-raportti-description' />
+  const shortDescriptionText = <Text name='Esiopetus-oppilasmäärät-raportti-short-description' />
+  const dateInputHelpText = <Text name='Esiopetus-oppilasmäärät-raportti-date-input-help' />
+  const exampleText = <Text name='Esiopetus-oppilasmäärät-raportti-example' />
 
-  return (<RaporttiPaivalta
-    organisaatioP={organisaatioP}
-    apiEndpoint={'/esiopetuksenoppijamaaratraportti'}
-    title={titleText}
-    description={descriptionText} />)
+  return (
+    <RaporttiPaivalta
+      organisaatioP={organisaatioP}
+      apiEndpoint={'/esiopetuksenoppijamaaratraportti'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      dateInputHelp={dateInputHelpText}
+      example={exampleText}
+    />
+  )
 }
 
 function PerusopetuksenOppijamäärätRaportti({ organisaatioP }) {
   const titleText = <Text name='Perusopetus-oppijamäärät-raportti-title' />
-  const descriptionText = <Text name='Perusopetus-oppijamäärät-raportti-description' />
+  const shortDescriptionText = <Text name='Perusopetus-oppijamäärät-raportti-short-description' />
+  const dateInputHelpText = <Text name='Perusopetus-oppijamäärät-raportti-date-input-help' />
+  const exampleText = <Text name='Perusopetus-oppijamäärät-raportti-example' />
 
-  return (<RaporttiPaivalta
-    organisaatioP={organisaatioP}
-    apiEndpoint={'/perusopetuksenoppijamaaratraportti'}
-    title={titleText}
-    description={descriptionText} />)
+  return (
+    <RaporttiPaivalta
+      organisaatioP={organisaatioP}
+      apiEndpoint={'/perusopetuksenoppijamaaratraportti'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      dateInputHelp={dateInputHelpText}
+      example={exampleText}
+    />
+  )
 }
 
 function PerusopetuksenLisäopetuksenOppijamäärätRaportti({ organisaatioP }) {
   const titleText = <Text name='Perusopetus-lisäopetus-oppijamäärät-raportti-title' />
-  const descriptionText = <Text name='Perusopetus-lisäopetus-oppijamäärät-raportti-description' />
+  const shortDescriptionText = <Text name='Perusopetus-lisäopetus-oppijamäärät-raportti-short-description' />
+  const dateInputHelpText = <Text name='Perusopetus-lisäopetus-oppijamäärät-raportti-date-input-help' />
+  const exampleText = <Text name='Perusopetus-lisäopetus-oppijamäärät-raportti-example' />
 
-  return (<RaporttiPaivalta
-    organisaatioP={organisaatioP}
-    apiEndpoint={'/perusopetuksenlisaopetuksenoppijamaaratraportti'}
-    title={titleText}
-    description={descriptionText} />)
+  return (
+    <RaporttiPaivalta
+      organisaatioP={organisaatioP}
+      apiEndpoint={'/perusopetuksenlisaopetuksenoppijamaaratraportti'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      dateInputHelp={dateInputHelpText}
+      example={exampleText}
+    />
+  )
 }
 
 function AikuistenPerusopetusRaportti({ organisaatioP }) {
   const titleText = <Text name='aikuisten-perusopetus-raportti-title' />
-  const descriptionText = <Text name='aikuisten-perusopetus-raportti-description' />
+  const shortDescriptionText = <Text name='aikuisten-perusopetus-raportti-short-description' />
+  const exampleText = <Text name='aikuisten-perusopetus-raportti-example' />
 
-  return (<AikuistenPerusopetuksenRaportit
-    organisaatioP={organisaatioP}
-    apiEndpoint={'/aikuisten-perusopetus-suoritustietojen-tarkistus'}
-    title={titleText}
-    description={descriptionText} />)
+  return (
+    <AikuistenPerusopetuksenRaportit
+      organisaatioP={organisaatioP}
+      apiEndpoint={'/aikuisten-perusopetus-suoritustietojen-tarkistus'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      example={exampleText}
+    />
+  )
 }
 
 function AikuistenPerusopetuksenOppijamäärätRaportti({ organisaatioP }) {
   const titleText = <Text name='Aikuisten-perusopetus-oppilasmäärät-raportti-title' />
-  const descriptionText = <Text name='Aikuisten-perusopetus-oppilasmäärät-raportti-description' />
+  const shortDescriptionText = <Text name='Aikuisten-perusopetus-oppilasmäärät-raportti-short-description' />
+  const dateInputHelpText = <Text name='Aikuisten-perusopetus-oppilasmäärät-raportti-date-input-help' />
+  const exampleText = <Text name='Aikuisten-perusopetus-oppilasmäärät-raportti-example' />
 
-  return (<RaporttiPaivalta
-    organisaatioP={organisaatioP}
-    apiEndpoint={'/aikuistenperusopetuksenoppijamaaratraportti'}
-    title={titleText}
-    description={descriptionText} />)
+  return (
+    <RaporttiPaivalta
+      organisaatioP={organisaatioP}
+      apiEndpoint={'/aikuistenperusopetuksenoppijamaaratraportti'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      dateInputHelp={dateInputHelpText}
+      example={exampleText}
+    />
+  )
 }
 
 function AikuistenPerusopetuksenKurssikertymäRaportti({ organisaatioP }) {
   const titleText = <Text name='Aikuisten-perusopetus-kurssikertymä-raportti-title' />
-  const descriptionText = <Text name='Aikuisten-perusopetus-kurssikertymä-raportti-description' />
+  const shortDescriptionText = <Text name='Aikuisten-perusopetus-kurssikertymä-raportti-short-description' />
+  const dateInputHelpText = <Text name='Aikuisten-perusopetus-kurssikertymä-raportti-date-input-help' />
+  const exampleText = <Text name='Aikuisten-perusopetus-kurssikertymä-raportti-example' />
 
-  return (<AikajaksoRaportti
-    organisaatioP={organisaatioP}
-    apiEndpoint={'/aikuistenperusopetuksenkurssikertymaraportti'}
-    title={titleText}
-    description={descriptionText} />)
+  return (
+    <AikajaksoRaportti
+      organisaatioP={organisaatioP}
+      apiEndpoint={'/aikuistenperusopetuksenkurssikertymaraportti'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      dateInputHelp={dateInputHelpText}
+      example={exampleText}
+    />
+  )
 }

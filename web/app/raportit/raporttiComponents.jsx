@@ -13,7 +13,7 @@ export const LyhytKuvaus = ({ children }) => (
 
 export const PaivaValinta = ({ paivaAtom, ohje }) => (
     <div className="parametri">
-        <label><Text name="Valitse päivä"/></label>
+        <label><Text name="select-date"/></label>
         <DateInput
             value={paivaAtom.get()}
             valueCallback={(value) => paivaAtom.set(value)}
@@ -56,7 +56,7 @@ export const Listavalinta = ({ label, options, atom }) => (
 
 export const Vinkit = ({ children }) => (
     <div className="vinkit">
-      <h3><InfoIcon /> <Text name="Vinkkejä ja ohjeita" /></h3>
+      <h3><InfoIcon /> <Text name="tips-and-help" /></h3>
       {children}
     </div>
 )

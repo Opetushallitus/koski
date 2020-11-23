@@ -7,7 +7,7 @@ import {generateRandomPassword} from '../util/password'
 import {downloadExcel} from './downloadExcel'
 import { AikajaksoValinta, LyhytKuvaus, RaportinLataus, Vinkit } from './raporttiComponents'
 
-export const AikajaksoRaportti = ({organisaatioP, apiEndpoint, description}) => {
+export const AikajaksoRaportti = ({organisaatioP, apiEndpoint, shortDescription, dateInputHelp, example}) => {
   const alkuAtom = Atom()
   const loppuAtom = Atom()
   const submitBus = Bacon.Bus()
@@ -26,11 +26,13 @@ export const AikajaksoRaportti = ({organisaatioP, apiEndpoint, description}) => 
 
   return (
     <section>
-      <LyhytKuvaus>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam porttitor libero dictum sem rhoncus, at euismod ex finibus. Morbi tortor purus, vehicula ut purus eget, blandit laoreet eros. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Proin tellus ipsum, mattis non purus sed, mattis rutrum arcu.
-      </LyhytKuvaus>
+      <LyhytKuvaus>{shortDescription}</LyhytKuvaus>
 
-      <AikajaksoValinta alkuAtom={alkuAtom} loppuAtom={loppuAtom} />
+      <AikajaksoValinta
+        alkuAtom={alkuAtom}
+        loppuAtom={loppuAtom}
+        ohje={dateInputHelp}
+      />
 
       <RaportinLataus
         password={password}
@@ -39,9 +41,7 @@ export const AikajaksoRaportti = ({organisaatioP, apiEndpoint, description}) => 
         submitBus={submitBus}
       />
 
-      <Vinkit>
-        <p>{description}</p>
-      </Vinkit>
+      <Vinkit>{example}</Vinkit>
     </section>
   )
 }

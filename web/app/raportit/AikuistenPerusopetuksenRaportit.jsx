@@ -14,7 +14,7 @@ const reportTypes = {
   oppiaineenoppimäärä: 'oppiaineenoppimäärä'
 }
 
-export const AikuistenPerusopetuksenRaportit = ({organisaatioP, apiEndpoint, description}) => {
+export const AikuistenPerusopetuksenRaportit = ({organisaatioP, apiEndpoint, shortDescription, example}) => {
   const alkuAtom = Atom()
   const loppuAtom = Atom()
   const osasuoritustenAikarajausAtom = Atom(false)
@@ -44,9 +44,7 @@ export const AikuistenPerusopetuksenRaportit = ({organisaatioP, apiEndpoint, des
 
   return (
     <section>
-      <LyhytKuvaus>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam porttitor libero dictum sem rhoncus, at euismod ex finibus. Morbi tortor purus, vehicula ut purus eget, blandit laoreet eros. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Proin tellus ipsum, mattis non purus sed, mattis rutrum arcu.
-      </LyhytKuvaus>
+      <LyhytKuvaus>{shortDescription}</LyhytKuvaus>
 
       <Listavalinta
         label="Valitse suorituksen tyyppi"
@@ -67,8 +65,8 @@ export const AikuistenPerusopetuksenRaportit = ({organisaatioP, apiEndpoint, des
         label="Valitse osasuorituksen aikarajaus"
         atom={osasuoritustenAikarajausAtom}
         options={[
-          { key: false, value: <Text name='Raportille valitaan kaikki kurssisuoritukset riippumatta niiden suoritusajankohdasta' /> },
-          { key: true, value: <Text name='Raportille valitaan vain sellaiset kurssit, joiden arviointipäivä osuu yllä määritellylle aikajaksolle' /> }
+          { key: false, value: <Text name="Raportille valitaan kaikki kurssisuoritukset riippumatta niiden suoritusajankohdasta" /> },
+          { key: true, value: <Text name="Raportille valitaan vain sellaiset kurssit, joiden arviointipäivä osuu yllä määritellylle aikajaksolle" /> }
         ]}
       />
 
@@ -79,9 +77,7 @@ export const AikuistenPerusopetuksenRaportit = ({organisaatioP, apiEndpoint, des
         submitBus={submitBus}
       />
 
-      <Vinkit>
-        <p>{description}</p>
-      </Vinkit>
+      <Vinkit>{example}</Vinkit>
     </section>
   )
 }

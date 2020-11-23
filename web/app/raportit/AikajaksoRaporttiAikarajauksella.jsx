@@ -34,7 +34,8 @@ const AikarajatutSuorituksetLabel = ({ osasuoritusType }) => {
 export const AikajaksoRaporttiAikarajauksella = ({
   organisaatioP,
   apiEndpoint,
-  description,
+  shortDescription,
+  example,
   osasuoritusType = osasuoritusTypes.TUTKINNON_OSA
 }) => {
   const alkuAtom = Atom()
@@ -64,9 +65,7 @@ export const AikajaksoRaporttiAikarajauksella = ({
 
   return (
     <section>
-      <LyhytKuvaus>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam porttitor libero dictum sem rhoncus, at euismod ex finibus. Morbi tortor purus, vehicula ut purus eget, blandit laoreet eros. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Proin tellus ipsum, mattis non purus sed, mattis rutrum arcu.
-      </LyhytKuvaus>
+      <LyhytKuvaus>{shortDescription}</LyhytKuvaus>
 
       <AikajaksoValinta alkuAtom={alkuAtom} loppuAtom={loppuAtom} />
 
@@ -86,9 +85,7 @@ export const AikajaksoRaporttiAikarajauksella = ({
         submitBus={submitBus}
       />
 
-      <Vinkit>
-        <p>{description}</p>
-      </Vinkit>
+      <Vinkit>{example}</Vinkit>
     </section>
   )
 }

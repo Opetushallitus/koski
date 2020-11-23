@@ -124,10 +124,10 @@ const Options = ({ organisaatiot, selected, onSelect, isOpen, isChild }) => (
     <ul
         className={
             isChild
-            ? "child-options"
+            ? 'child-options'
             : isOpen
-            ? "options open"
-            : "options"
+            ? 'options open'
+            : 'options'
         }
     >
         {organisaatiot.map(org => (
