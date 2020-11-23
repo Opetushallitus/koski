@@ -22,7 +22,7 @@ object AmmatillinenTutkintoRaportti {
   private def buildRows(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, osasuoritustenAikarajaus: Boolean)(data: (ROpiskeluoikeusRow, RHenkilöRow, Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])): SuoritustiedotTarkistusRow = {
     val (opiskeluoikeus, henkilö, aikajaksot, päätasonSuoritus, sisältyvätOpiskeluoikeudet, unfilteredOsasuoritukset) = data
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
-    val osaamisalat = extractOsaamisalatAikavalilta(List(päätasonSuoritus), alku, loppu)
+    val osaamisalat = extractOsaamisalatAikavalilta(päätasonSuoritus, alku, loppu)
 
     val osasuoritukset = if (osasuoritustenAikarajaus) unfilteredOsasuoritukset.filter(arvioituAikavälillä(alku, loppu)) else unfilteredOsasuoritukset
 

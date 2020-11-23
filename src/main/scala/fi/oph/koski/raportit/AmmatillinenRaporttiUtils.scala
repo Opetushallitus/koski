@@ -8,10 +8,9 @@ import fi.oph.koski.raportointikanta.{ROsasuoritusRow, RPäätasonSuoritusRow}
 import fi.oph.koski.schema._
 
 object AmmatillinenRaporttiUtils {
-  def extractOsaamisalatAikavalilta(päätasonSuoritukset: Seq[RPäätasonSuoritusRow], alku: LocalDate, loppu: LocalDate) = {
-    päätasonSuoritukset
-      .flatMap(s => JsonSerializer.extract[Option[List[Osaamisalajakso]]](s.data \ "osaamisala"))
-      .flatten
+  def extractOsaamisalatAikavalilta(päätasonSuoritus: RPäätasonSuoritusRow, alku: LocalDate, loppu: LocalDate) = {
+    JsonSerializer.extract[Option[List[Osaamisalajakso]]](päätasonSuoritus.data \ "osaamisala")
+      .getOrElse(List())
       .filterNot(j => j.alku.exists(_.isAfter(loppu)))
       .filterNot(j => j.loppu.exists(_.isBefore(alku)))
       .map(_.osaamisala.koodiarvo)
