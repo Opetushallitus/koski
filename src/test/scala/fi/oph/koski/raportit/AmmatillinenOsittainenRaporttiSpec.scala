@@ -68,7 +68,7 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
     tutkintonimike = "Autokorinkorjaaja",
     päätasonSuorituksenNimi = "Luonto- ja ympäristöalan perustutkinto",
     päätasonSuorituksenSuoritustapa = "Reformin mukainen näyttö",
-    päätasonSuorituksenTila = Some("Valmis"),
+    päätasonSuorituksenTila = "Valmis",
     opiskeluoikeudenAlkamispäivä = Some(date(2012, 9, 1)),
     viimeisinOpiskeluoikeudenTila = Some("valmistunut"),
     viimeisinOpiskeluoikeudenTilaAikajaksonLopussa = "lasna",

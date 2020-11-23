@@ -26,11 +26,7 @@ object AmmatillinenRaporttiUtils {
     päätasonsuoritukset.flatMap(pts => JsonSerializer.extract[Option[Koodistokoodiviite]](pts.data \ "suoritustapa").flatMap(_.nimi.map(_.get("fi")))).mkString(",")
   }
 
-  def päätasonSuoritustenTilat(päätasonsuoritukset: Seq[RPäätasonSuoritusRow]) = {
-    päätasonsuoritukset.map(ps => vahvistusPäivätToTila(ps.vahvistusPäivä)).mkString(",")
-  }
-
-  def vahvistusPäivätToTila(vahvistusPäivä: Option[Date]) = vahvistusPäivä match {
+  def vahvistusPäiväToTila(vahvistusPäivä: Option[Date]) = vahvistusPäivä match {
     case Some(päivä) if isTulevaisuudessa(päivä) =>  s"Kesken, Valmistuu ${päivä.toLocalDate}"
     case Some(_) =>  "Valmis"
     case _ => "Kesken"
