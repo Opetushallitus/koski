@@ -33,7 +33,7 @@ export class KurssiPopup extends React.Component {
       className={'details details-' + this.state.popupAlignment.x + ' details-' + this.state.popupAlignment.x + '-' + this.state.popupAlignment.y}>
       <PropertiesEditor
         model={kurssi}
-        propertyFilter={p => !['arviointi', 'koodistoUri'].includes(p.key) || isAikuistenPerusopetuksenKurssi(kurssi) || isIBKurssinArviointi(kurssi)(p) || isDIAOsasuorituksenArviointi(kurssi)(p)}
+        propertyFilter={p => !['arviointi', 'koodistoUri'].includes(p.key) || hasArviointi(kurssi)}
         propertyEditable={p => !['tunniste', 'koodiarvo', 'nimi'].includes(p.key)}
         getValueEditor={(prop, getDefault) => {
           const PropertyEditor = resolvePropertyEditor(kurssi, prop)
