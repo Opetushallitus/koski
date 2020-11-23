@@ -40,7 +40,7 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends K
     val raporttiQuery = query(oppilaitosOids, aikaisintaan, viimeistaan).as[AikuistenPerusopetuksenOppimääränKurssikertymätRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
-      title = "Aineopiskelijat",
+      title = "Oppimäärä",
       rows = rows,
       columnSettings = columnSettings
     )
