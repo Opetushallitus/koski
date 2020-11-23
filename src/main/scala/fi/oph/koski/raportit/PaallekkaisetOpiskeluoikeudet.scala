@@ -77,7 +77,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
         left join lateral (
           select
             opiskeluoikeus_oid,
-            string_agg(opintojen_rahoitus, ',' order by alku) koodiarvot
+            string_agg(coalesce(opintojen_rahoitus, '-'), ',' order by alku) koodiarvot
           from r_opiskeluoikeus_aikajakso aikajakso
             where opiskeluoikeus_oid = haetun_organisaation_opiskeluoikeudet.opiskeluoikeus_oid
             group by opiskeluoikeus_oid
@@ -85,7 +85,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
         left join lateral (
           select
             opiskeluoikeus_oid,
-            string_agg(opintojen_rahoitus, ',' order by alku) koodiarvot
+            string_agg(coalesce(opintojen_rahoitus, '-'), ',' order by alku) koodiarvot
           from r_opiskeluoikeus_aikajakso aikajakso
             where opiskeluoikeus_oid = haetun_organisaation_opiskeluoikeudet.opiskeluoikeus_oid
               and aikajakso.alku <= $viimeistaan
@@ -95,7 +95,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
         left join lateral (
           select
             opiskeluoikeus_oid,
-            string_agg(opintojen_rahoitus, ',' order by alku) koodiarvot
+            string_agg(coalesce(opintojen_rahoitus, '-'), ',' order by alku) koodiarvot
           from r_opiskeluoikeus_aikajakso aikajakso
             where opiskeluoikeus_oid = paallekkainen_opiskeluoikeus_oid
             group by opiskeluoikeus_oid
@@ -103,7 +103,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
         left join lateral (
           select
             opiskeluoikeus_oid,
-            string_agg(opintojen_rahoitus, ',' order by alku) koodiarvot
+            string_agg(coalesce(opintojen_rahoitus, '-'), ',' order by alku) koodiarvot
           from r_opiskeluoikeus_aikajakso aikajakso
             where opiskeluoikeus_oid = paallekkainen_opiskeluoikeus_oid
               and aikajakso.alku <= $viimeistaan

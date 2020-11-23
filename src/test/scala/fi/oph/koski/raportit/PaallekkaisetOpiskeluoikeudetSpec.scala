@@ -78,7 +78,7 @@ class PaallekkaisetOpiskeluoikeudetSpec extends FreeSpec with RaportointikantaTe
 
       pekanRivit(keskuksenRaportti).map(withOppilaitos(_.paallekkainenRahoitusmuodot)) should contain theSameElementsAs(Seq(
         ("Stadin ammatti- ja aikuisopisto", Some("1")),
-        ("Omnia", Some("1"))
+        ("Omnia", Some("1,-,1"))
       ))
       pekanRivit(keskuksenRaportti).map(withOppilaitos(_.paallekkainenRahoitusmuodotParametrienSisalla)) should contain theSameElementsAs(Seq(
         ("Stadin ammatti- ja aikuisopisto", Some("1")),
