@@ -81,7 +81,9 @@ describe('Lukiokoulutus2019', function( ){
             'Nimi Keittiöfysiikka 2\n' +
             'Laajuus 1 op\n' +
             'Kuvaus Haastava kokeellinen keittiöfysiikka, liekitys ja lämpöreaktiot\n' +
-            'Pakollinen ei')
+            'Pakollinen ei\n' +
+            'Arvosana S\n' +
+            'Arviointipäivä 4.9.2021')
         })
       })
       describe('Kun klikataan uudestaan', function() {
