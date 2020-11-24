@@ -10,6 +10,7 @@ import {AikuistenPerusopetuksenRaportit} from './AikuistenPerusopetuksenRaportit
 import {Tabs} from '../components/Tabs'
 import { OrganisaatioDropdown } from './OrganisaatioDropdown'
 import {filterOrgTreeByRaporttityyppi} from './raporttiComponents'
+import { contentWithLoadingIndicator } from '../components/AjaxLoadingIndicator'
 
 const kaikkiRaportitKategorioittain = [
   {
@@ -223,44 +224,61 @@ export const raportitContentP = () => {
     })
   )
 
+  return contentWithLoadingIndicator(organisaatiotP.map(() => ({
+    title: 'Raportit',
+    content: (
+      <div className='content-area raportit'>
+        <RaportitContent
+          stateP={stateP}
+          onSelectTab={index => selectedTabIdxE.push(index)}
+          onSelectRaportti={index => selectedRaporttiIdxE.push(index)}
+          onSelectOrganisaatio={org => selectedOrganisaatioE.push(org)}
+        />
+      </div>
+    )
+  })),
+  )
+}
+
+const RaportitContent = ({
+  stateP,
+  onSelectTab,
+  onSelectRaportti,
+  onSelectOrganisaatio
+}) => {
   const tabP = stateP.map(state => state.tabs[state.selectedTabIdx]).skipDuplicates()
   const raporttiP = Bacon.combineWith(stateP, tabP, (state, tab) => tab && tab.raportit[state.selectedRaporttiIdx]).skipDuplicates()
   const raporttiComponentP = raporttiP.map(raportti => raportti && raportti.component)
 
-  return Bacon.constant({
-    content: (
-      <div className='content-area raportit'>
-        <div className='main-content'>
-          <Tabs
-            optionsP={stateP.map(state => state.tabs.map((r, index) => ({
-              id: index,
-              name: <Text name={r.tab} />,
-              hidden: !r.visible
-            })))}
-            selectedP={stateP.map(state => state.selectedTabIdx)}
-            onSelect={id => selectedTabIdxE.push(id)}
-          />
-          {tabP.map(tab => tab && <h2><Text name={tab.heading} /></h2>)}
-          <RaporttiValitsin
-            raportitP={tabP.map(tab => tab ? tab.raportit : [])}
-            selectedP={stateP.map(state => state.selectedRaporttiIdx)}
-            onSelect={idx => selectedRaporttiIdxE.push(idx)}
-          />
-          <OrganisaatioValitsin
-            organisaatiotP={raporttiP.map(raportti => raportti ? raportti.organisaatiot : [])}
-            raporttityyppiP={raporttiP.map(raportti => raportti ? raportti.id : null)}
-            selectedP={stateP.map(state => state.selectedOrganisaatio)}
-            onSelect={org => selectedOrganisaatioE.push(org)}
-          />
-          {raporttiComponentP.map(RC => RC
-            ? <RC organisaatioP={stateP.map(state => state.selectedOrganisaatio)} />
-            : null
-          )}
-        </div>
-      </div>
-    ),
-    title: 'Raportit'
-  })
+  return (
+    <div className='main-content'>
+      <Tabs
+        optionsP={stateP.map(state => state.tabs.map((r, index) => ({
+          id: index,
+          name: <Text name={r.tab} />,
+          hidden: !r.visible
+        })))}
+        selectedP={stateP.map(state => state.selectedTabIdx)}
+        onSelect={onSelectTab}
+      />
+      {tabP.map(tab => tab && <h2><Text name={tab.heading} /></h2>)}
+      <RaporttiValitsin
+        raportitP={tabP.map(tab => tab ? tab.raportit : [])}
+        selectedP={stateP.map(state => state.selectedRaporttiIdx)}
+        onSelect={onSelectRaportti}
+      />
+      <OrganisaatioValitsin
+        organisaatiotP={raporttiP.map(raportti => raportti ? raportti.organisaatiot : [])}
+        raporttityyppiP={raporttiP.map(raportti => raportti ? raportti.id : null)}
+        selectedP={stateP.map(state => state.selectedOrganisaatio)}
+        onSelect={onSelectOrganisaatio}
+      />
+      {raporttiComponentP.map(RC => RC
+        ? <RC organisaatioP={stateP.map(state => state.selectedOrganisaatio)} />
+        : null
+      )}
+    </div>
+  )
 }
 
 const RaporttiValitsin = ({ raportitP, selectedP, onSelect }) => (
@@ -286,12 +304,14 @@ const RaporttiValitsin = ({ raportitP, selectedP, onSelect }) => (
 
 const OrganisaatioValitsin = ({ organisaatiotP, raporttityyppiP, selectedP, onSelect }) => (
   <div className="organisaatio-valitsin">
-    <OrganisaatioDropdown
-      organisaatiotP={organisaatiotP}
-      raporttityyppiP={raporttityyppiP}
-      selectedP={selectedP}
-      onSelect={onSelect}
-    />
+    {organisaatiotP.map(organisaatiot => organisaatiot.length === 0 ? null : (
+      <OrganisaatioDropdown
+        organisaatiotP={organisaatiotP}
+        raporttityyppiP={raporttityyppiP}
+        selectedP={selectedP}
+        onSelect={onSelect}
+      />
+    ))}
   </div>
 )
 
