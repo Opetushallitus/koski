@@ -269,63 +269,6 @@
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "A",
-            "koodistoUri" : "oppiaineetib"
-          },
-          "taso" : {
-            "koodiarvo" : "SL",
-            "koodistoUri" : "oppiaineentasoib"
-          },
-          "kieli" : {
-            "koodiarvo" : "FI",
-            "koodistoUri" : "kielivalikoima"
-          },
-          "ryhmä" : {
-            "koodiarvo" : "1",
-            "koodistoUri" : "aineryhmaib"
-          },
-          "pakollinen" : true
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "8",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          },
-          "hyväksytty" : true
-        } ],
-        "osasuoritukset" : [ {
-          "koulutusmoduuli" : {
-            "kuvaus" : {
-              "fi" : "A Finnish standard level 1"
-            },
-            "tunniste" : {
-              "koodiarvo" : "FIN_S1",
-              "nimi" : {
-                "en" : "FIN_S1"
-              }
-            },
-            "pakollinen" : true
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "8",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
-            },
-            "päivä" : "2021-09-04",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "preibkurssi",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        } ],
-        "tyyppi" : {
-          "koodiarvo" : "preiboppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
             "koodiarvo" : "AI",
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },

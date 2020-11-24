@@ -652,9 +652,6 @@ describe('Omat tiedot - lukio', function() {
         it('Näytetään Pre-IB -oppiaineet sekä kurssit', function () {
           expect(extractAsText(S('table.omattiedot-suoritukset'))).to.equal(
             'Oppiaine Arvosana\n' +
-            'Language A: literature, suomi 8\n' +
-            'FIN_S1\n' +
-            '8\n' +
             'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus, valinnainen\n' +
             '(4 opintopistettä) 9\n' +
             'ÄI1\n' +

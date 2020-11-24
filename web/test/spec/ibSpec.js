@@ -533,10 +533,7 @@ describe('IB', function( ) {
 
       it('näyttää oppiaineiden ja kurssien arvosanat', function() {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
-          'Oppiaine Arvioitu (kurssia) Hyväksytysti arvioitu (kurssia) Arvosana\n' +
-          'Language A: literature, suomi\n' +
-          'FIN_S1\n' +
-          '8 1 1 8\n' +
+          'Oppiaine Arvioitu (opintopistettä) Hyväksytysti arvioitu (opintopistettä) Arvosana\n' +
           'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus, valinnainen\n' +
           'ÄI1\n' +
           '8 ÄI2\n' +
@@ -579,7 +576,7 @@ describe('IB', function( ) {
           'Teemaopinnot\n' +
           'HAI765 *\n' +
           'S 1 1\n' +
-          'Arvioitujen osasuoritusten laajuus yhteensä: 35,0 Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 35,0\n' +
+          'Arvioitujen osasuoritusten laajuus yhteensä: 34,0 Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 34,0\n' +
           '* = paikallinen opintojakso tai oppiaine'
         )
       })

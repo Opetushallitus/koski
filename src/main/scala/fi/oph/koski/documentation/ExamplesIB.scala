@@ -83,10 +83,6 @@ object ExamplesIB {
     ryhmä = Some("AH"),
     todistuksellaNäkyvätLisätiedot = Some("Suorittanut etäopetuskokeiluna"),
     osasuoritukset = Some(List(
-      ibOppiaineenPreIBSuoritus2019(ibKieli("A", "FI", standardLevel, 1), List(
-        (ibKurssi("FIN_S1", "A Finnish standard level 1"), "8")
-      )).copy(arviointi = Lukio2019ExampleData.numeerinenLukionOppiaineenArviointi(8)),
-
       lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionÄidinkieli("AI1", false), List(
         (Lukio2019ExampleData.muuModuuliOppiaineissa("ÄI1"), "8"),
         (Lukio2019ExampleData.muuModuuliOppiaineissa("ÄI2").copy(pakollinen = false), "8")
@@ -246,16 +242,6 @@ object ExamplesIB {
       PreIBKurssinSuoritus2015(
         koulutusmoduuli = kurssi,
         arviointi = LukioExampleData.sanallinenArviointi(arvosana)
-      )
-    })
-  )
-
-  def ibOppiaineenPreIBSuoritus2019(oppiaine: PreIBIBOppiaine2019, kurssit: List[(PreIBKurssi2019, String)]) = IBOppiaineenPreIBSuoritus2019(
-    koulutusmoduuli = oppiaine,
-    osasuoritukset = Some(kurssit.map { case (kurssi, arvosana) =>
-      PreIBKurssinSuoritus2019(
-        koulutusmoduuli = kurssi,
-        arviointi = Lukio2019ExampleData.sanallinenArviointi(arvosana)
       )
     })
   )
