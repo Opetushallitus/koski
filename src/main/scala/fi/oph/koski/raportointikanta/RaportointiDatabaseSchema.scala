@@ -51,7 +51,7 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(paatason_suoritus_id)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(ylempi_osasuoritus_id)",
-    sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(arviointi_paiva, paatason_suoritus_id, suorituksen_tyyppi)",
+    sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(paatason_suoritus_id, suorituksen_tyyppi, arviointi_paiva)",
 
     sqlu"CREATE INDEX ON #${s.name}.esiopetus_opiskeluoik_aikajakso(opiskeluoikeus_oid)",
   )
