@@ -49,11 +49,7 @@ object AmmatillinenTutkintoRaportti {
       hetu = henkilö.hetu,
       sukunimi = henkilö.sukunimi,
       etunimet = henkilö.etunimet,
-      tutkinto = if (päätasonSuoritus.suorituksenTyyppi == "nayttotutkintoonvalmistavakoulutus") {
-        JsonSerializer.extract[String](päätasonSuoritus.data \ "tutkinto" \ "tunniste" \ "koodiarvo")
-      } else {
-        päätasonSuoritus.koulutusmoduuliKoodiarvo
-      },
+      tutkinto = päätasonSuoritus.koulutusmoduuliKoodiarvo,
       osaamisalat = if (osaamisalat.isEmpty) None else Some(osaamisalat.mkString(",")),
       tutkintonimike = tutkintonimike(päätasonSuoritus).getOrElse(""),
       päätasonSuorituksenNimi = päätasonSuoritus.koulutusmoduuliNimi.getOrElse(""),
@@ -105,7 +101,7 @@ object AmmatillinenTutkintoRaportti {
        |
        |Tarkempi kuvaus joistakin sarakkeista:
        |
-       |- Tutkinto: Opiskeluoikeudella olevan päätason suorituksen tutkinto (myös ennen raportin aikajaksoa valmistuneet, ja raportin aikajakson jälkeen alkaneet). Näyttötutkintoon valmistavan koulutuksen suoritukselle näytetään sen tutkinto-kentässä oleva tutkinto. Valtakunnalliset tutkinnot käyttävät "koulutus"-koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/koulutus/latest.
+       |- Tutkinto: Opiskeluoikeudella olevan päätason suorituksen tutkinto (myös ennen raportin aikajaksoa valmistuneet, ja raportin aikajakson jälkeen alkaneet). Valtakunnalliset tutkinnot käyttävät "koulutus"-koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/koulutus/latest.
        |
        |- Osaamisalat: Ym. tutkinnon osaamisalat (myös ennen/jälkeen raportin aikajaksoa). Valtakunnalliset osaamisalat käyttävät "osaamisala"-koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/osaamisala/latest.
        |

@@ -116,13 +116,13 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
     }
 
     "Näyttötutkintoon valmistava koulutus" - {
-      "Näytetään erillinen rivi, jolla tutkintokoodi luetaan tutkintokentästä" in {
+      "Näytetään erillinen rivi" in {
         val rivit = testiHenkilöRaporttiRows(defaultRequest, MockOppijat.erikoisammattitutkinto.hetu.get)
 
         rivit.length should equal(2)
 
         rivit(0).opiskeluoikeudenAlkamispäivä should equal(Some(date(2012, 9, 1)))
-        rivit(0).tutkinto should equal("357305")
+        rivit(0).tutkinto should equal("999904")
         rivit(0).osaamisalat should equal(None)
         rivit(0).tutkintonimike should equal("")
         rivit(0).päätasonSuorituksenNimi should equal("Näyttötutkintoon valmistava koulutus")
@@ -209,7 +209,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
           rivit.length should equal(2)
 
           rivit(0).opiskeluoikeudenAlkamispäivä should equal(Some(date(2012, 9, 1)))
-          rivit(0).tutkinto should equal("357305")
+          rivit(0).tutkinto should equal("999904")
           rivit(0).osaamisalat should equal(None)
           rivit(0).tutkintonimike should equal("")
           rivit(0).päätasonSuorituksenNimi should equal("Näyttötutkintoon valmistava koulutus")
