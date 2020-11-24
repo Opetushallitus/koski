@@ -8,10 +8,9 @@ import fi.oph.koski.raportointikanta.{ROsasuoritusRow, RPäätasonSuoritusRow}
 import fi.oph.koski.schema._
 
 object AmmatillinenRaporttiUtils {
-  def extractOsaamisalatAikavalilta(päätasonSuoritukset: Seq[RPäätasonSuoritusRow], alku: LocalDate, loppu: LocalDate) = {
-    päätasonSuoritukset
-      .flatMap(s => JsonSerializer.extract[Option[List[Osaamisalajakso]]](s.data \ "osaamisala"))
-      .flatten
+  def extractOsaamisalatAikavalilta(päätasonSuoritus: RPäätasonSuoritusRow, alku: LocalDate, loppu: LocalDate) = {
+    JsonSerializer.extract[Option[List[Osaamisalajakso]]](päätasonSuoritus.data \ "osaamisala")
+      .getOrElse(List())
       .filterNot(j => j.alku.exists(_.isAfter(loppu)))
       .filterNot(j => j.loppu.exists(_.isBefore(alku)))
       .map(_.osaamisala.koodiarvo)
@@ -27,11 +26,7 @@ object AmmatillinenRaporttiUtils {
     päätasonsuoritukset.flatMap(pts => JsonSerializer.extract[Option[Koodistokoodiviite]](pts.data \ "suoritustapa").flatMap(_.nimi.map(_.get("fi")))).mkString(",")
   }
 
-  def päätasonSuoritustenTilat(päätasonsuoritukset: Seq[RPäätasonSuoritusRow]) = {
-    päätasonsuoritukset.map(ps => vahvistusPäivätToTila(ps.vahvistusPäivä)).mkString(",")
-  }
-
-  def vahvistusPäivätToTila(vahvistusPäivä: Option[Date]) = vahvistusPäivä match {
+  def vahvistusPäiväToTila(vahvistusPäivä: Option[Date]) = vahvistusPäivä match {
     case Some(päivä) if isTulevaisuudessa(päivä) =>  s"Kesken, Valmistuu ${päivä.toLocalDate}"
     case Some(_) =>  "Valmis"
     case _ => "Kesken"
@@ -46,7 +41,7 @@ object AmmatillinenRaporttiUtils {
 
   def isAnyOf(osasuoritus: ROsasuoritusRow, fs: (ROsasuoritusRow => Boolean)*) = fs.exists(f => f(osasuoritus))
 
-  val sisältyyVahvistettuunPäätasonSuoritukseen: (ROsasuoritusRow, Seq[RPäätasonSuoritusRow]) => Boolean = (os, pss) => pss.exists(ps => ps.päätasonSuoritusId == os.päätasonSuoritusId & ps.vahvistusPäivä.isDefined)
+  val sisältyyVahvistettuunPäätasonSuoritukseen: (ROsasuoritusRow, RPäätasonSuoritusRow) => Boolean = (os, ps) => ps.päätasonSuoritusId == os.päätasonSuoritusId & ps.vahvistusPäivä.isDefined
 
   val yhteislaajuus: Seq[ROsasuoritusRow] => Double = osasuoritukset => osasuoritukset.flatMap(_.koulutusmoduuliLaajuusArvo).sum
 

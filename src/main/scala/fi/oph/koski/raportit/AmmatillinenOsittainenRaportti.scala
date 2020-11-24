@@ -18,10 +18,10 @@ object AmmatillinenOsittainenRaportti {
     data.map(buildRow(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus))
   }
 
-  private def buildRow(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, osasuoritustenAikarajaus: Boolean)(data: (ROpiskeluoikeusRow, RHenkilöRow, Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])) = {
-    val (opiskeluoikeus, henkilö, aikajaksot, päätasonSuoritukset, sisältyvätOpiskeluoikeudet, unFilteredosasuoritukset) = data
+  private def buildRow(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, osasuoritustenAikarajaus: Boolean)(data: (ROpiskeluoikeusRow, RHenkilöRow, Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])) = {
+    val (opiskeluoikeus, henkilö, aikajaksot, päätasonSuoritus, sisältyvätOpiskeluoikeudet, unFilteredosasuoritukset) = data
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
-    val osaamisalat = extractOsaamisalatAikavalilta(päätasonSuoritukset, alku, loppu)
+    val osaamisalat = extractOsaamisalatAikavalilta(päätasonSuoritus, alku, loppu)
 
     val osasuoritukset = if (osasuoritustenAikarajaus) unFilteredosasuoritukset.filter(arvioituAikavälillä(alku, loppu)) else unFilteredosasuoritukset
 
@@ -41,18 +41,18 @@ object AmmatillinenOsittainenRaportti {
       sisältyvätOpiskeluoikeudetOppilaitokset = sisältyvätOpiskeluoikeudet.map(_.oppilaitosNimi).mkString(","),
       linkitetynOpiskeluoikeudenOppilaitos = if (opiskeluoikeus.oppilaitosOid != oppilaitosOid) opiskeluoikeus.oppilaitosNimi else "",
       aikaleima = opiskeluoikeus.aikaleima.toLocalDateTime.toLocalDate,
-      toimipisteOidit = päätasonSuoritukset.map(_.toimipisteOid).sorted.distinct.mkString(","),
+      toimipisteOid = päätasonSuoritus.toimipisteOid,
       yksiloity = henkilö.yksiloity,
       oppijaOid = opiskeluoikeus.oppijaOid,
       hetu = henkilö.hetu,
       sukunimi = henkilö.sukunimi,
       etunimet = henkilö.etunimet,
-      koulutusmoduulit = päätasonSuoritukset.map(_.koulutusmoduuliKoodiarvo).sorted.mkString(","),
+      tutkinto = päätasonSuoritus.koulutusmoduuliKoodiarvo,
       osaamisalat = if (osaamisalat.isEmpty) None else Some(osaamisalat.mkString(",")),
-      tutkintonimikkeet = päätasonSuoritukset.flatMap(tutkintonimike(_)).mkString(","),
-      päätasonSuorituksenNimi = päätasonSuoritukset.flatMap(_.koulutusmoduuliNimi).mkString(","),
-      päätasonSuorituksenSuoritustapa = suoritusTavat(päätasonSuoritukset),
-      päätasonSuoritustenTilat = Some(päätasonSuoritustenTilat(päätasonSuoritukset)),
+      tutkintonimike = tutkintonimike(päätasonSuoritus).getOrElse(""),
+      päätasonSuorituksenNimi = päätasonSuoritus.koulutusmoduuliNimi.getOrElse(""),
+      päätasonSuorituksenSuoritustapa = suoritusTavat(List(päätasonSuoritus)),
+      päätasonSuorituksenTila = vahvistusPäiväToTila(päätasonSuoritus.vahvistusPäivä),
       opiskeluoikeudenAlkamispäivä = opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
       viimeisinOpiskeluoikeudenTila = opiskeluoikeus.viimeisinTila,
       viimeisinOpiskeluoikeudenTilaAikajaksonLopussa = aikajaksot.last.tila,
@@ -92,11 +92,11 @@ object AmmatillinenOsittainenRaportti {
        |
        |Tarkempi kuvaus joistakin sarakkeista:
        |
-       |- Tutkinnot: kaikki opiskeluoikeudella olevat päätason suoritusten tutkinnot pilkulla erotettuna (myös ennen raportin aikajaksoa valmistuneet, ja raportin aikajakson jälkeen alkaneet). Valtakunnalliset tutkinnot käyttävät "koulutus"-koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/koulutus/latest.
+       |- Tutkinto: Opiskeluoikeudella olevan päätason suorituksen tutkinto (myös ennen raportin aikajaksoa valmistuneet, ja raportin aikajakson jälkeen alkaneet). Valtakunnalliset tutkinnot käyttävät "koulutus"-koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/koulutus/latest.
        |
-       |- Osaamisalat: kaikkien ym. tutkintojen osaamisalat pilkulla erotettuna (myös ennen/jälkeen raportin aikajaksoa). Valtakunnalliset osaamisalat käyttävät "osaamisala"-koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/osaamisala/latest.
+       |- Osaamisalat: Ym. tutkinnon osaamisalat (myös ennen/jälkeen raportin aikajaksoa). Valtakunnalliset osaamisalat käyttävät "osaamisala"-koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/osaamisala/latest.
        |
-       |- Suorituksen tila: kaikkien opiskeluoikeuteen kuuluvien päätason suoritusten tilat.
+       |- Suorituksen tila: Päätason suorituksen tila.
        |
        |- Viimeisin opiskeluoikeuden tila: opiskeluoikeuden tila raportin aikajakson lopussa. Käyttää "koskiopiskeluoikeudentila" koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/koskiopiskeluoikeudentila/latest.
        |
@@ -131,23 +131,23 @@ object AmmatillinenOsittainenRaportti {
     "sisältyvätOpiskeluoikeudetOppilaitokset" -> Column("Sisältyvien opiskeluoikeuksien oppilaitokset", width = Some(4000)),
     "linkitetynOpiskeluoikeudenOppilaitos" -> Column("Toisen koulutuksen järjestäjän opiskeluoikeus"),
     "aikaleima" -> Column("Päivitetty"),
-    "toimipisteOidit" -> Column("Toimipisteet"),
+    "toimipisteOid" -> Column("Toimipiste"),
     "yksiloity" -> Column("Yksilöity", comment = Some("Jos tässä on arvo 'ei', tulee oppija yksilöidä oppijanumerorekisterissä")),
     "oppijaOid" -> Column("Oppijan oid"),
     "hetu" -> Column("Hetu"),
     "sukunimi" -> Column("Sukunimi"),
     "etunimet" -> Column("Etunimet"),
-    "koulutusmoduulit" -> CompactColumn("Tutkinnot"),
+    "tutkinto" -> CompactColumn("Tutkinto"),
     "osaamisalat" -> CompactColumn("Osaamisalat"),
-    "tutkintonimikkeet" -> CompactColumn("Tutkintonimike"),
+    "tutkintonimike" -> CompactColumn("Tutkintonimike"),
     "päätasonSuorituksenNimi" -> CompactColumn("Päätason suorituksen nimi"),
     "päätasonSuorituksenSuoritustapa" -> CompactColumn("Päätason suorituksen suoritustapa"),
-    "päätasonSuoritustenTilat" -> CompactColumn("Suorituksen tila"),
+    "päätasonSuorituksenTila" -> CompactColumn("Suorituksen tila"),
     "opiskeluoikeudenAlkamispäivä" -> Column("Opiskeluoikeuden alkamispäivä"),
     "viimeisinOpiskeluoikeudenTila" -> CompactColumn("Viimeisin opiskeluoikeuden tila"),
     "viimeisinOpiskeluoikeudenTilaAikajaksonLopussa" -> CompactColumn("Viimeisin opiskeluoikeuden tila aikajakson lopussa"),
     "opintojenRahoitukset" -> CompactColumn("Rahoitukset"),
-    "suoritettujenOpintojenYhteislaajuus" -> CompactColumn("Suorittetujen opintojen yhteislaajuus"),
+    "suoritettujenOpintojenYhteislaajuus" -> CompactColumn("Suoritettujen opintojen yhteislaajuus"),
     "valmiitAmmatillisetTutkinnonOsatLkm" -> CompactColumn("Valmiiden ammatillisten tutkinnon osien lukumäärä"),
     "näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm" -> CompactColumn("Valmiissa ammatillisissa tutkinnon osissa olevien näyttöjen lukumäärä"),
     "tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm" -> CompactColumn("Tunnustettujen tutkinnon osien osuus valmiista ammatilllisista tutkinnon osista"),
@@ -179,18 +179,18 @@ case class AmmatillinenOsittainRaporttiRow(
   sisältyvätOpiskeluoikeudetOppilaitokset: String,
   linkitetynOpiskeluoikeudenOppilaitos: String,
   aikaleima: LocalDate,
-  toimipisteOidit: String,
+  toimipisteOid: String,
   yksiloity: Boolean,
   oppijaOid: String,
   hetu: Option[String],
   sukunimi: String,
   etunimet: String,
-  koulutusmoduulit: String,
+  tutkinto: String,
   osaamisalat: Option[String],
-  tutkintonimikkeet: String,
+  tutkintonimike: String,
   päätasonSuorituksenNimi: String,
   päätasonSuorituksenSuoritustapa: String,
-  päätasonSuoritustenTilat: Option[String],
+  päätasonSuorituksenTila: String,
   opiskeluoikeudenAlkamispäivä: Option[LocalDate],
   viimeisinOpiskeluoikeudenTila: Option[String],
   viimeisinOpiskeluoikeudenTilaAikajaksonLopussa: String,
