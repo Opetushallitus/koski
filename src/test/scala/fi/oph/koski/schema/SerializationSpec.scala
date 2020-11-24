@@ -74,8 +74,7 @@ class SerializationSpec extends FreeSpec with Matchers with Logging {
                    _: LukionOppiaineenPreIBSuoritus2019 |
                    _: MuidenLukioOpintojenPreIBSuoritus2019 |
                    _: PreIBLukionModuulinSuoritus2019 |
-                   _: PreIBLukionPaikallisenOpintojaksonSuoritus2019 |
-                   _: PreIBKurssinSuoritus2019 => true
+                   _: PreIBLukionPaikallisenOpintojaksonSuoritus2019 => true
               case _ => false
             }
 

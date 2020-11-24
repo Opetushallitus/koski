@@ -38,21 +38,6 @@ case class PreIBKoulutusmoduuli2019(
 
 trait PreIBOppiaineenSuoritus2019 extends IBSuoritus2019 with PreIBSuorituksenOsasuoritus2019
 
-@Description("IB-oppiaineen suoritus Pre-IB-opinnoissa 2019")
-@Title("IB-oppiaineen Pre-IB-suoritus 2019")
-@OnlyWhen("koulutusmoduuli/tunniste/koodistoUri", "oppiaineetib")
-case class IBOppiaineenPreIBSuoritus2019(
-  @Title("Oppiaine")
-  koulutusmoduuli: PreIBIBOppiaine2019,
-  arviointi: Option[List[LukionOppiaineenArviointi2019]] = None,
-  suorituskieli: Option[Koodistokoodiviite] = None,
-  @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
-  @Title("Kurssit")
-  override val osasuoritukset: Option[List[PreIBKurssinSuoritus2019]],
-  @KoodistoKoodiarvo("preiboppiaine")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preiboppiaine", koodistoUri = "suorituksentyyppi")
-) extends PreIBOppiaineenSuoritus2019
-
 trait PreIBLukionOsasuoritus2019 extends PreIBSuorituksenOsasuoritus2019 {
   @Title("Moduulit ja paikalliset opintojaksot")
   override def osasuoritukset: Option[List[PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019]] = None
@@ -96,18 +81,6 @@ trait PreIBMuutSuorituksetTaiVastaavat2019 extends Koulutusmoduuli
 
 trait PreIBIBOppiaine2019 extends Koulutusmoduuli
 trait PreIBLukionOppiaine2019 extends Koulutusmoduuli with Valinnaisuus
-
-@Title("Pre-IB-kurssin suoritus 2019")
-case class PreIBKurssinSuoritus2019(
-  @Description("Pre-IB-kurssin tunnistetiedot 2019")
-  koulutusmoduuli: PreIBKurssi2019,
-  arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]] = None,
-  suorituskieli: Option[Koodistokoodiviite] = None,
-  @KoodistoKoodiarvo("preibkurssi")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preibkurssi", koodistoUri = "suorituksentyyppi")
-) extends IBSuoritus with KurssinSuoritus
-
-trait PreIBKurssi2019 extends Koulutusmoduuli
 
 trait PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019 extends IBSuoritus with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu with Vahvistukseton {
   def koulutusmoduuli: PreIBLukionModuuliTaiPaikallinenOpintojakso2019
