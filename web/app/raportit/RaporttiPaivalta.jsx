@@ -6,6 +6,7 @@ import {formatISODate} from '../date/date'
 import {generateRandomPassword} from '../util/password'
 import {downloadExcel} from './downloadExcel'
 import { LyhytKuvaus, PaivaValinta, RaportinLataus, Vinkit } from './raporttiComponents'
+import { today } from './raporttiUtils'
 
 export const RaporttiPaivalta = ({
   organisaatioP,
@@ -14,7 +15,7 @@ export const RaporttiPaivalta = ({
   dateInputHelp,
   example
 }) => {
-  const paivaAtom = Atom()
+  const paivaAtom = Atom(today())
   const submitBus = Bacon.Bus()
 
   const password = generateRandomPassword()
@@ -33,7 +34,7 @@ export const RaporttiPaivalta = ({
 
   return (
     <section>
-      {shortDescription && <LyhytKuvaus>{shortDescription}</LyhytKuvaus>}
+      <LyhytKuvaus>{shortDescription}</LyhytKuvaus>
 
       <PaivaValinta
         paivaAtom={paivaAtom}
@@ -47,7 +48,7 @@ export const RaporttiPaivalta = ({
         submitBus={submitBus}
       />
 
-      {example && <Vinkit>{example}</Vinkit>}
+      <Vinkit>{example}</Vinkit>
     </section>
   )
 }

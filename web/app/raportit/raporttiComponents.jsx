@@ -5,11 +5,13 @@ import InfoIcon from '../icons/InfoIcon'
 import RaporttiDownloadButton from './RaporttiDownloadButton'
 import RadioButtons from '../components/RadioButtons'
 
-export const LyhytKuvaus = ({ children }) => (
-    <p className="lyhyt-kuvaus">
-        {children}
-    </p>
-)
+export const LyhytKuvaus = ({ children }) => children
+    ? (
+        <p className="lyhyt-kuvaus">
+            {children}
+        </p>
+    )
+    : null
 
 export const PaivaValinta = ({ paivaAtom, ohje }) => (
     <div className="parametri">
@@ -54,12 +56,14 @@ export const Listavalinta = ({ label, options, atom }) => (
     </div>
 )
 
-export const Vinkit = ({ children }) => (
-    <div className="vinkit">
-      <h3><InfoIcon /> <Text name="tips-and-help" /></h3>
-      {children}
-    </div>
-)
+export const Vinkit = ({ children }) => children
+    ? (
+        <div className="vinkit">
+        <h3><InfoIcon /> <Text name="tips-and-help" /></h3>
+        {children}
+        </div>
+    )
+    : null
 
 export const RaportinLataus = ({
     password,
@@ -75,11 +79,3 @@ export const RaportinLataus = ({
         <RaporttiDownloadButton inProgressP={inProgressP} disabled={submitEnabledP.not()} onSubmit={e => { e.preventDefault(); submitBus.push(); return false }} />
     </div>
 )
-
-export const filterOrgTreeByRaporttityyppi = (raporttityyppi, orgs) =>
-  (orgs || []).flatMap(org => {
-      const children = filterOrgTreeByRaporttityyppi(raporttityyppi, org.children)
-      return org.raportit.includes(raporttityyppi)
-          ? [{ ...org, children }]
-          : children
-  })

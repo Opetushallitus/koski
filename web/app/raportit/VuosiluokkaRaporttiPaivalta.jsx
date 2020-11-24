@@ -8,9 +8,10 @@ import {generateRandomPassword} from '../util/password'
 import {downloadExcel} from './downloadExcel'
 import Dropdown from '../components/Dropdown'
 import { LyhytKuvaus, PaivaValinta, RaportinLataus, Vinkit } from './raporttiComponents'
+import { today } from './raporttiUtils'
 
 export const VuosiluokkaRaporttiPaivalta = ({organisaatioP, apiEndpoint, shortDescription, dateInputHelp, help, example}) => {
-  const paivaAtom = Atom()
+  const paivaAtom = Atom(today())
   const vuosiluokkaAtom = Atom('1')
   const submitBus = Bacon.Bus()
 

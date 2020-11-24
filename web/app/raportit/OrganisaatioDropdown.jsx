@@ -2,7 +2,7 @@ import React from 'baret'
 import Atom from 'bacon.atom'
 import {t} from '../i18n/i18n'
 import Bacon from 'baconjs'
-import {filterOrgTreeByRaporttityyppi} from './raporttiComponents'
+import {filterOrgTreeByRaporttityyppi} from './raporttiUtils'
 
 const filterOrgTree = (query, orgs) => {
     return orgs
@@ -23,7 +23,6 @@ const flattenOrgTree = (orgs) => orgs.flatMap(org => [org, ...flattenOrgTree(org
 
 export const OrganisaatioDropdown = ({
     organisaatiotP,
-    raporttityyppiP,
     selectedP,
     onSelect
 }) => {
@@ -35,9 +34,7 @@ export const OrganisaatioDropdown = ({
         (open ? filter : (selected && t(selected.nimi))) || ''
     ))
 
-    const prefilteredOrgsP = Bacon.combineWith(raporttityyppiP, organisaatiotP, filterOrgTreeByRaporttityyppi)
-
-    const filteredOrgsP = Bacon.combineWith(filterAtom, prefilteredOrgsP, (filter, orgs) => {
+    const filteredOrgsP = Bacon.combineWith(filterAtom, organisaatiotP, (filter, orgs) => {
         const query = filter && filter.toLowerCase()
         return filter
             ? filterOrgTree(query, orgs)
@@ -85,7 +82,6 @@ export const OrganisaatioDropdown = ({
     return (
         <div
             className="organisaatio-dropdown"
-            onClick={activate}
             onFocus={activate}
             onBlur={deactivate}
         >
@@ -94,6 +90,7 @@ export const OrganisaatioDropdown = ({
                 value={selectedP}
                 onKeyDown={handleKey}
                 onChange={updateFilter}
+                onClick={activate}
             />
             {Bacon.combineWith(openAtom, filteredOrgsP, selectedP, (isOpen, orgs, selected) => (
                 <Options
@@ -139,6 +136,7 @@ const Options = ({ organisaatiot, selected, onSelect, isOpen, isChild }) => (
                     className={selected && org.oid === selected.oid ? 'selected value' : 'value'}
                     onMouseDown={() => onSelect(org)}
                     onTouchStart={() => onSelect(org)}
+                    onClick={() => onSelect(org)}
                 >
                     {t(org.nimi)}
                 </span>

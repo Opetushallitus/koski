@@ -9,7 +9,7 @@ import {RaporttiPaivalta} from './RaporttiPaivalta'
 import {AikuistenPerusopetuksenRaportit} from './AikuistenPerusopetuksenRaportit'
 import {Tabs} from '../components/Tabs'
 import { OrganisaatioDropdown } from './OrganisaatioDropdown'
-import {filterOrgTreeByRaporttityyppi} from './raporttiComponents'
+import {filterOrgTreeByRaporttityyppi} from './raporttiUtils'
 import { contentWithLoadingIndicator } from '../components/AjaxLoadingIndicator'
 
 const kaikkiRaportitKategorioittain = [
@@ -130,13 +130,13 @@ const kaikkiRaportitKategorioittain = [
   },
   {
     tab: 'raporttikategoria-tab-muut',
-    name: 'raportti-tab-paallekkaisetopiskeluoikeudet',
+    heading: 'raportti-tab-paallekkaisetopiskeluoikeudet',
     raportit: [
       {
         id: 'paallekkaisetopiskeluoikeudet',
         name: 'raportti-tab-paallekkaisetopiskeluoikeudet',
         component: PaallekkaisetOpiskeluoikeudet,
-        visible: true,
+        visibleForAllOrgs: true,
         guard: () => document.location.search.includes('tilastoraportit=true')
       }
     ]
@@ -146,10 +146,12 @@ const kaikkiRaportitKategorioittain = [
 const getEnrichedRaportitKategorioittain = (organisaatiot) =>
   kaikkiRaportitKategorioittain.map(tab => {
     const raportit = tab.raportit.map(raportti => {
-      const visibleOrganisaatiot = organisaatiot.filter(org => org.raportit.includes(raportti.id))
+      const visibleOrganisaatiot = raportti.visibleForAllOrgs
+        ? organisaatiot
+        : organisaatiot.filter(org => org.raportit.includes(raportti.id))
       return {
         ...raportti,
-        visible: (raportti.visible === undefined ? visibleOrganisaatiot.length > 0 : raportti.visible) && (raportti.guard ? raportti.guard() : true),
+        visible: (raportti.visibleForAllOrgs || visibleOrganisaatiot.length > 0) && (raportti.guard ? raportti.guard() : true),
         organisaatiot: visibleOrganisaatiot
       }
     })
@@ -165,8 +167,11 @@ const organiaatiotTreeIncludes = (organisaatiot, oid) =>
   organisaatiot.some(org => org.oid === oid || organiaatiotTreeIncludes(org.children, oid))
 
 const preselectOrganisaatio = (raportti, selectedOrganisaatio) => {
+  if (raportti.visibleForAllOrgs) {
+    return selectedOrganisaatio
+  }
   const filteredOrganisaatiot = filterOrgTreeByRaporttityyppi(raportti.id, raportti.organisaatiot)
-  return organiaatiotTreeIncludes(filteredOrganisaatiot, selectedOrganisaatio.oid)
+  return selectedOrganisaatio && organiaatiotTreeIncludes(filteredOrganisaatiot, selectedOrganisaatio.oid)
           ? selectedOrganisaatio
           : filteredOrganisaatiot[0]
 }
@@ -268,8 +273,7 @@ const RaportitContent = ({
         onSelect={onSelectRaportti}
       />
       <OrganisaatioValitsin
-        organisaatiotP={raporttiP.map(raportti => raportti ? raportti.organisaatiot : [])}
-        raporttityyppiP={raporttiP.map(raportti => raportti ? raportti.id : null)}
+        raporttiP={raporttiP}
         selectedP={stateP.map(state => state.selectedOrganisaatio)}
         onSelect={onSelectOrganisaatio}
       />
@@ -302,18 +306,29 @@ const RaporttiValitsin = ({ raportitP, selectedP, onSelect }) => (
   </div>
 )
 
-const OrganisaatioValitsin = ({ organisaatiotP, raporttityyppiP, selectedP, onSelect }) => (
-  <div className="organisaatio-valitsin">
-    {organisaatiotP.map(organisaatiot => organisaatiot.length === 0 ? null : (
-      <OrganisaatioDropdown
-        organisaatiotP={organisaatiotP}
-        raporttityyppiP={raporttityyppiP}
-        selectedP={selectedP}
-        onSelect={onSelect}
-      />
-    ))}
-  </div>
-)
+const OrganisaatioValitsin = ({ raporttiP, selectedP, onSelect }) => {
+  const organisaatiotP = raporttiP.map(raportti => {
+      if (!raportti) {
+        return []
+      }
+      return raportti.visibleForAllOrgs
+        ? raportti.organisaatiot
+        : filterOrgTreeByRaporttityyppi(raportti.id, raportti.organisaatiot)
+    }
+  )
+
+  return (
+    <div className="organisaatio-valitsin">
+      {organisaatiotP.map(organisaatiot => organisaatiot.length === 0 ? null : (
+        <OrganisaatioDropdown
+          organisaatiotP={organisaatiotP}
+          selectedP={selectedP}
+          onSelect={onSelect}
+        />
+      ))}
+    </div>
+  )
+}
 
 function PaallekkaisetOpiskeluoikeudet({ organisaatioP }) {
   return (
