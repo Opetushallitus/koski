@@ -80,7 +80,9 @@ describe('Lukioon valmistava koulutus', function() {
       it('näyttää kurssin tiedot', function() {
         expect(kurssi.detailsText()).to.equal(
           'Nimi Matematiikkaa, fysiikkaa ja kemiaa\n' +
-          'Laajuus 1 kurssia'
+          'Laajuus 1 kurssia\n' +
+          'Arvosana S\n' +
+          'Arviointipäivä 4.6.2016'
         )
       })
     })

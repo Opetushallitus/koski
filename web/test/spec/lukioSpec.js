@@ -79,7 +79,9 @@ describe('Lukiokoulutus', function( ){
             'Nimi Analyyttisten menetelmien lisäkurssi, ksy, vuositaso 2\n' +
             'Laajuus 1 kurssia\n' +
             'Kuvaus Kurssilla syvennetään kurssien MAA4, MAA5 ja MAA7 sisältöjä.\n' +
-            'Kurssin tyyppi Syventävä')
+            'Kurssin tyyppi Syventävä\n' +
+            'Arvosana 9\n' +
+            'Arviointipäivä 4.6.2016')
         })
       })
       describe('Kun klikataan uudestaan', function() {
