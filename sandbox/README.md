@@ -31,7 +31,7 @@ Esimerkki viranomainen: `curl --header "Content-Type: application/json" --data '
 
 Esimerkki tilastokeskus: `curl "https://sandbox.dev.koski.opintopolku.fi/koski/api/luovutuspalvelu/haku?v=1&pageSize=10&pageNumber=0&opiskeluoikeudenTyyppi=ammatillinenkoulutus&muuttunutJälkeen=2015-06-24T15:24:49Z" --user Teppo:Teppo`
 
-### Oppilashallintarajapinnat
+### Opintohallintarajapinnat
 
 Dokumentaatio: https://sandbox.dev.koski.opintopolku.fi/koski/dokumentaatio/rajapinnat/oppilashallintojarjestelmat
 
