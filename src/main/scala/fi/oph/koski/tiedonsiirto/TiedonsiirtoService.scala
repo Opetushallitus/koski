@@ -82,8 +82,9 @@ class TiedonsiirtoService(
   val index = new ElasticSearchIndex(
     elastic = elastic,
     config = config,
-    name = "koski-index",
-    mappingType = "tiedonsiirto",
+    name = "tiedonsiirto",
+    legacyName = "koski-index",
+    mappingVersion = 1,
     mapping = TiedonsiirtoService.mapping,
     settings = TiedonsiirtoService.settings
   )
@@ -162,12 +163,12 @@ class TiedonsiirtoService(
       AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiSession, Map(juuriOrganisaatio -> oid)))
     }
 
-    val doc = toJValue(ElasticSearch.applyPagination(paginationSettings, Map(
+    val query = toJValue(ElasticSearch.applyPagination(paginationSettings, Map(
       "query" -> ElasticSearch.allFilter(filters),
       "sort" -> List(Map("aikaleima" -> "desc"), Map("oppija.sukunimi.keyword" -> "asc"), Map("oppija.etunimet.keyword" -> "asc"))
     )))
 
-    val rows: Seq[TiedonsiirtoDocument] = index.runSearch(doc)
+    val rows: Seq[TiedonsiirtoDocument] = index.runSearch(query)
       .map(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[TiedonsiirtoDocument](j \ "_source", ignoreExtras = true)))
       .getOrElse(Nil)
 
