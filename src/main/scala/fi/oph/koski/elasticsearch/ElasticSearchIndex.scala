@@ -1,7 +1,5 @@
 package fi.oph.koski.elasticsearch
 
-import com.typesafe.config.Config
-import fi.oph.koski.db.BackgroundExecutionContext
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatusException}
 import fi.oph.koski.json.Json4sHttp4s
@@ -12,17 +10,14 @@ import org.http4s.EntityEncoder
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 
-import scala.concurrent.Future
-
 class ElasticSearchIndex(
   private val elastic: ElasticSearch,
-  private val config: Config,
   private val name: String,
   private val legacyName: String,
   private val mapping: Map[String, Any],
   private val mappingVersion: Int,
   private val settings: Map[String, Any]
-) extends Logging with BackgroundExecutionContext {
+) extends Logging {
 
   private def http: Http = elastic.http
 
@@ -37,7 +32,7 @@ class ElasticSearchIndex(
   // TODO: Hankkiudu eroon erillisestä mapping-tyypistä - tuki poistuu uusissa ES-versioissa
   private val mappingTypeName = name
 
-  lazy val init: Future[Any] = {
+  lazy val init: Unit = {
     if (indexExists(currentIndexName)) {
       logger.info(s"ElasticSearch index $name exists")
       if (settingsChanged()) {
@@ -45,7 +40,6 @@ class ElasticSearchIndex(
         // Mapping version should be bumped when settings are changed so that we know to reindex
       }
       ensureAliases(mappingVersion)
-      Future.successful(()) // nothing left to do
     } else {
       val previousIndexName = versionedIndexName(mappingVersion - 1)
       if (indexExists(previousIndexName)) {
@@ -56,7 +50,6 @@ class ElasticSearchIndex(
         createIndex(mappingVersion)
         migrateAlias(readAlias, mappingVersion)
         migrateAlias(writeAlias, mappingVersion)
-        Future.successful(()) // nothing left to do
       }
     }
   }
@@ -141,14 +134,12 @@ class ElasticSearchIndex(
     Http.runTask(http.put(uri"/$indexName/_mapping/$mappingTypeName", toJValue(mapping))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
   }
 
-  private def reindexFromPreviousVersion(): Future[Any] = {
+  private def reindexFromPreviousVersion(): Unit = {
     ensureAliases(mappingVersion - 1)
     createIndex(mappingVersion)
     migrateAlias(writeAlias, mappingVersion, Some(mappingVersion - 1))
-    Future {
-      reindex(mappingVersion - 1, mappingVersion)
-      migrateAlias(readAlias, mappingVersion, Some(mappingVersion - 1))
-    }
+    reindex(mappingVersion - 1, mappingVersion)
+    migrateAlias(readAlias, mappingVersion, Some(mappingVersion - 1))
   }
 
   private def reindex(fromVersion: Int, toVersion: Int): Unit = {
@@ -170,7 +161,6 @@ class ElasticSearchIndex(
     }
     logger.info(s"Done reindexing from $fromIndex to $toIndex")
   }
-
 
   def refreshIndex(): Unit = {
     Http.runTask(http.post(uri"/$readAlias/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
