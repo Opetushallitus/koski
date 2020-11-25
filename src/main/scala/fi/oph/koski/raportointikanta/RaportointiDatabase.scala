@@ -92,6 +92,7 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
   def createMaterializedViews: Unit = {
     logger.info("Creating materialized views")
     val started = System.currentTimeMillis
+    setStatusLoadStarted("materialized_views")
     runDbSync(DBIO.seq(
       PaallekkaisetOpiskeluoikeudet.createMaterializedView,
       PaallekkaisetOpiskeluoikeudet.createIndex,
@@ -101,6 +102,7 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
       OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.createIndex
     ), timeout = 60.minutes)
     val duration = (System.currentTimeMillis - started) / 1000
+    setStatusLoadCompleted("materialized_views")
     logger.info(s"Materialized views created in $duration s")
   }
 
@@ -332,7 +334,7 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
 }
 
 case class RaportointikantaStatusResponse(schema: String, statuses: Seq[RaportointikantaStatusRow]) {
-  private val allNames = Seq("opiskeluoikeudet", "henkilot", "organisaatiot", "koodistot")
+  private val allNames = Seq("opiskeluoikeudet", "henkilot", "organisaatiot", "koodistot", "materialized_views")
 
   @SyntheticProperty
   def isComplete: Boolean = completionTime.isDefined && !isEmpty && allNames.forall(statuses.map(_.name).contains)
