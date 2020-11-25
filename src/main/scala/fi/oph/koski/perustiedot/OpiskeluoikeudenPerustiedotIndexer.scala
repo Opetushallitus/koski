@@ -14,12 +14,11 @@ import fi.oph.koski.schema.Henkilö._
 import fi.oph.koski.util.Timing
 import org.json4s._
 import org.json4s.jackson.JsonMethods
-
 import scala.concurrent.Future
 
 object PerustiedotIndexUpdater extends App with Timing {
   val perustiedotIndexer = KoskiApplication.apply.perustiedotIndexer
-  timed("Reindex") {
+  timed("Perustiedot index generation") {
     perustiedotIndexer.indexAllDocuments.toBlocking.last
   }
 }
@@ -97,7 +96,8 @@ class OpiskeluoikeudenPerustiedotIndexer(
     config = config,
     elastic = elastic,
     name = "perustiedot",
-    mappingType = "perustiedot",
+    legacyName = "perustiedot",
+    mappingVersion = 1,
     mapping = OpiskeluoikeudenPerustiedotIndexer.mapping,
     settings = OpiskeluoikeudenPerustiedotIndexer.settings
   )
