@@ -13,13 +13,6 @@ import fi.oph.koski.schema.Henkilö._
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 
-object PerustiedotIndexUpdater extends App with Timing {
-  val perustiedotIndexer = KoskiApplication.apply.perustiedotIndexer
-  timed("Perustiedot index generation") {
-    perustiedotIndexer.indexAllDocuments.toBlocking.last
-  }
-}
-
 object OpiskeluoikeudenPerustiedotIndexer {
   private val settings = Map(
     "analysis" -> Map(
@@ -100,6 +93,10 @@ class OpiskeluoikeudenPerustiedotIndexer(
 
   def init(): Unit = {
     index.init
+    if (config.getBoolean("elasticsearch.rewritePerustiedotAtStartup")) {
+      logger.warn("NOTE: elasticsearch.rewritePerustiedotAtStartup config option is set!")
+      this.indexAllDocuments()
+    }
   }
 
   def statistics(): OpiskeluoikeudenPerustiedotStatistics = OpiskeluoikeudenPerustiedotStatistics(index)
@@ -151,7 +148,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
     }
   }
 
-  def deleteByOppijaOids(oids: List[Oid]) = {
+  def deleteByOppijaOids(oids: List[Oid]): Int = {
     val query: JValue = toJValue(Map(
       "query" -> Map(
         "bool" -> Map(
@@ -161,8 +158,8 @@ class OpiskeluoikeudenPerustiedotIndexer(
     index.deleteByQuery(query)
   }
 
-  def indexAllDocuments = {
-    logger.info("Indexing all perustiedot documents")
+  private def indexAllDocuments() = {
+    logger.info("Start indexing all perustiedot documents")
     val bufferSize = 100
     val observable = opiskeluoikeusQueryService
       .opiskeluoikeusQuery(Nil, None, None)(KoskiSession.systemUser)
