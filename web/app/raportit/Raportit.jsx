@@ -11,9 +11,11 @@ import {Tabs} from '../components/Tabs'
 import { OrganisaatioDropdown } from './OrganisaatioDropdown'
 import {filterOrgTreeByRaporttityyppi} from './raporttiUtils'
 import { contentWithLoadingIndicator } from '../components/AjaxLoadingIndicator'
+import { replaceLocation } from '../util/location'
 
 const kaikkiRaportitKategorioittain = [
   {
+    id: 'esiopetus',
     tab: 'raporttikategoria-tab-esiopetus',
     heading: 'raporttikategoria-heading-esiopetus',
     raportit: [
@@ -30,6 +32,7 @@ const kaikkiRaportitKategorioittain = [
     ]
   },
   {
+    id: 'perusopetus',
     tab: 'raporttikategoria-tab-perusopetus',
     heading: 'raporttikategoria-heading-perusopetus',
     raportit: [
@@ -51,6 +54,7 @@ const kaikkiRaportitKategorioittain = [
     ]
   },
   {
+    id: 'aikuisten-perusopetus',
     tab: 'raporttikategoria-tab-aikuisten-perusopetus',
     heading: 'raporttikategoria-heading-aikuisten-perusopetus',
     raportit: [
@@ -72,6 +76,7 @@ const kaikkiRaportitKategorioittain = [
     ]
   },
   {
+    id: 'ammatillinen-koulutus',
     tab: 'raporttikategoria-tab-ammatillinen-koulutus',
     heading: 'raporttikategoria-heading-ammatillinen-koulutus',
     raportit: [
@@ -103,6 +108,7 @@ const kaikkiRaportitKategorioittain = [
     ]
   },
   {
+    id: 'lukio',
     tab: 'raporttikategoria-tab-lukio',
     heading: 'raporttikategoria-heading-lukio',
     raportit: [
@@ -129,6 +135,7 @@ const kaikkiRaportitKategorioittain = [
     ]
   },
   {
+    id: 'muut',
     tab: 'raporttikategoria-tab-muut',
     heading: 'raportti-tab-paallekkaisetopiskeluoikeudet',
     raportit: [
@@ -176,24 +183,43 @@ const preselectOrganisaatio = (raportti, selectedOrganisaatio) => {
           : filteredOrganisaatiot[0]
 }
 
-export const raportitContentP = () => {
+const findIndexById = (arr, value) => {
+  const index = arr.findIndex(item => item.id === value)
+  return index >= 0 ? index : null
+}
+
+const getInitialState = (pathTokens) => {
+  const [pathKategoriaId, pathRaporttiId] = pathTokens
+  const tabIdxByPath = findIndexById(kaikkiRaportitKategorioittain, pathKategoriaId)
+  const raporttiIdxByPath = tabIdxByPath && findIndexById(kaikkiRaportitKategorioittain[tabIdxByPath].raportit, pathRaporttiId)
+
+  return {
+    tabIdxByPath,
+    raporttiIdxByPath,
+    selectedTabIdx: 0,
+    selectedRaporttiIdx: 0,
+    selectedOrganisaatio: null,
+    tabs: [],
+    organisaatiot: []
+  }
+}
+
+export const raportitContentP = (pathTokens) => {
   const organisaatiotP = Http.cachedGet('/koski/api/raportit/organisaatiot-ja-raporttityypit')
   const selectedTabIdxE = new Bacon.Bus()
   const selectedRaporttiIdxE = new Bacon.Bus()
   const selectedOrganisaatioE = new Bacon.Bus()
 
   const stateP = Bacon.update(
-    {
-      selectedTabIdx: 0,
-      selectedRaporttiIdx: 0,
-      selectedOrganisaatio: null,
-      tabs: [],
-      organisaatiot: []
-    },
+    getInitialState(pathTokens),
     organisaatiotP.toEventStream(), (state, organisaatiot) => {
       const tabs = getEnrichedRaportitKategorioittain(organisaatiot)
-      const selectedTabIdx = tabs.findIndex(r => r.visible)
-      const selectedRaporttiIdx = 0
+      const selectedTabIdx = state.tabIdxByPath && tabs[state.tabIdxByPath].visible
+        ? state.tabIdxByPath
+        : tabs.findIndex(r => r.visible)
+      const selectedRaporttiIdx = state.raporttiIdxByPath && tabs[selectedTabIdx].raportit[state.raporttiIdxByPath].visible
+        ? state.raporttiIdxByPath
+        : 0
 
       return {
         ...state,
@@ -228,6 +254,14 @@ export const raportitContentP = () => {
       selectedOrganisaatio
     })
   )
+
+  stateP.filter(x => x).forEach(state => {
+    const tab = state.tabs[state.selectedTabIdx]
+    const raportti = tab && tab.raportit[state.selectedRaporttiIdx]
+    if (tab && raportti) {
+      replaceLocation(`/koski/raportit/${tab.id}/${raportti.id}`)
+    }
+  })
 
   return contentWithLoadingIndicator(organisaatiotP.map(() => ({
     title: 'Raportit',
