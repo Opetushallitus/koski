@@ -5,20 +5,21 @@ import java.lang.System.currentTimeMillis
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.{MockOpintopolkuHenkilöFacade, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.henkilo.MockOppijat._
-import fi.oph.koski.util.Futures
 import org.json4s.jackson.JsonMethods.{parse => parseJson}
 import org.scalatest.{BeforeAndAfterEach, FreeSpec, Matchers}
 
 class UpdateHenkilotTaskSpec extends FreeSpec with Matchers with BeforeAndAfterEach {
   lazy val application = KoskiApplicationForTests
+  application.perustiedotIndexer.init()
+
   "Nimitietojen päivittyminen" - {
-    Futures.await(application.perustiedotIndexer.init)
     "Päivittää muuttuneet oppijat oppijanumerorekisteristä" in {
       modify(OppijaHenkilöWithMasterInfo(eero.copy(sukunimi = "Uusisukunimi"), None))
       val päivitetytPerustiedot = application.perustiedotRepository.findHenkilöPerustiedotByHenkilöOid(eero.oid).get
       päivitetytPerustiedot.sukunimi should equal("Uusisukunimi")
     }
   }
+
   "Oppijoiden linkitys" - {
     "Aluksi ei linkitety" in {
       application.perustiedotRepository.findHenkilöPerustiedotByHenkilöOid(eero.oid).map(_.oid) should equal(Some(eero.oid))

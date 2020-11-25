@@ -81,7 +81,6 @@ class TiedonsiirtoService(
 
   val index = new ElasticSearchIndex(
     elastic = elastic,
-    config = config,
     name = "tiedonsiirto",
     legacyName = "koski-index",
     mappingVersion = 1,
@@ -96,7 +95,7 @@ class TiedonsiirtoService(
     .register()
   private val tiedonsiirtoBuffer = new ConcurrentBuffer[TiedonsiirtoDocument]
 
-  def init(): Future[Any] = index.init
+  def init(): Unit = index.init
 
   def statistics(): TiedonsiirtoStatistics = TiedonsiirtoStatistics(index)
 
