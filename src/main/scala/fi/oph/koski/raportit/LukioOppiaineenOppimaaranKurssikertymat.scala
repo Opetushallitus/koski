@@ -106,37 +106,22 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
       ) oppimaaran_kurssikertymat
       left join (
         select
-          r_opiskeluoikeus.oppilaitos_oid,
+          oppilaitos_oid,
           count(*) yhteensa
-        from r_osasuoritus
-        join r_paatason_suoritus
-          on r_paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id
-        join r_opiskeluoikeus
-          on r_opiskeluoikeus.opiskeluoikeus_oid = r_osasuoritus.opiskeluoikeus_oid
-        where r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOids)
-          -- lukion aineoppimäärä
-          and r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
-          and r_osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
-          -- kurssi menee parametrien sisään
-          and (r_osasuoritus.arviointi_paiva between $aikaisintaan and $viimeistaan)
-          -- mutta kurssi jää opiskeluoikeuden ulkopuolelle
-          and (
-            r_osasuoritus.arviointi_paiva < r_opiskeluoikeus.alkamispaiva
-            or (
-              r_osasuoritus.arviointi_paiva > r_opiskeluoikeus.paattymispaiva
-              and r_opiskeluoikeus.viimeisin_tila = 'valmistunut'
+        from osasuoritus_arvioitu_opiskeluoikeuden_ulkopuolella
+          join r_osasuoritus on r_osasuoritus.osasuoritus_id = osasuoritus_arvioitu_opiskeluoikeuden_ulkopuolella.osasuoritus_id
+          where oppilaitos_oid = any($oppilaitosOids)
+            and osasuorituksen_tyyppi = 'lukionkurssi'
+            and paatason_suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
+            and (osasuorituksen_arviointi_paiva between $aikaisintaan and $viimeistaan)
+            and (
+              koulutusmoduuli_kurssin_tyyppi = 'pakollinen'
+              or (koulutusmoduuli_kurssin_tyyppi = 'syventava' and koulutusmoduuli_paikallinen = false)
             )
-          )
-          -- pakolliset tai valtakunnalliset syventävät kurssit
-          and (
-            koulutusmoduuli_kurssin_tyyppi = 'pakollinen'
-            or (koulutusmoduuli_kurssin_tyyppi = 'syventava' and koulutusmoduuli_paikallinen = false)
-          )
-          -- jotka ovat joko suoritettuja tai tunnustettuja ja rahoituksen piirissä olevia
-          and (
+            and (
               tunnustettu = false
               or tunnustettu_rahoituksen_piirissa
-          )
+            )
         group by oppilaitos_oid
       ) opiskeluoikeuden_ulkopuoliset
           on opiskeluoikeuden_ulkopuoliset.oppilaitos_oid = oppimaaran_kurssikertymat.oppilaitos_oid
