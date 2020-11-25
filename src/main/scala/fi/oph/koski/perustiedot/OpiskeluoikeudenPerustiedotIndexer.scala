@@ -1,7 +1,6 @@
 package fi.oph.koski.perustiedot
 
 import com.typesafe.config.Config
-import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.elasticsearch.{ElasticSearch, ElasticSearchIndex}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer.extract
@@ -11,10 +10,8 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedot.docId
 import fi.oph.koski.schema.Henkilö._
-import fi.oph.koski.util.Timing
 import org.json4s._
 import org.json4s.jackson.JsonMethods
-import scala.concurrent.Future
 
 object PerustiedotIndexUpdater extends App with Timing {
   val perustiedotIndexer = KoskiApplication.apply.perustiedotIndexer
@@ -93,7 +90,6 @@ class OpiskeluoikeudenPerustiedotIndexer(
 ) extends Logging {
 
   var index = new ElasticSearchIndex(
-    config = config,
     elastic = elastic,
     name = "perustiedot",
     legacyName = "perustiedot",
@@ -102,7 +98,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
     settings = OpiskeluoikeudenPerustiedotIndexer.settings
   )
 
-  def init(): Future[Any] = {
+  def init(): Unit = {
     index.init
   }
 
