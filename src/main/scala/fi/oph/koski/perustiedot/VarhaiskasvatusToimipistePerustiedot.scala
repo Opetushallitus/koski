@@ -12,6 +12,7 @@ case class VarhaiskasvatusToimipistePerustiedot(index: ElasticSearchIndex) {
     }.map(_.key).toSet
   }
 
+  // TODO: Hae postgres-kannasta
   private def varhaiskasvatustoimipisteetQuery(koulutustoimijaOidit: Set[String]) = {
     LegacyJsonSerialization.toJValue(Map(
       "size" -> 0,
