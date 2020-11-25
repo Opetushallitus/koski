@@ -97,7 +97,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
     elastic = elastic,
     name = "perustiedot",
     legacyName = "perustiedot",
-    mappingVersion = 1,
+    mappingVersion = 2,
     mapping = OpiskeluoikeudenPerustiedotIndexer.mapping,
     settings = OpiskeluoikeudenPerustiedotIndexer.settings
   )
