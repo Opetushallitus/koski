@@ -62,7 +62,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
         paallekkainen_rahoitusmuodot_osuu_parametreille.koodiarvot paallekkainen_rahoitusmuodot_parametrien_sisalla,
         haetun_opiskeluoikeuden_tilat_parametrien_sisalla.tilat haetun_tilat_parametrien_sisalla,
         paatason_suoritukset.tyyppi_ja_koodiarvo paallekkainen_paatason_suoritukset,
-        paallekkainen_alkamispaiva <= $viimeistaan and paallekkainen_paattymispaiva >= $aikaisintaan paallekkainen_voimassa_aikajaksolla
+        paallekkainen_alkamispaiva <= $viimeistaan and coalesce(paallekkainen_paattymispaiva, '9999-12-31'::date) >= $aikaisintaan paallekkainen_voimassa_aikajaksolla
       from (
         select
           distinct r_opiskeluoikeus.opiskeluoikeus_oid
