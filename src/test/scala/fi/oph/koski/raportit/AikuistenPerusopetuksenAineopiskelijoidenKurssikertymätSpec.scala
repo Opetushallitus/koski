@@ -69,7 +69,7 @@ class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätSpec extends FreeS
 
     "Raportin kolumnit" in {
       lazy val r = findSingle(raportti)
-      println(r.toString)
+      
       r.oppilaitos should equal("Jyväskylän normaalikoulu")
       r.yhteensäSuorituksia should equal(2)
       r.yhteensäSuoritettujaSuorituksia(2)
