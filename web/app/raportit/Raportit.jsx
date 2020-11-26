@@ -12,6 +12,7 @@ import { OrganisaatioDropdown } from './OrganisaatioDropdown'
 import {filterOrgTreeByRaporttityyppi} from './raporttiUtils'
 import { contentWithLoadingIndicator } from '../components/AjaxLoadingIndicator'
 import { replaceLocation } from '../util/location'
+import { Paragraphs } from '../i18n/Paragraphs'
 
 const kaikkiRaportitKategorioittain = [
   {
@@ -395,7 +396,7 @@ function Opiskelijavuositiedot({ stateP }) {
 function SuoritustietojenTarkistus({ stateP }) {
   const titleText = <Text name='Suoritustiedot (ammatillinen koulutus, koko tutkinto)'/>
   const shortDescriptionText = <Text name='SuoritustietojenTarkistus-short-description'/>
-  const exampleText = <Text name='SuoritustietojenTarkistus-example'/>
+  const exampleText = <Paragraphs name='SuoritustietojenTarkistus-example'/>
 
   return (
     <AikajaksoRaporttiAikarajauksella
@@ -411,7 +412,7 @@ function SuoritustietojenTarkistus({ stateP }) {
 function AmmatillinenOsittainenSuoritustietojenTarkistus({ stateP }) {
   const titleText = <Text name='Suoritustiedot (ammatillinen koulutus, tutkinnon osa/osia)' />
   const shortDescriptionText = <Text name='AmmatillinenOsittainenSuoritustietojenTarkistus-short-description' />
-  const exampleText = <Text name='AmmatillinenOsittainenSuoritustietojenTarkistus-example' />
+  const exampleText = <Paragraphs name='AmmatillinenOsittainenSuoritustietojenTarkistus-example' />
 
   return (
     <AikajaksoRaporttiAikarajauksella
@@ -456,8 +457,8 @@ function PerusopetuksenVuosiluokka({ stateP }) {
   const titleText = <Text name='Nuorten perusopetuksen opiskeluoikeus- ja suoritustietojen tarkistusraportti' />
   const shortDescriptionText = <Text name='PerusopetuksenVuosiluokka-short-description' />
   const dateInputHelpText = <Text name='PerusopetuksenVuosiluokka-date-input-help' />
-  const helpText = <Text name='PerusopetuksenVuosiluokka-help' />
-  const exampleText = <Text name='PerusopetuksenVuosiluokka-example' />
+  const helpText = <Paragraphs name='PerusopetuksenVuosiluokka-help' />
+  const exampleText = <Paragraphs name='PerusopetuksenVuosiluokka-example' />
 
   return (
     <VuosiluokkaRaporttiPaivalta
@@ -493,7 +494,7 @@ function LukioKurssikertyma({ stateP }) {
   const title = <Text name='lukion-kurssikertyma-title' />
   const shortDescriptionText = <Text name='lukion-kurssikertyma-short-description' />
   const dateInputHelpText = <Text name='lukion-kurssikertyma-date-input-help' />
-  const exampleText = <Text name='Lukioraportti-example' />
+  const exampleText = <Paragraphs name='Lukioraportti-example' />
 
   return (
     <AikajaksoRaportti stateP={stateP}
@@ -510,7 +511,7 @@ function LukioDiaIBInternationalOpiskelijamaarat({ stateP }) {
   const titleText = <Text name='lukiokoulutuksen-opiskelijamaarat-title' />
   const shortDescriptionText = <Text name='lukiokoulutuksen-opiskelijamaarat-short-description' />
   const dateInputHelpText = <Text name='lukiokoulutuksen-opiskelijamaarat-date-input-help' />
-  const exampleText = <Text name='lukiokoulutuksen-opiskelijamaarat-example' />
+  const exampleText = <Paragraphs name='lukiokoulutuksen-opiskelijamaarat-example' />
 
   return (
     <RaporttiPaivalta
@@ -528,7 +529,7 @@ function LuvaOpiskelijamaaratRaportti({ stateP }) {
   const titleText = <Text name='luva-opiskelijamaarat-title' />
   const shortDescriptionText = <Text name='luva-opiskelijamaarat-short-description' />
   const dateInputHelpText = <Text name='luva-opiskelijamaarat-date-input-help' />
-  const exampleText = <Text name='luva-opiskelijamaarat-example' />
+  const exampleText = <Paragraphs name='luva-opiskelijamaarat-example' />
 
   return (
     <RaporttiPaivalta
@@ -546,7 +547,7 @@ function EsiopetusRaportti({ stateP }) {
   const titleText = <Text name='esiopetusraportti-title' />
   const shortDescriptionText = <Text name="esiopetusraportti-short-description" />
   const dateInputHelpText = <Text name="esiopetusraportti-date-input-help" />
-  const exampleText = <Text name='esiopetusraportti-example' />
+  const exampleText = <Paragraphs name='esiopetusraportti-example' />
 
   return (
     <RaporttiPaivalta
@@ -564,7 +565,7 @@ function EsiopetuksenOppijamäärätRaportti({ stateP }) {
   const titleText = <Text name='Esiopetus-oppilasmäärät-raportti-title' />
   const shortDescriptionText = <Text name='Esiopetus-oppilasmäärät-raportti-short-description' />
   const dateInputHelpText = <Text name='Esiopetus-oppilasmäärät-raportti-date-input-help' />
-  const exampleText = <Text name='Esiopetus-oppilasmäärät-raportti-example' />
+  const exampleText = <Paragraphs name='Esiopetus-oppilasmäärät-raportti-example' />
 
   return (
     <RaporttiPaivalta
@@ -582,7 +583,7 @@ function PerusopetuksenOppijamäärätRaportti({ stateP }) {
   const titleText = <Text name='Perusopetus-oppijamäärät-raportti-title' />
   const shortDescriptionText = <Text name='Perusopetus-oppijamäärät-raportti-short-description' />
   const dateInputHelpText = <Text name='Perusopetus-oppijamäärät-raportti-date-input-help' />
-  const exampleText = <Text name='Perusopetus-oppijamäärät-raportti-example' />
+  const exampleText = <Paragraphs name='Perusopetus-oppijamäärät-raportti-example' />
 
   return (
     <RaporttiPaivalta
@@ -600,7 +601,7 @@ function PerusopetuksenLisäopetuksenOppijamäärätRaportti({ stateP }) {
   const titleText = <Text name='Perusopetus-lisäopetus-oppijamäärät-raportti-title' />
   const shortDescriptionText = <Text name='Perusopetus-lisäopetus-oppijamäärät-raportti-short-description' />
   const dateInputHelpText = <Text name='Perusopetus-lisäopetus-oppijamäärät-raportti-date-input-help' />
-  const exampleText = <Text name='Perusopetus-lisäopetus-oppijamäärät-raportti-example' />
+  const exampleText = <Paragraphs name='Perusopetus-lisäopetus-oppijamäärät-raportti-example' />
 
   return (
     <RaporttiPaivalta
@@ -617,7 +618,7 @@ function PerusopetuksenLisäopetuksenOppijamäärätRaportti({ stateP }) {
 function AikuistenPerusopetusRaportti({ stateP }) {
   const titleText = <Text name='aikuisten-perusopetus-raportti-title' />
   const shortDescriptionText = <Text name='aikuisten-perusopetus-raportti-short-description' />
-  const exampleText = <Text name='aikuisten-perusopetus-raportti-example' />
+  const exampleText = <Paragraphs name='aikuisten-perusopetus-raportti-example' />
 
   return (
     <AikuistenPerusopetuksenRaportit
@@ -634,7 +635,7 @@ function AikuistenPerusopetuksenOppijamäärätRaportti({ stateP }) {
   const titleText = <Text name='Aikuisten-perusopetus-oppilasmäärät-raportti-title' />
   const shortDescriptionText = <Text name='Aikuisten-perusopetus-oppilasmäärät-raportti-short-description' />
   const dateInputHelpText = <Text name='Aikuisten-perusopetus-oppilasmäärät-raportti-date-input-help' />
-  const exampleText = <Text name='Aikuisten-perusopetus-oppilasmäärät-raportti-example' />
+  const exampleText = <Paragraphs name='Aikuisten-perusopetus-oppilasmäärät-raportti-example' />
 
   return (
     <RaporttiPaivalta
@@ -652,7 +653,7 @@ function AikuistenPerusopetuksenKurssikertymäRaportti({ stateP }) {
   const titleText = <Text name='Aikuisten-perusopetus-kurssikertymä-raportti-title' />
   const shortDescriptionText = <Text name='Aikuisten-perusopetus-kurssikertymä-raportti-short-description' />
   const dateInputHelpText = <Text name='Aikuisten-perusopetus-kurssikertymä-raportti-date-input-help' />
-  const exampleText = <Text name='Aikuisten-perusopetus-kurssikertymä-raportti-example' />
+  const exampleText = <Paragraphs name='Aikuisten-perusopetus-kurssikertymä-raportti-example' />
 
   return (
     <AikajaksoRaportti

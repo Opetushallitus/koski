@@ -1,17 +1,42 @@
 .tabs-container {
   display: flex;
-  font-size: 20px;
   font-weight: 400;
   color: @color-link-blue;
   border-bottom: solid 2px @color-link-blue;
+
+  .tabs-item-text {
+    padding: 15px;
+  }
+
+  @media screen and (min-width: 900px) {
+    .tabs-item-text {
+      padding: 20px 30px;
+    }
+  }
+
+  @media screen and (min-width: 1100px) {
+    font-size: 120%;
+    .tabs-item-text {
+      padding: 20px 40px;
+    }
+  }
 }
 
 .tabs-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
   position: relative;
   border: solid 2px @color-link-blue;
   border-bottom: none;
   margin-right: 12px;
   cursor: pointer;
+
+  .tabs-item-text {
+    display: block;
+    text-align: center;
+  }
 
   .tabs-item-caret {
     display: none;
@@ -19,7 +44,6 @@
 }
 
 .tabs-item-selected {
-  //   font-weight: 700;
   background: @color-link-blue;
   color: white;
 
@@ -36,11 +60,6 @@
     background: @color-link-blue;
     transform: scale(1.5, 1) rotate(45deg);
   }
-}
-
-.tabs-item-text {
-  display: block;
-  padding: 22px 40px;
 }
 
 .pills-container {
