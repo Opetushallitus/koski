@@ -27,6 +27,7 @@ case class OpiskelijavuositiedotRow(
   etunimet: String,
   suorituksenTyyppi: String,
   koulutusmoduulit: String,
+  koulutusmoduuliNimet: String,
   osaamisalat: Option[String],
   päätasonSuorituksenSuoritustapa: String,
   opiskeluoikeudenAlkamispäivä: Option[LocalDate],
@@ -84,6 +85,7 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
     "etunimet" -> Column("Etunimet"),
     "suorituksenTyyppi" -> Column("Suorituksen tyyppi"),
     "koulutusmoduulit" -> Column("Tutkinnot"),
+    "koulutusmoduuliNimet" -> Column("Päätason suoritusten nimet"),
     "osaamisalat" -> Column("Osaamisalat"),
     "päätasonSuorituksenSuoritustapa" -> Column("Päätason suorituksen suoritustapa"),
     "opiskeluoikeudenAlkamispäivä" -> Column("Opiskeluoikeuden alkamispäivä"),
@@ -166,6 +168,7 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
     val arvioituPäättymispäivä = JsonSerializer.validateAndExtract[Option[LocalDate]](opiskeluoikeus.data \ "arvioituPäättymispäivä").toOption.flatten
     val (opiskelijavuoteenKuuluvatLomaPäivät, muutLomaPäivät) = lomaPäivät(aikajaksot)
+    val (koulutusmoduulit, koulutusmoduuliNimet) = päätasonSuoritukset.sortBy(_.koulutusmoduuliKoodiarvo).map(ps => (ps.koulutusmoduuliKoodiarvo, ps.koulutusmoduuliNimi.getOrElse(""))).unzip
     OpiskelijavuositiedotRow(
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
       lähdejärjestelmä = lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
@@ -182,7 +185,8 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
       sukunimi = henkilö.sukunimi,
       etunimet = henkilö.etunimet,
       suorituksenTyyppi = päätasonSuoritukset.map(_.suorituksenTyyppi).mkString(","),
-      koulutusmoduulit = päätasonSuoritukset.map(_.koulutusmoduuliKoodiarvo).sorted.mkString(","),
+      koulutusmoduulit = koulutusmoduulit.mkString(","),
+      koulutusmoduuliNimet = koulutusmoduuliNimet.mkString(","),
       osaamisalat = if (osaamisalat.isEmpty) None else Some(osaamisalat.mkString(",")),
       päätasonSuorituksenSuoritustapa = AmmatillinenRaporttiUtils.suoritusTavat(päätasonSuoritukset),
       opiskeluoikeudenAlkamispäivä = opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
