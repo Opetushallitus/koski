@@ -65,6 +65,9 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
         "Suoritetut ammatilliset tutkinnon osat yhteislaajuus" in {
           rivi.suoritetutAmmatillisetTutkinnonOsatYhteislaajuus should equal(135.0)
         }
+        "Tunnustetut ammatilliset tutkinnon osat yhteislaajuus" in {
+          rivi.tunnustetutAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
+        }
         "Pakolliset ammatilliset tutkinnon osat yhteislaajuus" in {
           rivi.pakollisetAmmatillisetTutkinnonOsatYhteislaajuus should equal(135.0)
         }
@@ -142,6 +145,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
         rivit(0).tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm should equal(0)
         rivit(0).rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm should equal(0)
         rivit(0).suoritetutAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
+        rivit(0).tunnustetutAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
         rivit(0).pakollisetAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
         rivit(0).valinnaisetAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
 
@@ -181,6 +185,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
         rivit(1).tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm should equal(0)
         rivit(1).rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm should equal(0)
         rivit(1).suoritetutAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
+        rivit(1).tunnustetutAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
         rivit(1).pakollisetAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
         rivit(1).valinnaisetAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
 
