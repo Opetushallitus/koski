@@ -14,16 +14,16 @@ import fi.oph.koski.koskiuser.MockUser
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
-import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät, AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRow}
+import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät, AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRow, AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit, AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema._
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
-class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll with PutOpiskeluoikeusTestMethods[AikuistenPerusopetuksenOpiskeluoikeus] {
+class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll with PutOpiskeluoikeusTestMethods[AikuistenPerusopetuksenOpiskeluoikeus] {
   private val application = KoskiApplicationForTests
-  private val raporttiBuilder = AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(application.raportointiDatabase.db)
+  private val raporttiBuilder = AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit(application.raportointiDatabase.db)
   private lazy val raportti =
-    raporttiBuilder.build(List(jyväskylänNormaalikoulu), date(2006, 1, 1), date(2016, 12, 30))(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRow])
+    raporttiBuilder.build(List(jyväskylänNormaalikoulu), date(2006, 1, 1), date(2016, 12, 30))(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitRow])
 
   override def beforeAll(): Unit = {
     lisääPäätasonSuorituksia(
@@ -33,7 +33,6 @@ class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätSpec extends FreeS
         ExamplesAikuistenPerusopetus.oppiaineenOppimääränSuoritusYH
       )
     )
-
     loadRaportointikantaFixtures
   }
 
@@ -69,29 +68,17 @@ class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätSpec extends FreeS
 
     "Raportin kolumnit" in {
       lazy val r = findSingle(raportti)
-      
       r.oppilaitos should equal("Jyväskylän normaalikoulu")
-      r.yhteensäSuorituksia should equal(2)
-      r.yhteensäSuoritettujaSuorituksia(2)
-      r.yhteensäTunnistettujaSuorituksia should equal(0)
-      r.yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä should equal(0)
-      r.päättövaiheenSuorituksia should equal(2)
-      r.päättövaiheenSuoritettujaSuorituksia(2)
-      r.päättövaiheenTunnistettujaSuorituksia should equal(0)
-      r.päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä should equal(0)
-      r.alkuvaiheenSuorituksia should equal(0)
-      r.alkuvaiheenSuoritettujaSuorituksia(0)
-      r.alkuvaiheenTunnistettujaSuorituksia should equal(0)
-      r.alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä should equal(0)
-      r.suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitetut(0)
-      r.suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa(0)
-      r.suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa(0)
+      r.kurssikoodi should equal("AI")
+      r.kurssinNimi should equal("Äidinkieli ja kirjallisuus")
+      r.päätasonSuorituksenTyyppi should equal("aikuistenperusopetuksenoppimaaranalkuvaihe")
+      r.kurssinSuorituksenTyyppi should equal("aikuistenperusopetuksenalkuvaiheenoppiaine")
     }
   }
 
-  private def findSingle(rows: Seq[AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRow]) = {
+  private def findSingle(rows: Seq[AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitRow]) = {
     val found = rows.filter(_.oppilaitos.equals("Jyväskylän normaalikoulu"))
-    found.length should be(1)
+    found.length should be(3)
     found.head
   }
 
@@ -104,3 +91,4 @@ class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätSpec extends FreeS
     }
   }
 }
+

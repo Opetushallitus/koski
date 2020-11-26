@@ -20,7 +20,9 @@ case class AikuistenPerusopetuksenEiRahoitustietoaKurssit(db: DB) extends KoskiD
       oppilaitos =  r.rs.getString("oppilaitos_nimi"),
       kurssikoodi = r.rs.getString("kurssikoodi"),
       kurssinNimi = r.rs.getString("kurssin_nimi"),
-      suorituksenTyyppi = r.rs.getString("suorituksen_tyyppi")
+      kurssinSuorituksenTyyppi = r.rs.getString("kurssin_suorituksen_tyyppi"),
+      päätasonSuorituksenTyyppi = r.rs.getString("paatason_suorituksen_tyyppi"),
+      oppijaOid = r.rs.getString("oppija_oid"),
     )
   )
 
@@ -39,12 +41,14 @@ case class AikuistenPerusopetuksenEiRahoitustietoaKurssit(db: DB) extends KoskiD
     sql"""
           with paatason_suoritus as (
             select
+              r_opiskeluoikeus.oppija_oid,
               r_opiskeluoikeus.oppilaitos_oid,
               r_opiskeluoikeus.oppilaitos_nimi,
               r_paatason_suoritus.paatason_suoritus_id,
               r_opiskeluoikeus.opiskeluoikeus_oid oo_opiskeluoikeus_oid,
               r_opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid,
-              r_opiskeluoikeus.viimeisin_tila
+              r_opiskeluoikeus.viimeisin_tila,
+              r_paatason_suoritus.suorituksen_tyyppi
             from r_opiskeluoikeus
             join r_paatason_suoritus on r_opiskeluoikeus.opiskeluoikeus_oid = r_paatason_suoritus.opiskeluoikeus_oid
               and r_opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid is null
@@ -53,10 +57,12 @@ case class AikuistenPerusopetuksenEiRahoitustietoaKurssit(db: DB) extends KoskiD
             )
             select distinct on (r_osasuoritus.osasuoritus_id)
               oo_opiskeluoikeus_oid opiskeluoikeuden_oid,
+              paatason_suoritus.oppija_oid,
               oppilaitos_nimi oppilaitos_nimi,
               r_osasuoritus.koulutusmoduuli_koodiarvo kurssikoodi,
               r_osasuoritus.koulutusmoduuli_nimi kurssin_nimi,
-              coalesce(r_osasuoritus.koulutusmoduuli_kurssin_tyyppi, '') as suorituksen_tyyppi
+              paatason_suoritus.suorituksen_tyyppi as paatason_suorituksen_tyyppi,
+              r_osasuoritus.suorituksen_tyyppi as kurssin_suorituksen_tyyppi
             from paatason_suoritus
             join r_opiskeluoikeus_aikajakso on oo_opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
             join r_osasuoritus on (paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id or oo_opiskeluoikeus_oid = r_osasuoritus.sisaltyy_opiskeluoikeuteen_oid)
@@ -74,17 +80,21 @@ case class AikuistenPerusopetuksenEiRahoitustietoaKurssit(db: DB) extends KoskiD
 
   val columnSettings: Seq[(String, Column)] = Seq(
     "opiskeluoikeudenOid" -> Column("Opiskeluoikeuden oid"),
+    "oppijaOid" -> Column("Oppijanumero"),
     "oppilaitos" -> Column("Oppilaitos"),
     "kurssikoodi" -> Column("Kurssikoodi"),
     "kurssinNimi" -> Column("Kurssin nimi"),
-    "suorituksenTyyppi" -> Column("Suorituksen tyyppi"),
+    "päätasonSuorituksenTyyppi" -> Column("Päätason suorituksen tyyppi"),
+    "kurssinSuorituksenTyyppi" -> Column("Kurssin suorituksen tyyppi"),
   )
 }
 
 case class AikuistenPerusopetuksenEiRahoitustietoaKurssitRow(
    opiskeluoikeudenOid: String,
+   oppijaOid: String,
    oppilaitos: String,
    kurssikoodi: String,
    kurssinNimi: String,
-   suorituksenTyyppi: String,
+   päätasonSuorituksenTyyppi: String,
+   kurssinSuorituksenTyyppi: String,
 )
