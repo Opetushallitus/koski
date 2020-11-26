@@ -717,8 +717,9 @@ describe('Ammatillinen koulutus', function() {
         describe('Keskiarvo', function() {
           describe('Aluksi', function() {
             before(editor.edit)
-            it('keskiarvo-kenttä on näkyvissä', function() {
+            it('keskiarvo- ja sisältääMukautettujaArvosanoja -kentät on näkyvissä', function() {
               expect(editor.property('keskiarvo').isVisible()).to.equal(true)
+              expect(editor.property('sisältääMukautettujaArvosanoja').isVisible()).to.equal(true)
             })
             after(editor.cancelChanges)
           })
@@ -736,6 +737,7 @@ describe('Ammatillinen koulutus', function() {
             before(
               editor.edit,
               editor.property('keskiarvo').setValue(3.5),
+              editor.property('sisältääMukautettujaArvosanoja').setValue(false),
               editor.saveChanges
             )
             it('toimii', function() {
@@ -743,6 +745,7 @@ describe('Ammatillinen koulutus', function() {
             })
             it('keskiarvo näytetään kahden desimaalin tarkkuudella', function() {
               expect(editor.property('keskiarvo').getValue()).to.equal('3,50')
+              expect(!editor.property('sisältääMukautettujaArvosanoja').isVisible())
             })
           })
         })
@@ -779,6 +782,17 @@ describe('Ammatillinen koulutus', function() {
 
         it('näyttää oikeat tiedot', function () {
           expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
+        })
+      })
+
+      describe('Keskiarvo', function() {
+        describe('Aluksi', function() {
+          before(editor.edit)
+          it('keskiarvo- ja sisältääMukautettujaArvosanoja -kentät on näkyvissä', function() {
+            expect(editor.property('keskiarvo').isVisible()).to.equal(true)
+            expect(editor.property('sisältääMukautettujaArvosanoja').isVisible()).to.equal(true)
+          })
+          after(editor.cancelChanges)
         })
       })
     })
