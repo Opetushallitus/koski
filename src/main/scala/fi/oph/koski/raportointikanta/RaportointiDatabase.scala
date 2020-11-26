@@ -9,7 +9,7 @@ import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{KoskiDatabaseConfig, KoskiDatabaseMethods}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.raportit.{LukioOppiaineenOppimaaranKurssikertymat, PaallekkaisetOpiskeluoikeudet}
+import fi.oph.koski.raportit.{LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat, PaallekkaisetOpiskeluoikeudet}
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.util.DateOrdering.{sqlDateOrdering, sqlTimestampOrdering}
@@ -96,6 +96,8 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
     runDbSync(DBIO.seq(
       PaallekkaisetOpiskeluoikeudet.createMaterializedView,
       PaallekkaisetOpiskeluoikeudet.createIndex,
+      LukioOppimaaranKussikertymat.createMaterializedView,
+      LukioOppimaaranKussikertymat.createIndex,
       LukioOppiaineenOppimaaranKurssikertymat.createMaterializedView,
       LukioOppiaineenOppimaaranKurssikertymat.createIndex,
       OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.createMaterializedView,
