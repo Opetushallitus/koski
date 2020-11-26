@@ -7,6 +7,7 @@ import {formatISODate} from '../date/date'
 import {generateRandomPassword} from '../util/password'
 import {downloadExcel} from './downloadExcel'
 import { AikajaksoValinta, Listavalinta, LyhytKuvaus, RaportinLataus, Vinkit } from './raporttiComponents'
+import { selectFromState } from './raporttiUtils'
 
 const reportTypes = {
   alkuvaihe: 'alkuvaihe',
@@ -14,17 +15,18 @@ const reportTypes = {
   oppiaineenoppimäärä: 'oppiaineenoppimäärä'
 }
 
-export const AikuistenPerusopetuksenRaportit = ({organisaatioP, apiEndpoint, shortDescription, example}) => {
+export const AikuistenPerusopetuksenRaportit = ({stateP, apiEndpoint, shortDescription, example}) => {
   const alkuAtom = Atom()
   const loppuAtom = Atom()
   const osasuoritustenAikarajausAtom = Atom(false)
   const raportinTyyppiAtom = Atom(reportTypes.alkuvaihe)
   const submitBus = Bacon.Bus()
+  const { selectedOrganisaatioP, dbUpdatedP } = selectFromState(stateP)
 
   const password = generateRandomPassword()
 
   const downloadExcelP = Bacon.combineWith(
-    organisaatioP, alkuAtom, loppuAtom, osasuoritustenAikarajausAtom, raportinTyyppiAtom,
+    selectedOrganisaatioP, alkuAtom, loppuAtom, osasuoritustenAikarajausAtom, raportinTyyppiAtom,
     (o, a, l, r, t) => o && a && l && (l.valueOf() >= a.valueOf()) && t && {
       oppilaitosOid: o.oid,
       alku: formatISODate(a),
@@ -75,6 +77,7 @@ export const AikuistenPerusopetuksenRaportit = ({organisaatioP, apiEndpoint, sho
         inProgressP={inProgressP}
         submitEnabledP={submitEnabledP}
         submitBus={submitBus}
+        dbUpdatedP={dbUpdatedP}
       />
 
       <Vinkit>{example}</Vinkit>

@@ -281,5 +281,9 @@ describe('Raporttien luominen', function() {
     it('Näyttää organisaatiovalitsimessa kaikki organisaatiot', function() {
       expect(page.valittavatOrganisaatiot()).to.deep.equal(kaikkiOrganisaatiot)
     })
+
+    it('Raportin päivitysaika näkyy oikein', function() {
+      expect(page.raportinPäivitysaika()).to.match(/^\d{1,2}\.\d{1,2}\.\d{4} \d{1,2}:\d{2}$/)
+    })
   })
 })

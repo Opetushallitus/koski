@@ -8,17 +8,18 @@ import {generateRandomPassword} from '../util/password'
 import {downloadExcel} from './downloadExcel'
 import Dropdown from '../components/Dropdown'
 import { LyhytKuvaus, PaivaValinta, RaportinLataus, Vinkit } from './raporttiComponents'
-import { today } from './raporttiUtils'
+import { selectFromState, today } from './raporttiUtils'
 
-export const VuosiluokkaRaporttiPaivalta = ({organisaatioP, apiEndpoint, shortDescription, dateInputHelp, help, example}) => {
+export const VuosiluokkaRaporttiPaivalta = ({stateP, apiEndpoint, shortDescription, dateInputHelp, help, example}) => {
   const paivaAtom = Atom(today())
   const vuosiluokkaAtom = Atom('1')
   const submitBus = Bacon.Bus()
+  const { selectedOrganisaatioP, dbUpdatedP } = selectFromState(stateP)
 
   const password = generateRandomPassword()
 
   const downloadExcelP = Bacon.combineWith(
-    organisaatioP, paivaAtom, vuosiluokkaAtom,
+    selectedOrganisaatioP, paivaAtom, vuosiluokkaAtom,
     (o, p, v) => o && p && v && ({oppilaitosOid: o.oid, paiva: formatISODate(p), vuosiluokka:(v), password, baseUrl: `/koski/api/raportit${apiEndpoint}`})
   )
   const downloadExcelE = submitBus.map(downloadExcelP)
@@ -52,6 +53,7 @@ export const VuosiluokkaRaporttiPaivalta = ({organisaatioP, apiEndpoint, shortDe
         inProgressP={inProgressP}
         submitEnabledP={submitEnabledP}
         submitBus={submitBus}
+        dbUpdatedP={dbUpdatedP}
       />
 
       <Vinkit>

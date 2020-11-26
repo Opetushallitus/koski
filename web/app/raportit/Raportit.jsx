@@ -200,18 +200,24 @@ const getInitialState = (pathTokens) => {
     selectedRaporttiIdx: 0,
     selectedOrganisaatio: null,
     tabs: [],
-    organisaatiot: []
+    organisaatiot: [],
+    dbUpdated: null
   }
 }
 
 export const raportitContentP = (pathTokens) => {
   const organisaatiotP = Http.cachedGet('/koski/api/raportit/organisaatiot-ja-raporttityypit')
+  const dbUpdatedP = Http.get('/koski/api/raportit/paivitysaika')
   const selectedTabIdxE = new Bacon.Bus()
   const selectedRaporttiIdxE = new Bacon.Bus()
   const selectedOrganisaatioE = new Bacon.Bus()
 
   const stateP = Bacon.update(
     getInitialState(pathTokens),
+    dbUpdatedP.toEventStream(), (state, dbUpdated) => ({
+      ...state,
+      dbUpdated
+    }),
     organisaatiotP.toEventStream(), (state, organisaatiot) => {
       const tabs = getEnrichedRaportitKategorioittain(organisaatiot)
       const selectedTabIdx = state.tabIdxByPath && tabs[state.tabIdxByPath].visible
@@ -311,10 +317,7 @@ const RaportitContent = ({
         selectedP={stateP.map(state => state.selectedOrganisaatio)}
         onSelect={onSelectOrganisaatio}
       />
-      {raporttiComponentP.map(RC => RC
-        ? <RC organisaatioP={stateP.map(state => state.selectedOrganisaatio)} />
-        : null
-      )}
+      {raporttiComponentP.map(RC => RC ? <RC stateP={stateP} /> : null)}
     </div>
   )
 }
@@ -364,10 +367,10 @@ const OrganisaatioValitsin = ({ raporttiP, selectedP, onSelect }) => {
   )
 }
 
-function PaallekkaisetOpiskeluoikeudet({ organisaatioP }) {
+function PaallekkaisetOpiskeluoikeudet({ stateP }) {
   return (
     <AikajaksoRaportti
-      organisaatioP={organisaatioP}
+      stateP={stateP}
       apiEndpoint={'/paallekkaisetopiskeluoikeudet'}
       title={<Text name='paallekkaiset-opiskeluoikeudet'/>}
       description={<Text name='paallekkaiset-opiskeluoikeudet'/>}
@@ -375,13 +378,13 @@ function PaallekkaisetOpiskeluoikeudet({ organisaatioP }) {
   )
 }
 
-function Opiskelijavuositiedot({ organisaatioP }) {
+function Opiskelijavuositiedot({ stateP }) {
   const titleText = <Text name='Opiskelijavuositiedot' />
   const descriptionText = <Text name='Opiskelijavuositiedot-description' />
 
   return (
     <AikajaksoRaportti
-      organisaatioP={organisaatioP}
+      stateP={stateP}
       apiEndpoint={'/ammatillinenopiskelijavuositiedot'}
       title={titleText}
       shortDescription={descriptionText}
@@ -389,14 +392,14 @@ function Opiskelijavuositiedot({ organisaatioP }) {
   )
 }
 
-function SuoritustietojenTarkistus({ organisaatioP }) {
+function SuoritustietojenTarkistus({ stateP }) {
   const titleText = <Text name='Suoritustiedot (ammatillinen koulutus, koko tutkinto)'/>
   const shortDescriptionText = <Text name='SuoritustietojenTarkistus-short-description'/>
   const exampleText = <Text name='SuoritustietojenTarkistus-example'/>
 
   return (
     <AikajaksoRaporttiAikarajauksella
-      organisaatioP={organisaatioP}
+      stateP={stateP}
       apiEndpoint={'/ammatillinentutkintosuoritustietojentarkistus'}
       title={titleText}
       shortDescription={shortDescriptionText}
@@ -405,14 +408,14 @@ function SuoritustietojenTarkistus({ organisaatioP }) {
   )
 }
 
-function AmmatillinenOsittainenSuoritustietojenTarkistus({ organisaatioP }) {
+function AmmatillinenOsittainenSuoritustietojenTarkistus({ stateP }) {
   const titleText = <Text name='Suoritustiedot (ammatillinen koulutus, tutkinnon osa/osia)' />
   const shortDescriptionText = <Text name='AmmatillinenOsittainenSuoritustietojenTarkistus-short-description' />
   const exampleText = <Text name='AmmatillinenOsittainenSuoritustietojenTarkistus-example' />
 
   return (
     <AikajaksoRaporttiAikarajauksella
-      organisaatioP={organisaatioP}
+      stateP={stateP}
       apiEndpoint={'/ammatillinenosittainensuoritustietojentarkistus'}
       title={titleText}
       shortDescription={shortDescriptionText}
@@ -421,13 +424,13 @@ function AmmatillinenOsittainenSuoritustietojenTarkistus({ organisaatioP }) {
   )
 }
 
-function MuuAmmatillinenRaportti({ organisaatioP }) {
+function MuuAmmatillinenRaportti({ stateP }) {
   const titleText = <Text name='Suoritustiedot (muu ammatillinen koulutus)' />
   const descriptionText = <Text name='muuammatillinenraportti-description' />
 
   return (
     <AikajaksoRaportti
-      organisaatioP={organisaatioP}
+      stateP={stateP}
       apiEndpoint={'/muuammatillinen'}
       title={titleText}
       shortDescription={descriptionText}
@@ -435,13 +438,13 @@ function MuuAmmatillinenRaportti({ organisaatioP }) {
   )
 }
 
-function TOPKSAmmatillinenRaportti({ organisaatioP }) {
+function TOPKSAmmatillinenRaportti({ stateP }) {
   const titleText = <Text name='Suoritustiedot (TOPKS ammatillinen koulutus)' />
   const descriptionText = <Text name='topksammatillinen-description' />
 
   return (
     <AikajaksoRaportti
-      organisaatioP={organisaatioP}
+      stateP={stateP}
       apiEndpoint={'/topksammatillinen'}
       title={titleText}
       shortDescription={descriptionText}
@@ -449,7 +452,7 @@ function TOPKSAmmatillinenRaportti({ organisaatioP }) {
   )
 }
 
-function PerusopetuksenVuosiluokka({ organisaatioP }) {
+function PerusopetuksenVuosiluokka({ stateP }) {
   const titleText = <Text name='Nuorten perusopetuksen opiskeluoikeus- ja suoritustietojen tarkistusraportti' />
   const shortDescriptionText = <Text name='PerusopetuksenVuosiluokka-short-description' />
   const dateInputHelpText = <Text name='PerusopetuksenVuosiluokka-date-input-help' />
@@ -458,7 +461,7 @@ function PerusopetuksenVuosiluokka({ organisaatioP }) {
 
   return (
     <VuosiluokkaRaporttiPaivalta
-      organisaatioP={organisaatioP}
+      stateP={stateP}
       apiEndpoint={'/perusopetuksenvuosiluokka'}
       title={titleText}
       shortDescription={shortDescriptionText}
@@ -469,14 +472,14 @@ function PerusopetuksenVuosiluokka({ organisaatioP }) {
   )
 }
 
-function Lukioraportti({ organisaatioP }) {
+function Lukioraportti({ stateP }) {
   const titleText = <Text name='Lukioraportti-title' />
   const shortDescriptionText = <Text name='Lukioraportti-short-description' />
   const exampleText = <Text name='Lukioraportti-example' />
 
   return (
     <AikajaksoRaporttiAikarajauksella
-      organisaatioP={organisaatioP}
+      stateP={stateP}
       apiEndpoint={'/lukionsuoritustietojentarkistus'}
       title={titleText}
       shortDescription={shortDescriptionText}
@@ -486,14 +489,14 @@ function Lukioraportti({ organisaatioP }) {
   )
 }
 
-function LukioKurssikertyma({ organisaatioP }) {
+function LukioKurssikertyma({ stateP }) {
   const title = <Text name='lukion-kurssikertyma-title' />
   const shortDescriptionText = <Text name='lukion-kurssikertyma-short-description' />
   const dateInputHelpText = <Text name='lukion-kurssikertyma-date-input-help' />
   const exampleText = <Text name='Lukioraportti-example' />
 
   return (
-    <AikajaksoRaportti organisaatioP={organisaatioP}
+    <AikajaksoRaportti stateP={stateP}
       apiEndpoint={'/lukiokurssikertymat'}
       title={title}
       shortDescription={shortDescriptionText}
@@ -503,7 +506,7 @@ function LukioKurssikertyma({ organisaatioP }) {
   )
 }
 
-function LukioDiaIBInternationalOpiskelijamaarat({ organisaatioP }) {
+function LukioDiaIBInternationalOpiskelijamaarat({ stateP }) {
   const titleText = <Text name='lukiokoulutuksen-opiskelijamaarat-title' />
   const shortDescriptionText = <Text name='lukiokoulutuksen-opiskelijamaarat-short-description' />
   const dateInputHelpText = <Text name='lukiokoulutuksen-opiskelijamaarat-date-input-help' />
@@ -511,7 +514,7 @@ function LukioDiaIBInternationalOpiskelijamaarat({ organisaatioP }) {
 
   return (
     <RaporttiPaivalta
-      organisaatioP={organisaatioP}
+      stateP={stateP}
       apiEndpoint={'/lukiodiaibinternationalopiskelijamaarat'}
       title={titleText}
       shortDescription={shortDescriptionText}
@@ -521,7 +524,7 @@ function LukioDiaIBInternationalOpiskelijamaarat({ organisaatioP }) {
   )
 }
 
-function LuvaOpiskelijamaaratRaportti({ organisaatioP }) {
+function LuvaOpiskelijamaaratRaportti({ stateP }) {
   const titleText = <Text name='luva-opiskelijamaarat-title' />
   const shortDescriptionText = <Text name='luva-opiskelijamaarat-short-description' />
   const dateInputHelpText = <Text name='luva-opiskelijamaarat-date-input-help' />
@@ -529,7 +532,7 @@ function LuvaOpiskelijamaaratRaportti({ organisaatioP }) {
 
   return (
     <RaporttiPaivalta
-      organisaatioP={organisaatioP}
+      stateP={stateP}
       apiEndpoint={'/luvaopiskelijamaarat'}
       title={titleText}
       shortDescription={shortDescriptionText}
@@ -539,7 +542,7 @@ function LuvaOpiskelijamaaratRaportti({ organisaatioP }) {
   )
 }
 
-function EsiopetusRaportti({ organisaatioP }) {
+function EsiopetusRaportti({ stateP }) {
   const titleText = <Text name='esiopetusraportti-title' />
   const shortDescriptionText = <Text name="esiopetusraportti-short-description" />
   const dateInputHelpText = <Text name="esiopetusraportti-date-input-help" />
@@ -547,7 +550,7 @@ function EsiopetusRaportti({ organisaatioP }) {
 
   return (
     <RaporttiPaivalta
-      organisaatioP={organisaatioP}
+      stateP={stateP}
       apiEndpoint={'/esiopetus'}
       title={titleText}
       shortDescription={shortDescriptionText}
@@ -557,7 +560,7 @@ function EsiopetusRaportti({ organisaatioP }) {
   )
 }
 
-function EsiopetuksenOppijamäärätRaportti({ organisaatioP }) {
+function EsiopetuksenOppijamäärätRaportti({ stateP }) {
   const titleText = <Text name='Esiopetus-oppilasmäärät-raportti-title' />
   const shortDescriptionText = <Text name='Esiopetus-oppilasmäärät-raportti-short-description' />
   const dateInputHelpText = <Text name='Esiopetus-oppilasmäärät-raportti-date-input-help' />
@@ -565,7 +568,7 @@ function EsiopetuksenOppijamäärätRaportti({ organisaatioP }) {
 
   return (
     <RaporttiPaivalta
-      organisaatioP={organisaatioP}
+      stateP={stateP}
       apiEndpoint={'/esiopetuksenoppijamaaratraportti'}
       title={titleText}
       shortDescription={shortDescriptionText}
@@ -575,7 +578,7 @@ function EsiopetuksenOppijamäärätRaportti({ organisaatioP }) {
   )
 }
 
-function PerusopetuksenOppijamäärätRaportti({ organisaatioP }) {
+function PerusopetuksenOppijamäärätRaportti({ stateP }) {
   const titleText = <Text name='Perusopetus-oppijamäärät-raportti-title' />
   const shortDescriptionText = <Text name='Perusopetus-oppijamäärät-raportti-short-description' />
   const dateInputHelpText = <Text name='Perusopetus-oppijamäärät-raportti-date-input-help' />
@@ -583,7 +586,7 @@ function PerusopetuksenOppijamäärätRaportti({ organisaatioP }) {
 
   return (
     <RaporttiPaivalta
-      organisaatioP={organisaatioP}
+      stateP={stateP}
       apiEndpoint={'/perusopetuksenoppijamaaratraportti'}
       title={titleText}
       shortDescription={shortDescriptionText}
@@ -593,7 +596,7 @@ function PerusopetuksenOppijamäärätRaportti({ organisaatioP }) {
   )
 }
 
-function PerusopetuksenLisäopetuksenOppijamäärätRaportti({ organisaatioP }) {
+function PerusopetuksenLisäopetuksenOppijamäärätRaportti({ stateP }) {
   const titleText = <Text name='Perusopetus-lisäopetus-oppijamäärät-raportti-title' />
   const shortDescriptionText = <Text name='Perusopetus-lisäopetus-oppijamäärät-raportti-short-description' />
   const dateInputHelpText = <Text name='Perusopetus-lisäopetus-oppijamäärät-raportti-date-input-help' />
@@ -601,7 +604,7 @@ function PerusopetuksenLisäopetuksenOppijamäärätRaportti({ organisaatioP }) 
 
   return (
     <RaporttiPaivalta
-      organisaatioP={organisaatioP}
+      stateP={stateP}
       apiEndpoint={'/perusopetuksenlisaopetuksenoppijamaaratraportti'}
       title={titleText}
       shortDescription={shortDescriptionText}
@@ -611,14 +614,14 @@ function PerusopetuksenLisäopetuksenOppijamäärätRaportti({ organisaatioP }) 
   )
 }
 
-function AikuistenPerusopetusRaportti({ organisaatioP }) {
+function AikuistenPerusopetusRaportti({ stateP }) {
   const titleText = <Text name='aikuisten-perusopetus-raportti-title' />
   const shortDescriptionText = <Text name='aikuisten-perusopetus-raportti-short-description' />
   const exampleText = <Text name='aikuisten-perusopetus-raportti-example' />
 
   return (
     <AikuistenPerusopetuksenRaportit
-      organisaatioP={organisaatioP}
+      stateP={stateP}
       apiEndpoint={'/aikuisten-perusopetus-suoritustietojen-tarkistus'}
       title={titleText}
       shortDescription={shortDescriptionText}
@@ -627,7 +630,7 @@ function AikuistenPerusopetusRaportti({ organisaatioP }) {
   )
 }
 
-function AikuistenPerusopetuksenOppijamäärätRaportti({ organisaatioP }) {
+function AikuistenPerusopetuksenOppijamäärätRaportti({ stateP }) {
   const titleText = <Text name='Aikuisten-perusopetus-oppilasmäärät-raportti-title' />
   const shortDescriptionText = <Text name='Aikuisten-perusopetus-oppilasmäärät-raportti-short-description' />
   const dateInputHelpText = <Text name='Aikuisten-perusopetus-oppilasmäärät-raportti-date-input-help' />
@@ -635,7 +638,7 @@ function AikuistenPerusopetuksenOppijamäärätRaportti({ organisaatioP }) {
 
   return (
     <RaporttiPaivalta
-      organisaatioP={organisaatioP}
+      stateP={stateP}
       apiEndpoint={'/aikuistenperusopetuksenoppijamaaratraportti'}
       title={titleText}
       shortDescription={shortDescriptionText}
@@ -645,7 +648,7 @@ function AikuistenPerusopetuksenOppijamäärätRaportti({ organisaatioP }) {
   )
 }
 
-function AikuistenPerusopetuksenKurssikertymäRaportti({ organisaatioP }) {
+function AikuistenPerusopetuksenKurssikertymäRaportti({ stateP }) {
   const titleText = <Text name='Aikuisten-perusopetus-kurssikertymä-raportti-title' />
   const shortDescriptionText = <Text name='Aikuisten-perusopetus-kurssikertymä-raportti-short-description' />
   const dateInputHelpText = <Text name='Aikuisten-perusopetus-kurssikertymä-raportti-date-input-help' />
@@ -653,7 +656,7 @@ function AikuistenPerusopetuksenKurssikertymäRaportti({ organisaatioP }) {
 
   return (
     <AikajaksoRaportti
-      organisaatioP={organisaatioP}
+      stateP={stateP}
       apiEndpoint={'/aikuistenperusopetuksenkurssikertymaraportti'}
       title={titleText}
       shortDescription={shortDescriptionText}

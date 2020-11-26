@@ -4,6 +4,7 @@ import DateInput from '../date/DateInput'
 import InfoIcon from '../icons/InfoIcon'
 import RaporttiDownloadButton from './RaporttiDownloadButton'
 import RadioButtons from '../components/RadioButtons'
+import { formatFinnishDateTime } from '../../app/date/date'
 
 export const LyhytKuvaus = ({ children }) => children
     ? (
@@ -30,12 +31,14 @@ export const AikajaksoValinta = ({ alkuAtom, loppuAtom, ohje }) => (
         <label><Text name="select-date-range"/></label>
         <div className="parametrit-kentat">
             <DateInput
+                inputId="dateinput-alku"
                 value={alkuAtom.get()}
                 valueCallback={(value) => alkuAtom.set(value)}
                 validityCallback={(valid) => !valid && alkuAtom.set(undefined)}
             />
             <span className="parametri-aikajakso-viiva">{' — '}</span>
             <DateInput
+                inputId="dateinput-loppu"
                 value={loppuAtom.get()}
                 valueCallback={(value) => loppuAtom.set(value)}
                 validityCallback={(valid) => !valid && loppuAtom.set(undefined)}
@@ -67,15 +70,23 @@ export const Vinkit = ({ children }) => children
 
 export const RaportinLataus = ({
     password,
+    dbUpdatedP,
     inProgressP,
     submitEnabledP,
     submitBus
 }) => (
     <div>
         <div className="password">
-        <Text name='Excel-tiedosto on suojattu salasanalla'/> {password}<br />
-        <Text name="Ota salasana itsellesi talteen" />
+            <Text name='Excel-tiedosto on suojattu salasanalla'/> {password}<br />
+            <Text name="Ota salasana itsellesi talteen" />
         </div>
+        {dbUpdatedP.map(dbUpdated => (
+            <div className="update-time">
+                <Text name="Raporttidata luotu" />
+                {' '}
+                <span className="datetime">{formatFinnishDateTime(new Date(dbUpdated))}</span>
+            </div>
+        ))}
         <RaporttiDownloadButton inProgressP={inProgressP} disabled={submitEnabledP.not()} onSubmit={e => { e.preventDefault(); submitBus.push(); return false }} />
     </div>
 )

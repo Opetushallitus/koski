@@ -65,6 +65,9 @@ function RaportitPage() {
       return function() {
         setInputValue(S('.date-editor')[inputIndex], aika)
       }
+    },
+    raportinPäivitysaika: function() {
+      return S('.update-time .datetime').text()
     }
   }
   return api

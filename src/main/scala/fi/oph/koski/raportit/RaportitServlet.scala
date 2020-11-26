@@ -40,6 +40,10 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     )
   }
 
+  get("/paivitysaika") {
+    raportitService.viimeisinPäivitys
+  }
+
   get("/mahdolliset-raportit/:oppilaitosOid") {
     getStringParam("oppilaitosOid") match {
       case organisaatioService.ostopalveluRootOid => Set(EsiopetuksenRaportti.toString, EsiopetuksenOppijaMäärienRaportti.toString)
