@@ -19,15 +19,15 @@ const kaikkiOrganisaatiot = [
 ]
 
 const esiopetuksenRaportit = [
-  'Opiskeluoikeudet ja suoritustiedot',
-  'VOS-rahoituslaskenta: oppijamäärät'
+  'Opiskeluoikeus- ja suoritustiedot',
+  'VOS-tunnusluvut: oppijamäärät'
 ]
 
 const lukionRaportit = [
-  'Tarkistusraportti',
-  'VOS-tunnusluvut: Kurssikertymät',
-  'VOS-tunnusluvut: Opiskelijamäärät',
-  'VOS-tunnusluvut: Valmistavan koulutuksen opiskelijamäärät'
+  'Opiskeluoikeus- ja suoritustiedot',
+  'VOS-tunnusluvut: kurssikertymät',
+  'VOS-tunnusluvut: opiskelijamäärät',
+  'VOS-tunnusluvut: LUVA-opiskelijamäärät'
 ]
 
 describe('Raporttien luominen', function() {

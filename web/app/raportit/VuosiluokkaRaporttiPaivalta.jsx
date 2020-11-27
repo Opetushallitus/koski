@@ -57,8 +57,8 @@ export const VuosiluokkaRaporttiPaivalta = ({stateP, apiEndpoint, shortDescripti
       />
 
       <Vinkit>
-        <p>{help}</p>
-        <p>{example}</p>
+        <div>{help}</div>
+        <div>{example}</div>
       </Vinkit>
     </section>
   )
