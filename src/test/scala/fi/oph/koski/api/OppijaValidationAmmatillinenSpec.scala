@@ -574,6 +574,11 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatusOk()))
       }
 
+      "Syötetään tieto siitä, että keskiarvo sisältää mukautettuja arvosanoja" - {
+        val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaOps, osasuoritukset = Some(List(tutkinnonOsaSuoritus)), keskiarvo = Option(2.1f), sisältääMukautettujaArvosanoja = Some(true))
+        "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatusOk()))
+      }
+
       "suoritus.vahvistus.päivä > päättymispäivä" - {
         "palautetaan HTTP 400" in putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2016, 5, 31)).copy(
           suoritukset = List(autoalanPerustutkinnonSuoritus().copy(

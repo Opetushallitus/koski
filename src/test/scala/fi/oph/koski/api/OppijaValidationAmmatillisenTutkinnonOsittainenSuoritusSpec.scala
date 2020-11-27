@@ -56,6 +56,10 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
             "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(osittaisenTutkinnonOsaSuoritus.copy(tutkinnonOsanRyhmä = None)) (verifyResponseStatusOk()))
           }
 
+          "Syötetään keskiarvo ja tieto siitä, että keskiarvo sisältää mukautettuja arvosanoja" - {
+            val suoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(keskiarvo = Some(3.0f), sisältääMukautettujaArvosanoja = Some(true))
+            "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus) (verifyResponseStatusOk()))
+          }
 
           "Tutkinnon osa ei kuulu tutkintorakenteeseen" - {
             "palautetaan HTTP 200 (osittaisissa suorituksissa ei validoida rakennetta)" in (putTutkinnonOsaSuoritus(osittaisenTutkinnonOsaSuoritus.copy(koulutusmoduuli = johtaminenJaHenkilöstönKehittäminen))(

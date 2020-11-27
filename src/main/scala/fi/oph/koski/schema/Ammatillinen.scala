@@ -243,7 +243,12 @@ case class AmmatillisenTutkinnonSuoritus(
   @MinValue(1)
   @MaxValue(5)
   @Scale(2)
-  keskiarvo: Option[Double] = None
+  keskiarvo: Option[Double] = None,
+  @Title("Sisältää mukautettuja arvosanoja")
+  @Tooltip("Keskiarvoon sisältyy mukautettuja arvosanoja")
+  @OnlyWhen("suoritustapa/koodiarvo","reformi")
+  @OnlyWhen("suoritustapa/koodiarvo","ops")
+  sisältääMukautettujaArvosanoja: Option[Boolean] = None
 ) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus with Todistus with Järjestämismuodollinen with OsaamisenHankkimistavallinen
 
 @ReadFlattened
@@ -297,7 +302,20 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   @KoodistoKoodiarvo("ammatillinentutkintoosittainen")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkintoosittainen", "suorituksentyyppi"),
   @Tooltip("Oppijan opetusryhmä")
-  ryhmä: Option[String] = None
+  ryhmä: Option[String] = None,
+  @Title("Painotettu keskiarvo")
+  @Tooltip("Ammatillisen tutkinnon osaamispistein painotettu keskiarvo.")
+  @OnlyWhen("suoritustapa/koodiarvo","reformi")
+  @OnlyWhen("suoritustapa/koodiarvo","ops")
+  @MinValue(1)
+  @MaxValue(5)
+  @Scale(2)
+  keskiarvo: Option[Double] = None,
+  @Title("Sisältää mukautettuja arvosanoja")
+  @Tooltip("Keskiarvoon sisältyy mukautettuja arvosanoja")
+  @OnlyWhen("suoritustapa/koodiarvo","reformi")
+  @OnlyWhen("suoritustapa/koodiarvo","ops")
+  sisältääMukautettujaArvosanoja: Option[Boolean] = None
 ) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus with Järjestämismuodollinen with OsaamisenHankkimistavallinen
 
 trait AmmatillisenTutkinnonOsittainenTaiKokoSuoritus extends  AmmatillinenPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Ryhmällinen with Tutkintonimikkeellinen with Osaamisalallinen {
