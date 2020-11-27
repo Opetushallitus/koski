@@ -103,6 +103,9 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
         "Suoritettujen yhteisten tutkinnon osien osa-alueiden yhteislaajuus" in {
           rivi.suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal(35)
         }
+        "Tunnustettujen yhteisten tutkinnon osien osuus valmiista yhteisistä tutkinnon osista" in {
+          rivi.tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus should equal(0)
+        }
         "Pakollisten yhteisten tutkinnon osioen osa-alueiden yhteislaajuus" in {
           rivi.pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal(32)
         }
@@ -157,6 +160,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
         rivit(0).tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm should equal(0)
         rivit(0).rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm should equal(0)
         rivit(0).suoritettujenYhteistenTutkinnonOsienYhteislaajuus should equal(0)
+        rivit(0).tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus should equal(0)
         rivit(0).suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal(0)
         rivit(0).pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal(0)
         rivit(0).valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus should equal(0)
@@ -197,6 +201,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
         rivit(1).tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm should equal(0)
         rivit(1).rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm should equal(0)
         rivit(1).suoritettujenYhteistenTutkinnonOsienYhteislaajuus should equal(0)
+        rivit(1).tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus should equal(0)
         rivit(1).suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal(0)
         rivit(1).pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal(0)
         rivit(1).valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus should equal(0)
