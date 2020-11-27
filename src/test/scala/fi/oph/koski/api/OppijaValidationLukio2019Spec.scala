@@ -1476,6 +1476,29 @@ class OppijaValidationLukio2019Spec extends FreeSpec with PutOpiskeluoikeusTestM
     }
   }
 
+  "Suoritukset" - {
+    "Useampi lukionoppimaara-suoritus aiheuttaa virheen" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus, oppimääränSuoritus))) {
+        verifyResponseStatus(400,
+          KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaSuorituksia(
+            """Opiskeluoikeudella on lukionoppimaara-tyyppinen suoritus ja useampi kuin yksi lukion päätason suoritus"""
+          )
+        )
+      }
+    }
+
+    "Ei voida olla samaan aikaan oppimäärän suorittaja ja aineopiskelija" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus,
+        oppiaineidenOppimäärienSuoritus))) {
+        verifyResponseStatus(400,
+          KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaSuorituksia(
+            """Opiskeluoikeudella on lukionoppimaara-tyyppinen suoritus ja useampi kuin yksi lukion päätason suoritus"""
+          )
+        )
+      }
+    }
+  }
+
   private def putAndGetOpiskeluoikeus(oo: LukionOpiskeluoikeus): Opiskeluoikeus = putOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
