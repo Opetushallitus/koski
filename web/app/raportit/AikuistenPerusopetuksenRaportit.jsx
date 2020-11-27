@@ -2,12 +2,12 @@ import React from 'baret'
 import Text from '../i18n/Text'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
+import DateInput from '../date/DateInput'
 import {showError} from '../util/location'
 import {formatISODate} from '../date/date'
 import {generateRandomPassword} from '../util/password'
 import {downloadExcel} from './downloadExcel'
-import { AikajaksoValinta, Listavalinta, LyhytKuvaus, RaportinLataus, Vinkit } from './raporttiComponents'
-import { selectFromState } from './raporttiUtils'
+import RaporttiDownloadButton from './RaporttiDownloadButton'
 
 const reportTypes = {
   alkuvaihe: 'alkuvaihe',
@@ -15,18 +15,17 @@ const reportTypes = {
   oppiaineenoppimäärä: 'oppiaineenoppimäärä'
 }
 
-export const AikuistenPerusopetuksenRaportit = ({stateP, apiEndpoint, shortDescription, example}) => {
+export const AikuistenPerusopetuksenRaportit = ({organisaatioAtom, apiEndpoint, title, description}) => {
   const alkuAtom = Atom()
   const loppuAtom = Atom()
   const osasuoritustenAikarajausAtom = Atom(false)
   const raportinTyyppiAtom = Atom(reportTypes.alkuvaihe)
   const submitBus = Bacon.Bus()
-  const { selectedOrganisaatioP, dbUpdatedP } = selectFromState(stateP)
 
   const password = generateRandomPassword()
 
   const downloadExcelP = Bacon.combineWith(
-    selectedOrganisaatioP, alkuAtom, loppuAtom, osasuoritustenAikarajausAtom, raportinTyyppiAtom,
+    organisaatioAtom, alkuAtom, loppuAtom, osasuoritustenAikarajausAtom, raportinTyyppiAtom,
     (o, a, l, r, t) => o && a && l && (l.valueOf() >= a.valueOf()) && t && {
       oppilaitosOid: o.oid,
       alku: formatISODate(a),
@@ -46,41 +45,49 @@ export const AikuistenPerusopetuksenRaportit = ({stateP, apiEndpoint, shortDescr
 
   return (
     <section>
-      <LyhytKuvaus>{shortDescription}</LyhytKuvaus>
-
-      <Listavalinta
-        label="Valitse suorituksen tyyppi"
-        atom={raportinTyyppiAtom}
-        options={[
-          { key: reportTypes.alkuvaihe, value: <Text name="Alkuvaihe" /> },
-          { key: reportTypes.päättövaihe, value: <Text name="Päättövaihe" /> },
-          { key: reportTypes.oppiaineenoppimäärä, value: <Text name="Oppiaineen oppimäärä (ns. aineopiskelijat)" /> }
-        ]}
-      />
-
-      <AikajaksoValinta
-        alkuAtom={alkuAtom}
-        loppuAtom={loppuAtom}
-      />
-
-      <Listavalinta
-        label="Valitse osasuorituksen aikarajaus"
-        atom={osasuoritustenAikarajausAtom}
-        options={[
-          { key: false, value: <Text name="Raportille valitaan kaikki kurssisuoritukset riippumatta niiden suoritusajankohdasta" /> },
-          { key: true, value: <Text name="Raportille valitaan vain sellaiset kurssit, joiden arviointipäivä osuu yllä määritellylle aikajaksolle" /> }
-        ]}
-      />
-
-      <RaportinLataus
-        password={password}
-        inProgressP={inProgressP}
-        submitEnabledP={submitEnabledP}
-        submitBus={submitBus}
-        dbUpdatedP={dbUpdatedP}
-      />
-
-      <Vinkit>{example}</Vinkit>
+      <h2>{title}</h2>
+      <p>{description}</p>
+      <div className='parametri'>
+        <label><Text name='Suorituksen tyyppi'/></label>
+      </div>
+      {raportinTyyppiAtom.map(v => (
+        <React.Fragment>
+          <label className='radio-option-container'>
+            <input className='radio-option' type='radio' checked={v === reportTypes.alkuvaihe} onChange={() => raportinTyyppiAtom.set(reportTypes.alkuvaihe)}/>
+            <Text name='Alkuvaihe' />
+          </label>
+          <label className='radio-option-container'>
+            <input className='radio-option' type='radio' checked={v === reportTypes.päättövaihe} onChange={() => raportinTyyppiAtom.set(reportTypes.päättövaihe)}/>
+            <Text name='Päättövaihe' />
+          </label>
+          <label className='radio-option-container'>
+            <input className='radio-option' type='radio' checked={v === reportTypes.oppiaineenoppimäärä} onChange={() => raportinTyyppiAtom.set(reportTypes.oppiaineenoppimäärä)}/>
+            <Text name='Oppiaineen oppimäärä (ns. aineopiskelijat)' />
+          </label>
+        </React.Fragment>
+      ))}
+      <div className='parametri'>
+        <label><Text name='Aikajakso'/></label>
+        <div className='date-range'>
+          <DateInput value={alkuAtom.get()} valueCallback={(value) => alkuAtom.set(value)} validityCallback={(valid) => !valid && alkuAtom.set(undefined)}/>
+          {' — '}
+          <DateInput value={loppuAtom.get()} valueCallback={(value) => loppuAtom.set(value)} validityCallback={(valid) => !valid && loppuAtom.set(undefined)}/>
+        </div>
+      </div>
+      {osasuoritustenAikarajausAtom.map(v => (
+        <React.Fragment>
+          <label className='radio-option-container'>
+            <input className='radio-option' type='radio' checked={!v} onChange={() => osasuoritustenAikarajausAtom.set(false)}/>
+            <Text name='Raportille valitaan kaikki kurssisuoritukset riippumatta niiden suoritusajankohdasta' />
+          </label>
+          <label className='radio-option-container'>
+            <input className='radio-option' type='radio' checked={v} onChange={() => osasuoritustenAikarajausAtom.set(true)}/>
+            <Text name='Raportille valitaan vain sellaiset kurssit, joiden arviointipäivä osuu yllä määritellylle aikajaksolle' />
+          </label>
+        </React.Fragment>
+      ))}
+      <div className='password'><Text name='Excel-tiedosto on suojattu salasanalla'/> {password}</div>
+      <RaporttiDownloadButton inProgressP={inProgressP} disabled={submitEnabledP.not()} onSubmit={e => { e.preventDefault(); submitBus.push(); return false }} />
     </section>
   )
 }

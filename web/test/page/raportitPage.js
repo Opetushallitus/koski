@@ -1,7 +1,7 @@
 function RaportitPage() {
 
-  const tabsElementti = 'div.main-content .tabs-container'
-  const raporttivalitsinElementti = 'div.main-content .raportti-valitsin .pills-container'
+  var pageApi = Page(function() {return S('.raportit')})
+  var esiopetuksenTarkistusraportinElementti = 'div.main-content > div > section:nth-child(5)'
 
   var api = {
     openPage: function (predicate) {
@@ -9,65 +9,41 @@ function RaportitPage() {
         return openPage('/koski/raportit?tilastoraportit=true', predicate)()
       }
     },
-    odotaRaporttikategoriat: function () {
-      return wait.untilVisible(() => S(tabsElementti))
-    },
-    raporttikategoriat: function() {
-      return getAsTextArray(`${tabsElementti} .tabs-item-text`)
-    },
-    valittuRaporttikategoria: function() {
-      return S(`${tabsElementti} .tabs-item-selected .tabs-item-text`).text()
-    },
-    valitseRaporttikategoria: function(index) {
-      return wait.until(() => S(`${tabsElementti} .tabs-item:nth-child(${index + 1})`).click())
-    },
-    otsikko: function() {
-      return S('div.main-content > h2').text()
-    },
-    raportit: function(raportit) {
-      return getAsTextArray(`${raporttivalitsinElementti} .pills-item`)
-    },
-    valittuRaportti: function() {
-      return S(`${raporttivalitsinElementti} .pills-item-selected`).text()
-    },
-    valitseRaportti: function(index) {
-      return wait.until(() => S(`${raporttivalitsinElementti} .pills-item:nth-child(${index + 1})`).click())
-    },
-    organisaatioValitsinNäkyvillä: function() {
-      return isElementVisible(S('.organisaatio-dropdown'))
-    },
-    valitseOrganisaatio: function(index) {
+    avaaOrganisaatioValitsin: function () {
       return seq(
-        () => S('.organisaatio-dropdown input').click(),
-        wait.untilVisible(() => S('.organisaatio-dropdown .options.open')),
-        () => S(`.organisaatio-dropdown .options .option:nth-child(${index + 1}) .value`).click(),
-        wait.untilHidden(() => S('.organisaatio-dropdown .options.open'))
+        wait.untilVisible(function () {return S('.raportit-organisaatio')}),
+        wait.untilVisible(function () {return S('.organisaatio')}),
+        wait.untilVisible(function () {return S('.organisaatio-selection')}),
+        OrganisaatioHaku(function () {return S('.organisaatio')}).open,
       )
     },
-    haeOrganisaatioita: function(hakusana) {
-      return function() {
-        setInputValue('.organisaatio-dropdown input', hakusana)
-      }
+    organisaatioHakuNäkyvissä: function () {
+      return isElementVisible(S('.organisaatio-haku'))
     },
-    valittuOrganisaatio: function() {
-      return S('.organisaatio-dropdown .input-container input').val()
+    valitseOrganisaatio: function (nimi) {
+      return seq(
+        OrganisaatioHaku(function () {return S('.organisaatio')}).select(nimi),
+      )
     },
-    valittavatOrganisaatiot: function() {
-      return getAsTextArray('.organisaatio-dropdown .options .option')
+    syötäPäivämäärä: function (paivamaara) {
+      return pageApi.setInputValue(esiopetuksenTarkistusraportinElementti + ' > .parametri > .calendar-input > #date-input', paivamaara)
     },
-    valitutPäivät: function() {
-      return getValuesAsArray('.date-editor')
+    luoRaportti: function () {
+      return seq(
+        wait.until(function() {
+          return S(esiopetuksenTarkistusraportinElementti + ' > h2 > span').text() === 'Esiopetuksen opiskeluoikeus- ja suoritustietojen tarkistusraportti'
+        }),
+        click(esiopetuksenTarkistusraportinElementti + ' > .raportti-download-button > .koski-button'),
+        wait.until(function() {
+          return S(esiopetuksenTarkistusraportinElementti +  ' > .raportti-download-button > .ajax-indicator-bg').length === 1
+        }, 10000),
+        wait.until(function() {
+          return S(esiopetuksenTarkistusraportinElementti + ' > .raportti-download-button > .ajax-indicator-bg').length === 0
+        }, 10000)
+      )
     },
-    latausnappiAktiivinen: function() {
-      return !S('.raportti-download-button button').prop('disabled')
-    },
-    syötäAika: function(inputIndex, aika) {
-      return function() {
-        setInputValue(S('.date-editor')[inputIndex], aika)
-      }
-    },
-    raportinPäivitysaika: function() {
-      return S('.update-time .datetime').text()
+    latausIndikaatioPoistuu: function () {
+      return S(esiopetuksenTarkistusraportinElementti + ' > .raportti-download-button > .ajax-indicator-bg').length === 0
     }
   }
   return api

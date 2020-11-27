@@ -17,14 +17,6 @@ export const navigateTo = function (path, event) {
   if (event) event.preventDefault()
 }
 
-export const replaceLocation = (path, event) => {
-  const prevLoc = previousLocation
-  const nextLoc = parsePath(path)
-  previousLocation = nextLoc
-  history.replaceState(null, null, path)
-  if (nextLoc.path !== prevLoc.path) trackPageView(nextLoc.toString())
-}
-
 window.onpopstate = function() {
   if (!checkExitHook()) {
     // Back-button navigation cancelled by exit hook

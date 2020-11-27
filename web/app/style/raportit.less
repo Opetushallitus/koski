@@ -1,217 +1,55 @@
 .raportit {
-  padding: 0 32px;
-
-  h2 {
-    margin-top: 42px;
+  label {
+    display: block;
   }
 
-  .raportti-valitsin {
-    margin-bottom: 16px;
-    // font-size: 90%;
-  }
-
-  .organisaatio-valitsin {
-    max-width: 450px;
-    margin-bottom: 16px;
-  }
-
-  .lyhyt-kuvaus {
-    margin: 2em 0;
-    max-width: 650px;
-    color: #666666;
-  }
-
-  .parametri {
-    margin-bottom: 20px;
-
-    & > label {
-      display: block;
-      margin-bottom: 12px;
-    }
-
-    .calendar-input {
-      display: inline-block;
-      vertical-align: top;
-    }
-
-    .ohje {
-      display: inline-block;
-      vertical-align: top;
-      margin-left: 16px;
-      max-width: 400px;
-      font-size: 90%;
-      color: #666666;
-      line-height: 1.4;
-    }
-
-    &.vuosiluokka {
-      .dropdown {
-        max-width: 100px;
-      }
-    }
-
-    .parametrit-kentat {
-      display: inline-block;
-    }
-
-    .parametri-aikajakso-viiva {
-      display: inline-block;
-      vertical-align: bottom;
-      padding: 0 10px 10px;
-    }
-  }
-
-  .password {
-    margin-top: 2em;
-  }
-
-  .password, .update-time {
-    color: #666666;
-    margin-bottom: 20px;
-  }
-
-  .vinkit {
-    color: #666666;
-    max-width: 550px;
-    margin-top: 30px;
-    line-height: 1.4;
-
-    h3 {
-      vertical-align: center;
-
-      svg {
-        width: 20px;
-        height: 20px;
-        vertical-align: bottom;
-        margin-right: 5px;
-      }
-    }
-  }
-}
-
-.dropdown-wrapper:not(.error) {
-  .dropdown.inline:not(:hover) {
-    .select:after,
-    .input-container:after {
-      border: 1px solid rgba(0, 0, 0, 0);
-    }
-    .select {
-      box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0);
-    }
-    .input-container {
-      input {
-        border: 1px solid rgba(0, 0, 0, 0);
-        color: @color-link-blue;
-        padding-left: 0;
-      }
-    }
-  }
-}
-
-.organisaatio-dropdown {
-  position: relative;
-  outline: none;
-
-  &:focus {
-    .select {
-      outline: none;
-      border: 1px solid @color-link-blue;
-      box-shadow: none;
-    }
-  }
-
-  .select {
-    background: white;
-    border: 1px solid #aeaeae;
-    box-shadow: inset 0 1px 4px 0 #dadada;
-    border-radius: 2px;
-    padding: 0 24px 0 8px;
-    line-height: 28px;
-    &.no-selection {
-      color: #aeaeae;
-    }
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    position: relative;
-    cursor: default;
-    transition: all 0.1s;
-  }
-
-  .select:after,
-  .input-container:after {
-    content: "";
-    position: absolute;
-    right: 10px;
-    transform: rotate(135deg);
-    border-right: 1px solid #2b2b2b;
-    border-top: 1px solid #2b2b2b;
-    width: 6px;
-    height: 6px;
-    top: ~"calc(50% - 4px)";
-    pointer-events: none;
-  }
-
-  .input-container {
-    position: relative;
-    input {
-      width: 100%;
-      transition: all 0.1s;
-    }
-  }
-
-  .options {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border: 1px solid #e4e4e4;
-    position: absolute;
-    z-index: @z-index-base + 3;
-    min-width: 100%;
-    box-shadow: 1px 2px 3px 0 rgba(0, 0, 0, 0.25);
-    text-align: left;
-    background: white;
-
-    &:not(.open) {
-      display: none;
-    }
-
-    li {
-      line-height: 30px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-
-      .value {
-        display: block;
-        padding: 0 0.7em;
-        &:hover {
-          background: @color-medium-blue;
-        }
-        &.selected {
-          color: white;
-          background: @color-link-blue;
-        }
-      }
-
-      &.option {
-        cursor: pointer;
-      }
-
-      &.group-header {
-        font-weight: bold;
-        color: @color-darkgray;
-      }
-    }
-  }
-
-  &.grouped {
-    .options .option:not(.zero-value) {
-      padding-left: 30px;
-    }
-    .options .option.zero-value {
+  .raportit-organisaatio {
+    width: 500px;
+    .organisaatio {
       margin-top: 5px;
-      margin-bottom: 10px;
+      margin-bottom: 18px;
+      .organisaatio-selection {
+        line-height: 35px;
+      }
+    }
+  }
+
+  p {
+    max-width: 500px;
+  }
+
+  .parametri > label {
+    padding: 0.7em 0 0 0;
+    margin-bottom: 10px;
+  }
+
+  .dropdown-selection {
+    height: 35px;
+    width: 174px;
+    padding: 0 0 0.7em;
+    margin-bottom: 64px;
+
+    .select {
+      height: 35px;
+    }
+  }
+
+  .radio-option-container {
+    margin: 0.7em 0;
+    .radio-option {
+      margin-right: 0.7em;
+    }
+  }
+
+  .password, button {
+    margin-top: 20px;
+  }
+
+  .raportti-download-button {
+    margin-bottom: 20px;
+
+    > .axaj-indicator-bg {
+      margin-top: 20px;
     }
   }
 }

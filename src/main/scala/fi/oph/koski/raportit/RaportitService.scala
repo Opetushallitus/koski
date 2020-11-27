@@ -1,7 +1,5 @@
 package fi.oph.koski.raportit
 
-import java.time.LocalDate
-
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät, AikuistenPerusopetuksenEiRahoitustietoaKurssit, AikuistenPerusopetuksenMuutaKauttaRahoitetutKurssit, AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit, AikuistenPerusopetuksenOppijamäärätRaportti, AikuistenPerusopetuksenOppimääränKurssikertymät, AikuistenPerusopetusRaportti, AikuistenPerusopetusRaporttiRepository}
@@ -26,8 +24,6 @@ class RaportitService(application: KoskiApplication) {
   private val aikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetRaportti = AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit(raportointiDatabase.db)
   private val perusopetuksenOppijamäärätRaportti = PerusopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val perusopetuksenLisäopetuksenOppijamäärätRaportti = PerusopetuksenLisäopetusOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
-
-  def viimeisinPäivitys = raportointiDatabase.status.completionTime.get.toLocalDateTime
 
   def paallekkaisetOpiskeluoikeudet(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
     val oidit = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toSeq

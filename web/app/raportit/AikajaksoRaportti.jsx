@@ -1,24 +1,23 @@
 import React from 'baret'
+import Text from '../i18n/Text'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
+import DateInput from '../date/DateInput'
 import {showError} from '../util/location'
 import {formatISODate} from '../date/date'
 import {generateRandomPassword} from '../util/password'
 import {downloadExcel} from './downloadExcel'
-import { AikajaksoValinta, LyhytKuvaus, RaportinLataus, Vinkit } from './raporttiComponents'
-import { selectFromState } from './raporttiUtils'
+import RaporttiDownloadButton from './RaporttiDownloadButton'
 
-export const AikajaksoRaportti = ({stateP, apiEndpoint, shortDescription, dateInputHelp, example}) => {
+export const AikajaksoRaportti = ({organisaatioAtom, apiEndpoint, title, description}) => {
   const alkuAtom = Atom()
   const loppuAtom = Atom()
   const submitBus = Bacon.Bus()
 
-  const { selectedOrganisaatioP, dbUpdatedP } = selectFromState(stateP)
-
   const password = generateRandomPassword()
 
   const downloadExcelP = Bacon.combineWith(
-    selectedOrganisaatioP, alkuAtom, loppuAtom, (o, a, l) => o && a && l && (l.valueOf() >= a.valueOf()) && {oppilaitosOid: o.oid, alku: formatISODate(a), loppu: formatISODate(l), password, baseUrl: `/koski/api/raportit${apiEndpoint}`})
+    organisaatioAtom, alkuAtom, loppuAtom, (o, a, l) => o && a && l && (l.valueOf() >= a.valueOf()) && {oppilaitosOid: o.oid, alku: formatISODate(a), loppu: formatISODate(l), password, baseUrl: `/koski/api/raportit${apiEndpoint}`})
 
   const downloadExcelE = submitBus.map(downloadExcelP).flatMapLatest(downloadExcel)
 
@@ -29,23 +28,18 @@ export const AikajaksoRaportti = ({stateP, apiEndpoint, shortDescription, dateIn
 
   return (
     <section>
-      <LyhytKuvaus>{shortDescription}</LyhytKuvaus>
-
-      <AikajaksoValinta
-        alkuAtom={alkuAtom}
-        loppuAtom={loppuAtom}
-        ohje={dateInputHelp}
-      />
-
-      <RaportinLataus
-        password={password}
-        inProgressP={inProgressP}
-        submitEnabledP={submitEnabledP}
-        submitBus={submitBus}
-        dbUpdatedP={dbUpdatedP}
-      />
-
-      <Vinkit>{example}</Vinkit>
+      <h2>{title}</h2>
+      <p>{description}</p>
+      <div className='parametri'>
+        <label><Text name='Aikajakso'/></label>
+        <div className='date-range'>
+          <DateInput value={alkuAtom.get()} valueCallback={(value) => alkuAtom.set(value)} validityCallback={(valid) => !valid && alkuAtom.set(undefined)}/>
+          {' — '}
+          <DateInput value={loppuAtom.get()} valueCallback={(value) => loppuAtom.set(value)} validityCallback={(valid) => !valid && loppuAtom.set(undefined)}/>
+        </div>
+      </div>
+      <div className='password'><Text name='Excel-tiedosto on suojattu salasanalla'/> {password}</div>
+      <RaporttiDownloadButton inProgressP={inProgressP} disabled={submitEnabledP.not()} onSubmit={e => { e.preventDefault(); submitBus.push(); return false }} />
     </section>
   )
 }
