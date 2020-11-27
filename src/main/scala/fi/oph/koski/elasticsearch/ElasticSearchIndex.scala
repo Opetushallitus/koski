@@ -21,9 +21,7 @@ class ElasticSearchIndex(
 
   private def http: Http = elastic.http
 
-  private val currentIndexName: String = {
-    versionedIndexName(mappingVersion)
-  }
+  private val currentIndexName: String = versionedIndexName(mappingVersion)
 
   private val readAlias: String = s"$name-read-alias"
 
