@@ -116,12 +116,13 @@ class OpiskeluoikeudenPerustiedotIndexer(
         .flatMap { item =>
           if (item \ "error" != JNothing) List(extract[Int](item \ "_id")) else Nil
         }
-      perustiedotSyncRepository.syncAgain(failedOpiskeluoikeusIds.flatMap { id =>
+      val toSyncAgain = failedOpiskeluoikeusIds.flatMap { id =>
         items.find{ doc => docId(doc) == id}.orElse{
           logger.warn(s"Elasticsearch reported failed id $id that was not found in ${items.map(docId)}");
           None
         }
-      }, upsert)
+      }
+      perustiedotSyncRepository.syncAgain(toSyncAgain, upsert)
       val msg = s"Elasticsearch indexing failed for ids $failedOpiskeluoikeusIds: ${JsonMethods.pretty(response)}. Will retry soon."
       logger.error(msg)
       Left(KoskiErrorCategory.internalError(msg))
