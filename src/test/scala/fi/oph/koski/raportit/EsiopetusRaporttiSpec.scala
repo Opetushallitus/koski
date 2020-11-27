@@ -56,7 +56,6 @@ class EsiopetusRaporttiSpec extends FreeSpec with Matchers with Raportointikanta
         r.pidennettyOppivelvollisuus should equal(false)
         r.tukimuodot should equal(Some("1"))
         r.erityisenTuenPäätös should equal(false)
-        r.erityisenTuenPäätösOpiskeleeToimintaAlueittain should equal(false)
         r.erityisenTuenPäätösToteutuspaikka should equal(None)
         r.vammainen should equal(false)
         r.vaikeastiVammainen should equal(false)
