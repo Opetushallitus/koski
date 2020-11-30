@@ -9,9 +9,9 @@ import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.log.KoskiMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
-import fi.oph.koski.organisaatio.OrganisaatioOid
 import fi.oph.koski.raportit.aikuistenperusopetus.AikuistenPerusopetusRaportti
-import fi.oph.koski.schema.{Koodistokoodiviite, OpiskeluoikeudenTyyppi, Organisaatio}
+import fi.oph.koski.organisaatio.{Kaikki, OrganisaatioHierarkia, OrganisaatioOid}
+import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, OpiskeluoikeudenTyyppi, Organisaatio}
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import org.scalatra.{ContentEncodingSupport, Cookie, CookieOptions}
 
@@ -28,6 +28,16 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     if (!koskiSession.hasRaportitAccess) {
       haltWithStatus(KoskiErrorCategory.forbidden.organisaatio())
     }
+  }
+
+  get("/organisaatiot-ja-raporttityypit") {
+    raportinOrganisatiotJaRaporttiTyypit(
+      organisaatioService.searchInEntitledOrganizations(None, Kaikki)
+    )
+  }
+
+  get("/paivitysaika") {
+    raportitService.viimeisinPäivitys
   }
 
   get("/mahdolliset-raportit/:oppilaitosOid") {
@@ -279,4 +289,36 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
 
   private def auditLogRaportinLataus(raportti: String, request: RaporttiAikajaksoltaRequest) =
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> request.auditlogHakuehto(raportti))))
+
+  private def raportinOrganisatiotJaRaporttiTyypit(organisaatiot: Iterable[OrganisaatioHierarkia]): List[OrganisaatioJaRaporttiTyypit] =
+    organisaatiot
+      .filter(_.organisaatiotyypit.intersect(raporttinakymanOrganisaatiotyypit).nonEmpty)
+      .map(_.sortBy(koskiSession.lang))
+      .map((organisaatio) => {
+        OrganisaatioJaRaporttiTyypit(
+          nimi = organisaatio.nimi,
+          oid = organisaatio.oid,
+          organisaatiotyypit = organisaatio.organisaatiotyypit,
+          raportit = organisaatio.oid match {
+            case organisaatioService.ostopalveluRootOid => Set(EsiopetuksenRaportti.toString, EsiopetuksenOppijaMäärienRaportti.toString)
+            case oid => accessResolver.mahdollisetRaporttienTyypitOrganisaatiolle(validateOrganisaatioOid(oid)).map(_.toString)
+          },
+          children = raportinOrganisatiotJaRaporttiTyypit(organisaatio.children)
+        )
+      })
+      .toList
+
+  private val raporttinakymanOrganisaatiotyypit = List(
+    "OPPILAITOS",
+    "OPPISOPIMUSTOIMIPISTE",
+    "KOULUTUSTOIMIJA",
+    "VARHAISKASVATUKSEN_TOIMIPAIKKA",
+    "OSTOPALVELUTAIPALVELUSETELI"
+  )
 }
+
+case class OrganisaatioJaRaporttiTyypit(nimi: LocalizedString,
+                                        oid: String,
+                                        organisaatiotyypit: List[String],
+                                        raportit: Set[String],
+                                        children: List[OrganisaatioJaRaporttiTyypit])

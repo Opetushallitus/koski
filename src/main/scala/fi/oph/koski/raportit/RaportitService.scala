@@ -25,6 +25,8 @@ class RaportitService(application: KoskiApplication) {
   private val perusopetuksenOppijamäärätRaportti = PerusopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val perusopetuksenLisäopetuksenOppijamäärätRaportti = PerusopetuksenLisäopetusOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
 
+  def viimeisinPäivitys = raportointiDatabase.status.startedTime.get.toLocalDateTime
+
   def paallekkaisetOpiskeluoikeudet(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
     val oidit = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toSeq
     OppilaitosRaporttiResponse(
