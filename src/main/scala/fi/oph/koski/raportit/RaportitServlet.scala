@@ -31,9 +31,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
   }
 
   get("/organisaatiot-ja-raporttityypit") {
-    raportinOrganisatiotJaRaporttiTyypit(
-      organisaatioService.searchInEntitledOrganizations(None, Kaikki)
-    )
+    raportinOrganisatiotJaRaporttiTyypit(organisaatioService.kaikkiKäyttöoikeudellisetOrganisaatiot)
   }
 
   get("/paivitysaika") {

@@ -27,6 +27,14 @@ class OrganisaatioService(application: KoskiApplication) {
     }
   }
 
+  def kaikkiKäyttöoikeudellisetOrganisaatiot(implicit user: KoskiSession): Iterable[OrganisaatioHierarkia] = {
+    if (user.hasGlobalReadAccess) {
+      organisaatioRepository.findAllHierarkiat
+    } else {
+      searchInEntitledOrganizations(None, Kaikki)
+    }
+  }
+
   def organisaationAlaisetOrganisaatiot(organisaatioOid: Oid)(implicit user: KoskiSession): List[Oid] = {
     organisaatioRepository.getOrganisaatio(organisaatioOid).toList.flatMap { org =>
       val children = organisaatioRepository.getChildOids(org.oid).toList.flatten
