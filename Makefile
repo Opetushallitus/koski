@@ -176,10 +176,6 @@ dist: check-version
 
 .PHONY: deploy
 deploy: check-version
-	./scripts/deploy.sh $(env) $(version)
-
-.PHONY: deployaws
-deployaws: check-version
 	./scripts/deploy.sh $(env) $(version) $(CLOUD_ENV_DIR)/aws_ec2.yml
 
 .PHONY: check-version

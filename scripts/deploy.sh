@@ -43,7 +43,6 @@ function download_version {
   echo "# Application downloaded to: ${TMP_APPLICATION}"
 }
 
-INVENTORY=${INVENTORY:-"scripts/inventory.sh"}
 ANSIBLE_ARGS=${ANSIBLE_ARGS:-"--ssh-common-args=-F $CLOUD_ENV_DIR/ssh.config"}
 
 if [ -z "$ENV" ] || ! [[ " ${VALID_ENVS[@]} " =~ " ${ENV} " ]]; then
