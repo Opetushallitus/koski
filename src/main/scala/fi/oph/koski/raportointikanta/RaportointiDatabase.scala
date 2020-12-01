@@ -94,14 +94,14 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
     val started = System.currentTimeMillis
     setStatusLoadStarted("materialized_views")
     runDbSync(DBIO.seq(
-      PaallekkaisetOpiskeluoikeudet.createMaterializedView,
-      PaallekkaisetOpiskeluoikeudet.createIndex,
-      LukioOppimaaranKussikertymat.createMaterializedView,
-      LukioOppimaaranKussikertymat.createIndex,
-      LukioOppiaineenOppimaaranKurssikertymat.createMaterializedView,
-      LukioOppiaineenOppimaaranKurssikertymat.createIndex,
-      OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.createMaterializedView,
-      OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.createIndex
+      PaallekkaisetOpiskeluoikeudet.createMaterializedView(schema),
+      PaallekkaisetOpiskeluoikeudet.createIndex(schema),
+      LukioOppimaaranKussikertymat.createMaterializedView(schema),
+      LukioOppimaaranKussikertymat.createIndex(schema),
+      OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.createMaterializedView(schema),
+      OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.createIndex(schema),
+      LukioOppiaineenOppimaaranKurssikertymat.createMaterializedView(schema),
+      LukioOppiaineenOppimaaranKurssikertymat.createIndex(schema)
     ), timeout = 60.minutes)
     val duration = (System.currentTimeMillis - started) / 1000
     setStatusLoadCompleted("materialized_views")

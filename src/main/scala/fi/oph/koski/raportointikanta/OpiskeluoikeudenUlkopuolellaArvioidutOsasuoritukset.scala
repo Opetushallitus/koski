@@ -4,25 +4,25 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 
 object OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset {
 
-  def createMaterializedView =
+  def createMaterializedView(s: Schema) =
     sqlu"""
-      create materialized view osasuoritus_arvioitu_opiskeluoikeuden_ulkopuolella as select
-        r_opiskeluoikeus.opiskeluoikeus_oid,
-        r_opiskeluoikeus.oppilaitos_oid,
-        r_osasuoritus.osasuoritus_id,
-        r_osasuoritus.arviointi_paiva osasuorituksen_arviointi_paiva,
-        r_osasuoritus.suorituksen_tyyppi osasuorituksen_tyyppi,
-        r_paatason_suoritus.suorituksen_tyyppi paatason_suorituksen_tyyppi
-      from r_opiskeluoikeus
-        join r_osasuoritus on r_osasuoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+      create materialized view #${s.name}.osasuoritus_arvioitu_opiskeluoikeuden_ulkopuolella as select
+        opiskeluoikeus.opiskeluoikeus_oid,
+        opiskeluoikeus.oppilaitos_oid,
+        osasuoritus.osasuoritus_id,
+        osasuoritus.arviointi_paiva osasuorituksen_arviointi_paiva,
+        osasuoritus.suorituksen_tyyppi osasuorituksen_tyyppi,
+        paatason_suoritus.suorituksen_tyyppi paatason_suorituksen_tyyppi
+      from #${s.name}.r_opiskeluoikeus opiskeluoikeus
+        join #${s.name}.r_osasuoritus osasuoritus on osasuoritus.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
           and (
-            r_osasuoritus.arviointi_paiva < r_opiskeluoikeus.alkamispaiva
+            osasuoritus.arviointi_paiva < opiskeluoikeus.alkamispaiva
             or
-           (r_osasuoritus.arviointi_paiva > coalesce(r_opiskeluoikeus.paattymispaiva, '9999-12-31') and viimeisin_tila = 'valmistunut')
+           (osasuoritus.arviointi_paiva > coalesce(opiskeluoikeus.paattymispaiva, '9999-12-31') and viimeisin_tila = 'valmistunut')
           )
-        join r_paatason_suoritus on r_paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id
+        join #${s.name}.r_paatason_suoritus paatason_suoritus on paatason_suoritus.paatason_suoritus_id = osasuoritus.paatason_suoritus_id
     """
 
-  def createIndex =
-    sqlu"create index on osasuoritus_arvioitu_opiskeluoikeuden_ulkopuolella(oppilaitos_oid)"
+  def createIndex(s: Schema) =
+    sqlu"create index on #${s.name}.osasuoritus_arvioitu_opiskeluoikeuden_ulkopuolella(oppilaitos_oid)"
 }

@@ -5,7 +5,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.raportointikanta.RaportointiDatabase
+import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
 import slick.jdbc.GetResult
 
 object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
@@ -19,9 +19,9 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
     )
   }
 
-  def createMaterializedView =
+  def createMaterializedView(s: Schema) =
     sqlu"""
-      create materialized view lukion_oppiaineen_oppimaaran_kurssikertyma as select
+      create materialized view #${s.name}.lukion_oppiaineen_oppimaaran_kurssikertyma as select
         oppilaitos_oid,
         arviointi_paiva,
         count(*) yhteensa,
@@ -39,13 +39,13 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
         count(*) filter (where tunnustettu and valtakunnallinen and syventava) tunnustettuja_valtakunnallisia_syventavia,
         count(*) filter (where tunnustettu_rahoituksen_piirissa and (pakollinen or (valtakunnallinen and syventava))) tunnustut_pakolliset_ja_valtakunnalliset_syventavat_rahoitus,
         count(*) filter (where tunnustettu_rahoituksen_piirissa and pakollinen) pakollisia_tunnustettuja_rahoituksen_piirissa,
-        count(*) filter (where valtakunnallinen and syventava and tunnustettu_rahoituksen_piirissa) "valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa",
+        count(*) filter (where valtakunnallinen and syventava and tunnustettu_rahoituksen_piirissa) valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa,
         count(*) filter (where valtakunnallinen and (suoritettu or tunnustettu_rahoituksen_piirissa) and opintojen_rahoitus = '6') suoritetut_tai_rahoitetut_muuta_kautta_rahoitetut,
         count(*) filter (where valtakunnallinen and (suoritettu or tunnustettu_rahoituksen_piirissa) and opintojen_rahoitus is null) suoritetut_tai_rahoitetut_rahoitusmuoto_ei_tiedossa
       from (
         select
           oppilaitos_oid,
-          r_osasuoritus.arviointi_paiva,
+          osasuoritus.arviointi_paiva,
           tunnustettu,
           tunnustettu = false as suoritettu,
           tunnustettu_rahoituksen_piirissa,
@@ -54,22 +54,24 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
           koulutusmoduuli_kurssin_tyyppi = 'syventava' as syventava,
           koulutusmoduuli_paikallinen = false as valtakunnallinen,
           opintojen_rahoitus
-        from r_paatason_suoritus
-          join r_opiskeluoikeus on r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-          join r_osasuoritus on r_osasuoritus.paatason_suoritus_id = r_paatason_suoritus.paatason_suoritus_id
-          left join r_opiskeluoikeus_aikajakso
-            on r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid = r_osasuoritus.opiskeluoikeus_oid
-              and (r_osasuoritus.arviointi_paiva between r_opiskeluoikeus_aikajakso.alku and r_opiskeluoikeus_aikajakso.loppu)
-        where r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
-          and r_osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
+        from #${s.name}.r_paatason_suoritus paatason_suoritus
+          join #${s.name}.r_opiskeluoikeus opiskeluoikeus
+            on paatason_suoritus.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
+          join #${s.name}.r_osasuoritus osasuoritus
+            on paatason_suoritus.paatason_suoritus_id = osasuoritus.paatason_suoritus_id
+          left join #${s.name}.r_opiskeluoikeus_aikajakso opiskeluoikeus_aikajakso
+            on opiskeluoikeus_aikajakso.opiskeluoikeus_oid = osasuoritus.opiskeluoikeus_oid
+              and (osasuoritus.arviointi_paiva between opiskeluoikeus_aikajakso.alku and opiskeluoikeus_aikajakso.loppu)
+        where paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
+          and osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
       ) kurssit
     group by
       oppilaitos_oid,
       arviointi_paiva
     """
 
-  def createIndex =
-    sqlu"create index on lukion_oppiaineen_oppimaaran_kurssikertyma(oppilaitos_oid, arviointi_paiva)"
+  def createIndex(s: Schema) =
+    sqlu"create index on #${s.name}.lukion_oppiaineen_oppimaaran_kurssikertyma(oppilaitos_oid, arviointi_paiva)"
 
 
   private def queryAineopiskelija(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate) = {
