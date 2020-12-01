@@ -29,6 +29,7 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec extends FreeSpec with Raport
 
       rivi.suorituksenTyyppi should equal("ammatillinentutkinto")
       rivi.koulutusmoduulit should equal("361902")
+      rivi.koulutusmoduuliNimet should equal("Luonto- ja ympäristöalan perustutkinto")
       rivi.osaamisalat should equal(Some("1590"))
       rivi.päätasonSuorituksenSuoritustapa should equal("Ammatillinen perustutkinto")
       rivi.opiskeluoikeudenAlkamispäivä should equal(Some(LocalDate.of(2012, 9, 1)))

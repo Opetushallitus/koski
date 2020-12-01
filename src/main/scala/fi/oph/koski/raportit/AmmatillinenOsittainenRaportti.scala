@@ -30,6 +30,7 @@ object AmmatillinenOsittainenRaportti {
     val yhteistenTutkinnonOsienOsaSuoritukset = osasuoritukset.filter(isYhteinenTutkinnonOsanOsaalue(_, unFilteredosasuoritukset))
     val vapaastiValittavatTutkinnonOsat = osasuoritukset.filter(tutkinnonOsanRyhmä(_, "3"))
     val tutkintoaYksilöllisestiLaajentavatTutkinnonOsa = osasuoritukset.filter(tutkinnonOsanRyhmä(_, "4"))
+    val vahvistuspäivällisetTunnustetutAmmatillisenTutkinnonOsat = tunnustetut(ammatillisetTutkinnonOsat.filter(isVahvistusPäivällinen))
 
     AmmatillinenOsittainRaporttiRow(
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
@@ -60,9 +61,10 @@ object AmmatillinenOsittainenRaportti {
       suoritettujenOpintojenYhteislaajuus = yhteislaajuus(ammatillisetTutkinnonOsat.union(yhteistenTutkinnonOsienOsaSuoritukset).filter(_.arvioituJaHyväksytty)),
       valmiitAmmatillisetTutkinnonOsatLkm = ammatillisetTutkinnonOsat.filter(isVahvistusPäivällinen).size,
       näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm = näytöt(ammatillisetTutkinnonOsat.filter(isVahvistusPäivällinen)).size,
-      tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm = tunnustetut(ammatillisetTutkinnonOsat.filter(isVahvistusPäivällinen)).size,
+      tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm = vahvistuspäivällisetTunnustetutAmmatillisenTutkinnonOsat.size,
       rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm = rahoituksenPiirissä(tunnustetut(ammatillisetTutkinnonOsat)).size,
       suoritetutAmmatillisetTutkinnonOsatYhteislaajuus = yhteislaajuus(ammatillisetTutkinnonOsat),
+      tunnustetutAmmatillisetTutkinnonOsatYhteislaajuus = yhteislaajuus(vahvistuspäivällisetTunnustetutAmmatillisenTutkinnonOsat),
       valmiitYhteistenTutkinnonOsatLkm = yhteistenTutkinnonOsienSuoritukset.filter(isVahvistusPäivällinen).size,
       pakollisetYhteistenTutkinnonOsienOsaalueidenLkm = pakolliset(yhteistenTutkinnonOsienOsaSuoritukset).size,
       valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm = valinnaiset(yhteistenTutkinnonOsienOsaSuoritukset).size,
@@ -71,6 +73,7 @@ object AmmatillinenOsittainenRaportti {
       tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm = tunnustetut(yhteistenTutkinnonOsienSuoritukset.filter(isVahvistusPäivällinen)).size,
       rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm = rahoituksenPiirissä(tunnustetut(yhteistenTutkinnonOsienSuoritukset)).size,
       suoritettujenYhteistenTutkinnonOsienYhteislaajuus = yhteislaajuus(yhteistenTutkinnonOsienSuoritukset),
+      tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus = yhteislaajuus(tunnustetut(yhteistenTutkinnonOsienSuoritukset.filter(isVahvistusPäivällinen))),
       suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = yhteislaajuus(yhteistenTutkinnonOsienOsaSuoritukset.filter(_.arvioituJaHyväksytty)),
       pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = yhteislaajuus(pakolliset(yhteistenTutkinnonOsienOsaSuoritukset)),
       valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus = yhteislaajuus(valinnaiset(yhteistenTutkinnonOsienOsaSuoritukset)),
@@ -150,9 +153,10 @@ object AmmatillinenOsittainenRaportti {
     "suoritettujenOpintojenYhteislaajuus" -> CompactColumn("Suoritettujen opintojen yhteislaajuus"),
     "valmiitAmmatillisetTutkinnonOsatLkm" -> CompactColumn("Valmiiden ammatillisten tutkinnon osien lukumäärä"),
     "näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm" -> CompactColumn("Valmiissa ammatillisissa tutkinnon osissa olevien näyttöjen lukumäärä"),
-    "tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm" -> CompactColumn("Tunnustettujen tutkinnon osien osuus valmiista ammatilllisista tutkinnon osista"),
+    "tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm" -> CompactColumn("Tunnustettujen tutkinnon osien osuus valmiista ammatillisista tutkinnon osista"),
     "rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm" -> CompactColumn("Rahoituksen piirissä olevien tutkinnon osien osuus tunnustetuista ammatillisista tutkinnon osista"),
     "suoritetutAmmatillisetTutkinnonOsatYhteislaajuus" -> CompactColumn("KOSKI-palveluun siirrettyjen ammatillisten tutkinnon osien (valmis- tai kesken-tilaiset) yhteislaajuus"),
+    "tunnustetutAmmatillisetTutkinnonOsatYhteislaajuus" -> CompactColumn("Tunnustettujen ammatillisten tutkinnon osien yhteislaajuus"),
     "valmiitYhteistenTutkinnonOsatLkm" -> CompactColumn("Valmiiden yhteisten tutkinnon osien lukumäärä"),
     "pakollisetYhteistenTutkinnonOsienOsaalueidenLkm" -> CompactColumn("Pakollisten yhteisten tutkinnon osien osa-alueiden lukumäärä"),
     "valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm" -> CompactColumn("Valinnaisten yhteisten tutkinnon osien osa-alueiden lukumäärä"),
@@ -161,6 +165,7 @@ object AmmatillinenOsittainenRaportti {
     "tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm" -> CompactColumn("Tunnustettujen tutkinnon osien osuus valmiista yhteisistä tutkinnon osista"),
     "rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm" -> CompactColumn("Rahoituksen piirissä olevien tutkinnon osien osuus tunnustetuista yhteisistä tutkinnon osista"),
     "suoritettujenYhteistenTutkinnonOsienYhteislaajuus" -> CompactColumn("KOSKI-palveluun siirrettyjen yhteisten tutkinnon osien (valmis- tai kesken-tilaiset) yhteislaajuus"),
+    "tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus" -> CompactColumn("Tunnustettujen yhteisten tutkinnon osien yhteislaajuus"),
     "suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus" -> CompactColumn("Suoritettujen yhteisten tutkinnon osien osa-alueiden yhteislaajuus"),
     "pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus" -> CompactColumn("Pakollisten yhteisten tutkinnon osien osa-alueiden yhteislaajuus"),
     "valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus" -> CompactColumn("Valinnaisten yhteisten tutkinnon osien osa-aluiden yhteislaajuus"),
@@ -201,6 +206,7 @@ case class AmmatillinenOsittainRaporttiRow(
   tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm: Int,
   rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm: Int,
   suoritetutAmmatillisetTutkinnonOsatYhteislaajuus: Double,
+  tunnustetutAmmatillisetTutkinnonOsatYhteislaajuus: Double,
   valmiitYhteistenTutkinnonOsatLkm: Int,
   pakollisetYhteistenTutkinnonOsienOsaalueidenLkm: Int,
   valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm: Int,
@@ -209,6 +215,7 @@ case class AmmatillinenOsittainRaporttiRow(
   tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm: Int,
   rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm: Int,
   suoritettujenYhteistenTutkinnonOsienYhteislaajuus: Double,
+  tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus: Double,
   suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus: Double,
   pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus: Double,
   valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus: Double,
