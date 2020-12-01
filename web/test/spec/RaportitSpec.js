@@ -43,6 +43,26 @@ describe('Raporttien luominen', function() {
   })
 
   describe('Raporttikategoriat', function() {
+    describe('Testipääkäyttäjä: kaikki välilehdet', function() {
+      before(
+        Authentication().login('pää'),
+        page.openPage(),
+        page.odotaRaporttikategoriat()
+      )
+
+      it('Näyttää oikeat välilehdet', function() {
+        expect(page.raporttikategoriat()).to.deep.equal([
+          'Esiopetus',
+          'Perusopetus',
+          'Aikuisten perusopetus',
+          'Ammatillinen',
+          'Lukio',
+          'Muut'
+        ])
+        expect(page.valittuRaporttikategoria()).to.equal('Esiopetus')
+      })
+    })
+
     describe('Testikäyttäjä kalle: kaikki välilehdet', function() {
       before(
         Authentication().login('kalle'),
@@ -63,9 +83,9 @@ describe('Raporttien luominen', function() {
       })
     })
 
-    describe('Testikäyttäjä stadin-palvelu: rajatut välilehdet', function() {
+    describe('Testikäyttäjä stadin-esiopetus: rajatut välilehdet', function() {
       before(
-        Authentication().login('stadin-palvelu'),
+        Authentication().login('stadin-esiopetus'),
         page.openPage(),
         page.odotaRaporttikategoriat()
       )
@@ -73,8 +93,6 @@ describe('Raporttien luominen', function() {
       it('Näyttää oikeat välilehdet', function() {
         expect(page.raporttikategoriat()).to.deep.equal([
           'Esiopetus',
-          'Perusopetus',
-          'Lukio',
           'Muut'
         ])
       })

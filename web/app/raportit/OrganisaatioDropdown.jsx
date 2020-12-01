@@ -2,6 +2,7 @@ import React from 'baret'
 import Atom from 'bacon.atom'
 import {t} from '../i18n/i18n'
 import Bacon from 'baconjs'
+import {buildClassNames} from '../components/classnames'
 
 const filterOrgTree = (query, orgs) => {
     return orgs
@@ -126,28 +127,38 @@ const Options = ({ organisaatiot, selected, onSelect, isOpen, isChild }) => (
             : 'options'
         }
     >
-        {organisaatiot.map(org => (
-            <li
-                key={org.oid}
-                className="option"
-            >
-                <span
-                    className={selected && org.oid === selected.oid ? 'selected value' : 'value'}
-                    onMouseDown={() => onSelect(org)}
-                    onTouchStart={() => onSelect(org)}
-                    onClick={() => onSelect(org)}
+        {organisaatiot.map(org => {
+            const clickHandler = org.selectable
+                ? () => onSelect(org)
+                : null
+
+            return (
+                <li
+                    key={org.oid}
+                    className="option"
                 >
-                    {t(org.nimi)}
-                </span>
-                {org.children.length === 0 ? null : (
-                    <Options
-                        organisaatiot={org.children}
-                        selected={selected}
-                        onSelect={onSelect}
-                        isChild
-                    />
-                )}
-            </li>
-        ))}
+                    <span
+                        className={buildClassNames([
+                            'value',
+                            selected && org.oid === selected.oid ? 'selected' : null,
+                            org.selectable ? null : 'disabled'
+                        ])}
+                        onMouseDown={clickHandler}
+                        onTouchStart={clickHandler}
+                        onClick={clickHandler}
+                    >
+                        {t(org.nimi)}
+                    </span>
+                    {org.children.length === 0 ? null : (
+                        <Options
+                            organisaatiot={org.children}
+                            selected={selected}
+                            onSelect={onSelect}
+                            isChild
+                        />
+                    )}
+                </li>
+            )
+        })}
     </ul>
 )

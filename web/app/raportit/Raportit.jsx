@@ -155,8 +155,9 @@ const getEnrichedRaportitKategorioittain = (organisaatiot) =>
   kaikkiRaportitKategorioittain.map(tab => {
     const raportit = tab.raportit.map(raportti => {
       const visibleOrganisaatiot = raportti.visibleForAllOrgs
-        ? organisaatiot
-        : organisaatiot.filter(org => org.raportit.includes(raportti.id))
+        ? organisaatiot.map(organisaatioWithForcedVisibility)
+        : filterVisibleOrganisaatioTree(raportti.id, organisaatiot)
+
       return {
         ...raportti,
         visible: (raportti.visibleForAllOrgs || visibleOrganisaatiot.length > 0) && (raportti.guard ? raportti.guard() : true),
@@ -171,6 +172,29 @@ const getEnrichedRaportitKategorioittain = (organisaatiot) =>
     }
   })
 
+const filterVisibleOrganisaatioTree = (raporttityyppi, organisaatiot) =>
+  organisaatiot
+    .map(organisaatioWithRaporttiVisibility(raporttityyppi))
+    .filter(org => org.visible)
+
+const organisaatioWithRaporttiVisibility = raporttityyppi => organisaatio => {
+  const children = filterVisibleOrganisaatioTree(raporttityyppi, organisaatio.children)
+  const selectable = organisaatio.raportit.includes(raporttityyppi)
+  return {
+    ...organisaatio,
+    children,
+    selectable,
+    visible: selectable || children.some(child => child.visible)
+  }
+}
+
+const organisaatioWithForcedVisibility = organisaatio => ({
+  ...organisaatio,
+  children: organisaatio.children.map(organisaatioWithForcedVisibility),
+  selectable: true,
+  visible: true
+})
+
 const organiaatiotTreeIncludes = (organisaatiot, oid) =>
   organisaatiot.some(org => org.oid === oid || organiaatiotTreeIncludes(org.children, oid))
 
@@ -180,8 +204,8 @@ const preselectOrganisaatio = (raportti, selectedOrganisaatio) => {
   }
   const filteredOrganisaatiot = filterOrgTreeByRaporttityyppi(raportti.id, raportti.organisaatiot)
   return selectedOrganisaatio && organiaatiotTreeIncludes(filteredOrganisaatiot, selectedOrganisaatio.oid)
-          ? selectedOrganisaatio
-          : filteredOrganisaatiot[0]
+    ? selectedOrganisaatio
+    : filteredOrganisaatiot.find(org => org.selectable)
 }
 
 const findIndexById = (arr, value) => {
@@ -233,7 +257,7 @@ export const raportitContentP = (pathTokens) => {
         selectedTabIdx,
         selectedRaporttiIdx,
         selectedOrganisaatio: selectedTabIdx >= 0
-          ? tabs[selectedTabIdx].raportit[selectedRaporttiIdx].organisaatiot[0]
+          ? preselectOrganisaatio(tabs[selectedTabIdx].raportit[selectedRaporttiIdx], null)
           : null,
         tabs,
         organisaatiot
@@ -352,15 +376,7 @@ const RaporttiValitsin = ({ raportitP, selectedP, onSelect }) => (
 )
 
 const OrganisaatioValitsin = ({ raporttiP, selectedP, onSelect }) => {
-  const organisaatiotP = raporttiP.map(raportti => {
-      if (!raportti) {
-        return []
-      }
-      return raportti.visibleForAllOrgs
-        ? raportti.organisaatiot
-        : filterOrgTreeByRaporttityyppi(raportti.id, raportti.organisaatiot)
-    }
-  )
+  const organisaatiotP = raporttiP.map(raportti => raportti ? raportti.organisaatiot : [])
 
   return (
     <div className="organisaatio-valitsin">
