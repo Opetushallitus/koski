@@ -1499,5 +1499,6 @@
   "Valitse osasuoritusten aikarajaus": "Valitse osasuoritusten aikarajaus",
   "Ota salasana itsellesi talteen": "Ota salasana itsellesi talteen",
   "Raportille valitaan vain sellaiset kurssisuoritukset, joiden arviointipäivä osuu yllä määritellylle aikajaksolle": "Raportille valitaan vain sellaiset kurssisuoritukset, joiden arviointipäivä osuu yllä määritellylle aikajaksolle",
-  "Raporttidata luotu": "Raporttidata luotu"
+  "Raporttidata luotu": "Raporttidata luotu",
+  "virhe-ei-organisaatiokayttaoikeuksia": "Ei näytettäviä raportteja, koska käyttäjätunnuksellesi ei ole lisätty oikeuksia sopiviin organisaatioihin."
 }

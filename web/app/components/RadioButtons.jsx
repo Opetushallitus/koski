@@ -1,6 +1,6 @@
-import React from "baret"
-import Bacon from "baconjs"
-import { toObservable } from "../util/util"
+import React from 'baret'
+import Bacon from 'baconjs'
+import { toObservable } from '../util/util'
 
 const RadioButton = ({
     label,
@@ -36,7 +36,7 @@ const RadioButtons = ({
                 optionList.map((option, index) => (
                     <RadioButton
                         key={keyValue(option) || index}
-                        label={displayValue(option) || "NO DISPLAY VALUE"}
+                        label={displayValue(option) || 'NO DISPLAY VALUE'}
                         selected={equality(option, selectedItem)}
                         onSelect={() => onSelectionChanged(option)}
                     />

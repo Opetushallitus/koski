@@ -17,7 +17,7 @@ export const navigateTo = function (path, event) {
   if (event) event.preventDefault()
 }
 
-export const replaceLocation = (path, event) => {
+export const replaceLocation = (path) => {
   const prevLoc = previousLocation
   const nextLoc = parsePath(path)
   previousLocation = nextLoc

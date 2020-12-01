@@ -282,8 +282,7 @@ export const raportitContentP = (pathTokens) => {
         />
       </div>
     )
-  })),
-  )
+  })))
 }
 
 const RaportitContent = ({
@@ -298,15 +297,23 @@ const RaportitContent = ({
 
   return (
     <div className='main-content'>
-      <Tabs
-        optionsP={stateP.map(state => state.tabs.map((r, index) => ({
-          id: index,
-          name: <Text name={r.tab} />,
-          hidden: !r.visible
-        })))}
-        selectedP={stateP.map(state => state.selectedTabIdx)}
-        onSelect={onSelectTab}
-      />
+      {stateP.map(state => state.organisaatiot.length > 0
+        ? (
+          <Tabs
+            optionsP={stateP.map(s => s.tabs.map((r, index) => ({
+              id: index,
+              name: <Text name={r.tab} />,
+              hidden: !r.visible
+            })))}
+            selectedP={stateP.map(s => s.selectedTabIdx)}
+            onSelect={onSelectTab}
+          />
+        ) : (
+          <div className="error">
+            <Text name="virhe-ei-organisaatiokayttaoikeuksia" />
+          </div>
+        )
+      )}
       {tabP.map(tab => tab && <h2><Text name={tab.heading} /></h2>)}
       <RaporttiValitsin
         raportitP={tabP.map(tab => tab ? tab.raportit : [])}
