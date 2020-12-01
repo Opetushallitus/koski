@@ -2,7 +2,6 @@ import React from 'baret'
 import Atom from 'bacon.atom'
 import {t} from '../i18n/i18n'
 import Bacon from 'baconjs'
-import {filterOrgTreeByRaporttityyppi} from './raporttiUtils'
 
 const filterOrgTree = (query, orgs) => {
     return orgs
