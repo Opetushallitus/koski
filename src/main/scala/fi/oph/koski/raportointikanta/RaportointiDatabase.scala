@@ -102,7 +102,7 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
       OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.createIndex(schema),
       LukioOppiaineenOppimaaranKurssikertymat.createMaterializedView(schema),
       LukioOppiaineenOppimaaranKurssikertymat.createIndex(schema)
-    ), timeout = 60.minutes)
+    ), timeout = 120.minutes)
     val duration = (System.currentTimeMillis - started) / 1000
     setStatusLoadCompleted("materialized_views")
     logger.info(s"Materialized views created in $duration s")
