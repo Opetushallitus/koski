@@ -58,6 +58,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
         paallekkaiset_opiskeluoikeudet.*,
         rahoitusmuodot.koodiarvot rahoitusmuodot,
         rahoitusmuodot_osuu_parametreille.koodiarvot rahoitusmuodot_osuu_parametreille,
+        paallekkaiset_opiskeluoikeudet.paallekkainen_alkamispaiva = paallekkaiset_opiskeluoikeudet.alkamispaiva sama_alkupaiva,
         paallekkaiset_opiskeluoikeudet.paallekkainen_alkamispaiva < paallekkaiset_opiskeluoikeudet.alkamispaiva paallekkainen_alkanut_eka,
         paallekkainen_rahoitusmuodot.koodiarvot paallekkainen_rahoitusmuodot,
         paallekkainen_rahoitusmuodot_osuu_parametreille.koodiarvot paallekkainen_rahoitusmuodot_parametrien_sisalla,
@@ -164,7 +165,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       paallekkainenViimeisinTila = rs.getString("paallekkainen_viimeisin_tila"),
       paallekkainenAlkamispaiva = rs.getDate("paallekkainen_alkamispaiva").toLocalDate,
       paallekkainenPaattymispaiva = optional(rs.getDate("paallekkainen_paattymispaiva")).map(_.toLocalDate),
-      paallekkainenAlkanutEka = rs.getBoolean("paallekkainen_alkanut_eka"),
+      paallekkainenAlkanutEka = if (rs.getBoolean("sama_alkupaiva")) { "Sama alkamispäivä" } else { if (rs.getBoolean("paallekkainen_alkanut_eka")) "kyllä" else "ei" },
       paallekkainenRahoitusmuodot = optional(rs.getString("paallekkainen_rahoitusmuodot")).map(removeConsecutiveDuplicates),
       paallekkainenRahoitusmuodotParametrienSisalla = optional(rs.getString("paallekkainen_rahoitusmuodot_parametrien_sisalla")).map(removeConsecutiveDuplicates),
       paallekkainenVoimassaParametrienSisalla = rs.getBoolean("paallekkainen_voimassa_aikajaksolla")
@@ -266,7 +267,7 @@ case class PaallekkaisetOpiskeluoikeudetRow(
   paallekkainenViimeisinTila: String,
   paallekkainenAlkamispaiva: LocalDate,
   paallekkainenPaattymispaiva: Option[LocalDate],
-  paallekkainenAlkanutEka: Boolean,
+  paallekkainenAlkanutEka: String,
   paallekkainenRahoitusmuodot: Option[String],
   paallekkainenRahoitusmuodotParametrienSisalla: Option[String],
   paallekkainenVoimassaParametrienSisalla: Boolean

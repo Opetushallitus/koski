@@ -83,7 +83,7 @@ class PaallekkaisetOpiskeluoikeudetSpec extends FreeSpec with RaportointikantaTe
       ))
     }
     "Näytetään opiskeluoikeuden päättymispäivä jos sellainen on" in {
-      pekanRivit(stadinRaportti).map(_.paattymispaiva) shouldBe(Seq(Some(ensimmaisenPaattymispaiva)))r
+      pekanRivit(stadinRaportti).map(_.paattymispaiva) shouldBe(Seq(Some(ensimmaisenPaattymispaiva)))
 
     }
     "Puuttuva opiskeluoikeuden päättymispäivä näytetään tyhjänä" in {
@@ -103,10 +103,10 @@ class PaallekkaisetOpiskeluoikeudetSpec extends FreeSpec with RaportointikantaTe
       ))
     }
     "Päällekkäinen opiskeluoikeus alkanut aikasemmin" in {
-      pekanRivit(stadinRaportti).map(_.paallekkainenAlkanutEka) shouldBe(Seq(false))
+      pekanRivit(stadinRaportti).map(_.paallekkainenAlkanutEka) shouldBe(Seq("ei"))
       pekanRivit(keskuksenRaportti).map(withOppilaitos(_.paallekkainenAlkanutEka)) should contain theSameElementsAs(Seq(
-        ("Stadin ammatti- ja aikuisopisto", true),
-        ("Omnia", false)
+        ("Stadin ammatti- ja aikuisopisto", "kyllä"),
+        ("Omnia", "ei")
       ))
     }
 
