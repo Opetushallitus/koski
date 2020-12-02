@@ -9,10 +9,11 @@ import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeudenTila, AmmatillinenOpiske
 object PaallekkaisetOpiskeluoikeudetFixtures {
 
   val ensimmaisenAlkamispaiva = date(2020, 9, 1)
+  val ensimmaisenPaattymispaiva = date(2020, 10, 10)
   val ensimmainenOpiskeluoikeus = AmmatillinenExampleData.opiskeluoikeus().copy(
     tila = AmmatillinenOpiskeluoikeudenTila(List(
       AmmatillinenOpiskeluoikeusjakso(ensimmaisenAlkamispaiva, ExampleData.opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
-      AmmatillinenOpiskeluoikeusjakso(date(2020, 10, 10), ExampleData.opiskeluoikeusEronnut, Some(ExampleData.valtionosuusRahoitteinen))
+      AmmatillinenOpiskeluoikeusjakso(ensimmaisenPaattymispaiva, ExampleData.opiskeluoikeusEronnut, Some(ExampleData.valtionosuusRahoitteinen))
     )),
     suoritukset = List(
       AmmattitutkintoExample.näyttötutkintoonValmistavanKoulutuksenSuoritus.copy(alkamispäivä = Some(date(2020, 9, 1)), vahvistus = None),
