@@ -5,7 +5,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.raportointikanta.RaportointiDatabase
+import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
 import slick.jdbc.GetResult
 
 object LukioOppimaaranKussikertymat extends DatabaseConverters {
@@ -19,26 +19,44 @@ object LukioOppimaaranKussikertymat extends DatabaseConverters {
     )
   }
 
-  def queryOppimaara(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate) = {
-    sql"""
-      select
-        oppilaitos_nimi oppilaitos,
+  def createMaterializedView(s: Schema) =
+    sqlu"""
+      create materialized view #${s.name}.lukion_oppimaaran_kurssikertyma as select
         oppilaitos_oid,
+        osasuoritus.arviointi_paiva,
         count(*) filter (where tunnustettu = false) suoritettuja,
         count(*) filter (where tunnustettu) tunnustettuja,
         count(*) yhteensa,
         count(*) filter (where tunnustettu_rahoituksen_piirissa) tunnustettuja_rahoituksen_piirissa
-      from r_osasuoritus
-      join r_paatason_suoritus
-        on r_paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id
-      join r_opiskeluoikeus
-        on r_opiskeluoikeus.opiskeluoikeus_oid = r_paatason_suoritus.opiskeluoikeus_oid
-      where r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOids)
-        and r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppimaara'
-        and r_osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
-        and r_osasuoritus.arviointi_paiva >= $aikaisintaan
-        and r_osasuoritus.arviointi_paiva <= $viimeistaan
-      group by r_opiskeluoikeus.oppilaitos_nimi, r_opiskeluoikeus.oppilaitos_oid;
+      from #${s.name}.r_osasuoritus osasuoritus
+        join #${s.name}.r_paatason_suoritus paatason_suoritus on paatason_suoritus.paatason_suoritus_id = osasuoritus.paatason_suoritus_id
+        join #${s.name}.r_opiskeluoikeus opiskeluoikeus on opiskeluoikeus.opiskeluoikeus_oid = paatason_suoritus.opiskeluoikeus_oid
+      where paatason_suoritus.suorituksen_tyyppi = 'lukionoppimaara'
+        and osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
+      group by opiskeluoikeus.oppilaitos_oid, osasuoritus.arviointi_paiva
+    """
+
+  def createIndex(s: Schema) =
+    sqlu"create index on #${s.name}.lukion_oppimaaran_kurssikertyma(oppilaitos_oid, arviointi_paiva)"
+
+  def queryOppimaara(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate) = {
+    sql"""
+      select
+        nimi oppilaitos,
+        kurssikertyma.*
+      from (
+        select
+          oppilaitos_oid,
+          sum(suoritettuja) suoritettuja,
+          sum(tunnustettuja) tunnustettuja,
+          sum(yhteensa) yhteensa,
+          sum(tunnustettuja_rahoituksen_piirissa) tunnustettuja_rahoituksen_piirissa
+        from lukion_oppimaaran_kurssikertyma
+          where oppilaitos_oid = any($oppilaitosOids)
+            and (arviointi_paiva between $aikaisintaan and $viimeistaan)
+          group by oppilaitos_oid
+      ) kurssikertyma
+      join r_organisaatio on organisaatio_oid = oppilaitos_oid
     """.as[LukioKurssikertymaOppimaaraRow]
   }
 

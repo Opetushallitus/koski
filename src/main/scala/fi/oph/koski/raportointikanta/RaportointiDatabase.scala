@@ -9,7 +9,7 @@ import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{KoskiDatabaseConfig, KoskiDatabaseMethods}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.raportit.PaallekkaisetOpiskeluoikeudet
+import fi.oph.koski.raportit.{LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat, PaallekkaisetOpiskeluoikeudet}
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.util.DateOrdering.{sqlDateOrdering, sqlTimestampOrdering}
@@ -91,11 +91,21 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
 
   def createMaterializedViews: Unit = {
     logger.info("Creating materialized views")
+    val started = System.currentTimeMillis
+    setStatusLoadStarted("materialized_views")
     runDbSync(DBIO.seq(
-      PaallekkaisetOpiskeluoikeudet.createMaterializedView,
-      PaallekkaisetOpiskeluoikeudet.createIndex
-    ), timeout = 10.minutes)
-    logger.info("Materialized views created")
+      PaallekkaisetOpiskeluoikeudet.createMaterializedView(schema),
+      PaallekkaisetOpiskeluoikeudet.createIndex(schema),
+      LukioOppimaaranKussikertymat.createMaterializedView(schema),
+      LukioOppimaaranKussikertymat.createIndex(schema),
+      OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.createMaterializedView(schema),
+      OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.createIndex(schema),
+      LukioOppiaineenOppimaaranKurssikertymat.createMaterializedView(schema),
+      LukioOppiaineenOppimaaranKurssikertymat.createIndex(schema)
+    ), timeout = 120.minutes)
+    val duration = (System.currentTimeMillis - started) / 1000
+    setStatusLoadCompleted("materialized_views")
+    logger.info(s"Materialized views created in $duration s")
   }
 
   def deleteOpiskeluoikeudet =
@@ -326,7 +336,7 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
 }
 
 case class RaportointikantaStatusResponse(schema: String, statuses: Seq[RaportointikantaStatusRow]) {
-  private val allNames = Seq("opiskeluoikeudet", "henkilot", "organisaatiot", "koodistot")
+  private val allNames = Seq("opiskeluoikeudet", "henkilot", "organisaatiot", "koodistot", "materialized_views")
 
   @SyntheticProperty
   def isComplete: Boolean = completionTime.isDefined && !isEmpty && allNames.forall(statuses.map(_.name).contains)

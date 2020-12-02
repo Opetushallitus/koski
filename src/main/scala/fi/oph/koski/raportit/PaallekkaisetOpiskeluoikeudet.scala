@@ -6,7 +6,7 @@ import java.time.LocalDate
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
-import fi.oph.koski.raportointikanta.RaportointiDatabase
+import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
 import slick.jdbc.GetResult
 import scala.concurrent.duration._
 
@@ -19,9 +19,9 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       columnSettings
     )
 
-  def createMaterializedView =
+  def createMaterializedView(s: Schema) =
     sqlu"""
-      create materialized view paallekkaiset_opiskeluoikeudet as
+      create materialized view #${s.name}.paallekkaiset_opiskeluoikeudet as
         select
           opiskeluoikeus.oppija_oid,
           opiskeluoikeus.opiskeluoikeus_oid,
@@ -35,10 +35,10 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
           paallekkainen.viimeisin_tila     paallekkainen_viimeisin_tila,
           paallekkainen.alkamispaiva       paallekkainen_alkamispaiva,
           paallekkainen.paattymispaiva     paallekkainen_paattymispaiva
-      from r_opiskeluoikeus opiskeluoikeus
+      from #${s.name}.r_opiskeluoikeus opiskeluoikeus
         join lateral (
           select *
-          from r_opiskeluoikeus paallekkainen
+          from #${s.name}.r_opiskeluoikeus paallekkainen
           where paallekkainen.oppija_oid = opiskeluoikeus.oppija_oid
                and not paallekkainen.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
                and paallekkainen.sisaltyy_opiskeluoikeuteen_oid is null
@@ -48,8 +48,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
         where opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid is null
     """
 
-  def createIndex =
-    sqlu"create index on paallekkaiset_opiskeluoikeudet(opiskeluoikeus_oid)"
+  def createIndex(s: Schema) =
+    sqlu"create index on #${s.name}.paallekkaiset_opiskeluoikeudet(opiskeluoikeus_oid)"
 
   private def query(oppilaitosOids: Seq[String], aikaisintaan: Date, viimeistaan: Date) =
     sql"""

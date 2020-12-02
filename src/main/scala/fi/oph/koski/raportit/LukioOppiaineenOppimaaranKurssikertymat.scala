@@ -5,7 +5,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.raportointikanta.RaportointiDatabase
+import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
 import slick.jdbc.GetResult
 
 object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
@@ -19,112 +19,115 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
     )
   }
 
-  private def queryAineopiskelija(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate) = {
-    sql"""
-      select
-        oppimaaran_kurssikertymat.*,
-        coalesce(opiskeluoikeuden_ulkopuoliset.yhteensa, 0) as opiskeluoikeuden_ulkopuoliset
-
-      -- oppimaaran_kurssikertymat
+  def createMaterializedView(s: Schema) =
+    sqlu"""
+      create materialized view #${s.name}.lukion_oppiaineen_oppimaaran_kurssikertyma as select
+        oppilaitos_oid,
+        arviointi_paiva,
+        count(*) yhteensa,
+        count(*) filter (where suoritettu) suoritettuja,
+        count(*) filter (where tunnustettu) tunnustettuja,
+        count(*) filter (where tunnustettu_rahoituksen_piirissa) tunnustettuja_rahoituksen_piirissa,
+        count(*) filter (where pakollinen or (valtakunnallinen and syventava)) pakollisia_tai_valtakunnallisia_syventavia,
+        count(*) filter (where pakollinen) pakollisia,
+        count(*) filter (where valtakunnallinen and syventava) valtakunnallisia_syventavia,
+        count(*) filter (where suoritettu and (pakollinen or (valtakunnallinen and syventava))) suoritettuja_pakollisia_ja_valtakunnallisia_syventavia,
+        count(*) filter (where pakollinen and suoritettu) suoritettuja_pakollisia,
+        count(*) filter (where suoritettu and valtakunnallinen and syventava) suoritettuja_valtakunnallisia_syventavia,
+        count(*) filter (where tunnustettu and (pakollinen or (syventava and valtakunnallinen))) tunnustettuja_pakollisia_ja_valtakunnallisia_syventavia,
+        count(*) filter (where tunnustettu and pakollinen) tunnustettuja_pakollisia,
+        count(*) filter (where tunnustettu and valtakunnallinen and syventava) tunnustettuja_valtakunnallisia_syventavia,
+        count(*) filter (where tunnustettu_rahoituksen_piirissa and (pakollinen or (valtakunnallinen and syventava))) tunnustut_pakolliset_ja_valtakunnalliset_syventavat_rahoitus,
+        count(*) filter (where tunnustettu_rahoituksen_piirissa and pakollinen) pakollisia_tunnustettuja_rahoituksen_piirissa,
+        count(*) filter (where valtakunnallinen and syventava and tunnustettu_rahoituksen_piirissa) valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa,
+        count(*) filter (where valtakunnallinen and (suoritettu or tunnustettu_rahoituksen_piirissa) and opintojen_rahoitus = '6') suoritetut_tai_rahoitetut_muuta_kautta_rahoitetut,
+        count(*) filter (where valtakunnallinen and (suoritettu or tunnustettu_rahoituksen_piirissa) and opintojen_rahoitus is null) suoritetut_tai_rahoitetut_rahoitusmuoto_ei_tiedossa
       from (
         select
           oppilaitos_oid,
-          oppilaitos_nimi oppilaitos,
-          count(*) yhteensa,
-          count(*) filter (where suoritettu) suoritettuja,
-          count(*) filter (where tunnustettu) tunnustettuja,
-          count(*) filter (where tunnustettu_rahoituksen_piirissa) tunnustettuja_rahoituksen_piirissa,
-          count(*) filter (where pakollinen or (valtakunnallinen and syventava)) pakollisia_tai_valtakunnallisia_syventavia,
-          count(*) filter (where pakollinen) pakollisia,
-          count(*) filter (where valtakunnallinen and syventava) valtakunnallisia_syventavia,
-          count(*) filter (where suoritettu and (pakollinen or (valtakunnallinen and syventava))) suoritettuja_pakollisia_ja_valtakunnallisia_syventavia,
-          count(*) filter (where pakollinen and suoritettu) suoritettuja_pakollisia,
-          count(*) filter (where suoritettu and valtakunnallinen and syventava) suoritettuja_valtakunnallisia_syventavia,
-          count(*) filter (where tunnustettu and (pakollinen or (syventava and valtakunnallinen))) tunnustettuja_pakollisia_ja_valtakunnallisia_syventavia,
-          count(*) filter (where tunnustettu and pakollinen) tunnustettuja_pakollisia,
-          count(*) filter (where tunnustettu and valtakunnallinen and syventava) tunnustettuja_valtakunnallisia_syventavia,
-          count(*) filter (where tunnustettu_rahoituksen_piirissa and (pakollinen or (valtakunnallinen and syventava))) tunnustut_pakolliset_ja_valtakunnalliset_syventavat_rahoitus,
-          count(*) filter (where tunnustettu_rahoituksen_piirissa and pakollinen) pakollisia_tunnustettuja_rahoituksen_piirissa,
-          count(*) filter (where valtakunnallinen and syventava and tunnustettu_rahoituksen_piirissa) "valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa",
-          count(*) filter (where
-            valtakunnallinen
-            and (suoritettu or tunnustettu_rahoituksen_piirissa)
-            and opintojen_rahoitus = '6'
-          ) suoritetut_tai_rahoitetut_muuta_kautta_rahoitetut,
-          count(*) filter (where
-            valtakunnallinen
-            and (suoritettu or tunnustettu_rahoituksen_piirissa)
-            and opintojen_rahoitus is null
-          ) suoritetut_tai_rahoitetut_rahoitusmuoto_ei_tiedossa
-        from (
-          select
-            r_opiskeluoikeus.oppilaitos_oid,
-            r_opiskeluoikeus.oppilaitos_nimi,
-            tunnustettu,
-            tunnustettu = false as suoritettu,
-            tunnustettu_rahoituksen_piirissa,
-            koulutusmoduuli_kurssin_tyyppi,
-            koulutusmoduuli_kurssin_tyyppi = 'pakollinen' as pakollinen,
-            koulutusmoduuli_kurssin_tyyppi = 'syventava' as syventava,
-            koulutusmoduuli_paikallinen = false as valtakunnallinen,
-            r_opiskeluoikeus_aikajakso.opintojen_rahoitus
-          from r_osasuoritus
-          join r_paatason_suoritus
-            on r_paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id
-          join r_opiskeluoikeus
-            on r_opiskeluoikeus.opiskeluoikeus_oid = r_osasuoritus.opiskeluoikeus_oid
-          left join r_opiskeluoikeus_aikajakso
-            on r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid = r_osasuoritus.opiskeluoikeus_oid
-            and (r_osasuoritus.arviointi_paiva between r_opiskeluoikeus_aikajakso.alku and r_opiskeluoikeus_aikajakso.loppu)
-          where r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOids)
-            -- lukion aineoppimäärä
-            and r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
-            and r_osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
-            -- kurssi menee parametrien sisään
-            and (r_osasuoritus.arviointi_paiva between $aikaisintaan and $viimeistaan)
-          ) kurssit
-        group by
-          oppilaitos_oid,
-          oppilaitos_nimi
-      ) oppimaaran_kurssikertymat
+          osasuoritus.arviointi_paiva,
+          tunnustettu,
+          tunnustettu = false as suoritettu,
+          tunnustettu_rahoituksen_piirissa,
+          koulutusmoduuli_kurssin_tyyppi,
+          koulutusmoduuli_kurssin_tyyppi = 'pakollinen' as pakollinen,
+          koulutusmoduuli_kurssin_tyyppi = 'syventava' as syventava,
+          koulutusmoduuli_paikallinen = false as valtakunnallinen,
+          opintojen_rahoitus
+        from #${s.name}.r_paatason_suoritus paatason_suoritus
+          join #${s.name}.r_opiskeluoikeus opiskeluoikeus
+            on paatason_suoritus.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
+          join #${s.name}.r_osasuoritus osasuoritus
+            on paatason_suoritus.paatason_suoritus_id = osasuoritus.paatason_suoritus_id
+          left join #${s.name}.r_opiskeluoikeus_aikajakso opiskeluoikeus_aikajakso
+            on opiskeluoikeus_aikajakso.opiskeluoikeus_oid = osasuoritus.opiskeluoikeus_oid
+              and (osasuoritus.arviointi_paiva between opiskeluoikeus_aikajakso.alku and opiskeluoikeus_aikajakso.loppu)
+        where paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
+          and osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
+      ) kurssit
+    group by
+      oppilaitos_oid,
+      arviointi_paiva
+    """
 
-      -- opiskeluoikeuden_ulkopuoliset
+  def createIndex(s: Schema) =
+    sqlu"create index on #${s.name}.lukion_oppiaineen_oppimaaran_kurssikertyma(oppilaitos_oid, arviointi_paiva)"
+
+
+  private def queryAineopiskelija(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate) = {
+    sql"""
+      select
+        r_organisaatio.nimi oppilaitos,
+        oppimaaran_kurssikertymat.*,
+        coalesce(opiskeluoikeuden_ulkopuoliset.yhteensa, 0) as opiskeluoikeuden_ulkopuoliset
+      from (
+        select
+          oppilaitos_oid,
+          sum(yhteensa) yhteensa,
+          sum(suoritettuja) suoritettuja,
+          sum(tunnustettuja) tunnustettuja,
+          sum(tunnustettuja_rahoituksen_piirissa) tunnustettuja_rahoituksen_piirissa,
+          sum(pakollisia_tai_valtakunnallisia_syventavia) pakollisia_tai_valtakunnallisia_syventavia,
+          sum(pakollisia) pakollisia,
+          sum(valtakunnallisia_syventavia) valtakunnallisia_syventavia,
+          sum(suoritettuja_pakollisia_ja_valtakunnallisia_syventavia) suoritettuja_pakollisia_ja_valtakunnallisia_syventavia,
+          sum(suoritettuja_pakollisia) suoritettuja_pakollisia,
+          sum(suoritettuja_valtakunnallisia_syventavia) suoritettuja_valtakunnallisia_syventavia,
+          sum(tunnustettuja_pakollisia_ja_valtakunnallisia_syventavia) tunnustettuja_pakollisia_ja_valtakunnallisia_syventavia,
+          sum(tunnustettuja_pakollisia) tunnustettuja_pakollisia,
+          sum(tunnustettuja_valtakunnallisia_syventavia) tunnustettuja_valtakunnallisia_syventavia,
+          sum(tunnustut_pakolliset_ja_valtakunnalliset_syventavat_rahoitus) tunnustut_pakolliset_ja_valtakunnalliset_syventavat_rahoitus,
+          sum(pakollisia_tunnustettuja_rahoituksen_piirissa) pakollisia_tunnustettuja_rahoituksen_piirissa,
+          sum(valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa) valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa,
+          sum(suoritetut_tai_rahoitetut_muuta_kautta_rahoitetut) suoritetut_tai_rahoitetut_muuta_kautta_rahoitetut,
+          sum(suoritetut_tai_rahoitetut_rahoitusmuoto_ei_tiedossa) suoritetut_tai_rahoitetut_rahoitusmuoto_ei_tiedossa
+        from lukion_oppiaineen_oppimaaran_kurssikertyma
+          where oppilaitos_oid = any($oppilaitosOids)
+            and arviointi_paiva between $aikaisintaan and $viimeistaan
+          group by oppilaitos_oid
+      ) oppimaaran_kurssikertymat
       left join (
         select
-          r_opiskeluoikeus.oppilaitos_oid,
+          oppilaitos_oid,
           count(*) yhteensa
-        from r_osasuoritus
-        join r_paatason_suoritus
-          on r_paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id
-        join r_opiskeluoikeus
-          on r_opiskeluoikeus.opiskeluoikeus_oid = r_osasuoritus.opiskeluoikeus_oid
-        where r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOids)
-          -- lukion aineoppimäärä
-          and r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
-          and r_osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
-          -- kurssi menee parametrien sisään
-          and (r_osasuoritus.arviointi_paiva between $aikaisintaan and $viimeistaan)
-          -- mutta kurssi jää opiskeluoikeuden ulkopuolelle
-          and (
-            r_osasuoritus.arviointi_paiva < r_opiskeluoikeus.alkamispaiva
-            or (
-              r_osasuoritus.arviointi_paiva > r_opiskeluoikeus.paattymispaiva
-              and r_opiskeluoikeus.viimeisin_tila = 'valmistunut'
+        from osasuoritus_arvioitu_opiskeluoikeuden_ulkopuolella
+          join r_osasuoritus on r_osasuoritus.osasuoritus_id = osasuoritus_arvioitu_opiskeluoikeuden_ulkopuolella.osasuoritus_id
+          where oppilaitos_oid = any($oppilaitosOids)
+            and osasuorituksen_tyyppi = 'lukionkurssi'
+            and paatason_suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
+            and (osasuorituksen_arviointi_paiva between $aikaisintaan and $viimeistaan)
+            and (
+              koulutusmoduuli_kurssin_tyyppi = 'pakollinen'
+              or (koulutusmoduuli_kurssin_tyyppi = 'syventava' and koulutusmoduuli_paikallinen = false)
             )
-          )
-          -- pakolliset tai valtakunnalliset syventävät kurssit
-          and (
-            koulutusmoduuli_kurssin_tyyppi = 'pakollinen'
-            or (koulutusmoduuli_kurssin_tyyppi = 'syventava' and koulutusmoduuli_paikallinen = false)
-          )
-          -- jotka ovat joko suoritettuja tai tunnustettuja ja rahoituksen piirissä olevia
-          and (
+            and (
               tunnustettu = false
               or tunnustettu_rahoituksen_piirissa
-          )
+            )
         group by oppilaitos_oid
       ) opiskeluoikeuden_ulkopuoliset
-        on opiskeluoikeuden_ulkopuoliset.oppilaitos_oid = oppimaaran_kurssikertymat.oppilaitos_oid;
+          on opiskeluoikeuden_ulkopuoliset.oppilaitos_oid = oppimaaran_kurssikertymat.oppilaitos_oid
+      join r_organisaatio on oppimaaran_kurssikertymat.oppilaitos_oid = r_organisaatio.organisaatio_oid
     """.as[LukioKurssikertymaAineopiskelijaRow]
   }
 

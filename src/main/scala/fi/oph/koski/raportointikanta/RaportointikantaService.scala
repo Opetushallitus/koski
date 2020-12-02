@@ -64,8 +64,8 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     loadHenkilöt(loadDatabase)
     loadOrganisaatiot(loadDatabase)
     loadKoodistot(loadDatabase)
+    loadDatabase.createMaterializedViews
     swapRaportointikanta()
-    raportointiDatabase.createMaterializedViews
     raportointiDatabase.vacuumAnalyze()
   }
 
