@@ -29,6 +29,20 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
     filterOppilaitosOidsByKoulutusmuoto(kyselyOiditOrganisaatiolle(organisaatioOid).toSeq, koulutusmuoto)
   }
 
+  def mahdollisetRaporttienTyypitOrganisaatiolle(organisaatioOid: Organisaatio.Oid, koulutusmuodot: Map[String, Seq[String]])(implicit session: KoskiSession): Set[RaportinTyyppi] = {
+    val organisaatio = organisaatioRepository.getOrganisaatio(organisaatioOid)
+    val isKoulutustoimija = organisaatio.exists(_.isInstanceOf[Koulutustoimija])
+
+    organisaatio
+      .flatMap(organisaatioWithOid => organisaatioRepository.getChildOids(organisaatioWithOid.oid))
+      .map(_.flatMap(koulutusmuodot.getOrElse(_, Set.empty)))
+      .map(_.flatMap(raportinTyypitKoulutusmuodolle(_, isKoulutustoimija)))
+      .map(_.filter(checkRaporttiAccessIfAccessIsLimited(_)))
+      .map(_.filter(raportti => session.allowedOpiskeluoikeusTyypit.contains(raportti.opiskeluoikeudenTyyppi)))
+      .getOrElse(Set.empty)
+  }
+
+  // TODO: Tarpeeton kun uusi raporttikäli saadaan käyttöön, voi poistaa
   def mahdollisetRaporttienTyypitOrganisaatiolle(organisaatioOid: Organisaatio.Oid)(implicit session: KoskiSession): Set[RaportinTyyppi] = {
     val organisaatio = organisaatioRepository.getOrganisaatio(organisaatioOid)
     val isKoulutustoimija = organisaatio.exists(_.isInstanceOf[Koulutustoimija])
@@ -85,4 +99,3 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
     }
   }
 }
-

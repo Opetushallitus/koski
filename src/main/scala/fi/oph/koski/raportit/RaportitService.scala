@@ -1,14 +1,18 @@
 package fi.oph.koski.raportit
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.organisaatio.OrganisaatioHierarkia
 import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät, AikuistenPerusopetuksenEiRahoitustietoaKurssit, AikuistenPerusopetuksenMuutaKauttaRahoitetutKurssit, AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit, AikuistenPerusopetuksenOppijamäärätRaportti, AikuistenPerusopetuksenOppimääränKurssikertymät, AikuistenPerusopetusRaportti, AikuistenPerusopetusRaporttiRepository}
+import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
 
 class RaportitService(application: KoskiApplication) {
   private val raportointiDatabase = application.raportointiDatabase
   private val perusopetusRepository = PerusopetuksenRaportitRepository(raportointiDatabase.db)
   private val accessResolver = RaportitAccessResolver(application)
+  private lazy val organisaatioService = application.organisaatioService
   private val lukioRepository = LukioRaportitRepository(raportointiDatabase.db)
   private val lukioDiaIbInternationalOpiskelijaMaaratRaportti = LukioDiaIbInternationalOpiskelijamaaratRaportti(raportointiDatabase.db)
   private val ammatillisenRaportitRepository = AmmatillisenRaportitRepository(raportointiDatabase.db)
@@ -213,6 +217,24 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
+  def getRaportinOrganisatiotJaRaporttiTyypit(organisaatiot: Iterable[OrganisaatioHierarkia])(implicit user: KoskiSession) = {
+    val oppilaitosOids = getOppilaitosOids(organisaatiot)
+    val koulutusmuodot = getKoulutusmuodot(oppilaitosOids.toList)
+    buildOrganisaatioJaRaporttiTyypit(organisaatiot, koulutusmuodot)
+  }
+
+  def getKoulutusmuodot(oppilaitosOids: List[String]) = {
+    val query = sql"""
+      SELECT
+        oppilaitos_oid,
+        array_agg(DISTINCT koulutusmuoto) as koulutusmuodot
+      FROM r_opiskeluoikeus
+      WHERE oppilaitos_oid = any($oppilaitosOids)
+      GROUP BY oppilaitos_oid
+    """
+    raportointiDatabase.runDbSync(query.as[(String, Seq[String])]).toMap
+  }
+
   private def aikajaksoRaportti(request: AikajaksoRaporttiRequest, raporttiBuilder: AikajaksoRaportti) = {
     val rows = raporttiBuilder.buildRaportti(raportointiDatabase, request.oppilaitosOid, request.alku, request.loppu)
     val documentation = DocumentationSheet("Ohjeet", raporttiBuilder.documentation(request.oppilaitosOid, request.alku, request.loppu, raportointiDatabase.status.completionTime.get.toLocalDateTime))
@@ -247,6 +269,44 @@ class RaportitService(application: KoskiApplication) {
     }
     oppilaitosOids
   }
+
+  private def buildOrganisaatioJaRaporttiTyypit(organisaatiot: Iterable[OrganisaatioHierarkia], koulutusmuodot: Map[String, Seq[String]])(implicit user: KoskiSession): List[OrganisaatioJaRaporttiTyypit] =
+    organisaatiot
+      .filter(_.organisaatiotyypit.intersect(raporttinakymanOrganisaatiotyypit).nonEmpty)
+      .map(_.sortBy(user.lang))
+      .map((organisaatio) => {
+        OrganisaatioJaRaporttiTyypit(
+          nimi = organisaatio.nimi,
+          oid = organisaatio.oid,
+          organisaatiotyypit = organisaatio.organisaatiotyypit,
+          raportit = organisaatio.oid match {
+            case organisaatioService.ostopalveluRootOid => Set(EsiopetuksenRaportti.toString, EsiopetuksenOppijaMäärienRaportti.toString)
+            case oid: String => accessResolver.mahdollisetRaporttienTyypitOrganisaatiolle(oid, koulutusmuodot).map(_.toString)
+          },
+          children = buildOrganisaatioJaRaporttiTyypit(organisaatio.children, koulutusmuodot)
+        )
+      })
+      .filter(org => org.raportit.nonEmpty || org.children.nonEmpty)
+      .toList
+
+  private def getOppilaitosOids(organisaatiot: Iterable[OrganisaatioHierarkia]): Iterable[String] =
+    organisaatiot.flatMap(org => List(org.oid) ++ getOppilaitosOids(org.children))
+
+  private val raporttinakymanOrganisaatiotyypit = List(
+    "OPPILAITOS",
+    "OPPISOPIMUSTOIMIPISTE",
+    "KOULUTUSTOIMIJA",
+    "VARHAISKASVATUKSEN_TOIMIPAIKKA",
+    "OSTOPALVELUTAIPALVELUSETELI"
+  )
 }
 
 case class DynamicResponse(sheets: Seq[Sheet], workbookSettings: WorkbookSettings, filename: String, downloadToken: Option[String])
+
+case class OrganisaatioJaRaporttiTyypit(
+  nimi: LocalizedString,
+  oid: String,
+  organisaatiotyypit: List[String],
+  raportit: Set[String],
+  children: List[OrganisaatioJaRaporttiTyypit]
+)

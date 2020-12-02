@@ -114,16 +114,43 @@ class RaportitServletSpec extends FreeSpec with RaportointikantaTestMethods with
     }
   }
 
-  private val mahdollisetRaportitUrl = "api/raportit/mahdolliset-raportit/"
+  "Organisaatiohierarkia raporttityypeillä -API" - {
+    "Kuusi juuriorganisaatiota pääkäyttäjälle" in {
+      verifyOrganisaatiohierarkia(paakayttaja) { hierarkia => {
+        hierarkia.length shouldEqual 6
+      }}
+    }
 
-  private def verifyMahdollisetRaportit(organisaatio: String, user: UserWithPassword = defaultUser)(f: Seq[Any] => Unit) = {
-    authGet(s"${mahdollisetRaportitUrl}${organisaatio}", user) {
+    "Kahdeksan juuriorganisaatiota testikäyttäjälle kalle" in {
+      verifyOrganisaatiohierarkia(kalle) { hierarkia => {
+        hierarkia.length shouldEqual 8
+      }}
+    }
+
+    "Kaksi juuriorganisaatiota Helsingin palvelukäyttäjälle" in {
+      verifyOrganisaatiohierarkia(helsinginKaupunkiPalvelukäyttäjä) { hierarkia => {
+        hierarkia.length shouldEqual 2
+      }}
+    }
+  }
+
+  private val mahdollisetRaportitUrl = "api/raportit/mahdolliset-raportit/"
+  private val organisaatiotJaRaporttityypitUrl = "api/raportit/organisaatiot-ja-raporttityypit"
+
+  private def verifyMahdollisetRaportit(organisaatio: String, user: UserWithPassword = defaultUser)(f: Seq[Any] => Unit) =
+    verifyArrayResponse(s"${mahdollisetRaportitUrl}${organisaatio}", user, f)
+
+  private def verifyOrganisaatiohierarkia(user: UserWithPassword = defaultUser)(f: Seq[Any] => Unit) =
+    verifyArrayResponse(organisaatiotJaRaporttityypitUrl, user, f)
+
+  private def verifyArrayResponse(uri: String, user: UserWithPassword = defaultUser, f: Seq[Any] => Unit) = {
+    authGet(uri, user) {
       verifyResponseStatusOk()
       val parsedJson = JsonMethods.parse(body)
       parsedJson shouldBe a[JArray]
-      val raportit = parsedJson.asInstanceOf[JArray].values
+      val response = parsedJson.asInstanceOf[JArray].values
 
-      f(raportit)
+      f(response)
     }
   }
 
