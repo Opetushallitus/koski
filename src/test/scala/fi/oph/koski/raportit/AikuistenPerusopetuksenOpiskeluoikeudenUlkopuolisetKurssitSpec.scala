@@ -69,16 +69,16 @@ class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitSpec extends Fre
     "Raportin kolumnit" in {
       lazy val r = findSingle(raportti)
       r.oppilaitos should equal("Jyväskylän normaalikoulu")
-      r.kurssikoodi should equal("AI")
-      r.kurssinNimi should equal("Äidinkieli ja kirjallisuus")
+      r.kurssikoodi should equal("AÄI1")
+      r.kurssinNimi should equal("Suomen kielen ja kirjallisuuden opiskelun perustaidot")
       r.päätasonSuorituksenTyyppi should equal("aikuistenperusopetuksenoppimaaranalkuvaihe")
-      r.kurssinSuorituksenTyyppi should equal("aikuistenperusopetuksenalkuvaiheenoppiaine")
+      r.kurssinSuorituksenTyyppi should equal("aikuistenperusopetuksenalkuvaiheenkurssi")
     }
   }
 
   private def findSingle(rows: Seq[AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitRow]) = {
     val found = rows.filter(_.oppilaitos.equals("Jyväskylän normaalikoulu"))
-    found.length should be(3)
+    found.length should be(1)
     found.head
   }
 

@@ -58,6 +58,7 @@ object MockOppijat {
   val aikuisAineOpiskelijaMuuKuinVos = oppijat.oppija("Aikuinen", "AikuisAineOpiskelijaMuuKuinVos", "241001B7649")
   val aikuisOpiskelijaVieraskielinen = oppijat.oppija("Aikuinen", "Vieraskielinen", "241001B7651", äidinkieli = Some("en"))
   val aikuisOpiskelijaVieraskielinenMuuKuinVos = oppijat.oppija("Aikuinen", "VieraskielinenMuuKuinVos", "241001B7647", äidinkieli = Some("en"))
+  val aikuisOpiskelijaMuuRahoitus = oppijat.oppija("Aikuinen", "MuuRahoitus", "241001C4647")
   val kymppiluokkalainen = oppijat.oppija("Kymppiluokkalainen", "Kaisa", "131025-6573", sukupuoli = Some("2"), kotikunta = Some("Kontu"))
   val luva = oppijat.oppija("Lukioonvalmistautuja", "Luke", "211007-442N")
   val valma = oppijat.oppija("Amikseenvalmistautuja", "Anneli", "130404-054C")

@@ -58,6 +58,22 @@ object ExamplesAikuistenPerusopetus {
     )
   }
 
+  lazy val oppiaineenOppimääräOpiskeluoikeusMuuRahoitus: AikuistenPerusopetuksenOpiskeluoikeus = {
+    AikuistenPerusopetuksenOpiskeluoikeus(
+      oppilaitos = Some(jyväskylänNormaalikoulu),
+      koulutustoimija = None,
+      suoritukset = List(
+        aikuistenPerusopetukseOppimääränSuoritus(aikuistenPerusopetus2017, oppiaineidenSuoritukset2017)
+      ),
+      tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
+        List(
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä, Some(muutaKauttaRahoitettu)),
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut, Some(muutaKauttaRahoitettu))
+        )
+      )
+    )
+  }
+
   lazy val montaOppiaineenOppimääränSuoritustaOpiskeluoikeus: AikuistenPerusopetuksenOpiskeluoikeus = oppiaineenOppimääräOpiskeluoikeus.copy(
     suoritukset =
       oppiaineenOppimääränSuoritus(aikuistenOppiaine("YH").copy(perusteenDiaarinumero = Some("19/011/2015"))).copy(arviointi = arviointi(10)) ::
