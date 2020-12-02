@@ -341,7 +341,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
     "perusopetuksenAloittamistaLykatty" -> compactLisätiedotColumn("Perusopetuksen aloittamista lykätty"),
     "aloittanutEnnenOppivelvollisuutta" -> compactLisätiedotColumn("Aloittanut ennen oppivelvollisuutta"),
     "pidennettyOppivelvollisuus" -> compactLisätiedotColumn("Pidennetty oppivelvollisuus"),
-    "tehostetunTuenPaatos" -> compactLisätiedotColumn("Tehostetun tuen päätös"),
+    "tehostetunTuenPaatos" -> CompactColumn("Tehostetun tuen jakso voimassa", comment = Some("Sarakkeessa arvo \"kyllä\" jos opiskeluoikeudella on voimassa oleva tehostetun tuen jakso raportin tulostukseen valittuna päivämääränä.")),
     "joustavaPerusopetus" -> compactLisätiedotColumn("Joustava perusopetus"),
     "vuosiluokkiinSitoutumatonOpetus" -> compactLisätiedotColumn("Vuosiluokkiin sitomaton opetus"),
     "vammainen" -> compactLisätiedotColumn("Vammainen"),
@@ -349,7 +349,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
     "oikeusMaksuttomaanAsuntolapaikkaan" -> compactLisätiedotColumn("Oikeus maksuttomaan asuntolapaikkaan"),
     "sisäoppilaitosmainenMajoitus" -> compactLisätiedotColumn("Sisäoppilaitosmainen majoitus"),
     "koulukoti" -> compactLisätiedotColumn("Koulukoti"),
-    "erityisenTuenPaatosVoimassa" -> compactLisätiedotColumn("Erityisen tuen päätös"),
+    "erityisenTuenPaatosVoimassa" -> CompactColumn("Erityisen tuen jakso voimassa", comment = Some("Sarakkeessa arvo \"kyllä\" jos opiskeluoikeudella on voimassa oleva erityisen tuen jakso raportin tulostukseen valittuna päivämääränä.")),
     "erityisenTuenPaatosToimialueittain" -> compactLisätiedotColumn("Opiskelee toimialueittain"),
     "erityisenTuenPaatosToteutuspaikat" -> compactLisätiedotColumn("Erityisen tuen päätöksen toteutuspaikka"),
     "tukimuodot" -> compactLisätiedotColumn("Tukimuodot")
