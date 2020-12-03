@@ -31,17 +31,18 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
   }
 
   get("/organisaatiot-ja-raporttityypit") {
-    raportinOrganisatiotJaRaporttiTyypit(organisaatioService.kaikkiKäyttöoikeudellisetOrganisaatiot)
+    raportitService.getRaportinOrganisatiotJaRaporttiTyypit(organisaatioService.kaikkiKäyttöoikeudellisetOrganisaatiot)
   }
 
   get("/paivitysaika") {
     raportitService.viimeisinPäivitys
   }
 
+  // TODO: Tarpeeton kun uusi raporttikäli saadaan käyttöön, voi poistaa
   get("/mahdolliset-raportit/:oppilaitosOid") {
     getStringParam("oppilaitosOid") match {
       case organisaatioService.ostopalveluRootOid => Set(EsiopetuksenRaportti.toString, EsiopetuksenOppijaMäärienRaportti.toString)
-      case oid => accessResolver.mahdollisetRaporttienTyypitOrganisaatiolle(validateOrganisaatioOid(oid)).map(_.toString)
+      case oid: String => accessResolver.mahdollisetRaporttienTyypitOrganisaatiolle(validateOrganisaatioOid(oid)).map(_.toString)
     }
   }
 
@@ -287,36 +288,5 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
 
   private def auditLogRaportinLataus(raportti: String, request: RaporttiAikajaksoltaRequest) =
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> request.auditlogHakuehto(raportti))))
-
-  private def raportinOrganisatiotJaRaporttiTyypit(organisaatiot: Iterable[OrganisaatioHierarkia]): List[OrganisaatioJaRaporttiTyypit] =
-    organisaatiot
-      .filter(_.organisaatiotyypit.intersect(raporttinakymanOrganisaatiotyypit).nonEmpty)
-      .map(_.sortBy(koskiSession.lang))
-      .map((organisaatio) => {
-        OrganisaatioJaRaporttiTyypit(
-          nimi = organisaatio.nimi,
-          oid = organisaatio.oid,
-          organisaatiotyypit = organisaatio.organisaatiotyypit,
-          raportit = organisaatio.oid match {
-            case organisaatioService.ostopalveluRootOid => Set(EsiopetuksenRaportti.toString, EsiopetuksenOppijaMäärienRaportti.toString)
-            case oid => accessResolver.mahdollisetRaporttienTyypitOrganisaatiolle(validateOrganisaatioOid(oid)).map(_.toString)
-          },
-          children = raportinOrganisatiotJaRaporttiTyypit(organisaatio.children)
-        )
-      })
-      .toList
-
-  private val raporttinakymanOrganisaatiotyypit = List(
-    "OPPILAITOS",
-    "OPPISOPIMUSTOIMIPISTE",
-    "KOULUTUSTOIMIJA",
-    "VARHAISKASVATUKSEN_TOIMIPAIKKA",
-    "OSTOPALVELUTAIPALVELUSETELI"
-  )
 }
 
-case class OrganisaatioJaRaporttiTyypit(nimi: LocalizedString,
-                                        oid: String,
-                                        organisaatiotyypit: List[String],
-                                        raportit: Set[String],
-                                        children: List[OrganisaatioJaRaporttiTyypit])
