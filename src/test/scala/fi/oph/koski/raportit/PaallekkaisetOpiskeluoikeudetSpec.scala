@@ -3,7 +3,7 @@ package fi.oph.koski.raportit
 import java.time.LocalDate
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.fixture.PaallekkaisetOpiskeluoikeudetFixtures.{keskimmaisenAlkamispaiva, ensimmaisenAlkamispaiva}
+import fi.oph.koski.fixture.PaallekkaisetOpiskeluoikeudetFixtures.{keskimmaisenAlkamispaiva, ensimmaisenAlkamispaiva, ensimmaisenPaattymispaiva}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
@@ -72,6 +72,23 @@ class PaallekkaisetOpiskeluoikeudetSpec extends FreeSpec with RaportointikantaTe
       pekanRivit(keskuksenRaportti).map(_.rahoitusmuodot) shouldBe(Seq(Some("6,1"), Some("6,1")))
       pekanRivit(keskuksenRaportti).map(_.rahoitusmuodotParametrienSisalla) shouldBe(Seq(Some("6"), Some("6")))
     }
+    "Opiskeluoikeuden tilat parametrien sisällä" in {
+      pekanRivit(stadinRaportti).map(_.tilatParametrienSisalla) shouldBe(Seq("lasna,eronnut"))
+      pekanRivit(stadinRaportti).map(_.paallekkainenTilatParametrienSisalla) shouldBe(Seq(Some("lasna")))
+
+      pekanRivit(keskuksenRaportti).map(_.tilatParametrienSisalla) shouldBe(Seq("lasna","lasna"))
+      pekanRivit(keskuksenRaportti).map(withOppilaitos(_.paallekkainenTilatParametrienSisalla)) should contain theSameElementsAs (Seq(
+        ("Stadin ammatti- ja aikuisopisto", Some("lasna,eronnut")),
+        ("Omnia", None)
+      ))
+    }
+    "Näytetään opiskeluoikeuden päättymispäivä jos sellainen on" in {
+      pekanRivit(stadinRaportti).map(_.paattymispaiva) shouldBe(Seq(Some(ensimmaisenPaattymispaiva)))
+
+    }
+    "Puuttuva opiskeluoikeuden päättymispäivä näytetään tyhjänä" in {
+      pekanRivit(keskuksenRaportti).map(_.paattymispaiva) shouldBe(Seq(None, None))
+    }
     "Päällekkäisen opiskeluoikeuden rahoitusmuodot, luetellaan ilman peräkkäisiä duplikaatteja" in {
       pekanRivit(stadinRaportti).map(_.paallekkainenRahoitusmuodot) shouldBe(Seq(Some("6,1")))
       pekanRivit(stadinRaportti).map(_.paallekkainenRahoitusmuodotParametrienSisalla) shouldBe(Seq(Some("6")))
@@ -86,10 +103,10 @@ class PaallekkaisetOpiskeluoikeudetSpec extends FreeSpec with RaportointikantaTe
       ))
     }
     "Päällekkäinen opiskeluoikeus alkanut aikasemmin" in {
-      pekanRivit(stadinRaportti).map(_.paallekkainenAlkanutEka) shouldBe(Seq(false))
+      pekanRivit(stadinRaportti).map(_.paallekkainenAlkanutEka) shouldBe(Seq("ei"))
       pekanRivit(keskuksenRaportti).map(withOppilaitos(_.paallekkainenAlkanutEka)) should contain theSameElementsAs(Seq(
-        ("Stadin ammatti- ja aikuisopisto", true),
-        ("Omnia", false)
+        ("Stadin ammatti- ja aikuisopisto", "kyllä"),
+        ("Omnia", "ei")
       ))
     }
 

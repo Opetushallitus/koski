@@ -29,6 +29,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
           opiskeluoikeus.koulutusmuoto,
           opiskeluoikeus.alkamispaiva,
           opiskeluoikeus.viimeisin_tila,
+          opiskeluoikeus.paattymispaiva,
           paallekkainen.opiskeluoikeus_oid paallekkainen_opiskeluoikeus_oid,
           paallekkainen.oppilaitos_nimi    paallekkainen_oppilaitos_nimi,
           paallekkainen.koulutusmuoto      paallekkainen_koulutusmuoto,
@@ -57,10 +58,12 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
         paallekkaiset_opiskeluoikeudet.*,
         rahoitusmuodot.koodiarvot rahoitusmuodot,
         rahoitusmuodot_osuu_parametreille.koodiarvot rahoitusmuodot_osuu_parametreille,
+        paallekkaiset_opiskeluoikeudet.paallekkainen_alkamispaiva = paallekkaiset_opiskeluoikeudet.alkamispaiva sama_alkupaiva,
         paallekkaiset_opiskeluoikeudet.paallekkainen_alkamispaiva < paallekkaiset_opiskeluoikeudet.alkamispaiva paallekkainen_alkanut_eka,
         paallekkainen_rahoitusmuodot.koodiarvot paallekkainen_rahoitusmuodot,
         paallekkainen_rahoitusmuodot_osuu_parametreille.koodiarvot paallekkainen_rahoitusmuodot_parametrien_sisalla,
-        haetun_opiskeluoikeuden_tilat_parametrien_sisalla.tilat haetun_tilat_parametrien_sisalla,
+        paallekkaisen_opiskeluoikeuden_tilat_parametrien_sisalla.tilat paallekkainen_tilat_parametrien_sisalla,
+        haetun_opiskeluoikeuden_tilat_parametrien_sisalla.tilat tilat_parametrien_sisalla,
         paatason_suoritukset.tyyppi_ja_koodiarvo paallekkainen_paatason_suoritukset,
         paallekkainen_alkamispaiva <= $viimeistaan and coalesce(paallekkainen_paattymispaiva, '9999-12-31'::date) >= $aikaisintaan paallekkainen_voimassa_aikajaksolla
       from (
@@ -120,6 +123,16 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
               and oman_organisaation_aikajakso.loppu >= $aikaisintaan
             group by opiskeluoikeus_oid
         ) haetun_opiskeluoikeuden_tilat_parametrien_sisalla on haetun_organisaation_opiskeluoikeudet.opiskeluoikeus_oid = haetun_opiskeluoikeuden_tilat_parametrien_sisalla.opiskeluoikeus_oid
+        left join lateral (
+          select
+            opiskeluoikeus_oid,
+            string_agg(tila, ',' order by alku) tilat
+          from r_opiskeluoikeus_aikajakso oman_organisaation_aikajakso
+            where opiskeluoikeus_oid = paallekkainen_opiskeluoikeus_oid
+              and oman_organisaation_aikajakso.alku <= $viimeistaan
+              and oman_organisaation_aikajakso.loppu >= $aikaisintaan
+            group by opiskeluoikeus_oid
+        ) paallekkaisen_opiskeluoikeuden_tilat_parametrien_sisalla on paallekkainen_opiskeluoikeus_oid = paallekkaisen_opiskeluoikeuden_tilat_parametrien_sisalla.opiskeluoikeus_oid
         join lateral (
           select
             opiskeluoikeus_oid,
@@ -139,6 +152,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       oppilaitosNimi = rs.getString("oppilaitos_nimi"),
       koulutusmuoto = rs.getString("koulutusmuoto"),
       alkamispaiva = rs.getDate("alkamispaiva").toLocalDate,
+      tilatParametrienSisalla = removeConsecutiveDuplicates(rs.getString("tilat_parametrien_sisalla")),
+      paattymispaiva = optional(rs.getDate("paattymispaiva")).map(_.toLocalDate),
       viimeisinTila = rs.getString("viimeisin_tila"),
       rahoitusmuodot = optional(rs.getString("rahoitusmuodot")).map(removeConsecutiveDuplicates),
       rahoitusmuodotParametrienSisalla = optional(rs.getString("rahoitusmuodot_osuu_parametreille")).map(removeConsecutiveDuplicates),
@@ -146,9 +161,11 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       paallekkainenOppilaitosNimi = rs.getString("paallekkainen_oppilaitos_nimi"),
       paallekkainenKoulutusmuoto = rs.getString("paallekkainen_koulutusmuoto"),
       paallekkainenSuoritusTyyppi = suorituksistaKaytettavaNimi(rs.getString("paallekkainen_paatason_suoritukset")),
+      paallekkainenTilatParametrienSisalla = optional(rs.getString("paallekkainen_tilat_parametrien_sisalla")).map(removeConsecutiveDuplicates),
       paallekkainenViimeisinTila = rs.getString("paallekkainen_viimeisin_tila"),
       paallekkainenAlkamispaiva = rs.getDate("paallekkainen_alkamispaiva").toLocalDate,
-      paallekkainenAlkanutEka = rs.getBoolean("paallekkainen_alkanut_eka"),
+      paallekkainenPaattymispaiva = optional(rs.getDate("paallekkainen_paattymispaiva")).map(_.toLocalDate),
+      paallekkainenAlkanutEka = if (rs.getBoolean("sama_alkupaiva")) { "Sama alkamispäivä" } else { if (rs.getBoolean("paallekkainen_alkanut_eka")) "kyllä" else "ei" },
       paallekkainenRahoitusmuodot = optional(rs.getString("paallekkainen_rahoitusmuodot")).map(removeConsecutiveDuplicates),
       paallekkainenRahoitusmuodotParametrienSisalla = optional(rs.getString("paallekkainen_rahoitusmuodot_parametrien_sisalla")).map(removeConsecutiveDuplicates),
       paallekkainenVoimassaParametrienSisalla = rs.getBoolean("paallekkainen_voimassa_aikajaksolla")
@@ -160,8 +177,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
   def suorituksistaKaytettavaNimi(jsonb: String): String = {
     val suoritukset: List[(SuorituksenTyyppi, KoulutusmoduuliKoodiarvo)] = JsonSerializer.parse[List[List[String]]](jsonb).map(x => (x(0), x(1)))
     val nimi = (suoritukset.head :: suoritukset).foldLeft[String](suoritukset.head._1) {
-      case (_, ("aikuistenperusopetuksenoppimaara", _)) => "Perusopetuksen oppimäärä"
-      case (_, ("aikuistenperusopetuksenoppimaaranalkuvaihe", _)) => "Perusopetuksen oppimäärä"
+      case (_, ("aikuistenperusopetuksenoppimaara", _)) => "Aikuisten perusopetuksen oppimäärä"
+      case (_, ("aikuistenperusopetuksenoppimaaranalkuvaihe", _)) => "Aikuisten perusopetuksen oppimäärä"
       case (_, ("perusopetuksenoppiaineenoppimaara", _)) => "Perusopetuksen aineopiskelija"
       case (_, ("ammatillinentutkintoosittainen", _)) => "Ammatillisen tutkinnon osa/osia"
       case (_, ("ammatillinentutkinto", _)) => "Ammatillisen tutkinnon suoritus"
@@ -199,30 +216,34 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
   private def removeConsecutiveDuplicates(str: String) =
     str.split(",").foldRight(List.empty[String])((current, result) => if (result.headOption.contains(current)) result else current :: result).mkString(",")
 
-  private def optional(str: String) = if (str == null) None else Some(str)
+  private def optional[A](str: A): Option[A] = if (str == null) None else Some(str)
 
   val columnSettings = Columns.flattenGroupingColumns(Seq(
-    "Opiskeluoikeus" -> GroupColumnsWithTitle(List(
-      "oppijaOid" -> Column("oppijaOid", comment = Some("")),
-      "opiskeluoikeusOid" -> Column("opiskeluoikeusOid", comment = Some("")),
+    "Koulutuksen järjestäjän oma opiskeluoikeus" -> GroupColumnsWithTitle(List(
+      "oppijaOid" -> Column("Oppijanumero"),
+      "opiskeluoikeusOid" -> Column("Oman opiskeluoikeuden oid"),
       "oppilaitosNimi" -> Column("Oppilaitoksen nimi"),
-      "koulutusmuoto" -> Column("Koulutusmuoto"),
-      "alkamispaiva" -> Column("alkamispaiva", comment = Some("")),
-      "viimeisinTila" -> Column("viimeisinTila", comment = Some("")),
-      "rahoitusmuodot" -> Column("rahoitusmuodot"),
-      "rahoitusmuodotParametrienSisalla" -> Column("rahoitusmuodotParametrienSisalla"),
+      "koulutusmuoto" -> Column("Oman opiskeluoikeuden koulutusmuoto"),
+      "alkamispaiva" -> Column("Oman opiskeluoikeuden alkamispäivä"),
+      "tilatParametrienSisalla" -> Column("Oman opiskeluoikeuden tilat parametrien sisällä"),
+      "paattymispaiva" -> Column("Opiskeluoikeuden päättymispäivä"),
+      "viimeisinTila" -> Column("Oman opiskeluoikeuden viimeisin tila"),
+      "rahoitusmuodot" -> Column("Oman opiskeluoikeuden rahoitusmuodot", comment = Some("Sarakkeessa näytetään kaikki opiskeluoikeuden aikana käytetyt rahoitusmuodot, jos opiskeluoikeudelle on merkitty rahoitusmuotoja. Rahoitusmuotoja käytetään aikuisten perusopetuksen, lukiokoulutuksen ja ammatillisen koulutuksen opiskeluoikeuksissa. Rahoitusmuotojen koodiarvojen selitteet koodistossa: https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest")),
+      "rahoitusmuodotParametrienSisalla" -> Column("Oman opiskeluoikeuden rahoitusmuodot valitulla ajanjaksolla", comment = Some("Sarakkeessa näytetään opiskeluoikeudella raporttiin valitulla aikajaksolla käytetyt rahoitusmuodot, jos opiskeluoikeudelle on merkitty rahoitusmuotoja. Rahoitusmuotoja käytetään aikuisten perusopetuksen, lukiokoulutuksen ja ammatillisen koulutuksen opiskeluoikeuksissa. Rahoitusmuotojen koodiarvojen selitteet koodistossa: https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest")),
     )),
     "Päällekkäinen opiskeluoikeus" -> GroupColumnsWithTitle(List(
-      "paallekkainenOpiskeluoikeusOid" -> Column("paallekkainenOpiskeluoikeusOid", comment = Some("")),
-      "paallekkainenOppilaitosNimi" -> Column("paallekkainenOppilaitosNimi", comment = Some("")),
-      "paallekkainenKoulutusmuoto" -> Column("paallekkainenKoulutusmuoto", comment = Some("")),
-      "paallekkainenSuoritusTyyppi" -> Column("paallekkainenSuoritusTyyppi", comment = Some("")),
-      "paallekkainenViimeisinTila" -> Column("paallekkainenViimeisinTila", comment = Some("")),
-      "paallekkainenAlkamispaiva" -> Column("paallekkainenAlkamispaiva", comment = Some("")),
-      "paallekkainenAlkanutEka" -> Column("paallekkainenAlkanutEka", comment = Some("")),
-      "paallekkainenRahoitusmuodot" -> Column("paallekkainenRahoitusmuodot", comment = Some("")),
-      "paallekkainenRahoitusmuodotParametrienSisalla" -> Column("paallekkainenRahoitusmuodotParametrienSisalla", comment = Some("")),
-      "paallekkainenVoimassaParametrienSisalla" -> Column("paallekkainenVoimassaParametrienSisalla")
+      "paallekkainenOpiskeluoikeusOid" -> Column("Päällekkäisen opiskeluoikeuden oid"),
+      "paallekkainenOppilaitosNimi" -> Column("Päällekkäisen opiskeluoikeuden oppilaitoksen nimi"),
+      "paallekkainenKoulutusmuoto" -> Column("Päällekkäisen opiskeluoikeuden koulutusmuoto"),
+      "paallekkainenSuoritusTyyppi" -> Column("Päällekkäisen opiskeluoikeuden suorituksen tyyppi"),
+      "paallekkainenTilatParametrienSisalla" -> Column("Päällekkäisen opiskeluoikeuden tilat parametrien sisällä"),
+      "paallekkainenViimeisinTila" -> Column("Päällekkäisen opiskeluoikeuden viimeisin tila"),
+      "paallekkainenAlkamispaiva" -> Column("Päällekkäisen opiskeluoikeuden alkamispäivä"),
+      "paallekkainenPaattymispaiva" -> Column("Päällekkäisen opiskeluoikeuden päättymispäivä"),
+      "paallekkainenAlkanutEka" -> Column("Päällekkäinen opiskeluoikeus alkanut ensin", comment = Some("Sarakkeella arvo \"kyllä\" jos päällekkäisen opiskeluoikeuden alkamispäivämäärä on ennen organisaation oman opiskeluoikeuden alkamispävää.")),
+      "paallekkainenRahoitusmuodot" -> Column("Päällekkäisen opiskeluoikeuden rahoitusmuodot", comment = Some("Sarakkeessa näytetään kaikki opiskeluoikeuden aikana käytetyt rahoitusmuodot, jos opiskeluoikeudelle on merkitty rahoitusmuotoja. Rahoitusmuotoja käytetään aikuisten perusopetuksen, lukiokoulutuksen ja ammatillisen koulutuksen opiskeluoikeuksissa. Rahoitusmuotojen koodiarvojen selitteet koodistossa: https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest")),
+      "paallekkainenRahoitusmuodotParametrienSisalla" -> Column("Päällekkäisen opiskeluoikeuden rahoitusmuodot valitulla ajanjaksolla", comment = Some("Sarakkeessa näytetään opiskeluoikeudella raporttiin valitulla aikajaksolla käytetyt rahoitusmuodot, jos opiskeluoikeudelle on merkitty rahoitusmuotoja. Rahoitusmuotoja käytetään aikuisten perusopetuksen, lukiokoulutuksen ja ammatillisen koulutuksen opiskeluoikeuksissa. Rahoitusmuotojen koodiarvojen selitteet koodistossa: https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest")),
+      "paallekkainenVoimassaParametrienSisalla" -> Column("Päällekkäinen opiskeluoikeus aktiviinen valitulla ajanjaksolla", comment = Some("Raportille tulostuvat kaikki oman opiskeluoikeuden kanssa päällekkäin sattuvat opiskeluoikeudet. Päällekkäisyys voi olla raportille valitun ajanjakson ulkopuolella. Sarakkeessa arvo \"kyllä\" jos päällekkäinen opiskeluoikeus on ollut aktiivinen raportille valitulla ajanjaksolla."))
     ))
   ))
 }
@@ -233,6 +254,8 @@ case class PaallekkaisetOpiskeluoikeudetRow(
   oppilaitosNimi: String,
   koulutusmuoto: String,
   alkamispaiva: LocalDate,
+  tilatParametrienSisalla: String,
+  paattymispaiva: Option[LocalDate],
   viimeisinTila: String,
   rahoitusmuodot: Option[String],
   rahoitusmuodotParametrienSisalla: Option[String],
@@ -240,9 +263,11 @@ case class PaallekkaisetOpiskeluoikeudetRow(
   paallekkainenOppilaitosNimi: String,
   paallekkainenKoulutusmuoto: String,
   paallekkainenSuoritusTyyppi: String,
+  paallekkainenTilatParametrienSisalla: Option[String],
   paallekkainenViimeisinTila: String,
   paallekkainenAlkamispaiva: LocalDate,
-  paallekkainenAlkanutEka: Boolean,
+  paallekkainenPaattymispaiva: Option[LocalDate],
+  paallekkainenAlkanutEka: String,
   paallekkainenRahoitusmuodot: Option[String],
   paallekkainenRahoitusmuodotParametrienSisalla: Option[String],
   paallekkainenVoimassaParametrienSisalla: Boolean
