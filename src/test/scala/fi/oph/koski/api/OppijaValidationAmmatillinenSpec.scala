@@ -575,7 +575,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
 
       "Syötetään tieto siitä, että keskiarvo sisältää mukautettuja arvosanoja" - {
-        val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaOps, osasuoritukset = Some(List(tutkinnonOsaSuoritus)), keskiarvo = Option(2.1f), sisältääMukautettujaArvosanoja = Some(true))
+        val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaOps, osasuoritukset = Some(List(tutkinnonOsaSuoritus)), keskiarvo = Option(2.1f), keskiarvoSisältääMukautettujaArvosanoja = Some(true))
         "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatusOk()))
       }
 

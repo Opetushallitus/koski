@@ -57,7 +57,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           }
 
           "Syötetään keskiarvo ja tieto siitä, että keskiarvo sisältää mukautettuja arvosanoja" - {
-            val suoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(keskiarvo = Some(3.0f), sisältääMukautettujaArvosanoja = Some(true))
+            val suoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(keskiarvo = Some(3.0f), keskiarvoSisältääMukautettujaArvosanoja = Some(true))
             "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus) (verifyResponseStatusOk()))
           }
 

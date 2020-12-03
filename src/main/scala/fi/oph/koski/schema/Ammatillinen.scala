@@ -248,7 +248,7 @@ case class AmmatillisenTutkinnonSuoritus(
   @Tooltip("Keskiarvoon sisältyy mukautettuja arvosanoja")
   @OnlyWhen("suoritustapa/koodiarvo","reformi")
   @OnlyWhen("suoritustapa/koodiarvo","ops")
-  sisältääMukautettujaArvosanoja: Option[Boolean] = None
+  keskiarvoSisältääMukautettujaArvosanoja: Option[Boolean] = None
 ) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus with Todistus with Järjestämismuodollinen with OsaamisenHankkimistavallinen
 
 @ReadFlattened
@@ -315,7 +315,7 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   @Tooltip("Keskiarvoon sisältyy mukautettuja arvosanoja")
   @OnlyWhen("suoritustapa/koodiarvo","reformi")
   @OnlyWhen("suoritustapa/koodiarvo","ops")
-  sisältääMukautettujaArvosanoja: Option[Boolean] = None
+  keskiarvoSisältääMukautettujaArvosanoja: Option[Boolean] = None
 ) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus with Järjestämismuodollinen with OsaamisenHankkimistavallinen
 
 trait AmmatillisenTutkinnonOsittainenTaiKokoSuoritus extends  AmmatillinenPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Ryhmällinen with Tutkintonimikkeellinen with Osaamisalallinen {
