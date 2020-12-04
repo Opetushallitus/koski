@@ -98,6 +98,7 @@ case class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(db: DB) exte
       left join (
         select
           oppilaitos_oid oppilaitos_oid,
+          oppilaitos_nimi oppilaitos_nimi,
           count(distinct (case when (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true) then r_osasuoritus.osasuoritus_id end)) arviointipäivä_ei_opiskeluoikeuden_sisällä
         from paatason_suoritus
         join r_opiskeluoikeus_aikajakso on oo_opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
@@ -105,7 +106,6 @@ case class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(db: DB) exte
         where (r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi')
           and r_osasuoritus.arviointi_paiva >= $aikaisintaan
           and r_osasuoritus.arviointi_paiva <= $viimeistaan
-          and viimeisin_tila = 'valmistunut'
           and (oo_alkamisaiva > r_osasuoritus.arviointi_paiva
             or (oo_paattymispaiva < r_osasuoritus.arviointi_paiva and viimeisin_tila = 'valmistunut'))
         group by paatason_suoritus.oppilaitos_nimi, paatason_suoritus.oppilaitos_oid
