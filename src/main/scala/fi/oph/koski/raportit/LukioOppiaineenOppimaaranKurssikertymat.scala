@@ -59,11 +59,11 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
             on paatason_suoritus.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
           join #${s.name}.r_osasuoritus osasuoritus
             on paatason_suoritus.paatason_suoritus_id = osasuoritus.paatason_suoritus_id
-          left join #${s.name}.r_opiskeluoikeus_aikajakso opiskeluoikeus_aikajakso
+          join #${s.name}.r_opiskeluoikeus_aikajakso opiskeluoikeus_aikajakso
             on opiskeluoikeus_aikajakso.opiskeluoikeus_oid = osasuoritus.opiskeluoikeus_oid
-              and (osasuoritus.arviointi_paiva between opiskeluoikeus_aikajakso.alku and opiskeluoikeus_aikajakso.loppu)
         where paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
           and osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
+          and (osasuoritus.arviointi_paiva between opiskeluoikeus_aikajakso.alku and opiskeluoikeus_aikajakso.loppu)
       ) kurssit
     group by
       oppilaitos_oid,

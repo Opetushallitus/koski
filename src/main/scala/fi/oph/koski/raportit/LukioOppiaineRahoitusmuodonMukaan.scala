@@ -53,11 +53,10 @@ object LukioOppiaineRahoitusmuodonMukaan extends DatabaseConverters {
       from #${s.name}.r_paatason_suoritus paatason_suoritus
         join #${s.name}.r_osasuoritus osasuoritus on paatason_suoritus.paatason_suoritus_id = osasuoritus.paatason_suoritus_id
         join #${s.name}.r_opiskeluoikeus opiskeluoikeus on paatason_suoritus.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
-        left join #${s.name}.r_opiskeluoikeus_aikajakso aikajakso
-          on paatason_suoritus.opiskeluoikeus_oid = aikajakso.opiskeluoikeus_oid
-          and (osasuoritus.arviointi_paiva between aikajakso.alku and aikajakso.loppu)
+        join #${s.name}.r_opiskeluoikeus_aikajakso aikajakso on paatason_suoritus.opiskeluoikeus_oid = aikajakso.opiskeluoikeus_oid
         where
           paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
+          and (osasuoritus.arviointi_paiva between aikajakso.alku and aikajakso.loppu)
           and osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
           and (
             osasuoritus.tunnustettu = false
