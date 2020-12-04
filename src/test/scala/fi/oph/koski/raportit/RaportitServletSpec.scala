@@ -115,19 +115,19 @@ class RaportitServletSpec extends FreeSpec with RaportointikantaTestMethods with
   }
 
   "Organisaatiohierarkia raporttityypeillä -API" - {
-    "Kuusi juuriorganisaatiota pääkäyttäjälle" in {
+    "Juuriorganisaatiot pääkäyttäjälle" in {
       verifyOrganisaatiohierarkia(paakayttaja) { hierarkia => {
-        hierarkia.length shouldEqual 6
+        hierarkia.length shouldEqual 15
       }}
     }
 
-    "Kahdeksan juuriorganisaatiota testikäyttäjälle kalle" in {
+    "Juuriorganisaatiota testikäyttäjälle kalle" in {
       verifyOrganisaatiohierarkia(kalle) { hierarkia => {
-        hierarkia.length shouldEqual 8
+        hierarkia.length shouldEqual 17
       }}
     }
 
-    "Kaksi juuriorganisaatiota Helsingin palvelukäyttäjälle" in {
+    "Juuriorganisaatiot Helsingin palvelukäyttäjälle" in {
       verifyOrganisaatiohierarkia(helsinginKaupunkiPalvelukäyttäjä) { hierarkia => {
         hierarkia.length shouldEqual 2
       }}
