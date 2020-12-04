@@ -9,7 +9,7 @@ import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{KoskiDatabaseConfig, KoskiDatabaseMethods}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.raportit.{LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat, PaallekkaisetOpiskeluoikeudet}
+import fi.oph.koski.raportit.{LukioOppiaineRahoitusmuodonMukaan, LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat, PaallekkaisetOpiskeluoikeudet}
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.util.DateOrdering.{sqlDateOrdering, sqlTimestampOrdering}
@@ -101,7 +101,9 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
       OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.createMaterializedView(schema),
       OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.createIndex(schema),
       LukioOppiaineenOppimaaranKurssikertymat.createMaterializedView(schema),
-      LukioOppiaineenOppimaaranKurssikertymat.createIndex(schema)
+      LukioOppiaineenOppimaaranKurssikertymat.createIndex(schema),
+      LukioOppiaineRahoitusmuodonMukaan.createMaterializedView(schema),
+      LukioOppiaineRahoitusmuodonMukaan.createIndex(schema)
     ), timeout = 120.minutes)
     val duration = (System.currentTimeMillis - started) / 1000
     setStatusLoadCompleted("materialized_views")

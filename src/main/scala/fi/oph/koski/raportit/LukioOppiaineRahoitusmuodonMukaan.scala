@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.raportointikanta.RaportointiDatabase
+import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
 import slick.jdbc.GetResult
 
 object LukioMuutaKauttaRahoitetut {
@@ -40,41 +40,54 @@ object LukioRahoitusmuotoEiTiedossa {
 }
 
 object LukioOppiaineRahoitusmuodonMukaan extends DatabaseConverters {
+  def createMaterializedView(s: Schema) =
+    sqlu"""
+      create materialized view #${s.name}.lukion_oppiaineen_oppimaaran_kurssien_rahoitusmuodot as select
+        opiskeluoikeus.oppilaitos_oid,
+        opiskeluoikeus.opiskeluoikeus_oid,
+        opiskeluoikeus.oppija_oid,
+        osasuoritus.koulutusmoduuli_koodiarvo,
+        osasuoritus.koulutusmoduuli_nimi,
+        osasuoritus.arviointi_paiva,
+        aikajakso.opintojen_rahoitus
+      from #${s.name}.r_paatason_suoritus paatason_suoritus
+        join #${s.name}.r_osasuoritus osasuoritus on paatason_suoritus.paatason_suoritus_id = osasuoritus.paatason_suoritus_id
+        join #${s.name}.r_opiskeluoikeus opiskeluoikeus on paatason_suoritus.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
+        left join #${s.name}.r_opiskeluoikeus_aikajakso aikajakso
+          on paatason_suoritus.opiskeluoikeus_oid = aikajakso.opiskeluoikeus_oid
+          and (osasuoritus.arviointi_paiva between aikajakso.alku and aikajakso.loppu)
+        where
+          paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
+          and osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
+          and (
+            osasuoritus.tunnustettu = false
+            or
+            tunnustettu_rahoituksen_piirissa
+          )
+          and (
+            osasuoritus.koulutusmoduuli_kurssin_tyyppi = 'pakollinen'
+            or
+            (koulutusmoduuli_kurssin_tyyppi = 'syventava' and koulutusmoduuli_paikallinen = false)
+          )
+    """
+
+  def createIndex(s: Schema) =
+    sqlu"create index on #${s.name}.lukion_oppiaineen_oppimaaran_kurssien_rahoitusmuodot(oppilaitos_oid)"
+
   def queryMuutaKauttaRahoitetut(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate, rahoitusmuoto: Option[String]) = {
     sql"""
-        select
-          r_osasuoritus.opiskeluoikeus_oid,
-          r_opiskeluoikeus.oppija_oid,
-          r_osasuoritus.koulutusmoduuli_koodiarvo,
-          r_osasuoritus.koulutusmoduuli_nimi
-        from r_osasuoritus
-          join r_paatason_suoritus
-            on r_paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id
-          join r_opiskeluoikeus
-            on r_opiskeluoikeus.opiskeluoikeus_oid = r_osasuoritus.opiskeluoikeus_oid
-          left join r_opiskeluoikeus_aikajakso
-            on r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid = r_osasuoritus.opiskeluoikeus_oid
-            and (r_osasuoritus.arviointi_paiva between r_opiskeluoikeus_aikajakso.alku and r_opiskeluoikeus_aikajakso.loppu)
-          where r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOids)
-            -- rahoitusmuoto
-            and r_opiskeluoikeus_aikajakso.opintojen_rahoitus #${rahoitusmuoto match {
-              case Some(rahoitusmuoto) => s"= '$rahoitusmuoto'"
-              case None => "is null"
-            }}
-            -- lukion aineoppimäärä
-            and r_paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
-            and r_osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
-            -- kurssi menee parametrien sisään
-            and (r_osasuoritus.arviointi_paiva between $aikaisintaan and $viimeistaan)
-            -- suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut pakolliset tai valtakunnalliset syventävät kurssit, joiden arviointipäivä osuu muuta kautta rahoitetun läsnäolojakson sisälle. Kurssien
-            and (
-                tunnustettu = false
-                or tunnustettu_rahoituksen_piirissa
-            )
-            and (
-                koulutusmoduuli_kurssin_tyyppi = 'pakollinen'
-                or (koulutusmoduuli_kurssin_tyyppi = 'syventava' and koulutusmoduuli_paikallinen = false)
-            );
+      select
+        opiskeluoikeus_oid,
+        oppija_oid,
+        koulutusmoduuli_koodiarvo,
+        koulutusmoduuli_nimi
+      from lukion_oppiaineen_oppimaaran_kurssien_rahoitusmuodot
+      where oppilaitos_oid = any($oppilaitosOids)
+        and (arviointi_paiva between $aikaisintaan and $viimeistaan)
+        and opintojen_rahoitus #${rahoitusmuoto match {
+          case Some(rahoitusmuoto) => s"= '$rahoitusmuoto'"
+          case None => "is null"
+        }}
     """.as[LukioKurssinRahoitusmuotoRow]
   }
 
