@@ -218,18 +218,16 @@ class RaportitService(application: KoskiApplication) {
   }
 
   def getRaportinOrganisatiotJaRaporttiTyypit(organisaatiot: Iterable[OrganisaatioHierarkia])(implicit user: KoskiSession) = {
-    val oppilaitosOids = getOppilaitosOids(organisaatiot)
-    val koulutusmuodot = getKoulutusmuodot(oppilaitosOids.toList)
+    val koulutusmuodot = getKoulutusmuodot()
     buildOrganisaatioJaRaporttiTyypit(organisaatiot, koulutusmuodot)
   }
 
-  def getKoulutusmuodot(oppilaitosOids: List[String]) = {
+  def getKoulutusmuodot() = {
     val query = sql"""
       SELECT
         oppilaitos_oid,
         array_agg(DISTINCT koulutusmuoto) as koulutusmuodot
       FROM r_opiskeluoikeus
-      WHERE oppilaitos_oid = any($oppilaitosOids)
       GROUP BY oppilaitos_oid
     """
     raportointiDatabase.runDbSync(query.as[(String, Seq[String])]).toMap
@@ -281,16 +279,12 @@ class RaportitService(application: KoskiApplication) {
           organisaatiotyypit = organisaatio.organisaatiotyypit,
           raportit = organisaatio.oid match {
             case organisaatioService.ostopalveluRootOid => Set(EsiopetuksenRaportti.toString, EsiopetuksenOppijaMäärienRaportti.toString)
-            case oid: String => accessResolver.mahdollisetRaporttienTyypitOrganisaatiolle(oid, koulutusmuodot).map(_.toString)
+            case oid: String => accessResolver.mahdollisetRaporttienTyypitOrganisaatiolle(organisaatio, koulutusmuodot).map(_.toString)
           },
           children = buildOrganisaatioJaRaporttiTyypit(organisaatio.children, koulutusmuodot)
         )
       })
-      .filter(org => org.raportit.nonEmpty || org.children.nonEmpty)
       .toList
-
-  private def getOppilaitosOids(organisaatiot: Iterable[OrganisaatioHierarkia]): Iterable[String] =
-    organisaatiot.flatMap(org => List(org.oid) ++ getOppilaitosOids(org.children))
 
   private val raporttinakymanOrganisaatiotyypit = List(
     "OPPILAITOS",

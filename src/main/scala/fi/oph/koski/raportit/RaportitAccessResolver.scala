@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.organisaatio.OrganisaatioRepository
+import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
 import fi.oph.koski.raportointikanta.RaportointiDatabase
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema._
@@ -29,17 +29,17 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
     filterOppilaitosOidsByKoulutusmuoto(kyselyOiditOrganisaatiolle(organisaatioOid).toSeq, koulutusmuoto)
   }
 
-  def mahdollisetRaporttienTyypitOrganisaatiolle(organisaatioOid: Organisaatio.Oid, koulutusmuodot: Map[String, Seq[String]])(implicit session: KoskiSession): Set[RaportinTyyppi] = {
-    val organisaatio = organisaatioRepository.getOrganisaatio(organisaatioOid)
-    val isKoulutustoimija = organisaatio.exists(_.isInstanceOf[Koulutustoimija])
+  def mahdollisetRaporttienTyypitOrganisaatiolle(organisaatioHierarkia: OrganisaatioHierarkia, koulutusmuodot: Map[String, Seq[String]])(implicit session: KoskiSession): Set[RaportinTyyppi] = {
+    val isKoulutustoimija = organisaatioHierarkia.toOrganisaatio.isInstanceOf[Koulutustoimija]
 
-    organisaatio
-      .flatMap(organisaatioWithOid => organisaatioRepository.getChildOids(organisaatioWithOid.oid))
-      .map(_.flatMap(koulutusmuodot.getOrElse(_, Set.empty)))
-      .map(_.flatMap(raportinTyypitKoulutusmuodolle(_, isKoulutustoimija)))
-      .map(_.filter(checkRaporttiAccessIfAccessIsLimited(_)))
-      .map(_.filter(raportti => session.allowedOpiskeluoikeusTyypit.contains(raportti.opiskeluoikeudenTyyppi)))
-      .getOrElse(Set.empty)
+    OrganisaatioHierarkia.flatten(List(organisaatioHierarkia))
+      .map(_.oid)
+      .flatMap(koulutusmuodot.get)
+      .flatten
+      .toSet
+      .flatMap(raportinTyypitKoulutusmuodolle(_, isKoulutustoimija))
+      .filter(checkRaporttiAccessIfAccessIsLimited(_))
+      .filter(raportti => session.allowedOpiskeluoikeusTyypit.contains(raportti.opiskeluoikeudenTyyppi))
   }
 
   // TODO: Tarpeeton kun uusi raporttikäli saadaan käyttöön, voi poistaa
