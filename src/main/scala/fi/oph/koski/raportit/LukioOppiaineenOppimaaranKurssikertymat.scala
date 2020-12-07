@@ -39,9 +39,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
         count(*) filter (where tunnustettu and valtakunnallinen and syventava) tunnustettuja_valtakunnallisia_syventavia,
         count(*) filter (where tunnustettu_rahoituksen_piirissa and (pakollinen or (valtakunnallinen and syventava))) tunnustut_pakolliset_ja_valtakunnalliset_syventavat_rahoitus,
         count(*) filter (where tunnustettu_rahoituksen_piirissa and pakollinen) pakollisia_tunnustettuja_rahoituksen_piirissa,
-        count(*) filter (where valtakunnallinen and syventava and tunnustettu_rahoituksen_piirissa) valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa,
-        count(*) filter (where valtakunnallinen and (suoritettu or tunnustettu_rahoituksen_piirissa) and opintojen_rahoitus = '6') suoritetut_tai_rahoitetut_muuta_kautta_rahoitetut,
-        count(*) filter (where valtakunnallinen and (suoritettu or tunnustettu_rahoituksen_piirissa) and opintojen_rahoitus is null) suoritetut_tai_rahoitetut_rahoitusmuoto_ei_tiedossa
+        count(*) filter (where valtakunnallinen and syventava and tunnustettu_rahoituksen_piirissa) valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa
       from (
         select
           oppilaitos_oid,
@@ -79,6 +77,8 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
       select
         r_organisaatio.nimi oppilaitos,
         oppimaaran_kurssikertymat.*,
+        coalesce(muuta_kautta_rahoitetut.yhteensa, 0) as muuta_kautta_rahoitetut,
+        coalesce(rahoitusmuoto_ei_tiedossa.yhteensa, 0) as rahoitusmuoto_ei_tiedossa,
         coalesce(opiskeluoikeuden_ulkopuoliset.yhteensa, 0) as opiskeluoikeuden_ulkopuoliset
       from (
         select
@@ -98,9 +98,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
           sum(tunnustettuja_valtakunnallisia_syventavia) tunnustettuja_valtakunnallisia_syventavia,
           sum(tunnustut_pakolliset_ja_valtakunnalliset_syventavat_rahoitus) tunnustut_pakolliset_ja_valtakunnalliset_syventavat_rahoitus,
           sum(pakollisia_tunnustettuja_rahoituksen_piirissa) pakollisia_tunnustettuja_rahoituksen_piirissa,
-          sum(valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa) valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa,
-          sum(suoritetut_tai_rahoitetut_muuta_kautta_rahoitetut) suoritetut_tai_rahoitetut_muuta_kautta_rahoitetut,
-          sum(suoritetut_tai_rahoitetut_rahoitusmuoto_ei_tiedossa) suoritetut_tai_rahoitetut_rahoitusmuoto_ei_tiedossa
+          sum(valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa) valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa
         from lukion_oppiaineen_oppimaaran_kurssikertyma
           where oppilaitos_oid = any($oppilaitosOids)
             and arviointi_paiva between $aikaisintaan and $viimeistaan
@@ -127,6 +125,28 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
         group by oppilaitos_oid
       ) opiskeluoikeuden_ulkopuoliset
           on opiskeluoikeuden_ulkopuoliset.oppilaitos_oid = oppimaaran_kurssikertymat.oppilaitos_oid
+      left join (
+        select
+          oppilaitos_oid,
+          count(*) yhteensa
+        from lukion_oppiaineen_oppimaaran_kurssien_rahoitusmuodot
+        where opintojen_rahoitus = '6'
+          and oppilaitos_oid = any($oppilaitosOids)
+          and (arviointi_paiva between $aikaisintaan and $viimeistaan)
+        group by oppilaitos_oid
+      ) muuta_kautta_rahoitetut
+          on muuta_kautta_rahoitetut.oppilaitos_oid = oppimaaran_kurssikertymat.oppilaitos_oid
+      left join (
+        select
+          oppilaitos_oid,
+          count(*) yhteensa
+        from lukion_oppiaineen_oppimaaran_kurssien_rahoitusmuodot
+        where opintojen_rahoitus is null
+          and oppilaitos_oid = any($oppilaitosOids)
+          and (arviointi_paiva between $aikaisintaan and $viimeistaan)
+        group by oppilaitos_oid
+      ) rahoitusmuoto_ei_tiedossa
+          on rahoitusmuoto_ei_tiedossa.oppilaitos_oid = oppimaaran_kurssikertymat.oppilaitos_oid
       join r_organisaatio on oppimaaran_kurssikertymat.oppilaitos_oid = r_organisaatio.organisaatio_oid
     """.as[LukioKurssikertymaAineopiskelijaRow]
   }
@@ -152,8 +172,8 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
       tunnustettujaRahoituksenPiirissa_pakollisia_ja_valtakunnallisiaSyventavia = rs.getInt("tunnustut_pakolliset_ja_valtakunnalliset_syventavat_rahoitus"),
       tunnustettuja_rahoituksenPiirissa_pakollisia = rs.getInt("pakollisia_tunnustettuja_rahoituksen_piirissa"),
       tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva = rs.getInt("valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa"),
-      suoritetutTaiRahoitetut_muutaKauttaRahoitetut = rs.getInt("suoritetut_tai_rahoitetut_muuta_kautta_rahoitetut"),
-      suoritetutTaiRahoitetut_rahoitusmuotoEiTiedossa = rs.getInt("suoritetut_tai_rahoitetut_rahoitusmuoto_ei_tiedossa"),
+      suoritetutTaiRahoitetut_muutaKauttaRahoitetut = rs.getInt("muuta_kautta_rahoitetut"),
+      suoritetutTaiRahoitetut_rahoitusmuotoEiTiedossa = rs.getInt("rahoitusmuoto_ei_tiedossa"),
       suoritetutTaiRahoitetut_eiOpiskeluoikeudenSisalla = rs.getInt("opiskeluoikeuden_ulkopuoliset")
     )
   })
