@@ -4,7 +4,7 @@ tutkintoon johtavat suoritustiedot eri koulutusasteilta. Yleinen Koski-dokumenta
 kootaan [wikiin](https://confluence.csc.fi/display/OPHPALV/Koski).
 
 
-## Kosken heikkalaatikkoympäristö tiedon hyödyntäjille
+## Kosken hiekkalaatikkoympäristö tiedon hyödyntäjille
 
 Koskesta on saatavilla hiekkalaatikkoympäristö tiedon hyödyntäjille, jonka kautta
 Kosken toimintaan voi tutustua.
