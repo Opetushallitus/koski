@@ -30,6 +30,10 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     }
   }
 
+  get("/organisaatiot") {
+    organisaatioService.kaikkiKäyttöoikeudellisetOrganisaatiot
+  }
+
   get("/organisaatiot-ja-raporttityypit") {
     raportitService.getRaportinOrganisatiotJaRaporttiTyypit(organisaatioService.kaikkiKäyttöoikeudellisetOrganisaatiot)
   }
