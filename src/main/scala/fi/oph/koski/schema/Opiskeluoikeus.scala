@@ -94,6 +94,7 @@ object OpiskeluoikeudenTyyppi {
   val perusopetuksenlisaopetus = apply("perusopetuksenlisaopetus")
   val perusopetus = apply("perusopetus")
   val ylioppilastutkinto = apply("ylioppilastutkinto")
+  val vapaansivistystyönkoulutus = apply("vapaansivistystyönkoulutus")
 
   private def apply(koodiarvo: String): Koodistokoodiviite = {
     val tyyppi = Koodistokoodiviite(koodiarvo, "opiskeluoikeudentyyppi")
