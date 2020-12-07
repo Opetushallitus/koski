@@ -98,12 +98,16 @@ describe('Muu ammatillinen koulutus', function() {
       describe('Päätason suorituksen laajuus', function() {
         before(
           editor.edit,
+          editor.propertyBySelector('.koulutusmoduuli .nimi').setValue('Lentokonemekaniikon peruskoulutus'),
+          editor.propertyBySelector('.koulutusmoduuli .koodiarvo').setValue('LKP'),
           editor.propertyBySelector('.koulutusmoduuli .laajuus .arvo').setValue(24),
           editor.propertyBySelector('.koulutusmoduuli .laajuudenyksikko').setValue('opintopistettä'),
           editor.saveChangesAndWaitForSuccess
         )
 
         it('määrän ja yksikön määrittely onnistuu', function() {
+          expect(editor.propertyBySelector('.koulutusmoduuli .nimi').getValue()).to.equal('Lentokonemekaniikon peruskoulutus')
+          expect(editor.propertyBySelector('.koulutusmoduuli .koodiarvo').getValue()).to.equal('LKP')
           expect(editor.propertyBySelector('.koulutusmoduuli .laajuus .arvo').getValue()).to.equal('24')
           expect(editor.propertyBySelector('.koulutusmoduuli .laajuudenyksikko').getText()).to.equal('op')
         })
