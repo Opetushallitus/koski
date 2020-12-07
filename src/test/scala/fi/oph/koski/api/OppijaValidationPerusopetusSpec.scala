@@ -1,5 +1,7 @@
 package fi.oph.koski.api
 
+import java.time.LocalDate
+
 import fi.oph.koski.documentation.OsaAikainenErityisopetusExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData.{suoritus, _}
 import fi.oph.koski.http.KoskiErrorCategory
@@ -72,6 +74,17 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         )))))) {
           verifyResponseStatusOk()
         }
+      }
+    }
+
+    "Opiskeluoikeudella ei saa olla sama alkamispäivä kahdella vuosiluokalla" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+        suoritukset = List(
+          yhdeksännenLuokanSuoritus.copy(alkamispäivä = Some(LocalDate.of(2006, 1, 1))),
+          kahdeksannenLuokanSuoritus.copy(alkamispäivä = Some(LocalDate.of(2006, 1, 1))),
+        )
+      )) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaSuorituksia("Vuosiluokilla (perusopetuksenluokkaaste/9, perusopetuksenluokkaaste/8) on sama alkamispäivä"))
       }
     }
   }

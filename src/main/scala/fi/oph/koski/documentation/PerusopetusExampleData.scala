@@ -117,7 +117,7 @@ object PerusopetusExampleData {
   def suoritusTuplana() = opiskeluoikeus(
     oppilaitos = jyväskylänNormaalikoulu,
     suoritukset = List(
-      kahdeksannenLuokanSuoritus.copy(toimipiste = jyväskylänNormaalikoulu, luokka = "8C"),
+      kahdeksannenLuokanSuoritus.copy(toimipiste = jyväskylänNormaalikoulu, luokka = "8C", alkamispäivä = Some(date(2014, 8, 16))),
       kahdeksannenLuokanSuoritus.copy(toimipiste = jyväskylänNormaalikoulu, luokka = "8C")
     )
   )
@@ -178,7 +178,7 @@ object PerusopetusExampleData {
   )
 
   val seitsemännenLuokanLuokallejääntiSuoritus = PerusopetuksenVuosiluokanSuoritus(
-    koulutusmoduuli = PerusopetuksenLuokkaAste(7, perusopetuksenDiaarinumero), luokka = "7C", alkamispäivä = Some(date(2013, 8, 15)),
+    koulutusmoduuli = PerusopetuksenLuokkaAste(7, perusopetuksenDiaarinumero), luokka = "7C", alkamispäivä = Some(date(2013, 8, 16)),
     jääLuokalle = true,
     toimipiste = jyväskylänNormaalikoulu,
     suorituskieli = suomenKieli,
@@ -203,7 +203,7 @@ object PerusopetusExampleData {
   )
 
   val yhdeksännenLuokanLuokallejääntiSuoritus = PerusopetuksenVuosiluokanSuoritus(
-    koulutusmoduuli = PerusopetuksenLuokkaAste(9, perusopetuksenDiaarinumero), luokka = "9A", alkamispäivä = Some(date(2014, 8, 15)),
+    koulutusmoduuli = PerusopetuksenLuokkaAste(9, perusopetuksenDiaarinumero), luokka = "9A", alkamispäivä = Some(date(2014, 8, 16)),
     jääLuokalle = true,
     toimipiste = jyväskylänNormaalikoulu,
     suorituskieli = suomenKieli,

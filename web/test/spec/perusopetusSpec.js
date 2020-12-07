@@ -9,6 +9,9 @@ describe('Perusopetus', function() {
   var currentDate = new Date()
   function currentDatePlusYears(years) {return currentDate.getDate() + '.' + (1 + currentDate.getMonth()) + '.' + (currentDate.getFullYear() + years)}
   var currentDateStr = currentDatePlusYears(0)
+  var date2017Str = '1.1.2017'
+  var date2018Str = '1.1.2018'
+  var date2019Str = '1.1.2019'
 
   before(Authentication().login(), resetFixtures)
 
@@ -183,7 +186,7 @@ describe('Perusopetus', function() {
             'Luokka-aste 7. vuosiluokka 7 104/011/2014\n' +
             'Luokka 7C\n' +
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
-            'Alkamispäivä 15.8.2013\n' +
+            'Alkamispäivä 16.8.2013\n' +
             'Suorituskieli suomi\n' +
             'Suoritus valmis Vahvistus : 30.5.2014 Jyväskylä Reijo Reksi , rehtori\n' +
             'Ei siirretä seuraavalle luokalle')
@@ -1005,7 +1008,7 @@ describe('Perusopetus', function() {
           describe('Kun lisätään useita tähän päivään', function() {
             before(editor.edit,
               opinnot.avaaLisaysDialogi,
-              opiskeluoikeus.alkuPaiva().setValue('1.1.2017'),
+              opiskeluoikeus.alkuPaiva().setValue(date2017Str),
               opiskeluoikeus.tila().aseta('valiaikaisestikeskeytynyt'),
               opiskeluoikeus.tallenna,
               opinnot.avaaLisaysDialogi,
@@ -2570,7 +2573,12 @@ describe('Perusopetus', function() {
       prepareForNewOppija('kalle', '230872-7258'),
       addOppija.enterValidDataPerusopetus(),
       addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Päättötodistus'),
-      editor.edit
+      editor.edit,
+      editor.property('tila').removeItem(0),
+      opinnot.avaaLisaysDialogi,
+      opiskeluoikeus.alkuPaiva().setValue(date2017Str),
+      opiskeluoikeus.tila().aseta('lasna'),
+      opiskeluoikeus.tallenna,
     )
     describe('Kun opiskeluoikeus on tilassa VALMIS', function() {
       before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('valmistunut'), opiskeluoikeus.tallenna)
@@ -2607,7 +2615,7 @@ describe('Perusopetus', function() {
           })
 
           describe('Kun syötetään vielä alkamispäivä', function () {
-            before(lisääSuoritus.property('alkamispäivä').setValue(currentDateStr))
+            before(lisääSuoritus.property('alkamispäivä').setValue(date2017Str))
             it('Lisää nappi on enabloitu', function () {
               expect(lisääSuoritus.isEnabled()).to.equal(true)
             })
@@ -2727,7 +2735,7 @@ describe('Perusopetus', function() {
                         describe('Lisäyksen jälkeen', function() {
                           before(
                             lisääSuoritus.property('luokka').setValue('2a'),
-                            lisääSuoritus.property('alkamispäivä').setValue(currentDateStr),
+                            lisääSuoritus.property('alkamispäivä').setValue(date2018Str),
                             lisääSuoritus.lisääSuoritus
                           )
 
@@ -2749,7 +2757,7 @@ describe('Perusopetus', function() {
                               opinnot.oppiaineet.merkitseOppiaineetValmiiksi(),
                               tilaJaVahvistus.merkitseValmiiksi,
                               dialogEditor.propertyBySelector('.jaa-tai-siirretaan').setValue(false),
-                              dialogEditor.property('päivä').setValue(currentDateStr),
+                              dialogEditor.property('päivä').setValue(date2018Str),
                               dialogEditor.property('paikkakunta').setValue('Jyväskylä mlk')
                             )
 
@@ -2766,7 +2774,7 @@ describe('Perusopetus', function() {
                               )
 
                               it('Tila on "valmis" ja vahvistus näytetään', function() {
-                                expect(tilaJaVahvistus.text()).to.equal('Suoritus valmis Vahvistus : ' + currentDateStr + ' Jyväskylä mlk Reijo Reksi , rehtori\nEi siirretä seuraavalle luokalle')
+                                expect(tilaJaVahvistus.text()).to.equal('Suoritus valmis Vahvistus : ' + date2018Str + ' Jyväskylä mlk Reijo Reksi , rehtori\nEi siirretä seuraavalle luokalle')
                               })
 
                               describe('Seuraavan luokka-asteen lisäyksessä', function() {
@@ -2778,7 +2786,7 @@ describe('Perusopetus', function() {
                                 describe('Lisättäessä toinen 2. luokan suoritus', function() {
                                   before(
                                     lisääSuoritus.property('luokka').setValue('2x'),
-                                    lisääSuoritus.property('alkamispäivä').setValue(currentDateStr),
+                                    lisääSuoritus.property('alkamispäivä').setValue(date2019Str),
                                     lisääSuoritus.lisääSuoritus
                                   )
 

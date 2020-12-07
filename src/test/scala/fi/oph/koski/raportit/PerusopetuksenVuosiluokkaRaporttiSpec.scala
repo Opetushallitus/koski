@@ -360,7 +360,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
     viimeisinTila = "lasna",
     suorituksenTila = "valmis",
     voimassaolevatVuosiluokat = "",
-    suorituksenAlkamispaiva = "2014-08-15",
+    suorituksenAlkamispaiva = "2014-08-16",
     suorituksenVahvistuspaiva = "2016-05-30"
   )
 
