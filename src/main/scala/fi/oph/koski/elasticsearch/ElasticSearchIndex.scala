@@ -11,8 +11,8 @@ import org.json4s._
 import org.json4s.jackson.JsonMethods
 
 class ElasticSearchIndex(
+  val name: String,
   private val elastic: ElasticSearch,
-  private val name: String,
   private val legacyName: String,
   private val mapping: Map[String, Any],
   private val mappingVersion: Int,
@@ -61,7 +61,7 @@ class ElasticSearchIndex(
     }
   }
 
-  private def migrateAlias(aliasName: String, toVersion: Int, fromVersion: Option[Int] = None): Unit = {
+  private def migrateAlias(aliasName: String, toVersion: Int, fromVersion: Option[Int] = None): String = {
     val removeOp = fromVersion match {
       case Some(version) =>
         val fromIndex = versionedIndexName(version)
@@ -81,10 +81,14 @@ class ElasticSearchIndex(
     val ops = addOp :: removeOp.toList
     val query = Map("actions" -> ops)
     Http.runTask(http.post(uri"/_aliases", toJValue(query))(Json4sHttp4s.json4sEncoderOf[JValue]) {
-      case (200, _text, _request) => Unit
+      case (200, _text, _request) => aliasName
       case (status, text, request) => throw HttpStatusException(status, text, request)
     })
   }
+
+  def migrateReadAlias(toVersion: Int, fromVersion: Option[Int] = None): String = migrateAlias(readAlias, toVersion, fromVersion)
+
+  def migrateWriteAlias(toVersion: Int, fromVersion: Option[Int] = None): String = migrateAlias(writeAlias, toVersion, fromVersion)
 
   private def indexExists(indexName: String): Boolean = {
     Http.runTask(http.head(uri"/$indexName")(Http.statusCode)) match {
@@ -125,14 +129,15 @@ class ElasticSearchIndex(
     }
   }
 
-  private def createIndex(version: Int): Unit = {
+  def createIndex(version: Int): String = {
     val indexName = versionedIndexName(version)
     logger.info(s"Creating Elasticsearch index $indexName")
     Http.runTask(http.put(uri"/$indexName", JObject("settings" -> toJValue(settings)))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
     Http.runTask(http.put(uri"/$indexName/_mapping/$mappingTypeName", toJValue(mapping))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+    indexName
   }
 
-  private def reindex(fromVersion: Int, toVersion: Int): Unit = {
+  def reindex(fromVersion: Int, toVersion: Int): (String, String) = {
     val fromIndex = versionedIndexName(fromVersion)
     val toIndex = versionedIndexName(toVersion)
     logger.info(s"Reindexing from $fromIndex to $toIndex. This will take a while if the index is large.")
@@ -150,6 +155,7 @@ class ElasticSearchIndex(
       case statusCode: Int => throw new RuntimeException(s"Reindexing failed with $statusCode. Response: ")
     }
     logger.info(s"Done reindexing from $fromIndex to $toIndex")
+    (fromIndex, toIndex)
   }
 
   def refreshIndex(): Unit = {
