@@ -76,7 +76,6 @@ object OpiskeluoikeudenPerustiedotIndexer {
 }
 
 class OpiskeluoikeudenPerustiedotIndexer(
-  config: Config,
   elastic: ElasticSearch,
   opiskeluoikeusQueryService: OpiskeluoikeusQueryService,
   perustiedotSyncRepository: PerustiedotSyncRepository

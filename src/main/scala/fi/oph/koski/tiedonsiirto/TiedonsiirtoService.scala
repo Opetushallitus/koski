@@ -71,7 +71,6 @@ object TiedonsiirtoService {
 }
 
 class TiedonsiirtoService(
-  config: Config,
   elastic: ElasticSearch,
   organisaatioRepository: OrganisaatioRepository,
   henkilöRepository: HenkilöRepository,
