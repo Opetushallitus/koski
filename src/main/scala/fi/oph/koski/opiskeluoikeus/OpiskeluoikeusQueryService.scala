@@ -107,6 +107,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
     sorting match {
       case None => query
       case Some(Ascending("id")) => query.sortBy(_._1.id)
+      case Some(Descending("id")) => query.sortBy(_._1.id.desc)
       case Some(Ascending("oppijaOid")) => query.sortBy { case (oo, henkilö, masterHenkilö) => (masterHenkilö.map(_.oid).getOrElse(henkilö.oid), oo.id) } // slaves and master need to be adjacent for later grouping to work
       case Some(Ascending("nimi")) => query.sortBy(nimi)
       case Some(Descending("nimi")) => query.sortBy(nimiDesc)
@@ -114,7 +115,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
       case Some(Descending("alkamispäivä")) => query.sortBy(tuple => (alkamispäivä(tuple).desc, nimiDesc(tuple)))
       case Some(Ascending("luokka")) => query.sortBy(tuple => (luokka(tuple), nimi(tuple)))
       case Some(Descending("luokka")) => query.sortBy(tuple => (luokka(tuple).desc, nimiDesc(tuple)))
-      case s => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Epäkelpo järjestyskriteeri: " + s))
+      case Some(s) => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Epäkelpo järjestyskriteeri: " + s))
     }
   }
 

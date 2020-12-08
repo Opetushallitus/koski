@@ -10,6 +10,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedot.docId
 import fi.oph.koski.schema.Henkilö._
+import fi.oph.koski.util.SortOrder.Descending
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 
@@ -159,7 +160,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
     logger.info("Start indexing all perustiedot documents")
     val bufferSize = 100
     val observable = opiskeluoikeusQueryService
-      .opiskeluoikeusQuery(Nil, None, None)(KoskiSession.systemUser)
+      .opiskeluoikeusQuery(Nil, Some(Descending("id")), None)(KoskiSession.systemUser)
       .tumblingBuffer(bufferSize)
       .zipWithIndex
       .map {
