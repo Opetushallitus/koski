@@ -46,6 +46,14 @@ class ElasticSearchServlet(implicit val application: KoskiApplication)
     }
   }
 
+  post("/:indexName/reload") {
+    withNamedIndex[String](
+      _.reload(getStringParam("indexName"))
+    )(
+      indexName => renderObject(Map("started full index reload" -> indexName))
+    )
+  }
+
   private def aliasOperation(
     indexName: String, aliasType: String, toVersion: Int, fromVersion: Option[Int] = None
   ): IndexManager => Option[String] = {

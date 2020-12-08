@@ -16,7 +16,8 @@ class ElasticSearchIndex(
   private val legacyName: String,
   private val mapping: Map[String, Any],
   private val mappingVersion: Int,
-  private val settings: Map[String, Any]
+  private val settings: Map[String, Any],
+  private val initialLoader: () => Unit
 ) extends Logging {
 
   private def http: Http = elastic.http
@@ -158,6 +159,8 @@ class ElasticSearchIndex(
     logger.info(s"Done reindexing from $fromIndex to $toIndex")
     (fromIndex, toIndex)
   }
+
+  def reload(): Unit = this.initialLoader()
 
   def refreshIndex(): Unit = {
     Http.runTask(http.post(uri"/$readAlias/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))

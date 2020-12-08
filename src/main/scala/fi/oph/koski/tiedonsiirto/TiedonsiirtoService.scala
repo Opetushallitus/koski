@@ -85,7 +85,8 @@ class TiedonsiirtoService(
     legacyName = "koski-index",
     mappingVersion = 1,
     mapping = TiedonsiirtoService.mapping,
-    settings = TiedonsiirtoService.settings
+    settings = TiedonsiirtoService.settings,
+    initialLoader = () => ???
   )
 
   private val serializationContext = SerializationContext(KoskiSchema.schemaFactory, omitEmptyFields = false)
