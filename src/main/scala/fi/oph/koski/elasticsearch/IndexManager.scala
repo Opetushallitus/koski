@@ -22,6 +22,11 @@ class IndexManager(indexes: List[ElasticSearchIndex]) {
     withNamedIndex[(String, String)](indexName, _.reindex(fromVersion, toVersion))
   }
 
+  def reload(indexName: String): Option[String] = {
+    withNamedIndex[Unit](indexName, _.reload())
+    Some(indexName)
+  }
+
   def migrateReadAlias(indexName: String, toVersion: Int, fromVersion: Option[Int] = None): Option[String] = {
     withNamedIndex[String](indexName, _.migrateReadAlias(toVersion, fromVersion))
   }

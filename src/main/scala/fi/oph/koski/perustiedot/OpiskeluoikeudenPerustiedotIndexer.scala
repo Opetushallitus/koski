@@ -88,7 +88,8 @@ class OpiskeluoikeudenPerustiedotIndexer(
     legacyName = "perustiedot",
     mappingVersion = 2,
     mapping = OpiskeluoikeudenPerustiedotIndexer.mapping,
-    settings = OpiskeluoikeudenPerustiedotIndexer.settings
+    settings = OpiskeluoikeudenPerustiedotIndexer.settings,
+    initialLoader = this.indexAllDocuments
   )
 
   def init(): Unit = {
