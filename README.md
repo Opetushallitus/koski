@@ -224,6 +224,52 @@ Tietokannan rakenne luodaan ja päivitetään Flywayn migraatioskripteillä, jot
 
 Koski-sovellus ajaa migraatiot automaattisesti käynnistyessään.
 
+
+### Elasticsearch-hakuindeksien hallinta
+
+Elasticsearch-hakuindeksejä voidaan hallita Kosken API:n kautta. API sallii
+kutsut ainoastaan localhostista.
+
+API tarjoaa seuraavat toiminnot:
+
+* Indeksin luonti versioidulla nimellä koodissa määritellyn mappingin ja asetusten pohjalta
+* Luku- ja kirjoitusaliasten luonti tai siirto indeksiversiosta toiseen
+* Reindeksointi haluttujen versioiden välillä
+* Indeksin koko sisällön uudelleenlataus lähdedatasta (reload)
+
+
+#### Curl-esimerkkejä
+
+Esimerkki kuvaa tilannetta jossa indeksin mappingia tai asetuksia halutaan päivittää katkottomasti.
+
+Kirjautuminen ja keksin tallennus:
+
+    curl 'localhost:7021/koski/user/login' -H 'Content-Type: application/json' --data-raw '{"username":"kalle","password":"kalle"}' --cookier-jar koski-login-cookies
+
+Uuden perustiedot-indeksin luonti versiota 2 vastaavalla nimellä:
+
+    curl -X POST 'localhost:7021/koski/api/elasticsearch/perustiedot/create/2' --cookie koski-login-cookies
+
+Kirjoitusaliaksen siirto versiosta 1 versioon 2:
+
+    curl -X POST 'localhost:7021/koski/api/elasticsearch/perustiedot/migrateAlias/write/1/2' --cookie koski-login-cookies
+
+Reindeksointi versiosta 1 versioon 2:
+
+    curl -X POST 'localhost:7021/koski/api/elasticsearch/perustiedot/reindex/1/2' --cookie koski-login-cookies
+
+Huomaa, että reindeksointi jää käyntiin taustalle. Tietoja sen edistymisestä
+kirjoitetaan Kosken lokiin INFO-tasolla. Prosessia voi seurata myös Elasticsearchin
+task-apin avulla.
+
+Kun reindeksointi on valmis, lukualiaksen siirto versiosta 1 versioon 2:
+
+    curl -X POST 'localhost:7021/koski/api/elasticsearch/perustiedot/migrateAlias/read/1/2' --cookie koski-login-cookies
+
+Kosken indeksinhallinta-apin lisäksi ainakin Elasticsearchin `/_cat/indices?v`
+ja `/_cat/aliases?v` apit voivat olla avuksi.
+
+
 ### Testit
 
 Buildaa ja aja kaikki testit
