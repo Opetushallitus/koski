@@ -69,10 +69,13 @@ export const AikajaksoRaporttiAikarajauksella = ({
     <section>
       <LyhytKuvaus>{shortDescription}</LyhytKuvaus>
 
-      <AikajaksoValinta alkuAtom={alkuAtom} loppuAtom={loppuAtom} />
+      <AikajaksoValinta
+        alkuAtom={alkuAtom}
+        loppuAtom={loppuAtom}
+      />
 
       <Listavalinta
-        label="Valitse osasuoritusten aikarajaus"
+        seamless
         atom={osasuoritustenAikarajausAtom}
         options={[
           { key: false, value: <KaikkiSuorituksetLabel osasuoritusType={osasuoritusType} /> },

@@ -144,8 +144,7 @@ const kaikkiRaportitKategorioittain = [
         id: 'paallekkaisetopiskeluoikeudet',
         name: 'raportti-tab-paallekkaisetopiskeluoikeudet',
         component: PaallekkaisetOpiskeluoikeudet,
-        visibleForAllOrgs: true,
-        guard: () => document.location.search.includes('tilastoraportit=true')
+        visibleForAllOrgs: true
       }
     ]
   }
@@ -396,8 +395,8 @@ function PaallekkaisetOpiskeluoikeudet({ stateP }) {
     <AikajaksoRaportti
       stateP={stateP}
       apiEndpoint={'/paallekkaisetopiskeluoikeudet'}
-      title={<Text name='paallekkaiset-opiskeluoikeudet'/>}
-      description={<Text name='paallekkaiset-opiskeluoikeudet'/>}
+      shortDescription={<Text name='paallekkaiset-opiskeluoikeudet-short-description'/>}
+      example={<Text name='paallekkaiset-opiskeluoikeudet-example'/>}
     />
   )
 }
@@ -480,7 +479,6 @@ function PerusopetuksenVuosiluokka({ stateP }) {
   const titleText = <Text name='Nuorten perusopetuksen opiskeluoikeus- ja suoritustietojen tarkistusraportti' />
   const shortDescriptionText = <Text name='PerusopetuksenVuosiluokka-short-description' />
   const dateInputHelpText = <Text name='PerusopetuksenVuosiluokka-date-input-help' />
-  const helpText = <Paragraphs name='PerusopetuksenVuosiluokka-help' />
   const exampleText = <Paragraphs name='PerusopetuksenVuosiluokka-example' />
 
   return (
@@ -490,7 +488,6 @@ function PerusopetuksenVuosiluokka({ stateP }) {
       title={titleText}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
-      help={helpText}
       example={exampleText}
     />
   )

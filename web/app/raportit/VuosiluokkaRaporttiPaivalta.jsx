@@ -10,7 +10,7 @@ import Dropdown from '../components/Dropdown'
 import { LyhytKuvaus, PaivaValinta, RaportinLataus, Vinkit } from './raporttiComponents'
 import { selectFromState, today } from './raporttiUtils'
 
-export const VuosiluokkaRaporttiPaivalta = ({stateP, apiEndpoint, shortDescription, dateInputHelp, help, example}) => {
+export const VuosiluokkaRaporttiPaivalta = ({stateP, apiEndpoint, shortDescription, dateInputHelp, example}) => {
   const paivaAtom = Atom(today())
   const vuosiluokkaAtom = Atom('1')
   const submitBus = Bacon.Bus()
@@ -56,10 +56,7 @@ export const VuosiluokkaRaporttiPaivalta = ({stateP, apiEndpoint, shortDescripti
         dbUpdatedP={dbUpdatedP}
       />
 
-      <Vinkit>
-        <div>{help}</div>
-        <div>{example}</div>
-      </Vinkit>
+      <Vinkit>{example}</Vinkit>
     </section>
   )
 }

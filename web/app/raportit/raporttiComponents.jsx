@@ -48,9 +48,10 @@ export const AikajaksoValinta = ({ alkuAtom, loppuAtom, ohje }) => (
     </div>
 )
 
-export const Listavalinta = ({ label, options, atom }) => (
-    <div className="parametri">
+export const Listavalinta = ({ label, help, options, atom, seamless }) => (
+    <div className={`parametri ${seamless ? 'parametri-seamless' : ''}`}>
         {label && <label><Text name={label} /></label>}
+        {help && (<div className="etuohje">{<Text name={help} />}</div>)}
         <RadioButtons
             options={options}
             selected={atom}
@@ -75,7 +76,7 @@ export const RaportinLataus = ({
     submitEnabledP,
     submitBus
 }) => (
-    <div>
+    <div className="raportin-lataus">
         <div className="password">
             <Text name='Excel-tiedosto on suojattu salasanalla'/> {password}<br />
             <Text name="Ota salasana itsellesi talteen" />

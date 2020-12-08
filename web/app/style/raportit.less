@@ -22,10 +22,21 @@
   }
 
   .parametri {
-    margin-bottom: 20px;
+    margin-bottom: 24px;
+    border-left: 2px solid #e4e4e4;
+    padding-left: 16px;
+
+    &.parametri-seamless {
+      margin-top: -24px;
+      padding-top: 12px;
+    }
 
     & > label {
       display: block;
+      font-size: 90%;
+      color: #666666;
+      line-height: 1.4;
+      max-width: 600px;
       margin-bottom: 12px;
     }
 
@@ -86,6 +97,11 @@
         margin-right: 5px;
       }
     }
+  }
+
+  .raportin-lataus {
+    border-left: 2px solid #e4e4e4;
+    padding-left: 16px;
   }
 
   & > .error {

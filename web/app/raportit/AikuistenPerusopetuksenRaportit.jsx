@@ -49,7 +49,7 @@ export const AikuistenPerusopetuksenRaportit = ({stateP, apiEndpoint, shortDescr
       <LyhytKuvaus>{shortDescription}</LyhytKuvaus>
 
       <Listavalinta
-        label="Valitse suorituksen tyyppi"
+        label="suorituksentyyppivalinta-help"
         atom={raportinTyyppiAtom}
         options={[
           { key: reportTypes.alkuvaihe, value: <Text name="Alkuvaihe" /> },
@@ -64,7 +64,7 @@ export const AikuistenPerusopetuksenRaportit = ({stateP, apiEndpoint, shortDescr
       />
 
       <Listavalinta
-        label="Valitse osasuorituksen aikarajaus"
+        label="aikuistenperusopetuksen-raportti-osasuoritusten-aikavaraus-help"
         atom={osasuoritustenAikarajausAtom}
         options={[
           { key: false, value: <Text name="Raportille valitaan kaikki kurssisuoritukset riippumatta niiden suoritusajankohdasta" /> },

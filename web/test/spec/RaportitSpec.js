@@ -20,7 +20,7 @@ const kaikkiOrganisaatiot = [
 
 const esiopetuksenRaportit = [
   'Opiskeluoikeus- ja suoritustiedot',
-  'VOS-tunnusluvut: oppijamäärät'
+  'VOS-tunnusluvut: oppilasmäärät'
 ]
 
 const lukionRaportit = [
@@ -55,9 +55,9 @@ describe('Raporttien luominen', function() {
           'Esiopetus',
           'Perusopetus',
           'Aikuisten perusopetus',
-          'Ammatillinen',
-          'Lukio',
-          'Muut'
+          'Ammatillinen koulutus',
+          'Lukiokoulutus',
+          'Yleiset'
         ])
         expect(page.valittuRaporttikategoria()).to.equal('Esiopetus')
       })
@@ -75,9 +75,9 @@ describe('Raporttien luominen', function() {
           'Esiopetus',
           'Perusopetus',
           'Aikuisten perusopetus',
-          'Ammatillinen',
-          'Lukio',
-          'Muut'
+          'Ammatillinen koulutus',
+          'Lukiokoulutus',
+          'Yleiset'
         ])
         expect(page.valittuRaporttikategoria()).to.equal('Esiopetus')
       })
@@ -93,7 +93,7 @@ describe('Raporttien luominen', function() {
       it('Näyttää oikeat välilehdet', function() {
         expect(page.raporttikategoriat()).to.deep.equal([
           'Esiopetus',
-          'Muut'
+          'Yleiset'
         ])
       })
     })
