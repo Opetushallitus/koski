@@ -41,8 +41,8 @@ class ElasticSearchIndex(
     } else {
       val previousIndexName = versionedIndexName(mappingVersion - 1)
       if (indexExists(previousIndexName)) {
-        logger.info(s"Index $previousIndexName is at previous version and needs reindexing")
-        reindexFromPreviousVersion()
+        logger.warn(s"Index $previousIndexName is at previous version and needs reindexing!")
+        ensureAliases(mappingVersion - 1)
       } else {
         logger.info(s"No previous $name index found - creating an index from scratch")
         createIndex(mappingVersion)
@@ -130,14 +130,6 @@ class ElasticSearchIndex(
     logger.info(s"Creating Elasticsearch index $indexName")
     Http.runTask(http.put(uri"/$indexName", JObject("settings" -> toJValue(settings)))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
     Http.runTask(http.put(uri"/$indexName/_mapping/$mappingTypeName", toJValue(mapping))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
-  }
-
-  private def reindexFromPreviousVersion(): Unit = {
-    ensureAliases(mappingVersion - 1)
-    createIndex(mappingVersion)
-    migrateAlias(writeAlias, mappingVersion, Some(mappingVersion - 1))
-    reindex(mappingVersion - 1, mappingVersion)
-    migrateAlias(readAlias, mappingVersion, Some(mappingVersion - 1))
   }
 
   private def reindex(fromVersion: Int, toVersion: Int): Unit = {
