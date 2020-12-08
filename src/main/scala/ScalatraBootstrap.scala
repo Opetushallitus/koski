@@ -3,6 +3,7 @@ import fi.oph.koski.config.{AppConfig, Environment, KoskiApplication}
 import fi.oph.koski.db._
 import fi.oph.koski.documentation.{DocumentationApiServlet, DocumentationServlet, KoodistoServlet}
 import fi.oph.koski.editor.{EditorKooditServlet, EditorServlet}
+import fi.oph.koski.elasticsearch.ElasticSearchServlet
 import fi.oph.koski.etk.ElaketurvakeskusServlet
 import fi.oph.koski.fixture.FixtureServlet
 import fi.oph.koski.healthcheck.{HealthCheckApiServlet, HealthCheckHtmlServlet}
@@ -34,6 +35,7 @@ import fi.oph.koski.tutkinto.TutkinnonPerusteetServlet
 import fi.oph.koski.util.Futures
 import fi.oph.koski.valvira.ValviraServlet
 import fi.oph.koski.ytr.{YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
+
 import javax.servlet.ServletContext
 import org.scalatra._
 
@@ -59,6 +61,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/api/editor", new EditorServlet)
     mount("/api/editor/koodit", new EditorKooditServlet)
     mount("/api/elaketurvakeskus", new ElaketurvakeskusServlet)
+    mount("/api/elasticsearch", new ElasticSearchServlet)
     mount("/api/healthcheck", new HealthCheckApiServlet)
     mount("/api/henkilo", new HenkilötiedotServlet)
     mount("/api/koodisto", new KoodistoServlet)
