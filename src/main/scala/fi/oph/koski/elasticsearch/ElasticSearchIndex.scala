@@ -147,8 +147,9 @@ class ElasticSearchIndex(
       ),
       "dest" -> Map(
         "index" -> toIndex,
-        "version_type" -> "external"
-      )
+        "op_type" -> "create"
+      ),
+      "conflicts" -> "proceed"
     )
     Http.runTask(http.post(uri"/_reindex?wait_for_completion=true&refresh", toJValue(query))(Json4sHttp4s.json4sEncoderOf)(Http.statusCode)) match {
       case 200 => Unit
