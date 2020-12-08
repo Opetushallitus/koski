@@ -94,10 +94,6 @@ class OpiskeluoikeudenPerustiedotIndexer(
 
   def init(): Unit = {
     index.init
-    if (config.getBoolean("elasticsearch.rewritePerustiedotAtStartup")) {
-      logger.warn("NOTE: elasticsearch.rewritePerustiedotAtStartup config option is set!")
-      this.indexAllDocuments()
-    }
   }
 
   def statistics(): OpiskeluoikeudenPerustiedotStatistics = OpiskeluoikeudenPerustiedotStatistics(index)
