@@ -3,18 +3,17 @@ set -Euxo pipefail
 
 wait-for-url() {
     echo "Testing $1";
-    timeout --preserve-status --signal TERM 600 bash -c \
+    timeout --preserve-status --signal TERM 1200 bash -c \
     'while [[ "$(curl -s -o /dev/null -L -w ''%{http_code}'' ${0})" != "200" ]];\
-    do echo "Waiting for ${0}" && sleep 5;\
+    do echo "Waiting for ${0}" && sleep 30;\
     done' ${1};
 }
 
 sudo systemctl stop koski && \
+rm -rf /home/ubuntu/koski && \
+cd /home/ubuntu && \
+git clone https://github.com/Opetushallitus/koski.git && \
 cd /home/ubuntu/koski && \
-git fetch && \
-git reset --hard HEAD && \
-git clean -f -d && \
-git pull && \
 make build && \
 docker-compose down && \
 docker volume ls -q | xargs docker volume rm && \
