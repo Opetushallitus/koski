@@ -14,8 +14,18 @@ import fi.oph.koski.log.Logging
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 
-class Scheduler(val db: DB, name: String, scheduling: Schedule, initialContext: Option[JValue], task: Option[JValue] => Option[JValue], runOnSingleNode: Boolean = true, intervalMillis: Int = 10000)
-  extends BackgroundExecutionContext with KoskiDatabaseMethods with Logging {
+class Scheduler(
+  val db: DB,
+  name: String,
+  scheduling: Schedule,
+  initialContext: Option[JValue],
+  task: Option[JValue] => Option[JValue],
+  runOnSingleNode: Boolean = true,
+  intervalMillis: Int = 10000
+) extends BackgroundExecutionContext
+  with KoskiDatabaseMethods
+  with Logging {
+
   private val taskExecutor = Executors.newSingleThreadScheduledExecutor(NamedThreadFactory(name))
   private val context: Option[JValue] = getScheduler.flatMap(_.context).orElse(initialContext)
   private val firingStrategy = if (runOnSingleNode) new FireOnSingleNode else new FireOnAllNodes
@@ -75,8 +85,15 @@ class Scheduler(val db: DB, name: String, scheduling: Schedule, initialContext: 
   }
 
   class FireOnSingleNode extends FiringStrategy {
-    override def shouldFire: Boolean =
-      runDbSync(Tables.Scheduler.filter(s => s.name === name && s.nextFireTime < now && s.status === 0).map(s => (s.nextFireTime, s.status)).update(scheduling.nextFireTime(), 1)) > 0
+    override def shouldFire: Boolean = {
+      val rowsUpdated = runDbSync(
+        Tables.Scheduler
+          .filter(s => s.name === name && s.nextFireTime < now && s.status === 0)
+          .map(s => (s.nextFireTime, s.status))
+          .update(scheduling.nextFireTime(), 1)
+      )
+      rowsUpdated > 0
+    }
 
     override def endRun: Unit =
       runDbSync(Tables.Scheduler.filter(_.name === name).map(_.status).update(0))
