@@ -14,7 +14,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
 
   def datasheet(oids: Seq[String], aikaisintaan: LocalDate, viimeistaan: LocalDate, db: RaportointiDatabase) =
     DataSheet(
-      title = "Päällekäiset opiskeluoikeudet",
+      title = "Päällekkäiset opiskeluoikeudet",
       rows = db.runDbSync(query(oids, Date.valueOf(aikaisintaan), Date.valueOf(viimeistaan)).as[PaallekkaisetOpiskeluoikeudetRow], timeout = 5.minutes),
       columnSettings
     )
@@ -198,8 +198,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       case (_, ("internationalschoolmypvuosiluokka", "10")) => "International school lukio"
       case ("International school lukio", ("internationalschoolmypvuosiluokka", _)) => "International school lukio"
       case (_, ("internationalschoolmypvuosiluokka", _)) => "International school perusopetus"
-      case (_, ("lukionoppiaineenoppimaara", _)) => "Lukio aineopiskelija"
-      case (_, ("lukionaineopinnot", _)) => "Lukio aineopiskelija"
+      case (_, ("lukionoppiaineenoppimaara", _)) => "Lukion aineopiskelija"
+      case (_, ("lukionaineopinnot", _)) => "Lukion aineopiskelija"
       case (_, ("lukionoppimaara", _)) => "Lukion oppimäärä"
       case (_, ("luva", _)) => "Lukioon valmistavan koulutus (LUVA) suoritus"
       case (_, ("perusopetukseenvalmistavaopetus", _)) => "Perusopetukseen valmistava suoritus"
@@ -221,29 +221,29 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
   val columnSettings = Columns.flattenGroupingColumns(Seq(
     "Koulutuksen järjestäjän oma opiskeluoikeus" -> GroupColumnsWithTitle(List(
       "oppijaOid" -> Column("Oppijanumero"),
-      "opiskeluoikeusOid" -> Column("Oman opiskeluoikeuden oid"),
+      "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),
       "oppilaitosNimi" -> Column("Oppilaitoksen nimi"),
-      "koulutusmuoto" -> Column("Oman opiskeluoikeuden koulutusmuoto"),
-      "alkamispaiva" -> Column("Oman opiskeluoikeuden alkamispäivä"),
-      "tilatParametrienSisalla" -> Column("Oman opiskeluoikeuden tilat parametrien sisällä"),
+      "koulutusmuoto" -> Column("Koulutusmuoto"),
+      "alkamispaiva" -> Column("Opiskeluoikeuden alkamispäivä"),
       "paattymispaiva" -> Column("Opiskeluoikeuden päättymispäivä"),
-      "viimeisinTila" -> Column("Oman opiskeluoikeuden viimeisin tila"),
-      "rahoitusmuodot" -> Column("Oman opiskeluoikeuden rahoitusmuodot", comment = Some("Sarakkeessa näytetään kaikki opiskeluoikeuden aikana käytetyt rahoitusmuodot, jos opiskeluoikeudelle on merkitty rahoitusmuotoja. Rahoitusmuotoja käytetään aikuisten perusopetuksen, lukiokoulutuksen ja ammatillisen koulutuksen opiskeluoikeuksissa. Rahoitusmuotojen koodiarvojen selitteet koodistossa: https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest")),
-      "rahoitusmuodotParametrienSisalla" -> Column("Oman opiskeluoikeuden rahoitusmuodot valitulla ajanjaksolla", comment = Some("Sarakkeessa näytetään opiskeluoikeudella raporttiin valitulla aikajaksolla käytetyt rahoitusmuodot, jos opiskeluoikeudelle on merkitty rahoitusmuotoja. Rahoitusmuotoja käytetään aikuisten perusopetuksen, lukiokoulutuksen ja ammatillisen koulutuksen opiskeluoikeuksissa. Rahoitusmuotojen koodiarvojen selitteet koodistossa: https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest")),
+      "tilatParametrienSisalla" -> Column("Opiskeluoikeuden tilat valitun aikajakson sisällä", comment = Some("Kaikki opiskeluoikeuden tilat tulostusparametreissa määritellyn aikajakson sisällä. Tilat erotettu toisistaan pilkulla ja järjestetty krononologisesti. Esimerkiksi, jos opiskeluoikeudella on tulostusparametreissa määritellyn aikajakson aikana ollut kaksi läsnäolojaksoa, joiden välissä on väliaikainen keskeytys, kentässä on arvo \"lasna,valiaikaisestikeskeytynyt,lasna\".")),
+      "viimeisinTila" -> Column("Opiskeluoikeuden viimeisin tila", comment = Some("Opiskeluoikeuden tila raportin tulostuspäivänä, eli opiskeluoikeuden tila \"tänään\".")),
+      "rahoitusmuodot" -> Column("Opiskeluoikeuden rahoitusmuodot", comment = Some("Jokaiselle opiskeluoikeuden tilajaksolle merkityt rahoitusmuodot riippumatta siitä, osuvatko tilat tulostusparametreissa määritellyn aikajakson sisään. Rahoitusmuodot erotettu toisistaan pilkulla ja järjestetty kronologisesti. Sellainen tilajakso, josta ei löydy rahoitusmuotoa ilmaistaan merkillä \"-\". Jos siis opiskeluoikeudella on valtionosuusrahoitteinen \"Läsnä\"-tila sekä väliaikainen keskeytys ilman rahoitusmuotoa, kentässä on arvo \"1,-\". HUOM! Kaikissa opiskeluoikeuksissa (esim. perusopetus, esiopetus) tieto rahoitusmuodosta ei ole relevantti.")),
+      "rahoitusmuodotParametrienSisalla" -> Column("Opiskeluoikeuden rahoitusmuodot valitulla ajanjaksolla", comment = Some("Sarakkeessa näytetään opiskeluoikeudella raporttiin valitulla aikajaksolla käytetyt rahoitusmuodot, jos opiskeluoikeudelle on merkitty rahoitusmuotoja. Rahoitusmuotoja käytetään aikuisten perusopetuksen, lukiokoulutuksen ja ammatillisen koulutuksen opiskeluoikeuksissa. Rahoitusmuotojen koodiarvojen selitteet koodistossa: https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest")),
     )),
     "Päällekkäinen opiskeluoikeus" -> GroupColumnsWithTitle(List(
       "paallekkainenOpiskeluoikeusOid" -> Column("Päällekkäisen opiskeluoikeuden oid"),
       "paallekkainenOppilaitosNimi" -> Column("Päällekkäisen opiskeluoikeuden oppilaitoksen nimi"),
       "paallekkainenKoulutusmuoto" -> Column("Päällekkäisen opiskeluoikeuden koulutusmuoto"),
-      "paallekkainenSuoritusTyyppi" -> Column("Päällekkäisen opiskeluoikeuden suorituksen tyyppi"),
-      "paallekkainenTilatParametrienSisalla" -> Column("Päällekkäisen opiskeluoikeuden tilat parametrien sisällä"),
-      "paallekkainenViimeisinTila" -> Column("Päällekkäisen opiskeluoikeuden viimeisin tila"),
+      "paallekkainenSuoritusTyyppi" -> Column("Päällekkäisen opiskeluoikeuden suorituksen tyyppi", comment = Some("Tieto siitä millaista tutkintoa/millaisia opintoja oppija suorittaa päällekkäisen opiskeluoikeuden sisällä.")),
+      "paallekkainenViimeisinTila" -> Column("Päällekkäisen opiskeluoikeuden viimeisin tila", comment = Some("Päällekkäisen opiskeluoikeuden tila raportin tulostuspäivänä, eli päällekkäisen opiskeluoikeuden tila \"tänään\".")),
       "paallekkainenAlkamispaiva" -> Column("Päällekkäisen opiskeluoikeuden alkamispäivä"),
       "paallekkainenPaattymispaiva" -> Column("Päällekkäisen opiskeluoikeuden päättymispäivä"),
-      "paallekkainenAlkanutEka" -> Column("Päällekkäinen opiskeluoikeus alkanut ensin", comment = Some("Sarakkeella arvo \"kyllä\" jos päällekkäisen opiskeluoikeuden alkamispäivämäärä on ennen organisaation oman opiskeluoikeuden alkamispävää.")),
-      "paallekkainenRahoitusmuodot" -> Column("Päällekkäisen opiskeluoikeuden rahoitusmuodot", comment = Some("Sarakkeessa näytetään kaikki opiskeluoikeuden aikana käytetyt rahoitusmuodot, jos opiskeluoikeudelle on merkitty rahoitusmuotoja. Rahoitusmuotoja käytetään aikuisten perusopetuksen, lukiokoulutuksen ja ammatillisen koulutuksen opiskeluoikeuksissa. Rahoitusmuotojen koodiarvojen selitteet koodistossa: https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest")),
-      "paallekkainenRahoitusmuodotParametrienSisalla" -> Column("Päällekkäisen opiskeluoikeuden rahoitusmuodot valitulla ajanjaksolla", comment = Some("Sarakkeessa näytetään opiskeluoikeudella raporttiin valitulla aikajaksolla käytetyt rahoitusmuodot, jos opiskeluoikeudelle on merkitty rahoitusmuotoja. Rahoitusmuotoja käytetään aikuisten perusopetuksen, lukiokoulutuksen ja ammatillisen koulutuksen opiskeluoikeuksissa. Rahoitusmuotojen koodiarvojen selitteet koodistossa: https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest")),
-      "paallekkainenVoimassaParametrienSisalla" -> Column("Päällekkäinen opiskeluoikeus aktiviinen valitulla ajanjaksolla", comment = Some("Raportille tulostuvat kaikki oman opiskeluoikeuden kanssa päällekkäin sattuvat opiskeluoikeudet. Päällekkäisyys voi olla raportille valitun ajanjakson ulkopuolella. Sarakkeessa arvo \"kyllä\" jos päällekkäinen opiskeluoikeus on ollut aktiivinen raportille valitulla ajanjaksolla."))
+      "paallekkainenTilatParametrienSisalla" -> Column("Päällekkäisen opiskeluoikeuden tilat valitun aikajakson sisällä", comment = Some("Kaikki päällekkäisen opiskeluoikeuden tilat tulostusparametreissa määritellyn aikajakson sisällä. Tilat erotettu toisistaan pilkulla ja järjestetty krononologisesti. Esimerkiksi, jos päällekkäisellä opiskeluoikeudella on tulostusparametreissa määritellyn aikajakson aikana ollut kaksi läsnäolojaksoa, joiden välissä on väliaikainen keskeytys, kentässä on arvo \"lasna,valiaikaisestikeskeytynyt,lasna\".")),
+      "paallekkainenAlkanutEka" -> Column("Päällekkäinen opiskeluoikeus alkanut ensin", comment = Some("Onko päällekkäinen opiskeluoikeus alkanut ennen vertailtavana olevaa, koulutuksen järjestäjän omaa opiskeluoikeutta?")),
+      "paallekkainenRahoitusmuodot" -> Column("Päällekkäisen opiskeluoikeuden rahoitusmuodot", comment = Some("Jokaiselle päällekkäisen opiskeluoikeuden tilajaksolle merkityt rahoitusmuodot riippumatta siitä, osuvatko tilat tulostusparametreissa määritellyn aikajakson sisään. Rahoitusmuodot erotettu toisistaan pilkulla ja järjestetty kronologisesti. Sellainen tilajakso, josta ei löydy rahoitusmuotoa ilmaistaan merkillä \"-\". Jos siis päällekkäisellä opiskeluoikeudella on valtionosuusrahoitteinen \"Läsnä\"-tila sekä väliaikainen keskeytys ilman rahoitusmuotoa, kentässä on arvo \"1,-\". HUOM! Kaikissa opiskeluoikeuksissa (esim. perusopetus, esiopetus) tieto rahoitusmuodosta ei ole relevantti.")),
+      "paallekkainenRahoitusmuodotParametrienSisalla" -> Column("Päällekkäisen opiskeluoikeuden rahoitusmuodot valitulla aikajaksolla", comment = Some("Rahoitusmuodot niistä päällekkäisen opiskeluoikeuden tilajaksoista, jotka osuvat tulostusparametreissa määritellyn aikajakson sisään. Rahoitusmuodot erotettu toisistaan pilkulla ja järjestetty kronologisesti (eli samassa järjestyksessä kuin rahoitusmuotoa vastaavat tilat sarakkeessa \"Opiskeluoikeuden tilat valitun aikajakson sisällä\"). Sellainen tilajakso, josta ei löydy rahoitusmuotoa ilmaistaan merkillä \"-\". Jos siis päällekkäisellä opiskeluoikeudella on valitulla aikajaksolla valtionosuusrahoitteinen \"Läsnä\"-tila sekä väliaikainen keskeytys ilman rahoitusmuotoa, kentässä on arvo \"1,-\". HUOM! Kaikissa opiskeluoikeuksissa (esim. perusopetus, esiopetus) tieto rahoitusmuodosta ei ole relevantti.")),
+      "paallekkainenVoimassaParametrienSisalla" -> Column("Päällekkäinen opiskeluoikeus aktiviinen valitulla aikajaksolla", comment = Some("Tieto siitä, onko päällekkäinen opiskeluoikeus ollut vähintään päivän voimassa tulostusparametreisssa valitun aikajakson sisällä. Myös opiskeluoikeuden päättymispäivä lasketaan opiskeluoikeuden päättävästä tilasta huolimatta."))
     ))
   ))
 }
@@ -254,8 +254,8 @@ case class PaallekkaisetOpiskeluoikeudetRow(
   oppilaitosNimi: String,
   koulutusmuoto: String,
   alkamispaiva: LocalDate,
-  tilatParametrienSisalla: String,
   paattymispaiva: Option[LocalDate],
+  tilatParametrienSisalla: String,
   viimeisinTila: String,
   rahoitusmuodot: Option[String],
   rahoitusmuodotParametrienSisalla: Option[String],
@@ -263,10 +263,10 @@ case class PaallekkaisetOpiskeluoikeudetRow(
   paallekkainenOppilaitosNimi: String,
   paallekkainenKoulutusmuoto: String,
   paallekkainenSuoritusTyyppi: String,
-  paallekkainenTilatParametrienSisalla: Option[String],
   paallekkainenViimeisinTila: String,
   paallekkainenAlkamispaiva: LocalDate,
   paallekkainenPaattymispaiva: Option[LocalDate],
+  paallekkainenTilatParametrienSisalla: Option[String],
   paallekkainenAlkanutEka: String,
   paallekkainenRahoitusmuodot: Option[String],
   paallekkainenRahoitusmuodotParametrienSisalla: Option[String],
