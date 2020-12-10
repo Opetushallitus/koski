@@ -31,7 +31,14 @@ class Scheduler(
   private val firingStrategy = if (runOnSingleNode) new FireOnSingleNode else new FireOnAllNodes
 
   logger.info(s"Starting ${if (runOnSingleNode) "single" else "multi" } node scheduler $name with $scheduling")
-  runDbSync(Tables.Scheduler.insertOrUpdate(SchedulerRow(name, scheduling.nextFireTime(), context, ScheduledTaskStatus.scheduled)))
+  runDbSync(Tables.Scheduler.insertOrUpdate(
+    SchedulerRow(
+      name,
+      scheduling.nextFireTime(),
+      context,
+      ScheduledTaskStatus.scheduled
+    )
+  ))
   taskExecutor.scheduleAtFixedRate(() => fireIfTime(), 0, intervalMillis, MILLISECONDS)
 
   def shutdown: Unit = taskExecutor.shutdown()
