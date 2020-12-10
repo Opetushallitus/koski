@@ -77,7 +77,8 @@ object Käyttöoikeus {
       LUKIOKOULUTUS,
       LUVA,
       YLIOPPILASTUTKINTO,
-      INTERNATIONALSCHOOL
+      INTERNATIONALSCHOOL,
+      VAPAANSIVISTYSTYÖNKOULUTUS
     ).map(Palvelurooli(_))
     case Palvelurooli("KOSKI", READ_UPDATE_ESIOPETUS) => List(Palvelurooli(ESIOPETUS))
     case Palvelurooli("KOSKI", LUKU_ESIOPETUS) => List(Palvelurooli(ESIOPETUS))
