@@ -1481,7 +1481,7 @@ class OppijaValidationLukio2019Spec extends FreeSpec with PutOpiskeluoikeusTestM
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus, oppimääränSuoritus))) {
         verifyResponseStatus(400,
           KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaSuorituksia(
-            """Opiskeluoikeudella on lukionoppimaara-tyyppinen suoritus ja useampi kuin yksi lukion päätason suoritus"""
+            """Opiskeluoikeudelle yritetään lukion oppimäärän lisäksi tallentaa useampi päätason suoritus. Lukion oppimäärän opiskelijalla voi olla vain yksi päätason suoritus."""
           )
         )
       }
@@ -1492,7 +1492,7 @@ class OppijaValidationLukio2019Spec extends FreeSpec with PutOpiskeluoikeusTestM
         oppiaineidenOppimäärienSuoritus))) {
         verifyResponseStatus(400,
           KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaSuorituksia(
-            """Opiskeluoikeudella on lukionoppimaara-tyyppinen suoritus ja useampi kuin yksi lukion päätason suoritus"""
+            """Opiskeluoikeudelle yritetään lukion oppimäärän lisäksi tallentaa useampi päätason suoritus. Lukion oppimäärän opiskelijalla voi olla vain yksi päätason suoritus."""
           )
         )
       }
