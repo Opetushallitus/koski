@@ -267,8 +267,14 @@ case class HenkilöRowWithMasterInfo(henkilöRow: HenkilöRow, masterHenkilöRow
 
 case class OpiskeluoikeusHistoryRow(opiskeluoikeusId: Int, versionumero: Int, aikaleima: Timestamp, kayttajaOid: String, muutos: JValue)
 
+object ScheduledTaskStatus {
+  type ScheduledTaskStatus = Int
+  val scheduled: ScheduledTaskStatus = 0
+  val running: ScheduledTaskStatus = 1
+}
+
 case class SchedulerRow(name: String, nextFireTime: Timestamp, context: Option[JValue], status: Int) {
-  def running: Boolean = status == 1
+  def running: Boolean = status == ScheduledTaskStatus.running
 }
 
 case class PerustiedotSyncRow(id: Int = 0, opiskeluoikeusId: Int, data: JValue, upsert: Boolean, aikaleima: Timestamp = new Timestamp(System.currentTimeMillis))

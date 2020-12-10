@@ -31,7 +31,7 @@ class Scheduler(
   private val firingStrategy = if (runOnSingleNode) new FireOnSingleNode else new FireOnAllNodes
 
   logger.info(s"Starting ${if (runOnSingleNode) "single" else "multi" } node scheduler $name with $scheduling")
-  runDbSync(Tables.Scheduler.insertOrUpdate(SchedulerRow(name, scheduling.nextFireTime(), context, 0)))
+  runDbSync(Tables.Scheduler.insertOrUpdate(SchedulerRow(name, scheduling.nextFireTime(), context, ScheduledTaskStatus.scheduled)))
   taskExecutor.scheduleAtFixedRate(() => fireIfTime(), 0, intervalMillis, MILLISECONDS)
 
   def shutdown: Unit = taskExecutor.shutdown()
@@ -88,15 +88,15 @@ class Scheduler(
     override def shouldFire: Boolean = {
       val rowsUpdated = runDbSync(
         Tables.Scheduler
-          .filter(s => s.name === name && s.nextFireTime < now && s.status === 0)
+          .filter(s => s.name === name && s.nextFireTime < now && s.status === ScheduledTaskStatus.scheduled)
           .map(s => (s.nextFireTime, s.status))
-          .update(scheduling.nextFireTime(), 1)
+          .update(scheduling.nextFireTime(), ScheduledTaskStatus.running)
       )
       rowsUpdated > 0
     }
 
     override def endRun: Unit =
-      runDbSync(Tables.Scheduler.filter(_.name === name).map(_.status).update(0))
+      runDbSync(Tables.Scheduler.filter(_.name === name).map(_.status).update(ScheduledTaskStatus.scheduled))
   }
 
   class FireOnAllNodes extends FiringStrategy {
