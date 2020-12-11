@@ -42,7 +42,7 @@ const TunnisteEditor = ({model}) => {
   let tutkinnonNimiModel = tutkinnonNimi(model)
   const excludedProperties = ["koodistoUri"]
 
-  if (tutkinnonNimiModel.value.properties && isMuutaAmmatillistaPäätasonSuoritus(model.context.suoritus)) {
+  if (tutkinnonNimiModel.value.properties && isMuutaAmmatillistaPäätasonSuoritus(päätasonsuoritus)) {
     tutkinnonNimiModel.value.properties = tutkinnonNimiModel.value.properties.filter(p => {
       return !excludedProperties.includes(p.key);
     })
