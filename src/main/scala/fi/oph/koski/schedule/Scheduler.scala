@@ -108,13 +108,8 @@ class Scheduler(
 
   class FireOnAllNodes extends FiringStrategy {
     private var lastFired: Timestamp = new Timestamp(0)
-    private var active: Boolean = false
 
     override def shouldFire: Boolean = {
-      if (active) {
-        return false
-      }
-
       val nextFireTime = scheduling.nextFireTime(lastFired.toLocalDateTime)
       val shouldFire = now.after(nextFireTime)
       if (shouldFire) {
@@ -123,7 +118,7 @@ class Scheduler(
       shouldFire
     }
 
-    override def endRun: Unit = active = false
+    override def endRun: Unit = ()
   }
 }
 
