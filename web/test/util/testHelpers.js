@@ -114,6 +114,9 @@ wait = {
   },
   untilVisible: function(el) {
     return wait.until(function() { return isElementVisible(el) })
+  },
+  untilHidden: function(el) {
+    return wait.until(function() { return !isElementVisible(el) })
   }
 }
 
@@ -392,4 +395,21 @@ function refreshIndices() {
 
 function mockHttp(url, result) {
   return function() { testFrame().http.mock(url, result) }
+}
+
+function getAsTextArray(selector) {
+  return S(selector).map((_, elem) => S(elem).text()).toArray()
+}
+
+function getValuesAsArray(selector) {
+  return S(selector).map((_, elem) => S(elem).val()).toArray()
+}
+
+function setInputValue(elementOrSelector, value) {
+  // Setter .value= is not working as we wanted because React library overrides input value setter but we can call the function directly on the input as context.
+  // See: https://stackoverflow.com/questions/23892547/what-is-the-best-way-to-trigger-onchange-event-in-react-js
+  const input = S(elementOrSelector)[0]
+  const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set
+  nativeInputValueSetter.call(input, value)
+  input.dispatchEvent(new Event('input', { bubbles: true }))
 }
