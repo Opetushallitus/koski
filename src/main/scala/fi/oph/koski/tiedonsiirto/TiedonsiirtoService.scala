@@ -14,7 +14,7 @@ import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
-import fi.oph.koski.log.{AuditLog, AuditLogMessage}
+import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema._
 import fi.oph.koski.util.OptionalLists.optionalList
@@ -25,67 +25,79 @@ import org.json4s.JsonAST.{JArray, JString}
 import org.json4s.jackson.JsonMethods
 import org.json4s.{JValue, _}
 
-object TiedonsiirtoService {
-  private val settings = JsonMethods.parse("""
-    {
-        "analysis": {
-          "filter": {
-            "finnish_folding": {
-              "type": "icu_folding",
-              "unicodeSetFilter": "[^åäöÅÄÖ]"
-            }
-          },
-          "analyzer": {
-            "default": {
-              "tokenizer": "icu_tokenizer",
-              "filter":  [ "finnish_folding", "lowercase" ]
-            }
-          }
-        }
-    }""")
+import scala.concurrent.Future
 
-  private val mapping = toJValue(Map("properties" -> Map(
-    "virheet" -> Map(
-      "properties" -> Map(
-        "key" -> Map(
-          "type" -> "text",
-          "fields" -> Map(
-            "keyword" -> Map(
-              "ignore_above" -> 256,
-              "type" -> "keyword"
-            )
-          )
+object TiedonsiirtoService {
+  private val settings = Map(
+    "analysis" -> Map(
+      "filter" -> Map(
+        "finnish_folding" -> Map(
+          "type" -> "icu_folding",
+          "unicodeSetFilter" -> "[^åäöÅÄÖ]"
         )
       ),
-      "dynamic" -> false
-    ),
-    "data" -> Map(
-      "properties" -> Map(
-      ),
-      "dynamic" -> false
+      "analyzer" -> Map(
+        "default" -> Map(
+          "tokenizer" -> "icu_tokenizer",
+          "filter" -> Array("finnish_folding", "lowercase")
+        )
+      )
     )
-  )))
+  )
+
+  private val mapping = Map(
+    "properties" -> Map(
+      "virheet" -> Map(
+        "properties" -> Map(
+          "key" -> Map(
+            "type" -> "text",
+            "fields" -> Map(
+              "keyword" -> Map(
+                "ignore_above" -> 256,
+                "type" -> "keyword"
+              )
+            )
+          )
+        ),
+        "dynamic" -> false
+      ),
+      "data" -> Map(
+        "properties" -> Map(
+        ),
+        "dynamic" -> false
+      )
+    )
+  )
 }
 
 class TiedonsiirtoService(
-  config: Config,
   elastic: ElasticSearch,
   organisaatioRepository: OrganisaatioRepository,
   henkilöRepository: HenkilöRepository,
   koodistoviitePalvelu: KoodistoViitePalvelu,
   hetu: Hetu
-) extends ElasticSearchIndex(
-  elastic = elastic,
-  config = config,
-  name = "koski-index",
-  mappingType = "tiedonsiirto",
-  mapping = TiedonsiirtoService.mapping,
-  settings = TiedonsiirtoService.settings
-) {
+) extends Logging {
+
+  val index = new ElasticSearchIndex(
+    elastic = elastic,
+    name = "tiedonsiirto",
+    legacyName = "koski-index",
+    mappingVersion = 1,
+    mapping = TiedonsiirtoService.mapping,
+    settings = TiedonsiirtoService.settings,
+    initialLoader = () => ???
+  )
 
   private val serializationContext = SerializationContext(KoskiSchema.schemaFactory, omitEmptyFields = false)
-  private val tiedonSiirtoVirheet = Counter.build().name("fi_oph_koski_tiedonsiirto_TiedonsiirtoService_virheet").help("Koski tiedonsiirto virheet").register()
+  private val tiedonSiirtoVirheet = Counter.build()
+    .name("fi_oph_koski_tiedonsiirto_TiedonsiirtoService_virheet")
+    .help("Koski tiedonsiirto virheet")
+    .register()
   private val tiedonsiirtoBuffer = new ConcurrentBuffer[TiedonsiirtoDocument]
+
+  def init(): Unit = index.init
+
+  def statistics(): TiedonsiirtoStatistics = TiedonsiirtoStatistics(index)
 
   def haeTiedonsiirrot(query: TiedonsiirtoQuery)(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
     haeTiedonsiirrot(filtersFrom(query), query.oppilaitos, query.paginationSettings)
@@ -100,8 +112,8 @@ class TiedonsiirtoService(
       Map("terms" -> Map("_id" -> ids))
         :: Map("exists" -> Map("field" -> "virheet.key"))
         :: tallentajaOrganisaatioFilters(AccessType.tiedonsiirronMitätöinti))))
-    deleteByQuery(query)
-    refreshIndex
+    index.deleteByQuery(query)
+    index.refreshIndex()
   }
 
   private def filtersFrom(query: TiedonsiirtoQuery)(implicit session: KoskiSession): List[Map[String, Any]] = {
@@ -150,12 +162,12 @@ class TiedonsiirtoService(
       AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiSession, Map(juuriOrganisaatio -> oid)))
     }
 
-    val doc = toJValue(ElasticSearch.applyPagination(paginationSettings, Map(
+    val query = toJValue(ElasticSearch.applyPagination(paginationSettings, Map(
       "query" -> ElasticSearch.allFilter(filters),
       "sort" -> List(Map("aikaleima" -> "desc"), Map("oppija.sukunimi.keyword" -> "asc"), Map("oppija.etunimet.keyword" -> "asc"))
     )))
 
-    val rows: Seq[TiedonsiirtoDocument] = runSearch(doc)
+    val rows: Seq[TiedonsiirtoDocument] = index.runSearch(query)
       .map(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[TiedonsiirtoDocument](j \ "_source", ignoreExtras = true)))
       .getOrElse(Nil)
 
@@ -249,32 +261,21 @@ class TiedonsiirtoService(
     if (tiedonsiirrot.nonEmpty) {
       logger.debug(s"Syncing ${tiedonsiirrot.length} tiedonsiirrot documents")
 
-      val queries = tiedonsiirrot.grouped(1000).map { ts =>
-        ts.flatMap { tiedonsiirto =>
-          List(
-            JObject(
-              "update" -> JObject(
-                "_id" -> JString(tiedonsiirto.id),
-                "_index" -> JString(name),
-                "_type" -> JString(mappingType)
-              )
-            ),
-            JObject(
-              "doc_as_upsert" -> JBool(true),
-              "doc" -> Serializer.serialize(tiedonsiirto, serializationContext)
-            )
-          )
-        }
+      val docsAndIds = tiedonsiirrot.map { tiedonsiirto =>
+        val doc = Serializer.serialize(tiedonsiirto, serializationContext)
+        val id = tiedonsiirto.id
+        (doc, id)
       }
-      queries
-        .map(query => updateBulk(query))
+      docsAndIds
+        .grouped(1000)
+        .map(group => index.updateBulk(group, upsert = true))
         .collect { case (errors, response) if errors => JsonMethods.pretty(response) }
         .foreach(resp => logger.error(s"Elasticsearch indexing failed: $resp"))
       logger.debug(s"Done syncing ${tiedonsiirrot.length} tiedonsiirrot documents")
     }
     if (shouldRefreshIndex) {
       // wait for elasticsearch to refresh after the last batch, makes testing easier
-      refreshIndex
+      index.refreshIndex()
     }
   }
 
@@ -294,7 +295,7 @@ class TiedonsiirtoService(
   }
 
   def yhteenveto(implicit koskiSession: KoskiSession, sorting: SortOrder): Seq[TiedonsiirtoYhteenveto] = {
-    runSearch(yhteenvetoQuery).map { response =>
+    index.runSearch(yhteenvetoQuery).map { response =>
       for {
         orgResults <- extract[List[JValue]](response \ "aggregations" \ "organisaatio" \ "buckets")
         tallentajaOrganisaatioOid = extract[String](orgResults \ "key")

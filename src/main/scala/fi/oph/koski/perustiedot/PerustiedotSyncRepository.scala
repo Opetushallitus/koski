@@ -9,10 +9,21 @@ import slick.dbio.Effect
 import slick.sql.FixedSqlAction
 
 class PerustiedotSyncRepository(val db: DB) extends BackgroundExecutionContext with KoskiDatabaseMethods {
-  def syncAgain(opiskeluoikeudet: Seq[JValue], upsert: Boolean) = runDbSync(PerustiedotSync ++= opiskeluoikeudet.map { oo => PerustiedotSyncRow(opiskeluoikeusId = OpiskeluoikeudenPerustiedot.docId(oo), data = oo, upsert = upsert)})
+  def syncAgain(opiskeluoikeudet: Seq[JValue], upsert: Boolean): Unit = {
+    val rows = opiskeluoikeudet.map(oo => PerustiedotSyncRow(
+      opiskeluoikeusId = OpiskeluoikeudenPerustiedot.docId(oo),
+      data = oo,
+      upsert = upsert
+    ))
+    runDbSync(PerustiedotSync ++= rows)
+  }
 
   def syncAction(perustiedot: OpiskeluoikeudenPerustiedot, upsert: Boolean): FixedSqlAction[Int, NoStream, Effect.Write] = {
-    PerustiedotSync += PerustiedotSyncRow(opiskeluoikeusId = perustiedot.id, data = OpiskeluoikeudenPerustiedot.serializePerustiedot(perustiedot), upsert = upsert)
+    PerustiedotSync += PerustiedotSyncRow(
+      opiskeluoikeusId = perustiedot.id,
+      data = OpiskeluoikeudenPerustiedot.serializePerustiedot(perustiedot),
+      upsert = upsert
+    )
   }
 
   def needSyncing(limit: Int): Seq[PerustiedotSyncRow] =

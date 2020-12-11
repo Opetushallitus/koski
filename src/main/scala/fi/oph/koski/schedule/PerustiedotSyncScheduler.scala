@@ -20,6 +20,7 @@ case class PerustiedotSyncScheduler(app: KoskiApplication) extends Timing {
     }
 
   def syncAndLogErrors(ignore: Option[JValue]): Option[JValue] = timed("perustiedotSync") {
+    logger.info("Running scheluded perustiedotSync") // TODO: lokitus debug-tasolle myöhemmin
     try {
       sync
     } catch {

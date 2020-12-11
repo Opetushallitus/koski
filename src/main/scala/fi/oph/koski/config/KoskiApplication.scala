@@ -79,7 +79,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val opiskeluoikeusQueryRepository = new OpiskeluoikeusQueryService(replicaDatabase.db)
   lazy val validator: KoskiValidator = new KoskiValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository, possu, henkilöRepository, ePerusteet, config)
   lazy val elasticSearch = ElasticSearch(config)
-  lazy val perustiedotIndexer = new OpiskeluoikeudenPerustiedotIndexer(config, elasticSearch, opiskeluoikeusQueryRepository, perustiedotSyncRepository)
+  lazy val perustiedotIndexer = new OpiskeluoikeudenPerustiedotIndexer(elasticSearch, opiskeluoikeusQueryRepository, perustiedotSyncRepository)
   lazy val perustiedotRepository = new OpiskeluoikeudenPerustiedotRepository(perustiedotIndexer, opiskeluoikeusQueryRepository)
   lazy val perustiedotSyncRepository = new PerustiedotSyncRepository(masterDatabase.db)
   lazy val perustiedotSyncScheduler = new PerustiedotSyncScheduler(this)
@@ -94,7 +94,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val sessionTimeout = SessionTimeout(config)
   lazy val koskiSessionRepository = new KoskiSessionRepository(masterDatabase.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(this)
-  lazy val tiedonsiirtoService = new TiedonsiirtoService(config, elasticSearch, organisaatioRepository, henkilöRepository, koodistoViitePalvelu, hetu)
+  lazy val tiedonsiirtoService = new TiedonsiirtoService(elasticSearch, organisaatioRepository, henkilöRepository, koodistoViitePalvelu, hetu)
   lazy val healthCheck = HealthCheck(this)
   lazy val scheduledTasks = new KoskiScheduledTasks(this)
   lazy val ipService = new IPService(masterDatabase.db)
@@ -104,14 +104,14 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val oidGenerator = OidGenerator(config)
   lazy val hetu = new Hetu(config.getBoolean("acceptSyntheticHetus"))
   lazy val features = Features(config)
-  lazy val indexManager = new IndexManager(List(perustiedotIndexer, tiedonsiirtoService))
+  lazy val indexManager = new IndexManager(List(perustiedotIndexer.index, tiedonsiirtoService.index))
 
   lazy val init: Future[Unit] = {
-    perustiedotIndexer.init // This one will not be awaited for; it's ok that indexing continues while application is running
+    Future(perustiedotIndexer.init()) // This one will not be awaited for; it's ok that indexing continues while application is running
     AuditLog.startHeartbeat() // No need to await this one either
     tryCatch("Koodistojen luonti") { if (config.getString("opintopolku.virkailija.url") != "mock") KoodistoCreator(this).createAndUpdateCodesBasedOnMockData }
     val parallels: immutable.Seq[Future[Any]] = List(
-      Future { tiedonsiirtoService.init },
+      Future { tiedonsiirtoService.init() },
       Future { scheduledTasks.init },
       Future { localizationRepository.init }
     )

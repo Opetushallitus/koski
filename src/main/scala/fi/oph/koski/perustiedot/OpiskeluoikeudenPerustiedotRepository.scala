@@ -2,12 +2,9 @@ package fi.oph.koski.perustiedot
 
 import java.time.LocalDate
 
-import fi.oph.koski.elasticsearch.{ElasticSearch, ElasticSearchIndex}
-import fi.oph.koski.elasticsearch.ElasticSearch.anyFilter
+import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.henkilo.TestingException
-import fi.oph.koski.http.Http._
-import fi.oph.koski.http._
-import fi.oph.koski.json.Json4sHttp4s
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, KäyttöoikeusVarhaiskasvatusToimipiste}
@@ -19,12 +16,14 @@ import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.koski.util.SortOrder.{Ascending, Descending}
 import fi.oph.koski.util._
 import org.json4s.JValue
-import org.json4s.JsonAST.{JObject, JString}
 
-class OpiskeluoikeudenPerustiedotRepository(index: ElasticSearchIndex, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging {
+class OpiskeluoikeudenPerustiedotRepository(
+  indexer: OpiskeluoikeudenPerustiedotIndexer,
+  opiskeluoikeusQueryService: OpiskeluoikeusQueryService
+) extends Logging {
 
   def find(filters: List[OpiskeluoikeusQueryFilter], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): OpiskeluoikeudenPerustiedotResponse = {
-    if (filters.find(_.isInstanceOf[SuoritusJsonHaku]).isDefined) {
+    if (filters.exists(_.isInstanceOf[SuoritusJsonHaku])) {
       // JSON queries go to PostgreSQL
       OpiskeluoikeudenPerustiedotResponse(None, opiskeluoikeusQueryService.opiskeluoikeusQuery(filters, Some(sorting), Some(pagination)).toList.toBlocking.last.map {
         case (opiskeluoikeusRow, henkilöRow, masterHenkilöRow) => OpiskeluoikeudenPerustiedot.makePerustiedot(opiskeluoikeusRow, henkilöRow, masterHenkilöRow)
@@ -58,14 +57,18 @@ class OpiskeluoikeudenPerustiedotRepository(index: ElasticSearchIndex, opiskeluo
     val suoritusFilters = filters.flatMap {
       case SuorituksenTyyppi(tyyppi) => List(Map("term" -> Map("suoritukset.tyyppi.koodiarvo" -> tyyppi.koodiarvo)))
       case Tutkintohaku(hakusana) =>
-        index.analyze(hakusana).map { namePrefix =>
-          anyFilter(List(
+        indexer.index.analyze(hakusana).map { namePrefix =>
+          ElasticSearch.anyFilter(List(
             Map("prefix" -> Map(s"suoritukset.koulutusmoduuli.tunniste.nimi.${session.lang}" -> namePrefix)),
             Map("prefix" -> Map(s"suoritukset.osaamisala.nimi.${session.lang}" -> namePrefix)),
             Map("prefix" -> Map(s"suoritukset.tutkintonimike.nimi.${session.lang}" -> namePrefix))
           ))
         }
-      case OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet) => List(anyFilter(toimipisteet.map{ toimipiste => Map("term" -> Map("suoritukset.toimipiste.oid" -> toimipiste.oid))}))
+      case OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet) => List(
+        ElasticSearch.anyFilter(toimipisteet.map{ toimipiste =>
+          Map("term" -> Map("suoritukset.toimipiste.oid" -> toimipiste.oid))
+        })
+      )
       case _ => Nil
     }
 
@@ -87,7 +90,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: ElasticSearchIndex, opiskeluo
               "must" -> List(
                 Map("term" -> Map("tilat.tila.koodiarvo" -> tila.koodiarvo)),
                 Map("range" -> Map("tilat.alku" -> Map("lte" -> "now/d", "format" -> "yyyy-MM-dd"))),
-                anyFilter(List(
+                ElasticSearch.anyFilter(List(
                   Map("range" -> Map("tilat.loppu" -> Map("gte" -> "now/d", "format" -> "yyyy-MM-dd"))),
                   Map("bool" -> Map(
                     "must_not" -> Map(
@@ -124,7 +127,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: ElasticSearchIndex, opiskeluo
       "sort" -> elasticSort)
     ))
 
-    index.runSearch(doc)
+    indexer.index.runSearch(doc)
       .map{ response =>
         OpiskeluoikeudenPerustiedotResponse(
           Some(extract[Int](response \ "hits" \ "total")),
@@ -147,7 +150,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: ElasticSearchIndex, opiskeluo
 
   def findHenkiloPerustiedotByOids(oids: List[String]): List[OpiskeluoikeudenPerustiedot] = {
     val doc = toJValue(Map("query" -> Map("terms" -> Map("henkilöOid" -> oids)), "from" -> 0, "size" -> 10000))
-    index.runSearch(doc)
+    indexer.index.runSearch(doc)
       .map(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[OpiskeluoikeudenPerustiedot](j \ "_source", ignoreExtras = true)))
       .getOrElse(Nil)
   }
@@ -159,7 +162,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: ElasticSearchIndex, opiskeluo
   private def findSingleByHenkilöOid(oid: String): Option[JValue] = {
     val doc = toJValue(Map("query" -> Map("term" -> Map("henkilöOid" -> oid))))
 
-    index.runSearch(doc)
+    indexer.index.runSearch(doc)
       .flatMap(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => j \ "_source").headOption)
   }
 
@@ -179,7 +182,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: ElasticSearchIndex, opiskeluo
       "aggregations" -> Map("oids" -> Map("terms" -> Map("field" -> "henkilö.oid.keyword")))
     ))
 
-    index.runSearch(doc)
+    indexer.index.runSearch(doc)
       .map(response => extract[List[JValue]](response \ "aggregations" \ "oids" \ "buckets").map(j => extract[Oid](j \ "key")))
       .getOrElse(Nil)
   }
@@ -189,7 +192,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: ElasticSearchIndex, opiskeluo
       Nil
     } else {
       val varhaiskasvatusOikeudet: Set[KäyttöoikeusVarhaiskasvatusToimipiste] = session.varhaiskasvatusKäyttöoikeudet.filter(_.organisaatioAccessType.contains(AccessType.read))
-      List(anyFilter(List(
+      List(ElasticSearch.anyFilter(List(
         Map("terms" -> Map("sisältyyOpiskeluoikeuteen.oppilaitos.oid" -> session.organisationOids(AccessType.read))),
         Map("terms" -> Map("oppilaitos.oid" -> session.organisationOids(AccessType.read))),
         ElasticSearch.allFilter(List(
@@ -215,8 +218,8 @@ class OpiskeluoikeudenPerustiedotRepository(index: ElasticSearchIndex, opiskeluo
     ))))))
 
   private def nameFilter(hakusana: String) =
-    index.analyze(hakusana).map { namePrefix =>
-      anyFilter(List(
+    indexer.index.analyze(hakusana).map { namePrefix =>
+      ElasticSearch.anyFilter(List(
         Map("prefix" -> Map("henkilö.sukunimi" -> namePrefix)),
         Map("prefix" -> Map("henkilö.etunimet" -> namePrefix))
       ))
