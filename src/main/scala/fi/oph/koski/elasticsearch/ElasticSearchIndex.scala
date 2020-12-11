@@ -152,11 +152,11 @@ class ElasticSearchIndex(
       ),
       "conflicts" -> "proceed"
     )
-    Http.runTask(http.post(uri"/_reindex?wait_for_completion=true&refresh", toJValue(query))(Json4sHttp4s.json4sEncoderOf)(Http.statusCode)) match {
+    Http.runTask(http.post(uri"/_reindex?wait_for_completion=false&refresh", toJValue(query))(Json4sHttp4s.json4sEncoderOf)(Http.statusCode)) match {
       case 200 => Unit
       case statusCode: Int => throw new RuntimeException(s"Reindexing failed with $statusCode. Response: ")
     }
-    logger.info(s"Done reindexing from $fromIndex to $toIndex")
+    logger.info(s"Started reindexing from $fromIndex to $toIndex")
     (fromIndex, toIndex)
   }
 
