@@ -242,21 +242,17 @@ API tarjoaa seuraavat toiminnot:
 
 Esimerkki kuvaa tilannetta jossa indeksin mappingia tai asetuksia halutaan päivittää katkottomasti.
 
-Kirjautuminen ja keksin tallennus:
-
-    curl 'localhost:7021/koski/user/login' -H 'Content-Type: application/json' --data-raw '{"username":"kalle","password":"kalle"}' --cookier-jar koski-login-cookies
-
 Uuden perustiedot-indeksin luonti versiota 2 vastaavalla nimellä:
 
-    curl -X POST 'localhost:7021/koski/api/elasticsearch/perustiedot/create/2' --cookie koski-login-cookies
+    curl -N -u 'käyttäjätunnus:salasana' -X POST 'localhost:8080/koski/api/elasticsearch/perustiedot/create/2'
 
 Kirjoitusaliaksen siirto versiosta 1 versioon 2:
 
-    curl -X POST 'localhost:7021/koski/api/elasticsearch/perustiedot/migrateAlias/write/1/2' --cookie koski-login-cookies
+    curl -N -u 'käyttäjätunnus:salasana' -X POST 'localhost:8080/koski/api/elasticsearch/perustiedot/migrateAlias/write/1/2'
 
 Reindeksointi versiosta 1 versioon 2:
 
-    curl -X POST 'localhost:7021/koski/api/elasticsearch/perustiedot/reindex/1/2' --cookie koski-login-cookies
+    curl -N -u 'käyttäjätunnus:salasana' -X POST 'localhost:8080/koski/api/elasticsearch/perustiedot/reindex/1/2'
 
 Huomaa, että reindeksointi jää käyntiin taustalle. Tietoja sen edistymisestä
 kirjoitetaan Kosken lokiin INFO-tasolla. Prosessia voi seurata myös Elasticsearchin
@@ -264,10 +260,12 @@ task-apin avulla.
 
 Kun reindeksointi on valmis, lukualiaksen siirto versiosta 1 versioon 2:
 
-    curl -X POST 'localhost:7021/koski/api/elasticsearch/perustiedot/migrateAlias/read/1/2' --cookie koski-login-cookies
+    curl -N -u 'käyttäjätunnus:salasana' -X POST 'localhost:8080/koski/api/elasticsearch/perustiedot/migrateAlias/read/1/2'
 
 Kosken indeksinhallinta-apin lisäksi ainakin Elasticsearchin `/_cat/indices?v`
-ja `/_cat/aliases?v` apit voivat olla avuksi.
+ja `/_cat/aliases?v` apit voivat olla avuksi:
+
+    curl 'https://vpc-koski-elasticsearch-me2iad5ogsn4dchkttci6ytgfy.eu-west-1.es.amazonaws.com/_cat/indices?v'
 
 
 ### Testit
