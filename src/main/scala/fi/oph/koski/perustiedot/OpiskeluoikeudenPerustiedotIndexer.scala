@@ -132,7 +132,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
   }
 
   private def generateUpdates(serializedItems: Seq[JValue]): Seq[(JValue, String)] = {
-    serializedItems.map { (perustiedot: JValue) =>
+    serializedItems.flatMap { (perustiedot: JValue) =>
       val doc = perustiedot.asInstanceOf[JObject] match {
         case JObject(fields) => JObject(
           fields.filter {
@@ -142,7 +142,10 @@ class OpiskeluoikeudenPerustiedotIndexer(
           }
         )
       }
-      (doc, (doc \ "id").toString)
+      doc \ "id" match {
+        case JInt(id) => Some((doc, id.toString()))
+        case _ => None
+      }
     }
   }
 
