@@ -143,7 +143,9 @@ class OpiskeluoikeudenPerustiedotIndexer(
     }
     doc \ "id" match {
       case JInt(id) => Some((doc, id.toString()))
-      case _ => None
+      case _ =>
+        logger.error("Document id is not a number")
+        None
     }
   }
 
