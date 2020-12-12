@@ -106,7 +106,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
     if (items.isEmpty) {
       return Right(0)
     }
-    val docsAndIds = generateUpdates(items)
+    val docsAndIds = items.flatMap(generateUpdate)
     val (errors, response) = index.updateBulk(docsAndIds, upsert)
     if (errors) {
       val failedOpiskeluoikeusIds: List[Int] = extract[List[JValue]](response \ "items" \ "update")
@@ -131,21 +131,19 @@ class OpiskeluoikeudenPerustiedotIndexer(
     }
   }
 
-  private def generateUpdates(serializedItems: Seq[JValue]): Seq[(JValue, String)] = {
-    serializedItems.flatMap { (perustiedot: JValue) =>
-      val doc = perustiedot.asInstanceOf[JObject] match {
-        case JObject(fields) => JObject(
-          fields.filter {
-            case ("henkilö", JNull) => false // to prevent removing these from ElasticSearch
-            case ("henkilöOid", JNull) => false
-            case _ => true
-          }
-        )
-      }
-      doc \ "id" match {
-        case JInt(id) => Some((doc, id.toString()))
-        case _ => None
-      }
+  private def generateUpdate(perustiedot: JValue): Option[(JValue, String)] = {
+    val doc = perustiedot.asInstanceOf[JObject] match {
+      case JObject(fields) => JObject(
+        fields.filter {
+          case ("henkilö", JNull) => false // to prevent removing these from ElasticSearch
+          case ("henkilöOid", JNull) => false
+          case _ => true
+        }
+      )
+    }
+    doc \ "id" match {
+      case JInt(id) => Some((doc, id.toString()))
+      case _ => None
     }
   }
 
