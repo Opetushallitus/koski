@@ -81,11 +81,9 @@ object OpiskeluoikeusQueryContext {
       case _ => false
     }
 
-    val rows = application.opiskeluoikeusQueryRepository.opiskeluoikeusQuery(filters, Some(Ascending("oppijaOid")), paginationSettings, pagination)
-
-    val groupedByPerson: Observable[List[(OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])]] = rows
-      .tumblingBuffer(rows.map(masterOid).distinctUntilChanged.drop(1))
-      .map(_.toList)
+    val groupedByPerson: Observable[List[(OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])]] = application
+      .opiskeluoikeusQueryRepository.opiskeluoikeusQuery(filters, Some(Ascending("oppijaOid")), paginationSettings, pagination)
+      .publish(groupByPerson)
 
     val stream: Observable[(QueryOppijaHenkilö, List[OpiskeluoikeusRow])] = groupedByPerson.flatMap {
       case oikeudet@(row :: _) =>
@@ -102,6 +100,11 @@ object OpiskeluoikeusQueryContext {
   private def masterOid(row: (OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])): String = {
     val (_, henkilö, masterHenkilö) = row
     masterHenkilö.map(_.oid).getOrElse(henkilö.oid)
+  }
+
+  private type OpiskeluoikeusQueryRows = (OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])
+  private val groupByPerson: Observable[OpiskeluoikeusQueryRows] => Observable[List[OpiskeluoikeusQueryRows]] = {
+    rows => rows.tumblingBuffer(rows.map(masterOid).distinctUntilChanged.drop(1)).map(_.toList)
   }
 }
 
