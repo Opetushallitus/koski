@@ -285,6 +285,7 @@ class RaportitService(application: KoskiApplication) {
         )
       })
       .toList
+      .sortBy(_.nimi.get(user.lang))
 
   private val raporttinakymanOrganisaatiotyypit = List(
     "OPPILAITOS",
