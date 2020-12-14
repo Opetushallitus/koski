@@ -68,15 +68,30 @@ object OpiskeluoikeudenPerustiedot {
   val serializationContext = SerializationContext(KoskiSchema.schemaFactory, omitEmptyFields = false)
 
   def makePerustiedot(row: OpiskeluoikeusRow, henkilöRow: HenkilöRow, masterHenkilöRow: Option[HenkilöRow]): OpiskeluoikeudenPerustiedot = {
-    makePerustiedot(row.id, row.data, row.luokka, OpiskeluoikeudenHenkilötiedot(row.id, henkilöRow, masterHenkilöRow))
+    makePerustiedot(
+      row.id,
+      row.data,
+      row.luokka,
+      OpiskeluoikeudenHenkilötiedot(row.id, henkilöRow, masterHenkilöRow)
+    )
   }
 
   def makePerustiedot(id: Int, oo: Opiskeluoikeus, henkilö: OppijaHenkilöWithMasterInfo): OpiskeluoikeudenPerustiedot = {
-    makePerustiedot(id, JsonSerializer.serializeWithUser(KoskiSession.untrustedUser)(oo), oo.luokka.orElse(oo.ryhmä), OpiskeluoikeudenHenkilötiedot(id, henkilö))
+    makePerustiedot(
+      id,
+      JsonSerializer.serializeWithUser(KoskiSession.untrustedUser)(oo),
+      oo.luokka.orElse(oo.ryhmä),
+      OpiskeluoikeudenHenkilötiedot(id, henkilö)
+    )
   }
 
   def makePerustiedot(id: Int, oo: Opiskeluoikeus, henkilöRow: HenkilöRow, masterHenkilöRow: Option[HenkilöRow]): OpiskeluoikeudenPerustiedot = {
-    makePerustiedot(id, JsonSerializer.serializeWithUser(KoskiSession.untrustedUser)(oo), oo.luokka.orElse(oo.ryhmä), OpiskeluoikeudenHenkilötiedot(id, henkilöRow, masterHenkilöRow))
+    makePerustiedot(
+      id,
+      JsonSerializer.serializeWithUser(KoskiSession.untrustedUser)(oo),
+      oo.luokka.orElse(oo.ryhmä),
+      OpiskeluoikeudenHenkilötiedot(id, henkilöRow, masterHenkilöRow)
+    )
   }
 
   private def makePerustiedot(id: Int, data: JValue, luokka: Option[String], henkilö: OpiskeluoikeudenHenkilötiedot): OpiskeluoikeudenPerustiedot = {
