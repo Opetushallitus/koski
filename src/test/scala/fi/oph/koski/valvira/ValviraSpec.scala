@@ -72,11 +72,11 @@ class ValviraSpec extends FreeSpec with LocalJettyHttpSpecification with Opiskel
       }
     }
     "Hetu ei päädy lokiin" in {
+      AccessLogTester.clearMessages
       val maskedHetu = "******-****"
       getHetu(MockOppijat.valviraaKiinnostavaTutkinto.hetu.get) {
         verifyResponseStatusOk()
-        Thread.sleep(200) // wait for logging to catch up (there seems to be a slight delay)
-        AccessLogTester.getLogMessages.lastOption.get.getMessage.toString should include(maskedHetu)
+        AccessLogTester.getLatestMatchingAccessLog("/koski/api/luovutuspalvelu/valvira/") should include(maskedHetu)
       }
     }
   }

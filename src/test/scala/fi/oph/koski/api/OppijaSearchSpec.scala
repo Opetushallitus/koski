@@ -40,19 +40,19 @@ class OppijaSearchSpec extends FreeSpec with Matchers with SearchTestMethods wit
     }
     "GET endpoints" - {
       "Finds by hetu, and does not include hetu in access log" in {
+        AccessLogTester.clearMessages
         authGet("api/henkilo/hetu/010101-123N") {
           verifyResponseStatusOk()
           body should include("Esimerkki")
-          Thread.sleep(200) // wait for logging to catch up (there seems to be a slight delay)
-          AccessLogTester.getLogMessages.lastOption.get.getMessage.toString should include("/koski/api/henkilo/hetu/* HTTP")
+          AccessLogTester.getLatestMatchingAccessLog("/koski/api/henkilo/hetu/") should include("/koski/api/henkilo/hetu/* HTTP")
         }
       }
       "Finds by name, and does not include name in access log" in {
+        AccessLogTester.clearMessages
         authGet("api/henkilo/search?query=eero") {
           verifyResponseStatusOk()
           body should include("Eerola")
-          Thread.sleep(200) // wait for logging to catch up (there seems to be a slight delay)
-          AccessLogTester.getLogMessages.lastOption.get.getMessage.toString should include("/koski/api/henkilo/search?query=* HTTP")
+          AccessLogTester.getLatestMatchingAccessLog("/koski/api/henkilo/search") should include("/koski/api/henkilo/search?query=* HTTP")
         }
       }
     }

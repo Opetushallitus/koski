@@ -305,12 +305,12 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
     }
 
     "salaisuus ei päädy lokiin" in {
+      AccessLogTester.clearMessages
       val secret = secrets("yksi suoritus")
       val maskedSecret = secret.take(8) + "*" * (32 - 8)
       get(s"opinnot/$secret") {
         verifyResponseStatusOk()
-        Thread.sleep(200) // wait for logging to catch up (there seems to be a slight delay)
-        AccessLogTester.getLogMessages.lastOption.get.getMessage.toString should include(maskedSecret)
+        AccessLogTester.getLatestMatchingAccessLog("/koski/opinnot") should include(maskedSecret)
       }
     }
 
