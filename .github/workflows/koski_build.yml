@@ -47,7 +47,7 @@ jobs:
 
   run_frontend_tests:
     name: Run frontend tests
-    needs: build
+    needs: build_and_run_backend_tests
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
