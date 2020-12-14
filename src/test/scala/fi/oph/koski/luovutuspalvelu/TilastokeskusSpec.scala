@@ -144,7 +144,7 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
     }
   }
 
-  private val kaikkiOppijat = koskeenTallennetutOppijat.flatMap {
+  private lazy val kaikkiOppijat = koskeenTallennetutOppijat.flatMap {
     case Oppija(h: TäydellisetHenkilötiedot, opiskeluoikeudet) => opiskeluoikeudet.flatMap(_.oid).map { opiskeluoikeusOid =>
       (h.oid, h.sukunimi, h.etunimet, linkitettyOid.get(h.oid).toList, List(opiskeluoikeusOid))
     }
