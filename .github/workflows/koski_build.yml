@@ -42,7 +42,7 @@ jobs:
       - name: Start Postgres and ES containers
         run: |
           docker-compose up -d
-          docker-compose logs --follow --timestamps
+          docker-compose logs --follow --timestamps &
 
       - name: Run backend tests
         run: make backtest
