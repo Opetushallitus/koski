@@ -2,7 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
-import fi.oph.koski.huoltaja.Huollettava
+import fi.oph.koski.localization.Locale.finnishAlphabeticalOrdering
 import fi.oph.koski.schema.annotation.{KoodistoUri, OksaUri}
 import fi.oph.scalaschema.annotation._
 
@@ -44,13 +44,19 @@ case class TäydellisetHenkilötiedot(
 
 @Title("Henkilötiedot ja henkilö-OID")
 @IgnoreInAnyOfDeserialization
-case class HenkilötiedotJaOid(
+case class HenkilötiedotJaOid (
   oid: Henkilö.Oid,
   hetu: Option[Henkilö.Hetu],
   etunimet: String,
   kutsumanimi: String,
   sukunimi: String
 ) extends Henkilötiedot
+
+object HenkilötiedotJaOid {
+  def orderingByName: Ordering[HenkilötiedotJaOid] = Ordering.by[HenkilötiedotJaOid, (String, String)](
+    h => (h.sukunimi, h.etunimet)
+  )(Ordering.Tuple2(finnishAlphabeticalOrdering, finnishAlphabeticalOrdering))
+}
 
 @Description("Henkilö, jonka oppijanumero 'oid' ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun, jolloin henkilölle muodostuu oppijanumero")
 case class UusiHenkilö(

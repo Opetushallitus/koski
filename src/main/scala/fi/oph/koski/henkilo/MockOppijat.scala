@@ -16,7 +16,7 @@ object MockOppijat {
   val hetuton = oppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.99999999123", sukunimi = "Hetuton", etunimet = "Heikki", kutsumanimi = "Heikki", hetu = None, syntymäaika = Some(LocalDate.of(1977, 2, 24)), yksilöity = false))
   val syntymäajallinen = oppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.99999999124", sukunimi = "Syntynyt", etunimet = "Sylvi", kutsumanimi = "Sylvi", hetu = Some("220627-833V"), syntymäaika = Some(LocalDate.of(1970, 1, 1))))
   val eero = oppijat.oppija("Esimerkki", "Eero", "010101-123N")
-  val eerola = oppijat.oppija("Eerola", "Jouni", "081165-793C")
+  val eerola = oppijat.oppija("Çelik-Eerola", "Jouni", "081165-793C")
   val markkanen = oppijat.oppija("Markkanen-Fagerström", "Eéro Jorma-Petteri", "080154-770R")
   val teija = oppijat.oppija("Tekijä", "Teija", "251019-039B")
   val tero = oppijat.oppija("Tunkkila-Fagerlund", "Tero Petteri Gustaf", "280608-6619")

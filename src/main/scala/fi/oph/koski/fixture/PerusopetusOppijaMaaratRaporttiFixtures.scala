@@ -31,7 +31,7 @@ object PerusopetusOppijaMaaratRaporttiFixtures {
     suoritukset = List(
       PerusopetuksenVuosiluokanSuoritus(
         koulutusmoduuli = PerusopetuksenLuokkaAste(6, perusopetuksenDiaarinumero),
-        luokka = "6C",
+        luokka = "6-7C",
         toimipiste = jyväskylänNormaalikoulu,
         suorituskieli = suomenKieli,
         alkamispäivä = Some(date)

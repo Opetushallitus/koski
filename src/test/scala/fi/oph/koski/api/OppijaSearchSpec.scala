@@ -11,7 +11,7 @@ class OppijaSearchSpec extends FreeSpec with Matchers with SearchTestMethods wit
   "/api/henkilo/search" - {
     "Finds by name" in {
       resetFixtures
-      searchForNames("eero") should equal(List("Jouni Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
+      searchForNames("eero") should equal(List("Jouni Çelik-Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
     }
     "Find only those from your organization" in {
       searchForNames("eero", omniaKatselija) should equal(List("Eéro Jorma-Petteri Markkanen-Fagerström"))
