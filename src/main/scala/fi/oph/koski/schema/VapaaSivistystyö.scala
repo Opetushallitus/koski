@@ -5,7 +5,7 @@ import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 
-@Description("Vapaan sivistystyön opiskeluoikeus")
+@Description("Vapaan sivistystyön koulutuksen opiskeluoikeus")
 case class VapaanSivistystyönOpiskeluoikeus(
   oid: Option[String] = None,
   versionumero: Option[Int] = None,
@@ -38,16 +38,30 @@ case class VapaanSivistystyönOpiskeluoikeusjakso(
 
 case class VapaanSivistystyönOpiskeluoikeudenLisätiedot() extends OpiskeluoikeudenLisätiedot
 
-case class VapaanSivistystyönPäätasonSuoritus(
+trait VapaanSivistystyönPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus
+
+case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
   toimipiste: Toimipiste,
   tyyppi: Koodistokoodiviite,
-  koulutusmoduuli: VapaanSivistystyönKoulutus,
+  koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus,
   arviointi: Option[List[Arviointi]],
-  vahvistus: Option[Vahvistus]
-) extends KoskeenTallennettavaPäätasonSuoritus
+  vahvistus: Option[Vahvistus],
+  osaamiskokonaisuudet: Option[List[OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus]]
+) extends VapaanSivistystyönPäätasonSuoritus
+
+case class OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus(
+  tunniste: String, // TODO
+  arviointi: Option[List[Arviointi]],
+  osasuoritukset: Option[List[OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus]]
+)
+
+case class OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
+  nimi: String,
+  arviointi: Option[List[Arviointi]]
+)
 
 @Description("Vapaan sivistystyön oppivelvollisuuskoulutuksen tunnistetiedot")
-case class VapaanSivistystyönKoulutus(
+case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(
   @KoodistoKoodiarvo("099999")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("099999", koodistoUri = "koulutus"),
   perusteenDiaarinumero: Option[String],

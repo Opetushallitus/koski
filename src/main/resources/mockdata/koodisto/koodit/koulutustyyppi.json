@@ -32507,4 +32507,87 @@
     "codeElementVersion" : 1,
     "passive" : false
   } ]
+}, {
+  "koodiUri" : "koulutustyyppi_666",
+  "koodiArvo" : "666",
+  "metadata" : [ {
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön koulutus",
+    "lyhytNimi" : "Oppivelvollisille suunnattu vapaan sivistystyön koulutus",
+    "kuvaus" : "Oppivelvollisille suunnattu vapaan sivistystyön koulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "haunkohdejoukko_17",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_039997",
+    "codeElementVersion" : 2,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039997",
+    "codeElementVersion" : 3,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039997",
+    "codeElementVersion" : 4,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039997",
+    "codeElementVersion" : 5,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039997",
+    "codeElementVersion" : 6,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039997",
+    "codeElementVersion" : 7,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039997",
+    "codeElementVersion" : 8,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039997",
+    "codeElementVersion" : 9,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039997",
+    "codeElementVersion" : 10,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039997",
+    "codeElementVersion" : 11,
+    "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_039997",
+    "codeElementVersion" : 12,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutustyyppifasetti_et020104",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_15",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_19",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_21",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_63",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_64",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 } ]

@@ -25,12 +25,13 @@ object VapaaSivistystyöExample {
     )),
     lisätiedot = None,
     oppilaitos = Some(varsinaisSuomenKansanopisto),
-    suoritukset = List(VapaanSivistystyönPäätasonSuoritus(
+    suoritukset = List(OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
       toimipiste = varsinaisSuomenKansanopistoToimipiste,
       tyyppi = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"), // TODO, oikea tyyppi
-      koulutusmoduuli = VapaanSivistystyönKoulutus(perusteenDiaarinumero = Some("70/011/2015")), // TODO: Oikea perusteen diaarinumero, kunhan sisältö on eperusteista saatavilla ja tuotu Kosken mock-dataksi
+      koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(perusteenDiaarinumero = Some("70/011/2015")), // TODO: Oikea perusteen diaarinumero, kunhan sisältö on eperusteista saatavilla ja tuotu Kosken mock-dataksi
       arviointi = None,
-      vahvistus = None
+      vahvistus = None,
+      osaamiskokonaisuudet = None
     ))
   )
 
