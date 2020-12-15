@@ -7,6 +7,7 @@ import {buildClassNames} from '../components/classnames'
 import {tutkinnonNimi} from './Koulutusmoduuli'
 import {InternationalSchoolLevel} from '../internationalschool/InternationalSchoolLevel'
 import {TunnisteenKoodiarvoEditor} from './TunnisteenKoodiarvoEditor'
+import {isMuutaAmmatillistaPäätasonSuoritus} from '../muuammatillinen/MuuAmmatillinen'
 
 export const KoulutusmoduuliEditor = ({model}) => {
   const propertyFilter = p => {
@@ -33,13 +34,27 @@ export const KoulutusmoduuliEditor = ({model}) => {
 }
 
 const TunnisteEditor = ({model}) => {
-  const overrideEdit = model.context.editAll ? true : false
+  const overrideEdit = (model.context.editAll || (model.context.edit && isMuutaAmmatillistaPäätasonSuoritus(model.context.suoritus))) ? true : false
   const päätasonsuoritus = model.context.suoritus
   const tyyppi = suorituksenTyyppi(päätasonsuoritus)
   const käytäPäätasonSuoritusta =
     ['aikuistenperusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaaranalkuvaihe'].includes(tyyppi) || model.value.classes.includes('lukionoppiaineidenoppimaarat2019')
+  let tutkinnonNimiModel = tutkinnonNimi(model)
+  const excludedProperties = ["koodistoUri"]
+
+  if (tutkinnonNimiModel.value.properties && isMuutaAmmatillistaPäätasonSuoritus(päätasonsuoritus)) {
+    tutkinnonNimiModel.value.properties = tutkinnonNimiModel.value.properties.filter(p => {
+      return !excludedProperties.includes(p.key);
+    })
+  }
 
   return käytäPäätasonSuoritusta
     ? <Editor model={model.context.suoritus} path="tyyppi" edit={false}/>
-    : <React.Fragment><Editor model={tutkinnonNimi(model)} edit={overrideEdit}/><InternationalSchoolLevel model={model} /></React.Fragment>
+    : <React.Fragment>
+        <Editor
+          model={tutkinnonNimiModel}
+          edit={overrideEdit}
+          />
+        <InternationalSchoolLevel model={model} />
+      </React.Fragment>
 }
