@@ -40,7 +40,9 @@ jobs:
           sudo sysctl -w vm.max_map_count=262144
 
       - name: Start Postgres and ES containers
-        run: docker-compose up -d
+        run: |
+          docker-compose up -d
+          docker-compose logs --follow --timestamps
 
       - name: Run backend tests
         run: make backtest
