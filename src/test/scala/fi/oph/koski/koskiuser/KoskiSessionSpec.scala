@@ -108,7 +108,7 @@ class KoskiSessionSpec extends FreeSpec with Matchers with EitherValues with Opt
       }
       "viranomainen toinen aste" in {
         val session = createAndVerifySession("Teuvo", MockUsers.toinenAsteViranomainen.ldapUser)
-        val expectedOpiskeluoikeustyypit = Set(ammatillinenkoulutus, ibtutkinto, diatutkinto, lukiokoulutus, luva, vapaansivistystyönkoulutus, ylioppilastutkinto, internationalschool).map(_.koodiarvo)
+        val expectedOpiskeluoikeustyypit = Set(ammatillinenkoulutus, ibtutkinto, diatutkinto, lukiokoulutus, luva, vapaansivistystyonkoulutus, ylioppilastutkinto, internationalschool).map(_.koodiarvo)
         session.allowedOpiskeluoikeusTyypit should equal(expectedOpiskeluoikeustyypit)
       }
       "viranomainen korkeakoulu" in {

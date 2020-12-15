@@ -208,7 +208,7 @@
   "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "opiskeluoikeudentyyppi_vapaansivistystyonkoulutus",
-  "koodiArvo" : "vapaansivistystyönkoulutus",
+  "koodiArvo" : "vapaansivistystyonkoulutus",
   "metadata" : [ {
     "nimi" : "Vapaan sivistystyön koulutus",
     "lyhytNimi" : "Vapaan sivistystyön koulutus",

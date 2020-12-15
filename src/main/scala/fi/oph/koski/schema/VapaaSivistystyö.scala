@@ -19,8 +19,8 @@ case class VapaanSivistystyönOpiskeluoikeus(
   lisätiedot: Option[VapaanSivistystyönOpiskeluoikeudenLisätiedot] = None,
   @MaxItems(1)
   suoritukset: List[VapaanSivistystyönPäätasonSuoritus],
-  @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.vapaansivistystyönkoulutus.koodiarvo)
-  tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.vapaansivistystyönkoulutus,
+  @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo)
+  tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus,
   organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None,
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija): KoskeenTallennettavaOpiskeluoikeus = this.copy(koulutustoimija = Some(koulutustoimija))

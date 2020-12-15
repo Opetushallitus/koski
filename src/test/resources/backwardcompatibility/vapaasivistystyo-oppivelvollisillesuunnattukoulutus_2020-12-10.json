@@ -47,7 +47,7 @@
       }
     } ],
     "tyyppi" : {
-      "koodiarvo" : "vapaansivistystyönkoulutus",
+      "koodiarvo" : "vapaansivistystyonkoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
     "alkamispäivä" : "2021-09-01"
