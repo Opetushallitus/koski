@@ -70,9 +70,9 @@ object OpiskeluoikeudenPerustiedot {
   def makePerustiedot(row: OpiskeluoikeusRow, henkilöRow: HenkilöRow, masterHenkilöRow: Option[HenkilöRow]): OpiskeluoikeudenPerustiedot = {
     makePerustiedot(
       row.id,
-      row.data,
-      row.luokka,
-      OpiskeluoikeudenHenkilötiedot(row.id, henkilöRow, masterHenkilöRow)
+      row.toOpiskeluoikeus,
+      henkilöRow,
+      masterHenkilöRow
     )
   }
 
