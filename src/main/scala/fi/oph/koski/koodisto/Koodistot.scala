@@ -52,6 +52,7 @@ object Koodistot {
     KoodistoAsetus("lukionmuutopinnot"),
     KoodistoAsetus("opetusryhma"),
     KoodistoAsetus("opintojenrahoitus"),
+    KoodistoAsetus("opintokokonaisuusnimet"),
     KoodistoAsetus("opiskeluoikeudentyyppi"),
     KoodistoAsetus("oppiaineaidinkielijakirjallisuus"),
     KoodistoAsetus("oppiainediaaidinkieli"),

@@ -31,7 +31,13 @@ object VapaaSivistystyöExample {
       koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(perusteenDiaarinumero = Some("70/011/2015")), // TODO: Oikea perusteen diaarinumero, kunhan sisältö on eperusteista saatavilla ja tuotu Kosken mock-dataksi
       arviointi = None,
       vahvistus = None,
-      osaamiskokonaisuudet = None
+      osaamiskokonaisuudet = Some(List(
+        OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus(
+          tunniste = Koodistokoodiviite("1002", "opintokokonaisuusnimet"),
+          arviointi = None,
+          osasuoritukset = None
+        )
+      ))
     ))
   )
 

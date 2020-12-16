@@ -1,9 +1,9 @@
 package fi.oph.koski.schema
 
 import fi.oph.scalaschema.annotation.{Description, MaxItems}
-import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
+import java.time.{LocalDate, LocalDateTime}
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
 
 @Description("Vapaan sivistystyön koulutuksen opiskeluoikeus")
 case class VapaanSivistystyönOpiskeluoikeus(
@@ -50,7 +50,8 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
 ) extends VapaanSivistystyönPäätasonSuoritus
 
 case class OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus(
-  tunniste: String, // TODO
+  @KoodistoUri("opintokokonaisuusnimet")
+  tunniste: Koodistokoodiviite,
   arviointi: Option[List[Arviointi]],
   osasuoritukset: Option[List[OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus]]
 )

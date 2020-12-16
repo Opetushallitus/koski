@@ -1,0 +1,27 @@
+{
+  "koodistoUri": "opintokokonaisuusnimet",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Vapaan sivistystyön osaamiskokonaisuudet",
+      "kuvaus": "Vapaan sivitystyön KOPS-peruste"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Vapaan sivistystyön osaamiskokonaisuudet",
+      "kuvaus": "Vapaan sivitystyön KOPS-peruste"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Vapaan sivistystyön osaamiskokonaisuudet",
+      "kuvaus": "Vapaan sivitystyön KOPS-peruste"
+    }
+  ],
+  "codesGroupUri": "http://opintokokonaisuusnimet",
+  "voimassaAlkuPvm": "2020-01-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 2
+}
