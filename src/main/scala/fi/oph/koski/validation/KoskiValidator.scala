@@ -97,11 +97,6 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
               validatePerusopetuksenVuosiluokat(opiskeluoikeus),
               HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, Nil)))
             )
-          }
-          .onSuccess {
-            HttpStatus.fold(
-              validateYhdistetylläOpiskeluoikeudella(opiskeluoikeus),
-            )
           } match {
           case HttpStatus.ok => Right(opiskeluoikeus)
           case status =>
@@ -110,18 +105,36 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       }
 
     case _ if accessType == AccessType.write => Left(KoskiErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ja ylioppilastutkintojen tietoja ei voi päivittää Koski-järjestelmässä"))
-    case _ => Right(opiskeluoikeus)
+    case _ => {
+      Right(opiskeluoikeus)
+    }
   }
 
-
-  private def updateFields(oo: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
+  private def updateFields(oo: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession, application: Option[KoskiApplication]): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
     fillMissingOrganisations(oo)
       .flatMap(addKoulutustyyppi)
+      .map(fillPäätasonSuoritukset)
       .map(fillPerusteenNimi)
       .map(fillLaajuudet)
       .map(fillVieraatKielet)
       .map(clearVahvistukset)
       .map(_.withHistoria(None))
+  }
+
+  private def fillPäätasonSuoritukset(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession, application: Option[KoskiApplication]) = {
+    val vanhaOpiskeluoikeus = (application, opiskeluoikeus.oid) match {
+      case (Some(app), Some(oid)) =>  {
+        app.opiskeluoikeusRepositoryV2.findByOid(oid)
+      }
+      case _ => None
+    }
+
+    vanhaOpiskeluoikeus match {
+      case Right(vanhaO: OpiskeluoikeusRow) =>  {
+        OpiskeluoikeusChangeMigrator.migrate(vanhaO.toOpiskeluoikeus, opiskeluoikeus, false)
+      }
+      case _ => opiskeluoikeus
+    }
   }
 
   private def fillPerusteenNimi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = oo match {
@@ -1029,28 +1042,6 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
           .forall(hankkimistapa => List("koulutussopimus", "oppilaitosmuotoinenkoulutus").contains(hankkimistapa.tunniste.koodiarvo))
       )(KoskiErrorCategory.badRequest.validation.rakenne.deprekoituOsaamisenHankkimistapa())
     case _ => HttpStatus.ok
-  }
-
-  // Ajetaan valitaadiot, joille on tarpeen olemassaolevan opiskeluoikeuden tietojen yhdistäminen nyt Koskelle
-  // lähetettävän opiskeluoikeuden kanssa.
-  private def validateYhdistetylläOpiskeluoikeudella(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession, accessType: AccessType.Value, application: Option[KoskiApplication] = None): HttpStatus = {
-    val vanhaOpiskeluoikeus = (application, opiskeluoikeus.oid) match {
-      case (Some(app), Some(oid)) =>  {
-        app.opiskeluoikeusRepositoryV2.findByOid(oid)
-      }
-      case _ => None
-    }
-
-    val yhdistettyOpiskeluoikeus = vanhaOpiskeluoikeus match {
-      case Right(vanhaO: OpiskeluoikeusRow) =>  {
-        OpiskeluoikeusChangeMigrator.migrate(vanhaO.toOpiskeluoikeus, opiskeluoikeus, false)
-      }
-      case _ => opiskeluoikeus
-    }
-
-    HttpStatus.fold(
-      validatePerusopetuksenVuosiluokat(yhdistettyOpiskeluoikeus)
-    )
   }
 
   private def validatePerusopetuksenVuosiluokat(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
