@@ -26,7 +26,7 @@ object Koulutustyyppi {
   val valmaErityisopetuksena = apply(19)
   val perusopetukseenValmistava = apply(22)
   val luva = apply(23)
-  val oppivelvollisilleSuunnattuVapaanSivistystyönKoulutus = apply(666) // FIXME: Tämä on placeholder, muista päivittää myös mockdata/koodisto/koodit/koulutustyyppi.json
+  val oppivelvollisilleSuunnattuVapaanSivistystyönKoulutus = apply(30)
 
   def apply(numero: Int) = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(numero.toString, "koulutustyyppi"))
   def describe(koulutustyyppi: Koulutustyyppi) = koulutustyyppi.koodiarvo + koulutustyyppi.nimi.map(nimi => s"(${nimi.get("fi")})").getOrElse("")

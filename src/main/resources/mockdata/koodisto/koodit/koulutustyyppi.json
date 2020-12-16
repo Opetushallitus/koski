@@ -32508,8 +32508,8 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "koulutustyyppi_666",
-  "koodiArvo" : "666",
+  "koodiUri" : "koulutustyyppi_30",
+  "koodiArvo" : "30",
   "metadata" : [ {
     "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön koulutus",
     "lyhytNimi" : "Oppivelvollisille suunnattu vapaan sivistystyön koulutus",

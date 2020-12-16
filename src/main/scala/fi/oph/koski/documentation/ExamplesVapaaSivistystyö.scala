@@ -28,7 +28,7 @@ object VapaaSivistystyöExample {
     suoritukset = List(OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
       toimipiste = varsinaisSuomenKansanopistoToimipiste,
       tyyppi = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"), // TODO, oikea tyyppi
-      koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(perusteenDiaarinumero = Some("70/011/2015")), // TODO: Oikea perusteen diaarinumero, kunhan sisältö on eperusteista saatavilla ja tuotu Kosken mock-dataksi
+      koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(perusteenDiaarinumero = Some("OPH-1234-2020")), // TODO: Oikea perusteen diaarinumero, kunhan oikea diaarinumero saatavilla ja sisältö tuotu Kosken mockdataan
       arviointi = None,
       vahvistus = None,
       osaamiskokonaisuudet = Some(List(
