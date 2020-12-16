@@ -9,10 +9,9 @@ import {VirheraporttiMessage} from './emailMessage'
 
 const Yhteystieto = ({henkilö, yhteystieto}) => {
   const nimi = `${modelData(henkilö, 'etunimet')} ${modelData(henkilö, 'sukunimi')}`
-  const syntymäaika = ISO2FinnishDate(modelTitle(henkilö, 'syntymäaika'))
   const oppijaOid = modelData(henkilö, 'oid')
 
-  const messageDetails = VirheraporttiMessage.details(nimi, syntymäaika, oppijaOid)
+  const messageDetails = VirheraporttiMessage.details(nimi, oppijaOid)
   const fullMessage = [
     VirheraporttiMessage.placeholder(),
     VirheraporttiMessage.spacer(),
