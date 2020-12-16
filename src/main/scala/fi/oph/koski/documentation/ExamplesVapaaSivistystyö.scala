@@ -35,7 +35,13 @@ object VapaaSivistystyöExample {
         OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus(
           tunniste = Koodistokoodiviite("1002", "opintokokonaisuusnimet"),
           arviointi = None,
-          osasuoritukset = None
+          osasuoritukset = Some(List(
+            OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
+              tunniste = PaikallinenKoodi(koodiarvo = "A01", nimi = "Arjen rahankäyttö"),
+              kuvaus = "Arjen rahankäyttö",
+              arviointi = None
+            )
+          ))
         )
       ))
     ))

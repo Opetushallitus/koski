@@ -57,9 +57,10 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus(
 )
 
 case class OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
-  nimi: String,
+  tunniste: PaikallinenKoodi,
+  kuvaus: LocalizedString,
   arviointi: Option[List[Arviointi]]
-)
+) extends PaikallinenKoulutusmoduuli
 
 @Description("Vapaan sivistystyön oppivelvollisuuskoulutuksen tunnistetiedot")
 case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(
