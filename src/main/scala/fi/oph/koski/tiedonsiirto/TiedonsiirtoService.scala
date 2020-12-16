@@ -3,7 +3,6 @@ package fi.oph.koski.tiedonsiirto
 import java.sql.Timestamp
 import java.time.LocalDate
 
-import com.typesafe.config.Config
 import fi.oph.koski.elasticsearch.{ElasticSearch, ElasticSearchIndex}
 import fi.oph.koski.henkilo.{HenkilöOid, HenkilöRepository, Hetu}
 import fi.oph.koski.http.{ErrorDetail, HttpStatus, KoskiErrorCategory}
@@ -24,8 +23,6 @@ import io.prometheus.client.Counter
 import org.json4s.JsonAST.{JArray, JString}
 import org.json4s.jackson.JsonMethods
 import org.json4s.{JValue, _}
-
-import scala.concurrent.Future
 
 object TiedonsiirtoService {
   private val settings = Map(

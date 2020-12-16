@@ -1,6 +1,5 @@
 package fi.oph.koski.perustiedot
 
-import com.typesafe.config.Config
 import fi.oph.koski.elasticsearch.{ElasticSearch, ElasticSearchIndex}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer.extract
