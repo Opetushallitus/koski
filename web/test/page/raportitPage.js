@@ -53,7 +53,7 @@ function RaportitPage() {
       return S('.organisaatio-dropdown .input-container input').val()
     },
     valittavatOrganisaatiot: function() {
-      return getAsTextArray('.organisaatio-dropdown .options .option')
+      return getAsTextArray('.organisaatio-dropdown .options > .option .value')
     },
     valitutPäivät: function() {
       return getValuesAsArray('.date-editor')

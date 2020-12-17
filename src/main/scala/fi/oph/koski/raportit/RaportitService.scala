@@ -51,7 +51,7 @@ class RaportitService(application: KoskiApplication) {
     OppilaitosRaporttiResponse(
       sheets = Seq(
         DataSheet("Opiskeluoikeudet", AmmatillinenTutkintoRaportti.buildRaportti(request, ammatillisenRaportitRepository), AmmatillinenTutkintoRaportti.columnSettings),
-        DocumentationSheet("Ohjeet", AmmatillinenTutkintoRaportti.documentation(request, raportointiDatabase.status.completionTime.get.toLocalDateTime))
+        DocumentationSheet("Ohjeet", AmmatillinenTutkintoRaportti.documentation(request, raportointiDatabase.status.startedTime.get.toLocalDateTime))
       ),
       workbookSettings = WorkbookSettings(AmmatillinenTutkintoRaportti.title(request), Some(request.password)),
       filename = AmmatillinenTutkintoRaportti.filename(request),
@@ -63,7 +63,7 @@ class RaportitService(application: KoskiApplication) {
     OppilaitosRaporttiResponse(
       sheets = Seq(
         DataSheet("Opiskeluoikeudet", AmmatillinenOsittainenRaportti.buildRaportti(request, ammatillisenRaportitRepository), AmmatillinenOsittainenRaportti.columnSettings),
-        DocumentationSheet("Ohjeet", AmmatillinenOsittainenRaportti.documentation(request, raportointiDatabase.status.completionTime.get.toLocalDateTime))
+        DocumentationSheet("Ohjeet", AmmatillinenOsittainenRaportti.documentation(request, raportointiDatabase.status.startedTime.get.toLocalDateTime))
       ),
       workbookSettings = WorkbookSettings(AmmatillinenOsittainenRaportti.title(request), Some(request.password)),
       filename = AmmatillinenOsittainenRaportti.filename(request),
@@ -235,7 +235,7 @@ class RaportitService(application: KoskiApplication) {
 
   private def aikajaksoRaportti(request: AikajaksoRaporttiRequest, raporttiBuilder: AikajaksoRaportti) = {
     val rows = raporttiBuilder.buildRaportti(raportointiDatabase, request.oppilaitosOid, request.alku, request.loppu)
-    val documentation = DocumentationSheet("Ohjeet", raporttiBuilder.documentation(request.oppilaitosOid, request.alku, request.loppu, raportointiDatabase.status.completionTime.get.toLocalDateTime))
+    val documentation = DocumentationSheet("Ohjeet", raporttiBuilder.documentation(request.oppilaitosOid, request.alku, request.loppu, raportointiDatabase.status.startedTime.get.toLocalDateTime))
     val data = DataSheet("Opiskeluoikeudet", rows, raporttiBuilder.columnSettings)
 
     OppilaitosRaporttiResponse(
@@ -249,7 +249,7 @@ class RaportitService(application: KoskiApplication) {
   private def perusopetuksenVuosiluokka(request: PerusopetuksenVuosiluokkaRequest, raporttiBuilder: VuosiluokkaRaporttiPaivalta) = {
     val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid, "perusopetus")
     val rows = raporttiBuilder.buildRaportti(perusopetusRepository, oppilaitosOids, request.paiva, request.vuosiluokka)
-    val documentation = DocumentationSheet("Ohjeet", raporttiBuilder.documentation(request.oppilaitosOid, request.paiva, request.vuosiluokka, raportointiDatabase.status.completionTime.get.toLocalDateTime))
+    val documentation = DocumentationSheet("Ohjeet", raporttiBuilder.documentation(request.oppilaitosOid, request.paiva, request.vuosiluokka, raportointiDatabase.status.startedTime.get.toLocalDateTime))
     val data = DataSheet("Opiskeluoikeudet", rows, raporttiBuilder.columnSettings)
 
     OppilaitosRaporttiResponse(
@@ -285,6 +285,7 @@ class RaportitService(application: KoskiApplication) {
         )
       })
       .toList
+      .sortBy(_.nimi.get(user.lang))
 
   private val raporttinakymanOrganisaatiotyypit = List(
     "OPPILAITOS",

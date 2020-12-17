@@ -61,6 +61,18 @@ describe('Raporttien luominen', function() {
         ])
         expect(page.valittuRaporttikategoria()).to.equal('Esiopetus')
       })
+
+      it('Näyttää oikeat organisaatiot oikeassa järjestyksessä', function() {
+        expect(page.valittavatOrganisaatiot()).to.deep.equal([
+          'Helsingin kaupunki',
+          'Kulosaaren ala-aste',
+          'Jyväskylän yliopisto',
+          'Jyväskylän normaalikoulu',
+          'Pyhtään kunta',
+          'Päiväkoti Majakka',
+          'Päiväkoti Touhula'
+        ])
+      })
     })
 
     describe('Testikäyttäjä kalle: kaikki välilehdet', function() {
