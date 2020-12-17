@@ -63,8 +63,7 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(
   koulutustyyppi: Option[Koodistokoodiviite] = None
 ) extends DiaarinumerollinenKoulutus with Tutkinto with Laajuudeton
 
-// TODO: tämän rinnalle valinnaiset suuntautumisopinnot
-@Title("Osaamiskokonaisuuden suoritus")
+@Title("Osaamiskokonaisuuden tai valinnaisten suuntautumisopintojen suoritus")
 case class OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus(
   @Title("Osaamiskokokonaisuus")
   koulutusmoduuli: OppivelvollisilleSuunnatunVapaanSivistystyönKoulutus,
