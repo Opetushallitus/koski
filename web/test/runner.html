@@ -31,9 +31,11 @@
       console.log('Calling window.initMochaPhantomJS')
       window.initMochaPhantomJS();
     }
-    mocha.ui('bdd')
-    mocha.reporter('html')
-    mocha.timeout(testTimeoutPageLoad)
+    mocha.setup({
+        ui: 'bdd',
+        reporter: 'html',
+        timeout: testTimeoutPageLoad
+    });
 
     function reportAndClearWindowUiError() {
       var err = window.uiError
