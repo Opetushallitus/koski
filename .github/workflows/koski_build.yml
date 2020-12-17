@@ -1,6 +1,6 @@
 name: Build Koski
 on:
-  push:
+  #push:
 env:
   DOCKER_BUILDKIT: 1
 jobs:
