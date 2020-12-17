@@ -100,6 +100,19 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
   def haltWithStatus(status: HttpStatus): Nothing = {
     halt(status.statusCode, status)
   }
+
+  def noRemoteCallsExpectFor(expectFor: String*): Unit = {
+    if (expectFor.exists(request.pathInfo.endsWith(_))) {
+      //ok
+    } else {
+      noRemoteCalls()
+    }
+  }
+  def noRemoteCalls(): Unit = {
+    if (!List("127.0.0.1", "[0:0:0:0:0:0:0:1]").contains(request.getRemoteHost)) {
+      haltWithStatus(KoskiErrorCategory.forbidden(""))
+    }
+  }
 }
 
 
