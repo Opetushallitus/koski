@@ -91,8 +91,7 @@ case class OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumis
 @Title("Osaamiskokonaisuus")
 case class OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus(
   @KoodistoUri("opintokokonaisuusnimet")
-  tunniste: Koodistokoodiviite,
-  kuvaus: LocalizedString
+  tunniste: Koodistokoodiviite
 ) extends OppivelvollisilleSuunnatunVapaanSivistystyönKoulutus with KoodistostaLöytyväKoulutusmoduuli
 
 
