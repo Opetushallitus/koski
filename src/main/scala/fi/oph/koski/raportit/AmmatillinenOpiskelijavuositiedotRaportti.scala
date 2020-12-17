@@ -124,11 +124,11 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
   def title(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): String =
     s"Opiskelijavuositiedot $oppilaitosOid ${finnishDateFormat.format(alku)} - ${finnishDateFormat.format(loppu)}"
 
-  def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadCompleted: LocalDateTime): String = s"""
+  def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadStarted: LocalDateTime): String = s"""
     |Opiskelijavuositiedot (ammatillinen koulutus)
     |Oppilaitos: $oppilaitosOid
     |Aikajakso: ${finnishDateFormat.format(alku)} - ${finnishDateFormat.format(loppu)}
-    |Raportti luotu: ${finnishDateTimeFormat.format(LocalDateTime.now)} (${finnishDateTimeFormat.format(loadCompleted)} tietojen pohjalta)
+    |Raportti luotu: ${finnishDateTimeFormat.format(LocalDateTime.now)} (${finnishDateTimeFormat.format(loadStarted)} tietojen pohjalta)
     |
     |Tarkempia ohjeita taulukon sisällöstä:
     |

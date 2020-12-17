@@ -94,12 +94,12 @@ object AmmatillinenTutkintoRaportti {
   def title(request: AikajaksoRaporttiAikarajauksellaRequest): String =
     s"Suoritustiedot ${request.oppilaitosOid} ${finnishDateFormat.format(request.alku)} - ${finnishDateFormat.format(request.loppu)}"
 
-  def documentation(request: AikajaksoRaporttiAikarajauksellaRequest, loadCompleted: LocalDateTime): String =
+  def documentation(request: AikajaksoRaporttiAikarajauksellaRequest, loadStarted: LocalDateTime): String =
     s"""
        |Suoritustiedot (ammatillinen tutkinto)
        |Oppilaitos: ${request.oppilaitosOid}
        |Aikajakso: ${finnishDateFormat.format(request.alku)} - ${finnishDateFormat.format(request.loppu)}
-       |Raportti luotu: ${finnishDateTimeFormat.format(LocalDateTime.now)} (${finnishDateTimeFormat.format(loadCompleted)} tietojen pohjalta)
+       |Raportti luotu: ${finnishDateTimeFormat.format(LocalDateTime.now)} (${finnishDateTimeFormat.format(loadStarted)} tietojen pohjalta)
        |
        |Tarkempi kuvaus joistakin sarakkeista:
        |

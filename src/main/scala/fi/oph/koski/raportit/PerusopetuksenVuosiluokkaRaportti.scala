@@ -255,7 +255,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
 
   def title(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String = "TITLE TODO"
 
-  def documentation(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String, loadCompleted: LocalDateTime): String =
+  def documentation(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String, loadStarted: LocalDateTime): String =
     s"""
       |Tarkempi kuvaus joistakin sarakkeista:
       |

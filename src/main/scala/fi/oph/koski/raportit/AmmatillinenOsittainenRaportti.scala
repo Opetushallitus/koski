@@ -86,12 +86,12 @@ object AmmatillinenOsittainenRaportti {
     s"Ammatillinen_tutkinnon_osa_ja_osia_${request.oppilaitosOid}_${request.alku}_${request.loppu}"
   }
 
-  def documentation(request: AikajaksoRaporttiAikarajauksellaRequest, loadCompleted: LocalDateTime): String =
+  def documentation(request: AikajaksoRaporttiAikarajauksellaRequest, loadStarted: LocalDateTime): String =
     s"""
        |Suoritustiedot (Ammatillisen tutkinnon osa/osia)
        |Oppilaitos: ${request.oppilaitosOid}
        |Aikajakso: ${finnishDateFormat.format(request.alku)} - ${finnishDateFormat.format(request.loppu)}
-       |Raportti luotu: ${finnishDateTimeFormat.format(LocalDateTime.now)} (${finnishDateTimeFormat.format(loadCompleted)} tietojen pohjalta)
+       |Raportti luotu: ${finnishDateTimeFormat.format(LocalDateTime.now)} (${finnishDateTimeFormat.format(loadStarted)} tietojen pohjalta)
        |
        |Tarkempi kuvaus joistakin sarakkeista:
        |

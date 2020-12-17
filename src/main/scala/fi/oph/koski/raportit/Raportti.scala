@@ -15,7 +15,7 @@ trait AikajaksoRaportti extends Raportti {
 
   def title(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): String
 
-  def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadCompleted: LocalDateTime): String
+  def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadStarted: LocalDateTime): String
 
   def filename(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): String
 
@@ -28,7 +28,7 @@ trait VuosiluokkaRaporttiPaivalta extends Raportti {
 
   def title(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String
 
-  def documentation(oppilaitosOid: String, alku: LocalDate, vuosiluokka: String, loadCompleted: LocalDateTime): String
+  def documentation(oppilaitosOid: String, alku: LocalDate, vuosiluokka: String, loadStarted: LocalDateTime): String
 
   def filename(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String
 
