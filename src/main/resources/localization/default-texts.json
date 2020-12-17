@@ -1497,7 +1497,7 @@
   "Valitse osasuoritusten aikarajaus": "Valitse osasuoritusten aikarajaus",
   "Ota salasana itsellesi talteen": "Ota salasana itsellesi talteen",
   "Raportille valitaan vain sellaiset kurssisuoritukset, joiden arviointipäivä osuu yllä määritellylle aikajaksolle": "Raportille valitaan vain sellaiset kurssisuoritukset, joiden arviointipäivä osuu yllä määritellylle aikajaksolle",
-  "Raporttidata luotu": "Raporttidata luotu",
+  "Raportti pohjautuu KOSKI-tietovarannossa hetkellä $DATETIME olleille tiedoille.": "Raportti pohjautuu KOSKI-tietovarannossa hetkellä $DATETIME olleille tiedoille.",
   "virhe-ei-organisaatiokayttaoikeuksia": "Ei näytettäviä raportteja, koska käyttäjätunnuksellesi ei ole lisätty oikeuksia sopiviin organisaatioihin.",
   "paallekkaiset-opiskeluoikeudet-short-description": "Raportti näyttää päällekkäisten opiskeluoikeuksien tiedot sellaisille opiskeluoikeuksille, jotka ovat olleet vähintään yhden päivän aktiivisena tulostusparametreissa valitulla aikajaksolla, yhdellä rivillä per päällekkäinen opiskeluoikeus. Sekä oppilaitoksen omasta että päällekkäisestä opiskeluoikeudesta tulostetaan tarvittavat tunnistetiedot sekä tilajaksoihin ja mahdollisiin rahoitusmuotoihin liittyvät tiedot. Keskenään linkitettyjä opiskeluoikeuksia ei tulkita päällekkäisiksi opiskeluoikeuksiksi. Raportti pohjautuu viime yön tietoihin, eli tietojen päivitys Koskeen ei näy välittömästi raportilla.",
   "paallekkaiset-opiskeluoikeudet-example": "HUOM! Keskenään linkitettyjä opiskeluoikeuksia ei tulkita päällekkäisiksi opiskeluoikeuksiksi.",

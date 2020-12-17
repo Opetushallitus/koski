@@ -5,6 +5,7 @@ import InfoIcon from '../icons/InfoIcon'
 import RaporttiDownloadButton from './RaporttiDownloadButton'
 import RadioButtons from '../components/RadioButtons'
 import { formatFinnishDateTime } from '../../app/date/date'
+import { t } from '../i18n/i18n'
 
 export const LyhytKuvaus = ({ children }) => children
     ? (
@@ -81,13 +82,17 @@ export const RaportinLataus = ({
             <Text name='Excel-tiedosto on suojattu salasanalla'/> {password}<br />
             <Text name="Ota salasana itsellesi talteen" />
         </div>
-        {dbUpdatedP.map(dbUpdated => (
-            <div className="update-time">
-                <Text name="Raporttidata luotu" />
-                {' '}
-                <span className="datetime">{formatFinnishDateTime(new Date(dbUpdated))}</span>
-            </div>
-        ))}
+        {dbUpdatedP.map(dbUpdated => {
+            const text = t('Raportti pohjautuu KOSKI-tietovarannossa hetkellä $DATETIME olleille tiedoille.')
+            const [head, foot] = text.split('$DATETIME')
+            return (
+                <div className="update-time">
+                    {head}
+                    <span className="datetime">{formatFinnishDateTime(new Date(dbUpdated))}</span>
+                    {foot}
+                </div>
+            )
+        })}
         <RaporttiDownloadButton inProgressP={inProgressP} disabled={submitEnabledP.not()} onSubmit={e => { e.preventDefault(); submitBus.push(); return false }} />
     </div>
 )
