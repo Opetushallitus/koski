@@ -79,7 +79,7 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus(
 case class OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus(
   @Title("Opintokokonaisuus")
   koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus,
-  arviointi: Option[List[Arviointi]], // TODO: oma arviointiluokka
+  arviointi: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi]],
   // @KoodistoKoodiarvo("TODO")
   tyyppi: Koodistokoodiviite // = Koodistokoodiviite(koodiarvo = "TODO", koodistoUri = "suorituksentyyppi")
 ) extends Suoritus with Vahvistukseton
@@ -90,3 +90,11 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
   kuvaus: LocalizedString,
 ) extends PaikallinenKoulutusmoduuli
 
+@Title("Arviointi")
+case class OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi(
+  @KoodistoKoodiarvo("H")
+  @KoodistoKoodiarvo("S")
+  arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"), // TODO: oma koodisto?
+  kuvaus: Option[LocalizedString],
+  päivä: LocalDate
+) extends ArviointiPäivämäärällä with YleissivistävänKoulutuksenArviointi

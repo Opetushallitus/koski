@@ -29,7 +29,7 @@ object VapaaSivistystyöExample {
       toimipiste = varsinaisSuomenKansanopistoToimipiste,
       tyyppi = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"), // TODO, oikea tyyppi
       koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(perusteenDiaarinumero = Some("OPH-1234-2020")), // TODO: Oikea perusteen diaarinumero, kunhan oikea diaarinumero saatavilla ja sisältö tuotu Kosken mockdataan
-      vahvistus = None,
+      vahvistus = vahvistusPaikkakunnalla(päivä = date(2022, 5, 31)),
       osasuoritukset = Some(List(
         OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus(
           tyyppi = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"), // TODO, oikea tyyppi
@@ -44,7 +44,11 @@ object VapaaSivistystyöExample {
                 tunniste = PaikallinenKoodi(koodiarvo = "A01", nimi = "Arjen rahankäyttö"),
                 kuvaus = "Arjen rahankäyttö"
               ),
-              arviointi = None
+              arviointi = Some(List(OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi(
+                arvosana = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
+                kuvaus = None,
+                päivä = date(2021, 10, 30)
+              )))
             )
           ))
         )
