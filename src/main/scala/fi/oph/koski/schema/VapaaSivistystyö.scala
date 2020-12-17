@@ -45,7 +45,7 @@ case class OppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenSuoritus(
   // @KoodistoKoodiarvo("TODO")
   tyyppi: Koodistokoodiviite, // = Koodistokoodiviite(koodiarvo = "TODO", koodistoUri = "suorituksentyyppi")
   koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus,
-  vahvistus: Option[Vahvistus],
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla],
   @Description("Koulutuksen opetuskieli")
   @Title("Opetuskieli")
   suorituskieli: Koodistokoodiviite,
