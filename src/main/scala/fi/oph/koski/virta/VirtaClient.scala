@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.config.{Environment, SecretsManager}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpConnectionException}
-import fi.oph.koski.log.{Logging, TimedProxy}
+import fi.oph.koski.log.{Logging, NotLoggable, TimedProxy}
 import fi.oph.koski.util.Files
 
 import scala.xml.{Elem, Node}
@@ -157,7 +157,7 @@ sealed trait VirtaHakuehto
 case class VirtaHakuehtoHetu(hetu: String) extends VirtaHakuehto
 case class VirtaHakuehtoKansallinenOppijanumero(numero: String) extends VirtaHakuehto
 
-case class VirtaConfig(serviceUrl: String, jarjestelma: String, tunnus: String, avain: String)
+case class VirtaConfig(serviceUrl: String, jarjestelma: String, tunnus: String, avain: String) extends NotLoggable
 
 object VirtaConfig {
   // Virta test environment config, see http://virtawstesti.csc.fi/

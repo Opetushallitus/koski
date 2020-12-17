@@ -12,7 +12,7 @@ import fi.oph.koski.http.{ErrorDetail, HttpStatus, HttpStatusException, KoskiErr
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViite}
 import fi.oph.koski.koskiuser.AccessType
 import fi.oph.koski.koskiuser.KoskiSession._
-import fi.oph.koski.log.Logging
+import fi.oph.koski.log.{Logging, NotLoggable}
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, RemoteOrganisaatioRepository}
 import fi.oph.koski.schema._
 import fi.oph.koski.userdirectory.Password
@@ -23,7 +23,7 @@ import scalaz.concurrent.Task
 import scala.concurrent.duration._
 import scala.language.postfixOps
 
-case class VirkailijaCredentials(username: String, password: Password)
+case class VirkailijaCredentials(username: String, password: String) extends NotLoggable
 
 object VirkailijaCredentials {
   def fromSecretsManager: VirkailijaCredentials = {
@@ -34,7 +34,7 @@ object VirkailijaCredentials {
   def fromConfig(config: Config): VirkailijaCredentials = {
     VirkailijaCredentials(
       config.getString("opintopolku.virkailija.username"),
-      Password(config.getString("opintopolku.virkailija.password"))
+      config.getString("opintopolku.virkailija.password")
     )
   }
 }
@@ -98,7 +98,7 @@ trait HealthCheck extends Logging {
       VirkailijaCredentials.fromConfig(application.config)
     }
     def authenticate = try {
-      Some(application.directoryClient.authenticate(username, password))
+      Some(application.directoryClient.authenticate(username, Password(password)))
     } catch {
       case e: CasClientException => None
     }

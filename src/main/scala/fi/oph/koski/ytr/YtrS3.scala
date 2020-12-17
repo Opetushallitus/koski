@@ -1,7 +1,8 @@
 package fi.oph.koski.ytr
 
 import com.typesafe.config.Config
-import fi.oph.koski.config.{SecretsManager, Environment}
+import fi.oph.koski.config.{Environment, SecretsManager}
+import fi.oph.koski.log.NotLoggable
 import software.amazon.awssdk.auth.credentials.{AwsBasicCredentials, StaticCredentialsProvider}
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client
@@ -9,7 +10,7 @@ import software.amazon.awssdk.services.sts.StsClient
 import software.amazon.awssdk.services.sts.auth.StsAssumeRoleCredentialsProvider
 import software.amazon.awssdk.services.sts.model.AssumeRoleRequest
 
-case class YtrS3Config(accessKeyId: String, secretAccessKey: String, roleArn: String, externalId: String, bucket: String)
+case class YtrS3Config(accessKeyId: String, secretAccessKey: String, roleArn: String, externalId: String, bucket: String) extends NotLoggable
 
 class YtrS3(config: Config) {
   private val YtrS3Config(accessKeyId, secretAccessKey, roleArn, externalId, ytrS3Bucket) = {
