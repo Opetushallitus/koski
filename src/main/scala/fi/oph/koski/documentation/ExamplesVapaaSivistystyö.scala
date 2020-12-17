@@ -30,6 +30,8 @@ object VapaaSivistystyöExample {
       tyyppi = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"), // TODO, oikea tyyppi
       koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(perusteenDiaarinumero = Some("OPH-1234-2020")), // TODO: Oikea perusteen diaarinumero, kunhan oikea diaarinumero saatavilla ja sisältö tuotu Kosken mockdataan
       vahvistus = vahvistusPaikkakunnalla(päivä = date(2022, 5, 31)),
+      suorituskieli = suomenKieli,
+      todistuksellaNäkyvätLisätiedot = Some("Opinnot suoritettu pandemian vuoksi etäopintoina"),
       osasuoritukset = Some(List(
         OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus(
           tyyppi = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"), // TODO, oikea tyyppi

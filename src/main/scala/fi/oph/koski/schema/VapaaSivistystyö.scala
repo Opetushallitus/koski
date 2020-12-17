@@ -38,7 +38,7 @@ case class VapaanSivistystyönOpiskeluoikeusjakso(
 
 case class VapaanSivistystyönOpiskeluoikeudenLisätiedot() extends OpiskeluoikeudenLisätiedot
 
-trait VapaanSivistystyönPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus
+trait VapaanSivistystyönPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen with Todistus with Arvioinniton
 
 case class OppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenSuoritus(
   toimipiste: Toimipiste,
@@ -46,9 +46,14 @@ case class OppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenSuoritus(
   tyyppi: Koodistokoodiviite, // = Koodistokoodiviite(koodiarvo = "TODO", koodistoUri = "suorituksentyyppi")
   koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus,
   vahvistus: Option[Vahvistus],
+  @Description("Koulutuksen opetuskieli")
+  @Title("Opetuskieli")
+  suorituskieli: Koodistokoodiviite,
   @Title("Osaamiskokonaisuudet")
-  override val osasuoritukset: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus]]
-) extends VapaanSivistystyönPäätasonSuoritus with Arvioinniton
+  override val osasuoritukset: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus]],
+  @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
+) extends VapaanSivistystyönPäätasonSuoritus
 
 @Description("Vapaan sivistystyön oppivelvollisuuskoulutuksen tunnistetiedot")
 case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(

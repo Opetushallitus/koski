@@ -1509,5 +1509,6 @@
   "Osaamiskokonaisuudet" : "Osaamiskokonaisuudet",
   "Opintokokonaisuus" : "Opintokokonaisuus",
   "description:Käytä aina merkkijonoa vstsuuntautumisopinnot" : "Käytä aina merkkijonoa vstsuuntautumisopinnot",
-  "description:Laajuus lasketaan yhteen opintokokonaisuuksien laajuuksista..." : "Laajuus lasketaan yhteen opintokokonaisuuksien laajuuksista automaattisesti tietoja siirrettäessä"
+  "description:Laajuus lasketaan yhteen opintokokonaisuuksien laajuuksista..." : "Laajuus lasketaan yhteen opintokokonaisuuksien laajuuksista automaattisesti tietoja siirrettäessä",
+  "description:Koulutuksen opetuskieli" : "Koulutuksen opetuskieli"
 }

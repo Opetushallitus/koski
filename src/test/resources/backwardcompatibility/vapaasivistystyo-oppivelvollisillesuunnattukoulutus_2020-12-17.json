@@ -121,6 +121,13 @@
           }
         } ]
       },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -226,7 +233,10 @@
           "koodiarvo" : "lukionoppimaara",
           "koodistoUri" : "suorituksentyyppi"
         }
-      } ]
+      } ],
+      "todistuksellaNäkyvätLisätiedot" : {
+        "fi" : "Opinnot suoritettu pandemian vuoksi etäopintoina"
+      }
     } ],
     "tyyppi" : {
       "koodiarvo" : "vapaansivistystyonkoulutus",
