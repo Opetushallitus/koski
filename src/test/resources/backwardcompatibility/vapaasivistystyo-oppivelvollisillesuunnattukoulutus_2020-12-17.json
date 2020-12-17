@@ -45,22 +45,37 @@
         },
         "perusteenDiaarinumero" : "OPH-1234-2020"
       },
-      "osaamiskokonaisuudet" : [ {
-        "tunniste" : {
-          "koodiarvo" : "1002",
-          "koodistoUri" : "opintokokonaisuusnimet"
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "1002",
+            "koodistoUri" : "opintokokonaisuusnimet"
+          },
+          "kuvaus" : {
+            "fi" : "TODO"
+          }
         },
         "osasuoritukset" : [ {
-          "tunniste" : {
-            "koodiarvo" : "A01",
-            "nimi" : {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "A01",
+              "nimi" : {
+                "fi" : "Arjen rahankäyttö"
+              }
+            },
+            "kuvaus" : {
               "fi" : "Arjen rahankäyttö"
             }
           },
-          "kuvaus" : {
-            "fi" : "Arjen rahankäyttö"
+          "tyyppi" : {
+            "koodiarvo" : "lukionoppimaara",
+            "koodistoUri" : "suorituksentyyppi"
           }
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppimaara",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       } ]
     } ],
     "tyyppi" : {

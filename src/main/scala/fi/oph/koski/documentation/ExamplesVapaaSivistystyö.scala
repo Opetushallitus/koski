@@ -25,20 +25,25 @@ object VapaaSivistystyöExample {
     )),
     lisätiedot = None,
     oppilaitos = Some(varsinaisSuomenKansanopisto),
-    suoritukset = List(OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
+    suoritukset = List(OppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenSuoritus(
       toimipiste = varsinaisSuomenKansanopistoToimipiste,
       tyyppi = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"), // TODO, oikea tyyppi
       koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(perusteenDiaarinumero = Some("OPH-1234-2020")), // TODO: Oikea perusteen diaarinumero, kunhan oikea diaarinumero saatavilla ja sisältö tuotu Kosken mockdataan
-      arviointi = None,
       vahvistus = None,
-      osaamiskokonaisuudet = Some(List(
-        OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus(
-          tunniste = Koodistokoodiviite("1002", "opintokokonaisuusnimet"),
-          arviointi = None,
+      osasuoritukset = Some(List(
+        OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus(
+          tyyppi = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"), // TODO, oikea tyyppi
+          koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus(
+            tunniste = Koodistokoodiviite("1002", "opintokokonaisuusnimet"),
+            kuvaus = "TODO"
+          ),
           osasuoritukset = Some(List(
-            OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
-              tunniste = PaikallinenKoodi(koodiarvo = "A01", nimi = "Arjen rahankäyttö"),
-              kuvaus = "Arjen rahankäyttö",
+            OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus(
+              tyyppi = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"), // TODO, oikea tyyppi
+              koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
+                tunniste = PaikallinenKoodi(koodiarvo = "A01", nimi = "Arjen rahankäyttö"),
+                kuvaus = "Arjen rahankäyttö"
+              ),
               arviointi = None
             )
           ))

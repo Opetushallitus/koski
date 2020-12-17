@@ -1,8 +1,8 @@
 package fi.oph.koski.schema
 
-import fi.oph.scalaschema.annotation.{Description, MaxItems}
-
+import fi.oph.scalaschema.annotation.{Description, MaxItems, Title}
 import java.time.{LocalDate, LocalDateTime}
+
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
 
 @Description("Vapaan sivistystyön koulutuksen opiskeluoikeus")
@@ -40,27 +40,15 @@ case class VapaanSivistystyönOpiskeluoikeudenLisätiedot() extends Opiskeluoike
 
 trait VapaanSivistystyönPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus
 
-case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
+case class OppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenSuoritus(
   toimipiste: Toimipiste,
-  tyyppi: Koodistokoodiviite,
+  // @KoodistoKoodiarvo("TODO")
+  tyyppi: Koodistokoodiviite, // = Koodistokoodiviite(koodiarvo = "TODO", koodistoUri = "suorituksentyyppi")
   koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus,
-  arviointi: Option[List[Arviointi]],
   vahvistus: Option[Vahvistus],
-  osaamiskokonaisuudet: Option[List[OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus]]
-) extends VapaanSivistystyönPäätasonSuoritus
-
-case class OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus(
-  @KoodistoUri("opintokokonaisuusnimet")
-  tunniste: Koodistokoodiviite,
-  arviointi: Option[List[Arviointi]],
-  osasuoritukset: Option[List[OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus]]
-)
-
-case class OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
-  tunniste: PaikallinenKoodi,
-  kuvaus: LocalizedString,
-  arviointi: Option[List[Arviointi]]
-) extends PaikallinenKoulutusmoduuli
+  @Title("Osaamiskokonaisuudet")
+  override val osasuoritukset: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus]]
+) extends VapaanSivistystyönPäätasonSuoritus with Arvioinniton
 
 @Description("Vapaan sivistystyön oppivelvollisuuskoulutuksen tunnistetiedot")
 case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(
@@ -69,3 +57,32 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(
   perusteenDiaarinumero: Option[String],
   koulutustyyppi: Option[Koodistokoodiviite] = None
 ) extends DiaarinumerollinenKoulutus with Tutkinto with Laajuudeton
+
+// TODO: tämän rinnalle valinnaiset suuntautumisopinnot
+case class OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus(
+  @Title("Osaamiskokokonaisuus")
+  koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus,
+  override val osasuoritukset: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus]],
+  // @KoodistoKoodiarvo("TODO")
+  tyyppi: Koodistokoodiviite // = Koodistokoodiviite(koodiarvo = "TODO", koodistoUri = "suorituksentyyppi")
+) extends Suoritus with Vahvistukseton with Arvioinniton with Välisuoritus
+
+case class OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus(
+  @KoodistoUri("opintokokonaisuusnimet")
+  tunniste: Koodistokoodiviite,
+  kuvaus: LocalizedString
+) extends KoodistostaLöytyväKoulutusmoduuli
+
+case class OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus(
+  @Title("Opintokokonaisuus")
+  koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus,
+  arviointi: Option[List[Arviointi]], // TODO: oma arviointiluokka
+  // @KoodistoKoodiarvo("TODO")
+  tyyppi: Koodistokoodiviite // = Koodistokoodiviite(koodiarvo = "TODO", koodistoUri = "suorituksentyyppi")
+) extends Suoritus with Vahvistukseton
+
+case class OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
+  tunniste: PaikallinenKoodi,
+  kuvaus: LocalizedString,
+) extends PaikallinenKoulutusmoduuli
+
