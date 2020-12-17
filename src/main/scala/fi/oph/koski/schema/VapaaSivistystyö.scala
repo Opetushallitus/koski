@@ -123,6 +123,5 @@ case class OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArvio
   @KoodistoKoodiarvo("H")
   @KoodistoKoodiarvo("S")
   arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"), // TODO: oma koodisto?
-  kuvaus: Option[LocalizedString],
   päivä: LocalDate
 ) extends ArviointiPäivämäärällä with YleissivistävänKoulutuksenArviointi
