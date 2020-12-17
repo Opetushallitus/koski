@@ -1507,5 +1507,6 @@
   "Osaamiskokokonaisuus" : "Osaamiskokokonaisuus",
   "description:Vapaan sivistystyön koulutuksen opiskeluoikeus" : "Vapaan sivistystyön koulutuksen opiskeluoikeus",
   "Osaamiskokonaisuudet" : "Osaamiskokonaisuudet",
-  "Opintokokonaisuus" : "Opintokokonaisuus"
+  "Opintokokonaisuus" : "Opintokokonaisuus",
+  "description:Käytä aina merkkijonoa vstsuuntautumisopinnot" : "Käytä aina merkkijonoa vstsuuntautumisopinnot"
 }

@@ -1,9 +1,9 @@
 package fi.oph.koski.schema
 
-import fi.oph.scalaschema.annotation.{Description, MaxItems, Title}
+import fi.oph.scalaschema.annotation.{DefaultValue, Description, MaxItems, Title}
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
+import fi.oph.koski.schema.annotation.{Hidden, KoodistoKoodiarvo, KoodistoUri}
 
 @Description("Vapaan sivistystyön koulutuksen opiskeluoikeus")
 case class VapaanSivistystyönOpiskeluoikeus(
@@ -62,18 +62,39 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(
 @Title("Osaamiskokonaisuuden suoritus")
 case class OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus(
   @Title("Osaamiskokokonaisuus")
-  koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus,
+  koulutusmoduuli: OppivelvollisilleSuunnatunVapaanSivistystyönKoulutus,
   override val osasuoritukset: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus]],
   // @KoodistoKoodiarvo("TODO")
   tyyppi: Koodistokoodiviite // = Koodistokoodiviite(koodiarvo = "TODO", koodistoUri = "suorituksentyyppi")
 ) extends Suoritus with Vahvistukseton with Arvioinniton with Välisuoritus
+
+trait OppivelvollisilleSuunnatunVapaanSivistystyönKoulutus extends Koulutusmoduuli
+
+@Title("Valinnaiset suuntautumisopinnot")
+case class OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopinnot(
+  @Hidden
+  tunniste: OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenKoodi = OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenKoodi()
+) extends OppivelvollisilleSuunnatunVapaanSivistystyönKoulutus {
+  override def nimi: LocalizedString = LocalizedString.empty
+}
+
+// TODO: Pitäisikö tälle kuitenkin tehdä koodisto, jossa toistaiseksi olisi vain yksi arvo suuntautumisopinnoille?
+// Silloin voisi jatkossa helpommin lisätä muita vastaavia asioita tarvittaessa osaamiskokonaisuuksien rinnalle.
+case class OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenKoodi(
+  @Description("Käytä aina merkkijonoa vstsuuntautumisopinnot")
+  @DefaultValue("vstsuuntautumisopinnot")
+  koodiarvo: String = "vstsuuntautumisopinnot"
+) extends PaikallinenKoodiviite {
+  override def nimi: LocalizedString = LocalizedString.empty
+}
 
 @Title("Osaamiskokonaisuus")
 case class OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus(
   @KoodistoUri("opintokokonaisuusnimet")
   tunniste: Koodistokoodiviite,
   kuvaus: LocalizedString
-) extends KoodistostaLöytyväKoulutusmoduuli
+) extends OppivelvollisilleSuunnatunVapaanSivistystyönKoulutus with KoodistostaLöytyväKoulutusmoduuli
+
 
 @Title("Opintokokonaisuuden suoritus")
 case class OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus(

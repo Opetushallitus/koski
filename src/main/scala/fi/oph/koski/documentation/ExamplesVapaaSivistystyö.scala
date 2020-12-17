@@ -51,6 +51,24 @@ object VapaaSivistystyöExample {
               )))
             )
           ))
+        ),
+        OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus(
+          tyyppi = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"), // TODO, oikea tyyppi
+          koulutusmoduuli = OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopinnot(),
+          osasuoritukset = Some(List(
+            OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus(
+              tyyppi = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"), // TODO, oikea tyyppi
+              koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
+                tunniste = PaikallinenKoodi(koodiarvo = "ATX01", nimi = "Tietokoneen huolto"),
+                kuvaus = "Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet"
+              ),
+              arviointi = Some(List(OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi(
+                arvosana = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
+                kuvaus = None,
+                päivä = date(2021, 11, 12)
+              )))
+            )
+          ))
         )
       ))
     ))
