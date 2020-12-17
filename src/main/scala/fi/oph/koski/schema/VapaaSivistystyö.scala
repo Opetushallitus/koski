@@ -59,6 +59,7 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(
 ) extends DiaarinumerollinenKoulutus with Tutkinto with Laajuudeton
 
 // TODO: tämän rinnalle valinnaiset suuntautumisopinnot
+@Title("Osaamiskokonaisuuden suoritus")
 case class OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus(
   @Title("Osaamiskokokonaisuus")
   koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus,
@@ -67,12 +68,14 @@ case class OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuor
   tyyppi: Koodistokoodiviite // = Koodistokoodiviite(koodiarvo = "TODO", koodistoUri = "suorituksentyyppi")
 ) extends Suoritus with Vahvistukseton with Arvioinniton with Välisuoritus
 
+@Title("Osaamiskokonaisuus")
 case class OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus(
   @KoodistoUri("opintokokonaisuusnimet")
   tunniste: Koodistokoodiviite,
   kuvaus: LocalizedString
 ) extends KoodistostaLöytyväKoulutusmoduuli
 
+@Title("Opintokokonaisuuden suoritus")
 case class OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus(
   @Title("Opintokokonaisuus")
   koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus,
@@ -81,6 +84,7 @@ case class OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuori
   tyyppi: Koodistokoodiviite // = Koodistokoodiviite(koodiarvo = "TODO", koodistoUri = "suorituksentyyppi")
 ) extends Suoritus with Vahvistukseton
 
+@Title("Opintokokonaisuus")
 case class OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
   tunniste: PaikallinenKoodi,
   kuvaus: LocalizedString,
