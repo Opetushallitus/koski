@@ -126,9 +126,6 @@
           "tunniste" : {
             "koodiarvo" : "1002",
             "koodistoUri" : "opintokokonaisuusnimet"
-          },
-          "kuvaus" : {
-            "fi" : "TODO"
           }
         },
         "osasuoritukset" : [ {
@@ -141,6 +138,23 @@
             },
             "kuvaus" : {
               "fi" : "Arjen rahankäyttö"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
             }
           },
           "arviointi" : [ {
@@ -176,6 +190,23 @@
             },
             "kuvaus" : {
               "fi" : "Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet"
+            },
+            "laajuus" : {
+              "arvo" : 5.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
             }
           },
           "arviointi" : [ {

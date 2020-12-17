@@ -41,7 +41,8 @@ object VapaaSivistystyöExample {
               tyyppi = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"), // TODO, oikea tyyppi
               koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
                 tunniste = PaikallinenKoodi(koodiarvo = "A01", nimi = "Arjen rahankäyttö"),
-                kuvaus = "Arjen rahankäyttö"
+                kuvaus = "Arjen rahankäyttö",
+                laajuus = laajuus(2.0)
               ),
               arviointi = Some(List(OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi(
                 arvosana = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
@@ -59,7 +60,8 @@ object VapaaSivistystyöExample {
               tyyppi = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"), // TODO, oikea tyyppi
               koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
                 tunniste = PaikallinenKoodi(koodiarvo = "ATX01", nimi = "Tietokoneen huolto"),
-                kuvaus = "Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet"
+                kuvaus = "Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet",
+                laajuus = laajuus(5.0)
               ),
               arviointi = Some(List(OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi(
                 arvosana = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
@@ -86,4 +88,5 @@ object VapaaSivistystyöExampleData {
 
   lazy val varsinaisSuomenKansanopistoToimipiste: Toimipiste = Toimipiste(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste)
 
+  def laajuus(arvo: Double): LaajuusOpintopisteissä = LaajuusOpintopisteissä(arvo = arvo, yksikkö = laajuusOpintopisteissä)
 }

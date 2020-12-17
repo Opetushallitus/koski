@@ -80,6 +80,8 @@ trait PaikallinenKoulutusmoduuli extends Koulutusmoduuli {
 
 trait PaikallinenKoulutusmoduuliValinnainenLaajuus extends PaikallinenKoulutusmoduuli with KoulutusmoduuliValinnainenLaajuus
 
+trait PaikallinenKoulutusmoduuliPakollinenLaajuus extends PaikallinenKoulutusmoduuli with KoulutusmoduuliPakollinenLaajuus
+
 trait Valinnaisuus {
   @Description("Onko pakollinen osa tutkinnossa (true/false)")
   def pakollinen: Boolean

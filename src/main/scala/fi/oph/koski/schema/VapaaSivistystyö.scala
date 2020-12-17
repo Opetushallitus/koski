@@ -68,18 +68,20 @@ case class OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuor
   tyyppi: Koodistokoodiviite // = Koodistokoodiviite(koodiarvo = "TODO", koodistoUri = "suorituksentyyppi")
 ) extends Suoritus with Vahvistukseton with Arvioinniton with Välisuoritus
 
-trait OppivelvollisilleSuunnatunVapaanSivistystyönKoulutus extends Koulutusmoduuli
+trait OppivelvollisilleSuunnatunVapaanSivistystyönKoulutus extends KoulutusmoduuliValinnainenLaajuus {
+  @Description("Laajuus lasketaan yhteen opintokokonaisuuksien laajuuksista automaattisesti tietoja siirrettäessä") // TODO: Toteuta tämä
+  def laajuus: Option[LaajuusOpintopisteissä]
+}
 
 @Title("Valinnaiset suuntautumisopinnot")
 case class OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopinnot(
   @Hidden
-  tunniste: OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenKoodi = OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenKoodi()
+  tunniste: OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenKoodi = OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenKoodi(),
+  laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends OppivelvollisilleSuunnatunVapaanSivistystyönKoulutus {
   override def nimi: LocalizedString = LocalizedString.empty
 }
 
-// TODO: Pitäisikö tälle kuitenkin tehdä koodisto, jossa toistaiseksi olisi vain yksi arvo suuntautumisopinnoille?
-// Silloin voisi jatkossa helpommin lisätä muita vastaavia asioita tarvittaessa osaamiskokonaisuuksien rinnalle.
 case class OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenKoodi(
   @Description("Käytä aina merkkijonoa vstsuuntautumisopinnot")
   @DefaultValue("vstsuuntautumisopinnot")
@@ -91,9 +93,9 @@ case class OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumis
 @Title("Osaamiskokonaisuus")
 case class OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus(
   @KoodistoUri("opintokokonaisuusnimet")
-  tunniste: Koodistokoodiviite
+  tunniste: Koodistokoodiviite,
+  laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends OppivelvollisilleSuunnatunVapaanSivistystyönKoulutus with KoodistostaLöytyväKoulutusmoduuli
-
 
 @Title("Opintokokonaisuuden suoritus")
 case class OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus(
@@ -108,7 +110,8 @@ case class OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuori
 case class OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
   tunniste: PaikallinenKoodi,
   kuvaus: LocalizedString,
-) extends PaikallinenKoulutusmoduuli
+  laajuus: LaajuusOpintopisteissä
+) extends PaikallinenKoulutusmoduuliPakollinenLaajuus
 
 @Title("Arviointi")
 case class OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi(
