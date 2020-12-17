@@ -34,6 +34,12 @@ describe('Raporttien luominen', function() {
   var page = RaportitPage()
   var login = LoginPage()
 
+  before(
+    Authentication().login('pää'),
+    page.lataaRaportointikanta,
+    page.odotaRaportointikantaOnLatautunut
+  )
+
   describe('Tietoturva', function() {
     before(Authentication().logout, page.openPage())
 

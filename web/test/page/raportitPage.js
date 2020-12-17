@@ -9,6 +9,30 @@ function RaportitPage() {
         return openPage('/koski/raportit?tilastoraportit=true', predicate)()
       }
     },
+    lataaRaportointikanta: function() {
+      return Q($.ajax({ url: '/koski/api/raportointikanta/load', method: 'get'}))
+    },
+    odotaRaportointikantaOnLatautunut: function () {
+      return api.checkRaportointikantaStatus(30)
+    },
+    checkRaportointikantaStatus: function (retriesLeft) {
+      return api.raportointikantaStatus()
+        .then(function () {})
+        .catch(function (err) {
+          if (err.status == 503) {
+            if (retriesLeft > 0) {
+              return wait.forMilliseconds(1000)().then(function () {return api.checkRaportointikantaStatus(retriesLeft - 1)})
+            } else {
+              throw Error('Timeout: Raportointikanta ei ole latautunut')
+            }
+          } else {
+            throw err
+          }
+        })
+    },
+    raportointikantaStatus: function () {
+      return $.ajax({ url: '/koski/api/raportit/paivitysaika', method: 'get'})
+    },
     odotaRaporttikategoriat: function () {
       return wait.untilVisible(() => S(tabsElementti))
     },
