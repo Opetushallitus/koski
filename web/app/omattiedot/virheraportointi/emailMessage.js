@@ -9,9 +9,8 @@ const VirheraporttiMessage = (() => {
     'Allaoleva teksti on luotu automaattisesti Opintopolun tiedoista. Koulu tarvitsee näitä tietoja pystyäkseen käsittelemään kysymystäsi.'
   )
 
-  const details = (nimi, syntymäaika, oppijaoid) => [
+  const details = (nimi, oppijaoid) => [
     `${t('Nimi')}: ${nimi}`,
-    syntymäaika && `${t('Syntymäaika')}: ${syntymäaika}`,
     `${t('Oppijanumero')}: ${oppijaoid}`
   ].filter(v => !!v).join('\n')
 
