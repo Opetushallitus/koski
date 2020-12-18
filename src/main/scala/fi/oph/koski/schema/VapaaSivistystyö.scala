@@ -1,6 +1,6 @@
 package fi.oph.koski.schema
 
-import fi.oph.scalaschema.annotation.{DefaultValue, Description, MaxItems, Title}
+import fi.oph.scalaschema.annotation.{DefaultValue, Description, MaxItems, MinItems, Title}
 import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.schema.annotation.{Hidden, KoodistoKoodiarvo, KoodistoUri}
@@ -28,13 +28,14 @@ case class VapaanSivistystyönOpiskeluoikeus(
 }
 
 case class VapaanSivistystyönOpiskeluoikeudenTila(
+  @MinItems(1)
   opiskeluoikeusjaksot: List[VapaanSivistystyönOpiskeluoikeusjakso]
 ) extends OpiskeluoikeudenTila
 
 case class VapaanSivistystyönOpiskeluoikeusjakso(
   alku: LocalDate,
   tila: Koodistokoodiviite
-) extends KoskiOpiskeluoikeusjakso
+) extends KoskiSuppeaOpiskeluoikeusjakso
 
 case class VapaanSivistystyönOpiskeluoikeudenLisätiedot() extends OpiskeluoikeudenLisätiedot
 

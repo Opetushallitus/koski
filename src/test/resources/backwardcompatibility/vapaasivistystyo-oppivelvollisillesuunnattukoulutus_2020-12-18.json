@@ -35,7 +35,7 @@
         "oid" : "1.2.246.562.10.78513447389"
       },
       "tyyppi" : {
-        "koodiarvo" : "lukionoppimaara",
+        "koodiarvo" : "vstoppivelvollisillesuunnattukoulutus",
         "koodistoUri" : "suorituksentyyppi"
       },
       "koulutusmoduuli" : {
@@ -159,19 +159,19 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "S",
+              "koodiarvo" : "Hyväksytty",
               "koodistoUri" : "arviointiasteikkovst"
             },
             "päivä" : "2021-10-30",
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "lukionoppimaara",
+            "koodiarvo" : "vstopintokokonaisuus",
             "koodistoUri" : "suorituksentyyppi"
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "lukionoppimaara",
+          "koodiarvo" : "vstosaamiskokonaisuus",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -212,19 +212,19 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "S",
+              "koodiarvo" : "Hyväksytty",
               "koodistoUri" : "arviointiasteikkovst"
             },
             "päivä" : "2021-11-12",
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "lukionoppimaara",
+            "koodiarvo" : "vstopintokokonaisuus",
             "koodistoUri" : "suorituksentyyppi"
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "lukionoppiaine",
+          "koodiarvo" : "vstvalinnainensuuntautuminen",
           "koodistoUri" : "suorituksentyyppi"
         }
       } ],
