@@ -11,11 +11,15 @@ const filterOrgTree = (query, orgs) => {
 }
 
 const filterOrg = query => org => {
-    const children = filterOrgTree(query, org.children)
+    const matches = t(org.nimi).toLowerCase().includes(query)
+    const filteredChildren = filterOrgTree(query, org.children)
+
     return {
         ...org,
-        children,
-        match: children.length > 0 || t(org.nimi).toLowerCase().includes(query)
+        children: matches
+            ? org.children
+            : filteredChildren,
+        match: filteredChildren.length > 0 || matches
     }
 }
 

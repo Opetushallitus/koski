@@ -224,6 +224,47 @@ describe('Raporttien luominen', function() {
     })
   })
 
+  describe('Organisaatiovalitsimen hakutoiminto juuriorganisaatioille', function() {
+    before(
+      Authentication().login('pää'),
+      page.openPage(),
+      page.odotaRaporttikategoriat(),
+      page.valitseRaporttikategoria(5), // Muut
+      page.haeOrganisaatioita('itä-suomen yliopisto')
+    )
+
+    it('Rajaa näkyviin kaikki Itä-Suomen yliopiston toimipaikat', function() {
+      expect(page.valittavatOrganisaatiot()).to.deep.equal([
+        'Itä-Suomen yliopisto',
+        /**/ 'Itä-Suomen yliopisto',
+        /**/ 'Joensuun normaalikoulu',
+        /**/ 'Rantakylän normaalikoulu',
+        /**/ 'Savonlinnan normaalikoulu',
+        /**/ 'Tulliportin normaalikoulu'
+      ])
+    })
+  })
+
+  describe('Organisaatiovalitsimen hakutoiminto toimipisteille', function() {
+    before(
+      Authentication().login('pää'),
+      page.openPage(),
+      page.odotaRaporttikategoriat(),
+      page.valitseRaporttikategoria(5), // Muut
+      page.haeOrganisaatioita('aikuisopisto')
+    )
+
+    it('Rajaa näkyviin kaikki Itä-Suomen yliopiston toimipaikat', function() {
+      expect(page.valittavatOrganisaatiot()).to.deep.equal([
+        'Espoon seudun koulutuskuntayhtymä Omnia',
+        /**/ 'Omnian aikuisopisto',
+        'Helsingin kaupunki',
+        /**/ 'Stadin aikuisopisto',
+        /**/ 'Stadin ammatti- ja aikuisopisto'
+      ])
+    })
+  })
+
   describe('Päivävalitsin', function() {
     before(
       Authentication().login('kalle'),
