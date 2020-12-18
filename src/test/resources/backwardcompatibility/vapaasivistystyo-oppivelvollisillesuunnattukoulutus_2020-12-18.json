@@ -47,13 +47,6 @@
       },
       "vahvistus" : {
         "päivä" : "2022-05-31",
-        "paikkakunta" : {
-          "koodiarvo" : "179",
-          "nimi" : {
-            "fi" : "Jyväskylä"
-          },
-          "koodistoUri" : "kunta"
-        },
         "myöntäjäOrganisaatio" : {
           "oid" : "1.2.246.562.10.14613773812",
           "oppilaitosnumero" : {
@@ -167,7 +160,7 @@
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
+              "koodistoUri" : "arviointiasteikkovst"
             },
             "päivä" : "2021-10-30",
             "hyväksytty" : true
@@ -220,7 +213,7 @@
           "arviointi" : [ {
             "arvosana" : {
               "koodiarvo" : "S",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
+              "koodistoUri" : "arviointiasteikkovst"
             },
             "päivä" : "2021-11-12",
             "hyväksytty" : true
