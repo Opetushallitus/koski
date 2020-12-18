@@ -13,7 +13,6 @@ case class VapaanSivistystyönOpiskeluoikeus(
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija] = None,
-  sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
   arvioituPäättymispäivä: Option[LocalDate] = None,
   tila: VapaanSivistystyönOpiskeluoikeudenTila,
   lisätiedot: Option[VapaanSivistystyönOpiskeluoikeudenLisätiedot] = None,
@@ -25,6 +24,7 @@ case class VapaanSivistystyönOpiskeluoikeus(
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija): KoskeenTallennettavaOpiskeluoikeus = this.copy(koulutustoimija = Some(koulutustoimija))
   override def withOppilaitos(oppilaitos: Oppilaitos): KoskeenTallennettavaOpiskeluoikeus = this.copy(oppilaitos = Some(oppilaitos))
+  override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
 }
 
 case class VapaanSivistystyönOpiskeluoikeudenTila(
