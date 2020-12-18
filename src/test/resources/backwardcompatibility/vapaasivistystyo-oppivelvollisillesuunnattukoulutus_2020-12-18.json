@@ -169,6 +169,394 @@
             "koodiarvo" : "vstopintokokonaisuus",
             "koodistoUri" : "suorituksentyyppi"
           }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "M01",
+              "nimi" : {
+                "fi" : "Mielen liikkeet"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Mielen liikkeet ja niiden havaitseminen"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Hyväksytty",
+              "koodistoUri" : "arviointiasteikkovst"
+            },
+            "päivä" : "2021-11-02",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "vstopintokokonaisuus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "vstosaamiskokonaisuus",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "1003",
+            "koodistoUri" : "opintokokonaisuusnimet"
+          }
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "OP01",
+              "nimi" : {
+                "fi" : "Oman opiskelutyyli"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Oman opiskelutyylin analysointi ja tavoitteiden asettaminen"
+            },
+            "laajuus" : {
+              "arvo" : 4.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Hyväksytty",
+              "koodistoUri" : "arviointiasteikkovst"
+            },
+            "päivä" : "2021-10-30",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "vstopintokokonaisuus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "vstosaamiskokonaisuus",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "1004",
+            "koodistoUri" : "opintokokonaisuusnimet"
+          }
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "V100",
+              "nimi" : {
+                "fi" : "Viestinnän perusteet"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Viestiminen eri tyyleillä ja sillä vaikuttaminen"
+            },
+            "laajuus" : {
+              "arvo" : 4.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Hyväksytty",
+              "koodistoUri" : "arviointiasteikkovst"
+            },
+            "päivä" : "2021-10-30",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "vstopintokokonaisuus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "vstosaamiskokonaisuus",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "1005",
+            "koodistoUri" : "opintokokonaisuusnimet"
+          }
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Mat01",
+              "nimi" : {
+                "fi" : "Matematiikka arjessa"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Matematiikan jokapäiväinen käyttö"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Hyväksytty",
+              "koodistoUri" : "arviointiasteikkovst"
+            },
+            "päivä" : "2021-10-30",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "vstopintokokonaisuus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Mat04",
+              "nimi" : {
+                "fi" : "Geometria"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Geometrian perusteet"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Hyväksytty",
+              "koodistoUri" : "arviointiasteikkovst"
+            },
+            "päivä" : "2021-10-30",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "vstopintokokonaisuus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Mat06",
+              "nimi" : {
+                "fi" : "Trigonometria"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Trigonometrian perusteet"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Hylätty",
+              "koodistoUri" : "arviointiasteikkovst"
+            },
+            "päivä" : "2021-12-10",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "vstopintokokonaisuus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "vstosaamiskokonaisuus",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "1006",
+            "koodistoUri" : "opintokokonaisuusnimet"
+          }
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "KANS200",
+              "nimi" : {
+                "fi" : "Kansalaisuus"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Kansalaisuuden merkitys moniarvoisess yhteiskunnasa"
+            },
+            "laajuus" : {
+              "arvo" : 4.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Hyväksytty",
+              "koodistoUri" : "arviointiasteikkovst"
+            },
+            "päivä" : "2021-10-30",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "vstopintokokonaisuus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "vstosaamiskokonaisuus",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "1007",
+            "koodistoUri" : "opintokokonaisuusnimet"
+          }
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "CV01",
+              "nimi" : {
+                "fi" : "CV:n laadinta"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "CV:n laadinta ja käyttö työnhaussa"
+            },
+            "laajuus" : {
+              "arvo" : 4.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Hyväksytty",
+              "koodistoUri" : "arviointiasteikkovst"
+            },
+            "päivä" : "2021-10-30",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "vstopintokokonaisuus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
         } ],
         "tyyppi" : {
           "koodiarvo" : "vstosaamiskokonaisuus",
@@ -216,6 +604,88 @@
               "koodistoUri" : "arviointiasteikkovst"
             },
             "päivä" : "2021-11-12",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "vstopintokokonaisuus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "VT02",
+              "nimi" : {
+                "fi" : "Valaisintekniikka"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Valaisinlähteet ja niiden toiminta"
+            },
+            "laajuus" : {
+              "arvo" : 10.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Hyväksytty",
+              "koodistoUri" : "arviointiasteikkovst"
+            },
+            "päivä" : "2021-10-30",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "vstopintokokonaisuus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "TAI01",
+              "nimi" : {
+                "fi" : "Taide työkaluna"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Taiteen käyttö työkaluna"
+            },
+            "laajuus" : {
+              "arvo" : 30.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Hyväksytty",
+              "koodistoUri" : "arviointiasteikkovst"
+            },
+            "päivä" : "2021-10-30",
             "hyväksytty" : true
           } ],
           "tyyppi" : {

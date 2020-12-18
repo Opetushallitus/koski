@@ -78,7 +78,7 @@ case class OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuor
 @Title("Valinnaisten suuntautumisopintojen suoritus")
 case class OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus(
   @Title("Valinnaiset suuntautumisopinnot")
-  koulutusmoduuli: OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopinnot,
+  koulutusmoduuli: OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopinnot = OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopinnot(),
   override val osasuoritukset: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus]],
   @KoodistoKoodiarvo("vstvalinnainensuuntautuminen")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstvalinnainensuuntautuminen", koodistoUri = "suorituksentyyppi")
