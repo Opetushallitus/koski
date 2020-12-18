@@ -5,7 +5,7 @@ import com.typesafe.config.ConfigValueFactory._
 import fi.oph.koski.config.{Environment, SecretsManager}
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.executors.Pools
-import fi.oph.koski.log.Logging
+import fi.oph.koski.log.{Logging, NotLoggable}
 import fi.oph.koski.raportointikanta.Schema
 import fi.oph.koski.util.Futures
 import org.flywaydb.core.Flyway
@@ -15,7 +15,7 @@ import slick.jdbc.PostgresProfile.api._
 
 import scala.sys.process._
 
-case class DatabaseConfig(password: String, dbname: String, port: Int, host: String, username: String)
+case class DatabaseConfig(password: String, dbname: String, port: Int, host: String, username: String) extends NotLoggable
 
 object KoskiDatabase {
   type DB = PostgresProfile.backend.DatabaseDef

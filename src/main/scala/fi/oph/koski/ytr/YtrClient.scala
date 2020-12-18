@@ -5,7 +5,7 @@ import fi.oph.koski.config.{Environment, SecretsManager}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{ClientWithBasicAuthentication, Http}
 import fi.oph.koski.json.{JsonResources, JsonSerializer}
-import fi.oph.koski.log.{Logging, TimedProxy}
+import fi.oph.koski.log.{Logging, NotLoggable, TimedProxy}
 import org.http4s.client.blaze.BlazeClientConfig
 import org.json4s.JValue
 
@@ -56,7 +56,7 @@ case class RemoteYtrClient(rootUrl: String, user: String, password: String, inse
   }
 }
 
-case class YtrConfig(insecure: Boolean, username: String, password: String, url: String)
+case class YtrConfig(insecure: Boolean, username: String, password: String, url: String) extends NotLoggable
 
 object YtrConfig {
   def fromConfig(config: Config): YtrConfig = YtrConfig(
