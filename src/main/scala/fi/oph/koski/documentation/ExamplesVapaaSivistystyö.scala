@@ -47,7 +47,7 @@ object VapaaSivistystyöExample {
                 laajuus = laajuus(2.0)
               ),
               arviointi = Some(List(OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi(
-                arvosana = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
+                arvosana = Koodistokoodiviite("Hyväksytty", "arviointiasteikkovst"),
                 päivä = date(2021, 10, 30)
               )))
             )
@@ -65,7 +65,7 @@ object VapaaSivistystyöExample {
                 laajuus = laajuus(5.0)
               ),
               arviointi = Some(List(OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi(
-                arvosana = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
+                arvosana = Koodistokoodiviite("Hyväksytty", "arviointiasteikkovst"),
                 päivä = date(2021, 11, 12)
               )))
             )
