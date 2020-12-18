@@ -1310,4 +1310,64 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstoppivelvollisillesuunnattukoulutus",
+  "koodiArvo" : "vstoppivelvollisillesuunnattukoulutus",
+  "metadata" : [ {
+    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön koulutus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön koulutus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön koulutus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstosaamiskokonaisuus",
+  "koodiArvo" : "vstosaamiskokonaisuus",
+  "metadata" : [ {
+    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön osaamiskokonaisuus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön osaamiskokonaisuus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön osaamiskokonaisuus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstopintokokonaisuus",
+  "koodiArvo" : "vstopintokokonaisuus",
+  "metadata" : [ {
+    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön opintokokonaisuus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön opintokokonaisuus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön opintokokonaisuus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstvalinnainensuuntautuminen",
+  "koodiArvo" : "vstvalinnainensuuntautuminen",
+  "metadata" : [ {
+    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön valinnainen suuntautumisopinto",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön valinnainen suuntautumisopinto",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön valinnainen suuntautumisopinto",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]

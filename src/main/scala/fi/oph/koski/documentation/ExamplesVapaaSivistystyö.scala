@@ -27,20 +27,20 @@ object VapaaSivistystyöExample {
     oppilaitos = Some(varsinaisSuomenKansanopisto),
     suoritukset = List(OppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenSuoritus(
       toimipiste = varsinaisSuomenKansanopistoToimipiste,
-      tyyppi = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"), // TODO, oikea tyyppi
+      tyyppi = Koodistokoodiviite("vstoppivelvollisillesuunnattukoulutus", koodistoUri = "suorituksentyyppi"),
       koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(perusteenDiaarinumero = Some("OPH-1234-2020")), // TODO: Oikea perusteen diaarinumero, kunhan oikea diaarinumero saatavilla ja sisältö tuotu Kosken mockdataan
       vahvistus = vahvistus(päivä = date(2022, 5, 31)),
       suorituskieli = suomenKieli,
       todistuksellaNäkyvätLisätiedot = Some("Opinnot suoritettu pandemian vuoksi etäopintoina"),
       osasuoritukset = Some(List(
         OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus(
-          tyyppi = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"), // TODO, oikea tyyppi
+          tyyppi = Koodistokoodiviite("vstosaamiskokonaisuus", koodistoUri = "suorituksentyyppi"),
           koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus(
             tunniste = Koodistokoodiviite("1002", "opintokokonaisuusnimet")
           ),
           osasuoritukset = Some(List(
             OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus(
-              tyyppi = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"), // TODO, oikea tyyppi
+              tyyppi = Koodistokoodiviite("vstopintokokonaisuus", koodistoUri = "suorituksentyyppi"),
               koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
                 tunniste = PaikallinenKoodi(koodiarvo = "A01", nimi = "Arjen rahankäyttö"),
                 kuvaus = "Arjen rahankäyttö",
@@ -54,11 +54,11 @@ object VapaaSivistystyöExample {
           ))
         ),
         OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus(
-          tyyppi = Koodistokoodiviite("lukionoppiaine", koodistoUri = "suorituksentyyppi"), // TODO, oikea tyyppi
+          tyyppi = Koodistokoodiviite("vstvalinnainensuuntautuminen", koodistoUri = "suorituksentyyppi"),
           koulutusmoduuli = OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopinnot(),
           osasuoritukset = Some(List(
             OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus(
-              tyyppi = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"), // TODO, oikea tyyppi
+              tyyppi = Koodistokoodiviite("vstopintokokonaisuus", koodistoUri = "suorituksentyyppi"),
               koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
                 tunniste = PaikallinenKoodi(koodiarvo = "ATX01", nimi = "Tietokoneen huolto"),
                 kuvaus = "Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet",
