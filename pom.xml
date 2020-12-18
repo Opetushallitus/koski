@@ -298,7 +298,7 @@
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk-sts</artifactId>
-      <version>1.11.894</version>
+      <version>1.11.922</version>
     </dependency>
     <!-- test deps -->
     <dependency>
