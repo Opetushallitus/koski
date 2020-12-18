@@ -6,7 +6,11 @@ import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 class HealthCheckApiServlet(implicit val application: KoskiApplication) extends ApiServlet with NoCache with Unauthenticated {
   get("/") {
-    renderStatus(application.healthCheck.healthcheck)
+    renderStatus(application.healthCheck.healthcheckWithExternalSystems)
+  }
+
+  get("/internal") {
+    renderStatus(application.healthCheck.internalHealthcheck)
   }
 }
 
