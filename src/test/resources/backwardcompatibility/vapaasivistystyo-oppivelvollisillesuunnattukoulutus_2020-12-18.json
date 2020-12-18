@@ -184,7 +184,8 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "vstsuuntautumisopinnot"
+            "koodiarvo" : "valinnaisetsuuntautumisopinnot",
+            "koodistoUri" : "vstmuutopinnot"
           }
         },
         "osasuoritukset" : [ {
@@ -230,7 +231,7 @@
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "lukionoppimaara",
+          "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       } ],

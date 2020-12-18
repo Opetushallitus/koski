@@ -71,7 +71,8 @@ object Koodistot {
     KoodistoAsetus("perusopetuksentukimuoto"),
     KoodistoAsetus("suorituksentyyppi"),
     KoodistoAsetus("tutkinnonosatvalinnanmahdollisuus"),
-    KoodistoAsetus("uskonnonoppimaara")
+    KoodistoAsetus("uskonnonoppimaara"),
+    KoodistoAsetus("vstmuutopinnot")
   )
   val koskiKoodistot = koskiKoodistoAsetukset.map(_.koodisto)
 

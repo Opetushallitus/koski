@@ -1,0 +1,12 @@
+[ {
+  "koodiUri" : "vstmuutopinnot_valinnaisetsuuntautumisopinnot",
+  "koodiArvo" : "valinnaisetsuuntautumisopinnot",
+  "metadata" : [ {
+    "nimi" : "Valinnaiset suuntautumisopinnot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

@@ -53,8 +53,8 @@ object VapaaSivistystyöExample {
             )
           ))
         ),
-        OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus(
-          tyyppi = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"), // TODO, oikea tyyppi
+        OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus(
+          tyyppi = Koodistokoodiviite("lukionoppiaine", koodistoUri = "suorituksentyyppi"), // TODO, oikea tyyppi
           koulutusmoduuli = OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopinnot(),
           osasuoritukset = Some(List(
             OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus(
