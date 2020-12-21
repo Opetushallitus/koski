@@ -23,7 +23,7 @@ case class ElasticSearch(config: Config) extends Logging {
 
 object ElasticSearch {
   def allFilter(queries: List[Map[String, Any]]): Map[String, AnyRef] = queries match {
-    case Nil => Map.empty
+    case Nil => Map("match_all" -> Map.empty)
     case _ => Map(
       "bool" -> Map(
         "must" -> List(
@@ -34,7 +34,7 @@ object ElasticSearch {
   }
 
   def anyFilter(queries: List[Map[String, Any]]): Map[String, AnyRef] = queries match {
-    case Nil => Map.empty
+    case Nil => Map("match_all" -> Map.empty)
     case _ => Map(
       "bool" -> Map(
         "should" -> List(
