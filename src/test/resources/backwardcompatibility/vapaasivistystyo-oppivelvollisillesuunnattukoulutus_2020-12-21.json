@@ -125,7 +125,7 @@
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "1002",
-            "koodistoUri" : "opintokokonaisuusnimet"
+            "koodistoUri" : "vstosaamiskokonaisuus"
           }
         },
         "osasuoritukset" : [ {
@@ -219,7 +219,7 @@
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "1003",
-            "koodistoUri" : "opintokokonaisuusnimet"
+            "koodistoUri" : "vstosaamiskokonaisuus"
           }
         },
         "osasuoritukset" : [ {
@@ -272,7 +272,7 @@
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "1004",
-            "koodistoUri" : "opintokokonaisuusnimet"
+            "koodistoUri" : "vstosaamiskokonaisuus"
           }
         },
         "osasuoritukset" : [ {
@@ -325,7 +325,7 @@
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "1005",
-            "koodistoUri" : "opintokokonaisuusnimet"
+            "koodistoUri" : "vstosaamiskokonaisuus"
           }
         },
         "osasuoritukset" : [ {
@@ -460,7 +460,7 @@
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "1006",
-            "koodistoUri" : "opintokokonaisuusnimet"
+            "koodistoUri" : "vstosaamiskokonaisuus"
           }
         },
         "osasuoritukset" : [ {
@@ -513,7 +513,7 @@
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "1007",
-            "koodistoUri" : "opintokokonaisuusnimet"
+            "koodistoUri" : "vstosaamiskokonaisuus"
           }
         },
         "osasuoritukset" : [ {

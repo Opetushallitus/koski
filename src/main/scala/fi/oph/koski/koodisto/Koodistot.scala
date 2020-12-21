@@ -53,7 +53,6 @@ object Koodistot {
     KoodistoAsetus("lukionmuutopinnot"),
     KoodistoAsetus("opetusryhma"),
     KoodistoAsetus("opintojenrahoitus"),
-    KoodistoAsetus("opintokokonaisuusnimet"),
     KoodistoAsetus("opiskeluoikeudentyyppi"),
     KoodistoAsetus("oppiaineaidinkielijakirjallisuus"),
     KoodistoAsetus("oppiainediaaidinkieli"),
@@ -73,7 +72,8 @@ object Koodistot {
     KoodistoAsetus("suorituksentyyppi"),
     KoodistoAsetus("tutkinnonosatvalinnanmahdollisuus"),
     KoodistoAsetus("uskonnonoppimaara"),
-    KoodistoAsetus("vstmuutopinnot")
+    KoodistoAsetus("vstmuutopinnot"),
+    KoodistoAsetus("vstosaamiskokonaisuus")
   )
   val koskiKoodistot = koskiKoodistoAsetukset.map(_.koodisto)
 

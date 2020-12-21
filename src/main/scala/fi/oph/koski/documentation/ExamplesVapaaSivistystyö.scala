@@ -110,7 +110,7 @@ object VapaaSivistystyöExampleData {
   ): OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus = {
     OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus(
       koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus(
-        tunniste = Koodistokoodiviite(osaamiskokonaisuusKoodiarvo, "opintokokonaisuusnimet")
+        tunniste = Koodistokoodiviite(osaamiskokonaisuusKoodiarvo, "vstosaamiskokonaisuus")
       ),
       osasuoritukset = Some(opintokokonaisuudet)
     )

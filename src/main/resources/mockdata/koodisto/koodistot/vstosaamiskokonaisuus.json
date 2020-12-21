@@ -1,5 +1,5 @@
 {
-  "koodistoUri": "opintokokonaisuusnimet",
+  "koodistoUri": "vstosaamiskokonaisuus",
   "versio": 1,
   "metadata": [
     {
@@ -18,10 +18,10 @@
       "kuvaus": "Vapaan sivitystyön KOPS-peruste"
     }
   ],
-  "codesGroupUri": "http://opintokokonaisuusnimet",
+  "codesGroupUri": "http://vstosaamiskokonaisuus",
   "voimassaAlkuPvm": "2020-01-01",
   "organisaatioOid": "1.2.246.562.10.00000000001",
   "withinCodes": [],
   "tila": "LUONNOS",
-  "version": 2
+  "version": 0
 }
