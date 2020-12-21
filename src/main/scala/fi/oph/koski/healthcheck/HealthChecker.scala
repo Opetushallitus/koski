@@ -47,7 +47,7 @@ trait HealthCheck extends Logging {
   private val ePerusteet = application.ePerusteet
   private def healthcheckOppija: Either[HttpStatus, Oppija] = application.validator.validateAsJson(Oppija(OidHenkilö(oid), List(perustutkintoOpiskeluoikeusValmis())))
 
-  def healthcheck: HttpStatus = {
+  def healthcheckWithExternalSystems: HttpStatus = {
     logger.debug("Performing healthcheck")
     val oppija = findOrCreateOppija
     val checks: List[() => HttpStatus] = List(
@@ -61,7 +61,15 @@ trait HealthCheck extends Logging {
 
     val status = HttpStatus.fold(checks.par.map(_.apply).toList)
     if (status.isError) {
-      logger.warn(s"Healthcheck status failed $status")
+      logger.warn(s"Healthcheck with external systems status failed $status")
+    }
+    status
+  }
+
+  def internalHealthcheck: HttpStatus = {
+    val status = oppijaCheck(findOrCreateOppija)
+    if (status.isError) {
+      logger.warn(s"Internal healtcheck status failed $status")
     }
     status
   }
