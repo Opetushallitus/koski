@@ -48,7 +48,11 @@ jobs:
         run: docker-compose up -d
 
       - name: Run backend tests
-        run: ./run-backend-tests.sh
+        run: |
+          cd web
+          npm ci
+          cd ..
+          mvn test
 
   run_frontend_tests:
     name: Run frontend tests
@@ -94,4 +98,8 @@ jobs:
         run: docker-compose up -d
 
       - name: Run frontend tests
-        run: ./run-frontend-tests.sh
+        run: |
+          cd web
+          npm ci
+          cd ..
+          mvn test -Pfronttest
