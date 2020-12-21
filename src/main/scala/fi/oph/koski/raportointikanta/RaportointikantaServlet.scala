@@ -10,7 +10,7 @@ class RaportointikantaServlet(implicit val application: KoskiApplication) extend
   private val service = new RaportointikantaService(application)
 
   before() {
-    noRemoteCalls("/status")
+    noRemoteCallsExpectFor("/status")
   }
 
   get("/clear") {
@@ -43,9 +43,4 @@ class RaportointikantaServlet(implicit val application: KoskiApplication) extend
   get("/status") {
     renderObject(service.status)
   }
-
-  private def noRemoteCalls(exceptFor: String) =
-    if (!request.pathInfo.endsWith(exceptFor) && request.getRemoteHost != "127.0.0.1") {
-      haltWithStatus(KoskiErrorCategory.forbidden(""))
-    }
 }

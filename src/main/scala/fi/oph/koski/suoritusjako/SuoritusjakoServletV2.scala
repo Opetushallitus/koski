@@ -17,9 +17,7 @@ import scala.reflect.runtime.universe.TypeTag
 class SuoritusjakoServletV2(implicit val application: KoskiApplication) extends EditorApiServlet with AuthenticationSupport with Logging with NoCache {
 
   before() {
-    if (request.getRemoteHost != "127.0.0.1") {
-      haltWithStatus(KoskiErrorCategory.forbidden())
-    }
+    noRemoteCalls()
   }
 
   post("/editor") {

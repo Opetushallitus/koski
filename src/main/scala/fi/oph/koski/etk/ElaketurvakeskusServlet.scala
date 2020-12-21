@@ -19,9 +19,7 @@ class ElaketurvakeskusServlet(implicit val application: KoskiApplication) extend
   val elaketurvakeskusService = new ElaketurvakeskusService(application)
 
   before() {
-    if (request.getRemoteHost != "127.0.0.1") {
-      haltWithStatus(KoskiErrorCategory.forbidden(""))
-    }
+    noRemoteCalls()
   }
 
   post("/") {

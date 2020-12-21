@@ -13,12 +13,6 @@ class ElasticSearchServlet(implicit val application: KoskiApplication)
     with ObservableSupport
     with ContentEncodingSupport {
 
-  private def noRemoteCalls(): Unit = {
-    if (!List("127.0.0.1", "[0:0:0:0:0:0:0:1]").contains(request.getRemoteHost)) {
-      haltWithStatus(KoskiErrorCategory.forbidden(""))
-    }
-  }
-
   private def withNamedIndex[T](operation: IndexManager => Option[T])(renderer: T => Unit): Unit = {
     operation(application.indexManager) match {
       case Some(result) => renderer(result)
