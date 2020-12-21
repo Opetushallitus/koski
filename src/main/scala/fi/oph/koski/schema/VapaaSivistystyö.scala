@@ -43,7 +43,7 @@ trait VapaanSivistystyönPäätasonSuoritus extends KoskeenTallennettavaPäätas
 
 case class OppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenSuoritus(
   toimipiste: Toimipiste,
-   @KoodistoKoodiarvo("vstoppivelvollisillesuunnattukoulutus")
+  @KoodistoKoodiarvo("vstoppivelvollisillesuunnattukoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstoppivelvollisillesuunnattukoulutus", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus,
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla],
