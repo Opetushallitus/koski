@@ -403,7 +403,7 @@
               "koodistoUri" : "arviointiasteikkovst"
             },
             "päivä" : "2021-12-10",
-            "hyväksytty" : true
+            "hyväksytty" : false
           } ],
           "tyyppi" : {
             "koodiarvo" : "vstopintokokonaisuus",

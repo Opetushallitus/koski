@@ -133,7 +133,7 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
 case class OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi(
   @KoodistoKoodiarvo("Hyväksytty")
   @KoodistoKoodiarvo("Hylätty")
-  arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkovst"),
+  arvosana: Koodistokoodiviite = Koodistokoodiviite("Hyväksytty", "arviointiasteikkovst"),
   päivä: LocalDate
 ) extends ArviointiPäivämäärällä with VapaanSivistystyönKoulutuksenArviointi
 
@@ -142,7 +142,7 @@ trait VapaanSivistystyönKoulutuksenArviointi extends KoodistostaLöytyväArvioi
   def arvosana: Koodistokoodiviite
   def arvioitsijat = None
   def hyväksytty = arvosana.koodiarvo match {
-    case "H" => false
+    case "Hylätty" => false
     case _ => true
   }
 }
