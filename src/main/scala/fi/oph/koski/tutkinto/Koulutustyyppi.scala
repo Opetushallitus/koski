@@ -7,7 +7,7 @@ import fi.oph.koski.schema.{Koodistokoodiviite, SuorituksenTyyppi}
 object Koulutustyyppi {
   type Koulutustyyppi = Koodistokoodiviite
 
-  // https://testi.virkailija.opintopolku.fi/koodisto-ui/html/index.html#/koodisto/koulutustyyppi/2
+  // https://virkailija.testiopintopolku.fi/koodisto-ui/html/koodisto/koulutustyyppi/2
   val ammatillinenPerustutkinto = apply(1)
   val lukiokoulutus = apply(2)
   val korkeakoulutus = apply(3)
@@ -26,6 +26,7 @@ object Koulutustyyppi {
   val valmaErityisopetuksena = apply(19)
   val perusopetukseenValmistava = apply(22)
   val luva = apply(23)
+  val vapaanSivistystyönKoulutus = apply(10)
 
   def apply(numero: Int) = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(numero.toString, "koulutustyyppi"))
   def describe(koulutustyyppi: Koulutustyyppi) = koulutustyyppi.koodiarvo + koulutustyyppi.nimi.map(nimi => s"(${nimi.get("fi")})").getOrElse("")
@@ -55,6 +56,8 @@ object Koulutustyyppi {
         Set(telma)
       case SuorituksenTyyppi.lukionoppimaara | SuorituksenTyyppi.lukionoppiaineenoppimaara | SuorituksenTyyppi.lukionaineopinnot =>
         lukionKoulutustyypit.toSet
+      case SuorituksenTyyppi.vstoppivelvollisillesuunnattukoulutus =>
+        Set(vapaanSivistystyönKoulutus)
       case _ => Set.empty[Koulutustyyppi]
     }
   }

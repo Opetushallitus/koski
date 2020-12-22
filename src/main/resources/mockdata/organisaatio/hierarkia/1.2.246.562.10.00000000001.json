@@ -22617,6 +22617,76 @@
         "organisaatiotyyppi_07"
       ],
       "status": "AKTIIVINEN"
+    },
+    {
+      "oid": "1.2.246.562.10.44330177021",
+      "alkuPvm": 258760800000,
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "1.2.246.562.10.44330177021/1.2.246.562.10.00000000001",
+      "ytunnus": "0136193-2",
+      "toimipistekoodi": "",
+      "match": true,
+      "nimi": {
+        "fi": "Varsinais-Suomen Aikuiskoulutussäätiö sr"
+      },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
+      "kotipaikkaUri": "kunta_577",
+      "children": [
+        {
+          "oid": "1.2.246.562.10.31915273374",
+          "alkuPvm": 694216800000,
+          "parentOid": "1.2.246.562.10.44330177021",
+          "parentOidPath": "1.2.246.562.10.31915273374/1.2.246.562.10.44330177021/1.2.246.562.10.00000000001",
+          "oppilaitosKoodi": "01694",
+          "oppilaitostyyppi": "oppilaitostyyppi_63#1",
+          "toimipistekoodi": "01694",
+          "match": true,
+          "nimi": {
+            "fi": "Varsinais-Suomen kansanopisto",
+            "sv": "Varsinais-Suomen kansanopisto",
+            "en": "Varsinais-Suomen kansanopisto"
+          },
+          "kieletUris": [
+            "oppilaitoksenopetuskieli_1#1"
+          ],
+          "kotipaikkaUri": "kunta_577",
+          "children": [
+            {
+              "oid": "1.2.246.562.10.78513447389",
+              "alkuPvm": 694216800000,
+              "parentOid": "1.2.246.562.10.31915273374",
+              "parentOidPath": "1.2.246.562.10.78513447389/1.2.246.562.10.31915273374/1.2.246.562.10.44330177021/1.2.246.562.10.00000000001",
+              "toimipistekoodi": "0169401",
+              "match": true,
+              "nimi": {
+                "fi": "Varsinais-Suomen kansanopisto"
+              },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_577",
+              "children": [],
+              "aliOrganisaatioMaara": 0,
+              "organisaatiotyypit": [
+                "organisaatiotyyppi_03"
+              ],
+              "status": "AKTIIVINEN"
+            }
+          ],
+          "aliOrganisaatioMaara": 1,
+          "organisaatiotyypit": [
+            "organisaatiotyyppi_02"
+          ],
+          "status": "AKTIIVINEN"
+        }
+      ],
+      "aliOrganisaatioMaara": 1,
+      "organisaatiotyypit": [
+        "organisaatiotyyppi_01"
+      ],
+      "status": "AKTIIVINEN"
     }
   ]
 }

@@ -206,4 +206,20 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opiskeluoikeudentyyppi_vapaansivistystyonkoulutus",
+  "koodiArvo" : "vapaansivistystyonkoulutus",
+  "metadata" : [ {
+    "nimi" : "Vapaan sivistystyön koulutus",
+    "lyhytNimi" : "Vapaan sivistystyön koulutus",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Fritt bildningsarbete",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]

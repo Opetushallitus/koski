@@ -18,7 +18,8 @@ class KaikilleOpiskeluoikeudenTyypeilleOnKayttooikeusSpec extends FreeSpec with 
       Rooli.PERUSOPETUKSEENVALMISTAVAOPETUS,
       Rooli.PERUSOPETUKSENLISAOPETUS,
       Rooli.PERUSOPETUS,
-      Rooli.YLIOPPILASTUTKINTO
+      Rooli.YLIOPPILASTUTKINTO,
+      Rooli.VAPAANSIVISTYSTYONKOULUTUS
     ).map(_.toLowerCase))
   }
 }
