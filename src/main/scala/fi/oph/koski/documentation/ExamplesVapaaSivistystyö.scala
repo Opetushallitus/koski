@@ -26,67 +26,65 @@ object VapaaSivistystyöExample {
     )),
     lisätiedot = None,
     oppilaitos = Some(varsinaisSuomenKansanopisto),
-    suoritukset = List(OppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenSuoritus(
-      toimipiste = varsinaisSuomenKansanopistoToimipiste,
-      tyyppi = Koodistokoodiviite("vstoppivelvollisillesuunnattukoulutus", koodistoUri = "suorituksentyyppi"),
-      koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(perusteenDiaarinumero = Some("OPH-1234-2020")), // TODO: Oikea perusteen diaarinumero, kunhan oikea diaarinumero saatavilla ja sisältö tuotu Kosken mockdataan
-      vahvistus = vahvistus(päivä = date(2022, 5, 31)),
-      suorituskieli = suomenKieli,
-      todistuksellaNäkyvätLisätiedot = Some("Opinnot suoritettu pandemian vuoksi etäopintoina"),
-      osasuoritukset = Some(List(
-        osaamiskokonaisuudenSuoritus("1002", List(
-          opintokokonaisuudenSuoritus(
-            opintokokonaisuus("A01", "Arjen rahankäyttö", "Arjen rahankäyttö", 2.0)
-          ),
-          opintokokonaisuudenSuoritus(
-            opintokokonaisuus("M01", "Mielen liikkeet", "Mielen liikkeet ja niiden havaitseminen", 2.0),
-            vstArviointi("Hyväksytty", date(2021, 11, 2))
-          )
-        )),
-        osaamiskokonaisuudenSuoritus("1003", List(
-          opintokokonaisuudenSuoritus(
-            opintokokonaisuus("OP01", "Oman opiskelutyyli", "Oman opiskelutyylin analysointi ja tavoitteiden asettaminen", 4.0)
-          )
-        )),
-        osaamiskokonaisuudenSuoritus("1004", List(
-          opintokokonaisuudenSuoritus(
-            opintokokonaisuus("V100", "Viestinnän perusteet", "Viestiminen eri tyyleillä ja sillä vaikuttaminen", 4.0)
-          )
-        )),
-        osaamiskokonaisuudenSuoritus("1005", List(
-          opintokokonaisuudenSuoritus(
-            opintokokonaisuus("Mat01", "Matematiikka arjessa", "Matematiikan jokapäiväinen käyttö", 2.0)
-          ),
-          opintokokonaisuudenSuoritus(
-            opintokokonaisuus("Mat04", "Geometria", "Geometrian perusteet", 2.0)
-          ),
-          opintokokonaisuudenSuoritus(
-            opintokokonaisuus("Mat06", "Trigonometria", "Trigonometrian perusteet", 2.0),
-            vstArviointi("Hylätty", date(2021, 12, 10))
-          )
-        )),
-        osaamiskokonaisuudenSuoritus("1006", List(
-          opintokokonaisuudenSuoritus(
-            opintokokonaisuus("KANS200", "Kansalaisuus", "Kansalaisuuden merkitys moniarvoisess yhteiskunnasa", 4.0)
-          )
-        )),
-        osaamiskokonaisuudenSuoritus("1007", List(
-          opintokokonaisuudenSuoritus(
-            opintokokonaisuus("CV01", "CV:n laadinta", "CV:n laadinta ja käyttö työnhaussa", 4.0)
-          )
-        )),
-        suuntautumisopintojenSuoritus(List(
-          opintokokonaisuudenSuoritus(
-            opintokokonaisuus("ATX01", "Tietokoneen huolto", "Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet", 5.0),
-            vstArviointi("Hyväksytty", date(2021, 11, 12))
-          ),
-          opintokokonaisuudenSuoritus(
-            opintokokonaisuus("VT02", "Valaisintekniikka", "Valaisinlähteet ja niiden toiminta", 10.0)
-          ),
-          opintokokonaisuudenSuoritus(
-            opintokokonaisuus("TAI01", "Taide työkaluna", "Taiteen käyttö työkaluna", 30.0)
-          )
-        ))
+    suoritukset = List(suoritus)
+  )
+
+  lazy val suoritus = OppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenSuoritus(
+    toimipiste = varsinaisSuomenKansanopistoToimipiste,
+    tyyppi = Koodistokoodiviite("vstoppivelvollisillesuunnattukoulutus", koodistoUri = "suorituksentyyppi"),
+    koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(perusteenDiaarinumero = Some("OPH-1234-2020")), // TODO: Oikea perusteen diaarinumero, kunhan oikea diaarinumero saatavilla ja sisältö tuotu Kosken mockdataan
+    vahvistus = vahvistus(päivä = date(2022, 5, 31)),
+    suorituskieli = suomenKieli,
+    todistuksellaNäkyvätLisätiedot = Some("Opinnot suoritettu pandemian vuoksi etäopintoina"),
+    osasuoritukset = Some(List(
+      osaamiskokonaisuudenSuoritus("1002", List(
+        opintokokonaisuudenSuoritus(
+          opintokokonaisuus("A01", "Arjen rahankäyttö", "Arjen rahankäyttö", 2.0)
+        ),
+        opintokokonaisuudenSuoritus(
+          opintokokonaisuus("M01", "Mielen liikkeet", "Mielen liikkeet ja niiden havaitseminen", 2.0),
+          vstArviointi("Hyväksytty", date(2021, 11, 2))
+        )
+      )),
+      osaamiskokonaisuudenSuoritus("1003", List(
+        opintokokonaisuudenSuoritus(
+          opintokokonaisuus("OP01", "Oman opiskelutyyli", "Oman opiskelutyylin analysointi ja tavoitteiden asettaminen", 4.0)
+        )
+      )),
+      tyhjäOsaamiskokonaisuudenSuoritus("1004"),
+      osaamiskokonaisuudenSuoritus("1005", List(
+        opintokokonaisuudenSuoritus(
+          opintokokonaisuus("Mat01", "Matematiikka arjessa", "Matematiikan jokapäiväinen käyttö", 2.0)
+        ),
+        opintokokonaisuudenSuoritus(
+          opintokokonaisuus("Mat04", "Geometria", "Geometrian perusteet", 2.0)
+        ),
+        opintokokonaisuudenSuoritus(
+          opintokokonaisuus("Mat06", "Trigonometria", "Trigonometrian perusteet", 2.0),
+          vstArviointi("Hylätty", date(2021, 12, 10))
+        )
+      )),
+      osaamiskokonaisuudenSuoritus("1006", List(
+        opintokokonaisuudenSuoritus(
+          opintokokonaisuus("KANS200", "Kansalaisuus", "Kansalaisuuden merkitys moniarvoisess yhteiskunnasa", 4.0)
+        )
+      )),
+      osaamiskokonaisuudenSuoritus("1007", List(
+        opintokokonaisuudenSuoritus(
+          opintokokonaisuus("CV01", "CV:n laadinta", "CV:n laadinta ja käyttö työnhaussa", 4.0)
+        )
+      )),
+      suuntautumisopintojenSuoritus(List(
+        opintokokonaisuudenSuoritus(
+          opintokokonaisuus("ATX01", "Tietokoneen huolto", "Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet", 5.0),
+          vstArviointi("Hyväksytty", date(2021, 11, 12))
+        ),
+        opintokokonaisuudenSuoritus(
+          opintokokonaisuus("VT02", "Valaisintekniikka", "Valaisinlähteet ja niiden toiminta", 10.0)
+        ),
+        opintokokonaisuudenSuoritus(
+          opintokokonaisuus("TAI01", "Taide työkaluna", "Taiteen käyttö työkaluna", 30.0)
+        )
       ))
     ))
   )
@@ -108,19 +106,49 @@ object VapaaSivistystyöExampleData {
     osaamiskokonaisuusKoodiarvo: String = "1002",
     opintokokonaisuudet: List[OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus] = List(opintokokonaisuudenSuoritus())
   ): OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus = {
+    osaamiskokonaisuudenSuoritus(osaamiskokonaisuusKoodiarvo, None, Some(opintokokonaisuudet))
+  }
+
+  def tyhjäOsaamiskokonaisuudenSuoritus(
+    osaamiskokonaisuusKoodiarvo: String = "1002",
+    laajuus: Option[LaajuusOpintopisteissä] = None
+  ): OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus = {
+    osaamiskokonaisuudenSuoritus(osaamiskokonaisuusKoodiarvo, laajuus, None)
+  }
+
+  private def osaamiskokonaisuudenSuoritus(
+    osaamiskokonaisuusKoodiarvo: String,
+    laajuus: Option[LaajuusOpintopisteissä],
+    opintokokonaisuudet: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus]]
+  ): OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus = {
     OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus(
       koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus(
-        tunniste = Koodistokoodiviite(osaamiskokonaisuusKoodiarvo, "vstosaamiskokonaisuus")
+        tunniste = Koodistokoodiviite(osaamiskokonaisuusKoodiarvo, "vstosaamiskokonaisuus"),
+        laajuus = laajuus
       ),
-      osasuoritukset = Some(opintokokonaisuudet)
+      osasuoritukset = opintokokonaisuudet
     )
   }
 
   def suuntautumisopintojenSuoritus(
     opintokokonaisuudet: List[OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus] = List(opintokokonaisuudenSuoritus())
   ): OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus = {
+    suuntautumisopintojenSuoritus(None, Some(opintokokonaisuudet))
+  }
+
+  def tyhjäSuuntautumisopintojenSuoritus(
+    laajuus: Option[LaajuusOpintopisteissä] = None
+  ): OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus = {
+    suuntautumisopintojenSuoritus(laajuus, None)
+  }
+
+  private def suuntautumisopintojenSuoritus(
+    laajuus: Option[LaajuusOpintopisteissä],
+    opintokokonaisuudet: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus]]
+  ): OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus = {
     OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus(
-      osasuoritukset = Some(opintokokonaisuudet)
+      koulutusmoduuli = OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopinnot(laajuus = laajuus),
+      osasuoritukset = opintokokonaisuudet
     )
   }
 
