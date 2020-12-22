@@ -43,7 +43,7 @@
           "koodiarvo" : "099999",
           "koodistoUri" : "koulutus"
         },
-        "perusteenDiaarinumero" : "OPH-1234-2020"
+        "perusteenDiaarinumero" : "mock-empty-koulutukset"
       },
       "vahvistus" : {
         "päivä" : "2022-05-31",
