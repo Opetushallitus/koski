@@ -1,3 +1,7 @@
+## 22.12.2020
+- Lisätty tietomalliluonnos Vapaan sivistystyön oppivelvollisuuslinjoille. Tämä on vielä luonnos kommentointia varten ja
+tunnettuja selvityksessä olevista avoimista kysymyksistä johtuvia puutteita on vielä useita.
+
 ## 29.10.2020
 - Lisätty tietomalli Pre-IB-opinnoille lukion opetussuunnitelman 2019 mukaan
 - Poistettu Lukion opetussuunnitelman 2019 suorituksentyyppikoodistosta 2019 jälkiliite. Eri vuosien opetussuunnitelmat

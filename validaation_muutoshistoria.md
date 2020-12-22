@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 22.12.2020
+- Vapaan sivistystyön oppivelvollisuuslinjan opinnoissa täydennetään osaamiskokonaisuuksien ja valinnaisten
+suuntautumisopintojen laajuus automaattisesti opintokokonaisuuksien laajuuksista
+
 ## 29.10.2020
 - Pre-IB-opinnoissa lukion opetussuunnitelman 2019 mukaan validoidaan samat asiat kuin lukiossa.
 
