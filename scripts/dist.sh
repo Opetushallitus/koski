@@ -23,7 +23,6 @@ function create_version() {
   else
     (cd $BASE_DIR/target/dist && mvn versions:set -DnewVersion=$version)
     (cd $BASE_DIR/target/dist && make clean && mvn deploy -DskipTests=true)
-    git tag $version
     git push origin $version
   fi
 }
