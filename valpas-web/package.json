@@ -1,0 +1,19 @@
+{
+  "name": "valpas",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Opetushallitus/koski.git"
+  },
+  "license": "EUPL-1.1",
+  "homepage": "https://github.com/Opetushallitus/koski#readme",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4",
+    "typescript": "^4.1.3"
+  }
+}
