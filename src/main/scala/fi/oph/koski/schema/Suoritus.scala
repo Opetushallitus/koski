@@ -93,7 +93,7 @@ object SuorituksenTyyppi {
   val telma = apply("telma")
   val lukionoppimaara = apply("lukionoppimaara")
   val lukionoppiaineenoppimaara = apply("lukionoppiaineenoppimaara")
-  val oppivelvollisillesuunnattuvapaansivistystyönkoulutus = apply("oppivelvollisillesuunnattuvapaansivistystyönkoulutus") // FIXME: Tämä on placeholder
+  val vstoppivelvollisillesuunnattukoulutus = apply("vstoppivelvollisillesuunnattukoulutus")
 
   private def apply(koodiarvo: String): SuorituksenTyyppi =
     kaikkiTyypit.find(_.koodiarvo == koodiarvo)
