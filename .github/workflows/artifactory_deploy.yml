@@ -40,6 +40,12 @@ jobs:
         with:
           java-version: "8"
           architecture: x64
+          server-id: oph-sade-artifactory
+          server-username: ARTIFACTORY_USERNAME
+          server-password: ARTIFACTORY_PASSWORD
 
       - name: Build and upload to Artifactory
+        env:
+          ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
+          ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
         run: make dist version=$GITHUB_SHA
