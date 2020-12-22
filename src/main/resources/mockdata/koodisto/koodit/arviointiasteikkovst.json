@@ -1,6 +1,6 @@
 [
     {
-        "koodiUri": "arviointiasteikkovst_h",
+        "koodiUri": "arviointiasteikkovst_hylatty",
         "koodiArvo": "Hylätty",
         "metadata": [
             {
@@ -23,7 +23,7 @@
         "withinCodeElements": []
     },
     {
-        "koodiUri": "arviointiasteikkovst_s",
+        "koodiUri": "arviointiasteikkovst_hyvaksytty",
         "koodiArvo": "Hyväksytty",
         "metadata": [
             {
