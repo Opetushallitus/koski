@@ -5,6 +5,7 @@ on:
     branches: [master]
 env:
   DOCKER_BUILDKIT: 1
+  SSH_AUTH_SOCK: /tmp/ssh_agent.sock
 jobs:
   build:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
@@ -12,6 +13,11 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
+
+      - name: Set up SSH agent
+        run: |
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add - <<< "${{ secrets.ARTIFACTORY_DIST_KEY }}"
 
       - name: Cache Maven packages
         uses: actions/cache@v2
@@ -34,18 +40,6 @@ jobs:
         with:
           java-version: "8"
           architecture: x64
-
-      - name: Configure sysctl limits for Elasticsearch
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-
-      - name: Set up SSH agent
-        uses: webfactory/ssh-agent@v0.1.1
-        with:
-          ssh-private-key: ${{ secrets.ARTIFACTORY_DIST_KEY }}
 
       - name: Build and upload to Artifactory
         run: make dist version=$GITHUB_SHA
