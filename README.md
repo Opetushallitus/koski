@@ -66,7 +66,7 @@ Nämä ovat keskeiset Koski-järjestelmässä käytettävät teknologiat. Lista 
 tarpeen mukaan.
 
 - PostgreSQL 12.2 -tietokanta
-- Elasticsearch 5.6 -hakuindeksi
+- Elasticsearch 6.8 -hakuindeksi
 - Palvelinteknologiat
   - Scala 2.12 -ohjelmointikieli ja -kääntäjä
   - Scalatra-web-framework
@@ -93,9 +93,8 @@ Minimissään tarvitset nämä:
 - Java 8 (osx: `brew tap adoptopenjdk/openjdk`
                `brew cask install adoptopenjdk8`)
 - Maven 3 (osx: `brew install maven`)
-- NVM vanhan node version asentamiseen: (osx: `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash`)
-- Node.js uusin 8.x ja sen mukana tuleva NPM-versio (osx: `nvm install 8`)
-- Dockerin Postgres 12.2 ja Elasticsearch 5.6 ajamiseen kontissa
+- Node.js (`.nvmrc`-tiedoston mukainen versio)
+- Docker PostgreSQL:n ja Elasticsearchin ajamiseen konteissa
 - Tekstieditori (kehitystiimi käyttää IntelliJ IDEA)
 
 ## Buildi ja ajaminen
