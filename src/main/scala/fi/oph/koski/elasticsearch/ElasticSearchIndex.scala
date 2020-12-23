@@ -123,7 +123,7 @@ class ElasticSearchIndex(
     val indexName = versionedIndexName(version)
     logger.info(s"Creating Elasticsearch index $indexName")
     Http.runTask(http.put(uri"/$indexName", JObject("settings" -> toJValue(settings)))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
-    Http.runTask(http.put(uri"/$indexName/_mapping/_doc", toJValue(mapping))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+    Http.runTask(http.put(uri"/$indexName/_mapping", toJValue(mapping))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
     indexName
   }
 
@@ -133,12 +133,10 @@ class ElasticSearchIndex(
     logger.info(s"Reindexing from $fromIndex to $toIndex. This will take a while if the index is large.")
     val query = Map(
       "source" -> Map(
-        "index" -> fromIndex,
-        "type" -> "_doc"
+        "index" -> fromIndex
       ),
       "dest" -> Map(
         "index" -> toIndex,
-        "type" -> "_doc",
         "op_type" -> "create"
       ),
       "conflicts" -> "proceed"
@@ -158,7 +156,7 @@ class ElasticSearchIndex(
   }
 
   def runSearch(query: JValue): Option[JValue] = try {
-    Some(Http.runTask(http.post(uri"/$readAlias/_doc/_search", query)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue])))
+    Some(Http.runTask(http.post(uri"/$readAlias/_search", query)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue])))
   } catch {
     case e: HttpStatusException if e.status == 400 =>
       logger.error(e.getMessage)
@@ -179,8 +177,7 @@ class ElasticSearchIndex(
       Map(
         "update" -> Map(
           "_id" -> id,
-          "_index" -> writeAlias,
-          "_type" -> "_doc"
+          "_index" -> writeAlias
         )
       ),
       Map(
@@ -197,7 +194,7 @@ class ElasticSearchIndex(
   }
 
   def deleteByQuery(query: JValue): Int = {
-    val deletedCount = Http.runTask(http.post(uri"/$writeAlias/_doc/_delete_by_query", query)(Json4sHttp4s.json4sEncoderOf[JValue]) {
+    val deletedCount = Http.runTask(http.post(uri"/$writeAlias/_delete_by_query", query)(Json4sHttp4s.json4sEncoderOf[JValue]) {
       case (200, text, request) => extract[Int](JsonMethods.parse(text) \ "deleted")
       case (status, text, request) if List(404, 409).contains(status) => 0
       case (status, text, request) => throw HttpStatusException(status, text, request)
