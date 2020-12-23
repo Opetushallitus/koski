@@ -4,17 +4,15 @@ import fi.oph.koski.api.SharedJetty
 import fi.oph.koski.util.Files
 import org.scalatest.Tag
 
-
 trait KoskiParallelMochaSpec extends KoskiCommandLineSpec {
   def runnerNumber: Int
-  "Mocha tests" taggedAs(ParallelMochaTag) in {
-    SplitMochaSpecs.takeSpecsForRunner(runnerNumber)
+  "Mocha tests" taggedAs(Tag("parallelmocha")) in {
+    val specs = SplitMochaSpecs.takeSpecsForRunner(runnerNumber)
     SharedJetty.start
-    runTestCommand("mocha-chrome", Seq("scripts/mocha-chrome-test.sh", SharedJetty.baseUrl + "/test/runner.html"))
+    //specFiles parameter makes runner.html to only load given spec.js files
+    runTestCommand("mocha-chrome", Seq("scripts/mocha-chrome-test.sh", SharedJetty.baseUrl + s"/test/runner.html?specFiles=$specs"))
   }
 }
-
-object ParallelMochaTag extends Tag("parallelmocha")
 
 class KoskiMochaSpecRunner0 extends KoskiParallelMochaSpec {
   def runnerNumber: Int = 0
@@ -37,36 +35,30 @@ class KoskiMochaSpecRunner4 extends KoskiParallelMochaSpec {
 }
 
 object SplitMochaSpecs {
-  val numberOfRunners = 4 //indexing starts from 0
+  val numberOfRunners = 5
 
   def takeSpecsForRunner(number: Int)= {
     val runnerFile = Files
       .asString("web/test/runner.html").getOrElse(throw new RuntimeException("/web/test/runner.html not found"))
       .split("\n")
 
-    val divided = divideSpecs(runnerFile.filter(specFiles))
-    val specsForRunner = divided.get(number).getOrElse(throw new RuntimeException(s"Did not found any spec for runner number $number"))
+    val filenames = runnerFile.filter(javascriptSpecFilename).map(cleanFilename)
+    val filenamesByRunnerNumber = divideSpecs(filenames)
+    val filenamesForRunner = filenamesByRunnerNumber.getOrElse(number, throw new RuntimeException(s"No specs found for ParallelMochaRunner $number. Is there enough specs for every runner?"))
 
-    println(divided)
+    println(
+      s"Runner $number executing ${filenamesForRunner.size} specs\n" +
+      filenamesForRunner.mkString("\n")
+    )
 
-    val newFileContent = runnerFile
-      .filterNot(specFiles)
-      .flatMap(insertSpecFiles(specsForRunner))
-      .mkString("\n")
-
-    Files.writeFile("web/test/runner.html", newFileContent)
+    filenamesForRunner.mkString(",")
   }
 
   private def divideSpecs(specs: Seq[String]) = specs
-    .sorted
     .zipWithIndex.map { case (spec, index) => (index % numberOfRunners, spec)}
     .groupBy(_._1)
     .mapValues(_.map(_._2))
 
-  private def specFiles(s: String) = s.startsWith("<script src=\"spec/")
-
-  private def insertSpecFiles(importSpecFiles: Seq[String])(s: String) = {
-    if (s.contains("insert specs here")) importSpecFiles else List(s)
-  }
+  private def javascriptSpecFilename(str: String) = str.contains("spec/") && str.contains(".js")
+  private def cleanFilename(str: String) = str.trim.replace(",", "").replace("\"","")
 }
-

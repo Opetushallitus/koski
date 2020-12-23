@@ -102,7 +102,7 @@ jobs:
           cd web
           npm ci
           cd ..
-          mvn test -Pfronttest -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner0"
+          mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner0"
 
   run_frontend_tests_1:
     name: Run frontend tests runner 1
@@ -152,7 +152,7 @@ jobs:
           cd web
           npm ci
           cd ..
-          mvn test -Pfronttest -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner1"
+          mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner1"
 
   run_frontend_tests_2:
     name: Run frontend tests runner 2
@@ -202,7 +202,7 @@ jobs:
           cd web
           npm ci
           cd ..
-          mvn test -Pfronttest -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner2"
+          mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner2"
 
   run_frontend_tests_3:
     name: Run frontend tests runner 3
@@ -252,7 +252,7 @@ jobs:
           cd web
           npm ci
           cd ..
-          mvn test -Pfronttest -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner3"
+          mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner3"
 
   run_frontend_tests_4:
     name: Run frontend tests runner 4
@@ -302,4 +302,4 @@ jobs:
           cd web
           npm ci
           cd ..
-          mvn test -Pfronttest -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner4"
+          mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner4"
