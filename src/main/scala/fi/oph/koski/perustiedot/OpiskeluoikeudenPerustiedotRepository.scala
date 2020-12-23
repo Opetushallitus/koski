@@ -130,7 +130,7 @@ class OpiskeluoikeudenPerustiedotRepository(
     indexer.index.runSearch(doc)
       .map{ response =>
         OpiskeluoikeudenPerustiedotResponse(
-          Some(extract[Int](response \ "hits" \ "total")),
+          Some(extract[Int](response \ "hits" \ "total" \ "value")),
           extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[OpiskeluoikeudenPerustiedot](j \ "_source", ignoreExtras = true)).map(pt => pt.copy(tilat = pt.tilat.map(tilat => vainAktiivinen(tilat))))
         )
       }

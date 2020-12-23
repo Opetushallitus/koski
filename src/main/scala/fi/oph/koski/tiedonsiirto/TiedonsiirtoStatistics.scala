@@ -28,7 +28,7 @@ case class TiedonsiirtoStatistics(index: ElasticSearchIndex) {
         """.stripMargin)
     )
     result.map { r =>
-      val virheellisiä = extract[Int](r \ "hits" \ "total")
+      val virheellisiä = extract[Int](r \ "hits" \ "total" \ "value")
       val oppilaitoksiaJoillaVirheellisiä = extract[Int](r \ "aggregations" \ "oppilaitokset" \ "value")
       val virhekoodiTilastot = extract[List[VirhekoodiTilasto]](r \ "aggregations" \ "virhekoodit" \ "buckets")
       TiedonsiirtoTilasto(virheellisiä, oppilaitoksiaJoillaVirheellisiä, virhekoodiTilastot.sortBy(_.doc_count).reverse)
