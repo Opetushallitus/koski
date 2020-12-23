@@ -57,7 +57,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
   def initKoskiServices(context: ServletContext)(implicit application: KoskiApplication) = {
     def mount(path: String, handler: Handler) = context.mount(handler, path)
 
-    application.init // start parallel initialization tasks
+    val initTasks = application.init() // start parallel initialization tasks
 
     mount("/", new IndexServlet)
     mount("/omattiedot", new OmatTiedotHtmlServlet)
@@ -121,7 +121,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/cas", new CasServlet)
     mount("/cache", new CacheServlet)
 
-    Futures.await(application.init) // await for all initialization tasks to complete
+    Futures.await(initTasks) // await for all initialization tasks to complete
 
     if (application.fixtureCreator.shouldUseFixtures) {
       context.mount(new FixtureServlet, "/fixtures")
