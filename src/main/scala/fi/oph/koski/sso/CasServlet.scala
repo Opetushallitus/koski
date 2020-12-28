@@ -12,7 +12,8 @@ import fi.vm.sade.utils.cas.{CasClient, CasLogout}
   *  This is where the user lands after a CAS login / logout
   */
 class CasServlet(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with AuthenticationSupport with NoCache {
-  private val casClient = new CasClient(application.config.getString("opintopolku.virkailija.url"), Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
+  //private val casClient = new CasClient(application.config.getString("opintopolku.virkailija.url"), Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
+  private val casClient = new CasClient("https://testiopintopolku.fi/cas-oppija", Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
   private val koskiSessions = application.koskiSessionRepository
 
   // Return url for cas login
@@ -34,6 +35,7 @@ class CasServlet(implicit val application: KoskiApplication) extends VirkailijaH
           }
         } catch {
           case e: Exception =>
+            println(ticket.toString)
             logger.warn(e)("Service ticket validation failed")
             haltWithStatus(KoskiErrorCategory.internalError("Sisäänkirjautuminen Opintopolkuun epäonnistui."))
         }

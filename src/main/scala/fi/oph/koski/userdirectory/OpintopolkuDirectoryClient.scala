@@ -33,7 +33,7 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
     }).flatMap { case (oid: String, käyttöoikeudet: List[Käyttöoikeus]) => findKäyttäjä(oid, käyttöoikeudet) }
 
   override def authenticate(userid: String, wrappedPassword: Password): Boolean = {
-    val tgtUri: TGTUrl = resolve(Uri.fromString(virkailijaUrl).toOption.get, uri("/cas/v1/tickets"))
+    val tgtUri: TGTUrl = resolve(Uri.fromString(virkailijaUrl).toOption.get, uri("/cas-oppija/v1/tickets"))
 
     Http.runTask(http.client.fetch(
       POST(tgtUri, UrlForm("username" -> userid, "password" -> wrappedPassword.password))
