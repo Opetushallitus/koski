@@ -23,7 +23,6 @@ function create_version() {
   else
     (cd $BASE_DIR/target/dist && mvn versions:set -DnewVersion=$version)
     (cd $BASE_DIR/target/dist && make clean && mvn deploy -DskipTests=true)
-    git push origin $version
   fi
 }
 
@@ -31,11 +30,4 @@ if [ -z "$version" ]; then
   usage
 fi
 
-if GIT_DIR=$BASE_DIR/.git git show-ref --tags | egrep -q "refs/tags/$1$"
-then
-    echo "Version already exists. All versions: "
-    git tag
-    exit 1
-else
-    create_version
-fi
+create_version
