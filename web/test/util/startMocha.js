@@ -1,4 +1,4 @@
-console.log('Starting mocha, foo')
+console.log('Starting mocha')
 var runner = mocha.run()
 if (window.callPhantom) {
   console.log("PhantomJS mode")
