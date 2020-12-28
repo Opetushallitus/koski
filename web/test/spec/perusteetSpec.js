@@ -1,7 +1,11 @@
 describe('EPerusteet', function() {
   var page = KoskiPage()
   var opinnot = OpinnotPage()
-  before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
+  before(
+    Authentication().login(),
+    page.openPage,
+    page.oppijaHaku.searchAndSelect('220109-784L')
+  )
 
   describe('Kun peruste löytyy eperusteista', function() {
     before(opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'), wait.until(function() { return isElementVisible(S('.diaarinumero a'))}))
