@@ -86,7 +86,6 @@ private[cas] object ServiceTicketValidator {
     val pUri: Uri = casBaseUrl.withPath(casBaseUrl.path + "/serviceValidate")
       .withQueryParam("ticket", serviceTicket)
       .withQueryParam("service",service)
-      .withQueryParam("valtuudet", false)
 
     val task = GET(pUri)
     println("validateServiceTicket")
@@ -99,6 +98,7 @@ private[cas] object ServiceTicketValidator {
               user.text
             case response =>
               println("Apuprinttei")
+              println(response)
               println((response \\ "user").text)
               //throw new CasClientException(s"Service Ticket validation response decoding failed at ${service}: response body is of wrong form ($response)")
               (response \\ "user").text

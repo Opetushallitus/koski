@@ -77,6 +77,10 @@ trait SSOSupport extends ScalatraBase with Logging {
     koskiRoot + "/cas"
   }
 
+  def casOppijaServiceUrl = {
+    koskiRoot + "/cas-oppija"
+  }
+
   def redirectAfterLogin = {
     val returnUrlCookie = Option(request.getCookies).toList.flatten.find(_.getName == "koskiReturnUrl").map(_.getValue)
     removeCookie("koskiReturnUrl")

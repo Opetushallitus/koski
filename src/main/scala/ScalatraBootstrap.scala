@@ -119,7 +119,8 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     if (application.features.shibboleth) {
       mount("/user/shibbolethlogin", ShibbolethLoginServlet(application))
     }
-    mount("/cas", new CasServlet)
+    mount("/cas-oppija", new CasServlet(true))
+    mount("/cas", new CasServlet(false))
     mount("/cache", new CacheServlet)
 
     if (application.features.valpas) {

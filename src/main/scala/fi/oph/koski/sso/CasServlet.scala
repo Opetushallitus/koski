@@ -11,9 +11,9 @@ import cas.CasClient.Username
 /**
   *  This is where the user lands after a CAS login / logout
   */
-class CasServlet(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with AuthenticationSupport with NoCache {
-  //private val casClient = new CasClient(application.config.getString("opintopolku.virkailija.url"), Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
-  private val casClient = new CasClient("https://testiopintopolku.fi/cas-oppija", Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
+class CasServlet(kansalainen: Boolean = true)(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with AuthenticationSupport with NoCache {
+  private val casClient = new CasClient(application.config.getString("opintopolku.virkailija.url") + "/cas", Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
+  private val casOppijaClient = new CasClient("https://testiopintopolku.fi/cas-oppija", Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
   private val koskiSessions = application.koskiSessionRepository
 
   // Return url for cas login
@@ -21,26 +21,32 @@ class CasServlet(implicit val application: KoskiApplication) extends VirkailijaH
     params.get("ticket") match {
       case Some(ticket) =>
         try {
-          val username = validateServiceTicket(casServiceUrl, ticket).split('#')(1)
-          println("Jipii, päästiin tänne asti")
-          println(username)
-          val oppija = application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(username).get
-          val huollettavat = application.huoltajaServiceVtj.getHuollettavat(username)
-          val authUser = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true, huollettavat = Some(huollettavat))
-          setUser(Right(localLogin(authUser, Some(langFromCookie.getOrElse(langFromDomain)))))
-          println("Päästiin loppuun asti ja redirectaamaan?")
-          redirect("/omattiedot")
-          /*DirectoryClientLogin.findUser(application.directoryClient, request, username) match {
-            case Some(user) =>
-              setUser(Right(user.copy(serviceTicket = Some(ticket))))
-              logger.info(s"Started session ${session.id} for ticket $ticket")
-              koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
-              KoskiUserLanguage.setLanguageCookie(KoskiUserLanguage.getLanguageFromLDAP(user, application.directoryClient), response)
-              redirectAfterLogin
-            case None =>
-              logger.warn(s"User $username not found even though user logged in with valid ticket")
-              redirectToLogout
-          }*/
+          println(kansalainen)
+          println(routeBasePath)
+          if (kansalainen) {
+            println("Oppijaserviceurl:")
+            println(casOppijaServiceUrl)
+            val username = validateServiceTicket(casOppijaClient, casOppijaServiceUrl, ticket)
+            val hetu = username.split('#')(1)
+            val oppija = application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu).get
+            val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
+            val authUser = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true, huollettavat = Some(huollettavat))
+            setUser(Right(localLogin(authUser, Some(langFromCookie.getOrElse(langFromDomain)))))
+            redirect("/omattiedot")
+          } else {
+            val username = validateServiceTicket(casClient, casServiceUrl, ticket)
+            DirectoryClientLogin.findUser(application.directoryClient, request, username) match {
+              case Some(user) =>
+                setUser(Right(user.copy(serviceTicket = Some(ticket))))
+                logger.info(s"Started session ${session.id} for ticket $ticket")
+                koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
+                KoskiUserLanguage.setLanguageCookie(KoskiUserLanguage.getLanguageFromLDAP(user, application.directoryClient), response)
+                redirectAfterLogin
+              case None =>
+                logger.warn(s"User $username not found even though user logged in with valid ticket")
+                redirectToLogout
+            }
+          }
         } catch {
           case e: Exception =>
             logger.warn(e)("Service ticket validation failed")
@@ -82,7 +88,7 @@ class CasServlet(implicit val application: KoskiApplication) extends VirkailijaH
     }
   }
 
-  def validateServiceTicket(service: String, ticket: String): Username =
-    casClient.validateServiceTicket(service)(ticket).unsafePerformSync
+  def validateServiceTicket(client: CasClient, service: String, ticket: String): Username =
+    client.validateServiceTicket(service)(ticket).unsafePerformSync
 }
 
