@@ -5,15 +5,15 @@ import fi.oph.koski.http.{Http, KoskiErrorCategory, OpintopolkuCallerId}
 import fi.oph.koski.koskiuser.{AuthenticationSupport, DirectoryClientLogin, KoskiUserLanguage}
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.servlet.{NoCache, VirkailijaHtmlServlet}
-import fi.vm.sade.utils.cas.CasClient.Username
-import fi.vm.sade.utils.cas.{CasClient, CasLogout}
+import cas.CasClient
+import cas.CasClient.Username
 
 /**
   *  This is where the user lands after a CAS login / logout
   */
 class CasServlet(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with AuthenticationSupport with NoCache {
   //private val casClient = new CasClient(application.config.getString("opintopolku.virkailija.url"), Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
-  private val casClient = new CasClient("https://testiopintopolku.fi/cas-oppija", Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
+  private val casClient = new CasClient("https://testiopintopolku.fi/cas-oppija?valtuudet=false", Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
   private val koskiSessions = application.koskiSessionRepository
 
   // Return url for cas login
@@ -49,7 +49,7 @@ class CasServlet(implicit val application: KoskiApplication) extends VirkailijaH
   post("/") {
     params.get("logoutRequest") match {
       case Some(logoutRequest) =>
-        CasLogout.parseTicketFromLogoutRequest(logoutRequest) match {
+        cas.CasLogout.parseTicketFromLogoutRequest(logoutRequest) match {
           case Some(parsedTicket) =>
             logger.info("Got CAS logout for ticket " + parsedTicket)
             koskiSessions.removeSessionByTicket(parsedTicket)

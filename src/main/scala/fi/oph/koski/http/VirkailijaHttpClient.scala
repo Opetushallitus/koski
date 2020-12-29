@@ -1,15 +1,15 @@
 package fi.oph.koski.http
 
 import com.typesafe.config.Config
-import fi.vm.sade.utils.cas.{CasAuthenticatingClient, CasClient, CasParams}
 import org.http4s.client.Client
+import cas._
 
 object VirkailijaHttpClient {
   def apply(serviceConfig: ServiceConfig, serviceUrl: String, useCas: Boolean = true, sessionCookieName: String = "JSESSIONID") = {
     val blazeHttpClient = Http.newClient(serviceUrl)
     val casAuthenticatingClient: Client = if (useCas) {
       val casClient = new CasClient(serviceConfig.virkailijaUrl, blazeHttpClient, OpintopolkuCallerId.koski)
-      CasAuthenticatingClient(casClient, CasParams(serviceUrl, serviceConfig.username, serviceConfig.password), blazeHttpClient, OpintopolkuCallerId.koski, sessionCookieName)
+      cas.CasAuthenticatingClient(casClient, CasParams(serviceUrl, serviceConfig.username, serviceConfig.password), blazeHttpClient, OpintopolkuCallerId.koski, sessionCookieName)
     } else {
       ClientWithBasicAuthentication(blazeHttpClient, serviceConfig.username, serviceConfig.password)
     }

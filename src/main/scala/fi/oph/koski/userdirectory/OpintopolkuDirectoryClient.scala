@@ -1,5 +1,6 @@
 package fi.oph.koski.userdirectory
 
+import cas.CasClient.TGTUrl
 import com.typesafe.config.Config
 import fi.oph.koski.henkilo.{KäyttäjäHenkilö, OppijanumeroRekisteriClient}
 import fi.oph.koski.http.{Http, OpintopolkuCallerId}
@@ -7,13 +8,13 @@ import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema.OidOrganisaatio
-import fi.vm.sade.utils.cas.CasClientException
+import cas.CasClientException
 
 /**
   * Replacement for the LDAP-based directory client
   */
 class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends DirectoryClient with Logging {
-  import fi.vm.sade.utils.cas.CasClient._
+
   import org.http4s.Status.Created
   import org.http4s._
   import org.http4s.client._
