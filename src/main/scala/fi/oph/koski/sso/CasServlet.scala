@@ -2,7 +2,7 @@ package fi.oph.koski.sso
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{Http, KoskiErrorCategory, OpintopolkuCallerId}
-import fi.oph.koski.koskiuser.{AuthenticationSupport, DirectoryClientLogin, KoskiUserLanguage}
+import fi.oph.koski.koskiuser.{AuthenticationSupport, AuthenticationUser, DirectoryClientLogin, KoskiUserLanguage}
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.servlet.{NoCache, VirkailijaHtmlServlet}
 import cas.CasClient
@@ -13,7 +13,7 @@ import cas.CasClient.Username
   */
 class CasServlet(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with AuthenticationSupport with NoCache {
   //private val casClient = new CasClient(application.config.getString("opintopolku.virkailija.url"), Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
-  private val casClient = new CasClient("https://testiopintopolku.fi/cas-oppija?valtuudet=false", Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
+  private val casClient = new CasClient("https://testiopintopolku.fi/cas-oppija", Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
   private val koskiSessions = application.koskiSessionRepository
 
   // Return url for cas login
@@ -21,8 +21,16 @@ class CasServlet(implicit val application: KoskiApplication) extends VirkailijaH
     params.get("ticket") match {
       case Some(ticket) =>
         try {
-          val username = validateServiceTicket(casServiceUrl, ticket)
-          DirectoryClientLogin.findUser(application.directoryClient, request, username) match {
+          val username = validateServiceTicket(casServiceUrl, ticket).split('#')(1)
+          println("Jipii, päästiin tänne asti")
+          println(username)
+          val oppija = application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(username).get
+          val huollettavat = application.huoltajaServiceVtj.getHuollettavat(username)
+          val authUser = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true, huollettavat = Some(huollettavat))
+          setUser(Right(localLogin(authUser, Some(langFromCookie.getOrElse(langFromDomain)))))
+          println("Päästiin loppuun asti ja redirectaamaan?")
+          redirect("/omattiedot")
+          /*DirectoryClientLogin.findUser(application.directoryClient, request, username) match {
             case Some(user) =>
               setUser(Right(user.copy(serviceTicket = Some(ticket))))
               logger.info(s"Started session ${session.id} for ticket $ticket")
@@ -32,10 +40,9 @@ class CasServlet(implicit val application: KoskiApplication) extends VirkailijaH
             case None =>
               logger.warn(s"User $username not found even though user logged in with valid ticket")
               redirectToLogout
-          }
+          }*/
         } catch {
           case e: Exception =>
-            println(ticket.toString)
             logger.warn(e)("Service ticket validation failed")
             haltWithStatus(KoskiErrorCategory.internalError("Sisäänkirjautuminen Opintopolkuun epäonnistui."))
         }
@@ -44,6 +51,20 @@ class CasServlet(implicit val application: KoskiApplication) extends VirkailijaH
         redirectAfterLogin
     }
   }
+
+  /*
+    private def findOrCreate(validHetu: String) = {
+    application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(validHetu, nimitiedot)
+      .orElse(nimitiedot.map(toUusiHenkilö(validHetu, _)).map(application.henkilöRepository.findOrCreate(_).left.map(s => new RuntimeException(s.errorString.mkString)).toTry.get))
+  }
+
+  private def createSession(oppija: OppijaHenkilö, hetu: String) = {
+    val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
+    val authUser = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true, huollettavat = Some(huollettavat))
+    setUser(Right(localLogin(authUser, Some(langFromCookie.getOrElse(langFromDomain)))))
+    redirect(onSuccess)
+  }
+   */
 
   // Return url for cas logout
   post("/") {

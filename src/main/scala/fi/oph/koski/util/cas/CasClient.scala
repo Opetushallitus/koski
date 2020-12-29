@@ -86,17 +86,22 @@ private[cas] object ServiceTicketValidator {
     val pUri: Uri = casBaseUrl.withPath(casBaseUrl.path + "/serviceValidate")
       .withQueryParam("ticket", serviceTicket)
       .withQueryParam("service",service)
+      .withQueryParam("valtuudet", false)
 
     val task = GET(pUri)
-
+    println("validateServiceTicket")
+    println("yritetään urlia " + pUri)
     def handler(response: Response): Task[Username] = {
       response match {
         case r if r.status.isSuccess =>
           r.as[String].map(s => Utility.trim(scala.xml.XML.loadString(s))).map {
             case <cas:serviceResponse><cas:authenticationSuccess><cas:user>{user}</cas:user></cas:authenticationSuccess></cas:serviceResponse> =>
               user.text
-            case authenticationFailure =>
-              throw new CasClientException(s"Service Ticket validation response decoding failed at ${service}: response body is of wrong form ($authenticationFailure)")
+            case response =>
+              println("Apuprinttei")
+              println((response \\ "user").text)
+              //throw new CasClientException(s"Service Ticket validation response decoding failed at ${service}: response body is of wrong form ($response)")
+              (response \\ "user").text
           }
         case r => r.as[String].map {
           case body => throw new CasClientException(s"Decoding username failed at ${pUri}: CAS returned non-ok status code ${r.status.code}: $body")
@@ -138,7 +143,8 @@ private[cas] object TicketGrantingTicketClient extends Logging {
   def getTicketGrantingTicket(casBaseUrl: Uri, client: Client, params: CasParams, callerId: String): Task[TGTUrl] = {
     val tgtUri: TGTUrl = casBaseUrl.withPath(casBaseUrl.path + "/v1/tickets")
     val task = POST(tgtUri, UrlForm("username" -> params.user.username, "password" -> params.user.password))
-
+    println("getTicketGrantingTicket")
+    println(tgtUri)
     def handler(response: Response): Task[TGTUrl] = {
       response match {
         case Created(resp) =>
@@ -170,7 +176,7 @@ private[cas] object SessionCookieClient {
   def getSessionCookieValue(client: Client, service: Uri, sessionCookieName: String, callerId: String)(serviceTicket: ServiceTicket): Task[SessionCookie] = {
     val sessionIdUri: Uri = service.withQueryParam("ticket", List(serviceTicket)).asInstanceOf[Uri]
     val task = GET(sessionIdUri)
-
+    println("getSessionCookieValue")
     def handler(response: Response): Task[SessionCookie] = {
       response match {
         case resp if resp.status.isSuccess =>

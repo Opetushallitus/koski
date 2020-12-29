@@ -16,10 +16,12 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
 
   get("/") {
     if (application.features.shibboleth && !isAuthenticated) {
+      println("Ei autentikoitu?")
       setLangCookieFromDomainIfNecessary
       landerHtml
     } else {
       val url = if (koskiSessionOption.exists(_.user.kansalainen)) {
+        println("Omat tiedot")
         "/omattiedot"
       } else {
         "/virkailija"
