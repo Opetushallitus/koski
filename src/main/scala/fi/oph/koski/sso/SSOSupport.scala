@@ -73,12 +73,12 @@ trait SSOSupport extends ScalatraBase with Logging {
     removeCookie("eisuorituksia")
   }
 
-  def casServiceUrl = {
-    koskiRoot + "/cas"
+  def casVirkailijaServiceUrl = {
+    koskiRoot + "/cas/virkailija"
   }
 
   def casOppijaServiceUrl = {
-    koskiRoot + "/cas-oppija"
+    koskiRoot + "/cas/oppija"
   }
 
   def redirectAfterLogin = {
@@ -90,7 +90,7 @@ trait SSOSupport extends ScalatraBase with Logging {
   def redirectToLogin = {
     response.addCookie(Cookie("koskiReturnUrl", currentUrl)(CookieOptions(secure = isHttps, path = "/", maxAge = 60, httpOnly = true)))
     if (ssoConfig.isCasSsoUsed) {
-      redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/login?service=" + casServiceUrl)
+      redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/login?service=" + casVirkailijaServiceUrl)
     } else {
       redirect(localLoginPage)
     }

@@ -11,13 +11,19 @@ import cas.CasClient.Username
 /**
   *  This is where the user lands after a CAS login / logout
   */
-class CasServlet(kansalainen: Boolean = true)(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with AuthenticationSupport with NoCache {
+class CasServlet()(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with AuthenticationSupport with NoCache {
   private val casClient = new CasClient(application.config.getString("opintopolku.virkailija.url") + "/cas", Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
   private val casOppijaClient = new CasClient("https://testiopintopolku.fi/cas-oppija", Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
   private val koskiSessions = application.koskiSessionRepository
 
   // Return url for cas login
-  get("/") {
+  get("/*") {
+    println(requestPath)
+    val kansalainen = requestPath match {
+      case "/virkailija" => false;
+      case _ => true;
+    };
+
     params.get("ticket") match {
       case Some(ticket) =>
         try {
@@ -34,7 +40,7 @@ class CasServlet(kansalainen: Boolean = true)(implicit val application: KoskiApp
             setUser(Right(localLogin(authUser, Some(langFromCookie.getOrElse(langFromDomain)))))
             redirect("/omattiedot")
           } else {
-            val username = validateServiceTicket(casClient, casServiceUrl, ticket)
+            val username = validateServiceTicket(casClient, casVirkailijaServiceUrl, ticket)
             DirectoryClientLogin.findUser(application.directoryClient, request, username) match {
               case Some(user) =>
                 setUser(Right(user.copy(serviceTicket = Some(ticket))))
@@ -73,7 +79,7 @@ class CasServlet(kansalainen: Boolean = true)(implicit val application: KoskiApp
    */
 
   // Return url for cas logout
-  post("/") {
+  post("/*") {
     params.get("logoutRequest") match {
       case Some(logoutRequest) =>
         cas.CasLogout.parseTicketFromLogoutRequest(logoutRequest) match {
