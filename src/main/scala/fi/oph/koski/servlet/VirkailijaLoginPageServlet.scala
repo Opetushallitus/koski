@@ -12,4 +12,8 @@ class VirkailijaLoginPageServlet(implicit val application: KoskiApplication) ext
       htmlIndex("koski-login.js")
     }
   }
+
+  get("/oppija") {
+    redirectToOppijaLogin
+  }
 }

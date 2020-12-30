@@ -96,12 +96,10 @@ private[cas] object ServiceTicketValidator {
           r.as[String].map(s => Utility.trim(scala.xml.XML.loadString(s))).map {
             case <cas:serviceResponse><cas:authenticationSuccess><cas:user>{user}</cas:user></cas:authenticationSuccess></cas:serviceResponse> =>
               user.text
-            case response =>
-              println("Apuprinttei")
-              println(response)
-              println((response \\ "user").text)
-              //throw new CasClientException(s"Service Ticket validation response decoding failed at ${service}: response body is of wrong form ($response)")
+            case response if (response \\ "authenticationSuccess").nonEmpty =>
               (response \\ "user").text
+            case errorResponse =>
+              throw new CasClientException(s"Service Ticket validation response decoding failed at ${service}: response body is of wrong form ($errorResponse)")
           }
         case r => r.as[String].map {
           case body => throw new CasClientException(s"Decoding username failed at ${pUri}: CAS returned non-ok status code ${r.status.code}: $body")

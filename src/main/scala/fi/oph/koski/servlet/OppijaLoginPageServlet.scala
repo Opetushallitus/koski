@@ -15,7 +15,7 @@ class OppijaLoginPageServlet(implicit val application: KoskiApplication) extends
     } else {
       ShibbolethSecret.fromConfig(application.config)
     }
-    if (application.features.shibboleth && shibbolethSecurity == "mock") {
+    if (shibbolethSecurity == "mock") {
       htmlIndex(
         scriptBundleName = "koski-korhopankki.js",
         scripts = <script id="auth">{Unparsed(s"window.mockUsers=$oppijat")}</script>,

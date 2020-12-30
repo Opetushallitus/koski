@@ -10,7 +10,8 @@ import scala.xml.Unparsed
 class IndexServlet(implicit val application: KoskiApplication) extends ScalatraServlet with VirkailijaHtmlServlet with OmaOpintopolkuSupport {
   before("/.+".r) {
     if (!isAuthenticated) {
-      redirectToOppijaLogin
+      println(requestPath)
+      redirectToVirkailijaLogin
     }
   }
 
@@ -69,7 +70,7 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
     scriptBundleName = "koski-lander.js",
     raamit = oppijaRaamit,
     scripts = <script id="auth">
-      {Unparsed(s"""window.kansalaisenAuthUrl="paskaa"""")}
+      {Unparsed(s"""window.kansalaisenAuthUrl="login/oppija"""")}
     </script>,
     responsive = true
   )
