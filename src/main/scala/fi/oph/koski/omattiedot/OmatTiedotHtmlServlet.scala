@@ -10,10 +10,13 @@ class OmatTiedotHtmlServlet(implicit val application: KoskiApplication) extends 
     sessionOrStatus match {
       case Right(_) if shibbolethCookieFound =>
       case Left(_) if shibbolethCookieFound => {
-        println("TÄÄLLÄLÄLÄLÄ")
+        println("OmatTiedotHtmlServlet + shibbolethCookieFound")
         redirect("https://testiopintopolku.fi/cas-oppija/login?service=http://localhost:7021/koski/cas/oppija&valtuudet=false")
       }
-      case _ => redirect(shibbolethUrl)
+      case _ => {
+        println("OmatTiedotHtmlServlet case _")
+        redirect(shibbolethUrl)
+      }
     }
   }
 

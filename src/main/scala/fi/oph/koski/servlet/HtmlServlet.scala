@@ -25,7 +25,7 @@ trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport with HtmlN
   lazy val piwikSiteId: String = application.config.getString("piwik.siteId")
 
   override def haltWithStatus(status: HttpStatus): Nothing = status.statusCode match {
-    case 401 => redirectToLogin
+    case 401 => redirectToOppijaLogin
     case _ => super.haltWithStatus(status)
   }
 

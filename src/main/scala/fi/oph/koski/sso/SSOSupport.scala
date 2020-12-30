@@ -87,12 +87,23 @@ trait SSOSupport extends ScalatraBase with Logging {
     redirect(returnUrlCookie.getOrElse("/"))
   }
 
-  def redirectToLogin = {
+  def redirectToVirkailijaLogin = {
+    println("Redirect to virkailija login")
     response.addCookie(Cookie("koskiReturnUrl", currentUrl)(CookieOptions(secure = isHttps, path = "/", maxAge = 60, httpOnly = true)))
     if (ssoConfig.isCasSsoUsed) {
       redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/login?service=" + casVirkailijaServiceUrl)
     } else {
       redirect(localLoginPage)
+    }
+  }
+
+  def redirectToOppijaLogin = {
+    println("Redirect to oppija login")
+    response.addCookie(Cookie("koskiReturnUrl", currentUrl)(CookieOptions(secure = isHttps, path = "/", maxAge = 60, httpOnly = true)))
+    if (ssoConfig.isCasSsoUsed) {
+      redirect(application.config.getString("opintopolku.oppija.url") + "/cas-oppija/login?service=" + casOppijaServiceUrl + "&valtuudet=false")
+    } else {
+      redirect(localOppijaLoginPage)
     }
   }
 
@@ -109,6 +120,7 @@ trait SSOSupport extends ScalatraBase with Logging {
   def ssoConfig = SSOConfig(application.config)
 
   def localLoginPage = "/login"
+  def localOppijaLoginPage = "/login/shibboleth"
 
   // don't set cookie domain for localhost (so that local Koski works with non-localhost IP address, e.g. phone in the same wifi)
   private def cookieDomains: Iterable[String] =
