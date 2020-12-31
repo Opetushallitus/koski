@@ -64,20 +64,6 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
     }
   }
 
-  /*
-    private def findOrCreate(validHetu: String) = {
-    application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(validHetu, nimitiedot)
-      .orElse(nimitiedot.map(toUusiHenkilö(validHetu, _)).map(application.henkilöRepository.findOrCreate(_).left.map(s => new RuntimeException(s.errorString.mkString)).toTry.get))
-  }
-
-  private def createSession(oppija: OppijaHenkilö, hetu: String) = {
-    val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
-    val authUser = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true, huollettavat = Some(huollettavat))
-    setUser(Right(localLogin(authUser, Some(langFromCookie.getOrElse(langFromDomain)))))
-    redirect(onSuccess)
-  }
-   */
-
   // Return url for cas logout
   post("/*") {
     params.get("logoutRequest") match {

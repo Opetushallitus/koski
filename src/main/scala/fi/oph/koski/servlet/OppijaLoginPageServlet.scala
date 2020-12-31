@@ -10,6 +10,10 @@ import scala.xml.Unparsed
 
 class OppijaLoginPageServlet(implicit val application: KoskiApplication) extends ScalatraServlet with OppijaHtmlServlet with SSOSupport {
   get("/") {
+    redirectToOppijaLogin
+  }
+
+  get("/local") {
     val shibbolethSecurity = if (Environment.usesAwsSecretsManager) {
       ShibbolethSecret.fromSecretsManager
     } else {

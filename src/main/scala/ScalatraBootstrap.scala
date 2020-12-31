@@ -63,7 +63,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     mount("/", new IndexServlet)
     mount("/omattiedot", new OmatTiedotHtmlServlet)
     mount("/login", new VirkailijaLoginPageServlet)
-    mount("/login/shibboleth", new OppijaLoginPageServlet)
+    mount("/login/oppija", new OppijaLoginPageServlet)
     mount("/pulssi", new PulssiHtmlServlet)
     mount("/documentation", new RedirectServlet("/dokumentaatio", true))
     mount("/dokumentaatio", new DocumentationServlet)

@@ -128,7 +128,7 @@ trait SSOSupport extends ScalatraBase with Logging {
   def ssoConfig = SSOConfig(application.config)
 
   def localLoginPage = "/login"
-  def localOppijaLoginPage = "/login/shibboleth"
+  def localOppijaLoginPage = "/login/oppija/local"
 
   // don't set cookie domain for localhost (so that local Koski works with non-localhost IP address, e.g. phone in the same wifi)
   private def cookieDomains: Iterable[String] =
