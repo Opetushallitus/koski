@@ -50,7 +50,7 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
                 redirectAfterLogin
               case None =>
                 logger.warn(s"User $username not found even though user logged in with valid ticket")
-                redirectToLogout
+                redirectToVirkailijaLogout
             }
           }
         } catch {

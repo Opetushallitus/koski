@@ -20,21 +20,12 @@ class LogoutServlet(implicit val application: KoskiApplication) extends Virkaili
     removeUserCookie
 
     if (virkailija) {
-      redirectToLogout
+      redirectToVirkailijaLogout
     } else {
       params.get("target") match {
         case Some(target) => luvanluovutusLogout(target)
-        case None => kansalaisLogout
+        case None => redirectToOppijaLogout
       }
-    }
-  }
-
-  private def kansalaisLogout = {
-    val shibbolethLogoutUrl = LogoutServerConfiguration.shibbolethLogoutUrl(application, langFromDomain)
-    if (shibbolethLogoutUrl.isEmpty) {
-      redirectToFrontpage
-    } else {
-      redirect(shibbolethLogoutUrl)
     }
   }
 

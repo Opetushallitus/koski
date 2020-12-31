@@ -107,9 +107,17 @@ trait SSOSupport extends ScalatraBase with Logging {
     }
   }
 
-  def redirectToLogout = {
+  def redirectToVirkailijaLogout = {
     if (ssoConfig.isCasSsoUsed) {
       redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/logout?service=" + koskiRoot + "/virkailija")
+    } else {
+      redirect(localLoginPage)
+    }
+  }
+
+  def redirectToOppijaLogout = {
+    if (ssoConfig.isCasSsoUsed) {
+      redirect(application.config.getString("opintopolku.oppija.url") + "/cas-oppija/logout?service=" + koskiRoot)
     } else {
       redirect(localLoginPage)
     }
