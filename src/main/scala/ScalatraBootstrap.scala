@@ -1,5 +1,5 @@
 import fi.oph.koski.cache.CacheServlet
-import fi.oph.koski.config.{AppConfig, Environment, KoskiApplication}
+import fi.oph.koski.config.{KoskiApplication, RunMode}
 import fi.oph.koski.db._
 import fi.oph.koski.documentation.{DocumentationApiServlet, DocumentationServlet, KoodistoServlet}
 import fi.oph.koski.editor.{EditorKooditServlet, EditorServlet}
@@ -25,7 +25,7 @@ import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotServlet
 import fi.oph.koski.preferences.PreferencesServlet
 import fi.oph.koski.pulssi.{PulssiHtmlServlet, PulssiServlet}
 import fi.oph.koski.raportit.RaportitServlet
-import fi.oph.koski.raportointikanta.RaportointikantaServlet
+import fi.oph.koski.raportointikanta.{RaportointikantaService, RaportointikantaServlet}
 import fi.oph.koski.servlet._
 import fi.oph.koski.sso.{CasServlet, LocalLoginServlet, SSOConfig, ShibbolethLoginServlet}
 import fi.oph.koski.suoritusjako.{SuoritusjakoServlet, SuoritusjakoServletV2}
@@ -41,9 +41,20 @@ import org.scalatra._
 
 class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionContext {
   override def init(context: ServletContext) = try {
-    def mount(path: String, handler: Handler) = context.mount(handler, path)
-
     implicit val application = Option(context.getAttribute("koski.application").asInstanceOf[KoskiApplication]).getOrElse(KoskiApplication.apply)
+
+    application.runMode match {
+      case RunMode.NORMAL => initKoskiServices(context)
+      case RunMode.GENERATE_RAPORTOINTIKANTA => generateRaportointikanta()
+    }
+  } catch {
+    case e: Exception =>
+      logger.error(e)("Server startup failed: " + e.getMessage)
+      System.exit(1)
+  }
+
+  def initKoskiServices(context: ServletContext)(implicit application: KoskiApplication) = {
+    def mount(path: String, handler: Handler) = context.mount(handler, path)
 
     application.init // start parallel initialization tasks
 
@@ -114,10 +125,11 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       context.mount(new FixtureServlet, "/fixtures")
       application.fixtureCreator.resetFixtures
     }
-  } catch {
-    case e: Exception =>
-      logger.error(e)("Server startup failed: " + e.getMessage)
-      System.exit(1)
+  }
+
+  def generateRaportointikanta()(implicit application: KoskiApplication) = {
+    val service = new RaportointikantaService(application)
+    service.loadRaportointikantaAndExit()
   }
 
   override def destroy(context: ServletContext) = {
