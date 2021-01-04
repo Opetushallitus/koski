@@ -15,6 +15,7 @@ import fi.oph.koski.localization.LocalizationServlet
 import fi.oph.koski.log.Logging
 import fi.oph.koski.luovutuspalvelu.{LuovutuspalveluServlet, PalveluvaylaServlet, TilastokeskusServlet}
 import fi.oph.koski.mydata.{ApiProxyServlet, MyDataReactServlet, MyDataServlet}
+import fi.oph.koski.omaopintopolkuloki.AuditLogServlet
 import fi.oph.koski.omattiedot.{OmatTiedotHtmlServlet, OmatTiedotServlet}
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusServlet, OpiskeluoikeusValidationServlet}
 import fi.oph.koski.oppija.{OppijaServlet, OppijaServletV2}
@@ -103,6 +104,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/api/luovutuspalvelu/haku", new TilastokeskusServlet)
     mount("/api/omadata/oppija", new ApiProxyServlet)
     mount("/api/omadata", new MyDataServlet)
+    mount("/api/auditlogs", new AuditLogServlet)
     mount("/api/ytrkoesuoritukset", new YtrKoesuoritusApiServlet)
     mount("/omadata", new MyDataReactServlet)
     mount("/koesuoritus", new YtrKoesuoritusServlet)
