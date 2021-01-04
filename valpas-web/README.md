@@ -19,6 +19,7 @@ npm install
 ## Kehitys
 
 - `npm start` kääntää lähdekoodin, jää kuuntelemaan muutoksia ja käynnistää web-palvelimen osoitteeseen http://localhost:1234/
+- `npm test` ajaa testit
 - `npm run build` kääntää lähdekoodit kansioon `./dist`
 - `npm run lint` tarkastaa koodin tyypitykset ja formatoinnin
 - `npm run fix` korjaa formatointivirheet
