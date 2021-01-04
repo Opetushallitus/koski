@@ -45,6 +45,7 @@ object KoskiApplication {
 }
 
 class KoskiApplication(val config: Config, implicit val cacheManager: CacheManager = new CacheManager) extends Logging with UserAuthenticationContext with GlobalExecutionContext {
+  lazy val runMode = RunMode.get
   lazy val organisaatioRepository = OrganisaatioRepository(config, koodistoViitePalvelu)
   lazy val organisaatioService = new OrganisaatioService(this)
   lazy val directoryClient = DirectoryClient(config)

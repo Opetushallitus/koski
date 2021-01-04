@@ -24,6 +24,15 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     true
   }
 
+  def loadRaportointikantaAndExit() = {
+    loadDatabase.dropAndCreateObjects
+    startLoading(defaultScheduler, () => {
+      logger.info(s"Ended loading raportointikanta, shutting down...")
+      sys.exit()
+    })
+    logger.info(s"Started loading raportointikanta (force: true)")
+  }
+
   def loadOpiskeluoikeudet(db: RaportointiDatabase = raportointiDatabase): Observable[LoadResult] = {
     // Ensure that nobody uses koskiSession implicitely
     implicit val systemUser = KoskiSession.systemUser
@@ -47,14 +56,17 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   def status: Map[String, RaportointikantaStatusResponse] =
     List(loadDatabase.status, raportointiDatabase.status).groupBy(_.schema).mapValues(_.head)
 
-  private def startLoading(scheduler: Scheduler): Unit = {
+  private def startLoading(scheduler: Scheduler, onEnd: () => Unit = () => ()) = {
     logger.info(s"Start loading raportointikanta into ${loadDatabase.schema.name}")
     loadOpiskeluoikeudet(loadDatabase)
-     .subscribeOn(scheduler)
-     .subscribe(
+      .subscribeOn(scheduler)
+      .subscribe(
         onNext = doNothing,
-        onError = doNothing,
-        onCompleted = loadRestAndSwap
+        onError = (_) => onEnd(),
+        onCompleted = () => {
+          loadRestAndSwap()
+          onEnd()
+        }
       )
   }
 
