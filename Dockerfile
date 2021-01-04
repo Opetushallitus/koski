@@ -18,7 +18,7 @@ RUN find / -xdev -perm +6000 -type f -exec chmod a-s {} \; || true
 
 USER koski
 RUN mkdir -p /home/koski/heapdumps
-COPY target/dist/target/koski-${KOSKI_VERSION}}.war /home/koski
+COPY target/dist/target/koski-${KOSKI_VERSION}.war /home/koski
 RUN unzip -d /home/koski /home/koski/koski-${KOSKI_VERSION}.war && rm /home/koski/koski-${KOSKI_VERSION}.war
 COPY log4j.properties /home/koski
 
