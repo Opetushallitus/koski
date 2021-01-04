@@ -33,3 +33,4 @@ elastic-data
 !/src/main/resources/reference.conf
 fact_cache
 scripts/deploy.retry
+valpas-web/dist
