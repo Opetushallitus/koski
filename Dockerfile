@@ -1,5 +1,6 @@
 FROM adoptopenjdk/openjdk8:alpine-slim
 
+ARG KOSKI_VERSION
 ARG PROMETHEUS_JMX_EXPORTER_VERSION="0.14.0"
 ARG PROMETHEUS_JMX_EXPORTER_JAR_HASH="5ead661727d1e7ed4cf660c0904c71d93e01ebb8c744160bd122442580fe5206"
 
@@ -18,7 +19,7 @@ RUN find / -xdev -perm +6000 -type f -exec chmod a-s {} \; || true
 USER koski
 RUN mkdir -p /home/koski/heapdumps
 COPY target/dist/target/koski-master-SNAPSHOT.war /home/koski
-RUN unzip -d /home/koski /home/koski/koski-master-SNAPSHOT.war && rm /home/koski/koski-master-SNAPSHOT.war
+RUN unzip -d /home/koski /home/koski/koski-${KOSKI_VERSION}.war && rm /home/koski/koski-${KOSKI_VERSION}.war
 COPY log4j.properties /home/koski
 
 # Koski app
