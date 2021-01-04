@@ -21,3 +21,8 @@ services:
     - "9200:9200"
     volumes:
     - "./elasticsearch/elasticsearch-docker.yml:/usr/share/elasticsearch/config/elasticsearch.yml"
+
+  dynamodb:
+    image: "amazon/dynamodb-local"
+    ports:
+    - "8000:8000"
