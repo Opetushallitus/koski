@@ -10,7 +10,8 @@
     "lint:types": "tsc --noEmit",
     "lint:format": "prettier --check ./src",
     "fix": "npm run fix:format",
-    "fix:format": "prettier --write ./src"
+    "fix:format": "prettier --write ./src",
+    "clean": "rm -rf dist & rm -rf .cache"
   },
   "repository": {
     "type": "git",

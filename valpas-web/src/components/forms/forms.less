@@ -1,0 +1,48 @@
+@import "../../style/colors.less";
+@import "../../style/typography.less";
+
+.input-label() {
+  color: @color-black;
+  margin-bottom: 0.25rem;
+}
+
+.input-container() {
+  position: relative;
+}
+
+.input-box() {
+  width: 100%;
+  font-size: @font-size-medium;
+  color: @color-gray;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid @color-gray-lighten-3;
+  border-radius: 3px;
+  box-shadow: 0px 1px 3px 0px fade(#000000, 16.54%) inset;
+
+  &:focus {
+    outline: none !important;
+    border-color: @color-blue-lighten-1;
+    box-shadow: 0px 1px 3px 0px fade(@color-blue, 50%) inset;
+  }
+
+  &::placeholder {
+    color: @color-gray-lighten-2;
+  }
+}
+
+.input-icon() {
+  position: absolute;
+  top: 0;
+  right: 0.5rem;
+
+  font-size: @font-size-medium;
+  color: @color-gray-lighten-2;
+
+  .icon {
+    line-height: 1.5;
+  }
+}
+
+.input-disabled() {
+  opacity: 0.5;
+}

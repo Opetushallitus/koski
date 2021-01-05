@@ -1,0 +1,35 @@
+@import "./forms.less";
+
+.dropdown {
+  display: block;
+  max-width: 40rem;
+  margin-bottom: 1rem;
+
+  .dropdown__label {
+    .input-label();
+  }
+
+  .dropdown__inputcontainer {
+    .input-container();
+
+    .dropdown__input {
+      .input-box();
+      padding-right: 2.25rem;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+
+      &::-ms-expand {
+        display: none;
+      }
+    }
+
+    .dropdown__icon {
+      .input-icon();
+    }
+  }
+}
+
+.dropdown--disabled {
+  .input-disabled();
+}
