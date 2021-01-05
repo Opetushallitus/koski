@@ -1,0 +1,44 @@
+@import "../../style/typography.less";
+@import "../../style/colors.less";
+
+@table-h-end-padding: 1.25rem;
+@table-h-padding: 0.5rem;
+@table-v-padding: 0.2rem;
+
+.table {
+  width: 100%;
+}
+
+.table__body .table__row:nth-child(odd) {
+  background: @color-gray-lighten-4;
+}
+
+.table__th,
+.table__td {
+  padding: @table-v-padding @table-h-padding;
+
+  &:first-child {
+    padding-left: @table-h-end-padding;
+  }
+  &:last-child {
+    padding-right: @table-h-end-padding;
+  }
+}
+
+.table__th {
+  font-size: @font-size-medium;
+  font-weight: 500;
+  text-align: left;
+  user-select: none;
+}
+
+.table__td {
+  font-size: @font-size-medium;
+  font-weight: 400;
+}
+
+.table__sortindicator {
+  display: inline-block;
+  margin-left: 0.5ex;
+  width: 2ex;
+}

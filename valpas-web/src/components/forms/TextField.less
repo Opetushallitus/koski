@@ -1,0 +1,35 @@
+@import "./forms.less";
+
+.textfield {
+  display: block;
+  max-width: 40rem;
+  margin-bottom: 1rem;
+
+  .textfield__label {
+    .input-label();
+  }
+
+  .textfield__inputcontainer {
+    .input-container();
+
+    .textfield__input {
+      .input-box();
+    }
+
+    .textfield__icon {
+      .input-icon();
+    }
+  }
+}
+
+.textfield--withicon {
+  .textfield__inputcontainer {
+    .textfield__input {
+      padding-right: 2.25rem;
+    }
+  }
+}
+
+.textfield--disabled {
+  .input-disabled();
+}

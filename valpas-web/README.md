@@ -23,3 +23,4 @@ npm install
 - `npm run build` kääntää lähdekoodit kansioon `./dist`
 - `npm run lint` tarkastaa koodin tyypitykset ja formatoinnin
 - `npm run fix` korjaa formatointivirheet
+- `npm run clean` tyhjentää Parcelin välimuistin ja käännöskansion. Aja jos kääntäminen sekoilee esim. rebasen jälkeen.
