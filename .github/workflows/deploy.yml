@@ -1,0 +1,66 @@
+name: Deploy to ECS
+on:
+  workflow_run:
+    workflows: ["Build"]
+    branches: [master]
+jobs:
+  deploy_dev:
+    name: Deploy service
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure AWS credentials for utility account
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+
+      - name: Switch role to dev environment
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+          role-to-assume: ${{ secrets.AWS_DEPLOYMENT_ROLE_DEV }}
+          role-duration-seconds: 1200
+          role-session-name: KoskiDeployment-${{ github.sha }}
+
+      - name: Get task definition ARN
+        id: get-taskdef-arn
+        run: |
+          echo "::set-output name=taskdef-arn::$(aws ssm get-parameter --name /koski/task-definition-skeleton --output text --query 'Parameter.Value')"
+
+      - name: Get task definition skeleton
+        run: |
+          aws ecs describe-task-definition --task-definition ${{ steps.get-taskdef-arn.outputs.taskdef-arn }} --query 'taskDefinition' > task-definition.json
+
+      - name: Render Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: KoskiContainer
+          image: ${{ steps.login-ecr.outputs.registry }}/koski:${{ github.sha }}
+
+      - name: Deploy Amazon ECS task definition
+        id: taskdef-deploy
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          cluster: koski-cluster
+
+      - name: Add taskdef ARN to AppSpec
+        run: |
+          sed -i "s|TASKDEF_ARN|${{ steps.taskdef-deploy.task-definition-arn }}|g" appspec.yml
+
+      - name: Deploy using CodeDeploy
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: koski-fargate
+          cluster: koski-cluster
+          wait-for-service-stability: true
+          codedeploy-appspec: appspec.yml
+          codedeploy-application: koski
+          codedeploy-deployment-group: koski-deployment-group
