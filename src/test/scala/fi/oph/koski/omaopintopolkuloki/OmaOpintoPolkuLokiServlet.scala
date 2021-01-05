@@ -7,8 +7,8 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import org.scalatest.{FreeSpec, Matchers}
 
-class AuditLogServletSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification {
-  "AuditLogServlet" - {
+class OmaOpintoPolkuLokiServletSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification {
+  "AuditLogien näyttäminen kansalaiselle" - {
     "Katsoja voi kuulua useaan organisaatioon, logit ryhmitellään katsojan organisaatioiden perusteella" in {
       auditlogs(MockOppijat.amis).map(_.organizations.map(_.oid)) should contain theSameElementsAs(List(
         List(MockOrganisaatiot.helsinginKaupunki, MockOrganisaatiot.stadinAmmattiopisto),
@@ -27,19 +27,35 @@ class AuditLogServletSpec extends FreeSpec with Matchers with LocalJettyHttpSpec
       auditlogs(MockOppijat.lukiolainen) shouldBe empty
     }
     "Organisaation oidia, jota ei löydy organisaatiopalvelusta, ei osata käsitellä" in {
-      get("api/auditlogs", headers = kansalainenLoginHeaders(MockOppijat.virtaEiVastaa.hetu.get)) {
+      get("api/omaopintopolkuloki/auditlogs", headers = kansalainenLoginHeaders(MockOppijat.virtaEiVastaa.hetu.get)) {
         verifyResponseStatus(500, KoskiErrorCategory.internalError())
       }
     }
     "Rajapinta vaatii kirjautumisen" in {
-      get("api/auditlogs") {
+      get("api/omaopintopolkuloki/auditlogs") {
         verifyResponseStatus(401, KoskiErrorCategory.unauthorized.notAuthenticated())
+      }
+    }
+  }
+  "Henkilötietojen palauttaminen käyttöliittymään" - {
+    "Palauttaa henkilötiedot" in {
+      val oppija = MockOppijat.ammattilainen
+      get("api/omaopintopolkuloki/whoami", headers = kansalainenLoginHeaders(oppija.hetu.get)) {
+        verifyResponseStatusOk()
+        JsonSerializer.parse[OmaOpintopolkuLokiHenkiloTiedot](body) should equal(
+          OmaOpintopolkuLokiHenkiloTiedot(
+            hetu = oppija.hetu,
+            etunimi = oppija.etunimet,
+            kutsumanimi = oppija.kutsumanimi,
+            sukunimi = oppija.sukunimi
+          )
+        )
       }
     }
   }
 
   private def auditlogs(oppija: LaajatOppijaHenkilöTiedot) = {
-    get("api/auditlogs", headers = kansalainenLoginHeaders(oppija.hetu.get)) {
+    get("api/omaopintopolkuloki/auditlogs", headers = kansalainenLoginHeaders(oppija.hetu.get)) {
       verifyResponseStatusOk()
       JsonSerializer.parse[List[OrganisaationAuditLogit]](body)
     }
