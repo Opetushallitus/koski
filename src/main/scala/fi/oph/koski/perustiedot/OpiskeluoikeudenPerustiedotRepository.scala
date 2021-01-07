@@ -175,10 +175,10 @@ class OpiskeluoikeudenPerustiedotRepository(
       throw new TestingException("Testing error handling")
     }
 
-    val filters = List(nameFilter(hakusana)) ++ oppilaitosFilter(session) ++ mitätöityFilter
+    val filters = nameFilter(hakusana) ++ oppilaitosFilter(session) ++ mitätöityFilter
     val doc = toJValue(Map(
       "_source" -> "henkilö.oid",
-      "query" -> Map("bool" -> Map("must" -> filters)),
+      "query" -> ElasticSearch.allFilter(filters),
       "aggregations" -> Map("oids" -> Map("terms" -> Map("field" -> "henkilö.oid.keyword")))
     ))
 

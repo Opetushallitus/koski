@@ -26,9 +26,7 @@ object ElasticSearch {
     case Nil => Map("match_all" -> Map.empty)
     case _ => Map(
       "bool" -> Map(
-        "must" -> List(
-          queries
-        )
+        "must" -> queries
       )
     )
   }
@@ -37,9 +35,7 @@ object ElasticSearch {
     case Nil => Map("match_all" -> Map.empty)
     case _ => Map(
       "bool" -> Map(
-        "should" -> List(
-          queries
-        )
+        "should" -> queries
       )
     )
   }
