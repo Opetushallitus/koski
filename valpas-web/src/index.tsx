@@ -4,10 +4,10 @@ import "./style/index.less"
 import { Page } from "./components/containers/Page"
 import { Heading } from "./components/typography/headings"
 import { Card, CardBody, CardHeader } from "./components/containers/cards"
-import { DataTable } from "./components/tables/DataTable"
 import { TextField } from "./components/forms/TextField"
 import { SearchIcon, WarningIcon } from "./components/icons/Icon"
 import { Dropdown } from "./components/forms/Dropdown"
+import { SelectableDataTable } from "./components/tables/SelectableDataTable"
 
 ReactDOM.render(
   <Page>
@@ -15,7 +15,7 @@ ReactDOM.render(
     <Card>
       <CardHeader>Kortti</CardHeader>
       <CardBody>
-        <DataTable
+        <SelectableDataTable
           columns={[
             { label: "Nimi", filter: "freetext" },
             { label: "Oppilaitos", filter: "dropdown" },
@@ -44,6 +44,7 @@ ReactDOM.render(
               ],
             },
           ]}
+          onChange={(selected) => console.log("Selected", selected)}
         />
       </CardBody>
     </Card>
