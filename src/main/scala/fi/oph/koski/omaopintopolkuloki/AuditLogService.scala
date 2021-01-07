@@ -5,7 +5,7 @@ import java.util
 
 import com.amazonaws.services.dynamodbv2.document.DynamoDB
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec
-import fi.oph.koski.organisaatio.OrganisaatioRepository
+import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.LocalizedString
@@ -55,9 +55,18 @@ class AuditLogService(organisaatioRepository: OrganisaatioRepository, dynamoDB: 
     val nimi = organisaatioRepository.getOrganisaatio(oid)
       .flatMap(_.nimi)
       .map(name => Organisaatio(oid, name))
+      .orElse(isOpetushallitus(oid))
       .toRight(KoskiErrorCategory.internalError())
     nimi.left.foreach(_ => logger.error(s"AuditLogissa olevaa organisaatiota $oid ei löytynyt organisaatiopalvelusta"))
     nimi
+  }
+
+  private def isOpetushallitus(oid: String) = {
+    if (oid == Opetushallitus.organisaatioOid) {
+      Some(Organisaatio(Opetushallitus.organisaatioOid, Opetushallitus.nimi))
+    } else {
+      None
+    }
   }
 }
 
