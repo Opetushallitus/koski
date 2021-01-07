@@ -8,7 +8,7 @@ ARG PROMETHEUS_JMX_EXPORTER_JAR_HASH="5ead661727d1e7ed4cf660c0904c71d93e01ebb8c7
 RUN wget -q https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/${PROMETHEUS_JMX_EXPORTER_VERSION}/jmx_prometheus_javaagent-${PROMETHEUS_JMX_EXPORTER_VERSION}.jar \
     -O /usr/local/bin/jmx_prometheus_javaagent.jar && \
     echo "$PROMETHEUS_JMX_EXPORTER_JAR_HASH  /usr/local/bin/jmx_prometheus_javaagent.jar" | sha256sum -c
-RUN echo "{}" > /etc/prometheus.yml
+COPY jmx_exporter_config.yml /etc
 COPY run.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/run.sh
 RUN addgroup -S koski -g 10001 && adduser -u 10000 -S -G koski koski

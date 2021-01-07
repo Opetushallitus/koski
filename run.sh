@@ -19,4 +19,4 @@ JAVA_OPTS="\
 
 cd $ROOT
 JAR=$(ls WEB-INF/lib/koski*)
-java $JAVA_OPTS -classpath "$JAR:WEB-INF/lib/*" "fi.oph.koski.jettylauncher.JettyLauncher"
+java $JAVA_OPTS -javaagent:/usr/local/bin/jmx_prometheus_javaagent.jar=9101:/etc/jmx_exporter_config.yml -classpath "$JAR:WEB-INF/lib/*" "fi.oph.koski.jettylauncher.JettyLauncher"
