@@ -1,7 +1,7 @@
 @import "../../style/typography.less";
 @import "../../style/colors.less";
 
-@table-h-end-padding: 1.25rem;
+@table-cell-icon-padding: 2.5rem;
 @table-h-padding: 0.5rem;
 @table-v-padding: 0.2rem;
 
@@ -15,13 +15,18 @@
 
 .table__th,
 .table__td {
-  padding: @table-v-padding @table-h-padding;
+  position: relative;
+  padding: @table-v-padding @table-h-padding @table-v-padding
+    @table-cell-icon-padding;
 
-  &:first-child {
-    padding-left: @table-h-end-padding;
-  }
   &:last-child {
-    padding-right: @table-h-end-padding;
+    padding-right: @table-cell-icon-padding;
+  }
+
+  .table__icon {
+    position: absolute;
+    top: @table-v-padding;
+    left: 0.5rem;
   }
 }
 

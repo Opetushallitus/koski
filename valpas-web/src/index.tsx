@@ -6,7 +6,7 @@ import { Heading } from "./components/typography/headings"
 import { Card, CardBody, CardHeader } from "./components/containers/cards"
 import { DataTable } from "./components/tables/DataTable"
 import { TextField } from "./components/forms/TextField"
-import { SearchIcon } from "./components/icons/Icon"
+import { SearchIcon, WarningIcon } from "./components/icons/Icon"
 import { Dropdown } from "./components/forms/Dropdown"
 
 ReactDOM.render(
@@ -24,7 +24,7 @@ ReactDOM.render(
             {
               key: "123",
               values: [
-                { value: "Heikki" },
+                { value: "Heikki", icon: <SearchIcon /> },
                 { value: "Järvenpään yhteiskoulu" },
               ],
             },
@@ -40,7 +40,7 @@ ReactDOM.render(
               key: "3",
               values: [
                 { value: "Osmo" },
-                { value: "Esimerkkilän yhteiskoulu" },
+                { value: "Esimerkkilän yhteiskoulu", icon: <WarningIcon /> },
               ],
             },
           ]}
