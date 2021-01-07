@@ -4,7 +4,7 @@ import fi.oph.koski.api.LocalJettyHttpSpecification
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
 import org.scalatest.{FreeSpec, Matchers}
 
 class OmaOpintoPolkuLokiServletSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification {
@@ -13,6 +13,11 @@ class OmaOpintoPolkuLokiServletSpec extends FreeSpec with Matchers with LocalJet
       auditlogs(MockOppijat.amis).map(_.organizations.map(_.oid)) should contain theSameElementsAs(List(
         List(MockOrganisaatiot.helsinginKaupunki, MockOrganisaatiot.stadinAmmattiopisto),
         List(MockOrganisaatiot.helsinginKaupunki)
+      ))
+    }
+    "Jos katselijan organisaatio on Opetushallitus" in {
+      auditlogs(MockOppijat.aikuisOpiskelija).map(_.organizations.map(_.oid)) should contain theSameElementsAs(List(
+        List(Opetushallitus.organisaatioOid)
       ))
     }
     "Ei näytetä auditlogeja joissa operaationa on ollut opiskeluoikeuden päivitys/lisäys" in {

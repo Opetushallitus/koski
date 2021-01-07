@@ -4,7 +4,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB
 import com.amazonaws.services.dynamodbv2.model._
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.log.Logging
-import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
 import fi.oph.koski.omaopintopolkuloki.AuditLogDynamoDB.AuditLogTableName
 
 import scala.collection.JavaConverters._
@@ -140,6 +140,12 @@ object AuditLogMockData extends Logging {
       studentOid = MockOppijat.virtaEiVastaa.oid,
       time = "2000-01-12T20:31:32.104+03",
       organizationOid = List("123123123123123", MockOrganisaatiot.helsinginKaupunki),
+      raw = "{operation: \"OPISKELUOIKEUS_KATSOMINEN\", ...}"
+    ),
+    MockData(
+      studentOid = MockOppijat.aikuisOpiskelija.oid,
+      time = "2000-01-12T20:31:32.104+03",
+      organizationOid = List(Opetushallitus.organisaatioOid),
       raw = "{operation: \"OPISKELUOIKEUS_KATSOMINEN\", ...}"
     )
   )
