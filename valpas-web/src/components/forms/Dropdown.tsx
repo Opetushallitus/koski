@@ -28,16 +28,13 @@ export const Dropdown = <T,>(props: Props<T>) => (
   >
     <select
       className={b("input")}
+      value={props.options.findIndex((opt) => opt.value === props.value)}
       onChange={(event) =>
         props.onChange(props.options[parseInt(event.target.value, 10)]?.value)
       }
     >
       {props.options.map((option, index) => (
-        <option
-          key={index}
-          value={index}
-          selected={props.value === option.value}
-        >
+        <option key={index} value={index}>
           {option.display}
         </option>
       ))}
