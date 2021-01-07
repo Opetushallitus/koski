@@ -32,8 +32,9 @@ export type Datum = {
 }
 
 export type Value = {
-  display?: React.ReactNode
   value: string | number
+  display?: React.ReactNode
+  icon?: React.ReactNode
 }
 
 export const DataTable = (props: Props) => {
@@ -122,7 +123,9 @@ export const DataTable = (props: Props) => {
         {sortedData.map((datum) => (
           <Row key={datum.key}>
             {datum.values.map((value, index) => (
-              <Data key={index}>{value.display || value.value}</Data>
+              <Data key={index} icon={value.icon}>
+                {value.display || value.value}
+              </Data>
             ))}
           </Row>
         ))}

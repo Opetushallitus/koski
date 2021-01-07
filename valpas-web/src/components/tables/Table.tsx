@@ -34,11 +34,15 @@ export const Row = ({
   <tr {...rest} className={joinClassNames(b("row"), className)} />
 )
 
-export const Data = ({
-  className,
-  ...rest
-}: React.HTMLAttributes<HTMLTableDataCellElement>) => (
-  <td {...rest} className={joinClassNames(b("td"), className)} />
+export type DataProps = React.HTMLAttributes<HTMLTableDataCellElement> & {
+  icon?: React.ReactNode
+}
+
+export const Data = ({ className, children, icon, ...rest }: DataProps) => (
+  <td {...rest} className={joinClassNames(b("td"), className)}>
+    {icon && <div className={b("icon")}>{icon}</div>}
+    {children}
+  </td>
 )
 
 export const HeaderCell = ({
