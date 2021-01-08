@@ -13,6 +13,7 @@ export type Props<T> = {
   onChange: (value?: T) => void
   label?: string
   icon?: React.ReactNode
+  error?: React.ReactNode
 }
 
 export type DropdownOption<T> = {
@@ -25,9 +26,10 @@ export const Dropdown = <T,>(props: Props<T>) => (
     bemBase="dropdown"
     label={props.label}
     icon={props.icon || <ArrowDropDownIcon />}
+    error={props.error}
   >
     <select
-      className={b("input")}
+      className={b("input", { error: Boolean(props.error) })}
       value={props.options.findIndex((opt) => opt.value === props.value)}
       onChange={(event) =>
         props.onChange(props.options[parseInt(event.target.value, 10)]?.value)

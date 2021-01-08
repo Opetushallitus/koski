@@ -12,12 +12,18 @@ export type Props = {
   placeholder?: string
   disabled?: boolean
   icon?: React.ReactNode
+  error?: React.ReactNode
 }
 
 export const TextField = (props: Props) => (
-  <InputContainer bemBase="textfield" label={props.label} icon={props.icon}>
+  <InputContainer
+    bemBase="textfield"
+    label={props.label}
+    icon={props.icon}
+    error={props.error}
+  >
     <input
-      className={b("input")}
+      className={b("input", { error: Boolean(props.error) })}
       type="text"
       value={props.value}
       placeholder={props.placeholder}

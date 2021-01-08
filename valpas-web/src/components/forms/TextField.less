@@ -14,11 +14,19 @@
 
     .textfield__input {
       .input-box();
+
+      &.textfield__input--error {
+        .input-box-error();
+      }
     }
 
     .textfield__icon {
       .input-icon();
     }
+  }
+
+  .textfield__error {
+    .input-error();
   }
 }
 

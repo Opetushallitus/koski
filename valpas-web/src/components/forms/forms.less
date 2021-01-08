@@ -21,13 +21,18 @@
 
   &:focus {
     outline: none !important;
-    border-color: @color-blue-lighten-1;
-    box-shadow: 0px 1px 3px 0px fade(@color-blue, 50%) inset;
+    border-color: @color-blue-lighten-1 !important;
+    box-shadow: 0px 1px 3px 0px fade(@color-blue, 50%) inset !important;
   }
 
   &::placeholder {
     color: @color-gray-lighten-2;
   }
+}
+
+.input-box-error() {
+  border-color: @color-red;
+  box-shadow: 0px 1px 3px 0px fade(@color-red, 50%) inset;
 }
 
 .input-icon() {
@@ -45,4 +50,9 @@
 
 .input-disabled() {
   opacity: 0.5;
+}
+
+.input-error() {
+  color: @color-red;
+  font-size: @font-size-small;
 }

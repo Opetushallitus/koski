@@ -22,11 +22,19 @@
       &::-ms-expand {
         display: none;
       }
+
+      &.dropdown__input--error {
+        .input-box-error();
+      }
     }
 
     .dropdown__icon {
       .input-icon();
     }
+  }
+
+  .dropdown__error {
+    .input-error();
   }
 }
 
