@@ -8,6 +8,9 @@ import { TextField } from "./components/forms/TextField"
 import { SearchIcon, WarningIcon } from "./components/icons/Icon"
 import { Dropdown } from "./components/forms/Dropdown"
 import { SelectableDataTable } from "./components/tables/SelectableDataTable"
+import { Modal } from "./components/containers/Modal"
+import { RaisedButton } from "./components/buttons/RaisedButton"
+import { ModalButtonGroup } from "./components/buttons/ModalButtonGroup"
 
 ReactDOM.render(
   <Page>
@@ -84,6 +87,13 @@ ReactDOM.render(
         />
       </CardBody>
     </Card>
+    <Modal title="Modaalipopuppi" onClose={() => console.log("close")}>
+      <p>Tämmöistä se nyt vaan on</p>
+      <ModalButtonGroup>
+        <RaisedButton hierarchy="secondary">Peruuta</RaisedButton>
+        <RaisedButton>Valmista</RaisedButton>
+      </ModalButtonGroup>
+    </Modal>
   </Page>,
   document.getElementById("app")
 )

@@ -18,6 +18,7 @@ const defineIcon = (name: string, color?: IconColor) => (props: IconProps) => (
 export const SearchIcon = defineIcon("search")
 export const ArrowDropDownIcon = defineIcon("arrow_drop_down")
 export const ArrowDropUpIcon = defineIcon("arrow_drop_up")
+export const CloseIcon = defineIcon("close")
 export const WarningIcon = defineIcon("warning", "warning")
 
 type MaterialDesignIconProps = IconProps & {
