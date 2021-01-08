@@ -1,0 +1,44 @@
+@import "../../style/colors.less";
+
+.mainnavigation {
+  border-bottom: 2px solid @color-blue-lighten-1;
+  margin-bottom: 3rem;
+}
+
+.mainnavigation__list {
+  display: flex;
+}
+
+.mainnavigation__item {
+  position: relative;
+
+  flex: 1;
+  text-align: center;
+  padding: 1rem 2rem;
+  margin: 0 0.5rem;
+
+  background: @color-white;
+  color: @color-blue-lighten-1;
+
+  border: 2px solid @color-blue-lighten-1;
+  border-bottom: none;
+
+  &.mainnavigation__item--selected {
+    background: @color-blue-lighten-1;
+    color: @color-white;
+  }
+
+  .mainnavigation__caret {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -46px;
+    text-align: center;
+
+    color: @color-blue-lighten-1;
+
+    .icon {
+      font-size: 64px;
+    }
+  }
+}
