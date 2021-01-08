@@ -1,0 +1,22 @@
+@import "../../style/spacing.less";
+@import "../../style/responsive.less";
+
+.columns__container {
+  @media screen and (min-width: @breakpoint-desktop) {
+    display: flex;
+  }
+}
+
+.columns__column {
+  padding: @padding;
+}
+
+.loop(@counter) when (@counter > 0) {
+  .loop(@counter - 1);
+
+  .columns__column--@{counter} {
+    flex: @counter;
+  }
+}
+
+.loop(12);
