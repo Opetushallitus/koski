@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { ModalButtonGroup } from "../components/buttons/ModalButtonGroup"
 import { RaisedButton } from "../components/buttons/RaisedButton"
 import { Card, CardBody, CardHeader } from "../components/containers/cards"
+import { Column, ColumnsContainer } from "../components/containers/Columns"
 import { Modal } from "../components/containers/Modal"
 import { Page } from "../components/containers/Page"
 import { Dropdown } from "../components/forms/Dropdown"
@@ -97,6 +98,35 @@ export const ExampleView = () => {
           </RaisedButton>
         </CardBody>
       </Card>
+
+      <Card>
+        <CardHeader>Sarakkeet</CardHeader>
+        <ColumnsContainer>
+          <Column size={4} style={{ background: "#ffc" }}>
+            <p style={{ background: "#ff4" }}>X</p>
+          </Column>
+          <Column size={8} style={{ background: "#cff" }}>
+            <p style={{ background: "#4ff" }}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sit
+              amet leo ligula. Duis finibus aliquet ipsum, a ultricies quam
+              ornare id. Etiam metus enim, efficitur at tellus non, faucibus
+              volutpat libero. Pellentesque at magna quis tellus consequat
+              porttitor a eu elit. Nam egestas odio eget efficitur rhoncus.
+              Fusce vitae arcu ex. Nulla egestas quam sit amet turpis facilisis
+              facilisis.
+            </p>
+            <p style={{ background: "#4ff" }}>
+              Aliquam tincidunt ut leo eget porttitor. Etiam dictum pretium
+              ligula eu aliquam. Vestibulum auctor est nec faucibus porttitor.
+              Donec metus mauris, aliquet ut ligula at, rhoncus tempus mauris.
+              In interdum ex eu turpis ultricies tincidunt. Integer laoreet odio
+              at ipsum vulputate, ac vulputate justo vulputate. Nunc vel egestas
+              risus.
+            </p>
+          </Column>
+        </ColumnsContainer>
+      </Card>
+
       {modalVisible && (
         <Modal title="Modaalipopuppi" onClose={() => setModalVisible(false)}>
           <p>Tämmöistä se nyt vaan on</p>

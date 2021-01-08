@@ -1,6 +1,7 @@
 @import "./reset.less";
 @import "./typography.less";
 @import "./colors.less";
+@import "./spacing.less";
 
 html,
 body {
@@ -11,6 +12,13 @@ body {
 
 a {
   color: @color-blue;
+}
+
+p {
+  margin-bottom: 1rem;
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 * {

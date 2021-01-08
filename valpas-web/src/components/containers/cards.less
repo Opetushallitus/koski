@@ -1,7 +1,6 @@
 @import "../../style/colors.less";
 @import "../../style/typography.less";
-
-@card-padding: 1rem 1.2rem;
+@import "../../style/spacing.less";
 
 .card {
   border: 1px solid @color-gray-lighten-3;
@@ -11,11 +10,11 @@
 .card__header {
   font-size: @font-size-large;
   font-weight: 500;
-  padding: @card-padding;
+  padding: @padding;
   border-bottom: 1px solid @color-gray-lighten-3;
 }
 
 .card__body {
   position: relative;
-  padding: @card-padding;
+  padding: @padding;
 }
