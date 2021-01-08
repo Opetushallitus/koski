@@ -10,7 +10,7 @@ type FilterProps = {
   onChange: (filterFn: FilterFn | null) => void
 }
 
-export type Props = FilterProps & {
+export type DataTableFilterProps = FilterProps & {
   type: DataFilter
 }
 
@@ -18,7 +18,7 @@ export type DataFilter = "freetext" | "dropdown"
 export const dataFilterUsesValueList = (type?: DataFilter): boolean =>
   type === "dropdown"
 
-export const DataTableFilter = ({ type, ...props }: Props) => {
+export const DataTableFilter = ({ type, ...props }: DataTableFilterProps) => {
   switch (type) {
     case "freetext":
       return <FreeTextFilter {...props} />

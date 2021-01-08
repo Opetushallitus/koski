@@ -1,7 +1,7 @@
 import bem from "bem-ts"
 import React from "react"
 
-export type Props = {
+export type InputContainerProps = {
   bemBase: string
   children: React.ReactNode
   label?: string
@@ -9,7 +9,7 @@ export type Props = {
   error?: React.ReactNode
 }
 
-export const InputContainer = (props: Props) => {
+export const InputContainer = (props: InputContainerProps) => {
   const b = bem(props.bemBase)
   return (
     <label

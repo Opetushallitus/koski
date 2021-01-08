@@ -4,7 +4,7 @@ import "./Checkbox.less"
 
 const b = bem("checkbox")
 
-export type Props = Omit<
+export type CheckboxProps = Omit<
   React.HTMLAttributes<HTMLInputElement>,
   "value" | "onChange"
 > & {
@@ -13,7 +13,7 @@ export type Props = Omit<
 }
 
 // TODO: Tuunaa tästä hienompi
-export const Checkbox = ({ value, onChange, ...rest }: Props) => (
+export const Checkbox = ({ value, onChange, ...rest }: CheckboxProps) => (
   <input
     {...rest}
     className={b()}

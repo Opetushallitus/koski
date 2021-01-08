@@ -1,13 +1,17 @@
 import { update } from "ramda"
 import React, { useState } from "react"
 import { Checkbox } from "../forms/Checkbox"
-import { DataTable, Props as DataTableProps } from "./DataTable"
+import { DataTable, DataTableProps as DataTableProps } from "./DataTable"
 
-export type Props = DataTableProps & {
+export type SelectableDataTableProps = DataTableProps & {
   onChange: (selectedKeys: string[]) => void
 }
 
-export const SelectableDataTable = ({ data, onChange, ...rest }: Props) => {
+export const SelectableDataTable = ({
+  data,
+  onChange,
+  ...rest
+}: SelectableDataTableProps) => {
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])
 
   const dataWithCheckboxes = data.map((datum) => ({

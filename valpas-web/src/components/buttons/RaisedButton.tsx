@@ -5,7 +5,7 @@ import "./buttons.less"
 
 const b = bem("button")
 
-export type Props = React.HTMLAttributes<HTMLDivElement> & {
+export type RaisedButtonProps = React.HTMLAttributes<HTMLDivElement> & {
   hierarchy?: ButtonHierarchy
 }
 
@@ -16,7 +16,7 @@ export const RaisedButton = ({
   children,
   hierarchy,
   ...rest
-}: Props) => (
+}: RaisedButtonProps) => (
   <div
     className={joinClassNames(b(["raised", hierarchy || "primary"]), className)}
     {...rest}

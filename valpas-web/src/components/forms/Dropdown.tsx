@@ -7,7 +7,7 @@ import { InputContainer } from "./InputContainer"
 
 const b = bem("dropdown")
 
-export type Props<T> = {
+export type DropdownProps<T> = {
   options: DropdownOption<T>[]
   value: T
   onChange: (value?: T) => void
@@ -21,7 +21,7 @@ export type DropdownOption<T> = {
   display: string
 }
 
-export const Dropdown = <T,>(props: Props<T>) => (
+export const Dropdown = <T,>(props: DropdownProps<T>) => (
   <InputContainer
     bemBase="dropdown"
     label={props.label}
