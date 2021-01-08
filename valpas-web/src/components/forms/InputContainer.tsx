@@ -6,6 +6,7 @@ export type Props = {
   children: React.ReactNode
   label?: string
   icon?: React.ReactNode
+  error?: React.ReactNode
 }
 
 export const InputContainer = (props: Props) => {
@@ -21,6 +22,7 @@ export const InputContainer = (props: Props) => {
         {props.children}
         {props.icon && <div className={b("icon")}>{props.icon}</div>}
       </div>
+      {props.error && <div className={b("error")}>{props.error}</div>}
     </label>
   )
 }

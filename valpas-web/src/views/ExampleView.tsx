@@ -74,6 +74,12 @@ export const ExampleView = () => {
             placeholder="Placeholder"
             onChange={(value) => console.log("Value", value)}
           />
+          <TextField
+            label="Otsikko"
+            value=""
+            onChange={(value) => console.log("Value", value)}
+            error="Kenttä ei voi olla tyhjä"
+          />
           <Dropdown
             label="Pudotusvalikko"
             options={[
@@ -92,6 +98,13 @@ export const ExampleView = () => {
             ]}
             value={1}
             onChange={(value) => console.log("Value:", value)}
+          />
+          <Dropdown
+            label="Pudotusvalikko"
+            options={[]}
+            value={1}
+            onChange={(value) => console.log("Value:", value)}
+            error="Jotain pitäisi valita..."
           />
           <RaisedButton onClick={() => setModalVisible(true)}>
             Näytä popup
