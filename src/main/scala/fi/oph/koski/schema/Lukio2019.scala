@@ -175,7 +175,7 @@ case class LukionModuulinSuoritusMuissaOpinnoissa2019(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionvaltakunnallinenmoduuli", koodistoUri = "suorituksentyyppi")
 ) extends LukionModuulinSuoritus2019 with LukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019
 
-trait MuutSuorituksetTaiVastaavat2019 extends KoodistostaLöytyväKoulutusmoduuliValinnainenLaajuus with PreIBMuutSuorituksetTaiVastaavat2019 {
+trait MuutSuorituksetTaiVastaavat2019 extends KoodistostaLöytyväKoulutusmoduuliValinnainenLaajuus with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli with PreIBMuutSuorituksetTaiVastaavat2019 {
   @KoodistoUri("lukionmuutopinnot")
   def tunniste: Koodistokoodiviite
 }
@@ -186,7 +186,9 @@ case class MuutLukionSuoritukset2019(
   @KoodistoKoodiarvo("MS")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusOpintopisteissä]
-) extends MuutSuorituksetTaiVastaavat2019
+) extends MuutSuorituksetTaiVastaavat2019 {
+  def withLaajuus(laajuus: Option[LaajuusOpintopisteissä]): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli = this.copy(laajuus = laajuus)
+}
 
 @Title("Lukiodiplomit 2019")
 @Description("Kategoria lukiodiplomeille 2019.")
@@ -194,7 +196,9 @@ case class Lukiodiplomit2019(
   @KoodistoKoodiarvo("LD")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusOpintopisteissä]
-) extends MuutSuorituksetTaiVastaavat2019
+) extends MuutSuorituksetTaiVastaavat2019 {
+  def withLaajuus(laajuus: Option[LaajuusOpintopisteissä]): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli = this.copy(laajuus = laajuus)
+}
 
 @Title("Temaattiset opinnot 2019")
 @Description("Kategoria temaattisille opinnoille 2019.")
@@ -202,7 +206,9 @@ case class TemaattisetOpinnot2019(
   @KoodistoKoodiarvo("TO")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusOpintopisteissä]
-) extends MuutSuorituksetTaiVastaavat2019
+) extends MuutSuorituksetTaiVastaavat2019 {
+  def withLaajuus(laajuus: Option[LaajuusOpintopisteissä]): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli = this.copy(laajuus = laajuus)
+}
 
 @Title("Lukion paikallisen opintojakson suoritus 2019")
 @Description("Lukion paikallisen opintojakson suoritustiedot 2019")
@@ -306,10 +312,9 @@ case class LukionPaikallinenOpintojakso2019(
 ) extends LukionModuuliTaiPaikallinenOpintojakso2019 with PaikallinenKoulutusmoduuli with StorablePreference  with PreIBPaikallinenOpintojakso2019
 
 @Description("Lukion/IB-lukion oppiaineen tunnistetiedot 2019")
-trait LukionOppiaine2019 extends LukionOppiaine with KoulutusmoduuliValinnainenLaajuus with PreIBLukionOppiaine2019 {
+trait LukionOppiaine2019 extends LukionOppiaine with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli with KoulutusmoduuliValinnainenLaajuus with PreIBLukionOppiaine2019 {
   def laajuus: Option[LaajuusOpintopisteissä]
   override def perusteenDiaarinumero: Option[String] = None
-  def withLaajuus(laajuusArvo: Double): LukionOppiaine2019
 }
 
 @Title("Paikallinen oppiaine 2019")
@@ -321,7 +326,7 @@ case class PaikallinenLukionOppiaine2019(
   @DefaultValue(None)
   laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends LukionOppiaine2019 with PaikallinenKoulutusmoduuli with StorablePreference {
-  def withLaajuus(laajuusArvo: Double): LukionOppiaine2019 = this.copy(laajuus = Some(LaajuusOpintopisteissä(laajuusArvo)))
+  def withLaajuus(laajuus: Option[LaajuusOpintopisteissä]): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli = this.copy(laajuus = laajuus)
 }
 
 trait LukionValtakunnallinenOppiaine2019 extends LukionOppiaine2019 with YleissivistavaOppiaine
@@ -348,7 +353,7 @@ case class LukionMuuValtakunnallinenOppiaine2019(
   @DefaultValue(None)
   laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends LukionValtakunnallinenOppiaine2019 {
-  def withLaajuus(laajuusArvo: Double): LukionOppiaine2019 = this.copy(laajuus = Some(LaajuusOpintopisteissä(laajuusArvo)))
+  def withLaajuus(laajuus: Option[LaajuusOpintopisteissä]): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli = this.copy(laajuus = laajuus)
 }
 
 @Title("Uskonto 2019")
@@ -360,7 +365,7 @@ case class LukionUskonto2019(
   laajuus: Option[LaajuusOpintopisteissä] = None,
   uskonnonOppimäärä: Option[Koodistokoodiviite] = None
 ) extends LukionValtakunnallinenOppiaine2019 with Uskonto {
-  def withLaajuus(laajuusArvo: Double): LukionOppiaine2019 = this.copy(laajuus = Some(LaajuusOpintopisteissä(laajuusArvo)))
+  def withLaajuus(laajuus: Option[LaajuusOpintopisteissä]): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli = this.copy(laajuus = laajuus)
 }
 
 @Title("Äidinkieli ja kirjallisuus 2019")
@@ -377,7 +382,7 @@ case class LukionÄidinkieliJaKirjallisuus2019(
   laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends LukionValtakunnallinenOppiaine2019 with LukionÄidinkieliJaKirjallisuus {
   override def description: LocalizedString = kieliaineDescription
-  def withLaajuus(laajuusArvo: Double): LukionOppiaine2019 = this.copy(laajuus = Some(LaajuusOpintopisteissä(laajuusArvo)))
+  def withLaajuus(laajuus: Option[LaajuusOpintopisteissä]): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli = this.copy(laajuus = laajuus)
 }
 
 @Title("Vieras tai toinen kotimainen kieli 2019")
@@ -398,7 +403,7 @@ case class VierasTaiToinenKotimainenKieli2019(
   laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends LukionValtakunnallinenOppiaine2019 with Kieliaine {
   override def description = kieliaineDescription
-  def withLaajuus(laajuusArvo: Double): LukionOppiaine2019 = this.copy(laajuus = Some(LaajuusOpintopisteissä(laajuusArvo)))
+  def withLaajuus(laajuus: Option[LaajuusOpintopisteissä]): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli = this.copy(laajuus = laajuus)
 }
 
 @Title("Matematiikka 2019")
@@ -415,7 +420,7 @@ case class LukionMatematiikka2019(
   laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends LukionValtakunnallinenOppiaine2019 with KoodistostaLöytyväKoulutusmoduuliValinnainenLaajuus with Oppimäärä {
   override def description = oppimäärä.description
-  def withLaajuus(laajuusArvo: Double): LukionOppiaine2019 = this.copy(laajuus = Some(LaajuusOpintopisteissä(laajuusArvo)))
+  def withLaajuus(laajuus: Option[LaajuusOpintopisteissä]): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli = this.copy(laajuus = laajuus)
 }
 
 trait SuoritettavissaErityisenäTutkintona2019 {

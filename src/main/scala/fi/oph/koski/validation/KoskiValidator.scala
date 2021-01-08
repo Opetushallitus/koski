@@ -135,20 +135,12 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     oo.withSuoritukset(oo.suoritukset.map(fillOsasuoritustenLaajuudet))
 
   private def fillOsasuoritustenLaajuudet(suoritus: PäätasonSuoritus): PäätasonSuoritus = suoritus match {
-    case _: LukionPäätasonSuoritus2019 | _: PreIBSuoritus2019 =>
+    case _: LukionPäätasonSuoritus2019 | _: PreIBSuoritus2019 | _: OppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenSuoritus =>
       suoritus.withOsasuoritukset(suoritus.osasuoritukset.map(_.map { os =>
         lazy val yhteislaajuus = os.osasuoritusLista.map(_.koulutusmoduuli.laajuusArvo(1.0)).map(BigDecimal.decimal).sum.toDouble
         os.withKoulutusmoduuli(os.koulutusmoduuli match {
-          case k: LukionOppiaine2019 if yhteislaajuus > 0 => k.withLaajuus(yhteislaajuus)
-          case k => k
-        })
-      }))
-    case _: OppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenSuoritus =>
-      suoritus.withOsasuoritukset(suoritus.osasuoritukset.map(_.map { os =>
-        val yhteislaajuus = os.osasuoritusLista.map(_.koulutusmoduuli.laajuusArvo(1.0)).map(BigDecimal.decimal).sum.toDouble
-        os.withKoulutusmoduuli(os.koulutusmoduuli match {
-          case k: OppivelvollisilleSuunnatunVapaanSivistystyönOsasuorituksenKoulutusmoduuli if yhteislaajuus > 0 => k.withLaajuus(yhteislaajuus)
-          case k: OppivelvollisilleSuunnatunVapaanSivistystyönOsasuorituksenKoulutusmoduuli => k.withLaajuusNone()
+          case k: OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli if yhteislaajuus > 0 => k.withLaajuus(yhteislaajuus)
+          case k: OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli => k.withLaajuusNone()
           case k => k
         })
       }))

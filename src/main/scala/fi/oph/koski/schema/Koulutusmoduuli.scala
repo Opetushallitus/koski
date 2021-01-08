@@ -103,3 +103,12 @@ trait Äidinkieli extends Kieliaine
 trait Oppimäärä extends Koulutusmoduuli {
   def oppimäärä: Koodistokoodiviite
 }
+
+trait OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli extends KoulutusmoduuliValinnainenLaajuus {
+  def laajuus: Option[LaajuusOpintopisteissä]
+
+  final def withLaajuus(laajuusArvo: Double): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli = this.withLaajuus(Some(LaajuusOpintopisteissä(laajuusArvo)))
+  final def withLaajuusNone(): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli = this.withLaajuus(None)
+
+  def withLaajuus(laajuus: Option[LaajuusOpintopisteissä]): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli
+}

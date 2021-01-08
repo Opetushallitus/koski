@@ -1,5 +1,11 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 8.1.2021
+- Lops2021 laajuuksien laskenta korjattu: Aiemmin laajuudet asetettiin osana validaatioita ainoastaan oppiaineelle sen
+sisältämien moduulien ja paikallisten oppiaineiden laajuuksien perusteella. Lisäksi oppiaineelle mahdollisesti
+siirrettyä laajuutta ei poistettu, jos oppiaineella ei ollut yhtään osasuorituksia. Nyt laajuudet lasketaan myös
+lukion muissa opinnoissa, ja tyhjennetään ylemmältä tasolta, jos osasuorituksia ei ole.
+
 ## 22.12.2020
 - Vapaan sivistystyön oppivelvollisuuslinjan opinnoissa täydennetään osaamiskokonaisuuksien ja valinnaisten
 suuntautumisopintojen laajuus automaattisesti opintokokonaisuuksien laajuuksista

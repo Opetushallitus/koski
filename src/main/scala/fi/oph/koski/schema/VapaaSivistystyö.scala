@@ -84,11 +84,9 @@ case class OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumis
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstvalinnainensuuntautuminen", koodistoUri = "suorituksentyyppi")
 ) extends OppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus
 
-trait OppivelvollisilleSuunnatunVapaanSivistystyönOsasuorituksenKoulutusmoduuli extends KoulutusmoduuliValinnainenLaajuus with KoodistostaLöytyväKoulutusmoduuli {
+trait OppivelvollisilleSuunnatunVapaanSivistystyönOsasuorituksenKoulutusmoduuli extends KoulutusmoduuliValinnainenLaajuus with KoodistostaLöytyväKoulutusmoduuli with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli {
   @Description("Laajuus lasketaan yhteen opintokokonaisuuksien laajuuksista automaattisesti tietoja siirrettäessä")
   def laajuus: Option[LaajuusOpintopisteissä]
-  def withLaajuus(laajuusArvo: Double): OppivelvollisilleSuunnatunVapaanSivistystyönOsasuorituksenKoulutusmoduuli
-  def withLaajuusNone(): OppivelvollisilleSuunnatunVapaanSivistystyönOsasuorituksenKoulutusmoduuli
 }
 
 @Title("Valinnaiset suuntautumisopinnot")
@@ -99,8 +97,7 @@ case class OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumiso
   laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends OppivelvollisilleSuunnatunVapaanSivistystyönOsasuorituksenKoulutusmoduuli {
   override def nimi: LocalizedString = LocalizedString.empty
-  def withLaajuus(laajuusArvo: Double): OppivelvollisilleSuunnatunVapaanSivistystyönOsasuorituksenKoulutusmoduuli = this.copy(laajuus = Some(LaajuusOpintopisteissä(laajuusArvo)))
-  def withLaajuusNone(): OppivelvollisilleSuunnatunVapaanSivistystyönOsasuorituksenKoulutusmoduuli = this.copy(laajuus = None)
+  def withLaajuus(laajuus: Option[LaajuusOpintopisteissä]): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli = this.copy(laajuus = laajuus)
 }
 
 @Title("Osaamiskokonaisuus")
@@ -109,8 +106,7 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus(
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends OppivelvollisilleSuunnatunVapaanSivistystyönOsasuorituksenKoulutusmoduuli with KoodistostaLöytyväKoulutusmoduuli {
-  def withLaajuus(laajuusArvo: Double): OppivelvollisilleSuunnatunVapaanSivistystyönOsasuorituksenKoulutusmoduuli = this.copy(laajuus = Some(LaajuusOpintopisteissä(laajuusArvo)))
-  def withLaajuusNone(): OppivelvollisilleSuunnatunVapaanSivistystyönOsasuorituksenKoulutusmoduuli = this.copy(laajuus = None)
+  def withLaajuus(laajuus: Option[LaajuusOpintopisteissä]): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli = this.copy(laajuus = laajuus)
 }
 
 @Title("Opintokokonaisuuden suoritus")

@@ -16,12 +16,12 @@ import org.scalatest.FreeSpec
 class OppijaValidationLukio2019Spec extends FreeSpec with PutOpiskeluoikeusTestMethods[LukionOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsLukio {
   "Laajuudet" - {
     "Oppiaineen laajuus" - {
-      "Oppiaineen laajuus lasketaan moduuleiden laajuuksista" in {
+      "Oppiaineen laajuus lasketaan moduuleiden ja paikallisten opintojaksojen laajuuksista" in {
         val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
           osasuoritukset = Some(List(
             oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
               moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1").copy(laajuus = laajuus(2.5))).copy(arviointi = numeerinenArviointi(8)),
-              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI2").copy(laajuus = laajuus(1.5))).copy(arviointi = numeerinenArviointi(8)),
+              paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("ITT231", "Tanssin alkeet", "Rytmissä pysyminen").copy(laajuus = laajuus(1.5))).copy(arviointi = numeerinenArviointi(7)),
               moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(laajuus = laajuus(0.5))).copy(arviointi = numeerinenArviointi(8))
             )))
           ) ::: oppiainesuorituksetRiittääValmistumiseenNuorilla.tail)
@@ -30,6 +30,43 @@ class OppijaValidationLukio2019Spec extends FreeSpec with PutOpiskeluoikeusTestM
         val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)
         opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.laajuusArvo(0) should equal(4.5)
       }
+
+      "Muiden opintojen laajuus lasketaan moduuleiden ja paikallisten opintojaksojen laajuuksista" in {
+        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
+          osasuoritukset = Some(List(
+            muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
+              moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("ÄI1").copy(laajuus = laajuus(2.5))).copy(arviointi = numeerinenArviointi(8)),
+              paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("ITT231", "Tanssin alkeet", "Rytmissä pysyminen").copy(laajuus = laajuus(1.5))).copy(arviointi = numeerinenArviointi(7)),
+              moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("ÄI3").copy(laajuus = laajuus(0.5))).copy(arviointi = numeerinenArviointi(8))
+            )))
+          ) ::: oppiainesuorituksetRiittääValmistumiseenNuorilla.tail)
+        )))
+
+        val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)
+        opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.laajuusArvo(0) should equal(4.5)
+      }
+
+      "Jos oppiaineella ei ole osasuorituksia, sille asetettu laajuus poistetaan" in {
+        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
+          osasuoritukset = Some(List(
+            oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true).copy(laajuus = Some(laajuus(9.0)))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None)
+          ) ::: oppiainesuorituksetRiittääValmistumiseenNuorilla.tail)
+        )))
+
+        val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)
+        opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.getLaajuus should equal(None)
+      }
+
+      "Jos muilla suorituksilla ei ole osasuorituksia, sille asetettu laajuus poistetaan" in {
+        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
+          osasuoritukset = Some(List(
+            muidenLukioOpintojenSuoritus(lukiodiplomit().copy(laajuus = Some(laajuus(9.0)))).copy(osasuoritukset = None)
+          ) ::: oppiainesuorituksetRiittääValmistumiseenNuorilla.tail)
+        )))
+
+        val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)
+        opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.getLaajuus should equal(None)
+     }
 
       "Moduulin oletuslaajuus on 2" in {
         val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
