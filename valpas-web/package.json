@@ -22,7 +22,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.10",
-    "@types/jest": "^26.0.19",
+    "@types/jest": "^26.0.20",
     "@types/ramda": "^0.27.34",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
@@ -41,5 +41,8 @@
     "ramda": "^0.27.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
+  },
+  "resolutions": {
+    "node-forge": "0.10.0"
   }
 }
