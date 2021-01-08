@@ -8,6 +8,7 @@ import { Page } from "../components/containers/Page"
 import { Dropdown } from "../components/forms/Dropdown"
 import { TextField } from "../components/forms/TextField"
 import { SearchIcon, WarningIcon } from "../components/icons/Icon"
+import { MainNavigation } from "../components/navigation/MainNavigation"
 import { SelectableDataTable } from "../components/tables/SelectableDataTable"
 import { Heading } from "../components/typography/headings"
 
@@ -16,6 +17,15 @@ export const ExampleView = () => {
 
   return (
     <Page>
+      <MainNavigation
+        selected="1"
+        options={[
+          { key: "1", display: "Ilmoitetut" },
+          { key: "2", display: "Automaattinen tarkastus" },
+          { key: "3", display: "Hae hetulla" },
+        ]}
+        onChange={(selected) => console.log("selected", selected)}
+      />
       <Heading>Valpas-komponenttikirjasto</Heading>
       <Card>
         <CardHeader>Kortti</CardHeader>
