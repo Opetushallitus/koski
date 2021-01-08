@@ -107,16 +107,21 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val features = Features(config)
   lazy val indexManager = new IndexManager(List(perustiedotIndexer.index, tiedonsiirtoService.index))
 
-  lazy val init: Future[Unit] = {
-    Future(perustiedotIndexer.init()) // This one will not be awaited for; it's ok that indexing continues while application is running
-    AuditLog.startHeartbeat() // No need to await this one either
-    tryCatch("Koodistojen luonti") { if (config.getString("opintopolku.virkailija.url") != "mock") KoodistoCreator(this).createAndUpdateCodesBasedOnMockData }
-    val parallels: immutable.Seq[Future[Any]] = List(
-      Future { tiedonsiirtoService.init() },
-      Future { scheduledTasks.init },
-      Future { localizationRepository.init }
-    )
+  def init(): Future[Any] = {
+    AuditLog.startHeartbeat()
 
-    Future.sequence(parallels).map(_ => ())
+    tryCatch("Koodistojen luonti") {
+      if (config.getString("opintopolku.virkailija.url") != "mock") {
+        KoodistoCreator(this).createAndUpdateCodesBasedOnMockData
+      }
+    }
+
+    val parallels: immutable.Seq[Future[Any]] = List(
+      Future(perustiedotIndexer.init()),
+      Future(tiedonsiirtoService.init()),
+      Future(localizationRepository.init)
+    )
+    // Init scheduled tasks only after ES indexes have been initialized:
+    Future.sequence(parallels).map(_ => Future(scheduledTasks.init))
   }
 }

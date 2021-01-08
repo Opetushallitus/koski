@@ -170,7 +170,7 @@ class ElasticSearchIndex(
     Some(Http.runTask(http.post(uri"/$readAlias/$mappingTypeName/_search", query)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue])))
   } catch {
     case e: HttpStatusException if e.status == 400 =>
-      logger.warn(e.getMessage)
+      logger.error(e.getMessage)
       None
   }
 
