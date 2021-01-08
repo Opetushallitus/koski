@@ -1,0 +1,33 @@
+@import "../../style/colors.less";
+
+@button-vertical-align: 0.25rem;
+
+.button {
+  display: inline-block;
+  vertical-align: -@button-vertical-align;
+  color: @color-blue-lighten-1;
+  user-select: none;
+
+  &:hover {
+    opacity: 66%;
+  }
+}
+
+.button__content {
+  display: flex;
+  padding: @button-vertical-align 0.75rem;
+  vertical-align: 1rem;
+  cursor: pointer;
+}
+
+.button--raised {
+  background: @color-blue-lighten-1;
+  color: @color-white;
+  border: 2px solid @color-blue-lighten-1;
+  border-radius: 3px;
+}
+
+.button--secondary {
+  background: @color-white;
+  color: @color-blue-lighten-1;
+}

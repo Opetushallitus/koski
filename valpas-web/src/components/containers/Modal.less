@@ -1,0 +1,49 @@
+@import "../../style/colors.less";
+@import "../../style/typography.less";
+
+body.modal__noscroll {
+  overflow: hidden;
+}
+
+.modal__background {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  background: fade(@color-black, 50%);
+}
+
+.modal__container {
+  position: relative;
+  display: inline-block;
+  overflow: scroll;
+
+  min-width: 30vw;
+  max-height: 80vh;
+  padding: 1rem 2rem;
+  margin: 5rem 2rem;
+
+  background: white;
+
+  .modal__header {
+    position: relative;
+    margin-bottom: 1rem;
+
+    .modal__title {
+      font-size: @font-size-large;
+      padding-right: 3rem;
+    }
+
+    .modal__closebutton {
+      position: absolute;
+      top: 0;
+      right: -0.5rem;
+    }
+  }
+}
