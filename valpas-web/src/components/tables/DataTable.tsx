@@ -15,7 +15,7 @@ import "./Table.less"
 
 const b = bem("table")
 
-export type Props = {
+export type DataTableProps = {
   className?: string
   columns: Column[]
   data: Datum[]
@@ -37,7 +37,7 @@ export type Value = {
   icon?: React.ReactNode
 }
 
-export const DataTable = (props: Props) => {
+export const DataTable = (props: DataTableProps) => {
   const [sortColumnIndex, setSortColumnIndex] = useState(0)
   const [sortAscending, setSortAscending] = useState(true)
   const [filters, setFilters] = useState<Array<FilterFn | null>>(

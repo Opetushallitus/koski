@@ -5,7 +5,7 @@ import "./TextField.less"
 
 const b = bem("textfield")
 
-export type Props = {
+export type TextFieldProps = {
   value: string
   onChange: (value: string) => void
   label?: string
@@ -15,7 +15,7 @@ export type Props = {
   error?: React.ReactNode
 }
 
-export const TextField = (props: Props) => (
+export const TextField = (props: TextFieldProps) => (
   <InputContainer
     bemBase="textfield"
     label={props.label}

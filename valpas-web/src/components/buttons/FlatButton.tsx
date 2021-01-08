@@ -5,9 +5,13 @@ import "./buttons.less"
 
 const b = bem("button")
 
-export type Props = React.HTMLAttributes<HTMLDivElement>
+export type FlatButtonProps = React.HTMLAttributes<HTMLDivElement>
 
-export const FlatButton = ({ className, children, ...rest }: Props) => (
+export const FlatButton = ({
+  className,
+  children,
+  ...rest
+}: FlatButtonProps) => (
   <div className={joinClassNames(b(), className)} {...rest}>
     <span className={b("content")}>{children}</span>
   </div>
