@@ -110,5 +110,8 @@ trait OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli extends Koulutus
   final def withLaajuus(laajuusArvo: Double): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli = this.withLaajuus(Some(LaajuusOpintopisteissä(laajuusArvo)))
   final def withLaajuusNone(): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli = this.withLaajuus(None)
 
-  def withLaajuus(laajuus: Option[LaajuusOpintopisteissä]): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli
+  final def withLaajuus(laajuus: Option[LaajuusOpintopisteissä]): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli = {
+    import mojave._
+    shapeless.lens[OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli].field[Option[LaajuusOpintopisteissä]]("laajuus").set(this)(laajuus)
+  }
 }

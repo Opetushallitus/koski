@@ -97,7 +97,6 @@ case class OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumiso
   laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends OppivelvollisilleSuunnatunVapaanSivistystyönOsasuorituksenKoulutusmoduuli {
   override def nimi: LocalizedString = LocalizedString.empty
-  def withLaajuus(laajuus: Option[LaajuusOpintopisteissä]): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli = this.copy(laajuus = laajuus)
 }
 
 @Title("Osaamiskokonaisuus")
@@ -105,9 +104,7 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus(
   @KoodistoUri("vstosaamiskokonaisuus")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusOpintopisteissä] = None
-) extends OppivelvollisilleSuunnatunVapaanSivistystyönOsasuorituksenKoulutusmoduuli with KoodistostaLöytyväKoulutusmoduuli {
-  def withLaajuus(laajuus: Option[LaajuusOpintopisteissä]): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli = this.copy(laajuus = laajuus)
-}
+) extends OppivelvollisilleSuunnatunVapaanSivistystyönOsasuorituksenKoulutusmoduuli with KoodistostaLöytyväKoulutusmoduuli
 
 @Title("Opintokokonaisuuden suoritus")
 case class OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus(
