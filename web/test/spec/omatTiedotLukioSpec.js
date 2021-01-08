@@ -140,11 +140,14 @@ describe('Omat tiedot - lukio', function() {
             'Tanssi ja liike, valinnainen *\n' +
             '(52 opintopistettä) 8\n' +
             '+\n' +
-            'Lukiodiplomit -\n' +
+            'Lukiodiplomit\n' +
+            '(4 opintopistettä) -\n' +
             '+\n' +
-            'Muut suoritukset -\n' +
+            'Muut suoritukset\n' +
+            '(7 opintopistettä) -\n' +
             '+\n' +
-            'Teemaopinnot -'
+            'Teemaopinnot\n' +
+            '(1 opintopistettä) -'
           )
         })
 
@@ -416,17 +419,20 @@ describe('Omat tiedot - lukio', function() {
             'ITT234 *\n' +
             '10 ITT235 *\n' +
             '10\n' +
-            'Lukiodiplomit -\n' +
+            'Lukiodiplomit\n' +
+            '(4 opintopistettä) -\n' +
             'MELD5\n' +
             '7 KÄLD3\n' +
             '9\n' +
-            'Muut suoritukset -\n' +
+            'Muut suoritukset\n' +
+            '(7 opintopistettä) -\n' +
             'KE3\n' +
             '10 HAI765 *\n' +
             'S VKA1\n' +
             '10 ENA1\n' +
             '10\n' +
-            'Teemaopinnot -\n' +
+            'Teemaopinnot\n' +
+            '(1 opintopistettä) -\n' +
             'KAN200 *\n' +
             'S'
           )
@@ -692,15 +698,18 @@ describe('Omat tiedot - lukio', function() {
             'ITT234 *\n' +
             '6 ITT235 *\n' +
             '7\n' +
-            'Muut suoritukset -\n' +
+            'Muut suoritukset\n' +
+            '(6 opintopistettä) -\n' +
             'ÄI1\n' +
             '7 VKAAB31\n' +
             '6 RUB11\n' +
             '6\n' +
-            'Lukiodiplomit -\n' +
+            'Lukiodiplomit\n' +
+            '(2 opintopistettä) -\n' +
             'KULD2\n' +
             '9\n' +
-            'Teemaopinnot -\n' +
+            'Teemaopinnot\n' +
+            '(1 opintopistettä) -\n' +
             'HAI765 *\n' +
             'S'
           )

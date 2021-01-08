@@ -261,7 +261,7 @@ object Lukio2019ExampleData {
   def lukiodiplomit(): Lukiodiplomit2019 = Lukiodiplomit2019(Koodistokoodiviite(koodistoUri = "lukionmuutopinnot", koodiarvo= "LD"), None)
   def temaattisetOpinnot(): TemaattisetOpinnot2019 = TemaattisetOpinnot2019(Koodistokoodiviite(koodistoUri = "lukionmuutopinnot", koodiarvo= "TO"), None)
 
-  private def muidenLukioOpintojenSuoritus(koulutusmoduuli: MuutSuorituksetTaiVastaavat2019): MuidenLukioOpintojenSuoritus2019 = MuidenLukioOpintojenSuoritus2019(
+  def muidenLukioOpintojenSuoritus(koulutusmoduuli: MuutSuorituksetTaiVastaavat2019): MuidenLukioOpintojenSuoritus2019 = MuidenLukioOpintojenSuoritus2019(
     koulutusmoduuli = koulutusmoduuli,
     osasuoritukset = None
   )
