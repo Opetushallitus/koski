@@ -44,12 +44,12 @@ class OppijaValidationPreIB2019Spec extends FreeSpec with PutOpiskeluoikeusTestM
 
   "Laajuudet" - {
     "Oppiaineen laajuus" - {
-      "Oppiaineen laajuus lasketaan moduuleiden laajuuksista" in {
+      "Oppiaineen laajuus lasketaan moduuleiden ja paikallisten opintojaksojen laajuuksista" in {
         val oo = defaultOpiskeluoikeus.copy(suoritukset = List(ExamplesIB.preIBSuoritus2019.copy(
           osasuoritukset = Some(List(
             lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
               moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1").copy(laajuus = laajuus(2.5))).copy(arviointi = numeerinenArviointi(8)),
-              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI2").copy(laajuus = laajuus(1.5))).copy(arviointi = numeerinenArviointi(8)),
+              paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("ITT231", "Tanssin alkeet", "Rytmissä pysyminen").copy(laajuus = laajuus(1.5))).copy(arviointi = numeerinenArviointi(7)),
               moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(laajuus = laajuus(0.5))).copy(arviointi = numeerinenArviointi(8))
             )))
           ))
@@ -57,6 +57,43 @@ class OppijaValidationPreIB2019Spec extends FreeSpec with PutOpiskeluoikeusTestM
 
         val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)
         opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.laajuusArvo(0) should equal(4.5)
+      }
+
+      "Muiden opintojen laajuus lasketaan moduuleiden ja paikallisten opintojaksojen laajuuksista" in {
+        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(ExamplesIB.preIBSuoritus2019.copy(
+          osasuoritukset = Some(List(
+            muidenlukioOpintojenPreIBSuoritus2019(Lukio2019ExampleData.muutSuoritukset()).copy(osasuoritukset = Some(List(
+              moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("ÄI1").copy(laajuus = laajuus(2.5))).copy(arviointi = numeerinenArviointi(8)),
+              paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("ITT231", "Tanssin alkeet", "Rytmissä pysyminen").copy(laajuus = laajuus(1.5))).copy(arviointi = numeerinenArviointi(7)),
+              moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("ÄI3").copy(laajuus = laajuus(0.5))).copy(arviointi = numeerinenArviointi(8))
+            )))
+          ))
+        )))
+
+        val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)
+        opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.laajuusArvo(0) should equal(4.5)
+      }
+
+      "Jos oppiaineella ei ole osasuorituksia, sille asetettu laajuus poistetaan" in {
+        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(ExamplesIB.preIBSuoritus2019.copy(
+          osasuoritukset = Some(List(
+            lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true).copy(laajuus = Some(laajuus(9.0)))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None)
+          ))
+        )))
+
+        val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)
+        opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.getLaajuus should equal(None)
+      }
+
+      "Jos muilla suorituksilla ei ole osasuorituksia, sille asetettu laajuus poistetaan" in {
+        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(ExamplesIB.preIBSuoritus2019.copy(
+          osasuoritukset = Some(List(
+            muidenlukioOpintojenPreIBSuoritus2019(Lukio2019ExampleData.lukiodiplomit().copy(laajuus = Some(laajuus(9.0)))).copy(osasuoritukset = None)
+          ))
+        )))
+
+        val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)
+        opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.getLaajuus should equal(None)
       }
 
       "Moduulin oletuslaajuus on 2" in {
