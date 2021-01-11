@@ -54,7 +54,7 @@ case class OppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenSuoritus(
   override val osasuoritukset: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus]],
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
-) extends VapaanSivistystyönPäätasonSuoritus
+) extends VapaanSivistystyönPäätasonSuoritus with OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus
 
 @Description("Vapaan sivistystyön oppivelvollisuuskoulutuksen tunnistetiedot")
 case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(
@@ -64,7 +64,7 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(
   koulutustyyppi: Option[Koodistokoodiviite] = None
 ) extends DiaarinumerollinenKoulutus with Tutkinto with Laajuudeton
 
-trait OppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus extends Suoritus with Vahvistukseton with Arvioinniton with Välisuoritus
+trait OppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus extends Suoritus with Vahvistukseton with Arvioinniton with Välisuoritus with OpintopistelaajuuksienYhteislaskennallinenSuoritus
 
 @Title("Osaamiskokonaisuuden suoritus")
 case class OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus(

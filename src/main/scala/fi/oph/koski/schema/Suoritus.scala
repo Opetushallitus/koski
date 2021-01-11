@@ -178,6 +178,14 @@ trait PäätasonSuoritus extends Suoritus {
 
 trait KoskeenTallennettavaPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen
 
+trait OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus extends PäätasonSuoritus {
+  override def osasuoritukset: Option[List[OpintopistelaajuuksienYhteislaskennallinenSuoritus]] = None
+}
+
+trait OpintopistelaajuuksienYhteislaskennallinenSuoritus extends Suoritus {
+  def koulutusmoduuli: OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli
+}
+
 trait Todistus extends PäätasonSuoritus with Suorituskielellinen {
   @MultiLineString(3)
   def todistuksellaNäkyvätLisätiedot: Option[LocalizedString]

@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 
-trait LukionPäätasonSuoritus2019 extends LukionPäätasonSuoritus with Todistus with Arvioinniton with PuhviKokeellinen2019 with SuullisenKielitaidonKokeellinen2019 {
+trait LukionPäätasonSuoritus2019 extends LukionPäätasonSuoritus with Todistus with Arvioinniton with PuhviKokeellinen2019 with SuullisenKielitaidonKokeellinen2019 with OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus {
   def koulutusmoduuli: Koulutusmoduuli with Diaarinumerollinen
   @KoodistoUri("lukionoppimaara")
   @Title("Opetussuunnitelma")
@@ -90,7 +90,7 @@ case class LukionOppiaineidenOppimäärätKoodi2019(
   override def nimi: LocalizedString = LocalizedString.empty
 }
 
-trait LukionOppimääränOsasuoritus2019 extends LukionOppimääränPäätasonOsasuoritus {
+trait LukionOppimääränOsasuoritus2019 extends LukionOppimääränPäätasonOsasuoritus with OpintopistelaajuuksienYhteislaskennallinenSuoritus {
   @Title("Moduulit ja paikalliset opintojaksot")
   override def osasuoritukset: Option[List[LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019]] = None
 
