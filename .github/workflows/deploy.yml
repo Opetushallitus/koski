@@ -97,8 +97,4 @@ jobs:
       - name: Write task definition ARN to parameter store
         env:
           TASKDEF_ARN: ${{ steps.raportointikanta-taskdef-deploy.outputs.task-definition-arn }}
-        run: aws ssm put-parameter \
-          --name /koski/raportointikanta/task-definition \
-          --type String \
-          --value ${TASKDEF_ARN} \
-          --overwrite
+        run: aws ssm put-parameter --overwrite --name /koski/raportointikanta/task-definition --type String --value ${TASKDEF_ARN}
