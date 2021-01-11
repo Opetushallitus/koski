@@ -21,9 +21,9 @@ case class PreIBSuoritus2019(
   @KoodistoKoodiarvo("preiboppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("preiboppimaara", koodistoUri = "suorituksentyyppi"),
   ryhmä: Option[String] = None
-) extends IBPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen with Todistus with Arvioinniton with PuhviKokeellinen2019 with SuullisenKielitaidonKokeellinen2019 with Ryhmällinen
+) extends IBPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen with Todistus with Arvioinniton with PuhviKokeellinen2019 with SuullisenKielitaidonKokeellinen2019 with Ryhmällinen with OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus
 
-trait PreIBSuorituksenOsasuoritus2019 extends Suoritus
+trait PreIBSuorituksenOsasuoritus2019 extends Suoritus with OpintopistelaajuuksienYhteislaskennallinenSuoritus
 
 trait IBSuoritus2019 extends IBSuoritus
 
@@ -77,10 +77,9 @@ case class MuidenLukioOpintojenPreIBSuoritus2019(
   override def suorituskieli: Option[Koodistokoodiviite] = None
 }
 
-trait PreIBMuutSuorituksetTaiVastaavat2019 extends Koulutusmoduuli
+trait PreIBMuutSuorituksetTaiVastaavat2019 extends Koulutusmoduuli with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli
 
-trait PreIBIBOppiaine2019 extends Koulutusmoduuli
-trait PreIBLukionOppiaine2019 extends Koulutusmoduuli with Valinnaisuus
+trait PreIBLukionOppiaine2019 extends Koulutusmoduuli with Valinnaisuus with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli
 
 trait PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019 extends IBSuoritus with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu with Vahvistukseton {
   def koulutusmoduuli: PreIBLukionModuuliTaiPaikallinenOpintojakso2019

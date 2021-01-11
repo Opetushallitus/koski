@@ -135,7 +135,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     oo.withSuoritukset(oo.suoritukset.map(fillOsasuoritustenLaajuudet))
 
   private def fillOsasuoritustenLaajuudet(suoritus: PäätasonSuoritus): PäätasonSuoritus = suoritus match {
-    case _: LukionPäätasonSuoritus2019 | _: PreIBSuoritus2019 | _: OppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenSuoritus =>
+    case _: OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus =>
       suoritus.withOsasuoritukset(suoritus.osasuoritukset.map(_.map { os =>
         lazy val yhteislaajuus = os.osasuoritusLista.map(_.koulutusmoduuli.laajuusArvo(1.0)).map(BigDecimal.decimal).sum.toDouble
         os.withKoulutusmoduuli(os.koulutusmoduuli match {

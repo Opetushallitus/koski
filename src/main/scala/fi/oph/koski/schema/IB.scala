@@ -222,7 +222,7 @@ trait IBTaso {
   def taso: Option[Koodistokoodiviite]
 }
 
-trait IBAineRyhmäOppiaine extends IBOppiaine with PreIBOppiaine2015 with PreIBIBOppiaine2019 with IBTaso with Valinnaisuus {
+trait IBAineRyhmäOppiaine extends IBOppiaine with PreIBOppiaine2015 with IBTaso with Valinnaisuus {
   @KoodistoUri("aineryhmaib")
   def ryhmä: Koodistokoodiviite
 }
