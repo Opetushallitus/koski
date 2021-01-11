@@ -91,7 +91,7 @@ jobs:
         id: raportointikanta-taskdef-deploy
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          task-definition: ${{ steps.raportointikanta-task-def.outputs.task-definition }}
           cluster: koski-cluster
 
       - name: Write task definition ARN to parameter store
