@@ -50,7 +50,7 @@ class OmaOpintoPolkuLokiServletSpec extends FreeSpec with Matchers with LocalJet
         JsonSerializer.parse[OmaOpintopolkuLokiHenkiloTiedot](body) should equal(
           OmaOpintopolkuLokiHenkiloTiedot(
             hetu = oppija.hetu,
-            etunimi = oppija.etunimet,
+            etunimet = oppija.etunimet,
             kutsumanimi = oppija.kutsumanimi,
             sukunimi = oppija.sukunimi
           )

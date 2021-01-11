@@ -24,7 +24,7 @@ class OmaOpintoPolkuLokiServlet(implicit val application: KoskiApplication) exte
 
 case class OmaOpintopolkuLokiHenkiloTiedot(
   hetu: Option[String],
-  etunimi: String,
+  etunimet: String,
   kutsumanimi: String,
   sukunimi: String
 )
