@@ -154,6 +154,9 @@ export const ExampleView = () => {
         <Modal title="Modaalipopuppi" onClose={() => setModalVisible(false)}>
           <p>Tämmöistä se nyt vaan on</p>
           <ModalButtonGroup>
+            <RaisedButton disabled onClick={() => console.log("Ei tapahdu")}>
+              Disabloitu nappi
+            </RaisedButton>
             <RaisedButton
               hierarchy="secondary"
               onClick={() => setModalVisible(false)}
