@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.client_payload.sha }}
       - name: Configure AWS credentials for utility account
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -27,7 +29,7 @@ jobs:
           aws-region: eu-west-1
           role-to-assume: ${{ secrets.AWS_DEPLOYMENT_ROLE_DEV }}
           role-duration-seconds: 1200
-          role-session-name: KoskiDeployment-${{ github.sha }}
+          role-session-name: KoskiDeployment-${{ github.event.client_payload.sha }}
 
       - name: Get task definition ARN
         id: get-taskdef-arn
@@ -44,7 +46,7 @@ jobs:
         with:
           task-definition: task-definition.json
           container-name: KoskiContainer
-          image: ${{ steps.login-ecr.outputs.registry }}/koski:${{ github.sha }}
+          image: ${{ steps.login-ecr.outputs.registry }}/koski:${{ github.event.client_payload.sha }}
 
       - name: Deploy Amazon ECS task definition
         id: taskdef-deploy
@@ -85,7 +87,7 @@ jobs:
         with:
           task-definition: raportointikanta-task-definition.json
           container-name: RaportointikantaContainer
-          image: ${{ steps.login-ecr.outputs.registry }}/koski:${{ github.sha }}
+          image: ${{ steps.login-ecr.outputs.registry }}/koski:${{ github.event.client_payload.sha }}
 
       - name: Deploy Amazon ECS task definition
         id: raportointikanta-taskdef-deploy
