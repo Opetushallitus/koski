@@ -5,8 +5,11 @@ import fi.oph.koski.http.{Http, KoskiErrorCategory, OpintopolkuCallerId}
 import fi.oph.koski.koskiuser.{AuthenticationSupport, AuthenticationUser, DirectoryClientLogin, KoskiUserLanguage}
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.servlet.{NoCache, VirkailijaHtmlServlet}
-import cas.CasClient
-import cas.CasClient.Username
+import cas.{CasClient, CasClientException}
+import cas.CasClient.{OppijaAttributes, Username}
+import scalaz.concurrent.Task
+
+import scala.util.control.NonFatal
 
 /**
   *  This is where the user lands after a CAS login / logout
@@ -32,15 +35,14 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
           if (kansalainen) {
             println("Oppijaserviceurl:")
             println(casOppijaServiceUrl)
-            val username = validateServiceTicket(casOppijaClient, casOppijaServiceUrl, ticket)
-            val hetu = username.split('#')(1)
+            val hetu = validateServiceTicket(casOppijaClient, casOppijaServiceUrl, ticket, false)
             val oppija = application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu).get
             val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
             val authUser = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true, huollettavat = Some(huollettavat))
             setUser(Right(localLogin(authUser, Some(langFromCookie.getOrElse(langFromDomain)))))
             redirect("/omattiedot")
           } else {
-            val username = validateServiceTicket(casClient, casVirkailijaServiceUrl, ticket)
+            val username = validateServiceTicket(casClient, casVirkailijaServiceUrl, ticket, true)
             DirectoryClientLogin.findUser(application.directoryClient, request, username) match {
               case Some(user) =>
                 setUser(Right(user.copy(serviceTicket = Some(ticket))))
@@ -55,7 +57,7 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
           }
         } catch {
           case e: Exception =>
-            logger.warn(e)("Service ticket validation failed")
+            logger.warn(e)(s"Service ticket validation failed, ${e.toString}")
             haltWithStatus(KoskiErrorCategory.internalError("Sisäänkirjautuminen Opintopolkuun epäonnistui."))
         }
       case None =>
@@ -80,7 +82,36 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
     }
   }
 
-  def validateServiceTicket(client: CasClient, service: String, ticket: String): Username =
-    client.validateServiceTicket(service)(ticket).unsafePerformSync
+  def validateServiceTicket(client: CasClient, service: String, ticket: String, virkailija: Boolean): Username = {
+    if (virkailija) {
+      val attrs: Either[Throwable, Username] = client.validateServiceTicket(service)(ticket, casOppijaClient.decodeVirkailijaUsername).handleWith {
+        case NonFatal(t) => Task.fail(new CasClientException(s"Failed to validate service ticket $t"))
+      }.unsafePerformSyncAttemptFor(10000).toEither
+      logger.debug(s"attrs response: $attrs")
+      attrs match {
+        case Right(attrs) => {
+          attrs
+        }
+        case Left(t) => {
+          throw new CasClientException(s"Unable to process CAS Virkailija login request, username cannot be resolved from ticket $ticket")
+        }
+      }
+    }
+    else {
+      val attrs: Either[Throwable, OppijaAttributes] = client.validateServiceTicket(service)(ticket, casOppijaClient.decodeOppijaAttributes).handleWith {
+        case NonFatal(t) => Task.fail(new CasClientException(s"Failed to validate service ticket $t"))
+      }.unsafePerformSyncAttemptFor(10000).toEither
+      logger.debug(s"attrs response: $attrs")
+      attrs match {
+        case Right(attrs) => {
+          val hetu = attrs("nationalIdentificationNumber")
+          println(attrs.toString())
+          hetu
+        }
+        case Left(t) => {
+          throw new CasClientException(s"Unable to process CAS Oppija login request, hetu cannot be resolved from ticket $ticket")
+        }
+      }
+    }
+  }
 }
-

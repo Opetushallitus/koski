@@ -1,12 +1,14 @@
 package cas
 
-import cas.CasClient.SessionCookie
-
+import CasClient._
 import scala.collection.mutable.ListBuffer
+
 import org.http4s.{headers, _}
 import org.http4s.client.{Client, DisposableResponse}
 import org.http4s.headers.Location
+
 import scalaz.concurrent.Task
+
 
 /**
  *  HTTP client implementation that handles CAS authentication automatically. Sessions are maintained by keeping
