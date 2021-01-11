@@ -7,6 +7,7 @@
   vertical-align: -@button-vertical-align;
   color: @color-blue-lighten-1;
   user-select: none;
+  cursor: pointer;
 
   &:hover {
     opacity: 66%;
@@ -17,7 +18,6 @@
   display: flex;
   padding: @button-vertical-align 0.75rem;
   vertical-align: 1rem;
-  cursor: pointer;
 }
 
 .button--raised {
@@ -30,4 +30,10 @@
 .button--secondary {
   background: @color-white;
   color: @color-blue-lighten-1;
+}
+
+.button--disabled,
+.button--disabled:hover {
+  opacity: 50%;
+  cursor: default;
 }
