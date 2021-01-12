@@ -9,4 +9,4 @@ class ValpasFrontSpec extends KoskiCommandLineSpec {
   }
 }
 
-object ValpasFrontTag extends Tag("valpas-front")
+object ValpasFrontTag extends Tag("valpasfront")
