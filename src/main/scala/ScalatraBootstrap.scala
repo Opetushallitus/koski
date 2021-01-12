@@ -34,6 +34,7 @@ import fi.oph.koski.sure.SureServlet
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
 import fi.oph.koski.tutkinto.TutkinnonPerusteetServlet
 import fi.oph.koski.util.Futures
+import fi.oph.koski.valpas.ValpasApiServlet
 import fi.oph.koski.valvira.ValviraServlet
 import fi.oph.koski.ytr.{YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
 
@@ -55,6 +56,9 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
   }
 
   def initKoskiServices(context: ServletContext)(implicit application: KoskiApplication) = {
+    context.initParameters("org.scalatra.cors.enable") = "true"
+    context.initParameters("org.scalatra.cors.allowedOrigins") = application.corsAllowedOrigins
+
     def mount(path: String, handler: Handler) = context.mount(handler, path)
 
     val initTasks = application.init() // start parallel initialization tasks
@@ -120,6 +124,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     }
     mount("/cas", new CasServlet)
     mount("/cache", new CacheServlet)
+    mount("/api/valpas", new ValpasApiServlet)
 
     Futures.await(initTasks) // await for all initialization tasks to complete
 

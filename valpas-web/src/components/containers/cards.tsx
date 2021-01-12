@@ -1,5 +1,6 @@
 import bem from "bem-ts"
 import React from "react"
+import { joinClassNames } from "../../utils/classnames"
 import "./cards.less"
 
 const b = bem("card")
@@ -20,10 +21,8 @@ export const CardHeader = (props: CardHeaderProps) => (
   <header className={b("header")}>{props.children}</header>
 )
 
-export type CardBodyProps = {
-  children: React.ReactNode
-}
+export type CardBodyProps = React.HTMLAttributes<HTMLDivElement>
 
-export const CardBody = (props: CardBodyProps) => (
-  <div className={b("body")}>{props.children}</div>
+export const CardBody = ({ className, ...rest }: CardBodyProps) => (
+  <div className={joinClassNames(b("body"), className)} {...rest} />
 )

@@ -106,7 +106,7 @@ module.exports = async ({
     const index = path.join(root, fallback)
     fs.readFile(index, "binary", (err, file) => {
       if (err) return sendError(res, 500)
-      const status = pathname === "/" || static ? 200 : 301
+      const status = pathname === "/" ? 200 : 301
       sendFile(res, status, file, "html")
     })
   }
