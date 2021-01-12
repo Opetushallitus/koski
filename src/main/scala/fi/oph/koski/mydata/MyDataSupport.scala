@@ -35,7 +35,7 @@ trait MyDataSupport extends ScalatraServlet with MyDataConfig {
     } else {
       ShibbolethSecret.fromConfig(application.config)
     }
-    
+
     if(security == "mock") {
       s"&redirect=${urlEncode(target)}"
     } else {

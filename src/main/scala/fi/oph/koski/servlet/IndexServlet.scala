@@ -10,19 +10,16 @@ import scala.xml.Unparsed
 class IndexServlet(implicit val application: KoskiApplication) extends ScalatraServlet with VirkailijaHtmlServlet with OmaOpintopolkuSupport {
   before("/.+".r) {
     if (!isAuthenticated) {
-      println(requestPath)
       redirectToVirkailijaLogin
     }
   }
 
   get("/") {
     if (!isAuthenticated) {
-      println("Ei autentikoitu?")
       setLangCookieFromDomainIfNecessary
       landerHtml
     } else {
       val url = if (koskiSessionOption.exists(_.user.kansalainen)) {
-        println("Omat tiedot")
         "/omattiedot"
       } else {
         "/virkailija"

@@ -88,7 +88,6 @@ trait SSOSupport extends ScalatraBase with Logging {
   }
 
   def redirectToVirkailijaLogin = {
-    println("Redirect to virkailija login")
     response.addCookie(Cookie("koskiReturnUrl", currentUrl)(CookieOptions(secure = isHttps, path = "/", maxAge = 60, httpOnly = true)))
     if (ssoConfig.isCasSsoUsed) {
       redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/login?service=" + casVirkailijaServiceUrl)
@@ -98,7 +97,6 @@ trait SSOSupport extends ScalatraBase with Logging {
   }
 
   def redirectToOppijaLogin = {
-    println("Redirect to oppija login")
     response.addCookie(Cookie("koskiReturnUrl", currentUrl)(CookieOptions(secure = isHttps, path = "/", maxAge = 60, httpOnly = true)))
     if (ssoConfig.isCasSsoUsed) {
       redirect(application.config.getString("opintopolku.oppija.url") + "/cas-oppija/login?service=" + casOppijaServiceUrl + "&valtuudet=false")
