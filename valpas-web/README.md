@@ -19,7 +19,9 @@ npm install
 ## Kehitys
 
 - `npm start` kääntää lähdekoodin, jää kuuntelemaan muutoksia ja käynnistää web-palvelimen osoitteeseen http://localhost:1234/
-- `npm test` ajaa testit
+- `npm test` ajaa kaikki testit
+    - `npm run test:unit` ajaa vain
+    - `npm run test:integration` ajaa vain integraatiotestit (polun `test/integrationtests` alla olevat testit, jotka vaativan backendin)
 - `npm run build` kääntää lähdekoodit kansioon `./dist`
 - `npm run lint` tarkastaa koodin tyypitykset ja formatoinnin
 - `npm run fix` korjaa formatointivirheet
@@ -28,12 +30,13 @@ npm install
 ## Hakemistorakenne
 
 ```
-├── src
-│   ├── components      Uudelleenkäytettävat React-komponentit, niiden tyylit sekä niiden testit
-│   ├── style           Globaalit tyylitiedostot sekä muuttujat: värit, fonttikoot, mitat jne.
-│   ├── utils           Omat apukirjastot
-│   └── views           Näkymäkomponentit, tilanhallinta
-└── test                Testien lisäkonfiguraatiot, apukirjastot ja testidata
-    ├── mocks           Mockit
-    └── snapshots       Jestin snapshotit (eivät tallennu testitiedoston luo, kuten oletuksena)
+├── src                     Lähdekoodit ja yksikkötestit niiden rinnalla
+│   ├── components          Uudelleenkäytettävat React-komponentit, niiden tyylit
+│   ├── style               Globaalit tyylitiedostot sekä muuttujat: värit, fonttikoot, mitat jne.
+│   ├── utils               Omat apukirjastot
+│   └── views               Näkymäkomponentit, tilanhallinta
+└── test                    Testien lisäkonfiguraatiot, apukirjastot ja testidata
+    ├── integrationtests    Integraatiotestit
+    ├── mocks               Mockit
+    └── snapshots           Jestin snapshotit (eivät tallennu testitiedoston luo, kuten oletuksena)
 ```
