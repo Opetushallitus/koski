@@ -8,12 +8,12 @@ class OmatTiedotHtmlServlet(implicit val application: KoskiApplication) extends 
   before("/") {
     setLangCookieFromDomainIfNecessary
     sessionOrStatus match {
-      case Right(_) if shibbolethCookieFound =>
-      case Left(_) if shibbolethCookieFound => {
-        redirect("https://testiopintopolku.fi/cas-oppija/login?service=http://localhost:7021/koski/cas/oppija&valtuudet=false")
+      case Right(_) =>
+      case Left(_) => {
+        redirectToOppijaLogin
       }
       case _ => {
-        redirect(shibbolethUrl)
+        redirectToOppijaLogin
       }
     }
   }

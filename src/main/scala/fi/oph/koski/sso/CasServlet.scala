@@ -30,14 +30,14 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
       case Some(ticket) =>
         try {
           if (kansalainen) {
-            val hetu = validateServiceTicket(casOppijaClient, ticket, true)
+            val hetu = validateServiceTicket(ticket, true)
             val oppija = application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu).get
             val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
             val authUser = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true, huollettavat = Some(huollettavat))
             setUser(Right(localLogin(authUser, Some(langFromCookie.getOrElse(langFromDomain)))))
             redirect("/omattiedot")
           } else {
-            val username = validateServiceTicket(casClient, ticket, false)
+            val username = validateServiceTicket(ticket, false)
             DirectoryClientLogin.findUser(application.directoryClient, request, username) match {
               case Some(user) =>
                 setUser(Right(user.copy(serviceTicket = Some(ticket))))
@@ -77,11 +77,9 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
     }
   }
 
-  def validateServiceTicket(client: CasClient, ticket: String, kansalainen: Boolean): Username = {
-    val (service, client) = if (kansalainen) (casOppijaServiceUrl, casOppijaClient) else (casVirkailijaServiceUrl, casVirkailijaClient)
-
+  def validateServiceTicket(ticket: String, kansalainen: Boolean): Username = {
     if (kansalainen) {
-      val attrs: Either[Throwable, OppijaAttributes] = client.validateServiceTicket(service)(ticket, casOppijaClient.decodeOppijaAttributes).handleWith {
+      val attrs: Either[Throwable, OppijaAttributes] = casOppijaClient.validateServiceTicket(casOppijaServiceUrl)(ticket, casOppijaClient.decodeOppijaAttributes).handleWith {
         case NonFatal(t) => Task.fail(new CasClientException(s"Failed to validate service ticket $t"))
       }.unsafePerformSyncAttemptFor(10000).toEither
       logger.debug(s"attrs response: $attrs")
@@ -96,7 +94,7 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
       }
     }
     else {
-      val attrs: Either[Throwable, Username] = client.validateServiceTicket(service)(ticket, casOppijaClient.decodeVirkailijaUsername).handleWith {
+      val attrs: Either[Throwable, Username] = casVirkailijaClient.validateServiceTicket(casVirkailijaServiceUrl)(ticket, casVirkailijaClient.decodeVirkailijaUsername).handleWith {
         case NonFatal(t) => Task.fail(new CasClientException(s"Failed to validate service ticket $t"))
       }.unsafePerformSyncAttemptFor(10000).toEither
       logger.debug(s"attrs response: $attrs")
