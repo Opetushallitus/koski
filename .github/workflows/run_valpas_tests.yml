@@ -75,8 +75,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Run tests
+      - name: Run linter and tests
         run: |
           cd valpas-web
           npm ci
+          npm run lint
           npm run test:unit
