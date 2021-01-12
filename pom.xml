@@ -529,7 +529,7 @@
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest-maven-plugin</artifactId>
             <configuration>
-              <tagsToExclude>koskidev,browserstack,localization,mocha,parallelmocha</tagsToExclude>
+              <tagsToExclude>koskidev,browserstack,localization,mocha,parallelmocha,valpasfront</tagsToExclude>
             </configuration>
           </plugin>
         </plugins>
@@ -597,7 +597,7 @@
             <artifactId>scalatest-maven-plugin</artifactId>
             <configuration>
               <wildcardSuites>fi.oph.koski.mocha</wildcardSuites>
-              <tagsToExclude>parallelmocha</tagsToExclude>
+              <tagsToExclude>parallelmocha,valpasfront</tagsToExclude>
             </configuration>
           </plugin>
         </plugins>
