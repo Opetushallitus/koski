@@ -164,6 +164,11 @@ scala-console:
 reset-raportointikanta:
 	./scripts/local-reset-raportointikanta.sh
 
+### Valpas
+
+.PHONY: valpas-fronttest
+valpas-fronttest:
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pvalpasfronttest
 
 ### Dist and deploy
 

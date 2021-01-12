@@ -729,6 +729,20 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+      <id>valpasfronttest</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest-maven-plugin</artifactId>
+            <configuration>
+              <wildcardSuites>fi.oph.koski.valpas.jest</wildcardSuites>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
   <distributionManagement>
     <repository>
