@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import java.io.File
-import fi.oph.koski.json.JsonFiles
+import fi.oph.common.json.JsonFiles
 import fi.oph.scalaschema._
 import org.json4s.JsonAST.JBool
 

@@ -5,8 +5,8 @@ import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http._
-import fi.oph.koski.json.JsonDiff.jsonDiff
-import fi.oph.koski.json.JsonSerializer.serialize
+import fi.oph.common.json.JsonDiff.jsonDiff
+import fi.oph.common.json.JsonSerializer.serialize
 import fi.oph.common.koskiuser.{AccessType, KoskiSession, RequiresVirkailijaOrPalvelukäyttäjä, Rooli}
 import fi.oph.common.log.Logging
 import fi.oph.koski.schema.annotation.SensitiveData

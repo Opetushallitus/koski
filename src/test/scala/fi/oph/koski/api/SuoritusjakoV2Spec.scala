@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.documentation.{AmmatillinenExampleData, LukioExampleData}
 import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilö}
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.koski.schema._
 import org.json4s.jackson.JsonMethods
 import org.scalatest.{FreeSpec, Matchers}

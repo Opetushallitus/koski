@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.permission.{PermissionCheckRequest, PermissionCheckResponse}
 import fi.oph.koski.schema.{Henkilö, Organisaatio}

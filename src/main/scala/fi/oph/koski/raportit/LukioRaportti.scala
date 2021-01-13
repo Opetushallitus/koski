@@ -3,7 +3,7 @@ package fi.oph.koski.raportit
 import java.time.LocalDate
 
 import fi.oph.koski.db.GlobalExecutionContext
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.koski.raportit.YleissivistäväUtils._
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema._

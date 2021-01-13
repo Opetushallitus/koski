@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö}
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.common.koskiuser.{KoskiSession, UserWithPassword}
 import fi.oph.koski.schema._

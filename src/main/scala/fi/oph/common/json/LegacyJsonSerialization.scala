@@ -1,4 +1,4 @@
-package fi.oph.koski.json
+package fi.oph.common.json
 
 import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 

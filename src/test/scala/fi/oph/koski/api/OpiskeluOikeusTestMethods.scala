@@ -2,7 +2,7 @@ package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.MockOppijat.defaultOppijat
 import fi.oph.koski.http.{HttpSpecification, HttpStatus}
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.common.koskiuser.MockUsers.paakayttajaMitatoidytOpiskeluoikeudet
 import fi.oph.common.koskiuser.UserWithPassword
 import fi.oph.koski.schema.Henkilö.Oid

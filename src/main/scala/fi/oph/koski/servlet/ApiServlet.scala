@@ -1,7 +1,7 @@
 package fi.oph.koski.servlet
 
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.common.log.Logging
 import fi.oph.koski.schema.KoskiSchema

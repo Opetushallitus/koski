@@ -7,9 +7,9 @@ import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.elasticsearch.{ElasticSearch, ElasticSearchIndex}
 import fi.oph.koski.henkilo.{HenkilöOid, HenkilöRepository, Hetu}
 import fi.oph.koski.http.{ErrorDetail, HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.JsonSerializer.{extract, validateAndExtract}
-import fi.oph.koski.json.LegacyJsonSerialization.toJValue
-import fi.oph.koski.json._
+import fi.oph.common.json.JsonSerializer.{extract, validateAndExtract}
+import fi.oph.common.json.LegacyJsonSerialization.toJValue
+import fi.oph.common.json._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.common.koskiuser._
 import fi.oph.common.log.KoskiMessageField._

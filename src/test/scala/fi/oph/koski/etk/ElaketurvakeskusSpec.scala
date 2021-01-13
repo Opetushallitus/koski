@@ -4,7 +4,7 @@ import java.io.{File, PrintWriter}
 import java.sql.Timestamp
 import java.time.LocalDate.{of => date}
 
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.common.koskiuser.MockUsers
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsAmmatillinen}
 import fi.oph.koski.documentation.AmmatillinenExampleData

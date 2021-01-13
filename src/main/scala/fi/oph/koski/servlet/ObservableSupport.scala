@@ -3,7 +3,7 @@ package fi.oph.koski.servlet
 import java.io.EOFException
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.common.koskiuser.KoskiSession
 import rx.lang.scala.Observable
 

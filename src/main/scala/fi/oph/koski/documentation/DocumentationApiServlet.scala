@@ -1,7 +1,7 @@
 package fi.oph.koski.documentation
 
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.koski.kela.KelaSchema
 import fi.oph.koski.koodisto.Koodistot
 import fi.oph.common.koskiuser.Unauthenticated

@@ -1,7 +1,7 @@
 package fi.oph.koski.perftest
 
 import fi.oph.koski.documentation.ExamplesLukio
-import fi.oph.koski.json.{JsonFiles, JsonSerializer}
+import fi.oph.common.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.organisaatio.{OrganisaatioHakuTulos, OrganisaatioPalveluOrganisaatio}
 import fi.oph.koski.schema.{Koodistokoodiviite, Oppilaitos}
 

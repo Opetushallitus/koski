@@ -8,7 +8,7 @@ import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{GlobalExecutionContext, KoskiDatabaseMethods, SSOSessionRow, Tables}
 import fi.oph.koski.huoltaja.HuollettavatSearchResult
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.common.koskiuser.{AuthenticationUser, SessionTimeout}
 import fi.oph.common.log.{AuditLog, AuditLogMessage, KoskiOperation, Logging}
 import fi.oph.koski.util.Timing

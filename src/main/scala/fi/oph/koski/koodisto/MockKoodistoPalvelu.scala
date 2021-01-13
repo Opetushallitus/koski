@@ -1,7 +1,7 @@
 package fi.oph.koski.koodisto
 import fi.oph.common.koodisto.{Koodisto, KoodistoKoodi, KoodistoViite}
 import fi.oph.koski.cache.{Cached, GlobalCacheManager}
-import fi.oph.koski.json.{JsonResources, JsonSerializer}
+import fi.oph.common.json.{JsonResources, JsonSerializer}
 import fi.oph.koski.koodisto.MockKoodistoPalvelu._
 
 private class MockKoodistoPalvelu extends KoodistoPalvelu {

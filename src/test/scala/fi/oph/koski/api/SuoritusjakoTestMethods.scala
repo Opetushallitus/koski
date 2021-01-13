@@ -3,7 +3,7 @@ package fi.oph.koski.api
 import java.sql.Timestamp
 import java.time.LocalDate
 
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.koski.schema.Oppija
 import fi.oph.koski.suoritusjako.{SuoritusIdentifier, Suoritusjako, SuoritusjakoRequest, SuoritusjakoUpdateResponse}
 import fi.oph.koski.KoskiApplicationForTests

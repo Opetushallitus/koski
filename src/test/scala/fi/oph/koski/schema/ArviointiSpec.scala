@@ -3,7 +3,7 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.koski.validation.{ValidatingAndResolvingExtractor, ValidationAndResolvingContext}
 import org.scalatest.{FreeSpec, Matchers}
 

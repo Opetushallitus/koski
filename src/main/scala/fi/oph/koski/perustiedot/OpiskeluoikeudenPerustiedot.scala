@@ -5,8 +5,8 @@ import java.time.LocalDate
 import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö, OppijaHenkilöWithMasterInfo, SuppeatOppijaHenkilöTiedot}
-import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.json.JsonSerializer.extract
+import fi.oph.common.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer.extract
 import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.{Hidden, KoodistoUri, OksaUri}

@@ -1,6 +1,6 @@
 package fi.oph.koski.http
 import fi.oph.koski.http.ErrorCategory._
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import org.json4s.JValue
 
 private object ErrorCategory {

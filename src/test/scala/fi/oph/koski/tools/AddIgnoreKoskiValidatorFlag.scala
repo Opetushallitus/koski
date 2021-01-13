@@ -4,7 +4,7 @@ package fi.oph.koski.tools
 import java.io.File
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.json.JsonFiles
+import fi.oph.common.json.JsonFiles
 import fi.oph.common.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.schema.KoskiSchema.deserializationContext
 import fi.oph.koski.schema.Oppija

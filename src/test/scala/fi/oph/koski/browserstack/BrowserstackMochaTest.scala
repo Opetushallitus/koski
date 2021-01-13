@@ -4,7 +4,7 @@ import java.net.URL
 import java.util.Date
 
 import fi.oph.koski.api.LocalJettyHttpSpecification
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.koski.util.EnvVariables
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.remote.{DesiredCapabilities, RemoteWebDriver}

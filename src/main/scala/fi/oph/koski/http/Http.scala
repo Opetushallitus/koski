@@ -4,7 +4,7 @@ import java.net.URLEncoder
 
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.http.Http.{Decode, ParameterizedUriWrapper}
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.common.log.LogUtils.maskSensitiveInformation
 import fi.oph.common.log.{LoggerWithContext, Logging}
 import io.prometheus.client.{Counter, Summary}

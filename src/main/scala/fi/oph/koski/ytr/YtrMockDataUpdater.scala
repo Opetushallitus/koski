@@ -1,7 +1,7 @@
 package fi.oph.koski.ytr
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.json.JsonFiles
+import fi.oph.common.json.JsonFiles
 
 object YtrMockDataUpdater extends App {
   List("250493-602S", "200695-889X").foreach { hetu =>

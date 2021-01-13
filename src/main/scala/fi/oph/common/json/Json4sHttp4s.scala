@@ -1,4 +1,4 @@
-package fi.oph.koski.json
+package fi.oph.common.json
 
 import org.http4s._
 import org.http4s.headers.`Content-Type`

@@ -3,7 +3,7 @@ package fi.oph.koski.koodisto
 import com.typesafe.config.Config
 import fi.oph.common.koodisto.KoodistoKoodi
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.json.JsonFiles
+import fi.oph.common.json.JsonFiles
 import fi.oph.common.log.Logging
 import fi.oph.koski.koodisto.MockKoodistoPalvelu.{sortKoodistoKoodiMetadata, sortKoodistoMetadata}
 

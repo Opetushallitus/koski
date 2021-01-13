@@ -4,7 +4,7 @@ import fi.oph.common.koodisto.KoodistoViite
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.http.KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi
-import fi.oph.koski.json.LegacyJsonSerialization
+import fi.oph.common.json.LegacyJsonSerialization
 import fi.oph.common.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache}

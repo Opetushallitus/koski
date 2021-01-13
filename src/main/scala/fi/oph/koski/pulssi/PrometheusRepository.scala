@@ -3,8 +3,8 @@ package fi.oph.koski.pulssi
 import com.typesafe.config.Config
 import fi.oph.koski.http.Http
 import fi.oph.koski.http.Http.{ParameterizedUriWrapper, _}
-import fi.oph.koski.json.GenericJsonFormats
-import fi.oph.koski.json.JsonSerializer.extract
+import fi.oph.common.json.GenericJsonFormats
+import fi.oph.common.json.JsonSerializer.extract
 import org.json4s.JValue
 
 import scalaz.concurrent.Task

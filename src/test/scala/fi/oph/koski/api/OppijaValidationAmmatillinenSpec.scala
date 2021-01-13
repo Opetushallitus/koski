@@ -10,7 +10,7 @@ import fi.oph.koski.documentation.AmmatillinenOldExamples.muunAmmatillisenTutkin
 import fi.oph.koski.documentation.AmmatillinenReforminMukainenPerustutkintoExample.{jatkoOpintovalmiuksiaTukevienOpintojenSuoritus, korkeakouluopintoSuoritus}
 import fi.oph.koski.documentation.ExampleData.helsinki
 import fi.oph.koski.http.{ErrorMatcher, HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.common.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._

@@ -3,7 +3,7 @@ package fi.oph.koski.raportit
 import java.sql.Date
 import java.time.LocalDate
 
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.koski.raportointikanta.{ROsasuoritusRow, RPäätasonSuoritusRow}
 import fi.oph.koski.schema._
 

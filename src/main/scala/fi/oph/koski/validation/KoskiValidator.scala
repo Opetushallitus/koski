@@ -9,7 +9,7 @@ import fi.oph.koski.documentation.ExamplesEsiopetus.päiväkodinEsiopetuksenTunn
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.common.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository

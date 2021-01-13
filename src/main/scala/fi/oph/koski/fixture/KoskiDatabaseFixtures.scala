@@ -13,7 +13,7 @@ import fi.oph.koski.documentation.ExamplesPerusopetus.ysinOpiskeluoikeusKesken
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.oppilaitos
 import fi.oph.koski.documentation.{ExamplesEsiopetus, _}
 import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilö, VerifiedHenkilöOid}
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.common.koskiuser.{AccessType, KoskiSession, MockUsers}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{päiväkotiMajakka, päiväkotiTouhula}

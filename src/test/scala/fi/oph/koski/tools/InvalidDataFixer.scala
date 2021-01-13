@@ -1,7 +1,7 @@
 package fi.oph.koski.tools
 
 import fi.oph.koski.http.DefaultHttpTester
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.common.log.Logging
 import fi.oph.koski.opiskeluoikeus.ValidationResult
 import fi.oph.koski.schema._

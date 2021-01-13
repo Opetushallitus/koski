@@ -3,7 +3,7 @@ package fi.oph.koski.raportit
 import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.common.schema.LocalizedString
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema._

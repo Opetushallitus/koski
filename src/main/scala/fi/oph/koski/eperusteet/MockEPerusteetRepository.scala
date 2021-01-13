@@ -1,6 +1,6 @@
 package fi.oph.koski.eperusteet
 
-import fi.oph.koski.json.{JsonFiles, JsonResources, JsonSerializer}
+import fi.oph.common.json.{JsonFiles, JsonResources, JsonSerializer}
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 
 object MockEPerusteetRepository extends EPerusteetRepository {

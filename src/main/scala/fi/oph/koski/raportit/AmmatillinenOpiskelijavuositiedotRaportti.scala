@@ -4,7 +4,7 @@ import java.sql.Timestamp
 import java.time.temporal.ChronoUnit
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.{LähdejärjestelmäId, OpiskeluoikeudenTyyppi, Organisaatio, Osaamisalajakso}
 import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFormat}

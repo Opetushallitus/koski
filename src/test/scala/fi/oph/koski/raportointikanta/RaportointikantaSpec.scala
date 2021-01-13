@@ -10,7 +10,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.{master, masterEiKoskessa}
-import fi.oph.koski.json.{JsonFiles, JsonSerializer}
+import fi.oph.common.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Wait

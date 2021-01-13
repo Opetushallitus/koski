@@ -3,7 +3,7 @@ package fi.oph.koski.omaopintopolkuloki
 import fi.oph.koski.api.LocalJettyHttpSpecification
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat}
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
 import org.scalatest.{FreeSpec, Matchers}
 

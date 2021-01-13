@@ -6,7 +6,7 @@ import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.{MockOppijat, VerifiedHenkilöOid}
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.JsonSerializer.parse
+import fi.oph.common.json.JsonSerializer.parse
 import fi.oph.common.koskiuser.{AccessType, KoskiSession, MockUsers}
 import fi.oph.koski.opiskeluoikeus.ValidationResult
 import fi.oph.koski.validation.KoskiValidator

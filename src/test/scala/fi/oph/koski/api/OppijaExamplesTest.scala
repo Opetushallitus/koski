@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.documentation.Examples.examples
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.common.log.Logging
 import org.scalatest.{FreeSpec, Matchers}
 

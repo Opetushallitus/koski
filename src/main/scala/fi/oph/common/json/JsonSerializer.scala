@@ -1,4 +1,4 @@
-package fi.oph.koski.json
+package fi.oph.common.json
 
 import fi.oph.koski.schema.KoskiSchema.schemaFactory
 import fi.oph.scalaschema.extraction.ValidationError

@@ -6,7 +6,7 @@ import java.time.{Instant, LocalDate}
 
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.common.log.{AccessLogTester, AuditLogTester}
 import fi.oph.koski.schema.{PerusopetuksenVuosiluokanSuoritus, TäydellisetHenkilötiedot, YlioppilastutkinnonOpiskeluoikeus}
 import fi.oph.koski.suoritusjako.{SuoritusIdentifier, Suoritusjako}

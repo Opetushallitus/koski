@@ -5,7 +5,7 @@ import java.lang.System.currentTimeMillis
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.{OppijaHenkilö, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.koski.perustiedot.OpiskeluoikeudenHenkilötiedot
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.util.Timing

@@ -3,7 +3,7 @@ package fi.oph.koski.api
 import java.time.LocalDate
 
 import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä, valtionosuusRahoitteinen}
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{AmmatillinenPäätasonSuoritus, _}
 

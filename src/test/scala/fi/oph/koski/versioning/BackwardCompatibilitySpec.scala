@@ -5,7 +5,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.Examples
-import fi.oph.koski.json.{JsonFiles, JsonSerializer}
+import fi.oph.common.json.{JsonFiles, JsonSerializer}
 import fi.oph.common.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.schema.KoskiSchema.deserializationContext
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Oppija}

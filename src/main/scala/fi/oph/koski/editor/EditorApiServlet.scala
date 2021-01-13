@@ -1,6 +1,6 @@
 package fi.oph.koski.editor
 
-import fi.oph.koski.json.LegacyJsonSerialization
+import fi.oph.common.json.LegacyJsonSerialization
 import fi.oph.koski.servlet.ApiServlet
 import org.json4s.jackson.Serialization
 import reflect.runtime.universe.TypeTag

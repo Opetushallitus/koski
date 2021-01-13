@@ -14,7 +14,7 @@ import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.koululainen
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.common.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, helsinkiTallentaja, kalle, paakayttaja}
 import fi.oph.common.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot

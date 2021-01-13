@@ -9,7 +9,7 @@ import fi.oph.koski.db._
 import fi.oph.koski.henkilo._
 import fi.oph.koski.history.{JsonPatchException, OpiskeluoikeusHistory, OpiskeluoikeusHistoryRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.JsonDiff.jsonDiff
+import fi.oph.common.json.JsonDiff.jsonDiff
 import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.common.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusChangeValidator.validateOpiskeluoikeusChange

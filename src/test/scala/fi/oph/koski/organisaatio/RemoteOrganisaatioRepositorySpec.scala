@@ -6,7 +6,7 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.cache.GlobalCacheManager
 import fi.oph.koski.http.Http
-import fi.oph.koski.json.JsonResources.readResource
+import fi.oph.common.json.JsonResources.readResource
 import fi.oph.koski.organisaatio.MockOrganisaatioRepository.hierarchyResourcename
 import fi.oph.koski.organisaatio.MockOrganisaatiot.helsinginKaupunki
 import fi.oph.koski.organisaatio.Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA

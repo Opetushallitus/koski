@@ -7,7 +7,7 @@ import fi.oph.koski.config.{Environment, KoskiApplication, ShibbolethSecret}
 import fi.oph.koski.henkilo.{Hetu, OppijaHenkilö}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.huoltaja.HuollettavienHakuOnnistui
-import fi.oph.koski.json.JsonSerializer.writeWithRoot
+import fi.oph.common.json.JsonSerializer.writeWithRoot
 import fi.oph.common.koskiuser.{AuthenticationSupport, AuthenticationUser}
 import fi.oph.koski.schema.{Nimitiedot, UusiHenkilö}
 import fi.oph.koski.servlet.{ApiServlet, LanguageSupport, NoCache}

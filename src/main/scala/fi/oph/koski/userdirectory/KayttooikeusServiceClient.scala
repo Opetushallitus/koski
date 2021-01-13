@@ -3,7 +3,7 @@ package fi.oph.koski.userdirectory
 import com.typesafe.config.Config
 import fi.oph.koski.http.Http.{parseJson, _}
 import fi.oph.koski.http.{Http, ServiceConfig, VirkailijaHttpClient}
-import fi.oph.koski.json.Json4sHttp4s
+import fi.oph.common.json.Json4sHttp4s
 import scalaz.concurrent.Task
 import scalaz.concurrent.Task.gatherUnordered
 

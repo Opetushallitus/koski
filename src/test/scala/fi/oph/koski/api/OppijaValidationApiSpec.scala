@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.common.koskiuser.MockUsers
 import fi.oph.koski.opiskeluoikeus.ValidationResult
 import org.scalatest.{FreeSpec, Matchers}

@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.SuoritusjakoTableV2
-import fi.oph.koski.json.JsonManipulation.removeFields
+import fi.oph.common.json.JsonManipulation.removeFields
 import fi.oph.common.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.extraction.ValidationError

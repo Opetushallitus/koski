@@ -1,7 +1,7 @@
 package fi.oph.koski.localization
 
 import fi.oph.koski.editor.EditorSchema
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.scalaschema._
 import org.scalatest.{FreeSpec, Matchers}

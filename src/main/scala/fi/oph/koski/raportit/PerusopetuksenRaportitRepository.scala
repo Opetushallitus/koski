@@ -9,7 +9,7 @@ import fi.oph.koski.util.DateOrdering.sqlDateOrdering
 
 import scala.concurrent.duration._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
 import org.json4s.jackson.JsonMethods

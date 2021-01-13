@@ -1,4 +1,4 @@
-package fi.oph.koski.json
+package fi.oph.common.json
 
 import com.github.fge.jsonpatch.diff.JsonDiff.asJson
 import org.json4s._

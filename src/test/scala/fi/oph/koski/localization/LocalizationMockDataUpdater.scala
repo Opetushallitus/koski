@@ -1,8 +1,8 @@
 package fi.oph.koski.localization
 
 import fi.oph.koski.cache.GlobalCacheManager
-import fi.oph.koski.json.JsonFiles
-import fi.oph.koski.json.JsonSerializer.extract
+import fi.oph.common.json.JsonFiles
+import fi.oph.common.json.JsonSerializer.extract
 import org.json4s.{JArray, JObject, JValue}
 
 // VIRKAILIJA_ROOT=https://virkailija.opintopolku.fi mvn scala:testCompile exec:java -Dexec.mainClass=fi.oph.koski.localization.LocalizationMockDataUpdater

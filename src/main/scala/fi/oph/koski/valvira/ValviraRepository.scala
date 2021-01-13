@@ -8,7 +8,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parse
 import fi.oph.koski.db.Tables.OpiskeluOikeudet
 import fi.oph.koski.db.{DatabaseExecutionContext, KoskiDatabaseMethods}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.koski.schema.Henkilö
 import fi.oph.common.log.Logging
 import org.json4s.JValue

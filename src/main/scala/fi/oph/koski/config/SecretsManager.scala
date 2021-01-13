@@ -1,6 +1,6 @@
 package fi.oph.koski.config
 
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import org.json4s.jackson.JsonMethods.parse
 import scala.reflect.runtime.universe._
 import com.amazonaws.secretsmanager.caching.SecretCache

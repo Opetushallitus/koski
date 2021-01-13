@@ -5,9 +5,9 @@ import fi.oph.common.schema.{Finnish, LocalizedString}
 import fi.oph.koski.cache._
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, ServiceConfig, VirkailijaHttpClient}
-import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
-import fi.oph.koski.json.JsonSerializer.extract
-import fi.oph.koski.json.{JsonResources, JsonSerializer}
+import fi.oph.common.json.Json4sHttp4s.json4sEncoderOf
+import fi.oph.common.json.JsonSerializer.extract
+import fi.oph.common.json.{JsonResources, JsonSerializer}
 import fi.oph.koski.localization.LocalizationRepository.parseLocalizations
 import fi.oph.common.schema.LocalizedString.sanitize
 import fi.oph.koski.localization.MockLocalizationRepository.readLocalLocalizations

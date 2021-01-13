@@ -1,7 +1,7 @@
 package fi.oph.koski.sso
 
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.common.koskiuser._
 import fi.oph.koski.servlet.{ApiServlet, JsonBodySnatcher, NoCache}
 

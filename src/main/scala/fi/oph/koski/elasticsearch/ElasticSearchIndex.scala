@@ -2,9 +2,9 @@ package fi.oph.koski.elasticsearch
 
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatusException}
-import fi.oph.koski.json.Json4sHttp4s
-import fi.oph.koski.json.JsonSerializer.extract
-import fi.oph.koski.json.LegacyJsonSerialization.toJValue
+import fi.oph.common.json.Json4sHttp4s
+import fi.oph.common.json.JsonSerializer.extract
+import fi.oph.common.json.LegacyJsonSerialization.toJValue
 import fi.oph.common.log.Logging
 import org.http4s.EntityEncoder
 import org.json4s._

@@ -1,6 +1,6 @@
 package fi.oph.koski.http
 
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import org.json4s.JValue
 import org.json4s.JsonAST.JString
 import org.json4s.jackson.JsonMethods

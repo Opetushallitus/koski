@@ -5,8 +5,8 @@ import java.time.LocalDate
 import com.typesafe.config.Config
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
-import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.Json4sHttp4s.json4sEncoderOf
+import fi.oph.common.json.JsonSerializer
 import fi.oph.koski.schema.Henkilö.Oid
 import scalaz.Nondeterminism
 import scalaz.concurrent.Task

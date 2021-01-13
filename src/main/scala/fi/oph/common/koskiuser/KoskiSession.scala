@@ -6,7 +6,7 @@ import fi.oph.common.log.Loggable
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.huoltaja.{Huollettava, HuollettavienHakuOnnistui}
-import fi.oph.koski.json.SensitiveDataAllowed
+import fi.oph.common.json.SensitiveDataAllowed
 import fi.oph.common.koskiuser.Rooli._
 import fi.oph.common.log.{LogUserContext, Logging}
 import fi.oph.koski.schema.Organisaatio.Oid

@@ -2,7 +2,7 @@ package fi.oph.koski.perftest
 
 import fi.oph.koski.http.OpintopolkuCallerId
 import fi.oph.koski.integrationtest.TrustingHttpsClient
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import org.apache.http.client.methods.HttpGet
 import org.json4s.jackson.JsonMethods
 

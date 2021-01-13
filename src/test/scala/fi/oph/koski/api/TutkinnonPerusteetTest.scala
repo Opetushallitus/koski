@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.koski.schema._
 import org.scalatest.FreeSpec
 

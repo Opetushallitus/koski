@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.{HenkilöOid, Hetu}
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.common.koskiuser.RequiresLuovutuspalvelu
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus}

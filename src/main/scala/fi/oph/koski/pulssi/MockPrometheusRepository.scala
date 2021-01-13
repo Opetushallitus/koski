@@ -1,7 +1,7 @@
 package fi.oph.koski.pulssi
 
 import fi.oph.koski.http.HttpStatusException
-import fi.oph.koski.json.JsonFiles
+import fi.oph.common.json.JsonFiles
 import org.json4s
 
 import scalaz.concurrent.Task

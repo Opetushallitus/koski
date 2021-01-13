@@ -3,7 +3,7 @@ package fi.oph.koski.luovutuspalvelu
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.common.koskiuser.MockUsers
 import fi.oph.common.log.AuditLogTester
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}

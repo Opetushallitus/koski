@@ -6,7 +6,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample, ExampleData}
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
+import fi.oph.common.json.{JsonSerializer, SensitiveDataAllowed}
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.raportointikanta.{ROsasuoritusRow, RaportointikantaTestMethods}
 import fi.oph.koski.schema._

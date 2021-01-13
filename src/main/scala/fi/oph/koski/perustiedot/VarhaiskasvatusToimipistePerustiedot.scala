@@ -1,7 +1,7 @@
 package fi.oph.koski.perustiedot
 
-import fi.oph.koski.json.JsonSerializer.extract
-import fi.oph.koski.json.LegacyJsonSerialization
+import fi.oph.common.json.JsonSerializer.extract
+import fi.oph.common.json.LegacyJsonSerialization
 
 case class VarhaiskasvatusToimipistePerustiedot(indexer: OpiskeluoikeudenPerustiedotIndexer) {
   def haeVarhaiskasvatustoimipisteet(koulutustoimijaOidit: Set[String]): Set[String] = {

@@ -6,7 +6,7 @@ import java.time.temporal.ChronoUnit
 
 import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.koski.raportit.YleissivistäväRaporttiOppiaineTaiKurssi
 import org.json4s.JValue
 import shapeless.{Generic, HNil}

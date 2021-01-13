@@ -6,7 +6,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.common.koskiuser.{KoskiSession, RequiresTilastokeskus}
 import fi.oph.common.log.KoskiMessageField.hakuEhto
 import fi.oph.common.log.KoskiOperation.OPISKELUOIKEUS_HAKU

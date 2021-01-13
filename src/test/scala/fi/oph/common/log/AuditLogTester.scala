@@ -1,6 +1,6 @@
 package fi.oph.common.log
 
-import fi.oph.koski.json.GenericJsonFormats
+import fi.oph.common.json.GenericJsonFormats
 import fi.vm.sade.auditlog.Audit
 import org.apache.log4j.Logger
 import org.json4s.JsonAST.JObject

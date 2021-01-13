@@ -3,7 +3,7 @@ package fi.oph.koski.schema
 import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.documentation.{AmmatillinenExampleData, Examples}
 import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilöWithMasterInfo}
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.common.log.Logging
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenHenkilötiedot, OpiskeluoikeudenOsittaisetTiedot, OpiskeluoikeudenPerustiedot}
 import fi.oph.scalaschema.SchemaValidatingExtractor

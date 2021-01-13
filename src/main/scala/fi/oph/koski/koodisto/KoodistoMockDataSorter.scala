@@ -1,7 +1,7 @@
 package fi.oph.koski.koodisto
 
 import fi.oph.common.koodisto.{Koodisto, KoodistoKoodi}
-import fi.oph.koski.json.{JsonFiles, JsonSerializer}
+import fi.oph.common.json.{JsonFiles, JsonSerializer}
 import fi.oph.common.log.Logging
 
 /**

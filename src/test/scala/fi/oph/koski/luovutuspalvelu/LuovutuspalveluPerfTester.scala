@@ -6,7 +6,7 @@ import java.time.Instant
 import fi.oph.koski.integrationtest.KoskidevHttpSpecification
 
 import scala.io.Source
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import org.apache.http.client.methods.{CloseableHttpResponse, HttpPost}
 import org.apache.http.entity.{ContentType, StringEntity}
 

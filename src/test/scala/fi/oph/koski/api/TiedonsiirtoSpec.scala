@@ -5,7 +5,7 @@ import fi.oph.koski.documentation.ExamplesEsiopetus
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.{asUusiOppija, eerola}
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.common.json.JsonSerializer
 import fi.oph.common.koskiuser.MockUsers.{helsinginKaupunkiEsiopetus, helsinginKaupunkiPalvelukäyttäjä, omniaPääkäyttäjä, stadinPääkäyttäjä}
 import fi.oph.common.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
