@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
-import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.common.localization.LocalizedStringImplicits._
 
 object InternationalSchoolExampleData {
   lazy val internationalSchoolOfHelsinki: Oppilaitos = Oppilaitos(MockOrganisaatiot.internationalSchool, Some(Koodistokoodiviite("03510", None, "oppilaitosnumero", None)), Some("International School of Helsinki"))

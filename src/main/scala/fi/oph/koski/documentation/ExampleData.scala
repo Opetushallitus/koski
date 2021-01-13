@@ -2,9 +2,10 @@ package fi.oph.koski.documentation
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
+import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
-import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.common.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 
 object ExampleData {

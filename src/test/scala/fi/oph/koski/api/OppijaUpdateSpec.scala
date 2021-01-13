@@ -3,6 +3,7 @@ package fi.oph.koski.api
 import java.time.LocalDate.{of => date}
 import java.time.{LocalDate, LocalDateTime}
 
+import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.AmmatillinenOldExamples.muunAmmatillisenTutkinnonOsanSuoritus
 import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo, opiskeluoikeusLäsnä, valtionosuusRahoitteinen}

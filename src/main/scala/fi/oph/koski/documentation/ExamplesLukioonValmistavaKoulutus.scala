@@ -2,12 +2,13 @@ package fi.oph.koski.documentation
 
 import java.time.LocalDate.{of => date}
 
+import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
-import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.common.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 
 object ExamplesLukioonValmistavaKoulutus {

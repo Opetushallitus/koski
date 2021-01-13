@@ -1,6 +1,6 @@
 package fi.oph.koski.organisaatio
 
-import fi.oph.koski.schema.{Finnish, LocalizedString}
+import fi.oph.common.schema.{Finnish, LocalizedString}
 
 object Opetushallitus {
   val organisaatioOid = "1.2.246.562.10.00000000001"

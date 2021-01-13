@@ -1,6 +1,7 @@
 package fi.oph.koski.raportointikanta
 
-import fi.oph.koski.schema.{KoodiViite, Koodistokoodiviite, LocalizedString}
+import fi.oph.common.schema.LocalizedString
+import fi.oph.koski.schema.{KoodiViite, Koodistokoodiviite}
 
 object LoaderUtils {
   def convertLocalizedString(s: Option[LocalizedString]): String =

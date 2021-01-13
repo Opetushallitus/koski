@@ -2,6 +2,8 @@ package fi.oph.koski.editor
 
 import java.time.{LocalDate, LocalDateTime}
 
+import fi.oph.common.schema.{Localized, LocalizedString}
+import fi.oph.common.schema.annotation.Representative
 import fi.oph.koski.editor.ClassFinder.{forName, forSchema}
 import fi.oph.koski.editor.EditorModelBuilder._
 import fi.oph.koski.editor.MetadataToModel.classesFromMetadata
@@ -321,7 +323,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
   private def findTraits(tpe: ru.Type) = {
     tpe.baseClasses
       .map(_.fullName)
-      .filter(_.startsWith("fi.oph.koski"))
+      .filter(fullName => fullName.startsWith("fi.oph.koski") || fullName.startsWith("fi.oph.common"))
       .map {typeByName(_)}
       .filter {_.typeSymbol.asClass.isTrait}
       .filterNot {_ == tpe}

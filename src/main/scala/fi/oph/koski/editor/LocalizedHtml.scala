@@ -2,9 +2,9 @@ package fi.oph.koski.editor
 
 import java.time.format.DateTimeFormatter
 
+import fi.oph.common.schema.Localized
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.LocalizationRepository
-import fi.oph.koski.schema.Localized
 
 trait LocalizedHtml {
   implicit val user: KoskiSession

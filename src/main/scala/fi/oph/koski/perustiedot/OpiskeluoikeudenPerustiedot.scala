@@ -2,6 +2,7 @@ package fi.oph.koski.perustiedot
 
 import java.time.LocalDate
 
+import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö, OppijaHenkilöWithMasterInfo, SuppeatOppijaHenkilöTiedot}
 import fi.oph.koski.json.JsonSerializer

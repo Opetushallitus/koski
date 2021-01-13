@@ -1,5 +1,6 @@
 package fi.oph.koski.schema
 
+import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.schema.annotation.{ComplexObject, FlattenInUI, KoodistoKoodiarvo, KoodistoUri}
 import fi.oph.scalaschema.annotation._
 

@@ -4,6 +4,7 @@ import java.lang.System.currentTimeMillis
 import java.time.LocalDate
 
 import com.typesafe.config.Config
+import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.cache._
 import fi.oph.koski.http.{ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu

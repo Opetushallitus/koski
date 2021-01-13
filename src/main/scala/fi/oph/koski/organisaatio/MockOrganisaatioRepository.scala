@@ -2,11 +2,12 @@ package fi.oph.koski.organisaatio
 
 import java.time.LocalDate
 
+import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.json.JsonResources
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
-import fi.oph.koski.schema.LocalizedString.finnish
-import fi.oph.koski.schema.{LocalizedString, Oppilaitos}
+import fi.oph.common.schema.LocalizedString.finnish
+import fi.oph.koski.schema.Oppilaitos
 
 // Testeissä käytetyt organisaatio-oidit
 object MockOrganisaatiot {

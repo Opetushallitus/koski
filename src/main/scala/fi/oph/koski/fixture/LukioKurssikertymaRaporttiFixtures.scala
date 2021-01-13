@@ -2,6 +2,7 @@ package fi.oph.koski.fixture
 
 import java.time.LocalDate
 
+import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._

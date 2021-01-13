@@ -1,6 +1,6 @@
-package fi.oph.koski.schema
+package fi.oph.common.schema
 
-import fi.oph.koski.schema.annotation.Representative
+import fi.oph.common.schema.annotation.Representative
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 @Description("Lokalisoitu teksti. Vähintään yksi kielistä (fi/sv/en) vaaditaan")

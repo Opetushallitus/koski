@@ -5,12 +5,13 @@ import fi.oph.koski.documentation.ExamplesLukio2019.{aktiivinenOpiskeluoikeus, o
 import fi.oph.koski.documentation.Lukio2019ExampleData._
 import fi.oph.koski.documentation.{ExampleData, ExamplesLukio2019, Lukio2019ExampleData, LukioExampleData}
 import fi.oph.koski.documentation.LukioExampleData.opiskeluoikeusAktiivinen
-import fi.oph.koski.localization.LocalizedStringImplicits.str2localized
+import fi.oph.common.localization.LocalizedStringImplicits.str2localized
 import fi.oph.koski.http.ErrorMatcher.exact
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema._
 import java.time.LocalDate.{of => date}
 
+import fi.oph.common.schema.LocalizedString
 import org.scalatest.FreeSpec
 
 class OppijaValidationLukio2019Spec extends FreeSpec with PutOpiskeluoikeusTestMethods[LukionOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsLukio {

@@ -2,7 +2,8 @@ package fi.oph.koski.raportit
 
 import java.time.LocalDate
 
-import fi.oph.koski.documentation.ExampleData.{helsinki, opiskeluoikeusValmistunut, opiskeluoikeusEronnut}
+import fi.oph.common.schema.LocalizedString
+import fi.oph.koski.documentation.ExampleData.{helsinki, opiskeluoikeusEronnut, opiskeluoikeusValmistunut}
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.documentation.{AmmatillinenExampleData, TutkinnonOsaaPienempiKokonaisuusExample}
 import fi.oph.koski.documentation.MuunAmmatillisenKoulutuksenExample.muunAmmatillisenKoulutuksenSuoritus

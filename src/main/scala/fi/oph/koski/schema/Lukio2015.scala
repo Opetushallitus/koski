@@ -1,5 +1,6 @@
 package fi.oph.koski.schema
 
+import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, MinItems, OnlyWhen, Title}
 

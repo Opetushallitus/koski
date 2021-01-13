@@ -2,6 +2,7 @@ package fi.oph.koski.organisaatio
 
 import java.time.LocalDate
 
+import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.cache._
 import fi.oph.koski.http.Http
 import fi.oph.koski.http.Http._

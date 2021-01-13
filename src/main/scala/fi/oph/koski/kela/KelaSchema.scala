@@ -2,6 +2,7 @@ package fi.oph.koski.kela
 
 import java.time.{LocalDate, LocalDateTime}
 
+import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.SensitiveData
@@ -150,10 +151,10 @@ case class SuorituksenKoulutusmoduuli(
   tunniste: Koodistokoodiviite,
   laajuus: Option[schema.Laajuus],
   perusteenDiaarinumero: Option[String],
-  perusteenNimi: Option[schema.LocalizedString],
+  perusteenNimi: Option[LocalizedString],
   koulutustyyppi: Option[Koodistokoodiviite],
   pakollinen: Option[Boolean],
-  kuvaus: Option[schema.LocalizedString],
+  kuvaus: Option[LocalizedString],
   kieli: Option[Koodistokoodiviite],
   diplomaType: Option[Koodistokoodiviite],
   oppimäärä: Option[Koodistokoodiviite]
@@ -162,9 +163,9 @@ case class SuorituksenKoulutusmoduuli(
 case class OsasuorituksenKoulutusmoduuli(
   tunniste: Koodistokoodiviite,
   laajuus: Option[schema.Laajuus],
-  perusteenNimi: Option[schema.LocalizedString],
+  perusteenNimi: Option[LocalizedString],
   pakollinen: Option[Boolean],
-  kuvaus: Option[schema.LocalizedString],
+  kuvaus: Option[LocalizedString],
   kieli: Option[Koodistokoodiviite],
   osaAlue: Option[Koodistokoodiviite],
   taso: Option[Koodistokoodiviite],
@@ -175,8 +176,8 @@ case class OsasuorituksenKoulutusmoduuli(
 
 case class Koodistokoodiviite(
   koodiarvo: String,
-  nimi: Option[schema.LocalizedString],
-  lyhytNimi: Option[schema.LocalizedString],
+  nimi: Option[LocalizedString],
+  lyhytNimi: Option[LocalizedString],
   koodistoUri: Option[String],
   koodistoVersio: Option[Int]
 )
@@ -185,13 +186,13 @@ case class Ulkomaanjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
   maa: Option[Koodistokoodiviite],
-  kuvaus: Option[schema.LocalizedString]
+  kuvaus: Option[LocalizedString]
 )
 
 case class Koulutussopimusjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  työssäoppimispaikka: Option[schema.LocalizedString],
+  työssäoppimispaikka: Option[LocalizedString],
   paikkakunta: Koodistokoodiviite,
   maa: Koodistokoodiviite
 )
@@ -199,7 +200,7 @@ case class Koulutussopimusjakso(
 case class Työssäoppimisjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  työssäoppimispaikka: Option[schema.LocalizedString],
+  työssäoppimispaikka: Option[LocalizedString],
   paikkakunta: Koodistokoodiviite,
   maa: Koodistokoodiviite,
   laajuus: schema.Laajuus
@@ -220,7 +221,7 @@ case class Oppisopimus(
 )
 
 case class Yritys(
-  nimi: schema.LocalizedString,
+  nimi: LocalizedString,
   yTunnus: String
 )
 
@@ -245,7 +246,7 @@ case class OsaamisenHankkimistapajakso(
 
 case class OsaamisenTunnustaminen(
   osaaminen: Option[Osasuoritus],
-  selite: schema.LocalizedString,
+  selite: LocalizedString,
   rahoituksenPiirissä: Boolean
 )
 
@@ -261,20 +262,20 @@ case class Arviointi(
 case class Oppilaitos(
   oid: String,
   oppilaitosnumero: Option[Koodistokoodiviite],
-  nimi: Option[schema.LocalizedString],
+  nimi: Option[LocalizedString],
   kotipaikka: Option[Koodistokoodiviite]
 )
 
 case class Koulutustoimija(
   oid: String,
-  nimi: Option[schema.LocalizedString],
+  nimi: Option[LocalizedString],
   yTunnus: Option[String],
   kotipaikka: Option[Koodistokoodiviite]
 )
 
 case class Toimipiste(
   oid: String,
-  nimi: Option[schema.LocalizedString] = None,
+  nimi: Option[LocalizedString] = None,
   kotipaikka: Option[Koodistokoodiviite] = None
 )
 
@@ -293,7 +294,7 @@ case class Näyttö(
 
 case class NäytönSuorituspaikka(
   tunniste: Koodistokoodiviite,
-  kuvaus: schema.LocalizedString
+  kuvaus: LocalizedString
 )
 
 case class NäytönArviointi(
@@ -303,7 +304,7 @@ case class NäytönArviointi(
 case class Tutkinto(
   tunniste: Koodistokoodiviite,
   perusteenDiaarinumero: Option[String],
-  perusteenNimi: Option[schema.LocalizedString],
+  perusteenNimi: Option[LocalizedString],
   koulutustyyppi: Option[Koodistokoodiviite]
 )
 
@@ -342,7 +343,7 @@ case class IBCASSuoritus(
 case class YlioppilastutkinnonTutkintokerta(
   koodiarvo: String,
   vuosi: Int,
-  vuodenaika: schema.LocalizedString
+  vuodenaika: LocalizedString
 )
 
 case class VastaavuusTodistuksenTiedot(

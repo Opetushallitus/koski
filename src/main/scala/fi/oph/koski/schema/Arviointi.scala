@@ -2,8 +2,10 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
-import fi.oph.koski.schema.LocalizedString.unlocalized
-import fi.oph.koski.schema.annotation.{Hidden, MultiLineString, Representative}
+import fi.oph.common.schema.LocalizedString
+import fi.oph.common.schema.annotation.Representative
+import fi.oph.common.schema.LocalizedString.unlocalized
+import fi.oph.koski.schema.annotation.{Hidden, MultiLineString}
 import fi.oph.scalaschema.annotation._
 
 trait Arviointi {

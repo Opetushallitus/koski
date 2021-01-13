@@ -1,8 +1,9 @@
 package fi.oph.koski.tutkinto
 
+import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.schema.SuorituksenTyyppi.SuorituksenTyyppi
-import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
+import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 import fi.oph.koski.tutkinto.Perusteet.sallitutPerusteet
 

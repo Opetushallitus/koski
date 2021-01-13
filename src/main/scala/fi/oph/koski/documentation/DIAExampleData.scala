@@ -3,7 +3,7 @@ package fi.oph.koski.documentation
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.common.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 

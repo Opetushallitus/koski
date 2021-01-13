@@ -3,6 +3,7 @@ package fi.oph.koski.schema
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, MaxItems, MinItems, Title}
 import java.time.{LocalDate, LocalDateTime}
 
+import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.schema.annotation.{Hidden, KoodistoKoodiarvo, KoodistoUri}
 
 @Description("Vapaan sivistystyön koulutuksen opiskeluoikeus")

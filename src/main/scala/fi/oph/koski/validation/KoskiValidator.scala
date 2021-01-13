@@ -4,6 +4,7 @@ import java.lang.Character.isDigit
 import java.time.LocalDate
 
 import com.typesafe.config.Config
+import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.documentation.ExamplesEsiopetus.päiväkodinEsiopetuksenTunniste
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.henkilo.HenkilöRepository
