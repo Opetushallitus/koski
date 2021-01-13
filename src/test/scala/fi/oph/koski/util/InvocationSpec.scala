@@ -1,6 +1,6 @@
 package fi.oph.koski.util
 
-import fi.oph.koski.log.NotLoggable
+import fi.oph.common.log.NotLoggable
 import org.scalatest.{FreeSpec, Matchers}
 
 class InvocationSpec extends FreeSpec with Matchers {

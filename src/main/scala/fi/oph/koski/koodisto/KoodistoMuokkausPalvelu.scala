@@ -1,6 +1,7 @@
 package fi.oph.koski.koodisto
 
 import com.typesafe.config.Config
+import fi.oph.common.koodisto.{Koodisto, KoodistoKoodi, KoodistoRyhmä}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatusException, ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.log.Logging

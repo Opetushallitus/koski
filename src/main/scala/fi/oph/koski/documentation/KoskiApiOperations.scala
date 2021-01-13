@@ -2,11 +2,12 @@ package fi.oph.koski.documentation
 
 import java.sql.Timestamp
 
+import fi.oph.common.koodisto.KoodistoKoodi
 import fi.oph.koski.henkilo.{HenkilötiedotSearchResponse, MockOppijat}
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer.serializeWithRoot
-import fi.oph.koski.koodisto.{KoodistoKoodi, Koodistot, MockKoodistoPalvelu}
+import fi.oph.koski.koodisto.{Koodistot, MockKoodistoPalvelu}
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.schema.{HenkilötiedotJaOid, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, Oppija}
 import org.json4s.JsonAST.JObject

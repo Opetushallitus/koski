@@ -1,4 +1,4 @@
-package fi.oph.koski.koodisto
+package fi.oph.common.koodisto
 
 import java.time.LocalDate
 
@@ -7,6 +7,7 @@ import fi.oph.scalaschema.annotation.DefaultValue
 
 case class KoodistoKoodi(koodiUri: String, koodiArvo: String, metadata: List[KoodistoKoodiMetadata], versio: Int, version: Option[Long] = None, voimassaAlkuPvm: Option[LocalDate] = None, tila: Option[String] = None, withinCodeElements: Option[List[CodeRelationship]] = None) {
   def koodistoUri = koodiUri.split("_")(0)
+
   def hasParent(parent: KoodistoKoodi): Boolean = this.withinCodeElements.toList.flatten.find(relationship => relationship.codeElementUri == parent.koodiUri).isDefined
 
   private def localizedStringFromMetadata(f: KoodistoKoodiMetadata => Option[String]): Option[LocalizedString] = {
@@ -32,5 +33,5 @@ object KoodistoKoodi {
 }
 
 case class KoodistoKoodiMetadata(nimi: Option[String], lyhytNimi: Option[String] = None, kuvaus: Option[String] = None, kieli: Option[String])
-case class CodeAdditionalInfo(metadata: List[KoodistoKoodiMetadata], withinCodeElements: List[CodeRelationship]) // The info that can only be gotten by GETting the individual code from koodisto-service
+case class CodeAdditionalInfo(metadata: List[KoodistoKoodiMetadata], withinCodeElements: List[CodeRelationship])
 case class CodeRelationship(codeElementUri: String, codeElementVersion: Int, @DefaultValue(false) passive: Boolean = false)

@@ -3,16 +3,18 @@ package fi.oph.koski.healthcheck
 import java.util.concurrent.TimeoutException
 
 import com.typesafe.config.Config
+import fi.oph.common.koodisto.KoodistoViite
+import fi.oph.common.log.NotLoggable
 import fi.oph.koski.cache.RefreshingCache.Params
 import fi.oph.koski.cache._
 import fi.oph.koski.config.{Environment, KoskiApplication, SecretsManager}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.eperusteet.ERakenneOsa
 import fi.oph.koski.http.{ErrorDetail, HttpStatus, HttpStatusException, KoskiErrorCategory}
-import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViite}
+import fi.oph.koski.koodisto.KoodistoPalvelu
 import fi.oph.koski.koskiuser.AccessType
 import fi.oph.koski.koskiuser.KoskiSession._
-import fi.oph.koski.log.{Logging, NotLoggable}
+import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, RemoteOrganisaatioRepository}
 import fi.oph.koski.schema._
 import fi.oph.koski.userdirectory.Password

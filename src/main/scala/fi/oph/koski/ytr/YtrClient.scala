@@ -1,11 +1,12 @@
 package fi.oph.koski.ytr
 
 import com.typesafe.config.Config
+import fi.oph.common.log.NotLoggable
 import fi.oph.koski.config.{Environment, SecretsManager}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{ClientWithBasicAuthentication, Http}
 import fi.oph.koski.json.{JsonResources, JsonSerializer}
-import fi.oph.koski.log.{Logging, NotLoggable, TimedProxy}
+import fi.oph.koski.log.{Logging, TimedProxy}
 import org.http4s.client.blaze.BlazeClientConfig
 import org.json4s.JValue
 

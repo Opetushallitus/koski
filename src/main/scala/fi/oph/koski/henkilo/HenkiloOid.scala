@@ -1,7 +1,7 @@
 package fi.oph.koski.henkilo
 
+import fi.oph.common.log.Loggable
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.log.Loggable
 import fi.oph.koski.schema.Henkilö
 
 object HenkilöOid {

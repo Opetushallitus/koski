@@ -1,4 +1,4 @@
-package fi.oph.koski.koodisto
+package fi.oph.common.koodisto
 
 case class KoodistoRyhmä(koodistoRyhmaMetadatas: List[KoodistoRyhmäMetadata])
 

@@ -1,6 +1,6 @@
-package fi.oph.koski.log
+package fi.oph.common.log
 
-import fi.oph.koski.koodisto.KoodistoViite
+import fi.oph.common.koodisto.KoodistoViite
 import org.scalatest.{FreeSpec, Matchers}
 
 class LoggableSpec extends FreeSpec with Matchers {

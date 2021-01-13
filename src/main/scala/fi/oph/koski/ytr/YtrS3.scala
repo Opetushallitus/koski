@@ -1,8 +1,8 @@
 package fi.oph.koski.ytr
 
 import com.typesafe.config.Config
+import fi.oph.common.log.NotLoggable
 import fi.oph.koski.config.{Environment, SecretsManager}
-import fi.oph.koski.log.NotLoggable
 import software.amazon.awssdk.auth.credentials.{AwsBasicCredentials, StaticCredentialsProvider}
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client

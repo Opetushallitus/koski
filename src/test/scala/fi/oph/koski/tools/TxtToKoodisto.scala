@@ -3,6 +3,7 @@ package fi.oph.koski.tools
 import java.nio.charset.StandardCharsets
 import java.time.LocalDate
 
+import fi.oph.common.koodisto.{Koodisto, KoodistoKoodi, KoodistoKoodiMetadata, KoodistoMetadata}
 import fi.oph.koski.json.JsonFiles
 import fi.oph.koski.koodisto._
 import fi.oph.koski.util.Files

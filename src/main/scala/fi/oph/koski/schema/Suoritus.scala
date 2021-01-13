@@ -2,9 +2,10 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
+import fi.oph.common.koodisto.KoodistoViite
 import fi.oph.common.schema.LocalizedString
 import fi.oph.common.schema.annotation.Representative
-import fi.oph.koski.koodisto.{KoodistoViite, MockKoodistoViitePalvelu}
+import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.common.schema.LocalizedString.unlocalized
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._

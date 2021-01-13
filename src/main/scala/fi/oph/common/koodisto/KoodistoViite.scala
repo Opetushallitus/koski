@@ -1,8 +1,7 @@
-package fi.oph.koski.koodisto
+package fi.oph.common.koodisto
 
-import fi.oph.koski.log.Loggable
+import fi.oph.common.log.Loggable
 
 case class KoodistoViite(koodistoUri: String, versio: Int) extends Loggable {
   def logString = koodistoUri + "/" + versio
 }
-
