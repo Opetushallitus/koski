@@ -148,6 +148,7 @@ class ElasticSearchIndex(
       ),
       "dest" -> Map(
         "index" -> toIndex,
+        "type" -> "_doc",
         "op_type" -> "create"
       ),
       "conflicts" -> "proceed"
