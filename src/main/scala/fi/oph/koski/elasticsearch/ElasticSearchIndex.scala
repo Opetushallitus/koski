@@ -46,7 +46,7 @@ class ElasticSearchIndex(
         ensureAliases(mappingVersion - 1)
       } else {
         logger.info(s"No previous $name index found - creating an index from scratch")
-        createIndex(mappingVersion)
+        createIndex(mappingVersion, mappingTypeName)
         migrateAlias(readAlias, mappingVersion)
         migrateAlias(writeAlias, mappingVersion)
       }
@@ -130,11 +130,11 @@ class ElasticSearchIndex(
     }
   }
 
-  def createIndex(version: Int): String = {
+  def createIndex(version: Int, mappingType: String = "_doc"): String = {
     val indexName = versionedIndexName(version)
-    logger.info(s"Creating Elasticsearch index $indexName")
+    logger.info(s"Creating Elasticsearch index $indexName with mapping type $mappingType")
     Http.runTask(http.put(uri"/$indexName", JObject("settings" -> toJValue(settings)))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
-    Http.runTask(http.put(uri"/$indexName/_mapping/$mappingTypeName", toJValue(mapping))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+    Http.runTask(http.put(uri"/$indexName/_mapping/$mappingType", toJValue(mapping))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
     indexName
   }
 
