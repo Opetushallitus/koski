@@ -3,6 +3,7 @@ package fi.oph.koski.api
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
+import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.documentation.AmmatillinenExampleData.{stadinAmmattiopisto, _}
 import fi.oph.koski.documentation.ExampleData.{helsinki, vahvistus}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen

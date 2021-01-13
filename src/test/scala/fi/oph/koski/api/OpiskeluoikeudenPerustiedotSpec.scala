@@ -1,9 +1,10 @@
 package fi.oph.koski.api
 
+import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.henkilo.MockOppijat.{asUusiOppija, eerola, lukiolainen}
-import fi.oph.koski.schema.LocalizedString.{english, finnish, swedish}
+import fi.oph.common.schema.LocalizedString.{english, finnish, swedish}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Wait
 import org.scalatest.{BeforeAndAfterAll, FreeSpec}

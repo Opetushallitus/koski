@@ -2,26 +2,15 @@ package fi.oph.koski.api
 
 import java.time.LocalDate.{of => date}
 
+import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.documentation.ExampleData.{englanti, ruotsinKieli, suomenKieli}
 import fi.oph.koski.documentation.ExamplesIB.aktiivinenOpiskeluoikeus
 import fi.oph.koski.documentation.{ExamplesIB, Lukio2019ExampleData}
 import fi.oph.koski.documentation.IBExampleData._
-import fi.oph.koski.documentation.Lukio2019ExampleData.{
-  laajuus,
-  lukionKieli2019,
-  muuModuuliMuissaOpinnoissa,
-  muuModuuliOppiaineissa,
-  numeerinenArviointi,
-  numeerinenLukionOppiaineenArviointi,
-  paikallinenOpintojakso,
-  sanallinenArviointi,
-  sanallinenLukionOppiaineenArviointi,
-  vieraanKielenModuuliMuissaOpinnoissa,
-  vieraanKielenModuuliOppiaineissa
-}
+import fi.oph.koski.documentation.Lukio2019ExampleData.{laajuus, lukionKieli2019, muuModuuliMuissaOpinnoissa, muuModuuliOppiaineissa, numeerinenArviointi, numeerinenLukionOppiaineenArviointi, paikallinenOpintojakso, sanallinenArviointi, sanallinenLukionOppiaineenArviointi, vieraanKielenModuuliMuissaOpinnoissa, vieraanKielenModuuliOppiaineissa}
 import fi.oph.koski.http.ErrorMatcher.exact
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
-import fi.oph.koski.localization.LocalizedStringImplicits.str2localized
+import fi.oph.common.localization.LocalizedStringImplicits.str2localized
 import fi.oph.koski.schema._
 import org.scalatest.FreeSpec
 

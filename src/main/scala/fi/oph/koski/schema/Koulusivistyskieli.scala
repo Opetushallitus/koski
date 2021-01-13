@@ -1,5 +1,6 @@
 package fi.oph.koski.schema
 
+import fi.oph.common.schema.Finnish
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, ReadOnly}
 import fi.oph.scalaschema.annotation.{Description, SyntheticProperty}
 

@@ -3,9 +3,8 @@ package fi.oph.koski.tools
 import fi.oph.koski.cache.GlobalCacheManager
 import fi.oph.koski.localization.{LocalizationConfig, MockLocalizationRepository, ReadOnlyRemoteLocalizationRepository}
 import fi.oph.koski.raportit.{Column, DataSheet, ExcelWriter, WorkbookSettings}
-import fi.oph.koski.schema.LocalizedString
+import fi.oph.common.schema.LocalizedString
 import java.io.FileOutputStream
-
 
 object MissingLocalizationsToExcel extends App {
 

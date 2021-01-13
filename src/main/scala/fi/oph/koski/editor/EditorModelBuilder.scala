@@ -2,6 +2,8 @@ package fi.oph.koski.editor
 
 import java.time.{LocalDate, LocalDateTime}
 
+import fi.oph.common.schema.{Localized, LocalizedString}
+import fi.oph.common.schema.annotation.Representative
 import fi.oph.koski.editor.ClassFinder.{forName, forSchema}
 import fi.oph.koski.editor.EditorModelBuilder._
 import fi.oph.koski.editor.MetadataToModel.classesFromMetadata

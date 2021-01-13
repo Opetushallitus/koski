@@ -11,7 +11,7 @@ import fi.oph.koski.documentation.AmmatillinenReforminMukainenPerustutkintoExamp
 import fi.oph.koski.documentation.ExampleData.helsinki
 import fi.oph.koski.http.{ErrorMatcher, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.common.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 

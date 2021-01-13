@@ -2,10 +2,11 @@ package fi.oph.koski.virta
 
 import java.time.LocalDate
 
+import fi.oph.common.schema.{Finnish, LocalizedString}
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.oppilaitos.MockOppilaitosRepository
 import fi.oph.koski.schema._
-import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.common.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatioRepository
 import org.scalatest.{FreeSpec, Matchers, OptionValues}
 

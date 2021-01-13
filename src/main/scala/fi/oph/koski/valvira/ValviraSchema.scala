@@ -2,7 +2,8 @@ package fi.oph.koski.valvira
 
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.schema.{Koodistokoodiviite, KoskiSchema, LocalizedString}
+import fi.oph.common.schema.LocalizedString
+import fi.oph.koski.schema.{Koodistokoodiviite, KoskiSchema}
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
 

@@ -1,6 +1,6 @@
-package fi.oph.koski.localization
+package fi.oph.common.localization
 
-import fi.oph.koski.schema.LocalizedString
+import fi.oph.common.schema.LocalizedString
 
 import scala.math.Ordering.OptionOrdering
 import scala.language.implicitConversions
@@ -11,7 +11,7 @@ object LocalizedStringImplicits {
   lazy val localizedStringFinnishOrdering: Ordering[LocalizedString] = new Ordering[LocalizedString] {
     override def compare(x: LocalizedString, y: LocalizedString) = x.get("fi").compareTo(y.get("fi"))
   }
-  lazy val localizedStringOptionFinnishOrdering = new OptionOrdering[LocalizedString] { val optionOrdering = localizedStringFinnishOrdering }
+  lazy val localizedStringOptionFinnishOrdering = new OptionOrdering[LocalizedString] {
+    val optionOrdering = localizedStringFinnishOrdering
+  }
 }
-
-

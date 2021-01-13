@@ -5,6 +5,7 @@ import java.time.LocalDate
 import com.fasterxml.jackson.databind.JsonNode
 import com.github.fge.jackson.JsonLoader
 import com.github.fge.jsonschema.main.{JsonSchemaFactory, JsonValidator}
+import fi.oph.common.schema.{English, Finnish, LocalizedString}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.Examples
 import fi.oph.koski.json.JsonSerializer

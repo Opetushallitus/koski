@@ -2,6 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 
+import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema.annotation.{Deprecated, Hidden, KoodistoKoodiarvo, SensitiveData, Tooltip}
 import fi.oph.scalaschema.annotation._

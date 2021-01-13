@@ -1,7 +1,9 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.schema.LocalizedString.unlocalized
-import fi.oph.koski.schema.annotation.{ReadOnly, Representative}
+import fi.oph.common.schema.{Localized, LocalizedString}
+import fi.oph.common.schema.annotation.Representative
+import fi.oph.common.schema.LocalizedString.unlocalized
+import fi.oph.koski.schema.annotation.ReadOnly
 import fi.oph.scalaschema.annotation.{Description, Discriminator, Title}
 
 trait KoodiViite extends Localized {

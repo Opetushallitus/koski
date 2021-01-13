@@ -6,7 +6,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.PerusopetusExampleData.{oppiaine, suoritus}
 import fi.oph.koski.documentation.{ExamplesPerusopetuksenLisaopetus, PerusopetusExampleData, _}
 import fi.oph.koski.koskiuser.{KäyttöoikeusRepository, MockUsers}
-import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.common.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 import org.scalatest.{FreeSpec, Matchers}
 

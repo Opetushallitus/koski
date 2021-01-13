@@ -2,8 +2,8 @@ package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioPalveluOrganisaatio, OrganisaatioRepository}
-import fi.oph.koski.schema.LocalizedString.unlocalized
-import fi.oph.koski.schema.{LocalizedString, OrganisaatioWithOid}
+import fi.oph.common.schema.LocalizedString.unlocalized
+import fi.oph.koski.schema.OrganisaatioWithOid
 
 object OrganisaatioLoader extends Logging {
   private val BatchSize = 1000

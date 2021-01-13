@@ -4,10 +4,10 @@ import java.sql.{Date, Timestamp}
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
+import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportit.YleissivistäväRaporttiOppiaineTaiKurssi
-import fi.oph.koski.schema.LocalizedString
 import org.json4s.JValue
 import shapeless.{Generic, HNil}
 import slickless._

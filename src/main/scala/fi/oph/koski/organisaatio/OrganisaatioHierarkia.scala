@@ -3,6 +3,7 @@ package fi.oph.koski.organisaatio
 import fi.oph.koski.schema._
 import OrganisaatioHierarkia._
 import Organisaatiotyyppi._
+import fi.oph.common.schema.LocalizedString
 
 case class OrganisaatioHierarkia(
   oid: String,

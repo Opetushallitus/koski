@@ -1,9 +1,9 @@
 package fi.oph.koski.tutkinto
 
+import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.cache.{CacheManager, CachingProxy, RefreshingCache}
 import fi.oph.koski.eperusteet._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.schema.LocalizedString
 
 import scala.concurrent.duration._
 

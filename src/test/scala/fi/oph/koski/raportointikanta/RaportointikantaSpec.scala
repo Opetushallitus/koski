@@ -3,6 +3,7 @@ package fi.oph.koski.raportointikanta
 import java.sql.{Date, Timestamp}
 import java.time.LocalDate
 
+import fi.oph.common.schema.{Finnish, LocalizedString}
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsAmmatillinen}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
