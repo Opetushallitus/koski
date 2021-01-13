@@ -5,7 +5,7 @@ import fi.oph.koski.henkilo.{HenkilöOid, Hetu}
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser._
+import fi.oph.common.koskiuser._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusOid
 import fi.oph.koski.schema.Henkilö
 import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}

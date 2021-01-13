@@ -1,7 +1,7 @@
 package fi.oph.koski.fixture
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
+import fi.oph.common.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 class FixtureServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {

@@ -5,7 +5,7 @@ import fi.oph.koski.db._
 import fi.oph.koski.henkilo._
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.koski.perustiedot.PerustiedotSyncRepository
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, MuunAmmatillisenKoulutuksenSuoritus}
 import slick.dbio

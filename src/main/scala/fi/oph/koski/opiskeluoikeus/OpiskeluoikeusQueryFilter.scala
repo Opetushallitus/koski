@@ -4,7 +4,7 @@ import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.common.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{Luokkahaku, Nimihaku, SuoritusJsonHaku, _}
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioOid, OrganisaatioRepository, OrganisaatioService}

@@ -5,7 +5,7 @@ import java.util.Properties
 import fi.oph.koski.config.Environment
 import fi.oph.koski.html.{EiRaameja, HtmlNodes, Raamit, Virkailija}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.AuthenticationSupport
+import fi.oph.common.koskiuser.AuthenticationSupport
 import fi.oph.koski.util.XML
 
 import scala.reflect.runtime.{universe => ru}

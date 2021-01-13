@@ -6,8 +6,8 @@ import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.{asUusiOppija, eerola}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiEsiopetus, helsinginKaupunkiPalvelukäyttäjä, omniaPääkäyttäjä, stadinPääkäyttäjä}
-import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
+import fi.oph.common.koskiuser.MockUsers.{helsinginKaupunkiEsiopetus, helsinginKaupunkiPalvelukäyttäjä, omniaPääkäyttäjä, stadinPääkäyttäjä}
+import fi.oph.common.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.schema._
 import fi.oph.koski.tiedonsiirto._

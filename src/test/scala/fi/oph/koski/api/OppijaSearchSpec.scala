@@ -3,7 +3,7 @@ package fi.oph.koski.api
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat._
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.MockUsers.omniaKatselija
+import fi.oph.common.koskiuser.MockUsers.omniaKatselija
 import fi.oph.common.log.{AccessLogTester, AuditLogTester}
 import org.scalatest.{FreeSpec, Matchers}
 

@@ -5,7 +5,7 @@ import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.common.log._
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter}
 import fi.oph.koski.schema.{Henkilö, Oppija}

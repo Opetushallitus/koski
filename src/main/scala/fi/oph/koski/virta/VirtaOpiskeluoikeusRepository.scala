@@ -6,7 +6,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.HenkilönTunnisteet
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
-import fi.oph.koski.koskiuser.{AccessChecker, AccessType, KoskiSession, SkipAccessCheck}
+import fi.oph.common.koskiuser.{AccessChecker, AccessType, KoskiSession, SkipAccessCheck}
 import fi.oph.koski.opiskeluoikeus.AuxiliaryOpiskeluoikeusRepositoryImpl
 import fi.oph.koski.oppilaitos.{MockOppilaitosRepository, OppilaitosRepository}
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, OrganisaatioRepository}

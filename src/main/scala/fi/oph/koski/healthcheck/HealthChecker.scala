@@ -12,8 +12,8 @@ import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.eperusteet.ERakenneOsa
 import fi.oph.koski.http.{ErrorDetail, HttpStatus, HttpStatusException, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoPalvelu
-import fi.oph.koski.koskiuser.AccessType
-import fi.oph.koski.koskiuser.KoskiSession._
+import fi.oph.common.koskiuser.AccessType
+import fi.oph.common.koskiuser.KoskiSession._
 import fi.oph.common.log.Logging
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, RemoteOrganisaatioRepository}
 import fi.oph.koski.schema._

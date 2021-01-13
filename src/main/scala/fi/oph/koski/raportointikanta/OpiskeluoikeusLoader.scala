@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicLong
 
 import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.json.JsonManipulation
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.common.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.schema._

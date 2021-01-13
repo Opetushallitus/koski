@@ -1,7 +1,7 @@
 package fi.oph.koski.omaopintopolkuloki
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.RequiresKansalainen
+import fi.oph.common.koskiuser.RequiresKansalainen
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 class OmaOpintoPolkuLokiServlet(implicit val application: KoskiApplication) extends

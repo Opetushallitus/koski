@@ -7,7 +7,7 @@ import fi.oph.koski.henkilo.{HenkilöOid, Hetu}
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
-import fi.oph.koski.koskiuser.RequiresLuovutuspalvelu
+import fi.oph.common.koskiuser.RequiresLuovutuspalvelu
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus}
 import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
 import org.json4s.JValue

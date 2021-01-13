@@ -2,7 +2,7 @@ package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.{HttpTester, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.MockUsers.paakayttaja
+import fi.oph.common.koskiuser.MockUsers.paakayttaja
 import org.scalatest.{FreeSpec, Matchers}
 
 class OpiskeluoikeusInvalidateSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods with HttpTester {

@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.fixture.PaallekkaisetOpiskeluoikeudetFixtures.{keskimmaisenAlkamispaiva, ensimmaisenAlkamispaiva, ensimmaisenPaattymispaiva}
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.common.koskiuser.MockUsers
 import fi.oph.common.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods

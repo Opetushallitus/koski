@@ -2,7 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
-import fi.oph.koski.koskiuser.Rooli
+import fi.oph.common.koskiuser.Rooli
 import fi.oph.koski.schema.annotation._
 import fi.oph.koski.util.OptionalLists
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, Title}

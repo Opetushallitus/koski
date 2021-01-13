@@ -7,7 +7,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.MockUsers._
+import fi.oph.common.koskiuser.MockUsers._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}

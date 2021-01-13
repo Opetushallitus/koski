@@ -3,7 +3,7 @@ package fi.oph.koski.api
 import fi.oph.koski.henkilo.HenkilötiedotSearchResponse
 import fi.oph.koski.http.HttpSpecification
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.UserWithPassword
+import fi.oph.common.koskiuser.UserWithPassword
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedot, OpiskeluoikeudenPerustiedotResponse}
 import fi.oph.koski.schema.HenkilötiedotJaOid
 

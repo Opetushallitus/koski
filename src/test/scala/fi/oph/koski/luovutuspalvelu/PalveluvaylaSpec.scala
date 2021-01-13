@@ -3,7 +3,7 @@ package fi.oph.koski.luovutuspalvelu
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
 import fi.oph.koski.henkilo.{MockOppijat, LaajatOppijaHenkilöTiedot}
-import fi.oph.koski.koskiuser.{MockUser, MockUsers}
+import fi.oph.common.koskiuser.{MockUser, MockUsers}
 import fi.oph.common.log.AuditLogTester
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 

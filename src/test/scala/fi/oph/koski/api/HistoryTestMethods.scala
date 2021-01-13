@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
-import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
+import fi.oph.common.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s.jackson.JsonMethods
 

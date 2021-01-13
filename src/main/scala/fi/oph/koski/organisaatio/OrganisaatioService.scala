@@ -1,7 +1,7 @@
 package fi.oph.koski.organisaatio
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.{KoskiSession, KäyttöoikeusOrg}
+import fi.oph.common.koskiuser.{KoskiSession, KäyttöoikeusOrg}
 import fi.oph.koski.perustiedot.VarhaiskasvatusToimipistePerustiedot
 import fi.oph.koski.schema.Organisaatio.Oid
 

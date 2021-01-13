@@ -6,9 +6,9 @@ import fi.oph.koski.db.Tables.OpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.KoskiSession.systemUser
-import fi.oph.koski.koskiuser.MockUsers
-import fi.oph.koski.koskiuser.MockUsers.stadinAmmattiopistoTallentaja
+import fi.oph.common.koskiuser.KoskiSession.systemUser
+import fi.oph.common.koskiuser.MockUsers
+import fi.oph.common.koskiuser.MockUsers.stadinAmmattiopistoTallentaja
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{omnia, stadinAmmattiopisto}
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, OidOrganisaatio, Oppilaitos, SisältäväOpiskeluoikeus}
 import fi.oph.koski.util.Wait

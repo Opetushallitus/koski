@@ -1,7 +1,7 @@
 package fi.oph.koski.mydata
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSession}
+import fi.oph.common.koskiuser.{AuthenticationUser, KoskiSession}
 import fi.oph.common.log.{AuditLogTester, LogUserContext}
 import org.scalatest.{BeforeAndAfter, BeforeAndAfterAll, FreeSpec, Matchers}
 

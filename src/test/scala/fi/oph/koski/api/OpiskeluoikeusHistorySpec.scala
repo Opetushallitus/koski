@@ -9,7 +9,7 @@ import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.reformitutkinto
 import fi.oph.koski.http.KoskiErrorCategory.notFound
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.common.koskiuser.MockUsers
 import fi.oph.common.log.{AuditLogTester, RootLogTester}
 import fi.oph.koski.schema.Opiskeluoikeus
 import org.json4s.JsonAST.{JArray, JNothing}

@@ -1,7 +1,7 @@
 package fi.oph.koski.json
 
 import fi.oph.koski.db.OpiskeluoikeusRow
-import fi.oph.koski.koskiuser.Rooli.Role
+import fi.oph.common.koskiuser.Rooli.Role
 import fi.oph.koski.schema.annotation.SensitiveData
 import fi.oph.koski.schema.{Henkilö, KoskiSchema, Oppija}
 import fi.oph.scalaschema.{ClassSchema, Metadata, Property, SerializationContext}

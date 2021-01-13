@@ -1,7 +1,7 @@
 package fi.oph.koski.servlet
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.KoskiUserLanguage.{getLanguageFromCookie, sanitizeLanguage, setLanguageCookie}
+import fi.oph.common.koskiuser.KoskiUserLanguage.{getLanguageFromCookie, sanitizeLanguage, setLanguageCookie}
 
 trait LanguageSupport extends KoskiBaseServlet {
   def application: KoskiApplication

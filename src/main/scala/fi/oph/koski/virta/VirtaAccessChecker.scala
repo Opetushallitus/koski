@@ -1,6 +1,6 @@
 package fi.oph.koski.virta
 
-import fi.oph.koski.koskiuser.{AccessChecker, KoskiSession, KäyttöoikeusRepository}
+import fi.oph.common.koskiuser.{AccessChecker, KoskiSession, KäyttöoikeusRepository}
 import fi.oph.koski.organisaatio.Oppilaitostyyppi._
 import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
 

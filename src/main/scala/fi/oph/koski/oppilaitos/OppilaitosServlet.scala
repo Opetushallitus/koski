@@ -1,7 +1,7 @@
 package fi.oph.koski.oppilaitos
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
+import fi.oph.common.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.organisaatio.Oppilaitostyyppi._
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, Organisaatiotyyppi}
 import fi.oph.koski.schema.{Koodistokoodiviite, OpiskeluoikeudenTyyppi}

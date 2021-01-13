@@ -4,7 +4,7 @@ import java.sql.Timestamp
 import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.koski.schema.Henkilö.Oid
 
 import scala.io.BufferedSource

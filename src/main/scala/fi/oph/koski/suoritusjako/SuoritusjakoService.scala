@@ -5,7 +5,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.common.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.common.log.KoskiOperation.KANSALAINEN_SUORITUSJAKO_LISAYS
 import fi.oph.common.log.KoskiMessageField.oppijaHenkiloOid

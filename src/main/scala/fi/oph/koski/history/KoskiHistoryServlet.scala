@@ -2,7 +2,7 @@ package fi.oph.koski.history
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
+import fi.oph.common.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.common.log._
 import fi.oph.koski.schema.KoskeenTallennettavaOpiskeluoikeus
 import fi.oph.koski.servlet.{ApiServlet, NoCache}

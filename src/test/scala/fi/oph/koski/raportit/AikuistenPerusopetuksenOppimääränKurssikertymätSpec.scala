@@ -7,8 +7,8 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, valtionosuusRahoitteinen}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetuksenAlkuvaiheenSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
-import fi.oph.koski.koskiuser.MockUser
-import fi.oph.koski.koskiuser.MockUsers.paakayttaja
+import fi.oph.common.koskiuser.MockUser
+import fi.oph.common.koskiuser.MockUsers.paakayttaja
 import fi.oph.common.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu

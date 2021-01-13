@@ -6,7 +6,7 @@ import java.net.URLDecoder
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.servlet.{KoskiBaseServlet, LanguageSupport}
 import fi.oph.koski.util.XML.CommentedPCData

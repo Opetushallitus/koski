@@ -1,7 +1,7 @@
 package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 
 object OpiskeluoikeusLoaderPerfTester extends App {
 

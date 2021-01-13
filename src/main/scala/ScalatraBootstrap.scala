@@ -10,7 +10,7 @@ import fi.oph.koski.healthcheck.{HealthCheckApiServlet, HealthCheckHtmlServlet}
 import fi.oph.koski.henkilo.HenkilötiedotServlet
 import fi.oph.koski.history.KoskiHistoryServlet
 import fi.oph.koski.kela.KelaServlet
-import fi.oph.koski.koskiuser._
+import fi.oph.common.koskiuser._
 import fi.oph.koski.localization.LocalizationServlet
 import fi.oph.common.log.Logging
 import fi.oph.koski.luovutuspalvelu.{LuovutuspalveluServlet, PalveluvaylaServlet, TilastokeskusServlet}

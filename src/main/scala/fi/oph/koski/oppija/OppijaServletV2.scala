@@ -2,7 +2,7 @@ package fi.oph.koski.oppija
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresVirkailijaOrPalvelukäyttäjä}
+import fi.oph.common.koskiuser.{AccessType, KoskiSession, RequiresVirkailijaOrPalvelukäyttäjä}
 import fi.oph.common.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueries
 import fi.oph.koski.schema.Oppija

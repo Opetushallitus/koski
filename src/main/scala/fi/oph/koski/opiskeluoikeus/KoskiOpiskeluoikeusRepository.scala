@@ -3,7 +3,7 @@ package fi.oph.koski.opiskeluoikeus
 import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.henkilo.{HenkilönTunnisteet, PossiblyUnverifiedHenkilöOid, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import org.json4s.JValue

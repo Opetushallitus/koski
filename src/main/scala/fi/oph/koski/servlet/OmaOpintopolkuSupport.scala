@@ -2,7 +2,7 @@ package fi.oph.koski.servlet
 
 import fi.oph.koski.config.Environment
 import fi.oph.koski.html.{EiRaameja, Oppija, Raamit}
-import fi.oph.koski.koskiuser.AuthenticationSupport
+import fi.oph.common.koskiuser.AuthenticationSupport
 import org.scalatra.servlet.RichRequest
 
 trait OmaOpintopolkuSupport extends AuthenticationSupport with LanguageSupport {

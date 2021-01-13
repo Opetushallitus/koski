@@ -2,7 +2,7 @@ package fi.oph.koski.opiskeluoikeus
 
 import fi.oph.koski.henkilo.{HenkilönTunnisteet, PossiblyUnverifiedHenkilöOid}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
 import fi.oph.koski.util.{Futures, WithWarnings}

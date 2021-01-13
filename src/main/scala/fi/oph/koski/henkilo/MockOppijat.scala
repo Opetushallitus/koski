@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.common.log.Loggable
 import fi.oph.koski.henkilo
-import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.common.koskiuser.MockUsers
 import fi.oph.common.log.Logging
 import fi.oph.koski.schema._
 

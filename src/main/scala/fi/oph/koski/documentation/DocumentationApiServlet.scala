@@ -4,7 +4,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.kela.KelaSchema
 import fi.oph.koski.koodisto.Koodistot
-import fi.oph.koski.koskiuser.Unauthenticated
+import fi.oph.common.koskiuser.Unauthenticated
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.valvira.ValviraSchema

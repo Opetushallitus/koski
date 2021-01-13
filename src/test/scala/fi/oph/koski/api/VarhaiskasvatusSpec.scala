@@ -4,7 +4,7 @@ import fi.oph.koski.documentation.ExamplesEsiopetus.{ostopalvelu, päiväkodinEs
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{oidOrganisaatio, päiväkotiTouhula, päiväkotiVironniemi}
 import fi.oph.koski.henkilo.MockOppijat.{asUusiOppija, ysiluokkalainen}
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.common.koskiuser.MockUsers
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.päiväkotiTarina
 import fi.oph.koski.schema.EsiopetuksenOpiskeluoikeus

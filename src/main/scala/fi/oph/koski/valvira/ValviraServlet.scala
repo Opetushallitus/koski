@@ -1,7 +1,7 @@
 package fi.oph.koski.valvira
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.RequiresValvira
+import fi.oph.common.koskiuser.RequiresValvira
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 class ValviraServlet(implicit val application: KoskiApplication) extends ApiServlet with NoCache with RequiresValvira {

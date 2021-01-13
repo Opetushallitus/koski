@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.http.HttpSpecification
-import fi.oph.koski.koskiuser.UserWithPassword
+import fi.oph.common.koskiuser.UserWithPassword
 import fi.oph.koski.schema.Oppija
 import fi.oph.scalaschema.SchemaValidatingExtractor
 

@@ -2,7 +2,7 @@ package fi.oph.koski.documentation
 
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
-import fi.oph.koski.koskiuser._
+import fi.oph.common.koskiuser._
 import fi.oph.common.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._

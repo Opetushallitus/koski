@@ -1,6 +1,6 @@
 package fi.oph.koski.http
 
-import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
+import fi.oph.common.koskiuser.{MockUsers, UserWithPassword}
 
 trait DefaultHttpTester extends HttpTester {
   override def baseUrl = sys.env.getOrElse("KOSKI_BASE_URL", "http://localhost:7021/koski")

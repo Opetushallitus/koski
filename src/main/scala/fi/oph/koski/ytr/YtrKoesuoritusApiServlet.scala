@@ -6,7 +6,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.HenkilönTunnisteet
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.RequiresKansalainen
+import fi.oph.common.koskiuser.RequiresKansalainen
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 class YtrKoesuoritusApiServlet(implicit val application: KoskiApplication) extends ApiServlet with NoCache with RequiresKansalainen {

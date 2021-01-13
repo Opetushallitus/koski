@@ -6,7 +6,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.LocalJettyHttpSpecification
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.{BasicAuthentication, HttpTester}
-import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.common.koskiuser.MockUsers
 import org.json4s._
 import org.json4s.jackson.Serialization.write
 import org.scalatest.{FreeSpec, Matchers}

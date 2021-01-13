@@ -4,7 +4,7 @@ import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.common.schema.LocalizedString
 import fi.oph.common.schema.annotation.Representative
-import fi.oph.koski.koskiuser.Rooli
+import fi.oph.common.koskiuser.Rooli
 import fi.oph.scalaschema.annotation._
 import fi.oph.koski.schema.annotation._
 import mojave._

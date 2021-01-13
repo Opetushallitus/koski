@@ -5,7 +5,7 @@ import fi.oph.koski.cache.CacheManager
 import fi.oph.koski.henkilo.HenkilönTunnisteet
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.koskiuser.{AccessChecker, AccessType, KoskiSession}
+import fi.oph.common.koskiuser.{AccessChecker, AccessType, KoskiSession}
 import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.opiskeluoikeus.AuxiliaryOpiskeluoikeusRepositoryImpl
 import fi.oph.koski.oppilaitos.OppilaitosRepository

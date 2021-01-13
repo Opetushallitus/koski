@@ -1,7 +1,7 @@
 package fi.oph.common.log
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.common.koskiuser.MockUsers
 import fi.vm.sade.auditlog.Logger
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito._

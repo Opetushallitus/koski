@@ -1,6 +1,6 @@
 package fi.oph.koski.http
 
-import fi.oph.koski.koskiuser.UserWithPassword
+import fi.oph.common.koskiuser.UserWithPassword
 import org.scalatra.test.HttpComponentsClient
 
 trait HttpTester extends HttpComponentsClient {

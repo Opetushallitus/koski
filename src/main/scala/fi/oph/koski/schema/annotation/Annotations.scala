@@ -1,7 +1,7 @@
 package fi.oph.koski.schema.annotation
 
 import fi.oph.common.schema.annotation.RepresentationalMetadata
-import fi.oph.koski.koskiuser.Rooli.Role
+import fi.oph.common.koskiuser.Rooli.Role
 import fi.oph.scalaschema.Metadata
 import org.json4s.JsonAST
 

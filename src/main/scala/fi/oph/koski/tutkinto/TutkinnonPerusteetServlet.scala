@@ -3,7 +3,7 @@ package fi.oph.koski.tutkinto
 import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.{KoskiUserLanguage, Unauthenticated}
+import fi.oph.common.koskiuser.{KoskiUserLanguage, Unauthenticated}
 import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.servlet.{ApiServlet, Cached, LanguageSupport}
 

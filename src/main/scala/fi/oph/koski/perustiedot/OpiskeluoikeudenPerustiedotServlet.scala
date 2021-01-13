@@ -2,7 +2,7 @@ package fi.oph.koski.perustiedot
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
+import fi.oph.common.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.util.SortOrder.Ascending

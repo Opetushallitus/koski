@@ -7,7 +7,7 @@ import fi.oph.koski.henkilo.TestingException
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.LegacyJsonSerialization.toJValue
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession, KäyttöoikeusVarhaiskasvatusToimipiste}
+import fi.oph.common.koskiuser.{AccessType, KoskiSession, KäyttöoikeusVarhaiskasvatusToimipiste}
 import fi.oph.common.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryFilter, OpiskeluoikeusQueryService}

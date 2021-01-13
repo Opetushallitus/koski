@@ -7,7 +7,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.EditorModel
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.common.log.{AuditLog, AuditLogMessage}
 import fi.oph.common.log.KoskiOperation.{KANSALAINEN_SUORITUSJAKO_KATSOMINEN, KANSALAINEN_SUORITUSJAKO_LISAYS}
 import fi.oph.common.log.KoskiMessageField.oppijaHenkiloOid

@@ -1,7 +1,7 @@
 package fi.oph.koski.perftest
 
 import fi.oph.koski.documentation.AmmatillinenExampleData
-import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.common.koskiuser.MockUsers
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import fi.oph.koski.tiedonsiirto.ExamplesTiedonsiirto

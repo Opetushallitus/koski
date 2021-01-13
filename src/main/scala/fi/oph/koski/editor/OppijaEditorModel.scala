@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.{Hidden, KoodistoUri}
 import fi.oph.koski.util.{Timing, WithWarnings}

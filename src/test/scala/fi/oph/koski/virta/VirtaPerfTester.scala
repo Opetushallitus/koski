@@ -1,7 +1,7 @@
 package fi.oph.koski.virta
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.common.koskiuser.MockUsers
 
 object VirtaPerfTester extends App {
   private val app: KoskiApplication = KoskiApplication.apply

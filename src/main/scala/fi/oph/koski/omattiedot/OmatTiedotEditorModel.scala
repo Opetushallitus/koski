@@ -7,7 +7,7 @@ import fi.oph.koski.editor.OppijaEditorModel.oppilaitoksenOpiskeluoikeudetOrderi
 import fi.oph.koski.editor._
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.huoltaja.{Huollettava, HuollettavatSearchResult, HuollettavienHakuOnnistui}
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.koski.schema.PerusopetuksenOpiskeluoikeus._
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.Hidden

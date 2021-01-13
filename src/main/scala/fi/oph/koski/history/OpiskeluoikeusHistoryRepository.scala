@@ -11,7 +11,7 @@ import fi.oph.koski.db.Tables.OpiskeluoikeusTable.readAsOpiskeluoikeus
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.{KoskiSession, Rooli}
+import fi.oph.common.koskiuser.{KoskiSession, Rooli}
 import fi.oph.common.log.Logging
 import fi.oph.koski.schema.KoskeenTallennettavaOpiskeluoikeus
 import fi.oph.koski.schema.annotation.SensitiveData

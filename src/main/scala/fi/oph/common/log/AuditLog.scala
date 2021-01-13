@@ -2,7 +2,7 @@ package fi.oph.common.log
 
 import java.net.InetAddress
 
-import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSession}
+import fi.oph.common.koskiuser.{AuthenticationUser, KoskiSession}
 import fi.oph.common.log.KoskiMessageField.KoskiMessageField
 import fi.oph.common.log.KoskiOperation.KoskiOperation
 import fi.vm.sade.auditlog._

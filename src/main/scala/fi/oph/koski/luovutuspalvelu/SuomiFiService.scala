@@ -6,7 +6,7 @@ import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.OppilaitoksenOpiskeluoikeudet
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.common.log.Logging
 import fi.oph.koski.omattiedot.OmatTiedotEditorModel
 import fi.oph.koski.schema._

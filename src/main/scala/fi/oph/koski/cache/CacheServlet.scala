@@ -1,7 +1,7 @@
 package fi.oph.koski.cache
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.Unauthenticated
+import fi.oph.common.koskiuser.Unauthenticated
 import fi.oph.common.log.Logging
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 

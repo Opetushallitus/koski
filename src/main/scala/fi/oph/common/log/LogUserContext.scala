@@ -3,7 +3,7 @@ package fi.oph.common.log
 import java.net.InetAddress
 
 import javax.servlet.http.HttpServletRequest
-import fi.oph.koski.koskiuser.{UserWithOid, UserWithUsername}
+import fi.oph.common.koskiuser.{UserWithOid, UserWithUsername}
 import org.scalatra.servlet.RichRequest
 
 object LogUserContext {

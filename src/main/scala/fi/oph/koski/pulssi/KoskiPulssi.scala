@@ -3,7 +3,7 @@ package fi.oph.koski.pulssi
 import fi.oph.koski.cache._
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.Http
-import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.common.koskiuser.MockUsers
 import fi.oph.koski.perustiedot.OpiskeluoikeusTilasto
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoTilasto
 import fi.oph.koski.userdirectory.KäyttöoikeusServiceClient

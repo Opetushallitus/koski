@@ -9,7 +9,7 @@ import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataFilter}
-import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
+import fi.oph.common.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.common.log._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.OppijaOidHaku
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueries, OpiskeluoikeusQueryContext}

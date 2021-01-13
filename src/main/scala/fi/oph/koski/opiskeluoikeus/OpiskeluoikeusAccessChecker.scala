@@ -1,6 +1,6 @@
 package fi.oph.koski.opiskeluoikeus
 
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
+import fi.oph.common.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.schema.{EsiopetuksenOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, Oppilaitos}
 
 object OpiskeluoikeusAccessChecker {

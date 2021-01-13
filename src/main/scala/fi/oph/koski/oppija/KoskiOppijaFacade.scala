@@ -8,7 +8,7 @@ import fi.oph.koski.henkilo._
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.huoltaja.HuollettavienHakuOnnistui
-import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSession}
+import fi.oph.common.koskiuser.{AuthenticationUser, KoskiSession}
 import fi.oph.common.log.KoskiMessageField.{opiskeluoikeusId, opiskeluoikeusVersio, oppijaHenkiloOid}
 import fi.oph.common.log.KoskiOperation._
 import fi.oph.common.log.{AuditLog, _}

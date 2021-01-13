@@ -1,6 +1,6 @@
 package fi.oph.koski.oppilaitos
 
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
+import fi.oph.common.koskiuser.{AccessType, KoskiSession}
 import fi.oph.common.localization.LocalizedStringImplicits.localizedStringOptionFinnishOrdering
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, OrganisaatioHierarkia, OrganisaatioRepository}
 import fi.oph.koski.schema.{OidOrganisaatio, Oppilaitos}

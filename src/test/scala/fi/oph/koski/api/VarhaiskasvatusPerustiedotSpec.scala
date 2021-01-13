@@ -4,7 +4,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.ExamplesEsiopetus.ostopalvelu
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData
 import fi.oph.koski.henkilo.MockOppijat.{asUusiOppija, eero, eskari, tero}
-import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.common.koskiuser.MockUsers
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import org.scalatest.{BeforeAndAfterAll, FreeSpec}
 

@@ -1,6 +1,6 @@
 package fi.oph.koski.userdirectory
 
-import fi.oph.koski.koskiuser._
+import fi.oph.common.koskiuser._
 
 object MockDirectoryClient extends DirectoryClient {
   def findUser(username: String) =

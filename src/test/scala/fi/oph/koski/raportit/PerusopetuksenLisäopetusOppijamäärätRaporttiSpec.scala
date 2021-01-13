@@ -3,7 +3,7 @@ package fi.oph.koski.raportit
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.koskiuser.MockUser
+import fi.oph.common.koskiuser.MockUser
 import fi.oph.common.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods

@@ -4,7 +4,7 @@ import java.io.EOFException
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import rx.lang.scala.Observable
 
 import scala.reflect.runtime.universe.TypeTag

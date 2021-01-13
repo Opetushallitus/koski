@@ -3,7 +3,7 @@ package fi.oph.koski.editor
 import java.time.format.DateTimeFormatter
 
 import fi.oph.common.schema.Localized
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.koski.localization.LocalizationRepository
 
 trait LocalizedHtml {

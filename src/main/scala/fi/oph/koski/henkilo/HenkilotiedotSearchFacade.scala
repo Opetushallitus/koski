@@ -1,7 +1,7 @@
 package fi.oph.koski.henkilo
 
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.common.log.KoskiMessageField.{apply => _, _}
 import fi.oph.common.log.KoskiOperation._
 import fi.oph.common.log.{AuditLog, AuditLogMessage}

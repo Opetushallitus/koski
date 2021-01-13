@@ -7,7 +7,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
+import fi.oph.common.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.common.log.{AccessLogTester, AuditLogTester}
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 

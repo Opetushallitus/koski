@@ -3,7 +3,7 @@ package fi.oph.koski.opiskeluoikeus
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
+import fi.oph.common.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.common.log.KoskiMessageField.{apply => _, _}
 import fi.oph.common.log.KoskiOperation._
 import fi.oph.common.log.{AuditLog, AuditLogMessage, Logging}

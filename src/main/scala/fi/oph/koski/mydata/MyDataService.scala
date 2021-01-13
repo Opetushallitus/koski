@@ -2,7 +2,7 @@ package fi.oph.koski.mydata
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.common.log.KoskiMessageField.{omaDataKumppani, oppijaHenkiloOid}
 import fi.oph.common.log.KoskiOperation.{KANSALAINEN_MYDATA_LISAYS, KANSALAINEN_MYDATA_POISTO}
 import fi.oph.common.log.{AuditLog, AuditLogMessage, Logging}

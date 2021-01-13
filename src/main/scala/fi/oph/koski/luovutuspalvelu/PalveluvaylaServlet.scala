@@ -3,7 +3,7 @@ package fi.oph.koski.luovutuspalvelu
 import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.RequiresLuovutuspalvelu
+import fi.oph.common.koskiuser.RequiresLuovutuspalvelu
 import fi.oph.koski.servlet.NoCache
 
 import scala.xml.{Elem, Node, NodeSeq}

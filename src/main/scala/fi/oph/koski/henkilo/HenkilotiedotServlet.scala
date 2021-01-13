@@ -3,7 +3,7 @@ package fi.oph.koski.henkilo
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
+import fi.oph.common.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.common.log.Logging
 import fi.oph.koski.schema.HenkilötiedotJaOid
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache}

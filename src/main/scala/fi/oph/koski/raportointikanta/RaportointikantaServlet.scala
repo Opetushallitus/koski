@@ -2,7 +2,7 @@ package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.{KoskiSession, RequiresVirkailijaOrPalvelukäyttäjä}
+import fi.oph.common.koskiuser.{KoskiSession, RequiresVirkailijaOrPalvelukäyttäjä}
 import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
 import org.scalatra._
 

@@ -11,7 +11,7 @@ import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
+import fi.oph.common.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.Henkilö.Oid

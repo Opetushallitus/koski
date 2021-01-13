@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.common.koskiuser.MockUsers
 import fi.oph.koski.schema.AmmatillinenOpiskeluoikeus
 import org.scalatest.FreeSpec
 

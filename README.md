@@ -58,7 +58,7 @@ KOSKI | GLOBAALI_LUKU_TOINEN_ASTE | (Viranomaisen organisaation oid) | Globaali 
 KOSKI | GLOBAALI_LUKU_KORKEAKOULU | (Viranomaisen organisaation oid) | Globaali lukuoikeus kaikkien organisaatioiden korkeakoulutuksen opiskeluoikeuksiin
 LOKALISOINTI | CRUD | (OPH:n organisaation oid) | Lokalisointitekstien lukeminen ja muuttaminen Kosken API:n kautta, jos _oid_ on OPH:n organisaation oid
 
-Lähdekoodissa [MockUsers](src/main/scala/fi/oph/koski/koskiuser/MockUsers.scala) on käyttäjät testitarkoituksia varten. Koski-palvelu käyttää niitä, jos Koski on käynnistetty konfiguraatiolla `opintopolku.virkailija.url = "mock"` (katso [Konfigurointi](#konfigurointi)). Tätä voi käyttää ajaessa Koskea lokaalisti.
+Lähdekoodissa [MockUsers](src/main/scala/fi/oph/common/koskiuser/MockUsers.scala) on käyttäjät testitarkoituksia varten. Koski-palvelu käyttää niitä, jos Koski on käynnistetty konfiguraatiolla `opintopolku.virkailija.url = "mock"` (katso [Konfigurointi](#konfigurointi)). Tätä voi käyttää ajaessa Koskea lokaalisti.
 
 ## Teknologiat
 

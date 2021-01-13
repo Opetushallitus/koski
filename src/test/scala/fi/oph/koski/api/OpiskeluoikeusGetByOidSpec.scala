@@ -2,8 +2,8 @@ package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.{HttpTester, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.MockUsers
-import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
+import fi.oph.common.koskiuser.MockUsers
+import fi.oph.common.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
 import fi.oph.common.log.AuditLogTester
 import fi.oph.koski.schema.AmmatillinenOpiskeluoikeus
 import org.scalatest.{FreeSpec, Matchers}

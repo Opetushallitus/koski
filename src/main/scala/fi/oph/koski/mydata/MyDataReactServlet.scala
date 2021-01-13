@@ -1,7 +1,7 @@
 package fi.oph.koski.mydata
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.AuthenticationSupport
+import fi.oph.common.koskiuser.AuthenticationSupport
 import fi.oph.koski.servlet.{OmaOpintopolkuSupport, OppijaHtmlServlet}
 import org.scalatra.ScalatraServlet
 

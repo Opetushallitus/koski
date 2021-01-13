@@ -3,7 +3,7 @@ package fi.oph.koski.raportit
 import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.koski.organisaatio.OrganisaatioHierarkia
 import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät, AikuistenPerusopetuksenEiRahoitustietoaKurssit, AikuistenPerusopetuksenMuutaKauttaRahoitetutKurssit, AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit, AikuistenPerusopetuksenOppijamäärätRaportti, AikuistenPerusopetuksenOppimääränKurssikertymät, AikuistenPerusopetusRaportti, AikuistenPerusopetusRaporttiRepository}
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid

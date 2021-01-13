@@ -6,8 +6,8 @@ import fi.oph.koski.db.Tables.OpiskeluOikeudet
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
-import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
+import fi.oph.common.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
+import fi.oph.common.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.common.log.AuditLogTester
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.SchemaValidatingExtractor

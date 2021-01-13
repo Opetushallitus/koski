@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{GlobalExecutionContext, HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.{HasKoskiSession, KoskiSession}
+import fi.oph.common.koskiuser.{HasKoskiSession, KoskiSession}
 import fi.oph.common.log.KoskiMessageField._
 import fi.oph.common.log.KoskiOperation._
 import fi.oph.common.log.{AuditLog, AuditLogMessage, Logging}

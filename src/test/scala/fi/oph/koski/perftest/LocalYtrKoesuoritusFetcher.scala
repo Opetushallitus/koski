@@ -3,7 +3,7 @@ package fi.oph.koski.perftest
 import java.nio.file.Paths
 
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.koskiuser.UserWithPassword
+import fi.oph.common.koskiuser.UserWithPassword
 
 object LocalYtrKoesuoritusFetcher extends App {
   // 1) Check values of "copyOfExamPaper"-fields in src/main/resources/mockdata/ytr/080698-967F.json

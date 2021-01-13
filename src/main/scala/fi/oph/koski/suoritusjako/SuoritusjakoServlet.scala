@@ -6,7 +6,7 @@ import java.time.LocalDate
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.{EditorApiServlet, EditorModel}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{AuthenticationSupport, KoskiSession}
+import fi.oph.common.koskiuser.{AuthenticationSupport, KoskiSession}
 import fi.oph.common.log.Logging
 import fi.oph.koski.omattiedot.OmatTiedotEditorModel
 import fi.oph.koski.schema.KoskiSchema.deserializationContext

@@ -3,7 +3,7 @@ package fi.oph.koski.kela
 import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.common.schema.LocalizedString
-import fi.oph.koski.koskiuser.Rooli
+import fi.oph.common.koskiuser.Rooli
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.SensitiveData
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}

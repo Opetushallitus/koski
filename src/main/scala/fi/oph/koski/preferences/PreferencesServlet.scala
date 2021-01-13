@@ -2,7 +2,7 @@ package fi.oph.koski.preferences
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
+import fi.oph.common.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.schema.StorablePreference
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import org.json4s.JValue

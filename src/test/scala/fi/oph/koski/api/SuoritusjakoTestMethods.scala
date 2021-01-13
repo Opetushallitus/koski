@@ -7,7 +7,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema.Oppija
 import fi.oph.koski.suoritusjako.{SuoritusIdentifier, Suoritusjako, SuoritusjakoRequest, SuoritusjakoUpdateResponse}
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import org.mockito.Mockito.{mock, when}
 import org.scalatra.servlet.RichRequest
 

@@ -1,7 +1,7 @@
 package fi.oph.koski.etk
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.common.log.{AuditLog, AuditLogMessage, KoskiMessageField, KoskiOperation}
 import fi.oph.koski.schema.Henkilö
 import fi.oph.koski.schema.Henkilö.Hetu

@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.AmmatillinenPerustutkintoExample
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.koski.perftest.LocalPerfTest
 import fi.oph.koski.schema.Oppija
 import fi.oph.koski.util.{Timing, WithWarnings}

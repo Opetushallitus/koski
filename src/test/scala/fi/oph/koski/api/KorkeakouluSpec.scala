@@ -2,7 +2,7 @@ package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.common.koskiuser.MockUsers
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import org.scalatest.{FreeSpec, Matchers}

@@ -8,7 +8,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parse
 import fi.oph.koski.db.Tables.{HenkilöTable, OpiskeluoikeusTable, _}
 import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow, Tables, _}
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{SuoritusJsonHaku, _}
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.koski.util.SortOrder.{Ascending, Descending}

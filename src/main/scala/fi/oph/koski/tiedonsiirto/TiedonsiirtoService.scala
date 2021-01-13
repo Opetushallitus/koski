@@ -11,7 +11,7 @@ import fi.oph.koski.json.JsonSerializer.{extract, validateAndExtract}
 import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.json._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.koskiuser._
+import fi.oph.common.koskiuser._
 import fi.oph.common.log.KoskiMessageField._
 import fi.oph.common.log.KoskiOperation._
 import fi.oph.common.log.{AuditLog, AuditLogMessage, Logging}

@@ -9,7 +9,7 @@ import fi.oph.koski.editor.EditorModelBuilder._
 import fi.oph.koski.editor.MetadataToModel.classesFromMetadata
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataFilter}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
+import fi.oph.common.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.localization._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusAccessChecker
 import fi.oph.koski.schema._

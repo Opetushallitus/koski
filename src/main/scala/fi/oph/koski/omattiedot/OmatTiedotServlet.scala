@@ -3,7 +3,7 @@ package fi.oph.koski.omattiedot
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.{EditorApiServlet, EditorModel}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.RequiresKansalainen
+import fi.oph.common.koskiuser.RequiresKansalainen
 import fi.oph.koski.schema.Oppija
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.WithWarnings

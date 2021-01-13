@@ -3,7 +3,7 @@ package fi.oph.koski.raportit
 import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.common.koskiuser.KoskiSession
 import fi.oph.common.log.KoskiMessageField.hakuEhto
 import fi.oph.common.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
 import fi.oph.common.log.{AuditLog, AuditLogMessage}

@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.Hetu
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.RequiresLuovutuspalvelu
+import fi.oph.common.koskiuser.RequiresLuovutuspalvelu
 import fi.oph.common.log.Logging
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import fi.oph.koski.schema.filter.MyDataOppija

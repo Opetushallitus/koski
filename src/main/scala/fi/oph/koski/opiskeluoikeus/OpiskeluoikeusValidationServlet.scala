@@ -7,7 +7,7 @@ import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http._
 import fi.oph.koski.json.JsonDiff.jsonDiff
 import fi.oph.koski.json.JsonSerializer.serialize
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresVirkailijaOrPalvelukäyttäjä, Rooli}
+import fi.oph.common.koskiuser.{AccessType, KoskiSession, RequiresVirkailijaOrPalvelukäyttäjä, Rooli}
 import fi.oph.common.log.Logging
 import fi.oph.koski.schema.annotation.SensitiveData
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus}

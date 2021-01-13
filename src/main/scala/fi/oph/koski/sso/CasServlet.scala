@@ -2,7 +2,7 @@ package fi.oph.koski.sso
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{Http, KoskiErrorCategory, OpintopolkuCallerId}
-import fi.oph.koski.koskiuser.{AuthenticationSupport, DirectoryClientLogin, KoskiUserLanguage}
+import fi.oph.common.koskiuser.{AuthenticationSupport, DirectoryClientLogin, KoskiUserLanguage}
 import fi.oph.common.log.LogUserContext
 import fi.oph.koski.servlet.{NoCache, VirkailijaHtmlServlet}
 import fi.vm.sade.utils.cas.CasClient.Username

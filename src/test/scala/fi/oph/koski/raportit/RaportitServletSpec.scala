@@ -3,9 +3,9 @@ package fi.oph.koski.raportit
 
 import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.UserWithPassword
+import fi.oph.common.koskiuser.UserWithPassword
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
-import fi.oph.koski.koskiuser.MockUsers._
+import fi.oph.common.koskiuser.MockUsers._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import org.json4s.JArray
