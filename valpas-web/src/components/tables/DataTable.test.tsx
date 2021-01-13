@@ -1,37 +1,34 @@
 import React from "react"
-import renderer, { act } from "react-test-renderer"
+import { render, fireEvent, RenderResult } from "@testing-library/react"
 import { Column, DataTable, Datum } from "./DataTable"
 
 describe("DataTable", () => {
   test("Renderöityy oikein", () => {
-    expect(createTable().toJSON()).toMatchSnapshot()
+    expectToMatchSnapshot(createTable())
   })
 
   test("Aktiivisen sarakkeen nimen uudelleen klikkaaminen kääntää järjestyksen", () => {
     const table = createTable()
-    clickColumnLabel(table, 0)
-    expect(table.toJSON()).toMatchSnapshot()
+    clickColumnLabel(table, "Nimi")
+    expectToMatchSnapshot(table)
   })
 
   test("Toisen sarakkeen nimen klikkaaminen järjestää sen mukaisesti", () => {
     const table = createTable()
-    clickColumnLabel(table, 1)
-    expect(table.toJSON()).toMatchSnapshot()
+    clickColumnLabel(table, "Oppilaitos")
+    expectToMatchSnapshot(table)
   })
 })
 
 // Helpers
 
-const createTable = () =>
-  renderer.create(<DataTable columns={columns} data={data} />)
+const expectToMatchSnapshot = (element: RenderResult) =>
+  expect(element.container.firstChild).toMatchSnapshot()
 
-const clickColumnLabel = (table: renderer.ReactTestRenderer, index: number) =>
-  act(() =>
-    // @ts-ignore
-    table.root
-      .findAll((e) => e.props.className?.includes("table__label"))
-      [index].props.onClick()
-  )
+const createTable = () => render(<DataTable columns={columns} data={data} />)
+
+const clickColumnLabel = (table: RenderResult, columnLabel: string) =>
+  fireEvent.click(table.getByText(columnLabel))
 
 // Test data
 

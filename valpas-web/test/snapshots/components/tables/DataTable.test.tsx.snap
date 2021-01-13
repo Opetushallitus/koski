@@ -2,27 +2,26 @@
 
 exports[`DataTable Aktiivisen sarakkeen nimen uudelleen klikkaaminen kääntää järjestyksen 1`] = `
 <table
-  className="table"
+  class="table"
 >
   <thead
-    className="table__head"
+    class="table__head"
   >
     <tr
-      className="table__row"
+      class="table__row"
     >
       <th
-        className="table__th"
+        class="table__th"
       >
         <div
-          className="table__label"
-          onClick={[Function]}
+          class="table__label"
         >
           Nimi
           <span
-            className="table__sortindicator table__sortindicator--visible"
+            class="table__sortindicator table__sortindicator--visible"
           >
             <i
-              className="material-icons icon icon--inline"
+              class="material-icons icon icon--inline"
             >
               arrow_drop_up
             </i>
@@ -30,75 +29,74 @@ exports[`DataTable Aktiivisen sarakkeen nimen uudelleen klikkaaminen kääntää
         </div>
       </th>
       <th
-        className="table__th"
+        class="table__th"
       >
         <div
-          className="table__label"
-          onClick={[Function]}
+          class="table__label"
         >
           Oppilaitos
           <span
-            className="table__sortindicator"
+            class="table__sortindicator"
           />
         </div>
       </th>
     </tr>
   </thead>
   <thead
-    className="table__body"
+    class="table__body"
   >
     <tr
-      className="table__row"
+      class="table__row"
     >
       <td
-        className="table__td"
+        class="table__td"
       >
         Osmo
       </td>
       <td
-        className="table__td"
+        class="table__td"
       >
         Celsiuksen koulu
       </td>
     </tr>
     <tr
-      className="table__row"
+      class="table__row"
     >
       <td
-        className="table__td"
+        class="table__td"
       >
         Heli
       </td>
       <td
-        className="table__td"
+        class="table__td"
       >
         Beetakaroteenikoulu
       </td>
     </tr>
     <tr
-      className="table__row"
+      class="table__row"
     >
       <td
-        className="table__td"
+        class="table__td"
       >
         Heikki
       </td>
       <td
-        className="table__td"
+        class="table__td"
       >
         Aakkoskoulu
       </td>
     </tr>
     <tr
-      className="table__row"
+      class="table__row"
     >
       <td
-        className="table__td"
+        class="table__td"
       >
         Aatu
       </td>
       <td
-        className="table__td"
+        class="table__td"
       >
         Deltakoulu
       </td>
@@ -109,27 +107,26 @@ exports[`DataTable Aktiivisen sarakkeen nimen uudelleen klikkaaminen kääntää
 
 exports[`DataTable Renderöityy oikein 1`] = `
 <table
-  className="table"
+  class="table"
 >
   <thead
-    className="table__head"
+    class="table__head"
   >
     <tr
-      className="table__row"
+      class="table__row"
     >
       <th
-        className="table__th"
+        class="table__th"
       >
         <div
-          className="table__label"
-          onClick={[Function]}
+          class="table__label"
         >
           Nimi
           <span
-            className="table__sortindicator table__sortindicator--visible"
+            class="table__sortindicator table__sortindicator--visible"
           >
             <i
-              className="material-icons icon icon--inline"
+              class="material-icons icon icon--inline"
             >
               arrow_drop_down
             </i>
@@ -137,75 +134,74 @@ exports[`DataTable Renderöityy oikein 1`] = `
         </div>
       </th>
       <th
-        className="table__th"
+        class="table__th"
       >
         <div
-          className="table__label"
-          onClick={[Function]}
+          class="table__label"
         >
           Oppilaitos
           <span
-            className="table__sortindicator"
+            class="table__sortindicator"
           />
         </div>
       </th>
     </tr>
   </thead>
   <thead
-    className="table__body"
+    class="table__body"
   >
     <tr
-      className="table__row"
+      class="table__row"
     >
       <td
-        className="table__td"
+        class="table__td"
       >
         Aatu
       </td>
       <td
-        className="table__td"
+        class="table__td"
       >
         Deltakoulu
       </td>
     </tr>
     <tr
-      className="table__row"
+      class="table__row"
     >
       <td
-        className="table__td"
+        class="table__td"
       >
         Heikki
       </td>
       <td
-        className="table__td"
+        class="table__td"
       >
         Aakkoskoulu
       </td>
     </tr>
     <tr
-      className="table__row"
+      class="table__row"
     >
       <td
-        className="table__td"
+        class="table__td"
       >
         Heli
       </td>
       <td
-        className="table__td"
+        class="table__td"
       >
         Beetakaroteenikoulu
       </td>
     </tr>
     <tr
-      className="table__row"
+      class="table__row"
     >
       <td
-        className="table__td"
+        class="table__td"
       >
         Osmo
       </td>
       <td
-        className="table__td"
+        class="table__td"
       >
         Celsiuksen koulu
       </td>
@@ -216,40 +212,38 @@ exports[`DataTable Renderöityy oikein 1`] = `
 
 exports[`DataTable Toisen sarakkeen nimen klikkaaminen järjestää sen mukaisesti 1`] = `
 <table
-  className="table"
+  class="table"
 >
   <thead
-    className="table__head"
+    class="table__head"
   >
     <tr
-      className="table__row"
+      class="table__row"
     >
       <th
-        className="table__th"
+        class="table__th"
       >
         <div
-          className="table__label"
-          onClick={[Function]}
+          class="table__label"
         >
           Nimi
           <span
-            className="table__sortindicator"
+            class="table__sortindicator"
           />
         </div>
       </th>
       <th
-        className="table__th"
+        class="table__th"
       >
         <div
-          className="table__label"
-          onClick={[Function]}
+          class="table__label"
         >
           Oppilaitos
           <span
-            className="table__sortindicator table__sortindicator--visible"
+            class="table__sortindicator table__sortindicator--visible"
           >
             <i
-              className="material-icons icon icon--inline"
+              class="material-icons icon icon--inline"
             >
               arrow_drop_down
             </i>
@@ -259,60 +253,60 @@ exports[`DataTable Toisen sarakkeen nimen klikkaaminen järjestää sen mukaises
     </tr>
   </thead>
   <thead
-    className="table__body"
+    class="table__body"
   >
     <tr
-      className="table__row"
+      class="table__row"
     >
       <td
-        className="table__td"
+        class="table__td"
       >
         Heikki
       </td>
       <td
-        className="table__td"
+        class="table__td"
       >
         Aakkoskoulu
       </td>
     </tr>
     <tr
-      className="table__row"
+      class="table__row"
     >
       <td
-        className="table__td"
+        class="table__td"
       >
         Heli
       </td>
       <td
-        className="table__td"
+        class="table__td"
       >
         Beetakaroteenikoulu
       </td>
     </tr>
     <tr
-      className="table__row"
+      class="table__row"
     >
       <td
-        className="table__td"
+        class="table__td"
       >
         Osmo
       </td>
       <td
-        className="table__td"
+        class="table__td"
       >
         Celsiuksen koulu
       </td>
     </tr>
     <tr
-      className="table__row"
+      class="table__row"
     >
       <td
-        className="table__td"
+        class="table__td"
       >
         Aatu
       </td>
       <td
-        className="table__td"
+        class="table__td"
       >
         Deltakoulu
       </td>
