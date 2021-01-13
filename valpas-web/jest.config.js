@@ -5,4 +5,5 @@ module.exports = {
     ".*\\.less$": "<rootDir>/test/mocks/styleMock.js",
   },
   snapshotResolver: "<rootDir>/test/snapshotResolver.js",
+  testEnvironment: "jsdom",
 }
