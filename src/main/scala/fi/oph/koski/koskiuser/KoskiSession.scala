@@ -2,12 +2,13 @@ package fi.oph.koski.koskiuser
 
 import java.net.InetAddress
 
+import fi.oph.common.log.Loggable
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.huoltaja.{Huollettava, HuollettavienHakuOnnistui}
 import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.Rooli._
-import fi.oph.koski.log.{LogUserContext, Loggable, Logging}
+import fi.oph.koski.log.{LogUserContext, Logging}
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, Organisaatio, OrganisaatioWithOid}
 import org.scalatra.servlet.RichRequest

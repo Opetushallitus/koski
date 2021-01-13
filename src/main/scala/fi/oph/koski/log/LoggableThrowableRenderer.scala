@@ -1,5 +1,6 @@
 package fi.oph.koski.log
 
+import fi.oph.common.log.Loggable
 import org.apache.log4j.DefaultThrowableRenderer
 import org.apache.log4j.spi.ThrowableRenderer
 

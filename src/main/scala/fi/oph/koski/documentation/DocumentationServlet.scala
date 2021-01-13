@@ -1,10 +1,10 @@
 package fi.oph.koski.documentation
 
+import fi.oph.common.koodisto.{Koodisto, KoodistoKoodiMetadata}
 import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.html.{EiRaameja, Virkailija}
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koodisto.{Koodisto, KoodistoKoodiMetadata}
 import fi.oph.koski.koskiuser.KoskiAuthenticationSupport
 import fi.oph.koski.schema.{Henkilö, OsaamisenTunnustaminen}
 import fi.oph.koski.servlet.VirkailijaHtmlServlet

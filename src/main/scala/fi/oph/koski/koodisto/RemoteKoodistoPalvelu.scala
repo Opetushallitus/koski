@@ -1,5 +1,6 @@
 package fi.oph.koski.koodisto
 
+import fi.oph.common.koodisto.{CodeAdditionalInfo, Koodisto, KoodistoKoodi, KoodistoViite}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatusException}
 import fi.oph.koski.json.JsonSerializer

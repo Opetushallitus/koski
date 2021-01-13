@@ -1,10 +1,10 @@
 package fi.oph.koski.userdirectory
 
 import com.typesafe.config.Config
+import fi.oph.common.log.NotLoggable
 import fi.oph.koski.cache.{CacheManager, Cached, CachingProxy, ExpiringCache}
 import fi.oph.koski.config.Features
 import fi.oph.koski.koskiuser.Käyttöoikeus
-import fi.oph.koski.log.NotLoggable
 
 import scala.concurrent.duration._
 

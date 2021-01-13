@@ -2,9 +2,10 @@ package fi.oph.koski.util
 
 import java.lang.reflect.{InvocationTargetException, Method, UndeclaredThrowableException}
 import java.util.concurrent.ExecutionException
-import scala.util.control.NonFatal
 
-import fi.oph.koski.log.Loggable
+import fi.oph.common.log.Loggable
+
+import scala.util.control.NonFatal
 
 case class Invocation(val f: NamedFunction, val args: List[AnyRef]) {
   def invoke: AnyRef = f(args)

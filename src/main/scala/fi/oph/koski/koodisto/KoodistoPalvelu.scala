@@ -1,7 +1,9 @@
 package fi.oph.koski.koodisto
 
 import com.typesafe.config.Config
+import fi.oph.common.koodisto.{Koodisto, KoodistoKoodi, KoodistoViite}
 import fi.oph.koski.cache.{CacheManager, CachingProxy, RefreshingCache}
+
 import scala.concurrent.duration._
 
 object KoodistoPalvelu {

@@ -2,10 +2,11 @@ package fi.oph.koski.db
 
 import com.typesafe.config.{Config, ConfigFactory}
 import com.typesafe.config.ConfigValueFactory._
+import fi.oph.common.log.NotLoggable
 import fi.oph.koski.config.{Environment, SecretsManager}
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.executors.Pools
-import fi.oph.koski.log.{Logging, NotLoggable}
+import fi.oph.koski.log.Logging
 import fi.oph.koski.raportointikanta.Schema
 import fi.oph.koski.util.Futures
 import org.flywaydb.core.Flyway
