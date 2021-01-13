@@ -5,7 +5,7 @@ import fi.oph.common.log.NotLoggable
 import fi.oph.koski.config.{Environment, SecretsManager}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpConnectionException}
-import fi.oph.koski.log.{Logging, TimedProxy}
+import fi.oph.common.log.{Logging, TimedProxy}
 import fi.oph.koski.util.Files
 
 import scala.xml.{Elem, Node}

@@ -1,4 +1,4 @@
-package fi.oph.koski.log
+package fi.oph.common.log
 
 import fi.oph.koski.json.GenericJsonFormats
 import fi.vm.sade.auditlog.Audit

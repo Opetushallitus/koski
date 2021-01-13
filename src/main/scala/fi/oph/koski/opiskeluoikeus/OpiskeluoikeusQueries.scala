@@ -5,9 +5,9 @@ import fi.oph.koski.db.{GlobalExecutionContext, HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.{HasKoskiSession, KoskiSession}
-import fi.oph.koski.log.KoskiMessageField._
-import fi.oph.koski.log.KoskiOperation._
-import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
+import fi.oph.common.log.KoskiMessageField._
+import fi.oph.common.log.KoskiOperation._
+import fi.oph.common.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.schema.Henkilö._
 import fi.oph.koski.servlet.{ApiServlet, ObservableSupport}
 import fi.oph.koski.util.SortOrder.Ascending

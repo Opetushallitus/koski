@@ -5,7 +5,7 @@ import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration
 import com.amazonaws.services.dynamodbv2.{AmazonDynamoDBClientBuilder}
 import com.amazonaws.services.dynamodbv2.document.DynamoDB
 import fi.oph.koski.config.Environment
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 
 object AuditLogDynamoDB extends Logging {
   lazy private val dynamoClient = {

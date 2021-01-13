@@ -3,7 +3,7 @@ package fi.oph.koski.config
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.http.Http
 import fi.oph.koski.http.Http._
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import software.amazon.awssdk.services.appconfig.AppConfigClient
 import software.amazon.awssdk.services.appconfig.model._
 

@@ -2,7 +2,7 @@ package fi.oph.koski.tutkinto
 import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.eperusteet._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.tutkinto
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi

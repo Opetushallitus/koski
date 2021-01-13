@@ -6,7 +6,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat}
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.koskiuser.MockUsers.{helsinkiTallentaja, tornioTallentaja}
-import fi.oph.koski.log.AuditLogTester
+import fi.oph.common.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, jyväskylänNormaalikoulu, päiväkotiMajakka, päiväkotiTouhula}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema.Organisaatio.Oid

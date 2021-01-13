@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 
 
 class HuoltajaServiceVtj(config: Config, henkilöRepository: HenkilöRepository) extends Logging {

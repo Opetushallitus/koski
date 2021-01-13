@@ -2,7 +2,7 @@ package fi.oph.koski.mydata
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.AuthenticationSupport
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.servlet._
 
 class MyDataServlet(implicit val application: KoskiApplication) extends ApiServlet

@@ -2,7 +2,7 @@ package fi.oph.koski.elasticsearch
 
 import com.typesafe.config.Config
 import fi.oph.koski.http.Http
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.util.PaginationSettings
 
 case class ElasticSearch(config: Config) extends Logging {

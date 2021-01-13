@@ -8,7 +8,7 @@ import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
 import fi.oph.koski.koskiuser.UserWithPassword
-import fi.oph.koski.log.AuditLogTester
+import fi.oph.common.log.AuditLogTester
 import fi.oph.koski.schema._
 import org.scalatest.{FreeSpec, Matchers}
 

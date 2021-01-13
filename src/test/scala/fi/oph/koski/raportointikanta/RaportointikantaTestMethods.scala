@@ -6,7 +6,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.LocalJettyHttpSpecification
 import fi.oph.koski.db.KoskiDatabase
 import fi.oph.koski.http.HttpTester
-import fi.oph.koski.log.AuditLogTester
+import fi.oph.common.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.util.Wait
 import org.json4s.DefaultFormats

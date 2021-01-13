@@ -3,7 +3,7 @@ package fi.oph.koski.virta
 import fi.oph.koski.henkilo.HetuBasedHenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.schema.UusiHenkilö
 
 import scala.util.control.NonFatal

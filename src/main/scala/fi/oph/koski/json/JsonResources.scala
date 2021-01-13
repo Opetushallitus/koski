@@ -2,7 +2,7 @@ package fi.oph.koski.json
 
 import java.io.InputStream
 
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.util.ClasspathResource
 import org.json4s
 import org.json4s.StreamInput

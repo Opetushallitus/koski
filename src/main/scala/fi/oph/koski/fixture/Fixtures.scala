@@ -4,7 +4,7 @@ import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.KoskiDatabaseConfig
 import fi.oph.koski.henkilo.MockOpintopolkuHenkilöFacade
 import fi.oph.koski.localization.MockLocalizationRepository
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.util.Timing
 
 class FixtureCreator(application: KoskiApplication) extends Logging with Timing {

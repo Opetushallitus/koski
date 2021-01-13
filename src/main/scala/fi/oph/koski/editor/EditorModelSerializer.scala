@@ -1,7 +1,7 @@
 package fi.oph.koski.editor
 
 import fi.oph.koski.json.{JsonSerializer, LegacyJsonSerialization}
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.schema.annotation.{Example, MultiLineString, Scale, UnitOfMeasure}
 import fi.oph.scalaschema.annotation._

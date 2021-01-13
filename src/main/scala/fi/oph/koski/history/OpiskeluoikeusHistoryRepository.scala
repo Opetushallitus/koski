@@ -12,7 +12,7 @@ import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{KoskiSession, Rooli}
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.schema.KoskeenTallennettavaOpiskeluoikeus
 import fi.oph.koski.schema.annotation.SensitiveData
 import fi.oph.koski.util.OptionalLists.optionalList

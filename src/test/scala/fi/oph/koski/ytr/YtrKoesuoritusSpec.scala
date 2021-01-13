@@ -2,7 +2,7 @@ package fi.oph.koski.ytr
 
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.log.AuditLogTester
+import fi.oph.common.log.AuditLogTester
 import fi.oph.koski.util.ClasspathResource
 import org.scalatest.FreeSpec
 

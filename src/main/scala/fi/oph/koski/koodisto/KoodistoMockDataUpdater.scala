@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.common.koodisto.KoodistoKoodi
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.json.JsonFiles
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.koodisto.MockKoodistoPalvelu.{sortKoodistoKoodiMetadata, sortKoodistoMetadata}
 
 object KoodistoMockDataUpdater extends App with Logging {

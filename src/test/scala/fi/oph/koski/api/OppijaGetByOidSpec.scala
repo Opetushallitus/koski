@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.documentation.ExampleData.opiskeluoikeusMitätöity
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.log.AuditLogTester
+import fi.oph.common.log.AuditLogTester
 import fi.oph.koski.schema.AmmatillinenOpiskeluoikeusjakso
 import org.scalatest.{FreeSpec, Matchers}
 

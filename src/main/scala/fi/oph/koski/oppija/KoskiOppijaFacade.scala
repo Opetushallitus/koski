@@ -9,9 +9,9 @@ import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.huoltaja.HuollettavienHakuOnnistui
 import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSession}
-import fi.oph.koski.log.KoskiMessageField.{opiskeluoikeusId, opiskeluoikeusVersio, oppijaHenkiloOid}
-import fi.oph.koski.log.KoskiOperation._
-import fi.oph.koski.log.{AuditLog, _}
+import fi.oph.common.log.KoskiMessageField.{opiskeluoikeusId, opiskeluoikeusVersio, oppijaHenkiloOid}
+import fi.oph.common.log.KoskiOperation._
+import fi.oph.common.log.{AuditLog, _}
 import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotIndexer
 import fi.oph.koski.schema._

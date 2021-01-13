@@ -4,7 +4,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
 import fi.oph.koski.henkilo.{MockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
-import fi.oph.koski.log.AuditLogTester
+import fi.oph.common.log.AuditLogTester
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 import scala.xml.{NodeSeq, XML, Utility}

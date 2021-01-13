@@ -10,7 +10,7 @@ import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KäyttöoikeusViranomainen, MockUsers, Palvelurooli}
-import fi.oph.koski.log.AuditLogTester
+import fi.oph.common.log.AuditLogTester
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import org.scalatest.{FreeSpec, Matchers}

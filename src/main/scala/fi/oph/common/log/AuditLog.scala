@@ -1,10 +1,10 @@
-package fi.oph.koski.log
+package fi.oph.common.log
 
 import java.net.InetAddress
 
 import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSession}
-import fi.oph.koski.log.KoskiMessageField.KoskiMessageField
-import fi.oph.koski.log.KoskiOperation.KoskiOperation
+import fi.oph.common.log.KoskiMessageField.KoskiMessageField
+import fi.oph.common.log.KoskiOperation.KoskiOperation
 import fi.vm.sade.auditlog._
 import io.prometheus.client.Counter
 import org.ietf.jgss.Oid

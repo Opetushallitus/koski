@@ -9,7 +9,7 @@ import scala.util.Try
 import scala.xml.Node
 import fi.oph.koski.config.Environment
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.oppilaitos.{MockOppilaitosRepository, OppilaitosRepository}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.common.schema.LocalizedString.{finnish, sanitize}

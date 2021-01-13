@@ -4,7 +4,7 @@ import fi.oph.koski.cache._
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.log.{Logging, TimedProxy}
+import fi.oph.common.log.{Logging, TimedProxy}
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotRepository
 import fi.oph.koski.schema._
 import fi.oph.koski.virta.VirtaHenkilöRepository

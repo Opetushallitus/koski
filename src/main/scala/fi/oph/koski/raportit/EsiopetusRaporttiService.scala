@@ -4,9 +4,9 @@ import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.log.KoskiMessageField.hakuEhto
-import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
-import fi.oph.koski.log.{AuditLog, AuditLogMessage}
+import fi.oph.common.log.KoskiMessageField.hakuEhto
+import fi.oph.common.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
+import fi.oph.common.log.{AuditLog, AuditLogMessage}
 import fi.oph.koski.schema.Organisaatio.Oid
 
 class EsiopetusRaporttiService(application: KoskiApplication) {

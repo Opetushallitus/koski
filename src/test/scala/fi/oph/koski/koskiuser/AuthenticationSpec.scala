@@ -5,7 +5,7 @@ import java.lang.Thread.sleep
 import fi.oph.koski.api.LocalJettyHttpSpecification
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.log.AuditLogTester
+import fi.oph.common.log.AuditLogTester
 import org.scalatest.{FreeSpec, Matchers}
 
 class AuthenticationSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification {

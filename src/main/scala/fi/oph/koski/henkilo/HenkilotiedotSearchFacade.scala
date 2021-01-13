@@ -2,9 +2,9 @@ package fi.oph.koski.henkilo
 
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.log.KoskiMessageField.{apply => _, _}
-import fi.oph.koski.log.KoskiOperation._
-import fi.oph.koski.log.{AuditLog, AuditLogMessage}
+import fi.oph.common.log.KoskiMessageField.{apply => _, _}
+import fi.oph.common.log.KoskiOperation._
+import fi.oph.common.log.{AuditLog, AuditLogMessage}
 import fi.oph.koski.opiskeluoikeus.{CompositeOpiskeluoikeusRepository, KoskiOpiskeluoikeusRepository}
 import fi.oph.koski.schema.{Henkilö, HenkilötiedotJaOid}
 

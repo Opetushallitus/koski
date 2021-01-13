@@ -4,7 +4,7 @@ import fi.oph.common.koodisto.{CodeAdditionalInfo, Koodisto, KoodistoKoodi, Kood
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatusException}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 
 class RemoteKoodistoPalvelu(virkailijaUrl: String) extends KoodistoPalvelu with Logging {
   private val http = Http(virkailijaUrl, "koodisto")

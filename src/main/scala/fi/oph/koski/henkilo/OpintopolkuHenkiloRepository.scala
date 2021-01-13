@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.annotation.SyntheticProperty
 

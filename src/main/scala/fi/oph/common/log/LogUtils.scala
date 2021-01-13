@@ -1,4 +1,4 @@
-package fi.oph.koski.log
+package fi.oph.common.log
 
 object LogUtils {
   def maskSensitiveInformation(s: String): String = {

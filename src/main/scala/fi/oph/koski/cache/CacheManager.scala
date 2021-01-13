@@ -1,6 +1,6 @@
 package fi.oph.koski.cache
 
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 
 // CacheManager tracks caches, allows exposing all to JMX and invalidating all caches
 class CacheManager extends Logging {

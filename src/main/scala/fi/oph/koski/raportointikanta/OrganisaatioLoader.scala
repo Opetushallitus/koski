@@ -1,6 +1,6 @@
 package fi.oph.koski.raportointikanta
 
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioPalveluOrganisaatio, OrganisaatioRepository}
 import fi.oph.common.schema.LocalizedString.unlocalized
 import fi.oph.koski.schema.OrganisaatioWithOid

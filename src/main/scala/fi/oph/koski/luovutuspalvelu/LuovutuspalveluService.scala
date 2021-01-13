@@ -6,7 +6,7 @@ import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö, Suppeat
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiMessageField, KoskiOperation}
+import fi.oph.common.log.{AuditLog, AuditLogMessage, KoskiMessageField, KoskiOperation}
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{OneOfOpiskeluoikeudenTyypit, OppijaOidHaku}
 import fi.oph.koski.schema._

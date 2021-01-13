@@ -14,7 +14,7 @@ import fi.oph.koski.http.{ErrorDetail, HttpStatus, HttpStatusException, KoskiErr
 import fi.oph.koski.koodisto.KoodistoPalvelu
 import fi.oph.koski.koskiuser.AccessType
 import fi.oph.koski.koskiuser.KoskiSession._
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, RemoteOrganisaatioRepository}
 import fi.oph.koski.schema._
 import fi.oph.koski.userdirectory.Password

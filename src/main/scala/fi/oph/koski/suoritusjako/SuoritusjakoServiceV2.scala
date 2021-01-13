@@ -8,9 +8,9 @@ import fi.oph.koski.editor.EditorModel
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.log.{AuditLog, AuditLogMessage}
-import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_SUORITUSJAKO_KATSOMINEN, KANSALAINEN_SUORITUSJAKO_LISAYS}
-import fi.oph.koski.log.KoskiMessageField.oppijaHenkiloOid
+import fi.oph.common.log.{AuditLog, AuditLogMessage}
+import fi.oph.common.log.KoskiOperation.{KANSALAINEN_SUORITUSJAKO_KATSOMINEN, KANSALAINEN_SUORITUSJAKO_LISAYS}
+import fi.oph.common.log.KoskiMessageField.oppijaHenkiloOid
 import fi.oph.koski.omattiedot.OmatTiedotEditorModel
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
 import fi.oph.koski.schema.{Opiskeluoikeus, Oppija, Suoritus}

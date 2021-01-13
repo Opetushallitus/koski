@@ -1,7 +1,7 @@
 package fi.oph.koski.perftest
 
 import fi.oph.koski.integrationtest.KoskidevHttpSpecification
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.util.EnvVariables
 
 abstract class PerfTestScenario extends KoskidevHttpSpecification with EnvVariables with Logging {

@@ -6,7 +6,7 @@ import fi.oph.koski.db.Tables.OpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.db.{KoskiDatabaseMethods, PostgresDriverWithJsonSupport}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession.systemUser
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.schema.Henkilö.Oid
 
 class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Logging {

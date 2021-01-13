@@ -8,7 +8,7 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import com.typesafe.config.ConfigFactory
 import fi.oph.koski.cache.GlobalCacheManager
-import fi.oph.koski.log.LogUserContext
+import fi.oph.common.log.LogUserContext
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, lehtikuusentienToimipiste, oppilaitokset}
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot, Opetushallitus, OrganisaatioHierarkia}
 import fi.oph.koski.schema.OpiskeluoikeudenTyyppi

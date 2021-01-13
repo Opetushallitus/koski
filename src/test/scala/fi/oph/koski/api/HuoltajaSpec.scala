@@ -2,7 +2,7 @@ package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.log.AuditLogTester
+import fi.oph.common.log.AuditLogTester
 import org.json4s.jackson.JsonMethods
 import org.json4s.{DefaultFormats, JObject}
 import org.scalatest.FreeSpec

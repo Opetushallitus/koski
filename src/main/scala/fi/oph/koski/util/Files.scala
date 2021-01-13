@@ -3,7 +3,7 @@ package fi.oph.koski.util
 import java.nio.charset.{Charset, StandardCharsets}
 import java.nio.file.Paths
 
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 
 import scala.io.{BufferedSource, Codec, Source}
 import scala.reflect.io.File

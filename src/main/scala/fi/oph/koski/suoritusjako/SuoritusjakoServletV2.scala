@@ -5,7 +5,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.{EditorApiServlet, EditorModel}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{AuthenticationSupport, KoskiSession}
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.schema.KoskiSchema.deserializationContext

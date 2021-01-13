@@ -6,9 +6,9 @@ import java.time.LocalDate
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
-import fi.oph.koski.log.KoskiOperation.KANSALAINEN_SUORITUSJAKO_LISAYS
-import fi.oph.koski.log.KoskiMessageField.oppijaHenkiloOid
+import fi.oph.common.log.{AuditLog, AuditLogMessage, Logging}
+import fi.oph.common.log.KoskiOperation.KANSALAINEN_SUORITUSJAKO_LISAYS
+import fi.oph.common.log.KoskiMessageField.oppijaHenkiloOid
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.schema._
 import fi.oph.koski.util.WithWarnings

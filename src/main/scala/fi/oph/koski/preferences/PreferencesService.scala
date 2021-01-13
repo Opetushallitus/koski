@@ -4,7 +4,7 @@ import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.{KoskiDatabaseMethods, PreferenceRow, Tables}
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.scalaschema.SchemaValidatingExtractor

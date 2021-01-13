@@ -2,7 +2,7 @@ package fi.oph.koski.cache
 
 import com.google.common.cache.{CacheBuilder, CacheLoader, CacheStats, LoadingCache}
 import com.google.common.util.concurrent.UncheckedExecutionException
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.util.Invocation
 
 import scala.concurrent.duration.Duration

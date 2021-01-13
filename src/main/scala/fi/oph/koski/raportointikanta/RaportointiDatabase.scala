@@ -8,7 +8,7 @@ import java.time._
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{KoskiDatabaseConfig, KoskiDatabaseMethods}
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.raportit.{LukioOppiaineRahoitusmuodonMukaan, LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat, PaallekkaisetOpiskeluoikeudet}
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
 import fi.oph.koski.schema.Organisaatio

@@ -2,7 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.extraction.{CustomDeserializer, OtherViolation, ValidationError}
 

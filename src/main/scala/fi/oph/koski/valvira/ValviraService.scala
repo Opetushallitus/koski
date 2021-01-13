@@ -3,7 +3,7 @@ package fi.oph.koski.valvira
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiMessageField, KoskiOperation}
+import fi.oph.common.log.{AuditLog, AuditLogMessage, KoskiMessageField, KoskiOperation}
 import fi.oph.scalaschema.extraction.ValidationError
 
 

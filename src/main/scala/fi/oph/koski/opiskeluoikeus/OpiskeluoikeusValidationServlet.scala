@@ -8,7 +8,7 @@ import fi.oph.koski.http._
 import fi.oph.koski.json.JsonDiff.jsonDiff
 import fi.oph.koski.json.JsonSerializer.serialize
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresVirkailijaOrPalvelukäyttäjä, Rooli}
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.schema.annotation.SensitiveData
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus}
 import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}

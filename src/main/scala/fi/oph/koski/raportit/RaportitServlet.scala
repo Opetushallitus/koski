@@ -6,9 +6,9 @@ import java.time.format.DateTimeParseException
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
-import fi.oph.koski.log.KoskiMessageField.hakuEhto
-import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
-import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
+import fi.oph.common.log.KoskiMessageField.hakuEhto
+import fi.oph.common.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
+import fi.oph.common.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.raportit.aikuistenperusopetus.AikuistenPerusopetusRaportti
 import fi.oph.koski.organisaatio.{Kaikki, OrganisaatioHierarkia, OrganisaatioOid}
 import fi.oph.koski.schema.{Koodistokoodiviite, OpiskeluoikeudenTyyppi, Organisaatio}

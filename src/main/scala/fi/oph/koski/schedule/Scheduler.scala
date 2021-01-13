@@ -10,7 +10,7 @@ import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db._
 import fi.oph.koski.executors.NamedThreadFactory
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 

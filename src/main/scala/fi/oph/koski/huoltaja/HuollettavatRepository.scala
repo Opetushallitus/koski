@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.henkilo.MockOppijat.{eiKoskessa, eskari, faija, faijaFeilaa, ylioppilasLukiolainen}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 
 trait HuollettavatRepository {
   def getHuollettavat(huoltajaHetu: String): Either[HttpStatus, List[VtjHuollettavaHenkilö]]

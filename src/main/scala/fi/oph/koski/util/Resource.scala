@@ -2,7 +2,7 @@ package fi.oph.koski.util
 
 import java.io.InputStream
 
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.util.Resource.ResourceSerializer
 
 object Resource {

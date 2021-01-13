@@ -8,7 +8,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
-import fi.oph.koski.log.AuditLogTester
+import fi.oph.common.log.AuditLogTester
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s.JsonAST.{JArray, JBool}

@@ -3,7 +3,7 @@ package fi.oph.koski.opiskeluoikeus
 import fi.oph.koski.cache.{CacheManager, ExpiringCache, KeyValueCache}
 import fi.oph.koski.henkilo.HenkilönTunnisteet
 import fi.oph.koski.koskiuser.{AccessChecker, KoskiSession}
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.schema.{Opiskeluoikeus, Organisaatio}
 
 import scala.concurrent.duration._

@@ -12,9 +12,9 @@ import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.json._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser._
-import fi.oph.koski.log.KoskiMessageField._
-import fi.oph.koski.log.KoskiOperation._
-import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
+import fi.oph.common.log.KoskiMessageField._
+import fi.oph.common.log.KoskiOperation._
+import fi.oph.common.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema._
 import fi.oph.koski.util.OptionalLists.optionalList

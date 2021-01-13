@@ -8,9 +8,9 @@ import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiSession, RequiresTilastokeskus}
-import fi.oph.koski.log.KoskiMessageField.hakuEhto
-import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
-import fi.oph.koski.log._
+import fi.oph.common.log.KoskiMessageField.hakuEhto
+import fi.oph.common.log.KoskiOperation.OPISKELUOIKEUS_HAKU
+import fi.oph.common.log._
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter, QueryOppijaHenkilö}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._

@@ -1,7 +1,7 @@
 package fi.oph.koski.kela
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.schema
 
 object KelaOppijaConverter extends Logging {

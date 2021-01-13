@@ -9,7 +9,7 @@ import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsn�
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetuksenAlkuvaiheenSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
 import fi.oph.koski.koskiuser.MockUser
 import fi.oph.koski.koskiuser.MockUsers.paakayttaja
-import fi.oph.koski.log.AuditLogTester
+import fi.oph.common.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenOppimääränKurssikertymät, AikuistenPerusopetuksenOppimääränKurssikertymätRow}

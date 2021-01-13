@@ -9,7 +9,7 @@ import com.google.common.cache.AbstractCache.SimpleStatsCounter
 import com.google.common.cache.CacheStats
 import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.executors.NamedThreadFactory
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.util.{Futures, Invocation}
 
 import scala.collection.mutable.{Map => MutableMap}

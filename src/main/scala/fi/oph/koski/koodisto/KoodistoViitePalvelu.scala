@@ -3,7 +3,7 @@ package fi.oph.koski.koodisto
 import fi.oph.common.koodisto.{KoodistoKoodi, KoodistoViite}
 import fi.oph.koski.cache._
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.servlet.InvalidRequestException
 

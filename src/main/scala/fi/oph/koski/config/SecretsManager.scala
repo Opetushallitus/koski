@@ -4,7 +4,7 @@ import fi.oph.koski.json.JsonSerializer
 import org.json4s.jackson.JsonMethods.parse
 import scala.reflect.runtime.universe._
 import com.amazonaws.secretsmanager.caching.SecretCache
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 
 
 

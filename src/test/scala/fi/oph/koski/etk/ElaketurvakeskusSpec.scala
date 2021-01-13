@@ -11,7 +11,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.OppijaHenkilö
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 import fi.oph.koski.henkilo.MockOppijat._
-import fi.oph.koski.log.AuditLogTester
+import fi.oph.common.log.AuditLogTester
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 
 import scala.io.Source

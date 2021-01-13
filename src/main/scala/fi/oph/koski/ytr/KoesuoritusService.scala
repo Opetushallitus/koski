@@ -3,7 +3,7 @@ package fi.oph.koski.ytr
 import java.io.{InputStream, OutputStream}
 
 import com.typesafe.config.Config
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.util._
 import software.amazon.awssdk.core.sync.ResponseTransformer
 import software.amazon.awssdk.services.s3.model._

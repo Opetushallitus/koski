@@ -4,9 +4,9 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.HenkilönTunnisteet
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{KoskiSession, RequiresKansalainen}
-import fi.oph.koski.log.KoskiOperation.KoskiOperation
-import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiMessageField}
-import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_YLIOPPILASKOE_HAKU, KANSALAINEN_HUOLTAJA_YLIOPPILASKOE_HAKU}
+import fi.oph.common.log.KoskiOperation.KoskiOperation
+import fi.oph.common.log.{AuditLog, AuditLogMessage, KoskiMessageField}
+import fi.oph.common.log.KoskiOperation.{KANSALAINEN_YLIOPPILASKOE_HAKU, KANSALAINEN_HUOLTAJA_YLIOPPILASKOE_HAKU}
 import fi.oph.koski.servlet.OppijaHtmlServlet
 
 class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends OppijaHtmlServlet with RequiresKansalainen {

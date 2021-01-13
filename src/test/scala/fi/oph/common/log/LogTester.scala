@@ -1,4 +1,4 @@
-package fi.oph.koski.log
+package fi.oph.common.log
 
 import org.apache.log4j.spi.LoggingEvent
 import org.apache.log4j.{AppenderSkeleton, Logger}

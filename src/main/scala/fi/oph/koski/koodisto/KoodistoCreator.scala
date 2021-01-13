@@ -6,7 +6,7 @@ import fi.oph.common.koodisto.{Koodisto, KoodistoKoodi, KoodistoViite}
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.json.JsonDiff.objectDiff
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.koodisto.MockKoodistoPalvelu.{sortKoodistoKoodiMetadata, sortKoodistoMetadata}
 import org.json4s.jackson.JsonMethods
 

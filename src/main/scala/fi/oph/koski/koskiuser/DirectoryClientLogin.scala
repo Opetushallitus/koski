@@ -1,6 +1,6 @@
 package fi.oph.koski.koskiuser
 
-import fi.oph.koski.log.{LogUserContext, Logging}
+import fi.oph.common.log.{LogUserContext, Logging}
 import fi.oph.koski.userdirectory.DirectoryClient
 import javax.servlet.http.HttpServletRequest
 

@@ -4,7 +4,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.http.HttpSpecification
 import fi.oph.koski.jettylauncher.JettyLauncher
 import fi.oph.koski.koskiuser.MockUsers
-import fi.oph.koski.log.{AccessLogTester, AuditLogTester, Logging, RootLogTester}
+import fi.oph.common.log.{AccessLogTester, AuditLogTester, Logging, RootLogTester}
 import fi.oph.koski.util.PortChecker
 
 object SharedJetty extends JettyLauncher(PortChecker.findFreeLocalPort, KoskiApplicationForTests)

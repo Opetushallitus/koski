@@ -8,7 +8,7 @@ import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
-import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
+import fi.oph.common.log.{AccessLogTester, AuditLogTester}
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class ValviraSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with Matchers with BeforeAndAfterAll {

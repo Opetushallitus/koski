@@ -2,7 +2,7 @@ package fi.oph.koski.mocha
 
 import java.io.{InputStream, OutputStream}
 
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.util.Streams
 import org.scalatest.{FreeSpec, Matchers}
 

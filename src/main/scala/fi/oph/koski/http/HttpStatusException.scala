@@ -1,7 +1,7 @@
 package fi.oph.koski.http
 
 import fi.oph.common.log.Loggable
-import fi.oph.koski.log.LogUtils.maskSensitiveInformation
+import fi.oph.common.log.LogUtils.maskSensitiveInformation
 import org.http4s.Request
 
 /**

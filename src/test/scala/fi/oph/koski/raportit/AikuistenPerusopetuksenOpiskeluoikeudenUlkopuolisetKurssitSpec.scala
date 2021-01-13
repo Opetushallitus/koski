@@ -11,7 +11,7 @@ import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusop
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.henkilo.MockOppijat.aikuisOpiskelija
 import fi.oph.koski.koskiuser.MockUser
-import fi.oph.koski.log.AuditLogTester
+import fi.oph.common.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät, AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRow, AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit, AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitRow}

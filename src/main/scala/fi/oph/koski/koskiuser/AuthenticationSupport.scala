@@ -3,7 +3,7 @@ package fi.oph.koski.koskiuser
 import java.util.UUID
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.log._
+import fi.oph.common.log._
 import fi.oph.koski.servlet.KoskiBaseServlet
 import fi.oph.koski.sso.SSOSupport
 import fi.oph.koski.userdirectory.Password
