@@ -66,8 +66,8 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
         onCompleted = () => {
           loadRestAndSwap()
           KoskiEventBridgeClient.putEvents(
-            EventBridgeEvent(raportointikantaGeneration, Map("event" -> "start-upload", "upload-target" -> "lampi")),
-            EventBridgeEvent(raportointikantaGeneration, Map("event" -> "start-upload", "upload-target" -> "csc"))
+            EventBridgeEvent(raportointikantaGeneration, Map("event" -> "start-upload", "uploadTarget" -> "lampi")),
+            EventBridgeEvent(raportointikantaGeneration, Map("event" -> "start-upload", "uploadTarget" -> "csc"))
           )
           onEnd()
         }
