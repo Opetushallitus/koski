@@ -144,7 +144,8 @@ class ElasticSearchIndex(
     logger.info(s"Reindexing from $fromIndex to $toIndex. This will take a while if the index is large.")
     val query = Map(
       "source" -> Map(
-        "index" -> fromIndex
+        "index" -> fromIndex,
+        "type" -> mappingTypeName
       ),
       "dest" -> Map(
         "index" -> toIndex,
