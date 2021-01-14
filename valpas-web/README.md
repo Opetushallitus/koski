@@ -29,7 +29,7 @@ npm install
 - `npm run fix` korjaa formatointivirheet
 - `npm run clean` tyhjentää Parcelin välimuistin ja käännöskansion. Aja jos kääntäminen sekoilee esim. rebasen jälkeen.
 
-## Hakemistorakenne
+### Hakemistorakenne
 
 ```
 ├── src                     Lähdekoodit ja yksikkötestit niiden rinnalla
@@ -43,7 +43,24 @@ npm install
     └── snapshots           Jestin snapshotit (eivät tallennu testitiedoston luo, kuten oletuksena)
 ```
 
-## BrowserStack-testien ajaminen
+## Testit
+
+### Frontendin yksikkö-/komponenttitestit
+
+Yksikkötestit sisältävät frontendin React-komponenttien, apukirjastojen, tilanhallinnan yms. testit ja ne voidaan ajaa ilman backendiä.
+
+Voit ajaa yksikkötestit komennolla `npm run test:unit`.
+
+### Integraatiotestit
+
+Integraatiotestejä varten pitää Koski-backendin olla pystyssä (oletuksena `localhost:7021`) tai testit pitää käynnistää ajamalla `ValpasFrontSpec.scala`.
+Jos backend on valmiiksi ajossa, voi testit ajaa komennolla `npm run test:integration`.
+
+Integraatiotestien ajon ajaksi käynnistyy porttiin 7357 http-palvelin, joka jakaa käännetyt frontendin tiedostot.
+
+Testit ajetaan headless-selaimessa. Jos haluat selainikkunan näkyviin, aja testit komennolla `npm run test:integration:debug`
+
+### BrowserStack-testien ajaminen
 
 Voit ajaa integraatiotestit BrowserStackissa komennolla `npm run test:integration:browserstack`
 
@@ -52,6 +69,6 @@ Testin ajamista voi ohjata seuraavilla ympäristömuuttujilla. Tunnukset löydä
 ```
 BROWSERSTACK_USERNAME         Käyttäjänimi
 BROWSERSTACK_ACCESS_KEY       Access key
-BROWSERSTACK_BROWSER          Selain ja versio, esim. "firefox 80.0"
-BROWSERSTACK_OS               Käyttöjärjestelmä ja versio, esim. "windows 10"
+BROWSERSTACK_BROWSER          Selain (ja versio), esim. "firefox 80.0"
+BROWSERSTACK_OS               Käyttöjärjestelmä (ja versio), esim. "windows 10"
 ```
