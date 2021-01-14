@@ -56,9 +56,6 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
   }
 
   def initKoskiServices(context: ServletContext)(implicit application: KoskiApplication) = {
-    context.initParameters("org.scalatra.cors.enable") = "true"
-    context.initParameters("org.scalatra.cors.allowedOrigins") = application.corsAllowedOrigins
-
     def mount(path: String, handler: Handler) = context.mount(handler, path)
 
     val initTasks = application.init() // start parallel initialization tasks
@@ -124,7 +121,13 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     }
     mount("/cas", new CasServlet)
     mount("/cache", new CacheServlet)
-    mount("/api/valpas", new ValpasApiServlet)
+
+    if (application.features.valpas) {
+      context.initParameters("org.scalatra.cors.enable") = "true"
+      context.initParameters("org.scalatra.cors.allowedOrigins") = application.corsAllowedOrigins
+
+      mount("/api/valpas", new ValpasApiServlet)
+    }
 
     Futures.await(initTasks) // await for all initialization tasks to complete
 
