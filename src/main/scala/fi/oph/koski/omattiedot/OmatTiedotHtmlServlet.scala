@@ -12,9 +12,6 @@ class OmatTiedotHtmlServlet(implicit val application: KoskiApplication) extends 
       case Left(_) => {
         redirectToOppijaLogin
       }
-      case _ => {
-        redirectToOppijaLogin
-      }
     }
   }
 

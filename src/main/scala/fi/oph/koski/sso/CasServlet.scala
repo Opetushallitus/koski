@@ -26,6 +26,8 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
       case _ => true;
     };
 
+    println(requestPath)
+
     params.get("ticket") match {
       case Some(ticket) =>
         try {
