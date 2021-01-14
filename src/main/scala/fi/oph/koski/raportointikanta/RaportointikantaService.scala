@@ -65,6 +65,10 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
         onError = (_) => onEnd(),
         onCompleted = () => {
           loadRestAndSwap()
+          KoskiEventBridgeClient.putEvents(
+            EventBridgeEvent(raportointikantaGeneration, Map("event" -> "start-upload", "upload-target" -> "lampi")),
+            EventBridgeEvent(raportointikantaGeneration, Map("event" -> "start-upload", "upload-target" -> "csc"))
+          )
           onEnd()
         }
       )
@@ -87,4 +91,6 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
 
   private lazy val loadDatabase = new RaportointiDatabase(application.raportointiConfig.copy(raportointiSchema = Some(Temp)))
   private lazy val raportointiDatabase = application.raportointiDatabase
+
+  private val raportointikantaGeneration = "raportointikanta-generation"
 }
