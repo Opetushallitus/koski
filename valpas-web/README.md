@@ -43,6 +43,10 @@ npm install
     └── snapshots           Jestin snapshotit (eivät tallennu testitiedoston luo, kuten oletuksena)
 ```
 
+## Backend
+
+Valpas käyttää Koskea backendinä. Valpas-toiminnallisuus on toistaiseksi feature flagin `features.valpas` takana.
+
 ## Testit
 
 ### Frontendin yksikkö-/komponenttitestit
