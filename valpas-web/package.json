@@ -7,6 +7,7 @@
     "test:unit": "jest src",
     "test:integration": "npm run build:local && jest --config jest.integrationtests.config.js test/integrationtests",
     "test:integration:debug": "SHOW_BROWSER=true npm run test:integration",
+    "test:integration:browserstack": "jest --config jest.integrationtests.browserstack.config.js test/integrationtests",
     "build:local": "NODE_ENV=development parcel build src/index.html",
     "build:prod": "parcel build src/index.html",
     "lint": "npm run lint:types && npm run lint:format",
@@ -26,6 +27,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.10",
+    "@jest-environment-browserstack/selenium-webdriver": "^2.0.1",
     "@testing-library/react": "^11.2.3",
     "@types/jest": "^26.0.20",
     "@types/ramda": "^0.27.34",
@@ -36,6 +38,7 @@
     "babel-jest": "^26.6.3",
     "chromedriver": "^87.0.5",
     "jest": "^26.6.3",
+    "jest-environment-browserstack": "^2.0.1",
     "less": "^4.0.0",
     "parcel-bundler": "^1.12.4",
     "prettier": "2.2.1",

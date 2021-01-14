@@ -1,29 +1,52 @@
-import { Builder, WebDriver, until, By } from "selenium-webdriver"
+import {
+  Builder,
+  WebDriver,
+  until,
+  By,
+  WebElementCondition,
+} from "selenium-webdriver"
 import chrome from "selenium-webdriver/chrome"
 import "chromedriver"
+
+declare namespace global {
+  let __driver__: undefined | (() => Promise<WebDriver>)
+}
 
 let driver: WebDriver
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000 * 60 * 5
 
 beforeAll(async () => {
+  driver = (await buildBrowserStackDriver()) || (await buildChromeDriver())
+}, 20000)
+
+afterAll(() => driver?.quit())
+
+const buildBrowserStackDriver = async (): Promise<WebDriver | undefined> =>
+  // Browserstack webdriver is provided by jest-environment-browserstack
+  // See jest.integrationtests.browserstack.config.js
+  global.__driver__ && global.__driver__()
+
+const buildChromeDriver = async (): Promise<WebDriver> => {
   const builder = new Builder().forBrowser("chrome")
   if (!process.env.SHOW_BROWSER) {
     builder.setChromeOptions(new chrome.Options().headless())
   }
-  driver = await builder.build()
-})
-
-afterAll(async () => driver.quit())
+  return builder.build()
+}
 
 // Helpers
+
+const wait = async (condition: WebElementCondition, timeout: number) => {
+  return await driver.wait(async (d) => condition.fn(d), timeout)
+}
 
 export const goToLocation = async (path: string) => {
   await driver.get(`http://localhost:7357${path}`)
 }
 
 export const $ = async (selector: string, timeout = 20000) => {
-  const el = await driver.wait(until.elementLocated(By.css(selector)), timeout)
-  return await driver.wait(until.elementIsVisible(el), timeout)
+  const el = await wait(until.elementLocated(By.css(selector)), timeout)
+  return await wait(until.elementIsVisible(el), timeout)
 }
 
 export const textEquals = (selector: string, expected: string) =>
