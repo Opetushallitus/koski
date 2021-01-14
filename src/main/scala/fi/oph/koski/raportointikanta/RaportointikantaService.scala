@@ -1,5 +1,6 @@
 package fi.oph.koski.raportointikanta
 
+import fi.oph.koski.cloudwatch.CloudWatchMetrics
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
@@ -68,6 +69,10 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
           KoskiEventBridgeClient.putEvents(
             EventBridgeEvent(raportointikantaGeneration, Map("event" -> "start-upload", "uploadTarget" -> "lampi")),
             EventBridgeEvent(raportointikantaGeneration, Map("event" -> "start-upload", "uploadTarget" -> "csc"))
+          )
+          CloudWatchMetrics.putRaportointikantaLoadtime(
+            raportointiDatabase.status.startedTime.get,
+            raportointiDatabase.status.completionTime.get
           )
           onEnd()
         }
