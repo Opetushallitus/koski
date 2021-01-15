@@ -24,8 +24,8 @@ trait MyDataSupport extends ScalatraServlet with MyDataConfig {
   }
 
   def getShibbolethLoginURL(target: String = getCurrentURL, lang: String) = {
-    conf.getString(s"login.shibboleth.$lang") +
-      conf.getString("login.shibboleth.targetparam") + getLoginURL(target, encode = true) +
+    conf.getString(s"login.cas.$lang") +
+      conf.getString("login.cas.targetparam") + getLoginURL(target, encode = true) +
       getKorhopankkiRedirectURLParameter(target)
   }
 

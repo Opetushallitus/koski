@@ -30,7 +30,7 @@ class LogoutServlet(implicit val application: KoskiApplication) extends Virkaili
   }
 
   private def luvanluovutusLogout(target: String) = {
-    val url = casOppijaLogoutUrl(encode(target))
+    val url = LogoutServerConfiguration.logoutUrl(application, "fi") + encode(target)
     redirect(url)
   }
 
@@ -40,13 +40,8 @@ class LogoutServlet(implicit val application: KoskiApplication) extends Virkaili
 object LogoutServerConfiguration {
   var overrides: Map[String, String] = Map.empty
 
-  def shibbolethLogoutUrl(application: KoskiApplication, lang: String) = {
+  def logoutUrl(application: KoskiApplication, lang: String) = {
     val key = "logout.url." + lang
-    overrides.get(key).getOrElse(application.config.getString(key))
-  }
-
-  def configurableShibbolethLogoutUrl(application: KoskiApplication, lang: String) = {
-    val key = "configurable.logout.url." + lang
     overrides.get(key).getOrElse(application.config.getString(key))
   }
 
