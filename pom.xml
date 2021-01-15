@@ -287,6 +287,11 @@
     </dependency>
     <dependency>
       <groupId>software.amazon.awssdk</groupId>
+      <artifactId>cloudwatch</artifactId>
+      <version>${awssdk.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>software.amazon.awssdk</groupId>
       <version>${awssdk.version}</version>
       <artifactId>appconfig</artifactId>
     </dependency>
