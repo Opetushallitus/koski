@@ -81,6 +81,10 @@ trait SSOSupport extends ScalatraBase with Logging {
     koskiRoot + "/cas/oppija"
   }
 
+  def casOppijaLogoutUrl(service: String = koskiRoot) = {
+    application.config.getString("opintopolku.oppija.url") + "/cas-oppija/logout?service=" + service
+  }
+
   def redirectAfterLogin = {
     val returnUrlCookie = Option(request.getCookies).toList.flatten.find(_.getName == "koskiReturnUrl").map(_.getValue)
     removeCookie("koskiReturnUrl")
@@ -115,7 +119,7 @@ trait SSOSupport extends ScalatraBase with Logging {
 
   def redirectToOppijaLogout = {
     if (ssoConfig.isCasSsoUsed) {
-      redirect(application.config.getString("opintopolku.oppija.url") + "/cas-oppija/logout?service=" + koskiRoot)
+      redirect(casOppijaLogoutUrl)
     } else {
       redirect(localLoginPage)
     }

@@ -30,13 +30,7 @@ class LogoutServlet(implicit val application: KoskiApplication) extends Virkaili
   }
 
   private def luvanluovutusLogout(target: String) = {
-    val redirectToTargetUrl = "/koski/user/redirect?target=" + encode(target)
-    val shibbolethLogoutUrl = LogoutServerConfiguration.configurableShibbolethLogoutUrl(application, langFromDomain)
-    val url = if (shibbolethLogoutUrl.isEmpty) {
-      redirectToTargetUrl
-    } else {
-      shibbolethLogoutUrl + encode(redirectToTargetUrl)
-    }
+    val url = casOppijaLogoutUrl(encode(target))
     redirect(url)
   }
 
