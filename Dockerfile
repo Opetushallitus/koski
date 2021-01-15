@@ -26,5 +26,7 @@ COPY log4j.properties /home/koski
 EXPOSE 8080
 # Prometheus JMX exporter
 EXPOSE 9101
+# JMX port
+EXPOSE 5555
 
 ENTRYPOINT /usr/local/bin/run.sh
