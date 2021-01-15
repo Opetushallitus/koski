@@ -19,14 +19,15 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
   private val casOppijaClient = new CasClient(application.config.getString("opintopolku.oppija.url") + "/cas-oppija", Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
   private val koskiSessions = application.koskiSessionRepository
 
+  protected def onSuccess: String = params.get("onSuccess").getOrElse("/omattiedot")
+  protected def onFailure: String = params.get("onFailure").getOrElse("/virhesivu")
+
   // Return url for cas login
   get("/*") {
     val kansalainen = requestPath match {
       case "/virkailija" => false;
       case _ => true;
     };
-
-    println(requestPath)
 
     params.get("ticket") match {
       case Some(ticket) =>
@@ -37,7 +38,7 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
             val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
             val authUser = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true, huollettavat = Some(huollettavat))
             setUser(Right(localLogin(authUser, Some(langFromCookie.getOrElse(langFromDomain)))))
-            redirect("/omattiedot")
+            redirect(onSuccess)
           } else {
             val username = validateServiceTicket(ticket, false)
             DirectoryClientLogin.findUser(application.directoryClient, request, username) match {
