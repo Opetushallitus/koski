@@ -370,6 +370,7 @@ case class DIAOppiaineLisäaine(
   @KoodistoKoodiarvo("VELI")
   @KoodistoKoodiarvo("ELI")
   @KoodistoKoodiarvo("RALI")
+  @KoodistoKoodiarvo("VT")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusVuosiviikkotunneissa]
 ) extends DIAOppiaine
