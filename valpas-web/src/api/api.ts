@@ -1,33 +1,24 @@
-import * as E from "fp-ts/lib/Either"
-import { apiFetch, ApiResponse } from "./apiFetch"
+import { User } from "../state/auth"
+import { apiGet, apiPost } from "./apiFetch"
 
 /**
  * Hello world
  * TODO: Tuuppaa mereen
  */
-export const fetchHello = () => apiFetch<"string">("hello")
+export const fetchHello = () => apiGet<"string">("api/hello")
 
 /**
  * Login
- * TODO: Replace this mock with an API call
  */
+export const fetchLogin = async (username: string, password: string) =>
+  apiPost<User>("login", {
+    body: {
+      username,
+      password,
+    },
+  })
 
-export type Login = {
-  session: string
-}
-
-export const fetchLogin = async (
-  username: string,
-  password: string
-): Promise<ApiResponse<Login>> => {
-  return username === "" || username !== password
-    ? E.left({
-        message: "Väärä käyttäjätunnus tai salasana",
-      })
-    : E.right({
-        status: 200,
-        data: {
-          session: "mock",
-        },
-      })
-}
+/**
+ * Get current user
+ */
+export const fetchCurrentUser = async () => apiGet<User>("api/user")

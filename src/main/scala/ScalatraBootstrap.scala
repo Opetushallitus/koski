@@ -126,7 +126,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       context.initParameters("org.scalatra.cors.enable") = "true"
       context.initParameters("org.scalatra.cors.allowedOrigins") = application.corsAllowedOrigins
 
-      mount("/api/valpas", new ValpasApiServlet)
+      mount("/valpas/api", new ValpasApiServlet)
     }
 
     Futures.await(initTasks) // await for all initialization tasks to complete

@@ -1,27 +1,25 @@
 import React, { useEffect, useState } from "react"
-import * as E from "fp-ts/Either"
-import { fetchLogin, Login } from "../api/api"
+import { fetchLogin } from "../api/api"
 import { SubmitButton } from "../components/buttons/SubmitButton"
 import { Card, CardBody, CardHeader } from "../components/containers/cards"
 import { Page } from "../components/containers/Page"
 import { Form } from "../components/forms/Form"
 import { TextField } from "../components/forms/TextField"
 import { t, T } from "../i18n/i18n"
-import { setLogin } from "../state/auth"
-import { ApiSuccess } from "../api/apiFetch"
+import { User } from "../state/auth"
 import { formSubmitHandler } from "../utils/eventHandlers"
 import { Error } from "../components/typography/error"
 import { renderResponse, useApiState } from "../api/apiReact"
+import { forNullableEither } from "../utils/fp"
 
-const processLogin = E.map((login: ApiSuccess<Login>) => {
-  setLogin(login.data.session)
-  location.reload()
-})
+export type LoginAppProps = {
+  onLogin: (user: User) => void
+}
 
-export const LoginApp = () => {
+export const LoginApp = (props: LoginAppProps) => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [loginResponse, setLoginResponse] = useApiState<Login>()
+  const [loginResponse, setLoginResponse] = useApiState<User>()
 
   const submitDisabled = username === "" || password === ""
 
@@ -32,7 +30,7 @@ export const LoginApp = () => {
   })
 
   useEffect(() => {
-    loginResponse && processLogin(loginResponse)
+    forNullableEither(loginResponse, (login) => props.onLogin(login.data))
   }, [loginResponse])
 
   return (
@@ -59,7 +57,15 @@ export const LoginApp = () => {
               disabled={submitDisabled}
             />
             {renderResponse(loginResponse, {
-              error: ({ message }) => <Error>{message}</Error>,
+              error: ({ errors }) => (
+                <Error>
+                  <ul>
+                    {errors.map((error, index) => (
+                      <li key={index}>{error.message}</li>
+                    ))}
+                  </ul>
+                </Error>
+              ),
             })}
           </Form>
         </CardBody>

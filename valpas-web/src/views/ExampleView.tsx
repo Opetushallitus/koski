@@ -159,7 +159,7 @@ export const ExampleView = () => {
           {renderResponse(helloWorld, {
             loading: () => "Latailee...",
             success: ({ data }) => data,
-            error: ({ message }) => `Jokin reistailee: ${message}`,
+            error: ({ errors }) => `Jokin reistailee: ${errors.join("; ")}`,
           })}
         </CardBody>
       </Card>

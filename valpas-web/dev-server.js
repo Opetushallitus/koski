@@ -4,6 +4,7 @@ const { createProxyMiddleware } = require("http-proxy-middleware")
 
 const PORT = process.env.PORT || 1234
 const VIRKAILIJA_RAAMIT_PROXY = process.env.VIRKAILIJA_RAAMIT_PROXY || undefined
+const BACKEND = process.env.BACKEND_PROXY || "http://localhost:7021/koski"
 
 const app = express()
 
@@ -18,6 +19,22 @@ if (VIRKAILIJA_RAAMIT_PROXY) {
 } else {
   app.get(/\/virkailija-raamit\/.*/, (_req, res) => res.send(""))
 }
+
+app.use(
+  createProxyMiddleware("/api", {
+    target: `${BACKEND}/valpas/`,
+    changeOrigin: true,
+    logLevel: "debug",
+  })
+)
+
+app.use(
+  createProxyMiddleware("/login", {
+    target: `${BACKEND}/user/`,
+    changeOrigin: true,
+    logLevel: "debug",
+  })
+)
 
 const bundler = new Bundler("src/index.html", { cache: false })
 app.use(bundler.middleware())
