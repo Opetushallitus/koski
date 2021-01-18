@@ -23,7 +23,7 @@ trait MyDataSupport extends ScalatraServlet with MyDataConfig {
     }
   }
 
-  def getShibbolethLoginURL(target: String = getCurrentURL, lang: String) = {
+  def getCasLoginURL(target: String = getCurrentURL, lang: String) = {
     conf.getString(s"login.cas.$lang") +
       conf.getString("login.cas.targetparam") + getLoginURL(target, encode = true) +
       getKorhopankkiRedirectURLParameter(target)

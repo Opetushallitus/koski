@@ -29,7 +29,7 @@ class MyDataSupportTest extends FreeSpec with Matchers with MockFactory {
       (() => mockRequest.getQueryString).expects().returning("callback=http://www.hsl.fi").repeat(2)
       (() => mockRequest.getRequestURI).expects().returning("/koski/omadata/valtuutus/hsl")
 
-      support(mockRequest).getShibbolethLoginURL(lang = lang) should
+      support(mockRequest).getCasLoginURL(lang = lang) should
         equal("/koski/login/oppija?login=%2Fkoski%2Fuser%2Fshibbolethlogin%3FonSuccess%3D%252Fkoski%252Fomadata%252Fvaltuutus%252Fhsl%253Fcallback%253Dhttp%253A%252F%252Fwww.hsl.fi&redirect=%2Fkoski%2Fomadata%2Fvaltuutus%2Fhsl%3Fcallback%3Dhttp%3A%2F%2Fwww.hsl.fi")
     }
     "Palauttaa oikean URL:n sisään loganneille" in {

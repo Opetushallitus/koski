@@ -26,7 +26,7 @@ class MyDataReactServlet(implicit val application: KoskiApplication) extends Sca
 
     sessionOrStatus match {
       case Right(_) =>
-      case Left(_) => redirect(getLoginURL(getCurrentURL))
+      case Left(_) => redirect(getCasLoginURL(getCurrentURL, lang))
     }
   }
 
