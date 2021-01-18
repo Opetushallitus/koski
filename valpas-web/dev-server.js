@@ -15,6 +15,8 @@ if (VIRKAILIJA_RAAMIT_PROXY) {
       changeOrigin: true,
     })
   )
+} else {
+  app.get(/\/virkailija-raamit\/.*/, (_req, res) => res.send(""))
 }
 
 const bundler = new Bundler("src/index.html", { cache: false })
