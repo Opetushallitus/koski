@@ -1,51 +1,20 @@
-export type UnauthorizedState = {
-  loggedIn: false
+import * as O from "fp-ts/Option"
+import { pipe } from "fp-ts/lib/function"
+import { fetchCurrentUser } from "../api/api"
+
+export type User = {
+  oid: string
+  username: string
+  name: string
+  serviceTicket: string
+  kansalainen: boolean
+  huollettava: boolean
 }
 
-export type AuthorizedState = {
-  loggedIn: true
-  user: string
-}
-
-export type AuthState = UnauthorizedState | AuthorizedState
-
-const VALPAS_USER_COOKIE = "valpasUser"
-
-export function getAuthState(): AuthState {
-  const userCookie = getCookies()[VALPAS_USER_COOKIE]
-  return userCookie
-    ? {
-        loggedIn: true,
-        user: userCookie,
-      }
-    : {
-        loggedIn: false,
-      }
-}
-
-export function setLogin(user: string) {
-  setCookie(VALPAS_USER_COOKIE, user)
-}
-
-export function unsetLogin() {
-  setCookie(VALPAS_USER_COOKIE, "")
-}
-
-function setCookie(key: string, value: string) {
-  document.cookie = `${key}=${value}`
-}
-
-function getCookies(): Record<string, string> {
-  return document.cookie
-    .split(";")
-    .map((s) => s.trim())
-    .reduce((obj, item) => {
-      const [key, value] = item.split("=")
-      return key && value
-        ? {
-            ...obj,
-            [key]: value,
-          }
-        : obj
-    }, {})
-}
+export const getCurrentUser = async () =>
+  pipe(
+    await fetchCurrentUser(),
+    O.fromEither,
+    O.map((response) => response.data),
+    O.toNullable
+  )

@@ -1,20 +1,28 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import { getAuthState } from "./state/auth"
 import "./style/index.less"
+import { getCurrentUser, User } from "./state/auth"
 
 async function main() {
-  if (getAuthState().loggedIn) {
-    const { ValpasApp } = await import("./views/ValpasApp")
-    render(ValpasApp)
+  const user = await getCurrentUser()
+  if (user) {
+    showApp(user)
   } else {
-    const { LoginApp } = await import("./views/LoginApp")
-    render(LoginApp)
+    showLogin()
   }
 }
 
-function render(View: React.ComponentType<{}>) {
-  ReactDOM.render(<View />, document.getElementById("app"))
+async function showLogin() {
+  const { LoginApp } = await import("./views/LoginApp")
+  ReactDOM.render(
+    <LoginApp onLogin={showApp} />,
+    document.getElementById("app")
+  )
+}
+
+async function showApp(_user: User) {
+  const { ValpasApp } = await import("./views/ValpasApp")
+  ReactDOM.render(<ValpasApp />, document.getElementById("app"))
 }
 
 main()

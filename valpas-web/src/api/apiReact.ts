@@ -1,7 +1,7 @@
 import * as E from "fp-ts/lib/Either"
 import { pipe } from "fp-ts/lib/function"
 import { useEffect, useState } from "react"
-import { ApiError, ApiResponse, ApiSuccess } from "./apiFetch"
+import { ApiFailure, ApiResponse, ApiSuccess } from "./apiFetch"
 
 export type ApiLoading = null
 export type ApiResponseState<T> = ApiLoading | ApiResponse<T>
@@ -20,7 +20,7 @@ export const renderResponse = <T>(
   response: ApiResponse<T> | ApiLoading,
   mappings: {
     success?: (success: ApiSuccess<T>) => React.ReactNode
-    error?: (error: ApiError) => React.ReactNode
+    error?: (error: ApiFailure) => React.ReactNode
     loading?: () => React.ReactNode
   }
 ): React.ReactNode | undefined => {
@@ -30,6 +30,6 @@ export const renderResponse = <T>(
   return pipe(
     response,
     E.map((success) => mappings.success?.(success)),
-    E.getOrElse((error: ApiError) => mappings.error?.(error))
+    E.getOrElse((error: ApiFailure) => mappings.error?.(error))
   )
 }
