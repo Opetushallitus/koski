@@ -37,10 +37,13 @@ npm install
 │   ├── style               Globaalit tyylitiedostot sekä muuttujat: värit, fonttikoot, mitat jne.
 │   ├── utils               Omat apukirjastot
 │   └── views               Näkymäkomponentit, tilanhallinta
-└── test                    Testien lisäkonfiguraatiot, apukirjastot ja testidata
-    ├── integrationtests    Integraatiotestit
-    ├── mocks               Mockit
-    └── snapshots           Jestin snapshotit (eivät tallennu testitiedoston luo, kuten oletuksena)
+├── test                    Testien lisäkonfiguraatiot, apukirjastot ja testidata
+│   ├── integrationtests    Integraatiotestit
+│   ├── mocks               Mockit
+│   └── snapshots           Jestin snapshotit (eivät tallennu testitiedoston luo, kuten oletuksena)
+└── local_modules
+    └── parcel-plugin-skip-external-assets
+                            Paikallinen parcel-plugin raamien käsittelyä varten
 ```
 
 ## Backend
@@ -75,4 +78,21 @@ BROWSERSTACK_USERNAME         Käyttäjänimi
 BROWSERSTACK_ACCESS_KEY       Access key
 BROWSERSTACK_BROWSER          Selain (ja versio), esim. "firefox 80.0"
 BROWSERSTACK_OS               Käyttöjärjestelmä (ja versio), esim. "windows 10"
+```
+
+## Virkailija-raamit
+
+Paikallisen palvelimen käynnistys untuvaopintopolusta ladattavien raamien kanssa:
+
+```
+env VIRKAILIJA_RAAMIT_PROXY="https://virkailija.untuvaopintopolku.fi/" npm start
+```
+
+Hakemistossa `local_modules/parcel-plugin-skip-external-assets` on paikallinen parcel-plugin raamiskriptin
+käsittelyä varten. Jos päivität plugin-koodia, ota muutokset käyttöön paikallisesti:
+```
+                                                  $ cd local_modules/parcel-plugin-skip-external-assets
+ local_modules/parcel-plugin-skip-external-assets $ npm version minor
+                                                  $ cd ../..
+                                                  $ npm upgrade parcel-plugin-skip-external-assets
 ```
