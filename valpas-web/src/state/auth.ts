@@ -23,11 +23,11 @@ export function getAuthState(): AuthState {
       }
 }
 
-export function login(user: string) {
+export function setLogin(user: string) {
   setCookie(VALPAS_USER_COOKIE, user)
 }
 
-export function logout() {
+export function unsetLogin() {
   setCookie(VALPAS_USER_COOKIE, "")
 }
 

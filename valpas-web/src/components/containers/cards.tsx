@@ -14,7 +14,7 @@ export const Card = (props: CardProps) => (
 )
 
 export type CardHeaderProps = {
-  children: string
+  children?: React.ReactNode
 }
 
 export const CardHeader = (props: CardHeaderProps) => (

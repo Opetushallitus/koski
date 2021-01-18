@@ -5,29 +5,32 @@ import "./buttons.less"
 
 const b = bem("button")
 
-export type RaisedButtonProps = React.HTMLAttributes<HTMLDivElement> & {
+export type RaisedButtonProps = React.HTMLAttributes<HTMLButtonElement> & {
   hierarchy?: ButtonHierarchy
   disabled?: boolean
 }
 
 export type ButtonHierarchy = "primary" | "secondary"
 
-export const RaisedButton = ({
-  className,
-  children,
+export const RaisedButton = (props: RaisedButtonProps) => {
+  const { children, disabled, onClick, ...rest } = props
+  return (
+    <button
+      className={raisedButtonClassName(props)}
+      onClick={disabled ? undefined : onClick}
+      {...rest}
+    >
+      <span className={b("content")}>{children}</span>
+    </button>
+  )
+}
+
+export const raisedButtonClassName = ({
   hierarchy,
   disabled,
-  onClick,
-  ...rest
-}: RaisedButtonProps) => (
-  <div
-    className={joinClassNames(
-      b(["raised", hierarchy || "primary", disabled ? "disabled" : undefined]),
-      className
-    )}
-    onClick={disabled ? undefined : onClick}
-    {...rest}
-  >
-    <span className={b("content")}>{children}</span>
-  </div>
-)
+  className,
+}: Pick<RaisedButtonProps, "hierarchy" | "disabled" | "className">) =>
+  joinClassNames(
+    b(["raised", hierarchy || "primary", disabled ? "disabled" : undefined]),
+    className
+  )

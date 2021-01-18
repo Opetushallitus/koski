@@ -4,7 +4,7 @@ import React from "react"
 export type InputContainerProps = {
   bemBase: string
   children: React.ReactNode
-  label?: string
+  label?: React.ReactNode
   icon?: React.ReactNode
   error?: React.ReactNode
 }

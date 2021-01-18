@@ -1,5 +1,6 @@
 import React, { useState } from "react"
-import { fetchHello, useApi } from "../api/api"
+import { fetchHello } from "../api/api"
+import { useApiOnce, renderResponse } from "../api/apiReact"
 import { ModalButtonGroup } from "../components/buttons/ModalButtonGroup"
 import { RaisedButton } from "../components/buttons/RaisedButton"
 import { Card, CardBody, CardHeader } from "../components/containers/cards"
@@ -15,7 +16,7 @@ import { Heading } from "../components/typography/headings"
 
 export const ExampleView = () => {
   const [modalVisible, setModalVisible] = useState(false)
-  const helloWorld = useApi(fetchHello)
+  const helloWorld = useApiOnce(fetchHello)
 
   return (
     <Page>
@@ -155,11 +156,11 @@ export const ExampleView = () => {
       <Card>
         <CardHeader>API-testi</CardHeader>
         <CardBody id="helloworld">
-          {helloWorld === null
-            ? "Latailee..."
-            : helloWorld.type === "resolved"
-            ? helloWorld.data
-            : `Jokin reistailee: ${JSON.stringify(helloWorld)}`}
+          {renderResponse(helloWorld, {
+            loading: () => "Latailee...",
+            success: ({ data }) => data,
+            error: ({ message }) => `Jokin reistailee: ${message}`,
+          })}
         </CardBody>
       </Card>
 

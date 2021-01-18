@@ -1,15 +1,19 @@
 // TODO: Hieman parempi poikkeustenhallinta, ehkä fp-ts/Either paluuarvoksi
 
-export type ApiResponse<T> =
-  | {
-      type: "resolved"
-      status: number
-      data: T
-    }
-  | {
-      type: "rejected"
-      message: number
-    }
+import { Either, right, left } from "fp-ts/lib/Either"
+
+export type ApiSuccess<T> = {
+  status: number
+  data: T
+}
+
+export type ApiError = {
+  message: string
+  status?: number
+  data?: any
+}
+
+export type ApiResponse<T> = Either<ApiError, ApiSuccess<T>>
 
 export const apiFetch = async <T>(
   input: RequestInfo,
@@ -20,16 +24,23 @@ export const apiFetch = async <T>(
       prependUrl(process.env.BACKEND_URL || "", input),
       init
     )
-    return {
-      type: "resolved",
-      status: response.status,
-      data: (await response.json()) as T,
+    try {
+      const data = (await response.json()) as T
+      return right({
+        status: response.status,
+        data,
+      })
+    } catch (err) {
+      return left({
+        message: "Response is not valid JSON",
+        status: response.status,
+        data: await response.text(),
+      })
     }
   } catch (err) {
-    return {
-      type: "rejected",
+    return left({
       message: err.message,
-    }
+    })
   }
 }
 

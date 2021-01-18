@@ -1,6 +1,7 @@
 @import "../../style/colors.less";
 
 @button-vertical-align: 0.25rem;
+@button-horizontal-padding: 0.75rem;
 
 .button {
   display: inline-block;
@@ -9,6 +10,11 @@
   user-select: none;
   cursor: pointer;
 
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+
   &:hover {
     opacity: 66%;
   }
@@ -16,7 +22,7 @@
 
 .button__content {
   display: flex;
-  padding: @button-vertical-align 0.75rem;
+  padding: @button-vertical-align @button-horizontal-padding;
   vertical-align: 1rem;
 }
 
@@ -36,4 +42,8 @@
 .button--disabled:hover {
   opacity: 50%;
   cursor: default;
+}
+
+input.button {
+  padding: @button-vertical-align @button-horizontal-padding;
 }
