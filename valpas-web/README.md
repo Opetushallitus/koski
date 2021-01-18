@@ -85,11 +85,12 @@ BROWSERSTACK_OS               Käyttöjärjestelmä (ja versio), esim. "windows 
 Paikallisen palvelimen käynnistys untuvaopintopolusta ladattavien raamien kanssa:
 
 ```
-env VIRKAILIJA_RAAMIT_PROXY="https://virkailija.untuvaopintopolku.fi/" npm start
+npm run start:raamit
 ```
 
 Hakemistossa `local_modules/parcel-plugin-skip-external-assets` on paikallinen parcel-plugin raamiskriptin
 käsittelyä varten. Jos päivität plugin-koodia, ota muutokset käyttöön paikallisesti:
+
 ```
                                                   $ cd local_modules/parcel-plugin-skip-external-assets
  local_modules/parcel-plugin-skip-external-assets $ npm version minor
