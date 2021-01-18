@@ -8,7 +8,8 @@ const b = bem("textfield")
 export type TextFieldProps = {
   value: string
   onChange: (value: string) => void
-  label?: string
+  type?: "text" | "password"
+  label?: React.ReactNode
   placeholder?: string
   disabled?: boolean
   icon?: React.ReactNode
@@ -23,8 +24,10 @@ export const TextField = (props: TextFieldProps) => (
     error={props.error}
   >
     <input
-      className={b("input", { error: Boolean(props.error) })}
-      type="text"
+      className={b("input", {
+        error: Boolean(props.error),
+      })}
+      type={props.type || "type"}
       value={props.value}
       placeholder={props.placeholder}
       onChange={(event) => props.onChange(event.target.value)}
