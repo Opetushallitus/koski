@@ -3,7 +3,7 @@ import { apiGet, apiPost } from "./apiFetch"
 
 /**
  * Hello world
- * TODO: Tuuppaa mereen
+ * TODO: Remove
  */
 export const fetchHello = () => apiGet<"string">("api/hello")
 
