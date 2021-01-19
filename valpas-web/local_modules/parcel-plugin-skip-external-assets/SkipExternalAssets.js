@@ -3,7 +3,8 @@
 const HTMLAsset = require('parcel-bundler/lib/assets/HTMLAsset')
 
 function shouldIgnore (file) {
-  return /\/virkailija-raamit\/apply-raamit.js/.test(file)
+  return /\/virkailija-raamit\/apply-raamit.js/.test(file) ||
+    /\/valpas\/localization\/set-localization-map.js/.test(file)
 }
 
 class SkipExternalAssets extends HTMLAsset {

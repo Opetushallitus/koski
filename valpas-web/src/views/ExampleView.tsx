@@ -13,6 +13,7 @@ import { SearchIcon, WarningIcon } from "../components/icons/Icon"
 import { MainNavigation } from "../components/navigation/MainNavigation"
 import { SelectableDataTable } from "../components/tables/SelectableDataTable"
 import { Heading } from "../components/typography/headings"
+import { t } from "../i18n/i18n"
 
 export const ExampleView = () => {
   const [modalVisible, setModalVisible] = useState(false)
@@ -29,7 +30,7 @@ export const ExampleView = () => {
         ]}
         onChange={(selected) => console.log("selected", selected)}
       />
-      <Heading>Valpas-komponenttikirjasto</Heading>
+      <Heading>{t("title__Valpas")}-komponenttikirjasto</Heading>
 
       <Card>
         <CardHeader>API-testi</CardHeader>
@@ -43,7 +44,6 @@ export const ExampleView = () => {
             : "Latailee..."}
         </CardBody>
       </Card>
-
       <Card>
         <CardHeader>Kortti</CardHeader>
         <CardBody>
