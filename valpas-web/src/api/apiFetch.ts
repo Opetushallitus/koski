@@ -64,12 +64,12 @@ const enrichRequest = (
   method: string,
   init?: JsonRequestInit
 ): JsonRequestInit => ({
-  ...init,
+  credentials: "include",
   method,
+  ...init,
   headers: {
-    ...init?.headers,
     "Content-Type": "application/json",
-    credentials: "same-origin",
+    ...init?.headers,
   },
   body: init?.body && JSON.stringify(init.body),
 })

@@ -9,8 +9,7 @@ import { t, T } from "../i18n/i18n"
 import { User } from "../state/auth"
 import { formSubmitHandler } from "../utils/eventHandlers"
 import { Error } from "../components/typography/error"
-import { renderResponse, useApiState } from "../api/apiReact"
-import { forNullableEither } from "../utils/fp"
+import { useApiMethod } from "../api/apiHooks"
 
 export type LoginAppProps = {
   onLogin: (user: User) => void
@@ -19,19 +18,21 @@ export type LoginAppProps = {
 export const LoginApp = (props: LoginAppProps) => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [loginResponse, setLoginResponse] = useApiState<User>()
+  const login = useApiMethod(fetchLogin)
 
   const submitDisabled = username === "" || password === ""
 
-  const login = formSubmitHandler(async () => {
-    if (!submitDisabled) {
-      setLoginResponse(await fetchLogin(username, password))
+  const doLogin = formSubmitHandler(async () => {
+    if (!submitDisabled && login.state !== "loading") {
+      login.call(username, password)
     }
   })
 
   useEffect(() => {
-    forNullableEither(loginResponse, (login) => props.onLogin(login.data))
-  }, [loginResponse])
+    if (login.state === "success") {
+      props.onLogin(login.data)
+    }
+  }, [login])
 
   return (
     <Page>
@@ -40,7 +41,7 @@ export const LoginApp = (props: LoginAppProps) => {
           <T id="login__otsikko" />
         </CardHeader>
         <CardBody>
-          <Form onSubmit={login} onChange={() => setLoginResponse(null)}>
+          <Form onSubmit={doLogin} onChange={login.clear}>
             <TextField
               label={t("login__kayttaja")}
               value={username}
@@ -56,17 +57,15 @@ export const LoginApp = (props: LoginAppProps) => {
               value={t("login__btn_kirjaudu")}
               disabled={submitDisabled}
             />
-            {renderResponse(loginResponse, {
-              error: ({ errors }) => (
-                <Error>
-                  <ul>
-                    {errors.map((error, index) => (
-                      <li key={index}>{error.message}</li>
-                    ))}
-                  </ul>
-                </Error>
-              ),
-            })}
+            {login.state === "error" ? (
+              <Error>
+                <ul>
+                  {login.errors.map((error, index) => (
+                    <li key={index}>{error.message}</li>
+                  ))}
+                </ul>
+              </Error>
+            ) : null}
           </Form>
         </CardBody>
       </Card>
