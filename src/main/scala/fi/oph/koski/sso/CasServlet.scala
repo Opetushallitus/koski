@@ -34,6 +34,9 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
         try {
           if (kansalainen) {
             val hetu = validateServiceTicket(ticket, true)
+            println(hetu)
+            println(params)
+            println(requestPath)
             val oppija = application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu).get
             val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
             val authUser = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true, huollettavat = Some(huollettavat))
@@ -86,6 +89,8 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
         case NonFatal(t) => Task.fail(new CasClientException(s"Failed to validate service ticket $t"))
       }.unsafePerformSyncAttemptFor(10000).toEither
       logger.debug(s"attrs response: $attrs")
+      println(ticket)
+      println(attrs)
       attrs match {
         case Right(attrs) => {
           val hetu = attrs("nationalIdentificationNumber")
