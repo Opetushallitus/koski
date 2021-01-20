@@ -26,7 +26,7 @@ const apiFetch = async <T>(
 ): Promise<ApiResponse<T>> => {
   try {
     const response = await fetch(
-      prependUrl(process.env.BACKEND_URL || "", input),
+      prependUrl(process.env.BACKEND_PROXY || "", input),
       init
     )
     try {

@@ -66,8 +66,8 @@ async function startServer({
 function start(overrides) {
   return startServer({
     port: process.env.PORT || 1234,
-    virkailijaRaamitProxy: process.env.VIRKAILIJA_RAAMIT_PROXY || undefined,
-    backend: process.env.BACKEND_PROXY || "http://localhost:7021/koski",
+    virkailijaRaamitProxy: process.env.VIRKAILIJA_RAAMIT_HOST || undefined,
+    backend: process.env.BACKEND_HOST || "http://localhost:7021/koski",
     parcelOptions: {
       cache: false,
       watch: false,
