@@ -35,7 +35,7 @@ export const LoginApp = (props: LoginAppProps) => {
   }, [login])
 
   return (
-    <Page>
+    <Page id="login-app">
       <Card>
         <CardHeader>
           <T id="login__otsikko" />
@@ -43,11 +43,13 @@ export const LoginApp = (props: LoginAppProps) => {
         <CardBody>
           <Form onSubmit={doLogin} onChange={login.clear}>
             <TextField
+              id="username"
               label={t("login__kayttaja")}
               value={username}
               onChange={setUsername}
             />
             <TextField
+              id="password"
               label={t("login__salasana")}
               value={password}
               onChange={setPassword}

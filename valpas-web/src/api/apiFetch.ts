@@ -48,7 +48,6 @@ const apiFetch = async <T>(
           },
         ],
         status: response.status,
-        data: await response.text(),
       })
     }
   } catch (err) {

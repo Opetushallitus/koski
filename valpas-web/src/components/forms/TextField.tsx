@@ -14,6 +14,7 @@ export type TextFieldProps = {
   disabled?: boolean
   icon?: React.ReactNode
   error?: React.ReactNode
+  id?: string
 }
 
 export const TextField = (props: TextFieldProps) => (
@@ -24,6 +25,7 @@ export const TextField = (props: TextFieldProps) => (
     error={props.error}
   >
     <input
+      id={props.id}
       className={b("input", {
         error: Boolean(props.error),
       })}
