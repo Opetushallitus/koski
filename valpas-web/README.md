@@ -63,7 +63,7 @@ Voit ajaa yksikkötestit komennolla `npm run test:unit`.
 Integraatiotestejä varten pitää Koski-backendin olla pystyssä (oletuksena `localhost:7021`) tai testit pitää käynnistää ajamalla `ValpasFrontSpec.scala`.
 Jos backend on valmiiksi ajossa, voi testit ajaa komennolla `npm run test:integration`.
 
-Integraatiotestien ajon ajaksi käynnistyy porttiin 7357 http-palvelin, joka jakaa käännetyt frontendin tiedostot.
+Integraatiotestien ajon ajaksi käynnistyy porttiin 1234 http-palvelin, joka jakaa käännetyt frontendin tiedostot.
 
 Testit ajetaan headless-selaimessa. Jos haluat selainikkunan näkyviin, aja testit komennolla `npm run test:integration:debug`
 

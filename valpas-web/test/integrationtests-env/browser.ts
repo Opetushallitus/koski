@@ -4,6 +4,7 @@ import {
   until,
   By,
   WebElementCondition,
+  Key,
 } from "selenium-webdriver"
 import chrome from "selenium-webdriver/chrome"
 import "chromedriver"
@@ -41,15 +42,15 @@ const wait = async (condition: WebElementCondition, timeout: number) => {
 }
 
 export const goToLocation = async (path: string) => {
-  await driver.get(`http://localhost:7357${path}`)
+  await driver.get(`http://localhost:1234${path}`)
 }
 
-export const $ = async (selector: string, timeout = 20000) => {
+export const $ = async (selector: string, timeout = 200) => {
   const el = await wait(until.elementLocated(By.css(selector)), timeout)
   return await wait(until.elementIsVisible(el), timeout)
 }
 
-export const textEquals = (selector: string, expected: string) =>
+export const textEventuallyEquals = (selector: string, expected: string) =>
   eventually(async () => {
     const element = await $(selector)
     expect(await element.getText()).toEqual(expected)
@@ -76,4 +77,44 @@ export const eventually = async (
       await sleep(1000)
     }
   }
+}
+
+export const deleteCookies = async () => {
+  await driver.manage().deleteAllCookies()
+}
+
+export const reset = async (initialPath: string) => {
+  await deleteCookies()
+  await goToLocation(initialPath)
+  await driver.wait(until.elementLocated(By.css("article#login-app")), 5000)
+}
+
+export const loginAs = async (
+  initialPath: string,
+  username: string,
+  password: string
+) => {
+  await reset(initialPath)
+  ;(await $("#username")).sendKeys(username)
+  ;(await $("#password")).sendKeys(password, Key.ENTER)
+  await driver.wait(
+    until.elementLocated(By.css("article.page:not(#login-app)")),
+    5000
+  )
+}
+
+export const expectElementVisible = async (selector: string) => {
+  const elements = await driver.findElements(By.css(selector))
+  expect(
+    elements.length > 0,
+    `Element ${selector} expected to exist`
+  ).toBeTruthy()
+}
+
+export const expectElementNotVisible = async (selector: string) => {
+  const elements = await driver.findElements(By.css(selector))
+  expect(
+    elements.length === 0,
+    `Element ${selector} expected NOT to exist`
+  ).toBeTruthy()
 }

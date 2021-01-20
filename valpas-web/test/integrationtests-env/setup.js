@@ -1,11 +1,5 @@
-const server = require("./test-http-server")
-const { join } = require("path")
+const server = require("../../devserver/server")
 
 module.exports = async () => {
-  global.__FRONTEND_SERVER__ = await server({
-    root: join(__dirname, "..", "..", "dist"),
-    fallback: "index.html",
-    credentials: null,
-    port: 7357,
-  })
+  global.__FRONTEND_SERVER__ = await server.start()
 }

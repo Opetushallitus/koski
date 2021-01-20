@@ -6,4 +6,5 @@ module.exports = {
   },
   snapshotResolver: "<rootDir>/test/snapshotResolver.js",
   testEnvironment: "jsdom",
+  setupFilesAfterEnv: ["jest-expect-message"],
 }
