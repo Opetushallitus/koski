@@ -92,7 +92,9 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
       case (query, Luokkahaku(hakusana)) =>
         query.filter({ case t: (OpiskeluoikeusTable, HenkilöTable, _) => t._1.luokka ilike (hakusana + "%") })
       case (query, IdHaku(ids)) => query.filter(_._1.id inSetBind ids)
-      case (query, OppijaOidHaku(oids)) => query.filter { case (_, hlö, slave) => (hlö.oid inSetBind oids) || slave.map(s => s.oid inSetBind oids).getOrElse(false) }
+      case (query, OppijaOidHaku(oids)) => query.filter {
+        case (_, hlö, slave) => (hlö.oid inSetBind oids) || slave.map(s => s.oid inSetBind oids).getOrElse(false)
+      }
       case (query, SuoritusJsonHaku(json)) => query.filter(_._1.data.+>("suoritukset").@>(json))
       case (query, MuuttunutEnnen(aikaleima)) => query.filter(_._1.aikaleima < Timestamp.from(aikaleima))
       case (query, MuuttunutJälkeen(aikaleima)) => query.filter(_._1.aikaleima >= Timestamp.from(aikaleima))
