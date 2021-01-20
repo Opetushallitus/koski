@@ -106,7 +106,6 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val hetu = new Hetu(config.getBoolean("acceptSyntheticHetus"))
   lazy val features = Features(config)
   lazy val indexManager = new IndexManager(List(perustiedotIndexer.index, tiedonsiirtoService.index))
-  lazy val corsAllowedOrigins = config.getString("corsAllowedOrigins")
 
   def init(): Future[Any] = {
     AuditLog.startHeartbeat()
