@@ -7,7 +7,7 @@ import org.scalatest.Tag
 class ValpasFrontSpec extends KoskiCommandLineSpec {
   "Valpas front specs" taggedAs(ValpasFrontTag) in {
     SharedJetty.start
-    runTestCommand("valpas-front", Seq("scripts/valpas-front-test.sh", SharedJetty.baseUrl + "/api/valpas"))
+    runTestCommand("valpas-front", Seq("scripts/valpas-front-test.sh", SharedJetty.baseUrl))
   }
 }
 

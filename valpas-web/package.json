@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "start": "node devserver",
-    "start:raamit": "VIRKAILIJA_RAAMIT_PROXY=\"https://virkailija.untuvaopintopolku.fi/\" node devserver",
+    "start:raamit": "VIRKAILIJA_RAAMIT_HOST=\"https://virkailija.untuvaopintopolku.fi/\" node devserver",
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "jest src",
     "test:integration": "jest --config jest.integrationtests.config.js test/integrationtests",

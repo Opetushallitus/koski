@@ -101,6 +101,7 @@ export const loginAs = async (
     until.elementLocated(By.css("article.page:not(#login-app)")),
     5000
   )
+  await driver.wait(until.elementLocated(By.css("article.page")), 5000)
 }
 
 export const expectElementVisible = async (selector: string) => {
