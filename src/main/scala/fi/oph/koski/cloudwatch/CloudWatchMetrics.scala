@@ -22,6 +22,8 @@ object CloudWatchMetrics extends Logging {
   }
 
   private def putRaportointikantaLoadtimeToAWS(seconds: Double) = {
+    val namespace = "Raportointikanta"
+
     val dimension = Dimension.builder()
       .name("LOAD_TIMES")
       .value("TIME")
@@ -34,6 +36,6 @@ object CloudWatchMetrics extends Logging {
       .dimensions(dimension)
       .build()
 
-    client.putMetricData(PutMetricDataRequest.builder().metricData(metric).build())
+    client.putMetricData(PutMetricDataRequest.builder().metricData(metric).namespace(namespace).build())
   }
 }
