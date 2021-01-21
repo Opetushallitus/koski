@@ -1,3 +1,4 @@
+require("dotenv").config()
 const server = require("../../devserver/server")
 
 module.exports = async () => {

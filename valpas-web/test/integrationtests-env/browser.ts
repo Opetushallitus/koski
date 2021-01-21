@@ -42,7 +42,9 @@ const wait = async (condition: WebElementCondition, timeout: number) => {
 }
 
 export const goToLocation = async (path: string) => {
-  await driver.get(`http://localhost:1234${path}`)
+  await driver.get(
+    `http://localhost:1234${process.env.PUBLIC_URL || ""}${path}`
+  )
 }
 
 export const $ = async (selector: string, timeout = 200) => {
