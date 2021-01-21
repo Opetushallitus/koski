@@ -124,6 +124,9 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
 
     if (application.features.valpas) {
       mount("/valpas/api", new ValpasApiServlet)
+      if (!SSOConfig(application.config).isCasSsoUsed) {
+        mount("/valpas/login", new LocalLoginServlet)
+      }
     }
 
     Futures.await(initTasks) // await for all initialization tasks to complete

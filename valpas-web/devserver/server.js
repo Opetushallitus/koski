@@ -1,13 +1,16 @@
+require("dotenv").config()
 const Bundler = require("parcel-bundler")
 const express = require("express")
 const { createProxyMiddleware } = require("http-proxy-middleware")
 const path = require("path")
-const { over } = require("ramda")
+
+const proxyPaths = ["/api", "/login"]
 
 async function startServer({
   port,
   virkailijaRaamitProxy,
   backend,
+  publicUrl,
   parcelOptions,
 }) {
   const app = express()
@@ -24,22 +27,20 @@ async function startServer({
     app.get(/\/virkailija-raamit\/.*/, (_req, res) => res.send(""))
   }
 
-  app.use(
-    createProxyMiddleware("/api", {
-      target: `${backend}/valpas/`,
-      changeOrigin: true,
-    })
-  )
-
-  app.use(
-    createProxyMiddleware("/login", {
-      target: `${backend}/user/`,
-      changeOrigin: true,
-    })
-  )
+  proxyPaths.forEach((proxyPath) => {
+    app.use(
+      createProxyMiddleware(`${publicUrl}${proxyPath}`, {
+        target: backend,
+        changeOrigin: true,
+      })
+    )
+  })
 
   const valpasEntryPoint = path.join(__dirname, "../src/index.html")
-  const bundler = new Bundler(valpasEntryPoint, parcelOptions)
+  const bundler = new Bundler(valpasEntryPoint, {
+    ...parcelOptions,
+    publicUrl: publicUrl || "./",
+  })
   app.use(bundler.middleware())
 
   const bundled = new Promise((resolve, reject) => {
@@ -49,7 +50,8 @@ async function startServer({
 
   const serverStarted = new Promise((resolve) => {
     server = app.listen(Number(port), () => {
-      console.log(`\nServer running at http://localhost:${port}`)
+      const host = path.join("localhost", publicUrl)
+      console.log(`\nServer running at http://${host}:${port}`)
       resolve()
     })
   })
@@ -68,6 +70,7 @@ function start(overrides) {
     port: process.env.PORT || 1234,
     virkailijaRaamitProxy: process.env.VIRKAILIJA_RAAMIT_HOST || undefined,
     backend: process.env.BACKEND_HOST || "http://localhost:7021/koski",
+    publicUrl: process.env.PUBLIC_URL || "",
     parcelOptions: {
       cache: false,
       watch: false,
