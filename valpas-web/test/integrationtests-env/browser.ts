@@ -8,6 +8,7 @@ import {
 } from "selenium-webdriver"
 import chrome from "selenium-webdriver/chrome"
 import "chromedriver"
+import { expectCleanConsoleLogs } from "./fail-on-console"
 
 declare namespace global {
   let __driver__: undefined | (() => Promise<WebDriver>)
@@ -21,6 +22,10 @@ beforeAll(async () => {
 }, 20000)
 
 afterAll(() => driver?.quit())
+
+afterEach(async () => {
+  await expectCleanConsoleLogs(driver)
+})
 
 const buildBrowserStackDriver = async (): Promise<WebDriver | undefined> =>
   // Browserstack webdriver is provided by jest-environment-browserstack
