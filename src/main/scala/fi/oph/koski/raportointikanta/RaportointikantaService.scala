@@ -65,16 +65,24 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
         onNext = doNothing,
         onError = (_) => onEnd(),
         onCompleted = () => {
-          loadRestAndSwap()
-          KoskiEventBridgeClient.putEvents(
-            EventBridgeEvent(raportointikantaGeneration, Map("event" -> "start-upload", "uploadTarget" -> "lampi")),
-            EventBridgeEvent(raportointikantaGeneration, Map("event" -> "start-upload", "uploadTarget" -> "csc"))
-          )
-          CloudWatchMetrics.putRaportointikantaLoadtime(
-            raportointiDatabase.status.startedTime.get,
-            raportointiDatabase.status.completionTime.get
-          )
-          onEnd()
+          //Without try-catch, in case of an exception the process just silently halts, this is a feature of java.util.concurrent.Executors
+          try {
+            loadRestAndSwap()
+            KoskiEventBridgeClient.putEvents(
+              EventBridgeEvent(raportointikantaGeneration, Map("event" -> "start-upload", "uploadTarget" -> "lampi")),
+              EventBridgeEvent(raportointikantaGeneration, Map("event" -> "start-upload", "uploadTarget" -> "csc"))
+            )
+            CloudWatchMetrics.putRaportointikantaLoadtime(
+              raportointiDatabase.status.startedTime.get,
+              raportointiDatabase.status.completionTime.get
+            )
+            onEnd()
+          } catch {
+            case e: Throwable => {
+              logger.error(e)(e.toString)
+              sys.exit(1)
+            }
+          }
         }
       )
   }
