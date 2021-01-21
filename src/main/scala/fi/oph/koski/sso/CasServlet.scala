@@ -23,38 +23,42 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
   protected def onFailure: String = params.get("onFailure").getOrElse("/virhesivu")
 
   // Return url for cas login
-  get("/*") {
-    val kansalainen = requestPath match {
-      case "/virkailija" => false;
-      case _ => true;
-    };
-
+  get("/oppija") {
     params.get("ticket") match {
       case Some(ticket) =>
         try {
-          if (kansalainen) {
-            val hetu = validateServiceTicket(ticket, true)
-            println(hetu)
-            println(params)
-            println(requestPath)
-            val oppija = application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu).get
-            val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
-            val authUser = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true, huollettavat = Some(huollettavat))
-            setUser(Right(localLogin(authUser, Some(langFromCookie.getOrElse(langFromDomain)))))
-            redirect(onSuccess)
-          } else {
-            val username = validateServiceTicket(ticket, false)
-            DirectoryClientLogin.findUser(application.directoryClient, request, username) match {
-              case Some(user) =>
-                setUser(Right(user.copy(serviceTicket = Some(ticket))))
-                logger.info(s"Started session ${session.id} for ticket $ticket")
-                koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
-                KoskiUserLanguage.setLanguageCookie(KoskiUserLanguage.getLanguageFromLDAP(user, application.directoryClient), response)
-                redirectAfterLogin
-              case None =>
-                logger.warn(s"User $username not found even though user logged in with valid ticket")
-                redirectToVirkailijaLogout
-            }
+          val hetu = validateKansalainenServiceTicket(ticket)
+          val oppija = application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu).get
+          val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
+          val authUser = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true, huollettavat = Some(huollettavat))
+          setUser(Right(localLogin(authUser, Some(langFromCookie.getOrElse(langFromDomain)))))
+          redirect(onSuccess)
+        } catch {
+          case e: Exception =>
+            logger.warn(e)(s"Service ticket validation failed, ${e.toString}")
+            haltWithStatus(KoskiErrorCategory.internalError("Sisäänkirjautuminen Opintopolkuun epäonnistui."))
+        }
+      case None =>
+        // Seems to happen with Haka login. Redirect to login seems to cause another redirect to here with the required "ticket" parameter present.
+        redirectAfterLogin
+    }
+  }
+
+  get("/virkailija") {
+    params.get("ticket") match {
+      case Some(ticket) =>
+        try {
+          val username = validateVirkailijaServiceTicket(ticket)
+          DirectoryClientLogin.findUser(application.directoryClient, request, username) match {
+            case Some(user) =>
+              setUser(Right(user.copy(serviceTicket = Some(ticket))))
+              logger.info(s"Started session ${session.id} for ticket $ticket")
+              koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
+              KoskiUserLanguage.setLanguageCookie(KoskiUserLanguage.getLanguageFromLDAP(user, application.directoryClient), response)
+              redirectAfterLogin
+            case None =>
+              logger.warn(s"User $username not found even though user logged in with valid ticket")
+              redirectToVirkailijaLogout
           }
         } catch {
           case e: Exception =>
@@ -83,36 +87,38 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
     }
   }
 
-  def validateServiceTicket(ticket: String, kansalainen: Boolean): Username = {
-    if (kansalainen) {
-      val attrs: Either[Throwable, OppijaAttributes] = casOppijaClient.validateServiceTicket(casOppijaServiceUrl)(ticket, casOppijaClient.decodeOppijaAttributes).handleWith {
-        case NonFatal(t) => Task.fail(new CasClientException(s"Failed to validate service ticket $t"))
-      }.unsafePerformSyncAttemptFor(10000).toEither
-      logger.debug(s"attrs response: $attrs")
-      println(ticket)
-      println(attrs)
-      attrs match {
-        case Right(attrs) => {
-          val hetu = attrs("nationalIdentificationNumber")
-          hetu
-        }
-        case Left(t) => {
-          throw new CasClientException(s"Unable to process CAS Oppija login request, hetu cannot be resolved from ticket $ticket")
-        }
+  def validateKansalainenServiceTicket(ticket: String): Username = {
+    val url = params.get("onSuccess") match {
+      case Some(onSuccessRedirectUrl) => casOppijaServiceUrl + "?onSuccess=" + onSuccessRedirectUrl
+      case None => casOppijaServiceUrl
+    }
+
+    val attrs: Either[Throwable, OppijaAttributes] = casOppijaClient.validateServiceTicket(url)(ticket, casOppijaClient.decodeOppijaAttributes).handleWith {
+      case NonFatal(t) => Task.fail(new CasClientException(s"Failed to validate service ticket $t"))
+    }.unsafePerformSyncAttemptFor(10000).toEither
+    logger.debug(s"attrs response: $attrs")
+    attrs match {
+      case Right(attrs) => {
+        val hetu = attrs("nationalIdentificationNumber")
+        hetu
+      }
+      case Left(t) => {
+        throw new CasClientException(s"Unable to process CAS Oppija login request, hetu cannot be resolved from ticket $ticket")
       }
     }
-    else {
-      val attrs: Either[Throwable, Username] = casVirkailijaClient.validateServiceTicket(casVirkailijaServiceUrl)(ticket, casVirkailijaClient.decodeVirkailijaUsername).handleWith {
-        case NonFatal(t) => Task.fail(new CasClientException(s"Failed to validate service ticket $t"))
-      }.unsafePerformSyncAttemptFor(10000).toEither
-      logger.debug(s"attrs response: $attrs")
-      attrs match {
-        case Right(attrs) => {
-          attrs
-        }
-        case Left(t) => {
-          throw new CasClientException(s"Unable to process CAS Virkailija login request, username cannot be resolved from ticket $ticket")
-        }
+  }
+
+  def validateVirkailijaServiceTicket(ticket: String): Username = {
+    val attrs: Either[Throwable, Username] = casVirkailijaClient.validateServiceTicket(casVirkailijaServiceUrl)(ticket, casVirkailijaClient.decodeVirkailijaUsername).handleWith {
+      case NonFatal(t) => Task.fail(new CasClientException(s"Failed to validate service ticket $t"))
+    }.unsafePerformSyncAttemptFor(10000).toEither
+    logger.debug(s"attrs response: $attrs")
+    attrs match {
+      case Right(attrs) => {
+        attrs
+      }
+      case Left(t) => {
+        throw new CasClientException(s"Unable to process CAS Virkailija login request, username cannot be resolved from ticket $ticket")
       }
     }
   }

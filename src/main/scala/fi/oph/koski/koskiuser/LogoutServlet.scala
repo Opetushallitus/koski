@@ -23,20 +23,12 @@ class LogoutServlet(implicit val application: KoskiApplication) extends Virkaili
       redirectToVirkailijaLogout
     } else {
       params.get("target") match {
-        case Some(target) => {
-          println(target)
-          redirect(target)
-          // JATKETAAN TÄSTÄ: Redirectaa oppija-logouttiin mutta siten, että se palaa sieltä tonne targettiin?
-          //luvanluovutusLogout(target)
+        case Some(target) if target != "/" => {
+          redirectToOppijaLogout(target)
         }
-        case None => redirectToOppijaLogout
+        case _ => redirectToOppijaLogout(koskiRoot)
       }
     }
-  }
-
-  private def luvanluovutusLogout(target: String) = {
-    val url = LogoutServerConfiguration.logoutUrl(application, "fi") + encode(target)
-    redirect(url)
   }
 
   private def encode(param: String) = URLEncoder.encode(param, "UTF-8")

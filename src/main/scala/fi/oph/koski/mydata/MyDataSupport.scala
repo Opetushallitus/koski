@@ -25,7 +25,7 @@ trait MyDataSupport extends ScalatraServlet with MyDataConfig {
 
   def getCasLoginURL(target: String = getCurrentURL, lang: String) = {
     conf.getString(s"login.cas.$lang") +
-      conf.getString("login.cas.targetparam") + getLoginURL(target, encode = true) +
+      conf.getString("login.cas.targetparam") + getLoginURL(target, encode = false) +
       "&valtuudet=false" + getKorhopankkiRedirectURLParameter(target)
   }
 
