@@ -12,7 +12,7 @@ object CloudWatchMetrics extends Logging {
   private lazy val client = CloudWatchClient.builder().build()
 
   def putRaportointikantaLoadtime(start: Timestamp, completed: Timestamp) = {
-    val timeInSeconds = (start.getTime - completed.getTime) / 1000.0
+    val timeInSeconds = (completed.getTime - start.getTime) / 1000.0
 
     if (Environment.isLocalDevelopmentEnvironment) {
       logger.info(s"Mocking cloudwatch metric: raportointikanta loading took $timeInSeconds seconds")
