@@ -22,8 +22,10 @@ case class ElasticSearch(config: Config) extends Logging {
 }
 
 object ElasticSearch {
+  private val emptyFilter = Map("match_all" -> Map.empty)
+
   def allFilter(queries: List[Map[String, Any]]): Map[String, AnyRef] = queries match {
-    case Nil => Map("match_all" -> Map.empty)
+    case Nil => emptyFilter
     case _ => Map(
       "bool" -> Map(
         "must" -> queries
@@ -32,10 +34,19 @@ object ElasticSearch {
   }
 
   def anyFilter(queries: List[Map[String, Any]]): Map[String, AnyRef] = queries match {
-    case Nil => Map("match_all" -> Map.empty)
+    case Nil => emptyFilter
     case _ => Map(
       "bool" -> Map(
         "should" -> queries
+      )
+    )
+  }
+
+  def noneFilter(queries: List[Map[String, Any]]): Map[String, AnyRef] = queries match {
+    case Nil => emptyFilter
+    case _ => Map(
+      "bool" -> Map(
+        "must_not" -> queries
       )
     )
   }

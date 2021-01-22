@@ -1,5 +1,6 @@
 package fi.oph.koski.perustiedot
 
+import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.LegacyJsonSerialization
 
@@ -15,12 +16,10 @@ case class VarhaiskasvatusToimipistePerustiedot(indexer: OpiskeluoikeudenPerusti
   private def varhaiskasvatustoimipisteetQuery(koulutustoimijaOidit: Set[String]) = {
     LegacyJsonSerialization.toJValue(Map(
       "size" -> 0,
-      "query" -> Map(
-        "bool" -> Map(
-          "must" -> List(
-            Map("term" -> Map("tyyppi.koodiarvo" -> "esiopetus")),
-            Map("terms" -> Map("koulutustoimija.oid" -> koulutustoimijaOidit))
-          )
+      "query" -> ElasticSearch.allFilter(
+        List(
+          Map("term" -> Map("tyyppi.koodiarvo" -> "esiopetus")),
+          Map("terms" -> Map("koulutustoimija.oid" -> koulutustoimijaOidit))
         )
       ),
       "aggs" -> Map(
