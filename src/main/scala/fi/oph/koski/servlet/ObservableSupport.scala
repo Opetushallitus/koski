@@ -2,9 +2,10 @@ package fi.oph.koski.servlet
 
 import java.io.EOFException
 
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSession
+import org.eclipse.jetty.server.HttpConnection
 import rx.lang.scala.Observable
 
 import scala.reflect.runtime.universe.TypeTag
@@ -18,7 +19,8 @@ trait ObservableSupport extends ApiServlet {
     case e: Exception if isEOF(e) =>
       // Client abort, ok
     case e: Exception =>
-      renderInternalError(logger.error(e)("Error occurred while streaming"))
+      logger.error(s"Error occurred while streaming: ${e.toString}")
+      HttpConnection.getCurrentConnection.abort(e)
   }
 
   def streamResponse[T : TypeTag](x: Either[HttpStatus, Observable[T]], user: KoskiSession): Unit = x match {
@@ -29,8 +31,6 @@ trait ObservableSupport extends ApiServlet {
   }
 
   private def isEOF(e: Exception) = e.isInstanceOf[EOFException] || e.getCause.isInstanceOf[EOFException]
-
-  private def renderInternalError(log: Unit) = renderStatus(KoskiErrorCategory.internalError())
 
   private def writeJsonStreamSynchronously[T : TypeTag](in: Observable[T], user: KoskiSession): Unit = {
     contentType = "application/json;charset=utf-8"
