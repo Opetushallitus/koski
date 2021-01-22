@@ -72,15 +72,21 @@ case class KoskiDatabaseConfig(c: Config, readOnly: Boolean = false, raportointi
     .withValue("readOnly", fromAnyRef(readOnly))
     .withValue("numThreads", fromAnyRef(Pools.dbThreads))
 
-  private val config = configFromFile.withFallback(otherConfig)
+  private val config = {
+    if (useSecretsManager) {
+      configFromFile
+        .withValue("driverClassName", fromAnyRef("com.amazonaws.secretsmanager.sql.AWSSecretsManagerPostgreSQLDriver"))
+        .withValue("user", fromAnyRef(secretId))
+        .withValue("url", fromAnyRef(s"jdbc-secretsmanager:postgresql://$host:$port/$dbname"))
+        .withFallback(otherConfig)
+    } else {
+      configFromFile.withFallback(otherConfig)
+    }
+  }
 
   def isLocal: Boolean = config.getString("host") == "localhost" && !useSecretsManager
   def isRemote: Boolean = !isLocal
-  def toSlickDatabase = if (useSecretsManager) {
-    Database.forDriver(driver = new com.amazonaws.secretsmanager.sql.AWSSecretsManagerPostgreSQLDriver, url = s"jdbc-secretsmanager:postgresql://$host:$port/$dbname", user = secretId)
-  } else {
-    Database.forConfig("", config)
-  }
+  def toSlickDatabase = Database.forConfig("", config)
 }
 
 
