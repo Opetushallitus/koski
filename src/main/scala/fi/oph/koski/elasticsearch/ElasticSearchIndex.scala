@@ -13,7 +13,6 @@ import org.json4s.jackson.JsonMethods
 class ElasticSearchIndex(
   val name: String,
   private val elastic: ElasticSearch,
-  private val legacyName: String,
   private val mapping: Map[String, Any],
   private val mappingVersion: Int,
   private val settings: Map[String, Any],
@@ -50,14 +49,7 @@ class ElasticSearchIndex(
     }
   }
 
-  private def versionedIndexName(version: Int): String = {
-    if (version == 1) {
-      // TODO: Poista erillinen käsittely tälle tapaukselle kun indeksit on reindeksoitu uusille nimille
-      legacyName
-    } else {
-      s"$name-v$version"
-    }
-  }
+  private def versionedIndexName(version: Int): String = s"$name-v$version"
 
   private def migrateAlias(aliasName: String, toVersion: Int, fromVersion: Option[Int] = None): String = {
     val removeOp = fromVersion match {
