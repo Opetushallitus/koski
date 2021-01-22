@@ -48,7 +48,7 @@ npm install
 
 ## Backend
 
-Valpas käyttää Koskea backendinä. Valpas-toiminnallisuus on toistaiseksi feature flagin `features.valpas` takana.
+Valpas käyttää Koskea backendinä.
 
 ## Testit
 

@@ -16,7 +16,7 @@ import fi.oph.koski.validation.ValidationAndResolvingContext
   */
 class EditorServlet(implicit val application: KoskiApplication) extends EditorApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {
   private val preferencesService = PreferencesService(application.masterDatabase.db)
-  private def localization = LocalizedHtml.get(koskiSession, application.localizationRepository)
+  private def localization = LocalizedHtml.get(koskiSession, application.koskiLocalizationRepository)
   get("/:oid") {
     renderEither[EditorModel]((params.get("opiskeluoikeus"), getOptionalIntegerParam("versionumero")) match {
       case (Some(opiskeluoikeusOid), Some(versionumero)) =>
@@ -46,7 +46,7 @@ class EditorServlet(implicit val application: KoskiApplication) extends EditorAp
   }
 
   get("/prototype/:key") {
-    val c = ModelBuilderContext(EditorSchema.deserializationContext, editable = true, invalidatable = true)(koskiSession, application.koodistoViitePalvelu, application.localizationRepository)
+    val c = ModelBuilderContext(EditorSchema.deserializationContext, editable = true, invalidatable = true)(koskiSession, application.koodistoViitePalvelu, application.koskiLocalizationRepository)
     val className = params("key")
     try {
       renderObject[EditorModel](EditorModelBuilder.buildPrototype(className)(c))

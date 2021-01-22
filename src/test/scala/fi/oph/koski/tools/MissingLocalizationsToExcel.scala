@@ -1,19 +1,20 @@
 package fi.oph.koski.tools
 
 import fi.oph.koski.cache.GlobalCacheManager
-import fi.oph.koski.localization.{MockLocalizationRepository, ReadOnlyRemoteLocalizationRepository}
+import fi.oph.koski.localization.{LocalizationConfig, MockLocalizationRepository, ReadOnlyRemoteLocalizationRepository}
 import fi.oph.koski.raportit.{Column, DataSheet, ExcelWriter, WorkbookSettings}
 import fi.oph.koski.schema.LocalizedString
-import java.io.{FileOutputStream}
+import java.io.FileOutputStream
 
 
 object MissingLocalizationsToExcel extends App {
 
   implicit lazy val cacheManager = GlobalCacheManager
 
-  val root = "https://virkailija.opintopolku.fi"
-  val remoteLocalizations = new ReadOnlyRemoteLocalizationRepository(root).localizations
-  val localLocalizations: Map[String, LocalizedString] = new MockLocalizationRepository().localizations
+  val localizationCategory = sys.env.getOrElse("LOCALIZATION_CATEGORY", "koski")
+  val root = sys.env.getOrElse("VIRKAILIJA_ROOT", throw new RuntimeException("Environment variable VIRKAILIJA_ROOT missing"))
+  val remoteLocalizations = new ReadOnlyRemoteLocalizationRepository(root, LocalizationConfig(localizationCategory)).localizations
+  val localLocalizations: Map[String, LocalizedString] = new MockLocalizationRepository(LocalizationConfig(localizationCategory)).localizations
 
   val columnSettings = List(
     "key" -> Column("Avain"),
@@ -26,7 +27,7 @@ object MissingLocalizationsToExcel extends App {
     DataSheet(lang, rows, columnSettings)
   }
 
-  val output = new FileOutputStream("puuttuvat-koski-kaannokset.xlsx")
+  val output = new FileOutputStream(s"puuttuvat-${localizationCategory}-kaannokset.xlsx")
   val workbookSettings = WorkbookSettings("Puuttuvat käännökset", None)
   val sheets = List(missingKeysForLang("sv"), missingKeysForLang("en"))
 

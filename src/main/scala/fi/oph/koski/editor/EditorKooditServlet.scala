@@ -15,7 +15,7 @@ import org.json4s.jackson.Serialization
   */
 class EditorKooditServlet(implicit val application: KoskiApplication) extends EditorApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {
 
-  private def localization = LocalizedHtml.get(koskiSession, application.localizationRepository)
+  private def localization = LocalizedHtml.get(koskiSession, application.koskiLocalizationRepository)
 
   get[List[EnumValue]]("/:koodistoUri") {
     toKoodistoEnumValues(getKooditFromRequestParams())

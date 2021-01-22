@@ -34,10 +34,9 @@ import fi.oph.koski.sure.SureServlet
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
 import fi.oph.koski.tutkinto.TutkinnonPerusteetServlet
 import fi.oph.koski.util.Futures
-import fi.oph.koski.valpas.ValpasApiServlet
+import fi.oph.koski.valpas.{ValpasApiServlet, ValpasLocalizationServlet}
 import fi.oph.koski.valvira.ValviraServlet
 import fi.oph.koski.ytr.{YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
-
 import javax.servlet.ServletContext
 import org.scalatra._
 
@@ -123,6 +122,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/cache", new CacheServlet)
 
     if (application.features.valpas) {
+      mount("/valpas/localization", new ValpasLocalizationServlet)
       mount("/valpas/api", new ValpasApiServlet)
       if (!SSOConfig(application.config).isCasSsoUsed) {
         mount("/valpas/login", new LocalLoginServlet)

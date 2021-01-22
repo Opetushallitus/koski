@@ -10,7 +10,7 @@ import scala.util.{Failure, Success, Try}
 
 class LocalizationServlet(implicit val application: KoskiApplication) extends ApiServlet with AuthenticationSupport with NoCache {
   get("/") {
-    application.localizationRepository.localizations
+    application.koskiLocalizationRepository.localizations
   }
 
   put("/") {
@@ -22,7 +22,7 @@ class LocalizationServlet(implicit val application: KoskiApplication) extends Ap
     withJsonBody { body =>
       Try(JsonSerializer.extract[List[LocalizationRequest]](body)) match {
         case Success(req) =>
-          application.localizationRepository.createOrUpdate(req.map(_.toUpdateLocalization))
+          application.koskiLocalizationRepository.createOrUpdate(req.map(_.toUpdateLocalization))
           logger.info("Lokalisoitujen tekstien muutos: " + JsonSerializer.writeWithRoot(req))
         case Failure(e) =>
           haltWithStatus(
@@ -38,7 +38,5 @@ case class LocalizationRequest(
   key: String,
   value: String
 ) {
-  def toUpdateLocalization = UpdateLocalization(locale, key, value)
+  def toUpdateLocalization = UpdateLocalization(locale, key, value, "koski")
 }
-
-
