@@ -24,8 +24,6 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
 
   // Return url for cas login
   get("/oppija") {
-    println(request.headers)
-    println(request.parameters)
     val hetu = request.header("security") match {
       case Some(sec) if sec == "mock" && application.config.getString("login.security") == "mock" => {
         request.header("hetu").get
