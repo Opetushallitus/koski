@@ -121,11 +121,12 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
       }
     }
 
-    val parallels: immutable.Seq[Future[Any]] = List(
-      Future(perustiedotIndexer.init()),
-      Future(tiedonsiirtoService.init()),
-      Future(koskiLocalizationRepository.init)
-    )
+    val parallels: immutable.Seq[Future[Any]] =
+      Future(perustiedotIndexer.init()) ::
+      Future(tiedonsiirtoService.init()) ::
+      Future(koskiLocalizationRepository.init) ::
+      (if (features.valpas) List(Future(valpasLocalizationRepository.init)) else Nil)
+
     // Init scheduled tasks only after ES indexes have been initialized:
     Future.sequence(parallels).map(_ => Future(scheduledTasks.init))
   }
