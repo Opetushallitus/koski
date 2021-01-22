@@ -102,6 +102,11 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val prometheusRepository = PrometheusRepository(config)
   lazy val koskiPulssi = KoskiPulssi(this)
   lazy val koskiLocalizationRepository = LocalizationRepository(config, LocalizationConfig("koski"))
+  lazy val valpasLocalizationRepository = if (features.valpas) {
+    LocalizationRepository(config, LocalizationConfig("valpas"))
+  } else {
+    null // Vaikka kaikki valpasLocalizationRepository:n käyttöpaikat pitäisi olla feature flagätty, asetetaan kuitenkin varmuuden vuoksi null:ksi tässä, niin ei mahdolliset unohdukset pääse tuotantoon.
+  }
   lazy val oidGenerator = OidGenerator(config)
   lazy val hetu = new Hetu(config.getBoolean("acceptSyntheticHetus"))
   lazy val features = Features(config)

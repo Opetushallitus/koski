@@ -10,5 +10,6 @@ object LocalizationConfig {
   def apply(category: String): LocalizationConfig =
     category match {
       case "koski" => LocalizationConfig("koski", "/localization/koski-default-texts.json", "/mockdata/lokalisointi/koski.json")
+      case "valpas" => LocalizationConfig("valpas", "/localization/valpas-default-texts.json", "/mockdata/lokalisointi/valpas.json")
     }
 }
