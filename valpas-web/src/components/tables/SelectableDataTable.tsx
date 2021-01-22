@@ -1,5 +1,5 @@
-import { update } from "ramda"
 import React, { useState } from "react"
+import { update } from "../../utils/arrays"
 import { Checkbox } from "../forms/Checkbox"
 import { DataTable, DataTableProps as DataTableProps } from "./DataTable"
 
@@ -17,25 +17,21 @@ export const SelectableDataTable = ({
   const dataWithCheckboxes = data.map((datum) => ({
     ...datum,
     values: datum.values[0]
-      ? update(
-          0,
-          {
-            ...datum.values[0],
-            icon: (
-              <Checkbox
-                value={selectedKeys.includes(datum.key)}
-                onChange={(selected) => {
-                  const newKeys = selected
-                    ? [...selectedKeys, datum.key]
-                    : selectedKeys.filter((key) => key !== datum.key)
-                  setSelectedKeys(newKeys)
-                  onChange(newKeys)
-                }}
-              />
-            ),
-          },
-          datum.values
-        )
+      ? update(datum.values, 0, {
+          ...datum.values[0],
+          icon: (
+            <Checkbox
+              value={selectedKeys.includes(datum.key)}
+              onChange={(selected) => {
+                const newKeys = selected
+                  ? [...selectedKeys, datum.key]
+                  : selectedKeys.filter((key) => key !== datum.key)
+                setSelectedKeys(newKeys)
+                onChange(newKeys)
+              }}
+            />
+          ),
+        })
       : datum.values,
   }))
   return <DataTable data={dataWithCheckboxes} {...rest} />

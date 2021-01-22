@@ -1,8 +1,12 @@
 import bem from "bem-ts"
-import { sort, uniq, update, __ } from "ramda"
+import { eqString } from "fp-ts/lib/Eq"
+import { flip, pipe } from "fp-ts/lib/function"
+import * as O from "fp-ts/lib/Option"
+import * as A from "fp-ts/lib/Array"
+import * as Ord from "fp-ts/lib/Ord"
 import React, { useMemo, useState } from "react"
+// import { update } from "../../utils/arrays"
 import { toFilterableString } from "../../utils/conversions"
-import { ascending, compareStrings, descending } from "../../utils/sort"
 import { ArrowDropDownIcon, ArrowDropUpIcon } from "../icons/Icon"
 import {
   DataFilter,
@@ -56,27 +60,22 @@ export const DataTable = (props: DataTableProps) => {
   )
 
   const sortedData = useMemo(() => {
-    const direction = sortAscending ? ascending : descending
-    const compare = direction(compareStrings)
-    return sort(
-      (a, b) =>
-        compare(
-          a.values[sortColumnIndex]?.value,
-          b.values[sortColumnIndex]?.value
-        ),
-      filteredData
-    )
+    const compare = compareDatum(sortColumnIndex)
+    const ordDatum = Ord.fromCompare(sortAscending ? compare : flip(compare))
+    return A.sortBy([ordDatum])(filteredData)
   }, [sortColumnIndex, sortAscending, filteredData])
 
   const optionsForFilters = useMemo(
     () =>
       props.columns.map((col, index) =>
         dataFilterUsesValueList(col.filter)
-          ? uniq(
-              props.data.map((datum) =>
-                toFilterableString(datum.values[index]?.value)
-              )
-            ).sort()
+          ? pipe(
+              props.data,
+              A.map(selectValue(index)),
+              A.map(toFilterableString),
+              A.uniq(eqString),
+              A.sortBy([Ord.ordString])
+            )
           : []
       ),
     [props.data]
@@ -110,7 +109,11 @@ export const DataTable = (props: DataTableProps) => {
                     type={col.filter}
                     values={optionsForFilters[index] || []}
                     onChange={(filter) =>
-                      setFilters(update(index, filter, filters))
+                      pipe(
+                        filters,
+                        A.updateAt(index, filter),
+                        O.map(setFilters)
+                      )
                     }
                   />
                 </div>
@@ -145,3 +148,18 @@ const SortIndicator = ({ visible, ascending }: SortIndicatorProps) => (
       (ascending ? <ArrowDropDownIcon inline /> : <ArrowDropUpIcon inline />)}
   </span>
 )
+
+const compareDatum = (index: number) => (a: Datum, b: Datum) => {
+  const valueOf = selectValue(index)
+  const av = valueOf(a)
+  const bv = valueOf(b)
+  if (typeof av === "string" && typeof bv === "string") {
+    return Ord.ordString.compare(av, bv)
+  } else if (typeof av === "number" && typeof bv === "number") {
+    return Ord.ordNumber.compare(av, bv)
+  }
+  return 0
+}
+
+const selectValue = (index: number) => (datum: Datum) =>
+  datum.values[index]?.value
