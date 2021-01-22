@@ -1,5 +1,7 @@
 package fi.oph.koski.sso
 
+import java.net.URLEncoder.encode
+import java.nio.charset.StandardCharsets
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{Http, KoskiErrorCategory, OpintopolkuCallerId}
 import fi.oph.koski.koskiuser.{AuthenticationSupport, AuthenticationUser, DirectoryClientLogin, KoskiUserLanguage}
@@ -7,7 +9,11 @@ import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.servlet.{NoCache, VirkailijaHtmlServlet}
 import cas.{CasClient, CasClientException}
 import cas.CasClient.{OppijaAttributes, Username}
+import fi.oph.koski.henkilo.OppijaHenkilö
+import fi.oph.koski.json.JsonSerializer.writeWithRoot
 import scalaz.concurrent.Task
+import fi.oph.koski.schema.{Nimitiedot, UusiHenkilö}
+import org.scalatra.{Cookie, CookieOptions}
 
 import scala.util.control.NonFatal
 
@@ -21,6 +27,7 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
 
   protected def onSuccess: String = params.get("onSuccess").getOrElse("/omattiedot")
   protected def onFailure: String = params.get("onFailure").getOrElse("/virhesivu")
+  protected def onUserNotFound: String = params.get("onUserNotFound").getOrElse("/eisuorituksia")
 
   // Return url for cas login
   get("/oppija") {
@@ -47,12 +54,12 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
     }
 
     if (hetu.length > 0) {
-      val oppija = application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu).get
-      val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
-      val authUser = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true, huollettavat = Some(huollettavat))
-      setUser(Right(localLogin(authUser, Some(langFromCookie.getOrElse(langFromDomain)))))
-      redirect(onSuccess)
+      findOrCreate(hetu) match {
+        case Some(oppija) => createSession(oppija, hetu)
+        case _ => eiSuorituksia
+      }
     }
+    else redirect(onFailure)
   }
 
   get("/virkailija") {
@@ -81,6 +88,51 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
         redirectAfterLogin
     }
   }
+
+  private def findOrCreate(validHetu: String) = {
+    application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(validHetu, nimitiedot)
+      .orElse(nimitiedot.map(toUusiHenkilö(validHetu, _)).map(application.henkilöRepository.findOrCreate(_).left.map(s => new RuntimeException(s.errorString.mkString)).toTry.get))
+  }
+
+  private def toUusiHenkilö(validHetu: String, nimitiedot: Nimitiedot) = UusiHenkilö(
+    hetu = validHetu,
+    etunimet = nimitiedot.etunimet,
+    kutsumanimi = Some(nimitiedot.kutsumanimi),
+    sukunimi = nimitiedot.sukunimi
+  )
+
+  private def createSession(oppija: OppijaHenkilö, hetu: String) = {
+    val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
+    val authUser = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true, huollettavat = Some(huollettavat))
+    setUser(Right(localLogin(authUser, Some(langFromCookie.getOrElse(langFromDomain)))))
+    redirect(onSuccess)
+  }
+
+  private def eiSuorituksia = {
+    setNimitiedotCookie
+    redirect(onUserNotFound)
+  }
+
+  private def setNimitiedotCookie = {
+    val name = nimitiedot.map(n => n.etunimet + " " + n.sukunimi)
+    response.addCookie(Cookie("eisuorituksia", encode(writeWithRoot(name), "UTF-8"))(CookieOptions(secure = isHttps, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
+  }
+
+  private def nimitiedot: Option[Nimitiedot] = {
+    val nimi = for {
+      etunimet <- utf8Header("FirstName")
+      kutsumanimi <- utf8Header("givenName")
+      sukunimi <- utf8Header("sn")
+    } yield Nimitiedot(etunimet = etunimet, kutsumanimi = kutsumanimi, sukunimi = sukunimi)
+    logger.debug(nimi.toString)
+    nimi
+  }
+
+  private def utf8Header(headerName: String): Option[String] =
+    request.header(headerName)
+      .map(header => new String(header.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8))
+      .map(_.trim)
+      .filter(_.nonEmpty)
 
   // Return url for cas logout
   post("/*") {
