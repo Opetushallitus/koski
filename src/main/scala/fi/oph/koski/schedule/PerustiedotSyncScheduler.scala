@@ -19,7 +19,7 @@ case class PerustiedotSyncScheduler(app: KoskiApplication) extends Timing {
       )
     }
 
-  def syncAndLogErrors(ignore: Option[JValue]): Option[JValue] = timed("perustiedotSync") {
+  def syncAndLogErrors(ignore: Option[JValue]): Option[JValue] = timed("perustiedotSync", 500) {
     try {
       sync
     } catch {

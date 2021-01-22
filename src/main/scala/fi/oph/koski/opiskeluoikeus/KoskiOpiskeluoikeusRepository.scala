@@ -11,7 +11,12 @@ import org.json4s.JValue
 trait KoskiOpiskeluoikeusRepository {
   def findByOid(oid: String)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusRow]
   def getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSession): Either[HttpStatus, List[Henkilö.Oid]]
-  def createOrUpdate(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean, allowDeleteComplete: Boolean = false)(implicit user: KoskiSession): Either[HttpStatus, CreateOrUpdateResult]
+  def createOrUpdate(
+    oppijaOid: PossiblyUnverifiedHenkilöOid,
+    opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
+    allowUpdate: Boolean,
+    allowDeleteComplete: Boolean = false
+  )(implicit user: KoskiSession): Either[HttpStatus, CreateOrUpdateResult]
   def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSession): List[A]
   def findByOppijaOids(oids: List[String])(implicit user: KoskiSession): Seq[Opiskeluoikeus]
   def findByCurrentUserOids(oids: List[String])(implicit user: KoskiSession): Seq[Opiskeluoikeus]

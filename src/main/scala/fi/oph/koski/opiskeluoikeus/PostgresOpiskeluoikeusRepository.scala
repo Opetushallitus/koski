@@ -24,7 +24,14 @@ import slick.dbio.DBIOAction.sequence
 import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.{DBIOAction, NoStream}
 
-class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository, henkilöCache: KoskiHenkilöCache, oidGenerator: OidGenerator, henkilöRepository: OpintopolkuHenkilöRepository, perustiedotSyncRepository: PerustiedotSyncRepository) extends KoskiOpiskeluoikeusRepository with DatabaseExecutionContext with KoskiDatabaseMethods with Logging {
+class PostgresOpiskeluoikeusRepository(
+  val db: DB,
+  historyRepository: OpiskeluoikeusHistoryRepository,
+  henkilöCache: KoskiHenkilöCache,
+  oidGenerator: OidGenerator,
+  henkilöRepository: OpintopolkuHenkilöRepository,
+  perustiedotSyncRepository: PerustiedotSyncRepository
+) extends KoskiOpiskeluoikeusRepository with DatabaseExecutionContext with KoskiDatabaseMethods with Logging {
   override def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSession): List[A] = {
     val queryOppijaOids = sequence(oppijat.map { o =>
       findByOppijaOidsAction(o.oid :: o.linkitetytOidit).map(opiskeluoikeusOids => (o.oid, opiskeluoikeusOids))
@@ -88,7 +95,12 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
     }
   }
 
-  override def createOrUpdate(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean, allowDeleteCompleted: Boolean = false)(implicit user: KoskiSession): Either[HttpStatus, CreateOrUpdateResult] = {
+  override def createOrUpdate(
+    oppijaOid: PossiblyUnverifiedHenkilöOid,
+    opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
+    allowUpdate: Boolean,
+    allowDeleteCompleted: Boolean = false
+  )(implicit user: KoskiSession): Either[HttpStatus, CreateOrUpdateResult] = {
     def createOrUpdateWithRetry: Either[HttpStatus, CreateOrUpdateResult] = {
       val result = try {
         runDbSync {

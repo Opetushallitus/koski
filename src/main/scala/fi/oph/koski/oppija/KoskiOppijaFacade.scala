@@ -90,7 +90,7 @@ class KoskiOppijaFacade(
         Right(UnverifiedHenkilöOid(h.oid, henkilöRepository))
     }
 
-    timed("createOrUpdate") {
+    timed("createOrUpdate", 250) {
       val opiskeluoikeudet: Seq[KoskeenTallennettavaOpiskeluoikeus] = oppija.tallennettavatOpiskeluoikeudet
 
       oppijaOid.right.flatMap { oppijaOid: PossiblyUnverifiedHenkilöOid =>
