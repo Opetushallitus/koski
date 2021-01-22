@@ -2,6 +2,7 @@ package fi.oph.koski.userdirectory
 
 import com.typesafe.config.Config
 import fi.oph.koski.cache.{CacheManager, Cached, CachingProxy, ExpiringCache}
+import fi.oph.koski.config.Features
 import fi.oph.koski.koskiuser.Käyttöoikeus
 import fi.oph.koski.log.NotLoggable
 
@@ -19,7 +20,7 @@ object DirectoryClient {
     val cacheStrategy = ExpiringCache("DirectoryClient", 60.seconds, maxSize = 100)
     CachingProxy[DirectoryClient](cacheStrategy, config.getString("opintopolku.virkailija.url") match {
       case "mock" =>
-        MockDirectoryClient
+        new MockDirectoryClient(config)
       case url =>
         new OpintopolkuDirectoryClient(url, config)
     })
