@@ -14,7 +14,7 @@ class CookieSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification
       "security" -> "mock"
     )
 
-    get("/user/shibbolethlogin", headers = headers) {
+    get("/cas/oppija", headers = headers) {
       response.headers.get("Set-Cookie").get.mkString should not include ("huollettavat")
     }
   }

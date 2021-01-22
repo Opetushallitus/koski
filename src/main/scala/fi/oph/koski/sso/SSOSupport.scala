@@ -1,7 +1,6 @@
 package fi.oph.koski.sso
 
 import java.net.{URI, URLDecoder, URLEncoder}
-
 import com.typesafe.config.Config
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AuthenticationUser, UserAuthenticationContext}
@@ -115,7 +114,7 @@ trait SSOSupport extends ScalatraBase with Logging {
 
   def redirectToOppijaLogout(service: String = koskiRoot) = {
     if (ssoConfig.isCasSsoUsed) {
-      redirect(application.config.getString("opintopolku.oppija.url") + "/cas-oppija/logout?service=" + service)
+      redirect(SSOConfigurationOverride.getValue(application.config, "opintopolku.oppija.url") + "/cas-oppija/logout?service=" + service)
     } else {
       redirect(localLoginPage)
     }
@@ -137,5 +136,21 @@ trait SSOSupport extends ScalatraBase with Logging {
 }
 
 case class SSOConfig(config: Config) {
-  def isCasSsoUsed = config.getString("opintopolku.virkailija.url") != "mock"
+  def isCasSsoUsed = SSOConfigurationOverride.getValue(config, "login.security") != "mock"
+}
+
+object SSOConfigurationOverride {
+  var overrides: Map[String, String] = Map.empty
+
+  def overrideKey(key: String, value: String): Unit = {
+    overrides = overrides + (key -> value)
+  }
+
+  def clearOverrides = {
+    overrides = Map.empty
+  }
+
+  def getValue(config: Config, key: String): String = {
+    overrides.get(key).getOrElse(config.getString(key))
+  }
 }
