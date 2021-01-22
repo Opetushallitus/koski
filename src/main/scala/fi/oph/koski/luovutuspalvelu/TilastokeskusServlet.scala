@@ -16,7 +16,7 @@ import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
 import fi.oph.koski.util.SortOrder.Ascending
-import fi.oph.koski.util.{Pagination, PaginationSettings, QueryPagination}
+import fi.oph.koski.util.{Pagination, PaginationSettings, QueryPagination, Retry}
 import javax.servlet.http.HttpServletRequest
 import org.json4s.JValue
 import org.scalatra.MultiParams
@@ -57,7 +57,9 @@ case class TilastokeskusQueryContext(request: HttpServletRequest)(implicit koski
     val groupedByOid = OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, paginationSettings).tumblingBuffer(10)
     val oppijaStream = groupedByOid.flatMap { oppijatJaOidit: Seq[(QueryOppijaHenkilö, List[OpiskeluoikeusRow])] =>
       val oids: List[String] = oppijatJaOidit.map(_._1.oid).toList
-      val henkilöt: Map[Oid, LaajatOppijaHenkilöTiedot] = application.opintopolkuHenkilöFacade.findMasterOppijat(oids)
+      val henkilöt: Map[Oid, LaajatOppijaHenkilöTiedot] = Retry.retryWithInterval(2, 500) {
+        application.opintopolkuHenkilöFacade.findMasterOppijat(oids)
+      }
 
       val oppijat: Seq[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])] = oppijatJaOidit.flatMap { case (oppijaHenkilö, opiskeluOikeudet) =>
         opiskeluOikeudet.flatMap { oo =>
