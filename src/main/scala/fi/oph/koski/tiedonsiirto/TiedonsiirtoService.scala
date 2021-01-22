@@ -79,7 +79,7 @@ class TiedonsiirtoService(
     elastic = elastic,
     name = "tiedonsiirto",
     legacyName = "koski-index",
-    mappingVersion = 1,
+    mappingVersion = 2,
     mapping = TiedonsiirtoService.mapping,
     settings = TiedonsiirtoService.settings,
     initialLoader = () => ???
