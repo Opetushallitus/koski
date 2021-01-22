@@ -40,6 +40,13 @@ object ElasticSearch {
     )
   }
 
+  def nestedFilter(path: String, query: Map[String, AnyRef]) = Map(
+    "nested" -> Map(
+      "path" -> path,
+      "query" -> query
+    )
+  )
+
   def applyPagination(paginationSettings: Option[PaginationSettings], doc: Map[String, Any]) = paginationSettings match {
     case None => doc
     case Some(pagination) => doc ++ Map(
