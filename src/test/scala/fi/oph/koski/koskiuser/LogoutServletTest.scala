@@ -50,6 +50,7 @@ class LogoutServletTest extends FreeSpec with Matchers with MockFactory with Loc
   def enableCasUrls(): Unit = {
     LogoutServerConfiguration.overrideKey("logout.url.fi", "https://opintopolku.fi/cas-oppija/logout?service=")
     LogoutServerConfiguration.overrideKey("configurable.logout.url.fi", "https://opintopolku.fi/cas-oppija/logout?service=")
+    LogoutServerConfiguration.overrideKey("opintopolku.virkailija.url", "https://virkailija.testiopintopolku.fi")
     //config.getString("opintopolku.virkailija.url") !=
     // opintopolku.oppija.url="mock"
   }

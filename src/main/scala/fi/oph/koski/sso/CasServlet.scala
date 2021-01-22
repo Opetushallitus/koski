@@ -24,23 +24,36 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
 
   // Return url for cas login
   get("/oppija") {
-    params.get("ticket") match {
-      case Some(ticket) =>
-        try {
-          val hetu = validateKansalainenServiceTicket(ticket)
-          val oppija = application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu).get
-          val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
-          val authUser = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true, huollettavat = Some(huollettavat))
-          setUser(Right(localLogin(authUser, Some(langFromCookie.getOrElse(langFromDomain)))))
-          redirect(onSuccess)
-        } catch {
-          case e: Exception =>
-            logger.warn(e)(s"Service ticket validation failed, ${e.toString}")
-            haltWithStatus(KoskiErrorCategory.internalError("Sisäänkirjautuminen Opintopolkuun epäonnistui."))
+    println(request.headers)
+    println(request.parameters)
+    val hetu = request.header("security") match {
+      case Some(sec) if sec == "mock" && application.config.getString("login.security") == "mock" => {
+        request.header("hetu").get
+      }
+      case _ => {
+        params.get("ticket") match {
+          case Some(ticket) =>
+            try {
+              validateKansalainenServiceTicket(ticket)
+            }
+            catch {
+              case e: Exception =>
+                logger.warn(e)(s"Service ticket validation failed, ${e.toString}")
+                haltWithStatus(KoskiErrorCategory.internalError("Sisäänkirjautuminen Opintopolkuun epäonnistui."))
+            }
+          case None =>
+            // Seems to happen with Haka login. Redirect to login seems to cause another redirect to here with the required "ticket" parameter present.
+            redirectAfterLogin
         }
-      case None =>
-        // Seems to happen with Haka login. Redirect to login seems to cause another redirect to here with the required "ticket" parameter present.
-        redirectAfterLogin
+      }
+    }
+
+    if (hetu.length > 0) {
+      val oppija = application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu).get
+      val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
+      val authUser = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true, huollettavat = Some(huollettavat))
+      setUser(Right(localLogin(authUser, Some(langFromCookie.getOrElse(langFromDomain)))))
+      redirect(onSuccess)
     }
   }
 
