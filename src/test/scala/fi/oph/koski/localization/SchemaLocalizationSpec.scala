@@ -11,7 +11,7 @@ class SchemaLocalizationSpec extends FreeSpec with Matchers {
     "Have default localizations" in {
       val newStuff: Set[(ClassSchema, String, String)] = findMissingLocalizedTextsInSchema
       if (newStuff.nonEmpty) {
-        println("Missing localized strings found in Koski schema. Copy these into /localization/default-texts.json")
+        println("Missing localized strings found in Koski schema. Copy these into /localization/koski-default-texts.json")
 
         val missingKeysAndValues: Map[String, String] = newStuff.map { case (className, key, value) => (key, value)}.toMap
 
@@ -28,7 +28,7 @@ class SchemaLocalizationSpec extends FreeSpec with Matchers {
     val propertyTitles: Set[(ClassSchema, String, String)] = allSchemas(EditorSchema.schema)(KoskiSchema.schemaFactory, collection.mutable.Set.empty[String]).collect {
       case s: ClassSchema => SchemaLocalization.allLocalizableParts(s).map{ case (key, text) => (s, key, text)}
     }.flatten.toSet
-    val existingKeys = DefaultLocalizations.defaultFinnishTexts.keys.toSet
+    val existingKeys = new DefaultLocalizations(LocalizationConfig("koski").defaultFinnishTextsResourceFilename).defaultFinnishTexts.keys.toSet
 
     propertyTitles.filterNot{ case (schema, key, title) => existingKeys.contains(key) }
   }

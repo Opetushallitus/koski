@@ -12,7 +12,7 @@ import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.huoltaja.HuoltajaServiceVtj
 import fi.oph.koski.koodisto.{KoodistoCreator, KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser._
-import fi.oph.koski.localization.LocalizationRepository
+import fi.oph.koski.localization.{LocalizationConfig, LocalizationRepository}
 import fi.oph.koski.log.{AuditLog, Logging, TimedProxy}
 import fi.oph.koski.mydata.{MyDataRepository, MyDataService}
 import fi.oph.koski.omattiedot.HuoltajaService
@@ -74,7 +74,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val henkilöCache = new KoskiHenkilöCache(masterDatabase.db)
   lazy val possu = TimedProxy[KoskiOpiskeluoikeusRepository](new PostgresOpiskeluoikeusRepository(masterDatabase.db, historyRepository, henkilöCache, oidGenerator, henkilöRepository.opintopolku, perustiedotSyncRepository))
   lazy val possuV2 = TimedProxy[KoskiOpiskeluoikeusRepository](new PostgresOpiskeluoikeusRepositoryV2(masterDatabase.db, historyRepository, henkilöCache, oidGenerator, henkilöRepository.opintopolku, perustiedotSyncRepository))
-  lazy val ytr = TimedProxy[AuxiliaryOpiskeluoikeusRepository](YtrOpiskeluoikeusRepository(ytrRepository, organisaatioRepository, oppilaitosRepository, koodistoViitePalvelu, ytrAccessChecker, Some(validator), localizationRepository))
+  lazy val ytr = TimedProxy[AuxiliaryOpiskeluoikeusRepository](YtrOpiskeluoikeusRepository(ytrRepository, organisaatioRepository, oppilaitosRepository, koodistoViitePalvelu, ytrAccessChecker, Some(validator), koskiLocalizationRepository))
   lazy val opiskeluoikeusRepository = new CompositeOpiskeluoikeusRepository(possu, virta, ytr)
   lazy val opiskeluoikeusRepositoryV2 = new CompositeOpiskeluoikeusRepository(possuV2, virta, ytr)
   lazy val opiskeluoikeusQueryRepository = new OpiskeluoikeusQueryService(replicaDatabase.db)
@@ -101,7 +101,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val ipService = new IPService(masterDatabase.db)
   lazy val prometheusRepository = PrometheusRepository(config)
   lazy val koskiPulssi = KoskiPulssi(this)
-  lazy val localizationRepository = LocalizationRepository(config)
+  lazy val koskiLocalizationRepository = LocalizationRepository(config, LocalizationConfig("koski"))
   lazy val oidGenerator = OidGenerator(config)
   lazy val hetu = new Hetu(config.getBoolean("acceptSyntheticHetus"))
   lazy val features = Features(config)
@@ -119,7 +119,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
     val parallels: immutable.Seq[Future[Any]] = List(
       Future(perustiedotIndexer.init()),
       Future(tiedonsiirtoService.init()),
-      Future(localizationRepository.init)
+      Future(koskiLocalizationRepository.init)
     )
     // Init scheduled tasks only after ES indexes have been initialized:
     Future.sequence(parallels).map(_ => Future(scheduledTasks.init))

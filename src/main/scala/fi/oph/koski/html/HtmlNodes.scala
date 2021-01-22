@@ -18,7 +18,7 @@ import scala.xml.{Elem, NodeSeq, Unparsed}
 trait HtmlNodes extends KoskiBaseServlet with PiwikNodes with LanguageSupport {
   def application: KoskiApplication
   def buildVersion: Option[String]
-  def localizations: LocalizationRepository = application.localizationRepository
+  def localizations: LocalizationRepository = application.koskiLocalizationRepository
 
   def htmlIndex(scriptBundleName: String, piwikHttpStatusCode: Option[Int] = None, raamit: Raamit = EiRaameja, scripts: NodeSeq = Empty, responsive: Boolean = false, allowIndexing: Boolean = false): Elem = {
     var bodyClasses = scriptBundleName.replace("koski-", "").replace(".js", "") + "-page"

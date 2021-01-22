@@ -7,10 +7,10 @@ import org.json4s.{JArray, JObject, JValue}
 
 // VIRKAILIJA_ROOT=https://virkailija.opintopolku.fi mvn scala:testCompile exec:java -Dexec.mainClass=fi.oph.koski.localization.LocalizationMockDataUpdater
 object LocalizationMockDataUpdater extends App {
-  val filename = "src/main/resources" + MockLocalizationRepository.resourceName
+  val filename = "src/main/resources" + LocalizationConfig("koski").mockLocalizationResourceFilename
   val root = sys.env.getOrElse("VIRKAILIJA_ROOT", throw new RuntimeException("Environment variable VIRKAILIJA_ROOT missing"))
 
-  val JArray(localizations) = new ReadOnlyRemoteLocalizationRepository(root)(GlobalCacheManager).fetchLocalizations.asInstanceOf[JArray]
+  val JArray(localizations) = new ReadOnlyRemoteLocalizationRepository(root, LocalizationConfig("koski"))(GlobalCacheManager).fetchLocalizations.asInstanceOf[JArray]
   //val JArray(localizations) = JsonFiles.readFile(filename)
   val sorted = stabilize(localizations)
   JsonFiles.writeFile(filename, sorted)

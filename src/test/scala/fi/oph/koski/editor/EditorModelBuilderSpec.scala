@@ -10,7 +10,7 @@ import org.scalatest.{FreeSpec, Matchers}
 class EditorModelBuilderSpec extends FreeSpec with Matchers {
   val application = KoskiApplication.apply
   implicit val koodisto: KoodistoViitePalvelu = application.koodistoViitePalvelu
-  implicit val localizations: LocalizationRepository = application.localizationRepository
+  implicit val localizations: LocalizationRepository = application.koskiLocalizationRepository
   implicit val käyttöoikeusRepository: KäyttöoikeusRepository = application.käyttöoikeusRepository
 
 

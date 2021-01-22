@@ -99,7 +99,7 @@ class SuomiFiService(application: KoskiApplication) extends Logging {
       Left(error)
     }
 
-  private def localization(key: String) = application.localizationRepository.get(key)
+  private def localization(key: String) = application.koskiLocalizationRepository.get(key)
   private def suoritusTyyppi(koodiarvo: String) = application.koodistoViitePalvelu.validateRequired("suorituksentyyppi", koodiarvo)
 }
 

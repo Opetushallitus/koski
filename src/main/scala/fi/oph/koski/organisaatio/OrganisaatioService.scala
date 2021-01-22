@@ -9,7 +9,7 @@ class OrganisaatioService(application: KoskiApplication) {
   val ostopalveluRootOid = "OSTOPALVELUTAIPALVELUSETELI"
   val organisaatioRepository: OrganisaatioRepository = application.organisaatioRepository
   private val perustiedot = VarhaiskasvatusToimipistePerustiedot(application.perustiedotIndexer)
-  private val localizationRepository = application.localizationRepository
+  private val localizationRepository = application.koskiLocalizationRepository
 
   def searchInAllOrganizations(query: Option[String])(implicit user: KoskiSession): Iterable[OrganisaatioHierarkia] = {
     query match {

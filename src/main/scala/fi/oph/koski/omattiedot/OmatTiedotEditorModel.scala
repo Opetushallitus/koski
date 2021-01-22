@@ -50,7 +50,7 @@ object OmatTiedotEditorModel extends Timing {
   }
 
   private def buildModel(obj: AnyRef)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = {
-    EditorModelBuilder.buildModel(EditorSchema.deserializationContext, obj, editable = false)(koskiSession, application.koodistoViitePalvelu, application.localizationRepository)
+    EditorModelBuilder.buildModel(EditorSchema.deserializationContext, obj, editable = false)(koskiSession, application.koodistoViitePalvelu, application.koskiLocalizationRepository)
   }
 
   private def piilotaArvosanatKeskeneräisistäSuorituksista(oppija: Oppija) = {
