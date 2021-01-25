@@ -5,9 +5,9 @@ import { logWarning } from "../utils/log"
 export type TranslationId = string
 export type Translation = string
 
-const supportedLanguages = ["fi", "sv", "en"] as const
+export const supportedLanguages = ["fi", "sv", "en"] as const
 
-type Language = typeof supportedLanguages[number]
+export type Language = typeof supportedLanguages[number]
 
 type LanguageRecord = Record<Language, Translation>
 
