@@ -36,7 +36,7 @@ class LogoutServletTest extends FreeSpec with Matchers with MockFactory with Loc
     "Ohjaa oikeaan logout URL:iin kun target-parametri ei ole asetettu" in {
       authGet(s"user/logout") {
         status shouldBe (302)
-        header("Location") shouldEqual (s"${baseUrl}/login")
+        header("Location") shouldEqual (s"${baseUrl}")
       }
     }
 
@@ -44,7 +44,7 @@ class LogoutServletTest extends FreeSpec with Matchers with MockFactory with Loc
       val target = "https://www.hsl.fi/etusivu/#linkki"
       authGet(s"user/logout?target=${URLEncoder.encode(target, "UTF-8")}") {
         status shouldBe (302)
-        header("Location") shouldEqual (s"${baseUrl}/login")
+        header("Location") shouldEqual (s"https://www.hsl.fi/etusivu/#linkki")
       }
     }
   }
