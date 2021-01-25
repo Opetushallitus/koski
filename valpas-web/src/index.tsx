@@ -1,37 +1,42 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import "./style/index.less"
-import { getCurrentUser, hasValpasAccess, isLoggedIn, User } from "./state/auth"
+import { getCurrentUser, hasValpasAccess, isLoggedIn } from "./state/auth"
 import { t } from "./i18n/i18n"
 
-async function main() {
-  const user = await getCurrentUser()
-  if (hasValpasAccess(user)) {
-    showApp(user)
-  } else if (isLoggedIn(user)) {
-    showError(
-      t("login__ei_valpas-oikeuksia_otsikko"),
-      t("login__ei_valpas-oikeuksia_viesti")
-    )
-  } else {
-    showLogin()
+declare global {
+  interface Window {
+    environment: string | undefined
   }
 }
 
-async function showLogin() {
-  const { LoginApp } = await import("./views/LoginApp")
-  ReactDOM.render(<LoginApp onLogin={main} />, document.getElementById("app"))
-}
+const runningLocally = window.environment == "local"
 
-async function showApp(_user: User) {
-  const { ValpasApp } = await import("./views/ValpasApp")
-  ReactDOM.render(<ValpasApp />, document.getElementById("app"))
-}
+async function main() {
+  const user = await getCurrentUser()
 
-async function showError(title: string, message: string) {
-  const { ErrorView } = await import("./views/ErrorView")
+  const LocalRaamit = React.lazy(
+    () => import("./components/navigation/LocalRaamit")
+  )
+
+  const LoginApp = React.lazy(() => import("./views/LoginApp"))
+  const ValpasApp = React.lazy(() => import("./views/ValpasApp"))
+  const ErrorView = React.lazy(() => import("./views/ErrorView"))
+
   ReactDOM.render(
-    <ErrorView title={title} message={message} />,
+    <React.Suspense fallback={<></>}>
+      {runningLocally && <LocalRaamit user={user} />}
+      {hasValpasAccess(user) ? (
+        <ValpasApp />
+      ) : isLoggedIn(user) ? (
+        <ErrorView
+          title={t("login__ei_valpas-oikeuksia_otsikko")}
+          message={t("login__ei_valpas-oikeuksia_viesti")}
+        />
+      ) : (
+        <LoginApp onLogin={main} />
+      )}
+    </React.Suspense>,
     document.getElementById("app")
   )
 }
