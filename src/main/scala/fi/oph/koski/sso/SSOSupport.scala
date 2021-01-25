@@ -112,11 +112,11 @@ trait SSOSupport extends ScalatraBase with Logging {
     }
   }
 
-  def redirectToOppijaLogout(service: String = koskiRoot) = {
+  def redirectToOppijaLogout(redirectTarget: String = koskiRoot) = {
     if (ssoConfig.isCasSsoUsed) {
-      redirect(SSOConfigurationOverride.getValue(application.config, "opintopolku.oppija.url") + "/cas-oppija/logout?service=" + service)
+      redirect(SSOConfigurationOverride.getValue(application.config, "opintopolku.oppija.url") + "/cas-oppija/logout?service=" + redirectTarget)
     } else {
-      redirect(localLoginPage)
+      redirect(redirectTarget)
     }
   }
 
