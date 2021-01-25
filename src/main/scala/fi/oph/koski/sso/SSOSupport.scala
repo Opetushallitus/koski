@@ -100,7 +100,7 @@ trait SSOSupport extends ScalatraBase with Logging {
     if (ssoConfig.isCasSsoUsed) {
       redirect(application.config.getString("opintopolku.oppija.url") + "/cas-oppija/login?service=" + casOppijaServiceUrl + "&valtuudet=false")
     } else {
-      redirect(localOppijaLoginPage)
+      redirect(localOppijaLoginPage + "?onSuccess=" + URLEncoder.encode(params.getOrElse("redirect", ""), "UTF-8"))
     }
   }
 

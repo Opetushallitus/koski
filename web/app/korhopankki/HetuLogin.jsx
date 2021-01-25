@@ -37,7 +37,7 @@ const HetuLogin = ( { loginUrl = '/koski/cas/oppija', redirectUrl = '/koski/omat
       const headers = R.reject(R.isNil, R.merge(credentials, {security: 'mock'}))
       // console.log('Logging in with', headers)
       const lang = credentials.lang ? credentials.lang : 'fi'
-      return Bacon.fromPromise(fetch(loginUrl, { credentials: 'include', headers})).map(resp => ({resp: resp, lang: lang}))
+      return Bacon.fromPromise(fetch(loginUrl + window.location.search, { credentials: 'include', headers})).map(resp => ({resp: resp, lang: lang}))
     })
 
   login.onValue((x) => {
