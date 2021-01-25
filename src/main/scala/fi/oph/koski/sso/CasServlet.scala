@@ -56,7 +56,7 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
     if (hetu.length > 0) {
       findOrCreate(hetu) match {
         case Some(oppija) => createSession(oppija, hetu)
-        case _ => eiSuorituksia
+        case _ => redirect(onFailure)
       }
     }
     else redirect(onFailure)
