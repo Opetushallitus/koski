@@ -1,7 +1,13 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import "./style/index.less"
-import { getCurrentUser, hasValpasAccess, isLoggedIn } from "./state/auth"
+import {
+  getCurrentUser,
+  getLogin,
+  hasValpasAccess,
+  isLoggedIn,
+  User,
+} from "./state/auth"
 import { t } from "./i18n/i18n"
 
 declare global {
@@ -12,6 +18,22 @@ declare global {
 }
 
 const runningLocally = window.environment == "local"
+
+// TODO: Make external login great again
+function showLogin() {
+  const config = getLogin()
+  switch (config.type) {
+    case "local":
+      return showLocalLogin()
+    case "external":
+      return config.redirectToVirkailijaLogin()
+  }
+}
+
+async function showLocalLogin() {
+  const { LoginApp } = await import("./views/LoginApp")
+  ReactDOM.render(<LoginApp onLogin={main} />, document.getElementById("app"))
+}
 
 async function main() {
   const user = await getCurrentUser()
