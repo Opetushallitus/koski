@@ -13,9 +13,9 @@
     "build:prod": "parcel build src/index.html",
     "lint": "npm run lint:types && npm run lint:format",
     "lint:types": "tsc --noEmit",
-    "lint:format": "prettier --check ./src",
+    "lint:format": "prettier --check ./src ./local_modules ./devserver",
     "fix": "npm run fix:format",
-    "fix:format": "prettier --write ./src",
+    "fix:format": "prettier --write ./src ./local_modules ./devserver",
     "clean": "rm -rf dist && rm -rf .cache",
     "preinstall": "npx npm-force-resolutions"
   },

@@ -1,3 +1,3 @@
-module.exports = function(bundler) {
-  bundler.addAssetType('html', require.resolve('./SkipExternalAssets'))
+module.exports = function (bundler) {
+  bundler.addAssetType("html", require.resolve("./SkipExternalAssets"))
 }
