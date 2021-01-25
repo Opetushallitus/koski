@@ -38,6 +38,7 @@ const apiFetch = async <T>(
           })
         : E.left({
             errors: data,
+            status: response.status,
           })
     } catch (err) {
       return E.left({

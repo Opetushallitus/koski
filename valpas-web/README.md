@@ -80,6 +80,12 @@ BROWSERSTACK_BROWSER          Selain (ja versio), esim. "firefox 80.0"
 BROWSERSTACK_OS               Käyttöjärjestelmä (ja versio), esim. "windows 10"
 ```
 
+## Käyttäjätunnukset
+
+Omalta koneelta ajaessa sisään voi kirjautua tunnuksilla `valpas-helsinki` tai `valpas-jkl-normaali` (käyttäjätunnus ja salasana ovat samat).
+
+Mock-käyttäjät luodaan `ValpasMockUsers.scala` -tiedostossa.
+
 ## Virkailija-raamit
 
 Paikallisen palvelimen käynnistys untuvaopintopolusta ladattavien raamien kanssa:

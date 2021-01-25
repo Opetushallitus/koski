@@ -111,6 +111,9 @@ export const loginAs = async (
   await driver.wait(until.elementLocated(By.css("article.page")), 5000)
 }
 
+export const defaultLogin = async (initialPath: string) =>
+  loginAs(initialPath, "valpas-helsinki", "valpas-helsinki")
+
 export const expectElementVisible = async (selector: string) => {
   const elements = await driver.findElements(By.css(selector))
   expect(

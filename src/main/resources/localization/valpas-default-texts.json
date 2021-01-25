@@ -3,5 +3,7 @@
   "login__kayttaja": "Käyttäjä",
   "login__salasana": "Salasana",
   "login__btn_kirjaudu": "Kirjaudu sisään",
-  "login__otsikko": "Kirjautuminen"
+  "login__otsikko": "Kirjautuminen",
+  "login__ei_valpas-oikeuksia_otsikko": "Valpas: Ei käyttöoikeuksia",
+  "login__ei_valpas-oikeuksia_viesti": "Käyttäjätunnuksillasi ei ole oikeus käyttää Valpas-palvelua"
 }

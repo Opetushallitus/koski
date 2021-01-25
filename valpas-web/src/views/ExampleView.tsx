@@ -20,7 +20,7 @@ export const ExampleView = () => {
   const helloWorld = useApiOnce(fetchHello)
 
   return (
-    <Page>
+    <Page id="valpas-app">
       <MainNavigation
         selected="1"
         options={[
