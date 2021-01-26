@@ -4,7 +4,7 @@ import java.net.URLEncoder.encode
 import java.nio.charset.StandardCharsets
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{Http, KoskiErrorCategory, OpintopolkuCallerId}
-import fi.oph.koski.koskiuser.{AuthenticationSupport, AuthenticationUser, DirectoryClientLogin, KoskiUserLanguage}
+import fi.oph.koski.koskiuser.{KoskiAuthenticationSupport, AuthenticationUser, DirectoryClientLogin, KoskiUserLanguage}
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.servlet.{NoCache, VirkailijaHtmlServlet}
 import cas.{CasClient, CasClientException}
@@ -20,7 +20,7 @@ import scala.util.control.NonFatal
 /**
   *  This is where the user lands after a CAS login / logout
   */
-class CasServlet()(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with AuthenticationSupport with NoCache {
+class CasServlet()(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with KoskiAuthenticationSupport with NoCache {
   private val casVirkailijaClient = new CasClient(application.config.getString("opintopolku.virkailija.url") + "/cas", Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
   private val casOppijaClient = new CasClient(application.config.getString("opintopolku.oppija.url") + "/cas-oppija", Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
   private val koskiSessions = application.koskiSessionRepository

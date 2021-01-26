@@ -18,21 +18,14 @@ trait SSOSupport extends ScalatraBase with Logging {
 
   def protocol = if (isHttps) { "https" } else { "http" }
 
-  def koskiRoot: String = {
-    val host = request.getServerName()
-    val portStr = request.getServerPort match {
-      case 80 | 443 => ""
-      case port: Int => ":" + port
-    }
-    protocol + "://" + host + portStr + "/koski"
-  }
+  def serviceRoot: String
 
   private def currentUrl: String = try {
-    new URI(koskiRoot + request.getServletPath + request.getPathInfo).toASCIIString
+    new URI(serviceRoot + request.getServletPath + request.getPathInfo).toASCIIString
   } catch {
     case e: Exception =>
       logger.warn(s"Problem parsing url: ${e.getMessage}")
-      koskiRoot + request.getServletPath
+      serviceRoot + request.getServletPath
   }
 
 
@@ -73,11 +66,11 @@ trait SSOSupport extends ScalatraBase with Logging {
   }
 
   def casVirkailijaServiceUrl = {
-    koskiRoot + "/cas/virkailija"
+    serviceRoot + "/cas/virkailija"
   }
 
   def casOppijaServiceUrl = {
-    koskiRoot + "/cas/oppija"
+    serviceRoot + "/cas/oppija"
   }
 
   def redirectAfterLogin = {
@@ -106,13 +99,13 @@ trait SSOSupport extends ScalatraBase with Logging {
 
   def redirectToVirkailijaLogout = {
     if (ssoConfig.isCasSsoUsed) {
-      redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/logout?service=" + koskiRoot + "/virkailija")
+      redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/logout?service=" + serviceRoot + "/virkailija")
     } else {
       redirect(localLoginPage)
     }
   }
 
-  def redirectToOppijaLogout(redirectTarget: String = koskiRoot) = {
+  def redirectToOppijaLogout(redirectTarget: String = serviceRoot) = {
     if (ssoConfig.isCasSsoUsed) {
       redirect(SSOConfigurationOverride.getValue(application.config, "opintopolku.oppija.url") + "/cas-oppija/logout?service=" + redirectTarget)
     } else {
@@ -124,8 +117,8 @@ trait SSOSupport extends ScalatraBase with Logging {
 
   def ssoConfig = SSOConfig(application.config)
 
-  def localLoginPage = "/login"
-  def localOppijaLoginPage = "/login/oppija/local"
+  def localLoginPage: String
+  def localOppijaLoginPage: String
 
   // don't set cookie domain for localhost (so that local Koski works with non-localhost IP address, e.g. phone in the same wifi)
   private def cookieDomains: Iterable[String] =
@@ -154,3 +147,4 @@ object SSOConfigurationOverride {
     overrides.get(key).getOrElse(config.getString(key))
   }
 }
+

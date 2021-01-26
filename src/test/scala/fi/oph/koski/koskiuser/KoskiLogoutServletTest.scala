@@ -6,7 +6,7 @@ import fi.oph.koski.sso.SSOConfigurationOverride
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{BeforeAndAfterEach, FreeSpec, Matchers}
 
-class LogoutServletTest extends FreeSpec with Matchers with MockFactory with LocalJettyHttpSpecification with BeforeAndAfterEach {
+class KoskiLogoutServletTest extends FreeSpec with Matchers with MockFactory with LocalJettyHttpSpecification with BeforeAndAfterEach {
 
   override def afterEach = {
     LogoutServerConfiguration.clearOverrides

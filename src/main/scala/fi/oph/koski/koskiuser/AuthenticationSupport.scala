@@ -134,4 +134,3 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport {
 
   def createSession(user: AuthenticationUser) = KoskiSession(user, request, application.käyttöoikeusRepository)
 }
-
