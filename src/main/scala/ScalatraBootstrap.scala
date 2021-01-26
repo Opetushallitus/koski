@@ -36,6 +36,7 @@ import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
 import fi.oph.koski.tutkinto.TutkinnonPerusteetServlet
 import fi.oph.koski.util.Futures
 import fi.oph.koski.valpas.{ValpasApiServlet, ValpasLocalizationServlet}
+import fi.oph.koski.valpas.valpasuser.ValpasLogoutServlet
 import fi.oph.koski.valvira.ValviraServlet
 import fi.oph.koski.ytr.{YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
 import javax.servlet.ServletContext
@@ -122,6 +123,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     if (application.features.valpas) {
       mount("/valpas/localization", new ValpasLocalizationServlet)
       mount("/valpas/api", new ValpasApiServlet)
+      mount("/valpas/logout", new ValpasLogoutServlet)
       if (!SSOConfig(application.config).isCasSsoUsed) {
         mount("/valpas/login", new LocalLoginServlet)
       }
