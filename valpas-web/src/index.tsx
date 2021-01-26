@@ -6,6 +6,7 @@ import {
   getLogin,
   hasValpasAccess,
   isLoggedIn,
+  redirectToLoginReturnUrl,
   User,
 } from "./state/auth"
 import { t } from "./i18n/i18n"

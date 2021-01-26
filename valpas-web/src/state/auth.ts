@@ -1,7 +1,10 @@
 import * as E from "fp-ts/Either"
 import { pipe } from "fp-ts/lib/function"
+import Cookies from "js-cookie"
 import { fetchCurrentUser } from "../api/api"
 import { absoluteUrl, buildUrl } from "../utils/url"
+
+const RETURN_URL_KEY = "koskiReturnUrl"
 
 export type User = {
   oid: string
@@ -45,13 +48,23 @@ export const getLogin = (): Login => {
     ? {
         type: "external",
         redirectToVirkailijaLogin() {
+          Cookies.set(RETURN_URL_KEY, location.href)
           location.href = buildUrl(`${opintopolkuVirkailijaUrl}/cas/login`, {
             service: absoluteUrl("/cas/virkailija"),
-            redirect: location.href,
           })
         },
       }
     : {
         type: "local",
       }
+}
+
+export const redirectToLoginReturnUrl = (): boolean => {
+  const url = Cookies.get(RETURN_URL_KEY)
+  if (url) {
+    Cookies.remove(RETURN_URL_KEY)
+    location.href = url
+    return true
+  }
+  return false
 }
