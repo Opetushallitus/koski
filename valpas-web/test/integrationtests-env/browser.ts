@@ -3,11 +3,12 @@ import {
   WebDriver,
   until,
   By,
-  WebElementCondition,
   Key,
+  Condition,
 } from "selenium-webdriver"
 import chrome from "selenium-webdriver/chrome"
 import "chromedriver"
+import * as A from "fp-ts/Array"
 import { expectCleanConsoleLogs } from "./fail-on-console"
 
 declare namespace global {
@@ -42,7 +43,7 @@ const buildChromeDriver = async (): Promise<WebDriver> => {
 
 // Helpers
 
-const wait = async (condition: WebElementCondition, timeout: number) => {
+const wait = async <T>(condition: Condition<T>, timeout: number) => {
   return await driver.wait(async (d) => condition.fn(d), timeout)
 }
 
@@ -57,11 +58,19 @@ export const $ = async (selector: string, timeout = 200) => {
   return await wait(until.elementIsVisible(el), timeout)
 }
 
-export const textEventuallyEquals = (selector: string, expected: string) =>
+export const $$ = async (selector: string, timeout = 200) => {
+  return await wait(until.elementsLocated(By.css(selector)), timeout)
+}
+
+export const textEventuallyEquals = (
+  selector: string,
+  expected: string,
+  timeout = 1000
+) =>
   eventually(async () => {
     const element = await $(selector)
     expect(await element.getText()).toEqual(expected)
-  })
+  }, timeout)
 
 export const sleep = (time: number) =>
   new Promise((resolve) => setTimeout(resolve, time))
@@ -81,7 +90,7 @@ export const eventually = async (
       return
     } catch (err) {
       error = err
-      await sleep(1000)
+      await sleep(timeout / 10)
     }
   }
 }
@@ -143,8 +152,32 @@ export const expectElementNotVisible = async (selector: string) => {
 export const clickElement = async (selector: string) => {
   const element = await $(selector)
 
-  expect (await element.isEnabled(),
-  `Element ${selector} expected to be enabled`)
+  expect(
+    await element.isEnabled(),
+    `Element ${selector} expected to be enabled`
+  )
 
   await element.click()
+}
+
+export const dataTableEventuallyEquals = async (
+  selector: string,
+  displayValues: string,
+  timeout = 1000
+) => {
+  const expectedData = A.flatten(
+    displayValues
+      .split("\n")
+      .map((row) => row.trim())
+      .filter((row) => row.length > 0)
+      .map((row) => row.split("\t"))
+  )
+
+  await eventually(async () => {
+    const cells = await $$(`${selector} .table__body .table__td`)
+    const actualData = (
+      await Promise.all(cells.map((cell) => cell.getText()))
+    ).map((value) => value.replace(/\n/g, ""))
+    expect(actualData).toEqual(expectedData)
+  }, timeout)
 }

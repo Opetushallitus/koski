@@ -1,4 +1,6 @@
 {
+  "Kyllä": "Kyllä",
+  "Ei": "Ei",
   "title__Valpas": "Valpas",
   "login__kayttaja": "Käyttäjä",
   "login__salasana": "Salasana",
@@ -6,5 +8,25 @@
   "login__otsikko": "Kirjautuminen",
   "login__ei_valpas-oikeuksia_otsikko": "Valpas: Ei käyttöoikeuksia",
   "login__ei_valpas-oikeuksia_viesti": "Käyttäjätunnuksillasi ei ole oikeus käyttää Valpas-palvelua",
-  "localraamit__logout": "Kirjaudu ulos"
+  "localraamit__logout": "Kirjaudu ulos",
+  "ylänavi__hakutilanne": "Hakutilanne",
+  "perusopetusnäkymä__otsikko": "Perusopetuksen päättävät {{vuosi}}",
+  "hakutilanne__taulu_nimi": "Nimi",
+  "hakutilanne__taulu_oppilaitos": "Oppilaitos",
+  "hakutilanne__taulu_syntymäaika": "Syntymäaika",
+  "hakutilanne__taulu_luokka": "Luokka",
+  "hakutilanne__taulu_hakemuksen_tila": "Hakemuksen tila",
+  "hakutilanne__taulu_valintatieto": "Valintatieto",
+  "hakutilanne__taulu_opiskelupaikka_vastaanotettu": "Opiskelupaikka vastaanotettu",
+  "hakutilanne__taulu_läsnä_oppilaitoksessa": "Läsnä oppilaitoksessa",
+  "hakemuksentila__ei_hakemusta": "Ei hakemusta",
+  "hakemuksentila__aktiivinen": "Aktiivinen",
+  "hakemuksentila__passiivinen": "Passiivinen",
+  "hakemuksentila__puutteellinen": "Puutteellinen",
+  "hakemuksentila__luonnos": "Luonnos",
+  "valintatieto__ei_opiskelupaikkaa": "Ei opiskelupaikkaa",
+  "valintatieto__varasija": "Varasija",
+  "valintatieto__hyväksytty": "Hyväksytty: {{hakukohde}}",
+  "valintatieto__hakukohde_lc": "hakukohde",
+  "vastaanotettu__n_paikkaa": "{{lukumäärä}} paikkaa"
 }

@@ -91,3 +91,11 @@ const prependUrl = (baseUrl: string, request: RequestInfo): RequestInfo =>
         ...request,
         url: baseUrl + "/" + request.url,
       }
+
+export const mockApi = <T, P extends any[]>(
+  getResult: (...params: P) => T
+) => async (...params: P): Promise<ApiResponse<T>> =>
+  E.right({
+    status: 200,
+    data: getResult(...params),
+  })
