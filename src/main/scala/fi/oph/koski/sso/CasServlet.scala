@@ -9,7 +9,7 @@ import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.servlet.{NoCache, VirkailijaHtmlServlet}
 import cas.{CasClient, CasClientException}
 import cas.CasClient.{OppijaAttributes, Username}
-import fi.oph.koski.henkilo.OppijaHenkilö
+import fi.oph.koski.henkilo.{Hetu, OppijaHenkilö}
 import fi.oph.koski.json.JsonSerializer.writeWithRoot
 import scalaz.concurrent.Task
 import fi.oph.koski.schema.{Nimitiedot, UusiHenkilö}
@@ -31,35 +31,16 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
 
   // Return url for cas login
   get("/oppija") {
-    val hetu = request.header("security") match {
-      case Some(sec) if sec == "mock" && application.config.getString("login.security") == "mock" => {
-        request.header("hetu").get
-      }
-      case _ => {
-        params.get("ticket") match {
-          case Some(ticket) =>
-            try {
-              validateKansalainenServiceTicket(ticket)
-            }
-            catch {
-              case e: Exception =>
-                logger.warn(e)(s"Service ticket validation failed, ${e.toString}")
-                haltWithStatus(KoskiErrorCategory.internalError("Sisäänkirjautuminen Opintopolkuun epäonnistui."))
-            }
-          case None =>
-            // Seems to happen with Haka login. Redirect to login seems to cause another redirect to here with the required "ticket" parameter present.
-            redirectAfterLogin
-        }
-      }
-    }
+    val hetu = getOppijaHetu()
 
-    if (hetu.length > 0) {
-      findOrCreate(hetu) match {
-        case Some(oppija) => createSession(oppija, hetu)
-        case _ => redirect(onFailure)
-      }
+    hetu match {
+      case Some(hetu) =>
+        findOrCreate(hetu) match {
+          case Some(oppija) => createSession(oppija, hetu)
+          case _ => redirect(onFailure)
+        }
+      case None => redirect(onFailure)
     }
-    else redirect(onFailure)
   }
 
   get("/virkailija") {
@@ -80,12 +61,36 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
           }
         } catch {
           case e: Exception =>
-            logger.warn(e)(s"Service ticket validation failed, ${e.toString}")
+            logger.warn(e)(s"Virkailija login ticket validation failed, ${e.toString}")
             haltWithStatus(KoskiErrorCategory.internalError("Sisäänkirjautuminen Opintopolkuun epäonnistui."))
         }
       case None =>
         // Seems to happen with Haka login. Redirect to login seems to cause another redirect to here with the required "ticket" parameter present.
         redirectAfterLogin
+    }
+  }
+
+  private def getOppijaHetu(): Option[Username] = {
+    request.header("security") match {
+      case Some(sec) if sec == "mock" && application.config.getString("login.security") == "mock" => {
+        request.header("hetu")
+      }
+      case _ => {
+        params.get("ticket") match {
+          case Some(ticket) =>
+            try {
+              Some(validateKansalainenServiceTicket(ticket))
+            }
+            catch {
+              case e: Exception =>
+                logger.warn(e)(s"Oppija login ticket validation failed, ${e.toString}")
+                None
+            }
+          case None =>
+            // Seems to happen with Haka login. Redirect to login seems to cause another redirect to here with the required "ticket" parameter present.
+            redirectAfterLogin
+        }
+      }
     }
   }
 
