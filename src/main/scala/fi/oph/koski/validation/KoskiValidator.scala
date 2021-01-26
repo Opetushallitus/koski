@@ -103,7 +103,7 @@ class KoskiValidator(
               validatePäätasonSuoritustenStatus(opiskeluoikeus),
               validateOpiskeluoikeudenLisätiedot(opiskeluoikeus),
               validateOsaAikainenErityisopetus(opiskeluoikeus),
-              validatePerusopetuksenVuosiluokat(opiskeluoikeus),
+              TiedonSiirrostaPuuttuvatSuorituksetValidation.validateEiSamaaAlkamispaivaa(opiskeluoikeus, koskiOpiskeluoikeudet),
               HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, Nil)))
             )
           } match {
@@ -484,18 +484,6 @@ class KoskiValidator(
       }
     }
     case _ => HttpStatus.ok
-  }
-
-  private def validatePerusopetuksenVuosiluokat(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
-    val vuosiluokkasuoritukset = opiskeluoikeus.suoritukset.collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
-
-    vuosiluokkasuoritukset
-      .groupBy(_.alkamispäivä)
-      .find(_._2.length > 1) match {
-      case Some(s) => KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaSuorituksia(s"Vuosiluokilla (${suorituksenTunniste(s._2(0))}, " +
-        s"${suorituksenTunniste(s._2(1))}) on sama alkamispäivä")
-      case None => HttpStatus.ok
-    }
   }
 
   private lazy val osaAikainenErityisopetusKoodistokoodiviite =
