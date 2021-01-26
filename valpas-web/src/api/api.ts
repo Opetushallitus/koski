@@ -2,12 +2,6 @@ import { User } from "../state/auth"
 import { apiGet, apiPost } from "./apiFetch"
 
 /**
- * Hello world
- * TODO: Remove
- */
-export const fetchHello = () => apiGet<"string">("api/hello")
-
-/**
  * Login
  */
 export const fetchLogin = async (username: string, password: string) =>
