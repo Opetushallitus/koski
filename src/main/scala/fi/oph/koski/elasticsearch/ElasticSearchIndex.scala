@@ -122,8 +122,10 @@ class ElasticSearchIndex(
   def createIndex(version: Int): String = {
     val indexName = versionedIndexName(version)
     logger.info(s"Creating Elasticsearch index $indexName")
-    Http.runTask(http.put(uri"/$indexName", JObject("settings" -> toJValue(settings)))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
-    Http.runTask(http.put(uri"/$indexName/_mapping", toJValue(mapping))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+    Http.runTask(http.put(uri"/$indexName", toJValue(Map(
+      "settings" -> settings,
+      "mappings" -> mapping
+    )))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
     indexName
   }
 
