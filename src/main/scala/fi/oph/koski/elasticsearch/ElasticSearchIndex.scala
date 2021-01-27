@@ -28,9 +28,6 @@ class ElasticSearchIndex(
 
   private val writeAlias: String = s"$name-write-alias"
 
-  // TODO: Hankkiudu eroon erillisestä mapping-tyypistä - tuki poistuu uusissa ES-versioissa
-  private val mappingTypeName = name
-
   lazy val init: Unit = {
     if (indexExists(currentIndexName)) {
       logger.info(s"ElasticSearch index $name exists")
@@ -46,7 +43,7 @@ class ElasticSearchIndex(
         ensureAliases(mappingVersion - 1)
       } else {
         logger.info(s"No previous $name index found - creating an index from scratch")
-        createIndex(mappingVersion, mappingTypeName)
+        createIndex(mappingVersion)
         migrateAlias(readAlias, mappingVersion)
         migrateAlias(writeAlias, mappingVersion)
       }
@@ -130,11 +127,11 @@ class ElasticSearchIndex(
     }
   }
 
-  def createIndex(version: Int, mappingType: String = "_doc"): String = {
+  def createIndex(version: Int): String = {
     val indexName = versionedIndexName(version)
-    logger.info(s"Creating Elasticsearch index $indexName with mapping type $mappingType")
+    logger.info(s"Creating Elasticsearch index $indexName")
     Http.runTask(http.put(uri"/$indexName", JObject("settings" -> toJValue(settings)))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
-    Http.runTask(http.put(uri"/$indexName/_mapping/$mappingType", toJValue(mapping))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+    Http.runTask(http.put(uri"/$indexName/_mapping/_doc", toJValue(mapping))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
     indexName
   }
 
@@ -145,7 +142,7 @@ class ElasticSearchIndex(
     val query = Map(
       "source" -> Map(
         "index" -> fromIndex,
-        "type" -> mappingTypeName
+        "type" -> "_doc"
       ),
       "dest" -> Map(
         "index" -> toIndex,
@@ -169,7 +166,7 @@ class ElasticSearchIndex(
   }
 
   def runSearch(query: JValue): Option[JValue] = try {
-    Some(Http.runTask(http.post(uri"/$readAlias/$mappingTypeName/_search", query)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue])))
+    Some(Http.runTask(http.post(uri"/$readAlias/_doc/_search", query)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue])))
   } catch {
     case e: HttpStatusException if e.status == 400 =>
       logger.error(e.getMessage)
@@ -191,7 +188,7 @@ class ElasticSearchIndex(
         "update" -> Map(
           "_id" -> id,
           "_index" -> writeAlias,
-          "_type" -> mappingTypeName
+          "_type" -> "_doc"
         )
       ),
       Map(
@@ -208,7 +205,7 @@ class ElasticSearchIndex(
   }
 
   def deleteByQuery(query: JValue): Int = {
-    val deletedCount = Http.runTask(http.post(uri"/$writeAlias/$mappingTypeName/_delete_by_query", query)(Json4sHttp4s.json4sEncoderOf[JValue]) {
+    val deletedCount = Http.runTask(http.post(uri"/$writeAlias/_doc/_delete_by_query", query)(Json4sHttp4s.json4sEncoderOf[JValue]) {
       case (200, text, request) => extract[Int](JsonMethods.parse(text) \ "deleted")
       case (status, text, request) if List(404, 409).contains(status) => 0
       case (status, text, request) => throw HttpStatusException(status, text, request)
