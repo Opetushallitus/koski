@@ -65,8 +65,8 @@ Lähdekoodissa [MockUsers](src/main/scala/fi/oph/koski/koskiuser/MockUsers.scala
 Nämä ovat keskeiset Koski-järjestelmässä käytettävät teknologiat. Lista kuvaa järjestelmän nykytilaa ja muuttuu matkan varrella
 tarpeen mukaan.
 
-- PostgreSQL 12.2 -tietokanta
-- Elasticsearch 6.8 -hakuindeksi
+- PostgreSQL 12.3 -tietokanta
+- Elasticsearch 7.9 -hakuindeksi
 - Palvelinteknologiat
   - Scala 2.12 -ohjelmointikieli ja -kääntäjä
   - Scalatra-web-framework

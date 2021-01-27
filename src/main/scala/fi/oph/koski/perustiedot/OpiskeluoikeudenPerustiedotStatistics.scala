@@ -90,7 +90,7 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: ElasticSearchIndex) {
         """.stripMargin)
     )
     result.map { r =>
-      val total = extract[Int](r \ "hits" \ "total")
+      val total = extract[Int](r \ "hits" \ "total" \ "value")
       val aggs = extract[JValue](r \ "aggregations")
       val oppilaitosTotal = extract[Int](aggs \ "oppilaitos_total" \ "value")
       (oppilaitosTotal, OpiskeluoikeudetTyypeittäin(total, extract[List[Tyyppi]](aggs \ "tyyppi" \ "buckets", ignoreExtras = true)))

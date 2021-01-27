@@ -1,7 +1,6 @@
 package fi.oph.koski.perustiedot
 
 import java.time.LocalDate
-
 import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.henkilo.TestingException
 import fi.oph.koski.http.KoskiErrorCategory
@@ -74,7 +73,7 @@ class OpiskeluoikeudenPerustiedotRepository(
 
     val suoritusFilter = suoritusFilters match {
       case Nil => Nil
-      case filters => List(nestedFilter("suoritukset", ElasticSearch.allFilter(filters)))
+      case filters => List(ElasticSearch.nestedFilter("suoritukset", ElasticSearch.allFilter(filters)))
     }
 
     val elasticFilters: List[Map[String, Any]] = filters.flatMap {
@@ -85,24 +84,22 @@ class OpiskeluoikeudenPerustiedotRepository(
       case OpiskeluoikeudenTyyppi(tyyppi) => List(Map("term" -> Map("tyyppi.koodiarvo" -> tyyppi.koodiarvo)))
       case OpiskeluoikeudenTila(tila) =>
         List(
-          nestedFilter("tilat", Map(
-            "bool" -> Map(
-              "must" -> List(
-                Map("term" -> Map("tilat.tila.koodiarvo" -> tila.koodiarvo)),
-                Map("range" -> Map("tilat.alku" -> Map("lte" -> "now/d", "format" -> "yyyy-MM-dd"))),
-                ElasticSearch.anyFilter(List(
-                  Map("range" -> Map("tilat.loppu" -> Map("gte" -> "now/d", "format" -> "yyyy-MM-dd"))),
-                  Map("bool" -> Map(
-                    "must_not" -> Map(
-                      "exists" -> Map(
-                        "field" -> "tilat.loppu"
-                      )
+          ElasticSearch.nestedFilter("tilat",
+            ElasticSearch.allFilter(List(
+              Map("term" -> Map("tilat.tila.koodiarvo" -> tila.koodiarvo)),
+              Map("range" -> Map("tilat.alku" -> Map("lte" -> "now/d", "format" -> "yyyy-MM-dd"))),
+              ElasticSearch.anyFilter(List(
+                Map("range" -> Map("tilat.loppu" -> Map("gte" -> "now/d", "format" -> "yyyy-MM-dd"))),
+                ElasticSearch.noneFilter(List(
+                  Map(
+                    "exists" -> Map(
+                      "field" -> "tilat.loppu"
                     )
-                  ))
+                  )
                 ))
-              )
-            )
-          ))
+              ))
+            ))
+          )
         )
 
       case OpiskeluoikeusAlkanutAikaisintaan(day) =>
@@ -130,19 +127,12 @@ class OpiskeluoikeudenPerustiedotRepository(
     indexer.index.runSearch(doc)
       .map{ response =>
         OpiskeluoikeudenPerustiedotResponse(
-          Some(extract[Int](response \ "hits" \ "total")),
+          Some(extract[Int](response \ "hits" \ "total" \ "value")),
           extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[OpiskeluoikeudenPerustiedot](j \ "_source", ignoreExtras = true)).map(pt => pt.copy(tilat = pt.tilat.map(tilat => vainAktiivinen(tilat))))
         )
       }
       .getOrElse(OpiskeluoikeudenPerustiedotResponse(None, Nil))
   }
-
-  private def nestedFilter(path: String, query: Map[String, AnyRef]) = Map(
-    "nested" -> Map(
-      "path" -> path,
-      "query" -> query
-    )
-  )
 
   private def vainAktiivinen(tilat: List[OpiskeluoikeusJaksonPerustiedot]) = {
     tilat.reverse.find(!_.alku.isAfter(LocalDate.now)).toList
@@ -175,10 +165,10 @@ class OpiskeluoikeudenPerustiedotRepository(
       throw new TestingException("Testing error handling")
     }
 
-    val filters = List(nameFilter(hakusana)) ++ oppilaitosFilter(session) ++ mitätöityFilter
+    val filters = nameFilter(hakusana) ++ oppilaitosFilter(session) ++ mitätöityFilter
     val doc = toJValue(Map(
       "_source" -> "henkilö.oid",
-      "query" -> Map("bool" -> Map("must" -> filters)),
+      "query" -> ElasticSearch.allFilter(filters),
       "aggregations" -> Map("oids" -> Map("terms" -> Map("field" -> "henkilö.oid.keyword")))
     ))
 
@@ -210,12 +200,12 @@ class OpiskeluoikeudenPerustiedotRepository(
   }
 
   private def mitätöityFilter: List[Map[String, Any]] = List(
-    Map("bool" -> Map("must_not" -> nestedFilter("tilat", Map(
-      "bool" -> Map(
-        "must" -> List(
-          Map("term" -> Map("tilat.tila.koodiarvo" -> "mitatoity"))
-        )
-    ))))))
+    ElasticSearch.noneFilter(List(
+      ElasticSearch.nestedFilter("tilat", ElasticSearch.allFilter(List(
+        Map("term" -> Map("tilat.tila.koodiarvo" -> "mitatoity"))
+      )))
+    ))
+  )
 
   private def nameFilter(hakusana: String) =
     indexer.index.analyze(hakusana).map { namePrefix =>

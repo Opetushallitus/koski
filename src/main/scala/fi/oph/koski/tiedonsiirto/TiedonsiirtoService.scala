@@ -78,7 +78,6 @@ class TiedonsiirtoService(
   val index = new ElasticSearchIndex(
     elastic = elastic,
     name = "tiedonsiirto",
-    legacyName = "koski-index",
     mappingVersion = 2,
     mapping = TiedonsiirtoService.mapping,
     settings = TiedonsiirtoService.settings,
