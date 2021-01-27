@@ -1,6 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
+import fi.oph.scalaschema.annotation.Description
 
 trait OpiskeluoikeudenLisätiedot
 
@@ -48,4 +49,16 @@ trait Majoitusetuinen {
 
 trait Kuljetusetuinen {
   def kuljetusetu: Option[Aikajakso]
+}
+
+trait MaksuttomuusTieto extends OpiskeluoikeudenLisätiedot {
+  import mojave._
+  def maksuttomuus: Option[List[Maksuttomuus]]
+  def oikeuttaMaksuttomuuteenPidennetty: Option[List[MaksuttomuuttaPidennetty]]
+
+  final def withMaksuttomus(maksuttomuus: Option[List[Maksuttomuus]]): MaksuttomuusTieto =
+    shapeless.lens[MaksuttomuusTieto].field[Option[List[Maksuttomuus]]]("maksuttomuus").set(this)(maksuttomuus)
+
+  final def withOikeuttaMaksuttomuuteenPidennetty(oikeuttaMaksuttomuuteenPidennetty: Option[List[MaksuttomuuttaPidennetty]]): MaksuttomuusTieto =
+    shapeless.lens[MaksuttomuusTieto].field[Option[List[MaksuttomuuttaPidennetty]]]("oikeuttaMaksuttomuuteenPidennetty").set(this)(oikeuttaMaksuttomuuteenPidennetty)
 }

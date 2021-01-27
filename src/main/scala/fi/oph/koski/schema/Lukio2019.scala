@@ -42,7 +42,12 @@ case class LukionOppimääränSuoritus2019(
   @KoodistoKoodiarvo("lukionoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"),
   ryhmä: Option[String] = None
-) extends LukionPäätasonSuoritus2019 with Ryhmällinen with KoulusivistyskieliKieliaineesta with SuoritettavissaErityisenäTutkintona2019 with Oppimäärällinen
+) extends LukionPäätasonSuoritus2019
+  with Ryhmällinen
+  with KoulusivistyskieliKieliaineesta
+  with SuoritettavissaErityisenäTutkintona2019
+  with Oppimäärällinen
+  with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
 
 @Title("Lukion oppiaineiden oppimäärien suoritus 2019")
 @Description("Lukion oppiaineiden oppimäärien suoritustiedot 2019")

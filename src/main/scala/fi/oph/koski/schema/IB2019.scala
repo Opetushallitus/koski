@@ -21,7 +21,16 @@ case class PreIBSuoritus2019(
   @KoodistoKoodiarvo("preiboppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("preiboppimaara", koodistoUri = "suorituksentyyppi"),
   ryhmä: Option[String] = None
-) extends IBPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen with Todistus with Arvioinniton with PuhviKokeellinen2019 with SuullisenKielitaidonKokeellinen2019 with Ryhmällinen with OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus
+) extends IBPäätasonSuoritus
+  with Toimipisteellinen
+  with Suorituskielellinen
+  with Todistus
+  with Arvioinniton
+  with PuhviKokeellinen2019
+  with SuullisenKielitaidonKokeellinen2019
+  with Ryhmällinen
+  with OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus
+  with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
 
 trait PreIBSuorituksenOsasuoritus2019 extends Suoritus with OpintopistelaajuuksienYhteislaskennallinenSuoritus
 

@@ -120,6 +120,7 @@ class KoskiValidator(
   private def updateFields(oo: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSpecificSession): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
     fillMissingOrganisations(oo)
       .flatMap(addKoulutustyyppi)
+      .flatMap(MaksuttomuusValidation.validateAndFillJaksot)
       .map(fillPerusteenNimi)
       .map(fillLaajuudet)
       .map(fillVieraatKielet)

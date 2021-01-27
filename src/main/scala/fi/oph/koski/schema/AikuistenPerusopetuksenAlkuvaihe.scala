@@ -25,7 +25,12 @@ case class AikuistenPerusopetuksenAlkuvaiheenSuoritus(
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("aikuistenperusopetuksenoppimaaranalkuvaihe")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("aikuistenperusopetuksenoppimaaranalkuvaihe", koodistoUri = "suorituksentyyppi")
-) extends AikuistenPerusopetuksenPäätasonSuoritus with Suoritus with Todistus with Arvioinniton with SuoritustavallinenPerusopetuksenSuoritus
+) extends AikuistenPerusopetuksenPäätasonSuoritus
+  with Suoritus
+  with Todistus
+  with Arvioinniton
+  with SuoritustavallinenPerusopetuksenSuoritus
+  with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
 
 @Description("Aikuisten perusopetuksen alkuvaiheen tunnistetiedot")
 case class AikuistenPerusopetuksenAlkuvaihe(

@@ -43,8 +43,10 @@ case class InternationalSchoolOpiskeluoikeusjakso(
 case class InternationalSchoolOpiskeluoikeudenLisätiedot(
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
   @Description("Rahoituksen laskennassa käytettävä tieto.")
-  ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None
-) extends OpiskeluoikeudenLisätiedot with ErityisenKoulutustehtävänJaksollinen with Ulkomaajaksollinen
+  ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
+  maksuttomuus: Option[List[Maksuttomuus]] = None,
+  oikeuttaMaksuttomuuteenPidennetty: Option[List[MaksuttomuuttaPidennetty]] = None
+) extends OpiskeluoikeudenLisätiedot with ErityisenKoulutustehtävänJaksollinen with Ulkomaajaksollinen with MaksuttomuusTieto
 
 trait InternationalSchoolVuosiluokanSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Suorituskielellinen {
   @KoodistoKoodiarvo("internationalschoolvuosiluokka")
@@ -97,7 +99,7 @@ case class DiplomaVuosiluokanSuoritus(
   @KoodistoKoodiarvo("internationalschooldiplomavuosiluokka")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("internationalschooldiplomavuosiluokka", koodistoUri = "suorituksentyyppi"),
   override val osasuoritukset: Option[List[DiplomaIBOppiaineenSuoritus]] = None
-) extends InternationalSchoolVuosiluokanSuoritus
+) extends InternationalSchoolVuosiluokanSuoritus with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
 
 trait InternationalSchoolLuokkaAste extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton {
   @KoodistoUri("internationalschoolluokkaaste")

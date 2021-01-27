@@ -129,6 +129,8 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
   def withOppilaitos(oppilaitos: Oppilaitos): KoskeenTallennettavaOpiskeluoikeus
   final def withTila(tila: OpiskeluoikeudenTila): KoskeenTallennettavaOpiskeluoikeus =
     shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[OpiskeluoikeudenTila]("tila").set(this)(tila)
+  final def withLisätiedot(lisätiedot: Option[OpiskeluoikeudenLisätiedot]): KoskeenTallennettavaOpiskeluoikeus =
+    shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[Option[OpiskeluoikeudenLisätiedot]]("lisätiedot").set(this)(lisätiedot)
 }
 
 trait TukimuodollinenOpiskeluoikeus extends Opiskeluoikeus {

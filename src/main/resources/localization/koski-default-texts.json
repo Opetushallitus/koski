@@ -1511,5 +1511,8 @@
   "description:Käytä aina merkkijonoa vstsuuntautumisopinnot" : "Käytä aina merkkijonoa vstsuuntautumisopinnot",
   "description:Laajuus lasketaan yhteen opintokokonaisuuksien laajuuksista..." : "Laajuus lasketaan yhteen opintokokonaisuuksien laajuuksista automaattisesti tietoja siirrettäessä",
   "description:Koulutuksen opetuskieli" : "Koulutuksen opetuskieli",
-  "Valinnaiset suuntautumisopinnot" : "Valinnaiset suuntautumisopinnot"
+  "Valinnaiset suuntautumisopinnot" : "Valinnaiset suuntautumisopinnot",
+  "Maksuttomuus" : "Maksuttomuus",
+  "Oikeutta maksuttomuuteen pidennetty" : "Oikeutta maksuttomuuteen pidennetty",
+  "Maksuton" : "Maksuton"
 }
