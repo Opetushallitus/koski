@@ -7,6 +7,7 @@ import { t } from "./i18n/i18n"
 declare global {
   interface Window {
     environment: string | undefined
+    virkailija_raamit_set_to_load: boolean | undefined
   }
 }
 
@@ -25,7 +26,9 @@ async function main() {
 
   ReactDOM.render(
     <React.Suspense fallback={<></>}>
-      {runningLocally && <LocalRaamit user={user} />}
+      {runningLocally && !window.virkailija_raamit_set_to_load && (
+        <LocalRaamit user={user} />
+      )}
       {hasValpasAccess(user) ? (
         <ValpasApp />
       ) : isLoggedIn(user) ? (
