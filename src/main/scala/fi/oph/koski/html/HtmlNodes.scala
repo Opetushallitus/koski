@@ -81,13 +81,13 @@ case object Virkailija extends Raamit {
   override def toString: String = "virkailija"
 }
 
-case class Oppija(session: Option[KoskiSession], request: RichRequest, shibbolethUrl: String) extends Raamit {
+case class Oppija(session: Option[KoskiSession], request: RichRequest, loginUrl: String) extends Raamit {
   override def script: NodeSeq = {
     <script>
       {Unparsed(s"""
         Service = {
           getUser: function() { return Promise.resolve($user) },
-          login: function() { window.location = '$shibbolethUrl' },
+          login: function() { window.location = '$loginUrl' },
           logout: function() { window.location = '/koski/user/logout' }
         }
       """)}

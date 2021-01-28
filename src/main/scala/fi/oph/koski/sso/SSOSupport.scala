@@ -1,7 +1,6 @@
 package fi.oph.koski.sso
 
 import java.net.{URI, URLDecoder, URLEncoder}
-
 import com.typesafe.config.Config
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AuthenticationUser, UserAuthenticationContext}
@@ -73,8 +72,12 @@ trait SSOSupport extends ScalatraBase with Logging {
     removeCookie("eisuorituksia")
   }
 
-  def casServiceUrl = {
-    koskiRoot + "/cas"
+  def casVirkailijaServiceUrl = {
+    koskiRoot + "/cas/virkailija"
+  }
+
+  def casOppijaServiceUrl = {
+    koskiRoot + "/cas/oppija"
   }
 
   def redirectAfterLogin = {
@@ -83,20 +86,37 @@ trait SSOSupport extends ScalatraBase with Logging {
     redirect(returnUrlCookie.getOrElse("/"))
   }
 
-  def redirectToLogin = {
+  def redirectToVirkailijaLogin = {
     response.addCookie(Cookie("koskiReturnUrl", currentUrl)(CookieOptions(secure = isHttps, path = "/", maxAge = 60, httpOnly = true)))
     if (ssoConfig.isCasSsoUsed) {
-      redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/login?service=" + casServiceUrl)
+      redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/login?service=" + casVirkailijaServiceUrl)
     } else {
       redirect(localLoginPage)
     }
   }
 
-  def redirectToLogout = {
+  def redirectToOppijaLogin = {
+    response.addCookie(Cookie("koskiReturnUrl", currentUrl)(CookieOptions(secure = isHttps, path = "/", maxAge = 60, httpOnly = true)))
+    if (ssoConfig.isCasSsoUsed) {
+      redirect(application.config.getString("opintopolku.oppija.url") + "/cas-oppija/login?service=" + casOppijaServiceUrl + "&valtuudet=false")
+    } else {
+      redirect(localOppijaLoginPage + "?onSuccess=" + URLEncoder.encode(params.getOrElse("redirect", ""), "UTF-8"))
+    }
+  }
+
+  def redirectToVirkailijaLogout = {
     if (ssoConfig.isCasSsoUsed) {
       redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/logout?service=" + koskiRoot + "/virkailija")
     } else {
       redirect(localLoginPage)
+    }
+  }
+
+  def redirectToOppijaLogout(redirectTarget: String = koskiRoot) = {
+    if (ssoConfig.isCasSsoUsed) {
+      redirect(SSOConfigurationOverride.getValue(application.config, "opintopolku.oppija.url") + "/cas-oppija/logout?service=" + redirectTarget)
+    } else {
+      redirect(redirectTarget)
     }
   }
 
@@ -105,6 +125,7 @@ trait SSOSupport extends ScalatraBase with Logging {
   def ssoConfig = SSOConfig(application.config)
 
   def localLoginPage = "/login"
+  def localOppijaLoginPage = "/login/oppija/local"
 
   // don't set cookie domain for localhost (so that local Koski works with non-localhost IP address, e.g. phone in the same wifi)
   private def cookieDomains: Iterable[String] =
@@ -115,5 +136,21 @@ trait SSOSupport extends ScalatraBase with Logging {
 }
 
 case class SSOConfig(config: Config) {
-  def isCasSsoUsed = config.getString("opintopolku.virkailija.url") != "mock"
+  def isCasSsoUsed = SSOConfigurationOverride.getValue(config, "login.security") != "mock"
+}
+
+object SSOConfigurationOverride {
+  var overrides: Map[String, String] = Map.empty
+
+  def overrideKey(key: String, value: String): Unit = {
+    overrides = overrides + (key -> value)
+  }
+
+  def clearOverrides = {
+    overrides = Map.empty
+  }
+
+  def getValue(config: Config, key: String): String = {
+    overrides.get(key).getOrElse(config.getString(key))
+  }
 }

@@ -25,9 +25,8 @@ class MyDataReactServlet(implicit val application: KoskiApplication) extends Sca
     val lang = langFromCookie.getOrElse(langFromDomain)
 
     sessionOrStatus match {
-      case Right(_) if shibbolethCookieFound =>
-      case Left(_) if shibbolethCookieFound => redirect(getLoginURL(getCurrentURL))
-      case _ => redirect(getShibbolethLoginURL(getCurrentURL, lang))
+      case Right(_) =>
+      case Left(_) => redirect(getCasLoginURL(getCurrentURL, lang))
     }
   }
 

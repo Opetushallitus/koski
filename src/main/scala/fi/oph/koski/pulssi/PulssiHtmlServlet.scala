@@ -16,7 +16,7 @@ class PulssiHtmlServlet(implicit val application: KoskiApplication) extends Scal
 
   get("/raportti") {
     if (!isAuthenticated) {
-      redirectToLogin
+      redirectToVirkailijaLogin
     }
     if (koskiSessionOption.exists(_.hasGlobalReadAccess)) {
       raportti

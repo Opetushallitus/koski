@@ -29,7 +29,7 @@ import fi.oph.koski.pulssi.{PulssiHtmlServlet, PulssiServlet}
 import fi.oph.koski.raportit.RaportitServlet
 import fi.oph.koski.raportointikanta.{RaportointikantaService, RaportointikantaServlet}
 import fi.oph.koski.servlet._
-import fi.oph.koski.sso.{CasServlet, LocalLoginServlet, SSOConfig, ShibbolethLoginServlet}
+import fi.oph.koski.sso.{CasServlet, LocalLoginServlet, SSOConfig}
 import fi.oph.koski.suoritusjako.{SuoritusjakoServlet, SuoritusjakoServletV2}
 import fi.oph.koski.sure.SureServlet
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
@@ -63,7 +63,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     mount("/", new IndexServlet)
     mount("/omattiedot", new OmatTiedotHtmlServlet)
     mount("/login", new VirkailijaLoginPageServlet)
-    mount("/login/shibboleth", new OppijaLoginPageServlet)
+    mount("/login/oppija", new OppijaLoginPageServlet)
     mount("/pulssi", new PulssiHtmlServlet)
     mount("/documentation", new RedirectServlet("/dokumentaatio", true))
     mount("/dokumentaatio", new DocumentationServlet)
@@ -116,9 +116,6 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     }
     mount("/user/logout", new LogoutServlet)
     mount("/user/redirect", new LogoutRedirectServlet)
-    if (application.features.shibboleth) {
-      mount("/user/shibbolethlogin", ShibbolethLoginServlet(application))
-    }
     mount("/cas", new CasServlet)
     mount("/cache", new CacheServlet)
 

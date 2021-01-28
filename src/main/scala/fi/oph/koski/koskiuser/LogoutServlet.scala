@@ -20,33 +20,15 @@ class LogoutServlet(implicit val application: KoskiApplication) extends Virkaili
     removeUserCookie
 
     if (virkailija) {
-      redirectToLogout
+      redirectToVirkailijaLogout
     } else {
       params.get("target") match {
-        case Some(target) => luvanluovutusLogout(target)
-        case None => kansalaisLogout
+        case Some(target) if target != "/" => {
+          redirectToOppijaLogout(target)
+        }
+        case _ => redirectToOppijaLogout(koskiRoot)
       }
     }
-  }
-
-  private def kansalaisLogout = {
-    val shibbolethLogoutUrl = LogoutServerConfiguration.shibbolethLogoutUrl(application, langFromDomain)
-    if (shibbolethLogoutUrl.isEmpty) {
-      redirectToFrontpage
-    } else {
-      redirect(shibbolethLogoutUrl)
-    }
-  }
-
-  private def luvanluovutusLogout(target: String) = {
-    val redirectToTargetUrl = "/koski/user/redirect?target=" + encode(target)
-    val shibbolethLogoutUrl = LogoutServerConfiguration.configurableShibbolethLogoutUrl(application, langFromDomain)
-    val url = if (shibbolethLogoutUrl.isEmpty) {
-      redirectToTargetUrl
-    } else {
-      shibbolethLogoutUrl + encode(redirectToTargetUrl)
-    }
-    redirect(url)
   }
 
   private def encode(param: String) = URLEncoder.encode(param, "UTF-8")
@@ -55,13 +37,8 @@ class LogoutServlet(implicit val application: KoskiApplication) extends Virkaili
 object LogoutServerConfiguration {
   var overrides: Map[String, String] = Map.empty
 
-  def shibbolethLogoutUrl(application: KoskiApplication, lang: String) = {
+  def logoutUrl(application: KoskiApplication, lang: String) = {
     val key = "logout.url." + lang
-    overrides.get(key).getOrElse(application.config.getString(key))
-  }
-
-  def configurableShibbolethLogoutUrl(application: KoskiApplication, lang: String) = {
-    val key = "configurable.logout.url." + lang
     overrides.get(key).getOrElse(application.config.getString(key))
   }
 

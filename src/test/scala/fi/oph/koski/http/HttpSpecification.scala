@@ -48,7 +48,7 @@ trait HttpSpecification extends HttpTester with Assertions with Matchers {
   }
 
   def kansalainenLoginHeaders(hetu: String): List[(String, String)] = {
-    get("user/shibbolethlogin", headers = List("hetu" -> hetu, "security" -> "mock")) {
+    get("cas/oppija", headers = List("hetu" -> hetu, "security" -> "mock")) {
       verifyResponseStatusOk(302)
       val cookie = response.headers("Set-Cookie").find(x => x.startsWith("koskiOppija")).get
       List("Cookie" -> cookie)

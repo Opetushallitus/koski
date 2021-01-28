@@ -8,9 +8,10 @@ class OmatTiedotHtmlServlet(implicit val application: KoskiApplication) extends 
   before("/") {
     setLangCookieFromDomainIfNecessary
     sessionOrStatus match {
-      case Right(_) if shibbolethCookieFound =>
-      case Left(_) if shibbolethCookieFound => redirect("/user/shibbolethlogin")
-      case _ => redirect(shibbolethUrl)
+      case Right(_) =>
+      case Left(_) => {
+        redirectToOppijaLogin
+      }
     }
   }
 

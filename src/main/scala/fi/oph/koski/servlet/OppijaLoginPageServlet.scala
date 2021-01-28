@@ -10,21 +10,15 @@ import scala.xml.Unparsed
 
 class OppijaLoginPageServlet(implicit val application: KoskiApplication) extends ScalatraServlet with OppijaHtmlServlet with SSOSupport {
   get("/") {
-    val shibbolethSecurity = if (Environment.usesAwsSecretsManager) {
-      ShibbolethSecret.fromSecretsManager
-    } else {
-      ShibbolethSecret.fromConfig(application.config)
-    }
-    if (application.features.shibboleth && shibbolethSecurity == "mock") {
-      htmlIndex(
-        scriptBundleName = "koski-korhopankki.js",
-        scripts = <script id="auth">{Unparsed(s"window.mockUsers=$oppijat")}</script>,
-        responsive = true
-      )
-    } else {
-      logger.error("Mock shibboleth in use, please check shibboleth.url config")
-      haltWithStatus(KoskiErrorCategory.notFound())
-    }
+    redirectToOppijaLogin
+  }
+
+  get("/local") {
+    htmlIndex(
+      scriptBundleName = "koski-korhopankki.js",
+      scripts = <script id="auth">{Unparsed(s"window.mockUsers=$oppijat")}</script>,
+      responsive = true
+    )
   }
 
   private def oppijat = MockOppijat.defaultOppijat.sortBy(_.henkilö.etunimet).flatMap { o =>

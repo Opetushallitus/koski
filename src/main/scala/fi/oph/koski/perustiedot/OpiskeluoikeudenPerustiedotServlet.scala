@@ -13,7 +13,6 @@ class OpiskeluoikeudenPerustiedotServlet(implicit val application: KoskiApplicat
   get("/") {
     renderEither[PaginatedResponse[OpiskeluoikeudenPerustiedotResponse]]({
       val sort = SortOrder.parseSortOrder(params.get("sort"), Ascending("nimi"))
-
       val thing: Either[HttpStatus, PaginatedResponse[OpiskeluoikeudenPerustiedotResponse]] = OpiskeluoikeusQueryFilter.parse(multiParams)(application.koodistoViitePalvelu, application.organisaatioService, koskiSession) match {
         case Right(filters) =>
           val pagination: PaginationSettings = paginationSettings.getOrElse(PaginationSettings(0, 100))
@@ -21,7 +20,8 @@ class OpiskeluoikeudenPerustiedotServlet(implicit val application: KoskiApplicat
           Right(PaginatedResponse(Some(pagination), result, result.tiedot.length))
         case Left(HttpStatus(404, _)) =>
           Right(PaginatedResponse(None, OpiskeluoikeudenPerustiedotResponse(None, List[OpiskeluoikeudenPerustiedot]()), 0))
-        case Left(err) => Left(err)
+        case Left(err) =>
+          Left(err)
       }
       thing
     })

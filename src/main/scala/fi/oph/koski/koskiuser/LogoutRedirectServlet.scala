@@ -9,6 +9,7 @@ class LogoutRedirectServlet(implicit val koskiApplication: KoskiApplication) ext
   /**
     * Simple servlet for redirecting to whatever URL is passed as a parameter.
     * Required for Shibboleth logout, as it will only redirect to whitelisted addresses.
+    * 15.1.2021: Possibly not required to CAS-Oppija logout, which we're now migrating to.
     */
 
   private val mydataconfig: MyDataConfig = new MyDataConfig {
