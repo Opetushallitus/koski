@@ -6,8 +6,6 @@ import {
   getLogin,
   hasValpasAccess,
   isLoggedIn,
-  redirectToLoginReturnUrl,
-  User,
 } from "./state/auth"
 import { t } from "./i18n/i18n"
 
@@ -20,20 +18,20 @@ declare global {
 
 const runningLocally = window.environment == "local"
 
-// TODO: Make external login great again
-function showLogin() {
+const Login = () => {
+  const LocalLoginApp = React.lazy(() => import("./views/LoginApp"))
   const config = getLogin()
-  switch (config.type) {
-    case "local":
-      return showLocalLogin()
-    case "external":
-      return config.redirectToVirkailijaLogin()
-  }
-}
 
-async function showLocalLogin() {
-  const { LoginApp } = await import("./views/LoginApp")
-  ReactDOM.render(<LoginApp onLogin={main} />, document.getElementById("app"))
+  if (config.type === "external") {
+    config.redirectToVirkailijaLogin()
+    return null
+  }
+
+  return (
+    <React.Suspense fallback={<></>}>
+      <LocalLoginApp onLogin={main} />
+    </React.Suspense>
+  )
 }
 
 async function main() {
@@ -43,7 +41,6 @@ async function main() {
     () => import("./components/navigation/LocalRaamit")
   )
 
-  const LoginApp = React.lazy(() => import("./views/LoginApp"))
   const ValpasApp = React.lazy(() => import("./views/ValpasApp"))
   const ErrorView = React.lazy(() => import("./views/ErrorView"))
 
@@ -60,7 +57,7 @@ async function main() {
           message={t("login__ei_valpas-oikeuksia_viesti")}
         />
       ) : (
-        <LoginApp onLogin={main} />
+        <Login />
       )}
     </React.Suspense>,
     document.getElementById("app")

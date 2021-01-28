@@ -13,5 +13,8 @@ export const buildParamString = (params?: object) =>
 
 export const publicUrl = () => process.env.PUBLIC_URL || "/"
 
-export const absoluteUrl = (path?: string) =>
-  location.host + publicUrl() + (path || "")
+export const absoluteValpasUrl = (path?: string) =>
+  location.origin + publicUrl() + (path || "")
+
+export const absoluteKoskiUrl = (path?: string) =>
+  (process.env.KOSKI_HOST || location.origin) + "/koski" + (path || "")

@@ -24,6 +24,13 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
   private val casVirkailijaClient = new CasClient(application.config.getString("opintopolku.virkailija.url") + "/cas", Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
   private val casOppijaClient = new CasClient(application.config.getString("opintopolku.oppija.url") + "/cas-oppija", Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
   private val koskiSessions = application.koskiSessionRepository
+  private val mockUsernameForAllVirkailijaTickets = {
+    if (application.config.getString("opintopolku.virkailija.url") == "mock" && application.config.hasPath("mock.casClient.usernameForAllVirkailijaTickets")) {
+      Some(application.config.getString("mock.casClient.usernameForAllVirkailijaTickets"))
+    } else {
+      None
+    }
+  }
 
   protected def onSuccess: String = params.get("onSuccess").getOrElse("/omattiedot")
   protected def onFailure: String = params.get("onFailure").getOrElse("/virhesivu")
@@ -177,17 +184,19 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
   }
 
   def validateVirkailijaServiceTicket(ticket: String): Username = {
-    val attrs: Either[Throwable, Username] = casVirkailijaClient.validateServiceTicket(casVirkailijaServiceUrl)(ticket, casVirkailijaClient.decodeVirkailijaUsername).handleWith {
-      case NonFatal(t) => Task.fail(new CasClientException(s"Failed to validate service ticket $t"))
-    }.unsafePerformSyncAttemptFor(10000).toEither
-    logger.debug(s"attrs response: $attrs")
-    attrs match {
-      case Right(attrs) => {
-        attrs
+    mockUsernameForAllVirkailijaTickets.getOrElse({
+      val attrs: Either[Throwable, Username] = casVirkailijaClient.validateServiceTicket(casVirkailijaServiceUrl)(ticket, casVirkailijaClient.decodeVirkailijaUsername).handleWith {
+        case NonFatal(t) => Task.fail(new CasClientException(s"Failed to validate service ticket $t"))
+      }.unsafePerformSyncAttemptFor(10000).toEither
+      logger.debug(s"attrs response: $attrs")
+      attrs match {
+        case Right(attrs) => {
+          attrs
+        }
+        case Left(t) => {
+          throw new CasClientException(s"Unable to process CAS Virkailija login request, username cannot be resolved from ticket $ticket")
+        }
       }
-      case Left(t) => {
-        throw new CasClientException(s"Unable to process CAS Virkailija login request, username cannot be resolved from ticket $ticket")
-      }
-    }
+    })
   }
 }

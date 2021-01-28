@@ -103,3 +103,22 @@ käsittelyä varten. Jos päivität plugin-koodia, ota muutokset käyttöön pai
                                                   $ cd ../..
                                                   $ npm upgrade parcel-plugin-skip-external-assets
 ```
+
+## CAS-kirjautumisen testaaminen lokaalisti
+
+Käynnistä Koski-backend seuraavalla lisäkonfiguraatiolla, jossa **etunimi.sukunimi** on sama käyttäjänimi kuin esim. untuvapolussa:
+
+```
+mock.casClient.usernameForAllVirkailijaTickets="etunimi.sukunimi"
+```
+
+Lisää tunnuksesi tiedostoon `src/main/scala/fi/oph/koski/valpas/valpasuser/ValpasMockUsers.scala`.
+
+Lisää **.env** -tiedostoon seuraavat rivit:
+
+```
+OPINTOPOLKU_VIRKAILIJA_URL=https://virkailija.untuvaopintopolku.fi
+KOSKI_HOST=http://localhost:7021
+```
+
+Parcel ei välttämättä tajua ympäristömuuttujien vaihtuneen. Korjaa ongelma ajamalla `npm run clean`, joka tyhjentää välimuistin.
