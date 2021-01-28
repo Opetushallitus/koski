@@ -1,12 +1,12 @@
 package fi.oph.koski.mydata
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.AuthenticationSupport
+import fi.oph.koski.koskiuser.KoskiAuthenticationSupport
 import fi.oph.koski.log.Logging
 import fi.oph.koski.servlet._
 
 class MyDataServlet(implicit val application: KoskiApplication) extends ApiServlet
-  with AuthenticationSupport with Logging with NoCache with MyDataSupport with LanguageSupport {
+  with KoskiAuthenticationSupport with Logging with NoCache with MyDataSupport with LanguageSupport {
 
   get("/kumppani/:memberCode") {
     val conf = getConfigForMember()

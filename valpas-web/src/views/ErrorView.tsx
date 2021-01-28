@@ -7,7 +7,7 @@ export type ErrorViewProps = {
   message: string
 }
 
-export const ErrorView = (props: ErrorViewProps) => (
+export default (props: ErrorViewProps) => (
   <Page id="error-view">
     <Heading>{props.title}</Heading>
     <p>{props.message}</p>

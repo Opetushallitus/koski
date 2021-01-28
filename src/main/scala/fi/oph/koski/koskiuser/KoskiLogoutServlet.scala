@@ -4,9 +4,9 @@ import java.net.URLEncoder
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.servlet.{VirkailijaHtmlServlet}
-import fi.oph.koski.sso.SSOSupport
+import fi.oph.koski.sso.KoskiSSOSupport
 
-class LogoutServlet(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with SSOSupport {
+class KoskiLogoutServlet(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with KoskiSSOSupport {
   get("/") {
     logger.info("Logged out")
 
@@ -26,7 +26,7 @@ class LogoutServlet(implicit val application: KoskiApplication) extends Virkaili
         case Some(target) if target != "/" => {
           redirectToOppijaLogout(target)
         }
-        case _ => redirectToOppijaLogout(koskiRoot)
+        case _ => redirectToOppijaLogout(serviceRoot)
       }
     }
   }

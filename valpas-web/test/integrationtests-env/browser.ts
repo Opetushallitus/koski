@@ -114,6 +114,16 @@ export const loginAs = async (
 export const defaultLogin = async (initialPath: string) =>
   loginAs(initialPath, "valpas-helsinki", "valpas-helsinki")
 
+export const expectElementEventuallyVisible = async (selector: string) => {
+  eventually(async () => {
+    const elements = await driver.findElements(By.css(selector))
+    expect(
+      elements.length > 0,
+      `Element ${selector} expected to exist`
+    ).toBeTruthy()
+  })
+}
+
 export const expectElementVisible = async (selector: string) => {
   const elements = await driver.findElements(By.css(selector))
   expect(
@@ -128,4 +138,13 @@ export const expectElementNotVisible = async (selector: string) => {
     elements.length === 0,
     `Element ${selector} expected NOT to exist`
   ).toBeTruthy()
+}
+
+export const clickElement = async (selector: string) => {
+  const element = await $(selector)
+
+  expect (await element.isEnabled(),
+  `Element ${selector} expected to be enabled`)
+
+  await element.click()
 }

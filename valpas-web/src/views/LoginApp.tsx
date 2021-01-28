@@ -15,7 +15,7 @@ export type LoginAppProps = {
   onLogin: (user: User) => void
 }
 
-export const LoginApp = (props: LoginAppProps) => {
+export default (props: LoginAppProps) => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const login = useApiMethod(fetchLogin)

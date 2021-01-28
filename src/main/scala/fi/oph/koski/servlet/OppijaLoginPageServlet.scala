@@ -3,12 +3,12 @@ package fi.oph.koski.servlet
 import fi.oph.koski.config.{Environment, KoskiApplication, ShibbolethSecret}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.sso.SSOSupport
+import fi.oph.koski.sso.KoskiSSOSupport
 import org.scalatra.{EnvironmentKey, ScalatraServlet}
 
 import scala.xml.Unparsed
 
-class OppijaLoginPageServlet(implicit val application: KoskiApplication) extends ScalatraServlet with OppijaHtmlServlet with SSOSupport {
+class OppijaLoginPageServlet(implicit val application: KoskiApplication) extends ScalatraServlet with OppijaHtmlServlet with KoskiSSOSupport {
   get("/") {
     redirectToOppijaLogin
   }

@@ -2,10 +2,10 @@ package fi.oph.koski.organisaatio
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.{AuthenticationSupport, RequiresSession}
+import fi.oph.koski.koskiuser.{KoskiAuthenticationSupport, RequiresSession}
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
-class OrganisaatioServlet(implicit val application: KoskiApplication) extends ApiServlet with AuthenticationSupport with NoCache with RequiresSession {
+class OrganisaatioServlet(implicit val application: KoskiApplication) extends ApiServlet with KoskiAuthenticationSupport with NoCache with RequiresSession {
   private val organisaatioService = new OrganisaatioService(application)
 
   get("/hierarkia") {

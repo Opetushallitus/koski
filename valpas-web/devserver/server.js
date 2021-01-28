@@ -4,7 +4,7 @@ const express = require("express")
 const { createProxyMiddleware } = require("http-proxy-middleware")
 const path = require("path")
 
-const proxyPaths = ["/api", "/login", "/localization"]
+const proxyPaths = ["/api", "/login", "/localization", "/logout"]
 
 async function startServer({
   port,
