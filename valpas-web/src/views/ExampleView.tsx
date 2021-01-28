@@ -1,6 +1,4 @@
 import React, { useState } from "react"
-import { fetchHello } from "../api/api"
-import { useApiOnce } from "../api/apiHooks"
 import { ModalButtonGroup } from "../components/buttons/ModalButtonGroup"
 import { RaisedButton } from "../components/buttons/RaisedButton"
 import { Card, CardBody, CardHeader } from "../components/containers/cards"
@@ -17,7 +15,6 @@ import { t } from "../i18n/i18n"
 
 export const ExampleView = () => {
   const [modalVisible, setModalVisible] = useState(false)
-  const helloWorld = useApiOnce(fetchHello)
 
   return (
     <Page id="valpas-app">
@@ -32,18 +29,6 @@ export const ExampleView = () => {
       />
       <Heading>{t("title__Valpas")}-komponenttikirjasto</Heading>
 
-      <Card>
-        <CardHeader>API-testi</CardHeader>
-        <CardBody id="helloworld">
-          {helloWorld.state === "success"
-            ? helloWorld.data
-            : helloWorld.state === "error"
-            ? `Jokin reistailee: ${helloWorld.errors
-                .map((e) => e.message)
-                .join("; ")}`
-            : "Latailee..."}
-        </CardBody>
-      </Card>
       <Card>
         <CardHeader>Kortti</CardHeader>
         <CardBody>

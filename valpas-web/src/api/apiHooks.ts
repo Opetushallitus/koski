@@ -1,4 +1,4 @@
-import * as E from "fp-ts/lib/Either"
+import * as E from "fp-ts/Either"
 import { pipe } from "fp-ts/lib/function"
 import { useCallback, useEffect, useState } from "react"
 import { ApiFailure, ApiResponse, ApiSuccess } from "./apiFetch"
@@ -24,14 +24,20 @@ export const useApiOnce = <T>(fetchFn: () => Promise<ApiResponse<T>>) => {
  *
  */
 export type ApiMethodState<T> =
-  | { state: "initial" }
-  | { state: "loading" }
-  | ({ state: "success" } & ApiSuccess<T>)
-  | ({ state: "error" } & ApiFailure)
+  | ApiMethodStateInitial
+  | ApiMethodStateLoading
+  | ApiMethodStateSuccess<T>
+  | ApiMethodStateError
+
+export type ApiMethodStateInitial = { state: "initial" }
+export type ApiMethodStateLoading = { state: "loading" }
+export type ApiMethodStateSuccess<T> = { state: "success" } & ApiSuccess<T>
+export type ApiMethodStateError = { state: "error" } & ApiFailure
 
 export type ApiMethodHook<T, P extends any[]> = {
   call: (...args: P) => Promise<void>
   clear: () => void
+  flatMap: <R>(fn: (data: T) => R) => R | undefined
 } & ApiMethodState<T>
 
 export const useApiMethod = <T, P extends any[]>(
@@ -72,5 +78,12 @@ export const useApiMethod = <T, P extends any[]>(
     ...state,
     call,
     clear,
+    flatMap(fn) {
+      return state.state === "success" ? fn(state.data) : undefined
+    },
   }
 }
+
+export const isSuccessful = <T>(
+  state: ApiMethodState<T>
+): state is ApiMethodStateSuccess<T> => state.state === "success"

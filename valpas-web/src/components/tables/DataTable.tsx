@@ -30,14 +30,20 @@ export type Column = {
   filter?: DataFilter
 }
 
+/** Represents a piece of table data - a row */
 export type Datum = {
+  /** Unique identifier */
   key: string
+  /** List of values, length and order equals columns */
   values: Value[]
 }
 
 export type Value = {
+  /** Value for filtering and ordering */
   value: string | number
-  display?: React.ReactNode
+  /** Value for rendering */
+  display?: string | number
+  /** Icon alongside the value */
   icon?: React.ReactNode
 }
 

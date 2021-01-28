@@ -5,10 +5,6 @@ import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
 
 class ValpasApiServlet(implicit val application: KoskiApplication) extends ApiServlet with NoCache with RequiresValpasSession {
-  get("/hello") {
-    "Hello world!"
-  }
-
   get("/user") {
     valpasSession.user
   }

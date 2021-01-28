@@ -1,6 +1,7 @@
 import React from "react"
 import Cookie from "js-cookie"
 import { logWarning } from "../utils/log"
+import { LocalizedString } from "../state/types"
 
 export type TranslationId = string
 export type Translation = string
@@ -13,6 +14,7 @@ type LanguageRecord = Record<Language, Translation>
 
 type LocalizationMap = Record<TranslationId, LanguageRecord>
 
+type ParamsMap = Record<string, string | number>
 declare global {
   interface Window {
     valpasLocalizationMap: LocalizationMap
@@ -36,7 +38,7 @@ export const setLanguage = (newLang: Language) => {
   window.location.reload()
 }
 
-export const t = (id: TranslationId): Translation => {
+export const t = (id: TranslationId, params?: ParamsMap): Translation => {
   if (!id) {
     return ""
   }
@@ -53,11 +55,22 @@ export const t = (id: TranslationId): Translation => {
     return id
   }
 
-  return localizedString[usedLanguage]
+  const source = localizedString[usedLanguage]
+  return params ? replaceParams(source, params) : source
 }
+
+const replaceParams = (source: string, params: ParamsMap): string =>
+  Object.entries(params).reduce(
+    (str, [key, value]) => str.replace(`{{${key}}}`, value.toString()),
+    source
+  )
 
 export type LocalizedTextProps = {
   id: TranslationId
+  params?: ParamsMap
 }
 
-export const T = (props: LocalizedTextProps) => <>{t(props.id)}</>
+export const T = (props: LocalizedTextProps) => <>{t(props.id, props.params)}</>
+
+export const getLocalized = (localizedString: LocalizedString): string =>
+  localizedString[getLanguage()] || localizedString["fi"] || "KÄÄNNÖS PUUTTUU"

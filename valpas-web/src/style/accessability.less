@@ -1,0 +1,9 @@
+// Piilottaa elementin tavallisilta selaimilta, mutta se näkyy edelleen ruudunlukijoille, testityökaluille ja leikepöydälle kopioitaessa.
+.screen-readers-only() {
+  display: inline-block;
+  color: transparent;
+  pointer-events: none;
+  width: 0.1px;
+  height: 0.1px;
+  overflow: hidden;
+}
