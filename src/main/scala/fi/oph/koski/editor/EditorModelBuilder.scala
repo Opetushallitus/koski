@@ -321,7 +321,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
   private def findTraits(tpe: ru.Type) = {
     tpe.baseClasses
       .map(_.fullName)
-      .filter(_.startsWith("fi.oph.koski"))
+      .filter(fullName => fullName.startsWith("fi.oph.koski") || fullName.startsWith("fi.oph.common"))
       .map {typeByName(_)}
       .filter {_.typeSymbol.asClass.isTrait}
       .filterNot {_ == tpe}
