@@ -25,7 +25,7 @@ const HetuLogin = ( { loginUrl = '/koski/cas/oppija', redirectUrl = '/koski/omat
   }
 
   const errorHandler = e => {
-    console.error('Fake shibboleth login fail', e)
+    console.error('Fake cas login fail', e)
     inProgress.set(false)
     error.set(e)
   }

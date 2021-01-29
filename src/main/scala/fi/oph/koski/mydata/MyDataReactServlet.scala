@@ -16,7 +16,7 @@ class MyDataReactServlet(implicit val application: KoskiApplication) extends Sca
   /*
     If user has not logged in, then:
     -redirect to Tupas, which
-    -redirects to our Shibboleth page (based on 'login' parameter, or 'target' parameter in production), which
+    -redirects to our cas page (based on 'login' parameter, or 'target' parameter in production), which
     -redirects back here (based on 'onSuccess' parameter).
    */
 
