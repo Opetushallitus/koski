@@ -1,5 +1,6 @@
 package fi.oph.koski.localization
 
+import fi.oph.common.localization.UpdateLocalization
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer

@@ -1,13 +1,14 @@
 package fi.oph.koski.documentation
 
+import fi.oph.common.localization.MockLocalizationRepository
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
-import fi.oph.koski.localization.{LocalizationConfig, MockLocalizationRepository}
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.MockOrganisaatioRepository
 import fi.oph.koski.schema.Oppija
 import fi.oph.koski.ytr.{MockYrtClient, YtrOppijaConverter}
 import fi.oph.koski.cache.GlobalCacheManager._
+import fi.oph.koski.config.LocalizationConfig
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 
 object ExamplesYlioppilastutkinto {

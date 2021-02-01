@@ -2,6 +2,7 @@ package fi.oph.koski.editor
 
 import java.time.{LocalDate, LocalDateTime}
 
+import fi.oph.common.localization.LocalizationRepository
 import fi.oph.common.schema.{Localized, LocalizedString}
 import fi.oph.common.schema.annotation.Representative
 import fi.oph.koski.editor.ClassFinder.{forName, forSchema}

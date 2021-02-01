@@ -2,7 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
-import fi.oph.koski.localization.Locale.finnishAlphabeticalOrdering
+import fi.oph.common.localization.Locale.finnishAlphabeticalOrdering
 import fi.oph.koski.schema.annotation.{KoodistoUri, OksaUri}
 import fi.oph.scalaschema.annotation._
 

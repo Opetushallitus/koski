@@ -1,6 +1,7 @@
 package fi.oph.koski.localization
 
 import fi.oph.common.koodisto.KoodistoKoodi
+import fi.oph.common.localization.LocalizationTestTag
 import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.koodisto.{Koodistot, RemoteKoodistoPalvelu}
 import org.scalatest.{AppendedClues, FreeSpec, Matchers}

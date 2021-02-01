@@ -1,4 +1,4 @@
-package fi.oph.koski.localization
+package fi.oph.common.localization
 
 import java.text.Collator
 

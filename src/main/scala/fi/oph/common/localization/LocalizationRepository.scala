@@ -1,25 +1,26 @@
-package fi.oph.koski.localization
+package fi.oph.common.localization
 
 import com.typesafe.config.Config
+import fi.oph.common.localization.LocalizationRepository.parseLocalizations
+import fi.oph.common.localization.MockLocalizationRepository.readLocalLocalizations
 import fi.oph.common.log.Logging
 import fi.oph.common.schema.{Finnish, LocalizedString}
-import fi.oph.koski.cache._
-import fi.oph.koski.http.Http._
-import fi.oph.koski.http.{Http, ServiceConfig, VirkailijaHttpClient}
-import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
-import fi.oph.koski.json.JsonSerializer.extract
-import fi.oph.koski.json.{JsonResources, JsonSerializer}
-import fi.oph.koski.localization.LocalizationRepository.parseLocalizations
 import fi.oph.common.schema.LocalizedString.sanitize
-import fi.oph.koski.localization.MockLocalizationRepository.readLocalLocalizations
-import org.json4s._
+import fi.oph.koski.cache.{CacheManager, KeyValueCache, RefreshingCache}
+import fi.oph.koski.config.LocalizationConfig
+import fi.oph.koski.http.{Http, ServiceConfig, VirkailijaHttpClient}
+import fi.oph.koski.http.Http.{UriInterpolator, runTask}
+import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
+import fi.oph.koski.json.{JsonResources, JsonSerializer}
+import fi.oph.koski.json.JsonSerializer.extract
+import org.json4s.JValue
 
 import scala.collection.immutable
 
 trait LocalizationRepository extends Logging {
   def localizations: Map[String, LocalizedString]
 
-  def get(key: String) = localizations.get(key).getOrElse{
+  def get(key: String) = localizations.get(key).getOrElse {
     logger.error(s"Unknown localization key: $key")
     LocalizedString.unlocalized(key)
   }
@@ -33,12 +34,29 @@ trait LocalizationRepository extends Logging {
   def init
 }
 
+object LocalizationRepository {
+  def apply(config: Config, localizationConfig: LocalizationConfig)(implicit cacheInvalidator: CacheManager): LocalizationRepository = {
+    config.getString("localization.url") match {
+      case "mock" =>
+        new MockLocalizationRepository(localizationConfig)
+      case url: Any =>
+        new RemoteLocalizationRepository(config, localizationConfig)
+    }
+  }
+
+  def parseLocalizations(json: JValue) = extract[List[LocalizationServiceLocalization]](json, ignoreExtras = true)
+    .groupBy(_.key)
+    .mapValues(_.map(v => (v.locale, v.value)).toMap)
+}
+
 class DefaultLocalizations(resourceFilename: String) {
   val defaultFinnishTexts: Map[String, String] = extract[Map[String, String]](JsonResources.readResource(resourceFilename))
 }
 
 abstract class CachedLocalizationService(localizationConfig: LocalizationConfig)(implicit cacheInvalidator: CacheManager) extends LocalizationRepository {
+
   import scala.concurrent.duration._
+
   protected val cache = KeyValueCache[String, Map[String, LocalizedString]](
     new RefreshingCache(s"LocalizationRepository.${localizationConfig.localizationCategory}Localizations", RefreshingCache.Params(60.seconds, 1)),
     key => fetch()
@@ -67,20 +85,6 @@ abstract class CachedLocalizationService(localizationConfig: LocalizationConfig)
   protected lazy val defaultLocalizations = new DefaultLocalizations(localizationConfig.defaultFinnishTextsResourceFilename)
 }
 
-object LocalizationRepository {
-  def apply(config: Config, localizationConfig: LocalizationConfig)(implicit cacheInvalidator: CacheManager): LocalizationRepository = {
-    config.getString("localization.url") match {
-      case "mock" =>
-        new MockLocalizationRepository(localizationConfig)
-      case url: Any =>
-        new RemoteLocalizationRepository(config, localizationConfig)
-    }
-  }
-  def parseLocalizations(json: JValue) = extract[List[LocalizationServiceLocalization]](json, ignoreExtras = true)
-    .groupBy(_.key)
-    .mapValues(_.map(v => (v.locale, v.value)).toMap)
-}
-
 case class MockLocalizationRepository(localizationConfig: LocalizationConfig)(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService(localizationConfig) {
 
   private var _localizations: Map[String, LocalizedString] = super.localizations()
@@ -100,6 +104,7 @@ case class MockLocalizationRepository(localizationConfig: LocalizationConfig)(im
       }
     }
   }
+
   def reset = {
     _localizations = super.localizations
   }
@@ -118,8 +123,11 @@ object MockLocalizationRepository {
 
 class ReadOnlyRemoteLocalizationRepository(virkalijaRoot: String, localizationConfig: LocalizationConfig)(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService(localizationConfig) {
   private val http = Http(virkalijaRoot, "lokalisaatiopalvelu")
+
   override def fetchLocalizations(): JValue = runTask(http.get(uri"/lokalisointi/cxf/rest/v1/localisation?category=${localizationConfig.localizationCategory}")(Http.parseJson[JValue]))
+
   override def createOrUpdate(localizations: List[UpdateLocalization]): Unit = ???
+
   def init {}
 }
 
@@ -158,16 +166,16 @@ class RemoteLocalizationRepository(config: Config, localizationConfig: Localizat
       }
       val toUpdate = mockValues.flatMap { case (key, lang, value) =>
         inLocalizationService.getOrElse(key, Map()).get(lang) match {
-            case Some(remoteValue) if remoteValue == value =>
-              //logger.info(s"Up to date $key.$lang = $value")
-              Nil
-            case Some(remoteValue) =>
-              logger.info(s"Update $key.$lang $remoteValue => $value")
-              List(UpdateLocalization(lang, key, value, localizationConfig.localizationCategory))
-            case None =>
-              logger.info(s"Add $key.$lang = $value")
-              List(UpdateLocalization(lang, key, value, localizationConfig.localizationCategory))
-          }
+          case Some(remoteValue) if remoteValue == value =>
+            //logger.info(s"Up to date $key.$lang = $value")
+            Nil
+          case Some(remoteValue) =>
+            logger.info(s"Update $key.$lang $remoteValue => $value")
+            List(UpdateLocalization(lang, key, value, localizationConfig.localizationCategory))
+          case None =>
+            logger.info(s"Add $key.$lang = $value")
+            List(UpdateLocalization(lang, key, value, localizationConfig.localizationCategory))
+        }
       }.toList
 
       if (toUpdate.isEmpty) {
@@ -206,5 +214,3 @@ case class LocalizationServiceLocalization(
   key: String,
   value: String
 )
-
-

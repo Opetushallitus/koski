@@ -1,5 +1,7 @@
 package fi.oph.koski.localization
 
+import fi.oph.common.localization.DefaultLocalizations
+import fi.oph.koski.config.LocalizationConfig
 import fi.oph.koski.editor.EditorSchema
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema.KoskiSchema

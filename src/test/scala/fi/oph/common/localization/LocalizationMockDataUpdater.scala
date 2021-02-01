@@ -1,6 +1,7 @@
-package fi.oph.koski.localization
+package fi.oph.common.localization
 
 import fi.oph.koski.cache.GlobalCacheManager
+import fi.oph.koski.config.LocalizationConfig
 import fi.oph.koski.json.JsonFiles
 import fi.oph.koski.json.JsonSerializer.extract
 import org.json4s.{JArray, JObject, JValue}
@@ -28,4 +29,3 @@ object LocalizationMockDataUpdater extends App {
       }
   }
 }
-

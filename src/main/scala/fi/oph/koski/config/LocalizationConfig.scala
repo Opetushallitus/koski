@@ -1,4 +1,4 @@
-package fi.oph.koski.localization
+package fi.oph.koski.config
 
 case class LocalizationConfig(
   localizationCategory: String,

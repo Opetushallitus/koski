@@ -1,5 +1,6 @@
 package fi.oph.koski.localization
 
+import fi.oph.common.localization.LocalizationTestTag
 import fi.oph.koski.eperusteet.ETutkinnonOsa
 import org.json4s.DefaultFormats
 import fi.oph.koski.http.Http._

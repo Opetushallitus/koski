@@ -1,9 +1,9 @@
 package fi.oph.koski.editor
 
+import fi.oph.common.localization.LocalizationRepository
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{KäyttöoikeusRepository, MockUsers, Rooli}
-import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.schema.annotation.SensitiveData
 import org.scalatest.{FreeSpec, Matchers}
 

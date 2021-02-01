@@ -1,6 +1,7 @@
-package fi.oph.koski.localization
+package fi.oph.common.localization
 
 import fi.oph.koski.cache.GlobalCacheManager
+import fi.oph.koski.config.LocalizationConfig
 import org.scalatest.{FreeSpec, Matchers}
 
 /**
