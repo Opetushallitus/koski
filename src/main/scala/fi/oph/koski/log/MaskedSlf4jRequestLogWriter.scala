@@ -4,6 +4,7 @@ import java.io.IOException
 
 import org.eclipse.jetty.server.Slf4jRequestLogWriter
 
+// TODO: mahdollisesti modularisoi valpas-käyttöön, jos tarvitaan
 class MaskedSlf4jRequestLogWriter extends Slf4jRequestLogWriter {
   @throws[IOException]
   override def write(requestEntry: String): Unit = {

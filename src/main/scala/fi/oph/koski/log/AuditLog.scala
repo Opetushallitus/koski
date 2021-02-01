@@ -10,6 +10,7 @@ import io.prometheus.client.Counter
 import org.ietf.jgss.Oid
 import org.slf4j.{Logger => SLogger, LoggerFactory}
 
+// TODO: Modularisoi koski + valpas -käyttöön, splittaa common:iin yhteiset osat
 class AuditLogger(logger: SLogger) extends Logger {
   override def log(msg: String): Unit = logger.info(msg)
 }

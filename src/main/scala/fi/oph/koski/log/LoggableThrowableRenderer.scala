@@ -4,6 +4,7 @@ import fi.oph.common.log.Loggable
 import org.apache.log4j.DefaultThrowableRenderer
 import org.apache.log4j.spi.ThrowableRenderer
 
+// TODO: Siirrä common:iin, vaatii samalla aws-infra -muutoksen
 class LoggableThrowableRenderer extends ThrowableRenderer {
   val renderer = new DefaultThrowableRenderer
 
