@@ -72,7 +72,8 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
     server
   }
 
-  def baseUrl = "http://localhost:" + port + "/koski"
+  def hostUrl = "http://localhost:" + port
+  def baseUrl = hostUrl + "/koski"
 
   private def setupConnector = {
     val httpConfig = new HttpConfiguration()

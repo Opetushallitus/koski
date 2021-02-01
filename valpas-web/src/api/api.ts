@@ -6,7 +6,7 @@ import { apiGet, apiPost, mockApi } from "./apiFetch"
  * Login
  */
 export const fetchLogin = async (username: string, password: string) =>
-  apiPost<User>("login", {
+  apiPost<User>("valpas/login", {
     body: {
       username,
       password,
@@ -16,7 +16,7 @@ export const fetchLogin = async (username: string, password: string) =>
 /**
  * Get current user
  */
-export const fetchCurrentUser = async () => apiGet<User>("api/user")
+export const fetchCurrentUser = async () => apiGet<User>("valpas/api/user")
 
 /**
  * Get oppijat

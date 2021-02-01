@@ -17,4 +17,4 @@ export const absoluteValpasUrl = (path?: string) =>
   location.origin + publicUrl() + (path || "")
 
 export const absoluteKoskiUrl = (path?: string) =>
-  (process.env.KOSKI_HOST || location.origin) + "/koski" + (path || "")
+  location.origin + "/koski" + (path || "")

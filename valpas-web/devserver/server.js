@@ -4,8 +4,6 @@ const express = require("express")
 const { createProxyMiddleware } = require("http-proxy-middleware")
 const path = require("path")
 
-const proxyPaths = ["/api", "/login", "/localization", "/logout"]
-
 async function startServer({
   port,
   virkailijaRaamitProxy,
@@ -27,14 +25,12 @@ async function startServer({
     app.get(/\/virkailija-raamit\/.*/, (_req, res) => res.send(""))
   }
 
-  proxyPaths.forEach((proxyPath) => {
-    app.use(
-      createProxyMiddleware(`${publicUrl}${proxyPath}`, {
-        target: backend,
-        changeOrigin: true,
-      })
-    )
-  })
+  app.use(
+    createProxyMiddleware("/koski", {
+      target: backend,
+      changeOrigin: true,
+    })
+  )
 
   const valpasEntryPoint = path.join(__dirname, "../src/index.html")
   const bundler = new Bundler(valpasEntryPoint, {
@@ -69,7 +65,7 @@ function start(overrides) {
   return startServer({
     port: process.env.PORT || 1234,
     virkailijaRaamitProxy: process.env.VIRKAILIJA_RAAMIT_HOST || undefined,
-    backend: process.env.BACKEND_HOST || "http://localhost:7021/koski",
+    backend: process.env.BACKEND_HOST || "http://localhost:7021",
     publicUrl: process.env.PUBLIC_URL || "",
     parcelOptions: {
       cache: false,

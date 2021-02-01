@@ -78,5 +78,5 @@ const LanguageButtons = ({ currentLanguage }: LanguageButtonsProps) => (
 )
 
 const logout = () => {
-  document.location.href = "/valpas/logout"
+  document.location.href = "/koski/valpas/logout"
 }
