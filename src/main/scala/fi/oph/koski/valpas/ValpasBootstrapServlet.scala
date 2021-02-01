@@ -11,7 +11,8 @@ class ValpasBootstrapServlet(implicit val application: KoskiApplication) extends
     contentType = "text/javascript"
     response.writer.print(
       "window.valpasLocalizationMap=" + JsonSerializer.writeWithRoot(application.valpasLocalizationRepository.localizations) + ";" +
-      "window.environment='" + Environment.currentEnvironment(application.config) + "'"
+      "window.environment='" + Environment.currentEnvironment(application.config) + "';" +
+      "window.opintopolkuVirkailijaUrl='" + application.config.getString("opintopolku.virkailija.url") + "'"
     )
   }
 }

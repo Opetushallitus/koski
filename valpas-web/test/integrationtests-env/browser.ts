@@ -181,3 +181,5 @@ export const dataTableEventuallyEquals = async (
     expect(actualData).toEqual(expectedData)
   }, timeout)
 }
+
+export const getCurrentUrl = () => driver.getCurrentUrl()

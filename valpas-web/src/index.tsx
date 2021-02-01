@@ -1,17 +1,41 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import "./style/index.less"
-import { getCurrentUser, hasValpasAccess, isLoggedIn } from "./state/auth"
+import {
+  getCurrentUser,
+  getLogin,
+  hasValpasAccess,
+  isLoggedIn,
+  storeLoginReturnUrl,
+} from "./state/auth"
 import { t } from "./i18n/i18n"
 
 declare global {
   interface Window {
-    environment: string | undefined
-    virkailija_raamit_set_to_load: boolean | undefined
+    environment?: string
+    virkailija_raamit_set_to_load?: boolean
+    opintopolkuVirkailijaUrl?: string
   }
 }
 
 const runningLocally = window.environment == "local"
+
+const Login = () => {
+  storeLoginReturnUrl()
+  const config = getLogin()
+
+  if (config.type === "external") {
+    config.redirectToVirkailijaLogin()
+    return null
+  }
+
+  const LocalLoginApp = React.lazy(() => import("./views/LoginApp"))
+  return (
+    <React.Suspense fallback={<></>}>
+      <LocalLoginApp />
+    </React.Suspense>
+  )
+}
 
 async function main() {
   const user = await getCurrentUser()
@@ -20,7 +44,6 @@ async function main() {
     () => import("./components/navigation/LocalRaamit")
   )
 
-  const LoginApp = React.lazy(() => import("./views/LoginApp"))
   const ValpasApp = React.lazy(() => import("./views/ValpasApp"))
   const ErrorView = React.lazy(() => import("./views/ErrorView"))
 
@@ -37,7 +60,7 @@ async function main() {
           message={t("login__ei_valpas-oikeuksia_viesti")}
         />
       ) : (
-        <LoginApp onLogin={main} />
+        <Login />
       )}
     </React.Suspense>,
     document.getElementById("app")

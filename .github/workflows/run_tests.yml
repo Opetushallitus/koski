@@ -3,6 +3,9 @@ on:
   push:
     paths-ignore:
       - "valpas-web/**"
+  pull_request:
+    paths-ignore:
+      - "valpas-web/**"
 env:
   DOCKER_BUILDKIT: 1
 jobs:

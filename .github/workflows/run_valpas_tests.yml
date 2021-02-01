@@ -3,6 +3,9 @@ on:
   push:
     paths:
       - "valpas-web/**"
+  pull_request:
+    paths:
+      - "valpas-web/**"
 env:
   DOCKER_BUILDKIT: 1
 jobs:
