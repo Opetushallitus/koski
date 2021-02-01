@@ -49,7 +49,7 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
       Tables.SuoritusJakoV2.delete,
     ) ++ MockOppijat.defaultOppijat.map(application.henkilöCache.addHenkilöAction)))
 
-    application.perustiedotIndexer.deleteByOppijaOids(henkilöOids)
+    application.perustiedotIndexer.deleteByOppijaOids(henkilöOids, refresh = false)
 
     if (!fixtureCacheCreated) {
       cachedPerustiedot = Some(opiskeluoikeudet.map { case (henkilö, opiskeluoikeus) =>

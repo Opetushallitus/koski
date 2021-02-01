@@ -108,8 +108,7 @@ class TiedonsiirtoService(
       Map("terms" -> Map("_id" -> ids))
         :: Map("exists" -> Map("field" -> "virheet.key"))
         :: tallentajaOrganisaatioFilters(AccessType.tiedonsiirronMitätöinti))))
-    index.deleteByQuery(query)
-    index.refreshIndex()
+    index.deleteByQuery(query, refresh = true)
   }
 
   private def filtersFrom(query: TiedonsiirtoQuery)(implicit session: KoskiSession): List[Map[String, Any]] = {

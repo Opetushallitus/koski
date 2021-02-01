@@ -147,14 +147,14 @@ class OpiskeluoikeudenPerustiedotIndexer(
     }
   }
 
-  def deleteByOppijaOids(oids: List[Oid]): Int = {
+  def deleteByOppijaOids(oids: List[Oid], refresh: Boolean): Int = {
     val query: JValue = toJValue(Map(
       "query" -> Map(
         "bool" -> Map(
           "should" -> Map(
             "terms" -> Map(
               "henkilö.oid" -> oids))))))
-    index.deleteByQuery(query)
+    index.deleteByQuery(query, refresh)
   }
 
   private def indexAllDocuments() = {
