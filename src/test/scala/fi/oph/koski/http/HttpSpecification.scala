@@ -10,8 +10,6 @@ import org.scalatest.{Assertions, Matchers}
 import scala.util.matching.Regex
 
 trait HttpSpecification extends HttpTester with Assertions with Matchers {
-  def refreshElasticSearchIndexes: Unit
-
   def resetFixtures[A] = {
     post("fixtures/reset", Nil, authHeaders()) {
       verifyResponseStatus(200, Nil)

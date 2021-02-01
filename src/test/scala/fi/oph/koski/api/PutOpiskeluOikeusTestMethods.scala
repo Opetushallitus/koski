@@ -34,7 +34,6 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
   def putOppija[A](oppija: JValue, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     val jsonString = JsonMethods.pretty(oppija)
     val result = put("api/oppija", body = jsonString, headers = headers)(f)
-    refreshElasticSearchIndexes
     result
   }
 

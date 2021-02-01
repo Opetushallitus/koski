@@ -33,15 +33,12 @@ class OpiskeluoikeusServlet(implicit val application: KoskiApplication) extends 
       val result = validationResult.flatMap(
         application.oppijaFacade.invalidatePäätasonSuoritus(getStringParam("oid"), _, getIntegerParam("versionumero"))
       )
-
-      application.perustiedotIndexer.index.refreshIndex()
       renderEither[HenkilönOpiskeluoikeusVersiot](result)
     }(parseErrorHandler = haltWithStatus)
   }
 
   delete("/:oid") {
     val result = application.oppijaFacade.invalidateOpiskeluoikeus(getStringParam("oid"))
-    application.perustiedotIndexer.index.refreshIndex()
     renderEither[HenkilönOpiskeluoikeusVersiot](result)
   }
 }

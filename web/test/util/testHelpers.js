@@ -389,10 +389,6 @@ function syncPerustiedot() {
   return Q($.ajax({ url: '/koski/fixtures/sync-perustiedot', method: 'post'}))
 }
 
-function refreshIndices() {
-    return Q($.ajax({ url: '/koski/fixtures/refresh', method: 'post'}))
-}
-
 function mockHttp(url, result) {
   return function() { testFrame().http.mock(url, result) }
 }

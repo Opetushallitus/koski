@@ -100,7 +100,6 @@ class RemoteOpintopolkuHenkilöFacadeWithMockOids(
   }
 
   private def createMock(oid: String) = {
-    perustiedotIndexer.index.refreshIndex()
     perustiedotRepository.findHenkilöPerustiedotByHenkilöOid(oid).map { henkilö =>
       LaajatOppijaHenkilöTiedot(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some("010101-123N"), None, None, None, None, 0, false)
     }.getOrElse(LaajatOppijaHenkilöTiedot(oid, oid.substring("1.2.246.562.24.".length, oid.length), "Testihenkilö", "Testihenkilö", Some("010101-123N"), None, None, None, None, 0, false))
