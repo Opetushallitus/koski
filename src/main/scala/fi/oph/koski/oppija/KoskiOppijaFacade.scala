@@ -136,9 +136,6 @@ class KoskiOppijaFacade(
       result.right.map { (result: CreateOrUpdateResult) =>
         applicationLog(oppijaOid, opiskeluoikeus, result)
         auditLog(oppijaOid, result)
-        if (result.changed && opiskeluoikeus.lähdejärjestelmänId.isEmpty) {
-          // Currently we don't trigger an immediate update to elasticsearch, as we've a 1 sec poll interval anyway. This is where we would do it.
-        }
         OpiskeluoikeusVersio(result.oid, result.versionumero, result.lähdejärjestelmänId)
       }
     }
