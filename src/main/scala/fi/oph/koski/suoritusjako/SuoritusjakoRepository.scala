@@ -3,13 +3,13 @@ package fi.oph.koski.suoritusjako
 import java.sql.{Date, Timestamp}
 import java.time.{Instant, LocalDate}
 
+import fi.oph.common.log.Logging
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.{SuoritusJako, SuoritusjakoTable}
 import fi.oph.koski.db.{DatabaseExecutionContext, KoskiDatabaseMethods, SuoritusjakoRow}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.log.Logging
 
 class SuoritusjakoRepository(val db: DB) extends Logging with DatabaseExecutionContext with KoskiDatabaseMethods {
   def get(secret: String): Either[HttpStatus, SuoritusjakoRow] =

@@ -1,8 +1,9 @@
 package fi.oph.koski.mydata
 
+import fi.oph.common.log.LogUserContext
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSession}
-import fi.oph.koski.log.{AuditLogTester, LogUserContext}
+import fi.oph.koski.log.AuditLogTester
 import org.scalatest.{BeforeAndAfter, BeforeAndAfterAll, FreeSpec, Matchers}
 
 class MyDataServiceTest extends FreeSpec with Matchers with BeforeAndAfterAll with BeforeAndAfter {

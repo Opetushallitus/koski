@@ -1,8 +1,8 @@
 package fi.oph.koski.raportointikanta
 
 import fi.oph.common.koodisto.KoodistoKoodi
+import fi.oph.common.log.Logging
 import fi.oph.koski.koodisto.KoodistoPalvelu
-import fi.oph.koski.log.Logging
 import fi.oph.koski.raportointikanta.LoaderUtils.convertLocalizedString
 
 object KoodistoLoader extends Logging {

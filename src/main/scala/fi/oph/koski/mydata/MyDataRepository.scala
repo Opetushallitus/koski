@@ -4,12 +4,12 @@ import java.sql.Date
 import java.sql.Timestamp.{valueOf => timestamp}
 import java.time.{LocalDate, LocalDateTime}
 
+import fi.oph.common.log.Logging
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.{MyDataJako, MyDataJakoTable}
 import fi.oph.koski.db.{DatabaseExecutionContext, KoskiDatabaseMethods, MyDataJakoRow}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.log.Logging
 
 class MyDataRepository(val db: DB) extends Logging with DatabaseExecutionContext with KoskiDatabaseMethods {
   def get(asiakas: String): Either[HttpStatus, MyDataJakoRow] =

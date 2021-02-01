@@ -4,11 +4,11 @@ import java.lang.System.currentTimeMillis
 import java.time.LocalDate
 
 import com.typesafe.config.Config
+import fi.oph.common.log.Logging
 import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.cache._
 import fi.oph.koski.http.{ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema._
 

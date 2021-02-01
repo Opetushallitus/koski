@@ -3,10 +3,10 @@ package fi.oph.koski.raportointikanta
 import java.sql.{Date, Timestamp}
 import java.util.concurrent.atomic.AtomicLong
 
+import fi.oph.common.log.Logging
 import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.json.JsonManipulation
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.schema._
 import fi.oph.koski.raportointikanta.LoaderUtils.{convertKoodisto, convertLocalizedString}

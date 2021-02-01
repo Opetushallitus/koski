@@ -3,7 +3,7 @@ package fi.oph.koski.etk
 import java.sql.Timestamp
 import java.time.{Instant, LocalDate}
 
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.schema.Henkilö
 
 import scala.io.BufferedSource

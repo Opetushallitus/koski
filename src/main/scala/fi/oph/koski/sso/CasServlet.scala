@@ -2,13 +2,14 @@ package fi.oph.koski.sso
 
 import java.net.URLEncoder.encode
 import java.nio.charset.StandardCharsets
+
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{Http, KoskiErrorCategory, OpintopolkuCallerId}
-import fi.oph.koski.koskiuser.{KoskiAuthenticationSupport, AuthenticationUser, DirectoryClientLogin, KoskiUserLanguage}
-import fi.oph.koski.log.LogUserContext
+import fi.oph.koski.koskiuser.{AuthenticationUser, DirectoryClientLogin, KoskiAuthenticationSupport, KoskiUserLanguage}
 import fi.oph.koski.servlet.{NoCache, VirkailijaHtmlServlet}
 import cas.{CasClient, CasClientException}
 import cas.CasClient.{OppijaAttributes, Username}
+import fi.oph.common.log.LogUserContext
 import fi.oph.koski.henkilo.{Hetu, OppijaHenkilö}
 import fi.oph.koski.json.JsonSerializer.writeWithRoot
 import scalaz.concurrent.Task

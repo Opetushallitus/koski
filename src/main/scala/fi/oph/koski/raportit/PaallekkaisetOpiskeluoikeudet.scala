@@ -3,11 +3,12 @@ package fi.oph.koski.raportit
 import java.sql.{Date, ResultSet}
 import java.time.LocalDate
 
+import fi.oph.common.log.Logging
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.log.Logging
 import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
 import slick.jdbc.GetResult
+
 import scala.concurrent.duration._
 
 object PaallekkaisetOpiskeluoikeudet extends Logging {

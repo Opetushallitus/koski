@@ -3,6 +3,7 @@ package fi.oph.koski.oppija
 import java.time.LocalDate.now
 
 import com.typesafe.config.Config
+import fi.oph.common.log.Logging
 import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.henkilo._
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository

@@ -1,5 +1,6 @@
 package fi.oph.koski.kela
 
+import fi.oph.common.log.Logging
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch

@@ -1,8 +1,8 @@
 package fi.oph.koski.koodisto
 
 import fi.oph.common.koodisto.{Koodisto, KoodistoKoodi}
+import fi.oph.common.log.Logging
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
-import fi.oph.koski.log.Logging
 
 /**
  * Sorts the contents of mockdata/koodisto/ (to get deterministic diffs etc.)

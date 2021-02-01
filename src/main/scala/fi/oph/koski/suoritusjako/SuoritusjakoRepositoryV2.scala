@@ -4,13 +4,13 @@ package fi.oph.koski.suoritusjako
 import java.sql.{Date, Timestamp}
 import java.time.{Instant, LocalDate}
 
+import fi.oph.common.log.Logging
 import fi.oph.koski.db.Tables.SuoritusJakoV2
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{DatabaseExecutionContext, KoskiDatabaseMethods, SuoritusjakoRowV2}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{KoskiSchema, Opiskeluoikeus}
 import fi.oph.scalaschema._
 import org.json4s.JsonAST.JValue

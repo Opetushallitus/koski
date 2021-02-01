@@ -5,10 +5,10 @@ import java.util
 
 import com.amazonaws.services.dynamodbv2.document.DynamoDB
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec
+import fi.oph.common.log.Logging
 import fi.oph.common.schema.LocalizedString
 import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.log.Logging
 import fi.oph.koski.omaopintopolkuloki.AuditLogDynamoDB.AuditLogTableName
 
 import scala.collection.JavaConverters._

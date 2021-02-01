@@ -1,11 +1,14 @@
-package fi.oph.koski.log
+package fi.oph.common.log
 
-import org.log4s._
+import org.log4s.{Logger, getLogger}
 
 trait Logging {
   protected lazy val defaultLogger: LoggerWithContext = LoggerWithContext(getClass)
-  protected def logger : LoggerWithContext = defaultLogger
+
+  protected def logger: LoggerWithContext = defaultLogger
+
   protected def logger(user: LogUserContext): LoggerWithContext = defaultLogger.copy(context = Some(user))
+
   protected def logger(user: Option[LogUserContext]): LoggerWithContext = defaultLogger.copy(context = user)
 
   protected def tryCatch(thing: String)(task: => Unit): Unit = {

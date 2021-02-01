@@ -3,12 +3,12 @@ package fi.oph.koski.tiedonsiirto
 import java.net.InetAddress
 import java.sql.SQLException
 
+import fi.oph.common.log.Logging
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.OppilaitosIPOsoite
 import fi.oph.koski.db.{KoskiDatabaseMethods, OppilaitosIPOsoiteRow}
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.log.Logging
 import org.log4s.{Logger, getLogger}
 
 class IPService(val db: DB) extends KoskiDatabaseMethods with Logging {

@@ -1,6 +1,7 @@
 package fi.oph.koski.config
 
 import com.typesafe.config.{Config, ConfigFactory}
+import fi.oph.common.log.{Logging, TimedProxy}
 import fi.oph.koski.cache.CacheManager
 import fi.oph.koski.db._
 import fi.oph.koski.elasticsearch.{ElasticSearch, IndexManager}
@@ -13,7 +14,7 @@ import fi.oph.koski.huoltaja.HuoltajaServiceVtj
 import fi.oph.koski.koodisto.{KoodistoCreator, KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.localization.{LocalizationConfig, LocalizationRepository}
-import fi.oph.koski.log.{AuditLog, Logging, TimedProxy}
+import fi.oph.koski.log.AuditLog
 import fi.oph.koski.mydata.{MyDataRepository, MyDataService}
 import fi.oph.koski.omattiedot.HuoltajaService
 import fi.oph.koski.opiskeluoikeus._

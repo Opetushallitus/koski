@@ -2,9 +2,10 @@ package fi.oph.koski.mydata
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.log.Logging
 import com.typesafe.config.{Config => TypeSafeConfig}
+import fi.oph.common.log.Logging
 import fi.oph.koski.servlet.InvalidRequestException
+
 import scala.collection.JavaConverters._
 
 

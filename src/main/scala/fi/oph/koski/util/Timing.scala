@@ -1,6 +1,6 @@
 package fi.oph.koski.util
 
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import io.prometheus.client.Histogram
 import org.log4s.getLogger
 import rx.lang.scala.Observable

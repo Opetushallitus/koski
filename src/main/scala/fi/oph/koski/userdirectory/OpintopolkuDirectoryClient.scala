@@ -5,10 +5,10 @@ import com.typesafe.config.Config
 import fi.oph.koski.henkilo.{KäyttäjäHenkilö, OppijanumeroRekisteriClient}
 import fi.oph.koski.http.{Http, OpintopolkuCallerId}
 import fi.oph.koski.koskiuser._
-import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema.OidOrganisaatio
 import cas.CasClientException
+import fi.oph.common.log.Logging
 
 /**
   * Replacement for the LDAP-based directory client

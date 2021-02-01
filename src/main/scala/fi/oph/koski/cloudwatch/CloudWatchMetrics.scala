@@ -3,8 +3,8 @@ package fi.oph.koski.cloudwatch
 
 import java.sql.Timestamp
 
+import fi.oph.common.log.Logging
 import fi.oph.koski.config.Environment
-import fi.oph.koski.log.Logging
 import software.amazon.awssdk.services.cloudwatch.CloudWatchClient
 import software.amazon.awssdk.services.cloudwatch.model.{Dimension, MetricDatum, PutMetricDataRequest, StandardUnit}
 

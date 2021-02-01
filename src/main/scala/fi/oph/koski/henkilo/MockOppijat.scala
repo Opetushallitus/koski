@@ -2,10 +2,9 @@ package fi.oph.koski.henkilo
 
 import java.time.LocalDate
 
-import fi.oph.common.log.Loggable
+import fi.oph.common.log.{Loggable, Logging}
 import fi.oph.koski.henkilo
 import fi.oph.koski.koskiuser.MockUsers
-import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
 
 object MockOppijat {

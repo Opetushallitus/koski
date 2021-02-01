@@ -2,6 +2,7 @@ package fi.oph.koski.luovutuspalvelu
 
 import java.time.LocalDate
 
+import fi.oph.common.log.Logging
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot

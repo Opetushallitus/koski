@@ -1,7 +1,7 @@
 package fi.oph.koski.documentation
 
 import com.tristanhunt.knockoff.DefaultDiscounter.{knockoff, toXHTML}
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 
 import scala.xml.Node
 object Markdown extends Logging {

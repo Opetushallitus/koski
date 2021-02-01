@@ -3,10 +3,11 @@ package fi.oph.koski.suoritusjako
 
 import java.time.LocalDate
 
+import fi.oph.common.log.Logging
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
+import fi.oph.koski.log.{AuditLog, AuditLogMessage}
 import fi.oph.koski.log.KoskiOperation.KANSALAINEN_SUORITUSJAKO_LISAYS
 import fi.oph.koski.log.KoskiMessageField.oppijaHenkiloOid
 import fi.oph.koski.oppija.KoskiOppijaFacade

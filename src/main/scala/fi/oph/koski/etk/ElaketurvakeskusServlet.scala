@@ -2,11 +2,11 @@ package fi.oph.koski.etk
 
 import java.time.LocalDate
 
+import fi.oph.common.log.Logging
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
-import fi.oph.koski.log.Logging
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import org.json4s.JsonAST.JValue
 import org.json4s.jackson.JsonMethods

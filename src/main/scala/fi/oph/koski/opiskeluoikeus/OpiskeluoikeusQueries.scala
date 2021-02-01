@@ -1,5 +1,6 @@
 package fi.oph.koski.opiskeluoikeus
 
+import fi.oph.common.log.Logging
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{GlobalExecutionContext, HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
@@ -7,7 +8,7 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.{HasKoskiSession, KoskiSession}
 import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
-import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
+import fi.oph.koski.log.{AuditLog, AuditLogMessage}
 import fi.oph.koski.schema.Henkilö._
 import fi.oph.koski.servlet.{ApiServlet, ObservableSupport}
 import fi.oph.koski.util.SortOrder.Ascending

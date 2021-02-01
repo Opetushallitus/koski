@@ -4,6 +4,7 @@ import java.sql.Timestamp
 import java.time.{Instant, OffsetDateTime}
 import java.time.format.DateTimeParseException
 
+import fi.oph.common.log.Logging
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.henkilo.HenkilöOid

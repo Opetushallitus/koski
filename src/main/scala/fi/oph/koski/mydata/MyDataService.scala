@@ -1,11 +1,12 @@
 package fi.oph.koski.mydata
 
+import fi.oph.common.log.Logging
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.KoskiMessageField.{omaDataKumppani, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_MYDATA_LISAYS, KANSALAINEN_MYDATA_POISTO}
-import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
+import fi.oph.koski.log.{AuditLog, AuditLogMessage}
 
 class MyDataService(myDataRepository: MyDataRepository, val application: KoskiApplication) extends Logging with MyDataConfig {
   def put(asiakas: String, koskiSession: KoskiSession): Boolean = {

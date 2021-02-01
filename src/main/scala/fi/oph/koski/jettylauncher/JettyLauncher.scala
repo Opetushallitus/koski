@@ -4,10 +4,11 @@ import java.lang.management.ManagementFactory
 import java.nio.file.{Files, Paths}
 
 import com.typesafe.config.{Config, ConfigFactory}
+import fi.oph.common.log.{LogConfiguration, Logging}
 import fi.oph.koski.cache.JMXCacheManager
 import fi.oph.koski.config.{AppConfig, Environment, KoskiApplication}
 import fi.oph.koski.executors.Pools
-import fi.oph.koski.log.{LogConfiguration, Logging, MaskedSlf4jRequestLogWriter}
+import fi.oph.koski.log.MaskedSlf4jRequestLogWriter
 import io.prometheus.client.exporter.MetricsServlet
 import org.eclipse.jetty.client.HttpClient
 import org.eclipse.jetty.jmx.MBeanContainer

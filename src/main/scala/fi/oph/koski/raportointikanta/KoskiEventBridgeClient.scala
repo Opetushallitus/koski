@@ -1,8 +1,8 @@
 package fi.oph.koski.raportointikanta
 
+import fi.oph.common.log.Logging
 import fi.oph.koski.config.Environment
 import fi.oph.koski.json.LegacyJsonSerialization
-import fi.oph.koski.log.Logging
 import org.json4s.jackson.JsonMethods
 import software.amazon.awssdk.services.eventbridge.model.{PutEventsRequest, PutEventsRequestEntry}
 import software.amazon.awssdk.services.eventbridge.EventBridgeClient

@@ -2,8 +2,9 @@ package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.henkilo.{Hetu, OpintopolkuHenkilöFacade}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
-import fi.oph.koski.log.Logging
 import java.sql.Date
+
+import fi.oph.common.log.Logging
 
 object HenkilöLoader extends Logging {
   private val BatchSize = 1000

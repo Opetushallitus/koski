@@ -1,5 +1,6 @@
 package fi.oph.koski.opiskeluoikeus
 
+import fi.oph.common.log.Logging
 import fi.oph.koski.henkilo.{HenkilönTunnisteet, PossiblyUnverifiedHenkilöOid}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
@@ -7,7 +8,6 @@ import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
 import fi.oph.koski.util.{Futures, WithWarnings}
 import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluoikeusRow}
-import fi.oph.koski.log.Logging
 
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}

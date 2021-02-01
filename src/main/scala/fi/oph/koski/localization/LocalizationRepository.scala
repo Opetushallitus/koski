@@ -1,6 +1,7 @@
 package fi.oph.koski.localization
 
 import com.typesafe.config.Config
+import fi.oph.common.log.Logging
 import fi.oph.common.schema.{Finnish, LocalizedString}
 import fi.oph.koski.cache._
 import fi.oph.koski.http.Http._
@@ -11,7 +12,6 @@ import fi.oph.koski.json.{JsonResources, JsonSerializer}
 import fi.oph.koski.localization.LocalizationRepository.parseLocalizations
 import fi.oph.common.schema.LocalizedString.sanitize
 import fi.oph.koski.localization.MockLocalizationRepository.readLocalLocalizations
-import fi.oph.koski.log.Logging
 import org.json4s._
 
 import scala.collection.immutable

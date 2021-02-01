@@ -2,11 +2,11 @@ package fi.oph.koski.http
 
 import java.net.URLEncoder
 
+import fi.oph.common.log.{LoggerWithContext, Logging}
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.http.Http.{Decode, ParameterizedUriWrapper}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.log.LogUtils.maskSensitiveInformation
-import fi.oph.koski.log.{LoggerWithContext, Logging}
+import fi.oph.common.log.LogUtils.maskSensitiveInformation
 import io.prometheus.client.{Counter, Summary}
 import org.http4s._
 import org.http4s.client.blaze.BlazeClientConfig

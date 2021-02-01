@@ -1,9 +1,9 @@
 package fi.oph.koski.omattiedot
 
+import fi.oph.common.log.Logging
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Oppija
 import fi.oph.koski.util.WithWarnings
 

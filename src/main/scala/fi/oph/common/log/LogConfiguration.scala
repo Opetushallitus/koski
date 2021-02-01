@@ -1,4 +1,4 @@
-package fi.oph.koski.log
+package fi.oph.common.log
 
 import java.io.File
 import java.net.{MalformedURLException, URL}

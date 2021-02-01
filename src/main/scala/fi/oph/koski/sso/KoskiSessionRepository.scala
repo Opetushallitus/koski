@@ -4,13 +4,14 @@ import java.net.InetAddress
 import java.sql.Timestamp
 import java.time.Instant
 
+import fi.oph.common.log.Logging
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{GlobalExecutionContext, KoskiDatabaseMethods, SSOSessionRow, Tables}
 import fi.oph.koski.huoltaja.HuollettavatSearchResult
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AuthenticationUser, SessionTimeout}
-import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiOperation, Logging}
+import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiOperation}
 import fi.oph.koski.util.Timing
 import org.json4s.JsonAST.JValue
 

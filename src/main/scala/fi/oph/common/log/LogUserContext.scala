@@ -1,9 +1,9 @@
-package fi.oph.koski.log
+package fi.oph.common.log
 
 import java.net.InetAddress
 
-import javax.servlet.http.HttpServletRequest
 import fi.oph.koski.koskiuser.{UserWithOid, UserWithUsername}
+import javax.servlet.http.HttpServletRequest
 import org.scalatra.servlet.RichRequest
 
 object LogUserContext {

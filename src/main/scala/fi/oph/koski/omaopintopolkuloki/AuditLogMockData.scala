@@ -2,8 +2,8 @@ package fi.oph.koski.omaopintopolkuloki
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB
 import com.amazonaws.services.dynamodbv2.model._
+import fi.oph.common.log.Logging
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
 import fi.oph.koski.omaopintopolkuloki.AuditLogDynamoDB.AuditLogTableName
 

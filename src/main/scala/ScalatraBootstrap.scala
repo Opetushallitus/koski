@@ -1,3 +1,4 @@
+import fi.oph.common.log.Logging
 import fi.oph.koski.cache.CacheServlet
 import fi.oph.koski.config.{KoskiApplication, RunMode}
 import fi.oph.koski.db._
@@ -13,7 +14,6 @@ import fi.oph.koski.history.KoskiHistoryServlet
 import fi.oph.koski.kela.KelaServlet
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.localization.LocalizationServlet
-import fi.oph.koski.log.Logging
 import fi.oph.koski.luovutuspalvelu.{LuovutuspalveluServlet, PalveluvaylaServlet, TilastokeskusServlet}
 import fi.oph.koski.mydata.{ApiProxyServlet, MyDataReactServlet, MyDataServlet}
 import fi.oph.koski.omaopintopolkuloki.OmaOpintoPolkuLokiServlet

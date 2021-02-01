@@ -1,6 +1,6 @@
 package fi.oph.koski.organisaatio
 
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 import fi.oph.koski.schema._
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.extraction.{CustomDeserializer, OtherViolation, ValidationError}

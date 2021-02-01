@@ -1,6 +1,6 @@
 package fi.oph.koski.util
 
-import fi.oph.koski.log.Logging
+import fi.oph.common.log.Logging
 
 object Retry extends Logging {
   def retryWithInterval[T](n: Int, intervalMs: Long)(fn: => T): T = {

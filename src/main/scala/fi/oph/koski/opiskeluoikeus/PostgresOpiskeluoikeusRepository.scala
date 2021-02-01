@@ -2,6 +2,7 @@ package fi.oph.koski.opiskeluoikeus
 
 import java.sql.SQLException
 
+import fi.oph.common.log.Logging
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
@@ -11,7 +12,6 @@ import fi.oph.koski.history.{JsonPatchException, OpiskeluoikeusHistory, Opiskelu
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonDiff.jsonDiff
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusChangeValidator.validateOpiskeluoikeusChange
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedot, PerustiedotSyncRepository}
 import fi.oph.koski.schema.Henkilö.Oid
