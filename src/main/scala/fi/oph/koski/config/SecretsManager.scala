@@ -10,7 +10,7 @@ import fi.oph.koski.log.Logging
 
 class SecretsManager extends SecretCache with Logging {
   def getStructuredSecret[T: TypeTag](secretId: String): T = {
-    logger.info(s"Searching for secret $secretId")
+    logger.debug(s"Searching for secret $secretId")
     JsonSerializer.extract[T](parse(getSecretString(secretId)), ignoreExtras = true)
   }
 

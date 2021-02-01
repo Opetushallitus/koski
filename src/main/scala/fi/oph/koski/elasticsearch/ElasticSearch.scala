@@ -5,10 +5,13 @@ import fi.oph.koski.http.Http
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.PaginationSettings
 
+case class ElasticSearchConfig(host: String, protocol: String, port: Int)
+
 case class ElasticSearch(config: Config) extends Logging {
-  private val host = config.getString("elasticsearch.host")
-  private val port = config.getInt("elasticsearch.port")
-  private val protocol = config.getString("elasticsearch.protocol")
+  private val ElasticSearchConfig(host, protocol, port) = (sys.env.get("ES_ENDPOINT")) match {
+    case Some(host) => ElasticSearchConfig(host, "https", 443)
+    case _ => ElasticSearchConfig(config.getString("elasticsearch.host"), config.getString("elasticsearch.protocol"), config.getInt("elasticsearch.port"))
+  }
   private val url = s"$protocol://$host:$port"
 
   val http = Http(url, "elasticsearch")

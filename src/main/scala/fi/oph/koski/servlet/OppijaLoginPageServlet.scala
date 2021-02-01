@@ -1,10 +1,9 @@
 package fi.oph.koski.servlet
 
-import fi.oph.koski.config.{Environment, KoskiApplication, ShibbolethSecret}
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.sso.KoskiSSOSupport
-import org.scalatra.{EnvironmentKey, ScalatraServlet}
+import org.scalatra.ScalatraServlet
 
 import scala.xml.Unparsed
 
