@@ -29,7 +29,7 @@ trait MyDataSupport extends ScalatraServlet with MyDataConfig {
   }
 
   def getKorhopankkiRedirectURLParameter(target: String): String = {
-    val security = conf.getString("login.security")
+    val security = application.config.getString("login.security")
 
     if(security == "mock") {
       s"&redirect=${urlEncode(target)}"
