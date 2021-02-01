@@ -151,9 +151,12 @@ class ElasticSearchIndex(
     (fromIndex, toIndex)
   }
 
-  def reload(): Unit = this.initialLoader()
+  def reload(): Unit = {
+    initialLoader()
+    refreshIndex()
+  }
 
-  def refreshIndex(): Unit = {
+  private def refreshIndex(): Unit = {
     Http.runTask(http.post(uri"/$readAlias,$writeAlias/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
   }
 
