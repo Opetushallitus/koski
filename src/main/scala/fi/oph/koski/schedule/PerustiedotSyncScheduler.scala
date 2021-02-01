@@ -15,8 +15,8 @@ case class PerustiedotSyncScheduler(app: KoskiApplication) extends Timing {
         new IntervalSchedule(app.config.getDuration("schedule.perustiedotSyncInterval")),
         None,
         syncAndLogErrors,
-        intervalMillis = 1000)
-      )
+        intervalMillis = 1000
+      ))
     }
 
   def syncAndLogErrors(ignore: Option[JValue]): Option[JValue] = timed("perustiedotSync", 500) {

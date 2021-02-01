@@ -103,7 +103,7 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
     oo.oid.flatMap(oid => runDbSync(OpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oid === oid).map(_.id).result).headOption)
 
   private def syncPerustiedotToElasticsearch(waitCondition: => Boolean): Unit = {
-    KoskiApplicationForTests.perustiedotSyncScheduler.syncAndLogErrors(None)
+    KoskiApplicationForTests.perustiedotSyncScheduler.sync(refresh = true)
     Wait.until(waitCondition, timeoutMs = 120000)
   }
 }
