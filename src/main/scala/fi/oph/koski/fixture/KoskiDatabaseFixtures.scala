@@ -36,7 +36,7 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
   def resetFixtures: Unit = {
     if (database.config.isRemote) throw new IllegalStateException("Trying to reset fixtures in remote database")
 
-    application.perustiedotSyncScheduler.sync
+    application.perustiedotSyncScheduler.sync(refresh = false)
 
     val henkilöOids = MockOppijat.oids.sorted
 
@@ -56,7 +56,7 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
         val id = application.opiskeluoikeusRepository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, false).right.get.id
         OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, application.henkilöRepository.opintopolku.withMasterInfo(henkilö))
       })
-      application.perustiedotIndexer.updatePerustiedot(cachedPerustiedot.get, true)
+      application.perustiedotIndexer.updatePerustiedot(cachedPerustiedot.get, upsert = true, refresh = true)
       val henkilöOidsIn = henkilöOids.map("'" + _ + "'").mkString(",")
       runDbSync(DBIO.seq(
         sqlu"drop table if exists opiskeluoikeus_fixture",
@@ -72,7 +72,7 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
         sqlu"insert into opiskeluoikeushistoria select * from opiskeluoikeushistoria_fixture",
         sqlu"alter table opiskeluoikeus enable trigger update_opiskeluoikeus_aikaleima"
       ))
-      application.perustiedotIndexer.updatePerustiedot(cachedPerustiedot.get, true)
+      application.perustiedotIndexer.updatePerustiedot(cachedPerustiedot.get, upsert = true, refresh = true)
     }
   }
 

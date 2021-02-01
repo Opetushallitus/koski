@@ -23,7 +23,12 @@ trait OpintopolkuHenkilöFacade {
 }
 
 object OpintopolkuHenkilöFacade {
-  def apply(config: Config, db: => DB, perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository, perustiedotIndexer: => OpiskeluoikeudenPerustiedotIndexer): OpintopolkuHenkilöFacade = config.getString("opintopolku.virkailija.url") match {
+  def apply(
+    config: Config,
+    db: => DB,
+    perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository,
+    perustiedotIndexer: => OpiskeluoikeudenPerustiedotIndexer
+  ): OpintopolkuHenkilöFacade = config.getString("opintopolku.virkailija.url") match {
     case "mock" => new MockOpintopolkuHenkilöFacadeWithDBSupport(db)
     case _ => RemoteOpintopolkuHenkilöFacade(config, perustiedotRepository, perustiedotIndexer)
   }
@@ -67,7 +72,11 @@ class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroR
   def findSlaveOids(masterOid: String): List[Oid] = runTask(oppijanumeroRekisteriClient.findSlaveOids(masterOid))
 }
 
-class RemoteOpintopolkuHenkilöFacadeWithMockOids(oppijanumeroRekisteriClient: OppijanumeroRekisteriClient, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, perustiedotIndexer: OpiskeluoikeudenPerustiedotIndexer) extends RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient) {
+class RemoteOpintopolkuHenkilöFacadeWithMockOids(
+  oppijanumeroRekisteriClient: OppijanumeroRekisteriClient,
+  perustiedotRepository: OpiskeluoikeudenPerustiedotRepository,
+  perustiedotIndexer: OpiskeluoikeudenPerustiedotIndexer
+) extends RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient) {
   override def findOppijatNoSlaveOids(oids: List[String]): List[OppijaHenkilö] = {
     val found = super.findOppijatNoSlaveOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
     oids.map { oid =>

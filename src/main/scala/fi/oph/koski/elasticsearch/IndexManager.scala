@@ -24,6 +24,7 @@ class IndexManager(indexes: List[ElasticSearchIndex]) {
 
   def reload(indexName: String): Option[String] = {
     withNamedIndex[Unit](indexName, _.reload())
+    withNamedIndex[Unit](indexName, _.refreshIndex())
     Some(indexName)
   }
 

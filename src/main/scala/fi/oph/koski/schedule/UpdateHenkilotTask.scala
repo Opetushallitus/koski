@@ -80,7 +80,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
           OpiskeluoikeudenHenkilötiedot(p.id, päivitetytTiedot.tiedot)
         })
 
-      application.perustiedotIndexer.updatePerustiedot(muuttuneidenHenkilötiedot, false) match {
+      application.perustiedotIndexer.updatePerustiedot(muuttuneidenHenkilötiedot, upsert = false, refresh = false) match {
         case Right(updatedCount) => {
           logger.info(s"Updated ${updatedInKoskiHenkilöCache.length} entries to henkilö table and $updatedCount to elasticsearch, latest oppija modified timestamp: $lastModified")
           HenkilöUpdateContext(lastModified)

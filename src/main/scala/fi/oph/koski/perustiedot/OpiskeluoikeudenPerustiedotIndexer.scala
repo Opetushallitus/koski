@@ -96,16 +96,16 @@ class OpiskeluoikeudenPerustiedotIndexer(
 
   def statistics(): OpiskeluoikeudenPerustiedotStatistics = OpiskeluoikeudenPerustiedotStatistics(index)
 
-  def updatePerustiedot(items: Seq[OpiskeluoikeudenOsittaisetTiedot], upsert: Boolean): Either[HttpStatus, Int] = {
-    updatePerustiedotRaw(items.map(OpiskeluoikeudenPerustiedot.serializePerustiedot), upsert)
+  def updatePerustiedot(items: Seq[OpiskeluoikeudenOsittaisetTiedot], upsert: Boolean, refresh: Boolean): Either[HttpStatus, Int] = {
+    updatePerustiedotRaw(items.map(OpiskeluoikeudenPerustiedot.serializePerustiedot), upsert, refresh)
   }
 
-  def updatePerustiedotRaw(items: Seq[JValue], upsert: Boolean): Either[HttpStatus, Int] = {
+  def updatePerustiedotRaw(items: Seq[JValue], upsert: Boolean, refresh: Boolean): Either[HttpStatus, Int] = {
     if (items.isEmpty) {
       return Right(0)
     }
     val docsAndIds = items.flatMap(generateUpdate)
-    val (errors, response) = index.updateBulk(docsAndIds, upsert)
+    val (errors, response) = index.updateBulk(docsAndIds, upsert, refresh)
     if (errors) {
       val failedOpiskeluoikeusIds: List[Int] = extract[List[JValue]](response \ "items" \ "update")
         .flatMap { item =>
@@ -169,7 +169,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
           val perustiedot = rows.par.map { case (opiskeluoikeusRow, henkilöRow, masterHenkilöRow) =>
             OpiskeluoikeudenPerustiedot.makePerustiedot(opiskeluoikeusRow, henkilöRow, masterHenkilöRow)
           }.toList
-          val changed = updatePerustiedot(perustiedot, upsert = true) match {
+          val changed = updatePerustiedot(perustiedot, upsert = true, refresh = false) match {
             case Right(count) => count
             case Left(_) => 0 // error already logged
           }

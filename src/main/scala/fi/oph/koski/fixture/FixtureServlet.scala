@@ -17,13 +17,12 @@ class FixtureServlet(implicit val application: KoskiApplication) extends ApiServ
   }
 
   post("/sync-tiedonsiirrot") {
-    application.tiedonsiirtoService.syncToElasticsearch(shouldRefreshIndex = true)
+    application.tiedonsiirtoService.syncToElasticsearch(refresh = true)
     "ok"
   }
 
   post("/sync-perustiedot") {
-    application.perustiedotSyncScheduler.sync
-    application.perustiedotIndexer.index.refreshIndex()
+    application.perustiedotSyncScheduler.sync(refresh = true)
     "ok"
   }
 }

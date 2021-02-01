@@ -165,11 +165,11 @@ class ElasticSearchIndex(
       None
   }
 
-  def updateBulk(docsAndIds: Seq[(JValue, String)], upsert: Boolean): (Boolean, JValue) = {
+  def updateBulk(docsAndIds: Seq[(JValue, String)], upsert: Boolean, refresh: Boolean): (Boolean, JValue) = {
     val queries = docsAndIds
       .flatMap { case (doc, id) => buildUpdateQuery(doc, id, upsert) }
       .map(q => toJValue(q))
-    val url = uri"/$writeAlias/_bulk"
+    val url = uri"/$writeAlias/_bulk?refresh=${refresh}"
     val response: JValue = Http.runTask(http.post(url, queries)(Json4sHttp4s.multiLineJson4sEncoderOf[JValue])(Http.parseJson[JValue]))
     (extract[Boolean](response \ "errors"), response)
   }

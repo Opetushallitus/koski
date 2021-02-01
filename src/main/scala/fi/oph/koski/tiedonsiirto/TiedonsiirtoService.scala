@@ -252,7 +252,7 @@ class TiedonsiirtoService(
     tiedonsiirtoBuffer.append(tiedonsiirtoDoc)
   }
 
-  def syncToElasticsearch(shouldRefreshIndex: Boolean = false): Unit = {
+  def syncToElasticsearch(refresh: Boolean): Unit = {
     val tiedonsiirrot = tiedonsiirtoBuffer.popAll
     if (tiedonsiirrot.nonEmpty) {
       logger.debug(s"Syncing ${tiedonsiirrot.length} tiedonsiirrot documents")
@@ -264,14 +264,10 @@ class TiedonsiirtoService(
       }
       docsAndIds
         .grouped(1000)
-        .map(group => index.updateBulk(group, upsert = true))
+        .map(group => index.updateBulk(group, upsert = true, refresh = refresh))
         .collect { case (errors, response) if errors => JsonMethods.pretty(response) }
         .foreach(resp => logger.error(s"Elasticsearch indexing failed: $resp"))
       logger.debug(s"Done syncing ${tiedonsiirrot.length} tiedonsiirrot documents")
-    }
-    if (shouldRefreshIndex) {
-      // wait for elasticsearch to refresh after the last batch, makes testing easier
-      index.refreshIndex()
     }
   }
 
