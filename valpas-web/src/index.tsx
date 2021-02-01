@@ -12,8 +12,9 @@ import { t } from "./i18n/i18n"
 
 declare global {
   interface Window {
-    environment: string | undefined
-    virkailija_raamit_set_to_load: boolean | undefined
+    environment?: string
+    virkailija_raamit_set_to_load?: boolean
+    opintopolkuVirkailijaUrl?: string
   }
 }
 

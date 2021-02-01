@@ -43,8 +43,9 @@ export const hasValpasAccess = (user: CurrentUser): user is User =>
   isLoggedIn(user) && user !== "forbidden"
 
 export const getLogin = (): Login => {
-  const opintopolkuVirkailijaUrl = process.env.OPINTOPOLKU_VIRKAILIJA_URL
-  return opintopolkuVirkailijaUrl
+  const opintopolkuVirkailijaUrl =
+    process.env.OPINTOPOLKU_VIRKAILIJA_URL || window.opintopolkuVirkailijaUrl
+  return opintopolkuVirkailijaUrl && opintopolkuVirkailijaUrl !== "mock"
     ? {
         type: "external",
         redirectToVirkailijaLogin() {
