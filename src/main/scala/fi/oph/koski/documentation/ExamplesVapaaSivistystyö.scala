@@ -80,10 +80,10 @@ object VapaaSivistystyöExample {
           vstArviointi("Hyväksytty", date(2021, 11, 12))
         ),
         opintokokonaisuudenSuoritus(
-          opintokokonaisuus("VT02", "Valaisintekniikka", "Valaisinlähteet ja niiden toiminta", 10.0)
+          opintokokonaisuus("VT02", "Valaisintekniikka", "Valaisinlähteet ja niiden toiminta", 6.0)
         ),
         opintokokonaisuudenSuoritus(
-          opintokokonaisuus("TAI01", "Taide työkaluna", "Taiteen käyttö työkaluna", 30.0)
+          opintokokonaisuus("TAI01", "Taide työkaluna", "Taiteen käyttö työkaluna", 20.0)
         )
       ))
     ))

@@ -2,7 +2,6 @@ package fi.oph.koski.validation
 
 import java.lang.Character.isDigit
 import java.time.LocalDate
-
 import com.typesafe.config.Config
 import fi.oph.koski.documentation.ExamplesEsiopetus.päiväkodinEsiopetuksenTunniste
 import fi.oph.koski.eperusteet.EPerusteetRepository
@@ -15,7 +14,7 @@ import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.Opiskeluoikeus.{koulutustoimijaTraversal, oppilaitosTraversal, toimipisteetTraversal}
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{VapaanSivistystyönPäätasonSuoritus, _}
 import fi.oph.koski.tutkinto.Koulutustyyppi._
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.util.Timing
@@ -609,6 +608,7 @@ class KoskiValidator(
 
   private def validatePäätasonSuorituksenStatus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, suoritus: KoskeenTallennettavaPäätasonSuoritus) = suoritus match {
     case a: AmmatillisenTutkinnonOsittainenSuoritus => validateValmiinAmmatillisenTutkinnonOsittainenSuoritus(a, opiskeluoikeus)
+    case vst: VapaanSivistystyönPäätasonSuoritus => validateVapaanSivistystyönPäätasonSuoritus(vst)
     case s => validateValmiinSuorituksenStatus(s)
   }
 
@@ -620,6 +620,16 @@ class KoskiValidator(
         )
       case x => validateValmiinSuorituksenStatus(x)
     })
+  }
+
+  private def validateVapaanSivistystyönPäätasonSuoritus(suoritus: VapaanSivistystyönPäätasonSuoritus): HttpStatus = {
+    if (suoritus.vahvistettu &&
+        suoritus.osasuoritusLista.map(_.koulutusmoduuli.laajuusArvo(0)).sum != 53.0) {
+      KoskiErrorCategory.badRequest.validation.tila.vapaanSivistyönVahvistetunPäätasonSuorituksenLaajuus("Päätason suoritus " + suorituksenTunniste(suoritus) + " on vahvistettu, mutta sillä ei ole 53 opintopisteen edestä suorituksia")
+    }
+    else {
+      HttpStatus.ok
+    }
   }
 
   private def validateLinkitettyTaiSisältääOsasuorituksia(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, suoritus: KoskeenTallennettavaPäätasonSuoritus) = {
