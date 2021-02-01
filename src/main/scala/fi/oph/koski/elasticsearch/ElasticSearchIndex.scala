@@ -154,7 +154,7 @@ class ElasticSearchIndex(
   def reload(): Unit = this.initialLoader()
 
   def refreshIndex(): Unit = {
-    Http.runTask(http.post(uri"/$readAlias/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
+    Http.runTask(http.post(uri"/$readAlias,$writeAlias/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
   }
 
   def runSearch(query: JValue): Option[JValue] = try {
