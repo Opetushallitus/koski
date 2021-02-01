@@ -25,10 +25,7 @@ const apiFetch = async <T>(
   init?: RequestInit
 ): Promise<ApiResponse<T>> => {
   try {
-    const response = await fetch(
-      prependUrl(process.env.PUBLIC_URL || "", input),
-      init
-    )
+    const response = await fetch(prependUrl("/koski", input), init)
     try {
       const data = await response.json()
       return response.status < 400

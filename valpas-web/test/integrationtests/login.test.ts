@@ -45,7 +45,7 @@ describe("Login / Logout / kirjautuminen", () => {
   it("Käyttäjä on kirjautumisen jälkeen osoitteessa, jonne hän alunperin yritti", async () => {
     await defaultLogin("/testi/huone")
     expect(await getCurrentUrl()).toEqual(
-      "http://localhost:1234/valpas/testi/huone"
+      "http://localhost:1234/valpas/virkailija/testi/huone"
     )
   })
 })
