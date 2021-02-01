@@ -6,6 +6,7 @@ import {
   getLogin,
   hasValpasAccess,
   isLoggedIn,
+  storeLoginReturnUrl,
 } from "./state/auth"
 import { t } from "./i18n/i18n"
 
@@ -19,7 +20,7 @@ declare global {
 const runningLocally = window.environment == "local"
 
 const Login = () => {
-  const LocalLoginApp = React.lazy(() => import("./views/LoginApp"))
+  storeLoginReturnUrl()
   const config = getLogin()
 
   if (config.type === "external") {
@@ -27,9 +28,10 @@ const Login = () => {
     return null
   }
 
+  const LocalLoginApp = React.lazy(() => import("./views/LoginApp"))
   return (
     <React.Suspense fallback={<></>}>
-      <LocalLoginApp onLogin={main} />
+      <LocalLoginApp />
     </React.Suspense>
   )
 }

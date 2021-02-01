@@ -2,11 +2,14 @@ import {
   expectElementVisible,
   reset,
   loginAs,
-  defaultLogin, expectElementNotVisible, clickElement, expectElementEventuallyVisible,
+  defaultLogin,
+  expectElementNotVisible,
+  clickElement,
+  expectElementEventuallyVisible,
+  getCurrentUrl,
 } from "../integrationtests-env/browser"
 
 describe("Login / Logout / kirjautuminen", () => {
-
   it("Kirjautumattomalle käyttäjälle näytetään kirjautumisruutu, jossa ei näy logout-painiketta", async () => {
     await reset("/")
     await expectElementVisible("article.page#login-app")
@@ -37,5 +40,12 @@ describe("Login / Logout / kirjautuminen", () => {
     await expectElementVisible(".localraamit__logoutbutton")
     await clickElement(".localraamit__logoutbutton")
     await expectElementEventuallyVisible("article.page#login-app")
+  })
+
+  it("Käyttäjä on kirjautumisen jälkeen osoitteessa, jonne hän alunperin yritti", async () => {
+    await defaultLogin("/testi/huone")
+    expect(await getCurrentUrl()).toEqual(
+      "http://localhost:1234/valpas/testi/huone"
+    )
   })
 })

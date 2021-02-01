@@ -6,16 +6,12 @@ import { Page } from "../components/containers/Page"
 import { Form } from "../components/forms/Form"
 import { TextField } from "../components/forms/TextField"
 import { t, T } from "../i18n/i18n"
-import { User } from "../state/auth"
 import { formSubmitHandler } from "../utils/eventHandlers"
 import { Error } from "../components/typography/error"
 import { useApiMethod } from "../api/apiHooks"
+import { publicUrl } from "../utils/url"
 
-export type LoginAppProps = {
-  onLogin: (user: User) => void
-}
-
-export default (props: LoginAppProps) => {
+export default () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const login = useApiMethod(fetchLogin)
@@ -30,7 +26,7 @@ export default (props: LoginAppProps) => {
 
   useEffect(() => {
     if (login.state === "success") {
-      props.onLogin(login.data)
+      location.href = publicUrl()
     }
   }, [login])
 

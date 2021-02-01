@@ -48,7 +48,6 @@ export const getLogin = (): Login => {
     ? {
         type: "external",
         redirectToVirkailijaLogin() {
-          Cookies.set(RETURN_URL_KEY, location.href)
           location.href = buildUrl(`${opintopolkuVirkailijaUrl}/cas/login`, {
             service: absoluteKoskiUrl("/cas/virkailija"),
           })
@@ -57,6 +56,12 @@ export const getLogin = (): Login => {
     : {
         type: "local",
       }
+}
+
+export const storeLoginReturnUrl = () => {
+  if (!Cookies.get(RETURN_URL_KEY)) {
+    Cookies.set(RETURN_URL_KEY, location.href)
+  }
 }
 
 export const redirectToLoginReturnUrl = (): boolean => {
