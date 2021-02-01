@@ -21,7 +21,7 @@ case class PerustiedotSyncScheduler(app: KoskiApplication) extends Timing {
 
   def syncAndLogErrors(ignore: Option[JValue]): Option[JValue] = timed("perustiedotSync", 500) {
     try {
-      sync(refresh = false)
+      sync(refresh = true)
     } catch {
       case e: Exception =>
         logger.error(e)("Problem running perustiedotSync")
