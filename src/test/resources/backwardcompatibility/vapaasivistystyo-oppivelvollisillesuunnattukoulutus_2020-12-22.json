@@ -40,7 +40,7 @@
       },
       "koulutusmoduuli" : {
         "tunniste" : {
-          "koodiarvo" : "099999",
+          "koodiarvo" : "999909",
           "koodistoUri" : "koulutus"
         },
         "perusteenDiaarinumero" : "mock-empty-koulutukset"
