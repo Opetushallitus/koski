@@ -1,4 +1,4 @@
-name: Test, build, deploy
+name: Test, build and deploy master
 on:
   push:
     branches:
