@@ -9,6 +9,14 @@ import fi.oph.koski.config.{Environment, SecretsManager}
 case class VirkailijaCredentials(username: String, password: String) extends NotLoggable
 
 object VirkailijaCredentials {
+  def apply(serviceConfig: ServiceConfig): VirkailijaCredentials = {
+    if (Environment.usesAwsSecretsManager) {
+      VirkailijaCredentials.fromSecretsManager
+    }
+    else {
+      VirkailijaCredentials(serviceConfig.username, serviceConfig.password)
+    }
+  }
   def fromSecretsManager: VirkailijaCredentials = {
     val cachedSecretsClient = new SecretsManager
     val secretId = cachedSecretsClient.getSecretId("Opintopolku virkailija credentials", "OPINTOPOLKU_VIRKAILIJA_SECRET_ID")
@@ -24,12 +32,8 @@ object VirkailijaCredentials {
 
 object VirkailijaHttpClient {
   def apply(serviceConfig: ServiceConfig, serviceUrl: String, useCas: Boolean = true, sessionCookieName: String = "JSESSIONID") = {
+    val VirkailijaCredentials(username, password) = VirkailijaCredentials(serviceConfig)
     val blazeHttpClient = Http.newClient(serviceUrl)
-    val VirkailijaCredentials(username, password) = if (Environment.usesAwsSecretsManager) {
-      VirkailijaCredentials.fromSecretsManager
-    } else {
-      VirkailijaCredentials(serviceConfig.username, serviceConfig.password)
-    }
     val casAuthenticatingClient: Client = if (useCas) {
       val casClient = new CasClient(serviceConfig.virkailijaUrl + "/cas", blazeHttpClient, OpintopolkuCallerId.koski)
       cas.CasAuthenticatingClient(casClient, CasParams(serviceUrl, username, password), blazeHttpClient, OpintopolkuCallerId.koski, sessionCookieName)
