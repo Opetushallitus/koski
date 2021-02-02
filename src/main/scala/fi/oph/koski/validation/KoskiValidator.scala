@@ -623,13 +623,42 @@ class KoskiValidator(
   }
 
   private def validateVapaanSivistystyönPäätasonSuoritus(suoritus: VapaanSivistystyönPäätasonSuoritus): HttpStatus = {
-    if (suoritus.vahvistettu &&
-        suoritus.osasuoritusLista.map(_.koulutusmoduuli.laajuusArvo(0)).sum != 53.0) {
-      KoskiErrorCategory.badRequest.validation.tila.vapaanSivistyönVahvistetunPäätasonSuorituksenLaajuus("Päätason suoritus " + suorituksenTunniste(suoritus) + " on vahvistettu, mutta sillä ei ole 53 opintopisteen edestä suorituksia")
+    if (suoritus.vahvistettu) {
+      HttpStatus.fold(List(validateVapaanSivistystyönPäätasonSuorituksenLaajuus(suoritus),
+        validateVapaanSivistystyönPäätasonSuorituksenOsaamiskokonaisuuksienLaajuudet(suoritus)))
     }
     else {
       HttpStatus.ok
     }
+  }
+
+  private def validateVapaanSivistystyönPäätasonSuorituksenLaajuus(suoritus: VapaanSivistystyönPäätasonSuoritus): HttpStatus = {
+    if (hyväksytystiArvioidutOsasuoritukset(suoritus.osasuoritusLista.map(_.osasuoritusLista).flatten).map(_.koulutusmoduuli.laajuusArvo(0)).sum != 53.0) {
+      KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus("Päätason suoritus " + suorituksenTunniste(suoritus) + " on vahvistettu, mutta sillä ei ole 53 opintopisteen edestä suorituksia")
+    }
+    else {
+      HttpStatus.ok
+    }
+  }
+
+  private def validateVapaanSivistystyönPäätasonSuorituksenOsaamiskokonaisuuksienLaajuudet(suoritus: VapaanSivistystyönPäätasonSuoritus): HttpStatus = {
+    if (suoritus.osasuoritusLista.filter(_ match {
+      case _:OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus => true
+      case _ => false
+    })
+    .exists(_.koulutusmoduuli.laajuusArvo(0) < 4.0)) {
+      KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus("Päätason suoritus " + suorituksenTunniste(suoritus) + " on vahvistettu, mutta sillä on osaamiskokonaisuuksia, joiden laajuus on alle 4 opintopistettä")
+    }
+    else {
+      HttpStatus.ok
+    }
+  }
+
+  private def hyväksytystiArvioidutOsasuoritukset(suoritukset: List[Suoritus]): List[Suoritus] = {
+    suoritukset.filter(_.viimeisinArviointi match {
+      case Some(arviointi) if arviointi.hyväksytty => true
+      case _ => false
+    })
   }
 
   private def validateLinkitettyTaiSisältääOsasuorituksia(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, suoritus: KoskeenTallennettavaPäätasonSuoritus) = {

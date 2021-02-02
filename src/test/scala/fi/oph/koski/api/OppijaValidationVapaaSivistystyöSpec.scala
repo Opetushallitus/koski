@@ -76,11 +76,43 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
 
       "Jos päätason suorituksella on väärä yhteenlaskettu laajuus, päätason suoritusta ei voida merkitä valmiiksi" in {
         val oo = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(
-          osasuoritukset = Some(List(tyhjäSuuntautumisopintojenSuoritus(Some(laajuus(5.0)))))
+          osasuoritukset = Some(List(
+            osaamiskokonaisuudenSuoritus("1002", List(
+              opintokokonaisuudenSuoritus(
+                opintokokonaisuus("A01", "Arjen rahankäyttö", "Arjen rahankäyttö", 2.0)
+              ),
+              opintokokonaisuudenSuoritus(
+                opintokokonaisuus("M01", "Mielen liikkeet", "Mielen liikkeet ja niiden havaitseminen", 51),
+                vstArviointi("Hylätty", date(2021, 11, 2))
+              )
+            ))
+          ))
         )))
 
         putOpiskeluoikeus(oo) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistyönVahvistetunPäätasonSuorituksenLaajuus("Päätason suoritus koulutus/999909 on vahvistettu, mutta sillä ei ole 53 opintopisteen edestä suorituksia"))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus("Päätason suoritus koulutus/999909 on vahvistettu, mutta sillä ei ole 53 opintopisteen edestä suorituksia"))
+        }
+      }
+
+      "Jos päätason suorituksella on osaamiskokonaisuuksia, joiden laajuus on alle 4, päätason suoritusta ei voida merkitä valmiiksi" in {
+        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(
+          osasuoritukset = Some(List(
+            osaamiskokonaisuudenSuoritus("1002", List(
+              opintokokonaisuudenSuoritus(
+                opintokokonaisuus("M01", "Mielen liikkeet", "Mielen liikkeet ja niiden havaitseminen", 51),
+                vstArviointi("Hyväksytty", date(2021, 11, 2))
+              )
+            )),
+            osaamiskokonaisuudenSuoritus("1003", List(
+              opintokokonaisuudenSuoritus(
+                opintokokonaisuus("A01", "Arjen rahankäyttö", "Arjen rahankäyttö", 2.0)
+              )
+            ))
+          ))
+        )))
+
+        putOpiskeluoikeus(oo) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus("Päätason suoritus koulutus/999909 on vahvistettu, mutta sillä on osaamiskokonaisuuksia, joiden laajuus on alle 4 opintopistettä"))
         }
       }
     }

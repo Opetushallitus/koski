@@ -51,13 +51,12 @@ object VapaaSivistystyöExample {
           opintokokonaisuus("OP01", "Oman opiskelutyyli", "Oman opiskelutyylin analysointi ja tavoitteiden asettaminen", 4.0)
         )
       )),
-      tyhjäOsaamiskokonaisuudenSuoritus("1004"),
       osaamiskokonaisuudenSuoritus("1005", List(
         opintokokonaisuudenSuoritus(
           opintokokonaisuus("Mat01", "Matematiikka arjessa", "Matematiikan jokapäiväinen käyttö", 2.0)
         ),
         opintokokonaisuudenSuoritus(
-          opintokokonaisuus("Mat04", "Geometria", "Geometrian perusteet", 2.0)
+          opintokokonaisuus("Mat04", "Geometria", "Geometrian perusteet", 4.0)
         ),
         opintokokonaisuudenSuoritus(
           opintokokonaisuus("Mat06", "Trigonometria", "Trigonometrian perusteet", 2.0),
@@ -126,7 +125,7 @@ object VapaaSivistystyöExampleData {
         tunniste = Koodistokoodiviite(osaamiskokonaisuusKoodiarvo, "vstosaamiskokonaisuus"),
         laajuus = laajuus
       ),
-      osasuoritukset = opintokokonaisuudet
+      osasuoritukset = opintokokonaisuudet,
     )
   }
 

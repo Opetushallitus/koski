@@ -137,7 +137,7 @@ object KoskiErrorCategory {
         val tilaltaPuuttuuRahoitusmuoto = subcategory("tilaltaPuuttuuRahoitusmuoto", "Opiskeluoikeuden tilalta vaaditaan rahoitusmuoto")
         val tilallaEiSaaOllaRahoitusmuotoa = subcategory("tilallaEiSaaOllaRahoitusmuotoa", "Opiskeluoikeuden tilalla ei saa olla rahoitusmuotoa")
         val osasuoritusPuuttuu = subcategory("osasuoritusPuuttuu", "Opiskeluoikeutta ei voi merkitä valmiiksi kun sen suoritukselta puuttuu tarvittava osasuoritus")
-        val vapaanSivistyönVahvistetunPäätasonSuorituksenLaajuus = subcategory("vapaaSivistysTyöLaajuusVäärä", "Vahvistetuksi merkatun vapaan sivistyöstyön koulutuksen laajuuden tulee olla 53")
+        val vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus = subcategory("vapaaSivistysTyöLaajuusVäärä", "Vahvistetuksi merkatun vapaan sivistyöstyön koulutuksen laajuuden tulee olla 53")
       }
       val tila = new Tila
 
