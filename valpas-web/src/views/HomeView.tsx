@@ -8,10 +8,12 @@ import {
   Table,
   TableBody,
 } from "../components/tables/Table"
-import { User } from "../state/auth"
+import { getLocalized } from "../i18n/i18n"
+import { Organisaatio, User } from "../state/types"
 
 export type HomeViewProps = {
   user: User
+  organisaatiot: Organisaatio[]
 }
 
 export const HomeView = (props: HomeViewProps) => (
@@ -37,9 +39,36 @@ export const HomeView = (props: HomeViewProps) => (
               <HeaderCell>OID</HeaderCell>
               <Data>{props.user.oid}</Data>
             </Row>
+            <Row>
+              <HeaderCell>Organisaatiot</HeaderCell>
+              <Data>
+                <OrganisaatiotList organisaatiot={props.organisaatiot} />
+              </Data>
+            </Row>
           </TableBody>
         </Table>
       </CardBody>
     </Card>
   </Page>
+)
+
+type OrganisaatiotListProps = {
+  organisaatiot: Organisaatio[]
+  style?: React.CSSProperties
+}
+
+const OrganisaatiotList = (props: OrganisaatiotListProps) => (
+  <ul style={props.style}>
+    {props.organisaatiot.map((org) => (
+      <li key={org.oid}>
+        {getLocalized(org.nimi)}
+        {org.children.length > 0 ? (
+          <OrganisaatiotList
+            organisaatiot={org.children}
+            style={{ marginLeft: 30 }}
+          />
+        ) : null}
+      </li>
+    ))}
+  </ul>
 )

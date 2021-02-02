@@ -3,17 +3,9 @@ import { pipe } from "fp-ts/lib/function"
 import Cookies from "js-cookie"
 import { fetchCurrentUser } from "../api/api"
 import { absoluteKoskiUrl, buildUrl } from "../utils/url"
+import { User } from "./types"
 
 const RETURN_URL_KEY = "koskiReturnUrl"
-
-export type User = {
-  oid: string
-  username: string
-  name: string
-  serviceTicket: string
-  kansalainen: boolean
-  huollettava: boolean
-}
 
 export type CurrentUser = "unauthorized" | "forbidden" | User
 
