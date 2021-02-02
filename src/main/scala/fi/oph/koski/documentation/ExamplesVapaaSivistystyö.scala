@@ -30,7 +30,7 @@ object VapaaSivistystyöExample {
   lazy val suoritus = OppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenSuoritus(
     toimipiste = varsinaisSuomenKansanopistoToimipiste,
     tyyppi = Koodistokoodiviite("vstoppivelvollisillesuunnattukoulutus", koodistoUri = "suorituksentyyppi"),
-    koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(perusteenDiaarinumero = Some("mock-empty-koulutukset")), // TODO: Oikea perusteen diaarinumero, kunhan oikea diaarinumero saatavilla ja sisältö tuotu Kosken mockdataan
+    koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(perusteenDiaarinumero = Some("OPH-58-2021")),
     vahvistus = vahvistus(päivä = date(2022, 5, 31)),
     suorituskieli = suomenKieli,
     todistuksellaNäkyvätLisätiedot = Some("Opinnot suoritettu pandemian vuoksi etäopintoina"),
