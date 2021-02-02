@@ -75,7 +75,6 @@ describe('Linkitetyt oppijat', function() {
 
   describe('Oppijahaussa', function() {
     before(
-      refreshIndices, // ensure that elasticsearch index is refreshed to reflect the changes made above
       page.oppijaHaku.search('Puppets')
     )
 

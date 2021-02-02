@@ -65,7 +65,7 @@ class DelayedScheduler extends ScalaScheduler {
     override def schedule(action: Action0): Subscription = {
       new Thread {
         override def run(): Unit = {
-          Wait.until(okToContinue)
+          Wait.until(okToContinue, timeoutMs = 5*60*1000)
           action.call()
         }
       }.start()

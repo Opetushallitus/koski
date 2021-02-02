@@ -7,22 +7,18 @@ import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.henkilo._
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.huoltaja.HuollettavienHakuOnnistui
-import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSession}
+import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.KoskiMessageField.{opiskeluoikeusId, opiskeluoikeusVersio, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, _}
 import fi.oph.koski.opiskeluoikeus._
-import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotIndexer
 import fi.oph.koski.schema._
 import fi.oph.koski.util.{Timing, WithWarnings}
 
 class KoskiOppijaFacade(
   henkilöRepository: HenkilöRepository,
-  henkilöCache: KoskiHenkilöCache,
   opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
   historyRepository: OpiskeluoikeusHistoryRepository,
-  perustiedotIndexer: OpiskeluoikeudenPerustiedotIndexer,
   config: Config,
   hetu: Hetu
 ) extends Logging with Timing with GlobalExecutionContext {
@@ -78,7 +74,11 @@ class KoskiOppijaFacade(
     }
   }
 
-  def createOrUpdate(oppija: Oppija, allowUpdate: Boolean, allowDeleteCompleted: Boolean = false)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
+  def createOrUpdate(
+    oppija: Oppija,
+    allowUpdate: Boolean,
+    allowDeleteCompleted: Boolean = false
+  )(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
     val oppijaOid: Either[HttpStatus, PossiblyUnverifiedHenkilöOid] = oppija.henkilö match {
       case h: UusiHenkilö =>
         hetu.validate(h.hetu).right.flatMap { hetu =>
@@ -136,9 +136,6 @@ class KoskiOppijaFacade(
       result.right.map { (result: CreateOrUpdateResult) =>
         applicationLog(oppijaOid, opiskeluoikeus, result)
         auditLog(oppijaOid, result)
-        if (result.changed && opiskeluoikeus.lähdejärjestelmänId.isEmpty) {
-          // Currently we don't trigger an immediate update to elasticsearch, as we've a 1 sec poll interval anyway. This is where we would do it.
-        }
         OpiskeluoikeusVersio(result.oid, result.versionumero, result.lähdejärjestelmänId)
       }
     }

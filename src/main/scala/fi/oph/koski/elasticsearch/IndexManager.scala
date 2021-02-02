@@ -10,10 +10,6 @@ class IndexManager(indexes: List[ElasticSearchIndex]) {
     }
   }
 
-  def refreshAll(): Unit = {
-    indexes.foreach(_.refreshIndex())
-  }
-
   def createIndex(indexName: String, version: Int): Option[String] = {
     withNamedIndex[String](indexName, _.createIndex(version))
   }
@@ -24,7 +20,6 @@ class IndexManager(indexes: List[ElasticSearchIndex]) {
 
   def reload(indexName: String): Option[String] = {
     withNamedIndex[Unit](indexName, _.reload())
-    withNamedIndex[Unit](indexName, _.refreshIndex())
     Some(indexName)
   }
 

@@ -5,10 +5,6 @@ import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.util.EnvVariables
 
 trait KoskidevHttpSpecification extends HttpSpecification with EnvVariables {
-  def refreshElasticSearchIndexes = {
-
-  }
-
   override def baseUrl = env("KOSKI_BASE_URL", "https://dev.koski.opintopolku.fi/koski")
 
   def defaultUser = new UserWithPassword {

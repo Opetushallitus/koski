@@ -34,7 +34,6 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         submit("put", "api/oppija", body = "not json".getBytes("UTF-8"), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.json("Epäkelpo JSON-dokumentti"))
         }
-        refreshElasticSearchIndexes
         verifyTiedonsiirtoLoki(helsinginKaupunkiPalvelukäyttäjä, None, None, errorStored = true, dataStored = true, expectedLähdejärjestelmä = None)
       }
     }
@@ -190,8 +189,6 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
         verifyResponseStatusOk()
       }
-
-      refreshElasticSearchIndexes
 
       Wait.until(getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).size == 1)
       getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).flatMap(_.oppija.flatMap(_.hetu)) should equal(List(eerola.hetu.get))

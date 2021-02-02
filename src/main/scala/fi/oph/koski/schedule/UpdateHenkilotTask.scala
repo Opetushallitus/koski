@@ -17,14 +17,23 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
   // of latest change (+1 millisecond) as the limit.
   private val backBufferMs = 10 * 60 * 1000
   def scheduler: Option[Scheduler] =
-    if (application.config.getString("schedule.henkilötiedotUpdateInterval") == "never") None
-    else Some(new Scheduler(application.masterDatabase.db, "henkilötiedot-update", new IntervalSchedule(application.config.getDuration("schedule.henkilötiedotUpdateInterval")), henkilöUpdateContext(currentTimeMillis - backBufferMs), updateHenkilöt))
+    if (application.config.getString("schedule.henkilötiedotUpdateInterval") == "never") {
+      None
+    } else {
+      Some(new Scheduler(
+        application.masterDatabase.db,
+        "henkilötiedot-update",
+        new IntervalSchedule(application.config.getDuration("schedule.henkilötiedotUpdateInterval")),
+        henkilöUpdateContext(currentTimeMillis - backBufferMs),
+        updateHenkilöt(refresh = false)
+      ))
+    }
 
-  def updateHenkilöt(context: Option[JValue]): Option[JValue] = timed("scheduledHenkilötiedotUpdate") {
+  def updateHenkilöt(refresh: Boolean)(context: Option[JValue]): Option[JValue] = timed("scheduledHenkilötiedotUpdate") {
     try {
       val oldContext = JsonSerializer.extract[HenkilöUpdateContext](context.get)
       val (unfilteredChangedOids, changedKoskiOids) = findChangedOppijaOids(oldContext.lastRun)
-      val newContext = runUpdate(unfilteredChangedOids, changedKoskiOids, oldContext)
+      val newContext = runUpdate(unfilteredChangedOids, changedKoskiOids, oldContext, refresh)
       Some(JsonSerializer.serializeWithRoot(newContext))
     } catch {
       case e: Exception =>
@@ -49,7 +58,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
   }
 
 
-  private def runUpdate(oids: List[Oid], koskiOids: List[Oid], lastContext: HenkilöUpdateContext) = {
+  private def runUpdate(oids: List[Oid], koskiOids: List[Oid], lastContext: HenkilöUpdateContext, refresh: Boolean) = {
     val oppijat: List[OppijaHenkilö] = findOppijatWithoutSlaveOids(koskiOids)
 
     val oppijatWithMaster: List[WithModifiedTime] = oppijat.map { oppija =>
@@ -80,7 +89,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
           OpiskeluoikeudenHenkilötiedot(p.id, päivitetytTiedot.tiedot)
         })
 
-      application.perustiedotIndexer.updatePerustiedot(muuttuneidenHenkilötiedot, upsert = false, refresh = false) match {
+      application.perustiedotIndexer.updatePerustiedot(muuttuneidenHenkilötiedot, upsert = false, refresh) match {
         case Right(updatedCount) => {
           logger.info(s"Updated ${updatedInKoskiHenkilöCache.length} entries to henkilö table and $updatedCount to elasticsearch, latest oppija modified timestamp: $lastModified")
           HenkilöUpdateContext(lastModified)

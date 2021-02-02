@@ -19,7 +19,7 @@ class TiedonsiirtoScheduler(db: DB, config: Config, tiedonsiirtoService: Tiedons
     )
 
   def syncTiedonsiirrot(ctx: Option[JValue]): Option[JValue] = {
-    tiedonsiirtoService.syncToElasticsearch(refresh = false)
+    tiedonsiirtoService.syncToElasticsearch(refresh = true)
     None
   }
 }
