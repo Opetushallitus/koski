@@ -1,5 +1,6 @@
 import bem from "bem-ts"
 import React from "react"
+import { Link, LinkProps } from "react-router-dom"
 import { joinClassNames } from "../../utils/classnames"
 import "./buttons.less"
 
@@ -19,6 +20,15 @@ export const FlatButton = (props: FlatButtonProps) => {
     >
       <span className={b("content")}>{children}</span>
     </button>
+  )
+}
+
+export const FlatLink = (props: LinkProps) => {
+  const { className, children, onClick, ...rest } = props
+  return (
+    <Link className={flatButtonClassName(props)} {...rest}>
+      <span className={b("content")}>{children}</span>
+    </Link>
   )
 }
 

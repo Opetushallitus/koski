@@ -7,7 +7,7 @@ import {
 
 describe("Perusopetuksen näkymä", () => {
   it("Näyttää listan oppijoista", async () => {
-    await defaultLogin("/perusopetus")
+    await defaultLogin("/oppijat")
     await textEventuallyEquals(
       ".card__header",
       `Perusopetuksen päättävät ${currentYear()} (9)`

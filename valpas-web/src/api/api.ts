@@ -1,3 +1,6 @@
+import * as A from "fp-ts/Array"
+import * as E from "fp-ts/Either"
+import { pipe } from "fp-ts/lib/function"
 import { Oppija } from "../state/oppijat"
 import { Organisaatio, User } from "../state/types"
 import { apiGet, apiPost, mockApi } from "./apiFetch"
@@ -27,7 +30,15 @@ export const fetchOrganisaatiot = async () =>
 /**
  * Get oppijat
  */
-export const fetchOppijat = mockApi<Oppija[], []>(() => [
+export const fetchOppijat = mockApi<Oppija[], []>(() => E.right(mockOppijat))
+export const fetchOppija = mockApi<Oppija, [string]>((oid) =>
+  pipe(
+    A.findFirst((oppija: Oppija) => oppija.oid === oid)(mockOppijat),
+    E.fromOption(() => ({ message: "Not found" }))
+  )
+)
+
+const mockOppijat: Oppija[] = [
   {
     oid: "1.123.123.123.123.123.1",
     nimi: "Aaltonen Ada Adalmiina",
@@ -191,4 +202,4 @@ export const fetchOppijat = mockApi<Oppija[], []>(() => [
     vastaanotetut: [],
     lasna: [],
   },
-])
+]

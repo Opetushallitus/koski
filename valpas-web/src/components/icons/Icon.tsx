@@ -20,6 +20,7 @@ export const ArrowDropDownIcon = defineIcon("arrow_drop_down")
 export const ArrowDropUpIcon = defineIcon("arrow_drop_up")
 export const CloseIcon = defineIcon("close")
 export const WarningIcon = defineIcon("warning", "warning")
+export const BackIcon = defineIcon("arrow_back")
 
 type MaterialDesignIconProps = IconProps & {
   name: string // Ikonien nimet löytyvät osoitteesta https://material.io/resources/icons/?style=baseline
