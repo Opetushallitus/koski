@@ -8,8 +8,8 @@ import {
   T,
 } from "../../i18n/i18n"
 import { CurrentUser } from "../../state/auth"
-import "./LocalRaamit.less"
 import { joinClassNames } from "../../utils/classnames"
+import "./LocalRaamit.less"
 
 const b = bem("localraamit")
 

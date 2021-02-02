@@ -1,5 +1,5 @@
+import { fireEvent, render, RenderResult } from "@testing-library/react"
 import React from "react"
-import { render, fireEvent, RenderResult } from "@testing-library/react"
 import { Column, DataTable, Datum } from "./DataTable"
 
 describe("DataTable", () => {

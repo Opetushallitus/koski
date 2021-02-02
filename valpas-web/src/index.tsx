@@ -1,6 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import "./style/index.less"
+import { t } from "./i18n/i18n"
 import {
   getCurrentUser,
   getLogin,
@@ -8,7 +8,7 @@ import {
   isLoggedIn,
   storeLoginReturnUrl,
 } from "./state/auth"
-import { t } from "./i18n/i18n"
+import "./style/index.less"
 
 declare global {
   interface Window {
