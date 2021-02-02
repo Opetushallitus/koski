@@ -1,5 +1,5 @@
-import { User } from "../state/auth"
 import { Oppija } from "../state/oppijat"
+import { Organisaatio, User } from "../state/types"
 import { apiGet, apiPost, mockApi } from "./apiFetch"
 
 /**
@@ -14,9 +14,15 @@ export const fetchLogin = async (username: string, password: string) =>
   })
 
 /**
- * Get current user
+ * Hae kirjautuneen käyttäjän tiedot
  */
 export const fetchCurrentUser = async () => apiGet<User>("valpas/api/user")
+
+/**
+ * Hae lista organisaatioista, joihin käyttäjällä on käyttöoikeus
+ */
+export const fetchOrganisaatiot = async () =>
+  apiGet<Organisaatio[]>("valpas/api/organisaatiot")
 
 /**
  * Get oppijat

@@ -35,6 +35,7 @@
     "@types/js-cookie": "^2.2.6",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "@types/react-router-dom": "^5.1.7",
     "@types/react-test-renderer": "^17.0.0",
     "@types/selenium-webdriver": "^4.0.11",
     "babel-jest": "^26.6.3",
@@ -60,7 +61,8 @@
     "date-fns": "^2.16.1",
     "fp-ts": "^2.9.3",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0"
   },
   "resolutions": {
     "node-forge": "0.10.0"

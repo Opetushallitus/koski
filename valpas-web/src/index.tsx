@@ -53,7 +53,7 @@ async function main() {
         <LocalRaamit user={user} />
       )}
       {hasValpasAccess(user) ? (
-        <ValpasApp />
+        <ValpasApp user={user} />
       ) : isLoggedIn(user) ? (
         <ErrorView
           title={t("login__ei_valpas-oikeuksia_otsikko")}
