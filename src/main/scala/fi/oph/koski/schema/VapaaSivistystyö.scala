@@ -58,8 +58,8 @@ case class OppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenSuoritus(
 
 @Description("Vapaan sivistystyön oppivelvollisuuskoulutuksen tunnistetiedot")
 case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(
-  @KoodistoKoodiarvo("099999")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("099999", koodistoUri = "koulutus"),
+  @KoodistoKoodiarvo("999909")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("999909", koodistoUri = "koulutus"),
   perusteenDiaarinumero: Option[String],
   koulutustyyppi: Option[Koodistokoodiviite] = None
 ) extends DiaarinumerollinenKoulutus with Tutkinto with Laajuudeton

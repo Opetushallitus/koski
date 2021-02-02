@@ -198,18 +198,18 @@
   } ],
   "versio" : 12
 }, {
-  "koodiUri" : "koulutus_099999",
-  "koodiArvo" : "099999",
+  "koodiUri" : "koulutus_999909",
+  "koodiArvo" : "999909",
   "metadata" : [ {
-    "nimi" : "Vapaan sivistystyön koulutus",
-    "lyhytNimi" : "Vapaan sivistystyön koulutus",
+    "nimi" : "Kansanopistojen vapaan sivistystyön koulutus oppivelvollisille",
+    "lyhytNimi" : " Kansanopistojen vapaan sivistystyön koulutus oppivelvollisille",
     "kieli" : "FI"
   }, {
     "nimi" : "Fritt bildningsarbete ",
     "lyhytNimi" : "Fritt bildningsarbete ",
     "kieli" : "SV"
   } ],
-  "versio" : 12
+  "versio" : 1
 }, {
   "koodiUri" : "koulutus_100000",
   "koodiArvo" : "100000",
