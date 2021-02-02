@@ -8,7 +8,7 @@ import fi.oph.koski.cache._
 import fi.oph.koski.config.{Environment, KoskiApplication, SecretsManager}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.eperusteet.ERakenneOsa
-import fi.oph.koski.http.{ErrorDetail, HttpStatus, HttpStatusException, KoskiErrorCategory}
+import fi.oph.koski.http.{ErrorDetail, HttpStatus, HttpStatusException, KoskiErrorCategory, VirkailijaCredentials}
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViite}
 import fi.oph.koski.koskiuser.AccessType
 import fi.oph.koski.koskiuser.KoskiSession._
@@ -19,25 +19,8 @@ import fi.oph.koski.userdirectory.Password
 import fi.oph.koski.util.Timing
 import cas.CasClientException
 import scalaz.concurrent.Task
-
 import scala.concurrent.duration._
 import scala.language.postfixOps
-
-case class VirkailijaCredentials(username: String, password: String) extends NotLoggable
-
-object VirkailijaCredentials {
-  def fromSecretsManager: VirkailijaCredentials = {
-    val cachedSecretsClient = new SecretsManager
-    val secretId = cachedSecretsClient.getSecretId("Opintopolku virkailija credentials", "OPINTOPOLKU_VIRKAILIJA_SECRET_ID")
-    cachedSecretsClient.getStructuredSecret[VirkailijaCredentials](secretId)
-  }
-  def fromConfig(config: Config): VirkailijaCredentials = {
-    VirkailijaCredentials(
-      config.getString("opintopolku.virkailija.username"),
-      config.getString("opintopolku.virkailija.password")
-    )
-  }
-}
 
 trait HealthCheck extends Logging {
   private implicit val user = systemUser
