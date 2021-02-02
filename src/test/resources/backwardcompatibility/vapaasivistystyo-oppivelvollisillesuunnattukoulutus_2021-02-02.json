@@ -271,17 +271,6 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "1004",
-            "koodistoUri" : "vstosaamiskokonaisuus"
-          }
-        },
-        "tyyppi" : {
-          "koodiarvo" : "vstosaamiskokonaisuus",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
             "koodiarvo" : "1005",
             "koodistoUri" : "vstosaamiskokonaisuus"
           }
@@ -339,7 +328,7 @@
               "fi" : "Geometrian perusteet"
             },
             "laajuus" : {
-              "arvo" : 2.0,
+              "arvo" : 4.0,
               "yksikkö" : {
                 "koodiarvo" : "2",
                 "nimi" : {
@@ -580,7 +569,7 @@
               "fi" : "Valaisinlähteet ja niiden toiminta"
             },
             "laajuus" : {
-              "arvo" : 10.0,
+              "arvo" : 6.0,
               "yksikkö" : {
                 "koodiarvo" : "2",
                 "nimi" : {
@@ -621,7 +610,7 @@
               "fi" : "Taiteen käyttö työkaluna"
             },
             "laajuus" : {
-              "arvo" : 30.0,
+              "arvo" : 20.0,
               "yksikkö" : {
                 "koodiarvo" : "2",
                 "nimi" : {
