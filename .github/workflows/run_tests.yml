@@ -1,8 +1,10 @@
 name: Run tests
 on:
   push:
-    branches:
-      - master
+    paths-ignore:
+      - "valpas-web/**"
+    branches-ignore:
+      - "master"
   pull_request:
     paths-ignore:
       - "valpas-web/**"
@@ -308,24 +310,3 @@ jobs:
           npm ci
           cd ..
           mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner4"
-
-  trigger_build:
-    name: Send repository dispatch event to build artifacts
-    needs:
-      [
-        run_backend_tests,
-        run_frontend_tests_0,
-        run_frontend_tests_1,
-        run_frontend_tests_2,
-        run_frontend_tests_3,
-        run_frontend_tests_4,
-      ]
-    if: success() && github.ref == 'refs/heads/master'
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Send dispatch
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
-          event-type: build_artifacts
-          client-payload: '{"sha": "${{ github.sha }}"}'
