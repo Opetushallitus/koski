@@ -1,6 +1,7 @@
 package fi.oph.koski.localization
 
 import fi.oph.koski.cache.GlobalCacheManager
+import fi.oph.koski.valpas.localization.ValpasLocalizationConfig
 import org.scalatest.{FreeSpec, Matchers}
 
 /**
@@ -11,9 +12,12 @@ class LocalizationLanguagesTest extends FreeSpec with Matchers {
     implicit lazy val cacheManager = GlobalCacheManager
 
     lazy val root = sys.env.getOrElse("VIRKAILIJA_ROOT", throw new RuntimeException("Environment variable VIRKAILIJA_ROOT missing"))
-    lazy val localizationCategory = sys.env.getOrElse("LOCALIZATION_CATEGORY", "koski")
-    lazy val remoteLocalizations = new ReadOnlyRemoteLocalizationRepository(root, LocalizationConfig(localizationCategory)).localizations
-    lazy val localLocalizations = new MockLocalizationRepository(LocalizationConfig(localizationCategory)).localizations
+    lazy val localizationConfig = sys.env.getOrElse("LOCALIZATION_CATEGORY", "koski") match {
+      case "koski" => new KoskiLocalizationConfig
+      case "valpas" => new ValpasLocalizationConfig
+    }
+    lazy val remoteLocalizations = new ReadOnlyRemoteLocalizationRepository(root, localizationConfig).localizations
+    lazy val localLocalizations = new MockLocalizationRepository(localizationConfig).localizations
 
     s"Suomenkieliset tekstit" taggedAs(LocalizationTestTag) in {
       val missingKeys = localLocalizations.keySet -- remoteLocalizations.keySet

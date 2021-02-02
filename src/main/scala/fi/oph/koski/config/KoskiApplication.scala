@@ -12,7 +12,7 @@ import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.huoltaja.HuoltajaServiceVtj
 import fi.oph.koski.koodisto.{KoodistoCreator, KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser._
-import fi.oph.koski.localization.{LocalizationConfig, LocalizationRepository}
+import fi.oph.koski.localization.{KoskiLocalizationConfig, LocalizationRepository}
 import fi.oph.koski.log.{AuditLog, Logging, TimedProxy}
 import fi.oph.koski.mydata.{MyDataRepository, MyDataService}
 import fi.oph.koski.omattiedot.HuoltajaService
@@ -30,6 +30,7 @@ import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.userdirectory.DirectoryClient
 import fi.oph.koski.validation.KoskiValidator
+import fi.oph.koski.valpas.localization.ValpasLocalizationConfig
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
 import fi.oph.koski.ytr.{YtrAccessChecker, YtrClient, YtrOpiskeluoikeusRepository, YtrRepository}
 
@@ -101,9 +102,9 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val ipService = new IPService(masterDatabase.db)
   lazy val prometheusRepository = PrometheusRepository(config)
   lazy val koskiPulssi = KoskiPulssi(this)
-  lazy val koskiLocalizationRepository = LocalizationRepository(config, LocalizationConfig("koski"))
+  lazy val koskiLocalizationRepository = LocalizationRepository(config, new KoskiLocalizationConfig)
   lazy val valpasLocalizationRepository = if (features.valpas) {
-    LocalizationRepository(config, LocalizationConfig("valpas"))
+    LocalizationRepository(config, new ValpasLocalizationConfig)
   } else {
     null // Vaikka kaikki valpasLocalizationRepository:n käyttöpaikat pitäisi olla feature flagätty, asetetaan kuitenkin varmuuden vuoksi null:ksi tässä, niin ei mahdolliset unohdukset pääse tuotantoon.
   }

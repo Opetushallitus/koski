@@ -12,7 +12,7 @@ import fi.oph.koski.henkilo.HenkilötiedotServlet
 import fi.oph.koski.history.KoskiHistoryServlet
 import fi.oph.koski.kela.KelaServlet
 import fi.oph.koski.koskiuser._
-import fi.oph.koski.localization.LocalizationServlet
+import fi.oph.koski.localization.KoskiSpecificLocalizationServlet
 import fi.oph.koski.log.Logging
 import fi.oph.koski.luovutuspalvelu.{LuovutuspalveluServlet, PalveluvaylaServlet, TilastokeskusServlet}
 import fi.oph.koski.mydata.{ApiProxyServlet, MyDataReactServlet, MyDataServlet}
@@ -95,7 +95,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     mount("/api/preferences", new PreferencesServlet)
     mount("/api/tiedonsiirrot", new TiedonsiirtoServlet)
     mount("/api/tutkinnonperusteet", new TutkinnonPerusteetServlet)
-    mount("/api/localization", new LocalizationServlet)
+    mount("/api/localization", new KoskiSpecificLocalizationServlet)
     mount("/api/raportit", new RaportitServlet)
     mount("/api/raportointikanta", new RaportointikantaServlet)
     mount("/api/sure", new SureServlet)
