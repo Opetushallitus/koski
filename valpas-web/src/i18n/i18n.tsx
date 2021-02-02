@@ -1,7 +1,7 @@
-import React from "react"
 import Cookie from "js-cookie"
-import { logWarning } from "../utils/log"
+import React from "react"
 import { LocalizedString } from "../state/types"
+import { logWarning } from "../utils/log"
 
 export type TranslationId = string
 export type Translation = string

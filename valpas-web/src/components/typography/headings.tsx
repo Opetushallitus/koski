@@ -1,5 +1,5 @@
-import React from "react"
 import bem from "bem-ts"
+import React from "react"
 import "./headings.less"
 
 export type HeadingProps = {
