@@ -5,22 +5,25 @@ import "./buttons.less"
 
 const b = bem("button")
 
-export type FlatButtonProps = React.HTMLAttributes<HTMLDivElement> & {
+export type FlatButtonProps = React.HTMLAttributes<HTMLButtonElement> & {
   disabled?: boolean
 }
 
-export const FlatButton = ({
-  className,
-  children,
-  onClick,
+export const FlatButton = (props: FlatButtonProps) => {
+  const { className, children, onClick, disabled, ...rest } = props
+  return (
+    <button
+      className={flatButtonClassName(props)}
+      onClick={disabled ? undefined : onClick}
+      {...rest}
+    >
+      <span className={b("content")}>{children}</span>
+    </button>
+  )
+}
+
+export const flatButtonClassName = ({
   disabled,
-  ...rest
-}: FlatButtonProps) => (
-  <div
-    className={joinClassNames(b({ disabled }), className)}
-    onClick={disabled ? undefined : onClick}
-    {...rest}
-  >
-    <span className={b("content")}>{children}</span>
-  </div>
-)
+  className,
+}: Pick<FlatButtonProps, "disabled" | "className">) =>
+  joinClassNames(b(["flatten", disabled ? "disabled" : undefined]), className)
