@@ -464,7 +464,7 @@ jobs:
 
   deploy_qa:
     name: Deploy to qa environment
-    needs: [build]
+    needs: [deploy_dev]
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
