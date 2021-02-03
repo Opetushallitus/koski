@@ -1,6 +1,7 @@
 {
   "Kyllä": "Kyllä",
   "Ei": "Ei",
+  "Ladataan": "Ladataan",
   "title__Valpas": "Valpas",
   "login__kayttaja": "Käyttäjä",
   "login__salasana": "Salasana",
@@ -28,5 +29,8 @@
   "valintatieto__varasija": "Varasija",
   "valintatieto__hyväksytty": "Hyväksytty: {{hakukohde}}",
   "valintatieto__hakukohde_lc": "hakukohde",
-  "vastaanotettu__n_paikkaa": "{{lukumäärä}} paikkaa"
+  "vastaanotettu__n_paikkaa": "{{lukumäärä}} paikkaa",
+  "oppija__oletusotsikko": "Oppijan tiedot",
+  "oppija__oppija_oid": "Oppija {{oid}}",
+  "oppija__ei_löydy": "Oppijaa ei löydy tunnuksella {{oid}}"
 }

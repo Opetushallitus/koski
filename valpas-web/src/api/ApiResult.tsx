@@ -3,7 +3,7 @@ import * as O from "fp-ts/Option"
 import React from "react"
 import { ApiFailure } from "./apiFetch"
 import {
-  ApiMethodHook,
+  ApiMethodState,
   isError,
   isInitial,
   isLoading,
@@ -19,7 +19,7 @@ type ApiMappings<T, S> = {
 }
 
 export type ApiResultProps<T> = ApiMappings<T, React.ReactNode> & {
-  state: ApiMethodHook<T, any>
+  state: ApiMethodState<T>
 }
 
 export const ApiResult = <T,>({
@@ -30,7 +30,7 @@ export const ApiResult = <T,>({
 )
 
 export const mapApiResult = <T, S>(
-  state: ApiMethodHook<T, any>,
+  state: ApiMethodState<T>,
   mappings: ApiMappings<T, S>
 ): O.Option<S> => {
   if (isInitial(state)) {
