@@ -79,10 +79,10 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
           osasuoritukset = Some(List(
             osaamiskokonaisuudenSuoritus("1002", List(
               opintokokonaisuudenSuoritus(
-                opintokokonaisuus("A01", "Arjen rahankäyttö", "Arjen rahankäyttö", 2.0)
+                opintokokonaisuus("A01", "Arjen rahankäyttö", "Arjen rahankäyttö", 4.0)
               ),
               opintokokonaisuudenSuoritus(
-                opintokokonaisuus("M01", "Mielen liikkeet", "Mielen liikkeet ja niiden havaitseminen", 51),
+                opintokokonaisuus("M01", "Mielen liikkeet", "Mielen liikkeet ja niiden havaitseminen", 49),
                 vstArviointi("Hylätty", date(2021, 11, 2))
               )
             ))
@@ -90,7 +90,7 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
         )))
 
         putOpiskeluoikeus(oo) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus("Päätason suoritus koulutus/999909 on vahvistettu, mutta sillä ei ole 53 opintopisteen edestä suorituksia"))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus("Päätason suoritus koulutus/999909 on vahvistettu, mutta sillä ei ole 53 opintopisteen edestä hyväksytyksi arvioituja suorituksia"))
         }
       }
 
@@ -105,14 +105,15 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
             )),
             osaamiskokonaisuudenSuoritus("1003", List(
               opintokokonaisuudenSuoritus(
-                opintokokonaisuus("A01", "Arjen rahankäyttö", "Arjen rahankäyttö", 2.0)
+                opintokokonaisuus("A01", "Arjen rahankäyttö", "Arjen rahankäyttö", 2.0),
+                vstArviointi("Hyväksytty", date(2021, 11, 2))
               )
             ))
           ))
         )))
 
         putOpiskeluoikeus(oo) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus("Päätason suoritus koulutus/999909 on vahvistettu, mutta sillä on osaamiskokonaisuuksia, joiden laajuus on alle 4 opintopistettä"))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus("Päätason suoritus koulutus/999909 on vahvistettu, mutta sillä on hyväksytyksi arvioituja osaamiskokonaisuuksia, joiden laajuus on alle 4 opintopistettä"))
         }
       }
     }

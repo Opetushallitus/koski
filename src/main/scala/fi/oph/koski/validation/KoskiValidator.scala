@@ -634,7 +634,7 @@ class KoskiValidator(
 
   private def validateVapaanSivistystyönPäätasonSuorituksenLaajuus(suoritus: VapaanSivistystyönPäätasonSuoritus): HttpStatus = {
     if (hyväksytystiArvioidutOsasuoritukset(suoritus.osasuoritusLista.map(_.osasuoritusLista).flatten).map(_.koulutusmoduuli.laajuusArvo(0)).sum != 53.0) {
-      KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus("Päätason suoritus " + suorituksenTunniste(suoritus) + " on vahvistettu, mutta sillä ei ole 53 opintopisteen edestä suorituksia")
+      KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus("Päätason suoritus " + suorituksenTunniste(suoritus) + " on vahvistettu, mutta sillä ei ole 53 opintopisteen edestä hyväksytyksi arvioituja suorituksia")
     }
     else {
       HttpStatus.ok
@@ -646,8 +646,8 @@ class KoskiValidator(
       case _:OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus => true
       case _ => false
     })
-    .exists(_.koulutusmoduuli.laajuusArvo(0) < 4.0)) {
-      KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus("Päätason suoritus " + suorituksenTunniste(suoritus) + " on vahvistettu, mutta sillä on osaamiskokonaisuuksia, joiden laajuus on alle 4 opintopistettä")
+    .exists(s => hyväksytystiArvioidutOsasuoritukset(s.osasuoritusLista).map(_.koulutusmoduuli.laajuusArvo(0)).sum < 4.0)) {
+      KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus("Päätason suoritus " + suorituksenTunniste(suoritus) + " on vahvistettu, mutta sillä on hyväksytyksi arvioituja osaamiskokonaisuuksia, joiden laajuus on alle 4 opintopistettä")
     }
     else {
       HttpStatus.ok
