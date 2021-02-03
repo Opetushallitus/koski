@@ -1,5 +1,8 @@
 import bem from "bem-ts"
 import React from "react"
+import { ApiResponse } from "../../api/apiFetch"
+import { useApiMethod } from "../../api/apiHooks"
+import { clearMockData, resetMockData } from "../../api/testApi"
 import {
   getLanguage,
   Language,
@@ -26,8 +29,52 @@ export default ({ user }: LocalRaamitProps) => {
           <T id="title__Valpas" />
         </a>
       </h1>
+      <TestApiButtons />
       <UserInfo user={user} currentLanguage={getLanguage()} />
     </div>
+  )
+}
+
+const TestApiButtons = () => {
+  return (
+    <>
+      <TestApiButton
+        fetchFunc={resetMockData}
+        id={"resetMockData"}
+        title={"Reset mock data"}
+      />
+      <TestApiButton
+        fetchFunc={clearMockData}
+        id={"clearMockData"}
+        title={"Clear mock data"}
+      />
+    </>
+  )
+}
+
+type TestApiButtonProps = {
+  fetchFunc: () => Promise<ApiResponse<string>>
+  id: string
+  title: string
+}
+
+const TestApiButton = ({ fetchFunc, id, title }: TestApiButtonProps) => {
+  const apiFetch = useApiMethod(fetchFunc)
+
+  return (
+    <button
+      className={b("testapibutton")}
+      id={id}
+      onClick={() => {
+        apiFetch.clear()
+        return apiFetch.call()
+      }}
+    >
+      {title}{" "}
+      <span id={id + "State"} className={b("testapistate")}>
+        {apiFetch.state}
+      </span>
+    </button>
   )
 }
 

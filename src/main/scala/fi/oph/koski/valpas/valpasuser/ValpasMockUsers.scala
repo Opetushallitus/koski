@@ -5,6 +5,8 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.valpas.valpasuser.ValpasMockKäyttöoikeusryhmät._
 
 object ValpasMockUsers {
+  var mockUsersEnabled = false
+
   val valpasHelsinki = MockUser(
     "käyttäjä",
     "valpas-helsinki",
@@ -17,9 +19,11 @@ object ValpasMockUsers {
     "1.2.246.562.24.99999999487",
     Set(oppilaitoskäyttäjä(jyväskylänNormaalikoulu)))
 
-  val users = List(
-    valpasHelsinki,
-    valpasJklNormaalikoulu
-  )
+  def users = {
+    mockUsersEnabled match {
+      case true => List(valpasHelsinki, valpasJklNormaalikoulu)
+      case false => List()
+    }
+  }
 }
 
