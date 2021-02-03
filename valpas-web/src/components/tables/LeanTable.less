@@ -1,0 +1,34 @@
+@import "../../style/colors.less";
+@import "../../style/typography.less";
+
+@leantable-cell-padding: 0.25rem 0.5rem;
+
+.leantable {
+  width: 100%;
+}
+
+.leantable__headerrow {
+  border-bottom: 1px solid @color-gray-lighten-3;
+}
+
+.leantable__datarow {
+  &:first-child {
+    .leantable__td {
+      padding-top: 0.75rem;
+    }
+  }
+}
+
+.leantable__th {
+  text-align: left;
+  padding: @leantable-cell-padding;
+  font-weight: 500;
+}
+
+.leantable__td {
+  padding: @leantable-cell-padding;
+}
+
+.leantable__null {
+  color: @color-gray-lighten-3;
+}

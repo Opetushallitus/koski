@@ -13,5 +13,9 @@ export const Heading = (props: HeadingProps) => (
 )
 
 export const SecondaryHeading = (props: HeadingProps) => (
-  <h1 className={b(["secondary"])}>{props.children}</h1>
+  <h2 className={b(["secondary"])}>{props.children}</h2>
+)
+
+export const TertiaryHeading = (props: HeadingProps) => (
+  <h3 className={b(["tertiary"])}>{props.children}</h3>
 )
