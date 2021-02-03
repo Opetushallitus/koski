@@ -1,13 +1,8 @@
 import React, { useMemo } from "react"
-import { WarningIcon } from "../../components/icons/Icon"
 import { DataTable, Datum, Value } from "../../components/tables/DataTable"
 import { getLocalized, t } from "../../i18n/i18n"
-import {
-  Hakemuksentila,
-  Oppija,
-  Oppilaitos,
-  Valintatieto,
-} from "../../state/oppijat"
+import { isHyväksytty, isLäsnä, isVastaanotettu } from "../../state/koodistot"
+import { Hakemus, Oppija, Valintatieto } from "../../state/oppijat"
 import { formatDate } from "../../utils/date"
 
 export type HakutilanneTableProps = {
@@ -33,7 +28,7 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
           label: t("hakutilanne__taulu_syntymäaika"),
         },
         {
-          label: t("hakutilanne__taulu_luokka"),
+          label: t("hakutilanne__taulu_ryhma"),
           filter: "dropdown",
         },
         {
@@ -58,35 +53,44 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
   )
 }
 
-const oppijaToTableData = (oppija: Oppija): Datum => ({
-  key: oppija.oid,
-  values: [
-    {
-      value: oppija.nimi,
-    },
-    {
-      value: getLocalized(oppija.oppilaitos.nimi),
-    },
-    {
-      value: oppija.syntymaaika,
-      display: formatDate(oppija.syntymaaika),
-    },
-    {
-      value: oppija.luokka,
-    },
-    {
-      value: hakemuksentilaValue(oppija.hakemuksentila),
-    },
-    valintatietoValue(oppija.valintatiedot),
-    oppilaitosValue(oppija.vastaanotetut),
-    oppilaitosValue(oppija.lasna),
-  ],
-})
+const oppijaToTableData = (oppija: Oppija): Datum => {
+  const hakemus = oppija.hakemukset[0] // TODO: Tähän tarvittaneen parempi logiikka...
 
-const hakemuksentilaValue = (hakemuksentila: Hakemuksentila): string => {
-  switch (hakemuksentila.tila) {
-    case "ei":
-      return t("hakemuksentila__ei_hakemusta")
+  return {
+    key: oppija.oid,
+    values: [
+      {
+        value: oppija.nimi,
+      },
+      {
+        value: getLocalized(oppija.oppilaitos.nimi),
+      },
+      {
+        value: oppija.syntymaaika,
+        display: formatDate(oppija.syntymaaika),
+      },
+      {
+        value: oppija.ryhmä,
+      },
+      {
+        value: hakemuksentilaValue(hakemus),
+      },
+      valintatietoValue(hakemus),
+      oppilaitosValue(hakemus, (valinta) =>
+        Boolean(valinta.tila && isVastaanotettu(valinta.tila))
+      ),
+      oppilaitosValue(hakemus, (valinta) =>
+        Boolean(valinta.tila && isLäsnä(valinta.tila))
+      ),
+    ],
+  }
+}
+
+const hakemuksentilaValue = (hakemus?: Hakemus): string => {
+  if (!hakemus) {
+    return t("hakemuksentila__ei_hakemusta")
+  }
+  switch (hakemus.tila.koodiarvo) {
     case "aktiivinen":
       return t("hakemuksentila__aktiivinen")
     case "passiivinen":
@@ -98,26 +102,22 @@ const hakemuksentilaValue = (hakemuksentila: Hakemuksentila): string => {
   }
 }
 
-const valintatietoValue = (valintatiedot: Valintatieto[]): Value => {
-  if (valintatiedot.length === 0) {
-    return {
-      value: t("valintatieto__ei_opiskelupaikkaa"),
-      icon: <WarningIcon />,
-    }
-  }
-  if (valintatiedot.every((vt) => vt.tila === "varasija")) {
-    return {
-      value: t("valintatieto__varasija"),
-    }
-  }
-  const shownValintatieto = valintatiedot[0]!! // TODO: sort?
-  return {
-    value: formatHyvaksyttyValintatietoValue(shownValintatieto.hakukohdenumero),
-    display: formatHyvaksyttyValintatietoValue(
-      shownValintatieto.hakukohdenumero,
-      getLocalized(shownValintatieto.hakukohde.nimi)
-    ),
-  }
+const valintatietoValue = (hakemus?: Hakemus): Value => {
+  const valintatieto = hakemus?.valintatiedot[0] // TODO: valitse valintatieto fiksummin, esim. pienimmällä numerolla oleva
+  return valintatieto?.tila && isHyväksytty(valintatieto.tila)
+    ? {
+        value: formatHyvaksyttyValintatietoValue(
+          valintatieto.hakukohdenumero,
+          t("valintatieto__hakukohde_lc")
+        ),
+        display: formatHyvaksyttyValintatietoValue(
+          valintatieto.hakukohdenumero,
+          getLocalized(valintatieto.hakukohde.nimi)
+        ),
+      }
+    : {
+        value: "-",
+      }
 }
 
 const formatHyvaksyttyValintatietoValue = (
@@ -130,20 +130,31 @@ const formatHyvaksyttyValintatietoValue = (
       (nimi || t("valintatieto__hakukohde_lc")),
   })
 
-const oppilaitosValue = (vastaanotetut: Oppilaitos[]): Value => {
-  switch (vastaanotetut.length) {
+const oppilaitosValue = (
+  hakemus: Hakemus | undefined,
+  predicate: (valintatieto: Valintatieto) => boolean
+): Value => {
+  const nullValue = { value: t("Ei"), display: "-" }
+  if (!hakemus) {
+    return nullValue
+  }
+  const valintatiedot = hakemus.valintatiedot.filter(predicate)
+  switch (valintatiedot.length) {
     case 0:
-      return { value: t("Ei"), display: "-" }
+      return nullValue
     case 1:
+      const valinta = valintatiedot[0]!!
       return {
         value: t("Kyllä"),
-        display: getLocalized(vastaanotetut[0]!!.nimi),
+        display: `${
+          valinta.hakukohdenumero ? `${valinta.hakukohdenumero}. ` : ""
+        }${getLocalized(valinta.hakukohde.nimi)}`,
       }
     default:
       return {
         value: t("Kyllä"),
         display: t("vastaanotettu__n_paikkaa", {
-          lukumäärä: vastaanotetut.length,
+          lukumäärä: valintatiedot.length,
         }),
       }
   }

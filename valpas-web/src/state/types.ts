@@ -1,3 +1,8 @@
+import {
+  OppilaitosnumeroKoodistoviite,
+  PaikkakuntaKoodistoviite,
+} from "./koodistot"
+
 export type Oid = `1.${number}.${number}.${number}.${number}.${number}.${number}`
 export type ISODate = `${number}-${number}-${number}`
 
@@ -13,20 +18,12 @@ export type User = {
   huollettava: boolean
 }
 
-export type KoodistoKoodiviite = {
-  koodiarvo: string
-  koodistoUri: string
-  koodistoVersio?: number
-  nimi?: LocalizedString
-  lyhytNimi?: LocalizedString
-}
-
 export type Organisaatio = {
   oid: Oid
   nimi: LocalizedString
   aktiivinen: boolean
   organisaatiotyypit: string[] // TODO: tyypitä tarkemmin
-  oppilaitosnumero?: KoodistoKoodiviite
-  kotipaikka?: KoodistoKoodiviite
+  oppilaitosnumero?: OppilaitosnumeroKoodistoviite
+  kotipaikka?: PaikkakuntaKoodistoviite
   children: Organisaatio[]
 }
