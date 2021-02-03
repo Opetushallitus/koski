@@ -10,6 +10,10 @@
 
 .columns__column {
   padding: @padding-v (@padding-h / 2);
+
+  & > .card {
+    margin: 0;
+  }
 }
 
 .loop(@counter) when (@counter > 0) {

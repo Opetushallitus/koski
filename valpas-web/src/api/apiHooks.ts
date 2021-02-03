@@ -99,19 +99,3 @@ export const useApiMethod = <T, P extends any[]>(
     },
   }
 }
-
-export const isInitial = <T>(
-  state: ApiMethodState<T>
-): state is ApiMethodStateInitial => state.state === "initial"
-
-export const isLoading = <T>(
-  state: ApiMethodState<T>
-): state is ApiMethodStateLoading => state.state === "loading"
-
-export const isSuccessful = <T>(
-  state: ApiMethodState<T>
-): state is ApiMethodStateSuccess<T> => state.state === "success"
-
-export const isError = <T>(
-  state: ApiMethodState<T>
-): state is ApiMethodStateError => state.state === "error"

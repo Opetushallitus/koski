@@ -1,7 +1,8 @@
 import React from "react"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import { fetchOrganisaatiot } from "../api/api"
-import { isSuccessful, useApiOnce } from "../api/apiHooks"
+import { useApiOnce } from "../api/apiHooks"
+import { isSuccess } from "../api/apiUtils"
 import { Page } from "../components/containers/Page"
 import { MainNavigation } from "../components/navigation/MainNavigation"
 import { t } from "../i18n/i18n"
@@ -29,7 +30,7 @@ export default (props: ValpasAppProps) => {
 
   const organisaatiot = useApiOnce(fetchOrganisaatiot)
 
-  return isSuccessful(organisaatiot) ? (
+  return isSuccess(organisaatiot) ? (
     <Router basename={process.env.PUBLIC_URL}>
       <Page id="valpas-app">
         <Switch>

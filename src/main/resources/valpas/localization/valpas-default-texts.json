@@ -30,7 +30,12 @@
   "valintatieto__hyväksytty": "Hyväksytty: {{hakukohde}}",
   "valintatieto__hakukohde_lc": "hakukohde",
   "vastaanotettu__n_paikkaa": "{{lukumäärä}} paikkaa",
+  "oppija__muut_oppijat": "Muut oppijat",
   "oppija__oletusotsikko": "Oppijan tiedot",
   "oppija__oppija_oid": "Oppija {{oid}}",
-  "oppija__ei_löydy": "Oppijaa ei löydy tunnuksella {{oid}}"
+  "oppija__ei_löydy": "Oppijaa ei löydy tunnuksella {{oid}}",
+  "oppija__oppivelvollisuustiedot_otsikko": "Oppivelvollisuustiedot",
+  "oppija__yhteystiedot_otsikko": "Yhteystiedot",
+  "oppija__opiskeluhistoria_otsikko": "Opiskeluhistoria",
+  "oppija__haut_otsikko": "Haut"
 }
