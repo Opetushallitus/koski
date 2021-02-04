@@ -1,6 +1,7 @@
 import {
   HakemuksentilaKoodistoviite,
-  koodistoviite,
+  mockKoodistoviite,
+  Opiskeluoikeudentyyppi,
   ValintatietotilaKoodistoviite,
 } from "./koodistot"
 import { ISODate, LocalizedString, Oid } from "./types"
@@ -13,6 +14,7 @@ export type Oppija = {
   syntymaaika: ISODate
   ryhmä: string
   haut: Haku[]
+  opiskeluoikeushistoria?: Opiskeluoikeus[]
 }
 
 export type Oppilaitos = {
@@ -35,9 +37,22 @@ export type Valintatieto = {
   alinPistemäärä?: number
 }
 
+export type Opiskeluoikeus = {
+  oid: Oid
+  tyyppi: Opiskeluoikeudentyyppi
+  oppilaitos: Oppilaitos
+  alkamispäivä?: ISODate
+  arvioituPäättymispäivä?: ISODate
+  päättymispäivä?: ISODate
+  ryhmä?: string
+}
+
+export type OpiskeluoikeudenTila = {}
+
 // Mock-dataa, joka siirtyy myöhemmin backendin puolelle
-const hakemuksentila = koodistoviite("hakemuksentila")
-const valintatieto = koodistoviite("valintatietotila")
+const hakemuksentila = mockKoodistoviite("hakemuksentila")
+const valintatieto = mockKoodistoviite("valintatietotila")
+const opiskeluoikeudentyyppi = mockKoodistoviite("opiskeluoikeudentyyppi")
 
 export const mockOppijat: Oppija[] = [
   {
@@ -67,6 +82,19 @@ export const mockOppijat: Oppija[] = [
             alinPistemäärä: 7.0,
           },
         ],
+      },
+    ],
+    opiskeluoikeushistoria: [
+      {
+        oid: "1.2.3.4.5.6.7",
+        tyyppi: opiskeluoikeudentyyppi("perusopetus", "Perusopetus"),
+        oppilaitos: {
+          oid: "1.3.4.5.6.7.8.9",
+          nimi: { fi: "Järvenpään yhteiskoulu" },
+        },
+        ryhmä: "9A",
+        alkamispäivä: "2012-08-01",
+        arvioituPäättymispäivä: "2021-06-01",
       },
     ],
   },

@@ -22,6 +22,7 @@ export const CloseIcon = defineIcon("close")
 export const WarningIcon = defineIcon("warning", "warning")
 export const BackIcon = defineIcon("arrow_back")
 export const HakuIcon = defineIcon("list_alt")
+export const OpiskeluIcon = defineIcon("school")
 
 type MaterialDesignIconProps = IconProps & {
   name: string // Ikonien nimet löytyvät osoitteesta https://material.io/resources/icons/?style=baseline

@@ -8,6 +8,11 @@ export type KoodistoKoodiviite<T extends string, S extends string> = {
   lyhytNimi?: LocalizedString
 }
 
+export type Opiskeluoikeudentyyppi = KoodistoKoodiviite<
+  "opiskeluoikeudentyyppi",
+  string
+>
+
 export type OppilaitosnumeroKoodistoviite = KoodistoKoodiviite<
   "oppilaitosnumero",
   string
@@ -46,11 +51,13 @@ export const isLäsnä = (
   return arvo === "läsnä"
 }
 
-export const koodistoviite = <T extends string>(koodistoUri: T) => <
+export const mockKoodistoviite = <T extends string>(koodistoUri: T) => <
   S extends string
 >(
-  koodiarvo: S
+  koodiarvo: S,
+  nimi?: string
 ): KoodistoKoodiviite<T, S> => ({
   koodistoUri,
   koodiarvo,
+  nimi: { fi: `${nimi || koodiarvo}` },
 })
