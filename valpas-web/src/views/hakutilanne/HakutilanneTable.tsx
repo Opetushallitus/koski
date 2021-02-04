@@ -2,7 +2,7 @@ import React, { useMemo } from "react"
 import { DataTable, Datum, Value } from "../../components/tables/DataTable"
 import { getLocalized, t } from "../../i18n/i18n"
 import { isHyväksytty, isLäsnä, isVastaanotettu } from "../../state/koodistot"
-import { Hakemus, Oppija, Valintatieto } from "../../state/oppijat"
+import { Haku, Oppija, Valintatieto } from "../../state/oppijat"
 import { formatDate } from "../../utils/date"
 
 export type HakutilanneTableProps = {
@@ -54,7 +54,7 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
 }
 
 const oppijaToTableData = (oppija: Oppija): Datum => {
-  const hakemus = oppija.hakemukset[0] // TODO: Tähän tarvittaneen parempi logiikka...
+  const hakemus = oppija.haut[0] // TODO: Tähän tarvittaneen parempi logiikka...
 
   return {
     key: oppija.oid,
@@ -86,7 +86,7 @@ const oppijaToTableData = (oppija: Oppija): Datum => {
   }
 }
 
-const hakemuksentilaValue = (hakemus?: Hakemus): string => {
+const hakemuksentilaValue = (hakemus?: Haku): string => {
   if (!hakemus) {
     return t("hakemuksentila__ei_hakemusta")
   }
@@ -102,7 +102,7 @@ const hakemuksentilaValue = (hakemus?: Hakemus): string => {
   }
 }
 
-const valintatietoValue = (hakemus?: Hakemus): Value => {
+const valintatietoValue = (hakemus?: Haku): Value => {
   const valintatieto = hakemus?.valintatiedot[0] // TODO: valitse valintatieto fiksummin, esim. pienimmällä numerolla oleva
   return valintatieto?.tila && isHyväksytty(valintatieto.tila)
     ? {
@@ -131,7 +131,7 @@ const formatHyvaksyttyValintatietoValue = (
   })
 
 const oppilaitosValue = (
-  hakemus: Hakemus | undefined,
+  hakemus: Haku | undefined,
   predicate: (valintatieto: Valintatieto) => boolean
 ): Value => {
   const nullValue = { value: t("Ei"), display: "-" }

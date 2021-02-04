@@ -14,8 +14,6 @@ import { T, t } from "../../i18n/i18n"
 import { Oppija } from "../../state/oppijat"
 import { OppijanHaut } from "./OppijanHaut"
 import { OppijanOpiskeluhistoria } from "./OppijanOpiskeluhistoria"
-import { OppijanOppivelvollisuustiedot } from "./OppijanOppivelvollisuustiedot"
-import { OppijanYhteystiedot } from "./OppijanYhteystiedot"
 
 export type OppijaViewProps = RouteComponentProps<{
   oid: string
@@ -32,7 +30,7 @@ export const OppijaView = (props: OppijaViewProps) => {
 
       {mapSuccess(oppija, (oppijaData: Oppija) => (
         <>
-          <ColumnsContainer>
+          {/* <ColumnsContainer>
             <Column size={5}>
               <Card>
                 <CardHeader>
@@ -53,7 +51,7 @@ export const OppijaView = (props: OppijaViewProps) => {
                 </CardBody>
               </Card>
             </Column>
-          </ColumnsContainer>
+          </ColumnsContainer> */}
           <ColumnsContainer>
             <Column size={5}>
               <Card>

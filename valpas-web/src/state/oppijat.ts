@@ -12,7 +12,7 @@ export type Oppija = {
   oppilaitos: Oppilaitos
   syntymaaika: ISODate
   ryhmä: string
-  hakemukset: Hakemus[]
+  haut: Haku[]
 }
 
 export type Oppilaitos = {
@@ -20,7 +20,7 @@ export type Oppilaitos = {
   nimi: LocalizedString
 }
 
-export type Hakemus = {
+export type Haku = {
   nimi: LocalizedString
   luotu: ISODate
   tila: HakemuksentilaKoodistoviite
@@ -31,6 +31,8 @@ export type Valintatieto = {
   hakukohdenumero?: number
   hakukohde: Oppilaitos
   tila?: ValintatietotilaKoodistoviite
+  pisteet?: number
+  alinPistemäärä?: number
 }
 
 // Mock-dataa, joka siirtyy myöhemmin backendin puolelle
@@ -48,7 +50,7 @@ export const mockOppijat: Oppija[] = [
     },
     syntymaaika: "2005-07-31",
     ryhmä: "9A",
-    hakemukset: [
+    haut: [
       {
         nimi: { fi: "Yhteishaku 2021" },
         luotu: "2021-02-03",
@@ -61,6 +63,8 @@ export const mockOppijat: Oppija[] = [
               nimi: { fi: "Ressun lukio" },
             },
             tila: valintatieto("läsnä"),
+            pisteet: 7.29,
+            alinPistemäärä: 7.0,
           },
         ],
       },
@@ -76,7 +80,7 @@ export const mockOppijat: Oppija[] = [
     },
     syntymaaika: "2005-07-31",
     ryhmä: "9A",
-    hakemukset: [
+    haut: [
       {
         nimi: { fi: "Yhteishaku 2021" },
         luotu: "2021-02-03",
@@ -104,7 +108,7 @@ export const mockOppijat: Oppija[] = [
     },
     syntymaaika: "2005-07-31",
     ryhmä: "9A",
-    hakemukset: [],
+    haut: [],
   },
   {
     oid: "1.123.123.123.123.123.4",
@@ -116,7 +120,7 @@ export const mockOppijat: Oppija[] = [
     },
     syntymaaika: "2005-07-31",
     ryhmä: "9A",
-    hakemukset: [],
+    haut: [],
   },
   {
     oid: "1.123.123.123.123.123.5",
@@ -128,7 +132,7 @@ export const mockOppijat: Oppija[] = [
     },
     syntymaaika: "2005-07-31",
     ryhmä: "9A",
-    hakemukset: [],
+    haut: [],
   },
   {
     oid: "1.123.123.123.123.123.6",
@@ -140,7 +144,7 @@ export const mockOppijat: Oppija[] = [
     },
     syntymaaika: "2005-07-31",
     ryhmä: "9A",
-    hakemukset: [],
+    haut: [],
   },
   {
     oid: "1.123.123.123.123.123.7",
@@ -152,7 +156,7 @@ export const mockOppijat: Oppija[] = [
     },
     syntymaaika: "2005-07-31",
     ryhmä: "9A",
-    hakemukset: [],
+    haut: [],
   },
   {
     oid: "1.123.123.123.123.123.8",
@@ -164,7 +168,7 @@ export const mockOppijat: Oppija[] = [
     },
     syntymaaika: "2005-07-31",
     ryhmä: "9A",
-    hakemukset: [],
+    haut: [],
   },
   {
     oid: "1.123.123.123.123.123.9",
@@ -176,6 +180,6 @@ export const mockOppijat: Oppija[] = [
     },
     syntymaaika: "2005-07-31",
     ryhmä: "9A",
-    hakemukset: [],
+    haut: [],
   },
 ]

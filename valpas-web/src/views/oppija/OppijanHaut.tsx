@@ -4,7 +4,9 @@ import { HakuIcon } from "../../components/icons/Icon"
 import { Datum } from "../../components/tables/DataTable"
 import { LeanTable } from "../../components/tables/LeanTable"
 import { TertiaryHeading } from "../../components/typography/headings"
-import { Oppija } from "../../state/oppijat"
+import { formatFixedNumber, getLocalized, t } from "../../i18n/i18n"
+import { isHyväksytty } from "../../state/koodistot"
+import { Haku, Oppija, Valintatieto } from "../../state/oppijat"
 
 export type OppijanHautProps = {
   oppija: Oppija
@@ -12,18 +14,19 @@ export type OppijanHautProps = {
 
 export const OppijanHaut = (props: OppijanHautProps) => (
   <div>
-    <Haku name="Yhteishaku 2021" oppija={props.oppija} />
+    {props.oppija.haut.map((haku) => (
+      <HakuTable key={haku.luotu} haku={haku} />
+    ))}
   </div>
 )
 
-type HakuProps = {
-  name: string
-  oppija: Oppija
+type HakuTableProps = {
+  haku: Haku
 }
 
-const Haku = (props: HakuProps) => (
+const HakuTable = (props: HakuTableProps) => (
   <IconSection icon={<HakuIcon color="gray" />}>
-    <TertiaryHeading>{props.name}</TertiaryHeading>
+    <TertiaryHeading>{getLocalized(props.haku.nimi)}</TertiaryHeading>
     <LeanTable
       columns={[
         {
@@ -39,23 +42,36 @@ const Haku = (props: HakuProps) => (
           label: "Alin pistemäärä",
         },
       ]}
-      data={[
-        mapToHakuTableValue(1, "Järvenpään lukio"),
-        mapToHakuTableValue(2, "Keravan lukio ja aikuislukio"),
-        mapToHakuTableValue(3, "Martinlaakson lukio / Draamalinja"),
-        mapToHakuTableValue(4, "Lumon lukio"),
-        mapToHakuTableValue(5, "Helsingin medialukio"),
-      ]}
+      data={props.haku.valintatiedot.map(valintatietoToTableValue)}
     />
   </IconSection>
 )
 
-const mapToHakuTableValue = (n: number, name: string): Datum => ({
-  key: n.toString(),
+const valintatietoToTableValue = (
+  valinta: Valintatieto,
+  index: number
+): Datum => ({
+  key: index.toString(),
   values: [
-    { value: `${n}. ${name}` },
-    { value: "" },
-    { value: "" },
-    { value: "" },
+    {
+      value: `${valinta.hakukohdenumero}. ${getLocalized(
+        valinta.hakukohde.nimi
+      )}`,
+    },
+    {
+      value:
+        valinta.tila &&
+        (isHyväksytty(valinta.tila)
+          ? t("oppija__haut_hyvaksytty")
+          : valinta.tila.koodiarvo === "hylätty"
+          ? t("oppija__haut_hylatty")
+          : null),
+    },
+    { value: valinta.pisteet ? formatFixedNumber(valinta.pisteet, 2) : "" },
+    {
+      value: valinta.alinPistemäärä
+        ? formatFixedNumber(valinta.alinPistemäärä, 2)
+        : "",
+    },
   ],
 })

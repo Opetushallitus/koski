@@ -40,7 +40,7 @@ export type Datum = {
 
 export type Value = {
   /** Value for filtering and ordering */
-  value: string | number
+  value: string | number | null | undefined
   /** Value for rendering */
   display?: string | number
   /** Icon alongside the value */
