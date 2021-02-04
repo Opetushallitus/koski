@@ -1356,6 +1356,21 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "suorituksentyyppi_vstmuuallasuoritettuopintokokonaisuus",
+  "koodiArvo" : "vstmuuallasuoritettuopintokokonaisuus",
+  "metadata" : [ {
+    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön opintokokonaisuus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön opintokokonaisuus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön opintokokonaisuus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "suorituksentyyppi_vstvalinnainensuuntautuminen",
   "koodiArvo" : "vstvalinnainensuuntautuminen",
   "metadata" : [ {

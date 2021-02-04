@@ -18,7 +18,6 @@ object ExamplesVapaaSivistystyö {
 }
 
 object VapaaSivistystyöExample {
-
   lazy val opiskeluoikeus = VapaanSivistystyönOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2022, 5, 31)),
     tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
@@ -84,8 +83,12 @@ object VapaaSivistystyöExample {
         ),
         opintokokonaisuudenSuoritus(
           opintokokonaisuus("TAI01", "Taide työkaluna", "Taiteen käyttö työkaluna", 30.0)
+        ),
+        muuallaSuoritetunOpintokokonaisuudenSuoritus(
+          opintokokonaisuus("ATX02", "Tietokoneen huolto", "Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet (jatkokurssi)", 5.0),
+          vstArviointi("Hyväksytty", date(2021, 11, 12))
         )
-      ))
+      )),
     ))
   )
 
@@ -101,6 +104,14 @@ object VapaaSivistystyöExampleData {
   lazy val varsinaisSuomenKansanopisto: Oppilaitos = Oppilaitos(MockOrganisaatiot.varsinaisSuomenKansanopisto, Some(Koodistokoodiviite("01694", None, "oppilaitosnumero", None)), Some("Varsinais-Suomen kansanopisto"))
 
   lazy val varsinaisSuomenKansanopistoToimipiste: Toimipiste = Toimipiste(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste)
+
+  lazy val tunnustettu: OsaamisenTunnustaminen = OsaamisenTunnustaminen(
+    Some(opintokokonaisuudenSuoritus(
+      opintokokonaisuus("ATX01", "Tietokoneen huolto", "Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet", 5.0),
+      vstArviointi("Hyväksytty", date(2021, 11, 12))
+    )),
+    "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
+  )
 
   def osaamiskokonaisuudenSuoritus(
     osaamiskokonaisuusKoodiarvo: String = "1002",
@@ -131,7 +142,7 @@ object VapaaSivistystyöExampleData {
   }
 
   def suuntautumisopintojenSuoritus(
-    opintokokonaisuudet: List[OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus] = List(opintokokonaisuudenSuoritus())
+    opintokokonaisuudet: List[VapaanSivistystyönOpintokokonaisuudenSuoritus] = List(opintokokonaisuudenSuoritus())
   ): OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus = {
     suuntautumisopintojenSuoritus(None, Some(opintokokonaisuudet))
   }
@@ -144,7 +155,7 @@ object VapaaSivistystyöExampleData {
 
   private def suuntautumisopintojenSuoritus(
     laajuus: Option[LaajuusOpintopisteissä],
-    opintokokonaisuudet: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus]]
+    opintokokonaisuudet: Option[List[VapaanSivistystyönOpintokokonaisuudenSuoritus]]
   ): OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus = {
     OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus(
       koulutusmoduuli = OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopinnot(laajuus = laajuus),
@@ -160,6 +171,18 @@ object VapaaSivistystyöExampleData {
       tyyppi = Koodistokoodiviite("vstopintokokonaisuus", koodistoUri = "suorituksentyyppi"),
       koulutusmoduuli = koulutusmoduuli,
       arviointi = Some(List(arviointi))
+    )
+  }
+
+  def muuallaSuoritetunOpintokokonaisuudenSuoritus(
+                                   koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus = opintokokonaisuus(),
+                                   arviointi: OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi = vstArviointi()
+                                 ): MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus = {
+    MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus(
+      tyyppi = Koodistokoodiviite("vstmuuallasuoritettuopintokokonaisuus", koodistoUri = "suorituksentyyppi"),
+      koulutusmoduuli = koulutusmoduuli,
+      arviointi = Some(List(arviointi)),
+      tunnustettu = Some(tunnustettu)
     )
   }
 

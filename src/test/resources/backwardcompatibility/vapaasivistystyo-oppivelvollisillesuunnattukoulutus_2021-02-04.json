@@ -650,6 +650,95 @@
             "koodiarvo" : "vstopintokokonaisuus",
             "koodistoUri" : "suorituksentyyppi"
           }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ATX02",
+              "nimi" : {
+                "fi" : "Tietokoneen huolto"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet (jatkokurssi)"
+            },
+            "laajuus" : {
+              "arvo" : 5.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Hyväksytty",
+              "koodistoUri" : "arviointiasteikkovst"
+            },
+            "päivä" : "2021-11-12",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "vstmuuallasuoritettuopintokokonaisuus",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "tunnustettu" : {
+            "osaaminen" : {
+              "koulutusmoduuli" : {
+                "tunniste" : {
+                  "koodiarvo" : "ATX01",
+                  "nimi" : {
+                    "fi" : "Tietokoneen huolto"
+                  }
+                },
+                "kuvaus" : {
+                  "fi" : "Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet"
+                },
+                "laajuus" : {
+                  "arvo" : 5.0,
+                  "yksikkö" : {
+                    "koodiarvo" : "2",
+                    "nimi" : {
+                      "fi" : "opintopistettä",
+                      "sv" : "studiepoäng",
+                      "en" : "ECTS credits"
+                    },
+                    "lyhytNimi" : {
+                      "fi" : "op",
+                      "sv" : "sp",
+                      "en" : "ECTS cr"
+                    },
+                    "koodistoUri" : "opintojenlaajuusyksikko"
+                  }
+                }
+              },
+              "arviointi" : [ {
+                "arvosana" : {
+                  "koodiarvo" : "Hyväksytty",
+                  "koodistoUri" : "arviointiasteikkovst"
+                },
+                "päivä" : "2021-11-12",
+                "hyväksytty" : true
+              } ],
+              "tyyppi" : {
+                "koodiarvo" : "vstopintokokonaisuus",
+                "koodistoUri" : "suorituksentyyppi"
+              }
+            },
+            "selite" : {
+              "fi" : "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
+            },
+            "rahoituksenPiirissä" : false
+          }
         } ],
         "tyyppi" : {
           "koodiarvo" : "vstvalinnainensuuntautuminen",
