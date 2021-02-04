@@ -1,7 +1,7 @@
 import React, { useMemo } from "react"
 import { DataTable, Datum, Value } from "../../components/tables/DataTable"
 import { getLocalized, t } from "../../i18n/i18n"
-import { isHyväksytty, isLäsnä, isVastaanotettu } from "../../state/koodistot"
+import { ValintatietotilaKoodistoviite } from "../../state/koodistot"
 import { Haku, Oppija, Valintatieto } from "../../state/oppijat"
 import { formatDate } from "../../utils/date"
 
@@ -77,10 +77,15 @@ const oppijaToTableData = (oppija: Oppija): Datum => {
       },
       valintatietoValue(hakemus),
       oppilaitosValue(hakemus, (valinta) =>
-        Boolean(valinta.tila && isVastaanotettu(valinta.tila))
+        Boolean(
+          valinta.tila &&
+            ValintatietotilaKoodistoviite.isVastaanotettu(valinta.tila)
+        )
       ),
       oppilaitosValue(hakemus, (valinta) =>
-        Boolean(valinta.tila && isLäsnä(valinta.tila))
+        Boolean(
+          valinta.tila && ValintatietotilaKoodistoviite.isLäsnä(valinta.tila)
+        )
       ),
     ],
   }
@@ -104,7 +109,8 @@ const hakemuksentilaValue = (hakemus?: Haku): string => {
 
 const valintatietoValue = (hakemus?: Haku): Value => {
   const valintatieto = hakemus?.valintatiedot[0] // TODO: valitse valintatieto fiksummin, esim. pienimmällä numerolla oleva
-  return valintatieto?.tila && isHyväksytty(valintatieto.tila)
+  return valintatieto?.tila &&
+    ValintatietotilaKoodistoviite.isHyväksytty(valintatieto.tila)
     ? {
         value: formatHyvaksyttyValintatietoValue(
           valintatieto.hakukohdenumero,

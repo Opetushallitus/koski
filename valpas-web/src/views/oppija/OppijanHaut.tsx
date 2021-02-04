@@ -5,7 +5,7 @@ import { Datum } from "../../components/tables/DataTable"
 import { LeanTable } from "../../components/tables/LeanTable"
 import { TertiaryHeading } from "../../components/typography/headings"
 import { formatFixedNumber, getLocalized, t } from "../../i18n/i18n"
-import { isHyväksytty } from "../../state/koodistot"
+import { ValintatietotilaKoodistoviite } from "../../state/koodistot"
 import { Haku, Oppija, Valintatieto } from "../../state/oppijat"
 
 export type OppijanHautProps = {
@@ -61,7 +61,7 @@ const valintatietoToTableValue = (
     {
       value:
         valinta.tila &&
-        (isHyväksytty(valinta.tila)
+        (ValintatietotilaKoodistoviite.isHyväksytty(valinta.tila)
           ? t("oppija__haut_hyvaksytty")
           : valinta.tila.koodiarvo === "hylätty"
           ? t("oppija__haut_hylatty")

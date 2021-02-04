@@ -1,7 +1,8 @@
 import * as A from "fp-ts/Array"
 import * as E from "fp-ts/Either"
 import { pipe } from "fp-ts/lib/function"
-import { mockOppijat, Oppija } from "../state/oppijat"
+import { mockOppijat } from "../state/mock"
+import { Oppija } from "../state/oppijat"
 import { Organisaatio, User } from "../state/types"
 import { apiGet, apiPost, mockApi } from "./apiFetch"
 
