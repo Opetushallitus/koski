@@ -1,6 +1,7 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.fixture.FixtureType
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
@@ -21,6 +22,8 @@ class ValpasTestApiServlet(implicit val application: KoskiApplication) extends A
   get("/reset-mock-data") {
     ValpasMockUsers.mockUsersEnabled = true
     application.directoryClient.invalidateCache()
+    application.fixtureCreator.resetFixtures(FixtureType.VALPAS)
+
     contentType = "text/json"
     response.writer.print("\"Valpas mock data reset\"")
   }
@@ -28,6 +31,7 @@ class ValpasTestApiServlet(implicit val application: KoskiApplication) extends A
   get("/clear-mock-data") {
     ValpasMockUsers.mockUsersEnabled = false
     application.directoryClient.invalidateCache()
+    application.fixtureCreator.resetFixtures(FixtureType.KOSKI)
     contentType = "text/json"
     response.writer.print("\"Valpas mock data cleared\"")
   }

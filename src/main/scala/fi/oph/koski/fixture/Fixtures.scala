@@ -2,6 +2,7 @@ package fi.oph.koski.fixture
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.KoskiDatabaseConfig
+import fi.oph.koski.fixture.FixtureType.FixtureType
 import fi.oph.koski.henkilo.MockOpintopolkuHenkilöFacade
 import fi.oph.koski.localization.MockLocalizationRepository
 import fi.oph.koski.log.Logging
@@ -10,10 +11,19 @@ import fi.oph.koski.util.Timing
 class FixtureCreator(application: KoskiApplication) extends Logging with Timing {
   private val databaseFixtures = new KoskiDatabaseFixtureCreator(application)
 
-  def resetFixtures = if(shouldUseFixtures) {
+  def resetFixtures(fixtureType: FixtureType = FixtureType.KOSKI) = if(shouldUseFixtures) {
     application.cacheManager.invalidateAllCaches
-    timed("Resetting database fixtures") (databaseFixtures.resetFixtures)
-    application.henkilöRepository.opintopolku.henkilöt.asInstanceOf[MockOpintopolkuHenkilöFacade].resetFixtures
+    fixtureType match {
+      case FixtureType.KOSKI => {
+        timed("Resetting database fixtures") (databaseFixtures.resetFixtures)
+        application.henkilöRepository.opintopolku.henkilöt.asInstanceOf[MockOpintopolkuHenkilöFacade].resetFixtures
+      }
+      case FixtureType.VALPAS => {
+        timed("Clearing database fixtures") (databaseFixtures.clearFixtures)
+        application.henkilöRepository.opintopolku.henkilöt.asInstanceOf[MockOpintopolkuHenkilöFacade].clearFixtures
+
+      }
+    }
     application.koskiLocalizationRepository.asInstanceOf[MockLocalizationRepository].reset
     application.tiedonsiirtoService.index.deleteAll()
     logger.info("Reset application fixtures")
@@ -37,4 +47,10 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
     }
     useFixtures
   }
+}
+
+object FixtureType extends Enumeration {
+  type FixtureType = Value
+  val KOSKI,
+    VALPAS = Value
 }

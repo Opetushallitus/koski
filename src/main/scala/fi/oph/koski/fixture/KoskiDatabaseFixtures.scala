@@ -76,6 +76,25 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
     }
   }
 
+  def clearFixtures: Unit = {
+    if (database.config.isRemote) throw new IllegalStateException("Trying to reset fixtures in remote database")
+
+    application.perustiedotSyncScheduler.sync(refresh = false)
+
+    val henkilöOids = MockOppijat.oids.sorted
+
+    runDbSync(DBIO.sequence(Seq(
+      OpiskeluOikeudet.filter(_.oppijaOid inSetBind (henkilöOids)).delete,
+      Tables.Henkilöt.filter(_.oid inSetBind henkilöOids).delete,
+      Preferences.delete,
+      Tables.PerustiedotSync.delete,
+      Tables.SuoritusJako.delete,
+      Tables.SuoritusJakoV2.delete,
+    )))
+
+    application.perustiedotIndexer.deleteByOppijaOids(henkilöOids, refresh = false)
+  }
+
   private lazy val opiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = validatedOpiskeluoikeudet ++ invalidOpiskeluoikeudet
 
   private lazy val validatedOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {

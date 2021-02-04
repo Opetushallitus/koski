@@ -16,6 +16,10 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     oppijat = new MockOppijat(MockOppijat.defaultOppijat)
   }
 
+  def clearFixtures = synchronized {
+    oppijat = new MockOppijat(List())
+  }
+
   private def create(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, String] = synchronized {
     if (createUserInfo.sukunimi == "error") {
       throw new TestingException("Testing error handling")
