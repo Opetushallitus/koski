@@ -40,9 +40,9 @@ export type Datum = {
 
 export type Value = {
   /** Value for filtering and ordering */
-  value: string | number
+  value: string | number | null | undefined
   /** Value for rendering */
-  display?: string | number
+  display?: string | number | React.ReactNode
   /** Icon alongside the value */
   icon?: React.ReactNode
 }

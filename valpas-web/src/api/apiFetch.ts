@@ -1,4 +1,5 @@
 import * as E from "fp-ts/lib/Either"
+import { pipe } from "fp-ts/lib/function"
 
 export type ApiSuccess<T> = {
   status: number
@@ -90,9 +91,12 @@ const prependUrl = (baseUrl: string, request: RequestInfo): RequestInfo =>
       }
 
 export const mockApi = <T, P extends any[]>(
-  getResult: (...params: P) => T
-) => async (...params: P): Promise<ApiResponse<T>> =>
-  E.right({
-    status: 200,
-    data: getResult(...params),
-  })
+  getResult: (...params: P) => E.Either<ApiError, T>
+) => async (...params: P): Promise<ApiResponse<T>> => {
+  await new Promise((resolve) => setTimeout(resolve, 100 + Math.random() * 200))
+  return pipe(
+    getResult(...params),
+    E.map((data) => ({ status: 200, data })),
+    E.mapLeft((error) => ({ errors: [error] }))
+  )
+}

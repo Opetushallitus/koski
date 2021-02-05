@@ -1,6 +1,7 @@
 {
   "Kyllä": "Kyllä",
   "Ei": "Ei",
+  "Ladataan": "Ladataan",
   "title__Valpas": "Valpas",
   "login__kayttaja": "Käyttäjä",
   "login__salasana": "Salasana",
@@ -14,7 +15,7 @@
   "hakutilanne__taulu_nimi": "Nimi",
   "hakutilanne__taulu_oppilaitos": "Oppilaitos",
   "hakutilanne__taulu_syntymäaika": "Syntymäaika",
-  "hakutilanne__taulu_luokka": "Luokka",
+  "hakutilanne__taulu_ryhma": "Ryhmä",
   "hakutilanne__taulu_hakemuksen_tila": "Hakemuksen tila",
   "hakutilanne__taulu_valintatieto": "Valintatieto",
   "hakutilanne__taulu_opiskelupaikka_vastaanotettu": "Opiskelupaikka vastaanotettu",
@@ -28,5 +29,18 @@
   "valintatieto__varasija": "Varasija",
   "valintatieto__hyväksytty": "Hyväksytty: {{hakukohde}}",
   "valintatieto__hakukohde_lc": "hakukohde",
-  "vastaanotettu__n_paikkaa": "{{lukumäärä}} paikkaa"
+  "vastaanotettu__n_paikkaa": "{{lukumäärä}} paikkaa",
+  "oppija__muut_oppijat": "Muut oppijat",
+  "oppija__oletusotsikko": "Oppijan tiedot",
+  "oppija__oppija_oid": "Oppija {{oid}}",
+  "oppija__ei_löydy": "Oppijaa ei löydy tunnuksella {{oid}}",
+  "oppija__oppivelvollisuustiedot_otsikko": "Oppivelvollisuustiedot",
+  "oppija__yhteystiedot_otsikko": "Yhteystiedot",
+  "oppija__opiskeluhistoria_otsikko": "Opiskeluhistoria",
+  "oppija__haut_otsikko": "Haut",
+  "oppija__haut_hyvaksytty": "Hyväksytty",
+  "oppija__haut_hylatty": "Hylätty",
+  "oppija__ryhma": "Ryhmä",
+  "oppija__ei_hakuhistoriaa": "Oppijalle ei löytynyt hakuhistoriaa",
+  "oppija__ei_opiskeluhistoriaa": "Oppijalle ei löytynyt opiskeluhistoriaa"
 }

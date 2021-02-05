@@ -1,5 +1,14 @@
-export type Oid = `1.${number}.${number}.${number}.${number}.${number}.${number}`
-export type ISODate = `${number}-${number}-${number}`
+import {
+  OppilaitosnumeroKoodistoviite,
+  PaikkakuntaKoodistoviite,
+} from "./koodistot"
+
+// Tempate literal -tyypitykset aiheuttavat stack overflow'n linttausvaiheessa.
+// Korjattaneen Typescriptin versiossa 4.2, väliaikaisesti mennään yksinkertaisemmalla tyypityksellä.
+// export type Oid = `1.${number}.${number}.${number}.${number}.${number}.${number}`
+// export type ISODate = `${number}-${number}-${number}`
+export type Oid = string
+export type ISODate = string
 
 export type Language = "fi" | "sv" | "en"
 export type LocalizedString = Partial<Record<Language, string>>
@@ -13,20 +22,12 @@ export type User = {
   huollettava: boolean
 }
 
-export type KoodistoKoodiviite = {
-  koodiarvo: string
-  koodistoUri: string
-  koodistoVersio?: number
-  nimi?: LocalizedString
-  lyhytNimi?: LocalizedString
-}
-
 export type Organisaatio = {
   oid: Oid
   nimi: LocalizedString
   aktiivinen: boolean
   organisaatiotyypit: string[] // TODO: tyypitä tarkemmin
-  oppilaitosnumero?: KoodistoKoodiviite
-  kotipaikka?: KoodistoKoodiviite
+  oppilaitosnumero?: OppilaitosnumeroKoodistoviite
+  kotipaikka?: PaikkakuntaKoodistoviite
   children: Organisaatio[]
 }

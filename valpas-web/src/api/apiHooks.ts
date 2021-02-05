@@ -12,11 +12,27 @@ export const useApiState = <T>() => useState<ApiResponseState<T>>(null)
  * Triggers API call once on component mount
  * @param fetchFn
  */
-export const useApiOnce = <T>(fetchFn: () => Promise<ApiResponse<T>>) => {
+export const useApiOnce = <T>(fetchFn: () => Promise<ApiResponse<T>>) =>
+  useApiWithParams(fetchFn, [])
+
+/**
+ * Triggers API call once on component mount or when parameters change
+ * @param fetchFn
+ *
+ * Example:
+ *
+ * // function fetchOppija(oppijaOid: string): ApiResponse;
+ *
+ * const oppija = useApiWithParams(fetchOppija, [oppijaOid])
+ */
+export const useApiWithParams = <T, P extends any[]>(
+  fetchFn: (...fetchFnParams: P) => Promise<ApiResponse<T>>,
+  params: P
+) => {
   const api = useApiMethod(fetchFn)
   useEffect(() => {
-    api.call()
-  }, [])
+    api.call(...params)
+  }, params)
   return api
 }
 
@@ -83,7 +99,3 @@ export const useApiMethod = <T, P extends any[]>(
     },
   }
 }
-
-export const isSuccessful = <T>(
-  state: ApiMethodState<T>
-): state is ApiMethodStateSuccess<T> => state.state === "success"

@@ -5,10 +5,15 @@
   @media screen and (min-width: @breakpoint-desktop) {
     display: flex;
   }
+  margin: 0 - (@padding-h / 2);
 }
 
 .columns__column {
-  padding: @padding;
+  padding: @padding-v (@padding-h / 2);
+
+  & > .card {
+    margin: 0;
+  }
 }
 
 .loop(@counter) when (@counter > 0) {

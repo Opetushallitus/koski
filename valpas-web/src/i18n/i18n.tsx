@@ -74,3 +74,6 @@ export const T = (props: LocalizedTextProps) => <>{t(props.id, props.params)}</>
 
 export const getLocalized = (localizedString: LocalizedString): string =>
   localizedString[getLanguage()] || localizedString["fi"] || "KÄÄNNÖS PUUTTUU"
+
+export const formatFixedNumber = (n: number, fractionDigits: number) =>
+  n.toFixed(fractionDigits).replace(".", ",")
