@@ -4,7 +4,8 @@ import { HakuIcon } from "../../components/icons/Icon"
 import { Datum } from "../../components/tables/DataTable"
 import { LeanTable } from "../../components/tables/LeanTable"
 import { TertiaryHeading } from "../../components/typography/headings"
-import { formatFixedNumber, getLocalized, t } from "../../i18n/i18n"
+import { NoDataMessage } from "../../components/typography/NoDataMessage"
+import { formatFixedNumber, getLocalized, T, t } from "../../i18n/i18n"
 import { ValintatietotilaKoodistoviite } from "../../state/koodistot"
 import { Haku, Oppija, Valintatieto } from "../../state/oppijat"
 
@@ -12,13 +13,18 @@ export type OppijanHautProps = {
   oppija: Oppija
 }
 
-export const OppijanHaut = (props: OppijanHautProps) => (
-  <div>
-    {props.oppija.haut.map((haku) => (
-      <HakuTable key={haku.luotu} haku={haku} />
-    ))}
-  </div>
-)
+export const OppijanHaut = (props: OppijanHautProps) =>
+  props.oppija.haut.length > 0 ? (
+    <div>
+      {props.oppija.haut.map((haku) => (
+        <HakuTable key={haku.luotu} haku={haku} />
+      ))}
+    </div>
+  ) : (
+    <NoDataMessage>
+      <T id="oppija__ei_hakuhistoriaa" />
+    </NoDataMessage>
+  )
 
 type HakuTableProps = {
   haku: Haku

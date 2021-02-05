@@ -1,4 +1,5 @@
 import React, { useMemo } from "react"
+import { Link } from "react-router-dom"
 import { DataTable, Datum, Value } from "../../components/tables/DataTable"
 import { getLocalized, t } from "../../i18n/i18n"
 import { ValintatietotilaKoodistoviite } from "../../state/koodistot"
@@ -61,6 +62,7 @@ const oppijaToTableData = (oppija: Oppija): Datum => {
     values: [
       {
         value: oppija.nimi,
+        display: <Link to={`/oppijat/${oppija.oid}`}>{oppija.nimi}</Link>,
       },
       {
         value: getLocalized(oppija.oppilaitos.nimi),

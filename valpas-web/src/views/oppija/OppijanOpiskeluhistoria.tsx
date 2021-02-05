@@ -2,6 +2,7 @@ import React from "react"
 import { IconSection } from "../../components/containers/IconSection"
 import { OpiskeluIcon } from "../../components/icons/Icon"
 import { TertiaryHeading } from "../../components/typography/headings"
+import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import { getLocalized, T } from "../../i18n/i18n"
 import { KoodistoKoodiviite } from "../../state/koodistot"
 import { Oppija } from "../../state/oppijat"
@@ -16,7 +17,7 @@ export const OppijanOpiskeluhistoria = (
   props: OppijanOpiskeluhistoriaProps
 ) => {
   const historia = props.oppija.opiskeluoikeushistoria || []
-  return (
+  return historia.length > 0 ? (
     <>
       {historia.map((opiskeluoikeus) => {
         const nimi = koodistonimi(opiskeluoikeus.tyyppi)
@@ -45,6 +46,10 @@ export const OppijanOpiskeluhistoria = (
         )
       })}
     </>
+  ) : (
+    <NoDataMessage>
+      <T id="oppija__ei_opiskeluhistoriaa" />
+    </NoDataMessage>
   )
 }
 

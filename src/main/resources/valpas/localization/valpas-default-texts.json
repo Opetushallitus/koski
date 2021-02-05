@@ -40,5 +40,7 @@
   "oppija__haut_otsikko": "Haut",
   "oppija__haut_hyvaksytty": "Hyväksytty",
   "oppija__haut_hylatty": "Hylätty",
-  "oppija__ryhma": "Ryhmä"
+  "oppija__ryhma": "Ryhmä",
+  "oppija__ei_hakuhistoriaa": "Oppijalle ei löytynyt hakuhistoriaa",
+  "oppija__ei_opiskeluhistoriaa": "Oppijalle ei löytynyt opiskeluhistoriaa"
 }
