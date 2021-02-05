@@ -2,6 +2,7 @@ import * as E from "fp-ts/Either"
 import { pipe } from "fp-ts/lib/function"
 import { useCallback, useEffect, useState } from "react"
 import { ApiFailure, ApiResponse, ApiSuccess } from "./apiFetch"
+import { ApiCache } from "./cache"
 
 export type ApiLoading = null
 export type ApiResponseState<T> = ApiLoading | ApiResponse<T>
@@ -12,8 +13,10 @@ export const useApiState = <T>() => useState<ApiResponseState<T>>(null)
  * Triggers API call once on component mount
  * @param fetchFn
  */
-export const useApiOnce = <T>(fetchFn: () => Promise<ApiResponse<T>>) =>
-  useApiWithParams(fetchFn, [])
+export const useApiOnce = <T>(
+  fetchFn: () => Promise<ApiResponse<T>>,
+  cache?: ApiCache<T, []>
+) => useApiWithParams(fetchFn, [], cache)
 
 /**
  * Triggers API call once on component mount or when parameters change
@@ -27,9 +30,10 @@ export const useApiOnce = <T>(fetchFn: () => Promise<ApiResponse<T>>) =>
  */
 export const useApiWithParams = <T, P extends any[]>(
   fetchFn: (...fetchFnParams: P) => Promise<ApiResponse<T>>,
-  params: P
+  params: P,
+  cache?: ApiCache<T, P>
 ) => {
-  const api = useApiMethod(fetchFn)
+  const api = useApiMethod(fetchFn, cache)
   useEffect(() => {
     api.call(...params)
   }, params)
@@ -42,11 +46,13 @@ export const useApiWithParams = <T, P extends any[]>(
 export type ApiMethodState<T> =
   | ApiMethodStateInitial
   | ApiMethodStateLoading
+  | ApiMethodStateReloading<T>
   | ApiMethodStateSuccess<T>
   | ApiMethodStateError
 
 export type ApiMethodStateInitial = { state: "initial" }
 export type ApiMethodStateLoading = { state: "loading" }
+export type ApiMethodStateReloading<T> = { state: "reloading" } & ApiSuccess<T>
 export type ApiMethodStateSuccess<T> = { state: "success" } & ApiSuccess<T>
 export type ApiMethodStateError = { state: "error" } & ApiFailure
 
@@ -57,7 +63,8 @@ export type ApiMethodHook<T, P extends any[]> = {
 } & ApiMethodState<T>
 
 export const useApiMethod = <T, P extends any[]>(
-  fetchFn: (...args: P) => Promise<ApiResponse<T>>
+  fetchFn: (...args: P) => Promise<ApiResponse<T>>,
+  cache?: ApiCache<T, P>
 ): ApiMethodHook<T, P> => {
   const [state, setState] = useState<ApiMethodState<T>>({
     state: "initial",
@@ -66,14 +73,18 @@ export const useApiMethod = <T, P extends any[]>(
   const call = useCallback(
     async (...args: P) => {
       setState({ state: "loading" })
+      cache?.map(args, (previous) =>
+        setState({ state: "reloading", ...previous })
+      )
       pipe(
         await fetchFn(...args),
-        E.map((result) =>
+        E.map((result) => {
           setState({
             state: "success",
             ...result,
           })
-        ),
+          cache?.set(args, result)
+        }),
         E.mapLeft((error) =>
           setState({
             state: "error",
