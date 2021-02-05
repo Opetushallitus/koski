@@ -103,6 +103,17 @@ export const reset = async (initialPath: string) => {
   await deleteCookies()
   await goToLocation(initialPath)
   await driver.wait(until.elementLocated(By.css("article#login-app")), 5000)
+  await resetMockData()
+}
+
+export const resetMockData = async () => {
+  await clickElement("#resetMockData")
+  await textEventuallyEquals("#resetMockDataState", "success")
+}
+
+export const clearMockData = async () => {
+  await clickElement("#clearMockData")
+  await textEventuallyEquals("#clearMockDataState", "success")
 }
 
 export const loginAs = async (
