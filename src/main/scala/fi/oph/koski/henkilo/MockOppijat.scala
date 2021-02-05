@@ -7,17 +7,21 @@ import fi.oph.koski.schema._
 import fi.oph.koski.valpas.henkilo.ValpasMockOppijat
 
 object MockOppijat {
-  def generateOid(counter: Int) = "1.2.246.562.24." + "%011d".format(counter)
+  def generateOid(counter: Int) = "1.2.246.562.24." + "%011d".format(counter) // TODO: Käytä eri oid-sarjaa Valpas-oppijoille?
 
   def oids = (
     KoskiSpecificMockOppijat.defaultOppijat.map(_.henkilö.oid) ++
-    (1 to KoskiSpecificMockOppijat.defaultOppijat.length + 100).map(generateOid).toList
-  ).distinct // oids that should be considered when deleting fixture data
+      ValpasMockOppijat.defaultOppijat.map(_.henkilö.oid) ++
+      (1 to (KoskiSpecificMockOppijat.defaultOppijat.length.max(ValpasMockOppijat.defaultOppijat.length)) + 100).map(generateOid).toList
+    ).distinct // oids that should be considered when deleting fixture data
 
   def asUusiOppija(oppija: LaajatOppijaHenkilöTiedot) =
     UusiHenkilö(oppija.hetu.get, oppija.etunimet, Some(oppija.kutsumanimi), oppija.sukunimi)
 
-  def defaultOppijat = KoskiSpecificMockOppijat.defaultOppijat
+  def defaultOppijat = FixtureCreator.currentFixtureType match {
+    case FixtureType.KOSKI => KoskiSpecificMockOppijat.defaultOppijat
+    case FixtureType.VALPAS => ValpasMockOppijat.defaultOppijat
+  }
 }
 
 class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil) extends Logging {

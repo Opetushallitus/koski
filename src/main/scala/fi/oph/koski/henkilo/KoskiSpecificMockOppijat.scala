@@ -2,7 +2,6 @@ package fi.oph.koski.henkilo
 
 import java.time.LocalDate
 
-import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.schema.UusiHenkilö
 

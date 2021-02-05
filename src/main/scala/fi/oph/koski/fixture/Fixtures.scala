@@ -7,26 +7,36 @@ import fi.oph.koski.henkilo.MockOpintopolkuHenkilöFacade
 import fi.oph.koski.localization.MockLocalizationRepository
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Timing
+import fi.oph.koski.valpas.fixture.ValpasDatabaseFixtureCreator
+
+object FixtureCreator {
+  var currentFixtureType: FixtureType = FixtureType.KOSKI
+}
 
 class FixtureCreator(application: KoskiApplication) extends Logging with Timing {
-  private val databaseFixtures = new KoskiDatabaseFixtureCreator(application)
+
+  private val koskiSpecificDatabaseFixtures = new KoskiSpecificDatabaseFixtureCreator(application)
+  private val valpasDatabaseFixtures = new ValpasDatabaseFixtureCreator(application)
 
   def resetFixtures(fixtureType: FixtureType = FixtureType.KOSKI) = if(shouldUseFixtures) {
-    application.cacheManager.invalidateAllCaches
-    fixtureType match {
-      case FixtureType.KOSKI => {
-        timed("Resetting database fixtures") (databaseFixtures.resetFixtures)
-        application.henkilöRepository.opintopolku.henkilöt.asInstanceOf[MockOpintopolkuHenkilöFacade].resetFixtures
+    synchronized {
+      application.cacheManager.invalidateAllCaches
+      fixtureType match {
+        case FixtureType.KOSKI => {
+          FixtureCreator.currentFixtureType = fixtureType
+          timed("Resetting database fixtures") (koskiSpecificDatabaseFixtures.resetFixtures)
+          application.henkilöRepository.opintopolku.henkilöt.asInstanceOf[MockOpintopolkuHenkilöFacade].resetKoskiSpecificFixtures
+        }
+        case FixtureType.VALPAS => {
+          FixtureCreator.currentFixtureType = fixtureType
+          timed("Resetting database fixtures") (valpasDatabaseFixtures.resetFixtures)
+          application.henkilöRepository.opintopolku.henkilöt.asInstanceOf[MockOpintopolkuHenkilöFacade].resetValpasFixtures
+        }
       }
-      case FixtureType.VALPAS => {
-        timed("Clearing database fixtures") (databaseFixtures.clearFixtures)
-        application.henkilöRepository.opintopolku.henkilöt.asInstanceOf[MockOpintopolkuHenkilöFacade].clearFixtures
-
-      }
+      application.koskiLocalizationRepository.asInstanceOf[MockLocalizationRepository].reset
+      application.tiedonsiirtoService.index.deleteAll()
+      logger.info(s"Reset application fixtures ${FixtureCreator.currentFixtureType}")
     }
-    application.koskiLocalizationRepository.asInstanceOf[MockLocalizationRepository].reset
-    application.tiedonsiirtoService.index.deleteAll()
-    logger.info("Reset application fixtures")
   }
 
   def shouldUseFixtures = {

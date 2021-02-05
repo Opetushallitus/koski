@@ -12,11 +12,11 @@ import fi.oph.koski.documentation.ExamplesEsiopetus.{ostopalveluOpiskeluoikeus, 
 import fi.oph.koski.documentation.ExamplesPerusopetus.ysinOpiskeluoikeusKesken
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.oppilaitos
 import fi.oph.koski.documentation.{ExamplesEsiopetus, _}
-import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilö, VerifiedHenkilöOid}
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, MockOppijat, OppijaHenkilö, VerifiedHenkilöOid}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, MockUsers}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.organisaatio.MockOrganisaatiot.{päiväkotiMajakka, päiväkotiTouhula}
+import fi.oph.koski.organisaatio.MockOrganisaatiot.päiväkotiMajakka
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenOsittaisetTiedot, OpiskeluoikeudenPerustiedot}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
@@ -24,12 +24,7 @@ import slick.dbio.DBIO
 
 import scala.reflect.runtime.universe.TypeTag
 
-class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDatabaseMethods with Timing {
-  implicit val user = KoskiSession.systemUser
-  private val validator = application.validator
-  val database = application.masterDatabase
-  val db = database.db
-  implicit val accessType = AccessType.write
+class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDatabaseFixtureCreator(application) {
   var fixtureCacheCreated = false
   var cachedPerustiedot: Option[Seq[OpiskeluoikeudenOsittaisetTiedot]] = None
 
@@ -47,7 +42,7 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
       Tables.PerustiedotSync.delete,
       Tables.SuoritusJako.delete,
       Tables.SuoritusJakoV2.delete,
-    ) ++ MockOppijat.defaultOppijat.map(application.henkilöCache.addHenkilöAction)))
+    ) ++ KoskiSpecificMockOppijat.defaultOppijat.map(application.henkilöCache.addHenkilöAction)))
 
     application.perustiedotIndexer.deleteByOppijaOids(henkilöOids, refresh = false)
 
@@ -76,28 +71,8 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
     }
   }
 
-  def clearFixtures: Unit = {
-    if (database.config.isRemote) throw new IllegalStateException("Trying to reset fixtures in remote database")
 
-    application.perustiedotSyncScheduler.sync(refresh = false)
-
-    val henkilöOids = MockOppijat.oids.sorted
-
-    runDbSync(DBIO.sequence(Seq(
-      OpiskeluOikeudet.filter(_.oppijaOid inSetBind (henkilöOids)).delete,
-      Tables.Henkilöt.filter(_.oid inSetBind henkilöOids).delete,
-      Preferences.delete,
-      Tables.PerustiedotSync.delete,
-      Tables.SuoritusJako.delete,
-      Tables.SuoritusJakoV2.delete,
-    )))
-
-    application.perustiedotIndexer.deleteByOppijaOids(henkilöOids, refresh = false)
-  }
-
-  private lazy val opiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = validatedOpiskeluoikeudet ++ invalidOpiskeluoikeudet
-
-  private lazy val validatedOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
+  protected lazy val validatedOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
     defaultOpiskeluOikeudet.zipWithIndex.map { case ((henkilö, oikeus), index) =>
       timed(s"Validating fixture ${index}", 500) {
         validator.validateAsJson(Oppija(henkilö.toHenkilötiedotJaOid, List(oikeus))) match {
@@ -110,7 +85,7 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
     }
   }
 
-  private lazy val invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
+  protected lazy val invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
     val validOpiskeluoikeus: AmmatillinenOpiskeluoikeus = validateOpiskeluoikeus(AmmatillinenExampleData.opiskeluoikeus())
     val opiskeluoikeusJostaTunnisteenKoodiarvoPoistettu = validOpiskeluoikeus.copy(
       suoritukset = validOpiskeluoikeus.suoritukset.map(s => {
@@ -240,11 +215,6 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
     )
   }
 
-  private def validateOpiskeluoikeus[T: TypeTag](oo: T, session: KoskiSession = user): T =
-    validator.extractAndValidateOpiskeluoikeus(JsonSerializer.serialize(oo))(session, AccessType.write) match {
-      case Right(opiskeluoikeus) => opiskeluoikeus.asInstanceOf[T]
-      case Left(status) => throw new RuntimeException("Fixture insert failed for " + JsonSerializer.write(oo) + ": " + status)
-    }
 }
 
 object AmmatillinenOpiskeluoikeusTestData {

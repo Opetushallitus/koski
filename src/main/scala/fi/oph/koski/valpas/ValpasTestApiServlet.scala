@@ -20,19 +20,20 @@ class ValpasTestApiServlet(implicit val application: KoskiApplication) extends A
   }
 
   get("/reset-mock-data") {
-    ValpasMockUsers.mockUsersEnabled = true
-    application.directoryClient.invalidateCache()
-    application.fixtureCreator.resetFixtures(FixtureType.VALPAS)
-
-    contentType = "text/json"
-    response.writer.print("\"Valpas mock data reset\"")
+    synchronized {
+      ValpasMockUsers.mockUsersEnabled = true
+      application.fixtureCreator.resetFixtures(FixtureType.VALPAS)
+      contentType = "text/json"
+      response.writer.print("\"Valpas mock data reset\"")
+    }
   }
 
   get("/clear-mock-data") {
-    ValpasMockUsers.mockUsersEnabled = false
-    application.directoryClient.invalidateCache()
-    application.fixtureCreator.resetFixtures(FixtureType.KOSKI)
-    contentType = "text/json"
-    response.writer.print("\"Valpas mock data cleared\"")
+    synchronized {
+      ValpasMockUsers.mockUsersEnabled = false
+      application.fixtureCreator.resetFixtures(FixtureType.KOSKI)
+      contentType = "text/json"
+      response.writer.print("\"Valpas mock data cleared\"")
+    }
   }
 }

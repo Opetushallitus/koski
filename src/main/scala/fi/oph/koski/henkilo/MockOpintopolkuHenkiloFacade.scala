@@ -8,16 +8,17 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession.systemUser
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Henkilö.Oid
+import fi.oph.koski.valpas.henkilo.ValpasMockOppijat
 
 class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Logging {
-  var oppijat = new MockOppijat(MockOppijat.defaultOppijat)
+  var oppijat = new MockOppijat(KoskiSpecificMockOppijat.defaultOppijat)
 
-  def resetFixtures = synchronized {
-    oppijat = new MockOppijat(MockOppijat.defaultOppijat)
+  def resetKoskiSpecificFixtures = synchronized {
+    oppijat = new MockOppijat(KoskiSpecificMockOppijat.defaultOppijat)
   }
 
-  def clearFixtures = synchronized {
-    oppijat = new MockOppijat(List())
+  def resetValpasFixtures = synchronized {
+    oppijat = new MockOppijat(ValpasMockOppijat.defaultOppijat)
   }
 
   private def create(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, String] = synchronized {
@@ -78,10 +79,6 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
         o.copy(henkilö = toLaajat(o.henkilö, findSlaveOids(o.henkilö.oid)).copy(etunimet = oppija.henkilö.etunimet, kutsumanimi = oppija.henkilö.kutsumanimi, sukunimi = oppija.henkilö.sukunimi), master = oppija.master)
       else o
     })
-  }
-
-  def resetMock(): Unit = synchronized {
-    oppijat = new MockOppijat(MockOppijat.defaultOppijat)
   }
 
   override def findOppijaByHetu(hetu: String): Option[LaajatOppijaHenkilöTiedot] = synchronized {
