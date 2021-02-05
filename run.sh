@@ -9,6 +9,7 @@ JAVA_OPTS="\
 -Dcom.sun.management.jmxremote.rmi.port=5555 \
 -Dcom.sun.management.jmxremote.authenticate=false \
 -Djava.rmi.server.hostname=localhost \
+-Djava.io.tmpdir=/tmp \
 -Dkoski.port=8080 \
 -DHOSTNAME="$(hostname)" \
 -Dlog4j.configuration=file:///home/koski/log4j.properties \
