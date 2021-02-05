@@ -4,7 +4,7 @@ import fi.oph.koski.schema.annotation.{Deprecated, Tooltip}
 import fi.oph.scalaschema.{ClassSchema, Property}
 import fi.oph.scalaschema.annotation.Description
 
-object SchemaLocalization {
+object KoskiSpecificSchemaLocalization {
   type KeyAndText = (String, String)
 
   def title(property: Property): KeyAndText = (property.title, property.title)

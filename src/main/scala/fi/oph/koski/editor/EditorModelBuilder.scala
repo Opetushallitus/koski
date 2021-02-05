@@ -279,11 +279,11 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     if (!readOnly) props += ("editable" -> JBool(true))
     if (SensitiveDataFilter(context.user).sensitiveHidden(property.metadata)) props += ("sensitiveHidden" -> JBool(true))
     if (!onlyWhen.isEmpty) props +=("onlyWhen" -> JArray(onlyWhen))
-    SchemaLocalization.deprecated(property)
+    KoskiSpecificSchemaLocalization.deprecated(property)
       .map { case (key, _) => context.localizationRepository.get(key).get(context.user.lang) }
       .foreach { d => props += ("deprecated" -> JString(d)) }
 
-    val description = SchemaLocalization.tooltip(property).map{ case (key, text) => context.localizationRepository.get(key).get(context.user.lang) }
+    val description = KoskiSpecificSchemaLocalization.tooltip(property).map{ case (key, text) => context.localizationRepository.get(key).get(context.user.lang) }
 
     EditorProperty(property.key, property.title, description, propertyModel, props)
   }

@@ -6,7 +6,7 @@ import fi.oph.koski.schema.KoskiSchema
 import fi.oph.scalaschema._
 import org.scalatest.{FreeSpec, Matchers}
 
-class SchemaLocalizationSpec extends FreeSpec with Matchers {
+class KoskiSpecificSchemaLocalizationSpec extends FreeSpec with Matchers {
   "Koski schema texts" - {
     "Have default localizations" in {
       val newStuff: Set[(ClassSchema, String, String)] = findMissingLocalizedTextsInSchema
@@ -26,9 +26,9 @@ class SchemaLocalizationSpec extends FreeSpec with Matchers {
 
   private def findMissingLocalizedTextsInSchema: Set[(ClassSchema, String, String)] = {
     val propertyTitles: Set[(ClassSchema, String, String)] = allSchemas(EditorSchema.schema)(KoskiSchema.schemaFactory, collection.mutable.Set.empty[String]).collect {
-      case s: ClassSchema => SchemaLocalization.allLocalizableParts(s).map{ case (key, text) => (s, key, text)}
+      case s: ClassSchema => KoskiSpecificSchemaLocalization.allLocalizableParts(s).map{ case (key, text) => (s, key, text)}
     }.flatten.toSet
-    val existingKeys = new DefaultLocalizations(LocalizationConfig("koski").defaultFinnishTextsResourceFilename).defaultFinnishTexts.keys.toSet
+    val existingKeys = new DefaultLocalizations(new KoskiLocalizationConfig().defaultFinnishTextsResourceFilename).defaultFinnishTexts.keys.toSet
 
     propertyTitles.filterNot{ case (schema, key, title) => existingKeys.contains(key) }
   }

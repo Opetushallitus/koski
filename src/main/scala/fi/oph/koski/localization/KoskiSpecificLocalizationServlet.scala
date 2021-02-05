@@ -8,7 +8,7 @@ import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 import scala.util.{Failure, Success, Try}
 
-class LocalizationServlet(implicit val application: KoskiApplication) extends ApiServlet with KoskiAuthenticationSupport with NoCache {
+class KoskiSpecificLocalizationServlet(implicit val application: KoskiApplication) extends ApiServlet with KoskiAuthenticationSupport with NoCache {
   get("/") {
     application.koskiLocalizationRepository.localizations
   }
