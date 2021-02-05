@@ -118,14 +118,14 @@ case class OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuori
 ) extends VapaanSivistystyönOpintokokonaisuudenSuoritus
 
 @Title("Muualla suoritettu opintokokonaisuuden suoritus")
-case class MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus(
+case class MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus(
   @Title("Opintokokonaisuus")
-  koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus,
+  koulutusmoduuli: MuuallaSuoritetutVapaanSivistystyönOpinnot,
   arviointi: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi]],
-  @KoodistoKoodiarvo("vstmuuallasuoritettuopintokokonaisuus")
-  override val tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstmuuallasuoritettuopintokokonaisuus", koodistoUri = "suorituksentyyppi"),
-  tunnustettu: Option[OsaamisenTunnustaminen]
-) extends VapaanSivistystyönOpintokokonaisuudenSuoritus with MahdollisestiTunnustettu
+  @KoodistoUri("suorituksentyyppi")
+  override val tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstmuuallasuoritetutopinnot", koodistoUri = "suorituksentyyppi"),
+  tunnustettu: OsaamisenTunnustaminen
+) extends VapaanSivistystyönOpintokokonaisuudenSuoritus with Tunnustettu
 
 @Title("Opintokokonaisuus")
 case class OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
@@ -133,6 +133,14 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
   kuvaus: LocalizedString,
   laajuus: LaajuusOpintopisteissä
 ) extends PaikallinenKoulutusmoduuliPakollinenLaajuus
+
+@Title("Muualla suoritetut opinnot")
+case class MuuallaSuoritetutVapaanSivistystyönOpinnot(
+  @KoodistoUri("vstmuuallasuoritetutopinnot")
+  tunniste: Koodistokoodiviite,
+  kuvaus: LocalizedString,
+  laajuus: LaajuusOpintopisteissä
+) extends KoodistostaLöytyväKoulutusmoduuliPakollinenLaajuus
 
 @Title("Arviointi")
 case class OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi(

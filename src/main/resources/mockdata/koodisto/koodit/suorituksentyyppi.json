@@ -1356,8 +1356,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_vstmuuallasuoritettuopintokokonaisuus",
-  "koodiArvo" : "vstmuuallasuoritettuopintokokonaisuus",
+  "koodiUri" : "suorituksentyyppi_vstmuuallasuoritetutopinnot",
+  "koodiArvo" : "vstmuuallasuoritetutopinnot",
   "metadata" : [ {
     "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön opintokokonaisuus",
     "kieli" : "FI"

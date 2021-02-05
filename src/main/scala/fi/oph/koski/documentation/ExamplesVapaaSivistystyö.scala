@@ -85,7 +85,7 @@ object VapaaSivistystyöExample {
           opintokokonaisuus("TAI01", "Taide työkaluna", "Taiteen käyttö työkaluna", 30.0)
         ),
         muuallaSuoritetunOpintokokonaisuudenSuoritus(
-          opintokokonaisuus("ATX02", "Tietokoneen huolto", "Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet (jatkokurssi)", 5.0),
+          muuallaSuorietutOpinnot("ATX02", "Tietokoneen huolto", "Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet (jatkokurssi)", 5.0),
           vstArviointi("Hyväksytty", date(2021, 11, 12))
         )
       )),
@@ -175,19 +175,23 @@ object VapaaSivistystyöExampleData {
   }
 
   def muuallaSuoritetunOpintokokonaisuudenSuoritus(
-                                   koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus = opintokokonaisuus(),
+                                   koulutusmoduuli: MuuallaSuoritetutVapaanSivistystyönOpinnot = muuallaSuorietutOpinnot(),
                                    arviointi: OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi = vstArviointi()
-                                 ): MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus = {
-    MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus(
-      tyyppi = Koodistokoodiviite("vstmuuallasuoritettuopintokokonaisuus", koodistoUri = "suorituksentyyppi"),
+                                 ): MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus = {
+    MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus(
+      tyyppi = Koodistokoodiviite("vstmuuallasuoritetutopinnot", koodistoUri = "suorituksentyyppi"),
       koulutusmoduuli = koulutusmoduuli,
       arviointi = Some(List(arviointi)),
-      tunnustettu = Some(tunnustettu)
+      tunnustettu = tunnustettu
     )
   }
 
   def opintokokonaisuus(koodiarvo: String = "A01", nimi: String = "Arjen rahankäyttö" , kuvaus: String = "Arjen rahankäyttö", laajuusArvo: Double = 2.0): OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus = {
     OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(PaikallinenKoodi(koodiarvo, nimi), kuvaus, laajuus(laajuusArvo))
+  }
+
+  def muuallaSuorietutOpinnot(koodiarvo: String = "A01", nimi: String = "Arjen rahankäyttö" , kuvaus: String = "Arjen rahankäyttö", laajuusArvo: Double = 2.0): MuuallaSuoritetutVapaanSivistystyönOpinnot = {
+    MuuallaSuoritetutVapaanSivistystyönOpinnot(Koodistokoodiviite("jotain", "jotain"), kuvaus, laajuus(laajuusArvo))
   }
 
   def vstArviointi(arvosana:String = "Hyväksytty", päivä: LocalDate = date(2021, 10, 30)): OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi = {
