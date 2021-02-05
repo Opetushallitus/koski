@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.henkilo.{MockOppijat, VerifiedHenkilöOid}
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer.parse
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, MockUsers}
@@ -18,7 +18,7 @@ class OpiskeluoikeusValidationSpec extends FreeSpec with Matchers with Opiskeluo
 
   "Validoi" - {
     "validi opiskeluoikeus" in {
-      val opiskeluoikeusOid = oppija(MockOppijat.eero.oid).tallennettavatOpiskeluoikeudet.flatMap(_.oid).head
+      val opiskeluoikeusOid = oppija(KoskiSpecificMockOppijat.eero.oid).tallennettavatOpiskeluoikeudet.flatMap(_.oid).head
       authGet(s"api/opiskeluoikeus/validate/$opiskeluoikeusOid") {
         verifyResponseStatusOk()
         validationResult.errors should be(empty)
@@ -37,7 +37,7 @@ class OpiskeluoikeusValidationSpec extends FreeSpec with Matchers with Opiskeluo
             ]
           }
         """.stripMargin)
-      val opiskelija = oppija(MockOppijat.valma.oid)
+      val opiskelija = oppija(KoskiSpecificMockOppijat.valma.oid)
       mockKoskiValidator(mockConfig).validateAsJson(opiskelija).left.get should equal (KoskiErrorCategory.notImplemented("Päätason suorituksen tyyppi valma ei ole käytössä tässä ympäristössä"))
     }
 
@@ -53,7 +53,7 @@ class OpiskeluoikeusValidationSpec extends FreeSpec with Matchers with Opiskeluo
             ]
           }
         """.stripMargin)
-      val opiskelija = oppija(MockOppijat.valma.oid)
+      val opiskelija = oppija(KoskiSpecificMockOppijat.valma.oid)
       mockKoskiValidator(mockConfig).validateAsJson(opiskelija).left.get should equal (KoskiErrorCategory.notImplemented("Päätason suorituksen luokka ValmaKoulutuksenSuoritus ei ole käytössä tässä ympäristössä"))
     }
   }

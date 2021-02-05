@@ -2,7 +2,7 @@ package fi.oph.koski.luovutuspalvelu
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
-import fi.oph.koski.henkilo.{MockOppijat, LaajatOppijaHenkilöTiedot}
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
@@ -19,20 +19,20 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       MockUsers.users
         .diff(List(MockUsers.luovutuspalveluKäyttäjäArkaluontoinen, MockUsers.luovutuspalveluKäyttäjä, MockUsers.suomiFiKäyttäjä))
         .foreach { user =>
-          postSuomiFiRekisteritiedot(user, MockOppijat.ylioppilas.hetu.get) {
+          postSuomiFiRekisteritiedot(user, KoskiSpecificMockOppijat.ylioppilas.hetu.get) {
             verifySOAPError("forbidden.vainViranomainen", "Sallittu vain viranomaisille")
           }
         }
-      postSuomiFiRekisteritiedot(MockUsers.luovutuspalveluKäyttäjä, MockOppijat.ylioppilas.hetu.get) {
+      postSuomiFiRekisteritiedot(MockUsers.luovutuspalveluKäyttäjä, KoskiSpecificMockOppijat.ylioppilas.hetu.get) {
         verifySOAPError("forbidden.kiellettyKäyttöoikeus", "Ei sallittu näillä käyttöoikeuksilla")
       }
-      postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, MockOppijat.ylioppilas.hetu.get) {
+      postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, KoskiSpecificMockOppijat.ylioppilas.hetu.get) {
         verifyResponseStatusOk()
       }
     }
 
     "palauttaa oppilaan tiedot hetun perusteella - vain osa opiskeluoikeuden kentistä mukana" in {
-      postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, MockOppijat.ylioppilas.hetu.get) {
+      postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, KoskiSpecificMockOppijat.ylioppilas.hetu.get) {
         verifyResponseStatusOk()
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUOMIFI_KATSOMINEN"))
         val oppilaitokset = (soapResponse() \ "Body" \ "suomiFiRekisteritiedotResponse" \ "oppilaitokset").head
@@ -60,7 +60,7 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     }
 
     "palauttaa oppilaan tiedot hetun perusteella - kaikki opiskeluoikeuden kentät mukana" in {
-      postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, MockOppijat.ammattilainen.hetu.get) {
+      postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, KoskiSpecificMockOppijat.ammattilainen.hetu.get) {
         verifyResponseStatusOk()
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUOMIFI_KATSOMINEN"))
         val oppilaitokset = (soapResponse() \ "Body" \ "suomiFiRekisteritiedotResponse" \ "oppilaitokset").head
@@ -104,7 +104,7 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     }
 
     "palauttaa SOAP-virheen jos Virta-palvelu ei vastaa" in {
-      postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, MockOppijat.virtaEiVastaa.hetu.get) {
+      postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, KoskiSpecificMockOppijat.virtaEiVastaa.hetu.get) {
         verifySOAPError("unavailable.virta", "Korkeakoulutuksen opiskeluoikeuksia ei juuri nyt saada haettua. Yritä myöhemmin uudelleen.")
       }
     }
@@ -112,43 +112,43 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     "Suorituksen nimi" - {
       "Kun opiskeluoikeudessa on pelkkiä perusopetuksen vuosiluokkia käytetään sanaa 'Perusopetus'" in {
         // kesken olevat perusopetuksen päättötodistukset karsitaan pois -> opiskeluoikeudessa pelkkiä perusopetuksen vuosiluokkia
-        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.ysiluokkalainen) shouldEqual "Perusopetus"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.ysiluokkalainen) shouldEqual "Perusopetus"
       }
 
       "Kun opiskeluoikeudessa on perusopetuksen oppiaineen oppimääriä käytetään nimenä suorituksen tyyppiä" in {
-        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.montaOppiaineenOppimäärääOpiskeluoikeudessa) shouldEqual "Perusopetuksen oppiaineen oppimäärä"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.montaOppiaineenOppimäärääOpiskeluoikeudessa) shouldEqual "Perusopetuksen oppiaineen oppimäärä"
       }
 
       "Kun opiskeluoikeudessa on lukion oppiaineen oppimääriä käytetään nimenä suorituksen tyyppiä" in {
-        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.lukionAineopiskelija) shouldEqual "Lukion oppiaineen oppimäärä"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.lukionAineopiskelija) shouldEqual "Lukion oppiaineen oppimäärä"
       }
 
       "Kun opiskeluoikeudessa on opintojaksojen seassa korkeakoulututkinto käytetään tutkinnon nimeä" in {
-        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.opintojaksotSekaisin) shouldEqual "Fysioterapeutti (AMK)"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.opintojaksotSekaisin) shouldEqual "Fysioterapeutti (AMK)"
       }
 
       "Kun opiskeluoikeudessa on pelkkiä korkeakoulun opintojaksoja käytetään '<lkm> opintojaksoa'" in {
-        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.korkeakoululainen) shouldEqual "69 opintojaksoa"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.korkeakoululainen) shouldEqual "69 opintojaksoa"
       }
 
       "Aikuisten perusopetuksessa käytetään suorituksen tyypin nimeä" in {
-        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.aikuisOpiskelija) shouldEqual "Aikuisten perusopetuksen oppimäärä"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.aikuisOpiskelija) shouldEqual "Aikuisten perusopetuksen oppimäärä"
       }
 
       "Ammatillisen tutkinnon nimenä käytetään perusteen nimeä" in {
-        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.ammattilainen) shouldEqual "Luonto- ja ympäristöalan perustutkinto"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.ammattilainen) shouldEqual "Luonto- ja ympäristöalan perustutkinto"
       }
 
       "Osittaisen ammatillisen tutkinnon nimen loppuun tulee sana 'osittainen'" in {
-        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.osittainenammattitutkinto) shouldEqual "Luonto- ja ympäristöalan perustutkinto, osittainen"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.osittainenammattitutkinto) shouldEqual "Luonto- ja ympäristöalan perustutkinto, osittainen"
       }
 
       "Perustapauksessa käytetään suorituksen tunnisteen nimeä" in {
-        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.lukiolainen) shouldEqual "Lukion oppimäärä"
-        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.dippainssi) shouldEqual "Dipl.ins., konetekniikka"
-        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.amkValmistunut) shouldEqual "Fysioterapeutti (AMK)"
-        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.ylioppilas) shouldEqual "Ylioppilastutkinto"
-        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.koululainen) shouldEqual "Perusopetus"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.lukiolainen) shouldEqual "Lukion oppimäärä"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.dippainssi) shouldEqual "Dipl.ins., konetekniikka"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.amkValmistunut) shouldEqual "Fysioterapeutti (AMK)"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.ylioppilas) shouldEqual "Ylioppilastutkinto"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.koululainen) shouldEqual "Perusopetus"
       }
     }
   }

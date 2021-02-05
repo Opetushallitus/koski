@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, HttpTester, KoskiErrorCategory}
 import fi.oph.koski.schema.{PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus}
 import org.scalatest.{FreeSpec, Matchers}
@@ -11,7 +11,7 @@ class PaatasonSuoritusInvalidateSpec extends FreeSpec with Matchers with LocalJe
   "Päätason suorituksen poistaminen" - {
     "onnistuu" - {
       "kun useampi nuorten perusopetuksen päätason suoritus" in {
-        val oid = MockOppijat.koululainen.oid
+        val oid = KoskiSpecificMockOppijat.koululainen.oid
         val oo = oppija(oid).tallennettavatOpiskeluoikeudet.collect { case o: PerusopetuksenOpiskeluoikeus => o }.head
 
         deletePäätasonSuoritus(oo.oid.get, 1, oo.suoritukset.head) {
@@ -20,7 +20,7 @@ class PaatasonSuoritusInvalidateSpec extends FreeSpec with Matchers with LocalJe
       }
 
       "kun useampi aikuisten perusopetuksen päätason suoritus" in {
-        val oo = oppija(MockOppijat.aikuisOpiskelija.oid).tallennettavatOpiskeluoikeudet.head
+        val oo = oppija(KoskiSpecificMockOppijat.aikuisOpiskelija.oid).tallennettavatOpiskeluoikeudet.head
 
         deletePäätasonSuoritus(oo.oid.get, 1, oo.suoritukset.head) {
           verifyResponseStatusOk()
@@ -28,7 +28,7 @@ class PaatasonSuoritusInvalidateSpec extends FreeSpec with Matchers with LocalJe
       }
 
       "kun suoritus on valmis" in {
-        val oo = oppija(MockOppijat.koululainen.oid).tallennettavatOpiskeluoikeudet.collect { case o: PerusopetuksenOpiskeluoikeus => o}.head
+        val oo = oppija(KoskiSpecificMockOppijat.koululainen.oid).tallennettavatOpiskeluoikeudet.collect { case o: PerusopetuksenOpiskeluoikeus => o}.head
         val suoritus = oo.suoritukset.head
 
         assert(suoritus.valmis)
@@ -39,7 +39,7 @@ class PaatasonSuoritusInvalidateSpec extends FreeSpec with Matchers with LocalJe
       }
 
       "kun suoritus on kesken" in {
-        val oo = oppija(MockOppijat.ysiluokkalainen.oid).tallennettavatOpiskeluoikeudet.head
+        val oo = oppija(KoskiSpecificMockOppijat.ysiluokkalainen.oid).tallennettavatOpiskeluoikeudet.head
         val suoritus = oo.suoritukset.head
 
         assert(!suoritus.valmis)
@@ -50,7 +50,7 @@ class PaatasonSuoritusInvalidateSpec extends FreeSpec with Matchers with LocalJe
       }
 
       "kun kaksi saman vuosiluokan suoritusta" in {
-        val oo = oppija(MockOppijat.luokallejäänyt.oid).tallennettavatOpiskeluoikeudet.head
+        val oo = oppija(KoskiSpecificMockOppijat.luokallejäänyt.oid).tallennettavatOpiskeluoikeudet.head
         val suoritus = oo.suoritukset
           .collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
           .find(_.luokka == "7A")
@@ -60,7 +60,7 @@ class PaatasonSuoritusInvalidateSpec extends FreeSpec with Matchers with LocalJe
           verifyResponseStatusOk()
         }
 
-        val updated = getOpiskeluoikeus(MockOppijat.luokallejäänyt.oid, "perusopetus")
+        val updated = getOpiskeluoikeus(KoskiSpecificMockOppijat.luokallejäänyt.oid, "perusopetus")
 
         val poistettuVuosiluokanSuoritus = updated.suoritukset
           .collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
@@ -75,7 +75,7 @@ class PaatasonSuoritusInvalidateSpec extends FreeSpec with Matchers with LocalJe
       }
 
       "kun kaksi identtistä suoritusta" in {
-        val oo = oppija(MockOppijat.suoritusTuplana.oid).tallennettavatOpiskeluoikeudet.head
+        val oo = oppija(KoskiSpecificMockOppijat.suoritusTuplana.oid).tallennettavatOpiskeluoikeudet.head
         val suoritus = oo.suoritukset
           .collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
           .find(_.luokka == "8C")
@@ -85,7 +85,7 @@ class PaatasonSuoritusInvalidateSpec extends FreeSpec with Matchers with LocalJe
           verifyResponseStatusOk()
         }
 
-        val updated = getOpiskeluoikeus(MockOppijat.suoritusTuplana.oid, "perusopetus")
+        val updated = getOpiskeluoikeus(KoskiSpecificMockOppijat.suoritusTuplana.oid, "perusopetus")
 
         val jäljelläOlevaVuosiluokanSuoritus = updated.suoritukset
           .collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
@@ -96,7 +96,7 @@ class PaatasonSuoritusInvalidateSpec extends FreeSpec with Matchers with LocalJe
 
     "epäonnistuu" - {
       "kun suoritus on ainoa päätason suoritus" in {
-        val oo = oppija(MockOppijat.aikuisOpiskelija.oid).tallennettavatOpiskeluoikeudet.head
+        val oo = oppija(KoskiSpecificMockOppijat.aikuisOpiskelija.oid).tallennettavatOpiskeluoikeudet.head
 
         assert(oo.suoritukset.length == 1)
 
@@ -106,7 +106,7 @@ class PaatasonSuoritusInvalidateSpec extends FreeSpec with Matchers with LocalJe
       }
 
       "kun suoritus on muu päätason suoritus kuin perusopetuksen päätason suoritus" in {
-        val oo = oppija(MockOppijat.ammattilainen.oid).tallennettavatOpiskeluoikeudet.head
+        val oo = oppija(KoskiSpecificMockOppijat.ammattilainen.oid).tallennettavatOpiskeluoikeudet.head
 
         deletePäätasonSuoritus(oo.oid.get, 1, oo.suoritukset.head) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.ainoanPäätasonSuorituksenPoisto())
@@ -114,7 +114,7 @@ class PaatasonSuoritusInvalidateSpec extends FreeSpec with Matchers with LocalJe
       }
 
       "vanhalla versionumerolla" in {
-        val oo = oppija(MockOppijat.koululainen.oid).tallennettavatOpiskeluoikeudet.collect { case o: PerusopetuksenOpiskeluoikeus => o }.head
+        val oo = oppija(KoskiSpecificMockOppijat.koululainen.oid).tallennettavatOpiskeluoikeudet.collect { case o: PerusopetuksenOpiskeluoikeus => o }.head
 
         deletePäätasonSuoritus(oo.oid.get, 1, oo.suoritukset.head) {
           verifyResponseStatus(409, KoskiErrorCategory.conflict.versionumero())
@@ -122,7 +122,7 @@ class PaatasonSuoritusInvalidateSpec extends FreeSpec with Matchers with LocalJe
       }
 
       "olemattomalla versionumerolla" in {
-        val oo = oppija(MockOppijat.koululainen.oid).tallennettavatOpiskeluoikeudet.collect { case o: PerusopetuksenOpiskeluoikeus => o }.head
+        val oo = oppija(KoskiSpecificMockOppijat.koululainen.oid).tallennettavatOpiskeluoikeudet.collect { case o: PerusopetuksenOpiskeluoikeus => o }.head
 
         deletePäätasonSuoritus(oo.oid.get, 4, oo.suoritukset.head) {
           verifyResponseStatus(409, KoskiErrorCategory.conflict.versionumero())
@@ -130,7 +130,7 @@ class PaatasonSuoritusInvalidateSpec extends FreeSpec with Matchers with LocalJe
       }
 
       "virheellisellä oid:lla" in {
-        val oo = oppija(MockOppijat.koululainen.oid).tallennettavatOpiskeluoikeudet.collect { case o: PerusopetuksenOpiskeluoikeus => o }.head
+        val oo = oppija(KoskiSpecificMockOppijat.koululainen.oid).tallennettavatOpiskeluoikeudet.collect { case o: PerusopetuksenOpiskeluoikeus => o }.head
 
         deletePäätasonSuoritus("1.2.246.562.24.99999999999", 1, oo.suoritukset.head) {
           verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.queryParam.virheellinenOpiskeluoikeusOid, ".*Virheellinen oid.*".r))
@@ -138,8 +138,8 @@ class PaatasonSuoritusInvalidateSpec extends FreeSpec with Matchers with LocalJe
       }
 
       "suorituksella, jota ei löydy" in {
-        val oo = oppija(MockOppijat.koululainen.oid).tallennettavatOpiskeluoikeudet.collect { case o: PerusopetuksenOpiskeluoikeus => o }.head
-        val suoritus = oppija(MockOppijat.ysiluokkalainen.oid).tallennettavatOpiskeluoikeudet.head.suoritukset.head
+        val oo = oppija(KoskiSpecificMockOppijat.koululainen.oid).tallennettavatOpiskeluoikeudet.collect { case o: PerusopetuksenOpiskeluoikeus => o }.head
+        val suoritus = oppija(KoskiSpecificMockOppijat.ysiluokkalainen.oid).tallennettavatOpiskeluoikeudet.head.suoritukset.head
 
         deletePäätasonSuoritus(oo.oid.get, oo.versionumero.get, suoritus) {
           verifyResponseStatus(404, KoskiErrorCategory.notFound())

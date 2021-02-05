@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.documentation.OsaAikainenErityisopetusExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData.{suoritus, _}
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
 import mojave._
@@ -94,16 +94,16 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           suoritukset = List(yhdeksännenLuokanSuoritus.copy(alkamispäivä = Some(LocalDate.of(2006, 1, 1))))
         )
 
-        putOpiskeluoikeus(opiskeluoikeus, MockOppijat.eero) {
+        putOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.eero) {
           verifyResponseStatusOk()
         }
 
-        val edellinenVersio = lastOpiskeluoikeus(MockOppijat.eero.oid)
+        val edellinenVersio = lastOpiskeluoikeus(KoskiSpecificMockOppijat.eero.oid)
         val osittaisillaSuorituksilla = opiskeluoikeus.copy(
           suoritukset = List(kahdeksannenLuokanSuoritus.copy(alkamispäivä = Some(LocalDate.of(2006, 1, 1))))
         ).withOidAndVersion(edellinenVersio.oid, edellinenVersio.versionumero)
 
-        putOpiskeluoikeus(osittaisillaSuorituksilla, MockOppijat.eero) {
+        putOpiskeluoikeus(osittaisillaSuorituksilla, KoskiSpecificMockOppijat.eero) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaSuorituksia("Vuosiluokilla (perusopetuksenluokkaaste/9, perusopetuksenluokkaaste/8) on sama alkamispäivä. Kahdella tai useammalla vuosiluokalla ei saa olla sama alkamispäivämäärä."))
         }
       }

@@ -9,7 +9,7 @@ import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsn�
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetuksenAlkuvaiheenSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
-import fi.oph.koski.henkilo.MockOppijat.aikuisOpiskelija
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.aikuisOpiskelija
 import fi.oph.koski.koskiuser.MockUser
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot

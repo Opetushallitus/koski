@@ -2,8 +2,9 @@ package fi.oph.koski.api
 
 import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
 import fi.oph.koski.documentation.ExamplesEsiopetus
-import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.henkilo.MockOppijat.{asUusiOppija, eerola}
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.eerola
+import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiEsiopetus, helsinginKaupunkiPalvelukäyttäjä, omniaPääkäyttäjä, stadinPääkäyttäjä}
@@ -15,14 +16,14 @@ import fi.oph.koski.util.Wait
 import org.scalatest.FreeSpec
 
 class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
-  val oppija = MockOppijat.tyhjä
+  val oppija = KoskiSpecificMockOppijat.tyhjä
   val tiedonsiirtoService = SharedJetty.application.tiedonsiirtoService
 
   "Automaattinen tiedonsiirto" - {
     "Palvelukäyttäjä" - {
       "onnistuneesta tiedonsiirrosta tallennetaan vain henkilö- ja oppilaitostiedot" in {
         resetFixtures
-        val henkilö = SharedJetty.application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(MockOppijat.eero).copy(kansalaisuus = Some(List(Koodistokoodiviite("246", "maatjavaltiot2"))))
+        val henkilö = SharedJetty.application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(KoskiSpecificMockOppijat.eero).copy(kansalaisuus = Some(List(Koodistokoodiviite("246", "maatjavaltiot2"))))
         putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = henkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatusOk()
         }
@@ -77,7 +78,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
   "Esiopetus" in {
     val stadinOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
     val esiopetusOpiskeluoikeus = ExamplesEsiopetus.opiskeluoikeusHelsingissä.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
-    val markkanen = asUusiOppija(MockOppijat.markkanen)
+    val markkanen = asUusiOppija(KoskiSpecificMockOppijat.markkanen)
 
     resetFixtures
     putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {

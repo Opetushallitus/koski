@@ -4,14 +4,14 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat}
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 
 object AmmatillinenExampleData {
-  val exampleHenkilö = asUusiOppija(MockOppijat.ammattilainen)
+  val exampleHenkilö = asUusiOppija(KoskiSpecificMockOppijat.ammattilainen)
 
   val autoalanPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", "koulutus"), Some("39/011/2014"))
   val valmaKoulutus: ValmaKoulutus = ValmaKoulutus(Koodistokoodiviite("999901", "koulutus"), Some("OPH-2658-2017"))

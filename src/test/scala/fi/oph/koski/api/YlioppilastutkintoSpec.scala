@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema.{YlioppilastutkinnonOpiskeluoikeus, YlioppilastutkinnonSuoritus}
 import fi.oph.koski.koskiuser.MockUsers.{paakayttaja}
@@ -29,7 +29,7 @@ class YlioppilastutkintoSpec extends FreeSpec with Matchers with OpiskeluoikeusT
 
     "Haettaessa opintotietoja" - {
       "Konvertoidaan YTR-järjestelmän tiedot Koski-järjestelmän opiskeluoikeudeksi" in {
-        val oikeudet = getOpiskeluoikeudet(MockOppijat.ylioppilas.oid)
+        val oikeudet = getOpiskeluoikeudet(KoskiSpecificMockOppijat.ylioppilas.oid)
         oikeudet.length should equal(1)
 
         oikeudet(0).tyyppi.koodiarvo should equal("ylioppilastutkinto")
@@ -44,7 +44,7 @@ class YlioppilastutkintoSpec extends FreeSpec with Matchers with OpiskeluoikeusT
 
       "Suoritus on valmis myös silloin kun oppilaitostieto puuttuu" in {
         // huom, pääkäyttäjä koska tätä oppijaa ei voi yhdistää mihinkään oppilaitokseen/organisaatioon
-        val oikeudet = getOpiskeluoikeudet(MockOppijat.ylioppilasEiOppilaitosta.oid, user = paakayttaja)
+        val oikeudet = getOpiskeluoikeudet(KoskiSpecificMockOppijat.ylioppilasEiOppilaitosta.oid, user = paakayttaja)
         oikeudet.length should equal(1)
 
         oikeudet(0).oppilaitos should equal(None)

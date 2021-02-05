@@ -1,6 +1,6 @@
 package fi.oph.koski.documentation
 
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.localization.{KoskiLocalizationConfig, MockLocalizationRepository}
 import fi.oph.koski.oppilaitos.OppilaitosRepository
@@ -13,8 +13,8 @@ import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 object ExamplesYlioppilastutkinto {
   private lazy val koodistoViitePalvelu = MockKoodistoViitePalvelu
   private lazy val oppilaitokset = OppilaitosRepository(MockOrganisaatioRepository)
-  val opiskeluoikeus = MockYrtClient.oppijaByHetu(MockOppijat.ylioppilas.hetu.get).flatMap(YtrOppijaConverter(oppilaitokset, koodistoViitePalvelu, MockOrganisaatioRepository, MockLocalizationRepository(new KoskiLocalizationConfig)).convert(_)).get
-  val oppija = Oppija(asUusiOppija(MockOppijat.ylioppilas), List(opiskeluoikeus))
+  val opiskeluoikeus = MockYrtClient.oppijaByHetu(KoskiSpecificMockOppijat.ylioppilas.hetu.get).flatMap(YtrOppijaConverter(oppilaitokset, koodistoViitePalvelu, MockOrganisaatioRepository, MockLocalizationRepository(new KoskiLocalizationConfig)).convert(_)).get
+  val oppija = Oppija(asUusiOppija(KoskiSpecificMockOppijat.ylioppilas), List(opiskeluoikeus))
 
   val examples = List(Example("ylioppilastutkinto", "Oppija on suorittanut ylioppilastutkinnon", oppija, 501))
 }

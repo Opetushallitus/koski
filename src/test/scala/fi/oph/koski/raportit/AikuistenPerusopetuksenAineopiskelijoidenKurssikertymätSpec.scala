@@ -9,7 +9,7 @@ import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsn�
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetuksenAlkuvaiheenSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
-import fi.oph.koski.henkilo.MockOppijat.aikuisOpiskelija
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.aikuisOpiskelija
 import fi.oph.koski.koskiuser.MockUser
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -69,7 +69,7 @@ class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätSpec extends FreeS
 
     "Raportin kolumnit" in {
       lazy val r = findSingle(raportti)
-      
+
       r.oppilaitos should equal("Jyväskylän normaalikoulu")
       r.yhteensäSuorituksia should equal(2)
       r.yhteensäSuoritettujaSuorituksia(2)

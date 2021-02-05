@@ -5,8 +5,8 @@ import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.{OpiskeluOikeudet, OpiskeluoikeusHistoria}
 import fi.oph.koski.documentation.{AmmatillinenOldExamples, ReforminMukainenErikoisammattitutkintoExample => Reformi}
-import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.henkilo.MockOppijat.reformitutkinto
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.reformitutkinto
 import fi.oph.koski.http.KoskiErrorCategory.notFound
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.MockUsers
@@ -18,7 +18,7 @@ import org.scalatest.FreeSpec
 
 class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with HistoryTestMethods with DatabaseTestMethods {
   val uusiOpiskeluoikeus = defaultOpiskeluoikeus
-  val oppija = MockOppijat.tyhjä
+  val oppija = KoskiSpecificMockOppijat.tyhjä
 
   "Muutoshistoria" - {
     "Luotaessa uusi opiskeluoikeus" - {

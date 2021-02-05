@@ -1,7 +1,7 @@
 package fi.oph.koski.ytr
 
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.util.ClasspathResource
 import org.scalatest.FreeSpec
@@ -27,7 +27,7 @@ class YtrKoesuoritusSpec extends FreeSpec with LocalJettyHttpSpecification with 
     }
 
     "näkee huolletavansa koesuorituksen" in {
-      get(s"koesuoritus/2345K_XX_12345.pdf?huollettava=${MockOppijat.ylioppilasLukiolainen.oid}", headers = kansalainenLoginHeaders(MockOppijat.faija.hetu.get)) {
+      get(s"koesuoritus/2345K_XX_12345.pdf?huollettava=${KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid}", headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.faija.hetu.get)) {
         verifyResponseStatusOk()
         bodyBytes should equal(resourceAsByteArray(s"/mockdata/ytr/2345K_XX_12345.pdf"))
       }
@@ -40,7 +40,7 @@ class YtrKoesuoritusSpec extends FreeSpec with LocalJettyHttpSpecification with 
     }
 
     "ei näe toisen huollettavan koesuoritusta" in {
-      get(s"koesuoritus/2345K_XX_12345.pdf?huollettava=${MockOppijat.ylioppilasLukiolainen.oid}", headers = kansalainenLoginHeaders(MockOppijat.amis.hetu.get)) {
+      get(s"koesuoritus/2345K_XX_12345.pdf?huollettava=${KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid}", headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.amis.hetu.get)) {
         verifyResponseStatus(404, Nil)
       }
     }
@@ -62,7 +62,7 @@ class YtrKoesuoritusSpec extends FreeSpec with LocalJettyHttpSpecification with 
 
     "huollettavan koesuorituksen haku aiheuttaa auditlogin" in {
       AuditLogTester.clearMessages
-      get(s"koesuoritus/2345K_XX_12345.pdf?huollettava=${MockOppijat.ylioppilasLukiolainen.oid}", headers = kansalainenLoginHeaders(MockOppijat.faija.hetu.get)) {
+      get(s"koesuoritus/2345K_XX_12345.pdf?huollettava=${KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid}", headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.faija.hetu.get)) {
         verifyResponseStatusOk()
         bodyBytes should equal(resourceAsByteArray(s"/mockdata/ytr/2345K_XX_12345.pdf"))
       }

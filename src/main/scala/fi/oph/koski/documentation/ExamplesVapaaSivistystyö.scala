@@ -6,7 +6,7 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.VapaaSivistystyöExampleData._
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
@@ -96,7 +96,7 @@ object VapaaSivistystyöExample {
 }
 
 object VapaaSivistystyöExampleData {
-  val exampleHenkilö = asUusiOppija(MockOppijat.vapaaSivistystyöOppivelvollinen)
+  val exampleHenkilö = asUusiOppija(KoskiSpecificMockOppijat.vapaaSivistystyöOppivelvollinen)
 
   lazy val varsinaisSuomenKansanopisto: Oppilaitos = Oppilaitos(MockOrganisaatiot.varsinaisSuomenKansanopisto, Some(Koodistokoodiviite("01694", None, "oppilaitosnumero", None)), Some("Varsinais-Suomen kansanopisto"))
 

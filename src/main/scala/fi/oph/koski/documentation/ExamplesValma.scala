@@ -4,7 +4,7 @@ import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, MockOppijat}
 import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
@@ -45,7 +45,7 @@ object ExamplesValma {
   )
 
   val valmaTodistus = Oppija(
-    MockOppijat.asUusiOppija(MockOppijat.valma),
+    MockOppijat.asUusiOppija(KoskiSpecificMockOppijat.valma),
     List(
       valmaOpiskeluoikeus
     )
