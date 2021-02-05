@@ -1,14 +1,14 @@
-import {
-  Builder,
-  WebDriver,
-  until,
-  By,
-  Key,
-  Condition,
-} from "selenium-webdriver"
-import chrome from "selenium-webdriver/chrome"
 import "chromedriver"
 import * as A from "fp-ts/Array"
+import {
+  Builder,
+  By,
+  Condition,
+  Key,
+  until,
+  WebDriver,
+} from "selenium-webdriver"
+import chrome from "selenium-webdriver/chrome"
 import { expectCleanConsoleLogs } from "./fail-on-console"
 
 declare namespace global {
@@ -108,12 +108,12 @@ export const reset = async (initialPath: string) => {
 
 export const resetMockData = async () => {
   await clickElement("#resetMockData")
-  await textEventuallyEquals("#resetMockDataState", "success")
+  await textEventuallyEquals("#resetMockDataState", "success", 5000)
 }
 
 export const clearMockData = async () => {
   await clickElement("#clearMockData")
-  await textEventuallyEquals("#clearMockDataState", "success")
+  await textEventuallyEquals("#clearMockDataState", "success", 5000)
 }
 
 export const loginAs = async (
