@@ -93,7 +93,7 @@ const prependUrl = (baseUrl: string, request: RequestInfo): RequestInfo =>
 export const mockApi = <T, P extends any[]>(
   getResult: (...params: P) => E.Either<ApiError, T>
 ) => async (...params: P): Promise<ApiResponse<T>> => {
-  await new Promise((resolve) => setTimeout(resolve, 100 + Math.random() * 200))
+  await new Promise((resolve) => setTimeout(resolve, 300 + Math.random() * 200))
   return pipe(
     getResult(...params),
     E.map((data) => ({ status: 200, data })),

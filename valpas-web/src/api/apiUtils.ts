@@ -17,7 +17,8 @@ export const isLoading = <T>(
 
 export const isSuccess = <T>(
   state: ApiMethodState<T>
-): state is ApiMethodStateSuccess<T> => state.state === "success"
+): state is ApiMethodStateSuccess<T> =>
+  state.state === "success" || state.state === "reloading"
 
 export const isError = <T>(
   state: ApiMethodState<T>

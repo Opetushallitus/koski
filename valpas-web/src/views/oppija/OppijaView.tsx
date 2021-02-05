@@ -1,6 +1,6 @@
 import React from "react"
 import { RouteComponentProps } from "react-router-dom"
-import { fetchOppija } from "../../api/api"
+import { fetchOppija, fetchOppijaCache } from "../../api/api"
 import { ApiMethodState, useApiWithParams } from "../../api/apiHooks"
 import { mapError, mapLoading, mapSuccess } from "../../api/apiUtils"
 import { ButtonLabel } from "../../components/buttons/ButtonLabel"
@@ -21,7 +21,7 @@ export type OppijaViewProps = RouteComponentProps<{
 
 export const OppijaView = (props: OppijaViewProps) => {
   const queryOid = props.match.params.oid
-  const oppija = useApiWithParams(fetchOppija, [queryOid])
+  const oppija = useApiWithParams(fetchOppija, [queryOid], fetchOppijaCache)
 
   return (
     <Page id="oppija">

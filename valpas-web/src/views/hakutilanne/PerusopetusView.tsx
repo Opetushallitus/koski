@@ -1,5 +1,5 @@
 import React from "react"
-import { fetchOppijat } from "../../api/api"
+import { fetchOppijat, fetchOppijatCache } from "../../api/api"
 import { useApiOnce } from "../../api/apiHooks"
 import { isSuccess } from "../../api/apiUtils"
 import { Card, CardBody, CardHeader } from "../../components/containers/cards"
@@ -11,7 +11,7 @@ import { HakutilanneTable } from "./HakutilanneTable"
 export type PerusopetusViewProps = {}
 
 export const PerusopetusView = (_props: PerusopetusViewProps) => {
-  const oppijatFetch = useApiOnce(fetchOppijat)
+  const oppijatFetch = useApiOnce(fetchOppijat, fetchOppijatCache)
 
   return (
     <Card>
