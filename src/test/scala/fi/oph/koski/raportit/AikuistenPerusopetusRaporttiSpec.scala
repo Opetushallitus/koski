@@ -8,7 +8,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAikuistenPerusopetus
 import fi.oph.koski.documentation.{ExampleData, ExamplesAikuistenPerusopetus, YleissivistavakoulutusExampleData}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
-import fi.oph.koski.henkilo.MockOppijat._
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetusAlkuvaiheRaportti, AikuistenPerusopetusOppiaineenOppimääräRaportti, AikuistenPerusopetusPäättövaiheRaportti, AikuistenPerusopetusRaportti, AikuistenPerusopetusRaporttiRepository, AikuistenPerusopetusRaporttiType}
 import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}

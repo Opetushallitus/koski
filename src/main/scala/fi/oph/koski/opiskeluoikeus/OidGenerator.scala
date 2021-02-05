@@ -1,7 +1,7 @@
 package fi.oph.koski.opiskeluoikeus
 
 import com.typesafe.config.Config
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.vm.sade.oidgenerator.OIDGenerator.generateOID
 
 object OidGenerator {
@@ -22,7 +22,7 @@ class MockOidGenerator extends OidGenerator {
   private var previousOid: String = ""
 
   override def generateOid(oppijaOid: String): String = this.synchronized {
-    if (oppijaOid != MockOppijat.opiskeluoikeudenOidKonflikti.oid) {
+    if (oppijaOid != KoskiSpecificMockOppijat.opiskeluoikeudenOidKonflikti.oid) {
       super.generateOid("")
     } else if (previousOid.isEmpty) {
       getAndStore

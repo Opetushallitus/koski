@@ -3,7 +3,7 @@ package fi.oph.koski.api
 import java.time.LocalDate
 
 import fi.oph.koski.documentation.{AmmatillinenExampleData, LukioExampleData}
-import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilö}
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema._
 import org.json4s.jackson.JsonMethods
@@ -19,7 +19,7 @@ class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestM
   import fi.oph.koski.schema.KoskiSchema.deserializationContext
 
   "Voi jakaa koko opiskeluoikeuden" in {
-    val oppija = MockOppijat.lukiolainen
+    val oppija = KoskiSpecificMockOppijat.lukiolainen
     val oppimääränOpiskeluoikeus = getOpiskeluoikeudet(oppija.oid).collectFirst {
       case o: LukionOpiskeluoikeus if o.suoritukset.exists { case _: LukionOppimääränSuoritus2015 => true } => o
     }
@@ -30,7 +30,7 @@ class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestM
   }
 
   "Voi jakaa koko opiskeluoikeuden, josta on piilotettu kenttiä" in {
-    val oppija = MockOppijat.lukiolainen
+    val oppija = KoskiSpecificMockOppijat.lukiolainen
     val oppimääränOpiskeluoikeus = getOpiskeluoikeudet(oppija.oid).collectFirst {
       case o: LukionOpiskeluoikeus if o.suoritukset.exists { case _: LukionOppimääränSuoritus2015 => true } => o
     }
@@ -41,7 +41,7 @@ class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestM
   }
 
   "Voi jakaa opiskeluoikeuden, jossa ei ole kaikkia päätason suorituksia" in {
-    val oppija = MockOppijat.koululainen
+    val oppija = KoskiSpecificMockOppijat.koululainen
     val opiskeluoikeus = getOpiskeluoikeudet(oppija.oid).collectFirst {
       case o: PerusopetuksenOpiskeluoikeus => o.copy(suoritukset = o.suoritukset.filter(_.isInstanceOf[NuortenPerusopetuksenOppimääränSuoritus]))
     }
@@ -52,7 +52,7 @@ class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestM
   }
 
   "Voi jakaa opiskeluoikeuden, jossa päätason suorituksella ei ole kaikkia osasuorituksia" in {
-    val oppija = MockOppijat.koululainen
+    val oppija = KoskiSpecificMockOppijat.koululainen
     val opiskeluoikeus = getOpiskeluoikeudet(oppija.oid).collectFirst {
       case o: PerusopetuksenOpiskeluoikeus => o.copy(suoritukset = o.suoritukset.map {
         case oppimääränSuoritus: NuortenPerusopetuksenOppimääränSuoritus =>
@@ -67,7 +67,7 @@ class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestM
   }
 
   "Ei voi jakaa opiskeluoikeutta jossa muokattu tietoja" in {
-    val oppija = MockOppijat.koululainen
+    val oppija = KoskiSpecificMockOppijat.koululainen
     val opiskeluoikeus = getOpiskeluoikeudet(oppija.oid).collectFirst {
       case o: PerusopetuksenOpiskeluoikeus => o.copy(tila =
         NuortenPerusopetuksenOpiskeluoikeudenTila(
@@ -84,7 +84,7 @@ class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestM
     val ylimääräinenSuoritus = suoritus(LukioExampleData.lukionOppiaine("FOO", None)).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
       kurssisuoritus(valtakunnallinenKurssi("BAR")).copy(arviointi = numeerinenArviointi(8), tunnustettu = Some(AmmatillinenExampleData.tunnustettu))
     )))
-    val oppija = MockOppijat.lukiolainen
+    val oppija = KoskiSpecificMockOppijat.lukiolainen
     val opiskeluoikeus = getOpiskeluoikeudet(oppija.oid).collectFirst {
       case o: LukionOpiskeluoikeus => o.copy(suoritukset = o.suoritukset.map {
         case oppimääränSuoritus: LukionOppimääränSuoritus2015 => oppimääränSuoritus.copy(osasuoritukset = oppimääränSuoritus.osasuoritukset.map(_ ++ List(ylimääräinenSuoritus)))
@@ -99,7 +99,7 @@ class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestM
 
   "Uuden suoritusjaon lisääminen luo auditlogin" in {
     AuditLogTester.clearMessages
-    val oppija = MockOppijat.lukiolainen
+    val oppija = KoskiSpecificMockOppijat.lukiolainen
     postSuoritusjakoV2(getOpiskeluoikeudet(oppija.oid).toList, oppija) {
       verifyResponseStatusOk()
       AuditLogTester.verifyAuditLogMessage(Map(
@@ -112,7 +112,7 @@ class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestM
 
   "Voimassa olevat suoritusjaot voi listata" in {
     resetFixtures
-    val oppija = MockOppijat.lukiolainen
+    val oppija = KoskiSpecificMockOppijat.lukiolainen
 
     createSuoritusjako(oppija)
     createSuoritusjako(oppija)
@@ -121,7 +121,7 @@ class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestM
 
   "Voimassa olevan suoritusjaon voimassaolo aikaa voi päivittää" in {
     resetFixtures
-    val oppija = MockOppijat.lukiolainen
+    val oppija = KoskiSpecificMockOppijat.lukiolainen
     createSuoritusjako(oppija)
     val suoritusjako = getSuoritusjaot(oppija).head
     val voimassaAsti = LocalDate.now.plusDays(10)
@@ -133,7 +133,7 @@ class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestM
 
   "Suoritusjaon voi poistaa" in {
     resetFixtures
-    val oppija = MockOppijat.lukiolainen
+    val oppija = KoskiSpecificMockOppijat.lukiolainen
     createSuoritusjako(oppija)
     val suoritusjako = getSuoritusjaot(oppija).head
     deleteSuoritusjako(suoritusjako.secret, oppija)
@@ -143,8 +143,8 @@ class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestM
 
   "Jaetun suorituksen tarkastelu ei vaadi kirjautumista" in {
     resetFixtures
-    createSuoritusjako(MockOppijat.lukiolainen)
-    val secret = getSuoritusjaot(MockOppijat.lukiolainen).head.secret
+    createSuoritusjako(KoskiSpecificMockOppijat.lukiolainen)
+    val secret = getSuoritusjaot(KoskiSpecificMockOppijat.lukiolainen).head.secret
 
     post("api/suoritusjakoV2/editor", body = JsonMethods.pretty(JsonSerializer.serializeWithRoot(SuoritusjakoRequest(secret))), headers = jsonContent) {
       verifyResponseStatusOk()
@@ -153,9 +153,9 @@ class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestM
 
   "Suoritusjakoja ei voi luoda yli maksimimäärän" in {
     resetFixtures
-    (1 to 20).foreach(_ => createSuoritusjako(MockOppijat.koululainen))
+    (1 to 20).foreach(_ => createSuoritusjako(KoskiSpecificMockOppijat.koululainen))
 
-    postSuoritusjakoV2(getOpiskeluoikeudet(MockOppijat.koululainen.oid).toList, MockOppijat.koululainen) {
+    postSuoritusjakoV2(getOpiskeluoikeudet(KoskiSpecificMockOppijat.koululainen.oid).toList, KoskiSpecificMockOppijat.koululainen) {
       verifyResponseStatus(403, KoskiErrorCategory.forbidden.liianMontaSuoritusjakoa())
     }
   }

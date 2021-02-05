@@ -7,8 +7,8 @@ import fi.oph.koski.documentation.AmmatillinenExampleData.{stadinAmmattiopisto, 
 import fi.oph.koski.documentation.ExampleData.{helsinki, vahvistus}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
-import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.henkilo.MockOppijat.opiskeluoikeudenOidKonflikti
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.opiskeluoikeudenOidKonflikti
 import fi.oph.koski.http.ErrorMatcher.exact
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
@@ -64,7 +64,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
     "Omien tietojen muokkaaminen" - {
       "On estetty" in {
         putOpiskeluoikeus(opiskeluoikeus(oppilaitos = Oppilaitos(omnia), tutkinto = AmmatillinenExampleData.autoalanPerustutkinnonSuoritus(Oppilaitos(omnia))),
-                          henkilö = MockOppijat.omattiedot,
+                          henkilö = KoskiSpecificMockOppijat.omattiedot,
                           headers = authHeaders(MockUsers.omattiedot) ++ jsonContent) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
         }
@@ -137,7 +137,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
 
       "Käytettäessä oppijan oidia" - {
         "Oid ok" - {
-          "palautetaan HTTP 200"  in (putHenkilö(OidHenkilö(MockOppijat.eero.oid)) (verifyResponseStatusOk()))
+          "palautetaan HTTP 200"  in (putHenkilö(OidHenkilö(KoskiSpecificMockOppijat.eero.oid)) (verifyResponseStatusOk()))
         }
 
         "Oid virheellinen" - {
@@ -151,7 +151,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
 
       "Käytettäessä oppijan kaikkia tietoja" - {
         "Oid ok" - {
-          "palautetaan HTTP 200"  in (putHenkilö(MockOppijat.eero) (verifyResponseStatusOk()))
+          "palautetaan HTTP 200"  in (putHenkilö(KoskiSpecificMockOppijat.eero) (verifyResponseStatusOk()))
         }
 
         "Oid virheellinen" - {
@@ -171,22 +171,22 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
 
       "Päivitettäessä opiskeluoikeus käyttäen sen oid:ia" - {
         "Oid ok" in {
-          val opiskeluoikeus = lastOpiskeluoikeus(MockOppijat.eero.oid)
-          putOppija(Oppija(MockOppijat.eero, List(opiskeluoikeus))) {
+          val opiskeluoikeus = lastOpiskeluoikeus(KoskiSpecificMockOppijat.eero.oid)
+          putOppija(Oppija(KoskiSpecificMockOppijat.eero, List(opiskeluoikeus))) {
             verifyResponseStatusOk()
           }
         }
 
         "Tuntematon oid" in {
-          val opiskeluoikeus = lastOpiskeluoikeus(MockOppijat.eero.oid)
-          putOppija(Oppija(MockOppijat.eero, List(opiskeluoikeus.withOidAndVersion(oid = Some("1.2.246.562.15.15285175178"), versionumero = None)))) {
+          val opiskeluoikeus = lastOpiskeluoikeus(KoskiSpecificMockOppijat.eero.oid)
+          putOppija(Oppija(KoskiSpecificMockOppijat.eero, List(opiskeluoikeus.withOidAndVersion(oid = Some("1.2.246.562.15.15285175178"), versionumero = None)))) {
             verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta 1.2.246.562.15.15285175178 ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
           }
         }
 
         "Tyypin muutos" in {
-          val opiskeluoikeus = lastOpiskeluoikeus(MockOppijat.ysiluokkalainen.oid)
-          putOppija(Oppija(MockOppijat.ysiluokkalainen, List(aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen.withOidAndVersion(opiskeluoikeus.oid, versionumero = None)))) {
+          val opiskeluoikeus = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ysiluokkalainen.oid)
+          putOppija(Oppija(KoskiSpecificMockOppijat.ysiluokkalainen, List(aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen.withOidAndVersion(opiskeluoikeus.oid, versionumero = None)))) {
             verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos(s"Opiskeluoikeuden tyyppiä ei voi vaihtaa. Vanha tyyppi ${opiskeluoikeus.tyyppi.koodiarvo}. Uusi tyyppi ${aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen.tyyppi.koodiarvo}."))
           }
         }

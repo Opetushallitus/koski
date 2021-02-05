@@ -10,7 +10,7 @@ import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsA
 import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.OppijaHenkilö
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
-import fi.oph.koski.henkilo.MockOppijat._
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 

@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.henkilo.MockOppijat._
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers.omniaKatselija
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
@@ -23,7 +23,7 @@ class OppijaSearchSpec extends FreeSpec with Matchers with SearchTestMethods wit
       searchForNames(masterEiKoskessa.hetu.get) should equal(Nil)
     }
     "Finds with master info" in {
-      createOrUpdate(MockOppijat.slaveMasterEiKoskessa.henkilö, defaultOpiskeluoikeus)
+      createOrUpdate(KoskiSpecificMockOppijat.slaveMasterEiKoskessa.henkilö, defaultOpiskeluoikeus)
       searchForNames(masterEiKoskessa.hetu.get) should equal(List("Master Master"))
     }
     "Audit logging" in {

@@ -6,7 +6,7 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
@@ -357,7 +357,7 @@ object LukioExampleData {
 
   val hyväksytty = Some(List(LukionOppiaineenArviointi("S")))
 
-  val exampleHenkilö = asUusiOppija(MockOppijat.lukiolainen)
+  val exampleHenkilö = asUusiOppija(KoskiSpecificMockOppijat.lukiolainen)
 
   val ylioppilastutkinto: Ylioppilastutkinto = Ylioppilastutkinto(perusteenDiaarinumero = Some("60/011/2015"))
 

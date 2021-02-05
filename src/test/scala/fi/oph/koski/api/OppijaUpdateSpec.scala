@@ -10,8 +10,8 @@ import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusop
 import fi.oph.koski.documentation.PerusopetusExampleData.perusopetuksenOppimääränSuoritus
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.documentation._
-import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.henkilo.MockOppijat.koululainen
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.koululainen
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, helsinkiTallentaja, kalle, paakayttaja}
@@ -22,7 +22,7 @@ import fi.oph.koski.schema._
 import org.scalatest.FreeSpec
 
 class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
-  val oppija = MockOppijat.tyhjä
+  val oppija = KoskiSpecificMockOppijat.tyhjä
 
   "Opiskeluoikeuden lisääminen" - {
     "Palauttaa oidin ja versiot" in {
@@ -191,7 +191,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
 
       "Estää opiskeluoikeuden siirtymisen eri henkilölle" in {
-        val original = createOpiskeluoikeus(MockOppijat.eero, defaultOpiskeluoikeus)
+        val original = createOpiskeluoikeus(KoskiSpecificMockOppijat.eero, defaultOpiskeluoikeus)
 
         putOpiskeluoikeus(original.copy(arvioituPäättymispäivä = Some(LocalDate.now())), oppija) {
           verifyResponseStatus(403, ErrorMatcher.regex(KoskiErrorCategory.forbidden.oppijaOidinMuutos, "Oppijan oid.*ei löydy opiskeluoikeuden oppijan oideista.*".r))
@@ -199,16 +199,16 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
 
       "Sallii opiskeluoikeuden päivittämisen Master-henkilön oidilla" in {
-        createOpiskeluoikeus(MockOppijat.master, defaultOpiskeluoikeus)
-        val original = createOpiskeluoikeus(MockOppijat.slave.henkilö, defaultOpiskeluoikeus)
+        createOpiskeluoikeus(KoskiSpecificMockOppijat.master, defaultOpiskeluoikeus)
+        val original = createOpiskeluoikeus(KoskiSpecificMockOppijat.slave.henkilö, defaultOpiskeluoikeus)
 
-        putOpiskeluoikeus(original.copy(arvioituPäättymispäivä = Some(LocalDate.now())), MockOppijat.master) {
+        putOpiskeluoikeus(original.copy(arvioituPäättymispäivä = Some(LocalDate.now())), KoskiSpecificMockOppijat.master) {
           verifyResponseStatusOk()
         }
       }
 
       "Opiskeluoikeuden luominen slave-henkilön tiedoilla" in {
-        createOrUpdate(MockOppijat.slaveMasterEiKoskessa.henkilö, defaultOpiskeluoikeus)
+        createOrUpdate(KoskiSpecificMockOppijat.slaveMasterEiKoskessa.henkilö, defaultOpiskeluoikeus)
       }
     }
 
@@ -398,16 +398,16 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
       "Uusi muutos lisätään vanhojen perään" in {
         resetFixtures
-        val existing = lastOpiskeluoikeusByHetu(MockOppijat.organisaatioHistoria).asInstanceOf[AmmatillinenOpiskeluoikeus]
-        putOppija(Oppija(MockOppijat.organisaatioHistoria, List(existing.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.winnova)), koulutustoimija = None)))) {
-          lastOpiskeluoikeusByHetu(MockOppijat.organisaatioHistoria).organisaatiohistoria.get should equal(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria :+ uusiOrganisaatioHistoria)
+        val existing = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.organisaatioHistoria).asInstanceOf[AmmatillinenOpiskeluoikeus]
+        putOppija(Oppija(KoskiSpecificMockOppijat.organisaatioHistoria, List(existing.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.winnova)), koulutustoimija = None)))) {
+          lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.organisaatioHistoria).organisaatiohistoria.get should equal(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria :+ uusiOrganisaatioHistoria)
         }
       }
       "Organisaatiot eivät ole muuttuneet, vanha historia kopioidaan uuteen versioon" in {
         resetFixtures
-        val existing = lastOpiskeluoikeusByHetu(MockOppijat.organisaatioHistoria).asInstanceOf[AmmatillinenOpiskeluoikeus]
-        putOppija(Oppija(MockOppijat.organisaatioHistoria, List(existing.copy(ostettu = true)))) {
-          lastOpiskeluoikeusByHetu(MockOppijat.organisaatioHistoria).organisaatiohistoria should equal(Some(
+        val existing = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.organisaatioHistoria).asInstanceOf[AmmatillinenOpiskeluoikeus]
+        putOppija(Oppija(KoskiSpecificMockOppijat.organisaatioHistoria, List(existing.copy(ostettu = true)))) {
+          lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.organisaatioHistoria).organisaatiohistoria should equal(Some(
             AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria
           ))
         }

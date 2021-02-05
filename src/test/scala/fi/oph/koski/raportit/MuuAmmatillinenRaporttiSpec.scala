@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillinenTutkintoSuoritus, kiinteistösihteerinMuuAmmatillinenKoulutus, puutarhuri}
 import fi.oph.koski.documentation.MuunAmmatillisenKoulutuksenExample.muunAmmatillisenKoulutuksenSuoritus
-import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat}
+import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, KoskiSpecificMockOppijat}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.stadinAmmattiopisto
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
@@ -15,9 +15,9 @@ class MuuAmmatillinenRaporttiSpec extends FreeSpec with Matchers with Raportoint
 
   override def beforeAll: Unit = {
     resetFixtures
-    insertMuuAmmatillisenSuorituksenOpiskeluoikeusPäivämäärillä(MockOppijat.amis, alkanut = LocalDate.of(2019, 1, 2), päättynyt = LocalDate.of(2019, 12, 31))
-    insertMuuAmmatillisenSuorituksenOpiskeluoikeusPäivämäärillä(MockOppijat.lukiolainen, alkanut = LocalDate.of(2017, 1, 1), päättynyt = LocalDate.of(2020, 1, 1))
-    insertSisällytettyOpiskeluoikeusSuorituksilla(MockOppijat.eero, innerSuoritukset = List(muunAmmatillisenKoulutuksenSuoritus, ammatillinenTutkintoSuoritus(puutarhuri)), outerSuoritukset = List(kiinteistösihteerinMuuAmmatillinenKoulutus()))
+    insertMuuAmmatillisenSuorituksenOpiskeluoikeusPäivämäärillä(KoskiSpecificMockOppijat.amis, alkanut = LocalDate.of(2019, 1, 2), päättynyt = LocalDate.of(2019, 12, 31))
+    insertMuuAmmatillisenSuorituksenOpiskeluoikeusPäivämäärillä(KoskiSpecificMockOppijat.lukiolainen, alkanut = LocalDate.of(2017, 1, 1), päättynyt = LocalDate.of(2020, 1, 1))
+    insertSisällytettyOpiskeluoikeusSuorituksilla(KoskiSpecificMockOppijat.eero, innerSuoritukset = List(muunAmmatillisenKoulutuksenSuoritus, ammatillinenTutkintoSuoritus(puutarhuri)), outerSuoritukset = List(kiinteistösihteerinMuuAmmatillinenKoulutus()))
     loadRaportointikantaFixtures
   }
 
@@ -35,16 +35,16 @@ class MuuAmmatillinenRaporttiSpec extends FreeSpec with Matchers with Raportoint
 
     "Raportin hakuväli päivämäärä rajaus" - {
       "Opiskeluoikeus alkanut raportin hakuvälin jälkeen" in {
-        raportti.filter(_.hetu.exists(MockOppijat.amis.hetu.contains)).length should equal(0)
+        raportti.filter(_.hetu.exists(KoskiSpecificMockOppijat.amis.hetu.contains)).length should equal(0)
       }
       "Opiskeluoikeus alkanut ennen hakuväliä ja päättynyt hakuvälin jälkeen" in {
-        raportti.filter(_.hetu.exists(MockOppijat.lukiolainen.hetu.contains)).length should equal(1)
+        raportti.filter(_.hetu.exists(KoskiSpecificMockOppijat.lukiolainen.hetu.contains)).length should equal(1)
       }
     }
 
     "Raportin sisältö" - {
-      lazy val marjonRivi = findSingle(raportti, MockOppijat.muuAmmatillinen)
-      lazy val eeronRivit = findMultiple(raportti, MockOppijat.eero, expectedRowCount = 2)
+      lazy val marjonRivi = findSingle(raportti, KoskiSpecificMockOppijat.muuAmmatillinen)
+      lazy val eeronRivit = findMultiple(raportti, KoskiSpecificMockOppijat.eero, expectedRowCount = 2)
       lazy val eeronOuterOpiskeluoikeus = eeronRivit.find(_.sisältyyOpiskeluoikeuteenOid.isEmpty).get
       lazy val eeronInnerOpiskeluoikeus = eeronRivit.find(_.sisältyyOpiskeluoikeuteenOid.isDefined).get
 
@@ -57,7 +57,7 @@ class MuuAmmatillinenRaporttiSpec extends FreeSpec with Matchers with Raportoint
         marjonRivi.opiskeluoikeudenAlkamispäivä should equal(LocalDate.of(2018, 1, 1))
         marjonRivi.opiskeluoikeudenViimeisinTila should equal("lasna")
         marjonRivi.yksilöity should equal(true)
-        marjonRivi.oppijaOid should equal(MockOppijat.muuAmmatillinen.oid)
+        marjonRivi.oppijaOid should equal(KoskiSpecificMockOppijat.muuAmmatillinen.oid)
         marjonRivi.etunimet should equal("Marjo")
         marjonRivi.sukunimi should equal("Muu-Ammatillinen")
       }

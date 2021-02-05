@@ -3,7 +3,7 @@ package fi.oph.koski.sure
 import fi.oph.koski.api.{DatabaseTestMethods, LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsAmmatillinen}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.OpiskeluOikeudet
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
@@ -24,7 +24,7 @@ class SureSpec extends FreeSpec with LocalJettyHttpSpecification with Opiskeluoi
   "Sure-rajapinnat" - {
     "/api/sure/oids" - {
       "Palauttaa pyydetyt OIDit" in {
-        val henkilöOids = Set(MockOppijat.amis.oid, MockOppijat.lukiolainen.oid)
+        val henkilöOids = Set(KoskiSpecificMockOppijat.amis.oid, KoskiSpecificMockOppijat.lukiolainen.oid)
         postOids(henkilöOids) {
           verifyResponseStatusOk()
           val oppijat = SchemaValidatingExtractor.extract[List[Oppija]](body).right.get
@@ -58,20 +58,20 @@ class SureSpec extends FreeSpec with LocalJettyHttpSpecification with Opiskeluoi
       "Luottamuksellinen data" - {
         "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli" in {
           resetFixtures
-          postOids(Seq(MockOppijat.eero.oid), user = stadinAmmattiopistoKatselija) {
+          postOids(Seq(KoskiSpecificMockOppijat.eero.oid), user = stadinAmmattiopistoKatselija) {
             verifyResponseStatusOk()
             body should include("vankilaopetuksessa")
           }
         }
         "Piilotetaan käyttäjältä jolta puuttuu LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli" in {
-          postOids(Seq(MockOppijat.eero.oid), user = stadinVastuukäyttäjä) {
+          postOids(Seq(KoskiSpecificMockOppijat.eero.oid), user = stadinVastuukäyttäjä) {
             verifyResponseStatusOk()
             body should not include("vankilaopetuksessa")
           }
         }
       }
       "Lasketut kentät palautetaan" in {
-        postOids(Seq(MockOppijat.valma.oid), user = stadinAmmattiopistoKatselija) {
+        postOids(Seq(KoskiSpecificMockOppijat.valma.oid), user = stadinAmmattiopistoKatselija) {
           verifyResponseStatusOk()
           val parsedJson = JsonMethods.parse(body)
           val ensimmäisenOsasuorituksetArviointi = ((((parsedJson \ "opiskeluoikeudet") (0) \ "suoritukset") (0) \ "osasuoritukset") (0) \ "arviointi") (0)
@@ -80,7 +80,7 @@ class SureSpec extends FreeSpec with LocalJettyHttpSpecification with Opiskeluoi
       }
 
       "Hakee myös slave-oidille tallennetut opiskeluoikeudet" in {
-        val oppijat = postOids(List(MockOppijat.master.oid)) {
+        val oppijat = postOids(List(KoskiSpecificMockOppijat.master.oid)) {
           verifyResponseStatusOk()
           JsonSerializer.parse[List[JValue]](body).map(JsonSerializer.extract[Oppija](_))
         }
@@ -179,7 +179,7 @@ class SureSpec extends FreeSpec with LocalJettyHttpSpecification with Opiskeluoi
         val cursor = muuttuneetAikaleimalla("2015-01-01T00:00:00+02:00")(extractCursor)
         val res1 = muuttuneetKursorilla(cursor, pageSize = 1000)
 
-        val oppijaOid = MockOppijat.ibFinal.oid
+        val oppijaOid = KoskiSpecificMockOppijat.ibFinal.oid
         val opiskeluoikeusOid = runDbSync(OpiskeluOikeudet.filter(_.oppijaOid === oppijaOid).map(_.oid).result).head
         delete(s"api/opiskeluoikeus/$opiskeluoikeusOid", headers = authHeaders(MockUsers.paakayttaja)) {
           verifyResponseStatusOk()

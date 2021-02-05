@@ -4,7 +4,7 @@ import java.lang.System.currentTimeMillis
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.{MockOpintopolkuHenkilöFacade, OppijaHenkilöWithMasterInfo}
-import fi.oph.koski.henkilo.MockOppijat._
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import org.json4s.jackson.JsonMethods.{parse => parseJson}
 import org.scalatest.{BeforeAndAfterEach, FreeSpec, Matchers}
 
@@ -51,6 +51,6 @@ class UpdateHenkilotTaskSpec extends FreeSpec with Matchers with BeforeAndAfterE
     new UpdateHenkilotTask(application).updateHenkilöt(refresh = true)(Some(parseJson(s"""{"lastRun": ${currentTimeMillis}}""")))
   }
 
-  override def afterEach(): Unit = henkilöFacade.resetMock()
+  override def afterEach(): Unit = henkilöFacade.resetKoskiSpecificFixtures
   private def henkilöFacade = application.opintopolkuHenkilöFacade.asInstanceOf[MockOpintopolkuHenkilöFacade]
 }

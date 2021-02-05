@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.LocalJettyHttpSpecification
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{BasicAuthentication, HttpTester}
 import fi.oph.koski.koskiuser.MockUsers
 import org.json4s._
@@ -15,7 +15,7 @@ class MyDataAPIProxyServletTest extends FreeSpec with LocalJettyHttpSpecificatio
 
   implicit val formats = DefaultFormats
 
-  val opiskelija = MockOppijat.markkanen
+  val opiskelija = KoskiSpecificMockOppijat.markkanen
   val memberId = "hsl"
   val memberCode = "2769790-1" // HSL
 
@@ -43,7 +43,7 @@ class MyDataAPIProxyServletTest extends FreeSpec with LocalJettyHttpSpecificatio
 
       requestOpintoOikeudet(opiskelija.hetu.get, memberHeaders(memberCode)){
         status should equal(200)
-        body should (include (MockOppijat.markkanen.etunimet) and include (MockOppijat.markkanen.sukunimi))
+        body should (include (KoskiSpecificMockOppijat.markkanen.etunimet) and include (KoskiSpecificMockOppijat.markkanen.sukunimi))
       }
     }
 

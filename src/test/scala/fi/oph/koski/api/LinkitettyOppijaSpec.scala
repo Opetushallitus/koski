@@ -1,36 +1,36 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import org.scalatest.FreeSpec
 
 class LinkitettyOppijaSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsLukio2015 {
   "Linkitetyt oppijat" - {
     "Kun haetaan masterilla" - {
       "Näytetään myös slaveen kytketyt opiskeluoikeudet" in {
-        getOpiskeluoikeudet(MockOppijat.master.oid).map(_.tyyppi.koodiarvo) should equal(List("perusopetus", "lukiokoulutus"))
+        getOpiskeluoikeudet(KoskiSpecificMockOppijat.master.oid).map(_.tyyppi.koodiarvo) should equal(List("perusopetus", "lukiokoulutus"))
       }
     }
 
     "Kun haetaan slavella" - {
       "Näytetään vain slaveen kytketyt opiskeluoikeudet" in {
-        getOpiskeluoikeudet(MockOppijat.slave.henkilö.oid).map(_.tyyppi.koodiarvo) should equal(List("lukiokoulutus"))
+        getOpiskeluoikeudet(KoskiSpecificMockOppijat.slave.henkilö.oid).map(_.tyyppi.koodiarvo) should equal(List("lukiokoulutus"))
       }
 
       "Kun haetaan opintotiedot näytetään myös masteriin kytketyt opiskeluoikeudet" in {
-        val opiskeluoikeudet = authGet(s"api/oppija/${MockOppijat.slave.henkilö.oid}/opintotiedot-json")(readOppija).opiskeluoikeudet
+        val opiskeluoikeudet = authGet(s"api/oppija/${KoskiSpecificMockOppijat.slave.henkilö.oid}/opintotiedot-json")(readOppija).opiskeluoikeudet
         opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("perusopetus", "lukiokoulutus"))
       }
     }
 
     "Päivitettäessä slaveen liittyvä opiskeluoikeus käyttäen master-oppijaa" - {
       "Opiskeluoikeus päivittyy ja säilyy linkitettynä slaveen" in {
-        putOpiskeluoikeus(defaultOpiskeluoikeus, MockOppijat.master) {
+        putOpiskeluoikeus(defaultOpiskeluoikeus, KoskiSpecificMockOppijat.master) {
           verifyResponseStatusOk()
-          val masterOikeudet = getOpiskeluoikeudet(MockOppijat.master.oid)
+          val masterOikeudet = getOpiskeluoikeudet(KoskiSpecificMockOppijat.master.oid)
           masterOikeudet.map(_.tyyppi.koodiarvo) should equal(List("perusopetus", "lukiokoulutus"))
           masterOikeudet(1).versionumero should equal(Some(2))
 
-          val slaveOikeudet = getOpiskeluoikeudet(MockOppijat.slave.henkilö.oid)
+          val slaveOikeudet = getOpiskeluoikeudet(KoskiSpecificMockOppijat.slave.henkilö.oid)
           slaveOikeudet.map(_.tyyppi.koodiarvo) should equal(List("lukiokoulutus"))
         }
       }

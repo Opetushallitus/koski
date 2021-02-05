@@ -5,7 +5,7 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample, ExampleData}
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.raportointikanta.{ROsasuoritusRow, RaportointikantaTestMethods}
@@ -123,7 +123,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
 
     "Näyttötutkintoon valmistava koulutus" - {
       "Näytetään erillinen rivi" in {
-        val rivit = testiHenkilöRaporttiRows(defaultRequest, MockOppijat.erikoisammattitutkinto.hetu.get)
+        val rivit = testiHenkilöRaporttiRows(defaultRequest, KoskiSpecificMockOppijat.erikoisammattitutkinto.hetu.get)
 
         rivit.length should equal(2)
 
@@ -214,7 +214,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
         withNewVäärinSiirrettyNäyttötutkintoonValmistavanSisällytettyOpiskeluoikeus {
           val omnia = MockOrganisaatioRepository.findByOppilaitosnumero("10054").get
 
-          val rivit = testiHenkilöRaporttiRows(defaultRequest.copy(oppilaitosOid = omnia.oid), MockOppijat.erikoisammattitutkinto.hetu.get)
+          val rivit = testiHenkilöRaporttiRows(defaultRequest.copy(oppilaitosOid = omnia.oid), KoskiSpecificMockOppijat.erikoisammattitutkinto.hetu.get)
 
           rivit.length should equal(2)
 
@@ -312,7 +312,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
 
   override def beforeAll(): Unit = loadRaportointikantaFixtures
 
-  private val defaultHetu = MockOppijat.ammattilainen.hetu.get
+  private val defaultHetu = KoskiSpecificMockOppijat.ammattilainen.hetu.get
 
   private val defaultRequest = AikajaksoRaporttiAikarajauksellaRequest(
     oppilaitosOid = MockOrganisaatiot.stadinAmmattiopisto,
@@ -330,12 +330,12 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
     resetFixtures
     val omnia = MockOrganisaatioRepository.findByOppilaitosnumero("10054").get
     val omnianOpiskeluoikeus = makeOpiskeluoikeus(date(2016, 1, 1), omnia, omnia.oid)
-    val oppija = MockOppijat.ammattilainen
+    val oppija = KoskiSpecificMockOppijat.ammattilainen
 
     putOpiskeluoikeus(omnianOpiskeluoikeus, oppija){}
 
     val stadinOpiskeluoikeus = getOpiskeluoikeudet(oppija.oid).find(_.oppilaitos.map(_.oid).contains(MockOrganisaatiot.stadinAmmattiopisto)).map{case oo: AmmatillinenOpiskeluoikeus => oo}.get
-    val omnianOpiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.ammattilainen.oid).oid.get
+    val omnianOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ammattilainen.oid).oid.get
 
     putOpiskeluoikeus(sisällytäOpiskeluoikeus(stadinOpiskeluoikeus, SisältäväOpiskeluoikeus(omnia, omnianOpiskeluoikeusOid)), oppija){}
     loadRaportointikantaFixtures
@@ -359,7 +359,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
       )
     )
 
-    val oppija = MockOppijat.erikoisammattitutkinto
+    val oppija = KoskiSpecificMockOppijat.erikoisammattitutkinto
 
     putOpiskeluoikeus(omnianOpiskeluoikeus, oppija){}
 
@@ -379,7 +379,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
       )
     )
 
-    val omnianOpiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.erikoisammattitutkinto.oid).oid.get
+    val omnianOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.erikoisammattitutkinto.oid).oid.get
 
     putOpiskeluoikeus(sisällytäOpiskeluoikeus(stadinOpiskeluoikeus, SisältäväOpiskeluoikeus(omnia, omnianOpiskeluoikeusOid)), oppija){}
     loadRaportointikantaFixtures

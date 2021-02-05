@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{HttpTester, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
@@ -13,7 +13,7 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyH
     "GET" - {
       "with valid oid" in {
         resetFixtures
-        val oid = lastOpiskeluoikeus(MockOppijat.eero.oid).oid.get
+        val oid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.eero.oid).oid.get
         AuditLogTester.clearMessages
         get("api/opiskeluoikeus/" + oid, headers = authHeaders()) {
           verifyResponseStatusOk()
@@ -32,7 +32,7 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyH
       }
       "with mitätöity oid" in {
         resetFixtures
-        val mitätöity = mitätöiOpiskeluoikeus(createOpiskeluoikeus(MockOppijat.eero, defaultOpiskeluoikeus))
+        val mitätöity = mitätöiOpiskeluoikeus(createOpiskeluoikeus(KoskiSpecificMockOppijat.eero, defaultOpiskeluoikeus))
         List(defaultUser, MockUsers.paakayttaja).foreach { user =>
           get("api/opiskeluoikeus/" + mitätöity.oid.get, headers = authHeaders(user = user)) {
             verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta ei löydy annetulla oid:llä tai käyttäjällä ei ole siihen oikeuksia"))
@@ -44,7 +44,7 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyH
     "Luottamuksellinen data" - {
       "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli" in {
         resetFixtures
-        val oid = lastOpiskeluoikeusByHetu(MockOppijat.eero.toHenkilötiedotJaOid).oid.get
+        val oid = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.eero.toHenkilötiedotJaOid).oid.get
         authGet("api/opiskeluoikeus/" + oid, stadinAmmattiopistoKatselija) {
           verifyResponseStatusOk()
           vankilaopetusValue should be(true)
@@ -52,7 +52,7 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyH
       }
 
       "Piilotetaan käyttäjältä jolta puuttuu LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli" in {
-        val oid = lastOpiskeluoikeusByHetu(MockOppijat.eero.toHenkilötiedotJaOid).oid.get
+        val oid = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.eero.toHenkilötiedotJaOid).oid.get
         authGet("api/opiskeluoikeus/" + oid, stadinVastuukäyttäjä) {
           verifyResponseStatusOk()
           vankilaopetusValue should be(false)

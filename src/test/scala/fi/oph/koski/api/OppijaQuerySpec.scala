@@ -4,7 +4,7 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.{ExampleData, PerusopetusExampleData}
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
 import fi.oph.koski.koskiuser.UserWithPassword
@@ -14,8 +14,8 @@ import org.scalatest.{FreeSpec, Matchers}
 
 class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with QueryTestMethods with Matchers {
   import fi.oph.koski.util.DateOrdering._
-  val teija = MockOppijat.teija
-  val eero = MockOppijat.eero
+  val teija = KoskiSpecificMockOppijat.teija
+  val eero = KoskiSpecificMockOppijat.eero
 
   "Kyselyrajapinta" - {
     "kun haku osuu" - {
@@ -67,7 +67,7 @@ class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with Opi
           opiskeluoikeus.tila.copy(opiskeluoikeusjaksot =
             opiskeluoikeus.tila.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(LocalDate.now, ExampleData.opiskeluoikeusMitätöity)
           )
-        ), MockOppijat.koululainen)
+        ), KoskiSpecificMockOppijat.koululainen)
         queryOppijat().flatMap(_.opiskeluoikeudet).length should equal(ooCount)
       }
       "toimipistehaku" - {

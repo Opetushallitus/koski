@@ -6,7 +6,7 @@ import java.time.{LocalDate, ZonedDateTime}
 
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsAmmatillinen}
 import fi.oph.koski.documentation.{ExampleData, ExamplesLukio, LukioExampleData}
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KäyttöoikeusViranomainen, MockUsers, Palvelurooli}
@@ -20,14 +20,14 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
   "Tilastokeskus-API" - {
     "Hakee oppijoiden tiedot" in {
       val kaikkiOppijat = performQuery()
-      val master = kaikkiOppijat.find(_.henkilö.hetu == MockOppijat.master.hetu)
+      val master = kaikkiOppijat.find(_.henkilö.hetu == KoskiSpecificMockOppijat.master.hetu)
       master should be(defined)
-      master.get.henkilö.oid should equal(MockOppijat.master.oid)
-      master.get.henkilö.linkitetytOidit should equal(List(MockOppijat.slave.henkilö.oid))
+      master.get.henkilö.oid should equal(KoskiSpecificMockOppijat.master.oid)
+      master.get.henkilö.linkitetytOidit should equal(List(KoskiSpecificMockOppijat.slave.henkilö.oid))
 
-      val eero = kaikkiOppijat.find(_.henkilö.hetu == MockOppijat.eero.hetu)
+      val eero = kaikkiOppijat.find(_.henkilö.hetu == KoskiSpecificMockOppijat.eero.hetu)
       eero should be(defined)
-      eero.get.henkilö.oid should equal(MockOppijat.eero.oid)
+      eero.get.henkilö.oid should equal(KoskiSpecificMockOppijat.eero.oid)
       eero.get.henkilö.linkitetytOidit should be(empty)
     }
 
@@ -50,13 +50,13 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
     }
 
     "TILASTOKESKUS-käyttöoikeus ei toimi muualla" in {
-      post("api/luovutuspalvelu/hetut", JsonSerializer.writeWithRoot(BulkHetuRequestV1(1, List(MockOppijat.eero.hetu.get), List("ammatillinenkoulutus"))), headers = authHeaders(MockUsers.tilastokeskusKäyttäjä) ++ jsonContent) {
+      post("api/luovutuspalvelu/hetut", JsonSerializer.writeWithRoot(BulkHetuRequestV1(1, List(KoskiSpecificMockOppijat.eero.hetu.get), List("ammatillinenkoulutus"))), headers = authHeaders(MockUsers.tilastokeskusKäyttäjä) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainViranomainen())
       }
       authGet ("api/oppija", MockUsers.tilastokeskusKäyttäjä) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
       }
-      authGet (s"api/oppija/${MockOppijat.eerola}", MockUsers.tilastokeskusKäyttäjä) {
+      authGet (s"api/oppija/${KoskiSpecificMockOppijat.eerola}", MockUsers.tilastokeskusKäyttäjä) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
       }
       putOpiskeluoikeus(makeOpiskeluoikeus(date(2016, 1, 9)), headers = authHeaders(MockUsers.tilastokeskusKäyttäjä) ++ jsonContent) {
@@ -93,8 +93,8 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
     "Kyselyparametrit" - {
       "päättymispäivämäärä" in {
         resetFixtures
-        insert(päättymispäivällä(defaultOpiskeluoikeus, date(2016,1,9)), MockOppijat.eero)
-        insert(päättymispäivällä(defaultOpiskeluoikeus, date(2013,1,9)), MockOppijat.teija)
+        insert(päättymispäivällä(defaultOpiskeluoikeus, date(2016,1,9)), KoskiSpecificMockOppijat.eero)
+        insert(päättymispäivällä(defaultOpiskeluoikeus, date(2013,1,9)), KoskiSpecificMockOppijat.teija)
 
         val queryString = "opiskeluoikeusPäättynytAikaisintaan=2016-01-01&opiskeluoikeusPäättynytViimeistään=2016-12-31&v=1"
         val oppijat = performQuery("?" + queryString)
@@ -108,8 +108,8 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
 
       "alkamispäivämäärä" in {
         resetFixtures
-        insert(makeOpiskeluoikeus(date(2100, 1, 2)), MockOppijat.eero)
-        insert(makeOpiskeluoikeus(date(2110, 1, 1)), MockOppijat.teija)
+        insert(makeOpiskeluoikeus(date(2100, 1, 2)), KoskiSpecificMockOppijat.eero)
+        insert(makeOpiskeluoikeus(date(2110, 1, 1)), KoskiSpecificMockOppijat.teija)
         val alkamispäivät = performQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeusAlkanutViimeistään=2100-01-02")
           .flatMap(_.opiskeluoikeudet.flatMap(_.alkamispäivä))
         alkamispäivät should equal(List(date(2100, 1, 2)))
@@ -118,10 +118,10 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
 
       "opiskeluoikeuden tyypit" in {
         resetFixtures
-        insert(makeOpiskeluoikeus(date(2100, 1, 2)), MockOppijat.eero)
+        insert(makeOpiskeluoikeus(date(2100, 1, 2)), KoskiSpecificMockOppijat.eero)
         performQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=ammatillinenkoulutus").flatMap(_.opiskeluoikeudet).length should equal(1)
         performQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=perusopetus").flatMap(_.opiskeluoikeudet).length should equal(0)
-        insert(makeLukioOpiskeluoikeus(date(2100, 1, 2)), MockOppijat.eero)
+        insert(makeLukioOpiskeluoikeus(date(2100, 1, 2)), KoskiSpecificMockOppijat.eero)
         performQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=ammatillinenkoulutus&opiskeluoikeudenTyyppi=lukiokoulutus").flatMap(_.opiskeluoikeudet).length should equal(2)
       }
 
@@ -135,11 +135,11 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
         performQuery(s"?v=1&muuttunutEnnen=${now.minusDays(1).format(ISO_INSTANT)}").length should equal(0)
         performQuery(s"?v=1&muuttunutJälkeen=${now.minusDays(1).format(ISO_INSTANT)}").length should equal(performQuery().length)
 
-        insert(makeOpiskeluoikeus(LocalDate.now), MockOppijat.eero)
+        insert(makeOpiskeluoikeus(LocalDate.now), KoskiSpecificMockOppijat.eero)
 
         val oppijat = performQuery(s"?v=1&muuttunutJälkeen=${now.format(ISO_INSTANT)}")
         oppijat.length should equal(1)
-        oppijat.head.henkilö.oid should equal(MockOppijat.eero.oid)
+        oppijat.head.henkilö.oid should equal(KoskiSpecificMockOppijat.eero.oid)
       }
     }
   }

@@ -3,7 +3,7 @@ package fi.oph.koski.api
 import java.time.LocalDate
 
 import fi.oph.koski.documentation.ExampleData.opiskeluoikeusMitätöity
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.AmmatillinenOpiskeluoikeusjakso
@@ -13,13 +13,13 @@ class OppijaGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpeci
   "/api/oppija/" - {
     "GET" - {
       "with valid oid" in {
-        get("api/oppija/" + MockOppijat.eero.oid, headers = authHeaders()) {
+        get("api/oppija/" + KoskiSpecificMockOppijat.eero.oid, headers = authHeaders()) {
           verifyResponseStatusOk()
           AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
         }
       }
       "with valid oid, hetuless oppija" in {
-        get("api/oppija/" + MockOppijat.hetuton.oid, headers = authHeaders()) {
+        get("api/oppija/" + KoskiSpecificMockOppijat.hetuton.oid, headers = authHeaders()) {
           verifyResponseStatusOk()
           AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
         }
@@ -36,15 +36,15 @@ class OppijaGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpeci
       }
       "with mitätöity oid" in {
         resetFixtures
-        val oo = createOpiskeluoikeus(MockOppijat.eero, defaultOpiskeluoikeus)
+        val oo = createOpiskeluoikeus(KoskiSpecificMockOppijat.eero, defaultOpiskeluoikeus)
         val mitätöity = oo.copy(tila = defaultOpiskeluoikeus.tila.copy(opiskeluoikeusjaksot =
           defaultOpiskeluoikeus.tila.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
         ))
-        putOpiskeluoikeus(mitätöity, MockOppijat.eero, headers = authHeaders() ++ jsonContent) {
+        putOpiskeluoikeus(mitätöity, KoskiSpecificMockOppijat.eero, headers = authHeaders() ++ jsonContent) {
           verifyResponseStatusOk()
         }
-        get("api/oppija/" + MockOppijat.eero.oid, headers = authHeaders()) {
-          verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(s"Oppijaa ${MockOppijat.eero.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
+        get("api/oppija/" + KoskiSpecificMockOppijat.eero.oid, headers = authHeaders()) {
+          verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(s"Oppijaa ${KoskiSpecificMockOppijat.eero.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
         }
       }
     }
