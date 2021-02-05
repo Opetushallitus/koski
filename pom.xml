@@ -205,7 +205,7 @@
     <dependency>
       <groupId>org.http4s</groupId>
       <artifactId>http4s-blaze-client_2.12</artifactId>
-      <version>0.16.6a</version>
+      <version>0.21.17</version>
     </dependency>
     <dependency>
       <groupId>org.http4s</groupId>
