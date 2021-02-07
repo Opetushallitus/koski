@@ -554,6 +554,10 @@
                 <exclude>test/**</exclude>
               </excludes>
             </resource>
+            <resource>
+              <directory>${basedir}/valpas-web/dist</directory>
+              <targetPath>VALPAS-WEB</targetPath>
+            </resource>
           </webResources>
         </configuration>
       </plugin>
