@@ -370,7 +370,7 @@
               <goal>install-node-and-npm</goal>
             </goals>
             <configuration>
-              <nodeVersion>v14.15.2</nodeVersion>
+              <nodeVersion>v14.15.4</nodeVersion>
             </configuration>
           </execution>
           <execution>
