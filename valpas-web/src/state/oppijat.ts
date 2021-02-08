@@ -6,14 +6,17 @@ import {
 import { ISODate, LocalizedString, Oid } from "./types"
 
 export type Oppija = {
+  henkilö: Henkilö
+  opiskeluoikeudet: Opiskeluoikeus[]
+  haut?: Haku[]
+}
+
+export type Henkilö = {
   oid: Oid
-  nimi: string
   hetu: string
-  oppilaitos: Oppilaitos
-  syntymaaika: ISODate
-  ryhmä: string
-  haut: Haku[]
-  opiskeluoikeushistoria?: Opiskeluoikeus[]
+  syntymäaika: ISODate
+  etunimet: string
+  sukunimi: string
 }
 
 export type Oppilaitos = {

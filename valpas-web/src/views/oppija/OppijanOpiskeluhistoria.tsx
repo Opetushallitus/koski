@@ -16,10 +16,9 @@ export type OppijanOpiskeluhistoriaProps = {
 export const OppijanOpiskeluhistoria = (
   props: OppijanOpiskeluhistoriaProps
 ) => {
-  const historia = props.oppija.opiskeluoikeushistoria || []
-  return historia.length > 0 ? (
+  return props.oppija.opiskeluoikeudet.length > 0 ? (
     <>
-      {historia.map((opiskeluoikeus) => {
+      {props.oppija.opiskeluoikeudet.map((opiskeluoikeus) => {
         const nimi = koodistonimi(opiskeluoikeus.tyyppi)
         const range = yearRangeString(
           opiskeluoikeus.alkamispäivä,

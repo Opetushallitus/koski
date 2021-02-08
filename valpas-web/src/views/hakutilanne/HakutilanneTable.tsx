@@ -55,24 +55,32 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
 }
 
 const oppijaToTableData = (oppija: Oppija): Datum => {
-  const hakemus = oppija.haut[0] // TODO: Tähän tarvittaneen parempi logiikka...
+  // TODO: Näihin molempiin tarvitaaan rautaisempi logiikka
+  const hakemus = oppija?.haut?.[0]
+  const opiskeluoikeudet = oppija.opiskeluoikeudet[0]
+  const henkilö = oppija.henkilö
 
   return {
-    key: oppija.oid,
+    key: henkilö.oid,
     values: [
       {
-        value: oppija.nimi,
-        display: <Link to={`/oppijat/${oppija.oid}`}>{oppija.nimi}</Link>,
+        value: `${henkilö.sukunimi} ${henkilö.etunimet}`,
+        display: (
+          <Link to={`/oppijat/${henkilö.oid}`}>
+            {henkilö.sukunimi} {henkilö.etunimet}
+          </Link>
+        ),
       },
       {
-        value: getLocalized(oppija.oppilaitos.nimi),
+        value:
+          opiskeluoikeudet && getLocalized(opiskeluoikeudet.oppilaitos.nimi),
       },
       {
-        value: oppija.syntymaaika,
-        display: formatDate(oppija.syntymaaika),
+        value: henkilö.syntymäaika,
+        display: formatDate(henkilö.syntymäaika),
       },
       {
-        value: oppija.ryhmä,
+        value: opiskeluoikeudet?.ryhmä,
       },
       {
         value: hakemuksentilaValue(hakemus),

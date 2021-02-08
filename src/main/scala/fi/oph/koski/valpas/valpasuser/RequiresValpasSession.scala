@@ -5,7 +5,6 @@ import fi.oph.koski.koskiuser.{HasSession, KoskiSpecificAuthenticationSupport, K
 
 trait RequiresValpasSession extends ValpasAuthenticationSupport with HasValpasSession {
   implicit def session: ValpasSession = koskiSessionOption.get
-  def valpasSession = session
 
   before() {
     requireValpasSession
