@@ -29,4 +29,6 @@ EXPOSE 9101
 # JMX port
 EXPOSE 5555
 
+VOLUME /tmp
+
 ENTRYPOINT /usr/local/bin/run.sh
