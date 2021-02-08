@@ -72,6 +72,7 @@ object Koodistot {
     KoodistoAsetus("suorituksentyyppi"),
     KoodistoAsetus("tutkinnonosatvalinnanmahdollisuus"),
     KoodistoAsetus("uskonnonoppimaara"),
+    KoodistoAsetus("vstmuuallasuoritetutopinnot"),
     KoodistoAsetus("vstmuutopinnot"),
     KoodistoAsetus("vstosaamiskokonaisuus")
   )

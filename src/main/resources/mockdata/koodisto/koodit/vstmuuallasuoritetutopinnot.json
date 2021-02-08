@@ -1,0 +1,23 @@
+[ {
+  "koodiUri" : "vstmuuallasuoritetutopinnot_ammatillisentutkinnonosat",
+  "koodiArvo" : "ammatillisentutkinnonosat",
+  "metadata" : [ {
+    "nimi" : "Ammatillisen tutkinnon osat",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+    "koodiUri" : "vstmuuallasuoritetutopinnot_lukioopinnot",
+    "koodiArvo" : "lukioopinnot",
+    "metadata" : [ {
+      "nimi" : "Lukio-opinnot",
+      "lyhytNimi" : "",
+      "kuvaus" : "",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1,
+    "withinCodeElements" : [ ]
+}]

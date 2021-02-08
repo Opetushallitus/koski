@@ -122,7 +122,7 @@ case class MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintoj
   @Title("Opintokokonaisuus")
   koulutusmoduuli: MuuallaSuoritetutVapaanSivistystyönOpinnot,
   arviointi: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi]],
-  @KoodistoUri("suorituksentyyppi")
+  @KoodistoKoodiarvo("vstmuuallasuoritetutopinnot")
   override val tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstmuuallasuoritetutopinnot", koodistoUri = "suorituksentyyppi"),
   tunnustettu: OsaamisenTunnustaminen
 ) extends VapaanSivistystyönOpintokokonaisuudenSuoritus with Tunnustettu

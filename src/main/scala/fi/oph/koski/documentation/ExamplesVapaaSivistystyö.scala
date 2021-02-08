@@ -190,8 +190,9 @@ object VapaaSivistystyöExampleData {
     OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(PaikallinenKoodi(koodiarvo, nimi), kuvaus, laajuus(laajuusArvo))
   }
 
+
   def muuallaSuorietutOpinnot(koodiarvo: String = "A01", nimi: String = "Arjen rahankäyttö" , kuvaus: String = "Arjen rahankäyttö", laajuusArvo: Double = 2.0): MuuallaSuoritetutVapaanSivistystyönOpinnot = {
-    MuuallaSuoritetutVapaanSivistystyönOpinnot(Koodistokoodiviite("jotain", "jotain"), kuvaus, laajuus(laajuusArvo))
+    MuuallaSuoritetutVapaanSivistystyönOpinnot(Koodistokoodiviite("lukioopinnot", "vstmuuallasuoritetutopinnot"), kuvaus, laajuus(laajuusArvo))
   }
 
   def vstArviointi(arvosana:String = "Hyväksytty", päivä: LocalDate = date(2021, 10, 30)): OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi = {

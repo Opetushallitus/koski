@@ -653,10 +653,8 @@
         }, {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "ATX02",
-              "nimi" : {
-                "fi" : "Tietokoneen huolto"
-              }
+              "koodiarvo" : "lukioopinnot",
+              "koodistoUri" : "vstmuuallasuoritetutopinnot"
             },
             "kuvaus" : {
               "fi" : "Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet (jatkokurssi)"
@@ -688,7 +686,7 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "vstmuuallasuoritettuopintokokonaisuus",
+            "koodiarvo" : "vstmuuallasuoritetutopinnot",
             "koodistoUri" : "suorituksentyyppi"
           },
           "tunnustettu" : {
