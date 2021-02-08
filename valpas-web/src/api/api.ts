@@ -1,10 +1,6 @@
-import * as A from "fp-ts/Array"
-import * as E from "fp-ts/Either"
-import { pipe } from "fp-ts/lib/function"
-import { mockOppijat } from "../state/mock"
 import { Oppija } from "../state/oppijat"
-import { OrganisaatioJaKayttooikeusrooli, User } from "../state/types"
-import { apiGet, apiPost, mockApi } from "./apiFetch"
+import { Oid, OrganisaatioJaKayttooikeusrooli, User } from "../state/types"
+import { apiGet, apiPost } from "./apiFetch"
 import { createCache } from "./cache"
 
 /**
@@ -38,13 +34,9 @@ export const fetchYlatasonOrganisaatiotJaKayttooikeusroolitCache = createCache(
 /**
  * Get oppijat
  */
-export const fetchOppijat = mockApi<Oppija[], []>(() => E.right(mockOppijat))
+export const fetchOppijat = () => apiGet<Oppija[]>("valpas/api/mock-oppijat")
 export const fetchOppijatCache = createCache(fetchOppijat)
 
-export const fetchOppija = mockApi<Oppija, [string]>((oid) =>
-  pipe(
-    A.findFirst((oppija: Oppija) => oppija.oid === oid)(mockOppijat),
-    E.fromOption(() => ({ message: "Not found" }))
-  )
-)
+export const fetchOppija = (oppijaOid: Oid) =>
+  apiGet<Oppija>(`valpas/api/oppija/${oppijaOid}`)
 export const fetchOppijaCache = createCache(fetchOppija)
