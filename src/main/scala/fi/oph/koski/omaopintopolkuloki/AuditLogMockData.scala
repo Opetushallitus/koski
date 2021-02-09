@@ -2,7 +2,7 @@ package fi.oph.koski.omaopintopolkuloki
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB
 import com.amazonaws.services.dynamodbv2.model._
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
 import fi.oph.koski.omaopintopolkuloki.AuditLogDynamoDB.AuditLogTableName
@@ -51,7 +51,7 @@ object AuditLogMockData extends Logging {
 
   private lazy val data = List(
     MockData(
-      studentOid = MockOppijat.amis.oid,
+      studentOid = KoskiSpecificMockOppijat.amis.oid,
       time = "2018-07-19T21:38:35.104+03",
       organizationOid = List(MockOrganisaatiot.helsinginKaupunki, MockOrganisaatiot.stadinAmmattiopisto),
       raw =
@@ -71,79 +71,79 @@ object AuditLogMockData extends Logging {
         """.stripMargin
     ),
     MockData(
-      studentOid = MockOppijat.amis.oid,
+      studentOid = KoskiSpecificMockOppijat.amis.oid,
       time = "2018-07-19T21:38:35.104+03",
       organizationOid = List(MockOrganisaatiot.stadinAmmattiopisto, MockOrganisaatiot.helsinginKaupunki),
       raw = "{operation: \"OPISKELUOIKEUS_KATSOMINEN\", ...}"
     ),
     MockData(
-      studentOid = MockOppijat.amis.oid,
+      studentOid = KoskiSpecificMockOppijat.amis.oid,
       time = "2019-05-19T11:21:42.123+03",
       organizationOid = List(MockOrganisaatiot.helsinginKaupunki, MockOrganisaatiot.stadinAmmattiopisto),
       raw = "{operation: \"OPISKELUOIKEUS_KATSOMINEN\", ...}"
     ),
     MockData(
-      studentOid = MockOppijat.amis.oid,
+      studentOid = KoskiSpecificMockOppijat.amis.oid,
       time = "2020-01-12T20:31:32.104+03",
       organizationOid = List(MockOrganisaatiot.helsinginKaupunki),
       raw = "{operation: \"OPISKELUOIKEUS_KATSOMINEN\", ...}"
     ),
     MockData(
-      studentOid = MockOppijat.amis.oid,
+      studentOid = KoskiSpecificMockOppijat.amis.oid,
       time = "2020-01-12T20:31:32.104+03",
       organizationOid = List(MockOrganisaatiot.ressunLukio),
       raw = "{operation: \"OPISKELUOIKEUS_HAKU\", ...}"
     ),
     MockData(
-      studentOid = MockOppijat.amis.oid,
+      studentOid = KoskiSpecificMockOppijat.amis.oid,
       time = "2020-01-12T20:31:32.104+03",
       organizationOid = List(MockOrganisaatiot.ressunLukio),
       raw = "{operation: \"OPISKELUOIKEUS_LISAYS\", ...}"
     ),
     MockData(
-      studentOid = MockOppijat.amis.oid,
+      studentOid = KoskiSpecificMockOppijat.amis.oid,
       time = "2020-01-12T20:31:32.104+03",
       organizationOid = List(MockOrganisaatiot.ressunLukio),
       raw = "{operation: \"OPISKELUOIKEUS_MUUTOS\", ...}"
     ),
     MockData(
-      studentOid = MockOppijat.amis.oid,
+      studentOid = KoskiSpecificMockOppijat.amis.oid,
       time = "2001-01-12T20:31:32.104+03",
       organizationOid = List("self"),
       raw = "{operation: \"KANSALAINEN_OPISKELUOIKEUS_KATSOMINEN\", ...}"
     ),
     MockData(
-      studentOid = MockOppijat.ammattilainen.oid,
+      studentOid = KoskiSpecificMockOppijat.ammattilainen.oid,
       time = "2001-01-12T20:31:32.104+03",
       organizationOid = List("self"),
       raw = "{operation: \"KANSALAINEN_YLIOPPILASKOE_HAKU\", ...}"
     ),
     MockData(
-      studentOid = MockOppijat.ammattilainen.oid,
+      studentOid = KoskiSpecificMockOppijat.ammattilainen.oid,
       time = "2001-01-12T20:31:32.104+03",
       organizationOid = List("self"),
       raw = "{operation: \"KANSALAINEN_SUOMIFI_KATSOMINEN\", ...}"
     ),
     MockData(
-      studentOid = MockOppijat.lukiolainen.oid,
+      studentOid = KoskiSpecificMockOppijat.lukiolainen.oid,
       time = "2000-01-12T20:31:32.104+03",
       organizationOid = List("huoltaja"),
       raw = "{operation: \"KANSALAINEN_HUOLTAJA_OPISKELUOIKEUS_KATSOMINEN\", ...}"
     ),
     MockData(
-      studentOid = MockOppijat.lukiolainen.oid,
+      studentOid = KoskiSpecificMockOppijat.lukiolainen.oid,
       time = "2000-01-12T20:31:32.104+03",
       organizationOid = List("huoltaja"),
       raw = "{operation: \"KANSALAINEN_HUOLTAJA_YLIOPPILASKOE_HAKU\", ...}"
     ),
     MockData(
-      studentOid = MockOppijat.virtaEiVastaa.oid,
+      studentOid = KoskiSpecificMockOppijat.virtaEiVastaa.oid,
       time = "2000-01-12T20:31:32.104+03",
       organizationOid = List("123123123123123", MockOrganisaatiot.helsinginKaupunki),
       raw = "{operation: \"OPISKELUOIKEUS_KATSOMINEN\", ...}"
     ),
     MockData(
-      studentOid = MockOppijat.aikuisOpiskelija.oid,
+      studentOid = KoskiSpecificMockOppijat.aikuisOpiskelija.oid,
       time = "2000-01-12T20:31:32.104+03",
       organizationOid = List(Opetushallitus.organisaatioOid),
       raw = "{operation: \"OPISKELUOIKEUS_KATSOMINEN\", ...}"

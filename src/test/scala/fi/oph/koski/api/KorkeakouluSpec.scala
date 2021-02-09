@@ -1,8 +1,7 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.http.{KoskiErrorCategory}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import org.scalatest.{FreeSpec, Matchers}
@@ -32,18 +31,18 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
     "Suoritusten tilat" - {
       "Keskeneräinen tutkinto" - {
         "Näytetään keskeneräisenä" in {
-          getOpiskeluoikeudet(MockOppijat.korkeakoululainen.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.valmis) should equal(List(false))
+          getOpiskeluoikeudet(KoskiSpecificMockOppijat.korkeakoululainen.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.valmis) should equal(List(false))
         }
         "Valitaan uusimman opiskeluoikeusjakson nimi" in {
-          getOpiskeluoikeudet(MockOppijat.amkKesken.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.koulutusmoduuli.nimi.get("fi")) should equal(List("Medianomi (AMK)"))
+          getOpiskeluoikeudet(KoskiSpecificMockOppijat.amkKesken.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.koulutusmoduuli.nimi.get("fi")) should equal(List("Medianomi (AMK)"))
         }
       }
       "Valmis tutkinto" - {
         "Näytetään valmiina" in {
-          getOpiskeluoikeudet(MockOppijat.dippainssi.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.valmis) should equal(List(true))
+          getOpiskeluoikeudet(KoskiSpecificMockOppijat.dippainssi.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.valmis) should equal(List(true))
         }
         "Kun useampi kuin yksi opiskeluoikeusjakso" in {
-          val opiskeluoikeus = getOpiskeluoikeudet(MockOppijat.montaJaksoaKorkeakoululainen.oid).find(_.oppilaitos.exists(_.oid == MockOrganisaatiot.aaltoYliopisto)).get
+          val opiskeluoikeus = getOpiskeluoikeudet(KoskiSpecificMockOppijat.montaJaksoaKorkeakoululainen.oid).find(_.oppilaitos.exists(_.oid == MockOrganisaatiot.aaltoYliopisto)).get
           opiskeluoikeus.suoritukset.head.koulutusmoduuli.nimi.get("fi") should equal("Fil. maist., fysiikka")
         }
       }
@@ -51,7 +50,7 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
 
     "Haettaessa" - {
       "Konvertoidaan Virta-järjestelmän opiskeluoikeus" in {
-        val oikeudet = getOpiskeluoikeudet(MockOppijat.dippainssi.oid)
+        val oikeudet = getOpiskeluoikeudet(KoskiSpecificMockOppijat.dippainssi.oid)
         oikeudet.length should equal(2)
 
         oikeudet(0).tyyppi.koodiarvo should equal("korkeakoulutus")
@@ -66,12 +65,12 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
       }
 
       "Hetuttoman opiskeluoikeudet löytyy oidilla" in {
-        val oikeudet = getOpiskeluoikeudet(MockOppijat.virtaOppijaHetuton.henkilö.oid)
+        val oikeudet = getOpiskeluoikeudet(KoskiSpecificMockOppijat.virtaOppijaHetuton.henkilö.oid)
         oikeudet.length should equal(1)
       }
 
       "Linkitetyn oppijan slave tiedoilla löytyy" in {
-        val oikeudet = getOpiskeluoikeudet(MockOppijat.virtaOppija.oid)
+        val oikeudet = getOpiskeluoikeudet(KoskiSpecificMockOppijat.virtaOppija.oid)
         oikeudet.length should equal(2)
       }
 
@@ -103,7 +102,7 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
 
       "Laajuudet" - {
         "Osasuoritusten laajuudet lasketaan yhteen jos laajuutta ei tule datassa" in {
-          val oo = getOpiskeluoikeudet(MockOppijat.montaJaksoaKorkeakoululainen.oid).find(_.suoritukset.forall(_.tyyppi.koodiarvo == "korkeakoulunopintojakso")).get
+          val oo = getOpiskeluoikeudet(KoskiSpecificMockOppijat.montaJaksoaKorkeakoululainen.oid).find(_.suoritukset.forall(_.tyyppi.koodiarvo == "korkeakoulunopintojakso")).get
           oo.suoritukset.collect { case s: KorkeakoulunOpintojaksonSuoritus => s.koulutusmoduuli.laajuus }.flatten.map(_.arvo).sum should be(414.0f)
         }
       }

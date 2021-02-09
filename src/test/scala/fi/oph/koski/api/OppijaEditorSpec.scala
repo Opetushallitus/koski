@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
@@ -12,15 +12,15 @@ class OppijaEditorSpec extends FreeSpec with Matchers with LocalJettyHttpSpecifi
   "GET /api/editor/:oid" - {
     "with valid oid" in {
       AuditLogTester.clearMessages
-      get("api/editor/" + MockOppijat.eero.oid, headers = authHeaders()) {
+      get("api/editor/" + KoskiSpecificMockOppijat.eero.oid, headers = authHeaders()) {
         verifyResponseStatusOk()
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
       }
     }
     "with version number" in {
-      val opiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.eero.oid).oid.get
+      val opiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.eero.oid).oid.get
       AuditLogTester.clearMessages
-      get("api/editor/" + MockOppijat.eero.oid, params = List("opiskeluoikeus" -> opiskeluoikeusOid, "versionumero" -> "1"), headers = authHeaders()) {
+      get("api/editor/" + KoskiSpecificMockOppijat.eero.oid, params = List("opiskeluoikeus" -> opiskeluoikeusOid, "versionumero" -> "1"), headers = authHeaders()) {
         verifyResponseStatusOk()
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
       }
@@ -36,7 +36,7 @@ class OppijaEditorSpec extends FreeSpec with Matchers with LocalJettyHttpSpecifi
       }
     }
     "with Virta error" in {
-      get("api/editor/" + MockOppijat.virtaEiVastaa.oid, headers = authHeaders()) {
+      get("api/editor/" + KoskiSpecificMockOppijat.virtaEiVastaa.oid, headers = authHeaders()) {
         verifyResponseStatusOk()
         body should include("\"unavailable.virta\"")
       }
@@ -58,7 +58,7 @@ class OppijaEditorSpec extends FreeSpec with Matchers with LocalJettyHttpSpecifi
       }
     }
     "with Virta error" in {
-      get("api/omattiedot/editor", headers = kansalainenLoginHeaders(MockOppijat.virtaEiVastaa.hetu.get)) {
+      get("api/omattiedot/editor", headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.virtaEiVastaa.hetu.get)) {
         verifyResponseStatusOk()
         body should include("\"unavailable.virta\"")
       }

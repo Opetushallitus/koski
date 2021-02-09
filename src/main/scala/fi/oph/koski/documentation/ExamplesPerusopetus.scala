@@ -5,7 +5,7 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema.{Finnish, _}
@@ -17,7 +17,7 @@ object ExamplesPerusopetus {
   )
 
   lazy val aineopiskelija = Oppija(
-    asUusiOppija(MockOppijat.eero),
+    asUusiOppija(KoskiSpecificMockOppijat.eero),
     List(PerusopetuksenOpiskeluoikeus(
       oppilaitos = Some(jyväskylänNormaalikoulu),
       suoritukset = List(

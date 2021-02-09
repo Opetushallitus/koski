@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.fixture.PaallekkaisetOpiskeluoikeudetFixtures.{keskimmaisenAlkamispaiva, ensimmaisenAlkamispaiva, ensimmaisenPaattymispaiva}
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -175,7 +175,7 @@ class PaallekkaisetOpiskeluoikeudetSpec extends FreeSpec with RaportointikantaTe
   private def withOppilaitos[T](f: PaallekkaisetOpiskeluoikeudetRow => T)(row: PaallekkaisetOpiskeluoikeudetRow): (String, T) = (row.paallekkainenOppilaitosNimi , f(row))
 
   private def pekanRivit(raportti:Seq[PaallekkaisetOpiskeluoikeudetRow]) =
-    raportti.filter(_.oppijaOid == MockOppijat.paallekkaisiOpiskeluoikeuksia.oid)
+    raportti.filter(_.oppijaOid == KoskiSpecificMockOppijat.paallekkaisiOpiskeluoikeuksia.oid)
 
   private def loadRaportti(oppilaitos: String) = {
     val request = AikajaksoRaporttiRequest(

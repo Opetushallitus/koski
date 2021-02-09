@@ -1,7 +1,7 @@
 package fi.oph.koski.ytr
 
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s.jackson.JsonMethods
@@ -10,20 +10,20 @@ import org.scalatest.FreeSpec
 class YtrKoesuoritusApiSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods {
   "Kansalainen" - {
     "voi hakea koesuorituslistauksen" in {
-      post("api/ytrkoesuoritukset/" + MockOppijat.ylioppilasLukiolainen.oid, headers = kansalainenLoginHeaders(MockOppijat.ylioppilasLukiolainen.hetu.get) ++ jsonContent) {
+      post("api/ytrkoesuoritukset/" + KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid, headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.ylioppilasLukiolainen.hetu.get) ++ jsonContent) {
         verifyResponseStatusOk()
         readExams should equal (expected)
       }
     }
 
     "ei voi hakea toisen henkilön koesuorituslistausta, jos tämä ei ole huolettava" in {
-      post("api/ytrkoesuoritukset/" + MockOppijat.ylioppilasLukiolainen.oid, headers = kansalainenLoginHeaders(MockOppijat.aikuisOpiskelija.hetu.get) ++ jsonContent) {
+      post("api/ytrkoesuoritukset/" + KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid, headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.aikuisOpiskelija.hetu.get) ++ jsonContent) {
         verifyResponseStatus(403, Nil)
       }
     }
 
     "voi hakea huollettavan koesuorituslistauksen" in {
-      post("api/ytrkoesuoritukset/" + MockOppijat.ylioppilasLukiolainen.oid, headers = kansalainenLoginHeaders(MockOppijat.faija.hetu.get) ++ jsonContent) {
+      post("api/ytrkoesuoritukset/" + KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid, headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.faija.hetu.get) ++ jsonContent) {
         verifyResponseStatusOk()
         readExams should equal (expected)
       }

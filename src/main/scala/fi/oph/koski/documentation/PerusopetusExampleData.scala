@@ -5,7 +5,7 @@ import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste}
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
@@ -25,7 +25,7 @@ object PerusopetusExampleData {
 
   def vuosiviikkotuntia(määrä: Double): Some[LaajuusVuosiviikkotunneissa] = Some(LaajuusVuosiviikkotunneissa(määrä.toFloat))
 
-  val exampleHenkilö: UusiHenkilö = asUusiOppija(MockOppijat.koululainen)
+  val exampleHenkilö: UusiHenkilö = asUusiOppija(KoskiSpecificMockOppijat.koululainen)
 
   val perusopetuksenDiaarinumero = "104/011/2014"
   val perusopetus = NuortenPerusopetus(Some(perusopetuksenDiaarinumero))

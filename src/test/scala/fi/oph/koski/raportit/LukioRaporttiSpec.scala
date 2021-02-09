@@ -7,7 +7,7 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsLukio2015
 import fi.oph.koski.documentation.LukioExampleData
-import fi.oph.koski.henkilo.MockOppijat._
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}

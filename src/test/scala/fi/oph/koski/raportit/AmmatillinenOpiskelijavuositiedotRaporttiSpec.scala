@@ -5,7 +5,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethods
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -22,7 +22,7 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec extends FreeSpec with Raport
     "raportti sisältää oikeat tiedot" in {
       val result = AmmatillinenOpiskalijavuositiedotRaportti.buildRaportti(raportointiDatabase, MockOrganisaatiot.stadinAmmattiopisto, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"))
 
-      val aarnenOpiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.ammattilainen.oid).oid.get
+      val aarnenOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ammattilainen.oid).oid.get
       val aarnenRivi = result.find(_.opiskeluoikeusOid == aarnenOpiskeluoikeusOid)
       aarnenRivi shouldBe defined
       val rivi = aarnenRivi.get
@@ -44,7 +44,7 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec extends FreeSpec with Raport
     }
 
     "ostettu" in {
-      val markkasenOpiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.markkanen.oid).oid.get
+      val markkasenOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.markkanen.oid).oid.get
       val rivi = AmmatillinenOpiskalijavuositiedotRaportti.buildRaportti(raportointiDatabase, MockOrganisaatiot.omnia, LocalDate.parse("2000-01-01"), LocalDate.parse("2000-01-02"))
         .find(_.opiskeluoikeusOid == markkasenOpiskeluoikeusOid)
         .get

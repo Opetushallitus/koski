@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.AuditLogTester
 import org.json4s.jackson.JsonMethods
@@ -12,7 +12,7 @@ class HuoltajaSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
 
   "Huollettavan tietojen katselu" - {
     "Tarkistaa, että huollettavat tulevat login-datan mukana" in {
-      val loginHeaders = kansalainenLoginHeaders(MockOppijat.faija.hetu.get)
+      val loginHeaders = kansalainenLoginHeaders(KoskiSpecificMockOppijat.faija.hetu.get)
 
       get(s"api/omattiedot/editor", headers = loginHeaders) {
         verifyResponseStatusOk()
@@ -25,9 +25,9 @@ class HuoltajaSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
     }
 
     "Kysytään huollettavan opintotiedot" in {
-      val loginHeaders = kansalainenLoginHeaders(MockOppijat.faija.hetu.get)
+      val loginHeaders = kansalainenLoginHeaders(KoskiSpecificMockOppijat.faija.hetu.get)
 
-      get(s"api/omattiedot/editor/" + MockOppijat.eskari.oid, headers = loginHeaders) {
+      get(s"api/omattiedot/editor/" + KoskiSpecificMockOppijat.eskari.oid, headers = loginHeaders) {
         verifyResponseStatusOk()
         val nimet = nimitiedot
         nimet("etunimet") should equal("Essi")
@@ -35,17 +35,17 @@ class HuoltajaSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
     }
 
     "Muiden kuin huollettavien tietojen katselu on estetty" in {
-      val loginHeaders = kansalainenLoginHeaders(MockOppijat.faija.hetu.get)
+      val loginHeaders = kansalainenLoginHeaders(KoskiSpecificMockOppijat.faija.hetu.get)
 
-      get(s"api/omattiedot/editor/" + MockOppijat.amis.oid, headers = loginHeaders) {
+      get(s"api/omattiedot/editor/" + KoskiSpecificMockOppijat.amis.oid, headers = loginHeaders) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
       }
     }
 
     "Aiheuttaa auditlog-merkinnän" in {
-      val loginHeaders = kansalainenLoginHeaders(MockOppijat.faija.hetu.get)
+      val loginHeaders = kansalainenLoginHeaders(KoskiSpecificMockOppijat.faija.hetu.get)
 
-      get(s"api/omattiedot/editor/" + MockOppijat.ylioppilasLukiolainen.oid, headers = loginHeaders) {
+      get(s"api/omattiedot/editor/" + KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid, headers = loginHeaders) {
         verifyResponseStatusOk()
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_HUOLTAJA_OPISKELUOIKEUS_KATSOMINEN"))
         }

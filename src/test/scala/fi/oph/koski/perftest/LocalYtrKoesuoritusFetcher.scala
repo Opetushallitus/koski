@@ -2,7 +2,7 @@ package fi.oph.koski.perftest
 
 import java.nio.file.Paths
 
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.koskiuser.UserWithPassword
 
 object LocalYtrKoesuoritusFetcher extends App {
@@ -15,7 +15,7 @@ object LocalYtrKoesuoritusFetcher extends App {
 
 object LocalYtrFetchKoesuoritusScenario extends PerfTestScenario {
   private val pdfDir = Paths.get(requiredEnv("PDF_DIR"))
-  private val Some(hetu) = MockOppijat.ylioppilasLukiolainen.hetu
+  private val Some(hetu) = KoskiSpecificMockOppijat.ylioppilasLukiolainen.hetu
   private lazy val kansalainenAuthHeaders = kansalainenLoginHeaders(hetu).toMap
 
   override def operation(round: Int): List[Operation] = {

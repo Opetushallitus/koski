@@ -7,7 +7,7 @@ import fi.oph.koski.documentation.ExampleData.{englanti, helsinki, ruotsinKieli}
 import fi.oph.koski.documentation.IBExampleData._
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, ressunLukio}
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, MockOppijat}
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
@@ -329,9 +329,9 @@ object ExamplesIB {
   )
 
   val examples = List(
-    Example("ib - final grades", "Oppija on suorittanut pre-IB vuoden ja IB-tutkinnon, IBO on vahvistanut arvosanat", Oppija(asUusiOppija(MockOppijat.ibFinal), List(opiskeluoikeus))),
-    Example("ib - predicted grades", "Oppija on suorittanut pre-IB vuoden ja IB-tutkinnon, IBO ei ole vahvistanut arvosanoja", Oppija(asUusiOppija(MockOppijat.ibPredicted), List(opiskeluoikeusPredictedGrades))),
-    Example("ib - Pre-IB 2019", "Oppija on suorittanut Pre-IB-opintoja lukion 2019 opetussuunnitelman mukaan", Oppija(asUusiOppija(MockOppijat.ibPreIB2019), List(opiskeluoikeusPreIB2019)))
+    Example("ib - final grades", "Oppija on suorittanut pre-IB vuoden ja IB-tutkinnon, IBO on vahvistanut arvosanat", Oppija(asUusiOppija(KoskiSpecificMockOppijat.ibFinal), List(opiskeluoikeus))),
+    Example("ib - predicted grades", "Oppija on suorittanut pre-IB vuoden ja IB-tutkinnon, IBO ei ole vahvistanut arvosanoja", Oppija(asUusiOppija(KoskiSpecificMockOppijat.ibPredicted), List(opiskeluoikeusPredictedGrades))),
+    Example("ib - Pre-IB 2019", "Oppija on suorittanut Pre-IB-opintoja lukion 2019 opetussuunnitelman mukaan", Oppija(asUusiOppija(KoskiSpecificMockOppijat.ibPreIB2019), List(opiskeluoikeusPreIB2019)))
   )
 }
 

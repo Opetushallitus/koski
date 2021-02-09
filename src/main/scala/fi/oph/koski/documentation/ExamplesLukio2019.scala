@@ -7,7 +7,8 @@ import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.Lukio2019ExampleData._
 import fi.oph.koski.documentation.LukioExampleData.{nuortenOpetussuunnitelma, opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt, laajuus => _}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
-import fi.oph.koski.henkilo.MockOppijat.{asUusiOppija, uusiLukio, uusiLukionAineopiskelija}
+import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{uusiLukio, uusiLukionAineopiskelija}
 import fi.oph.koski.localization.LocalizedStringImplicits.str2localized
 import fi.oph.koski.schema._
 

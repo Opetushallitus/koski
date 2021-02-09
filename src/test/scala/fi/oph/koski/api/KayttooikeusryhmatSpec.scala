@@ -7,7 +7,7 @@ import fi.oph.koski.db.Tables
 import fi.oph.koski.db.Tables.OpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExamplesEsiopetus
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{evira, korkeakouluViranomainen, perusopetusViranomainen, toinenAsteViranomainen}
@@ -34,7 +34,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
 
     "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
       queryOppijat(user = user).length should equal(koskeenTallennetutOppijatCount)
-      authGet("api/oppija/" + MockOppijat.ammattilainen.oid, user) {
+      authGet("api/oppija/" + KoskiSpecificMockOppijat.ammattilainen.oid, user) {
         verifyResponseStatusOk()
       }
     }
@@ -51,7 +51,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
 
     "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
       queryOppijat(user = user).length should equal(koskeenTallennetutOppijatCount)
-      authGet("api/oppija/" + MockOppijat.ammattilainen.oid, user) {
+      authGet("api/oppija/" + KoskiSpecificMockOppijat.ammattilainen.oid, user) {
         verifyResponseStatusOk()
       }
     }
@@ -68,7 +68,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   "tallennusoikeudet muttei LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-roolia" - {
     val user = MockUsers.tallentajaEiLuottamuksellinen
     "ei voi muokata opiskeluoikeuksia" in {
-      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.51720121923"))
       }
     }
@@ -77,20 +77,20 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   "koski-oppilaitos-palvelukäyttäjä jolla LUOTTAMUKSELLINEN_KAIKKI_TIEDOT käyttöoikeus" - {
     val user = MockUsers.omniaPalvelukäyttäjä
     "voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
-      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatusOk()
       }
     }
 
     "voi muokata vain lähdejärjestelmällisiä opiskeluoikeuksia" in {
-      putOpiskeluoikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluoikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.lähdejärjestelmäIdPuuttuu("Käyttäjä on palvelukäyttäjä mutta lähdejärjestelmää ei ole määritelty"))
       }
     }
 
     "voi hakea ja katsella opiskeluoikeuksia vain omassa organisaatiossa" in {
       searchForNames("eero", user) should equal(List("Eéro Jorma-Petteri Markkanen-Fagerström"))
-      authGet("api/oppija/" + MockOppijat.markkanen.oid, user) {
+      authGet("api/oppija/" + KoskiSpecificMockOppijat.markkanen.oid, user) {
         verifyResponseStatusOk()
       }
     }
@@ -106,7 +106,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "ei voi katsella opiskeluoikeuksia muussa organisaatiossa" in {
-      authGet("api/oppija/" + MockOppijat.eero.oid, user) {
+      authGet("api/oppija/" + KoskiSpecificMockOppijat.eero.oid, user) {
         verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa 1.2.246.562.24.00000000001 ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
       }
     }
@@ -127,7 +127,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
 
     "näkee luottamuksellisen datan" in {
       resetFixtures
-      authGet("api/oppija/" + MockOppijat.markkanen.oid, user) {
+      authGet("api/oppija/" + KoskiSpecificMockOppijat.markkanen.oid, user) {
         verifyResponseStatusOk()
         kaikkiSensitiveDataNäkyy()
       }
@@ -137,7 +137,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   "vastuukäyttäjä" - {
     val user = MockUsers.stadinVastuukäyttäjä
     "ei näe luottamuksellista dataa" in {
-      authGet("api/oppija/" + MockOppijat.eero.oid, user) {
+      authGet("api/oppija/" + KoskiSpecificMockOppijat.eero.oid, user) {
         verifyResponseStatusOk()
         kaikkiSensitiveDataPiilotettu()
       }
@@ -155,14 +155,14 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   "koski-oppilaitos-katselija" - {
     val user = MockUsers.omniaKatselija
     "ei voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
-      putOpiskeluoikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluoikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.51720121923"))
       }
     }
 
     "voi hakea ja katsella opiskeluoikeuksia omassa organisaatiossa" in {
       searchForNames("eero", user) should equal(List("Eéro Jorma-Petteri Markkanen-Fagerström"))
-      authGet("api/oppija/" + MockOppijat.markkanen.oid, user) {
+      authGet("api/oppija/" + KoskiSpecificMockOppijat.markkanen.oid, user) {
         verifyResponseStatusOk()
         kaikkiSensitiveDataNäkyy()
       }
@@ -172,22 +172,22 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   "koski-oppilaitos-esiopetus-katselija" - {
     val user = MockUsers.jyväskylänKatselijaEsiopetus
     "ei voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
-      putOpiskeluoikeus(ExamplesEsiopetus.opiskeluoikeus, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluoikeus(ExamplesEsiopetus.opiskeluoikeus, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio(s"Ei oikeuksia organisatioon ${MockOrganisaatiot.jyväskylänNormaalikoulu}"))
       }
     }
 
     "voi hakea ja katsella esiopetuksen opiskeluoikeuksia omassa organisaatiossa" in {
-      searchForNames(MockOppijat.eskari.etunimet, user) should equal(List(MockOppijat.eskari.etunimet + " " + MockOppijat.eskari.sukunimi, MockOppijat.eskariAikaisillaLisätiedoilla.etunimet + " " + MockOppijat.eskariAikaisillaLisätiedoilla.sukunimi))
-      authGet("api/oppija/" + MockOppijat.eskari.oid, user) {
+      searchForNames(KoskiSpecificMockOppijat.eskari.etunimet, user) should equal(List(KoskiSpecificMockOppijat.eskari.etunimet + " " + KoskiSpecificMockOppijat.eskari.sukunimi, KoskiSpecificMockOppijat.eskariAikaisillaLisätiedoilla.etunimet + " " + KoskiSpecificMockOppijat.eskariAikaisillaLisätiedoilla.sukunimi))
+      authGet("api/oppija/" + KoskiSpecificMockOppijat.eskari.oid, user) {
         verifyResponseStatusOk()
       }
     }
 
     "ei voi hakea ja katsella muita kuin esiopetuksen opiskeluoikeuksia omassa organisaatiossa" in {
       searchForNames("kaisa", user) should be(Nil)
-      authGet("api/oppija/" + MockOppijat.koululainen.oid, user) {
-        verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(s"Oppijaa ${MockOppijat.koululainen.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
+      authGet("api/oppija/" + KoskiSpecificMockOppijat.koululainen.oid, user) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(s"Oppijaa ${KoskiSpecificMockOppijat.koululainen.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
       }
     }
   }
@@ -195,19 +195,19 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   "koski-oppilaitos-tallentaja" - {
     val user = MockUsers.omniaTallentaja
     "voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
-      putOpiskeluoikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluoikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatusOk()
       }
     }
 
     "ei voi tallentaa opiskeluoikeuksia käyttäen lähdejärjestelmä-id:tä" in {
-      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.lähdejärjestelmäIdEiSallittu("Lähdejärjestelmä määritelty, mutta käyttäjä ei ole palvelukäyttäjä"))
       }
     }
 
     "ei voi muokata lähdejärjestelmän tallentamia opiskeluoikeuksia" - {
-      val oppija = MockOppijat.tyhjä
+      val oppija = KoskiSpecificMockOppijat.tyhjä
       "ilman opiskeluoikeuden oid:ia luodaan uusi opiskeluoikeus" in {
         resetFixtures
         putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = oppija, headers = authHeaders(MockUsers.omniaPalvelukäyttäjä) ++ jsonContent) {
@@ -230,7 +230,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
 
   "viranomainen jolla oikeudet kaikkiin koulutusmuotoihin muttei arkaluontoisiin tietoihin" - {
     "ei näe luottamuksellista dataa" in {
-      authGet("api/oppija/" + MockOppijat.eero.oid, evira) {
+      authGet("api/oppija/" + KoskiSpecificMockOppijat.eero.oid, evira) {
         verifyResponseStatusOk()
         suppeaSensitiveDataPiilotettu()
         laajaSensitiveDataPiilotettu()
@@ -239,7 +239,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "ei voi muokata opiskeluoikeuksia" in {
-      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(evira) ++ jsonContent) {
+      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(evira) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.51720121923"))
       }
     }
@@ -250,7 +250,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
 
     "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
       queryOppijat(user = MockUsers.evira).length should equal(koskeenTallennetutOppijatCount)
-      authGet("api/oppija/" + MockOppijat.ammattilainen.oid, evira) {
+      authGet("api/oppija/" + KoskiSpecificMockOppijat.ammattilainen.oid, evira) {
         verifyResponseStatusOk()
       }
     }
@@ -267,8 +267,8 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "ei näe muun typpisiä opiskeluoikeuksia" in {
-      authGet("api/oppija/" + MockOppijat.ammattilainen.oid, perusopetusViranomainen) {
-        verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(s"Oppijaa ${MockOppijat.ammattilainen.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
+      authGet("api/oppija/" + KoskiSpecificMockOppijat.ammattilainen.oid, perusopetusViranomainen) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(s"Oppijaa ${KoskiSpecificMockOppijat.ammattilainen.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
       }
     }
   }
@@ -276,49 +276,49 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   "viranomainen jolla oikeudet toiseen asteeseen" - {
     "voi hakea toisen asteen opiskeluoikeuksia" in {
       searchForNames("ylermi", toinenAsteViranomainen) should be(empty)
-      searchForNames(MockOppijat.dippainssi.hetu.get, toinenAsteViranomainen) should be(empty)
-      searchForNames(MockOppijat.ylioppilas.hetu.get, toinenAsteViranomainen) should equal(List("Ynjevi Ylioppilas"))
+      searchForNames(KoskiSpecificMockOppijat.dippainssi.hetu.get, toinenAsteViranomainen) should be(empty)
+      searchForNames(KoskiSpecificMockOppijat.ylioppilas.hetu.get, toinenAsteViranomainen) should equal(List("Ynjevi Ylioppilas"))
       searchForNames("eero", toinenAsteViranomainen) should equal(List("Jouni Çelik-Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
     }
 
     "näkee vain toisen asteen opiskeluoikeudet" in {
       queryOppijat(user = toinenAsteViranomainen).flatMap(_.opiskeluoikeudet).map(_.tyyppi.koodiarvo).toSet should be(Set("ammatillinenkoulutus", "ibtutkinto", "internationalschool", "lukiokoulutus", "luva", "diatutkinto", "vapaansivistystyonkoulutus"))
-      authGet("api/oppija/" + MockOppijat.ylioppilas.oid, toinenAsteViranomainen) {
+      authGet("api/oppija/" + KoskiSpecificMockOppijat.ylioppilas.oid, toinenAsteViranomainen) {
         verifyResponseStatusOk()
       }
     }
 
     "ei näe muun typpisiä opiskeluoikeuksia" in {
-      authGet("api/oppija/" + MockOppijat.ysiluokkalainen.oid, toinenAsteViranomainen) {
-        verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(s"Oppijaa ${MockOppijat.ysiluokkalainen.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
+      authGet("api/oppija/" + KoskiSpecificMockOppijat.ysiluokkalainen.oid, toinenAsteViranomainen) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(s"Oppijaa ${KoskiSpecificMockOppijat.ysiluokkalainen.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
       }
     }
   }
 
   "viranomainen jolla oikeudet korkeakouluun" - {
     "voi hakea korkeakouluopiskeluoikeuksia" in {
-      searchForNames(MockOppijat.ylioppilas.hetu.get, korkeakouluViranomainen) should be(empty)
-      searchForNames(MockOppijat.dippainssi.hetu.get, korkeakouluViranomainen) should be(List("Dilbert Dippainssi"))
+      searchForNames(KoskiSpecificMockOppijat.ylioppilas.hetu.get, korkeakouluViranomainen) should be(empty)
+      searchForNames(KoskiSpecificMockOppijat.dippainssi.hetu.get, korkeakouluViranomainen) should be(List("Dilbert Dippainssi"))
       searchForNames("eero", korkeakouluViranomainen) should be(empty)
     }
 
     "näkee vain korkeakouluopiskeluoikeudet" in {
       queryOppijat(user = korkeakouluViranomainen) should be(empty)
-      authGet("api/oppija/" + MockOppijat.dippainssi.oid, korkeakouluViranomainen) {
+      authGet("api/oppija/" + KoskiSpecificMockOppijat.dippainssi.oid, korkeakouluViranomainen) {
         verifyResponseStatusOk()
       }
     }
 
     "ei näe muun typpisiä opiskeluoikeuksia" in {
-      authGet("api/oppija/" + MockOppijat.ysiluokkalainen.oid, korkeakouluViranomainen) {
-        verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(s"Oppijaa ${MockOppijat.ysiluokkalainen.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
+      authGet("api/oppija/" + KoskiSpecificMockOppijat.ysiluokkalainen.oid, korkeakouluViranomainen) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(s"Oppijaa ${KoskiSpecificMockOppijat.ysiluokkalainen.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
       }
     }
   }
 
   "viranomainen jolla luovutuspalveluoikeudet ja LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-oikeudet" - {
     "voi kutsua luovutuspalveluapeja, näkee arkaluontoiset tiedot" in {
-      val requestBody = HetuRequestV1(1, MockOppijat.eero.hetu.get, List(OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo))
+      val requestBody = HetuRequestV1(1, KoskiSpecificMockOppijat.eero.hetu.get, List(OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo))
       post("api/luovutuspalvelu/hetu", JsonSerializer.writeWithRoot(requestBody), headers = authHeaders(MockUsers.luovutuspalveluKäyttäjäArkaluontoinen) ++ jsonContent) {
         verifyResponseStatusOk()
         kaikkiSensitiveDataNäkyy(getLuovutuspalveluOpiskeluoikeudet)
@@ -328,7 +328,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
 
   "viranomainen jolla luovutuspalveluoikeudet" - {
     "voi kutsua luovutuspalveluapeja, ei näe arkaluontoisia tietoja" in {
-      val requestBody = HetuRequestV1(1, MockOppijat.eero.hetu.get, List(OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo))
+      val requestBody = HetuRequestV1(1, KoskiSpecificMockOppijat.eero.hetu.get, List(OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo))
       post("api/luovutuspalvelu/hetu", JsonSerializer.writeWithRoot(requestBody), headers = authHeaders(MockUsers.luovutuspalveluKäyttäjä) ++ jsonContent) {
         verifyResponseStatusOk()
         kaikkiSensitiveDataPiilotettu(getLuovutuspalveluOpiskeluoikeudet)
@@ -347,7 +347,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
 
   "viranomainen jolla ei ole luovutuspalveluoikeuksia" - {
     "ei voi kutsua luovutuspalveluapeja" in {
-      val body = HetuRequestV1(1, MockOppijat.ysiluokkalainen.hetu.get, List("perusopetus"))
+      val body = HetuRequestV1(1, KoskiSpecificMockOppijat.ysiluokkalainen.hetu.get, List("perusopetus"))
       post("api/luovutuspalvelu/hetu", JsonSerializer.writeWithRoot(body), headers = authHeaders(MockUsers.perusopetusViranomainen) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainViranomainen())
       }
@@ -358,19 +358,19 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     authGet("api/henkilo/hetu/010101-123N", user) {
       verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
     }
-    authGet("api/oppija/" + MockOppijat.ysiluokkalainen.oid, user) {
+    authGet("api/oppija/" + KoskiSpecificMockOppijat.ysiluokkalainen.oid, user) {
       verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
     }
     authGet("api/tiedonsiirrot/yhteenveto", user) {
       verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
     }
-    authGet("api/opiskeluoikeus/" + lastOpiskeluoikeus(MockOppijat.eero.oid).oid.get, user) {
+    authGet("api/opiskeluoikeus/" + lastOpiskeluoikeus(KoskiSpecificMockOppijat.eero.oid).oid.get, user) {
       verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
     }
     authGet("api/opiskeluoikeus/perustiedot", user) {
       verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
     }
-    authGet("api/opiskeluoikeus/historia/" + lastOpiskeluoikeus(MockOppijat.eero.oid).oid.get, user) {
+    authGet("api/opiskeluoikeus/historia/" + lastOpiskeluoikeus(KoskiSpecificMockOppijat.eero.oid).oid.get, user) {
       verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
     }
     authGet("api/oppilaitos", user) {

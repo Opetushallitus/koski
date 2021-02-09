@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.opiskeluoikeus.ValidationResult
@@ -29,7 +29,7 @@ class OppijaValidationApiSpec extends FreeSpec with LocalJettyHttpSpecification 
       }
     }
     "Validate single" in {
-      val oo = lastOpiskeluoikeus(MockOppijat.eero.oid)
+      val oo = lastOpiskeluoikeus(KoskiSpecificMockOppijat.eero.oid)
       authGet("api/opiskeluoikeus/validate/" + oo.oid.get) {
         verifyResponseStatusOk()
         val result = JsonSerializer.parse[ValidationResult](body)
@@ -41,7 +41,7 @@ class OppijaValidationApiSpec extends FreeSpec with LocalJettyHttpSpecification 
       println(result.henkilöOid)
 
       result.henkilöOid match {
-        case MockOppijat.tunnisteenKoodiarvoPoistettu.oid => result.errors.map(_.key) should equal(List("badRequest.validation.jsonSchema"))
+        case KoskiSpecificMockOppijat.tunnisteenKoodiarvoPoistettu.oid => result.errors.map(_.key) should equal(List("badRequest.validation.jsonSchema"))
         case _ => result.errors should equal(Nil)
       }
 
@@ -49,7 +49,7 @@ class OppijaValidationApiSpec extends FreeSpec with LocalJettyHttpSpecification 
     }
 
     "Forbidden for non-root users" in {
-      val oo = lastOpiskeluoikeus(MockOppijat.eero.oid)
+      val oo = lastOpiskeluoikeus(KoskiSpecificMockOppijat.eero.oid)
       authGet("api/opiskeluoikeus/validate/" + oo.oid.get, user = MockUsers.kalle) {
         verifyResponseStatus(403, Nil)
       }

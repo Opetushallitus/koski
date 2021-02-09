@@ -4,13 +4,13 @@ import java.nio.charset.StandardCharsets
 import java.sql.Timestamp
 import java.time.{Instant, LocalDate}
 
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import fi.oph.koski.schema.{PerusopetuksenVuosiluokanSuoritus, TäydellisetHenkilötiedot, YlioppilastutkinnonOpiskeluoikeus}
 import fi.oph.koski.suoritusjako.{SuoritusIdentifier, Suoritusjako}
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+import org.scalatest.{FreeSpec, Matchers}
 
 import scala.collection.mutable
 
@@ -81,14 +81,14 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
       }
 
       "vaikka virtakysely epäonnistuisikin" in {
-        putOpiskeluoikeus(makeOpiskeluoikeus(), MockOppijat.virtaEiVastaa)(verifyResponseStatusOk())
+        putOpiskeluoikeus(makeOpiskeluoikeus(), KoskiSpecificMockOppijat.virtaEiVastaa)(verifyResponseStatusOk())
         val json = """[{
           "oppilaitosOid": "1.2.246.562.10.52251087186",
           "suorituksenTyyppi": "ammatillinentutkinto",
           "koulutusmoduulinTunniste": "351301"
         }]"""
 
-        val secret = createSuoritusjako(json, hetu = MockOppijat.virtaEiVastaa.hetu.get){
+        val secret = createSuoritusjako(json, hetu = KoskiSpecificMockOppijat.virtaEiVastaa.hetu.get){
           verifyResponseStatusOk()
           JsonSerializer.parse[Suoritusjako](response.body).secret
         }

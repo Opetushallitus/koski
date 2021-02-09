@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsYlioppilastutkinto}
-import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat}
+import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, KoskiSpecificMockOppijat}
 import org.scalatest.FreeSpec
 
 class KoulusivistyskieliYlioppilastutkintoSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsYlioppilastutkinto {
@@ -9,14 +9,14 @@ class KoulusivistyskieliYlioppilastutkintoSpec extends FreeSpec with LocalJettyH
   "Koulusivistyskieli - Ylioppilastutkinnon suoritus" - {
 
     "Koulusivistyskieliä voi olla useita" in {
-      verifyKoulusivityskieli(MockOppijat.montaKoulusivityskieltäYlioppilas, Some(List(
+      verifyKoulusivityskieli(KoskiSpecificMockOppijat.montaKoulusivityskieltäYlioppilas, Some(List(
         Koodistokoodiviite("FI", "kieli"),
         Koodistokoodiviite("SV", "kieli")
       )))
     }
 
     "Koulusivistyskieleksi ei tulkita hylättyjä suorituksia" in {
-      verifyKoulusivityskieli(MockOppijat.koulusivistyskieliYlioppilas, Some(List(
+      verifyKoulusivityskieli(KoskiSpecificMockOppijat.koulusivistyskieliYlioppilas, Some(List(
         Koodistokoodiviite("SV", "kieli")
       )))
     }

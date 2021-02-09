@@ -3,7 +3,7 @@ package fi.oph.koski.documentation
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.InternationalSchoolExampleData._
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.schema._
 
@@ -193,6 +193,6 @@ object ExamplesInternationalSchool {
   )
 
   val examples = List(
-    Example("internationalschool", "International School of Helsinki", Oppija(asUusiOppija(MockOppijat.internationalschool), List(opiskeluoikeus)))
+    Example("internationalschool", "International School of Helsinki", Oppija(asUusiOppija(KoskiSpecificMockOppijat.internationalschool), List(opiskeluoikeus)))
   )
 }

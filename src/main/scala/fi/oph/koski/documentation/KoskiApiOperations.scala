@@ -2,13 +2,13 @@ package fi.oph.koski.documentation
 
 import java.sql.Timestamp
 
-import fi.oph.koski.henkilo.{HenkilötiedotSearchResponse, MockOppijat}
+import fi.oph.koski.henkilo.{HenkilötiedotSearchResponse, KoskiSpecificMockOppijat}
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer.serializeWithRoot
 import fi.oph.koski.koodisto.{KoodistoKoodi, Koodistot, MockKoodistoPalvelu}
 import fi.oph.koski.koskiuser.MockUsers
-import fi.oph.koski.schema.{HenkilötiedotJaOid, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, Oppija}
+import fi.oph.koski.schema.{HenkilötiedotJaOid, Opiskeluoikeus, Oppija}
 import org.json4s.JsonAST.JObject
 
 object KoskiApiOperations extends ApiGroup {
@@ -40,7 +40,7 @@ object KoskiApiOperations extends ApiGroup {
       Nil,
       List(QueryParameter("query", "Hakusana, joka voi olla hetu, oppija-oid tai nimen osa.", List("eero"))),
       List(
-        KoskiErrorCategory.ok.maybeEmptyList.copy(exampleResponse = serializeWithRoot[HenkilötiedotSearchResponse](HenkilötiedotSearchResponse(henkilöt = List(MockOppijat.eero.toHenkilötiedotJaOid)))),
+        KoskiErrorCategory.ok.maybeEmptyList.copy(exampleResponse = serializeWithRoot[HenkilötiedotSearchResponse](HenkilötiedotSearchResponse(henkilöt = List(KoskiSpecificMockOppijat.eero.toHenkilötiedotJaOid)))),
         KoskiErrorCategory.badRequest.queryParam.searchTermTooShort,
         KoskiErrorCategory.unauthorized
       )
@@ -54,7 +54,7 @@ object KoskiApiOperations extends ApiGroup {
         PathParameter("hetu", "Henkilötunnus", List("010101-123N"))
       ),
       List(
-        KoskiErrorCategory.ok.maybeEmptyList.copy(exampleResponse = serializeWithRoot[List[HenkilötiedotJaOid]](List(MockOppijat.eero.toHenkilötiedotJaOid))),
+        KoskiErrorCategory.ok.maybeEmptyList.copy(exampleResponse = serializeWithRoot[List[HenkilötiedotJaOid]](List(KoskiSpecificMockOppijat.eero.toHenkilötiedotJaOid))),
         KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu
       )
     ))

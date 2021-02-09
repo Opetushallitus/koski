@@ -4,7 +4,7 @@ import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData.{englanti, helsinki}
 import fi.oph.koski.documentation.DIAExampleData._
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, MockOppijat}
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.schema._
 
@@ -213,6 +213,6 @@ object ExamplesDIA {
   )
 
   val examples = List(
-    Example("dia", "dia", Oppija(asUusiOppija(MockOppijat.dia), List(opiskeluoikeus)))
+    Example("dia", "dia", Oppija(asUusiOppija(KoskiSpecificMockOppijat.dia), List(opiskeluoikeus)))
   )
 }

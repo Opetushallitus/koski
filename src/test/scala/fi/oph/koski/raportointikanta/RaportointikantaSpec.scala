@@ -7,8 +7,8 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsAmmatillinen}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.AmmatillinenExampleData
-import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.henkilo.MockOppijat.{master, masterEiKoskessa}
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{master, masterEiKoskessa}
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
@@ -23,7 +23,7 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
 
   override def beforeAll(): Unit = {
     LocalJettyHttpSpecification.setup(this)
-    createOrUpdate(MockOppijat.slaveMasterEiKoskessa.henkilö, defaultOpiskeluoikeus)
+    createOrUpdate(KoskiSpecificMockOppijat.slaveMasterEiKoskessa.henkilö, defaultOpiskeluoikeus)
     loadRaportointikantaFixtures
   }
 
@@ -34,7 +34,7 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
       opiskeluoikeusCount should be > 30
     }
     "Henkilöt on ladattu" in {
-      val mockOppija = MockOppijat.eero
+      val mockOppija = KoskiSpecificMockOppijat.eero
       henkiloCount should be > 30
       val henkilo = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.hetu === mockOppija.hetu.get).result)
       henkilo should equal(Seq(RHenkilöRow(
@@ -53,7 +53,7 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
       )))
     }
     "Huomioi linkitetyt oidit" in {
-      val slaveOppija = MockOppijat.slave.henkilö
+      val slaveOppija = KoskiSpecificMockOppijat.slave.henkilö
       val hakuOidit = Set(master.oid, slaveOppija.oid)
       val henkilot = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.oppijaOid inSet(hakuOidit)).result).toSet
       henkilot should equal (Set(
@@ -62,7 +62,7 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
       ))
     }
     "Master oidia ei löydy koskesta" in {
-      val slaveOppija = MockOppijat.slaveMasterEiKoskessa.henkilö
+      val slaveOppija = KoskiSpecificMockOppijat.slaveMasterEiKoskessa.henkilö
       val henkilot = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.hetu === slaveOppija.hetu.get).result).toSet
       henkilot should equal(Set(
         RHenkilöRow(slaveOppija.oid, masterEiKoskessa.oid, masterEiKoskessa.hetu, None, Some(Date.valueOf("1966-03-27")), masterEiKoskessa.sukunimi, masterEiKoskessa.etunimet, None, None, false, None, true),

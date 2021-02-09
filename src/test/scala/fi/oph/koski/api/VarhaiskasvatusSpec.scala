@@ -2,7 +2,8 @@ package fi.oph.koski.api
 
 import fi.oph.koski.documentation.ExamplesEsiopetus.{ostopalvelu, päiväkodinEsiopetuksenTunniste}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{oidOrganisaatio, päiväkotiTouhula, päiväkotiVironniemi}
-import fi.oph.koski.henkilo.MockOppijat.{asUusiOppija, ysiluokkalainen}
+import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.ysiluokkalainen
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.organisaatio.MockOrganisaatiot

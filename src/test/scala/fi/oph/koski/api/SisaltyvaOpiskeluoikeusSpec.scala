@@ -4,7 +4,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.OpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.documentation.AmmatillinenExampleData._
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.KoskiSession.systemUser
 import fi.oph.koski.koskiuser.MockUsers
@@ -36,13 +36,13 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
       }
 
       "Sisältävän opiskeluoikeuden organisaatiolla on katseluoikeudet sisältyvään opiskeluoikeuteen" in {
-        val oids = getOpiskeluoikeudet(MockOppijat.eero.oid, stadinAmmattiopistoTallentaja).flatMap(_.oid)
+        val oids = getOpiskeluoikeudet(KoskiSpecificMockOppijat.eero.oid, stadinAmmattiopistoTallentaja).flatMap(_.oid)
         oids should contain(fixture.original.oid.get)
         oids should contain(sisältyvä.oid.get)
       }
 
       "Sisältyvän opiskeluoikeuden organisaatiolla ei ole oikeuksia sisältävään opiskeluoikeuteen" in {
-        val oids = getOpiskeluoikeudet(MockOppijat.eero.oid, MockUsers.omniaKatselija).flatMap(_.oid)
+        val oids = getOpiskeluoikeudet(KoskiSpecificMockOppijat.eero.oid, MockUsers.omniaKatselija).flatMap(_.oid)
         oids should contain(sisältyvä.oid.get)
         oids should not contain(fixture.original.oid)
       }
@@ -80,20 +80,20 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
      }
 
     "Kun sisältävän opiskeluoikeuden henkilötieto ei täsmää -> HTTP 400" in {
-      putOpiskeluoikeus(fixture.sisältyvä, henkilö = MockOppijat.eerola) {
+      putOpiskeluoikeus(fixture.sisältyvä, henkilö = KoskiSpecificMockOppijat.eerola) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.henkilöTiedot())
       }
     }
 
     "Kun sisältävän opiskeluoikeuden henkilötieto on linkitetty -> HTTP 200" in {
-      val original = createOpiskeluoikeus(MockOppijat.master, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja)
+      val original = createOpiskeluoikeus(KoskiSpecificMockOppijat.master, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja)
       val sisältyvä: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
         oppilaitos = Some(Oppilaitos(omnia)),
         sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(original.oppilaitos.get, original.oid.get)),
         suoritukset = List(autoalanPerustutkinnonSuoritus(OidOrganisaatio(omnia)))
       )
 
-      putOpiskeluoikeus(sisältyvä, henkilö = MockOppijat.slave.henkilö) {
+      putOpiskeluoikeus(sisältyvä, henkilö = KoskiSpecificMockOppijat.slave.henkilö) {
         verifyResponseStatusOk()
       }
     }

@@ -3,7 +3,7 @@ package fi.oph.koski.raportit
 import java.time.LocalDate.{of => localDate}
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat}
+import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, KoskiSpecificMockOppijat}
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.koskiuser.MockUsers.{helsinkiTallentaja, tornioTallentaja}
 import fi.oph.koski.log.AuditLogTester
@@ -32,7 +32,7 @@ class EsiopetusRaporttiSpec extends FreeSpec with Matchers with Raportointikanta
     }
 
     "Raportin kolumnit" - {
-      lazy val r = findSingle(raportti, MockOppijat.eskari)
+      lazy val r = findSingle(raportti, KoskiSpecificMockOppijat.eskari)
 
       "Perustiedot" in {
         r.koulutustoimijaNimi should equal(Some("Jyväskylän yliopisto"))
@@ -47,9 +47,9 @@ class EsiopetusRaporttiSpec extends FreeSpec with Matchers with Raportointikanta
         r.suorituksenVahvistuspäivä should equal(Some(localDate(2007, 6, 3)))
 
         r.yksilöity should equal(true)
-        r.oppijaOid should equal(MockOppijat.eskari.oid)
-        r.etunimet should equal(MockOppijat.eskari.etunimet)
-        r.sukunimi should equal(MockOppijat.eskari.sukunimi)
+        r.oppijaOid should equal(KoskiSpecificMockOppijat.eskari.oid)
+        r.etunimet should equal(KoskiSpecificMockOppijat.eskari.etunimet)
+        r.sukunimi should equal(KoskiSpecificMockOppijat.eskari.sukunimi)
       }
 
       "Opiskeluoikeuden lisätiedot" in {

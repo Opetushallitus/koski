@@ -5,7 +5,7 @@ import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
@@ -15,7 +15,7 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
   override def beforeAll(): Unit = loadRaportointikantaFixtures
 
   lazy val repository = AmmatillisenRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
-  lazy val defaultTestiHenkilö = MockOppijat.ammatillisenOsittainenRapsa
+  lazy val defaultTestiHenkilö = KoskiSpecificMockOppijat.ammatillisenOsittainenRapsa
 
   "Ammatillisen tutkinnon osa/osia -raporti" - {
     "Raportin voi ladata" in {
@@ -41,7 +41,7 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
     }
 
     "Ei näytetä riviä näyttötutkintoon valmistavalle koulutukselle, jos sen parina oleva pääsuoritus ei ole osittainen" in {
-      val rivit = testiHenkilöRaporttiRows(alku = date(2016, 1, 1), loppu = date(2016, 5, 30), osasuoritustenAikarajaus = false, hetu = MockOppijat.erikoisammattitutkinto.hetu.get)
+      val rivit = testiHenkilöRaporttiRows(alku = date(2016, 1, 1), loppu = date(2016, 5, 30), osasuoritustenAikarajaus = false, hetu = KoskiSpecificMockOppijat.erikoisammattitutkinto.hetu.get)
 
       rivit.length should equal(0)
     }
