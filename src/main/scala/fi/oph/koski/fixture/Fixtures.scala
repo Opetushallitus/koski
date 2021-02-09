@@ -2,21 +2,30 @@ package fi.oph.koski.fixture
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.KoskiDatabaseConfig
-import fi.oph.koski.henkilo.MockOpintopolkuHenkilöFacade
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, MockOpintopolkuHenkilöFacade, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.localization.MockLocalizationRepository
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Timing
+import fi.oph.koski.valpas.fixture.ValpasFixtureState
+
+object FixtureCreator {
+  def generateOppijaOid(counter: Int) = "1.2.246.562.24." + "%011d".format(counter)
+}
 
 class FixtureCreator(application: KoskiApplication) extends Logging with Timing {
-  private val databaseFixtures = new KoskiDatabaseFixtureCreator(application)
+  private var currentFixtureState: FixtureState = new NotInitializedFixtureState
 
-  def resetFixtures = if(shouldUseFixtures) {
-    application.cacheManager.invalidateAllCaches
-    timed("Resetting database fixtures") (databaseFixtures.resetFixtures)
-    application.henkilöRepository.opintopolku.henkilöt.asInstanceOf[MockOpintopolkuHenkilöFacade].resetFixtures
-    application.koskiLocalizationRepository.asInstanceOf[MockLocalizationRepository].reset
-    application.tiedonsiirtoService.index.deleteAll()
-    logger.info("Reset application fixtures")
+  def defaultOppijat: List[OppijaHenkilöWithMasterInfo] = currentFixtureState.defaultOppijat
+
+  def resetFixtures(fixtureState: FixtureState = koskiSpecificFixtureState) = if(shouldUseFixtures) {
+    synchronized {
+      application.cacheManager.invalidateAllCaches
+      currentFixtureState = fixtureState
+      currentFixtureState.resetFixtures
+      application.koskiLocalizationRepository.asInstanceOf[MockLocalizationRepository].reset
+      application.tiedonsiirtoService.index.deleteAll()
+      logger.info(s"Reset application fixtures ${currentFixtureState.name}")
+    }
   }
 
   def shouldUseFixtures = {
@@ -37,4 +46,54 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
     }
     useFixtures
   }
+
+  def allOppijaOids: List[String] = (koskiSpecificFixtureState.oppijaOids ++ valpasFixtureState.oppijaOids).distinct // oids that should be considered when deleting fixture data
+
+  lazy val koskiSpecificFixtureState = new KoskiSpecificFixtureState(application)
+  lazy val valpasFixtureState = new ValpasFixtureState(application)
+}
+
+trait FixtureState extends Timing {
+  def name: String
+  def defaultOppijat: List[OppijaHenkilöWithMasterInfo]
+  def resetFixtures: Unit
+
+  def oppijaOids: List[String]
+}
+
+class NotInitializedFixtureState extends FixtureState {
+  val name = "NOT_INITIALIZED"
+
+  def defaultOppijat = {
+    throw new IllegalStateException("Internal error: Fixtures not initialized correctly")
+  }
+
+  def resetFixtures = {
+    throw new IllegalStateException("Internal error: Fixtures not initialized correctly")
+  }
+
+  def oppijaOids = {
+    throw new IllegalStateException("Internal error: Fixtures not initialized correctly")
+  }
+}
+
+abstract class DatabaseFixtureState(application: KoskiApplication) extends FixtureState {
+  def resetFixtures = {
+    timed("Resetting database fixtures") (databaseFixtureCreator.resetFixtures)
+    application.henkilöRepository.opintopolku.henkilöt.asInstanceOf[MockOpintopolkuHenkilöFacade].resetFixtures(defaultOppijat)
+  }
+
+  def oppijaOids: List[String] = (
+    defaultOppijat.map(_.henkilö.oid) ++ (1 to (defaultOppijat.length) + 100).map(FixtureCreator.generateOppijaOid).toList
+    ).distinct
+
+  protected def databaseFixtureCreator: DatabaseFixtureCreator
+}
+
+class KoskiSpecificFixtureState(application: KoskiApplication) extends DatabaseFixtureState(application)  {
+  lazy val name = "KOSKI_SPECIFIC"
+
+  def defaultOppijat: List[OppijaHenkilöWithMasterInfo] = KoskiSpecificMockOppijat.defaultOppijat
+
+  protected lazy val databaseFixtureCreator: DatabaseFixtureCreator = new KoskiSpecificDatabaseFixtureCreator(application)
 }
