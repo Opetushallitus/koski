@@ -6,6 +6,7 @@ import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, MockOpintopolkuHenkilöFa
 import fi.oph.koski.localization.MockLocalizationRepository
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Timing
+import fi.oph.koski.valpas.fixture.ValpasFixtureState
 
 object FixtureCreator {
   def generateOppijaOid(counter: Int) = "1.2.246.562.24." + "%011d".format(counter)
@@ -46,9 +47,10 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
     useFixtures
   }
 
-  def allOppijaOids: List[String] = (koskiSpecificFixtureState.oppijaOids).distinct // oids that should be considered when deleting fixture data
+  def allOppijaOids: List[String] = (koskiSpecificFixtureState.oppijaOids ++ valpasFixtureState.oppijaOids).distinct // oids that should be considered when deleting fixture data
 
   lazy val koskiSpecificFixtureState = new KoskiSpecificFixtureState(application)
+  lazy val valpasFixtureState = new ValpasFixtureState(application)
 }
 
 trait FixtureState extends Timing {
