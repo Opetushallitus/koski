@@ -9,11 +9,13 @@ import fi.oph.koski.koskiuser.KoskiSession.systemUser
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Henkilö.Oid
 
-class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Logging {
-  var oppijat = new MockOppijat(MockOppijat.defaultOppijat)
+class MockOpintopolkuHenkilöFacade extends OpintopolkuHenkilöFacade with Logging {
+  private var alkuperäisetOppijat = KoskiSpecificMockOppijat.defaultOppijat
+  private var oppijat = new MockOppijat(alkuperäisetOppijat)
 
-  def resetFixtures = synchronized {
-    oppijat = new MockOppijat(MockOppijat.defaultOppijat)
+  def resetFixtures(uudetOppijat: List[OppijaHenkilöWithMasterInfo]): Unit = synchronized {
+    alkuperäisetOppijat = uudetOppijat
+    oppijat = new MockOppijat(alkuperäisetOppijat)
   }
 
   private def create(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, String] = synchronized {
@@ -76,16 +78,12 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     })
   }
 
-  def resetMock(): Unit = synchronized {
-    oppijat = new MockOppijat(MockOppijat.defaultOppijat)
-  }
-
   override def findOppijaByHetu(hetu: String): Option[LaajatOppijaHenkilöTiedot] = synchronized {
     oppijat.getOppijat.find(o => o.henkilö.hetu.contains(hetu) || vanhatHetut(o.henkilö).contains(hetu)).map(h => h.master.getOrElse(h.henkilö)).map(withLinkedOids)
   }
 
   override def findChangedOppijaOids(since: Long, offset: Int, amount: Int): List[Oid] = synchronized {
-    MockOppijat.defaultOppijat.diff(oppijat.getOppijat).map(_.henkilö.oid)
+    alkuperäisetOppijat.diff(oppijat.getOppijat).map(_.henkilö.oid)
   }
 
   def findOppijatByHetusNoSlaveOids(hetus: List[String]): List[OppijaHenkilö] = synchronized {
@@ -93,7 +91,7 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
   }
 
   override def findSlaveOids(masterOid: String): List[Oid] =
-    MockOppijat.defaultOppijat.filter(_.master.exists(_.oid == masterOid)).map(_.henkilö.oid)
+    alkuperäisetOppijat.filter(_.master.exists(_.oid == masterOid)).map(_.henkilö.oid)
 
   private def withLinkedOids(x: OppijaHenkilö) = x match {
     case y: SuppeatOppijaHenkilöTiedot => toLaajat(y, linkitetytOidit = findSlaveOids(x.oid))

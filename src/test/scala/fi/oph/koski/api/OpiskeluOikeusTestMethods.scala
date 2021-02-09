@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.henkilo.MockOppijat.defaultOppijat
+import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.http.{HttpSpecification, HttpStatus}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.paakayttajaMitatoidytOpiskeluoikeudet
@@ -79,11 +79,11 @@ trait OpiskeluoikeusTestMethods extends HttpSpecification with Matchers {
   }
 
   lazy val linkitettyOid: Map[Oid, Oid] = (for {
-    oppija <- defaultOppijat
+    oppija <- KoskiApplicationForTests.fixtureCreator.defaultOppijat
     masterOid <- oppija.master.map(_.oid)
   } yield masterOid -> oppija.henkilö.oid).toMap
 
-  lazy val masterHenkilöt = defaultOppijat.filterNot(_.master.isDefined).map(_.henkilö).sortBy(_.oid)
+  lazy val masterHenkilöt = KoskiApplicationForTests.fixtureCreator.defaultOppijat.filterNot(_.master.isDefined).map(_.henkilö).sortBy(_.oid)
 
   lazy val koskeenTallennetutOppijat: List[Oppija] = masterHenkilöt.flatMap { m =>
     tryOppija(m.oid, paakayttajaMitatoidytOpiskeluoikeudet) match {

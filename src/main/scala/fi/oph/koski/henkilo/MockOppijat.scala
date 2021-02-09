@@ -1,21 +1,13 @@
 package fi.oph.koski.henkilo
 
+import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.henkilo
 import fi.oph.koski.log.{Loggable, Logging}
 import fi.oph.koski.schema._
 
 object MockOppijat {
-  def generateOid(counter: Int) = "1.2.246.562.24." + "%011d".format(counter)
-
-  def oids = (
-    KoskiSpecificMockOppijat.defaultOppijat.map(_.henkilö.oid) ++
-    (1 to KoskiSpecificMockOppijat.defaultOppijat.length + 100).map(generateOid).toList
-  ).distinct // oids that should be considered when deleting fixture data
-
   def asUusiOppija(oppija: LaajatOppijaHenkilöTiedot) =
     UusiHenkilö(oppija.hetu.get, oppija.etunimet, Some(oppija.kutsumanimi), oppija.sukunimi)
-
-  def defaultOppijat = KoskiSpecificMockOppijat.defaultOppijat
 }
 
 class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil) extends Logging {
@@ -59,7 +51,7 @@ class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil)
 
   def generateId(): String = this.synchronized {
     idCounter = idCounter + 1
-    MockOppijat.generateOid(idCounter)
+    FixtureCreator.generateOppijaOid(idCounter)
   }
 }
 
