@@ -116,6 +116,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
       mount("/user/login", new LocalLoginServlet)
     }
     mount("/user/logout", new KoskiLogoutServlet)
+    mount("/user/redirect", new LogoutRedirectServlet)
     mount("/cas", new CasServlet)
     mount("/cache", new CacheServlet)
 
