@@ -657,7 +657,7 @@
               "koodistoUri" : "vstmuuallasuoritetutopinnot"
             },
             "kuvaus" : {
-              "fi" : "Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet (jatkokurssi)"
+              "fi" : "Lukion lyhyen matematiikan kurssi M02"
             },
             "laajuus" : {
               "arvo" : 5.0,
@@ -693,13 +693,13 @@
             "osaaminen" : {
               "koulutusmoduuli" : {
                 "tunniste" : {
-                  "koodiarvo" : "ATX01",
+                  "koodiarvo" : "MT02",
                   "nimi" : {
-                    "fi" : "Tietokoneen huolto"
+                    "fi" : "Lukion lyhyt matematiikka M02"
                   }
                 },
                 "kuvaus" : {
-                  "fi" : "Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet"
+                  "fi" : "Lukiossa suoritettu lyhyen matematiikan kurssi"
                 },
                 "laajuus" : {
                   "arvo" : 5.0,

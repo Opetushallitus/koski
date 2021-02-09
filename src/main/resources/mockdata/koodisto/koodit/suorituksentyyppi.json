@@ -1359,13 +1359,13 @@
   "koodiUri" : "suorituksentyyppi_vstmuuallasuoritetutopinnot",
   "koodiArvo" : "vstmuuallasuoritetutopinnot",
   "metadata" : [ {
-    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön opintokokonaisuus",
+    "nimi" : "Vapaan sivistystyön muissa oppilaitostyypeissä suoritetut vapaavalintaiset suuntautuvat opinnot",
     "kieli" : "FI"
   }, {
-    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön opintokokonaisuus",
+    "nimi" : "Vapaan sivistystyön muissa oppilaitostyypeissä suoritetut vapaavalintaiset suuntautuvat opinnot",
     "kieli" : "SV"
   }, {
-    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön opintokokonaisuus",
+    "nimi" : "Vapaan sivistystyön muissa oppilaitostyypeissä suoritetut vapaavalintaiset suuntautuvat opinnot",
     "kieli" : "EN"
   } ],
   "versio" : 1,

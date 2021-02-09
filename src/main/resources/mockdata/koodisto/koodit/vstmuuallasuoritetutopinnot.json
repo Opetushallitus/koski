@@ -10,14 +10,47 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-    "koodiUri" : "vstmuuallasuoritetutopinnot_lukioopinnot",
-    "koodiArvo" : "lukioopinnot",
+    "koodiUri" : "vstmuuallasuoritetutopinnot_avoimetkorkeakouluopinnot",
+    "koodiArvo" : "avoimetkorkeakouluopinnot",
     "metadata" : [ {
-      "nimi" : "Lukio-opinnot",
+      "nimi" : "Avoimet korkeakouluopinnot",
       "lyhytNimi" : "",
       "kuvaus" : "",
       "kieli" : "FI"
     } ],
     "versio" : 1,
     "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "vstmuuallasuoritetutopinnot_lukioopinnot",
+  "koodiArvo" : "lukioopinnot",
+  "metadata" : [ {
+    "nimi" : "Lukio-opinnot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "vstmuuallasuoritetutopinnot_tyoelamaantutustuminen",
+  "koodiArvo" : "tyoelamaantutustuminen",
+  "metadata" : [ {
+    "nimi" : "Työelämään tutustuminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "vstmuuallasuoritetutopinnot_vapaansivistystyonopinnot",
+  "koodiArvo" : "vapaansivistystyonopinnot",
+  "metadata" : [ {
+    "nimi" : "Vapaan sivistystyön opinnot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }]

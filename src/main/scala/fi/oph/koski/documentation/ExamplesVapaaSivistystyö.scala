@@ -84,8 +84,8 @@ object VapaaSivistystyöExample {
         opintokokonaisuudenSuoritus(
           opintokokonaisuus("TAI01", "Taide työkaluna", "Taiteen käyttö työkaluna", 30.0)
         ),
-        muuallaSuoritetunOpintokokonaisuudenSuoritus(
-          muuallaSuorietutOpinnot("ATX02", "Tietokoneen huolto", "Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet (jatkokurssi)", 5.0),
+        muuallaSuoritettujenOpintojenSuoritus(
+          muuallaSuoritetutOpinnot("Lukion lyhyen matematiikan kurssi M02", 5.0),
           vstArviointi("Hyväksytty", date(2021, 11, 12))
         )
       )),
@@ -107,7 +107,7 @@ object VapaaSivistystyöExampleData {
 
   lazy val tunnustettu: OsaamisenTunnustaminen = OsaamisenTunnustaminen(
     Some(opintokokonaisuudenSuoritus(
-      opintokokonaisuus("ATX01", "Tietokoneen huolto", "Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet", 5.0),
+      opintokokonaisuus("MT02", "Lukion lyhyt matematiikka M02", "Lukiossa suoritettu lyhyen matematiikan kurssi", 5.0),
       vstArviointi("Hyväksytty", date(2021, 11, 12))
     )),
     "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
@@ -174,8 +174,8 @@ object VapaaSivistystyöExampleData {
     )
   }
 
-  def muuallaSuoritetunOpintokokonaisuudenSuoritus(
-                                   koulutusmoduuli: MuuallaSuoritetutVapaanSivistystyönOpinnot = muuallaSuorietutOpinnot(),
+  def muuallaSuoritettujenOpintojenSuoritus(
+                                   koulutusmoduuli: MuuallaSuoritetutVapaanSivistystyönOpinnot = muuallaSuoritetutOpinnot(),
                                    arviointi: OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi = vstArviointi()
                                  ): MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus = {
     MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus(
@@ -191,7 +191,7 @@ object VapaaSivistystyöExampleData {
   }
 
 
-  def muuallaSuorietutOpinnot(koodiarvo: String = "A01", nimi: String = "Arjen rahankäyttö" , kuvaus: String = "Arjen rahankäyttö", laajuusArvo: Double = 2.0): MuuallaSuoritetutVapaanSivistystyönOpinnot = {
+  def muuallaSuoritetutOpinnot(kuvaus: String = "Lukiossa suoritettuja opintoja", laajuusArvo: Double = 2.0): MuuallaSuoritetutVapaanSivistystyönOpinnot = {
     MuuallaSuoritetutVapaanSivistystyönOpinnot(Koodistokoodiviite("lukioopinnot", "vstmuuallasuoritetutopinnot"), kuvaus, laajuus(laajuusArvo))
   }
 
