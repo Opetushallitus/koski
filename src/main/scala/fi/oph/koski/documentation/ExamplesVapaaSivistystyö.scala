@@ -2,8 +2,7 @@ package fi.oph.koski.documentation
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
-
-import fi.oph.koski.documentation.VapaaSivistystyöExampleData._
+import fi.oph.koski.documentation.VapaaSivistystyöExampleData.{muuallaSuoritettujenOpintojenSuoritus, _}
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.henkilo.MockOppijat
@@ -82,7 +81,7 @@ object VapaaSivistystyöExample {
           opintokokonaisuus("VT02", "Valaisintekniikka", "Valaisinlähteet ja niiden toiminta", 10.0)
         ),
         opintokokonaisuudenSuoritus(
-          opintokokonaisuus("TAI01", "Taide työkaluna", "Taiteen käyttö työkaluna", 30.0)
+          opintokokonaisuus("TAI01", "Taide työkaluna", "Taiteen käyttö työkaluna", 20.0)
         ),
         muuallaSuoritettujenOpintojenSuoritus(
           muuallaSuoritetutOpinnot("Lukion lyhyen matematiikan kurssi M02", 5.0),
@@ -105,11 +104,7 @@ object VapaaSivistystyöExampleData {
 
   lazy val varsinaisSuomenKansanopistoToimipiste: Toimipiste = Toimipiste(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste)
 
-  lazy val tunnustettu: OsaamisenTunnustaminen = OsaamisenTunnustaminen(
-    Some(opintokokonaisuudenSuoritus(
-      opintokokonaisuus("MT02", "Lukion lyhyt matematiikka M02", "Lukiossa suoritettu lyhyen matematiikan kurssi", 5.0),
-      vstArviointi("Hyväksytty", date(2021, 11, 12))
-    )),
+  lazy val tunnustettu: MuuallaSuoritetunVapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen = MuuallaSuoritetunVapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen(
     "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
   )
 

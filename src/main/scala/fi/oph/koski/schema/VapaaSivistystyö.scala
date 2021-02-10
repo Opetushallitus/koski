@@ -1,9 +1,9 @@
 package fi.oph.koski.schema
 
-import fi.oph.scalaschema.annotation.{DefaultValue, Description, MaxItems, MinItems, Title}
-import java.time.{LocalDate, LocalDateTime}
+import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, Title}
 
-import fi.oph.koski.schema.annotation.{Hidden, KoodistoKoodiarvo, KoodistoUri}
+import java.time.{LocalDate, LocalDateTime}
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, MultiLineString, OksaUri, Representative, Tooltip}
 
 @Description("Vapaan sivistystyön koulutuksen opiskeluoikeus")
 case class VapaanSivistystyönOpiskeluoikeus(
@@ -124,8 +124,8 @@ case class MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintoj
   arviointi: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi]],
   @KoodistoKoodiarvo("vstmuuallasuoritetutopinnot")
   override val tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstmuuallasuoritetutopinnot", koodistoUri = "suorituksentyyppi"),
-  tunnustettu: OsaamisenTunnustaminen
-) extends VapaanSivistystyönOpintokokonaisuudenSuoritus with Tunnustettu
+  tunnustettu: MuuallaSuoritetunVapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen
+) extends VapaanSivistystyönOpintokokonaisuudenSuoritus with VSTTunnustettu
 
 @Title("Opintokokonaisuus")
 case class OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
@@ -158,4 +158,19 @@ trait VapaanSivistystyönKoulutuksenArviointi extends KoodistostaLöytyväArvioi
     case "Hylätty" => false
     case _ => true
   }
+}
+
+@Description("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")
+@OksaUri("tmpOKSAID629", "osaamisen tunnustaminen")
+case class MuuallaSuoritetunVapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen(
+   @Description("Osaamisen tunnustamisen kautta saatavan tutkinnon osan suorituksen selite.")
+   @Tooltip("Kuvaus siitä, miten aikaisemmin hankittu osaaminen on tunnustettu.")
+   @OksaUri("tmpOKSAID629", "osaamisen tunnustaminen")
+   @Representative
+   @MultiLineString(5)
+   selite: LocalizedString,
+)
+
+trait VSTTunnustettu {
+  def tunnustettu: MuuallaSuoritetunVapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen
 }

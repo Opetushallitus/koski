@@ -24,7 +24,3 @@ case class OsaamisenTunnustaminen(
 trait MahdollisestiTunnustettu {
   def tunnustettu: Option[OsaamisenTunnustaminen]
 }
-
-trait Tunnustettu {
-  def tunnustettu: OsaamisenTunnustaminen
-}

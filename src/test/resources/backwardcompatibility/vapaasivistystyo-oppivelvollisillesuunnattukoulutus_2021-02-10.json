@@ -690,52 +690,9 @@
             "koodistoUri" : "suorituksentyyppi"
           },
           "tunnustettu" : {
-            "osaaminen" : {
-              "koulutusmoduuli" : {
-                "tunniste" : {
-                  "koodiarvo" : "MT02",
-                  "nimi" : {
-                    "fi" : "Lukion lyhyt matematiikka M02"
-                  }
-                },
-                "kuvaus" : {
-                  "fi" : "Lukiossa suoritettu lyhyen matematiikan kurssi"
-                },
-                "laajuus" : {
-                  "arvo" : 5.0,
-                  "yksikkö" : {
-                    "koodiarvo" : "2",
-                    "nimi" : {
-                      "fi" : "opintopistettä",
-                      "sv" : "studiepoäng",
-                      "en" : "ECTS credits"
-                    },
-                    "lyhytNimi" : {
-                      "fi" : "op",
-                      "sv" : "sp",
-                      "en" : "ECTS cr"
-                    },
-                    "koodistoUri" : "opintojenlaajuusyksikko"
-                  }
-                }
-              },
-              "arviointi" : [ {
-                "arvosana" : {
-                  "koodiarvo" : "Hyväksytty",
-                  "koodistoUri" : "arviointiasteikkovst"
-                },
-                "päivä" : "2021-11-12",
-                "hyväksytty" : true
-              } ],
-              "tyyppi" : {
-                "koodiarvo" : "vstopintokokonaisuus",
-                "koodistoUri" : "suorituksentyyppi"
-              }
-            },
             "selite" : {
               "fi" : "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
-            },
-            "rahoituksenPiirissä" : false
+            }
           }
         } ],
         "tyyppi" : {
