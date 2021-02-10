@@ -72,7 +72,7 @@ class HyvaksyntaLanding extends React.Component {
   }
 
   getLogoutURL() {
-    return `/koski/user/logout?target=${encodeURIComponent(this.state.callback)}`
+    return `/koski/user/logout?target=${window.location.origin}/koski/user/redirect?target=${encodeURIComponent(this.state.callback)}`
   }
 
   parseCallbackURL() {
