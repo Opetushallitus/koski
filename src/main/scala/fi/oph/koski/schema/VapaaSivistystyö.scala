@@ -1,9 +1,9 @@
 package fi.oph.koski.schema
 
-import fi.oph.scalaschema.annotation.{DefaultValue, Description, MaxItems, MinItems, Title}
-import java.time.{LocalDate, LocalDateTime}
+import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, Title}
 
-import fi.oph.koski.schema.annotation.{Hidden, KoodistoKoodiarvo, KoodistoUri}
+import java.time.{LocalDate, LocalDateTime}
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, MultiLineString, OksaUri, Representative, Tooltip}
 
 @Description("Vapaan sivistystyön koulutuksen opiskeluoikeus")
 case class VapaanSivistystyönOpiskeluoikeus(
@@ -79,7 +79,7 @@ case class OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuor
 case class OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus(
   @Title("Valinnaiset suuntautumisopinnot")
   koulutusmoduuli: OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopinnot = OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopinnot(),
-  override val osasuoritukset: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus]],
+  override val osasuoritukset: Option[List[VapaanSivistystyönOpintokokonaisuudenSuoritus]],
   @KoodistoKoodiarvo("vstvalinnainensuuntautuminen")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstvalinnainensuuntautuminen", koodistoUri = "suorituksentyyppi")
 ) extends OppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus
@@ -106,14 +106,26 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus(
   laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends OppivelvollisilleSuunnatunVapaanSivistystyönOsasuorituksenKoulutusmoduuli with KoodistostaLöytyväKoulutusmoduuli
 
+trait VapaanSivistystyönOpintokokonaisuudenSuoritus extends Suoritus with Vahvistukseton
+
 @Title("Opintokokonaisuuden suoritus")
 case class OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus(
   @Title("Opintokokonaisuus")
   koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus,
   arviointi: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi]],
   @KoodistoKoodiarvo("vstopintokokonaisuus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstopintokokonaisuus", koodistoUri = "suorituksentyyppi")
-) extends Suoritus with Vahvistukseton
+  override val tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstopintokokonaisuus", koodistoUri = "suorituksentyyppi")
+) extends VapaanSivistystyönOpintokokonaisuudenSuoritus
+
+@Title("Muualla suoritettu opintokokonaisuuden suoritus")
+case class MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus(
+  @Title("Opintokokonaisuus")
+  koulutusmoduuli: MuuallaSuoritetutVapaanSivistystyönOpinnot,
+  arviointi: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi]],
+  @KoodistoKoodiarvo("vstmuuallasuoritetutopinnot")
+  override val tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstmuuallasuoritetutopinnot", koodistoUri = "suorituksentyyppi"),
+  tunnustettu: MuuallaSuoritetunVapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen
+) extends VapaanSivistystyönOpintokokonaisuudenSuoritus with VSTTunnustettu
 
 @Title("Opintokokonaisuus")
 case class OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
@@ -121,6 +133,14 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
   kuvaus: LocalizedString,
   laajuus: LaajuusOpintopisteissä
 ) extends PaikallinenKoulutusmoduuliPakollinenLaajuus
+
+@Title("Muualla suoritetut opinnot")
+case class MuuallaSuoritetutVapaanSivistystyönOpinnot(
+  @KoodistoUri("vstmuuallasuoritetutopinnot")
+  tunniste: Koodistokoodiviite,
+  kuvaus: LocalizedString,
+  laajuus: LaajuusOpintopisteissä
+) extends KoodistostaLöytyväKoulutusmoduuliPakollinenLaajuus
 
 @Title("Arviointi")
 case class OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi(
@@ -138,4 +158,19 @@ trait VapaanSivistystyönKoulutuksenArviointi extends KoodistostaLöytyväArvioi
     case "Hylätty" => false
     case _ => true
   }
+}
+
+@Description("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")
+@OksaUri("tmpOKSAID629", "osaamisen tunnustaminen")
+case class MuuallaSuoritetunVapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen(
+   @Description("Osaamisen tunnustamisen kautta saatavan tutkinnon osan suorituksen selite.")
+   @Tooltip("Kuvaus siitä, miten aikaisemmin hankittu osaaminen on tunnustettu.")
+   @OksaUri("tmpOKSAID629", "osaamisen tunnustaminen")
+   @Representative
+   @MultiLineString(5)
+   selite: LocalizedString,
+)
+
+trait VSTTunnustettu {
+  def tunnustettu: MuuallaSuoritetunVapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen
 }

@@ -2,8 +2,7 @@ package fi.oph.koski.documentation
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
-
-import fi.oph.koski.documentation.VapaaSivistystyöExampleData._
+import fi.oph.koski.documentation.VapaaSivistystyöExampleData.{muuallaSuoritettujenOpintojenSuoritus, _}
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -18,7 +17,6 @@ object ExamplesVapaaSivistystyö {
 }
 
 object VapaaSivistystyöExample {
-
   lazy val opiskeluoikeus = VapaanSivistystyönOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2022, 5, 31)),
     tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
@@ -83,8 +81,12 @@ object VapaaSivistystyöExample {
         ),
         opintokokonaisuudenSuoritus(
           opintokokonaisuus("TAI01", "Taide työkaluna", "Taiteen käyttö työkaluna", 20.0)
+        ),
+        muuallaSuoritettujenOpintojenSuoritus(
+          muuallaSuoritetutOpinnot("Lukion lyhyen matematiikan kurssi M02", 5.0),
+          vstArviointi("Hyväksytty", date(2021, 11, 12))
         )
-      ))
+      )),
     ))
   )
 
@@ -100,6 +102,10 @@ object VapaaSivistystyöExampleData {
   lazy val varsinaisSuomenKansanopisto: Oppilaitos = Oppilaitos(MockOrganisaatiot.varsinaisSuomenKansanopisto, Some(Koodistokoodiviite("01694", None, "oppilaitosnumero", None)), Some("Varsinais-Suomen kansanopisto"))
 
   lazy val varsinaisSuomenKansanopistoToimipiste: Toimipiste = Toimipiste(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste)
+
+  lazy val tunnustettu: MuuallaSuoritetunVapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen = MuuallaSuoritetunVapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen(
+    "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
+  )
 
   def osaamiskokonaisuudenSuoritus(
     osaamiskokonaisuusKoodiarvo: String = "1002",
@@ -130,7 +136,7 @@ object VapaaSivistystyöExampleData {
   }
 
   def suuntautumisopintojenSuoritus(
-    opintokokonaisuudet: List[OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus] = List(opintokokonaisuudenSuoritus())
+    opintokokonaisuudet: List[VapaanSivistystyönOpintokokonaisuudenSuoritus] = List(opintokokonaisuudenSuoritus())
   ): OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus = {
     suuntautumisopintojenSuoritus(None, Some(opintokokonaisuudet))
   }
@@ -143,7 +149,7 @@ object VapaaSivistystyöExampleData {
 
   private def suuntautumisopintojenSuoritus(
     laajuus: Option[LaajuusOpintopisteissä],
-    opintokokonaisuudet: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus]]
+    opintokokonaisuudet: Option[List[VapaanSivistystyönOpintokokonaisuudenSuoritus]]
   ): OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus = {
     OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus(
       koulutusmoduuli = OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopinnot(laajuus = laajuus),
@@ -162,8 +168,25 @@ object VapaaSivistystyöExampleData {
     )
   }
 
+  def muuallaSuoritettujenOpintojenSuoritus(
+                                   koulutusmoduuli: MuuallaSuoritetutVapaanSivistystyönOpinnot = muuallaSuoritetutOpinnot(),
+                                   arviointi: OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi = vstArviointi()
+                                 ): MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus = {
+    MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus(
+      tyyppi = Koodistokoodiviite("vstmuuallasuoritetutopinnot", koodistoUri = "suorituksentyyppi"),
+      koulutusmoduuli = koulutusmoduuli,
+      arviointi = Some(List(arviointi)),
+      tunnustettu = tunnustettu
+    )
+  }
+
   def opintokokonaisuus(koodiarvo: String = "A01", nimi: String = "Arjen rahankäyttö" , kuvaus: String = "Arjen rahankäyttö", laajuusArvo: Double = 2.0): OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus = {
     OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(PaikallinenKoodi(koodiarvo, nimi), kuvaus, laajuus(laajuusArvo))
+  }
+
+
+  def muuallaSuoritetutOpinnot(kuvaus: String = "Lukiossa suoritettuja opintoja", laajuusArvo: Double = 2.0): MuuallaSuoritetutVapaanSivistystyönOpinnot = {
+    MuuallaSuoritetutVapaanSivistystyönOpinnot(Koodistokoodiviite("lukioopinnot", "vstmuuallasuoritetutopinnot"), kuvaus, laajuus(laajuusArvo))
   }
 
   def vstArviointi(arvosana:String = "Hyväksytty", päivä: LocalDate = date(2021, 10, 30)): OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi = {

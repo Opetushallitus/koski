@@ -1356,6 +1356,21 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "suorituksentyyppi_vstmuuallasuoritetutopinnot",
+  "koodiArvo" : "vstmuuallasuoritetutopinnot",
+  "metadata" : [ {
+    "nimi" : "Vapaan sivistystyön muissa oppilaitostyypeissä suoritetut vapaavalintaiset suuntautuvat opinnot",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vapaan sivistystyön muissa oppilaitostyypeissä suoritetut vapaavalintaiset suuntautuvat opinnot",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaan sivistystyön muissa oppilaitostyypeissä suoritetut vapaavalintaiset suuntautuvat opinnot",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "suorituksentyyppi_vstvalinnainensuuntautuminen",
   "koodiArvo" : "vstvalinnainensuuntautuminen",
   "metadata" : [ {
