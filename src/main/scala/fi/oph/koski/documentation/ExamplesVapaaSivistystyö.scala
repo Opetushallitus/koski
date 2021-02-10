@@ -80,7 +80,7 @@ object VapaaSivistystyöExample {
           opintokokonaisuus("VT02", "Valaisintekniikka", "Valaisinlähteet ja niiden toiminta", 6.0)
         ),
         opintokokonaisuudenSuoritus(
-          opintokokonaisuus("TAI01", "Taide työkaluna", "Taiteen käyttö työkaluna", 20.0)
+          opintokokonaisuus("TAI01", "Taide työkaluna", "Taiteen käyttö työkaluna", 15.0)
         ),
         muuallaSuoritettujenOpintojenSuoritus(
           muuallaSuoritetutOpinnot("Lukion lyhyen matematiikan kurssi M02", 5.0),
