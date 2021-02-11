@@ -9,6 +9,8 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema.OidOrganisaatio
 import cas.CasClientException
+import fi.oph.koski.config.Features
+import fi.oph.koski.valpas.userdirectory.ValpasKäyttöoikeusRoolit
 
 /**
   * Replacement for the LDAP-based directory client
@@ -25,6 +27,7 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
   private val http = Http(virkailijaUrl, "kayttoikeuspalvelu")
   private val käyttöoikeusServiceClient = KäyttöoikeusServiceClient(config)
   private val oppijanumeroRekisteriClient = OppijanumeroRekisteriClient(config)
+  private lazy val features = Features(config)
 
   override def findUser(userid: String): Option[DirectoryUser] =
     Http.runTask(käyttöoikeusServiceClient.findKäyttöoikeudetByUsername(userid).map {
@@ -65,11 +68,26 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
     })
   }
 
-  private def resolveKäyttöoikeudet(käyttäjä: HenkilönKäyttöoikeudet) =
-    (käyttäjä.oidHenkilo, käyttäjä.organisaatiot.flatMap {
+  private def resolveKäyttöoikeudet(käyttäjä: HenkilönKäyttöoikeudet) = {
+    (käyttäjä.oidHenkilo,
+      KoskiSpecificKäyttöoikeusRoolit.resolveKäyttäjänKäyttöoikeudet(käyttäjä.organisaatiot)
+    )
+  }
+
+  private def findKäyttäjä(oid: String, käyttöoikeudet: List[Käyttöoikeus]) = {
+    Http.runTask(oppijanumeroRekisteriClient.findKäyttäjäByOid(oid)).map { (käyttäjä: KäyttäjäHenkilö) =>
+      DirectoryUser(käyttäjä.oidHenkilo, käyttöoikeudet, käyttäjä.etunimet, käyttäjä.sukunimi, käyttäjä.asiointiKieli.map(_.kieliKoodi))
+    }
+  }
+
+}
+
+object KoskiSpecificKäyttöoikeusRoolit {
+  def resolveKäyttäjänKäyttöoikeudet(organisaatiot: List[OrganisaatioJaKäyttöoikeudet]) =
+    organisaatiot.flatMap {
       case OrganisaatioJaKäyttöoikeudet(organisaatioOid, käyttöoikeudet) =>
         val roolit = käyttöoikeudet.collect { case PalveluJaOikeus(palvelu, oikeus) => Palvelurooli(palvelu, oikeus) }
-        if (!roolit.map(_.palveluName).contains("KOSKI")) {
+        if (!roolit.map(_.palveluName).contains("KOSKI") && !roolit.map(_.palveluName).contains("VALPAS")) {
           Nil
         } else if (organisaatioOid == Opetushallitus.organisaatioOid) {
           List(KäyttöoikeusGlobal(roolit))
@@ -78,15 +96,9 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
         } else {
           List(KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), roolit, juuri = true, oppilaitostyyppi = None))
         }
-    })
-
-  private def findKäyttäjä(oid: String, käyttöoikeudet: List[Käyttöoikeus]) = {
-    Http.runTask(oppijanumeroRekisteriClient.findKäyttäjäByOid(oid)).map { (käyttäjä: KäyttäjäHenkilö) =>
-      DirectoryUser(käyttäjä.oidHenkilo, käyttöoikeudet, käyttäjä.etunimet, käyttäjä.sukunimi, käyttäjä.asiointiKieli.map(_.kieliKoodi))
     }
-  }
 
   private def hasViranomaisRooli(roolit: List[Palvelurooli]) =
     roolit.exists(r => Rooli.globaalitKoulutusmuotoRoolit.contains(r.rooli)) ||
-    roolit.map(_.rooli).contains(Rooli.TIEDONSIIRTO_LUOVUTUSPALVELU)
+      roolit.map(_.rooli).contains(Rooli.TIEDONSIIRTO_LUOVUTUSPALVELU)
 }
