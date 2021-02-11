@@ -70,7 +70,8 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
 
   private def resolveKäyttöoikeudet(käyttäjä: HenkilönKäyttöoikeudet) = {
     (käyttäjä.oidHenkilo,
-      KoskiSpecificKäyttöoikeusRoolit.resolveKäyttäjänKäyttöoikeudet(käyttäjä.organisaatiot)
+      KoskiSpecificKäyttöoikeusRoolit.resolveKäyttäjänKäyttöoikeudet(käyttäjä.organisaatiot) ++
+        (if (features.valpas) ValpasKäyttöoikeusRoolit.resolveKäyttäjänKäyttöoikeudet(käyttäjä.organisaatiot) else Nil)
     )
   }
 
