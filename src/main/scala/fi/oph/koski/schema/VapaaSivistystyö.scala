@@ -117,7 +117,7 @@ case class OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuori
   override val tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstopintokokonaisuus", koodistoUri = "suorituksentyyppi")
 ) extends VapaanSivistystyönOpintokokonaisuudenSuoritus
 
-@Title("Muualla suoritettu opintokokonaisuuden suoritus")
+@Title("Muualla suoritettujen opintojen suoritus")
 case class MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus(
   @Title("Opintokokonaisuus")
   koulutusmoduuli: MuuallaSuoritetutVapaanSivistystyönOpinnot,
