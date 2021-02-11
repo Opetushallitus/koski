@@ -33,8 +33,6 @@ trait RequiresValpasSession extends ValpasAuthenticationSupport with HasKoskiSes
 
   def isValpasSessionWithLogging(session: KoskiSession): Boolean = {
     logger.info("session:" + session)
-    val kaikkiKäyttöoikeudet = session.kaikkiKäyttöoikeudet
-    logger.info("kaikkiKäyttöoikeudet:" + kaikkiKäyttöoikeudet)
     val orgKäyttöoikeudet = session.orgKäyttöoikeudet
     logger.info("orgKäyttöoikeudet:" + orgKäyttöoikeudet)
     orgKäyttöoikeudet
