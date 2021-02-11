@@ -17,6 +17,7 @@ trait RequiresValpasSession extends ValpasAuthenticationSupport with HasKoskiSes
         haltWithStatus(status)
       case _ =>
         if (!koskiSessionOption.exists(isValpasSession)) {
+          koskiSessionOption.exists(isValpasSessionWithLogging)
           haltWithStatus(KoskiErrorCategory.forbidden())
         }
     }
@@ -29,4 +30,16 @@ trait RequiresValpasSession extends ValpasAuthenticationSupport with HasKoskiSes
         ValpasPalvelurooli(ValpasRooli.OPPILAITOS),
         ValpasPalvelurooli(ValpasRooli.KUNTA)))
       .nonEmpty
+
+  def isValpasSessionWithLogging(session: KoskiSession): Boolean = {
+    logger.info("session:" + session)
+    val orgKäyttöoikeudet = session.orgKäyttöoikeudet
+    logger.info("orgKäyttöoikeudet:" + orgKäyttöoikeudet)
+    orgKäyttöoikeudet
+      .flatMap(_.organisaatiokohtaisetPalveluroolit)
+      .intersect(Set(
+        ValpasPalvelurooli(ValpasRooli.OPPILAITOS),
+        ValpasPalvelurooli(ValpasRooli.KUNTA)))
+      .nonEmpty
+  }
 }
