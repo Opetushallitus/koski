@@ -94,7 +94,7 @@ jobs:
 
       - name: Set role ARN parameter name
         run: |
-          echo "ROLE_ENVVAR_NAME=AWS_DEPLOYMENT_ROLE_${{ github.event.inputs.environment }}"
+          echo "ROLE_ENVVAR_NAME=AWS_DEPLOYMENT_ROLE_${{ github.event.inputs.environment }} >> $GITHUB_ENV"
 
       - name: Switch role to target environment
         uses: aws-actions/configure-aws-credentials@v1
