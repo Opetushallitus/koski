@@ -46,6 +46,7 @@ trait YleissivistävänKoulutuksenArviointi extends KoodistostaLöytyväArvioint
   def hyväksytty = arvosana.koodiarvo match {
     case "H" => false
     case "4" => false
+    case "O" => false
     case _ => true
   }
 }
