@@ -1,0 +1,164 @@
+name: Deploy
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target environment (dev/qa/prod)"
+        required: true
+        default: "dev"
+      commithash:
+        description: "Commit hash to deploy from"
+env:
+  DOCKER_BUILDKIT: 1
+  SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+
+jobs:
+  checkbuilddeploy:
+    name: Build and deploy
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.commithash }}
+
+      - name: Configure AWS credentials for utility account
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Check if container image already exists in ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: koski
+          IMAGE_TAG: ${{ github.event.inputs.commithash  }}
+        id: check-image
+        run: |
+          echo "::set-output name=image-exists::$(docker manifest inspect $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG > /dev/null ; echo $?)"
+
+      - name: Set up SSH agent
+        if: steps.check-image.image-exists != '0'
+        run: |
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add - <<< "${{ secrets.ARTIFACTORY_DIST_KEY }}"
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        if: steps.check-image.image-exists != '0'
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        if: steps.check-image.image-exists != '0'
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        if: steps.check-image.image-exists != '0'
+        with:
+          java-version: "8"
+          architecture: x64
+          server-id: oph-sade-artifactory
+          server-username: ARTIFACTORY_USERNAME
+          server-password: ARTIFACTORY_PASSWORD
+
+      - name: Build and upload to Artifactory
+        if: steps.check-image.image-exists != '0'
+        env:
+          ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
+          ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+        run: make dist version=${{ github.sha }}
+
+      - name: Build, tag, and push image to Amazon ECR
+        if: steps.check-image.image-exists != '0'
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: koski
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg KOSKI_VERSION=$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Set role ARN parameter name
+        run: |
+          echo "ROLE_ENVVAR_NAME=AWS_DEPLOYMENT_ROLE_${{ github.event.inputs.environment }}"
+
+      - name: Switch role to target environment
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+          role-to-assume: ${{ secrets[env.ROLE_ENVVAR_NAME] }}
+          role-duration-seconds: 3600
+          role-session-name: KoskiDeployment-${{ github.sha }}
+
+      - name: Get task definition ARN
+        id: get-taskdef-arn
+        run: |
+          echo "::set-output name=taskdef-arn::$(aws ssm get-parameter --name /koski/task-definition-skeleton --output text --query 'Parameter.Value')"
+
+      - name: Get task definition skeleton
+        run: |
+          aws ecs describe-task-definition --task-definition ${{ steps.get-taskdef-arn.outputs.taskdef-arn }} --query 'taskDefinition' > task-definition.json
+
+      - name: Render Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: KoskiContainer
+          image: ${{ steps.login-ecr.outputs.registry }}/koski:${{ github.sha }}
+
+      - name: Deploy using CodeDeploy
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: koski
+          cluster: koski-cluster
+          wait-for-service-stability: true
+          codedeploy-appspec: appspec.yml
+          codedeploy-application: koski
+          codedeploy-deployment-group: koski-deployment-group
+
+      - name: Get raportointikanta loader task definition ARN
+        id: get-raportointikanta-taskdef-arn
+        run: |
+          echo "::set-output name=taskdef-arn::$(aws ssm get-parameter --name /koski/raportointikanta/task-definition-skeleton --output text --query 'Parameter.Value')"
+
+      - name: Get task definition skeleton
+        run: |
+          aws ecs describe-task-definition --task-definition ${{ steps.get-raportointikanta-taskdef-arn.outputs.taskdef-arn }} --query 'taskDefinition' > raportointikanta-task-definition.json
+
+      - name: Render Amazon ECS task definition
+        id: raportointikanta-task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: raportointikanta-task-definition.json
+          container-name: RaportointikantaContainer
+          image: ${{ steps.login-ecr.outputs.registry }}/koski:${{ github.sha }}
+
+      - name: Deploy Amazon ECS task definition
+        id: raportointikanta-taskdef-deploy
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.raportointikanta-task-def.outputs.task-definition }}
+          cluster: koski-cluster
+
+      - name: Write task definition ARN to parameter store
+        env:
+          TASKDEF_ARN: ${{ steps.raportointikanta-taskdef-deploy.outputs.task-definition-arn }}
+        run: aws ssm put-parameter --overwrite --name /koski/raportointikanta/task-definition --type String --value ${TASKDEF_ARN}
