@@ -280,7 +280,7 @@ object ExamplesAikuistenPerusopetus {
       alkuvaiheenKurssinSuoritus("LÄI4"),
       alkuvaiheenKurssinSuoritus("LÄI5"),
       alkuvaiheenKurssinSuoritus("LÄI6"),
-      alkuvaiheenKurssinSuoritus("LÄI7"),
+      alkuvaiheenKurssinSuoritus("LÄI7").copy(arviointi = arviointi("O", None, Some(date(2016, 12, 29)))),
       alkuvaiheenKurssinSuoritus("LÄI8"),
       alkuvaiheenKurssinSuoritus("LÄI9"),
       alkuvaiheenKurssinSuoritus("AÄI1").copy(arviointi = arviointi(9, Some(date(2016, 12, 29)))),

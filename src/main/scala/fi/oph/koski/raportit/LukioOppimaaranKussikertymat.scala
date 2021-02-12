@@ -33,6 +33,7 @@ object LukioOppimaaranKussikertymat extends DatabaseConverters {
         join #${s.name}.r_opiskeluoikeus opiskeluoikeus on opiskeluoikeus.opiskeluoikeus_oid = paatason_suoritus.opiskeluoikeus_oid
       where paatason_suoritus.suorituksen_tyyppi = 'lukionoppimaara'
         and osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
+        and osasuoritus.arviointi_arvosana_koodiarvo != 'O'
       group by opiskeluoikeus.oppilaitos_oid, osasuoritus.arviointi_paiva
     """
 

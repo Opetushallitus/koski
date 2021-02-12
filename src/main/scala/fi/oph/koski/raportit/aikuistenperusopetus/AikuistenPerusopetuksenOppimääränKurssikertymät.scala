@@ -93,6 +93,7 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends K
         where (r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi')
           and r_osasuoritus.arviointi_paiva >= $aikaisintaan
           and r_osasuoritus.arviointi_paiva <= $viimeistaan
+          and r_osasuoritus.arviointi_arvosana_koodiarvo != 'O'
         group by paatason_suoritus.oppilaitos_nimi, paatason_suoritus.oppilaitos_oid
       ) kurssikertymat
       --- aikajaksojen ulkopuoliset kurssit
@@ -107,6 +108,7 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends K
         where (r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi')
           and r_osasuoritus.arviointi_paiva >= $aikaisintaan
           and r_osasuoritus.arviointi_paiva <= $viimeistaan
+          and r_osasuoritus.arviointi_arvosana_koodiarvo != 'O'
           and (oo_alkamisaiva > r_osasuoritus.arviointi_paiva
             or (oo_paattymispaiva < r_osasuoritus.arviointi_paiva and viimeisin_tila = 'valmistunut'))
         group by paatason_suoritus.oppilaitos_nimi, paatason_suoritus.oppilaitos_oid
