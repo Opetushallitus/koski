@@ -1,5 +1,5 @@
 package fi.oph.koski.koskiuser
 
-trait HasKoskiSession {
+trait HasKoskiSpecificSession {
   implicit def koskiSession: KoskiSpecificSession
 }

@@ -4,12 +4,12 @@ import java.util.UUID
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log._
-import fi.oph.koski.servlet.KoskiBaseServlet
+import fi.oph.koski.servlet.KoskiSpecificBaseServlet
 import fi.oph.koski.sso.SSOSupport
 import fi.oph.koski.userdirectory.Password
 import org.scalatra.auth.strategy.BasicAuthStrategy
 
-trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport {
+trait AuthenticationSupport extends KoskiSpecificBaseServlet with SSOSupport {
   val realm = "Koski"
 
   def application: UserAuthenticationContext
@@ -43,8 +43,8 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport {
   }
 
 
-  private def userFromCookie: Either[KoskiSessionStatus, AuthenticationUser] = {
-    def getUser(authUser: Option[AuthenticationUser]): Either[KoskiSessionStatus, AuthenticationUser] =
+  private def userFromCookie: Either[SessionStatus, AuthenticationUser] = {
+    def getUser(authUser: Option[AuthenticationUser]): Either[SessionStatus, AuthenticationUser] =
       authUser.flatMap(_.serviceTicket).map(ticket => (ticket, application.koskiSessionRepository.getUserByTicket(ticket))) match {
         case Some((_, Some(usr))) => Right(usr)
         case Some((ticket, None)) =>
@@ -73,7 +73,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport {
 
   def isAuthenticated = getUser.isRight
 
-  def sessionOrStatus: Either[KoskiSessionStatus, KoskiSpecificSession] =
+  def sessionOrStatus: Either[SessionStatus, KoskiSpecificSession] =
     userFromCookie.map(createSession)
 
   override def koskiSessionOption: Option[KoskiSpecificSession] =
@@ -128,7 +128,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport {
     val fakeServiceTicket: String = "koski-" + UUID.randomUUID()
     application.koskiSessionRepository.store(fakeServiceTicket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
     logger.info("Local session ticket created: " + fakeServiceTicket)
-    KoskiUserLanguage.setLanguageCookie(lang.getOrElse(KoskiUserLanguage.getLanguageFromLDAP(user, application.directoryClient)), response)
+    UserLanguage.setLanguageCookie(lang.getOrElse(UserLanguage.getLanguageFromLDAP(user, application.directoryClient)), response)
     user.copy(serviceTicket = Some(fakeServiceTicket))
   }
 

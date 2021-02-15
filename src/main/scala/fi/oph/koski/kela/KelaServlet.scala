@@ -8,10 +8,10 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusOid
 import fi.oph.koski.schema.Henkilö
-import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
+import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache, ObservableSupport}
 import org.json4s.JsonAST.JValue
 
-class KelaServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresKela with NoCache with ObservableSupport {
+class KelaServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresKela with NoCache with ObservableSupport {
   val kelaService = new KelaService(application)
 
   post("/hetu") {

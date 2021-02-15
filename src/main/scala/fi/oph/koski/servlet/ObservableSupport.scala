@@ -10,7 +10,7 @@ import rx.lang.scala.Observable
 
 import scala.reflect.runtime.universe.TypeTag
 
-trait ObservableSupport extends ApiServlet {
+trait ObservableSupport extends KoskiSpecificApiServlet {
   private val FlushInterval = 5000 // ms
 
   def streamResponse[T : TypeTag](in: Observable[T], user: KoskiSpecificSession): Unit = try {

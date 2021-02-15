@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.html.{EiRaameja, Virkailija}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.{Koodisto, KoodistoKoodiMetadata}
-import fi.oph.koski.koskiuser.KoskiAuthenticationSupport
+import fi.oph.koski.koskiuser.KoskiSpecificAuthenticationSupport
 import fi.oph.koski.schema.{Henkilö, LocalizedString, OsaamisenTunnustaminen}
 import fi.oph.koski.servlet.VirkailijaHtmlServlet
 import fi.oph.scalaschema.ClassSchema
@@ -13,7 +13,7 @@ import org.scalatra.ScalatraServlet
 import scala.Function.const
 import scala.xml.NodeSeq
 
-class DocumentationServlet(implicit val application: KoskiApplication) extends ScalatraServlet with VirkailijaHtmlServlet with KoskiAuthenticationSupport with KoodistoFinder {
+class DocumentationServlet(implicit val application: KoskiApplication) extends ScalatraServlet with VirkailijaHtmlServlet with KoskiSpecificAuthenticationSupport with KoodistoFinder {
   val koodistoPalvelu = application.koodistoPalvelu
 
   get("^/(|tietomalli|koodistot|rajapinnat/oppilashallintojarjestelmat|rajapinnat/luovutuspalvelu|rajapinnat/palveluvayla-omadata)$".r){

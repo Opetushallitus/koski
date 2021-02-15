@@ -3,11 +3,11 @@ package fi.oph.koski.elasticsearch
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
-import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
+import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache, ObservableSupport}
 import org.scalatra._
 
 class ElasticSearchServlet(implicit val application: KoskiApplication)
-  extends ApiServlet
+  extends KoskiSpecificApiServlet
     with RequiresVirkailijaOrPalvelukäyttäjä
     with NoCache
     with ObservableSupport

@@ -3,10 +3,10 @@ package fi.oph.koski.valpas
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.Unauthenticated
-import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 
-class ValpasTestApiServlet(implicit val application: KoskiApplication) extends ApiServlet with NoCache with Unauthenticated {
+class ValpasTestApiServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with NoCache with Unauthenticated {
   before() {
     // Tämä on ylimääräinen varmistus: tämän servletin ei koskaan pitäisi päätyä ajoon kuin mock-moodissa
     application.config.getString("opintopolku.virkailija.url") match {

@@ -8,11 +8,11 @@ import fi.oph.koski.koskiuser.RequiresLuovutuspalvelu
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import fi.oph.koski.schema.filter.MyDataOppija
-import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache}
+import fi.oph.koski.servlet.{KoskiSpecificApiServlet, InvalidRequestException, NoCache}
 import org.scalatra.ContentEncodingSupport
 
 
-class ApiProxyServlet(implicit val application: KoskiApplication) extends ApiServlet
+class ApiProxyServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet
   with Logging with ContentEncodingSupport with NoCache with MyDataSupport with RequiresLuovutuspalvelu {
 
   post("/") {

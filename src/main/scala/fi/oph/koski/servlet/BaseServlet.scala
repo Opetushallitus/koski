@@ -10,7 +10,7 @@ import org.scalatra._
 import scala.reflect.runtime.{universe => ru}
 import scala.xml.Elem
 
-trait KoskiBaseServlet extends ScalatraServlet with Logging {
+trait KoskiSpecificBaseServlet extends ScalatraServlet with Logging {
   override protected def logger: LoggerWithContext = {
     try {
       logger(koskiSessionOption)

@@ -1,14 +1,14 @@
 package fi.oph.koski.luovutuspalvelu
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.servlet.ApiServlet
+import fi.oph.koski.servlet.KoskiSpecificApiServlet
 import fi.oph.koski.util.XML
 
 import scala.util.control.NonFatal
 import scala.xml.transform.{RewriteRule, RuleTransformer}
 import scala.xml.{Elem, Node, NodeSeq}
 
-trait SoapServlet extends ApiServlet {
+trait SoapServlet extends KoskiSpecificApiServlet {
   def writeXml(elem: Node): Unit = {
     contentType = "text/xml"
     response.writer.print(XML.prettyPrint(elem))
