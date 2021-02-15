@@ -5,9 +5,9 @@ import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.organisaatio.Oppilaitostyyppi._
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, Organisaatiotyyppi}
 import fi.oph.koski.schema.{Koodistokoodiviite, OpiskeluoikeudenTyyppi}
-import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.servlet.{ApiServlet, KoskiSpecificApiServlet, NoCache}
 
-class OppilaitosServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {
+class OppilaitosServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {
   get("/") {
     application.oppilaitosRepository.oppilaitokset(koskiSession).toList
   }

@@ -4,9 +4,10 @@ import java.net.URLEncoder
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.SessionStatusExpiredVirkailija
-import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.servlet.NoCache
+import fi.oph.koski.valpas.servlet.ValpasApiServlet
 
-class ValpasLogoutServlet(implicit val application: KoskiApplication) extends ApiServlet with NoCache with ValpasAuthenticationSupport {
+class ValpasLogoutServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with ValpasAuthenticationSupport {
   get("/") {
     logger.info("Logged out")
 

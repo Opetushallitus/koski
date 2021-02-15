@@ -35,7 +35,7 @@ import fi.oph.koski.sure.SureServlet
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
 import fi.oph.koski.tutkinto.TutkinnonPerusteetServlet
 import fi.oph.koski.util.Futures
-import fi.oph.koski.valpas.{ValpasApiServlet, ValpasBootstrapServlet, ValpasTestApiServlet}
+import fi.oph.koski.valpas.{ValpasRootApiServlet, ValpasBootstrapServlet, ValpasTestApiServlet}
 import fi.oph.koski.valpas.valpasuser.ValpasLogoutServlet
 import fi.oph.koski.valvira.ValviraServlet
 import fi.oph.koski.ytr.{YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
@@ -115,14 +115,14 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     if (!SSOConfig(application.config).isCasSsoUsed) {
       mount("/user/login", new LocalLoginServlet)
     }
-    mount("/user/logout", new KoskiLogoutServlet)
+    mount("/user/logout", new KoskiSpecificLogoutServlet)
     mount("/user/redirect", new LogoutRedirectServlet)
     mount("/cas", new CasServlet)
     mount("/cache", new CacheServlet)
 
     if (application.features.valpas) {
       mount("/valpas/localization", new ValpasBootstrapServlet)
-      mount("/valpas/api", new ValpasApiServlet)
+      mount("/valpas/api", new ValpasRootApiServlet)
       mount("/valpas/logout", new ValpasLogoutServlet)
       if (!SSOConfig(application.config).isCasSsoUsed) {
         mount("/valpas/login", new LocalLoginServlet)

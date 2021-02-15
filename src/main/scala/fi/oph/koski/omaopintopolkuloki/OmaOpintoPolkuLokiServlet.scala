@@ -2,10 +2,10 @@ package fi.oph.koski.omaopintopolkuloki
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.RequiresKansalainen
-import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.servlet.{ApiServlet, KoskiSpecificApiServlet, NoCache}
 
 class OmaOpintoPolkuLokiServlet(implicit val application: KoskiApplication) extends
-  RequiresKansalainen with ApiServlet with NoCache {
+  RequiresKansalainen with KoskiSpecificApiServlet with NoCache {
 
   val auditLogs = new AuditLogService(application.organisaatioRepository, AuditLogDynamoDB.db)
 

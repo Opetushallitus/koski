@@ -2,9 +2,9 @@ package fi.oph.koski.fixture
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
-import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.servlet.{ApiServlet, KoskiSpecificApiServlet, NoCache}
 
-class FixtureServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {
+class FixtureServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {
   post("/reset") {
     application.fixtureCreator.resetFixtures()
     "ok"

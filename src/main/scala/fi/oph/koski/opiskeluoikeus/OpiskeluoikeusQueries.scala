@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{GlobalExecutionContext, HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.{HasKoskiSession, KoskiSpecificSession}
+import fi.oph.koski.koskiuser.{HasSession, HasKoskiSpecificSession, KoskiSpecificSession}
 import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest
 import org.scalatra._
 import rx.lang.scala.Observable
 
-trait OpiskeluoikeusQueries extends ApiServlet with Logging with GlobalExecutionContext with ObservableSupport with ContentEncodingSupport with Pagination with HasKoskiSession {
+trait OpiskeluoikeusQueries extends ApiServlet with Logging with GlobalExecutionContext with ObservableSupport with ContentEncodingSupport with Pagination with HasKoskiSpecificSession {
   def application: KoskiApplication
 
   def performOpiskeluoikeudetQueryLaajoillaHenkilötiedoilla: Either[HttpStatus, Observable[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])]] =

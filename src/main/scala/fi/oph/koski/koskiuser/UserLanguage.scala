@@ -6,7 +6,7 @@ import fi.oph.koski.userdirectory.DirectoryClient
 import org.scalatra.servlet.{RichRequest, RichResponse}
 import org.scalatra.{Cookie, CookieOptions}
 
-object KoskiUserLanguage extends Logging {
+object UserLanguage extends Logging {
   def getLanguageFromLDAP(user: AuthenticationUser, directoryClient: DirectoryClient): String = {
     val username = user.username
     directoryClient.findUser(username) match {

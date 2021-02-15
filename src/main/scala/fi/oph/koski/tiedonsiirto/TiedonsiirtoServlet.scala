@@ -4,11 +4,11 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.organisaatio.OrganisaatioOid
-import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.servlet.{ApiServlet, KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.util.SortOrder.Ascending
 import fi.oph.koski.util.{PaginatedResponse, Pagination, PaginationSettings, SortOrder}
 
-class TiedonsiirtoServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache with Pagination {
+class TiedonsiirtoServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache with Pagination {
 
   get("/") {
     renderEither[PaginatedResponse[Tiedonsiirrot]](application.tiedonsiirtoService.haeTiedonsiirrot(parseQuery)(koskiSession))

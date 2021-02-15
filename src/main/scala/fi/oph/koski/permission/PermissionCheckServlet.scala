@@ -5,13 +5,13 @@ import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, Unauthenticated}
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus, Organisaatio}
-import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.servlet.{ApiServlet, KoskiSpecificApiServlet, NoCache}
 
 case class PermissionCheckRequest(personOidsForSamePerson: List[Henkilö.Oid], organisationOids: List[Organisaatio.Oid], loggedInUserRoles: List[String])
 
 case class PermissionCheckResponse(accessAllowed: Boolean, errorMessage: Option[String] = None)
 
-class PermissionCheckServlet(implicit val application: KoskiApplication) extends ApiServlet with NoCache with Unauthenticated {
+class PermissionCheckServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with NoCache with Unauthenticated {
   post("/checkpermission") {
     withJsonBody({ body =>
       val request = JsonSerializer.extract[PermissionCheckRequest](body, ignoreExtras = true)

@@ -7,9 +7,9 @@ import fi.oph.koski.henkilo.HenkilönTunnisteet
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.RequiresKansalainen
-import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.servlet.{ApiServlet, KoskiSpecificApiServlet, NoCache}
 
-class YtrKoesuoritusApiServlet(implicit val application: KoskiApplication) extends ApiServlet with NoCache with RequiresKansalainen {
+class YtrKoesuoritusApiServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with NoCache with RequiresKansalainen {
   post("/:oid") {
     renderEither(examResponse(params("oid")))
   }

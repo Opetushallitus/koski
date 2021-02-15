@@ -7,14 +7,14 @@ import fi.oph.koski.http.{JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.log.Logging
-import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.servlet.{ApiServlet, KoskiSpecificApiServlet, NoCache}
 import org.json4s.JsonAST.JValue
 import org.json4s.jackson.JsonMethods
 import org.scalatra.servlet.FileUploadSupport
 
 import scala.io.{BufferedSource, Source}
 
-class ElaketurvakeskusServlet(implicit val application: KoskiApplication) extends ApiServlet with FileUploadSupport with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache {
+class ElaketurvakeskusServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with FileUploadSupport with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache {
 
   val elaketurvakeskusService = new ElaketurvakeskusService(application)
 

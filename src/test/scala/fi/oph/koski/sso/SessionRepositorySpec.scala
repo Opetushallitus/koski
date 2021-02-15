@@ -10,7 +10,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{SSOSessionRow, Tables}
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
-class KoskiSessionRepositorySpec extends FreeSpec with Matchers with DatabaseTestMethods with BeforeAndAfterAll {
+class SessionRepositorySpec extends FreeSpec with Matchers with DatabaseTestMethods with BeforeAndAfterAll {
   private def createDummySession(dateTime: ZonedDateTime) = {
     val fakeServiceTicket: String = "koski-" + UUID.randomUUID()
     val sqlTimestamp = new Timestamp(dateTime.toInstant.toEpochMilli)

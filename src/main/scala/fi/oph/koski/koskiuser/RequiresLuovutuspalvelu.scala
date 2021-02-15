@@ -2,7 +2,7 @@ package fi.oph.koski.koskiuser
 
 import fi.oph.koski.http.KoskiErrorCategory
 
-trait RequiresLuovutuspalvelu extends KoskiAuthenticationSupport {
+trait RequiresLuovutuspalvelu extends KoskiSpecificAuthenticationSupport {
   implicit def koskiSession: KoskiSpecificSession = koskiSessionOption.get
 
   before() {

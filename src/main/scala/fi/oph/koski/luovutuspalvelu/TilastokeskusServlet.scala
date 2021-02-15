@@ -14,7 +14,7 @@ import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter, QueryOppijaHenkilö}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
-import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
+import fi.oph.koski.servlet.{ApiServlet, KoskiSpecificApiServlet, NoCache, ObservableSupport}
 import fi.oph.koski.util.SortOrder.Ascending
 import fi.oph.koski.util.{Pagination, PaginationSettings, QueryPagination, Retry}
 import javax.servlet.http.HttpServletRequest
@@ -22,7 +22,7 @@ import org.json4s.JValue
 import org.scalatra.MultiParams
 import rx.lang.scala.Observable
 
-class TilastokeskusServlet(implicit val application: KoskiApplication) extends ApiServlet with ObservableSupport with NoCache with Pagination with RequiresTilastokeskus {
+class TilastokeskusServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with ObservableSupport with NoCache with Pagination with RequiresTilastokeskus {
 
   override protected val maxNumberOfItemsPerPage: Int = 1000
 
