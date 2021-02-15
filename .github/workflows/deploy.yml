@@ -15,6 +15,8 @@ env:
 jobs:
   checkbuilddeploy:
     name: Build and deploy
+    environment:
+      name: ${{ github.event.inputs.environment }}
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -92,17 +94,13 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg KOSKI_VERSION=$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-      - name: Set role ARN parameter name
-        run: |
-          echo "ROLE_ENVVAR_NAME=AWS_DEPLOYMENT_ROLE_${{ github.event.inputs.environment }}" >> $GITHUB_ENV
-
       - name: Switch role to target environment
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
-          role-to-assume: ${{ secrets[env.ROLE_ENVVAR_NAME] }}
+          role-to-assume: ${{ secrets.DEPLOYMENT_ROLE }}
           role-duration-seconds: 3600
           role-session-name: KoskiDeployment-${{ github.event.inputs.commithash }}
 
@@ -121,7 +119,7 @@ jobs:
         with:
           task-definition: task-definition.json
           container-name: KoskiContainer
-          image: ${{ steps.login-ecr.outputs.registry }}/koski:${{ github.sha }}
+          image: ${{ steps.login-ecr.outputs.registry }}/koski:${{ github.event.inputs.commithash }}
 
       - name: Deploy using CodeDeploy
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
