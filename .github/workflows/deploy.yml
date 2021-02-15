@@ -80,14 +80,14 @@ jobs:
         env:
           ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
           ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
-        run: make dist version=${{ github.sha }}
+        run: make dist version=${{ github.event.inputs.commithash }}
 
       - name: Build, tag, and push image to Amazon ECR
         if: steps.check-image.image-exists != '0'
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: koski
-          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: ${{ github.event.inputs.commithash }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg KOSKI_VERSION=$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
@@ -104,7 +104,7 @@ jobs:
           aws-region: eu-west-1
           role-to-assume: ${{ secrets[env.ROLE_ENVVAR_NAME] }}
           role-duration-seconds: 3600
-          role-session-name: KoskiDeployment-${{ github.sha }}
+          role-session-name: KoskiDeployment-${{ github.event.inputs.commithash }}
 
       - name: Get task definition ARN
         id: get-taskdef-arn
@@ -149,7 +149,7 @@ jobs:
         with:
           task-definition: raportointikanta-task-definition.json
           container-name: RaportointikantaContainer
-          image: ${{ steps.login-ecr.outputs.registry }}/koski:${{ github.sha }}
+          image: ${{ steps.login-ecr.outputs.registry }}/koski:${{ github.event.inputs.commithash }}
 
       - name: Deploy Amazon ECS task definition
         id: raportointikanta-taskdef-deploy
