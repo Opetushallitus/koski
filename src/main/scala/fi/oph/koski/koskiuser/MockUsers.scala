@@ -113,7 +113,7 @@ case class MockUser(lastname: String, firstname: String, oid: String, käyttöoi
   lazy val ldapUser = DirectoryUser(oid, käyttöoikeudet.toList, firstname, lastname, Some(lang))
   def toKoskiUser(käyttöoikeudet: KäyttöoikeusRepository) = {
     val authUser: AuthenticationUser = fromDirectoryUser(username, ldapUser)
-    new KoskiSession(authUser, "fi", InetAddress.getByName("192.168.0.10"), "", käyttöoikeudet.käyttäjänKäyttöoikeudet(authUser))
+    new KoskiSpecificSession(authUser, "fi", InetAddress.getByName("192.168.0.10"), "", käyttöoikeudet.käyttäjänKäyttöoikeudet(authUser))
   }
   def username = ldapUser.etunimet
   def password = username

@@ -1,10 +1,10 @@
 package fi.oph.koski.valpas.valpasuser
 
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.{KoskiAuthenticationSupport, HasKoskiSession, KoskiSession}
+import fi.oph.koski.koskiuser.{KoskiAuthenticationSupport, HasKoskiSession, KoskiSpecificSession}
 
 trait RequiresValpasSession extends ValpasAuthenticationSupport with HasKoskiSession {
-  implicit def koskiSession: KoskiSession = koskiSessionOption.get
+  implicit def koskiSession: KoskiSpecificSession = koskiSessionOption.get
   def valpasSession = koskiSession
 
   before() {
@@ -22,7 +22,7 @@ trait RequiresValpasSession extends ValpasAuthenticationSupport with HasKoskiSes
     }
   }
 
-  def isValpasSession(session: KoskiSession): Boolean =
+  def isValpasSession(session: KoskiSpecificSession): Boolean =
     session.orgKäyttöoikeudet
       .flatMap(_.organisaatiokohtaisetPalveluroolit)
       .intersect(Set(

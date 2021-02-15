@@ -6,7 +6,7 @@ import java.net.URLDecoder
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.servlet.{KoskiBaseServlet, LanguageSupport}
 import fi.oph.koski.util.XML.CommentedPCData
@@ -81,7 +81,7 @@ case object Virkailija extends Raamit {
   override def toString: String = "virkailija"
 }
 
-case class Oppija(session: Option[KoskiSession], request: RichRequest, loginUrl: String) extends Raamit {
+case class Oppija(session: Option[KoskiSpecificSession], request: RichRequest, loginUrl: String) extends Raamit {
   override def script: NodeSeq = {
     <script>
       {Unparsed(s"""

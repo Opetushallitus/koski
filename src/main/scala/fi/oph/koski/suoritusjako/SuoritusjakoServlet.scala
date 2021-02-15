@@ -6,7 +6,7 @@ import java.time.LocalDate
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.{EditorApiServlet, EditorModel}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{KoskiAuthenticationSupport, KoskiSession}
+import fi.oph.koski.koskiuser.{KoskiAuthenticationSupport, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.omattiedot.OmatTiedotEditorModel
 import fi.oph.koski.schema.KoskiSchema.deserializationContext
@@ -18,7 +18,7 @@ import scala.reflect.runtime.universe.TypeTag
 class SuoritusjakoServlet(implicit val application: KoskiApplication) extends EditorApiServlet with KoskiAuthenticationSupport with Logging with NoCache {
 
   post("/editor") {
-    implicit val koskiSession = KoskiSession.suoritusjakoKatsominenUser(request)
+    implicit val koskiSession = KoskiSpecificSession.suoritusjakoKatsominenUser(request)
     withJsonBody({ body =>
       val request = JsonSerializer.extract[SuoritusjakoRequest](body)
       renderEither[EditorModel](

@@ -2,7 +2,7 @@ package fi.oph.koski.log
 
 import java.net.InetAddress
 
-import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSession}
+import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession}
 import fi.oph.koski.log.KoskiMessageField.KoskiMessageField
 import fi.oph.koski.log.KoskiOperation.KoskiOperation
 import fi.vm.sade.auditlog._
@@ -37,7 +37,7 @@ object AuditLogMessage {
     build(operation, new User(new Oid(user.oid), clientIp, serviceTicket, userAgent), Map())
   }
 
-  def apply(operation: KoskiOperation, session: KoskiSession, extraFields: Map[KoskiMessageField, String]): AuditLogMessage = {
+  def apply(operation: KoskiOperation, session: KoskiSpecificSession, extraFields: Map[KoskiMessageField, String]): AuditLogMessage = {
     val user = if (session.user.isSuoritusjakoKatsominen) {
       new User(session.clientIp, "", session.userAgent)
     } else {

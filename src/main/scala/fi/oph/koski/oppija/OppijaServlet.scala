@@ -123,7 +123,7 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
   *  Operating context for data updates. Operates outside the lecixal scope of OppijaServlet to ensure that none of the
   *  Scalatra threadlocals are used. This must be done because in batch mode, we are running in several threads.
   */
-case class UpdateContext(user: KoskiSession, application: KoskiApplication, request: HttpServletRequest) extends Logging {
+case class UpdateContext(user: KoskiSpecificSession, application: KoskiApplication, request: HttpServletRequest) extends Logging {
   def putSingle(validationResult: Either[HttpStatus, Oppija], oppijaJsonFromRequest: JValue, allowUpdate: Boolean): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
 
     val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = validationResult.flatMap(application.oppijaFacade.createOrUpdate(_, allowUpdate)(user))

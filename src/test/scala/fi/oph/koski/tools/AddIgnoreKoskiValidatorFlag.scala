@@ -5,7 +5,7 @@ import java.io.File
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.json.JsonFiles
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.schema.KoskiSchema.deserializationContext
 import fi.oph.koski.schema.Oppija
 import fi.oph.scalaschema.SchemaValidatingExtractor
@@ -15,7 +15,7 @@ object AddIgnoreKoskiValidatorFlag extends App {
 
   val dirName = "src/test/resources/backwardcompatibility"
   lazy val koskiValidator = KoskiApplicationForTests.validator
-  implicit val user = KoskiSession.systemUser
+  implicit val user = KoskiSpecificSession.systemUser
   implicit val accessType = AccessType.read
 
   def modifyJsons = {

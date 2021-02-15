@@ -7,7 +7,7 @@ import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http._
 import fi.oph.koski.json.JsonDiff.jsonDiff
 import fi.oph.koski.json.JsonSerializer.serialize
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresVirkailijaOrPalvelukäyttäjä, Rooli}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, RequiresVirkailijaOrPalvelukäyttäjä, Rooli}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.annotation.SensitiveData
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus}
@@ -28,7 +28,7 @@ class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication
     val validateHenkilö = params.get("henkilö").map(_.toBoolean).getOrElse(false)
     val extractOnly = params.get("extractOnly").map(_.toBoolean).getOrElse(false)
     // Ensure that nobody uses koskiSession implicitely
-    implicit val systemUser = KoskiSession.systemUser
+    implicit val systemUser = KoskiSpecificSession.systemUser
 
     val context = ValidateContext(application.validator, application.historyRepository, application.henkilöRepository)(systemUser)
     val validateRow: OpiskeluoikeusRow => ValidationResult = row => try {
@@ -53,12 +53,12 @@ class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication
       haltWithStatus(KoskiErrorCategory.forbidden())
     }
     // Ensure that nobody uses koskiSession implicitely
-    implicit val systemUser = KoskiSession.systemUser
+    implicit val systemUser = KoskiSpecificSession.systemUser
     val context = ValidateContext(application.validator, application.historyRepository, application.henkilöRepository)(systemUser)
     renderEither[ValidationResult](application.opiskeluoikeusRepository.findByOid(getStringParam("oid"))(systemUser).map(context.validateAll))
   }
 
-  private def validate(errorsOnly: Boolean, validateRow: OpiskeluoikeusRow => ValidationResult, systemUser: KoskiSession): Observable[ValidationResult] = {
+  private def validate(errorsOnly: Boolean, validateRow: OpiskeluoikeusRow => ValidationResult, systemUser: KoskiSpecificSession): Observable[ValidationResult] = {
     application.opiskeluoikeusQueryRepository.mapKaikkiOpiskeluoikeudetSivuittain(1000, systemUser) { opiskeluoikeusRows =>
       opiskeluoikeusRows.par.map(validateRow).filter(result => !(errorsOnly && result.isOk)).seq
     }
@@ -69,7 +69,7 @@ class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication
   *  Operating context for data validation. Operates outside the lecixal scope of OpiskeluoikeusServlet to ensure that none of the
   *  Scalatra threadlocals are used. This must be done because in batch mode, we are running in several threads.
   */
-case class ValidateContext(validator: KoskiValidator, historyRepository: OpiskeluoikeusHistoryRepository, henkilöRepository: HenkilöRepository)(implicit user: KoskiSession) extends Logging {
+case class ValidateContext(validator: KoskiValidator, historyRepository: OpiskeluoikeusHistoryRepository, henkilöRepository: HenkilöRepository)(implicit user: KoskiSpecificSession) extends Logging {
   def validateHistory(row: OpiskeluoikeusRow): ValidationResult = {
     try {
       val opiskeluoikeus = row.toOpiskeluoikeus

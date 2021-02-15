@@ -95,15 +95,15 @@ class TiedonsiirtoService(
 
   def statistics(): TiedonsiirtoStatistics = TiedonsiirtoStatistics(index)
 
-  def haeTiedonsiirrot(query: TiedonsiirtoQuery)(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
+  def haeTiedonsiirrot(query: TiedonsiirtoQuery)(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
     haeTiedonsiirrot(filtersFrom(query), query.oppilaitos, query.paginationSettings)
   }
 
-  def virheelliset(query: TiedonsiirtoQuery)(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
+  def virheelliset(query: TiedonsiirtoQuery)(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
     haeTiedonsiirrot(Map("exists" -> Map("field" -> "virheet.key")) :: filtersFrom(query), query.oppilaitos, query.paginationSettings)
   }
 
-  def delete(ids: List[String])(implicit koskiSession: KoskiSession): Unit = {
+  def delete(ids: List[String])(implicit koskiSession: KoskiSpecificSession): Unit = {
     val query = toJValue(Map("query" -> ElasticSearch.allFilter(
       Map("terms" -> Map("_id" -> ids))
         :: Map("exists" -> Map("field" -> "virheet.key"))
@@ -111,7 +111,7 @@ class TiedonsiirtoService(
     index.deleteByQuery(query, refresh = true)
   }
 
-  private def filtersFrom(query: TiedonsiirtoQuery)(implicit session: KoskiSession): List[Map[String, Any]] = {
+  private def filtersFrom(query: TiedonsiirtoQuery)(implicit session: KoskiSpecificSession): List[Map[String, Any]] = {
     // vastaavasti kuin yhteenveto-kyselyssä, käytä tallentajaOrganisaatioOid:ia jos ja vain jos oppilaitos-OID puuttuu
     query.oppilaitos.toList.map(oppilaitos => {
       ElasticSearch.anyFilter(List(
@@ -125,12 +125,12 @@ class TiedonsiirtoService(
   }
 
   private def tallentajaOrganisaatioFilters(accessType: AccessType.Value = AccessType.read)
-                                           (implicit session: KoskiSession): List[Map[String, Any]] = {
+                                           (implicit session: KoskiSpecificSession): List[Map[String, Any]] = {
     tallentajaOrganisaatioFilter(accessType).toList
   }
 
   private def tallentajaOrganisaatioFilter(accessType: AccessType.Value = AccessType.read)
-                                          (implicit session: KoskiSession): Option[Map[String, Any]] = {
+                                          (implicit session: KoskiSpecificSession): Option[Map[String, Any]] = {
     if (session.hasGlobalReadAccess) {
       None
     } else {
@@ -152,7 +152,7 @@ class TiedonsiirtoService(
   private def haeTiedonsiirrot(filters: List[Map[String, Any]],
                                oppilaitosOid: Option[String],
                                paginationSettings: Option[PaginationSettings])
-                              (implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
+                              (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
     koskiSession.juuriOrganisaatiot.map(_.oid).foreach { oid =>
       AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiSession, Map(juuriOrganisaatio -> oid)))
     }
@@ -183,7 +183,7 @@ class TiedonsiirtoService(
     }
   }
 
-  def storeTiedonsiirtoResult(implicit koskiSession: KoskiSession, oppijaOid: Option[OidHenkilö], validatedOppija: Option[Oppija], data: Option[JValue], error: Option[TiedonsiirtoError]) {
+  def storeTiedonsiirtoResult(implicit koskiSession: KoskiSpecificSession, oppijaOid: Option[OidHenkilö], validatedOppija: Option[Oppija], data: Option[JValue], error: Option[TiedonsiirtoError]) {
     if (!koskiSession.isPalvelukäyttäjä && !koskiSession.isRoot) {
       return
     }
@@ -285,7 +285,7 @@ class TiedonsiirtoService(
     }
   }
 
-  def yhteenveto(implicit koskiSession: KoskiSession, sorting: SortOrder): Seq[TiedonsiirtoYhteenveto] = {
+  def yhteenveto(implicit koskiSession: KoskiSpecificSession, sorting: SortOrder): Seq[TiedonsiirtoYhteenveto] = {
     index.runSearch(yhteenvetoQuery).map { response =>
       for {
         orgResults <- extract[List[JValue]](response \ "aggregations" \ "organisaatio" \ "buckets")
@@ -336,7 +336,7 @@ class TiedonsiirtoService(
      .sorted(yhteenvetoOrdering(sorting, koskiSession.lang))
   }
 
-  private def yhteenvetoQuery(implicit koskiSession: KoskiSession): JValue = {
+  private def yhteenvetoQuery(implicit koskiSession: KoskiSpecificSession): JValue = {
     toJValue(Map(
       "size" -> 0,
       "aggs" ->
@@ -425,7 +425,7 @@ class TiedonsiirtoService(
 
   private def extractHenkilö(data: JValue,
                              oidHenkilö: Option[OidHenkilö])
-                            (implicit user: KoskiSession): Option[TiedonsiirtoOppija] = {
+                            (implicit user: KoskiSpecificSession): Option[TiedonsiirtoOppija] = {
     val annetutHenkilötiedot: JValue = data \ "henkilö"
     val annettuTunniste: Option[HetuTaiOid] = validateAndExtract[HetuTaiOid](
       annetutHenkilötiedot, ignoreExtras = true

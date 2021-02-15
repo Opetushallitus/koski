@@ -7,7 +7,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.EditorModel
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.{AuditLog, AuditLogMessage}
 import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_SUORITUSJAKO_KATSOMINEN, KANSALAINEN_SUORITUSJAKO_LISAYS}
 import fi.oph.koski.log.KoskiMessageField.oppijaHenkiloOid
@@ -18,7 +18,7 @@ import fi.oph.koski.util.WithWarnings
 
 class SuoritusjakoServiceV2(suoritusjakoRepositoryV2: SuoritusjakoRepositoryV2, henkiloRepository: HenkilöRepository, opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository, application: KoskiApplication) {
 
-  def createSuoritusjako(opiskeluoikeudet: List[Opiskeluoikeus])(implicit user: KoskiSession): HttpStatus = {
+  def createSuoritusjako(opiskeluoikeudet: List[Opiskeluoikeus])(implicit user: KoskiSpecificSession): HttpStatus = {
     HttpStatus.foldEithers(opiskeluoikeudet.map(validateIsUsersOpiskeluoikeus))
       .map(opiskeluoikeudet => suoritusjakoRepositoryV2.createSuoritusjako(opiskeluoikeudet))
       .map(ok => {
@@ -28,7 +28,7 @@ class SuoritusjakoServiceV2(suoritusjakoRepositoryV2: SuoritusjakoRepositoryV2, 
        .merge
   }
 
-  def findSuoritusjako(secret: String)(implicit user: KoskiSession): Either[HttpStatus, EditorModel] = {
+  def findSuoritusjako(secret: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, EditorModel] = {
     SuoritusjakoSecret.validate(secret)
       .flatMap(suoritusjakoRepositoryV2.findBySecret)
       .flatMap { case (oppijaOid, opiskeluoikeudet) =>
@@ -42,11 +42,11 @@ class SuoritusjakoServiceV2(suoritusjakoRepositoryV2: SuoritusjakoRepositoryV2, 
       .map(OmatTiedotEditorModel.toEditorModel(_)(application, user))
   }
 
-  def listActivesByUser(user: KoskiSession): Seq[Suoritusjako] = {
+  def listActivesByUser(user: KoskiSpecificSession): Seq[Suoritusjako] = {
     suoritusjakoRepositoryV2.listActivesByOppijaOid(user.oid)
   }
 
-  def updateExpirationDate(secret: String, voimassaAsti: LocalDate)(implicit user: KoskiSession): HttpStatus = {
+  def updateExpirationDate(secret: String, voimassaAsti: LocalDate)(implicit user: KoskiSpecificSession): HttpStatus = {
     if (voimassaAsti.isBefore(LocalDate.now) || voimassaAsti.isAfter(LocalDate.now.plusYears(1))) {
       KoskiErrorCategory.badRequest()
     } else {
@@ -54,11 +54,11 @@ class SuoritusjakoServiceV2(suoritusjakoRepositoryV2: SuoritusjakoRepositoryV2, 
     }
   }
 
-  def deleteSuoritujako(secret: String)(implicit user: KoskiSession): HttpStatus = {
+  def deleteSuoritujako(secret: String)(implicit user: KoskiSpecificSession): HttpStatus = {
     suoritusjakoRepositoryV2.deleteSuoritusjako(user.oid, secret)
   }
 
-  private def validateIsUsersOpiskeluoikeus(jaettuOpiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSession): Either[HttpStatus, Opiskeluoikeus] = {
+  private def validateIsUsersOpiskeluoikeus(jaettuOpiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSpecificSession): Either[HttpStatus, Opiskeluoikeus] = {
     henkiloRepository.findByOid(user.oid)
       .toRight(KoskiErrorCategory.internalError())
       .map(henkilö => opiskeluoikeusRepository.findByCurrentUser(henkilö))

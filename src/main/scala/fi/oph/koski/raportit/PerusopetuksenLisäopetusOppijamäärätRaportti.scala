@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.db.KoskiDatabaseMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import slick.jdbc.GetResult
@@ -31,7 +31,7 @@ case class PerusopetuksenLisäopetusOppijamäärätRaportti(db: DB, organisaatio
     )
   )
 
-  def build(oppilaitosOids: Seq[String], date: LocalDate)(implicit u: KoskiSession): DataSheet = {
+  def build(oppilaitosOids: Seq[String], date: LocalDate)(implicit u: KoskiSpecificSession): DataSheet = {
     val raporttiQuery = query(oppilaitosOids, date).as[PerusopetuksenLisäopetusOppijamäärätRaporttiRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
@@ -41,7 +41,7 @@ case class PerusopetuksenLisäopetusOppijamäärätRaportti(db: DB, organisaatio
     )
   }
 
-  private def query(oppilaitosOids: Seq[String], date: LocalDate)(implicit u: KoskiSession) = {
+  private def query(oppilaitosOids: Seq[String], date: LocalDate)(implicit u: KoskiSpecificSession) = {
     sql"""
     select
       oppilaitos.nimi as oppilaitos_nimi,

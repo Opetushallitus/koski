@@ -9,7 +9,7 @@ import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{DatabaseExecutionContext, KoskiDatabaseMethods, SuoritusjakoRowV2}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{KoskiSchema, Opiskeluoikeus}
 import fi.oph.scalaschema._
@@ -21,7 +21,7 @@ class SuoritusjakoRepositoryV2(val db: DB) extends Logging with DatabaseExecutio
   val  MAX_SUORITUSJAKO_COUNT = 20
   def SUORITUSJAON_DEFAULT_VOIMASSAOLOAIKA = Date.valueOf(LocalDate.now.plusMonths(6))
 
-  def createSuoritusjako(opiskeluoikeudet: List[Opiskeluoikeus])(implicit user: KoskiSession): HttpStatus = {
+  def createSuoritusjako(opiskeluoikeudet: List[Opiskeluoikeus])(implicit user: KoskiSpecificSession): HttpStatus = {
     if (suoritusjakoCount(user.oid) < MAX_SUORITUSJAKO_COUNT)  {
       httpStatus(runDbSync(SuoritusJakoV2 += SuoritusjakoRowV2(
         secret = SuoritusjakoSecret.generateNew,

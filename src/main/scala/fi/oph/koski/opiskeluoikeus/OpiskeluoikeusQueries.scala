@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{GlobalExecutionContext, HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.{HasKoskiSession, KoskiSession}
+import fi.oph.koski.koskiuser.{HasKoskiSession, KoskiSpecificSession}
 import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
@@ -27,7 +27,7 @@ trait OpiskeluoikeusQueries extends ApiServlet with Logging with GlobalExecution
   *  Operating context for data streaming in queries. Operates outside the lecixal scope of OpiskeluoikeusQueries to ensure that none of the
   *  Scalatra threadlocals are used.
   */
-case class OpiskeluoikeusQueryContext(request: HttpServletRequest)(implicit koskiSession: KoskiSession, application: KoskiApplication) extends Logging {
+case class OpiskeluoikeusQueryContext(request: HttpServletRequest)(implicit koskiSession: KoskiSpecificSession, application: KoskiApplication) extends Logging {
   def queryWithoutHenkilötiedotRaw(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings], queryForAuditLog: String): Observable[(Oid, List[OpiskeluoikeusRow])] = {
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, koskiSession, Map(hakuEhto -> queryForAuditLog)))
     OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, paginationSettings).map { case (oppijaHenkilö, opiskeluoikeudet) =>
@@ -71,7 +71,7 @@ object OpiskeluoikeusQueryContext {
     params.toList.sortBy(_._1).map { case (p,values) => values.map(v => p + "=" + v).mkString("&") }.mkString("&")
 
 
-  def streamingQueryGroupedByOid(application: KoskiApplication, filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Observable[(QueryOppijaHenkilö, List[(OpiskeluoikeusRow)])] = {
+  def streamingQueryGroupedByOid(application: KoskiApplication, filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSpecificSession): Observable[(QueryOppijaHenkilö, List[(OpiskeluoikeusRow)])] = {
     var streamedOpiskeluoikeusCount: Int = 0
     def opiskeluoikeusCountWithinPageSize(row: (QueryOppijaHenkilö, List[OpiskeluoikeusRow])): Boolean = paginationSettings match {
       case None => true

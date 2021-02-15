@@ -5,7 +5,7 @@ import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter}
 import fi.oph.koski.schema.{Henkilö, Oppija}
@@ -13,14 +13,14 @@ import org.json4s.JsonAST.JValue
 import rx.lang.scala.Observable
 
 class KelaService(application: KoskiApplication) extends Logging {
-  def findKelaOppijaByHetu(hetu: String)(implicit koskiSession: KoskiSession): Either[HttpStatus, KelaOppija] = {
+  def findKelaOppijaByHetu(hetu: String)(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, KelaOppija] = {
     //Kela ei ole kiinnostunut tässä tapauksessa korkeakoulujen opiskeluoikeuksista
     application.oppijaFacade.findOppijaByHetuOrCreateIfInYtrOrVirta(hetu, useVirta = false, useYtr = true)
       .flatMap(_.warningsToLeft)
       .flatMap(KelaOppijaConverter.convertOppijaToKelaOppija)
   }
 
-  def streamOppijatByHetu(hetut: List[String])(implicit koskiSession: KoskiSession): Observable[JValue] = {
+  def streamOppijatByHetu(hetut: List[String])(implicit koskiSession: KoskiSpecificSession): Observable[JValue] = {
     val user = koskiSession // take current session so it can be used in observable
     val henkilot = application.opintopolkuHenkilöFacade.findOppijatByHetusNoSlaveOids(hetut)
     val oidToHenkilo: Map[Henkilö.Oid, OppijaHenkilö] = henkilot.map(h => h.oid -> h).toMap
@@ -38,25 +38,25 @@ class KelaService(application: KoskiApplication) extends Logging {
       .map(JsonSerializer.serializeWithUser(user))
   }
 
-  def opiskeluoikeudenHistoria(opiskeluoikeusOid: String)(implicit koskiSession: KoskiSession): Option[List[OpiskeluoikeusHistoryPatch]] = {
+  def opiskeluoikeudenHistoria(opiskeluoikeusOid: String)(implicit koskiSession: KoskiSpecificSession): Option[List[OpiskeluoikeusHistoryPatch]] = {
     val history: Option[List[OpiskeluoikeusHistoryPatch]] = application.historyRepository.findByOpiskeluoikeusOid(opiskeluoikeusOid)(koskiSession)
     history.foreach { _ => auditLogHistoryView(opiskeluoikeusOid)(koskiSession)}
     history
   }
 
-  def findKelaOppijaVersion(oppijaOid: String, opiskeluoikeusOid: String, version: Int)(implicit koskiSession: KoskiSession): Either[HttpStatus, KelaOppija] = {
+  def findKelaOppijaVersion(oppijaOid: String, opiskeluoikeusOid: String, version: Int)(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, KelaOppija] = {
    application.oppijaFacade.findVersion(oppijaOid, opiskeluoikeusOid, version)
       .map(t => Oppija(t._1.toHenkilötiedotJaOid, t._2))
       .flatMap(KelaOppijaConverter.convertOppijaToKelaOppija)
   }
 
-  private def streamingQuery(filters: List[OpiskeluoikeusQueryFilter])(implicit koskiSession: KoskiSession) =
+  private def streamingQuery(filters: List[OpiskeluoikeusQueryFilter])(implicit koskiSession: KoskiSpecificSession) =
     OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, None)
 
 
-  private def auditLogOpiskeluoikeusKatsominen(oppija: KelaOppija)(koskiSession: KoskiSession): Unit =
+  private def auditLogOpiskeluoikeusKatsominen(oppija: KelaOppija)(koskiSession: KoskiSpecificSession): Unit =
     AuditLog.log(AuditLogMessage(KoskiOperation.OPISKELUOIKEUS_KATSOMINEN, koskiSession, Map(KoskiMessageField.oppijaHenkiloOid -> oppija.henkilö.oid)))
 
-  private def auditLogHistoryView(opiskeluoikeusOid: String)(koskiSession: KoskiSession): Unit =
+  private def auditLogHistoryView(opiskeluoikeusOid: String)(koskiSession: KoskiSpecificSession): Unit =
     AuditLog.log(AuditLogMessage(KoskiOperation.MUUTOSHISTORIA_KATSOMINEN, koskiSession, Map(KoskiMessageField.opiskeluoikeusOid -> opiskeluoikeusOid)))
 }

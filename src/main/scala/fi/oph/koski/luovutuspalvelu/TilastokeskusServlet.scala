@@ -7,7 +7,7 @@ import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{KoskiSession, RequiresTilastokeskus}
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresTilastokeskus}
 import fi.oph.koski.log.KoskiMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
 import fi.oph.koski.log._
@@ -39,7 +39,7 @@ class TilastokeskusServlet(implicit val application: KoskiApplication) extends A
       .queryLaajoillaHenkilöTiedoilla(multiParams, paginationSettings)
 }
 
-case class TilastokeskusQueryContext(request: HttpServletRequest)(implicit koskiSession: KoskiSession, application: KoskiApplication) extends Logging {
+case class TilastokeskusQueryContext(request: HttpServletRequest)(implicit koskiSession: KoskiSpecificSession, application: KoskiApplication) extends Logging {
   val pagination = QueryPagination(50)
 
   def queryLaajoillaHenkilöTiedoilla(params: MultiParams, paginationSettings: Option[PaginationSettings]): Either[HttpStatus, Observable[JValue]] = {

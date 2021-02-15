@@ -5,7 +5,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.HenkilönTunnisteet
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
-import fi.oph.koski.koskiuser.{AccessChecker, AccessType, KoskiSession, SkipAccessCheck}
+import fi.oph.koski.koskiuser.{AccessChecker, AccessType, KoskiSpecificSession, SkipAccessCheck}
 import fi.oph.koski.log.NotLoggable
 import fi.oph.koski.opiskeluoikeus.AuxiliaryOpiskeluoikeusRepositoryImpl
 import fi.oph.koski.oppilaitos.{MockOppilaitosRepository, OppilaitosRepository}
@@ -34,7 +34,7 @@ case class VirtaOpiskeluoikeusRepository(
 
   private def validate(opiskeluoikeus: KorkeakoulunOpiskeluoikeus): Unit = {
     val oppija = Oppija(UusiHenkilö("010101-123N", "tuntematon", Some("tuntematon"), "tuntematon"), List(opiskeluoikeus))
-    validator.foreach(_.validateAsJson(oppija)(KoskiSession.systemUser, AccessType.read).left.foreach { status: HttpStatus =>
+    validator.foreach(_.validateAsJson(oppija)(KoskiSpecificSession.systemUser, AccessType.read).left.foreach { status: HttpStatus =>
       logger.warn("Ulkoisesta järjestelmästä saatu opiskeluoikeus sisältää validointivirheitä " + status)
     })
   }

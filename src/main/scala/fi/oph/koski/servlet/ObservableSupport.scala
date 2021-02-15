@@ -4,7 +4,7 @@ import java.io.EOFException
 
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import org.eclipse.jetty.server.HttpConnection
 import rx.lang.scala.Observable
 
@@ -13,7 +13,7 @@ import scala.reflect.runtime.universe.TypeTag
 trait ObservableSupport extends ApiServlet {
   private val FlushInterval = 5000 // ms
 
-  def streamResponse[T : TypeTag](in: Observable[T], user: KoskiSession): Unit = try {
+  def streamResponse[T : TypeTag](in: Observable[T], user: KoskiSpecificSession): Unit = try {
     writeJsonStreamSynchronously(in, user)
   } catch {
     case e: Exception if isEOF(e) =>
@@ -23,7 +23,7 @@ trait ObservableSupport extends ApiServlet {
       HttpConnection.getCurrentConnection.abort(e)
   }
 
-  def streamResponse[T : TypeTag](x: Either[HttpStatus, Observable[T]], user: KoskiSession): Unit = x match {
+  def streamResponse[T : TypeTag](x: Either[HttpStatus, Observable[T]], user: KoskiSpecificSession): Unit = x match {
     case Right(in) =>
       streamResponse(in, user)
     case Left(status) =>
@@ -32,7 +32,7 @@ trait ObservableSupport extends ApiServlet {
 
   private def isEOF(e: Exception) = e.isInstanceOf[EOFException] || e.getCause.isInstanceOf[EOFException]
 
-  private def writeJsonStreamSynchronously[T : TypeTag](in: Observable[T], user: KoskiSession): Unit = {
+  private def writeJsonStreamSynchronously[T : TypeTag](in: Observable[T], user: KoskiSpecificSession): Unit = {
     contentType = "application/json;charset=utf-8"
     val writer = response.getWriter
     var empty = true

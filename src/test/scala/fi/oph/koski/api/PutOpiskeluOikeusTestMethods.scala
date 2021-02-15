@@ -3,7 +3,7 @@ package fi.oph.koski.api
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
-import fi.oph.koski.koskiuser.{KoskiSession, UserWithPassword}
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, UserWithPassword}
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s._
@@ -18,7 +18,7 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
   val koodisto: KoodistoViitePalvelu = MockKoodistoViitePalvelu
   val oppijaPath = "/api/oppija"
 
-  implicit def any2j[T : TypeTag](o: T): JValue = JsonSerializer.serializeWithUser(KoskiSession.systemUser)(o)
+  implicit def any2j[T : TypeTag](o: T): JValue = JsonSerializer.serializeWithUser(KoskiSpecificSession.systemUser)(o)
 
   implicit def oppijaHenkilöToHenkilöJaOid(o: OppijaHenkilö): HenkilötiedotJaOid = o.toHenkilötiedotJaOid
 

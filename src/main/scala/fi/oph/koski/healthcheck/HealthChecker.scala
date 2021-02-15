@@ -11,7 +11,7 @@ import fi.oph.koski.eperusteet.ERakenneOsa
 import fi.oph.koski.http.{ErrorDetail, HttpStatus, HttpStatusException, KoskiErrorCategory, VirkailijaCredentials}
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViite}
 import fi.oph.koski.koskiuser.AccessType
-import fi.oph.koski.koskiuser.KoskiSession._
+import fi.oph.koski.koskiuser.KoskiSpecificSession._
 import fi.oph.koski.log.{Logging, NotLoggable}
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, RemoteOrganisaatioRepository}
 import fi.oph.koski.schema._

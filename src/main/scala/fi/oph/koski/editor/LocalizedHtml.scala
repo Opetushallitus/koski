@@ -2,12 +2,12 @@ package fi.oph.koski.editor
 
 import java.time.format.DateTimeFormatter
 
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.schema.Localized
 
 trait LocalizedHtml {
-  implicit val user: KoskiSession
+  implicit val user: KoskiSpecificSession
   implicit val localizationRepository: LocalizationRepository
   val dateFormatter = DateTimeFormatter.ofPattern("d.M.yyyy")
   def lang = user.lang
@@ -16,8 +16,8 @@ trait LocalizedHtml {
 }
 
 object LocalizedHtml {
-  def get(implicit session: KoskiSession, localizations: LocalizationRepository) = new LocalizedHtml {
-    override implicit val user: KoskiSession = session
+  def get(implicit session: KoskiSpecificSession, localizations: LocalizationRepository) = new LocalizedHtml {
+    override implicit val user: KoskiSpecificSession = session
     override implicit val localizationRepository: LocalizationRepository = localizations
   }
 }

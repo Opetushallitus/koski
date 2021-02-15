@@ -5,13 +5,13 @@ import java.time.LocalDate
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.OppilaitoksenOpiskeluoikeudet
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.omattiedot.OmatTiedotEditorModel
 import fi.oph.koski.schema._
 
 class SuomiFiService(application: KoskiApplication) extends Logging {
-  def suomiFiOpiskeluoikeudet(hetu: String)(implicit user: KoskiSession): Either[HttpStatus, SuomiFiResponse] =
+  def suomiFiOpiskeluoikeudet(hetu: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, SuomiFiResponse] =
     application.oppijaFacade.findOppijaByHetuOrCreateIfInYtrOrVirta(hetu)
       .flatMap(_.warningsToLeft)
       .map(OmatTiedotEditorModel.piilotaKeskeneräisetPerusopetuksenPäättötodistukset)

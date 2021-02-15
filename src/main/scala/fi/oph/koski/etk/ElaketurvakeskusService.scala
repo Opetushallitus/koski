@@ -4,7 +4,7 @@ import java.sql.Timestamp
 import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.schema.Henkilö.Oid
 
 import scala.io.BufferedSource
@@ -14,7 +14,7 @@ class ElaketurvakeskusService(application: KoskiApplication) {
 
   private def queryService = new ElaketurvakeskusQueryService(application.raportointiDatabase.db)
 
-  def tutkintotiedot(request: Option[TutkintotietoRequest], source: Option[BufferedSource])(implicit koskiSession: KoskiSession): Option[EtkResponse] = {
+  def tutkintotiedot(request: Option[TutkintotietoRequest], source: Option[BufferedSource])(implicit koskiSession: KoskiSpecificSession): Option[EtkResponse] = {
     val ammatilliset = request.map(queryService.ammatillisetPerustutkinnot)
     val korkeakoulut = source.map(VirtaCsvParser.parse)
     val yhdistetty = (ammatilliset ++ korkeakoulut).reduceOption((a, b) => a.merge(b))

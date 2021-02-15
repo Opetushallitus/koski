@@ -3,7 +3,7 @@ package fi.oph.koski.ytr
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.HenkilönTunnisteet
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.{KoskiSession, RequiresKansalainen}
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresKansalainen}
 import fi.oph.koski.log.KoskiOperation.KoskiOperation
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiMessageField}
 import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_YLIOPPILASKOE_HAKU, KANSALAINEN_HUOLTAJA_YLIOPPILASKOE_HAKU}
@@ -48,7 +48,7 @@ class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends 
     }
   }
 
-  private def mkAuditLog(session: KoskiSession, operation: KoskiOperation): Unit = mkAuditLog(session.oid, operation)
+  private def mkAuditLog(session: KoskiSpecificSession, operation: KoskiOperation): Unit = mkAuditLog(session.oid, operation)
   private def mkAuditLog(oid: String, operation: KoskiOperation): Unit = AuditLog.log(AuditLogMessage(operation, koskiSession, Map(KoskiMessageField.oppijaHenkiloOid -> oid)))
 
   private def isHuollettava = getOptionalStringParam("huollettava").isDefined

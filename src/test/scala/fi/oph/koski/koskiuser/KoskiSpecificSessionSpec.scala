@@ -20,7 +20,7 @@ import org.mockito.Mockito.{mock, when}
 import org.scalatest.{FreeSpec, Matchers, _}
 import org.scalatra.servlet.RichRequest
 
-class KoskiSessionSpec extends FreeSpec with Matchers with EitherValues with OptionValues with BeforeAndAfterAll {
+class KoskiSpecificSessionSpec extends FreeSpec with Matchers with EitherValues with OptionValues with BeforeAndAfterAll {
   implicit val jsonDefaultFormats = DefaultFormats.preservingEmptyValues
   private val config = ConfigFactory.parseString(
     """
@@ -130,7 +130,7 @@ class KoskiSessionSpec extends FreeSpec with Matchers with EitherValues with Opt
 
   private def createAndVerifySession(username: String, expected: DirectoryUser) = {
     val authUser = AuthenticationUser.fromDirectoryUser(username, expected)
-    val session = KoskiSession(authUser, req, käyttöoikeusRepository)
+    val session = KoskiSpecificSession(authUser, req, käyttöoikeusRepository)
 
     session.lang should be("fi")
     session.clientIp should be(InetAddress.getByName("10.1.2.3"))
@@ -197,7 +197,7 @@ class KoskiSessionSpec extends FreeSpec with Matchers with EitherValues with Opt
 
   private def mkSession(ipStr: String) = {
     val ip = LogUserContext.toInetAddress(ipStr)
-    new KoskiSession(AuthenticationUser("", "", "", None), "fi", ip, "", Set())
+    new KoskiSpecificSession(AuthenticationUser("", "", "", None), "fi", ip, "", Set())
   }
 }
 
