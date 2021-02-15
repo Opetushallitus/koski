@@ -1,0 +1,17 @@
+package fi.oph.koski.valpas.servlet
+
+import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.servlet.ApiServlet
+import fi.oph.koski.valpas.valpasuser.ValpasSession
+
+import scala.reflect.runtime.universe.TypeTag
+
+trait ValpasApiServlet extends ApiServlet with ValpasBaseServlet {
+  def toJsonString[T: TypeTag](x: T): String = {
+    implicit val session = koskiSessionOption getOrElse ValpasSession.untrustedUser
+    // Ajax request won't have "text/html" in Accept header, clicking "JSON" button will
+    val pretty = Option(request.getHeader("accept")).exists(_.contains("text/html"))
+    val tag = implicitly[TypeTag[T]]
+    JsonSerializer.write(x, pretty) // TODO: Tästä voi oletettavasti vuotaa Kosken skeemaa läpi...
+  }
+}

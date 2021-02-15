@@ -14,16 +14,20 @@ import org.scalatra.servlet.RichRequest
 
 import scala.concurrent.{ExecutionContext, Future}
 
-abstract class Session(val user: AuthenticationUser, val lang: String, val clientIp: InetAddress, val userAgent: String, käyttöoikeudet: => Set[Käyttöoikeus]) extends LogUserContext with UserWithUsername with UserWithOid with SensitiveDataAllowed with Loggable with Logging {
-  Future(käyttöoikeudet)(ExecutionContext.global) // haetaan käyttöoikeudet toisessa säikeessä rinnakkain
-}
-
-class KoskiSpecificSession(user: AuthenticationUser, lang: String, clientIp: InetAddress, userAgent: String, käyttöoikeudet: => Set[Käyttöoikeus]) extends Session(user, lang, clientIp, userAgent, käyttöoikeudet) {
+abstract class Session(val user: AuthenticationUser, val lang: String, val clientIp: InetAddress, val userAgent: String) extends LogUserContext with UserWithUsername with UserWithOid with Loggable with Logging {
   def oid = user.oid
   def username = user.username
   def userOption = Some(user)
   def logString = "käyttäjä " + username + " / " + user.oid
 
+  def orgKäyttöoikeudet: Set[KäyttöoikeusOrg]
+  def varhaiskasvatusKoulutustoimijat: Set[Oid]
+  def hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess: Boolean
+
+  def hasGlobalReadAccess: Boolean
+}
+
+class KoskiSpecificSession(user: AuthenticationUser, lang: String, clientIp: InetAddress, userAgent: String, käyttöoikeudet: => Set[Käyttöoikeus]) extends Session(user, lang, clientIp, userAgent)  with SensitiveDataAllowed {
   lazy val orgKäyttöoikeudet: Set[KäyttöoikeusOrg] = käyttöoikeudet.collect { case k : KäyttöoikeusOrg => k}
   lazy val varhaiskasvatusKäyttöoikeudet: Set[KäyttöoikeusVarhaiskasvatusToimipiste] = käyttöoikeudet.collect { case k: KäyttöoikeusVarhaiskasvatusToimipiste => k }
   lazy val varhaiskasvatusKoulutustoimijat: Set[Oid] = varhaiskasvatusKäyttöoikeudet.map(_.koulutustoimija.oid)
@@ -101,6 +105,9 @@ class KoskiSpecificSession(user: AuthenticationUser, lang: String, clientIp: Ine
   def isUsersHuollettava(oid: String): Boolean = huollettavat.exists(_.exists(huollettava => huollettava.oid.contains(oid)))
 
   def juuriOrganisaatiot: List[OrganisaatioWithOid] = orgKäyttöoikeudet.collect { case r: KäyttöoikeusOrg if r.juuri => r.organisaatio }.toList
+
+  // TODO: Filtteröi tässä pois Valpas-oikeudet (tai vielä parempi: Jätä vain whitelistattuna KOSKI-oikeudet ja kosken käyttämät muiden palveluiden oikeudet...)
+  Future(käyttöoikeudet)(ExecutionContext.global) // haetaan käyttöoikeudet toisessa säikeessä rinnakkain
 }
 
 object KoskiSpecificSession {
