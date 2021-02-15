@@ -109,7 +109,7 @@ case class AikuistenPerusopetusRaportti(
   }
 
   private def osasuoritusMukanaAikarajauksessa(row: ROsasuoritusRow): Boolean = {
-    !osasuoritustenAikarajaus || !raporttiType.isKurssi(row) || arvioituAikavälillä(alku, loppu)(row)
+    (!osasuoritustenAikarajaus || !raporttiType.isKurssi(row) || arvioituAikavälillä(alku, loppu)(row)) && eiOleArvioituOsallistuneeksi(row)
   }
 
   private def dropDataColumnByTitle(
@@ -209,7 +209,8 @@ case class AikuistenPerusopetusRaportti(
         ulkomaanjaksot = lisätiedot.flatMap(_.ulkomaanjaksot.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
         majoitusetu = lisätiedot.flatMap(_.majoitusetu).map(lengthInDaysInDateRange(_, alku, loppu)),
         sisäoppilaitosmainenMajoitus = lisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
-        yhteislaajuus = kurssit.map(_.laajuus).sum,
+        yhteislaajuus = kurssit
+          .map(_.laajuus).sum,
         yhteislaajuusSuoritetut = kurssit
           .filterNot(k => k.tunnustettu)
           .map(_.laajuus).sum,
@@ -223,6 +224,11 @@ case class AikuistenPerusopetusRaportti(
       oppiaineet = oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet, raporttiType.isOppiaineenOppimäärä)
     )
     data.toSeq
+  }
+
+  private def eiOleArvioituOsallistuneeksi(osasuoritus: ROsasuoritusRow): Boolean =
+  {
+    osasuoritus.arviointiArvosanaKoodiarvo.getOrElse("") != "O"
   }
 
   private def oppiainekohtaisetKurssitiedot(row: AikuistenPerusopetusRaporttiRows, kurssit: Seq[YleissivistäväRaporttiKurssi]) = {
