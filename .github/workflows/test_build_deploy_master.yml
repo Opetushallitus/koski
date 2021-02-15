@@ -458,6 +458,8 @@ jobs:
 
   deploy_dev:
     name: Deploy to dev environment
+    environment:
+      name: dev
     needs: [build]
     runs-on: ubuntu-20.04
     steps:
@@ -480,7 +482,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
-          role-to-assume: ${{ secrets.AWS_DEPLOYMENT_ROLE_DEV }}
+          role-to-assume: ${{ secrets.DEPLOYMENT_ROLE }}
           role-duration-seconds: 3600
           role-session-name: KoskiDeployment-${{ github.sha }}
 
@@ -543,7 +545,96 @@ jobs:
 
   deploy_qa:
     name: Deploy to qa environment
+    environment:
+      name: qa
     needs: [deploy_dev]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Configure AWS credentials for utility account
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Switch role to qa environment
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+          role-to-assume: ${{ secrets.DEPLOYMENT_ROLE }}
+          role-duration-seconds: 3600
+          role-session-name: KoskiDeployment-${{ github.sha }}
+
+      - name: Get task definition ARN
+        id: get-taskdef-arn
+        run: |
+          echo "::set-output name=taskdef-arn::$(aws ssm get-parameter --name /koski/task-definition-skeleton --output text --query 'Parameter.Value')"
+
+      - name: Get task definition skeleton
+        run: |
+          aws ecs describe-task-definition --task-definition ${{ steps.get-taskdef-arn.outputs.taskdef-arn }} --query 'taskDefinition' > task-definition.json
+
+      - name: Render Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: KoskiContainer
+          image: ${{ steps.login-ecr.outputs.registry }}/koski:${{ github.sha }}
+
+      - name: Deploy using CodeDeploy
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: koski
+          cluster: koski-cluster
+          wait-for-service-stability: true
+          codedeploy-appspec: appspec.yml
+          codedeploy-application: koski
+          codedeploy-deployment-group: koski-deployment-group
+
+      - name: Get raportointikanta loader task definition ARN
+        id: get-raportointikanta-taskdef-arn
+        run: |
+          echo "::set-output name=taskdef-arn::$(aws ssm get-parameter --name /koski/raportointikanta/task-definition-skeleton --output text --query 'Parameter.Value')"
+
+      - name: Get task definition skeleton
+        run: |
+          aws ecs describe-task-definition --task-definition ${{ steps.get-raportointikanta-taskdef-arn.outputs.taskdef-arn }} --query 'taskDefinition' > raportointikanta-task-definition.json
+
+      - name: Render Amazon ECS task definition
+        id: raportointikanta-task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: raportointikanta-task-definition.json
+          container-name: RaportointikantaContainer
+          image: ${{ steps.login-ecr.outputs.registry }}/koski:${{ github.sha }}
+
+      - name: Deploy Amazon ECS task definition
+        id: raportointikanta-taskdef-deploy
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.raportointikanta-task-def.outputs.task-definition }}
+          cluster: koski-cluster
+
+      - name: Write task definition ARN to parameter store
+        env:
+          TASKDEF_ARN: ${{ steps.raportointikanta-taskdef-deploy.outputs.task-definition-arn }}
+        run: aws ssm put-parameter --overwrite --name /koski/raportointikanta/task-definition --type String --value ${TASKDEF_ARN}
+
+  deploy_prod:
+    name: Deploy to prod environment
+    environment:
+      name: prod
+    needs: [deploy_qa]
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -565,7 +656,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
-          role-to-assume: ${{ secrets.AWS_DEPLOYMENT_ROLE_QA }}
+          role-to-assume: ${{ secrets.DEPLOYMENT_ROLE }}
           role-duration-seconds: 3600
           role-session-name: KoskiDeployment-${{ github.sha }}
 
