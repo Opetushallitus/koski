@@ -234,6 +234,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     sukunimi = KoskiSpecificMockOppijat.ysiluokkalainen.sukunimi,
     etunimet = KoskiSpecificMockOppijat.ysiluokkalainen.etunimet,
     sukupuoli = None,
+    kotikunta = None,
     luokka = Some("8C"),
     opiskeluoikeudenAlkamispäivä = Some(date(2008, 8, 15)),
     viimeisinTila = "lasna",
