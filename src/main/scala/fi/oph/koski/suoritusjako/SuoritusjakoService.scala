@@ -5,7 +5,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.log.KoskiOperation.KANSALAINEN_SUORITUSJAKO_LISAYS
 import fi.oph.koski.log.KoskiMessageField.oppijaHenkiloOid
@@ -14,7 +14,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.util.WithWarnings
 
 class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppijaFacade: KoskiOppijaFacade) extends Logging {
-  def put(oppijaOid: String, suoritusIds: List[SuoritusIdentifier])(implicit koskiSession: KoskiSession): Either[HttpStatus, Suoritusjako] = {
+  def put(oppijaOid: String, suoritusIds: List[SuoritusIdentifier])(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, Suoritusjako] = {
     assertSuorituksetExist(oppijaOid, suoritusIds).toLeft(SuoritusjakoSecret.generateNew)
       .flatMap { secret =>
         val suoritusjako = suoritusjakoRepository.create(secret, oppijaOid, suoritusIds)
@@ -35,7 +35,7 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
     }
   }
 
-  def get(secret: String)(implicit koskiSession: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
+  def get(secret: String)(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, WithWarnings[Oppija]] = {
     suoritusjakoRepository.get(secret).flatMap { suoritusjako =>
       oppijaFacade.findOppija(suoritusjako.oppijaOid)(koskiSession).map(_.map { oppija =>
         val suoritusIdentifiers = JsonSerializer.extract[List[SuoritusIdentifier]](suoritusjako.suoritusIds)
@@ -59,7 +59,7 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
   }
 
   private def assertSuorituksetExist(oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Option[HttpStatus] = {
-    oppijaFacade.findOppija(oppijaOid)(KoskiSession.systemUser).map { oppijaWithWarnings =>
+    oppijaFacade.findOppija(oppijaOid)(KoskiSpecificSession.systemUser).map { oppijaWithWarnings =>
       oppijaWithWarnings.map { oppija =>
         suoritusIds.map(suoritusId =>
           oppija.opiskeluoikeudet.exists(oo =>

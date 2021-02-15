@@ -2,7 +2,7 @@ package fi.oph.koski.raportit
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.OrganisaatioHierarkia
 import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät, AikuistenPerusopetuksenEiRahoitustietoaKurssit, AikuistenPerusopetuksenMuutaKauttaRahoitetutKurssit, AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit, AikuistenPerusopetuksenOppijamäärätRaportti, AikuistenPerusopetuksenOppimääränKurssikertymät, AikuistenPerusopetusRaportti, AikuistenPerusopetusRaporttiRepository}
 import fi.oph.koski.schema.LocalizedString
@@ -149,7 +149,7 @@ class RaportitService(application: KoskiApplication) {
     downloadToken = request.downloadToken
   )
 
-  def esiopetuksenOppijamäärät(request: RaporttiPäivältäRequest)(implicit u: KoskiSession) = {
+  def esiopetuksenOppijamäärät(request: RaporttiPäivältäRequest)(implicit u: KoskiSpecificSession) = {
 
     val oppilaitosOids = request.oppilaitosOid match {
       case application.organisaatioService.ostopalveluRootOid =>
@@ -165,7 +165,7 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def aikuistenperusopetuksenKurssikertymä(request: AikajaksoRaporttiRequest)(implicit u: KoskiSession) = {
+  def aikuistenperusopetuksenKurssikertymä(request: AikajaksoRaporttiRequest)(implicit u: KoskiSpecificSession) = {
     val oppilaitosOids = validateOids(List(request.oppilaitosOid))
 
     OppilaitosRaporttiResponse(
@@ -182,7 +182,7 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def aikuistenperusopetuksenOppijamäärät(request: RaporttiPäivältäRequest)(implicit u: KoskiSession) = {
+  def aikuistenperusopetuksenOppijamäärät(request: RaporttiPäivältäRequest)(implicit u: KoskiSpecificSession) = {
     val oppilaitosOids = request.oppilaitosOid match {
       case application.organisaatioService.ostopalveluRootOid =>
         application.organisaatioService.omatOstopalveluOrganisaatiot.map(_.oid)
@@ -197,7 +197,7 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def perusopetuksenOppijamäärät(request: RaporttiPäivältäRequest)(implicit u: KoskiSession) = {
+  def perusopetuksenOppijamäärät(request: RaporttiPäivältäRequest)(implicit u: KoskiSpecificSession) = {
     val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid, "perusopetus")
     OppilaitosRaporttiResponse(
       sheets = Seq(perusopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva)),
@@ -207,7 +207,7 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def perusopetuksenLisäopetuksenOppijamäärät(request: RaporttiPäivältäRequest)(implicit u: KoskiSession) = {
+  def perusopetuksenLisäopetuksenOppijamäärät(request: RaporttiPäivältäRequest)(implicit u: KoskiSpecificSession) = {
     val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid)
     OppilaitosRaporttiResponse(
       sheets = Seq(perusopetuksenLisäopetuksenOppijamäärätRaportti.build(oppilaitosOids.toSeq, request.paiva)),
@@ -217,7 +217,7 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def getRaportinOrganisatiotJaRaporttiTyypit(organisaatiot: Iterable[OrganisaatioHierarkia])(implicit user: KoskiSession) = {
+  def getRaportinOrganisatiotJaRaporttiTyypit(organisaatiot: Iterable[OrganisaatioHierarkia])(implicit user: KoskiSpecificSession) = {
     val koulutusmuodot = getKoulutusmuodot()
     buildOrganisaatioJaRaporttiTyypit(organisaatiot, koulutusmuodot)
   }
@@ -268,7 +268,7 @@ class RaportitService(application: KoskiApplication) {
     oppilaitosOids
   }
 
-  private def buildOrganisaatioJaRaporttiTyypit(organisaatiot: Iterable[OrganisaatioHierarkia], koulutusmuodot: Map[String, Seq[String]])(implicit user: KoskiSession): List[OrganisaatioJaRaporttiTyypit] =
+  private def buildOrganisaatioJaRaporttiTyypit(organisaatiot: Iterable[OrganisaatioHierarkia], koulutusmuodot: Map[String, Seq[String]])(implicit user: KoskiSpecificSession): List[OrganisaatioJaRaporttiTyypit] =
     organisaatiot
       .filter(_.organisaatiotyypit.intersect(raporttinakymanOrganisaatiotyypit).nonEmpty)
       .map(_.sortBy(user.lang))

@@ -1,7 +1,7 @@
 package fi.oph.koski.koskiuser
 
 trait RequiresSession extends KoskiAuthenticationSupport with HasKoskiSession {
-  implicit def koskiSession: KoskiSession = koskiSessionOption.get
+  implicit def koskiSession: KoskiSpecificSession = koskiSessionOption.get
 
   before() {
     requireSession

@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicLong
 
 import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.json.JsonManipulation
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.schema._
@@ -20,7 +20,7 @@ object OpiskeluoikeusLoader extends Logging {
   private val DefaultBatchSize = 500
   private val statusName = "opiskeluoikeudet"
 
-  def loadOpiskeluoikeudet(opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService, systemUser: KoskiSession, db: RaportointiDatabase, batchSize: Int = DefaultBatchSize): Observable[LoadResult] = {
+  def loadOpiskeluoikeudet(opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService, systemUser: KoskiSpecificSession, db: RaportointiDatabase, batchSize: Int = DefaultBatchSize): Observable[LoadResult] = {
     db.setStatusLoadStarted(statusName)
     deleteEverything(db)
     val result = opiskeluoikeusQueryRepository.mapKaikkiOpiskeluoikeudetSivuittain(batchSize, systemUser) { opiskeluoikeusRows =>

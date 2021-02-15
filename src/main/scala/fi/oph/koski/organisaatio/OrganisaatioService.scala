@@ -1,7 +1,7 @@
 package fi.oph.koski.organisaatio
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.{KoskiSession, KäyttöoikeusOrg}
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, KäyttöoikeusOrg}
 import fi.oph.koski.perustiedot.VarhaiskasvatusToimipistePerustiedot
 import fi.oph.koski.schema.Organisaatio.Oid
 
@@ -11,7 +11,7 @@ class OrganisaatioService(application: KoskiApplication) {
   private val perustiedot = VarhaiskasvatusToimipistePerustiedot(application.perustiedotIndexer)
   private val localizationRepository = application.koskiLocalizationRepository
 
-  def searchInAllOrganizations(query: Option[String])(implicit user: KoskiSession): Iterable[OrganisaatioHierarkia] = {
+  def searchInAllOrganizations(query: Option[String])(implicit user: KoskiSpecificSession): Iterable[OrganisaatioHierarkia] = {
     query match {
       case Some(qry) if qry.length >= 3 =>
         organisaatioRepository.findHierarkia(qry).sortBy(organisaatioNimi)
@@ -19,7 +19,7 @@ class OrganisaatioService(application: KoskiApplication) {
     }
   }
 
-  def searchInEntitledOrganizations(query: Option[String], orgTypes: OrgTypesToShow)(implicit user: KoskiSession): Iterable[OrganisaatioHierarkia] = {
+  def searchInEntitledOrganizations(query: Option[String], orgTypes: OrgTypesToShow)(implicit user: KoskiSpecificSession): Iterable[OrganisaatioHierarkia] = {
     val orgs = getOrganisaatiot(orgTypes)
     query match {
       case Some(qry) => OrganisaatioHierarkiaFilter(qry, user.lang).filter(orgs)
@@ -27,7 +27,7 @@ class OrganisaatioService(application: KoskiApplication) {
     }
   }
 
-  def kaikkiKäyttöoikeudellisetOrganisaatiot(implicit user: KoskiSession): Iterable[OrganisaatioHierarkia] = {
+  def kaikkiKäyttöoikeudellisetOrganisaatiot(implicit user: KoskiSpecificSession): Iterable[OrganisaatioHierarkia] = {
     if (user.hasGlobalReadAccess) {
       organisaatioRepository.findAllHierarkiat
     } else {
@@ -35,7 +35,7 @@ class OrganisaatioService(application: KoskiApplication) {
     }
   }
 
-  def organisaationAlaisetOrganisaatiot(organisaatioOid: Oid)(implicit user: KoskiSession): List[Oid] = {
+  def organisaationAlaisetOrganisaatiot(organisaatioOid: Oid)(implicit user: KoskiSpecificSession): List[Oid] = {
     organisaatioRepository.getOrganisaatio(organisaatioOid).toList.flatMap { org =>
       val children = organisaatioRepository.getChildOids(org.oid).toList.flatten
       if (org.toKoulutustoimija.isDefined) {
@@ -47,10 +47,10 @@ class OrganisaatioService(application: KoskiApplication) {
     }
   }
 
-  def omatOstopalveluOrganisaatiot(implicit user: KoskiSession): List[OrganisaatioHierarkia] =
+  def omatOstopalveluOrganisaatiot(implicit user: KoskiSpecificSession): List[OrganisaatioHierarkia] =
     koulutustoimijoidenOstopalveluOrganisaatiot(user.varhaiskasvatusKoulutustoimijat)
 
-  private def koulutustoimijoidenOstopalveluOrganisaatiot(koulutustoimijat: Set[Oid])(implicit user: KoskiSession): List[OrganisaatioHierarkia] =
+  private def koulutustoimijoidenOstopalveluOrganisaatiot(koulutustoimijat: Set[Oid])(implicit user: KoskiSpecificSession): List[OrganisaatioHierarkia] =
     perustiedot.haeVarhaiskasvatustoimipisteet(koulutustoimijat) match {
       case päiväkoditJoihinTallennettuOpiskeluoikeuksia if päiväkoditJoihinTallennettuOpiskeluoikeuksia.nonEmpty =>
         val ostopalveluHierarkiat = kaikkiOstopalveluOrganisaatiohierarkiat(excludedKoulutustoimijaOidit = koulutustoimijat)
@@ -58,18 +58,18 @@ class OrganisaatioService(application: KoskiApplication) {
       case _ => Nil
     }
 
-  private def getOrganisaatiot(orgTypes: OrgTypesToShow)(implicit user: KoskiSession) = orgTypes match {
+  private def getOrganisaatiot(orgTypes: OrgTypesToShow)(implicit user: KoskiSpecificSession) = orgTypes match {
     case OmatOrganisaatiot => omatOrganisaatioHierarkiat
     case VarhaiskasvatusToimipisteet => kaikkiOstopalveluOrganisaatiohierarkiat(excludedKoulutustoimijaOidit = user.varhaiskasvatusKoulutustoimijat)
     case Kaikki => omatOrganisaatioHierarkiat ++ omatOstopalveluOrganisaatioHierarkiat
   }
 
-  private def omatOrganisaatioHierarkiat(implicit user: KoskiSession): List[OrganisaatioHierarkia] =
+  private def omatOrganisaatioHierarkiat(implicit user: KoskiSpecificSession): List[OrganisaatioHierarkia] =
     user.orgKäyttöoikeudet.filter(_.juuri).toList.flatMap { ko: KäyttöoikeusOrg =>
       organisaatioRepository.getOrganisaatioHierarkia(ko.organisaatio.oid)
     }.sortBy(organisaatioNimi)
 
-  private def kaikkiOstopalveluOrganisaatiohierarkiat(excludedKoulutustoimijaOidit: Set[Oid])(implicit user: KoskiSession) = if (user.hasGlobalReadAccess || user.hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess) {
+  private def kaikkiOstopalveluOrganisaatiohierarkiat(excludedKoulutustoimijaOidit: Set[Oid])(implicit user: KoskiSpecificSession) = if (user.hasGlobalReadAccess || user.hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess) {
     organisaatioRepository.findVarhaiskasvatusHierarkiat
       .filterNot(o => excludedKoulutustoimijaOidit.contains(o.oid))
       .sortBy(organisaatioNimi)
@@ -77,7 +77,7 @@ class OrganisaatioService(application: KoskiApplication) {
     Nil
   }
 
-  private def omatOstopalveluOrganisaatioHierarkiat(implicit user: KoskiSession) = omatOstopalveluOrganisaatiot match {
+  private def omatOstopalveluOrganisaatioHierarkiat(implicit user: KoskiSpecificSession) = omatOstopalveluOrganisaatiot match {
     case Nil => Nil
     case children => List(OrganisaatioHierarkia(
       oid = ostopalveluRootOid,
@@ -87,5 +87,5 @@ class OrganisaatioService(application: KoskiApplication) {
     ))
   }
 
-  private def organisaatioNimi(implicit user: KoskiSession): OrganisaatioHierarkia => String = _.nimi.get(user.lang)
+  private def organisaatioNimi(implicit user: KoskiSpecificSession): OrganisaatioHierarkia => String = _.nimi.get(user.lang)
 }

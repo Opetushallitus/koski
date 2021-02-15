@@ -1,14 +1,14 @@
 package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 
 object OpiskeluoikeusLoaderPerfTester extends App {
 
   lazy val application = KoskiApplication.apply
 
   def doIt: Unit = {
-    implicit val systemUser = KoskiSession.systemUser
+    implicit val systemUser = KoskiSpecificSession.systemUser
     val loadResults = OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, systemUser, application.raportointiDatabase)
     loadResults.toBlocking.foreach(lr => println(s"${lr}"))
   }

@@ -1,6 +1,6 @@
 package fi.oph.koski.ytr
 
-import fi.oph.koski.koskiuser.{AccessChecker, KoskiSession, KäyttöoikeusRepository}
+import fi.oph.koski.koskiuser.{AccessChecker, KoskiSpecificSession, KäyttöoikeusRepository}
 import fi.oph.koski.organisaatio.Oppilaitostyyppi._
 import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
 
@@ -8,13 +8,13 @@ import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
     fetch can be prevented if user has no access
 */
 class YtrAccessChecker(käyttöoikeudet: KäyttöoikeusRepository) extends AccessChecker {
-  def hasAccess(user: KoskiSession): Boolean = {
+  def hasAccess(user: KoskiSpecificSession): Boolean = {
     hasGlobalAccess(user) ||
     käyttöoikeudet.käyttäjänOppilaitostyypit(user.user)
       .intersect(Set(lukio, perusJaLukioasteenKoulut, muutOppilaitokset, kansanopistot))
       .nonEmpty
   }
 
-  def hasGlobalAccess(user: KoskiSession): Boolean =
+  def hasGlobalAccess(user: KoskiSpecificSession): Boolean =
     user.hasGlobalReadAccess || (user.hasGlobalKoulutusmuotoReadAccess && user.allowedOpiskeluoikeusTyypit.contains(OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo))
 }

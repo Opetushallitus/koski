@@ -6,7 +6,7 @@ import fi.oph.koski.henkilo.TestingException
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.LegacyJsonSerialization.toJValue
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession, KäyttöoikeusVarhaiskasvatusToimipiste}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, KäyttöoikeusVarhaiskasvatusToimipiste}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryFilter, OpiskeluoikeusQueryService}
@@ -21,7 +21,7 @@ class OpiskeluoikeudenPerustiedotRepository(
   opiskeluoikeusQueryService: OpiskeluoikeusQueryService
 ) extends Logging {
 
-  def find(filters: List[OpiskeluoikeusQueryFilter], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): OpiskeluoikeudenPerustiedotResponse = {
+  def find(filters: List[OpiskeluoikeusQueryFilter], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSpecificSession): OpiskeluoikeudenPerustiedotResponse = {
     if (filters.exists(_.isInstanceOf[SuoritusJsonHaku])) {
       // JSON queries go to PostgreSQL
       OpiskeluoikeudenPerustiedotResponse(None, opiskeluoikeusQueryService.opiskeluoikeusQuery(filters, Some(sorting), Some(pagination)).toList.toBlocking.last.map {
@@ -33,7 +33,7 @@ class OpiskeluoikeudenPerustiedotRepository(
     }
   }
 
-  private def findFromIndex(filters: List[OpiskeluoikeusQueryFilter], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): OpiskeluoikeudenPerustiedotResponse = {
+  private def findFromIndex(filters: List[OpiskeluoikeusQueryFilter], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSpecificSession): OpiskeluoikeudenPerustiedotResponse = {
     def nimi(order: String) = List(
       Map("henkilö.sukunimi.sort" -> order),
       Map("henkilö.etunimet.sort" -> order)
@@ -158,7 +158,7 @@ class OpiskeluoikeudenPerustiedotRepository(
   }
 
 
-  def findOids(hakusana: String)(implicit session: KoskiSession): List[Oid] = {
+  def findOids(hakusana: String)(implicit session: KoskiSpecificSession): List[Oid] = {
     if (hakusana == "") {
       throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort())
     }
@@ -178,7 +178,7 @@ class OpiskeluoikeudenPerustiedotRepository(
       .getOrElse(Nil)
   }
 
-  private def oppilaitosFilter(session: KoskiSession): List[Map[String, Any]] = {
+  private def oppilaitosFilter(session: KoskiSpecificSession): List[Map[String, Any]] = {
     val filters = if (session.hasGlobalReadAccess || session.hasGlobalKoulutusmuotoReadAccess) {
       Nil
     } else {

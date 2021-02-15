@@ -7,7 +7,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema.Oppija
 import fi.oph.koski.suoritusjako.{SuoritusIdentifier, Suoritusjako, SuoritusjakoRequest, SuoritusjakoUpdateResponse}
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import org.mockito.Mockito.{mock, when}
 import org.scalatra.servlet.RichRequest
 
@@ -19,7 +19,7 @@ trait SuoritusjakoTestMethods extends LocalJettyHttpSpecification with Opiskeluo
     when(request.header("User-Agent")).thenReturn(Some("MockUserAgent/1.0"))
     when(request.header("HTTP_X_FORWARDED_FOR")).thenReturn(Some("10.1.2.3"))
     when(request.cookies).thenReturn(Map[String, String]())
-    KoskiSession.suoritusjakoKatsominenUser(request)
+    KoskiSpecificSession.suoritusjakoKatsominenUser(request)
   }
 
   def createSuoritusjako[A](body: Array[Byte], hetu: String = suoritusjakoHetu, authenticate: Boolean = true)(f: => A): A = {

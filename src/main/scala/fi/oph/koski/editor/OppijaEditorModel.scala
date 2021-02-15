@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.{Hidden, KoodistoUri}
 import fi.oph.koski.util.{Timing, WithWarnings}
@@ -41,7 +41,7 @@ object OppijaEditorModel extends Timing {
     Ordering.by { ot: OpiskeluoikeudetTyypeittäin => ot.latestAlkamispäiväForOrdering }(localDateOptionOrdering).reverse
 
   // Note: even with editable=true, editability will be checked based on organizational access on the lower level
-  def toEditorModel(oppijaWithWarnings: WithWarnings[(LaajatOppijaHenkilöTiedot, Seq[Opiskeluoikeus])], editable: Boolean)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = timed("createModel") {
+  def toEditorModel(oppijaWithWarnings: WithWarnings[(LaajatOppijaHenkilöTiedot, Seq[Opiskeluoikeus])], editable: Boolean)(implicit application: KoskiApplication, koskiSession: KoskiSpecificSession): EditorModel = timed("createModel") {
     val (oppijaHenkilö, opiskeluoikeudet) = oppijaWithWarnings.getIgnoringWarnings
     val tyypit = opiskeluoikeudet.groupBy(oo => application.koodistoViitePalvelu.validateRequired(oo.tyyppi)).map {
       case (tyyppi, opiskeluoikeudet) =>
@@ -54,7 +54,7 @@ object OppijaEditorModel extends Timing {
     buildModel(OppijaEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], tyypit, oppijaWithWarnings.warnings.flatMap(_.errors).map(_.key).toList, oppijaHenkilö.yksilöity), editable)
   }
 
-  def buildModel(obj: AnyRef, editable: Boolean)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = {
+  def buildModel(obj: AnyRef, editable: Boolean)(implicit application: KoskiApplication, koskiSession: KoskiSpecificSession): EditorModel = {
     EditorModelBuilder.buildModel(EditorSchema.deserializationContext, obj, editable)(koskiSession, application.koodistoViitePalvelu, application.koskiLocalizationRepository)
   }
 

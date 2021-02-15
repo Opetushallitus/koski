@@ -6,7 +6,7 @@ import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö, OppijaHenkilöWithMasterInfo, SuppeatOppijaHenkilöTiedot}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.json.JsonSerializer.extract
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.{Hidden, KoodistoUri, OksaUri}
 import fi.oph.scalaschema.annotation.{Description, Discriminator}
@@ -79,7 +79,7 @@ object OpiskeluoikeudenPerustiedot {
   def makePerustiedot(id: Int, oo: Opiskeluoikeus, henkilö: OppijaHenkilöWithMasterInfo): OpiskeluoikeudenPerustiedot = {
     makePerustiedot(
       id,
-      JsonSerializer.serializeWithUser(KoskiSession.untrustedUser)(oo),
+      JsonSerializer.serializeWithUser(KoskiSpecificSession.untrustedUser)(oo),
       oo.luokka.orElse(oo.ryhmä),
       OpiskeluoikeudenHenkilötiedot(id, henkilö)
     )
@@ -88,7 +88,7 @@ object OpiskeluoikeudenPerustiedot {
   def makePerustiedot(id: Int, oo: Opiskeluoikeus, henkilöRow: HenkilöRow, masterHenkilöRow: Option[HenkilöRow]): OpiskeluoikeudenPerustiedot = {
     makePerustiedot(
       id,
-      JsonSerializer.serializeWithUser(KoskiSession.untrustedUser)(oo),
+      JsonSerializer.serializeWithUser(KoskiSpecificSession.untrustedUser)(oo),
       oo.luokka.orElse(oo.ryhmä),
       OpiskeluoikeudenHenkilötiedot(id, henkilöRow, masterHenkilöRow)
     )

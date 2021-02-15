@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.SuoritusjakoTableV2
 import fi.oph.koski.json.JsonManipulation.removeFields
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.extraction.ValidationError
 import fi.oph.scalaschema.{Serializer, _}
@@ -208,7 +208,7 @@ object Tables {
 
   val OpiskeluoikeusHistoria = TableQuery[OpiskeluoikeusHistoryTable]
 
-  def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiSession): Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq] = {
+  def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiSpecificSession): Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq] = {
     val query = if (user.hasGlobalReadAccess || user.hasGlobalKoulutusmuotoReadAccess) {
       OpiskeluOikeudet
     } else {

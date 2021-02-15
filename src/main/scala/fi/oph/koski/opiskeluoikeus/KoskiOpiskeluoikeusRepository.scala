@@ -3,31 +3,31 @@ package fi.oph.koski.opiskeluoikeus
 import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.henkilo.{HenkilönTunnisteet, PossiblyUnverifiedHenkilöOid, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import org.json4s.JValue
 
 trait KoskiOpiskeluoikeusRepository {
-  def findByOid(oid: String)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusRow]
-  def getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSession): Either[HttpStatus, List[Henkilö.Oid]]
+  def findByOid(oid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, OpiskeluoikeusRow]
+  def getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, List[Henkilö.Oid]]
   def createOrUpdate(
     oppijaOid: PossiblyUnverifiedHenkilöOid,
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     allowUpdate: Boolean,
     allowDeleteComplete: Boolean = false
-  )(implicit user: KoskiSession): Either[HttpStatus, CreateOrUpdateResult]
-  def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSession): List[A]
-  def findByOppijaOids(oids: List[String])(implicit user: KoskiSession): Seq[Opiskeluoikeus]
-  def findByCurrentUserOids(oids: List[String])(implicit user: KoskiSession): Seq[Opiskeluoikeus]
-  def findHuollettavaByOppijaOids(oids: List[String])(implicit user: KoskiSession): Seq[Opiskeluoikeus]
+  )(implicit user: KoskiSpecificSession): Either[HttpStatus, CreateOrUpdateResult]
+  def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSpecificSession): List[A]
+  def findByOppijaOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus]
+  def findByCurrentUserOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus]
+  def findHuollettavaByOppijaOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus]
 }
 
 trait AuxiliaryOpiskeluoikeusRepository {
-  def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSession): List[A]
-  def findByOppija(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
-  def findByCurrentUser(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
-  def findHuollettavaByOppija(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
+  def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSpecificSession): List[A]
+  def findByOppija(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus]
+  def findByCurrentUser(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus]
+  def findHuollettavaByOppija(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus]
 }
 
 sealed trait CreateOrUpdateResult {

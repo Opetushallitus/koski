@@ -3,7 +3,7 @@ package fi.oph.koski.permission
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{KoskiSession, Unauthenticated}
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, Unauthenticated}
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus, Organisaatio}
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
@@ -29,7 +29,7 @@ class PermissionCheckServlet(implicit val application: KoskiApplication) extends
   private def getOpiskeluoikeudet(oid: Henkilö.Oid): Seq[Opiskeluoikeus] = {
     HenkilöOid.validateHenkilöOid(oid)
       .toSeq
-      .flatMap(o => application.oppijaFacade.findOppija(o)(KoskiSession.systemUser).toOption.toSeq)
+      .flatMap(o => application.oppijaFacade.findOppija(o)(KoskiSpecificSession.systemUser).toOption.toSeq)
       .flatMap(_.getIgnoringWarnings.opiskeluoikeudet)
   }
 

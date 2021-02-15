@@ -1,7 +1,7 @@
 package fi.oph.koski.koskiuser
 
 trait RequiresVirkailijaOrPalvelukäyttäjä extends KoskiAuthenticationSupport with HasKoskiSession {
-  implicit def koskiSession: KoskiSession = koskiSessionOption.get
+  implicit def koskiSession: KoskiSpecificSession = koskiSessionOption.get
 
   before() {
     requireVirkailijaOrPalvelukäyttäjä

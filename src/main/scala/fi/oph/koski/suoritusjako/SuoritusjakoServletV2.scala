@@ -4,7 +4,7 @@ package fi.oph.koski.suoritusjako
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.{EditorApiServlet, EditorModel}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.{KoskiAuthenticationSupport, KoskiSession}
+import fi.oph.koski.koskiuser.{KoskiAuthenticationSupport, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.NoCache
@@ -21,7 +21,7 @@ class SuoritusjakoServletV2(implicit val application: KoskiApplication) extends 
   }
 
   post("/editor") {
-    implicit val suoritusjakoUser = KoskiSession.suoritusjakoKatsominenUser(request)
+    implicit val suoritusjakoUser = KoskiSpecificSession.suoritusjakoKatsominenUser(request)
     renderEither(
       extractFromBodyReturning[SuoritusjakoRequest, Either[HttpStatus, EditorModel]] {
         request => application.suoritusjakoServiceV2.findSuoritusjako(request.secret)(suoritusjakoUser)

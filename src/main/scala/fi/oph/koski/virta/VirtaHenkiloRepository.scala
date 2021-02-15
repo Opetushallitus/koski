@@ -2,7 +2,7 @@ package fi.oph.koski.virta
 
 import fi.oph.koski.henkilo.HetuBasedHenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.UusiHenkilö
 
@@ -31,7 +31,7 @@ case class VirtaHenkilöRepository(v: VirtaClient, accessChecker: VirtaAccessChe
     }
   }
 
-  override def hasAccess(user: KoskiSession): Boolean = accessChecker.hasAccess(user)
+  override def hasAccess(user: KoskiSpecificSession): Boolean = accessChecker.hasAccess(user)
 }
 
 

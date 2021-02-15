@@ -1,7 +1,7 @@
 package fi.oph.koski.servlet
 
 import fi.oph.koski.http.{ErrorCategory, HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.{LoggerWithContext, Logging}
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import org.eclipse.jetty.http.BadMessageException
@@ -86,7 +86,7 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
     }
   }
 
-  def koskiSessionOption: Option[KoskiSession]
+  def koskiSessionOption: Option[KoskiSpecificSession]
 
   def renderStatus(status: HttpStatus): Unit
 

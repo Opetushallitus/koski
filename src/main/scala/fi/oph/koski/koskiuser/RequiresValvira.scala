@@ -3,7 +3,7 @@ package fi.oph.koski.koskiuser
 import fi.oph.koski.http.KoskiErrorCategory
 
 trait RequiresValvira extends KoskiAuthenticationSupport with HasKoskiSession {
-  implicit def koskiSession: KoskiSession = koskiSessionOption.get
+  implicit def koskiSession: KoskiSpecificSession = koskiSessionOption.get
 
   before() {
     requiresValvira

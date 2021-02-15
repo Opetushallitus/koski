@@ -14,7 +14,7 @@ import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.oppilaitos
 import fi.oph.koski.documentation.{ExamplesEsiopetus, _}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, MockOppijat, OppijaHenkilö, VerifiedHenkilöOid}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession, MockUsers}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, MockUsers}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.päiväkotiMajakka
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenOsittaisetTiedot, OpiskeluoikeudenPerustiedot}

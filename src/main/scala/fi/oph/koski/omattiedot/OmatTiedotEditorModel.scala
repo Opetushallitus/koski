@@ -7,7 +7,7 @@ import fi.oph.koski.editor.OppijaEditorModel.oppilaitoksenOpiskeluoikeudetOrderi
 import fi.oph.koski.editor._
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.huoltaja.{Huollettava, HuollettavatSearchResult, HuollettavienHakuOnnistui}
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.schema.PerusopetuksenOpiskeluoikeus._
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.Hidden
@@ -17,13 +17,13 @@ import mojave._
 
 object OmatTiedotEditorModel extends Timing {
 
-  def toEditorModel(oppija: Oppija)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel =
+  def toEditorModel(oppija: Oppija)(implicit application: KoskiApplication, koskiSession: KoskiSpecificSession): EditorModel =
     toEditorModel(userOppija = oppija, näytettäväOppija = oppija, warnings = Nil)
 
-  def toEditorModel(userOppija: WithWarnings[Oppija], näytettäväOppija: WithWarnings[Oppija])(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel =
+  def toEditorModel(userOppija: WithWarnings[Oppija], näytettäväOppija: WithWarnings[Oppija])(implicit application: KoskiApplication, koskiSession: KoskiSpecificSession): EditorModel =
     toEditorModel(userOppija.getIgnoringWarnings, näytettäväOppija.getIgnoringWarnings, warnings = näytettäväOppija.warnings)
 
-  def toEditorModel(userOppija: Oppija, näytettäväOppija: Oppija, warnings: Seq[HttpStatus])(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = timed("createModel") {
+  def toEditorModel(userOppija: Oppija, näytettäväOppija: Oppija, warnings: Seq[HttpStatus])(implicit application: KoskiApplication, koskiSession: KoskiSpecificSession): EditorModel = timed("createModel") {
     val piilotetuillaTiedoilla = piilotaArvosanatKeskeneräisistäSuorituksista _ andThen
       piilotaSensitiivisetHenkilötiedot andThen
       piilotaKeskeneräisetPerusopetuksenPäättötodistukset
@@ -37,7 +37,7 @@ object OmatTiedotEditorModel extends Timing {
     }.toList.sorted(oppilaitoksenOpiskeluoikeudetOrdering)
   }
 
-  private def buildView(userOppija: Oppija, näytettäväOppija: Oppija, warnings: Seq[HttpStatus])(implicit application: KoskiApplication, koskiSession: KoskiSession) = {
+  private def buildView(userOppija: Oppija, näytettäväOppija: Oppija, warnings: Seq[HttpStatus])(implicit application: KoskiApplication, koskiSession: KoskiSpecificSession) = {
     val huollettavat = koskiSession.huollettavat
 
     OmatTiedotEditorView(
@@ -49,7 +49,7 @@ object OmatTiedotEditorModel extends Timing {
     )
   }
 
-  private def buildModel(obj: AnyRef)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = {
+  private def buildModel(obj: AnyRef)(implicit application: KoskiApplication, koskiSession: KoskiSpecificSession): EditorModel = {
     EditorModelBuilder.buildModel(EditorSchema.deserializationContext, obj, editable = false)(koskiSession, application.koodistoViitePalvelu, application.koskiLocalizationRepository)
   }
 

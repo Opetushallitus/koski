@@ -1,7 +1,7 @@
 package fi.oph.koski.mydata
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSession}
+import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession}
 import fi.oph.koski.log.{AuditLogTester, LogUserContext}
 import org.scalatest.{BeforeAndAfter, BeforeAndAfterAll, FreeSpec, Matchers}
 
@@ -19,7 +19,7 @@ class MyDataServiceTest extends FreeSpec with Matchers with BeforeAndAfterAll wi
     AuditLogTester.clearMessages
   }
 
-  def getSession = new KoskiSession(AuthenticationUser(oid, "", "", None), "fi", LogUserContext.toInetAddress("127.0.0.1"), "", Set())
+  def getSession = new KoskiSpecificSession(AuthenticationUser(oid, "", "", None), "fi", LogUserContext.toInetAddress("127.0.0.1"), "", Set())
 
   "MyDataService" - {
 

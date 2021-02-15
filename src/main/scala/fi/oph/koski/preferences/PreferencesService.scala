@@ -3,7 +3,7 @@ package fi.oph.koski.preferences
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.{KoskiDatabaseMethods, PreferenceRow, Tables}
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.InvalidRequestException
@@ -34,7 +34,7 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
     "lukionpaikallinenopintojakso2019" -> classOf[LukionPaikallinenOpintojakso2019]
   )
 
-  def put(organisaatioOid: String, koulutustoimijaOid: Option[String], `rawType`: String, key: String, value: JValue)(implicit session: KoskiSession) = {
+  def put(organisaatioOid: String, koulutustoimijaOid: Option[String], `rawType`: String, key: String, value: JValue)(implicit session: KoskiSpecificSession) = {
     val `type` = migrateTypeName(rawType)
 
     if (!session.hasWriteAccess(organisaatioOid, koulutustoimijaOid)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
@@ -51,7 +51,7 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
     }
   }
 
-  def delete(organisaatioOid: String, koulutustoimijaOid: Option[String], `rawType`: String, key: String)(implicit session: KoskiSession): HttpStatus = {
+  def delete(organisaatioOid: String, koulutustoimijaOid: Option[String], `rawType`: String, key: String)(implicit session: KoskiSpecificSession): HttpStatus = {
     val `type` = migrateTypeName(rawType)
 
     if (!session.hasWriteAccess(organisaatioOid, koulutustoimijaOid)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
@@ -70,7 +70,7 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
     SchemaValidatingExtractor.extract(value, klass).right.map(_.asInstanceOf[T])
   }
 
-  def get(organisaatioOid: String, koulutustoimijaOid: Option[String], `rawType`: String)(implicit session: KoskiSession): Either[HttpStatus, List[StorablePreference]] = {
+  def get(organisaatioOid: String, koulutustoimijaOid: Option[String], `rawType`: String)(implicit session: KoskiSpecificSession): Either[HttpStatus, List[StorablePreference]] = {
     val `type` = migrateTypeName(rawType)
 
     if (!session.hasWriteAccess(organisaatioOid, koulutustoimijaOid)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())

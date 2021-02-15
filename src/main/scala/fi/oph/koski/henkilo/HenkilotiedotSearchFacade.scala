@@ -1,7 +1,7 @@
 package fi.oph.koski.henkilo
 
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.KoskiMessageField.{apply => _, _}
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage}
@@ -9,7 +9,7 @@ import fi.oph.koski.opiskeluoikeus.{CompositeOpiskeluoikeusRepository, KoskiOpis
 import fi.oph.koski.schema.{Henkilö, HenkilötiedotJaOid}
 
 private[henkilo] case class HenkilötiedotSearchFacade(henkilöRepository: HenkilöRepository, kaikkiOpiskeluoikeudet: CompositeOpiskeluoikeusRepository, koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository, hetuValidator: Hetu) {
-  def searchOrPossiblyCreateIfInYtrOrVirta(query: String)(implicit koskiSession: KoskiSession): HenkilötiedotSearchResponse = {
+  def searchOrPossiblyCreateIfInYtrOrVirta(query: String)(implicit koskiSession: KoskiSpecificSession): HenkilötiedotSearchResponse = {
     AuditLog.log(AuditLogMessage(OPPIJA_HAKU, koskiSession, Map(hakuEhto -> query)))
     if (Hetu.validFormat(query).isRight) {
       searchByHetuOrPossiblyCreateIfInYtrOrVirta(query)
@@ -21,13 +21,13 @@ private[henkilo] case class HenkilötiedotSearchFacade(henkilöRepository: Henki
   }
 
   // huom: tässä kutsussa ei ole organisaatiorajausta.
-  def findByHetuOrCreateIfInYtrOrVirta(hetu: String)(implicit user: KoskiSession): Either[HttpStatus, List[HenkilötiedotJaOid]] = {
+  def findByHetuOrCreateIfInYtrOrVirta(hetu: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, List[HenkilötiedotJaOid]] = {
     AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> hetu)))
     hetuValidator.validate(hetu).right.map(henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(_)).map(_.map(_.toHenkilötiedotJaOid).toList)
   }
 
   // huom, tässä kutsussa ei ole organisaatiorajausta.
-  def findByOid(oid: String)(implicit user: KoskiSession): Either[HttpStatus, List[HenkilötiedotJaOid]] = {
+  def findByOid(oid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, List[HenkilötiedotJaOid]] = {
     AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> oid)))
     HenkilöOid.validateHenkilöOid(oid)
       .map(henkilöRepository.findByOid(_))
@@ -35,13 +35,13 @@ private[henkilo] case class HenkilötiedotSearchFacade(henkilöRepository: Henki
   }
 
   // Sisällyttää vain henkilöt, joilta löytyy vähintään yksi (tälle käyttäjälle näkyvä) opiskeluoikeus Koskesta, ei tarkista Virta- eikä YTR-palvelusta
-  private def searchHenkilötiedot(queryString: String)(implicit user: KoskiSession): HenkilötiedotSearchResponse = {
+  private def searchHenkilötiedot(queryString: String)(implicit user: KoskiSpecificSession): HenkilötiedotSearchResponse = {
     val filtered = koskiOpiskeluoikeudet.filterOppijat(henkilöRepository.findByOids(queryString)).map(_.toHenkilötiedotJaOid)
     HenkilötiedotSearchResponse(filtered.sorted(HenkilötiedotJaOid.orderingByName))
   }
 
   // Sisällyttää vain henkilöt, joilta löytyy vähintään yksi (tälle käyttäjälle näkyvä) opiskeluoikeus Koskesta, YTR:stä tai Virrasta
-  private def searchByHetuOrPossiblyCreateIfInYtrOrVirta(hetu: String)(implicit user: KoskiSession): HenkilötiedotSearchResponse = {
+  private def searchByHetuOrPossiblyCreateIfInYtrOrVirta(hetu: String)(implicit user: KoskiSpecificSession): HenkilötiedotSearchResponse = {
     hetuValidator.validate(hetu) match {
       case Right(_) =>
         val kaikkiHenkilöt = henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu, userForAccessChecks = Some(user)).toList
@@ -54,7 +54,7 @@ private[henkilo] case class HenkilötiedotSearchFacade(henkilöRepository: Henki
   }
 
   // Sisällyttää vain henkilöt, joilta löytyy vähintään yksi (tälle käyttäjälle näkyvä) opiskeluoikeus Koskesta, YTR:stä tai Virrasta
-  private def searchMasterByOid(oid: String)(implicit user: KoskiSession): HenkilötiedotSearchResponse = {
+  private def searchMasterByOid(oid: String)(implicit user: KoskiSpecificSession): HenkilötiedotSearchResponse = {
     val henkilöt = henkilöRepository.findByOid(oid, findMasterIfSlaveOid = true).toList
     val oppijat = kaikkiOpiskeluoikeudet.filterOppijat(henkilöt).map(_.toHenkilötiedotJaOid)
     val canAddNew = henkilöt.nonEmpty && oppijat.isEmpty && user.hasAnyWriteAccess

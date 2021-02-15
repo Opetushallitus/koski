@@ -11,7 +11,7 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{evira, korkeakouluViranomainen, perusopetusViranomainen, toinenAsteViranomainen}
-import fi.oph.koski.koskiuser.{KoskiSession, MockUser, MockUsers, UserWithPassword}
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUser, MockUsers, UserWithPassword}
 import fi.oph.koski.luovutuspalvelu.{HetuRequestV1, LuovutuspalveluResponseV1}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
@@ -421,7 +421,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   }
 
   private def koskeenTallennetutOppijatCount =
-    runDbSync(OpiskeluOikeudetWithAccessCheck(KoskiSession.systemUser)
+    runDbSync(OpiskeluOikeudetWithAccessCheck(KoskiSpecificSession.systemUser)
       .join(Tables.Henkilöt).on(_.oppijaOid === _.oid)
       .filter(_._2.masterOid.isEmpty)
       .map(_._1.oppijaOid).result)

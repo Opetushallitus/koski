@@ -4,7 +4,7 @@ import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{Luokkahaku, Nimihaku, SuoritusJsonHaku, _}
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioOid, OrganisaatioRepository, OrganisaatioService}
@@ -37,12 +37,12 @@ object OpiskeluoikeusQueryFilter {
   case class MuuttunutEnnen(aikaleima: Instant) extends OpiskeluoikeusQueryFilter
   case class MuuttunutJälkeen(aikaleima: Instant) extends OpiskeluoikeusQueryFilter
 
-  def parse(params: MultiParams)(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioService, session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] =
+  def parse(params: MultiParams)(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioService, session: KoskiSpecificSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] =
     OpiskeluoikeusQueryFilterParser.parse(params)
 }
 
 private object OpiskeluoikeusQueryFilterParser extends Logging {
-  def parse(params: MultiParams)(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioService, session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = {
+  def parse(params: MultiParams)(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioService, session: KoskiSpecificSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = {
     def dateParam(q: (String, String)): Either[HttpStatus, LocalDate] = q match {
       case (p, v) => try {
         Right(LocalDate.parse(v))

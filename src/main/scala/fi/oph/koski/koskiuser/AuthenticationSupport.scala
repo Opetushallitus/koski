@@ -73,10 +73,10 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport {
 
   def isAuthenticated = getUser.isRight
 
-  def sessionOrStatus: Either[KoskiSessionStatus, KoskiSession] =
+  def sessionOrStatus: Either[KoskiSessionStatus, KoskiSpecificSession] =
     userFromCookie.map(createSession)
 
-  override def koskiSessionOption: Option[KoskiSession] =
+  override def koskiSessionOption: Option[KoskiSpecificSession] =
     getUser.toOption.map(createSession)
 
   private val loginFail = Left(KoskiErrorCategory.unauthorized.loginFail(s"Sisäänkirjautuminen epäonnistui, väärä käyttäjätunnus tai salasana."))
@@ -132,5 +132,5 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport {
     user.copy(serviceTicket = Some(fakeServiceTicket))
   }
 
-  def createSession(user: AuthenticationUser) = KoskiSession(user, request, application.käyttöoikeusRepository)
+  def createSession(user: AuthenticationUser) = KoskiSpecificSession(user, request, application.käyttöoikeusRepository)
 }

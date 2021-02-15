@@ -3,7 +3,7 @@ package fi.oph.koski.raportit
 import com.typesafe.config.Config
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
 import fi.oph.koski.raportointikanta.RaportointiDatabase
 import fi.oph.koski.schema.Organisaatio.Oid
@@ -29,7 +29,7 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
     filterOppilaitosOidsByKoulutusmuoto(kyselyOiditOrganisaatiolle(organisaatioOid).toSeq, koulutusmuoto)
   }
 
-  def mahdollisetRaporttienTyypitOrganisaatiolle(organisaatioHierarkia: OrganisaatioHierarkia, koulutusmuodot: Map[String, Seq[String]])(implicit session: KoskiSession): Set[RaportinTyyppi] = {
+  def mahdollisetRaporttienTyypitOrganisaatiolle(organisaatioHierarkia: OrganisaatioHierarkia, koulutusmuodot: Map[String, Seq[String]])(implicit session: KoskiSpecificSession): Set[RaportinTyyppi] = {
     val isKoulutustoimija = organisaatioHierarkia.toOrganisaatio.isInstanceOf[Koulutustoimija]
 
     OrganisaatioHierarkia.flatten(List(organisaatioHierarkia))
@@ -43,7 +43,7 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
   }
 
   // TODO: Tarpeeton kun uusi raporttikäli saadaan käyttöön, voi poistaa
-  def mahdollisetRaporttienTyypitOrganisaatiolle(organisaatioOid: Organisaatio.Oid)(implicit session: KoskiSession): Set[RaportinTyyppi] = {
+  def mahdollisetRaporttienTyypitOrganisaatiolle(organisaatioOid: Organisaatio.Oid)(implicit session: KoskiSpecificSession): Set[RaportinTyyppi] = {
     val organisaatio = organisaatioRepository.getOrganisaatio(organisaatioOid)
     val isKoulutustoimija = organisaatio.exists(_.isInstanceOf[Koulutustoimija])
 
@@ -90,7 +90,7 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
     case _ => Seq.empty[RaportinTyyppi]
   }
 
-  private def checkRaporttiAccessIfAccessIsLimited(raportti: RaportinTyyppi)(implicit session: KoskiSession) = {
+  private def checkRaporttiAccessIfAccessIsLimited(raportti: RaportinTyyppi)(implicit session: KoskiSpecificSession) = {
     val rajatutRaportit = config.getConfigList("raportit.rajatut")
     val conf = rajatutRaportit.asScala.find(_.getString("name") == raportti.toString)
     conf match {
