@@ -4,15 +4,15 @@ import java.net.InetAddress
 
 import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.Rooli.Role
-import fi.oph.koski.koskiuser.{AuthenticationUser, Session, UserLanguage, Käyttöoikeus, KäyttöoikeusOrg, KäyttöoikeusRepository, UserWithOid, UserWithUsername}
+import fi.oph.koski.koskiuser.{AuthenticationUser, Käyttöoikeus, KäyttöoikeusOrg, KäyttöoikeusRepository, Session, UserLanguage}
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.schema.Organisaatio.Oid
 import org.scalatra.servlet.RichRequest
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ValpasSession(user: AuthenticationUser, lang: String, clientIp: InetAddress, userAgent: String, käyttöoikeudet: => Set[Käyttöoikeus]) extends Session(user, lang, clientIp, userAgent) with SensitiveDataAllowed {
-  def orgKäyttöoikeudet: Set[KäyttöoikeusOrg] = käyttöoikeudet.collect { case k : KäyttöoikeusOrg => k}.filter(hasValpasRooli)
+class ValpasSession(user: AuthenticationUser, lang: String, clientIp: InetAddress, userAgent: String, lähdeKäyttöoikeudet: => Set[Käyttöoikeus]) extends Session(user, lang, clientIp, userAgent) with SensitiveDataAllowed {
+  def orgKäyttöoikeudet: Set[KäyttöoikeusOrg] = käyttöoikeudet.collect { case k : KäyttöoikeusOrg => k}
   def varhaiskasvatusKoulutustoimijat: Set[Oid] = Set.empty
   def hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess: Boolean = false
 
@@ -20,12 +20,9 @@ class ValpasSession(user: AuthenticationUser, lang: String, clientIp: InetAddres
 
   def sensitiveDataAllowed(allowedRoles: Set[Role]): Boolean = false
 
-  private def hasValpasRooli(organisaatioKäyttöoikeus: KäyttöoikeusOrg) = {
-    organisaatioKäyttöoikeus.organisaatiokohtaisetPalveluroolit.exists(_.palveluName == "VALPAS")
-  }
+  private def käyttöoikeudet(): Set[Käyttöoikeus] = Käyttöoikeus.withPalveluroolitFilter(lähdeKäyttöoikeudet, _.palveluName == "VALPAS")
 
-  // TODO: Filtteröi tässä lista niin, että sille jää vain Valpas-oikeudet
-  Future(käyttöoikeudet)(ExecutionContext.global) // haetaan käyttöoikeudet toisessa säikeessä rinnakkain
+  Future(lähdeKäyttöoikeudet)(ExecutionContext.global) // haetaan käyttöoikeudet toisessa säikeessä rinnakkain
 }
 
 object ValpasSession {

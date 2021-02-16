@@ -27,7 +27,7 @@ abstract class Session(val user: AuthenticationUser, val lang: String, val clien
   def hasGlobalReadAccess: Boolean
 }
 
-class KoskiSpecificSession(user: AuthenticationUser, lang: String, clientIp: InetAddress, userAgent: String, käyttöoikeudet: => Set[Käyttöoikeus]) extends Session(user, lang, clientIp, userAgent)  with SensitiveDataAllowed {
+class KoskiSpecificSession(user: AuthenticationUser, lang: String, clientIp: InetAddress, userAgent: String, lähdeKäyttöoikeudet: => Set[Käyttöoikeus]) extends Session(user, lang, clientIp, userAgent)  with SensitiveDataAllowed {
   lazy val orgKäyttöoikeudet: Set[KäyttöoikeusOrg] = käyttöoikeudet.collect { case k : KäyttöoikeusOrg => k}
   lazy val varhaiskasvatusKäyttöoikeudet: Set[KäyttöoikeusVarhaiskasvatusToimipiste] = käyttöoikeudet.collect { case k: KäyttöoikeusVarhaiskasvatusToimipiste => k }
   lazy val varhaiskasvatusKoulutustoimijat: Set[Oid] = varhaiskasvatusKäyttöoikeudet.map(_.koulutustoimija.oid)
@@ -106,8 +106,12 @@ class KoskiSpecificSession(user: AuthenticationUser, lang: String, clientIp: Ine
 
   def juuriOrganisaatiot: List[OrganisaatioWithOid] = orgKäyttöoikeudet.collect { case r: KäyttöoikeusOrg if r.juuri => r.organisaatio }.toList
 
-  // TODO: Filtteröi tässä pois Valpas-oikeudet (tai vielä parempi: Jätä vain whitelistattuna KOSKI-oikeudet ja kosken käyttämät muiden palveluiden oikeudet...)
-  Future(käyttöoikeudet)(ExecutionContext.global) // haetaan käyttöoikeudet toisessa säikeessä rinnakkain
+  // Filtteröi pois Valpas-käyttöoikeudet. Oikeampi vaihtoehto olisi filteröidä pois white listin perusteella mukaan vain käyttöoikeudet, joista
+  // Koski on kiinnostunut. Sitä varten pitäisi koodia tutkimalla selvittää, mitä whitelistillä pitäisi olla. Se ei ole triviaalia, koska Koski
+  // käyttää myös muita kuin oman palvelunsa käyttöoikeuksia tarkoituksella.
+  private def käyttöoikeudet(): Set[Käyttöoikeus] = Käyttöoikeus.withPalveluroolitFilter(lähdeKäyttöoikeudet, _.palveluName != "VALPAS")
+
+  Future(lähdeKäyttöoikeudet)(ExecutionContext.global) // haetaan käyttöoikeudet toisessa säikeessä rinnakkain
 }
 
 object KoskiSpecificSession {
