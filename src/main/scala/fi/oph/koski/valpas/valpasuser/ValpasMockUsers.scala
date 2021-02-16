@@ -27,9 +27,16 @@ object ValpasMockUsers {
     Set(oppilaitoskäyttäjä(jyväskylänNormaalikoulu), MockKäyttöoikeusryhmät.oppilaitosTallentaja(helsinginKaupunki))
   )
 
+  val valpasJklNormaalikouluJaValpasHelsinki = MockUser(
+    "käyttäjä",
+    "valpas-jkl-normaali-hki",
+    "1.2.246.562.24.12312312304",
+    Set(oppilaitoskäyttäjä(jyväskylänNormaalikoulu), kuntakäyttäjä(helsinginKaupunki))
+  )
+
   def users = {
     mockUsersEnabled match {
-      case true => List(valpasHelsinki, valpasJklNormaalikoulu, valpasJklNormaalikouluJaKoskiHelsinkiTallentaja)
+      case true => List(valpasHelsinki, valpasJklNormaalikoulu, valpasJklNormaalikouluJaKoskiHelsinkiTallentaja, valpasJklNormaalikouluJaValpasHelsinki)
       case false => List()
     }
   }

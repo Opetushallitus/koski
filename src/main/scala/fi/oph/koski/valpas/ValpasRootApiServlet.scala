@@ -1,6 +1,7 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.organisaatio.OrganisaatioHierarkia
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
@@ -13,8 +14,6 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
   }
 
   get("/organisaatiot") {
-    // TODO: Kuntakäyttäjälle ei pitäisi lähettää hierarkista listaa, vaan ainoastaan flat-lista kyseisestä kunnasta! Kunta kun voi olla myös
-    // perusopetuksen järjestäjä.
-    organisaatioService.kaikkiKäyttöoikeudellisetOrganisaatiot
+    organisaatioService.kaikkiKäyttöoikeudellisetOrganisaatiot.map(_.copy(children = List()))
   }
 }
