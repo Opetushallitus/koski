@@ -69,7 +69,7 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
     (käyttäjä.oidHenkilo, käyttäjä.organisaatiot.flatMap {
       case OrganisaatioJaKäyttöoikeudet(organisaatioOid, käyttöoikeudet) =>
         val roolit = käyttöoikeudet.collect { case PalveluJaOikeus(palvelu, oikeus) => Palvelurooli(palvelu, oikeus) }
-        if (!roolit.map(_.palveluName).contains("KOSKI")) {
+        if (!roolit.map(_.palveluName).exists(List("KOSKI", "VALPAS").contains)) {
           Nil
         } else if (organisaatioOid == Opetushallitus.organisaatioOid) {
           List(KäyttöoikeusGlobal(roolit))
