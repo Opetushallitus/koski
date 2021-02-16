@@ -13,6 +13,9 @@ COPY run.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/run.sh
 RUN addgroup -S koski -g 10001 && adduser -u 10000 -S -G koski koski
 
+# https://github.com/docker-library/openjdk/issues/73#issuecomment-207816707
+RUN apk add --update ttf-dejavu && rm -rf /var/cache/apk/*
+
 # Defang bins
 RUN find / -xdev -perm +6000 -type f -exec chmod a-s {} \; || true
 
