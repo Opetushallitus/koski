@@ -447,6 +447,11 @@ object PerusopetuksenOppiaineenArviointi {
     päivä = None,
     kuvaus = kuvaus
   )
+  def apply(arvosana: String, kuvaus: Option[LocalizedString], arviointipäivä: Option[LocalDate]) = new SanallinenPerusopetuksenOppiaineenArviointi(
+    arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"),
+    päivä = arviointipäivä,
+    kuvaus = kuvaus
+  )
   def apply(arvosana: Int, arviointipäivä: Option[LocalDate] = None) = new NumeerinenPerusopetuksenOppiaineenArviointi(
     arvosana = Koodistokoodiviite(koodiarvo = arvosana.toString, koodistoUri = "arviointiasteikkoyleissivistava"),
     päivä = arviointipäivä

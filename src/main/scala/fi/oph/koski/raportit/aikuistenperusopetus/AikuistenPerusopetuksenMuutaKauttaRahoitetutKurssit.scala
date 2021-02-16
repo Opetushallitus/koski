@@ -76,6 +76,7 @@ case class AikuistenPerusopetuksenMuutaKauttaRahoitetutKurssit(db: DB) extends K
                   and r_osasuoritus.arviointi_paiva <= $viimeistaan
                   and (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true)
                   and r_opiskeluoikeus_aikajakso.opintojen_rahoitus = '6'
+                  and r_osasuoritus.arviointi_arvosana_koodiarvo != 'O'
   """
   }
 

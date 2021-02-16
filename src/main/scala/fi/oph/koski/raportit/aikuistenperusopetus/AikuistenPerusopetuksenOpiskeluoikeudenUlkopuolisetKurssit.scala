@@ -73,6 +73,7 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit(db: DB) ex
               or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi')
               and r_osasuoritus.arviointi_paiva >= $aikaisintaan
               and r_osasuoritus.arviointi_paiva <= $viimeistaan
+              and r_osasuoritus.arviointi_arvosana_koodiarvo != 'O'
               and (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true)
               and (oo_alkamisaiva > r_osasuoritus.arviointi_paiva
                 or (oo_paattymispaiva < r_osasuoritus.arviointi_paiva and viimeisin_tila = 'valmistunut'))

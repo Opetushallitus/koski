@@ -17,6 +17,10 @@ class ArviointiSpec extends FreeSpec with Matchers {
       val arviointi = read[PerusopetuksenOppiaineenArviointi]("""{"arvosana":{"koodistoUri":"arviointiasteikkoyleissivistava","koodiarvo":"S"}}""")
       arviointi.hyväksytty should equal(true)
     }
+    "O" in {
+      val arviointi = read[PerusopetuksenOppiaineenArviointi]("""{"arvosana":{"koodistoUri":"arviointiasteikkoyleissivistava","koodiarvo":"O"}}""")
+      arviointi.hyväksytty should equal(false)
+    }
     "4" in {
       val arviointi = read[PerusopetuksenOppiaineenArviointi]("""{"arvosana":{"koodistoUri":"arviointiasteikkoyleissivistava","koodiarvo":"4"}}""")
       arviointi.hyväksytty should equal(false)

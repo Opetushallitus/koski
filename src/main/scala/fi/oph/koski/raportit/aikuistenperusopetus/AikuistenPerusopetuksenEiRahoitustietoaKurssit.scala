@@ -77,6 +77,7 @@ case class AikuistenPerusopetuksenEiRahoitustietoaKurssit(db: DB) extends KoskiD
                   and r_osasuoritus.arviointi_paiva <= $viimeistaan
                   and (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true)
                   and r_opiskeluoikeus_aikajakso.opintojen_rahoitus is null
+                  and r_osasuoritus.arviointi_arvosana_koodiarvo != 'O'
   """
   }
 

@@ -57,6 +57,7 @@ object LukioOppiaineRahoitusmuodonMukaan extends DatabaseConverters {
         where paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
           and (osasuoritus.arviointi_paiva between aikajakso.alku and aikajakso.loppu)
           and osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
+          and osasuoritus.arviointi_arvosana_koodiarvo != 'O'
           and (
             osasuoritus.tunnustettu = false
             or

@@ -106,7 +106,7 @@ object LukioKurssikertymaRaporttiFixtures {
     kurssi(syventäväKurssi("MAA16", "MAA16", "MAA16")).copy(tunnustettu = Some(tunnustettu)),
     kurssi(valtakunnallinenKurssi("MAA2")).copy(tunnustettu = Some(tunnustettuRahoituksenPiirissa)),
     kurssi(valtakunnallinenKurssi("MAA3")).copy(tunnustettu = Some(tunnustettu)),
-    kurssi(valtakunnallinenKurssi("MAA4")),
+    kurssi(valtakunnallinenKurssi("MAA4")).copy(arviointi = kurssinArviointiOsallistunut),
     kurssi(valtakunnallinenKurssi("MAA5")),
     kurssi(valtakunnallinenKurssi("MAA6")).copy(arviointi = kurssinArviointiJaksoaEnnen),
     kurssi(valtakunnallinenKurssi("MAA7")).copy(arviointi = kurssinArviointiJaksonJalkeen),
@@ -119,6 +119,7 @@ object LukioKurssikertymaRaporttiFixtures {
   )
 
   lazy val kurssinArviointi = Some(List(NumeerinenLukionArviointi(Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"), date)))
+  lazy val kurssinArviointiOsallistunut = Some(List(SanallinenLukionArviointi(Koodistokoodiviite(koodiarvo = "O", koodistoUri = "arviointiasteikkoyleissivistava"), None, date)))
   lazy val kurssinArviointiJaksonJalkeen = Some(List(NumeerinenLukionArviointi(Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"), raportinAikajaksoLoppu.plusDays(1))))
   lazy val kurssinArviointiJaksoaEnnen = Some(List(NumeerinenLukionArviointi(Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"), raportinAikajaksoAlku.minusDays(1))))
   lazy val kurssinArviointiMuutaKauttaRahoitetullaJaksolla = Some(List(NumeerinenLukionArviointi(Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"), dateMuutaKauttaRahoitettu)))
