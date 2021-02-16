@@ -121,8 +121,9 @@ class OpiskeluoikeudenPerustiedotRepository(
 
     val doc = toJValue(ElasticSearch.applyPagination(Some(pagination), Map(
       "query" -> elasticQuery,
-      "sort" -> elasticSort)
-    ))
+      "sort" -> elasticSort,
+      "track_total_hits" -> true
+    )))
 
     indexer.index.runSearch(doc)
       .map{ response =>
