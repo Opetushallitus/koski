@@ -12,6 +12,7 @@ case class TiedonsiirtoStatistics(index: ElasticSearchIndex) {
         """
           |{
           |  "size": 0,
+          |  "track_total_hits": "true",
           |  "query": {"exists":{"field":"virheet.key"}},
           |  "aggs": {
           |    "virhekoodit": {

@@ -51,6 +51,7 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: ElasticSearchIndex) {
         """
           |{
           |  "size": 0,
+          |  "track_total_hits": "true",
           |  "aggs": {
           |    "oppilaitos_total": {
           |      "cardinality": {
