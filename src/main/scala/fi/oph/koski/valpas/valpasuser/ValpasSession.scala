@@ -20,7 +20,8 @@ class ValpasSession(user: AuthenticationUser, lang: String, clientIp: InetAddres
 
   def sensitiveDataAllowed(allowedRoles: Set[Role]): Boolean = false
 
-  private def käyttöoikeudet(): Set[Käyttöoikeus] = Käyttöoikeus.withPalveluroolitFilter(lähdeKäyttöoikeudet, _.palveluName == "VALPAS")
+  // Sessio luodaan aina uudestaan jokaisessa API-kutsussa, joten käyttöoikeudet voi tallentaa lazy val:iin eikä hakea ja filteröida aina uudestaan
+  private lazy val käyttöoikeudet: Set[Käyttöoikeus] = Käyttöoikeus.withPalveluroolitFilter(lähdeKäyttöoikeudet, _.palveluName == "VALPAS")
 
   Future(lähdeKäyttöoikeudet)(ExecutionContext.global) // haetaan käyttöoikeudet toisessa säikeessä rinnakkain
 }

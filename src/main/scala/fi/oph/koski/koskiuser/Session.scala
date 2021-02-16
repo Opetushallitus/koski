@@ -109,7 +109,8 @@ class KoskiSpecificSession(user: AuthenticationUser, lang: String, clientIp: Ine
   // Filtteröi pois Valpas-käyttöoikeudet. Oikeampi vaihtoehto olisi filteröidä pois white listin perusteella mukaan vain käyttöoikeudet, joista
   // Koski on kiinnostunut. Sitä varten pitäisi koodia tutkimalla selvittää, mitä whitelistillä pitäisi olla. Se ei ole triviaalia, koska Koski
   // käyttää myös muita kuin oman palvelunsa käyttöoikeuksia tarkoituksella.
-  private def käyttöoikeudet(): Set[Käyttöoikeus] = Käyttöoikeus.withPalveluroolitFilter(lähdeKäyttöoikeudet, _.palveluName != "VALPAS")
+  // Sessio luodaan aina uudestaan jokaisessa API-kutsussa, joten käyttöoikeudet voi tallentaa lazy val:iin eikä hakea ja filteröida aina uudestaan
+  private lazy val käyttöoikeudet: Set[Käyttöoikeus] = Käyttöoikeus.withPalveluroolitFilter(lähdeKäyttöoikeudet, _.palveluName != "VALPAS")
 
   Future(lähdeKäyttöoikeudet)(ExecutionContext.global) // haetaan käyttöoikeudet toisessa säikeessä rinnakkain
 }
