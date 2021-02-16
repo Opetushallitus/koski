@@ -190,7 +190,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
             "Oppijan oid" -> "1.2.246.562.24.00000000013",
             "Sukunimi" -> "Lukiolainen",
             "Etunimet" -> "Liisa",
-            "Kotikunta" -> None,
+            "Kotikunta" -> Some("Jyväskylä"),
             "Hetu" -> Some("020655-2479"),
             "Suorituksen tyyppi" -> "lukionoppimaara",
             "Toimipiste" -> "Jyväskylän normaalikoulu",
