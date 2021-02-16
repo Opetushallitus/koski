@@ -9,7 +9,8 @@ class ValpasOppijaService(application: KoskiApplication) {
   private lazy val dbService = new ValpasDatabaseService(application)
 
   def getOppijat(implicit session: ValpasSession): Option[Seq[RHenkilöRow]] = {
-    None
+    // TODO
+    Some(List())
   }
 
   def getOppija(oid: String)(implicit session: ValpasSession): Option[ValpasOppija] =

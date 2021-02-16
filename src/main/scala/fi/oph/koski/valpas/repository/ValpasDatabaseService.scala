@@ -7,8 +7,9 @@ import fi.oph.koski.raportointikanta.{Public, RHenkilöRow, ROpiskeluoikeusRow, 
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema.{RHenkilöTable, RHenkilöTableTemp, ROpiskeluoikeusTable, ROpiskeluoikeusTableTemp}
 
 class ValpasDatabaseService(application: KoskiApplication) extends Logging {
-  val schema = application.raportointiConfig.raportointiSchema.get
   val db = application.raportointiDatabase
+  lazy val RHenkilöt = TableQuery[RHenkilöTable]
+  lazy val ROpiskeluoikeudet = TableQuery[ROpiskeluoikeusTable]
 
   def getOppija(oppijaOid: String, organisaatioOids: Set[String]): Option[ValpasOppija] = {
     val opiskeluoikeudet = getOpiskeluoikeudet(oppijaOid, organisaatioOids)
@@ -32,15 +33,5 @@ class ValpasDatabaseService(application: KoskiApplication) extends Logging {
       .filter(_.oppijaOid === oppijaOid)
       .filter(_.oppilaitosOid inSet organisaatioOids)
       .result)
-
-  lazy val RHenkilöt = schema match {
-    case Public => TableQuery[RHenkilöTable]
-    case Temp => TableQuery[RHenkilöTableTemp]
-  }
-
-  lazy val ROpiskeluoikeudet = schema match {
-    case Public => TableQuery[ROpiskeluoikeusTable]
-    case Temp => TableQuery[ROpiskeluoikeusTableTemp]
-  }
 }
 
