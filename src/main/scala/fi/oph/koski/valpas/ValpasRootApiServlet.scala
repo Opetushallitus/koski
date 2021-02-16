@@ -17,7 +17,7 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
   get("/organisaatiot-ja-kayttooikeusroolit") {
     organisaatioService.omatOrganisaatiotJaKayttooikeusroolit.map(o => o.copy(organisaatioHierarkia = o.organisaatioHierarkia.copy(children = List())))
   }
-  
+
   get("/mock-oppijat") {
     renderEither(
       oppijaService.getOppijat

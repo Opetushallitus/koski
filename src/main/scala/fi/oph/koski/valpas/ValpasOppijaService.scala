@@ -1,12 +1,15 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.koodisto.KoodistoViite
 import fi.oph.koski.raportointikanta.RHenkilöRow
+import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.valpas.repository.{ValpasDatabaseService, ValpasOppija}
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
 class ValpasOppijaService(application: KoskiApplication) {
-  private lazy val dbService = new ValpasDatabaseService(application)
+  private val dbService = new ValpasDatabaseService(application)
+  private val koodisto = application.koodistoPalvelu
 
   def getOppijat(implicit session: ValpasSession): Option[Seq[RHenkilöRow]] = {
     // TODO
@@ -14,5 +17,27 @@ class ValpasOppijaService(application: KoskiApplication) {
   }
 
   def getOppija(oid: String)(implicit session: ValpasSession): Option[ValpasOppija] =
-    dbService.getOppija(oid, ValpasAccessResolver.valpasOrganisaatioOids)
+    dbService.getOppija(oid, ValpasAccessResolver.valpasOrganisaatioOids).map(enrichOppija)
+
+  def enrichOppija(oppija: ValpasOppija): ValpasOppija =
+    oppija.copy(
+      opiskeluoikeudet = oppija.opiskeluoikeudet.map(opiskeluoikeus =>
+        opiskeluoikeus.copy(tyyppi = enrichKoodistokoodiviite(opiskeluoikeus.tyyppi))))
+
+  def enrichKoodistokoodiviite(koodiviite: Koodistokoodiviite): Koodistokoodiviite =
+    if (koodiviite.nimi.isDefined) {
+      koodiviite
+    } else {
+      koodisto
+        .getKoodistoKoodit(KoodistoViite(koodiviite.koodistoUri, koodiviite.koodistoVersio.getOrElse(1)))
+        .find(_.koodiArvo == koodiviite.koodiarvo)
+        .map(k => Koodistokoodiviite(
+          koodiarvo = k.koodiArvo,
+          nimi = k.nimi,
+          lyhytNimi = k.lyhytNimi,
+          koodistoUri = k.koodistoUri,
+          koodistoVersio = Some(k.versio)
+        ))
+        .getOrElse(koodiviite)
+    }
 }
