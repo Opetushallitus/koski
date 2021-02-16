@@ -27,17 +27,17 @@ class OppijaServlet(implicit val application: KoskiApplication) extends KoskiSpe
 
   private def putSingle(allowUpdate: Boolean) = {
     withTracking { withJsonBody { (oppijaJson: JValue) =>
-      val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidateOppija(oppijaJson)(koskiSession, AccessType.write)
-      val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(koskiSession, application, request).putSingle(validationResult, oppijaJson, allowUpdate)
+      val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidateOppija(oppijaJson)(session, AccessType.write)
+      val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(session, application, request).putSingle(validationResult, oppijaJson, allowUpdate)
       renderEither[HenkilönOpiskeluoikeusVersiot](result)
     }(parseErrorHandler = handleUnparseableJson)}
   }
 
   put("/batch") {
     withTracking { withJsonBody { parsedJson =>
-      val putter = UpdateContext(koskiSession, application, request)
+      val putter = UpdateContext(session, application, request)
 
-      val validationResults: List[(Either[HttpStatus, Oppija], JValue)] = application.validator.extractAndValidateBatch(parsedJson.asInstanceOf[JArray])(koskiSession, AccessType.write)
+      val validationResults: List[(Either[HttpStatus, Oppija], JValue)] = application.validator.extractAndValidateBatch(parsedJson.asInstanceOf[JArray])(session, AccessType.write)
 
       val batchResults: List[Either[HttpStatus, HenkilönOpiskeluoikeusVersiot]] = validationResults.par.map { results =>
         putter.putSingle(results._1, results._2, true)
@@ -53,31 +53,31 @@ class OppijaServlet(implicit val application: KoskiApplication) extends KoskiSpe
   }
 
   get("/") {
-    val serializer = SensitiveDataFilter(koskiSession).rowSerializer
+    val serializer = SensitiveDataFilter(session).rowSerializer
 
     val oppijat = performOpiskeluoikeudetQueryLaajoillaHenkilötiedoilla.map(observable => observable
       .map(x => (application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(x._1), x._2))
       .map(serializer)
     )
 
-    streamResponse(oppijat, koskiSession)
+    streamResponse(oppijat, session)
   }
 
   // TODO: tarkista lokeista voiko tämän poistaa
   get("/:oid") {
     renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).right.flatMap { oid =>
-      application.oppijaFacade.findOppija(oid, findMasterIfSlaveOid = false)(koskiSession)
+      application.oppijaFacade.findOppija(oid, findMasterIfSlaveOid = false)(session)
     }.flatMap(_.warningsToLeft))
   }
 
   get("/:oid/opintotiedot-json") {
     renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).right.flatMap { oid =>
-      application.oppijaFacade.findOppija(oid, findMasterIfSlaveOid = true)(koskiSession)
+      application.oppijaFacade.findOppija(oid, findMasterIfSlaveOid = true)(session)
     }.flatMap(_.warningsToLeft))
   }
 
   get("/:oid/virta-opintotiedot-xml") {
-    if (!koskiSession.hasGlobalReadAccess) {
+    if (!session.hasGlobalReadAccess) {
       haltWithStatus(KoskiErrorCategory.forbidden())
     }
     virtaOpinnot(params("oid")) match {
@@ -89,7 +89,7 @@ class OppijaServlet(implicit val application: KoskiApplication) extends KoskiSpe
   }
 
   get("/oids") {
-    streamResponse[String](application.opiskeluoikeusQueryRepository.oppijaOidsQuery(paginationSettings)(koskiSession), koskiSession)
+    streamResponse[String](application.opiskeluoikeusQueryRepository.oppijaOidsQuery(paginationSettings)(session), session)
   }
 
   private def virtaOpinnot(oid: String) =
@@ -100,19 +100,19 @@ class OppijaServlet(implicit val application: KoskiApplication) extends KoskiSpe
     }.map(_.toList.distinct)
 
   private def handleUnparseableJson(status: HttpStatus) = {
-    application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiSession, None, None, None, Some(TiedonsiirtoError(JObject("unparseableJson" -> JString(request.body)), status.errors)))
+    application.tiedonsiirtoService.storeTiedonsiirtoResult(session, None, None, None, Some(TiedonsiirtoError(JObject("unparseableJson" -> JString(request.body)), status.errors)))
     haltWithStatus(status)
   }
 
   private def withTracking[T](f: => T) = {
-    if (koskiSession.isPalvelukäyttäjä) {
-      application.ipService.trackIPAddress(koskiSession)
+    if (session.isPalvelukäyttäjä) {
+      application.ipService.trackIPAddress(session)
     }
     try {
       f
     } catch {
       case e: Exception =>
-        application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiSession, None, None, None, Some(TiedonsiirtoError(JObject("unparseableJson" -> JString(request.body)), KoskiErrorCategory.internalError().errors)))
+        application.tiedonsiirtoService.storeTiedonsiirtoResult(session, None, None, None, Some(TiedonsiirtoError(JObject("unparseableJson" -> JString(request.body)), KoskiErrorCategory.internalError().errors)))
         logger.error(e)("virhe aiheutti unparseableJson merkinnän tiedonsiirtoihin")
         throw e
     }

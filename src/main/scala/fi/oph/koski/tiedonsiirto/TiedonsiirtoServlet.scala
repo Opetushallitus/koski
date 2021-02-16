@@ -11,21 +11,21 @@ import fi.oph.koski.util.{PaginatedResponse, Pagination, PaginationSettings, Sor
 class TiedonsiirtoServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache with Pagination {
 
   get("/") {
-    renderEither[PaginatedResponse[Tiedonsiirrot]](application.tiedonsiirtoService.haeTiedonsiirrot(parseQuery)(koskiSession))
+    renderEither[PaginatedResponse[Tiedonsiirrot]](application.tiedonsiirtoService.haeTiedonsiirrot(parseQuery)(session))
   }
 
   get("/virheet") {
-    renderEither[PaginatedResponse[Tiedonsiirrot]](application.tiedonsiirtoService.virheelliset(parseQuery)(koskiSession))
+    renderEither[PaginatedResponse[Tiedonsiirrot]](application.tiedonsiirtoService.virheelliset(parseQuery)(session))
   }
 
   get[Seq[TiedonsiirtoYhteenveto]]("/yhteenveto") {
-    application.tiedonsiirtoService.yhteenveto(koskiSession, SortOrder.parseSortOrder(params.get("sort"), Ascending("oppilaitos")))
+    application.tiedonsiirtoService.yhteenveto(session, SortOrder.parseSortOrder(params.get("sort"), Ascending("oppilaitos")))
   }
 
   post("/delete") {
     withJsonBody({ body =>
       val request = JsonSerializer.extract[TiedonsiirtoDeleteRequest](body)
-      application.tiedonsiirtoService.delete(request.ids)(koskiSession)
+      application.tiedonsiirtoService.delete(request.ids)(session)
     })()
   }
 

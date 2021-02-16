@@ -34,13 +34,13 @@ class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends 
     if (isHuollettava) {
       getHuollettavaOppija
     } else {
-      mkAuditLog(koskiSession, KANSALAINEN_YLIOPPILASKOE_HAKU)
-      application.henkilöRepository.findByOid(koskiSession.oid)
+      mkAuditLog(session, KANSALAINEN_YLIOPPILASKOE_HAKU)
+      application.henkilöRepository.findByOid(session.oid)
    }
 
   private def getHuollettavaOppija: Option[HenkilönTunnisteet] = {
     val oid = getStringParam("huollettava")
-    if (koskiSession.isUsersHuollettava(oid)) {
+    if (session.isUsersHuollettava(oid)) {
       mkAuditLog(oid, KANSALAINEN_HUOLTAJA_YLIOPPILASKOE_HAKU)
       application.henkilöRepository.findByOid(oid)
     } else {
@@ -49,7 +49,7 @@ class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends 
   }
 
   private def mkAuditLog(session: KoskiSpecificSession, operation: KoskiOperation): Unit = mkAuditLog(session.oid, operation)
-  private def mkAuditLog(oid: String, operation: KoskiOperation): Unit = AuditLog.log(AuditLogMessage(operation, koskiSession, Map(KoskiMessageField.oppijaHenkiloOid -> oid)))
+  private def mkAuditLog(oid: String, operation: KoskiOperation): Unit = AuditLog.log(AuditLogMessage(operation, session, Map(KoskiMessageField.oppijaHenkiloOid -> oid)))
 
   private def isHuollettava = getOptionalStringParam("huollettava").isDefined
 }

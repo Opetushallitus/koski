@@ -20,26 +20,26 @@ class OppijaServletV2(implicit val application: KoskiApplication) extends KoskiS
 
   private def putSingle(allowUpdate: Boolean) = {
     withTracking { withJsonBody { (oppijaJson: JValue) =>
-      val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidateOppija(oppijaJson)(koskiSession, AccessType.write)
-      val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContextV2(koskiSession, application, request).putSingle(validationResult, oppijaJson, allowUpdate)
+      val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidateOppija(oppijaJson)(session, AccessType.write)
+      val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContextV2(session, application, request).putSingle(validationResult, oppijaJson, allowUpdate)
       renderEither[HenkilönOpiskeluoikeusVersiot](result)
     }(parseErrorHandler = handleUnparseableJson)}
   }
 
   private def handleUnparseableJson(status: HttpStatus) = {
-    application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiSession, None, None, None, Some(TiedonsiirtoError(JObject("unparseableJson" -> JString(request.body)), status.errors)))
+    application.tiedonsiirtoService.storeTiedonsiirtoResult(session, None, None, None, Some(TiedonsiirtoError(JObject("unparseableJson" -> JString(request.body)), status.errors)))
     haltWithStatus(status)
   }
 
   private def withTracking[T](f: => T) = {
-    if (koskiSession.isPalvelukäyttäjä) {
-      application.ipService.trackIPAddress(koskiSession)
+    if (session.isPalvelukäyttäjä) {
+      application.ipService.trackIPAddress(session)
     }
     try {
       f
     } catch {
       case e: Exception =>
-        application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiSession, None, None, None, Some(TiedonsiirtoError(JObject("unparseableJson" -> JString(request.body)), KoskiErrorCategory.internalError().errors)))
+        application.tiedonsiirtoService.storeTiedonsiirtoResult(session, None, None, None, Some(TiedonsiirtoError(JObject("unparseableJson" -> JString(request.body)), KoskiErrorCategory.internalError().errors)))
         throw e
     }
   }

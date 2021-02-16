@@ -4,8 +4,8 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{HasSession, KoskiSpecificAuthenticationSupport, Session, KoskiSpecificSession}
 
 trait RequiresValpasSession extends ValpasAuthenticationSupport with HasValpasSession {
-  implicit def koskiSession: ValpasSession = koskiSessionOption.get
-  def valpasSession = koskiSession
+  implicit def session: ValpasSession = koskiSessionOption.get
+  def valpasSession = session
 
   before() {
     requireValpasSession

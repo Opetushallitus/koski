@@ -20,7 +20,7 @@ class OmatTiedotServlet(implicit val application: KoskiApplication) extends Edit
 
   get("/editor/:oid") {
     val oid = params("oid")
-    if (oid == koskiSession.user.oid) {
+    if (oid == session.user.oid) {
       renderOmatTiedot
     } else {
       renderHuollettavanTiedot(oid)
@@ -28,19 +28,19 @@ class OmatTiedotServlet(implicit val application: KoskiApplication) extends Edit
   }
 
   private def renderOmatTiedot: Unit = {
-    val käyttäjäOppija = huoltajaService.findUserOppijaAllowEmpty(koskiSession)
+    val käyttäjäOppija = huoltajaService.findUserOppijaAllowEmpty(session)
     val editorModel = käyttäjäOppija.map(oppija => OmatTiedotEditorModel.toEditorModel(userOppija = oppija, näytettäväOppija = oppija))
 
     renderEither[EditorModel](editorModel)
   }
 
   private def renderHuollettavanTiedot(oid: String): Unit = {
-    if (!koskiSession.isUsersHuollettava(oid)) {
+    if (!session.isUsersHuollettava(oid)) {
       haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
     }
 
-    val huoltajaOppija: Either[HttpStatus, WithWarnings[Oppija]] = huoltajaService.findUserOppijaAllowEmpty(koskiSession)
-    val huollettavaOppija: Either[HttpStatus, WithWarnings[Oppija]] = huoltajaService.findHuollettavaOppija(oid)(koskiSession)
+    val huoltajaOppija: Either[HttpStatus, WithWarnings[Oppija]] = huoltajaService.findUserOppijaAllowEmpty(session)
+    val huollettavaOppija: Either[HttpStatus, WithWarnings[Oppija]] = huoltajaService.findHuollettavaOppija(oid)(session)
 
     val editorModel = huoltajaOppija.flatMap(huoltaja => huollettavaOppija.map(huollettava => (huoltaja, huollettava))).map {
       case (huoltaja, huollettava) => OmatTiedotEditorModel.toEditorModel(userOppija = huoltaja, näytettäväOppija = huollettava)

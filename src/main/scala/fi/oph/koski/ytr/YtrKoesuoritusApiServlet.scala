@@ -15,10 +15,10 @@ class YtrKoesuoritusApiServlet(implicit val application: KoskiApplication) exten
   }
 
   private def examResponse(oid: String) = {
-    if (koskiSession.user.oid == oid || koskiSession.isUsersHuollettava(oid)) {
+    if (session.user.oid == oid || session.isUsersHuollettava(oid)) {
       val (ytrHenkilö, examResponse) = getExams(oid)
       if (shouldHaveExams(ytrHenkilö) && examResponse.forall(_.copyOfExamPaper.isEmpty)) {
-        logger.warn(s"Oppija ${koskiSession.oid} with graduadion date ${ytrHenkilö.flatMap(_.graduationDate).mkString} has an empty exam list")
+        logger.warn(s"Oppija ${session.oid} with graduadion date ${ytrHenkilö.flatMap(_.graduationDate).mkString} has an empty exam list")
       }
       Right(examResponse)
     }
