@@ -5,7 +5,7 @@ import {
   textEventuallyEquals,
 } from "../integrationtests-env/browser"
 
-describe("Perusopetuksen näkymä", () => {
+describe.skip("Perusopetuksen näkymä", () => {
   it("Näyttää listan oppijoista", async () => {
     await defaultLogin("/oppijat")
     await textEventuallyEquals(
