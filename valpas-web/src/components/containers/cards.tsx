@@ -5,12 +5,10 @@ import "./cards.less"
 
 const b = bem("card")
 
-export type CardProps = {
-  children: React.ReactNode
-}
+export type CardProps = React.HTMLAttributes<HTMLDivElement>
 
-export const Card = (props: CardProps) => (
-  <section className={b()}>{props.children}</section>
+export const Card = ({ className, ...props }: CardProps) => (
+  <section className={joinClassNames(b(), className)} {...props} />
 )
 
 export type CardHeaderProps = {

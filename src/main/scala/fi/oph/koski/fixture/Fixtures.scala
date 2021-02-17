@@ -27,10 +27,10 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
       application.tiedonsiirtoService.index.deleteAll()
 
       if (fixtureState == valpasFixtureState) {
-        Wait.until { raportointikantaIsComplete }
+        Wait.until { raportointikantaService.isEmpty || raportointikantaService.isAvailable }
         raportointikantaService.dropAndCreateSchema()
         raportointikantaService.loadRaportointikanta(false)
-        Wait.until { raportointikantaIsComplete }
+        Wait.until { raportointikantaService.isAvailable }
       }
 
       logger.info(s"Reset application fixtures ${currentFixtureState.name}")
@@ -55,9 +55,6 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
     }
     useFixtures
   }
-
-  def raportointikantaIsComplete(): Boolean =
-    raportointikantaService.status.exists(status => status._1 == "public" && status._2.isComplete)
 
   def allOppijaOids: List[String] = (koskiSpecificFixtureState.oppijaOids ++ valpasFixtureState.oppijaOids).distinct // oids that should be considered when deleting fixture data
 
