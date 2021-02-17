@@ -46,11 +46,8 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
   )
 
   def vacuumAnalyze(): Unit = {
-    logger.info("Vacuuming and analysing RaportointiDatabase...")
-    val started = System.currentTimeMillis
-    runDbSync(sqlu"""VACUUM ANALYZE""", timeout = 60.minutes)
-    val duration = (System.currentTimeMillis - started) / 1000
-    logger.info(s"Vacuuming and analysing RaportointiDatabase done in ${duration} s")
+    logger.info("Starting VACUUM ANALYZE in RaportointiDatabase")
+    db.run(sqlu"VACUUM ANALYZE")
   }
 
   def moveTo(newSchema: Schema): Unit = {
