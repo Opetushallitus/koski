@@ -42,5 +42,10 @@
   "oppija__haut_hylatty": "Hylätty",
   "oppija__ryhma": "Ryhmä",
   "oppija__ei_hakuhistoriaa": "Oppijalle ei löytynyt hakuhistoriaa",
-  "oppija__ei_opiskeluhistoriaa": "Oppijalle ei löytynyt opiskeluhistoriaa"
+  "oppija__ei_opiskeluhistoriaa": "Oppijalle ei löytynyt opiskeluhistoriaa",
+  "kayttooikeusrooli_OPPILAITOS_HAKEUTUMINEN": "Oppilaitoksen hakeutumisen valvonta",
+  "kayttooikeusrooli_OPPILAITOS_SUORITTAMINEN": "Oppilaitoksen oppivelvollisuuden suorittamisen valvonta",
+  "kayttooikeusrooli_OPPILAITOS_MAKSUTTOMUUS": "Oppilaitoksen opiskelun maksuttomuustietojen määrittely",
+  "kayttooikeusrooli_KUNTA": "Kunnan oppivelvollisuuden suorittamisen valvonta",
+  "homeview_olet_onnistuneesti_kirjautunut": "Olet onnistuneesti kirjautunut Valpas-järjestelmään seuraavilla käyttöoikeuksilla"
 }

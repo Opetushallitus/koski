@@ -3,7 +3,7 @@ import * as E from "fp-ts/Either"
 import { pipe } from "fp-ts/lib/function"
 import { mockOppijat } from "../state/mock"
 import { Oppija } from "../state/oppijat"
-import { Organisaatio, User } from "../state/types"
+import { OrganisaatioJaKayttooikeusrooli, User } from "../state/types"
 import { apiGet, apiPost, mockApi } from "./apiFetch"
 import { createCache } from "./cache"
 
@@ -24,12 +24,16 @@ export const fetchLogin = async (username: string, password: string) =>
 export const fetchCurrentUser = async () => apiGet<User>("valpas/api/user")
 
 /**
- * Hae lista organisaatioista, joihin käyttäjällä on käyttöoikeus
+ * Hae lista organisaatioista käyttöoikeuksien kanssa
  */
-export const fetchOrganisaatiot = async () =>
-  apiGet<Organisaatio[]>("valpas/api/organisaatiot")
+export const fetchYlatasonOrganisaatiotJaKayttooikeusroolit = async () =>
+  apiGet<OrganisaatioJaKayttooikeusrooli[]>(
+    "valpas/api/organisaatiot-ja-kayttooikeusroolit"
+  )
 
-export const fetchOrganisaatiotCache = createCache(fetchOrganisaatiot)
+export const fetchYlatasonOrganisaatiotJaKayttooikeusroolitCache = createCache(
+  fetchYlatasonOrganisaatiotJaKayttooikeusroolit
+)
 
 /**
  * Get oppijat
