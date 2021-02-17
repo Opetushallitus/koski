@@ -13,7 +13,7 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
     valpasSession.user
   }
 
-  get("/organisaatiot") {
-    organisaatioService.kaikkiKäyttöoikeudellisetOrganisaatiot.map(_.copy(children = List()))
+  get("/organisaatiot-ja-kayttooikeusroolit") {
+    organisaatioService.omatOrganisaatiotJaKayttooikeusroolit.map(o => o.copy(organisaatioHierarkia = o.organisaatioHierarkia.copy(children = List())))
   }
 }

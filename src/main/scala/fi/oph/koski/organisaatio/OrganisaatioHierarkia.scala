@@ -84,3 +84,5 @@ object OrganisaatioHierarkia {
 
   val oppilaitosTyypit = List(OPPILAITOS, OPPISOPIMUSTOIMIPISTE, VARHAISKASVATUKSEN_TOIMIPAIKKA)
 }
+
+case class OrganisaatioHierarkiaJaKayttooikeusrooli(organisaatioHierarkia: OrganisaatioHierarkia, kayttooikeusrooli: String)
