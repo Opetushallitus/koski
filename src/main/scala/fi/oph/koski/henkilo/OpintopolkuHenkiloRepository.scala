@@ -26,7 +26,7 @@ case class LaajatOppijaHenkilöTiedot(
   turvakielto: Boolean = false,
   linkitetytOidit: List[String] = Nil,
   vanhatHetut: List[String] = Nil,
-  kotikunta: Option[String] = Some("Jyväskylä"),
+  kotikunta: Option[String] = Some("179"),
   yksilöity: Boolean = true
 ) extends OppijaHenkilö with HenkilönTunnisteet {
   @SyntheticProperty

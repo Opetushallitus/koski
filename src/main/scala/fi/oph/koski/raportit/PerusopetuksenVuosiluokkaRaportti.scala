@@ -1,25 +1,39 @@
 package fi.oph.koski.raportit
 
 import java.time.{LocalDate, LocalDateTime}
-
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViite}
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio.Oid
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{Koodistokoodiviite, _}
 import org.json4s.JValue
 
 object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
 
-  def buildRaportti(repository: PerusopetuksenRaportitRepository, oppilaitosOids: Seq[Oid], paiva: LocalDate, vuosiluokka: String): Seq[PerusopetusRow] = {
+  def buildRaportti(repository: PerusopetuksenRaportitRepository, oppilaitosOids: Seq[Oid], paiva: LocalDate, vuosiluokka: String, koodistoPalvelu: KoodistoPalvelu): Seq[PerusopetusRow] = {
     val rows = if (vuosiluokka == "9") {
       repository.peruskoulunPaattavatJaLuokalleJääneet(oppilaitosOids, paiva, vuosiluokka)
     } else {
       repository.perusopetuksenvuosiluokka(oppilaitosOids, paiva, vuosiluokka)
     }
-    rows.map(buildRow(_, paiva))
+    rows.map(buildRow(_, paiva, koodistoPalvelu))
   }
 
-  private def buildRow(row: PerusopetuksenRaporttiRows, hakupaiva: LocalDate) = {
+  private def getKunnanNimi(koodi: Option[String], koodistoPalvelu: KoodistoPalvelu): Option[String] = {
+    koodi match {
+      case Some(koodi) => {
+        val koodistoKoodit = koodistoPalvelu.getKoodistoKoodit(koodistoPalvelu.getLatestVersionRequired("kunta"))
+        val koodistoKoodi = koodistoKoodit.find(_.koodiArvo == koodi)
+        koodistoKoodi match {
+          case Some(koodi) => Some(koodi.nimi.get.get("fi"))
+          case None => None
+        }
+      }
+      case None => None
+    }
+  }
+
+  private def buildRow(row: PerusopetuksenRaporttiRows, hakupaiva: LocalDate, koodistoPalvelu: KoodistoPalvelu) = {
     val opiskeluoikeudenLisätiedot = JsonSerializer.extract[Option[PerusopetuksenOpiskeluoikeudenLisätiedot]](row.opiskeluoikeus.data \ "lisätiedot")
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](row.opiskeluoikeus.data \ "lähdejärjestelmänId")
     val (toimintaalueOsasuoritukset, muutOsasuoritukset) = row.osasuoritukset.partition(_.suorituksenTyyppi == "perusopetuksentoimintaalue")
@@ -41,7 +55,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
       sukunimi = row.henkilo.sukunimi,
       etunimet = row.henkilo.etunimet,
       sukupuoli = row.henkilo.sukupuoli,
-      kotikunta = row.henkilo.kotikunta,
+      kotikunta = getKunnanNimi(row.henkilo.kotikunta, koodistoPalvelu),
       opiskeluoikeudenAlkamispäivä = row.opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
       viimeisinTila = row.opiskeluoikeus.viimeisinTila.getOrElse(""),
       tilaHakupaivalla = row.aikajaksot.last.tila,

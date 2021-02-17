@@ -1,7 +1,8 @@
 package fi.oph.koski.raportit
 
-import java.time.{LocalDate, LocalDateTime}
+import fi.oph.koski.koodisto.KoodistoPalvelu
 
+import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.raportit.aikuistenperusopetus.AikuistenPerusopetusRaporttiType
 import fi.oph.koski.raportointikanta.RaportointiDatabase
 import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, Organisaatio}
@@ -32,7 +33,7 @@ trait VuosiluokkaRaporttiPaivalta extends Raportti {
 
   def filename(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String
 
-  def buildRaportti(raportointiDatabase: PerusopetuksenRaportitRepository, oppilaitosOid: Seq[Organisaatio.Oid], paiva: LocalDate, vuosiluokka: String): Seq[Product]
+  def buildRaportti(raportointiDatabase: PerusopetuksenRaportitRepository, oppilaitosOid: Seq[Organisaatio.Oid], paiva: LocalDate, vuosiluokka: String, koodistoPalvelu: KoodistoPalvelu): Seq[Product]
 }
 
 trait RaporttiRequest {
