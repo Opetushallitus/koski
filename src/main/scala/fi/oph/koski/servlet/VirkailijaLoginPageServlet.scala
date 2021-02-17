@@ -1,10 +1,10 @@
 package fi.oph.koski.servlet
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.sso.KoskiSSOSupport
+import fi.oph.koski.sso.KoskiSpecificSSOSupport
 import org.scalatra.ScalatraServlet
 
-class VirkailijaLoginPageServlet(implicit val application: KoskiApplication) extends ScalatraServlet with VirkailijaHtmlServlet with KoskiSSOSupport {
+class VirkailijaLoginPageServlet(implicit val application: KoskiApplication) extends ScalatraServlet with VirkailijaHtmlServlet with KoskiSpecificSSOSupport {
   get("/") {
     if (ssoConfig.isCasSsoUsed) {
       redirect("/")

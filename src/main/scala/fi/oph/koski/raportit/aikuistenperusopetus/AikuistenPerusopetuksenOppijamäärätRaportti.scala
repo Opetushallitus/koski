@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.db.KoskiDatabaseMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.raportit.{Column, DataSheet}
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
@@ -34,7 +34,7 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
     )
   )
 
-  def build(oppilaitosOids: List[String], päivä: LocalDate)(implicit u: KoskiSession): DataSheet = {
+  def build(oppilaitosOids: List[String], päivä: LocalDate)(implicit u: KoskiSpecificSession): DataSheet = {
     val raporttiQuery = query(validateOids(oppilaitosOids), päivä).as[AikuistenPerusopetuksenOppijamäärätRaporttiRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
@@ -44,7 +44,7 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
     )
   }
 
-  private def query(oppilaitosOidit: List[String], päivä: LocalDate)(implicit u: KoskiSession) = {
+  private def query(oppilaitosOidit: List[String], päivä: LocalDate)(implicit u: KoskiSpecificSession) = {
     sql"""
     select
       r_opiskeluoikeus.oppilaitos_oid,
@@ -89,9 +89,9 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
   """
   }
 
-  private def käyttäjänOrganisaatioOidit(implicit u: KoskiSession) = u.organisationOids(AccessType.read).toSeq
+  private def käyttäjänOrganisaatioOidit(implicit u: KoskiSpecificSession) = u.organisationOids(AccessType.read).toSeq
 
-  private def käyttäjänKoulutustoimijaOidit(implicit u: KoskiSession) = u.varhaiskasvatusKäyttöoikeudet.toSeq
+  private def käyttäjänKoulutustoimijaOidit(implicit u: KoskiSpecificSession) = u.varhaiskasvatusKäyttöoikeudet.toSeq
     .filter(_.organisaatioAccessType.contains(AccessType.read))
     .map(_.koulutustoimija.oid)
 

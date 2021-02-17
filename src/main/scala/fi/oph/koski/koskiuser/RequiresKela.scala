@@ -2,8 +2,8 @@ package fi.oph.koski.koskiuser
 
 import fi.oph.koski.http.KoskiErrorCategory
 
-trait RequiresKela extends KoskiAuthenticationSupport with HasKoskiSession {
-  implicit def koskiSession: KoskiSession = koskiSessionOption.get
+trait RequiresKela extends KoskiSpecificAuthenticationSupport with HasKoskiSpecificSession {
+  implicit def koskiSession: KoskiSpecificSession = koskiSessionOption.get
 
   before() {
     requiresKela

@@ -3,7 +3,7 @@ package fi.oph.koski.henkilo
 import fi.oph.koski.cache._
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.{Logging, TimedProxy}
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotRepository
 import fi.oph.koski.schema._
@@ -14,7 +14,7 @@ import scala.concurrent.duration._
 
 trait HetuBasedHenkilöRepository {
   def findByHetuDontCreate(hetu: String): Either[HttpStatus, Option[UusiHenkilö]]
-  def hasAccess(user: KoskiSession): Boolean
+  def hasAccess(user: KoskiSpecificSession): Boolean
 }
 
 object HenkilöRepository {
@@ -56,7 +56,7 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
   // Jos userForAccessChecks on annettu, niin Virta/YTR katsotaan vain, jos ko. käyttäjällä on potentiaalisesti
   // pääsy johonkin Virta/YTR-tietoihin. Tämä on optimointi oppilaitosten virkailijakäliin, joissa käyttäjillä
   // ei yleensä ole tällaista pääsyä.
-  def findByHetuOrCreateIfInYtrOrVirta(hetu: String, nimitiedot: Option[Nimitiedot] = None, userForAccessChecks: Option[KoskiSession] = None): Option[OppijaHenkilö] = {
+  def findByHetuOrCreateIfInYtrOrVirta(hetu: String, nimitiedot: Option[Nimitiedot] = None, userForAccessChecks: Option[KoskiSpecificSession] = None): Option[OppijaHenkilö] = {
     Hetu.validFormat(hetu) match {
       case Right(validHetu) =>
         val tiedot = opintopolku.findByHetu(hetu)
@@ -92,7 +92,7 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
     }
   }
 
-  def findByOids(query: String)(implicit session: KoskiSession): List[LaajatOppijaHenkilöTiedot] =
+  def findByOids(query: String)(implicit session: KoskiSpecificSession): List[LaajatOppijaHenkilöTiedot] =
     opintopolku.findMastersByOids(perustiedotRepository.findOids(query))
 
   def oppijaHenkilöToTäydellisetHenkilötiedot(henkilö: OppijaHenkilö): TäydellisetHenkilötiedot =

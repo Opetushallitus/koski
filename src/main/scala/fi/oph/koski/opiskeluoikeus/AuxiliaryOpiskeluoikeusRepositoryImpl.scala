@@ -2,7 +2,7 @@ package fi.oph.koski.opiskeluoikeus
 
 import fi.oph.koski.cache.{CacheManager, ExpiringCache, KeyValueCache}
 import fi.oph.koski.henkilo.HenkilönTunnisteet
-import fi.oph.koski.koskiuser.{AccessChecker, KoskiSession}
+import fi.oph.koski.koskiuser.{AccessChecker, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Opiskeluoikeus, Organisaatio}
 
@@ -11,7 +11,7 @@ import scala.util.control.NonFatal
 
 abstract class AuxiliaryOpiskeluoikeusRepositoryImpl[OO <: Opiskeluoikeus, CK <: AnyRef](accessChecker: AccessChecker)(implicit cacheInvalidator: CacheManager) extends AuxiliaryOpiskeluoikeusRepository with Logging {
 
-  override def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSession): List[A] = {
+  override def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSpecificSession): List[A] = {
     val globalAccess = accessChecker.hasGlobalAccess(user)
     try {
       if (globalAccess) {
@@ -26,16 +26,16 @@ abstract class AuxiliaryOpiskeluoikeusRepositoryImpl[OO <: Opiskeluoikeus, CK <:
     }
   }
 
-  override def findByOppija(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSession): List[OO] = {
+  override def findByOppija(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSpecificSession): List[OO] = {
     quickAccessCheck(filterByOrganisaatio(cachedOpiskeluoikeudet(tunnisteet)))
   }
 
-  override def findByCurrentUser(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSession): List[OO] = {
+  override def findByCurrentUser(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSpecificSession): List[OO] = {
     assert(tunnisteet.oid == user.oid, "Käyttäjän oid: " + user.oid + " poikkeaa etsittävän oppijan oidista: " + tunnisteet.oid)
     cachedOpiskeluoikeudet(tunnisteet)
   }
 
-  override def findHuollettavaByOppija(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSession): List[OO] = {
+  override def findHuollettavaByOppija(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSpecificSession): List[OO] = {
     assert(user.isUsersHuollettava(tunnisteet.oid), "Käyttäjän oid: " + user.oid + " poikkeaa etsittävän oppijan oidista: " + tunnisteet.oid)
     cachedOpiskeluoikeudet(tunnisteet)
   }
@@ -69,9 +69,9 @@ abstract class AuxiliaryOpiskeluoikeusRepositoryImpl[OO <: Opiskeluoikeus, CK <:
     organizationsCache(buildCacheKey(tunnisteet))
   }
 
-  private def quickAccessCheck[T](list: => List[T])(implicit user: KoskiSession): List[T] = if (accessChecker.hasAccess(user)) { list } else { Nil }
+  private def quickAccessCheck[T](list: => List[T])(implicit user: KoskiSpecificSession): List[T] = if (accessChecker.hasAccess(user)) { list } else { Nil }
 
-  private def filterByOrganisaatio(opiskeluoikeudet: List[OO])(implicit user: KoskiSession): List[OO] = {
+  private def filterByOrganisaatio(opiskeluoikeudet: List[OO])(implicit user: KoskiSpecificSession): List[OO] = {
     opiskeluoikeudet.filter { oo =>
       accessChecker.hasGlobalAccess(user) ||
         oo.oppilaitos.exists(oppilaitos => user.hasReadAccess(oppilaitos.oid, None))

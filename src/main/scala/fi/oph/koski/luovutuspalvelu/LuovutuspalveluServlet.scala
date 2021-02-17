@@ -9,12 +9,12 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.koskiuser.RequiresLuovutuspalvelu
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus}
-import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
+import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache, ObservableSupport}
 import org.json4s.JValue
 import org.json4s.JsonAST.{JBool, JObject}
 
 
-class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends ApiServlet with ObservableSupport with RequiresLuovutuspalvelu with NoCache {
+class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with ObservableSupport with RequiresLuovutuspalvelu with NoCache {
   private val luovutuspalveluService = new LuovutuspalveluService(application)
 
   get("/healthcheck") {

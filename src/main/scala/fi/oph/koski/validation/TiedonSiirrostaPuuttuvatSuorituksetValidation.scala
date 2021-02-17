@@ -2,7 +2,7 @@ package fi.oph.koski.validation
 
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusChangeMigrator.kopioiValmiitSuorituksetUuteen
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus}
@@ -15,7 +15,7 @@ import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, PerusopetuksenVu
   päivittämään koko opiskeluoikeutta, koska vanhat suoritukset eivät läpäise viimeisimpiä validaatioita.
 */
 object TiedonSiirrostaPuuttuvatSuorituksetValidation {
-  def validateEiSamaaAlkamispaivaa(uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, repository: KoskiOpiskeluoikeusRepository)(implicit user: KoskiSession): HttpStatus = {
+  def validateEiSamaaAlkamispaivaa(uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, repository: KoskiOpiskeluoikeusRepository)(implicit user: KoskiSpecificSession): HttpStatus = {
     aikaisemminTallennetuillaSuorituksilla(uusiOpiskeluoikeus, repository)
       .collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
       .groupBy(_.alkamispäivä)
@@ -30,7 +30,7 @@ object TiedonSiirrostaPuuttuvatSuorituksetValidation {
     }
   }
 
-  private def aikaisemminTallennetuillaSuorituksilla(uusi: KoskeenTallennettavaOpiskeluoikeus, repository: KoskiOpiskeluoikeusRepository)(implicit user: KoskiSession) = {
+  private def aikaisemminTallennetuillaSuorituksilla(uusi: KoskeenTallennettavaOpiskeluoikeus, repository: KoskiOpiskeluoikeusRepository)(implicit user: KoskiSpecificSession) = {
     val aikaisemminTallennettuOpiskeluoikeus = uusi.oid
       .map(repository.findByOid)
       .flatMap(_.map(_.toOpiskeluoikeus) match {

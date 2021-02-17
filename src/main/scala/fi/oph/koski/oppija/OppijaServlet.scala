@@ -10,7 +10,7 @@ import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueries
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
-import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
 import fi.oph.koski.util.{Pagination, Timing, WithWarnings, XML}
 import fi.oph.koski.virta.{VirtaHakuehtoHetu, VirtaHakuehtoKansallinenOppijanumero}
@@ -19,7 +19,7 @@ import org.json4s.JsonAST.{JObject, JString}
 import org.json4s.{JArray, JValue}
 import org.scalatra.ContentEncodingSupport
 
-class OppijaServlet(implicit val application: KoskiApplication) extends ApiServlet with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with RequiresVirkailijaOrPalvelukäyttäjä with ContentEncodingSupport with NoCache with Timing with Pagination {
+class OppijaServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with RequiresVirkailijaOrPalvelukäyttäjä with ContentEncodingSupport with NoCache with Timing with Pagination {
 
   post("/") { putSingle(false) }
 
@@ -123,7 +123,7 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
   *  Operating context for data updates. Operates outside the lecixal scope of OppijaServlet to ensure that none of the
   *  Scalatra threadlocals are used. This must be done because in batch mode, we are running in several threads.
   */
-case class UpdateContext(user: KoskiSession, application: KoskiApplication, request: HttpServletRequest) extends Logging {
+case class UpdateContext(user: KoskiSpecificSession, application: KoskiApplication, request: HttpServletRequest) extends Logging {
   def putSingle(validationResult: Either[HttpStatus, Oppija], oppijaJsonFromRequest: JValue, allowUpdate: Boolean): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
 
     val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = validationResult.flatMap(application.oppijaFacade.createOrUpdate(_, allowUpdate)(user))

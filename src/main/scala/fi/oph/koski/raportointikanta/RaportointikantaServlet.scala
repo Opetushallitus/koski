@@ -2,11 +2,11 @@ package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.{KoskiSession, RequiresVirkailijaOrPalvelukäyttäjä}
-import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresVirkailijaOrPalvelukäyttäjä}
+import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache, ObservableSupport}
 import org.scalatra._
 
-class RaportointikantaServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache with ObservableSupport with ContentEncodingSupport {
+class RaportointikantaServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache with ObservableSupport with ContentEncodingSupport {
   private val service = new RaportointikantaService(application)
 
   before() {
@@ -25,7 +25,7 @@ class RaportointikantaServlet(implicit val application: KoskiApplication) extend
   }
 
   get("/opiskeluoikeudet") {
-    streamResponse[LoadResult](service.loadOpiskeluoikeudet(), KoskiSession.systemUser)
+    streamResponse[LoadResult](service.loadOpiskeluoikeudet(), KoskiSpecificSession.systemUser)
   }
 
   get("/henkilot") {

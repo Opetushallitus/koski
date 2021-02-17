@@ -2,7 +2,7 @@ package fi.oph.koski.servlet
 
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.util.PaginatedResponse
@@ -12,7 +12,7 @@ import org.scalatra._
 
 import scala.reflect.runtime.universe.{TypeRefApi, TypeTag}
 
-trait ApiServlet extends KoskiBaseServlet with Logging with TimedServlet with ContentEncodingSupport with CacheControlSupport {
+trait KoskiSpecificApiServlet extends KoskiSpecificBaseServlet with Logging with TimedServlet with ContentEncodingSupport with CacheControlSupport {
   def withJsonBody[T: TypeTag](block: JValue => T)(parseErrorHandler: HttpStatus => T = haltWithStatus(_)): T = {
     JsonBodySnatcher.getJsonBody(request) match {
       case Right(x) => block(x)
@@ -30,7 +30,7 @@ trait ApiServlet extends KoskiBaseServlet with Logging with TimedServlet with Co
   }
 
   def toJsonString[T: TypeTag](x: T): String = {
-    implicit val session = koskiSessionOption getOrElse KoskiSession.untrustedUser
+    implicit val session = koskiSessionOption getOrElse KoskiSpecificSession.untrustedUser
     // Ajax request won't have "text/html" in Accept header, clicking "JSON" button will
     val pretty = Option(request.getHeader("accept")).exists(_.contains("text/html"))
     val tag = implicitly[TypeTag[T]]

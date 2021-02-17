@@ -7,7 +7,7 @@ import fi.oph.koski.editor.EditorModelBuilder._
 import fi.oph.koski.editor.MetadataToModel.classesFromMetadata
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataFilter}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.localization._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusAccessChecker
 import fi.oph.koski.schema._
@@ -19,7 +19,7 @@ import org.json4s.JsonAST.{JBool, JString}
 import org.json4s.{JArray, JValue}
 
 object EditorModelBuilder {
-  def buildModel(deserializationContext: ExtractionContext, value: AnyRef, editable: Boolean)(implicit user: KoskiSession, koodisto: KoodistoViitePalvelu, localizations: LocalizationRepository): EditorModel = {
+  def buildModel(deserializationContext: ExtractionContext, value: AnyRef, editable: Boolean)(implicit user: KoskiSpecificSession, koodisto: KoodistoViitePalvelu, localizations: LocalizationRepository): EditorModel = {
     implicit val context = ModelBuilderContext(deserializationContext, editable = editable, invalidatable = editable)
     builder(deserializationContext.schemaFactory.createSchema(value.getClass.getName)).buildModelForObject(value, Nil)
   }
@@ -78,7 +78,7 @@ case class ModelBuilderContext(
   invalidatable: Boolean,
   root: Boolean = true,
   var prototypesRequested: SchemaSet = SchemaSet.empty,
-  prototypesBeingCreated: SchemaSet = SchemaSet.empty)(implicit val user: KoskiSession, val koodisto: KoodistoViitePalvelu, val localizationRepository: LocalizationRepository) extends LocalizedHtml {
+  prototypesBeingCreated: SchemaSet = SchemaSet.empty)(implicit val user: KoskiSpecificSession, val koodisto: KoodistoViitePalvelu, val localizationRepository: LocalizationRepository) extends LocalizedHtml {
 }
 
 case class NumberModelBuilder(t: NumberSchema) extends ModelBuilderWithData[Number] {

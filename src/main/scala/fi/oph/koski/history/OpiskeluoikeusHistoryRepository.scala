@@ -11,7 +11,7 @@ import fi.oph.koski.db.Tables.OpiskeluoikeusTable.readAsOpiskeluoikeus
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.{KoskiSession, Rooli}
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, Rooli}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskeenTallennettavaOpiskeluoikeus
 import fi.oph.koski.schema.annotation.SensitiveData
@@ -22,11 +22,11 @@ import slick.dbio.DBIOAction
 import slick.dbio.Effect.Write
 
 case class OpiskeluoikeusHistoryRepository(db: DB) extends DatabaseExecutionContext with KoskiDatabaseMethods with Logging with JsonMethods {
-  def findByOpiskeluoikeusOid(oid: String, maxVersion: Int = Int.MaxValue)(implicit user: KoskiSession): Option[List[OpiskeluoikeusHistoryPatch]] = {
+  def findByOpiskeluoikeusOid(oid: String, maxVersion: Int = Int.MaxValue)(implicit user: KoskiSpecificSession): Option[List[OpiskeluoikeusHistoryPatch]] = {
     runDbSync(findByOpiskeluoikeusOidAction(oid, maxVersion).map(_.map(_.patches)))
   }
 
-  def findByOpiskeluoikeusOidAction(oid: String, maxVersion: Int)(implicit user: KoskiSession): DBIOAction[Option[OpiskeluoikeusHistory], NoStream, Effect.Read] = {
+  def findByOpiskeluoikeusOidAction(oid: String, maxVersion: Int)(implicit user: KoskiSpecificSession): DBIOAction[Option[OpiskeluoikeusHistory], NoStream, Effect.Read] = {
     OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid)
       .join(OpiskeluoikeusHistoria.filter(_.versionumero <= maxVersion))
       .on(_.id === _.opiskeluoikeusId)
@@ -38,7 +38,7 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends DatabaseExecutionCont
       }
   }
 
-  def findVersion(oid: String, version: Int)(implicit user: KoskiSession): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
+  def findVersion(oid: String, version: Int)(implicit user: KoskiSpecificSession): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
     runDbSync(findVersionAction(oid, version))
   }
 
@@ -48,7 +48,7 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends DatabaseExecutionCont
     } +=(opiskeluoikeusId, kayttäjäOid, muutos, versionumero)
   }
 
-  private def findVersionAction(oid: String, version: Int)(implicit user: KoskiSession): DBIOAction[Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus], NoStream, Nothing] = {
+  private def findVersionAction(oid: String, version: Int)(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus], NoStream, Nothing] = {
     findByOpiskeluoikeusOidAction(oid, version).map(_
       .toRight(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta " + oid + " ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
       .flatMap(_.toOpiskeluoikeus)

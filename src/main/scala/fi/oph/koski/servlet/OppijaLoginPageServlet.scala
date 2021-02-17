@@ -3,12 +3,12 @@ package fi.oph.koski.servlet
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.sso.KoskiSSOSupport
+import fi.oph.koski.sso.KoskiSpecificSSOSupport
 import org.scalatra.ScalatraServlet
 
 import scala.xml.Unparsed
 
-class OppijaLoginPageServlet(implicit val application: KoskiApplication) extends ScalatraServlet with OppijaHtmlServlet with KoskiSSOSupport {
+class OppijaLoginPageServlet(implicit val application: KoskiApplication) extends ScalatraServlet with OppijaHtmlServlet with KoskiSpecificSSOSupport {
   get("/") {
     redirectToOppijaLogin
   }

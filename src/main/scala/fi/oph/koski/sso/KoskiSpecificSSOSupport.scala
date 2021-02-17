@@ -1,6 +1,6 @@
 package fi.oph.koski.sso
 
-trait KoskiSSOSupport extends SSOSupport {
+trait KoskiSpecificSSOSupport extends SSOSupport {
 
   def serviceRoot: String = {
     val host = request.getServerName()

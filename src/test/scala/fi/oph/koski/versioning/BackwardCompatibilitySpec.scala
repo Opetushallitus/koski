@@ -6,7 +6,7 @@ import java.time.LocalDate
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.Examples
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.schema.KoskiSchema.deserializationContext
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Oppija}
 import fi.oph.scalaschema.SchemaValidatingExtractor
@@ -20,7 +20,7 @@ import org.scalatest.{FreeSpec, Matchers}
  */
 class BackwardCompatibilitySpec extends FreeSpec with Matchers {
   lazy val koskiValidator = KoskiApplicationForTests.validator
-  implicit val user = KoskiSession.systemUser
+  implicit val user = KoskiSpecificSession.systemUser
   implicit val accessType = AccessType.read
 
   "backward compatibility with stored JSON examples" - {

@@ -4,7 +4,7 @@ import fi.oph.koski.elasticsearch.{ElasticSearch, ElasticSearchIndex}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.LegacyJsonSerialization.toJValue
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedot.docId
@@ -161,7 +161,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
     logger.info("Start indexing all perustiedot documents")
     val bufferSize = 100
     val observable = opiskeluoikeusQueryService
-      .opiskeluoikeusQuery(Nil, Some(Descending("id")), None)(KoskiSession.systemUser)
+      .opiskeluoikeusQuery(Nil, Some(Descending("id")), None)(KoskiSpecificSession.systemUser)
       .tumblingBuffer(bufferSize)
       .zipWithIndex
       .map {

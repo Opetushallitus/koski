@@ -5,7 +5,7 @@ import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö, SuppeatOppijaHenkilöTiedot}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiMessageField, KoskiOperation}
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{OneOfOpiskeluoikeudenTyypit, OppijaOidHaku}
@@ -14,21 +14,21 @@ import org.json4s.JValue
 import rx.lang.scala.Observable
 
 class LuovutuspalveluService(application: KoskiApplication) {
-  def findOppijaByOid(req: OidRequestV1)(implicit koskiSession: KoskiSession): Either[HttpStatus, LuovutuspalveluResponseV1] = {
+  def findOppijaByOid(req: OidRequestV1)(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, LuovutuspalveluResponseV1] = {
     val (useVirta, useYtr) = resolveVirtaAndYtrUsage(req)
     application.oppijaFacade.findOppija(req.oid, findMasterIfSlaveOid = true, useVirta = useVirta, useYtr = useYtr)
       .flatMap(_.warningsToLeft)
       .flatMap(buildResponse(_, req))
   }
 
-  def findOppijaByHetu(req: HetuRequestV1)(implicit koskiSession: KoskiSession): Either[HttpStatus, LuovutuspalveluResponseV1] = {
+  def findOppijaByHetu(req: HetuRequestV1)(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, LuovutuspalveluResponseV1] = {
     val (useVirta, useYtr) = resolveVirtaAndYtrUsage(req)
     application.oppijaFacade.findOppijaByHetuOrCreateIfInYtrOrVirta(req.hetu, useVirta = useVirta, useYtr = useYtr)
       .flatMap(_.warningsToLeft)
       .flatMap(buildResponse(_, req))
   }
 
-  def queryOppijatByHetu(req: BulkHetuRequestV1)(implicit koskiSession: KoskiSession): Observable[JValue] = {
+  def queryOppijatByHetu(req: BulkHetuRequestV1)(implicit koskiSession: KoskiSpecificSession): Observable[JValue] = {
     val henkilot: List[OppijaHenkilö] = application.opintopolkuHenkilöFacade.findOppijatByHetusNoSlaveOids(req.hetut)
     val oidToHenkilo: Map[String, OppijaHenkilö] = henkilot.map(h => h.oid -> h).toMap
     val user = koskiSession // take current session so it can be used in observable
@@ -41,10 +41,10 @@ class LuovutuspalveluService(application: KoskiApplication) {
     }
   }
 
-  private def streamingQuery(filters: List[OpiskeluoikeusQueryFilter])(implicit koskiSession: KoskiSession) =
+  private def streamingQuery(filters: List[OpiskeluoikeusQueryFilter])(implicit koskiSession: KoskiSpecificSession) =
     OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, None)
 
-  private def auditLogOpiskeluoikeusKatsominen(henkilöt: List[OppijaHenkilö])(implicit koskiSession: KoskiSession): Unit = henkilöt
+  private def auditLogOpiskeluoikeusKatsominen(henkilöt: List[OppijaHenkilö])(implicit koskiSession: KoskiSpecificSession): Unit = henkilöt
     .map(h => AuditLogMessage(KoskiOperation.OPISKELUOIKEUS_KATSOMINEN, koskiSession, Map(KoskiMessageField.oppijaHenkiloOid -> h.oid)))
     .foreach(AuditLog.log)
 

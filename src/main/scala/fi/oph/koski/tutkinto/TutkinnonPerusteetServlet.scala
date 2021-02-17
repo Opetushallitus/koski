@@ -2,13 +2,13 @@ package fi.oph.koski.tutkinto
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.{KoskiUserLanguage, Unauthenticated}
+import fi.oph.koski.koskiuser.{UserLanguage, Unauthenticated}
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
-import fi.oph.koski.servlet.{ApiServlet, Cached, LanguageSupport}
+import fi.oph.koski.servlet.{KoskiSpecificApiServlet, Cached, LanguageSupport}
 
 import scala.concurrent.duration.{Duration, _}
 
-class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) extends ApiServlet with Unauthenticated with Cached with LanguageSupport {
+class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with Unauthenticated with Cached with LanguageSupport {
   private val perusteetService = new TutkinnonPerusteetService(application)
 
   get("/oppilaitos/:oppilaitosId") {
@@ -45,7 +45,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
 
   get("/peruste/:diaari/linkki") {
     val diaari = params("diaari")
-    val lang = KoskiUserLanguage.sanitizeLanguage(params.get("lang")).getOrElse("fi")
+    val lang = UserLanguage.sanitizeLanguage(params.get("lang")).getOrElse("fi")
     renderEither[Map[String, String]](
       application.ePerusteet.findLinkToEperusteetWeb(diaari, lang)
         .map(url => Map("url" -> url))

@@ -6,12 +6,12 @@ import fi.oph.koski.kela.KelaSchema
 import fi.oph.koski.koodisto.Koodistot
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.schema.KoskiSchema
-import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.valvira.ValviraSchema
 
 import scala.reflect.runtime.{universe => ru}
 
-class DocumentationApiServlet extends ApiServlet with Unauthenticated with NoCache {
+class DocumentationApiServlet extends KoskiSpecificApiServlet with Unauthenticated with NoCache {
   get("/categoryNames.json") {
     KoskiTiedonSiirtoHtml.categoryNames
   }

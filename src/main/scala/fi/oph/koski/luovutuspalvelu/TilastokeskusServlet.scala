@@ -7,14 +7,14 @@ import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{KoskiSession, RequiresTilastokeskus}
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresTilastokeskus}
 import fi.oph.koski.log.KoskiMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
 import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter, QueryOppijaHenkilö}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
-import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
+import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache, ObservableSupport}
 import fi.oph.koski.util.SortOrder.Ascending
 import fi.oph.koski.util.{Pagination, PaginationSettings, QueryPagination, Retry}
 import javax.servlet.http.HttpServletRequest
@@ -22,7 +22,7 @@ import org.json4s.JValue
 import org.scalatra.MultiParams
 import rx.lang.scala.Observable
 
-class TilastokeskusServlet(implicit val application: KoskiApplication) extends ApiServlet with ObservableSupport with NoCache with Pagination with RequiresTilastokeskus {
+class TilastokeskusServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with ObservableSupport with NoCache with Pagination with RequiresTilastokeskus {
 
   override protected val maxNumberOfItemsPerPage: Int = 1000
 
@@ -39,7 +39,7 @@ class TilastokeskusServlet(implicit val application: KoskiApplication) extends A
       .queryLaajoillaHenkilöTiedoilla(multiParams, paginationSettings)
 }
 
-case class TilastokeskusQueryContext(request: HttpServletRequest)(implicit koskiSession: KoskiSession, application: KoskiApplication) extends Logging {
+case class TilastokeskusQueryContext(request: HttpServletRequest)(implicit koskiSession: KoskiSpecificSession, application: KoskiApplication) extends Logging {
   val pagination = QueryPagination(50)
 
   def queryLaajoillaHenkilöTiedoilla(params: MultiParams, paginationSettings: Option[PaginationSettings]): Either[HttpStatus, Observable[JValue]] = {
