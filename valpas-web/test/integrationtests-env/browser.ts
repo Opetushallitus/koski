@@ -176,6 +176,30 @@ export const dataTableEventuallyEquals = async (
   displayValues: string,
   timeout = 1000
 ) => {
+  await dataTableCellsEventuallyEquals(
+    `${selector} .table__body .table__td`,
+    displayValues,
+    timeout
+  )
+}
+
+export const dataTableHeadersEventuallyEquals = async (
+  selector: string,
+  displayValues: string,
+  timeout = 1000
+) => {
+  await dataTableCellsEventuallyEquals(
+    `${selector} .table__body .table__th`,
+    displayValues,
+    timeout
+  )
+}
+
+const dataTableCellsEventuallyEquals = async (
+  selector: string,
+  displayValues: string,
+  timeout = 1000
+) => {
   const expectedData = A.flatten(
     displayValues
       .split("\n")
@@ -185,7 +209,7 @@ export const dataTableEventuallyEquals = async (
   )
 
   await eventually(async () => {
-    const cells = await $$(`${selector} .table__body .table__td`)
+    const cells = await $$(`${selector}`)
     const actualData = (
       await Promise.all(cells.map((cell) => cell.getText()))
     ).map((value) => value.replace(/\n/g, ""))

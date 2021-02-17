@@ -1,6 +1,6 @@
 import React from "react"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
-import { fetchOrganisaatiot } from "../api/api"
+import { fetchYlatasonOrganisaatiotJaKayttooikeusroolit } from "../api/api"
 import { useApiOnce } from "../api/apiHooks"
 import { isSuccess } from "../api/apiUtils"
 import { Page } from "../components/containers/Page"
@@ -28,9 +28,11 @@ export default (props: ValpasAppProps) => {
     return null
   }
 
-  const organisaatiot = useApiOnce(fetchOrganisaatiot)
+  const organisaatiotJaKayttooikeusroolit = useApiOnce(
+    fetchYlatasonOrganisaatiotJaKayttooikeusroolit
+  )
 
-  return isSuccess(organisaatiot) ? (
+  return isSuccess(organisaatiotJaKayttooikeusroolit) ? (
     <Router basename={process.env.PUBLIC_URL}>
       <Page id="valpas-app">
         <Switch>
@@ -44,7 +46,12 @@ export default (props: ValpasAppProps) => {
           </Route>
           <Route path="/oppijat/:oid" component={OppijaView} />
           <Route>
-            <HomeView user={props.user} organisaatiot={organisaatiot.data} />
+            <HomeView
+              user={props.user}
+              organisaatiotJaKayttooikeusroolit={
+                organisaatiotJaKayttooikeusroolit.data
+              }
+            />
           </Route>
         </Switch>
       </Page>

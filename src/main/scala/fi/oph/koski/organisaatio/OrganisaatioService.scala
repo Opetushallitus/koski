@@ -50,6 +50,18 @@ class OrganisaatioService(application: KoskiApplication) {
   def omatOstopalveluOrganisaatiot(implicit user: Session): List[OrganisaatioHierarkia] =
     koulutustoimijoidenOstopalveluOrganisaatiot(user.varhaiskasvatusKoulutustoimijat)
 
+  def omatOrganisaatiotJaKayttooikeusroolit(implicit user: Session): List[OrganisaatioHierarkiaJaKayttooikeusrooli] =
+    user.orgKäyttöoikeudet.filter(_.juuri).toList.flatMap {
+      ko: KäyttöoikeusOrg => {
+        val hierarkia = organisaatioRepository.getOrganisaatioHierarkia(ko.organisaatio.oid)
+        if (hierarkia.isDefined) {
+          ko.organisaatiokohtaisetPalveluroolit.map(palvelurooli => OrganisaatioHierarkiaJaKayttooikeusrooli(hierarkia.get, palvelurooli.rooli))
+        } else {
+          List.empty
+        }
+      }
+    }.sortBy(organisaatioNimiOrganisaatioHierarkiaJaKayttooikeusroolista)
+
   private def koulutustoimijoidenOstopalveluOrganisaatiot(koulutustoimijat: Set[Oid])(implicit user: Session): List[OrganisaatioHierarkia] =
     perustiedot.haeVarhaiskasvatustoimipisteet(koulutustoimijat) match {
       case päiväkoditJoihinTallennettuOpiskeluoikeuksia if päiväkoditJoihinTallennettuOpiskeluoikeuksia.nonEmpty =>
@@ -88,4 +100,6 @@ class OrganisaatioService(application: KoskiApplication) {
   }
 
   private def organisaatioNimi(implicit user: Session): OrganisaatioHierarkia => String = _.nimi.get(user.lang)
+
+  private def organisaatioNimiOrganisaatioHierarkiaJaKayttooikeusroolista(implicit user: Session): OrganisaatioHierarkiaJaKayttooikeusrooli => String = _.organisaatioHierarkia.nimi.get(user.lang)
 }

@@ -8,43 +8,29 @@ import {
   Table,
   TableBody,
 } from "../components/tables/Table"
-import { getLocalized } from "../i18n/i18n"
-import { Organisaatio, User } from "../state/types"
+import { getLocalized, t } from "../i18n/i18n"
+import { OrganisaatioJaKayttooikeusrooli, User } from "../state/types"
 
 export type HomeViewProps = {
   user: User
-  organisaatiot: Organisaatio[]
+  organisaatiotJaKayttooikeusroolit: OrganisaatioJaKayttooikeusrooli[]
 }
 
 export const HomeView = (props: HomeViewProps) => (
   <Page>
     <Card>
-      <CardHeader>Valpas</CardHeader>
+      <CardHeader>{t("title__Valpas")}</CardHeader>
       <CardBody>
-        <p>
-          Olet onnistuneesti kirjautunut Valpas-järjestelmään seuraavalla
-          tunnuksella
+        <p className={"ohjeteksti"}>
+          {t("homeview_olet_onnistuneesti_kirjautunut")}
         </p>
-        <Table>
+        <Table className={"kayttooikeudet"} style={{ tableLayout: "fixed" }}>
           <TableBody>
-            <Row>
-              <HeaderCell>Käyttäjätunnus</HeaderCell>
-              <Data>{props.user.username}</Data>
-            </Row>
-            <Row>
-              <HeaderCell>Nimi</HeaderCell>
-              <Data>{props.user.name}</Data>
-            </Row>
-            <Row>
-              <HeaderCell>OID</HeaderCell>
-              <Data>{props.user.oid}</Data>
-            </Row>
-            <Row>
-              <HeaderCell>Organisaatiot</HeaderCell>
-              <Data>
-                <OrganisaatiotList organisaatiot={props.organisaatiot} />
-              </Data>
-            </Row>
+            <OrganisaatiotRows
+              organisaatiotJaKayttooikeusroolit={
+                props.organisaatiotJaKayttooikeusroolit
+              }
+            />
           </TableBody>
         </Table>
       </CardBody>
@@ -53,22 +39,20 @@ export const HomeView = (props: HomeViewProps) => (
 )
 
 type OrganisaatiotListProps = {
-  organisaatiot: Organisaatio[]
-  style?: React.CSSProperties
+  organisaatiotJaKayttooikeusroolit: OrganisaatioJaKayttooikeusrooli[]
 }
 
-const OrganisaatiotList = (props: OrganisaatiotListProps) => (
-  <ul style={props.style}>
-    {props.organisaatiot.map((org) => (
-      <li key={org.oid}>
-        {getLocalized(org.nimi)}
-        {org.children.length > 0 ? (
-          <OrganisaatiotList
-            organisaatiot={org.children}
-            style={{ marginLeft: 30 }}
-          />
-        ) : null}
-      </li>
+const OrganisaatiotRows = (props: OrganisaatiotListProps) => (
+  <>
+    {props.organisaatiotJaKayttooikeusroolit.map((org) => (
+      <Row key={`${org.organisaatioHierarkia.oid}-${org.kayttooikeusrooli}`}>
+        <HeaderCell style={{ whiteSpace: "normal", width: "30%" }}>
+          {getLocalized(org.organisaatioHierarkia.nimi)}
+        </HeaderCell>
+        <Data style={{ whiteSpace: "normal" }}>
+          {t("kayttooikeusrooli_" + org.kayttooikeusrooli)}
+        </Data>
+      </Row>
     ))}
-  </ul>
+  </>
 )

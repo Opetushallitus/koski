@@ -22,12 +22,23 @@ export type User = {
   huollettava: boolean
 }
 
-export type Organisaatio = {
+export type OrganisaatioHierarkia = {
   oid: Oid
   nimi: LocalizedString
   aktiivinen: boolean
   organisaatiotyypit: string[] // TODO: tyypitä tarkemmin
   oppilaitosnumero?: OppilaitosnumeroKoodistoviite
   kotipaikka?: PaikkakuntaKoodistoviite
-  children: Organisaatio[]
+  children: OrganisaatioHierarkia[]
+}
+
+export type Kayttooikeusrooli =
+  | "OPPILAITOS_HAKEUTUMINEN"
+  | "OPPILAITOS_SUORITTAMINEN"
+  | "OPPILAITOS_MAKSUTTOMUUS"
+  | "KUNTA"
+
+export type OrganisaatioJaKayttooikeusrooli = {
+  organisaatioHierarkia: OrganisaatioHierarkia
+  kayttooikeusrooli: Kayttooikeusrooli
 }
