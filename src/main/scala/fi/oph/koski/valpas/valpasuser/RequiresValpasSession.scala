@@ -26,7 +26,9 @@ trait RequiresValpasSession extends ValpasAuthenticationSupport with HasValpasSe
     session.orgKäyttöoikeudet
       .flatMap(_.organisaatiokohtaisetPalveluroolit)
       .intersect(Set(
-        ValpasPalvelurooli(ValpasRooli.OPPILAITOS),
+        ValpasPalvelurooli(ValpasRooli.OPPILAITOS_HAKEUTUMINEN),
+        ValpasPalvelurooli(ValpasRooli.OPPILAITOS_SUORITTAMINEN),
+        ValpasPalvelurooli(ValpasRooli.OPPILAITOS_MAKSUTTOMUUS),
         ValpasPalvelurooli(ValpasRooli.KUNTA)))
       .nonEmpty
 }

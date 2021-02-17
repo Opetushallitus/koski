@@ -12,26 +12,28 @@ object ValpasMockUsers {
     "käyttäjä",
     "valpas-helsinki",
     "1.2.246.562.24.12312312301",
-    Set(kuntakäyttäjä(helsinginKaupunki)))
+    kuntakäyttäjä(helsinginKaupunki)
+  )
 
   val valpasJklNormaalikoulu = MockUser(
     "käyttäjä",
     "valpas-jkl-normaali",
     "1.2.246.562.24.12312312302",
-    Set(oppilaitoskäyttäjä(jyväskylänNormaalikoulu)))
+    peruskoulunJossa10LuokkaKäyttäjä(jyväskylänNormaalikoulu) ++ toisenAsteenKäyttäjä(jyväskylänNormaalikoulu)
+  )
 
   val valpasJklNormaalikouluJaKoskiHelsinkiTallentaja = MockUser(
     "käyttäjä",
     "valpas-jkl-normaali-koski-hki",
     "1.2.246.562.24.12312312303",
-    Set(oppilaitoskäyttäjä(jyväskylänNormaalikoulu), MockKäyttöoikeusryhmät.oppilaitosTallentaja(helsinginKaupunki))
+    peruskoulunJossa10LuokkaKäyttäjä(jyväskylänNormaalikoulu) ++ toisenAsteenKäyttäjä(jyväskylänNormaalikoulu) ++ Set(MockKäyttöoikeusryhmät.oppilaitosTallentaja(helsinginKaupunki))
   )
 
   val valpasJklNormaalikouluJaValpasHelsinki = MockUser(
     "käyttäjä",
     "valpas-jkl-normaali-hki",
     "1.2.246.562.24.12312312304",
-    Set(oppilaitoskäyttäjä(jyväskylänNormaalikoulu), kuntakäyttäjä(helsinginKaupunki))
+    peruskoulunJossa10LuokkaKäyttäjä(jyväskylänNormaalikoulu) ++ toisenAsteenKäyttäjä(jyväskylänNormaalikoulu) ++ kuntakäyttäjä(helsinginKaupunki)
   )
 
   def users = {
