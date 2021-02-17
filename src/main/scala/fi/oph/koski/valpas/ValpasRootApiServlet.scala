@@ -2,7 +2,6 @@ package fi.oph.koski.valpas
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioHierarkia, OrganisaatioHierarkiaJaKayttooikeusrooli}
-import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
@@ -25,15 +24,15 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
     globaalit ++ organisaatiokohtaiset
   }
 
-  get("/mock-oppijat") {
+  get("/oppijat") {
     renderEither(
       oppijaService.getOppijat
-      .toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia()))
+      .toRight(ValpasErrorCategory.forbidden.oppijat()))
   }
 
   get("/oppija/:oid") {
     renderEither(
       oppijaService.getOppija(params("oid"))
-      .toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia()))
+      .toRight(ValpasErrorCategory.forbidden.oppija()))
   }
 }

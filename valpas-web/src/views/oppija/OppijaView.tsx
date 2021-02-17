@@ -54,7 +54,7 @@ export const OppijaView = (props: OppijaViewProps) => {
           </ColumnsContainer> */}
           <ColumnsContainer>
             <Column size={5}>
-              <Card>
+              <Card id="opiskeluhistoria">
                 <CardHeader>
                   <T id="oppija__opiskeluhistoria_otsikko" />
                 </CardHeader>
@@ -64,7 +64,7 @@ export const OppijaView = (props: OppijaViewProps) => {
               </Card>
             </Column>
             <Column size={7}>
-              <Card>
+              <Card id="haut">
                 <CardHeader>
                   <T id="oppija__haut_otsikko" />
                 </CardHeader>
