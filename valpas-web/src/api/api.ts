@@ -34,7 +34,7 @@ export const fetchYlatasonOrganisaatiotJaKayttooikeusroolitCache = createCache(
 /**
  * Get oppijat
  */
-export const fetchOppijat = () => apiGet<Oppija[]>("valpas/api/mock-oppijat")
+export const fetchOppijat = () => apiGet<Oppija[]>("valpas/api/oppijat")
 export const fetchOppijatCache = createCache(fetchOppijat)
 
 export const fetchOppija = (oppijaOid: Oid) =>

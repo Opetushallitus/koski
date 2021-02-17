@@ -54,6 +54,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
 
   def isAvailable: Boolean = raportointiDatabase.status.isComplete
   def isLoadComplete: Boolean = !isLoading && isAvailable
+  def isEmpty: Boolean = raportointiDatabase.status.isEmpty
 
   def status: Map[String, RaportointikantaStatusResponse] =
     List(loadDatabase.status, raportointiDatabase.status).groupBy(_.schema).mapValues(_.head)
