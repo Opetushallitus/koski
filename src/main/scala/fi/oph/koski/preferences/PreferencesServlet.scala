@@ -13,16 +13,16 @@ class PreferencesServlet(implicit val application: KoskiApplication) extends Kos
   put("/:organisaatioOid/:type") {
     withJsonBody({ body =>
       val KeyValue(key, value) = JsonSerializer.extract[KeyValue](body)
-      renderStatus(service.put(organisaatioOid, koulutustoimijaOid, `type`, key, value)(koskiSession))
+      renderStatus(service.put(organisaatioOid, koulutustoimijaOid, `type`, key, value)(session))
     })()
   }
 
   delete("/:organisaatioOid/:type/:key") {
-    renderStatus(service.delete(organisaatioOid, koulutustoimijaOid, `type`, params("key"))(koskiSession))
+    renderStatus(service.delete(organisaatioOid, koulutustoimijaOid, `type`, params("key"))(session))
   }
 
   get("/:organisaatioOid/:type") {
-    renderEither[List[StorablePreference]](service.get(organisaatioOid, koulutustoimijaOid, `type`)(koskiSession))
+    renderEither[List[StorablePreference]](service.get(organisaatioOid, koulutustoimijaOid, `type`)(session))
   }
 
   private def organisaatioOid = params("organisaatioOid")

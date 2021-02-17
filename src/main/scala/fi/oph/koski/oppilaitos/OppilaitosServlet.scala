@@ -9,7 +9,7 @@ import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 
 class OppilaitosServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {
   get("/") {
-    application.oppilaitosRepository.oppilaitokset(koskiSession).toList
+    application.oppilaitosRepository.oppilaitokset(session).toList
   }
 
   val perusopetuksenTyypit = List(OpiskeluoikeudenTyyppi.perusopetus, OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus, OpiskeluoikeudenTyyppi.perusopetuksenlisaopetus, OpiskeluoikeudenTyyppi.aikuistenperusopetus)
@@ -24,7 +24,7 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends Kosk
     (byOppilaitosTyyppi(organisaatiot) ++ byOrganisaatioTyyppi(organisaatiot))
       .distinct
       .flatMap(t => application.koodistoViitePalvelu.validate("opiskeluoikeudentyyppi", t.koodiarvo))
-      .filter(t => koskiSession.allowedOpiskeluoikeusTyypit.contains(t.koodiarvo))
+      .filter(t => session.allowedOpiskeluoikeusTyypit.contains(t.koodiarvo))
   }
 
   private def byOppilaitosTyyppi(organisaatiot: List[OrganisaatioHierarkia]) =

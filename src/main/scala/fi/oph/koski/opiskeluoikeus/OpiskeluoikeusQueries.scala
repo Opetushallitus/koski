@@ -20,7 +20,7 @@ trait OpiskeluoikeusQueries extends KoskiSpecificApiServlet with Logging with Gl
   def application: KoskiApplication
 
   def performOpiskeluoikeudetQueryLaajoillaHenkilötiedoilla: Either[HttpStatus, Observable[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])]] =
-    OpiskeluoikeusQueryContext(request)(koskiSession, application).queryLaajoillaHenkilöTiedoilla(multiParams, paginationSettings)
+    OpiskeluoikeusQueryContext(request)(session, application).queryLaajoillaHenkilöTiedoilla(multiParams, paginationSettings)
 }
 
 /**

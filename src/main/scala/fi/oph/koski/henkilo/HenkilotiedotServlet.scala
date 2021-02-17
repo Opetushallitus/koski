@@ -17,7 +17,7 @@ class HenkilötiedotServlet(implicit val application: KoskiApplication) extends 
   get[HenkilötiedotSearchResponse]("/search") {
     params.get("query") match {
       case Some(query) if query.length >= 3 =>
-        henkilötiedotSearchFacade.searchOrPossiblyCreateIfInYtrOrVirta(query.toUpperCase)(koskiSession)
+        henkilötiedotSearchFacade.searchOrPossiblyCreateIfInYtrOrVirta(query.toUpperCase)(session)
       case _ =>
         throw InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort)
     }
@@ -29,7 +29,7 @@ class HenkilötiedotServlet(implicit val application: KoskiApplication) extends 
       val request = JsonSerializer.extract[HenkilötiedotSearchRequest](body)
       request.query match {
         case query: String if query.length >= 3 =>
-          henkilötiedotSearchFacade.searchOrPossiblyCreateIfInYtrOrVirta(query.toUpperCase)(koskiSession)
+          henkilötiedotSearchFacade.searchOrPossiblyCreateIfInYtrOrVirta(query.toUpperCase)(session)
         case _ =>
           throw InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort)
       }
@@ -38,19 +38,19 @@ class HenkilötiedotServlet(implicit val application: KoskiApplication) extends 
 
   // note: Koski UI uses the POST version, but this is part of our public API (and apparently used)
   get("/hetu/:hetu") {
-    renderEither[List[HenkilötiedotJaOid]](henkilötiedotSearchFacade.findByHetuOrCreateIfInYtrOrVirta(params("hetu"))(koskiSession))
+    renderEither[List[HenkilötiedotJaOid]](henkilötiedotSearchFacade.findByHetuOrCreateIfInYtrOrVirta(params("hetu"))(session))
   }
 
   // uses POST to avoid having sensitive data in URLs
   post("/hetu") {
     withJsonBody({ body =>
       val request = JsonSerializer.extract[HenkilötiedotHetuRequest](body)
-      renderEither[List[HenkilötiedotJaOid]](henkilötiedotSearchFacade.findByHetuOrCreateIfInYtrOrVirta(request.hetu)(koskiSession))
+      renderEither[List[HenkilötiedotJaOid]](henkilötiedotSearchFacade.findByHetuOrCreateIfInYtrOrVirta(request.hetu)(session))
     })()
   }
 
   get("/oid/:oid") {
-    renderEither[List[HenkilötiedotJaOid]](henkilötiedotSearchFacade.findByOid(params("oid"))(koskiSession).right.map(_.map(_.copy(hetu = None)))) // poistetaan hetu tuloksista, sillä käytössä ei ole organisaatiorajausta
+    renderEither[List[HenkilötiedotJaOid]](henkilötiedotSearchFacade.findByOid(params("oid"))(session).right.map(_.map(_.copy(hetu = None)))) // poistetaan hetu tuloksista, sillä käytössä ei ole organisaatiorajausta
   }
 }
 

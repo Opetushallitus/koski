@@ -14,7 +14,7 @@ class KoskiHistoryServlet(implicit val application: KoskiApplication)
   get("/:oid") {
     val oid: String = getStringParam("oid")
     renderOption[List[OpiskeluoikeusHistoryPatch]](KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia) {
-      val history: Option[List[OpiskeluoikeusHistoryPatch]] = application.historyRepository.findByOpiskeluoikeusOid(oid)(koskiSession)
+      val history: Option[List[OpiskeluoikeusHistoryPatch]] = application.historyRepository.findByOpiskeluoikeusOid(oid)(session)
       history.foreach { _ => logHistoryView(oid)}
       history
     }
@@ -24,7 +24,7 @@ class KoskiHistoryServlet(implicit val application: KoskiApplication)
     val oid = getStringParam("oid")
     val version = getIntegerParam("version")
 
-    val result: Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = application.historyRepository.findVersion(oid, version)(koskiSession)
+    val result: Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = application.historyRepository.findVersion(oid, version)(session)
 
     result.right.foreach { _ => logHistoryView(oid)}
 
@@ -32,6 +32,6 @@ class KoskiHistoryServlet(implicit val application: KoskiApplication)
   }
 
   private def logHistoryView(oid: String): Unit = {
-    AuditLog.log(AuditLogMessage(KoskiOperation.MUUTOSHISTORIA_KATSOMINEN, koskiSession, Map(KoskiMessageField.opiskeluoikeusOid -> oid)))
+    AuditLog.log(AuditLogMessage(KoskiOperation.MUUTOSHISTORIA_KATSOMINEN, session, Map(KoskiMessageField.opiskeluoikeusOid -> oid)))
   }
 }

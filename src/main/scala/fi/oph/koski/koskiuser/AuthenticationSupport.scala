@@ -4,12 +4,12 @@ import java.util.UUID
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log._
-import fi.oph.koski.servlet.KoskiSpecificBaseServlet
+import fi.oph.koski.servlet.{BaseServlet, KoskiSpecificBaseServlet}
 import fi.oph.koski.sso.SSOSupport
 import fi.oph.koski.userdirectory.Password
 import org.scalatra.auth.strategy.BasicAuthStrategy
 
-trait AuthenticationSupport extends KoskiSpecificBaseServlet with SSOSupport {
+trait AuthenticationSupport extends BaseServlet with SSOSupport {
   val realm = "Koski"
 
   def application: UserAuthenticationContext
@@ -73,11 +73,8 @@ trait AuthenticationSupport extends KoskiSpecificBaseServlet with SSOSupport {
 
   def isAuthenticated = getUser.isRight
 
-  def sessionOrStatus: Either[SessionStatus, KoskiSpecificSession] =
+  def sessionOrStatus: Either[SessionStatus, Session] =
     userFromCookie.map(createSession)
-
-  override def koskiSessionOption: Option[KoskiSpecificSession] =
-    getUser.toOption.map(createSession)
 
   private val loginFail = Left(KoskiErrorCategory.unauthorized.loginFail(s"Sisäänkirjautuminen epäonnistui, väärä käyttäjätunnus tai salasana."))
 
@@ -94,20 +91,6 @@ trait AuthenticationSupport extends KoskiSpecificBaseServlet with SSOSupport {
           defaultLogger.warn(s"User not found, after successful authentication: $username")
           loginFail
       }
-    }
-  }
-
-  def requireVirkailijaOrPalvelukäyttäjä = {
-    getUser match {
-      case Right(user) if user.kansalainen =>
-        haltWithStatus(KoskiErrorCategory.forbidden.vainVirkailija())
-      case Right(user) =>
-        val session = createSession(user)
-        if (session.hasLuovutuspalveluAccess || session.hasTilastokeskusAccess || session.hasKelaAccess) {
-          haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
-        }
-      case Left(error) =>
-        haltWithStatus(error)
     }
   }
 
@@ -132,5 +115,5 @@ trait AuthenticationSupport extends KoskiSpecificBaseServlet with SSOSupport {
     user.copy(serviceTicket = Some(fakeServiceTicket))
   }
 
-  def createSession(user: AuthenticationUser) = KoskiSpecificSession(user, request, application.käyttöoikeusRepository)
+  def createSession(user: AuthenticationUser): Session
 }

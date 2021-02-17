@@ -34,11 +34,11 @@ class SureServlet(implicit val application: KoskiApplication) extends KoskiSpeci
       }
       oids.map(HenkilöOid.validateHenkilöOid).collectFirst { case Left(status) => status } match {
         case None =>
-          val serialize = SensitiveDataFilter(koskiSession).rowSerializer
-          val observable = OpiskeluoikeusQueryContext(request)(koskiSession, application).queryWithoutHenkilötiedotRaw(
+          val serialize = SensitiveDataFilter(session).rowSerializer
+          val observable = OpiskeluoikeusQueryContext(request)(session, application).queryWithoutHenkilötiedotRaw(
             List(OppijaOidHaku(oids)), None, "oids=" + oids.take(2).mkString(",") + ",...(" + oids.size + ")"
           )
-          streamResponse[JValue](observable.map(t => serialize(OidHenkilö(t._1), t._2)), koskiSession)
+          streamResponse[JValue](observable.map(t => serialize(OidHenkilö(t._1), t._2)), session)
         case Some(status) => haltWithStatus(status)
       }
     }()
@@ -119,7 +119,7 @@ class SureServlet(implicit val application: KoskiApplication) extends KoskiSpeci
     val DefaultPageSize = MaxPageSize
     val DefaultRecentPageOverlapSeconds = 20
 
-    if (!koskiSession.hasGlobalReadAccess) {
+    if (!session.hasGlobalReadAccess) {
       // Toteutuksessa käytetään OpiskeluOikeudet (eikä OpiskeluOikeudetWithAccessCheck) koska halutaan myös mitätöidyt
       haltWithStatus(KoskiErrorCategory.forbidden())
     }

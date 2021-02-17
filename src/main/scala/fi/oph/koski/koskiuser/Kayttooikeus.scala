@@ -45,6 +45,36 @@ object Rooli {
 }
 
 object Käyttöoikeus {
+  def withPalveluroolitFilter(käyttöoikeudet: Set[Käyttöoikeus], palvelurooliFilter: Palvelurooli => Boolean): Set[Käyttöoikeus] = {
+    käyttöoikeudet.flatMap(withPalveluroolitFilter(palvelurooliFilter))
+  }
+
+  private def withPalveluroolitFilter(palvelurooliFilter: Palvelurooli => Boolean)(käyttöoikeus: Käyttöoikeus): Set[Käyttöoikeus] = {
+    käyttöoikeus match {
+      case KäyttöoikeusOrg(organisaatio, roolit, juuri, oppilaitostyyppi) =>
+      {
+        val filteredRoolit = roolit.filter(palvelurooliFilter)
+        if (filteredRoolit.isEmpty) Set.empty else Set(KäyttöoikeusOrg(organisaatio, filteredRoolit, juuri, oppilaitostyyppi))
+      }
+      case KäyttöoikeusGlobal(globalPalveluroolit) =>
+      {
+        val filteredRoolit = globalPalveluroolit.filter(palvelurooliFilter)
+        if (filteredRoolit.isEmpty) Set.empty else Set(KäyttöoikeusGlobal(filteredRoolit))
+      }
+      case KäyttöoikeusViranomainen(globalPalveluroolit) =>
+      {
+        val filteredRoolit = globalPalveluroolit.filter(palvelurooliFilter)
+        if (filteredRoolit.isEmpty) Set.empty else Set(KäyttöoikeusViranomainen(filteredRoolit))
+      }
+      case KäyttöoikeusVarhaiskasvatusToimipiste(koulutustoimija, ulkopuolinenOrganisaatio, organisaatiokohtaisetPalveluroolit) =>
+      {
+        val filteredRoolit = organisaatiokohtaisetPalveluroolit.filter(palvelurooliFilter)
+        if (filteredRoolit.isEmpty) Set.empty else Set(KäyttöoikeusVarhaiskasvatusToimipiste(koulutustoimija, ulkopuolinenOrganisaatio, filteredRoolit))
+      }
+      case _ => Set.empty
+    }
+  }
+
   def parseAllowedOpiskeluoikeudenTyypit(roolit: List[Palvelurooli], accessTypes: List[AccessType.Value]): Set[String] = {
     val kaikkiOpiskeluoikeusTyypit = OpiskeluoikeudenTyyppi.kaikkiTyypit.map(_.koodiarvo)
     val kayttajanRoolit = unifyRoolit(roolit).filter(_.palveluName == "KOSKI").map(_.rooli.toLowerCase).toSet

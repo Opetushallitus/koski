@@ -11,12 +11,12 @@ class OmaOpintoPolkuLokiServlet(implicit val application: KoskiApplication) exte
 
   get("/auditlogs") {
     renderEither(
-      auditLogs.queryLogsFromDynamo(koskiSession.oid)
+      auditLogs.queryLogsFromDynamo(session.oid)
     )
   }
 
   get("/whoami") {
-    application.opintopolkuHenkilöFacade.findOppijaByOid(koskiSession.oid).map(h =>
+    application.opintopolkuHenkilöFacade.findOppijaByOid(session.oid).map(h =>
       OmaOpintopolkuLokiHenkiloTiedot(h.hetu, h.etunimet, h.kutsumanimi, h.sukunimi)
     )
   }

@@ -31,11 +31,11 @@ class TilastokeskusServlet(implicit val application: KoskiApplication) extends K
       haltWithStatus(KoskiErrorCategory.badRequest.queryParam("Tuntematon versio"))
     }
 
-    streamResponse(queryOppijat, koskiSession)
+    streamResponse(queryOppijat, session)
   }
 
   private def queryOppijat =
-    TilastokeskusQueryContext(request)(koskiSession, application)
+    TilastokeskusQueryContext(request)(session, application)
       .queryLaajoillaHenkilöTiedoilla(multiParams, paginationSettings)
 }
 

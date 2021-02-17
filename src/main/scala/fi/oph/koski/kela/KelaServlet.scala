@@ -17,7 +17,7 @@ class KelaServlet(implicit val application: KoskiApplication) extends KoskiSpeci
   post("/hetu") {
     withJsonBody { json =>
       val hetu = KelaRequest.parse(json)
-      val oppija = hetu.flatMap(kelaService.findKelaOppijaByHetu(_)(koskiSession))
+      val oppija = hetu.flatMap(kelaService.findKelaOppijaByHetu(_)(session))
       renderEither(oppija)
     }()
   }
@@ -26,7 +26,7 @@ class KelaServlet(implicit val application: KoskiApplication) extends KoskiSpeci
     withJsonBody { json =>
       KelaRequest.parseBulk(json) match {
         case Right(hetut) =>
-          streamResponse[JValue](kelaService.streamOppijatByHetu(hetut), koskiSession)
+          streamResponse[JValue](kelaService.streamOppijatByHetu(hetut), session)
         case Left(status) =>
           haltWithStatus(status)
       }

@@ -14,7 +14,7 @@ class OrganisaatioServlet(implicit val application: KoskiApplication) extends Ko
     } else {
       organisaatioService.searchInEntitledOrganizations(query, orgTypesToShow)
     }
-    filtered.map(_.sortBy(koskiSession.lang))
+    filtered.map(_.sortBy(session.lang))
   }
 
   get("/sahkoposti-virheiden-raportointiin") {

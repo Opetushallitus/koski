@@ -12,7 +12,7 @@ import org.scalatra._
 
 import scala.reflect.runtime.universe.{TypeRefApi, TypeTag}
 
-trait KoskiSpecificApiServlet extends KoskiSpecificBaseServlet with Logging with TimedServlet with ContentEncodingSupport with CacheControlSupport {
+trait ApiServlet extends BaseServlet with Logging with TimedServlet with ContentEncodingSupport with CacheControlSupport {
   def withJsonBody[T: TypeTag](block: JValue => T)(parseErrorHandler: HttpStatus => T = haltWithStatus(_)): T = {
     JsonBodySnatcher.getJsonBody(request) match {
       case Right(x) => block(x)
@@ -29,26 +29,7 @@ trait KoskiSpecificApiServlet extends KoskiSpecificBaseServlet with Logging with
     writeJson(toJsonString(x))
   }
 
-  def toJsonString[T: TypeTag](x: T): String = {
-    implicit val session = koskiSessionOption getOrElse KoskiSpecificSession.untrustedUser
-    // Ajax request won't have "text/html" in Accept header, clicking "JSON" button will
-    val pretty = Option(request.getHeader("accept")).exists(_.contains("text/html"))
-    val tag = implicitly[TypeTag[T]]
-    tag.tpe match {
-      case t: TypeRefApi if (t.typeSymbol.asClass.fullName == classOf[PaginatedResponse[_]].getName) =>
-        // Here's some special handling for PaginatedResponse (scala-schema doesn't support parameterized case classes yet)
-        val typeArg = t.args.head
-        val paginated = x.asInstanceOf[PaginatedResponse[_]]
-        val subSchema = KoskiSchema.schemaFactory.createSchema(typeArg)
-        JsonMethods.compact(JObject(
-          "result" -> JsonSerializer.serialize(paginated.result, subSchema),
-          "paginationSettings" -> JsonSerializer.serialize(paginated.paginationSettings),
-          "mayHaveMore" -> JBool(paginated.mayHaveMore)
-        ))
-      case t =>
-        JsonSerializer.write(x, pretty)
-    }
-  }
+  def toJsonString[T: TypeTag](x: T): String
 
   protected def writeJson(str: String): Unit = {
     contentType = "application/json;charset=utf-8"
@@ -72,6 +53,29 @@ trait KoskiSpecificApiServlet extends KoskiSpecificBaseServlet with Logging with
       case _: Unit => ()
       case s: HttpStatus => renderStatus(s)
       case x => renderObject(x)
+    }
+  }
+}
+
+trait KoskiSpecificApiServlet extends ApiServlet with KoskiSpecificBaseServlet {
+  def toJsonString[T: TypeTag](x: T): String = {
+    implicit val session = koskiSessionOption getOrElse KoskiSpecificSession.untrustedUser
+    // Ajax request won't have "text/html" in Accept header, clicking "JSON" button will
+    val pretty = Option(request.getHeader("accept")).exists(_.contains("text/html"))
+    val tag = implicitly[TypeTag[T]]
+    tag.tpe match {
+      case t: TypeRefApi if (t.typeSymbol.asClass.fullName == classOf[PaginatedResponse[_]].getName) =>
+        // Here's some special handling for PaginatedResponse (scala-schema doesn't support parameterized case classes yet)
+        val typeArg = t.args.head
+        val paginated = x.asInstanceOf[PaginatedResponse[_]]
+        val subSchema = KoskiSchema.schemaFactory.createSchema(typeArg)
+        JsonMethods.compact(JObject(
+          "result" -> JsonSerializer.serialize(paginated.result, subSchema),
+          "paginationSettings" -> JsonSerializer.serialize(paginated.paginationSettings),
+          "mayHaveMore" -> JBool(paginated.mayHaveMore)
+        ))
+      case t =>
+        JsonSerializer.write(x, pretty)
     }
   }
 }

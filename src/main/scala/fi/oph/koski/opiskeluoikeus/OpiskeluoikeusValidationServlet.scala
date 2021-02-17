@@ -19,7 +19,7 @@ import rx.lang.scala.Observable
 
 class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache with ObservableSupport with ContentEncodingSupport {
   get("/", request.getRemoteHost == "127.0.0.1") {
-    if (!koskiSession.hasGlobalReadAccess) {
+    if (!session.hasGlobalReadAccess) {
       haltWithStatus(KoskiErrorCategory.forbidden())
     }
 
@@ -49,7 +49,7 @@ class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication
   }
 
   get("/:oid") {
-    if (!koskiSession.hasGlobalReadAccess) {
+    if (!session.hasGlobalReadAccess) {
       haltWithStatus(KoskiErrorCategory.forbidden())
     }
     // Ensure that nobody uses koskiSession implicitely
