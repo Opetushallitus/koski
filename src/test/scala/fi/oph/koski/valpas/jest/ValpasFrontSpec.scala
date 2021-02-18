@@ -17,7 +17,7 @@ class ValpasFrontSpec extends KoskiCommandLineSpec {
     fixtureCreator.resetFixtures(fixtureCreator.valpasFixtureState)
     raportointikantaService.dropAndCreateSchema()
     raportointikantaService.loadRaportointikanta(true)
-    
+
     runTestCommand("valpas-front", Seq("scripts/valpas-front-test.sh", SharedJetty.hostUrl))
   }
 }
