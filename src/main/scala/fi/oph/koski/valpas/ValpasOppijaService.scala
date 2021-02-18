@@ -2,12 +2,14 @@ package fi.oph.koski.valpas
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koodisto.KoodistoViite
+import fi.oph.koski.log.{AuditLog, KoskiMessageField, Logging}
 import fi.oph.koski.raportointikanta.RHenkilöRow
 import fi.oph.koski.schema.Koodistokoodiviite
+import fi.oph.koski.valpas.log.{ValpasAuditLogMessage, ValpasOperation}
 import fi.oph.koski.valpas.repository.{ValpasDatabaseService, ValpasOppija}
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
-class ValpasOppijaService(application: KoskiApplication) {
+class ValpasOppijaService(application: KoskiApplication) extends Logging {
   private val dbService = new ValpasDatabaseService(application)
   private val koodisto = application.koodistoPalvelu
 
@@ -17,7 +19,12 @@ class ValpasOppijaService(application: KoskiApplication) {
   }
 
   def getOppija(oid: String)(implicit session: ValpasSession): Option[ValpasOppija] =
-    dbService.getOppija(oid, ValpasAccessResolver.valpasOrganisaatioOids).map(enrichOppija)
+    dbService.getOppija(oid, ValpasAccessResolver.valpasOrganisaatioOids)
+      .map(enrichOppija)
+      .map(oppija => {
+        auditLogOppijaKatsominen(oppija)
+        oppija
+      })
 
   def enrichOppija(oppija: ValpasOppija): ValpasOppija =
     oppija.copy(
@@ -40,4 +47,10 @@ class ValpasOppijaService(application: KoskiApplication) {
         ))
         .getOrElse(koodiviite)
     }
+
+  def auditLogOppijaKatsominen(oppija: ValpasOppija)(implicit session: ValpasSession) =
+    AuditLog.log(ValpasAuditLogMessage(
+      ValpasOperation.VALPAS_OPPIJA_KATSOMINEN,
+      Map(KoskiMessageField.oppijaHenkiloOid -> oppija.henkilö.oid)
+    ))
 }
