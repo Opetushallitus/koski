@@ -13,7 +13,7 @@ trait KoesuoritusService {
   def koesuoritusExists(key: String): Boolean
 }
 
-class RemoteKoesuoritusService(config: Config) extends KoesuoritusService with Logging {
+class RemoteKoesuoritusService(config: YtrS3Config) extends KoesuoritusService with Logging {
   private val s3 = new YtrS3(config)
   private val bucket = s3.bucket
 
@@ -51,7 +51,7 @@ object MockKoesuoritusService extends KoesuoritusService with EnvVariables {
 }
 
 object KoesuoritusService {
-  def apply(config: Config): KoesuoritusService = if (config.getString("ytr.aws.bucket") == "mock") {
+  def apply(config: YtrS3Config): KoesuoritusService = if (config.bucket == "mock") {
     MockKoesuoritusService
   } else {
     new RemoteKoesuoritusService(config)

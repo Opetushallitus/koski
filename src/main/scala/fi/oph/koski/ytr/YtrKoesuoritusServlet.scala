@@ -1,16 +1,20 @@
 package fi.oph.koski.ytr
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.henkilo.HenkilönTunnisteet
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresKansalainen}
 import fi.oph.koski.log.KoskiOperation.KoskiOperation
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiMessageField}
-import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_YLIOPPILASKOE_HAKU, KANSALAINEN_HUOLTAJA_YLIOPPILASKOE_HAKU}
+import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_HUOLTAJA_YLIOPPILASKOE_HAKU, KANSALAINEN_YLIOPPILASKOE_HAKU}
 import fi.oph.koski.servlet.OppijaHtmlServlet
 
 class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends OppijaHtmlServlet with RequiresKansalainen {
-  private val koesuoritukset: KoesuoritusService = KoesuoritusService(application.config)
+  val s3config: YtrS3Config = {
+    if (Environment.usesAwsSecretsManager) YtrS3Config.fromSecretsManager else YtrS3Config.fromConfig(application.config)
+  }
+
+  private val koesuoritukset: KoesuoritusService = KoesuoritusService(s3config)
 
   get("/:copyOfExamPaper") {
     val examPaper = getStringParam("copyOfExamPaper")
