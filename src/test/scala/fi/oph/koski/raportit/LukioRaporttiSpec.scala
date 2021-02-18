@@ -48,7 +48,6 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           "Hetu",
           "Sukunimi",
           "Etunimet",
-          "Kotikunta",
           "Opiskeluoikeuden alkamispäivä",
           "Opiskeluoikeuden viimeisin tila",
           "Opiskeluoikeuden tilat aikajakson aikana",
@@ -104,7 +103,6 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           "Hetu",
           "Sukunimi",
           "Etunimet",
-          "Kotikunta",
           "Toimipiste",
           "Opetussuunnitelma",
           "Suorituksen tyyppi",
@@ -190,7 +188,6 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
             "Oppijan oid" -> "1.2.246.562.24.00000000013",
             "Sukunimi" -> "Lukiolainen",
             "Etunimet" -> "Liisa",
-            "Kotikunta" -> Some("Jyväskylä"),
             "Hetu" -> Some("020655-2479"),
             "Suorituksen tyyppi" -> "lukionoppimaara",
             "Toimipiste" -> "Jyväskylän normaalikoulu",
@@ -331,7 +328,6 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Hetu" -> lukiolainen.hetu,
     "Sukunimi" -> lukiolainen.sukunimi,
     "Etunimet" -> lukiolainen.etunimet,
-    "Kotikunta" -> lukiolainen.kotikunta,
     "Yhteislaajuus (kaikki kurssit)" -> 90.5,
     "Yhteislaajuus (suoritetut kurssit)" -> 89.5,
     "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 1.0,
@@ -365,7 +361,6 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Hetu" -> lukiolainen.hetu,
     "Sukunimi" -> lukiolainen.sukunimi,
     "Etunimet" -> lukiolainen.etunimet,
-    "Kotikunta" -> lukiolainen.kotikunta,
     "Toimipiste" -> "Jyväskylän normaalikoulu",
     "Opetussuunnitelma" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
     "Suorituksen tyyppi" -> "lukionoppimaara",
@@ -408,7 +403,6 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Hetu" -> lukionAineopiskelijaAktiivinen.hetu,
     "Sukunimi" -> lukionAineopiskelijaAktiivinen.sukunimi,
     "Etunimet" -> lukionAineopiskelijaAktiivinen.etunimet,
-    "Kotikunta" -> lukionAineopiskelijaAktiivinen.kotikunta,
     "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "",
     "XX Ei tiedossa valtakunnallinen" -> "",
     "A1 Englanti valtakunnallinen" -> "",
@@ -439,7 +433,6 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Hetu" -> lukionAineopiskelijaAktiivinen.hetu,
       "Sukunimi" -> lukionAineopiskelijaAktiivinen.sukunimi,
       "Etunimet" -> lukionAineopiskelijaAktiivinen.etunimet,
-      "Kotikunta" -> lukionAineopiskelijaAktiivinen.kotikunta
     )
 
     lazy val englanninOppiaineenRow = default + (
@@ -493,7 +486,6 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Hetu" -> lukionAineopiskelijaAktiivinen.hetu,
       "Sukunimi" -> lukionAineopiskelijaAktiivinen.sukunimi,
       "Etunimet" -> lukionAineopiskelijaAktiivinen.etunimet,
-      "Kotikunta" -> lukionAineopiskelijaAktiivinen.kotikunta,
       "Toimipiste" -> "Jyväskylän normaalikoulu",
       "Opetussuunnitelma" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
       "Suorituksen tyyppi" -> "lukionoppiaineenoppimaara"
@@ -532,7 +524,6 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Hetu" -> lukionEiTiedossaAineopiskelija.hetu,
       "Sukunimi" -> lukionEiTiedossaAineopiskelija.sukunimi,
       "Etunimet" -> lukionEiTiedossaAineopiskelija.etunimet,
-      "Kotikunta" -> lukionEiTiedossaAineopiskelija.kotikunta
     )
 
     lazy val eiTiedossaOppiaineenRow = default + (
@@ -588,7 +579,6 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Hetu" -> lukionEiTiedossaAineopiskelija.hetu,
       "Sukunimi" -> lukionEiTiedossaAineopiskelija.sukunimi,
       "Etunimet" -> lukionEiTiedossaAineopiskelija.etunimet,
-      "Kotikunta" -> lukionEiTiedossaAineopiskelija.kotikunta,
       "Toimipiste" -> "Jyväskylän normaalikoulu",
       "Opetussuunnitelma" -> None,
       "Suorituksen tyyppi" -> "lukionoppiaineenoppimaara",

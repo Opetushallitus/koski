@@ -9,10 +9,11 @@ import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
 import slick.jdbc.GetResult
+import fi.oph.koski.koodisto.{KoodistoPalvelu, Kunta}
 
 import scala.concurrent.duration._
 
-case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) extends KoskiDatabaseMethods {
+case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService, koodistoPalvelu: KoodistoPalvelu) extends KoskiDatabaseMethods {
   implicit private val getResult: GetResult[EsiopetusRaporttiRow] = GetResult(r =>
     EsiopetusRaporttiRow(
       opiskeluoikeusOid = r.<<,
@@ -33,7 +34,7 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
       hetu = r.<<,
       etunimet = r.<<,
       sukunimi = r.<<,
-      kotikunta = r.<<,
+      kotikunta = Kunta.getKunnanNimi(Some(r.<<), koodistoPalvelu),
       pidennettyOppivelvollisuus = r.<<,
       tukimuodot = r.<<,
       erityisenTuenPäätös = r.<<,

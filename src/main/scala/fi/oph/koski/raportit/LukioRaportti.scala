@@ -93,7 +93,6 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
        hetu = row.henkilo.hetu,
        sukunimi = row.henkilo.sukunimi,
        etunimet = row.henkilo.etunimet,
-       kotikunta = row.henkilo.kotikunta,
        opiskeluoikeuden_alkamispäivä = row.opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
        opiskeluoikeuden_viimeisin_tila = row.opiskeluoikeus.viimeisinTila,
        opiskeluoikeuden_tilat_aikajakson_aikana = removeContinuousSameTila(row.aikajaksot).map(_.tila).mkString(","),
@@ -135,7 +134,6 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
         hetu = row.henkilo.hetu,
         sukinimi =  row.henkilo.sukunimi,
         etunimet = row.henkilo.etunimet,
-        kotikunta = row.henkilo.kotikunta,
         toimipiste = row.päätasonSuoritus.toimipisteNimi,
         opetussuunnitelma = opetussuunnitelma(row.päätasonSuoritus),
         suorituksenTyyppi = row.päätasonSuoritus.suorituksenTyyppi
@@ -184,7 +182,6 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
       Column("Hetu"),
       Column("Sukunimi"),
       Column("Etunimet"),
-      Column("Kotikunta"),
       CompactColumn("Opiskeluoikeuden alkamispäivä"),
       CompactColumn("Opiskeluoikeuden viimeisin tila", comment = Some("Se opiskeluoikeuden tila, joka opiskeluoikeudella on nyt.")),
       CompactColumn("Opiskeluoikeuden tilat aikajakson aikana", comment = Some("Kaikki opiskeluoikeuden tilat, joita opiskeluoikeudella on ollut aikajaksona aikana. Tilat näyteään pilkuilla erotettuna aikajärjestyksessä.")),
@@ -217,7 +214,6 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
       Column("Hetu"),
       Column("Sukunimi"),
       Column("Etunimet"),
-      Column("Kotikunta"),
       CompactColumn("Toimipiste"),
       CompactColumn("Opetussuunnitelma", comment = Some("Suoritetaanko lukio oppimäärää tai oppiaineen oppimäärää nuorten vai aikuisten opetussuunnitelman mukaan.")),
       CompactColumn("Suorituksen tyyppi", comment = Some("Onko kyseessä koko lukion oppimäärän suoritus (\"lukionoppimaara\") vai aineopintosuoritus (\"lukionoppiaineenoppimaara\")."))
@@ -238,7 +234,6 @@ case class LukioRaporttiOppiaineetVälilehtiMuut(
   hetu: Option[String],
   sukunimi: String,
   etunimet: String,
-  kotikunta: Option[String],
   opiskeluoikeuden_alkamispäivä: Option[LocalDate],
   opiskeluoikeuden_viimeisin_tila: Option[String],
   opiskeluoikeuden_tilat_aikajakson_aikana: String,
@@ -273,7 +268,6 @@ case class LukioOppiaineenKurssienVälilehtiStaattisetKolumnit(
   hetu: Option[String],
   sukinimi: String,
   etunimet: String,
-  kotikunta: Option[String],
   toimipiste: String,
   opetussuunnitelma: Option[String],
   suorituksenTyyppi: String

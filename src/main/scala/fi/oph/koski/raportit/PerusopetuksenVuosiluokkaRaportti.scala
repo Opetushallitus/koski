@@ -2,13 +2,14 @@ package fi.oph.koski.raportit
 
 import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViite}
+import fi.oph.koski.koodisto.{KoodistoPalvelu, Kunta}
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.{Koodistokoodiviite, _}
 import org.json4s.JValue
+import fi.oph.koski.log.Logging
 
-object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
+object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta with Logging {
 
   def buildRaportti(repository: PerusopetuksenRaportitRepository, oppilaitosOids: Seq[Oid], paiva: LocalDate, vuosiluokka: String, koodistoPalvelu: KoodistoPalvelu): Seq[PerusopetusRow] = {
     val rows = if (vuosiluokka == "9") {
@@ -17,20 +18,6 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
       repository.perusopetuksenvuosiluokka(oppilaitosOids, paiva, vuosiluokka)
     }
     rows.map(buildRow(_, paiva, koodistoPalvelu))
-  }
-
-  private def getKunnanNimi(koodi: Option[String], koodistoPalvelu: KoodistoPalvelu): Option[String] = {
-    koodi match {
-      case Some(koodi) => {
-        val koodistoKoodit = koodistoPalvelu.getKoodistoKoodit(koodistoPalvelu.getLatestVersionRequired("kunta"))
-        val koodistoKoodi = koodistoKoodit.find(_.koodiArvo == koodi)
-        koodistoKoodi match {
-          case Some(koodi) => Some(koodi.nimi.get.get("fi"))
-          case None => None
-        }
-      }
-      case None => None
-    }
   }
 
   private def buildRow(row: PerusopetuksenRaporttiRows, hakupaiva: LocalDate, koodistoPalvelu: KoodistoPalvelu) = {
@@ -55,7 +42,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
       sukunimi = row.henkilo.sukunimi,
       etunimet = row.henkilo.etunimet,
       sukupuoli = row.henkilo.sukupuoli,
-      kotikunta = getKunnanNimi(row.henkilo.kotikunta, koodistoPalvelu),
+      kotikunta = Kunta.getKunnanNimi(row.henkilo.kotikunta, koodistoPalvelu),
       opiskeluoikeudenAlkamispäivä = row.opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
       viimeisinTila = row.opiskeluoikeus.viimeisinTila.getOrElse(""),
       tilaHakupaivalla = row.aikajaksot.last.tila,

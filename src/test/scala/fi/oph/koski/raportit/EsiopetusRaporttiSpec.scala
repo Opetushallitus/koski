@@ -15,7 +15,7 @@ import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 class EsiopetusRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll {
   private val application = KoskiApplicationForTests
   private val raporttiService = new EsiopetusRaporttiService(application)
-  private val raporttiBuilder = EsiopetusRaportti(application.raportointiDatabase.db, application.organisaatioService)
+  private val raporttiBuilder = EsiopetusRaportti(application.raportointiDatabase.db, application.organisaatioService, application.koodistoPalvelu)
   private lazy val raportti =
     raporttiBuilder.build(List(jyväskylänNormaalikoulu), localDate(2007, 1, 1))(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetusRaporttiRow])
 
@@ -50,7 +50,7 @@ class EsiopetusRaporttiSpec extends FreeSpec with Matchers with Raportointikanta
         r.oppijaOid should equal(KoskiSpecificMockOppijat.eskari.oid)
         r.etunimet should equal(KoskiSpecificMockOppijat.eskari.etunimet)
         r.sukunimi should equal(KoskiSpecificMockOppijat.eskari.sukunimi)
-        r.kotikunta should equal(KoskiSpecificMockOppijat.eskari.kotikunta)
+        r.kotikunta should equal(Some("Jyväskylä"))
       }
 
       "Opiskeluoikeuden lisätiedot" in {

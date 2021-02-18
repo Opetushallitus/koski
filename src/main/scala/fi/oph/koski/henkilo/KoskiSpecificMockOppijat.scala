@@ -78,7 +78,7 @@ object KoskiSpecificMockOppijat {
   val ibPreIB2019 = koskiSpecificOppijat.oppija("IB-Pre-IB-uusilukio", "Pate", "180300A8736")
   val dia = koskiSpecificOppijat.oppija("Dia", "Dia", "151013-2195")
   val internationalschool = koskiSpecificOppijat.oppija("International", "Ida", "170186-854H")
-  val eskari = koskiSpecificOppijat.oppija("Eskari", "Essi", "300996-870E")
+  val eskari = koskiSpecificOppijat.oppija("Eskari", "Essi", "300996-870E", kotikunta = Some("179"))
   val eskariAikaisillaLisätiedoilla = koskiSpecificOppijat.oppija("Lisä-Eskari", "Essiina", "300996-872E")
   val master = koskiSpecificOppijat.oppija("of Puppets", "Master", "101097-6107")
   val slave = koskiSpecificOppijat.addOppija(OppijaHenkilöWithMasterInfo(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.00000051473", sukunimi = "of Puppets", etunimet = "Slave", kutsumanimi = "Slave", hetu = Some("101097-6107"), syntymäaika = None), Some(master)))
