@@ -3,6 +3,7 @@ package fi.oph.koski.servlet
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.sso.KoskiSpecificSSOSupport
 import org.scalatra.ScalatraServlet
 
@@ -14,6 +15,11 @@ class OppijaLoginPageServlet(implicit val application: KoskiApplication) extends
   }
 
   get("/local") {
+    val security = application.config.getString("login.security")
+    if(security != "mock") {
+      haltWithStatus(KoskiErrorCategory.unauthorized())
+    }
+
     htmlIndex(
       scriptBundleName = "koski-korhopankki.js",
       scripts = <script id="auth">{Unparsed(s"window.mockUsers=$oppijat")}</script>,
