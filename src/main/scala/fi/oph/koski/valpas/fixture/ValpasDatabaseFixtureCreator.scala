@@ -31,6 +31,7 @@ class ValpasDatabaseFixtureCreator(application: KoskiApplication) extends Databa
   protected lazy val invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = List()
 
   private def defaultOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = List(
-    (ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021, ValpasExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus)
+    (ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021, ValpasExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus),
+    (ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004, ValpasExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus)
   )
 }
