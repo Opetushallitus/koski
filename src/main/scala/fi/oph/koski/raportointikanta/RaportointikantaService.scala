@@ -4,6 +4,7 @@ import fi.oph.koski.cloudwatch.CloudWatchMetrics
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
+import org.apache.log4j.LogManager
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler}
 
@@ -29,7 +30,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     loadDatabase.dropAndCreateObjects
     startLoading(defaultScheduler, () => {
       logger.info(s"Ended loading raportointikanta, shutting down...")
-      sys.exit()
+      shutdown
     })
     logger.info(s"Started loading raportointikanta (force: true)")
   }
@@ -80,7 +81,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
           } catch {
             case e: Throwable => {
               logger.error(e)(e.toString)
-              sys.exit(1)
+              shutdown
             }
           }
         }
@@ -106,4 +107,9 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   private lazy val raportointiDatabase = application.raportointiDatabase
 
   private val raportointikantaGeneration = "raportointikanta-generation"
+
+  private def shutdown = {
+    LogManager.shutdown()
+    sys.exit()
+  }
 }
