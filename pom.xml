@@ -360,17 +360,15 @@
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
         <version>1.6</version>
-        <configuration>
-          <workingDirectory>web</workingDirectory>
-        </configuration>
         <executions>
           <execution>
-            <id>install node and npm</id>
+            <id>koski - install node and npm</id>
             <goals>
               <goal>install-node-and-npm</goal>
             </goals>
             <configuration>
-              <nodeVersion>v14.15.2</nodeVersion>
+              <workingDirectory>web</workingDirectory>
+              <nodeVersion>v14.15.4</nodeVersion>
             </configuration>
           </execution>
           <execution>
@@ -379,16 +377,48 @@
               <goal>npm</goal>
             </goals>
             <configuration>
+              <workingDirectory>web</workingDirectory>
               <arguments>--version</arguments>
             </configuration>
           </execution>
           <execution>
-            <id>npm install</id>
+            <id>koski - npm ci and build</id>
             <goals>
               <goal>npm</goal>
             </goals>
             <configuration>
-              <arguments>install</arguments>
+              <workingDirectory>web</workingDirectory>
+              <arguments>ci</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>valpas - install node and npm</id>
+            <goals>
+              <goal>install-node-and-npm</goal>
+            </goals>
+            <configuration>
+              <workingDirectory>valpas-web</workingDirectory>
+              <nodeVersion>v14.15.4</nodeVersion>
+            </configuration>
+          </execution>
+          <execution>
+            <id>valpas - npm ci</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <workingDirectory>valpas-web</workingDirectory>
+              <arguments>ci</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>valpas - npm build</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <workingDirectory>valpas-web</workingDirectory>
+              <arguments>run build:prod</arguments>
             </configuration>
           </execution>
         </executions>
@@ -523,6 +553,10 @@
               <excludes>
                 <exclude>test/**</exclude>
               </excludes>
+            </resource>
+            <resource>
+              <directory>${basedir}/valpas-web/dist</directory>
+              <targetPath>VALPAS-WEB</targetPath>
             </resource>
           </webResources>
         </configuration>

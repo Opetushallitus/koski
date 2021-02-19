@@ -14,7 +14,7 @@ function create_version() {
   mkdir -p $BASE_DIR/target
   if [ "$cleandist" = "true" ]; then
     echo "cleaning dist directory"
-    rm -rf $BASE_DIR/target/dist/web && rm -rf $BASE_DIR/target/dist
+    rm -rf $BASE_DIR/target/dist && rm -rf $BASE_DIR/valpas-web/dist
   fi
   git archive --format=tar --prefix=dist/ HEAD | (cd $BASE_DIR/target && tar xf -)
 
