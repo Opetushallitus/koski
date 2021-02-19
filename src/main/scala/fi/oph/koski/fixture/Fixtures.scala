@@ -5,7 +5,7 @@ import fi.oph.koski.db.KoskiDatabaseConfig
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, MockOpintopolkuHenkilöFacade, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.localization.MockLocalizationRepository
 import fi.oph.koski.log.Logging
-import fi.oph.koski.util.Timing
+import fi.oph.koski.util.{Timing, Wait}
 import fi.oph.koski.valpas.fixture.ValpasFixtureState
 
 object FixtureCreator {
@@ -13,6 +13,7 @@ object FixtureCreator {
 }
 
 class FixtureCreator(application: KoskiApplication) extends Logging with Timing {
+  private val raportointikantaService = application.raportointikantaService
   private var currentFixtureState: FixtureState = new NotInitializedFixtureState
 
   def defaultOppijat: List[OppijaHenkilöWithMasterInfo] = currentFixtureState.defaultOppijat
@@ -24,6 +25,14 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
       currentFixtureState.resetFixtures
       application.koskiLocalizationRepository.asInstanceOf[MockLocalizationRepository].reset
       application.tiedonsiirtoService.index.deleteAll()
+
+      if (fixtureState == valpasFixtureState) {
+        Wait.until { raportointikantaIsComplete }
+        raportointikantaService.dropAndCreateSchema()
+        raportointikantaService.loadRaportointikanta(false)
+        Wait.until { raportointikantaIsComplete }
+      }
+
       logger.info(s"Reset application fixtures ${currentFixtureState.name}")
     }
   }
@@ -46,6 +55,9 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
     }
     useFixtures
   }
+
+  def raportointikantaIsComplete(): Boolean =
+    raportointikantaService.status.exists(status => status._1 == "public" && status._2.isComplete)
 
   def allOppijaOids: List[String] = (koskiSpecificFixtureState.oppijaOids ++ valpasFixtureState.oppijaOids).distinct // oids that should be considered when deleting fixture data
 
