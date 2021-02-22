@@ -10,6 +10,6 @@ export type ErrorViewProps = {
 export default (props: ErrorViewProps) => (
   <Page id="error-view">
     <Heading>{props.title}</Heading>
-    <p>{props.message}</p>
+    <p className="error-message">{props.message}</p>
   </Page>
 )
