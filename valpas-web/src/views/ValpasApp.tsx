@@ -1,5 +1,10 @@
 import React from "react"
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom"
 import { fetchYlatasonOrganisaatiotJaKayttooikeusroolit } from "../api/api"
 import { useApiOnce } from "../api/apiHooks"
 import { isSuccess } from "../api/apiUtils"
@@ -23,6 +28,28 @@ const navOptions = [
   },
 ]
 
+const featureFlagName = "valpas-feature"
+const featureFlagEnabledValue = "enabled"
+
+const FeatureFlagEnabler = () => {
+  window.localStorage.setItem(featureFlagName, featureFlagEnabledValue)
+  return <Redirect to="/" />
+}
+
+const runningLocally = window.environment == "local"
+
+class FeatureRoute extends Route {
+  public render() {
+    const featureEnabled =
+      window.localStorage.getItem(featureFlagName) === featureFlagEnabledValue
+    if (featureEnabled || runningLocally) {
+      return <Route {...this.props} />
+    } else {
+      return null
+    }
+  }
+}
+
 export default (props: ValpasAppProps) => {
   if (redirectToLoginReturnUrl()) {
     return null
@@ -36,23 +63,24 @@ export default (props: ValpasAppProps) => {
     <Router basename={process.env.PUBLIC_URL}>
       <Page id="valpas-app">
         <Switch>
-          <Route exact path="/oppijat">
+          <Route exact path="/hunter2" component={FeatureFlagEnabler} />
+          <FeatureRoute exact path="/oppijat">
             <MainNavigation
               selected="hakutilanne"
               options={navOptions}
               onChange={() => null}
             />
             <PerusopetusView />
-          </Route>
-          <Route path="/oppijat/:oid" component={OppijaView} />
-          <Route>
+          </FeatureRoute>
+          <FeatureRoute path="/oppijat/:oid" component={OppijaView} />
+          <FeatureRoute>
             <HomeView
               user={props.user}
               organisaatiotJaKayttooikeusroolit={
                 organisaatiotJaKayttooikeusroolit.data
               }
             />
-          </Route>
+          </FeatureRoute>
         </Switch>
       </Page>
     </Router>
