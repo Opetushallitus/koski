@@ -44,9 +44,9 @@ describe("Login / Logout / kirjautuminen", () => {
 
   // FIXME: Flaky testi CI-putkessa
   it.skip("Käyttäjä on kirjautumisen jälkeen osoitteessa, jonne hän alunperin yritti", async () => {
-    await defaultLogin("/testi/huone")
+    await defaultLogin("/oppijat")
     expect(await getCurrentUrl()).toEqual(
-      "http://localhost:1234/valpas/virkailija/testi/huone"
+      "http://localhost:1234/valpas/virkailija/oppijat"
     )
   })
 })

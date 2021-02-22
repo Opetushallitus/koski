@@ -13,6 +13,7 @@ import { MainNavigation } from "../components/navigation/MainNavigation"
 import { t } from "../i18n/i18n"
 import { redirectToLoginReturnUrl } from "../state/auth"
 import { User } from "../state/types"
+import ErrorView from "../views/ErrorView"
 import { PerusopetusView } from "./hakutilanne/PerusopetusView"
 import { HomeView } from "./HomeView"
 import { OppijaView } from "./oppija/OppijaView"
@@ -73,7 +74,7 @@ export default (props: ValpasAppProps) => {
             <PerusopetusView />
           </FeatureRoute>
           <FeatureRoute path="/oppijat/:oid" component={OppijaView} />
-          <FeatureRoute>
+          <FeatureRoute exact path="/">
             <HomeView
               user={props.user}
               organisaatiotJaKayttooikeusroolit={
@@ -81,6 +82,12 @@ export default (props: ValpasAppProps) => {
               }
             />
           </FeatureRoute>
+          <Route>
+            <ErrorView
+              title={t("not_found_title")}
+              message={t("not_found_teksti")}
+            />
+          </Route>
         </Switch>
       </Page>
     </Router>
