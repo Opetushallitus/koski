@@ -7,7 +7,7 @@
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "jest src",
     "test:integration": "jest --config jest.integrationtests.config.js test/integrationtests",
-    "test:integration:debug": "SHOW_BROWSER=true npm run test:integration",
+    "test:integration:debug": "SHOW_BROWSER=true jest --config jest.integrationtests.config.js test/integrationtests",
     "test:integration:browserstack": "jest --config jest.integrationtests.browserstack.config.js test/integrationtests",
     "build:local": "NODE_ENV=development parcel build src/index.html",
     "build:prod": "parcel build src/index.html --public-url /valpas/virkailija",
