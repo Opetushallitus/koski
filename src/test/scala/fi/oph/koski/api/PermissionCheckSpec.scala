@@ -6,9 +6,13 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.permission.PermissionCheckResponse
 import fi.oph.koski.schema.{Henkilö, Organisaatio}
 import fi.oph.scalaschema.SchemaValidatingExtractor
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
-class PermissionCheckSpec extends FreeSpec with LocalJettyHttpSpecification with Matchers {
+class PermissionCheckSpec extends FreeSpec with LocalJettyHttpSpecification with Matchers with BeforeAndAfterAll {
+  override protected def beforeAll(): Unit = {
+    resetFixtures
+  }
+
   "Käyttöoikeustarkistus henkilo-ui:sta / kayttooikeus-service:ltä" - {
     "Käyttäjä samassa organisaatiossa kuin opiskeluoikeus" - {
       "pääsy sallittu" in { permissionCheck(List(KoskiSpecificMockOppijat.lukioKesken.oid), List(MockOrganisaatiot.jyväskylänNormaalikoulu)) should equal(true) }

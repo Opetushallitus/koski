@@ -1,11 +1,12 @@
 package fi.oph.koski.valpas
 
-import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.log.{AuditLogTester, KoskiMessageField}
 import fi.oph.koski.valpas.henkilo.ValpasMockOppijat
+import fi.oph.koski.valpas.log.ValpasOperation
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 import org.scalatest.Tag
 
-class ValpasRootApiServletSpec extends ValpasTestMethods {
+class ValpasRootApiServletSpec extends ValpasHttpTestBase {
   override def defaultUser = ValpasMockUsers.valpasJklNormaalikoulu
 
   "Oppijan lataaminen tuottaa auditlogin" taggedAs(ValpasBackendTag) in {
@@ -14,8 +15,8 @@ class ValpasRootApiServletSpec extends ValpasTestMethods {
     authGet(getOppijaUrl(oppijaOid)) {
       verifyResponseStatusOk()
       AuditLogTester.verifyAuditLogMessage(Map(
-        "operation" -> "VALPAS_OPPIJA_KATSOMINEN",
-        "target" -> Map("OPPIJA_OID" -> oppijaOid)))
+        "operation" -> ValpasOperation.VALPAS_OPPIJA_KATSOMINEN.toString,
+        "target" -> Map(KoskiMessageField.oppijaHenkiloOid.toString -> oppijaOid)))
     }
   }
 
@@ -35,12 +36,15 @@ class ValpasRootApiServletSpec extends ValpasTestMethods {
       authGet(getOppijaUrl("1.2.3.4.5.6.7"), ValpasMockUsers.valpasHelsinki) {
         verifyResponseStatus(403, ValpasErrorCategory.forbidden.oppija())
         response.body should equal (firstResponse.body)
-        response.headers should equal (firstResponse.headers)
+        withoutVariatingEntries(response.headers) should equal (withoutVariatingEntries(firstResponse.headers))
       }
     }
   }
 
   def getOppijaUrl(oppijaOid: String) = s"/valpas/api/oppija/$oppijaOid"
+
+  def withoutVariatingEntries[T](headers: Map[String, T]) =
+    headers.filterKeys(_ != "Date")
 }
 
 object ValpasBackendTag extends Tag("valpasback")
