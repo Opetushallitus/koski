@@ -49,6 +49,10 @@ object Käyttöoikeus {
     käyttöoikeudet.flatMap(withPalveluroolitFilter(palvelurooliFilter))
   }
 
+  def hasPalvelurooli(käyttöoikeudet: Set[Käyttöoikeus], palvelurooliFilter: Palvelurooli => Boolean): Boolean = {
+    käyttöoikeudet.exists(withPalveluroolitFilter(palvelurooliFilter)(_).nonEmpty)
+  }
+
   private def withPalveluroolitFilter(palvelurooliFilter: Palvelurooli => Boolean)(käyttöoikeus: Käyttöoikeus): Set[Käyttöoikeus] = {
     käyttöoikeus match {
       case KäyttöoikeusOrg(organisaatio, roolit, juuri, oppilaitostyyppi) =>

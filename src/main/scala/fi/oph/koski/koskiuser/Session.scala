@@ -25,6 +25,10 @@ abstract class Session(val user: AuthenticationUser, val lang: String, val clien
   def hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess: Boolean
 
   def hasGlobalReadAccess: Boolean
+
+  def hasPalvelurooli(palvelurooliFilter: Palvelurooli => Boolean) = Käyttöoikeus.hasPalvelurooli(kaikkiKäyttöoikeudet, palvelurooliFilter)
+
+  protected def kaikkiKäyttöoikeudet: Set[Käyttöoikeus]
 }
 
 class KoskiSpecificSession(user: AuthenticationUser, lang: String, clientIp: InetAddress, userAgent: String, lähdeKäyttöoikeudet: => Set[Käyttöoikeus]) extends Session(user, lang, clientIp, userAgent)  with SensitiveDataAllowed {
