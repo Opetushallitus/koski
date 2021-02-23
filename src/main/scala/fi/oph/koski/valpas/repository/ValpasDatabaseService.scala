@@ -4,12 +4,11 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
+import fi.oph.koski.raportointikanta.ROpiskeluoikeusRow
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema.{RHenkilöTable, ROpiskeluoikeusTable}
-import fi.oph.koski.raportointikanta.{RHenkilöRow, ROpiskeluoikeusRow}
 import slick.jdbc.GetResult
 
 import java.sql.ResultSet
-import java.util.{Calendar, GregorianCalendar}
 
 class ValpasDatabaseService(application: KoskiApplication) extends Logging {
   val db = application.raportointiDatabase
@@ -93,15 +92,6 @@ class ValpasDatabaseService(application: KoskiApplication) extends Logging {
       .filter(_.oppijaOid === oppijaOid)
       .filter(_.oppilaitosOid inSet organisaatioOids)
       .result)
-
-  private def isOppivelvollinen(henkilöRow: RHenkilöRow): Boolean =
-    henkilöRow.syntymäaika.exists(date => {
-      // 1) oppija on potentiaalisesti oppivelvollinen, eli syntynyt 2004 tai myöhemmin
-      val cal = new GregorianCalendar()
-      cal.setTime(date)
-      val year = cal.get(Calendar.YEAR)
-      cal.get(Calendar.YEAR) >= 2004
-    })
 
   implicit private val getValpasOppijaResult: GetResult[ValpasOppija] = GetResult(r => {
     val rs: ResultSet = r.rs
