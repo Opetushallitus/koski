@@ -5,7 +5,7 @@ import fi.oph.koski.valpas.henkilo.ValpasMockOppijat
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 import org.scalatest.Tag
 
-class ValpasRootApiServletSpec extends ValpasTestMethods {
+class ValpasRootApiServletSpec extends ValpasTestBase with ValpasHttpTestBase {
   override def defaultUser = ValpasMockUsers.valpasJklNormaalikoulu
 
   "Oppijan lataaminen tuottaa auditlogin" taggedAs(ValpasBackendTag) in {

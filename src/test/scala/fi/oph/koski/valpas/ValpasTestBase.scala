@@ -6,7 +6,7 @@ import fi.oph.koski.http.HttpTester
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 import org.scalatest.{BeforeAndAfterAll, FreeSpec}
 
-trait ValpasTestMethods extends FreeSpec with HttpTester with LocalJettyHttpSpecification with BeforeAndAfterAll {
+trait ValpasTestBase extends FreeSpec with BeforeAndAfterAll {
   override def beforeAll(): Unit = {
     val fixtureCreator = KoskiApplicationForTests.fixtureCreator
 
@@ -14,3 +14,5 @@ trait ValpasTestMethods extends FreeSpec with HttpTester with LocalJettyHttpSpec
     fixtureCreator.resetFixtures(fixtureCreator.valpasFixtureState)
   }
 }
+
+trait ValpasHttpTestBase extends HttpTester with LocalJettyHttpSpecification;
