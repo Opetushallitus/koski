@@ -42,11 +42,14 @@ describe("Login / Logout / kirjautuminen", () => {
     await expectElementEventuallyVisible("article.page#login-app")
   })
 
-  // FIXME: Flaky testi CI-putkessa
   it("Käyttäjä on kirjautumisen jälkeen osoitteessa, jonne hän alunperin yritti", async () => {
-    await defaultLogin("/oppijat")
+    await loginAs(
+      "/oppijat/1.2.246.562.24.00000000001",
+      "valpas-jkl-normaali",
+      "valpas-jkl-normaali"
+    )
     expect(await getCurrentUrl()).toEqual(
-      "http://localhost:1234/valpas/virkailija/oppijat"
+      "http://localhost:1234/valpas/virkailija/oppijat/1.2.246.562.24.00000000001"
     )
   })
 })
