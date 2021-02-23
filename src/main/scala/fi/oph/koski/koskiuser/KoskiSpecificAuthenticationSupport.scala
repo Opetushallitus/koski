@@ -15,6 +15,9 @@ trait KoskiSpecificAuthenticationSupport extends AuthenticationSupport with Kosk
         haltWithStatus(KoskiErrorCategory.forbidden.vainVirkailija())
       case Right(user) =>
         val session = createSession(user)
+        if (!session.hasPalvelurooli(_.palveluName == "KOSKI")) {
+          haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu ilman Koski-palvelun käyttöoikeuksia"))
+        }
         if (session.hasLuovutuspalveluAccess || session.hasTilastokeskusAccess || session.hasKelaAccess) {
           haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
         }
