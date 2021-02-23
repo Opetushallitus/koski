@@ -31,10 +31,10 @@ case class ValpasHenkilö(
 object ValpasOpiskeluoikeus {
   def apply(opiskeluoikeusRow: ROpiskeluoikeusRow): ValpasOpiskeluoikeus = ValpasOpiskeluoikeus(
     oid = opiskeluoikeusRow.opiskeluoikeusOid,
-    tyyppi = Koodistokoodiviite(opiskeluoikeusRow.koulutusmuoto, "opiskeluoikeudentyyppi"), // TODO: Koodiviitteen tekstisisältö
+    tyyppi = Koodistokoodiviite(opiskeluoikeusRow.koulutusmuoto, "opiskeluoikeudentyyppi"),
     oppilaitos = ValpasOppilaitos(
       oid = opiskeluoikeusRow.oppilaitosOid,
-      nimi = Finnish(opiskeluoikeusRow.oppilaitosNimi)), // TODO: Tue muitakin kieliä?
+      nimi = Finnish(opiskeluoikeusRow.oppilaitosNimi)),
     alkamispäivä = opiskeluoikeusRow.alkamispäivä.map(_.toString),
     päättymispäivä = opiskeluoikeusRow.päättymispäivä.map(_.toString),
     ryhmä = opiskeluoikeusRow.luokka
