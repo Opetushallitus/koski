@@ -21,13 +21,6 @@ import { PerusopetusView } from "./hakutilanne/PerusopetusView"
 import { HomeView } from "./HomeView"
 import { OppijaView } from "./oppija/OppijaView"
 
-const navOptions = [
-  {
-    key: "hakutilanne",
-    display: t("ylänavi__hakutilanne"),
-  },
-]
-
 const featureFlagName = "valpas-feature"
 const featureFlagEnabledValue = "enabled"
 
@@ -56,6 +49,13 @@ type VirkailijaRoutesProps = {
 }
 
 const VirkailijaRoutes = ({ path, user }: VirkailijaRoutesProps) => {
+  const navOptions = [
+    {
+      key: "hakutilanne",
+      display: t("ylänavi__hakutilanne"),
+    },
+  ]
+
   const organisaatiotJaKayttooikeusroolit = useApiOnce(
     fetchYlatasonOrganisaatiotJaKayttooikeusroolit
   )
