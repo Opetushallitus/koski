@@ -1,23 +1,23 @@
 import {
-  expectElementVisible,
-  reset,
-  loginAs,
   defaultLogin,
+  expectElementVisible,
+  loginAs,
+  reset,
 } from "../integrationtests-env/browser"
 
 describe("Paikalliset raamit", () => {
   it("näytetään login-sivulla kirjautumattomalle käyttäjälle", async () => {
-    await reset("/")
+    await reset("/virkailija")
     await expectElementVisible(".localraamit")
   })
 
   it("näytetään varsinaisessa sovelluksessa kirjautuneelle käyttäjälle", async () => {
-    await defaultLogin("/")
+    await defaultLogin("/virkailija")
     await expectElementVisible(".localraamit")
   })
 
   it("näytetään ilman Valpas-oikeuksia kirjautuneelle käyttäjlle virhesivulle", async () => {
-    await loginAs("/", "kalle", "kalle")
+    await loginAs("/virkailija", "kalle", "kalle")
     await expectElementVisible(".localraamit")
   })
 })

@@ -7,12 +7,12 @@ import {
 
 describe("Lokalisointi", () => {
   it("Lokalisoitu otsikko ilmestyy", async () => {
-    await reset("/")
+    await reset("/virkailija")
     await textEventuallyEquals(".card__header", "Kirjautuminen")
   })
 
   it("Kieli vaihtuu yläpalkista", async () => {
-    await reset("/")
+    await reset("/virkailija")
     await expectElementVisible("article.page#login-app")
 
     await textEventuallyEquals(".card__header", "Kirjautuminen")

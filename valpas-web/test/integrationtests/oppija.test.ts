@@ -16,7 +16,7 @@ const secondaryHeadingEquals = (expected: string) =>
 describe("Oppijakohtainen näkymä", () => {
   it("Näyttää oppijan tiedot, johon käyttäjällä on lukuoikeus", async () => {
     await loginAs(
-      "/oppijat/1.2.246.562.24.00000000001",
+      "/virkailija/oppijat/1.2.246.562.24.00000000001",
       "valpas-jkl-normaali",
       "valpas-jkl-normaali"
     )
@@ -38,7 +38,7 @@ describe("Oppijakohtainen näkymä", () => {
   it("Ei näytä oppijan tietoja, johon käyttäjällä ei ole lukuoikeutta", async () => {
     allowNetworkError("/valpas/api/oppija/", FORBIDDEN)
     await loginAs(
-      "/oppijat/1.2.246.562.24.00000000001",
+      "/virkailija/oppijat/1.2.246.562.24.00000000001",
       "valpas-helsinki",
       "valpas-helsinki"
     )
@@ -50,7 +50,7 @@ describe("Oppijakohtainen näkymä", () => {
 
   it("Näyttää oppijalta, jolla on useampia opiskeluoikeuksia vain ne, johon käyttäjällä on lukuoikeus", async () => {
     await loginAs(
-      "/oppijat/1.2.246.562.24.00000000003",
+      "/virkailija/oppijat/1.2.246.562.24.00000000003",
       "valpas-jkl-normaali",
       "valpas-jkl-normaali"
     )
