@@ -1,10 +1,5 @@
 import React from "react"
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch,
-} from "react-router-dom"
+import { Redirect, Route, Switch } from "react-router-dom"
 import { fetchYlatasonOrganisaatiotJaKayttooikeusroolit } from "../api/api"
 import { useApiOnce } from "../api/apiHooks"
 import { isSuccess } from "../api/apiUtils"
@@ -23,7 +18,6 @@ import {
 import { User } from "../state/types"
 import { ErrorView, NotFoundView } from "../views/ErrorView"
 import { PerusopetusView } from "./hakutilanne/PerusopetusView"
-import HealthView from "./HealthView"
 import { HomeView } from "./HomeView"
 import { OppijaView } from "./oppija/OppijaView"
 
@@ -158,14 +152,4 @@ const VirkailijaApp = ({ match: { path } }: { match: { path: string } }) => {
   )
 }
 
-export default () => {
-  return (
-    <Router basename={process.env.PUBLIC_URL}>
-      <Switch>
-        <Route exact path="/health" component={HealthView} />
-        <Route path="/virkailija" component={VirkailijaApp} />
-        <Route component={NotFoundView} />
-      </Switch>
-    </Router>
-  )
-}
+export default VirkailijaApp
