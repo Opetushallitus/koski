@@ -22,10 +22,10 @@ trait ValpasHttpTestBase extends ValpasTestBase with HttpTester with HttpSpecifi
   def defaultUser = ValpasMockUsers.valpasJklNormaalikoulu
 
   override def beforeAll(): Unit = {
-    super.beforeAll()
     if (externalJettyPort.isEmpty) SharedJetty.start
     AuditLogTester.setup
     AccessLogTester.setup
     RootLogTester.setup
+    super.beforeAll()
   }
 }
