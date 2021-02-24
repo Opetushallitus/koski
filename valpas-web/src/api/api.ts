@@ -3,6 +3,9 @@ import { Oid, OrganisaatioJaKayttooikeusrooli, User } from "../state/types"
 import { apiGet, apiPost } from "./apiFetch"
 import { createCache } from "./cache"
 
+export const healthCheck = async () =>
+  apiGet<string>("api/healthcheck/internal")
+
 /**
  * Login
  */
