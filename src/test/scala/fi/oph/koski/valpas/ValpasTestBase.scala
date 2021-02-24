@@ -15,11 +15,8 @@ trait ValpasTestBase extends FreeSpec with BeforeAndAfterAll {
     ValpasMockUsers.mockUsersEnabled = true
     fixtureCreator.resetFixtures(fixtureCreator.valpasFixtureState)
   }
-
   override protected def afterAll(): Unit = {
-    val fixtureCreator = KoskiApplicationForTests.fixtureCreator
     ValpasMockUsers.mockUsersEnabled = false
-    fixtureCreator.resetFixtures(fixtureCreator.koskiSpecificFixtureState)
   }
 }
 
