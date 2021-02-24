@@ -21,7 +21,7 @@ import {
   storeLoginReturnUrl,
 } from "../state/auth"
 import { User } from "../state/types"
-import ErrorView from "../views/ErrorView"
+import { ErrorView, NotFoundView } from "../views/ErrorView"
 import { PerusopetusView } from "./hakutilanne/PerusopetusView"
 import HealthView from "./HealthView"
 import { HomeView } from "./HomeView"
@@ -55,10 +55,6 @@ class FeatureRoute extends Route {
     }
   }
 }
-
-const NotFoundView = () => (
-  <ErrorView title={t("not_found_title")} message={t("not_found_teksti")} />
-)
 
 type VirkailijaRoutesProps = {
   path: string
