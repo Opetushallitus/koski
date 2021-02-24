@@ -23,6 +23,7 @@ import {
 import { User } from "../state/types"
 import ErrorView from "../views/ErrorView"
 import { PerusopetusView } from "./hakutilanne/PerusopetusView"
+import HealthView from "./HealthView"
 import { HomeView } from "./HomeView"
 import { OppijaView } from "./oppija/OppijaView"
 
@@ -165,6 +166,7 @@ export default () => {
   return (
     <Router basename={process.env.PUBLIC_URL}>
       <Switch>
+        <Route exact path="/health" component={HealthView} />
         <Route path="/virkailija" component={VirkailijaApp} />
         <Route component={NotFoundView} />
       </Switch>
