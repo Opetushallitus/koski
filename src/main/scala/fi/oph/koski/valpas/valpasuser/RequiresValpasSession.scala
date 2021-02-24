@@ -16,7 +16,7 @@ trait RequiresValpasSession extends ValpasAuthenticationSupport with HasValpasSe
         haltWithStatus(status)
       case _ =>
         if (!koskiSessionOption.exists(isValpasSession)) {
-          haltWithStatus(KoskiErrorCategory.forbidden())
+          haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
         }
     }
   }
