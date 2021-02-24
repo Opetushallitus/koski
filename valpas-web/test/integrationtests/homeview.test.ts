@@ -2,14 +2,16 @@ import {
   dataTableEventuallyEquals,
   dataTableHeadersEventuallyEquals,
   loginAs,
-  reset,
   textEventuallyEquals,
 } from "../integrationtests-env/browser"
 
 describe("Etusivun väliaikainen näkymä", () => {
   it("Näyttää ohjetekstin", async () => {
-    await reset("/")
-    await loginAs("/", "valpas-jkl-normaali-hki", "valpas-jkl-normaali-hki")
+    await loginAs(
+      "/virkailija",
+      "valpas-jkl-normaali-hki",
+      "valpas-jkl-normaali-hki"
+    )
 
     await textEventuallyEquals(
       ".ohjeteksti",
@@ -18,8 +20,11 @@ describe("Etusivun väliaikainen näkymä", () => {
   })
 
   it("Näyttää käyttäjän käyttöoikeudet", async () => {
-    await reset("/")
-    await loginAs("/", "valpas-jkl-normaali-hki", "valpas-jkl-normaali-hki")
+    await loginAs(
+      "/virkailija",
+      "valpas-jkl-normaali-hki",
+      "valpas-jkl-normaali-hki"
+    )
 
     await dataTableHeadersEventuallyEquals(
       ".kayttooikeudet",
@@ -42,8 +47,7 @@ describe("Etusivun väliaikainen näkymä", () => {
   })
 
   it("Näyttää pääkäyttäjän käyttöoikeudet", async () => {
-    await reset("/")
-    await loginAs("/", "valpas-pää", "valpas-pää")
+    await loginAs("/virkailija", "valpas-pää", "valpas-pää")
 
     await dataTableHeadersEventuallyEquals(
       ".kayttooikeudet",
@@ -66,9 +70,8 @@ describe("Etusivun väliaikainen näkymä", () => {
   })
 
   it("Ei näytä käyttäjän Koski-käyttöoikeuksia", async () => {
-    await reset("/")
     await loginAs(
-      "/",
+      "/virkailija",
       "valpas-jkl-normaali-koski-hki",
       "valpas-jkl-normaali-koski-hki"
     )
