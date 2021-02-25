@@ -98,7 +98,10 @@ const LocalRaamit = React.lazy(
 )
 
 const Login = () => {
-  storeLoginReturnUrl()
+  React.useEffect(() => {
+    storeLoginReturnUrl()
+  }, [])
+
   const config = getLogin()
 
   if (config.type === "external") {
