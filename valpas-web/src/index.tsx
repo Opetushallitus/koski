@@ -1,6 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import "./style/index.less"
+import { ValpasApp } from "./views/ValpasApp"
 
 declare global {
   interface Window {
@@ -11,14 +12,7 @@ declare global {
 }
 
 async function main() {
-  const ValpasApp = React.lazy(() => import("./views/ValpasApp"))
-
-  ReactDOM.render(
-    <React.Suspense fallback={<></>}>
-      <ValpasApp />
-    </React.Suspense>,
-    document.getElementById("app")
-  )
+  ReactDOM.render(<ValpasApp />, document.getElementById("app"))
 }
 
 main()

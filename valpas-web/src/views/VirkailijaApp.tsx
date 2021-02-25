@@ -117,7 +117,11 @@ const Login = () => {
   )
 }
 
-const VirkailijaApp = ({ match: { path } }: { match: { path: string } }) => {
+type VirkailijaAppProps = {
+  path: string
+}
+
+const VirkailijaApp = ({ path }: VirkailijaAppProps) => {
   const [user, setUser] = React.useState<CurrentUser | null>(null)
   React.useEffect(() => {
     ;(async () => {
