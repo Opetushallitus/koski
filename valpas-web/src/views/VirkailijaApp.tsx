@@ -44,11 +44,11 @@ class FeatureRoute extends Route {
 }
 
 type VirkailijaRoutesProps = {
-  path: string
+  basePath: string
   user: User
 }
 
-const VirkailijaRoutes = ({ path, user }: VirkailijaRoutesProps) => {
+const VirkailijaRoutes = ({ basePath, user }: VirkailijaRoutesProps) => {
   const navOptions = [
     {
       key: "hakutilanne",
@@ -66,8 +66,12 @@ const VirkailijaRoutes = ({ path, user }: VirkailijaRoutesProps) => {
 
   return (
     <Switch>
-      <Route exact path={`${path}/hunter2`} component={FeatureFlagEnabler} />
-      <FeatureRoute exact path={`${path}/oppijat`}>
+      <Route
+        exact
+        path={`${basePath}/hunter2`}
+        component={FeatureFlagEnabler}
+      />
+      <FeatureRoute exact path={`${basePath}/oppijat`}>
         <MainNavigation
           selected="hakutilanne"
           options={navOptions}
@@ -77,10 +81,10 @@ const VirkailijaRoutes = ({ path, user }: VirkailijaRoutesProps) => {
       </FeatureRoute>
       <FeatureRoute
         exact
-        path={`${path}/oppijat/:oid`}
+        path={`${basePath}/oppijat/:oid`}
         component={OppijaView}
       />
-      <FeatureRoute exact path={`${path}/`}>
+      <FeatureRoute exact path={`${basePath}/`}>
         <HomeView
           user={user}
           organisaatiotJaKayttooikeusroolit={
@@ -118,10 +122,10 @@ const Login = () => {
 }
 
 type VirkailijaAppProps = {
-  path: string
+  basePath: string
 }
 
-const VirkailijaApp = ({ path }: VirkailijaAppProps) => {
+const VirkailijaApp = ({ basePath }: VirkailijaAppProps) => {
   const [user, setUser] = React.useState<CurrentUser | null>(null)
   React.useEffect(() => {
     ;(async () => {
@@ -144,7 +148,7 @@ const VirkailijaApp = ({ path }: VirkailijaAppProps) => {
       )}
       {hasValpasAccess(user) ? (
         <Page id="virkailija-app">
-          <VirkailijaRoutes user={user} path={path} />
+          <VirkailijaRoutes user={user} basePath={basePath} />
         </Page>
       ) : isLoggedIn(user) ? (
         <ErrorView
