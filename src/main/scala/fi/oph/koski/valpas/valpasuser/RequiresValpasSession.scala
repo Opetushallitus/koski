@@ -1,7 +1,7 @@
 package fi.oph.koski.valpas.valpasuser
 
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.{HasSession, KoskiSpecificAuthenticationSupport, Session, KoskiSpecificSession}
+import fi.oph.koski.koskiuser.{HasSession, KoskiSpecificAuthenticationSupport, KoskiSpecificSession, Palvelurooli, Session}
 
 trait RequiresValpasSession extends ValpasAuthenticationSupport with HasValpasSession {
   implicit def session: ValpasSession = koskiSessionOption.get
@@ -22,13 +22,17 @@ trait RequiresValpasSession extends ValpasAuthenticationSupport with HasValpasSe
     }
   }
 
-  def isValpasSession(session: Session): Boolean =
-    session.orgKäyttöoikeudet
-      .flatMap(_.organisaatiokohtaisetPalveluroolit)
-      .intersect(Set(
-        ValpasPalvelurooli(ValpasRooli.OPPILAITOS_HAKEUTUMINEN),
-        ValpasPalvelurooli(ValpasRooli.OPPILAITOS_SUORITTAMINEN),
-        ValpasPalvelurooli(ValpasRooli.OPPILAITOS_MAKSUTTOMUUS),
-        ValpasPalvelurooli(ValpasRooli.KUNTA)))
-      .nonEmpty
+  def isValpasSession(session: ValpasSession): Boolean =
+    hasValpasPalvelurooli(session.orgKäyttöoikeudet.flatMap(_.organisaatiokohtaisetPalveluroolit)) ||
+    hasValpasPalvelurooli(session.globalKäyttöoikeudet.flatMap(_.globalPalveluroolit))
+
+  private def hasValpasPalvelurooli(palveluroolit: Set[Palvelurooli]): Boolean =
+    palveluroolit.exists(hyväksytytValpasPalveluroolit.contains)
+
+  private lazy val hyväksytytValpasPalveluroolit: List[Palvelurooli] = List(
+    ValpasPalvelurooli(ValpasRooli.OPPILAITOS_HAKEUTUMINEN),
+    ValpasPalvelurooli(ValpasRooli.OPPILAITOS_SUORITTAMINEN),
+    ValpasPalvelurooli(ValpasRooli.OPPILAITOS_MAKSUTTOMUUS),
+    ValpasPalvelurooli(ValpasRooli.KUNTA)
+  )
 }

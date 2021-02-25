@@ -8,6 +8,13 @@ import fi.oph.koski.valpas.valpasuser.ValpasMockKäyttöoikeusryhmät._
 object ValpasMockUsers {
   var mockUsersEnabled = false
 
+  val valpasOphPääkäyttäjä = MockUser(
+    "pääkäyttäjä",
+    "valpas-pää",
+    "1.2.246.562.24.12312312300",
+    pääkäyttäjä
+  )
+
   val valpasHelsinki = MockUser(
     "käyttäjä",
     "valpas-helsinki",
@@ -36,9 +43,10 @@ object ValpasMockUsers {
     peruskoulunJossa10LuokkaKäyttäjä(jyväskylänNormaalikoulu) ++ toisenAsteenKäyttäjä(jyväskylänNormaalikoulu) ++ kuntakäyttäjä(helsinginKaupunki)
   )
 
+
   def users = {
     mockUsersEnabled match {
-      case true => List(valpasHelsinki, valpasJklNormaalikoulu, valpasJklNormaalikouluJaKoskiHelsinkiTallentaja, valpasJklNormaalikouluJaValpasHelsinki)
+      case true => List(valpasOphPääkäyttäjä, valpasHelsinki, valpasJklNormaalikoulu, valpasJklNormaalikouluJaKoskiHelsinkiTallentaja, valpasJklNormaalikouluJaValpasHelsinki)
       case false => List()
     }
   }
