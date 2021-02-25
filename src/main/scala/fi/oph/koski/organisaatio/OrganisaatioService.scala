@@ -60,7 +60,7 @@ class OrganisaatioService(application: KoskiApplication) {
           List.empty
         }
       }
-    }.sortBy(organisaatioNimiOrganisaatioHierarkiaJaKayttooikeusroolista)
+    }.sortBy(r => (r.organisaatioHierarkia.nimi.get(user.lang), r.kayttooikeusrooli))
 
   private def koulutustoimijoidenOstopalveluOrganisaatiot(koulutustoimijat: Set[Oid])(implicit user: Session): List[OrganisaatioHierarkia] =
     perustiedot.haeVarhaiskasvatustoimipisteet(koulutustoimijat) match {
@@ -100,6 +100,4 @@ class OrganisaatioService(application: KoskiApplication) {
   }
 
   private def organisaatioNimi(implicit user: Session): OrganisaatioHierarkia => String = _.nimi.get(user.lang)
-
-  private def organisaatioNimiOrganisaatioHierarkiaJaKayttooikeusroolista(implicit user: Session): OrganisaatioHierarkiaJaKayttooikeusrooli => String = _.organisaatioHierarkia.nimi.get(user.lang)
 }

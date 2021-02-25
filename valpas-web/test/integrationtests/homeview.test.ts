@@ -34,9 +34,9 @@ describe("Etusivun väliaikainen näkymä", () => {
       ".kayttooikeudet",
       `
       Kunnan oppivelvollisuuden suorittamisen valvonta
+      Oppilaitoksen hakeutumisen valvonta
       Oppilaitoksen opiskelun maksuttomuustietojen määrittely
       Oppilaitoksen oppivelvollisuuden suorittamisen valvonta
-      Oppilaitoksen hakeutumisen valvonta
       `
     )
   })
@@ -60,9 +60,9 @@ describe("Etusivun väliaikainen näkymä", () => {
     await dataTableEventuallyEquals(
       ".kayttooikeudet",
       `
+      Oppilaitoksen hakeutumisen valvonta
       Oppilaitoksen opiskelun maksuttomuustietojen määrittely
       Oppilaitoksen oppivelvollisuuden suorittamisen valvonta
-      Oppilaitoksen hakeutumisen valvonta
       `
     )
   })
