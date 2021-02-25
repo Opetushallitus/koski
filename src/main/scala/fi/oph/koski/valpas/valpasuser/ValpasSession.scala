@@ -4,7 +4,7 @@ import java.net.InetAddress
 
 import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.Rooli.Role
-import fi.oph.koski.koskiuser.{AuthenticationUser, Käyttöoikeus, KäyttöoikeusOrg, KäyttöoikeusRepository, Session, UserLanguage}
+import fi.oph.koski.koskiuser.{AuthenticationUser, Käyttöoikeus, KäyttöoikeusRepository, Session, UserLanguage}
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.schema.Organisaatio.Oid
 import org.scalatra.servlet.RichRequest
@@ -12,7 +12,6 @@ import org.scalatra.servlet.RichRequest
 import scala.concurrent.{ExecutionContext, Future}
 
 class ValpasSession(user: AuthenticationUser, lang: String, clientIp: InetAddress, userAgent: String, lähdeKäyttöoikeudet: => Set[Käyttöoikeus]) extends Session(user, lang, clientIp, userAgent) with SensitiveDataAllowed {
-  def orgKäyttöoikeudet: Set[KäyttöoikeusOrg] = käyttöoikeudet.collect { case k : KäyttöoikeusOrg => k}
   def varhaiskasvatusKoulutustoimijat: Set[Oid] = Set.empty
   def hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess: Boolean = false
 
