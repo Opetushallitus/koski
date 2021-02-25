@@ -120,10 +120,9 @@ const Login = () => {
 const VirkailijaApp = ({ match: { path } }: { match: { path: string } }) => {
   const [user, setUser] = React.useState<CurrentUser | null>(null)
   React.useEffect(() => {
-    const fetchUser = async () => {
+    ;(async () => {
       setUser(await getCurrentUser())
-    }
-    fetchUser()
+    })()
   }, [])
 
   if (!user) {
