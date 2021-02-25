@@ -19,7 +19,7 @@ export const ValpasApp = () => {
           path="/virkailija"
           render={({ match: { path } }: RouteComponentProps) => (
             <React.Suspense fallback={<></>}>
-              <VirkailijaApp path={path} />
+              <VirkailijaApp basePath={path} />
             </React.Suspense>
           )}
         />
