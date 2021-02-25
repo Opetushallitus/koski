@@ -41,6 +41,30 @@ describe("Etusivun väliaikainen näkymä", () => {
     )
   })
 
+  it("Näyttää pääkäyttäjän käyttöoikeudet", async () => {
+    await reset("/")
+    await loginAs("/", "valpas-pää", "valpas-pää")
+
+    await dataTableHeadersEventuallyEquals(
+      ".kayttooikeudet",
+      `
+      Opetushallitus
+      Opetushallitus
+      Opetushallitus
+      Opetushallitus
+      `
+    )
+    await dataTableEventuallyEquals(
+      ".kayttooikeudet",
+      `
+      Kunnan oppivelvollisuuden suorittamisen valvonta
+      Oppilaitoksen hakeutumisen valvonta
+      Oppilaitoksen opiskelun maksuttomuustietojen määrittely
+      Oppilaitoksen oppivelvollisuuden suorittamisen valvonta
+      `
+    )
+  })
+
   it("Ei näytä käyttäjän Koski-käyttöoikeuksia", async () => {
     await reset("/")
     await loginAs(
