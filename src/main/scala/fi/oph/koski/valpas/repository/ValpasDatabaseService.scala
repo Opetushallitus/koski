@@ -15,15 +15,12 @@ class ValpasDatabaseService(application: KoskiApplication) extends Logging {
   lazy val RHenkilöt = TableQuery[RHenkilöTable]
   lazy val ROpiskeluoikeudet = TableQuery[ROpiskeluoikeusTable]
 
-  def getOppivelvollinenHenkilö(oppijaOid: String, oppilaitosOids: Seq[String]) = {
+  def getPeruskoulunValvojalleNäkyväOppija(oppijaOid: String, oppilaitosOids: Seq[String]) = {
     // TODO: Kaipaa mahdollisesti optimointia, koska nyt haetaan kaikki oppijat (jotka oikeus nähdä) ja otetaan siitä se yksi oppija.
-    getOppivelvollinsetHenkilötJaOpiskeluoikeudetQuery(oppilaitosOids).find(_.henkilö.oid == oppijaOid)
+    getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOids).find(_.henkilö.oid == oppijaOid)
   }
 
-  def getOppivelvollinsetHenkilötJaOpiskeluoikeudet(oppilaitosOids: Seq[String]) =
-    getOppivelvollinsetHenkilötJaOpiskeluoikeudetQuery(oppilaitosOids)
-
-  private def getOppivelvollinsetHenkilötJaOpiskeluoikeudetQuery(oppilaitosOids: Seq[String]): Seq[ValpasOppija] =
+  def getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOids: Seq[String]): Seq[ValpasOppija] =
     db.runDbSync(sql"""
       SELECT
         r_henkilo.oppija_oid,
