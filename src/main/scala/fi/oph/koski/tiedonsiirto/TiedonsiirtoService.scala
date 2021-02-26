@@ -251,7 +251,7 @@ class TiedonsiirtoService(
     tiedonsiirtoBuffer.append(tiedonsiirtoDoc)
   }
 
-  def syncToElasticsearch(refresh: Boolean): Unit = {
+  def syncToElasticsearch(refresh: Boolean): Unit = synchronized {
     val tiedonsiirrot = tiedonsiirtoBuffer.popAll
     if (tiedonsiirrot.nonEmpty) {
       logger.debug(s"Syncing ${tiedonsiirrot.length} tiedonsiirrot documents")
