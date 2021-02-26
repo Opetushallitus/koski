@@ -2,6 +2,7 @@ package fi.oph.koski.valpas.repository
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.db.SQLHelpers
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 import fi.oph.koski.raportointikanta.ROpiskeluoikeusRow
@@ -15,13 +16,15 @@ class ValpasDatabaseService(application: KoskiApplication) extends Logging {
   lazy val RHenkilöt = TableQuery[RHenkilöTable]
   lazy val ROpiskeluoikeudet = TableQuery[ROpiskeluoikeusTable]
 
-  def getPeruskoulunValvojalleNäkyväOppija(oppijaOid: String, oppilaitosOids: Seq[String]) = {
-    // TODO: Kaipaa mahdollisesti optimointia, koska nyt haetaan kaikki oppijat (jotka oikeus nähdä) ja otetaan siitä se yksi oppija.
-    getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOids).find(_.henkilö.oid == oppijaOid)
-  }
+  def getPeruskoulunValvojalleNäkyväOppija(oppijaOid: String, oppilaitosOids: Option[Seq[String]]): Option[ValpasOppija] =
+    getOppijat(Some(oppijaOid), oppilaitosOids).headOption
 
-  def getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOids: Seq[String]): Seq[ValpasOppija] =
-    db.runDbSync(sql"""
+  def getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOids: Option[Seq[String]]): Seq[ValpasOppija] =
+    getOppijat(None, oppilaitosOids)
+
+  private def getOppijat(oppijaOid: Option[String], oppilaitosOids: Option[Seq[String]]): Seq[ValpasOppija] =
+    db.runDbSync(SQLHelpers.concatMany(
+      Some(sql"""
       SELECT
         r_henkilo.oppija_oid,
         r_henkilo.hetu,
@@ -48,7 +51,9 @@ class ValpasDatabaseService(application: KoskiApplication) extends Logging {
         r_henkilo
         JOIN r_opiskeluoikeus ON
           r_opiskeluoikeus.oppija_oid = r_henkilo.oppija_oid
-          AND r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOids)
+      """),
+      oppilaitosOids.map(oids => sql"AND r_opiskeluoikeus.oppilaitos_oid = any($oids)"),
+      Some(sql"""
         JOIN r_paatason_suoritus ON r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
         -- Lasketaan voimassaolevien kotiopetusjaksojen määrä ehtoa 4a varten
         CROSS JOIN LATERAL (
@@ -58,6 +63,9 @@ class ValpasDatabaseService(application: KoskiApplication) extends Logging {
              OR to_char(NOW(), 'YYYY-MM-DD') BETWEEN jaksot ->> 'alku' AND jaksot ->> 'loppu'
         ) kotiopetusjaksoja
       WHERE
+      """),
+      oppijaOid.map(oid => sql"r_henkilo.oppija_oid = $oid AND"),
+      Some(sql"""
         -- (1) oppija on potentiaalisesti oppivelvollinen, eli syntynyt 2004 tai myöhemmin
         EXTRACT(YEAR FROM r_henkilo.syntymaaika) >= 2004
         -- (2) oppijalla on Koskessa peruskoulun valvojan käyttöoikeuksiin kuuluvassa organisaatiossa peruskoulun opiskeluoikeus
@@ -82,7 +90,7 @@ class ValpasDatabaseService(application: KoskiApplication) extends Logging {
         )
       GROUP BY r_henkilo.oppija_oid
       ORDER BY r_henkilo.sukunimi, r_henkilo.etunimet
-    """.as[(ValpasOppija)])
+    """)).as[(ValpasOppija)])
 
   def getOpiskeluoikeudet(oppijaOid: String, organisaatioOids: Set[String]): Seq[ROpiskeluoikeusRow] =
     db.runDbSync(ROpiskeluoikeudet

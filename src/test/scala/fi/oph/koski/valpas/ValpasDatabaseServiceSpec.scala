@@ -31,7 +31,7 @@ class ValpasDatabaseServiceSpec extends ValpasTestBase {
 
   "getOppivelvollinenHenkilö palauttaa vain annetun oppijanumeron mukaisen oppijan" in {
     val (expectedOppija, expectedOpiskeluoikeus) = oppivelvolliset(1)
-    val oppija = db.getPeruskoulunValvojalleNäkyväOppija(expectedOppija.oid, oppilaitokset)
+    val oppija = db.getPeruskoulunValvojalleNäkyväOppija(expectedOppija.oid, Some(oppilaitokset))
 
     validateOppija(
       oppija.get,
@@ -40,7 +40,7 @@ class ValpasDatabaseServiceSpec extends ValpasTestBase {
   }
 
   "getOppivelvollinsetHenkilötJaOpiskeluoikeudet palauttaa oikeat tulokset" in {
-    val oppijat = db.getPeruskoulunValvojalleNäkyvätOppijat(oppilaitokset).toList
+    val oppijat = db.getPeruskoulunValvojalleNäkyvätOppijat(Some(oppilaitokset)).toList
 
     oppijat.map(_.henkilö.oid) shouldBe oppivelvolliset.map(_._1.oid)
 

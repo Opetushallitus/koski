@@ -19,7 +19,7 @@ class ValpasOppijaService(application: KoskiApplication) extends Logging {
   }
 
   def getOppija(oid: String)(implicit session: ValpasSession): Option[ValpasOppija] =
-    dbService.getPeruskoulunValvojalleNäkyväOppija(oid, ValpasAccessResolver.valpasOrganisaatioOids.toSeq)
+    dbService.getPeruskoulunValvojalleNäkyväOppija(oid, Some(ValpasAccessResolver.valpasOrganisaatioOids.toSeq))
       .map(enrichOppija)
       .map(oppija => {
         auditLogOppijaKatsominen(oppija)
