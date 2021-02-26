@@ -92,12 +92,6 @@ class ValpasDatabaseService(application: KoskiApplication) extends Logging {
       ORDER BY r_henkilo.sukunimi, r_henkilo.etunimet
     """)).as[(ValpasOppija)])
 
-  def getOpiskeluoikeudet(oppijaOid: String, organisaatioOids: Set[String]): Seq[ROpiskeluoikeusRow] =
-    db.runDbSync(ROpiskeluoikeudet
-      .filter(_.oppijaOid === oppijaOid)
-      .filter(_.oppilaitosOid inSet organisaatioOids)
-      .result)
-
   implicit private val getValpasOppijaResult: GetResult[ValpasOppija] = GetResult(r => {
     val rs: ResultSet = r.rs
     ValpasOppija(
