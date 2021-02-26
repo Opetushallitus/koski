@@ -1,6 +1,5 @@
 package fi.oph.koski.valpas
 
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.valpas.henkilo.ValpasMockOppijat
@@ -196,6 +195,82 @@ class ValpasAuthenticationSpec extends ValpasHttpTestBase {
 
       "Valpas-routeja" taggedAs (ValpasBackendTag) in {
         get(valpasSessionVaativaUri, headers = kansalainenLoginHeaders(oppija.hetu.get)) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu näillä käyttöoikeuksilla"))
+        }
+      }
+    }
+  }
+
+  "Valppaan pääkäyttäjä" - {
+    val user = ValpasMockUsers.valpasOphPääkäyttäjä
+
+    "voi kutsua" - {
+      "avoimia routeja" taggedAs (ValpasBackendTag) in {
+        authGet(täysinAvoinUri, user = user) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "minkä tahansa session vaativia routeja" taggedAs (ValpasBackendTag) in {
+        authGet(sessionVaativaUri, user = user) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Valpas-routeja" taggedAs (ValpasBackendTag) in {
+        authGet(valpasSessionVaativaUri, user = user) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
+
+    "ei voi kutsua" - {
+      "virkailija- tai palvelukäyttäjärouteja" taggedAs (ValpasBackendTag) in {
+        authGet(virkailjanTaiPalvelukäyttäjänVaativaUri, user = user) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu ilman Koski-palvelun käyttöoikeuksia"))
+        }
+      }
+
+      "kansalaisrouteja" taggedAs (ValpasBackendTag) in {
+        authGet(kansalaisUri, user = user) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainKansalainen())
+        }
+      }
+    }
+  }
+
+  "Kosken pääkäyttäjä" - {
+    val user = MockUsers.paakayttaja
+
+    "voi kutsua" - {
+      "avoimia routeja" taggedAs (ValpasBackendTag) in {
+        authGet(täysinAvoinUri, user = user) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "minkä tahansa session vaativia routeja" taggedAs (ValpasBackendTag) in {
+        authGet(sessionVaativaUri, user = user) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "virkailija- tai palvelukäyttäjärouteja" taggedAs (ValpasBackendTag) in {
+        authGet(virkailjanTaiPalvelukäyttäjänVaativaUri, user = user) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
+
+    "ei voi kutsua" - {
+      "kansalaisrouteja" taggedAs (ValpasBackendTag) in {
+        authGet(kansalaisUri, user = user) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainKansalainen())
+        }
+      }
+
+      "Valpas-routeja" taggedAs (ValpasBackendTag) in {
+        authGet(valpasSessionVaativaUri, user = user) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu näillä käyttöoikeuksilla"))
         }
       }
