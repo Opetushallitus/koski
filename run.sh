@@ -1,7 +1,7 @@
 ROOT=/home/koski
 
 JAVA_OPTS="\
--Xms1g -Xmx6g \
+-Xms${JAVA_XMS:-1g} -Xmx${JAVA_XMX:-6g} \
 -XX:+HeapDumpOnOutOfMemoryError \
 -XX:HeapDumpPath=/home/koski/heapdumps/koski-heap.dump \
 -Dcom.sun.management.jmxremote.ssl=false \
