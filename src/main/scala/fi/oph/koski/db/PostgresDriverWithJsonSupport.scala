@@ -3,7 +3,7 @@ package fi.oph.koski.db
 import com.github.tminglei.slickpg._
 import com.github.tminglei.slickpg.str.PgStringSupport
 import org.json4s.JValue
-import slick.jdbc.PostgresProfile
+import slick.jdbc.{PositionedParameters, PostgresProfile, SQLActionBuilder, SetParameter}
 
 trait PostgresDriverWithJsonSupport extends PostgresProfile with PgJson4sSupport with PgArraySupport with array.PgArrayJdbcTypes with PgSearchSupport with PgStringSupport {
   /// for json support
@@ -25,3 +25,15 @@ trait PostgresDriverWithJsonSupport extends PostgresProfile with PgJson4sSupport
 }
 
 object PostgresDriverWithJsonSupport extends PostgresDriverWithJsonSupport
+
+object SQLHelpers {
+  def concatMany(builders: Option[SQLActionBuilder]*) =
+    builders.flatten.reduce(concat)
+
+  def concat(a: SQLActionBuilder, b: SQLActionBuilder): SQLActionBuilder = {
+    SQLActionBuilder(a.queryParts ++ b.queryParts, (p: Unit, pp: PositionedParameters) => {
+      a.unitPConv.apply(p, pp)
+      b.unitPConv.apply(p, pp)
+    })
+  }
+}
