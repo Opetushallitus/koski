@@ -18,8 +18,13 @@ class ValpasOppijaService(application: KoskiApplication) extends Logging {
     Some(List())
   }
 
+  // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
+  // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
+  // (2) käyttäjät, joilla globaali käyttöoikeus
+  // (3) käyttäjät, joilla oikeus välitasolle organisaatiohierarkiassa
+  // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
   def getOppija(oid: String)(implicit session: ValpasSession): Option[ValpasOppija] =
-    dbService.getPeruskoulunValvojalleNäkyväOppija(oid, Some(ValpasAccessResolver.valpasOrganisaatioOids.toSeq))
+    dbService.getPeruskoulunValvojalleNäkyväOppija(oid, Some(ValpasAccessResolver.oppilaitosHakeutuminenOrganisaatioOids.toSeq))
       .map(enrichOppija)
       .map(oppija => {
         auditLogOppijaKatsominen(oppija)
