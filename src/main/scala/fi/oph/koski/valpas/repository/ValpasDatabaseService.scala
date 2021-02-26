@@ -68,7 +68,7 @@ class ValpasDatabaseService(application: KoskiApplication) extends Logging {
       Some(sql"""
         -- (1) oppija on potentiaalisesti oppivelvollinen, eli syntynyt 2004 tai myöhemmin
         EXTRACT(YEAR FROM r_henkilo.syntymaaika) >= 2004
-        -- (2) oppijalla on Koskessa peruskoulun valvojan käyttöoikeuksiin kuuluvassa organisaatiossa peruskoulun opiskeluoikeus
+        -- (2) oppijalla on peruskoulun opiskeluoikeus
         AND r_opiskeluoikeus.koulutusmuoto = 'perusopetus'
         AND r_paatason_suoritus.suorituksen_tyyppi = 'perusopetuksenvuosiluokka'
         -- (3) kyseisessä opiskeluoikeudessa on yhdeksännen luokan suoritus.
