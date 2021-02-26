@@ -66,7 +66,7 @@ object ExamplesEsiopetus {
     suoritukset = List(päiväkotisuoritus(päiväkotiTouhula).copy(vahvistus = None, muutSuorituskielet = None)),
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
       List(
-        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2006, 8, 13), opiskeluoikeusLäsnä)
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2006, 8, 12), opiskeluoikeusLäsnä)
       )
     ),
     järjestämismuoto = ostopalvelu

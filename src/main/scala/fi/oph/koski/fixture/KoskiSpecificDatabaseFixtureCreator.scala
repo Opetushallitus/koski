@@ -67,7 +67,12 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       ),
       (KoskiSpecificMockOppijat.tunnisteenKoodiarvoPoistettu, opiskeluoikeusJostaTunnisteenKoodiarvoPoistettu),
       (KoskiSpecificMockOppijat.eskari, validateOpiskeluoikeus(ostopalveluOpiskeluoikeus, hkiTallentaja)),
-      (KoskiSpecificMockOppijat.eskari, validateOpiskeluoikeus(ostopalveluOpiskeluoikeus.copy(suoritukset = List(päiväkotisuoritus(oppilaitos(päiväkotiMajakka)))), hkiTallentaja)),
+      (KoskiSpecificMockOppijat.eskari, validateOpiskeluoikeus(ostopalveluOpiskeluoikeus.copy(
+        suoritukset = List(päiväkotisuoritus(oppilaitos(päiväkotiMajakka))),
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+          ostopalveluOpiskeluoikeus.tila.opiskeluoikeusjaksot.map(j => j.copy(alku = j.alku.minusDays(1)))
+        )
+      ), hkiTallentaja)),
     )
   }
 

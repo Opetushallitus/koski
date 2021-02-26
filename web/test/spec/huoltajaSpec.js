@@ -41,7 +41,15 @@ describe('Huollettavien tiedot', function () {
         before(wait.until(function() { return omattiedot.oppija() === "Huollettavani opinnot" }))
 
         it('näytetään huollettavan tiedot', function () {
-          verifyOppija('Huollettavani opinnot', 'Essi Eskari\ns. 30.9.1996', ['Päiväkoti Touhula', 'Päiväkoti Majakka', 'Jyväskylän normaalikoulu'], [ 'Päiväkodin esiopetus (2006—, läsnä)', 'Päiväkodin esiopetus (2006—, läsnä)', 'Peruskoulun esiopetus (2006—2007, valmistunut)' ])
+          verifyOppija('Huollettavani opinnot', 'Essi Eskari\ns. 30.9.1996', [
+            'Jyväskylän normaalikoulu',
+            'Päiväkoti Touhula',
+            'Päiväkoti Majakka'
+          ], [
+            'Peruskoulun esiopetus (2006—2007, valmistunut)',
+            'Päiväkodin esiopetus (2006—, läsnä)',
+            'Päiväkodin esiopetus (2006—, läsnä)'
+          ])
         })
       })
 
@@ -50,7 +58,12 @@ describe('Huollettavien tiedot', function () {
         before(wait.until(function() { return omattiedot.headerNimi() === "Ynjevi Ylioppilaslukiolainen\ns. 8.6.1998" }))
 
         it('näytetään huollettavan tiedot', function () {
-          verifyOppija('Huollettavani opinnot', 'Ynjevi Ylioppilaslukiolainen\ns. 8.6.1998', ['Jyväskylän normaalikoulu'], [ 'Ylioppilastutkinto', 'Lukion oppimäärä (2012—2016, valmistunut)' ])
+          verifyOppija(
+            'Huollettavani opinnot',
+            'Ynjevi Ylioppilaslukiolainen\ns. 8.6.1998',
+            ['Jyväskylän normaalikoulu'],
+            ['Ylioppilastutkinto', 'Lukion oppimäärä (2012—2016, valmistunut)']
+          )
         })
 
         describe('Ylioppilastutkinnon koesuoritukset', function () {
