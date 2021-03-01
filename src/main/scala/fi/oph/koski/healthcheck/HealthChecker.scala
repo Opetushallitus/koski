@@ -17,7 +17,7 @@ import fi.oph.koski.organisaatio.{MockOrganisaatiot, RemoteOrganisaatioRepositor
 import fi.oph.koski.schema._
 import fi.oph.koski.userdirectory.Password
 import fi.oph.koski.util.Timing
-import cas.CasClientException
+import fi.vm.sade.utils.cas.CasClientException
 import scalaz.concurrent.Task
 import scala.concurrent.duration._
 import scala.language.postfixOps

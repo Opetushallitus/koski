@@ -7,8 +7,8 @@ import fi.oph.koski.http.{Http, KoskiErrorCategory, OpintopolkuCallerId}
 import fi.oph.koski.koskiuser.{KoskiSpecificAuthenticationSupport, AuthenticationUser, DirectoryClientLogin, UserLanguage}
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.servlet.{NoCache, VirkailijaHtmlServlet}
-import cas.{CasClient, CasClientException}
-import cas.CasClient.{OppijaAttributes, Username}
+import fi.vm.sade.utils.cas.{CasClient, CasClientException, CasLogout}
+import fi.vm.sade.utils.cas.CasClient.{OppijaAttributes, Username}
 import fi.oph.koski.henkilo.{Hetu, OppijaHenkilö}
 import fi.oph.koski.json.JsonSerializer.writeWithRoot
 import scalaz.concurrent.Task
@@ -150,7 +150,7 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
   post("/*") {
     params.get("logoutRequest") match {
       case Some(logoutRequest) =>
-        cas.CasLogout.parseTicketFromLogoutRequest(logoutRequest) match {
+        CasLogout.parseTicketFromLogoutRequest(logoutRequest) match {
           case Some(parsedTicket) =>
             logger.info("Got CAS logout for ticket " + parsedTicket)
             koskiSessions.removeSessionByTicket(parsedTicket)

@@ -3,7 +3,7 @@ package fi.oph.koski.http
 import com.typesafe.config.Config
 import fi.oph.koski.log.NotLoggable
 import org.http4s.client.Client
-import cas._
+import fi.vm.sade.utils.cas.{CasClient, CasParams, CasAuthenticatingClient}
 import fi.oph.koski.config.{Environment, SecretsManager}
 
 case class VirkailijaCredentials(username: String, password: String) extends NotLoggable
@@ -36,7 +36,7 @@ object VirkailijaHttpClient {
     val blazeHttpClient = Http.newClient(serviceUrl)
     val casAuthenticatingClient: Client = if (useCas) {
       val casClient = new CasClient(serviceConfig.virkailijaUrl + "/cas", blazeHttpClient, OpintopolkuCallerId.koski)
-      cas.CasAuthenticatingClient(casClient, CasParams(serviceUrl, username, password), blazeHttpClient, OpintopolkuCallerId.koski, sessionCookieName)
+      CasAuthenticatingClient(casClient, CasParams(serviceUrl, username, password), blazeHttpClient, OpintopolkuCallerId.koski, sessionCookieName)
     } else {
       ClientWithBasicAuthentication(blazeHttpClient, username, password)
     }
