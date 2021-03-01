@@ -37,7 +37,8 @@ object ValpasOpiskeluoikeus {
       nimi = Finnish(opiskeluoikeusRow.oppilaitosNimi)),
     alkamispäivä = opiskeluoikeusRow.alkamispäivä.map(_.toString),
     päättymispäivä = opiskeluoikeusRow.päättymispäivä.map(_.toString),
-    ryhmä = opiskeluoikeusRow.luokka
+    ryhmä = opiskeluoikeusRow.luokka,
+    viimeisinTila = Koodistokoodiviite(opiskeluoikeusRow.koulutusmuoto, "koskiopiskeluoikeudentila")
   )
 }
 
@@ -47,7 +48,8 @@ case class ValpasOpiskeluoikeus(
   oppilaitos: ValpasOppilaitos,
   alkamispäivä: Option[String],
   päättymispäivä: Option[String],
-  ryhmä: Option[String]
+  ryhmä: Option[String],
+  viimeisinTila: Koodistokoodiviite
 )
 
 case class ValpasOppilaitos(

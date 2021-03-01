@@ -31,6 +31,7 @@ describe("Oppijakohtainen näkymä", () => {
       Perusopetus 2012 –
       Jyväskylän normaalikoulu
       Ryhmä: 9C
+      Tila: Läsnä
       `
     )
   })
@@ -52,6 +53,7 @@ describe("Oppijakohtainen näkymä", () => {
       Perusopetus 2012 – 2021
       Jyväskylän normaalikoulu
       Ryhmä: 9C
+      Tila: Valmistunut
       `
     )
   })
@@ -84,6 +86,7 @@ describe("Oppijakohtainen näkymä", () => {
       Perusopetus 2012 –
       Jyväskylän normaalikoulu
       Ryhmä: 9B
+      Tila: Läsnä
       `
     )
   })

@@ -44,3 +44,5 @@ export const ValintatietotilaKoodistoviite = {
   ]),
   isLäsnä: koodiarvoCondition("valintatietotila", ["läsnä"]),
 }
+
+export type OpiskeluoikeudenTila = KoodistoKoodiviite<"koskiopiskeluoikeudentila">
