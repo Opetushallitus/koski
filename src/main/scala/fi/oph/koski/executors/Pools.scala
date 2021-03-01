@@ -7,7 +7,7 @@ import scala.concurrent.ExecutionContext
  */
 object Pools {
   // Number of threads to use for Executors.global (scala.concurrent, our own GlobalExecution context, parallel collections etc)
-  val jettyThreads = 100
+  val jettyThreads = 250
   val globalExecutionContextThreads = jettyThreads
   val backgroundExecutionContextThreads = Math.max(jettyThreads / 10, 2)
   val httpThreads = jettyThreads

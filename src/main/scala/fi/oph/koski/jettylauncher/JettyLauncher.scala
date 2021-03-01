@@ -41,7 +41,7 @@ object JettyLauncher extends App with Logging {
 class JettyLauncher(val port: Int, val application: KoskiApplication) extends Logging {
   private val config = application.config
 
-  private val threadPool = new ManagedQueuedThreadPool(Pools.jettyThreads, 10)
+  private val threadPool = new ManagedQueuedThreadPool(Pools.jettyThreads)
 
   private val server = new Server(threadPool)
 
@@ -166,7 +166,7 @@ object TestConfig {
     """.stripMargin)
 }
 
-class ManagedQueuedThreadPool(maxThreads: Int, minThreads: Int) extends QueuedThreadPool(maxThreads, minThreads) with QueuedThreadPoolMXBean
+class ManagedQueuedThreadPool(maxThreads: Int) extends QueuedThreadPool(maxThreads) with QueuedThreadPoolMXBean
 
 trait QueuedThreadPoolMXBean {
   def getQueueSize: Int
