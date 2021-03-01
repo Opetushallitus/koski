@@ -31,17 +31,9 @@ const FeatureFlagEnabler = (props: { virkailijaBasePath: string }) => {
 
 const runningLocally = window.environment == "local"
 
-class FeatureRoute extends Route {
-  public render() {
-    const featureEnabled =
-      window.localStorage.getItem(featureFlagName) === featureFlagEnabledValue
-    if (featureEnabled || runningLocally) {
-      return <Route {...this.props} />
-    } else {
-      return null
-    }
-  }
-}
+const isFeatureFlagEnabled = () =>
+  runningLocally ||
+  window.localStorage.getItem(featureFlagName) === featureFlagEnabledValue
 
 type VirkailijaRoutesProps = {
   basePath: string
@@ -66,30 +58,36 @@ const VirkailijaRoutes = ({ basePath, user }: VirkailijaRoutesProps) => {
 
   return (
     <Switch>
-      <Route exact path={`${basePath}/hunter2`}>
-        <FeatureFlagEnabler virkailijaBasePath={basePath} />
-      </Route>
-      <FeatureRoute exact path={`${basePath}/oppijat`}>
-        <MainNavigation
-          selected="hakutilanne"
-          options={navOptions}
-          onChange={() => null}
-        />
-        <PerusopetusView />
-      </FeatureRoute>
-      <FeatureRoute
+      <Route
         exact
-        path={`${basePath}/oppijat/:oid`}
-        component={OppijaView}
+        path={`${basePath}/hunter2`}
+        component={FeatureFlagEnabler}
       />
-      <FeatureRoute exact path={`${basePath}/`}>
-        <HomeView
-          user={user}
-          organisaatiotJaKayttooikeusroolit={
-            organisaatiotJaKayttooikeusroolit.data
-          }
-        />
-      </FeatureRoute>
+      {isFeatureFlagEnabled() && (
+        <>
+          <Route exact path={`${basePath}/oppijat`}>
+            <MainNavigation
+              selected="hakutilanne"
+              options={navOptions}
+              onChange={() => null}
+            />
+            <PerusopetusView />
+          </Route>
+          <Route
+            exact
+            path={`${basePath}/oppijat/:oid`}
+            component={OppijaView}
+          />
+          <Route exact path={`${basePath}/`}>
+            <HomeView
+              user={user}
+              organisaatiotJaKayttooikeusroolit={
+                organisaatiotJaKayttooikeusroolit.data
+              }
+            />
+          </Route>
+        </>
+      )}
       <Route component={NotFoundView} />
     </Switch>
   )
