@@ -12,7 +12,7 @@ deploy() {
   local env="$3"
 
   local aws="$AWS_CLI --profile oph-koski-$ENV"
-  local s3_path="valpas/virkailija"
+  local s3_path="valpas"
   local distribution_id_parameter_name='/valpas/cloudfront-distribution-id'
 
   echo "Deploying $source_dir to S3 bucket $s3_bucket (environment: $env)"

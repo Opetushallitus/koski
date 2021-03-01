@@ -24,9 +24,9 @@ import { OppijaView } from "./oppija/OppijaView"
 const featureFlagName = "valpas-feature"
 const featureFlagEnabledValue = "enabled"
 
-const FeatureFlagEnabler = () => {
+const FeatureFlagEnabler = (props: { virkailijaBasePath: string }) => {
   window.localStorage.setItem(featureFlagName, featureFlagEnabledValue)
-  return <Redirect to="/" />
+  return <Redirect to={props.virkailijaBasePath} />
 }
 
 const runningLocally = window.environment == "local"
@@ -66,11 +66,9 @@ const VirkailijaRoutes = ({ basePath, user }: VirkailijaRoutesProps) => {
 
   return (
     <Switch>
-      <Route
-        exact
-        path={`${basePath}/hunter2`}
-        component={FeatureFlagEnabler}
-      />
+      <Route exact path={`${basePath}/hunter2`}>
+        <FeatureFlagEnabler virkailijaBasePath={basePath} />
+      </Route>
       <FeatureRoute exact path={`${basePath}/oppijat`}>
         <MainNavigation
           selected="hakutilanne"
