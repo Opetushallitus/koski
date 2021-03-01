@@ -515,7 +515,7 @@ jobs:
       - name: Backup current Valpas frontend
         run: |
           mkdir -p valpas_previous
-          aws s3 sync s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas/virkailija valpas_previous
+          aws s3 sync s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas valpas_previous
 
       - name: Deploy Valpas frontend
         id: valpas-deploy
@@ -523,7 +523,7 @@ jobs:
           ARTIFACTORY_URL_PREFIX: https://artifactory.opintopolku.fi/artifactory/oph-sade-release-local/fi/vm/sade/koski
         run: |
           curl -s -S -f -L $ARTIFACTORY_URL_PREFIX/${{ github.sha }}/koski-${{ github.sha }}.war | jar -x
-          aws s3 sync VALPAS-WEB s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas/virkailija --delete
+          aws s3 sync VALPAS-WEB s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas --delete
 
       - name: Deploy using CodeDeploy
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
@@ -539,9 +539,9 @@ jobs:
       - name: Roll back Valpas deployment
         if: failure() && steps.valpas-deploy.outcome == 'success'
         run: |
-          aws s3 sync valpas_previous s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas/virkailija --delete
+          aws s3 sync valpas_previous s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas --delete
           distribution_id=$(aws ssm get-parameter --name /valpas/cloudfront-distribution-id --query Parameter.Value --output text)
-          invalidation_id=$(aws cloudfront create-invalidation --distribution-id $distribution_id --paths '/valpas/virkailija/*' --query Invalidation.Id --output text)
+          invalidation_id=$(aws cloudfront create-invalidation --distribution-id $distribution_id --paths '/valpas/*' --query Invalidation.Id --output text)
           aws cloudfront wait invalidation-completed --distribution-id $distribution_id --id $invalidation_id
 
       - name: Get raportointikanta loader task definition ARN
@@ -632,7 +632,7 @@ jobs:
       - name: Backup current Valpas frontend
         run: |
           mkdir -p valpas_previous
-          aws s3 sync s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas/virkailija valpas_previous
+          aws s3 sync s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas valpas_previous
 
       - name: Deploy Valpas frontend
         id: valpas-deploy
@@ -640,7 +640,7 @@ jobs:
           ARTIFACTORY_URL_PREFIX: https://artifactory.opintopolku.fi/artifactory/oph-sade-release-local/fi/vm/sade/koski
         run: |
           curl -s -S -f -L $ARTIFACTORY_URL_PREFIX/${{ github.sha }}/koski-${{ github.sha }}.war | jar -x
-          aws s3 sync VALPAS-WEB s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas/virkailija --delete
+          aws s3 sync VALPAS-WEB s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas --delete
 
       - name: Deploy using CodeDeploy
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
@@ -656,9 +656,9 @@ jobs:
       - name: Roll back Valpas deployment
         if: failure() && steps.valpas-deploy.outcome == 'success'
         run: |
-          aws s3 sync valpas_previous s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas/virkailija --delete
+          aws s3 sync valpas_previous s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas --delete
           distribution_id=$(aws ssm get-parameter --name /valpas/cloudfront-distribution-id --query Parameter.Value --output text)
-          invalidation_id=$(aws cloudfront create-invalidation --distribution-id $distribution_id --paths '/valpas/virkailija/*' --query Invalidation.Id --output text)
+          invalidation_id=$(aws cloudfront create-invalidation --distribution-id $distribution_id --paths '/valpas/*' --query Invalidation.Id --output text)
           aws cloudfront wait invalidation-completed --distribution-id $distribution_id --id $invalidation_id
 
       - name: Get raportointikanta loader task definition ARN
@@ -749,7 +749,7 @@ jobs:
       - name: Backup current Valpas frontend
         run: |
           mkdir -p valpas_previous
-          aws s3 sync s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas/virkailija valpas_previous
+          aws s3 sync s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas valpas_previous
 
       - name: Deploy Valpas frontend
         id: valpas-deploy
@@ -757,7 +757,7 @@ jobs:
           ARTIFACTORY_URL_PREFIX: https://artifactory.opintopolku.fi/artifactory/oph-sade-release-local/fi/vm/sade/koski
         run: |
           curl -s -S -f -L $ARTIFACTORY_URL_PREFIX/${{ github.sha }}/koski-${{ github.sha }}.war | jar -x
-          aws s3 sync VALPAS-WEB s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas/virkailija --delete
+          aws s3 sync VALPAS-WEB s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas --delete
 
       - name: Deploy using CodeDeploy
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
@@ -773,9 +773,9 @@ jobs:
       - name: Roll back Valpas deployment
         if: failure() && steps.valpas-deploy.outcome == 'success'
         run: |
-          aws s3 sync valpas_previous s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas/virkailija --delete
+          aws s3 sync valpas_previous s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas --delete
           distribution_id=$(aws ssm get-parameter --name /valpas/cloudfront-distribution-id --query Parameter.Value --output text)
-          invalidation_id=$(aws cloudfront create-invalidation --distribution-id $distribution_id --paths '/valpas/virkailija/*' --query Invalidation.Id --output text)
+          invalidation_id=$(aws cloudfront create-invalidation --distribution-id $distribution_id --paths '/valpas/*' --query Invalidation.Id --output text)
           aws cloudfront wait invalidation-completed --distribution-id $distribution_id --id $invalidation_id
 
       - name: Get raportointikanta loader task definition ARN
