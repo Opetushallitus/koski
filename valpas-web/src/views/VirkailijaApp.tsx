@@ -20,6 +20,7 @@ import { ErrorView, NotFoundView } from "../views/ErrorView"
 import { PerusopetusView } from "./hakutilanne/PerusopetusView"
 import { HomeView } from "./HomeView"
 import { OppijaView } from "./oppija/OppijaView"
+import { Raamit } from "./Raamit"
 
 const featureFlagName = "valpas-feature"
 const featureFlagEnabledValue = "enabled"
@@ -58,11 +59,9 @@ const VirkailijaRoutes = ({ basePath, user }: VirkailijaRoutesProps) => {
 
   return (
     <Switch>
-      <Route
-        exact
-        path={`${basePath}/hunter2`}
-        component={FeatureFlagEnabler}
-      />
+      <Route exact path={`${basePath}/hunter2`}>
+        <FeatureFlagEnabler virkailijaBasePath={basePath} />
+      </Route>
       {isFeatureFlagEnabled() && (
         <>
           <Route exact path={`${basePath}/oppijat`}>
@@ -92,10 +91,6 @@ const VirkailijaRoutes = ({ basePath, user }: VirkailijaRoutesProps) => {
     </Switch>
   )
 }
-
-const LocalRaamit = React.lazy(
-  () => import("../components/navigation/LocalRaamit")
-)
 
 const Login = () => {
   React.useEffect(() => {
@@ -139,9 +134,7 @@ const VirkailijaApp = ({ basePath }: VirkailijaAppProps) => {
 
   return (
     <>
-      {runningLocally && !window.virkailija_raamit_set_to_load && (
-        <LocalRaamit user={user} />
-      )}
+      <Raamit user={user} />
       {hasValpasAccess(user) ? (
         <Page id="virkailija-app">
           <VirkailijaRoutes user={user} basePath={basePath} />
