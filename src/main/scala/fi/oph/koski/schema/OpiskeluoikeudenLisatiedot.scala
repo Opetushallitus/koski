@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
-import fi.oph.scalaschema.annotation.Description
+import fi.oph.koski.schema.annotation.ReadOnly
 
 trait OpiskeluoikeudenLisätiedot
 
@@ -53,7 +53,9 @@ trait Kuljetusetuinen {
 
 trait MaksuttomuusTieto extends OpiskeluoikeudenLisätiedot {
   import mojave._
+  @ReadOnly("Tietoa ei vielä voi syöttää käyttöliittymän kautta.")
   def maksuttomuus: Option[List[Maksuttomuus]]
+  @ReadOnly("Tietoa ei vielä voi syöttää käyttöliittymän kautta.")
   def oikeuttaMaksuttomuuteenPidennetty: Option[List[MaksuttomuuttaPidennetty]]
 
   final def withMaksuttomus(maksuttomuus: Option[List[Maksuttomuus]]): MaksuttomuusTieto =
