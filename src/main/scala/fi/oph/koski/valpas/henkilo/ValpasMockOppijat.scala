@@ -14,6 +14,10 @@ object ValpasMockOppijat {
   val kotiopetusMeneilläänOppija = valpasOppijat.oppija("Kotiopetus-meneillä", "Valpas", "210905A2151")
   val kotiopetusMenneisyydessäOppija = valpasOppijat.oppija("Kotiopetus-menneisyydessä", "Valpas", "060205A8805")
   val eronnutOppija = valpasOppijat.oppija("Eroaja", "Valpas", "240905A0078")
+  val luokalleJäänytYsiluokkalainen = valpasOppijat.oppija("LuokallejäänytYsiluokkalainen", "Valpas", "020805A5625")
+  val luokallejäänytYsiluokkalainenJollaUusiYsiluokka = valpasOppijat.oppija("LuokallejäänytYsiluokkalainenJatkaa", "Valpas", "060205A7222")
+  val valmistunutYsiluokkalainen = valpasOppijat.oppija("Ysiluokka-valmis-keväällä-2021", "Valpas", "190605A006K")
+  val luokalleJäänytYsiluokkalainenVaihtanutKoulua = valpasOppijat.oppija("LuokallejäänytYsiluokkalainenKouluvaihto", "Valpas", "050605A7684")
 
   def defaultOppijat = valpasOppijat.getOppijat
 }
