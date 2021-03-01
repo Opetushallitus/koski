@@ -63,30 +63,26 @@ const VirkailijaRoutes = ({ basePath, user }: VirkailijaRoutesProps) => {
         <FeatureFlagEnabler virkailijaBasePath={basePath} />
       </Route>
       {isFeatureFlagEnabled() && (
-        <>
-          <Route exact path={`${basePath}/oppijat`}>
-            <MainNavigation
-              selected="hakutilanne"
-              options={navOptions}
-              onChange={() => null}
-            />
-            <PerusopetusView />
-          </Route>
-          <Route
-            exact
-            path={`${basePath}/oppijat/:oid`}
-            component={OppijaView}
+        <Route exact path={`${basePath}/oppijat`}>
+          <MainNavigation
+            selected="hakutilanne"
+            options={navOptions}
+            onChange={() => null}
           />
-          <Route exact path={`${basePath}/`}>
-            <HomeView
-              user={user}
-              organisaatiotJaKayttooikeusroolit={
-                organisaatiotJaKayttooikeusroolit.data
-              }
-            />
-          </Route>
-        </>
+          <PerusopetusView />
+        </Route>
       )}
+      {isFeatureFlagEnabled() && (
+        <Route exact path={`${basePath}/oppijat/:oid`} component={OppijaView} />
+      )}
+      <Route exact path={`${basePath}/`}>
+        <HomeView
+          user={user}
+          organisaatiotJaKayttooikeusroolit={
+            organisaatiotJaKayttooikeusroolit.data
+          }
+        />
+      </Route>
       <Route component={NotFoundView} />
     </Switch>
   )

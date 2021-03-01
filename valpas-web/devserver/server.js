@@ -47,7 +47,7 @@ async function startServer({
   const serverStarted = new Promise((resolve) => {
     server = app.listen(Number(port), () => {
       const host = path.join(`localhost:${port}`, publicUrl)
-      console.log(`\nServer running at http://${host}`)
+      console.log(`\nVirkailija app running at http://${host}/virkailija`)
       resolve()
     })
   })
