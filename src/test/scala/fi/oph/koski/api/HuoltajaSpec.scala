@@ -5,10 +5,14 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.AuditLogTester
 import org.json4s.jackson.JsonMethods
 import org.json4s.{DefaultFormats, JObject}
-import org.scalatest.FreeSpec
+import org.scalatest.{BeforeAndAfterAll, FreeSpec}
 
-class HuoltajaSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsPerusopetus {
+class HuoltajaSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsPerusopetus with BeforeAndAfterAll {
   implicit val formats = DefaultFormats
+
+  override protected def beforeAll(): Unit = {
+    resetFixtures
+  }
 
   "Huollettavan tietojen katselu" - {
     "Tarkistaa, että huollettavat tulevat login-datan mukana" in {

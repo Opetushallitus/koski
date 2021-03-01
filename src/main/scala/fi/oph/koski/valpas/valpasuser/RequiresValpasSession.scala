@@ -5,7 +5,6 @@ import fi.oph.koski.koskiuser.{HasSession, KoskiSpecificAuthenticationSupport, K
 
 trait RequiresValpasSession extends ValpasAuthenticationSupport with HasValpasSession {
   implicit def session: ValpasSession = koskiSessionOption.get
-  def valpasSession = session
 
   before() {
     requireValpasSession
@@ -17,7 +16,7 @@ trait RequiresValpasSession extends ValpasAuthenticationSupport with HasValpasSe
         haltWithStatus(status)
       case _ =>
         if (!koskiSessionOption.exists(isValpasSession)) {
-          haltWithStatus(KoskiErrorCategory.forbidden())
+          haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
         }
     }
   }

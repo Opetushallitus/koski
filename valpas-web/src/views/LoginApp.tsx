@@ -9,7 +9,7 @@ import { TextField } from "../components/forms/TextField"
 import { Error } from "../components/typography/error"
 import { t, T } from "../i18n/i18n"
 import { formSubmitHandler } from "../utils/eventHandlers"
-import { publicUrl } from "../utils/url"
+import { virkailijaPublicUrl } from "../utils/url"
 
 export default () => {
   const [username, setUsername] = useState("")
@@ -26,7 +26,7 @@ export default () => {
 
   useEffect(() => {
     if (login.state === "success") {
-      location.href = publicUrl()
+      location.href = virkailijaPublicUrl()
     }
   }, [login])
 

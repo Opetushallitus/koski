@@ -13,6 +13,8 @@ export const buildParamString = (params?: object) =>
 
 export const publicUrl = () => process.env.PUBLIC_URL || "/"
 
+export const virkailijaPublicUrl = () => publicUrl() + "/virkailija"
+
 export const absoluteValpasUrl = (path?: string) =>
   location.origin + publicUrl() + (path || "")
 

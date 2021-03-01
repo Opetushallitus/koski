@@ -8,18 +8,31 @@ import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
 
 class ValpasRootApiServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with RequiresValpasSession {
   private lazy val organisaatioService = application.organisaatioService
+  private lazy val oppijaService = new ValpasOppijaService(application)
 
   get("/user") {
-    valpasSession.user
+    session.user
   }
 
   get("/organisaatiot-ja-kayttooikeusroolit") {
-    val globaalit = valpasSession.globalKäyttöoikeudet.toList.flatMap(_.globalPalveluroolit.map(palvelurooli =>
+    val globaalit = session.globalKäyttöoikeudet.toList.flatMap(_.globalPalveluroolit.map(palvelurooli =>
       OrganisaatioHierarkiaJaKayttooikeusrooli(OrganisaatioHierarkia(Opetushallitus.organisaatioOid, Opetushallitus.nimi, List.empty, List.empty), palvelurooli.rooli)
     )).sortBy(r => (r.organisaatioHierarkia.nimi.get(session.lang), r.kayttooikeusrooli))
 
     val organisaatiokohtaiset = organisaatioService.omatOrganisaatiotJaKayttooikeusroolit.map(o => o.copy(organisaatioHierarkia = o.organisaatioHierarkia.copy(children = List())))
 
     globaalit ++ organisaatiokohtaiset
+  }
+
+  get("/oppijat") {
+    renderEither(
+      oppijaService.getOppijat
+      .toRight(ValpasErrorCategory.forbidden.oppijat()))
+  }
+
+  get("/oppija/:oid") {
+    renderEither(
+      oppijaService.getOppija(params("oid"))
+      .toRight(ValpasErrorCategory.forbidden.oppija()))
   }
 }

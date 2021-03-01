@@ -54,7 +54,7 @@ export const OppijaView = (props: OppijaViewProps) => {
           </ColumnsContainer> */}
           <ColumnsContainer>
             <Column size={5}>
-              <Card>
+              <Card id="opiskeluhistoria">
                 <CardHeader>
                   <T id="oppija__opiskeluhistoria_otsikko" />
                 </CardHeader>
@@ -64,7 +64,7 @@ export const OppijaView = (props: OppijaViewProps) => {
               </Card>
             </Column>
             <Column size={7}>
-              <Card>
+              <Card id="haut">
                 <CardHeader>
                   <T id="oppija__haut_otsikko" />
                 </CardHeader>
@@ -98,13 +98,17 @@ const OppijaHeadings = (props: {
   <>
     <Heading>
       {mapLoading(props.oppija, () => t("oppija__oletusotsikko"))}
-      {mapSuccess(props.oppija, (oppija) => `${oppija.nimi} (${oppija.hetu})`)}
+      {mapSuccess(
+        props.oppija,
+        (oppija) =>
+          `${oppija.henkilö.sukunimi} ${oppija.henkilö.etunimet} (${oppija.henkilö.hetu})`
+      )}
       {mapError(props.oppija, () => t("oppija__oletusotsikko"))}
     </Heading>
     <SecondaryHeading>
       {mapLoading(props.oppija, () => t("Ladataan"))}
       {mapSuccess(props.oppija, (oppija) =>
-        t("oppija__oppija_oid", { oid: oppija.oid })
+        t("oppija__oppija_oid", { oid: oppija.henkilö.oid })
       )}
       {mapError(props.oppija, () => t("oppija__ei_löydy", { oid: props.oid }))}
     </SecondaryHeading>

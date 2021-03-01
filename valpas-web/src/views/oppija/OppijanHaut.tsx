@@ -14,7 +14,7 @@ export type OppijanHautProps = {
 }
 
 export const OppijanHaut = (props: OppijanHautProps) =>
-  props.oppija.haut.length > 0 ? (
+  props.oppija.haut && props.oppija.haut.length > 0 ? (
     <div>
       {props.oppija.haut.map((haku) => (
         <HakuTable key={haku.luotu} haku={haku} />

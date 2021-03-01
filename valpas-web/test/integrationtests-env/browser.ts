@@ -9,7 +9,10 @@ import {
   WebDriver,
 } from "selenium-webdriver"
 import chrome from "selenium-webdriver/chrome"
-import { expectCleanConsoleLogs } from "./fail-on-console"
+import {
+  expectCleanConsoleLogs,
+  resetTestSpecificNetworkErrors,
+} from "./fail-on-console"
 
 declare namespace global {
   let __driver__: undefined | (() => Promise<WebDriver>)
@@ -21,6 +24,10 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000 * 60 * 5
 beforeAll(async () => {
   driver = (await buildBrowserStackDriver()) || (await buildChromeDriver())
 }, 20000)
+
+beforeEach(() => {
+  resetTestSpecificNetworkErrors()
+})
 
 afterAll(() => driver?.quit())
 
@@ -72,6 +79,21 @@ export const textEventuallyEquals = (
     expect(await element.getText()).toEqual(expected)
   }, timeout)
 
+export const contentEventuallyEquals = (
+  selector: string,
+  expected: string,
+  timeout = 1000
+) =>
+  textEventuallyEquals(
+    selector,
+    expected
+      .trim()
+      .split("\n")
+      .map((a) => a.trim())
+      .join("\n"),
+    timeout
+  )
+
 export const sleep = (time: number) =>
   new Promise((resolve) => setTimeout(resolve, time))
 
@@ -102,18 +124,18 @@ export const deleteCookies = async () => {
 export const reset = async (initialPath: string) => {
   await deleteCookies()
   await goToLocation(initialPath)
-  await driver.wait(until.elementLocated(By.css("article#login-app")), 5000)
+  await driver.wait(until.elementLocated(By.css("article")), 5000)
   await resetMockData()
 }
 
 export const resetMockData = async () => {
   await clickElement("#resetMockData")
-  await textEventuallyEquals("#resetMockDataState", "success", 5000)
+  await textEventuallyEquals("#resetMockDataState", "success", 15000)
 }
 
 export const clearMockData = async () => {
   await clickElement("#clearMockData")
-  await textEventuallyEquals("#clearMockDataState", "success", 5000)
+  await textEventuallyEquals("#clearMockDataState", "success", 15000)
 }
 
 export const loginAs = async (
