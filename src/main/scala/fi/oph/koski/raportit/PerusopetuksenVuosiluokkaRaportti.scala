@@ -2,7 +2,7 @@ package fi.oph.koski.raportit
 
 import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koodisto.{KoodistoPalvelu, Kunta}
+import fi.oph.koski.koodisto.{KoodistoPalvelu}
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.{Koodistokoodiviite, _}
@@ -42,7 +42,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
       sukunimi = row.henkilo.sukunimi,
       etunimet = row.henkilo.etunimet,
       sukupuoli = row.henkilo.sukupuoli,
-      kotikunta = Kunta.getKunnanNimi(row.henkilo.kotikunta, koodistoPalvelu),
+      kotikunta = row.henkilo.kotikuntaNimiFi,
       opiskeluoikeudenAlkamispäivä = row.opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
       viimeisinTila = row.opiskeluoikeus.viimeisinTila.getOrElse(""),
       tilaHakupaivalla = row.aikajaksot.last.tila,
