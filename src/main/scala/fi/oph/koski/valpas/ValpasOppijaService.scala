@@ -34,7 +34,12 @@ class ValpasOppijaService(application: KoskiApplication) extends Logging {
   def enrichOppija(oppija: ValpasOppija): ValpasOppija =
     oppija.copy(
       opiskeluoikeudet = oppija.opiskeluoikeudet.map(opiskeluoikeus =>
-        opiskeluoikeus.copy(tyyppi = enrichKoodistokoodiviite(opiskeluoikeus.tyyppi))))
+        opiskeluoikeus.copy(
+          tyyppi = enrichKoodistokoodiviite(opiskeluoikeus.tyyppi),
+          viimeisinTila = enrichKoodistokoodiviite(opiskeluoikeus.viimeisinTila)
+        )
+      )
+    )
 
   def enrichKoodistokoodiviite(koodiviite: Koodistokoodiviite): Koodistokoodiviite =
     if (koodiviite.nimi.isDefined) {

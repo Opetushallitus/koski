@@ -45,7 +45,11 @@ class ValpasDatabaseService(application: KoskiApplication) extends Logging {
           ),
           'alkamispäivä', r_opiskeluoikeus.alkamispaiva,
           'päättymispäivä', r_opiskeluoikeus.paattymispaiva,
-          'ryhmä', r_opiskeluoikeus.luokka
+          'ryhmä', r_opiskeluoikeus.luokka,
+          'viimeisinTila', json_build_object(
+            'koodiarvo', r_opiskeluoikeus.viimeisin_tila,
+            'koodistoUri', 'koskiopiskeluoikeudentila'
+          )
         )) opiskeluoikeudet
       FROM
         r_henkilo

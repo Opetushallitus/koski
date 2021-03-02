@@ -1,5 +1,6 @@
 import {
   HakemuksentilaKoodistoviite,
+  OpiskeluoikeudenTila,
   Opiskeluoikeudentyyppi,
   ValintatietotilaKoodistoviite,
 } from "./koodistot"
@@ -47,6 +48,5 @@ export type Opiskeluoikeus = {
   arvioituPäättymispäivä?: ISODate
   päättymispäivä?: ISODate
   ryhmä?: string
+  viimeisinTila?: OpiskeluoikeudenTila
 }
-
-export type OpiskeluoikeudenTila = {}

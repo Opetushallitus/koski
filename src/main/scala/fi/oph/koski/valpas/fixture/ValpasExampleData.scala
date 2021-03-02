@@ -1,13 +1,14 @@
 package fi.oph.koski.valpas.fixture
 
-import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, vahvistusPaikkakunnalla}
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, vahvistusPaikkakunnalla}
 import fi.oph.koski.documentation.ExamplesLukio
-import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, perusopetuksenOppimääränSuoritusKesken, yhdeksännenLuokanSuoritus}
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste}
-import fi.oph.koski.schema.{Aikajakso, NuortenPerusopetuksenOpiskeluoikeudenTila, NuortenPerusopetuksenOpiskeluoikeusjakso, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus}
-
+import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, kaikkiAineet, perusopetuksenDiaarinumero, perusopetuksenOppimääränSuoritus, perusopetuksenOppimääränSuoritusKesken, yhdeksännenLuokanSuoritus}
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste, oppilaitos}
+import fi.oph.koski.schema.{Aikajakso, NuortenPerusopetuksenOpiskeluoikeudenTila, NuortenPerusopetuksenOpiskeluoikeusjakso, PerusopetuksenLuokkaAste, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus}
 import java.time.{LocalDate, Month}
 import java.time.LocalDate.{of => date}
+
+import fi.oph.koski.organisaatio.MockOrganisaatiot.aapajoenKoulu
 
 object ValpasExampleData {
   def oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus = PerusopetuksenOpiskeluoikeus(
@@ -27,6 +28,122 @@ object ValpasExampleData {
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
       List(
         NuortenPerusopetuksenOpiskeluoikeusjakso(date(2012, 8, 15), opiskeluoikeusLäsnä)
+      )
+    )
+  )
+
+  def valmistunutYsiluokkalainen = PerusopetuksenOpiskeluoikeus(
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    koulutustoimija = None,
+    suoritukset = List(
+      perusopetuksenOppimääränSuoritus.copy(
+        vahvistus = vahvistusPaikkakunnalla(date(2021, 5, 30))
+      ),
+      kahdeksannenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2019, 8, 15)),
+        vahvistus = vahvistusPaikkakunnalla(date(2020, 5, 30)),
+      ),
+      yhdeksännenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2020, 8, 15)),
+        vahvistus = vahvistusPaikkakunnalla(date(2021, 5, 30)),
+      )
+    ),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2012, 8, 15), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 5, 30), opiskeluoikeusValmistunut)
+      )
+    )
+  )
+
+  def luokallejäänytYsiluokkalainen = PerusopetuksenOpiskeluoikeus(
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    koulutustoimija = None,
+    suoritukset = List(
+      perusopetuksenOppimääränSuoritusKesken,
+      kahdeksannenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2019, 8, 15)),
+        vahvistus = vahvistusPaikkakunnalla(date(2020, 5, 30)),
+      ),
+      yhdeksännenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2020, 8, 15)),
+        luokka = "9A",
+        jääLuokalle = true,
+        vahvistus = vahvistusPaikkakunnalla(date(2021, 5, 30))
+      )
+    ),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2012, 8, 15), opiskeluoikeusLäsnä)
+      )
+    )
+  )
+
+  def luokallejäänytYsiluokkalainenJollaUusiYsiluokka = PerusopetuksenOpiskeluoikeus(
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    koulutustoimija = None,
+    suoritukset = List(
+      perusopetuksenOppimääränSuoritusKesken,
+      kahdeksannenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2019, 8, 15)),
+        vahvistus = vahvistusPaikkakunnalla(date(2020, 5, 30)),
+      ),
+      yhdeksännenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2020, 8, 15)),
+        luokka = "9A",
+        jääLuokalle = true,
+        vahvistus = vahvistusPaikkakunnalla(date(2021, 5, 30))
+      ),
+      yhdeksännenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2021, 8, 15)),
+        vahvistus = None,
+        luokka = "9B"
+      )
+    ),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2012, 8, 15), opiskeluoikeusLäsnä)
+      )
+    )
+  )
+
+  def luokallejäänytYsiluokkalainenVaihtanutKouluaEdellinen = PerusopetuksenOpiskeluoikeus(
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    koulutustoimija = None,
+    suoritukset = List(
+      perusopetuksenOppimääränSuoritusKesken,
+      kahdeksannenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2019, 8, 15)),
+        vahvistus = vahvistusPaikkakunnalla(date(2020, 5, 30)),
+      ),
+      yhdeksännenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2020, 8, 15)),
+        luokka = "9A",
+        jääLuokalle = true,
+        vahvistus = vahvistusPaikkakunnalla(date(2021, 5, 30))
+      )
+    ),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2012, 8, 15), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 5, 30), opiskeluoikeusEronnut)
+      )
+    )
+  )
+
+  def luokallejäänytYsiluokkalainenVaihtanutKouluaJälkimmäinen = PerusopetuksenOpiskeluoikeus(
+    oppilaitos = Some(oppilaitos(aapajoenKoulu)),
+    koulutustoimija = None,
+    suoritukset = List(
+      yhdeksännenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2021, 8, 15)),
+        vahvistus = None,
+        luokka = "9B"
+      )
+    ),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 8, 15), opiskeluoikeusLäsnä)
       )
     )
   )

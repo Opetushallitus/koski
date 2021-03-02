@@ -31,6 +31,29 @@ describe("Oppijakohtainen näkymä", () => {
       Perusopetus 2012 –
       Jyväskylän normaalikoulu
       Ryhmä: 9C
+      Tila: Läsnä
+      `
+    )
+  })
+
+  it("Näyttää oppijan tiedot valmistuneelle ysiluokkalaiselle", async () => {
+    await loginAs(
+      "/virkailija/oppijat/1.2.246.562.24.00000000011",
+      "valpas-jkl-normaali",
+      "valpas-jkl-normaali"
+    )
+    await mainHeadingEquals(
+      "Ysiluokka-valmis-keväällä-2021 Valpas (190605A006K)"
+    )
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000011")
+    await contentEventuallyEquals(
+      "#opiskeluhistoria .card__body",
+      `
+      school
+      Perusopetus 2012 – 2021
+      Jyväskylän normaalikoulu
+      Ryhmä: 9C
+      Tila: Valmistunut
       `
     )
   })
@@ -63,6 +86,7 @@ describe("Oppijakohtainen näkymä", () => {
       Perusopetus 2012 –
       Jyväskylän normaalikoulu
       Ryhmä: 9B
+      Tila: Läsnä
       `
     )
   })

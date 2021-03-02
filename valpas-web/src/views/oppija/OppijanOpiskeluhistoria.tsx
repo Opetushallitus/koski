@@ -40,6 +40,12 @@ export const OppijanOpiskeluhistoria = (
                   <T id="oppija__ryhma" />: {opiskeluoikeus.ryhmä}
                 </li>
               )}
+              {opiskeluoikeus.viimeisinTila && (
+                <li>
+                  <T id="oppija__viimeisin_tila" />:{" "}
+                  {koodistonimi(opiskeluoikeus.viimeisinTila)}
+                </li>
+              )}
             </ul>
           </IconSection>
         )

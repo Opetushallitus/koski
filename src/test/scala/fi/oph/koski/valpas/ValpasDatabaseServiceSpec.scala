@@ -20,12 +20,24 @@ class ValpasDatabaseServiceSpec extends ValpasTestBase {
       ValpasExampleData.kotiopetusMenneisyydessäOpiskeluoikeus
     ),
     (
+      ValpasMockOppijat.luokalleJäänytYsiluokkalainen,
+      ValpasExampleData.luokallejäänytYsiluokkalainen
+    ),
+    (
+      ValpasMockOppijat.luokallejäänytYsiluokkalainenJollaUusiYsiluokka,
+      ValpasExampleData.luokallejäänytYsiluokkalainenJollaUusiYsiluokka
+    ),
+    (
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
       ValpasExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus
     ),
     (
       ValpasMockOppijat.päällekkäisiäOppivelvollisuuksia,
       ValpasExampleData.oppivelvollinenVaihtanutKouluaMuttaOpiskeluoikeusMerkkaamattaOikein2
+    ),
+    (
+      ValpasMockOppijat.valmistunutYsiluokkalainen,
+      ValpasExampleData.valmistunutYsiluokkalainen
     )
   )
 
