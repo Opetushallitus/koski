@@ -2,7 +2,6 @@ package fi.oph.koski.raportit
 
 import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koodisto.{KoodistoPalvelu}
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.{Koodistokoodiviite, _}
@@ -11,16 +10,16 @@ import fi.oph.koski.log.Logging
 
 object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta with Logging {
 
-  def buildRaportti(repository: PerusopetuksenRaportitRepository, oppilaitosOids: Seq[Oid], paiva: LocalDate, vuosiluokka: String, koodistoPalvelu: KoodistoPalvelu): Seq[PerusopetusRow] = {
+  def buildRaportti(repository: PerusopetuksenRaportitRepository, oppilaitosOids: Seq[Oid], paiva: LocalDate, vuosiluokka: String): Seq[PerusopetusRow] = {
     val rows = if (vuosiluokka == "9") {
       repository.peruskoulunPaattavatJaLuokalleJääneet(oppilaitosOids, paiva, vuosiluokka)
     } else {
       repository.perusopetuksenvuosiluokka(oppilaitosOids, paiva, vuosiluokka)
     }
-    rows.map(buildRow(_, paiva, koodistoPalvelu))
+    rows.map(buildRow(_, paiva))
   }
 
-  private def buildRow(row: PerusopetuksenRaporttiRows, hakupaiva: LocalDate, koodistoPalvelu: KoodistoPalvelu) = {
+  private def buildRow(row: PerusopetuksenRaporttiRows, hakupaiva: LocalDate) = {
     val opiskeluoikeudenLisätiedot = JsonSerializer.extract[Option[PerusopetuksenOpiskeluoikeudenLisätiedot]](row.opiskeluoikeus.data \ "lisätiedot")
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](row.opiskeluoikeus.data \ "lähdejärjestelmänId")
     val (toimintaalueOsasuoritukset, muutOsasuoritukset) = row.osasuoritukset.partition(_.suorituksenTyyppi == "perusopetuksentoimintaalue")

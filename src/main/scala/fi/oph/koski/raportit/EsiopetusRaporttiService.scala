@@ -10,7 +10,7 @@ import fi.oph.koski.log.{AuditLog, AuditLogMessage}
 import fi.oph.koski.schema.Organisaatio.Oid
 
 class EsiopetusRaporttiService(application: KoskiApplication) {
-  private val esiopetusRaportti = EsiopetusRaportti(application.raportointiDatabase.db, application.organisaatioService, application.koodistoPalvelu)
+  private val esiopetusRaportti = EsiopetusRaportti(application.raportointiDatabase.db, application.organisaatioService)
 
   def buildOstopalveluRaportti(date: LocalDate, password: String, downloadToken: Option[String])(implicit session: KoskiSpecificSession): OppilaitosRaporttiResponse = {
     val ostopalveluOrganisaatiot = omatOstopalveluOrganisaatioOidit
