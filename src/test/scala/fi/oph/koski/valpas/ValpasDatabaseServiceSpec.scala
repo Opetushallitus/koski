@@ -16,6 +16,18 @@ class ValpasDatabaseServiceSpec extends ValpasTestBase {
   // Jyväskylän normaalikoulusta löytyvät näytettävät oppivelvolliset aakkosjärjestyksessä
   val oppivelvolliset = List(
     (
+      ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
+      ValpasExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus
+    ),
+    (
+      ValpasMockOppijat.päällekkäisiäOppivelvollisuuksia,
+      ValpasExampleData.oppivelvollinenVaihtanutKouluaMuttaOpiskeluoikeusMerkkaamattaOikein2
+    ),
+    (
+      ValpasMockOppijat.valmistunutYsiluokkalainen,
+      ValpasExampleData.valmistunutYsiluokkalainen
+    ),
+    (
       ValpasMockOppijat.kotiopetusMenneisyydessäOppija,
       ValpasExampleData.kotiopetusMenneisyydessäOpiskeluoikeus
     ),
@@ -27,19 +39,7 @@ class ValpasDatabaseServiceSpec extends ValpasTestBase {
       ValpasMockOppijat.luokallejäänytYsiluokkalainenJollaUusiYsiluokka,
       ValpasExampleData.luokallejäänytYsiluokkalainenJollaUusiYsiluokka
     ),
-    (
-      ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
-      ValpasExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus
-    ),
-    (
-      ValpasMockOppijat.päällekkäisiäOppivelvollisuuksia,
-      ValpasExampleData.oppivelvollinenVaihtanutKouluaMuttaOpiskeluoikeusMerkkaamattaOikein2
-    ),
-    (
-      ValpasMockOppijat.valmistunutYsiluokkalainen,
-      ValpasExampleData.valmistunutYsiluokkalainen
-    )
-  )
+  ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
   "getOppivelvollinenHenkilö palauttaa vain annetun oppijanumeron mukaisen oppijan" in {
     val (expectedOppija, expectedOpiskeluoikeus) = oppivelvolliset(1)
