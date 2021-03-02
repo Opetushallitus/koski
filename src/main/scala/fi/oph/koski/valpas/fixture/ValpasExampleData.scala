@@ -85,9 +85,11 @@ object ValpasExampleData {
     koulutustoimija = None,
     suoritukset = List(
       perusopetuksenOppimääränSuoritusKesken,
-      kahdeksannenLuokanSuoritus.copy(
-        alkamispäivä = Some(date(2019, 8, 15)),
-        vahvistus = vahvistusPaikkakunnalla(date(2020, 5, 30)),
+      // Tarkoituksella väärässä aikajärjestyksessä, jotta tulee testattua paremmin
+      yhdeksännenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2021, 8, 15)),
+        vahvistus = None,
+        luokka = "9B"
       ),
       yhdeksännenLuokanSuoritus.copy(
         alkamispäivä = Some(date(2020, 8, 15)),
@@ -95,11 +97,10 @@ object ValpasExampleData {
         jääLuokalle = true,
         vahvistus = vahvistusPaikkakunnalla(date(2021, 5, 30))
       ),
-      yhdeksännenLuokanSuoritus.copy(
-        alkamispäivä = Some(date(2021, 8, 15)),
-        vahvistus = None,
-        luokka = "9B"
-      )
+      kahdeksannenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2019, 8, 15)),
+        vahvistus = vahvistusPaikkakunnalla(date(2020, 5, 30)),
+      ),
     ),
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
       List(

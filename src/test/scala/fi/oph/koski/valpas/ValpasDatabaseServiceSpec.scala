@@ -4,6 +4,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus}
+import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
 import fi.oph.koski.valpas.fixture.ValpasExampleData
 import fi.oph.koski.valpas.henkilo.ValpasMockOppijat
 import fi.oph.koski.valpas.repository.{ValpasDatabaseService, ValpasOppija}
@@ -103,9 +104,13 @@ class ValpasDatabaseServiceSpec extends ValpasTestBase {
       opiskeluoikeus.alkamispäivä shouldBe expectedOpiskeluoikeus.alkamispäivä.map(_.toString)
       opiskeluoikeus.päättymispäivä shouldBe expectedOpiskeluoikeus.päättymispäivä.map(_.toString)
       opiskeluoikeus.viimeisinTila.koodiarvo shouldBe expectedOpiskeluoikeus.tila.opiskeluoikeusjaksot.lastOption.map(_.tila.koodiarvo).get
-      expectedOpiskeluoikeus.suoritukset.last match {
-        case p: PerusopetuksenVuosiluokanSuoritus => opiskeluoikeus.ryhmä shouldBe Some(p.luokka)
-      }
+
+      val luokkatietoExpectedFromSuoritus = expectedOpiskeluoikeus.suoritukset.flatMap({
+        case p: PerusopetuksenVuosiluokanSuoritus if p.koulutusmoduuli.tunniste.koodiarvo == "9" => Some(p)
+        case _ => None
+      }).sortBy(s => s.alkamispäivä)(localDateOptionOrdering).reverse.head.luokka
+
+      opiskeluoikeus.ryhmä shouldBe Some(luokkatietoExpectedFromSuoritus)
     }}
   }
 }
