@@ -102,6 +102,7 @@ class ValpasDatabaseServiceSpec extends ValpasTestBase {
       opiskeluoikeus.oppilaitos.oid shouldBe expectedOpiskeluoikeus.oppilaitos.get.oid
       opiskeluoikeus.alkamispäivä shouldBe expectedOpiskeluoikeus.alkamispäivä.map(_.toString)
       opiskeluoikeus.päättymispäivä shouldBe expectedOpiskeluoikeus.päättymispäivä.map(_.toString)
+      opiskeluoikeus.viimeisinTila.koodiarvo shouldBe expectedOpiskeluoikeus.tila.opiskeluoikeusjaksot.lastOption.map(_.tila.koodiarvo).get
       expectedOpiskeluoikeus.suoritukset.last match {
         case p: PerusopetuksenVuosiluokanSuoritus => opiskeluoikeus.ryhmä shouldBe Some(p.luokka)
       }
