@@ -44,6 +44,12 @@ class ValpasDatabaseFixtureCreator(application: KoskiApplication) extends Databa
     (ValpasMockOppijat.luokalleJäänytYsiluokkalainen, ValpasExampleData.luokallejäänytYsiluokkalainen),
     (ValpasMockOppijat.luokallejäänytYsiluokkalainenJollaUusiYsiluokka, ValpasExampleData.luokallejäänytYsiluokkalainenJollaUusiYsiluokka),
     (ValpasMockOppijat.luokalleJäänytYsiluokkalainenVaihtanutKoulua, ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaEdellinen),
-    (ValpasMockOppijat.luokalleJäänytYsiluokkalainenVaihtanutKoulua, ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaJälkimmäinen)
+    (ValpasMockOppijat.luokalleJäänytYsiluokkalainenVaihtanutKoulua, ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaJälkimmäinen),
+    (ValpasMockOppijat.luokalleJäänytYsiluokkalainenVaihtanutKouluaMuualta,  ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaEdellinen2),
+    (ValpasMockOppijat.luokalleJäänytYsiluokkalainenVaihtanutKouluaMuualta, ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaJälkimmäinen2),
+    (ValpasMockOppijat.kasiinAstiToisessaKoulussaOllut, ValpasExampleData.kasiluokkaEronnutKeväällä2020Opiskeluoikeus),
+    (ValpasMockOppijat.kasiinAstiToisessaKoulussaOllut, ValpasExampleData.pelkkäYsiluokkaKeskenKeväällä2021Opiskeluoikeus),
+    (ValpasMockOppijat.lukionAloittanut, ValpasExampleData.valmistunutYsiluokkalainen),
+    (ValpasMockOppijat.lukionAloittanut, ValpasExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä)
   )
 }
