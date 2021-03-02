@@ -9,9 +9,9 @@ import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.raportit.{Column, DataSheet}
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
-import slick.jdbc.GetResult
 
-import scala.concurrent.duration._
+import slick.jdbc.GetResult
+import scala.concurrent.duration.DurationInt
 
 case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: OrganisaatioService) extends KoskiDatabaseMethods {
   implicit private val getResult: GetResult[AikuistenPerusopetuksenOppijamäärätRaporttiRow] = GetResult(r =>

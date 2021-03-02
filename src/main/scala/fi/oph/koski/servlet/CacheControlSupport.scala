@@ -1,8 +1,7 @@
 package fi.oph.koski.servlet
 
 import org.scalatra.ScalatraServlet
-
-import scala.concurrent.duration._
+import scala.concurrent.duration.{Duration, DurationInt}
 
 trait CacheControlSupport extends ScalatraServlet {
   def getCacheHeaders: Map[String, String]

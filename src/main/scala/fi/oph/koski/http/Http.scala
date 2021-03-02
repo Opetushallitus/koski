@@ -7,6 +7,7 @@ import fi.oph.koski.http.Http.{Decode, ParameterizedUriWrapper}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.LogUtils.maskSensitiveInformation
 import fi.oph.koski.log.{LoggerWithContext, Logging}
+
 import io.prometheus.client.{Counter, Summary}
 import org.http4s._
 import org.http4s.client.blaze.BlazeClientConfig
@@ -14,7 +15,7 @@ import org.http4s.client.{Client, blaze}
 import org.http4s.headers.`Content-Type`
 import org.json4s.jackson.JsonMethods.parse
 
-import scala.concurrent.duration._
+import scala.concurrent.duration.DurationInt
 import scala.reflect.runtime.universe.TypeTag
 import scala.xml.Elem
 import scalaz.concurrent.Task

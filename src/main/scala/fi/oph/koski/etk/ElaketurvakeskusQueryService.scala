@@ -7,7 +7,8 @@ import fi.oph.koski.db.KoskiDatabaseMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import slick.jdbc.GetResult
-import scala.concurrent.duration._
+
+import scala.concurrent.duration.DurationInt
 
 class ElaketurvakeskusQueryService(val db: DB) extends KoskiDatabaseMethods {
 

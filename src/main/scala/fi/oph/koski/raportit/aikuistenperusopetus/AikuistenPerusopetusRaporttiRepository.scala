@@ -9,9 +9,9 @@ import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.util.DateOrdering.sqlDateOrdering
-import slick.jdbc.GetResult
 
-import scala.concurrent.duration._
+import slick.jdbc.GetResult
+import scala.concurrent.duration.DurationInt
 
 case class AikuistenPerusopetusRaporttiRepository(
   db: DB

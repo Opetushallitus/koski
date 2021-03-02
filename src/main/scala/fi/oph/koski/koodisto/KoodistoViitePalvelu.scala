@@ -5,7 +5,8 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.servlet.InvalidRequestException
-import scala.concurrent.duration._
+
+import scala.concurrent.duration.DurationInt
 
 case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu)(implicit cacheInvalidator: CacheManager) extends Logging {
   private val koodiviiteCache = KeyValueCache(RefreshingCache("KoodistoViitePalvelu", 1.hour, 100), { koodisto: KoodistoViite =>

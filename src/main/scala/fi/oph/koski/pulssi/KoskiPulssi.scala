@@ -8,7 +8,7 @@ import fi.oph.koski.perustiedot.OpiskeluoikeusTilasto
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoTilasto
 import fi.oph.koski.userdirectory.KäyttöoikeusServiceClient
 
-import scala.concurrent.duration._
+import scala.concurrent.duration.DurationInt
 
 
 trait KoskiPulssi {

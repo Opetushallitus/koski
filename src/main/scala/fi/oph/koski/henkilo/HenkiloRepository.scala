@@ -10,7 +10,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.virta.VirtaHenkilöRepository
 import fi.oph.koski.ytr.YtrHenkilöRepository
 
-import scala.concurrent.duration._
+import scala.concurrent.duration.DurationInt
 
 trait HetuBasedHenkilöRepository {
   def findByHetuDontCreate(hetu: String): Either[HttpStatus, Option[UusiHenkilö]]

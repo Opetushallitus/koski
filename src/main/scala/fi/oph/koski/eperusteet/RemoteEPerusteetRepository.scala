@@ -5,7 +5,7 @@ import fi.oph.koski.http.Http
 import fi.oph.koski.http.Http._
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 
-import scala.concurrent.duration._
+import scala.concurrent.duration.DurationInt
 
 class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: String)(implicit cacheInvalidator: CacheManager) extends EPerusteetRepository {
   private val http: Http = Http(ePerusteetRoot, "eperusteet")

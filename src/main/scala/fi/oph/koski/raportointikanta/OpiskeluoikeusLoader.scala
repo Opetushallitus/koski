@@ -10,10 +10,10 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.schema._
 import fi.oph.koski.raportointikanta.LoaderUtils.{convertKoodisto, convertLocalizedString}
+
 import org.json4s.JValue
 import rx.lang.scala.{Observable, Subscriber}
-
-import scala.concurrent.duration._
+import scala.concurrent.duration.DurationInt
 import scala.util.Try
 
 object OpiskeluoikeusLoader extends Logging {

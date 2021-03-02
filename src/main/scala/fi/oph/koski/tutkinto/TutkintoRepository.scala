@@ -5,7 +5,7 @@ import fi.oph.koski.eperusteet._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema.LocalizedString
 
-import scala.concurrent.duration._
+import scala.concurrent.duration.DurationInt
 
 trait TutkintoRepository {
   def findTutkinnot(oppilaitosId: String, query: String): List[TutkintoPeruste]

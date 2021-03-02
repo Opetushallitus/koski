@@ -1,25 +1,24 @@
 package fi.oph.koski.healthcheck
 
 import java.util.concurrent.TimeoutException
-
-import com.typesafe.config.Config
 import fi.oph.koski.cache.RefreshingCache.Params
 import fi.oph.koski.cache._
-import fi.oph.koski.config.{Environment, KoskiApplication, SecretsManager}
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.eperusteet.ERakenneOsa
-import fi.oph.koski.http.{ErrorDetail, HttpStatus, HttpStatusException, KoskiErrorCategory, VirkailijaCredentials}
+import fi.oph.koski.http._
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViite}
 import fi.oph.koski.koskiuser.AccessType
 import fi.oph.koski.koskiuser.KoskiSpecificSession._
-import fi.oph.koski.log.{Logging, NotLoggable}
+import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, RemoteOrganisaatioRepository}
 import fi.oph.koski.schema._
 import fi.oph.koski.userdirectory.Password
 import fi.oph.koski.util.Timing
 import fi.vm.sade.utils.cas.CasClientException
 import scalaz.concurrent.Task
-import scala.concurrent.duration._
+
+import scala.concurrent.duration.{Duration, DurationInt}
 import scala.language.postfixOps
 
 trait HealthCheck extends Logging {

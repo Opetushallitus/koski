@@ -5,13 +5,11 @@ import java.time.LocalDate
 import fi.oph.koski.db.KoskiDatabaseMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.raportit.{Column, DataSheet}
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
-import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
-import slick.jdbc.GetResult
 
-import scala.concurrent.duration._
+import slick.jdbc.GetResult
+import scala.concurrent.duration.DurationInt
 
 case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends KoskiDatabaseMethods {
   implicit private val getResult: GetResult[AikuistenPerusopetuksenOppimääränKurssikertymätRow] = GetResult(r =>

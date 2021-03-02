@@ -3,7 +3,7 @@ package fi.oph.koski.cache
 import fi.oph.koski.util.{Futures, Invocation}
 import org.scalatest.{FreeSpec, Matchers}
 
-import scala.concurrent.duration._
+import scala.concurrent.duration.DurationInt
 
 class CacheSpec extends FreeSpec with Matchers {
   implicit val manager = GlobalCacheManager

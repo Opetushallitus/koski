@@ -2,7 +2,8 @@ package fi.oph.koski.koodisto
 
 import com.typesafe.config.Config
 import fi.oph.koski.cache.{CacheManager, CachingProxy, RefreshingCache}
-import scala.concurrent.duration._
+
+import scala.concurrent.duration.DurationInt
 
 object KoodistoPalvelu {
   def apply(config: Config)(implicit cacheInvalidator: CacheManager) = {

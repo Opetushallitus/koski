@@ -9,7 +9,7 @@ import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema._
 import fi.oph.koski.util.DateOrdering
 
-import scala.concurrent.duration._
+import scala.concurrent.duration.DurationInt
 
 class RemoteOrganisaatioRepository(http: Http, val koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) extends OrganisaatioRepository {
   private val fullHierarchyCache = SingleValueCache[List[OrganisaatioHierarkia]](

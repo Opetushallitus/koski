@@ -2,11 +2,10 @@ package fi.oph.koski.koskiuser
 
 import fi.oph.koski.cache.{CacheManager, ExpiringCache, KeyValueCache}
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
-import fi.oph.koski.schema.OidOrganisaatio
 import fi.oph.koski.userdirectory.DirectoryClient
 import fi.oph.koski.util.Timing
 
-import scala.concurrent.duration._
+import scala.concurrent.duration.DurationInt
 
 class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, directoryClient: DirectoryClient)(implicit cacheInvalidator: CacheManager) extends Timing {
   def käyttäjänKäyttöoikeudet(user: AuthenticationUser): Set[Käyttöoikeus] = käyttöoikeusCache(user)

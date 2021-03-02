@@ -7,9 +7,10 @@ import fi.oph.koski.db.KoskiDatabaseMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio
-import slick.jdbc.GetResult
 import fi.oph.koski.util.DateOrdering.sqlDateOrdering
-import scala.concurrent.duration._
+
+import slick.jdbc.GetResult
+import scala.concurrent.duration.DurationInt
 
 case class AmmatillisenRaportitRepository(db: DB) extends KoskiDatabaseMethods with RaportointikantaTableQueries {
 

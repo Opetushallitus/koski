@@ -3,7 +3,7 @@ package fi.oph.koski.ytr
 import fi.oph.koski.cache.{CacheManager, ExpiringCache, KeyValueCache}
 import fi.oph.koski.henkilo.HenkilönTunnisteet
 
-import scala.concurrent.duration._
+import scala.concurrent.duration.DurationInt
 
 class YtrRepository(client: YtrClient)(implicit cacheInvalidator: CacheManager) {
   private val cache: KeyValueCache[YtrCacheKey, Option[YtrOppija]] =

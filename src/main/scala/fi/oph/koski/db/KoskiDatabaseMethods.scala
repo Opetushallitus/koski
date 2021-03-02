@@ -12,8 +12,7 @@ import slick.dbio.{DBIOAction, NoStream}
 import slick.jdbc.SetParameter
 import slick.lifted.Query
 
-import scala.concurrent.duration._
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration.{Duration, DurationInt}
 import scala.language.higherKinds
 
 trait DatabaseConverters {

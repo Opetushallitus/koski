@@ -2,7 +2,7 @@ package fi.oph.koski.cache
 
 import org.scalatest.{FreeSpec, Matchers}
 
-import scala.concurrent.duration._
+import scala.concurrent.duration.DurationInt
 
 class CachingProxySpec extends FreeSpec with Matchers {
   "CachingProxy" - {

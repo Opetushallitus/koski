@@ -4,7 +4,6 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit.MILLIS
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit.MILLISECONDS
-
 import com.google.common.cache.AbstractCache.SimpleStatsCounter
 import com.google.common.cache.CacheStats
 import fi.oph.koski.db.GlobalExecutionContext
@@ -14,7 +13,7 @@ import fi.oph.koski.util.{Futures, Invocation}
 
 import scala.collection.mutable.{Map => MutableMap}
 import scala.concurrent.Future
-import scala.concurrent.duration._
+import scala.concurrent.duration.{Duration, DurationInt}
 
 /**
   * RefreshingCache caches results of Invocations, keeping a configured number of most recently used keys. The cached

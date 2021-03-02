@@ -17,8 +17,7 @@ import fi.oph.scalaschema.annotation.SyntheticProperty
 import org.postgresql.util.PSQLException
 import slick.dbio.DBIO
 import slick.driver.PostgresDriver
-
-import scala.concurrent.duration._
+import scala.concurrent.duration.DurationInt
 
 object RaportointiDatabase {
   type DB = PostgresDriver.backend.DatabaseDef

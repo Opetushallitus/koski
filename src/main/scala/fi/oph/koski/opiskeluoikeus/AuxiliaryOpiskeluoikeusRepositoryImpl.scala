@@ -6,7 +6,7 @@ import fi.oph.koski.koskiuser.{AccessChecker, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Opiskeluoikeus, Organisaatio}
 
-import scala.concurrent.duration._
+import scala.concurrent.duration.DurationInt
 import scala.util.control.NonFatal
 
 abstract class AuxiliaryOpiskeluoikeusRepositoryImpl[OO <: Opiskeluoikeus, CK <: AnyRef](accessChecker: AccessChecker)(implicit cacheInvalidator: CacheManager) extends AuxiliaryOpiskeluoikeusRepository with Logging {

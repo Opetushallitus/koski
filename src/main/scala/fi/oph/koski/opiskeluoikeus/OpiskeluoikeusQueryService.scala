@@ -14,13 +14,13 @@ import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.koski.util.SortOrder.{Ascending, Descending}
 import fi.oph.koski.util.Retry.retryWithInterval
 import fi.oph.koski.util.{PaginationSettings, QueryPagination, SortOrder}
+
 import rx.Observable.{create => createObservable}
 import rx.Observer
 import rx.functions.{Func0, Func2}
 import rx.lang.scala.Observable
 import rx.observables.SyncOnSubscribe.createStateful
-
-import scala.concurrent.duration._
+import scala.concurrent.duration.DurationInt
 
 class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext with KoskiDatabaseMethods {
   private val defaultPagination = QueryPagination(0)

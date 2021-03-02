@@ -7,9 +7,9 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
-import slick.jdbc.GetResult
 
-import scala.concurrent.duration._
+import slick.jdbc.GetResult
+import scala.concurrent.duration.DurationInt
 
 case class PerusopetuksenLisäopetusOppijamäärätRaportti(db: DB, organisaatioService: OrganisaatioService) extends KoskiDatabaseMethods {
   implicit private val getResult: GetResult[PerusopetuksenLisäopetusOppijamäärätRaporttiRow] = GetResult(r =>

@@ -12,7 +12,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.util.Futures
 
 import scala.concurrent.Future
-import scala.concurrent.duration._
+import scala.concurrent.duration.DurationInt
 
 
 sealed trait AikuistenPerusopetusRaporttiType {

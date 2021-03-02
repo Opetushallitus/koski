@@ -12,9 +12,10 @@ import fi.oph.koski.schema.LocalizedString.sanitize
 import fi.oph.koski.localization.MockLocalizationRepository.readLocalLocalizations
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Finnish, LocalizedString}
-import org.json4s._
 
+import org.json4s._
 import scala.collection.immutable
+import scala.concurrent.duration.DurationInt
 
 trait LocalizationRepository extends Logging {
   def localizations: Map[String, LocalizedString]
@@ -38,7 +39,6 @@ class DefaultLocalizations(resourceFilename: String) {
 }
 
 abstract class CachedLocalizationService(localizationConfig: LocalizationConfig)(implicit cacheInvalidator: CacheManager) extends LocalizationRepository {
-  import scala.concurrent.duration._
   protected val cache = KeyValueCache[String, Map[String, LocalizedString]](
     new RefreshingCache(s"LocalizationRepository.${localizationConfig.localizationCategory}Localizations", RefreshingCache.Params(60.seconds, 1)),
     key => fetch()
