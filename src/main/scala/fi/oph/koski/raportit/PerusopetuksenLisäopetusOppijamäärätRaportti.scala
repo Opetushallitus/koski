@@ -75,6 +75,7 @@ case class PerusopetuksenLisäopetusOppijamäärätRaportti(db: DB, organisaatio
       and aikajakso.alku <= $date
       and aikajakso.loppu >= $date
       and aikajakso.tila = 'lasna'
+      and oo.sisaltyy_opiskeluoikeuteen_oid is null
     group by oppilaitos.nimi, oh.oppilaitos_oid, opetuskieli_koodisto.nimi, r_paatason_suoritus.koulutusmoduuli_koodiarvo
   """
   }

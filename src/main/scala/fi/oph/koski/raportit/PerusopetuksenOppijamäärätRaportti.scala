@@ -82,6 +82,7 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
         and aikajakso.alku <= $date
         and aikajakso.loppu >= $date
         and aikajakso.tila = 'lasna'
+        and oo.sisaltyy_opiskeluoikeuteen_oid is null
       group by oppilaitos.nimi, oh.oppilaitos_oid, opetuskieli_koodisto.nimi, pts.koulutusmoduuli_koodiarvo
     ), totals as (
       select * from q
