@@ -24,7 +24,8 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
 
   override def beforeAll(): Unit = loadRaportointikantaFixtures
 
-  lazy val repository = PerusopetuksenRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
+  lazy val app = KoskiApplicationForTests
+  lazy val repository = PerusopetuksenRaportitRepository(app.raportointiDatabase.db)
 
   "Perusopetuksenvuosiluokka raportti" - {
 
@@ -234,7 +235,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     sukunimi = KoskiSpecificMockOppijat.ysiluokkalainen.sukunimi,
     etunimet = KoskiSpecificMockOppijat.ysiluokkalainen.etunimet,
     sukupuoli = None,
-    kotikunta = None,
+    kotikunta = Some("Jyväskylä"),
     luokka = Some("8C"),
     opiskeluoikeudenAlkamispäivä = Some(date(2008, 8, 15)),
     viimeisinTila = "lasna",
@@ -364,6 +365,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     hetu = KoskiSpecificMockOppijat.vuosiluokkalainen.hetu,
     sukunimi = KoskiSpecificMockOppijat.vuosiluokkalainen.sukunimi,
     etunimet = KoskiSpecificMockOppijat.vuosiluokkalainen.etunimet,
+    kotikunta = None,
     luokka = Some("9A"),
     viimeisinTila = "lasna",
     suorituksenTila = "valmis",
@@ -377,6 +379,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     hetu = KoskiSpecificMockOppijat.koululainen.hetu,
     sukunimi = KoskiSpecificMockOppijat.koululainen.sukunimi,
     etunimet = KoskiSpecificMockOppijat.koululainen.etunimet,
+    kotikunta = None,
     sukupuoli = None,
     luokka = Some("9C"),
     viimeisinTila = "valmistunut",

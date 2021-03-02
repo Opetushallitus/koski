@@ -78,7 +78,7 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
       hetu,
       etunimet,
       sukunimi,
-      kotikunta,
+      kotikunta_nimi_fi,
       pidennetty_oppivelvollisuus,
       tukimuodot,
       erityisen_tuen_paatos,

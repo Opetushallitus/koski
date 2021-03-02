@@ -2,14 +2,16 @@ package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.henkilo.{Hetu, OpintopolkuHenkilöFacade}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
+import fi.oph.koski.koodisto.{KoodistoPalvelu, Kunta}
 import fi.oph.koski.log.Logging
+
 import java.sql.Date
 
 object HenkilöLoader extends Logging {
   private val BatchSize = 1000
   private val name = "henkilot"
 
-  def loadHenkilöt(opintopolkuHenkilöFacade: OpintopolkuHenkilöFacade, db: RaportointiDatabase): Int = {
+  def loadHenkilöt(opintopolkuHenkilöFacade: OpintopolkuHenkilöFacade, db: RaportointiDatabase, koodistoPalvelu: KoodistoPalvelu): Int = {
     logger.info("Ladataan henkilö-OIDeja opiskeluoikeuksista...")
     // note: this list has 1-2M oids in production.
     val oids = db.oppijaOidsFromOpiskeluoikeudet
@@ -19,7 +21,7 @@ object HenkilöLoader extends Logging {
     var masterOids = scala.collection.mutable.Set[String]()
     val count = oids.toList.grouped(BatchSize).map(batchOids => {
       val batchOppijat = opintopolkuHenkilöFacade.findMasterOppijat(batchOids)
-      val batchRows = batchOppijat.map { case (oid, oppija) => buildRHenkilöRow(oid, oppija) }.toList
+      val batchRows = batchOppijat.map { case (oid, oppija) => buildRHenkilöRow(oid, oppija, koodistoPalvelu) }.toList
       db.loadHenkilöt(batchRows)
       db.setLastUpdate(name)
       batchRows.foreach(masterOids += _.masterOid)
@@ -30,7 +32,7 @@ object HenkilöLoader extends Logging {
 
     val masterFetchCount =  masterOidsEiKoskessa.toList.grouped(BatchSize).map(batchOids => {
       val batchOppijat = opintopolkuHenkilöFacade.findMasterOppijat(batchOids)
-      val batchRows = batchOppijat.map { case (oid, oppija) => buildRHenkilöRow(oid, oppija) }.toList
+      val batchRows = batchOppijat.map { case (oid, oppija) => buildRHenkilöRow(oid, oppija, koodistoPalvelu) }.toList
       db.loadHenkilöt(batchRows)
       batchRows.size
     }).sum
@@ -43,7 +45,7 @@ object HenkilöLoader extends Logging {
     total
   }
 
-  private def buildRHenkilöRow(oid: String, oppija: LaajatOppijaHenkilöTiedot) =
+  private def buildRHenkilöRow(oid: String, oppija: LaajatOppijaHenkilöTiedot, koodistoPalvelu: KoodistoPalvelu) =
     RHenkilöRow(
       oppijaOid = oid,
       masterOid = oppija.oid,
@@ -56,6 +58,7 @@ object HenkilöLoader extends Logging {
       kansalaisuus = oppija.kansalaisuus.filter(_.nonEmpty).map(_.sorted.mkString(",")),
       turvakielto = oppija.turvakielto,
       kotikunta = oppija.kotikunta,
+      kotikuntaNimiFi = Kunta.getKunnanNimi(oppija.kotikunta, koodistoPalvelu),
       yksiloity =  oppija.yksilöity
     )
 }

@@ -66,7 +66,7 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
     "oidHenkilo" -> oid,
     "oppijanumero" -> oid,
     "sukupuoli" -> "1",
-    "kotikunta" -> Some("Jyväskylä"),
+    "kotikunta" -> Some("179"),
     "turvakielto" -> null,
     "eiSuomalaistaHetua" -> false,
     "passivoitu" -> false,

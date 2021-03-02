@@ -50,7 +50,7 @@ class EsiopetusRaporttiSpec extends FreeSpec with Matchers with Raportointikanta
         r.oppijaOid should equal(KoskiSpecificMockOppijat.eskari.oid)
         r.etunimet should equal(KoskiSpecificMockOppijat.eskari.etunimet)
         r.sukunimi should equal(KoskiSpecificMockOppijat.eskari.sukunimi)
-        r.kotikunta should equal(KoskiSpecificMockOppijat.eskari.kotikunta)
+        r.kotikunta should equal(Some("Jyväskylä"))
       }
 
       "Opiskeluoikeuden lisätiedot" in {

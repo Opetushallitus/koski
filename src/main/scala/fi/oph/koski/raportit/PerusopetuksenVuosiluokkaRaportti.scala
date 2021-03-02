@@ -1,14 +1,14 @@
 package fi.oph.koski.raportit
 
 import java.time.{LocalDate, LocalDateTime}
-
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio.Oid
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{Koodistokoodiviite, _}
 import org.json4s.JValue
+import fi.oph.koski.log.Logging
 
-object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
+object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta with Logging {
 
   def buildRaportti(repository: PerusopetuksenRaportitRepository, oppilaitosOids: Seq[Oid], paiva: LocalDate, vuosiluokka: String): Seq[PerusopetusRow] = {
     val rows = if (vuosiluokka == "9") {
@@ -41,7 +41,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
       sukunimi = row.henkilo.sukunimi,
       etunimet = row.henkilo.etunimet,
       sukupuoli = row.henkilo.sukupuoli,
-      kotikunta = row.henkilo.kotikunta,
+      kotikunta = row.henkilo.kotikuntaNimiFi,
       opiskeluoikeudenAlkamispäivä = row.opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
       viimeisinTila = row.opiskeluoikeus.viimeisinTila.getOrElse(""),
       tilaHakupaivalla = row.aikajaksot.last.tila,

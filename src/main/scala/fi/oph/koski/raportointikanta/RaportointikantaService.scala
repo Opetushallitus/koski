@@ -42,7 +42,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   }
 
   def loadHenkilöt(db: RaportointiDatabase = raportointiDatabase): Int =
-    HenkilöLoader.loadHenkilöt(application.opintopolkuHenkilöFacade, db)
+    HenkilöLoader.loadHenkilöt(application.opintopolkuHenkilöFacade, db, application.koodistoPalvelu)
 
   def loadOrganisaatiot(db: RaportointiDatabase = raportointiDatabase): Int =
     OrganisaatioLoader.loadOrganisaatiot(application.organisaatioRepository, db)

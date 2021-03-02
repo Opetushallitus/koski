@@ -1,7 +1,8 @@
 package fi.oph.koski.raportit
 
-import java.time.{LocalDate, LocalDateTime}
+import fi.oph.koski.koodisto.KoodistoPalvelu
 
+import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.raportit.aikuistenperusopetus.AikuistenPerusopetusRaporttiType
 import fi.oph.koski.raportointikanta.RaportointiDatabase
 import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, Organisaatio}
