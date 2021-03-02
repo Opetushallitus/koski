@@ -20,7 +20,7 @@ class ValpasDatabaseServiceSpec extends ValpasTestBase {
       ValpasExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus
     ),
     (
-      ValpasMockOppijat.päällekkäisiäOppivelvollisuuksia,
+      ValpasMockOppijat.päällekkäisiäOpiskeluoikeuksia,
       ValpasExampleData.oppivelvollinenVaihtanutKouluaMuttaOpiskeluoikeusMerkkaamattaOikein2
     ),
     (
@@ -41,7 +41,7 @@ class ValpasDatabaseServiceSpec extends ValpasTestBase {
     ),
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
-  "getOppivelvollinenHenkilö palauttaa vain annetun oppijanumeron mukaisen oppijan" in {
+  "getPeruskoulunValvojalleNäkyväOppija palauttaa vain annetun oppijanumeron mukaisen oppijan" in {
     val (expectedOppija, expectedOpiskeluoikeus) = oppivelvolliset(1)
     val oppija = db.getPeruskoulunValvojalleNäkyväOppija(expectedOppija.oid, Some(oppilaitokset))
 
@@ -51,7 +51,7 @@ class ValpasDatabaseServiceSpec extends ValpasTestBase {
       expectedOpiskeluoikeus)
   }
 
-  "getOppivelvollinsetHenkilötJaOpiskeluoikeudet palauttaa oikeat tulokset" in {
+  "getPeruskoulunValvojalleNäkyväOppija palauttaa oikeat tulokset" in {
     val oppijat = db.getPeruskoulunValvojalleNäkyvätOppijat(Some(oppilaitokset)).toList
 
     oppijat.map(_.henkilö.oid) shouldBe oppivelvolliset.map(_._1.oid)
