@@ -30,8 +30,10 @@ class ValpasOppijaService(application: KoskiApplication) extends Logging {
   // (2) käyttäjät, joilla globaali käyttöoikeus
   // (3) käyttäjät, joilla oikeus välitasolle organisaatiohierarkiassa
   // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
-  def getOppija(oid: String)(implicit session: ValpasSession): Option[ValpasOppija] =
-    dbService.getPeruskoulunValvojalleNäkyväOppija(oid, Some(accessResolver.oppilaitosHakeutuminenOrganisaatioOids.toSeq))
+  def getOppija(oppijaOid: String)(implicit session: ValpasSession): Option[ValpasOppija] =
+    Some(oppijaOid)
+      .filter(oid => accessResolver.accessToSomeOrgs(dbService.getOppijaOppilaitosOids(oid)))
+      .flatMap(oid => dbService.getPeruskoulunValvojalleNäkyväOppija(oid, Some(accessResolver.oppilaitosHakeutuminenOrganisaatioOids.toSeq)))
       .map(enrichOppija)
       .map(oppija => {
         auditLogOppijaKatsominen(oppija)
