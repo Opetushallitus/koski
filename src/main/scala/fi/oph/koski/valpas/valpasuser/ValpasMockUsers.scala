@@ -39,6 +39,13 @@ object ValpasMockUsers {
     peruskoulunJossa10LuokkaKäyttäjä(jyväskylänNormaalikoulu) ++ toisenAsteenKäyttäjä(jyväskylänNormaalikoulu)
   )
 
+  val valpasJklYliopisto = ValpasMockUser(
+    "käyttäjä",
+    "valpas-jkl-yliopisto",
+    "1.2.246.562.24.12312317302",
+    peruskoulunKäyttäjä(jyväskylänYliopisto)
+  )
+
   val valpasJklNormaalikouluJaKoskiHelsinkiTallentaja = ValpasMockUser(
     "käyttäjä",
     "valpas-jkl-normaali-koski-hki",
@@ -56,7 +63,15 @@ object ValpasMockUsers {
 
   def users: List[ValpasMockUser] = {
     mockUsersEnabled match {
-      case true => List(valpasOphPääkäyttäjä, valpasHelsinki, valpasJklNormaalikoulu, valpasJklNormaalikouluJaKoskiHelsinkiTallentaja, valpasJklNormaalikouluJaValpasHelsinki, valpasHelsinkiPeruskoulu)
+      case true => List(
+        valpasOphPääkäyttäjä,
+        valpasHelsinki,
+        valpasHelsinkiPeruskoulu,
+        valpasJklNormaalikoulu,
+        valpasJklYliopisto,
+        valpasJklNormaalikouluJaKoskiHelsinkiTallentaja,
+        valpasJklNormaalikouluJaValpasHelsinki,
+      )
       case false => List()
     }
   }
