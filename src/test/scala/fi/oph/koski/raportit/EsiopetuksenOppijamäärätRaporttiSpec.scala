@@ -4,9 +4,9 @@ import java.time.LocalDate.{of => localDate}
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.koskiuser.MockUsers.{helsinkiTallentaja, tornioTallentaja}
-import fi.oph.koski.koskiuser.{MockUser, MockUsers}
+import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession, MockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, tornionKaupunki, jyväskylänNormaalikoulu, päiväkotiMajakka, päiväkotiTouhula}
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, jyväskylänNormaalikoulu, päiväkotiMajakka, päiväkotiTouhula, tornionKaupunki}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema.Organisaatio.Oid
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
@@ -95,7 +95,7 @@ class EsiopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers wit
     found.head
   }
 
-  private def buildRaportti(user: MockUser, organisaatio: Oid) =
+  private def buildRaportti(user: KoskiMockUser, organisaatio: Oid) =
     raporttiService.build(List(organisaatio), localDate(2007, 1, 1))(session(user))
 
   private def getOppilaitokset(raportti: DataSheet) = {
@@ -108,5 +108,5 @@ class EsiopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers wit
     }.toList
   }
 
-  private def session(user: MockUser)= user.toKoskiUser(application.käyttöoikeusRepository)
+  private def session(user: KoskiMockUser): KoskiSpecificSession = user.toKoskiSpecificSession(application.käyttöoikeusRepository)
 }

@@ -3,7 +3,7 @@ package fi.oph.koski.raportit
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.koskiuser.MockUser
+import fi.oph.koski.koskiuser.{KoskiMockUser, MockUser}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenOppijamäärätRaportti, AikuistenPerusopetuksenOppijamäärätRaporttiRow}
@@ -55,5 +55,5 @@ class AikuistenPerusopetuksenOppijamäärätRaporttiSpec extends FreeSpec with M
     found.head
   }
 
-  private def session(user: MockUser)= user.toKoskiUser(application.käyttöoikeusRepository)
+  private def session(user: KoskiMockUser)= user.toKoskiSpecificSession(application.käyttöoikeusRepository)
 }

@@ -7,7 +7,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, valtionosuusRahoitteinen}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetuksenAlkuvaiheenSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
-import fi.oph.koski.koskiuser.MockUser
+import fi.oph.koski.koskiuser.{KoskiMockUser, MockUser}
 import fi.oph.koski.koskiuser.MockUsers.paakayttaja
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -95,7 +95,7 @@ class AikuistenPerusopetuksenOppimääränKurssikertymätSpec extends FreeSpec w
     found.head
   }
 
-  private def session(user: MockUser)= user.toKoskiUser(application.käyttöoikeusRepository)
+  private def session(user: KoskiMockUser)= user.toKoskiSpecificSession(application.käyttöoikeusRepository)
 
   private def createLinkitetytOpiskeluoikeudet(kuoriOpiskeluoikeus: AikuistenPerusopetuksenOpiskeluoikeus, pihviOppilaitos: Oid) = {
     val pihviOpiskeluoikeus = makeOpiskeluoikeus(oppilaitos = Oppilaitos(pihviOppilaitos)).copy(

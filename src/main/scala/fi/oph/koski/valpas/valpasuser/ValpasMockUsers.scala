@@ -1,42 +1,45 @@
 package fi.oph.koski.valpas.valpasuser
 
-import fi.oph.koski.koskiuser.MockKäyttöoikeusryhmät
-import fi.oph.koski.koskiuser.MockUser
+import java.net.InetAddress
+
+import fi.oph.koski.koskiuser.AuthenticationUser.fromDirectoryUser
+import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, Käyttöoikeus, KäyttöoikeusRepository, MockKäyttöoikeusryhmät, MockUser, UserWithPassword}
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
+import fi.oph.koski.userdirectory.DirectoryUser
 import fi.oph.koski.valpas.valpasuser.ValpasMockKäyttöoikeusryhmät._
 
 object ValpasMockUsers {
   var mockUsersEnabled = false
 
-  val valpasOphPääkäyttäjä = MockUser(
+  val valpasOphPääkäyttäjä = ValpasMockUser(
     "pääkäyttäjä",
     "valpas-pää",
     "1.2.246.562.24.12312312300",
     pääkäyttäjä
   )
 
-  val valpasHelsinki = MockUser(
+  val valpasHelsinki = ValpasMockUser(
     "käyttäjä",
     "valpas-helsinki",
     "1.2.246.562.24.12312312301",
     kuntakäyttäjä(helsinginKaupunki)
   )
 
-  val valpasJklNormaalikoulu = MockUser(
+  val valpasJklNormaalikoulu = ValpasMockUser(
     "käyttäjä",
     "valpas-jkl-normaali",
     "1.2.246.562.24.12312312302",
     peruskoulunJossa10LuokkaKäyttäjä(jyväskylänNormaalikoulu) ++ toisenAsteenKäyttäjä(jyväskylänNormaalikoulu)
   )
 
-  val valpasJklNormaalikouluJaKoskiHelsinkiTallentaja = MockUser(
+  val valpasJklNormaalikouluJaKoskiHelsinkiTallentaja = ValpasMockUser(
     "käyttäjä",
     "valpas-jkl-normaali-koski-hki",
     "1.2.246.562.24.12312312303",
     peruskoulunJossa10LuokkaKäyttäjä(jyväskylänNormaalikoulu) ++ toisenAsteenKäyttäjä(jyväskylänNormaalikoulu) ++ Set(MockKäyttöoikeusryhmät.oppilaitosTallentaja(helsinginKaupunki))
   )
 
-  val valpasJklNormaalikouluJaValpasHelsinki = MockUser(
+  val valpasJklNormaalikouluJaValpasHelsinki = ValpasMockUser(
     "käyttäjä",
     "valpas-jkl-normaali-hki",
     "1.2.246.562.24.12312312304",
@@ -44,7 +47,7 @@ object ValpasMockUsers {
   )
 
 
-  def users = {
+  def users: List[ValpasMockUser] = {
     mockUsersEnabled match {
       case true => List(valpasOphPääkäyttäjä, valpasHelsinki, valpasJklNormaalikoulu, valpasJklNormaalikouluJaKoskiHelsinkiTallentaja, valpasJklNormaalikouluJaValpasHelsinki)
       case false => List()
@@ -52,3 +55,10 @@ object ValpasMockUsers {
   }
 }
 
+case class ValpasMockUser(lastname: String, firstname: String, oid: String, käyttöoikeudet: Set[Käyttöoikeus], lang: String = "fi", käyttöoikeusRyhmät: List[String] = Nil) extends MockUser {
+  lazy val ldapUser = DirectoryUser(oid, käyttöoikeudet.toList, firstname, lastname, Some(lang))
+  def toValpasSession(käyttöoikeudet: KäyttöoikeusRepository): ValpasSession = {
+    val authUser: AuthenticationUser = fromDirectoryUser(username, ldapUser)
+    new ValpasSession(authUser, "fi", InetAddress.getByName("192.168.0.10"), "", käyttöoikeudet.käyttäjänKäyttöoikeudet(authUser))
+  }
+}

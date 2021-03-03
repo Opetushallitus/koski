@@ -25,9 +25,11 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
   }
 
   get("/oppijat") {
-    renderEither(
-      oppijaService.getOppijat
-      .toRight(ValpasErrorCategory.forbidden.oppijat()))
+    haltWithStatus(ValpasErrorCategory.forbidden.oppijat())
+    // TODO: Ei vielä loppuun asti toteutettu
+    //    renderEither(
+    //      oppijaService.getOppijat
+    //      .toRight(ValpasErrorCategory.forbidden.oppijat()))
   }
 
   get("/oppija/:oid") {

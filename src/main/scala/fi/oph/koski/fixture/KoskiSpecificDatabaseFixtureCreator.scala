@@ -50,7 +50,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
         ))
       })
     )
-    val hkiTallentaja = MockUsers.helsinkiTallentaja.toKoskiUser(application.käyttöoikeusRepository)
+    val hkiTallentaja = MockUsers.helsinkiTallentaja.toKoskiSpecificSession(application.käyttöoikeusRepository)
     List(
       (KoskiSpecificMockOppijat.organisaatioHistoria, validOpiskeluoikeus.copy(organisaatiohistoria = Some(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria))),
       (

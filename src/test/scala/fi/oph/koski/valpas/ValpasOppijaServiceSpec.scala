@@ -7,11 +7,12 @@ import fi.oph.koski.schema.{PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluo
 import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
 import fi.oph.koski.valpas.fixture.ValpasExampleData
 import fi.oph.koski.valpas.henkilo.ValpasMockOppijat
-import fi.oph.koski.valpas.repository.{ValpasDatabaseService, ValpasOppija}
+import fi.oph.koski.valpas.repository.ValpasOppija
+import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import org.scalatest.Matchers._
 
-class ValpasDatabaseServiceSpec extends ValpasTestBase {
-  val db = new ValpasDatabaseService(KoskiApplicationForTests)
+class ValpasOppijaServiceSpec extends ValpasTestBase {
+  val oppijaService = new ValpasOppijaService(KoskiApplicationForTests)
   val oppilaitokset = List(MockOrganisaatiot.jyväskylänNormaalikoulu)
 
   // Jyväskylän normaalikoulusta löytyvät näytettävät oppivelvolliset aakkosjärjestyksessä
@@ -65,7 +66,7 @@ class ValpasDatabaseServiceSpec extends ValpasTestBase {
 
   "getPeruskoulunValvojalleNäkyväOppija palauttaa vain annetun oppijanumeron mukaisen oppijan" in {
     val (expectedOppija, expectedOpiskeluoikeudet) = oppivelvolliset(1)
-    val oppija = db.getPeruskoulunValvojalleNäkyväOppija(expectedOppija.oid, Some(oppilaitokset))
+    val oppija = oppijaService.getOppija(expectedOppija.oid)(session(ValpasMockUsers.valpasJklNormaalikoulu))
 
     validateOppija(
       oppija.get,
@@ -73,8 +74,8 @@ class ValpasDatabaseServiceSpec extends ValpasTestBase {
       expectedOpiskeluoikeudet)
   }
 
-  "getPeruskoulunValvojalleNäkyväOppija palauttaa oikeat tulokset" in {
-    val oppijat = db.getPeruskoulunValvojalleNäkyvätOppijat(Some(oppilaitokset)).toList
+  "getPeruskoulunValvojalleNäkyväOppijat palauttaa oikeat tulokset" in {
+    val oppijat = oppijaService.getOppijat(oppilaitokset)(session(ValpasMockUsers.valpasJklNormaalikoulu)).toList
 
     oppijat.map(_.henkilö.oid) shouldBe oppivelvolliset.map(_._1.oid)
 
@@ -113,4 +114,7 @@ class ValpasDatabaseServiceSpec extends ValpasTestBase {
       opiskeluoikeus.ryhmä shouldBe Some(luokkatietoExpectedFromSuoritus)
     }}
   }
+
+  private def session(user: ValpasMockUser)= user.toValpasSession(KoskiApplicationForTests.käyttöoikeusRepository)
+
 }

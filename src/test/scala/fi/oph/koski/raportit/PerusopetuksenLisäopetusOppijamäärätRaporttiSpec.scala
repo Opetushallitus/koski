@@ -3,7 +3,7 @@ package fi.oph.koski.raportit
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.koskiuser.MockUser
+import fi.oph.koski.koskiuser.{KoskiMockUser, MockUser}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
@@ -15,7 +15,7 @@ class PerusopetuksenLisäopetusOppijamäärätRaporttiSpec extends FreeSpec with
     loadRaportointikantaFixtures
   }
 
-  private def session(user: MockUser) = user.toKoskiUser(application.käyttöoikeusRepository)
+  private def session(user: KoskiMockUser) = user.toKoskiSpecificSession(application.käyttöoikeusRepository)
 
   private val application = KoskiApplicationForTests
   private val raporttiBuilder = PerusopetuksenLisäopetusOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
