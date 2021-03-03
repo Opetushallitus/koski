@@ -13,10 +13,14 @@ class ValpasOppijaService(application: KoskiApplication) extends Logging {
   private val dbService = new ValpasDatabaseService(application)
   private val koodisto = application.koodistoPalvelu
 
-  def getOppijat(implicit session: ValpasSession): Option[Seq[RHenkilöRow]] = {
-    // TODO
-    Some(List())
-  }
+  def getOppijat(oppilaitosOids: Seq[String])(implicit session: ValpasSession): Seq[ValpasOppija] =
+    dbService.getPeruskoulunValvojalleNäkyvätOppijat(Some(oppilaitosOids))
+      .map(enrichOppija)
+      .map(oppija => {
+        // TODO, parempi auditlog-viesti, joka ei iteroi kaikkia oppijoita läpi
+        auditLogOppijaKatsominen(oppija)
+        oppija
+      })
 
   // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
   // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)

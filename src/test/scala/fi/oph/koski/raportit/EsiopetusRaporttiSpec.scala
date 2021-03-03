@@ -3,8 +3,8 @@ package fi.oph.koski.raportit
 import java.time.LocalDate.{of => localDate}
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, KoskiSpecificMockOppijat}
-import fi.oph.koski.koskiuser.{MockUser, MockUsers}
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
+import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession, MockUser, MockUsers}
 import fi.oph.koski.koskiuser.MockUsers.{helsinkiTallentaja, tornioTallentaja}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, jyväskylänNormaalikoulu, päiväkotiMajakka, päiväkotiTouhula}
@@ -106,10 +106,10 @@ class EsiopetusRaporttiSpec extends FreeSpec with Matchers with Raportointikanta
     }
   }
 
-  private def buildOstopalveluRaportti(user: MockUser) =
+  private def buildOstopalveluRaportti(user: KoskiMockUser) =
     raporttiService.buildOstopalveluRaportti(localDate(2006, 8, 13), "", None)(session(user))
 
-  private def buildOrganisaatioRaportti(user: MockUser, organisaatio: Oid) =
+  private def buildOrganisaatioRaportti(user: KoskiMockUser, organisaatio: Oid) =
     raporttiService.buildOrganisaatioRaportti(organisaatio, localDate(2006, 8, 13), "", None)(session(user))
 
   private def getOppilaitokset(raportti: OppilaitosRaporttiResponse) = {
@@ -130,5 +130,5 @@ class EsiopetusRaporttiSpec extends FreeSpec with Matchers with Raportointikanta
     found.head
   }
 
-  private def session(user: MockUser)= user.toKoskiUser(application.käyttöoikeusRepository)
+  private def session(user: KoskiMockUser): KoskiSpecificSession= user.toKoskiSpecificSession(application.käyttöoikeusRepository)
 }

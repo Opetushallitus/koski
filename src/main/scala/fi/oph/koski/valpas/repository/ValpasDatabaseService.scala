@@ -31,26 +31,28 @@ class ValpasDatabaseService(application: KoskiApplication) extends Logging {
         r_henkilo.syntymaaika,
         r_henkilo.etunimet,
         r_henkilo.sukunimi,
-        json_agg(json_build_object(
-          'oid', r_opiskeluoikeus.opiskeluoikeus_oid,
-          'tyyppi', json_build_object(
-            'koodiarvo', r_opiskeluoikeus.koulutusmuoto,
-            'koodistoUri', 'opiskeluoikeudentyyppi'
-          ),
-          'oppilaitos', json_build_object(
-            'oid', r_opiskeluoikeus.oppilaitos_oid,
-            'nimi', json_build_object(
-              'fi', r_opiskeluoikeus.oppilaitos_nimi
+        json_agg(
+          json_build_object(
+            'oid', r_opiskeluoikeus.opiskeluoikeus_oid,
+            'tyyppi', json_build_object(
+              'koodiarvo', r_opiskeluoikeus.koulutusmuoto,
+              'koodistoUri', 'opiskeluoikeudentyyppi'
+            ),
+            'oppilaitos', json_build_object(
+              'oid', r_opiskeluoikeus.oppilaitos_oid,
+              'nimi', json_build_object(
+                'fi', r_opiskeluoikeus.oppilaitos_nimi
+              )
+            ),
+            'alkamispäivä', r_opiskeluoikeus.alkamispaiva,
+            'päättymispäivä', r_opiskeluoikeus.paattymispaiva,
+            'ryhmä', coalesce(valittu_r_paatason_suoritus.data ->> 'luokka', r_opiskeluoikeus.luokka),
+            'viimeisinTila', json_build_object(
+              'koodiarvo', r_opiskeluoikeus.viimeisin_tila,
+              'koodistoUri', 'koskiopiskeluoikeudentila'
             )
-          ),
-          'alkamispäivä', r_opiskeluoikeus.alkamispaiva,
-          'päättymispäivä', r_opiskeluoikeus.paattymispaiva,
-          'ryhmä', r_opiskeluoikeus.luokka,
-          'viimeisinTila', json_build_object(
-            'koodiarvo', r_opiskeluoikeus.viimeisin_tila,
-            'koodistoUri', 'koskiopiskeluoikeudentila'
-          )
-        )) opiskeluoikeudet
+          ) ORDER BY valittu_r_paatason_suoritus.data -> 'alkamispäivä' DESC -- TODO: Olisiko joku muu päivämäärä parempi järjestämiseen?
+        ) opiskeluoikeudet
       FROM
         r_henkilo
         JOIN r_opiskeluoikeus ON
@@ -58,7 +60,23 @@ class ValpasDatabaseService(application: KoskiApplication) extends Logging {
       """),
       oppilaitosOids.map(oids => sql"AND r_opiskeluoikeus.oppilaitos_oid = any($oids)"),
       Some(sql"""
-        JOIN r_paatason_suoritus ON r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+        -- Haetaan päätason suoritus, jonka dataa halutaan näyttää (toisteiseksi valitaan uusin 9. luokan suoritus)
+        CROSS JOIN LATERAL (
+          SELECT
+            *
+          FROM
+            r_paatason_suoritus inner_r_paatason_suoritus
+          WHERE
+            inner_r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+            AND inner_r_paatason_suoritus.suorituksen_tyyppi = 'perusopetuksenvuosiluokka'
+            -- (3) kyseisessä opiskeluoikeudessa on yhdeksännen luokan suoritus.
+            AND inner_r_paatason_suoritus.koulutusmoduuli_koodiarvo = '9'
+          ORDER BY
+            -- hae vain uusin 9. luokan suoritus (toistaiseksi, möyhemmin pitää pystyä valitsemaan myös esim. edelliseltä keväältä päivämäärän perusteella)
+            inner_r_paatason_suoritus.DATA ->> 'alkamispäivä' DESC
+          LIMIT
+            1
+        ) valittu_r_paatason_suoritus
         -- Lasketaan voimassaolevien kotiopetusjaksojen määrä ehtoa 4a varten
         CROSS JOIN LATERAL (
           SELECT count(*) AS count
@@ -74,9 +92,6 @@ class ValpasDatabaseService(application: KoskiApplication) extends Logging {
         EXTRACT(YEAR FROM r_henkilo.syntymaaika) >= 2004
         -- (2) oppijalla on peruskoulun opiskeluoikeus
         AND r_opiskeluoikeus.koulutusmuoto = 'perusopetus'
-        AND r_paatason_suoritus.suorituksen_tyyppi = 'perusopetuksenvuosiluokka'
-        -- (3) kyseisessä opiskeluoikeudessa on yhdeksännen luokan suoritus.
-        AND r_paatason_suoritus.koulutusmoduuli_koodiarvo = '9'
         -- (4a) valvojalla on oppilaitostason oppilaitosoikeus ja opiskeluoikeuden lisätiedoista ei löydy kotiopetusjaksoa, joka osuu tälle hetkelle
         AND kotiopetusjaksoja.count = 0
         -- (5)  opiskeluoikeus ei ole eronnut tilassa tällä hetkellä
@@ -92,7 +107,7 @@ class ValpasDatabaseService(application: KoskiApplication) extends Logging {
             -- TOISTAISEKSI VOIDAAN NÄYTTÄÄ AINA
           )
         )
-      GROUP BY r_henkilo.oppija_oid
+      GROUP BY r_henkilo.oppija_oid, r_henkilo.hetu, r_henkilo.syntymaaika, r_henkilo.etunimet, r_henkilo.sukunimi
       ORDER BY r_henkilo.sukunimi, r_henkilo.etunimet
     """)).as[(ValpasOppija)])
 

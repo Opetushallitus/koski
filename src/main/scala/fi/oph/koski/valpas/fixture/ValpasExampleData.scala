@@ -1,13 +1,14 @@
 package fi.oph.koski.valpas.fixture
 
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, vahvistusPaikkakunnalla}
-import fi.oph.koski.documentation.ExamplesLukio
+import fi.oph.koski.documentation.{ExampleData, ExamplesLukio}
 import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, kaikkiAineet, perusopetuksenDiaarinumero, perusopetuksenOppimääränSuoritus, perusopetuksenOppimääränSuoritusKesken, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste, oppilaitos}
-import fi.oph.koski.schema.{Aikajakso, NuortenPerusopetuksenOpiskeluoikeudenTila, NuortenPerusopetuksenOpiskeluoikeusjakso, PerusopetuksenLuokkaAste, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus}
+import fi.oph.koski.schema.{Aikajakso, LukionOpiskeluoikeudenTila, LukionOpiskeluoikeusjakso, NuortenPerusopetuksenOpiskeluoikeudenTila, NuortenPerusopetuksenOpiskeluoikeusjakso, PerusopetuksenLuokkaAste, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus}
 import java.time.{LocalDate, Month}
 import java.time.LocalDate.{of => date}
 
+import fi.oph.koski.documentation.LukioExampleData.opiskeluoikeusAktiivinen
 import fi.oph.koski.organisaatio.MockOrganisaatiot.aapajoenKoulu
 
 object ValpasExampleData {
@@ -84,9 +85,11 @@ object ValpasExampleData {
     koulutustoimija = None,
     suoritukset = List(
       perusopetuksenOppimääränSuoritusKesken,
-      kahdeksannenLuokanSuoritus.copy(
-        alkamispäivä = Some(date(2019, 8, 15)),
-        vahvistus = vahvistusPaikkakunnalla(date(2020, 5, 30)),
+      // Tarkoituksella väärässä aikajärjestyksessä, jotta tulee testattua paremmin
+      yhdeksännenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2021, 8, 15)),
+        vahvistus = None,
+        luokka = "9B"
       ),
       yhdeksännenLuokanSuoritus.copy(
         alkamispäivä = Some(date(2020, 8, 15)),
@@ -94,11 +97,10 @@ object ValpasExampleData {
         jääLuokalle = true,
         vahvistus = vahvistusPaikkakunnalla(date(2021, 5, 30))
       ),
-      yhdeksännenLuokanSuoritus.copy(
-        alkamispäivä = Some(date(2021, 8, 15)),
-        vahvistus = None,
-        luokka = "9B"
-      )
+      kahdeksannenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2019, 8, 15)),
+        vahvistus = vahvistusPaikkakunnalla(date(2020, 5, 30)),
+      ),
     ),
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
       List(
@@ -148,6 +150,47 @@ object ValpasExampleData {
     )
   )
 
+  def luokallejäänytYsiluokkalainenVaihtanutKouluaEdellinen2 = luokallejäänytYsiluokkalainenVaihtanutKouluaEdellinen.copy(
+    oppilaitos = Some(oppilaitos(aapajoenKoulu))
+  )
+  def luokallejäänytYsiluokkalainenVaihtanutKouluaJälkimmäinen2 = luokallejäänytYsiluokkalainenVaihtanutKouluaJälkimmäinen.copy(
+    oppilaitos = Some(jyväskylänNormaalikoulu)
+  )
+
+  def kasiluokkaEronnutKeväällä2020Opiskeluoikeus = PerusopetuksenOpiskeluoikeus(
+    oppilaitos = Some(kulosaarenAlaAste),
+    koulutustoimija = None,
+    suoritukset = List(
+      kahdeksannenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2019, 8, 15)),
+        vahvistus = vahvistusPaikkakunnalla(date(2020, 5, 30))
+      )
+    ),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2012, 8, 15), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2020, 5, 30), opiskeluoikeusEronnut),
+      )
+    )
+  )
+
+  def pelkkäYsiluokkaKeskenKeväällä2021Opiskeluoikeus = PerusopetuksenOpiskeluoikeus(
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    koulutustoimija = None,
+    suoritukset = List(
+      perusopetuksenOppimääränSuoritusKesken,
+      yhdeksännenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2020, 8, 15)),
+        vahvistus = None
+      )
+    ),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2020, 8, 15), opiskeluoikeusLäsnä)
+      )
+    )
+  )
+
   // Päällekkäiset opiskeluoikeudet esimerkit
 
   def oppivelvollinenVaihtanutKouluaMuttaOpiskeluoikeusMerkkaamattaOikein1 = PerusopetuksenOpiskeluoikeus(
@@ -190,6 +233,14 @@ object ValpasExampleData {
   )
 
   def lukionOpiskeluoikeus = ExamplesLukio.lukioKesken
+
+  def lukionOpiskeluoikeusAlkaa2021Syksyllä = ExamplesLukio.lukioKesken.copy(
+    tila = LukionOpiskeluoikeudenTila(
+      List(
+        LukionOpiskeluoikeusjakso(alku = date(2021, 8, 15), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+      )
+    )
+  )
 
   def kasiluokkaKeskenKeväällä2021Opiskeluoikeus = PerusopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
