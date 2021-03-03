@@ -106,11 +106,14 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @Description("Onko kyseessä koulutusvientikoulutus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole koulutusvientikoulutus.")
   @Tooltip("Valitse valintaruutu, jos kyseessä on koulutusvientikoulutus.")
   @DefaultValue(false)
-  koulutusvienti: Boolean = false
+  koulutusvienti: Boolean = false,
+  maksuttomuus: Option[List[Maksuttomuus]] = None,
+  oikeuttaMaksuttomuuteenPidennetty: Option[List[MaksuttomuuttaPidennetty]] = None
 ) extends OpiskeluoikeudenLisätiedot
   with Ulkomaajaksollinen
   with SisäoppilaitosmainenMajoitus
   with VaikeastiVammainen
+  with MaksuttomuusTieto
 
 @Title("Osa-aikaisuusjakso")
 @Description("Osa-aikaisuusjakson kesto ja suuruus")
@@ -250,7 +253,11 @@ case class AmmatillisenTutkinnonSuoritus(
   @OnlyWhen("suoritustapa/koodiarvo","ops")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   keskiarvoSisältääMukautettujaArvosanoja: Option[Boolean] = None
-) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus with Todistus with Järjestämismuodollinen with OsaamisenHankkimistavallinen
+) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus
+  with Todistus
+  with Järjestämismuodollinen
+  with OsaamisenHankkimistavallinen
+  with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
 
 @ReadFlattened
 case class Osaamisalajakso(
@@ -1056,7 +1063,7 @@ case class ValmaKoulutuksenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valma", koodistoUri = "suorituksentyyppi"),
   @Tooltip("Oppijan opetusryhmä")
   ryhmä: Option[String] = None
-) extends ValmentavaSuoritus with AmmatillinenPäätasonSuoritus with Ryhmällinen
+) extends ValmentavaSuoritus with AmmatillinenPäätasonSuoritus with Ryhmällinen with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
 
 trait ValmaKoulutuksenOsanTaiOsanOsaAlueenSuoritus extends ValmentavanKoulutuksenOsanSuoritus with MahdollisestiSuorituskielellinen
 
@@ -1127,7 +1134,7 @@ case class TelmaKoulutuksenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("telma", koodistoUri = "suorituksentyyppi"),
   @Tooltip("Oppijan opetusryhmä")
   ryhmä: Option[String] = None
-) extends ValmentavaSuoritus with AmmatillinenPäätasonSuoritus with Ryhmällinen
+) extends ValmentavaSuoritus with AmmatillinenPäätasonSuoritus with Ryhmällinen with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
 
 @Title("TELMA-koulutuksen osan suoritus")
 @Description("Suoritettavan TELMA-koulutuksen osan tiedot")

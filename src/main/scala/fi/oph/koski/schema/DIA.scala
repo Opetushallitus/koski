@@ -55,10 +55,12 @@ case class DIAOpiskeluoikeudenLisätiedot(
   @DefaultValue(false)
   ulkomainenVaihtoopiskelija: Boolean = false,
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
-  ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None
-) extends OpiskeluoikeudenLisätiedot with ErityisenKoulutustehtävänJaksollinen with Ulkomaajaksollinen with UlkomainenVaihtoopiskelija
+  ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
+  maksuttomuus: Option[List[Maksuttomuus]] = None,
+  oikeuttaMaksuttomuuteenPidennetty: Option[List[MaksuttomuuttaPidennetty]] = None
+) extends OpiskeluoikeudenLisätiedot with ErityisenKoulutustehtävänJaksollinen with Ulkomaajaksollinen with UlkomainenVaihtoopiskelija with MaksuttomuusTieto
 
-trait DIAPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Suorituskielellinen
+trait DIAPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Suorituskielellinen with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
 
 @Title("DIA-tutkinnon suoritus")
 case class DIATutkinnonSuoritus(

@@ -14,6 +14,7 @@ import fi.oph.koski.log.{AuditLog, _}
 import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.schema._
 import fi.oph.koski.util.{Timing, WithWarnings}
+import fi.oph.koski.validation.MaksuttomuusValidation
 
 class KoskiOppijaFacade(
   henkilöRepository: HenkilöRepository,
@@ -90,7 +91,17 @@ class KoskiOppijaFacade(
         Right(UnverifiedHenkilöOid(h.oid, henkilöRepository))
     }
 
-    timed("createOrUpdate", 250) {
+    val maksuttomuusCheck = oppijaOid.map(_.verified).flatMap {
+      case Some(henkilö) =>
+        val syntymäaika = henkilöRepository.findByOid(henkilö.oid, findMasterIfSlaveOid = true).flatMap(_.syntymäaika)
+        val validation = HttpStatus.fold(oppija.tallennettavatOpiskeluoikeudet.map(opiskeluoikeus => {
+          MaksuttomuusValidation.checkOpiskeluoikeudenMaksuttomuus(opiskeluoikeus, syntymäaika)
+        }))
+        if (validation.isOk) Right(Unit) else Left(validation)
+      case None => Left(KoskiErrorCategory.notFound.oppijaaEiLöydy("Oppijaa " + oppijaOid.right.get.oppijaOid + " ei löydy."))
+    }
+
+    maksuttomuusCheck.flatMap { _ => timed("createOrUpdate", 250) {
       val opiskeluoikeudet: Seq[KoskeenTallennettavaOpiskeluoikeus] = oppija.tallennettavatOpiskeluoikeudet
 
       oppijaOid.right.flatMap { oppijaOid: PossiblyUnverifiedHenkilöOid =>
@@ -110,7 +121,7 @@ class KoskiOppijaFacade(
           }
         }
       }
-    }
+    }}
   }
 
   private def invalidate(opiskeluoikeusOid: String, invalidationFn: Oppija => Either[HttpStatus, Oppija], updateFn: Oppija => Either[HttpStatus, HenkilönOpiskeluoikeusVersiot])(implicit user: KoskiSpecificSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =

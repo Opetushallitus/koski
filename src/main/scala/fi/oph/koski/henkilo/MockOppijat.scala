@@ -1,5 +1,7 @@
 package fi.oph.koski.henkilo
 
+import java.time.LocalDate
+
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.henkilo
 import fi.oph.koski.log.{Loggable, Logging}
@@ -24,7 +26,8 @@ class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil)
     vanhaHetu: Option[String] = None,
     sukupuoli: Option[String] = None,
     kotikunta: Option[String] = None,
-    äidinkieli: Option[String] = Some("fi")
+    äidinkieli: Option[String] = Some("fi"),
+    syntymäaika: Option[LocalDate] = None
   ): LaajatOppijaHenkilöTiedot =
     addOppija(henkilo.LaajatOppijaHenkilöTiedot(
       oid = oid,
@@ -32,7 +35,7 @@ class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil)
       etunimet = etu,
       kutsumanimi = kutsumanimi.getOrElse(etu),
       hetu = Some(hetu),
-      syntymäaika = None,
+      syntymäaika = syntymäaika,
       äidinkieli = äidinkieli,
       turvakielto = turvakielto,
       vanhatHetut = vanhaHetu.toList,
