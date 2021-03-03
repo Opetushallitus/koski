@@ -291,7 +291,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     "sukunimi" -> Column("Sukunimi"),
     "etunimet" -> Column("Etunimet"),
     "sukupuoli" -> Column("Sukupuoli", comment = Some("1 = mies, 2 = nainen")),
-    "kotikunta" -> Column("Kotikunta", comment = Some("Kotikunta")),
+    "kotikunta" -> Column("Kotikunta", comment = Some("Tieto 'kotikunta' haetaan opintopolun oppijanumerorekisteristä, koulutuksenjärjestäjä ei tallenna kotikunta-tietoa KOSKI-palveluun. Oppijanumerorekisterin kotikunta-tieto ei sisällä takautuvia tietoja oppijan kotikuntahistoriasta, joten raportilla näkyvä kotikunta on raportin tulostamispäivän mukainen kotikunta, eli ei välttämättä sama, kuin mikä väestötietojärjestelmässä oppijan tosiasiallinen kotikunta on ollut raportille valittuna päivänä.")),
     "opiskeluoikeudenAlkamispäivä" -> Column("Opiskeluoikeuden alkamispäivä"),
     "viimeisinTila" -> CompactColumn("Viimeisin opiskeluoikeuden tila", comment = Some("Se opiskeluoikeuden tila, joka opiskeluoikeudella on nyt.")),
     "tilaHakupaivalla" -> CompactColumn("Opiskeluoikeuden tila tulostuspäivänä", comment = Some("Se opiskeluoikeuden tila, joka opiskeluoikeudella oli raportin tulostusparametrin \"Päivä\"- kenttään syötettynä päivämääränä")),

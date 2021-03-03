@@ -144,7 +144,7 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
     "hetu" -> Column("Hetu"),
     "etunimet" -> Column("Etunimet"),
     "sukunimi" -> Column("Sukunimi"),
-    "kotikunta" -> Column("Kotikunta"),
+    "kotikunta" -> Column("Kotikunta", comment = Some("Tieto 'kotikunta' haetaan opintopolun oppijanumerorekisteristä, koulutuksenjärjestäjä ei tallenna kotikunta-tietoa KOSKI-palveluun. Oppijanumerorekisterin kotikunta-tieto ei sisällä takautuvia tietoja oppijan kotikuntahistoriasta, joten raportilla näkyvä kotikunta on raportin tulostamispäivän mukainen kotikunta, eli ei välttämättä sama, kuin mikä väestötietojärjestelmässä oppijan tosiasiallinen kotikunta on ollut raportille valittuna päivänä.")),
     "pidennettyOppivelvollisuus" -> Column("Pidennetty oppivelvollisuus"),
     "tukimuodot" -> Column("Tukimuodot"),
     "erityisenTuenPäätös" -> Column("Erityisen tuen päätös"),
