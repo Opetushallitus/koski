@@ -118,7 +118,9 @@ class OpiskeluoikeudenPerustiedotIndexer(
         }
       }
       perustiedotSyncRepository.syncAgain(toSyncAgain, upsert)
-      val msg = s"Elasticsearch indexing failed for ids $failedOpiskeluoikeusIds: ${JsonMethods.pretty(response)}. Will retry soon."
+      val msg = s"""Elasticsearch indexing failed for ids ${failedOpiskeluoikeusIds.mkString(", ")}.
+Response from ES: ${JsonMethods.pretty(response)}.
+Will retry soon."""
       logger.error(msg)
       Left(KoskiErrorCategory.internalError(msg))
     } else {
