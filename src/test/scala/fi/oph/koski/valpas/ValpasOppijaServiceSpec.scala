@@ -78,7 +78,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
   }
 
   "getPeruskoulunValvojalleNäkyväOppijat palauttaa oikeat tulokset" in {
-    val oppijat = oppijaService.getOppijat(oppilaitokset)(session(ValpasMockUsers.valpasJklNormaalikoulu)).toList
+    val oppijat = oppijaService.getOppijat(oppilaitokset.toSet)(session(ValpasMockUsers.valpasJklNormaalikoulu)).get.toList
 
     oppijat.map(_.henkilö.oid) shouldBe oppivelvolliset.map(_._1.oid)
 

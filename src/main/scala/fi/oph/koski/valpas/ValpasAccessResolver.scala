@@ -1,12 +1,30 @@
 package fi.oph.koski.valpas
 
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.{KäyttöoikeusOrg, Palvelurooli}
 import fi.oph.koski.schema.OrganisaatioWithOid
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 
-object ValpasAccessResolver {
+class ValpasAccessResolver(application: KoskiApplication) {
+  val organisaatioRepository = application.organisaatioRepository
+
   def oppilaitosHakeutuminenOrganisaatioOids(implicit session: ValpasSession): Set[String] =
     valpasOrganisaatiot(ValpasRooli.OPPILAITOS_HAKEUTUMINEN).map(_.oid)
+
+  def organisaatiohierarkiaOids(organisaatioOids: Set[String])(implicit session: ValpasSession): Option[Set[String]] = {
+    if (sessionHasAccessToAllOrganisaatioOids(organisaatioOids.toSeq)) {
+      val childOids = organisaatioOids.flatMap(organisaatioRepository.getChildOids).flatten
+      Some(organisaatioOids ++ childOids)
+    } else {
+      None
+    }
+  }
+
+  def sessionHasAccessToAllOrganisaatioOids(organisaatioOids: Seq[String])(implicit session: ValpasSession): Boolean =
+    organisaatioOids.diff(oppilaitosHakeutuminenOrganisaatioOids.toSeq).isEmpty
+
+  def sessionHasAccessToAtLeastOneOrganisaatioOid(organisaatioOids: Seq[String])(implicit session: ValpasSession): Boolean =
+    organisaatioOids.intersect(oppilaitosHakeutuminenOrganisaatioOids.toSeq).nonEmpty
 
   def valpasOrganisaatiot(rooli: String)(implicit session: ValpasSession): Set[OrganisaatioWithOid] =
     session.orgKäyttöoikeudet
