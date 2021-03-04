@@ -26,7 +26,12 @@ class ValpasDatabaseService(application: KoskiApplication) extends Logging {
   // Huom2: Tämä toimii vain peruskoulun hakeutumisen valvojille (ei esim. 10-luokille tai toisen asteen näkymiin yms.)
   // Huom3: Tämä ei filteröi opiskeluoikeuksia sen mukaan, minkä tiedot kuuluisi näyttää listanäkymässä, jos samalla oppijalla on useita opiskeluoikeuksia.
   //        Valinta voidaan jättää joko Scalalle, käyttöliitymälle tai tehdä toinen query, joka tekee valinnan SQL:ssä.
-  private def getOppijat(oppijaOid: Option[String], oppilaitosOids: Option[Seq[String]]): Seq[ValpasOppija] =
+  private def getOppijat(oppijaOid: Option[String], oppilaitosOids: Option[Seq[String]]): Seq[ValpasOppija] = {
+    if (!oppilaitosOids.isDefined) {
+      // Varmuuden vuoksi: jos annetaan pelkkä oppijaOid, niin oikeustarkistusta johonkin oppijan (peruskoulun) organisaatioon
+      // ei vielä tehdä kyselyn jälkeen tai sisällä, ja saatetaan helposti enabloida toiminto, joka rikkoo tietoturvan.
+      throw new Error("Internal error, pelkkää yhden oppijan kyselyä ei vielä ole toteutettu")
+    }
     db.runDbSync(SQLHelpers.concatMany(
       Some(sql"""
 WITH
@@ -237,6 +242,7 @@ WITH
     oppija.sukunimi,
     oppija.etunimet
     """)).as[(ValpasOppija)])
+}
 
   implicit private val getValpasOppijaResult: GetResult[ValpasOppija] = GetResult(r => {
     val rs: ResultSet = r.rs
