@@ -12,7 +12,7 @@ class ValpasAccessResolver(application: KoskiApplication) {
     valpasOrganisaatiot(ValpasRooli.OPPILAITOS_HAKEUTUMINEN).map(_.oid)
 
   def organisaatiohierarkiaOids(organisaatioOids: Set[String])(implicit session: ValpasSession): Option[Set[String]] = {
-    if (accessToAllOrgs(organisaatioOids.toSeq)) {
+    if (accessToAllOrgs(organisaatioOids)) {
       val childOids = organisaatioOids.flatMap(organisaatioRepository.getChildOids).flatten
       Some(organisaatioOids ++ childOids)
     } else {
@@ -20,11 +20,11 @@ class ValpasAccessResolver(application: KoskiApplication) {
     }
   }
 
-  def accessToAllOrgs(organisaatioOids: Seq[String])(implicit session: ValpasSession): Boolean =
-    organisaatioOids.diff(oppilaitosHakeutuminenOrganisaatioOids.toSeq).isEmpty
+  def accessToAllOrgs(organisaatioOids: Set[String])(implicit session: ValpasSession): Boolean =
+    organisaatioOids.diff(oppilaitosHakeutuminenOrganisaatioOids).isEmpty
 
-  def accessToSomeOrgs(organisaatioOids: Seq[String])(implicit session: ValpasSession): Boolean =
-    organisaatioOids.intersect(oppilaitosHakeutuminenOrganisaatioOids.toSeq).nonEmpty
+  def accessToSomeOrgs(organisaatioOids: Set[String])(implicit session: ValpasSession): Boolean =
+    organisaatioOids.intersect(oppilaitosHakeutuminenOrganisaatioOids).nonEmpty
 
   def valpasOrganisaatiot(rooli: String)(implicit session: ValpasSession): Set[OrganisaatioWithOid] =
     session.orgKäyttöoikeudet
