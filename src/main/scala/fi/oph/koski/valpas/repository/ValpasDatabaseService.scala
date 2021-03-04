@@ -244,6 +244,14 @@ WITH
     """)).as[(ValpasOppija)])
 }
 
+  def getOppijaOppilaitosOids(oppijaOid: String): Set[String] =
+    db.runDbSync(sql"""
+      SELECT oppilaitos_oid
+      FROM r_opiskeluoikeus
+      WHERE oppija_oid = $oppijaOid;
+      """.as[String])
+      .toSet
+
   implicit private val getValpasOppijaResult: GetResult[ValpasOppija] = GetResult(r => {
     val rs: ResultSet = r.rs
     ValpasOppija(

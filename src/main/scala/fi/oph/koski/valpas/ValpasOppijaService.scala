@@ -12,23 +12,28 @@ import fi.oph.koski.valpas.valpasuser.ValpasSession
 class ValpasOppijaService(application: KoskiApplication) extends Logging {
   private val dbService = new ValpasDatabaseService(application)
   private val koodisto = application.koodistoPalvelu
+  private val accessResolver = new ValpasAccessResolver(application)
 
-  def getOppijat(oppilaitosOids: Seq[String])(implicit session: ValpasSession): Seq[ValpasOppija] =
-    dbService.getPeruskoulunValvojalleNäkyvätOppijat(Some(oppilaitosOids))
-      .map(enrichOppija)
-      .map(oppija => {
-        // TODO, parempi auditlog-viesti, joka ei iteroi kaikkia oppijoita läpi
-        auditLogOppijaKatsominen(oppija)
-        oppija
-      })
+  def getOppijat(oppilaitosOids: Set[String])(implicit session: ValpasSession): Option[Seq[ValpasOppija]] =
+    accessResolver.organisaatiohierarkiaOids(oppilaitosOids).map(oids => {
+      dbService.getPeruskoulunValvojalleNäkyvätOppijat(Some(oids.toSeq))
+        .map(enrichOppija)
+        .map(oppija => {
+          // TODO, parempi auditlog-viesti, joka ei iteroi kaikkia oppijoita läpi
+          auditLogOppijaKatsominen(oppija)
+          oppija
+        })
+    })
 
   // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
   // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
   // (2) käyttäjät, joilla globaali käyttöoikeus
   // (3) käyttäjät, joilla oikeus välitasolle organisaatiohierarkiassa
   // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
-  def getOppija(oid: String)(implicit session: ValpasSession): Option[ValpasOppija] =
-    dbService.getPeruskoulunValvojalleNäkyväOppija(oid, Some(ValpasAccessResolver.oppilaitosHakeutuminenOrganisaatioOids.toSeq))
+  def getOppija(oppijaOid: String)(implicit session: ValpasSession): Option[ValpasOppija] =
+    Some(oppijaOid)
+      .filter(oid => accessResolver.accessToSomeOrgs(dbService.getOppijaOppilaitosOids(oid)))
+      .flatMap(oid => dbService.getPeruskoulunValvojalleNäkyväOppija(oid, Some(accessResolver.oppilaitosHakeutuminenOrganisaatioOids.toSeq)))
       .map(enrichOppija)
       .map(oppija => {
         auditLogOppijaKatsominen(oppija)

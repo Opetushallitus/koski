@@ -67,7 +67,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
     )
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
-  "getPeruskoulunValvojalleNäkyväOppija palauttaa vain annetun oppijanumeron mukaisen oppijan" in {
+  "getOppija palauttaa vain annetun oppijanumeron mukaisen oppijan" in {
     val (expectedOppija, expectedOpiskeluoikeudet) = oppivelvolliset(1)
     val oppija = oppijaService.getOppija(expectedOppija.oid)(session(ValpasMockUsers.valpasJklNormaalikoulu))
 
@@ -77,8 +77,8 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
       expectedOpiskeluoikeudet)
   }
 
-  "getPeruskoulunValvojalleNäkyväOppijat palauttaa oikeat tulokset" in {
-    val oppijat = oppijaService.getOppijat(oppilaitokset)(session(ValpasMockUsers.valpasJklNormaalikoulu)).toList
+  "getOppija palauttaa oikeat tulokset" in {
+    val oppijat = oppijaService.getOppijat(oppilaitokset.toSet)(session(ValpasMockUsers.valpasJklNormaalikoulu)).get.toList
 
     oppijat.map(_.henkilö.oid) shouldBe oppivelvolliset.map(_._1.oid)
 
@@ -89,6 +89,27 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
         expectedOppija,
         expectedOppivelvollisuus)
     }
+  }
+
+  "Peruskoulun opo saa haettua oman oppilaitoksen oppijan tiedot" in {
+    canAccessOppija(
+      ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
+      ValpasMockUsers.valpasJklNormaalikoulu
+    ) shouldBe true
+  }
+
+  "Peruskoulun opo ei saa haettua toisen oppilaitoksen oppijan tiedot" in {
+    canAccessOppija(
+      ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
+      ValpasMockUsers.valpasHelsinkiPeruskoulu
+    ) shouldBe false
+  }
+
+  "Käyttäjä, jolla hakeutumisen tarkastelun oikeudet ja koulutusjärjestäjän organisaatio, näkee oppijan" in {
+    canAccessOppija(
+      ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
+      ValpasMockUsers.valpasJklYliopisto
+    ) shouldBe true
   }
 
   def validateOppija(
@@ -135,6 +156,11 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
         fail("Internal error")
     }
   }
+
+  def canAccessOppija(oppija: LaajatOppijaHenkilöTiedot, user: ValpasMockUser): Boolean =
+    oppijaService
+      .getOppija(oppija.oid)(session(user))
+      .isDefined
 
   private def session(user: ValpasMockUser)= user.toValpasSession(KoskiApplicationForTests.käyttöoikeusRepository)
 }
