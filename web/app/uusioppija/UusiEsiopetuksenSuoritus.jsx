@@ -5,7 +5,7 @@ import {makeSuoritus} from './esiopetuksenSuoritus'
 import Peruste from './Peruste'
 
 export default ({suoritusAtom, oppilaitosAtom, organisaatiotyypitAtom, suorituskieliAtom}) => {
-  const perusteAtom = Atom()
+  const perusteAtom = Atom("102/011/2014") // Valitaan oletuksena eräs vanhempi peruste, joka on yleisempi.
 
   Bacon.combineWith(oppilaitosAtom, organisaatiotyypitAtom, perusteAtom, suorituskieliAtom, makeSuoritus)
     .onValue(suoritus => suoritusAtom.set(suoritus))
