@@ -112,6 +112,9 @@ function OpinnotPage() {
         return click(S('.opiskeluoikeuden-tiedot .modal-content .close-modal'))()
       }
     },
+    avaaLisätiedot: function() {
+      return click(S('.expandable-container .lisätiedot span'))()
+    },
     opiskeluoikeudet: Opiskeluoikeudet(),
     opiskeluoikeusEditor: function(index, omatTiedot) {
       omatTiedot = omatTiedot || false

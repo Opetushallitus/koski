@@ -1514,5 +1514,9 @@
   "Valinnaiset suuntautumisopinnot" : "Valinnaiset suuntautumisopinnot",
   "Maksuttomuus" : "Maksuttomuus",
   "Oikeutta maksuttomuuteen pidennetty" : "Oikeutta maksuttomuuteen pidennetty",
-  "Maksuton" : "Maksuton"
+  "Maksuton" : "Maksuton",
+  "Maksullinen": "Maksullinen",
+  "Henkilö on syntynyt ennen vuotta 2004 ja ei ole laajennetun oppivelvollisuuden piirissä": "Henkilö on syntynyt ennen vuotta 2004 ja ei ole laajennetun oppivelvollisuuden piirissä",
+  "Koulutus on maksutonta": "Koulutus on maksutonta",
+  "Maksullinen koulutus": "Maksullinen koulutus"
 }

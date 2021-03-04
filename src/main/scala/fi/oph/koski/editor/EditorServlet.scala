@@ -7,9 +7,11 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{AccessType, RequiresVirkailijaOrPalvelukäyttäjä}
 import fi.oph.koski.organisaatio.OrganisaatioOid
 import fi.oph.koski.preferences.PreferencesService
+import fi.oph.koski.schema.{PäätasonSuoritus, SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta}
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.WithWarnings
-import fi.oph.koski.validation.ValidationAndResolvingContext
+import fi.oph.koski.validation.{ValidatingAndResolvingExtractor, ValidationAndResolvingContext}
+import fi.oph.scalaschema.SchemaValidatingExtractor
 
 /**
   *  Endpoints for the Koski UI
@@ -59,6 +61,16 @@ class EditorServlet(implicit val application: KoskiApplication) extends EditorAp
     val organisaatioOid = params("organisaatioOid")
     val `type` = params("type")
     renderEither[List[EditorModel]](preferencesService.get(organisaatioOid, params.get("koulutustoimijaOid"), `type`).right.map(_.map(OppijaEditorModel.buildModel(_, true))))
+  }
+
+  post("/check-vaatiiko-suoritus-maksuttomuus-tiedon") {
+    withJsonBody { body =>
+      render[Boolean](
+        ValidatingAndResolvingExtractor.extract[PäätasonSuoritus](body, context)
+        .map(_.isInstanceOf[SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta])
+        .getOrElse(false)
+      )
+    }()
   }
 
   private val context: ValidationAndResolvingContext = ValidationAndResolvingContext(application.koodistoViitePalvelu, application.organisaatioRepository)

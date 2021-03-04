@@ -2,8 +2,6 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
-import fi.oph.scalaschema.annotation.Description
-
 case class Maksuttomuus(
   alku: LocalDate,
   loppu: Option[LocalDate],

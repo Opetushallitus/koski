@@ -121,8 +121,8 @@ object KoskiSpecificMockOppijat {
   val luvaOpiskelijamaaratRaportti_aikuistenOppimaara = koskiSpecificOppijat.oppija("Luva", "Aikuisten", "300900A9774")
   val paallekkaisiOpiskeluoikeuksia = koskiSpecificOppijat.oppija("Paallekkaisia", "Pekka", "171100A9438")
   val vapaaSivistystyöOppivelvollinen = koskiSpecificOppijat.oppija("Vapaa-Sivistys", "Oppivelvollinen", "080177-870W")
-  val oikeusOpiskelunMaksuttomuuteen = koskiSpecificOppijat.oppija("Oikeus", "Maksuttomuuteen", "010104A929E", syntymäaika = Some(LocalDate.of(2004, 1, 1)))
-  val eiOikeuttaMaksuttomuuteen = koskiSpecificOppijat.oppija("EiOikeutta", "Maksuttomuuteen", "311203A9259", syntymäaika = Some(LocalDate.of(2003, 12, 31)))
+  val oikeusOpiskelunMaksuttomuuteen = koskiSpecificOppijat.oppija("Oikeus", "Maksuttomuuteen", "010104A6094", syntymäaika = Some(LocalDate.of(2004, 1, 1)))
+  val eiOikeuttaMaksuttomuuteen = koskiSpecificOppijat.oppija("EiOikeutta", "Maksuttomuuteen", "311203A1454", syntymäaika = Some(LocalDate.of(2003, 12, 31)))
 
   val virtaOppija = koskiSpecificOppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.57060795845", sukunimi = "Virta", etunimet = "Veikko", kutsumanimi = "Veikko", hetu = Some("270191-4208"), syntymäaika = Some(LocalDate.of(1978, 3, 25)), äidinkieli = None, kansalaisuus = None))
   val virtaOppijaHetuton = koskiSpecificOppijat.addOppija(OppijaHenkilöWithMasterInfo(

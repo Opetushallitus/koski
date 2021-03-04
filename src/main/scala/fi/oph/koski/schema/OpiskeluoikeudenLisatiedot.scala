@@ -2,6 +2,7 @@ package fi.oph.koski.schema
 
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.schema.annotation.ReadOnly
+import fi.oph.scalaschema.annotation.Title
 
 trait OpiskeluoikeudenLisätiedot
 

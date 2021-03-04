@@ -28,6 +28,8 @@ import {filterTilatByOpiskeluoikeudenTyyppi} from '../opiskeluoikeus/opiskeluoik
 import {userP} from '../util/user'
 import Checkbox from '../components/Checkbox'
 import {autoFillRahoitusmuoto, opiskeluoikeudenTilaVaatiiRahoitusmuodon, defaultRahoitusmuotoP} from '../opiskeluoikeus/opintojenRahoitus'
+import RadioButtons from '../components/RadioButtons'
+import {checkAlkamispäivä, checkSuoritus, maksuttomuusOptions} from '../opiskeluoikeus/Maksuttomuus'
 
 export default ({opiskeluoikeusAtom}) => {
   const dateAtom = Atom(new Date())
@@ -40,6 +42,7 @@ export default ({opiskeluoikeusAtom}) => {
   const rahoitusAtom = Atom()
   const varhaiskasvatusOrganisaationUlkopuoleltaAtom = Atom(false)
   const varhaiskasvatusJärjestämismuotoAtom = Atom()
+  const maksuttomuusAtom = Atom()
   tyyppiAtom.changes().onValue(() => {
     suoritusAtom.set(undefined)
     rahoitusAtom.set(undefined)
@@ -57,8 +60,7 @@ export default ({opiskeluoikeusAtom}) => {
   const opiskeluoikeudenTilatP = opiskeluoikeudentTilat(tyyppiAtom)
   opiskeluoikeudenTilatP.onValue(tilat => tilaAtom.set(tilat.find(koodiarvoMatch('lasna'))))
 
-  const opiskeluoikeusP = Bacon.combineWith(dateAtom, oppilaitosAtom, tyyppiAtom, suoritusAtom, tilaAtom, rahoitusAtom, varhaiskasvatusOrganisaationUlkopuoleltaAtom, varhaiskasvatusJärjestämismuotoAtom, makeOpiskeluoikeus)
-  opiskeluoikeusP.changes().onValue((oo) => opiskeluoikeusAtom.set(oo))
+  const maksuttomuusTiedonVoiValitaP = Bacon.combineWith(dateAtom.map(checkAlkamispäivä), suoritusAtom.flatMap(checkSuoritus), R.and)
 
   const rahoitusmuotoChanges = Bacon.combineWith(tyyppiAtom, rahoitusAtom, tilaAtom, defaultRahoitusmuotoP, (ooTyyppi, rahoitus, tila, defaultRahoitus) => ({
     vaatiiRahoituksen: opiskeluoikeudenTilaVaatiiRahoitusmuodon(ooTyyppi?.koodiarvo, tila?.koodiarvo),
@@ -68,6 +70,22 @@ export default ({opiskeluoikeusAtom}) => {
   }))
 
   rahoitusmuotoChanges.onValue(autoFillRahoitusmuoto)
+
+  const opiskeluoikeusP = Bacon.combineWith(
+    dateAtom,
+    oppilaitosAtom,
+    tyyppiAtom,
+    suoritusAtom,
+    tilaAtom,
+    rahoitusAtom,
+    varhaiskasvatusOrganisaationUlkopuoleltaAtom,
+    varhaiskasvatusJärjestämismuotoAtom,
+    maksuttomuusAtom,
+    maksuttomuusTiedonVoiValitaP,
+    makeOpiskeluoikeus
+  )
+
+  opiskeluoikeusP.changes().onValue((oo) => opiskeluoikeusAtom.set(oo))
 
   return (<div>
     <VarhaiskasvatuksenJärjestämismuotoPicker varhaiskasvatusAtom={varhaiskasvatusOrganisaationUlkopuoleltaAtom} järjestämismuotoAtom={varhaiskasvatusJärjestämismuotoAtom} />
@@ -96,6 +114,9 @@ export default ({opiskeluoikeusAtom}) => {
     <OpiskeluoikeudenTila tilaAtom={tilaAtom} opiskeluoikeudenTilatP={opiskeluoikeudenTilatP} />
     {
       ift(rahoitusmuotoChanges.map(x => x.vaatiiRahoituksen), <OpintojenRahoitus tyyppiAtom={tyyppiAtom} rahoitusAtom={rahoitusAtom} opintojenRahoituksetP={rahoituksetP} />)
+    }
+    {
+      ift(maksuttomuusTiedonVoiValitaP, <MaksuttomuusRadioButtons maksuttomuusAtom={maksuttomuusAtom}/>)
     }
   </div>)
 }
@@ -195,9 +216,31 @@ const OpintojenRahoitus = ({tyyppiAtom, rahoitusAtom, opintojenRahoituksetP}) =>
   )
 }
 
-const makeOpiskeluoikeus = (date, oppilaitos, tyyppi, suoritus, tila, opintojenRahoitus, varhaiskasvatusOrganisaationUlkopuolelta, varhaiskasvatusJärjestämismuoto) => {
+const MaksuttomuusRadioButtons = ({maksuttomuusAtom}) => {
+  return (
+    <RadioButtons
+      options={maksuttomuusOptions}
+      selected={maksuttomuusAtom}
+      onSelectionChanged={selected => maksuttomuusAtom.set(selected.key)}
+    />
+  )
+}
+
+
+const makeOpiskeluoikeus = (
+  alkamispäivä,
+  oppilaitos,
+  tyyppi,
+  suoritus,
+  tila,
+  opintojenRahoitus,
+  varhaiskasvatusOrganisaationUlkopuolelta,
+  varhaiskasvatusJärjestämismuoto,
+  maksuttomuus,
+  maksuttomuusTiedonVoiValita
+) => {
   const makeOpiskeluoikeusjakso = () => {
-    const opiskeluoikeusjakso = date && tila && {alku: formatISODate(date), tila}
+    const opiskeluoikeusjakso = alkamispäivä && tila && {alku: formatISODate(alkamispäivä), tila}
     opiskeluoikeusjakso && opintojenRahoitus
       ? opiskeluoikeusjakso.opintojenRahoitus = opintojenRahoitus
       : opiskeluoikeusjakso
@@ -205,17 +248,28 @@ const makeOpiskeluoikeus = (date, oppilaitos, tyyppi, suoritus, tila, opintojenR
     return opiskeluoikeusjakso
   }
 
-  if (date && oppilaitos && tyyppi && suoritus && tila && (!varhaiskasvatusOrganisaationUlkopuolelta || varhaiskasvatusJärjestämismuoto)) {
+  if (
+    alkamispäivä
+    && oppilaitos
+    && tyyppi
+    && suoritus
+    && tila
+    && (!varhaiskasvatusOrganisaationUlkopuolelta || varhaiskasvatusJärjestämismuoto)
+    && (!maksuttomuusTiedonVoiValita || maksuttomuus)
+  ) {
     const järjestämismuoto = tyyppi.koodiarvo === 'esiopetus' ? { järjestämismuoto: varhaiskasvatusJärjestämismuoto} : {}
-    const oo =  {
+    const maksuttomuusLisätieto = maksuttomuusTiedonVoiValita && maksuttomuus != 'none'
+      ? {lisätiedot: {maksuttomuus: [{alku: formatISODate(alkamispäivä), maksuton: maksuttomuus}]}}
+      : {}
+    const opiskeluoikeus =  {
       tyyppi: tyyppi,
       oppilaitos: oppilaitos,
-      alkamispäivä: formatISODate(date),
+      alkamispäivä: formatISODate(alkamispäivä),
       tila: {
         opiskeluoikeusjaksot: [makeOpiskeluoikeusjakso()]
       },
       suoritukset: [suoritus]
     }
-    return R.merge(oo, järjestämismuoto)
+    return R.mergeAll([opiskeluoikeus, järjestämismuoto, maksuttomuusLisätieto])
   }
 }
