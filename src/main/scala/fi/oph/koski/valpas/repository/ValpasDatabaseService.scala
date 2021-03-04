@@ -30,6 +30,16 @@ class ValpasDatabaseService(application: KoskiApplication) extends Logging {
     db.runDbSync(SQLHelpers.concatMany(
       Some(sql"""
 WITH
+  """),
+      oppijaOid.map(oid => sql"""
+  -- CTE: jos pyydettiin vain yhtä oppijaa, hae hänen master oid:nsa
+  pyydetty_oppija AS (
+    SELECT r_henkilo.master_oid
+    FROM r_henkilo
+    WHERE r_henkilo.oppija_oid = $oid
+  ),
+      """),
+      Some(sql"""
   -- CTE: kaikki oppijat, joilla on vähintään yksi kelpuutettava peruskoulun opetusoikeus:
   oppija AS (
     SELECT
@@ -43,6 +53,7 @@ WITH
       JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = r_henkilo.oppija_oid
       """),
       oppilaitosOids.map(oids => sql"AND r_opiskeluoikeus.oppilaitos_oid = any($oids)"),
+      oppijaOid.map(oid => sql"JOIN pyydetty_oppija ON pyydetty_oppija.master_oid = r_henkilo.master_oid"),
       Some(sql"""
       JOIN r_paatason_suoritus ON r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
       -- Lasketaan voimassaolevien kotiopetusjaksojen määrä ehtoa 4a varten
@@ -216,9 +227,6 @@ WITH
   FROM
     opiskeluoikeus
     JOIN oppija ON oppija.master_oid = opiskeluoikeus.master_oid
-      """),
-      oppijaOid.map(oid => sql"AND oppija.master_oid = $oid"),
-      Some(sql"""
   GROUP BY
     oppija.master_oid,
     oppija.hetu,
