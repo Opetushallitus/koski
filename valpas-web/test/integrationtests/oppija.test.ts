@@ -71,7 +71,7 @@ describe("Oppijakohtainen näkymä", () => {
     )
   })
 
-  it("Näyttää oppijalta, jolla on useampia opiskeluoikeuksia vain ne, johon käyttäjällä on lukuoikeus", async () => {
+  it("Näyttää oppijalta, jolla on useampia päällekäisiä opiskeluoikeuksia kaikki opiskeluoikeudet", async () => {
     await loginAs(
       "/virkailija/oppijat/1.2.246.562.24.00000000003",
       "valpas-jkl-normaali",
@@ -87,6 +87,35 @@ describe("Oppijakohtainen näkymä", () => {
       Jyväskylän normaalikoulu
       Ryhmä: 9B
       Tila: Läsnä
+      school
+      Perusopetus 2012 –
+      Kulosaaren ala-aste
+      Ryhmä: 8A
+      Tila: Läsnä
+      `
+    )
+  })
+
+  it("Näyttää oppijalta, jolla on useampia peräkkäisiä opiskeluoikeuksia kaikki opiskeluoikeudet", async () => {
+    await loginAs(
+      "/virkailija/oppijat/1.2.246.562.24.00000000015",
+      "valpas-jkl-normaali",
+      "valpas-jkl-normaali"
+    )
+    await mainHeadingEquals("LukionAloittanut Valpas (290405A871A)")
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000015")
+    await contentEventuallyEquals(
+      "#opiskeluhistoria .card__body",
+      `
+      school
+      Lukiokoulutus 2021 –
+      Jyväskylän normaalikoulu
+      Tila: Läsnä
+      school
+      Perusopetus 2012 – 2021
+      Jyväskylän normaalikoulu
+      Ryhmä: 9C
+      Tila: Valmistunut
       `
     )
   })
