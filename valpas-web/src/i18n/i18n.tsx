@@ -1,5 +1,5 @@
 import Cookie from "js-cookie"
-import React from "react"
+import React, { useMemo } from "react"
 import { LocalizedString } from "../state/types"
 import { logWarning } from "../utils/log"
 
@@ -77,3 +77,5 @@ export const getLocalized = (localizedString: LocalizedString): string =>
 
 export const formatFixedNumber = (n: number, fractionDigits: number) =>
   n.toFixed(fractionDigits).replace(".", ",")
+
+export const useLanguage = () => useMemo(() => getLanguage(), [])
