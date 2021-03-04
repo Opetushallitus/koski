@@ -3,9 +3,9 @@ import { IconSection } from "../../components/containers/IconSection"
 import { OpiskeluIcon } from "../../components/icons/Icon"
 import { TertiaryHeading } from "../../components/typography/headings"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
-import { getLocalized, T } from "../../i18n/i18n"
+import { getLocalized, T, useLanguage } from "../../i18n/i18n"
 import { KoodistoKoodiviite } from "../../state/koodistot"
-import { Oppija } from "../../state/oppijat"
+import { Opiskeluoikeus, Oppija } from "../../state/oppijat"
 import { ISODate } from "../../state/types"
 import { parseYear } from "../../utils/date"
 
@@ -16,9 +16,12 @@ export type OppijanOpiskeluhistoriaProps = {
 export const OppijanOpiskeluhistoria = (
   props: OppijanOpiskeluhistoriaProps
 ) => {
+  const language = useLanguage()
+  const sort = Opiskeluoikeus.sort(language)
+
   return props.oppija.opiskeluoikeudet.length > 0 ? (
     <>
-      {props.oppija.opiskeluoikeudet.map((opiskeluoikeus) => {
+      {sort(props.oppija.opiskeluoikeudet).map((opiskeluoikeus) => {
         const nimi = koodistonimi(opiskeluoikeus.tyyppi)
         const range = yearRangeString(
           opiskeluoikeus.alkamispäivä,
