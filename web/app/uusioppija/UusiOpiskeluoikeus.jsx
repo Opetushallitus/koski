@@ -24,6 +24,7 @@ import UusiIBSuoritus from './UusiIBSuoritus'
 import UusiDIASuoritus from './UusiDIASuoritus'
 import {VARHAISKASVATUKSEN_TOIMIPAIKKA} from './esiopetuksenSuoritus'
 import UusiInternationalSchoolSuoritus from './UusiInternationalSchoolSuoritus'
+import UusiVapaanSivistystyönSuoritus from './UusiVapaanSivistystyönSuoritus'
 import {filterTilatByOpiskeluoikeudenTyyppi} from '../opiskeluoikeus/opiskeluoikeus'
 import {userP} from '../util/user'
 import Checkbox from '../components/Checkbox'
@@ -90,6 +91,7 @@ export default ({opiskeluoikeusAtom}) => {
         if (tyyppi === 'ibtutkinto') return <UusiIBSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
         if (tyyppi === 'diatutkinto') return <UusiDIASuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
         if (tyyppi === 'internationalschool') return <UusiInternationalSchoolSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+        if (tyyppi === 'vapaansivistystyonkoulutus') return <UusiVapaanSivistystyönSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
       })
     }
     <Aloituspäivä dateAtom={dateAtom} />
