@@ -6,8 +6,6 @@ import org.postgresql.util.PSQLException
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class RaportointikantaDbSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll {
-  override protected def beforeAll(): Unit = startRaportointiDatabase
-
   "Drop and create public schema" in {
     dropsAndCreatesSchemaObjects(public)
   }
