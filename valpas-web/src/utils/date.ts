@@ -1,8 +1,10 @@
 import { format, getYear, parseISO } from "date-fns"
 import { ISODate } from "../state/types"
 
+export const DATE_FORMAT = "d.M.yyyy"
+
 export const formatDate = (date: ISODate): string =>
-  format(parseISO(date), "d.M.yyyy")
+  format(parseISO(date), DATE_FORMAT)
 
 export const currentYear = () => getYear(new Date())
 

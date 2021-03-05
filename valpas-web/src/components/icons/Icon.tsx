@@ -30,6 +30,7 @@ type MaterialDesignIconProps = IconProps & {
 
 const MaterialDesignIcon = (props: MaterialDesignIconProps) => (
   <i
+    aria-hidden
     className={`material-icons ${b({
       inline: props.inline,
       ...(props.color && {

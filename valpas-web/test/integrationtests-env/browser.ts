@@ -89,7 +89,7 @@ export const contentEventuallyEquals = (
     expected
       .trim()
       .split("\n")
-      .map((a) => a.trim())
+      .map((a) => a.trim().replace(/\s+/g, " "))
       .join("\n"),
     timeout
   )

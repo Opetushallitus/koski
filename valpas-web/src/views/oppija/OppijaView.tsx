@@ -34,7 +34,7 @@ export const OppijaView = (props: OppijaViewProps) => {
         <>
           <ColumnsContainer>
             <Column size={5}>
-              <Card>
+              <Card id="oppivelvollisuustiedot">
                 <CardHeader>
                   <T id="oppija__oppivelvollisuustiedot_otsikko" />
                 </CardHeader>

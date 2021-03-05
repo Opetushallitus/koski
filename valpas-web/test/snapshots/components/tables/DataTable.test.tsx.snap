@@ -21,6 +21,7 @@ exports[`DataTable Aktiivisen sarakkeen nimen uudelleen klikkaaminen kääntää
             class="table__sortindicator table__sortindicator--visible"
           >
             <i
+              aria-hidden="true"
               class="material-icons icon icon--inline"
             >
               arrow_drop_up
@@ -126,6 +127,7 @@ exports[`DataTable Renderöityy oikein 1`] = `
             class="table__sortindicator table__sortindicator--visible"
           >
             <i
+              aria-hidden="true"
               class="material-icons icon icon--inline"
             >
               arrow_drop_down
@@ -243,6 +245,7 @@ exports[`DataTable Toisen sarakkeen nimen klikkaaminen järjestää sen mukaises
             class="table__sortindicator table__sortindicator--visible"
           >
             <i
+              aria-hidden="true"
               class="material-icons icon icon--inline"
             >
               arrow_drop_down
