@@ -64,12 +64,19 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
         ValpasExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä,
         ValpasExampleData.valmistunutYsiluokkalainen
       )
+    ),
+    (
+      ValpasMockOppijat.oppivelvollinenKahdellaOppijaOidillaMaster,
+      List(
+        ValpasExampleData.lukionOpiskeluoikeus,
+        ValpasExampleData.valmistunutYsiluokkalainen
+      )
     )
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
   "getOppija palauttaa vain annetun oppijanumeron mukaisen oppijan" in {
     val (expectedOppija, expectedOpiskeluoikeudet) = oppivelvolliset(1)
-    val oppija = oppijaService.getOppija(expectedOppija.oid)(session(ValpasMockUsers.valpasJklNormaalikoulu))
+    val oppija = oppijaService.getOppija(expectedOppija.oid)(defaultSession())
 
     validateOppija(
       oppija.get,
@@ -77,8 +84,17 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
       expectedOpiskeluoikeudet)
   }
 
-  "getOppija palauttaa oikeat tulokset" in {
-    val oppijat = oppijaService.getOppijat(oppilaitokset.toSet)(session(ValpasMockUsers.valpasJklNormaalikoulu)).get.toList
+  "getOppija palauttaa oppijan tiedot, vaikka oid ei olisikaan master oid" in {
+    val oppija = oppijaService.getOppija(ValpasMockOppijat.oppivelvollinenKahdellaOppijaOidillaToinen.oid)(defaultSession())
+    validateOppija(
+      oppija.get,
+      ValpasMockOppijat.oppivelvollinenKahdellaOppijaOidillaMaster,
+      List(ValpasExampleData.lukionOpiskeluoikeus, ValpasExampleData.valmistunutYsiluokkalainen)
+    )
+  }
+
+  "getOppijat palauttaa oikeat tulokset" in {
+    val oppijat = oppijaService.getOppijat(oppilaitokset.toSet)(defaultSession()).get.toList
 
     oppijat.map(_.henkilö.oid) shouldBe oppivelvolliset.map(_._1.oid)
 
@@ -163,4 +179,5 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
       .isDefined
 
   private def session(user: ValpasMockUser)= user.toValpasSession(KoskiApplicationForTests.käyttöoikeusRepository)
+  private def defaultSession() = session(ValpasMockUsers.valpasJklNormaalikoulu)
 }
