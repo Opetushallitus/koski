@@ -2,11 +2,19 @@ package fi.oph.koski.config
 
 import fi.oph.koski.json.JsonSerializer
 import org.json4s.jackson.JsonMethods.parse
+
 import scala.reflect.runtime.universe._
 import com.amazonaws.secretsmanager.caching.SecretCache
-import fi.oph.koski.log.Logging
+import fi.oph.koski.log.{Logging, NotLoggable}
 
 
+case class DatabaseConnectionConfig(
+  host: String,
+  port: Int,
+  dbname: String,
+  username: String,
+  password: String
+) extends NotLoggable
 
 class SecretsManager extends SecretCache with Logging {
   def getStructuredSecret[T: TypeTag](secretId: String): T = {

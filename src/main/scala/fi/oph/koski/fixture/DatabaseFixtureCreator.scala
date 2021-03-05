@@ -17,8 +17,7 @@ import scala.reflect.runtime.universe.TypeTag
 abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoikeusFixtureCacheTableName: String, opiskeluoikeusHistoriaFixtureCacheTableName: String) extends KoskiDatabaseMethods with Timing {
   implicit val user = KoskiSpecificSession.systemUser
   protected val validator = application.validator
-  val database = application.masterDatabase
-  val db = database.db
+  val db = application.masterDatabase.db
   implicit val accessType = AccessType.write
 
   protected def validateOpiskeluoikeus[T: TypeTag](oo: T, session: KoskiSpecificSession = user): T =
@@ -33,7 +32,7 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
   var cachedPerustiedot: Option[Seq[OpiskeluoikeudenOsittaisetTiedot]] = None
 
   def resetFixtures: Unit = {
-    if (database.config.isRemote) throw new IllegalStateException("Trying to reset fixtures in remote database")
+    if (!application.masterDatabase.isLocal) throw new IllegalStateException("Trying to reset fixtures in remote database")
 
     val henkilöOids = application.fixtureCreator.allOppijaOids.sorted
 
