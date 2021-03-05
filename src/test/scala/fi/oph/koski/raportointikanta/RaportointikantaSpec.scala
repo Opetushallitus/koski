@@ -24,7 +24,7 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
   override def beforeAll(): Unit = {
     LocalJettyHttpSpecification.setup(this)
     createOrUpdate(KoskiSpecificMockOppijat.slaveMasterEiKoskessa.henkilö, defaultOpiskeluoikeus)
-    loadRaportointikantaFixtures
+    reloadRaportointikanta
   }
 
   override def afterAll(): Unit = resetFixtures

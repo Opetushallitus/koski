@@ -18,7 +18,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
 
   "Suoritustietojen tarkistusraportti" - {
     lazy val rivi = {
-      loadRaportointikantaFixtures
+      reloadRaportointikanta
       val rows = testiHenkilöRaporttiRows(defaultRequest)
       rows.length should equal(1)
       rows.head
@@ -310,7 +310,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
     }
   }
 
-  override def beforeAll(): Unit = loadRaportointikantaFixtures
+  override def beforeAll(): Unit = reloadRaportointikanta
 
   private val defaultHetu = KoskiSpecificMockOppijat.ammattilainen.hetu.get
 
@@ -338,7 +338,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
     val omnianOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ammattilainen.oid).oid.get
 
     putOpiskeluoikeus(sisällytäOpiskeluoikeus(stadinOpiskeluoikeus, SisältäväOpiskeluoikeus(omnia, omnianOpiskeluoikeusOid)), oppija){}
-    loadRaportointikantaFixtures
+    reloadRaportointikanta
     (f)
   }
 
@@ -382,7 +382,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
     val omnianOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.erikoisammattitutkinto.oid).oid.get
 
     putOpiskeluoikeus(sisällytäOpiskeluoikeus(stadinOpiskeluoikeus, SisältäväOpiskeluoikeus(omnia, omnianOpiskeluoikeusOid)), oppija){}
-    loadRaportointikantaFixtures
+    reloadRaportointikanta
     (f)
   }
 

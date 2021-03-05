@@ -16,7 +16,7 @@ class AikuistenPerusopetuksenOppijamäärätRaporttiSpec extends FreeSpec with M
   private lazy val raportti =
     raporttiBuilder.build(List(jyväskylänNormaalikoulu), date(2010, 1, 1))(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenOppijamäärätRaporttiRow])
 
-  override def beforeAll(): Unit = loadRaportointikantaFixtures
+  override def beforeAll(): Unit = reloadRaportointikanta
 
   "Aikuisten perusopetuksen oppijamäärien raportti" - {
     "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {

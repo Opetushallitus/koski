@@ -33,7 +33,7 @@ class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätSpec extends FreeS
         ExamplesAikuistenPerusopetus.oppiaineenOppimääränSuoritusYH
       )
     )
-    loadRaportointikantaFixtures
+    reloadRaportointikanta
   }
 
   override def afterAll: Unit = resetFixtures

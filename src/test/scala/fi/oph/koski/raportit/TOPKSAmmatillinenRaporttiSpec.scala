@@ -17,7 +17,7 @@ class TOPKSAmmatillinenRaporttiSpec extends FreeSpec with Matchers with Raportoi
     insertTOPKSOpiskeluoikeusPäivämäärillä(KoskiSpecificMockOppijat.amis, alkanut = LocalDate.of(2019, 1, 2), päättynyt = LocalDate.of(2019, 12, 31))
     insertTOPKSOpiskeluoikeusPäivämäärillä(KoskiSpecificMockOppijat.lukiolainen, alkanut = LocalDate.of(2017, 1, 1), päättynyt = LocalDate.of(2020, 1, 1))
     insertSisällytettyOpiskeluoikeusSuorituksilla(KoskiSpecificMockOppijat.eero, innerSuoritukset = List(TutkinnonOsaaPienempiKokonaisuusExample.tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus), outerSuoritukset = List(TutkinnonOsaaPienempiKokonaisuusExample.tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus.copy(osasuoritukset = None)))
-    loadRaportointikantaFixtures
+    reloadRaportointikanta
   }
 
   override def afterAll: Unit = resetFixtures

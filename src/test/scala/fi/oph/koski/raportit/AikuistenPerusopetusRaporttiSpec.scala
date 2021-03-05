@@ -33,7 +33,7 @@ class AikuistenPerusopetusRaporttiSpec
         ExamplesAikuistenPerusopetus.oppiaineenOppimääränSuoritusYH
       )
     )
-    loadRaportointikantaFixtures
+    reloadRaportointikanta
   }
 
   override def afterAll: Unit = resetFixtures
