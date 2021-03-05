@@ -4,7 +4,7 @@ import java.net.InetAddress
 import java.sql.Timestamp
 import java.time.Instant
 
-import fi.oph.koski.db.KoskiDatabase.DB
+import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{GlobalExecutionContext, KoskiDatabaseMethods, SSOSessionRow, Tables}
 import fi.oph.koski.huoltaja.HuollettavatSearchResult

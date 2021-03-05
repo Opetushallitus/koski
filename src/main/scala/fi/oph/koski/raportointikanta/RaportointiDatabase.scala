@@ -4,10 +4,8 @@ import java.sql.Timestamp.{valueOf => toTimestamp}
 import java.sql.{Date, Timestamp}
 import java.time.LocalDateTime.now
 import java.time._
-
-import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.{KoskiDatabaseConfig, KoskiDatabaseMethods}
+import fi.oph.koski.db.{DB, KoskiDatabaseConfig, KoskiDatabaseMethods}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.raportit.{LukioOppiaineRahoitusmuodonMukaan, LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat, PaallekkaisetOpiskeluoikeudet}
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
@@ -16,12 +14,9 @@ import fi.oph.koski.util.DateOrdering.{sqlDateOrdering, sqlTimestampOrdering}
 import fi.oph.scalaschema.annotation.SyntheticProperty
 import org.postgresql.util.PSQLException
 import slick.dbio.DBIO
-import slick.driver.PostgresDriver
+
 import scala.concurrent.duration.DurationInt
 
-object RaportointiDatabase {
-  type DB = PostgresDriver.backend.DatabaseDef
-}
 
 case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with KoskiDatabaseMethods {
   val schema = config.raportointiSchema.get

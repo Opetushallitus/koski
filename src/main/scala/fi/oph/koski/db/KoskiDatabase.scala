@@ -18,8 +18,6 @@ import scala.sys.process._
 case class DatabaseConfig(password: String, dbname: String, port: Int, host: String, username: String) extends NotLoggable
 
 object KoskiDatabase {
-  type DB = PostgresProfile.backend.DatabaseDef
-
   def master(config: Config): KoskiDatabase =
     new KoskiDatabase(KoskiDatabaseConfig(config))
 

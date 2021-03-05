@@ -2,7 +2,7 @@ package fi.oph.koski.raportit
 
 import java.time.LocalDate
 
-import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
+import fi.oph.koski.db.DB
 import fi.oph.koski.db.KoskiDatabaseMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.raportointikanta._

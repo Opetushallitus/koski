@@ -3,7 +3,7 @@ package fi.oph.koski.tiedonsiirto
 import java.net.InetAddress
 import java.sql.SQLException
 
-import fi.oph.koski.db.KoskiDatabase.DB
+import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.OppilaitosIPOsoite
 import fi.oph.koski.db.{KoskiDatabaseMethods, OppilaitosIPOsoiteRow}

@@ -2,7 +2,7 @@ package fi.oph.koski.valvira
 
 import java.sql.{Date, Timestamp}
 
-import fi.oph.koski.db.KoskiDatabase.DB
+import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
 import fi.oph.koski.db.Tables.OpiskeluOikeudet

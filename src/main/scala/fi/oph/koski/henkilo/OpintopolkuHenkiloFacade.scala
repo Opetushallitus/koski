@@ -1,7 +1,7 @@
 package fi.oph.koski.henkilo
 
 import com.typesafe.config.Config
-import fi.oph.koski.db.KoskiDatabase.DB
+import fi.oph.koski.db.DB
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotIndexer, OpiskeluoikeudenPerustiedotRepository}
