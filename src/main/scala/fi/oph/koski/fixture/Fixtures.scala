@@ -27,10 +27,8 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
       application.tiedonsiirtoService.index.deleteAll()
 
       if (fixtureState == valpasFixtureState) {
-        Wait.until { raportointikantaService.isEmpty || raportointikantaService.isAvailable }
-        raportointikantaService.dropAndCreateSchema()
-        raportointikantaService.loadRaportointikanta(false)
-        Wait.until { raportointikantaService.isAvailable }
+        raportointikantaService.loadRaportointikanta(force = true)
+        Wait.until { raportointikantaService.isLoadComplete }
       }
 
       logger.info(s"Reset application fixtures ${currentFixtureState.name}")

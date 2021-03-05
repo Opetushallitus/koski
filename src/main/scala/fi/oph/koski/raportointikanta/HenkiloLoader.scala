@@ -17,7 +17,6 @@ object HenkilöLoader extends Logging {
     val oids = db.oppijaOidsFromOpiskeluoikeudet
     logger.info(s"Löytyi ${oids.size} henkilö-OIDia")
     db.setStatusLoadStarted(name)
-    db.deleteHenkilöt
     var masterOids = scala.collection.mutable.Set[String]()
     val count = oids.toList.grouped(BatchSize).map(batchOids => {
       val batchOppijat = opintopolkuHenkilöFacade.findMasterOppijat(batchOids)

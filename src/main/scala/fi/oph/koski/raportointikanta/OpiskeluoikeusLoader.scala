@@ -20,9 +20,13 @@ object OpiskeluoikeusLoader extends Logging {
   private val DefaultBatchSize = 500
   private val statusName = "opiskeluoikeudet"
 
-  def loadOpiskeluoikeudet(opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService, systemUser: KoskiSpecificSession, db: RaportointiDatabase, batchSize: Int = DefaultBatchSize): Observable[LoadResult] = {
+  def loadOpiskeluoikeudet(
+    opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService,
+    systemUser: KoskiSpecificSession,
+    db: RaportointiDatabase,
+    batchSize: Int = DefaultBatchSize
+  ): Observable[LoadResult] = {
     db.setStatusLoadStarted(statusName)
-    deleteEverything(db)
     val result = opiskeluoikeusQueryRepository.mapKaikkiOpiskeluoikeudetSivuittain(batchSize, systemUser) { opiskeluoikeusRows =>
       if (opiskeluoikeusRows.nonEmpty) {
         val (errors, outputRows) = opiskeluoikeusRows.par.map(buildRow).seq.partition(_.isLeft)
@@ -50,17 +54,6 @@ object OpiskeluoikeusLoader extends Logging {
       }
     }
     result.doOnEach(progressLogger)
-  }
-
-  private def deleteEverything(raportointiDatabase: RaportointiDatabase): Unit = {
-    logger.info("Deleting opiskeluoikeus data")
-    raportointiDatabase.deleteOpiskeluoikeudet
-    raportointiDatabase.deleteOpiskeluoikeusAikajaksot
-    raportointiDatabase.deleteEsiopetusOpiskeluoikeusAikajaksot
-    raportointiDatabase.deletePäätasonSuoritukset
-    raportointiDatabase.deleteOsasuoritukset
-    raportointiDatabase.deleteMuuAmmatillinenRaportointi
-    raportointiDatabase.deleteTOPKSAmmatillinenRaportointi
   }
 
   private def progressLogger: Subscriber[LoadResult] = new Subscriber[LoadResult] {
@@ -112,12 +105,30 @@ object OpiskeluoikeusLoader extends Logging {
 
   private val suoritusIds = new AtomicLong()
 
+  type SuoritusRows = List[(
+    RPäätasonSuoritusRow,
+      List[ROsasuoritusRow],
+      List[MuuAmmatillinenOsasuoritusRaportointiRow],
+      List[TOPKSAmmatillinenRaportointiRow]
+    )]
+
+  type AikajaksoRows = (Seq[ROpiskeluoikeusAikajaksoRow], Seq[EsiopetusOpiskeluoikeusAikajaksoRow])
+
   private def buildRow(inputRow: OpiskeluoikeusRow): Either[LoadErrorResult, OutputRows] = {
     Try {
       val oo = inputRow.toOpiskeluoikeus
       val ooRow = buildROpiskeluoikeusRow(inputRow.oppijaOid, inputRow.aikaleima, oo, inputRow.data)
-      val aikajaksoRows = buildAikajaksoRows(inputRow.oid, oo)
-      val suoritusRows: List[(RPäätasonSuoritusRow, List[ROsasuoritusRow], List[MuuAmmatillinenOsasuoritusRaportointiRow], List[TOPKSAmmatillinenRaportointiRow])] = oo.suoritukset.zipWithIndex.map { case (ps, i) => buildSuoritusRows(inputRow.oid, inputRow.sisältäväOpiskeluoikeusOid, oo.getOppilaitos, ps, (inputRow.data \ "suoritukset")(i), suoritusIds.incrementAndGet) }
+      val aikajaksoRows: AikajaksoRows = buildAikajaksoRows(inputRow.oid, oo)
+      val suoritusRows: SuoritusRows = oo.suoritukset.zipWithIndex.map {
+        case (ps, i) => buildSuoritusRows(
+          inputRow.oid,
+          inputRow.sisältäväOpiskeluoikeusOid,
+          oo.getOppilaitos,
+          ps,
+          (inputRow.data \ "suoritukset") (i),
+          suoritusIds.incrementAndGet
+        )
+      }
       OutputRows(
         rOpiskeluoikeusRow = ooRow,
         organisaatioHistoriaRows = OrganisaatioHistoriaRowBuilder.buildOrganisaatioHistoriaRows(oo),
@@ -162,7 +173,7 @@ object OpiskeluoikeusLoader extends Logging {
       data = JsonManipulation.removeFields(data, fieldsToExcludeFromOpiskeluoikeusJson)
     )
 
-  private def buildAikajaksoRows(opiskeluoikeusOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): (Seq[ROpiskeluoikeusAikajaksoRow], Seq[EsiopetusOpiskeluoikeusAikajaksoRow]) = {
+  private def buildAikajaksoRows(opiskeluoikeusOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): AikajaksoRows = {
     val opiskeluoikeusAikajaksot = AikajaksoRowBuilder.buildROpiskeluoikeusAikajaksoRows(opiskeluoikeusOid, opiskeluoikeus)
     val esiopetusOpiskeluoikeusAikajaksot = opiskeluoikeus match {
       case esiopetus: EsiopetuksenOpiskeluoikeus => AikajaksoRowBuilder.buildEsiopetusOpiskeluoikeusAikajaksoRows(opiskeluoikeusOid, esiopetus)
@@ -233,7 +244,15 @@ object OpiskeluoikeusLoader extends Logging {
     päätaso
   }
 
-  private def buildROsasuoritusRow(päätasonSuoritusId: Long, ylempiOsasuoritusId: Option[Long], opiskeluoikeusOid: String, sisältyyOpiskeluoikeuteenOid: Option[String], os: Suoritus, data: JValue, idGenerator: => Long): Seq[ROsasuoritusRow] = {
+  private def buildROsasuoritusRow(
+    päätasonSuoritusId: Long,
+    ylempiOsasuoritusId: Option[Long],
+    opiskeluoikeusOid: String,
+    sisältyyOpiskeluoikeuteenOid: Option[String],
+    os: Suoritus,
+    data: JValue,
+    idGenerator: => Long
+  ): Seq[ROsasuoritusRow] = {
     val osasuoritusId: Long = idGenerator
     ROsasuoritusRow(
       osasuoritusId = osasuoritusId,
@@ -289,7 +308,15 @@ object OpiskeluoikeusLoader extends Logging {
       data = JsonManipulation.removeFields(data, fieldsToExcludeFromOsasuoritusJson),
       sisältyyOpiskeluoikeuteenOid = sisältyyOpiskeluoikeuteenOid
     ) +: os.osasuoritukset.getOrElse(List.empty).zipWithIndex.flatMap {
-      case (os2, i) => buildROsasuoritusRow(päätasonSuoritusId, Some(osasuoritusId), opiskeluoikeusOid, sisältyyOpiskeluoikeuteenOid, os2, (data \ "osasuoritukset")(i), idGenerator)
+      case (os2, i) => buildROsasuoritusRow(
+        päätasonSuoritusId,
+        Some(osasuoritusId),
+        opiskeluoikeusOid,
+        sisältyyOpiskeluoikeuteenOid,
+        os2,
+        (data \ "osasuoritukset")(i),
+        idGenerator
+      )
     }
   }
 }

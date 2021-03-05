@@ -15,8 +15,7 @@ class ValpasFrontSpec extends KoskiCommandLineSpec {
 
     ValpasMockUsers.mockUsersEnabled = true
     fixtureCreator.resetFixtures(fixtureCreator.valpasFixtureState)
-    raportointikantaService.dropAndCreateSchema()
-    raportointikantaService.loadRaportointikanta(true)
+    raportointikantaService.loadRaportointikanta(force = true)
 
     runTestCommand("valpas-front", Seq("scripts/valpas-front-test.sh", SharedJetty.hostUrl))
   }

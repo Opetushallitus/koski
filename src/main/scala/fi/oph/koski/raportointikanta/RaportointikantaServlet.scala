@@ -1,8 +1,7 @@
 package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresVirkailijaOrPalvelukäyttäjä}
+import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache, ObservableSupport}
 import org.scalatra._
 
@@ -13,19 +12,10 @@ class RaportointikantaServlet(implicit val application: KoskiApplication) extend
     noRemoteCallsExpectFor("/status")
   }
 
-  get("/clear") {
-    service.dropAndCreateSchema
-    renderObject(Map("ok" -> true))
-  }
-
   get("/load") {
     logger.info("load raportointikanta")
     service.loadRaportointikanta(getBooleanParam("force"))
     renderObject(Map("status" -> "loading"))
-  }
-
-  get("/opiskeluoikeudet") {
-    streamResponse[LoadResult](service.loadOpiskeluoikeudet(), KoskiSpecificSession.systemUser)
   }
 
   get("/henkilot") {

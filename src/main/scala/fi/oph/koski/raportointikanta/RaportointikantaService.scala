@@ -11,11 +11,6 @@ import rx.lang.scala.{Observable, Scheduler}
 import scala.language.postfixOps
 
 class RaportointikantaService(application: KoskiApplication) extends Logging {
-  def dropAndCreateSchema() {
-    logger.info("Clearing raportointikanta...")
-    raportointiDatabase.dropAndCreateObjects
-  }
-
   def loadRaportointikanta(force: Boolean, scheduler: Scheduler = defaultScheduler): Boolean = if (!force && isLoading) {
     logger.info("Raportointikanta already loading, do nothing")
     false
@@ -28,14 +23,14 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
 
   def loadRaportointikantaAndExit() = {
     loadDatabase.dropAndCreateObjects
-    startLoading(defaultScheduler, () => {
+    startLoading(defaultScheduler, () => { // TODO: kutsu ylempää
       logger.info(s"Ended loading raportointikanta, shutting down...")
       shutdown
     })
     logger.info(s"Started loading raportointikanta (force: true)")
   }
 
-  def loadOpiskeluoikeudet(db: RaportointiDatabase = raportointiDatabase): Observable[LoadResult] = {
+  def loadOpiskeluoikeudet(db: RaportointiDatabase): Observable[LoadResult] = {
     // Ensure that nobody uses koskiSession implicitely
     implicit val systemUser = KoskiSpecificSession.systemUser
     OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, systemUser, db)
