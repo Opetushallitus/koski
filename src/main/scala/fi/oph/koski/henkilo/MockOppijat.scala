@@ -50,6 +50,11 @@ class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil)
     oppija
   }
 
+  def duplicate(masterOppija: LaajatOppijaHenkilöTiedot): LaajatOppijaHenkilöTiedot = {
+    val oppijaCopy = masterOppija.copy(oid = generateId())
+    addOppija(OppijaHenkilöWithMasterInfo(oppijaCopy, Some(masterOppija))).henkilö.asInstanceOf[LaajatOppijaHenkilöTiedot]
+  }
+
   def getOppijat = oppijat
 
   def generateId(): String = this.synchronized {

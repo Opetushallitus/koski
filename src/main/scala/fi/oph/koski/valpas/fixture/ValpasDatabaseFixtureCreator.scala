@@ -50,6 +50,8 @@ class ValpasDatabaseFixtureCreator(application: KoskiApplication) extends Databa
     (ValpasMockOppijat.kasiinAstiToisessaKoulussaOllut, ValpasExampleData.kasiluokkaEronnutKeväällä2020Opiskeluoikeus),
     (ValpasMockOppijat.kasiinAstiToisessaKoulussaOllut, ValpasExampleData.pelkkäYsiluokkaKeskenKeväällä2021Opiskeluoikeus),
     (ValpasMockOppijat.lukionAloittanut, ValpasExampleData.valmistunutYsiluokkalainen),
-    (ValpasMockOppijat.lukionAloittanut, ValpasExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä)
+    (ValpasMockOppijat.lukionAloittanut, ValpasExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä),
+    (ValpasMockOppijat.oppivelvollinenKahdellaOppijaOidillaMaster, ValpasExampleData.valmistunutYsiluokkalainen),
+    (ValpasMockOppijat.oppivelvollinenKahdellaOppijaOidillaToinen, ValpasExampleData.lukionOpiskeluoikeus),
   )
 }
