@@ -77,7 +77,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
           } catch {
             case e: Throwable => {
               logger.error(e)(e.toString)
-              shutdown
+              onEnd()
             }
           }
         }
