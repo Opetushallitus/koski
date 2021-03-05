@@ -15,7 +15,7 @@ class LukioDiaIbInternationalOpiskelijaMaaratRaporttiSpec extends FreeSpec with 
   override def defaultUser = MockUsers.helsinginKaupunkiPalvelukäyttäjä
 
   override def beforeAll() = {
-    loadRaportointikantaFixtures
+    reloadRaportointikanta
   }
 
   val hese = "Helsingin medialukio"

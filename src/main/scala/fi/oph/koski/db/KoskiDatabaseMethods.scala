@@ -22,8 +22,8 @@ trait DatabaseConverters {
 trait KoskiDatabaseMethods extends DatabaseConverters {
   protected def db: DB
 
-  def runDbSync[R](a: DBIOAction[R, NoStream, Nothing], skipCheck: Boolean = false, timeout: Duration = 60.seconds): R = {
-    if (!skipCheck && Thread.currentThread().getName.startsWith(Pools.databasePoolName)) {
+  def runDbSync[R](a: DBIOAction[R, NoStream, Nothing], allowNestedTransactions: Boolean = false, timeout: Duration = 60.seconds): R = {
+    if (!allowNestedTransactions && Thread.currentThread().getName.startsWith(Pools.databasePoolName)) {
       throw new RuntimeException("Nested transaction detected! Don't call runDbSync in a nested manner, as it will cause deadlocks.")
     }
     Futures.await(db.run(a), atMost = timeout)

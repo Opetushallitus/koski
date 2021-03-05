@@ -13,7 +13,7 @@ class LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiSpec extends FreeSpec
   override def defaultUser = MockUsers.helsinginKaupunkiPalvelukäyttäjä
 
   override def beforeAll() = {
-    loadRaportointikantaFixtures
+    reloadRaportointikanta
   }
 
   "Lukioon valmistavan koulutuksen opiskelijamaarat" - {

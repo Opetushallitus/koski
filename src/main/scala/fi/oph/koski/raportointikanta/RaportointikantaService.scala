@@ -11,31 +11,26 @@ import rx.lang.scala.{Observable, Scheduler}
 import scala.language.postfixOps
 
 class RaportointikantaService(application: KoskiApplication) extends Logging {
-  def dropAndCreateSchema() {
-    logger.info("Clearing raportointikanta...")
-    raportointiDatabase.dropAndCreateObjects
+  def loadRaportointikanta(force: Boolean, scheduler: Scheduler = defaultScheduler, onEnd: () => Unit = () => ()): Boolean = {
+    if (isLoading && !force) {
+      logger.info("Raportointikanta already loading, do nothing")
+      false
+    } else {
+      loadDatabase.dropAndCreateObjects
+      startLoading(scheduler, onEnd)
+      logger.info(s"Started loading raportointikanta (force: $force)")
+      true
+    }
   }
 
-  def loadRaportointikanta(force: Boolean, scheduler: Scheduler = defaultScheduler): Boolean = if (!force && isLoading) {
-    logger.info("Raportointikanta already loading, do nothing")
-    false
-  } else {
-    loadDatabase.dropAndCreateObjects
-    startLoading(scheduler)
-    logger.info(s"Started loading raportointikanta (force: $force)")
-    true
-  }
-
-  def loadRaportointikantaAndExit() = {
-    loadDatabase.dropAndCreateObjects
-    startLoading(defaultScheduler, () => {
+  def loadRaportointikantaAndExit(): Unit = {
+    loadRaportointikanta(force = true, defaultScheduler, onEnd = () => {
       logger.info(s"Ended loading raportointikanta, shutting down...")
       shutdown
     })
-    logger.info(s"Started loading raportointikanta (force: true)")
   }
 
-  def loadOpiskeluoikeudet(db: RaportointiDatabase = raportointiDatabase): Observable[LoadResult] = {
+  private def loadOpiskeluoikeudet(db: RaportointiDatabase): Observable[LoadResult] = {
     // Ensure that nobody uses koskiSession implicitely
     implicit val systemUser = KoskiSpecificSession.systemUser
     OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, systemUser, db)
@@ -59,7 +54,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   def status: Map[String, RaportointikantaStatusResponse] =
     List(loadDatabase.status, raportointiDatabase.status).groupBy(_.schema).mapValues(_.head)
 
-  private def startLoading(scheduler: Scheduler, onEnd: () => Unit = () => ()) = {
+  private def startLoading(scheduler: Scheduler, onEnd: () => Unit) = {
     logger.info(s"Start loading raportointikanta into ${loadDatabase.schema.name}")
     loadOpiskeluoikeudet(loadDatabase)
       .subscribeOn(scheduler)
@@ -82,7 +77,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
           } catch {
             case e: Throwable => {
               logger.error(e)(e.toString)
-              shutdown
+              onEnd()
             }
           }
         }

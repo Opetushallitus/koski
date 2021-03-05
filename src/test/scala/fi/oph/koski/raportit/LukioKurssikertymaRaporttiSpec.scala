@@ -11,7 +11,7 @@ import org.scalatest.{BeforeAndAfterAll, FreeSpec}
 class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll {
 
   override def beforeAll = {
-    loadRaportointikantaFixtures
+    reloadRaportointikanta
   }
 
   override def defaultUser = MockUsers.helsinginKaupunkiPalvelukäyttäjä

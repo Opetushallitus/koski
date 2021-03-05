@@ -24,7 +24,6 @@ object KoodistoLoader extends Logging {
       val versio = koodistoPalvelu.getLatestVersionRequired(koodistoUri)
       val koodit = koodistoPalvelu.getKoodistoKoodit(versio)
       val rows = koodit.map(buildRKoodistoKoodiRow)
-      db.deleteKoodistoKoodit(koodistoUri)
       db.loadKoodistoKoodit(rows)
       db.setLastUpdate(name)
       count += rows.length

@@ -18,8 +18,10 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
 
   override def beforeAll(): Unit = {
     lisääPäätasonSuorituksia(lukionAineopiskelijaAktiivinen, List(LukioExampleData.lukionOppiaineenOppimääränSuoritusA1Englanti, LukioExampleData.lukionOppiaineenOppimääränSuoritusPitkäMatematiikka))
-    loadRaportointikantaFixtures
+    reloadRaportointikanta
   }
+
+  override def afterAll: Unit = resetFixtures
 
   lazy val today = LocalDate.now
   lazy val repository = LukioRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
@@ -290,7 +292,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     val oo = getOpiskeluoikeus(oppija.oid, OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo).asInstanceOf[LukionOpiskeluoikeus]
     putOppija(Oppija(oppija, List(oo.copy(suoritukset = päätasonSuoritukset ::: oo.suoritukset)))) {
       verifyResponseStatusOk()
-      loadRaportointikantaFixtures
+      reloadRaportointikanta
     }
   }
 

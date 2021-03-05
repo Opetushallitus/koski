@@ -154,5 +154,5 @@ class RaportitServletSpec extends FreeSpec with RaportointikantaTestMethods with
     }
   }
 
-  override def beforeAll(): Unit = loadRaportointikantaFixtures
+  override def beforeAll(): Unit = reloadRaportointikanta
 }

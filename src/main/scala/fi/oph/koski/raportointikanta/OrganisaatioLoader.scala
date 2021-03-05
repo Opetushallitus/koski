@@ -14,8 +14,6 @@ object OrganisaatioLoader extends Logging {
     val organisaatiot = organisaatioRepository.findAllFlattened
     logger.info(s"Löytyi ${organisaatiot.size} organisaatioita")
     db.setStatusLoadStarted(name)
-    db.deleteOrganisaatiot
-    db.deleteOrganisaatioKielet
     val count = organisaatiot.grouped(BatchSize).map(batch => {
       val batchRows = batch.map(buildROrganisaatioRow)
       val organisaatioRows = batchRows.map(_._1)

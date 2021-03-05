@@ -106,9 +106,6 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
     logger.info(s"Materialized views created in $duration s")
   }
 
-  def deleteOpiskeluoikeudet =
-    runDbSync(ROpiskeluoikeudet.schema.truncate)
-
   def loadOpiskeluoikeudet(opiskeluoikeudet: Seq[ROpiskeluoikeusRow]): Unit = {
     runDbSync(ROpiskeluoikeudet ++= opiskeluoikeudet, timeout = 5.minutes)
   }
@@ -117,57 +114,36 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
     runDbSync(ROpiskeluoikeudet.map(_.oppijaOid).distinct.result, timeout = 15.minutes)
   }
 
-  def deleteOrganisaatioHistoria: Unit =
-    runDbSync(ROrganisaatioHistoriat.schema.truncate)
   def loadOrganisaatioHistoria(organisaatioHistoriat: Seq[ROrganisaatioHistoriaRow]): Unit =
     runDbSync(ROrganisaatioHistoriat ++= organisaatioHistoriat)
 
-  def deleteOpiskeluoikeusAikajaksot: Unit =
-    runDbSync(ROpiskeluoikeusAikajaksot.schema.truncate)
   def loadOpiskeluoikeusAikajaksot(jaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Unit =
     runDbSync(ROpiskeluoikeusAikajaksot ++= jaksot)
 
-  def deleteEsiopetusOpiskeluoikeusAikajaksot: Unit =
-    runDbSync(EsiopetusOpiskeluoikeusAikajaksot.schema.truncate)
   def loadEsiopetusOpiskeluoikeusAikajaksot(jaksot: Seq[EsiopetusOpiskeluoikeusAikajaksoRow]): Unit =
     runDbSync(EsiopetusOpiskeluoikeusAikajaksot ++= jaksot)
 
-  def deletePäätasonSuoritukset: Unit =
-    runDbSync(RPäätasonSuoritukset.schema.truncate)
   def loadPäätasonSuoritukset(suoritukset: Seq[RPäätasonSuoritusRow]): Unit =
     runDbSync(RPäätasonSuoritukset ++= suoritukset)
-  def deleteOsasuoritukset: Unit =
-    runDbSync(ROsasuoritukset.schema.truncate)
+
   def loadOsasuoritukset(suoritukset: Seq[ROsasuoritusRow]): Unit =
     runDbSync(ROsasuoritukset ++= suoritukset, timeout = 5.minutes)
 
-  def deleteMuuAmmatillinenRaportointi: Unit =
-    runDbSync(MuuAmmatillinenOsasuoritusRaportointi.schema.truncate)
   def loadMuuAmmatillinenRaportointi(rows: Seq[MuuAmmatillinenOsasuoritusRaportointiRow]): Unit =
     runDbSync(MuuAmmatillinenOsasuoritusRaportointi ++= rows, timeout = 5.minutes)
 
-  def deleteTOPKSAmmatillinenRaportointi: Unit =
-    runDbSync(TOPKSAmmatillinenOsasuoritusRaportointi.schema.truncate)
   def loadTOPKSAmmatillinenRaportointi(rows: Seq[TOPKSAmmatillinenRaportointiRow]): Unit =
     runDbSync(TOPKSAmmatillinenOsasuoritusRaportointi ++= rows, timeout = 5.minutes)
 
-  def deleteHenkilöt: Unit =
-    runDbSync(RHenkilöt.schema.truncate)
   def loadHenkilöt(henkilöt: Seq[RHenkilöRow]): Unit =
     runDbSync(RHenkilöt ++= henkilöt)
 
-  def deleteOrganisaatiot: Unit =
-    runDbSync(ROrganisaatiot.schema.truncate)
   def loadOrganisaatiot(organisaatiot: Seq[ROrganisaatioRow]): Unit =
     runDbSync(ROrganisaatiot ++= organisaatiot)
 
-  def deleteOrganisaatioKielet: Unit =
-    runDbSync(ROrganisaatioKielet.schema.truncate)
   def loadOrganisaatioKielet(organisaatioKielet: Seq[ROrganisaatioKieliRow]): Unit =
     runDbSync(ROrganisaatioKielet ++= organisaatioKielet)
 
-  def deleteKoodistoKoodit(koodistoUri: String): Unit =
-    runDbSync(RKoodistoKoodit.filter(_.koodistoUri === koodistoUri).delete)
   def loadKoodistoKoodit(koodit: Seq[RKoodistoKoodiRow]): Unit =
     runDbSync(RKoodistoKoodit ++= koodit)
 

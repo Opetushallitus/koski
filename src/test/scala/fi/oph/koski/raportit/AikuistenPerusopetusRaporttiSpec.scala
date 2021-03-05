@@ -10,7 +10,7 @@ import fi.oph.koski.documentation.{ExampleData, ExamplesAikuistenPerusopetus, Yl
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
-import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetusAlkuvaiheRaportti, AikuistenPerusopetusOppiaineenOppimääräRaportti, AikuistenPerusopetusPäättövaiheRaportti, AikuistenPerusopetusRaportti, AikuistenPerusopetusRaporttiRepository, AikuistenPerusopetusRaporttiType}
+import fi.oph.koski.raportit.aikuistenperusopetus._
 import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}
 import fi.oph.koski.schema._
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
@@ -33,8 +33,10 @@ class AikuistenPerusopetusRaporttiSpec
         ExamplesAikuistenPerusopetus.oppiaineenOppimääränSuoritusYH
       )
     )
-    loadRaportointikantaFixtures
+    reloadRaportointikanta
   }
+
+  override def afterAll: Unit = resetFixtures
 
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = AikuistenPerusopetuksenOpiskeluoikeus(
     oppilaitos = Some(YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu),

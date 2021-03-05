@@ -8,7 +8,7 @@ import fi.oph.koski.schema.Opiskeluoikeus.Oid
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class OsasuorituksetSpec extends FreeSpec with Matchers with BeforeAndAfterAll with RaportointikantaTestMethods with OpiskeluoikeusTestMethods with DatabaseTestMethods {
-  override protected def beforeAll(): Unit = loadRaportointikantaFixtures
+  override protected def beforeAll(): Unit = reloadRaportointikanta
   private lazy val raportointiDatabase = KoskiApplicationForTests.raportointiDatabase
 
   "Osasuoritukset" - {

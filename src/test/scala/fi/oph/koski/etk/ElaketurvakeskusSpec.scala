@@ -21,7 +21,7 @@ class ElaketurvakeskusSpec extends FreeSpec with BeforeAndAfterAll with LocalJet
   override def beforeAll {
     resetFixtures
     insertAdditionalTestData
-    loadRaportointikantaFixtures
+    reloadRaportointikanta
   }
 
   "Elaketurvakeskus API" - {

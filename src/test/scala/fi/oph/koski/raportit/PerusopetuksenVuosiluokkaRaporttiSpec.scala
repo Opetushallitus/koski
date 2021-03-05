@@ -22,7 +22,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     with OpiskeluoikeusTestMethodsPerusopetus
     with BeforeAndAfterAll {
 
-  override def beforeAll(): Unit = loadRaportointikantaFixtures
+  override def beforeAll(): Unit = reloadRaportointikanta
 
   lazy val app = KoskiApplicationForTests
   lazy val repository = PerusopetuksenRaportitRepository(app.raportointiDatabase.db)
@@ -399,7 +399,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     addPerusopetus(KoskiSpecificMockOppijat.markkanen, createVuosiluokanSuoritus(Some(date(2015, 1, 1)), None, vuosiluokka = 9), createVuosiluokanSuoritus(Some(date(2014, 1, 1)), Some(date(2015, 1, 1))))
     addPerusopetus(KoskiSpecificMockOppijat.teija, createVuosiluokanSuoritus(Some(date(2014, 1, 1)), Some(date(2014, 12, 12))), createVuosiluokanSuoritus(alkupäivä, None, vuosiluokka = 8))
     addPerusopetus(KoskiSpecificMockOppijat.tero, createVuosiluokanSuoritus(alkupäivä, loppupäivä), createVuosiluokanSuoritus(Some(date(2014, 1, 1)), Some(date(2015, 2, 2)), vuosiluokka = 8))
-    loadRaportointikantaFixtures
+    reloadRaportointikanta
   }
 
   private def addPerusopetus(oppija: Henkilö, suoritukset: PerusopetuksenPäätasonSuoritus*) = {
@@ -421,7 +421,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     val lisatyllaVuosiluokanSuorituksella = oo.copy(suoritukset = (vuosiluokanSuoritus ::: oo.suoritukset), tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä))))
     putOppija(Oppija(oppija, List(lisatyllaVuosiluokanSuorituksella))) {
       verifyResponseStatusOk()
-      loadRaportointikantaFixtures
+      reloadRaportointikanta
       f
     }
   }
@@ -430,7 +430,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     val oo = lastOpiskeluoikeus(oppija.oid).asInstanceOf[T].copy(lisätiedot = Some(lisätiedot))
     putOppija(Oppija(oppija, List(oo))) {
       verifyResponseStatusOk()
-      loadRaportointikantaFixtures
+      reloadRaportointikanta
       f
     }
   }
