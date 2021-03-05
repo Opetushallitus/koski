@@ -92,7 +92,7 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends K
           and r_osasuoritus.arviointi_paiva >= $aikaisintaan
           and r_osasuoritus.arviointi_paiva <= $viimeistaan
           and r_osasuoritus.arviointi_arvosana_koodiarvo != 'O'
-        group by paatason_suoritus.oppilaitos_nimi, paatason_suoritus.oppilaitos_oid
+       group by paatason_suoritus.oppilaitos_nimi, paatason_suoritus.oppilaitos_oid
       ) kurssikertymat
       --- aikajaksojen ulkopuoliset kurssit
       left join (
