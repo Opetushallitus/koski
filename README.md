@@ -285,7 +285,7 @@ make fronttest
 
 ## CI-palvelin
 
-Kosken [Jenkins CI-palveluun](https://dev.koski.opintopolku.fi/jenkins/) on rajoitettu pääsy käyttäjätunnuksella ja salasanalla.
+Koskessa on käytössä [Gitbub Actions](https://github.com/Opetushallitus/koski/actions), joka on konfiguroitu [.github hakemistossa](.github).
 
 CI-palvelimella sovellus testataan jokaisen commitin yhteydessä. Paikallisten testien lisäksi ajetaan pieni määrä integraatiotestejä testiympäristön REST-rajapintoja vasten.
 
@@ -293,12 +293,6 @@ Myös staattinen analyysi [ScalaStyle](http://www.scalastyle.org/) ja [ESLint](h
 
 Suorituskykytestit ajetaan joka aamu.
 
-CI-palvelimen konfiguraatio synkronoidaan [Github-repositorioon](https://github.com/Opetushallitus/koski-ci-configuration) Jenkins SCM sync congiguration [pluginilla](https://wiki.jenkins-ci.org/display/JENKINS/SCM+Sync+configuration+plugin).
-
-CI-palvelimelle on asennettu PostgreSQL, mutta siellä ei ajeta tietokantaserveriä palveluna.
-Sen sijaan kullekin buildille on määritelty oma tietokantaportti parametrilla `-DargLine=-Ddb.port=5678`,
-jolloin testiajon käynnistyessä käynnistetään uusi tietokantaserveri, jonka datahakemisto on build-hakemiston alla
-ja joka palvelee omassa portissaan buildin ajan.
 
 ## Loggaus
 
@@ -343,76 +337,24 @@ Ylioppilastutkintorekisteri (YTR) | | 0295 338 200, lautakunta@ylioppilastutkint
 
 ### Sovelluksen asennus pilviympäristöön
 
-Jotta voit asentaa sovelluksen pilviympäristöön, tarvitset erillisen ympäristörepositorion, jossa on ympäristöjen konfiguraatiot. Pyydä apua kehitystiimiltä!
-
-- Aseta `CLOUD_ENV_DIR` ympäristömuuttuja osoittamaan ympäristörepositorion polkuun
-- Valitse haluamasi ympäristö sourcaamalla jokin ympäristöskripti ympäristörepositorion `tenants`-hakemistosta.
-
-#### Lokaalin version asentaminen
-
-Ajamalla
-
-``` shell
-make dist version=local
-```
-
-muodostuu uusi lokaali asennuspaketti applikaatiosta. Asennuspakettiin tulee mukaan kaikki lokaalisti kommitoidut muutokset.
-
-Tämän jälkeen voit asentaa Koskesta uuden version pilviympäristöön ajamalla
-
-``` shell
-make deploy version=local
-```
-
-Paketin muodostamisen ja asennuksen voi hoitaa myös yhdellä komennolla
-
-``` shell
-make dist deploy version=local
-```
-
-#### Versioidun paketin asentaminen
-
-Ajamalla
-
-``` shell
-make dist version=<versio>
-```
-
-muodostuu uusi versio applikaatiosta. Applikaatio siirretään Artifactoryyn ja versiohallintaan lisätään uusi tägi annetulla versionumerolla. Asennuspakettiin tulee mukaan kaikki lokaalisti kommitoidut muutokset.
-
-Tämän jälkeen voit asentaa Koskesta uuden version pilviympäristöön ajamalla
-
-``` shell
-make deploy version=<versio>
-```
-
-Paketin muodostamisen ja asennuksen voi hoitaa myös yhdellä komennolla
-
-``` shell
-make dist deploy version=<versio>
-```
-
-### Pilviasennuksen operointi
-
-Katso [pilviympäristön dokumentaatio](https://github.com/Opetushallitus/koski-env/blob/master/README.md).
+Sovelluksen asennus on rakennettu CI putkeen ja tapahtuu automaattisesti dev ja qa ympäristöihin masteriin tulevista
+muutoksista. Tarkempi kuvaus löytyy infra reposta.
 
 ## Toteutus ja integraatiot
 
 ### Konfigurointi
 
-Sovellus käyttää konfigurointiin [Typesafe Config](https://github.com/typesafehub/config) -kirjastoa,
-jonka avulla tarvittavat asetukset haetaan tiedostoista ja/tai komentoriviltä.
-
+Sovellus käyttää konfigurointiin [Typesafe Config](https://github.com/typesafehub/config) -kirjastoa.
 Sovelluksen oletusasetukset ovat tiedostossa [reference.conf](src/main/resources/reference.conf).
 Kun sovellus käynnistetään ilman ulkoisia parametrejä, käynnistyy se näillä asetuksilla
 ja toimii "kehitysmoodissa", eli käynnistää paikallisen tietokannan,
 eikä ota yhteyttä ulkoisiin järjestelmiin.
 
 Tuotantokäytössä ja testiympäristössä käytetään asetuksia, joilla Koski saadaan ottamaan yhteys ulkoisiin
-järjestelmiin. Pilviympäristössä käytetään tällä hetkellä `cloud/restart.sh` -skriptiä, jolla annetaan
-tarvittavat asetukset.
+järjestelmiin. Pilviympäristössä käytössä on [AWS:n AppConfig](https://eu-west-1.console.aws.amazon.com/systems-manager/appconfig).
 
 Kehityskäytössä voit käyttää erilaisia asetuksia tekemällä asetustiedostoja, kuten vaikkapa `src/main/resources/koskidev.conf` (ei versionhallinnassa, koska sisältää luottamuksellista tietoa) ja antaa käytettävän tiedoston nimi käynnistysparametrina, esim. `-Dconfig.resource=koskidev.conf`. Valmiita asetustiedostoja voi pyytää kehitystiimiltä.
+
 
 ### Oppijanumerorekisteri, organisaatiopalvelu ja käyttöoikeuspalvelu
 
