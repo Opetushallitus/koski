@@ -14,7 +14,7 @@ import fi.oph.koski.koskiuser.{KoskiMockUser, MockUser}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
-import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät, AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRow, AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit, AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitRow}
+import fi.oph.koski.raportit.aikuistenperusopetus._
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema._
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
@@ -35,6 +35,8 @@ class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitSpec extends Fre
     )
     loadRaportointikantaFixtures
   }
+
+  override def afterAll: Unit = resetFixtures
 
 
   def tag = implicitly[reflect.runtime.universe.TypeTag[AikuistenPerusopetuksenOpiskeluoikeus]]

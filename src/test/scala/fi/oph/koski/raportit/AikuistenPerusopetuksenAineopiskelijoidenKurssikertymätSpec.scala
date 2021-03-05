@@ -10,7 +10,7 @@ import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetuksenAlkuvaiheenSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.aikuisOpiskelija
-import fi.oph.koski.koskiuser.{KoskiMockUser, MockUser}
+import fi.oph.koski.koskiuser.KoskiMockUser
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
@@ -33,9 +33,10 @@ class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätSpec extends FreeS
         ExamplesAikuistenPerusopetus.oppiaineenOppimääränSuoritusYH
       )
     )
-
     loadRaportointikantaFixtures
   }
+
+  override def afterAll: Unit = resetFixtures
 
 
   def tag = implicitly[reflect.runtime.universe.TypeTag[AikuistenPerusopetuksenOpiskeluoikeus]]

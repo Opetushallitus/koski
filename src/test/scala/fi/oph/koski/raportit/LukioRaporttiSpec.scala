@@ -21,6 +21,8 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     loadRaportointikantaFixtures
   }
 
+  override def afterAll: Unit = resetFixtures
+
   lazy val today = LocalDate.now
   lazy val repository = LukioRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
   lazy val lukioRaportti = LukioRaportti(repository)

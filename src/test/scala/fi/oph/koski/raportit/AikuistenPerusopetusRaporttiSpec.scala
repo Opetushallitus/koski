@@ -36,6 +36,8 @@ class AikuistenPerusopetusRaporttiSpec
     loadRaportointikantaFixtures
   }
 
+  override def afterAll: Unit = resetFixtures
+
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = AikuistenPerusopetuksenOpiskeluoikeus(
     oppilaitos = Some(YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu),
     suoritukset = List(
