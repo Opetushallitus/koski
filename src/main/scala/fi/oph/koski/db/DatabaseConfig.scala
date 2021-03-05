@@ -3,7 +3,6 @@ package fi.oph.koski.db
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigValueFactory._
 import fi.oph.koski.config.{DatabaseConnectionConfig, Environment, SecretsManager}
-import fi.oph.koski.executors.Pools
 import fi.oph.koski.log.NotLoggable
 import fi.oph.koski.raportointikanta.Schema
 import slick.jdbc.PostgresProfile
@@ -59,7 +58,6 @@ trait DatabaseConfig extends NotLoggable {
   protected def databaseSpecificConfig: Config
 
   private def commonConfig: Config = DatabaseConfig.rootDbConfigWithoutChildren(rootConfig)
-    .withValue("numThreads", fromAnyRef(Pools.dbThreads)) // TODO: poista - haetaan aina konffista
 
   private def configWithSecretsManager(config: Config): Config = {
     if (useSecretsManager) {

@@ -12,7 +12,6 @@ object Pools {
   val backgroundExecutionContextThreads = Math.max(jettyThreads / 10, 2)
   val httpThreads = jettyThreads
   val httpPool = NamedThreadPoolExecutor("http4s-blaze-client", httpThreads, httpThreads, 1000)
-  val dbThreads = 20
   val databasePoolName = "databasePool"
   val globalExecutor = ExecutionContext.fromExecutor(NamedThreadPoolExecutor("globalPool", Pools.globalExecutionContextThreads, Pools.globalExecutionContextThreads, 1000))
   val databaseExecutor = ExecutionContext.fromExecutor(NamedThreadPoolExecutor(databasePoolName, Pools.globalExecutionContextThreads, Pools.globalExecutionContextThreads, 1000))
