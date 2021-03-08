@@ -4,7 +4,7 @@ import { DataTable, Datum, Value } from "../../components/tables/DataTable"
 import { getLocalized, t } from "../../i18n/i18n"
 import { ValintatietotilaKoodistoviite } from "../../state/koodistot"
 import { Haku, Oppija, Valintatieto } from "../../state/oppijat"
-import { formatDate } from "../../utils/date"
+import { formatNullableDate } from "../../utils/date"
 
 export type HakutilanneTableProps = {
   data: Oppija[]
@@ -77,7 +77,7 @@ const oppijaToTableData = (oppija: Oppija): Datum => {
       },
       {
         value: henkilö.syntymäaika,
-        display: formatDate(henkilö.syntymäaika),
+        display: formatNullableDate(henkilö.syntymäaika),
       },
       {
         value: opiskeluoikeudet?.ryhmä,

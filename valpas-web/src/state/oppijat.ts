@@ -13,13 +13,14 @@ import { ISODate, LocalizedString, Oid } from "./types"
 export type Oppija = {
   henkilö: Henkilö
   opiskeluoikeudet: Opiskeluoikeus[]
+  tiedot: Lisätiedot
   haut?: Haku[]
 }
 
 export type Henkilö = {
   oid: Oid
   hetu: string
-  syntymäaika: ISODate
+  syntymäaika?: ISODate
   etunimet: string
   sukunimi: string
 }
@@ -42,6 +43,11 @@ export type Valintatieto = {
   tila?: ValintatietotilaKoodistoviite
   pisteet?: number
   alinPistemäärä?: number
+}
+
+export type Lisätiedot = {
+  opiskelee: boolean
+  oppivelvollisuusVoimassaAsti?: ISODate
 }
 
 // Opiskeluoikeus
