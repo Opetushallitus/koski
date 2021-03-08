@@ -12,6 +12,10 @@ const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
 const secondaryHeadingEquals = (expected: string) =>
   textEventuallyEquals("h2.heading--secondary", expected)
+const oppivelvollisuustiedotEquals = (expected: string) =>
+  contentEventuallyEquals("#oppivelvollisuustiedot .card__body", expected)
+const opiskeluhistoriaEquals = (expected: string) =>
+  contentEventuallyEquals("#opiskeluhistoria .card__body", expected)
 
 describe("Oppijakohtainen näkymä", () => {
   it("Näyttää oppijan tiedot, johon käyttäjällä on lukuoikeus", async () => {
@@ -24,16 +28,17 @@ describe("Oppijakohtainen näkymä", () => {
       "Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas (221105A3023)"
     )
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000001")
-    await contentEventuallyEquals(
-      "#opiskeluhistoria .card__body",
-      `
+    await oppivelvollisuustiedotEquals(`
+      Opiskelutilanne:	Opiskelemassa
+      Oppivelvollisuus:	22.11.2023 asti
+    `)
+    await opiskeluhistoriaEquals(`
       school
       Perusopetus 2012 –
       Jyväskylän normaalikoulu
       Ryhmä: 9C
       Tila: Läsnä
-      `
-    )
+    `)
   })
 
   it("Näyttää oppijan tiedot valmistuneelle ysiluokkalaiselle", async () => {
@@ -46,16 +51,17 @@ describe("Oppijakohtainen näkymä", () => {
       "Ysiluokka-valmis-keväällä-2021 Valpas (190605A006K)"
     )
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000011")
-    await contentEventuallyEquals(
-      "#opiskeluhistoria .card__body",
-      `
+    await oppivelvollisuustiedotEquals(`
+      Opiskelutilanne:	Ei opiskelupaikkaa
+      Oppivelvollisuus:	19.6.2023 asti
+    `)
+    await opiskeluhistoriaEquals(`
       school
       Perusopetus 2012 – 2021
       Jyväskylän normaalikoulu
       Ryhmä: 9C
       Tila: Valmistunut
-      `
-    )
+    `)
   })
 
   it("Ei näytä oppijan tietoja, johon käyttäjällä ei ole lukuoikeutta", async () => {
@@ -79,9 +85,11 @@ describe("Oppijakohtainen näkymä", () => {
     )
     await mainHeadingEquals("Päällekkäisiä Oppivelvollisuuksia (060605A083N)")
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000003")
-    await contentEventuallyEquals(
-      "#opiskeluhistoria .card__body",
-      `
+    await oppivelvollisuustiedotEquals(`
+      Opiskelutilanne:	Opiskelemassa
+      Oppivelvollisuus:	6.6.2023 asti
+    `)
+    await opiskeluhistoriaEquals(`
       school
       Perusopetus 2012 –
       Jyväskylän normaalikoulu
@@ -92,8 +100,7 @@ describe("Oppijakohtainen näkymä", () => {
       Kulosaaren ala-aste
       Ryhmä: 8A
       Tila: Läsnä
-      `
-    )
+    `)
   })
 
   it("Näyttää oppijalta, jolla on useampia peräkkäisiä opiskeluoikeuksia kaikki opiskeluoikeudet", async () => {
@@ -104,9 +111,11 @@ describe("Oppijakohtainen näkymä", () => {
     )
     await mainHeadingEquals("LukionAloittanut Valpas (290405A871A)")
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000015")
-    await contentEventuallyEquals(
-      "#opiskeluhistoria .card__body",
-      `
+    await oppivelvollisuustiedotEquals(`
+      Opiskelutilanne:	Opiskelemassa
+      Oppivelvollisuus:	29.4.2023 asti
+    `)
+    await opiskeluhistoriaEquals(`
       school
       Lukiokoulutus 2021 –
       Jyväskylän normaalikoulu
@@ -116,7 +125,6 @@ describe("Oppijakohtainen näkymä", () => {
       Jyväskylän normaalikoulu
       Ryhmä: 9C
       Tila: Valmistunut
-      `
-    )
+    `)
   })
 })

@@ -1,0 +1,24 @@
+@import "../../style/colors.less";
+@import "../../style/typography.less";
+
+@infotable-cell-padding: 0.25rem 0.5rem;
+
+.infotable {
+  width: 100%;
+}
+
+.infotable__label {
+  text-align: left;
+  padding: @infotable-cell-padding;
+  font-weight: 500;
+  width: 30%;
+}
+
+.infotable__value {
+  padding: @infotable-cell-padding;
+  width: 70%;
+}
+
+.infotable__null {
+  color: @color-gray-lighten-3;
+}

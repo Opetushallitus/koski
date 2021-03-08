@@ -5,7 +5,7 @@ import fi.oph.koski.koodisto.KoodistoViite
 import fi.oph.koski.log.{AuditLog, KoskiMessageField, Logging}
 import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessage, ValpasOperation}
-import fi.oph.koski.valpas.repository.{ValpasDatabaseService, ValpasOppija}
+import fi.oph.koski.valpas.repository.{ValpasDatabaseService, ValpasOppija, ValpasOppijaLisätiedoilla, ValpasOppijaResult}
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
 class ValpasOppijaService(application: KoskiApplication) extends Logging {
@@ -37,12 +37,14 @@ class ValpasOppijaService(application: KoskiApplication) extends Logging {
         oppija
       })
 
-  def enrichOppija(oppija: ValpasOppija): ValpasOppija =
-    oppija.copy(
-      opiskeluoikeudet = oppija.opiskeluoikeudet.map(opiskeluoikeus =>
-        opiskeluoikeus.copy(
-          tyyppi = enrichKoodistokoodiviite(opiskeluoikeus.tyyppi),
-          viimeisinTila = enrichKoodistokoodiviite(opiskeluoikeus.viimeisinTila)
+  def enrichOppija(oppija: ValpasOppijaResult): ValpasOppijaLisätiedoilla =
+    ValpasOppijaLisätiedoilla(
+      oppija.copy(
+        opiskeluoikeudet = oppija.opiskeluoikeudet.map(opiskeluoikeus =>
+          opiskeluoikeus.copy(
+            tyyppi = enrichKoodistokoodiviite(opiskeluoikeus.tyyppi),
+            viimeisinTila = enrichKoodistokoodiviite(opiskeluoikeus.viimeisinTila)
+          )
         )
       )
     )

@@ -15,17 +15,17 @@ class ValpasDatabaseService(application: KoskiApplication) extends Logging {
   lazy val RHenkilöt = TableQuery[RHenkilöTable]
   lazy val ROpiskeluoikeudet = TableQuery[ROpiskeluoikeusTable]
 
-  def getPeruskoulunValvojalleNäkyväOppija(oppijaOid: String): Option[ValpasOppija] =
+  def getPeruskoulunValvojalleNäkyväOppija(oppijaOid: String): Option[ValpasOppijaResult] =
     getOppijat(Some(oppijaOid), None).headOption
 
-  def getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOids: Option[Seq[String]]): Seq[ValpasOppija] =
+  def getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOids: Option[Seq[String]]): Seq[ValpasOppijaResult] =
     getOppijat(None, oppilaitosOids)
 
   // Huom: Luotetaan siihen, että käyttäjällä on oikeudet nimenomaan annettuihin oppilaitoksiin!
   // Huom2: Tämä toimii vain peruskoulun hakeutumisen valvojille (ei esim. 10-luokille tai toisen asteen näkymiin yms.)
   // Huom3: Tämä ei filteröi opiskeluoikeuksia sen mukaan, minkä tiedot kuuluisi näyttää listanäkymässä, jos samalla oppijalla on useita opiskeluoikeuksia.
   //        Valinta voidaan jättää joko Scalalle, käyttöliitymälle tai tehdä toinen query, joka tekee valinnan SQL:ssä.
-  private def getOppijat(oppijaOid: Option[String], oppilaitosOids: Option[Seq[String]]): Seq[ValpasOppija] = {
+  private def getOppijat(oppijaOid: Option[String], oppilaitosOids: Option[Seq[String]]): Seq[ValpasOppijaResult] = {
     db.runDbSync(SQLHelpers.concatMany(
       Some(sql"""
 WITH
@@ -245,12 +245,12 @@ WITH
   ORDER BY
     oppija.sukunimi,
     oppija.etunimet
-    """)).as[(ValpasOppija)])
+    """)).as[(ValpasOppijaResult)])
   }
 
-  implicit private val getValpasOppijaResult: GetResult[ValpasOppija] = GetResult(r => {
+  implicit private val getValpasOppijaResult: GetResult[ValpasOppijaResult] = GetResult(r => {
     val rs: ResultSet = r.rs
-    ValpasOppija(
+    ValpasOppijaResult(
       henkilö = ValpasHenkilö(
         oid = rs.getString("oppija_oid"),
         hetu = Option(rs.getString("hetu")),
