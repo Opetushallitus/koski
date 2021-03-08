@@ -14,15 +14,12 @@ class ValpasOppijaService(application: KoskiApplication) extends Logging {
   private val accessResolver = new ValpasAccessResolver(application)
 
   def getOppijat(oppilaitosOids: Set[String], rajapäivät: Rajapäivät)(implicit session: ValpasSession): Option[Seq[ValpasOppija]] =
-    accessResolver.organisaatiohierarkiaOids(oppilaitosOids).map(oids => {
-      dbService.getPeruskoulunValvojalleNäkyvätOppijat(Some(oids.toSeq), rajapäivät)
-        .map(enrichOppija)
-        .map(oppija => {
-          // TODO, parempi auditlog-viesti, joka ei iteroi kaikkia oppijoita läpi
-          auditLogOppijaKatsominen(oppija)
-          oppija
-        })
-    })
+    accessResolver.organisaatiohierarkiaOids(oppilaitosOids)
+      .map(oids => dbService.getPeruskoulunValvojalleNäkyvätOppijat(Some(oids.toSeq), rajapäivät).map(enrichOppija))
+      .map(oppijat => {
+        oppilaitosOids.foreach(auditLogOppilaitoksenOppijatKatsominen)
+        oppijat
+      })
 
   // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
   // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
@@ -70,5 +67,11 @@ class ValpasOppijaService(application: KoskiApplication) extends Logging {
     AuditLog.log(ValpasAuditLogMessage(
       ValpasOperation.VALPAS_OPPIJA_KATSOMINEN,
       Map(KoskiMessageField.oppijaHenkiloOid -> oppija.henkilö.oid)
+    ))
+
+  def auditLogOppilaitoksenOppijatKatsominen(oppilaitosOid: String)(implicit session: ValpasSession) =
+    AuditLog.log(ValpasAuditLogMessage(
+      ValpasOperation.VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN,
+      Map(KoskiMessageField.juuriOrganisaatio -> oppilaitosOid)
     ))
 }
