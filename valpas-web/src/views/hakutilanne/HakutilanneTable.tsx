@@ -2,6 +2,7 @@ import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
 import { DataTable, Datum, Value } from "../../components/tables/DataTable"
 import { getLocalized, t } from "../../i18n/i18n"
+import { useBasePath } from "../../state/basePath"
 import { ValintatietotilaKoodistoviite } from "../../state/koodistot"
 import { Haku, Oppija, Valintatieto } from "../../state/oppijat"
 import { formatNullableDate } from "../../utils/date"
@@ -11,7 +12,10 @@ export type HakutilanneTableProps = {
 }
 
 export const HakutilanneTable = (props: HakutilanneTableProps) => {
-  const data = useMemo(() => props.data.map(oppijaToTableData), [props.data])
+  const basePath = useBasePath()
+  const data = useMemo(() => props.data.map(oppijaToTableData(basePath)), [
+    props.data,
+  ])
 
   return (
     <DataTable
@@ -54,7 +58,7 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
   )
 }
 
-const oppijaToTableData = (oppija: Oppija): Datum => {
+const oppijaToTableData = (basePath: string) => (oppija: Oppija): Datum => {
   // TODO: Näihin molempiin tarvitaaan rautaisempi logiikka
   const hakemus = oppija?.haut?.[0]
   const opiskeluoikeudet = oppija.opiskeluoikeudet[0]
@@ -66,7 +70,7 @@ const oppijaToTableData = (oppija: Oppija): Datum => {
       {
         value: `${henkilö.sukunimi} ${henkilö.etunimet}`,
         display: (
-          <Link to={`/oppijat/${henkilö.oid}`}>
+          <Link to={`${basePath}/oppijat/${henkilö.oid}`}>
             {henkilö.sukunimi} {henkilö.etunimet}
           </Link>
         ),
