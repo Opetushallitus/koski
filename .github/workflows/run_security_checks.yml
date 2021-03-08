@@ -42,5 +42,7 @@ jobs:
         run: |
           make owasp
       - name: Run snyk
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
           make snyk
