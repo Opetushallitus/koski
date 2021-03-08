@@ -121,6 +121,7 @@ object KoskiSpecificMockOppijat {
   val luvaOpiskelijamaaratRaportti_aikuistenOppimaara = koskiSpecificOppijat.oppija("Luva", "Aikuisten", "300900A9774")
   val paallekkaisiOpiskeluoikeuksia = koskiSpecificOppijat.oppija("Paallekkaisia", "Pekka", "171100A9438")
   val vapaaSivistystyöOppivelvollinen = koskiSpecificOppijat.oppija("Vapaa-Sivistys", "Oppivelvollinen", "080177-870W")
+  val vapaaSivistystyöMaahanmuuttajienKotoutus = koskiSpecificOppijat.oppija("Vapaa-Sivistys", "Kotoutuja", "080177-871W")
   val oikeusOpiskelunMaksuttomuuteen = koskiSpecificOppijat.oppija("Oikeus", "Maksuttomuuteen", "010104A6094", syntymäaika = Some(LocalDate.of(2004, 1, 1)))
   val eiOikeuttaMaksuttomuuteen = koskiSpecificOppijat.oppija("EiOikeutta", "Maksuttomuuteen", "311203A1454", syntymäaika = Some(LocalDate.of(2003, 12, 31)))
 

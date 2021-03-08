@@ -224,6 +224,19 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "koulutus_999910",
+  "koodiArvo" : "999910",
+  "metadata" : [ {
+    "nimi" : "Kansanopistojen vapaan sivistystyön maahanmuuttajien kotoutuskoulutus oppivelvollisille",
+    "lyhytNimi" : "Kansanopistojen vapaan sivistystyön maahanmuuttajien kotoutuskoulutus oppivelvollisille",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Fritt bildningsarbete ",
+    "lyhytNimi" : "Fritt bildningsarbete ",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "koulutus_100000",
   "koodiArvo" : "100000",
   "metadata" : [ {

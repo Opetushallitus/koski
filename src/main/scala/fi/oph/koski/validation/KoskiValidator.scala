@@ -624,12 +624,14 @@ class KoskiValidator(
   }
 
   private def validateVapaanSivistystyönPäätasonSuoritus(suoritus: VapaanSivistystyönPäätasonSuoritus): HttpStatus = {
-    if (suoritus.vahvistettu) {
-      HttpStatus.fold(List(validateVapaanSivistystyönPäätasonSuorituksenLaajuus(suoritus),
-        validateVapaanSivistystyönPäätasonSuorituksenOsaamiskokonaisuuksienLaajuudet(suoritus)))
-    }
-    else {
-      HttpStatus.ok
+    suoritus match {
+      case _: OppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenSuoritus if suoritus.vahvistettu => {
+        HttpStatus.fold(List(validateVapaanSivistystyönPäätasonSuorituksenLaajuus(suoritus),
+          validateVapaanSivistystyönPäätasonSuorituksenOsaamiskokonaisuuksienLaajuudet(suoritus)))
+      }
+      case _ => {
+        HttpStatus.ok
+      }
     }
   }
 
