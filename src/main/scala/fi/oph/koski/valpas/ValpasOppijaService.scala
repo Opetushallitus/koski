@@ -3,7 +3,6 @@ package fi.oph.koski.valpas
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koodisto.KoodistoViite
 import fi.oph.koski.log.{AuditLog, KoskiMessageField, Logging}
-import fi.oph.koski.raportointikanta.RHenkilöRow
 import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessage, ValpasOperation}
 import fi.oph.koski.valpas.repository.{ValpasDatabaseService, ValpasOppija}
@@ -27,8 +26,6 @@ class ValpasOppijaService(application: KoskiApplication) extends Logging {
 
   // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
   // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
-  // (2) käyttäjät, joilla globaali käyttöoikeus
-  // (3) käyttäjät, joilla oikeus välitasolle organisaatiohierarkiassa
   // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
   def getOppija(oppijaOid: String)(implicit session: ValpasSession): Option[ValpasOppija] =
     Some(oppijaOid)

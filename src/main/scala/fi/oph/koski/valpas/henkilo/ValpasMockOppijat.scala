@@ -24,6 +24,7 @@ object ValpasMockOppijat {
   val oppivelvollinenMonellaOppijaOidillaMaster = valpasOppijat.oppija("Kahdella-oppija-oidilla", "Valpas", "150205A490C")
   val oppivelvollinenMonellaOppijaOidillaToinen = valpasOppijat.duplicate(oppivelvollinenMonellaOppijaOidillaMaster)
   val oppivelvollinenMonellaOppijaOidillaKolmas = valpasOppijat.duplicate(oppivelvollinenMonellaOppijaOidillaMaster)
+  val aapajoenPeruskoulustaValmistunut = valpasOppijat.oppija("Aaapajoen-peruskoulusta-valmistunut", "Valpas", "160205A301X")
 
   def defaultOppijat = valpasOppijat.getOppijat
 }

@@ -16,8 +16,12 @@ class ValpasSession(user: AuthenticationUser, lang: String, clientIp: InetAddres
   def hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess: Boolean = false
 
   def hasGlobalReadAccess: Boolean = false
-
   def sensitiveDataAllowed(allowedRoles: Set[Role]): Boolean = false
+
+  def hasGlobalValpasOikeus(requiredRoles: Set[String]): Boolean = {
+    val käyttäjänGlobaalitValpasOikeudet = globalKäyttöoikeudet.flatMap(_.globalPalveluroolit.filter(_.palveluName == "VALPAS").map(_.rooli))
+    requiredRoles.subsetOf(käyttäjänGlobaalitValpasOikeudet)
+  }
 
   protected def kaikkiKäyttöoikeudet: Set[Käyttöoikeus] = käyttöoikeudet
 

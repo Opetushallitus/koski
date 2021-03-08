@@ -112,12 +112,45 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
     )
   }
 
-  "getOppijat palauttaa oikeat tulokset" in {
+  "getOppijat palauttaa yhden oppilaitoksen oppijat oikein" in {
     val oppijat = oppijaService.getOppijat(oppilaitokset.toSet)(defaultSession()).get.toList
 
     oppijat.map(_.henkilö.oid) shouldBe oppivelvolliset.map(_._1.oid)
 
     (oppijat zip oppivelvolliset).foreach { actualAndExpected =>
+      val (oppija, (expectedOppija, expectedOppivelvollisuus)) = actualAndExpected
+      validateOppija(
+        oppija,
+        expectedOppija,
+        expectedOppivelvollisuus)
+    }
+  }
+
+  "getOppijat palauttaa useamman oppilaitoksen oppijat oikein käyttäjälle, jolla globaalit oikeudet" in {
+    val oppijat = oppijaService.getOppijat((oppilaitokset ++ List(MockOrganisaatiot.aapajoenKoulu)).toSet)(session(ValpasMockUsers.valpasOphPääkäyttäjä)).get.toList
+
+    val expectedOppivelvolliset = (
+      oppivelvolliset ++
+      List(
+        (
+          ValpasMockOppijat.aapajoenPeruskoulustaValmistunut,
+          List(
+            ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu
+          )
+        ),
+        (
+          ValpasMockOppijat.luokalleJäänytYsiluokkalainenVaihtanutKoulua,
+          List(
+            ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaJälkimmäinen,
+            ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaEdellinen
+          )
+        )
+      )
+      ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
+
+    oppijat.map(_.henkilö.oid) shouldBe expectedOppivelvolliset.map(_._1.oid)
+
+    (oppijat zip expectedOppivelvolliset).foreach { actualAndExpected =>
       val (oppija, (expectedOppija, expectedOppivelvollisuus)) = actualAndExpected
       validateOppija(
         oppija,
@@ -145,6 +178,35 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
       ValpasMockUsers.valpasJklYliopisto
     ) shouldBe true
+  }
+
+  "Käyttäjä, jolla globaalit oikeudet, näkee oppijan" in {
+    canAccessOppija(
+      ValpasMockOppijat.aapajoenPeruskoulustaValmistunut,
+      ValpasMockUsers.valpasOphPääkäyttäjä
+    ) shouldBe true
+  }
+
+  "Käyttäjä, jolla globaalit oikeudet, ei näe liian vanhaa oppijaa" in {
+    canAccessOppija(
+      ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004,
+      ValpasMockUsers.valpasOphPääkäyttäjä
+    ) shouldBe false
+  }
+
+  "Käyttäjä, jolla OPPILAITOS_HAKEUTUMINEN globaalit oikeudet, ei näe lukio-oppijaa" in {
+    canAccessOppija(
+      ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004,
+      ValpasMockUsers.valpasOphHakeutuminenPääkäyttäjä
+    ) shouldBe false
+  }
+
+  "Käyttäjä, jolla globaalit oikeudet, ei näe lukio-oppijaa" in {
+    // TODO: Tämä tulee muuttumaan, kun toteutetaan muut kuin OPPILAITOS_HAKEUTUMINEN oikeudet
+    canAccessOppija(
+      ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004,
+      ValpasMockUsers.valpasOphPääkäyttäjä
+    ) shouldBe false
   }
 
   def validateOppija(

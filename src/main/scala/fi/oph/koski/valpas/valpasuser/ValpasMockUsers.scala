@@ -18,6 +18,13 @@ object ValpasMockUsers {
     pääkäyttäjä
   )
 
+  val valpasOphHakeutuminenPääkäyttäjä = ValpasMockUser(
+    "pääkäyttäjä",
+    "valpas-pää-hakeutuminen",
+    "1.2.246.562.24.12312312200",
+    pääkäyttäjä
+  )
+
   val valpasHelsinki = ValpasMockUser(
     "käyttäjä",
     "valpas-helsinki",
@@ -72,6 +79,7 @@ object ValpasMockUsers {
     mockUsersEnabled match {
       case true => List(
         valpasOphPääkäyttäjä,
+        valpasOphHakeutuminenPääkäyttäjä,
         valpasHelsinki,
         valpasHelsinkiPeruskoulu,
         valpasJklNormaalikoulu,
