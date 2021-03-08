@@ -39,6 +39,13 @@ object ValpasMockUsers {
     peruskoulunJossa10LuokkaKäyttäjä(jyväskylänNormaalikoulu) ++ toisenAsteenKäyttäjä(jyväskylänNormaalikoulu)
   )
 
+  val valpasAapajoenKoulu = ValpasMockUser(
+    "käyttäjä",
+    "valpas-aapajoen-koulu",
+    "1.2.246.562.24.12312312309",
+    peruskoulunJossa10LuokkaKäyttäjä(aapajoenKoulu) ++ toisenAsteenKäyttäjä(aapajoenKoulu)
+  )
+
   val valpasJklYliopisto = ValpasMockUser(
     "käyttäjä",
     "valpas-jkl-yliopisto",
@@ -68,9 +75,10 @@ object ValpasMockUsers {
         valpasHelsinki,
         valpasHelsinkiPeruskoulu,
         valpasJklNormaalikoulu,
+        valpasAapajoenKoulu,
         valpasJklYliopisto,
         valpasJklNormaalikouluJaKoskiHelsinkiTallentaja,
-        valpasJklNormaalikouluJaValpasHelsinki,
+        valpasJklNormaalikouluJaValpasHelsinki
       )
       case false => List()
     }

@@ -32,8 +32,8 @@ class ValpasOppijaService(application: KoskiApplication) extends Logging {
   // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
   def getOppija(oppijaOid: String)(implicit session: ValpasSession): Option[ValpasOppija] =
     Some(oppijaOid)
-      .filter(oid => accessResolver.accessToSomeOrgs(dbService.getOppijaOppilaitosOids(oid)))
-      .flatMap(oid => dbService.getPeruskoulunValvojalleNäkyväOppija(oid, Some(accessResolver.oppilaitosHakeutuminenOrganisaatioOids.toSeq)))
+      .flatMap(oid => dbService.getPeruskoulunValvojalleNäkyväOppija(oid))
+      .filter(oppija => accessResolver.accessToSomeOrgs(oppija.oikeutetutOppilaitokset))
       .map(enrichOppija)
       .map(oppija => {
         auditLogOppijaKatsominen(oppija)

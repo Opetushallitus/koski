@@ -4,6 +4,7 @@ import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
 
 case class ValpasOppija(
   henkilö: ValpasHenkilö,
+  oikeutetutOppilaitokset: Set[String],
   opiskeluoikeudet: Seq[ValpasOpiskeluoikeus]
 )
 

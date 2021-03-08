@@ -66,10 +66,11 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
       )
     ),
     (
-      ValpasMockOppijat.oppivelvollinenKahdellaOppijaOidillaMaster,
+      ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
       List(
         ValpasExampleData.lukionOpiskeluoikeus,
-        ValpasExampleData.valmistunutYsiluokkalainen
+        ValpasExampleData.valmistunutYsiluokkalainen,
+        ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu
       )
     )
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
@@ -85,11 +86,29 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
   }
 
   "getOppija palauttaa oppijan tiedot, vaikka oid ei olisikaan master oid" in {
-    val oppija = oppijaService.getOppija(ValpasMockOppijat.oppivelvollinenKahdellaOppijaOidillaToinen.oid)(defaultSession())
+    val oppija = oppijaService.getOppija(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaToinen.oid)(defaultSession())
     validateOppija(
       oppija.get,
-      ValpasMockOppijat.oppivelvollinenKahdellaOppijaOidillaMaster,
-      List(ValpasExampleData.lukionOpiskeluoikeus, ValpasExampleData.valmistunutYsiluokkalainen)
+      ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
+      List(ValpasExampleData.lukionOpiskeluoikeus, ValpasExampleData.valmistunutYsiluokkalainen, ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu)
+    )
+  }
+
+  "getOppija palauttaa oppijan tiedot, vaikka kysely tehtäisiin oidilla, jonka suoriin opiskeluoikeuksiin ei ole pääsyä" in {
+    val oppija = oppijaService.getOppija(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaKolmas.oid)(defaultSession())
+    validateOppija(
+      oppija.get,
+      ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
+      List(ValpasExampleData.lukionOpiskeluoikeus, ValpasExampleData.valmistunutYsiluokkalainen, ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu)
+    )
+  }
+
+  "getOppija palauttaa oppijan tiedot, vaikka kysely tehtäisiin master-oidilla, jonka suoriin opiskeluoikeuksiin ei ole pääsyä" in {
+    val oppija = oppijaService.getOppija(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster.oid)(session(ValpasMockUsers.valpasAapajoenKoulu))
+    validateOppija(
+      oppija.get,
+      ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
+      List(ValpasExampleData.lukionOpiskeluoikeus, ValpasExampleData.valmistunutYsiluokkalainen, ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu)
     )
   }
 
@@ -114,7 +133,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
     ) shouldBe true
   }
 
-  "Peruskoulun opo ei saa haettua toisen oppilaitoksen oppijan tiedot" in {
+  "Peruskoulun opo ei saa haettua toisen oppilaitoksen oppijan tietoja" in {
     canAccessOppija(
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
       ValpasMockUsers.valpasHelsinkiPeruskoulu

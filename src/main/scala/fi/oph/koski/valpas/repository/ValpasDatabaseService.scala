@@ -5,7 +5,6 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.SQLHelpers
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
-import fi.oph.koski.raportointikanta.ROpiskeluoikeusRow
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema.{RHenkilöTable, ROpiskeluoikeusTable}
 import slick.jdbc.GetResult
 
@@ -16,8 +15,8 @@ class ValpasDatabaseService(application: KoskiApplication) extends Logging {
   lazy val RHenkilöt = TableQuery[RHenkilöTable]
   lazy val ROpiskeluoikeudet = TableQuery[ROpiskeluoikeusTable]
 
-  def getPeruskoulunValvojalleNäkyväOppija(oppijaOid: String, oppilaitosOids: Option[Seq[String]]): Option[ValpasOppija] =
-    getOppijat(Some(oppijaOid), oppilaitosOids).headOption
+  def getPeruskoulunValvojalleNäkyväOppija(oppijaOid: String): Option[ValpasOppija] =
+    getOppijat(Some(oppijaOid), None).headOption
 
   def getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOids: Option[Seq[String]]): Seq[ValpasOppija] =
     getOppijat(None, oppilaitosOids)
@@ -27,11 +26,6 @@ class ValpasDatabaseService(application: KoskiApplication) extends Logging {
   // Huom3: Tämä ei filteröi opiskeluoikeuksia sen mukaan, minkä tiedot kuuluisi näyttää listanäkymässä, jos samalla oppijalla on useita opiskeluoikeuksia.
   //        Valinta voidaan jättää joko Scalalle, käyttöliitymälle tai tehdä toinen query, joka tekee valinnan SQL:ssä.
   private def getOppijat(oppijaOid: Option[String], oppilaitosOids: Option[Seq[String]]): Seq[ValpasOppija] = {
-    if (!oppilaitosOids.isDefined) {
-      // Varmuuden vuoksi: jos annetaan pelkkä oppijaOid, niin oikeustarkistusta johonkin oppijan (peruskoulun) organisaatioon
-      // ei vielä tehdä kyselyn jälkeen tai sisällä, ja saatetaan helposti enabloida toiminto, joka rikkoo tietoturvan.
-      throw new Error("Internal error, pelkkää yhden oppijan kyselyä ei vielä ole toteutettu")
-    }
     db.runDbSync(SQLHelpers.concatMany(
       Some(sql"""
 WITH
@@ -45,14 +39,16 @@ WITH
   ),
       """),
       Some(sql"""
-  -- CTE: kaikki oppijat, joilla on vähintään yksi kelpuutettava peruskoulun opetusoikeus:
+  -- CTE: kaikki oppijat, joilla on vähintään yksi kelpuutettava peruskoulun opetusoikeus, mukana
+  -- myös taulukko kelpuutettavien opiskeluoikeuksien oppilaitoksista käyttöoikeustarkastelua varten.
   oppija AS (
     SELECT
       DISTINCT r_henkilo.master_oid,
       r_henkilo.hetu,
       r_henkilo.syntymaaika,
       r_henkilo.etunimet,
-      r_henkilo.sukunimi
+      r_henkilo.sukunimi,
+      array_agg(DISTINCT r_opiskeluoikeus.oppilaitos_oid) AS oikeutettu_oppilaitos_oids
     FROM
       r_henkilo
       JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = r_henkilo.oppija_oid
@@ -94,6 +90,12 @@ WITH
           -- TODO (6b.2 ) ministeriön määrittelemä aikaraja ei ole kulunut umpeen henkilön valmistumisajasta. Säännöt on jotakuinkin selvillä, on vaan toteuttamatta.
         )
       )
+    GROUP BY
+      r_henkilo.master_oid,
+      r_henkilo.hetu,
+      r_henkilo.syntymaaika,
+      r_henkilo.etunimet,
+      r_henkilo.sukunimi
   )
   -- CTE: kaikki oppija_oidit, joilla pitää opiskeluoikeuksia etsiä
   , oppija_oid AS (
@@ -195,6 +197,7 @@ WITH
     oppija.syntymaaika,
     oppija.etunimet,
     oppija.sukunimi,
+    oppija.oikeutettu_oppilaitos_oids AS oikeutetutOppilaitokset,
     json_agg(
       json_build_object(
         'oid', opiskeluoikeus.opiskeluoikeus_oid,
@@ -237,20 +240,13 @@ WITH
     oppija.hetu,
     oppija.syntymaaika,
     oppija.etunimet,
-    oppija.sukunimi
+    oppija.sukunimi,
+    oppija.oikeutettu_oppilaitos_oids
   ORDER BY
     oppija.sukunimi,
     oppija.etunimet
     """)).as[(ValpasOppija)])
-}
-
-  def getOppijaOppilaitosOids(oppijaOid: String): Set[String] =
-    db.runDbSync(sql"""
-      SELECT oppilaitos_oid
-      FROM r_opiskeluoikeus
-      WHERE oppija_oid = $oppijaOid;
-      """.as[String])
-      .toSet
+  }
 
   implicit private val getValpasOppijaResult: GetResult[ValpasOppija] = GetResult(r => {
     val rs: ResultSet = r.rs
@@ -262,6 +258,7 @@ WITH
         etunimet = rs.getString("etunimet"),
         sukunimi = rs.getString("sukunimi")
       ),
+      oikeutetutOppilaitokset = rs.getArray("oikeutetutOppilaitokset").getArray.asInstanceOf[Array[String]].toSet,
       opiskeluoikeudet = JsonSerializer.parse[List[ValpasOpiskeluoikeus]](rs.getString("opiskeluoikeudet"))
     )
   })
