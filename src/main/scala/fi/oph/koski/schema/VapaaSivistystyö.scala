@@ -42,7 +42,7 @@ case class VapaanSivistystyönOpiskeluoikeudenLisätiedot() extends Opiskeluoike
 trait VapaanSivistystyönPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen with Todistus with Arvioinniton
 
 case class OppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenSuoritus(
-  toimipiste: Toimipiste,
+  toimipiste: OrganisaatioWithOid,
   @KoodistoKoodiarvo("vstoppivelvollisillesuunnattukoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstoppivelvollisillesuunnattukoulutus", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus,
