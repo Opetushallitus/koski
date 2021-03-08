@@ -18,6 +18,13 @@ object ValpasMockUsers {
     pääkäyttäjä
   )
 
+  val valpasOphHakeutuminenPääkäyttäjä = ValpasMockUser(
+    "pääkäyttäjä",
+    "valpas-pää-hakeutuminen",
+    "1.2.246.562.24.12312312200",
+    pääkäyttäjä
+  )
+
   val valpasHelsinki = ValpasMockUser(
     "käyttäjä",
     "valpas-helsinki",
@@ -37,6 +44,13 @@ object ValpasMockUsers {
     "valpas-jkl-normaali",
     "1.2.246.562.24.12312312302",
     peruskoulunJossa10LuokkaKäyttäjä(jyväskylänNormaalikoulu) ++ toisenAsteenKäyttäjä(jyväskylänNormaalikoulu)
+  )
+
+  val valpasAapajoenKoulu = ValpasMockUser(
+    "käyttäjä",
+    "valpas-aapajoen-koulu",
+    "1.2.246.562.24.12312312309",
+    peruskoulunJossa10LuokkaKäyttäjä(aapajoenKoulu) ++ toisenAsteenKäyttäjä(aapajoenKoulu)
   )
 
   val valpasJklYliopisto = ValpasMockUser(
@@ -65,12 +79,14 @@ object ValpasMockUsers {
     mockUsersEnabled match {
       case true => List(
         valpasOphPääkäyttäjä,
+        valpasOphHakeutuminenPääkäyttäjä,
         valpasHelsinki,
         valpasHelsinkiPeruskoulu,
         valpasJklNormaalikoulu,
+        valpasAapajoenKoulu,
         valpasJklYliopisto,
         valpasJklNormaalikouluJaKoskiHelsinkiTallentaja,
-        valpasJklNormaalikouluJaValpasHelsinki,
+        valpasJklNormaalikouluJaValpasHelsinki
       )
       case false => List()
     }

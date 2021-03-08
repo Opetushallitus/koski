@@ -57,6 +57,30 @@ object ValpasExampleData {
     )
   )
 
+  def valmistunutYsiluokkalainenToinenKoulu =
+    valmistunutYsiluokkalainen.copy(
+      oppilaitos = Some(oppilaitos(aapajoenKoulu)),
+      suoritukset = List(
+        perusopetuksenOppimääränSuoritus.copy(
+          vahvistus = vahvistusPaikkakunnalla(date(2021, 5, 29))
+        ),
+        kahdeksannenLuokanSuoritus.copy(
+          alkamispäivä = Some(date(2019, 8, 15)),
+          vahvistus = vahvistusPaikkakunnalla(date(2020, 5, 29)),
+        ),
+        yhdeksännenLuokanSuoritus.copy(
+          alkamispäivä = Some(date(2020, 8, 15)),
+          vahvistus = vahvistusPaikkakunnalla(date(2021, 5, 29)),
+        )
+      ),
+      tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+        List(
+          NuortenPerusopetuksenOpiskeluoikeusjakso(date(2012, 8, 14), opiskeluoikeusLäsnä),
+          NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 5, 29), opiskeluoikeusValmistunut)
+        )
+      )
+    )
+
   def luokallejäänytYsiluokkalainen = PerusopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
     koulutustoimija = None,

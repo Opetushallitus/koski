@@ -21,10 +21,10 @@ class ValpasAccessResolver(application: KoskiApplication) {
   }
 
   def accessToAllOrgs(organisaatioOids: Set[String])(implicit session: ValpasSession): Boolean =
-    organisaatioOids.diff(oppilaitosHakeutuminenOrganisaatioOids).isEmpty
+    onGlobaaliOppilaitosHakeutuminenOikeus || organisaatioOids.diff(oppilaitosHakeutuminenOrganisaatioOids).isEmpty
 
   def accessToSomeOrgs(organisaatioOids: Set[String])(implicit session: ValpasSession): Boolean =
-    organisaatioOids.intersect(oppilaitosHakeutuminenOrganisaatioOids).nonEmpty
+    onGlobaaliOppilaitosHakeutuminenOikeus || organisaatioOids.intersect(oppilaitosHakeutuminenOrganisaatioOids).nonEmpty
 
   def valpasOrganisaatiot(rooli: String)(implicit session: ValpasSession): Set[OrganisaatioWithOid] =
     session.orgKäyttöoikeudet
@@ -37,4 +37,7 @@ class ValpasAccessResolver(application: KoskiApplication) {
       case false => None
     }
   }
+
+  private def onGlobaaliOppilaitosHakeutuminenOikeus(implicit session: ValpasSession): Boolean =
+    session.hasGlobalValpasOikeus(Set(ValpasRooli.OPPILAITOS_HAKEUTUMINEN))
 }
