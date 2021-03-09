@@ -18,6 +18,9 @@ import {OpiskeluoikeudenTilaEditor} from '../opiskeluoikeus/OpiskeluoikeudenTila
 import {OsaaminenTunnustettuEditor} from '../suoritus/OsaaminenTunnustettuEditor'
 import genericEditors from '../editor/genericEditors'
 import {LukukausiIlmoittautuminenEditor} from '../opiskeluoikeus/LukukausiIlmoittautuminenEditor'
+import {MaksuttomuusEditor} from '../opiskeluoikeus/MaksuttomuusEditor'
+
+//Note: this maps name of the type to editor, not name of the property
 
 const oppijaEditors = {
   'oppijaeditorview': OppijaEditor,
@@ -32,6 +35,8 @@ const oppijaEditors = {
   'poissaolojakso': JaksoEditor,
   'jakso': JaksoEditor,
   'erityisenkoulutustehtavanjakso': InlineJaksoEditor,
+  'maksuttomuus': MaksuttomuusEditor,
+  'oikeuttamaksuttomuuteenpidennetty': PäivämääräväliEditor,
   'toimipiste': ToimipisteEditor,
   'organisaatiowithoid': OrganisaatioEditor,
   'organisaatiohenkilo': OrganisaatioHenkilöEditor,
