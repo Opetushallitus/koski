@@ -8,8 +8,9 @@ import org.json4s.JValue
 import slick.dbio.Effect
 import slick.sql.FixedSqlAction
 
+
 class PerustiedotSyncRepository(val db: DB) extends BackgroundExecutionContext with KoskiDatabaseMethods {
-  def syncAgain(opiskeluoikeudet: Seq[JValue], upsert: Boolean): Unit = {
+  def addToSyncQueueRaw(opiskeluoikeudet: Seq[JValue], upsert: Boolean): Unit = {
     val rows = opiskeluoikeudet.map(oo => PerustiedotSyncRow(
       opiskeluoikeusId = OpiskeluoikeudenPerustiedot.docId(oo),
       data = oo,
@@ -18,7 +19,7 @@ class PerustiedotSyncRepository(val db: DB) extends BackgroundExecutionContext w
     runDbSync(PerustiedotSync ++= rows)
   }
 
-  def syncAction(perustiedot: OpiskeluoikeudenPerustiedot, upsert: Boolean): FixedSqlAction[Int, NoStream, Effect.Write] = {
+  def addToSyncQueue(perustiedot: OpiskeluoikeudenPerustiedot, upsert: Boolean): FixedSqlAction[Int, NoStream, Effect.Write] = {
     PerustiedotSync += PerustiedotSyncRow(
       opiskeluoikeusId = perustiedot.id,
       data = OpiskeluoikeudenPerustiedot.serializePerustiedot(perustiedot),
@@ -26,7 +27,7 @@ class PerustiedotSyncRepository(val db: DB) extends BackgroundExecutionContext w
     )
   }
 
-  def needSyncing(limit: Int): Seq[PerustiedotSyncRow] =
+  def queuedUpdates(limit: Int): Seq[PerustiedotSyncRow] =
     runDbSync(
       PerustiedotSync
         .distinctOn(_.opiskeluoikeusId)
@@ -35,7 +36,7 @@ class PerustiedotSyncRepository(val db: DB) extends BackgroundExecutionContext w
         .result
     )
 
-  def delete(ids: Seq[Int]): Int =
+  def deleteFromQueue(ids: Seq[Int]): Int =
     runDbSync(PerustiedotSync.filter(_.id inSetBind ids).delete)
 }
 

@@ -47,7 +47,7 @@ class OpiskeluoikeudenPerustiedotSpec extends FreeSpec with BeforeAndAfterAll wi
     putAmmatillinenPäätasonSuoritus(suoritus(english("Respect: Helping us sustain a harassment free workplace")))(verifyResponseStatusOk())
     putAmmatillinenPäätasonSuoritus(suoritus(swedish("Respekt: Hjälp oss att upprätthålla en trakasseringsfri arbetsplats")), henkilö = asUusiOppija(eerola))(verifyResponseStatusOk())
     putAmmatillinenPäätasonSuoritus(suoritus(finnish("Kunnioitus: Auta meitä ylläpitämään häirinnätöntä työpaikkaa")), henkilö = asUusiOppija(lukiolainen))(verifyResponseStatusOk())
-    KoskiApplicationForTests.perustiedotSyncScheduler.sync(refresh = true)
+    KoskiApplicationForTests.perustiedotIndexer.sync(refresh = true)
   }
 
   def suoritus(tutkinnonTunniste: LocalizedString): MuunAmmatillisenKoulutuksenSuoritus = muunAmmatillisenKoulutuksenSuoritus(

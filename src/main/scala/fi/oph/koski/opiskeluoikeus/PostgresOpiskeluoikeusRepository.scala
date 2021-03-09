@@ -147,12 +147,12 @@ class PostgresOpiskeluoikeusRepository(
     henkilötiedot match {
       case Some(henkilö) =>
         val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, henkilö)
-        perustiedotSyncRepository.syncAction(perustiedot, true)
+        perustiedotSyncRepository.addToSyncQueue(perustiedot, true)
       case None =>
         henkilöCache.getCachedAction(oppijaOid).flatMap {
           case Some(HenkilöRowWithMasterInfo(henkilöRow, masterHenkilöRow)) =>
             val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, henkilöRow, masterHenkilöRow)
-            perustiedotSyncRepository.syncAction(perustiedot, true)
+            perustiedotSyncRepository.addToSyncQueue(perustiedot, true)
           case None =>
             throw new RuntimeException(s"Oppija not found: $oppijaOid")
         }

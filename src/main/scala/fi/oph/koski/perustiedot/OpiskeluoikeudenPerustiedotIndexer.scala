@@ -96,11 +96,24 @@ class OpiskeluoikeudenPerustiedotIndexer(
 
   def statistics(): OpiskeluoikeudenPerustiedotStatistics = OpiskeluoikeudenPerustiedotStatistics(index)
 
+  def sync(refresh: Boolean): Unit = synchronized {
+    logger.debug("Checking for sync rows")
+    val rows = perustiedotSyncRepository.queuedUpdates(1000)
+    if (rows.nonEmpty) {
+      logger.debug(s"Syncing ${rows.length} rows")
+      rows.groupBy(_.upsert) foreach { case (upsert, rows) =>
+        updatePerustiedotRaw(rows.map(_.data), upsert, refresh)
+      }
+      perustiedotSyncRepository.deleteFromQueue(rows.map(_.id))
+      logger.debug(s"Done syncing ${rows.length} rows")
+    }
+  }
+
   def updatePerustiedot(items: Seq[OpiskeluoikeudenOsittaisetTiedot], upsert: Boolean, refresh: Boolean): Either[HttpStatus, Int] = {
     updatePerustiedotRaw(items.map(OpiskeluoikeudenPerustiedot.serializePerustiedot), upsert, refresh)
   }
 
-  def updatePerustiedotRaw(items: Seq[JValue], upsert: Boolean, refresh: Boolean): Either[HttpStatus, Int] = {
+  private def updatePerustiedotRaw(items: Seq[JValue], upsert: Boolean, refresh: Boolean): Either[HttpStatus, Int] = {
     if (items.isEmpty) {
       return Right(0)
     }
@@ -117,7 +130,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
           None
         }
       }
-      perustiedotSyncRepository.syncAgain(toSyncAgain, upsert)
+      perustiedotSyncRepository.addToSyncQueueRaw(toSyncAgain, upsert)
       val msg = s"""Elasticsearch indexing failed for ids ${failedOpiskeluoikeusIds.mkString(", ")}.
 Response from ES: ${JsonMethods.pretty(response)}.
 Will retry soon."""

@@ -35,8 +35,6 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
   def resetFixtures: Unit = {
     if (database.config.isRemote) throw new IllegalStateException("Trying to reset fixtures in remote database")
 
-    application.perustiedotSyncScheduler.sync(refresh = false)
-
     val henkilöOids = application.fixtureCreator.allOppijaOids.sorted
 
     runDbSync(DBIO.sequence(Seq(
@@ -48,6 +46,7 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
       Tables.SuoritusJakoV2.delete,
     ) ++ oppijat.map(application.henkilöCache.addHenkilöAction)))
 
+    application.perustiedotIndexer.sync(refresh = false) // Make sure the sync queue is empty
     application.perustiedotIndexer.deleteByOppijaOids(henkilöOids, refresh = false)
 
     if (!fixtureCacheCreated) {

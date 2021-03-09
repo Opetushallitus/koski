@@ -53,6 +53,6 @@ class VarhaiskasvatusPerustiedotSpec extends FreeSpec with BeforeAndAfterAll wit
     putOpiskeluoikeus(päiväkotiEsiopetus(YleissivistavakoulutusExampleData.päiväkotiMajakka), henkilö = asUusiOppija(tero), headers = authHeaders(MockUsers.pyhtäänTallentaja) ++ jsonContent) {
       verifyResponseStatusOk()
     }
-    KoskiApplicationForTests.perustiedotSyncScheduler.sync(refresh = true)
+    KoskiApplicationForTests.perustiedotIndexer.sync(refresh = true)
   }
 }

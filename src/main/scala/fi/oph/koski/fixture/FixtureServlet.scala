@@ -16,7 +16,7 @@ class FixtureServlet(implicit val application: KoskiApplication) extends KoskiSp
   }
 
   post("/sync-perustiedot") {
-    application.perustiedotSyncScheduler.sync(refresh = true)
+    application.perustiedotIndexer.sync(refresh = true)
     "ok"
   }
 }
