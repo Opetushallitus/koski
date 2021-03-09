@@ -54,7 +54,7 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
         val id = application.opiskeluoikeusRepository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, false).right.get.id
         OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, application.henkilöRepository.opintopolku.withMasterInfo(henkilö))
       })
-      application.perustiedotIndexer.updatePerustiedot(cachedPerustiedot.get, upsert = true, refresh = true)
+      application.perustiedotIndexer.sync(refresh = true)
       val henkilöOidsIn = henkilöOids.map("'" + _ + "'").mkString(",")
       runDbSync(DBIO.seq(
         sqlu"drop table if exists #$opiskeluoikeusFixtureCacheTableName",
