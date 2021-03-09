@@ -2,7 +2,7 @@ import bem from "bem-ts"
 import React, { useState } from "react"
 import { ApiResponse } from "../../api/apiFetch"
 import { useApiMethod } from "../../api/apiHooks"
-import { clearMockData, resetMockData } from "../../api/testApi"
+import { clearMockData, resetMockDataToDate } from "../../api/testApi"
 import {
   getLanguage,
   Language,
@@ -41,7 +41,7 @@ const TestApiButtons = () => {
   return (
     <>
       <TestApiButton
-        fetchFunc={resetMockData}
+        fetchFunc={resetMockDataToDate(tarkasteluPäivä)}
         id={"resetMockData"}
         title={"Reset mock data"}
       />

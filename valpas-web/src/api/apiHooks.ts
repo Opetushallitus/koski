@@ -93,7 +93,7 @@ export const useApiMethod = <T, P extends any[]>(
         )
       )
     },
-    [setState, state]
+    [fetchFn, setState, state]
   )
 
   const clear = useCallback(() => setState({ state: "initial" }), [
