@@ -194,6 +194,20 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
     ) shouldBe false
   }
 
+  "Käyttäjä, jolla globaalit oikeudet, ei näe oppijaa, joka on valmistunut peruskoulusta ennen lain rajapäivää" in {
+    canAccessOppija(
+      ValpasMockOppijat.ennenLainRajapäivääPeruskoulustaValmistunut,
+      ValpasMockUsers.valpasOphPääkäyttäjä
+    ) shouldBe false
+  }
+
+  "Käyttäjä, jolla globaalit oikeudet, ei näe oppijaa, joka on valmistunut peruskoulusta yli 2 kk aiemmin" in {
+    canAccessOppija(
+      ValpasMockOppijat.yli2kkAiemminPeruskoulustaValmistunut,
+      ValpasMockUsers.valpasOphPääkäyttäjä
+    ) shouldBe false
+  }
+
   "Käyttäjä, jolla OPPILAITOS_HAKEUTUMINEN globaalit oikeudet, ei näe lukio-oppijaa" in {
     canAccessOppija(
       ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004,
