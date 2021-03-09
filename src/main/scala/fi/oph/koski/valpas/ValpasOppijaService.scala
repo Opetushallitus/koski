@@ -5,7 +5,7 @@ import fi.oph.koski.koodisto.KoodistoViite
 import fi.oph.koski.log.{AuditLog, KoskiMessageField, Logging}
 import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessage, ValpasOperation}
-import fi.oph.koski.valpas.repository.{ValpasDatabaseService, ValpasOppija, ValpasOppijaLisätiedoilla, ValpasOppijaResult}
+import fi.oph.koski.valpas.repository.{Rajapäivät, ValpasDatabaseService, ValpasOppija, ValpasOppijaLisätiedoilla, ValpasOppijaResult}
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
 class ValpasOppijaService(application: KoskiApplication) extends Logging {
@@ -13,9 +13,9 @@ class ValpasOppijaService(application: KoskiApplication) extends Logging {
   private val koodisto = application.koodistoPalvelu
   private val accessResolver = new ValpasAccessResolver(application)
 
-  def getOppijat(oppilaitosOids: Set[String])(implicit session: ValpasSession): Option[Seq[ValpasOppija]] =
+  def getOppijat(oppilaitosOids: Set[String], rajapäivät: Rajapäivät)(implicit session: ValpasSession): Option[Seq[ValpasOppija]] =
     accessResolver.organisaatiohierarkiaOids(oppilaitosOids).map(oids => {
-      dbService.getPeruskoulunValvojalleNäkyvätOppijat(Some(oids.toSeq))
+      dbService.getPeruskoulunValvojalleNäkyvätOppijat(Some(oids.toSeq), rajapäivät)
         .map(enrichOppija)
         .map(oppija => {
           // TODO, parempi auditlog-viesti, joka ei iteroi kaikkia oppijoita läpi
@@ -27,9 +27,9 @@ class ValpasOppijaService(application: KoskiApplication) extends Logging {
   // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
   // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
   // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
-  def getOppija(oppijaOid: String)(implicit session: ValpasSession): Option[ValpasOppija] =
+  def getOppija(oppijaOid: String, rajapäivät: Rajapäivät)(implicit session: ValpasSession): Option[ValpasOppija] =
     Some(oppijaOid)
-      .flatMap(oid => dbService.getPeruskoulunValvojalleNäkyväOppija(oid))
+      .flatMap(oid => dbService.getPeruskoulunValvojalleNäkyväOppija(oid, rajapäivät))
       .filter(oppija => accessResolver.accessToSomeOrgs(oppija.oikeutetutOppilaitokset))
       .map(enrichOppija)
       .map(oppija => {

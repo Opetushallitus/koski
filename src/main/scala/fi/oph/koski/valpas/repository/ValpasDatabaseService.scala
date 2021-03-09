@@ -2,30 +2,36 @@ package fi.oph.koski.valpas.repository
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.db.SQLHelpers
+import fi.oph.koski.db.{DatabaseConverters, SQLHelpers}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema.{RHenkilöTable, ROpiskeluoikeusTable}
 import slick.jdbc.GetResult
-
 import java.sql.ResultSet
 
-class ValpasDatabaseService(application: KoskiApplication) extends Logging {
+class ValpasDatabaseService(application: KoskiApplication) extends DatabaseConverters with Logging {
   val db = application.raportointiDatabase
   lazy val RHenkilöt = TableQuery[RHenkilöTable]
   lazy val ROpiskeluoikeudet = TableQuery[ROpiskeluoikeusTable]
 
-  def getPeruskoulunValvojalleNäkyväOppija(oppijaOid: String): Option[ValpasOppijaResult] =
-    getOppijat(Some(oppijaOid), None).headOption
+  def getPeruskoulunValvojalleNäkyväOppija(oppijaOid: String, rajapäivät: Rajapäivät): Option[ValpasOppijaResult] =
+    getOppijat(Some(oppijaOid), None, rajapäivät).headOption
 
-  def getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOids: Option[Seq[String]]): Seq[ValpasOppijaResult] =
-    getOppijat(None, oppilaitosOids)
+  def getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOids: Option[Seq[String]], rajapäivät: Rajapäivät): Seq[ValpasOppijaResult] =
+    getOppijat(None, oppilaitosOids, rajapäivät)
 
   // Huom: Luotetaan siihen, että käyttäjällä on oikeudet nimenomaan annettuihin oppilaitoksiin!
   // Huom2: Tämä toimii vain peruskoulun hakeutumisen valvojille (ei esim. 10-luokille tai toisen asteen näkymiin yms.)
   // Huom3: Tämä ei filteröi opiskeluoikeuksia sen mukaan, minkä tiedot kuuluisi näyttää listanäkymässä, jos samalla oppijalla on useita opiskeluoikeuksia.
   //        Valinta voidaan jättää joko Scalalle, käyttöliitymälle tai tehdä toinen query, joka tekee valinnan SQL:ssä.
-  private def getOppijat(oppijaOid: Option[String], oppilaitosOids: Option[Seq[String]]): Seq[ValpasOppijaResult] = {
+  private def getOppijat(oppijaOid: Option[String], oppilaitosOids: Option[Seq[String]], rajapäivät: Rajapäivät): Seq[ValpasOppijaResult] = {
+    val lakiVoimassaPeruskoulustaValmistuneillaAlku = rajapäivät.lakiVoimassaPeruskoulustaValmistuneillaAlku
+    val keväänValmistumisjaksoAlku = rajapäivät.keväänValmistumisjaksoAlku
+    val keväänValmistumisjaksoLoppu = rajapäivät.keväänValmistumisjaksoLoppu
+    val keväänUlkopuolellaValmistumisjaksoAlku = rajapäivät.keväänUlkopuolellaValmistumisjaksoAlku
+    val tarkasteluPäivä = rajapäivät.tarkasteluPäivä
+    val keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä = rajapäivät.keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
+
     db.runDbSync(SQLHelpers.concatMany(
       Some(sql"""
 WITH
@@ -87,7 +93,19 @@ WITH
         OR (
           -- (6b.1 ) opiskeluoikeus on valmistunut-tilassa, ja siitä löytyy vahvistettu päättötodistus
           r_opiskeluoikeus.viimeisin_tila = 'valmistunut'
-          -- TODO (6b.2 ) ministeriön määrittelemä aikaraja ei ole kulunut umpeen henkilön valmistumisajasta. Säännöt on jotakuinkin selvillä, on vaan toteuttamatta.
+          -- (6b.2 ) ministeriön määrittelemä aikaraja ei ole kulunut umpeen henkilön valmistumisajasta.
+          AND (
+            (
+              -- keväällä valmistunut ja tarkastellaan heille määrättyä rajapäivää aiemmin
+              (r_opiskeluoikeus.paattymispaiva BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
+              AND $tarkasteluPäivä <= $keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
+            )
+            OR (
+              -- tai muuna aikana valmistunut ja tarkastellaan heille määrättyä rajapäivää aiemmin
+              (r_opiskeluoikeus.paattymispaiva NOT BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
+              AND (r_opiskeluoikeus.paattymispaiva >= $keväänUlkopuolellaValmistumisjaksoAlku)
+            )
+          )
         )
       )
     GROUP BY
@@ -108,6 +126,9 @@ WITH
   )
   -- CTE: peruskoulun opiskeluoikeudet (ei sama lista kuin ekassa CTE:ssä, koska voi olla rinnakkaisia tai peräkkäisiä muita peruskoulun opiskeluoikeuksia.
   -- Teoriassa varmaan voisi tehostaa kyselyä jotenkin ja välttää näiden hakeminen uudestaan, mutta kysely voisi mennä melko monimutkaiseksi.)
+  -- Tässä lisäksi selvitetään se, ettei oppijalla ole peruskoulun opiskeluoikeutta, joka on valmistunut ennen 1.1.2021: tällöin henkilö ei ole
+  -- oppivelvollisuuslain piirissä, eikä mitään hänen tietojaan saa Valppaassa näyttää. Tätä tarkistusta ei voi tehdä osana aiempaa peruskoulun queryä,
+  -- koska siinä ei tutkita oppijan mahdollisia rinnakkaisia peruskoulun opiskeluoikeuksia, jotka voivat olla valmistuneita.
   , peruskoulun_opiskeluoikeus AS (
      SELECT
        oppija_oid.master_oid,
@@ -120,7 +141,8 @@ WITH
        r_opiskeluoikeus.alkamispaiva,
        r_opiskeluoikeus.paattymispaiva,
        coalesce(valittu_r_paatason_suoritus.data ->> 'luokka', r_opiskeluoikeus.luokka) AS ryhmä,
-       r_opiskeluoikeus.viimeisin_tila
+       r_opiskeluoikeus.viimeisin_tila,
+       (r_opiskeluoikeus.viimeisin_tila = 'valmistunut' AND r_opiskeluoikeus.paattymispaiva < $lakiVoimassaPeruskoulustaValmistuneillaAlku) AS aiemmin_valmistunut
      FROM
        oppija_oid
        JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
@@ -157,7 +179,8 @@ WITH
        r_opiskeluoikeus.alkamispaiva,
        r_opiskeluoikeus.paattymispaiva,
        coalesce(valittu_r_paatason_suoritus.data ->> 'ryhmä', r_opiskeluoikeus.luokka) AS ryhmä,
-       r_opiskeluoikeus.viimeisin_tila
+       r_opiskeluoikeus.viimeisin_tila,
+       FALSE AS aiemmin_valmistunut
      FROM
        oppija_oid
        JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
@@ -178,6 +201,31 @@ WITH
           1
         ) valittu_r_paatason_suoritus
   )
+  -- CTE: Oppijat, jotka ovat rajapäivää aimmmin valmistuneita
+  , rajapaivaa_aiemmin_valmistuneet_oppijat AS (
+    SELECT
+      DISTINCT oppija.master_oid
+    FROM
+      oppija
+      JOIN peruskoulun_opiskeluoikeus ON peruskoulun_opiskeluoikeus.master_oid = oppija.master_oid
+    WHERE
+      peruskoulun_opiskeluoikeus.aiemmin_valmistunut IS TRUE
+  )
+  -- CTE: Oppijat, jotka eivät ole rajapäivää aiemmin valmistuneita, ja siten oppivelvollisia
+  , oppivelvollinen_oppija AS (
+    SELECT
+      DISTINCT oppija.master_oid,
+      oppija.hetu,
+      oppija.syntymaaika,
+      oppija.etunimet,
+      oppija.sukunimi,
+      oppija.oikeutettu_oppilaitos_oids
+    FROM
+      oppija
+      LEFT JOIN rajapaivaa_aiemmin_valmistuneet_oppijat ON rajapaivaa_aiemmin_valmistuneet_oppijat.master_oid = oppija.master_oid
+    WHERE
+      rajapaivaa_aiemmin_valmistuneet_oppijat.master_oid IS NULL
+  )
   -- CTE: Yhdistettynä peruskoulun ja muut opiskeluoikeudet
   , opiskeluoikeus AS (
     SELECT
@@ -192,12 +240,12 @@ WITH
   )
   -- Päätason SELECT: Muodostetaan palautettava rakenne
   SELECT
-    oppija.master_oid AS oppija_oid,
-    oppija.hetu,
-    oppija.syntymaaika,
-    oppija.etunimet,
-    oppija.sukunimi,
-    oppija.oikeutettu_oppilaitos_oids AS oikeutetutOppilaitokset,
+    oppivelvollinen_oppija.master_oid AS oppija_oid,
+    oppivelvollinen_oppija.hetu,
+    oppivelvollinen_oppija.syntymaaika,
+    oppivelvollinen_oppija.etunimet,
+    oppivelvollinen_oppija.sukunimi,
+    oppivelvollinen_oppija.oikeutettu_oppilaitos_oids AS oikeutetutOppilaitokset,
     json_agg(
       json_build_object(
         'oid', opiskeluoikeus.opiskeluoikeus_oid,
@@ -234,17 +282,17 @@ WITH
     ) opiskeluoikeudet
   FROM
     opiskeluoikeus
-    JOIN oppija ON oppija.master_oid = opiskeluoikeus.master_oid
+    JOIN oppivelvollinen_oppija ON oppivelvollinen_oppija.master_oid = opiskeluoikeus.master_oid
   GROUP BY
-    oppija.master_oid,
-    oppija.hetu,
-    oppija.syntymaaika,
-    oppija.etunimet,
-    oppija.sukunimi,
-    oppija.oikeutettu_oppilaitos_oids
+    oppivelvollinen_oppija.master_oid,
+    oppivelvollinen_oppija.hetu,
+    oppivelvollinen_oppija.syntymaaika,
+    oppivelvollinen_oppija.etunimet,
+    oppivelvollinen_oppija.sukunimi,
+    oppivelvollinen_oppija.oikeutettu_oppilaitos_oids
   ORDER BY
-    oppija.sukunimi,
-    oppija.etunimet
+    oppivelvollinen_oppija.sukunimi,
+    oppivelvollinen_oppija.etunimet
     """)).as[(ValpasOppijaResult)])
   }
 

@@ -1,8 +1,9 @@
 package fi.oph.koski.valpas
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioHierarkia, OrganisaatioHierarkiaJaKayttooikeusrooli}
 import fi.oph.koski.servlet.NoCache
+import fi.oph.koski.valpas.repository.{MockRajapäivät, OikeatRajapäivät, Rajapäivät}
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
 
@@ -34,7 +35,12 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
 
   get("/oppija/:oid") {
     renderEither(
-      oppijaService.getOppija(params("oid"))
+      oppijaService.getOppija(params("oid"), rajapäivät)
       .toRight(ValpasErrorCategory.forbidden.oppija()))
+  }
+
+  private def rajapäivät: Rajapäivät = Environment.isLocalDevelopmentEnvironment match {
+    case true => MockRajapäivät.mockRajapäivät
+    case _ => new OikeatRajapäivät()
   }
 }
