@@ -1518,5 +1518,9 @@
   "Maksullinen": "Maksullinen",
   "Henkilö on syntynyt ennen vuotta 2004 ja ei ole laajennetun oppivelvollisuuden piirissä": "Henkilö on syntynyt ennen vuotta 2004 ja ei ole laajennetun oppivelvollisuuden piirissä",
   "Koulutus on maksutonta": "Koulutus on maksutonta",
-  "Maksullinen koulutus": "Maksullinen koulutus"
+  "Maksullinen koulutus": "Maksullinen koulutus",
+  "Koulutuksen maksuttomuus" : "Koulutuksen maksuttomuus",
+  "description:Laajennetun oppivelvollisuuden suoritus" : "Laajennetun oppivelvollisuuden suoritus",
+  "description:Tieto siitä, jos oppijan oikeutta..." : "Tieto siitä, jos oppijan oikeutta maksuttomaan koulutukseen on pidennetty. Aikajaksotieto (lista aikajaksoja), jossa pakollisina tietoina sekä alku- että loppupäivä. Tiedon siirtäminen vaatii opiskeluoikeudelta tiedon koulutuksen maksuttomuudesta",
+  "description:Tieto siitä, onko koulutus maksutonta...." : "Tieto siitä, onko koulutus maksutonta. Aikajaksotieto (lista aikajaksoja), jossa siirretään VAIN alkupäivä sekä tieto siitä, onko koulutus maksutonta (true/false). Jos jaksoja on useampi, edeltävän jakson loppupäivä päätellään seuraavan jakson alkupäivästä. Tieto koulutuksen maksuttomuudesta tulee siirtää opiskeluoikeuksiin, jotka ovat alkaneet 1.8.2021 tai sen jälkeen, jos oppija on syntynyt vuonna 2004 tai sen jälkeen ja opiskeluoikeus sisältää laajennetun oppivelvollisuuden piirissä olevan suorituksen"
 }
