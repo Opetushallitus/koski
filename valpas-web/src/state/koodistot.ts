@@ -11,6 +11,7 @@ export type KoodistoKoodiviite<
   lyhytNimi?: LocalizedString
 }
 
+// @ts-ignore
 const koodiarvoCondition = <K extends KoodistoKoodiviite, S extends string>(
   uri: string,
   truthyValues: S[]

@@ -1,6 +1,7 @@
 package fi.oph.koski.valpas.hakukooste
 
 import fi.oph.koski.henkilo.OppijaHenkilö
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{Finnish, Koodistokoodiviite}
 import fi.oph.koski.valpas.henkilo.ValpasMockOppijat
 import fi.vm.sade.oidgenerator.OIDGenerator
@@ -27,7 +28,23 @@ class MockHakukoosteService extends ValpasHakukoosteService {
       huoltajanNimi = "Huoltaja Sukunimi",
       huoltajanPuhelinnumero = "0407654321",
       huoltajanSahkoposti = "huoltaja.sukunimi@gmail.com",
-      hakutoiveet = List()
+      hakutoiveet = List(generateMockHakutoive())
+    )
+
+  private def generateMockHakutoive(): Hakutoive =
+    Hakutoive(
+      hakukohdeOid = MockOrganisaatiot.ressunLukio,
+      hakukohdeNimi = Finnish("Ressun lukio"),
+      hakutoivenumero = 1,
+      koulutusNimi = Finnish("Lukio"),
+      hakukohdeOrganisaatio = "TODO",
+      pisteet = 3.45f,
+      valintatila = Valintatila.KESKEN,
+      vastaanottotieto = Vastaanottotieto.KESKEN,
+      ilmoittautumistila = Ilmoittautumistila.EI_ILMOITTAUTUNUT,
+      koulutusOid = "TODO",
+      harkinnanvaraisuus = "TODO",
+      hakukohdeKoulutuskoodi = "TODO"
     )
 
   private def generateHakuOid() = OIDGenerator.generateOID(100)

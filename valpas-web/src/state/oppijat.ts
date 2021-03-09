@@ -2,12 +2,8 @@ import * as A from "fp-ts/Array"
 import * as Ord from "fp-ts/Ord"
 import * as string from "fp-ts/string"
 import { Language } from "../i18n/i18n"
-import {
-  KoodistoKoodiviite,
-  OpiskeluoikeudenTila,
-  Opiskeluoikeudentyyppi,
-} from "./koodistot"
-import { ISODate, LocalizedString, Oid } from "./types"
+import { OpiskeluoikeudenTila, Opiskeluoikeudentyyppi } from "./koodistot"
+import { ISODate, ISODateTime, LocalizedString, Oid } from "./types"
 
 export type Oppija = {
   henkilö: Henkilö
@@ -30,35 +26,19 @@ export type Oppilaitos = {
 }
 
 export type Haku = {
-  oppijaOid: string
-  hakuOid: string
-  hakemusOid: string
-  hakutapa: KoodistoKoodiviite
-  hakutyyppi: KoodistoKoodiviite
-  muokattu: string
+  hakuOid: Oid
   hakuNimi: LocalizedString
-  email: string
-  osoite: string
-  matkapuhelin: string
-  huoltajanNimi: string
-  huoltajanPuhelinnumero: string
-  huoltajanSahkoposti: string
+  hakemusOid: Oid
+  aktiivinen: boolean
+  muokattu: ISODateTime
   hakutoiveet: Hakutoive[]
 }
 
 export type Hakutoive = {
-  hakukohdeOid: string
+  hakutoivenumero?: number
   hakukohdeNimi: LocalizedString
-  hakutoivenumero: number
-  koulutusNimi: LocalizedString
-  hakukohdeOrganisaatio: string
   pisteet: number
-  valintatila: string // TODO: Lisää enum Valintatila,
-  vastaanottotieto: string // TODO: Lisää enum Vastaanottotieto,
-  ilmoittautumistila: string // TODO: Lisää enum Ilmoittautumistila,
-  koulutusOid: String
-  harkinnanvaraisuus: String // TODO: Arvot?
-  hakukohdeKoulutuskoodi: String // TODO: Arvot?
+  hyväksytty?: boolean
 }
 
 export type Lisätiedot = {

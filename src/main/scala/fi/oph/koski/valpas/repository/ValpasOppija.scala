@@ -1,7 +1,7 @@
 package fi.oph.koski.valpas.repository
 
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
-import fi.oph.koski.valpas.hakukooste.Hakukooste
+import fi.oph.koski.valpas.hakukooste.{Hakukooste, Hakutoive, Valintatila}
 
 import java.time.LocalDate
 
@@ -24,7 +24,7 @@ case class ValpasOppijaLisätiedoilla(
   henkilö: ValpasHenkilö,
   oikeutetutOppilaitokset: Set[String],
   opiskeluoikeudet: Seq[ValpasOpiskeluoikeus],
-  haut: Option[Seq[Hakukooste]],
+  haut: Option[Seq[ValpasHakutilanne]],
   tiedot: ValpasOppijaTiedot
 ) extends ValpasOppija
 
@@ -80,3 +80,45 @@ case class ValpasOppijaTiedot(
   opiskelee: Boolean,
   oppivelvollisuusVoimassaAsti: Option[String]
 )
+
+case class ValpasHakutilanne(
+  hakuOid: String,
+  hakuNimi: LocalizedString,
+  hakemusOid: String,
+  aktiivinen: Boolean,
+  muokattu: String,
+  hakutoiveet: Seq[ValpasHakutoive]
+)
+
+case class ValpasHakutoive(
+  hakukohdeNimi: LocalizedString,
+  hakutoivenumero: Option[Int],
+  pisteet: Float,
+  hyväksytty: Option[Boolean]
+)
+
+object ValpasHakutilanne {
+  def apply(hakukooste: Hakukooste): ValpasHakutilanne =
+    ValpasHakutilanne(
+      hakuOid = hakukooste.hakuOid,
+      hakuNimi = hakukooste.hakuNimi,
+      hakemusOid = hakukooste.hakemusOid,
+      aktiivinen = hakukooste.hakutoiveet.exists(hakutoive => Valintatila.isAktiivinen(hakutoive.valintatila)),
+      muokattu = hakukooste.muokattu,
+      hakutoiveet = hakukooste.hakutoiveet.map(ValpasHakutoive.apply)
+    )
+
+  def apply(hakukooste: Seq[Hakukooste]): Seq[ValpasHakutilanne] =
+    hakukooste.map(ValpasHakutilanne.apply)
+}
+
+object ValpasHakutoive {
+  def apply(hakutoive: Hakutoive): ValpasHakutoive = {
+    ValpasHakutoive(
+      hakukohdeNimi = hakutoive.hakukohdeNimi,
+      hakutoivenumero = if (hakutoive.hakutoivenumero > 0) { Some(hakutoive.hakutoivenumero) } else { None },
+      pisteet = hakutoive.pisteet,
+      hyväksytty = None // TODO
+    )
+  }
+}

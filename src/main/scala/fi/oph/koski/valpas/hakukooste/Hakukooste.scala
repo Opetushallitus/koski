@@ -32,10 +32,9 @@ case class Hakutoive(
   koulutusNimi: LocalizedString,
   hakukohdeOrganisaatio: String,
   pisteet: Float,
-  // TODO: Enumeraatiot eivät jostain syystä serialisoidu, väliaikaisesti stringeinä
-  valintatila: String, // Valintatila,
-  vastaanottotieto: String, // Vastaanottotieto,
-  ilmoittautumistila: String, // Ilmoittautumistila,
+  valintatila: Valintatila,
+  vastaanottotieto: Vastaanottotieto,
+  ilmoittautumistila: Ilmoittautumistila,
   koulutusOid: String,
   harkinnanvaraisuus: String, // TODO: Arvot?
   hakukohdeKoulutuskoodi: String // TODO: Arvot?
@@ -49,6 +48,19 @@ object Vastaanottotieto extends Enumeration {
 object Valintatila extends Enumeration {
   type Valintatila = Value
   val HYVAKSYTTY, HARKINNANVARAISESTI_HYVAKSYTTY, VARASIJALTA_HYVAKSYTTY, VARALLA,PERUUTETTU, PERUNUT, HYLATTY, PERUUNTUNUT, KESKEN = Value
+
+  def isAktiivinen(tila: Valintatila) = tila match {
+    case HYVAKSYTTY => true
+    case HARKINNANVARAISESTI_HYVAKSYTTY => true
+    case VARASIJALTA_HYVAKSYTTY => true
+    case VARALLA => true
+    case PERUUTETTU => false
+    case PERUNUT => false
+    case HYLATTY => false
+    case PERUUNTUNUT => false
+    case KESKEN => true
+    case _ => false
+  }
 }
 
 object Ilmoittautumistila extends Enumeration {

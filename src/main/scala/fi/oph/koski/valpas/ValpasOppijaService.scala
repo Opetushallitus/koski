@@ -4,9 +4,9 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koodisto.KoodistoViite
 import fi.oph.koski.log.{AuditLog, KoskiMessageField, Logging}
 import fi.oph.koski.schema.Koodistokoodiviite
-import fi.oph.koski.valpas.hakukooste.{MockHakukoosteService, ValpasHakukoosteService}
+import fi.oph.koski.valpas.hakukooste.ValpasHakukoosteService
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessage, ValpasOperation}
-import fi.oph.koski.valpas.repository.{Rajapäivät, ValpasDatabaseService, ValpasOppija, ValpasOppijaLisätiedoilla, ValpasOppijaResult}
+import fi.oph.koski.valpas.repository._
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
 class ValpasOppijaService(
@@ -42,19 +42,20 @@ class ValpasOppijaService(
 
   def fetchHaku(oppija: ValpasOppijaLisätiedoilla): ValpasOppijaLisätiedoilla = {
     oppija.copy(
-      haut = Some(hakukoosteService
+      haut = hakukoosteService
         .getHakukoosteet(Set(oppija.henkilö.oid))
-        .getOrElse(List())) // TODO: Oikea virheiden käsittely
+        .map(ValpasHakutilanne.apply)
+        .toOption // TODO: Virheen voisi käsitellä, eikä tipauttaa pois
     )
   }
 
   def fetchHaut(oppijat: Seq[ValpasOppijaLisätiedoilla]): Seq[ValpasOppijaLisätiedoilla] = {
-    val haut = hakukoosteService
-      .getHakukoosteet(oppijat.map(_.henkilö.oid).toSet)
-      .getOrElse(List()) // TODO: Oikea virheiden käsittely
-
+    val haut = hakukoosteService.getHakukoosteet(oppijat.map(_.henkilö.oid).toSet)
     oppijat.map(oppija => oppija.copy(
-      haut = Some(haut.filter(_.oppijaOid == oppija.henkilö.oid))
+      haut = haut
+        .map(h => h.filter(_.oppijaOid == oppija.henkilö.oid))
+        .map(ValpasHakutilanne.apply)
+        .toOption // TODO: Virheen voisi käsitellä, eikä tipauttaa pois
     ))
   }
 
