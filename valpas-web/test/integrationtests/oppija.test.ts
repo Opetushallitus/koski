@@ -1,6 +1,8 @@
 import {
   contentEventuallyEquals,
+  goToLocation,
   loginAs,
+  resetMockData,
   textEventuallyEquals,
 } from "../integrationtests-env/browser"
 import {
@@ -74,6 +76,23 @@ describe("Oppijakohtainen näkymä", () => {
     await mainHeadingEquals("Oppijan tiedot")
     await secondaryHeadingEquals(
       "Oppijaa ei löydy tunnuksella 1.2.246.562.24.00000000001"
+    )
+  })
+
+  it("Ei näytä oppijan tietoja, johon käyttäjällä ei ole lukuoikeutta vaihdetun tarkastelupäivän jälkeen", async () => {
+    const path = "/virkailija/oppijat/1.2.246.562.24.00000000011"
+
+    allowNetworkError("/valpas/api/oppija/", FORBIDDEN)
+    await loginAs(path, "valpas-jkl-normaali", "valpas-jkl-normaali")
+    await mainHeadingEquals(
+      "Ysiluokka-valmis-keväällä-2021 Valpas (190605A006K)"
+    )
+    await resetMockData("2021-10-05")
+    await goToLocation(path)
+
+    await mainHeadingEquals("Oppijan tiedot")
+    await secondaryHeadingEquals(
+      "Oppijaa ei löydy tunnuksella 1.2.246.562.24.00000000011"
     )
   })
 

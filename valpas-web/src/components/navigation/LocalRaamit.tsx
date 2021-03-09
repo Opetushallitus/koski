@@ -48,9 +48,9 @@ const TestApiButtons = () => {
       <SimpleTextField
         value={tarkasteluPäivä}
         onChange={(value) => {
-          console.log(value)
           setTarkasteluPäivä(value)
         }}
+        id={"tarkasteluPäivä"}
       />
       <TestApiButton
         fetchFunc={clearMockData}
