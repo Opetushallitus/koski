@@ -4,11 +4,15 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koodisto.KoodistoViite
 import fi.oph.koski.log.{AuditLog, KoskiMessageField, Logging}
 import fi.oph.koski.schema.Koodistokoodiviite
+import fi.oph.koski.valpas.hakukooste.{MockHakukoosteService, ValpasHakukoosteService}
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessage, ValpasOperation}
 import fi.oph.koski.valpas.repository.{Rajapäivät, ValpasDatabaseService, ValpasOppija, ValpasOppijaLisätiedoilla, ValpasOppijaResult}
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
-class ValpasOppijaService(application: KoskiApplication) extends Logging {
+class ValpasOppijaService(
+  application: KoskiApplication,
+  hakukoosteService: ValpasHakukoosteService,
+) extends Logging {
   private val dbService = new ValpasDatabaseService(application)
   private val koodisto = application.koodistoPalvelu
   private val accessResolver = new ValpasAccessResolver(application)
@@ -16,6 +20,7 @@ class ValpasOppijaService(application: KoskiApplication) extends Logging {
   def getOppijat(oppilaitosOids: Set[String], rajapäivät: Rajapäivät)(implicit session: ValpasSession): Option[Seq[ValpasOppija]] =
     accessResolver.organisaatiohierarkiaOids(oppilaitosOids)
       .map(oids => dbService.getPeruskoulunValvojalleNäkyvätOppijat(Some(oids.toSeq), rajapäivät).map(enrichOppija))
+      .map(fetchHaut)
       .map(oppijat => {
         oppilaitosOids.foreach(auditLogOppilaitoksenOppijatKatsominen)
         oppijat
@@ -29,10 +34,29 @@ class ValpasOppijaService(application: KoskiApplication) extends Logging {
       .flatMap(oid => dbService.getPeruskoulunValvojalleNäkyväOppija(oid, rajapäivät))
       .filter(oppija => accessResolver.accessToSomeOrgs(oppija.oikeutetutOppilaitokset))
       .map(enrichOppija)
+      .map(fetchHaku)
       .map(oppija => {
         auditLogOppijaKatsominen(oppija)
         oppija
       })
+
+  def fetchHaku(oppija: ValpasOppijaLisätiedoilla): ValpasOppijaLisätiedoilla = {
+    oppija.copy(
+      haut = Some(hakukoosteService
+        .getHakukoosteet(Set(oppija.henkilö.oid))
+        .getOrElse(List())) // TODO: Oikea virheiden käsittely
+    )
+  }
+
+  def fetchHaut(oppijat: Seq[ValpasOppijaLisätiedoilla]): Seq[ValpasOppijaLisätiedoilla] = {
+    val haut = hakukoosteService
+      .getHakukoosteet(oppijat.map(_.henkilö.oid).toSet)
+      .getOrElse(List()) // TODO: Oikea virheiden käsittely
+
+    oppijat.map(oppija => oppija.copy(
+      haut = Some(haut.filter(_.oppijaOid == oppija.henkilö.oid))
+    ))
+  }
 
   def enrichOppija(oppija: ValpasOppijaResult): ValpasOppijaLisätiedoilla =
     ValpasOppijaLisätiedoilla(

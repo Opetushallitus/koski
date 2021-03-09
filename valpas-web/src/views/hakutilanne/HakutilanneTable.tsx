@@ -106,33 +106,23 @@ const oppijaToTableData = (basePath: string) => (oppija: Oppija): Datum => {
 }
 
 const hakemuksentilaValue = (hakemus?: Haku): string => {
-  if (!hakemus) {
-    return t("hakemuksentila__ei_hakemusta")
-  }
-  switch (hakemus.tila.koodiarvo) {
-    case "aktiivinen":
-      return t("hakemuksentila__aktiivinen")
-    case "passiivinen":
-      return t("hakemuksentila__passiivinen")
-    case "luonnos":
-      return t("hakemuksentila__luonnos")
-    case "puutteellinen":
-      return t("hakemuksentila__puutteellinen")
-  }
+  return t(
+    hakemus ? "hakemuksentila__aktiivinen" : "hakemuksentila__ei_hakemusta"
+  )
 }
 
 const valintatietoValue = (hakemus?: Haku): Value => {
-  const valintatieto = hakemus?.valintatiedot[0] // TODO: valitse valintatieto fiksummin, esim. pienimmällä numerolla oleva
-  return valintatieto?.tila &&
-    ValintatietotilaKoodistoviite.isHyväksytty(valintatieto.tila)
+  // TODO: Oikea toteutus
+  const valintatieto = hakemus?.hakutoiveet[0]
+  return valintatieto
     ? {
         value: formatHyvaksyttyValintatietoValue(
-          valintatieto.hakukohdenumero,
+          valintatieto.hakutoivenumero,
           t("valintatieto__hakukohde_lc")
         ),
         display: formatHyvaksyttyValintatietoValue(
-          valintatieto.hakukohdenumero,
-          getLocalized(valintatieto.hakukohde.nimi)
+          valintatieto.hakutoivenumero,
+          getLocalized(valintatieto.hakukohdeNimi)
         ),
       }
     : {
@@ -151,31 +141,31 @@ const formatHyvaksyttyValintatietoValue = (
   })
 
 const oppilaitosValue = (
-  hakemus: Haku | undefined,
-  predicate: (valintatieto: Valintatieto) => boolean
+  _hakemus: Haku | undefined,
+  _predicate: (valintatieto: Valintatieto) => boolean
 ): Value => {
   const nullValue = { value: t("Ei"), display: "-" }
-  if (!hakemus) {
-    return nullValue
-  }
-  const valintatiedot = hakemus.valintatiedot.filter(predicate)
-  switch (valintatiedot.length) {
-    case 0:
-      return nullValue
-    case 1:
-      const valinta = valintatiedot[0]!!
-      return {
-        value: t("Kyllä"),
-        display: `${
-          valinta.hakukohdenumero ? `${valinta.hakukohdenumero}. ` : ""
-        }${getLocalized(valinta.hakukohde.nimi)}`,
-      }
-    default:
-      return {
-        value: t("Kyllä"),
-        display: t("vastaanotettu__n_paikkaa", {
-          lukumäärä: valintatiedot.length,
-        }),
-      }
-  }
+  // if (!hakemus) {
+  return nullValue
+  // }
+  // const valintatiedot = hakemus.valintatiedot.filter(predicate)
+  // switch (valintatiedot.length) {
+  //   case 0:
+  //     return nullValue
+  //   case 1:
+  //     const valinta = valintatiedot[0]!!
+  //     return {
+  //       value: t("Kyllä"),
+  //       display: `${
+  //         valinta.hakukohdenumero ? `${valinta.hakukohdenumero}. ` : ""
+  //       }${getLocalized(valinta.hakukohde.nimi)}`,
+  //     }
+  //   default:
+  //     return {
+  //       value: t("Kyllä"),
+  //       display: t("vastaanotettu__n_paikkaa", {
+  //         lukumäärä: valintatiedot.length,
+  //       }),
+  //     }
+  // }
 }
