@@ -79,4 +79,4 @@ const hakutoiveToTableValue = (hakutoive: Hakutoive, index: number): Datum => ({
 })
 
 const formatOrderNumber = (n?: number): string =>
-  n !== undefined ? `${n}. ` : ""
+  n !== undefined ? `${n + 1}. ` : ""

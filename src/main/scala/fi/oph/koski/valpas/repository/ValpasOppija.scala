@@ -116,7 +116,7 @@ object ValpasHakutoive {
   def apply(hakutoive: Hakutoive): ValpasHakutoive = {
     ValpasHakutoive(
       hakukohdeNimi = hakutoive.hakukohdeNimi,
-      hakutoivenumero = if (hakutoive.hakutoivenumero > 0) { Some(hakutoive.hakutoivenumero) } else { None },
+      hakutoivenumero = Some(hakutoive.hakutoivenumero),
       pisteet = hakutoive.pisteet,
       hyväksytty = None // TODO
     )

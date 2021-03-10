@@ -57,10 +57,10 @@ object HakukoosteExampleData {
       huoltajanSahkoposti = "huoltaja.sukunimi@gmail.com",
       hakutoiveet = hakutoiveet.map(hakutoive => hakutoive.copy(
         hakukohdeNimi = MockOrganisaatioRepository.getOrganisaationNimiHetkellä(oid = hakutoive.hakukohdeOid, localDate = muokattu.toLocalDate).get,
-        hakutoivenumero = if (hakutoive.hakutoivenumero > 0) {
+        hakutoivenumero = if (hakutoive.hakutoivenumero >= 0) {
           hakutoive.hakutoivenumero
         } else {
-          hakutoiveet.indexOf(hakutoive) + 1
+          hakutoiveet.indexOf(hakutoive)
         }
       ))
     )
