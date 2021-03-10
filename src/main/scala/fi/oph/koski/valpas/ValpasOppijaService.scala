@@ -17,6 +17,9 @@ class ValpasOppijaService(
   private val koodisto = application.koodistoPalvelu
   private val accessResolver = new ValpasAccessResolver(application)
 
+  // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
+  // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
+  // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
   def getOppijat(oppilaitosOids: Set[String], rajapäivät: Rajapäivät)(implicit session: ValpasSession): Option[Seq[ValpasOppija]] =
     accessResolver.organisaatiohierarkiaOids(oppilaitosOids)
       .map(oids => dbService.getPeruskoulunValvojalleNäkyvätOppijat(Some(oids.toSeq), rajapäivät).map(enrichOppija))

@@ -18,6 +18,8 @@ const oppivelvollisuustiedotEquals = (expected: string) =>
   contentEventuallyEquals("#oppivelvollisuustiedot .card__body", expected)
 const opiskeluhistoriaEquals = (expected: string) =>
   contentEventuallyEquals("#opiskeluhistoria .card__body", expected)
+const hautEquals = (expected: string) =>
+  contentEventuallyEquals("#haut .card__body", expected)
 
 describe("Oppijakohtainen näkymä", () => {
   it("Näyttää oppijan tiedot, johon käyttäjällä on lukuoikeus", async () => {
@@ -40,6 +42,19 @@ describe("Oppijakohtainen näkymä", () => {
       Jyväskylän normaalikoulu
       Ryhmä: 9C
       Tila: Läsnä
+    `)
+    await hautEquals(`
+      list_alt
+      Yhteishaku 2021
+        Oppilaitos
+        Valinta
+        Pisteet
+        Alin pistemäärä
+        1. Ressun lukio	–	0,00	–
+        2. Helsingin medialukio	–	0,00	–
+        3. Omnia	–	0,00	–
+        4. Omnia	–	0,00	–
+        5. Varsinais-Suomen kansanopisto	–	0,00	–
     `)
   })
 
