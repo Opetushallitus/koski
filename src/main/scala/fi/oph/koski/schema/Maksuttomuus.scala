@@ -10,13 +10,14 @@ case class Maksuttomuus(
   maksuton: Boolean
 ) extends Jakso
 
-case class MaksuttomuuttaPidennetty(
+case class OikeuttaMaksuttomuuteenPidennetty(
   alku: LocalDate,
   loppu: LocalDate
 ) extends Alkupäivällinen {
-  def overlaps(other: MaksuttomuuttaPidennetty): Boolean = {
+  def overlaps(other: OikeuttaMaksuttomuuteenPidennetty): Boolean = {
     !alku.isBefore(other.alku) && !alku.isAfter(other.loppu) || !loppu.isBefore(other.alku) && !loppu.isAfter(other.loppu)
   }
 }
 
+@Description("Laajennetun oppivelvollisuuden suoritus")
 trait SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta extends PäätasonSuoritus

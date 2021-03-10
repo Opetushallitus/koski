@@ -60,8 +60,8 @@ object MaksuttomuusValidation {
     )
   }
 
-  private def validateMaksuttomuuttaPidennetty(jaksot: List[MaksuttomuuttaPidennetty], opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
-    def betweenOpiskeluoikeudenAlkamisPäättymis(jakso: MaksuttomuuttaPidennetty) = {
+  private def validateMaksuttomuuttaPidennetty(jaksot: List[OikeuttaMaksuttomuuteenPidennetty], opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
+    def betweenOpiskeluoikeudenAlkamisPäättymis(jakso: OikeuttaMaksuttomuuteenPidennetty) = {
       val voimassaolonSisällä = between(opiskeluoikeus.alkamispäivä, opiskeluoikeus.päättymispäivä)_
       voimassaolonSisällä(jakso.alku) && voimassaolonSisällä(jakso.loppu)
     }
@@ -77,7 +77,7 @@ object MaksuttomuusValidation {
     )
   }
 
-  private def fill(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, lisätiedot: MaksuttomuusTieto, maksuttomuus: List[Maksuttomuus], oikeuttaMaksuttomuuteenPidennetty: List[MaksuttomuuttaPidennetty]): KoskeenTallennettavaOpiskeluoikeus = {
+  private def fill(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, lisätiedot: MaksuttomuusTieto, maksuttomuus: List[Maksuttomuus], oikeuttaMaksuttomuuteenPidennetty: List[OikeuttaMaksuttomuuteenPidennetty]): KoskeenTallennettavaOpiskeluoikeus = {
     val jaksot = maksuttomuus.map(_.copy(loppu = None))
     val last = jaksot.lastOption.toList
     val filled = jaksot.zip(jaksot.drop(1)).map { case (a, b) => a.copy(loppu = Some(b.alku.minusDays(1))) }

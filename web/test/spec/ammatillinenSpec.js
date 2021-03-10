@@ -208,7 +208,7 @@ describe('Ammatillinen koulutus', function() {
         describe('Kun valitaan kelvollinen päivämäärä', function() {
           before(
             addOppija.enterValidDataAmmatillinen({etunimet: 'Juha-Pekka', kutsumanimi: 'Pekka'}),
-            addOppija.selectAloituspäivä('1.1.2070')
+            addOppija.selectAloituspäivä('1.1.2020')
           )
           it('Lisää-nappi on enabloitu', function() {
             expect(addOppija.isEnabled()).to.equal(true)

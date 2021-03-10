@@ -200,6 +200,11 @@ function AddOppijaPage() {
     selectAloituspäivä: function(date) {
       return pageApi.setInputValue('.aloituspaiva input', date)
     },
+    selectMaksuttomuus: function (index) {
+      return function () {
+        return click(S('.radio-option-container')[index])()
+      }
+    },
     henkilötiedot: function() {
       return ['.etunimet input', '.kutsumanimi input[disabled], .kutsumanimi .dropdown', '.sukunimi input'].map(function(selector) {
         return pageApi.getInputValue(selector)

@@ -79,7 +79,7 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None,
   maksuttomuus: Option[List[Maksuttomuus]] = None,
-  oikeuttaMaksuttomuuteenPidennetty: Option[List[MaksuttomuuttaPidennetty]] = None
+  oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None
 ) extends OpiskeluoikeudenLisätiedot
   with SisäoppilaitosmainenMajoitus
   with OikeusmaksuttomaanAsuntolapaikkaan
