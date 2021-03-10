@@ -23,8 +23,8 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
   def findPerusteetByKoulutustyyppi(koulutustyypit: Set[Koulutustyyppi]): List[EPeruste] = if (koulutustyypit.isEmpty) {
     Nil
   } else {
-    val url = s"/api/perusteet?${koulutustyypit.map(k => s"koulutustyyppi=koulutustyyppi_${k.koodiarvo}").mkString("&")}"
-    runTask(http.get(ParameterizedUriWrapper(uriFromString(url), url))(Http.parseJson[EPerusteet])).data
+    val url = s"/api/perusteet?${koulutustyypit.map(k => s"koulutustyyppi=koulutustyyppi_${k.koodiarvo}").mkString("&")}".toUri
+    runTask(http.get(url)(Http.parseJson[EPerusteet])).data
   }
 
   def findRakenne(diaariNumero: String): Option[EPerusteRakenne] = {

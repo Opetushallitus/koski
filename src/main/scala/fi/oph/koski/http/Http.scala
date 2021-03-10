@@ -58,10 +58,16 @@ object Http extends Logging {
     }
   }
 
+  // Warning: does not do any URI encoding
+  // For when you don't want encoding but Http.scala wants a ParameterizedUriWrapper
+  implicit class StringToUriConverter(s: String) {
+    def toUri: ParameterizedUriWrapper = ParameterizedUriWrapper(uriFromString(s), s)
+  }
+
   case class ParameterizedUriWrapper(uri: Uri, template: String)
 
   // Warning: does not do any URI encoding
-  def uriFromString(uri: String): Uri = {
+  private def uriFromString(uri: String): Uri = {
     Uri.fromString(uri) match {
       case \/-(result) => result
       case -\/(failure) =>

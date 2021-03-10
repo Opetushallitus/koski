@@ -2,7 +2,7 @@ package fi.oph.koski.pulssi
 
 import com.typesafe.config.Config
 import fi.oph.koski.http.Http
-import fi.oph.koski.http.Http.{ParameterizedUriWrapper, _}
+import fi.oph.koski.http.Http._
 import fi.oph.koski.json.GenericJsonFormats
 import fi.oph.koski.json.JsonSerializer.extract
 import org.json4s.JValue
@@ -21,7 +21,7 @@ object PrometheusRepository {
 
 class RemotePrometheusRepository(http: Http) extends PrometheusRepository {
   override def query(query: String): Task[JValue] =
-    http.get(ParameterizedUriWrapper(uriFromString(query), query))(Http.parseJson[JValue])
+    http.get(query.toUri)(Http.parseJson[JValue])
 }
 
 trait PrometheusRepository {
