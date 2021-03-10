@@ -17,3 +17,7 @@ class MockHakukoosteService extends ValpasHakukoosteService {
   private def getData(oppijaOids: Set[String]): Seq[Hakukooste] =
     HakukoosteExampleData.data.filter(entry => oppijaOids.contains(entry.oppijaOid))
 }
+
+class MockEmptyHakukoosteService extends ValpasHakukoosteService {
+  def getHakukoosteet(oppijaOids: Set[String]): Either[ValpasHakukoosteServiceError, Seq[Hakukooste]] = Right(List())
+}

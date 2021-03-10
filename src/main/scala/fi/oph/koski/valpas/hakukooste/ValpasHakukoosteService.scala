@@ -10,6 +10,9 @@ trait ValpasHakukoosteService {
 
 object ValpasHakukoosteService {
   def apply(application: KoskiApplication): ValpasHakukoosteService = {
-    new MockHakukoosteService()
+    application.config.getString("opintopolku.virkailija.url") match {
+      case "mock" => new MockHakukoosteService()
+      case _ => new MockEmptyHakukoosteService()
+    }
   }
 }
