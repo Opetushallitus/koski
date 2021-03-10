@@ -5,6 +5,7 @@ import fi.oph.koski.api.LocalJettyHttpSpecification.externalJettyPort
 import fi.oph.koski.api.{LocalJettyHttpSpecification, SharedJetty}
 import fi.oph.koski.http.{HttpSpecification, HttpTester}
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester, RootLogTester}
+import fi.oph.koski.valpas.repository.{MockRajapäivät, OikeatRajapäivät}
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 import org.scalatest.{BeforeAndAfterAll, FreeSpec}
 
@@ -14,9 +15,11 @@ trait ValpasTestBase extends FreeSpec with BeforeAndAfterAll {
 
     ValpasMockUsers.mockUsersEnabled = true
     fixtureCreator.resetFixtures(fixtureCreator.valpasFixtureState)
+    MockRajapäivät.mockRajapäivät = MockRajapäivät()
   }
   override protected def afterAll(): Unit = {
     ValpasMockUsers.mockUsersEnabled = false
+    MockRajapäivät.mockRajapäivät = OikeatRajapäivät()
   }
 }
 

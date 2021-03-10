@@ -1,8 +1,8 @@
 import bem from "bem-ts"
-import React from "react"
+import React, { useState } from "react"
 import { ApiResponse } from "../../api/apiFetch"
 import { useApiMethod } from "../../api/apiHooks"
-import { clearMockData, resetMockData } from "../../api/testApi"
+import { clearMockData, resetMockDataToDate } from "../../api/testApi"
 import {
   getLanguage,
   Language,
@@ -36,12 +36,21 @@ export default ({ user }: LocalRaamitProps) => {
 }
 
 const TestApiButtons = () => {
+  const [tarkasteluPäivä, setTarkasteluPäivä] = useState("2021-09-05")
+
   return (
     <>
       <TestApiButton
-        fetchFunc={resetMockData}
+        fetchFunc={resetMockDataToDate(tarkasteluPäivä)}
         id={"resetMockData"}
         title={"Reset mock data"}
+      />
+      <SimpleTextField
+        value={tarkasteluPäivä}
+        onChange={(value) => {
+          setTarkasteluPäivä(value)
+        }}
+        id={"tarkasteluPäivä"}
       />
       <TestApiButton
         fetchFunc={clearMockData}
@@ -77,6 +86,21 @@ const TestApiButton = ({ fetchFunc, id, title }: TestApiButtonProps) => {
     </button>
   )
 }
+
+export type SimpleTextFieldProps = {
+  value: string
+  onChange: (value: string) => void
+  id?: string
+}
+
+export const SimpleTextField = (props: SimpleTextFieldProps) => (
+  <input
+    id={props.id}
+    className={b("input")}
+    value={props.value}
+    onChange={(event) => props.onChange(event.target.value)}
+  />
+)
 
 type UserInfoProps = {
   user: CurrentUser

@@ -57,6 +57,54 @@ object ValpasExampleData {
     )
   )
 
+  def ennenLainRajapäivääToisestaKoulustaValmistunutYsiluokkalainen = PerusopetuksenOpiskeluoikeus(
+    oppilaitos = Some(oppilaitos(aapajoenKoulu)),
+    koulutustoimija = None,
+    suoritukset = List(
+      perusopetuksenOppimääränSuoritus.copy(
+        vahvistus = vahvistusPaikkakunnalla(date(2020, 12, 31))
+      ),
+      kahdeksannenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2019, 8, 15)),
+        vahvistus = vahvistusPaikkakunnalla(date(2020, 5, 30)),
+      ),
+      yhdeksännenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2020, 8, 15)),
+        vahvistus = vahvistusPaikkakunnalla(date(2020, 12, 31)),
+      )
+    ),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2012, 8, 15), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2020, 12, 31), opiskeluoikeusValmistunut)
+      )
+    )
+  )
+
+  def yli2kkAiemminPeruskoulustaValmistunut = PerusopetuksenOpiskeluoikeus(
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    koulutustoimija = None,
+    suoritukset = List(
+      perusopetuksenOppimääränSuoritus.copy(
+        vahvistus = vahvistusPaikkakunnalla(date(2021, 7, 4))
+      ),
+      kahdeksannenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2019, 8, 15)),
+        vahvistus = vahvistusPaikkakunnalla(date(2020, 5, 30)),
+      ),
+      yhdeksännenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2020, 8, 15)),
+        vahvistus = vahvistusPaikkakunnalla(date(2021, 7, 4)),
+      )
+    ),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2012, 8, 15), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 7, 4), opiskeluoikeusValmistunut)
+      )
+    )
+  )
+
   def valmistunutYsiluokkalainenToinenKoulu =
     valmistunutYsiluokkalainen.copy(
       oppilaitos = Some(oppilaitos(aapajoenKoulu)),

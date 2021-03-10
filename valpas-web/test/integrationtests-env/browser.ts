@@ -94,6 +94,36 @@ export const contentEventuallyEquals = (
     timeout
   )
 
+export const setTextInput = async (selector: string, value: string) => {
+  await clearTextInput(selector)
+
+  const element = await $(selector)
+  await element.sendKeys(value, Key.ENTER)
+
+  await attributeEventuallyEquals(selector, "value", value)
+}
+
+// https://stackoverflow.com/questions/53698075/how-to-clear-text-input
+export const clearTextInput = async (selector: string, timeout = 1000) =>
+  // Pitää tehdä silmukassa, koska tämä ei aina toimi, välillä BACK_SPACE poistaa vain viimeisen merkin
+  eventually(async () => {
+    const element = await $(selector)
+    await driver.executeScript((element: any) => element.select(), element)
+    await element.sendKeys(Key.BACK_SPACE)
+    expect(await element.getAttribute("value")).toEqual("")
+  }, timeout)
+
+export const attributeEventuallyEquals = (
+  selector: string,
+  attributeName: string,
+  expected: string,
+  timeout = 1000
+) =>
+  eventually(async () => {
+    const element = await $(selector)
+    expect(await element.getAttribute(attributeName)).toEqual(expected)
+  }, timeout)
+
 export const sleep = (time: number) =>
   new Promise((resolve) => setTimeout(resolve, time))
 
@@ -128,7 +158,8 @@ export const reset = async (initialPath: string) => {
   await resetMockData()
 }
 
-export const resetMockData = async () => {
+export const resetMockData = async (tarkasteluPäivä: string = "2019-09-05") => {
+  await setTextInput("#tarkasteluPäivä", tarkasteluPäivä)
   await clickElement("#resetMockData")
   await textEventuallyEquals("#resetMockDataState", "success", 15000)
 }
