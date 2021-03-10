@@ -71,7 +71,7 @@ WITH
           jsonb_array_elements(r_opiskeluoikeus.data -> 'lisätiedot' -> 'kotiopetusjaksot') jaksot
         WHERE
           jaksot ->> 'loppu' IS NULL
-            OR to_char(NOW(), 'YYYY-MM-DD') BETWEEN jaksot ->> 'alku' AND jaksot ->> 'loppu'
+            OR $tarkasteluPäivä BETWEEN jaksot ->> 'alku' AND jaksot ->> 'loppu'
       ) kotiopetusjaksoja
     WHERE
       -- (1) oppija on potentiaalisesti oppivelvollinen, eli syntynyt 2004 tai myöhemmin
