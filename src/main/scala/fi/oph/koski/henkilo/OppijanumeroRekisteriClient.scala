@@ -21,7 +21,7 @@ case class OppijanumeroRekisteriClient(config: Config) {
     case Left(status) => Task.now(status).map(Left(_))
   }
 
-  private val oidServiceHttp = VirkailijaHttpClient(makeServiceConfig(config), "/oppijanumerorekisteri-service", config.getBoolean("authentication-service.useCas"))
+  private val oidServiceHttp = VirkailijaHttpClient(makeServiceConfig(config), "/oppijanumerorekisteri-service")
 
   private def makeServiceConfig(config: Config) = ServiceConfig.apply(config, "authentication-service", "authentication-service.virkailija", "opintopolku.virkailija")
 

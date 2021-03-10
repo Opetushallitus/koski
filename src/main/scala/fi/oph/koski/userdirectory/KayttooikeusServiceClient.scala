@@ -8,7 +8,7 @@ import scalaz.concurrent.Task
 import scalaz.concurrent.Task.gatherUnordered
 
 case class KäyttöoikeusServiceClient(config: Config) {
-  private val http = VirkailijaHttpClient(makeServiceConfig(config), "/kayttooikeus-service", config.getBoolean("authentication-service.useCas"))
+  private val http = VirkailijaHttpClient(makeServiceConfig(config), "/kayttooikeus-service")
 
   private def makeServiceConfig(config: Config) = ServiceConfig.apply(config, "authentication-service", "authentication-service.virkailija", "opintopolku.virkailija")
 
