@@ -30,11 +30,11 @@ case class Hakukooste(
 case class Hakutoive(
   hakukohdeOid: ValpasOppilaitos.Oid,
   hakukohdeNimi: LocalizedString,
-  hakutoivenumero: Int,
-  koulutusNimi: LocalizedString,
   hakukohdeOrganisaatio: String,
-  pisteet: BigDecimal,
+  koulutusNimi: LocalizedString,
   koulutusOid: ValpasHakutoive.KoulutusOid,
+  hakutoivenumero: Int,
+  pisteet: BigDecimal,
   valintatila: String, // TODO: Toteutetaan enumeraationa jotenkin scala-scheman tukemalla tavalla
   vastaanottotieto: String, // TODO: Toteutetaan enumeraationa jotenkin scala-scheman tukemalla tavalla
   ilmoittautumistila: String, // TODO: Toteutetaan enumeraationa jotenkin scala-scheman tukemalla tavalla
