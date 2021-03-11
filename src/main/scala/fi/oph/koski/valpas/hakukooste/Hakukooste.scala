@@ -5,11 +5,13 @@ import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.valpas.hakukooste.Ilmoittautumistila.Ilmoittautumistila
 import fi.oph.koski.valpas.hakukooste.Valintatila.Valintatila
 import fi.oph.koski.valpas.hakukooste.Vastaanottotieto.Vastaanottotieto
+import fi.oph.koski.valpas.repository.{ValpasHakutilanne, ValpasHakutoive, ValpasHenkilö, ValpasOppilaitos}
+
 
 case class Hakukooste(
-  oppijaOid: String,
-  hakuOid: String,
-  hakemusOid: String,
+  oppijaOid: ValpasHenkilö.Oid,
+  hakuOid: ValpasHakutilanne.HakuOid,
+  hakemusOid: ValpasHakutilanne.HakemusOid,
   @KoodistoUri("hakutapa") // Yhteishaku / Erillishaku / Jatkuva haku / Joustava haku
   hakutapa: Koodistokoodiviite,
   @KoodistoUri("hakutyyppi") // Varsinainen haku / täydennyshaku / lisähaku
@@ -26,13 +28,13 @@ case class Hakukooste(
 )
 
 case class Hakutoive(
-  hakukohdeOid: String,
+  hakukohdeOid: ValpasOppilaitos.Oid,
   hakukohdeNimi: LocalizedString,
   hakutoivenumero: Int,
   koulutusNimi: LocalizedString,
   hakukohdeOrganisaatio: String,
   pisteet: Float,
-  koulutusOid: String,
+  koulutusOid: ValpasHakutoive.KoulutusOid,
   valintatila: String, // TODO: Toteutetaan enumeraationa jotenkin scala-scheman tukemalla tavalla
   vastaanottotieto: String, // TODO: Toteutetaan enumeraationa jotenkin scala-scheman tukemalla tavalla
   ilmoittautumistila: String, // TODO: Toteutetaan enumeraationa jotenkin scala-scheman tukemalla tavalla
