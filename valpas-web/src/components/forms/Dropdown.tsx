@@ -14,6 +14,7 @@ export type DropdownProps<T> = {
   label?: string
   icon?: React.ReactNode
   error?: React.ReactNode
+  id?: string
 }
 
 export type DropdownOption<T> = {
@@ -29,6 +30,7 @@ export const Dropdown = <T,>(props: DropdownProps<T>) => (
     error={props.error}
   >
     <select
+      id={props.id}
       className={b("input", { error: Boolean(props.error) })}
       value={props.options.findIndex((opt) => opt.value === props.value)}
       onChange={(event) =>
