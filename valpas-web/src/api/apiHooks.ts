@@ -30,12 +30,16 @@ export const useApiOnce = <T>(
  */
 export const useApiWithParams = <T, P extends any[]>(
   fetchFn: (...fetchFnParams: P) => Promise<ApiResponse<T>>,
-  params: P,
+  params?: P,
   cache?: ApiCache<T, P>
 ) => {
   const api = useApiMethod(fetchFn, cache)
   useEffect(() => {
-    api.call(...params)
+    if (params) {
+      api.call(...params)
+    } else {
+      api.clear()
+    }
   }, params)
   return api
 }

@@ -11,6 +11,7 @@ export type KoodistoKoodiviite<
   lyhytNimi?: LocalizedString
 }
 
+// @ts-ignore
 const koodiarvoCondition = <K extends KoodistoKoodiviite, S extends string>(
   uri: string,
   truthyValues: S[]
@@ -23,26 +24,5 @@ export type Opiskeluoikeudentyyppi = KoodistoKoodiviite<"opiskeluoikeudentyyppi"
 // TODO: Omakeksittyjä koodistoja. Pitää tsekata mitä löytyy valmiina.
 export type OppilaitosnumeroKoodistoviite = KoodistoKoodiviite<"oppilaitosnumero">
 export type PaikkakuntaKoodistoviite = KoodistoKoodiviite<"paikkakunta">
-export type HakemuksentilaKoodistoviite = KoodistoKoodiviite<
-  "hakemuksentila",
-  "aktiivinen" | "passiivinen" | "puutteellinen" | "luonnos"
->
-export type ValintatietotilaKoodistoviite = KoodistoKoodiviite<
-  "valintatietotila",
-  "hyväksytty" | "varasija" | "hylätty" | "vastaanotettu" | "läsnä"
->
-
-export const ValintatietotilaKoodistoviite = {
-  isHyväksytty: koodiarvoCondition("valintatietotila", [
-    "hyväksytty",
-    "vastaanotettu",
-    "läsnä",
-  ]),
-  isVastaanotettu: koodiarvoCondition("valintatietotila", [
-    "vastaanotettu",
-    "läsnä",
-  ]),
-  isLäsnä: koodiarvoCondition("valintatietotila", ["läsnä"]),
-}
 
 export type OpiskeluoikeudenTila = KoodistoKoodiviite<"koskiopiskeluoikeudentila">

@@ -6,13 +6,15 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus, Ryhmällinen}
 import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
 import fi.oph.koski.valpas.fixture.ValpasExampleData
+import fi.oph.koski.valpas.hakukooste.ValpasHakukoosteService
 import fi.oph.koski.valpas.henkilo.ValpasMockOppijat
 import fi.oph.koski.valpas.repository.{MockRajapäivät, ValpasOppija}
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import org.scalatest.Matchers._
 
 class ValpasOppijaServiceSpec extends ValpasTestBase {
-  val oppijaService = new ValpasOppijaService(KoskiApplicationForTests)
+  val hakukoosteService = ValpasHakukoosteService(KoskiApplicationForTests)
+  val oppijaService = new ValpasOppijaService(KoskiApplicationForTests, hakukoosteService)
   val oppilaitokset = List(MockOrganisaatiot.jyväskylänNormaalikoulu)
 
   // Jyväskylän normaalikoulusta löytyvät näytettävät oppivelvolliset aakkosjärjestyksessä

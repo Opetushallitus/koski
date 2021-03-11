@@ -15,6 +15,7 @@ import {
   redirectToLoginReturnUrl,
   storeLoginReturnUrl,
 } from "../state/auth"
+import { BasePathProvider, useBasePath } from "../state/basePath"
 import { User } from "../state/types"
 import { ErrorView, NotFoundView } from "../views/ErrorView"
 import { PerusopetusView } from "./hakutilanne/PerusopetusView"
@@ -25,9 +26,10 @@ import { Raamit } from "./Raamit"
 const featureFlagName = "valpas-feature"
 const featureFlagEnabledValue = "enabled"
 
-const FeatureFlagEnabler = (props: { virkailijaBasePath: string }) => {
+const FeatureFlagEnabler = () => {
+  const basePath = useBasePath()
   window.localStorage.setItem(featureFlagName, featureFlagEnabledValue)
-  return <Redirect to={props.virkailijaBasePath} />
+  return <Redirect to={basePath} />
 }
 
 const runningLocally = window.environment == "local"
@@ -37,11 +39,11 @@ const isFeatureFlagEnabled = () =>
   window.localStorage.getItem(featureFlagName) === featureFlagEnabledValue
 
 type VirkailijaRoutesProps = {
-  basePath: string
   user: User
 }
 
-const VirkailijaRoutes = ({ basePath, user }: VirkailijaRoutesProps) => {
+const VirkailijaRoutes = ({ user }: VirkailijaRoutesProps) => {
+  const basePath = useBasePath()
   const navOptions = [
     {
       key: "hakutilanne",
@@ -60,7 +62,7 @@ const VirkailijaRoutes = ({ basePath, user }: VirkailijaRoutesProps) => {
   return (
     <Switch>
       <Route exact path={`${basePath}/hunter2`}>
-        <FeatureFlagEnabler virkailijaBasePath={basePath} />
+        <FeatureFlagEnabler />
       </Route>
       {isFeatureFlagEnabled() && (
         <Route exact path={`${basePath}/oppijat`}>
@@ -69,7 +71,9 @@ const VirkailijaRoutes = ({ basePath, user }: VirkailijaRoutesProps) => {
             options={navOptions}
             onChange={() => null}
           />
-          <PerusopetusView />
+          <PerusopetusView
+            kayttooikeusroolit={organisaatiotJaKayttooikeusroolit.data}
+          />
         </Route>
       )}
       {isFeatureFlagEnabled() && (
@@ -129,11 +133,11 @@ const VirkailijaApp = ({ basePath }: VirkailijaAppProps) => {
   }
 
   return (
-    <>
+    <BasePathProvider value={basePath}>
       <Raamit user={user} />
       {hasValpasAccess(user) ? (
         <Page id="virkailija-app">
-          <VirkailijaRoutes user={user} basePath={basePath} />
+          <VirkailijaRoutes user={user} />
         </Page>
       ) : isLoggedIn(user) ? (
         <ErrorView
@@ -143,7 +147,7 @@ const VirkailijaApp = ({ basePath }: VirkailijaAppProps) => {
       ) : (
         <Login />
       )}
-    </>
+    </BasePathProvider>
   )
 }
 
