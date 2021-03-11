@@ -33,7 +33,7 @@ case class Hakutoive(
   hakutoivenumero: Int,
   koulutusNimi: LocalizedString,
   hakukohdeOrganisaatio: String,
-  pisteet: Float,
+  pisteet: BigDecimal,
   koulutusOid: ValpasHakutoive.KoulutusOid,
   valintatila: String, // TODO: Toteutetaan enumeraationa jotenkin scala-scheman tukemalla tavalla
   vastaanottotieto: String, // TODO: Toteutetaan enumeraationa jotenkin scala-scheman tukemalla tavalla
