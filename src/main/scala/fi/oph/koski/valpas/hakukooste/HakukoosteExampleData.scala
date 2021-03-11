@@ -77,9 +77,9 @@ object HakukoosteExampleData {
       koulutusNimi = Finnish(koulutusNimi),
       hakukohdeOrganisaatio = hakukohdeOid,
       pisteet = 0,
-      valintatila = Valintatila.KESKEN,
-      vastaanottotieto = Vastaanottotieto.KESKEN,
-      ilmoittautumistila = Ilmoittautumistila.EI_ILMOITTAUTUNUT,
+      valintatila = Valintatila.KESKEN.toString,
+      vastaanottotieto = Vastaanottotieto.KESKEN.toString,
+      ilmoittautumistila = Ilmoittautumistila.EI_ILMOITTAUTUNUT.toString,
       koulutusOid = "TODO",
       harkinnanvaraisuus = "TODO",
       hakukohdeKoulutuskoodi = "TODO"

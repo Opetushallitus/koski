@@ -32,10 +32,10 @@ case class Hakutoive(
   koulutusNimi: LocalizedString,
   hakukohdeOrganisaatio: String,
   pisteet: Float,
-  valintatila: Valintatila,
-  vastaanottotieto: Vastaanottotieto,
-  ilmoittautumistila: Ilmoittautumistila,
   koulutusOid: String,
+  valintatila: String, // TODO: Toteutetaan enumeraationa jotenkin scala-scheman tukemalla tavalla
+  vastaanottotieto: String, // TODO: Toteutetaan enumeraationa jotenkin scala-scheman tukemalla tavalla
+  ilmoittautumistila: String, // TODO: Toteutetaan enumeraationa jotenkin scala-scheman tukemalla tavalla
   harkinnanvaraisuus: String, // TODO: Arvot?
   hakukohdeKoulutuskoodi: String // TODO: Arvot?
 )
@@ -49,16 +49,16 @@ object Valintatila extends Enumeration {
   type Valintatila = Value
   val HYVAKSYTTY, HARKINNANVARAISESTI_HYVAKSYTTY, VARASIJALTA_HYVAKSYTTY, VARALLA,PERUUTETTU, PERUNUT, HYLATTY, PERUUNTUNUT, KESKEN = Value
 
-  def isAktiivinen(tila: Valintatila) = tila match {
-    case HYVAKSYTTY => true
-    case HARKINNANVARAISESTI_HYVAKSYTTY => true
-    case VARASIJALTA_HYVAKSYTTY => true
-    case VARALLA => true
-    case PERUUTETTU => false
-    case PERUNUT => false
-    case HYLATTY => false
-    case PERUUNTUNUT => false
-    case KESKEN => true
+  def isAktiivinen(tila: String): Boolean = tila match {
+    case "HYVAKSYTTY" => true
+    case "HARKINNANVARAISESTI_HYVAKSYTTY" => true
+    case "VARASIJALTA_HYVAKSYTTY" => true
+    case "VARALLA" => true
+    case "PERUUTETTU" => false
+    case "PERUNUT" => false
+    case "HYLATTY" => false
+    case "PERUUNTUNUT" => false
+    case "KESKEN" => true
     case _ => false
   }
 }
@@ -67,4 +67,3 @@ object Ilmoittautumistila extends Enumeration {
   type Ilmoittautumistila = Value
   val EI_TEHTY, LASNA_KOKO_LUKUVUOSI, POISSA_KOKO_LUKUVUOSI, EI_ILMOITTAUTUNUT, LASNA_SYKSY, POISSA_SYKSY, LASNA, POISSA = Value
 }
-
