@@ -9,6 +9,13 @@ type NetworkErrorCase = [string, string]
 const globalAllowedNetworkErrors: NetworkErrorCase[] = [
   ["/valpas/api/user", UNAUTHORIZED],
   ["/valpas/api/user", FORBIDDEN],
+  [
+    // Chrome 89.0 deprecation message due React
+    // Fixed in PR https://github.com/facebook/react/pull/20831
+    // Waiting for new React release
+    "",
+    "SharedArrayBuffer will require cross-origin isolation as of M91, around May 2021.",
+  ],
 ]
 let testCaseSpecificAllowedNetworkErrors: NetworkErrorCase[] = []
 
