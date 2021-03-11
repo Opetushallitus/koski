@@ -35,6 +35,7 @@ case class Hakutoive(
   koulutusOid: ValpasHakutoive.KoulutusOid,
   hakutoivenumero: Int,
   pisteet: BigDecimal,
+  alinValintaPistemaara: BigDecimal,
   valintatila: String, // TODO: Toteutetaan enumeraationa jotenkin scala-scheman tukemalla tavalla
   vastaanottotieto: String, // TODO: Toteutetaan enumeraationa jotenkin scala-scheman tukemalla tavalla
   ilmoittautumistila: String, // TODO: Toteutetaan enumeraationa jotenkin scala-scheman tukemalla tavalla
