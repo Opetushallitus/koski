@@ -14,7 +14,7 @@ import rx.{Scheduler, Subscription}
 class RaportointikantaServiceSpec extends FreeSpec with Matchers with BeforeAndAfterAll with RaportointikantaTestMethods {
   override protected def beforeAll(): Unit = {
     LocalJettyHttpSpecification.setup(this)
-    resetDatabase
+    tempRaportointiDb.dropAndCreateObjects
   }
 
   "Loads raportointikanta is idempotent" in {
@@ -48,9 +48,6 @@ class RaportointikantaServiceSpec extends FreeSpec with Matchers with BeforeAndA
   }
 
   private lazy val service = KoskiApplicationForTests.raportointikantaService
-  private lazy val loadDatabase = new RaportointiDatabase(KoskiApplicationForTests.raportointiConfig.copy(raportointiSchema = Some(Temp)))
-
-  private def resetDatabase = loadDatabase.dropAndCreateObjects
 }
 
 class DelayedScheduler extends ScalaScheduler {

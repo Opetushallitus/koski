@@ -1,0 +1,112 @@
+package fi.oph.koski.db
+
+import com.typesafe.config.Config
+import com.typesafe.config.ConfigValueFactory._
+import fi.oph.koski.config.{DatabaseConnectionConfig, Environment, SecretsManager}
+import fi.oph.koski.log.NotLoggable
+import fi.oph.koski.raportointikanta.Schema
+import slick.jdbc.PostgresProfile
+
+
+object DatabaseConfig {
+  def rootDbConfigWithoutChildren(config: Config): Config = {
+    // Konfiguraation db-osan juuri on samalla sekä Kosken pääkannan
+    // konfiguraatio että oletuskonfiguraatio muille kannoille.
+    config.getConfig("db")
+      .withoutPath("replica")
+      .withoutPath("raportointi")
+  }
+}
+
+class KoskiDatabaseConfig(val rootConfig: Config) extends DatabaseConfig {
+  override val envVarForSecretId: String = "DB_KOSKI_SECRET_ID"
+
+  override protected def databaseSpecificConfig: Config = DatabaseConfig.rootDbConfigWithoutChildren(rootConfig)
+}
+
+class KoskiReplicaConfig(val rootConfig: Config) extends DatabaseConfig {
+  override val envVarForSecretId: String = "DB_KOSKI_SECRET_ID"
+
+  override protected def databaseSpecificConfig: Config = rootConfig.getConfig("db.replica")
+
+  override protected def makeConfig(): Config = {
+    if (useSecretsManager) {
+      val host = sys.env.getOrElse(
+        "DB_KOSKI_REPLICA_HOST",
+        throw new RuntimeException("Secrets manager enabled for DB secrets but environment variable DB_KOSKI_REPLICA_HOST not set")
+      )
+      super.makeConfig().withValue("host", fromAnyRef(host))
+    } else {
+      super.makeConfig()
+    }
+  }
+}
+
+class RaportointiDatabaseConfig(val rootConfig: Config, val schema: Schema) extends DatabaseConfig {
+  override val envVarForSecretId: String = "DB_RAPORTOINTI_SECRET_ID"
+
+  override protected def databaseSpecificConfig: Config =
+    rootConfig.getConfig("db.raportointi")
+      .withValue("poolName", fromAnyRef(s"koskiRaportointiPool-${schema.name}"))
+}
+
+trait DatabaseConfig extends NotLoggable {
+  protected val rootConfig: Config
+  protected val envVarForSecretId: String
+  protected val useSecretsManager: Boolean = Environment.usesAwsSecretsManager
+
+  protected def databaseSpecificConfig: Config
+
+  private def commonConfig: Config = DatabaseConfig.rootDbConfigWithoutChildren(rootConfig)
+
+  private def configWithSecretsManager(config: Config): Config = {
+    if (useSecretsManager) {
+      val cachedSecretsClient = new SecretsManager
+      val secretId = cachedSecretsClient.getSecretId("Koski DB secrets", envVarForSecretId)
+      val secretConfig = cachedSecretsClient.getStructuredSecret[DatabaseConnectionConfig](secretId)
+      config
+        .withValue("driverClassName", fromAnyRef("com.amazonaws.secretsmanager.sql.AWSSecretsManagerPostgreSQLDriver"))
+        .withValue("host", fromAnyRef(secretConfig.host))
+        .withValue("port", fromAnyRef(secretConfig.port))
+        .withValue("name", fromAnyRef(secretConfig.dbname))
+        .withValue("user", fromAnyRef(secretId))
+        .withValue("username", fromAnyRef(secretConfig.username))
+        .withValue("password", fromAnyRef(secretConfig.password))
+    } else {
+      config
+    }
+  }
+
+  private def configWithUrl(config: Config): Config = {
+    val protocol = if (useSecretsManager) {
+      "jdbc-secretsmanager:postgresql"
+    } else {
+      "jdbc:postgresql"
+    }
+    val url = s"$protocol://${config.getString("host")}:${config.getInt("port")}/${config.getString("name")}"
+    config.withValue("url", fromAnyRef(url))
+  }
+
+  protected def makeConfig(): Config = {
+    configWithUrl(
+      configWithSecretsManager(
+        databaseSpecificConfig.withFallback(
+          commonConfig
+        )
+      )
+    )
+  }
+
+  lazy val config: Config = makeConfig()
+
+  val host: String = config.getString("host")
+  val port: Int = config.getInt("port")
+  val dbname: String = config.getString("name")
+  val url: String = config.getString("url")
+  val username: String = config.getString("user")
+  val password: String = config.getString("password")
+
+  def isLocal: Boolean = host == "localhost" && !useSecretsManager
+
+  def toSlickDatabase: DB = PostgresProfile.api.Database.forConfig("", config)
+}

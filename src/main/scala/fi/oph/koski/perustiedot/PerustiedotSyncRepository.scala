@@ -1,6 +1,6 @@
 package fi.oph.koski.perustiedot
 
-import fi.oph.koski.db.KoskiDatabase.DB
+import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.PerustiedotSync
 import fi.oph.koski.db.{BackgroundExecutionContext, KoskiDatabaseMethods, PerustiedotSyncRow}

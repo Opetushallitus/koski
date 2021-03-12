@@ -1,6 +1,6 @@
 package fi.oph.koski.preferences
 
-import fi.oph.koski.db.KoskiDatabase._
+import fi.oph.koski.db.DB
 import fi.oph.koski.db.{KoskiDatabaseMethods, PreferenceRow, Tables}
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession

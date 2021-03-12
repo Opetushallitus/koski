@@ -2,8 +2,6 @@ package fi.oph.koski.db
 
 import java.sql.Date
 import java.time.LocalDate
-
-import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.util.Futures
@@ -14,6 +12,7 @@ import slick.lifted.Query
 
 import scala.concurrent.duration.{Duration, DurationInt}
 import scala.language.higherKinds
+
 
 trait DatabaseConverters {
   implicit val setLocalDate: SetParameter[LocalDate] = (localDate, params) => params.setDate(Date.valueOf(localDate))

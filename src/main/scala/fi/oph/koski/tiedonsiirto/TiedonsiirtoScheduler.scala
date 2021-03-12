@@ -1,7 +1,7 @@
 package fi.oph.koski.tiedonsiirto
 
 import com.typesafe.config.Config
-import fi.oph.koski.db.KoskiDatabase.DB
+import fi.oph.koski.db.DB
 import fi.oph.koski.schedule.{IntervalSchedule, Scheduler}
 import fi.oph.koski.util.Timing
 import org.json4s.JValue

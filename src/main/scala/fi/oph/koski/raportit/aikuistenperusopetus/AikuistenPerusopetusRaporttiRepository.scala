@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.db.KoskiDatabaseMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.raportit.YleissivistäväRaporttiRows
-import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
+import fi.oph.koski.db.DB
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.util.DateOrdering.sqlDateOrdering

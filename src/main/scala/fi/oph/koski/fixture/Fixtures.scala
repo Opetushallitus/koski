@@ -1,7 +1,6 @@
 package fi.oph.koski.fixture
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
-import fi.oph.koski.db.KoskiDatabaseConfig
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, MockOpintopolkuHenkilöFacade, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.localization.MockLocalizationRepository
 import fi.oph.koski.log.Logging
@@ -18,11 +17,11 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
 
   def defaultOppijat: List[OppijaHenkilöWithMasterInfo] = currentFixtureState.defaultOppijat
 
-  def resetFixtures(fixtureState: FixtureState = koskiSpecificFixtureState) = if(shouldUseFixtures) {
-    synchronized {
+  def resetFixtures(fixtureState: FixtureState = koskiSpecificFixtureState): Unit = synchronized {
+    if (shouldUseFixtures) {
       application.cacheManager.invalidateAllCaches
       currentFixtureState = fixtureState
-      currentFixtureState.resetFixtures
+      fixtureState.resetFixtures
       application.koskiLocalizationRepository.asInstanceOf[MockLocalizationRepository].reset
       application.tiedonsiirtoService.index.deleteAll()
 
@@ -31,7 +30,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
         Wait.until { raportointikantaService.isLoadComplete }
       }
 
-      logger.info(s"Reset application fixtures ${currentFixtureState.name}")
+      logger.info(s"Reset application fixtures ${fixtureState.name}")
     }
   }
 
@@ -40,16 +39,16 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
     val useFixtures = if (config.hasPath("fixtures.use")) {
       config.getBoolean("fixtures.use")
     } else {
-      KoskiDatabaseConfig(config).isLocal && config.getString("opintopolku.virkailija.url") == "mock"
+      application.masterDatabase.isLocal && config.getString("opintopolku.virkailija.url") == "mock"
     }
     if (useFixtures && !Environment.isLocalDevelopmentEnvironment) {
       throw new RuntimeException("Trying to use fixtures when running in a server environment")
     }
-    if (useFixtures && application.masterDatabase.databaseIsLarge) {
-      throw new RuntimeException("Trying to use fixtures against a database with more than 100 rows")
+    if (useFixtures && application.masterDatabase.util.databaseIsLarge) {
+      throw new RuntimeException(s"Trying to use fixtures against a database with more than ${application.masterDatabase.util.SmallDatabaseMaxRows} rows")
     }
     if (useFixtures && application.perustiedotIndexer.indexIsLarge) {
-      throw new RuntimeException("Trying to use fixtures against an ElasticSearch index with more than 100 rows")
+      throw new RuntimeException(s"Trying to use fixtures against an ElasticSearch index with more than ${application.perustiedotIndexer.SmallIndexMaxRows} rows")
     }
     useFixtures
   }

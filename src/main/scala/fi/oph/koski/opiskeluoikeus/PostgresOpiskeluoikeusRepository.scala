@@ -2,7 +2,7 @@ package fi.oph.koski.opiskeluoikeus
 
 import java.sql.SQLException
 
-import fi.oph.koski.db.KoskiDatabase.DB
+import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
