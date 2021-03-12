@@ -58,9 +58,9 @@ trait DatabaseConfig extends NotLoggable {
 
   protected def databaseSpecificConfig: Config
 
-  private def commonConfig: Config = DatabaseConfig.rootDbConfigWithoutChildren(rootConfig)
+  private final def commonConfig: Config = DatabaseConfig.rootDbConfigWithoutChildren(rootConfig)
 
-  private def configWithSecrets(config: Config): Config = {
+  private final def configWithSecrets(config: Config): Config = {
     if (useSecretsManager) {
       val cachedSecretsClient = new SecretsManager
       val secretId = cachedSecretsClient.getSecretId("Koski DB secrets", envVarForSecretId)
@@ -77,28 +77,12 @@ trait DatabaseConfig extends NotLoggable {
     }
   }
 
-  private def configWithUrl(config: Config): Config = {
-    val protocol = if (useSecretsManager) {
-      "jdbc-secretsmanager:postgresql"
-    } else {
-      "jdbc:postgresql"
-    }
-    val url = s"$protocol://${config.getString("host")}:${config.getInt("port")}/${config.getString("name")}"
-    config.withValue("url", fromAnyRef(url))
-  }
-
   protected def makeConfig(): Config = {
-    configWithUrl(
-      configWithSecrets(
-        databaseSpecificConfig.withFallback(
-          commonConfig
-        )
-      )
-    )
+    configWithSecrets(databaseSpecificConfig.withFallback(commonConfig))
   }
 
-  private def configForSecretsManagerDriver(config: Config): Config = {
-    if (useSecretsManager) {
+  private final def configForSlick(): Config = {
+    (if (useSecretsManager) {
       // Secrets Manager JDBC-ajuri haluaa käyttäjänimenä secret ID:n. Korvataan
       // konfiguraation käyttäjänimi vasta tässä vaiheessa, jotta konfiguraatio
       // toimii myös Flywayn käyttämän tavallisen JDBC-ajurin kanssa.
@@ -107,19 +91,27 @@ trait DatabaseConfig extends NotLoggable {
         .withValue("driverClassName", fromAnyRef("com.amazonaws.secretsmanager.sql.AWSSecretsManagerPostgreSQLDriver"))
     } else {
       config
-    }
+    }).withValue("url", fromAnyRef(url(useSecretsManagerProtocol = useSecretsManager)))
   }
 
-  final lazy val config: Config = makeConfig()
+  private final lazy val config: Config = makeConfig()
 
   final def host: String = config.getString("host")
   final def port: Int = config.getInt("port")
   final def dbname: String = config.getString("name")
-  final def url: String = config.getString("url")
   final def user: String = config.getString("user")
   final def password: String = config.getString("password")
 
+  final def url(useSecretsManagerProtocol: Boolean): String = {
+    val protocol = if (useSecretsManagerProtocol) {
+      "jdbc-secretsmanager:postgresql"
+    } else {
+      "jdbc:postgresql"
+    }
+    s"$protocol://${host}:${port}/${dbname}"
+  }
+
   final def isLocal: Boolean = host == "localhost" && !useSecretsManager
 
-  final def toSlickDatabase: DB = PostgresProfile.api.Database.forConfig("", configForSecretsManagerDriver(config))
+  final def toSlickDatabase: DB = PostgresProfile.api.Database.forConfig("", configForSlick())
 }

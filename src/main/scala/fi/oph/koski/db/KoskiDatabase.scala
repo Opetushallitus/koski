@@ -58,7 +58,7 @@ class KoskiDatabase(config: DatabaseConfig, isReplica: Boolean) extends Logging 
       logger.error("Migration not allowed with a large database in local development environment")
     } else {
       val flyway = new Flyway
-      flyway.setDataSource(config.url, config.user, config.password)
+      flyway.setDataSource(config.url(useSecretsManagerProtocol = false), config.user, config.password)
       flyway.setSchemas(config.user)
       flyway.setValidateOnMigrate(false)
       try {
