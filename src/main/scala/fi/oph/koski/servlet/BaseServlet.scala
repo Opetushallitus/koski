@@ -7,6 +7,8 @@ import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import org.eclipse.jetty.http.BadMessageException
 import org.scalatra._
 
+import java.time.LocalDate
+import java.time.format.DateTimeParseException
 import scala.reflect.runtime.{universe => ru}
 import scala.xml.Elem
 
@@ -42,6 +44,14 @@ trait BaseServlet extends ScalatraServlet with Logging {
 
   def getBooleanParam(name: String, defaultValue: Boolean = false): Boolean = {
     params.getAs[Boolean](name).getOrElse(defaultValue)
+  }
+
+  def getLocalDateParam(param: String): LocalDate = {
+    try {
+      LocalDate.parse(getStringParam(param))
+    } catch {
+      case e: DateTimeParseException => haltWithStatus(KoskiErrorCategory.badRequest.format.pvm())
+    }
   }
 
   error {

@@ -3,7 +3,7 @@ package fi.oph.koski.valpas.valpasuser
 import java.net.InetAddress
 
 import fi.oph.koski.koskiuser.AuthenticationUser.fromDirectoryUser
-import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, Käyttöoikeus, KäyttöoikeusRepository, MockKäyttöoikeusryhmät, MockUser, UserWithPassword}
+import fi.oph.koski.koskiuser.{AuthenticationUser, Käyttöoikeus, KäyttöoikeusRepository, MockKäyttöoikeusryhmät, MockUser}
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.userdirectory.DirectoryUser
 import fi.oph.koski.valpas.valpasuser.ValpasMockKäyttöoikeusryhmät._
@@ -89,8 +89,8 @@ object ValpasMockUsers {
   )
 
   def users: List[ValpasMockUser] = {
-    mockUsersEnabled match {
-      case true => List(
+    if (mockUsersEnabled) {
+      List(
         valpasOphPääkäyttäjä,
         valpasOphHakeutuminenPääkäyttäjä,
         valpasHelsinki,
@@ -103,7 +103,8 @@ object ValpasMockUsers {
         valpasKulosaariPeruskoulu,
         valpasUseampiPeruskoulu
       )
-      case false => List()
+    } else {
+      List()
     }
   }
 }

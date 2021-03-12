@@ -17,19 +17,33 @@ trait Rajapäivät {
 
   // Tämä päättää tutkittavan kevään nykyhetken vuoden mukaan: Tämä yksinkertainen logiikka toistaiseksi
   // riittää, koska edellisenä keväänä valmistuvat eivät näy enää kyseisen vuoden syyskuun lopun jälkeen.
-  protected def keväänVuosi = tarkasteluPäivä.getYear
+  private val keväänVuosi = tarkasteluPäivä.getYear
 }
 
-case class OikeatRajapäivät(
-  tarkasteluPäivä: LocalDate = LocalDate.now
-) extends Rajapäivät
+class OikeatRajapäivät extends Rajapäivät {
+  override def tarkasteluPäivä: LocalDate = LocalDate.now
+}
 
-case class MockRajapäivät(
-  tarkasteluPäivä: LocalDate = date(2021, 9, 5)
-) extends Rajapäivät
+class MockRajapäivät(val tarkasteluPäivä: LocalDate = date(2021, 9, 5)) extends Rajapäivät
 
-object MockRajapäivät {
+object Rajapäivät {
   // käytetään oletuksena tuotantototeutusta myös paikallisesti: kun Valppaan mock-data resetoidaan, tämä vaihdetaan
   // mock-versioksi.
-  var mockRajapäivät: Rajapäivät = OikeatRajapäivät()
+  private val default = new OikeatRajapäivät()
+
+  private var mockImplementation: Rajapäivät = default
+
+  def enableMock(rajapäivät: MockRajapäivät): Unit = mockImplementation = rajapäivät
+
+  def disableMock(): Unit = mockImplementation = default
+
+  def apply(allowMock: Boolean): () => Rajapäivät = {
+    () => {
+      if (allowMock) {
+        mockImplementation
+      } else {
+        default
+      }
+    }
+  }
 }

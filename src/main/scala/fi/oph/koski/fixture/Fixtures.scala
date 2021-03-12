@@ -97,7 +97,7 @@ abstract class DatabaseFixtureState(application: KoskiApplication) extends Fixtu
 }
 
 class KoskiSpecificFixtureState(application: KoskiApplication) extends DatabaseFixtureState(application)  {
-  lazy val name = "KOSKI_SPECIFIC"
+  val name = "KOSKI_SPECIFIC"
 
   def defaultOppijat: List[OppijaHenkilöWithMasterInfo] = KoskiSpecificMockOppijat.defaultOppijat
 

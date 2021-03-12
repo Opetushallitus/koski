@@ -1,6 +1,6 @@
 package fi.oph.koski.valpas
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.koodisto.KoodistoViite
 import fi.oph.koski.log.{AuditLog, KoskiMessageField, Logging}
 import fi.oph.koski.schema.Koodistokoodiviite
@@ -16,13 +16,14 @@ class ValpasOppijaService(
   private val dbService = new ValpasDatabaseService(application)
   private val koodisto = application.koodistoPalvelu
   private val accessResolver = new ValpasAccessResolver(application)
+  private val rajapäivät: () => Rajapäivät = Rajapäivät(Environment.isLocalDevelopmentEnvironment)
 
   // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
   // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
   // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
-  def getOppijat(oppilaitosOids: Set[String], rajapäivät: Rajapäivät)(implicit session: ValpasSession): Option[Seq[ValpasOppija]] =
+  def getOppijat(oppilaitosOids: Set[String])(implicit session: ValpasSession): Option[Seq[ValpasOppija]] =
     accessResolver.organisaatiohierarkiaOids(oppilaitosOids)
-      .map(oids => dbService.getPeruskoulunValvojalleNäkyvätOppijat(Some(oids.toSeq), rajapäivät).map(enrichOppija))
+      .map(oids => dbService.getPeruskoulunValvojalleNäkyvätOppijat(Some(oids.toSeq), rajapäivät()).map(enrichOppija))
       .map(fetchHaut)
       .map(oppijat => {
         oppilaitosOids.foreach(auditLogOppilaitoksenOppijatKatsominen)
@@ -32,9 +33,9 @@ class ValpasOppijaService(
   // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
   // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
   // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
-  def getOppija(oppijaOid: String, rajapäivät: Rajapäivät)(implicit session: ValpasSession): Option[ValpasOppija] =
+  def getOppija(oppijaOid: String)(implicit session: ValpasSession): Option[ValpasOppija] =
     Some(oppijaOid)
-      .flatMap(oid => dbService.getPeruskoulunValvojalleNäkyväOppija(oid, rajapäivät))
+      .flatMap(oid => dbService.getPeruskoulunValvojalleNäkyväOppija(oid, rajapäivät()))
       .filter(oppija => accessResolver.accessToSomeOrgs(oppija.oikeutetutOppilaitokset))
       .map(enrichOppija)
       .map(fetchHaku)

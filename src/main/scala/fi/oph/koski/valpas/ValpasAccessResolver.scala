@@ -31,12 +31,12 @@ class ValpasAccessResolver(application: KoskiApplication) {
       .flatMap(asValpasOrgKäyttöoikeus(rooli))
       .map(_.organisaatio)
 
-  def asValpasOrgKäyttöoikeus(rooli: String)(orgKäyttöoikeus: KäyttöoikeusOrg): Option[KäyttöoikeusOrg] = {
-    orgKäyttöoikeus.organisaatiokohtaisetPalveluroolit.contains(Palvelurooli("VALPAS", rooli)) match {
-      case true => Some(orgKäyttöoikeus)
-      case false => None
+  def asValpasOrgKäyttöoikeus(rooli: String)(orgKäyttöoikeus: KäyttöoikeusOrg): Option[KäyttöoikeusOrg] =
+    if (orgKäyttöoikeus.organisaatiokohtaisetPalveluroolit.contains(Palvelurooli("VALPAS", rooli))) {
+      Some(orgKäyttöoikeus)
+    } else {
+      None
     }
-  }
 
   private def onGlobaaliOppilaitosHakeutuminenOikeus(implicit session: ValpasSession): Boolean =
     session.hasGlobalValpasOikeus(Set(ValpasRooli.OPPILAITOS_HAKEUTUMINEN))
