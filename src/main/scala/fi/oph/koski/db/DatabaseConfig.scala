@@ -54,7 +54,7 @@ trait DatabaseConfig extends NotLoggable {
   protected val rootConfig: Config
   protected val envVarForSecretId: String
 
-  protected final val useSecretsManager: Boolean = Environment.usesAwsSecretsManager || true
+  protected final val useSecretsManager: Boolean = Environment.usesAwsSecretsManager
 
   protected def databaseSpecificConfig: Config
 
