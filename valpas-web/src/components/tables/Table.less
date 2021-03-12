@@ -31,12 +31,6 @@
   font-weight: 500;
   text-align: left;
   user-select: none;
-  white-space: nowrap;
-}
-
-.table__label {
-  text-overflow: ellipsis;
-  overflow: hidden;
 }
 
 .table__td {
@@ -45,6 +39,10 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: auto;
+}
+
+.table__label {
+  border-bottom: 1px solid @color-gray-lighten-3;
 }
 
 .table__th--xsmall {
@@ -68,4 +66,9 @@
   display: inline-block;
   margin-left: 0.5ex;
   width: 2ex;
+  height: @font-size-medium;
+  overflow-y: hidden;
+  i {
+    font-size: @font-size-large;
+  }
 }

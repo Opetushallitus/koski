@@ -106,25 +106,38 @@ export const DataTable = (props: DataTableProps) => {
     }
   }
 
+  const containsFilters = props.columns.some((col) => col.filter)
+
   return (
     <Table className={props.className}>
       <TableHeader>
+        {/* Label row */}
         <Row>
           {props.columns.map((col, index) => (
             <HeaderCell
               key={index}
               size={col.size}
               indicatorSpace={col.indicatorSpace}
+              onClick={() => sortByColumn(index)}
+              className={b("label")}
             >
-              <div className={b("label")} onClick={() => sortByColumn(index)}>
-                {col.label}
+              <div className={b("labeltext")}>
+                <span>{col.label}</span>
                 <SortIndicator
                   visible={sortColumnIndex === index}
                   ascending={sortAscending}
                 />
               </div>
-              {col.filter && (
-                <div className={b("filter")}>
+            </HeaderCell>
+          ))}
+        </Row>
+
+        {/* Filter row */}
+        {containsFilters && (
+          <Row>
+            {props.columns.map((col, index) => (
+              <HeaderCell key={index} className={b("filter")}>
+                {col.filter && (
                   <DataTableFilter
                     type={col.filter}
                     values={optionsForFilters[index] || []}
@@ -136,11 +149,11 @@ export const DataTable = (props: DataTableProps) => {
                       )
                     }
                   />
-                </div>
-              )}
-            </HeaderCell>
-          ))}
-        </Row>
+                )}
+              </HeaderCell>
+            ))}
+          </Row>
+        )}
       </TableHeader>
       <TableBody>
         {sortedData.map((datum) => (
