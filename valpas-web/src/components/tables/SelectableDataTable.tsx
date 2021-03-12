@@ -1,7 +1,11 @@
 import React, { useState } from "react"
 import { update } from "../../utils/arrays"
 import { Checkbox } from "../forms/Checkbox"
-import { DataTable, DataTableProps as DataTableProps } from "./DataTable"
+import {
+  Column,
+  DataTable,
+  DataTableProps as DataTableProps,
+} from "./DataTable"
 
 export type SelectableDataTableProps = DataTableProps & {
   onChange: (selectedKeys: string[]) => void
@@ -9,6 +13,7 @@ export type SelectableDataTableProps = DataTableProps & {
 
 export const SelectableDataTable = ({
   data,
+  columns,
   onChange,
   ...rest
 }: SelectableDataTableProps) => {
@@ -34,5 +39,16 @@ export const SelectableDataTable = ({
         })
       : datum.values,
   }))
-  return <DataTable data={dataWithCheckboxes} {...rest} />
+
+  const forcedColumns: Column[] = [
+    {
+      ...columns[0]!!,
+      indicatorSpace: true,
+    },
+    ...columns.slice(1),
+  ]
+
+  return (
+    <DataTable data={dataWithCheckboxes} columns={forcedColumns} {...rest} />
+  )
 }

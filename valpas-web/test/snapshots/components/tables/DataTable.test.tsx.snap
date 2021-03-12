@@ -11,12 +11,14 @@ exports[`DataTable Aktiivisen sarakkeen nimen uudelleen klikkaaminen kääntää
       class="table__row"
     >
       <th
-        class="table__th"
+        class="table__th table__label"
       >
         <div
-          class="table__label"
+          class="table__labeltext"
         >
-          Nimi
+          <span>
+            Nimi
+          </span>
           <span
             class="table__sortindicator table__sortindicator--visible"
           >
@@ -30,12 +32,14 @@ exports[`DataTable Aktiivisen sarakkeen nimen uudelleen klikkaaminen kääntää
         </div>
       </th>
       <th
-        class="table__th"
+        class="table__th table__label"
       >
         <div
-          class="table__label"
+          class="table__labeltext"
         >
-          Oppilaitos
+          <span>
+            Oppilaitos
+          </span>
           <span
             class="table__sortindicator"
           />
@@ -43,7 +47,7 @@ exports[`DataTable Aktiivisen sarakkeen nimen uudelleen klikkaaminen kääntää
       </th>
     </tr>
   </thead>
-  <thead
+  <tbody
     class="table__body"
   >
     <tr
@@ -51,11 +55,13 @@ exports[`DataTable Aktiivisen sarakkeen nimen uudelleen klikkaaminen kääntää
     >
       <td
         class="table__td"
+        title="Osmo"
       >
         Osmo
       </td>
       <td
         class="table__td"
+        title="Celsiuksen koulu"
       >
         Celsiuksen koulu
       </td>
@@ -65,11 +71,13 @@ exports[`DataTable Aktiivisen sarakkeen nimen uudelleen klikkaaminen kääntää
     >
       <td
         class="table__td"
+        title="Heli"
       >
         Heli
       </td>
       <td
         class="table__td"
+        title="Beetakaroteenikoulu"
       >
         Beetakaroteenikoulu
       </td>
@@ -79,11 +87,13 @@ exports[`DataTable Aktiivisen sarakkeen nimen uudelleen klikkaaminen kääntää
     >
       <td
         class="table__td"
+        title="Heikki"
       >
         Heikki
       </td>
       <td
         class="table__td"
+        title="Aakkoskoulu"
       >
         Aakkoskoulu
       </td>
@@ -93,16 +103,18 @@ exports[`DataTable Aktiivisen sarakkeen nimen uudelleen klikkaaminen kääntää
     >
       <td
         class="table__td"
+        title="Aatu"
       >
         Aatu
       </td>
       <td
         class="table__td"
+        title="Deltakoulu"
       >
         Deltakoulu
       </td>
     </tr>
-  </thead>
+  </tbody>
 </table>
 `;
 
@@ -117,12 +129,14 @@ exports[`DataTable Renderöityy oikein 1`] = `
       class="table__row"
     >
       <th
-        class="table__th"
+        class="table__th table__label"
       >
         <div
-          class="table__label"
+          class="table__labeltext"
         >
-          Nimi
+          <span>
+            Nimi
+          </span>
           <span
             class="table__sortindicator table__sortindicator--visible"
           >
@@ -136,12 +150,14 @@ exports[`DataTable Renderöityy oikein 1`] = `
         </div>
       </th>
       <th
-        class="table__th"
+        class="table__th table__label"
       >
         <div
-          class="table__label"
+          class="table__labeltext"
         >
-          Oppilaitos
+          <span>
+            Oppilaitos
+          </span>
           <span
             class="table__sortindicator"
           />
@@ -149,7 +165,7 @@ exports[`DataTable Renderöityy oikein 1`] = `
       </th>
     </tr>
   </thead>
-  <thead
+  <tbody
     class="table__body"
   >
     <tr
@@ -157,11 +173,13 @@ exports[`DataTable Renderöityy oikein 1`] = `
     >
       <td
         class="table__td"
+        title="Aatu"
       >
         Aatu
       </td>
       <td
         class="table__td"
+        title="Deltakoulu"
       >
         Deltakoulu
       </td>
@@ -171,11 +189,13 @@ exports[`DataTable Renderöityy oikein 1`] = `
     >
       <td
         class="table__td"
+        title="Heikki"
       >
         Heikki
       </td>
       <td
         class="table__td"
+        title="Aakkoskoulu"
       >
         Aakkoskoulu
       </td>
@@ -185,11 +205,13 @@ exports[`DataTable Renderöityy oikein 1`] = `
     >
       <td
         class="table__td"
+        title="Heli"
       >
         Heli
       </td>
       <td
         class="table__td"
+        title="Beetakaroteenikoulu"
       >
         Beetakaroteenikoulu
       </td>
@@ -199,16 +221,18 @@ exports[`DataTable Renderöityy oikein 1`] = `
     >
       <td
         class="table__td"
+        title="Osmo"
       >
         Osmo
       </td>
       <td
         class="table__td"
+        title="Celsiuksen koulu"
       >
         Celsiuksen koulu
       </td>
     </tr>
-  </thead>
+  </tbody>
 </table>
 `;
 
@@ -223,24 +247,28 @@ exports[`DataTable Toisen sarakkeen nimen klikkaaminen järjestää sen mukaises
       class="table__row"
     >
       <th
-        class="table__th"
+        class="table__th table__label"
       >
         <div
-          class="table__label"
+          class="table__labeltext"
         >
-          Nimi
+          <span>
+            Nimi
+          </span>
           <span
             class="table__sortindicator"
           />
         </div>
       </th>
       <th
-        class="table__th"
+        class="table__th table__label"
       >
         <div
-          class="table__label"
+          class="table__labeltext"
         >
-          Oppilaitos
+          <span>
+            Oppilaitos
+          </span>
           <span
             class="table__sortindicator table__sortindicator--visible"
           >
@@ -255,7 +283,7 @@ exports[`DataTable Toisen sarakkeen nimen klikkaaminen järjestää sen mukaises
       </th>
     </tr>
   </thead>
-  <thead
+  <tbody
     class="table__body"
   >
     <tr
@@ -263,11 +291,13 @@ exports[`DataTable Toisen sarakkeen nimen klikkaaminen järjestää sen mukaises
     >
       <td
         class="table__td"
+        title="Heikki"
       >
         Heikki
       </td>
       <td
         class="table__td"
+        title="Aakkoskoulu"
       >
         Aakkoskoulu
       </td>
@@ -277,11 +307,13 @@ exports[`DataTable Toisen sarakkeen nimen klikkaaminen järjestää sen mukaises
     >
       <td
         class="table__td"
+        title="Heli"
       >
         Heli
       </td>
       <td
         class="table__td"
+        title="Beetakaroteenikoulu"
       >
         Beetakaroteenikoulu
       </td>
@@ -291,11 +323,13 @@ exports[`DataTable Toisen sarakkeen nimen klikkaaminen järjestää sen mukaises
     >
       <td
         class="table__td"
+        title="Osmo"
       >
         Osmo
       </td>
       <td
         class="table__td"
+        title="Celsiuksen koulu"
       >
         Celsiuksen koulu
       </td>
@@ -305,15 +339,17 @@ exports[`DataTable Toisen sarakkeen nimen klikkaaminen järjestää sen mukaises
     >
       <td
         class="table__td"
+        title="Aatu"
       >
         Aatu
       </td>
       <td
         class="table__td"
+        title="Deltakoulu"
       >
         Deltakoulu
       </td>
     </tr>
-  </thead>
+  </tbody>
 </table>
 `;
