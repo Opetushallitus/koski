@@ -14,7 +14,15 @@ import {
   DataTableFilter,
   FilterFn,
 } from "./DataTableFilter"
-import { Data, HeaderCell, Row, Table, TableBody, TableHeader } from "./Table"
+import {
+  Data,
+  HeaderCell,
+  Row,
+  Table,
+  TableBody,
+  TableCellSize,
+  TableHeader,
+} from "./Table"
 import "./Table.less"
 
 const b = bem("table")
@@ -28,6 +36,8 @@ export type DataTableProps = {
 export type Column = {
   label: React.ReactNode
   filter?: DataFilter
+  size?: TableCellSize
+  indicatorSpace?: boolean
 }
 
 /** Represents a piece of table data - a row */
@@ -101,7 +111,11 @@ export const DataTable = (props: DataTableProps) => {
       <TableHeader>
         <Row>
           {props.columns.map((col, index) => (
-            <HeaderCell key={index}>
+            <HeaderCell
+              key={index}
+              size={col.size}
+              indicatorSpace={col.indicatorSpace}
+            >
               <div className={b("label")} onClick={() => sortByColumn(index)}>
                 {col.label}
                 <SortIndicator
@@ -131,11 +145,20 @@ export const DataTable = (props: DataTableProps) => {
       <TableBody>
         {sortedData.map((datum) => (
           <Row key={datum.key}>
-            {datum.values.map((value, index) => (
-              <Data key={index} icon={value.icon}>
-                {value.display || value.value}
-              </Data>
-            ))}
+            {datum.values.map((value, index) => {
+              const column = props.columns[index]
+              return (
+                <Data
+                  key={index}
+                  icon={value.icon}
+                  size={column?.size}
+                  indicatorSpace={column?.indicatorSpace}
+                  title={value.value?.toString()}
+                >
+                  {value.display || value.value}
+                </Data>
+              )
+            })}
           </Row>
         ))}
       </TableBody>

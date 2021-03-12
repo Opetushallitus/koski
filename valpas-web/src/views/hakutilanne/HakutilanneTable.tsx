@@ -23,6 +23,7 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
         {
           label: t("hakutilanne__taulu_nimi"),
           filter: "freetext",
+          size: "large",
         },
         {
           label: t("hakutilanne__taulu_oppilaitos"),
@@ -30,10 +31,12 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
         },
         {
           label: t("hakutilanne__taulu_syntymäaika"),
+          size: "small",
         },
         {
           label: t("hakutilanne__taulu_ryhma"),
           filter: "dropdown",
+          size: "xsmall",
         },
         {
           label: t("hakutilanne__taulu_hakemuksen_tila"),

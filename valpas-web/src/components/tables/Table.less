@@ -2,10 +2,11 @@
 @import "../../style/colors.less";
 
 @table-cell-icon-padding: 2.5rem;
-@table-h-padding: 0.5rem;
+@table-h-padding: 0.75rem;
 @table-v-padding: 0.5rem;
 
 .table {
+  table-layout: fixed;
   width: 100%;
 }
 
@@ -16,12 +17,7 @@
 .table__th,
 .table__td {
   position: relative;
-  padding: @table-v-padding @table-h-padding @table-v-padding
-    @table-cell-icon-padding;
-
-  &:last-child {
-    padding-right: @table-cell-icon-padding;
-  }
+  padding: @table-v-padding @table-h-padding;
 
   .table__icon {
     position: absolute;
@@ -38,11 +34,34 @@
   white-space: nowrap;
 }
 
+.table__label {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
 .table__td {
   font-size: @font-size-medium;
   font-weight: 400;
   white-space: nowrap;
-  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow: auto;
+}
+
+.table__th--xsmall {
+  width: 6rem;
+}
+
+.table__th--small {
+  width: 10rem;
+}
+
+.table__th--large {
+  width: 25rem;
+}
+
+.table__th--indicator,
+.table__td--indicator {
+  padding-left: @table-cell-icon-padding;
 }
 
 .table__sortindicator {
