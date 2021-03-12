@@ -14,6 +14,8 @@ export type DropdownProps<T> = {
   label?: string
   icon?: React.ReactNode
   error?: React.ReactNode
+  selectorId?: string
+  containerClassName?: string
 }
 
 export type DropdownOption<T> = {
@@ -23,12 +25,14 @@ export type DropdownOption<T> = {
 
 export const Dropdown = <T,>(props: DropdownProps<T>) => (
   <InputContainer
+    className={props.containerClassName}
     bemBase="dropdown"
     label={props.label}
     icon={props.icon || <ArrowDropDownIcon />}
     error={props.error}
   >
     <select
+      id={props.selectorId}
       className={b("input", { error: Boolean(props.error) })}
       value={props.options.findIndex((opt) => opt.value === props.value)}
       onChange={(event) =>

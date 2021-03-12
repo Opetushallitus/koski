@@ -270,4 +270,10 @@ const dataTableCellsEventuallyEquals = async (
   }, timeout)
 }
 
+export const dropdownSelect = async (selector: string, index: number) => {
+  const optionSelector = `${selector} > option[value='${index}']`
+  const option = await $(optionSelector)
+  option.click()
+}
+
 export const getCurrentUrl = () => driver.getCurrentUrl()
