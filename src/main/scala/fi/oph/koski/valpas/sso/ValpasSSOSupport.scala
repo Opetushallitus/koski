@@ -13,6 +13,6 @@ trait ValpasSSOSupport extends SSOSupport {
     protocol + "://" + host + portStr + "/valpas"
   }
 
-  def localLoginPage: String = "http://localhost:1234/valpas/"
+  def localLoginPage: String = "http://localhost:1234/valpas/virkailija/"
   def localOppijaLoginPage: String = "http://localhost:1234/valpas/oppija/"
 }
