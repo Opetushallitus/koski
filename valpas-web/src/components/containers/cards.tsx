@@ -7,8 +7,10 @@ const b = bem("card")
 
 export type CardProps = React.HTMLAttributes<HTMLDivElement>
 
-export const Card = ({ className, ...props }: CardProps) => (
-  <section className={joinClassNames(b(), className)} {...props} />
+export const Card = ({ className, children, ...props }: CardProps) => (
+  <section className={joinClassNames(b(), className)} {...props}>
+    <div className={b("borders")}>{children}</div>
+  </section>
 )
 
 export type CardHeaderProps = {
