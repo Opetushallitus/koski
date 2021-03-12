@@ -1,3 +1,4 @@
+import bem from "bem-ts"
 import * as A from "fp-ts/Array"
 import * as Eq from "fp-ts/Eq"
 import { pipe } from "fp-ts/lib/function"
@@ -15,6 +16,10 @@ import {
 } from "../../state/types"
 import { currentYear } from "../../utils/date"
 import { HakutilanneTable } from "./HakutilanneTable"
+import "./PerusopetusView.less"
+import { VirkailijaNavigation } from "./VirkailijaNavigation"
+
+const b = bem("perusopetusview")
 
 export type PerusopetusViewProps = {
   kayttooikeusroolit: OrganisaatioJaKayttooikeusrooli[]
@@ -36,12 +41,14 @@ export const PerusopetusView = (props: PerusopetusViewProps) => {
   return (
     <>
       <Dropdown
-        id="organisaatiovalitsin"
+        selectorId="organisaatiovalitsin"
+        containerClassName={b("organisaatiovalitsin")}
         label={t("Oppilaitos")}
         options={orgOptions}
         value={organisaatioOid || ""}
         onChange={setOrganisaatioOid}
       />
+      <VirkailijaNavigation />
       <Card>
         <CardHeader>
           <T
