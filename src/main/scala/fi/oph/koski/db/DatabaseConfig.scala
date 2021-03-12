@@ -53,7 +53,8 @@ class RaportointiDatabaseConfig(val rootConfig: Config, val schema: Schema) exte
 trait DatabaseConfig extends NotLoggable {
   protected val rootConfig: Config
   protected val envVarForSecretId: String
-  protected val useSecretsManager: Boolean = Environment.usesAwsSecretsManager
+
+  protected final val useSecretsManager: Boolean = Environment.usesAwsSecretsManager || true
 
   protected def databaseSpecificConfig: Config
 
@@ -97,16 +98,16 @@ trait DatabaseConfig extends NotLoggable {
     )
   }
 
-  lazy val config: Config = makeConfig()
+  final lazy val config: Config = makeConfig()
 
-  def host: String = config.getString("host")
-  def port: Int = config.getInt("port")
-  def dbname: String = config.getString("name")
-  def url: String = config.getString("url")
-  def username: String = config.getString("user")
-  def password: String = config.getString("password")
+  final def host: String = config.getString("host")
+  final def port: Int = config.getInt("port")
+  final def dbname: String = config.getString("name")
+  final def url: String = config.getString("url")
+  final def username: String = config.getString("user")
+  final def password: String = config.getString("password")
 
-  def isLocal: Boolean = host == "localhost" && !useSecretsManager
+  final def isLocal: Boolean = host == "localhost" && !useSecretsManager
 
-  def toSlickDatabase: DB = PostgresProfile.api.Database.forConfig("", config)
+  final def toSlickDatabase: DB = PostgresProfile.api.Database.forConfig("", config)
 }
