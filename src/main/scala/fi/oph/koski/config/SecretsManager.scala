@@ -17,6 +17,9 @@ case class DatabaseConnectionConfig(
 ) extends NotLoggable
 
 class SecretsManager extends SecretCache with Logging {
+  def getDatabaseSecret(secretId: String): DatabaseConnectionConfig =
+    getStructuredSecret[DatabaseConnectionConfig](secretId)
+
   def getStructuredSecret[T: TypeTag](secretId: String): T = {
     logger.debug(s"Searching for secret $secretId")
     JsonSerializer.extract[T](parse(getSecretString(secretId)), ignoreExtras = true)

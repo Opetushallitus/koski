@@ -2,7 +2,7 @@ package fi.oph.koski.db
 
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigValueFactory._
-import fi.oph.koski.config.{DatabaseConnectionConfig, Environment, SecretsManager}
+import fi.oph.koski.config.{Environment, SecretsManager}
 import fi.oph.koski.log.NotLoggable
 import fi.oph.koski.raportointikanta.Schema
 import slick.jdbc.PostgresProfile
@@ -62,9 +62,9 @@ trait DatabaseConfig extends NotLoggable {
 
   private final def configWithSecrets(config: Config): Config = {
     if (useSecretsManager) {
-      val cachedSecretsClient = new SecretsManager
-      val secretId = cachedSecretsClient.getSecretId("Koski DB secrets", envVarForSecretId)
-      val secretConfig = cachedSecretsClient.getStructuredSecret[DatabaseConnectionConfig](secretId)
+      val secretsClient = new SecretsManager()
+      val secretId = secretsClient.getSecretId("Koski DB secrets", envVarForSecretId)
+      val secretConfig = secretsClient.getDatabaseSecret(secretId)
       config
         .withValue("host", fromAnyRef(secretConfig.host))
         .withValue("port", fromAnyRef(secretConfig.port))
