@@ -99,12 +99,12 @@ trait DatabaseConfig extends NotLoggable {
 
   lazy val config: Config = makeConfig()
 
-  val host: String = config.getString("host")
-  val port: Int = config.getInt("port")
-  val dbname: String = config.getString("name")
-  val url: String = config.getString("url")
-  val username: String = config.getString("user")
-  val password: String = config.getString("password")
+  def host: String = config.getString("host")
+  def port: Int = config.getInt("port")
+  def dbname: String = config.getString("name")
+  def url: String = config.getString("url")
+  def username: String = config.getString("user")
+  def password: String = config.getString("password")
 
   def isLocal: Boolean = host == "localhost" && !useSecretsManager
 
