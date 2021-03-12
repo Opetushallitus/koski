@@ -31,7 +31,7 @@ case class LocalDatabaseRunner(config: DatabaseConfig) {
   }
 
   private def createUser(): Unit = {
-    val user = config.username
+    val user = config.user
     val port = config.port
     s"createuser -p $port -s $user -w".!
   }
@@ -58,8 +58,8 @@ class KoskiDatabase(config: DatabaseConfig, isReplica: Boolean) extends Logging 
       logger.error("Migration not allowed with a large database in local development environment")
     } else {
       val flyway = new Flyway
-      flyway.setDataSource(config.url, config.username, config.password)
-      flyway.setSchemas(config.username)
+      flyway.setDataSource(config.url, config.user, config.password)
+      flyway.setSchemas(config.user)
       flyway.setValidateOnMigrate(false)
       try {
         flyway.migrate
