@@ -9,7 +9,7 @@ export type IconProps = {
   color?: IconColor
 }
 
-export type IconColor = "warning" | "error" | "gray"
+export type IconColor = "warning" | "error" | "gray" | "blue"
 
 const defineIcon = (name: string, color?: IconColor) => (props: IconProps) => (
   <MaterialDesignIcon name={name} color={color} {...props} />
@@ -23,6 +23,7 @@ export const WarningIcon = defineIcon("warning", "warning")
 export const BackIcon = defineIcon("arrow_back")
 export const HakuIcon = defineIcon("list_alt")
 export const OpiskeluIcon = defineIcon("school")
+export const InfoIcon = defineIcon("info_outline", "blue")
 
 type MaterialDesignIconProps = IconProps & {
   name: string // Ikonien nimet löytyvät osoitteesta https://material.io/resources/icons/?style=baseline

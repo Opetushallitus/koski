@@ -9,6 +9,7 @@ import { Card, CardBody, CardHeader } from "../../components/containers/cards"
 import { Column, ColumnsContainer } from "../../components/containers/Columns"
 import { Page } from "../../components/containers/Page"
 import { BackIcon } from "../../components/icons/Icon"
+import { InfoTooltip } from "../../components/tooltip/InfoTooltip"
 import { Heading, SecondaryHeading } from "../../components/typography/headings"
 import { T, t } from "../../i18n/i18n"
 import { Oppija } from "../../state/oppijat"
@@ -47,6 +48,9 @@ export const OppijaView = (props: OppijaViewProps) => {
               <Card>
                 <CardHeader>
                   <T id="oppija__yhteystiedot_otsikko" />
+                  <InfoTooltip>
+                    Yhteystiedot ovat vielä toteuttamatta.
+                  </InfoTooltip>
                 </CardHeader>
                 <CardBody>
                   <OppijanYhteystiedot oppija={oppijaData} />

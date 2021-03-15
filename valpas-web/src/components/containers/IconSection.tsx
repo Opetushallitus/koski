@@ -15,3 +15,11 @@ export const IconSection = (props: IconSectionProps) => (
     <div className={b("content")}>{props.children}</div>
   </section>
 )
+
+export type IconSectionHeadingProps = {
+  children: React.ReactNode
+}
+
+export const IconSectionHeading = (props: IconSectionHeadingProps) => (
+  <h3 className={b("heading")}>{props.children}</h3>
+)

@@ -1,7 +1,9 @@
 import React from "react"
-import { IconSection } from "../../components/containers/IconSection"
+import {
+  IconSection,
+  IconSectionHeading,
+} from "../../components/containers/IconSection"
 import { OpiskeluIcon } from "../../components/icons/Icon"
-import { TertiaryHeading } from "../../components/typography/headings"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import { getLocalized, T, useLanguage } from "../../i18n/i18n"
 import { KoodistoKoodiviite } from "../../state/koodistot"
@@ -33,9 +35,9 @@ export const OppijanOpiskeluhistoria = (
             key={opiskeluoikeus.oid}
             icon={<OpiskeluIcon color="gray" />}
           >
-            <TertiaryHeading>
+            <IconSectionHeading>
               {nimi} {range}
-            </TertiaryHeading>
+            </IconSectionHeading>
             <ul>
               <li>{getLocalized(opiskeluoikeus.oppilaitos.nimi)}</li>
               {opiskeluoikeus.ryhmä && (
