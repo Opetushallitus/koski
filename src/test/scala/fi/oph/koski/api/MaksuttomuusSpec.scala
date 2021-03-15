@@ -161,60 +161,84 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
   }
 
   "Maksuttomuutta pidennetty" - {
-    "Jaksojen tulee olla opiskeluoikeuden voimassaolon sisällä" - {
-      lazy val oppija = KoskiSpecificMockOppijat.oikeusOpiskelunMaksuttomuuteen
-      val alkamispaiva = date(2021, 8, 2)
-      val paattymispaiva = date(2021, 12, 12)
-      val opiskeluoikeus = päättymispäivällä(alkamispäivällä(defaultOpiskeluoikeus, alkamispaiva), paattymispaiva)
+    lazy val oppija = KoskiSpecificMockOppijat.oikeusOpiskelunMaksuttomuuteen
+    val alkamispaiva = date(2021, 8, 2)
+    val paattymispaiva = date(2021, 12, 12)
+    val maksuttomuusJakso = Some(List(Maksuttomuus(alkamispaiva, None, maksuton = true)))
+    val opiskeluoikeus = päättymispäivällä(alkamispäivällä(defaultOpiskeluoikeus, alkamispaiva), paattymispaiva)
 
-      "Ei sallita jakson alkamispäivää ennen opiskeluoikeuden alkua" in {
-        putMaksuttomuuttaPidennetty(List(
-          OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 1), date(2021, 12, 12))
-        ), oppija, opiskeluoikeus) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation(s"Opiskeluoikeudella on koulutuksen maksuttomuuden pidennykseen liittyvä jakso, jonka alku- ja/tai loppupäivä ei ole opiskeluoikeuden voimassaolon (2021-08-02 - 2021-12-12) sisällä OikeuttaMaksuttomuuteenPidennetty(2021-08-01,2021-12-12)"))
-        }
+    "Ei sallita jakson alkamispäivää opiskeluoikeuden päättymisen jälkeen" in {
+      putMaksuttomuuttaPidennetty(List(
+        OikeuttaMaksuttomuuteenPidennetty(date(2021, 12, 13), date(2021, 12, 14))
+      ), oppija, opiskeluoikeus, maksuttomuusJakso) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation(s"Opiskeluoikeudella on koulutuksen maksuttomuuden pidennykseen liittyvä jakso, jonka alku- ja/tai loppupäivä ei ole opiskeluoikeuden voimassaolon (2021-08-02 - 2021-12-12) sisällä OikeuttaMaksuttomuuteenPidennetty(2021-12-13,2021-12-14)"))
       }
-      "Ei sallita jakson alkamispäivää opiskeluoikeuden päättymisen jälkeen" in {
-        putMaksuttomuuttaPidennetty(List(
-          OikeuttaMaksuttomuuteenPidennetty(date(2021, 12, 13), date(2021, 12, 14))
-        ), oppija, opiskeluoikeus) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation(s"Opiskeluoikeudella on koulutuksen maksuttomuuden pidennykseen liittyvä jakso, jonka alku- ja/tai loppupäivä ei ole opiskeluoikeuden voimassaolon (2021-08-02 - 2021-12-12) sisällä OikeuttaMaksuttomuuteenPidennetty(2021-12-13,2021-12-14)"))
-        }
+    }
+    "Ei sallita jakson päättymispäivää jälkeen opiskeluoikeuden päättymisen" in {
+      putMaksuttomuuttaPidennetty(List(
+        OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 2), date(2021, 12, 13))
+      ), oppija, opiskeluoikeus, maksuttomuusJakso) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation(s"Opiskeluoikeudella on koulutuksen maksuttomuuden pidennykseen liittyvä jakso, jonka alku- ja/tai loppupäivä ei ole opiskeluoikeuden voimassaolon (2021-08-02 - 2021-12-12) sisällä OikeuttaMaksuttomuuteenPidennetty(2021-08-02,2021-12-13)"))
       }
-      "Ei sallita jakson päättymispäivää jälkeen opiskeluoikeuden päättymisen" in {
-        putMaksuttomuuttaPidennetty(List(
-          OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 2), date(2021, 12, 13))
-        ), oppija, opiskeluoikeus) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation(s"Opiskeluoikeudella on koulutuksen maksuttomuuden pidennykseen liittyvä jakso, jonka alku- ja/tai loppupäivä ei ole opiskeluoikeuden voimassaolon (2021-08-02 - 2021-12-12) sisällä OikeuttaMaksuttomuuteenPidennetty(2021-08-02,2021-12-13)"))
-        }
+    }
+    "Jakson päättymispäivä ei voi olla ennen jakson alkamispäivää" in {
+      putMaksuttomuuttaPidennetty(List(
+        OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 3), date(2021, 8, 2))
+      ), oppija, opiskeluoikeus, maksuttomuusJakso) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation(s"Opiskeluoikeudella on koulutuksen maksuttomuuden pidennykseen liittyvä jakso, jonka loppupäivä on aikaisemmin kuin alkupäivä. 2021-08-03 (alku) - 2021-08-02 (loppu)"))
       }
-      "Jakson päättymispäivä ei voi olla ennen jakson alkamispäivää" in {
-        putMaksuttomuuttaPidennetty(List(
-          OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 3), date(2021, 8, 2))
-        ), oppija, opiskeluoikeus) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation(s"Opiskeluoikeudella on koulutuksen maksuttomuuden pidennykseen liittyvä jakso, jonka loppupäivä on aikaisemmin kuin alkupäivä. 2021-08-03 (alku) - 2021-08-02 (loppu)"))
-        }
+    }
+    "Jaksot järjestetään päivämääräjärjestykseen" in {
+      putMaksuttomuuttaPidennetty(List(
+        OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 2), date(2021, 8, 2)),
+        OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 4), date(2021, 8, 4)),
+        OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 3), date(2021, 8, 3))
+      ), oppija, opiskeluoikeus, maksuttomuusJakso) {
+        verifyResponseStatusOk()
       }
-      "Jaksot järjestetään päivämääräjärjestykseen" in {
-        putMaksuttomuuttaPidennetty(List(
-          OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 2), date(2021, 8, 2)),
-          OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 4), date(2021, 8, 4)),
-          OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 3), date(2021, 8, 3))
-        ), oppija, opiskeluoikeus, maksuttomuus = Some(List(Maksuttomuus(date(2021, 8, 2), None, true)))) {
-          verifyResponseStatusOk()
-        }
-        getTallennetutOikeuttaMaksuttomuuteenPidennettyJaksot(oppija) shouldBe(List(
-          OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 2), date(2021, 8, 2)),
-          OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 3),date(2021, 8, 3)),
-          OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 4),date(2021, 8, 4))
+      getTallennetutOikeuttaMaksuttomuuteenPidennettyJaksot(oppija) shouldBe(List(
+        OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 2), date(2021, 8, 2)),
+        OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 3),date(2021, 8, 3)),
+        OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 4),date(2021, 8, 4))
+      ))
+    }
+    "Jaksojen voimassaolot eivät saa olla päällekkäisiä" in {
+      putMaksuttomuuttaPidennetty(List(
+        OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 2), date(2021, 10, 10)),
+        OikeuttaMaksuttomuuteenPidennetty(date(2021, 10, 10), date(2021, 12, 12))
+      ), oppija, opiskeluoikeus, maksuttomuusJakso) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation(s"Opiskeluoikeudella on koulutuksen maksuttomuuden pidennykseen liittyviä jaksoja, jotka ovat keskenään päällekkäisiä (OikeuttaMaksuttomuuteenPidennetty(2021-08-02,2021-10-10),OikeuttaMaksuttomuuteenPidennetty(2021-10-10,2021-12-12))"))
+      }
+    }
+    "Pidennys jakson tulee olla maksuttuman jakson sisällä" - {
+      "Pidennys alkanut maksullisella jaksolla" in {
+        val maksuttomuusJaksot = Some(List(
+          Maksuttomuus(alkamispaiva, None, maksuton = true),
+          Maksuttomuus(alkamispaiva.plusDays(10), None, maksuton = false),
+          Maksuttomuus(alkamispaiva.plusDays(20), None, maksuton = true)
         ))
+
+        val pidennykset = List(
+          OikeuttaMaksuttomuuteenPidennetty(alkamispaiva, alkamispaiva.plusDays(9)),
+          OikeuttaMaksuttomuuteenPidennetty(alkamispaiva.plusDays(19), alkamispaiva.plusDays(30))
+        )
+
+        putMaksuttomuuttaPidennetty(pidennykset, oppija, opiskeluoikeus, maksuttomuusJaksot) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation(s"Maksuttomuutta voidaan pidetäntää vain aikavälillä jolloin koulutus on maksutontonta"))
+        }
       }
-      "Jaksojen voimassaolot eivät saa olla päällekkäisiä" in {
-        putMaksuttomuuttaPidennetty(List(
-          OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 2), date(2021, 10, 10)),
-          OikeuttaMaksuttomuuteenPidennetty(date(2021, 10, 10), date(2021, 12, 12))
-        ), oppija, opiskeluoikeus) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation(s"Opiskeluoikeudella on koulutuksen maksuttomuuden pidennykseen liittyviä jaksoja, jotka ovat keskenään päällekkäisiä (OikeuttaMaksuttomuuteenPidennetty(2021-08-02,2021-10-10),OikeuttaMaksuttomuuteenPidennetty(2021-10-10,2021-12-12))"))
+      "Pidennys päättyy maksullisella jaksolla" in {
+        val maksuttomuusJaksot = Some(List(
+          Maksuttomuus(alkamispaiva, None, maksuton = true),
+          Maksuttomuus(alkamispaiva.plusDays(20), None, maksuton = false)
+        ))
+
+        val pidennykset = List(
+          OikeuttaMaksuttomuuteenPidennetty(alkamispaiva, alkamispaiva.plusDays(20))
+        )
+
+        putMaksuttomuuttaPidennetty(pidennykset, oppija, opiskeluoikeus, maksuttomuusJaksot) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation(s"Maksuttomuutta voidaan pidetäntää vain aikavälillä jolloin koulutus on maksutontonta"))
         }
       }
     }

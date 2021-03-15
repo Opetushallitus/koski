@@ -8,7 +8,11 @@ case class Maksuttomuus(
   alku: LocalDate,
   loppu: Option[LocalDate],
   maksuton: Boolean
-) extends Jakso
+) extends Jakso {
+  def containsPidennysJakso(pidennys: OikeuttaMaksuttomuuteenPidennetty) = {
+    this.contains(pidennys.alku) && this.contains(pidennys.loppu)
+  }
+}
 
 case class OikeuttaMaksuttomuuteenPidennetty(
   alku: LocalDate,
