@@ -154,21 +154,21 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       koulutusmuoto = rs.getString("koulutusmuoto"),
       alkamispaiva = rs.getObject("alkamispaiva", classOf[LocalDate]),
       tilatParametrienSisalla = removeConsecutiveDuplicates(rs.getString("tilat_parametrien_sisalla")),
-      paattymispaiva = optional(rs.getObject("paattymispaiva", classOf[LocalDate])),
+      paattymispaiva = Option(rs.getObject("paattymispaiva", classOf[LocalDate])),
       viimeisinTila = rs.getString("viimeisin_tila"),
-      rahoitusmuodot = optional(rs.getString("rahoitusmuodot")).map(removeConsecutiveDuplicates),
-      rahoitusmuodotParametrienSisalla = optional(rs.getString("rahoitusmuodot_osuu_parametreille")).map(removeConsecutiveDuplicates),
+      rahoitusmuodot = Option(rs.getString("rahoitusmuodot")).map(removeConsecutiveDuplicates),
+      rahoitusmuodotParametrienSisalla = Option(rs.getString("rahoitusmuodot_osuu_parametreille")).map(removeConsecutiveDuplicates),
       paallekkainenOpiskeluoikeusOid = rs.getString("paallekkainen_opiskeluoikeus_oid"),
       paallekkainenOppilaitosNimi = rs.getString("paallekkainen_oppilaitos_nimi"),
       paallekkainenKoulutusmuoto = rs.getString("paallekkainen_koulutusmuoto"),
       paallekkainenSuoritusTyyppi = suorituksistaKaytettavaNimi(rs.getString("paallekkainen_paatason_suoritukset")),
-      paallekkainenTilatParametrienSisalla = optional(rs.getString("paallekkainen_tilat_parametrien_sisalla")).map(removeConsecutiveDuplicates),
+      paallekkainenTilatParametrienSisalla = Option(rs.getString("paallekkainen_tilat_parametrien_sisalla")).map(removeConsecutiveDuplicates),
       paallekkainenViimeisinTila = rs.getString("paallekkainen_viimeisin_tila"),
       paallekkainenAlkamispaiva = rs.getObject("paallekkainen_alkamispaiva", classOf[LocalDate]),
-      paallekkainenPaattymispaiva = optional(rs.getObject("paallekkainen_paattymispaiva", classOf[LocalDate])),
+      paallekkainenPaattymispaiva = Option(rs.getObject("paallekkainen_paattymispaiva", classOf[LocalDate])),
       paallekkainenAlkanutEka = if (rs.getBoolean("sama_alkupaiva")) { "Sama alkamispäivä" } else { if (rs.getBoolean("paallekkainen_alkanut_eka")) "kyllä" else "ei" },
-      paallekkainenRahoitusmuodot = optional(rs.getString("paallekkainen_rahoitusmuodot")).map(removeConsecutiveDuplicates),
-      paallekkainenRahoitusmuodotParametrienSisalla = optional(rs.getString("paallekkainen_rahoitusmuodot_parametrien_sisalla")).map(removeConsecutiveDuplicates),
+      paallekkainenRahoitusmuodot = Option(rs.getString("paallekkainen_rahoitusmuodot")).map(removeConsecutiveDuplicates),
+      paallekkainenRahoitusmuodotParametrienSisalla = Option(rs.getString("paallekkainen_rahoitusmuodot_parametrien_sisalla")).map(removeConsecutiveDuplicates),
       paallekkainenVoimassaParametrienSisalla = rs.getBoolean("paallekkainen_voimassa_aikajaksolla")
     )
   })
@@ -216,8 +216,6 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
 
   private def removeConsecutiveDuplicates(str: String) =
     str.split(",").foldRight(List.empty[String])((current, result) => if (result.headOption.contains(current)) result else current :: result).mkString(",")
-
-  private def optional[A](str: A): Option[A] = if (str == null) None else Some(str)
 
   val columnSettings = Columns.flattenGroupingColumns(Seq(
     "Koulutuksen järjestäjän oma opiskeluoikeus" -> GroupColumnsWithTitle(List(
