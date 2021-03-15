@@ -1,4 +1,5 @@
 @import "../../style/colors.less";
+@import "../icons/Caret.less";
 
 .mainnavigation {
   border-bottom: 2px solid @color-blue-lighten-1;
@@ -16,7 +17,7 @@
   text-align: center;
   padding: 1rem 2rem;
   margin: 0 0.5rem;
-  max-width: 30rem;
+  max-width: 20rem;
 
   background: @color-white;
   color: @color-blue-lighten-1;
@@ -29,17 +30,15 @@
     color: @color-white;
   }
 
-  .mainnavigation__caret {
+  .mainnavigation__caretwrapper {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -46px;
-    text-align: center;
+    margin: 0 auto;
+    bottom: -25px;
 
-    color: @color-blue-lighten-1;
-
-    .icon {
-      font-size: 64px;
+    .caret {
+      .caret-colors(@color-blue-lighten-1, @color-blue-lighten-1);
     }
   }
 }

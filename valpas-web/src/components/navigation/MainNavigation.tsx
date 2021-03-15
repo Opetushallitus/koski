@@ -1,6 +1,6 @@
 import bem from "bem-ts"
 import React from "react"
-import { ArrowDropDownIcon } from "../icons/Icon"
+import { Caret } from "../icons/Caret"
 import "./MainNavigation.less"
 
 const b = bem("mainnavigation")
@@ -29,9 +29,9 @@ export const MainNavigation = (props: MainNavigationProps) => (
         >
           <span className={b("display")}>{option.display}</span>
           {props.selected === option.key && (
-            <span className={b("caret")}>
-              <ArrowDropDownIcon />
-            </span>
+            <div className={b("caretwrapper")}>
+              <Caret width={24} direction="down" />
+            </div>
           )}
         </li>
       ))}
