@@ -1,7 +1,7 @@
 package fi.oph.koski.valpas.repository
 
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
-import fi.oph.koski.valpas.hakukooste.{Hakukooste, Hakutoive, Valintatila}
+import fi.oph.koski.valpas.hakukooste.{Hakukooste, Hakutoive}
 
 import java.time.LocalDate
 
@@ -106,13 +106,10 @@ object ValpasHakutilanne {
       hakuOid = hakukooste.hakuOid,
       hakuNimi = hakukooste.hakuNimi,
       hakemusOid = hakukooste.hakemusOid,
-      aktiivinen = hakukooste.hakutoiveet.exists(hakutoive => Valintatila.isAktiivinen(hakutoive.valintatila)),
+      aktiivinen = hakukooste.hakutoiveet.exists(_.isAktiivinen),
       muokattu = hakukooste.muokattu,
       hakutoiveet = hakukooste.hakutoiveet.map(ValpasHakutoive.apply)
     )
-
-  def apply(hakukooste: Seq[Hakukooste]): Seq[ValpasHakutilanne] =
-    hakukooste.map(ValpasHakutilanne.apply)
 }
 
 case class ValpasHakutilanne(

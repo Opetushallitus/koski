@@ -3,6 +3,7 @@ package fi.oph.koski.valpas.hakukooste
 import fi.oph.koski.schema.annotation.{EnumValues, KoodistoUri}
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.valpas.repository.{ValpasHakutilanne, ValpasHakutoive, ValpasHenkilö, ValpasOppilaitos}
+import fi.oph.scalaschema.annotation.SyntheticProperty
 
 
 case class Hakukooste(
@@ -41,7 +42,10 @@ case class Hakutoive(
   ilmoittautumistila: String,
   harkinnanvaraisuus: String, // TODO: Arvot?
   hakukohdeKoulutuskoodi: String // TODO: Arvot?
-)
+) {
+  @SyntheticProperty
+  def isAktiivinen: Boolean = Valintatila.isAktiivinen(valintatila)
+}
 
 object Vastaanottotieto {
   val values = Set(
