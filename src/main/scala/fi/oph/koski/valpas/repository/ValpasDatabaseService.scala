@@ -7,7 +7,9 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema.{RHenkilöTable, ROpiskeluoikeusTable}
 import slick.jdbc.GetResult
+
 import java.sql.ResultSet
+import java.time.LocalDate
 
 class ValpasDatabaseService(application: KoskiApplication) extends DatabaseConverters with Logging {
   val db = application.raportointiDatabase
@@ -302,7 +304,7 @@ WITH
       henkilö = ValpasHenkilö(
         oid = rs.getString("oppija_oid"),
         hetu = Option(rs.getString("hetu")),
-        syntymäaika = Option(rs.getString("syntymaaika")),
+        syntymäaika = Option(rs.getObject("syntymaaika", classOf[LocalDate])),
         etunimet = rs.getString("etunimet"),
         sukunimi = rs.getString("sukunimi")
       ),

@@ -10,8 +10,8 @@ trait ValpasOppija {
   def oikeutetutOppilaitokset: Set[ValpasOppilaitos.Oid]
   def opiskeluoikeudet: Seq[ValpasOpiskeluoikeus]
 
-  def opiskelee = opiskeluoikeudet.exists(_.isOpiskelu)
-  def oppivelvollisuusVoimassaAsti = henkilö.syntymäaika.map(LocalDate.parse(_).plusYears(18).toString)
+  def opiskelee: Boolean = opiskeluoikeudet.exists(_.isOpiskelu)
+  def oppivelvollisuusVoimassaAsti: Option[LocalDate] = henkilö.syntymäaika.map(_.plusYears(18))
 }
 
 case class ValpasOppijaResult(
@@ -50,7 +50,7 @@ object ValpasHenkilö {
 case class ValpasHenkilö(
   oid: ValpasHenkilö.Oid,
   hetu: Option[String],
-  syntymäaika: Option[String],
+  syntymäaika: Option[LocalDate],
   etunimet: String,
   sukunimi: String
 )
@@ -94,7 +94,7 @@ case class ValpasToimipiste(
 
 case class ValpasOppijaTiedot(
   opiskelee: Boolean,
-  oppivelvollisuusVoimassaAsti: Option[String]
+  oppivelvollisuusVoimassaAsti: Option[LocalDate]
 )
 
 object ValpasHakutilanne {
