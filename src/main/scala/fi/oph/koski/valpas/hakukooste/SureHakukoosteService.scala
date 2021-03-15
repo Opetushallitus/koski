@@ -2,7 +2,7 @@ package fi.oph.koski.valpas.hakukooste
 
 import com.typesafe.config.Config
 import fi.oph.koski.http.Http.{StringToUriConverter, parseJson}
-import fi.oph.koski.http.{ErrorCategory, ServiceConfig, VirkailijaHttpClient}
+import fi.oph.koski.http.{HttpStatus, ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.log.Logging
 import fi.oph.koski.valpas.ValpasErrorCategory
@@ -14,7 +14,7 @@ class SureHakukoosteService(config: Config) extends ValpasHakukoosteService with
 
   private val http = VirkailijaHttpClient(ServiceConfig.apply(config, "opintopolku.virkailija"), baseUrl)
 
-  def getHakukoosteet(oppijaOids: Set[ValpasHenkilö.Oid]): Either[ErrorCategory, Seq[Hakukooste]] = {
+  def getHakukoosteet(oppijaOids: Set[ValpasHenkilö.Oid]): Either[HttpStatus, Seq[Hakukooste]] = {
     val encoder = json4sEncoderOf[Seq[ValpasHenkilö.Oid]]
     val decoder = parseJson[Seq[Hakukooste]] _
     http.post(s"$baseUrl/rest/v1/valpas/".toUri, oppijaOids.toSeq)(encoder)(decoder)
@@ -22,7 +22,7 @@ class SureHakukoosteService(config: Config) extends ValpasHakukoosteService with
       .handle {
         case e: Exception =>
           logger.error("Error fetching hakukoosteet: " + e.toString)
-          Left(ValpasErrorCategory.unavailable.sure)
+          Left(ValpasErrorCategory.unavailable.sure())
       }
       .unsafePerformSync
   }

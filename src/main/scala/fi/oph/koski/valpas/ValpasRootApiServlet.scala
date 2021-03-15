@@ -32,14 +32,10 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
   }
 
   get("/oppijat/:organisaatio") {
-    renderEither(
-      oppijaService.getOppijat(Set(params("organisaatio")))
-      .toRight(ValpasErrorCategory.forbidden.oppijat())) // TODO: accessresolver voisi palauttaa suoraan Either eikä Option
+    renderEither(oppijaService.getOppijat(Set(params("organisaatio"))))
   }
 
   get("/oppija/:oid") {
-    renderEither(
-      oppijaService.getOppija(params("oid"))
-      .toRight(ValpasErrorCategory.forbidden.oppija())) // TODO: accessresolver voisi palauttaa suoraan Either eikä Option
+    renderEither(oppijaService.getOppija(params("oid")))
   }
 }

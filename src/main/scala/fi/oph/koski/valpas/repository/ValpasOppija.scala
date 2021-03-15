@@ -24,7 +24,6 @@ case class ValpasOppijaLisätiedoilla(
   henkilö: ValpasHenkilö,
   oikeutetutOppilaitokset: Set[ValpasOppilaitos.Oid],
   opiskeluoikeudet: Seq[ValpasOpiskeluoikeus],
-  haut: Option[Seq[ValpasHakutilanne]],
   tiedot: ValpasOppijaTiedot
 ) extends ValpasOppija
 
@@ -34,7 +33,6 @@ object ValpasOppijaLisätiedoilla {
       henkilö = oppija.henkilö,
       oikeutetutOppilaitokset = oppija.oikeutetutOppilaitokset,
       opiskeluoikeudet = oppija.opiskeluoikeudet,
-      haut = None,
       tiedot = ValpasOppijaTiedot(
         opiskelee = oppija.opiskelee,
         oppivelvollisuusVoimassaAsti = oppija.oppivelvollisuusVoimassaAsti

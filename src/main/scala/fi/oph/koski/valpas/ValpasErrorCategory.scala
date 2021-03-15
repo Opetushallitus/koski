@@ -6,6 +6,7 @@ object ValpasErrorCategory {
   object forbidden extends ErrorCategory("forbidden", 403, "Käyttäjällä ei ole oikeuksia tietoihin") {
     val oppija = subcategory("oppija", "Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin")
     val oppijat = subcategory("oppijat", "Käyttäjällä ei ole oikeuksia oppijoiden tietoihin")
+    val organisaatio = subcategory("oppijat", "Käyttäjällä ei ole oikeuksia annetun organisaation tietoihin")
   }
 
   object unavailable extends ErrorCategory("unavailable", 503, "Service unavailable") {

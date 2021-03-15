@@ -46,7 +46,7 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
 
       val result = mockClient.getHakukoosteet(Set("asdf")).left.value
       result.statusCode should equal(503)
-      result.message should startWith("Hakukoosteita ei juuri nyt saada haettua")
+      result.errorString.get should startWith("Hakukoosteita ei juuri nyt saada haettua")
     }
 
     "toimii kun vastaus on tyhjä" in {
