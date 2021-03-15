@@ -1,8 +1,8 @@
 import React from "react"
-import { Oppija } from "../../state/oppijat"
+import { OppijaHakutilanteilla } from "../../state/oppijat"
 
 export type OppijanYhteystiedotProps = {
-  oppija: Oppija
+  oppija: OppijaHakutilanteilla
 }
 
 export const OppijanYhteystiedot = (_props: OppijanYhteystiedotProps) => (

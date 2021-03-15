@@ -1,11 +1,11 @@
 import React from "react"
 import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
 import { t } from "../../i18n/i18n"
-import { Oppija } from "../../state/oppijat"
+import { OppijaHakutilanteilla } from "../../state/oppijat"
 import { formatNullableDate } from "../../utils/date"
 
 export type OppijanOppivelvollisuustiedotProps = {
-  oppija: Oppija
+  oppija: OppijaHakutilanteilla
 }
 
 export const OppijanOppivelvollisuustiedot = (
@@ -15,7 +15,7 @@ export const OppijanOppivelvollisuustiedot = (
     <InfoTableRow
       label={t("oppija__opiskelutilanne")}
       value={t(
-        props.oppija.tiedot.opiskelee
+        props.oppija.oppija.opiskelee
           ? "oppija__opiskelutilanne__opiskelemassa"
           : "oppija__opiskelutilanne__ei_opiskelupaikkaa"
       )}
@@ -24,7 +24,7 @@ export const OppijanOppivelvollisuustiedot = (
       label={t("oppija__oppivelvollisuus_voimassa")}
       value={t("oppija__oppivelvollisuus_voimassa_value", {
         date: formatNullableDate(
-          props.oppija.tiedot.oppivelvollisuusVoimassaAsti
+          props.oppija.oppija.oppivelvollisuusVoimassaAsti
         ),
       })}
     />

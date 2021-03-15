@@ -5,11 +5,16 @@ import { Language } from "../i18n/i18n"
 import { OpiskeluoikeudenTila, Opiskeluoikeudentyyppi } from "./koodistot"
 import { ISODate, ISODateTime, LocalizedString, Oid } from "./types"
 
+export type OppijaHakutilanteilla = {
+  oppija: Oppija
+  haut?: Haku[]
+}
+
 export type Oppija = {
   henkilö: Henkilö
   opiskeluoikeudet: Opiskeluoikeus[]
-  tiedot: Lisätiedot
-  haut?: Haku[]
+  opiskelee: boolean
+  oppivelvollisuusVoimassaAsti?: ISODate
 }
 
 export type Henkilö = {
@@ -40,13 +45,6 @@ export type Hakutoive = {
   pisteet: number
   hyväksytty?: boolean
 }
-
-export type Lisätiedot = {
-  opiskelee: boolean
-  oppivelvollisuusVoimassaAsti?: ISODate
-}
-
-// Opiskeluoikeus
 
 export type Opiskeluoikeus = {
   oid: Oid

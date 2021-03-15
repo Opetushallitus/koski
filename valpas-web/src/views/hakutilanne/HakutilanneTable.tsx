@@ -3,11 +3,11 @@ import { Link } from "react-router-dom"
 import { DataTable, Datum } from "../../components/tables/DataTable"
 import { getLocalized, t } from "../../i18n/i18n"
 import { useBasePath } from "../../state/basePath"
-import { Haku, Oppija } from "../../state/oppijat"
+import { Haku, OppijaHakutilanteilla } from "../../state/oppijat"
 import { formatNullableDate } from "../../utils/date"
 
 export type HakutilanneTableProps = {
-  data: Oppija[]
+  data: OppijaHakutilanteilla[]
 }
 
 export const HakutilanneTable = (props: HakutilanneTableProps) => {
@@ -60,11 +60,13 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
   )
 }
 
-const oppijaToTableData = (basePath: string) => (oppija: Oppija): Datum => {
+const oppijaToTableData = (basePath: string) => (
+  oppija: OppijaHakutilanteilla
+): Datum => {
   // TODO: Näihin molempiin tarvitaaan rautaisempi logiikka
   const hakemus = oppija?.haut?.[0]
-  const opiskeluoikeudet = oppija.opiskeluoikeudet[0]
-  const henkilö = oppija.henkilö
+  const opiskeluoikeudet = oppija.oppija.opiskeluoikeudet[0]
+  const henkilö = oppija.oppija.henkilö
 
   return {
     key: henkilö.oid,
