@@ -255,10 +255,10 @@ const makeOpiskeluoikeus = (
     && suoritus
     && tila
     && (!varhaiskasvatusOrganisaationUlkopuolelta || varhaiskasvatusJärjestämismuoto)
-    && (!maksuttomuusTiedonVoiValita || maksuttomuus)
+    && (!maksuttomuusTiedonVoiValita || maksuttomuus !== undefined)
   ) {
     const järjestämismuoto = tyyppi.koodiarvo === 'esiopetus' ? { järjestämismuoto: varhaiskasvatusJärjestämismuoto} : {}
-    const maksuttomuusLisätieto = maksuttomuusTiedonVoiValita && maksuttomuus != 'none'
+    const maksuttomuusLisätieto = maksuttomuusTiedonVoiValita && maksuttomuus !== 'none'
       ? {lisätiedot: {maksuttomuus: [{alku: formatISODate(alkamispäivä), maksuton: maksuttomuus}]}}
       : {}
     const opiskeluoikeus =  {
