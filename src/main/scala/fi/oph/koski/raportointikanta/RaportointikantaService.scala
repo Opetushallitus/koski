@@ -2,6 +2,7 @@ package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.cloudwatch.CloudWatchMetrics
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.db.RaportointiDatabaseConfig
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import org.apache.log4j.LogManager
@@ -99,7 +100,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
 
   private def swapRaportointikanta(): Unit = raportointiDatabase.dropPublicAndMoveTempToPublic
 
-  private lazy val loadDatabase = new RaportointiDatabase(application.raportointiConfig.copy(raportointiSchema = Some(Temp)))
+  private lazy val loadDatabase = new RaportointiDatabase(new RaportointiDatabaseConfig(application.config, schema = Temp))
   private lazy val raportointiDatabase = application.raportointiDatabase
 
   private val raportointikantaGeneration = "raportointikanta-generation"

@@ -1,6 +1,6 @@
 package fi.oph.koski.opiskeluoikeus
 
-import fi.oph.koski.db.KoskiDatabase.DB
+import fi.oph.koski.db.DB
 import fi.oph.koski.db._
 import fi.oph.koski.henkilo._
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository

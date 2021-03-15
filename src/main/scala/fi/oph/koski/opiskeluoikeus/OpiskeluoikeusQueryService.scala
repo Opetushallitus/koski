@@ -2,7 +2,6 @@ package fi.oph.koski.opiskeluoikeus
 
 import java.sql.{Date, Timestamp}
 
-import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
 import fi.oph.koski.db.Tables.{HenkilöTable, OpiskeluoikeusTable, _}

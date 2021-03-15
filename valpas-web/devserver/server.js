@@ -10,6 +10,7 @@ async function startServer({
   backend,
   publicUrl,
   parcelOptions,
+  redirects,
 }) {
   const app = express()
 
@@ -32,6 +33,11 @@ async function startServer({
     })
   )
 
+  Object.entries(redirects).forEach(([path, target]) => {
+    app.get(path, (_req, res) => res.redirect(target))
+    console.log(`Redirecting: ${path} -> ${target}`)
+  })
+
   const valpasEntryPoint = path.join(__dirname, "../src/index.html")
   const bundler = new Bundler(valpasEntryPoint, {
     ...parcelOptions,
@@ -46,13 +52,14 @@ async function startServer({
 
   const serverStarted = new Promise((resolve) => {
     server = app.listen(Number(port), () => {
-      const host = path.join(`localhost:${port}`, publicUrl)
-      console.log(`\nVirkailija app running at http://${host}/virkailija`)
-      resolve()
+      resolve(path.join(`localhost:${port}`, publicUrl))
     })
   })
 
-  await Promise.all([bundled, serverStarted])
+  await bundled
+  const host = await serverStarted
+
+  console.log(`\nVirkailija app running at http://${host}/virkailija`)
 
   return {
     close() {
@@ -72,6 +79,7 @@ function start(overrides) {
       watch: false,
       ...(overrides && overrides.parcelOptions),
     },
+    redirects: {},
     ...overrides,
   })
 }

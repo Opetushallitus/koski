@@ -1,6 +1,7 @@
 import bem from "bem-ts"
 import React from "react"
 import { Link, LinkProps } from "react-router-dom"
+import { useBasePath } from "../../state/basePath"
 import { joinClassNames } from "../../utils/classnames"
 import "./buttons.less"
 
@@ -24,9 +25,11 @@ export const FlatButton = (props: FlatButtonProps) => {
 }
 
 export const FlatLink = (props: LinkProps) => {
-  const { className, children, onClick, ...rest } = props
+  const { className, children, onClick, to, ...rest } = props
+  const basePath = useBasePath()
+
   return (
-    <Link className={flatButtonClassName(props)} {...rest}>
+    <Link className={flatButtonClassName(props)} to={basePath + to} {...rest}>
       <span className={b("content")}>{children}</span>
     </Link>
   )

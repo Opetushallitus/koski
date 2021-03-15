@@ -7,7 +7,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.raportit.{Column, DataSheet}
-import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
+import fi.oph.koski.db.DB
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
 
 import slick.jdbc.GetResult

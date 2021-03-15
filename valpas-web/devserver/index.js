@@ -5,6 +5,8 @@ start({
     cache: true,
     watch: true,
   },
-})
-  .then(() => console.log("\n\nDevserver is up and running\n\n"))
-  .catch((err) => console.error("Oh noes!", err))
+  redirects: {
+    "/": "/valpas",
+    "/valpas": "/valpas/virkailija",
+  },
+}).catch((err) => console.error("Oh noes!", err))

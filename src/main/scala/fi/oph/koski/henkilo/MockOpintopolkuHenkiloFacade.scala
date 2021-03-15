@@ -1,6 +1,6 @@
 package fi.oph.koski.henkilo
 
-import fi.oph.koski.db.KoskiDatabase.DB
+import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.OpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.db.{KoskiDatabaseMethods, PostgresDriverWithJsonSupport}

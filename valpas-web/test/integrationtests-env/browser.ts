@@ -172,11 +172,11 @@ export const clearMockData = async () => {
 export const loginAs = async (
   initialPath: string,
   username: string,
-  password: string
+  password?: string
 ) => {
   await reset(initialPath)
   ;(await $("#username")).sendKeys(username)
-  ;(await $("#password")).sendKeys(password, Key.ENTER)
+  ;(await $("#password")).sendKeys(password || username, Key.ENTER)
   await driver.wait(
     until.elementLocated(By.css("article.page:not(#login-app)")),
     5000
@@ -268,6 +268,12 @@ const dataTableCellsEventuallyEquals = async (
     ).map((value) => value.replace(/\n/g, ""))
     expect(actualData).toEqual(expectedData)
   }, timeout)
+}
+
+export const dropdownSelect = async (selector: string, index: number) => {
+  const optionSelector = `${selector} > option[value='${index}']`
+  const option = await $(optionSelector)
+  option.click()
 }
 
 export const getCurrentUrl = () => driver.getCurrentUrl()

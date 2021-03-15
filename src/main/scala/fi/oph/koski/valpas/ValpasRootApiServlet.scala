@@ -3,13 +3,15 @@ package fi.oph.koski.valpas
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioHierarkia, OrganisaatioHierarkiaJaKayttooikeusrooli}
 import fi.oph.koski.servlet.NoCache
+import fi.oph.koski.valpas.hakukooste.ValpasHakukoosteService
 import fi.oph.koski.valpas.repository.{MockRajapäivät, OikeatRajapäivät, Rajapäivät}
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
 
 class ValpasRootApiServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with RequiresValpasSession {
   private lazy val organisaatioService = application.organisaatioService
-  private lazy val oppijaService = new ValpasOppijaService(application)
+  private lazy val hakukoosteService = ValpasHakukoosteService(application)
+  private lazy val oppijaService = new ValpasOppijaService(application, hakukoosteService)
 
   get("/user") {
     session.user
@@ -25,12 +27,10 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
     globaalit ++ organisaatiokohtaiset
   }
 
-  get("/oppijat") {
-    haltWithStatus(ValpasErrorCategory.forbidden.oppijat())
-    // TODO: Ei vielä loppuun asti toteutettu
-    //    renderEither(
-    //      oppijaService.getOppijat
-    //      .toRight(ValpasErrorCategory.forbidden.oppijat()))
+  get("/oppijat/:organisaatio") {
+    renderEither(
+      oppijaService.getOppijat(Set(params("organisaatio")), rajapäivät )
+      .toRight(ValpasErrorCategory.forbidden.oppijat()))
   }
 
   get("/oppija/:oid") {

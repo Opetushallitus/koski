@@ -208,7 +208,9 @@ Will retry soon."""
     }
   }
 
+  val SmallIndexMaxRows: Int = 500
+
   def indexIsLarge: Boolean = {
-    statistics().statistics.opiskeluoikeuksienMäärä > 500
+    statistics().statistics.opiskeluoikeuksienMäärä > SmallIndexMaxRows
   }
 }

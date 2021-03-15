@@ -5,7 +5,7 @@ import java.time.{Instant, LocalDate}
 
 import fi.oph.koski.db.KoskiDatabaseMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
+import fi.oph.koski.db.DB
 import slick.jdbc.GetResult
 
 import scala.concurrent.duration.DurationInt

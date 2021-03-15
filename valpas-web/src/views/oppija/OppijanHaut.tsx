@@ -1,3 +1,4 @@
+import * as A from "fp-ts/Array"
 import React from "react"
 import { IconSection } from "../../components/containers/IconSection"
 import { HakuIcon } from "../../components/icons/Icon"
@@ -5,19 +6,19 @@ import { Datum } from "../../components/tables/DataTable"
 import { LeanTable } from "../../components/tables/LeanTable"
 import { TertiaryHeading } from "../../components/typography/headings"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
-import { formatFixedNumber, getLocalized, T, t } from "../../i18n/i18n"
-import { ValintatietotilaKoodistoviite } from "../../state/koodistot"
-import { Haku, Oppija, Valintatieto } from "../../state/oppijat"
+import { formatFixedNumber, getLocalized, t, T } from "../../i18n/i18n"
+import { Haku, Hakutoive, Oppija } from "../../state/oppijat"
 
 export type OppijanHautProps = {
   oppija: Oppija
 }
 
-export const OppijanHaut = (props: OppijanHautProps) =>
-  props.oppija.haut && props.oppija.haut.length > 0 ? (
+export const OppijanHaut = (props: OppijanHautProps) => {
+  const haut = props.oppija.haut || []
+  return A.isNonEmpty(haut) ? (
     <div>
-      {props.oppija.haut.map((haku) => (
-        <HakuTable key={haku.luotu} haku={haku} />
+      {haut.map((haku) => (
+        <HakuTable key={haku.hakuOid} haku={haku} />
       ))}
     </div>
   ) : (
@@ -25,6 +26,7 @@ export const OppijanHaut = (props: OppijanHautProps) =>
       <T id="oppija__ei_hakuhistoriaa" />
     </NoDataMessage>
   )
+}
 
 type HakuTableProps = {
   haku: Haku
@@ -32,7 +34,7 @@ type HakuTableProps = {
 
 const HakuTable = (props: HakuTableProps) => (
   <IconSection icon={<HakuIcon color="gray" />}>
-    <TertiaryHeading>{getLocalized(props.haku.nimi)}</TertiaryHeading>
+    <TertiaryHeading>{getLocalized(props.haku.hakuNimi)}</TertiaryHeading>
     <LeanTable
       columns={[
         {
@@ -48,36 +50,33 @@ const HakuTable = (props: HakuTableProps) => (
           label: "Alin pistemäärä",
         },
       ]}
-      data={props.haku.valintatiedot.map(valintatietoToTableValue)}
+      data={props.haku.hakutoiveet.map(hakutoiveToTableValue)}
     />
   </IconSection>
 )
 
-const valintatietoToTableValue = (
-  valinta: Valintatieto,
-  index: number
-): Datum => ({
+const hakutoiveToTableValue = (hakutoive: Hakutoive, index: number): Datum => ({
   key: index.toString(),
   values: [
     {
-      value: `${valinta.hakukohdenumero}. ${getLocalized(
-        valinta.hakukohde.nimi
-      )}`,
+      value:
+        formatOrderNumber(hakutoive.hakutoivenumero) +
+        getLocalized(hakutoive.hakukohdeNimi),
     },
     {
       value:
-        valinta.tila &&
-        (ValintatietotilaKoodistoviite.isHyväksytty(valinta.tila)
+        hakutoive.hyväksytty === undefined
+          ? null
+          : hakutoive.hyväksytty === true
           ? t("oppija__haut_hyvaksytty")
-          : valinta.tila.koodiarvo === "hylätty"
-          ? t("oppija__haut_hylatty")
-          : null),
+          : t("oppija__haut_hylatty"),
     },
-    { value: valinta.pisteet ? formatFixedNumber(valinta.pisteet, 2) : "" },
+    { value: formatFixedNumber(hakutoive.pisteet, 2) },
     {
-      value: valinta.alinPistemäärä
-        ? formatFixedNumber(valinta.alinPistemäärä, 2)
-        : "",
+      value: "", // TODO: Alin pistemäärä
     },
   ],
 })
+
+const formatOrderNumber = (n?: number): string =>
+  n !== undefined ? `${n + 1}. ` : ""

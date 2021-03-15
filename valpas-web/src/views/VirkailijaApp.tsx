@@ -4,7 +4,6 @@ import { fetchYlatasonOrganisaatiotJaKayttooikeusroolit } from "../api/api"
 import { useApiOnce } from "../api/apiHooks"
 import { isSuccess } from "../api/apiUtils"
 import { Page } from "../components/containers/Page"
-import { MainNavigation } from "../components/navigation/MainNavigation"
 import { t } from "../i18n/i18n"
 import {
   CurrentUser,
@@ -15,6 +14,7 @@ import {
   redirectToLoginReturnUrl,
   storeLoginReturnUrl,
 } from "../state/auth"
+import { BasePathProvider, useBasePath } from "../state/basePath"
 import { User } from "../state/types"
 import { ErrorView, NotFoundView } from "../views/ErrorView"
 import { PerusopetusView } from "./hakutilanne/PerusopetusView"
@@ -25,9 +25,10 @@ import { Raamit } from "./Raamit"
 const featureFlagName = "valpas-feature"
 const featureFlagEnabledValue = "enabled"
 
-const FeatureFlagEnabler = (props: { virkailijaBasePath: string }) => {
+const FeatureFlagEnabler = () => {
+  const basePath = useBasePath()
   window.localStorage.setItem(featureFlagName, featureFlagEnabledValue)
-  return <Redirect to={props.virkailijaBasePath} />
+  return <Redirect to={basePath} />
 }
 
 const runningLocally = window.environment == "local"
@@ -37,17 +38,11 @@ const isFeatureFlagEnabled = () =>
   window.localStorage.getItem(featureFlagName) === featureFlagEnabledValue
 
 type VirkailijaRoutesProps = {
-  basePath: string
   user: User
 }
 
-const VirkailijaRoutes = ({ basePath, user }: VirkailijaRoutesProps) => {
-  const navOptions = [
-    {
-      key: "hakutilanne",
-      display: t("ylänavi__hakutilanne"),
-    },
-  ]
+const VirkailijaRoutes = ({ user }: VirkailijaRoutesProps) => {
+  const basePath = useBasePath()
 
   const organisaatiotJaKayttooikeusroolit = useApiOnce(
     fetchYlatasonOrganisaatiotJaKayttooikeusroolit
@@ -60,16 +55,13 @@ const VirkailijaRoutes = ({ basePath, user }: VirkailijaRoutesProps) => {
   return (
     <Switch>
       <Route exact path={`${basePath}/hunter2`}>
-        <FeatureFlagEnabler virkailijaBasePath={basePath} />
+        <FeatureFlagEnabler />
       </Route>
       {isFeatureFlagEnabled() && (
         <Route exact path={`${basePath}/oppijat`}>
-          <MainNavigation
-            selected="hakutilanne"
-            options={navOptions}
-            onChange={() => null}
+          <PerusopetusView
+            kayttooikeusroolit={organisaatiotJaKayttooikeusroolit.data}
           />
-          <PerusopetusView />
         </Route>
       )}
       {isFeatureFlagEnabled() && (
@@ -129,11 +121,11 @@ const VirkailijaApp = ({ basePath }: VirkailijaAppProps) => {
   }
 
   return (
-    <>
+    <BasePathProvider value={basePath}>
       <Raamit user={user} />
       {hasValpasAccess(user) ? (
         <Page id="virkailija-app">
-          <VirkailijaRoutes user={user} basePath={basePath} />
+          <VirkailijaRoutes user={user} />
         </Page>
       ) : isLoggedIn(user) ? (
         <ErrorView
@@ -143,7 +135,7 @@ const VirkailijaApp = ({ basePath }: VirkailijaAppProps) => {
       ) : (
         <Login />
       )}
-    </>
+    </BasePathProvider>
   )
 }
 

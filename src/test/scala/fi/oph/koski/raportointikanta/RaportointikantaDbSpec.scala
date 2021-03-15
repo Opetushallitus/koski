@@ -1,27 +1,26 @@
 package fi.oph.koski.raportointikanta
 
-import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import org.postgresql.util.PSQLException
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class RaportointikantaDbSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll {
   "Drop and create public schema" in {
-    dropsAndCreatesSchemaObjects(public)
+    dropsAndCreatesSchemaObjects(mainRaportointiDb)
   }
 
   "Drop and create temp schema" in {
-    dropsAndCreatesSchemaObjects(temp)
+    dropsAndCreatesSchemaObjects(tempRaportointiDb)
   }
 
   "Moves schema" in {
-    dropAll(public)
-    schemaIsEmpty(public)
-    dropsAndCreatesSchemaObjects(temp)
-    schemaExists(temp)
-    temp.moveTo(Public)
-    schemaIsEmpty(temp)
-    schemaExists(public)
+    dropAll(mainRaportointiDb)
+    schemaIsEmpty(mainRaportointiDb)
+    dropsAndCreatesSchemaObjects(tempRaportointiDb)
+    schemaExists(tempRaportointiDb)
+    tempRaportointiDb.moveTo(Public)
+    schemaIsEmpty(tempRaportointiDb)
+    schemaExists(mainRaportointiDb)
   }
 
   private def dropsAndCreatesSchemaObjects(db: RaportointiDatabase) = {
@@ -48,8 +47,4 @@ class RaportointikantaDbSpec extends FreeSpec with Matchers with Raportointikant
     db.dropAndCreateObjects
     db.runDbSync(RaportointiDatabaseSchema.dropAllIfExists(db.schema))
   }
-
-  private lazy val public = new RaportointiDatabase(KoskiApplicationForTests.raportointiConfig)
-  private lazy val temp = new RaportointiDatabase(KoskiApplicationForTests.raportointiConfig.copy(raportointiSchema = Some(Temp)))
-
 }

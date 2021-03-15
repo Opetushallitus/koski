@@ -1,8 +1,9 @@
 package fi.oph.koski.raportointikanta
 
 import java.time.LocalDate
-
+import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.LocalJettyHttpSpecification
+import fi.oph.koski.db.RaportointiDatabaseConfig
 import fi.oph.koski.http.HttpTester
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -14,6 +15,11 @@ import org.json4s.jackson.JsonMethods
 trait RaportointikantaTestMethods extends HttpTester with LocalJettyHttpSpecification {
   implicit val formats = DefaultFormats
   val ENCRYPTED_XLSX_PREFIX: Array[Byte] = Array(0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1).map(_.toByte)
+
+  lazy val mainRaportointiDb: RaportointiDatabase = KoskiApplicationForTests.raportointiDatabase
+  lazy val tempRaportointiDb: RaportointiDatabase = new RaportointiDatabase(
+    new RaportointiDatabaseConfig(KoskiApplicationForTests.config, schema = Temp)
+  )
 
   def reloadRaportointikanta: Unit = {
     authGet("api/raportointikanta/load?force=true") { verifyResponseStatusOk() }
