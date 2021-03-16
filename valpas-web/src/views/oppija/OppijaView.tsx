@@ -49,7 +49,7 @@ export const OppijaView = (props: OppijaViewProps) => {
                 <CardHeader>
                   <T id="oppija__yhteystiedot_otsikko" />
                   <InfoTooltip>
-                    Yhteystiedot ovat vielä toteuttamatta.
+                    <T id="oppija__yhteystiedot_tooltip" />
                   </InfoTooltip>
                 </CardHeader>
                 <CardBody>
