@@ -31,10 +31,10 @@ object VirkailijaCredentials {
 }
 
 object VirkailijaHttpClient {
-  def apply(serviceConfig: ServiceConfig, serviceUrl: String, useCas: Boolean = true, sessionCookieName: String = "JSESSIONID") = {
+  def apply(serviceConfig: ServiceConfig, serviceUrl: String, sessionCookieName: String = "JSESSIONID"): Http = {
     val VirkailijaCredentials(username, password) = VirkailijaCredentials(serviceConfig)
     val blazeHttpClient = Http.newClient(serviceUrl)
-    val casAuthenticatingClient: Client = if (useCas) {
+    val casAuthenticatingClient: Client = if (serviceConfig.useCas) {
       val casClient = new CasClient(serviceConfig.virkailijaUrl + "/cas", blazeHttpClient, OpintopolkuCallerId.koski)
       CasAuthenticatingClient(casClient, CasParams(serviceUrl, username, password), blazeHttpClient, OpintopolkuCallerId.koski, sessionCookieName)
     } else {
@@ -44,15 +44,16 @@ object VirkailijaHttpClient {
   }
 }
 
-case class ServiceConfig(virkailijaUrl: String, username: String, password: String)
+case class ServiceConfig(virkailijaUrl: String, username: String, password: String, useCas: Boolean)
 
 object ServiceConfig {
   def apply(config: Config, prefixes: String*): ServiceConfig = {
-    val virkailijaUrl = getString(config, prefixes, "url")
-    val username = getString(config, prefixes, "username")
-    val password = getString(config, prefixes, "password")
-
-    ServiceConfig(virkailijaUrl, username, password)
+    ServiceConfig(
+      virkailijaUrl = getString(config, prefixes, "url"),
+      username = getString(config, prefixes, "username"),
+      password = getString(config, prefixes, "password"),
+      useCas = config.getBoolean("authentication-service.useCas")
+    )
   }
 
   private def getString(config: Config, prefixes: Seq[String], suffix: String) = {

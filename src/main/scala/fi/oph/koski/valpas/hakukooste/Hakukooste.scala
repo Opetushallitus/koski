@@ -1,15 +1,14 @@
 package fi.oph.koski.valpas.hakukooste
 
-import fi.oph.koski.schema.annotation.KoodistoUri
+import fi.oph.koski.schema.annotation.{EnumValues, KoodistoUri}
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
-import fi.oph.koski.valpas.hakukooste.Ilmoittautumistila.Ilmoittautumistila
-import fi.oph.koski.valpas.hakukooste.Valintatila.Valintatila
-import fi.oph.koski.valpas.hakukooste.Vastaanottotieto.Vastaanottotieto
+import fi.oph.koski.valpas.repository.{ValpasHakutilanne, ValpasHakutoive, ValpasHenkilö, ValpasOppilaitos}
+
 
 case class Hakukooste(
-  oppijaOid: String,
-  hakuOid: String,
-  hakemusOid: String,
+  oppijaOid: ValpasHenkilö.Oid,
+  hakuOid: ValpasHakutilanne.HakuOid,
+  hakemusOid: ValpasHakutilanne.HakemusOid,
   @KoodistoUri("hakutapa") // Yhteishaku / Erillishaku / Jatkuva haku / Joustava haku
   hakutapa: Koodistokoodiviite,
   @KoodistoUri("hakutyyppi") // Varsinainen haku / täydennyshaku / lisähaku
@@ -26,45 +25,64 @@ case class Hakukooste(
 )
 
 case class Hakutoive(
-  hakukohdeOid: String,
+  hakukohdeOid: ValpasOppilaitos.Oid,
   hakukohdeNimi: LocalizedString,
-  hakutoivenumero: Int,
-  koulutusNimi: LocalizedString,
   hakukohdeOrganisaatio: String,
-  pisteet: Float,
-  valintatila: Valintatila,
-  vastaanottotieto: Vastaanottotieto,
-  ilmoittautumistila: Ilmoittautumistila,
-  koulutusOid: String,
+  koulutusNimi: LocalizedString,
+  koulutusOid: ValpasHakutoive.KoulutusOid,
+  hakutoivenumero: Int,
+  pisteet: BigDecimal,
+  alinValintaPistemaara: BigDecimal,
+  @EnumValues(Valintatila.values)
+  valintatila: String,
+  @EnumValues(Vastaanottotieto.values)
+  vastaanottotieto: String,
+  @EnumValues(Ilmoittautumistila.values)
+  ilmoittautumistila: String,
   harkinnanvaraisuus: String, // TODO: Arvot?
   hakukohdeKoulutuskoodi: String // TODO: Arvot?
 )
 
-object Vastaanottotieto extends Enumeration {
-  type Vastaanottotieto = Value
-  val KESKEN, VASTAANOTTANUT_SITOVASTI, EI_VASTAANOTETTU_MAARA_AIKANA, PERUNUT,PERUUTETTU, OTTANUT_VASTAAN_TOISEN_PAIKAN, EHDOLLISESTI_VASTAANOTTANUT = Value
+object Vastaanottotieto {
+  val values = Set(
+    "KESKEN",
+    "VASTAANOTTANUT_SITOVASTI",
+    "EI_VASTAANOTETTU_MAARA_AIKANA",
+    "PERUNUT", "PERUUTETTU",
+    "OTTANUT_VASTAAN_TOISEN_PAIKAN",
+    "EHDOLLISESTI_VASTAANOTTANUT"
+  )
 }
 
-object Valintatila extends Enumeration {
-  type Valintatila = Value
-  val HYVAKSYTTY, HARKINNANVARAISESTI_HYVAKSYTTY, VARASIJALTA_HYVAKSYTTY, VARALLA,PERUUTETTU, PERUNUT, HYLATTY, PERUUNTUNUT, KESKEN = Value
+object Valintatila {
+  private val aktiivisetTilat = Set(
+    "HYVAKSYTTY",
+    "HARKINNANVARAISESTI_HYVAKSYTTY",
+    "VARASIJALTA_HYVAKSYTTY",
+    "VARALLA",
+    "KESKEN"
+  )
 
-  def isAktiivinen(tila: Valintatila) = tila match {
-    case HYVAKSYTTY => true
-    case HARKINNANVARAISESTI_HYVAKSYTTY => true
-    case VARASIJALTA_HYVAKSYTTY => true
-    case VARALLA => true
-    case PERUUTETTU => false
-    case PERUNUT => false
-    case HYLATTY => false
-    case PERUUNTUNUT => false
-    case KESKEN => true
-    case _ => false
-  }
+  private val eiAktiivisetTilat = Set(
+    "PERUUTETTU",
+    "PERUNUT",
+    "HYLATTY",
+    "PERUUNTUNUT"
+  )
+
+  val values: Set[String] = aktiivisetTilat ++ eiAktiivisetTilat
+
+  def isAktiivinen(tila: String): Boolean = aktiivisetTilat.contains(tila)
 }
 
-object Ilmoittautumistila extends Enumeration {
-  type Ilmoittautumistila = Value
-  val EI_TEHTY, LASNA_KOKO_LUKUVUOSI, POISSA_KOKO_LUKUVUOSI, EI_ILMOITTAUTUNUT, LASNA_SYKSY, POISSA_SYKSY, LASNA, POISSA = Value
+object Ilmoittautumistila {
+  val values = Set("EI_TEHTY",
+    "LASNA_KOKO_LUKUVUOSI",
+    "POISSA_KOKO_LUKUVUOSI",
+    "EI_ILMOITTAUTUNUT",
+    "LASNA_SYKSY",
+    "POISSA_SYKSY",
+    "LASNA",
+    "POISSA"
+  )
 }
-

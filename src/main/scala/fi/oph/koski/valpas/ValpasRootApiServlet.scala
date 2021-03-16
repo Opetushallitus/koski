@@ -10,7 +10,7 @@ import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
 
 class ValpasRootApiServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with RequiresValpasSession {
   private lazy val organisaatioService = application.organisaatioService
-  private lazy val hakukoosteService = ValpasHakukoosteService(application)
+  private lazy val hakukoosteService = ValpasHakukoosteService(application.config)
   private lazy val oppijaService = new ValpasOppijaService(application, hakukoosteService)
 
   get("/user") {

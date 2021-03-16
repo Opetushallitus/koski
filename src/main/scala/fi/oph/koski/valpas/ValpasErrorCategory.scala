@@ -7,4 +7,8 @@ object ValpasErrorCategory {
     val oppija = subcategory("oppija", "Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin")
     val oppijat = subcategory("oppijat", "Käyttäjällä ei ole oikeuksia oppijoiden tietoihin")
   }
+
+  object unavailable extends ErrorCategory("unavailable", 503, "Service unavailable") {
+    val sure = subcategory("sure", "Hakukoosteita ei juuri nyt saada haettua suoritusrekisteristä. Yritä myöhemmin uudelleen.")
+  }
 }
