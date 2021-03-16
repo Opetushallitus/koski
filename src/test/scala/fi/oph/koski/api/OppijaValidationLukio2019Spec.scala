@@ -517,14 +517,14 @@ class OppijaValidationLukio2019Spec extends FreeSpec with PutOpiskeluoikeusTestM
 
   "Oppiaineen arvosana" - {
     "Liikunnassa" - {
-      "Saa olla S, jos laajuus on korkeintaan 2 op" in {
+      "Saa olla S, vaikka laajuus olisi yli 2 op" in {
         putOpiskeluoikeus(aktiivinenOpiskeluoikeus.copy(suoritukset = List(vahvistamatonOppimääränSuoritus.copy(suorituskieli = suomenKieli, osasuoritukset = Some(List(
           oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("LI")).copy(
             arviointi = Some(List(
               SanallinenLukionOppiaineenArviointi2019("S"))
             ),
             osasuoritukset = Some(List(
-              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("LI1", 2.0f)).copy(arviointi = numeerinenArviointi(5))
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("LI1", 3.0f)).copy(arviointi = numeerinenArviointi(5))
             ))
           )
         )))))) {

@@ -53,7 +53,7 @@ object Lukio2019ArvosanaValidation {
       case _:LukionOppiaineenSuoritus2019 | _: LukionOppiaineenPreIBSuoritus2019
         if s.koulutusmoduuli.tunniste.koodiarvo == "LI" &&
           s.koulutusmoduuli.laajuusArvo(0.0) > 2 &&
-          s.viimeisinArvosana.exists(kirjainarvosanat.contains) =>
+          s.viimeisinArvosana.contains("H") =>
         KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainSuppealle(s"Oppiaineen ${suorituksenTunniste(s)} arvosanan pitää olla numero, jos oppiaineen laajuus on yli 2 op")
       case _ => HttpStatus.ok
     })
