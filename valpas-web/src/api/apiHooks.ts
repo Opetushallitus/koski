@@ -1,6 +1,6 @@
 import * as E from "fp-ts/Either"
 import { pipe } from "fp-ts/lib/function"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { ApiFailure, ApiResponse, ApiSuccess } from "./apiFetch"
 import { ApiCache } from "./cache"
 
@@ -74,43 +74,41 @@ export const useApiMethod = <T, P extends any[]>(
     state: "initial",
   })
 
-  const call = useCallback(
-    async (...args: P) => {
-      setState({ state: "loading" })
-      cache?.map(args, (previous) =>
-        setState({ state: "reloading", ...previous })
-      )
-      pipe(
-        await fetchFn(...args),
-        E.map((result) => {
-          setState({
-            state: "success",
-            ...result,
-          })
-          cache?.set(args, result)
-        }),
-        E.mapLeft((error) =>
-          setState({
-            state: "error",
-            ...error,
-          })
-        )
-      )
-    },
-    [fetchFn, setState, state]
-  )
-
   const clear = useCallback(() => setState({ state: "initial" }), [
     setState,
     state,
   ])
 
-  return {
-    ...state,
-    call,
-    clear,
-    flatMap(fn) {
-      return state.state === "success" ? fn(state.data) : undefined
-    },
-  }
+  return useMemo(
+    () => ({
+      ...state,
+      call: async (...args: P) => {
+        setState({ state: "loading" })
+        cache?.map(args, (previous) =>
+          setState({ state: "reloading", ...previous })
+        )
+        pipe(
+          await fetchFn(...args),
+          E.map((result) => {
+            setState({
+              state: "success",
+              ...result,
+            })
+            cache?.set(args, result)
+          }),
+          E.mapLeft((error) =>
+            setState({
+              state: "error",
+              ...error,
+            })
+          )
+        )
+      },
+      clear,
+      flatMap(fn) {
+        return state.state === "success" ? fn(state.data) : undefined
+      },
+    }),
+    [state, setState, fetchFn]
+  )
 }

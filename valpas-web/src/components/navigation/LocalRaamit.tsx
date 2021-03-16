@@ -1,8 +1,14 @@
 import bem from "bem-ts"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { ApiResponse } from "../../api/apiFetch"
-import { useApiMethod } from "../../api/apiHooks"
-import { clearMockData, resetMockDataToDate } from "../../api/testApi"
+import { useApiMethod, useApiOnce } from "../../api/apiHooks"
+import { mapSuccess } from "../../api/apiUtils"
+import {
+  clearMockData,
+  FixtureState,
+  getMockStatus,
+  resetMockDataToDate,
+} from "../../api/testApi"
 import {
   getLanguage,
   Language,
@@ -36,47 +42,73 @@ export default ({ user }: LocalRaamitProps) => {
 }
 
 const TestApiButtons = () => {
-  const [tarkasteluPäivä, setTarkasteluPäivä] = useState("2021-09-05")
+  const [state, setState] = useState<FixtureState | null>(null)
+  const current = useApiOnce(getMockStatus)
+  useEffect(() => {
+    mapSuccess(current, setState)
+  }, [current])
+
+  const setTarkasteluPäivä = (tarkasteluPäivä: string) =>
+    state &&
+    setState({
+      ...state,
+      rajapäivät: {
+        ...state.rajapäivät,
+        tarkasteluPäivä,
+      },
+    })
 
   return (
-    <>
-      <TestApiButton
-        fetchFunc={resetMockDataToDate(tarkasteluPäivä)}
-        id={"resetMockData"}
-        title={"Reset mock data"}
-      />
-      <SimpleTextField
-        value={tarkasteluPäivä}
-        onChange={(value) => {
-          setTarkasteluPäivä(value)
-        }}
-        id={"tarkasteluPäivä"}
-      />
-      <TestApiButton
-        fetchFunc={clearMockData}
-        id={"clearMockData"}
-        title={"Clear mock data"}
-      />
-    </>
+    state && (
+      <>
+        <Fixture>{state.fixture}</Fixture>
+        <TestApiButton
+          fetchFunc={resetMockDataToDate(state.rajapäivät.tarkasteluPäivä)}
+          id={"resetMockData"}
+          title={"Use Valpas mock data"}
+          onStateUpdated={() => current.call()}
+        />
+        <SimpleTextField
+          value={state.rajapäivät.tarkasteluPäivä}
+          onChange={setTarkasteluPäivä}
+          id={"tarkasteluPäivä"}
+        />
+        {state.fixture === "VALPAS" && (
+          <TestApiButton
+            fetchFunc={clearMockData}
+            id={"clearMockData"}
+            title={"Unload Valpas mock data"}
+            onStateUpdated={() => current.call()}
+          />
+        )}
+      </>
+    )
   )
 }
 
 type TestApiButtonProps = {
-  fetchFunc: () => Promise<ApiResponse<string>>
+  fetchFunc: () => Promise<ApiResponse<FixtureState>>
   id: string
   title: string
+  onStateUpdated: () => void
 }
 
-const TestApiButton = ({ fetchFunc, id, title }: TestApiButtonProps) => {
+const TestApiButton = ({
+  fetchFunc,
+  id,
+  title,
+  onStateUpdated,
+}: TestApiButtonProps) => {
   const apiFetch = useApiMethod(fetchFunc)
 
   return (
     <button
       className={b("testapibutton")}
       id={id}
-      onClick={() => {
+      onClick={async () => {
         apiFetch.clear()
-        return apiFetch.call()
+        await apiFetch.call()
+        onStateUpdated()
       }}
     >
       {title}{" "}
@@ -146,6 +178,15 @@ const LanguageButtons = ({ currentLanguage }: LanguageButtonsProps) => (
       </button>
     ))}
   </>
+)
+
+const Fixture = ({ children, ...rest }: React.HTMLAttributes<HTMLElement>) => (
+  <span {...rest} className={b("fixture")}>
+    Fixture:{" "}
+    <span id="current-fixture" className={b("fixturevalue")}>
+      {children}
+    </span>
+  </span>
 )
 
 const logout = () => {
