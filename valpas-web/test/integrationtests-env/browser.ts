@@ -103,6 +103,11 @@ export const setTextInput = async (selector: string, value: string) => {
   await attributeEventuallyEquals(selector, "value", value)
 }
 
+export const getTextInput = async (selector: string) => {
+  const element = await $(selector)
+  return element.getAttribute("value")
+}
+
 // https://stackoverflow.com/questions/53698075/how-to-clear-text-input
 export const clearTextInput = async (selector: string, timeout = 1000) =>
   // Pitää tehdä silmukassa, koska tämä ei aina toimi, välillä BACK_SPACE poistaa vain viimeisen merkin
@@ -159,9 +164,19 @@ export const reset = async (initialPath: string) => {
 }
 
 export const resetMockData = async (tarkasteluPäivä: string = "2019-09-05") => {
-  await setTextInput("#tarkasteluPäivä", tarkasteluPäivä)
-  await clickElement("#resetMockData")
-  await textEventuallyEquals("#resetMockDataState", "success", 15000)
+  const inputSelector = "#tarkasteluPäivä"
+
+  const currentTarkastelupäivä = await getTextInput(inputSelector)
+  const currentFixture = await (await $("#current-fixture")).getText()
+
+  if (
+    currentTarkastelupäivä !== tarkasteluPäivä ||
+    currentFixture !== "VALPAS"
+  ) {
+    await setTextInput(inputSelector, tarkasteluPäivä)
+    await clickElement("#resetMockData")
+    await textEventuallyEquals("#resetMockDataState", "success", 15000)
+  }
 }
 
 export const clearMockData = async () => {
