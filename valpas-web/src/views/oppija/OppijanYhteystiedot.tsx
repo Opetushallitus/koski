@@ -19,7 +19,7 @@ export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {
 
   return (
     <ColumnsContainer>
-      <Column size={6}>
+      <Column size={6} id="ilmoitetut-yhteystiedot">
         <TertiaryHeading>
           <T id="oppija__ilmoitetut_yhteystiedot" />
         </TertiaryHeading>

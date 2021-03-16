@@ -1,5 +1,6 @@
 import { fireEvent, render, RenderResult } from "@testing-library/react"
 import React from "react"
+import { expectToMatchSnapshot } from "../../utils/tests"
 import { Column, DataTable, Datum } from "./DataTable"
 
 describe("DataTable", () => {
@@ -21,9 +22,6 @@ describe("DataTable", () => {
 })
 
 // Helpers
-
-const expectToMatchSnapshot = (element: RenderResult) =>
-  expect(element.container.firstChild).toMatchSnapshot()
 
 const createTable = () => render(<DataTable columns={columns} data={data} />)
 

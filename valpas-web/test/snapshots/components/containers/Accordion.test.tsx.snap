@@ -1,0 +1,135 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Accordion kaikki sivut avatutuvat klikkauksesta 1`] = `
+<ul
+  class="accordion"
+>
+  <li
+    class="accordion__item accordion__item--open"
+  >
+    <h4
+      class="accordion__label"
+    >
+      <i
+        aria-hidden="true"
+        class="material-icons icon icon--inline"
+      >
+        keyboard_arrow_down
+      </i>
+      Yksi
+    </h4>
+    <div
+      class="accordion__content"
+    >
+      Ekan sivun sisältö
+    </div>
+  </li>
+  <li
+    class="accordion__item accordion__item--open"
+  >
+    <h4
+      class="accordion__label"
+    >
+      <i
+        aria-hidden="true"
+        class="material-icons icon icon--inline"
+      >
+        keyboard_arrow_down
+      </i>
+      Kaksi
+    </h4>
+    <div
+      class="accordion__content"
+    >
+      Tokan sivun sisältö
+    </div>
+  </li>
+  <li
+    class="accordion__item accordion__item--open"
+  >
+    <h4
+      class="accordion__label"
+    >
+      <i
+        aria-hidden="true"
+        class="material-icons icon icon--inline"
+      >
+        keyboard_arrow_down
+      </i>
+      Kolmas
+    </h4>
+    <div
+      class="accordion__content"
+    >
+      Kolmannen sivun sisältö
+    </div>
+  </li>
+</ul>
+`;
+
+exports[`Accordion renderöityy oikein 1`] = `
+<ul
+  class="accordion"
+>
+  <li
+    class="accordion__item"
+  >
+    <h4
+      class="accordion__label"
+    >
+      <i
+        aria-hidden="true"
+        class="material-icons icon icon--inline"
+      >
+        keyboard_arrow_right
+      </i>
+      Yksi
+    </h4>
+    <div
+      class="accordion__content"
+    >
+      Ekan sivun sisältö
+    </div>
+  </li>
+  <li
+    class="accordion__item"
+  >
+    <h4
+      class="accordion__label"
+    >
+      <i
+        aria-hidden="true"
+        class="material-icons icon icon--inline"
+      >
+        keyboard_arrow_right
+      </i>
+      Kaksi
+    </h4>
+    <div
+      class="accordion__content"
+    >
+      Tokan sivun sisältö
+    </div>
+  </li>
+  <li
+    class="accordion__item"
+  >
+    <h4
+      class="accordion__label"
+    >
+      <i
+        aria-hidden="true"
+        class="material-icons icon icon--inline"
+      >
+        keyboard_arrow_right
+      </i>
+      Kolmas
+    </h4>
+    <div
+      class="accordion__content"
+    >
+      Kolmannen sivun sisältö
+    </div>
+  </li>
+</ul>
+`;
