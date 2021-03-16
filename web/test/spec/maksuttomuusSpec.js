@@ -5,7 +5,7 @@ describe('Maksuttomuus', function() {
   var editor = opinnot.opiskeluoikeusEditor()
 
   describe('Uusi opiskeluoikeus voidaan luoda', function() {
-    describe('Maksuttomuus-tiedolla', function () {
+    describe('Maksuttomana', function () {
       before(
         prepareForNewOppija('pää', '010104A6094'),
         addOppija.enterValidDataAmmatillinen(),
@@ -54,6 +54,22 @@ describe('Maksuttomuus', function() {
             'Oikeutta maksuttomuuteen pidennetty 11.11.2021 — 12.12.2021'
           )
         })
+      })
+    })
+    describe('Maksullisena', function () {
+      before(
+        prepareForNewOppija('pää', '010104A6094'),
+        addOppija.enterValidDataAmmatillinen(),
+        addOppija.selectAloituspäivä('1.8.2021'),
+        addOppija.selectMaksuttomuus(2),
+        addOppija.submit,
+        opinnot.expandAll
+      )
+      it('Lisätiedot ovat tyhjät', function() {
+        expect(extractAsText(S('.lisätiedot'))).to.equal(
+          'Lisätiedot\n' +
+          'Koulutuksen maksuttomuus 1.8.2021 — Maksullinen'
+        )
       })
     })
     describe('Ilman maksuttomuus-tietoa', function () {

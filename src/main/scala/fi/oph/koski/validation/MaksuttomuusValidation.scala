@@ -35,32 +35,35 @@ object MaksuttomuusValidation {
        val oikeuttaMaksuttomuuteenPidennetty = sortJaksonAlkupäivänMukaan(lisätiedot.oikeuttaMaksuttomuuteenPidennetty.toList.flatten)
        val maksuttomuus = sortJaksonAlkupäivänMukaan(lisätiedot.maksuttomuus.toList.flatten)
 
-       val validationResult = HttpStatus.fold(
-         validateMaksuttomuuttaPidennetty(oikeuttaMaksuttomuuteenPidennetty, opiskeluoikeus),
-         validateMaksuttomuus(maksuttomuus, opiskeluoikeus)
-       )
-       if (validationResult.isOk) {
-         Right(fill(opiskeluoikeus, lisätiedot, maksuttomuus, oikeuttaMaksuttomuuteenPidennetty))
-       } else {
-         Left(validationResult)
-       }
+       for {
+         validMaksuttomuus <- validateAndFillMaksuttomuusJaksot(maksuttomuus, opiskeluoikeus)
+         validMaksuttomuuttaPidennetty <- validateMaksuttomuuttaPidennetty(oikeuttaMaksuttomuuteenPidennetty, validMaksuttomuus, opiskeluoikeus)
+       } yield (
+         opiskeluoikeus
+           .withLisätiedot(Some(lisätiedot
+             .withMaksuttomus(toOptional(validMaksuttomuus))
+             .withOikeuttaMaksuttomuuteenPidennetty(toOptional(validMaksuttomuuttaPidennetty))
+           ))
+         )
      }
    }.getOrElse(Right(opiskeluoikeus))
   }
 
   private def sortJaksonAlkupäivänMukaan[A <: Alkupäivällinen](jaksot: List[A]): List[A] = jaksot.sortBy(_.alku)(DateOrdering.localDateOrdering)
 
-  private def validateMaksuttomuus(jaksot: List[Maksuttomuus], opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
+  private def validateAndFillMaksuttomuusJaksot(jaksot: List[Maksuttomuus], opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
     val voimassaolonUlkopuolella = jaksot.map(_.alku).filterNot(d => between(opiskeluoikeus.alkamispäivä, opiskeluoikeus.päättymispäivä)(d))
     val samojaAlkamispäiviä = jaksot.map(_.alku).groupBy(x => x).filter(_._2.length > 1).values.flatten.toSeq
 
-    HttpStatus.fold(
+    val validationResult = HttpStatus.fold(
       validate(voimassaolonUlkopuolella)(x => KoskiErrorCategory.badRequest.validation(s"Opiskeluoikeudella on koulutuksen maksuttomuusjaksoja, jonka alkupäivä ${x.map(_.toString).mkString(", ")} ei ole opiskeluoikeuden voimassaolon (${voimassaolo(opiskeluoikeus)}) sisällä")),
       validate(samojaAlkamispäiviä)(x => KoskiErrorCategory.badRequest.validation(s"Opiskeluoikeudella on koulutuksen maksuttomuusjaksoja, joilla on sama alkupäivä ${x.map(_.toString).mkString(", ")}"))
     )
+
+    if (validationResult.isOk) Right(fillPäättymispäivät(jaksot)) else Left(validationResult)
   }
 
-  private def validateMaksuttomuuttaPidennetty(jaksot: List[OikeuttaMaksuttomuuteenPidennetty], opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
+  private def validateMaksuttomuuttaPidennetty(jaksot: List[OikeuttaMaksuttomuuteenPidennetty], maksuttomuus: List[Maksuttomuus], opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
     def betweenOpiskeluoikeudenAlkamisPäättymis(jakso: OikeuttaMaksuttomuuteenPidennetty) = {
       val voimassaolonSisällä = between(opiskeluoikeus.alkamispäivä, opiskeluoikeus.päättymispäivä)_
       voimassaolonSisällä(jakso.alku) && voimassaolonSisällä(jakso.loppu)
@@ -70,23 +73,24 @@ object MaksuttomuusValidation {
     val jaksonAlkuEnnenLoppua = jaksot.filterNot(jakso => !jakso.alku.isAfter(jakso.loppu))
     val päällekkäisiäJaksoja = jaksot.zip(jaksot.drop(1)).filter { case (a,b) => a.overlaps(b) }
 
-    HttpStatus.fold(
+    val maksuttomatMaksuttomuusJaksot = maksuttomuus.filter(_.maksuton)
+    val pidennysMaksuttomuudenUlkopuolella = jaksot.filterNot(pidennys => maksuttomatMaksuttomuusJaksot.exists(maksuton => maksuton.containsPidennysJakso(pidennys)))
+
+    val validationResult = HttpStatus.fold(
       validate(voimassaolonUlkopuolella)(x => KoskiErrorCategory.badRequest.validation(s"Opiskeluoikeudella on koulutuksen maksuttomuuden pidennykseen liittyvä jakso, jonka alku- ja/tai loppupäivä ei ole opiskeluoikeuden voimassaolon (${voimassaolo(opiskeluoikeus)}) sisällä ${x.map(_.toString).mkString(", ")}")),
       validate(jaksonAlkuEnnenLoppua)(x => KoskiErrorCategory.badRequest.validation(s"Opiskeluoikeudella on koulutuksen maksuttomuuden pidennykseen liittyvä jakso, jonka loppupäivä on aikaisemmin kuin alkupäivä. ${x.map(y => s"${y.alku} (alku) - ${y.loppu} (loppu)").mkString(", ")}")),
-      validate(päällekkäisiäJaksoja)(x => KoskiErrorCategory.badRequest.validation(s"Opiskeluoikeudella on koulutuksen maksuttomuuden pidennykseen liittyviä jaksoja, jotka ovat keskenään päällekkäisiä ${x.map(_.toString).mkString(", ")}"))
+      validate(päällekkäisiäJaksoja)(x => KoskiErrorCategory.badRequest.validation(s"Opiskeluoikeudella on koulutuksen maksuttomuuden pidennykseen liittyviä jaksoja, jotka ovat keskenään päällekkäisiä ${x.map(_.toString).mkString(", ")}")),
+      validate(pidennysMaksuttomuudenUlkopuolella)(x => KoskiErrorCategory.badRequest.validation(s"Maksuttomuutta voidaan pidetäntää vain aikavälillä jolloin koulutus on maksutontonta"))
     )
+
+    if (validationResult.isOk) Right(jaksot) else Left(validationResult)
   }
 
-  private def fill(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, lisätiedot: MaksuttomuusTieto, maksuttomuus: List[Maksuttomuus], oikeuttaMaksuttomuuteenPidennetty: List[OikeuttaMaksuttomuuteenPidennetty]): KoskeenTallennettavaOpiskeluoikeus = {
+  private def fillPäättymispäivät(maksuttomuus: List[Maksuttomuus]) = {
     val jaksot = maksuttomuus.map(_.copy(loppu = None))
     val last = jaksot.lastOption.toList
     val filled = jaksot.zip(jaksot.drop(1)).map { case (a, b) => a.copy(loppu = Some(b.alku.minusDays(1))) }
-    val maksuttomuusJaksot = filled ::: last
-
-    opiskeluoikeus.withLisätiedot(Some(lisätiedot
-      .withMaksuttomus(toOptional(maksuttomuusJaksot))
-      .withOikeuttaMaksuttomuuteenPidennetty(toOptional(oikeuttaMaksuttomuuteenPidennetty))
-    ))
+    filled ::: last
   }
 
   private def validate[A](virheelliset: Seq[A])(virheviesti: Seq[A] => HttpStatus) =
