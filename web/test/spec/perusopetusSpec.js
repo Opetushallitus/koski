@@ -1046,7 +1046,7 @@ describe('Perusopetus', function() {
                 page.oppijataulukko.filterBy('nimi', 'Koululainen Kaisa'), page.oppijataulukko.filterBy('tyyppi', 'Perusopetus')
               )
 
-              it('Näytetään nykyinen tila "läsnä"', function() {
+              it('Näytetään nykyinen tila "läsnä" (flaky)', function() {
                 expect(page.oppijataulukko.isVisible()).to.equal(true)
                 expect(page.oppijataulukko.findOppija('Koululainen, Kaisa', 'Perusopetus')).to.deep.equal([ 'Koululainen, Kaisa',
                   'Perusopetus',
