@@ -1431,8 +1431,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksentyöelämäjayhteiskuntataitojenopinnot",
-  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyöelämäjayhteiskuntataitojenopinnot",
+  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenopinnot",
+  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenopinnot",
   "metadata" : [ {
     "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen opintojen suoritus",
     "kieli" : "FI"
@@ -1486,21 +1486,6 @@
     "kieli" : "SV"
   }, {
     "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen ohjauksen osasuoritus",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksentyöelämäjayhteiskuntataitojenopintojenosasuoritus",
-  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyöelämäjayhteiskuntataitojenopintojenosasuoritus",
-  "metadata" : [ {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen opintojen osasuoritus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen opintojen osasuoritus",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen opintojen osasuoritus",
     "kieli" : "EN"
   } ],
   "versio" : 1,

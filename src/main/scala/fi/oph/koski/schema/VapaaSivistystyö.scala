@@ -188,7 +188,7 @@ case class OppivelvollisilleSuunnatunMaahanmuuttajienKotoutumiskoulutuksenSuorit
   override val osasuoritukset: Option[List[VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus]],
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
-) extends VapaanSivistystyönPäätasonSuoritus with OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus with Laajuudellinen
+) extends VapaanSivistystyönPäätasonSuoritus with Laajuudellinen
 
 @Description("Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen tunnistetiedot")
 case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus(
@@ -199,7 +199,7 @@ case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus(
  laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends DiaarinumerollinenKoulutus with Tutkinto
 
-trait VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus extends Suoritus with Vahvistukseton with OpintopistelaajuuksienYhteislaskennallinenSuoritus
+trait VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus extends Suoritus with Vahvistukseton
 
 @Title("Maahanmuuttajien kotoutumiskoulutuksen kieliopintojen suoritus")
 case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus(
@@ -239,8 +239,8 @@ case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuor
 case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus(
   @Title("Kotoutumiskoulutuksen työelämä- ja yhteiskuntaopinnot")
   koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönMaahanmuuttajienKotoutumisKokonaisuus,
-  @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutuksentyöelämäjayhteiskuntataitojenopinnot")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutuksentyöelämäjayhteiskuntataitojenopinnot´", koodistoUri = "suorituksentyyppi"),
+  @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenopinnot")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenopinnot´", koodistoUri = "suorituksentyyppi"),
   override val arviointi: Option[List[Arviointi]] = None
 ) extends VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus
 
