@@ -57,7 +57,7 @@ object KelaRequest {
       .flatMap(req => Hetu.validFormat(req.hetu))
   }
 
-  def parseBulk(json : JValue): Either[HttpStatus, List[Henkilö.Hetu]] = {
+  def parseBulk(json : JValue): Either[HttpStatus, Seq[Henkilö.Hetu]] = {
     val MaxHetus = 1000
 
     JsonSerializer.validateAndExtract[KelaBulkRequest](json)

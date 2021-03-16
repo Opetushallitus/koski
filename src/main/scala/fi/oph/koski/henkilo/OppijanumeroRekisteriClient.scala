@@ -29,7 +29,7 @@ case class OppijanumeroRekisteriClient(config: Config) {
 
   def findKäyttäjäByOid(oid: String): Task[Option[KäyttäjäHenkilö]] = henkilöByOid(oid)(Http.parseJsonOptional[KäyttäjäHenkilö])
 
-  def findOppijatNoSlaveOids(oids: List[Oid]): Task[List[SuppeatOppijaHenkilöTiedot]] =
+  def findOppijatNoSlaveOids(oids: Seq[Oid]): Task[List[SuppeatOppijaHenkilöTiedot]] =
     findOnrOppijatByOids(oids).map(_.map(_.toSuppeaOppijaHenkilö(Nil)))
 
   def findChangedOppijaOids(since: Long, offset: Int, amount: Int): Task[List[Oid]] =
@@ -51,15 +51,15 @@ case class OppijanumeroRekisteriClient(config: Config) {
     oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/masterHenkilosByOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[Map[String, OppijaNumerorekisteriOppija]])
     .map(_.mapValues(_.toOppijaHenkilö(Nil)))
 
-  def findOppijatByHetusNoSlaveOids(hetus: List[String]): Task[List[SuppeatOppijaHenkilöTiedot]] =
-    oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloHetuList", hetus)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaNumerorekisteriPerustiedot]])
+  def findOppijatByHetusNoSlaveOids(hetus: Seq[String]): Task[List[SuppeatOppijaHenkilöTiedot]] =
+    oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloHetuList", hetus)(json4sEncoderOf[Seq[String]])(Http.parseJson[List[OppijaNumerorekisteriPerustiedot]])
       .map(_.map(_.toSuppeaOppijaHenkilö(Nil)))
 
   def findSlaveOids(masterOid: String): Task[List[String]] =
     oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/$masterOid/slaves")(Http.parseJson[List[OppijaNumerorekisteriSlave]]).map(_.map(_.oidHenkilo))
 
-  private def findOnrOppijatByOids(oids: List[Oid]): Task[List[OppijaNumerorekisteriPerustiedot]] =
-    oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaNumerorekisteriPerustiedot]])
+  private def findOnrOppijatByOids(oids: Seq[Oid]): Task[List[OppijaNumerorekisteriPerustiedot]] =
+    oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList", oids)(json4sEncoderOf[Seq[String]])(Http.parseJson[List[OppijaNumerorekisteriPerustiedot]])
 
   private def withSlaveOids(onrOppijat: Iterable[OppijaNumerorekisteriOppija]): Task[List[LaajatOppijaHenkilöTiedot]] =
     Nondeterminism[Task].gather(onrOppijat.toSeq.map(complementWithSlaveOids))

@@ -196,7 +196,7 @@ class KoskiValidator(
   private def addOppilaitos(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
     val oppilaitos: Either[HttpStatus, Oppilaitos] = oo.oppilaitos.map(Right(_)).getOrElse {
       val toimipisteet: List[OrganisaatioWithOid] = oo.suoritukset.map(_.toimipiste)
-      val oppilaitokset: Either[HttpStatus, List[Oppilaitos]] = HttpStatus.foldEithers(toimipisteet.map { toimipiste =>
+      val oppilaitokset: Either[HttpStatus, Seq[Oppilaitos]] = HttpStatus.foldEithers(toimipisteet.map { toimipiste =>
         organisaatioRepository.findOppilaitosForToimipiste(toimipiste) match {
           case Some(oppilaitos) => Right(oppilaitos)
           case None => Left(KoskiErrorCategory.badRequest.validation.organisaatio.eiOppilaitos(s"Toimipisteenä käytetylle organisaatiolle ${toimipiste.oid} ei löydy oppilaitos-tyyppistä yliorganisaatiota."))

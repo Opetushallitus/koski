@@ -20,7 +20,7 @@ class KelaService(application: KoskiApplication) extends Logging {
       .flatMap(KelaOppijaConverter.convertOppijaToKelaOppija)
   }
 
-  def streamOppijatByHetu(hetut: List[String])(implicit koskiSession: KoskiSpecificSession): Observable[JValue] = {
+  def streamOppijatByHetu(hetut: Seq[String])(implicit koskiSession: KoskiSpecificSession): Observable[JValue] = {
     val user = koskiSession // take current session so it can be used in observable
     val henkilot = application.opintopolkuHenkilöFacade.findOppijatByHetusNoSlaveOids(hetut)
     val oidToHenkilo: Map[Henkilö.Oid, OppijaHenkilö] = henkilot.map(h => h.oid -> h).toMap

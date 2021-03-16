@@ -21,7 +21,7 @@ class SuoritusjakoRepositoryV2(val db: DB) extends Logging with DatabaseExecutio
   val  MAX_SUORITUSJAKO_COUNT = 20
   def SUORITUSJAON_DEFAULT_VOIMASSAOLOAIKA = Date.valueOf(LocalDate.now.plusMonths(6))
 
-  def createSuoritusjako(opiskeluoikeudet: List[Opiskeluoikeus])(implicit user: KoskiSpecificSession): HttpStatus = {
+  def createSuoritusjako(opiskeluoikeudet: Seq[Opiskeluoikeus])(implicit user: KoskiSpecificSession): HttpStatus = {
     if (suoritusjakoCount(user.oid) < MAX_SUORITUSJAKO_COUNT)  {
       httpStatus(runDbSync(SuoritusJakoV2 += SuoritusjakoRowV2(
         secret = SuoritusjakoSecret.generateNew,
@@ -79,7 +79,7 @@ object SuoritusjakoJsonMethods {
   private val serializationContext = SerializationContext(KoskiSchema.schemaFactory, skipSyntheticProperties)
   private implicit val deserializationContext = ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
 
-  def serialize(opiskeluoikeudet: List[Opiskeluoikeus]): JValue =
+  def serialize(opiskeluoikeudet: Seq[Opiskeluoikeus]): JValue =
     Serializer.serialize(opiskeluoikeudet, serializationContext)
 
   def extractOpiskeluoikeudet(opiskeluoikeudet: JValue): Either[HttpStatus, List[Opiskeluoikeus]] =

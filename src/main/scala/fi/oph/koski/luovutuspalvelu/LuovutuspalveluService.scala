@@ -29,7 +29,7 @@ class LuovutuspalveluService(application: KoskiApplication) {
   }
 
   def queryOppijatByHetu(req: BulkHetuRequestV1)(implicit koskiSession: KoskiSpecificSession): Observable[JValue] = {
-    val henkilot: List[OppijaHenkilö] = application.opintopolkuHenkilöFacade.findOppijatByHetusNoSlaveOids(req.hetut)
+    val henkilot: Seq[OppijaHenkilö] = application.opintopolkuHenkilöFacade.findOppijatByHetusNoSlaveOids(req.hetut)
     val oidToHenkilo: Map[String, OppijaHenkilö] = henkilot.map(h => h.oid -> h).toMap
     val user = koskiSession // take current session so it can be used in observable
 
@@ -44,7 +44,7 @@ class LuovutuspalveluService(application: KoskiApplication) {
   private def streamingQuery(filters: List[OpiskeluoikeusQueryFilter])(implicit koskiSession: KoskiSpecificSession) =
     OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, None)
 
-  private def auditLogOpiskeluoikeusKatsominen(henkilöt: List[OppijaHenkilö])(implicit koskiSession: KoskiSpecificSession): Unit = henkilöt
+  private def auditLogOpiskeluoikeusKatsominen(henkilöt: Seq[OppijaHenkilö])(implicit koskiSession: KoskiSpecificSession): Unit = henkilöt
     .map(h => AuditLogMessage(KoskiOperation.OPISKELUOIKEUS_KATSOMINEN, koskiSession, Map(KoskiMessageField.oppijaHenkiloOid -> h.oid)))
     .foreach(AuditLog.log)
 
