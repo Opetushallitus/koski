@@ -103,7 +103,7 @@ object VapaaSivistystyöExampleData {
 
   lazy val varsinaisSuomenKansanopistoToimipiste: OidOrganisaatio = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste)
 
-  lazy val tunnustettu: MuuallaSuoritetunVapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen = MuuallaSuoritetunVapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen(
+  lazy val tunnustettu: VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen = VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen(
     "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
   )
 
@@ -176,7 +176,7 @@ object VapaaSivistystyöExampleData {
       tyyppi = Koodistokoodiviite("vstmuuallasuoritetutopinnot", koodistoUri = "suorituksentyyppi"),
       koulutusmoduuli = koulutusmoduuli,
       arviointi = Some(List(arviointi)),
-      tunnustettu = tunnustettu
+      tunnustettu = Some(tunnustettu)
     )
   }
 

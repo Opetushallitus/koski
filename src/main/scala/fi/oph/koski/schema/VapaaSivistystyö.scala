@@ -114,8 +114,9 @@ case class OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuori
   koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus,
   arviointi: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi]],
   @KoodistoKoodiarvo("vstopintokokonaisuus")
-  override val tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstopintokokonaisuus", koodistoUri = "suorituksentyyppi")
-) extends VapaanSivistystyönOpintokokonaisuudenSuoritus
+  override val tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstopintokokonaisuus", koodistoUri = "suorituksentyyppi"),
+  tunnustettu: Option[VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen] = None
+) extends VapaanSivistystyönOpintokokonaisuudenSuoritus with VSTTunnustettu
 
 @Title("Muualla suoritettujen opintojen suoritus")
 case class MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus(
@@ -124,7 +125,7 @@ case class MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintoj
   arviointi: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi]],
   @KoodistoKoodiarvo("vstmuuallasuoritetutopinnot")
   override val tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstmuuallasuoritetutopinnot", koodistoUri = "suorituksentyyppi"),
-  tunnustettu: MuuallaSuoritetunVapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen
+  tunnustettu: Option[VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen] = None
 ) extends VapaanSivistystyönOpintokokonaisuudenSuoritus with VSTTunnustettu
 
 @Title("Opintokokonaisuus")
@@ -162,7 +163,7 @@ trait VapaanSivistystyönKoulutuksenArviointi extends KoodistostaLöytyväArvioi
 
 @Description("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")
 @OksaUri("tmpOKSAID629", "osaamisen tunnustaminen")
-case class MuuallaSuoritetunVapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen(
+case class VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen(
    @Description("Osaamisen tunnustamisen kautta saatavan tutkinnon osan suorituksen selite.")
    @Tooltip("Kuvaus siitä, miten aikaisemmin hankittu osaaminen on tunnustettu.")
    @OksaUri("tmpOKSAID629", "osaamisen tunnustaminen")
@@ -172,5 +173,5 @@ case class MuuallaSuoritetunVapaanSivistystyönOpintojenSuorituksenOsaamisenTunn
 )
 
 trait VSTTunnustettu {
-  def tunnustettu: MuuallaSuoritetunVapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen
+  def tunnustettu: Option[VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen]
 }
