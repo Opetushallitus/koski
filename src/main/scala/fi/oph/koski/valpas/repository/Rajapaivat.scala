@@ -37,6 +37,8 @@ object Rajapäivät {
 
   def disableMock(): Unit = mockImplementation = default
 
+  def getCurrent(): Rajapäivät = mockImplementation
+
   def apply(allowMock: Boolean): () => Rajapäivät = {
     () => {
       if (allowMock) {
