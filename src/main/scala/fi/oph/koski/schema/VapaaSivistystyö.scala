@@ -262,6 +262,9 @@ trait OppivelvollisilleSuunnatunVapaanSivistystyönMaahanmuuttajienKotoutumiskou
 @Title("Maahanmuuttajien kotoutumiskoulutuksen kokonaisuus")
 case class OppivelvollisilleSuunnattuVapaanSivistystyönMaahanmuuttajienKotoutumisKokonaisuus(
   @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutuksenkieliopinnot")
+  @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutuksenohjaus")
+  @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenopinnot")
+  @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaisetopinnot")
   @KoodistoUri(koodistoUri = "suorituksentyyppi")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusOpintoviikoissa] = None
