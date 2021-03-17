@@ -110,6 +110,6 @@ object ValpasHakutoive {
 case class ValpasHakutoive(
   hakukohdeNimi: LocalizedString,
   hakutoivenumero: Option[Int],
-  pisteet: BigDecimal,
+  pisteet: Option[BigDecimal],
   hyväksytty: Option[Boolean]
 )

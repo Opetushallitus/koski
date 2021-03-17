@@ -52,9 +52,9 @@ object HakukoosteExampleData {
       email = generateEmail(henkilö),
       osoite = "Esimerkkikatu 123, 00000 KAUPUNKI",
       matkapuhelin = "0401234567",
-      huoltajanNimi = "Huoltaja Sukunimi",
-      huoltajanPuhelinnumero = "0407654321",
-      huoltajanSahkoposti = "huoltaja.sukunimi@gmail.com",
+      huoltajanNimi = Some("Huoltaja Sukunimi"),
+      huoltajanPuhelinnumero = Some("0407654321"),
+      huoltajanSähkoposti = Some("huoltaja.sukunimi@gmail.com"),
       hakutoiveet = hakutoiveet.map(hakutoive => hakutoive.copy(
         hakukohdeNimi = MockOrganisaatioRepository.getOrganisaationNimiHetkellä(oid = hakutoive.hakukohdeOid, localDate = muokattu.toLocalDate).get,
         hakutoivenumero = if (hakutoive.hakutoivenumero >= 0) {
@@ -76,13 +76,13 @@ object HakukoosteExampleData {
       hakutoivenumero = hakutoivenumero,
       koulutusNimi = Finnish(koulutusNimi),
       hakukohdeOrganisaatio = hakukohdeOid,
-      pisteet = 0,
-      alinValintaPistemaara = 0,
-      valintatila = "KESKEN",
-      vastaanottotieto = "KESKEN",
-      ilmoittautumistila = "EI_ILMOITTAUTUNUT",
-      koulutusOid = "TODO",
-      harkinnanvaraisuus = "TODO",
+      pisteet = Some(0),
+      alinValintaPistemaara = Some(0),
+      valintatila = Some("KESKEN"),
+      vastaanottotieto = Some("KESKEN"),
+      ilmoittautumistila = Some("EI_ILMOITTAUTUNUT"),
+      koulutusOid = Some("TODO"),
+      harkinnanvaraisuus = Some("TODO"),
       hakukohdeKoulutuskoodi = "TODO"
     )
 
