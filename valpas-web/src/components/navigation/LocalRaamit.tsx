@@ -129,7 +129,7 @@ export const SimpleTextField = (props: SimpleTextFieldProps) => (
   <input
     id={props.id}
     className={b("input")}
-    value={props.value}
+    value={props.value || ""}
     onChange={(event) => props.onChange(event.target.value)}
   />
 )
