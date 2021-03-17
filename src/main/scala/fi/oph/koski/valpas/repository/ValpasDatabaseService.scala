@@ -32,7 +32,7 @@ class ValpasDatabaseService(application: KoskiApplication) extends DatabaseConve
     ValpasOppijaRow(
       oppijaOid = r.rs.getString("oppija_oid"),
       hetu = Option(r.rs.getString("hetu")),
-      syntymäaika = Option(r.rs.getObject("syntymaaika", classOf[LocalDate])),
+      syntymäaika = Option(r.getLocalDate("syntymaaika")),
       etunimet = r.rs.getString("etunimet"),
       sukunimi = r.rs.getString("sukunimi"),
       oikeutetutOppilaitokset = r.getArray("oikeutetutOppilaitokset").toSet,

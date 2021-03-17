@@ -78,8 +78,8 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
   private def fetchOrganisaatiohistoriat(päivä: LocalDate, opiskeluoikeusOids: Seq[String]) = {
     implicit val getResult: GetResult[OrganisaatiohistoriaResult] = GetResult(r => OrganisaatiohistoriaResult(
       opiskeluoikeusOid = r.rs.getString("opiskeluoikeus_oid"),
-      alku = r.rs.getObject("alku", classOf[LocalDate]),
-      loppu = r.rs.getObject("loppu", classOf[LocalDate]),
+      alku = r.getLocalDate("alku"),
+      loppu = r.getLocalDate("loppu"),
       oppilaitosOid = r.rs.getString("oppilaitos_oid"),
       oppilaitosNimi = r.rs.getString("oppilaitos_nimi"),
       koulutustoimijaOid = r.rs.getString("koulutustoimija_oid"),

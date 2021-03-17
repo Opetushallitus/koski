@@ -5,6 +5,8 @@ import com.github.tminglei.slickpg.str.PgStringSupport
 import org.json4s.JValue
 import slick.jdbc.{PositionedParameters, PositionedResult, PostgresProfile, SQLActionBuilder}
 
+import java.time.LocalDate
+
 trait PostgresDriverWithJsonSupport extends PostgresProfile
   with PgJson4sSupport
   with PgArraySupport
@@ -38,6 +40,8 @@ trait PostgresDriverWithJsonSupport extends PostgresProfile
       def getArray[T](columnName: String): IndexedSeq[T] = r.rs.getArray(columnName).getArray.asInstanceOf[Array[T]]
 
       def getJson(columnName: String): JValue = jsonMethods.parse(r.rs.getString(columnName))
+
+      def getLocalDate(columnName: String): LocalDate = r.rs.getObject(columnName, classOf[LocalDate])
     }
   }
 
