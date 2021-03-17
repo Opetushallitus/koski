@@ -123,12 +123,12 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
           osasuoritukset = Some(List(
             vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus.copy(
               koulutusmoduuli = vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus.koulutusmoduuli.copy(
-                laajuus = Some(LaajuusOpintopisteissä(10))
+                laajuus = Some(LaajuusOpintoviikoissa(10))
               )
             )
           )),
           koulutusmoduuli = suoritusKOTO.koulutusmoduuli.copy(
-            laajuus = Some(LaajuusOpintopisteissä(10))
+            laajuus = Some(LaajuusOpintoviikoissa(10))
           )
         )))
 

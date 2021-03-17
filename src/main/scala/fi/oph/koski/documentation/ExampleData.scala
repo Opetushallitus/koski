@@ -30,6 +30,7 @@ object ExampleData {
   def vahvistusPaikkakunnalla(päivä: LocalDate = date(2016, 6, 4), org: OrganisaatioWithOid = jyväskylänNormaalikoulu, kunta: Koodistokoodiviite = jyväskylä) =
     Some(HenkilövahvistusPaikkakunnalla(päivä = päivä, kunta, myöntäjäOrganisaatio = org, myöntäjäHenkilöt = List(Organisaatiohenkilö("Reijo Reksi", "rehtori", org))))
 
+  lazy val laajuusOpintoviikoissa: Koodistokoodiviite = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(koodiarvo = "1", koodistoUri = "opintojenlaajuusyksikko", nimi = Some("opintoviikkoa")))
   lazy val laajuusOpintopisteissä: Koodistokoodiviite = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(koodiarvo = "2", koodistoUri = "opintojenlaajuusyksikko", nimi = Some("opintopistettä")))
   lazy val laajuusVuosiviikkotunneissa: Koodistokoodiviite = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(koodiarvo = "3", koodistoUri = "opintojenlaajuusyksikko", nimi = Some("vuosiviikkotuntia")))
   lazy val laajuusKursseissa: Koodistokoodiviite = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(koodiarvo = "4", koodistoUri = "opintojenlaajuusyksikko", nimi = Some("kurssia")))

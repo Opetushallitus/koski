@@ -20,6 +20,12 @@ case class LaajuusKaikkiYksiköt(
   yksikkö: Koodistokoodiviite
 ) extends Laajuus
 
+case class LaajuusOpintoviikoissa(
+  arvo: Double,
+  @KoodistoKoodiarvo("1")
+  yksikkö: Koodistokoodiviite = laajuusOpintoviikoissa
+) extends LaajuusOpintopisteissäTaiKursseissa
+
 case class LaajuusOpintopisteissä(
   arvo: Double,
   @KoodistoKoodiarvo("2")
