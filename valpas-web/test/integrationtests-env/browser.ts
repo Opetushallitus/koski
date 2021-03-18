@@ -61,12 +61,20 @@ export const goToLocation = async (path: string) => {
 }
 
 export const $ = async (selector: string, timeout = 200) => {
-  const el = await wait(until.elementLocated(By.css(selector)), timeout)
-  return await wait(until.elementIsVisible(el), timeout)
+  try {
+    const el = await wait(until.elementLocated(By.css(selector)), timeout)
+    return await wait(until.elementIsVisible(el), timeout)
+  } catch (_err) {
+    throw new Error(`Could not find a visible element by "${selector}"`)
+  }
 }
 
 export const $$ = async (selector: string, timeout = 200) => {
-  return await wait(until.elementsLocated(By.css(selector)), timeout)
+  try {
+    return await wait(until.elementsLocated(By.css(selector)), timeout)
+  } catch (_err) {
+    throw new Error(`Could not find elements by "${selector}"`)
+  }
 }
 
 export const textEventuallyEquals = (

@@ -1,4 +1,6 @@
 import * as A from "fp-ts/Array"
+import { pipe } from "fp-ts/lib/function"
+import * as O from "fp-ts/Option"
 import * as Ord from "fp-ts/Ord"
 import * as string from "fp-ts/string"
 import { Language } from "../i18n/i18n"
@@ -37,6 +39,12 @@ export type Haku = {
   aktiivinen: boolean
   muokattu: ISODateTime
   hakutoiveet: Hakutoive[]
+  osoite: string
+  puhelinnumero: string
+  sähköposti: string
+  huoltajanNimi?: string
+  huoltajanPuhelinnumero?: string
+  huoltajanSähköposti?: string
 }
 
 export type Hakutoive = {
@@ -74,4 +82,11 @@ export const Opiskeluoikeus = {
       Ord.reverse(päättymispäiväOrd),
       tyyppiNimiOrd(lang),
     ]),
+}
+
+const muokkausOrd = Ord.contramap((haku: Haku) => haku.muokattu)(string.Ord)
+
+export const Haku = {
+  latest: (haut: Haku[]) =>
+    pipe(haut, A.sortBy([muokkausOrd]), A.head, O.toNullable),
 }

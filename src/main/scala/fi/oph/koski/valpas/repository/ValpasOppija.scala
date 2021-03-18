@@ -81,7 +81,13 @@ object ValpasHakutilanne {
       hakemusOid = hakukooste.hakemusOid,
       aktiivinen = hakukooste.hakutoiveet.exists(_.isAktiivinen),
       muokattu = hakukooste.muokattu,
-      hakutoiveet = hakukooste.hakutoiveet.map(ValpasHakutoive.apply)
+      hakutoiveet = hakukooste.hakutoiveet.map(ValpasHakutoive.apply),
+      osoite = hakukooste.osoite,
+      puhelinnumero = hakukooste.matkapuhelin,
+      sähköposti = hakukooste.email,
+      huoltajanNimi = hakukooste.huoltajanNimi,
+      huoltajanPuhelinnumero = hakukooste.huoltajanPuhelinnumero,
+      huoltajanSähköposti = hakukooste.huoltajanSähkoposti
     )
 }
 
@@ -91,7 +97,13 @@ case class ValpasHakutilanne(
   hakemusOid: String,
   aktiivinen: Boolean,
   muokattu: String,
-  hakutoiveet: Seq[ValpasHakutoive]
+  hakutoiveet: Seq[ValpasHakutoive],
+  osoite: String,
+  puhelinnumero: String,
+  sähköposti: String,
+  huoltajanNimi: Option[String],
+  huoltajanPuhelinnumero: Option[String],
+  huoltajanSähköposti: Option[String]
 )
 
 object ValpasHakutoive {

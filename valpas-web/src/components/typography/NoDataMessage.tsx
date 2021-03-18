@@ -1,13 +1,7 @@
 import bem from "bem-ts"
-import React from "react"
+import { plainComponent } from "../../utils/plaincomponent"
 import "./NoDataMessage.less"
 
 const b = bem("nodatamessage")
 
-export type NoDataMessageProps = {
-  children: React.ReactNode
-}
-
-export const NoDataMessage = (props: NoDataMessageProps) => (
-  <div className={b()}>{props.children}</div>
-)
+export const NoDataMessage = plainComponent("div", b())

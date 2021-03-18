@@ -1,4 +1,5 @@
 import {
+  $$,
   contentEventuallyEquals,
   goToLocation,
   loginAs,
@@ -14,12 +15,13 @@ const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
 const secondaryHeadingEquals = (expected: string) =>
   textEventuallyEquals("h2.heading--secondary", expected)
-const oppivelvollisuustiedotEquals = (expected: string) =>
-  contentEventuallyEquals("#oppivelvollisuustiedot .card__body", expected)
-const opiskeluhistoriaEquals = (expected: string) =>
-  contentEventuallyEquals("#opiskeluhistoria .card__body", expected)
-const hautEquals = (expected: string) =>
-  contentEventuallyEquals("#haut .card__body", expected)
+const cardBodyEquals = (id: string) => (expected: string) =>
+  contentEventuallyEquals(`#${id} .card__body`, expected)
+const oppivelvollisuustiedotEquals = cardBodyEquals("oppivelvollisuustiedot")
+const opiskeluhistoriaEquals = cardBodyEquals("opiskeluhistoria")
+const hautEquals = cardBodyEquals("haut")
+const ilmoitetutYhteystiedotEquals = (expected: string) =>
+  contentEventuallyEquals("#ilmoitetut-yhteystiedot", expected)
 
 describe("Oppijakohtainen näkymä", () => {
   it("Näyttää oppijan tiedot, johon käyttäjällä on lukuoikeus", async () => {
@@ -159,6 +161,35 @@ describe("Oppijakohtainen näkymä", () => {
       Jyväskylän normaalikoulu
       Ryhmä: 9C
       Tila: Valmistunut
+    `)
+  })
+
+  it("Näyttää oppijan yhteystiedot", async () => {
+    await loginAs(
+      "/virkailija/oppijat/1.2.246.562.24.00000000001",
+      "valpas-jkl-normaali",
+      "valpas-jkl-normaali"
+    )
+
+    await ilmoitetutYhteystiedotEquals(`
+      Ilmoitetut yhteystiedot
+      keyboard_arrow_rightYhteystiedot
+      keyboard_arrow_rightHuoltaja
+    `)
+
+    const labels = await $$("#yhteystiedot .accordion__label")
+    await Promise.all(labels.map((label) => label.click()))
+
+    await ilmoitetutYhteystiedotEquals(`
+      Ilmoitetut yhteystiedot
+      keyboard_arrow_downYhteystiedot
+      Lähiosoite:	Esimerkkikatu 123, 00000 KAUPUNKI
+      Puhelin:	0401234567
+      Sähköposti:	Valpas.Oppivelvollinen-ysiluokka-kesken-keväällä-2021@gmail.com
+      keyboard_arrow_downHuoltaja
+      Nimi:	Huoltaja Sukunimi
+      Puhelin:	0401234567
+      Sähköposti:	huoltaja.sukunimi@gmail.com
     `)
   })
 })

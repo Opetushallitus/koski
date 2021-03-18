@@ -1,0 +1,28 @@
+@import "../../style/colors.less";
+@import "../../style/spacing.less";
+
+.accordion__item .accordion__content {
+  display: none;
+}
+
+.accordion__item--open .accordion__content {
+  display: block;
+}
+
+.accordion__label {
+  margin-bottom: 0.5rem;
+  color: @color-blue;
+  user-select: none;
+  cursor: pointer;
+
+  &:hover {
+    color: @color-blue-lighten-1;
+  }
+}
+
+.accordion__content {
+  margin: @padding-v 0;
+  border-left: 2px solid @color-gray-lighten-3;
+  padding-left: @padding-h;
+  margin-left: 0.7rem;
+}
