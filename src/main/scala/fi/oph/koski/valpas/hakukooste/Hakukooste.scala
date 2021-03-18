@@ -3,6 +3,7 @@ package fi.oph.koski.valpas.hakukooste
 import fi.oph.koski.schema.annotation.{EnumValues, KoodistoUri}
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.valpas.repository.{ValpasHakutilanne, ValpasHakutoive, ValpasHenkilö, ValpasOppilaitos}
+import fi.oph.scalaschema.annotation.SyntheticProperty
 
 
 case class Hakukooste(
@@ -18,9 +19,9 @@ case class Hakukooste(
   email: String,
   osoite: String,
   matkapuhelin: String,
-  huoltajanNimi: String,
-  huoltajanPuhelinnumero: String,
-  huoltajanSahkoposti: String,
+  huoltajanNimi: Option[String],
+  huoltajanPuhelinnumero: Option[String],
+  huoltajanSähkoposti: Option[String],
   hakutoiveet: Seq[Hakutoive]
 )
 
@@ -29,19 +30,22 @@ case class Hakutoive(
   hakukohdeNimi: LocalizedString,
   hakukohdeOrganisaatio: String,
   koulutusNimi: LocalizedString,
-  koulutusOid: ValpasHakutoive.KoulutusOid,
+  koulutusOid: Option[ValpasHakutoive.KoulutusOid],
   hakutoivenumero: Int,
-  pisteet: BigDecimal,
-  alinValintaPistemaara: BigDecimal,
+  pisteet: Option[BigDecimal],
+  alinValintaPistemaara: Option[BigDecimal],
   @EnumValues(Valintatila.values)
-  valintatila: String,
+  valintatila: Option[String],
   @EnumValues(Vastaanottotieto.values)
-  vastaanottotieto: String,
+  vastaanottotieto: Option[String],
   @EnumValues(Ilmoittautumistila.values)
-  ilmoittautumistila: String,
-  harkinnanvaraisuus: String, // TODO: Arvot?
+  ilmoittautumistila: Option[String],
+  harkinnanvaraisuus: Option[String], // TODO: Arvot?
   hakukohdeKoulutuskoodi: String // TODO: Arvot?
-)
+) {
+  @SyntheticProperty
+  def isAktiivinen: Boolean = valintatila.exists(v => Valintatila.isAktiivinen(v))
+}
 
 object Vastaanottotieto {
   val values = Set(
@@ -76,7 +80,8 @@ object Valintatila {
 }
 
 object Ilmoittautumistila {
-  val values = Set("EI_TEHTY",
+  val values = Set(
+    "EI_TEHTY",
     "LASNA_KOKO_LUKUVUOSI",
     "POISSA_KOKO_LUKUVUOSI",
     "EI_ILMOITTAUTUNUT",

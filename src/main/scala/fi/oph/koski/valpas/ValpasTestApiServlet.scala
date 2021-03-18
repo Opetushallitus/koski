@@ -1,14 +1,12 @@
 package fi.oph.koski.valpas
 
-import java.time.LocalDate
-
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.servlet.NoCache
-import fi.oph.koski.valpas.repository.{MockRajapäivät, OikeatRajapäivät}
+import fi.oph.koski.valpas.fixture.FixtureUtil
+import fi.oph.koski.valpas.repository.MockRajapäivät
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
-import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 
 class ValpasTestApiServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with Unauthenticated {
   before() {
@@ -23,32 +21,21 @@ class ValpasTestApiServlet(implicit val application: KoskiApplication) extends V
   }
 
   get("/reset-mock-data/:paiva") {
-    val tarkasteluPäivä = LocalDate.parse(getStringParam("paiva"))
-    resetMockData(MockRajapäivät(tarkasteluPäivä))
+    val tarkasteluPäivä = getLocalDateParam("paiva")
+    FixtureUtil.resetMockData(application, new MockRajapäivät(tarkasteluPäivä))
+    contentType = "text/json"
+    response.writer.print("\"Valpas mock data reset\"")
   }
 
   get("/reset-mock-data") {
-    resetMockData(MockRajapäivät())
+    FixtureUtil.resetMockData(application)
+    contentType = "text/json"
+    response.writer.print("\"Valpas mock data reset\"")
   }
 
   get("/clear-mock-data") {
-    synchronized {
-      ValpasMockUsers.mockUsersEnabled = false
-      application.fixtureCreator.resetFixtures(application.fixtureCreator.koskiSpecificFixtureState)
-      contentType = "text/json"
-      response.writer.print("\"Valpas mock data cleared\"")
-      MockRajapäivät.mockRajapäivät = OikeatRajapäivät()
-    }
-  }
-
-  private def resetMockData(rajapäivät: MockRajapäivät) = {
-    synchronized {
-      ValpasMockUsers.mockUsersEnabled = true
-      application.fixtureCreator.resetFixtures(application.fixtureCreator.valpasFixtureState)
-      contentType = "text/json"
-      response.writer.print("\"Valpas mock data reset\"")
-      val tarkasteluPäivä = LocalDate.parse(getStringParam("paiva"))
-      MockRajapäivät.mockRajapäivät = rajapäivät
-    }
+    FixtureUtil.clearMockData(application)
+    contentType = "text/json"
+    response.writer.print("\"Valpas mock data cleared\"")
   }
 }

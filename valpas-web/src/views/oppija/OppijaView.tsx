@@ -12,7 +12,7 @@ import { BackIcon } from "../../components/icons/Icon"
 import { InfoTooltip } from "../../components/tooltip/InfoTooltip"
 import { Heading, SecondaryHeading } from "../../components/typography/headings"
 import { T, t } from "../../i18n/i18n"
-import { Oppija } from "../../state/oppijat"
+import { OppijaHakutilanteilla } from "../../state/oppijat"
 import { OppijanHaut } from "./OppijanHaut"
 import { OppijanOpiskeluhistoria } from "./OppijanOpiskeluhistoria"
 import { OppijanOppivelvollisuustiedot } from "./OppijanOppivelvollisuustiedot"
@@ -31,7 +31,7 @@ export const OppijaView = (props: OppijaViewProps) => {
       <BackNav />
       <OppijaHeadings oppija={oppija} oid={queryOid} />
 
-      {mapSuccess(oppija, (oppijaData: Oppija) => (
+      {mapSuccess(oppija, (oppijaData: OppijaHakutilanteilla) => (
         <>
           <ColumnsContainer>
             <Column size={5}>
@@ -98,7 +98,7 @@ const BackNav = () => (
 )
 
 const OppijaHeadings = (props: {
-  oppija: ApiMethodState<Oppija>
+  oppija: ApiMethodState<OppijaHakutilanteilla>
   oid: string
 }) => (
   <>
@@ -107,14 +107,14 @@ const OppijaHeadings = (props: {
       {mapSuccess(
         props.oppija,
         (oppija) =>
-          `${oppija.henkilö.sukunimi} ${oppija.henkilö.etunimet} (${oppija.henkilö.hetu})`
+          `${oppija.oppija.henkilö.sukunimi} ${oppija.oppija.henkilö.etunimet} (${oppija.oppija.henkilö.hetu})`
       )}
       {mapError(props.oppija, () => t("oppija__oletusotsikko"))}
     </Heading>
     <SecondaryHeading>
       {mapLoading(props.oppija, () => t("Ladataan"))}
       {mapSuccess(props.oppija, (oppija) =>
-        t("oppija__oppija_oid", { oid: oppija.henkilö.oid })
+        t("oppija__oppija_oid", { oid: oppija.oppija.henkilö.oid })
       )}
       {mapError(props.oppija, () => t("oppija__ei_löydy", { oid: props.oid }))}
     </SecondaryHeading>

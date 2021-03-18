@@ -70,7 +70,11 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
     SchemaValidatingExtractor.extract(value, klass).right.map(_.asInstanceOf[T])
   }
 
-  def get(organisaatioOid: String, koulutustoimijaOid: Option[String], `rawType`: String)(implicit session: KoskiSpecificSession): Either[HttpStatus, List[StorablePreference]] = {
+  def get(
+    organisaatioOid: String,
+    koulutustoimijaOid: Option[String],
+    `rawType`: String
+  )(implicit session: KoskiSpecificSession): Either[HttpStatus, Seq[StorablePreference]] = {
     val `type` = migrateTypeName(rawType)
 
     if (!session.hasWriteAccess(organisaatioOid, koulutustoimijaOid)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())

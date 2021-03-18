@@ -59,9 +59,9 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
 
 
   private def runUpdate(oids: List[Oid], koskiOids: List[Oid], lastContext: HenkilöUpdateContext, refresh: Boolean) = {
-    val oppijat: List[OppijaHenkilö] = findOppijatWithoutSlaveOids(koskiOids)
+    val oppijat: Seq[OppijaHenkilö] = findOppijatWithoutSlaveOids(koskiOids)
 
-    val oppijatWithMaster: List[WithModifiedTime] = oppijat.map { oppija =>
+    val oppijatWithMaster: Seq[WithModifiedTime] = oppijat.map { oppija =>
       WithModifiedTime(application.henkilöRepository.opintopolku.withMasterInfo(oppija), oppija.modified)
     }
 
@@ -75,14 +75,14 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
       logger.info(s"Changed count: ${oids.size}, filtered count ${oppijat.size}, lastModified: $lastModified")
     }
 
-    val updatedInKoskiHenkilöCache: List[Oid] = oppijatWithMaster
+    val updatedInKoskiHenkilöCache: Seq[Oid] = oppijatWithMaster
       .filter(o => application.henkilöCache.updateHenkilö(o.tiedot) > 0)
       .map(_.tiedot.henkilö.oid)
 
     if (updatedInKoskiHenkilöCache.isEmpty) {
       HenkilöUpdateContext(lastModified)
     } else {
-      val muuttuneidenHenkilötiedot: List[OpiskeluoikeudenHenkilötiedot] = application.perustiedotRepository
+      val muuttuneidenHenkilötiedot: Seq[OpiskeluoikeudenHenkilötiedot] = application.perustiedotRepository
         .findHenkiloPerustiedotByOids(updatedInKoskiHenkilöCache)
         .map(p => {
           val päivitetytTiedot: WithModifiedTime = oppijatByOid(p.henkilöOid.getOrElse(p.henkilö.get.oid))

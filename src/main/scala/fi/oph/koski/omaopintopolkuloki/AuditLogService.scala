@@ -15,7 +15,7 @@ import scala.collection.JavaConverters._
 
 class AuditLogService(organisaatioRepository: OrganisaatioRepository, dynamoDB: DynamoDB) extends Logging {
 
-  def queryLogsFromDynamo(oppijaOid: String): Either[HttpStatus, List[OrganisaationAuditLogit]] = {
+  def queryLogsFromDynamo(oppijaOid: String): Either[HttpStatus, Seq[OrganisaationAuditLogit]] = {
     val auditLogTable = dynamoDB.getTable(AuditLogTableName)
     val querySpec = new QuerySpec()
       .withKeyConditionExpression("studentOid = :oid")
@@ -71,8 +71,8 @@ class AuditLogService(organisaatioRepository: OrganisaatioRepository, dynamoDB: 
 }
 
 case class OrganisaationAuditLogit(
-  organizations: List[Organisaatio],
-  timestamps: List[String]
+  organizations: Seq[Organisaatio],
+  timestamps: Seq[String]
 )
 
 case class Organisaatio(

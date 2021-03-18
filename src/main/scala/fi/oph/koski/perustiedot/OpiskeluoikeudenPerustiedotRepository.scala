@@ -139,7 +139,7 @@ class OpiskeluoikeudenPerustiedotRepository(
     tilat.reverse.find(!_.alku.isAfter(LocalDate.now)).toList
   }
 
-  def findHenkiloPerustiedotByOids(oids: List[String]): List[OpiskeluoikeudenPerustiedot] = {
+  def findHenkiloPerustiedotByOids(oids: Seq[String]): Seq[OpiskeluoikeudenPerustiedot] = {
     val doc = toJValue(Map("query" -> Map("terms" -> Map("henkilöOid" -> oids)), "from" -> 0, "size" -> 10000))
     indexer.index.runSearch(doc)
       .map(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[OpiskeluoikeudenPerustiedot](j \ "_source", ignoreExtras = true)))

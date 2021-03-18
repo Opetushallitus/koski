@@ -46,7 +46,7 @@ class MockOpintopolkuHenkilöFacade extends OpintopolkuHenkilöFacade with Loggi
     oppijat.getOppijat.find(_.henkilö.oid == id)
   }
 
-  def findOppijatNoSlaveOids(oids: List[String]): List[OppijaHenkilö] = {
+  def findOppijatNoSlaveOids(oids: Seq[String]): Seq[OppijaHenkilö] = {
     oids.flatMap(findOppijaByOid)
   }
 
@@ -86,7 +86,7 @@ class MockOpintopolkuHenkilöFacade extends OpintopolkuHenkilöFacade with Loggi
     alkuperäisetOppijat.diff(oppijat.getOppijat).map(_.henkilö.oid)
   }
 
-  def findOppijatByHetusNoSlaveOids(hetus: List[String]): List[OppijaHenkilö] = synchronized {
+  def findOppijatByHetusNoSlaveOids(hetus: Seq[String]): Seq[OppijaHenkilö] = synchronized {
     hetus.flatMap(findOppijaByHetu)
   }
 

@@ -60,7 +60,8 @@ class EditorServlet(implicit val application: KoskiApplication) extends EditorAp
   get("/preferences/:organisaatioOid/:type") {
     val organisaatioOid = params("organisaatioOid")
     val `type` = params("type")
-    renderEither[List[EditorModel]](preferencesService.get(organisaatioOid, params.get("koulutustoimijaOid"), `type`).right.map(_.map(OppijaEditorModel.buildModel(_, true))))
+    renderEither[Seq[EditorModel]](preferencesService.get(organisaatioOid, params.get("koulutustoimijaOid"), `type`)
+      .right.map(_.map(OppijaEditorModel.buildModel(_, true))))
   }
 
   post("/check-vaatiiko-suoritus-maksuttomuus-tiedon") {

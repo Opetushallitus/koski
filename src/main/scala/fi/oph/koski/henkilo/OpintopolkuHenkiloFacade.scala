@@ -13,12 +13,12 @@ import org.http4s._
 trait OpintopolkuHenkilöFacade {
   def findOppijaByOid(oid: String): Option[LaajatOppijaHenkilöTiedot]
   def findOppijaByHetu(hetu: String): Option[LaajatOppijaHenkilöTiedot]
-  def findOppijatNoSlaveOids(oids: List[String]): List[OppijaHenkilö]
+  def findOppijatNoSlaveOids(oids: Seq[String]): Seq[OppijaHenkilö]
   def findChangedOppijaOids(since: Long, offset: Int, amount: Int): List[Oid]
   def findMasterOppija(oid: String): Option[LaajatOppijaHenkilöTiedot]
   def findMasterOppijat(oids: List[String]): Map[String, LaajatOppijaHenkilöTiedot]
   def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö]
-  def findOppijatByHetusNoSlaveOids(hetus: List[String]): List[OppijaHenkilö]
+  def findOppijatByHetusNoSlaveOids(hetus: Seq[String]): Seq[OppijaHenkilö]
   def findSlaveOids(masterOid: String): List[Oid]
 }
 
@@ -44,11 +44,15 @@ object RemoteOpintopolkuHenkilöFacade {
   }
 }
 
-class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroRekisteriClient) extends OpintopolkuHenkilöFacade with EntityDecoderInstances with Timing {
+class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroRekisteriClient)
+  extends OpintopolkuHenkilöFacade
+    with EntityDecoderInstances
+    with Timing {
+
   def findOppijaByOid(oid: String): Option[LaajatOppijaHenkilöTiedot] =
     runTask(oppijanumeroRekisteriClient.findOppijaByOid(oid))
 
-  def findOppijatNoSlaveOids(oids: List[Oid]): List[OppijaHenkilö] =
+  def findOppijatNoSlaveOids(oids: Seq[Oid]): Seq[OppijaHenkilö] =
     runTask(oppijanumeroRekisteriClient.findOppijatNoSlaveOids(oids))
 
   def findChangedOppijaOids(since: Long, offset: Int, amount: Int): List[Oid] =
@@ -66,7 +70,7 @@ class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroR
   def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö] =
     runTask(oppijanumeroRekisteriClient.findOrCreate(createUserInfo))
 
-  def findOppijatByHetusNoSlaveOids(hetus: List[String]): List[OppijaHenkilö] =
+  def findOppijatByHetusNoSlaveOids(hetus: Seq[String]): List[OppijaHenkilö] =
     runTask(oppijanumeroRekisteriClient.findOppijatByHetusNoSlaveOids(hetus))
 
   def findSlaveOids(masterOid: String): List[Oid] = runTask(oppijanumeroRekisteriClient.findSlaveOids(masterOid))
@@ -77,7 +81,7 @@ class RemoteOpintopolkuHenkilöFacadeWithMockOids(
   perustiedotRepository: OpiskeluoikeudenPerustiedotRepository,
   perustiedotIndexer: OpiskeluoikeudenPerustiedotIndexer
 ) extends RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient) {
-  override def findOppijatNoSlaveOids(oids: List[String]): List[OppijaHenkilö] = {
+  override def findOppijatNoSlaveOids(oids: Seq[String]): Seq[OppijaHenkilö] = {
     val found = super.findOppijatNoSlaveOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
     oids.map { oid =>
       found.get(oid) match {

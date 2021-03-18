@@ -7,12 +7,12 @@ import { OpiskeluIcon } from "../../components/icons/Icon"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import { getLocalized, T, useLanguage } from "../../i18n/i18n"
 import { KoodistoKoodiviite } from "../../state/koodistot"
-import { Opiskeluoikeus, Oppija } from "../../state/oppijat"
+import { Opiskeluoikeus, OppijaHakutilanteilla } from "../../state/oppijat"
 import { ISODate } from "../../state/types"
 import { parseYear } from "../../utils/date"
 
 export type OppijanOpiskeluhistoriaProps = {
-  oppija: Oppija
+  oppija: OppijaHakutilanteilla
 }
 
 export const OppijanOpiskeluhistoria = (
@@ -21,9 +21,9 @@ export const OppijanOpiskeluhistoria = (
   const language = useLanguage()
   const sort = Opiskeluoikeus.sort(language)
 
-  return props.oppija.opiskeluoikeudet.length > 0 ? (
+  return props.oppija.oppija.opiskeluoikeudet.length > 0 ? (
     <>
-      {sort(props.oppija.opiskeluoikeudet).map((opiskeluoikeus) => {
+      {sort(props.oppija.oppija.opiskeluoikeudet).map((opiskeluoikeus) => {
         const nimi = koodistonimi(opiskeluoikeus.tyyppi)
         const range = yearRangeString(
           opiskeluoikeus.alkamispäivä,

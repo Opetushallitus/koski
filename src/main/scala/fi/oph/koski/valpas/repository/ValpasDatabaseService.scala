@@ -3,28 +3,52 @@ package fi.oph.koski.valpas.repository
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DatabaseConverters, SQLHelpers}
-import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
-import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema.{RHenkilöTable, ROpiskeluoikeusTable}
+import org.json4s.JValue
 import slick.jdbc.GetResult
-import java.sql.ResultSet
+
+import java.time.LocalDate
+
+case class ValpasOppijaRow(
+  oppijaOid: String,
+  hetu: Option[String],
+  syntymäaika: Option[LocalDate],
+  etunimet: String,
+  sukunimi: String,
+  oikeutetutOppilaitokset: Set[ValpasOppilaitos.Oid],
+  opiskeluoikeudet: JValue
+)
 
 class ValpasDatabaseService(application: KoskiApplication) extends DatabaseConverters with Logging {
-  val db = application.raportointiDatabase
-  lazy val RHenkilöt = TableQuery[RHenkilöTable]
-  lazy val ROpiskeluoikeudet = TableQuery[ROpiskeluoikeusTable]
+  private val db = application.raportointiDatabase
 
-  def getPeruskoulunValvojalleNäkyväOppija(oppijaOid: String, rajapäivät: Rajapäivät): Option[ValpasOppijaResult] =
+  def getPeruskoulunValvojalleNäkyväOppija(oppijaOid: String, rajapäivät: Rajapäivät): Option[ValpasOppijaRow] =
     getOppijat(Some(oppijaOid), None, rajapäivät).headOption
 
-  def getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOids: Option[Seq[String]], rajapäivät: Rajapäivät): Seq[ValpasOppijaResult] =
+  def getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOids: Option[Seq[String]], rajapäivät: Rajapäivät): Seq[ValpasOppijaRow] =
     getOppijat(None, oppilaitosOids, rajapäivät)
+
+  private implicit def getResult: GetResult[ValpasOppijaRow] = GetResult(r => {
+    ValpasOppijaRow(
+      oppijaOid = r.rs.getString("oppija_oid"),
+      hetu = Option(r.rs.getString("hetu")),
+      syntymäaika = Option(r.getLocalDate("syntymaaika")),
+      etunimet = r.rs.getString("etunimet"),
+      sukunimi = r.rs.getString("sukunimi"),
+      oikeutetutOppilaitokset = r.getArray("oikeutetutOppilaitokset").toSet,
+      opiskeluoikeudet = r.getJson("opiskeluoikeudet")
+    )
+  })
 
   // Huom: Luotetaan siihen, että käyttäjällä on oikeudet nimenomaan annettuihin oppilaitoksiin!
   // Huom2: Tämä toimii vain peruskoulun hakeutumisen valvojille (ei esim. 10-luokille tai toisen asteen näkymiin yms.)
   // Huom3: Tämä ei filteröi opiskeluoikeuksia sen mukaan, minkä tiedot kuuluisi näyttää listanäkymässä, jos samalla oppijalla on useita opiskeluoikeuksia.
   //        Valinta voidaan jättää joko Scalalle, käyttöliitymälle tai tehdä toinen query, joka tekee valinnan SQL:ssä.
-  private def getOppijat(oppijaOid: Option[String], oppilaitosOids: Option[Seq[String]], rajapäivät: Rajapäivät): Seq[ValpasOppijaResult] = {
+  private def getOppijat(
+    oppijaOid: Option[String],
+    oppilaitosOids: Option[Seq[String]],
+    rajapäivät: Rajapäivät
+  ): Seq[ValpasOppijaRow] = {
     val lakiVoimassaPeruskoulustaValmistuneillaAlku = rajapäivät.lakiVoimassaPeruskoulustaValmistuneillaAlku
     val keväänValmistumisjaksoAlku = rajapäivät.keväänValmistumisjaksoAlku
     val keväänValmistumisjaksoLoppu = rajapäivät.keväänValmistumisjaksoLoppu
@@ -293,21 +317,6 @@ WITH
   ORDER BY
     oppivelvollinen_oppija.sukunimi,
     oppivelvollinen_oppija.etunimet
-    """)).as[(ValpasOppijaResult)])
+    """)).as[ValpasOppijaRow])
   }
-
-  implicit private val getValpasOppijaResult: GetResult[ValpasOppijaResult] = GetResult(r => {
-    val rs: ResultSet = r.rs
-    ValpasOppijaResult(
-      henkilö = ValpasHenkilö(
-        oid = rs.getString("oppija_oid"),
-        hetu = Option(rs.getString("hetu")),
-        syntymäaika = Option(rs.getString("syntymaaika")),
-        etunimet = rs.getString("etunimet"),
-        sukunimi = rs.getString("sukunimi")
-      ),
-      oikeutetutOppilaitokset = rs.getArray("oikeutetutOppilaitokset").getArray.asInstanceOf[Array[String]].toSet,
-      opiskeluoikeudet = JsonSerializer.parse[List[ValpasOpiskeluoikeus]](rs.getString("opiskeluoikeudet"))
-    )
-  })
 }

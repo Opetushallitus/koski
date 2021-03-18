@@ -282,14 +282,6 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     (alku, loppu)
   }
 
-  private def getLocalDateParam(param: String): LocalDate = {
-    try {
-      LocalDate.parse(getStringParam(param))
-    } catch {
-      case e: DateTimeParseException => haltWithStatus(KoskiErrorCategory.badRequest.format.pvm())
-    }
-  }
-
   private def auditLogRaportinLataus(raportti: String, request: RaporttiAikajaksoltaRequest) =
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> request.auditlogHakuehto(raportti))))
 }

@@ -39,17 +39,35 @@ case class Tooltip(text: String) extends RepresentationalMetadata
 case class Scale(numberOfDigits: Int) extends RepresentationalMetadata
 
 // TODO: Toteuta siistimmin suoraan scala-schemaan
-case class EnumValues(values: Set[String]) extends Metadata {
-  override def applyMetadata(x: ObjectWithMetadata[_], schemaFactory: SchemaFactory): ObjectWithMetadata[_] = {
-    val metadata = x match {
-      case p: Property => p.schema match {
-        case s: StringSchema => p.copy(schema = s.copy(enumValues = Option(s.enumValues.toList.flatten ++ values)))
-        case other: Any => throw new UnsupportedOperationException("EnumValues not supported for " + other)
-      }
-      case other: Any => throw new UnsupportedOperationException("EnumValues not supported for " + other)
+case class EnumValues(values: Set[String]) extends RepresentationalMetadata {
+  override def applyMetadata(o: ObjectWithMetadata[_], schemaFactory: SchemaFactory): ObjectWithMetadata[_] = {
+    val metadata = o match {
+      case p: Property => addEnumValues(p)
+      case other: Any => notSupported(other)
     }
     super.applyMetadata(metadata, schemaFactory)
   }
 
-  override def appendMetadataToJsonSchema(obj: JsonAST.JObject): JsonAST.JObject = obj
+  private def addEnumValues(property: Property): Property = {
+    property.copy(schema = property.schema match {
+      case s: StringSchema => addEnumValues(s)
+      case o: OptionalSchema => addEnumValues(o)
+      case other: Any => notSupported(other)
+    })
+  }
+
+  private def addEnumValues(optionalSchema: OptionalSchema): OptionalSchema = {
+    optionalSchema.copy(itemSchema = optionalSchema.itemSchema match {
+      case s: StringSchema => addEnumValues(s)
+      case other: Any => notSupported(other)
+    })
+  }
+
+  private def addEnumValues(s: StringSchema): StringSchema = {
+    s.copy(enumValues = Option(s.enumValues.toList.flatten ++ values))
+  }
+
+  private def notSupported(other: Any): Nothing = {
+    throw new UnsupportedOperationException("EnumValues not supported for " + other)
+  }
 }

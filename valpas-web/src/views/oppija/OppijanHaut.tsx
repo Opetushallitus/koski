@@ -7,10 +7,10 @@ import { LeanTable } from "../../components/tables/LeanTable"
 import { TertiaryHeading } from "../../components/typography/headings"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import { formatFixedNumber, getLocalized, t, T } from "../../i18n/i18n"
-import { Haku, Hakutoive, Oppija } from "../../state/oppijat"
+import { Haku, Hakutoive, OppijaHakutilanteilla } from "../../state/oppijat"
 
 export type OppijanHautProps = {
-  oppija: Oppija
+  oppija: OppijaHakutilanteilla
 }
 
 export const OppijanHaut = (props: OppijanHautProps) => {

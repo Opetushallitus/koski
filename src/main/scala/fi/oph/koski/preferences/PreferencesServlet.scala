@@ -22,7 +22,7 @@ class PreferencesServlet(implicit val application: KoskiApplication) extends Kos
   }
 
   get("/:organisaatioOid/:type") {
-    renderEither[List[StorablePreference]](service.get(organisaatioOid, koulutustoimijaOid, `type`)(session))
+    renderEither[Seq[StorablePreference]](service.get(organisaatioOid, koulutustoimijaOid, `type`)(session))
   }
 
   private def organisaatioOid = params("organisaatioOid")

@@ -113,7 +113,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
     val diaari = params("diaari")
     val suoritustapa = params("suoritustapa")
 
-    val laajuudet: Either[HttpStatus, List[(String, TutkinnonOsanLaajuus)]] = HttpStatus.foldEithers(ryhmäkoodit.map(rk => {
+    val laajuudet: Either[HttpStatus, Seq[(String, TutkinnonOsanLaajuus)]] = HttpStatus.foldEithers(ryhmäkoodit.map(rk => {
       perusteenRakenne().flatMap {
         case Nil => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Rakennetta ei löydy diaarinumerolla $diaari ja suoritustavalla $suoritustapa"))
         case List(osa) => Right(findRyhmä(rk, osa).map(_.tutkinnonRakenneLaajuus))

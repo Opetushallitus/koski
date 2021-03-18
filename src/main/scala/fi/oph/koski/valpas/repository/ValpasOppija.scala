@@ -1,46 +1,22 @@
 package fi.oph.koski.valpas.repository
 
+import fi.oph.koski.schema.annotation.KoodistoUri
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
-import fi.oph.koski.valpas.hakukooste.{Hakukooste, Hakutoive, Valintatila}
+import fi.oph.koski.valpas.hakukooste.{Hakukooste, Hakutoive}
+import fi.oph.scalaschema.annotation.SyntheticProperty
 
 import java.time.LocalDate
 
-trait ValpasOppija {
-  def henkilö: ValpasHenkilö
-  def oikeutetutOppilaitokset: Set[ValpasOppilaitos.Oid]
-  def opiskeluoikeudet: Seq[ValpasOpiskeluoikeus]
-
-  def opiskelee = opiskeluoikeudet.exists(_.isOpiskelu)
-  def oppivelvollisuusVoimassaAsti = henkilö.syntymäaika.map(LocalDate.parse(_).plusYears(18).toString)
-}
-
-case class ValpasOppijaResult(
+case class ValpasOppija(
   henkilö: ValpasHenkilö,
   oikeutetutOppilaitokset: Set[ValpasOppilaitos.Oid],
   opiskeluoikeudet: Seq[ValpasOpiskeluoikeus]
-) extends ValpasOppija
+) {
+  @SyntheticProperty
+  def opiskelee: Boolean = opiskeluoikeudet.exists(_.isOpiskelu)
 
-case class ValpasOppijaLisätiedoilla(
-  henkilö: ValpasHenkilö,
-  oikeutetutOppilaitokset: Set[ValpasOppilaitos.Oid],
-  opiskeluoikeudet: Seq[ValpasOpiskeluoikeus],
-  haut: Option[Seq[ValpasHakutilanne]],
-  tiedot: ValpasOppijaTiedot
-) extends ValpasOppija
-
-object ValpasOppijaLisätiedoilla {
-  def apply(oppija: ValpasOppija): ValpasOppijaLisätiedoilla = {
-    ValpasOppijaLisätiedoilla(
-      henkilö = oppija.henkilö,
-      oikeutetutOppilaitokset = oppija.oikeutetutOppilaitokset,
-      opiskeluoikeudet = oppija.opiskeluoikeudet,
-      haut = None,
-      tiedot = ValpasOppijaTiedot(
-        opiskelee = oppija.opiskelee,
-        oppivelvollisuusVoimassaAsti = oppija.oppivelvollisuusVoimassaAsti
-      )
-    )
-  }
+  @SyntheticProperty
+  def oppivelvollisuusVoimassaAsti: Option[LocalDate] = henkilö.syntymäaika.map(_.plusYears(18))
 }
 
 object ValpasHenkilö {
@@ -50,7 +26,7 @@ object ValpasHenkilö {
 case class ValpasHenkilö(
   oid: ValpasHenkilö.Oid,
   hetu: Option[String],
-  syntymäaika: Option[String],
+  syntymäaika: Option[LocalDate],
   etunimet: String,
   sukunimi: String
 )
@@ -61,17 +37,19 @@ object ValpasOpiskeluoikeus {
 
 case class ValpasOpiskeluoikeus(
   oid: ValpasOpiskeluoikeus.Oid,
+  @KoodistoUri("opiskeluoikeudentyyppi")
   tyyppi: Koodistokoodiviite,
   oppilaitos: ValpasOppilaitos,
   toimipiste: Option[ValpasToimipiste],
   alkamispäivä: Option[String],
   päättymispäivä: Option[String],
   ryhmä: Option[String],
+  @KoodistoUri("koskiopiskeluoikeudentila")
   viimeisinTila: Koodistokoodiviite
 ) {
-  def isOpiskelu = {
+  @SyntheticProperty
+  def isOpiskelu: Boolean =
     viimeisinTila.koodiarvo == "lasna" || viimeisinTila.koodiarvo == "valiaikaisestikeskeytynyt"
-  }
 }
 
 object ValpasOppilaitos {
@@ -92,11 +70,6 @@ case class ValpasToimipiste(
   nimi: LocalizedString
 )
 
-case class ValpasOppijaTiedot(
-  opiskelee: Boolean,
-  oppivelvollisuusVoimassaAsti: Option[String]
-)
-
 object ValpasHakutilanne {
   type HakuOid = String
   type HakemusOid = String
@@ -106,13 +79,10 @@ object ValpasHakutilanne {
       hakuOid = hakukooste.hakuOid,
       hakuNimi = hakukooste.hakuNimi,
       hakemusOid = hakukooste.hakemusOid,
-      aktiivinen = hakukooste.hakutoiveet.exists(hakutoive => Valintatila.isAktiivinen(hakutoive.valintatila)),
+      aktiivinen = hakukooste.hakutoiveet.exists(_.isAktiivinen),
       muokattu = hakukooste.muokattu,
       hakutoiveet = hakukooste.hakutoiveet.map(ValpasHakutoive.apply)
     )
-
-  def apply(hakukooste: Seq[Hakukooste]): Seq[ValpasHakutilanne] =
-    hakukooste.map(ValpasHakutilanne.apply)
 }
 
 case class ValpasHakutilanne(
@@ -140,6 +110,6 @@ object ValpasHakutoive {
 case class ValpasHakutoive(
   hakukohdeNimi: LocalizedString,
   hakutoivenumero: Option[Int],
-  pisteet: BigDecimal,
+  pisteet: Option[BigDecimal],
   hyväksytty: Option[Boolean]
 )
