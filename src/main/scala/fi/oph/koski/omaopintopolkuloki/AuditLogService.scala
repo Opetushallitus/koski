@@ -2,8 +2,7 @@ package fi.oph.koski.omaopintopolkuloki
 
 
 import java.util
-
-import com.amazonaws.services.dynamodbv2.document.DynamoDB
+import com.amazonaws.services.dynamodbv2.document.{DynamoDB, Item}
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec
 import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -16,6 +15,10 @@ import scala.collection.JavaConverters._
 class AuditLogService(organisaatioRepository: OrganisaatioRepository, dynamoDB: DynamoDB) extends Logging {
 
   def queryLogsFromDynamo(oppijaOid: String): Either[HttpStatus, Seq[OrganisaationAuditLogit]] = {
+    runQuery(oppijaOid).flatMap(results => HttpStatus.foldEithers(buildLogs(results).toSeq))
+  }
+
+  private def runQuery(oppijaOid: String): Either[HttpStatus, Seq[Item]] = {
     val auditLogTable = dynamoDB.getTable(AuditLogTableName)
     val querySpec = new QuerySpec()
       .withKeyConditionExpression("studentOid = :oid")
@@ -29,7 +32,7 @@ class AuditLogService(organisaatioRepository: OrganisaatioRepository, dynamoDB: 
         valueMap
       })
 
-    val queryItems = try {
+    try {
       Right(auditLogTable.query(querySpec).asScala.toIterator.toList)
     } catch {
       case e: Exception => {
@@ -37,18 +40,19 @@ class AuditLogService(organisaatioRepository: OrganisaatioRepository, dynamoDB: 
         Left(KoskiErrorCategory.internalError())
       }
     }
+  }
 
-    val timestampsGroupedByListOfOids = queryItems.map(_.map(item => {
-      val organisaatioOidit = item.getList[String]("organizationOid").asScala.sorted.toList
+  private def buildLogs(queryResults: Seq[Item]): Iterable[Either[HttpStatus, OrganisaationAuditLogit]] = {
+    val timestampsGroupedByListOfOids = queryResults.map(item => {
+      val organisaatioOidit = item.getList[String]("organizationOid").asScala.sorted
       val timestamp = item.getString("time")
-      (organisaatioOidit -> timestamp)
-    }).groupBy(_._1).mapValues(_.map(_._2)))
+      (organisaatioOidit, timestamp)
+    }).groupBy(_._1).mapValues(_.map(_._2))
 
-    timestampsGroupedByListOfOids.map(_.map { case (oids, timestamps) =>
-      HttpStatus.foldEithers(oids.map(toOrganisaatio)).map(org => (org -> timestamps))
-    }).flatMap(HttpStatus.foldEithers).map(_.map { case (orgs, timestamps) =>
-      OrganisaationAuditLogit(orgs, timestamps)
-    })
+    timestampsGroupedByListOfOids.map { case (oids, timestamps) =>
+      HttpStatus.foldEithers(oids.map(toOrganisaatio))
+        .map(orgs => OrganisaationAuditLogit(orgs, timestamps))
+    }
   }
 
   private def toOrganisaatio(oid: String): Either[HttpStatus, Organisaatio] = {

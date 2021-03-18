@@ -47,14 +47,13 @@ object HttpStatus {
   def fold(statii: Iterable[HttpStatus]): HttpStatus = statii.fold(ok)(append)
 
   /** Append all given statii into one, concatenating error list, picking highest status code */
-  def fold(statii: HttpStatus*): HttpStatus = fold(statii.toList)
+  def fold(statii: HttpStatus*): HttpStatus = fold(statii)
 
-  def foldEithers[T](xs: Iterable[Either[HttpStatus, T]]): Either[HttpStatus, Seq[T]] = xs.collect { case Left(e) => e} match {
-    case Nil =>
-      Right(xs.collect { case Right(oo) => oo }.toList)
-    case errors =>
-      Left(HttpStatus.fold(errors))
-  }
+  def foldEithers[T](xs: Seq[Either[HttpStatus, T]]): Either[HttpStatus, Seq[T]] =
+    xs.collect { case Left(e) => e } match {
+      case Nil => Right(xs.collect { case Right(oo) => oo })
+      case errors: Iterable[HttpStatus] => Left(HttpStatus.fold(errors))
+    }
 
   def justStatus[A](either: Either[HttpStatus, A]) = either match {
     case Right(_) => HttpStatus.ok

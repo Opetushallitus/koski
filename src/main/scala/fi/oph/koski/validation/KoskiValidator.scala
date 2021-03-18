@@ -528,7 +528,7 @@ class KoskiValidator(
     }
   }
 
-  private def validateDuplicates(suoritukset: List[Suoritus]) = {
+  private def validateDuplicates(suoritukset: Seq[Suoritus]) = {
     HttpStatus.fold(suoritukset
       .filterNot(_.salliDuplikaatit)
       .groupBy(osasuoritus => (osasuoritus.koulutusmoduuli.identiteetti, osasuoritus.ryhmittelytekijä))
