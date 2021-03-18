@@ -50,7 +50,7 @@ object HakukoosteExampleData {
       muokattu = muokattu.toString,
       hakuNimi = Finnish("Yhteishaku 2021"),
       email = generateEmail(henkilö),
-      osoite = "Esimerkkikatu 123, 00000 KAUPUNKI",
+      lahiosoite = "Esimerkkikatu 123, 00000 KAUPUNKI",
       matkapuhelin = "0401234567",
       huoltajanNimi = Some("Huoltaja Sukunimi"),
       huoltajanPuhelinnumero = Some("0407654321"),

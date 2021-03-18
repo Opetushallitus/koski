@@ -17,7 +17,7 @@ case class Hakukooste(
   muokattu: String,
   hakuNimi: LocalizedString,
   email: String,
-  osoite: String,
+  lahiosoite: String,
   matkapuhelin: String,
   huoltajanNimi: Option[String],
   huoltajanPuhelinnumero: Option[String],

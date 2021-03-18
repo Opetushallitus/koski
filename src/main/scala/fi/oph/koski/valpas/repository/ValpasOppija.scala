@@ -82,7 +82,7 @@ object ValpasHakutilanne {
       aktiivinen = hakukooste.hakutoiveet.exists(_.isAktiivinen),
       muokattu = hakukooste.muokattu,
       hakutoiveet = hakukooste.hakutoiveet.map(ValpasHakutoive.apply),
-      osoite = hakukooste.osoite,
+      osoite = hakukooste.lahiosoite,
       puhelinnumero = hakukooste.matkapuhelin,
       sähköposti = hakukooste.email,
       huoltajanNimi = hakukooste.huoltajanNimi,
