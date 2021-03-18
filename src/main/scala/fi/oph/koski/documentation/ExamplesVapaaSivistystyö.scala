@@ -235,7 +235,7 @@ object VapaaSivistystyöExampleData {
 
   def oppivelvollisilleSuunnattuVapaanSivistystyönMaahanmuuttajienKotoutumisKokonaisuus() = {
     OppivelvollisilleSuunnattuVapaanSivistystyönMaahanmuuttajienKotoutumisKokonaisuus(
-      tunniste =  Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutuksenkieliopinnot", koodistoUri = "suorituksentyyppi"),
+      tunniste =  Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus", koodistoUri = "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"),
       laajuus = Some(LaajuusOpintoviikoissa(30))
     )
   }

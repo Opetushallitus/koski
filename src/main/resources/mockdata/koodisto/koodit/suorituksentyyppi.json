@@ -1401,8 +1401,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenkieliopinnot",
-  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenkieliopinnot",
+  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
+  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
   "metadata" : [ {
     "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kieliopintojen suoritus",
     "kieli" : "FI"
@@ -1431,8 +1431,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenopinnot",
-  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenopinnot",
+  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus",
+  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus",
   "metadata" : [ {
     "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen opintojen suoritus",
     "kieli" : "FI"
@@ -1446,8 +1446,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaisetopinnot",
-  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaisetopinnot",
+  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
+  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
   "metadata" : [ {
     "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen valinnaisten opintojen suoritus",
     "kieli" : "FI"
@@ -1501,6 +1501,21 @@
     "kieli" : "SV"
   }, {
     "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen valinnaisten opintojen osasuoritus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus",
+  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus",
+  "metadata" : [ {
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kokonaisuus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kokonaisuus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kokonaisuus",
     "kieli" : "EN"
   } ],
   "versio" : 1,
