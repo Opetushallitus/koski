@@ -22,11 +22,11 @@ case class ValpasOppijaRow(
 class ValpasDatabaseService(application: KoskiApplication) extends DatabaseConverters with Logging {
   private val db = application.raportointiDatabase
 
-  def getPeruskoulunValvojalleNäkyväOppija(oppijaOid: String, rajapäivät: Rajapäivät): Option[ValpasOppijaRow] =
+  def getPeruskoulunValvojalleNäkyväOppija(rajapäivät: Rajapäivät)(oppijaOid: String): Option[ValpasOppijaRow] =
     getOppijat(Some(oppijaOid), None, rajapäivät).headOption
 
-  def getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOids: Option[Seq[String]], rajapäivät: Rajapäivät): Seq[ValpasOppijaRow] =
-    getOppijat(None, oppilaitosOids, rajapäivät)
+  def getPeruskoulunValvojalleNäkyvätOppijat(rajapäivät: Rajapäivät)(oppilaitosOids: Set[String]): Seq[ValpasOppijaRow] =
+    getOppijat(None, Some(oppilaitosOids.toSeq), rajapäivät)
 
   private implicit def getResult: GetResult[ValpasOppijaRow] = GetResult(r => {
     ValpasOppijaRow(
