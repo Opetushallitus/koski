@@ -47,7 +47,7 @@ describe("Oppijakohtainen näkymä", () => {
     `)
     await hautEquals(`
       list_alt
-      Yhteishaku 2021
+      Yhteishaku 2021 Hakenut open_in_new
         Oppilaitos
         Valinta
         Pisteet

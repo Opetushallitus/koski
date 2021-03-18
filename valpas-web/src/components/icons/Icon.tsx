@@ -28,6 +28,7 @@ export const CaretDownIcon = defineIcon("keyboard_arrow_down")
 export const CaretUpIcon = defineIcon("keyboard_arrow_up")
 export const CaretRightIcon = defineIcon("keyboard_arrow_right")
 export const CaretLeftIcon = defineIcon("keyboard_arrow_left")
+export const OpenInNewIcon = defineIcon("open_in_new")
 
 type MaterialDesignIconProps = IconProps & {
   name: string // Ikonien nimet löytyvät osoitteesta https://material.io/resources/icons/?style=baseline

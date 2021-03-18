@@ -11,6 +11,10 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
   private lazy val organisaatioService = application.organisaatioService
   private lazy val hakukoosteService = ValpasHakukoosteService(application.config)
   private lazy val oppijaService = new ValpasOppijaService(application, hakukoosteService)
+  private lazy val opintopolkuVirkailijaUrl = {
+    val url = application.config.getString("opintopolku.virkailija.url")
+    if (url == "mock") { "//mock" } else { url }
+  }
 
   get("/user") {
     session.user
@@ -37,5 +41,15 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
 
   get("/oppija/:oid") {
     renderEither(oppijaService.getOppija(params("oid")))
+  }
+
+  get("/redirect/hakemus") {
+    val oid = params("oid")
+    response.redirect(s"$opintopolkuVirkailijaUrl/haku-app/virkailija/hakemus/")
+  }
+
+  get("/redirect/hakemus/:oid") {
+    val oid = params("oid")
+    response.redirect(s"$opintopolkuVirkailijaUrl/haku-app/virkailija/hakemus/$oid/")
   }
 }

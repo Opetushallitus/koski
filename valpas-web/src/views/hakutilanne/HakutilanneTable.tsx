@@ -1,8 +1,10 @@
 import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
+import { ExternalLink } from "../../components/navigation/ExternalLink"
 import { DataTable, Datum } from "../../components/tables/DataTable"
 import { getLocalized, t } from "../../i18n/i18n"
 import { useBasePath } from "../../state/basePath"
+import { externalHakemussivu } from "../../state/externalUrls"
 import { Haku, OppijaHakutilanteilla } from "../../state/oppijat"
 import { formatNullableDate } from "../../utils/date"
 
@@ -92,6 +94,11 @@ const oppijaToTableData = (basePath: string) => (
       },
       {
         value: hakemuksentilaValue(hakemus),
+        display: hakemus && (
+          <ExternalLink to={externalHakemussivu(hakemus.hakemusOid)}>
+            {hakemuksentilaValue(hakemus)}
+          </ExternalLink>
+        ),
       },
       {
         value: "-",
@@ -108,10 +115,8 @@ const oppijaToTableData = (basePath: string) => (
 
 const hakemuksentilaValue = (hakemus?: Haku): string => {
   return t(
-    hakemus
-      ? hakemus.aktiivinen
-        ? "hakemuksentila__aktiivinen"
-        : "hakemuksentila__passiivinen"
+    hakemus && hakemus.aktiivinen
+      ? "hakemuksentila__hakenut"
       : "hakemuksentila__ei_hakemusta"
   )
 }
