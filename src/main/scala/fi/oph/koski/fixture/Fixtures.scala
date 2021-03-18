@@ -55,6 +55,8 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
 
   def allOppijaOids: List[String] = (koskiSpecificFixtureState.oppijaOids ++ valpasFixtureState.oppijaOids).distinct // oids that should be considered when deleting fixture data
 
+  def getCurrentFixtureStateName() = currentFixtureState.name
+
   lazy val koskiSpecificFixtureState = new KoskiSpecificFixtureState(application)
   lazy val valpasFixtureState = new ValpasFixtureState(application)
 }

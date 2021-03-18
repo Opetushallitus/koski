@@ -75,7 +75,7 @@ function start(overrides) {
     backend: process.env.BACKEND_HOST || "http://localhost:7021",
     publicUrl: process.env.PUBLIC_URL || "",
     parcelOptions: {
-      cache: false,
+      cache: !!process.env.PARCEL_CACHE,
       watch: false,
       ...(overrides && overrides.parcelOptions),
     },
