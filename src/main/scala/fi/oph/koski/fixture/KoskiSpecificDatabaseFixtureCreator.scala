@@ -171,7 +171,8 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.paallekkaisiOpiskeluoikeuksia, PaallekkaisetOpiskeluoikeudetFixtures.ensimmainenOpiskeluoikeus),
       (KoskiSpecificMockOppijat.paallekkaisiOpiskeluoikeuksia, PaallekkaisetOpiskeluoikeudetFixtures.keskimmainenOpiskeluoikeus),
       (KoskiSpecificMockOppijat.paallekkaisiOpiskeluoikeuksia, PaallekkaisetOpiskeluoikeudetFixtures.viimeinenOpiskeluoikeus),
-      (KoskiSpecificMockOppijat.vapaaSivistystyöOppivelvollinen, VapaaSivistystyöExample.opiskeluoikeus)
+      (KoskiSpecificMockOppijat.vapaaSivistystyöOppivelvollinen, VapaaSivistystyöExample.opiskeluoikeusKOPS),
+      (KoskiSpecificMockOppijat.vapaaSivistystyöMaahanmuuttajienKotoutus, VapaaSivistystyöExample.opiskeluoikeusKOTO)
     )
   }
 

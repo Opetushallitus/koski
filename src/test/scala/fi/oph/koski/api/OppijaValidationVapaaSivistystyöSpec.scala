@@ -13,7 +13,7 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
   "Laajuudet" - {
     "Osaamiskokonaisuuden laajuus" - {
       "Osaamiskokonaisuuden laajuus lasketaan opintokokonaisuuksien laajuuksista" in {
-        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(
+        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(suoritusKOPS.copy(
           osasuoritukset = Some(List(
             osaamiskokonaisuudenSuoritus("1002", List(
               opintokokonaisuudenSuoritus(
@@ -32,7 +32,7 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
       }
 
       "Valinnaisten suuntautumisopintojen laajuus lasketaan opintokokonaisuuksien laajuuksista" in {
-        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(
+        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(suoritusKOPS.copy(
           osasuoritukset = Some(List(
             suuntautumisopintojenSuoritus(List(
               opintokokonaisuudenSuoritus(
@@ -55,7 +55,7 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
 
       "Jos osaamiskokonaisuudella ei ole opintokokonaisuuksia, sille asetettu laajuus poistetaan" in {
         val oo = defaultOpiskeluoikeus.copy(
-          suoritukset = List(suoritus.copy(
+          suoritukset = List(suoritusKOPS.copy(
             vahvistus = None,
             osasuoritukset = Some(List(tyhjäOsaamiskokonaisuudenSuoritus("1003", Some(laajuus(5.0)))))
         )))
@@ -65,7 +65,7 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
       }
 
       "Jos valinnaisilla suuntautumisopinnoilla ei ole opintokokonaisuuksia, sille asetettu laajuus poistetaan" in {
-        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(
+        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(suoritusKOPS.copy(
           vahvistus = None,
           osasuoritukset = Some(List(tyhjäSuuntautumisopintojenSuoritus(Some(laajuus(5.0)))))
         )))
@@ -75,7 +75,7 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
       }
 
       "Jos päätason suorituksella on väärä yhteenlaskettu laajuus, päätason suoritusta ei voida merkitä valmiiksi" in {
-        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(
+        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(suoritusKOPS.copy(
           osasuoritukset = Some(List(
             osaamiskokonaisuudenSuoritus("1002", List(
               opintokokonaisuudenSuoritus(
@@ -95,7 +95,7 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
       }
 
       "Jos päätason suorituksella on osaamiskokonaisuuksia, joiden laajuus on alle 4, päätason suoritusta ei voida merkitä valmiiksi" in {
-        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(
+        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(suoritusKOPS.copy(
           osasuoritukset = Some(List(
             osaamiskokonaisuudenSuoritus("1002", List(
               opintokokonaisuudenSuoritus(
@@ -117,6 +117,26 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
         }
       }
     }
+    "Maahanmuuttajien kotoutumiskoulutuksen laajuudet" - {
+      "Jos KOTO-suorituksen kieliopintojen laajuus on alle 30 opintoviikkoa, ei päätason suoritusta voida merkitä valmiiksi" in {
+        val oo = KOTOOPiskeluoikeus.copy(suoritukset = List(suoritusKOTO.copy(
+          osasuoritukset = Some(List(
+            vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus.copy(
+              koulutusmoduuli = vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus.koulutusmoduuli.copy(
+                laajuus = Some(LaajuusOpintoviikoissa(10))
+              )
+            )
+          )),
+          koulutusmoduuli = suoritusKOTO.koulutusmoduuli.copy(
+            laajuus = Some(LaajuusOpintoviikoissa(10))
+          )
+        )))
+
+        putOpiskeluoikeus(oo) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönKOTOSuorituksenKieliopintojenLaajuus("Päätason suoritus koulutus/999910 on vahvistettu, mutta sillä on kieliopintoja, joiden yhteenlaskettu laajuus on alle 30 opintoviikkoa"))
+        }
+      }
+    }
   }
 
   private def putAndGetOpiskeluoikeus(oo: VapaanSivistystyönOpiskeluoikeus): Opiskeluoikeus = putOpiskeluoikeus(oo) {
@@ -124,5 +144,6 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
   }
 
-  override def defaultOpiskeluoikeus: VapaanSivistystyönOpiskeluoikeus = opiskeluoikeus
+  override def defaultOpiskeluoikeus: VapaanSivistystyönOpiskeluoikeus = opiskeluoikeusKOPS
+  def KOTOOPiskeluoikeus: VapaanSivistystyönOpiskeluoikeus = opiskeluoikeusKOTO
 }

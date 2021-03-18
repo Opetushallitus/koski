@@ -12,22 +12,33 @@ import fi.oph.koski.schema._
 
 object ExamplesVapaaSivistystyö {
   lazy val examples = List(
-    Example("vapaa sivistystyö - oppivelvollisille suunnattu koulutus", "Oppija suorittaa oppivelvollisille suunnattua koulutusta kansanopistossa", VapaaSivistystyöExample.oppivelvollisuuskoulutusExample)
+    Example("vapaa sivistystyö - oppivelvollisille suunnattu koulutus", "Oppija suorittaa oppivelvollisille suunnattua koulutusta kansanopistossa", VapaaSivistystyöExample.oppivelvollisuuskoulutusExample),
+    Example("vapaa sivistystyö - maahanmuuttajien kotoutuskoulutus", "Oppija suorittaa maahannmuuttajien kotoutumiskoulutusta kansanopistossa", VapaaSivistystyöExample.maahanmuuttajienkotoutusExample)
   )
 }
 
 object VapaaSivistystyöExample {
-  lazy val opiskeluoikeus = VapaanSivistystyönOpiskeluoikeus(
+  lazy val opiskeluoikeusKOPS = VapaanSivistystyönOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2022, 5, 31)),
     tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
       VapaanSivistystyönOpiskeluoikeusjakso(date(2021, 9, 1), opiskeluoikeusLäsnä)
     )),
     lisätiedot = None,
     oppilaitos = Some(varsinaisSuomenKansanopisto),
-    suoritukset = List(suoritus)
+    suoritukset = List(suoritusKOPS)
   )
 
-  lazy val suoritus = OppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenSuoritus(
+  lazy val opiskeluoikeusKOTO = VapaanSivistystyönOpiskeluoikeus(
+    arvioituPäättymispäivä = Some(date(2022, 5, 31)),
+    tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
+      VapaanSivistystyönOpiskeluoikeusjakso(date(2021, 9, 1), opiskeluoikeusLäsnä)
+    )),
+    lisätiedot = None,
+    oppilaitos = Some(varsinaisSuomenKansanopisto),
+    suoritukset = List(suoritusKOTO)
+  )
+
+  lazy val suoritusKOPS = OppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenSuoritus(
     toimipiste = varsinaisSuomenKansanopistoToimipiste,
     tyyppi = Koodistokoodiviite("vstoppivelvollisillesuunnattukoulutus", koodistoUri = "suorituksentyyppi"),
     koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(perusteenDiaarinumero = Some("OPH-58-2021")),
@@ -90,14 +101,32 @@ object VapaaSivistystyöExample {
     ))
   )
 
+  lazy val suoritusKOTO = OppivelvollisilleSuunnatunMaahanmuuttajienKotoutumiskoulutuksenSuoritus(
+    toimipiste = OidOrganisaatio(MockOrganisaatiot.itäsuomenYliopisto),
+    tyyppi = Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutus", koodistoUri = "suorituksentyyppi"),
+    koulutusmoduuli = VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus(perusteenDiaarinumero = Some("OPH-58-2021"), laajuus = Some(LaajuusOpintoviikoissa(30))),
+    vahvistus = vahvistus(päivä = date(2022, 5, 31)),
+    suorituskieli = suomenKieli,
+    todistuksellaNäkyvätLisätiedot = None,
+    osasuoritukset = Some(List(
+      vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus
+    ))
+  )
+
   lazy val oppivelvollisuuskoulutusExample = Oppija(
-    VapaaSivistystyöExampleData.exampleHenkilö,
-    List(opiskeluoikeus)
+    VapaaSivistystyöExampleData.exampleHenkilöKOPS,
+    List(opiskeluoikeusKOPS)
+  )
+
+  lazy val maahanmuuttajienkotoutusExample = Oppija(
+    VapaaSivistystyöExampleData.exampleHenkilöKOTO,
+    List(opiskeluoikeusKOTO)
   )
 }
 
 object VapaaSivistystyöExampleData {
-  val exampleHenkilö = asUusiOppija(KoskiSpecificMockOppijat.vapaaSivistystyöOppivelvollinen)
+  val exampleHenkilöKOPS = asUusiOppija(KoskiSpecificMockOppijat.vapaaSivistystyöOppivelvollinen)
+  val exampleHenkilöKOTO = asUusiOppija(KoskiSpecificMockOppijat.vapaaSivistystyöMaahanmuuttajienKotoutus)
 
   lazy val varsinaisSuomenKansanopisto: Oppilaitos = Oppilaitos(MockOrganisaatiot.varsinaisSuomenKansanopisto, Some(Koodistokoodiviite("01694", None, "oppilaitosnumero", None)), Some("Varsinais-Suomen kansanopisto"))
 
@@ -194,4 +223,30 @@ object VapaaSivistystyöExampleData {
   }
 
   def laajuus(arvo: Double): LaajuusOpintopisteissä = LaajuusOpintopisteissä(arvo = arvo, yksikkö = laajuusOpintopisteissä)
+
+  // Maahanmuuttajien kotoutumiskoulutuksen rakenteen osia
+
+  def vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus() = {
+    VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus(
+      koulutusmoduuli = oppivelvollisilleSuunnattuVapaanSivistystyönMaahanmuuttajienKotoutumisKokonaisuus,
+      arviointi = Some(List(vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi))
+    )
+  }
+
+  def oppivelvollisilleSuunnattuVapaanSivistystyönMaahanmuuttajienKotoutumisKokonaisuus() = {
+    OppivelvollisilleSuunnattuVapaanSivistystyönMaahanmuuttajienKotoutumisKokonaisuus(
+      tunniste =  Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus", koodistoUri = "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"),
+      laajuus = Some(LaajuusOpintoviikoissa(30))
+    )
+  }
+
+  def vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi() = {
+    VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi(
+      kuullunYmmärtämisenTaitotaso = Koodistokoodiviite(koodiarvo = "yli_C1.1", koodistoUri = "arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
+      puhumisenTaitotaso = Koodistokoodiviite(koodiarvo = "yli_C1.1", koodistoUri = "arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
+      luetunYmmärtämisenTaitotaso = Koodistokoodiviite(koodiarvo = "yli_C1.1", koodistoUri = "arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
+      kirjoittamisenTaitotaso = Koodistokoodiviite(koodiarvo = "yli_C1.1", koodistoUri = "arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
+      päivä = date(2020, 1, 1)
+    )
+  }
 }
