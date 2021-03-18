@@ -1,7 +1,7 @@
 package fi.oph.koski.valpas.hakukooste
 
 import fi.oph.koski.schema.annotation.{EnumValues, KoodistoUri}
-import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
+import fi.oph.koski.schema.{BlankableLocalizedString, Koodistokoodiviite}
 import fi.oph.koski.valpas.repository.{ValpasHakutilanne, ValpasHakutoive, ValpasHenkilö, ValpasOppilaitos}
 import fi.oph.scalaschema.annotation.SyntheticProperty
 
@@ -15,7 +15,7 @@ case class Hakukooste(
   @KoodistoUri("hakutyyppi") // Varsinainen haku / täydennyshaku / lisähaku
   hakutyyppi: Koodistokoodiviite,
   muokattu: String,
-  hakuNimi: LocalizedString,
+  hakuNimi: BlankableLocalizedString,
   email: String,
   lahiosoite: String,
   matkapuhelin: String,
@@ -27,9 +27,9 @@ case class Hakukooste(
 
 case class Hakutoive(
   hakukohdeOid: ValpasOppilaitos.Oid,
-  hakukohdeNimi: LocalizedString,
+  hakukohdeNimi: BlankableLocalizedString,
   hakukohdeOrganisaatio: String,
-  koulutusNimi: LocalizedString,
+  koulutusNimi: BlankableLocalizedString,
   koulutusOid: Option[ValpasHakutoive.KoulutusOid],
   hakutoivenumero: Int,
   pisteet: Option[BigDecimal],
