@@ -33,13 +33,13 @@
     "koodiUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
     "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
     "metadata" : [ {
-      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kieliopintojen osasuoritus",
+      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kieliopintojen suoritus",
       "kieli" : "FI"
     }, {
-      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kieliopintojen osasuoritus",
+      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kieliopintojen suoritus",
       "kieli" : "SV"
     }, {
-      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kieliopintojen osasuoritus",
+      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kieliopintojen suoritus",
       "kieli" : "EN"
     } ],
     "versio" : 1,
@@ -48,13 +48,13 @@
     "koodiUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
     "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
     "metadata" : [ {
-      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen ohjauksen osasuoritus",
+      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen ohjauksen suoritus",
       "kieli" : "FI"
     }, {
-      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen ohjauksen osasuoritus",
+      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen ohjauksen suoritus",
       "kieli" : "SV"
     }, {
-      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen ohjauksen osasuoritus",
+      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen ohjauksen suoritus",
       "kieli" : "EN"
     } ],
     "versio" : 1,
