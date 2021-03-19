@@ -72,10 +72,18 @@ export type LocalizedTextProps = {
 
 export const T = (props: LocalizedTextProps) => <>{t(props.id, props.params)}</>
 
-export const getLocalized = (localizedString: LocalizedString): string =>
-  localizedString[getLanguage()] || localizedString["fi"] || "KÄÄNNÖS PUUTTUU"
+export const getLocalized = (
+  localizedString?: LocalizedString
+): string | undefined =>
+  localizedString === undefined
+    ? undefined
+    : localizedString[getLanguage()] ||
+      localizedString["fi"] ||
+      "KÄÄNNÖS PUUTTUU"
 
-export const formatFixedNumber = (n: number, fractionDigits: number) =>
-  n.toFixed(fractionDigits).replace(".", ",")
+export const formatFixedNumber = (
+  n: number | undefined,
+  fractionDigits: number
+): string | undefined => n?.toFixed(fractionDigits).replace(".", ",")
 
 export const useLanguage = () => useMemo(() => getLanguage(), [])

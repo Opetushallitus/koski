@@ -21,7 +21,7 @@ export type Oppija = {
 
 export type Henkilö = {
   oid: Oid
-  hetu: string
+  hetu?: string
   syntymäaika?: ISODate
   etunimet: string
   sukunimi: string
@@ -34,7 +34,7 @@ export type Oppilaitos = {
 
 export type Haku = {
   hakuOid: Oid
-  hakuNimi: LocalizedString
+  hakuNimi?: LocalizedString
   hakemusOid: Oid
   aktiivinen: boolean
   muokattu: ISODateTime
@@ -49,8 +49,8 @@ export type Haku = {
 
 export type Hakutoive = {
   hakutoivenumero?: number
-  hakukohdeNimi: LocalizedString
-  pisteet: number
+  hakukohdeNimi?: LocalizedString
+  pisteet?: number
   hyväksytty?: boolean
 }
 

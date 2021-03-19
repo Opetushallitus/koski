@@ -13,7 +13,7 @@ const jklNormaalikouluTableContent = `
   KasiinAstiToisessaKoulussaOllut Valpas	Jyväskylän normaalikoulu	17.8.2005	9C	Ei hakemusta	-	-	-
   Kotiopetus-menneisyydessä Valpas	Jyväskylän normaalikoulu	6.2.2005	9C	Ei hakemusta	-	-	-
   LukionAloittanut Valpas	Jyväskylän normaalikoulu	29.4.2005		Ei hakemusta	-	-	-
-  LuokallejäänytYsiluokkalainen Valpas	Jyväskylän normaalikoulu	2.8.2005	9A	Ei hakemusta	-	-	-
+  LuokallejäänytYsiluokkalainen Valpas	Jyväskylän normaalikoulu	2.8.2005	9A	Hakenut open_in_new	-	-	-
   LuokallejäänytYsiluokkalainenJatkaa Valpas	Jyväskylän normaalikoulu	6.2.2005	9B	Ei hakemusta	-	-	-
   LuokallejäänytYsiluokkalainenKouluvaihtoMuualta Valpas	Jyväskylän normaalikoulu	2.11.2005	9B	Ei hakemusta	-	-	-
   Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas	Jyväskylän normaalikoulu	22.11.2005	9C	Hakenut open_in_new	-	-	-

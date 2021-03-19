@@ -64,7 +64,7 @@ export const OppijanOpiskeluhistoria = (
 }
 
 const koodistonimi = (k: KoodistoKoodiviite<string, string>): string =>
-  k.nimi ? getLocalized(k.nimi) : k.koodiarvo
+  getLocalized(k.nimi) || k.koodiarvo
 
 const yearRangeString = (a?: ISODate, b?: ISODate): string =>
   a || b ? [yearString(a), "–", yearString(b)].filter((s) => !!s).join(" ") : ""
