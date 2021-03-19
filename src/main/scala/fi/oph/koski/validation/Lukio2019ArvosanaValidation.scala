@@ -19,7 +19,7 @@ object Lukio2019ArvosanaValidation {
   }
 
   private def validateVieraatKielet(suoritus: Suoritus): HttpStatus = {
-    val statii = suoritus.osasuoritukset.toList.flatten.map({
+    val statuses = suoritus.osasuoritukset.toList.flatten.map({
       case k:LukionOppiaineenSuoritus2019
         if vieraatKielet.contains(k.koulutusmoduuli.tunniste.koodiarvo) &&
           k.koulutusmoduuli.pakollinen &&
@@ -45,11 +45,11 @@ object Lukio2019ArvosanaValidation {
       case _ => HttpStatus.ok
     })
 
-    HttpStatus.fold(statii)
+    HttpStatus.fold(statuses)
   }
 
   private def validateLiikunta(suoritus: Suoritus): HttpStatus = {
-    val statii = suoritus.osasuoritukset.toList.flatten.map(s => s match {
+    val statuses = suoritus.osasuoritukset.toList.flatten.map(s => s match {
       case _:LukionOppiaineenSuoritus2019 | _: LukionOppiaineenPreIBSuoritus2019
         if s.koulutusmoduuli.tunniste.koodiarvo == "LI" &&
           s.koulutusmoduuli.laajuusArvo(0.0) > 2 &&
@@ -58,7 +58,7 @@ object Lukio2019ArvosanaValidation {
       case _ => HttpStatus.ok
     })
 
-    HttpStatus.fold(statii)
+    HttpStatus.fold(statuses)
   }
 
   private def validateValtakunnallinenModuuli(suoritus: Suoritus): HttpStatus = (suoritus) match {

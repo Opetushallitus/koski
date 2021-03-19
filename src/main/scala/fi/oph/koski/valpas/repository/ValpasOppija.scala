@@ -77,12 +77,12 @@ object ValpasHakutilanne {
   def apply(hakukooste: Hakukooste): ValpasHakutilanne =
     ValpasHakutilanne(
       hakuOid = hakukooste.hakuOid,
-      hakuNimi = hakukooste.hakuNimi,
+      hakuNimi = hakukooste.hakuNimi.toLocalizedString,
       hakemusOid = hakukooste.hakemusOid,
       aktiivinen = hakukooste.hakutoiveet.exists(_.isAktiivinen),
       muokattu = hakukooste.muokattu,
       hakutoiveet = hakukooste.hakutoiveet.map(ValpasHakutoive.apply),
-      osoite = hakukooste.osoite,
+      osoite = hakukooste.lahiosoite,
       puhelinnumero = hakukooste.matkapuhelin,
       sähköposti = hakukooste.email,
       huoltajanNimi = hakukooste.huoltajanNimi,
@@ -93,7 +93,7 @@ object ValpasHakutilanne {
 
 case class ValpasHakutilanne(
   hakuOid: String,
-  hakuNimi: LocalizedString,
+  hakuNimi: Option[LocalizedString],
   hakemusOid: String,
   aktiivinen: Boolean,
   muokattu: String,
@@ -111,7 +111,7 @@ object ValpasHakutoive {
 
   def apply(hakutoive: Hakutoive): ValpasHakutoive = {
     ValpasHakutoive(
-      hakukohdeNimi = hakutoive.hakukohdeNimi,
+      hakukohdeNimi = hakutoive.hakukohdeNimi.toLocalizedString,
       hakutoivenumero = Some(hakutoive.hakutoivenumero),
       pisteet = hakutoive.pisteet,
       hyväksytty = None // TODO
@@ -120,7 +120,7 @@ object ValpasHakutoive {
 }
 
 case class ValpasHakutoive(
-  hakukohdeNimi: LocalizedString,
+  hakukohdeNimi: Option[LocalizedString],
   hakutoivenumero: Option[Int],
   pisteet: Option[BigDecimal],
   hyväksytty: Option[Boolean]

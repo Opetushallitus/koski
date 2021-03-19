@@ -52,7 +52,7 @@ class ValpasOppijaService(
   // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
   def getOppijat(oppilaitosOids: Set[ValpasOppilaitos.Oid])(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteilla]] =
     accessResolver.organisaatiohierarkiaOids(oppilaitosOids)
-      .map(oids => dbService.getPeruskoulunValvojalleNäkyvätOppijat(Some(oids.toSeq), rajapäivät()))
+      .map(dbService.getPeruskoulunValvojalleNäkyvätOppijat(rajapäivät()))
       .flatMap(results => HttpStatus.foldEithers(results.map(_.asValpasOppija)))
       .flatMap(fetchHaut)
       .map(withAuditLogOppilaitostenKatsominen(oppilaitosOids))
@@ -61,7 +61,7 @@ class ValpasOppijaService(
   // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
   // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
   def getOppija(oppijaOid: ValpasHenkilö.Oid)(implicit session: ValpasSession): Either[HttpStatus, OppijaHakutilanteilla] =
-    dbService.getPeruskoulunValvojalleNäkyväOppija(oppijaOid, rajapäivät())
+    dbService.getPeruskoulunValvojalleNäkyväOppija(rajapäivät())(oppijaOid)
       .toRight(ValpasErrorCategory.forbidden.oppija())
       .flatMap(_.asValpasOppija)
       .flatMap(accessResolver.withOppijaAccess)

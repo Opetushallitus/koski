@@ -3,8 +3,7 @@ package fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.Representative
 import fi.oph.scalaschema.annotation.{Description, Title}
 
-@Description("Lokalisoitu teksti. Vähintään yksi kielistä (fi/sv/en) vaaditaan")
-trait LocalizedString extends Localized {
+trait BlankableLocalizedString {
   def valueList: List[(String, String)]
   lazy val values: Map[String, String] = Map(valueList : _*)
   def get(lang: String) = values.get(lang).orElse(values.get("fi")).orElse(values.values.headOption).getOrElse(LocalizedString.missingString)
@@ -12,8 +11,18 @@ trait LocalizedString extends Localized {
     val (fi :: sv :: en :: Nil) = LocalizedString.languages.map { lang => get(lang) + x.get(lang) }
     Finnish(fi, Some(sv), Some(en))
   }
-  def description = this
   def hasLanguage(lang: String): Boolean = valueList.map(_._1).contains(lang)
+  def toLocalizedString: Option[LocalizedString]
+}
+
+// Placeholder-implementaatio tyhjälle tekstille scala-schemaa varten.
+// Mahdollistaa BlankableLocalizedString-tyyppisen elementin, jossa lokalisoitu
+// teksti on tyhjä kaikilla kielillä.
+@Description("Lokalisoitu teksti, joka on tyhjä kaikilla kielillä")
+case class BlankLocalizedString() extends BlankableLocalizedString {
+  override def valueList: List[(String, String)] = List()
+
+  override def toLocalizedString: Option[LocalizedString] = None
 }
 
 object LocalizedString {
@@ -59,22 +68,29 @@ trait Localized {
   def description: LocalizedString
 }
 
+@Description("Lokalisoitu teksti. Vähintään yksi kielistä (fi/sv/en) vaaditaan")
+trait LocalizedString extends BlankableLocalizedString with Localized {
+  override def description: LocalizedString = this
+
+  override def toLocalizedString: Option[LocalizedString] = Some(this)
+}
+
 @Description("Lokalisoitu teksti, jossa mukana suomi")
 @Title("Suomeksi")
 case class Finnish(@Representative fi: String, sv: Option[String] = None, en: Option[String] = None) extends LocalizedString {
-  def valueList = (("fi" -> fi) :: sv.toList.map(("sv", _))) ++ en.toList.map(("en", _))
+  override def valueList = (("fi" -> fi) :: sv.toList.map(("sv", _))) ++ en.toList.map(("en", _))
 }
 
 @Description("Lokalisoitu teksti, jossa mukana ruotsi")
 @Title("Ruotsiksi")
 case class Swedish(@Representative sv: String, en: Option[String] = None) extends LocalizedString {
-  def valueList = ("sv" -> sv) :: en.toList.map(("en", _))
+  override def valueList = ("sv" -> sv) :: en.toList.map(("en", _))
 }
 
 @Description("Lokalisoitu teksti, jossa mukana englanti")
 @Title("Englanniksi")
 case class English(@Representative en: String) extends LocalizedString {
-  def valueList = List(("en" -> en))
+  override def valueList = List(("en" -> en))
 }
 
 

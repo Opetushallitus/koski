@@ -38,25 +38,24 @@ object HttpStatus {
   // Combinators
 
   /** If predicate is true, yield 200/ok, else run given block */
-  def validate(predicate: => Boolean)(status: => HttpStatus) = if (predicate) { ok } else { status }
-  /** Combine two statii: concatenate errors list, pick highest status code */
-  def append(a: HttpStatus, b: HttpStatus) = {
+  def validate(predicate: => Boolean)(status: => HttpStatus): HttpStatus = if (predicate) { ok } else { status }
+
+  /** Combine two statuses: concatenate errors list, pick highest status code */
+  def append(a: HttpStatus, b: HttpStatus): HttpStatus = {
     HttpStatus(Math.max(a.statusCode, b.statusCode), a.errors ++ b.errors)
   }
-  /** Append all given statii into one, concatenating error list, picking highest status code */
-  def fold(statii: Iterable[HttpStatus]): HttpStatus = statii.fold(ok)(append)
 
-  /** Append all given statii into one, concatenating error list, picking highest status code */
-  def fold(statii: HttpStatus*): HttpStatus = fold(statii.toList)
+  /** Append all given statuses into one, concatenating error list, picking highest status code */
+  def fold(statuses: Iterable[HttpStatus]): HttpStatus = statuses.fold(ok)(append)
+  def fold(statuses: HttpStatus*): HttpStatus = fold(statuses)
 
-  def foldEithers[T](xs: Iterable[Either[HttpStatus, T]]): Either[HttpStatus, Seq[T]] = xs.collect { case Left(e) => e} match {
-    case Nil =>
-      Right(xs.collect { case Right(oo) => oo }.toList)
-    case errors =>
-      Left(HttpStatus.fold(errors))
-  }
+  def foldEithers[T](xs: Seq[Either[HttpStatus, T]]): Either[HttpStatus, Seq[T]] =
+    xs.collect { case Left(e) => e } match {
+      case Nil => Right(xs.collect { case Right(oo) => oo })
+      case errors: Iterable[HttpStatus] => Left(HttpStatus.fold(errors))
+    }
 
-  def justStatus[A](either: Either[HttpStatus, A]) = either match {
+  def justStatus[A](either: Either[HttpStatus, A]): HttpStatus = either match {
     case Right(_) => HttpStatus.ok
     case Left(status) => status
   }
