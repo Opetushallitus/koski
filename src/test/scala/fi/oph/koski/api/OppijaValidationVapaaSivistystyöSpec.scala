@@ -133,7 +133,45 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
         )))
 
         putOpiskeluoikeus(oo) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönKOTOSuorituksenKieliopintojenLaajuus("Päätason suoritus koulutus/999910 on vahvistettu, mutta sillä on kieliopintoja, joiden yhteenlaskettu laajuus on alle 30 opintoviikkoa"))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönKOTOKokonaisuudenLaajuus("Päätason suoritus koulutus/999910 on vahvistettu, mutta sillä on kieliopintojen kokonaisuus, jonka yhteenlaskettu laajuus on alle 30 opintoviikkoa"))
+        }
+      }
+
+      "Jos KOTO-suorituksen työelämä- ja yhteiskuntataitojen laajuus on alle 15 opintoviikkoa, ei päätason suoritusta voida merkitä valmiiksi" in {
+        val oo = KOTOOPiskeluoikeus.copy(suoritukset = List(suoritusKOTO.copy(
+          osasuoritukset = Some(List(
+            vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus().copy(
+              koulutusmoduuli = vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus.koulutusmoduuli.copy(
+                laajuus = Some(LaajuusOpintoviikoissa(10))
+              )
+            )
+          )),
+          koulutusmoduuli = suoritusKOTO.koulutusmoduuli.copy(
+            laajuus = Some(LaajuusOpintoviikoissa(10))
+          )
+        )))
+
+        putOpiskeluoikeus(oo) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönKOTOKokonaisuudenLaajuus("Päätason suoritus koulutus/999910 on vahvistettu, mutta sillä on työelämä- ja yhteiskuntataitojen kokonaisuus, jonka yhteenlaskettu laajuus on alle 15 opintoviikkoa"))
+        }
+      }
+
+      "Jos KOTO-suorituksen opintojen ohjauksen laajuus on alle 5 opintoviikkoa, ei päätason suoritusta voida merkitä valmiiksi" in {
+        val oo = KOTOOPiskeluoikeus.copy(suoritukset = List(suoritusKOTO.copy(
+          osasuoritukset = Some(List(
+            vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus().copy(
+              koulutusmoduuli = vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus.koulutusmoduuli.copy(
+                laajuus = Some(LaajuusOpintoviikoissa(4))
+              )
+            )
+          )),
+          koulutusmoduuli = suoritusKOTO.koulutusmoduuli.copy(
+            laajuus = Some(LaajuusOpintoviikoissa(4))
+          )
+        )))
+
+        putOpiskeluoikeus(oo) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönKOTOKokonaisuudenLaajuus("Päätason suoritus koulutus/999910 on vahvistettu, mutta sillä on opintojen ohjauksen kokonaisuus, jonka yhteenlaskettu laajuus on alle 5 opintoviikkoa"))
         }
       }
     }

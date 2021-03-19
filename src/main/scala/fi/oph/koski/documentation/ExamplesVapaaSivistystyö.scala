@@ -104,7 +104,7 @@ object VapaaSivistystyöExample {
   lazy val suoritusKOTO = OppivelvollisilleSuunnatunMaahanmuuttajienKotoutumiskoulutuksenSuoritus(
     toimipiste = OidOrganisaatio(MockOrganisaatiot.itäsuomenYliopisto),
     tyyppi = Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutus", koodistoUri = "suorituksentyyppi"),
-    koulutusmoduuli = VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus(perusteenDiaarinumero = Some("OPH-58-2021"), laajuus = Some(LaajuusOpintoviikoissa(49))),
+    koulutusmoduuli = VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus(perusteenDiaarinumero = Some("OPH-58-2021"), laajuus = Some(LaajuusOpintoviikoissa(54))),
     vahvistus = vahvistus(päivä = date(2022, 5, 31)),
     suorituskieli = suomenKieli,
     todistuksellaNäkyvätLisätiedot = None,
@@ -263,7 +263,7 @@ object VapaaSivistystyöExampleData {
     VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus(
       koulutusmoduuli = oppivelvollisilleSuunnattuVapaanSivistystyönMaahanmuuttajienKotoutumisKokonaisuus(
         Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus", koodistoUri = "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"),
-        Some(LaajuusOpintoviikoissa(10))
+        Some(LaajuusOpintoviikoissa(15))
       ),
       arviointi = Some(List(vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenArviointi))
     )
