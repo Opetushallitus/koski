@@ -22,6 +22,8 @@ const opiskeluhistoriaEquals = cardBodyEquals("opiskeluhistoria")
 const hautEquals = cardBodyEquals("haut")
 const ilmoitetutYhteystiedotEquals = (expected: string) =>
   contentEventuallyEquals("#ilmoitetut-yhteystiedot", expected)
+const virallisetYhteystiedotEquals = (expected: string) =>
+  contentEventuallyEquals("#viralliset-yhteystiedot", expected)
 
 describe("Oppijakohtainen näkymä", () => {
   it("Näyttää oppijan tiedot, johon käyttäjällä on lukuoikeus", async () => {
@@ -218,13 +220,22 @@ describe("Oppijakohtainen näkymä", () => {
     await ilmoitetutYhteystiedotEquals(`
       Ilmoitetut yhteystiedot
       keyboard_arrow_downYhteystiedot
-      Lähiosoite:	Esimerkkikatu 123, 00000 KAUPUNKI
-      Puhelin:	0401234567
+      Lähiosoite:	Esimerkkikatu 123
+      Postitoimipaikka:  00000 Helsinki
+      Matkapuhelin:	0401234567
       Sähköposti:	Valpas.Oppivelvollinen-ysiluokka-kesken-keväällä-2021@gmail.com
       keyboard_arrow_downHuoltaja
       Nimi:	Huoltaja Sukunimi
-      Puhelin:	0401234567
+      Matkapuhelin:	0407654321
       Sähköposti:	huoltaja.sukunimi@gmail.com
+    `)
+
+    await virallisetYhteystiedotEquals(`
+      Viralliset yhteystiedot
+      Lähiosoite:	Esimerkkitie 10
+      Postitoimipaikka:	00000 Helsinki
+      Puhelin:	0401122334
+      Sähköposti:	valpas@gmail.com
     `)
   })
 })

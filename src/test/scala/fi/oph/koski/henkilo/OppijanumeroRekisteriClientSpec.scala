@@ -1,12 +1,13 @@
 package fi.oph.koski.henkilo
 
 import java.time.LocalDate
-
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration._
 import com.typesafe.config.ConfigFactory
+import fi.oph.koski.schema.Koodistokoodiviite
+import fi.oph.koski.schema.annotation.KoodistoUri
 import org.json4s.DefaultFormats
 import org.json4s.jackson.Serialization.write
 import org.scalatest._
@@ -28,6 +29,7 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
   private val vanhaHetu = "120456-DCBA"
   private val oid = "1.2.246.562.24.99999999123"
   private val slaveOid = "1.2.246.562.24.99999999124"
+  private val deserializationTestOid = "1.2.246.562.24.76912370865"
   private val organisaatioOid = "1.2.246.562.10.85149969462"
 
   private val wireMockServer = new WireMockServer(wireMockConfig().port(9876))
@@ -83,7 +85,45 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
     "kielisyys" -> null,
     "kansalaisuus" -> null,
     "yhteystiedotRyhma" -> null,
-    "henkiloTyyppi" -> "OPPIJA"
+    "henkiloTyyppi" -> "OPPIJA",
+    "yhteystiedotRyhma" -> List(
+      Map(
+        "id" -> 163351041,
+        "ryhmaKuvaus" -> "yhteystietotyyppi13",
+        "ryhmaAlkuperaTieto" -> "alkupera7",
+        "readOnly" -> false,
+        "yhteystieto" -> List(
+          Map(
+            "yhteystietoTyyppi" -> "YHTEYSTIETO_PUHELINNUMERO",
+            "yhteystietoArvo" -> "0401122334"
+          ),
+          Map(
+            "yhteystietoTyyppi" -> "YHTEYSTIETO_MATKAPUHELINNUMERO",
+            "yhteystietoArvo" -> "0401122334"
+          ),
+          Map(
+            "yhteystietoTyyppi" -> "YHTEYSTIETO_SAHKOPOSTI",
+            "yhteystietoArvo" -> "esimerkki@gmail.com"
+          ),
+          Map(
+            "yhteystietoTyyppi" -> "YHTEYSTIETO_KUNTA",
+            "yhteystietoArvo" -> "Helsinki"
+          ),
+          Map(
+            "yhteystietoTyyppi" -> "YHTEYSTIETO_KATUOSOITE",
+            "yhteystietoArvo" -> "Esimerkkitie 10"
+          ),
+          Map(
+            "yhteystietoTyyppi" -> "YHTEYSTIETO_KAUPUNKI",
+            "yhteystietoArvo" -> "Helsinki"
+          ),
+          Map(
+            "yhteystietoTyyppi" -> "YHTEYSTIETO_POSTINUMERO",
+            "yhteystietoArvo" -> "00300"
+          )
+        )
+      )
+    )
   )
 
   private val expectedKäyttäjäHenkilö = KäyttäjäHenkilö(
@@ -106,7 +146,19 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
     turvakielto = false,
     linkitetytOidit = Nil,
     yksilöity = true,
-    vanhatHetut = List(vanhaHetu)
+    vanhatHetut = List(vanhaHetu),
+    yhteystiedot = List(Yhteystiedot(
+      alkuperä = Koodistokoodiviite("alkupera7", "yhteystietojenalkupera"),
+      tyyppi = Koodistokoodiviite("yhteystietotyyppi13", "yhteystietotyypit"),
+      sähköposti = Some("esimerkki@gmail.com"),
+      puhelinnumero = Some("0401122334"),
+      matkapuhelinnumero = Some("0401122334"),
+      katuosoite = Some("Esimerkkitie 10"),
+      kunta = Some("Helsinki"),
+      postinumero = Some("00300"),
+      kaupunki = Some("Helsinki"),
+      maa = None,
+    ))
   )
 
   private val expectedSuppeatOppijaHenkilötiedot = SuppeatOppijaHenkilöTiedot(
@@ -123,6 +175,80 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
     turvakielto = false,
     linkitetytOidit = Nil
   )
+
+  private val realLaajaOppijaHenkilötResponse =
+    """{
+          "oidHenkilo": "1.2.246.562.24.76912370865",
+          "hetu": "200220A924F",
+          "kaikkiHetut": [],
+          "passivoitu": false,
+          "etunimet": "Aamu Annika",
+          "kutsumanimi": "Aamu",
+          "sukunimi": "Aalto",
+          "aidinkieli": null,
+          "asiointiKieli": null,
+          "kansalaisuus": [],
+          "kasittelijaOid": "1.2.246.562.24.53996747039",
+          "syntymaaika": "2020-02-20",
+          "sukupuoli": "2",
+          "kotikunta": null,
+          "oppijanumero": null,
+          "turvakielto": false,
+          "eiSuomalaistaHetua": false,
+          "yksiloity": false,
+          "yksiloityVTJ": false,
+          "yksilointiYritetty": true,
+          "duplicate": false,
+          "created": 1604324426993,
+          "modified": 1604324808996,
+          "vtjsynced": null,
+          "yhteystiedotRyhma": [
+            {
+              "id": 163351041,
+              "ryhmaKuvaus": "yhteystietotyyppi13",
+              "ryhmaAlkuperaTieto": "alkupera7",
+              "readOnly": false,
+              "yhteystieto": [
+                {
+                  "yhteystietoTyyppi": "YHTEYSTIETO_SAHKOPOSTI",
+                  "yhteystietoArvo": "esimerkki@gmail.com"
+                },
+                {
+                  "yhteystietoTyyppi": "YHTEYSTIETO_KATUOSOITE",
+                  "yhteystietoArvo": "Esimerkkitie 10"
+                },
+                {
+                  "yhteystietoTyyppi": "YHTEYSTIETO_PUHELINNUMERO",
+                  "yhteystietoArvo": "0401122334"
+                },
+                {
+                  "yhteystietoTyyppi": "YHTEYSTIETO_POSTINUMERO",
+                  "yhteystietoArvo": "00300"
+                },
+                {
+                  "yhteystietoTyyppi": "YHTEYSTIETO_MATKAPUHELINNUMERO",
+                  "yhteystietoArvo": "0401122334"
+                },
+                {
+                  "yhteystietoTyyppi": "YHTEYSTIETO_KAUPUNKI",
+                  "yhteystietoArvo": "Helsinki"
+                },
+                {
+                  "yhteystietoTyyppi": "YHTEYSTIETO_KUNTA",
+                  "yhteystietoArvo": "Helsinki"
+                }
+              ]
+            }
+          ],
+          "yksilointivirheet": [
+            {
+              "yksilointivirheTila": "HETU_EI_OIKEA",
+              "uudelleenyritysAikaleima": null
+            }
+          ],
+          "henkiloTyyppi": "OPPIJA",
+          "kielisyys": []
+        }"""
 
   override def beforeAll {
     wireMockServer.start()
@@ -235,6 +361,12 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
       val result = mockClient.findMasterOppija(oid).unsafePerformSync
       result.value.yksilöity should equal(false)
     }
+
+    "deserialisoi oikean JSON-merkkijonon" in {
+      mockEndpoints()
+      val result = mockClient.findOppijaByOid(deserializationTestOid).unsafePerformSync
+      result.value.yhteystiedot should equal(expectedLaajatOppijaHenkilötiedot.yhteystiedot)
+    }
   }
 
   def mockEndpoints(henkilöResponse: Map[String, Any] = defaultHenkilöResponse, slaveOidsResponseData: List[Map[String, Any]] = List.empty) = {
@@ -247,6 +379,8 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
     val yhteystiedotUrl = "/oppijanumerorekisteri-service/s2s/henkilo/yhteystiedot"
     val slaveOidsUrl = s"/oppijanumerorekisteri-service/henkilo/${oid}/slaves"
     val uusiHenkiloUrl = "/oppijanumerorekisteri-service/s2s/findOrCreateHenkiloPerustieto"
+    val deserializationOidUrl = s"/oppijanumerorekisteri-service/henkilo/${deserializationTestOid}"
+    val deserializationSlaveOidsUrl = s"/oppijanumerorekisteri-service/henkilo/${deserializationTestOid}/slaves"
 
     wireMockServer.stubFor(
       WireMock.post(urlPathEqualTo(uusiHenkiloUrl))
@@ -295,6 +429,14 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
 
     wireMockServer.stubFor(
       WireMock.get(urlPathEqualTo(slaveOidsUrl))
+        .willReturn(ok().withBody(write(slaveOidsResponseData))))
+
+    wireMockServer.stubFor(
+      WireMock.get(urlPathEqualTo(deserializationOidUrl))
+        .willReturn(ok().withBody(realLaajaOppijaHenkilötResponse)))
+
+    wireMockServer.stubFor(
+      WireMock.get(urlPathEqualTo(deserializationSlaveOidsUrl))
         .willReturn(ok().withBody(write(slaveOidsResponseData))))
   }
 }

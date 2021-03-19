@@ -1,11 +1,11 @@
 package fi.oph.koski.henkilo
 
 import java.time.LocalDate
-
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
+import fi.oph.koski.schema.annotation.KoodistoUri
 import fi.oph.scalaschema.annotation.SyntheticProperty
 
 // Tätä rakennetta käytetään kuvaamaan oppijanumerorekisteristä löytyvää henkilöä sovelluksen sisällä.
@@ -27,7 +27,8 @@ case class LaajatOppijaHenkilöTiedot(
   linkitetytOidit: List[String] = Nil,
   vanhatHetut: List[String] = Nil,
   kotikunta: Option[String] = Some("179"),
-  yksilöity: Boolean = true
+  yksilöity: Boolean = true,
+  yhteystiedot: Seq[Yhteystiedot] = List.empty
 ) extends OppijaHenkilö with HenkilönTunnisteet {
   @SyntheticProperty
   def preventSerialization: Nothing = ??? // ensure this class never gets serialized to JSON
@@ -77,6 +78,21 @@ trait HenkilönTunnisteet {
   def linkitetytOidit: List[String]
   def vanhatHetut: List[String]
 }
+
+case class Yhteystiedot(
+  @KoodistoUri("yhteystietojenalkupera")
+  alkuperä: Koodistokoodiviite,
+  @KoodistoUri("yhteystietotyypit")
+  tyyppi: Koodistokoodiviite,
+  sähköposti: Option[String],
+  puhelinnumero: Option[String],
+  matkapuhelinnumero: Option[String],
+  katuosoite: Option[String],
+  kunta: Option[String],
+  postinumero: Option[String],
+  kaupunki: Option[String],
+  maa: Option[String],
+)
 
 case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, koodisto: KoodistoViitePalvelu) extends Logging {
   def withMasterInfo(henkilötiedot: OppijaHenkilö) = OppijaHenkilöWithMasterInfo(henkilötiedot, findMasterHenkilö(henkilötiedot.oid))

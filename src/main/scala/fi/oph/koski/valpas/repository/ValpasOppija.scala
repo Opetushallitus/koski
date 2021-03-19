@@ -85,12 +85,6 @@ object ValpasHakutilanne {
       aktiivinen = hakukooste.hakutoiveet.exists(_.isAktiivinen),
       hakuAlkaa = hakukooste.haunAlkamispaivamaara,
       hakutoiveet = hakukooste.hakutoiveet.map(ValpasHakutoive.apply),
-      osoite = hakukooste.lahiosoite,
-      puhelinnumero = hakukooste.matkapuhelin,
-      sähköposti = hakukooste.email,
-      huoltajanNimi = hakukooste.huoltajanNimi,
-      huoltajanPuhelinnumero = hakukooste.huoltajanPuhelinnumero,
-      huoltajanSähköposti = hakukooste.huoltajanSähkoposti
     )
 }
 
@@ -101,12 +95,6 @@ case class ValpasHakutilanne(
   aktiivinen: Boolean,
   hakuAlkaa: LocalDateTime,
   hakutoiveet: Seq[ValpasHakutoive],
-  osoite: String,
-  puhelinnumero: String,
-  sähköposti: String,
-  huoltajanNimi: Option[String],
-  huoltajanPuhelinnumero: Option[String],
-  huoltajanSähköposti: Option[String]
 )
 
 object ValpasHakutoive {
@@ -134,3 +122,4 @@ case class ValpasHakutoive(
     case _ => None
   }
 }
+

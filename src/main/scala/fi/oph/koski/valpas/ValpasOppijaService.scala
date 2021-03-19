@@ -1,19 +1,22 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.henkilo.Yhteystiedot
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.{AuditLog, KoskiMessageField, Logging}
+import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
 import fi.oph.koski.validation.{ValidatingAndResolvingExtractor, ValidationAndResolvingContext}
+import fi.oph.koski.valpas.ValpasOppijaService.ValpasOppijaRowConversionOps
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, ValpasHakukoosteService}
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessage, ValpasOperation}
 import fi.oph.koski.valpas.repository._
-import fi.oph.koski.valpas.ValpasOppijaService.ValpasOppijaRowConversionOps
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
 case class OppijaHakutilanteilla(
   oppija: ValpasOppija,
   hakutilanteet: Seq[ValpasHakutilanne],
-  hakutilanneError: Option[String]
+  hakutilanneError: Option[String],
+  yhteystiedot: Seq[ValpasYhteystiedot]
 )
 
 object OppijaHakutilanteilla {
@@ -22,7 +25,8 @@ object OppijaHakutilanteilla {
       oppija = oppija,
       hakutilanteet = haut.map(_.map(ValpasHakutilanne.apply)).getOrElse(Seq()),
       // TODO: Pitäisikö virheet mankeloida jotenkin eikä palauttaa sellaisenaan fronttiin?
-      hakutilanneError = haut.left.toOption.flatMap(_.errorString)
+      hakutilanneError = haut.left.toOption.flatMap(_.errorString),
+      yhteystiedot = Seq.empty
     )
   }
 }
@@ -57,6 +61,8 @@ class ValpasOppijaService(
   hakukoosteService: ValpasHakukoosteService,
 ) extends Logging {
   private val dbService = new ValpasDatabaseService(application)
+  private val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
+  private val localizationRepository = application.valpasLocalizationRepository
 
   private val accessResolver = new ValpasAccessResolver(application.organisaatioRepository)
 
@@ -84,6 +90,9 @@ class ValpasOppijaService(
       .flatMap(_.asValpasOppija)
       .flatMap(accessResolver.withOppijaAccess)
       .map(fetchHaku)
+      .flatMap(o => fetchVirallisetYhteystiedot(o.oppija).map(yhteystiedot => o.copy(
+        yhteystiedot = o.yhteystiedot ++ yhteystiedot.map(yt => ValpasYhteystiedot.virallinenYhteystieto(yt, localizationRepository.get("oppija__viralliset_yhteystiedot")))
+      )))
       .map(withAuditLogOppijaKatsominen)
 
   private def fetchHaku(oppija: ValpasOppija): OppijaHakutilanteilla = {
@@ -99,6 +108,23 @@ class ValpasOppijaService(
           OppijaHakutilanteilla.apply(oppija, Right(groups.getOrElse(oppija.henkilö.oid, Seq()))))
       )
   }
+
+  private def fetchVirallisetYhteystiedot(oppija: ValpasOppija): Either[HttpStatus, Seq[Yhteystiedot]] = {
+    oppijanumerorekisteri.findOppijaByOid(oppija.henkilö.oid)
+      .map(_.yhteystiedot)
+      .toRight(ValpasErrorCategory.internalError())
+  }
+
+  private def ilmoitetutYhteystiedot(hakukoosteet: Seq[Hakukooste]): Seq[ValpasYhteystiedot] =
+    hakukoosteet
+      .sortBy(_.haunAlkamispaivamaara)
+      .lastOption
+      .map(haku => List(
+        Some(ValpasYhteystiedot.oppijanIlmoittamatYhteystiedot(haku, localizationRepository.get("oppija__yhteystiedot"))),
+        ValpasYhteystiedot.oppijanIlmoittamatHuoltajanYhteystiedot(haku, localizationRepository.get("oppija__huoltaja")),
+      ))
+      .getOrElse(List.empty)
+      .collect { case Some(s) => s }
 
   private def withAuditLogOppijaKatsominen(result: OppijaHakutilanteilla)(implicit session: ValpasSession): OppijaHakutilanteilla = {
     AuditLog.log(ValpasAuditLogMessage(

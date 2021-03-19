@@ -6,7 +6,7 @@ import fi.oph.koski.http.Http._
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotIndexer, OpiskeluoikeudenPerustiedotRepository}
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.TäydellisetHenkilötiedot
+import fi.oph.koski.schema.{Koodistokoodiviite, TäydellisetHenkilötiedot}
 import fi.oph.koski.util.Timing
 import org.http4s._
 

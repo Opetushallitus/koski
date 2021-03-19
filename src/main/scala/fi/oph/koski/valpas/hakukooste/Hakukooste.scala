@@ -32,6 +32,8 @@ case class Hakukooste(
   hakuNimi: BlankableLocalizedString,
   email: String,
   lahiosoite: String,
+  postinumero: String,
+  postitoimipaikka: Option[String],
   matkapuhelin: String,
   huoltajanNimi: Option[String],
   huoltajanPuhelinnumero: Option[String],

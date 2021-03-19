@@ -1,21 +1,25 @@
+import { isNonEmpty } from "fp-ts/lib/Array"
 import React from "react"
 import { Accordion } from "../../components/containers/Accordion"
 import { Column, ColumnsContainer } from "../../components/containers/Columns"
 import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
 import { TertiaryHeading } from "../../components/typography/headings"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
-import { t, T } from "../../i18n/i18n"
-import { Haku, OppijaHakutilanteilla } from "../../state/oppijat"
+import { getLocalized, t, T } from "../../i18n/i18n"
+import {
+  OppijaHakutilanteilla,
+  Yhteystiedot,
+  YhteystietojenAlkuperä,
+} from "../../state/oppijat"
+import { nonNull } from "../../utils/arrays"
 
 export type OppijanYhteystiedotProps = {
   oppija: OppijaHakutilanteilla
 }
 
 export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {
-  const haku = Haku.latest(props.oppija.hakutilanteet)
-  const hakuYht = haku && getYhteystiedot(haku)
-  const huoltajaYht = haku && getHuoltajanYhteystiedot(haku)
-  const ilmoitettujaYhteystietoja = !!(hakuYht || huoltajaYht)
+  const ilmoitetut = props.oppija.yhteystiedot.filter(Yhteystiedot.isIlmoitettu)
+  const viralliset = props.oppija.yhteystiedot.filter(Yhteystiedot.isVirallinen)
 
   return (
     <ColumnsContainer>
@@ -23,18 +27,13 @@ export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {
         <TertiaryHeading>
           <T id="oppija__ilmoitetut_yhteystiedot" />
         </TertiaryHeading>
-        {ilmoitettujaYhteystietoja ? (
+        {isNonEmpty(ilmoitetut) ? (
           <Accordion
-            items={[
-              hakuYht && {
-                label: t("oppija__yhteystiedot"),
-                render: () => <Yhteystietolista yhteystiedot={hakuYht} />,
-              },
-              huoltajaYht && {
-                label: t("oppija__huoltaja"),
-                render: () => <Yhteystietolista yhteystiedot={huoltajaYht} />,
-              },
-            ]}
+            items={ilmoitetut.map((yhteystiedot) => ({
+              label:
+                getLocalized(yhteystiedot.nimi) || t("oppija__yhteystiedot"),
+              render: () => <Yhteystietolista yhteystiedot={yhteystiedot} />,
+            }))}
           />
         ) : (
           <NoDataMessage>
@@ -42,37 +41,70 @@ export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {
           </NoDataMessage>
         )}
       </Column>
-      <Column size={6}>
+      <Column size={6} id="viralliset-yhteystiedot">
         <TertiaryHeading>
           <T id="oppija__viralliset_yhteystiedot" />
         </TertiaryHeading>
-        <NoDataMessage>Tämä ominaisuus on toteuttamatta</NoDataMessage>
+        {isNonEmpty(viralliset) ? (
+          viralliset.map((yhteystiedot) => (
+            <Yhteystietolista
+              key={yhteystiedot.alkuperä.alkuperä.koodiarvo}
+              yhteystiedot={yhteystiedot}
+            />
+          ))
+        ) : (
+          <NoDataMessage>
+            <T id="oppija__yhteystietoja_ei_löytynyt" />
+          </NoDataMessage>
+        )}
       </Column>
     </ColumnsContainer>
   )
 }
 
 type YhteystietolistaProps = {
-  yhteystiedot: Yhteystiedot
+  yhteystiedot: Yhteystiedot<YhteystietojenAlkuperä>
 }
 
 const Yhteystietolista = (props: YhteystietolistaProps) => (
   <InfoTable>
-    {props.yhteystiedot.nimi && (
-      <InfoTableRow label={t("oppija__nimi")} value={props.yhteystiedot.nimi} />
-    )}
-    {props.yhteystiedot.osoite && (
+    {props.yhteystiedot.henkilönimi && (
       <InfoTableRow
-        label={t("oppija__osoite")}
-        value={props.yhteystiedot.osoite}
+        label={t("oppija__nimi")}
+        value={props.yhteystiedot.henkilönimi}
       />
     )}
-    {props.yhteystiedot.puhelin && (
+    {props.yhteystiedot.lähiosoite && (
+      <InfoTableRow
+        label={t("oppija__lähiosoite")}
+        value={props.yhteystiedot.lähiosoite}
+      />
+    )}
+    {(props.yhteystiedot.kunta || props.yhteystiedot.postinumero) && (
+      <InfoTableRow
+        label={t("oppija__postitoimipaikka")}
+        value={[props.yhteystiedot.postinumero, props.yhteystiedot.kunta]
+          .filter(nonNull)
+          .join(" ")}
+      />
+    )}
+    {props.yhteystiedot.maa && (
+      <InfoTableRow label={t("oppija__maa")} value={props.yhteystiedot.maa} />
+    )}
+    {props.yhteystiedot.puhelinnumero && (
       <InfoTableRow
         label={t("oppija__puhelin")}
-        value={props.yhteystiedot.puhelin}
+        value={props.yhteystiedot.puhelinnumero}
       />
     )}
+    {props.yhteystiedot.matkapuhelinnumero &&
+      props.yhteystiedot.puhelinnumero !==
+        props.yhteystiedot.matkapuhelinnumero && (
+        <InfoTableRow
+          label={t("oppija__matkapuhelin")}
+          value={props.yhteystiedot.matkapuhelinnumero}
+        />
+      )}
     {props.yhteystiedot.sähköposti && (
       <InfoTableRow
         label={t("oppija__email")}
@@ -81,28 +113,3 @@ const Yhteystietolista = (props: YhteystietolistaProps) => (
     )}
   </InfoTable>
 )
-
-type Yhteystiedot = {
-  nimi?: string
-  osoite?: string
-  puhelin?: string
-  sähköposti?: string
-}
-
-const getYhteystiedot = (haku: Haku): Yhteystiedot | null =>
-  haku.osoite || haku.puhelinnumero || haku.sähköposti
-    ? {
-        osoite: haku.osoite,
-        puhelin: haku.puhelinnumero,
-        sähköposti: haku.sähköposti,
-      }
-    : null
-
-const getHuoltajanYhteystiedot = (haku: Haku): Yhteystiedot | null =>
-  haku.huoltajanNimi || haku.huoltajanPuhelinnumero || haku.huoltajanSähköposti
-    ? {
-        nimi: haku.huoltajanNimi,
-        puhelin: haku.puhelinnumero,
-        sähköposti: haku.huoltajanSähköposti,
-      }
-    : null
