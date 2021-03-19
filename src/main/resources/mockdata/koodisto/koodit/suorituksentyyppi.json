@@ -1461,31 +1461,16 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojenosasuoritus",
-  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojenosasuoritus",
-  "metadata" : [ {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kieliopintojen osasuoritus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kieliopintojen osasuoritus",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kieliopintojen osasuoritus",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
   "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
   "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
   "metadata" : [ {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen ohjauksen osasuoritus",
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen ohjauksen suoritus",
     "kieli" : "FI"
   }, {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen ohjauksen osasuoritus",
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen ohjauksen suoritus",
     "kieli" : "SV"
   }, {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen ohjauksen osasuoritus",
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen ohjauksen suoritus",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -1501,21 +1486,6 @@
     "kieli" : "SV"
   }, {
     "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen valinnaisten opintojen osasuoritus",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus",
-  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus",
-  "metadata" : [ {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kokonaisuus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kokonaisuus",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kokonaisuus",
     "kieli" : "EN"
   } ],
   "versio" : 1,
