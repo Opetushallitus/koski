@@ -16,7 +16,7 @@ const jklNormaalikouluTableContent = `
   LuokallejäänytYsiluokkalainen Valpas	Jyväskylän normaalikoulu	2.8.2005	9A	Ei hakemusta	-	-	-
   LuokallejäänytYsiluokkalainenJatkaa Valpas	Jyväskylän normaalikoulu	6.2.2005	9B	Ei hakemusta	-	-	-
   LuokallejäänytYsiluokkalainenKouluvaihtoMuualta Valpas	Jyväskylän normaalikoulu	2.11.2005	9B	Ei hakemusta	-	-	-
-  Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas	Jyväskylän normaalikoulu	22.11.2005	9C	Aktiivinen	-	-	-
+  Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas	Jyväskylän normaalikoulu	22.11.2005	9C	Hakenut open_in_new	-	-	-
   Päällekkäisiä Oppivelvollisuuksia	Jyväskylän normaalikoulu	6.6.2005	9B	Ei hakemusta	-	-	-
   Yli-2-kk-aiemmin-peruskoulusta-valmistunut Valpas	Jyväskylän normaalikoulu	1.2.2004	9C	Ei hakemusta	-	-	-
   Ysiluokka-valmis-keväällä-2021 Valpas	Jyväskylän normaalikoulu	19.6.2005	9C	Ei hakemusta	-	-	-

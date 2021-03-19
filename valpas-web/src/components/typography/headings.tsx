@@ -1,5 +1,6 @@
 import bem from "bem-ts"
 import React from "react"
+import { plainComponent } from "../../utils/plaincomponent"
 import "./headings.less"
 
 export type HeadingProps = {
@@ -8,14 +9,6 @@ export type HeadingProps = {
 
 const b = bem("heading")
 
-export const Heading = (props: HeadingProps) => (
-  <h1 className={b(["primary"])}>{props.children}</h1>
-)
-
-export const SecondaryHeading = (props: HeadingProps) => (
-  <h2 className={b(["secondary"])}>{props.children}</h2>
-)
-
-export const TertiaryHeading = (props: HeadingProps) => (
-  <h3 className={b(["tertiary"])}>{props.children}</h3>
-)
+export const Heading = plainComponent("h1", b(["primary"]))
+export const SecondaryHeading = plainComponent("h2", b(["secondary"]))
+export const TertiaryHeading = plainComponent("h3", b(["tertiary"]))

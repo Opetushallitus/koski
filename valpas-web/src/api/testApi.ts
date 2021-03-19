@@ -14,7 +14,9 @@ export const resetMockData = () =>
   apiGet<FixtureState>("valpas/test/reset-mock-data")
 
 export const resetMockDataToDate = (tarkasteluPäivä: string) => () =>
-  apiGet<FixtureState>("valpas/test/reset-mock-data/" + tarkasteluPäivä)
+  apiGet<FixtureState>(
+    "valpas/test/reset-mock-data/" + (tarkasteluPäivä || "2021-09-01")
+  )
 
 export const clearMockData = () =>
   apiGet<FixtureState>("valpas/test/clear-mock-data")
