@@ -2,13 +2,17 @@ package fi.oph.koski.valpas.hakukooste
 
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
-import fi.oph.koski.schema.{Finnish, Koodistokoodiviite}
+import fi.oph.koski.schema.{BlankLocalizedString, BlankableLocalizedString, Finnish, Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.valpas.henkilo.ValpasMockOppijat
 import fi.vm.sade.oidgenerator.OIDGenerator
 
 import java.time.{LocalDate, LocalDateTime}
 
 object HakukoosteExampleData {
+  private implicit class Conversions(maybe: Option[LocalizedString]) {
+    def toBlankable: BlankableLocalizedString = maybe.getOrElse(BlankLocalizedString())
+  }
+
   lazy val data = List(
     haku(
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
@@ -33,7 +37,15 @@ object HakukoosteExampleData {
           hakukohdeOid = MockOrganisaatiot.varsinaisSuomenKansanopisto,
           koulutusNimi = "Vapaan sivistystyön koulutus oppivelvollisille"
         ),
-      ))
+      )),
+    haku(
+      ValpasMockOppijat.luokalleJäänytYsiluokkalainen,
+      List(
+        hakutoive(
+          hakukohdeOid = "",
+          koulutusNimi = "Lukiokoulutus"
+        ),
+      )),
   )
 
   def haku(
@@ -56,7 +68,10 @@ object HakukoosteExampleData {
       huoltajanPuhelinnumero = Some("0407654321"),
       huoltajanSähkoposti = Some("huoltaja.sukunimi@gmail.com"),
       hakutoiveet = hakutoiveet.map(hakutoive => hakutoive.copy(
-        hakukohdeNimi = MockOrganisaatioRepository.getOrganisaationNimiHetkellä(oid = hakutoive.hakukohdeOid, localDate = muokattu.toLocalDate).get,
+        hakukohdeNimi = MockOrganisaatioRepository.getOrganisaationNimiHetkellä(
+          oid = hakutoive.hakukohdeOid,
+          localDate = muokattu.toLocalDate
+        ).toBlankable,
         hakutoivenumero = if (hakutoive.hakutoivenumero >= 0) {
           hakutoive.hakutoivenumero
         } else {
@@ -72,7 +87,10 @@ object HakukoosteExampleData {
   ): Hakutoive =
     Hakutoive(
       hakukohdeOid = hakukohdeOid,
-      hakukohdeNimi = MockOrganisaatioRepository.getOrganisaationNimiHetkellä(oid = hakukohdeOid, localDate = LocalDate.now()).get,
+      hakukohdeNimi = MockOrganisaatioRepository.getOrganisaationNimiHetkellä(
+        oid = hakukohdeOid,
+        localDate = LocalDate.now()
+      ).toBlankable,
       hakutoivenumero = hakutoivenumero,
       koulutusNimi = Finnish(koulutusNimi),
       hakukohdeOrganisaatio = hakukohdeOid,
