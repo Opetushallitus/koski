@@ -265,6 +265,24 @@ object VapaaSivistystyöExampleData {
         Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus", koodistoUri = "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"),
         Some(LaajuusOpintoviikoissa(15))
       ),
+      arviointi = Some(List(vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenArviointi)),
+      osasuoritukset = Some(List(
+        vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso,
+        vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataidot
+      ))
+    )
+  }
+
+  def vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso() = {
+    VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso(
+      koulutusmoduuli = vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus,
+      arviointi = Some(List(vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenArviointi))
+    )
+  }
+
+  def vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataidot() = {
+    VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataidot(
+      koulutusmoduuli = vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus,
       arviointi = Some(List(vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenArviointi))
     )
   }
