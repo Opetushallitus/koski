@@ -5,6 +5,8 @@ import fi.oph.koski.schema.{BlankableLocalizedString, Koodistokoodiviite}
 import fi.oph.koski.valpas.repository.{ValpasHakutilanne, ValpasHakutoive, ValpasHenkilö, ValpasOppilaitos}
 import fi.oph.scalaschema.annotation.SyntheticProperty
 
+import java.time.LocalDateTime
+
 
 case class Hakukooste(
   oppijaOid: ValpasHenkilö.Oid,
@@ -26,7 +28,7 @@ case class Hakukooste(
   @KoodistoKoodiarvo("03") // lisähaku
   hakutyyppi: Koodistokoodiviite,
 
-  muokattu: String,
+  haunAlkamispaivamaara: LocalDateTime,
   hakuNimi: BlankableLocalizedString,
   email: String,
   lahiosoite: String,

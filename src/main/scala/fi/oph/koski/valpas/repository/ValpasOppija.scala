@@ -5,7 +5,7 @@ import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, Hakutoive}
 import fi.oph.scalaschema.annotation.SyntheticProperty
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 case class ValpasOppija(
   henkilö: ValpasHenkilö,
@@ -80,7 +80,7 @@ object ValpasHakutilanne {
       hakuNimi = hakukooste.hakuNimi.toLocalizedString,
       hakemusOid = hakukooste.hakemusOid,
       aktiivinen = hakukooste.hakutoiveet.exists(_.isAktiivinen),
-      muokattu = hakukooste.muokattu,
+      hakuAlkaa = hakukooste.haunAlkamispaivamaara,
       hakutoiveet = hakukooste.hakutoiveet.map(ValpasHakutoive.apply),
       osoite = hakukooste.lahiosoite,
       puhelinnumero = hakukooste.matkapuhelin,
@@ -96,7 +96,7 @@ case class ValpasHakutilanne(
   hakuNimi: Option[LocalizedString],
   hakemusOid: String,
   aktiivinen: Boolean,
-  muokattu: String,
+  hakuAlkaa: LocalDateTime,
   hakutoiveet: Seq[ValpasHakutoive],
   osoite: String,
   puhelinnumero: String,

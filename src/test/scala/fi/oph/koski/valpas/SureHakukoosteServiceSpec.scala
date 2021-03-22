@@ -5,11 +5,13 @@ import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration._
 import com.typesafe.config.ConfigFactory
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, HakukoosteExampleData, ValpasHakukoosteService}
 import fi.oph.koski.valpas.henkilo.ValpasMockOppijat
-import org.json4s.jackson.Serialization
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatest._
+
+import java.time.LocalDateTime
 
 class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with EitherValues with BeforeAndAfterAll {
   implicit val jsonDefaultFormats: Formats = DefaultFormats.preservingEmptyValues
@@ -84,6 +86,7 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
       result.hakutapa.nimi.get.get("sv") should equal("Gemensam ansökan")
       result.hakuNimi.get("en") should startWith("Joint Application")
       result.hakutoiveet.map(_.hakukohdeOid) should equal(List("1.2.246.562.20.80878445842", "1.2.246.562.20.24492106752"))
+      result.haunAlkamispaivamaara should equal(LocalDateTime.of(2021, 4, 20, 9, 0))
     }
   }
 
@@ -99,7 +102,7 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
     wireMockServer.stubFor(
       WireMock.post(urlPathEqualTo(sureHakukoosteUrl))
         .withRequestBody(equalToJson(expectedRequest))
-        .willReturn(ok().withBody(Serialization.write(response))))
+        .willReturn(ok().withBody(JsonSerializer.writeWithRoot(response))))
   }
 }
 
@@ -133,7 +136,7 @@ object SureHakukoosteServiceSpec {
       |      "koodistoUri": "hakutyyppi",
       |      "koodistoVersio": 1
       |    },
-      |    "muokattu": "",
+      |    "haunAlkamispaivamaara": "2021-04-20T09:00:00",
       |    "oppijaOid": "1.2.246.562.24.85292063498",
       |    "hakemusOid": "1.2.246.562.11.00000000000000675952",
       |    "hakuOid": "1.2.246.562.29.72389663526",

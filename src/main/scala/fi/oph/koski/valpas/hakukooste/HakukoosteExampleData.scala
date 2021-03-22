@@ -2,7 +2,7 @@ package fi.oph.koski.valpas.hakukooste
 
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
-import fi.oph.koski.schema.{BlankLocalizedString, BlankableLocalizedString, Finnish, Koodistokoodiviite, LocalizedString}
+import fi.oph.koski.schema._
 import fi.oph.koski.valpas.henkilo.ValpasMockOppijat
 import fi.vm.sade.oidgenerator.OIDGenerator
 
@@ -51,7 +51,7 @@ object HakukoosteExampleData {
   def haku(
     henkilö: OppijaHenkilö,
     hakutoiveet: Seq[Hakutoive],
-    muokattu: LocalDateTime = LocalDateTime.of(2020, 3, 9, 12, 0, 0),
+    alkamisaika: LocalDateTime = LocalDateTime.of(2020, 3, 9, 12, 0, 0),
   ): Hakukooste =
     Hakukooste(
       oppijaOid = henkilö.oid,
@@ -59,7 +59,7 @@ object HakukoosteExampleData {
       hakemusOid = generateHakemusOid(),
       hakutapa = yhteishakukoodi,
       hakutyyppi = varsinaisenHaunKoodi,
-      muokattu = muokattu.toString,
+      haunAlkamispaivamaara = alkamisaika,
       hakuNimi = Finnish("Yhteishaku 2021"),
       email = generateEmail(henkilö),
       lahiosoite = "Esimerkkikatu 123, 00000 KAUPUNKI",
@@ -68,10 +68,9 @@ object HakukoosteExampleData {
       huoltajanPuhelinnumero = Some("0407654321"),
       huoltajanSähkoposti = Some("huoltaja.sukunimi@gmail.com"),
       hakutoiveet = hakutoiveet.map(hakutoive => hakutoive.copy(
-        hakukohdeNimi = MockOrganisaatioRepository.getOrganisaationNimiHetkellä(
-          oid = hakutoive.hakukohdeOid,
-          localDate = muokattu.toLocalDate
-        ).toBlankable,
+        hakukohdeNimi = MockOrganisaatioRepository
+          .getOrganisaationNimiHetkellä(hakutoive.hakukohdeOid, alkamisaika.toLocalDate)
+          .toBlankable,
         hakutoivenumero = if (hakutoive.hakutoivenumero >= 0) {
           hakutoive.hakutoivenumero
         } else {
