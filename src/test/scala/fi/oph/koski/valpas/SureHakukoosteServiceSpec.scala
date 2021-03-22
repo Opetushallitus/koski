@@ -117,7 +117,7 @@ object SureHakukoosteServiceSpec {
       |        "fi": "YH",
       |        "sv": "GA"
       |      },
-      |      "koodistoUri": "hakutapa_01",
+      |      "koodistoUri": "hakutapa",
       |      "koodistoVersio": 1
       |    },
       |    "hakutyyppi": {
@@ -130,7 +130,7 @@ object SureHakukoosteServiceSpec {
       |        "fi": "VH",
       |        "sv": "EA"
       |      },
-      |      "koodistoUri": "hakutyyppi_01",
+      |      "koodistoUri": "hakutyyppi",
       |      "koodistoVersio": 1
       |    },
       |    "muokattu": "",

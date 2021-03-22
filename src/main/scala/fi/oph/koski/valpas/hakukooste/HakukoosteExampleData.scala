@@ -104,8 +104,8 @@ object HakukoosteExampleData {
       hakukohdeKoulutuskoodi = "TODO"
     )
 
-  def yhteishakukoodi = Koodistokoodiviite("01", "hakutapa_01") // TODO: Korjaa koodistoUri kun API-vastaus korjattu
-  def varsinaisenHaunKoodi = Koodistokoodiviite("01", "hakutyyppi_01") // TODO: Korjaa koodistoUri kun API-vastaus korjattu
+  def yhteishakukoodi = Koodistokoodiviite("01", "hakutapa")
+  def varsinaisenHaunKoodi = Koodistokoodiviite("01", "hakutyyppi")
   def generateHakuOid() = OIDGenerator.generateOID(100)
   def generateHakemusOid() = OIDGenerator.generateOID(101)
   def generateEmail(henkilö: OppijaHenkilö) =

@@ -11,11 +11,7 @@ case class Hakukooste(
   hakuOid: ValpasHakutilanne.HakuOid,
   hakemusOid: ValpasHakutilanne.HakemusOid,
 
-  // TODO: koodistoUrin korjaus Suren vastauksessa
-  @KoodistoUri("hakutapa_01")
-  @KoodistoUri("hakutapa_02")
-  @KoodistoUri("hakutapa_03")
-  @KoodistoUri("hakutapa_04")
+  @KoodistoUri("hakutapa")
   // TODO: Koodiston lataus koskeen
   @KoodistoKoodiarvo("01") // Yhteishaku
   @KoodistoKoodiarvo("02") // Erillishaku
@@ -23,10 +19,7 @@ case class Hakukooste(
   @KoodistoKoodiarvo("04") // Joustava haku
   hakutapa: Koodistokoodiviite,
 
-  // TODO: koodistoUrin korjaus Suren vastauksessa
-  @KoodistoUri("hakutyyppi_01")
-  @KoodistoUri("hakutyyppi_02")
-  @KoodistoUri("hakutyyppi_03")
+  @KoodistoUri("hakutyyppi")
   // TODO: Koodiston lataus koskeen
   @KoodistoKoodiarvo("01") // Varsinainen haku
   @KoodistoKoodiarvo("02") // täydennyshaku
