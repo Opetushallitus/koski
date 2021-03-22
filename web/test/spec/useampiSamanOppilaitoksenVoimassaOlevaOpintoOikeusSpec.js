@@ -36,6 +36,7 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
       addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
       addOppija.selectTutkinto('Autoalan perustutkinto'),
       addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
+      addOppija.selectAloituspäivä('1.1.2018'),
       addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
       addOppija.submitModal,
       opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
@@ -43,6 +44,7 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
       addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
       addOppija.selectTutkinto('Autoalan perustutkinto'),
       addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
+      addOppija.selectAloituspäivä('1.1.2018'),
       addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
       addOppija.submitModal
     )

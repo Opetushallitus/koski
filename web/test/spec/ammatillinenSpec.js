@@ -237,7 +237,8 @@ describe('Ammatillinen koulutus', function() {
               addOppija.enterHenkilötiedot(),
               addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
               addOppija.selectTutkinto('auto'),
-              addOppija.selectSuoritustapa('Ammatillinen perustutkinto')
+              addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
+              addOppija.selectAloituspäivä('1.1.2018')
             )
             it('Vaihtoehto on valmiiksi valittu', function() {
               expect(addOppija.oppilaitos()).to.deep.equal('Omnia')
@@ -524,6 +525,7 @@ describe('Ammatillinen koulutus', function() {
               .then(Page().setInputValue('.tutkinto input', 'Autoalan perustutkinto'))
               .then(click('.results li:last()'))
           },
+          addOppija.selectAloituspäivä('1.1.2018'),
           addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
           addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)'),
           editor.edit
@@ -2418,6 +2420,7 @@ describe('Ammatillinen koulutus', function() {
           addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen'),
           addOppija.selectTutkinto('Autoalan perustutkinto'),
           addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
+          addOppija.selectAloituspäivä('1.1.2018'),
           addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
           addOppija.submitModal,
 

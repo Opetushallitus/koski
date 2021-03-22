@@ -64,10 +64,9 @@ describe('Opiskeluoikeuden sisältyvyys', function() {
         )
 
         it('Lukuoikeudet on', function() {
-          var year = new Date().getFullYear()
           expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.have.members([
             'Stadin ammatti- ja aikuisopisto, Luonto- ja ympäristöalan perustutkinto (2012—2016, valmistunut)',
-            'Omnia, Autoalan perustutkinto (' + year + '—, läsnä)'
+            'Omnia, Autoalan perustutkinto (2018—, läsnä)'
           ])
         })
 
