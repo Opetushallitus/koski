@@ -16,7 +16,7 @@ export type AccordionItem = {
 }
 
 export const Accordion = (props: AccordionProps) => {
-  const [openItems, setOpenItems] = useState<number[]>([])
+  const [openItems, setOpenItems] = useState<number[]>([0])
 
   const onClickItem = (index: number) => () => {
     setOpenItems(toggleItemExistence(openItems, index))

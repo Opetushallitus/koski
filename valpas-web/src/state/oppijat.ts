@@ -36,7 +36,7 @@ export type Henkilö = {
 
 export type Yhteystiedot<T extends YhteystietojenAlkuperä> = {
   alkuperä: T
-  nimi: LocalizedString
+  yhteystietoryhmänNimi: LocalizedString
   henkilönimi?: string
   sähköposti?: string
   puhelinnumero?: string

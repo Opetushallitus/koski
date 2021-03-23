@@ -1,4 +1,5 @@
-import { isNonEmpty } from "fp-ts/lib/Array"
+import { isNonEmpty, uniq } from "fp-ts/lib/Array"
+import * as string from "fp-ts/string"
 import React from "react"
 import { Accordion } from "../../components/containers/Accordion"
 import { Column, ColumnsContainer } from "../../components/containers/Columns"
@@ -27,40 +28,52 @@ export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {
         <TertiaryHeading>
           <T id="oppija__ilmoitetut_yhteystiedot" />
         </TertiaryHeading>
-        {isNonEmpty(ilmoitetut) ? (
-          <Accordion
-            items={ilmoitetut.map((yhteystiedot) => ({
-              label:
-                getLocalized(yhteystiedot.nimi) || t("oppija__yhteystiedot"),
-              render: () => <Yhteystietolista yhteystiedot={yhteystiedot} />,
-            }))}
-          />
-        ) : (
-          <NoDataMessage>
-            <T id="oppija__ilmoitetut_yhteystiedot_ei_hakemusta" />
-          </NoDataMessage>
-        )}
+        <YhteistietoAccordion
+          yhteystiedot={ilmoitetut}
+          label={(yt) =>
+            getLocalized(yt.yhteystietoryhmänNimi) || t("oppija__yhteystiedot")
+          }
+          noDataMessage={t("oppija__ilmoitetut_yhteystiedot_ei_hakemusta")}
+        />
       </Column>
       <Column size={6} id="viralliset-yhteystiedot">
         <TertiaryHeading>
           <T id="oppija__viralliset_yhteystiedot" />
         </TertiaryHeading>
-        {isNonEmpty(viralliset) ? (
-          viralliset.map((yhteystiedot) => (
-            <Yhteystietolista
-              key={yhteystiedot.alkuperä.alkuperä.koodiarvo}
-              yhteystiedot={yhteystiedot}
-            />
-          ))
-        ) : (
-          <NoDataMessage>
-            <T id="oppija__yhteystietoja_ei_löytynyt" />
-          </NoDataMessage>
-        )}
+        <YhteistietoAccordion
+          yhteystiedot={viralliset}
+          label={(yt) =>
+            uniq(string.Eq)([
+              getLocalized(yt.alkuperä.alkuperä.nimi)!,
+              getLocalized(yt.alkuperä.tyyppi.nimi)!,
+            ]).join(": ")
+          }
+          noDataMessage={t("oppija__yhteystietoja_ei_löytynyt")}
+        />
       </Column>
     </ColumnsContainer>
   )
 }
+
+type YhteystietoAccordionProps<T extends YhteystietojenAlkuperä> = {
+  yhteystiedot: Array<Yhteystiedot<T>>
+  label: (yt: Yhteystiedot<T>) => string
+  noDataMessage: string
+}
+
+const YhteistietoAccordion = <T extends YhteystietojenAlkuperä>(
+  props: YhteystietoAccordionProps<T>
+) =>
+  isNonEmpty(props.yhteystiedot) ? (
+    <Accordion
+      items={props.yhteystiedot.map((yhteystiedot) => ({
+        label: props.label(yhteystiedot),
+        render: () => <Yhteystietolista yhteystiedot={yhteystiedot} />,
+      }))}
+    />
+  ) : (
+    <NoDataMessage>{props.noDataMessage}</NoDataMessage>
+  )
 
 type YhteystietolistaProps = {
   yhteystiedot: Yhteystiedot<YhteystietojenAlkuperä>

@@ -144,8 +144,8 @@ class MockOpintopolkuHenkilöFacadeWithDBSupport(val db: DB) extends MockOpintop
       case henkilö: LaajatOppijaHenkilöTiedot => oppijaHenkilö.copy(
         henkilö = henkilö.copy(
           yhteystiedot = List(Yhteystiedot(
-            alkuperä = Koodistokoodiviite("alkupera7", "yhteystietojenalkupera"),
-            tyyppi = Koodistokoodiviite("yhteystietotyyppi13", "yhteystietotyypit"),
+            alkuperä = Koodistokoodiviite("alkupera1", "yhteystietojenalkupera"),
+            tyyppi = Koodistokoodiviite("yhteystietotyyppi1", "yhteystietotyypit"),
             sähköposti = Some(s"${henkilö.kutsumanimi.toLowerCase()}@gmail.com"),
             puhelinnumero = Some("0401122334"),
             matkapuhelinnumero = Some("0401122334"),
