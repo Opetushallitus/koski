@@ -83,7 +83,7 @@ const hakutoiveToTableValue = (hakutoive: Hakutoive, index: number): Datum => ({
     {
       value:
         formatOrderNumber(hakutoive.hakutoivenumero) +
-        getLocalized(hakutoive.hakukohdeNimi),
+        (getLocalized(hakutoive.hakukohdeNimi) || t("tieto_puuttuu")),
     },
     {
       value:

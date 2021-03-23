@@ -12,6 +12,7 @@
   "login__ei_valpas-oikeuksia_viesti": "Käyttäjätunnuksillasi ei ole oikeus käyttää Valpas-palvelua",
   "not_found_title": "404",
   "not_found_teksti": "Sivua ei löydy",
+  "tieto_puuttuu": "Tieto puuttuu",
   "localraamit__logout": "Kirjaudu ulos",
   "ylänavi__hakutilanne": "Hakutilanne",
   "perusopetusnäkymä__otsikko": "Perusopetuksen päättävät {{vuosi}}",
