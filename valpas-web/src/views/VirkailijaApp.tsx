@@ -20,7 +20,6 @@ import { ErrorView, NotFoundView } from "../views/ErrorView"
 import { PerusopetusView } from "./hakutilanne/PerusopetusView"
 import { HomeView } from "./HomeView"
 import { OppijaView } from "./oppija/OppijaView"
-import { Raamit } from "./Raamit"
 
 const featureFlagName = "valpas-feature"
 const featureFlagEnabledValue = "enabled"
@@ -80,6 +79,10 @@ const VirkailijaRoutes = ({ user }: VirkailijaRoutesProps) => {
   )
 }
 
+const LocalRaamit = React.lazy(
+  () => import("../components/navigation/LocalRaamit")
+)
+
 const Login = () => {
   React.useEffect(() => {
     storeLoginReturnUrl()
@@ -122,7 +125,9 @@ const VirkailijaApp = ({ basePath }: VirkailijaAppProps) => {
 
   return (
     <BasePathProvider value={basePath}>
-      <Raamit user={user} />
+      {runningLocally && !window.virkailija_raamit_set_to_load && (
+        <LocalRaamit user={user} />
+      )}
       {hasValpasAccess(user) ? (
         <Page id="virkailija-app">
           <VirkailijaRoutes user={user} />
