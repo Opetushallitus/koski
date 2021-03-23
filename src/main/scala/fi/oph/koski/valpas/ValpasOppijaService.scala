@@ -63,6 +63,7 @@ class ValpasOppijaService(
   private val dbService = new ValpasDatabaseService(application)
   private val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
   private val localizationRepository = application.valpasLocalizationRepository
+  private val koodistoviitepalvelu = application.koodistoViitePalvelu
 
   private val accessResolver = new ValpasAccessResolver(application.organisaatioRepository)
 
@@ -111,7 +112,15 @@ class ValpasOppijaService(
 
   private def fetchVirallisetYhteystiedot(oppija: ValpasOppija): Either[HttpStatus, Seq[Yhteystiedot]] = {
     oppijanumerorekisteri.findOppijaByOid(oppija.henkilö.oid)
-      .map(_.yhteystiedot)
+      .map(_.yhteystiedot.flatMap(yt => {
+        val alkuperä = koodistoviitepalvelu.validate(yt.alkuperä)
+        val tyyppi = koodistoviitepalvelu.validate(yt.tyyppi)
+        if (alkuperä.isDefined && tyyppi.isDefined) {
+          Some(yt.copy(alkuperä = alkuperä.get, tyyppi = tyyppi.get))
+        } else {
+          None
+        }
+      }))
       .toRight(ValpasErrorCategory.internalError())
   }
 
