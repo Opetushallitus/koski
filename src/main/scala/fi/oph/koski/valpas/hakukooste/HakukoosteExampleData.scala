@@ -20,11 +20,11 @@ object HakukoosteExampleData {
         hakutoive(
           hakukohdeOid = MockOrganisaatiot.ressunLukio,
           koulutusNimi = "Lukiokoulutus"
-        ),
+        ).copy(alinValintaPistemaara = Some(9.01), pisteet = Some(9)),
         hakutoive(
           hakukohdeOid = MockOrganisaatiot.helsinginMedialukio,
           koulutusNimi = "Lukiokoulutus"
-        ),
+        ).copy(alinValintaPistemaara = Some(8.2), pisteet = Some(9)),
         hakutoive(
           hakukohdeOid = MockOrganisaatiot.omnia,
           koulutusNimi = "Leipomoalan ammattitutkinto"
@@ -81,8 +81,7 @@ object HakukoosteExampleData {
 
   def hakutoive(
     hakukohdeOid: String,
-    koulutusNimi: String,
-    hakutoivenumero: Int = -1
+    koulutusNimi: String
   ): Hakutoive =
     Hakutoive(
       hakukohdeOid = hakukohdeOid,
@@ -90,11 +89,11 @@ object HakukoosteExampleData {
         oid = hakukohdeOid,
         localDate = LocalDate.now()
       ).toBlankable,
-      hakutoivenumero = hakutoivenumero,
+      hakutoivenumero = -1,
       koulutusNimi = Finnish(koulutusNimi),
       hakukohdeOrganisaatio = hakukohdeOid,
-      pisteet = Some(0),
-      alinValintaPistemaara = Some(0),
+      pisteet = None,
+      alinValintaPistemaara = None,
       valintatila = Some("KESKEN"),
       vastaanottotieto = Some("KESKEN"),
       ilmoittautumistila = Some("EI_ILMOITTAUTUNUT"),

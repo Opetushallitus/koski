@@ -94,9 +94,7 @@ const hakutoiveToTableValue = (hakutoive: Hakutoive, index: number): Datum => ({
           : t("oppija__haut_hylatty"),
     },
     { value: formatFixedNumber(hakutoive.pisteet, 2) },
-    {
-      value: "", // TODO: Alin pistemäärä
-    },
+    { value: formatFixedNumber(hakutoive.minValintapisteet, 2) },
   ],
 })
 

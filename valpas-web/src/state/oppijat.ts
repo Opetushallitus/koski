@@ -52,6 +52,7 @@ export type Hakutoive = {
   hakutoivenumero?: number
   hakukohdeNimi?: LocalizedString
   pisteet?: number
+  minValintapisteet?: number
   hyväksytty?: boolean
 }
 

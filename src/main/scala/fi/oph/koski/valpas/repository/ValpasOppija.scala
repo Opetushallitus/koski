@@ -114,7 +114,7 @@ object ValpasHakutoive {
       hakukohdeNimi = hakutoive.hakukohdeNimi.toLocalizedString,
       hakutoivenumero = Some(hakutoive.hakutoivenumero),
       pisteet = hakutoive.pisteet,
-      hyväksytty = None // TODO
+      minValintapisteet = hakutoive.alinValintaPistemaara
     )
   }
 }
@@ -123,5 +123,11 @@ case class ValpasHakutoive(
   hakukohdeNimi: Option[LocalizedString],
   hakutoivenumero: Option[Int],
   pisteet: Option[BigDecimal],
-  hyväksytty: Option[Boolean]
-)
+  minValintapisteet: Option[BigDecimal]
+) {
+  @SyntheticProperty
+  def hyväksytty: Option[Boolean] = (pisteet, minValintapisteet) match {
+    case (Some(p), Some(min)) => Some(p >= min)
+    case _ => None
+  }
+}
