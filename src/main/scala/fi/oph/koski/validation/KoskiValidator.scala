@@ -672,20 +672,40 @@ class KoskiValidator(
   }
 
   private def validateVapaanSivistystyönPäätasonKOTOSuorituksenLaajuudet(suoritus: OppivelvollisilleSuunnatunMaahanmuuttajienKotoutumiskoulutuksenSuoritus): HttpStatus = {
-    HttpStatus.fold(List(
-      validateVapaanSivistystyönPäätasonKOTOSuorituksenKieliopintojenLaajuus(suoritus),
-    ))
+    HttpStatus.fold(suoritus.osasuoritukset.getOrElse(List()).map(_ match {
+        case kieli:VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus => {
+          validateVapaanSivistystyönPäätasonKOTOSuorituksenKieliopintojenLaajuus(suoritus, kieli)
+        }
+        case työjayhteiskunta:VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus => {
+          validateVapaanSivistystyönPäätasonKOTOSuorituksenTyöelämänJaYhteiskuntataitojenKokonaisusudenLaajuus(suoritus, työjayhteiskunta)
+        }
+        case ohjaus:VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus => {
+          validateVapaanSivistystyönPäätasonKOTOSuorituksenOpintojenOhjauksenLaajuus(suoritus, ohjaus)
+        }
+        case _ => HttpStatus.ok
+      })
+    )
   }
 
-  private def validateVapaanSivistystyönPäätasonKOTOSuorituksenKieliopintojenLaajuus(suoritus: OppivelvollisilleSuunnatunMaahanmuuttajienKotoutumiskoulutuksenSuoritus): HttpStatus = {
-    val laajuus = suoritus.osasuoritukset.getOrElse(List()).map(_ match {
-      case s:VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus => {
-        s.koulutusmoduuli.laajuus.getOrElse(LaajuusOpintopisteissä(0)).arvo
-      }
-      case _ => 0
-    }).sum
-    if (laajuus < 30) {
-      KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönKOTOSuorituksenKieliopintojenLaajuus("Päätason suoritus " + suorituksenTunniste(suoritus) + " on vahvistettu, mutta sillä on kieliopintoja, joiden yhteenlaskettu laajuus on alle 30 opintoviikkoa")
+  private def validateVapaanSivistystyönPäätasonKOTOSuorituksenKieliopintojenLaajuus(päätasonSuoritus: OppivelvollisilleSuunnatunMaahanmuuttajienKotoutumiskoulutuksenSuoritus, suoritus: VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus): HttpStatus = {
+    if (suoritus.koulutusmoduuli.laajuusArvo((0)) < 30) {
+      KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönKOTOKokonaisuudenLaajuus("Päätason suoritus " + suorituksenTunniste(päätasonSuoritus) + " on vahvistettu, mutta sillä on kieliopintojen kokonaisuus, jonka yhteenlaskettu laajuus on alle 30 opintoviikkoa")
+    } else {
+      HttpStatus.ok
+    }
+  }
+
+  private def validateVapaanSivistystyönPäätasonKOTOSuorituksenTyöelämänJaYhteiskuntataitojenKokonaisusudenLaajuus(päätasonSuoritus: OppivelvollisilleSuunnatunMaahanmuuttajienKotoutumiskoulutuksenSuoritus, suoritus: VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus): HttpStatus = {
+    if (suoritus.koulutusmoduuli.laajuusArvo((0)) < 15) {
+      KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönKOTOKokonaisuudenLaajuus("Päätason suoritus " + suorituksenTunniste(päätasonSuoritus) + " on vahvistettu, mutta sillä on työelämä- ja yhteiskuntataitojen kokonaisuus, jonka yhteenlaskettu laajuus on alle 15 opintoviikkoa")
+    } else {
+      HttpStatus.ok
+    }
+  }
+
+  private def validateVapaanSivistystyönPäätasonKOTOSuorituksenOpintojenOhjauksenLaajuus(päätasonSuoritus: OppivelvollisilleSuunnatunMaahanmuuttajienKotoutumiskoulutuksenSuoritus, suoritus: VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus): HttpStatus = {
+    if (suoritus.koulutusmoduuli.laajuusArvo((0)) < 5) {
+      KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönKOTOKokonaisuudenLaajuus("Päätason suoritus " + suorituksenTunniste(päätasonSuoritus) + " on vahvistettu, mutta sillä on opintojen ohjauksen kokonaisuus, jonka yhteenlaskettu laajuus on alle 5 opintoviikkoa")
     } else {
       HttpStatus.ok
     }

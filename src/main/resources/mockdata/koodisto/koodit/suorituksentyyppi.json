@@ -1431,16 +1431,16 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus",
-  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus",
+  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
+  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
   "metadata" : [ {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen opintojen suoritus",
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen kokonaisuuden suoritus",
     "kieli" : "FI"
   }, {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen opintojen suoritus",
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen kokonaisuuden suoritus",
     "kieli" : "SV"
   }, {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen opintojen suoritus",
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen kokonaisuuden suoritus",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -1486,6 +1486,36 @@
     "kieli" : "SV"
   }, {
     "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen valinnaisten opintojen osasuoritus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojentyoelamajaksonsuoritus",
+  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojentyoelamajaksonsuoritus",
+  "metadata" : [ {
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen työelämäjakson suoritus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen työelämäjakson suoritus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen työelämäjakson suoritus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus",
+  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus",
+  "metadata" : [ {
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen suoritus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen suoritus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen suoritus",
     "kieli" : "EN"
   } ],
   "versio" : 1,
