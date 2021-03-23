@@ -12,7 +12,7 @@ export type OppijanYhteystiedotProps = {
 }
 
 export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {
-  const haku = Haku.latest(props.oppija.haut || [])
+  const haku = Haku.latest(props.oppija.hakutilanteet)
   const hakuYht = haku && getYhteystiedot(haku)
   const huoltajaYht = haku && getHuoltajanYhteystiedot(haku)
   const ilmoitettujaYhteystietoja = !!(hakuYht || huoltajaYht)

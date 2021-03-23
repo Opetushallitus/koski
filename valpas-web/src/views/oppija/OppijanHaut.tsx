@@ -20,8 +20,13 @@ export type OppijanHautProps = {
 }
 
 export const OppijanHaut = (props: OppijanHautProps) => {
-  const haut = props.oppija.haut || []
-  return A.isNonEmpty(haut) ? (
+  const haut = props.oppija.hakutilanteet
+  const error = props.oppija.hakutilanneError
+  return error ? (
+    <NoDataMessage>
+      <T id="oppija__hakuhistoria_virhe" />
+    </NoDataMessage>
+  ) : A.isNonEmpty(haut) ? (
     <div className={b()}>
       {haut.map((haku) => (
         <HakuTable key={haku.hakuOid} haku={haku} />

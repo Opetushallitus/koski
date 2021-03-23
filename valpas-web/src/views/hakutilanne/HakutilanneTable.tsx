@@ -63,7 +63,8 @@ const oppijaToTableData = (basePath: string) => (
   oppija: OppijaHakutilanteilla
 ): Datum => {
   // TODO: Näihin molempiin tarvitaaan rautaisempi logiikka
-  const hakemus = oppija?.haut?.[0]
+  const hakemus = oppija.hakutilanteet[0]
+  const hakemuksenTila = hakemuksentilaValue(hakemus, oppija.hakutilanneError)
   const opiskeluoikeudet = oppija.oppija.opiskeluoikeudet[0]
   const henkilö = oppija.oppija.henkilö
 
@@ -86,10 +87,10 @@ const oppijaToTableData = (basePath: string) => (
         value: opiskeluoikeudet?.ryhmä,
       },
       {
-        value: hakemuksentilaValue(hakemus),
+        value: hakemuksenTila,
         display: hakemus && (
           <ExternalLink to={externalHakemussivu(hakemus.hakemusOid)}>
-            {hakemuksentilaValue(hakemus)}
+            {hakemuksenTila}
           </ExternalLink>
         ),
       },
@@ -121,9 +122,14 @@ const oppijaToTableData = (basePath: string) => (
   }
 }
 
-const hakemuksentilaValue = (hakemus?: Haku): string => {
+const hakemuksentilaValue = (
+  hakemus?: Haku,
+  hakutilanneError?: string
+): string => {
   return t(
-    hakemus && hakemus.aktiivinen
+    hakutilanneError
+      ? "oppija__hakuhistoria_virhe"
+      : hakemus && hakemus.aktiivinen
       ? "hakemuksentila__hakenut"
       : "hakemuksentila__ei_hakemusta"
   )
