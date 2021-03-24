@@ -53,7 +53,7 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
           filter: "dropdown",
         },
         {
-          label: t("hakutilanne__taulu_läsnä_oppilaitoksessa"),
+          label: t("hakutilanne__taulu_voimassaolevia_opiskeluoikeuksia"),
           filter: "dropdown",
         },
       ]}
