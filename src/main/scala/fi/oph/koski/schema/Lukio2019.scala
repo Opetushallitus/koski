@@ -474,28 +474,6 @@ trait LukionOppiaineenArviointi2019 extends YleissivistävänKoulutuksenArvioint
   def arviointipäivä = päivä
 }
 
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "LI")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "A")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "B1")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "B2")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "B3")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "AOM")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodistoUri", None)
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "BI")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "ET")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "FI")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "FY")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "GE")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "HI")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "KE")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "KU")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "MU")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "PS")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "TE")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "YH")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "KT")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "AI")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "MA")
 @Title("Numeerinen lukion oppiaineen arviointi 2019")
 case class NumeerinenLukionOppiaineenArviointi2019(
   @KoodistoKoodiarvo("4")
@@ -513,17 +491,8 @@ object NumeerinenLukionOppiaineenArviointi2019 {
   def apply(arvosana: String) = new NumeerinenLukionOppiaineenArviointi2019(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)
 }
 
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "OP")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "LI")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "A")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "B1")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "B2")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "B3")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "AOM")
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodistoUri", None)
 @Title("Sanallinen lukion oppiaineen arviointi 2019")
 case class SanallinenLukionOppiaineenArviointi2019(
-  @Description("H/S sallittu liikunnassa, jos korkeintaan 2 op ja vieraan kielen ollessa valinnainen, jos sen laajuus on korkeintaan 4 op. Opinto-ohjauksessa sallittu ainoastaan H/S.")
   @KoodistoKoodiarvo("H")
   @KoodistoKoodiarvo("S")
   arvosana: Koodistokoodiviite,

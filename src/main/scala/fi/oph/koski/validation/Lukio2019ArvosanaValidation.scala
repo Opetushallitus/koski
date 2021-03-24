@@ -6,10 +6,7 @@ import fi.oph.koski.schema._
 object Lukio2019ArvosanaValidation {
 
   def validatePäätasonSuoritus(suoritus: Suoritus): HttpStatus = {
-    HttpStatus.fold(List(
-      validateVieraatKielet(suoritus),
-      validateLiikunta(suoritus)
-    ))
+    validateOppiaineidenArvosanat(suoritus)
   }
 
   def validateOsasuoritus(suoritus: Suoritus): HttpStatus = {
@@ -18,47 +15,43 @@ object Lukio2019ArvosanaValidation {
     ))
   }
 
-  private def validateVieraatKielet(suoritus: Suoritus): HttpStatus = {
-    val statuses = suoritus.osasuoritukset.toList.flatten.map({
-      case k:LukionOppiaineenSuoritus2019
-        if vieraatKielet.contains(k.koulutusmoduuli.tunniste.koodiarvo) &&
-          k.koulutusmoduuli.pakollinen &&
-          k.arviointi.toList.flatten.exists(a => kirjainarvosanat.contains(a.arvosana.koodiarvo)) =>
-        KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle(s"Pakollisen vieraan kielen oppiaineen ${suorituksenTunniste(k)} arvosanan pitää olla numero")
-      case k:LukionOppiaineenPreIBSuoritus2019
-        if vieraatKielet.contains(k.koulutusmoduuli.tunniste.koodiarvo) &&
-          k.koulutusmoduuli.pakollinen &&
-          k.arviointi.toList.flatten.exists(a => kirjainarvosanat.contains(a.arvosana.koodiarvo)) =>
-        KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle(s"Pakollisen vieraan kielen oppiaineen ${suorituksenTunniste(k)} arvosanan pitää olla numero")
-      case k:LukionOppiaineenSuoritus2019
-        if vieraatKielet.contains(k.koulutusmoduuli.tunniste.koodiarvo) &&
-          !k.koulutusmoduuli.pakollinen &&
-          k.koulutusmoduuli.laajuusArvo(0.0) > 4 &&
-          k.viimeisinArvosana.exists(kirjainarvosanat.contains) =>
-        KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainSuppealle(s"Valinnaisen vieraan kielen oppiaineen ${suorituksenTunniste(k)} arvosanan pitää olla numero, jos oppiaineen laajuus on yli 4 op")
-      case k:LukionOppiaineenPreIBSuoritus2019
-        if vieraatKielet.contains(k.koulutusmoduuli.tunniste.koodiarvo) &&
-          !k.koulutusmoduuli.pakollinen &&
-          k.koulutusmoduuli.laajuusArvo(0.0) > 4 &&
-          k.viimeisinArvosana.exists(kirjainarvosanat.contains) =>
-        KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainSuppealle(s"Valinnaisen vieraan kielen oppiaineen ${suorituksenTunniste(k)} arvosanan pitää olla numero, jos oppiaineen laajuus on yli 4 op")
-      case _ => HttpStatus.ok
+  private def validateOppiaineidenArvosanat(suoritus: Suoritus): HttpStatus = {
+    HttpStatus.fold(suoritus.osasuoritusLista.flatMap { oppiaine =>
+      oppiaine.viimeisinArviointi.map(_.arvosana.koodiarvo).map {
+        case "S" =>
+          oppiaine.koulutusmoduuli match {
+            case o: LukionOppiaine2019 if List("OP", "LI").contains(o.tunniste.koodiarvo) =>
+              HttpStatus.ok
+            case k: VierasTaiToinenKotimainenKieli2019 if !k.pakollinen =>
+              HttpStatus.validate(k.laajuusArvo(0.0) <= 4.0) {
+                KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainSuppealle(s"Valinnaisen vieraan kielen oppiaineen ${suorituksenTunniste(oppiaine)} arvosanan pitää olla numero, jos oppiaineen laajuus on yli 4 op")
+              }
+            case o: LukionOppiaine2019 =>
+              HttpStatus.validate(o.laajuusArvo(0.0) <= 2.0) {
+                KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainSuppealle(s"Oppiaineen ${suorituksenTunniste(oppiaine)} arvosanan pitää olla numero, jos oppiaineen laajuus on yli 2 op")
+              }
+          }
+        case "H" =>
+          oppiaine.koulutusmoduuli match {
+            case o: LukionOppiaine2019 if o.tunniste.koodiarvo == "OP" =>
+              HttpStatus.ok
+            case o: LukionOppiaine2019 if o.tunniste.koodiarvo == "LI" && o.laajuusArvo(0.0) <= 2 =>
+              HttpStatus.ok
+            case k: VierasTaiToinenKotimainenKieli2019 if !k.pakollinen =>
+              HttpStatus.validate(k.laajuusArvo(0.0) <= 4.0) {
+                KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainSuppealle(s"Valinnaisen vieraan kielen oppiaineen ${suorituksenTunniste(oppiaine)} arvosanan pitää olla numero, jos oppiaineen laajuus on yli 4 op")
+              }
+            case _: LukionOppiaine2019 =>
+              KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainSuppealle(s"Oppiaineen ${suorituksenTunniste(oppiaine)} arvosanan pitää olla numero")
+          }
+        case numeroArvosana =>
+          if (oppiaine.koulutusmoduuli.tunniste.koodiarvo == "OP") {
+            KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(s"Opinto-ohjauksen oppiaineen ${suorituksenTunniste(suoritus)} arvosanan on oltava S tai H")
+          } else {
+            HttpStatus.ok
+          }
+      }
     })
-
-    HttpStatus.fold(statuses)
-  }
-
-  private def validateLiikunta(suoritus: Suoritus): HttpStatus = {
-    val statuses = suoritus.osasuoritukset.toList.flatten.map(s => s match {
-      case _:LukionOppiaineenSuoritus2019 | _: LukionOppiaineenPreIBSuoritus2019
-        if s.koulutusmoduuli.tunniste.koodiarvo == "LI" &&
-          s.koulutusmoduuli.laajuusArvo(0.0) > 2 &&
-          s.viimeisinArvosana.exists(kirjainarvosanat.contains) =>
-        KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainSuppealle(s"Oppiaineen ${suorituksenTunniste(s)} arvosanan pitää olla numero, jos oppiaineen laajuus on yli 2 op")
-      case _ => HttpStatus.ok
-    })
-
-    HttpStatus.fold(statuses)
   }
 
   private def validateValtakunnallinenModuuli(suoritus: Suoritus): HttpStatus = (suoritus) match {
@@ -78,7 +71,6 @@ object Lukio2019ArvosanaValidation {
     suoritus.koulutusmoduuli.tunniste
   }
 
-  private val vieraatKielet = List("A", "B1", "B2", "B3", "AOM")
   private val kirjainarvosanat = List("H", "S")
 
   private val opintoOhjausModuulit = List("OP1", "OP2")
