@@ -38,7 +38,7 @@ object VapaaSivistystyöExample {
     suoritukset = List(suoritusKOTO)
   )
 
-  lazy val suoritusKOPS = OppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenSuoritus(
+  lazy val suoritusKOPS = OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
     toimipiste = varsinaisSuomenKansanopistoToimipiste,
     tyyppi = Koodistokoodiviite("vstoppivelvollisillesuunnattukoulutus", koodistoUri = "suorituksentyyppi"),
     koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(perusteenDiaarinumero = Some("OPH-58-2021")),
@@ -101,7 +101,7 @@ object VapaaSivistystyöExample {
     ))
   )
 
-  lazy val suoritusKOTO = OppivelvollisilleSuunnatunMaahanmuuttajienKotoutumiskoulutuksenSuoritus(
+  lazy val suoritusKOTO = OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus(
     toimipiste = OidOrganisaatio(MockOrganisaatiot.itäsuomenYliopisto),
     tyyppi = Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutus", koodistoUri = "suorituksentyyppi"),
     koulutusmoduuli = VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus(perusteenDiaarinumero = Some("OPH-58-2021"), laajuus = Some(LaajuusOpintoviikoissa(54))),

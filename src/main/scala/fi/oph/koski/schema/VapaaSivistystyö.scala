@@ -41,7 +41,7 @@ case class VapaanSivistystyönOpiskeluoikeudenLisätiedot() extends Opiskeluoike
 
 trait VapaanSivistystyönPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen with Todistus with Arvioinniton
 
-case class OppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenSuoritus(
+case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
   @KoodistoKoodiarvo("vstoppivelvollisillesuunnattukoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstoppivelvollisillesuunnattukoulutus", koodistoUri = "suorituksentyyppi"),
@@ -176,7 +176,7 @@ trait VSTTunnustettu {
   def tunnustettu: Option[VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen]
 }
 
-case class OppivelvollisilleSuunnatunMaahanmuuttajienKotoutumiskoulutuksenSuoritus(
+case class OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
   @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutus", koodistoUri = "suorituksentyyppi"),

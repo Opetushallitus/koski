@@ -1314,13 +1314,13 @@
   "koodiUri" : "suorituksentyyppi_vstoppivelvollisillesuunnattukoulutus",
   "koodiArvo" : "vstoppivelvollisillesuunnattukoulutus",
   "metadata" : [ {
-    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön koulutus",
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön koulutus",
     "kieli" : "FI"
   }, {
-    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön koulutus",
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön koulutus",
     "kieli" : "SV"
   }, {
-    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön koulutus",
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön koulutus",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -1329,13 +1329,13 @@
   "koodiUri" : "suorituksentyyppi_vstosaamiskokonaisuus",
   "koodiArvo" : "vstosaamiskokonaisuus",
   "metadata" : [ {
-    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön osaamiskokonaisuus",
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön osaamiskokonaisuus",
     "kieli" : "FI"
   }, {
-    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön osaamiskokonaisuus",
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön osaamiskokonaisuus",
     "kieli" : "SV"
   }, {
-    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön osaamiskokonaisuus",
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön osaamiskokonaisuus",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -1344,13 +1344,13 @@
   "koodiUri" : "suorituksentyyppi_vstopintokokonaisuus",
   "koodiArvo" : "vstopintokokonaisuus",
   "metadata" : [ {
-    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön opintokokonaisuus",
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön opintokokonaisuus",
     "kieli" : "FI"
   }, {
-    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön opintokokonaisuus",
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön opintokokonaisuus",
     "kieli" : "SV"
   }, {
-    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön opintokokonaisuus",
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön opintokokonaisuus",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -1374,13 +1374,13 @@
   "koodiUri" : "suorituksentyyppi_vstvalinnainensuuntautuminen",
   "koodiArvo" : "vstvalinnainensuuntautuminen",
   "metadata" : [ {
-    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön valinnainen suuntautumisopinto",
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön valinnainen suuntautumisopinto",
     "kieli" : "FI"
   }, {
-    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön valinnainen suuntautumisopinto",
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön valinnainen suuntautumisopinto",
     "kieli" : "SV"
   }, {
-    "nimi" : "Oppivelvollisille suunnatun vapaan sivistystyön valinnainen suuntautumisopinto",
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön valinnainen suuntautumisopinto",
     "kieli" : "EN"
   } ],
   "versio" : 1,
