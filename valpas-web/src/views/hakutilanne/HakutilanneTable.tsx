@@ -29,10 +29,6 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
           size: "large",
         },
         {
-          label: t("hakutilanne__taulu_oppilaitos"),
-          filter: "dropdown",
-        },
-        {
           label: t("hakutilanne__taulu_syntymäaika"),
           size: "small",
         },
@@ -81,10 +77,6 @@ const oppijaToTableData = (basePath: string) => (
             {henkilö.sukunimi} {henkilö.etunimet}
           </Link>
         ),
-      },
-      {
-        value:
-          opiskeluoikeudet && getLocalized(opiskeluoikeudet.oppilaitos.nimi),
       },
       {
         value: henkilö.syntymäaika,
