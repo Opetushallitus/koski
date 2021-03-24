@@ -141,8 +141,9 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
         val oo = KOTOOPiskeluoikeus.copy(suoritukset = List(suoritusKOTO.copy(
           osasuoritukset = Some(List(
             vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus().copy(
-              koulutusmoduuli = vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus.koulutusmoduuli.copy(
-                laajuus = Some(LaajuusOpintoviikoissa(10))
+              koulutusmoduuli = oppivelvollisilleSuunnattuVapaanSivistystyönMaahanmuuttajienKotoutumisKokonaisuus(
+                Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus", koodistoUri = "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"),
+                Some(LaajuusOpintoviikoissa(10))
               )
             )
           )),
@@ -160,8 +161,9 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
         val oo = KOTOOPiskeluoikeus.copy(suoritukset = List(suoritusKOTO.copy(
           osasuoritukset = Some(List(
             vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus().copy(
-              koulutusmoduuli = vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus.koulutusmoduuli.copy(
-                laajuus = Some(LaajuusOpintoviikoissa(4))
+              koulutusmoduuli = oppivelvollisilleSuunnattuVapaanSivistystyönMaahanmuuttajienKotoutumisKokonaisuus(
+                Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus", koodistoUri = "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"),
+                Some(LaajuusOpintoviikoissa(4))
               )
             )
           )),
