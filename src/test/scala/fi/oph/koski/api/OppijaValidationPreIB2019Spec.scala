@@ -332,9 +332,8 @@ class OppijaValidationPreIB2019Spec extends FreeSpec with PutOpiskeluoikeusTestM
   }
 
   "Oppiaineen arvosana" - {
-    "Liikunnassa" - {
-      "Saa olla S, jos laajuus on korkeintaan 2 op" in {
-        putOpiskeluoikeus(aktiivinenOpiskeluoikeus.copy(suoritukset = List(ExamplesIB.vahvistamatonPreIB2019Suoritus.copy(suorituskieli = suomenKieli, osasuoritukset = Some(List(
+    "Saa olla S, laajuus on 2 tai alle" in {
+      putOpiskeluoikeus(aktiivinenOpiskeluoikeus.copy(suoritukset = List(ExamplesIB.vahvistamatonPreIB2019Suoritus.copy(suorituskieli = suomenKieli, osasuoritukset = Some(List(
           lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionOppiaine("LI")).copy(
             arviointi = Some(List(
               SanallinenLukionOppiaineenArviointi2019("S"))
@@ -346,18 +345,73 @@ class OppijaValidationPreIB2019Spec extends FreeSpec with PutOpiskeluoikeusTestM
         )))))) {
           verifyResponseStatusOk()
         }
+    }
+    "Ei saa olla S, jos laajuus on yli 2 op" in {
+      putOpiskeluoikeus(aktiivinenOpiskeluoikeus.copy(suoritukset = List(ExamplesIB.vahvistamatonPreIB2019Suoritus.copy(suorituskieli = suomenKieli, osasuoritukset = Some(List(
+          lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionOppiaine("KE")).copy(
+            arviointi = Some(List(
+              SanallinenLukionOppiaineenArviointi2019("S"))
+            ),
+            osasuoritukset = Some(List(
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("KE1", 3.0f)).copy(arviointi = numeerinenArviointi(5))
+            ))
+          )
+        )))))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainSuppealle("Oppiaineen koskioppiaineetyleissivistava/KE arvosanan pitää olla numero, jos oppiaineen laajuus on yli 2 op"))
       }
+    }
+    "Opinto-ohjauksessa" - {
+      "Ei saa olla numeroarviointia" in {
+        putOpiskeluoikeus(aktiivinenOpiskeluoikeus.copy(suoritukset = List(ExamplesIB.vahvistamatonPreIB2019Suoritus.copy(suorituskieli = suomenKieli, osasuoritukset = Some(List(
+          lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionOppiaine("OP")).copy(
+            arviointi = numeerinenLukionOppiaineenArviointi(5),
+            osasuoritukset = Some(List(
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("OP1", 2.0f)).copy(arviointi = sanallinenArviointi("S"))
+            ))
+          )
+        )))))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana("Opinto-ohjauksen oppiaineen suorituksentyyppi/preiboppimaara2019 arvosanan on oltava S tai H"))
+        }
+      }
+      "Saa olla sanallinen arviointi S, riippumatta laajuudesta" in {
+        putOpiskeluoikeus(aktiivinenOpiskeluoikeus.copy(suoritukset = List(ExamplesIB.vahvistamatonPreIB2019Suoritus.copy(suorituskieli = suomenKieli, osasuoritukset = Some(List(
+          lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionOppiaine("OP")).copy(
+            arviointi = Some(List(
+              SanallinenLukionOppiaineenArviointi2019("S"))
+            ),
+            osasuoritukset = Some(List(
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("OP1", 5.0f)).copy(arviointi = sanallinenArviointi("S"))
+            ))
+          )
+        )))))) {
+          verifyResponseStatusOk()
+        }
+      }
+      "Saa olla sanallinen arviointi H, riippumatta laajuudesta" in {
+        putOpiskeluoikeus(aktiivinenOpiskeluoikeus.copy(suoritukset = List(ExamplesIB.vahvistamatonPreIB2019Suoritus.copy(suorituskieli = suomenKieli, osasuoritukset = Some(List(
+          lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionOppiaine("OP")).copy(
+            arviointi = Some(List(
+              SanallinenLukionOppiaineenArviointi2019("H"))
+            ),
+            osasuoritukset = Some(List(
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("OP1", 5.0f)).copy(arviointi = sanallinenArviointi("H"))
+            ))
+          )
+        )))))) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
 
-      "Aiempi saa olla S, vaikka laajuus olisi yli 2 op" in {
+    "Liikunnassa" - {
+      "Saa olla S, vaikka laajuus olisi yli 2 op" in {
         putOpiskeluoikeus(aktiivinenOpiskeluoikeus.copy(suoritukset = List(ExamplesIB.vahvistamatonPreIB2019Suoritus.copy(suorituskieli = suomenKieli, osasuoritukset = Some(List(
           lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionOppiaine("LI")).copy(
             arviointi = Some(List(
-              SanallinenLukionOppiaineenArviointi2019("S"),
-              NumeerinenLukionOppiaineenArviointi2019("8"))
+              SanallinenLukionOppiaineenArviointi2019("S"))
             ),
             osasuoritukset = Some(List(
-              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("LI1", 2.0f)).copy(arviointi = numeerinenArviointi(5)),
-              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("LI2", 2.0f)).copy(arviointi = numeerinenArviointi(6))
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("LI1", 2.0f)).copy(arviointi = numeerinenArviointi(5))
             ))
           )
         )))))) {
@@ -378,13 +432,13 @@ class OppijaValidationPreIB2019Spec extends FreeSpec with PutOpiskeluoikeusTestM
             ))
           )
         )))))) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainSuppealle("""Oppiaineen koskioppiaineetyleissivistava/LI arvosanan pitää olla numero, jos oppiaineen laajuus on yli 2 op"""))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainSuppealle("Oppiaineen koskioppiaineetyleissivistava/LI arvosanan pitää olla numero"))
         }
       }
     }
 
     "Vieraassa kielessä" - {
-      "Pakollisessa ei saa olla S vaikka laajuus olisi pieni" in {
+      "Pakollisessa saa olla S, jos laajuus on 2 op tai alle" in {
         putOpiskeluoikeus(aktiivinenOpiskeluoikeus.copy(suoritukset = List(ExamplesIB.vahvistamatonPreIB2019Suoritus.copy(suorituskieli = suomenKieli, osasuoritukset = Some(List(
           lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionKieli2019("B2", "SV").copy(pakollinen = true)).copy(
             arviointi = Some(List(
@@ -395,11 +449,11 @@ class OppijaValidationPreIB2019Spec extends FreeSpec with PutOpiskeluoikeusTestM
             ))
           )
         )))))) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("""Pakollisen vieraan kielen oppiaineen koskioppiaineetyleissivistava/B2 arvosanan pitää olla numero"""))
+          verifyResponseStatusOk()
         }
       }
 
-      "Pakollisessa ei saa esiintyä aiempana arvosanana S vaikka laajuus olisi pieni" in {
+      "Pakollisessa aiempi saa olla S, vaikka laajuus olisi yli 2 op" in {
         putOpiskeluoikeus(aktiivinenOpiskeluoikeus.copy(suoritukset = List(ExamplesIB.vahvistamatonPreIB2019Suoritus.copy(suorituskieli = suomenKieli, osasuoritukset = Some(List(
           lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionKieli2019("B2", "SV").copy(pakollinen = true)).copy(
             arviointi = Some(List(
@@ -407,11 +461,11 @@ class OppijaValidationPreIB2019Spec extends FreeSpec with PutOpiskeluoikeusTestM
               NumeerinenLukionOppiaineenArviointi2019("7"))
             ),
             osasuoritukset = Some(List(
-              moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("VKB21", 2.0f)).copy(arviointi = numeerinenArviointi(5))
+              moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("VKB21", 4.0f)).copy(arviointi = numeerinenArviointi(5))
             ))
           )
         )))))) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("""Pakollisen vieraan kielen oppiaineen koskioppiaineetyleissivistava/B2 arvosanan pitää olla numero"""))
+          verifyResponseStatusOk()
         }
       }
 
