@@ -21,67 +21,74 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
   val oppivelvolliset = List(
     (
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
-      List(ValpasExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus)
+      List(ExpectedData(ValpasExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa"))
     ),
     (
       ValpasMockOppijat.päällekkäisiäOpiskeluoikeuksia,
       List(
-        ValpasExampleData.oppivelvollinenVaihtanutKouluaMuttaOpiskeluoikeusMerkkaamattaOikein2,
-        ValpasExampleData.oppivelvollinenVaihtanutKouluaMuttaOpiskeluoikeusMerkkaamattaOikein1
+        ExpectedData(ValpasExampleData.oppivelvollinenVaihtanutKouluaMuttaOpiskeluoikeusMerkkaamattaOikein2, "voimassa"),
+        ExpectedData(ValpasExampleData.oppivelvollinenVaihtanutKouluaMuttaOpiskeluoikeusMerkkaamattaOikein1, "voimassa")
       )
     ),
     (
       ValpasMockOppijat.valmistunutYsiluokkalainen,
-      List(ValpasExampleData.valmistunutYsiluokkalainen)
+      List(ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut"))
     ),
     (
       ValpasMockOppijat.kotiopetusMenneisyydessäOppija,
-      List(ValpasExampleData.kotiopetusMenneisyydessäOpiskeluoikeus)
+      List(ExpectedData(ValpasExampleData.kotiopetusMenneisyydessäOpiskeluoikeus, "voimassa"))
     ),
     (
       ValpasMockOppijat.luokalleJäänytYsiluokkalainen,
-      List(ValpasExampleData.luokallejäänytYsiluokkalainen)
+      List(ExpectedData(ValpasExampleData.luokallejäänytYsiluokkalainen, "voimassa"))
     ),
     (
       ValpasMockOppijat.luokallejäänytYsiluokkalainenJollaUusiYsiluokka,
-      List(ValpasExampleData.luokallejäänytYsiluokkalainenJollaUusiYsiluokka)
+      List(ExpectedData(ValpasExampleData.luokallejäänytYsiluokkalainenJollaUusiYsiluokka, "voimassa"))
     ),
     (
       ValpasMockOppijat.luokalleJäänytYsiluokkalainenVaihtanutKouluaMuualta,
       List(
-        ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaJälkimmäinen2,
-        ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaEdellinen2
+        ExpectedData(ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaJälkimmäinen2, "voimassa"),
+        ExpectedData(ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaEdellinen2, "eronnut")
       )
     ),
     (
       ValpasMockOppijat.kasiinAstiToisessaKoulussaOllut,
       List(
-        ValpasExampleData.pelkkäYsiluokkaKeskenKeväällä2021Opiskeluoikeus,
-        ValpasExampleData.kasiluokkaEronnutKeväällä2020Opiskeluoikeus
+        ExpectedData(ValpasExampleData.pelkkäYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa"),
+        ExpectedData(ValpasExampleData.kasiluokkaEronnutKeväällä2020Opiskeluoikeus, "eronnut")
       )
     ),
     (
       ValpasMockOppijat.lukionAloittanut,
       List(
-        ValpasExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä,
-        ValpasExampleData.valmistunutYsiluokkalainen
+        ExpectedData(ValpasExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä, "voimassa"),
+        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut")
+      )
+    ),
+    (
+      ValpasMockOppijat.lukionLokakuussaAloittanut,
+      List(
+        ExpectedData(ValpasExampleData.lukionOpiskeluoikeusAlkaa2021Lokakuussa, "voimassatulevaisuudessa"),
+        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut")
       )
     ),
     (
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
       List(
-        ValpasExampleData.lukionOpiskeluoikeus,
-        ValpasExampleData.valmistunutYsiluokkalainen,
-        ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu
+        ExpectedData(ValpasExampleData.lukionOpiskeluoikeus, "voimassa"),
+        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut"),
+        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut")
       )
     )
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
   "getOppija palauttaa vain annetun oppijanumeron mukaisen oppijan" in {
-    val (expectedOppija, expectedOpiskeluoikeudet) = oppivelvolliset(1)
+    val (expectedOppija, expectedData) = oppivelvolliset(1)
     val result = oppijaService.getOppija(expectedOppija.oid)(defaultSession()).toOption.get
 
-    validateOppija(result.oppija, expectedOppija, expectedOpiskeluoikeudet)
+    validateOppija(result.oppija, expectedOppija, expectedData)
   }
 
   "getOppija palauttaa oppijan tiedot, vaikka oid ei olisikaan master oid" in {
@@ -89,7 +96,11 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
     validateOppija(
       result.toOption.get.oppija,
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
-      List(ValpasExampleData.lukionOpiskeluoikeus, ValpasExampleData.valmistunutYsiluokkalainen, ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu)
+      List(
+        ExpectedData(ValpasExampleData.lukionOpiskeluoikeus, "voimassa"),
+        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut"),
+        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut")
+      )
     )
   }
 
@@ -99,7 +110,10 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
     validateOppija(
       result.oppija,
       ValpasMockOppijat.lukionAloittanut,
-      List(ValpasExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä, ValpasExampleData.valmistunutYsiluokkalainen)
+      List(
+        ExpectedData(ValpasExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä, "voimassa"),
+        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut")
+      )
     )
   }
 
@@ -108,7 +122,11 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
     validateOppija(
       result.toOption.get.oppija,
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
-      List(ValpasExampleData.lukionOpiskeluoikeus, ValpasExampleData.valmistunutYsiluokkalainen, ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu)
+      List(
+        ExpectedData(ValpasExampleData.lukionOpiskeluoikeus, "voimassa"),
+        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut"),
+        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut")
+      )
     )
   }
 
@@ -117,7 +135,11 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
     validateOppija(
       result.toOption.get.oppija,
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
-      List(ValpasExampleData.lukionOpiskeluoikeus, ValpasExampleData.valmistunutYsiluokkalainen, ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu)
+      List(
+        ExpectedData(ValpasExampleData.lukionOpiskeluoikeus, "voimassa"),
+        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut"),
+        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut")
+      )
     )
   }
 
@@ -127,11 +149,11 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
     oppijat.map(_.henkilö.oid) shouldBe oppivelvolliset.map(_._1.oid)
 
     (oppijat zip oppivelvolliset).foreach { actualAndExpected =>
-      val (oppija, (expectedOppija, expectedOppivelvollisuus)) = actualAndExpected
+      val (oppija, (expectedOppija, expectedData)) = actualAndExpected
       validateOppija(
         oppija,
         expectedOppija,
-        expectedOppivelvollisuus)
+        expectedData)
     }
   }
 
@@ -145,14 +167,14 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
         (
           ValpasMockOppijat.aapajoenPeruskoulustaValmistunut,
           List(
-            ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu
+            ExpectedData(ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut")
           )
         ),
         (
           ValpasMockOppijat.luokalleJäänytYsiluokkalainenVaihtanutKoulua,
           List(
-            ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaJälkimmäinen,
-            ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaEdellinen
+            ExpectedData(ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaJälkimmäinen, "voimassa"),
+            ExpectedData(ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaEdellinen, "eronnut")
           )
         )
       )
@@ -236,45 +258,67 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
   def validateOppija(
     oppija: ValpasOppija,
     expectedOppija: LaajatOppijaHenkilöTiedot,
-    expectedOpiskeluoikeudet: List[KoskeenTallennettavaOpiskeluoikeus]
+    expectedData: List[ExpectedData]
   ) = {
-    oppija.henkilö.oid shouldBe expectedOppija.oid
-    oppija.henkilö.hetu shouldBe expectedOppija.hetu
-    oppija.henkilö.etunimet shouldBe expectedOppija.etunimet
-    oppija.henkilö.sukunimi shouldBe expectedOppija.sukunimi
+    withClue(s"ValpasOppija(${oppija.henkilö.oid}/${oppija.henkilö.hetu}): ") {
+      oppija.henkilö.oid shouldBe expectedOppija.oid
+      oppija.henkilö.hetu shouldBe expectedOppija.hetu
+      oppija.henkilö.etunimet shouldBe expectedOppija.etunimet
+      oppija.henkilö.sukunimi shouldBe expectedOppija.sukunimi
 
-    val maybeOpiskeluoikeudet = oppija.opiskeluoikeudet.map(o => Some(o))
-    val maybeExpectedOpiskeluoikeudet = expectedOpiskeluoikeudet.map(o => Some(o))
+      val maybeOpiskeluoikeudet = oppija.opiskeluoikeudet.map(o => Some(o))
+      val maybeExpectedData = expectedData.map(o => Some(o))
 
-    maybeOpiskeluoikeudet.zipAll(maybeExpectedOpiskeluoikeudet, None, None).foreach {
-      case (Some(opiskeluoikeus), Some(expectedOpiskeluoikeus)) =>
-        opiskeluoikeus.oppilaitos.oid shouldBe expectedOpiskeluoikeus.oppilaitos.get.oid
-        opiskeluoikeus.alkamispäivä shouldBe expectedOpiskeluoikeus.alkamispäivä.map(_.toString)
-        opiskeluoikeus.päättymispäivä shouldBe expectedOpiskeluoikeus.päättymispäivä.map(_.toString)
-        opiskeluoikeus.viimeisinTila.koodiarvo shouldBe expectedOpiskeluoikeus.tila.opiskeluoikeusjaksot.lastOption.map(_.tila.koodiarvo).get
+      maybeOpiskeluoikeudet.zipAll(maybeExpectedData, None, None).zipWithIndex.foreach {
+        case (element, index) => {
+          withClue(s"index ${index}: ") {
+            element match {
+              case (Some(opiskeluoikeus), Some(expectedData)) =>
+                withClue(s"ValpasOpiskeluoikeus(${opiskeluoikeus.oid}/${opiskeluoikeus.oppilaitos.nimi.get("fi")}/${opiskeluoikeus.alkamispäivä}-${opiskeluoikeus.päättymispäivä}): ") {
+                  withClue("oppilaitos.oid") {
+                    opiskeluoikeus.oppilaitos.oid shouldBe expectedData.opiskeluoikeus.oppilaitos.get.oid
+                  }
+                  withClue("alkamispäivä") {
+                    opiskeluoikeus.alkamispäivä shouldBe expectedData.opiskeluoikeus.alkamispäivä.map(_.toString)
+                  }
+                  withClue("päättymispäivä") {
+                    opiskeluoikeus.päättymispäivä shouldBe expectedData.opiskeluoikeus.päättymispäivä.map(_.toString)
+                  }
+                  withClue("viimeisinTila") {
+                    opiskeluoikeus.viimeisinTila.koodiarvo shouldBe expectedData.opiskeluoikeus.tila.opiskeluoikeusjaksot.lastOption.map(_.tila.koodiarvo).get
+                  }
+                  withClue("tarkastelupäivänTila") {
+                    opiskeluoikeus.tarkastelupäivänTila.koodiarvo shouldBe expectedData.tarkastelupäivänTila
+                  }
 
-        val luokkatietoExpectedFromSuoritus = expectedOpiskeluoikeus match {
-          case oo: PerusopetuksenOpiskeluoikeus =>
-            oo.suoritukset.flatMap({
-              case p: PerusopetuksenVuosiluokanSuoritus => Some(p)
-              case _ => None
-            }).sortBy(s => s.alkamispäivä)(localDateOptionOrdering).reverse.headOption.map(r => r.luokka)
-          // Esim. lukiossa jne. voi olla monta päätason suoritusta, eikä mitään järkevää sorttausparametria päätasolla (paitsi mahdollisesti oleva vahvistus).
-          // => oletetaan, että saadaan taulukossa viimeisenä olevan suorituksen ryhmä
-          case oo =>
-            oo.suoritukset.flatMap({
-              case r: Ryhmällinen => Some(r)
-              case _ => None
-            }).reverse.headOption.flatMap(_.ryhmä)
+                  val luokkatietoExpectedFromSuoritus = expectedData.opiskeluoikeus match {
+                    case oo: PerusopetuksenOpiskeluoikeus =>
+                      oo.suoritukset.flatMap({
+                        case p: PerusopetuksenVuosiluokanSuoritus => Some(p)
+                        case _ => None
+                      }).sortBy(s => s.alkamispäivä)(localDateOptionOrdering).reverse.headOption.map(r => r.luokka)
+                    // Esim. lukiossa jne. voi olla monta päätason suoritusta, eikä mitään järkevää sorttausparametria päätasolla (paitsi mahdollisesti oleva vahvistus).
+                    // => oletetaan, että saadaan taulukossa viimeisenä olevan suorituksen ryhmä
+                    case oo =>
+                      oo.suoritukset.flatMap({
+                        case r: Ryhmällinen => Some(r)
+                        case _ => None
+                      }).reverse.headOption.flatMap(_.ryhmä)
+                  }
+                  withClue("ryhmä") {
+                    opiskeluoikeus.ryhmä shouldBe luokkatietoExpectedFromSuoritus
+                  }
+                }
+              case (None, Some(expectedData)) =>
+                fail(s"Opiskeluoikeus puuttuu: oppija.oid:${expectedOppija.oid} oppija.hetu:${expectedOppija.hetu} opiskeluoikeus.oid:${expectedData.opiskeluoikeus.oid} opiskeluoikeus.tyyppi:${expectedData.opiskeluoikeus.tyyppi.koodiarvo}")
+              case (Some(opiskeluoikeus), None) =>
+                fail(s"Saatiin ylimääräinen opiskeluoikeus: oppija.oid:${expectedOppija.oid} oppija.hetu:${expectedOppija.hetu} opiskeluoikeus.oid:${opiskeluoikeus.oid} opiskeluoikeus.tyyppi:${opiskeluoikeus.tyyppi.koodiarvo}")
+              case _ =>
+                fail("Internal error")
+            }
+          }
         }
-        opiskeluoikeus.ryhmä shouldBe luokkatietoExpectedFromSuoritus
-
-      case (None, Some(expectedOpiskeluoikeus)) =>
-        fail(s"Opiskeluoikeus puuttuu: oppija.oid:${expectedOppija.oid} oppija.hetu:${expectedOppija.hetu} opiskeluoikeus.oid:${expectedOpiskeluoikeus.oid} opiskeluoikeus.tyyppi:${expectedOpiskeluoikeus.tyyppi.koodiarvo}")
-      case (Some(opiskeluoikeus), None) =>
-        fail(s"Saatiin ylimääräinen opiskeluoikeus: oppija.oid:${expectedOppija.oid} oppija.hetu:${expectedOppija.hetu} opiskeluoikeus.oid:${opiskeluoikeus.oid} opiskeluoikeus.tyyppi:${opiskeluoikeus.tyyppi.koodiarvo}")
-      case _ =>
-        fail("Internal error")
+      }
     }
   }
 
@@ -284,3 +328,8 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
   private def session(user: ValpasMockUser)= user.toValpasSession(KoskiApplicationForTests.käyttöoikeusRepository)
   private def defaultSession() = session(ValpasMockUsers.valpasJklNormaalikoulu)
 }
+
+case class ExpectedData(
+  opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
+  tarkastelupäivänTila: String
+)

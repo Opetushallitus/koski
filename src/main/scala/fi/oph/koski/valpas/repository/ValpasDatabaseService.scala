@@ -148,6 +148,24 @@ WITH
 	  r_henkilo
 	  JOIN oppija ON oppija.master_oid = r_henkilo.master_oid
   )
+  -- Tilamäppäykset Kosken tarkkojen ja Valppaan yksinkertaisempien tilojen välillä
+  , valpastila AS (
+    SELECT
+      column1 AS koskiopiskeluoikeudentila,
+      column2 AS valpasopiskeluoikeudentila
+    FROM
+      (VALUES
+        ('lasna', 'voimassa'),
+        ('valiaikaisestikeskeytynyt', 'voimassa'),
+        ('loma', 'voimassa'),
+        ('valmistunut', 'valmistunut'),
+        ('eronnut', 'eronnut'),
+        ('katsotaaneronneeksi', 'katsotaaneronneeksi'),
+        ('peruutettu', 'peruutettu'),
+        ('mitatoity', 'mitatoity'),
+        (NULL, 'tuntematon')
+      ) t
+  )
   -- CTE: peruskoulun opiskeluoikeudet (ei sama lista kuin ekassa CTE:ssä, koska voi olla rinnakkaisia tai peräkkäisiä muita peruskoulun opiskeluoikeuksia.
   -- Teoriassa varmaan voisi tehostaa kyselyä jotenkin ja välttää näiden hakeminen uudestaan, mutta kysely voisi mennä melko monimutkaiseksi.)
   -- Tässä lisäksi selvitetään se, ettei oppijalla ole peruskoulun opiskeluoikeutta, joka on valmistunut ennen 1.1.2021: tällöin henkilö ei ole
@@ -166,11 +184,20 @@ WITH
        r_opiskeluoikeus.paattymispaiva,
        coalesce(valittu_r_paatason_suoritus.data ->> 'luokka', r_opiskeluoikeus.luokka) AS ryhmä,
        r_opiskeluoikeus.viimeisin_tila,
-       (r_opiskeluoikeus.viimeisin_tila = 'valmistunut' AND r_opiskeluoikeus.paattymispaiva < $lakiVoimassaPeruskoulustaValmistuneillaAlku) AS aiemmin_valmistunut
+       (r_opiskeluoikeus.viimeisin_tila = 'valmistunut' AND r_opiskeluoikeus.paattymispaiva < $lakiVoimassaPeruskoulustaValmistuneillaAlku) AS aiemmin_valmistunut,
+       CASE
+         WHEN $tarkasteluPäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
+         WHEN $tarkasteluPäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
+         ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
+       END tarkastelupäivan_tila
      FROM
        oppija_oid
        JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
          AND r_opiskeluoikeus.koulutusmuoto = 'perusopetus'
+       LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella ON aikajakson_keskella.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+         AND $tarkasteluPäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
+       LEFT JOIN valpastila valpastila_aikajakson_keskella ON valpastila_aikajakson_keskella.koskiopiskeluoikeudentila = aikajakson_keskella.tila
+       LEFT JOIN valpastila valpastila_viimeisin ON valpastila_viimeisin.koskiopiskeluoikeudentila = r_opiskeluoikeus.viimeisin_tila
        -- Haetaan päätason suoritus, jonka dataa halutaan näyttää (toistaiseksi valitaan alkamispäivän perusteella uusin)
        -- TODO: Ei välttämättä osu oikeaan, koska voi olla esim. monen eri tyyppisiä peruskoulun päätason suorituksia, ja pitäisi oikeasti filteröidä myös tyypin perusteella.
        -- TODO: Pitää toteuttaa tutkittavan ajanhetken tarkistus tähänkin, että näytetään luokkatieto sen mukaan, millä luokalla on ollut tutkittavalla ajanhetkellä.
@@ -204,11 +231,20 @@ WITH
        r_opiskeluoikeus.paattymispaiva,
        coalesce(valittu_r_paatason_suoritus.data ->> 'ryhmä', r_opiskeluoikeus.luokka) AS ryhmä,
        r_opiskeluoikeus.viimeisin_tila,
-       FALSE AS aiemmin_valmistunut
+       FALSE AS aiemmin_valmistunut,
+       CASE
+         WHEN $tarkasteluPäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
+         WHEN $tarkasteluPäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
+         ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
+       END tarkastelupäivan_tila
      FROM
        oppija_oid
        JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
          AND r_opiskeluoikeus.koulutusmuoto <> 'perusopetus'
+       LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella ON aikajakson_keskella.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+         AND $tarkasteluPäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
+       LEFT JOIN valpastila valpastila_aikajakson_keskella ON valpastila_aikajakson_keskella.koskiopiskeluoikeudentila = aikajakson_keskella.tila
+       LEFT JOIN valpastila valpastila_viimeisin ON valpastila_viimeisin.koskiopiskeluoikeudentila = r_opiskeluoikeus.viimeisin_tila
        -- Haetaan päätason suoritus, jonka dataa halutaan näyttää (TODO: toistaiseksi tulos on random, jos ei ole vahvistusta tai arviointia, mutta data ei riitä muuten.
        -- Teoriassa voisi tutkia päätason suorituksen osasuorituksiin kirjattuja päivämääriä, mutta se on aika monimutkaista ja luultavasti myös hidasta.
        CROSS JOIN LATERAL (
@@ -295,6 +331,10 @@ WITH
         'viimeisinTila', json_build_object(
           'koodiarvo', opiskeluoikeus.viimeisin_tila,
           'koodistoUri', 'koskiopiskeluoikeudentila'
+        ),
+        'tarkastelupäivänTila', json_build_object(
+          'koodiarvo', opiskeluoikeus.tarkastelupäivan_tila,
+          'koodistoUri', 'valpasopiskeluoikeudentila'
         )
       ) ORDER BY
         opiskeluoikeus.alkamispaiva DESC,

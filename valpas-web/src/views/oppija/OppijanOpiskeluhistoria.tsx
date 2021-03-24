@@ -5,11 +5,11 @@ import {
 } from "../../components/containers/IconSection"
 import { OpiskeluIcon } from "../../components/icons/Icon"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
-import { getLocalized, T, useLanguage } from "../../i18n/i18n"
+import { getLocalized, T, t, useLanguage } from "../../i18n/i18n"
 import { KoodistoKoodiviite } from "../../state/koodistot"
 import { Opiskeluoikeus, OppijaHakutilanteilla } from "../../state/oppijat"
 import { ISODate } from "../../state/types"
-import { parseYear } from "../../utils/date"
+import { formatNullableDate, parseYear } from "../../utils/date"
 
 export type OppijanOpiskeluhistoriaProps = {
   oppija: OppijaHakutilanteilla
@@ -45,10 +45,9 @@ export const OppijanOpiskeluhistoria = (
                   <T id="oppija__ryhma" />: {opiskeluoikeus.ryhmä}
                 </li>
               )}
-              {opiskeluoikeus.viimeisinTila && (
+              {opiskeluoikeus.tarkastelupäivänTila && (
                 <li>
-                  <T id="oppija__viimeisin_tila" />:{" "}
-                  {koodistonimi(opiskeluoikeus.viimeisinTila)}
+                  <T id="oppija__tila" />: {tilaString(opiskeluoikeus)}
                 </li>
               )}
             </ul>
@@ -71,3 +70,31 @@ const yearRangeString = (a?: ISODate, b?: ISODate): string =>
 
 const yearString = (date?: ISODate): string | undefined =>
   date && parseYear(date).toString()
+
+const tilaString = (opiskeluoikeus: Opiskeluoikeus): string => {
+  const tila = opiskeluoikeus.tarkastelupäivänTila
+  const alkamispäivä = formatNullableDate(opiskeluoikeus.alkamispäivä)
+  const päättymispäivä = formatNullableDate(opiskeluoikeus.päättymispäivä)
+
+  switch (tila.koodiarvo) {
+    case "voimassatulevaisuudessa":
+      return t("oppija__tila_voimassatulevaisuudessa", {
+        päivämäärä: alkamispäivä,
+      })
+    case "valmistunut":
+      return t("oppija__tila_valmistunut", { päivämäärä: päättymispäivä })
+    case "eronnut":
+      return t("oppija__tila_eronnut", { päivämäärä: päättymispäivä })
+    case "katsotaaneronneeksi":
+      return t("oppija__tila_katsotaaneronneeksi", {
+        päivämäärä: päättymispäivä,
+      })
+    case "mitatoity":
+      return t("oppija__tila_mitatoity", { päivämäärä: päättymispäivä })
+    case "voimassa":
+    case "peruutettu":
+    case "tuntematon":
+    default:
+      return koodistonimi(tila)
+  }
+}

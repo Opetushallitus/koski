@@ -45,11 +45,13 @@ case class ValpasOpiskeluoikeus(
   päättymispäivä: Option[String],
   ryhmä: Option[String],
   @KoodistoUri("koskiopiskeluoikeudentila")
-  viimeisinTila: Koodistokoodiviite
+  viimeisinTila: Koodistokoodiviite,
+  @KoodistoUri("valpasopiskeluoikeudentila")
+  tarkastelupäivänTila: Koodistokoodiviite
 ) {
   @SyntheticProperty
   def isOpiskelu: Boolean =
-    viimeisinTila.koodiarvo == "lasna" || viimeisinTila.koodiarvo == "valiaikaisestikeskeytynyt"
+    tarkastelupäivänTila.koodiarvo == "voimassa"
 }
 
 object ValpasOppilaitos {
