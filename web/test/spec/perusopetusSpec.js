@@ -2138,6 +2138,7 @@ describe('Perusopetus', function() {
               addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
               addOppija.selectTutkinto('Autoalan perustutkinto'),
               addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
+              addOppija.selectAloituspäivä('1.1.2018'),
               addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
               addOppija.submitAndExpectSuccessModal('Tyhjä, Tero (230872-7258)', 'Autoalan perustutkinto')
             )
