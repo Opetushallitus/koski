@@ -30,7 +30,7 @@ class MockOpintopolkuHenkilöFacade extends OpintopolkuHenkilöFacade with Loggi
     }
   }
 
-  def findOppijaByOid(henkilöOid: String): Option[LaajatOppijaHenkilöTiedot] =
+  def findOppijaJaYhteystiedotByOid(henkilöOid: String): Option[LaajatOppijaHenkilöTiedot] =
     findHenkilötiedot(henkilöOid).map(_.henkilö).map(withLinkedOids)
 
   def findMasterOppija(henkilöOid: String): Option[LaajatOppijaHenkilöTiedot] =

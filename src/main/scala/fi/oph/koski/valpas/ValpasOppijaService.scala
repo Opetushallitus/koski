@@ -111,7 +111,7 @@ class ValpasOppijaService(
   }
 
   private def fetchVirallisetYhteystiedot(oppija: ValpasOppija): Either[HttpStatus, Seq[Yhteystiedot]] = {
-    oppijanumerorekisteri.findOppijaByOid(oppija.henkilö.oid)
+    oppijanumerorekisteri.findOppijaJaYhteystiedotByOid(oppija.henkilö.oid)
       .map(_.yhteystiedot.flatMap(yt => {
         val alkuperä = koodistoviitepalvelu.validate(yt.alkuperä)
         val tyyppi = koodistoviitepalvelu.validate(yt.tyyppi)
