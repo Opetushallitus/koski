@@ -20,8 +20,13 @@ export type OppijanHautProps = {
 }
 
 export const OppijanHaut = (props: OppijanHautProps) => {
-  const haut = props.oppija.haut || []
-  return A.isNonEmpty(haut) ? (
+  const haut = props.oppija.hakutilanteet
+  const error = props.oppija.hakutilanneError
+  return error ? (
+    <NoDataMessage>
+      <T id="oppija__hakuhistoria_virhe" />
+    </NoDataMessage>
+  ) : A.isNonEmpty(haut) ? (
     <div className={b()}>
       {haut.map((haku) => (
         <HakuTable key={haku.hakuOid} haku={haku} />
@@ -78,7 +83,19 @@ const hakutoiveToTableValue = (hakutoive: Hakutoive, index: number): Datum => ({
     {
       value:
         formatOrderNumber(hakutoive.hakutoivenumero) +
-        getLocalized(hakutoive.hakukohdeNimi),
+        (getLocalized(hakutoive.hakukohdeNimi) || t("tieto_puuttuu")),
+      display: (
+        <>
+          <span>{formatOrderNumber(hakutoive.hakutoivenumero)}</span>
+          {hakutoive.hakukohdeNimi ? (
+            getLocalized(hakutoive.hakukohdeNimi)
+          ) : (
+            <NoDataMessage>
+              <T id="tieto_puuttuu" />
+            </NoDataMessage>
+          )}
+        </>
+      ),
     },
     {
       value:
@@ -89,9 +106,7 @@ const hakutoiveToTableValue = (hakutoive: Hakutoive, index: number): Datum => ({
           : t("oppija__haut_hylatty"),
     },
     { value: formatFixedNumber(hakutoive.pisteet, 2) },
-    {
-      value: "", // TODO: Alin pistemäärä
-    },
+    { value: formatFixedNumber(hakutoive.minValintapisteet, 2) },
   ],
 })
 

@@ -52,11 +52,11 @@ describe("Oppijakohtainen näkymä", () => {
         Valinta
         Pisteet
         Alin pistemäärä
-        1. Ressun lukio	–	0,00	–
-        2. Helsingin medialukio	–	0,00	–
-        3. Omnia	–	0,00	–
-        4. Omnia	–	0,00	–
-        5. Varsinais-Suomen kansanopisto	–	0,00	–
+        1. Ressun lukio Hylätty 9,00 9,01
+        2. Helsingin medialukio Hyväksytty 9,00 8,20
+        3. Omnia – – –
+        4. Omnia – – –
+        5. Varsinais-Suomen kansanopisto – – –
     `)
   })
 
@@ -81,6 +81,16 @@ describe("Oppijakohtainen näkymä", () => {
       Ryhmä: 9C
       Tila: Valmistunut
     `)
+  })
+
+  it("Näyttää oppijan muut tiedot vaikka hakukoostekysely epäonnistuu", async () => {
+    await loginAs(
+      "/virkailija/oppijat/1.2.246.562.24.00000000015",
+      "valpas-jkl-normaali",
+      "valpas-jkl-normaali"
+    )
+    await mainHeadingEquals("LukionAloittanut Valpas (290405A871A)")
+    await hautEquals("Virhe oppijan hakuhistorian hakemisessa")
   })
 
   it("Ei näytä oppijan tietoja, johon käyttäjällä ei ole lukuoikeutta", async () => {

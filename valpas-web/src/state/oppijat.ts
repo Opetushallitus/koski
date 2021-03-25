@@ -9,7 +9,8 @@ import { ISODate, ISODateTime, LocalizedString, Oid } from "./types"
 
 export type OppijaHakutilanteilla = {
   oppija: Oppija
-  haut?: Haku[]
+  hakutilanteet: Haku[]
+  hakutilanneError?: string
 }
 
 export type Oppija = {
@@ -51,6 +52,7 @@ export type Hakutoive = {
   hakutoivenumero?: number
   hakukohdeNimi?: LocalizedString
   pisteet?: number
+  minValintapisteet?: number
   hyväksytty?: boolean
 }
 
