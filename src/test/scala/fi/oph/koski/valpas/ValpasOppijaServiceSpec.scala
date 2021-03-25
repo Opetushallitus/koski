@@ -81,6 +81,13 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
         ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut"),
         ExpectedData(ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut")
       )
+    ),
+    (
+      ValpasMockOppijat.useampiYsiluokkaSamassaKoulussa,
+      List(
+        ExpectedData(ValpasExampleData.kesäYsiluokkaKesken, "voimassa"),
+        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut")
+      )
     )
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
@@ -260,6 +267,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
     expectedOppija: LaajatOppijaHenkilöTiedot,
     expectedData: List[ExpectedData]
   ) = {
+    // TODO: Tarkista myös valvottavatOpiskeluoikeudet ja oikeutetutOppilaitokset
     withClue(s"ValpasOppija(${oppija.henkilö.oid}/${oppija.henkilö.hetu}): ") {
       oppija.henkilö.oid shouldBe expectedOppija.oid
       oppija.henkilö.hetu shouldBe expectedOppija.hetu

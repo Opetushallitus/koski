@@ -43,6 +43,7 @@ object ValpasOppijaService {
               sukunimi = thiss.sukunimi
             ),
             oikeutetutOppilaitokset = thiss.oikeutetutOppilaitokset,
+            valvottavatOpiskeluoikeudet = thiss.valvottavatOpiskeluoikeudet,
             opiskeluoikeudet = opiskeluoikeudet
           )
         )

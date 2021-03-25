@@ -54,6 +54,8 @@ class ValpasDatabaseFixtureCreator(application: KoskiApplication) extends Databa
     (ValpasMockOppijat.aapajoenPeruskoulustaValmistunut, ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu),
     (ValpasMockOppijat.ennenLainRajapäivääPeruskoulustaValmistunut, ValpasExampleData.ennenLainRajapäivääToisestaKoulustaValmistunutYsiluokkalainen),
     (ValpasMockOppijat.ennenLainRajapäivääPeruskoulustaValmistunut, ValpasExampleData.valmistunutYsiluokkalainen),
-    (ValpasMockOppijat.yli2kkAiemminPeruskoulustaValmistunut, ValpasExampleData.yli2kkAiemminPeruskoulustaValmistunut)
+    (ValpasMockOppijat.yli2kkAiemminPeruskoulustaValmistunut, ValpasExampleData.yli2kkAiemminPeruskoulustaValmistunut),
+    (ValpasMockOppijat.useampiYsiluokkaSamassaKoulussa, ValpasExampleData.valmistunutYsiluokkalainen),
+    (ValpasMockOppijat.useampiYsiluokkaSamassaKoulussa, ValpasExampleData.kesäYsiluokkaKesken) // Tämä on vähän huono esimerkki, mutta varmistelee sitä, että homma toimii myös sitten, kun aletaan tukea nivelvaihetta, jossa nämä tapaukset voivat olla yleisempiä
   )
 }

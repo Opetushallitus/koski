@@ -18,6 +18,7 @@ export type Oppija = {
   opiskeluoikeudet: Opiskeluoikeus[]
   opiskelee: boolean
   oppivelvollisuusVoimassaAsti?: ISODate
+  valvottavatOpiskeluoikeudet: Oid[]
 }
 
 export type Henkilö = {
