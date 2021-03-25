@@ -561,6 +561,12 @@ trait NuortenPerusopetuksenOppiainenTaiEiTiedossaOppiaine extends Koulutusmoduul
 trait NuortenPerusopetuksenOppiaine extends PerusopetuksenOppiaine with NuortenPerusopetuksenOppiainenTaiEiTiedossaOppiaine {
   @Tooltip("Oppiaineen laajuus vuosiviikkotunteina.")
   def laajuus: Option[LaajuusVuosiviikkotunneissa]
+
+
+  final def withLaajuus(laajuus: Option[Laajuus]) = {
+    import mojave._
+    shapeless.lens[NuortenPerusopetuksenOppiaine].field[Option[Laajuus]]("laajuus").set(this)(laajuus)
+  }
 }
 
 trait NuortenPerusopetuksenKoodistostaLöytyväOppiaine extends NuortenPerusopetuksenOppiaine with YleissivistavaOppiaine {
