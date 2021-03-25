@@ -50,6 +50,8 @@ export type Yhteystiedot<T extends YhteystietojenAlkuperä> = {
 export type YhteystietojenAlkuperä = AlkuperäHakemukselta | AlkuperäRekisteristä
 
 export type AlkuperäHakemukselta = {
+  hakuNimi: LocalizedString
+  haunAlkamispaivämäärä: ISODateTime
   hakuOid: Oid
   hakemusOid: Oid
 }
@@ -129,7 +131,12 @@ export const Yhteystiedot = {
     yhteystiedot: Yhteystiedot<YhteystietojenAlkuperä>
   ): yhteystiedot is Yhteystiedot<AlkuperäHakemukselta> => {
     const a = yhteystiedot.alkuperä as AlkuperäHakemukselta
-    return a.hakuOid !== undefined && a.hakemusOid !== undefined
+    return (
+      a.hakuNimi !== undefined &&
+      a.haunAlkamispaivämäärä !== undefined &&
+      a.hakuOid !== undefined &&
+      a.hakemusOid !== undefined
+    )
   },
 
   isVirallinen: (

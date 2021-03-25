@@ -129,11 +129,9 @@ class ValpasOppijaService(
       .sortBy(_.haunAlkamispaivamaara)
       .lastOption
       .map(haku => List(
-        Some(ValpasYhteystiedot.oppijanIlmoittamatYhteystiedot(haku, localizationRepository.get("oppija__yhteystiedot"))),
-        ValpasYhteystiedot.oppijanIlmoittamatHuoltajanYhteystiedot(haku, localizationRepository.get("oppija__huoltaja")),
+        ValpasYhteystiedot.oppijanIlmoittamatYhteystiedot(haku, localizationRepository.get("oppija__yhteystiedot")),
       ))
       .getOrElse(List.empty)
-      .collect { case Some(s) => s }
 
   private def withAuditLogOppijaKatsominen(result: OppijaHakutilanteilla)(implicit session: ValpasSession): OppijaHakutilanteilla = {
     AuditLog.log(ValpasAuditLogMessage(

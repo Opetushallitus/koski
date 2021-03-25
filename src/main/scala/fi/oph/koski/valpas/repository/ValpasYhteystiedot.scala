@@ -1,9 +1,11 @@
 package fi.oph.koski.valpas.repository
 
 import fi.oph.koski.henkilo.Yhteystiedot
-import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
+import fi.oph.koski.schema.{BlankableLocalizedString, Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.schema.annotation.KoodistoUri
 import fi.oph.koski.valpas.hakukooste.Hakukooste
+
+import java.time.LocalDateTime
 
 case class ValpasYhteystiedot(
   alkuperä: ValpasYhteystietojenAlkuperä,
@@ -21,9 +23,20 @@ case class ValpasYhteystiedot(
 trait ValpasYhteystietojenAlkuperä
 
 case class ValpasYhteystietoHakemukselta (
+  hakuNimi: BlankableLocalizedString,
+  haunAlkamispaivämäärä: LocalDateTime,
   hakuOid: String,
   hakemusOid: String
 ) extends ValpasYhteystietojenAlkuperä
+
+object ValpasYhteystietoHakemukselta {
+  def apply(hakukooste: Hakukooste): ValpasYhteystietoHakemukselta = ValpasYhteystietoHakemukselta(
+    hakuNimi = hakukooste.hakuNimi,
+    haunAlkamispaivämäärä = hakukooste.haunAlkamispaivamaara,
+    hakuOid = hakukooste.hakuOid,
+    hakemusOid = hakukooste.hakemusOid
+  )
+}
 
 case class ValpasYhteystietoOppijanumerorekisteristä (
   @KoodistoUri("yhteystietojenalkupera")
@@ -34,7 +47,7 @@ case class ValpasYhteystietoOppijanumerorekisteristä (
 
 object ValpasYhteystiedot {
   def oppijanIlmoittamatYhteystiedot(hakukooste: Hakukooste, nimi: LocalizedString): ValpasYhteystiedot = ValpasYhteystiedot(
-    alkuperä = ValpasYhteystietoHakemukselta(hakukooste.hakemusOid, hakukooste.hakemusOid),
+    alkuperä = ValpasYhteystietoHakemukselta(hakukooste),
     yhteystietoryhmänNimi = nimi,
     matkapuhelinnumero = Some(hakukooste.matkapuhelin),
     lähiosoite = Some(hakukooste.lahiosoite),
@@ -46,7 +59,7 @@ object ValpasYhteystiedot {
   def oppijanIlmoittamatHuoltajanYhteystiedot(hakukooste: Hakukooste, nimi: LocalizedString): Option[ValpasYhteystiedot] =
     if (hakukooste.huoltajanNimi.nonEmpty || hakukooste.huoltajanPuhelinnumero.nonEmpty || hakukooste.huoltajanSähkoposti.nonEmpty) {
       Some(ValpasYhteystiedot(
-        alkuperä = ValpasYhteystietoHakemukselta(hakukooste.hakemusOid, hakukooste.hakemusOid),
+        alkuperä = ValpasYhteystietoHakemukselta(hakukooste),
         yhteystietoryhmänNimi = nimi,
         henkilönimi = hakukooste.huoltajanNimi,
         matkapuhelinnumero = hakukooste.huoltajanPuhelinnumero,

@@ -210,12 +210,12 @@ describe("Oppijakohtainen näkymä", () => {
 
     await ilmoitetutYhteystiedotEquals(`
       Ilmoitetut yhteystiedot
-      keyboard_arrow_downYhteystiedot
+      keyboard_arrow_downYhteystiedot – 9.3.2020
       Lähiosoite:	Esimerkkikatu 123
       Postitoimipaikka:  00000 Helsinki
       Matkapuhelin:	0401234567
       Sähköposti:	Valpas.Oppivelvollinen-ysiluokka-kesken-keväällä-2021@gmail.com
-      keyboard_arrow_rightHuoltaja
+      Lähde: Hakulomake – Yhteishaku 2021
     `)
 
     await virallisetYhteystiedotEquals(`
@@ -233,11 +233,7 @@ describe("Oppijakohtainen näkymä", () => {
 
     await ilmoitetutYhteystiedotEquals(`
       Ilmoitetut yhteystiedot
-      keyboard_arrow_rightYhteystiedot
-      keyboard_arrow_downHuoltaja
-      Nimi:	Huoltaja Sukunimi
-      Matkapuhelin:	0407654321
-      Sähköposti:	huoltaja.sukunimi@gmail.com
+      keyboard_arrow_rightYhteystiedot – 9.3.2020
     `)
   })
 })
