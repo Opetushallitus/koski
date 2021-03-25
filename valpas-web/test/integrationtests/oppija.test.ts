@@ -174,7 +174,7 @@ describe("Oppijakohtainen näkymä", () => {
     `)
   })
 
-  it("Näyttää oppijalta, jolla on opiskeluoikeus alkaa tulevaisuudessa oikeat tiedot", async () => {
+  it("Näyttää oppijalta, jolla opiskeluoikeus alkaa tulevaisuudessa oikeat tiedot", async () => {
     await loginAs(
       "/virkailija/oppijat/1.2.246.562.24.00000000016",
       "valpas-jkl-normaali",

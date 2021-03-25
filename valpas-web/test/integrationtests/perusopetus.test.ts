@@ -19,7 +19,6 @@ const jklNormaalikouluTableContent = `
   LuokallejäänytYsiluokkalainenKouluvaihtoMuualta Valpas	2.11.2005	9B	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
   Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas	22.11.2005	9C	Hakenut open_in_new	Ei toteutettu	Ei toteutettu	Ei toteutettu
   Päällekkäisiä Oppivelvollisuuksia	6.6.2005	9B	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
-  Yli-2-kk-aiemmin-peruskoulusta-valmistunut Valpas	1.2.2004	9C	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
   Ysiluokka-valmis-keväällä-2021 Valpas	19.6.2005	9C	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
 `
 
@@ -28,7 +27,7 @@ describe("Perusopetuksen näkymä", () => {
     await loginAs("/virkailija/oppijat", "valpas-jkl-normaali")
     await textEventuallyEquals(
       ".card__header",
-      "Perusopetuksen päättävät 2021 (12)"
+      "Perusopetuksen päättävät 2021 (11)"
     )
     await dataTableEventuallyEquals(
       ".hakutilanne",
@@ -50,7 +49,7 @@ describe("Perusopetuksen näkymä", () => {
     await selectOrganisaatio(0)
     await textEventuallyEquals(
       ".card__header",
-      "Perusopetuksen päättävät 2021 (12)"
+      "Perusopetuksen päättävät 2021 (11)"
     )
     await dataTableEventuallyEquals(
       ".hakutilanne",
