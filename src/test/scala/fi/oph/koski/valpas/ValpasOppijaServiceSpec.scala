@@ -93,6 +93,16 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
     )
   }
 
+  "getOppija palauttaa oppijan tiedot, vaikka hakukoostekysely epäonnistuisi" in {
+    val result = oppijaService.getOppija(ValpasMockOppijat.lukionAloittanut.oid)(defaultSession()).toOption.get
+    result.hakutilanneError.get should equal("Hakukoosteita ei juuri nyt saada haettua suoritusrekisteristä. Yritä myöhemmin uudelleen.")
+    validateOppija(
+      result.oppija,
+      ValpasMockOppijat.lukionAloittanut,
+      List(ValpasExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä, ValpasExampleData.valmistunutYsiluokkalainen)
+    )
+  }
+
   "getOppija palauttaa oppijan tiedot, vaikka kysely tehtäisiin oidilla, jonka suoriin opiskeluoikeuksiin ei ole pääsyä" in {
     val result = oppijaService.getOppija(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaKolmas.oid)(defaultSession())
     validateOppija(
@@ -236,7 +246,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
     val maybeOpiskeluoikeudet = oppija.opiskeluoikeudet.map(o => Some(o))
     val maybeExpectedOpiskeluoikeudet = expectedOpiskeluoikeudet.map(o => Some(o))
 
-    (maybeOpiskeluoikeudet.zipAll(maybeExpectedOpiskeluoikeudet, None, None)).foreach {
+    maybeOpiskeluoikeudet.zipAll(maybeExpectedOpiskeluoikeudet, None, None).foreach {
       case (Some(opiskeluoikeus), Some(expectedOpiskeluoikeus)) =>
         opiskeluoikeus.oppilaitos.oid shouldBe expectedOpiskeluoikeus.oppilaitos.get.oid
         opiskeluoikeus.alkamispäivä shouldBe expectedOpiskeluoikeus.alkamispäivä.map(_.toString)

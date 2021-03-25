@@ -22,7 +22,7 @@ object OppijaHakutilanteilla {
       oppija = oppija,
       hakutilanteet = haut.map(_.map(ValpasHakutilanne.apply)).getOrElse(Seq()),
       // TODO: Pitäisikö virheet mankeloida jotenkin eikä palauttaa sellaisenaan fronttiin?
-      hakutilanneError = haut.left.toOption.map(_.toString)
+      hakutilanneError = haut.left.toOption.flatMap(_.errorString)
     )
   }
 }

@@ -83,6 +83,16 @@ describe("Oppijakohtainen näkymä", () => {
     `)
   })
 
+  it("Näyttää oppijan muut tiedot vaikka hakukoostekysely epäonnistuu", async () => {
+    await loginAs(
+      "/virkailija/oppijat/1.2.246.562.24.00000000015",
+      "valpas-jkl-normaali",
+      "valpas-jkl-normaali"
+    )
+    await mainHeadingEquals("LukionAloittanut Valpas (290405A871A)")
+    await hautEquals("Virhe oppijan hakuhistorian hakemisessa")
+  })
+
   it("Ei näytä oppijan tietoja, johon käyttäjällä ei ole lukuoikeutta", async () => {
     allowNetworkError("/valpas/api/oppija/", FORBIDDEN)
     await loginAs(
