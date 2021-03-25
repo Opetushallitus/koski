@@ -114,6 +114,7 @@ class ValpasOppijaService(
     oppijanumerorekisteri.findOppijaJaYhteystiedotByOid(oppija.henkilö.oid)
       .map(_.yhteystiedot.flatMap(yt => {
         val alkuperä = koodistoviitepalvelu.validate(yt.alkuperä)
+          .filter(_.koodiarvo == "alkupera1") // Filtteröi pois muut kuin VTJ:ltä peräisin olevat yhteystiedot
         val tyyppi = koodistoviitepalvelu.validate(yt.tyyppi)
         if (alkuperä.isDefined && tyyppi.isDefined) {
           Some(yt.copy(alkuperä = alkuperä.get, tyyppi = tyyppi.get))

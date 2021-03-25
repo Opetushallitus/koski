@@ -143,20 +143,28 @@ class MockOpintopolkuHenkilöFacadeWithDBSupport(val db: DB) extends MockOpintop
     oppijaHenkilö.henkilö match {
       case henkilö: LaajatOppijaHenkilöTiedot => oppijaHenkilö.copy(
         henkilö = henkilö.copy(
-          yhteystiedot = List(Yhteystiedot(
-            alkuperä = Koodistokoodiviite("alkupera1", "yhteystietojenalkupera"),
-            tyyppi = Koodistokoodiviite("yhteystietotyyppi1", "yhteystietotyypit"),
-            sähköposti = Some(s"${henkilö.kutsumanimi.toLowerCase()}@gmail.com"),
-            puhelinnumero = Some("0401122334"),
-            matkapuhelinnumero = Some("0401122334"),
-            katuosoite = Some("Esimerkkitie 10"),
-            kunta = henkilö.kotikunta.orElse(Some("Helsinki")),
-            postinumero = henkilö.kotikunta.map(_ => "99999").orElse(Some("00000")),
-            kaupunki = henkilö.kotikunta,
-            maa = None,
-          ))
+          yhteystiedot = List(
+            mockYhteystiedot(henkilö),
+            mockYhteystiedot(henkilö).copy(
+              alkuperä = Koodistokoodiviite("alkupera7", "yhteystietojenalkupera"),
+              tyyppi = Koodistokoodiviite("yhteystietotyyppi7", "yhteystietotyypit"),
+            )
+          )
         )
       )
       case _ => oppijaHenkilö
     }
+
+  private def mockYhteystiedot(henkilö: LaajatOppijaHenkilöTiedot) = Yhteystiedot(
+    alkuperä = Koodistokoodiviite("alkupera1", "yhteystietojenalkupera"),
+    tyyppi = Koodistokoodiviite("yhteystietotyyppi1", "yhteystietotyypit"),
+    sähköposti = Some(s"${henkilö.kutsumanimi.toLowerCase()}@gmail.com"),
+    puhelinnumero = Some("0401122334"),
+    matkapuhelinnumero = Some("0401122334"),
+    katuosoite = Some("Esimerkkitie 10"),
+    kunta = henkilö.kotikunta.orElse(Some("Helsinki")),
+    postinumero = henkilö.kotikunta.map(_ => "99999").orElse(Some("00000")),
+    kaupunki = henkilö.kotikunta,
+    maa = None,
+  )
 }
