@@ -75,6 +75,12 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
       )
     ),
     (
+      ValpasMockOppijat.turvakieltoOppija,
+      List(
+        ExpectedData(ValpasExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa")
+      )
+    ),
+    (
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
       List(
         ExpectedData(ValpasExampleData.lukionOpiskeluoikeus, "voimassa"),

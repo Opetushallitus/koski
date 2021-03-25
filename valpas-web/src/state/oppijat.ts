@@ -32,6 +32,7 @@ export type Henkilö = {
   syntymäaika?: ISODate
   etunimet: string
   sukunimi: string
+  turvakielto: boolean
 }
 
 export type Yhteystiedot<T extends YhteystietojenAlkuperä> = {

@@ -236,4 +236,17 @@ describe("Oppijakohtainen näkymä", () => {
       keyboard_arrow_rightYhteystiedot – 9.3.2020
     `)
   })
+
+  it("Yhteystietoja ei näytetä, jos oppijalla on turvakielto", async () => {
+    await loginAs(
+      "/virkailija/oppijat/1.2.246.562.24.00000000024",
+      "valpas-jkl-normaali",
+      "valpas-jkl-normaali"
+    )
+
+    await virallisetYhteystiedotEquals(`
+      Viralliset yhteystiedot
+      Henkilöllä on turvakielto
+    `)
+  })
 })

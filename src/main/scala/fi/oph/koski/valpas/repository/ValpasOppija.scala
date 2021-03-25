@@ -29,7 +29,8 @@ case class ValpasHenkilö(
   hetu: Option[String],
   syntymäaika: Option[LocalDate],
   etunimet: String,
-  sukunimi: String
+  sukunimi: String,
+  turvakielto: Boolean
 )
 
 object ValpasOpiskeluoikeus {

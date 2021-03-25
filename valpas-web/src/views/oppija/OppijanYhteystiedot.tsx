@@ -59,7 +59,11 @@ export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {
               getLocalized(yt.alkuperä.tyyppi.nimi)!,
             ]).join(": ")
           }
-          noDataMessage={t("oppija__yhteystietoja_ei_löytynyt")}
+          noDataMessage={t(
+            props.oppija.oppija.henkilö.turvakielto
+              ? "oppija__henkilöllä_turvakielto"
+              : "oppija__yhteystietoja_ei_löytynyt"
+          )}
         />
       </Column>
     </ColumnsContainer>

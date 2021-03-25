@@ -44,7 +44,8 @@ object ValpasOppijaService {
               hetu = thiss.hetu,
               syntymäaika = thiss.syntymäaika,
               etunimet = thiss.etunimet,
-              sukunimi = thiss.sukunimi
+              sukunimi = thiss.sukunimi,
+              turvakielto = thiss.turvakielto,
             ),
             oikeutetutOppilaitokset = thiss.oikeutetutOppilaitokset,
             valvottavatOpiskeluoikeudet = thiss.valvottavatOpiskeluoikeudet,
@@ -97,7 +98,9 @@ class ValpasOppijaService(
       .map(withAuditLogOppijaKatsominen)
 
   private def fetchHaku(oppija: ValpasOppija): OppijaHakutilanteilla = {
-    OppijaHakutilanteilla.apply(oppija, hakukoosteService.getHakukoosteet(Set(oppija.henkilö.oid)))
+    val hakukoosteet = hakukoosteService.getHakukoosteet(Set(oppija.henkilö.oid))
+    val yhteystiedot = hakukoosteet.map(ilmoitetutYhteystiedot).getOrElse(Seq.empty)
+    OppijaHakutilanteilla.apply(oppija, hakukoosteet).copy(yhteystiedot = yhteystiedot)
   }
 
   private def fetchHaut(oppijat: Seq[ValpasOppija]): Seq[OppijaHakutilanteilla] = {
@@ -111,18 +114,22 @@ class ValpasOppijaService(
   }
 
   private def fetchVirallisetYhteystiedot(oppija: ValpasOppija): Either[HttpStatus, Seq[Yhteystiedot]] = {
-    oppijanumerorekisteri.findOppijaJaYhteystiedotByOid(oppija.henkilö.oid)
-      .map(_.yhteystiedot.flatMap(yt => {
-        val alkuperä = koodistoviitepalvelu.validate(yt.alkuperä)
-          .filter(_.koodiarvo == "alkupera1") // Filtteröi pois muut kuin VTJ:ltä peräisin olevat yhteystiedot
-        val tyyppi = koodistoviitepalvelu.validate(yt.tyyppi)
-        if (alkuperä.isDefined && tyyppi.isDefined) {
-          Some(yt.copy(alkuperä = alkuperä.get, tyyppi = tyyppi.get))
-        } else {
-          None
-        }
-      }))
-      .toRight(ValpasErrorCategory.internalError())
+    if (oppija.henkilö.turvakielto) {
+      Right(Seq.empty)
+    } else {
+      oppijanumerorekisteri.findOppijaJaYhteystiedotByOid(oppija.henkilö.oid)
+        .map(_.yhteystiedot.flatMap(yt => {
+          val alkuperä = koodistoviitepalvelu.validate(yt.alkuperä)
+            .filter(_.koodiarvo == "alkupera1") // Filtteröi pois muut kuin VTJ:ltä peräisin olevat yhteystiedot
+          val tyyppi = koodistoviitepalvelu.validate(yt.tyyppi)
+          if (alkuperä.isDefined && tyyppi.isDefined) {
+            Some(yt.copy(alkuperä = alkuperä.get, tyyppi = tyyppi.get))
+          } else {
+            None
+          }
+        }))
+        .toRight(ValpasErrorCategory.internalError())
+    }
   }
 
   private def ilmoitetutYhteystiedot(hakukoosteet: Seq[Hakukooste]): Seq[ValpasYhteystiedot] =

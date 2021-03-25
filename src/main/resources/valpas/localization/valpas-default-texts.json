@@ -70,6 +70,7 @@
   "oppija__tila_katsotaaneronneeksi": "Katsotaan eronneeksi {{päivämäärä}}",
   "oppija__tila_mitatoity": "Mitätöity {{päivämäärä}}",
   "oppija__yhteystietoja_ei_löytynyt": "Yhteystietoja ei löytynyt",
+  "oppija__henkilöllä_turvakielto": "Henkilöllä on turvakielto",
   "kayttooikeusrooli_OPPILAITOS_HAKEUTUMINEN": "Oppilaitoksen hakeutumisen valvonta",
   "kayttooikeusrooli_OPPILAITOS_SUORITTAMINEN": "Oppilaitoksen oppivelvollisuuden suorittamisen valvonta",
   "kayttooikeusrooli_OPPILAITOS_MAKSUTTOMUUS": "Oppilaitoksen opiskelun maksuttomuustietojen määrittely",
