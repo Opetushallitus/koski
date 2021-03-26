@@ -1,5 +1,6 @@
 import bem from "bem-ts"
 import React from "react"
+import { joinClassNames } from "../../utils/classnames"
 import "./Icon.less"
 
 const b = bem("icon")
@@ -7,6 +8,7 @@ const b = bem("icon")
 export type IconProps = {
   inline?: boolean
   color?: IconColor
+  className?: string
 }
 
 export type IconColor = "warning" | "error" | "gray" | "blue"
@@ -37,12 +39,16 @@ type MaterialDesignIconProps = IconProps & {
 const MaterialDesignIcon = (props: MaterialDesignIconProps) => (
   <i
     aria-hidden
-    className={`material-icons ${b({
-      inline: props.inline,
-      ...(props.color && {
-        [props.color]: true,
+    className={joinClassNames(
+      "material-icons",
+      b({
+        inline: props.inline,
+        ...(props.color && {
+          [props.color]: true,
+        }),
       }),
-    })}`}
+      props.className
+    )}
   >
     {props.name}
   </i>

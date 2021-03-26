@@ -3,7 +3,7 @@ import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
 import { ExternalLink } from "../../components/navigation/ExternalLink"
 import { DataTable, Datum } from "../../components/tables/DataTable"
-import { NoDataMessage } from "../../components/typography/NoDataMessage"
+import { NotImplemented } from "../../components/typography/NoDataMessage"
 import { T, t } from "../../i18n/i18n"
 import { useBasePath } from "../../state/basePath"
 import { externalHakemussivu } from "../../state/externalUrls"
@@ -110,25 +110,25 @@ const oppijaToTableData = (
       {
         value: t("hakutilanne__taulu_data_ei_toteutettu"),
         display: (
-          <NoDataMessage>
+          <NotImplemented>
             <T id="hakutilanne__taulu_data_ei_toteutettu" />
-          </NoDataMessage>
+          </NotImplemented>
         ),
       },
       {
         value: t("hakutilanne__taulu_data_ei_toteutettu"),
         display: (
-          <NoDataMessage>
+          <NotImplemented>
             <T id="hakutilanne__taulu_data_ei_toteutettu" />
-          </NoDataMessage>
+          </NotImplemented>
         ),
       },
       {
         value: t("hakutilanne__taulu_data_ei_toteutettu"),
         display: (
-          <NoDataMessage>
+          <NotImplemented>
             <T id="hakutilanne__taulu_data_ei_toteutettu" />
-          </NoDataMessage>
+          </NotImplemented>
         ),
       },
     ],

@@ -7,11 +7,11 @@
 
 .table {
   table-layout: fixed;
-  width: 100%;
+  min-width: 100%;
 }
 
 .table__body .table__row:nth-child(odd) {
-  background: @color-gray-lighten-4;
+  background: @color-gray-lighten-5;
 }
 
 .table__th,
@@ -62,6 +62,15 @@
   padding-left: @table-cell-icon-padding;
 }
 
+.table__filter {
+  padding-top: (.pxToRem(16) []);
+  padding-bottom: (.pxToRem(16) []);
+
+  & > * {
+    margin: 0;
+  }
+}
+
 .table__sortindicator {
   display: inline-block;
   margin-left: 0.5ex;
@@ -70,5 +79,16 @@
   overflow-y: hidden;
   i {
     font-size: @font-size-large;
+  }
+}
+
+.card__body {
+  .table {
+    margin-left: -@table-h-padding;
+    margin-right: -@table-h-padding;
+
+    &:first-child {
+      margin-top: -(.pxToRem(16) []);
+    }
   }
 }
