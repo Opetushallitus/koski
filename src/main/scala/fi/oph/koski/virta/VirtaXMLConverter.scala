@@ -37,6 +37,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         .map(tila => KorkeakoulunOpiskeluoikeusjakso(alkuPvm(tila), requiredKoodi("virtaopiskeluoikeudentila", tila \ "Koodi" text)))
         .toList)
 
+      val lukuvuosimaksut: List[KorkeakoulunOpiskeluoikeudenLukuvuosimaksu] = (opiskeluoikeusNode \ "LukuvuosiMaksu").map(lukuvuosiMaksuTiedot).toList
+
       val suoritukset: List[KorkeakouluSuoritus] = opiskeluOikeudenSuoritukset.flatMap(convertSuoritus(_, suoritusNodeList))
 
       val vahvistus = suoritukset.flatMap(_.vahvistus).sortBy(_.päivä)(localDateOrdering).lastOption
@@ -55,7 +57,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
           ensisijaisuus = Some((opiskeluoikeusNode \ "Ensisijaisuus").toList.map { e => Aikajakso(alkuPvm(e), loppuPvm(e)) }).filter(_.nonEmpty),
           virtaOpiskeluoikeudenTyyppi = Some(opiskeluoikeudenTyyppi(opiskeluoikeusNode)),
           lukukausiIlmoittautuminen = lukukausiIlmoittautuminen(oppilaitos, opiskeluoikeudenTila, avain(opiskeluoikeusNode), virtaXml),
-          järjestäväOrganisaatio = järjestäväOrganisaatio(opiskeluoikeusNode, vahvistus.map(_.päivä))
+          järjestäväOrganisaatio = järjestäväOrganisaatio(opiskeluoikeusNode, vahvistus.map(_.päivä)),
+          maksettavatLukuvuosimaksut = lukuvuosimaksut
         ))
       )
 
@@ -250,6 +253,12 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   private def päättynyt(tila: KorkeakoulunOpiskeluoikeudenTila) =
     tila.opiskeluoikeusjaksot.lastOption.exists(_.tila.koodiarvo == "3")
 
+  private def lukuvuosiMaksuTiedot(n: Node) = KorkeakoulunOpiskeluoikeudenLukuvuosimaksu(
+    alku = alkuPvm(n),
+    loppu = loppuPvm(n),
+    summa = (n \ "Summa").headOption.map(_.text.toInt)
+  )
+
   private def lukukausiIlmoittautuminen(oppilaitos: Option[Oppilaitos], tila: KorkeakoulunOpiskeluoikeudenTila, opiskeluoikeusAvain: String, virtaXml: Node): Option[Lukukausi_Ilmoittautuminen] = {
     val ilmo = Ilmoittautuminen(oppilaitos, tila, opiskeluoikeusAvain, virtaXml)
     val ilmot = (virtaXml \\ "LukukausiIlmoittautuminen").toList
@@ -275,7 +284,14 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     loppu = loppuPvm(n),
     tila = koodistoViitePalvelu.validate(Koodistokoodiviite((n \ "Tila").text, "virtalukukausiilmtila")).getOrElse(lukukausiIlmottautuminenPuuttuu),
     ylioppilaskunnanJäsen = (n \ "YlioppilaskuntaJasen").headOption.map(toBoolean),
-    ythsMaksettu = (n \ "YTHSMaksu").headOption.map(toBoolean)
+    ythsMaksettu = (n \ "YTHSMaksu").headOption.map(toBoolean),
+    maksetutLukuvuosimaksut = (n \ "LukuvuosiMaksu").headOption.map(lukukausiIlmoLukuvuosiMaksu)
+  )
+
+  private def lukukausiIlmoLukuvuosiMaksu(n: Node) = Lukuvuosi_IlmottautumisjaksonLukuvuosiMaksu(
+    maksettu = (n \ "Maksettu").headOption.map(toBoolean),
+    summa = (n \ "Summa").headOption.map(_.text.toInt),
+    apuraha = (n \ "Apuraha").headOption.map(_.text.toInt)
   )
 
   private val virtaTruths = List("1", "true")

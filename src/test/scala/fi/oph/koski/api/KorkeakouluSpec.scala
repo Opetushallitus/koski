@@ -48,6 +48,17 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
       }
     }
 
+    "Maksettavat lukuvuosimaksutiedot" - {
+      "Koski näyttää maksutiedot" in {
+        val opiskeluoikeus = opiskeluoikeudet("250668-293Y", "02470").head
+
+        val maksettavatLukuvuosimaksut = opiskeluoikeus.lisätiedot.get.maksettavatLukuvuosimaksut.head
+        maksettavatLukuvuosimaksut.alku.toString should equal("2015-10-20")
+        maksettavatLukuvuosimaksut.loppu.get.toString should equal("2016-04-12")
+        maksettavatLukuvuosimaksut.summa.get should equal (4000)
+      }
+    }
+
     "Haettaessa" - {
       "Konvertoidaan Virta-järjestelmän opiskeluoikeus" in {
         val oikeudet = getOpiskeluoikeudet(KoskiSpecificMockOppijat.dippainssi.oid)
@@ -97,6 +108,13 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
             .get
 
           opiskeluoikeus.lisätiedot.get.lukukausiIlmoittautuminen should equal(None)
+        }
+
+        "Lukuvuosimaksutiedot löytyvät" in {
+          val opiskeluoikeus = opiskeluoikeudet("250668-293Y", "10076").head
+
+          val maksutiedot = opiskeluoikeus.lisätiedot.get.lukukausiIlmoittautuminen.get.ilmoittautumisjaksot.map(_.maksetutLukuvuosimaksut.getOrElse("").toString)
+          maksutiedot should equal(List("Lukuvuosi_IlmottautumisjaksonLukuvuosiMaksu(Some(true),Some(2000),Some(2000))", "", "", "", "", ""))
         }
       }
 
