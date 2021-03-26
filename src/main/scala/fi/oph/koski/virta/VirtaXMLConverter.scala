@@ -34,7 +34,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
       val opiskeluoikeudenTila: KorkeakoulunOpiskeluoikeudenTila = KorkeakoulunOpiskeluoikeudenTila((opiskeluoikeusNode \ "Tila")
         .sortBy(alkuPvm)
-        .map(tila => KorkeakoulunOpiskeluoikeusjakso(alkuPvm(tila), requiredKoodi("virtaopiskeluoikeudentila", tila \ "Koodi" text)))
+        .map(tila => KorkeakoulunOpiskeluoikeusjakso(alkuPvm(tila), jaksonNimi(opiskeluoikeusNode), requiredKoodi("virtaopiskeluoikeudentila", tila \ "Koodi" text)))
         .toList)
 
       val lukuvuosimaksut: List[KorkeakoulunOpiskeluoikeudenLukuvuosimaksu] = (opiskeluoikeusNode \ "LukuvuosiMaksu").map(lukuvuosiMaksuTiedot).toList
@@ -429,6 +429,11 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
   private def nimi(suoritus: Node): LocalizedString = {
     sanitize((suoritus \ "Nimi" map { nimi => (nimi \ "@kieli").text -> nimi.text }).toMap).getOrElse(finnish("Suoritus: " + avain(suoritus)))
+  }
+
+  private def jaksonNimi(opiskeluoikeusNode: Node): Option[LocalizedString] = {
+    val jakso = opiskeluoikeusNode \ "Jakso"
+    sanitize((jakso \ "Nimi" map { nimi => (nimi \ "@kieli").text -> nimi.text }).toMap)
   }
 
   private def oppilaitos(node: Node, vahvistusPäivä: Option[LocalDate]): Oppilaitos =

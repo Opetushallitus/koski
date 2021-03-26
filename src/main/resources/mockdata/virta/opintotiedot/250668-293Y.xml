@@ -35,6 +35,9 @@
                 <virta:AlkuPvm>2015-10-20</virta:AlkuPvm>
                 <virta:LoppuPvm>2016-04-12</virta:LoppuPvm>
                 <virta:Koulutuskunta>398</virta:Koulutuskunta>
+                <virta:Nimi kieli="fi">Tieto- ja viestintätekniikan tutkinto-ohjelma</virta:Nimi>
+                <virta:Nimi kieli="sv">Examensprogram inom informations- och kommunikationsteknik</virta:Nimi>
+                <virta:Nimi kieli="en">Information Technology Master's Programme</virta:Nimi>
               </virta:Jakso>
               <virta:Koulutusala versio="opmala">2</virta:Koulutusala>
               <virta:Laajuus>

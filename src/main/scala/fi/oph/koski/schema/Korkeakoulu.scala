@@ -140,6 +140,7 @@ case class KorkeakoulunOpiskeluoikeudenTila(
 
 case class KorkeakoulunOpiskeluoikeusjakso(
   alku: LocalDate,
+  nimi: Option[LocalizedString],
   @KoodistoUri("virtaopiskeluoikeudentila")
   tila: Koodistokoodiviite
 ) extends Opiskeluoikeusjakso {

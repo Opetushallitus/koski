@@ -46,6 +46,12 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
           opiskeluoikeus.suoritukset.head.koulutusmoduuli.nimi.get("fi") should equal("Fil. maist., fysiikka")
         }
       }
+
+      "Opiskeluoikeusjaksoilta voi löytyä tarkentava nimi" in {
+        val opiskeluoikeus = opiskeluoikeudet("250668-293Y", "02470").head
+
+        opiskeluoikeus.tila.opiskeluoikeusjaksot.head.nimi.get.values.values.toList should equal (List("Tieto- ja viestintätekniikan tutkinto-ohjelma", "Examensprogram inom informations- och kommunikationsteknik", "Information Technology Master's Programme"))
+      }
     }
 
     "Maksettavat lukuvuosimaksutiedot" - {
