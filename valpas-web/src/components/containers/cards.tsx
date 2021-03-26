@@ -1,28 +1,23 @@
 import bem from "bem-ts"
 import React from "react"
-import { joinClassNames } from "../../utils/classnames"
+import { plainComponent } from "../../utils/plaincomponent"
 import "./cards.less"
 
 const b = bem("card")
 
 export type CardProps = React.HTMLAttributes<HTMLDivElement>
 
-export const Card = ({ className, children, ...props }: CardProps) => (
-  <section className={joinClassNames(b(), className)} {...props}>
-    <div className={b("borders")}>{children}</div>
-  </section>
+const CardContainer = plainComponent("section", b())
+const CardBorders = plainComponent("div", b("borders"))
+
+export const Card = ({ children, ...props }: CardProps) => (
+  <CardContainer {...props}>
+    <CardBorders>{children}</CardBorders>
+  </CardContainer>
 )
 
-export type CardHeaderProps = {
-  children?: React.ReactNode
-}
+export const BorderlessCard = plainComponent("section", b(["borderless"]))
 
-export const CardHeader = (props: CardHeaderProps) => (
-  <header className={b("header")}>{props.children}</header>
-)
+export const CardHeader = plainComponent("header", b("header"))
 
-export type CardBodyProps = React.HTMLAttributes<HTMLDivElement>
-
-export const CardBody = ({ className, ...rest }: CardBodyProps) => (
-  <div className={joinClassNames(b("body"), className)} {...rest} />
-)
+export const CardBody = plainComponent("div", b("body"))

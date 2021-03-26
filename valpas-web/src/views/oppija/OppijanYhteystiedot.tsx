@@ -96,7 +96,7 @@ type YhteystietolistaProps = {
 
 const Yhteystietolista = (props: YhteystietolistaProps) => (
   <>
-    <InfoTable>
+    <InfoTable size="tighter">
       {props.yhteystiedot.henkilönimi && (
         <InfoTableRow
           label={t("oppija__nimi")}

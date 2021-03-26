@@ -5,13 +5,21 @@
 
 html,
 body {
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: @font-family;
   line-height: 1.5;
   color: @color-black;
+
+  * {
+    font-size: @font-size-medium;
+  }
 }
 
 a {
   color: @color-blue;
+
+  &:hover {
+    color: @color-blue-lighten-1;
+  }
 }
 
 p {

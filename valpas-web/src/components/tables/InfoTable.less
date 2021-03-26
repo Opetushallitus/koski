@@ -1,15 +1,21 @@
 @import "../../style/colors.less";
 @import "../../style/typography.less";
 
-@infotable-cell-padding: 0.25rem 0.5rem 0.25rem 0;
+@infotable-cell-bottom-padding: .pxToRem(16) [];
+@infotable-cell-padding: 0 0 @infotable-cell-bottom-padding 0;
+
+@infotable-cell-bottom-tighter-padding: .pxToRem(12) [];
+@infotable-cell-tighter-padding: 0 0 @infotable-cell-bottom-tighter-padding 0;
 
 .infotable {
   width: 100%;
+  font-size: @font-size-medium;
 }
 
 .infotable__label {
   text-align: left;
   padding: @infotable-cell-padding;
+  padding-right: 1rem;
   font-weight: @font-weight-bold;
   width: 30%;
 }
@@ -21,4 +27,11 @@
 
 .infotable__null {
   color: @color-gray-lighten-3;
+}
+
+.infotable--tighter {
+  .infotable__label,
+  .infotable__value {
+    padding: @infotable-cell-tighter-padding;
+  }
 }

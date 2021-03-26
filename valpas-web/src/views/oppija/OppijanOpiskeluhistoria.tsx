@@ -4,6 +4,7 @@ import {
   IconSectionHeading,
 } from "../../components/containers/IconSection"
 import { OpiskeluIcon } from "../../components/icons/Icon"
+import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import { getLocalized, T, t, useLanguage } from "../../i18n/i18n"
 import { KoodistoKoodiviite } from "../../state/koodistot"
@@ -38,19 +39,23 @@ export const OppijanOpiskeluhistoria = (
             <IconSectionHeading>
               {nimi} {range}
             </IconSectionHeading>
-            <ul>
-              <li>{getLocalized(opiskeluoikeus.oppilaitos.nimi)}</li>
+            <InfoTable size="tighter">
+              <InfoTableRow
+                value={getLocalized(opiskeluoikeus.oppilaitos.nimi)}
+              />
               {opiskeluoikeus.ryhmä && (
-                <li>
-                  <T id="oppija__ryhma" />: {opiskeluoikeus.ryhmä}
-                </li>
+                <InfoTableRow
+                  label={t("oppija__ryhma")}
+                  value={opiskeluoikeus.ryhmä}
+                />
               )}
               {opiskeluoikeus.tarkastelupäivänTila && (
-                <li>
-                  <T id="oppija__tila" />: {tilaString(opiskeluoikeus)}
-                </li>
+                <InfoTableRow
+                  label={t("oppija__tila")}
+                  value={tilaString(opiskeluoikeus)}
+                />
               )}
-            </ul>
+            </InfoTable>
           </IconSection>
         )
       })}
