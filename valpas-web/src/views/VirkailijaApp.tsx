@@ -27,7 +27,7 @@ const featureFlagEnabledValue = "enabled"
 const FeatureFlagEnabler = () => {
   const basePath = useBasePath()
   window.localStorage.setItem(featureFlagName, featureFlagEnabledValue)
-  return <Redirect to={basePath} />
+  return <Redirect to={`${basePath}/oppijat`} />
 }
 
 const runningLocally = window.environment == "local"
@@ -53,7 +53,7 @@ const VirkailijaRoutes = ({ user }: VirkailijaRoutesProps) => {
 
   return (
     <Switch>
-      <Route exact path={`${basePath}/hunter2`}>
+      <Route exact path={`${basePath}/pilotti2021`}>
         <FeatureFlagEnabler />
       </Route>
       {isFeatureFlagEnabled() && (
