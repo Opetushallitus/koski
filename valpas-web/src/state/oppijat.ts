@@ -4,13 +4,18 @@ import * as O from "fp-ts/Option"
 import * as Ord from "fp-ts/Ord"
 import * as string from "fp-ts/string"
 import { Language } from "../i18n/i18n"
-import { Opiskeluoikeudentyyppi, ValpasOpiskeluoikeudenTila } from "./koodistot"
+import {
+  KoodistoKoodiviite,
+  Opiskeluoikeudentyyppi,
+  ValpasOpiskeluoikeudenTila,
+} from "./koodistot"
 import { ISODate, ISODateTime, LocalizedString, Oid } from "./types"
 
 export type OppijaHakutilanteilla = {
   oppija: Oppija
   hakutilanteet: Haku[]
   hakutilanneError?: string
+  yhteystiedot: Yhteystiedot<YhteystietojenAlkuperä>[]
 }
 
 export type Oppija = {
@@ -27,6 +32,34 @@ export type Henkilö = {
   syntymäaika?: ISODate
   etunimet: string
   sukunimi: string
+  turvakielto: boolean
+}
+
+export type Yhteystiedot<T extends YhteystietojenAlkuperä> = {
+  alkuperä: T
+  yhteystietoryhmänNimi: LocalizedString
+  henkilönimi?: string
+  sähköposti?: string
+  puhelinnumero?: string
+  matkapuhelinnumero?: string
+  lähiosoite?: string
+  kunta?: string
+  postinumero?: string
+  maa?: string
+}
+
+export type YhteystietojenAlkuperä = AlkuperäHakemukselta | AlkuperäRekisteristä
+
+export type AlkuperäHakemukselta = {
+  hakuNimi: LocalizedString
+  haunAlkamispaivämäärä: ISODateTime
+  hakuOid: Oid
+  hakemusOid: Oid
+}
+
+export type AlkuperäRekisteristä = {
+  alkuperä: KoodistoKoodiviite<"yhteystietojenalkupera">
+  tyyppi: KoodistoKoodiviite<"yhteystietotyypit">
 }
 
 export type Oppilaitos = {
@@ -92,4 +125,25 @@ const muokkausOrd = Ord.contramap((haku: Haku) => haku.muokattu)(string.Ord)
 export const Haku = {
   latest: (haut: Haku[]) =>
     pipe(haut, A.sortBy([muokkausOrd]), A.head, O.toNullable),
+}
+
+export const Yhteystiedot = {
+  isIlmoitettu: (
+    yhteystiedot: Yhteystiedot<YhteystietojenAlkuperä>
+  ): yhteystiedot is Yhteystiedot<AlkuperäHakemukselta> => {
+    const a = yhteystiedot.alkuperä as AlkuperäHakemukselta
+    return (
+      a.hakuNimi !== undefined &&
+      a.haunAlkamispaivämäärä !== undefined &&
+      a.hakuOid !== undefined &&
+      a.hakemusOid !== undefined
+    )
+  },
+
+  isVirallinen: (
+    yhteystiedot: Yhteystiedot<YhteystietojenAlkuperä>
+  ): yhteystiedot is Yhteystiedot<AlkuperäRekisteristä> => {
+    const a = yhteystiedot.alkuperä as AlkuperäRekisteristä
+    return a.alkuperä !== undefined && a.tyyppi !== undefined
+  },
 }

@@ -22,6 +22,8 @@ const opiskeluhistoriaEquals = cardBodyEquals("opiskeluhistoria")
 const hautEquals = cardBodyEquals("haut")
 const ilmoitetutYhteystiedotEquals = (expected: string) =>
   contentEventuallyEquals("#ilmoitetut-yhteystiedot", expected)
+const virallisetYhteystiedotEquals = (expected: string) =>
+  contentEventuallyEquals("#viralliset-yhteystiedot", expected)
 
 describe("Oppijakohtainen näkymä", () => {
   it("Näyttää oppijan tiedot, johon käyttäjällä on lukuoikeus", async () => {
@@ -208,23 +210,43 @@ describe("Oppijakohtainen näkymä", () => {
 
     await ilmoitetutYhteystiedotEquals(`
       Ilmoitetut yhteystiedot
-      keyboard_arrow_rightYhteystiedot
-      keyboard_arrow_rightHuoltaja
+      keyboard_arrow_downYhteystiedot – 9.3.2020
+      Lähiosoite:	Esimerkkikatu 123
+      Postitoimipaikka:  00000 Helsinki
+      Matkapuhelin:	0401234567
+      Sähköposti:	Valpas.Oppivelvollinen-ysiluokka-kesken-keväällä-2021@gmail.com
+      Lähde: Hakulomake – Yhteishaku 2021
     `)
 
+    await virallisetYhteystiedotEquals(`
+      Viralliset yhteystiedot
+      keyboard_arrow_downVTJ: Kotiosoite
+      Lähiosoite:	Esimerkkitie 10
+      Postitoimipaikka:	00000 Helsinki
+      Puhelin:	0401122334
+      Sähköposti:	valpas@gmail.com
+    `)
+
+    // Klikkaukset kääntävät näkyvät ja piilotetut arvot päinvastaiseen tilaan
     const labels = await $$("#yhteystiedot .accordion__label")
     await Promise.all(labels.map((label) => label.click()))
 
     await ilmoitetutYhteystiedotEquals(`
       Ilmoitetut yhteystiedot
-      keyboard_arrow_downYhteystiedot
-      Lähiosoite:	Esimerkkikatu 123, 00000 KAUPUNKI
-      Puhelin:	0401234567
-      Sähköposti:	Valpas.Oppivelvollinen-ysiluokka-kesken-keväällä-2021@gmail.com
-      keyboard_arrow_downHuoltaja
-      Nimi:	Huoltaja Sukunimi
-      Puhelin:	0401234567
-      Sähköposti:	huoltaja.sukunimi@gmail.com
+      keyboard_arrow_rightYhteystiedot – 9.3.2020
+    `)
+  })
+
+  it("Yhteystietoja ei näytetä, jos oppijalla on turvakielto", async () => {
+    await loginAs(
+      "/virkailija/oppijat/1.2.246.562.24.00000000024",
+      "valpas-jkl-normaali",
+      "valpas-jkl-normaali"
+    )
+
+    await virallisetYhteystiedotEquals(`
+      Viralliset yhteystiedot
+      Henkilöllä on turvakielto
     `)
   })
 })

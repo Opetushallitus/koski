@@ -8,6 +8,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession.systemUser
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Henkilö.Oid
+import fi.oph.koski.schema.Koodistokoodiviite
 
 class MockOpintopolkuHenkilöFacade extends OpintopolkuHenkilöFacade with Logging {
   private var alkuperäisetOppijat = KoskiSpecificMockOppijat.defaultOppijat
@@ -29,7 +30,7 @@ class MockOpintopolkuHenkilöFacade extends OpintopolkuHenkilöFacade with Loggi
     }
   }
 
-  def findOppijaByOid(henkilöOid: String): Option[LaajatOppijaHenkilöTiedot] =
+  def findOppijaJaYhteystiedotByOid(henkilöOid: String): Option[LaajatOppijaHenkilöTiedot] =
     findHenkilötiedot(henkilöOid).map(_.henkilö).map(withLinkedOids)
 
   def findMasterOppija(henkilöOid: String): Option[LaajatOppijaHenkilöTiedot] =
@@ -133,6 +134,37 @@ class MockOpintopolkuHenkilöFacadeWithDBSupport(val db: DB) extends MockOpintop
   }
 
   override protected def findHenkilötiedot(id: String): Option[OppijaHenkilöWithMasterInfo] = {
-    super.findHenkilötiedot(id).orElse(findFromDb(id).map(OppijaHenkilöWithMasterInfo(_, None)))
+    super.findHenkilötiedot(id)
+      .orElse(findFromDb(id).map(OppijaHenkilöWithMasterInfo(_, None)))
+      .map(mockYhteystiedot)
   }
+
+  private def mockYhteystiedot(oppijaHenkilö: OppijaHenkilöWithMasterInfo): OppijaHenkilöWithMasterInfo =
+    oppijaHenkilö.henkilö match {
+      case henkilö: LaajatOppijaHenkilöTiedot => oppijaHenkilö.copy(
+        henkilö = henkilö.copy(
+          yhteystiedot = List(
+            mockYhteystiedot(henkilö),
+            mockYhteystiedot(henkilö).copy(
+              alkuperä = Koodistokoodiviite("alkupera7", "yhteystietojenalkupera"),
+              tyyppi = Koodistokoodiviite("yhteystietotyyppi7", "yhteystietotyypit"),
+            )
+          )
+        )
+      )
+      case _ => oppijaHenkilö
+    }
+
+  private def mockYhteystiedot(henkilö: LaajatOppijaHenkilöTiedot) = Yhteystiedot(
+    alkuperä = Koodistokoodiviite("alkupera1", "yhteystietojenalkupera"),
+    tyyppi = Koodistokoodiviite("yhteystietotyyppi1", "yhteystietotyypit"),
+    sähköposti = Some(s"${henkilö.kutsumanimi.toLowerCase()}@gmail.com"),
+    puhelinnumero = Some("0401122334"),
+    matkapuhelinnumero = Some("0401122334"),
+    katuosoite = Some("Esimerkkitie 10"),
+    kunta = henkilö.kotikunta.orElse(Some("Helsinki")),
+    postinumero = henkilö.kotikunta.map(_ => "99999").orElse(Some("00000")),
+    kaupunki = henkilö.kotikunta,
+    maa = None,
+  )
 }

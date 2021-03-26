@@ -1,13 +1,13 @@
 package fi.oph.koski.henkilo
 
 import java.time.LocalDate
-
 import com.typesafe.config.Config
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema.Henkilö.Oid
+import fi.oph.koski.schema.Koodistokoodiviite
 import scalaz.Nondeterminism
 import scalaz.concurrent.Task
 
@@ -118,7 +118,8 @@ case class OppijaNumerorekisteriOppija(
   sukupuoli: Option[String],
   kotikunta: Option[String],
   yksiloity: Option[Boolean],
-  yksiloityVTJ: Option[Boolean]
+  yksiloityVTJ: Option[Boolean],
+  yhteystiedotRyhma: Seq[OppijaNumerorekisteriYhteystiedotRyhma]
 ) {
   def toOppijaHenkilö(linkitetytOidit: List[String]) = LaajatOppijaHenkilöTiedot(
     oid = oidHenkilo,
@@ -135,10 +136,41 @@ case class OppijaNumerorekisteriOppija(
     linkitetytOidit = linkitetytOidit,
     vanhatHetut = kaikkiHetut.getOrElse(Nil).filterNot(hetu.contains),
     kotikunta = kotikunta,
-    yksilöity = yksiloity.exists(identity) || yksiloityVTJ.exists(identity)
+    yksilöity = yksiloity.exists(identity) || yksiloityVTJ.exists(identity),
+    yhteystiedot = yhteystiedotRyhma.map(_.toYhteystiedot)
   )
 }
 case class UusiOppijaHenkilö(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String, henkiloTyyppi: String = "OPPIJA")
 
 case class Kansalaisuus(kansalaisuusKoodi: String)
 case class Kieli(kieliKoodi: String)
+
+case class OppijaNumerorekisteriYhteystiedotRyhma(
+  id: Int,
+  readOnly: Boolean,
+  ryhmaAlkuperaTieto: String,
+  ryhmaKuvaus: String,
+  yhteystieto: Seq[OppijaNumerorekisteriYhteystieto]
+) {
+  def toYhteystiedot: Yhteystiedot = Yhteystiedot(
+    alkuperä = Koodistokoodiviite(ryhmaAlkuperaTieto, "yhteystietojenalkupera"),
+    tyyppi = Koodistokoodiviite(ryhmaKuvaus, "yhteystietotyypit"),
+    sähköposti = yhteystietoarvo("YHTEYSTIETO_SAHKOPOSTI"),
+    puhelinnumero = yhteystietoarvo("YHTEYSTIETO_PUHELINNUMERO"),
+    matkapuhelinnumero = yhteystietoarvo("YHTEYSTIETO_MATKAPUHELINNUMERO"),
+    katuosoite = yhteystietoarvo("YHTEYSTIETO_KATUOSOITE"),
+    kunta = yhteystietoarvo("YHTEYSTIETO_KUNTA"),
+    postinumero = yhteystietoarvo("YHTEYSTIETO_POSTINUMERO"),
+    kaupunki = yhteystietoarvo("YHTEYSTIETO_KAUPUNKI"),
+    maa = yhteystietoarvo("YHTEYSTIETO_MAA"),
+  )
+
+  def yhteystietoarvo(tyyppi: String): Option[String] = yhteystieto
+    .find(yt => yt.yhteystietoTyyppi == tyyppi)
+    .map(yt => yt.yhteystietoArvo)
+}
+
+case class OppijaNumerorekisteriYhteystieto(
+  yhteystietoArvo: String,
+  yhteystietoTyyppi: String
+)

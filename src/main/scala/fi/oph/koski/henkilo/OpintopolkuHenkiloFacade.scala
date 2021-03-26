@@ -11,7 +11,9 @@ import fi.oph.koski.util.Timing
 import org.http4s._
 
 trait OpintopolkuHenkilöFacade {
-  def findOppijaByOid(oid: String): Option[LaajatOppijaHenkilöTiedot]
+  def findOppijaByOid(oid: String): Option[LaajatOppijaHenkilöTiedot] =
+    findOppijaJaYhteystiedotByOid(oid).map(_.copy(yhteystiedot = List.empty))
+  def findOppijaJaYhteystiedotByOid(oid: String): Option[LaajatOppijaHenkilöTiedot]
   def findOppijaByHetu(hetu: String): Option[LaajatOppijaHenkilöTiedot]
   def findOppijatNoSlaveOids(oids: Seq[String]): Seq[OppijaHenkilö]
   def findChangedOppijaOids(since: Long, offset: Int, amount: Int): List[Oid]
@@ -49,7 +51,7 @@ class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroR
     with EntityDecoderInstances
     with Timing {
 
-  def findOppijaByOid(oid: String): Option[LaajatOppijaHenkilöTiedot] =
+  def findOppijaJaYhteystiedotByOid(oid: String): Option[LaajatOppijaHenkilöTiedot] =
     runTask(oppijanumeroRekisteriClient.findOppijaByOid(oid))
 
   def findOppijatNoSlaveOids(oids: Seq[Oid]): Seq[OppijaHenkilö] =

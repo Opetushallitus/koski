@@ -1,6 +1,6 @@
 package fi.oph.koski.valpas.henkilo
 
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat}
 import fi.oph.koski.schema.UusiHenkilö
 
 object ValpasMockOppijat {
@@ -29,6 +29,7 @@ object ValpasMockOppijat {
   val ennenLainRajapäivääPeruskoulustaValmistunut = valpasOppijat.oppija("Ennen-lain-rajapäivää-peruskoulusta-valmistunut", "Valpas", "080905A0798")
   val yli2kkAiemminPeruskoulustaValmistunut = valpasOppijat.oppija("Yli-2-kk-aiemmin-peruskoulusta-valmistunut", "Valpas", "010204A079U")
   val useampiYsiluokkaSamassaKoulussa = valpasOppijat.oppija("UseampiYsiluokkaSamassaKoulussa", "Valpas", "250805A605C")
+  val turvakieltoOppija = valpasOppijat.oppija("Turvakielto", "Valpas", "290904A4030", valpasOppijat.generateId(), None, true)
 
   def defaultOppijat = valpasOppijat.getOppijat
 }
