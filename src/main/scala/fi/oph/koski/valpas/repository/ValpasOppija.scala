@@ -10,6 +10,7 @@ import java.time.{LocalDate, LocalDateTime}
 case class ValpasOppija(
   henkilö: ValpasHenkilö,
   oikeutetutOppilaitokset: Set[ValpasOppilaitos.Oid],
+  valvottavatOpiskeluoikeudet: Set[ValpasOpiskeluoikeus.Oid],
   opiskeluoikeudet: Seq[ValpasOpiskeluoikeus]
 ) {
   @SyntheticProperty

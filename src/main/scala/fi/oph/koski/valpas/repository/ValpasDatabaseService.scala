@@ -16,6 +16,7 @@ case class ValpasOppijaRow(
   etunimet: String,
   sukunimi: String,
   oikeutetutOppilaitokset: Set[ValpasOppilaitos.Oid],
+  valvottavatOpiskeluoikeudet: Set[ValpasOpiskeluoikeus.Oid],
   opiskeluoikeudet: JValue
 )
 
@@ -36,6 +37,7 @@ class ValpasDatabaseService(application: KoskiApplication) extends DatabaseConve
       etunimet = r.rs.getString("etunimet"),
       sukunimi = r.rs.getString("sukunimi"),
       oikeutetutOppilaitokset = r.getArray("oikeutetutOppilaitokset").toSet,
+      valvottavatOpiskeluoikeudet = r.getArray("valvottavatOpiskeluoikeudet").toSet,
       opiskeluoikeudet = r.getJson("opiskeluoikeudet")
     )
   })
@@ -78,7 +80,8 @@ WITH
       r_henkilo.syntymaaika,
       r_henkilo.etunimet,
       r_henkilo.sukunimi,
-      array_agg(DISTINCT r_opiskeluoikeus.oppilaitos_oid) AS oikeutettu_oppilaitos_oids
+      array_agg(DISTINCT r_opiskeluoikeus.oppilaitos_oid) AS oikeutettu_oppilaitos_oids,
+      array_agg(DISTINCT r_opiskeluoikeus.opiskeluoikeus_oid) AS valvottava_opiskeluoikeus_oids
     FROM
       r_henkilo
       JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = r_henkilo.oppija_oid
@@ -105,7 +108,7 @@ WITH
       AND r_paatason_suoritus.suorituksen_tyyppi = 'perusopetuksenvuosiluokka'
       -- (3) kyseisessä opiskeluoikeudessa on yhdeksännen luokan suoritus.
       AND r_paatason_suoritus.koulutusmoduuli_koodiarvo = '9'
-      -- (4a) valvojalla on oppilaitostason oppilaitosoikeus ja opiskeluoikeuden lisätiedoista ei löydy kotiopetusjaksoa, joka osuu tälle hetkelle (TODO: tutkittavalle ajanhetkelle)
+      -- (4a) valvojalla on oppilaitostason oppilaitosoikeus ja opiskeluoikeuden lisätiedoista ei löydy kotiopetusjaksoa, joka osuu tälle hetkelle
       --      TODO (4b): puuttuu, koska ei vielä ole selvää, miten kotiopetusoppilaat halutaan käsitellä
       AND kotiopetusjaksoja.count = 0
       -- (5)  opiskeluoikeus ei ole eronnut tilassa tällä hetkellä (TODO: tutkittavalla ajanhetkellä)
@@ -279,7 +282,8 @@ WITH
       oppija.syntymaaika,
       oppija.etunimet,
       oppija.sukunimi,
-      oppija.oikeutettu_oppilaitos_oids
+      oppija.oikeutettu_oppilaitos_oids,
+      oppija.valvottava_opiskeluoikeus_oids
     FROM
       oppija
       LEFT JOIN rajapaivaa_aiemmin_valmistuneet_oppijat ON rajapaivaa_aiemmin_valmistuneet_oppijat.master_oid = oppija.master_oid
@@ -306,6 +310,7 @@ WITH
     oppivelvollinen_oppija.etunimet,
     oppivelvollinen_oppija.sukunimi,
     oppivelvollinen_oppija.oikeutettu_oppilaitos_oids AS oikeutetutOppilaitokset,
+    oppivelvollinen_oppija.valvottava_opiskeluoikeus_oids AS valvottavatOpiskeluoikeudet,
     json_agg(
       json_build_object(
         'oid', opiskeluoikeus.opiskeluoikeus_oid,
@@ -353,7 +358,8 @@ WITH
     oppivelvollinen_oppija.syntymaaika,
     oppivelvollinen_oppija.etunimet,
     oppivelvollinen_oppija.sukunimi,
-    oppivelvollinen_oppija.oikeutettu_oppilaitos_oids
+    oppivelvollinen_oppija.oikeutettu_oppilaitos_oids,
+    oppivelvollinen_oppija.valvottava_opiskeluoikeus_oids
   ORDER BY
     oppivelvollinen_oppija.sukunimi,
     oppivelvollinen_oppija.etunimet
