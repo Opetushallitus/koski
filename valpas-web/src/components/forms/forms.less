@@ -4,6 +4,7 @@
 .input-label() {
   color: @color-black;
   margin-bottom: 0.25rem;
+  font-weight: @font-weight-bold;
 }
 
 .input-container() {
@@ -13,11 +14,11 @@
 .input-box() {
   width: 100%;
   font-size: @font-size-medium;
-  color: @color-gray;
+  color: @color-black;
   padding: 0.5rem 0.75rem;
   border: 1px solid @color-gray-lighten-3;
   border-radius: 3px;
-  box-shadow: 0px 1px 3px 0px fade(#000000, 16.54%) inset;
+  // box-shadow: 0px 1px 3px 0px fade(#000000, 16.54%) inset;
 
   &:focus {
     outline: none !important;
@@ -32,7 +33,7 @@
 
 .input-box-error() {
   border-color: @color-red;
-  box-shadow: 0px 1px 3px 0px fade(@color-red, 50%) inset;
+  // box-shadow: 0px 1px 3px 0px fade(@color-red, 50%) inset;
 }
 
 .input-icon() {
@@ -41,12 +42,12 @@
   right: 0.5rem;
 
   font-size: @font-size-medium;
-  color: @color-gray-lighten-2;
+  color: @color-gray;
 
   pointer-events: none;
 
   .icon {
-    line-height: 1.5;
+    line-height: 1.4;
   }
 }
 

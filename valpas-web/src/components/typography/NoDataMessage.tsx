@@ -5,3 +5,4 @@ import "./NoDataMessage.less"
 const b = bem("nodatamessage")
 
 export const NoDataMessage = plainComponent("div", b())
+export const NotImplemented = plainComponent("div", b("notimplemented"))

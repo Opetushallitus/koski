@@ -1,5 +1,6 @@
 @import "../../style/colors.less";
 @import "../../style/spacing.less";
+@import "../../style/typography.less";
 
 .accordion__item .accordion__content {
   display: none;
@@ -10,6 +11,9 @@
 }
 
 .accordion__label {
+  font-size: @font-size-medium;
+  font-weight: @font-weight-regular;
+
   margin-bottom: 0.5rem;
   color: @color-blue;
   user-select: none;
@@ -22,7 +26,7 @@
 
 .accordion__content {
   margin: @padding-v 0;
-  border-left: 2px solid @color-gray-lighten-3;
+  border-left: 2px solid @color-gray-lighten-4;
   padding-left: @padding-h;
   margin-left: 0.7rem;
 }

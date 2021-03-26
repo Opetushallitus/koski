@@ -1,5 +1,9 @@
+import bem from "bem-ts"
 import React from "react"
 import { OpenInNewIcon } from "../icons/Icon"
+import "./ExternalLink.less"
+
+const b = bem("externallink")
 
 export type ExternalLinkProps = {
   to: string
@@ -8,6 +12,6 @@ export type ExternalLinkProps = {
 
 export const ExternalLink = (props: ExternalLinkProps) => (
   <a href={props.to} target="_blank" className="externallink">
-    {props.children} <OpenInNewIcon inline />
+    {props.children} <OpenInNewIcon inline className={b("icon")} />
   </a>
 )

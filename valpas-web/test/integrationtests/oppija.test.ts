@@ -14,7 +14,7 @@ import {
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
 const secondaryHeadingEquals = (expected: string) =>
-  textEventuallyEquals("h2.heading--secondary", expected)
+  textEventuallyEquals(".oppijaview__secondaryheading", expected)
 const cardBodyEquals = (id: string) => (expected: string) =>
   contentEventuallyEquals(`#${id} .card__body`, expected)
 const oppivelvollisuustiedotEquals = cardBodyEquals("oppivelvollisuustiedot")
@@ -50,7 +50,7 @@ describe("Oppijakohtainen näkymä", () => {
     await hautEquals(`
       list_alt
       Yhteishaku 2021 Hakenut open_in_new
-        Oppilaitos
+        Hakukohde
         Valinta
         Pisteet
         Alin pistemäärä

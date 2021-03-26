@@ -60,16 +60,16 @@ const HakuTable = (props: HakuTableProps) => (
     <LeanTable
       columns={[
         {
-          label: "Oppilaitos",
+          label: t("oppija__hakukohde"),
         },
         {
-          label: "Valinta",
+          label: t("oppija__valintatilanne"),
         },
         {
-          label: "Pisteet",
+          label: t("oppija__pisteet"),
         },
         {
-          label: "Alin pistemäärä",
+          label: t("oppija__alin_pistemäärä"),
         },
       ]}
       data={props.haku.hakutoiveet.map(hakutoiveToTableValue)}

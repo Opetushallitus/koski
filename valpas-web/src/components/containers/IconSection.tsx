@@ -1,5 +1,6 @@
 import bem from "bem-ts"
 import React from "react"
+import { plainComponent } from "../../utils/plaincomponent"
 import "./IconSection.less"
 
 const b = bem("iconsection")
@@ -20,6 +21,4 @@ export type IconSectionHeadingProps = {
   children: React.ReactNode
 }
 
-export const IconSectionHeading = (props: IconSectionHeadingProps) => (
-  <h3 className={b("heading")}>{props.children}</h3>
-)
+export const IconSectionHeading = plainComponent("h3", b("heading"))

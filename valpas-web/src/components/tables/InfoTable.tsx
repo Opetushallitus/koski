@@ -6,22 +6,33 @@ const b = bem("infotable")
 
 export type InfoTableProps = {
   children: React.ReactNode
+  size?: InfoTableSize
 }
 
+export type InfoTableSize = "normal" | "tighter"
+
 export const InfoTable = (props: InfoTableProps) => (
-  <table className={b()}>
+  <table className={b([props.size])}>
     <tbody>{props.children}</tbody>
   </table>
 )
 
 export type InfoTableRow = {
-  label: React.ReactNode
+  label?: React.ReactNode
   value: React.ReactNode
 }
 
 export const InfoTableRow = (props: InfoTableRow) => (
   <tr className={b("row")}>
-    <th className={b("label")}>{props.label}:</th>
-    <td className={b("value")}>{props.value}</td>
+    {props.label ? (
+      <>
+        <th className={b("label")}>{props.label}:</th>
+        <td className={b("value")}>{props.value}</td>
+      </>
+    ) : (
+      <td className={b("value")} colSpan={2}>
+        {props.value}
+      </td>
+    )}
   </tr>
 )

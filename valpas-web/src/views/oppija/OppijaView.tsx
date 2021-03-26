@@ -1,3 +1,4 @@
+import bem from "bem-ts"
 import React from "react"
 import { RouteComponentProps } from "react-router-dom"
 import { fetchOppija, fetchOppijaCache } from "../../api/api"
@@ -5,18 +6,26 @@ import { ApiMethodState, useApiWithParams } from "../../api/apiHooks"
 import { mapError, mapLoading, mapSuccess } from "../../api/apiUtils"
 import { ButtonLabel } from "../../components/buttons/ButtonLabel"
 import { FlatLink } from "../../components/buttons/FlatButton"
-import { Card, CardBody, CardHeader } from "../../components/containers/cards"
+import {
+  BorderlessCard,
+  CardBody,
+  CardHeader,
+} from "../../components/containers/cards"
 import { Column, ColumnsContainer } from "../../components/containers/Columns"
 import { Page } from "../../components/containers/Page"
 import { BackIcon } from "../../components/icons/Icon"
 import { InfoTooltip } from "../../components/tooltip/InfoTooltip"
-import { Heading, SecondaryHeading } from "../../components/typography/headings"
+import { Heading } from "../../components/typography/headings"
 import { T, t } from "../../i18n/i18n"
 import { OppijaHakutilanteilla } from "../../state/oppijat"
+import { plainComponent } from "../../utils/plaincomponent"
 import { OppijanHaut } from "./OppijanHaut"
 import { OppijanOpiskeluhistoria } from "./OppijanOpiskeluhistoria"
 import { OppijanOppivelvollisuustiedot } from "./OppijanOppivelvollisuustiedot"
 import { OppijanYhteystiedot } from "./OppijanYhteystiedot"
+import "./OppijaView.less"
+
+const b = bem("oppijaview")
 
 export type OppijaViewProps = RouteComponentProps<{
   oid: string
@@ -34,18 +43,18 @@ export const OppijaView = (props: OppijaViewProps) => {
       {mapSuccess(oppija, (oppijaData: OppijaHakutilanteilla) => (
         <>
           <ColumnsContainer>
-            <Column size={5}>
-              <Card id="oppivelvollisuustiedot">
+            <Column size={4}>
+              <BorderlessCard id="oppivelvollisuustiedot">
                 <CardHeader>
                   <T id="oppija__oppivelvollisuustiedot_otsikko" />
                 </CardHeader>
                 <CardBody>
                   <OppijanOppivelvollisuustiedot oppija={oppijaData} />
                 </CardBody>
-              </Card>
+              </BorderlessCard>
             </Column>
-            <Column size={7}>
-              <Card id="yhteystiedot">
+            <Column size={8}>
+              <BorderlessCard id="yhteystiedot">
                 <CardHeader>
                   <T id="oppija__yhteystiedot_otsikko" />
                   <InfoTooltip>
@@ -55,29 +64,29 @@ export const OppijaView = (props: OppijaViewProps) => {
                 <CardBody>
                   <OppijanYhteystiedot oppija={oppijaData} />
                 </CardBody>
-              </Card>
+              </BorderlessCard>
             </Column>
           </ColumnsContainer>
           <ColumnsContainer>
-            <Column size={5}>
-              <Card id="opiskeluhistoria">
+            <Column size={4}>
+              <BorderlessCard id="opiskeluhistoria">
                 <CardHeader>
                   <T id="oppija__opiskeluhistoria_otsikko" />
                 </CardHeader>
                 <CardBody>
                   <OppijanOpiskeluhistoria oppija={oppijaData} />
                 </CardBody>
-              </Card>
+              </BorderlessCard>
             </Column>
-            <Column size={7}>
-              <Card id="haut">
+            <Column size={8}>
+              <BorderlessCard id="haut">
                 <CardHeader>
                   <T id="oppija__haut_otsikko" />
                 </CardHeader>
                 <CardBody>
                   <OppijanHaut oppija={oppijaData} />
                 </CardBody>
-              </Card>
+              </BorderlessCard>
             </Column>
           </ColumnsContainer>
         </>
@@ -87,7 +96,7 @@ export const OppijaView = (props: OppijaViewProps) => {
 }
 
 const BackNav = () => (
-  <div>
+  <div className={b("backbutton")}>
     <FlatLink to="/oppijat">
       <BackIcon />
       <ButtonLabel>
@@ -111,12 +120,14 @@ const OppijaHeadings = (props: {
       )}
       {mapError(props.oppija, () => t("oppija__oletusotsikko"))}
     </Heading>
-    <SecondaryHeading>
+    <SecondaryOppijaHeading>
       {mapLoading(props.oppija, () => t("Ladataan"))}
       {mapSuccess(props.oppija, (oppija) =>
         t("oppija__oppija_oid", { oid: oppija.oppija.henkilö.oid })
       )}
       {mapError(props.oppija, () => t("oppija__ei_löydy", { oid: props.oid }))}
-    </SecondaryHeading>
+    </SecondaryOppijaHeading>
   </>
 )
+
+const SecondaryOppijaHeading = plainComponent("h2", b("secondaryheading"))

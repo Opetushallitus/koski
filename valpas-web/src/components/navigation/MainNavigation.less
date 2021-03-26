@@ -1,32 +1,44 @@
+@import "../../style/utils.less";
 @import "../../style/colors.less";
 @import "../icons/Caret.less";
 
+@main-navigation-color: @color-blue;
+@main-navigation-h-padding: .pxToRem(64) [];
+@main-navigation-v-padding: .pxToRem(12) [];
+
 .mainnavigation {
-  border-bottom: 2px solid @color-blue-lighten-1;
   margin-bottom: 3rem;
 }
 
 .mainnavigation__list {
   display: flex;
+  border-bottom: 2px solid @main-navigation-color;
 }
 
 .mainnavigation__item {
   position: relative;
 
-  flex: 1;
   text-align: center;
-  padding: 1rem 2rem;
-  margin: 0 0.5rem;
+  padding: @main-navigation-v-padding @main-navigation-h-padding;
+  margin: 0 (.pxToRem(8) []) 0 0;
   max-width: 20rem;
 
   background: @color-white;
-  color: @color-blue-lighten-1;
+  color: @main-navigation-color;
 
-  border: 2px solid @color-blue-lighten-1;
+  border: 2px solid @main-navigation-color;
   border-bottom: none;
 
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+
   &.mainnavigation__item--selected {
-    background: @color-blue-lighten-1;
+    background: @main-navigation-color;
     color: @color-white;
   }
 
@@ -35,10 +47,10 @@
     left: 0;
     right: 0;
     margin: 0 auto;
-    bottom: -25px;
+    bottom: -(.pxToRem(20) []);
 
     .caret {
-      .caret-colors(@color-blue-lighten-1, @color-blue-lighten-1);
+      .caret-colors(@main-navigation-color, @main-navigation-color);
     }
   }
 }

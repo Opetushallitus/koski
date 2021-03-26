@@ -47,6 +47,7 @@
 
   &.infotooltip__popup--up {
     top: 10px + @caret-height;
+    border-bottom: 2px solid @color-blue;
 
     .caret {
       top: 1px - @caret-height;
@@ -55,6 +56,7 @@
 
   &.infotooltip__popup--down {
     bottom: 10px + @caret-height;
+    border-top: 2px solid @color-blue;
 
     .caret {
       bottom: 1px - @caret-height;
@@ -65,4 +67,7 @@
 .infotooltip__content {
   padding-top: 0.15rem;
   padding-left: 0.6rem;
+  text-transform: none;
+  font-weight: @font-weight-regular;
+  line-height: 1.8;
 }

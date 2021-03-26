@@ -1,16 +1,18 @@
 @import "../../style/spacing.less";
 @import "../../style/responsive.less";
 
+@column-spacing: 4rem;
+
 .columns__container {
   @media screen and (min-width: @breakpoint-desktop) {
     display: flex;
     align-items: stretch;
   }
-  margin: 0 - (@padding-h / 2);
+  margin: 0 (0 - (@column-spacing / 2));
 }
 
 .columns__column {
-  padding: @padding-v (@padding-h / 2);
+  padding: 0 (@column-spacing / 2);
 
   & > .card {
     margin: 0;

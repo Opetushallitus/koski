@@ -1,21 +1,22 @@
 @import "../../style/colors.less";
 @import "../../style/typography.less";
 
-@leantable-cell-padding: 0.25rem 0.5rem;
+@leantable-cell-v-padding: .pxToRem(16) [];
+@leantable-cell-h-padding: .pxToRem(12) [];
+@leantable-cell-padding: @leantable-cell-h-padding @leantable-cell-v-padding;
 
 .leantable {
   width: 100%;
 }
 
 .leantable__headerrow {
+  border-top: 1px solid @color-black;
   border-bottom: 1px solid @color-gray-lighten-3;
 }
 
 .leantable__datarow {
-  &:first-child {
-    .leantable__td {
-      padding-top: 0.75rem;
-    }
+  &:nth-child(odd) {
+    background-color: @color-gray-lighten-5;
   }
 }
 
