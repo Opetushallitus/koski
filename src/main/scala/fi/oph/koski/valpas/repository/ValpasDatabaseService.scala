@@ -123,10 +123,9 @@ WITH
         OR (aikajakson_keskella.tila IS NULL AND $tarkasteluPäivä > r_opiskeluoikeus.paattymispaiva AND NOT r_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
       )
       AND (
-        -- (6a) opiskeluoikeus on läsnä tai väliaikaisesti keskeytynyt tai lomalla tällä hetkellä
+        -- (6a) opiskeluoikeus on läsnä tai väliaikaisesti keskeytynyt tai lomalla tällä hetkellä. Huomaa, että tulevaisuuteen luotuja opiskeluoikeuksia ei tarkoituksella haluta näkyviin.
         (
           (aikajakson_keskella.tila IS NOT NULL AND aikajakson_keskella.tila = any('{lasna, valiaikaisestikeskeytynyt, loma}'))
-          OR (aikajakson_keskella.tila IS NULL AND $tarkasteluPäivä < r_opiskeluoikeus.alkamispaiva)
         )
         -- TAI:
         OR (
