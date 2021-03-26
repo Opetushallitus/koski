@@ -308,12 +308,12 @@
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk-dynamodb</artifactId>
-      <version>1.11.974</version>
+      <version>1.11.983</version>
     </dependency>
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk-sts</artifactId>
-      <version>1.11.974</version>
+      <version>1.11.983</version>
     </dependency>
     <!-- test deps -->
     <dependency>
