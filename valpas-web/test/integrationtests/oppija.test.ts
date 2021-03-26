@@ -43,7 +43,7 @@ describe("Oppijakohtainen näkymä", () => {
       Perusopetus 2012 –
       Jyväskylän normaalikoulu
       Ryhmä: 9C
-      Tila: Läsnä
+      Tila: Opiskeluoikeus voimassa
     `)
     await hautEquals(`
       list_alt
@@ -79,7 +79,7 @@ describe("Oppijakohtainen näkymä", () => {
       Perusopetus 2012 – 2021
       Jyväskylän normaalikoulu
       Ryhmä: 9C
-      Tila: Valmistunut
+      Tila: Valmistunut 30.5.2021
     `)
   })
 
@@ -140,12 +140,12 @@ describe("Oppijakohtainen näkymä", () => {
       Perusopetus 2012 –
       Jyväskylän normaalikoulu
       Ryhmä: 9B
-      Tila: Läsnä
+      Tila: Opiskeluoikeus voimassa
       school
       Perusopetus 2012 –
       Kulosaaren ala-aste
       Ryhmä: 8A
-      Tila: Läsnä
+      Tila: Opiskeluoikeus voimassa
     `)
   })
 
@@ -165,12 +165,37 @@ describe("Oppijakohtainen näkymä", () => {
       school
       Lukiokoulutus 2021 –
       Jyväskylän normaalikoulu
-      Tila: Läsnä
+      Tila: Opiskeluoikeus voimassa
       school
       Perusopetus 2012 – 2021
       Jyväskylän normaalikoulu
       Ryhmä: 9C
-      Tila: Valmistunut
+      Tila: Valmistunut 30.5.2021
+    `)
+  })
+
+  it("Näyttää oppijalta, jolla opiskeluoikeus alkaa tulevaisuudessa oikeat tiedot", async () => {
+    await loginAs(
+      "/virkailija/oppijat/1.2.246.562.24.00000000016",
+      "valpas-jkl-normaali",
+      "valpas-jkl-normaali"
+    )
+    await mainHeadingEquals("LukionLokakuussaAloittanut Valpas (180405A819J)")
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000016")
+    await oppivelvollisuustiedotEquals(`
+      Opiskelutilanne:	Ei opiskelupaikkaa
+      Oppivelvollisuus:	18.4.2023 asti
+    `)
+    await opiskeluhistoriaEquals(`
+      school
+      Lukiokoulutus 2021 –
+      Jyväskylän normaalikoulu
+      Tila: Opiskeluoikeus alkaa 3.10.2021
+      school
+      Perusopetus 2012 – 2021
+      Jyväskylän normaalikoulu
+      Ryhmä: 9C
+      Tila: Valmistunut 30.5.2021
     `)
   })
 

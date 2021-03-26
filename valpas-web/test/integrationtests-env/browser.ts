@@ -171,7 +171,7 @@ export const reset = async (initialPath: string) => {
   await resetMockData()
 }
 
-export const resetMockData = async (tarkasteluPäivä: string = "2019-09-05") => {
+export const resetMockData = async (tarkasteluPäivä: string = "2021-09-05") => {
   const inputSelector = "#tarkasteluPäivä"
 
   const currentTarkastelupäivä = await getTextInput(inputSelector)

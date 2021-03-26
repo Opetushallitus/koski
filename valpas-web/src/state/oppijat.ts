@@ -4,7 +4,7 @@ import * as O from "fp-ts/Option"
 import * as Ord from "fp-ts/Ord"
 import * as string from "fp-ts/string"
 import { Language } from "../i18n/i18n"
-import { OpiskeluoikeudenTila, Opiskeluoikeudentyyppi } from "./koodistot"
+import { Opiskeluoikeudentyyppi, ValpasOpiskeluoikeudenTila } from "./koodistot"
 import { ISODate, ISODateTime, LocalizedString, Oid } from "./types"
 
 export type OppijaHakutilanteilla = {
@@ -18,6 +18,7 @@ export type Oppija = {
   opiskeluoikeudet: Opiskeluoikeus[]
   opiskelee: boolean
   oppivelvollisuusVoimassaAsti?: ISODate
+  valvottavatOpiskeluoikeudet: Oid[]
 }
 
 export type Henkilö = {
@@ -64,7 +65,7 @@ export type Opiskeluoikeus = {
   arvioituPäättymispäivä?: ISODate
   päättymispäivä?: ISODate
   ryhmä?: string
-  viimeisinTila?: OpiskeluoikeudenTila
+  tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
 }
 
 const opiskeluoikeusDateOrd = (key: keyof Opiskeluoikeus) =>

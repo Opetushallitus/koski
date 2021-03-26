@@ -10,6 +10,7 @@ import java.time.{LocalDate, LocalDateTime}
 case class ValpasOppija(
   henkilö: ValpasHenkilö,
   oikeutetutOppilaitokset: Set[ValpasOppilaitos.Oid],
+  valvottavatOpiskeluoikeudet: Set[ValpasOpiskeluoikeus.Oid],
   opiskeluoikeudet: Seq[ValpasOpiskeluoikeus]
 ) {
   @SyntheticProperty
@@ -45,11 +46,13 @@ case class ValpasOpiskeluoikeus(
   päättymispäivä: Option[String],
   ryhmä: Option[String],
   @KoodistoUri("koskiopiskeluoikeudentila")
-  viimeisinTila: Koodistokoodiviite
+  viimeisinTila: Koodistokoodiviite,
+  @KoodistoUri("valpasopiskeluoikeudentila")
+  tarkastelupäivänTila: Koodistokoodiviite
 ) {
   @SyntheticProperty
   def isOpiskelu: Boolean =
-    viimeisinTila.koodiarvo == "lasna" || viimeisinTila.koodiarvo == "valiaikaisestikeskeytynyt"
+    tarkastelupäivänTila.koodiarvo == "voimassa"
 }
 
 object ValpasOppilaitos {

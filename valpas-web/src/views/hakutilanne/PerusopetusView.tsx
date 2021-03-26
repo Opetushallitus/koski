@@ -56,12 +56,23 @@ export const PerusopetusView = (props: PerusopetusViewProps) => {
             params={{ vuosi: currentYear() }}
           />
           {isSuccess(oppijatFetch) && (
-            <Counter>{oppijatFetch.data.length}</Counter>
+            <Counter>
+              {
+                A.flatten(
+                  oppijatFetch.data.map(
+                    (d) => d.oppija.valvottavatOpiskeluoikeudet
+                  )
+                ).length
+              }
+            </Counter>
           )}
         </CardHeader>
         <CardBody>
           {isSuccess(oppijatFetch) && (
-            <HakutilanneTable data={oppijatFetch.data} />
+            <HakutilanneTable
+              data={oppijatFetch.data}
+              organisaatioOid={organisaatioOid}
+            />
           )}
         </CardBody>
       </Card>

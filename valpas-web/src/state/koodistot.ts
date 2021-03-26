@@ -25,4 +25,4 @@ export type Opiskeluoikeudentyyppi = KoodistoKoodiviite<"opiskeluoikeudentyyppi"
 export type OppilaitosnumeroKoodistoviite = KoodistoKoodiviite<"oppilaitosnumero">
 export type PaikkakuntaKoodistoviite = KoodistoKoodiviite<"paikkakunta">
 
-export type OpiskeluoikeudenTila = KoodistoKoodiviite<"koskiopiskeluoikeudentila">
+export type ValpasOpiskeluoikeudenTila = KoodistoKoodiviite<"valpasopiskeluoikeudentila">

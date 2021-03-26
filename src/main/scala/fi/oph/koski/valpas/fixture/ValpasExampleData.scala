@@ -304,12 +304,38 @@ object ValpasExampleData {
     )
   )
 
+  def kesäYsiluokkaKesken = PerusopetuksenOpiskeluoikeus(
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    koulutustoimija = None,
+    suoritukset = List(
+      perusopetuksenOppimääränSuoritusKesken,
+      yhdeksännenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2021, 6, 2)),
+        vahvistus = None,
+        luokka = "9D"
+      )
+    ),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 6, 2), opiskeluoikeusLäsnä)
+      )
+    )
+  )
+
   def lukionOpiskeluoikeus = ExamplesLukio.lukioKesken
 
   def lukionOpiskeluoikeusAlkaa2021Syksyllä = ExamplesLukio.lukioKesken.copy(
     tila = LukionOpiskeluoikeudenTila(
       List(
         LukionOpiskeluoikeusjakso(alku = date(2021, 8, 15), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+      )
+    )
+  )
+
+  def lukionOpiskeluoikeusAlkaa2021Lokakuussa = ExamplesLukio.lukioKesken.copy(
+    tila = LukionOpiskeluoikeudenTila(
+      List(
+        LukionOpiskeluoikeusjakso(alku = date(2021, 10, 3), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
       )
     )
   )

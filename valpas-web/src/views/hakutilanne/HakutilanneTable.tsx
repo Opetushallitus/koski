@@ -1,3 +1,4 @@
+import * as A from "fp-ts/lib/Array"
 import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
 import { ExternalLink } from "../../components/navigation/ExternalLink"
@@ -11,13 +12,18 @@ import { formatNullableDate } from "../../utils/date"
 
 export type HakutilanneTableProps = {
   data: OppijaHakutilanteilla[]
+  organisaatioOid: string | undefined
 }
 
 export const HakutilanneTable = (props: HakutilanneTableProps) => {
   const basePath = useBasePath()
-  const data = useMemo(() => props.data.map(oppijaToTableData(basePath)), [
-    props.data,
-  ])
+  const data = useMemo(
+    () =>
+      A.flatten(
+        props.data.map(oppijaToTableData(basePath, props.organisaatioOid))
+      ),
+    [props.data]
+  )
 
   return (
     <DataTable
@@ -59,17 +65,24 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
   )
 }
 
-const oppijaToTableData = (basePath: string) => (
-  oppija: OppijaHakutilanteilla
-): Datum => {
-  // TODO: Näihin molempiin tarvitaaan rautaisempi logiikka
+const oppijaToTableData = (
+  basePath: string,
+  organisaatioOid: string | undefined
+) => (oppija: OppijaHakutilanteilla): Array<Datum> => {
+  // TODO: Hakemuksen valintaan tarvitaan rautaisempi logiikka
   const hakemus = oppija.hakutilanteet[0]
   const hakemuksenTila = hakemuksentilaValue(hakemus, oppija.hakutilanneError)
-  const opiskeluoikeudet = oppija.oppija.opiskeluoikeudet[0]
+
+  const valvottavatOpiskeluoikeudet = oppija.oppija.opiskeluoikeudet.filter(
+    (oo) =>
+      oppija.oppija.valvottavatOpiskeluoikeudet.includes(oo.oid) &&
+      oo.oppilaitos.oid == organisaatioOid
+  )
+
   const henkilö = oppija.oppija.henkilö
 
-  return {
-    key: henkilö.oid,
+  return valvottavatOpiskeluoikeudet.map((opiskeluoikeus) => ({
+    key: opiskeluoikeus.oid,
     values: [
       {
         value: `${henkilö.sukunimi} ${henkilö.etunimet}`,
@@ -84,7 +97,7 @@ const oppijaToTableData = (basePath: string) => (
         display: formatNullableDate(henkilö.syntymäaika),
       },
       {
-        value: opiskeluoikeudet?.ryhmä,
+        value: opiskeluoikeus?.ryhmä,
       },
       {
         value: hakemuksenTila,
@@ -119,7 +132,7 @@ const oppijaToTableData = (basePath: string) => (
         ),
       },
     ],
-  }
+  }))
 }
 
 const hakemuksentilaValue = (
