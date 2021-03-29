@@ -4,7 +4,7 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.{KäyttöoikeusOrg, Palvelurooli}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.{Organisaatio, OrganisaatioWithOid}
-import fi.oph.koski.valpas.repository.ValpasOppija
+import fi.oph.koski.valpas.repository.ValpasOppijaLaajatTiedot
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 
 class ValpasAccessResolver(organisaatioRepository: OrganisaatioRepository) {
@@ -15,7 +15,7 @@ class ValpasAccessResolver(organisaatioRepository: OrganisaatioRepository) {
     })
   }
 
-  def withOppijaAccess[T <: ValpasOppija](oppija: T)(implicit session: ValpasSession): Either[HttpStatus, T] = {
+  def withOppijaAccess[T <: ValpasOppijaLaajatTiedot](oppija: T)(implicit session: ValpasSession): Either[HttpStatus, T] = {
     Either.cond(accessToSomeOrgs(oppija.oikeutetutOppilaitokset), oppija, ValpasErrorCategory.forbidden.oppija())
   }
 

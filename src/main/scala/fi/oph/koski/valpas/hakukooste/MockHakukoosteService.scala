@@ -3,7 +3,7 @@ package fi.oph.koski.valpas.hakukooste
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.henkilo.ValpasMockOppijat
-import fi.oph.koski.valpas.repository.ValpasHenkilö
+import fi.oph.koski.valpas.repository.{ValpasHenkilö, ValpasHenkilöLaajatTiedot}
 
 
 class MockHakukoosteService extends ValpasHakukoosteService {

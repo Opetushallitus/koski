@@ -10,13 +10,17 @@ import { TertiaryHeading } from "../../components/typography/headings"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import { formatFixedNumber, getLocalized, t, T } from "../../i18n/i18n"
 import { externalHakemussivu } from "../../state/externalUrls"
-import { Haku, Hakutoive, OppijaHakutilanteilla } from "../../state/oppijat"
+import {
+  HakuLaajatTiedot,
+  Hakutoive,
+  OppijaHakutilanteillaLaajatTiedot,
+} from "../../state/oppijat"
 import "./OppijanHaut.less"
 
 const b = bem("oppijanhaut")
 
 export type OppijanHautProps = {
-  oppija: OppijaHakutilanteilla
+  oppija: OppijaHakutilanteillaLaajatTiedot
 }
 
 export const OppijanHaut = (props: OppijanHautProps) => {
@@ -40,7 +44,7 @@ export const OppijanHaut = (props: OppijanHautProps) => {
 }
 
 type HakuTableProps = {
-  haku: Haku
+  haku: HakuLaajatTiedot
 }
 
 const HakuTable = (props: HakuTableProps) => (

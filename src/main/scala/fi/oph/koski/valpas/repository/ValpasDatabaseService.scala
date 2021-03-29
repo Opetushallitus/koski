@@ -347,10 +347,6 @@ WITH
         'alkamispäivä', opiskeluoikeus.alkamispaiva,
         'päättymispäivä', opiskeluoikeus.paattymispaiva,
         'ryhmä', opiskeluoikeus.ryhmä,
-        'viimeisinTila', json_build_object(
-          'koodiarvo', opiskeluoikeus.viimeisin_tila,
-          'koodistoUri', 'koskiopiskeluoikeudentila'
-        ),
         'tarkastelupäivänTila', json_build_object(
           'koodiarvo', opiskeluoikeus.tarkastelupäivan_tila,
           'koodistoUri', 'valpasopiskeluoikeudentila'
@@ -361,7 +357,7 @@ WITH
         opiskeluoikeus.paattymispaiva DESC,
         opiskeluoikeus.koulutusmuoto,
         opiskeluoikeus.ryhmä DESC NULLS LAST,
-        opiskeluoikeus.viimeisin_tila
+        opiskeluoikeus.tarkastelupäivan_tila
     ) opiskeluoikeudet
   FROM
     opiskeluoikeus

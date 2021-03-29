@@ -17,7 +17,7 @@ import { BackIcon } from "../../components/icons/Icon"
 import { InfoTooltip } from "../../components/tooltip/InfoTooltip"
 import { Heading } from "../../components/typography/headings"
 import { T, t } from "../../i18n/i18n"
-import { OppijaHakutilanteilla } from "../../state/oppijat"
+import { OppijaHakutilanteillaLaajatTiedot } from "../../state/oppijat"
 import { plainComponent } from "../../utils/plaincomponent"
 import { OppijanHaut } from "./OppijanHaut"
 import { OppijanOpiskeluhistoria } from "./OppijanOpiskeluhistoria"
@@ -40,7 +40,7 @@ export const OppijaView = (props: OppijaViewProps) => {
       <BackNav />
       <OppijaHeadings oppija={oppija} oid={queryOid} />
 
-      {mapSuccess(oppija, (oppijaData: OppijaHakutilanteilla) => (
+      {mapSuccess(oppija, (oppijaData: OppijaHakutilanteillaLaajatTiedot) => (
         <>
           <ColumnsContainer>
             <Column size={4}>
@@ -107,7 +107,7 @@ const BackNav = () => (
 )
 
 const OppijaHeadings = (props: {
-  oppija: ApiMethodState<OppijaHakutilanteilla>
+  oppija: ApiMethodState<OppijaHakutilanteillaLaajatTiedot>
   oid: string
 }) => (
   <>

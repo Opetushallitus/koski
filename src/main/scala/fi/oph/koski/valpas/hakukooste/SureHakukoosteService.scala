@@ -6,7 +6,7 @@ import fi.oph.koski.http.{HttpStatus, HttpStatusException, ServiceConfig, Virkai
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.log.Logging
 import fi.oph.koski.valpas.ValpasErrorCategory
-import fi.oph.koski.valpas.repository.ValpasHenkilö
+import fi.oph.koski.valpas.repository.{ValpasHenkilö, ValpasHenkilöLaajatTiedot}
 
 
 class SureHakukoosteService(config: Config) extends ValpasHakukoosteService with Logging {
