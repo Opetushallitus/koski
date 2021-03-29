@@ -26,7 +26,8 @@ object OmatTiedotEditorModel extends Timing {
   def toEditorModel(userOppija: Oppija, näytettäväOppija: Oppija, warnings: Seq[HttpStatus])(implicit application: KoskiApplication, koskiSession: KoskiSpecificSession): EditorModel = timed("createModel") {
     val piilotetuillaTiedoilla = piilotaArvosanatKeskeneräisistäSuorituksista _ andThen
       piilotaSensitiivisetHenkilötiedot andThen
-      piilotaKeskeneräisetPerusopetuksenPäättötodistukset
+      piilotaKeskeneräisetPerusopetuksenPäättötodistukset andThen
+      piilotaTietojaSuoritusjaosta
 
     buildModel(buildView(piilotetuillaTiedoilla(userOppija), piilotetuillaTiedoilla(näytettäväOppija), warnings))
   }
@@ -63,6 +64,43 @@ object OmatTiedotEditorModel extends Timing {
     List(piilotettavaKäyttäytymisenArviointi, piilotettavatOppiaineidenArvioinnit).foldLeft(oppija) { (oppija, traversal) =>
       traversal.set(oppija)(None)
     }
+  }
+
+  private def piilotaTietojaSuoritusjaosta(oppija: Oppija)(implicit koskiSession: KoskiSpecificSession) = {
+    if (koskiSession.user.isSuoritusjakoKatsominen) {
+      piilotaLukuvuosimaksutiedot(oppija)
+    } else {
+      oppija
+    }
+  }
+
+  private def piilotaLukuvuosimaksutiedot(oppija: Oppija)(implicit koskiSession: KoskiSpecificSession) = {
+    val korjatutOpiskeluoikeudet = oppija.opiskeluoikeudet.map {
+      case oo: KorkeakoulunOpiskeluoikeus if oo.lisätiedot.nonEmpty => {
+        val korjatutLukukausiIlmottautuminen = oo.lisätiedot.get.lukukausiIlmoittautuminen match {
+          case Some(ilmo) => {
+            Some(ilmo.copy(
+              ilmoittautumisjaksot = ilmo.ilmoittautumisjaksot.map(_.copy(
+                maksetutLukuvuosimaksut = None
+              ))
+            ))
+          }
+          case None => None
+        }
+
+        val korjatutLisätiedot = oo.lisätiedot.get.copy(
+          maksettavatLukuvuosimaksut = None,
+          lukukausiIlmoittautuminen = korjatutLukukausiIlmottautuminen
+        )
+        oo.copy(
+          lisätiedot = Some(korjatutLisätiedot)
+        )
+      }
+      case oo: Any => oo
+    }
+    oppija.copy(
+      opiskeluoikeudet = korjatutOpiskeluoikeudet
+    )
   }
 
   private def piilotaSensitiivisetHenkilötiedot(oppija: Oppija) = {

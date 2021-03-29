@@ -58,7 +58,7 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
       "Koski näyttää maksutiedot" in {
         val opiskeluoikeus = opiskeluoikeudet("250668-293Y", "02470").head
 
-        val maksettavatLukuvuosimaksut = opiskeluoikeus.lisätiedot.get.maksettavatLukuvuosimaksut.head
+        val maksettavatLukuvuosimaksut = opiskeluoikeus.lisätiedot.get.maksettavatLukuvuosimaksut.get.head
         maksettavatLukuvuosimaksut.alku.toString should equal("2015-10-20")
         maksettavatLukuvuosimaksut.loppu.get.toString should equal("2016-04-12")
         maksettavatLukuvuosimaksut.summa.get should equal (4000)

@@ -3,12 +3,11 @@ package fi.oph.koski.api
 import java.nio.charset.StandardCharsets
 import java.sql.Timestamp
 import java.time.{Instant, LocalDate}
-
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
-import fi.oph.koski.schema.{PerusopetuksenVuosiluokanSuoritus, TäydellisetHenkilötiedot, YlioppilastutkinnonOpiskeluoikeus}
+import fi.oph.koski.schema.{KorkeakoulunOpiskeluoikeudenLukuvuosimaksu, Lukuvuosi_IlmottautumisjaksonLukuvuosiMaksu, PerusopetuksenVuosiluokanSuoritus, TäydellisetHenkilötiedot, YlioppilastutkinnonOpiskeluoikeus}
 import fi.oph.koski.suoritusjako.{SuoritusIdentifier, Suoritusjako}
 import org.scalatest.{FreeSpec, Matchers}
 
@@ -319,6 +318,27 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
       getSuoritusjako(secrets("yksi suoritus")) {
         verifyResponseStatusOk()
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
+      }
+    }
+
+    "ei sisällä korkeakoulun lukuvuosimaksutietoja" in {
+      val json = """[{
+          "lähdejärjestelmänId": 30759,
+          "oppilaitosOid": "1.2.246.562.10.56753942459",
+          "suorituksenTyyppi": "korkeakoulututkinto",
+          "koulutusmoduulinTunniste": "651301"
+        }]"""
+
+      val secret = createSuoritusjako(json, hetu = "270191-4208"){
+        verifyResponseStatusOk()
+        JsonSerializer.parse[Suoritusjako](response.body).secret
+      }
+
+      getSuoritusjako(secret) {
+        val bodyString = new String(response.bodyBytes, StandardCharsets.UTF_8)
+
+        bodyString should not include(Lukuvuosi_IlmottautumisjaksonLukuvuosiMaksu.toString.toLowerCase)
+        bodyString should not include(KorkeakoulunOpiskeluoikeudenLukuvuosimaksu.toString.toLowerCase)
       }
     }
   }
