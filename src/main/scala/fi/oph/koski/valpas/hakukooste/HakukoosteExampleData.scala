@@ -73,6 +73,7 @@ object HakukoosteExampleData {
         hakukohdeNimi = MockOrganisaatioRepository
           .getOrganisaationNimiHetkellä(hakutoive.hakukohdeOid, alkamisaika.toLocalDate)
           .toBlankable,
+        koulutusNimi = hakutoive.koulutusNimi,
         hakutoivenumero = if (hakutoive.hakutoivenumero >= 0) {
           hakutoive.hakutoivenumero
         } else {
