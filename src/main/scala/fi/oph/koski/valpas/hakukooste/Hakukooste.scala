@@ -11,6 +11,7 @@ case class Hakukooste(
   oppijaOid: ValpasHenkilö.Oid,
   hakuOid: ValpasHakutilanneLaajatTiedot.HakuOid,
   hakemusOid: ValpasHakutilanneLaajatTiedot.HakemusOid,
+  hakemusUrl: String,
 
   @KoodistoUri("hakutapa")
   // TODO: Koodiston lataus koskeen

@@ -97,6 +97,7 @@ export type HakuLaajatTiedot = {
   hakuOid: Oid
   hakuNimi?: LocalizedString
   hakemusOid: Oid
+  hakemusUrl: string
   aktiivinen: boolean
   muokattu: ISODateTime
   hakutoiveet: Hakutoive[]
@@ -112,6 +113,7 @@ export type HakuSuppeatTiedot = {
   hakuOid: Oid
   hakuNimi?: LocalizedString
   hakemusOid: Oid
+  hakemusUrl: string
   aktiivinen: boolean
 }
 

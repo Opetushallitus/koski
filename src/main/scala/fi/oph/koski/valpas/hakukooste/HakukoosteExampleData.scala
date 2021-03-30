@@ -57,6 +57,7 @@ object HakukoosteExampleData {
       oppijaOid = henkilö.oid,
       hakuOid = generateHakuOid(),
       hakemusOid = generateHakemusOid(),
+      hakemusUrl = "/placeholder-hakemus-url",
       hakutapa = yhteishakukoodi,
       hakutyyppi = varsinaisenHaunKoodi,
       haunAlkamispaivamaara = alkamisaika,

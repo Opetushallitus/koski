@@ -9,7 +9,6 @@ import { LeanTable } from "../../components/tables/LeanTable"
 import { TertiaryHeading } from "../../components/typography/headings"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import { formatFixedNumber, getLocalized, t, T } from "../../i18n/i18n"
-import { externalHakemussivu } from "../../state/externalUrls"
 import {
   HakuLaajatTiedot,
   Hakutoive,
@@ -51,7 +50,7 @@ const HakuTable = (props: HakuTableProps) => (
   <IconSection icon={<HakuIcon color="gray" />}>
     <TertiaryHeading className={b("hakunimi")}>
       {getLocalized(props.haku.hakuNimi)}{" "}
-      <ExternalLink to={externalHakemussivu(props.haku.hakemusOid)}>
+      <ExternalLink to={props.haku.hakemusUrl}>
         <T
           id={
             props.haku.aktiivinen

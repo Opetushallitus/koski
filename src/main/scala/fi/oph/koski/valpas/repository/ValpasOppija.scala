@@ -6,8 +6,6 @@ import fi.oph.koski.valpas.hakukooste.{Hakukooste, Hakutoive}
 import fi.oph.scalaschema.annotation.SyntheticProperty
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.valpas.repository.ValpasOpiskeluoikeus.Oid
-
 trait ValpasOppija {
   def henkilö: ValpasHenkilö
   def valvottavatOpiskeluoikeudet: Set[ValpasOpiskeluoikeus.Oid]
@@ -166,6 +164,7 @@ trait ValpasHakutilanne {
   def hakuOid: String
   def hakuNimi: Option[LocalizedString]
   def hakemusOid: String
+  def hakemusUrl: String
   def aktiivinen: Boolean
 }
 
@@ -178,6 +177,7 @@ object ValpasHakutilanneLaajatTiedot {
       hakuOid = hakukooste.hakuOid,
       hakuNimi = hakukooste.hakuNimi.toLocalizedString,
       hakemusOid = hakukooste.hakemusOid,
+      hakemusUrl = hakukooste.hakemusUrl,
       aktiivinen = hakukooste.hakutoiveet.exists(_.isAktiivinen),
       hakuAlkaa = hakukooste.haunAlkamispaivamaara,
       hakutoiveet = hakukooste.hakutoiveet.map(ValpasHakutoive.apply),
@@ -189,6 +189,7 @@ case class ValpasHakutilanneLaajatTiedot(
   hakuOid: String,
   hakuNimi: Option[LocalizedString],
   hakemusOid: String,
+  hakemusUrl: String,
   aktiivinen: Boolean,
   hakuAlkaa: LocalDateTime,
   hakutoiveet: Seq[ValpasHakutoive],
@@ -201,6 +202,7 @@ object ValpasHakutilanneSuppeatTiedot {
       laajatTiedot.hakuOid,
       laajatTiedot.hakuNimi,
       laajatTiedot.hakemusOid,
+      laajatTiedot.hakemusUrl,
       laajatTiedot.aktiivinen
     )
   }
@@ -210,6 +212,7 @@ case class ValpasHakutilanneSuppeatTiedot(
   hakuOid: String,
   hakuNimi: Option[LocalizedString],
   hakemusOid: String,
+  hakemusUrl: String,
   aktiivinen: Boolean
 ) extends ValpasHakutilanne
 
