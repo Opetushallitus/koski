@@ -126,6 +126,8 @@ class OppijaServlet(implicit val application: KoskiApplication) extends KoskiSpe
 case class UpdateContext(user: KoskiSpecificSession, application: KoskiApplication, request: HttpServletRequest) extends Logging {
   def putSingle(validationResult: Either[HttpStatus, Oppija], oppijaJsonFromRequest: JValue, allowUpdate: Boolean): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
 
+    validationResult.foreach(_.tallennettavatOpiskeluoikeudet.filter(_.lähdejärjestelmänId.isDefined).flatMap(_.versionumero).foreach(_ => logger.info("Lähdejärjestelmä siirsi versionumeron")))
+
     val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = validationResult.flatMap(application.oppijaFacade.createOrUpdate(_, allowUpdate)(user))
 
     result.left.foreach { case HttpStatus(code, errors) =>
