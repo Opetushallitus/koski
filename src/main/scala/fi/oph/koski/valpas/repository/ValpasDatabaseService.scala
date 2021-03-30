@@ -93,6 +93,8 @@ WITH
       oppijaOid.map(oid => sql"JOIN pyydetty_oppija ON pyydetty_oppija.master_oid = r_henkilo.master_oid"),
       Some(sql"""
       JOIN r_paatason_suoritus ON r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+      LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella ON aikajakson_keskella.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+        AND $tarkasteluPäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
       -- Lasketaan voimassaolevien kotiopetusjaksojen määrä ehtoa 4a varten
       CROSS JOIN LATERAL (
         SELECT
@@ -114,15 +116,21 @@ WITH
       -- (4a) valvojalla on oppilaitostason oppilaitosoikeus ja opiskeluoikeuden lisätiedoista ei löydy kotiopetusjaksoa, joka osuu tälle hetkelle
       --      TODO (4b): puuttuu, koska ei vielä ole selvää, miten kotiopetusoppilaat halutaan käsitellä
       AND kotiopetusjaksoja.count = 0
-      -- (5)  opiskeluoikeus ei ole eronnut tilassa tällä hetkellä (TODO: tutkittavalla ajanhetkellä)
-      AND r_opiskeluoikeus.viimeisin_tila <> 'eronnut'
+      -- (5)  opiskeluoikeus ei ole eronnut tilassa tällä hetkellä
       AND (
-        -- (6a) opiskeluoikeus on läsnä tai väliaikaisesti keskeytynyt tällä hetkellä (TODO: tutkittavalla ajanhetkellä)
-        r_opiskeluoikeus.viimeisin_tila = any('{lasna, valiaikaisestikeskeytynyt}')
+        (aikajakson_keskella.tila IS NOT NULL AND NOT aikajakson_keskella.tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
+        OR (aikajakson_keskella.tila IS NULL AND $tarkasteluPäivä < r_opiskeluoikeus.alkamispaiva)
+        OR (aikajakson_keskella.tila IS NULL AND $tarkasteluPäivä > r_opiskeluoikeus.paattymispaiva AND NOT r_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
+      )
+      AND (
+        -- (6a) opiskeluoikeus on läsnä tai väliaikaisesti keskeytynyt tai lomalla tällä hetkellä. Huomaa, että tulevaisuuteen luotuja opiskeluoikeuksia ei tarkoituksella haluta näkyviin.
+        (
+          (aikajakson_keskella.tila IS NOT NULL AND aikajakson_keskella.tila = any('{lasna, valiaikaisestikeskeytynyt, loma}'))
+        )
         -- TAI:
         OR (
           -- (6b.1 ) opiskeluoikeus on valmistunut-tilassa, ja siitä löytyy vahvistettu päättötodistus
-          r_opiskeluoikeus.viimeisin_tila = 'valmistunut'
+          ($tarkasteluPäivä >= r_opiskeluoikeus.paattymispaiva AND r_opiskeluoikeus.viimeisin_tila = 'valmistunut')
           -- (6b.2 ) ministeriön määrittelemä aikaraja ei ole kulunut umpeen henkilön valmistumisajasta.
           AND (
             (

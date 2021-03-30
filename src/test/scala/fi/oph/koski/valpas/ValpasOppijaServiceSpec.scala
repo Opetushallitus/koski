@@ -94,6 +94,12 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
         ExpectedData(ValpasExampleData.kesäYsiluokkaKesken, "voimassa"),
         ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut")
       )
+    ),
+    (
+      ValpasMockOppijat.eronnutOppijaTarkastelupäivänJälkeen,
+      List(
+        ExpectedData(ValpasExampleData.eronnutOpiskeluoikeusTarkastelupäivänJälkeen, "voimassa")
+      )
     )
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 

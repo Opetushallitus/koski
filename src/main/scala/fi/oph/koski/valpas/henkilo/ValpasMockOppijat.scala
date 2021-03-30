@@ -13,7 +13,7 @@ object ValpasMockOppijat {
   val kasiluokkaKeskenKeväällä2021 = valpasOppijat.oppija("Kasiluokka-kesken-keväällä-2021", "Valpas", "191106A1384")
   val kotiopetusMeneilläänOppija = valpasOppijat.oppija("Kotiopetus-meneillä", "Valpas", "210905A2151")
   val kotiopetusMenneisyydessäOppija = valpasOppijat.oppija("Kotiopetus-menneisyydessä", "Valpas", "060205A8805")
-  val eronnutOppija = valpasOppijat.oppija("Eroaja", "Valpas", "240905A0078")
+  val eronnutOppija = valpasOppijat.oppija("Eroaja-aiemmin", "Valpas", "240905A0078")
   val luokalleJäänytYsiluokkalainen = valpasOppijat.oppija("LuokallejäänytYsiluokkalainen", "Valpas", "020805A5625")
   val luokallejäänytYsiluokkalainenJollaUusiYsiluokka = valpasOppijat.oppija("LuokallejäänytYsiluokkalainenJatkaa", "Valpas", "060205A7222")
   val valmistunutYsiluokkalainen = valpasOppijat.oppija("Ysiluokka-valmis-keväällä-2021", "Valpas", "190605A006K")
@@ -30,6 +30,9 @@ object ValpasMockOppijat {
   val yli2kkAiemminPeruskoulustaValmistunut = valpasOppijat.oppija("Yli-2-kk-aiemmin-peruskoulusta-valmistunut", "Valpas", "010204A079U")
   val useampiYsiluokkaSamassaKoulussa = valpasOppijat.oppija("UseampiYsiluokkaSamassaKoulussa", "Valpas", "250805A605C")
   val turvakieltoOppija = valpasOppijat.oppija("Turvakielto", "Valpas", "290904A4030", valpasOppijat.generateId(), None, true)
+  val eronnutOppijaTarkastelupäivänä = valpasOppijat.oppija("Eroaja-samana-päivänä", "Valpas", "270805A084V")
+  val eronnutOppijaTarkastelupäivänJälkeen = valpasOppijat.oppija("Eroaja-myöhemmin", "Valpas", "290905A840B")
+  val oppivelvollinenAloittanutJaEronnutTarkastelupäivänJälkeen = valpasOppijat.oppija("Aloittanut-ja-eronnut-myöhemmin", "Valpas", "270405A450E")
 
   def defaultOppijat = valpasOppijat.getOppijat
 }

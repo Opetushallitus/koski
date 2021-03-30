@@ -9,6 +9,7 @@ const selectOrganisaatio = (index: number) =>
   dropdownSelect("#organisaatiovalitsin", index)
 
 const jklNormaalikouluTableContent = `
+  Eroaja-myöhemmin Valpas	29.9.2005	9C	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
   Kahdella-oppija-oidilla Valpas	15.2.2005	9C	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
   KasiinAstiToisessaKoulussaOllut Valpas	17.8.2005	9C	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
   Kotiopetus-menneisyydessä Valpas	6.2.2005	9C	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
@@ -30,7 +31,7 @@ describe("Perusopetuksen näkymä", () => {
     await loginAs("/virkailija/oppijat", "valpas-jkl-normaali")
     await textEventuallyEquals(
       ".card__header",
-      "Perusopetuksen päättävät 2021 (14)"
+      "Perusopetuksen päättävät 2021 (15)"
     )
     await dataTableEventuallyEquals(
       ".hakutilanne",
@@ -52,7 +53,7 @@ describe("Perusopetuksen näkymä", () => {
     await selectOrganisaatio(0)
     await textEventuallyEquals(
       ".card__header",
-      "Perusopetuksen päättävät 2021 (14)"
+      "Perusopetuksen päättävät 2021 (15)"
     )
     await dataTableEventuallyEquals(
       ".hakutilanne",

@@ -34,7 +34,9 @@ class ValpasDatabaseFixtureCreator(application: KoskiApplication) extends Databa
     (ValpasMockOppijat.kasiluokkaKeskenKeväällä2021, ValpasExampleData.kasiluokkaKeskenKeväällä2021Opiskeluoikeus),
     (ValpasMockOppijat.kotiopetusMeneilläänOppija, ValpasExampleData.kotiopetusMeneilläänOpiskeluoikeus),
     (ValpasMockOppijat.kotiopetusMenneisyydessäOppija, ValpasExampleData.kotiopetusMenneisyydessäOpiskeluoikeus),
-    (ValpasMockOppijat.eronnutOppija, ValpasExampleData.eronnutOpiskeluoikeus),
+    (ValpasMockOppijat.eronnutOppija, ValpasExampleData.eronnutOpiskeluoikeusTarkastelupäivääEnnen),
+    (ValpasMockOppijat.eronnutOppijaTarkastelupäivänä, ValpasExampleData.eronnutOpiskeluoikeusTarkastelupäivänä),
+    (ValpasMockOppijat.eronnutOppijaTarkastelupäivänJälkeen, ValpasExampleData.eronnutOpiskeluoikeusTarkastelupäivänJälkeen),
     (ValpasMockOppijat.valmistunutYsiluokkalainen, ValpasExampleData.valmistunutYsiluokkalainen),
     (ValpasMockOppijat.luokalleJäänytYsiluokkalainen, ValpasExampleData.luokallejäänytYsiluokkalainen),
     (ValpasMockOppijat.luokallejäänytYsiluokkalainenJollaUusiYsiluokka, ValpasExampleData.luokallejäänytYsiluokkalainenJollaUusiYsiluokka),
@@ -55,6 +57,7 @@ class ValpasDatabaseFixtureCreator(application: KoskiApplication) extends Databa
     (ValpasMockOppijat.ennenLainRajapäivääPeruskoulustaValmistunut, ValpasExampleData.ennenLainRajapäivääToisestaKoulustaValmistunutYsiluokkalainen),
     (ValpasMockOppijat.ennenLainRajapäivääPeruskoulustaValmistunut, ValpasExampleData.valmistunutYsiluokkalainen),
     (ValpasMockOppijat.yli2kkAiemminPeruskoulustaValmistunut, ValpasExampleData.yli2kkAiemminPeruskoulustaValmistunut),
+    (ValpasMockOppijat.oppivelvollinenAloittanutJaEronnutTarkastelupäivänJälkeen, ValpasExampleData.oppivelvollinenAloittanutJaEronnutTarkastelupäivänJälkeenOpiskeluoikeus),
     (ValpasMockOppijat.useampiYsiluokkaSamassaKoulussa, ValpasExampleData.valmistunutYsiluokkalainen),
     (ValpasMockOppijat.useampiYsiluokkaSamassaKoulussa, ValpasExampleData.kesäYsiluokkaKesken), // Tämä on vähän huono esimerkki, mutta varmistelee sitä, että homma toimii myös sitten, kun aletaan tukea nivelvaihetta, jossa nämä tapaukset voivat olla yleisempiä
     (ValpasMockOppijat.turvakieltoOppija, ValpasExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus)
