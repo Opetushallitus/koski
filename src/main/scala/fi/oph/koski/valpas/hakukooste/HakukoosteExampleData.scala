@@ -78,7 +78,7 @@ object HakukoosteExampleData {
         hakutoivenumero = if (hakutoive.hakutoivenumero >= 0) {
           hakutoive.hakutoivenumero
         } else {
-          hakutoiveet.indexOf(hakutoive)
+          hakutoiveet.indexOf(hakutoive) + 1
         }
       ))
     )
