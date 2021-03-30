@@ -8,7 +8,7 @@ import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
 import fi.oph.koski.valpas.fixture.ValpasExampleData
 import fi.oph.koski.valpas.hakukooste.ValpasHakukoosteService
 import fi.oph.koski.valpas.henkilo.ValpasMockOppijat
-import fi.oph.koski.valpas.repository.{ValpasOpiskeluoikeus, ValpasOpiskeluoikeusPerustiedot, ValpasOppijaLaajatTiedot, ValpasOppijaPerustiedot}
+import fi.oph.koski.valpas.repository.{ValpasOpiskeluoikeus, ValpasOpiskeluoikeusSuppeatTiedot, ValpasOppijaLaajatTiedot, ValpasOppijaSuppeatTiedot}
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import org.scalatest.Matchers._
 
@@ -105,13 +105,13 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
 
   "getOppija palauttaa vain annetun oppijanumeron mukaisen oppijan" in {
     val (expectedOppija, expectedData) = oppivelvolliset(1)
-    val result = oppijaService.getOppija(expectedOppija.oid)(defaultSession()).toOption.get
+    val result = oppijaService.getOppijaLaajatTiedot(expectedOppija.oid)(defaultSession()).toOption.get
 
     validateOppijaLaajatTiedot(result.oppija, expectedOppija, expectedData)
   }
 
   "getOppija palauttaa oppijan tiedot, vaikka oid ei olisikaan master oid" in {
-    val result = oppijaService.getOppija(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaToinen.oid)(defaultSession())
+    val result = oppijaService.getOppijaLaajatTiedot(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaToinen.oid)(defaultSession())
     validateOppijaLaajatTiedot(
       result.toOption.get.oppija,
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
@@ -124,7 +124,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
   }
 
   "getOppija palauttaa oppijan tiedot, vaikka hakukoostekysely epäonnistuisi" in {
-    val result = oppijaService.getOppija(ValpasMockOppijat.lukionAloittanut.oid)(defaultSession()).toOption.get
+    val result = oppijaService.getOppijaLaajatTiedot(ValpasMockOppijat.lukionAloittanut.oid)(defaultSession()).toOption.get
     result.hakutilanneError.get should equal("Hakukoosteita ei juuri nyt saada haettua suoritusrekisteristä. Yritä myöhemmin uudelleen.")
     validateOppijaLaajatTiedot(
       result.oppija,
@@ -137,7 +137,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
   }
 
   "getOppija palauttaa oppijan tiedot, vaikka kysely tehtäisiin oidilla, jonka suoriin opiskeluoikeuksiin ei ole pääsyä" in {
-    val result = oppijaService.getOppija(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaKolmas.oid)(defaultSession())
+    val result = oppijaService.getOppijaLaajatTiedot(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaKolmas.oid)(defaultSession())
     validateOppijaLaajatTiedot(
       result.toOption.get.oppija,
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
@@ -150,7 +150,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
   }
 
   "getOppija palauttaa oppijan tiedot, vaikka kysely tehtäisiin master-oidilla, jonka suoriin opiskeluoikeuksiin ei ole pääsyä" in {
-    val result = oppijaService.getOppija(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster.oid)(session(ValpasMockUsers.valpasAapajoenKoulu))
+    val result = oppijaService.getOppijaLaajatTiedot(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster.oid)(session(ValpasMockUsers.valpasAapajoenKoulu))
     validateOppijaLaajatTiedot(
       result.toOption.get.oppija,
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
@@ -163,7 +163,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
   }
 
   "getOppijat palauttaa yhden oppilaitoksen oppijat oikein" in {
-    val oppijat = oppijaService.getOppijatPerustiedot(oppilaitokset.toSet)(defaultSession()).toOption.get.map(_.oppija)
+    val oppijat = oppijaService.getOppijatSuppeatTiedot(oppilaitokset.toSet)(defaultSession()).toOption.get.map(_.oppija)
 
     oppijat.map(_.henkilö.oid) shouldBe oppivelvolliset.map(_._1.oid)
 
@@ -178,7 +178,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
 
   "getOppijat palauttaa useamman oppilaitoksen oppijat oikein käyttäjälle, jolla globaalit oikeudet" in {
     val queryOids = (oppilaitokset ++ List(MockOrganisaatiot.aapajoenKoulu)).toSet
-    val oppijat = oppijaService.getOppijatPerustiedot(queryOids)(session(ValpasMockUsers.valpasOphPääkäyttäjä)).toOption.get.map(_.oppija)
+    val oppijat = oppijaService.getOppijatSuppeatTiedot(queryOids)(session(ValpasMockUsers.valpasOphPääkäyttäjä)).toOption.get.map(_.oppija)
 
     val expectedOppivelvolliset = (
       oppivelvolliset ++
@@ -317,7 +317,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
   }
 
   def validateOppijaPerustiedot(
-    oppija: ValpasOppijaPerustiedot,
+    oppija: ValpasOppijaSuppeatTiedot,
     expectedOppija: LaajatOppijaHenkilöTiedot,
     expectedData: List[ExpectedData]
   ) = {
@@ -379,7 +379,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
   }
 
   def canAccessOppija(oppija: LaajatOppijaHenkilöTiedot, user: ValpasMockUser): Boolean =
-    oppijaService.getOppija(oppija.oid)(session(user)).isRight
+    oppijaService.getOppijaLaajatTiedot(oppija.oid)(session(user)).isRight
 
   private def session(user: ValpasMockUser)= user.toValpasSession(KoskiApplicationForTests.käyttöoikeusRepository)
   private def defaultSession() = session(ValpasMockUsers.valpasJklNormaalikoulu)

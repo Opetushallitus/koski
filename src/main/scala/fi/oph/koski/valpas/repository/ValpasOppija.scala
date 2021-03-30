@@ -27,20 +27,20 @@ case class ValpasOppijaLaajatTiedot(
   def oppivelvollisuusVoimassaAsti: Option[LocalDate] = henkilö.syntymäaika.map(_.plusYears(18))
 }
 
-object ValpasOppijaPerustiedot {
-  def apply(laajatTiedot: ValpasOppijaLaajatTiedot): ValpasOppijaPerustiedot = {
-    ValpasOppijaPerustiedot(
-      ValpasHenkilöPerustiedot(laajatTiedot.henkilö),
+object ValpasOppijaSuppeatTiedot {
+  def apply(laajatTiedot: ValpasOppijaLaajatTiedot): ValpasOppijaSuppeatTiedot = {
+    ValpasOppijaSuppeatTiedot(
+      ValpasHenkilöSuppeatTiedot(laajatTiedot.henkilö),
       laajatTiedot.valvottavatOpiskeluoikeudet,
-      laajatTiedot.opiskeluoikeudet.map(ValpasOpiskeluoikeusPerustiedot.apply)
+      laajatTiedot.opiskeluoikeudet.map(ValpasOpiskeluoikeusSuppeatTiedot.apply)
     )
   }
 }
 
-case class ValpasOppijaPerustiedot(
-  henkilö: ValpasHenkilöPerustiedot,
+case class ValpasOppijaSuppeatTiedot(
+  henkilö: ValpasHenkilöSuppeatTiedot,
   valvottavatOpiskeluoikeudet: Set[ValpasOpiskeluoikeus.Oid],
-  opiskeluoikeudet: Seq[ValpasOpiskeluoikeusPerustiedot]
+  opiskeluoikeudet: Seq[ValpasOpiskeluoikeusSuppeatTiedot]
 ) extends ValpasOppija {
   @SyntheticProperty
   def opiskelee: Boolean = opiskeluoikeudet.exists(_.isOpiskelu)
@@ -69,9 +69,9 @@ case class ValpasHenkilöLaajatTiedot(
   turvakielto: Boolean
 ) extends ValpasHenkilö
 
-object ValpasHenkilöPerustiedot {
-  def apply(laajatTiedot: ValpasHenkilöLaajatTiedot): ValpasHenkilöPerustiedot = {
-    ValpasHenkilöPerustiedot(
+object ValpasHenkilöSuppeatTiedot {
+  def apply(laajatTiedot: ValpasHenkilöLaajatTiedot): ValpasHenkilöSuppeatTiedot = {
+    ValpasHenkilöSuppeatTiedot(
       laajatTiedot.oid,
       laajatTiedot.syntymäaika,
       laajatTiedot.etunimet,
@@ -80,7 +80,7 @@ object ValpasHenkilöPerustiedot {
   }
 }
 
-case class ValpasHenkilöPerustiedot(
+case class ValpasHenkilöSuppeatTiedot(
   oid: ValpasHenkilö.Oid,
   syntymäaika: Option[LocalDate],
   etunimet: String,
@@ -118,9 +118,9 @@ case class ValpasOpiskeluoikeusLaajatTiedot(
     tarkastelupäivänTila.koodiarvo == "voimassa"
 }
 
-object ValpasOpiskeluoikeusPerustiedot {
-  def apply(laajatTiedot: ValpasOpiskeluoikeusLaajatTiedot): ValpasOpiskeluoikeusPerustiedot = {
-    ValpasOpiskeluoikeusPerustiedot(
+object ValpasOpiskeluoikeusSuppeatTiedot {
+  def apply(laajatTiedot: ValpasOpiskeluoikeusLaajatTiedot): ValpasOpiskeluoikeusSuppeatTiedot = {
+    ValpasOpiskeluoikeusSuppeatTiedot(
       laajatTiedot.oid,
       laajatTiedot.tyyppi,
       laajatTiedot.oppilaitos,
@@ -131,7 +131,7 @@ object ValpasOpiskeluoikeusPerustiedot {
   }
 }
 
-case class ValpasOpiskeluoikeusPerustiedot(
+case class ValpasOpiskeluoikeusSuppeatTiedot(
   oid: ValpasOpiskeluoikeus.Oid,
   tyyppi: Koodistokoodiviite,
   oppilaitos: ValpasOppilaitos,
@@ -193,9 +193,9 @@ case class ValpasHakutilanneLaajatTiedot(
   hakutoiveet: Seq[ValpasHakutoive]
 ) extends ValpasHakutilanne
 
-object ValpasHakutilannePerustiedot {
-  def apply(laajatTiedot: ValpasHakutilanneLaajatTiedot): ValpasHakutilannePerustiedot = {
-    ValpasHakutilannePerustiedot(
+object ValpasHakutilanneSuppeatTiedot {
+  def apply(laajatTiedot: ValpasHakutilanneLaajatTiedot): ValpasHakutilanneSuppeatTiedot = {
+    ValpasHakutilanneSuppeatTiedot(
       laajatTiedot.hakuOid,
       laajatTiedot.hakuNimi,
       laajatTiedot.hakemusOid,
@@ -204,7 +204,7 @@ object ValpasHakutilannePerustiedot {
   }
 }
 
-case class ValpasHakutilannePerustiedot(
+case class ValpasHakutilanneSuppeatTiedot(
   hakuOid: String,
   hakuNimi: Option[LocalizedString],
   hakemusOid: String,

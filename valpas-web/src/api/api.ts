@@ -1,6 +1,6 @@
 import {
   OppijaHakutilanteillaLaajatTiedot,
-  OppijaHakutilanteillaPerustiedot,
+  OppijaHakutilanteillaSuppeatTiedot,
 } from "../state/oppijat"
 import { Oid, OrganisaatioJaKayttooikeusrooli, User } from "../state/types"
 import { apiGet, apiPost } from "./apiFetch"
@@ -41,7 +41,7 @@ export const fetchYlatasonOrganisaatiotJaKayttooikeusroolitCache = createCache(
  * Get oppijat
  */
 export const fetchOppijat = (organisaatioOid: Oid) =>
-  apiGet<OppijaHakutilanteillaPerustiedot[]>(
+  apiGet<OppijaHakutilanteillaSuppeatTiedot[]>(
     `valpas/api/oppijat/${organisaatioOid}`
   )
 export const fetchOppijatCache = createCache(fetchOppijat)

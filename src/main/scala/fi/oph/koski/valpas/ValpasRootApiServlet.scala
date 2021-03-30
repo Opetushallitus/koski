@@ -36,11 +36,11 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
   }
 
   get("/oppijat/:organisaatio") {
-    renderEither(oppijaService.getOppijatPerustiedot(Set(params("organisaatio"))))
+    renderEither(oppijaService.getOppijatSuppeatTiedot(Set(params("organisaatio"))))
   }
 
   get("/oppija/:oid") {
-    renderEither(oppijaService.getOppija(params("oid")))
+    renderEither(oppijaService.getOppijaLaajatTiedot(params("oid")))
   }
 
   get("/redirect/hakemus") {

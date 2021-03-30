@@ -18,9 +18,9 @@ export type OppijaHakutilanteillaLaajatTiedot = {
   yhteystiedot: Yhteystiedot<YhteystietojenAlkuperä>[]
 }
 
-export type OppijaHakutilanteillaPerustiedot = {
-  oppija: OppijaPerustiedot
-  hakutilanteet: HakuPerustiedot[]
+export type OppijaHakutilanteillaSuppeatTiedot = {
+  oppija: OppijaSuppeatTiedot
+  hakutilanteet: HakuSuppeatTiedot[]
   hakutilanneError?: string
 }
 
@@ -32,9 +32,9 @@ export type OppijaLaajatTiedot = {
   valvottavatOpiskeluoikeudet: Oid[]
 }
 
-export type OppijaPerustiedot = {
-  henkilö: HenkilöPerustiedot
-  opiskeluoikeudet: OpiskeluoikeusPerustiedot[]
+export type OppijaSuppeatTiedot = {
+  henkilö: HenkilöSuppeatTiedot
+  opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
   opiskelee: boolean
   oppivelvollisuusVoimassaAsti?: ISODate
   valvottavatOpiskeluoikeudet: Oid[]
@@ -49,7 +49,7 @@ export type HenkilöLaajatTiedot = {
   turvakielto: boolean
 }
 
-export type HenkilöPerustiedot = {
+export type HenkilöSuppeatTiedot = {
   oid: Oid
   syntymäaika?: ISODate
   etunimet: string
@@ -108,7 +108,7 @@ export type HakuLaajatTiedot = {
   huoltajanSähköposti?: string
 }
 
-export type HakuPerustiedot = {
+export type HakuSuppeatTiedot = {
   hakuOid: Oid
   hakuNimi?: LocalizedString
   hakemusOid: Oid
@@ -135,7 +135,7 @@ export type OpiskeluoikeusLaajatTiedot = {
   tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
 }
 
-export type OpiskeluoikeusPerustiedot = {
+export type OpiskeluoikeusSuppeatTiedot = {
   oid: Oid
   tyyppi: Opiskeluoikeudentyyppi
   oppilaitos: Oppilaitos

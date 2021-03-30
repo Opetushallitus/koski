@@ -31,17 +31,17 @@ object OppijaHakutilanteillaLaajatTiedot {
   }
 }
 
-case class OppijaHakutilanteillaPerustiedot(
-  oppija: ValpasOppijaPerustiedot,
-  hakutilanteet: Seq[ValpasHakutilannePerustiedot],
+case class OppijaHakutilanteillaSuppeatTiedot(
+  oppija: ValpasOppijaSuppeatTiedot,
+  hakutilanteet: Seq[ValpasHakutilanneSuppeatTiedot],
   hakutilanneError: Option[String]
 )
 
-object OppijaHakutilanteillaPerustiedot {
-  def apply(laajatTiedot: OppijaHakutilanteillaLaajatTiedot): OppijaHakutilanteillaPerustiedot = {
-    OppijaHakutilanteillaPerustiedot(
-      ValpasOppijaPerustiedot(laajatTiedot.oppija),
-      laajatTiedot.hakutilanteet.map(ValpasHakutilannePerustiedot.apply),
+object OppijaHakutilanteillaSuppeatTiedot {
+  def apply(laajatTiedot: OppijaHakutilanteillaLaajatTiedot): OppijaHakutilanteillaSuppeatTiedot = {
+    OppijaHakutilanteillaSuppeatTiedot(
+      ValpasOppijaSuppeatTiedot(laajatTiedot.oppija),
+      laajatTiedot.hakutilanteet.map(ValpasHakutilanneSuppeatTiedot.apply),
       laajatTiedot.hakutilanneError
     )
   }
@@ -91,12 +91,12 @@ class ValpasOppijaService(
   // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
   // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
   // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
-  def getOppijatPerustiedot(oppilaitosOids: Set[ValpasOppilaitos.Oid])(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaPerustiedot]] =
-    getOppijatKaikkiTiedot(oppilaitosOids)
-      .map(_.map(OppijaHakutilanteillaPerustiedot.apply))
+  def getOppijatSuppeatTiedot(oppilaitosOids: Set[ValpasOppilaitos.Oid])(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =
+    getOppijatLaajatTiedot(oppilaitosOids)
+      .map(_.map(OppijaHakutilanteillaSuppeatTiedot.apply))
       .map(withAuditLogOppilaitostenKatsominen(oppilaitosOids))
 
-  private def getOppijatKaikkiTiedot(oppilaitosOids: Set[ValpasOppilaitos.Oid])(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] =
+  private def getOppijatLaajatTiedot(oppilaitosOids: Set[ValpasOppilaitos.Oid])(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] =
     accessResolver.organisaatiohierarkiaOids(oppilaitosOids)
       .map(dbService.getPeruskoulunValvojalleNäkyvätOppijat(rajapäivät()))
       .flatMap(results => HttpStatus.foldEithers(results.map(_.asValpasOppijaLaajatTiedot)))
@@ -105,7 +105,7 @@ class ValpasOppijaService(
   // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
   // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
   // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
-  def getOppija(oppijaOid: ValpasHenkilö.Oid)(implicit session: ValpasSession): Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] =
+  def getOppijaLaajatTiedot(oppijaOid: ValpasHenkilö.Oid)(implicit session: ValpasSession): Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] =
     dbService.getPeruskoulunValvojalleNäkyväOppija(rajapäivät())(oppijaOid)
       .toRight(ValpasErrorCategory.forbidden.oppija())
       .flatMap(_.asValpasOppijaLaajatTiedot)

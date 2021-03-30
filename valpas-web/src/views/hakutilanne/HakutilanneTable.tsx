@@ -8,13 +8,13 @@ import { T, t } from "../../i18n/i18n"
 import { useBasePath } from "../../state/basePath"
 import { externalHakemussivu } from "../../state/externalUrls"
 import {
-  HakuPerustiedot,
-  OppijaHakutilanteillaPerustiedot,
+  HakuSuppeatTiedot,
+  OppijaHakutilanteillaSuppeatTiedot,
 } from "../../state/oppijat"
 import { formatNullableDate } from "../../utils/date"
 
 export type HakutilanneTableProps = {
-  data: OppijaHakutilanteillaPerustiedot[]
+  data: OppijaHakutilanteillaSuppeatTiedot[]
   organisaatioOid: string | undefined
 }
 
@@ -71,7 +71,7 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
 const oppijaToTableData = (
   basePath: string,
   organisaatioOid: string | undefined
-) => (oppija: OppijaHakutilanteillaPerustiedot): Array<Datum> => {
+) => (oppija: OppijaHakutilanteillaSuppeatTiedot): Array<Datum> => {
   // TODO: Hakemuksen valintaan tarvitaan rautaisempi logiikka
   const hakemus = oppija.hakutilanteet[0]
   const hakemuksenTila = hakemuksentilaValue(hakemus, oppija.hakutilanneError)
@@ -139,7 +139,7 @@ const oppijaToTableData = (
 }
 
 const hakemuksentilaValue = (
-  hakemus?: HakuPerustiedot,
+  hakemus?: HakuSuppeatTiedot,
   hakutilanneError?: string
 ): string => {
   return t(
