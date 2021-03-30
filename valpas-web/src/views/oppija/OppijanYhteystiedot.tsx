@@ -9,7 +9,7 @@ import { TertiaryHeading } from "../../components/typography/headings"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import { getLocalized, t, T } from "../../i18n/i18n"
 import {
-  OppijaHakutilanteilla,
+  OppijaHakutilanteillaLaajatTiedot,
   Yhteystiedot,
   YhteystietojenAlkuperä,
 } from "../../state/oppijat"
@@ -20,7 +20,7 @@ import "./OppijanYhteystiedot.less"
 const b = bem("oppijanyhteystiedot")
 
 export type OppijanYhteystiedotProps = {
-  oppija: OppijaHakutilanteilla
+  oppija: OppijaHakutilanteillaLaajatTiedot
 }
 
 export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {

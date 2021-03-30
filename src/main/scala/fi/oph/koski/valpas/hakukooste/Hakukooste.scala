@@ -2,16 +2,15 @@ package fi.oph.koski.valpas.hakukooste
 
 import fi.oph.koski.schema.annotation.{EnumValues, KoodistoKoodiarvo, KoodistoUri}
 import fi.oph.koski.schema.{BlankableLocalizedString, Koodistokoodiviite}
-import fi.oph.koski.valpas.repository.{ValpasHakutilanne, ValpasHakutoive, ValpasHenkilö, ValpasOppilaitos}
+import fi.oph.koski.valpas.repository.{ValpasHakutilanneLaajatTiedot, ValpasHakutoive, ValpasHenkilö, ValpasHenkilöLaajatTiedot, ValpasOppilaitos}
 import fi.oph.scalaschema.annotation.SyntheticProperty
-
 import java.time.LocalDateTime
 
 
 case class Hakukooste(
   oppijaOid: ValpasHenkilö.Oid,
-  hakuOid: ValpasHakutilanne.HakuOid,
-  hakemusOid: ValpasHakutilanne.HakemusOid,
+  hakuOid: ValpasHakutilanneLaajatTiedot.HakuOid,
+  hakemusOid: ValpasHakutilanneLaajatTiedot.HakemusOid,
 
   @KoodistoUri("hakutapa")
   // TODO: Koodiston lataus koskeen

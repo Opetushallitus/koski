@@ -8,19 +8,22 @@ import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import { getLocalized, T, t, useLanguage } from "../../i18n/i18n"
 import { KoodistoKoodiviite } from "../../state/koodistot"
-import { Opiskeluoikeus, OppijaHakutilanteilla } from "../../state/oppijat"
+import {
+  OpiskeluoikeusLaajatTiedot,
+  OppijaHakutilanteillaLaajatTiedot,
+} from "../../state/oppijat"
 import { ISODate } from "../../state/types"
 import { formatNullableDate, parseYear } from "../../utils/date"
 
 export type OppijanOpiskeluhistoriaProps = {
-  oppija: OppijaHakutilanteilla
+  oppija: OppijaHakutilanteillaLaajatTiedot
 }
 
 export const OppijanOpiskeluhistoria = (
   props: OppijanOpiskeluhistoriaProps
 ) => {
   const language = useLanguage()
-  const sort = Opiskeluoikeus.sort(language)
+  const sort = OpiskeluoikeusLaajatTiedot.sort(language)
 
   return props.oppija.oppija.opiskeluoikeudet.length > 0 ? (
     <>
@@ -76,7 +79,7 @@ const yearRangeString = (a?: ISODate, b?: ISODate): string =>
 const yearString = (date?: ISODate): string | undefined =>
   date && parseYear(date).toString()
 
-const tilaString = (opiskeluoikeus: Opiskeluoikeus): string => {
+const tilaString = (opiskeluoikeus: OpiskeluoikeusLaajatTiedot): string => {
   const tila = opiskeluoikeus.tarkastelupäivänTila
   const alkamispäivä = formatNullableDate(opiskeluoikeus.alkamispäivä)
   const päättymispäivä = formatNullableDate(opiskeluoikeus.päättymispäivä)

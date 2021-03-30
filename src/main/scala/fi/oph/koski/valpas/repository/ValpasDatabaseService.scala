@@ -204,7 +204,7 @@ WITH
          WHEN $tarkasteluPäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
          WHEN $tarkasteluPäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
          ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
-       END tarkastelupäivan_tila
+       END tarkastelupäivän_tila
      FROM
        oppija_oid
        JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
@@ -251,7 +251,7 @@ WITH
          WHEN $tarkasteluPäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
          WHEN $tarkasteluPäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
          ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
-       END tarkastelupäivan_tila
+       END tarkastelupäivän_tila
      FROM
        oppija_oid
        JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
@@ -347,12 +347,8 @@ WITH
         'alkamispäivä', opiskeluoikeus.alkamispaiva,
         'päättymispäivä', opiskeluoikeus.paattymispaiva,
         'ryhmä', opiskeluoikeus.ryhmä,
-        'viimeisinTila', json_build_object(
-          'koodiarvo', opiskeluoikeus.viimeisin_tila,
-          'koodistoUri', 'koskiopiskeluoikeudentila'
-        ),
         'tarkastelupäivänTila', json_build_object(
-          'koodiarvo', opiskeluoikeus.tarkastelupäivan_tila,
+          'koodiarvo', opiskeluoikeus.tarkastelupäivän_tila,
           'koodistoUri', 'valpasopiskeluoikeudentila'
         )
       ) ORDER BY
@@ -361,7 +357,7 @@ WITH
         opiskeluoikeus.paattymispaiva DESC,
         opiskeluoikeus.koulutusmuoto,
         opiskeluoikeus.ryhmä DESC NULLS LAST,
-        opiskeluoikeus.viimeisin_tila
+        opiskeluoikeus.tarkastelupäivän_tila
     ) opiskeluoikeudet
   FROM
     opiskeluoikeus

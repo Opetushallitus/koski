@@ -1,4 +1,7 @@
-import { OppijaHakutilanteilla } from "../state/oppijat"
+import {
+  OppijaHakutilanteillaLaajatTiedot,
+  OppijaHakutilanteillaSuppeatTiedot,
+} from "../state/oppijat"
 import { Oid, OrganisaatioJaKayttooikeusrooli, User } from "../state/types"
 import { apiGet, apiPost } from "./apiFetch"
 import { createCache } from "./cache"
@@ -38,9 +41,11 @@ export const fetchYlatasonOrganisaatiotJaKayttooikeusroolitCache = createCache(
  * Get oppijat
  */
 export const fetchOppijat = (organisaatioOid: Oid) =>
-  apiGet<OppijaHakutilanteilla[]>(`valpas/api/oppijat/${organisaatioOid}`)
+  apiGet<OppijaHakutilanteillaSuppeatTiedot[]>(
+    `valpas/api/oppijat/${organisaatioOid}`
+  )
 export const fetchOppijatCache = createCache(fetchOppijat)
 
 export const fetchOppija = (oppijaOid: Oid) =>
-  apiGet<OppijaHakutilanteilla>(`valpas/api/oppija/${oppijaOid}`)
+  apiGet<OppijaHakutilanteillaLaajatTiedot>(`valpas/api/oppija/${oppijaOid}`)
 export const fetchOppijaCache = createCache(fetchOppija)

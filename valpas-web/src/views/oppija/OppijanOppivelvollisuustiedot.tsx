@@ -1,11 +1,11 @@
 import React from "react"
 import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
 import { t } from "../../i18n/i18n"
-import { OppijaHakutilanteilla } from "../../state/oppijat"
+import { OppijaHakutilanteillaLaajatTiedot } from "../../state/oppijat"
 import { formatNullableDate } from "../../utils/date"
 
 export type OppijanOppivelvollisuustiedotProps = {
-  oppija: OppijaHakutilanteilla
+  oppija: OppijaHakutilanteillaLaajatTiedot
 }
 
 export const OppijanOppivelvollisuustiedot = (

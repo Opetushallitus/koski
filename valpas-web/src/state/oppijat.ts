@@ -11,28 +11,49 @@ import {
 } from "./koodistot"
 import { ISODate, ISODateTime, LocalizedString, Oid } from "./types"
 
-export type OppijaHakutilanteilla = {
-  oppija: Oppija
-  hakutilanteet: Haku[]
+export type OppijaHakutilanteillaLaajatTiedot = {
+  oppija: OppijaLaajatTiedot
+  hakutilanteet: HakuLaajatTiedot[]
   hakutilanneError?: string
   yhteystiedot: Yhteystiedot<YhteystietojenAlkuperä>[]
 }
 
-export type Oppija = {
-  henkilö: Henkilö
-  opiskeluoikeudet: Opiskeluoikeus[]
+export type OppijaHakutilanteillaSuppeatTiedot = {
+  oppija: OppijaSuppeatTiedot
+  hakutilanteet: HakuSuppeatTiedot[]
+  hakutilanneError?: string
+}
+
+export type OppijaLaajatTiedot = {
+  henkilö: HenkilöLaajatTiedot
+  opiskeluoikeudet: OpiskeluoikeusLaajatTiedot[]
   opiskelee: boolean
   oppivelvollisuusVoimassaAsti?: ISODate
   valvottavatOpiskeluoikeudet: Oid[]
 }
 
-export type Henkilö = {
+export type OppijaSuppeatTiedot = {
+  henkilö: HenkilöSuppeatTiedot
+  opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
+  opiskelee: boolean
+  oppivelvollisuusVoimassaAsti?: ISODate
+  valvottavatOpiskeluoikeudet: Oid[]
+}
+
+export type HenkilöLaajatTiedot = {
   oid: Oid
   hetu?: string
   syntymäaika?: ISODate
   etunimet: string
   sukunimi: string
   turvakielto: boolean
+}
+
+export type HenkilöSuppeatTiedot = {
+  oid: Oid
+  syntymäaika?: ISODate
+  etunimet: string
+  sukunimi: string
 }
 
 export type Yhteystiedot<T extends YhteystietojenAlkuperä> = {
@@ -67,7 +88,12 @@ export type Oppilaitos = {
   nimi: LocalizedString
 }
 
-export type Haku = {
+export type Toimipiste = {
+  oid: Oid
+  nimi: LocalizedString
+}
+
+export type HakuLaajatTiedot = {
   hakuOid: Oid
   hakuNimi?: LocalizedString
   hakemusOid: Oid
@@ -82,6 +108,13 @@ export type Haku = {
   huoltajanSähköposti?: string
 }
 
+export type HakuSuppeatTiedot = {
+  hakuOid: Oid
+  hakuNimi?: LocalizedString
+  hakemusOid: Oid
+  aktiivinen: boolean
+}
+
 export type Hakutoive = {
   hakutoivenumero?: number
   hakukohdeNimi?: LocalizedString
@@ -91,40 +124,53 @@ export type Hakutoive = {
   hyväksytty?: boolean
 }
 
-export type Opiskeluoikeus = {
+export type OpiskeluoikeusLaajatTiedot = {
   oid: Oid
   tyyppi: Opiskeluoikeudentyyppi
   oppilaitos: Oppilaitos
+  toimipiste?: Toimipiste
   alkamispäivä?: ISODate
-  arvioituPäättymispäivä?: ISODate
   päättymispäivä?: ISODate
   ryhmä?: string
   tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
 }
 
-const opiskeluoikeusDateOrd = (key: keyof Opiskeluoikeus) =>
-  Ord.contramap((o: Opiskeluoikeus) => (o[key] as ISODate) || "0000-00-00")(
-    string.Ord
-  )
+export type OpiskeluoikeusSuppeatTiedot = {
+  oid: Oid
+  tyyppi: Opiskeluoikeudentyyppi
+  oppilaitos: Oppilaitos
+  toimipiste?: Toimipiste
+  ryhmä?: string
+  tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
+}
+
+const opiskeluoikeusDateOrd = (key: keyof OpiskeluoikeusLaajatTiedot) =>
+  Ord.contramap(
+    (o: OpiskeluoikeusLaajatTiedot) => (o[key] as ISODate) || "0000-00-00"
+  )(string.Ord)
 
 const alkamispäiväOrd = opiskeluoikeusDateOrd("alkamispäivä")
 const päättymispäiväOrd = opiskeluoikeusDateOrd("päättymispäivä")
 const tyyppiNimiOrd = (lang: Language) =>
-  Ord.contramap((o: Opiskeluoikeus) => o.tyyppi.nimi?.[lang] || "")(string.Ord)
+  Ord.contramap((o: OpiskeluoikeusLaajatTiedot) => o.tyyppi.nimi?.[lang] || "")(
+    string.Ord
+  )
 
-export const Opiskeluoikeus = {
+export const OpiskeluoikeusLaajatTiedot = {
   sort: (lang: Language) =>
-    A.sortBy<Opiskeluoikeus>([
+    A.sortBy<OpiskeluoikeusLaajatTiedot>([
       Ord.reverse(alkamispäiväOrd),
       Ord.reverse(päättymispäiväOrd),
       tyyppiNimiOrd(lang),
     ]),
 }
 
-const muokkausOrd = Ord.contramap((haku: Haku) => haku.muokattu)(string.Ord)
+const muokkausOrd = Ord.contramap((haku: HakuLaajatTiedot) => haku.muokattu)(
+  string.Ord
+)
 
 export const Haku = {
-  latest: (haut: Haku[]) =>
+  latest: (haut: HakuLaajatTiedot[]) =>
     pipe(haut, A.sortBy([muokkausOrd]), A.head, O.toNullable),
 }
 
