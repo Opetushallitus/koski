@@ -6,7 +6,6 @@ import { DataTable, Datum } from "../../components/tables/DataTable"
 import { NotImplemented } from "../../components/typography/NoDataMessage"
 import { T, t } from "../../i18n/i18n"
 import { useBasePath } from "../../state/basePath"
-import { externalHakemussivu } from "../../state/externalUrls"
 import {
   HakuSuppeatTiedot,
   OppijaHakutilanteillaSuppeatTiedot,
@@ -105,9 +104,7 @@ const oppijaToTableData = (
       {
         value: hakemuksenTila,
         display: hakemus && (
-          <ExternalLink to={externalHakemussivu(hakemus.hakemusOid)}>
-            {hakemuksenTila}
-          </ExternalLink>
+          <ExternalLink to={hakemus.hakemusUrl}>{hakemuksenTila}</ExternalLink>
         ),
       },
       {
@@ -145,7 +142,7 @@ const hakemuksentilaValue = (
   return t(
     hakutilanneError
       ? "oppija__hakuhistoria_virhe"
-      : hakemus && hakemus.aktiivinen
+      : hakemus
       ? "hakemuksentila__hakenut"
       : "hakemuksentila__ei_hakemusta"
   )

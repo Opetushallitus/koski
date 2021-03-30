@@ -42,14 +42,4 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
   get("/oppija/:oid") {
     renderEither(oppijaService.getOppijaLaajatTiedot(params("oid")))
   }
-
-  get("/redirect/hakemus") {
-    val oid = params("oid")
-    response.redirect(s"$opintopolkuVirkailijaUrl/haku-app/virkailija/hakemus/")
-  }
-
-  get("/redirect/hakemus/:oid") {
-    val oid = params("oid")
-    response.redirect(s"$opintopolkuVirkailijaUrl/haku-app/virkailija/hakemus/$oid/")
-  }
 }

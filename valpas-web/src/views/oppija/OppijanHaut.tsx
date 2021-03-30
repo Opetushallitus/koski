@@ -9,7 +9,6 @@ import { LeanTable } from "../../components/tables/LeanTable"
 import { TertiaryHeading } from "../../components/typography/headings"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import { formatFixedNumber, getLocalized, t, T } from "../../i18n/i18n"
-import { externalHakemussivu } from "../../state/externalUrls"
 import {
   HakuLaajatTiedot,
   Hakutoive,
@@ -51,10 +50,10 @@ const HakuTable = (props: HakuTableProps) => (
   <IconSection icon={<HakuIcon color="gray" />}>
     <TertiaryHeading className={b("hakunimi")}>
       {getLocalized(props.haku.hakuNimi)}{" "}
-      <ExternalLink to={externalHakemussivu(props.haku.hakemusOid)}>
+      <ExternalLink to={props.haku.hakemusUrl}>
         <T
           id={
-            props.haku.aktiivinen
+            props.haku
               ? "hakemuksentila__hakenut"
               : "hakemuksentila__ei_hakenut"
           }
@@ -87,22 +86,22 @@ const hakutoiveToTableValue = (hakutoive: Hakutoive, index: number): Datum => ({
     {
       value:
         formatOrderNumber(hakutoive.hakutoivenumero) +
-        (getLocalized(hakutoive.hakukohdeNimi) || t("tieto_puuttuu")) +
-        (hakutoive.koulutusNimi
-          ? ", " + getLocalized(hakutoive.koulutusNimi)
+        (getLocalized(hakutoive.organisaatioNimi) || t("tieto_puuttuu")) +
+        (hakutoive.hakukohdeNimi
+          ? ", " + getLocalized(hakutoive.hakukohdeNimi)
           : ""),
       display: (
         <>
           <span>{formatOrderNumber(hakutoive.hakutoivenumero)}</span>
-          {hakutoive.hakukohdeNimi ? (
-            getLocalized(hakutoive.hakukohdeNimi)
+          {hakutoive.organisaatioNimi ? (
+            getLocalized(hakutoive.organisaatioNimi)
           ) : (
             <NoDataMessage>
               <T id="tieto_puuttuu" />
             </NoDataMessage>
           )}
-          {hakutoive.koulutusNimi &&
-            ", " + getLocalized(hakutoive.koulutusNimi)}
+          {hakutoive.hakukohdeNimi &&
+            ", " + getLocalized(hakutoive.hakukohdeNimi)}
         </>
       ),
     },
@@ -120,4 +119,4 @@ const hakutoiveToTableValue = (hakutoive: Hakutoive, index: number): Datum => ({
 })
 
 const formatOrderNumber = (n?: number): string =>
-  n !== undefined ? `${n + 1}. ` : ""
+  n !== undefined ? `${n}. ` : ""
