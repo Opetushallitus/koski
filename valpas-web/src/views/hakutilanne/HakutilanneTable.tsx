@@ -142,7 +142,7 @@ const hakemuksentilaValue = (
   return t(
     hakutilanneError
       ? "oppija__hakuhistoria_virhe"
-      : hakemus && hakemus.aktiivinen
+      : hakemus
       ? "hakemuksentila__hakenut"
       : "hakemuksentila__ei_hakemusta"
   )

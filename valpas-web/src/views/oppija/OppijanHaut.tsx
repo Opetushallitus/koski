@@ -53,7 +53,7 @@ const HakuTable = (props: HakuTableProps) => (
       <ExternalLink to={props.haku.hakemusUrl}>
         <T
           id={
-            props.haku.aktiivinen
+            props.haku
               ? "hakemuksentila__hakenut"
               : "hakemuksentila__ei_hakenut"
           }
