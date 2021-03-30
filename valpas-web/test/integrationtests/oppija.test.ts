@@ -54,11 +54,11 @@ describe("Oppijakohtainen näkymä", () => {
         Valinta
         Pisteet
         Alin pistemäärä
-        1. Ressun lukio Hylätty 9,00 9,01
-        2. Helsingin medialukio Hyväksytty 9,00 8,20
-        3. Omnia – – –
-        4. Omnia – – –
-        5. Varsinais-Suomen kansanopisto – – –
+        1. Ressun lukio, Lukiokoulutus Hylätty 9,00 9,01
+        2. Helsingin medialukio, Lukiokoulutus Hyväksytty 9,00 8,20
+        3. Omnia, Leipomoalan ammattitutkinto – – –
+        4. Omnia, Puhtaus- ja kiinteistöpalvelualan ammattitutkinto laitoshuoltajille ja toimitilahuoltajille – – –
+        5. Varsinais-Suomen kansanopisto, Vapaan sivistystyön koulutus oppivelvollisille – – –
     `)
   })
 
