@@ -162,6 +162,7 @@ object SureHakukoosteServiceSpec {
       |        "hakukohdeOid": "1.2.246.562.20.80878445842",
       |        "hakukohdeKoulutuskoodi": "751201",
       |        "hakukohdeOrganisaatio": "1.2.246.562.10.38864316104",
+      |        "organisaatioNimi": {},
       |        "koulutusOid": "1.2.246.562.17.83264128444"
       |      },
       |      {
@@ -174,6 +175,7 @@ object SureHakukoosteServiceSpec {
       |        "hakukohdeOid": "1.2.246.562.20.24492106752",
       |        "hakukohdeKoulutuskoodi": "751301",
       |        "hakukohdeOrganisaatio": "1.2.246.562.10.39920288212",
+      |        "organisaatioNimi": {},
       |        "koulutusOid": "1.2.246.562.17.58545683169"
       |      }
       |    ]

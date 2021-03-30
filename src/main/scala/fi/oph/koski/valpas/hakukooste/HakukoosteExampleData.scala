@@ -18,23 +18,33 @@ object HakukoosteExampleData {
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
       List(
         hakutoive(
-          hakukohdeOid = MockOrganisaatiot.ressunLukio,
+          hakukohdeOid = generateOid(),
+          hakukohdeOrganisaatio = MockOrganisaatiot.ressunLukio,
+          hakukohdeNimi = "Lukio",
           koulutusNimi = "Lukiokoulutus"
         ).copy(alinValintaPistemaara = Some(9.01), pisteet = Some(9)),
         hakutoive(
-          hakukohdeOid = MockOrganisaatiot.helsinginMedialukio,
+          hakukohdeOid = generateOid(),
+          hakukohdeOrganisaatio = MockOrganisaatiot.helsinginMedialukio,
+          hakukohdeNimi = "Lukio",
           koulutusNimi = "Lukiokoulutus"
         ).copy(alinValintaPistemaara = Some(8.2), pisteet = Some(9)),
         hakutoive(
-          hakukohdeOid = MockOrganisaatiot.omnia,
+          hakukohdeOid = generateOid(),
+          hakukohdeOrganisaatio = MockOrganisaatiot.omnia,
+          hakukohdeNimi = "Leipomoala",
           koulutusNimi = "Leipomoalan ammattitutkinto"
         ),
         hakutoive(
-          hakukohdeOid = MockOrganisaatiot.omnia,
+          hakukohdeOid = generateOid(),
+          hakukohdeOrganisaatio = MockOrganisaatiot.omnia,
+          hakukohdeNimi = "Puhtaus- ja kiinteistöpalveluala",
           koulutusNimi = "Puhtaus- ja kiinteistöpalvelualan ammattitutkinto laitoshuoltajille ja toimitilahuoltajille"
         ),
         hakutoive(
-          hakukohdeOid = MockOrganisaatiot.varsinaisSuomenKansanopisto,
+          hakukohdeOid = generateOid(),
+          hakukohdeOrganisaatio = MockOrganisaatiot.varsinaisSuomenKansanopisto,
+          hakukohdeNimi = "Vapaan sivistystyön koulutus oppivelvollisille 2021-2022",
           koulutusNimi = "Vapaan sivistystyön koulutus oppivelvollisille"
         ),
       )),
@@ -42,7 +52,9 @@ object HakukoosteExampleData {
       ValpasMockOppijat.luokalleJäänytYsiluokkalainen,
       List(
         hakutoive(
-          hakukohdeOid = "",
+          hakukohdeOid = generateOid(),
+          hakukohdeOrganisaatio = "",
+          hakukohdeNimi = "Lukio",
           koulutusNimi = "Lukiokoulutus"
         ),
       )),
@@ -71,9 +83,10 @@ object HakukoosteExampleData {
       huoltajanPuhelinnumero = Some("0407654321"),
       huoltajanSähkoposti = Some("huoltaja.sukunimi@gmail.com"),
       hakutoiveet = hakutoiveet.map(hakutoive => hakutoive.copy(
-        hakukohdeNimi = MockOrganisaatioRepository
-          .getOrganisaationNimiHetkellä(hakutoive.hakukohdeOid, alkamisaika.toLocalDate)
+        organisaatioNimi = MockOrganisaatioRepository
+          .getOrganisaationNimiHetkellä(hakutoive.hakukohdeOrganisaatio, alkamisaika.toLocalDate)
           .toBlankable,
+        hakukohdeNimi = hakutoive.hakukohdeNimi,
         koulutusNimi = hakutoive.koulutusNimi,
         hakutoivenumero = if (hakutoive.hakutoivenumero >= 0) {
           hakutoive.hakutoivenumero
@@ -85,17 +98,20 @@ object HakukoosteExampleData {
 
   def hakutoive(
     hakukohdeOid: String,
+    hakukohdeOrganisaatio: String,
+    hakukohdeNimi: String,
     koulutusNimi: String
   ): Hakutoive =
     Hakutoive(
       hakukohdeOid = hakukohdeOid,
-      hakukohdeNimi = MockOrganisaatioRepository.getOrganisaationNimiHetkellä(
-        oid = hakukohdeOid,
+      hakukohdeNimi = Finnish(hakukohdeNimi),
+      organisaatioNimi = MockOrganisaatioRepository.getOrganisaationNimiHetkellä(
+        oid = hakukohdeOrganisaatio,
         localDate = LocalDate.now()
       ).toBlankable,
       hakutoivenumero = -1,
       koulutusNimi = Finnish(koulutusNimi),
-      hakukohdeOrganisaatio = hakukohdeOid,
+      hakukohdeOrganisaatio = hakukohdeOrganisaatio,
       pisteet = None,
       alinValintaPistemaara = None,
       valintatila = Some("KESKEN"),
@@ -112,4 +128,11 @@ object HakukoosteExampleData {
   def generateHakemusOid() = OIDGenerator.generateOID(101)
   def generateEmail(henkilö: OppijaHenkilö) =
     s"${henkilö.etunimet}.${henkilö.sukunimi}".replace(" ", "-") + "@gmail.com"
+
+  private var oidCounter: Int = 1
+  private def generateOid(): String= {
+    val oid = "1.2.246.562.24." + "999%08d".format(oidCounter)
+    oidCounter = oidCounter + 1
+    oid
+  }
 }

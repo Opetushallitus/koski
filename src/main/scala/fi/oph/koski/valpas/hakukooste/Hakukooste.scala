@@ -42,8 +42,9 @@ case class Hakukooste(
 )
 
 case class Hakutoive(
-  hakukohdeOid: ValpasOppilaitos.Oid,
+  hakukohdeOid: String,
   hakukohdeNimi: BlankableLocalizedString,
+  organisaatioNimi: BlankableLocalizedString,
   hakukohdeOrganisaatio: String,
   koulutusNimi: BlankableLocalizedString,
   koulutusOid: Option[ValpasHakutoive.KoulutusOid],

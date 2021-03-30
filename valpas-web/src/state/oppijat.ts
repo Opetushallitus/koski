@@ -120,6 +120,7 @@ export type HakuSuppeatTiedot = {
 export type Hakutoive = {
   hakutoivenumero?: number
   hakukohdeNimi?: LocalizedString
+  organisaatioNimi?: LocalizedString
   koulutusNimi?: LocalizedString
   pisteet?: number
   minValintapisteet?: number

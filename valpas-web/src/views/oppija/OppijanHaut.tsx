@@ -86,22 +86,22 @@ const hakutoiveToTableValue = (hakutoive: Hakutoive, index: number): Datum => ({
     {
       value:
         formatOrderNumber(hakutoive.hakutoivenumero) +
-        (getLocalized(hakutoive.hakukohdeNimi) || t("tieto_puuttuu")) +
-        (hakutoive.koulutusNimi
-          ? ", " + getLocalized(hakutoive.koulutusNimi)
+        (getLocalized(hakutoive.organisaatioNimi) || t("tieto_puuttuu")) +
+        (hakutoive.hakukohdeNimi
+          ? ", " + getLocalized(hakutoive.hakukohdeNimi)
           : ""),
       display: (
         <>
           <span>{formatOrderNumber(hakutoive.hakutoivenumero)}</span>
-          {hakutoive.hakukohdeNimi ? (
-            getLocalized(hakutoive.hakukohdeNimi)
+          {hakutoive.organisaatioNimi ? (
+            getLocalized(hakutoive.organisaatioNimi)
           ) : (
             <NoDataMessage>
               <T id="tieto_puuttuu" />
             </NoDataMessage>
           )}
-          {hakutoive.koulutusNimi &&
-            ", " + getLocalized(hakutoive.koulutusNimi)}
+          {hakutoive.hakukohdeNimi &&
+            ", " + getLocalized(hakutoive.hakukohdeNimi)}
         </>
       ),
     },

@@ -222,6 +222,7 @@ object ValpasHakutoive {
   def apply(hakutoive: Hakutoive): ValpasHakutoive = {
     ValpasHakutoive(
       hakukohdeNimi = hakutoive.hakukohdeNimi.toLocalizedString,
+      organisaatioNimi = hakutoive.organisaatioNimi.toLocalizedString,
       koulutusNimi = hakutoive.koulutusNimi.toLocalizedString,
       hakutoivenumero = Some(hakutoive.hakutoivenumero),
       pisteet = hakutoive.pisteet,
@@ -232,6 +233,7 @@ object ValpasHakutoive {
 
 case class ValpasHakutoive(
   hakukohdeNimi: Option[LocalizedString],
+  organisaatioNimi: Option[LocalizedString],
   koulutusNimi: Option[LocalizedString],
   hakutoivenumero: Option[Int],
   pisteet: Option[BigDecimal],
