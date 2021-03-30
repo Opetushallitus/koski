@@ -52,6 +52,12 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
 
         opiskeluoikeus.tila.opiskeluoikeusjaksot.head.nimi.get.values.values.toList should equal (List("Tieto- ja viestintätekniikan tutkinto-ohjelma", "Examensprogram inom informations- och kommunikationsteknik", "Information Technology Master's Programme"))
       }
+
+      "Jos Virran Jakso-tietorakenteessa on määritelty nimi, sitä käytetään myös tutkinnon nimenä" in {
+        val opiskeluoikeus = opiskeluoikeudet("250668-293Y", "02470").head
+
+        opiskeluoikeus.suoritukset.head.koulutusmoduuli.nimi should equal (Finnish("Tieto- ja viestintätekniikan tutkinto-ohjelma",Some("Examensprogram inom informations- och kommunikationsteknik"),Some("Information Technology Master's Programme")))
+      }
     }
 
     "Maksettavat lukuvuosimaksutiedot" - {

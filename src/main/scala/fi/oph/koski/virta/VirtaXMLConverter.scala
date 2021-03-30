@@ -39,7 +39,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
       val lukuvuosimaksut: List[KorkeakoulunOpiskeluoikeudenLukuvuosimaksu] = (opiskeluoikeusNode \ "LukuvuosiMaksu").map(lukuvuosiMaksuTiedot).toList
 
-      val suoritukset: List[KorkeakouluSuoritus] = opiskeluOikeudenSuoritukset.flatMap(convertSuoritus(_, suoritusNodeList))
+      val suoritukset: List[KorkeakouluSuoritus] = opiskeluOikeudenSuoritukset.flatMap(convertSuoritus(Some(opiskeluoikeusNode), _, suoritusNodeList))
 
       val vahvistus = suoritukset.flatMap(_.vahvistus).sortBy(_.päivä)(localDateOrdering).lastOption
 
@@ -65,7 +65,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       (muutSuoritukset, opiskeluoikeus :: opiskeluOikeudet)
     }
 
-    val orphanSuoritukset = orphans.flatMap(convertSuoritus(_, suoritusNodeList))
+    val orphanSuoritukset = orphans.flatMap(convertSuoritus(None, _, suoritusNodeList))
     val orphanages = orphanSuoritukset.groupBy(_.toimipiste).toList.map { case (organisaatio, suoritukset) =>
       KorkeakoulunOpiskeluoikeus(
         lähdejärjestelmänId = Some(LähdejärjestelmäId(None, requiredKoodi("lahdejarjestelma", "virta"))),
@@ -158,7 +158,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     if (suoritusLöytyyKoulutuskoodilla) { // suoritus löytyy virta datasta vain jos se on valmis
       moveOpintojaksotUnderPäätasonSuoritusIfNecessary(suoritukset)
     } else if (opiskeluoikeusJaksot.nonEmpty && !päättynyt(tila)) {
-      val viimeisinTutkinto = tutkinto(opiskeluoikeusJaksot.maxBy(_.alku)(DateOrdering.localDateOrdering).koulutuskoodi)
+      val viimeisinTutkinto = tutkinto(opiskeluoikeusJaksot.maxBy(_.alku)(DateOrdering.localDateOrdering).koulutuskoodi, jaksonNimi(opiskeluoikeusNode))
       addKeskeneräinenTutkinnonSuoritus(tila, suoritukset, opiskeluoikeusNode, viimeisinTutkinto)
     } else {
       val opiskeluoikeusTila = tila.opiskeluoikeusjaksot.lastOption.map(_.tila)
@@ -199,7 +199,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       MuuKorkeakoulunSuoritus(
         koulutusmoduuli = MuuKorkeakoulunOpinto(
           tunniste = virtaOpiskeluoikeudenTyyppi,
-          nimi = nimi,
+          nimi = jaksonNimi(opiskeluoikeusNode).getOrElse(nimi),
           laajuus = laajuus(opiskeluoikeusNode)
         ),
         vahvistus = päivämääräVahvistus(vahvistusPäivä, org),
@@ -213,14 +213,18 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   private def päivämääräVahvistus(vahvistusPäivä: Option[LocalDate], organisaatio: Organisaatio): Option[Päivämäärävahvistus] =
     vahvistusPäivä.map(pvm => Päivämäärävahvistus(pvm, organisaatio))
 
-  def convertSuoritus(suoritus: Node, allNodes: List[Node]): Option[KorkeakouluSuoritus] = try {
+  def convertSuoritus(opiskeluoikeusNode: Option[Node], suoritus: Node, allNodes: List[Node]): Option[KorkeakouluSuoritus] = try {
     laji(suoritus) match {
       case "1" => // tutkinto
         val tutkinnonSuoritus = koulutuskoodi(suoritus).map { koulutuskoodi =>
+          val koulutusmoduuli = opiskeluoikeusNode match {
+            case Some(node) => tutkinto(koulutuskoodi, jaksonNimi(node))
+            case _ => tutkinto(koulutuskoodi, None)
+          }
           val osasuoritukset = childNodes(suoritus, allNodes).map(convertOpintojaksonSuoritus(_, allNodes))
           val päivämääräVahvistus = vahvistus(suoritus)
           KorkeakoulututkinnonSuoritus(
-            koulutusmoduuli = tutkinto(koulutuskoodi),
+            koulutusmoduuli = koulutusmoduuli,
             arviointi = arviointi(suoritus),
             vahvistus = päivämääräVahvistus,
             suorituskieli = None,
@@ -423,8 +427,13 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     requiredKoodi("virtaopiskeluoikeudentyyppi", (opiskeluoikeus \ "Tyyppi").text)
   }
 
-  private def tutkinto(koulutuskoodi: String): Korkeakoulututkinto = {
-    Korkeakoulututkinto(requiredKoodi("koulutus", koulutuskoodi))
+  private def tutkinto(koulutuskoodi: String, nimi: Option[LocalizedString] = None): Korkeakoulututkinto = {
+    nimi match {
+      case Some(nimi) => Korkeakoulututkinto(requiredKoodi("koulutus", koulutuskoodi).copy(
+        nimi = Some(nimi)
+      ))
+      case _ => Korkeakoulututkinto(requiredKoodi("koulutus", koulutuskoodi))
+    }
   }
 
   private def nimi(suoritus: Node): LocalizedString = {

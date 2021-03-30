@@ -23,9 +23,9 @@
                 <virta:Koulutuskunta>049</virta:Koulutuskunta>
                 <virta:Koulutuskieli>fi</virta:Koulutuskieli>
                 <virta:Rahoituslahde>1</virta:Rahoituslahde>
-                <virta:Nimi kieli="fi">Tieto- ja viestintätekniikan tutkinto-ohjelma</virta:Nimi>
-                <virta:Nimi kieli="sv">Examensprogram inom informations- och kommunikationsteknik</virta:Nimi>
-                <virta:Nimi kieli="en">Information Technology Master's Programme</virta:Nimi>
+                <virta:Nimi kieli="fi">Pelialan tutkinto-ohjelma</virta:Nimi>
+                <virta:Nimi kieli="sv">Examensprogram inom spelutveckling</virta:Nimi>
+                <virta:Nimi kieli="en">Game Development Master's Programme</virta:Nimi>
               </virta:Jakso>
               <virta:Koulutusala versio="ohjausala">7</virta:Koulutusala>
               <virta:Laajuus>
