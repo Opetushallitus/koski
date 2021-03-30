@@ -164,6 +164,17 @@ object PerusopetusExampleData {
     suoritustapa = Some(suoritustapaKoulutus)
   )
 
+  val seitsemännenLuokanSuoritusLaajuudet_ennen_1_8_2020 = kahdeksannenLuokanSuoritus.copy(
+    koulutusmoduuli = PerusopetuksenLuokkaAste(7, perusopetuksenDiaarinumero), luokka = "7", alkamispäivä = Some(date(2019, 8, 15)),
+    toimipiste = jyväskylänNormaalikoulu,
+    vahvistus = vahvistusPaikkakunnalla(date(2020, 7, 31))
+  )
+
+  val seitsemännenLuokanSuoritusLaajuudet_jälkeen_1_8_2020 = kahdeksannenLuokanSuoritus.copy(
+    koulutusmoduuli = PerusopetuksenLuokkaAste(7, perusopetuksenDiaarinumero), luokka = "7", alkamispäivä = Some(date(2020, 7, 15)),
+    vahvistus = vahvistusPaikkakunnalla(date(2020, 8, 1))
+  )
+
   val kahdeksannenLuokanLuokalleJääntiSuoritus = PerusopetuksenVuosiluokanSuoritus(
     koulutusmoduuli = PerusopetuksenLuokkaAste(8, perusopetuksenDiaarinumero), luokka = "8", alkamispäivä = Some(date(2013, 8, 15)),
     jääLuokalle = true,

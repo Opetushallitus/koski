@@ -1,6 +1,8 @@
 package fi.oph.koski.raportit
 
+import java.sql.Date
 import java.time.{LocalDate, LocalDateTime}
+
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio.Oid
@@ -28,6 +30,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     val (pakollisetPaikalliset, valinnaisetPaikalliset) = paikalliset.partition(isPakollinen)
     val kaikkiValinnaiset = valinnaisetPaikalliset.union(valinnaisetValtakunnalliset)
     val voimassaOlevatErityisenTuenPäätökset = opiskeluoikeudenLisätiedot.map(lt => combineErityisenTuenPäätökset(lt.erityisenTuenPäätös, lt.erityisenTuenPäätökset).filter(erityisentuenPäätösvoimassaPaivalla(_, hakupaiva))).getOrElse(List.empty)
+    val päätasonVahvistusPäivä = row.päätasonSuoritus.vahvistusPäivä
 
     PerusopetusRow(
       opiskeluoikeusOid = row.opiskeluoikeus.opiskeluoikeusOid,
@@ -51,31 +54,31 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
       jaaLuokalle = JsonSerializer.extract[Option[Boolean]](row.päätasonSuoritus.data \ "jääLuokalle").getOrElse(false),
       luokka = row.luokka,
       voimassaolevatVuosiluokat = row.voimassaolevatVuosiluokat.mkString(","),
-      aidinkieli = oppiaineenArvosanaTiedot("AI")(pakollisetValtakunnalliset),
+      aidinkieli = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "AI")(pakollisetValtakunnalliset),
       pakollisenAidinkielenOppimaara = getOppiaineenOppimäärä("AI")(pakollisetValtakunnalliset),
-      kieliA1 = oppiaineenArvosanaTiedot("A1")(pakollisetValtakunnalliset),
+      kieliA1 = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "A1")(pakollisetValtakunnalliset),
       kieliA1Oppimaara = getOppiaineenOppimäärä("A1")(pakollisetValtakunnalliset),
-      kieliA2 = oppiaineenArvosanaTiedot("A2")(pakollisetValtakunnalliset),
+      kieliA2 = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "A2")(pakollisetValtakunnalliset),
       kieliA2Oppimaara = getOppiaineenOppimäärä("A2")(pakollisetValtakunnalliset),
-      kieliB = oppiaineenArvosanaTiedot("B1")(pakollisetValtakunnalliset),
+      kieliB = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "B1")(pakollisetValtakunnalliset),
       kieliBOppimaara = getOppiaineenOppimäärä("B1")(pakollisetValtakunnalliset),
-      uskonto = oppiaineenArvosanaTiedot("KT", "ET")(pakollisetValtakunnalliset),
+      uskonto = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "KT", "ET")(pakollisetValtakunnalliset),
       uskonnonOppimaara = uskonnonOppimääräIfNotElämänkatsomustieto(pakollisetValtakunnalliset),
-      historia = oppiaineenArvosanaTiedot("HI")(pakollisetValtakunnalliset),
-      yhteiskuntaoppi = oppiaineenArvosanaTiedot("YH")(pakollisetValtakunnalliset),
-      matematiikka = oppiaineenArvosanaTiedot("MA")(pakollisetValtakunnalliset),
-      kemia = oppiaineenArvosanaTiedot("KE")(pakollisetValtakunnalliset),
-      fysiikka = oppiaineenArvosanaTiedot("FY")(pakollisetValtakunnalliset),
-      biologia = oppiaineenArvosanaTiedot("BI")(pakollisetValtakunnalliset),
-      maantieto = oppiaineenArvosanaTiedot("GE")(pakollisetValtakunnalliset),
-      musiikki = oppiaineenArvosanaTiedot("MU")(pakollisetValtakunnalliset),
-      kuvataide = oppiaineenArvosanaTiedot("KU")(pakollisetValtakunnalliset),
-      kotitalous = oppiaineenArvosanaTiedot("KO")(pakollisetValtakunnalliset),
-      terveystieto = oppiaineenArvosanaTiedot("TE")(pakollisetValtakunnalliset),
-      kasityo = oppiaineenArvosanaTiedot("KS")(pakollisetValtakunnalliset),
-      liikunta = oppiaineenArvosanaTiedot("LI")(pakollisetValtakunnalliset),
-      ymparistooppi = oppiaineenArvosanaTiedot("YL")(pakollisetValtakunnalliset),
-      opintoohjaus = oppiaineenArvosanaTiedot("OP")(pakollisetValtakunnalliset),
+      historia = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "HI")(pakollisetValtakunnalliset),
+      yhteiskuntaoppi = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "YH")(pakollisetValtakunnalliset),
+      matematiikka = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "MA")(pakollisetValtakunnalliset),
+      kemia = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "KE")(pakollisetValtakunnalliset),
+      fysiikka = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "FY")(pakollisetValtakunnalliset),
+      biologia = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "BI")(pakollisetValtakunnalliset),
+      maantieto = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "GE")(pakollisetValtakunnalliset),
+      musiikki = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "MU")(pakollisetValtakunnalliset),
+      kuvataide = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "KU")(pakollisetValtakunnalliset),
+      kotitalous = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "KO")(pakollisetValtakunnalliset),
+      terveystieto = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "TE")(pakollisetValtakunnalliset),
+      kasityo = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "KS")(pakollisetValtakunnalliset),
+      liikunta = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "LI")(pakollisetValtakunnalliset),
+      ymparistooppi = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "YL")(pakollisetValtakunnalliset),
+      opintoohjaus = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "OP")(pakollisetValtakunnalliset),
       kayttaymisenArvio = JsonSerializer.extract[Option[PerusopetuksenKäyttäytymisenArviointi]](row.päätasonSuoritus.data \ "käyttäytymisenArvio").map(_.arvosana.koodiarvo).getOrElse(""),
       paikallistenOppiaineidenKoodit = paikalliset.map(_.koulutusmoduuliKoodiarvo).mkString(","),
       pakollisetPaikalliset = pakollisetPaikalliset.map(nimiJaKoodi).mkString(","),
@@ -131,17 +134,22 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     JsonSerializer.extract[Option[Boolean]](osasuoritus.data \ "koulutusmoduuli" \ "pakollinen").getOrElse(false)
   }
 
-  private def oppiaineenArvosanaTiedot(koodistoKoodit: String*)(oppiaineidenSuoritukset: Seq[ROsasuoritusRow]) = {
+  private def oppiaineenArvosanaTiedot(päätasonVahvistusPäivä: Option[Date], koodistoKoodit: String*)(oppiaineidenSuoritukset: Seq[ROsasuoritusRow]) = {
     oppiaineidenSuoritukset.filter(s => koodistoKoodit.contains(s.koulutusmoduuliKoodiarvo)) match {
       case Nil => "Oppiaine puuttuu"
-      case suoritukset@_ => suoritukset.map(oppiaineenArvosanaJaYksilöllistettyTieto).mkString(",")
+      case suoritukset@_ => suoritukset.map(oppiaineenArvosanaJaYksilöllistettyTieto(_, päätasonVahvistusPäivä)).mkString(",")
     }
   }
 
-  private def oppiaineenArvosanaJaYksilöllistettyTieto(osasuoritus: ROsasuoritusRow) = {
-    osasuoritus.arviointiArvosanaKoodiarvo
-      .map(arvosana => arvosana + täppäIfYksilöllistetty(osasuoritus))
-      .getOrElse("Arvosana puuttuu")
+  private def oppiaineenArvosanaJaYksilöllistettyTieto(osasuoritus: ROsasuoritusRow, päätasonVahvistusPäivä: Option[Date]) = {
+    val arvosana = osasuoritus.arviointiArvosanaKoodiarvo.getOrElse("Arvosana puuttuu")
+    val viimeinenPäiväIlmanLaajuuksia = Date.valueOf(LocalDate.of(2020,7,31))
+    if (päätasonVahvistusPäivä.exists(_.after(viimeinenPäiväIlmanLaajuuksia)) && osasuoritus.koulutusmoduuliPakollinen.getOrElse(false)) {
+      val laajuus = osasuoritus.koulutusmoduuliLaajuusArvo.getOrElse("Ei laajuutta")
+      s"$arvosana${täppäIfYksilöllistetty(osasuoritus)} $laajuus"
+    } else {
+      s"$arvosana${täppäIfYksilöllistetty(osasuoritus)}"
+    }
   }
 
   private def täppäIfYksilöllistetty(osasuoritus: ROsasuoritusRow) = {
