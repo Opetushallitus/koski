@@ -180,7 +180,7 @@ object ValpasHakutilanneLaajatTiedot {
       hakemusUrl = hakukooste.hakemusUrl,
       aktiivinen = hakukooste.hakutoiveet.exists(_.isAktiivinen),
       hakuAlkaa = hakukooste.haunAlkamispaivamaara,
-      hakutoiveet = hakukooste.hakutoiveet.map(ValpasHakutoive.apply),
+      hakutoiveet = hakukooste.hakutoiveet.sortBy(_.hakutoivenumero).map(ValpasHakutoive.apply),
       debugHakukooste = Some(hakukooste)
     )
 }
