@@ -79,6 +79,8 @@ export const getLocalized = (
     ? undefined
     : localizedString[getLanguage()] ||
       localizedString["fi"] ||
+      localizedString["sv"] ||
+      localizedString["en"] ||
       "KÄÄNNÖS PUUTTUU"
 
 export const formatFixedNumber = (
