@@ -181,6 +181,7 @@ object ValpasHakutilanneLaajatTiedot {
       aktiivinen = hakukooste.hakutoiveet.exists(_.isAktiivinen),
       hakuAlkaa = hakukooste.haunAlkamispaivamaara,
       hakutoiveet = hakukooste.hakutoiveet.map(ValpasHakutoive.apply),
+      debugHakukooste = Some(hakukooste)
     )
 }
 
@@ -190,7 +191,8 @@ case class ValpasHakutilanneLaajatTiedot(
   hakemusOid: String,
   aktiivinen: Boolean,
   hakuAlkaa: LocalDateTime,
-  hakutoiveet: Seq[ValpasHakutoive]
+  hakutoiveet: Seq[ValpasHakutoive],
+  debugHakukooste: Option[Hakukooste]
 ) extends ValpasHakutilanne
 
 object ValpasHakutilanneSuppeatTiedot {
