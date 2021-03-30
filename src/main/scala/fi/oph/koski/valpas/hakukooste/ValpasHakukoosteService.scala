@@ -7,6 +7,10 @@ import fi.oph.koski.valpas.repository.{ValpasHenkilö, ValpasHenkilöLaajatTiedo
 
 trait ValpasHakukoosteService {
   def getHakukoosteet(oppijaOids: Set[ValpasHenkilö.Oid]): Either[HttpStatus, Seq[Hakukooste]]
+
+  def getYhteishakujenHakukoosteet(oppijaOids: Set[ValpasHenkilö.Oid]): Either[HttpStatus, Seq[Hakukooste]] = {
+    getHakukoosteet(oppijaOids).map(_.filter(hk => hk.hakutapa.koodiarvo == "01"))
+  }
 }
 
 object ValpasHakukoosteService {
