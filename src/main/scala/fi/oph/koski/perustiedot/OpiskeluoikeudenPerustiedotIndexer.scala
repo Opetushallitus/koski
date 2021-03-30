@@ -9,6 +9,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedot.docId
 import fi.oph.koski.schema.Henkilö._
+import fi.oph.koski.util.DateOrdering
 import fi.oph.koski.util.SortOrder.Descending
 import org.json4s._
 import org.json4s.jackson.JsonMethods
@@ -98,14 +99,15 @@ class OpiskeluoikeudenPerustiedotIndexer(
 
   def sync(refresh: Boolean): Unit = synchronized {
     logger.debug("Checking for sync rows")
-    val rows = perustiedotSyncRepository.queuedUpdates(1000)
-    if (rows.nonEmpty) {
-      logger.debug(s"Syncing ${rows.length} rows")
-      rows.groupBy(_.upsert) foreach { case (upsert, rows) =>
-        updatePerustiedotRaw(rows.map(_.data), upsert, refresh)
+    val allRows = perustiedotSyncRepository.queuedUpdates(1000)
+    val rowsToBeSync = allRows.groupBy(_.opiskeluoikeusId).mapValues(_.sortBy(_.aikaleima)(DateOrdering.ascedingSqlTimestampOrdering).last).map(_._2).toSeq
+    if (allRows.nonEmpty) {
+      logger.debug(s"Syncing ${allRows.length} rows")
+      rowsToBeSync.groupBy(_.upsert) foreach { case (upsert, syncRows) =>
+        updatePerustiedotRaw(syncRows.map(_.data), upsert, refresh)
       }
-      perustiedotSyncRepository.deleteFromQueue(rows.map(_.id))
-      logger.debug(s"Done syncing ${rows.length} rows")
+      perustiedotSyncRepository.deleteFromQueue(allRows.map(_.id))
+      logger.debug(s"Done syncing ${allRows.length} rows")
     }
   }
 
@@ -130,7 +132,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
           None
         }
       }
-      perustiedotSyncRepository.addToSyncQueueRaw(toSyncAgain, upsert)
+      perustiedotSyncRepository.addToSyncQueueRaw(toSyncAgain, upsert) // FIXME: Sivuvaikutuksena timestamppi päivittyy, kun rivi lisätään uudestaan jonoon. Oikea korjaus olisi käyttää opiskeluoikeuden versionumeroa.
       val msg = s"""Elasticsearch indexing failed for ids ${failedOpiskeluoikeusIds.mkString(", ")}.
 Response from ES: ${JsonMethods.pretty(response)}.
 Will retry soon."""
