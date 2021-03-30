@@ -166,11 +166,11 @@ case class OppijaNumerorekisteriYhteystiedotRyhma(
   )
 
   def yhteystietoarvo(tyyppi: String): Option[String] = yhteystieto
-    .find(yt => yt.yhteystietoTyyppi == tyyppi)
-    .map(yt => yt.yhteystietoArvo)
+    .find(_.yhteystietoTyyppi == tyyppi)
+    .flatMap(_.yhteystietoArvo)
 }
 
 case class OppijaNumerorekisteriYhteystieto(
-  yhteystietoArvo: String,
+  yhteystietoArvo: Option[String],
   yhteystietoTyyppi: String
 )
