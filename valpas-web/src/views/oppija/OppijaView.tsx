@@ -62,7 +62,10 @@ export const OppijaView = (props: OppijaViewProps) => {
                   </InfoTooltip>
                 </CardHeader>
                 <CardBody>
-                  <OppijanYhteystiedot oppija={oppijaData} />
+                  <OppijanYhteystiedot
+                    henkilö={oppijaData.oppija.henkilö}
+                    yhteystiedot={oppijaData.yhteystiedot}
+                  />
                 </CardBody>
               </BorderlessCard>
             </Column>
