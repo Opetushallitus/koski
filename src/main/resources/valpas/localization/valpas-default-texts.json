@@ -75,6 +75,7 @@
   "oppija__valintatilanne": "Valinta",
   "oppija__pisteet": "Pisteet",
   "oppija__alin_pistemäärä": "Alin pistemäärä",
+  "oppija__turvakielto_varoitus": "Oppijalla on turvakielto. Yhteystietoja saa käyttää ainoastaan oppivelvollisuuden valvontaan.",
   "kayttooikeusrooli_OPPILAITOS_HAKEUTUMINEN": "Oppilaitoksen hakeutumisen valvonta",
   "kayttooikeusrooli_OPPILAITOS_SUORITTAMINEN": "Oppilaitoksen oppivelvollisuuden suorittamisen valvonta",
   "kayttooikeusrooli_OPPILAITOS_MAKSUTTOMUUS": "Oppilaitoksen opiskelun maksuttomuustietojen määrittely",

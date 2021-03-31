@@ -1,6 +1,7 @@
 import {
   $$,
   contentEventuallyEquals,
+  expectElementNotVisible,
   goToLocation,
   loginAs,
   resetMockData,
@@ -24,6 +25,10 @@ const ilmoitetutYhteystiedotEquals = (expected: string) =>
   contentEventuallyEquals("#ilmoitetut-yhteystiedot", expected)
 const virallisetYhteystiedotEquals = (expected: string) =>
   contentEventuallyEquals("#viralliset-yhteystiedot", expected)
+const turvakieltoVaroitusEquals = (expected: string) =>
+  contentEventuallyEquals("#turvakielto-varoitus", expected)
+const turvakieltoVaroitusNotVisible = () =>
+  expectElementNotVisible("#turvakielto-varoitus")
 
 describe("Oppijakohtainen näkymä", () => {
   it("Näyttää oppijan tiedot, johon käyttäjällä on lukuoikeus", async () => {
@@ -201,7 +206,7 @@ describe("Oppijakohtainen näkymä", () => {
     `)
   })
 
-  it("Näyttää oppijan yhteystiedot", async () => {
+  it("Näyttää oppijan yhteystiedot ilman turvakieltovaroitusta", async () => {
     await loginAs(
       "/virkailija/oppijat/1.2.246.562.24.00000000001",
       "valpas-jkl-normaali",
@@ -235,6 +240,8 @@ describe("Oppijakohtainen näkymä", () => {
       Ilmoitetut yhteystiedot
       keyboard_arrow_rightYhteystiedot – 9.3.2020
     `)
+
+    await turvakieltoVaroitusNotVisible()
   })
 
   it("Yhteystietoja ei näytetä, jos oppijalla on turvakielto", async () => {
@@ -243,6 +250,11 @@ describe("Oppijakohtainen näkymä", () => {
       "valpas-jkl-normaali",
       "valpas-jkl-normaali"
     )
+
+    await turvakieltoVaroitusEquals(`
+      warning
+      Oppijalla on turvakielto. Yhteystietoja saa käyttää ainoastaan oppivelvollisuuden valvontaan.
+    `)
 
     await virallisetYhteystiedotEquals(`
       Viralliset yhteystiedot

@@ -20,7 +20,7 @@ const jklNormaalikouluTableContent = `
   LuokallejäänytYsiluokkalainenKouluvaihtoMuualta Valpas	2.11.2005	9B	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
   Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas	22.11.2005	9C	Hakenut open_in_new	Ei toteutettu	Ei toteutettu	Ei toteutettu
   Päällekkäisiä Oppivelvollisuuksia	6.6.2005	9B	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
-  Turvakielto Valpas	29.9.2004	9C	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
+  Turvakielto Valpas	29.9.2004	9C	Hakenut open_in_new	Ei toteutettu	Ei toteutettu	Ei toteutettu
   UseampiYsiluokkaSamassaKoulussa Valpas	25.8.2005	9D	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
   UseampiYsiluokkaSamassaKoulussa Valpas	25.8.2005	9C	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
   Ysiluokka-valmis-keväällä-2021 Valpas	19.6.2005	9C	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu

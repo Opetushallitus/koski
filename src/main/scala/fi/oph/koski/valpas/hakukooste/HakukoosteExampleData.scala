@@ -49,6 +49,16 @@ object HakukoosteExampleData {
         ),
       )),
     haku(
+      ValpasMockOppijat.turvakieltoOppija,
+      List(
+        hakutoive(
+          hakukohdeOid = generateOid(),
+          hakukohdeOrganisaatio = MockOrganisaatiot.ressunLukio,
+          hakukohdeNimi = "Lukio",
+          koulutusNimi = "Lukiokoulutus"
+        ).copy(alinValintaPistemaara = Some(9.01), pisteet = Some(9)),
+      )),
+    haku(
       ValpasMockOppijat.luokalleJäänytYsiluokkalainen,
       List(
         hakutoive(
