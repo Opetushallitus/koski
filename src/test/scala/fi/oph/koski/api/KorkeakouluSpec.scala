@@ -46,6 +46,29 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
           opiskeluoikeus.suoritukset.head.koulutusmoduuli.nimi.get("fi") should equal("Fil. maist., fysiikka")
         }
       }
+
+      "Opiskeluoikeusjaksoilta voi löytyä tarkentava nimi" in {
+        val opiskeluoikeus = opiskeluoikeudet("250668-293Y", "02470").head
+
+        opiskeluoikeus.tila.opiskeluoikeusjaksot.head.nimi.get.values.values.toList should equal (List("Tieto- ja viestintätekniikan tutkinto-ohjelma", "Examensprogram inom informations- och kommunikationsteknik", "Information Technology Master's Programme"))
+      }
+
+      "Jos Virran Jakso-tietorakenteessa on määritelty nimi, sitä käytetään myös tutkinnon nimenä" in {
+        val opiskeluoikeus = opiskeluoikeudet("250668-293Y", "02470").head
+
+        opiskeluoikeus.suoritukset.head.koulutusmoduuli.nimi should equal (Finnish("Tieto- ja viestintätekniikan tutkinto-ohjelma",Some("Examensprogram inom informations- och kommunikationsteknik"),Some("Information Technology Master's Programme")))
+      }
+    }
+
+    "Maksettavat lukuvuosimaksutiedot" - {
+      "Koski näyttää maksutiedot" in {
+        val opiskeluoikeus = opiskeluoikeudet("250668-293Y", "02470").head
+
+        val maksettavatLukuvuosimaksut = opiskeluoikeus.lisätiedot.get.maksettavatLukuvuosimaksut.get.head
+        maksettavatLukuvuosimaksut.alku.toString should equal("2015-10-20")
+        maksettavatLukuvuosimaksut.loppu.get.toString should equal("2016-04-12")
+        maksettavatLukuvuosimaksut.summa.get should equal (4000)
+      }
     }
 
     "Haettaessa" - {
@@ -97,6 +120,13 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
             .get
 
           opiskeluoikeus.lisätiedot.get.lukukausiIlmoittautuminen should equal(None)
+        }
+
+        "Lukuvuosimaksutiedot löytyvät" in {
+          val opiskeluoikeus = opiskeluoikeudet("250668-293Y", "10076").head
+
+          val maksutiedot = opiskeluoikeus.lisätiedot.get.lukukausiIlmoittautuminen.get.ilmoittautumisjaksot.map(_.maksetutLukuvuosimaksut.getOrElse("").toString)
+          maksutiedot should equal(List("Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu(Some(true),Some(2000),Some(2000))", "", "", "", "", ""))
         }
       }
 

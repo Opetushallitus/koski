@@ -23,11 +23,24 @@
                 <virta:Koulutuskunta>049</virta:Koulutuskunta>
                 <virta:Koulutuskieli>fi</virta:Koulutuskieli>
                 <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Pelialan tutkinto-ohjelma</virta:Nimi>
+                <virta:Nimi kieli="sv">Examensprogram inom spelutveckling</virta:Nimi>
+                <virta:Nimi kieli="en">Game Development Master's Programme</virta:Nimi>
               </virta:Jakso>
               <virta:Koulutusala versio="ohjausala">7</virta:Koulutusala>
               <virta:Laajuus>
                 <virta:Opintopiste>240</virta:Opintopiste>
               </virta:Laajuus>
+              <virta:LukuvuosiMaksu>
+                <virta:AlkuPvm>2015-08-20</virta:AlkuPvm>
+                <virta:LoppuPvm>2016-07-31</virta:LoppuPvm>
+                <virta:Summa>4000</virta:Summa>
+              </virta:LukuvuosiMaksu>
+              <virta:LukuvuosiMaksu>
+                <virta:AlkuPvm>2016-08-20</virta:AlkuPvm>
+                <virta:LoppuPvm>2017-07-31</virta:LoppuPvm>
+                <virta:Summa>5000</virta:Summa>
+              </virta:LukuvuosiMaksu>
             </virta:Opiskeluoikeus>
           </virta:Opiskeluoikeudet>
           <virta:LukukausiIlmoittautumiset>
@@ -37,6 +50,11 @@
               <virta:IlmoittautumisPvm>2015-08-20</virta:IlmoittautumisPvm>
               <virta:AlkuPvm>2015-08-01</virta:AlkuPvm>
               <virta:LoppuPvm>2015-12-31</virta:LoppuPvm>
+              <virta:LukuvuosiMaksu opiskeluoikeusAvain="888999">
+                <virta:Maksettu>1</virta:Maksettu>
+                <virta:Summa>2000</virta:Summa>
+                <virta:Apuraha>2000</virta:Apuraha>
+              </virta:LukuvuosiMaksu>
             </virta:LukukausiIlmoittautuminen>
             <virta:LukukausiIlmoittautuminen opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
               <virta:Myontaja>02629</virta:Myontaja>
@@ -44,6 +62,11 @@
               <virta:IlmoittautumisPvm>2016-01-01</virta:IlmoittautumisPvm>
               <virta:AlkuPvm>2016-01-01</virta:AlkuPvm>
               <virta:LoppuPvm>2016-07-31</virta:LoppuPvm>
+              <virta:LukuvuosiMaksu opiskeluoikeusAvain="888999">
+                <virta:Maksettu>0</virta:Maksettu>
+                <virta:Summa>2000</virta:Summa>
+                <virta:Apuraha>3000</virta:Apuraha>
+              </virta:LukuvuosiMaksu>
             </virta:LukukausiIlmoittautuminen>
             <virta:LukukausiIlmoittautuminen opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
               <virta:Myontaja>02629</virta:Myontaja>

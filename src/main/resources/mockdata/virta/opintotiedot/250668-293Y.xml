@@ -35,11 +35,19 @@
                 <virta:AlkuPvm>2015-10-20</virta:AlkuPvm>
                 <virta:LoppuPvm>2016-04-12</virta:LoppuPvm>
                 <virta:Koulutuskunta>398</virta:Koulutuskunta>
+                <virta:Nimi kieli="fi">Tieto- ja viestintätekniikan tutkinto-ohjelma</virta:Nimi>
+                <virta:Nimi kieli="sv">Examensprogram inom informations- och kommunikationsteknik</virta:Nimi>
+                <virta:Nimi kieli="en">Information Technology Master's Programme</virta:Nimi>
               </virta:Jakso>
               <virta:Koulutusala versio="opmala">2</virta:Koulutusala>
               <virta:Laajuus>
                 <virta:Opintopiste>0.000000</virta:Opintopiste>
               </virta:Laajuus>
+              <virta:LukuvuosiMaksu>
+                <virta:AlkuPvm>2015-10-20</virta:AlkuPvm>
+                <virta:LoppuPvm>2016-04-12</virta:LoppuPvm>
+                <virta:Summa>4000</virta:Summa>
+              </virta:LukuvuosiMaksu>
             </virta:Opiskeluoikeus>
           </virta:Opiskeluoikeudet>
           <virta:Opintosuoritukset>
@@ -3214,6 +3222,11 @@
               <virta:LoppuPvm>2008-12-31</virta:LoppuPvm>
               <virta:YlioppilaskuntaJasen>0</virta:YlioppilaskuntaJasen>
               <virta:YTHSMaksu>0</virta:YTHSMaksu>
+              <virta:LukuvuosiMaksu opiskeluoikeusAvain="888999">
+                <virta:Maksettu>1</virta:Maksettu>
+                <virta:Summa>2000</virta:Summa>
+                <virta:Apuraha>2000</virta:Apuraha>
+              </virta:LukuvuosiMaksu>
             </virta:LukukausiIlmoittautuminen>
           </virta:LukukausiIlmoittautumiset>
           <virta:Opintosuoritukset>

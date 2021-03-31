@@ -1,9 +1,10 @@
 package fi.oph.koski.schema
 
-import java.time.LocalDate
+import fi.oph.koski.schema.LocalizedString.unlocalized
 
+import java.time.LocalDate
 import fi.oph.koski.schema.annotation._
-import fi.oph.scalaschema.annotation.{Description, Title}
+import fi.oph.scalaschema.annotation.{Description, Discriminator, Title}
 
 case class KorkeakoulunOpiskeluoikeus(
   oid: Option[String] = None,
@@ -48,11 +49,20 @@ case class KorkeakoulunOpiskeluoikeudenLisätiedot(
   @Title("Korkeakoulun opiskeluoikeuden tyyppi")
   @KoodistoUri("virtaopiskeluoikeudentyyppi")
   virtaOpiskeluoikeudenTyyppi: Option[Koodistokoodiviite],
+  @Title("Maksettavat lukuvuosimaksut")
+  maksettavatLukuvuosimaksut: Option[Seq[KorkeakoulunOpiskeluoikeudenLukuvuosimaksu]] = None,
   lukukausiIlmoittautuminen: Option[Lukukausi_Ilmoittautuminen] = None,
   järjestäväOrganisaatio: Option[Oppilaitos] = None
 ) extends OpiskeluoikeudenLisätiedot {
   def ensisijaisuusVoimassa(d: LocalDate): Boolean = ensisijaisuus.exists(_.exists((j: Aikajakso) => j.contains(d)))
 }
+
+@Description("Korkeakoulun opiskeluoikeuden lukuvuosimaksut")
+case class KorkeakoulunOpiskeluoikeudenLukuvuosimaksu(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  summa: Option[Int]
+) extends Jakso
 
 trait KorkeakouluSuoritus extends PäätasonSuoritus with MahdollisestiSuorituskielellinen with Toimipisteellinen {
   def toimipiste: Oppilaitos
@@ -107,8 +117,11 @@ case class MuuKorkeakoulunSuoritus (
 @Description("Korkeakoulututkinnon tunnistetiedot")
 case class Korkeakoulututkinto(
   tunniste: Koodistokoodiviite,
-  koulutustyyppi: Option[Koodistokoodiviite] = None
-) extends Koulutus with Tutkinto with Laajuudeton
+  koulutustyyppi: Option[Koodistokoodiviite] = None,
+  virtaNimi: Option[LocalizedString]
+) extends Koulutus with Tutkinto with Laajuudeton {
+  override def nimi: LocalizedString = virtaNimi.getOrElse(tunniste.nimi.getOrElse(unlocalized(tunniste.koodiarvo)))
+}
 
 @Description("Korkeakoulun opintojakson tunnistetiedot")
 case class KorkeakoulunOpintojakso(
@@ -132,6 +145,7 @@ case class KorkeakoulunOpiskeluoikeudenTila(
 
 case class KorkeakoulunOpiskeluoikeusjakso(
   alku: LocalDate,
+  nimi: Option[LocalizedString],
   @KoodistoUri("virtaopiskeluoikeudentila")
   tila: Koodistokoodiviite
 ) extends Opiskeluoikeusjakso {
@@ -167,5 +181,14 @@ case class Lukukausi_Ilmoittautumisjakso(
   @KoodistoUri("virtalukukausiilmtila")
   tila: Koodistokoodiviite,
   ylioppilaskunnanJäsen: Option[Boolean] = None,
-  ythsMaksettu: Option[Boolean] = None
+  ythsMaksettu: Option[Boolean] = None,
+  @Title("Lukuvuosimaksu")
+  maksetutLukuvuosimaksut: Option[Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu] = None
 ) extends Jakso
+
+case class Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu(
+  @Title("Maksettu kokonaan")
+  maksettu: Option[Boolean] = None,
+  summa: Option[Int] = None,
+  apuraha: Option[Int] = None
+)

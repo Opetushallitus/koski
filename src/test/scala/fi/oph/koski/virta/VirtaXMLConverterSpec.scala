@@ -14,7 +14,7 @@ import scala.xml.Elem
 class VirtaXMLConverterSpec extends FreeSpec with Matchers with OptionValues {
 
   val converter = VirtaXMLConverter(MockOppilaitosRepository, MockKoodistoViitePalvelu, MockOrganisaatioRepository)
-  private def convertSuoritus(suoritus: Elem) = converter.convertSuoritus(suoritus, List(suoritus))
+  private def convertSuoritus(suoritus: Elem) = converter.convertSuoritus(None, suoritus, List(suoritus))
 
   def baseSuoritus: Elem = suoritusWithOrganisaatio(None)
   def suoritusWithOrganisaatio(organisaatio: Option[Elem]): Elem = <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kul-49.3400" avain="1114935190">
