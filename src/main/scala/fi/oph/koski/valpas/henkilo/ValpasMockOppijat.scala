@@ -1,7 +1,6 @@
 package fi.oph.koski.valpas.henkilo
 
-import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat}
-import fi.oph.koski.schema.UusiHenkilö
+import fi.oph.koski.henkilo.MockOppijat
 
 object ValpasMockOppijat {
   private val valpasOppijat = new MockOppijat
@@ -33,6 +32,7 @@ object ValpasMockOppijat {
   val eronnutOppijaTarkastelupäivänä = valpasOppijat.oppija("Eroaja-samana-päivänä", "Valpas", "270805A084V")
   val eronnutOppijaTarkastelupäivänJälkeen = valpasOppijat.oppija("Eroaja-myöhemmin", "Valpas", "290905A840B")
   val oppivelvollinenAloittanutJaEronnutTarkastelupäivänJälkeen = valpasOppijat.oppija("Aloittanut-ja-eronnut-myöhemmin", "Valpas", "270405A450E")
+  val hakukohteidenHakuEpäonnistuu = valpasOppijat.oppija("Epäonninen", "Valpas", "301005A336J")
 
   def defaultOppijat = valpasOppijat.getOppijat
 }

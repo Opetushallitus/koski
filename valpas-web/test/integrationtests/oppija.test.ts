@@ -92,11 +92,11 @@ describe("Oppijakohtainen näkymä", () => {
 
   it("Näyttää oppijan muut tiedot vaikka hakukoostekysely epäonnistuu", async () => {
     await loginAs(
-      "/virkailija/oppijat/1.2.246.562.24.00000000015",
+      "/virkailija/oppijat/1.2.246.562.24.00000000028",
       "valpas-jkl-normaali",
       "valpas-jkl-normaali"
     )
-    await mainHeadingEquals("LukionAloittanut Valpas (290405A871A)")
+    await mainHeadingEquals("Epäonninen Valpas (301005A336J)")
     await hautEquals("Virhe oppijan hakuhistorian hakemisessa")
   })
 
