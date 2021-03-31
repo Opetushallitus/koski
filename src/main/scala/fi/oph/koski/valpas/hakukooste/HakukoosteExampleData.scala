@@ -60,14 +60,24 @@ object HakukoosteExampleData {
       ))),
     haku(
       ValpasMockOppijat.luokalleJäänytYsiluokkalainen,
-      Vector(Vector(
-        hakutoive(
-          hakukohdeOid = generateOid(),
-          hakukohdeOrganisaatio = "",
-          hakukohdeNimi = "Lukio",
-          koulutusNimi = "Lukiokoulutus"
+      Vector(
+        Vector(
+          hakutoive(
+            hakukohdeOid = generateOid(),
+            hakukohdeOrganisaatio = MockOrganisaatiot.helsinginMedialukio,
+            hakukohdeNimi = "Lukio",
+            koulutusNimi = "Lukiokoulutus"
+          ),
         ),
-      ))),
+        Vector(
+          hakutoive(
+            hakukohdeOid = generateOid(),
+            hakukohdeOrganisaatio = MockOrganisaatiot.varsinaisSuomenKansanopisto,
+            hakukohdeNimi = "Vapaan sivistystyön koulutus oppivelvollisille 2021-2022",
+            koulutusNimi = "Vapaan sivistystyön koulutus oppivelvollisille"
+          ),
+        )
+      )),
   ).flatten
 
   def haku(
