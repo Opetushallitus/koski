@@ -37,7 +37,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         .map(tila => KorkeakoulunOpiskeluoikeusjakso(alkuPvm(tila), jaksonNimi(opiskeluoikeusNode), requiredKoodi("virtaopiskeluoikeudentila", tila \ "Koodi" text)))
         .toList)
 
-      val lukuvuosimaksut: List[KorkeakoulunOpiskeluoikeudenLukuvuosimaksu] = (opiskeluoikeusNode \ "LukuvuosiMaksu").map(lukuvuosiMaksuTiedot).toList
+      val lukuvuosimaksut: Seq[KorkeakoulunOpiskeluoikeudenLukuvuosimaksu] = (opiskeluoikeusNode \ "LukuvuosiMaksu").map(lukuvuosiMaksuTiedot)
 
       val suoritukset: List[KorkeakouluSuoritus] = opiskeluOikeudenSuoritukset.flatMap(convertSuoritus(Some(opiskeluoikeusNode), _, suoritusNodeList))
 
@@ -308,8 +308,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     val päivämääräVahvistus = vahvistus(suoritus)
     KorkeakoulunOpintojaksonSuoritus(
       koulutusmoduuli = KorkeakoulunOpintojakso(
-        tunniste = PaikallinenKoodi((suoritus \\ "@koulutusmoduulitunniste").text, nimi(suoritus)),
-        nimi = nimi(suoritus),
+        tunniste = PaikallinenKoodi((suoritus \\ "@koulutusmoduulitunniste").text, suorituksenNimi(suoritus)),
+        nimi = suorituksenNimi(suoritus),
         laajuus = laajuus(suoritus).orElse(laajuudetYhteensä(osasuoritukset))
       ),
       arviointi = arviointi(suoritus),
@@ -436,13 +436,20 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     }
   }
 
-  private def nimi(suoritus: Node): LocalizedString = {
-    sanitize((suoritus \ "Nimi" map { nimi => (nimi \ "@kieli").text -> nimi.text }).toMap).getOrElse(finnish("Suoritus: " + avain(suoritus)))
+  private def nimi(node: Node): Option[LocalizedString] = {
+    sanitize((node \ "Nimi" map { nimi => (nimi \ "@kieli").text -> nimi.text }).toMap)
+  }
+
+  private def suorituksenNimi(suoritus: Node): LocalizedString = {
+    nimi(suoritus).getOrElse(finnish("Suoritus: " + avain(suoritus)))
   }
 
   private def jaksonNimi(opiskeluoikeusNode: Node): Option[LocalizedString] = {
     val jakso = opiskeluoikeusNode \ "Jakso"
-    sanitize((jakso \ "Nimi" map { nimi => (nimi \ "@kieli").text -> nimi.text }).toMap)
+    jakso.headOption match {
+      case Some(node) => nimi(node)
+      case _ => None
+    }
   }
 
   private def oppilaitos(node: Node, vahvistusPäivä: Option[LocalDate]): Oppilaitos =

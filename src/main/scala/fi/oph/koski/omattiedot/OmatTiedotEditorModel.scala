@@ -77,16 +77,13 @@ object OmatTiedotEditorModel extends Timing {
   private def piilotaLukuvuosimaksutiedot(oppija: Oppija)(implicit koskiSession: KoskiSpecificSession) = {
     val korjatutOpiskeluoikeudet = oppija.opiskeluoikeudet.map {
       case oo: KorkeakoulunOpiskeluoikeus if oo.lisätiedot.nonEmpty => {
-        val korjatutLukukausiIlmottautuminen = oo.lisätiedot.get.lukukausiIlmoittautuminen match {
-          case Some(ilmo) => {
-            Some(ilmo.copy(
-              ilmoittautumisjaksot = ilmo.ilmoittautumisjaksot.map(_.copy(
-                maksetutLukuvuosimaksut = None
-              ))
+        val korjatutLukukausiIlmottautuminen = oo.lisätiedot.get.lukukausiIlmoittautuminen.flatMap(ilmo =>
+          Some(ilmo.copy(
+            ilmoittautumisjaksot = ilmo.ilmoittautumisjaksot.map(_.copy(
+              maksetutLukuvuosimaksut = None
             ))
-          }
-          case None => None
-        }
+          ))
+        )
 
         val korjatutLisätiedot = oo.lisätiedot.get.copy(
           maksettavatLukuvuosimaksut = None,

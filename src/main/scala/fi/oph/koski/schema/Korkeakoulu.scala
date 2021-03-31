@@ -48,7 +48,7 @@ case class KorkeakoulunOpiskeluoikeudenLisätiedot(
   @KoodistoUri("virtaopiskeluoikeudentyyppi")
   virtaOpiskeluoikeudenTyyppi: Option[Koodistokoodiviite],
   @Title("Maksettavat lukuvuosimaksut")
-  maksettavatLukuvuosimaksut: Option[List[KorkeakoulunOpiskeluoikeudenLukuvuosimaksu]] = None,
+  maksettavatLukuvuosimaksut: Option[Seq[KorkeakoulunOpiskeluoikeudenLukuvuosimaksu]] = None,
   lukukausiIlmoittautuminen: Option[Lukukausi_Ilmoittautuminen] = None,
   järjestäväOrganisaatio: Option[Oppilaitos] = None
 ) extends OpiskeluoikeudenLisätiedot {
