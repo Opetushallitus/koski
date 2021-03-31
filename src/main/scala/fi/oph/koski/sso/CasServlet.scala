@@ -2,14 +2,14 @@ package fi.oph.koski.sso
 
 import java.net.URLEncoder.encode
 import java.nio.charset.StandardCharsets
-import fi.oph.koski.config.KoskiApplication
+
+import fi.oph.koski.config.{KoskiApplication}
 import fi.oph.koski.http.{Http, KoskiErrorCategory, OpintopolkuCallerId}
-import fi.oph.koski.koskiuser.{KoskiSpecificAuthenticationSupport, AuthenticationUser, DirectoryClientLogin, UserLanguage}
+import fi.oph.koski.koskiuser.{AuthenticationUser, DirectoryClientLogin, KoskiSpecificAuthenticationSupport, UserLanguage}
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.servlet.{NoCache, VirkailijaHtmlServlet}
 import fi.vm.sade.utils.cas.{CasClient, CasClientException, CasLogout}
 import fi.vm.sade.utils.cas.CasClient.{OppijaAttributes, Username}
-import fi.oph.koski.henkilo.{Hetu, OppijaHenkilö}
 import fi.oph.koski.json.JsonSerializer.writeWithRoot
 import scalaz.concurrent.Task
 import fi.oph.koski.schema.{Nimitiedot, UusiHenkilö}
@@ -36,17 +36,45 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
   protected def onFailure: String = params.get("onFailure").getOrElse("/virhesivu")
   protected def onUserNotFound: String = params.get("onUserNotFound").getOrElse("/eisuorituksia")
 
-  // Return url for cas login
   get("/oppija") {
-    val hetu = getOppijaHetu()
-
-    hetu match {
-      case Some(hetu) =>
-        findOrCreate(hetu) match {
-          case Some(oppija) => createSession(oppija, hetu)
-          case _ => redirect(onFailure)
-        }
-      case None => redirect(onFailure)
+    if (application.config.getString("login.security") == "mock") {
+      request.header("hetu") match {
+        case Some(hetu) =>
+          findOrCreate(hetu) match {
+            case Some(oppija) =>
+              val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
+              val user = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true, huollettavat = Some(huollettavat))
+              val mockAuthUser =  localLogin(user, Some(langFromCookie.getOrElse(langFromDomain)))
+              setUser(Right(mockAuthUser))
+              redirect(onSuccess)
+            case None => redirect(onFailure)
+          }
+        case None => redirect(onFailure)
+      }
+    } else {
+      params.get("ticket") match {
+        case Some(ticket) =>
+          try {
+            val hetu = validateKansalainenServiceTicket(ticket)
+            findOrCreate(hetu) match {
+              case Some(oppija) =>
+                val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
+                val user = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", serviceTicket = Some(ticket), kansalainen = true, huollettavat = Some(huollettavat))
+                koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
+                UserLanguage.setLanguageCookie(UserLanguage.getLanguageFromLDAP(user, application.directoryClient), response)
+                setUser(Right(user))
+                redirect(onSuccess)
+              case None =>
+                eiSuorituksia
+            }
+          } catch {
+            case e: Exception =>
+              logger.warn(e)(s"Oppija login ticket validation failed, ${e.toString}")
+              haltWithStatus(KoskiErrorCategory.internalError("Sisäänkirjautuminen Opintopolkuun epäonnistui."))
+          }
+        case None =>
+          redirectAfterLogin
+      }
     }
   }
 
@@ -77,30 +105,6 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
     }
   }
 
-  private def getOppijaHetu(): Option[Username] = {
-    request.header("security") match {
-      case Some(sec) if sec == "mock" && application.config.getString("login.security") == "mock" => {
-        request.header("hetu")
-      }
-      case _ => {
-        params.get("ticket") match {
-          case Some(ticket) =>
-            try {
-              Some(validateKansalainenServiceTicket(ticket))
-            }
-            catch {
-              case e: Exception =>
-                logger.warn(e)(s"Oppija login ticket validation failed, ${e.toString}")
-                None
-            }
-          case None =>
-            // Seems to happen with Haka login. Redirect to login seems to cause another redirect to here with the required "ticket" parameter present.
-            redirectAfterLogin
-        }
-      }
-    }
-  }
-
   private def findOrCreate(validHetu: String) = {
     application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(validHetu, nimitiedot)
       .orElse(nimitiedot.map(toUusiHenkilö(validHetu, _)).map(application.henkilöRepository.findOrCreate(_).left.map(s => new RuntimeException(s.errorString.mkString)).toTry.get))
@@ -112,13 +116,6 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
     kutsumanimi = Some(nimitiedot.kutsumanimi),
     sukunimi = nimitiedot.sukunimi
   )
-
-  private def createSession(oppija: OppijaHenkilö, hetu: String) = {
-    val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
-    val authUser = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true, huollettavat = Some(huollettavat))
-    setUser(Right(localLogin(authUser, Some(langFromCookie.getOrElse(langFromDomain)))))
-    redirect(onSuccess)
-  }
 
   private def eiSuorituksia = {
     setNimitiedotCookie
@@ -162,7 +159,7 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
     }
   }
 
-  def validateKansalainenServiceTicket(ticket: String): Username = {
+  def validateKansalainenServiceTicket(ticket: String): String = {
     val url = params.get("onSuccess") match {
       case Some(onSuccessRedirectUrl) => casOppijaServiceUrl + "?onSuccess=" + onSuccessRedirectUrl
       case None => casOppijaServiceUrl
