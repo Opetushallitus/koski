@@ -292,7 +292,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     maksetutLukuvuosimaksut = (n \ "LukuvuosiMaksu").headOption.map(lukukausiIlmoLukuvuosiMaksu)
   )
 
-  private def lukukausiIlmoLukuvuosiMaksu(n: Node) = Lukuvuosi_IlmottautumisjaksonLukuvuosiMaksu(
+  private def lukukausiIlmoLukuvuosiMaksu(n: Node) = Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu(
     maksettu = (n \ "Maksettu").headOption.map(toBoolean),
     summa = (n \ "Summa").headOption.map(_.text.toInt),
     apuraha = (n \ "Apuraha").headOption.map(_.text.toInt)
@@ -428,12 +428,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   }
 
   private def tutkinto(koulutuskoodi: String, nimi: Option[LocalizedString] = None): Korkeakoulututkinto = {
-    nimi match {
-      case Some(nimi) => Korkeakoulututkinto(requiredKoodi("koulutus", koulutuskoodi).copy(
-        nimi = Some(nimi)
-      ))
-      case _ => Korkeakoulututkinto(requiredKoodi("koulutus", koulutuskoodi))
-    }
+    Korkeakoulututkinto(requiredKoodi("koulutus", koulutuskoodi), virtaNimi = nimi)
   }
 
   private def nimi(node: Node): Option[LocalizedString] = {

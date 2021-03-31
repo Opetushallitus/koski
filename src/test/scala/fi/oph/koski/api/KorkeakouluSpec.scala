@@ -126,7 +126,7 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
           val opiskeluoikeus = opiskeluoikeudet("250668-293Y", "10076").head
 
           val maksutiedot = opiskeluoikeus.lisätiedot.get.lukukausiIlmoittautuminen.get.ilmoittautumisjaksot.map(_.maksetutLukuvuosimaksut.getOrElse("").toString)
-          maksutiedot should equal(List("Lukuvuosi_IlmottautumisjaksonLukuvuosiMaksu(Some(true),Some(2000),Some(2000))", "", "", "", "", ""))
+          maksutiedot should equal(List("Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu(Some(true),Some(2000),Some(2000))", "", "", "", "", ""))
         }
       }
 

@@ -7,7 +7,7 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
-import fi.oph.koski.schema.{KorkeakoulunOpiskeluoikeudenLukuvuosimaksu, Lukuvuosi_IlmottautumisjaksonLukuvuosiMaksu, PerusopetuksenVuosiluokanSuoritus, TäydellisetHenkilötiedot, YlioppilastutkinnonOpiskeluoikeus}
+import fi.oph.koski.schema.{KorkeakoulunOpiskeluoikeudenLukuvuosimaksu, Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu, PerusopetuksenVuosiluokanSuoritus, TäydellisetHenkilötiedot, YlioppilastutkinnonOpiskeluoikeus}
 import fi.oph.koski.suoritusjako.{SuoritusIdentifier, Suoritusjako}
 import org.scalatest.{FreeSpec, Matchers}
 
@@ -337,7 +337,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
       getSuoritusjako(secret) {
         val bodyString = new String(response.bodyBytes, StandardCharsets.UTF_8)
 
-        bodyString should not include(Lukuvuosi_IlmottautumisjaksonLukuvuosiMaksu.toString.toLowerCase)
+        bodyString should not include(Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu.toString.toLowerCase)
         bodyString should not include(KorkeakoulunOpiskeluoikeudenLukuvuosimaksu.toString.toLowerCase)
       }
     }

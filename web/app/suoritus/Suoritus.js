@@ -54,7 +54,7 @@ export const rekursiivisetOsasuoritukset = (suoritus) => flatMapArray(osasuoritu
 export const suorituksenTyyppi = suoritus => suoritus && modelData(suoritus, 'tyyppi').koodiarvo
 
 export const suoritusTitle = (suoritus) => {
-  let title = modelTitle(tutkinnonNimi(modelLookup(suoritus, 'koulutusmoduuli')))
+  const title = modelTitle(tutkinnonNimi(modelLookup(suoritus, 'koulutusmoduuli')))
   switch(suorituksenTyyppi(suoritus)) {
     case 'ammatillinentutkintoosittainen': return title + t(', osittainen')
     case 'lukionaineopinnot':
@@ -64,9 +64,9 @@ export const suoritusTitle = (suoritus) => {
 }
 
 export const newSuoritusProto = (opiskeluoikeus, prototypeKey) => {
-  let suoritukset = modelLookup(opiskeluoikeus, 'suoritukset')
-  let indexForNewItem = modelItems(suoritukset).length
-  let selectedProto = contextualizeSubModel(suoritukset.arrayPrototype, suoritukset, indexForNewItem).oneOfPrototypes.find(p => p.key === prototypeKey)
+  const suoritukset = modelLookup(opiskeluoikeus, 'suoritukset')
+  const indexForNewItem = modelItems(suoritukset).length
+  const selectedProto = contextualizeSubModel(suoritukset.arrayPrototype, suoritukset, indexForNewItem).oneOfPrototypes.find(p => p.key === prototypeKey)
   return contextualizeSubModel(selectedProto, suoritukset, indexForNewItem)
 }
 

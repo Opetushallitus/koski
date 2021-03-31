@@ -1,5 +1,7 @@
 package fi.oph.koski.schema
 
+import fi.oph.koski.schema.LocalizedString.unlocalized
+
 import java.time.LocalDate
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{Description, Discriminator, Title}
@@ -115,8 +117,11 @@ case class MuuKorkeakoulunSuoritus (
 @Description("Korkeakoulututkinnon tunnistetiedot")
 case class Korkeakoulututkinto(
   tunniste: Koodistokoodiviite,
-  koulutustyyppi: Option[Koodistokoodiviite] = None
-) extends Koulutus with Tutkinto with Laajuudeton
+  koulutustyyppi: Option[Koodistokoodiviite] = None,
+  virtaNimi: Option[LocalizedString]
+) extends Koulutus with Tutkinto with Laajuudeton {
+  override def nimi: LocalizedString = virtaNimi.getOrElse(tunniste.nimi.getOrElse(unlocalized(tunniste.koodiarvo)))
+}
 
 @Description("Korkeakoulun opintojakson tunnistetiedot")
 case class KorkeakoulunOpintojakso(
@@ -178,10 +183,10 @@ case class Lukukausi_Ilmoittautumisjakso(
   ylioppilaskunnanJäsen: Option[Boolean] = None,
   ythsMaksettu: Option[Boolean] = None,
   @Title("Lukuvuosimaksu")
-  maksetutLukuvuosimaksut: Option[Lukuvuosi_IlmottautumisjaksonLukuvuosiMaksu] = None
+  maksetutLukuvuosimaksut: Option[Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu] = None
 ) extends Jakso
 
-case class Lukuvuosi_IlmottautumisjaksonLukuvuosiMaksu(
+case class Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu(
   @Title("Maksettu kokonaan")
   maksettu: Option[Boolean] = None,
   summa: Option[Int] = None,
