@@ -1520,5 +1520,80 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstlukutaitokoulutus",
+  "koodiArvo" : "vstlukutaitokoulutus",
+  "metadata" : [ {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus",
+  "koodiArvo" : "vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus",
+  "metadata" : [ {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen vuorovaikutustilanteissa toimimisen suoritus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen vuorovaikutustilanteissa toimimisen suoritus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen vuorovaikutustilanteissa toimimisen suoritus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus",
+  "koodiArvo" : "vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus",
+  "metadata" : [ {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen tekstien lukemisen ja tulkitsemisen suoritus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen tekstien lukemisen ja tulkitsemisen suoritus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen tekstien lukemisen ja tulkitsemisen suoritus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus",
+  "koodiArvo" : "vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus",
+  "metadata" : [ {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen tekstien kirjoittamisen ja tuottamisen suoritus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen tekstien kirjoittamisen ja tuottamisen suoritus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen tekstien kirjoittamisen ja tuottamisen suoritus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstlukutaitokoulutuksennumeeristentaitojenkokonaisuudensuoritus",
+  "koodiArvo" : "vstlukutaitokoulutuksennumeeristentaitojenkokonaisuudensuoritus",
+  "metadata" : [ {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen numeeristen taitojen suoritus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen numeeristen taitojen suoritus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen numeeristen taitojen suoritus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }
 ]
