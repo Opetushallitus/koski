@@ -30,8 +30,7 @@ class PerustiedotSyncRepository(val db: DB) extends BackgroundExecutionContext w
   def queuedUpdates(limit: Int): Seq[PerustiedotSyncRow] =
     runDbSync(
       PerustiedotSync
-        .distinctOn(_.opiskeluoikeusId)
-        .sortBy(pt => (pt.opiskeluoikeusId, pt.aikaleima.desc))
+        .sortBy(pt => (pt.opiskeluoikeusId, pt.aikaleima.asc))
         .take(limit)
         .result
     )

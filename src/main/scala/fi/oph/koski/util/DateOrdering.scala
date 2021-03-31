@@ -18,5 +18,5 @@ object DateOrdering {
 
   lazy val sqlDateOrdering: Ordering[java.sql.Date] = Ordering.fromLessThan(_ before _)
 
-  lazy val sqlTimestampOrdering: Ordering[java.sql.Timestamp] = Ordering.fromLessThan(_ before _)
+  lazy val ascedingSqlTimestampOrdering: Ordering[java.sql.Timestamp] = Ordering.fromLessThan(_ before _)
 }

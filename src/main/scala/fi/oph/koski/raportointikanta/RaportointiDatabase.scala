@@ -10,7 +10,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.raportit.{LukioOppiaineRahoitusmuodonMukaan, LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat, PaallekkaisetOpiskeluoikeudet}
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
 import fi.oph.koski.schema.Organisaatio
-import fi.oph.koski.util.DateOrdering.{sqlDateOrdering, sqlTimestampOrdering}
+import fi.oph.koski.util.DateOrdering.{sqlDateOrdering, ascedingSqlTimestampOrdering}
 import fi.oph.scalaschema.annotation.SyntheticProperty
 import org.postgresql.util.PSQLException
 import slick.dbio.DBIO
@@ -318,14 +318,14 @@ case class RaportointikantaStatusResponse(schema: String, statuses: Seq[Raportoi
   def startedTime: Option[Timestamp] =
     statuses.collect { case r if r.loadStarted.isDefined => r.loadStarted.get } match {
       case Nil => None
-      case xs => Some(xs.min(sqlTimestampOrdering))
+      case xs => Some(xs.min(ascedingSqlTimestampOrdering))
     }
 
   @SyntheticProperty
   def completionTime: Option[Timestamp] = {
     val allDates = statuses.collect { case s if allNames.contains(s.name) && s.loadCompleted.isDefined => s.loadCompleted.get }
     if (allDates.length == allNames.length) {
-      Some(allDates.max(sqlTimestampOrdering))
+      Some(allDates.max(ascedingSqlTimestampOrdering))
     } else {
       None
     }
@@ -335,6 +335,6 @@ case class RaportointikantaStatusResponse(schema: String, statuses: Seq[Raportoi
   def lastUpdate: Option[Timestamp] = if (isEmpty) {
     None
   } else {
-    Some(statuses.map(_.lastUpdate).max(sqlTimestampOrdering))
+    Some(statuses.map(_.lastUpdate).max(ascedingSqlTimestampOrdering))
   }
 }
