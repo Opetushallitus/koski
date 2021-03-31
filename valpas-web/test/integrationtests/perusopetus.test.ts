@@ -17,7 +17,7 @@ const jklNormaalikouluTableContent = `
   Kotiopetus-menneisyydessä Valpas	6.2.2005	9C	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
   LukionAloittanut Valpas	29.4.2005	9C	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
   LukionLokakuussaAloittanut Valpas	18.4.2005	9C	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
-  LuokallejäänytYsiluokkalainen Valpas	2.8.2005	9A	Hakenut open_in_new	Ei toteutettu	Ei toteutettu	Ei toteutettu
+  LuokallejäänytYsiluokkalainen Valpas	2.8.2005	9A	2 hakua	Ei toteutettu	Ei toteutettu	Ei toteutettu
   LuokallejäänytYsiluokkalainenJatkaa Valpas	6.2.2005	9B	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
   LuokallejäänytYsiluokkalainenKouluvaihtoMuualta Valpas	2.11.2005	9B	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
   Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas	22.11.2005	9C	Hakenut open_in_new	Ei toteutettu	Ei toteutettu	Ei toteutettu

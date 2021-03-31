@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 import { ExternalLink } from "../../components/navigation/ExternalLink"
 import { DataTable, Datum } from "../../components/tables/DataTable"
 import { NotImplemented } from "../../components/typography/NoDataMessage"
-import { T, t } from "../../i18n/i18n"
+import { T, t, Translation } from "../../i18n/i18n"
 import { useBasePath } from "../../state/basePath"
 import {
   HakuSuppeatTiedot,
@@ -71,10 +71,6 @@ const oppijaToTableData = (
   basePath: string,
   organisaatioOid: string | undefined
 ) => (oppija: OppijaHakutilanteillaSuppeatTiedot): Array<Datum> => {
-  // TODO: Hakemuksen valintaan tarvitaan rautaisempi logiikka
-  const hakemus = oppija.hakutilanteet[0]
-  const hakemuksenTila = hakemuksentilaValue(hakemus, oppija.hakutilanneError)
-
   const valvottavatOpiskeluoikeudet = oppija.oppija.opiskeluoikeudet.filter(
     (oo) =>
       oppija.oppija.valvottavatOpiskeluoikeudet.includes(oo.oid) &&
@@ -101,12 +97,7 @@ const oppijaToTableData = (
       {
         value: opiskeluoikeus?.ryhmä,
       },
-      {
-        value: hakemuksenTila,
-        display: hakemus && (
-          <ExternalLink to={hakemus.hakemusUrl}>{hakemuksenTila}</ExternalLink>
-        ),
-      },
+      hakemuksenTila(oppija.hakutilanteet, oppija.hakutilanneError),
       {
         value: t("hakutilanne__taulu_data_ei_toteutettu"),
         display: (
@@ -135,15 +126,33 @@ const oppijaToTableData = (
   }))
 }
 
-const hakemuksentilaValue = (
-  hakemus?: HakuSuppeatTiedot,
+export const hakemuksenTila = (
+  hakutilanteet: HakuSuppeatTiedot[],
   hakutilanneError?: string
-): string => {
-  return t(
-    hakutilanneError
-      ? "oppija__hakuhistoria_virhe"
-      : hakemus
-      ? "hakemuksentila__hakenut"
-      : "hakemuksentila__ei_hakemusta"
-  )
+) => {
+  const hakemuksenTila = hakemuksenTilaT(hakutilanteet.length, hakutilanneError)
+  const component = () => {
+    if (hakutilanteet.length == 0) return null
+    else if (hakutilanteet.length == 1 && hakutilanteet[0])
+      return (
+        <ExternalLink to={hakutilanteet[0].hakemusUrl}>
+          {hakemuksenTila}
+        </ExternalLink>
+      )
+    else return null
+  }
+  return {
+    value: hakemuksenTila,
+    display: component(),
+  }
+}
+
+const hakemuksenTilaT = (
+  hakemusCount: number,
+  hakutilanneError?: string
+): Translation => {
+  if (hakutilanneError) return t("oppija__hakuhistoria_virhe")
+  else if (hakemusCount == 0) return t("hakemuksentila__ei_hakemusta")
+  else if (hakemusCount == 1) return t("hakemuksentila__hakenut")
+  else return `${hakemusCount} ${t("hakemuksentila__n_hakua")}`
 }
