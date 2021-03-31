@@ -4,6 +4,8 @@ import * as string from "fp-ts/string"
 import React from "react"
 import { Accordion } from "../../components/containers/Accordion"
 import { Column, ColumnsContainer } from "../../components/containers/Columns"
+import { IconSection } from "../../components/containers/IconSection"
+import { WarningIcon } from "../../components/icons/Icon"
 import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
 import { TertiaryHeading } from "../../components/typography/headings"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
@@ -29,44 +31,51 @@ export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {
   const viewIlmoitetut = ilmoitetut.length > 0
 
   return (
-    <ColumnsContainer>
-      {viewIlmoitetut && (
-        <Column size={6} id="ilmoitetut-yhteystiedot">
+    <>
+      {props.oppija.oppija.henkilö.turvakielto && (
+        <IconSection icon={<WarningIcon />} id="turvakielto-varoitus">
+          <T id="oppija__turvakielto_varoitus" />
+        </IconSection>
+      )}
+      <ColumnsContainer>
+        {viewIlmoitetut && (
+          <Column size={6} id="ilmoitetut-yhteystiedot">
+            <TertiaryHeading>
+              <T id="oppija__ilmoitetut_yhteystiedot" />
+            </TertiaryHeading>
+            <YhteistietoAccordion
+              yhteystiedot={ilmoitetut}
+              label={(yt) =>
+                (getLocalized(yt.yhteystietoryhmänNimi) ||
+                  t("oppija__yhteystiedot")) +
+                " – " +
+                formatDate(yt.alkuperä.haunAlkamispaivämäärä)
+              }
+            />
+          </Column>
+        )}
+
+        <Column size={viewIlmoitetut ? 6 : 12} id="viralliset-yhteystiedot">
           <TertiaryHeading>
-            <T id="oppija__ilmoitetut_yhteystiedot" />
+            <T id="oppija__viralliset_yhteystiedot" />
           </TertiaryHeading>
           <YhteistietoAccordion
-            yhteystiedot={ilmoitetut}
+            yhteystiedot={viralliset}
             label={(yt) =>
-              (getLocalized(yt.yhteystietoryhmänNimi) ||
-                t("oppija__yhteystiedot")) +
-              " – " +
-              formatDate(yt.alkuperä.haunAlkamispaivämäärä)
+              uniq(string.Eq)([
+                getLocalized(yt.alkuperä.alkuperä.nimi)!,
+                getLocalized(yt.alkuperä.tyyppi.nimi)!,
+              ]).join(": ")
             }
+            noDataMessage={t(
+              props.oppija.oppija.henkilö.turvakielto
+                ? "oppija__henkilöllä_turvakielto"
+                : "oppija__yhteystietoja_ei_löytynyt"
+            )}
           />
         </Column>
-      )}
-
-      <Column size={viewIlmoitetut ? 6 : 12} id="viralliset-yhteystiedot">
-        <TertiaryHeading>
-          <T id="oppija__viralliset_yhteystiedot" />
-        </TertiaryHeading>
-        <YhteistietoAccordion
-          yhteystiedot={viralliset}
-          label={(yt) =>
-            uniq(string.Eq)([
-              getLocalized(yt.alkuperä.alkuperä.nimi)!,
-              getLocalized(yt.alkuperä.tyyppi.nimi)!,
-            ]).join(": ")
-          }
-          noDataMessage={t(
-            props.oppija.oppija.henkilö.turvakielto
-              ? "oppija__henkilöllä_turvakielto"
-              : "oppija__yhteystietoja_ei_löytynyt"
-          )}
-        />
-      </Column>
-    </ColumnsContainer>
+      </ColumnsContainer>
+    </>
   )
 }
 
