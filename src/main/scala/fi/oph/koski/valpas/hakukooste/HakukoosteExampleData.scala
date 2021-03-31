@@ -13,10 +13,10 @@ object HakukoosteExampleData {
     def toBlankable: BlankableLocalizedString = maybe.getOrElse(BlankLocalizedString())
   }
 
-  lazy val data = List(
+  lazy val data: Seq[Hakukooste] = Vector(
     haku(
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
-      List(
+      Vector(Vector(
         hakutoive(
           hakukohdeOid = generateOid(),
           hakukohdeOrganisaatio = MockOrganisaatiot.ressunLukio,
@@ -47,34 +47,34 @@ object HakukoosteExampleData {
           hakukohdeNimi = "Vapaan sivistystyön koulutus oppivelvollisille 2021-2022",
           koulutusNimi = "Vapaan sivistystyön koulutus oppivelvollisille"
         ),
-      )),
+      ))),
     haku(
       ValpasMockOppijat.turvakieltoOppija,
-      List(
+      Vector(Vector(
         hakutoive(
           hakukohdeOid = generateOid(),
           hakukohdeOrganisaatio = MockOrganisaatiot.ressunLukio,
           hakukohdeNimi = "Lukio",
           koulutusNimi = "Lukiokoulutus"
         ).copy(alinValintaPistemaara = Some(9.01), pisteet = Some(9)),
-      )),
+      ))),
     haku(
       ValpasMockOppijat.luokalleJäänytYsiluokkalainen,
-      List(
+      Vector(Vector(
         hakutoive(
           hakukohdeOid = generateOid(),
           hakukohdeOrganisaatio = "",
           hakukohdeNimi = "Lukio",
           koulutusNimi = "Lukiokoulutus"
         ),
-      )),
-  )
+      ))),
+  ).flatten
 
   def haku(
     henkilö: OppijaHenkilö,
-    hakutoiveet: Seq[Hakutoive],
+    hakukoosteidenToiveet: Seq[Seq[Hakutoive]],
     alkamisaika: LocalDateTime = LocalDateTime.of(2020, 3, 9, 12, 0, 0),
-  ): Hakukooste =
+  ): Seq[Hakukooste] = hakukoosteidenToiveet.map(hakutoiveet =>
     Hakukooste(
       oppijaOid = henkilö.oid,
       hakuOid = generateHakuOid(),
@@ -105,6 +105,7 @@ object HakukoosteExampleData {
         }
       ))
     )
+  )
 
   def hakutoive(
     hakukohdeOid: String,
