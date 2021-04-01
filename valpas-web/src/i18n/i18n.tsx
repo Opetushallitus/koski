@@ -43,20 +43,27 @@ export const t = (id: TranslationId, params?: ParamsMap): Translation => {
     return ""
   }
 
-  const localizedString = texts[id]
-  const usedLanguage = getLanguage()
+  const tRecursive = (
+    usedLanguage: Language,
+    id: TranslationId,
+    params?: ParamsMap
+  ): Translation => {
+    const localizedString = texts[id]
 
-  if (!localizedString || !localizedString[usedLanguage]) {
-    if (!missing[usedLanguage + "." + id]) {
-      logWarning(`Käännös puuttuu ${usedLanguage}:`, id)
-      missing[usedLanguage + "." + id] = true
+    if (!localizedString || !localizedString[usedLanguage]) {
+      if (!missing[usedLanguage + "." + id]) {
+        logWarning(`Käännös puuttuu ${usedLanguage}:`, id)
+        missing[usedLanguage + "." + id] = true
+      }
+
+      return usedLanguage === "fi" ? id : tRecursive("fi", id, params)
     }
 
-    return id
+    const source = localizedString[usedLanguage]
+    return params ? replaceParams(source, params) : source
   }
 
-  const source = localizedString[usedLanguage]
-  return params ? replaceParams(source, params) : source
+  return tRecursive(getLanguage(), id, params)
 }
 
 const replaceParams = (source: string, params: ParamsMap): string =>
