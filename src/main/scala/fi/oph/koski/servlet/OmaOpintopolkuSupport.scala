@@ -7,7 +7,7 @@ import org.scalatra.servlet.RichRequest
 
 trait OmaOpintopolkuSupport extends KoskiSpecificAuthenticationSupport with LanguageSupport {
   def oppijaRaamit: Raamit = if (oppijaRaamitSet || useOppijaRaamitProxy) Oppija(koskiSessionOption, request, loginUrl) else EiRaameja
-  def loginUrl: String = application.config.getString("identification.url." + langFromCookie.getOrElse(langFromDomain))
+  def loginUrl: String = application.config.getString("cas.oppija.login.return.url")
   def oppijaRaamitSet: Boolean = isCloudEnvironment
   private val useOppijaRaamitProxy = application.config.hasPath("oppijaRaamitProxy")
   private lazy val isCloudEnvironment = !Environment.isLocalDevelopmentEnvironment

@@ -10,7 +10,7 @@ import org.scalatra.ScalatraServlet
 trait MyDataSupport extends ScalatraServlet with MyDataConfig {
   override def hasConfigForMember(id: String = memberCodeParam): Boolean
   override def getConfigForMember(id: String = memberCodeParam): TypeSafeConfig
-  def mydataLoginServletURL: String = conf.getString("login.servlet")
+  def mydataLoginServletURL: String = application.config.getString("cas.oppija.login.return.url")
 
   def urlEncode(str: String): String = URLEncoder.encode(str, "UTF-8")
 
