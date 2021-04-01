@@ -154,5 +154,5 @@ const hakemuksenTilaT = (
   if (hakutilanneError) return t("oppija__hakuhistoria_virhe")
   else if (hakemusCount == 0) return t("hakemuksentila__ei_hakemusta")
   else if (hakemusCount == 1) return t("hakemuksentila__hakenut")
-  else return `${t("hakemuksentila__n_hakua", { lukumäärä: hakemusCount })}`
+  else return t("hakemuksentila__n_hakua", { lukumäärä: hakemusCount })
 }
