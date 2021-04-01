@@ -11,7 +11,7 @@ import { TertiaryHeading } from "../../components/typography/headings"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import { getLocalized, t, T } from "../../i18n/i18n"
 import {
-  OppijaHakutilanteillaLaajatTiedot,
+  HenkilöLaajatTiedot,
   Yhteystiedot,
   YhteystietojenAlkuperä,
 } from "../../state/oppijat"
@@ -22,17 +22,18 @@ import "./OppijanYhteystiedot.less"
 const b = bem("oppijanyhteystiedot")
 
 export type OppijanYhteystiedotProps = {
-  oppija: OppijaHakutilanteillaLaajatTiedot
+  henkilö: HenkilöLaajatTiedot
+  yhteystiedot: Yhteystiedot<YhteystietojenAlkuperä>[]
 }
 
 export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {
-  const ilmoitetut = props.oppija.yhteystiedot.filter(Yhteystiedot.isIlmoitettu)
-  const viralliset = props.oppija.yhteystiedot.filter(Yhteystiedot.isVirallinen)
+  const ilmoitetut = props.yhteystiedot.filter(Yhteystiedot.isIlmoitettu)
+  const viralliset = props.yhteystiedot.filter(Yhteystiedot.isVirallinen)
   const viewIlmoitetut = ilmoitetut.length > 0
 
   return (
     <>
-      {props.oppija.oppija.henkilö.turvakielto && (
+      {props.henkilö.turvakielto && (
         <IconSection icon={<WarningIcon />} id="turvakielto-varoitus">
           <T id="oppija__turvakielto_varoitus" />
         </IconSection>
@@ -43,7 +44,7 @@ export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {
             <TertiaryHeading>
               <T id="oppija__ilmoitetut_yhteystiedot" />
             </TertiaryHeading>
-            <YhteistietoAccordion
+            <YhteystietoAccordion
               yhteystiedot={ilmoitetut}
               label={(yt) =>
                 (getLocalized(yt.yhteystietoryhmänNimi) ||
@@ -59,7 +60,7 @@ export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {
           <TertiaryHeading>
             <T id="oppija__viralliset_yhteystiedot" />
           </TertiaryHeading>
-          <YhteistietoAccordion
+          <YhteystietoAccordion
             yhteystiedot={viralliset}
             label={(yt) =>
               uniq(string.Eq)([
@@ -68,7 +69,7 @@ export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {
               ]).join(": ")
             }
             noDataMessage={t(
-              props.oppija.oppija.henkilö.turvakielto
+              props.henkilö.turvakielto
                 ? "oppija__henkilöllä_turvakielto"
                 : "oppija__yhteystietoja_ei_löytynyt"
             )}
@@ -85,7 +86,7 @@ type YhteystietoAccordionProps<T extends YhteystietojenAlkuperä> = {
   noDataMessage?: string
 }
 
-const YhteistietoAccordion = <T extends YhteystietojenAlkuperä>(
+const YhteystietoAccordion = <T extends YhteystietojenAlkuperä>(
   props: YhteystietoAccordionProps<T>
 ) =>
   isNonEmpty(props.yhteystiedot) ? (

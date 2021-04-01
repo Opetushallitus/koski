@@ -10,7 +10,7 @@ class MockHakukoosteService extends ValpasHakukoosteService {
   // Näillä oideilla kutsuminen aiheuttaa virhetilanteen (käytetään virhetilanteiden hallinnan testaamiseen)
   private def errorOids = Map(
     "unavailable" -> ValpasErrorCategory.unavailable.sure(),
-    ValpasMockOppijat.lukionAloittanut.oid -> ValpasErrorCategory.unavailable.sure()
+    ValpasMockOppijat.hakukohteidenHakuEpäonnistuu.oid -> ValpasErrorCategory.unavailable.sure()
   )
 
   def getHakukoosteet(oppijaOids: Set[ValpasHenkilö.Oid]): Either[HttpStatus, Seq[Hakukooste]] =
