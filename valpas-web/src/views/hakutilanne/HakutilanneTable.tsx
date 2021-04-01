@@ -2,7 +2,7 @@ import * as A from "fp-ts/lib/Array"
 import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
 import { ExternalLink } from "../../components/navigation/ExternalLink"
-import { DataTable, Datum } from "../../components/tables/DataTable"
+import { DataTable, Datum, Value } from "../../components/tables/DataTable"
 import { NotImplemented } from "../../components/typography/NoDataMessage"
 import { T, t, Translation } from "../../i18n/i18n"
 import { useBasePath } from "../../state/basePath"
@@ -126,10 +126,10 @@ const oppijaToTableData = (
   }))
 }
 
-export const hakemuksenTila = (
+const hakemuksenTila = (
   hakutilanteet: HakuSuppeatTiedot[],
   hakutilanneError?: string
-) => {
+): Value => {
   const hakemuksenTila = hakemuksenTilaT(hakutilanteet.length, hakutilanneError)
   const component = () => {
     if (hakutilanteet.length == 0) return null
@@ -154,5 +154,5 @@ const hakemuksenTilaT = (
   if (hakutilanneError) return t("oppija__hakuhistoria_virhe")
   else if (hakemusCount == 0) return t("hakemuksentila__ei_hakemusta")
   else if (hakemusCount == 1) return t("hakemuksentila__hakenut")
-  else return `${hakemusCount} ${t("hakemuksentila__n_hakua")}`
+  else return `${t("hakemuksentila__n_hakua", { lukumäärä: hakemusCount })}`
 }
