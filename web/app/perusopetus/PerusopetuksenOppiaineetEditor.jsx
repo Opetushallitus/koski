@@ -35,6 +35,7 @@ import {
 import {expandableProperties, PerusopetuksenOppiaineRowEditor} from './PerusopetuksenOppiaineRowEditor'
 import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown'
 import {FootnoteDescriptions} from '../components/footnote'
+import {parseISODate} from '../date/date'
 
 
 export const PerusopetuksenOppiaineetEditor = ({model}) => {
@@ -159,7 +160,15 @@ class Oppiainetaulukko extends React.Component {
     const showArvosana = edit || arvioituTaiVahvistettu(model) || !model.value.classes.includes('perusopetuksenoppimaaransuoritus')
     const uudellaSuorituksellaLaajuus = () => !!modelLookup(uusiOppiaineenSuoritus ? uusiOppiaineenSuoritus : createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset')), 'koulutusmoduuli.laajuus')
     const sisältääLajuudellisiaSuorituksia = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus'))
-    const showLaajuus = !pakolliset && (sisältääLajuudellisiaSuorituksia || (edit && uudellaSuorituksellaLaajuus()))
+    const päätasonSuorituksenVahvituspäivä = modelData(model, 'vahvistus.päivä')
+    const vahvistusSalliiLaajuudenNäyttämisen =  päätasonSuorituksenVahvituspäivä && parseISODate(päätasonSuorituksenVahvituspäivä) >= parseISODate('2020-08-01')
+
+    const showLaajuus = edit
+      ? uudellaSuorituksellaLaajuus()
+      : pakolliset
+        ? vahvistusSalliiLaajuudenNäyttämisen && sisältääLajuudellisiaSuorituksia
+        : sisältääLajuudellisiaSuorituksia
+
     const showFootnotes = !edit && !R.isEmpty(footnoteDescriptions(suoritukset))
 
     let addOppiaine = oppiaineenSuoritus => oppiaine => {
