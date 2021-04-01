@@ -130,20 +130,13 @@ const hakemuksenTila = (
   hakutilanteet: HakuSuppeatTiedot[],
   hakutilanneError?: string
 ): Value => {
-  const hakemuksenTila = hakemuksenTilaT(hakutilanteet.length, hakutilanneError)
-  const component = () => {
-    if (hakutilanteet.length == 0) return null
-    else if (hakutilanteet.length == 1 && hakutilanteet[0])
-      return (
-        <ExternalLink to={hakutilanteet[0].hakemusUrl}>
-          {hakemuksenTila}
-        </ExternalLink>
-      )
-    else return null
-  }
+  const hakemuksenTilaValue = hakemuksenTilaT(
+    hakutilanteet.length,
+    hakutilanneError
+  )
   return {
-    value: hakemuksenTila,
-    display: component(),
+    value: hakemuksenTilaValue,
+    display: hakemuksenTilaDisplay(hakutilanteet, hakemuksenTilaValue),
   }
 }
 
@@ -155,4 +148,18 @@ const hakemuksenTilaT = (
   else if (hakemusCount == 0) return t("hakemuksentila__ei_hakemusta")
   else if (hakemusCount == 1) return t("hakemuksentila__hakenut")
   else return t("hakemuksentila__n_hakua", { lukumäärä: hakemusCount })
+}
+
+const hakemuksenTilaDisplay = (
+  hakutilanteet: HakuSuppeatTiedot[],
+  hakemuksenTilaValue: Translation
+) => {
+  if (hakutilanteet.length == 0) return null
+  else if (hakutilanteet.length == 1 && hakutilanteet[0]) {
+    return (
+      <ExternalLink to={hakutilanteet[0].hakemusUrl}>
+        {hakemuksenTilaValue}
+      </ExternalLink>
+    )
+  } else return null
 }
