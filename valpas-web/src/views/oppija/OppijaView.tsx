@@ -14,6 +14,7 @@ import {
 import { Column, ColumnsContainer } from "../../components/containers/Columns"
 import { Page } from "../../components/containers/Page"
 import { BackIcon } from "../../components/icons/Icon"
+import { Spinner } from "../../components/icons/Spinner"
 import { InfoTooltip } from "../../components/tooltip/InfoTooltip"
 import { Heading } from "../../components/typography/headings"
 import { T, t } from "../../i18n/i18n"
@@ -39,6 +40,10 @@ export const OppijaView = (props: OppijaViewProps) => {
     <Page id="oppija">
       <BackNav />
       <OppijaHeadings oppija={oppija} oid={queryOid} />
+
+      {mapLoading(oppija, () => (
+        <Spinner />
+      ))}
 
       {mapSuccess(oppija, (oppijaData: OppijaHakutilanteillaLaajatTiedot) => (
         <>
@@ -124,7 +129,6 @@ const OppijaHeadings = (props: {
       {mapError(props.oppija, () => t("oppija__oletusotsikko"))}
     </Heading>
     <SecondaryOppijaHeading>
-      {mapLoading(props.oppija, () => t("Ladataan"))}
       {mapSuccess(props.oppija, (oppija) =>
         t("oppija__oppija_oid", { oid: oppija.oppija.henkilö.oid })
       )}

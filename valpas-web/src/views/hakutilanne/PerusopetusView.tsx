@@ -5,9 +5,10 @@ import { pipe } from "fp-ts/lib/function"
 import React, { useState } from "react"
 import { fetchOppijat, fetchOppijatCache } from "../../api/api"
 import { useApiWithParams } from "../../api/apiHooks"
-import { isSuccess } from "../../api/apiUtils"
+import { isLoading, isSuccess } from "../../api/apiUtils"
 import { Card, CardBody, CardHeader } from "../../components/containers/cards"
 import { Dropdown } from "../../components/forms/Dropdown"
+import { Spinner } from "../../components/icons/Spinner"
 import { Counter } from "../../components/typography/Counter"
 import { getLocalized, t, T } from "../../i18n/i18n"
 import {
@@ -68,6 +69,7 @@ export const PerusopetusView = (props: PerusopetusViewProps) => {
           )}
         </CardHeader>
         <CardBody>
+          {isLoading(oppijatFetch) && <Spinner />}
           {isSuccess(oppijatFetch) && (
             <HakutilanneTable
               data={oppijatFetch.data}
