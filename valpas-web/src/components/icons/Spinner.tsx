@@ -7,3 +7,9 @@ export const Spinner = () => (
     <div className="spinner-circle spinner-circle-blue" />
   </div>
 )
+
+export const LoadingModal = () => (
+  <div className="loading-modal">
+    <Spinner />
+  </div>
+)
