@@ -26,7 +26,7 @@ case class VapaanSivistystyönLukutaitokoulutus(
  tunniste: Koodistokoodiviite = Koodistokoodiviite("999911", koodistoUri = "koulutus"),
  perusteenDiaarinumero: Option[String] = None,
  koulutustyyppi: Option[Koodistokoodiviite] = None,
- laajuus: Option[LaajuusOpintoviikoissa] = None
+ laajuus: Option[LaajuusTunneissa] = None
 ) extends DiaarinumerollinenKoulutus with Tutkinto
 
 trait VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus extends Suoritus with Vahvistukseton
@@ -38,7 +38,7 @@ case class VapaanSivistystyönLukutaitokoulutuksenVuorovaikutustilanteissaToimim
   koulutusmoduuli: VapaanSivistystyönLukutaidonKokonaisuus,
   @KoodistoKoodiarvo("vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus", koodistoUri = "suorituksentyyppi"),
-  override val arviointi: Option[List[VapaanSivistystyönLukutaitokoulutuksenArviointi]] = None
+  override val arviointi: Option[List[VapaanSivistystyönKieliopintojenArviointi]] = None
 ) extends VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus
 
 @Title("Lukutaitokoulutuksen tekstien lukemisen ja tulkitsemisen kokonaisuuden suoritus")
@@ -48,7 +48,7 @@ case class VapaanSivistystyönLukutaitokoulutuksenTekstienLukeminenJaTulkitsemin
   koulutusmoduuli: VapaanSivistystyönLukutaidonKokonaisuus,
   @KoodistoKoodiarvo("vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus", koodistoUri = "suorituksentyyppi"),
-  override val arviointi: Option[List[VapaanSivistystyönLukutaitokoulutuksenArviointi]] = None
+  override val arviointi: Option[List[VapaanSivistystyönKieliopintojenArviointi]] = None
 ) extends VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus
 
 @Title("Lukutaitokoulutuksen tekstien kirjoittamisen ja tuottamisen kokonaisuuden suoritus")
@@ -58,7 +58,7 @@ case class VapaanSivistystyönLukutaitokoulutuksenTekstienKirjoittaminenJaTuotta
   koulutusmoduuli: VapaanSivistystyönLukutaidonKokonaisuus,
   @KoodistoKoodiarvo("vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus", koodistoUri = "suorituksentyyppi"),
-  override val arviointi: Option[List[VapaanSivistystyönLukutaitokoulutuksenArviointi]] = None
+  override val arviointi: Option[List[VapaanSivistystyönKieliopintojenArviointi]] = None
 ) extends VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus
 
 @Title("Lukutaitokoulutuksen numeeristen taitojen kokonaisuuden suoritus")
@@ -68,7 +68,7 @@ case class VapaanSivistystyönLukutaitokoulutuksenNumeeristenTaitojenSuoritus(
   koulutusmoduuli: VapaanSivistystyönLukutaidonKokonaisuus,
   @KoodistoKoodiarvo("vstlukutaitokoulutuksennumeeristentaitojenkokonaisuudensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstlukutaitokoulutuksennumeeristentaitojenkokonaisuudensuoritus", koodistoUri = "suorituksentyyppi"),
-  override val arviointi: Option[List[VapaanSivistystyönLukutaitokoulutuksenArviointi]] = None
+  override val arviointi: Option[List[VapaanSivistystyönKieliopintojenArviointi]] = None
 ) extends VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus
 
 trait VapaanSivistystyönLukutaitokoulutuksenOsasuoritustenKoulutusmoduuli extends KoulutusmoduuliValinnainenLaajuus with KoodistostaLöytyväKoulutusmoduuli {
@@ -81,11 +81,3 @@ case class VapaanSivistystyönLukutaidonKokonaisuus(
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusOpintoviikoissa] = None
 ) extends VapaanSivistystyönLukutaitokoulutuksenOsasuoritustenKoulutusmoduuli with KoodistostaLöytyväKoulutusmoduuli with LaajuuttaEiValidoida
-
-@Title("Arviointi")
-case class VapaanSivistystyönLukutaitokoulutuksenArviointi(
-  @KoodistoUri("arviointiasteikkovstkoto")
-  @KoodistoKoodiarvo("Suoritettu")
-  arvosana: Koodistokoodiviite = Koodistokoodiviite("Suoritettu", "arviointiasteikkovstkoto"),
-  päivä: LocalDate
-) extends ArviointiPäivämäärällä with VapaanSivistystyönKoulutuksenArviointi
