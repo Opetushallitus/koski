@@ -1541,5 +1541,11 @@
   "Maksettu kokonaan" : "Maksettu kokonaan",
   "description:Korkeakoulun opiskeluoikeuden lukuvuosimaksut" : "Korkeakoulun opiskeluoikeuden lukuvuosimaksut",
   "Maksettavat lukuvuosimaksut" : "Maksettavat lukuvuosimaksut",
-  "Virta nimi" : "Virta-datasta saatu nimi"
+  "Virta nimi" : "Virta-datasta saatu nimi",
+  "Lukutaitokoulutuksen vuorovaikutustilanteissa toimimisen osuus" : "Lukutaitokoulutuksen vuorovaikutustilanteissa toimimisen osuus",
+  "description:Vapaan sivistystyön lukutaitokoulutuksen tunnistetiedot" : "Vapaan sivistystyön lukutaitokoulutuksen tunnistetiedot",
+  "Lukutaitokoulutuksen tekstien lukemisen ja tulkitsemisen osuus" : "Lukutaitokoulutuksen tekstien lukemisen ja tulkitsemisen osuus",
+  "Lukutaitokoulutuksen numeeristen taitojen osuus" : "Lukutaitokoulutuksen numeeristen taitojen osuus",
+  "Suorituskokonaisuudet" : "Suorituskokonaisuudet",
+  "Lukutaitokoulutuksen tekstien kirjoittamisen ja tuottamisen osuus" : "Lukutaitokoulutuksen tekstien kirjoittamisen ja tuottamisen osuus"
 }

@@ -72,12 +72,12 @@ case class VapaanSivistystyönLukutaitokoulutuksenNumeeristenTaitojenSuoritus(
 ) extends VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus
 
 trait VapaanSivistystyönLukutaitokoulutuksenOsasuoritustenKoulutusmoduuli extends KoulutusmoduuliValinnainenLaajuus with KoodistostaLöytyväKoulutusmoduuli {
-  def laajuus: Option[LaajuusOpintoviikoissa]
+  def laajuus: Option[LaajuusTunneissa]
 }
 
 @Title("Lukutaitokoulutuksen kokonaisuus")
 case class VapaanSivistystyönLukutaidonKokonaisuus(
   @KoodistoUri(koodistoUri = "vstlukutaitokoulutuksenkokonaisuus")
   tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusOpintoviikoissa] = None
+  laajuus: Option[LaajuusTunneissa] = None
 ) extends VapaanSivistystyönLukutaitokoulutuksenOsasuoritustenKoulutusmoduuli with KoodistostaLöytyväKoulutusmoduuli with LaajuuttaEiValidoida
