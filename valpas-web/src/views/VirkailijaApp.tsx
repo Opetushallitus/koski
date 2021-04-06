@@ -4,6 +4,7 @@ import { fetchYlatasonOrganisaatiotJaKayttooikeusroolit } from "../api/api"
 import { useApiOnce } from "../api/apiHooks"
 import { isSuccess } from "../api/apiUtils"
 import { Page } from "../components/containers/Page"
+import { LoadingModal } from "../components/icons/Spinner"
 import { t } from "../i18n/i18n"
 import {
   CurrentUser,
@@ -48,7 +49,7 @@ const VirkailijaRoutes = ({ user }: VirkailijaRoutesProps) => {
   )
 
   if (!isSuccess(organisaatiotJaKayttooikeusroolit)) {
-    return null
+    return <LoadingModal />
   }
 
   return (
@@ -118,7 +119,7 @@ const VirkailijaApp = ({ basePath }: VirkailijaAppProps) => {
   }, [])
 
   if (!user) {
-    return null
+    return <LoadingModal />
   }
 
   const redirectPath = getLoginRedirectPath()
