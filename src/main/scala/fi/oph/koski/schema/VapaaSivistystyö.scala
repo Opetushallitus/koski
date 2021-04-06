@@ -210,11 +210,11 @@ case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintoje
  @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus")
  @KoodistoUri(koodistoUri = "suorituksentyyppi")
  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus", koodistoUri = "suorituksentyyppi"),
- override val arviointi: Option[List[VapaanSivistystyönKieliopintojenArviointi]]
+ override val arviointi: Option[List[VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi]]
 ) extends VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus
 
 @Title("Kieliopintojen arviointi")
-case class VapaanSivistystyönKieliopintojenArviointi(
+case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi(
   @KoodistoUri("arviointiasteikkovstkoto")
   @KoodistoKoodiarvo("Suoritettu")
   arvosana: Koodistokoodiviite = Koodistokoodiviite("Suoritettu", "arviointiasteikkovstkoto"),

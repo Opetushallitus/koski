@@ -267,12 +267,12 @@ object VapaaSivistystyöExampleData {
         Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus", koodistoUri = "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"),
         Some(LaajuusOpintoviikoissa(30))
       ),
-      arviointi = Some(List(vapaanSivistystyönKieliopintojenArviointi))
+      arviointi = Some(List(vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi))
     )
   }
 
-  def vapaanSivistystyönKieliopintojenArviointi() = {
-    VapaanSivistystyönKieliopintojenArviointi(
+  def vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi() = {
+    VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi(
       kuullunYmmärtämisenTaitotaso = Koodistokoodiviite(koodiarvo = "yli_C1.1", koodistoUri = "arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
       puhumisenTaitotaso = Koodistokoodiviite(koodiarvo = "yli_C1.1", koodistoUri = "arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
       luetunYmmärtämisenTaitotaso = Koodistokoodiviite(koodiarvo = "yli_C1.1", koodistoUri = "arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
@@ -362,42 +362,42 @@ object VapaaSivistystyöExampleData {
   // Lukutaitokoulutuksen rakenteen osia
 
   def vapaanSivistystyönLukutaitokoulutuksenVuorovaikutustilanteissaToimimisenSuoritus() = {
-    VapaanSivistystyönLukutaitokoulutuksenVuorovaikutustilanteissaToimimisenSuoritus(
+    VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus(
       koulutusmoduuli = VapaanSivistystyönLukutaidonKokonaisuus(
         Koodistokoodiviite(koodiarvo = "vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus", koodistoUri = "vstlukutaitokoulutuksenkokonaisuus"),
         Some(LaajuusTunneissa(20))
       ),
-      arviointi = Some(List(vapaanSivistystyönKieliopintojenArviointi))
+      arviointi = Some(List(vapaanSivistystyönLukutaitokoulutuksenArviointi))
     )
   }
 
   def vapaanSivistystyönLukutaitokoulutuksenTekstienLukeminenJaTulkitseminenSuoritus() = {
-    VapaanSivistystyönLukutaitokoulutuksenTekstienLukeminenJaTulkitseminenSuoritus(
+    VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus(
       koulutusmoduuli = VapaanSivistystyönLukutaidonKokonaisuus(
         Koodistokoodiviite(koodiarvo = "vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus", koodistoUri = "vstlukutaitokoulutuksenkokonaisuus"),
         Some(LaajuusTunneissa(20))
       ),
-      arviointi = Some(List(vapaanSivistystyönKieliopintojenArviointi))
+      arviointi = Some(List(vapaanSivistystyönLukutaitokoulutuksenArviointi))
     )
   }
 
   def vapaanSivistystyönLukutaitokoulutuksenTekstienKirjoittaminenJaTuottaminenToimimisenSuoritus() = {
-    VapaanSivistystyönLukutaitokoulutuksenTekstienKirjoittaminenJaTuottaminenToimimisenSuoritus(
+    VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus(
       koulutusmoduuli = VapaanSivistystyönLukutaidonKokonaisuus(
         Koodistokoodiviite(koodiarvo = "vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus", koodistoUri = "vstlukutaitokoulutuksenkokonaisuus"),
         Some(LaajuusTunneissa(20))
       ),
-      arviointi = Some(List(vapaanSivistystyönKieliopintojenArviointi))
+      arviointi = Some(List(vapaanSivistystyönLukutaitokoulutuksenArviointi))
     )
   }
 
   def vapaanSivistystyönLukutaitokoulutuksenNumeeristenTaitojenSuoritus() = {
-    VapaanSivistystyönLukutaitokoulutuksenNumeeristenTaitojenSuoritus(
+    VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus(
       koulutusmoduuli = VapaanSivistystyönLukutaidonKokonaisuus(
         Koodistokoodiviite(koodiarvo = "vstlukutaitokoulutuksennumeeristentaitojenkokonaisuudensuoritus", koodistoUri = "vstlukutaitokoulutuksenkokonaisuus"),
         Some(LaajuusTunneissa(20))
       ),
-      arviointi = Some(List(vapaanSivistystyönKieliopintojenArviointi))
+      arviointi = Some(List(vapaanSivistystyönLukutaitokoulutuksenArviointi))
     )
   }
 
@@ -405,6 +405,13 @@ object VapaaSivistystyöExampleData {
     VapaanSivistystyönLukutaidonKokonaisuus(
       tunniste =  tunniste,
       laajuus = laajuus
+    )
+  }
+
+  def vapaanSivistystyönLukutaitokoulutuksenArviointi() = {
+    VapaanSivistystyönLukutaitokoulutuksenArviointi(
+      taitotaso = Koodistokoodiviite(koodiarvo = "yli_C1.1", koodistoUri = "arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
+      päivä = date(2020, 1, 1)
     )
   }
 }
