@@ -52,6 +52,7 @@ exports[`DataTable Aktiivisen sarakkeen nimen uudelleen klikkaaminen kääntää
   >
     <tr
       class="table__row"
+      data-row="4"
     >
       <td
         class="table__td"
@@ -68,6 +69,7 @@ exports[`DataTable Aktiivisen sarakkeen nimen uudelleen klikkaaminen kääntää
     </tr>
     <tr
       class="table__row"
+      data-row="2"
     >
       <td
         class="table__td"
@@ -84,6 +86,7 @@ exports[`DataTable Aktiivisen sarakkeen nimen uudelleen klikkaaminen kääntää
     </tr>
     <tr
       class="table__row"
+      data-row="1"
     >
       <td
         class="table__td"
@@ -100,6 +103,7 @@ exports[`DataTable Aktiivisen sarakkeen nimen uudelleen klikkaaminen kääntää
     </tr>
     <tr
       class="table__row"
+      data-row="3"
     >
       <td
         class="table__td"
@@ -170,6 +174,7 @@ exports[`DataTable Renderöityy oikein 1`] = `
   >
     <tr
       class="table__row"
+      data-row="3"
     >
       <td
         class="table__td"
@@ -186,6 +191,7 @@ exports[`DataTable Renderöityy oikein 1`] = `
     </tr>
     <tr
       class="table__row"
+      data-row="1"
     >
       <td
         class="table__td"
@@ -202,6 +208,7 @@ exports[`DataTable Renderöityy oikein 1`] = `
     </tr>
     <tr
       class="table__row"
+      data-row="2"
     >
       <td
         class="table__td"
@@ -218,6 +225,7 @@ exports[`DataTable Renderöityy oikein 1`] = `
     </tr>
     <tr
       class="table__row"
+      data-row="4"
     >
       <td
         class="table__td"
@@ -288,6 +296,7 @@ exports[`DataTable Toisen sarakkeen nimen klikkaaminen järjestää sen mukaises
   >
     <tr
       class="table__row"
+      data-row="1"
     >
       <td
         class="table__td"
@@ -304,6 +313,7 @@ exports[`DataTable Toisen sarakkeen nimen klikkaaminen järjestää sen mukaises
     </tr>
     <tr
       class="table__row"
+      data-row="2"
     >
       <td
         class="table__td"
@@ -320,6 +330,7 @@ exports[`DataTable Toisen sarakkeen nimen klikkaaminen järjestää sen mukaises
     </tr>
     <tr
       class="table__row"
+      data-row="4"
     >
       <td
         class="table__td"
@@ -336,6 +347,7 @@ exports[`DataTable Toisen sarakkeen nimen klikkaaminen järjestää sen mukaises
     </tr>
     <tr
       class="table__row"
+      data-row="3"
     >
       <td
         class="table__td"

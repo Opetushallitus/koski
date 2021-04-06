@@ -1,12 +1,14 @@
+import { createOppijaPath } from "../../src/state/paths"
 import {
   clickElement,
   defaultLogin,
   expectElementEventuallyVisible,
   expectElementNotVisible,
   expectElementVisible,
-  getCurrentUrl,
   loginAs,
+  pathToUrl,
   reset,
+  urlIsEventually,
 } from "../integrationtests-env/browser"
 
 describe("Login / Logout / kirjautuminen", () => {
@@ -43,13 +45,10 @@ describe("Login / Logout / kirjautuminen", () => {
   })
 
   it("Käyttäjä on kirjautumisen jälkeen osoitteessa, jonne hän alunperin yritti", async () => {
-    await loginAs(
-      "/virkailija/oppijat/1.2.246.562.24.00000000001",
-      "valpas-jkl-normaali",
-      "valpas-jkl-normaali"
-    )
-    expect(await getCurrentUrl()).toEqual(
-      "http://localhost:1234/valpas/virkailija/oppijat/1.2.246.562.24.00000000001"
-    )
+    const oppijaPath = createOppijaPath("/virkailija", {
+      oppijaOid: "1.2.246.562.24.00000000001",
+    })
+    await loginAs(oppijaPath, "valpas-jkl-normaali")
+    await urlIsEventually(pathToUrl(oppijaPath))
   })
 })

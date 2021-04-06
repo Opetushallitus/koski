@@ -300,3 +300,20 @@ export const dropdownSelect = async (selector: string, index: number) => {
 }
 
 export const getCurrentUrl = () => driver.getCurrentUrl()
+
+export const urlIsEventually = async (
+  expectedUrl: string,
+  timeout: number = 10000
+) => {
+  try {
+    await eventually(async () => {
+      expect(await getCurrentUrl()).toMatch(expectedUrl)
+    }, timeout)
+  } catch (error) {
+    throw new Error(
+      `Expected URL eventually to be ${expectedUrl}. It is currently ${await getCurrentUrl()}`
+    )
+  }
+}
+
+export const pathToUrl = (path: string) => `http://localhost:1234/valpas${path}`

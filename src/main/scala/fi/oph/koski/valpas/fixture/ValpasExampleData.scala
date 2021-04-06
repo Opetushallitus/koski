@@ -418,4 +418,7 @@ object ValpasExampleData {
     )
   )
 
+  def kulosaarelainenYsiluokkalainenOpiskeluoikeus = oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus.copy(
+    oppilaitos = Some(kulosaarenAlaAste)
+  )
 }
