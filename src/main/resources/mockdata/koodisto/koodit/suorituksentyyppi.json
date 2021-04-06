@@ -1520,5 +1520,35 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstlukutaitokoulutus",
+  "koodiArvo" : "vstlukutaitokoulutus",
+  "metadata" : [ {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstlukutaitokoulutuksenkokonaisuudensuoritus",
+  "koodiArvo" : "vstlukutaitokoulutuksenkokonaisuudensuoritus",
+  "metadata" : [ {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen kokonaisuuden suoritus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen kokonaisuuden suoritus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen kokonaisuuden suoritus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }
 ]

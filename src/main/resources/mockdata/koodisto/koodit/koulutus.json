@@ -237,6 +237,19 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "koulutus_999911",
+  "koodiArvo" : "999911",
+  "metadata" : [ {
+    "nimi" : "Kansanopistojen vapaan sivistystyön lukutaitokoulutus",
+    "lyhytNimi" : "Kansanopistojen vapaan sivistystyön lukutaitokoulutus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kansanopistojen vapaan sivistystyön lukutaitokoulutus",
+    "lyhytNimi" : "Kansanopistojen vapaan sivistystyön lukutaitokoulutus",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "koulutus_100000",
   "koodiArvo" : "100000",
   "metadata" : [ {
