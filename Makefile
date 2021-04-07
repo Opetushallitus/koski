@@ -129,7 +129,7 @@ elastic:
 ### Code checks
 
 .PHONY: eslint
-eslint: front
+eslint:
 	cd web && npm run lint
 
 .PHONY: scalastyle
