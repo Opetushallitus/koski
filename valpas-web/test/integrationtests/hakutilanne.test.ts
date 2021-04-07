@@ -1,12 +1,22 @@
 import {
+  createHakutilannePathWithOrg,
+  createHakutilannePathWithoutOrg,
+  createOppijaPath,
+} from "../../src/state/paths"
+import {
+  clickElement,
   dataTableEventuallyEquals,
   dropdownSelect,
   loginAs,
+  pathToUrl,
   textEventuallyEquals,
+  urlIsEventually,
 } from "../integrationtests-env/browser"
 
 const selectOrganisaatio = (index: number) =>
   dropdownSelect("#organisaatiovalitsin", index)
+const clickOppija = (index: number) =>
+  clickElement(`.hakutilanne tr:nth-child(${index + 1}) td:first-child a`)
 
 // HUOM: Tämä on sarkaimilla (\t) erotettu taulukko:
 const jklNormaalikouluTableContent = `
@@ -28,9 +38,20 @@ const jklNormaalikouluTableContent = `
   Ysiluokka-valmis-keväällä-2021 Valpas	19.6.2005	9C	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
 `
 
-describe("Perusopetuksen näkymä", () => {
+const hakutilannePath = createHakutilannePathWithoutOrg("/virkailija")
+const jklHakutilannePath = createHakutilannePathWithOrg("/virkailija", {
+  organisaatioOid: "1.2.246.562.10.14613773812",
+})
+const kulosaariOid = "1.2.246.562.10.64353470871"
+const kulosaariHakutilannePath = createHakutilannePathWithOrg("/virkailija", {
+  organisaatioOid: kulosaariOid,
+})
+const kulosaarenOppijaOid = "1.2.246.562.24.00000000029"
+
+describe("Hakutilannenäkymä", () => {
   it("Näyttää listan oppijoista", async () => {
-    await loginAs("/virkailija/oppijat", "valpas-jkl-normaali")
+    await loginAs(hakutilannePath, "valpas-jkl-normaali")
+    await urlIsEventually(pathToUrl(jklHakutilannePath))
     await textEventuallyEquals(
       ".card__header",
       "Perusopetuksen päättävät 2021 (16)"
@@ -42,17 +63,19 @@ describe("Perusopetuksen näkymä", () => {
   })
 
   it("Näyttää tyhjän listan virheittä, jos ei oppijoita", async () => {
-    await loginAs("/virkailija/oppijat", "valpas-kulosaari")
+    await loginAs(hakutilannePath, "valpas-kulosaari")
+    await urlIsEventually(pathToUrl(kulosaariHakutilannePath))
     await textEventuallyEquals(
       ".card__header",
-      "Perusopetuksen päättävät 2021 (0)"
+      "Perusopetuksen päättävät 2021 (1)"
     )
   })
 
   it("Vaihtaa taulun sisällön organisaatiovalitsimesta", async () => {
-    await loginAs("/virkailija/oppijat", "valpas-useampi-peruskoulu")
+    await loginAs(hakutilannePath, "valpas-useampi-peruskoulu")
 
     await selectOrganisaatio(0)
+    await urlIsEventually(pathToUrl(jklHakutilannePath))
     await textEventuallyEquals(
       ".card__header",
       "Perusopetuksen päättävät 2021 (16)"
@@ -63,9 +86,42 @@ describe("Perusopetuksen näkymä", () => {
     )
 
     await selectOrganisaatio(1)
+    await urlIsEventually(pathToUrl(kulosaariHakutilannePath))
     await textEventuallyEquals(
       ".card__header",
-      "Perusopetuksen päättävät 2021 (0)"
+      "Perusopetuksen päättävät 2021 (1)"
     )
+  })
+
+  it("Käyminen oppijakohtaisessa näkymässä ei hukkaa valittua organisaatiota", async () => {
+    await loginAs(hakutilannePath, "valpas-useampi-peruskoulu")
+
+    await selectOrganisaatio(1)
+    await urlIsEventually(pathToUrl(kulosaariHakutilannePath))
+
+    await clickOppija(0)
+    await urlIsEventually(
+      pathToUrl(
+        createOppijaPath("/virkailija", {
+          oppijaOid: kulosaarenOppijaOid,
+          organisaatioOid: kulosaariOid,
+        })
+      )
+    )
+
+    await clickElement(".oppijaview__backbutton a")
+    await urlIsEventually(pathToUrl(kulosaariHakutilannePath))
+  })
+
+  it("Oppijasivulta, jolta puuttuu organisaatioreferenssi, ohjataan oikean organisaation hakutilannenäkymään", async () => {
+    await loginAs(
+      createOppijaPath("/virkailija", {
+        oppijaOid: kulosaarenOppijaOid,
+      }),
+      "valpas-useampi-peruskoulu"
+    )
+
+    await clickElement(".oppijaview__backbutton a")
+    await urlIsEventually(pathToUrl(kulosaariHakutilannePath))
   })
 })

@@ -10,11 +10,12 @@ import {
   HakuSuppeatTiedot,
   OppijaHakutilanteillaSuppeatTiedot,
 } from "../../state/oppijat"
+import { createOppijaPath } from "../../state/paths"
 import { formatNullableDate } from "../../utils/date"
 
 export type HakutilanneTableProps = {
   data: OppijaHakutilanteillaSuppeatTiedot[]
-  organisaatioOid: string | undefined
+  organisaatioOid: string
 }
 
 export const HakutilanneTable = (props: HakutilanneTableProps) => {
@@ -24,7 +25,7 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
       A.flatten(
         props.data.map(oppijaToTableData(basePath, props.organisaatioOid))
       ),
-    [props.data]
+    [props.organisaatioOid, props.data]
   )
 
   return (
@@ -67,10 +68,9 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
   )
 }
 
-const oppijaToTableData = (
-  basePath: string,
-  organisaatioOid: string | undefined
-) => (oppija: OppijaHakutilanteillaSuppeatTiedot): Array<Datum> => {
+const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
+  oppija: OppijaHakutilanteillaSuppeatTiedot
+): Array<Datum> => {
   const valvottavatOpiskeluoikeudet = oppija.oppija.opiskeluoikeudet.filter(
     (oo) =>
       oppija.oppija.valvottavatOpiskeluoikeudet.includes(oo.oid) &&
@@ -85,7 +85,12 @@ const oppijaToTableData = (
       {
         value: `${henkilö.sukunimi} ${henkilö.etunimet}`,
         display: (
-          <Link to={`${basePath}/oppijat/${henkilö.oid}`}>
+          <Link
+            to={createOppijaPath(basePath, {
+              organisaatioOid,
+              oppijaOid: henkilö.oid,
+            })}
+          >
             {henkilö.sukunimi} {henkilö.etunimet}
           </Link>
         ),

@@ -16,9 +16,19 @@ import {
   storeLoginReturnUrl,
 } from "../state/auth"
 import { BasePathProvider, useBasePath } from "../state/basePath"
+import {
+  createHakutilannePathWithoutOrg,
+  hakutilannePathWithOrg,
+  hakutilannePathWithoutOrg,
+  oppijaPath,
+  rootPath,
+} from "../state/paths"
 import { User } from "../state/types"
 import { ErrorView, NotFoundView } from "../views/ErrorView"
-import { PerusopetusView } from "./hakutilanne/PerusopetusView"
+import {
+  HakutilanneView,
+  HakutilanneViewWithoutOrgOid,
+} from "./hakutilanne/HakutilanneView"
 import { HomeView } from "./HomeView"
 import { OppijaView } from "./oppija/OppijaView"
 
@@ -28,7 +38,7 @@ const featureFlagEnabledValue = "enabled"
 const FeatureFlagEnabler = () => {
   const basePath = useBasePath()
   window.localStorage.setItem(featureFlagName, featureFlagEnabledValue)
-  return <Redirect to={`${basePath}/oppijat`} />
+  return <Redirect to={createHakutilannePathWithoutOrg(basePath)} />
 }
 
 const runningLocally = window.environment == "local"
@@ -58,16 +68,33 @@ const VirkailijaRoutes = ({ user }: VirkailijaRoutesProps) => {
         <FeatureFlagEnabler />
       </Route>
       {isFeatureFlagEnabled() && (
-        <Route exact path={`${basePath}/oppijat`}>
-          <PerusopetusView
-            kayttooikeusroolit={organisaatiotJaKayttooikeusroolit.data}
-          />
-        </Route>
+        <Route
+          exact
+          path={hakutilannePathWithoutOrg(basePath)}
+          render={(routeProps) => (
+            <HakutilanneViewWithoutOrgOid
+              kayttooikeusroolit={organisaatiotJaKayttooikeusroolit.data}
+              {...routeProps}
+            />
+          )}
+        />
       )}
       {isFeatureFlagEnabled() && (
-        <Route exact path={`${basePath}/oppijat/:oid`} component={OppijaView} />
+        <Route
+          exact
+          path={hakutilannePathWithOrg(basePath)}
+          render={(routeProps) => (
+            <HakutilanneView
+              kayttooikeusroolit={organisaatiotJaKayttooikeusroolit.data}
+              {...routeProps}
+            />
+          )}
+        />
       )}
-      <Route exact path={`${basePath}/`}>
+      {isFeatureFlagEnabled() && (
+        <Route exact path={oppijaPath(basePath)} component={OppijaView} />
+      )}
+      <Route exact path={rootPath(basePath)}>
         <HomeView
           user={user}
           organisaatiotJaKayttooikeusroolit={

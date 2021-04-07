@@ -157,7 +157,7 @@ export const DataTable = (props: DataTableProps) => {
       </TableHeader>
       <TableBody>
         {sortedData.map((datum) => (
-          <Row key={datum.key}>
+          <Row key={datum.key} data-row={datum.key}>
             {datum.values.map((value, index) => {
               const column = props.columns[index]
               return (

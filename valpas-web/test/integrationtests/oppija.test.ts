@@ -1,3 +1,4 @@
+import { createOppijaPath } from "../../src/state/paths"
 import {
   $$,
   contentEventuallyEquals,
@@ -11,6 +12,28 @@ import {
   allowNetworkError,
   FORBIDDEN,
 } from "../integrationtests-env/fail-on-console"
+
+const ysiluokkaKeskenKeväälläPath = createOppijaPath("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000001",
+})
+const päällekkäisiäOppivelvollisuuksiaPath = createOppijaPath("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000003",
+})
+const ysiluokkaValmisKeväälläPath = createOppijaPath("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000011",
+})
+const lukionAloittanutPath = createOppijaPath("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000015",
+})
+const lukionLokakuussaAloittanutPath = createOppijaPath("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000016",
+})
+const turvakiellollinenOppijaPath = createOppijaPath("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000024",
+})
+const epäonninenOppijaPath = createOppijaPath("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000028",
+})
 
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
@@ -32,11 +55,7 @@ const turvakieltoVaroitusNotVisible = () =>
 
 describe("Oppijakohtainen näkymä", () => {
   it("Näyttää oppijan tiedot, johon käyttäjällä on lukuoikeus", async () => {
-    await loginAs(
-      "/virkailija/oppijat/1.2.246.562.24.00000000001",
-      "valpas-jkl-normaali",
-      "valpas-jkl-normaali"
-    )
+    await loginAs(ysiluokkaKeskenKeväälläPath, "valpas-jkl-normaali")
     await mainHeadingEquals(
       "Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas (221105A3023)"
     )
@@ -68,11 +87,7 @@ describe("Oppijakohtainen näkymä", () => {
   })
 
   it("Näyttää oppijan tiedot valmistuneelle ysiluokkalaiselle", async () => {
-    await loginAs(
-      "/virkailija/oppijat/1.2.246.562.24.00000000011",
-      "valpas-jkl-normaali",
-      "valpas-jkl-normaali"
-    )
+    await loginAs(ysiluokkaValmisKeväälläPath, "valpas-jkl-normaali")
     await mainHeadingEquals(
       "Ysiluokka-valmis-keväällä-2021 Valpas (190605A006K)"
     )
@@ -91,22 +106,14 @@ describe("Oppijakohtainen näkymä", () => {
   })
 
   it("Näyttää oppijan muut tiedot vaikka hakukoostekysely epäonnistuu", async () => {
-    await loginAs(
-      "/virkailija/oppijat/1.2.246.562.24.00000000028",
-      "valpas-jkl-normaali",
-      "valpas-jkl-normaali"
-    )
+    await loginAs(epäonninenOppijaPath, "valpas-jkl-normaali")
     await mainHeadingEquals("Epäonninen Valpas (301005A336J)")
     await hautEquals("Virhe oppijan hakuhistorian hakemisessa")
   })
 
   it("Ei näytä oppijan tietoja, johon käyttäjällä ei ole lukuoikeutta", async () => {
     allowNetworkError("/valpas/api/oppija/", FORBIDDEN)
-    await loginAs(
-      "/virkailija/oppijat/1.2.246.562.24.00000000001",
-      "valpas-helsinki",
-      "valpas-helsinki"
-    )
+    await loginAs(ysiluokkaKeskenKeväälläPath, "valpas-helsinki")
     await mainHeadingEquals("Oppijan tiedot")
     await secondaryHeadingEquals(
       "Oppijaa ei löydy tunnuksella 1.2.246.562.24.00000000001"
@@ -114,15 +121,13 @@ describe("Oppijakohtainen näkymä", () => {
   })
 
   it("Ei näytä oppijan tietoja, johon käyttäjällä ei ole lukuoikeutta vaihdetun tarkastelupäivän jälkeen", async () => {
-    const path = "/virkailija/oppijat/1.2.246.562.24.00000000011"
-
     allowNetworkError("/valpas/api/oppija/", FORBIDDEN)
-    await loginAs(path, "valpas-jkl-normaali", "valpas-jkl-normaali")
+    await loginAs(ysiluokkaValmisKeväälläPath, "valpas-jkl-normaali")
     await mainHeadingEquals(
       "Ysiluokka-valmis-keväällä-2021 Valpas (190605A006K)"
     )
     await resetMockData("2021-10-05")
-    await goToLocation(path)
+    await goToLocation(ysiluokkaValmisKeväälläPath)
 
     await mainHeadingEquals("Oppijan tiedot")
     await secondaryHeadingEquals(
@@ -131,11 +136,7 @@ describe("Oppijakohtainen näkymä", () => {
   })
 
   it("Näyttää oppijalta, jolla on useampia päällekäisiä opiskeluoikeuksia kaikki opiskeluoikeudet", async () => {
-    await loginAs(
-      "/virkailija/oppijat/1.2.246.562.24.00000000003",
-      "valpas-jkl-normaali",
-      "valpas-jkl-normaali"
-    )
+    await loginAs(päällekkäisiäOppivelvollisuuksiaPath, "valpas-jkl-normaali")
     await mainHeadingEquals("Päällekkäisiä Oppivelvollisuuksia (060605A083N)")
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000003")
     await oppivelvollisuustiedotEquals(`
@@ -157,11 +158,7 @@ describe("Oppijakohtainen näkymä", () => {
   })
 
   it("Näyttää oppijalta, jolla on useampia peräkkäisiä opiskeluoikeuksia kaikki opiskeluoikeudet", async () => {
-    await loginAs(
-      "/virkailija/oppijat/1.2.246.562.24.00000000015",
-      "valpas-jkl-normaali",
-      "valpas-jkl-normaali"
-    )
+    await loginAs(lukionAloittanutPath, "valpas-jkl-normaali")
     await mainHeadingEquals("LukionAloittanut Valpas (290405A871A)")
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000015")
     await oppivelvollisuustiedotEquals(`
@@ -182,11 +179,7 @@ describe("Oppijakohtainen näkymä", () => {
   })
 
   it("Näyttää oppijalta, jolla opiskeluoikeus alkaa tulevaisuudessa oikeat tiedot", async () => {
-    await loginAs(
-      "/virkailija/oppijat/1.2.246.562.24.00000000016",
-      "valpas-jkl-normaali",
-      "valpas-jkl-normaali"
-    )
+    await loginAs(lukionLokakuussaAloittanutPath, "valpas-jkl-normaali")
     await mainHeadingEquals("LukionLokakuussaAloittanut Valpas (180405A819J)")
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000016")
     await oppivelvollisuustiedotEquals(`
@@ -207,11 +200,7 @@ describe("Oppijakohtainen näkymä", () => {
   })
 
   it("Näyttää oppijan yhteystiedot ilman turvakieltovaroitusta", async () => {
-    await loginAs(
-      "/virkailija/oppijat/1.2.246.562.24.00000000001",
-      "valpas-jkl-normaali",
-      "valpas-jkl-normaali"
-    )
+    await loginAs(ysiluokkaKeskenKeväälläPath, "valpas-jkl-normaali")
 
     await ilmoitetutYhteystiedotEquals(`
       Ilmoitetut yhteystiedot
@@ -245,11 +234,7 @@ describe("Oppijakohtainen näkymä", () => {
   })
 
   it("Yhteystietoja ei näytetä, jos oppijalla on turvakielto", async () => {
-    await loginAs(
-      "/virkailija/oppijat/1.2.246.562.24.00000000024",
-      "valpas-jkl-normaali",
-      "valpas-jkl-normaali"
-    )
+    await loginAs(turvakiellollinenOppijaPath, "valpas-jkl-normaali")
 
     await turvakieltoVaroitusEquals(`
       warning

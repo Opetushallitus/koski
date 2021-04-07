@@ -23,30 +23,37 @@ export type DropdownOption<T> = {
   display: string
 }
 
-export const Dropdown = <T,>(props: DropdownProps<T>) => (
-  <InputContainer
-    className={props.containerClassName}
-    bemBase="dropdown"
-    label={props.label}
-    icon={props.icon || <ArrowDropDownIcon />}
-    error={props.error}
-  >
-    <select
-      id={props.selectorId}
-      className={b("input", { error: Boolean(props.error) })}
-      value={props.options.findIndex((opt) => opt.value === props.value)}
-      onChange={(event) =>
-        props.onChange(props.options[parseInt(event.target.value, 10)]?.value)
-      }
+export const Dropdown = <T,>(props: DropdownProps<T>) => {
+  const showEmptyValue = !props.options.some(
+    (option) => option.value === props.value
+  )
+
+  return (
+    <InputContainer
+      className={props.containerClassName}
+      bemBase="dropdown"
+      label={props.label}
+      icon={props.icon || <ArrowDropDownIcon />}
+      error={props.error}
     >
-      {props.options.map((option, index) => (
-        <option key={index} value={index}>
-          {option.display}
-        </option>
-      ))}
-    </select>
-  </InputContainer>
-)
+      <select
+        id={props.selectorId}
+        className={b("input", { error: Boolean(props.error) })}
+        value={props.options.findIndex((opt) => opt.value === props.value)}
+        onChange={(event) =>
+          props.onChange(props.options[parseInt(event.target.value, 10)]?.value)
+        }
+      >
+        {showEmptyValue ? <option>-</option> : null}
+        {props.options.map((option, index) => (
+          <option key={index} value={index}>
+            {option.display}
+          </option>
+        ))}
+      </select>
+    </InputContainer>
+  )
+}
 
 export const listToOptions = <T extends FilterableValue>(
   list: T[]
