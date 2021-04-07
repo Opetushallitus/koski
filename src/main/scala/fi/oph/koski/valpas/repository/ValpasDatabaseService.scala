@@ -6,8 +6,9 @@ import fi.oph.koski.db.{DatabaseConverters, SQLHelpers}
 import fi.oph.koski.log.Logging
 import org.json4s.JValue
 import slick.jdbc.GetResult
-
 import java.time.LocalDate
+
+import fi.oph.koski.util.Timing
 
 case class ValpasOppijaRow(
   oppijaOid: String,
@@ -21,7 +22,7 @@ case class ValpasOppijaRow(
   turvakielto: Boolean,
 )
 
-class ValpasDatabaseService(application: KoskiApplication) extends DatabaseConverters with Logging {
+class ValpasDatabaseService(application: KoskiApplication) extends DatabaseConverters with Logging with Timing {
   private val db = application.raportointiDatabase
 
   def getPeruskoulunValvojalleNäkyväOppija(rajapäivät: Rajapäivät)(oppijaOid: String): Option[ValpasOppijaRow] =
@@ -60,11 +61,16 @@ class ValpasDatabaseService(application: KoskiApplication) extends DatabaseConve
     val tarkasteluPäivä = rajapäivät.tarkasteluPäivä
     val keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä = rajapäivät.keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
 
-    db.runDbSync(SQLHelpers.concatMany(
-      Some(sql"""
+    val timedBlockname = if (oppijaOid.isDefined) "getOppijatSingle" else "getOppijatMultiple"
+
+    timed(timedBlockname, 10) {
+      db.runDbSync(SQLHelpers.concatMany(
+        Some(
+          sql"""
 WITH
   """),
-      oppijaOid.map(oid => sql"""
+        oppijaOid.map(oid =>
+          sql"""
   -- CTE: jos pyydettiin vain yhtä oppijaa, hae hänen master oid:nsa
   pyydetty_oppija AS (
     SELECT r_henkilo.master_oid
@@ -72,7 +78,8 @@ WITH
     WHERE r_henkilo.oppija_oid = $oid
   ),
       """),
-      Some(sql"""
+        Some(
+          sql"""
   -- CTE: kaikki oppijat, joilla on vähintään yksi kelpuutettava peruskoulun opetusoikeus, mukana
   -- myös taulukko kelpuutettavien opiskeluoikeuksien oppilaitoksista käyttöoikeustarkastelua varten.
   oppija AS (
@@ -89,9 +96,10 @@ WITH
       r_henkilo
       JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = r_henkilo.oppija_oid
       """),
-      oppilaitosOids.map(oids => sql"AND r_opiskeluoikeus.oppilaitos_oid = any($oids)"),
-      oppijaOid.map(oid => sql"JOIN pyydetty_oppija ON pyydetty_oppija.master_oid = r_henkilo.master_oid"),
-      Some(sql"""
+        oppilaitosOids.map(oids => sql"AND r_opiskeluoikeus.oppilaitos_oid = any($oids)"),
+        oppijaOid.map(oid => sql"JOIN pyydetty_oppija ON pyydetty_oppija.master_oid = r_henkilo.master_oid"),
+        Some(
+          sql"""
       JOIN r_paatason_suoritus ON r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
       LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella ON aikajakson_keskella.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
         AND $tarkasteluPäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
@@ -375,5 +383,6 @@ WITH
     oppivelvollinen_oppija.sukunimi,
     oppivelvollinen_oppija.etunimet
     """)).as[ValpasOppijaRow])
+    }
   }
 }

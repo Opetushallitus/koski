@@ -5,6 +5,7 @@ import fi.oph.koski.henkilo.Yhteystiedot
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.{AuditLog, KoskiMessageField, Logging}
 import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
+import fi.oph.koski.util.Timing
 import fi.oph.koski.validation.{ValidatingAndResolvingExtractor, ValidationAndResolvingContext}
 import fi.oph.koski.valpas.ValpasOppijaService.ValpasOppijaRowConversionOps
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, ValpasHakukoosteService}
@@ -76,7 +77,7 @@ object ValpasOppijaService {
 class ValpasOppijaService(
   application: KoskiApplication,
   hakukoosteService: ValpasHakukoosteService,
-) extends Logging {
+) extends Logging with Timing {
   private val dbService = new ValpasDatabaseService(application)
   private val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
   private val localizationRepository = application.valpasLocalizationRepository
@@ -96,11 +97,18 @@ class ValpasOppijaService(
       .map(_.map(OppijaHakutilanteillaSuppeatTiedot.apply))
       .map(withAuditLogOppilaitostenKatsominen(oppilaitosOids))
 
-  private def getOppijatLaajatTiedot(oppilaitosOids: Set[ValpasOppilaitos.Oid])(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] =
+  private def getOppijatLaajatTiedot(oppilaitosOids: Set[ValpasOppilaitos.Oid])(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
+    val errorClue = oppilaitosOids.size match {
+      case 1 =>  s"oppilaitos:${oppilaitosOids.head}"
+      case n if n > 1 => s"oppilaitokset[${n}]:${oppilaitosOids.head}, ..."
+      case _ => ""
+    }
+
     accessResolver.organisaatiohierarkiaOids(oppilaitosOids)
       .map(dbService.getPeruskoulunValvojalleNäkyvätOppijat(rajapäivät()))
       .flatMap(results => HttpStatus.foldEithers(results.map(_.asValpasOppijaLaajatTiedot)))
-      .map(fetchHaut)
+      .map(fetchHaut(errorClue))
+  }
 
   // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
   // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
@@ -117,13 +125,13 @@ class ValpasOppijaService(
       .map(withAuditLogOppijaKatsominen)
 
   private def fetchHaku(oppija: ValpasOppijaLaajatTiedot): OppijaHakutilanteillaLaajatTiedot = {
-    val hakukoosteet = hakukoosteService.getYhteishakujenHakukoosteet(Set(oppija.henkilö.oid))
+    val hakukoosteet = hakukoosteService.getYhteishakujenHakukoosteet(Set(oppija.henkilö.oid), s"oppija:${oppija.henkilö.oid}")
     val yhteystiedot = hakukoosteet.map(ilmoitetutYhteystiedot).getOrElse(Seq.empty)
     OppijaHakutilanteillaLaajatTiedot.apply(oppija, hakukoosteet).copy(yhteystiedot = yhteystiedot)
   }
 
-  private def fetchHaut(oppijat: Seq[ValpasOppijaLaajatTiedot]): Seq[OppijaHakutilanteillaLaajatTiedot] = {
-    hakukoosteService.getYhteishakujenHakukoosteet(oppijat.map(_.henkilö.oid).toSet)
+  private def fetchHaut(errorClue: String)(oppijat: Seq[ValpasOppijaLaajatTiedot]): Seq[OppijaHakutilanteillaLaajatTiedot] = {
+    hakukoosteService.getYhteishakujenHakukoosteet(oppijat.map(_.henkilö.oid).toSet, errorClue)
       .map(_.groupBy(_.oppijaOid))
       .fold(
         error => oppijat.map(oppija => OppijaHakutilanteillaLaajatTiedot.apply(oppija, Left(error))),
@@ -136,18 +144,20 @@ class ValpasOppijaService(
     if (oppija.henkilö.turvakielto) {
       Right(Seq.empty)
     } else {
-      oppijanumerorekisteri.findOppijaJaYhteystiedotByOid(oppija.henkilö.oid)
-        .map(_.yhteystiedot.flatMap(yt => {
-          val alkuperä = koodistoviitepalvelu.validate(yt.alkuperä)
-            .filter(_.koodiarvo == "alkupera1") // Filtteröi pois muut kuin VTJ:ltä peräisin olevat yhteystiedot
-          val tyyppi = koodistoviitepalvelu.validate(yt.tyyppi)
-          if (alkuperä.isDefined && tyyppi.isDefined) {
-            Some(yt.copy(alkuperä = alkuperä.get, tyyppi = tyyppi.get))
-          } else {
-            None
-          }
-        }))
-        .toRight(ValpasErrorCategory.internalError())
+      timed("fetchVirallisetYhteystiedot", 10) {
+        oppijanumerorekisteri.findOppijaJaYhteystiedotByOid(oppija.henkilö.oid)
+          .map(_.yhteystiedot.flatMap(yt => {
+            val alkuperä = koodistoviitepalvelu.validate(yt.alkuperä)
+              .filter(_.koodiarvo == "alkupera1") // Filtteröi pois muut kuin VTJ:ltä peräisin olevat yhteystiedot
+            val tyyppi = koodistoviitepalvelu.validate(yt.tyyppi)
+            if (alkuperä.isDefined && tyyppi.isDefined) {
+              Some(yt.copy(alkuperä = alkuperä.get, tyyppi = tyyppi.get))
+            } else {
+              None
+            }
+          }))
+          .toRight(ValpasErrorCategory.internalError())
+      }
     }
   }
 

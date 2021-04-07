@@ -13,7 +13,7 @@ class MockHakukoosteService extends ValpasHakukoosteService {
     ValpasMockOppijat.hakukohteidenHakuEpäonnistuu.oid -> ValpasErrorCategory.unavailable.sure()
   )
 
-  def getHakukoosteet(oppijaOids: Set[ValpasHenkilö.Oid]): Either[HttpStatus, Seq[Hakukooste]] =
+  def getHakukoosteet(oppijaOids: Set[ValpasHenkilö.Oid], errorClue: String = ""): Either[HttpStatus, Seq[Hakukooste]] =
     if (oppijaOids.forall(errorOids.contains)) {
       Left(HttpStatus.fold(oppijaOids.map(errorOids(_))))
     } else {
