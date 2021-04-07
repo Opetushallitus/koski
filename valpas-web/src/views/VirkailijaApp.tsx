@@ -1,5 +1,5 @@
 import React from "react"
-import { Redirect, Route, Switch, useLocation } from "react-router-dom"
+import { Redirect, Route, Switch } from "react-router-dom"
 import { fetchYlatasonOrganisaatiotJaKayttooikeusroolit } from "../api/api"
 import { useApiOnce } from "../api/apiHooks"
 import { isSuccess } from "../api/apiUtils"
@@ -10,9 +10,9 @@ import {
   CurrentUser,
   getCurrentUser,
   getLogin,
-  getLoginRedirectPath,
   hasValpasAccess,
   isLoggedIn,
+  redirectToLoginReturnUrl,
   storeLoginReturnUrl,
 } from "../state/auth"
 import { BasePathProvider, useBasePath } from "../state/basePath"
@@ -112,10 +112,8 @@ const LocalRaamit = React.lazy(
 )
 
 const Login = () => {
-  const location = useLocation()
-
   React.useEffect(() => {
-    storeLoginReturnUrl(location.pathname)
+    storeLoginReturnUrl()
   }, [])
 
   const config = getLogin()
@@ -149,7 +147,9 @@ const VirkailijaApp = ({ basePath }: VirkailijaAppProps) => {
     return <LoadingModal />
   }
 
-  const redirectPath = getLoginRedirectPath()
+  if (redirectToLoginReturnUrl()) {
+    return null
+  }
 
   return (
     <BasePathProvider value={basePath}>
@@ -157,13 +157,9 @@ const VirkailijaApp = ({ basePath }: VirkailijaAppProps) => {
         <LocalRaamit user={user} />
       )}
       {hasValpasAccess(user) ? (
-        redirectPath ? (
-          <Redirect to={redirectPath} />
-        ) : (
-          <Page id="virkailija-app">
-            <VirkailijaRoutes user={user} />
-          </Page>
-        )
+        <Page id="virkailija-app">
+          <VirkailijaRoutes user={user} />
+        </Page>
       ) : isLoggedIn(user) ? (
         <ErrorView
           title={t("login__ei_valpas-oikeuksia_otsikko")}
