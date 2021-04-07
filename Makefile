@@ -134,7 +134,7 @@ eslint: front
 
 .PHONY: scalastyle
 scalastyle:
-	mvn verify -DskipTests -P scalastyle
+	mvn scalastyle:check -P scalastyle
 
 .PHONY: lint
 lint: eslint scalastyle
