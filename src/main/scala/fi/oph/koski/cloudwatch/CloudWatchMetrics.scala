@@ -15,7 +15,7 @@ object CloudWatchMetrics extends Logging {
     val timeInSeconds = (completed.getTime - start.getTime) / 1000.0
 
     if (Environment.isLocalDevelopmentEnvironment) {
-      logger.info(s"Mocking cloudwatch metric: raportointikanta loading took $timeInSeconds seconds")
+      logger.debug(s"Mocking cloudwatch metric: raportointikanta loading took $timeInSeconds seconds")
     } else {
       putRaportointikantaLoadtimeToAWS(timeInSeconds)
     }
