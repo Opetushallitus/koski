@@ -10,7 +10,7 @@ export default {
     let toimipisteellä = copyToimipiste(preIBSuoritus(opiskeluoikeus), proto)
     return oppimääränOsasuoritukset(modelData(proto, 'tyyppi')).map(oppiaineet => modelSetValue(toimipisteellä, oppiaineet.value, 'osasuoritukset'))
   },
-  canAddSuoritus: (opiskeluoikeus) => true,
+  canAddSuoritus: () => true,
   addSuoritusTitle: () => <Text name="lisää opintojen päättövaiheen suoritus"/>
 }
 
