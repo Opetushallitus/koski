@@ -130,7 +130,7 @@ elastic:
 
 .PHONY: eslint
 eslint:
-	cd web && npm run lint
+	cd web && npm run eslint
 
 .PHONY: scalastyle
 scalastyle:
