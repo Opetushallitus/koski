@@ -54,7 +54,7 @@ case class VapaanSivistystyönLukutaitokoulutuksenArviointi(
   @KoodistoUri("arviointiasteikkovstkoto")
   @KoodistoKoodiarvo("Suoritettu")
   arvosana: Koodistokoodiviite = Koodistokoodiviite("Suoritettu", "arviointiasteikkovstkoto"),
-  @KoodistoUri("arviointiasteikkosuullisenkielitaidonkoetaitotaso")
+  @KoodistoUri("arviointiasteikkokehittyvankielitaidontasot")
   taitotaso: Koodistokoodiviite,
   päivä: LocalDate
 ) extends ArviointiPäivämäärällä with VapaanSivistystyönKoulutuksenArviointi

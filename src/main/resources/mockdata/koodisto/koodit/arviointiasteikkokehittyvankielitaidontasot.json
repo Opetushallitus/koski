@@ -1,5 +1,5 @@
 [ {
-  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_allea11",
+  "koodiUri" : "arviointiasteikkokehittyvankielitaidontasot_allea11",
   "koodiArvo" : "alle_A1.1",
   "metadata" : [ {
     "nimi" : "Alle A1.1",
@@ -8,7 +8,7 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_a11",
+  "koodiUri" : "arviointiasteikkokehittyvankielitaidontasot_a11",
   "koodiArvo" : "A1.1",
   "metadata" : [ {
     "nimi" : "A1.1",
@@ -17,7 +17,7 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_a12",
+  "koodiUri" : "arviointiasteikkokehittyvankielitaidontasot_a12",
   "koodiArvo" : "A1.2",
   "metadata" : [ {
     "nimi" : "A1.2",
@@ -26,7 +26,7 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_a13",
+  "koodiUri" : "arviointiasteikkokehittyvankielitaidontasot_a13",
   "koodiArvo" : "A1.3",
   "metadata" : [ {
     "nimi" : "A1.3",
@@ -35,7 +35,7 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_a21",
+  "koodiUri" : "arviointiasteikkokehittyvankielitaidontasot_a21",
   "koodiArvo" : "A2.1",
   "metadata" : [ {
     "nimi" : "A2.1",
@@ -44,7 +44,7 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_a22",
+  "koodiUri" : "arviointiasteikkokehittyvankielitaidontasot_a22",
   "koodiArvo" : "A2.2",
   "metadata" : [ {
     "nimi" : "A2.2",
@@ -53,7 +53,7 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_b11",
+  "koodiUri" : "arviointiasteikkokehittyvankielitaidontasot_b11",
   "koodiArvo" : "B1.1",
   "metadata" : [ {
     "nimi" : "B1.1",
@@ -62,7 +62,7 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_b12",
+  "koodiUri" : "arviointiasteikkokehittyvankielitaidontasot_b12",
   "koodiArvo" : "B1.2",
   "metadata" : [ {
     "nimi" : "B1.2",
@@ -71,7 +71,7 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_b21",
+  "koodiUri" : "arviointiasteikkokehittyvankielitaidontasot_b21",
   "koodiArvo" : "B2.1",
   "metadata" : [ {
     "nimi" : "B2.1",
@@ -80,7 +80,7 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_b22",
+  "koodiUri" : "arviointiasteikkokehittyvankielitaidontasot_b22",
   "koodiArvo" : "B2.2",
   "metadata" : [ {
     "nimi" : "B2.2",
@@ -89,7 +89,7 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_c11",
+  "koodiUri" : "arviointiasteikkokehittyvankielitaidontasot_c11",
   "koodiArvo" : "C1.1",
   "metadata" : [ {
     "nimi" : "C1.1",
@@ -98,7 +98,7 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_ylic11",
+  "koodiUri" : "arviointiasteikkokehittyvankielitaidontasot_ylic11",
   "koodiArvo" : "yli_C1.1",
   "metadata" : [ {
     "nimi" : "Yli C1.1",

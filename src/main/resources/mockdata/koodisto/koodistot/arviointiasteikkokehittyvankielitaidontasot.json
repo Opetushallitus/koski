@@ -1,15 +1,15 @@
 {
-  "koodistoUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso",
+  "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot",
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "FI",
-    "nimi" : "Arviointiasteikko suullisen kielitaidon koe taitotaso"
+    "nimi" : "Arviointiasteikko kehittyvän kielitaidon tasot"
   }, {
     "kieli" : "SV",
-    "nimi" : "Arviointiasteikko suullisen kielitaidon koe taitotaso"
+    "nimi" : "Arviointiasteikko kehittyvän kielitaidon tasot"
   }, {
     "kieli" : "EN",
-    "nimi" : "Arviointiasteikko suullisen kielitaidon koe taitotaso"
+    "nimi" : "Arviointiasteikko kehittyvän kielitaidon tasot"
   } ],
   "codesGroupUri" : "http://koski",
   "voimassaAlkuPvm" : "2020-07-29",

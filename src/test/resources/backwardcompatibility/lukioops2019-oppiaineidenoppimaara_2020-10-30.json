@@ -134,7 +134,7 @@
         },
         "taitotaso" : {
           "koodiarvo" : "yli_C1.1",
-          "koodistoUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso"
+          "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
         },
         "kuvaus" : {
           "fi" : "Puhetaito äidinkielen tasolla"
