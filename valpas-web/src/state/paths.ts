@@ -37,33 +37,33 @@ export const rootPath = (basePath: string = "") => `${basePath}/`
 
 // Hakutilannenäkymä
 
-export const perusopetusPathWithoutOrg = (basePath: string = "") =>
+export const hakutilannePathWithoutOrg = (basePath: string = "") =>
   `${basePath}/hakutilanne`
 
-export const createPerusopetusPathWithoutOrg = perusopetusPathWithoutOrg
+export const createHakutilannePathWithoutOrg = hakutilannePathWithoutOrg
 
-export const perusopetusPathWithOrg = (basePath: string = "") =>
+export const hakutilannePathWithOrg = (basePath: string = "") =>
   `${basePath}/hakutilanne/:organisaatioOid`
 
-export const createPerusopetusPathWithOrg = (
+export const createHakutilannePathWithOrg = (
   basePath: string = "",
   params: { organisaatioOid: Oid }
 ) => `${basePath}/hakutilanne/${params.organisaatioOid}`
 
-export type PerusopetusViewRouteProps = RouteComponentProps<{
+export type HakutilanneViewRouteProps = RouteComponentProps<{
   organisaatioOid?: string
 }>
 
 // Oppijakohtainen näkymä
 
 export const oppijaPath = (basePath: string = "") =>
-  `${basePath}/oppijat/:oppijaOid`
+  `${basePath}/oppija/:oppijaOid`
 
 export const createOppijaPath = (
   basePath: string = "",
   params: { oppijaOid: Oid; organisaatioOid?: Oid }
 ) =>
-  queryPath(`${basePath}/oppijat/${params.oppijaOid}`, {
+  queryPath(`${basePath}/oppija/${params.oppijaOid}`, {
     organisaatioRef: params.organisaatioOid,
   })
 

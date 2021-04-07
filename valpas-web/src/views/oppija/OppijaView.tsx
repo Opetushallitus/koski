@@ -19,8 +19,8 @@ import { Heading } from "../../components/typography/headings"
 import { T, t } from "../../i18n/i18n"
 import { OppijaHakutilanteillaLaajatTiedot } from "../../state/oppijat"
 import {
-  createPerusopetusPathWithOrg as createPerusopetusPathWithOrg,
-  createPerusopetusPathWithoutOrg as createPerusopetusPathWithoutOrg,
+  createHakutilannePathWithOrg as createHakutilannePathWithOrg,
+  createHakutilannePathWithoutOrg as createHakutilannePathWithoutOrg,
   OppijaViewRouteProps,
   parseQueryFromProps as parseSearchQueryFromProps,
 } from "../../state/paths"
@@ -119,8 +119,8 @@ const BackNav = (props: BackNavProps) => {
   const organisaatioOid =
     props.organisaatioRef || props.oppija?.oppija.oikeutetutOppilaitokset[0]
   const targetPath = organisaatioOid
-    ? createPerusopetusPathWithOrg("", { organisaatioOid })
-    : createPerusopetusPathWithoutOrg("")
+    ? createHakutilannePathWithOrg("", { organisaatioOid })
+    : createHakutilannePathWithoutOrg("")
 
   return (
     <div className={b("backbutton")}>

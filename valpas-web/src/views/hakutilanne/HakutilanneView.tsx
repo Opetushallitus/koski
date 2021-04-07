@@ -14,8 +14,8 @@ import { Counter } from "../../components/typography/Counter"
 import { getLocalized, t, T } from "../../i18n/i18n"
 import { useBasePath } from "../../state/basePath"
 import {
-  createPerusopetusPathWithOrg,
-  PerusopetusViewRouteProps,
+  createHakutilannePathWithOrg,
+  HakutilanneViewRouteProps,
 } from "../../state/paths"
 import {
   Oid,
@@ -25,22 +25,22 @@ import {
 import { currentYear } from "../../utils/date"
 import { ErrorView } from "../ErrorView"
 import { HakutilanneTable } from "./HakutilanneTable"
-import "./PerusopetusView.less"
+import "./HakutilanneView.less"
 import { VirkailijaNavigation } from "./VirkailijaNavigation"
 
-const b = bem("perusopetusview")
+const b = bem("hakutilanneview")
 
-export type PerusopetusViewProps = PerusopetusViewRouteProps & {
+export type HakutilanneViewProps = HakutilanneViewRouteProps & {
   kayttooikeusroolit: OrganisaatioJaKayttooikeusrooli[]
 }
 
-export const PerusopetusViewWithoutOrgOid = (props: PerusopetusViewProps) => {
+export const HakutilanneViewWithoutOrgOid = (props: HakutilanneViewProps) => {
   const basePath = useBasePath()
   const organisaatio = getOrganisaatiot(props.kayttooikeusroolit)[0]
 
   return organisaatio ? (
     <Redirect
-      to={createPerusopetusPathWithOrg(basePath, {
+      to={createHakutilannePathWithOrg(basePath, {
         organisaatioOid: organisaatio.oid,
       })}
     />
@@ -49,7 +49,7 @@ export const PerusopetusViewWithoutOrgOid = (props: PerusopetusViewProps) => {
   )
 }
 
-export const PerusopetusView = (props: PerusopetusViewProps) => {
+export const HakutilanneView = (props: HakutilanneViewProps) => {
   const history = useHistory()
   const organisaatiot = getOrganisaatiot(props.kayttooikeusroolit)
   const organisaatioOid =

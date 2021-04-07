@@ -17,18 +17,18 @@ import {
 } from "../state/auth"
 import { BasePathProvider, useBasePath } from "../state/basePath"
 import {
-  createPerusopetusPathWithoutOrg,
+  createHakutilannePathWithoutOrg,
+  hakutilannePathWithOrg,
+  hakutilannePathWithoutOrg,
   oppijaPath,
-  perusopetusPathWithOrg,
-  perusopetusPathWithoutOrg,
   rootPath,
 } from "../state/paths"
 import { User } from "../state/types"
 import { ErrorView, NotFoundView } from "../views/ErrorView"
 import {
-  PerusopetusView,
-  PerusopetusViewWithoutOrgOid,
-} from "./hakutilanne/PerusopetusView"
+  HakutilanneView,
+  HakutilanneViewWithoutOrgOid,
+} from "./hakutilanne/HakutilanneView"
 import { HomeView } from "./HomeView"
 import { OppijaView } from "./oppija/OppijaView"
 
@@ -38,7 +38,7 @@ const featureFlagEnabledValue = "enabled"
 const FeatureFlagEnabler = () => {
   const basePath = useBasePath()
   window.localStorage.setItem(featureFlagName, featureFlagEnabledValue)
-  return <Redirect to={createPerusopetusPathWithoutOrg(basePath)} />
+  return <Redirect to={createHakutilannePathWithoutOrg(basePath)} />
 }
 
 const runningLocally = window.environment == "local"
@@ -70,9 +70,9 @@ const VirkailijaRoutes = ({ user }: VirkailijaRoutesProps) => {
       {isFeatureFlagEnabled() && (
         <Route
           exact
-          path={perusopetusPathWithoutOrg(basePath)}
+          path={hakutilannePathWithoutOrg(basePath)}
           render={(routeProps) => (
-            <PerusopetusViewWithoutOrgOid
+            <HakutilanneViewWithoutOrgOid
               kayttooikeusroolit={organisaatiotJaKayttooikeusroolit.data}
               {...routeProps}
             />
@@ -82,9 +82,9 @@ const VirkailijaRoutes = ({ user }: VirkailijaRoutesProps) => {
       {isFeatureFlagEnabled() && (
         <Route
           exact
-          path={perusopetusPathWithOrg(basePath)}
+          path={hakutilannePathWithOrg(basePath)}
           render={(routeProps) => (
-            <PerusopetusView
+            <HakutilanneView
               kayttooikeusroolit={organisaatiotJaKayttooikeusroolit.data}
               {...routeProps}
             />
