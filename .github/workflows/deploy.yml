@@ -8,6 +8,7 @@ on:
         default: "dev"
       commithash:
         description: "Commit hash to deploy from"
+        required: true
 env:
   DOCKER_BUILDKIT: 1
   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
