@@ -2989,8 +2989,7 @@ describe('Perusopetus', function() {
 
           describe('Kun on merkitty valmiiksi', function() {
             before(
-              tilaJaVahvistus.merkitseValmiiksiDialog.lisääMyöntäjä('Reijo Reksi', 'rehtori'),
-              tilaJaVahvistus.merkitseValmiiksiDialog.merkitseValmiiksi,
+              opinnot.tilaJaVahvistus.lisääVahvistus('31.7.2020'),
               editor.saveChanges,
               wait.until(page.isSavedLabelShown)
             )
@@ -3041,8 +3040,7 @@ describe('Perusopetus', function() {
             before(
               editor.edit,
               tilaJaVahvistus.merkitseValmiiksi,
-              tilaJaVahvistus.merkitseValmiiksiDialog.lisääMyöntäjä('Reijo Reksi', 'rehtori'),
-              tilaJaVahvistus.merkitseValmiiksiDialog.merkitseValmiiksi,
+              tilaJaVahvistus.lisääVahvistus('31.7.2020'),
               editor.saveChanges
             )
 

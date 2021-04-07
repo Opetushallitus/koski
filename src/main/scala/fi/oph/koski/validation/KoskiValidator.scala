@@ -505,6 +505,7 @@ class KoskiValidator(
         :: validateStatus(suoritus, opiskeluoikeus)
         :: validateArvioinnit(suoritus)
         :: validateLaajuus(suoritus)
+        :: validateNuortenPerusopetuksenPakollistenOppiaineidenLaajuus(suoritus)
         :: validateOppiaineet(suoritus)
         :: validatePäiväkodinEsiopetus(suoritus, opiskeluoikeus)
         :: validateTutkinnonosanRyhmä(suoritus)
@@ -1124,4 +1125,15 @@ class KoskiValidator(
       )(KoskiErrorCategory.badRequest.validation.rakenne.deprekoituOsaamisenHankkimistapa())
     case _ => HttpStatus.ok
   }
+
+ private def validateNuortenPerusopetuksenPakollistenOppiaineidenLaajuus(suoritus: Suoritus)  = suoritus match {
+   case _: NuortenPerusopetuksenOppimääränSuoritus | _: PerusopetuksenVuosiluokanSuoritus
+     if suoritus.vahvistus.exists(v => !v.päivä.isBefore(LocalDate.of(2020, 8, 1)))=>
+     HttpStatus.fold(
+       suoritus.osasuoritusLista.collect {
+         case o: NuortenPerusopetuksenOppiaineenSuoritus if o.koulutusmoduuli.pakollinen =>
+           HttpStatus.validate(o.koulutusmoduuli.laajuusArvo(0.0) > 0) { KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu(s"Oppiaineen ${suorituksenTunniste(o)} laajuus puuttuu") }
+       })
+   case _ => HttpStatus.ok
+ }
 }
