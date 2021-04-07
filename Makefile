@@ -53,7 +53,7 @@ build: logdir
 
 .PHONY: front
 front: logdir
-	cd web && npm install
+	cd web && npm ci && npm run build:prod
 
 .PHONY: watch
 watch:

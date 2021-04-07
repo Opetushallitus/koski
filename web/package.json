@@ -75,7 +75,7 @@
   },
   "scripts": {
     "lint": "failOnWarning=true webpack --bail",
-    "postinstall": "webpack -p --bail --define process.env.NODE_ENV=\"'production'\"",
+    "build:prod": "webpack -p --bail --define process.env.NODE_ENV=\"'production'\"",
     "watch": "webpack -d --progress --colors --watch --define process.env.NODE_ENV=${NODE_ENV:=undefined}",
     "unit-test": "mocha --require @babel/register --reporter spec ./test/unit-test",
     "unit-test-watch": "mocha -w --require @babel/register --reporter spec ./test/unit-test",

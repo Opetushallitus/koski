@@ -388,13 +388,23 @@
             </configuration>
           </execution>
           <execution>
-            <id>koski - npm ci and build</id>
+            <id>koski - npm ci</id>
             <goals>
               <goal>npm</goal>
             </goals>
             <configuration>
               <workingDirectory>web</workingDirectory>
               <arguments>ci</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>koski - npm build</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <workingDirectory>web</workingDirectory>
+              <arguments>run build:prod</arguments>
             </configuration>
           </execution>
           <execution>
