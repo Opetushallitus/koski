@@ -7,6 +7,46 @@ env:
   DOCKER_BUILDKIT: 1
   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
 jobs:
+  lint_koski:
+    name: Lint Koski scala and frontend code
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: "8"
+          architecture: x64
+
+      - name: Setup Node 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Run linter
+        run: |
+          cd web
+          npm ci
+          cd ..
+          make lint
+
   run_backend_tests:
     name: Run Koski backend tests
     runs-on: ubuntu-20.04
@@ -387,6 +427,7 @@ jobs:
     name: Build and upload artifacts
     needs:
       [
+        lint_koski,
         run_backend_tests,
         run_frontend_tests_0,
         run_frontend_tests_1,
