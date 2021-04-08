@@ -317,3 +317,6 @@ export const urlIsEventually = async (
 }
 
 export const pathToUrl = (path: string) => `http://localhost:1234/valpas${path}`
+
+export const pathToApiUrl = (path: string) =>
+  `http://localhost:1234/koski/valpas${path}`
