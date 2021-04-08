@@ -7,7 +7,7 @@ import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.ValpasErrorCategory
-import fi.oph.koski.valpas.repository.{ValpasHenkilö, ValpasHenkilöLaajatTiedot}
+import fi.oph.koski.valpas.repository.ValpasHenkilö
 
 
 class SureHakukoosteService(config: Config) extends ValpasHakukoosteService with Logging with Timing {
@@ -33,6 +33,36 @@ class SureHakukoosteService(config: Config) extends ValpasHakukoosteService with
             Left(ValpasErrorCategory.internalError())
         }
         .unsafePerformSync
+    }.map(_.map(withVaroitusPuuttuvastaSisällöstäLogitus(errorClue)))
+  }
+
+  // Logita varoitus tyhjistä kentistä, joita ilman käyttöliittymä toimii, mutta joiden arvon pitäisi kuitenkin aina tulla hakukoostepalvelusta
+  private def withVaroitusPuuttuvastaSisällöstäLogitus(baseErrorClue: String = "")(hakukooste: Hakukooste) = {
+    if (hakukooste.hakuNimi.valueList.isEmpty) {
+      val errorClue = s"${baseErrorClue} oppijaOid:${hakukooste.oppijaOid} hakemusOid:${hakukooste.hakemusOid}"
+      logger.warn(s"Properties missing for ${errorClue}: hakuNimi}")
     }
+
+    hakukooste.hakutoiveet.map(hakutoive => {
+      val puuttuvatPropertyt = Seq(
+        ("valintatila", hakutoive.valintatila.isEmpty),
+        ("vastaanottotieto", hakutoive.vastaanottotieto.isEmpty),
+        ("ilmoittautumistila", hakutoive.ilmoittautumistila.isEmpty),
+        ("harkinnanvaraisuus", hakutoive.harkinnanvaraisuus.isEmpty),
+        ("hakukohdeNimi", hakutoive.hakukohdeNimi.valueList.isEmpty),
+        ("organisaatioNimi", hakutoive.organisaatioNimi.valueList.isEmpty),
+        ("koulutusNimi", hakutoive.koulutusNimi.valueList.isEmpty)
+      ).flatMap({
+        case (a, true) => Seq(a)
+        case _ => Seq()
+      })
+
+      if (!puuttuvatPropertyt.isEmpty) {
+        val errorClue = s"${baseErrorClue} oppijaOid:${hakukooste.oppijaOid} hakemusOid:${hakukooste.hakemusOid} hakukohdeOid:${hakutoive.hakukohdeOid}"
+        logger.warn(s"Properties missing for ${errorClue}: ${puuttuvatPropertyt.mkString(",")}")
+      }
+    })
+
+    hakukooste
   }
 }
