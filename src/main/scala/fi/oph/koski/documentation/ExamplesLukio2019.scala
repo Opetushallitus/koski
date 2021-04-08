@@ -285,7 +285,7 @@ object Lukio2019ExampleData {
   def suullisenKielitaidonKoeEnglanti(): SuullisenKielitaidonKoe2019 = SuullisenKielitaidonKoe2019(
     kieli = Koodistokoodiviite("EN", Some("englanti"), "kielivalikoima", None),
     arvosana = Koodistokoodiviite("6", "arviointiasteikkoyleissivistava"),
-    taitotaso = Koodistokoodiviite(koodiarvo = "B1.1", koodistoUri = "arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
+    taitotaso = Koodistokoodiviite(koodiarvo = "B1.1", koodistoUri = "arviointiasteikkokehittyvankielitaidontasot"),
     kuvaus = None,
     päivä = date(2019, 9, 3)
   )
@@ -293,7 +293,7 @@ object Lukio2019ExampleData {
   def suullisenKielitaidonKoeEspanja(): SuullisenKielitaidonKoe2019 = SuullisenKielitaidonKoe2019(
     kieli = Koodistokoodiviite("ES", Some("espanja"), "kielivalikoima", None),
     arvosana = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
-    taitotaso = Koodistokoodiviite(koodiarvo = "yli_C1.1", koodistoUri = "arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
+    taitotaso = Koodistokoodiviite(koodiarvo = "yli_C1.1", koodistoUri = "arviointiasteikkokehittyvankielitaidontasot"),
     kuvaus = Some("Puhetaito äidinkielen tasolla"),
     päivä = date(2019, 9, 3)
   )

@@ -30,7 +30,7 @@ object Koodistot {
     KoodistoAsetus("arviointiasteikkovst"),
     KoodistoAsetus("arviointiasteikkovstkoto"),
     KoodistoAsetus("arviointiasteikkoyleissivistava"),
-    KoodistoAsetus("arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
+    KoodistoAsetus("arviointiasteikkokehittyvankielitaidontasot"),
     KoodistoAsetus("dialukukausi", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("diaosaalue", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("diapaattokoe", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),

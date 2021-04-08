@@ -250,7 +250,7 @@
         },
         "taitotaso" : {
           "koodiarvo" : "B1.1",
-          "koodistoUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso"
+          "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
         },
         "päivä" : "2019-09-03",
         "hyväksytty" : true
@@ -268,7 +268,7 @@
         },
         "taitotaso" : {
           "koodiarvo" : "yli_C1.1",
-          "koodistoUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso"
+          "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
         },
         "kuvaus" : {
           "fi" : "Puhetaito äidinkielen tasolla"

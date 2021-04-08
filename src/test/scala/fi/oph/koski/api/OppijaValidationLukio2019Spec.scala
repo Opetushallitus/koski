@@ -1540,7 +1540,7 @@ class OppijaValidationLukio2019Spec extends FreeSpec with PutOpiskeluoikeusTestM
     SuullisenKielitaidonKoe2019(
       kieli = Koodistokoodiviite(kieli, "kielivalikoima"),
       arvosana = Koodistokoodiviite(arvosana, "arviointiasteikkoyleissivistava"),
-      taitotaso = Koodistokoodiviite(taitotaso, koodistoUri = "arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
+      taitotaso = Koodistokoodiviite(taitotaso, koodistoUri = "arviointiasteikkokehittyvankielitaidontasot"),
       kuvaus = kuvaus,
       päivä = date(2019, 9, 3)
     )

@@ -218,13 +218,13 @@ case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintoje
   @KoodistoUri("arviointiasteikkovstkoto")
   @KoodistoKoodiarvo("Suoritettu")
   arvosana: Koodistokoodiviite = Koodistokoodiviite("Suoritettu", "arviointiasteikkovstkoto"),
-  @KoodistoUri("arviointiasteikkosuullisenkielitaidonkoetaitotaso")
+  @KoodistoUri("arviointiasteikkokehittyvankielitaidontasot")
   kuullunYmmärtämisenTaitotaso: Koodistokoodiviite,
-  @KoodistoUri("arviointiasteikkosuullisenkielitaidonkoetaitotaso")
+  @KoodistoUri("arviointiasteikkokehittyvankielitaidontasot")
   puhumisenTaitotaso: Koodistokoodiviite,
-  @KoodistoUri("arviointiasteikkosuullisenkielitaidonkoetaitotaso")
+  @KoodistoUri("arviointiasteikkokehittyvankielitaidontasot")
   luetunYmmärtämisenTaitotaso: Koodistokoodiviite,
-  @KoodistoUri("arviointiasteikkosuullisenkielitaidonkoetaitotaso")
+  @KoodistoUri("arviointiasteikkokehittyvankielitaidontasot")
   kirjoittamisenTaitotaso: Koodistokoodiviite,
   päivä: LocalDate
 ) extends ArviointiPäivämäärällä with VapaanSivistystyönKoulutuksenArviointi
