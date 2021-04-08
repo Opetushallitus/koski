@@ -8,7 +8,7 @@ import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
 import fi.oph.koski.valpas.fixture.ValpasExampleData
 import fi.oph.koski.valpas.hakukooste.ValpasHakukoosteService
 import fi.oph.koski.valpas.henkilo.ValpasMockOppijat
-import fi.oph.koski.valpas.repository.{ValpasOpiskeluoikeus, ValpasOpiskeluoikeusSuppeatTiedot, ValpasOppijaLaajatTiedot, ValpasOppijaSuppeatTiedot}
+import fi.oph.koski.valpas.repository.{ValpasOpiskeluoikeus, ValpasOpiskeluoikeusSuppeatTiedot, ValpasOppijaLaajatTiedot, ValpasOppijaSuppeatTiedot, ValpasOppilaitos}
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import org.scalatest.Matchers._
 
@@ -21,42 +21,42 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
   val oppivelvolliset = List(
     (
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
-      List(ExpectedData(ValpasExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa"))
+      List(ExpectedData(ValpasExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true))
     ),
     (
       ValpasMockOppijat.päällekkäisiäOpiskeluoikeuksia,
       List(
-        ExpectedData(ValpasExampleData.oppivelvollinenVaihtanutKouluaMuttaOpiskeluoikeusMerkkaamattaOikein2, "voimassa"),
-        ExpectedData(ValpasExampleData.oppivelvollinenVaihtanutKouluaMuttaOpiskeluoikeusMerkkaamattaOikein1, "voimassa")
+        ExpectedData(ValpasExampleData.oppivelvollinenVaihtanutKouluaMuttaOpiskeluoikeusMerkkaamattaOikein2, "voimassa", true),
+        ExpectedData(ValpasExampleData.oppivelvollinenVaihtanutKouluaMuttaOpiskeluoikeusMerkkaamattaOikein1, "voimassa", true)
       )
     ),
     (
       ValpasMockOppijat.valmistunutYsiluokkalainen,
-      List(ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut"))
+      List(ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut", true))
     ),
     (
       ValpasMockOppijat.kotiopetusMenneisyydessäOppija,
-      List(ExpectedData(ValpasExampleData.kotiopetusMenneisyydessäOpiskeluoikeus, "voimassa"))
+      List(ExpectedData(ValpasExampleData.kotiopetusMenneisyydessäOpiskeluoikeus, "voimassa", true))
     ),
     (
       ValpasMockOppijat.luokalleJäänytYsiluokkalainen,
-      List(ExpectedData(ValpasExampleData.luokallejäänytYsiluokkalainen, "voimassa"))
+      List(ExpectedData(ValpasExampleData.luokallejäänytYsiluokkalainen, "voimassa", true))
     ),
     (
       ValpasMockOppijat.luokallejäänytYsiluokkalainenJollaUusiYsiluokka,
-      List(ExpectedData(ValpasExampleData.luokallejäänytYsiluokkalainenJollaUusiYsiluokka, "voimassa"))
+      List(ExpectedData(ValpasExampleData.luokallejäänytYsiluokkalainenJollaUusiYsiluokka, "voimassa", true))
     ),
     (
       ValpasMockOppijat.luokalleJäänytYsiluokkalainenVaihtanutKouluaMuualta,
       List(
-        ExpectedData(ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaJälkimmäinen2, "voimassa"),
-        ExpectedData(ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaEdellinen2, "eronnut")
+        ExpectedData(ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaJälkimmäinen2, "voimassa", true),
+        ExpectedData(ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaEdellinen2, "eronnut", true)
       )
     ),
     (
       ValpasMockOppijat.kasiinAstiToisessaKoulussaOllut,
       List(
-        ExpectedData(ValpasExampleData.pelkkäYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa"),
+        ExpectedData(ValpasExampleData.pelkkäYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true),
         ExpectedData(ValpasExampleData.kasiluokkaEronnutKeväällä2020Opiskeluoikeus, "eronnut")
       )
     ),
@@ -64,27 +64,27 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
       ValpasMockOppijat.lukionAloittanut,
       List(
         ExpectedData(ValpasExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä, "voimassa"),
-        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut")
+        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut", true)
       )
     ),
     (
       ValpasMockOppijat.lukionLokakuussaAloittanut,
       List(
         ExpectedData(ValpasExampleData.lukionOpiskeluoikeusAlkaa2021Lokakuussa, "voimassatulevaisuudessa"),
-        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut")
+        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut", true)
       )
     ),
     (
       ValpasMockOppijat.turvakieltoOppija,
       List(
-        ExpectedData(ValpasExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa")
+        ExpectedData(ValpasExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true)
       )
     ),
     (
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
       List(
         ExpectedData(ValpasExampleData.lukionOpiskeluoikeus, "voimassa"),
-        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut"),
+        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut", true),
         ExpectedData(ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut")
       )
     ),
@@ -92,18 +92,18 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
       ValpasMockOppijat.useampiYsiluokkaSamassaKoulussa,
       List(
         ExpectedData(ValpasExampleData.kesäYsiluokkaKesken, "voimassa"),
-        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut")
+        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut", true)
       )
     ),
     (
       ValpasMockOppijat.eronnutOppijaTarkastelupäivänJälkeen,
       List(
-        ExpectedData(ValpasExampleData.eronnutOpiskeluoikeusTarkastelupäivänJälkeen, "voimassa")
+        ExpectedData(ValpasExampleData.eronnutOpiskeluoikeusTarkastelupäivänJälkeen, "voimassa", true)
       )
     ),
     (
       ValpasMockOppijat.hakukohteidenHakuEpäonnistuu,
-      List(ExpectedData(ValpasExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa"))
+      List(ExpectedData(ValpasExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true))
     )
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
@@ -121,8 +121,8 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
       List(
         ExpectedData(ValpasExampleData.lukionOpiskeluoikeus, "voimassa"),
-        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut"),
-        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut")
+        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut", true),
+        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut", true)
       )
     )
   }
@@ -133,7 +133,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
     validateOppijaLaajatTiedot(
       result.oppija,
       ValpasMockOppijat.hakukohteidenHakuEpäonnistuu,
-      List(ExpectedData(ValpasExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa"))
+      List(ExpectedData(ValpasExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true))
     )
   }
 
@@ -144,8 +144,8 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
       List(
         ExpectedData(ValpasExampleData.lukionOpiskeluoikeus, "voimassa"),
-        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut"),
-        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut")
+        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut", true),
+        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut", true)
       )
     )
   }
@@ -157,8 +157,8 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
       List(
         ExpectedData(ValpasExampleData.lukionOpiskeluoikeus, "voimassa"),
-        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut"),
-        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut")
+        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainen, "valmistunut", true),
+        ExpectedData(ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut", true)
       )
     )
   }
@@ -170,7 +170,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
 
     (oppijat zip oppivelvolliset).foreach { actualAndExpected =>
       val (oppija, (expectedOppija, expectedData)) = actualAndExpected
-      validateOppijaPerustiedot(
+      validateOppijaSuppeatTiedot(
         oppija,
         expectedOppija,
         expectedData)
@@ -187,14 +187,14 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
         (
           ValpasMockOppijat.aapajoenPeruskoulustaValmistunut,
           List(
-            ExpectedData(ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut")
+            ExpectedData(ValpasExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut", true)
           )
         ),
         (
           ValpasMockOppijat.luokalleJäänytYsiluokkalainenVaihtanutKoulua,
           List(
-            ExpectedData(ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaJälkimmäinen, "voimassa"),
-            ExpectedData(ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaEdellinen, "eronnut")
+            ExpectedData(ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaJälkimmäinen, "voimassa", true),
+            ExpectedData(ValpasExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaEdellinen, "eronnut", true)
           )
         )
       )
@@ -204,7 +204,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
 
     (oppijat zip expectedOppivelvolliset).foreach { actualAndExpected =>
       val (oppija, (expectedOppija, expectedOppivelvollisuus)) = actualAndExpected
-      validateOppijaPerustiedot(
+      validateOppijaSuppeatTiedot(
         oppija,
         expectedOppija,
         expectedOppivelvollisuus)
@@ -280,12 +280,14 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
     expectedOppija: LaajatOppijaHenkilöTiedot,
     expectedData: List[ExpectedData]
   ) = {
-    // TODO: Tarkista myös valvottavatOpiskeluoikeudet ja oikeutetutOppilaitokset
     withClue(s"ValpasOppija(${oppija.henkilö.oid}/${oppija.henkilö.hetu}): ") {
       oppija.henkilö.oid shouldBe expectedOppija.oid
       oppija.henkilö.hetu shouldBe expectedOppija.hetu
       oppija.henkilö.etunimet shouldBe expectedOppija.etunimet
       oppija.henkilö.sukunimi shouldBe expectedOppija.sukunimi
+
+      val expectedOikeutetutOppilaitokset = expectedData.filter(_.onOikeutettuOppilaitos).map(_.opiskeluoikeus.oppilaitos.get.oid).toSet
+      oppija.oikeutetutOppilaitokset shouldBe expectedOikeutetutOppilaitokset
 
       val maybeOpiskeluoikeudet = oppija.opiskeluoikeudet.map(o => Some(o))
       val maybeExpectedData = expectedData.map(o => Some(o))
@@ -317,12 +319,11 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
     }
   }
 
-  def validateOppijaPerustiedot(
+  def validateOppijaSuppeatTiedot(
     oppija: ValpasOppijaSuppeatTiedot,
     expectedOppija: LaajatOppijaHenkilöTiedot,
     expectedData: List[ExpectedData]
   ) = {
-    // TODO: Tarkista myös valvottavatOpiskeluoikeudet ja oikeutetutOppilaitokset
     withClue(s"ValpasOppija(${oppija.henkilö.oid}/${oppija.henkilö.sukunimi}/${oppija.henkilö.etunimet}): ") {
       oppija.henkilö.oid shouldBe expectedOppija.oid
       oppija.henkilö.etunimet shouldBe expectedOppija.etunimet
@@ -388,5 +389,6 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
 
 case class ExpectedData(
   opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
-  tarkastelupäivänTila: String
+  tarkastelupäivänTila: String,
+  onOikeutettuOppilaitos: Boolean = false
 )
