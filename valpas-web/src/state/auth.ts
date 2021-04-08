@@ -51,17 +51,15 @@ export const getLogin = (): Login => {
       }
 }
 
-export const storeLoginReturnUrl = () => {
-  if (!Cookies.get(RETURN_URL_KEY)) {
-    Cookies.set(RETURN_URL_KEY, location.href)
-  }
+export const storeLoginReturnUrl = (url: string) => {
+  Cookies.set(RETURN_URL_KEY, url)
 }
 
 export const redirectToLoginReturnUrl = (): boolean => {
   const url = Cookies.get(RETURN_URL_KEY)
   if (url) {
     Cookies.remove(RETURN_URL_KEY)
-    location.href = url
+    location.replace(url)
     return true
   }
   return false

@@ -18,15 +18,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: fade-in 1000ms cubic-bezier(0.5, 0, 0.9, 1);
+  animation: fade-in 300ms ease-in;
 }
 
 @keyframes fade-in {
-  0%,
-  50% {
+  from {
     opacity: 0;
   }
-  100% {
+  to {
     opacity: 1;
   }
 }
