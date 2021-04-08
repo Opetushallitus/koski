@@ -19,9 +19,7 @@ help:
 	@echo "make watch	- Watch for changes in webapp files"
 	@echo "make clean	- Remove generated build data"
 	@echo "make purge	- Remove all local data, including postgresql and elasticsearch databases"
-	@echo "make deploy 	- Deploy to CSC's ePouta cloud"
-	@echo "make dist version=<version> - Tag and deploy application to artifactory."
-	@echo "make deploy env=<env> version=<version>	- Install deployed version to env."
+	@echo "make dist version=<version> - Build and deploy application to artifactory"
 
 .PHONY: logdir
 logdir:
@@ -170,15 +168,11 @@ reset-raportointikanta:
 valpas-fronttest:
 	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pvalpasfronttest
 
-### Dist and deploy
+### Dist
 
 .PHONY: dist
 dist: check-version
 	cleandist=$(cleandist) ./scripts/dist.sh $(version)
-
-.PHONY: deploy
-deploy: check-version
-	./scripts/deploy.sh $(env) $(version) $(CLOUD_ENV_DIR)/aws_ec2.yml
 
 .PHONY: check-version
 check-version:
