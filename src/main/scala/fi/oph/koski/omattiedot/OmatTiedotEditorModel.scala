@@ -61,9 +61,28 @@ object OmatTiedotEditorModel extends Timing {
     val piilotettavatOppiaineidenArvioinnit = (oppimääränArvioinnitTraversal ++ vuosiluokanArvioinnitTraversal ++ oppiaineenOppimääränArvioinnitTraversal).compose(keskeneräisetTaiLiianÄskettäinVahvistetut)
     val piilotettavaKäyttäytymisenArviointi = käyttäytymisenArviointiTraversal.compose(keskeneräisetTaiLiianÄskettäinVahvistetut)
 
-    List(piilotettavaKäyttäytymisenArviointi, piilotettavatOppiaineidenArvioinnit).foldLeft(oppija) { (oppija, traversal) =>
+    List(piilotettavaKäyttäytymisenArviointi, piilotettavatOppiaineidenArvioinnit, piilotettavatLaajuudet).foldLeft(oppija) { (oppija, traversal) =>
       traversal.set(oppija)(None)
     }
+  }
+
+  private def piilotettavatLaajuudet: Traversal[Oppija, Option[Laajuus]] = {
+    val keskenTaiVahvistettuEnnenLeikkuripäivää = traversal[Suoritus].filter { s => s match {
+      case _: PerusopetuksenVuosiluokanSuoritus |  _: NuortenPerusopetuksenOppimääränSuoritus =>
+        s.vahvistus.forall(_.päivä.isBefore(LocalDate.of(2020, 8, 1)))
+      case _ => false
+    }}.compose(päätasonSuorituksetTraversal)
+
+    val oppiaineet = traversal[Suoritus]
+      .field[Option[List[Suoritus]]]("osasuoritukset").items.items
+      .ifInstanceOf[NuortenPerusopetuksenOppiaineenSuoritus]
+
+    val pakollistenLaajuudet = traversal[NuortenPerusopetuksenOppiaineenSuoritus]
+      .filter(_.koulutusmoduuli.pakollinen)
+      .field[NuortenPerusopetuksenOppiaine]("koulutusmoduuli")
+      .field[Option[Laajuus]]("laajuus")
+
+    pakollistenLaajuudet.compose(oppiaineet.compose(keskenTaiVahvistettuEnnenLeikkuripäivää))
   }
 
   private def piilotaTietojaSuoritusjaosta(oppija: Oppija)(implicit koskiSession: KoskiSpecificSession) = {
