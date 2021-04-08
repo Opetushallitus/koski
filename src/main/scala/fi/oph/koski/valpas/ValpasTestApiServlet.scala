@@ -36,5 +36,9 @@ class ValpasTestApiServlet(implicit val application: KoskiApplication) extends V
   get("/current-mock-status") {
     FixtureState(application)
   }
+
+  get("/logout/:user") {
+    application.koskiSessionRepository.removeSessionByUsername(getStringParam("user"))
+  }
 }
 

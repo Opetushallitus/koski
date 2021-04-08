@@ -50,6 +50,11 @@ class KoskiSessionRepository(val db: DB, sessionTimeout: SessionTimeout) extends
     }
   }
 
+  def removeSessionByUsername(username: String) = {
+    val query = Tables.CasServiceTicketSessions.filter(_.username === username)
+    runDbSync(query.delete)
+  }
+
   def purgeOldSessions(before: Instant): Unit = {
     val timestamp = new Timestamp(before.toEpochMilli)
     val query = Tables.CasServiceTicketSessions.filter(_.updated < timestamp)

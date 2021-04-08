@@ -1,4 +1,8 @@
-import { createOppijaPath } from "../../src/state/paths"
+import fetch from "node-fetch"
+import {
+  createHakutilannePathWithOrg,
+  createOppijaPath,
+} from "../../src/state/paths"
 import {
   clickElement,
   defaultLogin,
@@ -6,10 +10,12 @@ import {
   expectElementNotVisible,
   expectElementVisible,
   loginAs,
+  pathToApiUrl,
   pathToUrl,
   reset,
   urlIsEventually,
 } from "../integrationtests-env/browser"
+import { allowNetworkError } from "../integrationtests-env/fail-on-console"
 
 describe("Login / Logout / kirjautuminen", () => {
   it("Kirjautumattomalle käyttäjälle näytetään kirjautumisruutu, jossa ei näy logout-painiketta", async () => {
@@ -50,5 +56,21 @@ describe("Login / Logout / kirjautuminen", () => {
     })
     await loginAs(oppijaPath, "valpas-jkl-normaali")
     await urlIsEventually(pathToUrl(oppijaPath))
+  })
+
+  it("Session vanheneminen vie käyttäjän kirjautumiseen", async () => {
+    const organisaatioOid = "1.2.246.562.10.14613773812"
+    await loginAs(
+      createHakutilannePathWithOrg("/virkailija", { organisaatioOid }),
+      "valpas-jkl-normaali"
+    )
+
+    // Salavihkainen logout (ei poista selaimesta keksiä)
+    await fetch(pathToApiUrl("/test/logout/valpas-jkl-normaali"))
+
+    // Yritä selailla eteenpäin ja päädy kirjautumiseen
+    allowNetworkError("/valpas/api/oppija/", "401 (Unauthorized)")
+    await clickElement(".hakutilanne tbody tr td:first-child a")
+    await expectElementEventuallyVisible("article.page#login-app")
   })
 })
