@@ -1,17 +1,21 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.log.{AuditLogTester, KoskiMessageField}
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.valpas.henkilo.ValpasMockOppijat
 import fi.oph.koski.valpas.log.ValpasOperation
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
-import org.scalatest.Tag
+import org.scalatest.{BeforeAndAfterEach, Tag}
 
-class ValpasRootApiServletSpec extends ValpasHttpTestBase {
+class ValpasRootApiServletSpec extends ValpasHttpTestBase with BeforeAndAfterEach {
   override def defaultUser = ValpasMockUsers.valpasJklNormaalikoulu
 
-  "Oppijan lataaminen tuottaa auditlogin" taggedAs(ValpasBackendTag) in {
-    val oppijaOid = ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid
+  override def beforeEach() {
     AuditLogTester.clearMessages
+  }
+
+  "Oppijan lataaminen tuottaa rivin auditlogiin" taggedAs(ValpasBackendTag) in {
+    val oppijaOid = ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid
     authGet(getOppijaUrl(oppijaOid)) {
       verifyResponseStatusOk()
       AuditLogTester.verifyAuditLogMessage(Map(
@@ -20,10 +24,21 @@ class ValpasRootApiServletSpec extends ValpasHttpTestBase {
     }
   }
 
+  "Oppilaitoksen oppijalistan hakeminen tuottaa rivin auditlogiin" taggedAs(ValpasBackendTag) in {
+    val oppilaitosOid = MockOrganisaatiot.jyväskylänNormaalikoulu
+    authGet(getOppijaListUrl(oppilaitosOid)) {
+      verifyResponseStatusOk()
+      AuditLogTester.verifyAuditLogMessage(Map(
+        "operation" -> ValpasOperation.VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN.toString,
+        "target" -> Map(KoskiMessageField.juuriOrganisaatio.toString -> oppilaitosOid)))
+    }
+  }
+
   "Ei-oppivelvollisen oppijan tietojen lataaminen ei onnistu" taggedAs(ValpasBackendTag) in {
     val oppijaOid = ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004.oid
     authGet(getOppijaUrl(oppijaOid)) {
       verifyResponseStatus(403, ValpasErrorCategory.forbidden.oppija())
+      AuditLogTester.verifyNoAuditLogMessages()
     }
   }
 
@@ -37,11 +52,14 @@ class ValpasRootApiServletSpec extends ValpasHttpTestBase {
         verifyResponseStatus(403, ValpasErrorCategory.forbidden.oppija())
         response.body should equal (firstResponse.body)
         withoutVariatingEntries(response.headers) should equal (withoutVariatingEntries(firstResponse.headers))
+        AuditLogTester.verifyNoAuditLogMessages()
       }
     }
   }
 
   def getOppijaUrl(oppijaOid: String) = s"/valpas/api/oppija/$oppijaOid"
+
+  def getOppijaListUrl(organisaatioOid: String) = s"/valpas/api/oppijat/$organisaatioOid"
 
   def withoutVariatingEntries[T](headers: Map[String, T]) =
     headers.filterKeys(_ != "Date")

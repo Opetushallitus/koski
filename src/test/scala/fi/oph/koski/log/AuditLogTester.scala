@@ -15,6 +15,12 @@ object AuditLogTester extends Matchers with LogTester {
     }
   }
 
+  def verifyNoAuditLogMessages(): Unit = {
+    if (getLogMessages.nonEmpty) {
+      throw new IllegalStateException("Audit log message found, expected none")
+    }
+  }
+
   private def verifyAuditLogMessage(msg: JObject, params: Map[String, Any]): Unit = {
     implicit val formats = GenericJsonFormats.genericFormats
     params.foreach {
