@@ -113,7 +113,7 @@ const LocalRaamit = React.lazy(
 
 const Login = () => {
   React.useEffect(() => {
-    storeLoginReturnUrl()
+    storeLoginReturnUrl(location.href)
   }, [])
 
   const config = getLogin()
@@ -147,8 +147,8 @@ const VirkailijaApp = ({ basePath }: VirkailijaAppProps) => {
     return <LoadingModal />
   }
 
-  if (redirectToLoginReturnUrl()) {
-    return null
+  if (isLoggedIn(user) && redirectToLoginReturnUrl()) {
+    return <LoadingModal />
   }
 
   return (
@@ -156,15 +156,17 @@ const VirkailijaApp = ({ basePath }: VirkailijaAppProps) => {
       {runningLocally && !window.virkailija_raamit_set_to_load && (
         <LocalRaamit user={user} />
       )}
-      {hasValpasAccess(user) ? (
-        <Page id="virkailija-app">
-          <VirkailijaRoutes user={user} />
-        </Page>
-      ) : isLoggedIn(user) ? (
-        <ErrorView
-          title={t("login__ei_valpas-oikeuksia_otsikko")}
-          message={t("login__ei_valpas-oikeuksia_viesti")}
-        />
+      {isLoggedIn(user) ? (
+        hasValpasAccess(user) ? (
+          <Page id="virkailija-app">
+            <VirkailijaRoutes user={user} />
+          </Page>
+        ) : (
+          <ErrorView
+            title={t("login__ei_valpas-oikeuksia_otsikko")}
+            message={t("login__ei_valpas-oikeuksia_viesti")}
+          />
+        )
       ) : (
         <Login />
       )}
