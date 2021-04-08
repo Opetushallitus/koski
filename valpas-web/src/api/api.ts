@@ -3,7 +3,8 @@ import {
   OppijaHakutilanteillaSuppeatTiedot,
 } from "../state/oppijat"
 import { Oid, OrganisaatioJaKayttooikeusrooli, User } from "../state/types"
-import { apiGet, apiPost } from "./apiFetch"
+import { tapLeftP } from "../utils/either"
+import { ApiFailure, apiGet, apiPost } from "./apiFetch"
 import { createCache } from "./cache"
 
 export const healthCheck = async () =>
@@ -29,8 +30,10 @@ export const fetchCurrentUser = async () => apiGet<User>("valpas/api/user")
  * Hae lista organisaatioista käyttöoikeuksien kanssa
  */
 export const fetchYlatasonOrganisaatiotJaKayttooikeusroolit = async () =>
-  apiGet<OrganisaatioJaKayttooikeusrooli[]>(
-    "valpas/api/organisaatiot-ja-kayttooikeusroolit"
+  handleExpiredSession(
+    apiGet<OrganisaatioJaKayttooikeusrooli[]>(
+      "valpas/api/organisaatiot-ja-kayttooikeusroolit"
+    )
   )
 
 export const fetchYlatasonOrganisaatiotJaKayttooikeusroolitCache = createCache(
@@ -38,14 +41,34 @@ export const fetchYlatasonOrganisaatiotJaKayttooikeusroolitCache = createCache(
 )
 
 /**
- * Get oppijat
+ * Hae suppeat tiedot oppijoista
  */
 export const fetchOppijat = (organisaatioOid: Oid) =>
-  apiGet<OppijaHakutilanteillaSuppeatTiedot[]>(
-    `valpas/api/oppijat/${organisaatioOid}`
+  handleExpiredSession(
+    apiGet<OppijaHakutilanteillaSuppeatTiedot[]>(
+      `valpas/api/oppijat/${organisaatioOid}`
+    )
   )
+
 export const fetchOppijatCache = createCache(fetchOppijat)
 
+/**
+ * Hae yksittäisen oppijan laajat tiedot
+ */
 export const fetchOppija = (oppijaOid: Oid) =>
-  apiGet<OppijaHakutilanteillaLaajatTiedot>(`valpas/api/oppija/${oppijaOid}`)
+  handleExpiredSession(
+    apiGet<OppijaHakutilanteillaLaajatTiedot>(`valpas/api/oppija/${oppijaOid}`)
+  )
+
 export const fetchOppijaCache = createCache(fetchOppija)
+
+// Virhetilanteiden hallinta
+
+const handleExpiredSession = tapLeftP((failure: ApiFailure) => {
+  if (failure.status === 401) {
+    // 401 Unauthorized -> käyttäjä ei ole (enää) kirjautunut -> lähetä kirjautumiseen lataamalla sivu uudelleen.
+    // Kirjautuminen ei laukea siitä, että käyttäjä yritti nähdä tietoa, johon hänellä ei ole oikeutta,
+    // koska Valpas-APIt palauttavat siinä tapauksessa 403 Forbidden.
+    location.reload()
+  }
+})
