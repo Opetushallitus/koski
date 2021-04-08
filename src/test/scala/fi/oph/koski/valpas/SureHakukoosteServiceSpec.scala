@@ -137,6 +137,7 @@ object SureHakukoosteServiceSpec {
       |      "koodistoVersio": 1
       |    },
       |    "haunAlkamispaivamaara": "2021-04-20T09:00:00",
+      |    "aktiivinenHaku": true,
       |    "oppijaOid": "1.2.246.562.24.85292063498",
       |    "hakemusOid": "1.2.246.562.11.00000000000000675952",
       |    "hakemusUrl": "/placeholder-hakemus-url",

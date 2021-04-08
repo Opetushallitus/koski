@@ -78,22 +78,40 @@ object HakukoosteExampleData {
           ),
         )
       )),
+    haku(
+      hakuNimi = Finnish("Yhteishaku 2019"),
+      aktiivinenHaku = Some(false),
+      henkilö = ValpasMockOppijat.luokalleJäänytYsiluokkalainen,
+      alkamisaika = LocalDateTime.of(2019, 3, 9, 12, 0, 0),
+      hakukoosteidenToiveet = Vector(
+        Vector(
+          hakutoive(
+            hakukohdeOid = generateOid(),
+            hakukohdeOrganisaatio = MockOrganisaatiot.varsinaisSuomenKansanopisto,
+            hakukohdeNimi = "Vapaan sivistystyön koulutus oppivelvollisille 2019-2020",
+            koulutusNimi = "Vapaan sivistystyön koulutus oppivelvollisille"
+          ),
+        )
+      )),
   ).flatten
 
   def haku(
     henkilö: OppijaHenkilö,
     hakukoosteidenToiveet: Seq[Seq[Hakutoive]],
+    hakuNimi: BlankableLocalizedString = Finnish("Yhteishaku 2021"),
+    aktiivinenHaku: Some[Boolean] = Some(true),
     alkamisaika: LocalDateTime = LocalDateTime.of(2020, 3, 9, 12, 0, 0),
   ): Seq[Hakukooste] = hakukoosteidenToiveet.map(hakutoiveet =>
     Hakukooste(
       oppijaOid = henkilö.oid,
       hakuOid = generateHakuOid(),
+      aktiivinenHaku = aktiivinenHaku,
       hakemusOid = generateHakemusOid(),
       hakemusUrl = "/placeholder-hakemus-url",
       hakutapa = yhteishakukoodi,
       hakutyyppi = varsinaisenHaunKoodi,
       haunAlkamispaivamaara = alkamisaika,
-      hakuNimi = Finnish("Yhteishaku 2021"),
+      hakuNimi = hakuNimi,
       email = generateEmail(henkilö),
       lahiosoite = "Esimerkkikatu 123",
       postinumero = "00000",

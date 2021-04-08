@@ -34,6 +34,12 @@ const turvakiellollinenOppijaPath = createOppijaPath("/virkailija", {
 const epäonninenOppijaPath = createOppijaPath("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000028",
 })
+const montaHakuaJoistaYksiPäättynytOppijaPath = createOppijaPath(
+  "/virkailija",
+  {
+    oppijaOid: "1.2.246.562.24.00000000009",
+  }
+)
 
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
@@ -83,6 +89,40 @@ describe("Oppijakohtainen näkymä", () => {
         3. Omnia, Leipomoala – – –
         4. Omnia, Puhtaus- ja kiinteistöpalveluala – – –
         5. Varsinais-Suomen kansanopisto, Vapaan sivistystyön koulutus oppivelvollisille 2021-2022 – – –
+    `)
+  })
+
+  it("Näyttää oppijan, jolla monta hakua, kaikki haut, myös päättyneet", async () => {
+    await loginAs(
+      montaHakuaJoistaYksiPäättynytOppijaPath,
+      "valpas-jkl-normaali"
+    )
+    await mainHeadingEquals(
+      "LuokallejäänytYsiluokkalainen Valpas (020805A5625)"
+    )
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000009")
+    await hautEquals(`
+      list_alt
+      Yhteishaku 2021 Hakenut open_in_new
+      Hakukohde
+      Valinta
+      Pisteet
+      Alin pistemäärä
+      1. Helsingin medialukio, Lukio – – –
+      list_alt
+      Yhteishaku 2021 Hakenut open_in_new
+      Hakukohde
+      Valinta
+      Pisteet
+      Alin pistemäärä
+      1. Varsinais-Suomen kansanopisto, Vapaan sivistystyön koulutus oppivelvollisille 2021-2022 – – –
+      list_alt
+      Yhteishaku 2019 Hakenut open_in_new
+      Hakukohde
+      Valinta
+      Pisteet
+      Alin pistemäärä
+      1. Varsinais-Suomen kansanopisto, Vapaan sivistystyön koulutus oppivelvollisille 2019-2020 – – –
     `)
   })
 

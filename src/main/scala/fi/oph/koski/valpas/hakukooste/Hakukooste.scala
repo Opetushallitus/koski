@@ -2,14 +2,14 @@ package fi.oph.koski.valpas.hakukooste
 
 import fi.oph.koski.schema.annotation.{EnumValues, KoodistoKoodiarvo, KoodistoUri}
 import fi.oph.koski.schema.{BlankableLocalizedString, Koodistokoodiviite}
-import fi.oph.koski.valpas.repository.{ValpasHakutilanneLaajatTiedot, ValpasHakutoive, ValpasHenkilö, ValpasHenkilöLaajatTiedot, ValpasOppilaitos}
-import fi.oph.scalaschema.annotation.SyntheticProperty
+import fi.oph.koski.valpas.repository.{ValpasHakutilanneLaajatTiedot, ValpasHakutoive, ValpasHenkilö}
 import java.time.LocalDateTime
 
 
 case class Hakukooste(
   oppijaOid: ValpasHenkilö.Oid,
   hakuOid: ValpasHakutilanneLaajatTiedot.HakuOid,
+  aktiivinenHaku: Option[Boolean],
   hakemusOid: ValpasHakutilanneLaajatTiedot.HakemusOid,
   hakemusUrl: String,
 
@@ -60,8 +60,6 @@ case class Hakutoive(
   harkinnanvaraisuus: Option[String], // TODO: Arvot?
   hakukohdeKoulutuskoodi: String // TODO: Arvot?
 ) {
-  @SyntheticProperty
-  def isAktiivinen: Boolean = valintatila.exists(v => Valintatila.isAktiivinen(v))
 }
 
 object Vastaanottotieto {
@@ -76,24 +74,17 @@ object Vastaanottotieto {
 }
 
 object Valintatila {
-  private val aktiivisetTilat = Set(
+  val values: Set[String] = Set(
     "HYVAKSYTTY",
     "HARKINNANVARAISESTI_HYVAKSYTTY",
     "VARASIJALTA_HYVAKSYTTY",
     "VARALLA",
-    "KESKEN"
-  )
-
-  private val eiAktiivisetTilat = Set(
+    "KESKEN",
     "PERUUTETTU",
     "PERUNUT",
     "HYLATTY",
     "PERUUNTUNUT"
   )
-
-  val values: Set[String] = aktiivisetTilat ++ eiAktiivisetTilat
-
-  def isAktiivinen(tila: String): Boolean = aktiivisetTilat.contains(tila)
 }
 
 object Ilmoittautumistila {

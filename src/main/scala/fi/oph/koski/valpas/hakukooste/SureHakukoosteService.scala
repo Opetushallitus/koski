@@ -15,14 +15,16 @@ class SureHakukoosteService(config: Config) extends ValpasHakukoosteService with
 
   private val http = VirkailijaHttpClient(ServiceConfig.apply(config, "opintopolku.virkailija"), baseUrl)
 
-  def getHakukoosteet(oppijaOids: Set[ValpasHenkilö.Oid], errorClue: String = ""): Either[HttpStatus, Seq[Hakukooste]] = {
+  def getHakukoosteet(oppijaOids: Set[ValpasHenkilö.Oid], ainoastaanAktiivisetHaut: Boolean = false, errorClue: String = ""): Either[HttpStatus, Seq[Hakukooste]] = {
     val encoder = json4sEncoderOf[Seq[ValpasHenkilö.Oid]]
     val decoder = parseJson[Seq[Hakukooste]] _
 
     val timedBlockname = if (oppijaOids.size == 1) "getHakukoosteetSingle" else "getHakukoosteetMultiple"
 
+    val queryParams = if (ainoastaanAktiivisetHaut) "?ainoastaanAktiivisetHaut=true" else ""
+
     timed(timedBlockname, 10) {
-      http.post(s"$baseUrl/rest/v1/valpas/".toUri, oppijaOids.toSeq)(encoder)(decoder)
+      http.post(s"$baseUrl/rest/v1/valpas/${queryParams}".toUri, oppijaOids.toSeq)(encoder)(decoder)
         .map(Right(_))
         .handle {
           case e: HttpStatusException =>

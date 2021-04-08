@@ -165,7 +165,7 @@ trait ValpasHakutilanne {
   def hakuNimi: Option[LocalizedString]
   def hakemusOid: String
   def hakemusUrl: String
-  def aktiivinen: Boolean
+  def aktiivinenHaku: Boolean
 }
 
 object ValpasHakutilanneLaajatTiedot {
@@ -178,7 +178,7 @@ object ValpasHakutilanneLaajatTiedot {
       hakuNimi = hakukooste.hakuNimi.toLocalizedString,
       hakemusOid = hakukooste.hakemusOid,
       hakemusUrl = hakukooste.hakemusUrl,
-      aktiivinen = hakukooste.hakutoiveet.exists(_.isAktiivinen),
+      aktiivinenHaku = hakukooste.aktiivinenHaku.getOrElse(true),
       hakuAlkaa = hakukooste.haunAlkamispaivamaara,
       hakutoiveet = hakukooste.hakutoiveet.sortBy(_.hakutoivenumero).map(ValpasHakutoive.apply),
       debugHakukooste = Some(hakukooste)
@@ -190,7 +190,7 @@ case class ValpasHakutilanneLaajatTiedot(
   hakuNimi: Option[LocalizedString],
   hakemusOid: String,
   hakemusUrl: String,
-  aktiivinen: Boolean,
+  aktiivinenHaku: Boolean,
   hakuAlkaa: LocalDateTime,
   hakutoiveet: Seq[ValpasHakutoive],
   debugHakukooste: Option[Hakukooste]
@@ -203,7 +203,7 @@ object ValpasHakutilanneSuppeatTiedot {
       laajatTiedot.hakuNimi,
       laajatTiedot.hakemusOid,
       laajatTiedot.hakemusUrl,
-      laajatTiedot.aktiivinen
+      laajatTiedot.aktiivinenHaku
     )
   }
 }
@@ -213,7 +213,7 @@ case class ValpasHakutilanneSuppeatTiedot(
   hakuNimi: Option[LocalizedString],
   hakemusOid: String,
   hakemusUrl: String,
-  aktiivinen: Boolean
+  aktiivinenHaku: Boolean
 ) extends ValpasHakutilanne
 
 object ValpasHakutoive {
