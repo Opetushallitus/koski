@@ -4,7 +4,7 @@
   "scripts": {
     "start": "node devserver",
     "start:watch": "concurrently npm:start npm:lint:types:watch",
-    "start:raamit": "VIRKAILIJA_RAAMIT_HOST=\"https://virkailija.untuvaopintopolku.fi/\" node devserver",
+    "start:raamit": "npm run clean && VIRKAILIJA_RAAMIT_HOST=\"https://virkailija.untuvaopintopolku.fi/\" node devserver",
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "jest --runInBand src",
     "test:integration": "jest --config jest.integrationtests.config.js --runInBand test/integrationtests",
