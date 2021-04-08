@@ -125,13 +125,13 @@ class ValpasOppijaService(
       .map(withAuditLogOppijaKatsominen)
 
   private def fetchHaku(oppija: ValpasOppijaLaajatTiedot): OppijaHakutilanteillaLaajatTiedot = {
-    val hakukoosteet = hakukoosteService.getYhteishakujenHakukoosteet(Set(oppija.henkilö.oid), s"oppija:${oppija.henkilö.oid}")
+    val hakukoosteet = hakukoosteService.getYhteishakujenHakukoosteet(oppijaOids = Set(oppija.henkilö.oid), ainoastaanAktiivisetHaut =  false, errorClue = s"oppija:${oppija.henkilö.oid}")
     val yhteystiedot = hakukoosteet.map(ilmoitetutYhteystiedot).getOrElse(Seq.empty)
     OppijaHakutilanteillaLaajatTiedot.apply(oppija, hakukoosteet).copy(yhteystiedot = yhteystiedot)
   }
 
   private def fetchHaut(errorClue: String)(oppijat: Seq[ValpasOppijaLaajatTiedot]): Seq[OppijaHakutilanteillaLaajatTiedot] = {
-    hakukoosteService.getYhteishakujenHakukoosteet(oppijat.map(_.henkilö.oid).toSet, errorClue)
+    hakukoosteService.getYhteishakujenHakukoosteet(oppijaOids = oppijat.map(_.henkilö.oid).toSet, ainoastaanAktiivisetHaut =  true, errorClue = errorClue)
       .map(_.groupBy(_.oppijaOid))
       .fold(
         error => oppijat.map(oppija => OppijaHakutilanteillaLaajatTiedot.apply(oppija, Left(error))),
