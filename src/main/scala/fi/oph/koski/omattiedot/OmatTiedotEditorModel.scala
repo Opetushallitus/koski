@@ -27,7 +27,8 @@ object OmatTiedotEditorModel extends Timing {
     val piilotetuillaTiedoilla = piilotaArvosanatKeskeneräisistäSuorituksista _ andThen
       piilotaSensitiivisetHenkilötiedot andThen
       piilotaKeskeneräisetPerusopetuksenPäättötodistukset andThen
-      piilotaTietojaSuoritusjaosta
+      piilotaTietojaSuoritusjaosta andThen
+      piilotaLaajuuksia
 
     buildModel(buildView(piilotetuillaTiedoilla(userOppija), piilotetuillaTiedoilla(näytettäväOppija), warnings))
   }
@@ -64,6 +65,17 @@ object OmatTiedotEditorModel extends Timing {
     List(piilotettavaKäyttäytymisenArviointi, piilotettavatOppiaineidenArvioinnit).foldLeft(oppija) { (oppija, traversal) =>
       traversal.set(oppija)(None)
     }
+  }
+
+  private def piilotaLaajuuksia(oppija: Oppija)= {
+    val  keskenTaiVahvistettuEnnenLeikkuriPäivää = traversal[Suoritus].filter { suoritus =>
+      (suoritus.isInstanceOf[PerusopetuksenVuosiluokanSuoritus] || suoritus.isInstanceOf[NuortenPerusopetuksenOppimääränSuoritus]) &&
+        suoritus.vahvistus.forall(_.päivä.isBefore(LocalDate.of(2020, 8, 1)))
+    }.compose(päätasonSuorituksetTraversal)
+
+    val piilotettavatLaajuudet = nuortenPerusopetuksenPakollistenOppiaineidenLaajuudetTraversal.compose(keskenTaiVahvistettuEnnenLeikkuriPäivää)
+
+    piilotettavatLaajuudet.set(oppija)(None)
   }
 
   private def piilotaTietojaSuoritusjaosta(oppija: Oppija)(implicit koskiSession: KoskiSpecificSession) = {

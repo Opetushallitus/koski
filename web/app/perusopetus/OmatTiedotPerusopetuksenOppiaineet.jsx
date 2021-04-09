@@ -60,13 +60,12 @@ const GroupedOppiaineet = ({model}) => {
 
   return groups.map(groupTitle => {
     const suoritukset = groupedSuoritukset[groupTitle]
-    const showLaajuus = groupTitle === valinnaisetTitle
     if (!suoritukset) return null
 
     return (
       <section className='suoritus-group' key={groupTitle}>
         <h4><Text name={groupTitle}/></h4>
-        <Oppiainetaulukko model={model} suoritukset={suoritukset} showLaajuus={showLaajuus}/>
+        <Oppiainetaulukko model={model} suoritukset={suoritukset} showLaajuus={true}/>
       </section>
     )
   })
