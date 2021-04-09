@@ -80,15 +80,20 @@ object ExamplesLukioonValmistavaKoulutus {
         ))
       ),
       LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa2019(
-        lukionKieli2019("A1", "EN"),
+        lukionKieli2019("AOM", "SV"),
         arviointi = numeerinenLukionOppiaineenArviointi(9),
         osasuoritukset = Some(List(
-          moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("VKA1").copy(laajuus = laajuus2019(1))).copy(arviointi = numeerinenArviointi(7)),
-          moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("VKA8").copy(laajuus = laajuus2019(1))).copy(arviointi = numeerinenArviointi(7))
+          moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUA4").copy(laajuus = laajuus2019(1))).copy(arviointi = numeerinenArviointi(7))
         ))
       )
     ))
   )
+
+  /*
+  oppiaineenSuoritus(lukionKieli2019("AOM", "SV")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+      moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUA4").copy(laajuus = laajuus(1))).copy(arviointi = numeerinenArviointi(7))
+    )))
+   */
 
   val lukioonValmistavanKoulutuksenOpiskeluoikeus = LukioonValmistavanKoulutuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
