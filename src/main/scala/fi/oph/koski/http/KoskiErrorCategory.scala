@@ -119,6 +119,7 @@ object KoskiErrorCategory {
         val deprekoituKielikoodi = subcategory("deprekoituKielikoodi", "Suorituksessa on käytetty deprekoitua kielikoodia")
         val deprekoituOppimäärä = subcategory("deprekoituOppimäärä", "Suorituksessa on käytetty deprekoitua oppimäärää")
         val puuttuvaSuullisenKielitaidonKoe = subcategory("puuttuvaSuullisenKielitaidonKoe", "Suorituksesta puuttuu vaadittava merkintä suullisen kielitaidon kokeesta")
+        val lukioonValmistavassaEriLukioOpsienOsasuorituksia = subcategory("lukioonValmistavassaEriLukioOpsienSuorituksia", "Lukion valmistavan koulutuksen suorituksella ei voi olla sekä lukion 2015 että lukion 2019 opetussuunnitelmien mukaisia osasuorituksia")
       }
       val rakenne = new Rakenne
 

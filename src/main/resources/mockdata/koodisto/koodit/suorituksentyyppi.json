@@ -835,6 +835,27 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "suorituksentyyppi_luvalukionoppiaine2019",
+  "koodiArvo" : "luvalukionoppiaine2019",
+  "metadata" : [ {
+    "nimi" : "Lukion oppiaineen 2019 opinnnot osana lukioon valmistavaa koulutusta",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Studier i ett läroämne i gymnasiet 2019 som en del av förberedande utbildning för gymnasieutbildning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Upper secondary school subject 2019 as part of instruction preparing for general upper secondary education ",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "suorituksentyyppi_luvaoppiaine",
   "koodiArvo" : "luvaoppiaine",
   "metadata" : [ {

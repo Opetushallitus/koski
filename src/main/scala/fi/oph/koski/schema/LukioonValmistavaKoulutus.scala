@@ -95,6 +95,21 @@ case class LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "luvalukionoppiaine", koodistoUri = "suorituksentyyppi")
 ) extends LukioonValmistavanKoulutuksenOsasuoritus with Vahvistukseton
 
+@Title("Lukion oppiaineen opintojen suoritus 2019")
+@Description("Lukion oppiaineen 2019 opintojen suoritustiedot LUVA-koulutuksessa")
+case class LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa2019(
+  @Title("Oppiaine")
+  koulutusmoduuli: LukionOppiaine2019,
+  @Description("Lukiokoulutuksen valmistavan koulutuksen todistukseen merkitään opiskelijan opiskelemat oppiaineet, niissä suoritettujen kurssien määrä tai merkintä aineryhmän tai oppiaineen hyväksytystä suorittamisesta (hyväksytty)")
+  arviointi: Option[List[LukionOppiaineenArviointi2019]] = None,
+  suoritettuErityisenäTutkintona: Boolean = false,
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
+  @Title("Kurssit")
+  override val osasuoritukset: Option[List[LukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019]],
+  @KoodistoKoodiarvo("luvalukionoppiaine2019")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "luvalukionoppiaine2019", koodistoUri = "suorituksentyyppi")
+) extends LukioonValmistavanKoulutuksenOsasuoritus with Vahvistukseton
 
 trait LukioonValmistavanKoulutuksenOppiaine extends KoulutusmoduuliValinnainenLaajuus with Valinnaisuus {
   @Title("Oppiaine")
