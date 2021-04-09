@@ -1,4 +1,6 @@
 import * as A from "fp-ts/lib/Array"
+import { pipe } from "fp-ts/lib/function"
+import * as O from "fp-ts/lib/Option"
 import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
 import { ExternalLink } from "../../components/navigation/ExternalLink"
@@ -11,6 +13,7 @@ import {
   OppijaHakutilanteillaSuppeatTiedot,
 } from "../../state/oppijat"
 import { createOppijaPath } from "../../state/paths"
+import { Oid } from "../../state/types"
 import { formatNullableDate } from "../../utils/date"
 
 export type HakutilanneTableProps = {
@@ -102,7 +105,7 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
       {
         value: opiskeluoikeus?.ryhmä,
       },
-      hakemuksenTila(oppija.hakutilanteet, oppija.hakutilanneError),
+      hakemuksenTila(oppija, basePath),
       {
         value: t("hakutilanne__taulu_data_ei_toteutettu"),
         display: (
@@ -132,16 +135,24 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
 }
 
 const hakemuksenTila = (
-  hakutilanteet: HakuSuppeatTiedot[],
-  hakutilanneError?: string
+  oppija: OppijaHakutilanteillaSuppeatTiedot,
+  basePath: string
 ): Value => {
+  const { hakutilanteet, hakutilanneError } = oppija
+  const oppijaOid = oppija.oppija.henkilö.oid
+
   const hakemuksenTilaValue = hakemuksenTilaT(
     hakutilanteet.length,
     hakutilanneError
   )
   return {
     value: hakemuksenTilaValue,
-    display: hakemuksenTilaDisplay(hakutilanteet, hakemuksenTilaValue),
+    display: hakemuksenTilaDisplay(
+      hakutilanteet,
+      hakemuksenTilaValue,
+      oppijaOid,
+      basePath
+    ),
   }
 }
 
@@ -157,14 +168,22 @@ const hakemuksenTilaT = (
 
 const hakemuksenTilaDisplay = (
   hakutilanteet: HakuSuppeatTiedot[],
-  hakemuksenTilaValue: Translation
-) => {
-  if (hakutilanteet.length == 0) return null
-  else if (hakutilanteet.length == 1 && hakutilanteet[0]) {
-    return (
-      <ExternalLink to={hakutilanteet[0].hakemusUrl}>
-        {hakemuksenTilaValue}
-      </ExternalLink>
-    )
-  } else return null
-}
+  hakemuksenTilaValue: Translation,
+  oppijaOid: Oid,
+  basePath: string
+) =>
+  pipe(
+    A.head(hakutilanteet),
+    O.map((hakutilanne) =>
+      hakutilanteet.length == 1 ? (
+        <ExternalLink to={hakutilanne.hakemusUrl}>
+          {hakemuksenTilaValue}
+        </ExternalLink>
+      ) : (
+        <Link to={createOppijaPath(basePath, { oppijaOid })}>
+          {hakemuksenTilaValue}
+        </Link>
+      )
+    ),
+    O.toNullable
+  )
