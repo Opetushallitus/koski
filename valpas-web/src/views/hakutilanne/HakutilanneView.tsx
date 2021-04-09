@@ -22,7 +22,6 @@ import {
   OrganisaatioHierarkia,
   OrganisaatioJaKayttooikeusrooli,
 } from "../../state/types"
-import { currentYear } from "../../utils/date"
 import { ErrorView } from "../ErrorView"
 import { HakutilanneTable } from "./HakutilanneTable"
 import "./HakutilanneView.less"
@@ -81,10 +80,7 @@ export const HakutilanneView = (props: HakutilanneViewProps) => {
       <VirkailijaNavigation />
       <Card>
         <CardHeader>
-          <T
-            id="perusopetusnäkymä__otsikko"
-            params={{ vuosi: currentYear() }}
-          />
+          <T id="hakutilannenäkymä__otsikko" />
           {isSuccess(oppijatFetch) && (
             <Counter>
               {
