@@ -1,0 +1,65 @@
+[
+  {
+    "koodiUri": "hakutapa_01",
+    "metadata": [
+      {
+        "nimi": "Yhteishaku",
+        "lyhytNimi": "YH",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Gemensam ansökan",
+        "lyhytNimi": "GA",
+        "kieli": "SV"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "01"
+  },
+  {
+    "koodiUri": "hakutapa_04",
+    "metadata": [
+      {
+        "nimi": "Joustava haku",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "04"
+  },
+  {
+    "koodiUri": "hakutapa_02",
+    "metadata": [
+      {
+        "nimi": "Separata antagningar",
+        "lyhytNimi": "SA",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Erillishaku",
+        "lyhytNimi": "EH",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "02"
+  },
+  {
+    "koodiUri": "hakutapa_03",
+    "metadata": [
+      {
+        "nimi": "Jatkuva haku",
+        "lyhytNimi": "JH",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Fortgående ansökan",
+        "lyhytNimi": "FA",
+        "kieli": "SV"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "03"
+  }
+]

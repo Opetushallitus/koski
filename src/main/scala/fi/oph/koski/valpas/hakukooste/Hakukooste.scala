@@ -12,22 +12,10 @@ case class Hakukooste(
   aktiivinenHaku: Option[Boolean],
   hakemusOid: ValpasHakutilanneLaajatTiedot.HakemusOid,
   hakemusUrl: String,
-
   @KoodistoUri("hakutapa")
-  // TODO: Koodiston lataus koskeen
-  @KoodistoKoodiarvo("01") // Yhteishaku
-  @KoodistoKoodiarvo("02") // Erillishaku
-  @KoodistoKoodiarvo("03") // Jatkuva haku
-  @KoodistoKoodiarvo("04") // Joustava haku
   hakutapa: Koodistokoodiviite,
-
   @KoodistoUri("hakutyyppi")
-  // TODO: Koodiston lataus koskeen
-  @KoodistoKoodiarvo("01") // Varsinainen haku
-  @KoodistoKoodiarvo("02") // täydennyshaku
-  @KoodistoKoodiarvo("03") // lisähaku
   hakutyyppi: Koodistokoodiviite,
-
   haunAlkamispaivamaara: LocalDateTime,
   hakuNimi: BlankableLocalizedString,
   email: String,
