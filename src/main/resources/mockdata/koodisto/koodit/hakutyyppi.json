@@ -1,0 +1,53 @@
+[
+  {
+    "koodiUri": "hakutyyppi_02",
+    "metadata": [
+      {
+        "nimi": "Täydennyshaku",
+        "lyhytNimi": "TH",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Tilläggsansögan",
+        "lyhytNimi": "TA",
+        "kieli": "SV"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "02"
+  },
+  {
+    "koodiUri": "hakutyyppi_03",
+    "metadata": [
+      {
+        "nimi": "Kompletteringansökan",
+        "lyhytNimi": "KA",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Lisähaku",
+        "lyhytNimi": "LH",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "03"
+  },
+  {
+    "koodiUri": "hakutyyppi_01",
+    "metadata": [
+      {
+        "nimi": "Varsinainen haku",
+        "lyhytNimi": "VH",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Egentlig ansökan",
+        "lyhytNimi": "EA",
+        "kieli": "SV"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "01"
+  }
+]

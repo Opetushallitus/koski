@@ -86,6 +86,8 @@ object Koodistot {
   private val muutKoodistoAsetukset = List (
     KoodistoAsetus("ammatillisenoppiaineet"),
     KoodistoAsetus("ammatilliseentehtavaanvalmistavakoulutus"),
+    KoodistoAsetus("hakutapa"),
+    KoodistoAsetus("hakutyyppi"),
     KoodistoAsetus("jarjestamismuoto"),
     KoodistoAsetus("kieli"),
     KoodistoAsetus("kielivalikoima"),
