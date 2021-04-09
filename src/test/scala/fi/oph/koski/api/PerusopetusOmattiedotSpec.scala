@@ -4,9 +4,10 @@ import java.time.LocalDate
 
 import fi.oph.koski.documentation.ExampleData.{suomenKieli, vahvistusPaikkakunnalla}
 import fi.oph.koski.documentation.PerusopetusExampleData
+import fi.oph.koski.documentation.PerusopetusExampleData.{suoritus, _}
 import fi.oph.koski.documentation.PerusopetusExampleData.{arviointi, kahdeksannenLuokanSuoritus, perusopetuksenDiaarinumero, suoritustapaErityinenTutkinto}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
-import fi.oph.koski.schema.NuortenPerusopetuksenOppiaineenOppimääränSuoritus
+import fi.oph.koski.schema.{NuortenPerusopetuksenOppiaineenOppimääränSuoritus, PerusopetuksenPäätasonSuoritus}
 import org.json4s.{DefaultFormats, JObject}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.FreeSpec
@@ -187,12 +188,66 @@ class PerusopetusOmattiedotSpec extends FreeSpec with LocalJettyHttpSpecificatio
     }
   }
 
+  "Pakollisten oppiainenden laajuuksien piilottaminen" - {
+    def verify[A](päätasonSuoritus: PerusopetuksenPäätasonSuoritus, hetu: String)(verifyResponse: => A): A = {
+      val pakollinenOppiaine = suoritus(oppiaine("GE").copy(pakollinen = true, laajuus = vuosiviikkotuntia(8))).copy(arviointi = arviointi(9))
+      val valinnainenOppiaine = suoritus(oppiaine("LI").copy(pakollinen = false, laajuus = vuosiviikkotuntia(8))).copy(arviointi = arviointi(8))
+      val opiskeluoikeus = defaultOpiskeluoikeus.withSuoritukset(List(päätasonSuoritus.withOsasuoritukset(Some(List(pakollinenOppiaine, valinnainenOppiaine)))))
+      val henkilö = defaultHenkilö.copy(hetu = hetu)
+
+      putOpiskeluoikeus(opiskeluoikeus, henkilö) {
+        verifyResponseStatusOk()
+        get("api/omattiedot/editor", headers = kansalainenLoginHeaders(hetu)) {
+          verifyResponse
+        }
+      }
+    }
+    "nuorten perusopetuksen vuosiluokan suoritus" - {
+      "ilman vuosiluokan vahvistusta laajuudet piilotetaan pakollisilta oppiaineilta" in {
+        verify(seitsemännenLuokanSuoritus.copy(vahvistus = None), hetu = "090401A8955") {
+          laajuudet.length should equal(1)
+        }
+      }
+      "jos vuosiluokan vahvistus on ennen leikkuripäivää, laajuudet piilotetaan pakollisilta oppiaineilta" in {
+        verify(seitsemännenLuokanSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 7, 31))), hetu = "090401A8955") {
+          laajuudet.length should equal(1)
+        }
+      }
+      "jos vuosiluokka on vahvistettu leikkuripäivänä tai sen jälkeen, kaikki laajuudet näytetään" in {
+        verify(seitsemännenLuokanSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 8, 1))), hetu = "090401A8955") {
+          laajuudet.length should equal(2)
+        }
+      }
+    }
+    "nuorten perusopetuksen oppimäärän suoritus" - {
+      "ilman oppimäärän vahvistusta laajuudet piilotetaan pakollisilta oppiaineilta" in {
+        verify(päättötodistusSuoritus.copy(vahvistus = None), hetu = "090401A187A") {
+          laajuudet.length should equal(0) // Keskeneräisestä oppimäärän suorituksesta piilotetaan kaikki osasuoritukset (suorituksen ollessa ainut)
+        }
+      }
+      "jos vuosiluokan vahvistus on ennen leikkuripäivää, laajuudet piilotetaan pakollisilta oppiaineilta" in {
+        verify(päättötodistusSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 7, 31))), hetu = "090401A187A") {
+          laajuudet.length should equal(1)
+        }
+      }
+      "jos vuosiluokka on vahvistettu leikkuripäivänä tai sen jälkeen, kaikki laajuudet näytetään" in {
+        verify(päättötodistusSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 8, 1))), hetu = "090401A187A") {
+          laajuudet.length should equal(2)
+        }
+      }
+    }
+  }
+
   def käyttäytymisenArviointi = JsonMethods.parse(body).filter { json =>
     (json \ "key").extractOpt[String].contains("käyttäytymisenArvio") && (json \ "model" \ "value").toOption.isDefined
   }
 
   def arvioinnit = JsonMethods.parse(body).filter { json =>
     (json \ "key").extractOpt[String].contains("arviointi") && (json \ "model" \ "value").toOption.isDefined
+  }
+
+  def laajuudet = JsonMethods.parse(body).filter { json =>
+    (json \ "key").extractOpt[String].contains("laajuus") && (json \ "model" \ "value").toOption.isDefined
   }
 
   def päätasonSuoritukset = JsonMethods.parse(body)
