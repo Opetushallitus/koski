@@ -8,14 +8,12 @@ import java.time.{LocalDate, LocalDateTime}
 
 trait ValpasOppija {
   def henkilö: ValpasHenkilö
-  def valvottavatOpiskeluoikeudet: Set[ValpasOpiskeluoikeus.Oid]
   def opiskeluoikeudet: Seq[ValpasOpiskeluoikeus]
 }
 
 case class ValpasOppijaLaajatTiedot(
   henkilö: ValpasHenkilöLaajatTiedot,
   oikeutetutOppilaitokset: Set[ValpasOppilaitos.Oid],
-  valvottavatOpiskeluoikeudet: Set[ValpasOpiskeluoikeus.Oid],
   opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot]
 ) extends ValpasOppija {
   @SyntheticProperty
@@ -29,7 +27,6 @@ object ValpasOppijaSuppeatTiedot {
   def apply(laajatTiedot: ValpasOppijaLaajatTiedot): ValpasOppijaSuppeatTiedot = {
     ValpasOppijaSuppeatTiedot(
       ValpasHenkilöSuppeatTiedot(laajatTiedot.henkilö),
-      laajatTiedot.valvottavatOpiskeluoikeudet,
       laajatTiedot.opiskeluoikeudet.map(ValpasOpiskeluoikeusSuppeatTiedot.apply)
     )
   }
@@ -37,7 +34,6 @@ object ValpasOppijaSuppeatTiedot {
 
 case class ValpasOppijaSuppeatTiedot(
   henkilö: ValpasHenkilöSuppeatTiedot,
-  valvottavatOpiskeluoikeudet: Set[ValpasOpiskeluoikeus.Oid],
   opiskeluoikeudet: Seq[ValpasOpiskeluoikeusSuppeatTiedot]
 ) extends ValpasOppija {
   @SyntheticProperty
@@ -91,6 +87,7 @@ object ValpasOpiskeluoikeus {
 
 trait ValpasOpiskeluoikeus {
   def oid: ValpasOpiskeluoikeus.Oid
+  def onValvottava: Boolean
   @KoodistoUri("opiskeluoikeudentyyppi")
   def tyyppi: Koodistokoodiviite
   def oppilaitos: ValpasOppilaitos
@@ -103,6 +100,7 @@ trait ValpasOpiskeluoikeus {
 
 case class ValpasOpiskeluoikeusLaajatTiedot(
   oid: ValpasOpiskeluoikeus.Oid,
+  onValvottava: Boolean,
   tyyppi: Koodistokoodiviite,
   oppilaitos: ValpasOppilaitos,
   toimipiste: Option[ValpasToimipiste],
@@ -120,6 +118,7 @@ object ValpasOpiskeluoikeusSuppeatTiedot {
   def apply(laajatTiedot: ValpasOpiskeluoikeusLaajatTiedot): ValpasOpiskeluoikeusSuppeatTiedot = {
     ValpasOpiskeluoikeusSuppeatTiedot(
       laajatTiedot.oid,
+      laajatTiedot.onValvottava,
       laajatTiedot.tyyppi,
       laajatTiedot.oppilaitos,
       laajatTiedot.toimipiste,
@@ -131,6 +130,7 @@ object ValpasOpiskeluoikeusSuppeatTiedot {
 
 case class ValpasOpiskeluoikeusSuppeatTiedot(
   oid: ValpasOpiskeluoikeus.Oid,
+  onValvottava: Boolean,
   tyyppi: Koodistokoodiviite,
   oppilaitos: ValpasOppilaitos,
   toimipiste: Option[ValpasToimipiste],
