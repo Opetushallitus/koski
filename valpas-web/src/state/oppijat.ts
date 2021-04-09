@@ -124,8 +124,7 @@ export type Hakutoive = {
   organisaatioNimi?: LocalizedString
   koulutusNimi?: LocalizedString
   pisteet?: number
-  minValintapisteet?: number
-  hyväksytty?: boolean
+  alinValintaPistemaara?: number
 }
 
 export type OpiskeluoikeusLaajatTiedot = {
