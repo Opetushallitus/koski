@@ -3,6 +3,8 @@ package fi.oph.koski.valpas.hakukooste
 import fi.oph.koski.schema.annotation.{EnumValues, KoodistoKoodiarvo, KoodistoUri}
 import fi.oph.koski.schema.{BlankableLocalizedString, Koodistokoodiviite}
 import fi.oph.koski.valpas.repository.{ValpasHakutilanneLaajatTiedot, ValpasHakutoive, ValpasHenkilö}
+import fi.oph.scalaschema.annotation.SyntheticProperty
+
 import java.time.LocalDateTime
 
 
@@ -45,9 +47,12 @@ case class Hakutoive(
   vastaanottotieto: Option[String],
   @EnumValues(Ilmoittautumistila.values)
   ilmoittautumistila: Option[String],
-  harkinnanvaraisuus: Option[String], // TODO: Arvot?
-  hakukohdeKoulutuskoodi: String // TODO: Arvot?
+  harkinnanvaraisuus: Option[String],
+  // TODO: hakukohdeKoulutuskoodi muuttuu merkkijonosta koodistoarvoksi, kytketty väliaikaisesti pois, ettei hajota parsintaa
+  // hakukohdeKoulutuskoodi: Koodistokoodiviite
 ) {
+  @SyntheticProperty
+  def onHakenutHarkinnanvaraisesti = harkinnanvaraisuus.isDefined
 }
 
 object Vastaanottotieto {
