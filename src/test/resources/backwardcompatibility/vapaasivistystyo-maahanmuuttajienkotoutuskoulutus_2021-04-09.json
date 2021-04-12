@@ -1,0 +1,434 @@
+{
+  "henkilö" : {
+    "hetu" : "260769-598H",
+    "etunimet" : "Kotoutuja",
+    "kutsumanimi" : "Kotoutuja",
+    "sukunimi" : "Vapaa-Sivistys"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.31915273374",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "01694",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Varsinais-Suomen kansanopisto"
+      }
+    },
+    "arvioituPäättymispäivä" : "2022-05-31",
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2021-09-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.38515028629"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutus",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "999910",
+          "koodistoUri" : "koulutus"
+        },
+        "perusteenDiaarinumero" : "OPH-58-2021",
+        "laajuus" : {
+          "arvo" : 54.0,
+          "yksikkö" : {
+            "koodiarvo" : "1",
+            "nimi" : {
+              "fi" : "opintoviikkoa",
+              "sv" : "studieveckor",
+              "en" : "study weeks"
+            },
+            "lyhytNimi" : {
+              "fi" : "ov",
+              "sv" : "sv",
+              "en" : "study weeks"
+            },
+            "koodistoUri" : "opintojenlaajuusyksikko"
+          }
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2022-05-31",
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.14613773812",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "00204",
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "lyhytNimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "kotipaikka" : {
+            "koodiarvo" : "179",
+            "nimi" : {
+              "fi" : "Jyväskylä",
+              "sv" : "Jyväskylä"
+            },
+            "koodistoUri" : "kunta"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.14613773812",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "00204",
+              "nimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
+              "lyhytNimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "kotipaikka" : {
+              "koodiarvo" : "179",
+              "nimi" : {
+                "fi" : "Jyväskylä",
+                "sv" : "Jyväskylä"
+              },
+              "koodistoUri" : "kunta"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
+            "koodistoUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"
+          },
+          "laajuus" : {
+            "arvo" : 30.0,
+            "yksikkö" : {
+              "koodiarvo" : "1",
+              "nimi" : {
+                "fi" : "opintoviikkoa",
+                "sv" : "studieveckor",
+                "en" : "study weeks"
+              },
+              "lyhytNimi" : {
+                "fi" : "ov",
+                "sv" : "sv",
+                "en" : "study weeks"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tyyppi" : {
+          "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Suoritettu",
+            "koodistoUri" : "arviointiasteikkovstkoto"
+          },
+          "kuullunYmmärtämisenTaitotaso" : {
+            "koodiarvo" : "yli_C1.1",
+            "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
+          },
+          "puhumisenTaitotaso" : {
+            "koodiarvo" : "yli_C1.1",
+            "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
+          },
+          "luetunYmmärtämisenTaitotaso" : {
+            "koodiarvo" : "yli_C1.1",
+            "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
+          },
+          "kirjoittamisenTaitotaso" : {
+            "koodiarvo" : "yli_C1.1",
+            "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
+          },
+          "päivä" : "2020-01-01",
+          "hyväksytty" : true
+        } ]
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
+            "koodistoUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"
+          },
+          "laajuus" : {
+            "arvo" : 5.0,
+            "yksikkö" : {
+              "koodiarvo" : "1",
+              "nimi" : {
+                "fi" : "opintoviikkoa",
+                "sv" : "studieveckor",
+                "en" : "study weeks"
+              },
+              "lyhytNimi" : {
+                "fi" : "ov",
+                "sv" : "sv",
+                "en" : "study weeks"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tyyppi" : {
+          "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Suoritettu",
+            "koodistoUri" : "arviointiasteikkovstkoto"
+          },
+          "päivä" : "2020-01-01",
+          "hyväksytty" : true
+        } ]
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus",
+            "koodistoUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"
+          },
+          "laajuus" : {
+            "arvo" : 15.0,
+            "yksikkö" : {
+              "koodiarvo" : "1",
+              "nimi" : {
+                "fi" : "opintoviikkoa",
+                "sv" : "studieveckor",
+                "en" : "study weeks"
+              },
+              "lyhytNimi" : {
+                "fi" : "ov",
+                "sv" : "sv",
+                "en" : "study weeks"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "TALO",
+              "nimi" : {
+                "fi" : "Kiinteistöhuollon perusteita"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Omakotitaloasujan kiinteistöhuollon perusteet"
+            },
+            "laajuus" : {
+              "arvo" : 4.0,
+              "yksikkö" : {
+                "koodiarvo" : "1",
+                "nimi" : {
+                  "fi" : "opintoviikkoa",
+                  "sv" : "studieveckor",
+                  "en" : "study weeks"
+                },
+                "lyhytNimi" : {
+                  "fi" : "ov",
+                  "sv" : "sv",
+                  "en" : "study weeks"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Suoritettu",
+              "koodistoUri" : "arviointiasteikkovstkoto"
+            },
+            "päivä" : "2020-01-01",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojentyoelamajaksonsuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "TALO",
+              "nimi" : {
+                "fi" : "Kiinteistöhuollon perusteita"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Omakotitaloasujan kiinteistöhuollon perusteet"
+            },
+            "laajuus" : {
+              "arvo" : 4.0,
+              "yksikkö" : {
+                "koodiarvo" : "1",
+                "nimi" : {
+                  "fi" : "opintoviikkoa",
+                  "sv" : "studieveckor",
+                  "en" : "study weeks"
+                },
+                "lyhytNimi" : {
+                  "fi" : "ov",
+                  "sv" : "sv",
+                  "en" : "study weeks"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Suoritettu",
+              "koodistoUri" : "arviointiasteikkovstkoto"
+            },
+            "päivä" : "2020-01-01",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Suoritettu",
+            "koodistoUri" : "arviointiasteikkovstkoto"
+          },
+          "päivä" : "2020-01-01",
+          "hyväksytty" : true
+        } ]
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
+            "koodistoUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"
+          },
+          "laajuus" : {
+            "arvo" : 4.0,
+            "yksikkö" : {
+              "koodiarvo" : "1",
+              "nimi" : {
+                "fi" : "opintoviikkoa",
+                "sv" : "studieveckor",
+                "en" : "study weeks"
+              },
+              "lyhytNimi" : {
+                "fi" : "ov",
+                "sv" : "sv",
+                "en" : "study weeks"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "TALO",
+              "nimi" : {
+                "fi" : "Kiinteistöhuollon perusteita"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Omakotitaloasujan kiinteistöhuollon perusteet"
+            },
+            "laajuus" : {
+              "arvo" : 4.0,
+              "yksikkö" : {
+                "koodiarvo" : "1",
+                "nimi" : {
+                  "fi" : "opintoviikkoa",
+                  "sv" : "studieveckor",
+                  "en" : "study weeks"
+                },
+                "lyhytNimi" : {
+                  "fi" : "ov",
+                  "sv" : "sv",
+                  "en" : "study weeks"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Suoritettu",
+              "koodistoUri" : "arviointiasteikkovstkoto"
+            },
+            "päivä" : "2020-01-01",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojenosasuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Suoritettu",
+            "koodistoUri" : "arviointiasteikkovstkoto"
+          },
+          "päivä" : "2020-01-01",
+          "hyväksytty" : true
+        } ]
+      } ]
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "vapaansivistystyonkoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "alkamispäivä" : "2021-09-01"
+  } ]
+}

@@ -1,0 +1,309 @@
+{
+  "henkilö" : {
+    "hetu" : "231158-467R",
+    "etunimet" : "Lukutaitokouluttautuja",
+    "kutsumanimi" : "Lukutaitokouluttautuja",
+    "sukunimi" : "Vapaa-Sivistys"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.31915273374",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "01694",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Varsinais-Suomen kansanopisto"
+      }
+    },
+    "arvioituPäättymispäivä" : "2022-05-31",
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2021-09-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.38515028629"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "vstlukutaitokoulutus",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "999911",
+          "koodistoUri" : "koulutus"
+        },
+        "perusteenDiaarinumero" : "OPH-58-2021",
+        "laajuus" : {
+          "arvo" : 80.0,
+          "yksikkö" : {
+            "koodiarvo" : "5",
+            "nimi" : {
+              "fi" : "tuntia",
+              "sv" : "timmar",
+              "en" : "hours"
+            },
+            "lyhytNimi" : {
+              "fi" : "tuntia",
+              "sv" : "timmar",
+              "en" : "hours"
+            },
+            "koodistoUri" : "opintojenlaajuusyksikko"
+          }
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2022-05-31",
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.14613773812",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "00204",
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "lyhytNimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "kotipaikka" : {
+            "koodiarvo" : "179",
+            "nimi" : {
+              "fi" : "Jyväskylä",
+              "sv" : "Jyväskylä"
+            },
+            "koodistoUri" : "kunta"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.14613773812",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "00204",
+              "nimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
+              "lyhytNimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "kotipaikka" : {
+              "koodiarvo" : "179",
+              "nimi" : {
+                "fi" : "Jyväskylä",
+                "sv" : "Jyväskylä"
+              },
+              "koodistoUri" : "kunta"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus",
+            "koodistoUri" : "vstlukutaitokoulutuksenkokonaisuus"
+          },
+          "laajuus" : {
+            "arvo" : 20.0,
+            "yksikkö" : {
+              "koodiarvo" : "5",
+              "nimi" : {
+                "fi" : "tuntia",
+                "sv" : "timmar",
+                "en" : "hours"
+              },
+              "lyhytNimi" : {
+                "fi" : "tuntia",
+                "sv" : "timmar",
+                "en" : "hours"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tyyppi" : {
+          "koodiarvo" : "vstlukutaitokoulutuksenkokonaisuudensuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Suoritettu",
+            "koodistoUri" : "arviointiasteikkovstkoto"
+          },
+          "taitotaso" : {
+            "koodiarvo" : "yli_C1.1",
+            "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
+          },
+          "päivä" : "2020-01-01",
+          "hyväksytty" : true
+        } ]
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus",
+            "koodistoUri" : "vstlukutaitokoulutuksenkokonaisuus"
+          },
+          "laajuus" : {
+            "arvo" : 20.0,
+            "yksikkö" : {
+              "koodiarvo" : "5",
+              "nimi" : {
+                "fi" : "tuntia",
+                "sv" : "timmar",
+                "en" : "hours"
+              },
+              "lyhytNimi" : {
+                "fi" : "tuntia",
+                "sv" : "timmar",
+                "en" : "hours"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tyyppi" : {
+          "koodiarvo" : "vstlukutaitokoulutuksenkokonaisuudensuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Suoritettu",
+            "koodistoUri" : "arviointiasteikkovstkoto"
+          },
+          "taitotaso" : {
+            "koodiarvo" : "yli_C1.1",
+            "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
+          },
+          "päivä" : "2020-01-01",
+          "hyväksytty" : true
+        } ]
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus",
+            "koodistoUri" : "vstlukutaitokoulutuksenkokonaisuus"
+          },
+          "laajuus" : {
+            "arvo" : 20.0,
+            "yksikkö" : {
+              "koodiarvo" : "5",
+              "nimi" : {
+                "fi" : "tuntia",
+                "sv" : "timmar",
+                "en" : "hours"
+              },
+              "lyhytNimi" : {
+                "fi" : "tuntia",
+                "sv" : "timmar",
+                "en" : "hours"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tyyppi" : {
+          "koodiarvo" : "vstlukutaitokoulutuksenkokonaisuudensuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Suoritettu",
+            "koodistoUri" : "arviointiasteikkovstkoto"
+          },
+          "taitotaso" : {
+            "koodiarvo" : "yli_C1.1",
+            "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
+          },
+          "päivä" : "2020-01-01",
+          "hyväksytty" : true
+        } ]
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "vstlukutaitokoulutuksennumeeristentaitojenkokonaisuudensuoritus",
+            "koodistoUri" : "vstlukutaitokoulutuksenkokonaisuus"
+          },
+          "laajuus" : {
+            "arvo" : 20.0,
+            "yksikkö" : {
+              "koodiarvo" : "5",
+              "nimi" : {
+                "fi" : "tuntia",
+                "sv" : "timmar",
+                "en" : "hours"
+              },
+              "lyhytNimi" : {
+                "fi" : "tuntia",
+                "sv" : "timmar",
+                "en" : "hours"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tyyppi" : {
+          "koodiarvo" : "vstlukutaitokoulutuksenkokonaisuudensuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Suoritettu",
+            "koodistoUri" : "arviointiasteikkovstkoto"
+          },
+          "taitotaso" : {
+            "koodiarvo" : "yli_C1.1",
+            "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
+          },
+          "päivä" : "2020-01-01",
+          "hyväksytty" : true
+        } ]
+      } ]
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "vapaansivistystyonkoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "alkamispäivä" : "2021-09-01"
+  } ]
+}
