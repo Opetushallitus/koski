@@ -40,6 +40,12 @@ class RaportointiDatabaseConfig(val rootConfig: Config, val schema: Schema) exte
       .withValue("poolName", fromAnyRef(s"koskiRaportointiPool-${schema.name}"))
 }
 
+class ValpasDatabaseConfig(val rootConfig: Config) extends DatabaseConfig {
+  override val envVarForSecretId: String = "DB_KOSKI_SECRET_ID" // Samalla instanssilla kuin pääkanta
+
+  override protected def databaseSpecificConfig: Config = rootConfig.getConfig("dbs.valpas")
+}
+
 trait DatabaseConfig extends NotLoggable {
   protected val rootConfig: Config
   protected val envVarForSecretId: String
