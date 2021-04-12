@@ -8,26 +8,16 @@ import fi.oph.koski.raportointikanta.Schema
 import slick.jdbc.PostgresProfile
 
 
-object DatabaseConfig {
-  def rootDbConfigWithoutChildren(config: Config): Config = {
-    // Konfiguraation db-osan juuri on samalla sekä Kosken pääkannan
-    // konfiguraatio että oletuskonfiguraatio muille kannoille.
-    config.getConfig("db")
-      .withoutPath("replica")
-      .withoutPath("raportointi")
-  }
-}
-
 class KoskiDatabaseConfig(val rootConfig: Config) extends DatabaseConfig {
   override val envVarForSecretId: String = "DB_KOSKI_SECRET_ID"
 
-  override protected def databaseSpecificConfig: Config = DatabaseConfig.rootDbConfigWithoutChildren(rootConfig)
+  override protected def databaseSpecificConfig: Config = rootConfig.getConfig("dbs.koski")
 }
 
 class KoskiReplicaConfig(val rootConfig: Config) extends DatabaseConfig {
   override val envVarForSecretId: String = "DB_KOSKI_SECRET_ID"
 
-  override protected def databaseSpecificConfig: Config = rootConfig.getConfig("db.replica")
+  override protected def databaseSpecificConfig: Config = rootConfig.getConfig("dbs.replica")
 
   override protected def makeConfig(): Config = {
     if (useSecretsManager) {
@@ -46,7 +36,7 @@ class RaportointiDatabaseConfig(val rootConfig: Config, val schema: Schema) exte
   override val envVarForSecretId: String = "DB_RAPORTOINTI_SECRET_ID"
 
   override protected def databaseSpecificConfig: Config =
-    rootConfig.getConfig("db.raportointi")
+    rootConfig.getConfig("dbs.raportointi")
       .withValue("poolName", fromAnyRef(s"koskiRaportointiPool-${schema.name}"))
 }
 
@@ -58,7 +48,7 @@ trait DatabaseConfig extends NotLoggable {
 
   protected def databaseSpecificConfig: Config
 
-  private final def commonConfig: Config = DatabaseConfig.rootDbConfigWithoutChildren(rootConfig)
+  private final def sharedConfig: Config = rootConfig.getConfig("db")
 
   private final def configWithSecrets(config: Config): Config = {
     if (useSecretsManager) {
@@ -78,7 +68,7 @@ trait DatabaseConfig extends NotLoggable {
   }
 
   protected def makeConfig(): Config = {
-    configWithSecrets(databaseSpecificConfig.withFallback(commonConfig))
+    configWithSecrets(databaseSpecificConfig.withFallback(sharedConfig))
   }
 
   private final def configForSlick(): Config = {
