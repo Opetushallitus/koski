@@ -7,6 +7,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.Examples
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
+import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.deserializationContext
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Oppija}
 import fi.oph.scalaschema.SchemaValidatingExtractor
@@ -18,7 +19,7 @@ import org.scalatest.{FreeSpec, Matchers}
 /**
  * Tests that examples match saved JSON files. Run with -DupdateExamples=true to update saved JSON files from current examples.
  */
-class BackwardCompatibilitySpec extends FreeSpec with Matchers {
+class BackwardCompatibilitySpec extends FreeSpec with Matchers with Logging {
   lazy val koskiValidator = KoskiApplicationForTests.validator
   implicit val user = KoskiSpecificSession.systemUser
   implicit val accessType = AccessType.read
@@ -33,10 +34,10 @@ class BackwardCompatibilitySpec extends FreeSpec with Matchers {
         val existingFiles = new File(dirName).list().filter(fn => fn == basename + ".json" || fn.startsWith(basename + "_")).toList.sorted
         existingFiles match {
           case Nil =>
-            println("Creating " + currentFilename)
+            logger.info("Creating " + currentFilename)
             new File(fullName(currentFilename)).getParentFile().mkdirs()
             JsonFiles.writeFile(fullName(currentFilename), example.data)
-          case files =>
+          case files: List[String] =>
             files.foreach { filename =>
               filename in {
 
@@ -74,7 +75,7 @@ class BackwardCompatibilitySpec extends FreeSpec with Matchers {
             }
             val latest = files.last
             if (JsonSerializer.serializeWithRoot(example.data) != JsonFiles.readFile(fullName(latest))) {
-              println(s"Example data differs for ${example.name} at ${latest}. Creating new version")
+              logger.info(s"Example data differs for ${example.name} at ${latest}. Creating new version")
               JsonFiles.writeFile(fullName(currentFilename), example.data)
             }
         }
