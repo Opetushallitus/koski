@@ -17,7 +17,6 @@ case class ValpasOppijaRow(
   etunimet: String,
   sukunimi: String,
   oikeutetutOppilaitokset: Set[ValpasOppilaitos.Oid],
-  valvottavatOpiskeluoikeudet: Set[ValpasOpiskeluoikeus.Oid],
   opiskeluoikeudet: JValue,
   turvakielto: Boolean,
 )
@@ -39,7 +38,6 @@ class ValpasDatabaseService(application: KoskiApplication) extends DatabaseConve
       etunimet = r.rs.getString("etunimet"),
       sukunimi = r.rs.getString("sukunimi"),
       oikeutetutOppilaitokset = r.getArray("oikeutetutOppilaitokset").toSet,
-      valvottavatOpiskeluoikeudet = r.getArray("valvottavatOpiskeluoikeudet").toSet,
       opiskeluoikeudet = r.getJson("opiskeluoikeudet"),
       turvakielto = r.rs.getBoolean("turvakielto"),
     )
@@ -80,7 +78,7 @@ WITH
       """),
         Some(
           sql"""
-  -- CTE: kaikki oppijat, joilla on vähintään yksi kelpuutettava peruskoulun opetusoikeus, mukana
+  -- CTE: kaikki oppijat, joilla on vähintään yksi kelpuutettava peruskoulun opiskeluoikeus, mukana
   -- myös taulukko kelpuutettavien opiskeluoikeuksien oppilaitoksista käyttöoikeustarkastelua varten.
   oppija AS (
     SELECT
@@ -331,11 +329,11 @@ WITH
     oppivelvollinen_oppija.etunimet,
     oppivelvollinen_oppija.sukunimi,
     oppivelvollinen_oppija.oikeutettu_oppilaitos_oids AS oikeutetutOppilaitokset,
-    oppivelvollinen_oppija.valvottava_opiskeluoikeus_oids AS valvottavatOpiskeluoikeudet,
     oppivelvollinen_oppija.turvakielto AS turvakielto,
     json_agg(
       json_build_object(
         'oid', opiskeluoikeus.opiskeluoikeus_oid,
+        'onValvottava', opiskeluoikeus.opiskeluoikeus_oid = ANY(oppivelvollinen_oppija.valvottava_opiskeluoikeus_oids),
         'tyyppi', json_build_object(
           'koodiarvo', opiskeluoikeus.koulutusmuoto,
           'koodistoUri', 'opiskeluoikeudentyyppi'
@@ -377,7 +375,6 @@ WITH
     oppivelvollinen_oppija.etunimet,
     oppivelvollinen_oppija.sukunimi,
     oppivelvollinen_oppija.oikeutettu_oppilaitos_oids,
-    oppivelvollinen_oppija.valvottava_opiskeluoikeus_oids,
     oppivelvollinen_oppija.turvakielto
   ORDER BY
     oppivelvollinen_oppija.sukunimi,

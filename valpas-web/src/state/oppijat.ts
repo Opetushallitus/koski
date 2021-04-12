@@ -29,7 +29,6 @@ export type OppijaLaajatTiedot = {
   opiskeluoikeudet: OpiskeluoikeusLaajatTiedot[]
   opiskelee: boolean
   oppivelvollisuusVoimassaAsti?: ISODate
-  valvottavatOpiskeluoikeudet: Oid[]
   oikeutetutOppilaitokset: Oid[]
 }
 
@@ -38,7 +37,6 @@ export type OppijaSuppeatTiedot = {
   opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
   opiskelee: boolean
   oppivelvollisuusVoimassaAsti?: ISODate
-  valvottavatOpiskeluoikeudet: Oid[]
 }
 
 export type HenkilöLaajatTiedot = {
@@ -129,6 +127,7 @@ export type Hakutoive = {
 
 export type OpiskeluoikeusLaajatTiedot = {
   oid: Oid
+  onValvottava: boolean
   tyyppi: Opiskeluoikeudentyyppi
   oppilaitos: Oppilaitos
   toimipiste?: Toimipiste
@@ -140,6 +139,7 @@ export type OpiskeluoikeusLaajatTiedot = {
 
 export type OpiskeluoikeusSuppeatTiedot = {
   oid: Oid
+  onValvottava: boolean
   tyyppi: Opiskeluoikeudentyyppi
   oppilaitos: Oppilaitos
   toimipiste?: Toimipiste
@@ -197,3 +197,12 @@ export const Yhteystiedot = {
     return a.alkuperä !== undefined && a.tyyppi !== undefined
   },
 }
+
+const onValvottavaOpiskeluoikeus = (organisaatioOid: string | undefined) => (
+  oo: OpiskeluoikeusSuppeatTiedot
+) => oo.onValvottava && oo.oppilaitos.oid == organisaatioOid
+
+export const valvottavatOpiskeluoikeudet = (
+  organisaatioOid: string | undefined,
+  opiskeluoikeudet: Array<OpiskeluoikeusSuppeatTiedot>
+) => opiskeluoikeudet.filter(onValvottavaOpiskeluoikeus(organisaatioOid))

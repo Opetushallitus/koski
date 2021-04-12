@@ -65,7 +65,6 @@ object ValpasOppijaService {
               turvakielto = thiss.turvakielto,
             ),
             oikeutetutOppilaitokset = thiss.oikeutetutOppilaitokset,
-            valvottavatOpiskeluoikeudet = thiss.valvottavatOpiskeluoikeudet,
             opiskeluoikeudet = opiskeluoikeudet
           )
         )

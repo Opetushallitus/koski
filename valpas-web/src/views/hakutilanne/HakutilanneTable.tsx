@@ -9,6 +9,7 @@ import { useBasePath } from "../../state/basePath"
 import {
   HakuSuppeatTiedot,
   OppijaHakutilanteillaSuppeatTiedot,
+  valvottavatOpiskeluoikeudet,
 } from "../../state/oppijat"
 import { createOppijaPath } from "../../state/paths"
 import { formatNullableDate } from "../../utils/date"
@@ -71,15 +72,12 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
 const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
   oppija: OppijaHakutilanteillaSuppeatTiedot
 ): Array<Datum> => {
-  const valvottavatOpiskeluoikeudet = oppija.oppija.opiskeluoikeudet.filter(
-    (oo) =>
-      oppija.oppija.valvottavatOpiskeluoikeudet.includes(oo.oid) &&
-      oo.oppilaitos.oid == organisaatioOid
-  )
-
   const henkilö = oppija.oppija.henkilö
 
-  return valvottavatOpiskeluoikeudet.map((opiskeluoikeus) => ({
+  return valvottavatOpiskeluoikeudet(
+    organisaatioOid,
+    oppija.oppija.opiskeluoikeudet
+  ).map((opiskeluoikeus) => ({
     key: opiskeluoikeus.oid,
     values: [
       {
