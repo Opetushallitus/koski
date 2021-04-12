@@ -4,7 +4,8 @@ import java.io.File
 import java.time.LocalDate
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.documentation.Examples
+import fi.oph.koski.documentation.Example
+import fi.oph.koski.documentation.Examples.examples
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
@@ -19,69 +20,95 @@ import org.scalatest.{FreeSpec, Matchers}
 /**
  * Tests that examples match saved JSON files.
  */
-class BackwardCompatibilitySpec extends FreeSpec with Matchers with Logging {
-  lazy val koskiValidator = KoskiApplicationForTests.validator
-  implicit val user = KoskiSpecificSession.systemUser
-  implicit val accessType = AccessType.read
+class BackwardCompatibilitySpec extends FreeSpec with Matchers with Logging with EnvVariables {
+  private lazy val koskiValidator = KoskiApplicationForTests.validator
+  private implicit val user: KoskiSpecificSession = KoskiSpecificSession.systemUser
+  private implicit val accessType: AccessType.Value = AccessType.read
 
-  "backward compatibility with stored JSON examples" - {
-    Examples.examples.filter(example => example.data.opiskeluoikeudet.head.isInstanceOf[KoskeenTallennettavaOpiskeluoikeus]).foreach { example =>
-      example.name - {
-        val basename = example.name.replaceAll(" ", "").replaceAll("ä", "a").replaceAll("ö", "o")
-        val currentFilename = basename + "_" + LocalDate.now.toString + ".json"
-        val dirName: String = "src/test/resources/backwardcompatibility"
-        def fullName(fileName: String) = dirName + "/" + fileName
-        val existingFiles = new File(dirName).list().filter(fn => fn == basename + ".json" || fn.startsWith(basename + "_")).toList.sorted
-        existingFiles match {
-          case Nil =>
-            logger.info("Creating " + currentFilename)
-            new File(fullName(currentFilename)).getParentFile().mkdirs()
-            JsonFiles.writeFile(fullName(currentFilename), example.data)
-          case files: List[String] =>
-            files.foreach { filename =>
-              filename in {
+  private val backwardsCompatibilityFilesDir: String = "src/test/resources/backwardcompatibility"
 
-                var skipEqualityCheck = false
-                var skipKoskiValidator = false
+  private val allBackwardsCompatibilityFiles = new File(backwardsCompatibilityFilesDir).list()
 
-                val json: JValue = JsonFiles.readFile(fullName(filename)).removeField {
-                  case ("ignoreJsonEquality", JBool(true)) =>
-                    skipEqualityCheck = true
-                    true
-                  case ("ignoreKoskiValidator", JBool(true)) =>
-                    skipKoskiValidator = true
-                    true
-                  case _ => false
-                }
+  private def backwardsCompatibilityFilesForExample(exampleName: String): Seq[String] =
+    allBackwardsCompatibilityFiles
+      .filter(filename => filename.matches(sanitize(exampleName) + raw"_\d\d\d\d-\d\d-\d\d\.json"))
+      .toSeq.sorted
 
-                SchemaValidatingExtractor.extract[Oppija](json) match {
-                  case Right(oppija) =>
-                    val afterRoundtrip: JValue = JsonSerializer.serializeWithRoot(oppija)
+  private def sanitize(exampleName: String): String =
+    exampleName
+      .replaceAll(" ", "")
+      .replaceAll("ä", "a")
+      .replaceAll("ö", "o")
 
-                    if (!skipKoskiValidator) {
-                      koskiValidator.validateAsJson(oppija) match {
-                        case Right(_) => //ok
-                        case Left(err) => throw new IllegalStateException(err.toString)
-                      }
-                    }
+  private def fullPath(fileName: String) = backwardsCompatibilityFilesDir + "/" + fileName
 
-                    if (!skipEqualityCheck) {
-                      JsonMethods.compact(mangle(afterRoundtrip)) should equal(JsonMethods.compact(mangle(json)))
-                    }
-                  case Left(errors) =>
-                    fail("Backward compatibility problem: " + errors)
-                }
-              }
-            }
-            val latest = files.last
-            if (JsonSerializer.serializeWithRoot(example.data) != JsonFiles.readFile(fullName(latest))) {
-              logger.info(s"Example data differs for ${example.name} at ${latest}. Creating new version")
-              JsonFiles.writeFile(fullName(currentFilename), example.data)
-            }
+  private def filenameWithDate(exampleName: String): String = sanitize(exampleName) + "_" + LocalDate.now.toString + ".json"
+
+  private def writeNewVersion(example: Example): Unit = JsonFiles.writeFile(fullPath(filenameWithDate(example.name)), example.data)
+
+  private def writeInitialVersion(example: Example): Unit = {
+    logger.info(s"No example data found for ${example.name}. Creating initial version.")
+    new File(backwardsCompatibilityFilesDir).mkdirs()
+    writeNewVersion(example)
+  }
+
+  private def readFile(filename: String): (JValue, Boolean, Boolean) = {
+    var skipEqualityCheck = false
+    var skipKoskiValidator = false
+    val json: JValue = JsonFiles.readFile(fullPath(filename)).removeField {
+      case ("ignoreJsonEquality", JBool(true)) =>
+        skipEqualityCheck = true
+        true
+      case ("ignoreKoskiValidator", JBool(true)) =>
+        skipKoskiValidator = true
+        true
+      case _ => false
+    }
+    (json, skipEqualityCheck, skipKoskiValidator)
+  }
+
+  "backwards compatibility with stored JSON examples" - {
+    val storedExamples = examples.filter(
+      _.data.opiskeluoikeudet.head.isInstanceOf[KoskeenTallennettavaOpiskeluoikeus]
+    )
+    storedExamples.foreach(makeTestForExample)
+  }
+
+  private def makeTestForExample(example: Example): Unit =
+    example.name - {
+      val existingFiles = backwardsCompatibilityFilesForExample(example.name)
+      if (existingFiles.isEmpty) {
+        writeInitialVersion(example)
+      } else {
+        existingFiles.foreach(makeTestForExistingFile)
+        val latest = existingFiles.last
+        if (JsonSerializer.serializeWithRoot(example.data) != JsonFiles.readFile(fullPath(latest))) {
+          logger.info(s"Example data differs for ${example.name} at ${latest}. Creating new version.")
+          writeNewVersion(example)
         }
       }
     }
-  }
+
+  private def makeTestForExistingFile(filename: String): Unit =
+    filename in {
+      val (json, skipRoundtripCheck, skipKoskiValidator) = readFile(filename)
+
+      SchemaValidatingExtractor.extract[Oppija](json) match {
+        case Left(errors) => fail("Backwards compatibility problem: " + errors)
+        case Right(oppija) =>
+          if (!skipKoskiValidator) {
+            koskiValidator.validateAsJson(oppija) match {
+              case Right(_) => //ok
+              case Left(err) => fail("Validation error: " + err.toString)
+            }
+          }
+
+          val afterRoundtrip: JValue = JsonSerializer.serializeWithRoot(oppija)
+          if (!skipRoundtripCheck) {
+            JsonMethods.compact(mangle(afterRoundtrip)) should equal(JsonMethods.compact(mangle(json)))
+          }
+      }
+    }
 
   private def mangle(json: JValue): JValue = json match {
     case JObject(fields) => JObject(fields
