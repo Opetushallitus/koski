@@ -6,9 +6,9 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus, Ryhmällinen}
 import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
 import fi.oph.koski.valpas.fixture.ValpasExampleData
-import fi.oph.koski.valpas.hakukooste.ValpasHakukoosteService
+import fi.oph.koski.valpas.hakukooste.{HakukoosteExampleData, ValpasHakukoosteService}
 import fi.oph.koski.valpas.henkilo.ValpasMockOppijat
-import fi.oph.koski.valpas.repository.{ValpasOpiskeluoikeus, ValpasOpiskeluoikeusSuppeatTiedot, ValpasOppijaLaajatTiedot, ValpasOppijaSuppeatTiedot, ValpasOppilaitos}
+import fi.oph.koski.valpas.repository.{ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot, ValpasOppijaSuppeatTiedot}
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import org.scalatest.Matchers._
 
@@ -112,6 +112,22 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
     val result = oppijaService.getOppijaLaajatTiedot(expectedOppija.oid)(defaultSession()).toOption.get
 
     validateOppijaLaajatTiedot(result.oppija, expectedOppija, expectedData)
+  }
+
+  "getOppijan palauttaman oppijan valintatilat ovat oikein" in {
+    val result = oppijaService.getOppijaLaajatTiedot(ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid)(defaultSession()).toOption.get
+
+    val valintatilat = result.hakutilanteet.map(_.hakutoiveet.flatMap(_.valintatila.map(_.koodiarvo)))
+
+    valintatilat shouldBe List(
+      List(
+        "hylatty",
+        "hyvaksytty",
+        "peruuntunut",
+        "peruuntunut",
+        "peruuntunut",
+      ),
+    )
   }
 
   "getOppija palauttaa oppijan tiedot, vaikka oid ei olisikaan master oid" in {

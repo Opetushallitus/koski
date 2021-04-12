@@ -1,0 +1,58 @@
+[
+  {
+    "koodiUri": "valpashaunvalintatila_hyvaksytty",
+    "koodiArvo": "hyvaksytty",
+    "metadata": [
+      {
+        "nimi": "Hyväksytty",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpashaunvalintatila_hylatty",
+    "koodiArvo": "hylatty",
+    "metadata": [
+      {
+        "nimi": "Hylätty",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpashaunvalintatila_varasijalla",
+    "koodiArvo": "varasijalla",
+    "metadata": [
+      {
+        "nimi": "Varasijalla",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpashaunvalintatila_peruuntunut",
+    "koodiArvo": "peruuntunut",
+    "metadata": [
+      {
+        "nimi": "Peruuntunut",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

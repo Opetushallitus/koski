@@ -2,8 +2,9 @@ package fi.oph.koski.valpas.repository
 
 import fi.oph.koski.schema.annotation.KoodistoUri
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
-import fi.oph.koski.valpas.hakukooste.{Hakukooste, Hakutoive}
+import fi.oph.koski.valpas.hakukooste.{Hakukooste, Hakutoive, Valintatila}
 import fi.oph.scalaschema.annotation.SyntheticProperty
+
 import java.time.{LocalDate, LocalDateTime}
 
 trait ValpasOppija {
@@ -203,7 +204,7 @@ object ValpasHakutilanneSuppeatTiedot {
       laajatTiedot.hakuNimi,
       laajatTiedot.hakemusOid,
       laajatTiedot.hakemusUrl,
-      laajatTiedot.aktiivinenHaku
+      laajatTiedot.aktiivinenHaku,
     )
   }
 }
@@ -213,7 +214,7 @@ case class ValpasHakutilanneSuppeatTiedot(
   hakuNimi: Option[LocalizedString],
   hakemusOid: String,
   hakemusUrl: String,
-  aktiivinenHaku: Boolean
+  aktiivinenHaku: Boolean,
 ) extends ValpasHakutilanne
 
 object ValpasHakutoive {
@@ -227,6 +228,7 @@ object ValpasHakutoive {
       hakutoivenumero = Some(hakutoive.hakutoivenumero),
       pisteet = hakutoive.pisteet,
       alinValintaPistemaara = hakutoive.alinValintaPistemaara,
+      valintatila = Valintatila.valpasKoodiviiteOption(hakutoive.valintatila),
     )
   }
 }
@@ -237,6 +239,7 @@ case class ValpasHakutoive(
   koulutusNimi: Option[LocalizedString],
   hakutoivenumero: Option[Int],
   pisteet: Option[BigDecimal],
-  alinValintaPistemaara: Option[BigDecimal]
+  alinValintaPistemaara: Option[BigDecimal],
+  @KoodistoUri("valpashaunvalintatila")
+  valintatila: Option[Koodistokoodiviite],
 )
-
