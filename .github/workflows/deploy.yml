@@ -13,6 +13,7 @@ env:
   DOCKER_BUILDKIT: 1
   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
 
+
 jobs:
   checkbuilddeploy:
     name: Build and deploy

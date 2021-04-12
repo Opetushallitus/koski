@@ -6,6 +6,8 @@ on:
 env:
   DOCKER_BUILDKIT: 1
   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+
+
 jobs:
   lint_koski:
     name: Lint Koski scala and frontend code
@@ -91,11 +93,7 @@ jobs:
         run: docker-compose up -d
 
       - name: Run backend tests
-        run: |
-          cd web
-          npm ci
-          cd ..
-          mvn test
+        run: mvn test
 
   run_frontend_tests_0:
     name: Run Koski frontend tests runner 0
@@ -141,11 +139,7 @@ jobs:
         run: docker-compose up -d
 
       - name: Run frontend tests
-        run: |
-          cd web
-          npm ci
-          cd ..
-          mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner0"
+        run: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner0"
 
   run_frontend_tests_1:
     name: Run Koski frontend tests runner 1
@@ -191,11 +185,7 @@ jobs:
         run: docker-compose up -d
 
       - name: Run frontend tests
-        run: |
-          cd web
-          npm ci
-          cd ..
-          mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner1"
+        run: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner1"
 
   run_frontend_tests_2:
     name: Run Koski frontend tests runner 2
@@ -241,11 +231,7 @@ jobs:
         run: docker-compose up -d
 
       - name: Run frontend tests
-        run: |
-          cd web
-          npm ci
-          cd ..
-          mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner2"
+        run: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner2"
 
   run_frontend_tests_3:
     name: Run Koski frontend tests runner 3
@@ -291,11 +277,7 @@ jobs:
         run: docker-compose up -d
 
       - name: Run frontend tests
-        run: |
-          cd web
-          npm ci
-          cd ..
-          mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner3"
+        run: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner3"
 
   run_frontend_tests_4:
     name: Run Koski frontend tests runner 4
@@ -341,11 +323,7 @@ jobs:
         run: docker-compose up -d
 
       - name: Run frontend tests
-        run: |
-          cd web
-          npm ci
-          cd ..
-          mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner4"
+        run: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner4"
 
   valpas_integration_tests:
     name: Valpas integration tests
