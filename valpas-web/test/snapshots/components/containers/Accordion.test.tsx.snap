@@ -10,12 +10,12 @@ exports[`Accordion kaikki sivut avatutuvat klikkauksesta 1`] = `
     <h4
       class="accordion__label"
     >
-      <i
+      <span
         aria-hidden="true"
         class="material-icons icon icon--inline"
       >
         keyboard_arrow_right
-      </i>
+      </span>
       Yksi
     </h4>
     <div
@@ -30,12 +30,12 @@ exports[`Accordion kaikki sivut avatutuvat klikkauksesta 1`] = `
     <h4
       class="accordion__label"
     >
-      <i
+      <span
         aria-hidden="true"
         class="material-icons icon icon--inline"
       >
         keyboard_arrow_down
-      </i>
+      </span>
       Kaksi
     </h4>
     <div
@@ -50,12 +50,12 @@ exports[`Accordion kaikki sivut avatutuvat klikkauksesta 1`] = `
     <h4
       class="accordion__label"
     >
-      <i
+      <span
         aria-hidden="true"
         class="material-icons icon icon--inline"
       >
         keyboard_arrow_down
-      </i>
+      </span>
       Kolmas
     </h4>
     <div
@@ -77,12 +77,12 @@ exports[`Accordion renderöityy oikein 1`] = `
     <h4
       class="accordion__label"
     >
-      <i
+      <span
         aria-hidden="true"
         class="material-icons icon icon--inline"
       >
         keyboard_arrow_down
-      </i>
+      </span>
       Yksi
     </h4>
     <div
@@ -97,12 +97,12 @@ exports[`Accordion renderöityy oikein 1`] = `
     <h4
       class="accordion__label"
     >
-      <i
+      <span
         aria-hidden="true"
         class="material-icons icon icon--inline"
       >
         keyboard_arrow_right
-      </i>
+      </span>
       Kaksi
     </h4>
     <div
@@ -117,12 +117,12 @@ exports[`Accordion renderöityy oikein 1`] = `
     <h4
       class="accordion__label"
     >
-      <i
+      <span
         aria-hidden="true"
         class="material-icons icon icon--inline"
       >
         keyboard_arrow_right
-      </i>
+      </span>
       Kolmas
     </h4>
     <div

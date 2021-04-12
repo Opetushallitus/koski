@@ -37,7 +37,7 @@ type MaterialDesignIconProps = IconProps & {
 }
 
 const MaterialDesignIcon = (props: MaterialDesignIconProps) => (
-  <i
+  <span
     aria-hidden
     className={joinClassNames(
       "material-icons",
@@ -51,5 +51,5 @@ const MaterialDesignIcon = (props: MaterialDesignIconProps) => (
     )}
   >
     {props.name}
-  </i>
+  </span>
 )
