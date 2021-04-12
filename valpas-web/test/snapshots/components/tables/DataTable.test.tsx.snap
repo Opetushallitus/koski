@@ -22,12 +22,12 @@ exports[`DataTable Aktiivisen sarakkeen nimen uudelleen klikkaaminen kääntää
           <span
             class="table__sortindicator table__sortindicator--visible"
           >
-            <i
+            <span
               aria-hidden="true"
               class="material-icons icon icon--inline"
             >
               arrow_drop_up
-            </i>
+            </span>
           </span>
         </div>
       </th>
@@ -144,12 +144,12 @@ exports[`DataTable Renderöityy oikein 1`] = `
           <span
             class="table__sortindicator table__sortindicator--visible"
           >
-            <i
+            <span
               aria-hidden="true"
               class="material-icons icon icon--inline"
             >
               arrow_drop_down
-            </i>
+            </span>
           </span>
         </div>
       </th>
@@ -280,12 +280,12 @@ exports[`DataTable Toisen sarakkeen nimen klikkaaminen järjestää sen mukaises
           <span
             class="table__sortindicator table__sortindicator--visible"
           >
-            <i
+            <span
               aria-hidden="true"
               class="material-icons icon icon--inline"
             >
               arrow_drop_down
-            </i>
+            </span>
           </span>
         </div>
       </th>
