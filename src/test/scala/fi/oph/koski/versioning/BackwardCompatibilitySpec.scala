@@ -11,6 +11,7 @@ import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.deserializationContext
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Oppija}
+import fi.oph.koski.util.EnvVariables
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s.JValue
 import org.json4s.JsonAST.{JArray, JBool, JObject}
@@ -22,6 +23,7 @@ import org.scalatest.{FreeSpec, Matchers}
  */
 class BackwardCompatibilitySpec extends FreeSpec with Matchers with Logging with EnvVariables {
   private lazy val koskiValidator = KoskiApplicationForTests.validator
+  private lazy val runningOnCI = optEnv("CI").isDefined
   private implicit val user: KoskiSpecificSession = KoskiSpecificSession.systemUser
   private implicit val accessType: AccessType.Value = AccessType.read
 
@@ -44,7 +46,15 @@ class BackwardCompatibilitySpec extends FreeSpec with Matchers with Logging with
 
   private def filenameWithDate(exampleName: String): String = sanitize(exampleName) + "_" + LocalDate.now.toString + ".json"
 
-  private def writeNewVersion(example: Example): Unit = JsonFiles.writeFile(fullPath(filenameWithDate(example.name)), example.data)
+  private def writeNewVersion(example: Example): Unit = {
+    if (runningOnCI) {
+      throw new IllegalStateException(
+        s"Backwards compatibility data missing for example '${example.name}' while running on CI. " +
+          "Run BackwardCompatibilitySpec locally and commit the files first."
+      )
+    }
+    JsonFiles.writeFile(fullPath(filenameWithDate(example.name)), example.data)
+  }
 
   private def writeInitialVersion(example: Example): Unit = {
     logger.info(s"No example data found for ${example.name}. Creating initial version.")
