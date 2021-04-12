@@ -513,7 +513,7 @@ class KoskiValidator(
         :: Lukio2019OsasuoritusValidation.validate(suoritus, parent)
         :: Lukio2019VieraatKieletValidation.validate(suoritus, parent)
         :: Lukio2019ArvosanaValidation.validateOsasuoritus(suoritus)
-        :: validateLukioonValmistava2019(suoritus)
+        :: LukioonValmistavanKoulutuksenValidaatiot.validateLukioonValmistava2019(suoritus)
         :: HttpStatus.validate(!suoritus.isInstanceOf[PäätasonSuoritus])(validateDuplicates(suoritus.osasuoritukset.toList.flatten))
         :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, suoritus :: parent))
     )
@@ -1124,23 +1124,5 @@ class KoskiValidator(
           .forall(hankkimistapa => List("koulutussopimus", "oppilaitosmuotoinenkoulutus").contains(hankkimistapa.tunniste.koodiarvo))
       )(KoskiErrorCategory.badRequest.validation.rakenne.deprekoituOsaamisenHankkimistapa())
     case _ => HttpStatus.ok
-  }
-
-  private def validateLukioonValmistava2019(suoritus: Suoritus) = {
-    suoritus match {
-      case s: LukioonValmistavanKoulutuksenSuoritus => validateLukioonValmistava2019Osasuoritukset(s)
-      case _ => HttpStatus.ok
-    }
-  }
-
-  private def validateLukioonValmistava2019Osasuoritukset(suoritus: LukioonValmistavanKoulutuksenSuoritus) = {
-    if (suoritus.osasuoritukset.getOrElse(List()).exists(_.isInstanceOf[LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa2019]) &&
-      suoritus.osasuoritukset.getOrElse(List()).exists(_.isInstanceOf[LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa]))
-    {
-      KoskiErrorCategory.badRequest.validation.rakenne.lukioonValmistavassaEriLukioOpsienOsasuorituksia()
-    }
-    else {
-      HttpStatus.ok
-    }
   }
 }

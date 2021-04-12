@@ -89,12 +89,6 @@ object ExamplesLukioonValmistavaKoulutus {
     ))
   )
 
-  /*
-  oppiaineenSuoritus(lukionKieli2019("AOM", "SV")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
-      moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUA4").copy(laajuus = laajuus(1))).copy(arviointi = numeerinenArviointi(7))
-    )))
-   */
-
   val lukioonValmistavanKoulutuksenOpiskeluoikeus = LukioonValmistavanKoulutuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
     koulutustoimija = None,
