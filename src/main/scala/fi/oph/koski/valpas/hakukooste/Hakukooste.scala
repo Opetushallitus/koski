@@ -3,6 +3,8 @@ package fi.oph.koski.valpas.hakukooste
 import fi.oph.koski.schema.annotation.{EnumValues, KoodistoKoodiarvo, KoodistoUri}
 import fi.oph.koski.schema.{BlankableLocalizedString, Koodistokoodiviite}
 import fi.oph.koski.valpas.repository.{ValpasHakutilanneLaajatTiedot, ValpasHakutoive, ValpasHenkilö}
+import fi.oph.scalaschema.annotation.SyntheticProperty
+
 import java.time.LocalDateTime
 
 
@@ -12,22 +14,10 @@ case class Hakukooste(
   aktiivinenHaku: Option[Boolean],
   hakemusOid: ValpasHakutilanneLaajatTiedot.HakemusOid,
   hakemusUrl: String,
-
   @KoodistoUri("hakutapa")
-  // TODO: Koodiston lataus koskeen
-  @KoodistoKoodiarvo("01") // Yhteishaku
-  @KoodistoKoodiarvo("02") // Erillishaku
-  @KoodistoKoodiarvo("03") // Jatkuva haku
-  @KoodistoKoodiarvo("04") // Joustava haku
   hakutapa: Koodistokoodiviite,
-
   @KoodistoUri("hakutyyppi")
-  // TODO: Koodiston lataus koskeen
-  @KoodistoKoodiarvo("01") // Varsinainen haku
-  @KoodistoKoodiarvo("02") // täydennyshaku
-  @KoodistoKoodiarvo("03") // lisähaku
   hakutyyppi: Koodistokoodiviite,
-
   haunAlkamispaivamaara: LocalDateTime,
   hakuNimi: BlankableLocalizedString,
   email: String,
@@ -57,9 +47,12 @@ case class Hakutoive(
   vastaanottotieto: Option[String],
   @EnumValues(Ilmoittautumistila.values)
   ilmoittautumistila: Option[String],
-  harkinnanvaraisuus: Option[String], // TODO: Arvot?
-  hakukohdeKoulutuskoodi: String // TODO: Arvot?
+  harkinnanvaraisuus: Option[String],
+  // TODO: hakukohdeKoulutuskoodi muuttuu merkkijonosta koodistoarvoksi, kytketty väliaikaisesti pois, ettei hajota parsintaa
+  // hakukohdeKoulutuskoodi: Koodistokoodiviite
 ) {
+  @SyntheticProperty
+  def onHakenutHarkinnanvaraisesti = harkinnanvaraisuus.isDefined
 }
 
 object Vastaanottotieto {

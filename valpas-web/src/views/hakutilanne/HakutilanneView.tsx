@@ -13,6 +13,7 @@ import { Spinner } from "../../components/icons/Spinner"
 import { Counter } from "../../components/typography/Counter"
 import { getLocalized, t, T } from "../../i18n/i18n"
 import { useBasePath } from "../../state/basePath"
+import { valvottavatOpiskeluoikeudet } from "../../state/oppijat"
 import {
   createHakutilannePathWithOrg,
   HakutilanneViewRouteProps,
@@ -22,7 +23,6 @@ import {
   OrganisaatioHierarkia,
   OrganisaatioJaKayttooikeusrooli,
 } from "../../state/types"
-import { currentYear } from "../../utils/date"
 import { ErrorView } from "../ErrorView"
 import { HakutilanneTable } from "./HakutilanneTable"
 import "./HakutilanneView.less"
@@ -81,16 +81,16 @@ export const HakutilanneView = (props: HakutilanneViewProps) => {
       <VirkailijaNavigation />
       <Card>
         <CardHeader>
-          <T
-            id="perusopetusnäkymä__otsikko"
-            params={{ vuosi: currentYear() }}
-          />
+          <T id="hakutilannenäkymä__otsikko" />
           {isSuccess(oppijatFetch) && (
             <Counter>
               {
                 A.flatten(
-                  oppijatFetch.data.map(
-                    (d) => d.oppija.valvottavatOpiskeluoikeudet
+                  oppijatFetch.data.map((d) =>
+                    valvottavatOpiskeluoikeudet(
+                      organisaatioOid,
+                      d.oppija.opiskeluoikeudet
+                    )
                   )
                 ).length
               }
