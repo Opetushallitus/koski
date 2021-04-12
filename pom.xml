@@ -722,7 +722,7 @@
               <dependency>
                 <groupId>com.beautiful-scala</groupId>
                 <artifactId>scalastyle_2.12</artifactId>
-                <version>1.4.0</version>
+                <version>1.5.0</version>
               </dependency>
             </dependencies>
             <configuration>
