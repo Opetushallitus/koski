@@ -34,3 +34,4 @@ elastic-data
 fact_cache
 scripts/deploy.retry
 valpas-web/dist
+valpas-web/node/
