@@ -1,6 +1,6 @@
 package fi.oph.koski.raportointikanta
 
-import fi.oph.koski.cloudwatch.CloudWatchMetrics
+import fi.oph.koski.cloudwatch.CloudWatchMetricsService
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.RaportointiDatabaseConfig
 import fi.oph.koski.koskiuser.KoskiSpecificSession
@@ -12,6 +12,8 @@ import rx.lang.scala.{Observable, Scheduler}
 import scala.language.postfixOps
 
 class RaportointikantaService(application: KoskiApplication) extends Logging {
+  private val cloudWatchMetrics = CloudWatchMetricsService.apply(application.config)
+
   def loadRaportointikanta(force: Boolean, scheduler: Scheduler = defaultScheduler, onEnd: () => Unit = () => ()): Boolean = {
     if (isLoading && !force) {
       logger.info("Raportointikanta already loading, do nothing")
@@ -55,6 +57,13 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   def status: Map[String, RaportointikantaStatusResponse] =
     List(loadDatabase.status, raportointiDatabase.status).groupBy(_.schema).mapValues(_.head)
 
+  def putLoadTimeMetric(): Unit = {
+    cloudWatchMetrics.putRaportointikantaLoadtime(
+      raportointiDatabase.status.startedTime.get,
+      raportointiDatabase.status.completionTime.get
+    )
+  }
+
   private def startLoading(scheduler: Scheduler, onEnd: () => Unit) = {
     logger.info(s"Start loading raportointikanta into ${loadDatabase.schema.name}")
     loadOpiskeluoikeudet(loadDatabase)
@@ -70,10 +79,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
               EventBridgeEvent(raportointikantaGeneration, Map("event" -> "start-upload", "uploadTarget" -> "lampi")),
               EventBridgeEvent(raportointikantaGeneration, Map("event" -> "start-upload", "uploadTarget" -> "csc"))
             )
-            CloudWatchMetrics.putRaportointikantaLoadtime(
-              raportointiDatabase.status.startedTime.get,
-              raportointiDatabase.status.completionTime.get
-            )
+            putLoadTimeMetric()
             onEnd()
           } catch {
             case e: Throwable => {

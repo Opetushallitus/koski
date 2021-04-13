@@ -1,7 +1,6 @@
 package fi.oph.koski.schedule
 
 import java.time.Duration
-import fi.oph.koski.cloudwatch.CloudWatchMetrics
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.util.Timing
 import org.json4s.JValue
@@ -25,11 +24,5 @@ class SendRaportointikantaLoadTimeToCloudwatch(app: KoskiApplication) extends Ti
     None
   }
 
-  private def run(): Unit = {
-    CloudWatchMetrics.putRaportointikantaLoadtime(
-      raportointiDatabase.status.startedTime.get,
-      raportointiDatabase.status.completionTime.get
-    )
-  }
-  private lazy val raportointiDatabase = app.raportointiDatabase
+  private def run(): Unit = app.raportointikantaService.putLoadTimeMetric()
 }

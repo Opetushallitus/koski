@@ -14,6 +14,8 @@ object Environment {
   def isUsingLocalDevelopmentServices(app: KoskiApplication): Boolean =
     app.masterDatabase.isLocal && app.config.getString("opintopolku.virkailija.url") == "mock"
 
+  def isServerEnvironment(config: Config): Boolean = !Set(Local, UnitTest).contains(currentEnvironment(config))
+
   def usesAwsAppConfig: Boolean = {
     sys.env.getOrElse("CONFIG_SOURCE", "") == "appconfig"
   }
