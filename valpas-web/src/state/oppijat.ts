@@ -124,12 +124,7 @@ export type Hakutoive = {
   alinValintaPistemaara?: number
   valintatila?: KoodistoKoodiviite<
     "valpashaunvalintatila",
-    | "hyvaksytty"
-    | "hylatty"
-    | "varasijalla"
-    | "peruuntunut"
-    | "peruttu"
-    | "peruutettu"
+    HakutoiveValintatilakoodiarvo
   >
 }
 
@@ -204,8 +199,9 @@ export const Hakutoive = {
   isVarasijalla: (toive: Hakutoive) =>
     toive.valintatila?.koodiarvo === "varasijalla",
   isEiPaikkaa: (toive: Hakutoive) =>
-    toive.valintatila?.koodiarvo === undefined ||
-    !["hyvaksytty", "varasijalla"].includes(toive.valintatila.koodiarvo),
+    toive.valintatila?.koodiarvo === undefined
+      ? false
+      : !["hyvaksytty", "varasijalla"].includes(toive.valintatila.koodiarvo),
 }
 
 export const Yhteystiedot = {

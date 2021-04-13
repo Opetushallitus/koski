@@ -20,22 +20,22 @@ const clickOppija = (index: number) =>
 
 // HUOM: Tämä on sarkaimilla (\t) erotettu taulukko:
 const jklNormaalikouluTableContent = `
-  Epäonninen Valpas	30.10.2005	9C	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
-  Eroaja-myöhemmin Valpas	29.9.2005	9C	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
-  Kahdella-oppija-oidilla Valpas	15.2.2005	9C	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
-  KasiinAstiToisessaKoulussaOllut Valpas	17.8.2005	9C	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
-  Kotiopetus-menneisyydessä Valpas	6.2.2005	9C	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
-  LukionAloittanut Valpas	29.4.2005	9C	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
-  LukionLokakuussaAloittanut Valpas	18.4.2005	9C	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
-  LuokallejäänytYsiluokkalainen Valpas	2.8.2005	9A	2 hakua	Ei toteutettu	Ei toteutettu	Ei toteutettu
-  LuokallejäänytYsiluokkalainenJatkaa Valpas	6.2.2005	9B	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
-  LuokallejäänytYsiluokkalainenKouluvaihtoMuualta Valpas	2.11.2005	9B	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
-  Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas	22.11.2005	9C	Hakenut open_in_new	Ei toteutettu	Ei toteutettu	Ei toteutettu
-  Päällekkäisiä Oppivelvollisuuksia	6.6.2005	9B	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
-  Turvakielto Valpas	29.9.2004	9C	Hakenut open_in_new	Ei toteutettu	Ei toteutettu	Ei toteutettu
-  UseampiYsiluokkaSamassaKoulussa Valpas	25.8.2005	9D	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
-  UseampiYsiluokkaSamassaKoulussa Valpas	25.8.2005	9C	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
-  Ysiluokka-valmis-keväällä-2021 Valpas	19.6.2005	9C	Ei hakemusta	Ei toteutettu	Ei toteutettu	Ei toteutettu
+  Epäonninen Valpas	30.10.2005	9C	Ei hakemusta	–	Ei toteutettu	Ei toteutettu
+  Eroaja-myöhemmin Valpas	29.9.2005	9C	Ei hakemusta	–	Ei toteutettu	Ei toteutettu
+  Kahdella-oppija-oidilla Valpas	15.2.2005	9C	Hakenut open_in_new	Varasija	Ei toteutettu	Ei toteutettu
+  KasiinAstiToisessaKoulussaOllut Valpas	17.8.2005	9C	Ei hakemusta	–	Ei toteutettu	Ei toteutettu
+  Kotiopetus-menneisyydessä Valpas	6.2.2005	9C	Ei hakemusta	–	Ei toteutettu	Ei toteutettu
+  LukionAloittanut Valpas	29.4.2005	9C	Ei hakemusta	–	Ei toteutettu	Ei toteutettu
+  LukionLokakuussaAloittanut Valpas	18.4.2005	9C	Ei hakemusta	–	Ei toteutettu	Ei toteutettu
+  LuokallejäänytYsiluokkalainen Valpas	2.8.2005	9A	2 hakua	–	Ei toteutettu	Ei toteutettu
+  LuokallejäänytYsiluokkalainenJatkaa Valpas	6.2.2005	9B	Ei hakemusta	–	Ei toteutettu	Ei toteutettu
+  LuokallejäänytYsiluokkalainenKouluvaihtoMuualta Valpas	2.11.2005	9B	Ei hakemusta	–	Ei toteutettu	Ei toteutettu
+  Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas	22.11.2005	9C	Hakenut open_in_new	2. Helsingin medialukio	Ei toteutettu	Ei toteutettu
+  Päällekkäisiä Oppivelvollisuuksia	6.6.2005	9B	Hakenut open_in_new	Hyväksytty (2 hakukohdetta)	Ei toteutettu	Ei toteutettu
+  Turvakielto Valpas	29.9.2004	9C	Hakenut open_in_new	warningEi opiskelupaikkaa	Ei toteutettu	Ei toteutettu
+  UseampiYsiluokkaSamassaKoulussa Valpas	25.8.2005	9D	Ei hakemusta	–	Ei toteutettu	Ei toteutettu
+  UseampiYsiluokkaSamassaKoulussa Valpas	25.8.2005	9C	Ei hakemusta	–	Ei toteutettu	Ei toteutettu
+  Ysiluokka-valmis-keväällä-2021 Valpas	19.6.2005	9C	Ei hakemusta	–	Ei toteutettu	Ei toteutettu
 `
 
 const hakutilannePath = createHakutilannePathWithoutOrg("/virkailija")

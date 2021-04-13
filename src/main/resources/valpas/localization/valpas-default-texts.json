@@ -33,6 +33,7 @@
   "valintatieto__varasija": "Varasija",
   "valintatieto__hyväksytty": "Hyväksytty: {{hakukohde}}",
   "valintatieto__hakukohde_lc": "hakukohde",
+  "valintatieto__hyväksytty_n_hakutoivetta": "Hyväksytty ({{lukumäärä}} hakukohdetta)",
   "vastaanotettu__n_paikkaa": "{{lukumäärä}} paikkaa",
   "oppija__muut_oppijat": "Muut oppijat",
   "oppija__oletusotsikko": "Oppijan tiedot",

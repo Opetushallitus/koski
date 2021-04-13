@@ -1,9 +1,9 @@
 import bem from "bem-ts"
 import * as A from "fp-ts/lib/Array"
-import { eqString } from "fp-ts/lib/Eq"
 import { flip, pipe } from "fp-ts/lib/function"
 import * as O from "fp-ts/lib/Option"
 import * as Ord from "fp-ts/lib/Ord"
+import * as string from "fp-ts/lib/string"
 import React, { useMemo, useState } from "react"
 // import { update } from "../../utils/arrays"
 import { toFilterableString } from "../../utils/conversions"
@@ -37,7 +37,7 @@ export type Column = {
   label: React.ReactNode
   filter?: DataFilter
   size?: TableCellSize
-  indicatorSpace?: boolean
+  indicatorSpace?: true | false | "auto"
 }
 
 /** Represents a piece of table data - a row */
@@ -89,8 +89,8 @@ export const DataTable = (props: DataTableProps) => {
               props.data,
               A.map(selectValue(index)),
               A.map(toFilterableString),
-              A.uniq(eqString),
-              A.sortBy([Ord.ordString])
+              A.uniq(string.Eq),
+              A.sortBy([string.Ord])
             )
           : []
       ),
@@ -108,16 +108,27 @@ export const DataTable = (props: DataTableProps) => {
 
   const containsFilters = props.columns.some((col) => col.filter)
 
+  const columns = props.columns.map((column, colIndex) =>
+    column.indicatorSpace === "auto"
+      ? {
+          ...column,
+          indicatorSpace: filteredData.some(
+            (row) => row.values[colIndex]?.icon
+          ),
+        }
+      : column
+  )
+
   return (
     <Table className={props.className}>
       <TableHeader>
         {/* Label row */}
         <Row>
-          {props.columns.map((col, index) => (
+          {columns.map((col, index) => (
             <HeaderCell
               key={index}
               size={col.size}
-              indicatorSpace={col.indicatorSpace}
+              indicatorSpace={!!col.indicatorSpace}
               onClick={() => sortByColumn(index)}
               className={b("label")}
             >
@@ -135,8 +146,12 @@ export const DataTable = (props: DataTableProps) => {
         {/* Filter row */}
         {containsFilters && (
           <Row>
-            {props.columns.map((col, index) => (
-              <HeaderCell key={index} className={b("filter")}>
+            {columns.map((col, index) => (
+              <HeaderCell
+                key={index}
+                indicatorSpace={!!col.indicatorSpace}
+                className={b("filter")}
+              >
                 {col.filter && (
                   <DataTableFilter
                     type={col.filter}
@@ -159,13 +174,13 @@ export const DataTable = (props: DataTableProps) => {
         {sortedData.map((datum) => (
           <Row key={datum.key} data-row={datum.key}>
             {datum.values.map((value, index) => {
-              const column = props.columns[index]
+              const column = columns[index]
               return (
                 <Data
                   key={index}
                   icon={value.icon}
                   size={column?.size}
-                  indicatorSpace={column?.indicatorSpace}
+                  indicatorSpace={!!column?.indicatorSpace}
                   title={value.value?.toString()}
                 >
                   {value.display || value.value}
