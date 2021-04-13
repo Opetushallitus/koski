@@ -13,6 +13,7 @@ import scala.language.postfixOps
 
 class RaportointikantaService(application: KoskiApplication) extends Logging {
   private val cloudWatchMetrics = CloudWatchMetricsService.apply(application.config)
+  private val eventBridgeClient = KoskiEventBridgeClient.apply(application.config)
 
   def loadRaportointikanta(force: Boolean, scheduler: Scheduler = defaultScheduler, onEnd: () => Unit = () => ()): Boolean = {
     if (isLoading && !force) {
@@ -57,6 +58,13 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   def status: Map[String, RaportointikantaStatusResponse] =
     List(loadDatabase.status, raportointiDatabase.status).groupBy(_.schema).mapValues(_.head)
 
+  def putUploadEvents(): Unit = {
+    eventBridgeClient.putEvents(
+      EventBridgeEvent(raportointikantaGeneration, Map("event" -> "start-upload", "uploadTarget" -> "lampi")),
+      EventBridgeEvent(raportointikantaGeneration, Map("event" -> "start-upload", "uploadTarget" -> "csc"))
+    )
+  }
+
   def putLoadTimeMetric(): Unit = {
     cloudWatchMetrics.putRaportointikantaLoadtime(
       raportointiDatabase.status.startedTime.get,
@@ -75,10 +83,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
           //Without try-catch, in case of an exception the process just silently halts, this is a feature of java.util.concurrent.Executors
           try {
             loadRestAndSwap()
-            KoskiEventBridgeClient.putEvents(
-              EventBridgeEvent(raportointikantaGeneration, Map("event" -> "start-upload", "uploadTarget" -> "lampi")),
-              EventBridgeEvent(raportointikantaGeneration, Map("event" -> "start-upload", "uploadTarget" -> "csc"))
-            )
+            putUploadEvents()
             putLoadTimeMetric()
             onEnd()
           } catch {
