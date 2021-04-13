@@ -219,9 +219,7 @@ const valintatila = (haut: HakuSuppeatTiedot[]): Value | null => {
 const hyväksyttyValintatila = (
   hyväksytytHakutoiveet: NonEmptyArray<Hakutoive>
 ): Value => {
-  const [hakutoive] = hyväksytytHakutoiveet
-
-  if (hyväksytytHakutoiveet.length === 1) {
+  const buildHyväksyttyValue = (hakutoive: Hakutoive) => {
     const buildValue = (hakukohde: string) =>
       hakutoive.hakutoivenumero
         ? `${hakutoive.hakutoivenumero}. ${hakukohde}`
@@ -235,9 +233,16 @@ const hyväksyttyValintatila = (
     }
   }
 
+  if (hyväksytytHakutoiveet.length === 1) {
+    return buildHyväksyttyValue(hyväksytytHakutoiveet[0])
+  }
+
   return {
     value: t("valintatieto__hyväksytty_n_hakutoivetta", {
       lukumäärä: hyväksytytHakutoiveet.length,
     }),
+    filterValues: hyväksytytHakutoiveet.map(
+      (hakutoive) => buildHyväksyttyValue(hakutoive).value
+    ),
   }
 }

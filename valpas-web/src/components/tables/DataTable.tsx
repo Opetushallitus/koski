@@ -1,6 +1,7 @@
 import bem from "bem-ts"
 import * as A from "fp-ts/lib/Array"
 import { flip, pipe } from "fp-ts/lib/function"
+import * as number from "fp-ts/lib/number"
 import * as O from "fp-ts/lib/Option"
 import * as Ord from "fp-ts/lib/Ord"
 import * as string from "fp-ts/lib/string"
@@ -55,6 +56,7 @@ export type Value = {
   display?: string | number | React.ReactNode
   /** Icon alongside the value */
   icon?: React.ReactNode
+  filterValues?: Array<string | number>
 }
 
 export const DataTable = (props: DataTableProps) => {
@@ -66,10 +68,16 @@ export const DataTable = (props: DataTableProps) => {
 
   const filteredData = useMemo(
     () =>
+      // TODO: Tän sotkun vois kirjoittaa kauniimmaksi
       props.data.filter((datum) =>
         filters.every(
           (filter, index) =>
-            !filter || filter(toFilterableString(datum.values[index]?.value))
+            !filter ||
+            (datum.values[index]?.filterValues
+              ? datum.values[index]?.filterValues?.some((fv) =>
+                  filter(toFilterableString(fv))
+                )
+              : filter(toFilterableString(datum.values[index]?.value)))
         )
       ),
     [filters, props.data]
@@ -87,7 +95,7 @@ export const DataTable = (props: DataTableProps) => {
         dataFilterUsesValueList(col.filter)
           ? pipe(
               props.data,
-              A.map(selectValue(index)),
+              A.chain(selectFilterValues(index)),
               A.map(toFilterableString),
               A.uniq(string.Eq),
               A.sortBy([string.Ord])
@@ -211,12 +219,17 @@ const compareDatum = (index: number) => (a: Datum, b: Datum) => {
   const av = valueOf(a)
   const bv = valueOf(b)
   if (typeof av === "string" && typeof bv === "string") {
-    return Ord.ordString.compare(av, bv)
+    return string.Ord.compare(av, bv)
   } else if (typeof av === "number" && typeof bv === "number") {
-    return Ord.ordNumber.compare(av, bv)
+    return number.Ord.compare(av, bv)
   }
   return 0
 }
 
 const selectValue = (index: number) => (datum: Datum) =>
   datum.values[index]?.value
+
+const selectFilterValues = (index: number) => (datum: Datum) => {
+  const item = datum.values[index]
+  return item?.filterValues || (item?.value ? [item.value] : [])
+}
