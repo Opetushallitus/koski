@@ -54,4 +54,10 @@ case class VirtaOpiskeluoikeusRepository(
 
 private[virta] case class VirtaCacheKey(hetut: List[String], oidit: List[String]) extends NotLoggable
 
-object MockVirtaOpiskeluoikeusRepository extends VirtaOpiskeluoikeusRepository(MockVirtaClient(KoskiApplication.defaultConfig), MockOppilaitosRepository, MockKoodistoViitePalvelu, MockOrganisaatioRepository, SkipAccessCheck)(GlobalCacheManager)
+object MockVirtaOpiskeluoikeusRepository extends VirtaOpiskeluoikeusRepository(
+  MockVirtaClient(KoskiApplication.defaultConfig),
+  MockOppilaitosRepository,
+  MockKoodistoViitePalvelu,
+  MockOrganisaatioRepository,
+  SkipAccessCheck
+)(GlobalCacheManager)
