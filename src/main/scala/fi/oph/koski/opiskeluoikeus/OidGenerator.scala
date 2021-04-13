@@ -1,11 +1,12 @@
 package fi.oph.koski.opiskeluoikeus
 
 import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.vm.sade.oidgenerator.OIDGenerator.generateOID
 
 object OidGenerator {
-  def apply(config: Config): OidGenerator = if (config.hasPath("mockoidgenerator") && config.getBoolean("mockoidgenerator")) {
+  def apply(config: Config): OidGenerator = if (Environment.isUnitTestEnvironment(config)) {
     new MockOidGenerator
   } else {
     new OidGenerator

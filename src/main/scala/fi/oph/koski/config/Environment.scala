@@ -7,6 +7,8 @@ object Environment {
   val Local = "local"
   val UnitTest = "unittest"
 
+  def isUnitTestEnvironment(config: Config): Boolean = currentEnvironment(config) == UnitTest
+
   def isLocalDevelopmentEnvironment: Boolean = Files.exists("Makefile")
 
   def isUsingLocalDevelopmentServices(app: KoskiApplication): Boolean =
