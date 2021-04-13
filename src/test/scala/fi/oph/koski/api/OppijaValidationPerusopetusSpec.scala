@@ -2,6 +2,7 @@ package fi.oph.koski.api
 
 import java.time.LocalDate
 
+import fi.oph.koski.documentation.ExampleData.vahvistusPaikkakunnalla
 import fi.oph.koski.documentation.OsaAikainenErityisopetusExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData.{suoritus, _}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -287,6 +288,64 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         "Sallitaan aina arvosana O" in {
           val opinto_ohjaus_O = suoritus(oppiaine("OP")).copy(arviointi = osallistunut)
           putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(opinto_ohjaus_O)))))) {
+            verifyResponseStatusOk()
+          }
+        }
+      }
+    }
+  }
+
+  "Laajuus" - {
+    def verify[A](päätasonSuoritus: PerusopetuksenPäätasonSuoritus)(fn: => A): A = {
+      val pakollinenEiLaajuutta = suoritus(oppiaine("GE").copy(pakollinen = true, laajuus = None)).copy(arviointi = arviointi(9))
+      putOpiskeluoikeus(defaultOpiskeluoikeus.withSuoritukset(List(päätasonSuoritus.withOsasuoritukset(Some(List(pakollinenEiLaajuutta)))))) {
+        fn
+      }
+    }
+
+    "Suorituksen vahvistuspäivä on 1.8.2020 tai sen jälkeen" - {
+      "Vuosiluokan suoritus" - {
+        "Pakollisilla oppiaineille tulee olla laajuus > 0" in {
+          verify(seitsemännenLuokanSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 8, 1)))) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu("Oppiaineen koskioppiaineetyleissivistava/GE laajuus puuttuu"))
+          }
+        }
+      }
+      "Päättötodistus" - {
+        "Pakollisilla oppiaineille tulee olla laajuus > 0" in {
+          verify(päättötodistusSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 8, 1)))) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu("Oppiaineen koskioppiaineetyleissivistava/GE laajuus puuttuu"))
+          }
+        }
+      }
+    }
+    "Suorituksen vahvistuspäivä on ennen 1.8.2020" - {
+      "Vuosiluokan suoritus" - {
+        "Laajuutta ei vaadita pakollisilta oppiaineilta" in {
+          verify(seitsemännenLuokanSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 7, 31)))) {
+            verifyResponseStatusOk()
+          }
+        }
+      }
+      "Päättötodistus" - {
+        "Laajuutta ei vaadita pakollisilta oppiaineilta" in {
+          verify(päättötodistusSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 7, 31)))) {
+            verifyResponseStatusOk()
+          }
+        }
+      }
+    }
+    "Suorituksella ei ole vahvistuspäivää" - {
+      "Vuosiluokan suoritus" - {
+        "Laajuutta ei vaadita pakollisilta oppiaineilta" in {
+          verify(seitsemännenLuokanSuoritus.copy(vahvistus = None)) {
+            verifyResponseStatusOk()
+          }
+        }
+      }
+      "Päättötodistus" - {
+        "Laajuutta ei vaadita pakollisilta oppiaineilta" in {
+          verify(päättötodistusSuoritus.copy(vahvistus = None)) {
             verifyResponseStatusOk()
           }
         }

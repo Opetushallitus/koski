@@ -41,7 +41,7 @@ describe('Kela', function () {
     })
 
     it('Kaikkien osasuoritusten yhteislaajuus', function () {
-      expect(extractAsText(S('.yhteislaajuus'))).to.include('Yhteislaajuus 6.5 vuosiviikkotuntia')
+      expect(extractAsText(S('.yhteislaajuus'))).to.include('Yhteislaajuus 23.5 vuosiviikkotuntia')
     })
 
     describe('Valitaan toinen päätason suoritus', function () {

@@ -49,6 +49,33 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
       }
     }
 
+    "Ei näytetä laajuuksia kun päätason suorituksen arviointipäivä on 31.7.2020 tai ennen" in {
+      withAdditionalSuoritukset(KoskiSpecificMockOppijat.ysiluokkalainen, List(seitsemännenLuokanSuoritusLaajuudet_ennen_1_8_2020)) {
+        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2019, 8, 15), vuosiluokka = "7")
+        val oppijaOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ysiluokkalainen.oid).oid.get
+        val rivi = result.find(_.opiskeluoikeusOid == oppijaOpiskeluoikeusOid)
+
+        rivi.get.aidinkieli should equal("9")
+        rivi.get.kieliA2 should equal("Oppiaine puuttuu")
+        rivi.get.biologia should equal("9*")
+        rivi.get.uskonto should equal("10")
+      }
+    }
+
+    "Näytetään laajuudet kun päätason suorituksen arviointipäivä on 1.8.2020 tai jälkeen" in {
+      withAdditionalSuoritukset(KoskiSpecificMockOppijat.ysiluokkalainen, List(seitsemännenLuokanSuoritusLaajuudet_jälkeen_1_8_2020)) {
+        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2020, 8, 1), vuosiluokka = "7")
+        val oppijaOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ysiluokkalainen.oid).oid.get
+        val rivi = result.find(_.opiskeluoikeusOid == oppijaOpiskeluoikeusOid)
+
+        rivi.get.aidinkieli should equal("9 1.0")
+        rivi.get.kieliA2 should equal("Oppiaine puuttuu")
+        rivi.get.biologia should equal("9* 1.0")
+        rivi.get.uskonto should equal("10 1.0")
+      }
+    }
+
+
     "Monta saman vuosiluokan suoritusta eritellään omiksi riveiksi" in {
       withAdditionalSuoritukset(KoskiSpecificMockOppijat.ysiluokkalainen, List(kahdeksannenLuokanLuokalleJääntiSuoritus.copy(luokka = "8C"))) {
         val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2014, 8, 15), vuosiluokka = "8")
