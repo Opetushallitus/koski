@@ -10,6 +10,7 @@ import fi.oph.koski.validation.{ValidatingAndResolvingExtractor, ValidationAndRe
 import fi.oph.koski.valpas.ValpasOppijaService.ValpasOppijaRowConversionOps
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, ValpasHakukoosteService}
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessage, ValpasOperation}
+import fi.oph.koski.valpas.oppivelvollisuusrekisteri.{ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusSuppeatTiedot}
 import fi.oph.koski.valpas.repository._
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
@@ -17,7 +18,8 @@ case class OppijaHakutilanteillaLaajatTiedot(
   oppija: ValpasOppijaLaajatTiedot,
   hakutilanteet: Seq[ValpasHakutilanneLaajatTiedot],
   hakutilanneError: Option[String],
-  yhteystiedot: Seq[ValpasYhteystiedot]
+  yhteystiedot: Seq[ValpasYhteystiedot],
+  kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot]
 )
 
 object OppijaHakutilanteillaLaajatTiedot {
@@ -27,7 +29,8 @@ object OppijaHakutilanteillaLaajatTiedot {
       hakutilanteet = haut.map(_.map(ValpasHakutilanneLaajatTiedot.apply)).getOrElse(Seq()),
       // TODO: Pitäisikö virheet mankeloida jotenkin eikä palauttaa sellaisenaan fronttiin?
       hakutilanneError = haut.left.toOption.flatMap(_.errorString),
-      yhteystiedot = Seq.empty
+      yhteystiedot = Seq.empty,
+      kuntailmoitukset = Seq.empty
     )
   }
 }
@@ -35,7 +38,8 @@ object OppijaHakutilanteillaLaajatTiedot {
 case class OppijaHakutilanteillaSuppeatTiedot(
   oppija: ValpasOppijaSuppeatTiedot,
   hakutilanteet: Seq[ValpasHakutilanneSuppeatTiedot],
-  hakutilanneError: Option[String]
+  hakutilanneError: Option[String],
+  kuntailmoitukset: Seq[ValpasKuntailmoitusSuppeatTiedot]
 )
 
 object OppijaHakutilanteillaSuppeatTiedot {
@@ -43,7 +47,8 @@ object OppijaHakutilanteillaSuppeatTiedot {
     OppijaHakutilanteillaSuppeatTiedot(
       ValpasOppijaSuppeatTiedot(laajatTiedot.oppija),
       laajatTiedot.hakutilanteet.map(ValpasHakutilanneSuppeatTiedot.apply),
-      laajatTiedot.hakutilanneError
+      laajatTiedot.hakutilanneError,
+      laajatTiedot.kuntailmoitukset.map(ValpasKuntailmoitusSuppeatTiedot.apply)
     )
   }
 }
