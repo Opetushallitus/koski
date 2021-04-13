@@ -1,5 +1,6 @@
 package fi.oph.koski.raportointikanta
 
+import com.typesafe.config.Config
 import fi.oph.koski.config.Environment
 import fi.oph.koski.json.LegacyJsonSerialization
 import fi.oph.koski.log.Logging
@@ -10,17 +11,29 @@ import software.amazon.awssdk.services.eventbridge.EventBridgeClient
 import scala.collection.JavaConverters._
 
 object KoskiEventBridgeClient extends Logging {
-  private lazy val client = EventBridgeClient.create()
-
-  def putEvents(events: EventBridgeEvent*): Unit = {
-    if (Environment.isLocalDevelopmentEnvironment) {
-      logger.info(s"Mocking event creation: ${events.map(_.toString).mkString(", ")}")
+  def apply(config: Config): KoskiEventBridgeClient = {
+    if (Environment.isServerEnvironment(config)) {
+      new AwsEventBridgeClient
     } else {
-      putEventsToAWS(events)
+      new MockEventBridgeClient
     }
   }
+}
 
-  private def putEventsToAWS(events: Seq[EventBridgeEvent]) = {
+trait KoskiEventBridgeClient {
+  def putEvents(events: EventBridgeEvent*): Unit
+}
+
+class MockEventBridgeClient extends KoskiEventBridgeClient with Logging {
+  override def putEvents(events: EventBridgeEvent*): Unit = {
+    logger.info(s"Mocking event creation: ${events.map(_.toString).mkString(", ")}")
+  }
+}
+
+class AwsEventBridgeClient extends KoskiEventBridgeClient {
+  private val client = EventBridgeClient.create()
+
+  override def putEvents(events: EventBridgeEvent*): Unit = {
     val entries = events.map(e =>
       PutEventsRequestEntry.builder()
         .source("fi.oph.koski")
