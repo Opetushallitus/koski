@@ -513,6 +513,7 @@ class KoskiValidator(
         :: Lukio2019OsasuoritusValidation.validate(suoritus, parent)
         :: Lukio2019VieraatKieletValidation.validate(suoritus, parent)
         :: Lukio2019ArvosanaValidation.validateOsasuoritus(suoritus)
+        :: LukioonValmistavanKoulutuksenValidaatiot.validateLukioonValmistava2019(suoritus)
         :: HttpStatus.validate(!suoritus.isInstanceOf[PäätasonSuoritus])(validateDuplicates(suoritus.osasuoritukset.toList.flatten))
         :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, suoritus :: parent))
     )

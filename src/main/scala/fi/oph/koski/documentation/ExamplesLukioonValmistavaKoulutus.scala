@@ -1,8 +1,8 @@
 package fi.oph.koski.documentation
 
 import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.documentation.ExampleData._
+import fi.oph.koski.documentation.Lukio2019ExampleData.{lukionKieli2019, moduulinSuoritusOppiaineissa, numeerinenArviointi, numeerinenLukionOppiaineenArviointi, vieraanKielenModuuliOppiaineissa}
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -64,7 +64,26 @@ object ExamplesLukioonValmistavaKoulutus {
         lukionKieli("A1", "EN"),
         arviointi = arviointi("S"),
         osasuoritukset = Some(List(
-          kurssisuoritus(valtakunnallinenKurssi("ENA1")).copy(arviointi = numeerinenArviointi(8))
+          kurssisuoritus(valtakunnallinenKurssi("ENA1")).copy(arviointi = LukioExampleData.numeerinenArviointi(8))
+        ))
+      )
+    ))
+  )
+
+  val lukioonValmistavanKoulutuksenSuoritus2019 = lukioonValmistavanKoulutuksenSuoritus.copy(
+    osasuoritukset = Some(List(
+      LukioonValmistavanKoulutuksenOppiaineenSuoritus(
+        PaikallinenLukioonValmistavanKoulutuksenOppiaine(PaikallinenKoodi("LVATK", "Tietojenkäsittely"), "Tietojenkäsittely", pakollinen = false),
+        arviointi = arviointi("S"),
+        osasuoritukset = Some(List(
+          luvaKurssinSuoritus(paikallinenLuvaKurssi("ATK1", "Tietokoneen käytön peruskurssi", "Kurssilla opiskellaan tietokoneen, toimisto-ohjelmien sekä internetin ja sähköpostin peruskäyttöä."))
+        ))
+      ),
+      LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa2019(
+        lukionKieli2019("AOM", "SV"),
+        arviointi = numeerinenLukionOppiaineenArviointi(9),
+        osasuoritukset = Some(List(
+          moduulinSuoritusOppiaineissa(vieraanKielenModuuliOppiaineissa("RUA4").copy(laajuus = laajuus2019(1))).copy(arviointi = numeerinenArviointi(7))
         ))
       )
     ))
@@ -87,13 +106,28 @@ object ExamplesLukioonValmistavaKoulutus {
     ))
   )
 
+  val lukioonValmistavanKoulutuksenOpiskeluoikeus2019 = lukioonValmistavanKoulutuksenOpiskeluoikeus.copy(
+    suoritukset = List(lukioonValmistavanKoulutuksenSuoritus2019),
+  )
+
   val luvaTodistus = Oppija(
     asUusiOppija(KoskiSpecificMockOppijat.luva),
     List(
       lukioonValmistavanKoulutuksenOpiskeluoikeus
     )
   )
-  val examples = List(Example("lukioon valmistava koulutus", "Oppija on suorittanut lukioon valmistavan koulutuksen (LUVA)", luvaTodistus, 200))
+
+  val luvaTodistus2019 = Oppija(
+    asUusiOppija(KoskiSpecificMockOppijat.luva2019),
+    List(
+      lukioonValmistavanKoulutuksenOpiskeluoikeus2019
+    )
+  )
+
+  val examples = List(
+    Example("lukioon valmistava koulutus", "Oppija on suorittanut lukioon valmistavan koulutuksen (LUVA)", luvaTodistus, 200),
+    Example("lukioon valmistava koulutus, Lukion 2019-opsilla", "Oppija on suorittanut lukioon valmistavan koulutuksen (LUVA). Mukana lukion 2019 opsin mukaisia osasuorituksia.", luvaTodistus2019, 200)
+  )
 
   private def luvaKurssinSuoritus(kurssi: LukioonValmistavanKoulutuksenKurssi) = LukioonValmistavanKurssinSuoritus(
     koulutusmoduuli = kurssi,
@@ -105,4 +139,6 @@ object ExamplesLukioonValmistavaKoulutus {
 
   private def paikallinenLuvaKurssi(koodi: String, nimi: String, kuvaus: String) =
     PaikallinenLukioonValmistavanKoulutuksenKurssi(PaikallinenKoodi(koodi, LocalizedString.finnish(nimi)), Some(laajuus(1.0f)), LocalizedString.finnish(kuvaus))
+
+  def laajuus2019(arvo: Double): LaajuusOpintopisteissä = LaajuusOpintopisteissä(arvo = arvo, yksikkö = laajuusOpintopisteissä)
 }
