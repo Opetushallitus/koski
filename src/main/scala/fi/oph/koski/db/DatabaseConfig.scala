@@ -2,8 +2,8 @@ package fi.oph.koski.db
 
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigValueFactory._
-import fi.oph.koski.config.{Environment, SecretsManager}
-import fi.oph.koski.log.NotLoggable
+import fi.oph.koski.config.{Environment, FluentConfig, SecretsManager}
+import fi.oph.koski.log.{Logging, NotLoggable}
 import fi.oph.koski.raportointikanta.Schema
 import slick.jdbc.PostgresProfile
 
@@ -46,7 +46,7 @@ class ValpasDatabaseConfig(val rootConfig: Config) extends DatabaseConfig {
   override protected def databaseSpecificConfig: Config = rootConfig.getConfig("dbs.valpas")
 }
 
-trait DatabaseConfig extends NotLoggable {
+trait DatabaseConfig extends NotLoggable with Logging {
   protected val rootConfig: Config
   protected val envVarForSecretId: String
 
@@ -73,8 +73,20 @@ trait DatabaseConfig extends NotLoggable {
     }
   }
 
+  private final def configWithTestDb(config: Config): Config = {
+    if (Environment.isUnitTestEnvironment(rootConfig)) {
+      val postfix = "_test"
+      config.withValue("name", fromAnyRef(config.getString("name") + postfix))
+    } else {
+      config
+    }
+  }
+
   protected def makeConfig(): Config = {
-    configWithSecrets(databaseSpecificConfig.withFallback(sharedConfig))
+    databaseSpecificConfig
+      .withFallback(sharedConfig)
+      .andThen(configWithSecrets)
+      .andThen(configWithTestDb)
   }
 
   private final def configForSlick(): Config = {
@@ -93,9 +105,13 @@ trait DatabaseConfig extends NotLoggable {
   private final lazy val config: Config = makeConfig()
 
   final def host: String = config.getString("host")
+
   final def port: Int = config.getInt("port")
+
   final def dbname: String = config.getString("name")
+
   final def user: String = config.getString("user")
+
   final def password: String = config.getString("password")
 
   final def url(useSecretsManagerProtocol: Boolean): String = {
@@ -109,5 +125,8 @@ trait DatabaseConfig extends NotLoggable {
 
   final def isLocal: Boolean = host == "localhost" && !useSecretsManager
 
-  final def toSlickDatabase: DB = PostgresProfile.api.Database.forConfig("", configForSlick())
+  final def toSlickDatabase: DB = {
+    logger.info(s"Using database $dbname")
+    PostgresProfile.api.Database.forConfig("", configForSlick())
+  }
 }

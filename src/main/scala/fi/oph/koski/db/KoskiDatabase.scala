@@ -49,10 +49,10 @@ class KoskiDatabase(config: DatabaseConfig, isReplica: Boolean) extends Logging 
   val util: DatabaseUtilQueries = DatabaseUtilQueries(db)
 
   if (!isReplica) {
-    migrateSchema
+    migrateSchema()
   }
 
-  private def migrateSchema: Unit = {
+  private def migrateSchema(): Unit = {
     if (config.isLocal && util.databaseIsLarge) {
       // Prevent running migrations against a (large) remote database when running locally
       logger.error("Migration not allowed with a large database in local development environment")
