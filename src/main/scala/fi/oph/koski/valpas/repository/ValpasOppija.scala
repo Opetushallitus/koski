@@ -205,6 +205,7 @@ object ValpasHakutilanneSuppeatTiedot {
       laajatTiedot.hakemusOid,
       laajatTiedot.hakemusUrl,
       laajatTiedot.aktiivinenHaku,
+      laajatTiedot.hakutoiveet.map(ValpasSuppeaHakutoive.apply),
     )
   }
 }
@@ -215,6 +216,7 @@ case class ValpasHakutilanneSuppeatTiedot(
   hakemusOid: String,
   hakemusUrl: String,
   aktiivinenHaku: Boolean,
+  hakutoiveet: Seq[ValpasSuppeaHakutoive],
 ) extends ValpasHakutilanne
 
 object ValpasHakutoive {
@@ -240,6 +242,21 @@ case class ValpasHakutoive(
   hakutoivenumero: Option[Int],
   pisteet: Option[BigDecimal],
   alinValintaPistemaara: Option[BigDecimal],
+  @KoodistoUri("valpashaunvalintatila")
+  valintatila: Option[Koodistokoodiviite],
+)
+
+object ValpasSuppeaHakutoive {
+  def apply(hakutoive: ValpasHakutoive): ValpasSuppeaHakutoive = ValpasSuppeaHakutoive(
+    organisaatioNimi = hakutoive.organisaatioNimi,
+    hakutoivenumero = hakutoive.hakutoivenumero,
+    valintatila = hakutoive.valintatila,
+  )
+}
+
+case class ValpasSuppeaHakutoive(
+  organisaatioNimi: Option[LocalizedString],
+  hakutoivenumero: Option[Int],
   @KoodistoUri("valpashaunvalintatila")
   valintatila: Option[Koodistokoodiviite],
 )
