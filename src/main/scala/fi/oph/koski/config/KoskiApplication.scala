@@ -46,7 +46,9 @@ object KoskiApplication {
   def apply(config: Config): KoskiApplication = new KoskiApplication(config)
 }
 
-class KoskiApplication(val config: Config, implicit val cacheManager: CacheManager = new CacheManager) extends Logging with UserAuthenticationContext with GlobalExecutionContext {
+class KoskiApplication(val config: Config, implicit val cacheManager: CacheManager = new CacheManager)
+  extends Logging with UserAuthenticationContext with GlobalExecutionContext {
+
   lazy val runMode = RunMode.get
   lazy val organisaatioRepository = OrganisaatioRepository(config, koodistoViitePalvelu)
   lazy val organisaatioService = new OrganisaatioService(this)
