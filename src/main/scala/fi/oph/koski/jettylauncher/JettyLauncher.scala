@@ -154,8 +154,6 @@ object TestConfig {
     """
       |db.name = koskitest
       |fixtures.use = true
-      |authenticationFailed.initialDelay = 1s
-      |authenticationFailed.resetAfter = 1s
       |mockoidgenerator = true
     """.stripMargin)
 }
