@@ -54,5 +54,33 @@
     ],
     "versio": 1,
     "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpashaunvalintatila_peruttu",
+    "koodiArvo": "peruttu",
+    "metadata": [
+      {
+        "nimi": "Peruttu",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpashaunvalintatila_peruutettu",
+    "koodiArvo": "peruutettu",
+    "metadata": [
+      {
+        "nimi": "Peruutettu",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
   }
 ]

@@ -122,7 +122,12 @@ export type Hakutoive = {
   alinValintaPistemaara?: number
   valintatila?: KoodistoKoodiviite<
     "valpashaunvalintatila",
-    "hyvaksytty" | "hylatty" | "varasijalla" | "peruuntunut"
+    | "hyvaksytty"
+    | "hylatty"
+    | "varasijalla"
+    | "peruuntunut"
+    | "peruttu"
+    | "peruutettu"
   >
 }
 
