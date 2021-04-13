@@ -80,7 +80,7 @@ class KoskiValidator(
 
   private def validateOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus, henkilö: Option[Henkilö])(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = opiskeluoikeus match {
     case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus =>
-        updateFields(opiskeluoikeus).right.flatMap { opiskeluoikeus =>
+      updateFields(opiskeluoikeus).right.flatMap { opiskeluoikeus =>
         (validateAccess(opiskeluoikeus)
           .onSuccess {
             validateLähdejärjestelmä(opiskeluoikeus)
@@ -96,6 +96,7 @@ class KoskiValidator(
             HttpStatus.fold(
               päätasonSuoritusTyypitEnabled(opiskeluoikeus),
               päätasonSuoritusLuokatEnabled(opiskeluoikeus),
+              osasuoritusTyypitEnabled(opiskeluoikeus),
               validateOpintojenrahoitus(opiskeluoikeus),
               validateSisältyvyys(henkilö, opiskeluoikeus),
               validatePäivämäärät(opiskeluoikeus),
@@ -658,7 +659,7 @@ class KoskiValidator(
       case _:OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus => true
       case _ => false
     })
-    .exists(s => hyväksytystiArvioidutOsasuoritukset(s.osasuoritusLista).map(_.koulutusmoduuli.laajuusArvo(0)).sum < 4.0)) {
+      .exists(s => hyväksytystiArvioidutOsasuoritukset(s.osasuoritusLista).map(_.koulutusmoduuli.laajuusArvo(0)).sum < 4.0)) {
       KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus("Päätason suoritus " + suorituksenTunniste(suoritus) + " on vahvistettu, mutta sillä on hyväksytyksi arvioituja osaamiskokonaisuuksia, joiden laajuus on alle 4 opintopistettä")
     }
     else {
@@ -998,6 +999,15 @@ class KoskiValidator(
     val päätasonSuoritusLuokat = opiskeluoikeus.suoritukset.map(_.getClass.getSimpleName)
     päätasonSuoritusLuokat.find(disabled.contains(_)) match {
       case Some(luokka) => KoskiErrorCategory.notImplemented(s"Päätason suorituksen luokka $luokka ei ole käytössä tässä ympäristössä")
+      case _ => HttpStatus.ok
+    }
+  }
+
+  private def osasuoritusTyypitEnabled(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+    val disabled = config.getStringList("features.disabledOsasuoritusTyypit")
+    val osasuoritusTyypit = opiskeluoikeus.suoritukset.flatMap(_.rekursiivisetOsasuoritukset).map(_.tyyppi.koodiarvo)
+    osasuoritusTyypit.find(disabled.contains(_)) match {
+      case Some(tyyppi) => KoskiErrorCategory.notImplemented(s"Osasuorituksen tyyppi $tyyppi ei ole käytössä tässä ympäristössä")
       case _ => HttpStatus.ok
     }
   }
