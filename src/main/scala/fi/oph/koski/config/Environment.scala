@@ -1,7 +1,6 @@
 package fi.oph.koski.config
 
 import com.typesafe.config.Config
-import fi.oph.koski.util.Files
 
 object Environment {
   val Local = "local"
@@ -9,7 +8,7 @@ object Environment {
 
   def isUnitTestEnvironment(config: Config): Boolean = currentEnvironment(config) == UnitTest
 
-  def isLocalDevelopmentEnvironment: Boolean = Files.exists("Makefile")
+  def isLocalDevelopmentEnvironment(config: Config): Boolean = currentEnvironment(config) == Local
 
   def isUsingLocalDevelopmentServices(app: KoskiApplication): Boolean =
     app.masterDatabase.isLocal && app.config.getString("opintopolku.virkailija.url") == "mock"

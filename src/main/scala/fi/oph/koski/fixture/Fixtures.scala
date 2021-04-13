@@ -40,9 +40,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
       case Environment.Local => Environment.isUsingLocalDevelopmentServices(application)
       case _ => false
     }
-    if (useFixtures && !Environment.isLocalDevelopmentEnvironment) {
-      throw new RuntimeException("Trying to use fixtures when running in a server environment")
-    }
+
     if (useFixtures && application.masterDatabase.util.databaseIsLarge) {
       throw new RuntimeException(s"Trying to use fixtures against a database with more than ${application.masterDatabase.util.SmallDatabaseMaxRows} rows")
     }
