@@ -149,13 +149,6 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
   }
 }
 
-object TestConfig {
-  val overrides = ConfigFactory.parseString(
-    """
-      |db.name = koskitest
-    """.stripMargin)
-}
-
 class ManagedQueuedThreadPool(maxThreads: Int) extends QueuedThreadPool(maxThreads) with QueuedThreadPoolMXBean
 
 trait QueuedThreadPoolMXBean {
