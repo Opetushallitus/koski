@@ -35,11 +35,10 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
   }
 
   def shouldUseFixtures = {
-    val config = application.config
-    val useFixtures = if (config.hasPath("fixtures.use")) {
-      config.getBoolean("fixtures.use")
-    } else {
-      application.masterDatabase.isLocal && config.getString("opintopolku.virkailija.url") == "mock"
+    val useFixtures: Boolean = Environment.currentEnvironment(application.config) match {
+      case Environment.UnitTest => true
+      case Environment.Local => Environment.isUsingLocalDevelopmentServices(application)
+      case _ => false
     }
     if (useFixtures && !Environment.isLocalDevelopmentEnvironment) {
       throw new RuntimeException("Trying to use fixtures when running in a server environment")

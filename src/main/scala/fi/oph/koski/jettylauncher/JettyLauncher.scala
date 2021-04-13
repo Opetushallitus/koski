@@ -153,7 +153,6 @@ object TestConfig {
   val overrides = ConfigFactory.parseString(
     """
       |db.name = koskitest
-      |fixtures.use = true
       |mockoidgenerator = true
     """.stripMargin)
 }
