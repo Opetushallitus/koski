@@ -108,13 +108,10 @@ export type HakuLaajatTiedot = {
   huoltajanSähköposti?: string
 }
 
-export type HakuSuppeatTiedot = {
-  hakuOid: Oid
-  hakuNimi?: LocalizedString
-  hakemusOid: Oid
-  hakemusUrl: string
-  aktiivinenHaku: boolean
-}
+export type HakuSuppeatTiedot = Pick<
+  HakuLaajatTiedot,
+  "hakuOid" | "hakuNimi" | "hakemusOid" | "hakemusUrl" | "aktiivinenHaku"
+>
 
 export type Hakutoive = {
   hakutoivenumero?: number
@@ -123,6 +120,15 @@ export type Hakutoive = {
   koulutusNimi?: LocalizedString
   pisteet?: number
   alinValintaPistemaara?: number
+  valintatila?: KoodistoKoodiviite<
+    "valpashaunvalintatila",
+    | "hyvaksytty"
+    | "hylatty"
+    | "varasijalla"
+    | "peruuntunut"
+    | "peruttu"
+    | "peruutettu"
+  >
 }
 
 export type OpiskeluoikeusLaajatTiedot = {

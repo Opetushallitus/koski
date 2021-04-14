@@ -78,6 +78,18 @@ object Valintatila {
     "HYLATTY",
     "PERUUNTUNUT"
   )
+
+  def valpasKoodiviiteOption(valintatila: Option[String]): Option[Koodistokoodiviite] =
+    (valintatila match {
+      case Some("HYVAKSYTTY") | Some("HARKINNANVARAISESTI_HYVAKSYTTY") | Some("VARASIJALTA_HYVAKSYTTY") => Some("hyvaksytty")
+      case Some("HYLATTY") => Some("hylatty")
+      case Some("VARALLA") => Some("varasijalla")
+      case Some("PERUUNTUNUT") => Some("peruuntunut")
+      case Some("PERUUTETTU") => Some("peruutettu")
+      case Some("PERUTTU") => Some("peruttu")
+      case Some("KESKEN") => None
+      case _ => None
+    }).map(Koodistokoodiviite(_, "valpashaunvalintatila"))
 }
 
 object Ilmoittautumistila {

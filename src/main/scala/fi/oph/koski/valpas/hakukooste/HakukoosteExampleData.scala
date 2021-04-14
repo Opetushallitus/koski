@@ -21,31 +21,42 @@ object HakukoosteExampleData {
           hakukohdeOid = generateOid(),
           hakukohdeOrganisaatio = MockOrganisaatiot.ressunLukio,
           hakukohdeNimi = "Lukio",
-          koulutusNimi = "Lukiokoulutus"
-        ).copy(alinValintaPistemaara = Some(9.01), pisteet = Some(9)),
+          koulutusNimi = "Lukiokoulutus",
+          valintatila = Some("HYLATTY"),
+        ).copy(
+          alinValintaPistemaara = Some(9.01),
+          pisteet = Some(9),
+        ),
         hakutoive(
           hakukohdeOid = generateOid(),
           hakukohdeOrganisaatio = MockOrganisaatiot.helsinginMedialukio,
           hakukohdeNimi = "Lukio",
-          koulutusNimi = "Lukiokoulutus"
-        ).copy(alinValintaPistemaara = Some(8.2), pisteet = Some(9)),
+          koulutusNimi = "Lukiokoulutus",
+          valintatila = Some("HYVAKSYTTY"),
+        ).copy(
+          alinValintaPistemaara = Some(8.2),
+          pisteet = Some(9),
+        ),
         hakutoive(
           hakukohdeOid = generateOid(),
           hakukohdeOrganisaatio = MockOrganisaatiot.omnia,
           hakukohdeNimi = "Leipomoala",
-          koulutusNimi = "Leipomoalan ammattitutkinto"
+          koulutusNimi = "Leipomoalan ammattitutkinto",
+          valintatila = Some("PERUUNTUNUT"),
         ),
         hakutoive(
           hakukohdeOid = generateOid(),
           hakukohdeOrganisaatio = MockOrganisaatiot.omnia,
           hakukohdeNimi = "Puhtaus- ja kiinteistöpalveluala",
-          koulutusNimi = "Puhtaus- ja kiinteistöpalvelualan ammattitutkinto laitoshuoltajille ja toimitilahuoltajille"
+          koulutusNimi = "Puhtaus- ja kiinteistöpalvelualan ammattitutkinto laitoshuoltajille ja toimitilahuoltajille",
+          valintatila = Some("PERUUNTUNUT"),
         ),
         hakutoive(
           hakukohdeOid = generateOid(),
           hakukohdeOrganisaatio = MockOrganisaatiot.varsinaisSuomenKansanopisto,
           hakukohdeNimi = "Vapaan sivistystyön koulutus oppivelvollisille 2021-2022",
-          koulutusNimi = "Vapaan sivistystyön koulutus oppivelvollisille"
+          koulutusNimi = "Vapaan sivistystyön koulutus oppivelvollisille",
+          valintatila = Some("PERUUNTUNUT"),
         ),
       ))),
     haku(
@@ -55,8 +66,12 @@ object HakukoosteExampleData {
           hakukohdeOid = generateOid(),
           hakukohdeOrganisaatio = MockOrganisaatiot.ressunLukio,
           hakukohdeNimi = "Lukio",
-          koulutusNimi = "Lukiokoulutus"
-        ).copy(alinValintaPistemaara = Some(9.01), pisteet = Some(9)),
+          koulutusNimi = "Lukiokoulutus",
+          valintatila = Some("HYLATTY"),
+        ).copy(
+          alinValintaPistemaara = Some(9.01),
+          pisteet = Some(9)
+        ),
       ))),
     haku(
       ValpasMockOppijat.luokalleJäänytYsiluokkalainen,
@@ -89,7 +104,7 @@ object HakukoosteExampleData {
             hakukohdeOid = generateOid(),
             hakukohdeOrganisaatio = MockOrganisaatiot.varsinaisSuomenKansanopisto,
             hakukohdeNimi = "Vapaan sivistystyön koulutus oppivelvollisille 2019-2020",
-            koulutusNimi = "Vapaan sivistystyön koulutus oppivelvollisille"
+            koulutusNimi = "Vapaan sivistystyön koulutus oppivelvollisille",
           ),
         )
       )),
@@ -139,7 +154,8 @@ object HakukoosteExampleData {
     hakukohdeOid: String,
     hakukohdeOrganisaatio: String,
     hakukohdeNimi: String,
-    koulutusNimi: String
+    koulutusNimi: String,
+    valintatila: Option[String] = None
   ): Hakutoive =
     Hakutoive(
       hakukohdeOid = hakukohdeOid,
@@ -153,7 +169,7 @@ object HakukoosteExampleData {
       hakukohdeOrganisaatio = hakukohdeOrganisaatio,
       pisteet = None,
       alinValintaPistemaara = None,
-      valintatila = Some("KESKEN"),
+      valintatila = valintatila,
       vastaanottotieto = Some("KESKEN"),
       ilmoittautumistila = Some("EI_ILMOITTAUTUNUT"),
       koulutusOid = Some("TODO"),
