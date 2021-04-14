@@ -21,7 +21,7 @@ case class ValpasOppijaRow(
   turvakielto: Boolean,
 )
 
-class ValpasDatabaseService(application: KoskiApplication) extends DatabaseConverters with Logging with Timing {
+class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends DatabaseConverters with Logging with Timing {
   private val db = application.raportointiDatabase
 
   def getPeruskoulunValvojalleNäkyväOppija(rajapäivät: Rajapäivät)(oppijaOid: String): Option[ValpasOppijaRow] =

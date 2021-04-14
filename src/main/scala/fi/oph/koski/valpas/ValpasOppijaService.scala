@@ -82,7 +82,7 @@ class ValpasOppijaService(
   application: KoskiApplication,
   hakukoosteService: ValpasHakukoosteService,
 ) extends Logging with Timing {
-  private val dbService = new ValpasDatabaseService(application)
+  private val opiskeluoikeusDbService = new ValpasOpiskeluoikeusDatabaseService(application)
   private val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
   private val localizationRepository = application.valpasLocalizationRepository
   private val koodistoviitepalvelu = application.koodistoViitePalvelu
@@ -109,7 +109,7 @@ class ValpasOppijaService(
     }
 
     accessResolver.organisaatiohierarkiaOids(oppilaitosOids)
-      .map(dbService.getPeruskoulunValvojalleNäkyvätOppijat(rajapäivät()))
+      .map(opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyvätOppijat(rajapäivät()))
       .flatMap(results => HttpStatus.foldEithers(results.map(_.asValpasOppijaLaajatTiedot)))
       .map(fetchHaut(errorClue))
   }
@@ -118,7 +118,7 @@ class ValpasOppijaService(
   // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
   // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
   def getOppijaLaajatTiedot(oppijaOid: ValpasHenkilö.Oid)(implicit session: ValpasSession): Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] =
-    dbService.getPeruskoulunValvojalleNäkyväOppija(rajapäivät())(oppijaOid)
+    opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyväOppija(rajapäivät())(oppijaOid)
       .toRight(ValpasErrorCategory.forbidden.oppija())
       .flatMap(_.asValpasOppijaLaajatTiedot)
       .flatMap(accessResolver.withOppijaAccess)
