@@ -55,7 +55,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val directoryClient = DirectoryClient(config)
   lazy val ePerusteet = EPerusteetRepository.apply(config)
   lazy val tutkintoRepository = TutkintoRepository(ePerusteet, koodistoViitePalvelu)
-  lazy val oppilaitosRepository = new OppilaitosRepository(organisaatioRepository)
+  lazy val oppilaitosRepository = OppilaitosRepository(config, organisaatioRepository)
   lazy val koodistoPalvelu = KoodistoPalvelu.apply(config)
   lazy val koodistoViitePalvelu = KoodistoViitePalvelu(koodistoPalvelu)
   lazy val opintopolkuHenkilöFacade = OpintopolkuHenkilöFacade(config, masterDatabase.db, perustiedotRepository, perustiedotIndexer)
