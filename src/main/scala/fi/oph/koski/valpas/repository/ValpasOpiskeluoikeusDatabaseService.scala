@@ -24,10 +24,10 @@ case class ValpasOppijaRow(
 class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends DatabaseConverters with Logging with Timing {
   private val db = application.raportointiDatabase
 
-  def getPeruskoulunValvojalleNäkyväOppija(rajapäivät: Rajapäivät)(oppijaOid: String): Option[ValpasOppijaRow] =
+  def getPeruskoulunValvojalleNäkyväOppija(rajapäivät: ValpasRajapäivät)(oppijaOid: String): Option[ValpasOppijaRow] =
     getOppijat(Some(oppijaOid), None, rajapäivät).headOption
 
-  def getPeruskoulunValvojalleNäkyvätOppijat(rajapäivät: Rajapäivät)(oppilaitosOids: Set[String]): Seq[ValpasOppijaRow] =
+  def getPeruskoulunValvojalleNäkyvätOppijat(rajapäivät: ValpasRajapäivät)(oppilaitosOids: Set[String]): Seq[ValpasOppijaRow] =
     getOppijat(None, Some(oppilaitosOids.toSeq), rajapäivät)
 
   private implicit def getResult: GetResult[ValpasOppijaRow] = GetResult(r => {
@@ -50,7 +50,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   private def getOppijat(
     oppijaOid: Option[String],
     oppilaitosOids: Option[Seq[String]],
-    rajapäivät: Rajapäivät
+    rajapäivät: ValpasRajapäivät
   ): Seq[ValpasOppijaRow] = {
     val lakiVoimassaPeruskoulustaValmistuneillaAlku = rajapäivät.lakiVoimassaPeruskoulustaValmistuneillaAlku
     val keväänValmistumisjaksoAlku = rajapäivät.keväänValmistumisjaksoAlku

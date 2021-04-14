@@ -89,7 +89,7 @@ class ValpasOppijaService(
 
   private val accessResolver = new ValpasAccessResolver(application.organisaatioRepository)
 
-  private val rajapäivät: () => Rajapäivät = Rajapäivät(Environment.isLocalDevelopmentEnvironment)
+  private val rajapäivät: () => ValpasRajapäivät = ValpasRajapäivät(Environment.isLocalDevelopmentEnvironment)
   private implicit val validationAndResolvingContext: ValidationAndResolvingContext =
     ValidationAndResolvingContext(application.koodistoViitePalvelu, application.organisaatioRepository)
 

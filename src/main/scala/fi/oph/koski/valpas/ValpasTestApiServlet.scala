@@ -5,7 +5,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.valpas.fixture.{FixtureState, FixtureUtil}
-import fi.oph.koski.valpas.repository.MockRajapäivät
+import fi.oph.koski.valpas.repository.MockValpasRajapäivät
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 
 class ValpasTestApiServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with Unauthenticated {
@@ -22,7 +22,7 @@ class ValpasTestApiServlet(implicit val application: KoskiApplication) extends V
 
   get("/reset-mock-data/:paiva") {
     val tarkasteluPäivä = getLocalDateParam("paiva")
-    FixtureUtil.resetMockData(application, new MockRajapäivät(tarkasteluPäivä))
+    FixtureUtil.resetMockData(application, new MockValpasRajapäivät(tarkasteluPäivä))
   }
 
   get("/reset-mock-data") {
