@@ -3,6 +3,7 @@ package fi.oph.koski.valpas
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.henkilo.Yhteystiedot
 import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.log.{AuditLog, KoskiMessageField, Logging}
 import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
 import fi.oph.koski.util.Timing
@@ -20,8 +21,11 @@ case class OppijaHakutilanteillaLaajatTiedot(
   hakutilanteet: Seq[ValpasHakutilanneLaajatTiedot],
   hakutilanneError: Option[String],
   yhteystiedot: Seq[ValpasYhteystiedot],
-  kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot]
-)
+  kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot],
+){
+  def validate(koodistoviitepalvelu: KoodistoViitePalvelu): OppijaHakutilanteillaLaajatTiedot =
+    this.copy(hakutilanteet = hakutilanteet.map(_.validate(koodistoviitepalvelu)))
+}
 
 object OppijaHakutilanteillaLaajatTiedot {
   def apply(oppija: ValpasOppijaLaajatTiedot, haut: Either[HttpStatus, Seq[Hakukooste]]): OppijaHakutilanteillaLaajatTiedot = {
@@ -127,6 +131,7 @@ class ValpasOppijaService(
       .flatMap(o => fetchVirallisetYhteystiedot(o.oppija).map(yhteystiedot => o.copy(
         yhteystiedot = o.yhteystiedot ++ yhteystiedot.map(yt => ValpasYhteystiedot.virallinenYhteystieto(yt, localizationRepository.get("oppija__viralliset_yhteystiedot")))
       )))
+      .map(_.validate(koodistoviitepalvelu))
       .map(withAuditLogOppijaKatsominen)
 
   private def fetchHaku(oppija: ValpasOppijaLaajatTiedot): OppijaHakutilanteillaLaajatTiedot = {

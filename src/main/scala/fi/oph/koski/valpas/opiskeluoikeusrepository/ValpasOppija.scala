@@ -1,5 +1,6 @@
 package fi.oph.koski.valpas.opiskeluoikeusrepository
 
+import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema.annotation.KoodistoUri
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, Hakutoive, Valintatila, Vastaanottotieto}
@@ -197,7 +198,10 @@ case class ValpasHakutilanneLaajatTiedot(
   muokattu: Option[LocalDateTime],
   hakutoiveet: Seq[ValpasHakutoive],
   debugHakukooste: Option[Hakukooste]
-) extends ValpasHakutilanne
+) extends ValpasHakutilanne {
+  def validate(koodistoviitepalvelu: KoodistoViitePalvelu): ValpasHakutilanneLaajatTiedot =
+    this.copy(hakutoiveet = hakutoiveet.map(_.validate(koodistoviitepalvelu)))
+}
 
 object ValpasHakutilanneSuppeatTiedot {
   def apply(laajatTiedot: ValpasHakutilanneLaajatTiedot): ValpasHakutilanneSuppeatTiedot = {
@@ -249,7 +253,10 @@ case class ValpasHakutoive(
   valintatila: Option[Koodistokoodiviite],
   @KoodistoUri("valpasvastaanottotieto")
   vastaanottotieto: Option[Koodistokoodiviite],
-)
+) {
+  def validate(koodistoviitepalvelu: KoodistoViitePalvelu): ValpasHakutoive =
+    this.copy(valintatila = valintatila.flatMap(koodistoviitepalvelu.validate))
+}
 
 object ValpasSuppeaHakutoive {
   def apply(hakutoive: ValpasHakutoive): ValpasSuppeaHakutoive = ValpasSuppeaHakutoive(

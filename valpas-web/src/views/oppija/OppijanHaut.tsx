@@ -7,11 +7,14 @@ import { ExternalLink } from "../../components/navigation/ExternalLink"
 import { Datum } from "../../components/tables/DataTable"
 import { LeanTable } from "../../components/tables/LeanTable"
 import { TertiaryHeading } from "../../components/typography/headings"
+import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import {
-  NoDataMessage,
-  NotImplemented,
-} from "../../components/typography/NoDataMessage"
-import { formatFixedNumber, getLocalized, t, T } from "../../i18n/i18n"
+  formatFixedNumber,
+  getLocalized,
+  koodiviiteToShortString,
+  t,
+  T,
+} from "../../i18n/i18n"
 import {
   Haku,
   HakuLaajatTiedot,
@@ -110,12 +113,9 @@ const hakutoiveToTableValue = (hakutoive: Hakutoive, index: number): Datum => ({
       ),
     },
     {
-      value: t("hakutilanne__taulu_data_ei_toteutettu"),
-      display: (
-        <NotImplemented>
-          <T id="hakutilanne__taulu_data_ei_toteutettu" />
-        </NotImplemented>
-      ),
+      value:
+        hakutoive?.valintatila &&
+        koodiviiteToShortString(hakutoive.valintatila),
     },
     { value: formatFixedNumber(hakutoive.pisteet, 2) },
     { value: formatFixedNumber(hakutoive.alinValintaPistemaara, 2) },

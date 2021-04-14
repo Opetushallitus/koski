@@ -84,11 +84,11 @@ describe("Oppijakohtainen näkymä", () => {
         Valinta
         Pisteet
         Alin pistemäärä
-        1. Ressun lukio, Lukio Ei toteutettu 9,00 9,01
-        2. Helsingin medialukio, Lukio Ei toteutettu 9,00 8,20
-        3. Omnia, Leipomoala Ei toteutettu – –
-        4. Omnia, Puhtaus- ja kiinteistöpalveluala Ei toteutettu – –
-        5. Varsinais-Suomen kansanopisto, Vapaan sivistystyön koulutus oppivelvollisille 2021-2022 Ei toteutettu – –
+        1. Ressun lukio, Lukio Hylätty 9,00 9,01
+        2. Helsingin medialukio, Lukio Hyväksytty 9,00 8,20
+        3. Omnia, Leipomoala Peruuntunut – –
+        4. Omnia, Puhtaus- ja kiinteistöpalveluala Peruuntunut – –
+        5. Varsinais-Suomen kansanopisto, Vapaan sivistystyön koulutus oppivelvollisille 2021-2022 Peruuntunut – –
     `)
   })
 
@@ -108,21 +108,21 @@ describe("Oppijakohtainen näkymä", () => {
       Valinta
       Pisteet
       Alin pistemäärä
-      1. Helsingin medialukio, Lukio Ei toteutettu – –
+      1. Helsingin medialukio, Lukio – – –
       list_alt
       Yhteishaku 2021 Hakenut open_in_new
       Hakukohde
       Valinta
       Pisteet
       Alin pistemäärä
-      1. Varsinais-Suomen kansanopisto, Vapaan sivistystyön koulutus oppivelvollisille 2021-2022 Ei toteutettu – –
+      1. Varsinais-Suomen kansanopisto, Vapaan sivistystyön koulutus oppivelvollisille 2021-2022 – – –
       list_alt
       Yhteishaku 2019 Hakenut open_in_new
       Hakukohde
       Valinta
       Pisteet
       Alin pistemäärä
-      1. Varsinais-Suomen kansanopisto, Vapaan sivistystyön koulutus oppivelvollisille 2019-2020 Ei toteutettu – –
+      1. Varsinais-Suomen kansanopisto, Vapaan sivistystyön koulutus oppivelvollisille 2019-2020 – – –
     `)
   })
 
