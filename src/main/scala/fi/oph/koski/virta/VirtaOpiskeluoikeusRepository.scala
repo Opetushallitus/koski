@@ -56,7 +56,7 @@ private[virta] case class VirtaCacheKey(hetut: List[String], oidit: List[String]
 
 object MockVirtaOpiskeluoikeusRepository extends VirtaOpiskeluoikeusRepository(
   MockVirtaClient(KoskiApplication.defaultConfig),
-  MockOppilaitosRepository,
+  new MockOppilaitosRepository,
   MockKoodistoViitePalvelu,
   MockOrganisaatioRepository,
   SkipAccessCheck
