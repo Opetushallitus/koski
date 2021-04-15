@@ -8,14 +8,19 @@ import fi.oph.koski.raportointikanta.Schema
 import slick.jdbc.PostgresProfile
 
 
+object DatabaseConfig {
+  val EnvVarForKoskiDbSecret = "DB_KOSKI_SECRET_ID"
+  val EnvVarForRaportointiDbSecret = "DB_RAPORTOINTI_SECRET_ID"
+}
+
 class KoskiDatabaseConfig(val rootConfig: Config) extends DatabaseConfig {
-  override val envVarForSecretId: String = "DB_KOSKI_SECRET_ID"
+  override val envVarForSecretId: String = DatabaseConfig.EnvVarForKoskiDbSecret
 
   override protected def databaseSpecificConfig: Config = rootConfig.getConfig("dbs.koski")
 }
 
 class KoskiReplicaConfig(val rootConfig: Config) extends DatabaseConfig {
-  override val envVarForSecretId: String = "DB_KOSKI_SECRET_ID"
+  override val envVarForSecretId: String = DatabaseConfig.EnvVarForKoskiDbSecret
 
   override protected def databaseSpecificConfig: Config = rootConfig.getConfig("dbs.replica")
 
@@ -33,7 +38,7 @@ class KoskiReplicaConfig(val rootConfig: Config) extends DatabaseConfig {
 }
 
 class RaportointiDatabaseConfig(val rootConfig: Config, val schema: Schema) extends DatabaseConfig {
-  override val envVarForSecretId: String = "DB_RAPORTOINTI_SECRET_ID"
+  override val envVarForSecretId: String = DatabaseConfig.EnvVarForRaportointiDbSecret
 
   override protected def databaseSpecificConfig: Config =
     rootConfig.getConfig("dbs.raportointi")
@@ -41,7 +46,7 @@ class RaportointiDatabaseConfig(val rootConfig: Config, val schema: Schema) exte
 }
 
 class ValpasDatabaseConfig(val rootConfig: Config) extends DatabaseConfig {
-  override val envVarForSecretId: String = "DB_KOSKI_SECRET_ID" // Samalla instanssilla kuin pääkanta
+  override val envVarForSecretId: String = DatabaseConfig.EnvVarForKoskiDbSecret // Samalla instanssilla kuin pääkanta
 
   override protected def databaseSpecificConfig: Config = rootConfig.getConfig("dbs.valpas")
 }
