@@ -48,6 +48,7 @@ case class Hakutoive(
   vastaanottotieto: Option[String],
   @EnumValues(Ilmoittautumistila.values)
   ilmoittautumistila: Option[String],
+  @EnumValues(Harkinnanvaraisuus.values)
   harkinnanvaraisuus: Option[String],
   @KoodistoUri("koulutus")
   hakukohdeKoulutuskoodi: Koodistokoodiviite
@@ -103,5 +104,15 @@ object Ilmoittautumistila {
     "POISSA_SYKSY",
     "LASNA",
     "POISSA"
+  )
+}
+
+object Harkinnanvaraisuus {
+  val values = Set(
+    "oppimisvaikudet", // Typo lähdekoodissa, https://github.com/Opetushallitus/haku/blob/master/hakemus-api/src/main/java/fi/vm/sade/haku/virkailija/lomakkeenhallinta/hakulomakepohja/phase/hakutoiveet/HakutoiveetPhase.java#L212-L221
+    "sosiaalisetsyyt",
+    "todistustenvertailuvaikeudet",
+    "todistustenpuuttuminen",
+    "riittamatonkielitaito"
   )
 }
