@@ -15,7 +15,7 @@ case class ValpasYhteystiedot(
   puhelinnumero: Option[String] = None,
   matkapuhelinnumero: Option[String] = None,
   lähiosoite: Option[String] = None,
-  kunta: Option[String] = None,
+  postitoimipaikka: Option[String] = None,
   postinumero: Option[String] = None,
   maa: Option[String] = None,
 )
@@ -54,7 +54,7 @@ object ValpasYhteystiedot {
     matkapuhelinnumero = Some(hakukooste.matkapuhelin),
     lähiosoite = Some(hakukooste.lahiosoite),
     postinumero = Some(hakukooste.postinumero),
-    kunta = hakukooste.postitoimipaikka,
+    postitoimipaikka = hakukooste.postitoimipaikka,
     sähköposti = Some(hakukooste.email),
   )
 
@@ -78,7 +78,7 @@ object ValpasYhteystiedot {
     puhelinnumero = yhteystiedot.puhelinnumero,
     matkapuhelinnumero = yhteystiedot.matkapuhelinnumero,
     lähiosoite = yhteystiedot.katuosoite,
-    kunta = yhteystiedot.kunta.orElse(yhteystiedot.kaupunki),
+    postitoimipaikka = yhteystiedot.kunta.orElse(yhteystiedot.kaupunki),
     postinumero = yhteystiedot.postinumero,
     maa = yhteystiedot.maa,
   )

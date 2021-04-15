@@ -121,10 +121,14 @@ const Yhteystietolista = (props: YhteystietolistaProps) => (
           value={props.yhteystiedot.lähiosoite}
         />
       )}
-      {(props.yhteystiedot.kunta || props.yhteystiedot.postinumero) && (
+      {(props.yhteystiedot.postitoimipaikka ||
+        props.yhteystiedot.postinumero) && (
         <InfoTableRow
           label={t("oppija__postitoimipaikka")}
-          value={[props.yhteystiedot.postinumero, props.yhteystiedot.kunta]
+          value={[
+            props.yhteystiedot.postinumero,
+            props.yhteystiedot.postitoimipaikka,
+          ]
             .filter(nonNull)
             .join(" ")}
         />

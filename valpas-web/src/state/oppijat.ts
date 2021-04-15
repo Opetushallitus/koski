@@ -63,7 +63,7 @@ export type Yhteystiedot<T extends YhteystietojenAlkuperä> = {
   puhelinnumero?: string
   matkapuhelinnumero?: string
   lähiosoite?: string
-  kunta?: string
+  postitoimipaikka?: string
   postinumero?: string
   maa?: string
 }
