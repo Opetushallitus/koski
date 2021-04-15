@@ -1,6 +1,4 @@
-package fi.oph.koski.db
-
-import fi.oph.koski.executors.Pools
+package fi.oph.koski.executors
 
 trait GlobalExecutionContext {
   implicit val executor = Pools.globalExecutor

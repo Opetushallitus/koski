@@ -6,7 +6,8 @@ import java.time.Instant
 
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.{GlobalExecutionContext, KoskiDatabaseMethods, SSOSessionRow, Tables}
+import fi.oph.koski.db.{KoskiDatabaseMethods, SSOSessionRow, Tables}
+import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.huoltaja.HuollettavatSearchResult
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AuthenticationUser, SessionTimeout}
