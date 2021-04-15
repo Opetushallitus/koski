@@ -74,8 +74,10 @@ object HakukoosteExampleData {
         ),
       ))),
     haku(
-      ValpasMockOppijat.luokalleJäänytYsiluokkalainen,
-      Vector(
+      henkilö = ValpasMockOppijat.luokalleJäänytYsiluokkalainen,
+      muokkausaika = Some(LocalDateTime.of(2020, 4, 10, 12, 0, 0)),
+      lahiosoite = "Uudempi esimerkkikatu 987",
+      hakukoosteidenToiveet = Vector(
         Vector(
           hakutoive(
             hakukohdeOid = generateOid(),
@@ -98,6 +100,7 @@ object HakukoosteExampleData {
       aktiivinenHaku = Some(false),
       henkilö = ValpasMockOppijat.luokalleJäänytYsiluokkalainen,
       alkamisaika = LocalDateTime.of(2019, 3, 9, 12, 0, 0),
+      muokkausaika = None,
       hakukoosteidenToiveet = Vector(
         Vector(
           hakutoive(
@@ -116,6 +119,8 @@ object HakukoosteExampleData {
     hakuNimi: BlankableLocalizedString = Finnish("Yhteishaku 2021"),
     aktiivinenHaku: Some[Boolean] = Some(true),
     alkamisaika: LocalDateTime = LocalDateTime.of(2020, 3, 9, 12, 0, 0),
+    muokkausaika: Option[LocalDateTime] = Some(LocalDateTime.of(2020, 4, 9, 12, 0, 0)),
+    lahiosoite: String = "Esimerkkikatu 123"
   ): Seq[Hakukooste] = hakukoosteidenToiveet.map(hakutoiveet =>
     Hakukooste(
       oppijaOid = henkilö.oid,
@@ -126,9 +131,10 @@ object HakukoosteExampleData {
       hakutapa = yhteishakukoodi,
       hakutyyppi = varsinaisenHaunKoodi,
       haunAlkamispaivamaara = alkamisaika,
+      hakemuksenMuokkauksenAikaleima = muokkausaika,
       hakuNimi = hakuNimi,
       email = generateEmail(henkilö),
-      lahiosoite = "Esimerkkikatu 123",
+      lahiosoite = lahiosoite,
       postinumero = "00000",
       postitoimipaikka = Some("Helsinki"),
       matkapuhelin = "0401234567",

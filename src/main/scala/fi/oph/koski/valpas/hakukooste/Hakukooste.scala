@@ -28,7 +28,8 @@ case class Hakukooste(
   huoltajanNimi: Option[String],
   huoltajanPuhelinnumero: Option[String],
   huoltajanSähkoposti: Option[String],
-  hakutoiveet: Seq[Hakutoive]
+  hakutoiveet: Seq[Hakutoive],
+  hakemuksenMuokkauksenAikaleima: Option[LocalDateTime]
 )
 
 case class Hakutoive(

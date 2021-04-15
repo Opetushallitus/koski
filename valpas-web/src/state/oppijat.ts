@@ -73,6 +73,7 @@ export type YhteystietojenAlkuperä = AlkuperäHakemukselta | AlkuperäRekisteri
 export type AlkuperäHakemukselta = {
   hakuNimi: LocalizedString
   haunAlkamispaivämäärä: ISODateTime
+  hakemuksenMuokkauksenAikaleima?: ISODateTime
   hakuOid: Oid
   hakemusOid: Oid
 }

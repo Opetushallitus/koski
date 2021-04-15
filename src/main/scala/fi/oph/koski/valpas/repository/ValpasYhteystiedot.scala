@@ -25,6 +25,7 @@ trait ValpasYhteystietojenAlkuperä
 case class ValpasYhteystietoHakemukselta (
   hakuNimi: BlankableLocalizedString,
   haunAlkamispaivämäärä: LocalDateTime,
+  hakemuksenMuokkauksenAikaleima: Option[LocalDateTime],
   hakuOid: String,
   hakemusOid: String
 ) extends ValpasYhteystietojenAlkuperä
@@ -33,6 +34,7 @@ object ValpasYhteystietoHakemukselta {
   def apply(hakukooste: Hakukooste): ValpasYhteystietoHakemukselta = ValpasYhteystietoHakemukselta(
     hakuNimi = hakukooste.hakuNimi,
     haunAlkamispaivämäärä = hakukooste.haunAlkamispaivamaara,
+    hakemuksenMuokkauksenAikaleima = hakukooste.hakemuksenMuokkauksenAikaleima,
     hakuOid = hakukooste.hakuOid,
     hakemusOid = hakukooste.hakemusOid
   )

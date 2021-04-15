@@ -49,8 +49,10 @@ export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {
               label={(yt) =>
                 (getLocalized(yt.yhteystietoryhmänNimi) ||
                   t("oppija__yhteystiedot")) +
-                " – " +
-                formatDate(yt.alkuperä.haunAlkamispaivämäärä)
+                (yt.alkuperä.hakemuksenMuokkauksenAikaleima !== undefined
+                  ? " – " +
+                    formatDate(yt.alkuperä.hakemuksenMuokkauksenAikaleima)
+                  : formatDate(yt.alkuperä.haunAlkamispaivämäärä))
               }
             />
           </Column>
