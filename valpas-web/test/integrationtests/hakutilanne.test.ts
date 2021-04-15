@@ -22,7 +22,7 @@ const clickOppija = (index: number) =>
 const jklNormaalikouluTableContent = `
   Epäonninen Valpas	30.10.2005	9C	Ei hakemusta	–	Ei toteutettu	Ei toteutettu
   Eroaja-myöhemmin Valpas	29.9.2005	9C	Ei hakemusta	–	Ei toteutettu	Ei toteutettu
-  Kahdella-oppija-oidilla Valpas	15.2.2005	9C	Hakenut open_in_new	Varasija	Ei toteutettu	Ei toteutettu
+  Kahdella-oppija-oidilla Valpas	15.2.2005	9C	Hakenut open_in_new	Varasija: Ressun lukio	Ei toteutettu	Ei toteutettu
   KasiinAstiToisessaKoulussaOllut Valpas	17.8.2005	9C	Ei hakemusta	–	Ei toteutettu	Ei toteutettu
   Kotiopetus-menneisyydessä Valpas	6.2.2005	9C	Ei hakemusta	–	Ei toteutettu	Ei toteutettu
   LukionAloittanut Valpas	29.4.2005	9C	Ei hakemusta	–	Ei toteutettu	Ei toteutettu

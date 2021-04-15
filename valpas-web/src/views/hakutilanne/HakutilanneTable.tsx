@@ -190,16 +190,23 @@ const fromNullableValue = (value: Value | null): Value =>
   }
 
 const valintatila = (haut: HakuSuppeatTiedot[]): Value | null => {
-  const hyväksytytHakutoiveet = A.chain((haku: HakuSuppeatTiedot) =>
-    haku.hakutoiveet.filter(Hakutoive.isHyväksytty)
-  )(haut)
+  const hakutoiveetBy = (predicate: (hakutoive: Hakutoive) => boolean) =>
+    A.chain((haku: HakuSuppeatTiedot) => haku.hakutoiveet.filter(predicate))(
+      haut
+    )
 
+  const hyväksytytHakutoiveet = hakutoiveetBy(Hakutoive.isHyväksytty)
   if (isNonEmpty(hyväksytytHakutoiveet)) {
     return hyväksyttyValintatila(hyväksytytHakutoiveet)
   }
 
-  if (haut.some((haku) => haku.hakutoiveet.some(Hakutoive.isVarasijalla))) {
-    return { value: t("valintatieto__varasija") }
+  const [varasija] = hakutoiveetBy(Hakutoive.isVarasijalla)
+  if (varasija) {
+    return {
+      value: t("valintatieto__varasija_hakukohde", {
+        hakukohde: getLocalized(varasija.organisaatioNimi) || "?",
+      }),
+    }
   }
 
   if (
@@ -220,16 +227,17 @@ const hyväksyttyValintatila = (
   hyväksytytHakutoiveet: NonEmptyArray<Hakutoive>
 ): Value => {
   const buildHyväksyttyValue = (hakutoive: Hakutoive) => {
-    const buildValue = (hakukohde: string) =>
-      hakutoive.hakutoivenumero
-        ? `${hakutoive.hakutoivenumero}. ${hakukohde}`
-        : hakukohde
-
     return {
       value: t("valintatieto__hyväksytty", {
-        hakukohde: buildValue(t("valintatieto__hakukohde_lc")),
+        hakukohde: orderedHakukohde(
+          hakutoive.hakutoivenumero,
+          t("valintatieto__hakukohde_lc")
+        ),
       }),
-      display: buildValue(getLocalized(hakutoive.organisaatioNimi) || "?"),
+      display: orderedHakukohde(
+        hakutoive.hakutoivenumero,
+        getLocalized(hakutoive.organisaatioNimi) || "?"
+      ),
     }
   }
 
@@ -246,3 +254,8 @@ const hyväksyttyValintatila = (
     ),
   }
 }
+
+const orderedHakukohde = (
+  hakutoivenumero: number | undefined,
+  hakukohde: string
+) => (hakutoivenumero ? `${hakutoivenumero}. ${hakukohde}` : hakukohde)

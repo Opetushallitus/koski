@@ -31,6 +31,7 @@
   "hakemuksentila__ei_hakemusta": "Ei hakemusta",
   "valintatieto__ei_opiskelupaikkaa": "Ei opiskelupaikkaa",
   "valintatieto__varasija": "Varasija",
+  "valintatieto__varasija_hakukohde": "Varasija: {{hakukohde}}",
   "valintatieto__hyväksytty": "Hyväksytty: {{hakukohde}}",
   "valintatieto__hakukohde_lc": "hakukohde",
   "valintatieto__hyväksytty_n_hakutoivetta": "Hyväksytty ({{lukumäärä}} hakukohdetta)",
