@@ -1,8 +1,6 @@
 package fi.oph.koski.raportit.aikuistenperusopetus
 
-import java.time.LocalDate
-
-import fi.oph.koski.db.GlobalExecutionContext
+import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportit.RaporttiUtils.arvioituAikavälillä
 import fi.oph.koski.raportit.YleissivistäväUtils._
@@ -11,6 +9,7 @@ import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Futures
 
+import java.time.LocalDate
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 

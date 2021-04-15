@@ -2,9 +2,10 @@ package fi.oph.koski.config
 
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.cache.CacheManager
-import fi.oph.koski.db._
+import fi.oph.koski.db.{KoskiDatabase, RaportointiDatabaseConfig, ValpasDatabaseConfig}
 import fi.oph.koski.elasticsearch.{ElasticSearch, IndexManager}
 import fi.oph.koski.eperusteet.EPerusteetRepository
+import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.healthcheck.HealthCheck
 import fi.oph.koski.henkilo.{HenkilöRepository, Hetu, KoskiHenkilöCache, OpintopolkuHenkilöFacade}

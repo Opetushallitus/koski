@@ -1,7 +1,6 @@
 package fi.oph.koski.oppija
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.SensitiveDataFilter
@@ -19,7 +18,15 @@ import org.json4s.JsonAST.{JObject, JString}
 import org.json4s.{JArray, JValue}
 import org.scalatra.ContentEncodingSupport
 
-class OppijaServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with RequiresVirkailijaOrPalvelukäyttäjä with ContentEncodingSupport with NoCache with Timing with Pagination {
+class OppijaServlet(implicit val application: KoskiApplication)
+  extends KoskiSpecificApiServlet
+    with Logging
+    with OpiskeluoikeusQueries
+    with RequiresVirkailijaOrPalvelukäyttäjä
+    with ContentEncodingSupport
+    with NoCache
+    with Timing
+    with Pagination {
 
   post("/") { putSingle(false) }
 
