@@ -161,7 +161,17 @@ object SureHakukoosteServiceSpec {
       |        "ilmoittautumistila": "EI_TEHTY",
       |        "hakutoivenumero": 0,
       |        "hakukohdeOid": "1.2.246.562.20.80878445842",
-      |        "hakukohdeKoulutuskoodi": "751201",
+      |        "hakukohdeKoulutuskoodi": {
+      |          "koodiarvo": "751201",
+      |          "nimi": {
+      |            "fi": "Dipl.ins., sähkötekniikka"
+      |          },
+      |          "lyhytNimi": {
+      |            "fi": "DI sähkötekniikka"
+      |          },
+      |          "koodistoUri": "koulutus",
+      |          "koodistoVersio": 1
+      |        },
       |        "hakukohdeOrganisaatio": "1.2.246.562.10.38864316104",
       |        "organisaatioNimi": {},
       |        "koulutusOid": "1.2.246.562.17.83264128444"
@@ -174,7 +184,17 @@ object SureHakukoosteServiceSpec {
       |        "ilmoittautumistila": "EI_TEHTY",
       |        "hakutoivenumero": 1,
       |        "hakukohdeOid": "1.2.246.562.20.24492106752",
-      |        "hakukohdeKoulutuskoodi": "751301",
+      |        "hakukohdeKoulutuskoodi": {
+      |          "koodiarvo": "751301",
+      |          "nimi": {
+      |            "fi": "Dipl.ins., tietotekniikka"
+      |          },
+      |          "lyhytNimi": {
+      |            "fi": "DI tietotekniikka"
+      |          },
+      |          "koodistoUri": "koulutus",
+      |          "koodistoVersio": 1
+      |        },
       |        "hakukohdeOrganisaatio": "1.2.246.562.10.39920288212",
       |        "organisaatioNimi": {},
       |        "koulutusOid": "1.2.246.562.17.58545683169"

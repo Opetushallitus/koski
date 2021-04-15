@@ -49,8 +49,8 @@ case class Hakutoive(
   @EnumValues(Ilmoittautumistila.values)
   ilmoittautumistila: Option[String],
   harkinnanvaraisuus: Option[String],
-  // TODO: hakukohdeKoulutuskoodi muuttuu merkkijonosta koodistoarvoksi, kytketty väliaikaisesti pois, ettei hajota parsintaa
-  // hakukohdeKoulutuskoodi: Koodistokoodiviite
+  @KoodistoUri("koulutus")
+  hakukohdeKoulutuskoodi: Koodistokoodiviite
 ) {
   @SyntheticProperty
   def onHakenutHarkinnanvaraisesti = harkinnanvaraisuus.isDefined

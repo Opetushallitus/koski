@@ -180,7 +180,7 @@ object HakukoosteExampleData {
       ilmoittautumistila = Some("EI_ILMOITTAUTUNUT"),
       koulutusOid = Some("TODO"),
       harkinnanvaraisuus = None,
-      // hakukohdeKoulutuskoodi = Koodistokoodiviite("000", "hakukohteet")
+      hakukohdeKoulutuskoodi = Koodistokoodiviite("321152", "koulutus")
     )
 
   def yhteishakukoodi = Koodistokoodiviite("01", "hakutapa")
