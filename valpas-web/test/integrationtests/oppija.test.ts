@@ -244,7 +244,7 @@ describe("Oppijakohtainen näkymä", () => {
 
     await ilmoitetutYhteystiedotEquals(`
       Ilmoitetut yhteystiedot
-      keyboard_arrow_downYhteystiedot – 9.3.2020
+      keyboard_arrow_downYhteystiedot – 9.4.2020
       Lähiosoite:	Esimerkkikatu 123
       Postitoimipaikka:  00000 Helsinki
       Matkapuhelin:	0401234567
@@ -267,10 +267,27 @@ describe("Oppijakohtainen näkymä", () => {
 
     await ilmoitetutYhteystiedotEquals(`
       Ilmoitetut yhteystiedot
-      keyboard_arrow_rightYhteystiedot – 9.3.2020
+      keyboard_arrow_rightYhteystiedot – 9.4.2020
     `)
 
     await turvakieltoVaroitusNotVisible()
+  })
+
+  it("Näyttää oppijalta uusimman muokatun hakemuksen yhteystiedot", async () => {
+    await loginAs(
+      montaHakuaJoistaYksiPäättynytOppijaPath,
+      "valpas-jkl-normaali"
+    )
+
+    await ilmoitetutYhteystiedotEquals(`
+      Ilmoitetut yhteystiedot
+      keyboard_arrow_downYhteystiedot – 10.4.2020
+      Lähiosoite:	Uudempi esimerkkikatu 987
+      Postitoimipaikka:  00000 Helsinki
+      Matkapuhelin:	0401234567
+      Sähköposti:	Valpas.LuokallejäänytYsiluokkalainen@gmail.com
+      Lähde: Hakulomake – Yhteishaku 2021
+    `)
   })
 
   it("Yhteystietoja ei näytetä, jos oppijalla on turvakielto", async () => {

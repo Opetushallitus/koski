@@ -28,7 +28,8 @@ case class Hakukooste(
   huoltajanNimi: Option[String],
   huoltajanPuhelinnumero: Option[String],
   huoltajanSähkoposti: Option[String],
-  hakutoiveet: Seq[Hakutoive]
+  hakutoiveet: Seq[Hakutoive],
+  hakemuksenMuokkauksenAikaleima: Option[LocalDateTime]
 )
 
 case class Hakutoive(
@@ -47,9 +48,10 @@ case class Hakutoive(
   vastaanottotieto: Option[String],
   @EnumValues(Ilmoittautumistila.values)
   ilmoittautumistila: Option[String],
+  @EnumValues(Harkinnanvaraisuus.values)
   harkinnanvaraisuus: Option[String],
-  // TODO: hakukohdeKoulutuskoodi muuttuu merkkijonosta koodistoarvoksi, kytketty väliaikaisesti pois, ettei hajota parsintaa
-  // hakukohdeKoulutuskoodi: Koodistokoodiviite
+  @KoodistoUri("koulutus")
+  hakukohdeKoulutuskoodi: Koodistokoodiviite
 ) {
   @SyntheticProperty
   def onHakenutHarkinnanvaraisesti = harkinnanvaraisuus.isDefined
@@ -102,5 +104,15 @@ object Ilmoittautumistila {
     "POISSA_SYKSY",
     "LASNA",
     "POISSA"
+  )
+}
+
+object Harkinnanvaraisuus {
+  val values = Set(
+    "oppimisvaikudet", // Typo lähdekoodissa, https://github.com/Opetushallitus/haku/blob/master/hakemus-api/src/main/java/fi/vm/sade/haku/virkailija/lomakkeenhallinta/hakulomakepohja/phase/hakutoiveet/HakutoiveetPhase.java#L212-L221
+    "sosiaalisetsyyt",
+    "todistustenvertailuvaikeudet",
+    "todistustenpuuttuminen",
+    "riittamatonkielitaito"
   )
 }

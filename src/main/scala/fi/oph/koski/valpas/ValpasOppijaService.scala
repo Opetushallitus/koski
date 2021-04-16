@@ -162,7 +162,7 @@ class ValpasOppijaService(
 
   private def ilmoitetutYhteystiedot(hakukoosteet: Seq[Hakukooste]): Seq[ValpasYhteystiedot] =
     hakukoosteet
-      .sortBy(_.haunAlkamispaivamaara)
+      .sortBy(_.hakemuksenMuokkauksenAikaleima)
       .lastOption
       .map(haku => List(
         ValpasYhteystiedot.oppijanIlmoittamatYhteystiedot(haku, localizationRepository.get("oppija__yhteystiedot")),

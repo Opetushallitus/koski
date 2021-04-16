@@ -63,7 +63,7 @@ export type Yhteystiedot<T extends YhteystietojenAlkuperä> = {
   puhelinnumero?: string
   matkapuhelinnumero?: string
   lähiosoite?: string
-  kunta?: string
+  postitoimipaikka?: string
   postinumero?: string
   maa?: string
 }
@@ -73,6 +73,7 @@ export type YhteystietojenAlkuperä = AlkuperäHakemukselta | AlkuperäRekisteri
 export type AlkuperäHakemukselta = {
   hakuNimi: LocalizedString
   haunAlkamispaivämäärä: ISODateTime
+  hakemuksenMuokkauksenAikaleima?: ISODateTime
   hakuOid: Oid
   hakemusOid: Oid
 }
