@@ -287,7 +287,7 @@ object VapaaSivistystyöExampleData {
         Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus", koodistoUri = "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"),
         Some(LaajuusOpintoviikoissa(5))
       ),
-      arviointi = Some(List(vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenArviointi))
+      arviointi = Some(List(vstArviointi()))
     )
   }
 
@@ -297,7 +297,7 @@ object VapaaSivistystyöExampleData {
         Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus", koodistoUri = "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"),
         Some(LaajuusOpintoviikoissa(15))
       ),
-      arviointi = Some(List(vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenArviointi)),
+      arviointi = Some(List(vstArviointi())),
       osasuoritukset = Some(List(
         vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso,
         vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataidot
@@ -308,14 +308,14 @@ object VapaaSivistystyöExampleData {
   def vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso() = {
     VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso(
       koulutusmoduuli = vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus,
-      arviointi = Some(List(vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenArviointi))
+      arviointi = Some(List(vstArviointi()))
     )
   }
 
   def vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataidot() = {
     VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataidot(
       koulutusmoduuli = vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus,
-      arviointi = Some(List(vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenArviointi))
+      arviointi = Some(List(vstArviointi()))
     )
   }
 
@@ -325,7 +325,7 @@ object VapaaSivistystyöExampleData {
         Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus", koodistoUri = "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"),
         Some(LaajuusOpintoviikoissa(4))
       ),
-      arviointi = Some(List(vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenArviointi)),
+      arviointi = Some(List(vstArviointi())),
       osasuoritukset = Some(List(vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus))
     )
   }
@@ -333,7 +333,7 @@ object VapaaSivistystyöExampleData {
   def vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus() = {
     VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus(
       koulutusmoduuli = vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus,
-      arviointi = Some(List(vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenArviointi))
+      arviointi = Some(List(vstArviointi()))
     )
   }
 
@@ -342,13 +342,6 @@ object VapaaSivistystyöExampleData {
       tunniste = PaikallinenKoodi("TALO", "Kiinteistöhuollon perusteita"),
       kuvaus = "Omakotitaloasujan kiinteistöhuollon perusteet",
       laajuus = Some(LaajuusOpintoviikoissa(4))
-    )
-  }
-
-  def vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenArviointi() = {
-    VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenArviointi(
-      arvosana = Koodistokoodiviite("Suoritettu", "arviointiasteikkovstkoto"),
-      päivä = date(2020, 1, 1)
     )
   }
 
@@ -367,7 +360,7 @@ object VapaaSivistystyöExampleData {
         Koodistokoodiviite(koodiarvo = "vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus", koodistoUri = "vstlukutaitokoulutuksenkokonaisuus"),
         Some(LaajuusTunneissa(20))
       ),
-      arviointi = Some(List(vapaanSivistystyönLukutaitokoulutuksenArviointi))
+      arviointi = Some(List(vstArviointi()))
     )
   }
 
@@ -377,7 +370,7 @@ object VapaaSivistystyöExampleData {
         Koodistokoodiviite(koodiarvo = "vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus", koodistoUri = "vstlukutaitokoulutuksenkokonaisuus"),
         Some(LaajuusTunneissa(20))
       ),
-      arviointi = Some(List(vapaanSivistystyönLukutaitokoulutuksenArviointi))
+      arviointi = Some(List(vstArviointi()))
     )
   }
 
@@ -387,7 +380,7 @@ object VapaaSivistystyöExampleData {
         Koodistokoodiviite(koodiarvo = "vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus", koodistoUri = "vstlukutaitokoulutuksenkokonaisuus"),
         Some(LaajuusTunneissa(20))
       ),
-      arviointi = Some(List(vapaanSivistystyönLukutaitokoulutuksenArviointi))
+      arviointi = Some(List(vstArviointi()))
     )
   }
 
@@ -397,7 +390,7 @@ object VapaaSivistystyöExampleData {
         Koodistokoodiviite(koodiarvo = "vstlukutaitokoulutuksennumeeristentaitojenkokonaisuudensuoritus", koodistoUri = "vstlukutaitokoulutuksenkokonaisuus"),
         Some(LaajuusTunneissa(20))
       ),
-      arviointi = Some(List(vapaanSivistystyönLukutaitokoulutuksenArviointi))
+      arviointi = Some(List(vstArviointi()))
     )
   }
 
@@ -405,13 +398,6 @@ object VapaaSivistystyöExampleData {
     VapaanSivistystyönLukutaidonKokonaisuus(
       tunniste =  tunniste,
       laajuus = laajuus
-    )
-  }
-
-  def vapaanSivistystyönLukutaitokoulutuksenArviointi() = {
-    VapaanSivistystyönLukutaitokoulutuksenArviointi(
-      taitotaso = Koodistokoodiviite(koodiarvo = "yli_C1.1", koodistoUri = "arviointiasteikkokehittyvankielitaidontasot"),
-      päivä = date(2020, 1, 1)
     )
   }
 }

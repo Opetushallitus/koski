@@ -168,14 +168,10 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "Suoritettu",
-            "koodistoUri" : "arviointiasteikkovstkoto"
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkovst"
           },
-          "taitotaso" : {
-            "koodiarvo" : "yli_C1.1",
-            "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
-          },
-          "päivä" : "2020-01-01",
+          "päivä" : "2021-10-30",
           "hyväksytty" : true
         } ]
       }, {
@@ -208,14 +204,10 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "Suoritettu",
-            "koodistoUri" : "arviointiasteikkovstkoto"
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkovst"
           },
-          "taitotaso" : {
-            "koodiarvo" : "yli_C1.1",
-            "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
-          },
-          "päivä" : "2020-01-01",
+          "päivä" : "2021-10-30",
           "hyväksytty" : true
         } ]
       }, {
@@ -248,14 +240,10 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "Suoritettu",
-            "koodistoUri" : "arviointiasteikkovstkoto"
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkovst"
           },
-          "taitotaso" : {
-            "koodiarvo" : "yli_C1.1",
-            "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
-          },
-          "päivä" : "2020-01-01",
+          "päivä" : "2021-10-30",
           "hyväksytty" : true
         } ]
       }, {
@@ -288,14 +276,10 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "Suoritettu",
-            "koodistoUri" : "arviointiasteikkovstkoto"
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkovst"
           },
-          "taitotaso" : {
-            "koodiarvo" : "yli_C1.1",
-            "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
-          },
-          "päivä" : "2020-01-01",
+          "päivä" : "2021-10-30",
           "hyväksytty" : true
         } ]
       } ]
