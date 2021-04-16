@@ -1,9 +1,10 @@
 import bem from "bem-ts"
 import * as A from "fp-ts/lib/Array"
-import { eqString } from "fp-ts/lib/Eq"
 import { flip, pipe } from "fp-ts/lib/function"
+import * as number from "fp-ts/lib/number"
 import * as O from "fp-ts/lib/Option"
 import * as Ord from "fp-ts/lib/Ord"
+import * as string from "fp-ts/lib/string"
 import React, { useMemo, useState } from "react"
 // import { update } from "../../utils/arrays"
 import { toFilterableString } from "../../utils/conversions"
@@ -37,7 +38,7 @@ export type Column = {
   label: React.ReactNode
   filter?: DataFilter
   size?: TableCellSize
-  indicatorSpace?: boolean
+  indicatorSpace?: true | false | "auto"
 }
 
 /** Represents a piece of table data - a row */
@@ -55,6 +56,7 @@ export type Value = {
   display?: string | number | React.ReactNode
   /** Icon alongside the value */
   icon?: React.ReactNode
+  filterValues?: Array<string | number>
 }
 
 export const DataTable = (props: DataTableProps) => {
@@ -66,10 +68,16 @@ export const DataTable = (props: DataTableProps) => {
 
   const filteredData = useMemo(
     () =>
+      // TODO: Tän sotkun vois kirjoittaa kauniimmaksi
       props.data.filter((datum) =>
         filters.every(
           (filter, index) =>
-            !filter || filter(toFilterableString(datum.values[index]?.value))
+            !filter ||
+            (datum.values[index]?.filterValues
+              ? datum.values[index]?.filterValues?.some((fv) =>
+                  filter(toFilterableString(fv))
+                )
+              : filter(toFilterableString(datum.values[index]?.value)))
         )
       ),
     [filters, props.data]
@@ -87,10 +95,10 @@ export const DataTable = (props: DataTableProps) => {
         dataFilterUsesValueList(col.filter)
           ? pipe(
               props.data,
-              A.map(selectValue(index)),
+              A.chain(selectFilterValues(index)),
               A.map(toFilterableString),
-              A.uniq(eqString),
-              A.sortBy([Ord.ordString])
+              A.uniq(string.Eq),
+              A.sortBy([string.Ord])
             )
           : []
       ),
@@ -108,16 +116,27 @@ export const DataTable = (props: DataTableProps) => {
 
   const containsFilters = props.columns.some((col) => col.filter)
 
+  const columns = props.columns.map((column, colIndex) =>
+    column.indicatorSpace === "auto"
+      ? {
+          ...column,
+          indicatorSpace: filteredData.some(
+            (row) => row.values[colIndex]?.icon
+          ),
+        }
+      : column
+  )
+
   return (
     <Table className={props.className}>
       <TableHeader>
         {/* Label row */}
         <Row>
-          {props.columns.map((col, index) => (
+          {columns.map((col, index) => (
             <HeaderCell
               key={index}
               size={col.size}
-              indicatorSpace={col.indicatorSpace}
+              indicatorSpace={!!col.indicatorSpace}
               onClick={() => sortByColumn(index)}
               className={b("label")}
             >
@@ -135,8 +154,12 @@ export const DataTable = (props: DataTableProps) => {
         {/* Filter row */}
         {containsFilters && (
           <Row>
-            {props.columns.map((col, index) => (
-              <HeaderCell key={index} className={b("filter")}>
+            {columns.map((col, index) => (
+              <HeaderCell
+                key={index}
+                indicatorSpace={!!col.indicatorSpace}
+                className={b("filter")}
+              >
                 {col.filter && (
                   <DataTableFilter
                     type={col.filter}
@@ -159,13 +182,13 @@ export const DataTable = (props: DataTableProps) => {
         {sortedData.map((datum) => (
           <Row key={datum.key} data-row={datum.key}>
             {datum.values.map((value, index) => {
-              const column = props.columns[index]
+              const column = columns[index]
               return (
                 <Data
                   key={index}
                   icon={value.icon}
                   size={column?.size}
-                  indicatorSpace={column?.indicatorSpace}
+                  indicatorSpace={!!column?.indicatorSpace}
                   title={value.value?.toString()}
                 >
                   {value.display || value.value}
@@ -196,12 +219,17 @@ const compareDatum = (index: number) => (a: Datum, b: Datum) => {
   const av = valueOf(a)
   const bv = valueOf(b)
   if (typeof av === "string" && typeof bv === "string") {
-    return Ord.ordString.compare(av, bv)
+    return string.Ord.compare(av, bv)
   } else if (typeof av === "number" && typeof bv === "number") {
-    return Ord.ordNumber.compare(av, bv)
+    return number.Ord.compare(av, bv)
   }
   return 0
 }
 
 const selectValue = (index: number) => (datum: Datum) =>
   datum.values[index]?.value
+
+const selectFilterValues = (index: number) => (datum: Datum) => {
+  const item = datum.values[index]
+  return item?.filterValues || (item?.value ? [item.value] : [])
+}

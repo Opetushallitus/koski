@@ -112,7 +112,9 @@ export type HakuLaajatTiedot = {
 export type HakuSuppeatTiedot = Pick<
   HakuLaajatTiedot,
   "hakuOid" | "hakuNimi" | "hakemusOid" | "hakemusUrl" | "aktiivinenHaku"
->
+> & {
+  hakutoiveet: SuppeaHakutoive[]
+}
 
 export type Hakutoive = {
   hakutoivenumero?: number
@@ -123,14 +125,22 @@ export type Hakutoive = {
   alinValintaPistemaara?: number
   valintatila?: KoodistoKoodiviite<
     "valpashaunvalintatila",
-    | "hyvaksytty"
-    | "hylatty"
-    | "varasijalla"
-    | "peruuntunut"
-    | "peruttu"
-    | "peruutettu"
+    HakutoiveValintatilakoodiarvo
   >
 }
+
+export type SuppeaHakutoive = Pick<
+  Hakutoive,
+  "organisaatioNimi" | "hakutoivenumero" | "valintatila"
+>
+
+export type HakutoiveValintatilakoodiarvo =
+  | "hyvaksytty"
+  | "hylatty"
+  | "varasijalla"
+  | "peruuntunut"
+  | "peruttu"
+  | "peruutettu"
 
 export type OpiskeluoikeusLaajatTiedot = {
   oid: Oid
@@ -182,6 +192,17 @@ const muokkausOrd = Ord.contramap((haku: HakuLaajatTiedot) => haku.muokattu)(
 export const Haku = {
   latest: (haut: HakuLaajatTiedot[]) =>
     pipe(haut, A.sortBy([muokkausOrd]), A.head, O.toNullable),
+}
+
+export const Hakutoive = {
+  isHyväksytty: (toive: Hakutoive) =>
+    toive.valintatila?.koodiarvo === "hyvaksytty",
+  isVarasijalla: (toive: Hakutoive) =>
+    toive.valintatila?.koodiarvo === "varasijalla",
+  isEiPaikkaa: (toive: Hakutoive) =>
+    toive.valintatila?.koodiarvo === undefined
+      ? false
+      : !["hyvaksytty", "varasijalla"].includes(toive.valintatila.koodiarvo),
 }
 
 export const Yhteystiedot = {

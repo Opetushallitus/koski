@@ -1,20 +1,24 @@
 import * as A from "fp-ts/lib/Array"
 import { pipe } from "fp-ts/lib/function"
+import { isNonEmpty, NonEmptyArray } from "fp-ts/lib/NonEmptyArray"
 import * as O from "fp-ts/lib/Option"
 import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
+import { WarningIcon } from "../../components/icons/Icon"
 import { ExternalLink } from "../../components/navigation/ExternalLink"
 import { DataTable, Datum, Value } from "../../components/tables/DataTable"
 import { NotImplemented } from "../../components/typography/NoDataMessage"
-import { T, t, Translation } from "../../i18n/i18n"
+import { getLocalized, T, t, Translation } from "../../i18n/i18n"
 import { useBasePath } from "../../state/basePath"
 import {
   HakuSuppeatTiedot,
+  Hakutoive,
   OppijaHakutilanteillaSuppeatTiedot,
   valvottavatOpiskeluoikeudet,
 } from "../../state/oppijat"
 import { createOppijaPath } from "../../state/paths"
 import { Oid } from "../../state/types"
+import { nonEmptyEvery } from "../../utils/arrays"
 import { formatNullableDate } from "../../utils/date"
 
 export type HakutilanneTableProps = {
@@ -57,6 +61,7 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
         {
           label: t("hakutilanne__taulu_valintatieto"),
           filter: "dropdown",
+          indicatorSpace: "auto",
         },
         {
           label: t("hakutilanne__taulu_opiskelupaikka_vastaanotettu"),
@@ -104,14 +109,7 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
         value: opiskeluoikeus?.ryhmä,
       },
       hakemuksenTila(oppija, basePath),
-      {
-        value: t("hakutilanne__taulu_data_ei_toteutettu"),
-        display: (
-          <NotImplemented>
-            <T id="hakutilanne__taulu_data_ei_toteutettu" />
-          </NotImplemented>
-        ),
-      },
+      fromNullableValue(valintatila(oppija.hakutilanteet)),
       {
         value: t("hakutilanne__taulu_data_ei_toteutettu"),
         display: (
@@ -185,3 +183,79 @@ const hakemuksenTilaDisplay = (
     ),
     O.toNullable
   )
+
+const fromNullableValue = (value: Value | null): Value =>
+  value || {
+    value: "–",
+  }
+
+const valintatila = (haut: HakuSuppeatTiedot[]): Value | null => {
+  const hakutoiveetBy = (predicate: (hakutoive: Hakutoive) => boolean) =>
+    A.chain((haku: HakuSuppeatTiedot) => haku.hakutoiveet.filter(predicate))(
+      haut
+    )
+
+  const hyväksytytHakutoiveet = hakutoiveetBy(Hakutoive.isHyväksytty)
+  if (isNonEmpty(hyväksytytHakutoiveet)) {
+    return hyväksyttyValintatila(hyväksytytHakutoiveet)
+  }
+
+  const [varasija] = hakutoiveetBy(Hakutoive.isVarasijalla)
+  if (varasija) {
+    return {
+      value: t("valintatieto__varasija_hakukohde", {
+        hakukohde: getLocalized(varasija.organisaatioNimi) || "?",
+      }),
+    }
+  }
+
+  if (
+    nonEmptyEvery(haut, (haku) =>
+      nonEmptyEvery(haku.hakutoiveet, Hakutoive.isEiPaikkaa)
+    )
+  ) {
+    return {
+      value: t("valintatieto__ei_opiskelupaikkaa"),
+      icon: <WarningIcon />,
+    }
+  }
+
+  return null
+}
+
+const hyväksyttyValintatila = (
+  hyväksytytHakutoiveet: NonEmptyArray<Hakutoive>
+): Value => {
+  const buildHyväksyttyValue = (hakutoive: Hakutoive) => {
+    return {
+      value: t("valintatieto__hyväksytty", {
+        hakukohde: orderedHakukohde(
+          hakutoive.hakutoivenumero,
+          t("valintatieto__hakukohde_lc")
+        ),
+      }),
+      display: orderedHakukohde(
+        hakutoive.hakutoivenumero,
+        getLocalized(hakutoive.organisaatioNimi) || "?"
+      ),
+    }
+  }
+
+  if (hyväksytytHakutoiveet.length === 1) {
+    return buildHyväksyttyValue(hyväksytytHakutoiveet[0])
+  }
+
+  return {
+    value: t("valintatieto__hyväksytty_n_hakutoivetta", {
+      lukumäärä: hyväksytytHakutoiveet.length,
+    }),
+    filterValues: hyväksytytHakutoiveet.map(
+      (hakutoive) => buildHyväksyttyValue(hakutoive).value
+    ),
+  }
+}
+
+const orderedHakukohde = (
+  hakutoivenumero: number | undefined,
+  hakukohde: string
+) => (hakutoivenumero ? `${hakutoivenumero}. ${hakukohde}` : hakukohde)

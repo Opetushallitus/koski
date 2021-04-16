@@ -111,6 +111,48 @@ object HakukoosteExampleData {
           ),
         )
       )),
+    haku(
+      ValpasMockOppijat.päällekkäisiäOpiskeluoikeuksia,
+      Vector(Vector(
+        hakutoive(
+          hakukohdeOid = generateOid(),
+          hakukohdeOrganisaatio = MockOrganisaatiot.helsinginMedialukio,
+          hakukohdeNimi = "Lukio",
+          koulutusNimi = "Lukiokoulutus",
+          valintatila = Some("HYLATTY"),
+        ).copy(
+          alinValintaPistemaara = Some(8.2),
+          pisteet = Some(7.5),
+        ),
+        hakutoive(
+          hakukohdeOid = generateOid(),
+          hakukohdeOrganisaatio = MockOrganisaatiot.omnia,
+          hakukohdeNimi = "Leipomoala",
+          koulutusNimi = "Leipomoalan ammattitutkinto",
+          valintatila = Some("HYVAKSYTTY"),
+        ),
+        hakutoive(
+          hakukohdeOid = generateOid(),
+          hakukohdeOrganisaatio = MockOrganisaatiot.omnia,
+          hakukohdeNimi = "Puhtaus- ja kiinteistöpalveluala",
+          koulutusNimi = "Puhtaus- ja kiinteistöpalvelualan ammattitutkinto laitoshuoltajille ja toimitilahuoltajille",
+          valintatila = Some("HYVAKSYTTY"),
+        ),
+      ))),
+    haku(
+      ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
+      Vector(Vector(
+        hakutoive(
+          hakukohdeOid = generateOid(),
+          hakukohdeOrganisaatio = MockOrganisaatiot.ressunLukio,
+          hakukohdeNimi = "Lukio",
+          koulutusNimi = "Lukiokoulutus",
+          valintatila = Some("VARALLA"),
+        ).copy(
+          alinValintaPistemaara = Some(8.99),
+          pisteet = Some(9)
+        ),
+      ))),
   ).flatten
 
   def haku(
