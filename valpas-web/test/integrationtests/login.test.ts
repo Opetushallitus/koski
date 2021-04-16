@@ -65,6 +65,10 @@ describe("Login / Logout / kirjautuminen", () => {
       "valpas-jkl-normaali"
     )
 
+    await expectElementEventuallyVisible(
+      ".hakutilanne tbody tr td:first-child a"
+    )
+
     // Salavihkainen logout (ei poista selaimesta keksiä)
     await fetch(pathToApiUrl("/test/logout/valpas-jkl-normaali"))
 

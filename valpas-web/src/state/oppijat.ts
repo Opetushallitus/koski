@@ -99,14 +99,9 @@ export type HakuLaajatTiedot = {
   hakemusOid: Oid
   hakemusUrl: string
   aktiivinenHaku: boolean
-  muokattu: ISODateTime
+  hakuAlkaa: ISODateTime
+  muokattu?: ISODateTime
   hakutoiveet: Hakutoive[]
-  osoite: string
-  puhelinnumero: string
-  sähköposti: string
-  huoltajanNimi?: string
-  huoltajanPuhelinnumero?: string
-  huoltajanSähköposti?: string
 }
 
 export type HakuSuppeatTiedot = Pick<
@@ -117,10 +112,10 @@ export type HakuSuppeatTiedot = Pick<
 }
 
 export type Hakutoive = {
-  hakutoivenumero?: number
   hakukohdeNimi?: LocalizedString
   organisaatioNimi?: LocalizedString
   koulutusNimi?: LocalizedString
+  hakutoivenumero?: number
   pisteet?: number
   alinValintaPistemaara?: number
   valintatila?: KoodistoKoodiviite<
@@ -185,13 +180,14 @@ export const OpiskeluoikeusLaajatTiedot = {
     ]),
 }
 
-const muokkausOrd = Ord.contramap((haku: HakuLaajatTiedot) => haku.muokattu)(
-  string.Ord
-)
+const muokkausOrd = Ord.contramap(
+  (h: HakuLaajatTiedot) => (h["muokattu"] as ISODate) || "0000-00-00"
+)(Ord.reverse(string.Ord))
 
 export const Haku = {
   latest: (haut: HakuLaajatTiedot[]) =>
     pipe(haut, A.sortBy([muokkausOrd]), A.head, O.toNullable),
+  sort: A.sortBy<HakuLaajatTiedot>([muokkausOrd]),
 }
 
 export const Hakutoive = {
