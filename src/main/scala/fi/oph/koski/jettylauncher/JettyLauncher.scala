@@ -68,7 +68,8 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
   handlers.addHandler(rootContext)
 
   def start = {
-    server.start
+    server.start()
+    logger.info(s"Running in port $port")
     server
   }
 
