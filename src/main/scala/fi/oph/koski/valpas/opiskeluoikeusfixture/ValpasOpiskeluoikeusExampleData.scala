@@ -1,4 +1,4 @@
-package fi.oph.koski.valpas.fixture
+package fi.oph.koski.valpas.opiskeluoikeusfixture
 
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, vahvistusPaikkakunnalla}
 import fi.oph.koski.documentation.{ExampleData, ExamplesLukio}
@@ -11,7 +11,7 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.LukioExampleData.opiskeluoikeusAktiivinen
 import fi.oph.koski.organisaatio.MockOrganisaatiot.aapajoenKoulu
 
-object ValpasExampleData {
+object ValpasOpiskeluoikeusExampleData {
   def oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus = PerusopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
     koulutustoimija = None,

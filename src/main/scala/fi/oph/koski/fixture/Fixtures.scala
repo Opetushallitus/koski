@@ -5,7 +5,7 @@ import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, MockOpintopolkuHenkilöFa
 import fi.oph.koski.localization.MockLocalizationRepository
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.{Timing, Wait}
-import fi.oph.koski.valpas.fixture.ValpasFixtureState
+import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasOpiskeluoikeusFixtureState
 
 object FixtureCreator {
   def generateOppijaOid(counter: Int) = "1.2.246.562.24." + "%011d".format(counter)
@@ -58,7 +58,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
   def getCurrentFixtureStateName() = currentFixtureState.name
 
   lazy val koskiSpecificFixtureState = new KoskiSpecificFixtureState(application)
-  lazy val valpasFixtureState = new ValpasFixtureState(application)
+  lazy val valpasFixtureState = new ValpasOpiskeluoikeusFixtureState(application)
 }
 
 trait FixtureState extends Timing {

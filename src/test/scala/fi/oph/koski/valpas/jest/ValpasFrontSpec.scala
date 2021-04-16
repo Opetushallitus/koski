@@ -3,7 +3,7 @@ package fi.oph.koski.valpas.jest
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.SharedJetty
 import fi.oph.koski.mocha.KoskiCommandLineSpec
-import fi.oph.koski.valpas.fixture.FixtureUtil
+import fi.oph.koski.valpas.opiskeluoikeusfixture.FixtureUtil
 import org.scalatest.Tag
 
 class ValpasFrontSpec extends KoskiCommandLineSpec {

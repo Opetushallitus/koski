@@ -1,4 +1,4 @@
-package fi.oph.koski.valpas.oppivelvollisuusrekisteri
+package fi.oph.koski.valpas.valpasrepository
 
 import java.time.LocalDate
 

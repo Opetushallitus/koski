@@ -1,11 +1,11 @@
-package fi.oph.koski.valpas.repository
-
-import fi.oph.koski.henkilo.Yhteystiedot
-import fi.oph.koski.schema.{BlankableLocalizedString, Koodistokoodiviite, LocalizedString}
-import fi.oph.koski.schema.annotation.KoodistoUri
-import fi.oph.koski.valpas.hakukooste.Hakukooste
+package fi.oph.koski.valpas.yhteystiedot
 
 import java.time.LocalDateTime
+
+import fi.oph.koski.henkilo.Yhteystiedot
+import fi.oph.koski.schema.annotation.KoodistoUri
+import fi.oph.koski.schema.{BlankableLocalizedString, Koodistokoodiviite, LocalizedString}
+import fi.oph.koski.valpas.hakukooste.Hakukooste
 
 case class ValpasYhteystiedot(
   alkuperä: ValpasYhteystietojenAlkuperä,

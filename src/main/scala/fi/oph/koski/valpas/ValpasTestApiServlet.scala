@@ -4,8 +4,8 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.servlet.NoCache
-import fi.oph.koski.valpas.fixture.{FixtureState, FixtureUtil}
-import fi.oph.koski.valpas.repository.MockValpasRajapäivät
+import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureState, FixtureUtil}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivät
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 
 class ValpasTestApiServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with Unauthenticated {

@@ -1,7 +1,7 @@
-package fi.oph.koski.valpas.fixture
+package fi.oph.koski.valpas.opiskeluoikeusfixture
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.valpas.repository.{MockValpasRajapäivät, ValpasRajapäivät}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{MockValpasRajapäivät, ValpasRajapäivät}
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 
 

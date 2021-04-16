@@ -7,7 +7,7 @@ import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.ValpasErrorCategory
-import fi.oph.koski.valpas.repository.{ValpasHenkilö, ValpasHenkilöLaajatTiedot}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasHenkilöLaajatTiedot}
 
 
 class SureHakukoosteService(config: Config) extends ValpasHakukoosteService with Logging with Timing {

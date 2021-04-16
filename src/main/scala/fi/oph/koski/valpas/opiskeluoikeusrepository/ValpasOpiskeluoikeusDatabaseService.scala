@@ -1,4 +1,4 @@
-package fi.oph.koski.valpas.repository
+package fi.oph.koski.valpas.opiskeluoikeusrepository
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._

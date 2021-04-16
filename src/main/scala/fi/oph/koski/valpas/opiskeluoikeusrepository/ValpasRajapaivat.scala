@@ -1,4 +1,4 @@
-package fi.oph.koski.valpas.repository
+package fi.oph.koski.valpas.opiskeluoikeusrepository
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
