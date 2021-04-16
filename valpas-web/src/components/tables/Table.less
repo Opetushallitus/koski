@@ -57,6 +57,14 @@
   width: 25rem;
 }
 
+.table_th_col(@columns) when (@columns > 0) {
+  .table_th_col(@columns - 1);
+  .table__th--col@{columns} {
+    width: 100% * (@columns / 16);
+  }
+}
+.table_th_col(16);
+
 .table__th--indicator,
 .table__td--indicator {
   padding-left: @table-cell-icon-padding;

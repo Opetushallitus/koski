@@ -11,7 +11,7 @@ export const LeanTable = (props: DataTableProps) => (
     <thead>
       <tr className={b("headerrow")}>
         {props.columns.map((col, index) => (
-          <th key={index} className={b("th")}>
+          <th key={index} className={b("th", [col.size])}>
             <div className={b("label")}>{col.label}</div>
           </th>
         ))}

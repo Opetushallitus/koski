@@ -68,18 +68,23 @@ const HakuTable = (props: HakuTableProps) => (
       </ExternalLink>
     </TertiaryHeading>
     <LeanTable
+      className={b("table")}
       columns={[
         {
           label: t("oppija__hakukohde"),
+          size: "col6",
         },
         {
           label: t("oppija__valintatilanne"),
+          size: "col4",
         },
         {
           label: t("oppija__pisteet"),
+          size: "col3",
         },
         {
           label: t("oppija__alin_pistemäärä"),
+          size: "col3",
         },
       ]}
       data={props.haku.hakutoiveet.map(hakutoiveToTableValue)}
