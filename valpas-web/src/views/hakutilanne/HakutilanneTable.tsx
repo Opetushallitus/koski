@@ -196,7 +196,8 @@ const valintatila = (haut: HakuSuppeatTiedot[]): Value | null => {
   const [varasija] = Haku.selectByHakutoive(haut, Hakutoive.isVarasijalla)
   if (varasija) {
     return {
-      value: t("valintatieto__varasija_hakukohde", {
+      value: t("valintatieto__varasija"),
+      display: t("valintatieto__varasija_hakukohde", {
         hakukohde: getLocalized(varasija.organisaatioNimi) || "?",
       }),
     }
