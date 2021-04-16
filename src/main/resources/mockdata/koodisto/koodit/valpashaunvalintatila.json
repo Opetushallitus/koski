@@ -82,5 +82,19 @@
     ],
     "versio": 1,
     "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpashaunvalintatila_kesken",
+    "koodiArvo": "kesken",
+    "metadata": [
+      {
+        "nimi": "Kesken",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
   }
 ]
