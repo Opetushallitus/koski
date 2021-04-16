@@ -4,13 +4,14 @@ import { isNonEmpty, NonEmptyArray } from "fp-ts/lib/NonEmptyArray"
 import * as O from "fp-ts/lib/Option"
 import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
-import { WarningIcon } from "../../components/icons/Icon"
+import { SuccessIcon, WarningIcon } from "../../components/icons/Icon"
 import { ExternalLink } from "../../components/navigation/ExternalLink"
 import { DataTable, Datum, Value } from "../../components/tables/DataTable"
 import { NotImplemented } from "../../components/typography/NoDataMessage"
 import { getLocalized, T, t, Translation } from "../../i18n/i18n"
 import { useBasePath } from "../../state/basePath"
 import {
+  Haku,
   HakuSuppeatTiedot,
   Hakutoive,
   OppijaHakutilanteillaSuppeatTiedot,
@@ -66,6 +67,7 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
         {
           label: t("hakutilanne__taulu_opiskelupaikka_vastaanotettu"),
           filter: "dropdown",
+          indicatorSpace: "auto",
         },
         {
           label: t("hakutilanne__taulu_voimassaolevia_opiskeluoikeuksia"),
@@ -110,14 +112,7 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
       },
       hakemuksenTila(oppija, basePath),
       fromNullableValue(valintatila(oppija.hakutilanteet)),
-      {
-        value: t("hakutilanne__taulu_data_ei_toteutettu"),
-        display: (
-          <NotImplemented>
-            <T id="hakutilanne__taulu_data_ei_toteutettu" />
-          </NotImplemented>
-        ),
-      },
+      fromNullableValue(vastaanottotieto(oppija.hakutilanteet)),
       {
         value: t("hakutilanne__taulu_data_ei_toteutettu"),
         display: (
@@ -190,17 +185,15 @@ const fromNullableValue = (value: Value | null): Value =>
   }
 
 const valintatila = (haut: HakuSuppeatTiedot[]): Value | null => {
-  const hakutoiveetBy = (predicate: (hakutoive: Hakutoive) => boolean) =>
-    A.chain((haku: HakuSuppeatTiedot) => haku.hakutoiveet.filter(predicate))(
-      haut
-    )
-
-  const hyväksytytHakutoiveet = hakutoiveetBy(Hakutoive.isHyväksytty)
+  const hyväksytytHakutoiveet = Haku.selectByHakutoive(
+    haut,
+    Hakutoive.isHyväksytty
+  )
   if (isNonEmpty(hyväksytytHakutoiveet)) {
     return hyväksyttyValintatila(hyväksytytHakutoiveet)
   }
 
-  const [varasija] = hakutoiveetBy(Hakutoive.isVarasijalla)
+  const [varasija] = Haku.selectByHakutoive(haut, Hakutoive.isVarasijalla)
   if (varasija) {
     return {
       value: t("valintatieto__varasija_hakukohde", {
@@ -259,3 +252,26 @@ const orderedHakukohde = (
   hakutoivenumero: number | undefined,
   hakukohde: string
 ) => (hakutoivenumero ? `${hakutoivenumero}. ${hakukohde}` : hakukohde)
+
+const vastaanottotieto = (hakutilanteet: HakuSuppeatTiedot[]): Value | null => {
+  const vastaanotetut = Haku.selectByHakutoive(
+    hakutilanteet,
+    Hakutoive.isVastaanotettu
+  )
+  switch (vastaanotetut.length) {
+    case 0:
+      return null
+    case 1:
+      return {
+        value: getLocalized(vastaanotetut[0]?.organisaatioNimi),
+        icon: <SuccessIcon />,
+      }
+    default:
+      return {
+        value: t("vastaanotettu__n_paikkaa", {
+          lukumäärä: vastaanotetut.length,
+        }),
+        icon: <SuccessIcon />,
+      }
+  }
+}

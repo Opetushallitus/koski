@@ -123,6 +123,10 @@ export type Hakutoive = {
     HakutoiveValintatilakoodiarvo
   >
   varasijanumero?: number
+  vastaanottotieto?: KoodistoKoodiviite<
+    "valpasvastaanottotieto",
+    HakutoiveVastaanottokoodiarvo
+  >
 }
 
 export type SuppeaHakutoive = Pick<
@@ -138,6 +142,8 @@ export type HakutoiveValintatilakoodiarvo =
   | "peruttu"
   | "peruutettu"
   | "kesken"
+
+export type HakutoiveVastaanottokoodiarvo = "vastaanotettu" | "ehdollinen"
 
 export type OpiskeluoikeusLaajatTiedot = {
   oid: Oid
@@ -189,7 +195,16 @@ const muokkausOrd = Ord.contramap(
 export const Haku = {
   latest: (haut: HakuLaajatTiedot[]) =>
     pipe(haut, A.sortBy([muokkausOrd]), A.head, O.toNullable),
+
   sort: A.sortBy<HakuLaajatTiedot>([muokkausOrd]),
+
+  selectByHakutoive: (
+    haut: HakuSuppeatTiedot[],
+    predicate: (hakutoive: Hakutoive) => boolean
+  ) =>
+    A.chain((haku: HakuSuppeatTiedot) => haku.hakutoiveet.filter(predicate))(
+      haut
+    ),
 }
 
 export const Hakutoive = {
@@ -203,6 +218,9 @@ export const Hakutoive = {
       : !["hyvaksytty", "varasijalla", "kesken"].includes(
           toive.valintatila.koodiarvo
         ),
+  isVastaanotettu: (toive: Hakutoive) =>
+    toive.vastaanottotieto?.koodiarvo === "vastaanotettu" ||
+    toive.vastaanottotieto?.koodiarvo === "ehdollinen",
 }
 
 export const Yhteystiedot = {
