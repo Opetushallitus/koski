@@ -122,6 +122,7 @@ export type Hakutoive = {
     "valpashaunvalintatila",
     HakutoiveValintatilakoodiarvo
   >
+  varasijanumero?: number
 }
 
 export type SuppeaHakutoive = Pick<

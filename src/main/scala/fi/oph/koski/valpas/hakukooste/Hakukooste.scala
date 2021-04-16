@@ -44,6 +44,7 @@ case class Hakutoive(
   alinValintaPistemaara: Option[BigDecimal],
   @EnumValues(Valintatila.values)
   valintatila: Option[String],
+  varasijanumero: Option[Int],
   @EnumValues(Vastaanottotieto.values)
   vastaanottotieto: Option[String],
   @EnumValues(Ilmoittautumistila.values)

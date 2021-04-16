@@ -238,6 +238,7 @@ object ValpasHakutoive {
       alinValintaPistemaara = hakutoive.alinValintaPistemaara,
       valintatila = Valintatila.valpasKoodiviiteOption(hakutoive.valintatila),
       vastaanottotieto = Vastaanottotieto.valpasKoodiviiteOption(hakutoive.vastaanottotieto),
+      varasijanumero = hakutoive.varasijanumero,
     )
   }
 }
@@ -253,6 +254,7 @@ case class ValpasHakutoive(
   valintatila: Option[Koodistokoodiviite],
   @KoodistoUri("valpasvastaanottotieto")
   vastaanottotieto: Option[Koodistokoodiviite],
+  varasijanumero: Option[Int],
 ) {
   def validate(koodistoviitepalvelu: KoodistoViitePalvelu): ValpasHakutoive =
     this.copy(valintatila = valintatila.flatMap(koodistoviitepalvelu.validate))

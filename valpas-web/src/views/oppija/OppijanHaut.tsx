@@ -120,7 +120,10 @@ const hakutoiveToTableValue = (hakutoive: Hakutoive, index: number): Datum => ({
     {
       value:
         hakutoive?.valintatila &&
-        koodiviiteToShortString(hakutoive.valintatila),
+        (hakutoive.valintatila.koodiarvo === "varasijalla" &&
+        hakutoive.varasijanumero !== undefined
+          ? t("valintatieto__ns_varasija", { n: hakutoive.varasijanumero })
+          : koodiviiteToShortString(hakutoive.valintatila)),
     },
     { value: formatFixedNumber(hakutoive.pisteet, 2) },
     { value: formatFixedNumber(hakutoive.alinValintaPistemaara, 2) },
