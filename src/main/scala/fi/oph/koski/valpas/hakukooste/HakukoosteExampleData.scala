@@ -3,10 +3,10 @@ package fi.oph.koski.valpas.hakukooste
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.schema._
-import fi.oph.koski.valpas.henkilo.ValpasMockOppijat
 import fi.vm.sade.oidgenerator.OIDGenerator
-
 import java.time.{LocalDate, LocalDateTime}
+
+import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
 
 object HakukoosteExampleData {
   private implicit class Conversions(maybe: Option[LocalizedString]) {

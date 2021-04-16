@@ -1,4 +1,4 @@
-package fi.oph.koski.valpas.henkilo
+package fi.oph.koski.valpas.opiskeluoikeusfixture
 
 import fi.oph.koski.henkilo.MockOppijat
 

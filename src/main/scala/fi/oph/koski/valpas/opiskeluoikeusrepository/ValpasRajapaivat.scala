@@ -1,9 +1,9 @@
-package fi.oph.koski.valpas.repository
+package fi.oph.koski.valpas.opiskeluoikeusrepository
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-trait Rajapäivät {
+trait ValpasRajapäivät {
   def tarkasteluPäivä: LocalDate
 
   def lakiVoimassaPeruskoulustaValmistuneillaAlku: LocalDate = date(2021, 1, 1)
@@ -20,26 +20,26 @@ trait Rajapäivät {
   private val keväänVuosi = tarkasteluPäivä.getYear
 }
 
-class OikeatRajapäivät extends Rajapäivät {
+class OikeatValpasRajapäivät extends ValpasRajapäivät {
   override def tarkasteluPäivä: LocalDate = LocalDate.now
 }
 
-class MockRajapäivät(val tarkasteluPäivä: LocalDate = date(2021, 9, 5)) extends Rajapäivät
+class MockValpasRajapäivät(val tarkasteluPäivä: LocalDate = date(2021, 9, 5)) extends ValpasRajapäivät
 
-object Rajapäivät {
+object ValpasRajapäivät {
   // käytetään oletuksena tuotantototeutusta myös paikallisesti: kun Valppaan mock-data resetoidaan, tämä vaihdetaan
   // mock-versioksi.
-  private val default = new OikeatRajapäivät()
+  private val default = new OikeatValpasRajapäivät()
 
-  private var mockImplementation: Rajapäivät = default
+  private var mockImplementation: ValpasRajapäivät = default
 
-  def enableMock(rajapäivät: MockRajapäivät): Unit = mockImplementation = rajapäivät
+  def enableMock(rajapäivät: MockValpasRajapäivät): Unit = mockImplementation = rajapäivät
 
   def disableMock(): Unit = mockImplementation = default
 
-  def getCurrent(): Rajapäivät = mockImplementation
+  def getCurrent(): ValpasRajapäivät = mockImplementation
 
-  def apply(allowMock: Boolean): () => Rajapäivät = {
+  def apply(allowMock: Boolean): () => ValpasRajapäivät = {
     () => {
       if (allowMock) {
         mockImplementation

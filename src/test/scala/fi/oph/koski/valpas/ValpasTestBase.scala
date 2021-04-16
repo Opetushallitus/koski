@@ -5,7 +5,7 @@ import fi.oph.koski.api.LocalJettyHttpSpecification.externalJettyPort
 import fi.oph.koski.api.{LocalJettyHttpSpecification, SharedJetty}
 import fi.oph.koski.http.{HttpSpecification, HttpTester}
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester, RootLogTester}
-import fi.oph.koski.valpas.fixture.FixtureUtil
+import fi.oph.koski.valpas.opiskeluoikeusfixture.FixtureUtil
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 import org.scalatest.{BeforeAndAfterAll, FreeSpec}
 

@@ -6080,7 +6080,8 @@
       "aliOrganisaatioMaara": 12,
       "organisaatiotyypit": [
         "organisaatiotyyppi_01",
-        "organisaatiotyyppi_07"
+        "organisaatiotyyppi_07",
+        "organisaatiotyyppi_09"
       ],
       "status": "AKTIIVINEN"
     },
@@ -22568,7 +22569,8 @@
       "aliOrganisaatioMaara": 555,
       "organisaatiotyypit": [
         "organisaatiotyyppi_01",
-        "organisaatiotyyppi_07"
+        "organisaatiotyyppi_07",
+        "organisaatiotyyppi_09"
       ],
       "status": "AKTIIVINEN"
     },

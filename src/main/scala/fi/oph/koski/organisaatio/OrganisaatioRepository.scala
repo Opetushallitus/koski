@@ -75,6 +75,10 @@ trait OrganisaatioRepository extends Logging {
     filter(_.organisaatiotyypit.contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA))
   }
 
+  def findKunnat: List[OrganisaatioHierarkia] = {
+    filter(_.organisaatiotyypit.contains(Organisaatiotyyppi.KUNTA))
+  }
+
   def convertOrganisaatio(org: OrganisaatioPalveluOrganisaatio): OrganisaatioHierarkia = {
     val oppilaitosnumero = org.oppilaitosKoodi.flatMap(oppilaitosnumero => koodisto.validate("oppilaitosnumero", oppilaitosnumero))
     val kotipaikka = org.kotipaikkaUri.map(str => str.split("_")).flatMap {
@@ -119,6 +123,7 @@ object Organisaatiotyyppi {
   val OPPISOPIMUSTOIMIPISTE = "OPPISOPIMUSTOIMIPISTE"
   val VARHAISKASVATUKSEN_TOIMIPAIKKA = "VARHAISKASVATUKSEN_TOIMIPAIKKA"
   val VARHAISKASVATUKSEN_JARJESTAJA = "VARHAISKASVATUKSEN_JARJESTAJA"
+  val KUNTA = "KUNTA"
 
   private val fromNew = Map(
     "organisaatiotyyppi_01" -> KOULUTUSTOIMIJA,
@@ -126,7 +131,8 @@ object Organisaatiotyyppi {
     "organisaatiotyyppi_03" -> TOIMIPISTE,
     "organisaatiotyyppi_04" -> OPPISOPIMUSTOIMIPISTE,
     "organisaatiotyyppi_08" -> VARHAISKASVATUKSEN_TOIMIPAIKKA,
-    "organisaatiotyyppi_07" -> VARHAISKASVATUKSEN_JARJESTAJA
+    "organisaatiotyyppi_07" -> VARHAISKASVATUKSEN_JARJESTAJA,
+    "organisaatiotyyppi_09" -> KUNTA
   )
 
   def convertFromNew(newOrgType: String): Oid =

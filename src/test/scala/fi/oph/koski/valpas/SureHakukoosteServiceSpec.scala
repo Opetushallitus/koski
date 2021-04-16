@@ -7,11 +7,11 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration._
 import com.typesafe.config.ConfigFactory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, HakukoosteExampleData, ValpasHakukoosteService}
-import fi.oph.koski.valpas.henkilo.ValpasMockOppijat
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatest._
-
 import java.time.LocalDateTime
+
+import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
 
 class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with EitherValues with BeforeAndAfterAll {
   implicit val jsonDefaultFormats: Formats = DefaultFormats.preservingEmptyValues

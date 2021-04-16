@@ -1,4 +1,4 @@
-package fi.oph.koski.valpas.repository
+package fi.oph.koski.valpas.opiskeluoikeusrepository
 
 import fi.oph.koski.schema.annotation.KoodistoUri
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}

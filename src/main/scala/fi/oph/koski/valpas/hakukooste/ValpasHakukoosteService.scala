@@ -2,7 +2,7 @@ package fi.oph.koski.valpas.hakukooste
 
 import com.typesafe.config.Config
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.valpas.repository.{ValpasHenkilö, ValpasHenkilöLaajatTiedot}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasHenkilöLaajatTiedot}
 
 
 trait ValpasHakukoosteService {

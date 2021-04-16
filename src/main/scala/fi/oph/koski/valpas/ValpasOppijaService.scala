@@ -10,14 +10,17 @@ import fi.oph.koski.validation.{ValidatingAndResolvingExtractor, ValidationAndRe
 import fi.oph.koski.valpas.ValpasOppijaService.ValpasOppijaRowConversionOps
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, ValpasHakukoosteService}
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessage, ValpasOperation}
-import fi.oph.koski.valpas.repository._
+import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusSuppeatTiedot}
+import fi.oph.koski.valpas.opiskeluoikeusrepository._
 import fi.oph.koski.valpas.valpasuser.ValpasSession
+import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystiedot
 
 case class OppijaHakutilanteillaLaajatTiedot(
   oppija: ValpasOppijaLaajatTiedot,
   hakutilanteet: Seq[ValpasHakutilanneLaajatTiedot],
   hakutilanneError: Option[String],
-  yhteystiedot: Seq[ValpasYhteystiedot]
+  yhteystiedot: Seq[ValpasYhteystiedot],
+  kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot]
 )
 
 object OppijaHakutilanteillaLaajatTiedot {
@@ -27,7 +30,8 @@ object OppijaHakutilanteillaLaajatTiedot {
       hakutilanteet = haut.map(_.map(ValpasHakutilanneLaajatTiedot.apply)).getOrElse(Seq()),
       // TODO: Pitäisikö virheet mankeloida jotenkin eikä palauttaa sellaisenaan fronttiin?
       hakutilanneError = haut.left.toOption.flatMap(_.errorString),
-      yhteystiedot = Seq.empty
+      yhteystiedot = Seq.empty,
+      kuntailmoitukset = Seq.empty
     )
   }
 }
@@ -35,7 +39,8 @@ object OppijaHakutilanteillaLaajatTiedot {
 case class OppijaHakutilanteillaSuppeatTiedot(
   oppija: ValpasOppijaSuppeatTiedot,
   hakutilanteet: Seq[ValpasHakutilanneSuppeatTiedot],
-  hakutilanneError: Option[String]
+  hakutilanneError: Option[String],
+  kuntailmoitukset: Seq[ValpasKuntailmoitusSuppeatTiedot]
 )
 
 object OppijaHakutilanteillaSuppeatTiedot {
@@ -43,7 +48,8 @@ object OppijaHakutilanteillaSuppeatTiedot {
     OppijaHakutilanteillaSuppeatTiedot(
       ValpasOppijaSuppeatTiedot(laajatTiedot.oppija),
       laajatTiedot.hakutilanteet.map(ValpasHakutilanneSuppeatTiedot.apply),
-      laajatTiedot.hakutilanneError
+      laajatTiedot.hakutilanneError,
+      laajatTiedot.kuntailmoitukset.map(ValpasKuntailmoitusSuppeatTiedot.apply)
     )
   }
 }
@@ -77,14 +83,14 @@ class ValpasOppijaService(
   application: KoskiApplication,
   hakukoosteService: ValpasHakukoosteService,
 ) extends Logging with Timing {
-  private val dbService = new ValpasDatabaseService(application)
+  private val opiskeluoikeusDbService = new ValpasOpiskeluoikeusDatabaseService(application)
   private val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
   private val localizationRepository = application.valpasLocalizationRepository
   private val koodistoviitepalvelu = application.koodistoViitePalvelu
 
   private val accessResolver = new ValpasAccessResolver(application.organisaatioRepository)
 
-  private val rajapäivät: () => Rajapäivät = Rajapäivät(Environment.isLocalDevelopmentEnvironment)
+  private val rajapäivät: () => ValpasRajapäivät = ValpasRajapäivät(Environment.isLocalDevelopmentEnvironment)
   private implicit val validationAndResolvingContext: ValidationAndResolvingContext =
     ValidationAndResolvingContext(application.koodistoViitePalvelu, application.organisaatioRepository)
 
@@ -104,7 +110,7 @@ class ValpasOppijaService(
     }
 
     accessResolver.organisaatiohierarkiaOids(oppilaitosOids)
-      .map(dbService.getPeruskoulunValvojalleNäkyvätOppijat(rajapäivät()))
+      .map(opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyvätOppijat(rajapäivät()))
       .flatMap(results => HttpStatus.foldEithers(results.map(_.asValpasOppijaLaajatTiedot)))
       .map(fetchHaut(errorClue))
   }
@@ -113,7 +119,7 @@ class ValpasOppijaService(
   // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
   // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
   def getOppijaLaajatTiedot(oppijaOid: ValpasHenkilö.Oid)(implicit session: ValpasSession): Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] =
-    dbService.getPeruskoulunValvojalleNäkyväOppija(rajapäivät())(oppijaOid)
+    opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyväOppija(rajapäivät())(oppijaOid)
       .toRight(ValpasErrorCategory.forbidden.oppija())
       .flatMap(_.asValpasOppijaLaajatTiedot)
       .flatMap(accessResolver.withOppijaAccess)

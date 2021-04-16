@@ -2,7 +2,7 @@ package fi.oph.koski.valpas
 
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers
-import fi.oph.koski.valpas.henkilo.ValpasMockOppijat
+import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 
 class ValpasAuthenticationSpec extends ValpasHttpTestBase {
