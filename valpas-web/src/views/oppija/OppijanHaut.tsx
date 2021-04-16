@@ -13,6 +13,7 @@ import {
 } from "../../components/typography/NoDataMessage"
 import { formatFixedNumber, getLocalized, t, T } from "../../i18n/i18n"
 import {
+  Haku,
   HakuLaajatTiedot,
   Hakutoive,
   OppijaHakutilanteillaLaajatTiedot,
@@ -26,7 +27,7 @@ export type OppijanHautProps = {
 }
 
 export const OppijanHaut = (props: OppijanHautProps) => {
-  const haut = props.oppija.hakutilanteet
+  const haut = Haku.sort(props.oppija.hakutilanteet)
   const error = props.oppija.hakutilanneError
   return error ? (
     <NoDataMessage>
