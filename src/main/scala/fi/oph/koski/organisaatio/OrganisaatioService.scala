@@ -62,6 +62,9 @@ class OrganisaatioService(application: KoskiApplication) {
       }
     }.sortBy(r => (r.organisaatioHierarkia.nimi.get(user.lang), r.kayttooikeusrooli))
 
+  def kunnat(implicit user: Session): List[OrganisaatioHierarkia] =
+    organisaatioRepository.findKunnat
+
   private def koulutustoimijoidenOstopalveluOrganisaatiot(koulutustoimijat: Set[Oid])(implicit user: Session): List[OrganisaatioHierarkia] =
     perustiedot.haeVarhaiskasvatustoimipisteet(koulutustoimijat) match {
       case päiväkoditJoihinTallennettuOpiskeluoikeuksia if päiväkoditJoihinTallennettuOpiskeluoikeuksia.nonEmpty =>

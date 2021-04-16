@@ -5,6 +5,7 @@ import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioHierarkia, Organis
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.valpas.hakukooste.ValpasHakukoosteService
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
+import fi.oph.koski.valpas.valpasrepository.ValpasKunta
 import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
 
 class ValpasRootApiServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with RequiresValpasSession {
@@ -41,5 +42,11 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
 
   get("/oppija/:oid") {
     renderEither(oppijaService.getOppijaLaajatTiedot(params("oid")))
+  }
+
+  get("/organisaatiot/kunnat") {
+    organisaatioService.kunnat.map(oh =>
+      ValpasKunta(oh.oid, Some(oh.nimi), oh.kotipaikka)
+    )
   }
 }
