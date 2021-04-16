@@ -107,10 +107,7 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
     handlers.addHandler(context)
   }
 
-  private def resourceBase = if (isRunningAws) {
-    Resource.setDefaultUseCaches(false) // avoid "zip file is closed" exceptions in some situations (exact cause unknown)
-    JettyLauncher.getClass.getClassLoader.getResource("webapp").toExternalForm
-  } else {
+  private def resourceBase = {
     val base = System.getProperty("resourcebase", "./target/webapp")
     if (!Files.exists(Paths.get(base))) {
       throw new RuntimeException("WebApplication resource base: " + base + " does not exist.")
@@ -136,8 +133,7 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
   }
 
   private def setupPrometheusMetrics = {
-    val pathSpec = if (isRunningAws) "/koski-metrics" else "/metrics"
-    rootContext.addServlet(new ServletHolder(new MetricsServlet), pathSpec)
+    rootContext.addServlet(new ServletHolder(new MetricsServlet), "/metrics")
   }
 
   private def setupOppijaRaamitProxy = {
@@ -151,8 +147,6 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
     holder.setInitParameter("proxyTo", config.getString("virkailijaRaamitProxy"))
     holder.setInitParameter("prefix", "/virkailija-raamit")
   }
-
-  private def isRunningAws = System.getProperty("uberjar", "false").equals("true")
 }
 
 object TestConfig {
