@@ -30,7 +30,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
         Wait.until { raportointikantaService.isLoadComplete }
       }
 
-      logger.info(s"Reset application fixtures ${fixtureState.name}")
+      logger.info(s"Application fixtures reset to ${fixtureState.name}")
     }
   }
 
