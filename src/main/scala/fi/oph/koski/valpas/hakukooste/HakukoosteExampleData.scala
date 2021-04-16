@@ -33,6 +33,7 @@ object HakukoosteExampleData {
           hakukohdeNimi = "Lukio",
           koulutusNimi = "Lukiokoulutus",
           valintatila = Some("HYVAKSYTTY"),
+          vastaanottotieto = Some("VASTAANOTTANUT_SITOVASTI"),
         ).copy(
           alinValintaPistemaara = Some(8.2),
           pisteet = Some(9),
@@ -203,7 +204,8 @@ object HakukoosteExampleData {
     hakukohdeOrganisaatio: String,
     hakukohdeNimi: String,
     koulutusNimi: String,
-    valintatila: Option[String] = None
+    valintatila: Option[String] = None,
+    vastaanottotieto: Option[String] = None,
   ): Hakutoive =
     Hakutoive(
       hakukohdeOid = hakukohdeOid,
@@ -218,7 +220,7 @@ object HakukoosteExampleData {
       pisteet = None,
       alinValintaPistemaara = None,
       valintatila = valintatila,
-      vastaanottotieto = Some("KESKEN"),
+      vastaanottotieto = vastaanottotieto,
       ilmoittautumistila = Some("EI_ILMOITTAUTUNUT"),
       koulutusOid = Some("TODO"),
       harkinnanvaraisuus = None,

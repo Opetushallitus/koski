@@ -2,7 +2,7 @@ package fi.oph.koski.valpas.opiskeluoikeusrepository
 
 import fi.oph.koski.schema.annotation.KoodistoUri
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
-import fi.oph.koski.valpas.hakukooste.{Hakukooste, Hakutoive, Valintatila}
+import fi.oph.koski.valpas.hakukooste.{Hakukooste, Hakutoive, Valintatila, Vastaanottotieto}
 import fi.oph.scalaschema.annotation.SyntheticProperty
 
 import java.time.{LocalDate, LocalDateTime}
@@ -233,6 +233,7 @@ object ValpasHakutoive {
       pisteet = hakutoive.pisteet,
       alinValintaPistemaara = hakutoive.alinValintaPistemaara,
       valintatila = Valintatila.valpasKoodiviiteOption(hakutoive.valintatila),
+      vastaanottotieto = Vastaanottotieto.valpasKoodiviiteOption(hakutoive.vastaanottotieto),
     )
   }
 }
@@ -246,6 +247,8 @@ case class ValpasHakutoive(
   alinValintaPistemaara: Option[BigDecimal],
   @KoodistoUri("valpashaunvalintatila")
   valintatila: Option[Koodistokoodiviite],
+  @KoodistoUri("valpasvastaanottotieto")
+  vastaanottotieto: Option[Koodistokoodiviite],
 )
 
 object ValpasSuppeaHakutoive {
