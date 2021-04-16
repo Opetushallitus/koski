@@ -79,7 +79,8 @@ object Koodistot {
     KoodistoAsetus("vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"),
     KoodistoAsetus("vstlukutaitokoulutuksenkokonaisuus"),
     KoodistoAsetus("valpasopiskeluoikeudentila"),
-    KoodistoAsetus("valpashaunvalintatila")
+    KoodistoAsetus("valpashaunvalintatila"),
+    KoodistoAsetus("valpasvastaanottotieto"),
   )
   val koskiKoodistot = koskiKoodistoAsetukset.map(_.koodisto)
 
