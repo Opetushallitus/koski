@@ -1,4 +1,6 @@
 @import "../../style/typography.less";
+@import "../../style/colors.less";
+@import "../../components/tables/LeanTable.less";
 
 .oppijanhaut__hakunimi {
   .externallink {
@@ -9,4 +11,19 @@
 
 .oppijanhaut__table {
   margin-bottom: 3rem;
+}
+
+.oppijanhaut__footnotes {
+  margin-top: -2rem;
+  margin-bottom: 3rem;
+  padding-left: @leantable-cell-v-padding;
+  color: @color-gray;
+  font-size: @font-size-small;
+}
+
+.oppijanhaut__footnotereference {
+  vertical-align: super;
+  font-size: 80%;
+  margin: 0 0.1rem;
+  color: @color-gray;
 }

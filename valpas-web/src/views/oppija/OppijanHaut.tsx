@@ -21,6 +21,7 @@ import {
   Hakutoive,
   OppijaHakutilanteillaLaajatTiedot,
 } from "../../state/oppijat"
+import { plainComponent } from "../../utils/plaincomponent"
 import "./OppijanHaut.less"
 
 const b = bem("oppijanhaut")
@@ -53,44 +54,55 @@ type HakuTableProps = {
   haku: HakuLaajatTiedot
 }
 
-const HakuTable = (props: HakuTableProps) => (
-  <IconSection icon={<HakuIcon color="gray" />}>
-    <TertiaryHeading className={b("hakunimi")}>
-      {getLocalized(props.haku.hakuNimi)}{" "}
-      <ExternalLink to={props.haku.hakemusUrl}>
-        <T
-          id={
-            props.haku
-              ? "hakemuksentila__hakenut"
-              : "hakemuksentila__ei_hakenut"
-          }
-        />
-      </ExternalLink>
-    </TertiaryHeading>
-    <LeanTable
-      className={b("table")}
-      columns={[
-        {
-          label: t("oppija__hakukohde"),
-          size: "col6",
-        },
-        {
-          label: t("oppija__valintatilanne"),
-          size: "col4",
-        },
-        {
-          label: t("oppija__pisteet"),
-          size: "col3",
-        },
-        {
-          label: t("oppija__alin_pistemäärä"),
-          size: "col3",
-        },
-      ]}
-      data={props.haku.hakutoiveet.map(hakutoiveToTableValue)}
-    />
-  </IconSection>
-)
+const HakuTable = (props: HakuTableProps) => {
+  const hasHarkinnanvaraisuus = props.haku.hakutoiveet.some(
+    (toive) => toive.harkinnanvarainen
+  )
+
+  return (
+    <IconSection icon={<HakuIcon color="gray" />}>
+      <TertiaryHeading className={b("hakunimi")}>
+        {getLocalized(props.haku.hakuNimi)}{" "}
+        <ExternalLink to={props.haku.hakemusUrl}>
+          <T
+            id={
+              props.haku
+                ? "hakemuksentila__hakenut"
+                : "hakemuksentila__ei_hakenut"
+            }
+          />
+        </ExternalLink>
+      </TertiaryHeading>
+      <LeanTable
+        className={b("table")}
+        columns={[
+          {
+            label: t("oppija__hakukohde"),
+            size: "col6",
+          },
+          {
+            label: t("oppija__valintatilanne"),
+            size: "col4",
+          },
+          {
+            label: t("oppija__pisteet"),
+            size: "col3",
+          },
+          {
+            label: t("oppija__alin_pistemäärä"),
+            size: "col3",
+          },
+        ]}
+        data={props.haku.hakutoiveet.map(hakutoiveToTableValue)}
+      />
+      {hasHarkinnanvaraisuus ? (
+        <div className={b("footnotes")}>
+          1) <T id="oppija__hakenut_harkinnanvaraisesti" />
+        </div>
+      ) : null}
+    </IconSection>
+  )
+}
 
 const hakutoiveToTableValue = (hakutoive: Hakutoive, index: number): Datum => ({
   key: index.toString(),
@@ -114,6 +126,9 @@ const hakutoiveToTableValue = (hakutoive: Hakutoive, index: number): Datum => ({
           )}
           {hakutoive.hakukohdeNimi &&
             ", " + getLocalized(hakutoive.hakukohdeNimi)}
+          {hakutoive.harkinnanvarainen ? (
+            <FootnoteReference>1</FootnoteReference>
+          ) : null}
         </>
       ),
     },
@@ -132,3 +147,5 @@ const hakutoiveToTableValue = (hakutoive: Hakutoive, index: number): Datum => ({
 
 const formatOrderNumber = (n?: number): string =>
   n !== undefined ? `${n}. ` : ""
+
+const FootnoteReference = plainComponent("span", b("footnotereference"))

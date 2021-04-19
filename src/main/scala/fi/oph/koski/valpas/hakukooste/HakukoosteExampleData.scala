@@ -131,6 +131,8 @@ object HakukoosteExampleData {
           hakukohdeNimi = "Leipomoala",
           koulutusNimi = "Leipomoalan ammattitutkinto",
           valintatila = Some("HYVAKSYTTY"),
+        ).copy(
+          harkinnanvaraisuus = Some("sosiaalisetsyyt")
         ),
         hakutoive(
           hakukohdeOid = generateOid(),
