@@ -122,6 +122,7 @@ export type Hakutoive = {
     "valpashaunvalintatila",
     HakutoiveValintatilakoodiarvo
   >
+  varasijanumero?: number
 }
 
 export type SuppeaHakutoive = Pick<
@@ -136,6 +137,7 @@ export type HakutoiveValintatilakoodiarvo =
   | "peruuntunut"
   | "peruttu"
   | "peruutettu"
+  | "kesken"
 
 export type OpiskeluoikeusLaajatTiedot = {
   oid: Oid
@@ -198,7 +200,9 @@ export const Hakutoive = {
   isEiPaikkaa: (toive: Hakutoive) =>
     toive.valintatila?.koodiarvo === undefined
       ? false
-      : !["hyvaksytty", "varasijalla"].includes(toive.valintatila.koodiarvo),
+      : !["hyvaksytty", "varasijalla", "kesken"].includes(
+          toive.valintatila.koodiarvo
+        ),
 }
 
 export const Yhteystiedot = {

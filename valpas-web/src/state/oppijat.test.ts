@@ -25,5 +25,6 @@ describe("Hakutoive", () => {
     testHakutoivePattern("peruuntunut")(false, false, true))
   it("peruttu", () => testHakutoivePattern("peruttu")(false, false, true))
   it("peruutettu", () => testHakutoivePattern("peruutettu")(false, false, true))
+  it("kesken", () => testHakutoivePattern("kesken")(false, false, false))
   it("undefined", () => testHakutoivePattern()(false, false, false))
 })

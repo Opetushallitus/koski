@@ -44,6 +44,7 @@ case class Hakutoive(
   alinValintaPistemaara: Option[BigDecimal],
   @EnumValues(Valintatila.values)
   valintatila: Option[String],
+  varasijanumero: Option[Int],
   @EnumValues(Vastaanottotieto.values)
   vastaanottotieto: Option[String],
   @EnumValues(Ilmoittautumistila.values)
@@ -96,7 +97,7 @@ object Valintatila {
       case Some("PERUUNTUNUT") => Some("peruuntunut")
       case Some("PERUUTETTU") => Some("peruutettu")
       case Some("PERUTTU") => Some("peruttu")
-      case Some("KESKEN") => None
+      case Some("KESKEN") => Some("kesken")
       case _ => None
     }).map(Koodistokoodiviite(_, "valpashaunvalintatila"))
 }

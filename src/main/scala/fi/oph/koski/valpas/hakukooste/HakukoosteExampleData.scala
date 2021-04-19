@@ -224,7 +224,8 @@ object HakukoosteExampleData {
       ilmoittautumistila = Some("EI_ILMOITTAUTUNUT"),
       koulutusOid = Some("TODO"),
       harkinnanvaraisuus = None,
-      hakukohdeKoulutuskoodi = Koodistokoodiviite("321152", "koulutus")
+      hakukohdeKoulutuskoodi = Koodistokoodiviite("321152", "koulutus"),
+      varasijanumero = if (valintatila == Some("VARALLA")) Some(3) else None,
     )
 
   def yhteishakukoodi = Koodistokoodiviite("01", "hakutapa")

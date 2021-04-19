@@ -7,11 +7,14 @@ import { ExternalLink } from "../../components/navigation/ExternalLink"
 import { Datum } from "../../components/tables/DataTable"
 import { LeanTable } from "../../components/tables/LeanTable"
 import { TertiaryHeading } from "../../components/typography/headings"
+import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import {
-  NoDataMessage,
-  NotImplemented,
-} from "../../components/typography/NoDataMessage"
-import { formatFixedNumber, getLocalized, t, T } from "../../i18n/i18n"
+  formatFixedNumber,
+  getLocalized,
+  koodiviiteToShortString,
+  t,
+  T,
+} from "../../i18n/i18n"
 import {
   Haku,
   HakuLaajatTiedot,
@@ -65,18 +68,23 @@ const HakuTable = (props: HakuTableProps) => (
       </ExternalLink>
     </TertiaryHeading>
     <LeanTable
+      className={b("table")}
       columns={[
         {
           label: t("oppija__hakukohde"),
+          size: "col6",
         },
         {
           label: t("oppija__valintatilanne"),
+          size: "col4",
         },
         {
           label: t("oppija__pisteet"),
+          size: "col3",
         },
         {
           label: t("oppija__alin_pistemäärä"),
+          size: "col3",
         },
       ]}
       data={props.haku.hakutoiveet.map(hakutoiveToTableValue)}
@@ -110,12 +118,12 @@ const hakutoiveToTableValue = (hakutoive: Hakutoive, index: number): Datum => ({
       ),
     },
     {
-      value: t("hakutilanne__taulu_data_ei_toteutettu"),
-      display: (
-        <NotImplemented>
-          <T id="hakutilanne__taulu_data_ei_toteutettu" />
-        </NotImplemented>
-      ),
+      value:
+        hakutoive?.valintatila &&
+        (hakutoive.valintatila.koodiarvo === "varasijalla" &&
+        hakutoive.varasijanumero !== undefined
+          ? t("valintatieto__ns_varasija", { n: hakutoive.varasijanumero })
+          : koodiviiteToShortString(hakutoive.valintatila)),
     },
     { value: formatFixedNumber(hakutoive.pisteet, 2) },
     { value: formatFixedNumber(hakutoive.alinValintaPistemaara, 2) },

@@ -7,6 +7,7 @@ import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.servlet.InvalidRequestException
 
 import scala.concurrent.duration.DurationInt
+import scala.reflect.runtime.universe.TypeTag
 
 case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu)(implicit cacheInvalidator: CacheManager) extends Logging {
   private val koodiviiteCache = KeyValueCache(RefreshingCache("KoodistoViitePalvelu", 1.hour, 100), { koodisto: KoodistoViite =>
@@ -56,8 +57,7 @@ case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu)(implicit cache
   def validateRequired(input: Koodistokoodiviite) = {
     validate(input).getOrElse(throw new InvalidRequestException(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia ei löydy koodistosta: " + input)))
   }
-
-
+  
   private def toKoodiviite(koodisto: KoodistoViite)(koodi: KoodistoKoodi) = Koodistokoodiviite(koodi.koodiArvo, koodi.nimi, koodi.lyhytNimi, koodisto.koodistoUri, Some(koodisto.versio))
 }
 

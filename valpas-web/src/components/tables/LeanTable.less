@@ -24,6 +24,7 @@
   text-align: left;
   padding: @leantable-cell-padding;
   font-weight: @font-weight-bold;
+  vertical-align: bottom;
 }
 
 .leantable__td {
@@ -33,3 +34,11 @@
 .leantable__null {
   color: @color-gray-lighten-3;
 }
+
+.leantable_th_col(@columns) when (@columns > 0) {
+  .leantable_th_col(@columns - 1);
+  .leantable__th--col@{columns} {
+    width: 100% * (@columns / 16);
+  }
+}
+.leantable_th_col(16);

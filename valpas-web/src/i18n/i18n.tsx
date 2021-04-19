@@ -1,5 +1,6 @@
 import Cookie from "js-cookie"
 import React, { useMemo } from "react"
+import { KoodistoKoodiviite } from "../state/koodistot"
 import { LocalizedString } from "../state/types"
 import { logWarning } from "../utils/log"
 
@@ -96,3 +97,13 @@ export const formatFixedNumber = (
 ): string | undefined => n?.toFixed(fractionDigits).replace(".", ",")
 
 export const useLanguage = () => useMemo(() => getLanguage(), [])
+
+/**
+ * Palauttaa koodiviitteestä aina edes jonkilaisen esitettävän merkkijonon
+ */
+export const koodiviiteToShortString = (
+  koodiviite: KoodistoKoodiviite
+): string =>
+  getLocalized(koodiviite.lyhytNimi) ||
+  getLocalized(koodiviite.nimi) ||
+  koodiviite.koodiarvo
