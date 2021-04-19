@@ -265,6 +265,7 @@ object ValpasSuppeaHakutoive {
     organisaatioNimi = hakutoive.organisaatioNimi,
     hakutoivenumero = hakutoive.hakutoivenumero,
     valintatila = hakutoive.valintatila,
+    vastaanottotieto = hakutoive.vastaanottotieto,
   )
 }
 
@@ -273,4 +274,6 @@ case class ValpasSuppeaHakutoive(
   hakutoivenumero: Option[Int],
   @KoodistoUri("valpashaunvalintatila")
   valintatila: Option[Koodistokoodiviite],
+  @KoodistoUri("valpasvastaanottotieto")
+  vastaanottotieto: Option[Koodistokoodiviite],
 )

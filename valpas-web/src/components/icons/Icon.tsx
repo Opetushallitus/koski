@@ -11,7 +11,7 @@ export type IconProps = {
   className?: string
 }
 
-export type IconColor = "warning" | "error" | "gray" | "blue"
+export type IconColor = "warning" | "error" | "gray" | "blue" | "success"
 
 const defineIcon = (name: string, color?: IconColor) => (props: IconProps) => (
   <MaterialDesignIcon name={name} color={color} {...props} />
@@ -31,6 +31,7 @@ export const CaretUpIcon = defineIcon("keyboard_arrow_up")
 export const CaretRightIcon = defineIcon("keyboard_arrow_right")
 export const CaretLeftIcon = defineIcon("keyboard_arrow_left")
 export const OpenInNewIcon = defineIcon("open_in_new")
+export const SuccessIcon = defineIcon("done", "success")
 
 type MaterialDesignIconProps = IconProps & {
   name: string // Ikonien nimet löytyvät osoitteesta https://material.io/resources/icons/?style=baseline
