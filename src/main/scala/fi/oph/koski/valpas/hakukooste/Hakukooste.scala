@@ -66,6 +66,13 @@ object Vastaanottotieto {
     "OTTANUT_VASTAAN_TOISEN_PAIKAN",
     "EHDOLLISESTI_VASTAANOTTANUT"
   )
+
+  def valpasKoodiviiteOption(vastaanotto: Option[String]): Option[Koodistokoodiviite] =
+    (vastaanotto match {
+      case Some("VASTAANOTTANUT_SITOVASTI") => Some("vastaanotettu")
+      case Some("EHDOLLISESTI_VASTAANOTTANUT") => Some("ehdollinen")
+      case _ => None
+    }).map(Koodistokoodiviite(_, "valpasvastaanottotieto"))
 }
 
 object Valintatila {
