@@ -106,6 +106,7 @@ object KelaOppijaConverter extends Logging {
     OpiskeluoikeudenLisätiedot(
       oikeusMaksuttomaanAsuntolapaikkaanPerusopetus = lisatiedot match {
         case x: schema.PerusopetuksenOpiskeluoikeudenLisätiedot => x.oikeusMaksuttomaanAsuntolapaikkaan
+        case x: schema.PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot => x.oikeusMaksuttomaanAsuntolapaikkaan
         case x: schema.AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot => x.oikeusMaksuttomaanAsuntolapaikkaan
         case _ => None
       },
@@ -138,6 +139,7 @@ object KelaOppijaConverter extends Logging {
       ulkomaanjaksot = lisatiedot match {
         case x: schema.Ulkomaajaksollinen => x.ulkomaanjaksot.map(_.map(convertUlkomaanjaksot))
         case n: schema.PerusopetuksenOpiskeluoikeudenLisätiedot => n.ulkomaanjaksot.map(_.map(convertPerusopetuksenUlkomaanjakso))
+        case n: schema.PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot => n.ulkomaanjaksot.map(_.map(convertPerusopetuksenUlkomaanjakso))
         case a: schema.AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot => a.ulkomaanjaksot.map(_.map(convertPerusopetuksenUlkomaanjakso))
         case _ => None
       },
@@ -169,30 +171,36 @@ object KelaOppijaConverter extends Logging {
       },
       koulukoti = lisatiedot match {
         case x: schema.PerusopetuksenOpiskeluoikeudenLisätiedot => x.koulukoti
+        case x: schema.PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot => x.koulukoti
         case _ => None
       },
       majoitusetu = lisatiedot match {
         case x: schema.PerusopetuksenOpiskeluoikeudenLisätiedot => x.majoitusetu
+        case x: schema.PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot => x.majoitusetu
         case x: schema.AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot => x.majoitusetu
         case _ => None
       },
       ulkomailla = lisatiedot match {
         case x: schema.PerusopetuksenOpiskeluoikeudenLisätiedot => x.ulkomailla
+        case x: schema.PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot => x.ulkomailla
         case x: schema.AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot => x.ulkomailla
         case _ => None
       },
       tehostetunTuenPäätös = lisatiedot match {
         case x: schema.PerusopetuksenOpiskeluoikeudenLisätiedot => x.tehostetunTuenPäätös
+        case x: schema.PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot => x.tehostetunTuenPäätös
         case x: schema.AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot => x.tehostetunTuenPäätös.map(jakso => schema.TehostetunTuenPäätös(alku = jakso.alku, loppu = jakso.loppu, tukimuodot = None))
         case _ => None
       },
       tehostetunTuenPäätökset = lisatiedot match {
         case x: schema.PerusopetuksenOpiskeluoikeudenLisätiedot => x.tehostetunTuenPäätökset
+        case x: schema.PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot => x.tehostetunTuenPäätökset
         case x: schema.AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot => x.tehostetunTuenPäätökset.map(_.map(jakso => schema.TehostetunTuenPäätös(alku = jakso.alku, loppu = jakso.loppu, tukimuodot = None)))
         case _ => None
       },
       joustavaPerusopetus = lisatiedot match {
         case x: schema.PerusopetuksenOpiskeluoikeudenLisätiedot => x.joustavaPerusopetus
+        case x: schema.PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot => x.joustavaPerusopetus
         case _ => None
       }
     )
