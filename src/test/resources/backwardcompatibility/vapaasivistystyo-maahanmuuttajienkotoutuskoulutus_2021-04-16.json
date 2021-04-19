@@ -220,10 +220,10 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "Suoritettu",
-            "koodistoUri" : "arviointiasteikkovstkoto"
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkovst"
           },
-          "päivä" : "2020-01-01",
+          "päivä" : "2021-10-30",
           "hyväksytty" : true
         } ]
       }, {
@@ -281,10 +281,10 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "Suoritettu",
-              "koodistoUri" : "arviointiasteikkovstkoto"
+              "koodiarvo" : "Hyväksytty",
+              "koodistoUri" : "arviointiasteikkovst"
             },
-            "päivä" : "2020-01-01",
+            "päivä" : "2021-10-30",
             "hyväksytty" : true
           } ],
           "tyyppi" : {
@@ -322,10 +322,10 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "Suoritettu",
-              "koodistoUri" : "arviointiasteikkovstkoto"
+              "koodiarvo" : "Hyväksytty",
+              "koodistoUri" : "arviointiasteikkovst"
             },
-            "päivä" : "2020-01-01",
+            "päivä" : "2021-10-30",
             "hyväksytty" : true
           } ],
           "tyyppi" : {
@@ -339,10 +339,10 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "Suoritettu",
-            "koodistoUri" : "arviointiasteikkovstkoto"
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkovst"
           },
-          "päivä" : "2020-01-01",
+          "päivä" : "2021-10-30",
           "hyväksytty" : true
         } ]
       }, {
@@ -400,10 +400,10 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "Suoritettu",
-              "koodistoUri" : "arviointiasteikkovstkoto"
+              "koodiarvo" : "Hyväksytty",
+              "koodistoUri" : "arviointiasteikkovst"
             },
-            "päivä" : "2020-01-01",
+            "päivä" : "2021-10-30",
             "hyväksytty" : true
           } ],
           "tyyppi" : {
@@ -417,10 +417,10 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "Suoritettu",
-            "koodistoUri" : "arviointiasteikkovstkoto"
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkovst"
           },
-          "päivä" : "2020-01-01",
+          "päivä" : "2021-10-30",
           "hyväksytty" : true
         } ]
       } ]
