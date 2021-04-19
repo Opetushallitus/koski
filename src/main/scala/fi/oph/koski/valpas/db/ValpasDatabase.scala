@@ -1,8 +1,5 @@
 package fi.oph.koski.valpas.db
 
-import fi.oph.koski.db.{DB, DatabaseConfig}
-import fi.oph.koski.log.Logging
+import fi.oph.koski.db.{Database, DatabaseConfig}
 
-class ValpasDatabase(config: DatabaseConfig) extends Logging {
-  val db: DB = config.toSlickDatabase
-}
+class ValpasDatabase(protected val config: DatabaseConfig) extends Database

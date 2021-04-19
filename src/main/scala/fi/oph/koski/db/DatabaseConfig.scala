@@ -17,6 +17,8 @@ class KoskiDatabaseConfig(val rootConfig: Config) extends DatabaseConfig {
   override val envVarForSecretId: String = DatabaseConfig.EnvVarForKoskiDbSecret
 
   override protected def databaseSpecificConfig: Config = rootConfig.getConfig("dbs.koski")
+
+  override def migrationLocations: Option[String] = Some("db.migration")
 }
 
 class KoskiReplicaConfig(val rootConfig: Config) extends DatabaseConfig {
@@ -49,10 +51,13 @@ class ValpasDatabaseConfig(val rootConfig: Config) extends DatabaseConfig {
   override val envVarForSecretId: String = DatabaseConfig.EnvVarForKoskiDbSecret // Samalla instanssilla kuin pääkanta
 
   override protected def databaseSpecificConfig: Config = rootConfig.getConfig("dbs.valpas")
+
+  override def migrationLocations: Option[String] = Some("fi.oph.koski.valpas.db.migration")
 }
 
 trait DatabaseConfig extends NotLoggable with Logging {
-  protected val rootConfig: Config
+  val rootConfig: Config
+
   protected val envVarForSecretId: String
 
   protected final val useSecretsManager: Boolean = Environment.usesAwsSecretsManager
@@ -115,6 +120,8 @@ trait DatabaseConfig extends NotLoggable with Logging {
 
   final def dbname: String = config.getString("name")
 
+  final def schemaName: String = config.getString("schemaName")
+
   final def user: String = config.getString("user")
 
   final def password: String = config.getString("password")
@@ -134,4 +141,6 @@ trait DatabaseConfig extends NotLoggable with Logging {
     logger.info(s"Using database $dbname")
     PostgresProfile.api.Database.forConfig("", configForSlick())
   }
+
+  def migrationLocations: Option[String] = None
 }
