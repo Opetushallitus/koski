@@ -3,6 +3,7 @@ import * as A from "fp-ts/Array"
 import React from "react"
 import { IconSection } from "../../components/containers/IconSection"
 import { HakuIcon } from "../../components/icons/Icon"
+import { LongArrow } from "../../components/icons/LongArrow"
 import { ExternalLink } from "../../components/navigation/ExternalLink"
 import { Datum } from "../../components/tables/DataTable"
 import { LeanTable } from "../../components/tables/LeanTable"
@@ -116,7 +117,7 @@ const hakutoiveToTableValue = (hakutoive: Hakutoive, index: number): Datum => ({
           : ""),
       display: (
         <>
-          <span>{formatOrderNumber(hakutoive.hakutoivenumero)}</span>
+          {formatOrderNumber(hakutoive.hakutoivenumero)}
           {hakutoive.organisaatioNimi ? (
             getLocalized(hakutoive.organisaatioNimi)
           ) : (
@@ -128,6 +129,18 @@ const hakutoiveToTableValue = (hakutoive: Hakutoive, index: number): Datum => ({
             ", " + getLocalized(hakutoive.hakukohdeNimi)}
           {hakutoive.harkinnanvarainen ? (
             <FootnoteReference>1</FootnoteReference>
+          ) : null}
+          {Hakutoive.isVastaanotettu(hakutoive) ? (
+            <div>
+              <LongArrow />
+              <span className={b("otettuvastaan")}>
+                {Hakutoive.isVastaanotettuEhdollisesti(hakutoive) ? (
+                  <T id="oppija__otettu_vastaan_ehdollisesti" />
+                ) : (
+                  <T id="oppija__otettu_vastaan" />
+                )}
+              </span>
+            </div>
           ) : null}
         </>
       ),

@@ -222,6 +222,8 @@ export const Hakutoive = {
   isVastaanotettu: (toive: SuppeaHakutoive) =>
     toive.vastaanottotieto?.koodiarvo === "vastaanotettu" ||
     toive.vastaanottotieto?.koodiarvo === "ehdollinen",
+  isVastaanotettuEhdollisesti: (toive: SuppeaHakutoive) =>
+    toive.vastaanottotieto?.koodiarvo === "ehdollinen",
 }
 
 export const Yhteystiedot = {

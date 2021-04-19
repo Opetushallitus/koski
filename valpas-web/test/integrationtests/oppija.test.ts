@@ -88,7 +88,9 @@ describe("Oppijakohtainen näkymä", () => {
         Pisteet
         Alin pistemäärä
         1. Ressun lukio, Lukio Hylätty 9,00 9,01
-        2. Helsingin medialukio, Lukio Hyväksytty 9,00 8,20
+        2. Helsingin medialukio, Lukio
+        Otettu vastaan
+        Hyväksytty 9,00 8,20
         3. Omnia, Leipomoala Peruuntunut – –
         4. Omnia, Puhtaus- ja kiinteistöpalveluala Peruuntunut – –
         5. Varsinais-Suomen kansanopisto, Vapaan sivistystyön koulutus oppivelvollisille 2021-2022 Peruuntunut – –
@@ -318,6 +320,25 @@ describe("Oppijakohtainen näkymä", () => {
         Pisteet
         Alin pistemäärä
         1. Ressun lukio, Lukio 3. varasija 9,00 8,99
+    `)
+  })
+
+  it("Näyttää harkinnanvaraisen haun", async () => {
+    await loginAs(päällekkäisiäOppivelvollisuuksiaPath, "valpas-jkl-normaali")
+    await mainHeadingEquals("Päällekkäisiä Oppivelvollisuuksia (060605A083N)")
+    await hautEquals(`
+      list_alt
+      Yhteishaku 2021 Hakenut open_in_new
+        Hakukohde
+        Valinta
+        Pisteet
+        Alin pistemäärä
+        1. Helsingin medialukio, Lukio	Hylätty	7,50	8,20
+        2. Omnia, Leipomoala1
+        Otettu vastaan ehdollisesti
+        Hyväksytty	–	–
+        3. Omnia, Puhtaus- ja kiinteistöpalveluala	Hyväksytty	–	–
+        1) Hakenut harkinnanvaraisesti
     `)
   })
 })

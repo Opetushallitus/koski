@@ -131,6 +131,7 @@ object HakukoosteExampleData {
           hakukohdeNimi = "Leipomoala",
           koulutusNimi = "Leipomoalan ammattitutkinto",
           valintatila = Some("HYVAKSYTTY"),
+          vastaanottotieto = Some("EHDOLLISESTI_VASTAANOTTANUT"),
         ).copy(
           harkinnanvaraisuus = Some("sosiaalisetsyyt")
         ),

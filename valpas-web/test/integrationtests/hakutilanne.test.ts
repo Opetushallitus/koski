@@ -31,7 +31,7 @@ const jklNormaalikouluTableContent = `
   LuokallejäänytYsiluokkalainenJatkaa Valpas	6.2.2005	9B	Ei hakemusta	–	–	Ei toteutettu
   LuokallejäänytYsiluokkalainenKouluvaihtoMuualta Valpas	2.11.2005	9B	Ei hakemusta	–	–	Ei toteutettu
   Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas	22.11.2005	9C	Hakenut open_in_new	2. Helsingin medialukio	doneHelsingin medialukio	Ei toteutettu
-  Päällekkäisiä Oppivelvollisuuksia	6.6.2005	9B	Hakenut open_in_new	Hyväksytty (2 hakukohdetta)	–	Ei toteutettu
+  Päällekkäisiä Oppivelvollisuuksia	6.6.2005	9B	Hakenut open_in_new	Hyväksytty (2 hakukohdetta)	doneOmnia	Ei toteutettu
   Turvakielto Valpas	29.9.2004	9C	Hakenut open_in_new	warningEi opiskelupaikkaa	–	Ei toteutettu
   UseampiYsiluokkaSamassaKoulussa Valpas	25.8.2005	9D	Ei hakemusta	–	–	Ei toteutettu
   UseampiYsiluokkaSamassaKoulussa Valpas	25.8.2005	9C	Ei hakemusta	–	–	Ei toteutettu
