@@ -1,4 +1,8 @@
-import { Hakutoive, HakutoiveValintatilakoodiarvo } from "./oppijat"
+import {
+  Hakutoive,
+  HakutoiveValintatilakoodiarvo,
+  SuppeaHakutoive,
+} from "./oppijat"
 
 describe("Hakutoive", () => {
   const testHakutoivePattern = (koodiarvo?: HakutoiveValintatilakoodiarvo) => (
@@ -6,7 +10,7 @@ describe("Hakutoive", () => {
     varasijalla: boolean,
     eiPaikkaa: boolean
   ) => {
-    const hakutoive: Hakutoive = {
+    const hakutoive: SuppeaHakutoive = {
       valintatila: koodiarvo && {
         koodistoUri: "valpashaunvalintatila",
         koodiarvo,

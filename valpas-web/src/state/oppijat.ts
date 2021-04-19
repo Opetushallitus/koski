@@ -127,11 +127,12 @@ export type Hakutoive = {
     "valpasvastaanottotieto",
     HakutoiveVastaanottokoodiarvo
   >
+  harkinnanvarainen: boolean
 }
 
 export type SuppeaHakutoive = Pick<
   Hakutoive,
-  "organisaatioNimi" | "hakutoivenumero" | "valintatila"
+  "organisaatioNimi" | "hakutoivenumero" | "valintatila" | "vastaanottotieto"
 >
 
 export type HakutoiveValintatilakoodiarvo =
@@ -200,7 +201,7 @@ export const Haku = {
 
   selectByHakutoive: (
     haut: HakuSuppeatTiedot[],
-    predicate: (hakutoive: Hakutoive) => boolean
+    predicate: (hakutoive: SuppeaHakutoive) => boolean
   ) =>
     A.chain((haku: HakuSuppeatTiedot) => haku.hakutoiveet.filter(predicate))(
       haut
@@ -208,17 +209,17 @@ export const Haku = {
 }
 
 export const Hakutoive = {
-  isHyväksytty: (toive: Hakutoive) =>
+  isHyväksytty: (toive: SuppeaHakutoive) =>
     toive.valintatila?.koodiarvo === "hyvaksytty",
-  isVarasijalla: (toive: Hakutoive) =>
+  isVarasijalla: (toive: SuppeaHakutoive) =>
     toive.valintatila?.koodiarvo === "varasijalla",
-  isEiPaikkaa: (toive: Hakutoive) =>
+  isEiPaikkaa: (toive: SuppeaHakutoive) =>
     toive.valintatila?.koodiarvo === undefined
       ? false
       : !["hyvaksytty", "varasijalla", "kesken"].includes(
           toive.valintatila.koodiarvo
         ),
-  isVastaanotettu: (toive: Hakutoive) =>
+  isVastaanotettu: (toive: SuppeaHakutoive) =>
     toive.vastaanottotieto?.koodiarvo === "vastaanotettu" ||
     toive.vastaanottotieto?.koodiarvo === "ehdollinen",
 }

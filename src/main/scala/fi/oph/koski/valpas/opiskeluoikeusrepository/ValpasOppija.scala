@@ -3,7 +3,7 @@ package fi.oph.koski.valpas.opiskeluoikeusrepository
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema.annotation.KoodistoUri
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
-import fi.oph.koski.valpas.hakukooste.{Hakukooste, Hakutoive, Valintatila, Vastaanottotieto}
+import fi.oph.koski.valpas.hakukooste.{Hakukooste, Hakutoive, Harkinnanvaraisuus, Valintatila, Vastaanottotieto}
 import fi.oph.scalaschema.annotation.SyntheticProperty
 
 import java.time.{LocalDate, LocalDateTime}
@@ -239,6 +239,7 @@ object ValpasHakutoive {
       valintatila = Valintatila.valpasKoodiviiteOption(hakutoive.valintatila),
       vastaanottotieto = Vastaanottotieto.valpasKoodiviiteOption(hakutoive.vastaanottotieto),
       varasijanumero = hakutoive.varasijanumero,
+      harkinnanvarainen = hakutoive.harkinnanvaraisuus.exists(Harkinnanvaraisuus.isHarkinnanvarainen),
     )
   }
 }
@@ -255,6 +256,7 @@ case class ValpasHakutoive(
   @KoodistoUri("valpasvastaanottotieto")
   vastaanottotieto: Option[Koodistokoodiviite],
   varasijanumero: Option[Int],
+  harkinnanvarainen: Boolean,
 ) {
   def validate(koodistoviitepalvelu: KoodistoViitePalvelu): ValpasHakutoive =
     this.copy(valintatila = valintatila.flatMap(koodistoviitepalvelu.validate))
