@@ -91,6 +91,8 @@ object AikajaksoRowBuilder {
         case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.erityinenTuki
         case l: PerusopetuksenOpiskeluoikeudenLisätiedot =>
           Some(l.erityisenTuenPäätös.toList ::: l.erityisenTuenPäätökset.toList.flatten)
+        case l: PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot =>
+          Some(l.erityisenTuenPäätös.toList ::: l.erityisenTuenPäätökset.toList.flatten)
       },
       vaativanErityisenTuenErityinenTehtävä = lisätietoVoimassaPäivänä {
         case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.vaativanErityisenTuenErityinenTehtävä
@@ -115,12 +117,15 @@ object AikajaksoRowBuilder {
       },
       pidennettyOppivelvollisuus = lisätietoVoimassaPäivänä {
         case l: PerusopetuksenOpiskeluoikeudenLisätiedot => Some(l.pidennettyOppivelvollisuus.toList)
+        case l: PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot => Some(l.pidennettyOppivelvollisuus.toList)
       },
       joustavaPerusopetus = lisätietoVoimassaPäivänä {
         case l: PerusopetuksenOpiskeluoikeudenLisätiedot => Some(l.joustavaPerusopetus.toList)
+        case l: PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot => Some(l.joustavaPerusopetus.toList)
       },
       koulukoti = lisätietoVoimassaPäivänä {
         case l: PerusopetuksenOpiskeluoikeudenLisätiedot => l.koulukoti
+        case l: PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot => l.koulukoti
       },
       oppimääränSuorittaja = o.suoritukset.exists {
         case _: AikuistenPerusopetuksenOppimääränSuoritus => true
@@ -231,6 +236,18 @@ object AikajaksoRowBuilder {
           pol.pidennettyOppivelvollisuus,
           pol.joustavaPerusopetus
         ).flatten ++ aikajaksotErityisenTuenPäätöksistä(pol.erityisenTuenPäätös, pol.erityisenTuenPäätökset)
+      case poll: PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot =>
+        toSeq(
+          poll.sisäoppilaitosmainenMajoitus,
+          poll.vammainen,
+          poll.vaikeastiVammainen,
+          poll.koulukoti
+        ) ++ Seq(
+          poll.majoitusetu,
+          poll.kuljetusetu,
+          poll.pidennettyOppivelvollisuus,
+          poll.joustavaPerusopetus
+        ).flatten ++ aikajaksotErityisenTuenPäätöksistä(poll.erityisenTuenPäätös, poll.erityisenTuenPäätökset)
       case lol: LukionOpiskeluoikeudenLisätiedot =>
         toSeq(
           lol.sisäoppilaitosmainenMajoitus,

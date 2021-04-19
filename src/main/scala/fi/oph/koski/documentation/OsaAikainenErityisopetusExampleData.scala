@@ -49,8 +49,18 @@ object OsaAikainenErityisopetusExampleData {
       Some(List(OsaAikainenErityisopetusExampleData.erityisenTuenPäätösJossaOsaAikainenErityisopetus))
     ))
 
+  def perusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedotJoissaOsaAikainenErityisopetusErityisenTuenPäätöksessä =
+    Some(PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(erityisenTuenPäätökset =
+      Some(List(OsaAikainenErityisopetusExampleData.erityisenTuenPäätösJossaOsaAikainenErityisopetus))
+    ))
+
   def perusopetuksenOpiskeluoikeudenLisätiedotJoissaOsaAikainenErityisopetusTehostetunTuenPäätöksessä =
     Some(PerusopetuksenOpiskeluoikeudenLisätiedot(tehostetunTuenPäätökset =
+      Some(List(OsaAikainenErityisopetusExampleData.tehostetunTuenPäätösJossaOsaAikainenErityisopetus))
+    ))
+
+  def perusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedotJoissaOsaAikainenErityisopetusTehostetunTuenPäätöksessä =
+    Some(PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(tehostetunTuenPäätökset =
       Some(List(OsaAikainenErityisopetusExampleData.tehostetunTuenPäätösJossaOsaAikainenErityisopetus))
     ))
 
@@ -58,7 +68,15 @@ object OsaAikainenErityisopetusExampleData {
     Some(PerusopetuksenOpiskeluoikeudenLisätiedot(erityisenTuenPäätökset =
       Some(List(OsaAikainenErityisopetusExampleData.erityisenTuenPäätösIlmanOsaAikaistaErityisopetusta))))
 
+  def perusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedotJoissaErityisenTuenPäätösIlmanOsaAikaistaErityisopetusta =
+    Some(PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(erityisenTuenPäätökset =
+      Some(List(OsaAikainenErityisopetusExampleData.erityisenTuenPäätösIlmanOsaAikaistaErityisopetusta))))
+
   def perusopetuksenOpiskeluoikeudenLisätiedotJoissaTehostetunTuenPäätösIlmanOsaAikaistaErityisopetusta =
     Some(PerusopetuksenOpiskeluoikeudenLisätiedot(tehostetunTuenPäätökset =
+      Some(List(OsaAikainenErityisopetusExampleData.tehostetunTuenPäätösIlmanOsaAikaistaErityisopetusta))))
+
+  def perusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedotJoissaTehostetunTuenPäätösIlmanOsaAikaistaErityisopetusta =
+    Some(PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(tehostetunTuenPäätökset =
       Some(List(OsaAikainenErityisopetusExampleData.tehostetunTuenPäätösIlmanOsaAikaistaErityisopetusta))))
 }
