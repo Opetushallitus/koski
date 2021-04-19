@@ -20,10 +20,6 @@ object Migration extends Logging {
     flyway.setSchemas(config.schemaName)
     flyway.setValidateOnMigrate(true)
 
-    try {
-      flyway.migrate
-    } catch {
-      case e: Exception => logger.error(e)("Migration failure")
-    }
+    flyway.migrate
   }
 }
