@@ -1,7 +1,6 @@
 package fi.oph.koski.koskiuser
 
-import java.net.InetAddress
-
+import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.huoltaja.{Huollettava, HuollettavienHakuOnnistui}
@@ -12,9 +11,16 @@ import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, Organisaatio, OrganisaatioWithOid}
 import org.scalatra.servlet.RichRequest
 
-import scala.concurrent.{ExecutionContext, Future}
+import java.net.InetAddress
+import scala.concurrent.Future
 
-abstract class Session(val user: AuthenticationUser, val lang: String, val clientIp: InetAddress, val userAgent: String) extends LogUserContext with UserWithUsername with UserWithOid with Loggable with Logging {
+abstract class Session(val user: AuthenticationUser, val lang: String, val clientIp: InetAddress, val userAgent: String)
+  extends LogUserContext
+    with UserWithUsername
+    with UserWithOid
+    with Loggable
+    with Logging {
+
   def oid = user.oid
   def username = user.username
   def userOption = Some(user)
@@ -33,7 +39,14 @@ abstract class Session(val user: AuthenticationUser, val lang: String, val clien
   protected def kaikkiKäyttöoikeudet: Set[Käyttöoikeus]
 }
 
-class KoskiSpecificSession(user: AuthenticationUser, lang: String, clientIp: InetAddress, userAgent: String, lähdeKäyttöoikeudet: => Set[Käyttöoikeus]) extends Session(user, lang, clientIp, userAgent)  with SensitiveDataAllowed {
+class KoskiSpecificSession(
+  user: AuthenticationUser,
+  lang: String,
+  clientIp: InetAddress,
+  userAgent: String,
+  lähdeKäyttöoikeudet: => Set[Käyttöoikeus]
+) extends Session(user, lang, clientIp, userAgent)  with SensitiveDataAllowed with GlobalExecutionContext {
+
   lazy val varhaiskasvatusKäyttöoikeudet: Set[KäyttöoikeusVarhaiskasvatusToimipiste] = käyttöoikeudet.collect { case k: KäyttöoikeusVarhaiskasvatusToimipiste => k }
   lazy val varhaiskasvatusKoulutustoimijat: Set[Oid] = varhaiskasvatusKäyttöoikeudet.map(_.koulutustoimija.oid)
   lazy val hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess: Boolean = varhaiskasvatusKäyttöoikeudet.nonEmpty
@@ -116,7 +129,7 @@ class KoskiSpecificSession(user: AuthenticationUser, lang: String, clientIp: Ine
   // Sessio luodaan aina uudestaan jokaisessa API-kutsussa, joten käyttöoikeudet voi tallentaa lazy val:iin eikä hakea ja filteröida aina uudestaan
   private lazy val käyttöoikeudet: Set[Käyttöoikeus] = Käyttöoikeus.withPalveluroolitFilter(lähdeKäyttöoikeudet, _.palveluName != "VALPAS")
 
-  Future(lähdeKäyttöoikeudet)(ExecutionContext.global) // haetaan käyttöoikeudet toisessa säikeessä rinnakkain
+  Future(lähdeKäyttöoikeudet) // haetaan käyttöoikeudet toisessa säikeessä rinnakkain
 }
 
 object KoskiSpecificSession {
