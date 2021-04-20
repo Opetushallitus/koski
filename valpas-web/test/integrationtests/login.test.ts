@@ -5,17 +5,21 @@ import {
 } from "../../src/state/paths"
 import {
   clickElement,
-  defaultLogin,
   expectElementEventuallyVisible,
   expectElementNotVisible,
   expectElementVisible,
-  loginAs,
+} from "../integrationtests-env/browser/content"
+import {
   pathToApiUrl,
   pathToUrl,
-  reset,
   urlIsEventually,
-} from "../integrationtests-env/browser"
-import { allowNetworkError } from "../integrationtests-env/fail-on-console"
+} from "../integrationtests-env/browser/core"
+import { allowNetworkError } from "../integrationtests-env/browser/fail-on-console"
+import {
+  defaultLogin,
+  loginAs,
+  reset,
+} from "../integrationtests-env/browser/reset"
 
 describe("Login / Logout / kirjautuminen", () => {
   it("Kirjautumattomalle käyttäjälle näytetään kirjautumisruutu, jossa ei näy logout-painiketta", async () => {

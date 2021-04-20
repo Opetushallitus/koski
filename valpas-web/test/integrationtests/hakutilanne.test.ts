@@ -5,13 +5,15 @@ import {
 } from "../../src/state/paths"
 import {
   clickElement,
-  dataTableEventuallyEquals,
-  dropdownSelect,
-  loginAs,
-  pathToUrl,
   textEventuallyEquals,
+} from "../integrationtests-env/browser/content"
+import {
+  pathToUrl,
   urlIsEventually,
-} from "../integrationtests-env/browser"
+} from "../integrationtests-env/browser/core"
+import { dataTableEventuallyEquals } from "../integrationtests-env/browser/datatable"
+import { dropdownSelect } from "../integrationtests-env/browser/forms"
+import { loginAs } from "../integrationtests-env/browser/reset"
 
 const selectOrganisaatio = (index: number) =>
   dropdownSelect("#organisaatiovalitsin", index)

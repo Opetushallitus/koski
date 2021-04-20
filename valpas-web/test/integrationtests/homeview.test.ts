@@ -1,9 +1,9 @@
+import { textEventuallyEquals } from "../integrationtests-env/browser/content"
 import {
   dataTableEventuallyEquals,
   dataTableHeadersEventuallyEquals,
-  loginAs,
-  textEventuallyEquals,
-} from "../integrationtests-env/browser"
+} from "../integrationtests-env/browser/datatable"
+import { loginAs } from "../integrationtests-env/browser/reset"
 
 describe("Etusivun väliaikainen näkymä", () => {
   it("Näyttää ohjetekstin", async () => {
