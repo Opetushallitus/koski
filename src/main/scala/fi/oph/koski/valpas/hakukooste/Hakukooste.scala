@@ -123,4 +123,6 @@ object Harkinnanvaraisuus {
     "todistustenpuuttuminen",
     "riittamatonkielitaito"
   )
+  
+  def isHarkinnanvarainen(value: String) = values.contains(value)
 }

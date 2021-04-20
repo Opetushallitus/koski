@@ -15,6 +15,7 @@ import {
   HakuSuppeatTiedot,
   Hakutoive,
   OppijaHakutilanteillaSuppeatTiedot,
+  SuppeaHakutoive,
   valvottavatOpiskeluoikeudet,
 } from "../../state/oppijat"
 import { createOppijaPath } from "../../state/paths"
@@ -218,9 +219,9 @@ const valintatila = (haut: HakuSuppeatTiedot[]): Value | null => {
 }
 
 const hyväksyttyValintatila = (
-  hyväksytytHakutoiveet: NonEmptyArray<Hakutoive>
+  hyväksytytHakutoiveet: NonEmptyArray<SuppeaHakutoive>
 ): Value => {
-  const buildHyväksyttyValue = (hakutoive: Hakutoive) => {
+  const buildHyväksyttyValue = (hakutoive: SuppeaHakutoive) => {
     return {
       value: t("valintatieto__hyväksytty", {
         hakukohde: orderedHakukohde(
