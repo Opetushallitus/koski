@@ -1150,6 +1150,38 @@ class OppijaValidationLukio2019Spec extends FreeSpec with PutOpiskeluoikeusTestM
     }
   }
 
+  "Äidinkielen omainen oppiaine" - {
+    def verify[A](kieli: String)(expect: => A): A = {
+      val oo = aktiivinenOpiskeluoikeus.copy(
+        suoritukset = List(vahvistamatonOppimääränSuoritus.copy(
+          osasuoritukset = Some(List(
+            oppiaineenSuoritus(Lukio2019ExampleData.lukionKieli2019("AOM", kieli)).copy(osasuoritukset = None)
+          ))
+        ))
+      )
+
+      putOpiskeluoikeus(oo) {
+        expect
+      }
+    }
+
+    "FI sallittu" in {
+      verify("FI") {
+        verifyResponseStatusOk()
+      }
+    }
+    "SV sallittu" in {
+      verify("SV") {
+        verifyResponseStatusOk()
+      }
+    }
+    "Muita ei sallita" in {
+      verify("SE") {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.deprekoituKielikoodi("Äidinkielen omaisen oppiaineen kieli tulee olla suomi tai ruotsi"))
+      }
+    }
+  }
+
   "Suullisen kielitaidon kokeen merkintä, jos sen sisältäviä moduuleita on suoritettu" - {
 
     "oppimäärän suorituksessa" - {
