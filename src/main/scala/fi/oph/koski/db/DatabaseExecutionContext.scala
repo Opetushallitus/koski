@@ -2,6 +2,8 @@ package fi.oph.koski.db
 
 import fi.oph.koski.executors.Pools
 
+import scala.concurrent.ExecutionContextExecutor
+
 trait DatabaseExecutionContext {
-  implicit val executor = Pools.databaseExecutor
+  protected final implicit val executor: ExecutionContextExecutor = Pools.databaseExecutor
 }
