@@ -6,12 +6,12 @@ import java.time.{Instant, LocalDate}
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.{SuoritusJako, SuoritusjakoTable}
-import fi.oph.koski.db.{DatabaseExecutionContext, KoskiDatabaseMethods, SuoritusjakoRow}
+import fi.oph.koski.db.{KoskiDatabaseMethods, SuoritusjakoRow}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 
-class SuoritusjakoRepository(val db: DB) extends Logging with DatabaseExecutionContext with KoskiDatabaseMethods {
+class SuoritusjakoRepository(val db: DB) extends Logging with KoskiDatabaseMethods {
   def get(secret: String): Either[HttpStatus, SuoritusjakoRow] =
     runDbSync(SuoritusJako.filter(r => r.secret === secret && r.voimassaAsti >= Date.valueOf(LocalDate.now)).result.headOption)
       .toRight(KoskiErrorCategory.notFound())
