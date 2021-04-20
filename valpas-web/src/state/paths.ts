@@ -1,7 +1,7 @@
 import { RouteComponentProps } from "react-router"
 import { nonNull } from "../utils/arrays"
 import { fromEntries, isEntry } from "../utils/objects"
-import { Oid } from "./types"
+import { Oid } from "./common"
 
 export type QueryParams = Record<string, string | undefined | null>
 

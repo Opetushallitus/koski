@@ -9,17 +9,19 @@ import { ExternalLink } from "../../components/navigation/ExternalLink"
 import { DataTable, Datum, Value } from "../../components/tables/DataTable"
 import { NotImplemented } from "../../components/typography/NoDataMessage"
 import { getLocalized, T, t, Translation } from "../../i18n/i18n"
-import { useBasePath } from "../../state/basePath"
+import { HakuSuppeatTiedot, selectByHakutoive } from "../../state/apitypes/haku"
 import {
-  Haku,
-  HakuSuppeatTiedot,
-  Hakutoive,
-  OppijaHakutilanteillaSuppeatTiedot,
+  isEiPaikkaa,
+  isHyväksytty,
+  isVarasijalla,
+  isVastaanotettu,
   SuppeaHakutoive,
-  valvottavatOpiskeluoikeudet,
-} from "../../state/oppijat"
+} from "../../state/apitypes/hakutoive"
+import { valvottavatOpiskeluoikeudet } from "../../state/apitypes/opiskeluoikeus"
+import { OppijaHakutilanteillaSuppeatTiedot } from "../../state/apitypes/oppija"
+import { useBasePath } from "../../state/basePath"
+import { Oid } from "../../state/common"
 import { createOppijaPath } from "../../state/paths"
-import { Oid } from "../../state/types"
 import { nonEmptyEvery } from "../../utils/arrays"
 import { formatNullableDate } from "../../utils/date"
 
@@ -186,15 +188,12 @@ const fromNullableValue = (value: Value | null): Value =>
   }
 
 const valintatila = (haut: HakuSuppeatTiedot[]): Value | null => {
-  const hyväksytytHakutoiveet = Haku.selectByHakutoive(
-    haut,
-    Hakutoive.isHyväksytty
-  )
+  const hyväksytytHakutoiveet = selectByHakutoive(haut, isHyväksytty)
   if (isNonEmpty(hyväksytytHakutoiveet)) {
     return hyväksyttyValintatila(hyväksytytHakutoiveet)
   }
 
-  const [varasija] = Haku.selectByHakutoive(haut, Hakutoive.isVarasijalla)
+  const [varasija] = selectByHakutoive(haut, isVarasijalla)
   if (varasija) {
     return {
       value: t("valintatieto__varasija"),
@@ -205,9 +204,7 @@ const valintatila = (haut: HakuSuppeatTiedot[]): Value | null => {
   }
 
   if (
-    nonEmptyEvery(haut, (haku) =>
-      nonEmptyEvery(haku.hakutoiveet, Hakutoive.isEiPaikkaa)
-    )
+    nonEmptyEvery(haut, (haku) => nonEmptyEvery(haku.hakutoiveet, isEiPaikkaa))
   ) {
     return {
       value: t("valintatieto__ei_opiskelupaikkaa"),
@@ -256,10 +253,7 @@ const orderedHakukohde = (
 ) => (hakutoivenumero ? `${hakutoivenumero}. ${hakukohde}` : hakukohde)
 
 const vastaanottotieto = (hakutilanteet: HakuSuppeatTiedot[]): Value | null => {
-  const vastaanotetut = Haku.selectByHakutoive(
-    hakutilanteet,
-    Hakutoive.isVastaanotettu
-  )
+  const vastaanotetut = selectByHakutoive(hakutilanteet, isVastaanotettu)
   switch (vastaanotetut.length) {
     case 0:
       return null

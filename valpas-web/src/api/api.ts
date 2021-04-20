@@ -1,8 +1,8 @@
 import {
   OppijaHakutilanteillaLaajatTiedot,
   OppijaHakutilanteillaSuppeatTiedot,
-} from "../state/oppijat"
-import { Oid, OrganisaatioJaKayttooikeusrooli, User } from "../state/types"
+} from "../state/apitypes/oppija"
+import { Oid, OrganisaatioJaKayttooikeusrooli, User } from "../state/common"
 import { tapLeftP } from "../utils/either"
 import { ApiFailure, apiGet, apiPost } from "./apiFetch"
 import { createCache } from "./cache"

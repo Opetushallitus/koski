@@ -1,4 +1,4 @@
-import { LocalizedString } from "./types"
+import { LocalizedString } from "../common"
 
 export type KoodistoKoodiviite<
   T extends string = string,

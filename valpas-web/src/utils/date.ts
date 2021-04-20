@@ -1,5 +1,5 @@
 import { format, getYear, parseISO } from "date-fns"
-import { ISODate } from "../state/types"
+import { ISODate } from "../state/common"
 
 export const DATE_FORMAT = "d.M.yyyy"
 

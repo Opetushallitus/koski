@@ -10,11 +10,13 @@ import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
 import { TertiaryHeading } from "../../components/typography/headings"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import { getLocalized, t, T } from "../../i18n/i18n"
+import { HenkilöLaajatTiedot } from "../../state/apitypes/henkilo"
 import {
-  HenkilöLaajatTiedot,
+  isIlmoitettu,
+  isVirallinen,
   Yhteystiedot,
   YhteystietojenAlkuperä,
-} from "../../state/oppijat"
+} from "../../state/apitypes/yhteystiedot"
 import { nonNull } from "../../utils/arrays"
 import { formatDate } from "../../utils/date"
 import "./OppijanYhteystiedot.less"
@@ -27,8 +29,8 @@ export type OppijanYhteystiedotProps = {
 }
 
 export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {
-  const ilmoitetut = props.yhteystiedot.filter(Yhteystiedot.isIlmoitettu)
-  const viralliset = props.yhteystiedot.filter(Yhteystiedot.isVirallinen)
+  const ilmoitetut = props.yhteystiedot.filter(isIlmoitettu)
+  const viralliset = props.yhteystiedot.filter(isVirallinen)
   const viewIlmoitetut = ilmoitetut.length > 0
 
   return (
@@ -157,7 +159,7 @@ const Yhteystietolista = (props: YhteystietolistaProps) => (
         />
       )}
     </InfoTable>
-    {Yhteystiedot.isIlmoitettu(props.yhteystiedot) && (
+    {isIlmoitettu(props.yhteystiedot) && (
       <div className={b("lahde")}>
         <T
           id="oppija__ilmoitetun_yhteystiedon_lahde"
