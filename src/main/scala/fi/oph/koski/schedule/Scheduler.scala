@@ -22,9 +22,7 @@ class Scheduler(
   task: Option[JValue] => Option[JValue],
   runOnSingleNode: Boolean = true,
   intervalMillis: Int = 10000
-) extends BackgroundExecutionContext
-  with KoskiDatabaseMethods
-  with Logging {
+) extends KoskiDatabaseMethods with Logging {
 
   private val taskExecutor = Executors.newSingleThreadScheduledExecutor(NamedThreadFactory(name))
   private val context: Option[JValue] = getScheduler.flatMap(_.context).orElse(initialContext)
