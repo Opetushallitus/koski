@@ -15,5 +15,4 @@ object Pools {
   val databasePoolName = "databasePool"
   val globalExecutor = ExecutionContext.fromExecutor(NamedThreadPoolExecutor("globalPool", Pools.globalExecutionContextThreads, Pools.globalExecutionContextThreads, 1000))
   val databaseExecutor = ExecutionContext.fromExecutor(NamedThreadPoolExecutor(databasePoolName, Pools.globalExecutionContextThreads, Pools.globalExecutionContextThreads, 1000))
-  val backgroundExecutor = ExecutionContext.fromExecutor(NamedThreadPoolExecutor("backgroundPool", 0, Pools.backgroundExecutionContextThreads,1000))
 }
