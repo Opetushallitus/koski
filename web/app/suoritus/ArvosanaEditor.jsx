@@ -2,7 +2,7 @@ import React from 'baret'
 import {Editor} from '../editor/Editor'
 import {wrapOptional, modelEmpty, modelProperty} from '../editor/EditorModel'
 import * as L from 'partial.lenses'
-import {lensedModel, modelData, modelLookup, modelSetValue, oneOfPrototypes} from '../editor/EditorModel'
+import {lensedModel, modelData, modelLookup, modelSetValue, oneOfPrototypes, modelItems} from '../editor/EditorModel'
 import {sortGrades} from '../util/sorting'
 import {fetchAlternativesBasedOnPrototypes} from '../editor/EnumEditor'
 import {fixArviointi} from './Suoritus'
@@ -52,8 +52,23 @@ export const ArvosanaEditor = ({model, notFoundText}) => {
 }
 
 export const resolveArvosanaModel = model => {
-  const arviointi = modelLookup(model, 'arviointi.-1')
-  const arvosana = arviointi ? modelLookup(model, 'arviointi.-1.arvosana') : null
+  let arviointi = modelLookup(model, 'arviointi.-1')
+  let arvosana = arviointi ? modelLookup(model, 'arviointi.-1.arvosana') : null
+
+  console.log("Arviointi:")
+  console.log(arvosana)
+  modelItems(model, 'arviointi').map(item => {
+    const nthArvosana = modelLookup(item, 'arvosana')
+    // Tää pitää korjata jonneki muualle jotenkin hienommaksi.
+    // Idea siis se, että näytetään paras arvosana.
+    // Arvosana ei ole kuitenkaan välttämättä numero..
+    console.log(nthArvosana.value.data.koodiarvo)
+    if (nthArvosana.value.data.koodiarvo === 'S' || nthArvosana.value.data.koodiarvo > arvosana.value.data.koodiarvo) {
+      console.log("Korvataan")
+      arviointi = item
+      arvosana = nthArvosana // pitäis näkyy 10 ja 6
+    }
+  })
 
   const isPaikallinenArviointi = arviointi && !modelEmpty(arviointi) && arviointi.value.classes.includes('paikallinenarviointi')
 
