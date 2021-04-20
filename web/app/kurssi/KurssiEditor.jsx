@@ -7,6 +7,7 @@ import {KurssiPopup} from './KurssiPopup'
 import {isLukio2019ModuuliTaiOpintojakso, isLukionKurssimainen, isPaikallinen} from '../suoritus/Koulutusmoduuli'
 import {FootnoteHint} from '../components/footnote'
 import {eiLasketaKokonaispistemäärään} from '../dia/DIA'
+import {ArrayEditor} from '../editor/ArrayEditor'
 
 export class KurssiEditor extends React.Component {
   constructor(props) {
@@ -59,7 +60,11 @@ export class KurssiEditor extends React.Component {
           eiLasketaKokonaispistemäärään(kurssi) &&
           <FootnoteHint title={'Ei lasketa kokonaispistemäärään'}/>
         }
-        <div className="arvosana"><ArvosanaEditor model={kurssi}/></div>
+        <div className="arvosana">
+        {
+          edit ? <ArrayEditor model={modelLookup(kurssi, 'arviointi')}/> : <ArvosanaEditor model={modelLookup(kurssi, 'arviointi')}/>
+        }
+        </div>
         {
           open && <KurssiPopup kurssi={kurssi} parentElemPosition={this.kurssiElement.getBoundingClientRect()}/>
         }
