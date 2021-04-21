@@ -3,7 +3,7 @@ import { pipe } from "fp-ts/lib/function"
 import Cookies from "js-cookie"
 import { fetchCurrentUser } from "../api/api"
 import { absoluteKoskiUrl, buildUrl } from "../utils/url"
-import { User } from "./types"
+import { User } from "./common"
 
 const RETURN_URL_KEY = "koskiReturnUrl"
 

@@ -7,12 +7,13 @@ import { OpiskeluIcon } from "../../components/icons/Icon"
 import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import { getLocalized, T, t, useLanguage } from "../../i18n/i18n"
-import { KoodistoKoodiviite } from "../../state/koodistot"
+import { KoodistoKoodiviite } from "../../state/apitypes/koodistot"
 import {
   OpiskeluoikeusLaajatTiedot,
-  OppijaHakutilanteillaLaajatTiedot,
-} from "../../state/oppijat"
-import { ISODate } from "../../state/types"
+  sortOpiskeluoikeusLaajatTiedot,
+} from "../../state/apitypes/opiskeluoikeus"
+import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
+import { ISODate } from "../../state/common"
 import { formatNullableDate, parseYear } from "../../utils/date"
 
 export type OppijanOpiskeluhistoriaProps = {
@@ -23,7 +24,7 @@ export const OppijanOpiskeluhistoria = (
   props: OppijanOpiskeluhistoriaProps
 ) => {
   const language = useLanguage()
-  const sort = OpiskeluoikeusLaajatTiedot.sort(language)
+  const sort = sortOpiskeluoikeusLaajatTiedot(language)
 
   return props.oppija.oppija.opiskeluoikeudet.length > 0 ? (
     <>

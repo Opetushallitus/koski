@@ -1,4 +1,4 @@
-import { ISODate } from "../state/types"
+import { ISODate } from "../state/common"
 import { apiGet } from "./apiFetch"
 
 export type FixtureState = {

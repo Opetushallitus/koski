@@ -1,8 +1,10 @@
 import {
-  Hakutoive,
   HakutoiveValintatilakoodiarvo,
+  isEiPaikkaa,
+  isHyväksytty,
+  isVarasijalla,
   SuppeaHakutoive,
-} from "./oppijat"
+} from "./hakutoive"
 
 describe("Hakutoive", () => {
   const testHakutoivePattern = (koodiarvo?: HakutoiveValintatilakoodiarvo) => (
@@ -16,9 +18,9 @@ describe("Hakutoive", () => {
         koodiarvo,
       },
     }
-    expect(Hakutoive.isHyväksytty(hakutoive)).toEqual(hyväksytty)
-    expect(Hakutoive.isVarasijalla(hakutoive)).toEqual(varasijalla)
-    expect(Hakutoive.isEiPaikkaa(hakutoive)).toEqual(eiPaikkaa)
+    expect(isHyväksytty(hakutoive)).toEqual(hyväksytty)
+    expect(isVarasijalla(hakutoive)).toEqual(varasijalla)
+    expect(isEiPaikkaa(hakutoive)).toEqual(eiPaikkaa)
   }
 
   it("hyvaksytty", () => testHakutoivePattern("hyvaksytty")(true, false, false))

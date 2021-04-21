@@ -1,9 +1,9 @@
 import {
   clickElement,
   expectElementVisible,
-  reset,
   textEventuallyEquals,
-} from "../integrationtests-env/browser"
+} from "../integrationtests-env/browser/content"
+import { reset } from "../integrationtests-env/browser/reset"
 
 describe("Lokalisointi", () => {
   it("Lokalisoitu otsikko ilmestyy", async () => {

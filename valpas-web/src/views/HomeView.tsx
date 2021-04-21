@@ -9,7 +9,7 @@ import {
   TableBody,
 } from "../components/tables/Table"
 import { getLocalized, t } from "../i18n/i18n"
-import { OrganisaatioJaKayttooikeusrooli, User } from "../state/types"
+import { OrganisaatioJaKayttooikeusrooli, User } from "../state/common"
 
 export type HomeViewProps = {
   user: User

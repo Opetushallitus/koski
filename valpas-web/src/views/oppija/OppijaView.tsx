@@ -17,7 +17,7 @@ import { Spinner } from "../../components/icons/Spinner"
 import { InfoTooltip } from "../../components/tooltip/InfoTooltip"
 import { Heading } from "../../components/typography/headings"
 import { T, t } from "../../i18n/i18n"
-import { OppijaHakutilanteillaLaajatTiedot } from "../../state/oppijat"
+import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import {
   createHakutilannePathWithOrg as createHakutilannePathWithOrg,
   createHakutilannePathWithoutOrg as createHakutilannePathWithoutOrg,

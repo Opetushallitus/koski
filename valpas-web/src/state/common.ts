@@ -1,7 +1,7 @@
 import {
   OppilaitosnumeroKoodistoviite,
   PaikkakuntaKoodistoviite,
-} from "./koodistot"
+} from "./apitypes/koodistot"
 
 // Tempate literal -tyypitykset aiheuttavat stack overflow'n linttausvaiheessa.
 // Korjattaneen Typescriptin versiossa 4.2, väliaikaisesti mennään yksinkertaisemmalla tyypityksellä.

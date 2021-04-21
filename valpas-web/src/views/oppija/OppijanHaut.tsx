@@ -17,11 +17,15 @@ import {
   T,
 } from "../../i18n/i18n"
 import {
-  Haku,
   HakuLaajatTiedot,
+  sortHakuLaajatTiedot,
+} from "../../state/apitypes/haku"
+import {
   Hakutoive,
-  OppijaHakutilanteillaLaajatTiedot,
-} from "../../state/oppijat"
+  isVastaanotettu,
+  isVastaanotettuEhdollisesti,
+} from "../../state/apitypes/hakutoive"
+import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import { plainComponent } from "../../utils/plaincomponent"
 import "./OppijanHaut.less"
 
@@ -32,7 +36,7 @@ export type OppijanHautProps = {
 }
 
 export const OppijanHaut = (props: OppijanHautProps) => {
-  const haut = Haku.sort(props.oppija.hakutilanteet)
+  const haut = sortHakuLaajatTiedot(props.oppija.hakutilanteet)
   const error = props.oppija.hakutilanneError
   return error ? (
     <NoDataMessage>
@@ -130,11 +134,11 @@ const hakutoiveToTableValue = (hakutoive: Hakutoive, index: number): Datum => ({
           {hakutoive.harkinnanvarainen ? (
             <FootnoteReference>1</FootnoteReference>
           ) : null}
-          {Hakutoive.isVastaanotettu(hakutoive) ? (
+          {isVastaanotettu(hakutoive) ? (
             <div>
               <LongArrow />
               <span className={b("otettuvastaan")}>
-                {Hakutoive.isVastaanotettuEhdollisesti(hakutoive) ? (
+                {isVastaanotettuEhdollisesti(hakutoive) ? (
                   <T id="oppija__otettu_vastaan_ehdollisesti" />
                 ) : (
                   <T id="oppija__otettu_vastaan" />

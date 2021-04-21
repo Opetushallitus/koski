@@ -12,17 +12,17 @@ import { Dropdown } from "../../components/forms/Dropdown"
 import { Spinner } from "../../components/icons/Spinner"
 import { Counter } from "../../components/typography/Counter"
 import { getLocalized, t, T } from "../../i18n/i18n"
+import { valvottavatOpiskeluoikeudet } from "../../state/apitypes/opiskeluoikeus"
 import { useBasePath } from "../../state/basePath"
-import { valvottavatOpiskeluoikeudet } from "../../state/oppijat"
-import {
-  createHakutilannePathWithOrg,
-  HakutilanneViewRouteProps,
-} from "../../state/paths"
 import {
   Oid,
   OrganisaatioHierarkia,
   OrganisaatioJaKayttooikeusrooli,
-} from "../../state/types"
+} from "../../state/common"
+import {
+  createHakutilannePathWithOrg,
+  HakutilanneViewRouteProps,
+} from "../../state/paths"
 import { ErrorView } from "../ErrorView"
 import { HakutilanneTable } from "./HakutilanneTable"
 import "./HakutilanneView.less"

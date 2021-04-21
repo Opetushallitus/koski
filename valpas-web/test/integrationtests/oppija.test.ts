@@ -1,17 +1,15 @@
 import { createOppijaPath } from "../../src/state/paths"
 import {
-  $$,
   contentEventuallyEquals,
   expectElementNotVisible,
-  goToLocation,
-  loginAs,
-  resetMockData,
   textEventuallyEquals,
-} from "../integrationtests-env/browser"
+} from "../integrationtests-env/browser/content"
+import { $$, goToLocation } from "../integrationtests-env/browser/core"
 import {
   allowNetworkError,
   FORBIDDEN,
-} from "../integrationtests-env/fail-on-console"
+} from "../integrationtests-env/browser/fail-on-console"
+import { loginAs, resetMockData } from "../integrationtests-env/browser/reset"
 
 const ysiluokkaKeskenKeväälläPath = createOppijaPath("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000001",

@@ -16,6 +16,7 @@ import {
   storeLoginReturnUrl,
 } from "../state/auth"
 import { BasePathProvider, useBasePath } from "../state/basePath"
+import { User } from "../state/common"
 import {
   createHakutilannePathWithoutOrg,
   hakutilannePathWithOrg,
@@ -23,7 +24,6 @@ import {
   oppijaPath,
   rootPath,
 } from "../state/paths"
-import { User } from "../state/types"
 import { ErrorView, NotFoundView } from "./ErrorView"
 import {
   HakutilanneView,

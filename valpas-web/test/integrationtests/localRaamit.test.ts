@@ -1,9 +1,9 @@
+import { expectElementVisible } from "../integrationtests-env/browser/content"
 import {
   defaultLogin,
-  expectElementVisible,
   loginAs,
   reset,
-} from "../integrationtests-env/browser"
+} from "../integrationtests-env/browser/reset"
 
 describe("Paikalliset raamit", () => {
   it("näytetään login-sivulla kirjautumattomalle käyttäjälle", async () => {

@@ -1,7 +1,7 @@
 import Cookie from "js-cookie"
 import React, { useMemo } from "react"
-import { KoodistoKoodiviite } from "../state/koodistot"
-import { LocalizedString } from "../state/types"
+import { KoodistoKoodiviite } from "../state/apitypes/koodistot"
+import { LocalizedString } from "../state/common"
 import { logWarning } from "../utils/log"
 
 export type TranslationId = string
