@@ -4,9 +4,8 @@ import java.net.InetAddress
 import java.sql.Timestamp
 import java.time.Instant
 
-import fi.oph.koski.db.DB
+import fi.oph.koski.db.{DB, DatabaseExecutionContext, KoskiDatabaseMethods, SSOSessionRow, Tables}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.{GlobalExecutionContext, KoskiDatabaseMethods, SSOSessionRow, Tables}
 import fi.oph.koski.huoltaja.HuollettavatSearchResult
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AuthenticationUser, SessionTimeout}
@@ -14,7 +13,7 @@ import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiOperation, Logging}
 import fi.oph.koski.util.Timing
 import org.json4s.JsonAST.JValue
 
-class KoskiSessionRepository(val db: DB, sessionTimeout: SessionTimeout) extends KoskiDatabaseMethods with GlobalExecutionContext with Timing with Logging {
+class KoskiSessionRepository(val db: DB, sessionTimeout: SessionTimeout) extends KoskiDatabaseMethods with DatabaseExecutionContext with Timing with Logging {
 
   def store(ticket: String, user: AuthenticationUser, clientIp: InetAddress, userAgent: String) = {
     val operation = if (user.kansalainen) KoskiOperation.KANSALAINEN_LOGIN else KoskiOperation.LOGIN

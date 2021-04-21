@@ -2,9 +2,10 @@ package fi.oph.koski.config
 
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.cache.CacheManager
-import fi.oph.koski.db._
+import fi.oph.koski.db.{KoskiDatabase, RaportointiDatabaseConfig, ValpasDatabaseConfig}
 import fi.oph.koski.elasticsearch.{ElasticSearch, IndexManager}
 import fi.oph.koski.eperusteet.EPerusteetRepository
+import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.healthcheck.HealthCheck
 import fi.oph.koski.henkilo.{HenkilöRepository, Hetu, KoskiHenkilöCache, OpintopolkuHenkilöFacade}
@@ -30,6 +31,7 @@ import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.userdirectory.DirectoryClient
 import fi.oph.koski.validation.KoskiValidator
+import fi.oph.koski.valpas.db.ValpasDatabase
 import fi.oph.koski.valpas.localization.ValpasLocalizationConfig
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
 import fi.oph.koski.ytr.{YtrAccessChecker, YtrClient, YtrOpiskeluoikeusRepository, YtrRepository}
@@ -45,14 +47,16 @@ object KoskiApplication {
   def apply(config: Config): KoskiApplication = new KoskiApplication(config)
 }
 
-class KoskiApplication(val config: Config, implicit val cacheManager: CacheManager = new CacheManager) extends Logging with UserAuthenticationContext with GlobalExecutionContext {
+class KoskiApplication(val config: Config, implicit val cacheManager: CacheManager = new CacheManager)
+  extends Logging with UserAuthenticationContext with GlobalExecutionContext {
+
   lazy val runMode = RunMode.get
   lazy val organisaatioRepository = OrganisaatioRepository(config, koodistoViitePalvelu)
   lazy val organisaatioService = new OrganisaatioService(this)
   lazy val directoryClient = DirectoryClient(config)
   lazy val ePerusteet = EPerusteetRepository.apply(config)
   lazy val tutkintoRepository = TutkintoRepository(ePerusteet, koodistoViitePalvelu)
-  lazy val oppilaitosRepository = new OppilaitosRepository(organisaatioRepository)
+  lazy val oppilaitosRepository = OppilaitosRepository(config, organisaatioRepository)
   lazy val koodistoPalvelu = KoodistoPalvelu.apply(config)
   lazy val koodistoViitePalvelu = KoodistoViitePalvelu(koodistoPalvelu)
   lazy val opintopolkuHenkilöFacade = OpintopolkuHenkilöFacade(config, masterDatabase.db, perustiedotRepository, perustiedotIndexer)
@@ -60,6 +64,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val masterDatabase = KoskiDatabase.master(config)
   lazy val replicaDatabase = KoskiDatabase.replica(config)
   lazy val raportointiDatabase = new RaportointiDatabase(new RaportointiDatabaseConfig(config, schema = Public))
+  lazy val valpasDatabase = new ValpasDatabase(new ValpasDatabaseConfig(config))
   lazy val raportointikantaService = new RaportointikantaService(this)
   lazy val virtaClient = VirtaClient(config)
   lazy val ytrClient = YtrClient(config)

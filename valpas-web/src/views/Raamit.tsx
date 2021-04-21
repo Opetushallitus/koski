@@ -1,8 +1,8 @@
 import React, { useEffect } from "react"
 import { Route } from "react-router-dom"
 import { CurrentUser, isLoggedIn } from "../state/auth"
+import { runningLocally } from "../utils/environment"
 
-const runningLocally = window.environment == "local"
 const localRaamitEnabled = runningLocally && !process.env.VIRKAILIJA_RAAMIT_HOST
 
 type RaamitProps = {

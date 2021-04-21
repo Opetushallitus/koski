@@ -24,6 +24,7 @@ import {
   oppijaPath,
   rootPath,
 } from "../state/paths"
+import { runningLocally } from "../utils/environment"
 import { ErrorView, NotFoundView } from "./ErrorView"
 import {
   HakutilanneView,
@@ -41,8 +42,6 @@ const FeatureFlagEnabler = () => {
   window.localStorage.setItem(featureFlagName, featureFlagEnabledValue)
   return <Redirect to={createHakutilannePathWithoutOrg(basePath)} />
 }
-
-const runningLocally = window.environment == "local"
 
 const isFeatureFlagEnabled = () =>
   runningLocally ||

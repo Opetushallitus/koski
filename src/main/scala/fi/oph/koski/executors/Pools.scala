@@ -1,6 +1,7 @@
 package fi.oph.koski.executors
 
-import scala.concurrent.ExecutionContext
+import java.util.concurrent.ThreadPoolExecutor
+import scala.concurrent.{ExecutionContext, ExecutionContextExecutor}
 
 /**
  *  We've tried to bundle all global threadpool/executor/executioncontext settings here.
@@ -8,12 +9,15 @@ import scala.concurrent.ExecutionContext
 object Pools {
   // Number of threads to use for Executors.global (scala.concurrent, our own GlobalExecution context, parallel collections etc)
   val jettyThreads = 250
-  val globalExecutionContextThreads = jettyThreads
-  val backgroundExecutionContextThreads = Math.max(jettyThreads / 10, 2)
-  val httpThreads = jettyThreads
-  val httpPool = NamedThreadPoolExecutor("http4s-blaze-client", httpThreads, httpThreads, 1000)
+  val globalExecutionContextThreads: Int = jettyThreads
+  val backgroundExecutionContextThreads: Int = Math.max(jettyThreads / 10, 2)
+  val httpThreads: Int = jettyThreads
+  val httpPool: ThreadPoolExecutor = NamedThreadPoolExecutor("http4s-blaze-client", httpThreads, httpThreads, 1000)
   val databasePoolName = "databasePool"
-  val globalExecutor = ExecutionContext.fromExecutor(NamedThreadPoolExecutor("globalPool", Pools.globalExecutionContextThreads, Pools.globalExecutionContextThreads, 1000))
-  val databaseExecutor = ExecutionContext.fromExecutor(NamedThreadPoolExecutor(databasePoolName, Pools.globalExecutionContextThreads, Pools.globalExecutionContextThreads, 1000))
-  val backgroundExecutor = ExecutionContext.fromExecutor(NamedThreadPoolExecutor("backgroundPool", 0, Pools.backgroundExecutionContextThreads,1000))
+  val globalExecutor: ExecutionContextExecutor = ExecutionContext.fromExecutor(
+    NamedThreadPoolExecutor("globalPool", Pools.globalExecutionContextThreads, Pools.globalExecutionContextThreads, 1000)
+  )
+  val databaseExecutor: ExecutionContextExecutor = ExecutionContext.fromExecutor(
+    NamedThreadPoolExecutor(databasePoolName, Pools.globalExecutionContextThreads, Pools.globalExecutionContextThreads, 1000)
+  )
 }
