@@ -41,7 +41,7 @@ case class Hakutoive(
   koulutusOid: Option[ValpasHakutoive.KoulutusOid],
   hakutoivenumero: Int,
   pisteet: Option[BigDecimal],
-  alinValintaPistemaara: Option[BigDecimal],
+  alinHyvaksyttyPistemaara: Option[BigDecimal],
   @EnumValues(Valintatila.values)
   valintatila: Option[String],
   varasijanumero: Option[Int],
@@ -123,6 +123,6 @@ object Harkinnanvaraisuus {
     "todistustenpuuttuminen",
     "riittamatonkielitaito"
   )
-  
+
   def isHarkinnanvarainen(value: String) = values.contains(value)
 }

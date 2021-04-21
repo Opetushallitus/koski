@@ -24,7 +24,7 @@ object HakukoosteExampleData {
           koulutusNimi = "Lukiokoulutus",
           valintatila = Some("HYLATTY"),
         ).copy(
-          alinValintaPistemaara = Some(9.01),
+          alinHyvaksyttyPistemaara = Some(9.01),
           pisteet = Some(9),
         ),
         hakutoive(
@@ -35,7 +35,7 @@ object HakukoosteExampleData {
           valintatila = Some("HYVAKSYTTY"),
           vastaanottotieto = Some("VASTAANOTTANUT_SITOVASTI"),
         ).copy(
-          alinValintaPistemaara = Some(8.2),
+          alinHyvaksyttyPistemaara = Some(8.2),
           pisteet = Some(9),
         ),
         hakutoive(
@@ -70,7 +70,7 @@ object HakukoosteExampleData {
           koulutusNimi = "Lukiokoulutus",
           valintatila = Some("HYLATTY"),
         ).copy(
-          alinValintaPistemaara = Some(9.01),
+          alinHyvaksyttyPistemaara = Some(9.01),
           pisteet = Some(9)
         ),
       ))),
@@ -122,7 +122,7 @@ object HakukoosteExampleData {
           koulutusNimi = "Lukiokoulutus",
           valintatila = Some("HYLATTY"),
         ).copy(
-          alinValintaPistemaara = Some(8.2),
+          alinHyvaksyttyPistemaara = Some(8.2),
           pisteet = Some(7.5),
         ),
         hakutoive(
@@ -153,7 +153,7 @@ object HakukoosteExampleData {
           koulutusNimi = "Lukiokoulutus",
           valintatila = Some("VARALLA"),
         ).copy(
-          alinValintaPistemaara = Some(8.99),
+          alinHyvaksyttyPistemaara = Some(8.99),
           pisteet = Some(9)
         ),
       ))),
@@ -221,7 +221,7 @@ object HakukoosteExampleData {
       koulutusNimi = Finnish(koulutusNimi),
       hakukohdeOrganisaatio = hakukohdeOrganisaatio,
       pisteet = None,
-      alinValintaPistemaara = None,
+      alinHyvaksyttyPistemaara = None,
       valintatila = valintatila,
       vastaanottotieto = vastaanottotieto,
       ilmoittautumistila = Some("EI_ILMOITTAUTUNUT"),

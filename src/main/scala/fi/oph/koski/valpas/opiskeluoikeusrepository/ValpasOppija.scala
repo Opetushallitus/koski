@@ -235,7 +235,7 @@ object ValpasHakutoive {
       koulutusNimi = hakutoive.koulutusNimi.toLocalizedString,
       hakutoivenumero = Some(hakutoive.hakutoivenumero),
       pisteet = hakutoive.pisteet,
-      alinValintaPistemaara = hakutoive.alinValintaPistemaara,
+      alinHyvaksyttyPistemaara = hakutoive.alinHyvaksyttyPistemaara,
       valintatila = Valintatila.valpasKoodiviiteOption(hakutoive.valintatila),
       vastaanottotieto = Vastaanottotieto.valpasKoodiviiteOption(hakutoive.vastaanottotieto),
       varasijanumero = hakutoive.varasijanumero,
@@ -250,7 +250,7 @@ case class ValpasHakutoive(
   koulutusNimi: Option[LocalizedString],
   hakutoivenumero: Option[Int],
   pisteet: Option[BigDecimal],
-  alinValintaPistemaara: Option[BigDecimal],
+  alinHyvaksyttyPistemaara: Option[BigDecimal],
   @KoodistoUri("valpashaunvalintatila")
   valintatila: Option[Koodistokoodiviite],
   @KoodistoUri("valpasvastaanottotieto")
