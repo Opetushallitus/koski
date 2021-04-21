@@ -72,7 +72,7 @@ class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitSpec extends Fre
       lazy val r = findSingle(raportti)
       r.oppilaitos should equal("Jyväskylän normaalikoulu")
       r.kurssikoodi should (equal("ÄI2") or equal("AÄI1"))
-      r.kurssinNimi should equal("Monimuotoiset tekstit")
+      r.kurssinNimi should (equal("Monimuotoiset tekstit") or equal("Suomen kielen ja kirjallisuuden opiskelun perustaidot"))
       r.päätasonSuorituksenTyyppi should equal("aikuistenperusopetuksenoppimaara")
       r.kurssinSuorituksenTyyppi should equal("aikuistenperusopetuksenkurssi")
     }
