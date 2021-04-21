@@ -48,14 +48,11 @@ const TestApiButtons = () => {
     mapSuccess(current, setState)
   }, [current])
 
-  const setTarkasteluPäivä = (tarkasteluPäivä: string) =>
+  const setTarkastelupäivä = (tarkastelupäivä: string) =>
     state &&
     setState({
       ...state,
-      rajapäivät: {
-        ...state.rajapäivät,
-        tarkasteluPäivä,
-      },
+      tarkastelupäivä: tarkastelupäivä,
     })
 
   return (
@@ -63,15 +60,15 @@ const TestApiButtons = () => {
       <>
         <Fixture>{state.fixture}</Fixture>
         <TestApiButton
-          fetchFunc={resetMockDataToDate(state.rajapäivät.tarkasteluPäivä)}
+          fetchFunc={resetMockDataToDate(state.tarkastelupäivä)}
           id={"resetMockData"}
           title={"Use Valpas mock data"}
           onStateUpdated={() => current.call()}
         />
         <SimpleTextField
-          value={state.rajapäivät.tarkasteluPäivä}
-          onChange={setTarkasteluPäivä}
-          id={"tarkasteluPäivä"}
+          value={state.tarkastelupäivä}
+          onChange={setTarkastelupäivä}
+          id={"tarkastelupäivä"}
         />
         {state.fixture === "VALPAS" && (
           <TestApiButton

@@ -94,7 +94,6 @@ class ValpasOppijaService(
 
   private val accessResolver = new ValpasAccessResolver(application.organisaatioRepository)
 
-  private val rajapäivät: () => ValpasRajapäivät = ValpasRajapäivät(application.config)
   private implicit val validationAndResolvingContext: ValidationAndResolvingContext =
     ValidationAndResolvingContext(application.koodistoViitePalvelu, application.organisaatioRepository)
 
@@ -114,7 +113,7 @@ class ValpasOppijaService(
     }
 
     accessResolver.organisaatiohierarkiaOids(oppilaitosOids)
-      .map(opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyvätOppijat(rajapäivät()))
+      .map(opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyvätOppijat)
       .flatMap(results => HttpStatus.foldEithers(results.map(_.asValpasOppijaLaajatTiedot)))
       .map(fetchHaut(errorClue))
   }
@@ -123,7 +122,7 @@ class ValpasOppijaService(
   // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
   // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
   def getOppijaLaajatTiedot(oppijaOid: ValpasHenkilö.Oid)(implicit session: ValpasSession): Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] =
-    opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyväOppija(rajapäivät())(oppijaOid)
+    opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyväOppija(oppijaOid)
       .toRight(ValpasErrorCategory.forbidden.oppija())
       .flatMap(_.asValpasOppijaLaajatTiedot)
       .flatMap(accessResolver.withOppijaAccess)

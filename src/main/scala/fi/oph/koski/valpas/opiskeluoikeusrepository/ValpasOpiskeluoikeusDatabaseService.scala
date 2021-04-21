@@ -23,12 +23,13 @@ case class ValpasOppijaRow(
 
 class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends DatabaseConverters with Logging with Timing {
   private val db = application.raportointiDatabase
+  private val rajapäivätService = application.valpasRajapäivätService
 
-  def getPeruskoulunValvojalleNäkyväOppija(rajapäivät: ValpasRajapäivät)(oppijaOid: String): Option[ValpasOppijaRow] =
-    getOppijat(Some(oppijaOid), None, rajapäivät).headOption
+  def getPeruskoulunValvojalleNäkyväOppija(oppijaOid: String): Option[ValpasOppijaRow] =
+    getOppijat(Some(oppijaOid), None).headOption
 
-  def getPeruskoulunValvojalleNäkyvätOppijat(rajapäivät: ValpasRajapäivät)(oppilaitosOids: Set[String]): Seq[ValpasOppijaRow] =
-    getOppijat(None, Some(oppilaitosOids.toSeq), rajapäivät)
+  def getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOids: Set[String]): Seq[ValpasOppijaRow] =
+    getOppijat(None, Some(oppilaitosOids.toSeq))
 
   private implicit def getResult: GetResult[ValpasOppijaRow] = GetResult(r => {
     ValpasOppijaRow(
@@ -49,15 +50,15 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   //        Valinta voidaan jättää joko Scalalle, käyttöliitymälle tai tehdä toinen query, joka tekee valinnan SQL:ssä.
   private def getOppijat(
     oppijaOid: Option[String],
-    oppilaitosOids: Option[Seq[String]],
-    rajapäivät: ValpasRajapäivät
+    oppilaitosOids: Option[Seq[String]]
   ): Seq[ValpasOppijaRow] = {
-    val lakiVoimassaPeruskoulustaValmistuneillaAlku = rajapäivät.lakiVoimassaPeruskoulustaValmistuneillaAlku
-    val keväänValmistumisjaksoAlku = rajapäivät.keväänValmistumisjaksoAlku
-    val keväänValmistumisjaksoLoppu = rajapäivät.keväänValmistumisjaksoLoppu
-    val keväänUlkopuolellaValmistumisjaksoAlku = rajapäivät.keväänUlkopuolellaValmistumisjaksoAlku
-    val tarkasteluPäivä = rajapäivät.tarkasteluPäivä
-    val keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä = rajapäivät.keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
+    val lakiVoimassaVanhinSyntymäaika = rajapäivätService.lakiVoimassaVanhinSyntymäaika
+    val lakiVoimassaPeruskoulustaValmistuneillaAlku = rajapäivätService.lakiVoimassaPeruskoulustaValmistuneillaAlku
+    val keväänValmistumisjaksoAlku = rajapäivätService.keväänValmistumisjaksoAlku
+    val keväänValmistumisjaksoLoppu = rajapäivätService.keväänValmistumisjaksoLoppu
+    val keväänUlkopuolellaValmistumisjaksoAlku = rajapäivätService.keväänUlkopuolellaValmistumisjaksoAlku()
+    val tarkastelupäivä = rajapäivätService.tarkastelupäivä
+    val keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä = rajapäivätService.keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
 
     val timedBlockname = if (oppijaOid.isDefined) "getOppijatSingle" else "getOppijatMultiple"
 
@@ -100,7 +101,7 @@ WITH
           sql"""
       JOIN r_paatason_suoritus ON r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
       LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella ON aikajakson_keskella.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-        AND $tarkasteluPäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
+        AND $tarkastelupäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
       -- Lasketaan voimassaolevien kotiopetusjaksojen määrä ehtoa 4a varten
       CROSS JOIN LATERAL (
         SELECT
@@ -109,11 +110,11 @@ WITH
           jsonb_array_elements(r_opiskeluoikeus.data -> 'lisätiedot' -> 'kotiopetusjaksot') jaksot
         WHERE
           jaksot ->> 'loppu' IS NULL
-            OR $tarkasteluPäivä BETWEEN jaksot ->> 'alku' AND jaksot ->> 'loppu'
+            OR $tarkastelupäivä BETWEEN jaksot ->> 'alku' AND jaksot ->> 'loppu'
       ) kotiopetusjaksoja
     WHERE
       -- (1) oppija on potentiaalisesti oppivelvollinen, eli syntynyt 2004 tai myöhemmin
-      EXTRACT(YEAR FROM r_henkilo.syntymaaika) >= 2004
+      r_henkilo.syntymaaika >= $lakiVoimassaVanhinSyntymäaika
       -- (2) oppijalla on peruskoulun opiskeluoikeus
       AND r_opiskeluoikeus.koulutusmuoto = 'perusopetus'
       AND r_paatason_suoritus.suorituksen_tyyppi = 'perusopetuksenvuosiluokka'
@@ -125,8 +126,8 @@ WITH
       -- (5)  opiskeluoikeus ei ole eronnut tilassa tällä hetkellä
       AND (
         (aikajakson_keskella.tila IS NOT NULL AND NOT aikajakson_keskella.tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
-        OR (aikajakson_keskella.tila IS NULL AND $tarkasteluPäivä < r_opiskeluoikeus.alkamispaiva)
-        OR (aikajakson_keskella.tila IS NULL AND $tarkasteluPäivä > r_opiskeluoikeus.paattymispaiva AND NOT r_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
+        OR (aikajakson_keskella.tila IS NULL AND $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva)
+        OR (aikajakson_keskella.tila IS NULL AND $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva AND NOT r_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
       )
       AND (
         -- (6a) opiskeluoikeus on läsnä tai väliaikaisesti keskeytynyt tai lomalla tällä hetkellä. Huomaa, että tulevaisuuteen luotuja opiskeluoikeuksia ei tarkoituksella haluta näkyviin.
@@ -136,13 +137,13 @@ WITH
         -- TAI:
         OR (
           -- (6b.1 ) opiskeluoikeus on valmistunut-tilassa, ja siitä löytyy vahvistettu päättötodistus
-          ($tarkasteluPäivä >= r_opiskeluoikeus.paattymispaiva AND r_opiskeluoikeus.viimeisin_tila = 'valmistunut')
+          ($tarkastelupäivä >= r_opiskeluoikeus.paattymispaiva AND r_opiskeluoikeus.viimeisin_tila = 'valmistunut')
           -- (6b.2 ) ministeriön määrittelemä aikaraja ei ole kulunut umpeen henkilön valmistumisajasta.
           AND (
             (
               -- keväällä valmistunut ja tarkastellaan heille määrättyä rajapäivää aiemmin
               (r_opiskeluoikeus.paattymispaiva BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
-              AND $tarkasteluPäivä <= $keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
+              AND $tarkastelupäivä <= $keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
             )
             OR (
               -- tai muuna aikana valmistunut ja tarkastellaan heille määrättyä rajapäivää aiemmin
@@ -207,8 +208,8 @@ WITH
        r_opiskeluoikeus.viimeisin_tila,
        (r_opiskeluoikeus.viimeisin_tila = 'valmistunut' AND r_opiskeluoikeus.paattymispaiva < $lakiVoimassaPeruskoulustaValmistuneillaAlku) AS aiemmin_valmistunut,
        CASE
-         WHEN $tarkasteluPäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
-         WHEN $tarkasteluPäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
+         WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
+         WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
          ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
        END tarkastelupäivän_tila
      FROM
@@ -216,7 +217,7 @@ WITH
        JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
          AND r_opiskeluoikeus.koulutusmuoto = 'perusopetus'
        LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella ON aikajakson_keskella.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-         AND $tarkasteluPäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
+         AND $tarkastelupäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
        LEFT JOIN valpastila valpastila_aikajakson_keskella ON valpastila_aikajakson_keskella.koskiopiskeluoikeudentila = aikajakson_keskella.tila
        LEFT JOIN valpastila valpastila_viimeisin ON valpastila_viimeisin.koskiopiskeluoikeudentila = r_opiskeluoikeus.viimeisin_tila
        -- Haetaan päätason suoritus, jonka dataa halutaan näyttää (toistaiseksi valitaan alkamispäivän perusteella uusin)
@@ -254,8 +255,8 @@ WITH
        r_opiskeluoikeus.viimeisin_tila,
        FALSE AS aiemmin_valmistunut,
        CASE
-         WHEN $tarkasteluPäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
-         WHEN $tarkasteluPäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
+         WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
+         WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
          ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
        END tarkastelupäivän_tila
      FROM
@@ -263,7 +264,7 @@ WITH
        JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
          AND r_opiskeluoikeus.koulutusmuoto <> 'perusopetus'
        LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella ON aikajakson_keskella.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-         AND $tarkasteluPäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
+         AND $tarkastelupäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
        LEFT JOIN valpastila valpastila_aikajakson_keskella ON valpastila_aikajakson_keskella.koskiopiskeluoikeudentila = aikajakson_keskella.tila
        LEFT JOIN valpastila valpastila_viimeisin ON valpastila_viimeisin.koskiopiskeluoikeudentila = r_opiskeluoikeus.viimeisin_tila
        -- Haetaan päätason suoritus, jonka dataa halutaan näyttää (TODO: toistaiseksi tulos on random, jos ei ole vahvistusta tai arviointia, mutta data ei riitä muuten.
