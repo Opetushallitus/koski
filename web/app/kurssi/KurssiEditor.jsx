@@ -8,6 +8,11 @@ import {isLukio2019ModuuliTaiOpintojakso, isLukionKurssimainen, isPaikallinen} f
 import {FootnoteHint} from '../components/footnote'
 import {eiLasketaKokonaispistemäärään} from '../dia/DIA'
 import {ArrayEditor} from '../editor/ArrayEditor'
+import {
+  isLukionKurssi,
+  isLukioonValmistavanKoulutuksenKurssi,
+  isPreIBKurssi
+} from '../suoritus/Koulutusmoduuli'
 
 export class KurssiEditor extends React.Component {
   constructor(props) {
@@ -36,6 +41,17 @@ export class KurssiEditor extends React.Component {
     let edit = kurssi.context.edit
     const paikallinenLukionKurssimainen = isLukionKurssimainen(koulutusmoduuliModel) && isPaikallinen(koulutusmoduuliModel)
     const paikallinenLukionOpintojakso = isLukio2019ModuuliTaiOpintojakso(koulutusmoduuliModel) && isPaikallinen(koulutusmoduuliModel)
+    let suorituksenTyyppi = modelData(kurssi, 'tyyppi').koodiarvo
+    const näytetäänArviointiListana = edit &&
+      (suorituksenTyyppi === 'aikuistenperusopetuksenalkuvaiheenoppiaine' ||
+      suorituksenTyyppi === 'aikuistenperusopetuksenalkuvaiheenkurssi' ||
+      suorituksenTyyppi === 'aikuistenperusopetuksenkurssi' ||
+      suorituksenTyyppi === 'aikuistenperusopetuksenoppiaine' ||
+      suorituksenTyyppi === 'lukionkurssi' ||
+      suorituksenTyyppi === 'lukionoppiaine' ||
+      suorituksenTyyppi === 'ammatillisentutkinnonosa' ||
+      suorituksenTyyppi === 'ammatillisentutkinnonosanosaalue' ||
+      suorituksenTyyppi === 'nayttotutkintoonvalmistavankoulutuksenosa')
     let className = buildClassNames([
       'tunniste',
       kurssinTyyppi,
@@ -60,11 +76,15 @@ export class KurssiEditor extends React.Component {
           eiLasketaKokonaispistemäärään(kurssi) &&
           <FootnoteHint title={'Ei lasketa kokonaispistemäärään'}/>
         }
-        <div className="arviointi">
         {
-          edit ? <ArrayEditor model={modelLookup(kurssi, 'arviointi')}/> : <ArvosanaEditor model={kurssi}/>
+          näytetäänArviointiListana ?
+          <div className="arviointi">
+            <ArrayEditor model={modelLookup(kurssi, 'arviointi')}/>
+          </div> :
+          <div className="arvosana">
+            <ArvosanaEditor model={kurssi}/>
+          </div>
         }
-        </div>
         {
           open && <KurssiPopup kurssi={kurssi} parentElemPosition={this.kurssiElement.getBoundingClientRect()}/>
         }
