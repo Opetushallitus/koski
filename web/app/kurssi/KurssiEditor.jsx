@@ -60,9 +60,9 @@ export class KurssiEditor extends React.Component {
           eiLasketaKokonaispistemäärään(kurssi) &&
           <FootnoteHint title={'Ei lasketa kokonaispistemäärään'}/>
         }
-        <div className="arvosana">
+        <div className="arviointi">
         {
-          edit ? <ArrayEditor model={modelLookup(kurssi, 'arviointi')}/> : <ArvosanaEditor model={modelLookup(kurssi, 'arviointi')}/>
+          edit ? <ArrayEditor model={modelLookup(kurssi, 'arviointi')}/> : <ArvosanaEditor model={kurssi}/>
         }
         </div>
         {

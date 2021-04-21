@@ -197,14 +197,14 @@ object ExamplesAikuistenPerusopetus {
         osasuoritukset = Some(List(
           kurssinSuoritus2017("ÄI1").copy(tunnustettu = Some(OsaamisenTunnustaminen(None, "Osoittanut osaamisen käytännössä.")),
             arviointi =  Some(List(
-              PerusopetuksenOppiaineenArviointi(9, Some(date(2016, 12, 28))),
-              PerusopetuksenOppiaineenArviointi(10, Some(date(2016, 12, 29))),
+              PerusopetuksenOppiaineenArviointi(8, Some(date(2016, 12, 28))),
+              PerusopetuksenOppiaineenArviointi(9, Some(date(2016, 12, 29))),
             ))
           ),
           kurssinSuoritus2017("ÄI2").copy(tunnustettu = Some(OsaamisenTunnustaminen(None, "Osoittanut osaamisen käytännössä.", true)),
             arviointi =  Some(List(
-              PerusopetuksenOppiaineenArviointi(6, Some(date(2016, 12, 28))),
-              PerusopetuksenOppiaineenArviointi(5, Some(date(2016, 12, 29))),
+              PerusopetuksenOppiaineenArviointi(9, Some(date(2016, 12, 28))),
+              PerusopetuksenOppiaineenArviointi(8, Some(date(2016, 12, 29))),
             ))
           ),
           kurssinSuoritus2017("ÄI3", laajuus = LaajuusVuosiviikkotunneissa(1)),

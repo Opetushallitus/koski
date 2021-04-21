@@ -55,18 +55,14 @@ export const resolveArvosanaModel = model => {
   let arviointi = modelLookup(model, 'arviointi.-1')
   let arvosana = arviointi ? modelLookup(model, 'arviointi.-1.arvosana') : null
 
-  console.log("Arviointi:")
-  console.log(arvosana)
   modelItems(model, 'arviointi').map(item => {
     const nthArvosana = modelLookup(item, 'arvosana')
     // Tää pitää korjata jonneki muualle jotenkin hienommaksi.
     // Idea siis se, että näytetään paras arvosana.
     // Arvosana ei ole kuitenkaan välttämättä numero..
-    console.log(nthArvosana.value.data.koodiarvo)
-    if (nthArvosana.value.data.koodiarvo === 'S' || nthArvosana.value.data.koodiarvo > arvosana.value.data.koodiarvo) {
-      console.log("Korvataan")
+    if (nthArvosana.value.data.koodiarvo === 'S' || parseInt(nthArvosana.value.data.koodiarvo) > parseInt(arvosana.value.data.koodiarvo)) {
       arviointi = item
-      arvosana = nthArvosana // pitäis näkyy 10 ja 6
+      arvosana = nthArvosana
     }
   })
 
