@@ -158,7 +158,7 @@ const hakutoiveToTableValue = (hakutoive: Hakutoive, index: number): Datum => ({
           : koodiviiteToShortString(hakutoive.valintatila)),
     },
     { value: formatFixedNumber(hakutoive.pisteet, 2) },
-    { value: formatFixedNumber(hakutoive.alinValintaPistemaara, 2) },
+    { value: formatFixedNumber(hakutoive.alinHyvaksyttyPistemaara, 2) },
   ],
 })
 

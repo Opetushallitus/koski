@@ -7,7 +7,7 @@ export type Hakutoive = {
   koulutusNimi?: LocalizedString
   hakutoivenumero?: number
   pisteet?: number
-  alinValintaPistemaara?: number
+  alinHyvaksyttyPistemaara?: number
   valintatila?: KoodistoKoodiviite<
     "valpashaunvalintatila",
     HakutoiveValintatilakoodiarvo
