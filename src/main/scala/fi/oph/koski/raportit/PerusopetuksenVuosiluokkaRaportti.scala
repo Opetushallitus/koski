@@ -145,7 +145,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     val viimeinenPäiväIlmanLaajuuksia = Date.valueOf(LocalDate.of(2020,7,31))
     if (päätasonVahvistusPäivä.exists(_.after(viimeinenPäiväIlmanLaajuuksia)) && osasuoritus.koulutusmoduuliPakollinen.getOrElse(false)) {
       val laajuus = osasuoritus.koulutusmoduuliLaajuusArvo.getOrElse("Ei laajuutta")
-      s"$arvosana${täppäIfYksilöllistetty(osasuoritus)} $laajuus"
+      s"$arvosana${täppäIfYksilöllistetty(osasuoritus)} laajuus: $laajuus"
     } else {
       s"$arvosana${täppäIfYksilöllistetty(osasuoritus)}"
     }

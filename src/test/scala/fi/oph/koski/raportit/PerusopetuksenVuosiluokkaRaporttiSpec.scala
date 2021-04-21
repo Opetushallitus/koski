@@ -68,10 +68,10 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
         val oppijaOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ysiluokkalainen.oid).oid.get
         val rivi = result.find(_.opiskeluoikeusOid == oppijaOpiskeluoikeusOid)
 
-        rivi.get.aidinkieli should equal("9 1.0")
+        rivi.get.aidinkieli should equal("9 laajuus: 1.0")
         rivi.get.kieliA2 should equal("Oppiaine puuttuu")
-        rivi.get.biologia should equal("9* 1.0")
-        rivi.get.uskonto should equal("10 1.0")
+        rivi.get.biologia should equal("9* laajuus: 1.0")
+        rivi.get.uskonto should equal("10 laajuus: 1.0")
       }
     }
 
