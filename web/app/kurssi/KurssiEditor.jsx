@@ -8,11 +8,6 @@ import {isLukio2019ModuuliTaiOpintojakso, isLukionKurssimainen, isPaikallinen} f
 import {FootnoteHint} from '../components/footnote'
 import {eiLasketaKokonaispistemäärään} from '../dia/DIA'
 import {ArrayEditor} from '../editor/ArrayEditor'
-import {
-  isLukionKurssi,
-  isLukioonValmistavanKoulutuksenKurssi,
-  isPreIBKurssi
-} from '../suoritus/Koulutusmoduuli'
 
 export class KurssiEditor extends React.Component {
   constructor(props) {
