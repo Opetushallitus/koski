@@ -75,6 +75,7 @@ export class KurssiEditor extends React.Component {
           näytetäänArviointiListana ?
           <div className="arviointi">
             <ArrayEditor model={modelLookup(kurssi, 'arviointi')}/>
+            <hr/>
           </div> :
           <div className="arvosana">
             <ArvosanaEditor model={kurssi}/>

@@ -38,7 +38,7 @@ export const ArrayEditor = ({model, reverse}) => {
         wrappedModel.context.edit && wrappedModel.arrayPrototype !== undefined
           ? itemEditorHandlesOptional() || tooFewItems
             ? <li className="add-item"><Editor model = {modelLookup(model, items.length)} /></li>
-            : <li className="add-item"><a onClick={addItem}><Text name="lisää uusi"/></a></li>
+            : <li className="add-item"><a onClick={addItem}><Text name="Uusi arviointi"/></a></li>
           :null
       }
     </ul>
