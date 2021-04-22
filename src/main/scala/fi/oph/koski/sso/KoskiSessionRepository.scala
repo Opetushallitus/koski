@@ -4,7 +4,7 @@ import java.net.InetAddress
 import java.sql.Timestamp
 import java.time.Instant
 
-import fi.oph.koski.db.{DB, DatabaseExecutionContext, QueryMethods, SSOSessionRow, Tables}
+import fi.oph.koski.db.{DB, DatabaseExecutionContext, QueryMethods, SSOSessionRow, KoskiTables}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.huoltaja.HuollettavatSearchResult
 import fi.oph.koski.json.JsonSerializer
@@ -18,12 +18,12 @@ class KoskiSessionRepository(val db: DB, sessionTimeout: SessionTimeout) extends
   def store(ticket: String, user: AuthenticationUser, clientIp: InetAddress, userAgent: String) = {
     val operation = if (user.kansalainen) KoskiOperation.KANSALAINEN_LOGIN else KoskiOperation.LOGIN
     AuditLog.log(AuditLogMessage(operation, user, clientIp, ticket, userAgent))
-    runDbSync(Tables.CasServiceTicketSessions += SSOSessionRow(ticket, user.username, user.oid, user.name, now, now, user.huollettavat.map(serialize)))
+    runDbSync(KoskiTables.CasServiceTicketSessions += SSOSessionRow(ticket, user.username, user.oid, user.name, now, now, user.huollettavat.map(serialize)))
   }
 
   def getUserByTicket(ticket: String): Option[AuthenticationUser] = timed("getUserByTicket", 10) {
     val limit = new Timestamp(System.currentTimeMillis() - sessionTimeout.milliseconds)
-    val query = Tables.CasServiceTicketSessions.filter(row => row.serviceTicket === ticket && row.updated >= limit)
+    val query = KoskiTables.CasServiceTicketSessions.filter(row => row.serviceTicket === ticket && row.updated >= limit)
 
     val action = for {
       _ <- query.map(_.updated).update(now)
@@ -38,7 +38,7 @@ class KoskiSessionRepository(val db: DB, sessionTimeout: SessionTimeout) extends
   }
 
   def removeSessionByTicket(ticket: String) = {
-    val query = Tables.CasServiceTicketSessions.filter(_.serviceTicket === ticket)
+    val query = KoskiTables.CasServiceTicketSessions.filter(_.serviceTicket === ticket)
     val deleted = runDbSync(query.delete)
     deleted match {
       case 1 =>
@@ -50,13 +50,13 @@ class KoskiSessionRepository(val db: DB, sessionTimeout: SessionTimeout) extends
   }
 
   def removeSessionByUsername(username: String) = {
-    val query = Tables.CasServiceTicketSessions.filter(_.username === username)
+    val query = KoskiTables.CasServiceTicketSessions.filter(_.username === username)
     runDbSync(query.delete)
   }
 
   def purgeOldSessions(before: Instant): Unit = {
     val timestamp = new Timestamp(before.toEpochMilli)
-    val query = Tables.CasServiceTicketSessions.filter(_.updated < timestamp)
+    val query = KoskiTables.CasServiceTicketSessions.filter(_.updated < timestamp)
     val deleted = runDbSync(query.delete)
     logger.info(s"Purged $deleted sessions older than $before")
   }

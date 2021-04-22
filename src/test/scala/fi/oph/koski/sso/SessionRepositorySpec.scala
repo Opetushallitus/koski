@@ -7,25 +7,25 @@ import java.util.UUID
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.DatabaseTestMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.{SSOSessionRow, Tables}
+import fi.oph.koski.db.{SSOSessionRow, KoskiTables}
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class SessionRepositorySpec extends FreeSpec with Matchers with DatabaseTestMethods with BeforeAndAfterAll {
   private def createDummySession(dateTime: ZonedDateTime) = {
     val fakeServiceTicket: String = "koski-" + UUID.randomUUID()
     val sqlTimestamp = new Timestamp(dateTime.toInstant.toEpochMilli)
-    runDbSync(Tables.CasServiceTicketSessions += SSOSessionRow(
+    runDbSync(KoskiTables.CasServiceTicketSessions += SSOSessionRow(
       fakeServiceTicket, "test", "test", "test", sqlTimestamp, sqlTimestamp, None)
     )
   }
 
   private def sessionsStarteds = {
-    val query = Tables.CasServiceTicketSessions.map(_.started)
+    val query = KoskiTables.CasServiceTicketSessions.map(_.started)
     runDbSync(query.result)
   }
 
   override protected def beforeAll(): Unit = {
-    runDbSync(Tables.CasServiceTicketSessions.delete)
+    runDbSync(KoskiTables.CasServiceTicketSessions.delete)
   }
 
   "Vanhentuneiden sessioiden poisto" in {

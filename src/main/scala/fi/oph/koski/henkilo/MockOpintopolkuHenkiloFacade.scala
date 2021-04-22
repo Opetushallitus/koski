@@ -2,7 +2,7 @@ package fi.oph.koski.henkilo
 
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables.OpiskeluOikeudetWithAccessCheck
+import fi.oph.koski.db.KoskiTables.OpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.db.{QueryMethods, PostgresDriverWithJsonSupport}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession.systemUser

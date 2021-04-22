@@ -5,7 +5,7 @@ import java.sql.{Date, Timestamp}
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
-import fi.oph.koski.db.Tables.OpiskeluOikeudet
+import fi.oph.koski.db.KoskiTables.OpiskeluOikeudet
 import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer

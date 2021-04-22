@@ -5,7 +5,7 @@ import java.time.{Instant, LocalDate}
 
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables.{SuoritusJako, SuoritusjakoTable}
+import fi.oph.koski.db.KoskiTables.{SuoritusJako, SuoritusjakoTable}
 import fi.oph.koski.db.{QueryMethods, SuoritusjakoRow}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer

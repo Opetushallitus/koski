@@ -29,7 +29,7 @@ class Scheduler(
   private val firingStrategy = if (runOnSingleNode) new FireOnSingleNode else new FireOnAllNodes
 
   logger.info(s"Starting ${if (runOnSingleNode) "single" else "multi" } node scheduler $name with $scheduling")
-  runDbSync(Tables.Scheduler.insertOrUpdate(
+  runDbSync(KoskiTables.Scheduler.insertOrUpdate(
     SchedulerRow(
       name,
       scheduling.nextFireTime(),
@@ -67,10 +67,10 @@ class Scheduler(
   }
 
   private def fire = try {
-    val context: Option[JValue] = runDbSync(Tables.Scheduler.filter(_.name === name).result.head).context
+    val context: Option[JValue] = runDbSync(KoskiTables.Scheduler.filter(_.name === name).result.head).context
     logger.debug(s"Firing scheduled task $name ${context.map(c => s"with context ${JsonMethods.compact(c)}").mkString}")
     val newContext: Option[JValue] = task(context)
-    runDbSync(Tables.Scheduler.filter(_.name === name).map(_.context).update(newContext))
+    runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.context).update(newContext))
   } finally {
     firingStrategy.endRun
   }
@@ -78,7 +78,7 @@ class Scheduler(
   private def now = new Timestamp(currentTimeMillis)
 
   private def getScheduler: Option[SchedulerRow] = try {
-    runDbSync(Tables.Scheduler.filter(s => s.name === name).result.headOption)
+    runDbSync(KoskiTables.Scheduler.filter(s => s.name === name).result.headOption)
   } catch {
     case e: Exception => logger.error(e)(s"Error getting scheduler $name")
     None
@@ -92,7 +92,7 @@ class Scheduler(
   class FireOnSingleNode extends FiringStrategy {
     override def shouldFire: Boolean = {
       val rowsUpdated = runDbSync(
-        Tables.Scheduler
+        KoskiTables.Scheduler
           .filter(s => s.name === name && s.nextFireTime < now && s.status === ScheduledTaskStatus.scheduled)
           .map(s => (s.nextFireTime, s.status))
           .update(scheduling.nextFireTime(), ScheduledTaskStatus.running)
@@ -101,7 +101,7 @@ class Scheduler(
     }
 
     override def endRun: Unit =
-      runDbSync(Tables.Scheduler.filter(_.name === name).map(_.status).update(ScheduledTaskStatus.scheduled))
+      runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.status).update(ScheduledTaskStatus.scheduled))
   }
 
   class FireOnAllNodes extends FiringStrategy {

@@ -5,7 +5,7 @@ import java.sql.SQLException
 
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables.OppilaitosIPOsoite
+import fi.oph.koski.db.KoskiTables.OppilaitosIPOsoite
 import fi.oph.koski.db.{QueryMethods, OppilaitosIPOsoiteRow}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging

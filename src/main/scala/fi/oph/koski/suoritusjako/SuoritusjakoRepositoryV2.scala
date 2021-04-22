@@ -4,7 +4,7 @@ package fi.oph.koski.suoritusjako
 import java.sql.{Date, Timestamp}
 import java.time.{Instant, LocalDate}
 
-import fi.oph.koski.db.Tables.SuoritusJakoV2
+import fi.oph.koski.db.KoskiTables.SuoritusJakoV2
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{QueryMethods, SuoritusjakoRowV2}

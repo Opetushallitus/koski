@@ -7,8 +7,8 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.github.fge.jsonpatch.JsonPatch
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables.OpiskeluoikeusTable.readAsOpiskeluoikeus
-import fi.oph.koski.db.Tables._
+import fi.oph.koski.db.KoskiTables.OpiskeluoikeusTable.readAsOpiskeluoikeus
+import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, Rooli}

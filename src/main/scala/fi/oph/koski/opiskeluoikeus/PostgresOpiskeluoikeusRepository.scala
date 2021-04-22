@@ -4,7 +4,7 @@ import java.sql.SQLException
 
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables._
+import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db._
 import fi.oph.koski.henkilo._
 import fi.oph.koski.history.{JsonPatchException, OpiskeluoikeusHistory, OpiskeluoikeusHistoryRepository}
@@ -232,9 +232,9 @@ class PostgresOpiskeluoikeusRepository(
       case _ =>
         val tallennettavaOpiskeluoikeus = opiskeluoikeus
         val oid = oidGenerator.generateOid(oppija.henkilö.oid)
-        val row: OpiskeluoikeusRow = Tables.OpiskeluoikeusTable.makeInsertableRow(oppija.henkilö.oid, oid, tallennettavaOpiskeluoikeus)
+        val row: OpiskeluoikeusRow = KoskiTables.OpiskeluoikeusTable.makeInsertableRow(oppija.henkilö.oid, oid, tallennettavaOpiskeluoikeus)
         for {
-          opiskeluoikeusId <- Tables.OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += row
+          opiskeluoikeusId <- KoskiTables.OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += row
           diff = JArray(List(JObject("op" -> JString("add"), "path" -> JString(""), "value" -> row.data)))
           _ <- historyRepository.createAction(opiskeluoikeusId, VERSIO_1, user.oid, diff)
         } yield {
@@ -257,7 +257,7 @@ class PostgresOpiskeluoikeusRepository(
 
         validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, tallennettavaOpiskeluoikeus) match {
           case HttpStatus.ok =>
-            val updatedValues@(newData, _, _, _, _, _, _, _, _, _) = Tables.OpiskeluoikeusTable.updatedFieldValues(tallennettavaOpiskeluoikeus, nextVersionumero)
+            val updatedValues@(newData, _, _, _, _, _, _, _, _, _) = KoskiTables.OpiskeluoikeusTable.updatedFieldValues(tallennettavaOpiskeluoikeus, nextVersionumero)
             val diff: JArray = jsonDiff(oldRow.data, newData)
             diff.values.length match {
               case 0 =>

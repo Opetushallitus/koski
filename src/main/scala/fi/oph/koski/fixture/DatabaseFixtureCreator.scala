@@ -2,7 +2,7 @@ package fi.oph.koski.fixture
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables._
+import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db._
 import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilö, OppijaHenkilöWithMasterInfo, VerifiedHenkilöOid}
 import fi.oph.koski.json.JsonSerializer
@@ -38,11 +38,11 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
 
     runDbSync(DBIO.sequence(Seq(
       OpiskeluOikeudet.filter(_.oppijaOid inSetBind (henkilöOids)).delete,
-      Tables.Henkilöt.filter(_.oid inSetBind henkilöOids).delete,
+      KoskiTables.Henkilöt.filter(_.oid inSetBind henkilöOids).delete,
       Preferences.delete,
-      Tables.PerustiedotSync.delete,
-      Tables.SuoritusJako.delete,
-      Tables.SuoritusJakoV2.delete,
+      KoskiTables.PerustiedotSync.delete,
+      KoskiTables.SuoritusJako.delete,
+      KoskiTables.SuoritusJakoV2.delete,
     ) ++ oppijat.map(application.henkilöCache.addHenkilöAction)))
 
     application.perustiedotIndexer.sync(refresh = false) // Make sure the sync queue is empty

@@ -6,7 +6,7 @@ import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables.{MyDataJako, MyDataJakoTable}
+import fi.oph.koski.db.KoskiTables.{MyDataJako, MyDataJakoTable}
 import fi.oph.koski.db.{QueryMethods, MyDataJakoRow}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log.Logging

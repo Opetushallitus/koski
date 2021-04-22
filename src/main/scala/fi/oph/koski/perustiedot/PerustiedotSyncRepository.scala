@@ -2,7 +2,7 @@ package fi.oph.koski.perustiedot
 
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables.PerustiedotSync
+import fi.oph.koski.db.KoskiTables.PerustiedotSync
 import fi.oph.koski.db.{QueryMethods, PerustiedotSyncRow}
 import org.json4s.JValue
 import slick.dbio.Effect

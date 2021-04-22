@@ -1,7 +1,7 @@
 package fi.oph.koski.preferences
 
 import fi.oph.koski.db.DB
-import fi.oph.koski.db.{QueryMethods, PreferenceRow, Tables}
+import fi.oph.koski.db.{QueryMethods, PreferenceRow, KoskiTables}
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
@@ -42,7 +42,7 @@ case class PreferencesService(protected val db: DB) extends Logging with QueryMe
       case Some(klass) =>
         extract[StorablePreference](value, klass) match {
           case Right(deserialized) =>
-            runDbSync(Tables.Preferences.insertOrUpdate(PreferenceRow(organisaatioOid, koulutustoimijaOid, `type`, key, value)))
+            runDbSync(KoskiTables.Preferences.insertOrUpdate(PreferenceRow(organisaatioOid, koulutustoimijaOid, `type`, key, value)))
             HttpStatus.ok
           case Left(errors: immutable.Seq[ValidationError]) =>
             KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors))
@@ -59,7 +59,7 @@ case class PreferencesService(protected val db: DB) extends Logging with QueryMe
     prefTypes.get(`type`) match {
       case Some(klass) =>
         val koulutustoimija: String = koulutustoimijaOid.getOrElse("")
-        runDbSync(Tables.Preferences.filter(r => r.organisaatioOid === organisaatioOid && r.`type` === `type` && r.key === key && r.koulutustoimijaOid.map(_ === koulutustoimija).getOrElse(true)).delete)
+        runDbSync(KoskiTables.Preferences.filter(r => r.organisaatioOid === organisaatioOid && r.`type` === `type` && r.key === key && r.koulutustoimijaOid.map(_ === koulutustoimija).getOrElse(true)).delete)
         HttpStatus.ok
       case None => KoskiErrorCategory.notFound("Unknown pref type " + `type`)
     }
@@ -82,7 +82,7 @@ case class PreferencesService(protected val db: DB) extends Logging with QueryMe
     prefTypes.get(`type`) match {
       case Some(klass) =>
         val koulutustoimija: String = koulutustoimijaOid.getOrElse("")
-        val jValues = runDbSync(Tables.Preferences.filter(r => r.organisaatioOid === organisaatioOid && r.`type` === `type` && r.koulutustoimijaOid.map(_ === koulutustoimija).getOrElse(true)).map(_.value).result).toList
+        val jValues = runDbSync(KoskiTables.Preferences.filter(r => r.organisaatioOid === organisaatioOid && r.`type` === `type` && r.koulutustoimijaOid.map(_ === koulutustoimija).getOrElse(true)).map(_.value).result).toList
         HttpStatus.foldEithers(jValues.map(value =>
           extract[StorablePreference](value, klass)
             .left.map((errors: List[ValidationError]) => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors)))

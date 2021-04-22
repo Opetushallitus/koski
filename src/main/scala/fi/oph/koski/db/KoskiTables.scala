@@ -11,7 +11,7 @@ import fi.oph.scalaschema.extraction.ValidationError
 import fi.oph.scalaschema.{Serializer, _}
 import org.json4s._
 
-object Tables {
+object KoskiTables {
   class OpiskeluoikeusTable(tag: Tag) extends Table[OpiskeluoikeusRow](tag, "opiskeluoikeus") {
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
     val oid = column[String]("oid", O.Unique)
@@ -246,12 +246,12 @@ case class OpiskeluoikeusRow(id: Int,
   koulutusmuoto: String,
   alkamispäivä: Date,
   päättymispäivä: Option[Date]) {
-  import fi.oph.koski.db.Tables.OpiskeluoikeusTable
+
   lazy val toOpiskeluoikeusData: JValue = {
-    OpiskeluoikeusTable.readAsJValue(data, oid, versionumero, aikaleima)
+    KoskiTables.OpiskeluoikeusTable.readAsJValue(data, oid, versionumero, aikaleima)
   }
   lazy val toOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus = {
-    OpiskeluoikeusTable.readAsOpiskeluoikeus(data, oid, versionumero, aikaleima) match {
+    KoskiTables.OpiskeluoikeusTable.readAsOpiskeluoikeus(data, oid, versionumero, aikaleima) match {
       case Right(oo) =>
         oo.asInstanceOf[KoskeenTallennettavaOpiskeluoikeus]
       case Left(errors) =>

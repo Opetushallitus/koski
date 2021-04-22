@@ -3,8 +3,8 @@ package fi.oph.koski.opiskeluoikeus
 import java.sql.{Date, Timestamp}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
-import fi.oph.koski.db.Tables._
-import fi.oph.koski.db.{DB, HenkilöRow, QueryMethods, OpiskeluoikeusRow, Tables}
+import fi.oph.koski.db.KoskiTables._
+import fi.oph.koski.db.{DB, HenkilöRow, QueryMethods, OpiskeluoikeusRow, KoskiTables}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
@@ -69,8 +69,8 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
 
   private def mkQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder])(implicit user: KoskiSpecificSession) = {
     val baseQuery = OpiskeluOikeudetWithAccessCheck
-      .join(Tables.Henkilöt).on(_.oppijaOid === _.oid)
-      .joinLeft(Tables.Henkilöt).on(_._2.masterOid === _.oid)
+      .join(KoskiTables.Henkilöt).on(_.oppijaOid === _.oid)
+      .joinLeft(KoskiTables.Henkilöt).on(_._2.masterOid === _.oid)
       .map(stuff => (stuff._1._1, stuff._1._2, stuff._2))
 
     val query = filters.foldLeft(baseQuery) {

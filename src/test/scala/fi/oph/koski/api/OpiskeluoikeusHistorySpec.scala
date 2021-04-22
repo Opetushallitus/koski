@@ -3,7 +3,7 @@ package fi.oph.koski.api
 import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables.{OpiskeluOikeudet, OpiskeluoikeusHistoria}
+import fi.oph.koski.db.KoskiTables.{OpiskeluOikeudet, OpiskeluoikeusHistoria}
 import fi.oph.koski.documentation.{AmmatillinenOldExamples, ReforminMukainenErikoisammattitutkintoExample => Reformi}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.reformitutkinto
