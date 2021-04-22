@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.db.DB
-import fi.oph.koski.db.KoskiDatabaseMethods
+import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.util.DateOrdering.sqlDateOrdering
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.raportit.RaporttiUtils.arvioituAikavälillä
@@ -13,7 +13,7 @@ import fi.oph.koski.schema.Organisaatio
 import scala.concurrent.duration.DurationInt
 import slick.jdbc.GetResult
 
-case class LukioRaportitRepository(db: DB) extends KoskiDatabaseMethods with RaportointikantaTableQueries {
+case class LukioRaportitRepository(db: DB) extends QueryMethods with RaportointikantaTableQueries {
 
   private val defaultTimeout = 5.minutes
   private type OpiskeluoikeusOid = String

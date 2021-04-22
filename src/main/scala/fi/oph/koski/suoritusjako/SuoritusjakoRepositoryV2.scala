@@ -7,7 +7,7 @@ import java.time.{Instant, LocalDate}
 import fi.oph.koski.db.Tables.SuoritusJakoV2
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.{KoskiDatabaseMethods, SuoritusjakoRowV2}
+import fi.oph.koski.db.{QueryMethods, SuoritusjakoRowV2}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
@@ -15,7 +15,7 @@ import fi.oph.koski.schema.{KoskiSchema, Opiskeluoikeus}
 import fi.oph.scalaschema._
 import org.json4s.JsonAST.JValue
 
-class SuoritusjakoRepositoryV2(val db: DB) extends Logging with KoskiDatabaseMethods {
+class SuoritusjakoRepositoryV2(val db: DB) extends Logging with QueryMethods {
   type OppijaOid = String
 
   val  MAX_SUORITUSJAKO_COUNT = 20

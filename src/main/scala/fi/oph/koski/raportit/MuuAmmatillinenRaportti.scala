@@ -2,14 +2,14 @@ package fi.oph.koski.raportit
 
 import java.time.LocalDate
 
-import fi.oph.koski.db.KoskiDatabaseMethods
+import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.DB
 
 import slick.jdbc.GetResult
 import scala.concurrent.duration.DurationInt
 
-case class MuuAmmatillinenRaporttiBuilder(db: DB) extends KoskiDatabaseMethods {
+case class MuuAmmatillinenRaporttiBuilder(db: DB) extends QueryMethods {
 
   implicit val getResult = GetResult(r =>
     MuuAmmatillinenRaporttiRow(

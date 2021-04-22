@@ -4,7 +4,7 @@ import java.sql.{Date, Timestamp}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
 import fi.oph.koski.db.Tables._
-import fi.oph.koski.db.{DB, HenkilöRow, KoskiDatabaseMethods, OpiskeluoikeusRow, Tables}
+import fi.oph.koski.db.{DB, HenkilöRow, QueryMethods, OpiskeluoikeusRow, Tables}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
@@ -20,7 +20,7 @@ import rx.lang.scala.Observable
 import rx.observables.SyncOnSubscribe.createStateful
 import scala.concurrent.duration.DurationInt
 
-class OpiskeluoikeusQueryService(val db: DB) extends KoskiDatabaseMethods {
+class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
   private val defaultPagination = QueryPagination(0)
 
   def oppijaOidsQuery(pagination: Option[PaginationSettings])(implicit user: KoskiSpecificSession): Observable[String] = {

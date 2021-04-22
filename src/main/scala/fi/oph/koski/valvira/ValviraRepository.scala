@@ -6,7 +6,7 @@ import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
 import fi.oph.koski.db.Tables.OpiskeluOikeudet
-import fi.oph.koski.db.KoskiDatabaseMethods
+import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema.Henkilö
@@ -17,7 +17,7 @@ import org.json4s.JsonAST.{JArray, JString}
 import scala.util.{Failure, Success, Try}
 
 
-class ValviraRepository(val db: DB) extends KoskiDatabaseMethods with Logging {
+class ValviraRepository(val db: DB) extends QueryMethods with Logging {
 
   def opiskeluoikeudetByOppijaOids(oppijaOids: Seq[Henkilö.Oid]): Either[HttpStatus, List[ValviraOpiskeluoikeus]] = Try {
     runDbSync(

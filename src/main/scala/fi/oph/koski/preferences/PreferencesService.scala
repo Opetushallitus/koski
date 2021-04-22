@@ -1,7 +1,7 @@
 package fi.oph.koski.preferences
 
 import fi.oph.koski.db.DB
-import fi.oph.koski.db.{KoskiDatabaseMethods, PreferenceRow, Tables}
+import fi.oph.koski.db.{QueryMethods, PreferenceRow, Tables}
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
@@ -14,7 +14,7 @@ import org.json4s._
 import scala.collection.immutable
 import scala.reflect.runtime.universe.TypeTag
 
-case class PreferencesService(protected val db: DB) extends Logging with KoskiDatabaseMethods {
+case class PreferencesService(protected val db: DB) extends Logging with QueryMethods {
   import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 
   val prefTypes: Map[String, Class[_ <: StorablePreference]] = Map(

@@ -13,7 +13,7 @@ class DatabaseUtilQueries(
   protected val db: DB,
   sizeQuery: DatabaseUtilQueries.SizeQuery,
   smallDatabaseMaxRows: Int
-) extends KoskiDatabaseMethods {
+) extends QueryMethods {
   def databaseIsLarge: Boolean = {
     try {
       val count: Int = runDbSync(sizeQuery)

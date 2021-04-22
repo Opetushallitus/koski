@@ -14,7 +14,7 @@ import slick.dbio.DBIO
 
 import scala.reflect.runtime.universe.TypeTag
 
-abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoikeusFixtureCacheTableName: String, opiskeluoikeusHistoriaFixtureCacheTableName: String) extends KoskiDatabaseMethods with Timing {
+abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoikeusFixtureCacheTableName: String, opiskeluoikeusHistoriaFixtureCacheTableName: String) extends QueryMethods with Timing {
   implicit val user = KoskiSpecificSession.systemUser
   protected val validator = application.validator
   val db = application.masterDatabase.db

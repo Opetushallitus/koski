@@ -3,7 +3,7 @@ package fi.oph.koski.henkilo
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.OpiskeluOikeudetWithAccessCheck
-import fi.oph.koski.db.{KoskiDatabaseMethods, PostgresDriverWithJsonSupport}
+import fi.oph.koski.db.{QueryMethods, PostgresDriverWithJsonSupport}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession.systemUser
 import fi.oph.koski.log.Logging
@@ -122,7 +122,7 @@ class MockOpintopolkuHenkilöFacade extends OpintopolkuHenkilöFacade with Loggi
   )
 }
 
-class MockOpintopolkuHenkilöFacadeWithDBSupport(val db: DB) extends MockOpintopolkuHenkilöFacade with KoskiDatabaseMethods {
+class MockOpintopolkuHenkilöFacadeWithDBSupport(val db: DB) extends MockOpintopolkuHenkilöFacade with QueryMethods {
   def findFromDb(oid: String): Option[LaajatOppijaHenkilöTiedot] = {
     runQuery(OpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oppijaOid === oid)).headOption.map { oppijaRow =>
       LaajatOppijaHenkilöTiedot(oid, oid, oid, oid, Some(oid), None, None, None)
