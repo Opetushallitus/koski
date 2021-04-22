@@ -73,8 +73,8 @@ class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitSpec extends Fre
       r.oppilaitos should equal("Jyväskylän normaalikoulu")
       r.kurssikoodi should (equal("ÄI2") or equal("AÄI1"))
       r.kurssinNimi should (equal("Monimuotoiset tekstit") or equal("Suomen kielen ja kirjallisuuden opiskelun perustaidot"))
-      r.päätasonSuorituksenTyyppi should equal("aikuistenperusopetuksenoppimaara")
-      r.kurssinSuorituksenTyyppi should equal("aikuistenperusopetuksenkurssi")
+      r.päätasonSuorituksenTyyppi should (equal("aikuistenperusopetuksenoppimaara") or equal("aikuistenperusopetuksenoppimaaranalkuvaihe"))
+      r.kurssinSuorituksenTyyppi should (equal("aikuistenperusopetuksenkurssi") or equal("aikuistenperusopetuksenalkuvaiheenkurssi"))
     }
   }
 
