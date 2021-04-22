@@ -44,11 +44,11 @@ import org.scalatra._
 
 class ScalatraBootstrap extends LifeCycle with Logging with Timing {
   override def init(context: ServletContext) = try {
-    implicit val application = Option(context.getAttribute("koski.application").asInstanceOf[KoskiApplication]).getOrElse(KoskiApplication.apply)
+    val application = Option(context.getAttribute("koski.application").asInstanceOf[KoskiApplication]).getOrElse(KoskiApplication.apply)
 
     application.runMode match {
-      case RunMode.NORMAL => initKoskiServices(context)
-      case RunMode.GENERATE_RAPORTOINTIKANTA => generateRaportointikanta()
+      case RunMode.NORMAL => initKoskiServices(context)(application)
+      case RunMode.GENERATE_RAPORTOINTIKANTA => generateRaportointikanta(application)
     }
   } catch {
     case e: Exception =>
@@ -141,7 +141,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     }
   }
 
-  def generateRaportointikanta()(implicit application: KoskiApplication) = {
+  def generateRaportointikanta(application: KoskiApplication): Unit = {
     val service = new RaportointikantaService(application)
     service.loadRaportointikantaAndExit()
   }
