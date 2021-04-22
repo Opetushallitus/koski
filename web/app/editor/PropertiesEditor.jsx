@@ -7,6 +7,8 @@ import Text from '../i18n/Text'
 import {buildClassNames} from '../components/classnames'
 import {flatMapArray} from '../util/util'
 import {KoulusivistyskieliPropertyTitle} from '../suoritus/Koulusivistyskieli'
+import {PuhviKoePropertyTitle} from '../suoritus/PuhviKoePropertyTitle'
+import {SuullisenKielitaidonKoePropertyTitle} from '../suoritus/SuullisenKielitaidonKoePropertyTitle'
 
 export class PropertiesEditor extends React.Component {
   render() {
@@ -73,6 +75,10 @@ export const PropertyTitle = ({property}) => {
   let description = property.description && property.description.join(' ')
   if (property.title === 'Koulusivistyskieli') {
     return <KoulusivistyskieliPropertyTitle/>
+  } else if (property.title === 'Suullisen kielitaidon kokeet') {
+    return <SuullisenKielitaidonKoePropertyTitle/>
+  } else if (property.title === 'Puhvi-koe') {
+    return <PuhviKoePropertyTitle/>
   } else if (description) {
     return <Text name={property.title} title={description} className="with-description"/>
   } else {
