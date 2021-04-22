@@ -6,6 +6,8 @@ import {lensedModel, modelData, modelLookup, modelSetValue, oneOfPrototypes, mod
 import {sortGrades} from '../util/sorting'
 import {fetchAlternativesBasedOnPrototypes} from '../editor/EnumEditor'
 import {fixArviointi} from './Suoritus'
+import {arviointiListaaKäyttäväKurssi} from '../kurssi/kurssi.js'
+import {ArrayEditor} from '../editor/ArrayEditor'
 
 export const ArvosanaEditor = ({model, notFoundText}) => {
   if (!model.context.edit) {
@@ -17,6 +19,22 @@ export const ArvosanaEditor = ({model, notFoundText}) => {
 
   if (!modelProperty(model, 'arviointi')) {
     return null
+  }
+
+  const arvioinnit = modelLookup(model, 'arviointi')
+  console.log(arvioinnit.type)
+
+  const suorituksenTyyppi = modelData(model, 'tyyppi').koodiarvo
+  console.log(suorituksenTyyppi)
+  const näytetäänArviointiListana = model.context.edit && arviointiListaaKäyttäväKurssi(suorituksenTyyppi)
+
+  if (näytetäänArviointiListana)
+  {
+    return (<span>
+      <ArrayEditor model={modelLookup(model, 'arviointi')} lisääTeksti="Lisää arviointi"/>
+      <hr/>
+    </span>
+    )
   }
 
   model = fixArviointi(model)
