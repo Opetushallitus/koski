@@ -143,6 +143,7 @@ jobs:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: koski
           cluster: koski-cluster
+          wait-for-service-stability: true
           codedeploy-appspec: appspec.json
           codedeploy-application: koski
           codedeploy-deployment-group: koski-deployment-group
