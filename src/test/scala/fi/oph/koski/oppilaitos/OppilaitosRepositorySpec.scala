@@ -5,8 +5,6 @@ import org.scalatest.{FreeSpec, Matchers}
 
 class OppilaitosRepositorySpec extends FreeSpec with Matchers {
   "Oppilaitoshaku oppilaitosnumerolla" in {
-    KoskiApplicationForTests.oppilaitosRepository
-      .findByOppilaitosnumero("01901")
-      .flatMap(_.nimi.map(_.get("fi"))) should equal(Some("Helsingin yliopisto"))
+    KoskiApplicationForTests.oppilaitosRepository.findByOppilaitosnumero("01901").flatMap(_.nimi.map(_.get("fi"))) should equal(Some("Helsingin yliopisto"))
   }
 }

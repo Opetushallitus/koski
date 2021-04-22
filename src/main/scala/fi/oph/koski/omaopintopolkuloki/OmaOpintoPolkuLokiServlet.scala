@@ -7,7 +7,7 @@ import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 class OmaOpintoPolkuLokiServlet(implicit val application: KoskiApplication) extends
   RequiresKansalainen with KoskiSpecificApiServlet with NoCache {
 
-  val auditLogs = new AuditLogService(application)
+  val auditLogs = new AuditLogService(application.organisaatioRepository, AuditLogDynamoDB.db)
 
   get("/auditlogs") {
     renderEither(

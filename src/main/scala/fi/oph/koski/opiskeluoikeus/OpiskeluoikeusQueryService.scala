@@ -1,13 +1,14 @@
 package fi.oph.koski.opiskeluoikeus
 
 import java.sql.{Date, Timestamp}
+
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
-import fi.oph.koski.db.Tables._
-import fi.oph.koski.db.{DB, HenkilöRow, KoskiDatabaseMethods, OpiskeluoikeusRow, Tables}
+import fi.oph.koski.db.Tables.{HenkilöTable, OpiskeluoikeusTable, _}
+import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow, Tables, _}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{SuoritusJsonHaku, _}
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.koski.util.SortOrder.{Ascending, Descending}
 import fi.oph.koski.util.Retry.retryWithInterval
@@ -20,7 +21,7 @@ import rx.lang.scala.Observable
 import rx.observables.SyncOnSubscribe.createStateful
 import scala.concurrent.duration.DurationInt
 
-class OpiskeluoikeusQueryService(val db: DB) extends KoskiDatabaseMethods {
+class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext with KoskiDatabaseMethods {
   private val defaultPagination = QueryPagination(0)
 
   def oppijaOidsQuery(pagination: Option[PaginationSettings])(implicit user: KoskiSpecificSession): Observable[String] = {

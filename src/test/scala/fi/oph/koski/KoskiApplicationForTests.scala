@@ -1,9 +1,8 @@
 package fi.oph.koski
 
-import com.typesafe.config.ConfigValueFactory.fromAnyRef
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.config.KoskiApplication.defaultConfig
-import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.jettylauncher.TestConfig
 
-object KoskiApplicationForTests extends KoskiApplication(
-  defaultConfig.withValue("env", fromAnyRef(Environment.UnitTest))
-)
+object KoskiApplicationForTests extends
+  KoskiApplication(TestConfig.overrides.withFallback(defaultConfig))

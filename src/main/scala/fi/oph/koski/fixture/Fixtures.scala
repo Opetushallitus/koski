@@ -30,19 +30,22 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
         Wait.until { raportointikantaService.isLoadComplete }
       }
 
-      logger.info(s"Application fixtures reset to ${fixtureState.name}")
+      logger.info(s"Reset application fixtures ${fixtureState.name}")
     }
   }
 
   def shouldUseFixtures = {
-    val useFixtures: Boolean = Environment.currentEnvironment(application.config) match {
-      case Environment.UnitTest => true
-      case Environment.Local => Environment.isUsingLocalDevelopmentServices(application)
-      case _ => false
+    val config = application.config
+    val useFixtures = if (config.hasPath("fixtures.use")) {
+      config.getBoolean("fixtures.use")
+    } else {
+      application.masterDatabase.isLocal && config.getString("opintopolku.virkailija.url") == "mock"
     }
-
+    if (useFixtures && !Environment.isLocalDevelopmentEnvironment) {
+      throw new RuntimeException("Trying to use fixtures when running in a server environment")
+    }
     if (useFixtures && application.masterDatabase.util.databaseIsLarge) {
-      throw new RuntimeException(s"Trying to use fixtures against a database with more than ${application.masterDatabase.smallDatabaseMaxRows} rows")
+      throw new RuntimeException(s"Trying to use fixtures against a database with more than ${application.masterDatabase.util.SmallDatabaseMaxRows} rows")
     }
     if (useFixtures && application.perustiedotIndexer.indexIsLarge) {
       throw new RuntimeException(s"Trying to use fixtures against an ElasticSearch index with more than ${application.perustiedotIndexer.SmallIndexMaxRows} rows")

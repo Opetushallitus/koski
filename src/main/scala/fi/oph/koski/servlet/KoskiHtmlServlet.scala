@@ -19,7 +19,6 @@ trait KoskiHtmlServlet extends HtmlServlet with KoskiSpecificAuthenticationSuppo
     renderHtml(html)
   }
 
-  protected val virkailijaRaamitSet: Boolean
-
-  protected def virkailijaRaamit: Raamit
+  def virkailijaRaamitSet: Boolean
+  def virkailijaRaamit: Raamit
 }

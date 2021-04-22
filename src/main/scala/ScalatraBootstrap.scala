@@ -43,7 +43,7 @@ import fi.oph.koski.ytr.{YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
 import javax.servlet.ServletContext
 import org.scalatra._
 
-class ScalatraBootstrap extends LifeCycle with Logging with Timing {
+class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalExecutionContext {
   override def init(context: ServletContext) = try {
     implicit val application = Option(context.getAttribute("koski.application").asInstanceOf[KoskiApplication]).getOrElse(KoskiApplication.apply)
 
