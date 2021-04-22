@@ -137,6 +137,7 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   with OikeusmaksuttomaanAsuntolapaikkaan
   with Majoitusetuinen
   with Kuljetusetuinen
+  with Kotiopetuksellinen
   with Vammainen
   with VaikeastiVammainen
   with MaksuttomuusTieto {

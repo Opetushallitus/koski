@@ -51,6 +51,10 @@ trait Kuljetusetuinen {
   def kuljetusetu: Option[Aikajakso]
 }
 
+trait Kotiopetuksellinen {
+  def kotiopetus: Option[Aikajakso]
+}
+
 trait MaksuttomuusTieto extends OpiskeluoikeudenLisätiedot {
   import mojave._
   @Title("Koulutuksen maksuttomuus")

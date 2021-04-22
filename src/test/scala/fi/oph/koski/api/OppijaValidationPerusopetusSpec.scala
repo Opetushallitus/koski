@@ -296,9 +296,13 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
   }
 
   "Laajuus" - {
-    def verify[A](päätasonSuoritus: PerusopetuksenPäätasonSuoritus)(fn: => A): A = {
-      val pakollinenEiLaajuutta = suoritus(oppiaine("GE").copy(pakollinen = true, laajuus = None)).copy(arviointi = arviointi(9))
-      putOpiskeluoikeus(defaultOpiskeluoikeus.withSuoritukset(List(päätasonSuoritus.withOsasuoritukset(Some(List(pakollinenEiLaajuutta)))))) {
+    def verify[A](
+      päätasonSuoritus: PerusopetuksenPäätasonSuoritus,
+      opiskeluoikeus: PerusopetuksenOpiskeluoikeus = defaultOpiskeluoikeus,
+      pakollisenOppiaineenSuoritustapa: Option[Koodistokoodiviite] = None
+    )(fn: => A): A = {
+      val pakollinenEiLaajuutta = suoritus(oppiaine("GE").copy(pakollinen = true, laajuus = None)).copy(arviointi = arviointi(9), suoritustapa = pakollisenOppiaineenSuoritustapa)
+      putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(päätasonSuoritus.withOsasuoritukset(Some(List(pakollinenEiLaajuutta)))))) {
         fn
       }
     }
@@ -348,6 +352,66 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           verify(päättötodistusSuoritus.copy(vahvistus = None)) {
             verifyResponseStatusOk()
           }
+        }
+      }
+    }
+    "Suoritustapana on erityinen tutkinto" - {
+      "Vuosiluokan suoritus" - {
+        "Laajuutta ei vaadita pakollisilta oppianeilta" in {
+          verify(seitsemännenLuokanSuoritus.copy(suoritustapa = Some(suoritustapaErityinenTutkinto), vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 8, 1)))) {
+            verifyResponseStatusOk()
+          }
+        }
+      }
+      "Päättötodistus" - {
+        "Laajuutta ei vaadita pakollisilta oppiaineilta" in {
+          verify(päättötodistusSuoritus.copy(suoritustapa = suoritustapaErityinenTutkinto, vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 8, 1)))) {
+            verifyResponseStatusOk()
+          }
+        }
+      }
+    }
+    "Opiskeluoikeudella on lisätiedoissa kotiopetusjakso" - {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+        kotiopetus = Some(Aikajakso(LocalDate.of(2020, 7, 1), Some(LocalDate.of(2020, 8, 1))))
+      )))
+      "Kotiopetusjakso on voimassa suorituksen vahvistuspäivänä" - {
+        "Vuosiluokan suoritus" - {
+          "Laajuutta ei vaadita pakollisilta oppiaineilta" in {
+            verify(seitsemännenLuokanSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 8, 1))), opiskeluoikeus) {
+              verifyResponseStatusOk()
+            }
+          }
+        }
+        "Päättötodistus" - {
+          "Laajuutta ei vaadita pakollisilta oppiaineilta" in {
+            verify(päättötodistusSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 8, 1))), opiskeluoikeus) {
+              verifyResponseStatusOk()
+            }
+          }
+        }
+      }
+      "Kotiopetusjakso ei ole voimassa suorituksen vahvistuspäivänä" - {
+        "Vuosiluokan suoritus" - {
+          "Pakollisilla oppiaineille tulee olla laajuus > 0" in {
+            verify(seitsemännenLuokanSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 8, 2))), opiskeluoikeus) {
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu("Oppiaineen koskioppiaineetyleissivistava/GE laajuus puuttuu"))
+            }
+          }
+        }
+        "Päättötodistus" - {
+          "Pakollisilla oppiaineille tulee olla laajuus > 0" in {
+            verify(päättötodistusSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 8, 2))), opiskeluoikeus) {
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu("Oppiaineen koskioppiaineetyleissivistava/GE laajuus puuttuu"))
+            }
+          }
+        }
+      }
+    }
+    "Oppiaineen suoritustapa on erityinen tutkinto" - {
+      "Laajuutta ei vaadita pakollisilta oppiaineilta" in {
+        verify(seitsemännenLuokanSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 8, 1))), pakollisenOppiaineenSuoritustapa = Some(suoritustapaErityinenTutkinto)) {
+          verifyResponseStatusOk()
         }
       }
     }

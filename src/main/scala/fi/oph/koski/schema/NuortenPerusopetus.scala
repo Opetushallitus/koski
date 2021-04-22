@@ -170,6 +170,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   with OikeusmaksuttomaanAsuntolapaikkaan
   with Majoitusetuinen
   with Kuljetusetuinen
+  with Kotiopetuksellinen
   with Vammainen
   with VaikeastiVammainen {
   override def sisältääOsaAikaisenErityisopetuksen: Boolean =
