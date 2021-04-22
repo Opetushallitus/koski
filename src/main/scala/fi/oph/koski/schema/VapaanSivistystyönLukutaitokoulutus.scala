@@ -1,9 +1,8 @@
 package fi.oph.koski.schema
 
-import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, OnlyWhen, Title}
+import fi.oph.scalaschema.annotation.{Description, Title}
 
-import java.time.{LocalDate, LocalDateTime}
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, MultiLineString, OksaUri, Representative, Tooltip}
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
 
 case class VapaanSivistystyönLukutaitokoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
