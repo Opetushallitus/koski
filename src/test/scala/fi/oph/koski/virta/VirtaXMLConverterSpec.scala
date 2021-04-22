@@ -13,7 +13,8 @@ import scala.xml.Elem
 
 class VirtaXMLConverterSpec extends FreeSpec with Matchers with OptionValues {
 
-  val converter = VirtaXMLConverter(MockOppilaitosRepository, MockKoodistoViitePalvelu, MockOrganisaatioRepository)
+  private val converter = VirtaXMLConverter(new MockOppilaitosRepository, MockKoodistoViitePalvelu, MockOrganisaatioRepository)
+
   private def convertSuoritus(suoritus: Elem) = converter.convertSuoritus(None, suoritus, List(suoritus))
 
   def baseSuoritus: Elem = suoritusWithOrganisaatio(None)

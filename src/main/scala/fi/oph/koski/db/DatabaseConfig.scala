@@ -2,32 +2,29 @@ package fi.oph.koski.db
 
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigValueFactory._
-import fi.oph.koski.config.{Environment, SecretsManager}
-import fi.oph.koski.log.NotLoggable
+import fi.oph.koski.config.{Environment, FluentConfig, SecretsManager}
+import fi.oph.koski.log.{Logging, NotLoggable}
 import fi.oph.koski.raportointikanta.Schema
 import slick.jdbc.PostgresProfile
 
 
 object DatabaseConfig {
-  def rootDbConfigWithoutChildren(config: Config): Config = {
-    // Konfiguraation db-osan juuri on samalla sekä Kosken pääkannan
-    // konfiguraatio että oletuskonfiguraatio muille kannoille.
-    config.getConfig("db")
-      .withoutPath("replica")
-      .withoutPath("raportointi")
-  }
+  val EnvVarForKoskiDbSecret = "DB_KOSKI_SECRET_ID"
+  val EnvVarForRaportointiDbSecret = "DB_RAPORTOINTI_SECRET_ID"
 }
 
 class KoskiDatabaseConfig(val rootConfig: Config) extends DatabaseConfig {
-  override val envVarForSecretId: String = "DB_KOSKI_SECRET_ID"
+  override val envVarForSecretId: String = DatabaseConfig.EnvVarForKoskiDbSecret
 
-  override protected def databaseSpecificConfig: Config = DatabaseConfig.rootDbConfigWithoutChildren(rootConfig)
+  override protected def databaseSpecificConfig: Config = rootConfig.getConfig("dbs.koski")
+
+  override def migrationLocations: Option[String] = Some("db.migration")
 }
 
 class KoskiReplicaConfig(val rootConfig: Config) extends DatabaseConfig {
-  override val envVarForSecretId: String = "DB_KOSKI_SECRET_ID"
+  override val envVarForSecretId: String = DatabaseConfig.EnvVarForKoskiDbSecret
 
-  override protected def databaseSpecificConfig: Config = rootConfig.getConfig("db.replica")
+  override protected def databaseSpecificConfig: Config = rootConfig.getConfig("dbs.replica")
 
   override protected def makeConfig(): Config = {
     if (useSecretsManager) {
@@ -43,22 +40,31 @@ class KoskiReplicaConfig(val rootConfig: Config) extends DatabaseConfig {
 }
 
 class RaportointiDatabaseConfig(val rootConfig: Config, val schema: Schema) extends DatabaseConfig {
-  override val envVarForSecretId: String = "DB_RAPORTOINTI_SECRET_ID"
+  override val envVarForSecretId: String = DatabaseConfig.EnvVarForRaportointiDbSecret
 
   override protected def databaseSpecificConfig: Config =
-    rootConfig.getConfig("db.raportointi")
+    rootConfig.getConfig("dbs.raportointi")
       .withValue("poolName", fromAnyRef(s"koskiRaportointiPool-${schema.name}"))
 }
 
-trait DatabaseConfig extends NotLoggable {
-  protected val rootConfig: Config
+class ValpasDatabaseConfig(val rootConfig: Config) extends DatabaseConfig {
+  override val envVarForSecretId: String = DatabaseConfig.EnvVarForKoskiDbSecret // Samalla instanssilla kuin pääkanta
+
+  override protected def databaseSpecificConfig: Config = rootConfig.getConfig("dbs.valpas")
+
+  override def migrationLocations: Option[String] = Some("fi.oph.koski.valpas.db.migration")
+}
+
+trait DatabaseConfig extends NotLoggable with Logging {
+  val rootConfig: Config
+
   protected val envVarForSecretId: String
 
   protected final val useSecretsManager: Boolean = Environment.usesAwsSecretsManager
 
   protected def databaseSpecificConfig: Config
 
-  private final def commonConfig: Config = DatabaseConfig.rootDbConfigWithoutChildren(rootConfig)
+  private final def sharedConfig: Config = rootConfig.getConfig("db")
 
   private final def configWithSecrets(config: Config): Config = {
     if (useSecretsManager) {
@@ -77,8 +83,20 @@ trait DatabaseConfig extends NotLoggable {
     }
   }
 
+  private final def configWithTestDb(config: Config): Config = {
+    if (Environment.isUnitTestEnvironment(rootConfig)) {
+      val postfix = "_test"
+      config.withValue("name", fromAnyRef(config.getString("name") + postfix))
+    } else {
+      config
+    }
+  }
+
   protected def makeConfig(): Config = {
-    configWithSecrets(databaseSpecificConfig.withFallback(commonConfig))
+    databaseSpecificConfig
+      .withFallback(sharedConfig)
+      .andThen(configWithSecrets)
+      .andThen(configWithTestDb)
   }
 
   private final def configForSlick(): Config = {
@@ -97,9 +115,15 @@ trait DatabaseConfig extends NotLoggable {
   private final lazy val config: Config = makeConfig()
 
   final def host: String = config.getString("host")
+
   final def port: Int = config.getInt("port")
+
   final def dbname: String = config.getString("name")
+
+  final def schemaName: String = config.getString("schemaName")
+
   final def user: String = config.getString("user")
+
   final def password: String = config.getString("password")
 
   final def url(useSecretsManagerProtocol: Boolean): String = {
@@ -113,5 +137,10 @@ trait DatabaseConfig extends NotLoggable {
 
   final def isLocal: Boolean = host == "localhost" && !useSecretsManager
 
-  final def toSlickDatabase: DB = PostgresProfile.api.Database.forConfig("", configForSlick())
+  final def toSlickDatabase: DB = {
+    logger.info(s"Using database $dbname")
+    PostgresProfile.api.Database.forConfig("", configForSlick())
+  }
+
+  def migrationLocations: Option[String] = None
 }
