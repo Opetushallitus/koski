@@ -60,7 +60,7 @@ export const resolveArvosanaModel = model => {
     // Tää pitää korjata jonneki muualle jotenkin hienommaksi.
     // Idea siis se, että näytetään paras arvosana.
     // Arvosana ei ole kuitenkaan välttämättä numero..
-    if (nthArvosana.value.data.koodiarvo === 'S' || parseInt(nthArvosana.value.data.koodiarvo) > parseInt(arvosana.value.data.koodiarvo)) {
+    if (nthArvosana.value.data !== undefined && (nthArvosana.value.data.koodiarvo === 'S' || parseInt(nthArvosana.value.data.koodiarvo) > parseInt(arvosana.value.data.koodiarvo))) {
       arviointi = item
       arvosana = nthArvosana
     }
