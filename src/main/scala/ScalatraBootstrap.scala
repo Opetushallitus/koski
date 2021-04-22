@@ -1,6 +1,5 @@
 import fi.oph.koski.cache.CacheServlet
 import fi.oph.koski.config.{KoskiApplication, RunMode}
-import fi.oph.koski.datamigration.RemovePakollistenOppiainedenLaajuusFromPerusopetus
 import fi.oph.koski.db._
 import fi.oph.koski.documentation.{DocumentationApiServlet, DocumentationServlet, KoodistoServlet}
 import fi.oph.koski.util.Timing
@@ -36,7 +35,7 @@ import fi.oph.koski.sure.SureServlet
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
 import fi.oph.koski.tutkinto.TutkinnonPerusteetServlet
 import fi.oph.koski.util.Futures
-import fi.oph.koski.valpas.{ValpasBootstrapServlet, ValpasRootApiServlet, ValpasTestApiServlet}
+import fi.oph.koski.valpas.{ValpasRootApiServlet, ValpasBootstrapServlet, ValpasTestApiServlet}
 import fi.oph.koski.valpas.valpasuser.ValpasLogoutServlet
 import fi.oph.koski.valvira.ValviraServlet
 import fi.oph.koski.ytr.{YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
@@ -50,7 +49,6 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     application.runMode match {
       case RunMode.NORMAL => initKoskiServices(context)
       case RunMode.GENERATE_RAPORTOINTIKANTA => generateRaportointikanta()
-      case RunMode.REMOVE_LAAJUUDET => RemovePakollistenOppiainedenLaajuusFromPerusopetus.migrate()
     }
   } catch {
     case e: Exception =>
