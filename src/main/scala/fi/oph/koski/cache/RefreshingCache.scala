@@ -6,7 +6,8 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit.MILLISECONDS
 import com.google.common.cache.AbstractCache.SimpleStatsCounter
 import com.google.common.cache.CacheStats
-import fi.oph.koski.executors.{GlobalExecutionContext, NamedThreadFactory}
+import fi.oph.koski.db.GlobalExecutionContext
+import fi.oph.koski.executors.NamedThreadFactory
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.{Futures, Invocation}
 

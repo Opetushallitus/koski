@@ -4,7 +4,6 @@ package fi.oph.koski.omaopintopolkuloki
 import java.util
 import com.amazonaws.services.dynamodbv2.document.{DynamoDB, Item}
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec
-import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log.Logging
@@ -13,9 +12,7 @@ import fi.oph.koski.omaopintopolkuloki.AuditLogDynamoDB.AuditLogTableName
 
 import scala.collection.JavaConverters._
 
-class AuditLogService(app: KoskiApplication) extends Logging {
-  private val organisaatioRepository = app.organisaatioRepository
-  private val dynamoDB = AuditLogDynamoDB.buildDb(app.config)
+class AuditLogService(organisaatioRepository: OrganisaatioRepository, dynamoDB: DynamoDB) extends Logging {
 
   def queryLogsFromDynamo(oppijaOid: String): Either[HttpStatus, Seq[OrganisaationAuditLogit]] = {
     runQuery(oppijaOid).flatMap(results => HttpStatus.foldEithers(buildLogs(results).toSeq))

@@ -1,15 +1,15 @@
 package fi.oph.koski.valpas.valpasuser
 
-import fi.oph.koski.executors.GlobalExecutionContext
+import java.net.InetAddress
+
 import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.Rooli.Role
-import fi.oph.koski.koskiuser._
+import fi.oph.koski.koskiuser.{AuthenticationUser, Käyttöoikeus, KäyttöoikeusRepository, Session, UserLanguage}
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.schema.Organisaatio.Oid
 import org.scalatra.servlet.RichRequest
 
-import java.net.InetAddress
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class ValpasSession(
   user: AuthenticationUser,
@@ -17,7 +17,7 @@ class ValpasSession(
   clientIp: InetAddress,
   userAgent: String,
   lähdeKäyttöoikeudet: => Set[Käyttöoikeus]
-) extends Session(user, lang, clientIp, userAgent) with SensitiveDataAllowed with GlobalExecutionContext {
+) extends Session(user, lang, clientIp, userAgent) with SensitiveDataAllowed {
   def varhaiskasvatusKoulutustoimijat: Set[Oid] = Set.empty
   def hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess: Boolean = false
 
@@ -36,7 +36,7 @@ class ValpasSession(
   private lazy val käyttöoikeudet: Set[Käyttöoikeus] =
     Käyttöoikeus.withPalveluroolitFilter(lähdeKäyttöoikeudet, _.palveluName == "VALPAS")
 
-  Future(lähdeKäyttöoikeudet) // haetaan käyttöoikeudet toisessa säikeessä rinnakkain
+  Future(lähdeKäyttöoikeudet)(ExecutionContext.global) // haetaan käyttöoikeudet toisessa säikeessä rinnakkain
 }
 
 object ValpasSession {

@@ -1,8 +1,5 @@
 package fi.oph.koski.valpas.opiskeluoikeusrepository
 
-import com.typesafe.config.Config
-import fi.oph.koski.config.Environment
-
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
@@ -42,8 +39,7 @@ object ValpasRajapäivät {
 
   def getCurrent(): ValpasRajapäivät = mockImplementation
 
-  def apply(config: Config): () => ValpasRajapäivät = {
-    val allowMock = !Environment.isServerEnvironment(config)
+  def apply(allowMock: Boolean): () => ValpasRajapäivät = {
     () => {
       if (allowMock) {
         mockImplementation

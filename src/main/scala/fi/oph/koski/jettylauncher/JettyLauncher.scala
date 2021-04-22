@@ -59,17 +59,16 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
   setupGzipForStaticResources
   setupJMX
   setupPrometheusMetrics
-  if (Environment.isLocalDevelopmentEnvironment(config) && config.hasPath("oppijaRaamitProxy")) {
+  if (Environment.isLocalDevelopmentEnvironment && config.hasPath("oppijaRaamitProxy")) {
     setupOppijaRaamitProxy
   }
-  if (Environment.isLocalDevelopmentEnvironment(config) && config.hasPath("virkailijaRaamitProxy")) {
+  if (Environment.isLocalDevelopmentEnvironment && config.hasPath("virkailijaRaamitProxy")) {
     setupVirkailijaRaamitProxy
   }
   handlers.addHandler(rootContext)
 
   def start = {
-    server.start()
-    logger.info(s"Running in port $port")
+    server.start
     server
   }
 
@@ -99,7 +98,7 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
     context.setContextPath("/koski")
     context.setResourceBase(resourceBase)
     context.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false")
-    if (Environment.isLocalDevelopmentEnvironment(config)) {
+    if (Environment.isLocalDevelopmentEnvironment) {
       // Avoid random SIGBUS errors when static files memory-mapped by Jetty (and being sent to client)
       // are modified (by "make watch"). Can be reproduced somewhat reliably with Java 8 by editing
       // a .less file and quickly doing a reload in the browser.
@@ -148,6 +147,17 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
     holder.setInitParameter("proxyTo", config.getString("virkailijaRaamitProxy"))
     holder.setInitParameter("prefix", "/virkailija-raamit")
   }
+}
+
+object TestConfig {
+  val overrides = ConfigFactory.parseString(
+    """
+      |db.name = koskitest
+      |fixtures.use = true
+      |authenticationFailed.initialDelay = 1s
+      |authenticationFailed.resetAfter = 1s
+      |mockoidgenerator = true
+    """.stripMargin)
 }
 
 class ManagedQueuedThreadPool(maxThreads: Int) extends QueuedThreadPool(maxThreads) with QueuedThreadPoolMXBean

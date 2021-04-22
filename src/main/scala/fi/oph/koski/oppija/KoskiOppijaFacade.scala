@@ -3,6 +3,7 @@ package fi.oph.koski.oppija
 import java.time.LocalDate.now
 
 import com.typesafe.config.Config
+import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.henkilo._
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -21,8 +22,7 @@ class KoskiOppijaFacade(
   historyRepository: OpiskeluoikeusHistoryRepository,
   config: Config,
   hetu: Hetu
-) extends Logging with Timing {
-
+) extends Logging with Timing with GlobalExecutionContext {
   private lazy val mockOids = config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")
 
   def findOppija(oid: String, findMasterIfSlaveOid: Boolean = false, useVirta: Boolean = true, useYtr: Boolean = true)(implicit user: KoskiSpecificSession): Either[HttpStatus, WithWarnings[Oppija]] = {

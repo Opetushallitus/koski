@@ -6,8 +6,7 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
 import fi.oph.koski.util.{Futures, WithWarnings}
-import fi.oph.koski.db.OpiskeluoikeusRow
-import fi.oph.koski.executors.GlobalExecutionContext
+import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluoikeusRow}
 import fi.oph.koski.log.Logging
 
 import scala.concurrent.Future

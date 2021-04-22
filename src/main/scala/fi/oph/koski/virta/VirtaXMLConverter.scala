@@ -5,9 +5,10 @@ import java.time.LocalDate.{parse => date}
 
 import scala.util.Try
 import scala.xml.Node
+import fi.oph.koski.config.Environment
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.log.Logging
-import fi.oph.koski.oppilaitos.OppilaitosRepository
+import fi.oph.koski.oppilaitos.{MockOppilaitosRepository, OppilaitosRepository}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.LocalizedString.{finnish, sanitize}
 import fi.oph.koski.schema._
@@ -466,12 +467,28 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
   private def findOppilaitos(numero: Option[String], päivä: Option[LocalDate]): Option[Oppilaitos] =
     numero.flatMap(oppilaitosRepository.findByOppilaitosnumero)
+      .orElse(numero.flatMap(possiblyMockOppilaitos))
       .map(oppilaitoksenNimiValmistumishetkellä(päivä))
 
   private def oppilaitoksenNimiValmistumishetkellä(vahvistusPäivä: Option[LocalDate])(oppilaitos: Oppilaitos) =
     vahvistusPäivä.flatMap(organisaatioRepository.getOrganisaationNimiHetkellä(oppilaitos.oid, _))
       .map(nimi => oppilaitos.copy(nimi = Some(nimi)))
       .getOrElse(oppilaitos)
+
+  // Jos ajetaan paikallista Koskea Virta-testiympäristön kanssa, useimpia oppilaitoksia ei löydy
+  // MockOppilaitosRepositorystä. Käytetään Aalto-yliopistoa, jotta pystytään näyttämään edes jotain.
+  // Testejä varten oppilaitoskoodilla "kuraa" saa aiheutettua virheen puuttuvasta oppilaitoksesta
+  private def possiblyMockOppilaitos(numero: String): Option[Oppilaitos] = {
+    if (Environment.isLocalDevelopmentEnvironment && oppilaitosRepository == MockOppilaitosRepository) {
+      if (numero == "kuraa") {
+        oppilaitosRepository.findByOppilaitosnumero("kuraa")
+      } else {
+        oppilaitosRepository.findByOppilaitosnumero("10076")
+      }
+    } else {
+      None
+    }
+  }
 }
 
 case class Ilmoittautuminen(oppilaitos: Option[Oppilaitos], tila: KorkeakoulunOpiskeluoikeudenTila, ooAvain: String, virtaXml: Node) {
