@@ -123,12 +123,12 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
           osasuoritukset = Some(List(
             vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus.copy(
               koulutusmoduuli = vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus.koulutusmoduuli.copy(
-                laajuus = Some(LaajuusOpintoviikoissa(10))
+                laajuus = Some(LaajuusOpintopisteissä(10))
               )
             )
           )),
           koulutusmoduuli = suoritusKOTO.koulutusmoduuli.copy(
-            laajuus = Some(LaajuusOpintoviikoissa(10))
+            laajuus = Some(LaajuusOpintopisteissä(10))
           )
         )))
 
@@ -143,12 +143,12 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
             vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus().copy(
               koulutusmoduuli = oppivelvollisilleSuunnattuVapaanSivistystyönMaahanmuuttajienKotoutumisKokonaisuus(
                 Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus", koodistoUri = "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"),
-                Some(LaajuusOpintoviikoissa(10))
+                Some(LaajuusOpintopisteissä(10))
               )
             )
           )),
           koulutusmoduuli = suoritusKOTO.koulutusmoduuli.copy(
-            laajuus = Some(LaajuusOpintoviikoissa(10))
+            laajuus = Some(LaajuusOpintopisteissä(10))
           )
         )))
 
@@ -163,12 +163,12 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
             vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus().copy(
               koulutusmoduuli = oppivelvollisilleSuunnattuVapaanSivistystyönMaahanmuuttajienKotoutumisKokonaisuus(
                 Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus", koodistoUri = "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"),
-                Some(LaajuusOpintoviikoissa(4))
+                Some(LaajuusOpintopisteissä(4))
               )
             )
           )),
           koulutusmoduuli = suoritusKOTO.koulutusmoduuli.copy(
-            laajuus = Some(LaajuusOpintoviikoissa(4))
+            laajuus = Some(LaajuusOpintopisteissä(4))
           )
         )))
 

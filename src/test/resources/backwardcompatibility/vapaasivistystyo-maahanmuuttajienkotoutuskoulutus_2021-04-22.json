@@ -47,16 +47,16 @@
         "laajuus" : {
           "arvo" : 54.0,
           "yksikkö" : {
-            "koodiarvo" : "1",
+            "koodiarvo" : "2",
             "nimi" : {
-              "fi" : "opintoviikkoa",
-              "sv" : "studieveckor",
-              "en" : "study weeks"
+              "fi" : "opintopistettä",
+              "sv" : "studiepoäng",
+              "en" : "ECTS credits"
             },
             "lyhytNimi" : {
-              "fi" : "ov",
-              "sv" : "sv",
-              "en" : "study weeks"
+              "fi" : "op",
+              "sv" : "sp",
+              "en" : "ECTS cr"
             },
             "koodistoUri" : "opintojenlaajuusyksikko"
           }
@@ -147,16 +147,16 @@
           "laajuus" : {
             "arvo" : 30.0,
             "yksikkö" : {
-              "koodiarvo" : "1",
+              "koodiarvo" : "2",
               "nimi" : {
-                "fi" : "opintoviikkoa",
-                "sv" : "studieveckor",
-                "en" : "study weeks"
+                "fi" : "opintopistettä",
+                "sv" : "studiepoäng",
+                "en" : "ECTS credits"
               },
               "lyhytNimi" : {
-                "fi" : "ov",
-                "sv" : "sv",
-                "en" : "study weeks"
+                "fi" : "op",
+                "sv" : "sp",
+                "en" : "ECTS cr"
               },
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
@@ -199,16 +199,16 @@
           "laajuus" : {
             "arvo" : 5.0,
             "yksikkö" : {
-              "koodiarvo" : "1",
+              "koodiarvo" : "2",
               "nimi" : {
-                "fi" : "opintoviikkoa",
-                "sv" : "studieveckor",
-                "en" : "study weeks"
+                "fi" : "opintopistettä",
+                "sv" : "studiepoäng",
+                "en" : "ECTS credits"
               },
               "lyhytNimi" : {
-                "fi" : "ov",
-                "sv" : "sv",
-                "en" : "study weeks"
+                "fi" : "op",
+                "sv" : "sp",
+                "en" : "ECTS cr"
               },
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
@@ -235,16 +235,16 @@
           "laajuus" : {
             "arvo" : 15.0,
             "yksikkö" : {
-              "koodiarvo" : "1",
+              "koodiarvo" : "2",
               "nimi" : {
-                "fi" : "opintoviikkoa",
-                "sv" : "studieveckor",
-                "en" : "study weeks"
+                "fi" : "opintopistettä",
+                "sv" : "studiepoäng",
+                "en" : "ECTS credits"
               },
               "lyhytNimi" : {
-                "fi" : "ov",
-                "sv" : "sv",
-                "en" : "study weeks"
+                "fi" : "op",
+                "sv" : "sp",
+                "en" : "ECTS cr"
               },
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
@@ -264,16 +264,16 @@
             "laajuus" : {
               "arvo" : 4.0,
               "yksikkö" : {
-                "koodiarvo" : "1",
+                "koodiarvo" : "2",
                 "nimi" : {
-                  "fi" : "opintoviikkoa",
-                  "sv" : "studieveckor",
-                  "en" : "study weeks"
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
                 },
                 "lyhytNimi" : {
-                  "fi" : "ov",
-                  "sv" : "sv",
-                  "en" : "study weeks"
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
                 },
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
@@ -305,16 +305,16 @@
             "laajuus" : {
               "arvo" : 4.0,
               "yksikkö" : {
-                "koodiarvo" : "1",
+                "koodiarvo" : "2",
                 "nimi" : {
-                  "fi" : "opintoviikkoa",
-                  "sv" : "studieveckor",
-                  "en" : "study weeks"
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
                 },
                 "lyhytNimi" : {
-                  "fi" : "ov",
-                  "sv" : "sv",
-                  "en" : "study weeks"
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
                 },
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
@@ -354,16 +354,16 @@
           "laajuus" : {
             "arvo" : 4.0,
             "yksikkö" : {
-              "koodiarvo" : "1",
+              "koodiarvo" : "2",
               "nimi" : {
-                "fi" : "opintoviikkoa",
-                "sv" : "studieveckor",
-                "en" : "study weeks"
+                "fi" : "opintopistettä",
+                "sv" : "studiepoäng",
+                "en" : "ECTS credits"
               },
               "lyhytNimi" : {
-                "fi" : "ov",
-                "sv" : "sv",
-                "en" : "study weeks"
+                "fi" : "op",
+                "sv" : "sp",
+                "en" : "ECTS cr"
               },
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
@@ -383,16 +383,16 @@
             "laajuus" : {
               "arvo" : 4.0,
               "yksikkö" : {
-                "koodiarvo" : "1",
+                "koodiarvo" : "2",
                 "nimi" : {
-                  "fi" : "opintoviikkoa",
-                  "sv" : "studieveckor",
-                  "en" : "study weeks"
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
                 },
                 "lyhytNimi" : {
-                  "fi" : "ov",
-                  "sv" : "sv",
-                  "en" : "study weeks"
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
                 },
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }

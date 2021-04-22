@@ -200,7 +200,7 @@ case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus(
  tunniste: Koodistokoodiviite = Koodistokoodiviite("999910", koodistoUri = "koulutus"),
  perusteenDiaarinumero: Option[String] = None,
  koulutustyyppi: Option[Koodistokoodiviite] = None,
- laajuus: Option[LaajuusOpintoviikoissa] = None
+ laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends DiaarinumerollinenKoulutus with Tutkinto
 
 trait VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus extends Suoritus with Vahvistukseton
@@ -266,14 +266,14 @@ case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenO
 ) extends VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus
 
 trait OppivelvollisilleSuunnatunVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenKoulutusmoduuli extends KoulutusmoduuliValinnainenLaajuus with KoodistostaLöytyväKoulutusmoduuli {
-  def laajuus: Option[LaajuusOpintoviikoissa]
+  def laajuus: Option[LaajuusOpintopisteissä]
 }
 
 @Title("Maahanmuuttajien kotoutumiskoulutuksen kokonaisuus")
 case class OppivelvollisilleSuunnattuVapaanSivistystyönMaahanmuuttajienKotoutumisKokonaisuus(
   @KoodistoUri(koodistoUri = "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus")
   tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusOpintoviikoissa] = None
+  laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends OppivelvollisilleSuunnatunVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenKoulutusmoduuli with KoodistostaLöytyväKoulutusmoduuli with LaajuuttaEiValidoida
 
 trait VapaanSivistystyönMaahanmuuttajienKuntoutuskoulutuksenValinnaistenOpintojenOsasuoritus extends Suoritus with Vahvistukseton
@@ -311,5 +311,5 @@ case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJa
 case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus(
   tunniste: PaikallinenKoodi,
   kuvaus: LocalizedString,
-  laajuus: Option[LaajuusOpintoviikoissa]
+  laajuus: Option[LaajuusOpintopisteissä]
 ) extends PaikallinenKoulutusmoduuliValinnainenLaajuus
