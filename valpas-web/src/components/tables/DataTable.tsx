@@ -57,6 +57,7 @@ export type Value = {
   /** Icon alongside the value */
   icon?: React.ReactNode
   filterValues?: Array<string | number>
+  tooltip?: string
 }
 
 export const DataTable = (props: DataTableProps) => {
@@ -189,7 +190,7 @@ export const DataTable = (props: DataTableProps) => {
                   icon={value.icon}
                   size={column?.size}
                   indicatorSpace={!!column?.indicatorSpace}
-                  title={value.value?.toString()}
+                  title={value.tooltip || value.value?.toString()}
                 >
                   {value.display || value.value}
                 </Data>

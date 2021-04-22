@@ -5,11 +5,13 @@ import { eventually } from "./utils"
 export const dataTableEventuallyEquals = async (
   selector: string,
   displayValues: string,
+  columnSeparator = "\t",
   timeout = 1000
 ) => {
   await dataTableCellsEventuallyEquals(
     `${selector} .table__body .table__td`,
     displayValues,
+    columnSeparator,
     timeout
   )
 }
@@ -17,11 +19,13 @@ export const dataTableEventuallyEquals = async (
 export const dataTableHeadersEventuallyEquals = async (
   selector: string,
   displayValues: string,
+  columnSeparator = "\t",
   timeout = 1000
 ) => {
   await dataTableCellsEventuallyEquals(
     `${selector} .table__body .table__th`,
     displayValues,
+    columnSeparator,
     timeout
   )
 }
@@ -29,6 +33,7 @@ export const dataTableHeadersEventuallyEquals = async (
 const dataTableCellsEventuallyEquals = async (
   selector: string,
   displayValues: string,
+  columnSeparator = "\t",
   timeout = 1000
 ) => {
   const expectedData = A.flatten(
@@ -36,7 +41,7 @@ const dataTableCellsEventuallyEquals = async (
       .split("\n")
       .map((row) => row.trim())
       .filter((row) => row.length > 0)
-      .map((row) => row.split("\t"))
+      .map((row) => row.split(columnSeparator).map((c) => c.trim()))
   )
 
   await eventually(async () => {

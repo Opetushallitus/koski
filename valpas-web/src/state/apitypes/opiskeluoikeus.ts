@@ -2,8 +2,9 @@ import * as A from "fp-ts/Array"
 import * as Ord from "fp-ts/Ord"
 import * as string from "fp-ts/string"
 import { ISODate, Language, Oid } from "../common"
-import { Opiskeluoikeudentyyppi, ValpasOpiskeluoikeudenTila } from "./koodistot"
+import { Opiskeluoikeudentyyppi } from "./koodistot"
 import { Oppilaitos, Toimipiste } from "./organisaatiot"
+import { ValpasOpiskeluoikeudenTila } from "./valpasopiskeluoikeudentila"
 
 export type OpiskeluoikeusLaajatTiedot = {
   oid: Oid
@@ -15,6 +16,7 @@ export type OpiskeluoikeusLaajatTiedot = {
   päättymispäivä?: ISODate
   ryhmä?: string
   tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
+  oppivelvollisuudenSuorittamiseenKelpaava: boolean
 }
 
 export type OpiskeluoikeusSuppeatTiedot = {
@@ -25,6 +27,8 @@ export type OpiskeluoikeusSuppeatTiedot = {
   toimipiste?: Toimipiste
   ryhmä?: string
   tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
+  alkamispäivä?: ISODate
+  oppivelvollisuudenSuorittamiseenKelpaava: boolean
 }
 
 const opiskeluoikeusDateOrd = (key: keyof OpiskeluoikeusLaajatTiedot) =>
@@ -55,3 +59,13 @@ export const valvottavatOpiskeluoikeudet = (
   organisaatioOid: string | undefined,
   opiskeluoikeudet: Array<OpiskeluoikeusSuppeatTiedot>
 ) => opiskeluoikeudet.filter(isValvottavaOpiskeluoikeus(organisaatioOid))
+
+export const taulukossaNäytettäväOpiskeluoikeus = (
+  opiskeluoikeus: OpiskeluoikeusSuppeatTiedot
+): boolean => {
+  const tila = opiskeluoikeus.tarkastelupäivänTila.koodiarvo
+  return (
+    opiskeluoikeus.oppivelvollisuudenSuorittamiseenKelpaava &&
+    (tila === "voimassa" || tila === "voimassatulevaisuudessa")
+  )
+}

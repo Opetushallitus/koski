@@ -32,6 +32,7 @@ export const CaretRightIcon = defineIcon("keyboard_arrow_right")
 export const CaretLeftIcon = defineIcon("keyboard_arrow_left")
 export const OpenInNewIcon = defineIcon("open_in_new")
 export const SuccessIcon = defineIcon("done", "success")
+export const FutureSuccessIcon = defineIcon("hourglass_empty", "success")
 
 type MaterialDesignIconProps = IconProps & {
   name: string // Ikonien nimet löytyvät osoitteesta https://material.io/resources/icons/?style=baseline
