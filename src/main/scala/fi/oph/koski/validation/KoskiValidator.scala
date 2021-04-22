@@ -506,7 +506,7 @@ class KoskiValidator(
         :: validateStatus(suoritus, opiskeluoikeus)
         :: validateArvioinnit(suoritus)
         :: validateLaajuus(suoritus)
-        :: validateNuortenPerusopetuksenPakollistenOppiaineidenLaajuus(suoritus)
+        :: validateNuortenPerusopetuksenPakollistenOppiaineidenLaajuus(suoritus, opiskeluoikeus)
         :: validateOppiaineet(suoritus)
         :: validatePäiväkodinEsiopetus(suoritus, opiskeluoikeus)
         :: validateTutkinnonosanRyhmä(suoritus)
@@ -1137,14 +1137,32 @@ class KoskiValidator(
     case _ => HttpStatus.ok
   }
 
- private def validateNuortenPerusopetuksenPakollistenOppiaineidenLaajuus(suoritus: Suoritus)  = suoritus match {
-   case _: NuortenPerusopetuksenOppimääränSuoritus | _: PerusopetuksenVuosiluokanSuoritus
-     if suoritus.vahvistus.exists(v => !v.päivä.isBefore(LocalDate.of(2020, 8, 1)))=>
-     HttpStatus.fold(
-       suoritus.osasuoritusLista.collect {
-         case o: NuortenPerusopetuksenOppiaineenSuoritus if o.koulutusmoduuli.pakollinen =>
-           HttpStatus.validate(o.koulutusmoduuli.laajuusArvo(0.0) > 0) { KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu(s"Oppiaineen ${suorituksenTunniste(o)} laajuus puuttuu") }
-       })
-   case _ => HttpStatus.ok
+ private def validateNuortenPerusopetuksenPakollistenOppiaineidenLaajuus(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)  = {
+   val kotiopetusVoimassaVahvistusPäivänä = opiskeluoikeus.lisätiedot.exists {
+     case lisätiedot: Kotiopetuksellinen =>
+       suoritus.vahvistus.map(_.päivä)
+         .exists(vahvistusPäivä => lisätiedot.kotiopetus.exists(_.contains(vahvistusPäivä)))
+     case _ => false
+   }
+
+   val suoritusTapanaErityinenTutkinto = suoritus match {
+     case s: PerusopetuksenVuosiluokanSuoritus => s.suoritustapa.exists(_.koodiarvo == "erityinentutkinto")
+     case s: NuortenPerusopetuksenOppimääränSuoritus => s.suoritustapa.koodiarvo == "erityinentutkinto"
+     case _ => false
+   }
+
+   val vahvistettuPäivänJälkeenJolloinLaajuusVaaditaan = suoritus.vahvistus.exists(v => !v.päivä.isBefore(LocalDate.of(2020, 8, 1)))
+
+   suoritus match {
+     case _: NuortenPerusopetuksenOppimääränSuoritus | _: PerusopetuksenVuosiluokanSuoritus
+       if vahvistettuPäivänJälkeenJolloinLaajuusVaaditaan && !(kotiopetusVoimassaVahvistusPäivänä || suoritusTapanaErityinenTutkinto) =>
+       HttpStatus.fold(
+         suoritus.osasuoritusLista.collect {
+           case o: NuortenPerusopetuksenOppiaineenSuoritus
+             if o.koulutusmoduuli.pakollinen && o.suoritustapa.forall(_.koodiarvo != "erityinentutkinto") =>
+             HttpStatus.validate(o.koulutusmoduuli.laajuusArvo(0.0) > 0) { KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu(s"Oppiaineen ${suorituksenTunniste(o)} laajuus puuttuu") }
+         })
+     case _ => HttpStatus.ok
+   }
  }
 }
