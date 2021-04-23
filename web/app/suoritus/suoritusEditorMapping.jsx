@@ -46,7 +46,12 @@ export const resolveOsasuorituksetEditor = (mdl) => {
   if (firstClassOneOf('esiopetuksensuoritus')) {
     return <PropertiesEditor model={modelLookup(mdl, 'koulutusmoduuli')} propertyFilter={p => p.key === 'kuvaus'} />
   }
-  if (oneOf('ammatillinenpaatasonsuoritus', 'ylioppilastutkinnonsuoritus', 'korkeakoulusuoritus')) {
+  if (oneOf(
+    'ammatillinenpaatasonsuoritus',
+    'ylioppilastutkinnonsuoritus',
+    'korkeakoulusuoritus',
+    'oppivelvollisillesuunnattuvapaansivistystyonkoulutuksensuoritus'
+    )) {
     const SuoritustaulukkoComponent = kansalainen ? OmatTiedotSuoritustaulukko : Suoritustaulukko
     return <SuoritustaulukkoComponent suorituksetModel={modelLookup(mdl, 'osasuoritukset')} />
   }
