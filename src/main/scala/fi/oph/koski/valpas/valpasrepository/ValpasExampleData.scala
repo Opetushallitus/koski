@@ -29,6 +29,8 @@ object ValpasExampleData {
     hakenutUlkomaille = Some(false)
   )
 
+  def oppilaitoksenIlmoitusKaikillaTiedoilla = ilmoitus
+
   def oppilaitoksenIlmoitusMinimitiedoilla = ValpasKuntailmoitusLaajatTiedot(
     id = None,
     kunta = OidOrganisaatio(

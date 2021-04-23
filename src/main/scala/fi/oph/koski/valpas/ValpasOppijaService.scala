@@ -1,6 +1,6 @@
 package fi.oph.koski.valpas
 
-import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.Yhteystiedot
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
@@ -84,15 +84,15 @@ object ValpasOppijaService {
 }
 
 class ValpasOppijaService(
-  application: KoskiApplication,
-  hakukoosteService: ValpasHakukoosteService,
+  application: KoskiApplication
 ) extends Logging with Timing {
-  private val opiskeluoikeusDbService = new ValpasOpiskeluoikeusDatabaseService(application)
-  private val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
-  private val localizationRepository = application.valpasLocalizationRepository
-  private val koodistoviitepalvelu = application.koodistoViitePalvelu
+  private lazy val hakukoosteService = application.valpasHakukoosteService
+  private lazy val opiskeluoikeusDbService = new ValpasOpiskeluoikeusDatabaseService(application)
+  private lazy val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
+  private lazy val localizationRepository = application.valpasLocalizationRepository
+  private lazy val koodistoviitepalvelu = application.koodistoViitePalvelu
 
-  private val accessResolver = new ValpasAccessResolver(application.organisaatioRepository)
+  private lazy val accessResolver = new ValpasAccessResolver(application.organisaatioRepository)
 
   private implicit val validationAndResolvingContext: ValidationAndResolvingContext =
     ValidationAndResolvingContext(application.koodistoViitePalvelu, application.organisaatioRepository)

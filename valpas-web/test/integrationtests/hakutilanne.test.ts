@@ -99,7 +99,7 @@ describe("Hakutilannenäkymä", () => {
     await urlIsEventually(pathToUrl(kulosaariHakutilannePath))
     await textEventuallyEquals(
       ".card__header",
-      "Hakeutumisvelvollisia oppijoita (1)"
+      "Hakeutumisvelvollisia oppijoita (4)"
     )
   })
 
@@ -109,7 +109,7 @@ describe("Hakutilannenäkymä", () => {
     await selectOrganisaatio(1)
     await urlIsEventually(pathToUrl(kulosaariHakutilannePath))
 
-    await clickOppija(0)
+    await clickOppija(3)
     await urlIsEventually(
       pathToUrl(
         createOppijaPath("/virkailija", {

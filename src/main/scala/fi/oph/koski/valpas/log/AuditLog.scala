@@ -31,7 +31,8 @@ object ValpasAuditLogMessage {
 object ValpasOperation extends Enumeration {
   type ValpasOperation = Value
   val VALPAS_OPPIJA_KATSOMINEN,
-      VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN = Value
+      VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN,
+      VALPAS_OPPIJA_KUNTAILMOITUS = Value
 }
 
 class ValpasAuditLogOperation(op: ValpasOperation) extends Operation {

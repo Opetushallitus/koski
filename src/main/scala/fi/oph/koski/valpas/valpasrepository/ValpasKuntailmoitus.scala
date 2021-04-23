@@ -5,6 +5,8 @@ import java.time.LocalDateTime
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
 import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
 
+case class ValpasKuntailmoitusLaajatTiedotJaOppijaOid(oppijaOid: String, kuntailmoitus: ValpasKuntailmoitusLaajatTiedot)
+
 trait ValpasKuntailmoitus {
   def id: Option[Int]
   def tekijä: ValpasKuntailmoituksenTekijä
