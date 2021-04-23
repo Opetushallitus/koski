@@ -47,16 +47,16 @@
         "laajuus" : {
           "arvo" : 80.0,
           "yksikkö" : {
-            "koodiarvo" : "5",
+            "koodiarvo" : "2",
             "nimi" : {
-              "fi" : "tuntia",
-              "sv" : "timmar",
-              "en" : "hours"
+              "fi" : "opintopistettä",
+              "sv" : "studiepoäng",
+              "en" : "ECTS credits"
             },
             "lyhytNimi" : {
-              "fi" : "tuntia",
-              "sv" : "timmar",
-              "en" : "hours"
+              "fi" : "op",
+              "sv" : "sp",
+              "en" : "ECTS cr"
             },
             "koodistoUri" : "opintojenlaajuusyksikko"
           }
@@ -147,16 +147,16 @@
           "laajuus" : {
             "arvo" : 20.0,
             "yksikkö" : {
-              "koodiarvo" : "5",
+              "koodiarvo" : "2",
               "nimi" : {
-                "fi" : "tuntia",
-                "sv" : "timmar",
-                "en" : "hours"
+                "fi" : "opintopistettä",
+                "sv" : "studiepoäng",
+                "en" : "ECTS credits"
               },
               "lyhytNimi" : {
-                "fi" : "tuntia",
-                "sv" : "timmar",
-                "en" : "hours"
+                "fi" : "op",
+                "sv" : "sp",
+                "en" : "ECTS cr"
               },
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
@@ -183,16 +183,16 @@
           "laajuus" : {
             "arvo" : 20.0,
             "yksikkö" : {
-              "koodiarvo" : "5",
+              "koodiarvo" : "2",
               "nimi" : {
-                "fi" : "tuntia",
-                "sv" : "timmar",
-                "en" : "hours"
+                "fi" : "opintopistettä",
+                "sv" : "studiepoäng",
+                "en" : "ECTS credits"
               },
               "lyhytNimi" : {
-                "fi" : "tuntia",
-                "sv" : "timmar",
-                "en" : "hours"
+                "fi" : "op",
+                "sv" : "sp",
+                "en" : "ECTS cr"
               },
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
@@ -219,16 +219,16 @@
           "laajuus" : {
             "arvo" : 20.0,
             "yksikkö" : {
-              "koodiarvo" : "5",
+              "koodiarvo" : "2",
               "nimi" : {
-                "fi" : "tuntia",
-                "sv" : "timmar",
-                "en" : "hours"
+                "fi" : "opintopistettä",
+                "sv" : "studiepoäng",
+                "en" : "ECTS credits"
               },
               "lyhytNimi" : {
-                "fi" : "tuntia",
-                "sv" : "timmar",
-                "en" : "hours"
+                "fi" : "op",
+                "sv" : "sp",
+                "en" : "ECTS cr"
               },
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
@@ -255,16 +255,16 @@
           "laajuus" : {
             "arvo" : 20.0,
             "yksikkö" : {
-              "koodiarvo" : "5",
+              "koodiarvo" : "2",
               "nimi" : {
-                "fi" : "tuntia",
-                "sv" : "timmar",
-                "en" : "hours"
+                "fi" : "opintopistettä",
+                "sv" : "studiepoäng",
+                "en" : "ECTS credits"
               },
               "lyhytNimi" : {
-                "fi" : "tuntia",
-                "sv" : "timmar",
-                "en" : "hours"
+                "fi" : "op",
+                "sv" : "sp",
+                "en" : "ECTS cr"
               },
               "koodistoUri" : "opintojenlaajuusyksikko"
             }

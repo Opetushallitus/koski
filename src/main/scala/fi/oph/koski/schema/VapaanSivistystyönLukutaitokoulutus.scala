@@ -1,9 +1,8 @@
 package fi.oph.koski.schema
 
-import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, OnlyWhen, Title}
+import fi.oph.scalaschema.annotation.{Description, Title}
 
-import java.time.{LocalDate, LocalDateTime}
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, MultiLineString, OksaUri, Representative, Tooltip}
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
 
 case class VapaanSivistystyönLukutaitokoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
@@ -26,7 +25,7 @@ case class VapaanSivistystyönLukutaitokoulutus(
  tunniste: Koodistokoodiviite = Koodistokoodiviite("999911", koodistoUri = "koulutus"),
  perusteenDiaarinumero: Option[String] = None,
  koulutustyyppi: Option[Koodistokoodiviite] = None,
- laajuus: Option[LaajuusTunneissa] = None
+ laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends DiaarinumerollinenKoulutus with Tutkinto
 
 @Title("Lukutaitokoulutuksen kokonaisuuden suoritus")
@@ -39,12 +38,12 @@ case class VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus(
 ) extends Suoritus with Vahvistukseton
 
 trait VapaanSivistystyönLukutaitokoulutuksenOsasuoritustenKoulutusmoduuli extends KoulutusmoduuliValinnainenLaajuus with KoodistostaLöytyväKoulutusmoduuli {
-  def laajuus: Option[LaajuusTunneissa]
+  def laajuus: Option[LaajuusOpintopisteissä]
 }
 
 @Title("Lukutaitokoulutuksen kokonaisuus")
 case class VapaanSivistystyönLukutaidonKokonaisuus(
   @KoodistoUri(koodistoUri = "vstlukutaitokoulutuksenkokonaisuus")
   tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusTunneissa] = None
+  laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends VapaanSivistystyönLukutaitokoulutuksenOsasuoritustenKoulutusmoduuli with KoodistostaLöytyväKoulutusmoduuli with LaajuuttaEiValidoida
