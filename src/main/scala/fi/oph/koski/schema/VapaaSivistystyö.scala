@@ -98,9 +98,8 @@ case class OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumiso
   @KoodistoKoodiarvo("valinnaisetsuuntautumisopinnot")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("valinnaisetsuuntautumisopinnot", "vstmuutopinnot"),
   laajuus: Option[LaajuusOpintopisteissä] = None
-) extends OppivelvollisilleSuunnatunVapaanSivistystyönOsasuorituksenKoulutusmoduuli {
-  override def nimi: LocalizedString = LocalizedString.empty
-}
+) extends OppivelvollisilleSuunnatunVapaanSivistystyönOsasuorituksenKoulutusmoduuli
+
 
 @Title("Osaamiskokonaisuus")
 case class OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus(
