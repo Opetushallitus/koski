@@ -1,21 +1,24 @@
 package fi.oph.koski.valpas.opiskeluoikeusfixture
 
+import java.time.LocalDate
+import java.time.LocalDate.{of => date}
+
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{MockValpasRajapäivät, ValpasRajapäivät}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 
 
 object FixtureUtil {
-  def resetMockData(app: KoskiApplication, rajapäivät: MockValpasRajapäivät = new MockValpasRajapäivät()): FixtureState = synchronized {
+  def resetMockData(app: KoskiApplication, tarkastelupäivä: LocalDate = date(2021, 9, 5)): FixtureState = synchronized {
     ValpasMockUsers.mockUsersEnabled = true
-    ValpasRajapäivät.enableMock(rajapäivät)
+    app.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(tarkastelupäivä)
     app.fixtureCreator.resetFixtures(app.fixtureCreator.valpasFixtureState)
     FixtureState(app)
   }
 
   def clearMockData(app: KoskiApplication): FixtureState = synchronized {
     ValpasMockUsers.mockUsersEnabled = false
-    ValpasRajapäivät.disableMock()
+    app.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService].poistaMockTarkastelupäivä()
     app.fixtureCreator.resetFixtures(app.fixtureCreator.koskiSpecificFixtureState)
     FixtureState(app)
   }
@@ -24,11 +27,11 @@ object FixtureUtil {
 object FixtureState {
   def apply(application: KoskiApplication): FixtureState = FixtureState(
     fixture = application.fixtureCreator.getCurrentFixtureStateName(),
-    rajapäivät = ValpasRajapäivät.getCurrent()
+    tarkastelupäivä = application.valpasRajapäivätService.tarkastelupäivä
   )
 }
 
 case class FixtureState(
   fixture: String,
-  rajapäivät: ValpasRajapäivät
+  tarkastelupäivä: LocalDate
 )

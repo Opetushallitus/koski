@@ -33,6 +33,7 @@ import fi.oph.koski.userdirectory.DirectoryClient
 import fi.oph.koski.validation.KoskiValidator
 import fi.oph.koski.valpas.db.ValpasDatabase
 import fi.oph.koski.valpas.localization.ValpasLocalizationConfig
+import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
 import fi.oph.koski.ytr.{YtrAccessChecker, YtrClient, YtrOpiskeluoikeusRepository, YtrRepository}
 
@@ -111,6 +112,11 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
     LocalizationRepository(config, new ValpasLocalizationConfig)
   } else {
     null // Vaikka kaikki valpasLocalizationRepository:n käyttöpaikat pitäisi olla feature flagätty, asetetaan kuitenkin varmuuden vuoksi null:ksi tässä, niin ei mahdolliset unohdukset pääse tuotantoon.
+  }
+  lazy val valpasRajapäivätService = if (features.valpas) {
+    ValpasRajapäivätService(config)
+  } else {
+    null
   }
   lazy val oidGenerator = OidGenerator(config)
   lazy val hetu = new Hetu(config.getBoolean("acceptSyntheticHetus"))

@@ -3,19 +3,15 @@ import { apiGet } from "./apiFetch"
 
 export type FixtureState = {
   fixture: string
-  rajapäivät: Rajapäivät
-}
-
-export type Rajapäivät = {
-  tarkasteluPäivä: ISODate
+  tarkastelupäivä: ISODate
 }
 
 export const resetMockData = () =>
   apiGet<FixtureState>("valpas/test/reset-mock-data")
 
-export const resetMockDataToDate = (tarkasteluPäivä: string) => () =>
+export const resetMockDataToDate = (tarkastelupäivä: string) => () =>
   apiGet<FixtureState>(
-    "valpas/test/reset-mock-data/" + (tarkasteluPäivä || "2021-09-01")
+    "valpas/test/reset-mock-data/" + (tarkastelupäivä || "2021-09-01")
   )
 
 export const clearMockData = () =>

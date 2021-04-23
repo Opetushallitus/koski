@@ -29,17 +29,17 @@ export const reset = async (initialPath: string) => {
   await resetMockData()
 }
 
-export const resetMockData = async (tarkasteluPäivä: string = "2021-09-05") => {
-  const inputSelector = "#tarkasteluPäivä"
+export const resetMockData = async (tarkastelupäivä: string = "2021-09-05") => {
+  const inputSelector = "#tarkastelupäivä"
 
   const currentTarkastelupäivä = await getTextInput(inputSelector)
   const currentFixture = await (await $("#current-fixture")).getText()
 
   if (
-    currentTarkastelupäivä !== tarkasteluPäivä ||
+    currentTarkastelupäivä !== tarkastelupäivä ||
     currentFixture !== "VALPAS"
   ) {
-    await setTextInput(inputSelector, tarkasteluPäivä)
+    await setTextInput(inputSelector, tarkastelupäivä)
     await clickElement("#resetMockData")
     await textEventuallyEquals("#resetMockDataState", "success", 15000)
   }
