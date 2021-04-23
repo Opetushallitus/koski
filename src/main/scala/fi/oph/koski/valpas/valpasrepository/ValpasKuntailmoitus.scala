@@ -7,7 +7,7 @@ import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
 
 trait ValpasKuntailmoitus {
   def id: Option[Int]
-  def tekijä: Option[ValpasKuntailmoituksenTekijä]
+  def tekijä: ValpasKuntailmoituksenTekijä
   def kunta: OrganisaatioWithOid // Koska suuri osa kunnista on koulutustoimijoita, on niille vaikea luoda omaa tyyppiä.
                                  // Validointi, että tähän voi tallentaa vain kunta-tyyppisen organisaation, tehdään erikseen.
   def ilmoituspäivä: Option[LocalDate]
@@ -19,7 +19,7 @@ trait ValpasKuntailmoituksenTekijä {
 
 case class ValpasKuntailmoitusSuppeatTiedot(
   id: Option[Int],
-  tekijä: Option[ValpasKuntailmoituksenTekijäSuppeatTiedot],
+  tekijä: ValpasKuntailmoituksenTekijäSuppeatTiedot,
   kunta: OrganisaatioWithOid,
   ilmoituspäivä: Option[LocalDate]
 ) extends ValpasKuntailmoitus
@@ -28,10 +28,7 @@ object ValpasKuntailmoitusSuppeatTiedot {
   def apply(laajatTiedot: ValpasKuntailmoitusLaajatTiedot): ValpasKuntailmoitusSuppeatTiedot = {
     ValpasKuntailmoitusSuppeatTiedot(
       laajatTiedot.id,
-      laajatTiedot.tekijä match {
-        case Some(tekijänLaajatTiedot) => Some(ValpasKuntailmoituksenTekijäSuppeatTiedot(tekijänLaajatTiedot))
-        case _ => None
-      },
+      ValpasKuntailmoituksenTekijäSuppeatTiedot(laajatTiedot.tekijä),
       laajatTiedot.kunta,
       laajatTiedot.ilmoituspäivä
     )
@@ -42,8 +39,7 @@ case class ValpasKuntailmoitusLaajatTiedot(
   id: Option[Int],
   kunta: OrganisaatioWithOid,
   ilmoituspäivä: Option[LocalDate], // Option, koska create-operaatiossa bäkkäri täyttää ilmoituspäivän
-  tekijä: Option[ValpasKuntailmoituksenTekijäLaajatTiedot], // Option, koska kunnan tekemissä ilmoituksissa tiedot voidaan päätellä kokonaan aiemmista
-                                                            // ilmoituksista ja tekijän sessiosta
+  tekijä: ValpasKuntailmoituksenTekijäLaajatTiedot,
   @KoodistoUri("kieli")
   @KoodistoKoodiarvo("FI")
   @KoodistoKoodiarvo("SV")

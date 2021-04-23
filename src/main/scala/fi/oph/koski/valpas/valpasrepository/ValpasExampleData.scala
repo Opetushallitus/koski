@@ -13,10 +13,10 @@ object ValpasExampleData {
     id = None,
     kunta = pyhtäänKunta,
     ilmoituspäivä = Some(date(2021, 8, 15)),
-    tekijä = Some(ValpasKuntailmoituksenTekijäLaajatTiedot(
+    tekijä = ValpasKuntailmoituksenTekijäLaajatTiedot(
       organisaatio = jyväskylänNormaalikoulu,
       henkilö = tekijäHenkilö(ValpasMockUsers.valpasJklNormaalikoulu)
-    )),
+    ),
     yhteydenottokieli = suomi,
     oppijanYhteystiedot = Some(ValpasKuntailmoituksenOppijanYhteystiedot(
       puhelinnumero = Some("0401234567"),
@@ -36,7 +36,7 @@ object ValpasExampleData {
       kotipaikka = None
     ),
     ilmoituspäivä = None,
-    tekijä = Some(ValpasKuntailmoituksenTekijäLaajatTiedot(
+    tekijä = ValpasKuntailmoituksenTekijäLaajatTiedot(
       organisaatio = OidOrganisaatio(
         oid = MockOrganisaatiot.jyväskylänNormaalikoulu,
         nimi = None
@@ -47,7 +47,7 @@ object ValpasExampleData {
         sukunimi = "Käyttäjä",
         email = Some("valpas.kayttaja@gmail.com")
       ))
-    )),
+    ),
     yhteydenottokieli = suomi,
     oppijanYhteystiedot = Some(ValpasKuntailmoituksenOppijanYhteystiedot(
       puhelinnumero = None,
