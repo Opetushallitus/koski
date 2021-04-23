@@ -62,7 +62,7 @@ class ValpasRootApiServletSpec extends ValpasHttpTestBase with BeforeAndAfterEac
   "Palauttaa kunnat" taggedAs(ValpasBackendTag) in {
     authGet(s"/valpas/api/organisaatiot/kunnat", ValpasMockUsers.valpasJklNormaalikoulu) {
       verifyResponseStatusOk()
-      val actualKunnat = JsonSerializer.parse[List[ValpasKunta]](response.body)
+      val actualKunnat = JsonSerializer.parse[List[OidOrganisaatio]](response.body)
         .map(vk => (vk.nimi.get.get("fi"), vk.kotipaikka.get.koodiarvo, vk.kotipaikka.get.getNimi.get.get("fi")))
         .sortBy(_._1)
 

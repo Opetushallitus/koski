@@ -3,19 +3,24 @@ package fi.oph.koski.valpas.valpasrepository
 import java.time.LocalDate
 
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
-import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
+import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
 
 trait ValpasKuntailmoitus {
   def id: Option[Int]
   def tekijä: Option[ValpasKuntailmoituksenTekijä]
-  def kunta: ValpasKunta
+  def kunta: OrganisaatioWithOid // Koska suuri osa kunnista on koulutustoimijoita, on niille vaikea luoda omaa tyyppiä.
+                                 // Validointi, että tähän voi tallentaa vain kunta-tyyppisen organisaation, tehdään erikseen.
   def ilmoituspäivä: Option[LocalDate]
+}
+
+trait ValpasKuntailmoituksenTekijä {
+  def organisaatio: OrganisaatioWithOid // Tekijä voi olla joko kunta tai oppilaitos. Validointi, että on jompikumpi, tehdään erikseen.
 }
 
 case class ValpasKuntailmoitusSuppeatTiedot(
   id: Option[Int],
   tekijä: Option[ValpasKuntailmoituksenTekijäSuppeatTiedot],
-  kunta: ValpasKunta,
+  kunta: OrganisaatioWithOid,
   ilmoituspäivä: Option[LocalDate]
 ) extends ValpasKuntailmoitus
 
@@ -35,7 +40,7 @@ object ValpasKuntailmoitusSuppeatTiedot {
 
 case class ValpasKuntailmoitusLaajatTiedot(
   id: Option[Int],
-  kunta: ValpasKunta,
+  kunta: OrganisaatioWithOid,
   ilmoituspäivä: Option[LocalDate], // Option, koska create-operaatiossa bäkkäri täyttää ilmoituspäivän
   tekijä: Option[ValpasKuntailmoituksenTekijäLaajatTiedot], // Option, koska kunnan tekemissä ilmoituksissa tiedot voidaan päätellä kokonaan aiemmista
                                                             // ilmoituksista ja tekijän sessiosta
@@ -43,28 +48,14 @@ case class ValpasKuntailmoitusLaajatTiedot(
   @KoodistoKoodiarvo("FI")
   @KoodistoKoodiarvo("SV")
   yhteydenottokieli: Option[Koodistokoodiviite], // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn ilmoituksen tiedoista,
-                                                 // tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa
+                                                 // tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa.
   oppijanYhteystiedot: Option[ValpasKuntailmoituksenOppijanYhteystiedot] // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn
                                                                          // ilmoituksen tiedoista, tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa
 ) extends ValpasKuntailmoitus
 
-case class ValpasKunta(
-  oid: ValpasKunta.Oid,
-  nimi: Option[LocalizedString], // Option, koska create-operaatiossa käytetään pelkkää oidia
-  @KoodistoUri("kunta")
-  kotipaikka: Option[Koodistokoodiviite] // Option, koska create-operaatiossa käytetään pelkkää oidia
-)
-
-object ValpasKunta {
-  type Oid = String
-}
-
-trait ValpasKuntailmoituksenTekijä {
-  def organisaatio: ValpasKuntailmoituksenTekijäOrganisaatio
-}
 
 case class ValpasKuntailmoituksenTekijäSuppeatTiedot(
-  organisaatio: ValpasKuntailmoituksenTekijäOrganisaatio
+  organisaatio: OrganisaatioWithOid
 ) extends ValpasKuntailmoituksenTekijä
 
 object ValpasKuntailmoituksenTekijäSuppeatTiedot {
@@ -74,18 +65,9 @@ object ValpasKuntailmoituksenTekijäSuppeatTiedot {
 }
 
 case class ValpasKuntailmoituksenTekijäLaajatTiedot(
-  organisaatio: ValpasKuntailmoituksenTekijäOrganisaatio,
+  organisaatio: OrganisaatioWithOid,
   henkilö: Option[ValpasKuntailmoituksenTekijäHenkilö] // Option, koska tämä on oppivelvollisuurekisterin ulkopuolista lisädataa eikä välttämättä tallessa tietokannassa vaikka muuta ilmoituksen tiedot olisivatkin
 ) extends ValpasKuntailmoituksenTekijä
-
-case class ValpasKuntailmoituksenTekijäOrganisaatio(
-  oid: ValpasKuntailmoituksenTekijäOrganisaatio.Oid,
-  nimi: Option[LocalizedString]
-)
-
-object ValpasKuntailmoituksenTekijäOrganisaatio {
-  type Oid = String
-}
 
 case class ValpasKuntailmoituksenTekijäHenkilö(
   oid: Option[ValpasKuntailmoituksenTekijäHenkilö.Oid], // Option, koska create-operaatiossa bäkkäri lukee tekijän oidin sessiosta

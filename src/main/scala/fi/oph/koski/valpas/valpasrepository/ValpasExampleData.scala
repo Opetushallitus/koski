@@ -3,7 +3,7 @@ package fi.oph.koski.valpas.valpasrepository
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.schema.Koodistokoodiviite
+import fi.oph.koski.schema.{Koodistokoodiviite, OidOrganisaatio}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 
@@ -30,14 +30,14 @@ object ValpasExampleData {
 
   def oppilaitoksenIlmoitusMinimitiedoilla = ValpasKuntailmoitusLaajatTiedot(
     id = None,
-    kunta = ValpasKunta(
+    kunta = OidOrganisaatio(
       oid = MockOrganisaatiot.pyhtäänKunta,
       nimi = None,
       kotipaikka = None
     ),
     ilmoituspäivä = None,
     tekijä = Some(ValpasKuntailmoituksenTekijäLaajatTiedot(
-      organisaatio = ValpasKuntailmoituksenTekijäOrganisaatio(
+      organisaatio = OidOrganisaatio(
         oid = MockOrganisaatiot.jyväskylänNormaalikoulu,
         nimi = None
       ),
@@ -62,13 +62,13 @@ object ValpasExampleData {
   lazy val suomi = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli"))
   lazy val ruotsi = Some(Koodistokoodiviite("SV", Some("ruotsi"), "kieli"))
 
-  lazy val pyhtäänKunta = ValpasKunta(
+  lazy val pyhtäänKunta = OidOrganisaatio(
     oid = MockOrganisaatiot.pyhtäänKunta,
     nimi = Some("Pyhtään kunta"),
     kotipaikka = Some(Koodistokoodiviite(koodistoUri = "kunta", koodiarvo = "624", nimi = Some("Pyhtää")))
   )
 
-  lazy val jyväskylänNormaalikoulu = ValpasKuntailmoituksenTekijäOrganisaatio(
+  lazy val jyväskylänNormaalikoulu = OidOrganisaatio(
     oid = MockOrganisaatiot.jyväskylänNormaalikoulu,
     nimi = Some("Jyväskylän normaalikoulu")
   )
