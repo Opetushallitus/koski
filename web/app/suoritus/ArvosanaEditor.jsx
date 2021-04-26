@@ -2,12 +2,14 @@ import React from 'baret'
 import {Editor} from '../editor/Editor'
 import {wrapOptional, modelEmpty, modelProperty} from '../editor/EditorModel'
 import * as L from 'partial.lenses'
-import {lensedModel, modelData, modelLookup, modelSetValue, oneOfPrototypes, modelItems} from '../editor/EditorModel'
+import {lensedModel, modelData, modelLookup, modelSetValue, oneOfPrototypes, pushModel, contextualizeSubModel, modelItems, resetOptionalModel} from '../editor/EditorModel'
 import {sortGrades} from '../util/sorting'
 import {fetchAlternativesBasedOnPrototypes} from '../editor/EnumEditor'
 import {fixArviointi} from './Suoritus'
+import {DateEditor} from '../editor/DateEditor'
 import {arviointiListaaKäyttäväKurssi} from '../kurssi/kurssi.js'
-import {ArrayEditor} from '../editor/ArrayEditor'
+
+let global_run = 0
 
 export const ArvosanaEditor = ({model, notFoundText}) => {
   if (!model.context.edit) {
@@ -21,30 +23,81 @@ export const ArvosanaEditor = ({model, notFoundText}) => {
     return null
   }
 
-  const arvioinnit = modelLookup(model, 'arviointi')
-  console.log(arvioinnit.type)
+  model = fixArviointi(model)
 
-  const suorituksenTyyppi = modelData(model, 'tyyppi').koodiarvo
-  console.log(suorituksenTyyppi)
-  const näytetäänArviointiListana = model.context.edit && arviointiListaaKäyttäväKurssi(suorituksenTyyppi)
+  const arvioinnitModel = wrapOptional(modelLookup(model, 'arviointi'))
 
-  if (näytetäänArviointiListana)
-  {
-    return (<span>
-      <ArrayEditor model={modelLookup(model, 'arviointi')} lisääTeksti="Lisää arviointi"/>
-      <hr/>
-    </span>
-    )
+  const arviointiItems = modelItems(arvioinnitModel)
+
+  let addItem = () => {
+    pushModel(contextualizeSubModel(arvioinnitModel.arrayPrototype, arvioinnitModel, arviointiItems.length))
   }
 
-  model = fixArviointi(model)
-  const alternativesP = fetchAlternativesBasedOnPrototypes(oneOfPrototypes(wrapOptional(modelLookup(model, 'arviointi.-1'))), 'arvosana').startWith([])
+  const suorituksenTyyppi = modelData(model, 'tyyppi').koodiarvo
+  const näytetäänArviointiListana = model.context.edit && arviointiListaaKäyttäväKurssi(suorituksenTyyppi)
+
+  if (näytetäänArviointiListana) {
+   return (<div>
+       {
+         arviointiItems.map((m, id) => {
+           return (<div key={id}>
+             {YksittainenArvosana(m)}
+             {YksittainenArviointipaiva(m)}
+             <br/>
+             <span>
+               <a className="remove-value" style={{position:"static"}} onClick={() => resetOptionalModel(m, undefined)}>Poista arviointi</a>
+             </span>
+           </div>)
+         })
+      }
+     <a className="add-value" onClick={() => addItem()}>Lisää arviointi</a>
+   </div>)
+  } else {
+    return VanhaArvosanaKoodi(model)
+  }
+}
+
+export const VanhaArvosanaKoodi = model => {
+    const alternativesP = fetchAlternativesBasedOnPrototypes(oneOfPrototypes(wrapOptional(modelLookup(model, 'arviointi.-1'))), 'arvosana').startWith([])
+    const arvosanatP = alternativesP.map(alternatives => alternatives.map(m => modelLookup(m, 'arvosana').value))
+    return (<span>{
+      alternativesP.map(alternatives => {
+        const arvosanaLens = L.lens(
+          (m) => {
+            return modelLookup(m, '-1.arvosana')
+          },
+          (v, m) => {
+            const valittu = modelData(v)
+            if (valittu) {
+              // Arvosana valittu -> valitaan vastaava prototyyppi (eri prototyypit eri arvosanoille)
+              const found = alternatives.find(alt => {
+                const altData = modelData(alt, 'arvosana')
+                return altData.koodiarvo === valittu.koodiarvo && altData.koodistoUri === valittu.koodistoUri
+              })
+              return modelSetValue(m, found.value, '-1')
+            } else {
+              // Ei arvosanaa -> poistetaan arviointi kokonaan
+              return modelSetValue(m, undefined)
+            }
+          }
+        )
+        const arviointiModel = modelLookup(model, 'arviointi')
+        const arvosanaModel = lensedModel(arviointiModel, arvosanaLens)
+        // Use key to ensure re-render when alternatives are supplied
+        return <Editor key={alternatives.length} model={ arvosanaModel } sortBy={sortGrades} fetchAlternatives={() => arvosanatP} showEmptyOption="true"/>
+      })
+    }</span>)
+}
+
+export const YksittainenArvosana = model => {
+  const alternativesP = fetchAlternativesBasedOnPrototypes(oneOfPrototypes(wrapOptional(model)), 'arvosana').startWith([])
   const arvosanatP = alternativesP.map(alternatives => alternatives.map(m => modelLookup(m, 'arvosana').value))
+
   return (<span>{
     alternativesP.map(alternatives => {
       const arvosanaLens = L.lens(
         (m) => {
-          return modelLookup(m, '-1.arvosana')
+          return modelLookup(m, 'arvosana')
         },
         (v, m) => {
           const valittu = modelData(v)
@@ -54,19 +107,27 @@ export const ArvosanaEditor = ({model, notFoundText}) => {
               const altData = modelData(alt, 'arvosana')
               return altData.koodiarvo === valittu.koodiarvo && altData.koodistoUri === valittu.koodistoUri
             })
-            return modelSetValue(m, found.value, '-1')
+            return modelSetValue(m, found.value)
           } else {
             // Ei arvosanaa -> poistetaan arviointi kokonaan
             return modelSetValue(m, undefined)
           }
         }
       )
-      const arviointiModel = modelLookup(model, 'arviointi')
+      const arviointiModel = model
       const arvosanaModel = lensedModel(arviointiModel, arvosanaLens)
       // Use key to ensure re-render when alternatives are supplied
       return <Editor key={alternatives.length} model={ arvosanaModel } sortBy={sortGrades} fetchAlternatives={() => arvosanatP} showEmptyOption="true"/>
     })
   }</span>)
+}
+
+export const YksittainenArviointipaiva = model => {
+  const päiväModel = modelLookup(model, 'päivä')
+
+  return (<span>
+    <DateEditor model={päiväModel} />
+  </span>)
 }
 
 export const resolveArvosanaModel = model => {
