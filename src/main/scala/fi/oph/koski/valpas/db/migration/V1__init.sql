@@ -1,25 +1,20 @@
+create extension if not exists "uuid-ossp";
+
 create table "ilmoitus"
 (
-    "id"                      serial                  not null primary key,
-    "luotu"                   timestamp default now() not null,
-    "oppija_oid"              text                    not null,
-    "kunta_oid"               text                    not null,
-    "tekijä_organisaatio_oid" text                    not null,
-    "tekijä_oid"              text
+    "uuid"                    uuid        not null primary key,
+    "luotu"                   timestamptz not null,
+    "oppija_oid"              text        not null,
+    "kunta_oid"               text        not null,
+    "tekijä_organisaatio_oid" text        not null,
+    "tekijä_oid"              text        not null
 );
 
-create table "ilmoitus_yhteystiedot"
+create table "ilmoitus_lisätiedot"
 (
-    "id"                serial  not null primary key,
-    "ilmoitus_id"       integer not null,
-    "yhteydenottokieli" text,
-    "puhelin"           text,
-    "sähköposti"        text,
-    "lähiosoite"        text,
-    "postinumero"       text,
-    "postitoimipaikka"  text,
-    "maa"               text
+    "ilmoitus_uuid" uuid  not null primary key,
+    "data"          jsonb not null
 );
 
-alter table "ilmoitus_yhteystiedot"
-    add constraint "ilmoitus_fk" foreign key ("ilmoitus_id") references "ilmoitus" ("id") on update cascade on delete cascade;
+alter table "ilmoitus_lisätiedot"
+    add constraint "ilmoitus_fk" foreign key ("ilmoitus_uuid") references "ilmoitus" ("uuid") on update cascade on delete cascade;
