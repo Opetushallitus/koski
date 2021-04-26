@@ -132,11 +132,13 @@ object RaportointiDatabaseSchema {
     val lähdejärjestelmäKoodiarvo = column[Option[String]]("lahdejarjestelma_koodiarvo")
     val lähdejärjestelmäId = column[Option[String]]("lahdejarjestelma_id")
     val luokka = column[Option[String]]("luokka")
+    val oppivelvollisuudenSuorittamiseenKelpaava = column[Boolean]("oppivelvollisuuden_suorittamiseen_kelpaava")
     val data = column[JValue]("data")
     def * = (opiskeluoikeusOid, versionumero, aikaleima, sisältyyOpiskeluoikeuteenOid, oppijaOid,
       oppilaitosOid, oppilaitosNimi, oppilaitosKotipaikka, oppilaitosnumero, koulutustoimijaOid, koulutustoimijaNimi,
       koulutusmuoto, alkamispäivä, päättymispäivä, viimeisinTila,
-      lisätiedotHenkilöstökoulutus, lisätiedotKoulutusvienti, lähdejärjestelmäKoodiarvo, lähdejärjestelmäId, luokka, data) <> (ROpiskeluoikeusRow.tupled, ROpiskeluoikeusRow.unapply)
+      lisätiedotHenkilöstökoulutus, lisätiedotKoulutusvienti, lähdejärjestelmäKoodiarvo, lähdejärjestelmäId, luokka,
+      oppivelvollisuudenSuorittamiseenKelpaava, data) <> (ROpiskeluoikeusRow.tupled, ROpiskeluoikeusRow.unapply)
   }
   class ROpiskeluoikeusTableTemp(tag: Tag) extends ROpiskeluoikeusTable(tag, Temp)
 
@@ -445,6 +447,7 @@ case class ROpiskeluoikeusRow(
   lähdejärjestelmäKoodiarvo: Option[String],
   lähdejärjestelmäId: Option[String],
   luokka: Option[String],
+  oppivelvollisuudenSuorittamiseenKelpaava: Boolean,
   data: JValue
 )
 
