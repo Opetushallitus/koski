@@ -133,6 +133,17 @@ class ValpasOppijaService(
       .map(_.validate(koodistoviitepalvelu))
       .map(withAuditLogOppijaKatsominen)
 
+  // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
+  // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
+  // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
+  def opiskeleeOppivelvollisuusOpintojaOppilaitoksessa(oppijaOid: ValpasHenkilö.Oid, oppilaitosOid: ValpasOppilaitos.Oid)(implicit session: ValpasSession): Either[HttpStatus, Boolean] = {
+    opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyväOppija(oppijaOid)
+      .toRight(ValpasErrorCategory.forbidden.oppija())
+      .flatMap(_.asValpasOppijaLaajatTiedot)
+      .flatMap(accessResolver.withOppijaAccess)
+      .flatMap(oppija => Right(oppija.oikeutetutOppilaitokset.contains(oppilaitosOid)))
+  }
+
   private def fetchHaku(oppija: ValpasOppijaLaajatTiedot): OppijaHakutilanteillaLaajatTiedot = {
     val hakukoosteet = hakukoosteService.getYhteishakujenHakukoosteet(oppijaOids = Set(oppija.henkilö.oid), ainoastaanAktiivisetHaut =  false, errorClue = s"oppija:${oppija.henkilö.oid}")
     val yhteystiedot = hakukoosteet.map(ilmoitetutYhteystiedot).getOrElse(Seq.empty)
