@@ -9,7 +9,9 @@ import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 
 
 object FixtureUtil {
-  def resetMockData(app: KoskiApplication, tarkastelupäivä: LocalDate = date(2021, 9, 5)): FixtureState = synchronized {
+  val DefaultTarkastelupäivä: LocalDate = date(2021, 9, 5)
+
+  def resetMockData(app: KoskiApplication, tarkastelupäivä: LocalDate = DefaultTarkastelupäivä): FixtureState = synchronized {
     ValpasMockUsers.mockUsersEnabled = true
     app.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(tarkastelupäivä)
     app.fixtureCreator.resetFixtures(app.fixtureCreator.valpasFixtureState)
