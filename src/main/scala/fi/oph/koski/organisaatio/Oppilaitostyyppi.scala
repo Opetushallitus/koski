@@ -14,7 +14,10 @@ object Oppilaitostyyppi {
   val sotilaskorkeakoulut = "43"
   val lastentarhaopettajaopistot = "45"
   val väliaikaisetAmmattikorkeakoulut = "46"
+  val liikunnanKoulutuskeskukset = "62"
   val kansanopistot = "63"
+  val kansalaisopistot = "64"
+  val opintokeskukset = "65"
   val kesäyliopistot = "66"
   val muutOppilaitokset = "99"
 }
