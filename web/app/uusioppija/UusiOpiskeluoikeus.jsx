@@ -11,6 +11,7 @@ import UusiAmmatillisenKoulutuksenSuoritus from './UusiAmmatillisenKoulutuksenSu
 import KoodistoDropdown from '../koodisto/KoodistoDropdown'
 import UusiPerusopetukseenValmistavanOpetuksenSuoritus from './UusiPerusopetukseenValmistavanOpetuksenSuoritus'
 import UusiPerusopetuksenLisaopetuksenSuoritus from './UusiPerusopetuksenLisaopetuksenSuoritus'
+import UusiVapaanSivistystyonSuoritus from './UusiVapaanSivistystyonSuoritus'
 import {koodiarvoMatch, koodistoValues} from './koodisto'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
@@ -108,6 +109,7 @@ export default ({opiskeluoikeusAtom}) => {
         if (tyyppi === 'ibtutkinto') return <UusiIBSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
         if (tyyppi === 'diatutkinto') return <UusiDIASuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
         if (tyyppi === 'internationalschool') return <UusiInternationalSchoolSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+        if (tyyppi === 'vapaansivistystyonkoulutus') return <UusiVapaanSivistystyonSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom}/>
       })
     }
     <Aloituspäivä dateAtom={dateAtom} />
