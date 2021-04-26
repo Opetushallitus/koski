@@ -1,6 +1,6 @@
 import React from 'baret'
 import {Editor} from '../editor/Editor'
-import {wrapOptional, modelEmpty, modelProperty} from '../editor/EditorModel'
+import {wrapOptional, modelEmpty, modelProperty, modelItems} from '../editor/EditorModel'
 import * as L from 'partial.lenses'
 import {lensedModel, modelData, modelLookup, modelSetValue, oneOfPrototypes} from '../editor/EditorModel'
 import {sortGrades} from '../util/sorting'
@@ -51,11 +51,26 @@ export const ArvosanaEditor = ({model, notFoundText}) => {
   }</span>)
 }
 
-export const resolveArvosanaModel = model => {
-  const arviointi = modelLookup(model, 'arviointi.-1')
-  const arvosana = arviointi ? modelLookup(model, 'arviointi.-1.arvosana') : null
+export const resolveArvosanaModel = suoritus => {
+  let arviointi = parasArviointi(suoritus)
+  let arvosana = arviointi ? modelLookup(arviointi, 'arvosana') : null
 
   const isPaikallinenArviointi = arviointi && !modelEmpty(arviointi) && arviointi.value.classes.includes('paikallinenarviointi')
 
   return isPaikallinenArviointi ? modelLookup(arvosana, 'nimi') : arvosana
+}
+
+const parasArviointi = suoritus => {
+    let arviointi = modelLookup(suoritus, 'arviointi.-1')
+    let arvosana = arviointi ? modelLookup(suoritus, 'arviointi.-1.arvosana') : null
+
+    modelItems(suoritus, 'arviointi').map(item => {
+      const nthArvosana = modelLookup(item, 'arvosana')
+      if (nthArvosana.value.data !== undefined && (nthArvosana.value.data.koodiarvo === 'S' || parseInt(nthArvosana.value.data.koodiarvo) > parseInt(arvosana.value.data.koodiarvo))) {
+        arviointi = item
+        arvosana = nthArvosana
+      }
+    })
+
+    return arviointi
 }
