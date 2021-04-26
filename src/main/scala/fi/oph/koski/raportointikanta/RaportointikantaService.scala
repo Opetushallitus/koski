@@ -66,10 +66,10 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   }
 
   def putLoadTimeMetric(): Unit = {
-    cloudWatchMetrics.putRaportointikantaLoadtime(
-      raportointiDatabase.status.startedTime.get,
-      raportointiDatabase.status.completionTime.get
-    )
+    (raportointiDatabase.status.startedTime, raportointiDatabase.status.completionTime) match {
+      case (Some(started), Some(completed)) => cloudWatchMetrics.putRaportointikantaLoadtime(started, completed)
+      case _ => logger.info("Cannot put raportointikanta load time metric: load start or end time missing (probably never loaded yet?)")
+    }
   }
 
   private def startLoading(scheduler: Scheduler, onEnd: () => Unit) = {
