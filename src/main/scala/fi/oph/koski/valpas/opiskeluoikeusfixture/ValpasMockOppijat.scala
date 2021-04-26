@@ -34,6 +34,9 @@ object ValpasMockOppijat {
   val oppivelvollinenAloittanutJaEronnutTarkastelupäivänJälkeen = valpasOppijat.oppija("Aloittanut-ja-eronnut-myöhemmin", "Valpas", "270405A450E")
   val hakukohteidenHakuEpäonnistuu = valpasOppijat.oppija("Epäonninen", "Valpas", "301005A336J")
   val kulosaarenYsiluokkalainen = valpasOppijat.oppija("Kulosaarelainen", "Oppija", "190105A788S")
+  val kulosaarenYsiluokkalainenJaJyväskylänLukiolainen = valpasOppijat.oppija("Jkl-Lukio-Kulosaarelainen", "Valpas", "010104A187H")
+  val kulosaarenYsiluokkalainenJaJyväskylänNivelvaiheinen = valpasOppijat.oppija("Jkl-Nivel-Kulosaarelainen", "Valpas", "010104A787V")
+  val kulosaarenYsiluokkalainenJaJyväskylänEsikoululainen = valpasOppijat.oppija("Jkl-Esikoulu-Kulosaarelainen", "Valpas", "220304A4173")
 
   def defaultOppijat = valpasOppijat.getOppijat
 }
