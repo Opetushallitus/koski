@@ -296,7 +296,7 @@ const opiskeluoikeustiedot = (
       .filter(nonNull)
       .join(", ")
 
-    return isVoimassa(oo.tarkastelupäivänTila) || !oo.alkamispäivä
+    return isVoimassa(oo.tarkastelupäivänTila)
       ? kohde
       : t("opiskeluoikeudet__pvm_alkaen_kohde", {
           päivämäärä: formatDate(oo.alkamispäivä),

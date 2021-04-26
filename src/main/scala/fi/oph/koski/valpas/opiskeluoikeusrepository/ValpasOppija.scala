@@ -111,7 +111,7 @@ case class ValpasOpiskeluoikeusLaajatTiedot(
   tyyppi: Koodistokoodiviite,
   oppilaitos: ValpasOppilaitos,
   toimipiste: Option[ValpasToimipiste],
-  alkamispäivä: Option[String],
+  alkamispäivä: String,
   päättymispäivä: Option[String],
   ryhmä: Option[String],
   tarkastelupäivänTila: Koodistokoodiviite,
@@ -150,7 +150,7 @@ case class ValpasOpiskeluoikeusSuppeatTiedot(
   toimipiste: Option[ValpasToimipiste],
   ryhmä: Option[String],
   tarkastelupäivänTila: Koodistokoodiviite,
-  alkamispäivä: Option[String],
+  alkamispäivä: String,
   oppivelvollisuudenSuorittamiseenKelpaava: Boolean,
 ) extends ValpasOpiskeluoikeus {
   @SyntheticProperty

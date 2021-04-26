@@ -12,7 +12,7 @@ export type OpiskeluoikeusLaajatTiedot = {
   tyyppi: Opiskeluoikeudentyyppi
   oppilaitos: Oppilaitos
   toimipiste?: Toimipiste
-  alkamispäivä?: ISODate
+  alkamispäivä: ISODate
   päättymispäivä?: ISODate
   ryhmä?: string
   tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
@@ -27,7 +27,7 @@ export type OpiskeluoikeusSuppeatTiedot = {
   toimipiste?: Toimipiste
   ryhmä?: string
   tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
-  alkamispäivä?: ISODate
+  alkamispäivä: ISODate
   oppivelvollisuudenSuorittamiseenKelpaava: boolean
 }
 

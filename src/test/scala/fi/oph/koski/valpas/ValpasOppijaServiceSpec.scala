@@ -323,7 +323,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
                 withClue(s"ValpasOpiskeluoikeus(${opiskeluoikeus.oid}/${opiskeluoikeus.oppilaitos.nimi.get("fi")}/${opiskeluoikeus.alkamispäivä}-${opiskeluoikeus.päättymispäivä}): ") {
                   validateOpiskeluoikeus(opiskeluoikeus, expectedData)
                   withClue("alkamispäivä") {
-                    opiskeluoikeus.alkamispäivä shouldBe expectedData.opiskeluoikeus.alkamispäivä.map(_.toString)
+                    Some(opiskeluoikeus.alkamispäivä) shouldBe expectedData.opiskeluoikeus.alkamispäivä.map(_.toString)
                   }
                   withClue("päättymispäivä") {
                     opiskeluoikeus.päättymispäivä shouldBe expectedData.opiskeluoikeus.päättymispäivä.map(_.toString)

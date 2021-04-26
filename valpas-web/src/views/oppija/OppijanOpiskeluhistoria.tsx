@@ -14,7 +14,7 @@ import {
 } from "../../state/apitypes/opiskeluoikeus"
 import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import { ISODate } from "../../state/common"
-import { formatNullableDate, parseYear } from "../../utils/date"
+import { formatDate, formatNullableDate, parseYear } from "../../utils/date"
 
 export type OppijanOpiskeluhistoriaProps = {
   oppija: OppijaHakutilanteillaLaajatTiedot
@@ -82,7 +82,7 @@ const yearString = (date?: ISODate): string | undefined =>
 
 const tilaString = (opiskeluoikeus: OpiskeluoikeusLaajatTiedot): string => {
   const tila = opiskeluoikeus.tarkastelupäivänTila
-  const alkamispäivä = formatNullableDate(opiskeluoikeus.alkamispäivä)
+  const alkamispäivä = formatDate(opiskeluoikeus.alkamispäivä)
   const päättymispäivä = formatNullableDate(opiskeluoikeus.päättymispäivä)
 
   switch (tila.koodiarvo) {
