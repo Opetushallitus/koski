@@ -69,19 +69,16 @@ class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitSpec extends Fre
     }
 
     "Raportin kolumnit" in {
-      lazy val r = findSingle(raportti)
-      r.oppilaitos should equal("Jyväskylän normaalikoulu")
-      r.kurssikoodi should equal("AÄI1")
-      r.kurssinNimi should equal("Suomen kielen ja kirjallisuuden opiskelun perustaidot")
-      r.päätasonSuorituksenTyyppi should equal("aikuistenperusopetuksenoppimaaranalkuvaihe")
-      r.kurssinSuorituksenTyyppi should equal("aikuistenperusopetuksenalkuvaiheenkurssi")
-    }
-  }
+      lazy val rows = raportti.filter(_.oppilaitos.equals("Jyväskylän normaalikoulu"))
+      rows.length should equal (3)
 
-  private def findSingle(rows: Seq[AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitRow]) = {
-    val found = rows.filter(_.oppilaitos.equals("Jyväskylän normaalikoulu"))
-    found.length should be(1)
-    found.head
+      lazy val row = rows.head
+      row.oppilaitos should equal("Jyväskylän normaalikoulu")
+      row.kurssikoodi should (equal("ÄI2") or equal("AÄI1"))
+      row.kurssinNimi should (equal("Monimuotoiset tekstit") or equal("Suomen kielen ja kirjallisuuden opiskelun perustaidot"))
+      row.päätasonSuorituksenTyyppi should (equal("aikuistenperusopetuksenoppimaara") or equal("aikuistenperusopetuksenoppimaaranalkuvaihe"))
+      row.kurssinSuorituksenTyyppi should (equal("aikuistenperusopetuksenkurssi") or equal("aikuistenperusopetuksenalkuvaiheenkurssi"))
+    }
   }
 
   private def session(user: KoskiMockUser)= user.toKoskiSpecificSession(application.käyttöoikeusRepository)
