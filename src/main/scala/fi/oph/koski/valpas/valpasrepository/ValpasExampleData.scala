@@ -1,13 +1,25 @@
 package fi.oph.koski.valpas.valpasrepository
 
-import java.time.LocalDateTime
-
+import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{Koodistokoodiviite, OidOrganisaatio}
-import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 
+import java.time.LocalDateTime
+
 object ValpasExampleData {
+
+  def ilmoitukset: Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = Seq(
+    ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      oppijaOid = ValpasMockOppijat.valmistunutYsiluokkalainen.oid,
+      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla
+    ),
+    ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      oppijaOid = ValpasMockOppijat.kasiinAstiToisessaKoulussaOllut.oid,
+      kuntailmoitus = oppilaitoksenIlmoitusMinimitiedoilla
+    )
+  )
 
   def ilmoitus = ValpasKuntailmoitusLaajatTiedot(
     id = None,
@@ -15,7 +27,7 @@ object ValpasExampleData {
     aikaleima = Some(LocalDateTime.of(2021, 8, 15, 8, 0)),
     tekijä = ValpasKuntailmoituksenTekijäLaajatTiedot(
       organisaatio = jyväskylänNormaalikoulu,
-      henkilö = tekijäHenkilö(ValpasMockUsers.valpasJklNormaalikoulu)
+      henkilö = Some(tekijäHenkilö(ValpasMockUsers.valpasJklNormaalikoulu))
     ),
     yhteydenottokieli = suomi,
     oppijanYhteystiedot = Some(ValpasKuntailmoituksenOppijanYhteystiedot(
@@ -45,7 +57,7 @@ object ValpasExampleData {
         nimi = None
       ),
       henkilö = Some(ValpasKuntailmoituksenTekijäHenkilö(
-        oid = None,
+        oid = tekijäHenkilö(ValpasMockUsers.valpasJklNormaalikoulu).oid,
         etunimet = Some("Valpas"),
         sukunimi = Some("Käyttäjä"),
         kutsumanimi = None,
@@ -79,12 +91,12 @@ object ValpasExampleData {
     nimi = Some("Jyväskylän normaalikoulu")
   )
 
-  def tekijäHenkilö(mockUser: ValpasMockUser) = Some(ValpasKuntailmoituksenTekijäHenkilö(
+  def tekijäHenkilö(mockUser: ValpasMockUser) = ValpasKuntailmoituksenTekijäHenkilö(
     oid = Some(mockUser.oid),
     etunimet = Some(s"${mockUser.firstname} Mestari"),
     sukunimi = Some(mockUser.lastname),
     kutsumanimi = Some(mockUser.firstname),
     email = Some(s"${mockUser.firstname}@gmail.com"),
     puhelinnumero = Some("040 123 4567")
-  ))
+  )
 }

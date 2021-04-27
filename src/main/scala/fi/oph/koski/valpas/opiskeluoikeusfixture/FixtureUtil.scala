@@ -2,8 +2,8 @@ package fi.oph.koski.valpas.opiskeluoikeusfixture
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.valpas.db.ValpasDatabaseFixtureLoader
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 
@@ -15,6 +15,7 @@ object FixtureUtil {
     ValpasMockUsers.mockUsersEnabled = true
     app.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(tarkastelupäivä)
     app.fixtureCreator.resetFixtures(app.fixtureCreator.valpasFixtureState)
+    new ValpasDatabaseFixtureLoader(app).reset()
     FixtureState(app)
   }
 
