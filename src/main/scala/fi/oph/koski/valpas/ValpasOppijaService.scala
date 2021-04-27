@@ -121,11 +121,21 @@ class ValpasOppijaService(
   // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
   // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
   // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
-  def getOppijaLaajatTiedot(oppijaOid: ValpasHenkilö.Oid)(implicit session: ValpasSession): Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] =
+  private def getOppijaLaajatTiedot
+    (oppijaOid: ValpasHenkilö.Oid)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
     opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyväOppija(oppijaOid)
       .toRight(ValpasErrorCategory.forbidden.oppija())
       .flatMap(_.asValpasOppijaLaajatTiedot)
       .flatMap(accessResolver.withOppijaAccess)
+  }
+
+  def getOppijaHakutilanteillaLaajatTiedot
+    (oppijaOid: ValpasHenkilö.Oid)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] = {
+    getOppijaLaajatTiedot(oppijaOid)
       .map(fetchHaku)
       .flatMap(o => fetchVirallisetYhteystiedot(o.oppija).map(yhteystiedot => o.copy(
         yhteystiedot = o.yhteystiedot ++ yhteystiedot.map(yt =>
@@ -134,15 +144,10 @@ class ValpasOppijaService(
       )))
       .map(_.validate(koodistoviitepalvelu))
       .map(withAuditLogOppijaKatsominen)
+  }
 
-  // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
-  // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
-  // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
   def opiskeleeOppivelvollisuusOpintojaOppilaitoksessa(oppijaOid: ValpasHenkilö.Oid, oppilaitosOid: ValpasOppilaitos.Oid)(implicit session: ValpasSession): Either[HttpStatus, Boolean] = {
-    opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyväOppija(oppijaOid)
-      .toRight(ValpasErrorCategory.forbidden.oppija())
-      .flatMap(_.asValpasOppijaLaajatTiedot)
-      .flatMap(accessResolver.withOppijaAccess)
+    getOppijaLaajatTiedot(oppijaOid)
       .flatMap(oppija => Right(oppija.oikeutetutOppilaitokset.contains(oppilaitosOid)))
   }
 
