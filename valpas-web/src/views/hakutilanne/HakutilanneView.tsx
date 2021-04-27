@@ -2,7 +2,7 @@ import bem from "bem-ts"
 import * as A from "fp-ts/Array"
 import * as Eq from "fp-ts/Eq"
 import { pipe } from "fp-ts/lib/function"
-import React from "react"
+import React, { useState } from "react"
 import { Redirect, useHistory } from "react-router"
 import { fetchOppijat, fetchOppijatCache } from "../../api/api"
 import { useApiWithParams } from "../../api/apiHooks"
@@ -10,9 +10,9 @@ import { isLoading, isSuccess } from "../../api/apiUtils"
 import { Card, CardBody, CardHeader } from "../../components/containers/cards"
 import { Dropdown } from "../../components/forms/Dropdown"
 import { Spinner } from "../../components/icons/Spinner"
+import { DataTableChangeEvent } from "../../components/tables/DataTable"
 import { Counter } from "../../components/typography/Counter"
 import { getLocalized, t, T } from "../../i18n/i18n"
-import { valvottavatOpiskeluoikeudet } from "../../state/apitypes/opiskeluoikeus"
 import { useBasePath } from "../../state/basePath"
 import {
   Oid,
@@ -59,6 +59,10 @@ export const HakutilanneView = (props: HakutilanneViewProps) => {
     organisaatioOid ? [organisaatioOid] : undefined,
     fetchOppijatCache
   )
+  const [counters, setCounters] = useState<DataTableChangeEvent>({
+    filteredRowCount: 0,
+    unfilteredRowCount: 0,
+  })
 
   const orgOptions = getOrgOptions(organisaatiot)
 
@@ -84,16 +88,9 @@ export const HakutilanneView = (props: HakutilanneViewProps) => {
           <T id="hakutilannenäkymä__otsikko" />
           {isSuccess(oppijatFetch) && (
             <Counter>
-              {
-                A.flatten(
-                  oppijatFetch.data.map((d) =>
-                    valvottavatOpiskeluoikeudet(
-                      organisaatioOid,
-                      d.oppija.opiskeluoikeudet
-                    )
-                  )
-                ).length
-              }
+              {counters.filteredRowCount === counters.unfilteredRowCount
+                ? counters.filteredRowCount
+                : `${counters.filteredRowCount} / ${counters.unfilteredRowCount}`}
             </Counter>
           )}
         </CardHeader>
@@ -103,6 +100,7 @@ export const HakutilanneView = (props: HakutilanneViewProps) => {
             <HakutilanneTable
               data={oppijatFetch.data}
               organisaatioOid={organisaatioOid}
+              onChange={setCounters}
             />
           )}
         </CardBody>

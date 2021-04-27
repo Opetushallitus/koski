@@ -5,7 +5,7 @@ import * as number from "fp-ts/lib/number"
 import * as O from "fp-ts/lib/Option"
 import * as Ord from "fp-ts/lib/Ord"
 import * as string from "fp-ts/lib/string"
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import {
   nonStoredState,
   sessionStateStorage,
@@ -39,6 +39,12 @@ export type DataTableProps = {
   columns: Column[]
   data: Datum[]
   storageName?: string
+  onChange?: (event: DataTableChangeEvent) => void
+}
+
+export type DataTableChangeEvent = {
+  filteredRowCount: number
+  unfilteredRowCount: number
 }
 
 export type Column = {
@@ -101,6 +107,13 @@ export const DataTable = (props: DataTableProps) => {
     const ordDatum = Ord.fromCompare(sortAscending ? compare : flip(compare))
     return A.sortBy([ordDatum])(filteredData)
   }, [sortColumnIndex, sortAscending, filteredData])
+
+  useEffect(() => {
+    props.onChange?.({
+      filteredRowCount: sortedData.length,
+      unfilteredRowCount: props.data.length,
+    })
+  }, [sortedData, props.onChange])
 
   const optionsForFilters = useMemo(
     () =>

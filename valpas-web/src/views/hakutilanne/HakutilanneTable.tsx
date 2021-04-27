@@ -10,7 +10,12 @@ import {
   WarningIcon,
 } from "../../components/icons/Icon"
 import { ExternalLink } from "../../components/navigation/ExternalLink"
-import { DataTable, Datum, Value } from "../../components/tables/DataTable"
+import {
+  DataTable,
+  DataTableProps,
+  Datum,
+  Value,
+} from "../../components/tables/DataTable"
 import { getLocalized, t, Translation } from "../../i18n/i18n"
 import { HakuSuppeatTiedot, selectByHakutoive } from "../../state/apitypes/haku"
 import {
@@ -39,6 +44,7 @@ import { formatDate, formatNullableDate } from "../../utils/date"
 export type HakutilanneTableProps = {
   data: OppijaHakutilanteillaSuppeatTiedot[]
   organisaatioOid: string
+  onChange?: DataTableProps["onChange"]
 }
 
 export const HakutilanneTable = (props: HakutilanneTableProps) => {
@@ -91,6 +97,7 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
         },
       ]}
       data={data}
+      onChange={props.onChange}
     />
   )
 }
