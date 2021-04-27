@@ -22,7 +22,7 @@ case class OppijaHakutilanteillaLaajatTiedot(
   hakutilanneError: Option[String],
   yhteystiedot: Seq[ValpasYhteystiedot],
   kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot],
-){
+) {
   def validate(koodistoviitepalvelu: KoodistoViitePalvelu): OppijaHakutilanteillaLaajatTiedot =
     this.copy(hakutilanteet = hakutilanteet.map(_.validate(koodistoviitepalvelu)))
 }
@@ -107,8 +107,8 @@ class ValpasOppijaService(
 
   private def getOppijatLaajatTiedot(oppilaitosOids: Set[ValpasOppilaitos.Oid])(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
     val errorClue = oppilaitosOids.size match {
-      case 1 =>  s"oppilaitos:${oppilaitosOids.head}"
-      case n if n > 1 => s"oppilaitokset[${n}]:${oppilaitosOids.head}, ..."
+      case 1 => s"oppilaitos:${oppilaitosOids.head}"
+      case n if n > 1 => s"oppilaitokset[$n]:${oppilaitosOids.head}, ..."
       case _ => ""
     }
 
@@ -128,7 +128,9 @@ class ValpasOppijaService(
       .flatMap(accessResolver.withOppijaAccess)
       .map(fetchHaku)
       .flatMap(o => fetchVirallisetYhteystiedot(o.oppija).map(yhteystiedot => o.copy(
-        yhteystiedot = o.yhteystiedot ++ yhteystiedot.map(yt => ValpasYhteystiedot.virallinenYhteystieto(yt, localizationRepository.get("oppija__viralliset_yhteystiedot")))
+        yhteystiedot = o.yhteystiedot ++ yhteystiedot.map(yt =>
+          ValpasYhteystiedot.virallinenYhteystieto(yt, localizationRepository.get("oppija__viralliset_yhteystiedot"))
+        )
       )))
       .map(_.validate(koodistoviitepalvelu))
       .map(withAuditLogOppijaKatsominen)
@@ -145,13 +147,13 @@ class ValpasOppijaService(
   }
 
   private def fetchHaku(oppija: ValpasOppijaLaajatTiedot): OppijaHakutilanteillaLaajatTiedot = {
-    val hakukoosteet = hakukoosteService.getYhteishakujenHakukoosteet(oppijaOids = Set(oppija.henkilö.oid), ainoastaanAktiivisetHaut =  false, errorClue = s"oppija:${oppija.henkilö.oid}")
+    val hakukoosteet = hakukoosteService.getYhteishakujenHakukoosteet(oppijaOids = Set(oppija.henkilö.oid), ainoastaanAktiivisetHaut = false, errorClue = s"oppija:${oppija.henkilö.oid}")
     val yhteystiedot = hakukoosteet.map(ilmoitetutYhteystiedot).getOrElse(Seq.empty)
     OppijaHakutilanteillaLaajatTiedot.apply(oppija, hakukoosteet).copy(yhteystiedot = yhteystiedot)
   }
 
   private def fetchHaut(errorClue: String)(oppijat: Seq[ValpasOppijaLaajatTiedot]): Seq[OppijaHakutilanteillaLaajatTiedot] = {
-    hakukoosteService.getYhteishakujenHakukoosteet(oppijaOids = oppijat.map(_.henkilö.oid).toSet, ainoastaanAktiivisetHaut =  true, errorClue = errorClue)
+    hakukoosteService.getYhteishakujenHakukoosteet(oppijaOids = oppijat.map(_.henkilö.oid).toSet, ainoastaanAktiivisetHaut = true, errorClue = errorClue)
       .map(_.groupBy(_.oppijaOid))
       .fold(
         error => oppijat.map(oppija => OppijaHakutilanteillaLaajatTiedot.apply(oppija, Left(error))),
