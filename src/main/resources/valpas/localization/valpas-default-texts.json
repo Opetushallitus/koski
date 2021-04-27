@@ -40,7 +40,7 @@
   "vastaanotettu__n_paikkaa": "{{lukumäärä}} paikkaa",
   "opiskeluoikeudet__n_opiskeluoikeutta": "{{lukumäärä}} opiskeluoikeutta",
   "opiskeluoikeudet__pvm_alkaen_kohde": "{{päivämäärä}} alkaen: {{kohde}}",
-  "oppija__muut_oppijat": "Muut oppijat",
+  "oppija__takaisin": "Takaisin",
   "oppija__oletusotsikko": "Oppijan tiedot",
   "oppija__oppija_oid": "Oppija {{oid}}",
   "oppija__ei_löydy": "Oppijaa ei löydy tunnuksella {{oid}}",

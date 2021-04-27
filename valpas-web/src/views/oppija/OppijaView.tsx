@@ -127,7 +127,7 @@ const BackNav = (props: BackNavProps) => {
       <FlatLink to={targetPath}>
         <BackIcon />
         <ButtonLabel>
-          <T id="oppija__muut_oppijat" />
+          <T id="oppija__takaisin" />
         </ButtonLabel>
       </FlatLink>
     </div>
