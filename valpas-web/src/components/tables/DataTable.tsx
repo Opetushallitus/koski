@@ -5,11 +5,17 @@ import * as number from "fp-ts/lib/number"
 import * as O from "fp-ts/lib/Option"
 import * as Ord from "fp-ts/lib/Ord"
 import * as string from "fp-ts/lib/string"
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
+import {
+  nonStoredState,
+  sessionStateStorage,
+  useStoredState,
+} from "../../state/useSessionStoreState"
 // import { update } from "../../utils/arrays"
 import { toFilterableString } from "../../utils/conversions"
 import { ArrowDropDownIcon, ArrowDropUpIcon } from "../icons/Icon"
 import {
+  createFilter,
   DataFilter,
   dataFilterUsesValueList,
   DataTableFilter,
@@ -32,6 +38,13 @@ export type DataTableProps = {
   className?: string
   columns: Column[]
   data: Datum[]
+  storageName?: string
+  onChange?: (event: DataTableChangeEvent) => void
+}
+
+export type DataTableChangeEvent = {
+  filteredRowCount: number
+  unfilteredRowCount: number
 }
 
 export type Column = {
@@ -60,11 +73,16 @@ export type Value = {
   tooltip?: string
 }
 
+type FilterArray = Array<{ fn: FilterFn | null; value: string | null }>
+
 export const DataTable = (props: DataTableProps) => {
   const [sortColumnIndex, setSortColumnIndex] = useState(0)
   const [sortAscending, setSortAscending] = useState(true)
-  const [filters, setFilters] = useState<Array<FilterFn | null>>(
-    new Array(props.columns.length).fill(null)
+
+  const [filters, setFilters] = useStoredState<FilterArray>(
+    props.storageName
+      ? createFilterStorage(props.storageName, props.columns)
+      : nonStoredState(initialFilters(props.columns.length))
   )
 
   const filteredData = useMemo(
@@ -73,12 +91,12 @@ export const DataTable = (props: DataTableProps) => {
       props.data.filter((datum) =>
         filters.every(
           (filter, index) =>
-            !filter ||
+            !filter?.fn ||
             (datum.values[index]?.filterValues
               ? datum.values[index]?.filterValues?.some((fv) =>
-                  filter(toFilterableString(fv))
+                  filter.fn?.(toFilterableString(fv))
                 )
-              : filter(toFilterableString(datum.values[index]?.value)))
+              : filter.fn?.(toFilterableString(datum.values[index]?.value)))
         )
       ),
     [filters, props.data]
@@ -89,6 +107,13 @@ export const DataTable = (props: DataTableProps) => {
     const ordDatum = Ord.fromCompare(sortAscending ? compare : flip(compare))
     return A.sortBy([ordDatum])(filteredData)
   }, [sortColumnIndex, sortAscending, filteredData])
+
+  useEffect(() => {
+    props.onChange?.({
+      filteredRowCount: sortedData.length,
+      unfilteredRowCount: props.data.length,
+    })
+  }, [sortedData, props.onChange])
 
   const optionsForFilters = useMemo(
     () =>
@@ -165,10 +190,11 @@ export const DataTable = (props: DataTableProps) => {
                   <DataTableFilter
                     type={col.filter}
                     values={optionsForFilters[index] || []}
-                    onChange={(filter) =>
+                    initialValue={filters[index]?.value}
+                    onChange={(filter, value) =>
                       pipe(
                         filters,
-                        A.updateAt(index, filter),
+                        A.updateAt(index, { fn: filter, value }),
                         O.map(setFilters)
                       )
                     }
@@ -234,3 +260,18 @@ const selectFilterValues = (index: number) => (datum: Datum) => {
   const item = datum.values[index]
   return item?.filterValues || (item?.value ? [item.value] : [])
 }
+
+const createFilterStorage = (storageName: string, columns: Column[]) =>
+  sessionStateStorage<FilterArray, Array<string | null>>(
+    `${storageName}-${columns.map((c) => c.filter?.slice(0, 2)).join(".")}`,
+    initialFilters(columns.length),
+    (filts) => filts.map((f) => f.value),
+    (values) =>
+      values.map((value, index) => ({
+        value,
+        fn: createFilter(columns[index]?.filter, value),
+      }))
+  )
+
+const initialFilters = (length: number): FilterArray =>
+  new Array(length).fill({ value: null, fn: null })

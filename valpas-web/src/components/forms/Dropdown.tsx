@@ -9,7 +9,7 @@ const b = bem("dropdown")
 
 export type DropdownProps<T> = {
   options: DropdownOption<T>[]
-  value: T
+  value?: T
   onChange: (value?: T) => void
   label?: string
   icon?: React.ReactNode

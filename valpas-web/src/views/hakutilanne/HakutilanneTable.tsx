@@ -10,7 +10,12 @@ import {
   WarningIcon,
 } from "../../components/icons/Icon"
 import { ExternalLink } from "../../components/navigation/ExternalLink"
-import { DataTable, Datum, Value } from "../../components/tables/DataTable"
+import {
+  DataTable,
+  DataTableProps,
+  Datum,
+  Value,
+} from "../../components/tables/DataTable"
 import { getLocalized, t, Translation } from "../../i18n/i18n"
 import { HakuSuppeatTiedot, selectByHakutoive } from "../../state/apitypes/haku"
 import {
@@ -39,6 +44,7 @@ import { formatDate, formatNullableDate } from "../../utils/date"
 export type HakutilanneTableProps = {
   data: OppijaHakutilanteillaSuppeatTiedot[]
   organisaatioOid: string
+  onChange?: DataTableProps["onChange"]
 }
 
 export const HakutilanneTable = (props: HakutilanneTableProps) => {
@@ -53,6 +59,7 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
 
   return (
     <DataTable
+      storageName="hakutilannetaulu"
       className="hakutilanne"
       columns={[
         {
@@ -90,6 +97,7 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
         },
       ]}
       data={data}
+      onChange={props.onChange}
     />
   )
 }
@@ -152,6 +160,7 @@ const hakemuksenTila = (
       oppijaOid,
       basePath
     ),
+    tooltip: hakutilanteet.map(hakuTooltip).join("\n"),
   }
 }
 
@@ -186,6 +195,12 @@ const hakemuksenTilaDisplay = (
     ),
     O.toNullable
   )
+
+const hakuTooltip = (haku: HakuSuppeatTiedot): string =>
+  t("hakemuksentila__tooltip", {
+    haku: getLocalized(haku.hakuNimi) || "?",
+    muokkausPvm: formatNullableDate(haku.muokattu),
+  })
 
 const fromNullableValue = (value: Value | null): Value =>
   value || {
