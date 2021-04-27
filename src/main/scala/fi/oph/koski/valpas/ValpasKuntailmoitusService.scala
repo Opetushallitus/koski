@@ -18,25 +18,20 @@ class ValpasKuntailmoitusService(
   def createKuntailmoitus(
     kuntailmoitusInput: ValpasKuntailmoitusLaajatTiedotJaOppijaOid,
   )(implicit session: ValpasSession): Either[HttpStatus, ValpasKuntailmoitusLaajatTiedot] = {
-    val organisaatioOidit = Set(kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio.oid)
+    val organisaatioOid = kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio.oid
 
-    accessResolver.organisaatiohierarkiaOids(organisaatioOidit) match {
-      case Right(_) => {
-        oppijaService.opiskeleeOppivelvollisuusOpintojaOppilaitoksessa(
-          kuntailmoitusInput.oppijaOid,
-          kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio.oid
-        ).flatMap(opiskelee => Either.cond(
-          opiskelee,
-          withAuditLogOppijaKuntailmoitus(kuntailmoitusInput.oppijaOid)(
-            kuntailmoitusInput.kuntailmoitus.copy(aikaleima = Some(valpasRajapäivätService.tarkastelupäivä.atTime(8, 0))) // TODO: Oikea toteutus
-          ),
-          ValpasErrorCategory.forbidden.oppija("Käyttäjällä ei ole oikeuksia tehdä kuntailmoitusta annetusta oppijasta")
-        ))
-      }
-      case Left(_) => Left(ValpasErrorCategory.forbidden.organisaatio(
-        "Käyttäjällä ei ole oikeutta tehdä kuntailmoitusta annetun organisaation nimissä")
+    accessResolver.organisaatiohierarkiaOids(Set(organisaatioOid))
+      .left.map(_ => ValpasErrorCategory.forbidden.organisaatio("Käyttäjällä ei ole oikeutta tehdä kuntailmoitusta annetun organisaation nimissä"))
+      .flatMap(_ => oppijaService.getOppijaLaajatTiedot(kuntailmoitusInput.oppijaOid))
+      .flatMap(oppija =>
+        accessResolver.withOppijaAccessAsOrganisaatio(organisaatioOid)(oppija)
+          .left.map(_ => ValpasErrorCategory.forbidden.oppija("Käyttäjällä ei ole oikeuksia tehdä kuntailmoitusta annetusta oppijasta"))
       )
-    }
+      .map(_ =>
+        withAuditLogOppijaKuntailmoitus(kuntailmoitusInput.oppijaOid)(
+          kuntailmoitusInput.kuntailmoitus.copy(aikaleima = Some(valpasRajapäivätService.tarkastelupäivä.atTime(8, 0))) // TODO: Oikea toteutus
+        )
+      )
   }
 
   private def withAuditLogOppijaKuntailmoitus(oppijaOid: String)
