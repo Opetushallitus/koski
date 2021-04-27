@@ -30,6 +30,7 @@
   "hakemuksentila__hakenut": "Hakenut",
   "hakemuksentila__n_hakua": "{{lukumäärä}} hakua",
   "hakemuksentila__ei_hakemusta": "Ei hakemusta",
+  "hakemuksentila__tooltip": "{{haku}}, muokattu {{muokkausPvm}}",
   "valintatieto__ei_opiskelupaikkaa": "Ei opiskelupaikkaa",
   "valintatieto__varasija": "Varasija",
   "valintatieto__ns_varasija": "{{n}}. varasija",

@@ -230,6 +230,7 @@ object ValpasHakutilanneSuppeatTiedot {
       laajatTiedot.hakemusUrl,
       laajatTiedot.aktiivinenHaku,
       laajatTiedot.hakutoiveet.map(ValpasSuppeaHakutoive.apply),
+      laajatTiedot.muokattu,
     )
   }
 }
@@ -241,6 +242,7 @@ case class ValpasHakutilanneSuppeatTiedot(
   hakemusUrl: String,
   aktiivinenHaku: Boolean,
   hakutoiveet: Seq[ValpasSuppeaHakutoive],
+  muokattu: Option[LocalDateTime],
 ) extends ValpasHakutilanne
 
 object ValpasHakutoive {

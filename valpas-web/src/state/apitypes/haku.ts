@@ -21,7 +21,12 @@ export type HakuLaajatTiedot = {
 
 export type HakuSuppeatTiedot = Pick<
   HakuLaajatTiedot,
-  "hakuOid" | "hakuNimi" | "hakemusOid" | "hakemusUrl" | "aktiivinenHaku"
+  | "hakuOid"
+  | "hakuNimi"
+  | "hakemusOid"
+  | "hakemusUrl"
+  | "aktiivinenHaku"
+  | "muokattu"
 > & {
   hakutoiveet: SuppeaHakutoive[]
 }

@@ -153,6 +153,7 @@ const hakemuksenTila = (
       oppijaOid,
       basePath
     ),
+    tooltip: hakutilanteet.map(hakuTooltip).join("\n"),
   }
 }
 
@@ -187,6 +188,12 @@ const hakemuksenTilaDisplay = (
     ),
     O.toNullable
   )
+
+const hakuTooltip = (haku: HakuSuppeatTiedot): string =>
+  t("hakemuksentila__tooltip", {
+    haku: getLocalized(haku.hakuNimi) || "?",
+    muokkausPvm: formatNullableDate(haku.muokattu),
+  })
 
 const fromNullableValue = (value: Value | null): Value =>
   value || {
