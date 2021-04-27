@@ -4,11 +4,14 @@ import { isNonEmpty, NonEmptyArray } from "fp-ts/lib/NonEmptyArray"
 import * as O from "fp-ts/lib/Option"
 import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
-import { SuccessIcon, WarningIcon } from "../../components/icons/Icon"
+import {
+  FutureSuccessIcon,
+  SuccessIcon,
+  WarningIcon,
+} from "../../components/icons/Icon"
 import { ExternalLink } from "../../components/navigation/ExternalLink"
 import { DataTable, Datum, Value } from "../../components/tables/DataTable"
-import { NotImplemented } from "../../components/typography/NoDataMessage"
-import { getLocalized, T, t, Translation } from "../../i18n/i18n"
+import { getLocalized, t, Translation } from "../../i18n/i18n"
 import { HakuSuppeatTiedot, selectByHakutoive } from "../../state/apitypes/haku"
 import {
   isEiPaikkaa,
@@ -17,13 +20,21 @@ import {
   isVastaanotettu,
   SuppeaHakutoive,
 } from "../../state/apitypes/hakutoive"
-import { valvottavatOpiskeluoikeudet } from "../../state/apitypes/opiskeluoikeus"
+import {
+  OpiskeluoikeusSuppeatTiedot,
+  taulukossaNäytettäväOpiskeluoikeus,
+  valvottavatOpiskeluoikeudet,
+} from "../../state/apitypes/opiskeluoikeus"
 import { OppijaHakutilanteillaSuppeatTiedot } from "../../state/apitypes/oppija"
+import {
+  isVoimassa,
+  isVoimassaTulevaisuudessa,
+} from "../../state/apitypes/valpasopiskeluoikeudentila"
 import { useBasePath } from "../../state/basePath"
 import { Oid } from "../../state/common"
 import { createOppijaPath } from "../../state/paths"
-import { nonEmptyEvery } from "../../utils/arrays"
-import { formatNullableDate } from "../../utils/date"
+import { nonEmptyEvery, nonNull } from "../../utils/arrays"
+import { formatDate, formatNullableDate } from "../../utils/date"
 
 export type HakutilanneTableProps = {
   data: OppijaHakutilanteillaSuppeatTiedot[]
@@ -75,6 +86,7 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
         {
           label: t("hakutilanne__taulu_voimassaolevia_opiskeluoikeuksia"),
           filter: "dropdown",
+          indicatorSpace: "auto",
         },
       ]}
       data={data}
@@ -116,14 +128,7 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
       hakemuksenTila(oppija, basePath),
       fromNullableValue(valintatila(oppija.hakutilanteet)),
       fromNullableValue(vastaanottotieto(oppija.hakutilanteet)),
-      {
-        value: t("hakutilanne__taulu_data_ei_toteutettu"),
-        display: (
-          <NotImplemented>
-            <T id="hakutilanne__taulu_data_ei_toteutettu" />
-          </NotImplemented>
-        ),
-      },
+      fromNullableValue(opiskeluoikeustiedot(oppija.oppija.opiskeluoikeudet)),
     ],
   }))
 }
@@ -244,6 +249,9 @@ const hyväksyttyValintatila = (
     filterValues: hyväksytytHakutoiveet.map(
       (hakutoive) => buildHyväksyttyValue(hakutoive).value
     ),
+    tooltip: hyväksytytHakutoiveet
+      .map((ht) => buildHyväksyttyValue(ht).display)
+      .join("\n"),
   }
 }
 
@@ -267,7 +275,55 @@ const vastaanottotieto = (hakutilanteet: HakuSuppeatTiedot[]): Value | null => {
         value: t("vastaanotettu__n_paikkaa", {
           lukumäärä: vastaanotetut.length,
         }),
+        tooltip: vastaanotetut
+          .map((vo) => getLocalized(vo.organisaatioNimi))
+          .join("\n"),
         icon: <SuccessIcon />,
+      }
+  }
+}
+
+const opiskeluoikeustiedot = (
+  opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
+): Value | null => {
+  const oos = opiskeluoikeudet.filter(taulukossaNäytettäväOpiskeluoikeus)
+
+  const toValue = (oo: OpiskeluoikeusSuppeatTiedot) => {
+    const kohde = [
+      getLocalized(oo.oppilaitos.nimi),
+      getLocalized(oo.tyyppi.nimi),
+    ]
+      .filter(nonNull)
+      .join(", ")
+
+    return isVoimassa(oo.tarkastelupäivänTila)
+      ? kohde
+      : t("opiskeluoikeudet__pvm_alkaen_kohde", {
+          päivämäärä: formatDate(oo.alkamispäivä),
+          kohde,
+        })
+  }
+
+  const icon = oos.some((oo) => isVoimassa(oo.tarkastelupäivänTila)) ? (
+    <SuccessIcon />
+  ) : oos.some((oo) => isVoimassaTulevaisuudessa(oo.tarkastelupäivänTila)) ? (
+    <FutureSuccessIcon />
+  ) : undefined
+
+  switch (oos.length) {
+    case 0:
+      return null
+    case 1:
+      return { value: toValue(oos[0]!!), icon }
+    default:
+      const filterValues = oos.map(toValue).filter(nonNull)
+      return {
+        value: t("opiskeluoikeudet__n_opiskeluoikeutta", {
+          lukumäärä: oos.length,
+        }),
+        filterValues,
+        tooltip: filterValues.join("\n"),
+        icon,
       }
   }
 }

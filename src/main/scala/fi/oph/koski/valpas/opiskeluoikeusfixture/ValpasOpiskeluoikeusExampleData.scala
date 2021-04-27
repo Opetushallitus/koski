@@ -1,13 +1,13 @@
 package fi.oph.koski.valpas.opiskeluoikeusfixture
 
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, vahvistusPaikkakunnalla}
-import fi.oph.koski.documentation.{ExampleData, ExamplesLukio}
+import fi.oph.koski.documentation.{ExampleData, ExamplesLukio2019}
 import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, kaikkiAineet, perusopetuksenDiaarinumero, perusopetuksenOppimääränSuoritus, perusopetuksenOppimääränSuoritusKesken, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste, oppilaitos}
 import fi.oph.koski.schema.{Aikajakso, LukionOpiskeluoikeudenTila, LukionOpiskeluoikeusjakso, NuortenPerusopetuksenOpiskeluoikeudenTila, NuortenPerusopetuksenOpiskeluoikeusjakso, PerusopetuksenLuokkaAste, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus}
+
 import java.time.{LocalDate, Month}
 import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.documentation.LukioExampleData.opiskeluoikeusAktiivinen
 import fi.oph.koski.organisaatio.MockOrganisaatiot.aapajoenKoulu
 
@@ -322,9 +322,9 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
-  def lukionOpiskeluoikeus = ExamplesLukio.lukioKesken
+  def lukionOpiskeluoikeus = ExamplesLukio2019.aktiivinenOpiskeluoikeus
 
-  def lukionOpiskeluoikeusAlkaa2021Syksyllä = ExamplesLukio.lukioKesken.copy(
+  def lukionOpiskeluoikeusAlkaa2021Syksyllä = ExamplesLukio2019.aktiivinenOpiskeluoikeus.copy(
     tila = LukionOpiskeluoikeudenTila(
       List(
         LukionOpiskeluoikeusjakso(alku = date(2021, 8, 15), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
@@ -332,7 +332,7 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
-  def lukionOpiskeluoikeusAlkaa2021Lokakuussa = ExamplesLukio.lukioKesken.copy(
+  def lukionOpiskeluoikeusAlkaa2021Lokakuussa = ExamplesLukio2019.aktiivinenOpiskeluoikeus.copy(
     tila = LukionOpiskeluoikeudenTila(
       List(
         LukionOpiskeluoikeusjakso(alku = date(2021, 10, 3), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))

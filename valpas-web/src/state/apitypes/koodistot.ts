@@ -24,5 +24,3 @@ export type Opiskeluoikeudentyyppi = KoodistoKoodiviite<"opiskeluoikeudentyyppi"
 // TODO: Omakeksittyjä koodistoja. Pitää tsekata mitä löytyy valmiina.
 export type OppilaitosnumeroKoodistoviite = KoodistoKoodiviite<"oppilaitosnumero">
 export type PaikkakuntaKoodistoviite = KoodistoKoodiviite<"paikkakunta">
-
-export type ValpasOpiskeluoikeudenTila = KoodistoKoodiviite<"valpasopiskeluoikeudentila">

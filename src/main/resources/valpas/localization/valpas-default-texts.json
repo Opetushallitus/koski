@@ -37,6 +37,8 @@
   "valintatieto__hakukohde_lc": "hakukohde",
   "valintatieto__hyväksytty_n_hakutoivetta": "Hyväksytty ({{lukumäärä}} hakukohdetta)",
   "vastaanotettu__n_paikkaa": "{{lukumäärä}} paikkaa",
+  "opiskeluoikeudet__n_opiskeluoikeutta": "{{lukumäärä}} opiskeluoikeutta",
+  "opiskeluoikeudet__pvm_alkaen_kohde": "{{päivämäärä}} alkaen: {{kohde}}",
   "oppija__muut_oppijat": "Muut oppijat",
   "oppija__oletusotsikko": "Oppijan tiedot",
   "oppija__oppija_oid": "Oppija {{oid}}",

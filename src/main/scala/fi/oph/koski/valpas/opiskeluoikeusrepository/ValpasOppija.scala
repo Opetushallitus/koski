@@ -98,6 +98,11 @@ trait ValpasOpiskeluoikeus {
 
   @KoodistoUri("valpasopiskeluoikeudentila")
   def tarkastelupäivänTila: Koodistokoodiviite
+
+  def onVoimassaNytTaiTulevaisuudessa: Boolean = tarkastelupäivänTila.koodiarvo match {
+    case "voimassa" | "voimassatulevaisuudessa" => true
+    case _ => false
+  }
 }
 
 case class ValpasOpiskeluoikeusLaajatTiedot(
@@ -106,26 +111,33 @@ case class ValpasOpiskeluoikeusLaajatTiedot(
   tyyppi: Koodistokoodiviite,
   oppilaitos: ValpasOppilaitos,
   toimipiste: Option[ValpasToimipiste],
-  alkamispäivä: Option[String],
+  alkamispäivä: String,
   päättymispäivä: Option[String],
   ryhmä: Option[String],
-  tarkastelupäivänTila: Koodistokoodiviite
+  tarkastelupäivänTila: Koodistokoodiviite,
+  oppivelvollisuudenSuorittamiseenKelpaava: Boolean,
 ) extends ValpasOpiskeluoikeus {
   @SyntheticProperty
   def isOpiskelu: Boolean =
     tarkastelupäivänTila.koodiarvo == "voimassa"
+
+  @SyntheticProperty
+  def isOpiskeluTulevaisuudessa: Boolean =
+    tarkastelupäivänTila.koodiarvo == "voimassatulevaisuudessa"
 }
 
 object ValpasOpiskeluoikeusSuppeatTiedot {
   def apply(laajatTiedot: ValpasOpiskeluoikeusLaajatTiedot): ValpasOpiskeluoikeusSuppeatTiedot = {
     ValpasOpiskeluoikeusSuppeatTiedot(
-      laajatTiedot.oid,
-      laajatTiedot.onValvottava,
-      laajatTiedot.tyyppi,
-      laajatTiedot.oppilaitos,
-      laajatTiedot.toimipiste,
-      laajatTiedot.ryhmä,
-      laajatTiedot.tarkastelupäivänTila
+      oid = laajatTiedot.oid,
+      onValvottava = laajatTiedot.onValvottava,
+      tyyppi = laajatTiedot.tyyppi,
+      oppilaitos = laajatTiedot.oppilaitos,
+      toimipiste = laajatTiedot.toimipiste,
+      ryhmä = laajatTiedot.ryhmä,
+      tarkastelupäivänTila = laajatTiedot.tarkastelupäivänTila,
+      alkamispäivä = laajatTiedot.alkamispäivä,
+      oppivelvollisuudenSuorittamiseenKelpaava = laajatTiedot.oppivelvollisuudenSuorittamiseenKelpaava,
     )
   }
 }
@@ -137,11 +149,17 @@ case class ValpasOpiskeluoikeusSuppeatTiedot(
   oppilaitos: ValpasOppilaitos,
   toimipiste: Option[ValpasToimipiste],
   ryhmä: Option[String],
-  tarkastelupäivänTila: Koodistokoodiviite
+  tarkastelupäivänTila: Koodistokoodiviite,
+  alkamispäivä: String,
+  oppivelvollisuudenSuorittamiseenKelpaava: Boolean,
 ) extends ValpasOpiskeluoikeus {
   @SyntheticProperty
   def isOpiskelu: Boolean =
     tarkastelupäivänTila.koodiarvo == "voimassa"
+
+  @SyntheticProperty
+  def isOpiskeluTulevaisuudessa: Boolean =
+    tarkastelupäivänTila.koodiarvo == "voimassatulevaisuudessa"
 }
 
 object ValpasOppilaitos {

@@ -212,6 +212,7 @@ describe("Oppijakohtainen näkymä", () => {
       school
       Lukiokoulutus 2021 –
       Jyväskylän normaalikoulu
+      Ryhmä: AH
       Tila: Opiskeluoikeus voimassa
       school
       Perusopetus 2012 – 2021
@@ -233,6 +234,7 @@ describe("Oppijakohtainen näkymä", () => {
       school
       Lukiokoulutus 2021 –
       Jyväskylän normaalikoulu
+      Ryhmä: AH
       Tila: Opiskeluoikeus alkaa 3.10.2021
       school
       Perusopetus 2012 – 2021

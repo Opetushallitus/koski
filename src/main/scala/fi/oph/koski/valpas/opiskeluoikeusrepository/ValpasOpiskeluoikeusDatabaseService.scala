@@ -211,7 +211,8 @@ WITH
          WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
          WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
          ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
-       END tarkastelupäivän_tila
+       END tarkastelupäivän_tila,
+       r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava
      FROM
        oppija_oid
        JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
@@ -258,7 +259,8 @@ WITH
          WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
          WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
          ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
-       END tarkastelupäivän_tila
+       END tarkastelupäivän_tila,
+       r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava
      FROM
        oppija_oid
        JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
@@ -357,7 +359,8 @@ WITH
         'tarkastelupäivänTila', json_build_object(
           'koodiarvo', opiskeluoikeus.tarkastelupäivän_tila,
           'koodistoUri', 'valpasopiskeluoikeudentila'
-        )
+        ),
+        'oppivelvollisuudenSuorittamiseenKelpaava', opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava
       ) ORDER BY
         opiskeluoikeus.alkamispaiva DESC,
         -- Alkamispäivä varmaan riittäisi käyttöliitymälle, mutta lisätään muita kenttiä testien pitämiseksi deteministisempinä myös päällekäisillä opiskeluoikeuksilla:
