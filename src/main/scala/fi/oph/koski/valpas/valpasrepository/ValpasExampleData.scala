@@ -1,6 +1,6 @@
 package fi.oph.koski.valpas.valpasrepository
 
-import java.time.LocalDate.{of => date}
+import java.time.LocalDateTime
 
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{Koodistokoodiviite, OidOrganisaatio}
@@ -12,7 +12,7 @@ object ValpasExampleData {
   def ilmoitus = ValpasKuntailmoitusLaajatTiedot(
     id = None,
     kunta = pyhtäänKunta,
-    ilmoituspäivä = Some(date(2021, 8, 15)),
+    aikaleima = Some(LocalDateTime.of(2021, 8, 15, 8, 0)),
     tekijä = ValpasKuntailmoituksenTekijäLaajatTiedot(
       organisaatio = jyväskylänNormaalikoulu,
       henkilö = tekijäHenkilö(ValpasMockUsers.valpasJklNormaalikoulu)
@@ -25,7 +25,8 @@ object ValpasExampleData {
       postinumero = Some("000000"),
       postitoimipaikka = Some("Pyhtää"),
       maa = Some("Finland")
-    ))
+    )),
+    hakenutUlkomaille = Some(false)
   )
 
   def oppilaitoksenIlmoitusMinimitiedoilla = ValpasKuntailmoitusLaajatTiedot(
@@ -35,7 +36,7 @@ object ValpasExampleData {
       nimi = None,
       kotipaikka = None
     ),
-    ilmoituspäivä = None,
+    aikaleima = None,
     tekijä = ValpasKuntailmoituksenTekijäLaajatTiedot(
       organisaatio = OidOrganisaatio(
         oid = MockOrganisaatiot.jyväskylänNormaalikoulu,
@@ -43,12 +44,14 @@ object ValpasExampleData {
       ),
       henkilö = Some(ValpasKuntailmoituksenTekijäHenkilö(
         oid = None,
-        etunimi = "Valpas",
-        sukunimi = "Käyttäjä",
-        email = Some("valpas.kayttaja@gmail.com")
+        etunimet = Some("Valpas"),
+        sukunimi = Some("Käyttäjä"),
+        kutsumanimi = None,
+        email = None,
+        puhelinnumero = None
       ))
     ),
-    yhteydenottokieli = suomi,
+    yhteydenottokieli = None,
     oppijanYhteystiedot = Some(ValpasKuntailmoituksenOppijanYhteystiedot(
       puhelinnumero = None,
       email = None,
@@ -56,7 +59,8 @@ object ValpasExampleData {
       postinumero = None,
       postitoimipaikka = None,
       maa = None
-    ))
+    )),
+    hakenutUlkomaille = None
   )
 
   lazy val suomi = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli"))
@@ -75,8 +79,10 @@ object ValpasExampleData {
 
   def tekijäHenkilö(mockUser: ValpasMockUser) = Some(ValpasKuntailmoituksenTekijäHenkilö(
     oid = Some(mockUser.oid),
-    etunimi = mockUser.firstname,
-    sukunimi = mockUser.lastname,
-    email = Some(s"${mockUser.firstname}@gmail.com")
+    etunimet = Some(s"${mockUser.firstname} Mestari"),
+    sukunimi = Some(mockUser.lastname),
+    kutsumanimi = Some(mockUser.firstname),
+    email = Some(s"${mockUser.firstname}@gmail.com"),
+    puhelinnumero = Some("040 123 4567")
   ))
 }
