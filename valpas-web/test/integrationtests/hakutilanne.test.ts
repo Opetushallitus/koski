@@ -48,6 +48,13 @@ const kulosaariHakutilannePath = createHakutilannePathWithOrg("/virkailija", {
   organisaatioOid: kulosaariOid,
 })
 const kulosaarenOppijaOid = "1.2.246.562.24.00000000029"
+const saksalainenKouluOid = "1.2.246.562.10.45093614456"
+const saksalainenKouluHakutilannePath = createHakutilannePathWithOrg(
+  "/virkailija",
+  {
+    organisaatioOid: saksalainenKouluOid,
+  }
+)
 
 describe("Hakutilannenäkymä", () => {
   it("Näyttää listan oppijoista", async () => {
@@ -65,11 +72,11 @@ describe("Hakutilannenäkymä", () => {
   })
 
   it("Näyttää tyhjän listan virheittä, jos ei oppijoita", async () => {
-    await loginAs(hakutilannePath, "valpas-kulosaari")
-    await urlIsEventually(pathToUrl(kulosaariHakutilannePath))
+    await loginAs(hakutilannePath, "valpas-saksalainen")
+    await urlIsEventually(pathToUrl(saksalainenKouluHakutilannePath))
     await textEventuallyEquals(
       ".card__header",
-      "Hakeutumisvelvollisia oppijoita (1)"
+      "Hakeutumisvelvollisia oppijoita (0)"
     )
   })
 
