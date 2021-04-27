@@ -70,6 +70,7 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
   def start = {
     server.start()
     logger.info(s"Running in port $port")
+    System.exit(1)
     server
   }
 
