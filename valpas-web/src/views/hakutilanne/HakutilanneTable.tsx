@@ -53,6 +53,7 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
 
   return (
     <DataTable
+      storageName="hakutilannetaulu"
       className="hakutilanne"
       columns={[
         {
