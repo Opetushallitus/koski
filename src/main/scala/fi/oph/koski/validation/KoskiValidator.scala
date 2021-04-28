@@ -1095,8 +1095,9 @@ class KoskiValidator(
  private def validateNuortenPerusopetuksenPakollistenOppiaineidenLaajuus(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)  = {
    val kotiopetusVoimassaVahvistusPäivänä = opiskeluoikeus.lisätiedot.exists {
      case lisätiedot: Kotiopetuksellinen =>
+       val kaikkiKotiopetusJaksot =  lisätiedot.kotiopetus.toList ::: lisätiedot.kotiopetusjaksot.toList.flatten
        suoritus.vahvistus.map(_.päivä)
-         .exists(vahvistusPäivä => lisätiedot.kotiopetus.exists(_.contains(vahvistusPäivä)))
+         .exists(vahvistusPäivä => kaikkiKotiopetusJaksot.exists(_.contains(vahvistusPäivä)))
      case _ => false
    }
 

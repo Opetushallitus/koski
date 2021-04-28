@@ -53,6 +53,7 @@ trait Kuljetusetuinen {
 
 trait Kotiopetuksellinen {
   def kotiopetus: Option[Aikajakso]
+  def kotiopetusjaksot: Option[List[Aikajakso]]
 }
 
 trait MaksuttomuusTieto extends OpiskeluoikeudenLisätiedot {
