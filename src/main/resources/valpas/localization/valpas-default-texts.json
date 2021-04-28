@@ -89,6 +89,7 @@
   "oppija__hakenut_harkinnanvaraisesti": "Hakenut harkinnanvaraisesti",
   "oppija__otettu_vastaan": "Otettu vastaan",
   "oppija__otettu_vastaan_ehdollisesti": "Otettu vastaan ehdollisesti",
+  "oppija__paattynyt_haku": "Päättynyt: {{haku}}",
   "kayttooikeusrooli_OPPILAITOS_HAKEUTUMINEN": "Oppilaitoksen hakeutumisen valvonta",
   "kayttooikeusrooli_OPPILAITOS_SUORITTAMINEN": "Oppilaitoksen oppivelvollisuuden suorittamisen valvonta",
   "kayttooikeusrooli_OPPILAITOS_MAKSUTTOMUUS": "Oppilaitoksen opiskelun maksuttomuustietojen määrittely",

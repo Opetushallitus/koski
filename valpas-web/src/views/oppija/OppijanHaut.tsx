@@ -67,7 +67,7 @@ const HakuTable = (props: HakuTableProps) => {
   return (
     <IconSection icon={<HakuIcon color="gray" />}>
       <TertiaryHeading className={b("hakunimi")}>
-        {getLocalized(props.haku.hakuNimi)}{" "}
+        <HaunNimi haku={props.haku} />{" "}
         <ExternalLink to={props.haku.hakemusUrl}>
           <T
             id={
@@ -106,6 +106,23 @@ const HakuTable = (props: HakuTableProps) => {
         </div>
       ) : null}
     </IconSection>
+  )
+}
+
+type HaunNimiProps = {
+  haku: HakuLaajatTiedot
+}
+
+const HaunNimi = (props: HaunNimiProps) => {
+  const haunNimi = getLocalized(props.haku.hakuNimi)
+  return (
+    <span
+      className={b("hakunimititle", { paattynyt: !props.haku.aktiivinenHaku })}
+    >
+      {props.haku.aktiivinenHaku
+        ? haunNimi
+        : t("oppija__paattynyt_haku", { haku: haunNimi || "?" })}
+    </span>
   )
 }
 
