@@ -31,7 +31,9 @@ import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.userdirectory.DirectoryClient
 import fi.oph.koski.validation.KoskiValidator
+import fi.oph.koski.valpas.{ValpasKuntailmoitusInputValidator, ValpasKuntailmoitusService, ValpasOppijaService}
 import fi.oph.koski.valpas.db.ValpasDatabase
+import fi.oph.koski.valpas.hakukooste.ValpasHakukoosteService
 import fi.oph.koski.valpas.localization.ValpasLocalizationConfig
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
@@ -115,6 +117,26 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   }
   lazy val valpasRajapäivätService = if (features.valpas) {
     ValpasRajapäivätService(config)
+  } else {
+    null
+  }
+  lazy val valpasHakukoosteService = if (features.valpas) {
+    ValpasHakukoosteService(config)
+  } else {
+    null
+  }
+  lazy val valpasOppijaService = if (features.valpas) {
+    new ValpasOppijaService(this)
+  } else {
+    null
+  }
+  lazy val valpasKuntailmoitusService = if (features.valpas) {
+    new ValpasKuntailmoitusService(this)
+  } else {
+    null
+  }
+  lazy val valpasKuntailmoitusInputValidator = if (features.valpas) {
+    ValpasKuntailmoitusInputValidator(this)
   } else {
     null
   }

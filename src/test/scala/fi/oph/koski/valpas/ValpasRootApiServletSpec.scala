@@ -3,9 +3,9 @@ package fi.oph.koski.valpas
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.{AuditLogTester, KoskiMessageField}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.schema.OidOrganisaatio
 import fi.oph.koski.valpas.log.ValpasOperation
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
-import fi.oph.koski.valpas.valpasrepository.ValpasKunta
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 import org.scalatest.{BeforeAndAfterEach, Tag}
 
@@ -62,7 +62,7 @@ class ValpasRootApiServletSpec extends ValpasHttpTestBase with BeforeAndAfterEac
   "Palauttaa kunnat" taggedAs(ValpasBackendTag) in {
     authGet(s"/valpas/api/organisaatiot/kunnat", ValpasMockUsers.valpasJklNormaalikoulu) {
       verifyResponseStatusOk()
-      val actualKunnat = JsonSerializer.parse[List[ValpasKunta]](response.body)
+      val actualKunnat = JsonSerializer.parse[List[OidOrganisaatio]](response.body)
         .map(vk => (vk.nimi.get.get("fi"), vk.kotipaikka.get.koodiarvo, vk.kotipaikka.get.getNimi.get.get("fi")))
         .sortBy(_._1)
 
@@ -84,3 +84,4 @@ class ValpasRootApiServletSpec extends ValpasHttpTestBase with BeforeAndAfterEac
 }
 
 object ValpasBackendTag extends Tag("valpasback")
+

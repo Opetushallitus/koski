@@ -14,6 +14,8 @@ object ValpasMockKäyttöoikeusryhmät {
 
   def oppilaitosKäyttäjäKaikkiOikeudet(organisaatioOid: String): Set[Käyttöoikeus] = Set(oppilaitosHakeutuminenKäyttäjä _, oppilaitosSuorittaminenKäyttäjä _, oppilaitosMaksuttomuusKäyttäjä _).map(_(organisaatioOid))
 
+  def oppilaitosKäyttäjäPelkkäMaksuttomuus(organisaatioOid: String): Set[Käyttöoikeus] = Set(oppilaitosMaksuttomuusKäyttäjä _).map(_(organisaatioOid))
+
   def kuntakäyttäjä(organisaatioOid: String): Set[Käyttöoikeus] = Set(organisaatioKäyttäjä(organisaatioOid, ValpasRooli.KUNTA))
 
   def pääkäyttäjä: Set[Käyttöoikeus] = Set(KäyttöoikeusGlobal(List(

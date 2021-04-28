@@ -1,70 +1,60 @@
 package fi.oph.koski.valpas.valpasrepository
 
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
-import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
+import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
+
+case class ValpasKuntailmoitusLaajatTiedotJaOppijaOid(oppijaOid: String, kuntailmoitus: ValpasKuntailmoitusLaajatTiedot)
 
 trait ValpasKuntailmoitus {
   def id: Option[Int]
-  def tekijä: Option[ValpasKuntailmoituksenTekijä]
-  def kunta: ValpasKunta
-  def ilmoituspäivä: Option[LocalDate]
+  def tekijä: ValpasKuntailmoituksenTekijä
+  def kunta: OrganisaatioWithOid // Koska suuri osa kunnista on koulutustoimijoita, on niille vaikea luoda omaa tyyppiä.
+                                 // Validointi, että tähän voi tallentaa vain kunta-tyyppisen organisaation, tehdään erikseen.
+  def aikaleima: Option[LocalDateTime]
+}
+
+trait ValpasKuntailmoituksenTekijä {
+  def organisaatio: OrganisaatioWithOid // Tekijä voi olla joko kunta tai oppilaitos. Validointi, että on jompikumpi, tehdään erikseen.
 }
 
 case class ValpasKuntailmoitusSuppeatTiedot(
   id: Option[Int],
-  tekijä: Option[ValpasKuntailmoituksenTekijäSuppeatTiedot],
-  kunta: ValpasKunta,
-  ilmoituspäivä: Option[LocalDate]
+  tekijä: ValpasKuntailmoituksenTekijäSuppeatTiedot,
+  kunta: OrganisaatioWithOid,
+  aikaleima: Option[LocalDateTime]
 ) extends ValpasKuntailmoitus
 
 object ValpasKuntailmoitusSuppeatTiedot {
   def apply(laajatTiedot: ValpasKuntailmoitusLaajatTiedot): ValpasKuntailmoitusSuppeatTiedot = {
     ValpasKuntailmoitusSuppeatTiedot(
       laajatTiedot.id,
-      laajatTiedot.tekijä match {
-        case Some(tekijänLaajatTiedot) => Some(ValpasKuntailmoituksenTekijäSuppeatTiedot(tekijänLaajatTiedot))
-        case _ => None
-      },
+      ValpasKuntailmoituksenTekijäSuppeatTiedot(laajatTiedot.tekijä),
       laajatTiedot.kunta,
-      laajatTiedot.ilmoituspäivä
+      laajatTiedot.aikaleima
     )
   }
 }
 
 case class ValpasKuntailmoitusLaajatTiedot(
   id: Option[Int],
-  kunta: ValpasKunta,
-  ilmoituspäivä: Option[LocalDate], // Option, koska create-operaatiossa bäkkäri täyttää ilmoituspäivän
-  tekijä: Option[ValpasKuntailmoituksenTekijäLaajatTiedot], // Option, koska kunnan tekemissä ilmoituksissa tiedot voidaan päätellä kokonaan aiemmista
-                                                            // ilmoituksista ja tekijän sessiosta
+  kunta: OrganisaatioWithOid,
+  aikaleima: Option[LocalDateTime], // Option, koska create-operaatiossa bäkkäri täyttää ilmoitusajan
+  tekijä: ValpasKuntailmoituksenTekijäLaajatTiedot,
   @KoodistoUri("kieli")
   @KoodistoKoodiarvo("FI")
   @KoodistoKoodiarvo("SV")
   yhteydenottokieli: Option[Koodistokoodiviite], // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn ilmoituksen tiedoista,
-                                                 // tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa
-  oppijanYhteystiedot: Option[ValpasKuntailmoituksenOppijanYhteystiedot] // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn
+                                                 // tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa.
+  oppijanYhteystiedot: Option[ValpasKuntailmoituksenOppijanYhteystiedot], // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn
                                                                          // ilmoituksen tiedoista, tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa
+  hakenutUlkomaille: Option[Boolean]             // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn ilmoituksen tiedoista,
+                                                 // tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa.
 ) extends ValpasKuntailmoitus
 
-case class ValpasKunta(
-  oid: ValpasKunta.Oid,
-  nimi: Option[LocalizedString], // Option, koska create-operaatiossa käytetään pelkkää oidia
-  @KoodistoUri("kunta")
-  kotipaikka: Option[Koodistokoodiviite] // Option, koska create-operaatiossa käytetään pelkkää oidia
-)
-
-object ValpasKunta {
-  type Oid = String
-}
-
-trait ValpasKuntailmoituksenTekijä {
-  def organisaatio: ValpasKuntailmoituksenTekijäOrganisaatio
-}
-
 case class ValpasKuntailmoituksenTekijäSuppeatTiedot(
-  organisaatio: ValpasKuntailmoituksenTekijäOrganisaatio
+  organisaatio: OrganisaatioWithOid
 ) extends ValpasKuntailmoituksenTekijä
 
 object ValpasKuntailmoituksenTekijäSuppeatTiedot {
@@ -74,24 +64,17 @@ object ValpasKuntailmoituksenTekijäSuppeatTiedot {
 }
 
 case class ValpasKuntailmoituksenTekijäLaajatTiedot(
-  organisaatio: ValpasKuntailmoituksenTekijäOrganisaatio,
-  henkilö: Option[ValpasKuntailmoituksenTekijäHenkilö] // Option, koska tämä on oppivelvollisuurekisterin ulkopuolista lisädataa eikä välttämättä tallessa tietokannassa vaikka muuta ilmoituksen tiedot olisivatkin
+  organisaatio: OrganisaatioWithOid,
+  henkilö: Option[ValpasKuntailmoituksenTekijäHenkilö], // Option, koska tämä on oppivelvollisuurekisterin ulkopuolista lisädataa eikä välttämättä tallessa tietokannassa vaikka muuta ilmoituksen tiedot olisivatkin
 ) extends ValpasKuntailmoituksenTekijä
-
-case class ValpasKuntailmoituksenTekijäOrganisaatio(
-  oid: ValpasKuntailmoituksenTekijäOrganisaatio.Oid,
-  nimi: Option[LocalizedString]
-)
-
-object ValpasKuntailmoituksenTekijäOrganisaatio {
-  type Oid = String
-}
 
 case class ValpasKuntailmoituksenTekijäHenkilö(
   oid: Option[ValpasKuntailmoituksenTekijäHenkilö.Oid], // Option, koska create-operaatiossa bäkkäri lukee tekijän oidin sessiosta
-  etunimi: String,
-  sukunimi: String,
-  email: Option[String] // Option, koska kunnan itselleen tekemissä osoitteenmuutosilmoituksissa tätä ei tallenneta.
+  etunimet: Option[String], // Option, koska kuntailmoitusta tehdessä tieto täytetään käyttäjän tiedoista
+  sukunimi: Option[String], // Option, koska kuntailmoitusta tehdessä tieto täytetään käyttäjän tiedoista
+  kutsumanimi: Option[String],
+  email: Option[String],
+  puhelinnumero: Option[String]
 )
 
 object ValpasKuntailmoituksenTekijäHenkilö {

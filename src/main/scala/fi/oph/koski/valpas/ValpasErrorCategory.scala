@@ -14,4 +14,15 @@ object ValpasErrorCategory {
   object unavailable extends ErrorCategory("unavailable", 503, "Service unavailable") {
     val sure = subcategory("sure", "Hakukoosteita ei juuri nyt saada haettua suoritusrekisteristä. Yritä myöhemmin uudelleen.")
   }
+
+  object validation extends ErrorCategory("validation", 400, "Syötteen validointi epäonnistui.") {
+    val kuntailmoituksenKohde = subcategory("kuntailmoituksenKohde", "Kuntailmoituksen kohteen validointi epäonnistui.")
+    val kuntailmoituksenTekijä = subcategory("kuntailmoituksenTekijä", "Kuntailmoituksen tekijän validointi epäonnistui.")
+    val kuntailmoituksenIlmoituspäivä = subcategory("kuntailmoituksenIlmoituspäivä", "Kuntailmoituksia ei voi tehdä ennen lain voimaantuloa 1.8.2021")
+  }
+
+  object notImplemented extends ErrorCategory("notImplemented", 501, "Not implemented") {
+    val kuntailmoituksenMuokkaus = subcategory("kuntailmoituksenMuokkaus", "Kuntailmoitusta ei voi muokata")
+  }
 }
+
