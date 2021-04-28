@@ -373,7 +373,8 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
     }
     "Opiskeluoikeudella on lisätiedoissa kotiopetusjakso" - {
       val opiskeluoikeus = defaultOpiskeluoikeus.copy(lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-        kotiopetus = Some(Aikajakso(LocalDate.of(2020, 7, 1), Some(LocalDate.of(2020, 8, 1))))
+        kotiopetus = Some(Aikajakso(LocalDate.of(2020, 7, 1), Some(LocalDate.of(2020, 8, 1)))),
+        kotiopetusjaksot = Some(List(Aikajakso(LocalDate.of(2020, 10, 1), Some(LocalDate.of(2020, 10, 2)))))
       )))
       "Kotiopetusjakso on voimassa suorituksen vahvistuspäivänä" - {
         "Vuosiluokan suoritus" - {
@@ -385,7 +386,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         }
         "Päättötodistus" - {
           "Laajuutta ei vaadita pakollisilta oppiaineilta" in {
-            verify(päättötodistusSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 8, 1))), opiskeluoikeus) {
+            verify(päättötodistusSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 10, 1))), opiskeluoikeus) {
               verifyResponseStatusOk()
             }
           }
