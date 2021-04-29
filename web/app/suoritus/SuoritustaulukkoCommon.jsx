@@ -1,15 +1,21 @@
 import React from 'baret'
 import {tutkinnonOsanRyhmät} from '../koodisto/koodistot'
 import {t} from '../i18n/i18n'
-import {modelData, modelLookup, modelProperties, modelProperty, optionalPrototypeModel} from '../editor/EditorModel'
+import {modelData, modelLookup, modelProperties, modelProperty, modelTitle, optionalPrototypeModel} from '../editor/EditorModel'
 import * as R from 'ramda'
 import {createTutkinnonOsanSuoritusPrototype, NON_GROUPED} from '../ammatillinen/TutkinnonOsa'
-import {hasArvosana, suorituksenTyyppi} from './Suoritus'
+import {hasArvosana, suorituksenTyyppi, tilaText} from './Suoritus'
 import Text from '../i18n/Text'
 import {ArvosanaEditor} from './ArvosanaEditor'
 import {Editor} from '../editor/Editor'
 import {shouldShowProperty} from '../editor/PropertiesEditor'
-
+import {
+  isValinnanMahdollisuus,
+  osanOsa
+} from '../ammatillinen/TutkinnonOsa'
+import {sortLanguages} from '../util/sorting'
+import {suorituksenTilaSymbol} from './Suoritustaulukko'
+import {isKieliaine} from './Koulutusmoduuli'
 
 export const isAmmatillinentutkinto = suoritus => suoritus.value.classes.includes('ammatillisentutkinnonsuoritus')
 export const isMuunAmmatillisenKoulutuksenSuoritus = suoritus => suoritus && suoritus.value.classes.includes('muunammatillisenkoulutuksensuoritus')
@@ -111,6 +117,30 @@ export const suoritusProperties = suoritus => {
  * Shared column types
  *
  */
+
+export const SuoritusColumn = {
+  shouldShow : () => true,
+  renderHeader: ({parentSuoritus, groupTitles, groupId}) => (<td key="suoritus" className="tutkinnon-osan-ryhma">{isValinnanMahdollisuus(parentSuoritus) ? t('Osasuoritus') : groupTitles[groupId]}</td>),
+  renderData: ({model, showTila, onExpand, hasProperties, expanded}) => {
+    let koulutusmoduuli = modelLookup(model, 'koulutusmoduuli')
+    let titleAsExpandLink = hasProperties && (!osanOsa(koulutusmoduuli) || !model.context.edit)
+    let kieliaine = isKieliaine(koulutusmoduuli)
+
+    return (<td key="suoritus" className="suoritus">
+      <a className={ hasProperties ? 'toggle-expand' : 'toggle-expand disabled'}
+         onClick={() => onExpand(!expanded)}>{ expanded ? '' : ''}</a>
+      {showTila && <span className="tila" title={tilaText(model)}>{suorituksenTilaSymbol(model)}</span>}
+      {
+        titleAsExpandLink
+          ? <button className='nimi inline-link-button' onClick={() => onExpand(!expanded)}>{modelTitle(model, 'koulutusmoduuli')}</button>
+          : <span className="nimi">
+            {t(modelData(koulutusmoduuli, 'tunniste.nimi')) + (kieliaine ? ', ' : '')}
+            {kieliaine && <span className="value kieli"><Editor model={koulutusmoduuli} inline={true} path="kieli" sortBy={sortLanguages}/></span>}
+          </span>
+      }
+    </td>)
+  }
+}
 
 export const TutkintokertaColumn = {
   shouldShow: ({parentSuoritus}) => isYlioppilastutkinto(parentSuoritus),

@@ -3,7 +3,6 @@ import {modelData, modelLookup} from '../editor/EditorModel'
 
 import {PerusopetuksenOppiaineetEditor} from '../perusopetus/PerusopetuksenOppiaineetEditor'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
-import {Suoritustaulukko} from './Suoritustaulukko'
 import {LukionOppiaineetEditor} from '../lukio/LukionOppiaineetEditor'
 import {LuvaEditor} from '../lukio/LuvaEditor'
 import {PropertyEditor} from '../editor/PropertyEditor'
@@ -23,6 +22,7 @@ import OmatTiedotRyhmiteltyOppiaineet from './OmatTiedotRyhmiteltyOppiaineet'
 import TäydentääTutkintoaEditor from '../ammatillinen/TaydentaaTutkintoaEditor'
 import InternationalSchoolOppiaineetEditor from '../internationalschool/InternationalSchoolOppiaineetEditor'
 import {AikuistenPerusopetuksenKurssitEditor} from '../aikuistenperusopetus/AikuistenPerusopetuksenKurssitEditor'
+import {Suoritustaulukko} from './Suoritustaulukko'
 
 export const resolveOsasuorituksetEditor = (mdl) => {
   const oneOf = (...classes) => classes.some(c => mdl.value.classes.includes(c))

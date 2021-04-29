@@ -8,11 +8,11 @@ import Text from '../i18n/Text'
 import {OrganisaatioEditor} from '../organisaatio/OrganisaatioEditor'
 import {SelectAlternativeByEnumValueEditor} from '../editor/SelectAlternativeByEnumValueEditor'
 import {AmmatillinenNäyttöEditor} from './AmmatillinenNayttoEditor'
-import {TutkinnonOsanSuoritusEditor} from '../suoritus/Suoritustaulukko'
 import {InlineJaksoEditor} from '../date/JaksoEditor'
 import {hasModelProperty, wrapOptional} from '../editor/EditorModel'
 import {EnumEditor} from '../editor/EnumEditor'
 import Http from '../util/http'
+import {TutkinnonOsanSuoritusEditor} from './TutkinnonOsanSuoritusEditor'
 
 class NäytönSuorituspaikkaEditor extends React.Component {
   render() {
