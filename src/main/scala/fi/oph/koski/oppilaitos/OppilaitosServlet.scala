@@ -34,8 +34,7 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends Kosk
       case tyyppi if List(ammatillisetOppilaitokset, ammatillisetErityisoppilaitokset, ammatillisetErikoisoppilaitokset, ammatillisetAikuiskoulutusKeskukset).contains(tyyppi) => perusopetuksenTyypit ++ ammatillisenTyypit
       case tyyppi if List(lukio).contains(tyyppi) => perusopetuksenTyypit ++ lukionTyypit
       case tyyppi if List(perusJaLukioasteenKoulut).contains(tyyppi) => perusopetuksenTyypit ++ esiopetuksenTyypit ++ lukionTyypit ++ saksalaisenKoulunTyypit ++ internationalSchoolTyypit
-      case tyyppi if List(liikunnanKoulutuskeskukset, kansanopistot, kansalaisopistot, opintokeskukset, kesäyliopistot).contains(tyyppi) => vapaanSivistysTyönTyypit
-      case _ => perusopetuksenTyypit ++ ammatillisenTyypit
+      case _ => perusopetuksenTyypit ++ ammatillisenTyypit ++ vapaanSivistysTyönTyypit
     }
 
   private def byOrganisaatioTyyppi(organisaatiot: List[OrganisaatioHierarkia]) =
