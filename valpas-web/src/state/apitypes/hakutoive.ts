@@ -18,6 +18,7 @@ export type Hakutoive = {
     HakutoiveVastaanottokoodiarvo
   >
   harkinnanvarainen: boolean
+  liitteetTarkastettu?: boolean
 }
 
 export type SuppeaHakutoive = Pick<
@@ -55,3 +56,9 @@ export const isVastaanotettu = (toive: SuppeaHakutoive) =>
 
 export const isVastaanotettuEhdollisesti = (toive: SuppeaHakutoive) =>
   toive.vastaanottotieto?.koodiarvo === "ehdollinen"
+
+export const isLiitteetTarkastettu = (toive: Hakutoive) =>
+  toive.liitteetTarkastettu === true
+
+export const isLiitteetTarkastamatta = (toive: Hakutoive) =>
+  toive.liitteetTarkastettu === false

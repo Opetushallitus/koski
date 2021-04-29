@@ -334,11 +334,12 @@ describe("Oppijakohtainen näkymä", () => {
         Pisteet
         Alin pistemäärä
         1. Helsingin medialukio, Lukio	Hylätty	7,50	8,20
-        2. Omnia, Leipomoala1
+        2. Omnia, Leipomoala2
         Otettu vastaan ehdollisesti
         Hyväksytty	–	–
-        3. Omnia, Puhtaus- ja kiinteistöpalveluala	Hyväksytty	–	–
-        1) Hakenut harkinnanvaraisesti
+        3. Omnia, Puhtaus- ja kiinteistöpalveluala3	Hyväksytty	–	–
+        2) Hakenut harkinnanvaraisesti, liitteet lähetetty, vastaanotettu ja tarkastettu
+        3) Hakenut harkinnanvaraisesti, liitteitä ei ole joko lähetetty, vastaanotettu tai tarkastettu
     `)
   })
 })

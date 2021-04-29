@@ -133,7 +133,8 @@ object HakukoosteExampleData {
           valintatila = Some("HYVAKSYTTY"),
           vastaanottotieto = Some("EHDOLLISESTI_VASTAANOTTANUT"),
         ).copy(
-          harkinnanvaraisuus = Some("sosiaalisetsyyt")
+          harkinnanvaraisuus = Some("sosiaalisetsyyt"),
+          liitteetTarkastettu = Some(true),
         ),
         hakutoive(
           hakukohdeOid = generateOid(),
@@ -141,6 +142,9 @@ object HakukoosteExampleData {
           hakukohdeNimi = "Puhtaus- ja kiinteistöpalveluala",
           koulutusNimi = "Puhtaus- ja kiinteistöpalvelualan ammattitutkinto laitoshuoltajille ja toimitilahuoltajille",
           valintatila = Some("HYVAKSYTTY"),
+        ).copy(
+          harkinnanvaraisuus = Some("sosiaalisetsyyt"),
+          liitteetTarkastettu = Some(false),
         ),
       ))),
     haku(
@@ -227,6 +231,7 @@ object HakukoosteExampleData {
       ilmoittautumistila = Some("EI_ILMOITTAUTUNUT"),
       koulutusOid = Some("TODO"),
       harkinnanvaraisuus = None,
+      liitteetTarkastettu = None,
       hakukohdeKoulutuskoodi = Koodistokoodiviite("321152", "koulutus"),
       varasijanumero = if (valintatila == Some("VARALLA")) Some(3) else None,
     )

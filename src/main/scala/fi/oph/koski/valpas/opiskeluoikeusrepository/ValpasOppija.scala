@@ -260,6 +260,7 @@ object ValpasHakutoive {
       vastaanottotieto = Vastaanottotieto.valpasKoodiviiteOption(hakutoive.vastaanottotieto),
       varasijanumero = hakutoive.varasijanumero,
       harkinnanvarainen = hakutoive.harkinnanvaraisuus.exists(Harkinnanvaraisuus.isHarkinnanvarainen),
+      liitteetTarkastettu = hakutoive.liitteetTarkastettu,
     )
   }
 }
@@ -277,6 +278,7 @@ case class ValpasHakutoive(
   vastaanottotieto: Option[Koodistokoodiviite],
   varasijanumero: Option[Int],
   harkinnanvarainen: Boolean,
+  liitteetTarkastettu: Option[Boolean],
 ) {
   def validate(koodistoviitepalvelu: KoodistoViitePalvelu): ValpasHakutoive =
     this.copy(valintatila = valintatila.flatMap(koodistoviitepalvelu.validate))

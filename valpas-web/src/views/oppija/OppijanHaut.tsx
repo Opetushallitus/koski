@@ -5,7 +5,6 @@ import { IconSection } from "../../components/containers/IconSection"
 import { HakuIcon } from "../../components/icons/Icon"
 import { LongArrow } from "../../components/icons/LongArrow"
 import { ExternalLink } from "../../components/navigation/ExternalLink"
-import { Datum } from "../../components/tables/DataTable"
 import { LeanTable } from "../../components/tables/LeanTable"
 import { TertiaryHeading } from "../../components/typography/headings"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
@@ -26,8 +25,14 @@ import {
   isVastaanotettuEhdollisesti,
 } from "../../state/apitypes/hakutoive"
 import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
-import { plainComponent } from "../../utils/plaincomponent"
 import "./OppijanHaut.less"
+import {
+  DatumWithFootnotes,
+  Footnote,
+  FootnoteReference,
+  hakutoiveToFootnoteRefId,
+  pickFootnoteRefs,
+} from "./OppijanHautFootnotes"
 
 const b = bem("oppijanhaut")
 
@@ -60,9 +65,8 @@ type HakuTableProps = {
 }
 
 const HakuTable = (props: HakuTableProps) => {
-  const hasHarkinnanvaraisuus = props.haku.hakutoiveet.some(
-    (toive) => toive.harkinnanvarainen
-  )
+  const hakutoiveet = props.haku.hakutoiveet.map(hakutoiveToTableValue)
+  const footnoteRefs = pickFootnoteRefs(hakutoiveet)
 
   return (
     <IconSection icon={<HakuIcon color="gray" />}>
@@ -98,11 +102,13 @@ const HakuTable = (props: HakuTableProps) => {
             size: "col3",
           },
         ]}
-        data={props.haku.hakutoiveet.map(hakutoiveToTableValue)}
+        data={hakutoiveet}
       />
-      {hasHarkinnanvaraisuus ? (
+      {A.isNonEmpty(footnoteRefs) ? (
         <div className={b("footnotes")}>
-          1) <T id="oppija__hakenut_harkinnanvaraisesti" />
+          {footnoteRefs.map((refId) => (
+            <Footnote key={refId} refId={refId} />
+          ))}
         </div>
       ) : null}
     </IconSection>
@@ -126,60 +132,63 @@ const HaunNimi = (props: HaunNimiProps) => {
   )
 }
 
-const hakutoiveToTableValue = (hakutoive: Hakutoive, index: number): Datum => ({
-  key: index.toString(),
-  values: [
-    {
-      value:
-        formatOrderNumber(hakutoive.hakutoivenumero) +
-        (getLocalized(hakutoive.organisaatioNimi) || t("tieto_puuttuu")) +
-        (hakutoive.hakukohdeNimi
-          ? ", " + getLocalized(hakutoive.hakukohdeNimi)
-          : ""),
-      display: (
-        <>
-          {formatOrderNumber(hakutoive.hakutoivenumero)}
-          {hakutoive.organisaatioNimi ? (
-            getLocalized(hakutoive.organisaatioNimi)
-          ) : (
-            <NoDataMessage>
-              <T id="tieto_puuttuu" />
-            </NoDataMessage>
-          )}
-          {hakutoive.hakukohdeNimi &&
-            ", " + getLocalized(hakutoive.hakukohdeNimi)}
-          {hakutoive.harkinnanvarainen ? (
-            <FootnoteReference>1</FootnoteReference>
-          ) : null}
-          {isVastaanotettu(hakutoive) ? (
-            <div>
-              <LongArrow />
-              <span className={b("otettuvastaan")}>
-                {isVastaanotettuEhdollisesti(hakutoive) ? (
-                  <T id="oppija__otettu_vastaan_ehdollisesti" />
-                ) : (
-                  <T id="oppija__otettu_vastaan" />
-                )}
-              </span>
-            </div>
-          ) : null}
-        </>
-      ),
-    },
-    {
-      value:
-        hakutoive?.valintatila &&
-        (hakutoive.valintatila.koodiarvo === "varasijalla" &&
-        hakutoive.varasijanumero !== undefined
-          ? t("valintatieto__ns_varasija", { n: hakutoive.varasijanumero })
-          : koodiviiteToShortString(hakutoive.valintatila)),
-    },
-    { value: formatFixedNumber(hakutoive.pisteet, 2) },
-    { value: formatFixedNumber(hakutoive.alinHyvaksyttyPistemaara, 2) },
-  ],
-})
+const hakutoiveToTableValue = (
+  hakutoive: Hakutoive,
+  index: number
+): DatumWithFootnotes => {
+  const footnoteRef = hakutoiveToFootnoteRefId(hakutoive)
+  return {
+    key: index.toString(),
+    values: [
+      {
+        value:
+          formatOrderNumber(hakutoive.hakutoivenumero) +
+          (getLocalized(hakutoive.organisaatioNimi) || t("tieto_puuttuu")) +
+          (hakutoive.hakukohdeNimi
+            ? ", " + getLocalized(hakutoive.hakukohdeNimi)
+            : ""),
+        display: (
+          <>
+            {formatOrderNumber(hakutoive.hakutoivenumero)}
+            {hakutoive.organisaatioNimi ? (
+              getLocalized(hakutoive.organisaatioNimi)
+            ) : (
+              <NoDataMessage>
+                <T id="tieto_puuttuu" />
+              </NoDataMessage>
+            )}
+            {hakutoive.hakukohdeNimi &&
+              ", " + getLocalized(hakutoive.hakukohdeNimi)}
+            {footnoteRef && <FootnoteReference refId={footnoteRef} />}
+            {isVastaanotettu(hakutoive) ? (
+              <div>
+                <LongArrow />
+                <span className={b("otettuvastaan")}>
+                  {isVastaanotettuEhdollisesti(hakutoive) ? (
+                    <T id="oppija__otettu_vastaan_ehdollisesti" />
+                  ) : (
+                    <T id="oppija__otettu_vastaan" />
+                  )}
+                </span>
+              </div>
+            ) : null}
+          </>
+        ),
+        footnoteRefId: footnoteRef || undefined,
+      },
+      {
+        value:
+          hakutoive?.valintatila &&
+          (hakutoive.valintatila.koodiarvo === "varasijalla" &&
+          hakutoive.varasijanumero !== undefined
+            ? t("valintatieto__ns_varasija", { n: hakutoive.varasijanumero })
+            : koodiviiteToShortString(hakutoive.valintatila)),
+      },
+      { value: formatFixedNumber(hakutoive.pisteet, 2) },
+      { value: formatFixedNumber(hakutoive.alinHyvaksyttyPistemaara, 2) },
+    ],
+  }
+}
 
 const formatOrderNumber = (n?: number): string =>
   n !== undefined ? `${n}. ` : ""
-
-const FootnoteReference = plainComponent("span", b("footnotereference"))

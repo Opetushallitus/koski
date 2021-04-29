@@ -29,7 +29,7 @@ case class Hakukooste(
   huoltajanPuhelinnumero: Option[String],
   huoltajanSähkoposti: Option[String],
   hakutoiveet: Seq[Hakutoive],
-  hakemuksenMuokkauksenAikaleima: Option[LocalDateTime]
+  hakemuksenMuokkauksenAikaleima: Option[LocalDateTime],
 )
 
 case class Hakutoive(
@@ -52,7 +52,8 @@ case class Hakutoive(
   @EnumValues(Harkinnanvaraisuus.values)
   harkinnanvaraisuus: Option[String],
   @KoodistoUri("koulutus")
-  hakukohdeKoulutuskoodi: Koodistokoodiviite
+  hakukohdeKoulutuskoodi: Koodistokoodiviite,
+  liitteetTarkastettu: Option[Boolean],
 ) {
   @SyntheticProperty
   def onHakenutHarkinnanvaraisesti = harkinnanvaraisuus.isDefined
