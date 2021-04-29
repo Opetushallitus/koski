@@ -120,7 +120,7 @@ describe("Oppijakohtainen näkymä", () => {
       Alin pistemäärä
       1. Varsinais-Suomen kansanopisto, Vapaan sivistystyön koulutus oppivelvollisille 2021-2022 – – –
       list_alt
-      Yhteishaku 2019 Hakenut open_in_new
+      Päättynyt: Yhteishaku 2019 Hakenut open_in_new
       Hakukohde
       Valinta
       Pisteet
