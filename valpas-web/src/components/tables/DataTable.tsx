@@ -39,10 +39,10 @@ export type DataTableProps = {
   columns: Column[]
   data: Datum[]
   storageName?: string
-  onChange?: (event: DataTableChangeEvent) => void
+  onCountChange?: (event: DataTableCountChangeEvent) => void
 }
 
-export type DataTableChangeEvent = {
+export type DataTableCountChangeEvent = {
   filteredRowCount: number
   unfilteredRowCount: number
 }
