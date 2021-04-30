@@ -40,7 +40,7 @@ export const useApiWithParams = <T, P extends any[]>(
     } else {
       api.clear()
     }
-  }, params)
+  }, params) // eslint-disable-line react-hooks/exhaustive-deps
   return api
 }
 
@@ -74,10 +74,7 @@ export const useApiMethod = <T, P extends any[]>(
     state: "initial",
   })
 
-  const clear = useCallback(() => setState({ state: "initial" }), [
-    setState,
-    state,
-  ])
+  const clear = useCallback(() => setState({ state: "initial" }), [setState])
 
   return useMemo(
     () => ({
@@ -109,6 +106,6 @@ export const useApiMethod = <T, P extends any[]>(
         return state.state === "success" ? fn(state.data) : undefined
       },
     }),
-    [state, setState, fetchFn]
+    [state, setState, fetchFn, cache, clear]
   )
 }

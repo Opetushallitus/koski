@@ -59,7 +59,7 @@ const FreeTextFilter = (props: FilterProps) => {
     if (props.initialValue) {
       emit(props.initialValue)
     }
-  }, [])
+  })
   return <TextField value={needle} onChange={emit} icon={<SearchIcon />} />
 }
 
@@ -80,7 +80,7 @@ const SelectFilter = (props: FilterProps) => {
     if (props.initialValue) {
       emit(props.initialValue)
     }
-  }, [])
+  })
 
   return (
     <Dropdown
