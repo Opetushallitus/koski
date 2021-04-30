@@ -559,7 +559,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
        |        "etunimet" : "${etunimet}",
        |        "sukunimi" : "${sukunimi}",
        |        "kutsumanimi" : "${kutsumanimi}",
-       |        "email": "${kutsumanimi}.${sukunimi}@gmail.com",
+       |        "email": "${tekijäEmail}",
        |        "puhelinnumero" : "${tekijäPuhelinnumero}"
        |      }
        |    },
