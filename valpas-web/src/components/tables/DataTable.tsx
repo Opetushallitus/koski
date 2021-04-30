@@ -108,7 +108,7 @@ export const DataTable = (props: DataTableProps) => {
     return A.sortBy([ordDatum])(filteredData)
   }, [sortColumnIndex, sortAscending, filteredData])
 
-  useEmitCountChanges(props.data, sortedData, props.onChange)
+  useEmitCountChanges(props.data, sortedData, props.onCountChange)
 
   const optionsForFilters = useOptionsForFilters(props.columns, props.data)
 
@@ -231,7 +231,7 @@ const useOptionsForFilters = (columns: Column[], data: Datum[]) => {
 const useEmitCountChanges = (
   data: Datum[],
   sortedData: Datum[],
-  onChange?: (event: DataTableChangeEvent) => void
+  onChange?: (event: DataTableCountChangeEvent) => void
 ) => {
   const filteredRowCount = sortedData.length
   const unfilteredRowCount = data.length

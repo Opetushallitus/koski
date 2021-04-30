@@ -8,13 +8,13 @@ import {
 } from "./DataTable"
 
 export type SelectableDataTableProps = DataTableProps & {
-  onChange: (selectedKeys: string[]) => void
+  onSelect: (selectedKeys: string[]) => void
 }
 
 export const SelectableDataTable = ({
   data,
   columns,
-  onChange,
+  onSelect,
   ...rest
 }: SelectableDataTableProps) => {
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])
@@ -32,7 +32,7 @@ export const SelectableDataTable = ({
                   ? [...selectedKeys, datum.key]
                   : selectedKeys.filter((key) => key !== datum.key)
                 setSelectedKeys(newKeys)
-                onChange(newKeys)
+                onSelect(newKeys)
               }}
             />
           ),

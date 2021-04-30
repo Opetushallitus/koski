@@ -7,6 +7,7 @@ import { Redirect, useHistory } from "react-router"
 import { fetchOppijat, fetchOppijatCache } from "../../api/api"
 import { useApiWithParams } from "../../api/apiHooks"
 import { isLoading, isSuccess } from "../../api/apiUtils"
+import { RaisedButton } from "../../components/buttons/RaisedButton"
 import { BottomDrawer } from "../../components/containers/BottomDrawer"
 import { Card, CardBody, CardHeader } from "../../components/containers/cards"
 import { Dropdown } from "../../components/forms/Dropdown"
@@ -64,6 +65,7 @@ export const HakutilanneView = (props: HakutilanneViewProps) => {
     filteredRowCount: 0,
     unfilteredRowCount: 0,
   })
+  const [selected, setSelected] = useState<string[]>([])
 
   const orgOptions = getOrgOptions(organisaatiot)
 
@@ -102,11 +104,29 @@ export const HakutilanneView = (props: HakutilanneViewProps) => {
               data={oppijatFetch.data}
               organisaatioOid={organisaatioOid}
               onCountChange={setCounters}
+              onSelect={setSelected}
             />
           )}
         </CardBody>
       </Card>
-      <BottomDrawer>Hello world</BottomDrawer>
+      <BottomDrawer>
+        <div className={b("ilmoittaminen")}>
+          <h4 className={b("ilmoittaminentitle")}>
+            <T id="ilmoittaminen_drawer__title" />
+          </h4>
+          <div className={b("ilmoittamisenalarivi")}>
+            <span className={b("valittujaoppilaita")}>
+              <T
+                id="ilmoittaminen_drawer__valittuja_oppilaita"
+                params={{ määrä: selected.length }}
+              />
+            </span>
+            <RaisedButton disabled={A.isEmpty(selected)}>
+              <T id="ilmoittaminen_drawer__siirry_ilmoittamiseen" />
+            </RaisedButton>
+          </div>
+        </div>
+      </BottomDrawer>
     </>
   ) : (
     <OrganisaatioMissingView />

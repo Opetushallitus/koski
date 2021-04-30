@@ -10,12 +10,11 @@ import {
   WarningIcon,
 } from "../../components/icons/Icon"
 import { ExternalLink } from "../../components/navigation/ExternalLink"
+import { Datum, Value } from "../../components/tables/DataTable"
 import {
-  DataTable,
-  DataTableProps,
-  Datum,
-  Value,
-} from "../../components/tables/DataTable"
+  SelectableDataTable,
+  SelectableDataTableProps,
+} from "../../components/tables/SelectableDataTable"
 import { getLocalized, t, Translation } from "../../i18n/i18n"
 import { HakuSuppeatTiedot, selectByHakutoive } from "../../state/apitypes/haku"
 import {
@@ -44,8 +43,7 @@ import { formatDate, formatNullableDate } from "../../utils/date"
 export type HakutilanneTableProps = {
   data: OppijaHakutilanteillaSuppeatTiedot[]
   organisaatioOid: string
-  onCountChange?: DataTableProps["onCountChange"]
-}
+} & Pick<SelectableDataTableProps, "onCountChange" | "onSelect">
 
 const useOppijaData = (
   organisaatioOid: Oid,
@@ -62,7 +60,7 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
   const data = useOppijaData(props.organisaatioOid, props.data)
 
   return (
-    <DataTable
+    <SelectableDataTable
       storageName="hakutilannetaulu"
       className="hakutilanne"
       columns={[
@@ -102,6 +100,7 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
       ]}
       data={data}
       onCountChange={props.onCountChange}
+      onSelect={props.onSelect}
     />
   )
 }
