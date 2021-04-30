@@ -10,7 +10,7 @@ import {
   WarningIcon,
 } from "../../components/icons/Icon"
 import { ExternalLink } from "../../components/navigation/ExternalLink"
-import { Datum, Value } from "../../components/tables/DataTable"
+import { DataTable, Datum, Value } from "../../components/tables/DataTable"
 import {
   SelectableDataTable,
   SelectableDataTableProps,
@@ -36,6 +36,7 @@ import {
 } from "../../state/apitypes/valpasopiskeluoikeudentila"
 import { useBasePath } from "../../state/basePath"
 import { Oid } from "../../state/common"
+import { isFeatureFlagEnabled } from "../../state/featureFlags"
 import { createOppijaPath } from "../../state/paths"
 import { nonEmptyEvery, nonNull } from "../../utils/arrays"
 import { formatDate, formatNullableDate } from "../../utils/date"
@@ -58,9 +59,12 @@ const useOppijaData = (
 
 export const HakutilanneTable = (props: HakutilanneTableProps) => {
   const data = useOppijaData(props.organisaatioOid, props.data)
+  const TableComponent = isFeatureFlagEnabled("ilmoittaminen")
+    ? SelectableDataTable
+    : DataTable
 
   return (
-    <SelectableDataTable
+    <TableComponent
       storageName="hakutilannetaulu"
       className="hakutilanne"
       columns={[

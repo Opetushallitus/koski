@@ -21,6 +21,7 @@ import {
   OrganisaatioHierarkia,
   OrganisaatioJaKayttooikeusrooli,
 } from "../../state/common"
+import { isFeatureFlagEnabled } from "../../state/featureFlags"
 import {
   createHakutilannePathWithOrg,
   HakutilanneViewRouteProps,
@@ -109,24 +110,26 @@ export const HakutilanneView = (props: HakutilanneViewProps) => {
           )}
         </CardBody>
       </Card>
-      <BottomDrawer>
-        <div className={b("ilmoittaminen")}>
-          <h4 className={b("ilmoittaminentitle")}>
-            <T id="ilmoittaminen_drawer__title" />
-          </h4>
-          <div className={b("ilmoittamisenalarivi")}>
-            <span className={b("valittujaoppilaita")}>
-              <T
-                id="ilmoittaminen_drawer__valittuja_oppilaita"
-                params={{ määrä: selected.length }}
-              />
-            </span>
-            <RaisedButton disabled={A.isEmpty(selected)}>
-              <T id="ilmoittaminen_drawer__siirry_ilmoittamiseen" />
-            </RaisedButton>
+      {isFeatureFlagEnabled("ilmoittaminen") ? (
+        <BottomDrawer>
+          <div className={b("ilmoittaminen")}>
+            <h4 className={b("ilmoittaminentitle")}>
+              <T id="ilmoittaminen_drawer__title" />
+            </h4>
+            <div className={b("ilmoittamisenalarivi")}>
+              <span className={b("valittujaoppilaita")}>
+                <T
+                  id="ilmoittaminen_drawer__valittuja_oppilaita"
+                  params={{ määrä: selected.length }}
+                />
+              </span>
+              <RaisedButton disabled={A.isEmpty(selected)}>
+                <T id="ilmoittaminen_drawer__siirry_ilmoittamiseen" />
+              </RaisedButton>
+            </div>
           </div>
-        </div>
-      </BottomDrawer>
+        </BottomDrawer>
+      ) : null}
     </>
   ) : (
     <OrganisaatioMissingView />
