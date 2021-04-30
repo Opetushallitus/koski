@@ -29,8 +29,13 @@ export const ArvosanaEditor = ({model, notFoundText}) => {
 
   const arviointiItems = modelItems(arvioinnitModel)
 
+
   let addItem = () => {
-    pushModel(contextualizeSubModel(arvioinnitModel.arrayPrototype, arvioinnitModel, arviointiItems.length))
+    console.log("adding item")
+
+    let contextualized = contextualizeSubModel(arvioinnitModel.arrayPrototype, arvioinnitModel, arviointiItems.length)
+    console.log(contextualized)
+    pushModel(contextualized)
   }
 
   const suorituksenTyyppi = modelData(model, 'tyyppi').koodiarvo
@@ -45,7 +50,7 @@ export const ArvosanaEditor = ({model, notFoundText}) => {
              {YksittainenArviointipaiva(m)}
              <br/>
              <span>
-               <a className="remove-value" style={{position:"static"}} onClick={() => resetOptionalModel(m, undefined)}>Poista arviointi</a>
+               <a className="remove-value" style={{position:"static"}} onClick={() => {resetOptionalModel(m, undefined); console.log("poistetaan arviointi");}}>Poista arviointi</a>
              </span>
            </div>)
          })
