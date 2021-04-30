@@ -7,6 +7,7 @@ import { Redirect, useHistory } from "react-router"
 import { fetchOppijat, fetchOppijatCache } from "../../api/api"
 import { useApiWithParams } from "../../api/apiHooks"
 import { isLoading, isSuccess } from "../../api/apiUtils"
+import { BottomDrawer } from "../../components/containers/BottomDrawer"
 import { Card, CardBody, CardHeader } from "../../components/containers/cards"
 import { Dropdown } from "../../components/forms/Dropdown"
 import { Spinner } from "../../components/icons/Spinner"
@@ -105,6 +106,7 @@ export const HakutilanneView = (props: HakutilanneViewProps) => {
           )}
         </CardBody>
       </Card>
+      <BottomDrawer>Hello world</BottomDrawer>
     </>
   ) : (
     <OrganisaatioMissingView />
