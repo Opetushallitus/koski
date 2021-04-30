@@ -123,6 +123,13 @@ trait BaseServlet extends ScalatraServlet with Logging {
       haltWithStatus(KoskiErrorCategory.forbidden(""))
     }
   }
+
+  def callsOnlyFrom(acceptedHosts: List[String]): Unit = {
+    if (!acceptedHosts.contains(request.getRemoteHost)) {
+      logger.error("Kutsu ei ole sallittu osoitteesta: " + request.getRemoteHost)
+      haltWithStatus(KoskiErrorCategory.forbidden(""))
+    }
+  }
 }
 
 trait KoskiSpecificBaseServlet extends BaseServlet {

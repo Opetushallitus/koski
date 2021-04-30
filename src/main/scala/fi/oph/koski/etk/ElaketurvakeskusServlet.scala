@@ -13,13 +13,14 @@ import org.json4s.jackson.JsonMethods
 import org.scalatra.servlet.FileUploadSupport
 
 import scala.io.{BufferedSource, Source}
+import scala.collection.JavaConverters._
 
 class ElaketurvakeskusServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with FileUploadSupport with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache {
 
   val elaketurvakeskusService = new ElaketurvakeskusService(application)
 
   before() {
-    noRemoteCalls()
+    callsOnlyFrom(application.config.getStringList("elaketurvakeskus.kutsutSallittuOsoitteesta").asScala.toList)
   }
 
   post("/") {
