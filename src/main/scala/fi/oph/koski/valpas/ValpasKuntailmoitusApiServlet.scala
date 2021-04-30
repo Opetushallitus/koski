@@ -30,11 +30,13 @@ class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication)
 
   private def extractAndValidateKuntailmoitus = (kuntailmoitusInputJson: JValue) => {
     validatingAndResolvingExtractor.extract[ValpasKuntailmoitusLaajatTiedotJaOppijaOid](kuntailmoitusInputJson)
-      .flatMap(kuntailmoitusInput => Either.cond(!
-        kuntailmoitusInput.kuntailmoitus.id.isDefined,
-        kuntailmoitusInput,
-        ValpasErrorCategory.notImplemented.kuntailmoituksenMuokkaus()
-      ))
+      .flatMap(kuntailmoitusInput =>
+        Either.cond(
+          kuntailmoitusInput.kuntailmoitus.id.isEmpty,
+          kuntailmoitusInput,
+          ValpasErrorCategory.notImplemented.kuntailmoituksenMuokkaus()
+        )
+      )
       .flatMap(kuntailmoitusValidator.validateKuntailmoitusInput)
   }
 
