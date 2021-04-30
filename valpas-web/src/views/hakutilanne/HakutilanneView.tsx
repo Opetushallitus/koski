@@ -11,7 +11,7 @@ import { BottomDrawer } from "../../components/containers/BottomDrawer"
 import { Card, CardBody, CardHeader } from "../../components/containers/cards"
 import { Dropdown } from "../../components/forms/Dropdown"
 import { Spinner } from "../../components/icons/Spinner"
-import { DataTableChangeEvent } from "../../components/tables/DataTable"
+import { DataTableCountChangeEvent } from "../../components/tables/DataTable"
 import { Counter } from "../../components/typography/Counter"
 import { getLocalized, t, T } from "../../i18n/i18n"
 import { useBasePath } from "../../state/basePath"
@@ -60,7 +60,7 @@ export const HakutilanneView = (props: HakutilanneViewProps) => {
     organisaatioOid ? [organisaatioOid] : undefined,
     fetchOppijatCache
   )
-  const [counters, setCounters] = useState<DataTableChangeEvent>({
+  const [counters, setCounters] = useState<DataTableCountChangeEvent>({
     filteredRowCount: 0,
     unfilteredRowCount: 0,
   })
@@ -101,7 +101,7 @@ export const HakutilanneView = (props: HakutilanneViewProps) => {
             <HakutilanneTable
               data={oppijatFetch.data}
               organisaatioOid={organisaatioOid}
-              onChange={setCounters}
+              onCountChange={setCounters}
             />
           )}
         </CardBody>

@@ -44,7 +44,7 @@ import { formatDate, formatNullableDate } from "../../utils/date"
 export type HakutilanneTableProps = {
   data: OppijaHakutilanteillaSuppeatTiedot[]
   organisaatioOid: string
-  onChange?: DataTableProps["onChange"]
+  onCountChange?: DataTableProps["onCountChange"]
 }
 
 const useOppijaData = (
@@ -101,7 +101,7 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
         },
       ]}
       data={data}
-      onChange={props.onChange}
+      onCountChange={props.onCountChange}
     />
   )
 }
