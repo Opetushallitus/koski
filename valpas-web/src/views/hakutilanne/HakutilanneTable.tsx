@@ -47,15 +47,19 @@ export type HakutilanneTableProps = {
   onChange?: DataTableProps["onChange"]
 }
 
-export const HakutilanneTable = (props: HakutilanneTableProps) => {
+const useOppijaData = (
+  organisaatioOid: Oid,
+  data: OppijaHakutilanteillaSuppeatTiedot[]
+) => {
   const basePath = useBasePath()
-  const data = useMemo(
-    () =>
-      A.flatten(
-        props.data.map(oppijaToTableData(basePath, props.organisaatioOid))
-      ),
-    [props.organisaatioOid, props.data]
+  return useMemo(
+    () => A.flatten(data.map(oppijaToTableData(basePath, organisaatioOid))),
+    [organisaatioOid, data, basePath]
   )
+}
+
+export const HakutilanneTable = (props: HakutilanneTableProps) => {
+  const data = useOppijaData(props.organisaatioOid, props.data)
 
   return (
     <DataTable

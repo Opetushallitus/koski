@@ -32,7 +32,7 @@ export const sessionStateStorage = <S, T>(
 export const useStoredState = <S>(
   storage: StateStorage<S>
 ): [S, Dispatch<SetStateAction<S>>] => {
-  const initialState = useMemo(() => storage.get(), [])
+  const initialState = useMemo(() => storage.get(), [storage])
 
   const [state, setState] = useState(initialState)
 

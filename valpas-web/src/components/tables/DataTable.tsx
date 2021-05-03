@@ -108,28 +108,9 @@ export const DataTable = (props: DataTableProps) => {
     return A.sortBy([ordDatum])(filteredData)
   }, [sortColumnIndex, sortAscending, filteredData])
 
-  useEffect(() => {
-    props.onChange?.({
-      filteredRowCount: sortedData.length,
-      unfilteredRowCount: props.data.length,
-    })
-  }, [sortedData, props.onChange])
+  useEmitCountChanges(props.data, sortedData, props.onChange)
 
-  const optionsForFilters = useMemo(
-    () =>
-      props.columns.map((col, index) =>
-        dataFilterUsesValueList(col.filter)
-          ? pipe(
-              props.data,
-              A.chain(selectFilterValues(index)),
-              A.map(toFilterableString),
-              A.uniq(string.Eq),
-              A.sortBy([string.Ord])
-            )
-          : []
-      ),
-    [props.data]
-  )
+  const optionsForFilters = useOptionsForFilters(props.columns, props.data)
 
   const sortByColumn = (index: number) => {
     if (index === sortColumnIndex) {
@@ -227,6 +208,40 @@ export const DataTable = (props: DataTableProps) => {
       </TableBody>
     </Table>
   )
+}
+
+const useOptionsForFilters = (columns: Column[], data: Datum[]) => {
+  return useMemo(
+    () =>
+      columns.map((col, index) =>
+        dataFilterUsesValueList(col.filter)
+          ? pipe(
+              data,
+              A.chain(selectFilterValues(index)),
+              A.map(toFilterableString),
+              A.uniq(string.Eq),
+              A.sortBy([string.Ord])
+            )
+          : []
+      ),
+    [columns, data]
+  )
+}
+
+const useEmitCountChanges = (
+  data: Datum[],
+  sortedData: Datum[],
+  onChange?: (event: DataTableChangeEvent) => void
+) => {
+  const filteredRowCount = sortedData.length
+  const unfilteredRowCount = data.length
+
+  useEffect(() => {
+    onChange?.({
+      filteredRowCount,
+      unfilteredRowCount,
+    })
+  }, [filteredRowCount, unfilteredRowCount, onChange])
 }
 
 type SortIndicatorProps = {
