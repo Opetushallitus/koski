@@ -35,7 +35,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
   "Kuntailmoituksen tekeminen minimi-inputilla toimii" in {
     val minimiKuntailmoitus = teeMinimiKuntailmoitusInput()
 
-    put("/valpas/api/kuntailmoitus", body = minimiKuntailmoitus, headers = authHeaders() ++ jsonContent) {
+    post("/valpas/api/kuntailmoitus", body = minimiKuntailmoitus, headers = authHeaders() ++ jsonContent) {
       verifyResponseStatusOk()
     }
   }
@@ -43,7 +43,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
   "Kuntailmoituksen tekeminen täydellä inputilla toimii" in {
     val kuntailmoitusInput = teeKuntailmoitusInputKaikillaTiedoilla()
 
-    put("/valpas/api/kuntailmoitus", body = kuntailmoitusInput, headers = authHeaders() ++ jsonContent) {
+    post("/valpas/api/kuntailmoitus", body = kuntailmoitusInput, headers = authHeaders() ++ jsonContent) {
       verifyResponseStatusOk()
     }
   }
@@ -51,7 +51,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
   "Kuntailmoituksen ilmoituspäivä lisätään ilmoitukseen" in {
     val minimiKuntailmoitusInput = teeMinimiKuntailmoitusInput()
 
-    put("/valpas/api/kuntailmoitus", body = minimiKuntailmoitusInput, headers = authHeaders() ++ jsonContent) {
+    post("/valpas/api/kuntailmoitus", body = minimiKuntailmoitusInput, headers = authHeaders() ++ jsonContent) {
       verifyResponseStatusOk()
 
       val responseKuntailmoitus = JsonSerializer.parse[ValpasKuntailmoitusLaajatTiedot](response.body)
@@ -68,7 +68,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
       tekijäPuhelinnumero = "050 999 9999"
     )
 
-    put("/valpas/api/kuntailmoitus", body = kuntailmoitusInput, headers = authHeaders() ++ jsonContent) {
+    post("/valpas/api/kuntailmoitus", body = kuntailmoitusInput, headers = authHeaders() ++ jsonContent) {
       verifyResponseStatusOk()
 
       val responseKuntailmoitus = JsonSerializer.parse[ValpasKuntailmoitusLaajatTiedot](response.body)
@@ -88,7 +88,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
   "Kuntailmoituksen tekijäorganisaation ja kunnan tiedot haetaan" in {
     val minimiKuntailmoitusInput = teeMinimiKuntailmoitusInput()
 
-    put("/valpas/api/kuntailmoitus", body = minimiKuntailmoitusInput, headers = authHeaders() ++ jsonContent) {
+    post("/valpas/api/kuntailmoitus", body = minimiKuntailmoitusInput, headers = authHeaders() ++ jsonContent) {
       verifyResponseStatusOk()
 
       val responseKuntailmoitus = JsonSerializer.parse[ValpasKuntailmoitusLaajatTiedot](response.body)
@@ -129,7 +129,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
          |}
          |""".stripMargin
 
-    put("/valpas/api/kuntailmoitus", body = minimiKuntailmoitusRuotsilla, headers = authHeaders() ++ jsonContent) {
+    post("/valpas/api/kuntailmoitus", body = minimiKuntailmoitusRuotsilla, headers = authHeaders() ++ jsonContent) {
       verifyResponseStatusOk()
 
       val responseKuntailmoitus = JsonSerializer.parse[ValpasKuntailmoitusLaajatTiedot](response.body)
@@ -143,7 +143,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
   "Kuntailmoituksen tekeminen luo rivin auditlogiin" in {
     val kuntailmoitusInput = teeKuntailmoitusInputKaikillaTiedoilla()
 
-    put("/valpas/api/kuntailmoitus", body = kuntailmoitusInput, headers = authHeaders() ++ jsonContent) {
+    post("/valpas/api/kuntailmoitus", body = kuntailmoitusInput, headers = authHeaders() ++ jsonContent) {
       AuditLogTester.verifyAuditLogMessage(Map(
         "operation" -> ValpasOperation.VALPAS_OPPIJA_KUNTAILMOITUS.toString,
         "target" -> Map(
@@ -159,7 +159,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
 
     val kuntailmoitusInput = teeKuntailmoitusInputKaikillaTiedoilla()
 
-    put("/valpas/api/kuntailmoitus", body = kuntailmoitusInput, headers = authHeaders() ++ jsonContent) {
+    post("/valpas/api/kuntailmoitus", body = kuntailmoitusInput, headers = authHeaders() ++ jsonContent) {
       verifyResponseStatus(400, ValpasErrorCategory.validation.kuntailmoituksenIlmoituspäivä())
     }
   }
@@ -171,7 +171,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
         |  }
         |}""".stripMargin
 
-    put("/valpas/api/kuntailmoitus", body = invalidJson, headers = authHeaders() ++ jsonContent) {
+    post("/valpas/api/kuntailmoitus", body = invalidJson, headers = authHeaders() ++ jsonContent) {
       verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.json("Epäkelpo JSON-dokumentti"))
     }
   }
@@ -191,7 +191,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
         |}
         |""".stripMargin
 
-    put("/valpas/api/kuntailmoitus", body = minimikuntailmoitusIlmanKuntaa, headers = authHeaders() ++ jsonContent) {
+    post("/valpas/api/kuntailmoitus", body = minimikuntailmoitusIlmanKuntaa, headers = authHeaders() ++ jsonContent) {
       verifyResponseStatus(
         400,
         ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*kuntailmoitus.kunta.*missingProperty.*".r)
@@ -218,7 +218,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
          |}
          |""".stripMargin
 
-    put("/valpas/api/kuntailmoitus", body = minimiKuntailmoitusJossaId, headers = authHeaders() ++ jsonContent) {
+    post("/valpas/api/kuntailmoitus", body = minimiKuntailmoitusJossaId, headers = authHeaders() ++ jsonContent) {
       verifyResponseStatus(501, ValpasErrorCategory.notImplemented.kuntailmoituksenMuokkaus())
     }
   }
@@ -227,7 +227,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
     val minimikuntailmoitusVirheelliselläKuntaOidilla =
       teeMinimiKuntailmoitusInput(kuntaOid = "1.2.246.562.10.999999111000")
 
-    put("/valpas/api/kuntailmoitus",
+    post("/valpas/api/kuntailmoitus",
       body = minimikuntailmoitusVirheelliselläKuntaOidilla,
       headers = authHeaders() ++ jsonContent
     ) {
@@ -245,7 +245,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
     val minimikuntailmoitusVirheelliselläOppilaitosOidilla =
       teeMinimiKuntailmoitusInput(tekijäOid = "1.2.246.562.10.999999111000")
 
-    put("/valpas/api/kuntailmoitus",
+    post("/valpas/api/kuntailmoitus",
       body = minimikuntailmoitusVirheelliselläOppilaitosOidilla,
       headers = authHeaders() ++ jsonContent
     ) {
@@ -263,7 +263,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
     val minimikuntailmoitusKäyttäenMuutaKuinKuntaaKohteena =
       teeMinimiKuntailmoitusInput(kuntaOid = MockOrganisaatiot.jyväskylänNormaalikoulu)
 
-    put("/valpas/api/kuntailmoitus",
+    post("/valpas/api/kuntailmoitus",
       body = minimikuntailmoitusKäyttäenMuutaKuinKuntaaKohteena,
       headers = authHeaders() ++ jsonContent
     ) {
@@ -282,7 +282,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
     val minimikuntailmoitusKäyttäenMuutaKuinKuntaaKohteena =
       teeMinimiKuntailmoitusInput(tekijäOid = MockOrganisaatiot.helsinginKaupunki)
 
-    put("/valpas/api/kuntailmoitus",
+    post("/valpas/api/kuntailmoitus",
       body = minimikuntailmoitusKäyttäenMuutaKuinKuntaaKohteena,
       headers = authHeaders() ++ jsonContent
     ) {
@@ -299,7 +299,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
     val minimikuntailmoitusKäyttäenMuutaKuinKuntaaKohteena =
       teeMinimiKuntailmoitusInput(tekijäOid = MockOrganisaatiot.lehtikuusentienToimipiste)
 
-    put("/valpas/api/kuntailmoitus",
+    post("/valpas/api/kuntailmoitus",
       body = minimikuntailmoitusKäyttäenMuutaKuinKuntaaKohteena,
       headers = authHeaders() ++ jsonContent
     ) {
@@ -333,7 +333,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
          |}
          |""".stripMargin
 
-    put("/valpas/api/kuntailmoitus",
+    post("/valpas/api/kuntailmoitus",
       body = minimiKuntailmoitusJossaTekijänOid,
       headers = authHeaders() ++ jsonContent
     ) {
@@ -366,7 +366,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
          |}
          |""".stripMargin
 
-    put("/valpas/api/kuntailmoitus",
+    post("/valpas/api/kuntailmoitus",
       body = minimiKuntailmoitusEpäkelvollaYhteydenottokielellä,
       headers = authHeaders() ++ jsonContent) {
       verifyResponseStatus(
@@ -382,7 +382,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
   "Kuntailmoituksen tekeminen ilman oikeuksia tekijäorganisaatioon palauttaa virheen" in {
     val minimikuntailmoitus = teeMinimiKuntailmoitusInput()
 
-    put("/valpas/api/kuntailmoitus",
+    post("/valpas/api/kuntailmoitus",
       body = minimikuntailmoitus,
       headers = authHeaders(ValpasMockUsers.valpasAapajoenKoulu) ++ jsonContent
     ) {
@@ -399,7 +399,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
     val minimikuntailmoitusAapajoenOppilaasta =
       teeMinimiKuntailmoitusInput(oppijaOid = ValpasMockOppijat.aapajoenPeruskoulustaValmistunut.oid)
 
-    put("/valpas/api/kuntailmoitus",
+    post("/valpas/api/kuntailmoitus",
       body = minimikuntailmoitusAapajoenOppilaasta,
       headers = authHeaders() ++ jsonContent) {
       verifyResponseStatus(
@@ -412,7 +412,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
     val minimikuntailmoitusJyväskylänEsikoululaisesta =
       teeMinimiKuntailmoitusInput(oppijaOid = ValpasMockOppijat.kulosaarenYsiluokkalainenJaJyväskylänEsikoululainen.oid)
 
-    put("/valpas/api/kuntailmoitus",
+    post("/valpas/api/kuntailmoitus",
       body = minimikuntailmoitusJyväskylänEsikoululaisesta,
       headers = authHeaders(ValpasMockUsers.valpasUseampiPeruskoulu) ++ jsonContent
     ) {
@@ -429,7 +429,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
     val minimikuntailmoitusJyväskylänNivelvaiheisesta =
       teeMinimiKuntailmoitusInput(oppijaOid = ValpasMockOppijat.kulosaarenYsiluokkalainenJaJyväskylänNivelvaiheinen.oid)
 
-    put("/valpas/api/kuntailmoitus",
+    post("/valpas/api/kuntailmoitus",
       body = minimikuntailmoitusJyväskylänNivelvaiheisesta,
       headers = authHeaders(ValpasMockUsers.valpasUseampiPeruskoulu) ++ jsonContent
     ) {
@@ -446,7 +446,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
     val minimikuntailmoitusJyväskylänLukiolaisesta =
       teeMinimiKuntailmoitusInput(oppijaOid = ValpasMockOppijat.kulosaarenYsiluokkalainenJaJyväskylänLukiolainen.oid)
 
-    put("/valpas/api/kuntailmoitus",
+    post("/valpas/api/kuntailmoitus",
       body = minimikuntailmoitusJyväskylänLukiolaisesta,
       headers = authHeaders(ValpasMockUsers.valpasUseampiPeruskoulu) ++ jsonContent
     ) {
@@ -460,7 +460,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
   "Kuntailmoituksen tekeminen hakeutumisen valvojana oppijalle, jonka opiskelupaikkaan ei ole hakeutumisen valvonnan oikeuksia, palauttaa virheen" in {
     val minimiKuntailmoitus = teeMinimiKuntailmoitusInput()
 
-    put("/valpas/api/kuntailmoitus",
+    post("/valpas/api/kuntailmoitus",
       body = minimiKuntailmoitus,
       headers = authHeaders(ValpasMockUsers.valpasPelkkäMaksuttomuuskäyttäjä) ++ jsonContent
     ) {
@@ -476,7 +476,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
   "Kuntailmoituksen voi tehdä globaaleilla käyttöoikeuksilla kenelle vain oppijalle minkä vaan organisaation nimissä" in {
     val minimiKuntailmoitus = teeMinimiKuntailmoitusInput()
 
-    put("/valpas/api/kuntailmoitus",
+    post("/valpas/api/kuntailmoitus",
       body = minimiKuntailmoitus,
       headers = authHeaders(ValpasMockUsers.valpasOphPääkäyttäjä) ++ jsonContent
     ) {

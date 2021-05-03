@@ -19,7 +19,7 @@ class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication)
   private lazy val kuntailmoitusService = application.valpasKuntailmoitusService
   private lazy val validatingAndResolvingExtractor = application.validatingAndResolvingExtractor
 
-  put("/") { // TODO: Ei idempotentti - pitäisi olla post
+  post("/") {
     withJsonBody { (kuntailmoitusInputJson: JValue) =>
       val result: Either[HttpStatus, ValpasKuntailmoitusLaajatTiedot] =
         extractAndValidateKuntailmoitus(kuntailmoitusInputJson)
