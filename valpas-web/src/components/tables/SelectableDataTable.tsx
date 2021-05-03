@@ -5,19 +5,35 @@ import {
   Column,
   DataTable,
   DataTableProps as DataTableProps,
+  DatumKey,
+  equalKeys,
 } from "./DataTable"
 
 export type SelectableDataTableProps = DataTableProps & {
-  onSelect: (selectedKeys: string[]) => void
+  /**
+   * Valintojen muuttuessa palauttaa taulukon valittujen rivien avaimista.
+   */
+  onSelect: (selectedKeys: DatumKey[]) => void
+
+  /**
+   * Oletuksena SelectableDataTable käsittelee jokaista rivin valintaa uniikkina valintana.
+   * Antamalla oman löysemmän vertailuehdon saadaan valittua myös rivin vertaisrivit
+   * (esim. hakutilannetaulusta valitaan kaikki muutkin rivit, joilla on sama oppija oid, kuin valitulla rivillä).
+   *
+   * Tämä vaikuttaa ainoastaan rivien automaattiseen valintaan; onSelectin palauttamia avaimia ei siis aggregoida.
+   */
+  peerEquality?: (a: DatumKey) => (b: DatumKey) => boolean
 }
 
 export const SelectableDataTable = ({
   data,
   columns,
   onSelect,
+  peerEquality: equalForSelection,
   ...rest
 }: SelectableDataTableProps) => {
-  const [selectedKeys, setSelectedKeys] = useState<string[]>([])
+  const [selectedKeys, setSelectedKeys] = useState<DatumKey[]>([])
+  const equals = equalForSelection || equalKeys
 
   const dataWithCheckboxes = data.map((datum) => ({
     ...datum,
@@ -26,11 +42,14 @@ export const SelectableDataTable = ({
           ...datum.values[0],
           icon: (
             <Checkbox
-              value={selectedKeys.includes(datum.key)}
+              value={selectedKeys.some(equals(datum.key))}
               onChange={(selected) => {
-                const newKeys = selected
-                  ? [...selectedKeys, datum.key]
-                  : selectedKeys.filter((key) => key !== datum.key)
+                const newKeys: DatumKey[] = selected
+                  ? [
+                      ...selectedKeys,
+                      ...data.map((d) => d.key).filter(equals(datum.key)),
+                    ]
+                  : selectedKeys.filter((key) => !equals(key)(datum.key))
                 setSelectedKeys(newKeys)
                 onSelect(newKeys)
               }}

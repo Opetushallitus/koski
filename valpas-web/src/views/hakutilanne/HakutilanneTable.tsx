@@ -1,7 +1,8 @@
 import * as A from "fp-ts/lib/Array"
-import { pipe } from "fp-ts/lib/function"
+import { flow, pipe } from "fp-ts/lib/function"
 import { isNonEmpty, NonEmptyArray } from "fp-ts/lib/NonEmptyArray"
 import * as O from "fp-ts/lib/Option"
+import * as string from "fp-ts/string"
 import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
 import {
@@ -10,7 +11,12 @@ import {
   WarningIcon,
 } from "../../components/icons/Icon"
 import { ExternalLink } from "../../components/navigation/ExternalLink"
-import { DataTable, Datum, Value } from "../../components/tables/DataTable"
+import {
+  DataTable,
+  Datum,
+  DatumKey,
+  Value,
+} from "../../components/tables/DataTable"
 import {
   SelectableDataTable,
   SelectableDataTableProps,
@@ -44,7 +50,8 @@ import { formatDate, formatNullableDate } from "../../utils/date"
 export type HakutilanneTableProps = {
   data: OppijaHakutilanteillaSuppeatTiedot[]
   organisaatioOid: string
-} & Pick<SelectableDataTableProps, "onCountChange" | "onSelect">
+  onSelect: (oppijaOids: Oid[]) => void
+} & Pick<SelectableDataTableProps, "onCountChange">
 
 const useOppijaData = (
   organisaatioOid: Oid,
@@ -104,10 +111,28 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
       ]}
       data={data}
       onCountChange={props.onCountChange}
-      onSelect={props.onSelect}
+      peerEquality={oppijaOidsEqual}
+      onSelect={(keys) =>
+        props.onSelect(hakutilanneKeysToOppijaOids(keys as HakutilanneKey[]))
+      }
     />
   )
 }
+
+/** Tuple: [Oppijan oid, Opiskeluoikeuden oid] */
+type HakutilanneKey = [Oid, Oid]
+
+const createHakutilanneKey = (
+  oppija: OppijaHakutilanteillaSuppeatTiedot,
+  opiskeluoikeus: OpiskeluoikeusSuppeatTiedot
+): HakutilanneKey => [oppija.oppija.henkilö.oid, opiskeluoikeus.oid]
+
+const hakutilanneKeysToOppijaOids = flow(
+  A.map((key: HakutilanneKey) => key[0]),
+  A.uniq(string.Eq)
+)
+
+const oppijaOidsEqual = (a: DatumKey) => (b: DatumKey) => a[0] === b[0]
 
 const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
   oppija: OppijaHakutilanteillaSuppeatTiedot
@@ -118,7 +143,7 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
     organisaatioOid,
     oppija.oppija.opiskeluoikeudet
   ).map((opiskeluoikeus) => ({
-    key: opiskeluoikeus.oid,
+    key: createHakutilanneKey(oppija, opiskeluoikeus),
     values: [
       {
         value: `${henkilö.sukunimi} ${henkilö.etunimet}`,

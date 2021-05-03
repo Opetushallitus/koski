@@ -66,7 +66,7 @@ export const HakutilanneView = (props: HakutilanneViewProps) => {
     filteredRowCount: 0,
     unfilteredRowCount: 0,
   })
-  const [selected, setSelected] = useState<string[]>([])
+  const [selected, setSelected] = useState<Oid[]>([])
 
   const orgOptions = getOrgOptions(organisaatiot)
 
@@ -77,7 +77,7 @@ export const HakutilanneView = (props: HakutilanneViewProps) => {
   }
 
   return organisaatioOid ? (
-    <>
+    <div className={b("view")}>
       <Dropdown
         selectorId="organisaatiovalitsin"
         containerClassName={b("organisaatiovalitsin")}
@@ -130,7 +130,7 @@ export const HakutilanneView = (props: HakutilanneViewProps) => {
           </div>
         </BottomDrawer>
       ) : null}
-    </>
+    </div>
   ) : (
     <OrganisaatioMissingView />
   )
