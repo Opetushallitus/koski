@@ -127,7 +127,7 @@ const HaunNimi = (props: HaunNimiProps) => {
 }
 
 const hakutoiveToTableValue = (hakutoive: Hakutoive, index: number): Datum => ({
-  key: index.toString(),
+  key: [index.toString()],
   values: [
     {
       value:
