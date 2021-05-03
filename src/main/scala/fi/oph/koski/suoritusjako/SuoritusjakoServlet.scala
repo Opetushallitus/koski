@@ -1,8 +1,6 @@
 package fi.oph.koski.suoritusjako
 
 
-import java.time.LocalDate
-
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.{EditorApiServlet, EditorModel}
 import fi.oph.koski.json.JsonSerializer
@@ -11,8 +9,9 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.omattiedot.OmatTiedotEditorModel
 import fi.oph.koski.schema.KoskiSchema.deserializationContext
 import fi.oph.koski.servlet.NoCache
-import fi.oph.koski.validation.ValidatingAndResolvingExtractor
 import org.json4s.JValue
+
+import java.time.LocalDate
 import scala.reflect.runtime.universe.TypeTag
 
 class SuoritusjakoServlet(implicit val application: KoskiApplication) extends EditorApiServlet with KoskiSpecificAuthenticationSupport with Logging with NoCache {
@@ -73,7 +72,7 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ed
   private def user = koskiSessionOption.get
 
   private def extract[T: TypeTag](body: JValue) = {
-    ValidatingAndResolvingExtractor.extract[T](body, deserializationContext.copy(allowEmptyStrings = true))
+    application.validatingAndResolvingExtractor.extract[T](body, deserializationContext.copy(allowEmptyStrings = true))
   }
 }
 

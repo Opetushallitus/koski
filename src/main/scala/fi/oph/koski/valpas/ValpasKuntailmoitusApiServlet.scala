@@ -3,17 +3,21 @@ package fi.oph.koski.valpas
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.servlet.NoCache
-import fi.oph.koski.validation.{ValidatingAndResolvingExtractor, ValidationAndResolvingContext}
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusLaajatTiedotJaOppijaOid}
 import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
 import org.json4s._
 
-class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with RequiresValpasSession {
+class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication)
+  extends ValpasApiServlet
+    with NoCache
+    with RequiresValpasSession {
+
   private lazy val koodistoViitePalvelu = application.koodistoViitePalvelu
   private lazy val organisaatioRepository = application.organisaatioRepository
   private lazy val kuntailmoitusValidator = application.valpasKuntailmoitusInputValidator
   private lazy val kuntailmoitusService = application.valpasKuntailmoitusService
+  private lazy val validatingAndResolvingExtractor = application.validatingAndResolvingExtractor
 
   put("/") {
     withJsonBody { (kuntailmoitusInputJson: JValue) =>
@@ -25,13 +29,7 @@ class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication) 
   }
 
   private def extractAndValidateKuntailmoitus = (kuntailmoitusInputJson: JValue) => {
-    val extractionResult: Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
-      ValidatingAndResolvingExtractor.extract[ValpasKuntailmoitusLaajatTiedotJaOppijaOid](
-        kuntailmoitusInputJson,
-        ValidationAndResolvingContext(koodistoViitePalvelu, organisaatioRepository)
-      )
-    }
-    extractionResult
+    validatingAndResolvingExtractor.extract[ValpasKuntailmoitusLaajatTiedotJaOppijaOid](kuntailmoitusInputJson)
       .flatMap(kuntailmoitusInput => Either.cond(!
         kuntailmoitusInput.kuntailmoitus.id.isDefined,
         kuntailmoitusInput,
@@ -39,7 +37,6 @@ class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication) 
       ))
       .flatMap(kuntailmoitusValidator.validateKuntailmoitusInput)
   }
-
 
   private def handleUnparseableJson(status: HttpStatus) = {
     haltWithStatus(status)

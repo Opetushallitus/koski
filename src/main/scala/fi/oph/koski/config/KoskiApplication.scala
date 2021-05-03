@@ -25,17 +25,18 @@ import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotIndexer, Opiskeluoik
 import fi.oph.koski.pulssi.{KoskiPulssi, PrometheusRepository}
 import fi.oph.koski.raportointikanta.{Public, RaportointiDatabase, RaportointikantaService}
 import fi.oph.koski.schedule.{KoskiScheduledTasks, PerustiedotSyncScheduler}
+import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.sso.KoskiSessionRepository
 import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoRepositoryV2, SuoritusjakoService, SuoritusjakoServiceV2}
 import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.userdirectory.DirectoryClient
-import fi.oph.koski.validation.KoskiValidator
-import fi.oph.koski.valpas.{ValpasKuntailmoitusInputValidator, ValpasKuntailmoitusService, ValpasOppijaService}
+import fi.oph.koski.validation.{KoskiValidator, ValidatingAndResolvingExtractor}
 import fi.oph.koski.valpas.db.ValpasDatabase
 import fi.oph.koski.valpas.hakukooste.ValpasHakukoosteService
 import fi.oph.koski.valpas.localization.ValpasLocalizationConfig
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
+import fi.oph.koski.valpas.{ValpasKuntailmoitusInputValidator, ValpasKuntailmoitusService, ValpasOppijaService}
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
 import fi.oph.koski.ytr.{YtrAccessChecker, YtrClient, YtrOpiskeluoikeusRepository, YtrRepository}
 
@@ -62,6 +63,11 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val oppilaitosRepository = OppilaitosRepository(config, organisaatioRepository)
   lazy val koodistoPalvelu = KoodistoPalvelu.apply(config)
   lazy val koodistoViitePalvelu = KoodistoViitePalvelu(koodistoPalvelu)
+  lazy val validatingAndResolvingExtractor = new ValidatingAndResolvingExtractor(
+    koodistoViitePalvelu,
+    organisaatioRepository,
+    KoskiSchema.deserializationContext
+  )
   lazy val opintopolkuHenkilöFacade = OpintopolkuHenkilöFacade(config, masterDatabase.db, perustiedotRepository, perustiedotIndexer)
   lazy val käyttöoikeusRepository = new KäyttöoikeusRepository(organisaatioRepository, directoryClient)
   lazy val masterDatabase = KoskiDatabase.master(config)
@@ -86,7 +92,16 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val opiskeluoikeusRepository = new CompositeOpiskeluoikeusRepository(possu, virta, ytr)
   lazy val opiskeluoikeusRepositoryV2 = new CompositeOpiskeluoikeusRepository(possuV2, virta, ytr)
   lazy val opiskeluoikeusQueryRepository = new OpiskeluoikeusQueryService(replicaDatabase.db)
-  lazy val validator: KoskiValidator = new KoskiValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository, possu, henkilöRepository, ePerusteet, config)
+  lazy val validator: KoskiValidator = new KoskiValidator(
+    tutkintoRepository,
+    koodistoViitePalvelu,
+    organisaatioRepository,
+    possu,
+    henkilöRepository,
+    ePerusteet,
+    validatingAndResolvingExtractor,
+    config
+  )
   lazy val elasticSearch = ElasticSearch(config)
   lazy val perustiedotIndexer = new OpiskeluoikeudenPerustiedotIndexer(elasticSearch, opiskeluoikeusQueryRepository, perustiedotSyncRepository)
   lazy val perustiedotRepository = new OpiskeluoikeudenPerustiedotRepository(perustiedotIndexer, opiskeluoikeusQueryRepository)

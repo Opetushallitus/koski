@@ -2,10 +2,10 @@ package fi.oph.koski.db
 
 import java.sql.{Date, Timestamp}
 import java.time.LocalDateTime
-
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.json.JsonManipulation.removeFields
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
+import fi.oph.koski.schema.KoskiSchema.skipSyntheticProperties
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.extraction.ValidationError
 import fi.oph.scalaschema.{Serializer, _}
@@ -34,8 +34,6 @@ object KoskiTables {
   }
 
   object OpiskeluoikeusTable {
-    private def skipSyntheticProperties(s: ClassSchema, p: Property) = if (p.synthetic) Nil else List(p)
-
     private val serializationContext = SerializationContext(KoskiSchema.schemaFactory, skipSyntheticProperties)
     private val fieldsToExcludeInJson = Set("oid", "versionumero", "aikaleima")
     private implicit val deserializationContext = ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
