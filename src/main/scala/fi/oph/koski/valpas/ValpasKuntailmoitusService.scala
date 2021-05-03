@@ -2,10 +2,9 @@ package fi.oph.koski.valpas
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.log.{AuditLog, KoskiMessageField, Logging}
+import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Timing
-import fi.oph.koski.valpas.log.{ValpasAuditLogMessage, ValpasOperation}
-import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusLaajatTiedotJaOppijaOid, ValpasKuntailmoitusQueryService, ValpasKuntailmoitusSuppeatTiedot}
+import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedotJaOppijaOid, ValpasKuntailmoitusQueryService}
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
 class ValpasKuntailmoitusService(
@@ -19,7 +18,7 @@ class ValpasKuntailmoitusService(
   def createKuntailmoitus
     (kuntailmoitusInput: ValpasKuntailmoitusLaajatTiedotJaOppijaOid)
     (implicit session: ValpasSession)
-  : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedot] = {
+  : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
     val organisaatioOid = kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio.oid
 
     accessResolver.organisaatiohierarkiaOids(Set(organisaatioOid))
@@ -30,17 +29,5 @@ class ValpasKuntailmoitusService(
           .left.map(_ => ValpasErrorCategory.forbidden.oppija("Käyttäjällä ei ole oikeuksia tehdä kuntailmoitusta annetusta oppijasta"))
       )
       .flatMap(_ => queryService.create(kuntailmoitusInput))
-      .map(_.kuntailmoitus)
-      .map(withAuditLogOppijaKuntailmoitus(kuntailmoitusInput.oppijaOid))
-  }
-
-  private def withAuditLogOppijaKuntailmoitus(oppijaOid: String)
-                                             (result: ValpasKuntailmoitusLaajatTiedot)
-                                             (implicit session: ValpasSession): ValpasKuntailmoitusLaajatTiedot = {
-    AuditLog.log(ValpasAuditLogMessage(
-      ValpasOperation.VALPAS_OPPIJA_KUNTAILMOITUS,
-      Map(KoskiMessageField.oppijaHenkiloOid -> oppijaOid) // TODO: pitäisikö olla muutakin dataa kuin oppijan oid? Ts. pitäisikö auditlogista näkyä, että mikä oppilaitos/kunta on tehnyt ilmoituksen mihin kuntaan?
-    ))
-    result
   }
 }

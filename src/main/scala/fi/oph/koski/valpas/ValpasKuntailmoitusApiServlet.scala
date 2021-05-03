@@ -2,10 +2,12 @@ package fi.oph.koski.valpas
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.log.{AuditLog, KoskiMessageField}
 import fi.oph.koski.servlet.NoCache
+import fi.oph.koski.valpas.log.{ValpasAuditLogMessage, ValpasOperation}
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusLaajatTiedotJaOppijaOid}
-import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
+import fi.oph.koski.valpas.valpasuser.{RequiresValpasSession, ValpasSession}
 import org.json4s._
 
 class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication)
@@ -21,6 +23,8 @@ class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication)
       val result: Either[HttpStatus, ValpasKuntailmoitusLaajatTiedot] =
         extractAndValidateKuntailmoitus(kuntailmoitusInputJson)
           .flatMap(kuntailmoitusService.createKuntailmoitus)
+          .map(withAuditLogOppijaKuntailmoitus)
+          .map(_.kuntailmoitus)
       renderEither[ValpasKuntailmoitusLaajatTiedot](result)
     }(parseErrorHandler = handleUnparseableJson)
   }
@@ -39,5 +43,18 @@ class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication)
 
   private def handleUnparseableJson(status: HttpStatus) = {
     haltWithStatus(status)
+  }
+
+  private def withAuditLogOppijaKuntailmoitus
+    (result: ValpasKuntailmoitusLaajatTiedotJaOppijaOid)
+    (implicit session: ValpasSession)
+  : ValpasKuntailmoitusLaajatTiedotJaOppijaOid = {
+    AuditLog.log(ValpasAuditLogMessage(
+      ValpasOperation.VALPAS_OPPIJA_KUNTAILMOITUS,
+      // TODO: pitäisikö olla muutakin dataa kuin oppijan oid? Ts. pitäisikö auditlogista näkyä,
+      //  että mikä oppilaitos/kunta on tehnyt ilmoituksen mihin kuntaan?
+      Map(KoskiMessageField.oppijaHenkiloOid -> result.oppijaOid)
+    ))
+    result
   }
 }

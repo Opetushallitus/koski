@@ -4,11 +4,10 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.Yhteystiedot
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.log.{AuditLog, KoskiMessageField, Logging}
+import fi.oph.koski.log.Logging
 import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, ValpasHakukoosteService}
-import fi.oph.koski.valpas.log.{ValpasAuditLogMessage, ValpasOperation}
 import fi.oph.koski.valpas.opiskeluoikeusrepository._
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusSuppeatTiedot}
 import fi.oph.koski.valpas.valpasuser.ValpasSession
@@ -75,7 +74,6 @@ class ValpasOppijaService(
   def getOppijatSuppeatTiedot(oppilaitosOids: Set[ValpasOppilaitos.Oid])(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =
     getOppijatLaajatTiedot(oppilaitosOids)
       .map(_.map(OppijaHakutilanteillaSuppeatTiedot.apply))
-      .map(withAuditLogOppilaitostenKatsominen(oppilaitosOids))
 
   private def getOppijatLaajatTiedot(oppilaitosOids: Set[ValpasOppilaitos.Oid])(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
     val errorClue = oppilaitosOids.size match {
@@ -115,7 +113,6 @@ class ValpasOppijaService(
         )
       )))
       .map(_.validate(koodistoviitepalvelu))
-      .map(withAuditLogOppijaKatsominen)
   }
 
   private def asValpasOppijaLaajatTiedot(dbRow: ValpasOppijaRow): Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
@@ -159,17 +156,16 @@ class ValpasOppijaService(
     } else {
       timed("fetchVirallisetYhteystiedot", 10) {
         oppijanumerorekisteri.findOppijaJaYhteystiedotByOid(oppija.henkilö.oid)
+          .toRight(ValpasErrorCategory.internalError("Virallisten yhteystietojen haku epäonnistui"))
           .map(_.yhteystiedot.flatMap(yt => {
             val alkuperä = koodistoviitepalvelu.validate(yt.alkuperä)
               .filter(_.koodiarvo == "alkupera1") // Filtteröi pois muut kuin VTJ:ltä peräisin olevat yhteystiedot
             val tyyppi = koodistoviitepalvelu.validate(yt.tyyppi)
-            if (alkuperä.isDefined && tyyppi.isDefined) {
-              Some(yt.copy(alkuperä = alkuperä.get, tyyppi = tyyppi.get))
-            } else {
-              None
+            (alkuperä, tyyppi) match {
+              case (Some(alkuperä), Some(tyyppi)) => Some(yt.copy(alkuperä = alkuperä, tyyppi = tyyppi))
+              case _ => None
             }
           }))
-          .toRight(ValpasErrorCategory.internalError())
       }
     }
   }
@@ -182,22 +178,4 @@ class ValpasOppijaService(
         ValpasYhteystiedot.oppijanIlmoittamatYhteystiedot(haku, localizationRepository.get("oppija__yhteystiedot")),
       ))
       .getOrElse(List.empty)
-
-  private def withAuditLogOppijaKatsominen(result: OppijaHakutilanteillaLaajatTiedot)(implicit session: ValpasSession): OppijaHakutilanteillaLaajatTiedot = {
-    AuditLog.log(ValpasAuditLogMessage(
-      ValpasOperation.VALPAS_OPPIJA_KATSOMINEN,
-      Map(KoskiMessageField.oppijaHenkiloOid -> result.oppija.henkilö.oid)
-    ))
-    result
-  }
-
-  private def withAuditLogOppilaitostenKatsominen[T](oppilaitosOids: Set[ValpasOppilaitos.Oid])(result: T)(implicit session: ValpasSession): T = {
-    oppilaitosOids.foreach { oppilaitosOid =>
-      AuditLog.log(ValpasAuditLogMessage(
-        ValpasOperation.VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN,
-        Map(KoskiMessageField.juuriOrganisaatio -> oppilaitosOid)
-      ))
-    }
-    result
-  }
 }
