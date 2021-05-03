@@ -119,6 +119,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
          |    "kunta" : {
          |      "oid" : "${MockOrganisaatiot.helsinginKaupunki}"
          |    },
+         |    "oppijanYhteystiedot" : {},
          |    "yhteydenottokieli" : {
          |      "koodiarvo" : "SV",
          |      "koodistoUri" : "kieli"
@@ -498,7 +499,8 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
        |    },
        |    "kunta" : {
        |      "oid" : "${kuntaOid}"
-       |    }
+       |    },
+       |    "oppijanYhteystiedot" : {}
        |  }
        |}
        |""".stripMargin
@@ -531,7 +533,8 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
        |    },
        |    "kunta" : {
        |      "oid" : "${kuntaOid}"
-       |    }
+       |    },
+       |    "oppijanYhteystiedot" : {}
        |  }
        |}
        |""".stripMargin

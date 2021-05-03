@@ -5,19 +5,20 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.{AuditLog, KoskiMessageField, Logging}
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessage, ValpasOperation}
-import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusLaajatTiedotJaOppijaOid, ValpasKuntailmoitusSuppeatTiedot}
+import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusLaajatTiedotJaOppijaOid, ValpasKuntailmoitusQueryService, ValpasKuntailmoitusSuppeatTiedot}
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
 class ValpasKuntailmoitusService(
   application: KoskiApplication
 ) extends Logging with Timing {
-  private lazy val accessResolver = new ValpasAccessResolver(application.organisaatioRepository)
-  private lazy val oppijaService = application.valpasOppijaService
-  private lazy val valpasRajapäivätService = application.valpasRajapäivätService
+  private val accessResolver = new ValpasAccessResolver(application.organisaatioRepository)
+  private val queryService = new ValpasKuntailmoitusQueryService(application)
+  private val oppijaService = application.valpasOppijaService
 
-  def createKuntailmoitus(
-    kuntailmoitusInput: ValpasKuntailmoitusLaajatTiedotJaOppijaOid,
-  )(implicit session: ValpasSession): Either[HttpStatus, ValpasKuntailmoitusLaajatTiedot] = {
+  def createKuntailmoitus
+    (kuntailmoitusInput: ValpasKuntailmoitusLaajatTiedotJaOppijaOid)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedot] = {
     val organisaatioOid = kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio.oid
 
     accessResolver.organisaatiohierarkiaOids(Set(organisaatioOid))
@@ -27,11 +28,9 @@ class ValpasKuntailmoitusService(
         accessResolver.withOppijaAccessAsOrganisaatio(organisaatioOid)(oppija)
           .left.map(_ => ValpasErrorCategory.forbidden.oppija("Käyttäjällä ei ole oikeuksia tehdä kuntailmoitusta annetusta oppijasta"))
       )
-      .map(_ =>
-        withAuditLogOppijaKuntailmoitus(kuntailmoitusInput.oppijaOid)(
-          kuntailmoitusInput.kuntailmoitus.copy(aikaleima = Some(valpasRajapäivätService.tarkastelupäivä.atTime(8, 0))) // TODO: Oikea toteutus
-        )
-      )
+      .flatMap(_ => queryService.create(kuntailmoitusInput))
+      .map(_.kuntailmoitus)
+      .map(withAuditLogOppijaKuntailmoitus(kuntailmoitusInput.oppijaOid))
   }
 
   private def withAuditLogOppijaKuntailmoitus(oppijaOid: String)
