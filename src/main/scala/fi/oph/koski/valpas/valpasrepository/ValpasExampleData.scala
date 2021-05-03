@@ -74,7 +74,7 @@ object ValpasExampleData {
       postitoimipaikka = None,
       maa = None
     )),
-    hakenutUlkomaille = None
+    hakenutUlkomaille = Some(false)
   )
 
   lazy val suomi = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli"))

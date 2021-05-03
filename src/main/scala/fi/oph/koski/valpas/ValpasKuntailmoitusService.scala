@@ -11,6 +11,7 @@ import fi.oph.koski.valpas.valpasuser.ValpasSession
 class ValpasKuntailmoitusService(
   application: KoskiApplication
 ) extends Logging with Timing {
+
   private val accessResolver = new ValpasAccessResolver(application.organisaatioRepository)
   private val queryService = new ValpasKuntailmoitusQueryService(application)
   private val oppijaService = application.valpasOppijaService

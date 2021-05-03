@@ -71,7 +71,8 @@ object ValpasJsonSchema {
 case class IlmoitusLisätiedotData(
   yhteydenottokieli: Option[ValpasJsonSchema.Koodiarvo],
   oppijaYhteystiedot: OppijaYhteystiedotData,
-  tekijäYhteystiedot: TekijäYhteystiedotData
+  tekijäYhteystiedot: TekijäYhteystiedotData,
+  hakenutUlkomaille: Boolean
 )
 
 case class OppijaYhteystiedotData(

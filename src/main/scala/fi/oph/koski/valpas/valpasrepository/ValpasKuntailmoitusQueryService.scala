@@ -30,6 +30,7 @@ class ValpasKuntailmoitusQueryService(app: KoskiApplication) extends QueryMethod
     for {
       tekijäHenkilö <- data.kuntailmoitus.tekijä.henkilö.toRight(ValpasErrorCategory.internalError("Tekijähenkilö puuttuu"))
       oppijaY <- data.kuntailmoitus.oppijanYhteystiedot.toRight(ValpasErrorCategory.internalError("Oppijan yhteystiedot puuttuvat"))
+      hakenutUlkomaille <- data.kuntailmoitus.hakenutUlkomaille.toRight(ValpasErrorCategory.internalError("'Hakenut ulkomaille' puuttuu"))
     } yield {
       val ilmoitus = IlmoitusRow(
         luotu = app.valpasRajapäivätService.tarkastelupäivä.atTime(LocalTime.now()),
@@ -57,7 +58,8 @@ class ValpasKuntailmoitusQueryService(app: KoskiApplication) extends QueryMethod
               kutsumanimi = tekijäHenkilö.kutsumanimi,
               puhelin = tekijäHenkilö.puhelinnumero,
               sähköposti = tekijäHenkilö.email
-            )
+            ),
+            hakenutUlkomaille = hakenutUlkomaille
           )
         )
       )
@@ -101,7 +103,7 @@ class ValpasKuntailmoitusQueryService(app: KoskiApplication) extends QueryMethod
           postitoimipaikka = li.oppijaYhteystiedot.postitoimipaikka,
           maa = li.oppijaYhteystiedot.maa
         )),
-        hakenutUlkomaille = None // TODO
+        hakenutUlkomaille = Some(li.hakenutUlkomaille)
       )
     )
   }
