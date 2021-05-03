@@ -17,7 +17,6 @@ class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication)
   private lazy val organisaatioRepository = application.organisaatioRepository
   private lazy val kuntailmoitusValidator = application.valpasKuntailmoitusInputValidator
   private lazy val kuntailmoitusService = application.valpasKuntailmoitusService
-  private lazy val validatingAndResolvingExtractor = application.validatingAndResolvingExtractor
 
   post("/") {
     withJsonBody { (kuntailmoitusInputJson: JValue) =>
@@ -28,8 +27,8 @@ class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication)
     }(parseErrorHandler = handleUnparseableJson)
   }
 
-  private def extractAndValidateKuntailmoitus = (kuntailmoitusInputJson: JValue) => {
-    validatingAndResolvingExtractor.extract[ValpasKuntailmoitusLaajatTiedotJaOppijaOid](kuntailmoitusInputJson)
+  private def extractAndValidateKuntailmoitus(kuntailmoitusInputJson: JValue) = {
+    application.validatingAndResolvingExtractor.extract[ValpasKuntailmoitusLaajatTiedotJaOppijaOid](kuntailmoitusInputJson)
       .flatMap(kuntailmoitusInput =>
         Either.cond(
           kuntailmoitusInput.kuntailmoitus.id.isEmpty,
