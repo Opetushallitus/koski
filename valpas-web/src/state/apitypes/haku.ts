@@ -32,7 +32,7 @@ export type HakuSuppeatTiedot = Pick<
 }
 
 export const hakuMuokattuOrd = Ord.contramap(
-  (h: HakuLaajatTiedot) => (h["muokattu"] as ISODate) || "0000-00-00"
+  (h: HakuSuppeatTiedot) => (h["muokattu"] as ISODate) || "0000-00-00"
 )(Ord.reverse(string.Ord))
 
 export const latest = (haut: HakuLaajatTiedot[]) =>

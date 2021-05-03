@@ -9,3 +9,6 @@ export const fromEntries = <T>(entries: [string, T][]): Record<string, T> =>
     }),
     {}
   )
+
+export const isEmptyObject = <T extends object>(obj: T): boolean =>
+  Object.entries(obj).length === 0
