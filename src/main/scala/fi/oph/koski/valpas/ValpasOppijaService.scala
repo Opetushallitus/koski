@@ -7,7 +7,7 @@ import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.log.{AuditLog, KoskiMessageField, Logging}
 import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
 import fi.oph.koski.util.Timing
-import fi.oph.koski.valpas.hakukooste.Hakukooste
+import fi.oph.koski.valpas.hakukooste.{Hakukooste, ValpasHakukoosteService}
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessage, ValpasOperation}
 import fi.oph.koski.valpas.opiskeluoikeusrepository._
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusSuppeatTiedot}
@@ -59,7 +59,7 @@ object OppijaHakutilanteillaSuppeatTiedot {
 class ValpasOppijaService(
   application: KoskiApplication
 ) extends Logging with Timing {
-  private val hakukoosteService = application.valpasHakukoosteService
+  private val hakukoosteService = ValpasHakukoosteService(application.config)
   private val opiskeluoikeusDbService = new ValpasOpiskeluoikeusDatabaseService(application)
   private val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
   private val localizationRepository = application.valpasLocalizationRepository

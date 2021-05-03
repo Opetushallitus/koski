@@ -11,7 +11,6 @@ import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import org.scalatest.Matchers._
 
 class ValpasOppijaServiceSpec extends ValpasTestBase {
-  val hakukoosteService = KoskiApplicationForTests.valpasHakukoosteService
   val oppijaService = KoskiApplicationForTests.valpasOppijaService
   val oppilaitokset = List(MockOrganisaatiot.jyväskylänNormaalikoulu)
 

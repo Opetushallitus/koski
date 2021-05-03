@@ -13,10 +13,8 @@ class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication)
     with NoCache
     with RequiresValpasSession {
 
-  private lazy val koodistoViitePalvelu = application.koodistoViitePalvelu
-  private lazy val organisaatioRepository = application.organisaatioRepository
-  private lazy val kuntailmoitusValidator = application.valpasKuntailmoitusInputValidator
-  private lazy val kuntailmoitusService = application.valpasKuntailmoitusService
+  private lazy val kuntailmoitusValidator = new ValpasKuntailmoitusInputValidator(application)
+  private lazy val kuntailmoitusService = new ValpasKuntailmoitusService(application)
 
   post("/") {
     withJsonBody { (kuntailmoitusInputJson: JValue) =>

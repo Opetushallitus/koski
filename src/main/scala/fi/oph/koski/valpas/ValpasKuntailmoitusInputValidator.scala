@@ -7,10 +7,10 @@ import fi.oph.koski.userdirectory.DirectoryUser
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoituksenTekijäHenkilö, ValpasKuntailmoitusLaajatTiedotJaOppijaOid}
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
-case class ValpasKuntailmoitusInputValidator(application: KoskiApplication) {
-  private lazy val organisaatioRepository = application.organisaatioRepository
-  private lazy val valpasRajapäivätService = application.valpasRajapäivätService
-  private lazy val directoryClient = application.directoryClient
+class ValpasKuntailmoitusInputValidator(application: KoskiApplication) {
+  private val organisaatioRepository = application.organisaatioRepository
+  private val valpasRajapäivätService = application.valpasRajapäivätService
+  private val directoryClient = application.directoryClient
 
   def validateKuntailmoitusInput(kuntailmoitusInput: ValpasKuntailmoitusLaajatTiedotJaOppijaOid)
                                 (implicit user: ValpasSession): Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
