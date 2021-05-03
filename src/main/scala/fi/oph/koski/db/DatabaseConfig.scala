@@ -52,7 +52,7 @@ class ValpasDatabaseConfig(val rootConfig: Config) extends DatabaseConfig {
 
   override protected def databaseSpecificConfig: Config = rootConfig.getConfig("dbs.valpas")
 
-  override def migrationLocations: Option[String] = Some("fi.oph.koski.valpas.db.migration")
+  override def migrationLocations: Option[String] = Some("valpas.migration")
 }
 
 trait DatabaseConfig extends NotLoggable with Logging {
