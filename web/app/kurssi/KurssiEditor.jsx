@@ -82,7 +82,7 @@ export class KurssiEditor extends React.Component {
 
   handleClickOutside(e) {
     let detailsElem = this.kurssiElement.querySelector('.details')
-    if (detailsElem && !detailsElem.contains(e.target)) {
+    if (detailsElem && !detailsElem.contains(e.target) && !['DayPicker-Day', 'remove-item'].includes(e.target.className)) {
       this.removeListeners()
       this.setState({open: false})
     }
