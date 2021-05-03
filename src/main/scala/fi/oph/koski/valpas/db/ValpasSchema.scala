@@ -2,6 +2,7 @@ package fi.oph.koski.valpas.db
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.OrganisaatioWithOid
 import org.json4s.JValue
 
 import java.time.LocalDateTime
@@ -72,6 +73,8 @@ case class IlmoitusLisätiedotData(
   yhteydenottokieli: Option[ValpasJsonSchema.Koodiarvo],
   oppijaYhteystiedot: OppijaYhteystiedotData,
   tekijäYhteystiedot: TekijäYhteystiedotData,
+  tekijäOrganisaatio: OrganisaatioWithOid,
+  kunta: OrganisaatioWithOid,
   hakenutUlkomaille: Boolean
 )
 

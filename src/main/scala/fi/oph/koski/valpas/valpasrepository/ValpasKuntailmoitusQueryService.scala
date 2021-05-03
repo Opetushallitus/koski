@@ -28,9 +28,15 @@ class ValpasKuntailmoitusQueryService(app: KoskiApplication) extends QueryMethod
   private def toDbRows(data: ValpasKuntailmoitusLaajatTiedotJaOppijaOid)(tekijäHenkilöOid: String)
   : Either[HttpStatus, (IlmoitusRow, IlmoitusLisätiedotRow)] = {
     for {
-      tekijäHenkilö <- data.kuntailmoitus.tekijä.henkilö.toRight(ValpasErrorCategory.internalError("Tekijähenkilö puuttuu"))
-      oppijaY <- data.kuntailmoitus.oppijanYhteystiedot.toRight(ValpasErrorCategory.internalError("Oppijan yhteystiedot puuttuvat"))
-      hakenutUlkomaille <- data.kuntailmoitus.hakenutUlkomaille.toRight(ValpasErrorCategory.internalError("'Hakenut ulkomaille' puuttuu"))
+      tekijäHenkilö <- data.kuntailmoitus.tekijä.henkilö.toRight(
+        ValpasErrorCategory.internalError("Tekijähenkilö puuttuu")
+      )
+      oppijaY <- data.kuntailmoitus.oppijanYhteystiedot.toRight(
+        ValpasErrorCategory.internalError("Oppijan yhteystiedot puuttuvat")
+      )
+      hakenutUlkomaille <- data.kuntailmoitus.hakenutUlkomaille.toRight(
+        ValpasErrorCategory.internalError("'Hakenut ulkomaille' puuttuu")
+      )
     } yield {
       val ilmoitus = IlmoitusRow(
         luotu = app.valpasRajapäivätService.tarkastelupäivä.atTime(LocalTime.now()),
@@ -59,6 +65,8 @@ class ValpasKuntailmoitusQueryService(app: KoskiApplication) extends QueryMethod
               puhelin = tekijäHenkilö.puhelinnumero,
               sähköposti = tekijäHenkilö.email
             ),
+            tekijäOrganisaatio = data.kuntailmoitus.tekijä.organisaatio,
+            kunta = data.kuntailmoitus.kunta,
             hakenutUlkomaille = hakenutUlkomaille
           )
         )
@@ -70,21 +78,15 @@ class ValpasKuntailmoitusQueryService(app: KoskiApplication) extends QueryMethod
   private def fromDbRows(il: IlmoitusRow, lisätiedotRow: IlmoitusLisätiedotRow)
   : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
     for {
-      kunta <- app.organisaatioRepository.getOrganisaatio(il.kuntaOid).toRight(
-        ValpasErrorCategory.internalError(s"Kuntaa ei löydy tallennetulla oidilla: ${il.kuntaOid}")
-      )
-      tekijäOrganisaatio <- app.organisaatioRepository.getOrganisaatio(il.tekijäOrganisaatioOid).toRight(
-        ValpasErrorCategory.internalError(s"Tekijäorganisaatiota ei löydy tallennetulla oidilla: ${il.tekijäOrganisaatioOid}")
-      )
       li <- deserialize(lisätiedotRow.data)
     } yield ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
       oppijaOid = il.oppijaOid,
       kuntailmoitus = ValpasKuntailmoitusLaajatTiedot(
         id = Some(il.uuid.toString),
-        kunta = kunta,
+        kunta = li.kunta,
         aikaleima = Some(il.luotu),
         tekijä = ValpasKuntailmoituksenTekijäLaajatTiedot(
-          organisaatio = tekijäOrganisaatio,
+          organisaatio = li.tekijäOrganisaatio,
           henkilö = Some(ValpasKuntailmoituksenTekijäHenkilö(
             oid = Some(il.tekijäOid),
             etunimet = li.tekijäYhteystiedot.etunimet,
