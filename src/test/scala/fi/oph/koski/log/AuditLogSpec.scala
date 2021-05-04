@@ -10,9 +10,9 @@ import org.scalatest.{Assertions, FreeSpec, Matchers}
 import scala.util.matching.Regex
 
 class AuditLogSpec extends FreeSpec with Assertions with Matchers {
-  val loggerMock = mock(classOf[Logger])
-  val audit = new AuditLog(loggerMock)
-  lazy val käyttöoikeuspalvelu = KoskiApplicationForTests.käyttöoikeusRepository
+  private val loggerMock = mock(classOf[Logger])
+  private val audit = new AuditLog(loggerMock)
+  private lazy val käyttöoikeuspalvelu = KoskiApplicationForTests.käyttöoikeusRepository
 
   verifyLogMessage("""\{"version":1,"logSeq":0,"type":"alive","bootTime":".*","hostname":"","timestamp":".*","serviceName":"koski","applicationType":"backend","message":"started"}""".r)
 

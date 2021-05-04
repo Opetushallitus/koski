@@ -14,15 +14,16 @@ class AuditLogger(logger: SLogger) extends Logger {
   override def log(msg: String): Unit = logger.info(msg)
 }
 
-object AuditLog extends AuditLog(new AuditLogger(LoggerFactory.getLogger(classOf[Audit].getName)))
+object AuditLog extends AuditLog(new AuditLogger(LoggerFactory.getLogger(classOf[Audit].getName))) {
+  private val counter = Counter.build().name("fi_oph_koski_log_AuditLog").help("Koski audit log events").labelNames("operation").register()
+}
 
 class AuditLog(logger: Logger) {
   private val audit = new Audit(logger, "koski", ApplicationType.BACKEND)
-  private val counter = Counter.build().name("fi_oph_koski_log_AuditLog").help("Koski audit log events").labelNames("operation").register()
 
   def log(msg: AuditLogMessage): Unit = {
     audit.log(msg.user, msg.operation, msg.target, msg.changes)
-    counter.labels(msg.operation.toString).inc
+    AuditLog.counter.labels(msg.operation.toString).inc()
   }
 
   def startHeartbeat(): Unit = {
