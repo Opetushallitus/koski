@@ -37,6 +37,15 @@ class MyDataAPIProxyServletTest extends FreeSpec with KoskiHttpSpec with Matcher
       }
     }
 
+    "Palauttaa 404-virheen kun opinto-oikeutta ei löydy" in {
+      KoskiApplicationForTests.mydataRepository.create(opiskelija.oid, memberId)
+
+      requestOpintoOikeudet("131047-803F", memberHeaders(memberCode)){
+        status should equal(404)
+        body should include("Oppijaa ei löydy annetulla oidilla tai käyttäjällä ei ole oikeuksia tietojen katseluun.")
+      }
+    }
+
     "Palauttaa opiskelutiedot mikäli käyttäjä on antanut siihen luvan" in {
       KoskiApplicationForTests.mydataRepository.create(opiskelija.oid, memberId)
 
