@@ -3,20 +3,38 @@ import * as E from "fp-ts/Either"
 import { pipe } from "fp-ts/lib/function"
 import * as Separated from "fp-ts/Separated"
 import { useMemo, useState } from "react"
-import { fromEntries, isEmptyObject } from "../utils/objects"
+import { fromEntries } from "../utils/objects"
 
 export type UseFormStateOptions<T extends object> = {
   initialValues: T
-  validators: {
-    [K in keyof T]: Array<FieldValidator<T[K]>>
-  }
+  validators: FormValidators<T>
+}
+
+export type FormValidators<T extends object> = {
+  [K in keyof T]: Array<FieldValidator<T[K], T>>
 }
 
 export type UseFormStateHook<T extends object> = {
   state: FormState<T>
-  set: (key: keyof T, value: T[typeof key]) => void
-  errors: () => FormErrors<T>
-  values: () => E.Either<FormErrors<T>, T>
+  touch: FormTouchFunction<T>
+  set: FormSetFunction<T>
+  fieldProps: FormFieldPropsFunction<T>
+}
+
+export type FormTouchFunction<T extends object> = (key: keyof T) => void
+export type FormSetFunction<T extends object> = (
+  key: keyof T,
+  value: T[typeof key]
+) => void
+export type FormFieldPropsFunction<T extends object> = <K extends keyof T>(
+  key: K
+) => FormFieldProps<T[K]>
+
+export type FormFieldProps<T> = {
+  value: T
+  onChange: (value: T) => void
+  onBlur: () => void
+  error?: React.ReactNode
 }
 
 export type FormState<T extends object> = {
@@ -32,7 +50,10 @@ export type FieldState<T> = {
   errors: string[]
 }
 
-export type FieldValidator<T> = (t: T) => E.Either<FieldError, T>
+export type FieldValidator<T, F extends object> = (
+  value: T,
+  formState: FormState<F>
+) => E.Either<FieldError[], T>
 
 export type FieldError = string
 
@@ -45,47 +66,22 @@ export const useFormState = <T extends object>({
   ])
   const [currentState, setState] = useState(initialState)
 
-  const set: UseFormStateHook<T>["set"] = (key, value) => {
-    const fieldErrors = pipe(
-      validators[key] || [],
-      A.map((validate) => validate(value)),
-      A.separate,
-      Separated.left
-    )
-
-    return setState({
-      ...currentState,
-      [key]: {
-        ...currentState[key],
-        currentValue: value,
-        touched: true,
-        errors: fieldErrors,
-      },
-    })
+  const set: FormSetFunction<T> = (key, value) => {
+    const newState = updatedField(key, value, validators, currentState)
+    return setState(softValidation(validators, newState))
   }
 
-  const errors: UseFormStateHook<T>["errors"] = () =>
-    Object.entries(currentState).reduce(
-      (errors, [key, field]): FormErrors<T> => {
-        const f = field as FieldState<unknown>
-        return A.isNonEmpty(f.errors) ? { ...errors, [key]: f.errors } : errors
-      },
-      {} as FormErrors<T>
-    )
+  const touch: FormTouchFunction<T> = (key) =>
+    setState(touched(key, validators, currentState))
 
-  const values: UseFormStateHook<T>["values"] = () => {
-    const errs = errors()
-    return isEmptyObject(errs)
-      ? E.right(
-          Object.entries(currentState).reduce((vals, [key, field]) => {
-            const f = field as FieldState<unknown>
-            return { ...vals, [key]: f.currentValue }
-          }, {} as T)
-        )
-      : E.left(errs)
-  }
+  const fieldProps: FormFieldPropsFunction<T> = (key) => ({
+    value: currentState[key].currentValue,
+    onChange: (value) => set(key, value),
+    onBlur: () => touch(key),
+    error: currentState[key].errors.join(", "),
+  })
 
-  return { state: currentState, set, errors, values }
+  return { state: currentState, touch, set, fieldProps }
 }
 
 const createInitialState = <T extends object>(values: T): FormState<T> =>
@@ -102,3 +98,66 @@ const createInitialState = <T extends object>(values: T): FormState<T> =>
     ]),
     (entries) => fromEntries(entries) as FormState<T>
   )
+
+const touched = <T extends object>(
+  key: keyof T,
+  validators: FormValidators<T>,
+  state: FormState<T>
+): FormState<T> =>
+  validateField(key, validators, {
+    ...state,
+    [key]: {
+      ...state[key],
+      touched: true,
+    },
+  })
+
+const updatedField = <K extends keyof T, T extends object>(
+  key: K,
+  value: T[K],
+  validators: FormValidators<T>,
+  state: FormState<T>
+): FormState<T> =>
+  validateField(key, validators, {
+    ...state,
+    [key]: {
+      ...state[key],
+      currentValue: value,
+      touched: true,
+    },
+  })
+
+const validateField = <K extends keyof T, T extends object>(
+  key: K,
+  validators: FormValidators<T>,
+  state: FormState<T>
+): FormState<T> => {
+  const value = state[key].currentValue
+  const fieldErrors = pipe(
+    validators[key] || [],
+    A.map((validate) => validate(value, state)),
+    A.separate,
+    Separated.left
+  )
+
+  return {
+    ...state,
+    [key]: {
+      ...state[key],
+      errors: fieldErrors,
+    },
+  }
+}
+
+const softValidation = <T extends object>(
+  validators: FormValidators<T>,
+  inputState: FormState<T>
+): FormState<T> => {
+  let state = inputState
+  for (const key in inputState) {
+    if (inputState[key].touched) {
+      state = updatedField(key, inputState[key].currentValue, validators, state)
+    }
+  }
+  return state
+}

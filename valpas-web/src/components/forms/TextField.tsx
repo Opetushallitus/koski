@@ -8,6 +8,7 @@ const b = bem("textfield")
 export type TextFieldProps = {
   value: string
   onChange: (value: string) => void
+  onBlur?: () => void
   type?: "text" | "password"
   label?: React.ReactNode
   placeholder?: string
@@ -33,6 +34,7 @@ export const TextField = (props: TextFieldProps) => (
       value={props.value}
       placeholder={props.placeholder}
       onChange={(event) => props.onChange(event.target.value)}
+      onBlur={props.onBlur}
       disabled={props.disabled}
     />
   </InputContainer>
