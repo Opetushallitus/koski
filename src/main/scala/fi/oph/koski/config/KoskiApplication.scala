@@ -39,7 +39,6 @@ import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
 import fi.oph.koski.ytr.{YtrAccessChecker, YtrClient, YtrOpiskeluoikeusRepository, YtrRepository}
 
-import scala.collection.immutable
 import scala.concurrent.Future
 
 object KoskiApplication {
@@ -124,24 +123,11 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val prometheusRepository = PrometheusRepository(config)
   lazy val koskiPulssi = KoskiPulssi(this)
   lazy val koskiLocalizationRepository = LocalizationRepository(config, new KoskiLocalizationConfig)
-  lazy val valpasLocalizationRepository = if (features.valpas) {
-    LocalizationRepository(config, new ValpasLocalizationConfig)
-  } else {
-    null // Vaikka kaikki valpasLocalizationRepository:n käyttöpaikat pitäisi olla feature flagätty, asetetaan kuitenkin varmuuden vuoksi null:ksi tässä, niin ei mahdolliset unohdukset pääse tuotantoon.
-  }
-  lazy val valpasRajapäivätService = if (features.valpas) {
-    ValpasRajapäivätService(config)
-  } else {
-    null
-  }
-  lazy val valpasOppijaService = if (features.valpas) {
-    new ValpasOppijaService(this)
-  } else {
-    null
-  }
+  lazy val valpasLocalizationRepository = LocalizationRepository(config, new ValpasLocalizationConfig)
+  lazy val valpasRajapäivätService = ValpasRajapäivätService(config)
+  lazy val valpasOppijaService = new ValpasOppijaService(this)
   lazy val oidGenerator = OidGenerator(config)
   lazy val hetu = new Hetu(config.getBoolean("acceptSyntheticHetus"))
-  lazy val features = Features(config)
   lazy val indexManager = new IndexManager(List(perustiedotIndexer.index, tiedonsiirtoService.index))
 
   def init(): Future[Any] = {
@@ -153,11 +139,12 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
       }
     }
 
-    val parallels: immutable.Seq[Future[Any]] =
-      Future(perustiedotIndexer.init()) ::
-      Future(tiedonsiirtoService.init()) ::
-      Future(koskiLocalizationRepository.init) ::
-      (if (features.valpas) List(Future(valpasLocalizationRepository.init)) else Nil)
+    val parallels: Seq[Future[Any]] = Seq(
+      Future(perustiedotIndexer.init()),
+      Future(tiedonsiirtoService.init()),
+      Future(koskiLocalizationRepository.init),
+      Future(valpasLocalizationRepository.init)
+    )
 
     // Init scheduled tasks only after ES indexes have been initialized:
     Future.sequence(parallels).map(_ => Future(scheduledTasks.init))

@@ -120,17 +120,15 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     mount("/cas", new CasServlet)
     mount("/cache", new CacheServlet)
 
-    if (application.features.valpas) {
-      mount("/valpas/localization", new ValpasBootstrapServlet)
-      mount("/valpas/api", new ValpasRootApiServlet)
-      mount("/valpas/api/kuntailmoitus", new ValpasKuntailmoitusApiServlet)
-      mount("/valpas/logout", new ValpasLogoutServlet)
-      if (!SSOConfig(application.config).isCasSsoUsed) {
-        mount("/valpas/login", new LocalLoginServlet)
-      }
-      if (application.config.getString("opintopolku.virkailija.url") == "mock") {
-        mount("/valpas/test", new ValpasTestApiServlet)
-      }
+    mount("/valpas/localization", new ValpasBootstrapServlet)
+    mount("/valpas/api", new ValpasRootApiServlet)
+    mount("/valpas/api/kuntailmoitus", new ValpasKuntailmoitusApiServlet)
+    mount("/valpas/logout", new ValpasLogoutServlet)
+    if (!SSOConfig(application.config).isCasSsoUsed) {
+      mount("/valpas/login", new LocalLoginServlet)
+    }
+    if (application.config.getString("opintopolku.virkailija.url") == "mock") {
+      mount("/valpas/test", new ValpasTestApiServlet)
     }
 
     Futures.await(initTasks) // await for all initialization tasks to complete
