@@ -1,27 +1,18 @@
-import { Oid } from "../../../state/common"
-import { expectNonEmptyString } from "../../../state/formValidators"
-import { useFormState } from "../../../state/useFormState"
+import { OppijaHakutilanteillaSuppeatTiedot } from "../../../state/apitypes/oppija"
 
 export type IlmoituslomakeProps = {
-  oppijaOids: Oid[]
+  oppijat: OppijaHakutilanteillaSuppeatTiedot[]
 }
 
-type IlmoitusKunnalle = {
-  nimi: string
-  kunta: string
-}
-
-const initialValues: IlmoitusKunnalle = {
-  nimi: "",
-  kunta: "",
-}
-
-const validators = {
-  nimi: [expectNonEmptyString],
-  kunta: [],
-}
-
-export const Ilmoituslomake = (_props: IlmoituslomakeProps) => {
-  const form = useFormState<IlmoitusKunnalle>({ initialValues, validators })
-  form.set("nimi", "asdas")
+export const Ilmoituslomake = (props: IlmoituslomakeProps) => {
+  console.log("Ilmoituslomake", props)
+  return null
+  // return (
+  //   <Modal title="Ilman opiskelupaikkaa jäävien ilmoittaminen">
+  //     <p>Tarkista ilmoitettavien oppijoiden yhteystiedot.</p>
+  //     {props.oppijat.map((oppija) => (
+  //       <IlmoitusForm key={oppija.oppija.henkilö.oid} />
+  //     ))}
+  //   </Modal>
+  // )
 }
