@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.db.DB
-import fi.oph.koski.db.KoskiDatabaseMethods
+import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.util.DateOrdering.sqlDateOrdering
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.json.JsonSerializer
@@ -15,7 +15,7 @@ import org.json4s.jackson.JsonMethods
 import slick.jdbc.GetResult
 import scala.concurrent.duration.DurationInt
 
-case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods with RaportointikantaTableQueries {
+case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with RaportointikantaTableQueries {
 
   type OpiskeluoikeusOid = String
   type PäätasonSuoritusId = Long

@@ -6,10 +6,9 @@ import fi.oph.koski.editor.{EditorApiServlet, EditorModel}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{KoskiSpecificAuthenticationSupport, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.KoskiSchema.deserializationContext
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.NoCache
-import fi.oph.koski.schema.KoskiSchema.deserializationContext
-import fi.oph.koski.validation.ValidatingAndResolvingExtractor
 import org.json4s.JValue
 
 import scala.reflect.runtime.universe.TypeTag
@@ -65,7 +64,7 @@ class SuoritusjakoServletV2(implicit val application: KoskiApplication) extends 
   }
 
   private def extract[T: TypeTag](body: JValue) =
-    ValidatingAndResolvingExtractor.extract[T](body, deserializationContext.copy(allowEmptyStrings = true))
+    application.validatingAndResolvingExtractor.extract[T](body, deserializationContext.copy(allowEmptyStrings = true))
       .left.map(_ => KoskiErrorCategory.badRequest())
 
   private def user = koskiSessionOption.get

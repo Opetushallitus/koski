@@ -19,7 +19,7 @@ object DirectoryClient {
     val cacheStrategy = ExpiringCache("DirectoryClient", 60.seconds, maxSize = 100)
     CachingProxy[DirectoryClient](cacheStrategy, config.getString("opintopolku.virkailija.url") match {
       case "mock" =>
-        new MockDirectoryClient(config)
+        new MockDirectoryClient()
       case url =>
         new OpintopolkuDirectoryClient(url, config)
     })

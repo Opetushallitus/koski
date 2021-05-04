@@ -2,7 +2,7 @@ package fi.oph.koski.sure
 
 import fi.oph.koski.api.{DatabaseTestMethods, LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsAmmatillinen}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables.OpiskeluOikeudet
+import fi.oph.koski.db.KoskiTables.OpiskeluOikeudet
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer

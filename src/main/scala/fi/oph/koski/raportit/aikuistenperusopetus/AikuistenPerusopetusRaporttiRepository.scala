@@ -2,7 +2,7 @@ package fi.oph.koski.raportit.aikuistenperusopetus
 
 import java.time.LocalDate
 
-import fi.oph.koski.db.KoskiDatabaseMethods
+import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.raportit.YleissivistäväRaporttiRows
 import fi.oph.koski.db.DB
@@ -15,7 +15,7 @@ import scala.concurrent.duration.DurationInt
 
 case class AikuistenPerusopetusRaporttiRepository(
   db: DB
-) extends KoskiDatabaseMethods with RaportointikantaTableQueries {
+) extends QueryMethods with RaportointikantaTableQueries {
   private val defaultTimeout = 5.minutes
   private type OppijaOid = String
   private type OpiskeluoikeusOid = String

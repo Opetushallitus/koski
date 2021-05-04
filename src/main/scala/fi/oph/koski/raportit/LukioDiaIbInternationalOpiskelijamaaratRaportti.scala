@@ -3,7 +3,7 @@ package fi.oph.koski.raportit
 import java.sql.ResultSet
 import java.time.LocalDate
 
-import fi.oph.koski.db.KoskiDatabaseMethods
+import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.DB
 import fi.oph.koski.raportit.AhvenanmaanKunnat.ahvenanmaanKunnat
@@ -12,7 +12,7 @@ import slick.jdbc.GetResult
 import scala.concurrent.duration.DurationInt
 
 
-case class LukioDiaIbInternationalOpiskelijamaaratRaportti(db: DB) extends KoskiDatabaseMethods {
+case class LukioDiaIbInternationalOpiskelijamaaratRaportti(db: DB) extends QueryMethods {
   def build(oppilaitosOids: List[String], päivä: LocalDate): DataSheet = {
     DataSheet(
       title = "opiskelijamäärät",

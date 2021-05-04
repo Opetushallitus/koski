@@ -4,15 +4,12 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.Yhteystiedot
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.log.{AuditLog, KoskiMessageField, Logging}
+import fi.oph.koski.log.Logging
 import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
 import fi.oph.koski.util.Timing
-import fi.oph.koski.validation.{ValidatingAndResolvingExtractor, ValidationAndResolvingContext}
-import fi.oph.koski.valpas.ValpasOppijaService.ValpasOppijaRowConversionOps
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, ValpasHakukoosteService}
-import fi.oph.koski.valpas.log.{ValpasAuditLogMessage, ValpasOperation}
-import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusSuppeatTiedot}
 import fi.oph.koski.valpas.opiskeluoikeusrepository._
+import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusSuppeatTiedot}
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystiedot
 
@@ -22,7 +19,7 @@ case class OppijaHakutilanteillaLaajatTiedot(
   hakutilanneError: Option[String],
   yhteystiedot: Seq[ValpasYhteystiedot],
   kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot],
-){
+) {
   def validate(koodistoviitepalvelu: KoodistoViitePalvelu): OppijaHakutilanteillaLaajatTiedot =
     this.copy(hakutilanteet = hakutilanteet.map(_.validate(koodistoviitepalvelu)))
 }
@@ -58,44 +55,18 @@ object OppijaHakutilanteillaSuppeatTiedot {
   }
 }
 
-object ValpasOppijaService {
-
-  private[valpas] implicit class ValpasOppijaRowConversionOps(thiss: ValpasOppijaRow) {
-    def asValpasOppijaLaajatTiedot()(implicit context: ValidationAndResolvingContext): Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
-      ValidatingAndResolvingExtractor
-        .extract[List[ValpasOpiskeluoikeusLaajatTiedot]](thiss.opiskeluoikeudet, context)
-        .map(opiskeluoikeudet =>
-          ValpasOppijaLaajatTiedot(
-            henkilö = ValpasHenkilöLaajatTiedot(
-              oid = thiss.oppijaOid,
-              hetu = thiss.hetu,
-              syntymäaika = thiss.syntymäaika,
-              etunimet = thiss.etunimet,
-              sukunimi = thiss.sukunimi,
-              turvakielto = thiss.turvakielto,
-            ),
-            oikeutetutOppilaitokset = thiss.oikeutetutOppilaitokset,
-            opiskeluoikeudet = opiskeluoikeudet
-          )
-        )
-    }
-  }
-
-}
-
 class ValpasOppijaService(
   application: KoskiApplication
 ) extends Logging with Timing {
-  private lazy val hakukoosteService = application.valpasHakukoosteService
-  private lazy val opiskeluoikeusDbService = new ValpasOpiskeluoikeusDatabaseService(application)
-  private lazy val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
-  private lazy val localizationRepository = application.valpasLocalizationRepository
-  private lazy val koodistoviitepalvelu = application.koodistoViitePalvelu
+  private val hakukoosteService = ValpasHakukoosteService(application.config)
+  private val opiskeluoikeusDbService = new ValpasOpiskeluoikeusDatabaseService(application)
+  private val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
+  private val localizationRepository = application.valpasLocalizationRepository
+  private val koodistoviitepalvelu = application.koodistoViitePalvelu
 
-  private lazy val accessResolver = new ValpasAccessResolver(application.organisaatioRepository)
+  private val accessResolver = new ValpasAccessResolver(application.organisaatioRepository)
 
-  private implicit val validationAndResolvingContext: ValidationAndResolvingContext =
-    ValidationAndResolvingContext(application.koodistoViitePalvelu, application.organisaatioRepository)
+  private val validatingAndResolvingExtractor = application.validatingAndResolvingExtractor
 
   // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
   // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
@@ -103,55 +74,74 @@ class ValpasOppijaService(
   def getOppijatSuppeatTiedot(oppilaitosOids: Set[ValpasOppilaitos.Oid])(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =
     getOppijatLaajatTiedot(oppilaitosOids)
       .map(_.map(OppijaHakutilanteillaSuppeatTiedot.apply))
-      .map(withAuditLogOppilaitostenKatsominen(oppilaitosOids))
 
   private def getOppijatLaajatTiedot(oppilaitosOids: Set[ValpasOppilaitos.Oid])(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
     val errorClue = oppilaitosOids.size match {
-      case 1 =>  s"oppilaitos:${oppilaitosOids.head}"
-      case n if n > 1 => s"oppilaitokset[${n}]:${oppilaitosOids.head}, ..."
+      case 1 => s"oppilaitos:${oppilaitosOids.head}"
+      case n if n > 1 => s"oppilaitokset[$n]:${oppilaitosOids.head}, ..."
       case _ => ""
     }
 
     accessResolver.organisaatiohierarkiaOids(oppilaitosOids)
       .map(opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyvätOppijat)
-      .flatMap(results => HttpStatus.foldEithers(results.map(_.asValpasOppijaLaajatTiedot)))
+      .flatMap(results => HttpStatus.foldEithers(results.map(asValpasOppijaLaajatTiedot)))
       .map(fetchHaut(errorClue))
   }
 
   // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
   // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
   // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
-  def getOppijaLaajatTiedot(oppijaOid: ValpasHenkilö.Oid)(implicit session: ValpasSession): Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] =
+  def getOppijaLaajatTiedot
+    (oppijaOid: ValpasHenkilö.Oid)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
     opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyväOppija(oppijaOid)
       .toRight(ValpasErrorCategory.forbidden.oppija())
-      .flatMap(_.asValpasOppijaLaajatTiedot)
+      .flatMap(asValpasOppijaLaajatTiedot)
       .flatMap(accessResolver.withOppijaAccess)
+  }
+
+  def getOppijaHakutilanteillaLaajatTiedot
+    (oppijaOid: ValpasHenkilö.Oid)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] = {
+    getOppijaLaajatTiedot(oppijaOid)
       .map(fetchHaku)
       .flatMap(o => fetchVirallisetYhteystiedot(o.oppija).map(yhteystiedot => o.copy(
-        yhteystiedot = o.yhteystiedot ++ yhteystiedot.map(yt => ValpasYhteystiedot.virallinenYhteystieto(yt, localizationRepository.get("oppija__viralliset_yhteystiedot")))
+        yhteystiedot = o.yhteystiedot ++ yhteystiedot.map(yt =>
+          ValpasYhteystiedot.virallinenYhteystieto(yt, localizationRepository.get("oppija__viralliset_yhteystiedot"))
+        )
       )))
       .map(_.validate(koodistoviitepalvelu))
-      .map(withAuditLogOppijaKatsominen)
+  }
 
-  // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
-  // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
-  // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
-  def opiskeleeOppivelvollisuusOpintojaOppilaitoksessa(oppijaOid: ValpasHenkilö.Oid, oppilaitosOid: ValpasOppilaitos.Oid)(implicit session: ValpasSession): Either[HttpStatus, Boolean] = {
-    opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyväOppija(oppijaOid)
-      .toRight(ValpasErrorCategory.forbidden.oppija())
-      .flatMap(_.asValpasOppijaLaajatTiedot)
-      .flatMap(accessResolver.withOppijaAccess)
-      .flatMap(oppija => Right(oppija.oikeutetutOppilaitokset.contains(oppilaitosOid)))
+  private def asValpasOppijaLaajatTiedot(dbRow: ValpasOppijaRow): Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
+    validatingAndResolvingExtractor
+      .extract[List[ValpasOpiskeluoikeusLaajatTiedot]](dbRow.opiskeluoikeudet)
+      .map(opiskeluoikeudet =>
+        ValpasOppijaLaajatTiedot(
+          henkilö = ValpasHenkilöLaajatTiedot(
+            oid = dbRow.oppijaOid,
+            hetu = dbRow.hetu,
+            syntymäaika = dbRow.syntymäaika,
+            etunimet = dbRow.etunimet,
+            sukunimi = dbRow.sukunimi,
+            turvakielto = dbRow.turvakielto,
+          ),
+          oikeutetutOppilaitokset = dbRow.oikeutetutOppilaitokset,
+          opiskeluoikeudet = opiskeluoikeudet
+        )
+      )
   }
 
   private def fetchHaku(oppija: ValpasOppijaLaajatTiedot): OppijaHakutilanteillaLaajatTiedot = {
-    val hakukoosteet = hakukoosteService.getYhteishakujenHakukoosteet(oppijaOids = Set(oppija.henkilö.oid), ainoastaanAktiivisetHaut =  false, errorClue = s"oppija:${oppija.henkilö.oid}")
+    val hakukoosteet = hakukoosteService.getYhteishakujenHakukoosteet(oppijaOids = Set(oppija.henkilö.oid), ainoastaanAktiivisetHaut = false, errorClue = s"oppija:${oppija.henkilö.oid}")
     val yhteystiedot = hakukoosteet.map(ilmoitetutYhteystiedot).getOrElse(Seq.empty)
     OppijaHakutilanteillaLaajatTiedot.apply(oppija, hakukoosteet).copy(yhteystiedot = yhteystiedot)
   }
 
   private def fetchHaut(errorClue: String)(oppijat: Seq[ValpasOppijaLaajatTiedot]): Seq[OppijaHakutilanteillaLaajatTiedot] = {
-    hakukoosteService.getYhteishakujenHakukoosteet(oppijaOids = oppijat.map(_.henkilö.oid).toSet, ainoastaanAktiivisetHaut =  true, errorClue = errorClue)
+    hakukoosteService.getYhteishakujenHakukoosteet(oppijaOids = oppijat.map(_.henkilö.oid).toSet, ainoastaanAktiivisetHaut = true, errorClue = errorClue)
       .map(_.groupBy(_.oppijaOid))
       .fold(
         error => oppijat.map(oppija => OppijaHakutilanteillaLaajatTiedot.apply(oppija, Left(error))),
@@ -166,17 +156,16 @@ class ValpasOppijaService(
     } else {
       timed("fetchVirallisetYhteystiedot", 10) {
         oppijanumerorekisteri.findOppijaJaYhteystiedotByOid(oppija.henkilö.oid)
+          .toRight(ValpasErrorCategory.internalError("Virallisten yhteystietojen haku epäonnistui"))
           .map(_.yhteystiedot.flatMap(yt => {
             val alkuperä = koodistoviitepalvelu.validate(yt.alkuperä)
               .filter(_.koodiarvo == "alkupera1") // Filtteröi pois muut kuin VTJ:ltä peräisin olevat yhteystiedot
             val tyyppi = koodistoviitepalvelu.validate(yt.tyyppi)
-            if (alkuperä.isDefined && tyyppi.isDefined) {
-              Some(yt.copy(alkuperä = alkuperä.get, tyyppi = tyyppi.get))
-            } else {
-              None
+            (alkuperä, tyyppi) match {
+              case (Some(alkuperä), Some(tyyppi)) => Some(yt.copy(alkuperä = alkuperä, tyyppi = tyyppi))
+              case _ => None
             }
           }))
-          .toRight(ValpasErrorCategory.internalError())
       }
     }
   }
@@ -189,22 +178,4 @@ class ValpasOppijaService(
         ValpasYhteystiedot.oppijanIlmoittamatYhteystiedot(haku, localizationRepository.get("oppija__yhteystiedot")),
       ))
       .getOrElse(List.empty)
-
-  private def withAuditLogOppijaKatsominen(result: OppijaHakutilanteillaLaajatTiedot)(implicit session: ValpasSession): OppijaHakutilanteillaLaajatTiedot = {
-    AuditLog.log(ValpasAuditLogMessage(
-      ValpasOperation.VALPAS_OPPIJA_KATSOMINEN,
-      Map(KoskiMessageField.oppijaHenkiloOid -> result.oppija.henkilö.oid)
-    ))
-    result
-  }
-
-  private def withAuditLogOppilaitostenKatsominen[T](oppilaitosOids: Set[ValpasOppilaitos.Oid])(result: T)(implicit session: ValpasSession): T = {
-    oppilaitosOids.foreach { oppilaitosOid =>
-      AuditLog.log(ValpasAuditLogMessage(
-        ValpasOperation.VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN,
-        Map(KoskiMessageField.juuriOrganisaatio -> oppilaitosOid)
-      ))
-    }
-    result
-  }
 }

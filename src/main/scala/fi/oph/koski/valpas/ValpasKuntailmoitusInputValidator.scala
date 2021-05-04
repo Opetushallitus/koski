@@ -1,31 +1,26 @@
 package fi.oph.koski.valpas
 
-import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.{Oppilaitos, Toimipiste}
-import fi.oph.koski.userdirectory.DirectoryUser
+import fi.oph.koski.userdirectory.{DirectoryClient, DirectoryUser}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoituksenTekijäHenkilö, ValpasKuntailmoitusLaajatTiedotJaOppijaOid}
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
-case class ValpasKuntailmoitusInputValidator(application: KoskiApplication) {
-  private lazy val organisaatioRepository = application.organisaatioRepository
-  private lazy val valpasRajapäivätService = application.valpasRajapäivätService
-  private lazy val directoryClient = application.directoryClient
+class ValpasKuntailmoitusInputValidator(
+  organisaatioRepository: OrganisaatioRepository,
+  valpasRajapäivätService: ValpasRajapäivätService,
+  directoryClient: DirectoryClient
+) {
 
   def validateKuntailmoitusInput(kuntailmoitusInput: ValpasKuntailmoitusLaajatTiedotJaOppijaOid)
                                 (implicit user: ValpasSession): Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
     validateIlmoituspäivä(kuntailmoitusInput)
       .flatMap(validateTekijänOid)
+      .flatMap(validateKunta)
       .flatMap(fillTekijänHenkilöTiedot)
-      .flatMap(kuntailmoitusInput => {
-        HttpStatus.fold(
-          validateKunta(kuntailmoitusInput),
-          validateTekijä(kuntailmoitusInput)
-        ) match {
-          case HttpStatus.ok => Right(kuntailmoitusInput)
-          case status => Left(status)
-        }
-      })
+      .flatMap(validateTekijä)
   }
 
   private def validateIlmoituspäivä(
@@ -46,7 +41,7 @@ case class ValpasKuntailmoitusInputValidator(application: KoskiApplication) {
           Left(ValpasErrorCategory.validation.kuntailmoituksenTekijä("Kuntailmoitusta ei voi tehdä toisen henkilön oidilla"))
         case _ => Right(kuntailmoitusInput)
       }
-      case _ => Right(kuntailmoitusInput)
+      case None => Right(kuntailmoitusInput)
     }
   }
 
@@ -81,27 +76,29 @@ case class ValpasKuntailmoitusInputValidator(application: KoskiApplication) {
     Right(kuntailmoitusInputTäydennettynä)
   }
 
-  private def validateKunta(kuntailmoitusInput: ValpasKuntailmoitusLaajatTiedotJaOppijaOid): HttpStatus = {
-    lazy val virheIlmoitus =
+  private def validateKunta(kuntailmoitusInput: ValpasKuntailmoitusLaajatTiedotJaOppijaOid)
+  : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
+    val virheIlmoitus = Left(
       ValpasErrorCategory.validation.kuntailmoituksenKohde(
         s"Kuntailmoituksen kohde ${kuntailmoitusInput.kuntailmoitus.kunta.oid} ei ole kunta"
-      )
+      ))
 
     kuntailmoitusInput.kuntailmoitus.kunta match {
       // Tarkistetaan osa suoraan tyypeistä, koska silloin ei tarvitse tehdä hakua organisaatioRepositoryyn
       case o: Oppilaitos => virheIlmoitus
       case t: Toimipiste => virheIlmoitus
       case _ if !organisaatioRepository.isKunta(kuntailmoitusInput.kuntailmoitus.kunta) => virheIlmoitus
-      case _ => HttpStatus.ok
+      case _ => Right(kuntailmoitusInput)
     }
   }
 
-  private def validateTekijä(kuntailmoitusInput: ValpasKuntailmoitusLaajatTiedotJaOppijaOid): HttpStatus = {
+  private def validateTekijä(kuntailmoitusInput: ValpasKuntailmoitusLaajatTiedotJaOppijaOid)
+  : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
     kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio match {
-      case o: Oppilaitos => HttpStatus.ok
-      case _ => ValpasErrorCategory.validation.kuntailmoituksenTekijä(
+      case o: Oppilaitos => Right(kuntailmoitusInput)
+      case _ => Left(ValpasErrorCategory.validation.kuntailmoituksenTekijä(
         s"Kuntailmoituksen tekijä ${kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio.oid} ei ole oppilaitos"
-      )
+      ))
     }
   }
 }

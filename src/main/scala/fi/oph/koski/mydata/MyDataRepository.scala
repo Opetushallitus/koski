@@ -6,12 +6,12 @@ import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables.{MyDataJako, MyDataJakoTable}
-import fi.oph.koski.db.{KoskiDatabaseMethods, MyDataJakoRow}
+import fi.oph.koski.db.KoskiTables.{MyDataJako, MyDataJakoTable}
+import fi.oph.koski.db.{QueryMethods, MyDataJakoRow}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log.Logging
 
-class MyDataRepository(val db: DB) extends Logging with KoskiDatabaseMethods {
+class MyDataRepository(val db: DB) extends Logging with QueryMethods {
   def get(asiakas: String): Either[HttpStatus, MyDataJakoRow] =
     runDbSync(MyDataJako.filter(r => r.asiakas === asiakas && r.voimassaAsti >= Date.valueOf(LocalDate.now)).result.headOption)
       .toRight(KoskiErrorCategory.notFound())

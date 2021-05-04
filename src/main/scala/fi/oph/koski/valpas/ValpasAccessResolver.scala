@@ -19,6 +19,10 @@ class ValpasAccessResolver(organisaatioRepository: OrganisaatioRepository) {
     Either.cond(accessToSomeOrgs(oppija.oikeutetutOppilaitokset), oppija, ValpasErrorCategory.forbidden.oppija())
   }
 
+  def withOppijaAccessAsOrganisaatio[T <: ValpasOppijaLaajatTiedot](organisaatioOid: Organisaatio.Oid)(oppija: T): Either[HttpStatus, T] = {
+    Either.cond(oppija.oikeutetutOppilaitokset.contains(organisaatioOid), oppija, ValpasErrorCategory.forbidden.oppija())
+  }
+
   private def withOrgAccess[T](access: Boolean, fn: () => T): Either[HttpStatus, T] = {
     Either.cond(access, fn(), ValpasErrorCategory.forbidden.organisaatio())
   }

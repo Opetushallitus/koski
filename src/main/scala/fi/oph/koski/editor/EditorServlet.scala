@@ -10,15 +10,19 @@ import fi.oph.koski.preferences.PreferencesService
 import fi.oph.koski.schema.{PäätasonSuoritus, SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta}
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.WithWarnings
-import fi.oph.koski.validation.{ValidatingAndResolvingExtractor, ValidationAndResolvingContext}
-import fi.oph.scalaschema.SchemaValidatingExtractor
 
 /**
   *  Endpoints for the Koski UI
   */
-class EditorServlet(implicit val application: KoskiApplication) extends EditorApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {
+class EditorServlet(implicit val application: KoskiApplication)
+  extends EditorApiServlet
+    with RequiresVirkailijaOrPalvelukäyttäjä
+    with NoCache {
+
   private val preferencesService = PreferencesService(application.masterDatabase.db)
+
   private def localization = LocalizedHtml.get(session, application.koskiLocalizationRepository)
+
   get("/:oid") {
     renderEither[EditorModel]((params.get("opiskeluoikeus"), getOptionalIntegerParam("versionumero")) match {
       case (Some(opiskeluoikeusOid), Some(versionumero)) =>
@@ -28,13 +32,15 @@ class EditorServlet(implicit val application: KoskiApplication) extends EditorAp
     })
   }
 
-  get[List[EnumValue]]("/organisaatiot") {
-    def organisaatiot = session.organisationOids(AccessType.write).flatMap(context.organisaatioRepository.getOrganisaatio).toList
+  get[Set[EnumValue]]("/organisaatiot") {
+    val organisaatiot = session.organisationOids(AccessType.write)
+      .flatMap(application.organisaatioRepository.getOrganisaatio)
     organisaatiot.map(EditorModelBuilder.organisaatioEnumValue(localization)(_))
   }
 
-  get[List[EnumValue]]("/oppilaitokset") {
-    def organisaatiot = session.organisationOids(AccessType.write).flatMap(context.organisaatioRepository.getOrganisaatio).toList
+  get[Set[EnumValue]]("/oppilaitokset") {
+    val organisaatiot = session.organisationOids(AccessType.write)
+      .flatMap(application.organisaatioRepository.getOrganisaatio)
     organisaatiot.flatMap(_.toOppilaitos).map(EditorModelBuilder.organisaatioEnumValue(localization)(_))
   }
 
@@ -42,13 +48,23 @@ class EditorServlet(implicit val application: KoskiApplication) extends EditorAp
     renderEither[EnumValue](OrganisaatioOid.validateOrganisaatioOid(params("oid")).right.flatMap { oid =>
       application.organisaatioRepository.getOrganisaatio(oid).flatMap(_.kotipaikka) match {
         case None => Left(KoskiErrorCategory.notFound())
-        case Some(kotipaikka) => Right(KoodistoEnumModelBuilder.koodistoEnumValue(kotipaikka)(localization, application.koodistoViitePalvelu))
+        case Some(kotipaikka) => Right(
+          KoodistoEnumModelBuilder.koodistoEnumValue(kotipaikka)(localization, application.koodistoViitePalvelu)
+        )
       }
     })
   }
 
   get("/prototype/:key") {
-    val c = ModelBuilderContext(EditorSchema.deserializationContext, editable = true, invalidatable = true)(session, application.koodistoViitePalvelu, application.koskiLocalizationRepository)
+    val c = ModelBuilderContext(
+      EditorSchema.deserializationContext,
+      editable = true,
+      invalidatable = true
+    )(
+      session,
+      application.koodistoViitePalvelu,
+      application.koskiLocalizationRepository
+    )
     val className = params("key")
     try {
       renderObject[EditorModel](EditorModelBuilder.buildPrototype(className)(c))
@@ -67,14 +83,12 @@ class EditorServlet(implicit val application: KoskiApplication) extends EditorAp
   post("/check-vaatiiko-suoritus-maksuttomuus-tiedon") {
     withJsonBody { body =>
       render[Boolean](
-        ValidatingAndResolvingExtractor.extract[PäätasonSuoritus](body, context)
+        application.validatingAndResolvingExtractor.extract[PäätasonSuoritus](body)
         .map(_.isInstanceOf[SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta])
         .getOrElse(false)
       )
     }()
   }
-
-  private val context: ValidationAndResolvingContext = ValidationAndResolvingContext(application.koodistoViitePalvelu, application.organisaatioRepository)
 
   private def findByHenkilöOid(oid: String): Either[HttpStatus, EditorModel] = {
     for {

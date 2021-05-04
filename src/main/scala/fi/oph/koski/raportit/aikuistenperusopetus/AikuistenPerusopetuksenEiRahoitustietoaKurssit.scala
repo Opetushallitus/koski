@@ -2,7 +2,7 @@ package fi.oph.koski.raportit.aikuistenperusopetus
 
 import java.time.LocalDate
 
-import fi.oph.koski.db.KoskiDatabaseMethods
+import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.raportit.{Column, DataSheet}
@@ -11,7 +11,7 @@ import fi.oph.koski.db.DB
 import slick.jdbc.GetResult
 import scala.concurrent.duration.DurationInt
 
-case class AikuistenPerusopetuksenEiRahoitustietoaKurssit(db: DB) extends KoskiDatabaseMethods {
+case class AikuistenPerusopetuksenEiRahoitustietoaKurssit(db: DB) extends QueryMethods {
   implicit private val getResult: GetResult[AikuistenPerusopetuksenEiRahoitustietoaKurssitRow] = GetResult(r =>
     AikuistenPerusopetuksenEiRahoitustietoaKurssitRow(
       opiskeluoikeudenOid = r.rs.getString("opiskeluoikeuden_oid"),

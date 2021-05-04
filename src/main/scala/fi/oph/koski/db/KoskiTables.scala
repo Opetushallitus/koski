@@ -2,16 +2,16 @@ package fi.oph.koski.db
 
 import java.sql.{Date, Timestamp}
 import java.time.LocalDateTime
-
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.json.JsonManipulation.removeFields
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
+import fi.oph.koski.schema.KoskiSchema.skipSyntheticProperties
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.extraction.ValidationError
 import fi.oph.scalaschema.{Serializer, _}
 import org.json4s._
 
-object Tables {
+object KoskiTables {
   class OpiskeluoikeusTable(tag: Tag) extends Table[OpiskeluoikeusRow](tag, "opiskeluoikeus") {
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
     val oid = column[String]("oid", O.Unique)
@@ -34,8 +34,6 @@ object Tables {
   }
 
   object OpiskeluoikeusTable {
-    private def skipSyntheticProperties(s: ClassSchema, p: Property) = if (p.synthetic) Nil else List(p)
-
     private val serializationContext = SerializationContext(KoskiSchema.schemaFactory, skipSyntheticProperties)
     private val fieldsToExcludeInJson = Set("oid", "versionumero", "aikaleima")
     private implicit val deserializationContext = ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
@@ -246,12 +244,12 @@ case class OpiskeluoikeusRow(id: Int,
   koulutusmuoto: String,
   alkamispäivä: Date,
   päättymispäivä: Option[Date]) {
-  import fi.oph.koski.db.Tables.OpiskeluoikeusTable
+
   lazy val toOpiskeluoikeusData: JValue = {
-    OpiskeluoikeusTable.readAsJValue(data, oid, versionumero, aikaleima)
+    KoskiTables.OpiskeluoikeusTable.readAsJValue(data, oid, versionumero, aikaleima)
   }
   lazy val toOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus = {
-    OpiskeluoikeusTable.readAsOpiskeluoikeus(data, oid, versionumero, aikaleima) match {
+    KoskiTables.OpiskeluoikeusTable.readAsOpiskeluoikeus(data, oid, versionumero, aikaleima) match {
       case Right(oo) =>
         oo.asInstanceOf[KoskeenTallennettavaOpiskeluoikeus]
       case Left(errors) =>

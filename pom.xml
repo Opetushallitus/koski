@@ -15,7 +15,7 @@
     <slick.version>3.3.3</slick.version>
     <scalatra.version>2.6.5</scalatra.version>
     <json4s.version>3.6.8</json4s.version>
-    <awssdk.version>2.15.28</awssdk.version>
+    <awssdk.version>2.16.52</awssdk.version>
     <jetty.version>9.4.39.v20210325</jetty.version>
     <prometheus.client.version>0.0.17</prometheus.client.version>
     <scoverage.plugin.version>1.1.1</scoverage.plugin.version>
@@ -308,12 +308,12 @@
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk-dynamodb</artifactId>
-      <version>1.11.993</version>
+      <version>1.11.1005</version>
     </dependency>
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk-sts</artifactId>
-      <version>1.11.993</version>
+      <version>1.11.1005</version>
     </dependency>
     <!-- test deps -->
     <dependency>

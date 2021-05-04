@@ -37,7 +37,7 @@ case class LocalDatabaseRunner(config: DatabaseConfig) {
 class KoskiDatabase(protected val config: DatabaseConfig, isReplica: Boolean) extends Database {
   override final val smallDatabaseMaxRows = 500
 
-  override protected lazy val dbSizeQuery = Tables.OpiskeluOikeudet.length.result
+  override protected lazy val dbSizeQuery = KoskiTables.OpiskeluOikeudet.length.result
 
   val isLocal: Boolean = config.isLocal
 
