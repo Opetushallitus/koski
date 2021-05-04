@@ -1,16 +1,18 @@
 package fi.oph.koski.valpas
 
-import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.{Oppilaitos, Toimipiste}
-import fi.oph.koski.userdirectory.DirectoryUser
+import fi.oph.koski.userdirectory.{DirectoryClient, DirectoryUser}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoituksenTekijäHenkilö, ValpasKuntailmoitusLaajatTiedotJaOppijaOid}
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
-class ValpasKuntailmoitusInputValidator(application: KoskiApplication) {
-  private val organisaatioRepository = application.organisaatioRepository
-  private val valpasRajapäivätService = application.valpasRajapäivätService
-  private val directoryClient = application.directoryClient
+class ValpasKuntailmoitusInputValidator(
+  organisaatioRepository: OrganisaatioRepository,
+  valpasRajapäivätService: ValpasRajapäivätService,
+  directoryClient: DirectoryClient
+) {
 
   def validateKuntailmoitusInput(kuntailmoitusInput: ValpasKuntailmoitusLaajatTiedotJaOppijaOid)
                                 (implicit user: ValpasSession): Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {

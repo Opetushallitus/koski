@@ -1,29 +1,35 @@
 package fi.oph.koski.valpas.valpasrepository
 
-import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.skipSyntheticProperties
 import fi.oph.koski.schema.{Koodistokoodiviite, KoskiSchema}
+import fi.oph.koski.validation.ValidatingAndResolvingExtractor
 import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.db.ValpasSchema._
 import fi.oph.koski.valpas.db._
+import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import fi.oph.scalaschema.{SerializationContext, Serializer}
 import org.json4s.JValue
 
 import java.time.LocalTime
 import java.util.UUID
 
-class ValpasKuntailmoitusQueryService(app: KoskiApplication) extends QueryMethods with Logging {
-  protected val db: DB = app.valpasDatabase.db
+class ValpasKuntailmoitusQueryService(
+  valpasDatabase: ValpasDatabase,
+  deserializer: ValidatingAndResolvingExtractor,
+  valpasRajapäivätService: ValpasRajapäivätService
+) extends QueryMethods with Logging {
+
+  protected val db: DB = valpasDatabase.db
 
   private def serialize(model: IlmoitusLisätiedotData): JValue =
     Serializer.serialize(model, SerializationContext(KoskiSchema.schemaFactory, skipSyntheticProperties))
 
   private def deserialize(data: JValue): Either[HttpStatus, IlmoitusLisätiedotData] =
-    app.validatingAndResolvingExtractor.extract[IlmoitusLisätiedotData](data)
+    deserializer.extract[IlmoitusLisätiedotData](data)
 
   private def toDbRows(data: ValpasKuntailmoitusLaajatTiedotJaOppijaOid)(tekijäHenkilöOid: String)
   : Either[HttpStatus, (IlmoitusRow, IlmoitusLisätiedotRow)] = {
@@ -39,7 +45,7 @@ class ValpasKuntailmoitusQueryService(app: KoskiApplication) extends QueryMethod
       )
     } yield {
       val ilmoitus = IlmoitusRow(
-        luotu = app.valpasRajapäivätService.tarkastelupäivä.atTime(LocalTime.now()),
+        luotu = valpasRajapäivätService.tarkastelupäivä.atTime(LocalTime.now()),
         oppijaOid = data.oppijaOid,
         kuntaOid = data.kuntailmoitus.kunta.oid,
         tekijäOrganisaatioOid = data.kuntailmoitus.tekijä.organisaatio.oid,

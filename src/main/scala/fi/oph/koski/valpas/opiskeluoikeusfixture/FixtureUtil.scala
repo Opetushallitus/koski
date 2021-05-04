@@ -15,7 +15,7 @@ object FixtureUtil {
     ValpasMockUsers.mockUsersEnabled = true
     app.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(tarkastelupäivä)
     app.fixtureCreator.resetFixtures(app.fixtureCreator.valpasFixtureState)
-    new ValpasDatabaseFixtureLoader(app).reset()
+    new ValpasDatabaseFixtureLoader(app.valpasKuntailmoitusQueryService).reset()
     FixtureState(app)
   }
 
