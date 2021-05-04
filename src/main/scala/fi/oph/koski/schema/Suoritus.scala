@@ -1,12 +1,13 @@
 package fi.oph.koski.schema
 
 import java.time.LocalDate
-
 import fi.oph.koski.koodisto.{KoodistoViite, MockKoodistoViitePalvelu}
 import fi.oph.koski.schema.LocalizedString.unlocalized
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 import mojave.{Traversal, traversal}
+
+import java.sql.Date
 
 trait Suoritus {
   @Description("Suorituksen tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) ja eri tasoihin (tutkinto, tutkinnon osa, kurssi, oppiaine...) liittyvät suoritukset")
@@ -36,7 +37,32 @@ trait Suoritus {
     osasuoritusLista ++ osasuoritusLista.flatMap(_.rekursiivisetOsasuoritukset)
   }
   def viimeisinArviointi: Option[Arviointi] = arviointi.toList.flatten.lastOption
+  def parasArviointi: Option[Arviointi] = arviointi.toList.flatten.reduceOption((a, b) => {
+    Arviointi.korkeampiArviointi(a, b)
+  })
+  def parasArviointiPäivä: Option[LocalDate] = parasArviointi match {
+    case Some(arviointi) => arviointi.arviointipäivä
+    case _ => None
+  }
   def viimeisinArvosana: Option[String] = viimeisinArviointi.map(_.arvosana.koodiarvo)
+  def ensimmäinenArviointi: Option[Arviointi] = {
+    arviointi.toList.flatten.reduceOption((a, b) => {
+      (a.arviointipäivä, b.arviointipäivä) match {
+        case (Some(aPäivä), Some(bPäivä)) => {
+          if (aPäivä.isBefore(bPäivä)) {
+            a
+          } else {
+            b
+          }
+        }
+        case _ => a
+      }
+    })
+  }
+  def ensimmäinenArviointiPäivä: Option[LocalDate] = ensimmäinenArviointi match {
+    case Some(arviointi) => arviointi.arviointipäivä
+    case _ => None
+  }
   def arvosanaKirjaimin: LocalizedString = viimeisinArviointi.map(_.arvosanaKirjaimin).getOrElse(unlocalized(""))
   def arvosanaNumeroin: Option[LocalizedString] = viimeisinArviointi.flatMap(_.arvosanaNumeroin)
   def sanallinenArviointi: Option[LocalizedString] = viimeisinArviointi.flatMap {

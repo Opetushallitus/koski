@@ -110,6 +110,7 @@ class AikuistenPerusopetusRaporttiSpec
           "Yhteislaajuus (suoritetut kurssit)",
           "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)",
           "Yhteislaajuus (tunnustetut kurssit)",
+          "Yhteislaajuus (eri vuonna korotetut kurssit)",
           "AI Suomen kieli ja kirjallisuus valtakunnallinen",
           "A1 Englanti valtakunnallinen",
           "MA Matematiikka valtakunnallinen",
@@ -145,6 +146,7 @@ class AikuistenPerusopetusRaporttiSpec
         }
 
         "Oppimäärän suoritus" in {
+          println(oppiaineetRowsWithColumns)
           lazy val expectedaikuisOpiskelijaRow = Map(
             "Opiskeluoikeuden oid" -> "",
             "Oppilaitoksen nimi" -> "Jyväskylän normaalikoulu",
@@ -178,6 +180,7 @@ class AikuistenPerusopetusRaporttiSpec
             "Yhteislaajuus (suoritetut kurssit)" -> 25.0,
             "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
             "Yhteislaajuus (tunnustetut kurssit)" -> 2.0,
+            "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
             "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 14.0 kurssia",
             "A1 Englanti valtakunnallinen" -> "Arvosana 7, 4.0 kurssia",
             "MA Matematiikka valtakunnallinen" -> "Arvosana 10, 3.0 kurssia",
@@ -344,6 +347,7 @@ class AikuistenPerusopetusRaporttiSpec
             "Yhteislaajuus (suoritetut kurssit)" -> 0.0,
             "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
             "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
+            "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
             "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 0.0 kurssia",
             "A1 Englanti valtakunnallinen" -> "Arvosana 7, 0.0 kurssia",
             "MA Matematiikka valtakunnallinen" -> "Arvosana 10, 0.0 kurssia",
@@ -403,6 +407,7 @@ class AikuistenPerusopetusRaporttiSpec
           "Yhteislaajuus (suoritetut kurssit)",
           "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)",
           "Yhteislaajuus (tunnustetut kurssit)",
+          "Yhteislaajuus (eri vuonna korotetut kurssit)",
           "AI Suomen kieli ja kirjallisuus valtakunnallinen",
           "A1 Englanti valtakunnallinen",
           "B1 Ruotsi valtakunnallinen",
@@ -479,6 +484,7 @@ class AikuistenPerusopetusRaporttiSpec
             "Yhteislaajuus (suoritetut kurssit)" -> 3.0,
             "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 1.0,
             "Yhteislaajuus (tunnustetut kurssit)" -> 2.0,
+            "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 1.0,
             "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 5.0 kurssia (joista 1.0 hylättyjä)",
             "A1 Englanti valtakunnallinen" -> "Arvosana 8, 0.0 kurssia",
             "B1 Ruotsi valtakunnallinen" -> "Arvosana 8, 0.0 kurssia,Arvosana S, 0.0 kurssia",
@@ -556,6 +562,7 @@ class AikuistenPerusopetusRaporttiSpec
           "Yhteislaajuus (suoritetut kurssit)",
           "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)",
           "Yhteislaajuus (tunnustetut kurssit)",
+          "Yhteislaajuus (eri vuonna korotetut kurssit)",
           "AI Suomen kieli ja kirjallisuus valtakunnallinen",
           "MA Matematiikka valtakunnallinen",
           "YH Yhteiskuntaoppi valtakunnallinen"
@@ -620,6 +627,7 @@ class AikuistenPerusopetusRaporttiSpec
             "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
             "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
             "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
+            "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
             "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 1.0 kurssia",
             "YH Yhteiskuntaoppi valtakunnallinen" -> "",
             "MA Matematiikka valtakunnallinen" -> "",
@@ -633,7 +641,7 @@ class AikuistenPerusopetusRaporttiSpec
             "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
             "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
             "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
-            "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
+            "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
             "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "",
             "YH Yhteiskuntaoppi valtakunnallinen" -> "Arvosana 10, 1.0 kurssia",
             "MA Matematiikka valtakunnallinen" -> "",

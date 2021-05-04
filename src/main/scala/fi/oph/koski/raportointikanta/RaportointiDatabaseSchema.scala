@@ -296,6 +296,8 @@ object RaportointiDatabaseSchema {
     val arviointiArvosanaKoodisto = column[Option[String]]("arviointi_arvosana_koodisto", StringIdentifierType)
     val arviointiHyväksytty = column[Option[Boolean]]("arviointi_hyvaksytty")
     val arviointiPäivä = column[Option[Date]]("arviointi_paiva")
+    val ensimmäinenArviointiPäivä  = column[Option[Date]]("ensimmainen_arviointi_paiva")
+    val korotettuEriVuonna  = column[Boolean]("korotettu_eri_vuonna")
     val näytönArviointiPäivä = column[Option[Date]]("nayton_arviointi_paiva")
     val tunnustettu = column[Boolean]("tunnustettu")
     val tunnustettuRahoituksenPiirissä = column[Boolean]("tunnustettu_rahoituksen_piirissa")
@@ -322,6 +324,8 @@ object RaportointiDatabaseSchema {
       arviointiArvosanaKoodisto ::
       arviointiHyväksytty ::
       arviointiPäivä ::
+      ensimmäinenArviointiPäivä ::
+      korotettuEriVuonna ::
       näytönArviointiPäivä ::
       tunnustettu ::
       tunnustettuRahoituksenPiirissä ::
@@ -592,6 +596,8 @@ case class ROsasuoritusRow(
   arviointiArvosanaKoodisto: Option[String],
   arviointiHyväksytty: Option[Boolean],
   arviointiPäivä: Option[Date],
+  ensimmäinenArviointiPäivä: Option[Date],
+  korotettuEriVuonna: Boolean,
   näytönArviointiPäivä: Option[Date],
   tunnustettu: Boolean,
   tunnustettuRahoituksenPiirissä: Boolean,

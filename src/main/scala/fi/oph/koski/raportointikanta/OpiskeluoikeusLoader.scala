@@ -12,6 +12,7 @@ import org.json4s.JValue
 import rx.lang.scala.{Observable, Subscriber}
 
 import java.sql.{Date, Timestamp}
+import java.time.temporal.ChronoField
 import java.util.concurrent.atomic.AtomicLong
 import scala.concurrent.duration.DurationInt
 import scala.util.Try
@@ -294,10 +295,27 @@ object OpiskeluoikeusLoader extends Logging {
         case _ => None
       },
       vahvistusPäivä = os.vahvistus.map(v => Date.valueOf(v.päivä)),
-      arviointiArvosanaKoodiarvo = os.viimeisinArviointi.map(_.arvosana.koodiarvo),
-      arviointiArvosanaKoodisto = os.viimeisinArviointi.flatMap(a => convertKoodisto(a.arvosana)),
-      arviointiHyväksytty = os.viimeisinArviointi.map(_.hyväksytty),
-      arviointiPäivä = os.viimeisinArviointi.flatMap(_.arviointipäivä).map(v => Date.valueOf(v)),
+      arviointiArvosanaKoodiarvo = os.parasArviointi.map(_.arvosana.koodiarvo),
+      arviointiArvosanaKoodisto = os.parasArviointi.flatMap(a => convertKoodisto(a.arvosana)),
+      arviointiHyväksytty = os.parasArviointi.map(_.hyväksytty),
+      arviointiPäivä = os.parasArviointi.flatMap(_.arviointipäivä).map(v => Date.valueOf(v)),
+      ensimmäinenArviointiPäivä = os.arviointi.toList.flatten.map(_.arviointipäivä).flatten.map(v => Date.valueOf(v)).reduceOption((a, b) => {
+        if (a.toLocalDate.isBefore(b.toLocalDate)) {
+          a
+        } else {
+          b
+        }
+      }),
+      korotettuEriVuonna = (os.ensimmäinenArviointiPäivä, os.parasArviointiPäivä) match {
+        case (Some(a), Some(b)) => {
+          if (a.get(ChronoField.YEAR) != b.get(ChronoField.YEAR)) {
+            true
+          } else {
+            false
+          }
+        }
+        case _ => false
+      },
       näytönArviointiPäivä = os match {
         case atos: AmmatillisenTutkinnonOsanSuoritus => atos.näyttö.flatMap(_.arviointi).map(v => Date.valueOf(v.päivä))
         case vkos: ValmaKoulutuksenOsanSuoritus => vkos.näyttö.flatMap(_.arviointi).map(v => Date.valueOf(v.päivä))

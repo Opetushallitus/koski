@@ -10,9 +10,9 @@ import fi.oph.koski.schema._
 import fi.oph.koski.util.Futures
 
 import java.time.LocalDate
+import java.time.temporal.ChronoField
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
-
 
 sealed trait AikuistenPerusopetusRaporttiType {
   def typeName: String
@@ -218,6 +218,9 @@ case class AikuistenPerusopetusRaportti(
           .map(_.laajuus).sum,
         yhteislaajuusTunnustetut = kurssit
           .filter(k => k.arvioituJaHyväksytty && k.tunnustettu)
+          .map(_.laajuus).sum,
+        yhteislaajuusKorotettuEriVuonna = kurssit
+          .filter(_.korotettuEriVuonna)
           .map(_.laajuus).sum
       ),
       oppiaineet = oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet, raporttiType.isOppiaineenOppimäärä)
@@ -251,7 +254,8 @@ case class AikuistenPerusopetusRaportti(
         AikuistenPerusopetusKurssinTiedot(
           arvosana = kurssisuoritus.arviointiArvosanaKoodiarvo,
           laajuus = kurssisuoritus.koulutusmoduuliLaajuusArvo,
-          tunnustettu = kurssisuoritus.tunnustettu
+          tunnustettu = kurssisuoritus.tunnustettu,
+          korotettuEriVuonna = kurssisuoritus.korotettuEriVuonna
         ).toString
       ).mkString(", ")
     }
@@ -309,7 +313,8 @@ case class AikuistenPerusopetusRaportti(
       CompactColumn("Yhteislaajuus (kaikki kurssit)", comment = Some("Opintojen yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien kurssien määrän tai tulostusparametreissa määriteltynä aikajaksona arvioiduiksi merkittyjen kurssien määrän riippuen siitä, mitä tulostusparametreissa on valittu.")),
       CompactColumn("Yhteislaajuus (suoritetut kurssit)", comment = Some("Suoritettujen kurssien (eli sellaisten kurssien, jotka eivät ole tunnustettuja aikaisemman osaamisen pohjalta) yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien suoritettujen kurssien yhteislaajuuden tai tulostusparametreissa määriteltynä aikajaksona suoritettujen kurssien yhteislaajuuden riippuen siitä, mitä tulostusparametreissa on valittu.")),
       CompactColumn("Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)", comment = Some("Hylätyllä arvosanalla suoritettujen kurssien yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien suoritettujen kurssien yhteislaajuuden tai tulostusparametreissa määriteltynä aikajaksona suoritettujen kurssien yhteislaajuuden riippuen siitä, mitä tulostusparametreissa on valittu.")),
-      CompactColumn("Yhteislaajuus (tunnustetut kurssit)", comment = Some("Tunnustettujen kurssien yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien tunnustettujen kurssien yhteislaajuuden tai tulostusparametreissa määriteltynä aikajaksona arvioiduiksi merkittyjen kurssien yhteislaajuuden riippuen siitä, mitä tulostusparametreissa on valittu."))
+      CompactColumn("Yhteislaajuus (tunnustetut kurssit)", comment = Some("Tunnustettujen kurssien yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien tunnustettujen kurssien yhteislaajuuden tai tulostusparametreissa määriteltynä aikajaksona arvioiduiksi merkittyjen kurssien yhteislaajuuden riippuen siitä, mitä tulostusparametreissa on valittu.")),
+      CompactColumn("Yhteislaajuus (eri vuonna korotetut kurssit)", comment = Some("Kurssit, joiden arviointia on korotettuu eri vuonna, kuin jona kurssin ensimmäinen arviointi on annettu."))
     )
 
     val oppiaineColumns = oppiaineet.map(x =>
@@ -371,7 +376,8 @@ case class AikuistenPerusopetusRaporttiOppiaineetVälilehtiMuut(
   yhteislaajuus: BigDecimal,
   yhteislaajuusSuoritetut: BigDecimal,
   yhteislaajuusHylätyt: BigDecimal,
-  yhteislaajuusTunnustetut: BigDecimal
+  yhteislaajuusTunnustetut: BigDecimal,
+  yhteislaajuusKorotettuEriVuonna: BigDecimal
 )
 
 case class AikuistenPerusopetusRaporttiOppiaineRow(
@@ -389,12 +395,13 @@ case class AikuistenPerusopetusRaporttiOppiaineTabStaticColumns(
   suorituksenTyyppi: String
 )
 
-case class AikuistenPerusopetusKurssinTiedot(arvosana: Option[String], laajuus: Option[Double], tunnustettu: Boolean) {
+case class AikuistenPerusopetusKurssinTiedot(arvosana: Option[String], laajuus: Option[Double], tunnustettu: Boolean, korotettuEriVuonna: Boolean) {
   override def toString: String = {
     List(
       Some(arvosana.map("Arvosana " + _).getOrElse("Ei arvosanaa")),
       Some(laajuus.map("Laajuus " + _).getOrElse("Ei laajuutta")),
-      if (tunnustettu) Some("Tunnustettu") else None
+      if (tunnustettu) Some("Tunnustettu") else None,
+      if (korotettuEriVuonna) Some("Korotettu eri vuonna") else None
     ).flatten.mkString(", ")
   }
 }

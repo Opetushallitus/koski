@@ -28,6 +28,24 @@ object Arviointi {
   def numeerinen(arviointi: String) = try { Some(arviointi.toInt) } catch {
     case e: NumberFormatException => None
   }
+  def korkeampiArviointi(a: Arviointi, b: Arviointi) = {
+    val numeerinenA = numeerinen(a.arvosana.koodiarvo)
+    val numeerinenB = numeerinen(b.arvosana.koodiarvo)
+
+    if (numeerinenA.nonEmpty && numeerinenB.nonEmpty) {
+      if (numeerinenA.get > numeerinenB.get) {
+        a
+      } else {
+        b
+      }
+    } else {
+      if (!a.hyväksytty && b.hyväksytty) {
+        b
+      } else {
+        a
+      }
+    }
+  }
 }
 
 trait ArviointiPäivämäärällä extends Arviointi {

@@ -31,6 +31,7 @@ case class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(db: DB) exte
       suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitetut = r.rs.getInt("muuta_kautta_rahoitetut"),
       suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa = r.rs.getInt("ei_rahoitustietoa"),
       suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa = r.rs.getInt("arviointipäivä_ei_opiskeluoikeuden_sisällä"),
+      eriVuonnaKorotetutSuoritukset = r.rs.getInt("eri_vuonna_korotetut")
     )
   )
 
@@ -81,7 +82,8 @@ case class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(db: DB) exte
           count(distinct (case when tunnustettu and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi' then r_osasuoritus.osasuoritus_id end)) alkuvaiheen_tunnistettuja_suorituksia,
           count(distinct (case when tunnustettu_rahoituksen_piirissa and suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi' then r_osasuoritus.osasuoritus_id end)) alkuvaiheen_tunnistettuja_suorituksia_rahoituksen_piirissä,
           count(distinct (case when (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true) and r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid is not null and r_opiskeluoikeus_aikajakso.opintojen_rahoitus = '6' then r_osasuoritus.osasuoritus_id end)) muuta_kautta_rahoitetut,
-          count(distinct (case when (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true) and r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid is not null and r_opiskeluoikeus_aikajakso.opintojen_rahoitus is null then r_osasuoritus.osasuoritus_id end)) ei_rahoitustietoa
+          count(distinct (case when (tunnustettu = false or tunnustettu_rahoituksen_piirissa = true) and r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid is not null and r_opiskeluoikeus_aikajakso.opintojen_rahoitus is null then r_osasuoritus.osasuoritus_id end)) ei_rahoitustietoa,
+          count(distinct (case when korotettu_eri_vuonna then r_osasuoritus.osasuoritus_id end)) eri_vuonna_korotetut
         from paatason_suoritus
         join r_osasuoritus on (paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id or oo_opiskeluoikeus_oid = r_osasuoritus.sisaltyy_opiskeluoikeuteen_oid)
         left join r_opiskeluoikeus_aikajakso on oo_opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
@@ -133,6 +135,7 @@ case class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(db: DB) exte
     "suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitetut" -> Column("Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit - muuta kautta rahoitetut", comment = Some("Sellaiset suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit, joiden arviointipäivä osuu muuta kautta rahoitetun läsnäolojakson sisälle. Kurssien tunnistetiedot löytyvät välilehdeltä \"Muuta kautta rah.\"")),
     "suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa" -> Column("Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit, joilla ei rahoitustietoa", comment = Some("Sellaiset suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut pakolliset tai valtakunnalliset syventävät kurssit, joiden arviointipäivä osuus sellaiselle tilajaksolle, jolta ei löydy tietoa rahoitusmuodosta. Kurssien tunnistetiedot löytyvät välilehdeltä \"Ei rahoitusmuotoa\".")),
     "suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa" -> Column("Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit – arviointipäivä ei opiskeluoikeuden sisällä", comment = Some("Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit, joiden arviointipäivä on aikaisemmin kuin opiskeluoikeuden alkamispäivä tai joiden arviointipäivä on myöhemmin kuin \"Valmistunut\"-tilan päivä. Kurssien tunnistetiedot löytyvät välilehdeltä \"Opiskeluoikeuden ulkop.\".")),
+    "eriVuonnaKorotetutSuoritukset" -> Column("Suoritetut kurssit, joiden arviointia on korotettu eri vuonna kuin jona ensimmäinen arviointi on annettu")
   )
 }
 
@@ -153,5 +156,6 @@ case class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRow(
    alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä: Int,
    suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitetut: Int,
    suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa: Int,
-   suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa: Int
+   suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa: Int,
+   eriVuonnaKorotetutSuoritukset: Int
 )
