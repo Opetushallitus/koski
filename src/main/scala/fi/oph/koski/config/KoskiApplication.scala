@@ -25,21 +25,21 @@ import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotIndexer, Opiskeluoik
 import fi.oph.koski.pulssi.{KoskiPulssi, PrometheusRepository}
 import fi.oph.koski.raportointikanta.{Public, RaportointiDatabase, RaportointikantaService}
 import fi.oph.koski.schedule.{KoskiScheduledTasks, PerustiedotSyncScheduler}
+import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.sso.KoskiSessionRepository
 import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoRepositoryV2, SuoritusjakoService, SuoritusjakoServiceV2}
 import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.userdirectory.DirectoryClient
-import fi.oph.koski.validation.KoskiValidator
-import fi.oph.koski.valpas.{ValpasKuntailmoitusInputValidator, ValpasKuntailmoitusService, ValpasOppijaService}
+import fi.oph.koski.validation.{KoskiValidator, ValidatingAndResolvingExtractor}
+import fi.oph.koski.valpas.ValpasOppijaService
 import fi.oph.koski.valpas.db.ValpasDatabase
-import fi.oph.koski.valpas.hakukooste.ValpasHakukoosteService
 import fi.oph.koski.valpas.localization.ValpasLocalizationConfig
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
+import fi.oph.koski.valpas.valpasrepository.ValpasKuntailmoitusQueryService
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
 import fi.oph.koski.ytr.{YtrAccessChecker, YtrClient, YtrOpiskeluoikeusRepository, YtrRepository}
 
-import scala.collection.immutable
 import scala.concurrent.Future
 
 object KoskiApplication {
@@ -62,6 +62,11 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val oppilaitosRepository = OppilaitosRepository(config, organisaatioRepository)
   lazy val koodistoPalvelu = KoodistoPalvelu.apply(config)
   lazy val koodistoViitePalvelu = KoodistoViitePalvelu(koodistoPalvelu)
+  lazy val validatingAndResolvingExtractor = new ValidatingAndResolvingExtractor(
+    koodistoViitePalvelu,
+    organisaatioRepository,
+    KoskiSchema.deserializationContext
+  )
   lazy val opintopolkuHenkilöFacade = OpintopolkuHenkilöFacade(config, masterDatabase.db, perustiedotRepository, perustiedotIndexer)
   lazy val käyttöoikeusRepository = new KäyttöoikeusRepository(organisaatioRepository, directoryClient)
   lazy val masterDatabase = KoskiDatabase.master(config)
@@ -86,7 +91,16 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val opiskeluoikeusRepository = new CompositeOpiskeluoikeusRepository(possu, virta, ytr)
   lazy val opiskeluoikeusRepositoryV2 = new CompositeOpiskeluoikeusRepository(possuV2, virta, ytr)
   lazy val opiskeluoikeusQueryRepository = new OpiskeluoikeusQueryService(replicaDatabase.db)
-  lazy val validator: KoskiValidator = new KoskiValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository, possu, henkilöRepository, ePerusteet, config)
+  lazy val validator: KoskiValidator = new KoskiValidator(
+    tutkintoRepository,
+    koodistoViitePalvelu,
+    organisaatioRepository,
+    possu,
+    henkilöRepository,
+    ePerusteet,
+    validatingAndResolvingExtractor,
+    config
+  )
   lazy val elasticSearch = ElasticSearch(config)
   lazy val perustiedotIndexer = new OpiskeluoikeudenPerustiedotIndexer(elasticSearch, opiskeluoikeusQueryRepository, perustiedotSyncRepository)
   lazy val perustiedotRepository = new OpiskeluoikeudenPerustiedotRepository(perustiedotIndexer, opiskeluoikeusQueryRepository)
@@ -110,39 +124,14 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val prometheusRepository = PrometheusRepository(config)
   lazy val koskiPulssi = KoskiPulssi(this)
   lazy val koskiLocalizationRepository = LocalizationRepository(config, new KoskiLocalizationConfig)
-  lazy val valpasLocalizationRepository = if (features.valpas) {
-    LocalizationRepository(config, new ValpasLocalizationConfig)
-  } else {
-    null // Vaikka kaikki valpasLocalizationRepository:n käyttöpaikat pitäisi olla feature flagätty, asetetaan kuitenkin varmuuden vuoksi null:ksi tässä, niin ei mahdolliset unohdukset pääse tuotantoon.
-  }
-  lazy val valpasRajapäivätService = if (features.valpas) {
-    ValpasRajapäivätService(config)
-  } else {
-    null
-  }
-  lazy val valpasHakukoosteService = if (features.valpas) {
-    ValpasHakukoosteService(config)
-  } else {
-    null
-  }
-  lazy val valpasOppijaService = if (features.valpas) {
-    new ValpasOppijaService(this)
-  } else {
-    null
-  }
-  lazy val valpasKuntailmoitusService = if (features.valpas) {
-    new ValpasKuntailmoitusService(this)
-  } else {
-    null
-  }
-  lazy val valpasKuntailmoitusInputValidator = if (features.valpas) {
-    ValpasKuntailmoitusInputValidator(this)
-  } else {
-    null
-  }
+  lazy val valpasLocalizationRepository = LocalizationRepository(config, new ValpasLocalizationConfig)
+  lazy val valpasRajapäivätService = ValpasRajapäivätService(config)
+  lazy val valpasOppijaService = new ValpasOppijaService(this)
+  lazy val valpasKuntailmoitusQueryService = new ValpasKuntailmoitusQueryService(
+    valpasDatabase, validatingAndResolvingExtractor, valpasRajapäivätService
+  )
   lazy val oidGenerator = OidGenerator(config)
   lazy val hetu = new Hetu(config.getBoolean("acceptSyntheticHetus"))
-  lazy val features = Features(config)
   lazy val indexManager = new IndexManager(List(perustiedotIndexer.index, tiedonsiirtoService.index))
 
   def init(): Future[Any] = {
@@ -154,11 +143,12 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
       }
     }
 
-    val parallels: immutable.Seq[Future[Any]] =
-      Future(perustiedotIndexer.init()) ::
-      Future(tiedonsiirtoService.init()) ::
-      Future(koskiLocalizationRepository.init) ::
-      (if (features.valpas) List(Future(valpasLocalizationRepository.init)) else Nil)
+    val parallels: Seq[Future[Any]] = Seq(
+      Future(perustiedotIndexer.init()),
+      Future(tiedonsiirtoService.init()),
+      Future(koskiLocalizationRepository.init),
+      Future(valpasLocalizationRepository.init)
+    )
 
     // Init scheduled tasks only after ES indexes have been initialized:
     Future.sequence(parallels).map(_ => Future(scheduledTasks.init))

@@ -6,6 +6,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.util.Futures
 import fi.oph.koski.util.ReactiveStreamsToRx.publisherToObservable
+import rx.lang.scala.Observable
 import slick.dbio.{DBIOAction, NoStream}
 import slick.jdbc.SetParameter
 import slick.lifted.Query
@@ -18,7 +19,7 @@ trait DatabaseConverters {
   implicit val setLocalDate: SetParameter[LocalDate] = (localDate, params) => params.setDate(Date.valueOf(localDate))
 }
 
-trait KoskiDatabaseMethods extends DatabaseConverters {
+trait QueryMethods extends DatabaseConverters {
   protected def db: DB
 
   def runDbSync[R](a: DBIOAction[R, NoStream, Nothing], allowNestedTransactions: Boolean = false, timeout: Duration = 60.seconds): R = {
@@ -28,7 +29,7 @@ trait KoskiDatabaseMethods extends DatabaseConverters {
     Futures.await(db.run(a), atMost = timeout)
   }
 
-  def streamingQuery[E, U, C[_]](query: Query[E, U, C]) = {
+  def streamingQuery[E, U, C[_]](query: Query[E, U, C]): Observable[U] = {
     // Note: it won't actually stream unless you use both `transactionally` and `fetchSize`. It'll collect all the data into memory.
     publisherToObservable(db.stream(query.result.transactionally.withStatementParameters(fetchSize = 1000))).publish.refCount
   }

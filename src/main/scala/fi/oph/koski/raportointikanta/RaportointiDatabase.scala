@@ -5,7 +5,7 @@ import java.sql.{Date, Timestamp}
 import java.time.LocalDateTime.now
 import java.time._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.{DB, KoskiDatabaseMethods, RaportointiDatabaseConfig}
+import fi.oph.koski.db.{DB, QueryMethods, RaportointiDatabaseConfig}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.raportit.{LukioOppiaineRahoitusmuodonMukaan, LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat, PaallekkaisetOpiskeluoikeudet}
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
@@ -18,7 +18,7 @@ import slick.dbio.DBIO
 import scala.concurrent.duration.DurationInt
 
 
-class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging with KoskiDatabaseMethods {
+class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging with QueryMethods {
   val schema: Schema = config.schema
   logger.info(s"Instantiating RaportointiDatabase for ${schema.name}")
 

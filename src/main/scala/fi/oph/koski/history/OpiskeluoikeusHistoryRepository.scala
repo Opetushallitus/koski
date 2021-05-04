@@ -7,8 +7,8 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.github.fge.jsonpatch.JsonPatch
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables.OpiskeluoikeusTable.readAsOpiskeluoikeus
-import fi.oph.koski.db.Tables._
+import fi.oph.koski.db.KoskiTables.OpiskeluoikeusTable.readAsOpiskeluoikeus
+import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, Rooli}
@@ -21,7 +21,7 @@ import org.json4s.jackson.JsonMethods
 import slick.dbio.DBIOAction
 import slick.dbio.Effect.Write
 
-case class OpiskeluoikeusHistoryRepository(db: DB) extends DatabaseExecutionContext with KoskiDatabaseMethods with Logging with JsonMethods {
+case class OpiskeluoikeusHistoryRepository(db: DB) extends DatabaseExecutionContext with QueryMethods with Logging with JsonMethods {
   def findByOpiskeluoikeusOid(oid: String, maxVersion: Int = Int.MaxValue)(implicit user: KoskiSpecificSession): Option[List[OpiskeluoikeusHistoryPatch]] = {
     runDbSync(findByOpiskeluoikeusOidAction(oid, maxVersion).map(_.map(_.patches)))
   }

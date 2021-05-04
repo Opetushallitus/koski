@@ -27,13 +27,15 @@ import org.json4s.{JArray, JValue}
 
 class KoskiValidator(
   tutkintoRepository: TutkintoRepository,
-  val koodistoPalvelu: KoodistoViitePalvelu,
-  val organisaatioRepository: OrganisaatioRepository,
+  koodistoPalvelu: KoodistoViitePalvelu,
+  organisaatioRepository: OrganisaatioRepository,
   koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository,
   henkilöRepository: HenkilöRepository,
   ePerusteet: EPerusteetRepository,
+  validatingAndResolvingExtractor: ValidatingAndResolvingExtractor,
   config: Config
 ) extends Timing {
+
   def validateAsJson(oppija: Oppija)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
     val serialized = timed("Oppija serialization", 500) {JsonSerializer.serialize(oppija)}
     extractAndValidateOppija(serialized)
@@ -50,7 +52,7 @@ class KoskiValidator(
   def extractAndValidateOppija(parsedJson: JValue)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
     timed("extractAndValidateOppija", 200) {
       val extractionResult: Either[HttpStatus, Oppija] = {
-        ValidatingAndResolvingExtractor.extract[Oppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository))
+        validatingAndResolvingExtractor.extract[Oppija](parsedJson)
       }
       extractionResult.right.flatMap(validateOpiskeluoikeudet)
     }
@@ -66,7 +68,7 @@ class KoskiValidator(
 
   def extractOpiskeluoikeus(parsedJson: JValue): Either[HttpStatus, Opiskeluoikeus] = {
     timed("extract")(
-      ValidatingAndResolvingExtractor.extract[Opiskeluoikeus](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository))
+      validatingAndResolvingExtractor.extract[Opiskeluoikeus](parsedJson)
     )
   }
 

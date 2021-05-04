@@ -3,7 +3,7 @@ package fi.oph.koski.raportit
 import java.time.LocalDate
 
 import fi.oph.koski.db.DB
-import fi.oph.koski.db.KoskiDatabaseMethods
+import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio
@@ -12,7 +12,7 @@ import fi.oph.koski.util.DateOrdering.sqlDateOrdering
 import slick.jdbc.GetResult
 import scala.concurrent.duration.DurationInt
 
-case class AmmatillisenRaportitRepository(db: DB) extends KoskiDatabaseMethods with RaportointikantaTableQueries {
+case class AmmatillisenRaportitRepository(db: DB) extends QueryMethods with RaportointikantaTableQueries {
 
   private val defaultTimeout = 10.minutes
 

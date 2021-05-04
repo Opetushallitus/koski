@@ -16,7 +16,6 @@ import org.eclipse.jetty.server._
 import org.eclipse.jetty.server.handler.gzip.GzipHandler
 import org.eclipse.jetty.server.handler.{HandlerCollection, StatisticsHandler}
 import org.eclipse.jetty.servlet.{ServletContextHandler, ServletHolder}
-import org.eclipse.jetty.util.resource.Resource
 import org.eclipse.jetty.util.ssl.SslContextFactory
 import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.eclipse.jetty.webapp.WebAppContext
@@ -28,6 +27,7 @@ object JettyLauncher extends App with Logging {
   } else {
     ConfigFactory.load
   }
+  logger.info(s"Starting koski in ${Environment.currentEnvironment(config)}")
   try {
     val application = new KoskiApplication(config, new JMXCacheManager)
     new JettyLauncher(globalPort, application).start.join

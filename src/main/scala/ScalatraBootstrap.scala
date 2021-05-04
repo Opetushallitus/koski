@@ -44,11 +44,11 @@ import org.scalatra._
 
 class ScalatraBootstrap extends LifeCycle with Logging with Timing {
   override def init(context: ServletContext) = try {
-    implicit val application = Option(context.getAttribute("koski.application").asInstanceOf[KoskiApplication]).getOrElse(KoskiApplication.apply)
+    val application = Option(context.getAttribute("koski.application").asInstanceOf[KoskiApplication]).getOrElse(KoskiApplication.apply)
 
     application.runMode match {
-      case RunMode.NORMAL => initKoskiServices(context)
-      case RunMode.GENERATE_RAPORTOINTIKANTA => generateRaportointikanta()
+      case RunMode.NORMAL => initKoskiServices(context)(application)
+      case RunMode.GENERATE_RAPORTOINTIKANTA => generateRaportointikanta(application)
     }
   } catch {
     case e: Exception =>
@@ -120,17 +120,15 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     mount("/cas", new CasServlet)
     mount("/cache", new CacheServlet)
 
-    if (application.features.valpas) {
-      mount("/valpas/localization", new ValpasBootstrapServlet)
-      mount("/valpas/api", new ValpasRootApiServlet)
-      mount("/valpas/api/kuntailmoitus", new ValpasKuntailmoitusApiServlet)
-      mount("/valpas/logout", new ValpasLogoutServlet)
-      if (!SSOConfig(application.config).isCasSsoUsed) {
-        mount("/valpas/login", new LocalLoginServlet)
-      }
-      if (application.config.getString("opintopolku.virkailija.url") == "mock") {
-        mount("/valpas/test", new ValpasTestApiServlet)
-      }
+    mount("/valpas/localization", new ValpasBootstrapServlet)
+    mount("/valpas/api", new ValpasRootApiServlet)
+    mount("/valpas/api/kuntailmoitus", new ValpasKuntailmoitusApiServlet)
+    mount("/valpas/logout", new ValpasLogoutServlet)
+    if (!SSOConfig(application.config).isCasSsoUsed) {
+      mount("/valpas/login", new LocalLoginServlet)
+    }
+    if (application.config.getString("opintopolku.virkailija.url") == "mock") {
+      mount("/valpas/test", new ValpasTestApiServlet)
     }
 
     Futures.await(initTasks) // await for all initialization tasks to complete
@@ -141,7 +139,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     }
   }
 
-  def generateRaportointikanta()(implicit application: KoskiApplication) = {
+  def generateRaportointikanta(application: KoskiApplication): Unit = {
     val service = new RaportointikantaService(application)
     service.loadRaportointikantaAndExit()
   }

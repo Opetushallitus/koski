@@ -3,14 +3,14 @@ package fi.oph.koski.etk
 import java.sql.{Date, Timestamp}
 import java.time.{Instant, LocalDate}
 
-import fi.oph.koski.db.KoskiDatabaseMethods
+import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.DB
 import slick.jdbc.GetResult
 
 import scala.concurrent.duration.DurationInt
 
-class ElaketurvakeskusQueryService(val db: DB) extends KoskiDatabaseMethods {
+class ElaketurvakeskusQueryService(val db: DB) extends QueryMethods {
 
   def ammatillisetPerustutkinnot(request: TutkintotietoRequest): EtkResponse = {
     val queryResult = ammatillisetPerustutkinnotAikajaksolta(request.alku, request.loppu)

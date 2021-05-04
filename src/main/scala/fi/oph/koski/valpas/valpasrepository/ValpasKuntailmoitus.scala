@@ -1,14 +1,17 @@
 package fi.oph.koski.valpas.valpasrepository
 
-import java.time.LocalDateTime
-
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
 import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
 
-case class ValpasKuntailmoitusLaajatTiedotJaOppijaOid(oppijaOid: String, kuntailmoitus: ValpasKuntailmoitusLaajatTiedot)
+import java.time.LocalDateTime
+
+case class ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+  oppijaOid: String,
+  kuntailmoitus: ValpasKuntailmoitusLaajatTiedot
+)
 
 trait ValpasKuntailmoitus {
-  def id: Option[Int]
+  def id: Option[String] // TODO: Scala-schemasta puuttuu UUID-tuki :(
   def tekijä: ValpasKuntailmoituksenTekijä
   def kunta: OrganisaatioWithOid // Koska suuri osa kunnista on koulutustoimijoita, on niille vaikea luoda omaa tyyppiä.
                                  // Validointi, että tähän voi tallentaa vain kunta-tyyppisen organisaation, tehdään erikseen.
@@ -20,7 +23,7 @@ trait ValpasKuntailmoituksenTekijä {
 }
 
 case class ValpasKuntailmoitusSuppeatTiedot(
-  id: Option[Int],
+  id: Option[String],
   tekijä: ValpasKuntailmoituksenTekijäSuppeatTiedot,
   kunta: OrganisaatioWithOid,
   aikaleima: Option[LocalDateTime]
@@ -38,7 +41,7 @@ object ValpasKuntailmoitusSuppeatTiedot {
 }
 
 case class ValpasKuntailmoitusLaajatTiedot(
-  id: Option[Int],
+  id: Option[String],
   kunta: OrganisaatioWithOid,
   aikaleima: Option[LocalDateTime], // Option, koska create-operaatiossa bäkkäri täyttää ilmoitusajan
   tekijä: ValpasKuntailmoituksenTekijäLaajatTiedot,

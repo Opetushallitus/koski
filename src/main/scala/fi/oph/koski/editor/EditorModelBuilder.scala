@@ -78,8 +78,12 @@ case class ModelBuilderContext(
   invalidatable: Boolean,
   root: Boolean = true,
   var prototypesRequested: SchemaSet = SchemaSet.empty,
-  prototypesBeingCreated: SchemaSet = SchemaSet.empty)(implicit val user: KoskiSpecificSession, val koodisto: KoodistoViitePalvelu, val localizationRepository: LocalizationRepository) extends LocalizedHtml {
-}
+  prototypesBeingCreated: SchemaSet = SchemaSet.empty
+)(
+  implicit val user: KoskiSpecificSession,
+  val koodisto: KoodistoViitePalvelu,
+  val localizationRepository: LocalizationRepository
+) extends LocalizedHtml
 
 case class NumberModelBuilder(t: NumberSchema) extends ModelBuilderWithData[Number] {
   override def buildModelForObject(x: Number, metadata: List[Metadata]) = NumberModel(ValueWithData(x, classesFromMetadata(metadata)), metadata)

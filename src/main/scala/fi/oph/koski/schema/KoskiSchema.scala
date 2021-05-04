@@ -16,4 +16,6 @@ object KoskiSchema {
     case s: ClassSchema => s.moveDefinitionsToTopLevel
     case _ => ???
   }
+
+  def skipSyntheticProperties(s: ClassSchema, p: Property): List[Property] = if (p.synthetic) Nil else List(p)
 }

@@ -2,7 +2,7 @@ package fi.oph.koski.api
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables.OpiskeluOikeudetWithAccessCheck
+import fi.oph.koski.db.KoskiTables.OpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory

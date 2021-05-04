@@ -3,8 +3,7 @@ package fi.oph.koski.api
 import java.time.LocalDate
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables
-import fi.oph.koski.db.Tables.OpiskeluOikeudetWithAccessCheck
+import fi.oph.koski.db.KoskiTables
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExamplesEsiopetus
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -421,8 +420,8 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   }
 
   private def koskeenTallennetutOppijatCount =
-    runDbSync(OpiskeluOikeudetWithAccessCheck(KoskiSpecificSession.systemUser)
-      .join(Tables.Henkilöt).on(_.oppijaOid === _.oid)
+    runDbSync(KoskiTables.OpiskeluOikeudetWithAccessCheck(KoskiSpecificSession.systemUser)
+      .join(KoskiTables.Henkilöt).on(_.oppijaOid === _.oid)
       .filter(_._2.masterOid.isEmpty)
       .map(_._1.oppijaOid).result)
       .distinct

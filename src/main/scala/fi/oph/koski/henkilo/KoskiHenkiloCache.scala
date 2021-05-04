@@ -2,11 +2,11 @@ package fi.oph.koski.henkilo
 
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables._
+import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db._
 import fi.oph.koski.log.Logging
 
-class KoskiHenkilöCache(val db: DB) extends Logging with DatabaseExecutionContext with KoskiDatabaseMethods {
+class KoskiHenkilöCache(val db: DB) extends Logging with DatabaseExecutionContext with QueryMethods {
   def addHenkilöAction(data: OppijaHenkilöWithMasterInfo) =
     addMasterIfNecessary(data.master)
       .andThen(addHenkilö(data.henkilö.oid, toHenkilöRow(data.henkilö, data.master.map(_.oid))))

@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables.OpiskeluOikeudetWithAccessCheck
+import fi.oph.koski.db.KoskiTables.OpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.koskiuser.KoskiSpecificSession.systemUser
 import fi.oph.koski.koskiuser.MockUsers.stadinAmmattiopistoTallentaja
 import fi.oph.koski.organisaatio.MockOrganisaatiot.omnia

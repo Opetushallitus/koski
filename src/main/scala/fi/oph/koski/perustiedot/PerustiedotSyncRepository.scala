@@ -2,14 +2,14 @@ package fi.oph.koski.perustiedot
 
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables.PerustiedotSync
-import fi.oph.koski.db.{KoskiDatabaseMethods, PerustiedotSyncRow}
+import fi.oph.koski.db.KoskiTables.PerustiedotSync
+import fi.oph.koski.db.{QueryMethods, PerustiedotSyncRow}
 import org.json4s.JValue
 import slick.dbio.Effect
 import slick.sql.FixedSqlAction
 
 
-class PerustiedotSyncRepository(val db: DB) extends KoskiDatabaseMethods {
+class PerustiedotSyncRepository(val db: DB) extends QueryMethods {
   def addToSyncQueueRaw(opiskeluoikeudet: Seq[JValue], upsert: Boolean): Unit = {
     val rows = opiskeluoikeudet.map(oo => PerustiedotSyncRow(
       opiskeluoikeusId = OpiskeluoikeudenPerustiedot.docId(oo),

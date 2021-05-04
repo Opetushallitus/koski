@@ -5,13 +5,13 @@ import java.sql.SQLException
 
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables.OppilaitosIPOsoite
-import fi.oph.koski.db.{KoskiDatabaseMethods, OppilaitosIPOsoiteRow}
+import fi.oph.koski.db.KoskiTables.OppilaitosIPOsoite
+import fi.oph.koski.db.{QueryMethods, OppilaitosIPOsoiteRow}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import org.log4s.{Logger, getLogger}
 
-class IPService(val db: DB) extends KoskiDatabaseMethods with Logging {
+class IPService(val db: DB) extends QueryMethods with Logging {
   def setIP(username: String, ip: String): Unit = try {
     runDbSync(OppilaitosIPOsoite.insertOrUpdate(OppilaitosIPOsoiteRow(username, ip)))
   } catch {
