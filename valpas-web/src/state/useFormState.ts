@@ -52,9 +52,9 @@ export type FieldState<T> = {
 }
 
 export type FieldValidator<T, F extends object> = (
-  value: T,
+  value: T | undefined,
   formState: FormState<F>
-) => E.Either<FieldError[], T>
+) => E.Either<FieldError[], T | undefined>
 
 export type FieldError = string
 

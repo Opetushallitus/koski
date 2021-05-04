@@ -22,3 +22,17 @@ export const Checkbox = ({ value, onChange, ...rest }: CheckboxProps) => (
     onChange={(event) => onChange(event.target.checked)}
   />
 )
+
+export type LabeledCheckboxProps = CheckboxProps & {
+  label: string
+}
+
+export const LabeledCheckbox = ({
+  label,
+  ...checkboxProps
+}: LabeledCheckboxProps) => (
+  <label className={b("label")}>
+    <Checkbox {...checkboxProps} />
+    {label}
+  </label>
+)

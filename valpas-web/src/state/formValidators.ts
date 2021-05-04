@@ -6,7 +6,9 @@ import { FieldValidator, FormState } from "./useFormState"
 export const expectNonEmptyString = <T extends object>(
   errorStringId: string = "validointi__ei_voi_olla_tyhjä"
 ): FieldValidator<string, T> => (input, _form) =>
-  input.length === 0 ? E.left([t(errorStringId)]) : E.right(input)
+  input === undefined || input.length === 0
+    ? E.left([t(errorStringId)])
+    : E.right(input)
 
 export const composeValidators = <T extends object, S>(
   validators: Array<FieldValidator<S, T>>
