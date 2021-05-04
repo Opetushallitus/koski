@@ -306,6 +306,8 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
       oppija.henkilö.hetu shouldBe expectedOppija.hetu
       oppija.henkilö.etunimet shouldBe expectedOppija.etunimet
       oppija.henkilö.sukunimi shouldBe expectedOppija.sukunimi
+      oppija.henkilö.turvakielto shouldBe expectedOppija.turvakielto
+      oppija.henkilö.äidinkieli shouldBe expectedOppija.äidinkieli
 
       val expectedOikeutetutOppilaitokset = expectedData.filter(_.onOikeutettuOppilaitos).map(_.opiskeluoikeus.oppilaitos.get.oid).toSet
       oppija.oikeutetutOppilaitokset shouldBe expectedOikeutetutOppilaitokset

@@ -127,6 +127,7 @@ class ValpasOppijaService(
             etunimet = dbRow.etunimet,
             sukunimi = dbRow.sukunimi,
             turvakielto = dbRow.turvakielto,
+            äidinkieli = dbRow.äidinkieli
           ),
           oikeutetutOppilaitokset = dbRow.oikeutetutOppilaitokset,
           opiskeluoikeudet = opiskeluoikeudet

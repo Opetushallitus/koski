@@ -62,7 +62,8 @@ case class ValpasHenkilöLaajatTiedot(
   syntymäaika: Option[LocalDate],
   etunimet: String,
   sukunimi: String,
-  turvakielto: Boolean
+  turvakielto: Boolean,
+  äidinkieli: Option[String]
 ) extends ValpasHenkilö
 
 object ValpasHenkilöSuppeatTiedot {
