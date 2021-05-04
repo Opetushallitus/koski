@@ -31,7 +31,7 @@ object PerfTestRunner extends Logging {
     val stats = new StatsCollector
     scenarios.map(scenario => startScenario(scenario, group, stats, scenario.threadCount, scenario.roundCount)).foreach(_())
     logger.info("**** Finished test ****")
-    sys.env.get("PERFTEST_NAME").foreach(testname => new PerfTestPrometheusPusher(testname).push(stats.getStatsByOperation))
+//    sys.env.get("PERFTEST_NAME").foreach(testname => new PerfTestPrometheusPusher(testname).push(stats.getStatsByOperation))
     val failures: Int = stats.summary.failedCount
     if (failures > 0) {
       throw new RuntimeException(s"Test failed: $failures failures")

@@ -1,0 +1,148 @@
+name: Run performance tests
+on:
+  schedule:
+    - cron: "0 23 * * *"
+env:
+  DOCKER_BUILDKIT: 1
+  KOSKI_SERVER_COUNT: 2
+  KOSKI_BASE_URL: https://dev.koski.opintopolku.fi/koski
+  KOSKI_USER: ${{ secrets.KOSKI_USER_USERNAME }}
+  KOSKI_PASS: ${{ secrets.KOSKI_USER_PASSWORD }}
+  VIRKAILIJA: https://virkailija.untuvaopintopolku.fi
+
+jobs:
+  random_get_light:
+    name: random-get-light
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: "8"
+          architecture: x64
+
+      - name: Setup Node 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Build
+        run: mvn test-compile
+
+      - name: Run perftest randomget-light
+        run: |
+          export PERFTEST_NAME="randomget-light"
+          export PERFTEST_THREADS=2
+          mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.RandomOpiskeluoikeusGetter"
+
+  insert_light:
+    needs: [ random_get_light ]
+    name: insert-light
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: "8"
+          architecture: x64
+
+      - name: Setup Node 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Build
+        run: mvn test-compile
+
+      - name: Run perftest insert-light
+        run: |
+          export PERFTEST_NAME="insert-light"
+          export PERFTEST_THREADS=4
+          mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.MixedOpiskeluoikeusInserterUpdater"
+
+  mixed-overload:
+    needs: [ insert_light ]
+    name: mixed-overload
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: "8"
+          architecture: x64
+
+      - name: Setup Node 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Build
+        run: mvn test-compile
+
+      - name: Run perftest mixed-overload
+        run: |
+          export PERFTEST_NAME="mixed-overload"
+          export PERFTEST_THREADS=100
+          mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.MixedPerfTester"
+
+      - name: Report failure
+        uses: ravsamhq/notify-slack-action@v1
+        if: ${{ failure() }}
+        with:
+          status: ${{ job.status }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
