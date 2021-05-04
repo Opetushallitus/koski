@@ -1,0 +1,35 @@
+@import "../../../style/colors.less";
+@import "../../../style/spacing.less";
+@import "../../../style/typography.less";
+
+@ilmoitusform-frame-color: @color-blue;
+
+.ilmoitusform__frame {
+  border: 2px solid @ilmoitusform-frame-color;
+  margin-bottom: 1rem;
+
+  .ilmoitusform__header {
+    background: @ilmoitusform-frame-color;
+    color: @color-white;
+
+    padding: @padding;
+
+    .ilmoitusform__title {
+      display: flex;
+      justify-content: space-between;
+
+      font-size: @font-size-large;
+      font-weight: @font-weight-regular;
+      margin-bottom: 0.5rem;
+    }
+
+    .ilmoitusform__subtitle {
+      font-size: @font-size-medium;
+      font-weight: @font-weight-regular;
+    }
+  }
+
+  .ilmoitusform__body {
+    padding: @padding;
+  }
+}

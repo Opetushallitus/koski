@@ -11,8 +11,13 @@ export const Ilmoituslomake = (props: IlmoituslomakeProps) => {
   return (
     <Modal title="Ilman opiskelupaikkaa jäävien ilmoittaminen">
       <p>Tarkista ilmoitettavien oppijoiden yhteystiedot.</p>
-      {props.oppijat.map((oppija) => (
-        <IlmoitusForm key={oppija.oppija.henkilö.oid} oppija={oppija} />
+      {props.oppijat.map((oppija, index) => (
+        <IlmoitusForm
+          key={oppija.oppija.henkilö.oid}
+          oppija={oppija}
+          formIndex={index}
+          numberOfForms={props.oppijat.length}
+        />
       ))}
     </Modal>
   )
