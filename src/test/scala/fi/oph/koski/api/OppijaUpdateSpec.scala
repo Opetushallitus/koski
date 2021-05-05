@@ -461,11 +461,20 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     }
 
     "NULL merkki datassa" in {
-      val opiskeluoikeus: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(lisätiedot = Some(AmmatillinenExampleData.opiskeluoikeudenLisätiedot.copy(ulkomaanjaksot =
-        Some(List(Ulkomaanjakso(alku = date(2012, 9, 1), loppu = None, maa = ExampleData.ruotsi, kuvaus = LocalizedString.finnish("\u0000"))))
-      )))
+      resetFixtures
+
+      val opiskeluoikeus: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
+        lisätiedot = Some(AmmatillinenExampleData.opiskeluoikeudenLisätiedot.copy(
+          ulkomaanjaksot = Some(List(Ulkomaanjakso(
+            alku = date(2012, 9, 1), loppu = None, maa = ExampleData.ruotsi, kuvaus = LocalizedString.finnish("kuv\u0000aus")
+          ))))))
+
       putOppija(Oppija(oppija, List(opiskeluoikeus))) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.json("unsupported unicode escape sequence in data"))
+        verifyResponseStatusOk()
+        lastOpiskeluoikeusByHetu(oppija)
+          .lisätiedot.collect { case l: AmmatillisenOpiskeluoikeudenLisätiedot => l }.get
+          .ulkomaanjaksot.get.head
+          .kuvaus.get("fi") should equal("kuvaus")
       }
     }
   }
