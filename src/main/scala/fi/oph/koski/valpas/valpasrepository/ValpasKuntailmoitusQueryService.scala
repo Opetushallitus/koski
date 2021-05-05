@@ -40,7 +40,7 @@ class ValpasKuntailmoitusQueryService(
       oppijaY <- data.kuntailmoitus.oppijanYhteystiedot.toRight(
         ValpasErrorCategory.internalError("Oppijan yhteystiedot puuttuvat")
       )
-      hakenutUlkomaille <- data.kuntailmoitus.hakenutUlkomaille.toRight(
+      hakenutMuualle <- data.kuntailmoitus.hakenutMuualle.toRight(
         ValpasErrorCategory.internalError("'Hakenut ulkomaille' puuttuu")
       )
     } yield {
@@ -73,7 +73,7 @@ class ValpasKuntailmoitusQueryService(
             ),
             tekijäOrganisaatio = data.kuntailmoitus.tekijä.organisaatio,
             kunta = data.kuntailmoitus.kunta,
-            hakenutUlkomaille = hakenutUlkomaille
+            hakenutMuualle = hakenutMuualle
           )
         )
       )
@@ -111,7 +111,7 @@ class ValpasKuntailmoitusQueryService(
           postitoimipaikka = li.oppijaYhteystiedot.postitoimipaikka,
           maa = li.oppijaYhteystiedot.maa
         )),
-        hakenutUlkomaille = Some(li.hakenutUlkomaille)
+        hakenutMuualle = Some(li.hakenutMuualle)
       )
     )
   }

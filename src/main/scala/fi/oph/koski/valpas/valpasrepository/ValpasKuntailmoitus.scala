@@ -52,7 +52,7 @@ case class ValpasKuntailmoitusLaajatTiedot(
                                                  // tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa.
   oppijanYhteystiedot: Option[ValpasKuntailmoituksenOppijanYhteystiedot], // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn
                                                                          // ilmoituksen tiedoista, tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa
-  hakenutUlkomaille: Option[Boolean]             // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn ilmoituksen tiedoista,
+  hakenutMuualle: Option[Boolean]             // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn ilmoituksen tiedoista,
                                                  // tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa.
 ) extends ValpasKuntailmoitus
 

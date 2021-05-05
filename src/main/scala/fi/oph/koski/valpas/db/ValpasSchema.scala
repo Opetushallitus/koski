@@ -74,7 +74,7 @@ case class IlmoitusLisätiedotData(
   tekijäYhteystiedot: TekijäYhteystiedotData,
   tekijäOrganisaatio: OrganisaatioWithOid,
   kunta: OrganisaatioWithOid,
-  hakenutUlkomaille: Boolean
+  hakenutMuualle: Boolean
 )
 
 case class OppijaYhteystiedotData(
