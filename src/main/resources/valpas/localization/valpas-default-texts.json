@@ -103,5 +103,18 @@
   "kayttooikeusrooli_OPPILAITOS_SUORITTAMINEN": "Oppilaitoksen oppivelvollisuuden suorittamisen valvonta",
   "kayttooikeusrooli_OPPILAITOS_MAKSUTTOMUUS": "Oppilaitoksen opiskelun maksuttomuustietojen määrittely",
   "kayttooikeusrooli_KUNTA": "Kunnan oppivelvollisuuden suorittamisen valvonta",
-  "homeview_olet_onnistuneesti_kirjautunut": "Olet onnistuneesti kirjautunut Valpas-järjestelmään seuraavilla käyttöoikeuksilla"
+  "homeview_olet_onnistuneesti_kirjautunut": "Olet onnistuneesti kirjautunut Valpas-järjestelmään seuraavilla käyttöoikeuksilla",
+  "ilmoituslomake__esitäytä_yhteystiedoilla": "Esitäytä yhteystiedoilla:",
+  "ilmoituslomake__asuinkunta": "Asuinkunta",
+  "ilmoituslomake__yhteydenottokieli": "Yhteydenottokieli",
+  "ilmoituslomake__muut_yhteystiedot": "Yhteystiedot",
+  "ilmoituslomake__maa": "Maa",
+  "ilmoituslomake__postinumero": "Postinumero",
+  "ilmoituslomake__postitoimipaikka": "Postitoimipaikka",
+  "ilmoituslomake__katuosoite": "Katuosoite",
+  "ilmoituslomake__puhelinnumero": "Puhelinnumero",
+  "ilmoituslomake__sähköposti": "Sähköposti",
+  "ilmoituslomake__hakenut_opiskelemaan_yhteishakujen_ulkopuolella": "Hakenut opiskelemaan yhteyshakujen ulkopuolella (esim. ulkomaille tai Ahvenanmaalle)",
+  "ilmoituslomake__pakollinen_tieto": "Pakollinen tieto",
+  "ilmoituslomake__ilmoita_asuinkunnalle": "Ilmoita asuinkunnalle"
 }

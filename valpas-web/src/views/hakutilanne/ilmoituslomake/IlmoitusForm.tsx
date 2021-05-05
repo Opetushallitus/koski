@@ -5,71 +5,74 @@ import { LabeledCheckbox } from "../../../components/forms/Checkbox"
 import { Dropdown, koodistoToOptions } from "../../../components/forms/Dropdown"
 import { TextField } from "../../../components/forms/TextField"
 import { CaretDownIcon, CaretUpIcon } from "../../../components/icons/Icon"
+import { SecondaryHeading } from "../../../components/typography/headings"
+import { T, t } from "../../../i18n/i18n"
 import { HenkilöSuppeatTiedot } from "../../../state/apitypes/henkilo"
 import { KoodistoKoodiviite } from "../../../state/apitypes/koodistot"
 import { OppijaHakutilanteillaSuppeatTiedot } from "../../../state/apitypes/oppija"
-import {
-  expectNonEmptyString,
-  validateIfElse,
-} from "../../../state/formValidators"
-import { FormState, useFormState } from "../../../state/useFormState"
+import { expectNonEmptyString } from "../../../state/formValidators"
+import { FormValidators, useFormState } from "../../../state/useFormState"
 import { plainComponent } from "../../../utils/plaincomponent"
 import "./IlmoitusForm.less"
 
 const b = bem("ilmoitusform")
 
-type IlmoitusFormValues = {
-  asuinkunta: string
+const koodiarvoFinland = "246"
+
+export type IlmoitusFormValues = {
+  asuinkunta?: string
   yhteydenottokieli?: string
+  maa?: string
   postinumero: string
+  postitoimipaikka: string
   katuosoite: string
   puhelinnumero: string
   sähköposti: string
-  maa: string
-  hakenutOpiskelemaanUlkomailleTaiAhvenanmaalle: boolean
+  hakenutOpiskelemaanYhteyshakujenUlkopuolella: boolean
 }
 
 const initialValues: IlmoitusFormValues = {
-  asuinkunta: "",
-  yhteydenottokieli: "",
+  asuinkunta: undefined,
+  yhteydenottokieli: "FI",
+  maa: koodiarvoFinland,
   postinumero: "",
+  postitoimipaikka: "",
   katuosoite: "",
   puhelinnumero: "",
   sähköposti: "",
-  maa: "",
-  hakenutOpiskelemaanUlkomailleTaiAhvenanmaalle: false,
+  hakenutOpiskelemaanYhteyshakujenUlkopuolella: false,
 }
 
-const validators = {
-  asuinkunta: [expectNonEmptyString()],
-  yhteydenottokieli: [expectNonEmptyString()],
-  postinumero: [expectNonEmptyString()],
-  katuosoite: [
-    validateIfElse(
-      (form: FormState<IlmoitusFormValues>) =>
-        form.maa.currentValue === "Suomi",
-      [expectNonEmptyString("ei voi olla tyhjä jos maa suomi")],
-      []
-    ),
-  ],
-  puhelinnumero: [expectNonEmptyString()],
-  sähköposti: [expectNonEmptyString()],
-  maa: [expectNonEmptyString()],
-  hakenutOpiskelemaanUlkomailleTaiAhvenanmaalle: [],
+const validators: FormValidators<IlmoitusFormValues> = {
+  asuinkunta: [expectNonEmptyString("ilmoituslomake__pakollinen_tieto")],
+  yhteydenottokieli: [],
+  maa: [],
+  postitoimipaikka: [],
+  postinumero: [],
+  katuosoite: [],
+  puhelinnumero: [],
+  sähköposti: [],
+  hakenutOpiskelemaanYhteyshakujenUlkopuolella: [],
 }
 
 export type IlmoitusFormProps = {
   oppija: OppijaHakutilanteillaSuppeatTiedot
-  yhteydenottokielet: Array<KoodistoKoodiviite>
+  kunnat: Array<KoodistoKoodiviite>
+  maat: Array<KoodistoKoodiviite>
+  kielet: Array<KoodistoKoodiviite>
   formIndex: number
   numberOfForms: number
+  prefilledValues: PrefilledIlmoitusFormValues[]
+}
+
+export type PrefilledIlmoitusFormValues = {
+  label: string
+  values: Partial<IlmoitusFormValues>
 }
 
 export const IlmoitusForm = (props: IlmoitusFormProps) => {
   const form = useFormState({ initialValues, validators })
   const [isOpen, setOpen] = useState(true)
-
-  console.log(form)
 
   return (
     <IlmoitusFormFrame>
@@ -82,21 +85,57 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
       />
       {isOpen ? (
         <IlmoitusBody>
-          <TextField label="Asuinkunta" {...form.fieldProps("asuinkunta")} />
-          <TextField label="Katuosoite" {...form.fieldProps("katuosoite")} />
+          <IlmoitusPrefillSelector
+            prefilledValues={props.prefilledValues}
+            onSelect={form.patch}
+          />
           <Dropdown
-            label="Yhteydenottokieli"
-            options={koodistoToOptions(props.yhteydenottokielet)}
+            label={t("ilmoituslomake__asuinkunta")}
+            options={koodistoToOptions(props.kunnat)}
+            {...form.fieldProps("asuinkunta")}
+          />
+          <Dropdown
+            label={t("ilmoituslomake__yhteydenottokieli")}
+            options={koodistoToOptions(props.kielet)}
             {...form.fieldProps("yhteydenottokieli")}
           />
-          <TextField label="Maa" {...form.fieldProps("maa")} />
-          <LabeledCheckbox
-            label="Hakenut opiskelemaan muualle"
-            {...form.fieldProps(
-              "hakenutOpiskelemaanUlkomailleTaiAhvenanmaalle"
-            )}
+          <SecondaryHeading className={b("muutyhteystiedototsikko")}>
+            <T id="ilmoituslomake__muut_yhteystiedot" />
+          </SecondaryHeading>
+          <Dropdown
+            label={t("ilmoituslomake__maa")}
+            options={koodistoToOptions(props.maat)}
+            {...form.fieldProps("maa")}
           />
-          <RaisedButton disabled={!form.isValid}>Ilmoita</RaisedButton>
+          <TextField
+            label={t("ilmoituslomake__postinumero")}
+            {...form.fieldProps("postinumero")}
+          />
+          <TextField
+            label={t("ilmoituslomake__postitoimipaikka")}
+            {...form.fieldProps("postitoimipaikka")}
+          />
+          <TextField
+            label={t("ilmoituslomake__katuosoite")}
+            {...form.fieldProps("katuosoite")}
+          />
+          <TextField
+            label={t("ilmoituslomake__puhelinnumero")}
+            {...form.fieldProps("puhelinnumero")}
+          />
+          <TextField
+            label={t("ilmoituslomake__sähköposti")}
+            {...form.fieldProps("sähköposti")}
+          />
+          <LabeledCheckbox
+            label={t(
+              "ilmoituslomake__hakenut_opiskelemaan_yhteishakujen_ulkopuolella"
+            )}
+            {...form.fieldProps("hakenutOpiskelemaanYhteyshakujenUlkopuolella")}
+          />
+          <RaisedButton disabled={!form.isValid}>
+            <T id="ilmoituslomake__ilmoita_asuinkunnalle" />
+          </RaisedButton>
         </IlmoitusBody>
       ) : null}
     </IlmoitusFormFrame>
@@ -135,3 +174,25 @@ const IlmoitusTitleText = plainComponent("div", b("titletext"))
 const IlmoitusTitleCaret = plainComponent("div", b("titlecaret"))
 const IlmoitusSubtitle = plainComponent("h4", b("subtitle"))
 const IlmoitusBody = plainComponent("div", b("body"))
+
+type IlmoitusPrefillSelectorProps = {
+  prefilledValues: PrefilledIlmoitusFormValues[]
+  onSelect: (values: Partial<IlmoitusFormValues>) => void
+}
+
+const IlmoitusPrefillSelector = (props: IlmoitusPrefillSelectorProps) => (
+  <div className={b("prefill")}>
+    <T id="ilmoituslomake__esitäytä_yhteystiedoilla" />
+    <ul className={b("prefilllist")}>
+      {props.prefilledValues.map((prefill, index) => (
+        <li
+          key={index}
+          className={b("prefillitem")}
+          onClick={() => props.onSelect(prefill.values)}
+        >
+          {index + 1}) {prefill.label}
+        </li>
+      ))}
+    </ul>
+  </div>
+)

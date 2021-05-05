@@ -18,6 +18,7 @@ export type UseFormStateHook<T extends object> = {
   state: FormState<T>
   touch: FormTouchFunction<T>
   set: FormSetFunction<T>
+  patch: FormPatchFunction<T>
   fieldProps: FormFieldPropsFunction<T>
   isValid: boolean
 }
@@ -27,6 +28,7 @@ export type FormSetFunction<T extends object> = (
   key: keyof T,
   value: T[typeof key]
 ) => void
+export type FormPatchFunction<T extends object> = (patch: Partial<T>) => void
 export type FormFieldPropsFunction<T extends object> = <K extends keyof T>(
   key: K
 ) => FormFieldProps<T[K]>
@@ -38,9 +40,11 @@ export type FormFieldProps<T> = {
   error?: React.ReactNode
 }
 
-export type FormState<T extends object> = {
-  [K in keyof T]: FieldState<T[K]>
-}
+export type FormState<T extends object> = Required<
+  {
+    [K in keyof T]: FieldState<T[K]>
+  }
+>
 
 export type FormErrors<T extends object> = Record<keyof T, FieldError[]>
 
@@ -72,6 +76,15 @@ export const useFormState = <T extends object>({
     return setState(softValidation(validators, newState))
   }
 
+  const patch: FormPatchFunction<T> = (values) => {
+    let newState = currentState
+    for (const key in values) {
+      const value = values[key] as T[typeof key]
+      newState = updatedField(key, value, validators, newState)
+    }
+    setState(softValidation(validators, newState))
+  }
+
   const touch: FormTouchFunction<T> = (key) =>
     setState(touched(key, validators, currentState))
 
@@ -89,7 +102,7 @@ export const useFormState = <T extends object>({
     currentState
   )
 
-  return { state: currentState, touch, set, fieldProps, isValid }
+  return { state: currentState, touch, set, patch, fieldProps, isValid }
 }
 
 const createInitialState = <T extends object>(values: T): FormState<T> =>

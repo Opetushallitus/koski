@@ -2,7 +2,7 @@ import React from "react"
 import { Modal } from "../../../components/containers/Modal"
 import { KoodistoKoodiviite } from "../../../state/apitypes/koodistot"
 import { OppijaHakutilanteillaSuppeatTiedot } from "../../../state/apitypes/oppija"
-import { IlmoitusForm } from "./IlmoitusForm"
+import { IlmoitusForm, PrefilledIlmoitusFormValues } from "./IlmoitusForm"
 
 export type IlmoituslomakeProps = {
   oppijat: OppijaHakutilanteillaSuppeatTiedot[]
@@ -18,7 +18,13 @@ export const Ilmoituslomake = (props: IlmoituslomakeProps) => {
           formIndex={index}
           numberOfForms={props.oppijat.length}
           oppija={oppija}
-          yhteydenottokielet={mockYhteydenottokielet}
+          kunnat={mockAsuinkunnat}
+          maat={mockMaat}
+          kielet={mockYhteydenottokielet}
+          prefilledValues={[
+            mockPrefilledYhteishakuValues,
+            mockPrefilledDvvValues,
+          ]}
         />
       ))}
     </Modal>
@@ -37,9 +43,42 @@ const mockKoodisto = (
     },
   }))
 
-const mockYhteydenottokielet = mockKoodisto("kielivalikoima", {
-  FI: "Suomi",
-  SV: "Ruotsi",
-  EN: "Englanti",
-  AR: "Arabia",
+const mockAsuinkunnat = mockKoodisto("kunta", {
+  "091": "Helsinki",
+  "179": "Jyväskylä",
+  "272": "Kokkola",
 })
+
+const mockMaat = mockKoodisto("maatjavaltiot2", {
+  "004": "Afganistan",
+  "246": "Suomi",
+  "752": "Ruotsi",
+  "840": "Yhdysvallat (USA)",
+})
+
+const mockYhteydenottokielet = mockKoodisto("kielivalikoima", {
+  FI: "suomi",
+  SV: "ruotsi",
+  EN: "englanti",
+  AR: "arabia",
+})
+
+const mockPrefilledDvvValues: PrefilledIlmoitusFormValues = {
+  label: "DVV yhteystiedot",
+  values: {
+    asuinkunta: "272",
+    postinumero: "67100",
+    postitoimipaikka: "Kokkola",
+    katuosoite: "Esimerkkikatu 123",
+  },
+}
+
+const mockPrefilledYhteishakuValues: PrefilledIlmoitusFormValues = {
+  label: "Yhteishaku kevät 2021",
+  values: {
+    asuinkunta: "179",
+    postinumero: "12345",
+    postitoimipaikka: "Jyväskylä",
+    katuosoite: "Jytäraitti 83",
+  },
+}

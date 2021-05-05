@@ -31,5 +31,28 @@
 
   .ilmoitusform__body {
     padding: @padding;
+
+    .ilmoitusform__prefill {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+
+      .ilmoitusform__prefilllist {
+        margin-left: 1rem;
+
+        .ilmoitusform__prefillitem {
+          color: @color-blue;
+          cursor: pointer;
+
+          &:hover {
+            color: @color-blue-lighten-1;
+          }
+        }
+      }
+    }
+
+    .ilmoitusform__muutyhteystiedototsikko {
+      margin-top: 2rem;
+    }
   }
 }
