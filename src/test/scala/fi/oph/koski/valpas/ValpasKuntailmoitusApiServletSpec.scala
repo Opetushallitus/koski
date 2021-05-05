@@ -582,7 +582,10 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
        |      "lähiosoite" : "Metsäkatu 1 C 10",
        |      "postinumero" : "00100",
        |      "postitoimipaikka" : "Helsinki",
-       |      "maa" : "Finland"
+       |      "maa" : {
+       |        "koodiarvo" : "246",
+       |        "koodistoUri" : "maatjavaltiot2"
+       |      }
        |    },
        |    "hakenutUlkomaille": false
        |  }

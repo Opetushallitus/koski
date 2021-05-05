@@ -2,9 +2,8 @@ package fi.oph.koski.valpas.db
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.OrganisaatioWithOid
+import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
 import org.json4s.JValue
-
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -84,7 +83,7 @@ case class OppijaYhteystiedotData(
   lähiosoite: Option[String],
   postinumero: Option[String],
   postitoimipaikka: Option[String],
-  maa: Option[String]
+  maa: Option[Koodistokoodiviite]
 )
 
 case class TekijäYhteystiedotData(

@@ -90,5 +90,6 @@ case class ValpasKuntailmoituksenOppijanYhteystiedot(
   lähiosoite: Option[String] = None,
   postinumero: Option[String] = None,
   postitoimipaikka: Option[String] = None,
-  maa: Option[String] = None
+  @KoodistoUri("maatjavaltiot2")
+  maa: Option[Koodistokoodiviite] = None
 )
