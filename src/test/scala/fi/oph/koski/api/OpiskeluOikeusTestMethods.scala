@@ -71,7 +71,9 @@ trait OpiskeluoikeusTestMethods extends HttpSpecification with Matchers {
   }
 
   def readOppija = {
-    SchemaValidatingExtractor.extract[Oppija](JsonMethods.parse(body)).right.get
+    SchemaValidatingExtractor.extract[Oppija](JsonMethods.parse(body))
+      .left.map(e => throw new RuntimeException(e.mkString("\n")))
+      .right.get
   }
 
   def readOpiskeluoikeus = {
