@@ -39,10 +39,10 @@ export type DataTableProps = {
   columns: Column[]
   data: Datum[]
   storageName?: string
-  onChange?: (event: DataTableChangeEvent) => void
+  onCountChange?: (event: DataTableCountChangeEvent) => void
 }
 
-export type DataTableChangeEvent = {
+export type DataTableCountChangeEvent = {
   filteredRowCount: number
   unfilteredRowCount: number
 }
@@ -55,12 +55,18 @@ export type Column = {
 }
 
 /** Represents a piece of table data - a row */
+export type DatumKey = string[]
 export type Datum = {
   /** Unique identifier */
-  key: string
+  key: DatumKey
   /** List of values, length and order equals columns */
   values: Value[]
 }
+
+export const keyToString = (key: DatumKey): string => key.join(".")
+
+export const equalKeys = (a: DatumKey) => (b: DatumKey) =>
+  A.getEq(string.Eq).equals(a, b)
 
 export type Value = {
   /** Value for filtering and ordering */
@@ -108,7 +114,7 @@ export const DataTable = (props: DataTableProps) => {
     return A.sortBy([ordDatum])(filteredData)
   }, [sortColumnIndex, sortAscending, filteredData])
 
-  useEmitCountChanges(props.data, sortedData, props.onChange)
+  useEmitCountChanges(props.data, sortedData, props.onCountChange)
 
   const optionsForFilters = useOptionsForFilters(props.columns, props.data)
 
@@ -188,7 +194,7 @@ export const DataTable = (props: DataTableProps) => {
       </TableHeader>
       <TableBody>
         {sortedData.map((datum) => (
-          <Row key={datum.key} data-row={datum.key}>
+          <Row key={keyToString(datum.key)} data-row={datum.key}>
             {datum.values.map((value, index) => {
               const column = columns[index]
               return (
@@ -231,7 +237,7 @@ const useOptionsForFilters = (columns: Column[], data: Datum[]) => {
 const useEmitCountChanges = (
   data: Datum[],
   sortedData: Datum[],
-  onChange?: (event: DataTableChangeEvent) => void
+  onChange?: (event: DataTableCountChangeEvent) => void
 ) => {
   const filteredRowCount = sortedData.length
   const unfilteredRowCount = data.length

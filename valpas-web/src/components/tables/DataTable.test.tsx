@@ -33,19 +33,19 @@ const clickColumnLabel = (table: RenderResult, columnLabel: string) =>
 const columns: Column[] = [{ label: "Nimi" }, { label: "Oppilaitos" }]
 const data: Datum[] = [
   {
-    key: "1",
+    key: ["1"],
     values: [{ value: "Heikki" }, { value: "Aakkoskoulu" }],
   },
   {
-    key: "2",
+    key: ["2"],
     values: [{ value: "Heli" }, { value: "Beetakaroteenikoulu" }],
   },
   {
-    key: "3",
+    key: ["3"],
     values: [{ value: "Aatu" }, { value: "Deltakoulu" }],
   },
   {
-    key: "4",
+    key: ["4"],
     values: [{ value: "Osmo" }, { value: "Celsiuksen koulu" }],
   },
 ]

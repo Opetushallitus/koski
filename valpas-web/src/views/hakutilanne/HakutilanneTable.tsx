@@ -1,7 +1,8 @@
 import * as A from "fp-ts/lib/Array"
-import { pipe } from "fp-ts/lib/function"
+import { flow, pipe } from "fp-ts/lib/function"
 import { isNonEmpty, NonEmptyArray } from "fp-ts/lib/NonEmptyArray"
 import * as O from "fp-ts/lib/Option"
+import * as string from "fp-ts/string"
 import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
 import {
@@ -12,10 +13,14 @@ import {
 import { ExternalLink } from "../../components/navigation/ExternalLink"
 import {
   DataTable,
-  DataTableProps,
   Datum,
+  DatumKey,
   Value,
 } from "../../components/tables/DataTable"
+import {
+  SelectableDataTable,
+  SelectableDataTableProps,
+} from "../../components/tables/SelectableDataTable"
 import { getLocalized, t, Translation } from "../../i18n/i18n"
 import { HakuSuppeatTiedot, selectByHakutoive } from "../../state/apitypes/haku"
 import {
@@ -37,6 +42,7 @@ import {
 } from "../../state/apitypes/valpasopiskeluoikeudentila"
 import { useBasePath } from "../../state/basePath"
 import { Oid } from "../../state/common"
+import { isFeatureFlagEnabled } from "../../state/featureFlags"
 import { createOppijaPath } from "../../state/paths"
 import { nonEmptyEvery, nonNull } from "../../utils/arrays"
 import { formatDate, formatNullableDate } from "../../utils/date"
@@ -44,8 +50,8 @@ import { formatDate, formatNullableDate } from "../../utils/date"
 export type HakutilanneTableProps = {
   data: OppijaHakutilanteillaSuppeatTiedot[]
   organisaatioOid: string
-  onChange?: DataTableProps["onChange"]
-}
+  onSelect: (oppijaOids: Oid[]) => void
+} & Pick<SelectableDataTableProps, "onCountChange">
 
 const useOppijaData = (
   organisaatioOid: Oid,
@@ -60,9 +66,12 @@ const useOppijaData = (
 
 export const HakutilanneTable = (props: HakutilanneTableProps) => {
   const data = useOppijaData(props.organisaatioOid, props.data)
+  const TableComponent = isFeatureFlagEnabled("ilmoittaminen")
+    ? SelectableDataTable
+    : DataTable
 
   return (
-    <DataTable
+    <TableComponent
       storageName="hakutilannetaulu"
       className="hakutilanne"
       columns={[
@@ -101,10 +110,29 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
         },
       ]}
       data={data}
-      onChange={props.onChange}
+      onCountChange={props.onCountChange}
+      peerEquality={oppijaOidsEqual}
+      onSelect={(keys) =>
+        props.onSelect(hakutilanneKeysToOppijaOids(keys as HakutilanneKey[]))
+      }
     />
   )
 }
+
+/** Tuple: [Oppijan oid, Opiskeluoikeuden oid] */
+type HakutilanneKey = [Oid, Oid]
+
+const createHakutilanneKey = (
+  oppija: OppijaHakutilanteillaSuppeatTiedot,
+  opiskeluoikeus: OpiskeluoikeusSuppeatTiedot
+): HakutilanneKey => [oppija.oppija.henkilö.oid, opiskeluoikeus.oid]
+
+const hakutilanneKeysToOppijaOids = flow(
+  A.map((key: HakutilanneKey) => key[0]),
+  A.uniq(string.Eq)
+)
+
+const oppijaOidsEqual = (a: DatumKey) => (b: DatumKey) => a[0] === b[0]
 
 const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
   oppija: OppijaHakutilanteillaSuppeatTiedot
@@ -115,7 +143,7 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
     organisaatioOid,
     oppija.oppija.opiskeluoikeudet
   ).map((opiskeluoikeus) => ({
-    key: opiskeluoikeus.oid,
+    key: createHakutilanneKey(oppija, opiskeluoikeus),
     values: [
       {
         value: `${henkilö.sukunimi} ${henkilö.etunimet}`,

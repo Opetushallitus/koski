@@ -7,10 +7,12 @@ import { Redirect, useHistory } from "react-router"
 import { fetchOppijat, fetchOppijatCache } from "../../api/api"
 import { useApiWithParams } from "../../api/apiHooks"
 import { isLoading, isSuccess } from "../../api/apiUtils"
+import { RaisedButton } from "../../components/buttons/RaisedButton"
+import { BottomDrawer } from "../../components/containers/BottomDrawer"
 import { Card, CardBody, CardHeader } from "../../components/containers/cards"
 import { Dropdown } from "../../components/forms/Dropdown"
 import { Spinner } from "../../components/icons/Spinner"
-import { DataTableChangeEvent } from "../../components/tables/DataTable"
+import { DataTableCountChangeEvent } from "../../components/tables/DataTable"
 import { Counter } from "../../components/typography/Counter"
 import { getLocalized, t, T } from "../../i18n/i18n"
 import { useBasePath } from "../../state/basePath"
@@ -19,6 +21,7 @@ import {
   OrganisaatioHierarkia,
   OrganisaatioJaKayttooikeusrooli,
 } from "../../state/common"
+import { isFeatureFlagEnabled } from "../../state/featureFlags"
 import {
   createHakutilannePathWithOrg,
   HakutilanneViewRouteProps,
@@ -59,10 +62,11 @@ export const HakutilanneView = (props: HakutilanneViewProps) => {
     organisaatioOid ? [organisaatioOid] : undefined,
     fetchOppijatCache
   )
-  const [counters, setCounters] = useState<DataTableChangeEvent>({
+  const [counters, setCounters] = useState<DataTableCountChangeEvent>({
     filteredRowCount: 0,
     unfilteredRowCount: 0,
   })
+  const [selected, setSelected] = useState<Oid[]>([])
 
   const orgOptions = getOrgOptions(organisaatiot)
 
@@ -73,7 +77,7 @@ export const HakutilanneView = (props: HakutilanneViewProps) => {
   }
 
   return organisaatioOid ? (
-    <>
+    <div className={b("view")}>
       <Dropdown
         selectorId="organisaatiovalitsin"
         containerClassName={b("organisaatiovalitsin")}
@@ -100,12 +104,33 @@ export const HakutilanneView = (props: HakutilanneViewProps) => {
             <HakutilanneTable
               data={oppijatFetch.data}
               organisaatioOid={organisaatioOid}
-              onChange={setCounters}
+              onCountChange={setCounters}
+              onSelect={setSelected}
             />
           )}
         </CardBody>
       </Card>
-    </>
+      {isFeatureFlagEnabled("ilmoittaminen") ? (
+        <BottomDrawer>
+          <div className={b("ilmoittaminen")}>
+            <h4 className={b("ilmoittaminentitle")}>
+              <T id="ilmoittaminen_drawer__title" />
+            </h4>
+            <div className={b("ilmoittamisenalarivi")}>
+              <span className={b("valittujaoppilaita")}>
+                <T
+                  id="ilmoittaminen_drawer__valittuja_oppilaita"
+                  params={{ määrä: selected.length }}
+                />
+              </span>
+              <RaisedButton disabled={A.isEmpty(selected)}>
+                <T id="ilmoittaminen_drawer__siirry_ilmoittamiseen" />
+              </RaisedButton>
+            </div>
+          </div>
+        </BottomDrawer>
+      ) : null}
+    </div>
   ) : (
     <OrganisaatioMissingView />
   )

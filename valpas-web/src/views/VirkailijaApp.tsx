@@ -1,5 +1,5 @@
 import React from "react"
-import { Redirect, Route, Switch } from "react-router-dom"
+import { Route, Switch } from "react-router-dom"
 import { fetchYlatasonOrganisaatiotJaKayttooikeusroolit } from "../api/api"
 import { useApiOnce } from "../api/apiHooks"
 import { isSuccess } from "../api/apiUtils"
@@ -17,6 +17,7 @@ import {
 } from "../state/auth"
 import { BasePathProvider, useBasePath } from "../state/basePath"
 import { User } from "../state/common"
+import { FeatureFlagEnabler, isFeatureFlagEnabled } from "../state/featureFlags"
 import {
   createHakutilannePathWithoutOrg,
   hakutilannePathWithOrg,
@@ -24,7 +25,6 @@ import {
   oppijaPath,
   rootPath,
 } from "../state/paths"
-import { runningLocally } from "../utils/environment"
 import { ErrorView, NotFoundView } from "./ErrorView"
 import {
   HakutilanneView,
@@ -33,19 +33,6 @@ import {
 import { HomeView } from "./HomeView"
 import { OppijaView } from "./oppija/OppijaView"
 import { Raamit } from "./Raamit"
-
-const featureFlagName = "valpas-feature"
-const featureFlagEnabledValue = "enabled"
-
-const FeatureFlagEnabler = () => {
-  const basePath = useBasePath()
-  window.localStorage.setItem(featureFlagName, featureFlagEnabledValue)
-  return <Redirect to={createHakutilannePathWithoutOrg(basePath)} />
-}
-
-const isFeatureFlagEnabled = () =>
-  runningLocally ||
-  window.localStorage.getItem(featureFlagName) === featureFlagEnabledValue
 
 type VirkailijaRoutesProps = {
   user: User
@@ -65,9 +52,18 @@ const VirkailijaRoutes = ({ user }: VirkailijaRoutesProps) => {
   return (
     <Switch>
       <Route exact path={`${basePath}/pilotti2021`}>
-        <FeatureFlagEnabler />
+        <FeatureFlagEnabler
+          feature="valpas"
+          redirectTo={createHakutilannePathWithoutOrg(basePath)}
+        />
       </Route>
-      {isFeatureFlagEnabled() && (
+      <Route exact path={`${basePath}/feature/ilmoittaminen`}>
+        <FeatureFlagEnabler
+          feature="ilmoittaminen"
+          redirectTo={createHakutilannePathWithoutOrg(basePath)}
+        />
+      </Route>
+      {isFeatureFlagEnabled("valpas") && (
         <Route
           exact
           path={hakutilannePathWithoutOrg(basePath)}
@@ -79,7 +75,7 @@ const VirkailijaRoutes = ({ user }: VirkailijaRoutesProps) => {
           )}
         />
       )}
-      {isFeatureFlagEnabled() && (
+      {isFeatureFlagEnabled("valpas") && (
         <Route
           exact
           path={hakutilannePathWithOrg(basePath)}
@@ -91,7 +87,7 @@ const VirkailijaRoutes = ({ user }: VirkailijaRoutesProps) => {
           )}
         />
       )}
-      {isFeatureFlagEnabled() && (
+      {isFeatureFlagEnabled("valpas") && (
         <Route exact path={oppijaPath(basePath)} component={OppijaView} />
       )}
       <Route exact path={rootPath(basePath)}>
