@@ -23,7 +23,6 @@ object HakukoosteExampleData {
           hakukohdeNimi = "Lukio",
           koulutusNimi = "Lukiokoulutus",
           valintatila = Some("HYLATTY"),
-        ).copy(
           alinHyvaksyttyPistemaara = Some(9.01),
           pisteet = Some(9),
         ),
@@ -34,7 +33,6 @@ object HakukoosteExampleData {
           koulutusNimi = "Lukiokoulutus",
           valintatila = Some("HYVAKSYTTY"),
           vastaanottotieto = Some("VASTAANOTTANUT_SITOVASTI"),
-        ).copy(
           alinHyvaksyttyPistemaara = Some(8.2),
           pisteet = Some(9),
         ),
@@ -69,7 +67,6 @@ object HakukoosteExampleData {
           hakukohdeNimi = "Lukio",
           koulutusNimi = "Lukiokoulutus",
           valintatila = Some("HYLATTY"),
-        ).copy(
           alinHyvaksyttyPistemaara = Some(9.01),
           pisteet = Some(9)
         ),
@@ -121,7 +118,6 @@ object HakukoosteExampleData {
           hakukohdeNimi = "Lukio",
           koulutusNimi = "Lukiokoulutus",
           valintatila = Some("HYLATTY"),
-        ).copy(
           alinHyvaksyttyPistemaara = Some(8.2),
           pisteet = Some(7.5),
         ),
@@ -132,7 +128,6 @@ object HakukoosteExampleData {
           koulutusNimi = "Leipomoalan ammattitutkinto",
           valintatila = Some("HYVAKSYTTY"),
           vastaanottotieto = Some("EHDOLLISESTI_VASTAANOTTANUT"),
-        ).copy(
           harkinnanvaraisuus = Some("sosiaalisetsyyt")
         ),
         hakutoive(
@@ -152,7 +147,6 @@ object HakukoosteExampleData {
           hakukohdeNimi = "Lukio",
           koulutusNimi = "Lukiokoulutus",
           valintatila = Some("VARALLA"),
-        ).copy(
           alinHyvaksyttyPistemaara = Some(8.99),
           pisteet = Some(9)
         ),
@@ -191,8 +185,6 @@ object HakukoosteExampleData {
         organisaatioNimi = MockOrganisaatioRepository
           .getOrganisaationNimiHetkellä(hakutoive.hakukohdeOrganisaatio, alkamisaika.toLocalDate)
           .toBlankable,
-        hakukohdeNimi = hakutoive.hakukohdeNimi,
-        koulutusNimi = hakutoive.koulutusNimi,
         hakutoivenumero = if (hakutoive.hakutoivenumero >= 0) {
           hakutoive.hakutoivenumero
         } else {
@@ -209,6 +201,9 @@ object HakukoosteExampleData {
     koulutusNimi: String,
     valintatila: Option[String] = None,
     vastaanottotieto: Option[String] = None,
+    pisteet: Option[BigDecimal] = None,
+    alinHyvaksyttyPistemaara: Option[BigDecimal] = None,
+    harkinnanvaraisuus: Option[String] = None,
   ): Hakutoive =
     Hakutoive(
       hakukohdeOid = hakukohdeOid,
@@ -220,13 +215,13 @@ object HakukoosteExampleData {
       hakutoivenumero = -1,
       koulutusNimi = Finnish(koulutusNimi),
       hakukohdeOrganisaatio = hakukohdeOrganisaatio,
-      pisteet = None,
-      alinHyvaksyttyPistemaara = None,
+      pisteet = pisteet,
+      alinHyvaksyttyPistemaara = alinHyvaksyttyPistemaara,
       valintatila = valintatila,
       vastaanottotieto = vastaanottotieto,
       ilmoittautumistila = Some("EI_ILMOITTAUTUNUT"),
       koulutusOid = Some("TODO"),
-      harkinnanvaraisuus = None,
+      harkinnanvaraisuus = harkinnanvaraisuus,
       hakukohdeKoulutuskoodi = Koodistokoodiviite("321152", "koulutus"),
       varasijanumero = if (valintatila == Some("VARALLA")) Some(3) else None,
     )
