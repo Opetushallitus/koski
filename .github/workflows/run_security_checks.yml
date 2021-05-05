@@ -41,19 +41,17 @@ jobs:
       - name: Run owasp
         run: |
           make owasp
+
       - name: Run snyk
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
           make snyk
 
-  failure-notification:
-    needs: [ run_owasp_and_snyk ]
-    runs-on: ubuntu-latest
-  steps:
-    - uses: ravsamhq/notify-slack-action@v1
-      if: always()
-      with:
-        status: ${{ job.status }}
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Report failure 
+        uses: ravsamhq/notify-slack-action@v1
+        if: ${{ failure() }}
+        with:
+          status: ${{ job.status }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
