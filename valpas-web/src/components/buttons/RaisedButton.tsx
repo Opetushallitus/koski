@@ -18,6 +18,7 @@ export const RaisedButton = (props: RaisedButtonProps) => {
     <button
       className={raisedButtonClassName(props)}
       onClick={disabled ? undefined : onClick}
+      disabled={disabled}
       {...rest}
     >
       <span className={b("content")}>{children}</span>

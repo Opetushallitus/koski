@@ -63,6 +63,7 @@ export type IlmoitusFormProps = {
   formIndex: number
   numberOfForms: number
   prefilledValues: PrefilledIlmoitusFormValues[]
+  onSubmit: (values: IlmoitusFormValues) => void
 }
 
 export type PrefilledIlmoitusFormValues = {
@@ -133,7 +134,10 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
             )}
             {...form.fieldProps("hakenutOpiskelemaanYhteyshakujenUlkopuolella")}
           />
-          <RaisedButton disabled={!form.isValid}>
+          <RaisedButton
+            disabled={!form.isValid}
+            onClick={form.submitCallback(props.onSubmit)}
+          >
             <T id="ilmoituslomake__ilmoita_asuinkunnalle" />
           </RaisedButton>
         </IlmoitusBody>
@@ -167,7 +171,7 @@ const IlmoitusHeader = (props: IlmoitusHeaderProps) => (
   </IlmoitusHeaderFrame>
 )
 
-const IlmoitusFormFrame = plainComponent("form", b("frame"))
+const IlmoitusFormFrame = plainComponent("div", b("frame"))
 const IlmoitusHeaderFrame = plainComponent("header", b("header"))
 const IlmoitusTitle = plainComponent("h3", b("title"))
 const IlmoitusTitleText = plainComponent("div", b("titletext"))

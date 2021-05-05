@@ -25,6 +25,7 @@ export const Ilmoituslomake = (props: IlmoituslomakeProps) => {
             mockPrefilledYhteishakuValues,
             mockPrefilledDvvValues,
           ]}
+          onSubmit={() => {}}
         />
       ))}
     </Modal>

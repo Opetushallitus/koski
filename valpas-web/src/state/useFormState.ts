@@ -21,6 +21,7 @@ export type UseFormStateHook<T extends object> = {
   patch: FormPatchFunction<T>
   fieldProps: FormFieldPropsFunction<T>
   isValid: boolean
+  submitCallback: FormSubmitCallback<T>
 }
 
 export type FormTouchFunction<T extends object> = (key: keyof T) => void
@@ -32,6 +33,9 @@ export type FormPatchFunction<T extends object> = (patch: Partial<T>) => void
 export type FormFieldPropsFunction<T extends object> = <K extends keyof T>(
   key: K
 ) => FormFieldProps<T[K]>
+export type FormSubmitCallback<T extends object> = (
+  callback: (t: T) => void
+) => () => void
 
 export type FormFieldProps<T> = {
   value: T
@@ -102,7 +106,26 @@ export const useFormState = <T extends object>({
     currentState
   )
 
-  return { state: currentState, touch, set, patch, fieldProps, isValid }
+  const submitCallback: FormSubmitCallback<T> = (callback) => () => {
+    if (isValid) {
+      const values = foldFields(
+        (acc, key, field) => ({ ...acc, [key]: field.currentValue }),
+        {},
+        currentState
+      ) as T
+      callback(values)
+    }
+  }
+
+  return {
+    state: currentState,
+    touch,
+    set,
+    patch,
+    fieldProps,
+    isValid,
+    submitCallback,
+  }
 }
 
 const createInitialState = <T extends object>(values: T): FormState<T> =>
