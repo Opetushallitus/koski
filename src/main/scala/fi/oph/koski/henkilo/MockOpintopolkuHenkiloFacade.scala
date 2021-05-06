@@ -3,7 +3,7 @@ package fi.oph.koski.henkilo
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.KoskiTables.OpiskeluOikeudetWithAccessCheck
-import fi.oph.koski.db.{QueryMethods, PostgresDriverWithJsonSupport}
+import fi.oph.koski.db.{PostgresDriverWithJsonSupport, QueryMethods}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession.systemUser
 import fi.oph.koski.log.Logging
@@ -146,8 +146,20 @@ class MockOpintopolkuHenkilöFacadeWithDBSupport(val db: DB) extends MockOpintop
           yhteystiedot = List(
             mockYhteystiedot(henkilö),
             mockYhteystiedot(henkilö).copy(
-              alkuperä = Koodistokoodiviite("alkupera7", "yhteystietojenalkupera"),
-              tyyppi = Koodistokoodiviite("yhteystietotyyppi7", "yhteystietotyypit"),
+              alkuperä = Koodistokoodiviite("alkupera7", "yhteystietojenalkupera"), // Oikeustulkkirekisteri
+              tyyppi = Koodistokoodiviite("yhteystietotyyppi7", "yhteystietotyypit"), // Muu osoite
+            ),
+            mockYhteystiedot(henkilö).copy(
+              alkuperä = Koodistokoodiviite("alkupera3", "yhteystietojenalkupera"), // Omat tiedot UI
+              tyyppi = Koodistokoodiviite("yhteystietotyyppi2", "yhteystietotyypit"), // Työosoite
+              sähköposti = None,
+              puhelinnumero = None,
+              matkapuhelinnumero = None
+            ),
+            mockYhteystiedot(henkilö).copy(
+              alkuperä = Koodistokoodiviite("alkupera3", "yhteystietojenalkupera"), // Omat tiedot UI
+              tyyppi = Koodistokoodiviite("yhteystietotyyppi2", "yhteystietotyypit"), // Työosoite
+              puhelinnumero = Some("09777 888")
             )
           )
         )
@@ -156,8 +168,8 @@ class MockOpintopolkuHenkilöFacadeWithDBSupport(val db: DB) extends MockOpintop
     }
 
   private def mockYhteystiedot(henkilö: LaajatOppijaHenkilöTiedot) = Yhteystiedot(
-    alkuperä = Koodistokoodiviite("alkupera1", "yhteystietojenalkupera"),
-    tyyppi = Koodistokoodiviite("yhteystietotyyppi1", "yhteystietotyypit"),
+    alkuperä = Koodistokoodiviite("alkupera1", "yhteystietojenalkupera"), // VTJ
+    tyyppi = Koodistokoodiviite("yhteystietotyyppi1", "yhteystietotyypit"), // Kotiosoite
     sähköposti = Some(s"${henkilö.kutsumanimi.toLowerCase()}@gmail.com"),
     puhelinnumero = Some("0401122334"),
     matkapuhelinnumero = Some("0401122334"),
@@ -165,6 +177,6 @@ class MockOpintopolkuHenkilöFacadeWithDBSupport(val db: DB) extends MockOpintop
     kunta = henkilö.kotikunta.orElse(Some("Helsinki")),
     postinumero = henkilö.kotikunta.map(_ => "99999").orElse(Some("00000")),
     kaupunki = henkilö.kotikunta,
-    maa = None,
+    maa = Some("  Costa rica  "),
   )
 }

@@ -262,6 +262,7 @@ describe("Oppijakohtainen näkymä", () => {
       keyboard_arrow_downVTJ: Kotiosoite
       Lähiosoite:	Esimerkkitie 10
       Postitoimipaikka:	00000 Helsinki
+      Maa: Costa rica
       Puhelin:	0401122334
       Sähköposti:	valpas@gmail.com
     `)

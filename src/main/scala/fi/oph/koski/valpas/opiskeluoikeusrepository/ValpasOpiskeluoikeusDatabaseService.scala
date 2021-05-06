@@ -19,6 +19,7 @@ case class ValpasOppijaRow(
   oikeutetutOppilaitokset: Set[ValpasOppilaitos.Oid],
   opiskeluoikeudet: JValue,
   turvakielto: Boolean,
+  äidinkieli: Option[String]
 )
 
 class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends DatabaseConverters with Logging with Timing {
@@ -41,6 +42,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       oikeutetutOppilaitokset = r.getArray("oikeutetutOppilaitokset").toSet,
       opiskeluoikeudet = r.getJson("opiskeluoikeudet"),
       turvakielto = r.rs.getBoolean("turvakielto"),
+      äidinkieli = Option(r.rs.getString("aidinkieli"))
     )
   })
 
@@ -90,7 +92,8 @@ WITH
       r_henkilo.sukunimi,
       array_agg(DISTINCT r_opiskeluoikeus.oppilaitos_oid) AS oikeutettu_oppilaitos_oids,
       array_agg(DISTINCT r_opiskeluoikeus.opiskeluoikeus_oid) AS valvottava_opiskeluoikeus_oids,
-      r_henkilo.turvakielto
+      r_henkilo.turvakielto,
+      r_henkilo.aidinkieli
     FROM
       r_henkilo
       JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = r_henkilo.oppija_oid
@@ -159,7 +162,8 @@ WITH
       r_henkilo.syntymaaika,
       r_henkilo.etunimet,
       r_henkilo.sukunimi,
-      r_henkilo.turvakielto
+      r_henkilo.turvakielto,
+      r_henkilo.aidinkieli
   )
   -- CTE: kaikki oppija_oidit, joilla pitää opiskeluoikeuksia etsiä
   , oppija_oid AS (
@@ -305,7 +309,8 @@ WITH
       oppija.sukunimi,
       oppija.oikeutettu_oppilaitos_oids,
       oppija.valvottava_opiskeluoikeus_oids,
-      oppija.turvakielto
+      oppija.turvakielto,
+      oppija.aidinkieli
     FROM
       oppija
       LEFT JOIN rajapaivaa_aiemmin_valmistuneet_oppijat ON rajapaivaa_aiemmin_valmistuneet_oppijat.master_oid = oppija.master_oid
@@ -333,6 +338,7 @@ WITH
     oppivelvollinen_oppija.sukunimi,
     oppivelvollinen_oppija.oikeutettu_oppilaitos_oids AS oikeutetutOppilaitokset,
     oppivelvollinen_oppija.turvakielto AS turvakielto,
+    oppivelvollinen_oppija.aidinkieli AS aidinkieli,
     json_agg(
       json_build_object(
         'oid', opiskeluoikeus.opiskeluoikeus_oid,
@@ -379,7 +385,8 @@ WITH
     oppivelvollinen_oppija.etunimet,
     oppivelvollinen_oppija.sukunimi,
     oppivelvollinen_oppija.oikeutettu_oppilaitos_oids,
-    oppivelvollinen_oppija.turvakielto
+    oppivelvollinen_oppija.turvakielto,
+    oppivelvollinen_oppija.aidinkieli
   ORDER BY
     oppivelvollinen_oppija.sukunimi,
     oppivelvollinen_oppija.etunimet

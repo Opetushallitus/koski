@@ -32,7 +32,7 @@ import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.userdirectory.DirectoryClient
 import fi.oph.koski.validation.{KoskiValidator, ValidatingAndResolvingExtractor}
-import fi.oph.koski.valpas.ValpasOppijaService
+import fi.oph.koski.valpas.{ValpasKuntailmoitusService, ValpasOppijaService}
 import fi.oph.koski.valpas.db.ValpasDatabase
 import fi.oph.koski.valpas.localization.ValpasLocalizationConfig
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
@@ -130,6 +130,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val valpasKuntailmoitusQueryService = new ValpasKuntailmoitusQueryService(
     valpasDatabase, validatingAndResolvingExtractor, valpasRajapäivätService
   )
+  lazy val valpasKuntailmoitusService = new ValpasKuntailmoitusService(this)
   lazy val oidGenerator = OidGenerator(config)
   lazy val hetu = new Hetu(config.getBoolean("acceptSyntheticHetus"))
   lazy val indexManager = new IndexManager(List(perustiedotIndexer.index, tiedonsiirtoService.index))

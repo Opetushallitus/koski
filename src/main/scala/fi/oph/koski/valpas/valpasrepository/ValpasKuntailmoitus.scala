@@ -2,6 +2,7 @@ package fi.oph.koski.valpas.valpasrepository
 
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
 import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
+import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystietojenAlkuperä
 
 import java.time.LocalDateTime
 
@@ -52,7 +53,7 @@ case class ValpasKuntailmoitusLaajatTiedot(
                                                  // tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa.
   oppijanYhteystiedot: Option[ValpasKuntailmoituksenOppijanYhteystiedot], // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn
                                                                          // ilmoituksen tiedoista, tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa
-  hakenutUlkomaille: Option[Boolean]             // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn ilmoituksen tiedoista,
+  hakenutMuualle: Option[Boolean]             // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn ilmoituksen tiedoista,
                                                  // tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa.
 ) extends ValpasKuntailmoitus
 
@@ -90,5 +91,43 @@ case class ValpasKuntailmoituksenOppijanYhteystiedot(
   lähiosoite: Option[String] = None,
   postinumero: Option[String] = None,
   postitoimipaikka: Option[String] = None,
-  maa: Option[String] = None
+  @KoodistoUri("maatjavaltiot2")
+  maa: Option[Koodistokoodiviite] = None
+)
+
+case class ValpasKuntailmoitusPohjatiedotInput(
+  /**
+   * Option, koska detaljinäkymästä ilmoitusta tehtäessä tekijäroganisaatiota ei välttämättä tiedetä. Paluuarvossa
+   * palautetaan sen vuoksi mahdollisetTekijäOrganisaatiot, jotka voi tarjota käyttäjälle valitsimessa.
+   */
+  tekijäOrganisaatio: Option[OrganisaatioWithOid],
+  oppijaOidit: List[String]
+)
+
+case class ValpasKuntailmoitusPohjatiedot(
+  tekijäHenkilö: Option[ValpasKuntailmoituksenTekijäHenkilö] = None,
+  mahdollisetTekijäOrganisaatiot: Seq[OrganisaatioWithOid] = Seq.empty,
+  oppijat: Seq[ValpasOppijanPohjatiedot] = Seq.empty,
+  kunnat: Seq[OrganisaatioWithOid] = Seq.empty,
+  @KoodistoUri("maatjavaltiot2")
+  maat: Seq[Koodistokoodiviite] = Seq.empty,
+  @KoodistoUri("kieli")
+  yhteydenottokielet: Seq[Koodistokoodiviite] = Seq.empty,
+)
+
+case class ValpasOppijanPohjatiedot(
+  oppijaOid: String,
+  mahdollisetTekijäOrganisaatiot: Seq[OrganisaatioWithOid],
+  @KoodistoUri("kieli")
+  @KoodistoKoodiarvo("FI")
+  @KoodistoKoodiarvo("SV")
+  yhteydenottokieli: Option[Koodistokoodiviite],
+  turvakielto: Boolean,
+  yhteystiedot: Seq[ValpasPohjatietoYhteystieto]
+)
+
+case class ValpasPohjatietoYhteystieto(
+  yhteystietojenAlkuperä: ValpasYhteystietojenAlkuperä,
+  yhteystiedot: ValpasKuntailmoituksenOppijanYhteystiedot,
+  kunta: Option[OrganisaatioWithOid]
 )

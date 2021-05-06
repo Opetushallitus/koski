@@ -36,9 +36,9 @@ object ValpasExampleData {
       lähiosoite = Some("Esimerkkikatu 123"),
       postinumero = Some("000000"),
       postitoimipaikka = Some("Pyhtää"),
-      maa = Some("Finland")
+      maa = Some(Koodistokoodiviite("246", "maatjavaltiot2"))
     )),
-    hakenutUlkomaille = Some(false)
+    hakenutMuualle = Some(false)
   )
 
   def oppilaitoksenIlmoitusKaikillaTiedoilla = ilmoitus
@@ -74,7 +74,7 @@ object ValpasExampleData {
       postitoimipaikka = None,
       maa = None
     )),
-    hakenutUlkomaille = Some(false)
+    hakenutMuualle = Some(false)
   )
 
   lazy val suomi = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli"))

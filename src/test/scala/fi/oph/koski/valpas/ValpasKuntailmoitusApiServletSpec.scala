@@ -120,7 +120,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
          |      "oid" : "${MockOrganisaatiot.helsinginKaupunki}"
          |    },
          |    "oppijanYhteystiedot" : {},
-         |    "hakenutUlkomaille" : false,
+         |    "hakenutMuualle" : false,
          |    "yhteydenottokieli" : {
          |      "koodiarvo" : "SV",
          |      "koodistoUri" : "kieli"
@@ -484,6 +484,94 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
     }
   }
 
+  "Pohjatietojen haku audit-logitetaan oppijan tietojan katsomisena" in {
+    val pohjatiedotInput =
+      s"""
+         |{
+         |  "tekijäOrganisaatio" : {
+         |    "oid" : "${MockOrganisaatiot.jyväskylänNormaalikoulu}"
+         |  },
+         |  "oppijaOidit": [
+         |    "${ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid}"
+         |  ]
+         |}
+         |""".stripMargin
+
+    post("/valpas/api/kuntailmoitus/pohjatiedot", body = pohjatiedotInput, headers = authHeaders() ++ jsonContent) {
+      verifyResponseStatusOk()
+
+      AuditLogTester.verifyAuditLogMessage(Map(
+        "operation" -> ValpasOperation.VALPAS_OPPIJA_KATSOMINEN.toString,
+        "target" -> Map(
+          KoskiMessageField.oppijaHenkiloOid.toString ->
+            ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid)
+      ))
+    }
+  }
+
+  "Pohjatiedot palauttaa virheen rikkinäisellä JSONilla" in {
+    val epävalidiPohjatiedotInput =
+      s"""
+         |{
+         |  "tekijäOrganisaatio" : "${MockOrganisaatiot.jyväskylänNormaalikoulu}"
+         |  "oppijaOidit": [
+         |    "${ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid}"
+         |  ]
+         |}
+         |""".stripMargin
+
+    post("/valpas/api/kuntailmoitus/pohjatiedot",
+      body = epävalidiPohjatiedotInput,
+      headers = authHeaders() ++ jsonContent
+    ) {
+      verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.json("Epäkelpo JSON-dokumentti"))
+    }
+  }
+
+  "Pohjatiedot palauttaa virheen ehjällä JSONilla, joka ei jäsenny Scala-olioksi" in {
+    val pohjatiedotJossaPuutteellinenOrganisaatiorakenne =
+      s"""
+         |{
+         |  "tekijäOrganisaatio" : "${MockOrganisaatiot.jyväskylänNormaalikoulu}",
+         |  "oppijaOidit": [
+         |    "${ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid}"
+         |  ]
+         |}
+         |""".stripMargin
+
+    post("/valpas/api/kuntailmoitus/pohjatiedot",
+      body = pohjatiedotJossaPuutteellinenOrganisaatiorakenne,
+      headers = authHeaders() ++ jsonContent
+    ) {
+      verifyResponseStatus(
+        400,
+        ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*tekijäOrganisaatio.*notAnyOf.*".r)
+      )
+    }
+  }
+
+  "Pohjatiedot palauttaa virheen organisaatiolla, jota ei ole olemassa" in {
+    val pohjatiedotInput =
+      s"""
+         |{
+         |  "tekijäOrganisaatio" : {
+         |    "oid" : "1.2.246.562.10.99999111112"
+         |  },
+         |  "oppijaOidit": [
+         |    "${ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid}"
+         |  ]
+         |}
+         |""".stripMargin
+
+    post("/valpas/api/kuntailmoitus/pohjatiedot", body = pohjatiedotInput, headers = authHeaders() ++ jsonContent) {
+      verifyResponseStatus(
+        400,
+        ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*Organisaatiota 1.2.246.562.10.99999111112 ei löydy organisaatiopalvelusta.*".r
+        )
+      )
+    }
+  }
+
   private def teeMinimiKuntailmoitusInput(
     oppijaOid: String = ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid,
     tekijäOid: String = MockOrganisaatiot.jyväskylänNormaalikoulu,
@@ -502,7 +590,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
        |      "oid" : "${kuntaOid}"
        |    },
        |    "oppijanYhteystiedot" : {},
-       |    "hakenutUlkomaille" : false
+       |    "hakenutMuualle" : false
        |  }
        |}
        |""".stripMargin
@@ -537,7 +625,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
        |      "oid" : "${kuntaOid}"
        |    },
        |    "oppijanYhteystiedot" : {},
-       |    "hakenutUlkomaille" : false
+       |    "hakenutMuualle" : false
        |  }
        |}
        |""".stripMargin
@@ -582,9 +670,12 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAn
        |      "lähiosoite" : "Metsäkatu 1 C 10",
        |      "postinumero" : "00100",
        |      "postitoimipaikka" : "Helsinki",
-       |      "maa" : "Finland"
+       |      "maa" : {
+       |        "koodiarvo" : "246",
+       |        "koodistoUri" : "maatjavaltiot2"
+       |      }
        |    },
-       |    "hakenutUlkomaille": false
+       |    "hakenutMuualle": false
        |  }
        |}
        |""".stripMargin

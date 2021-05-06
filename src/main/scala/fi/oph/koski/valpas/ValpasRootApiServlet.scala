@@ -3,7 +3,6 @@ package fi.oph.koski.valpas
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.{AuditLog, KoskiMessageField}
 import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioHierarkia, OrganisaatioHierarkiaJaKayttooikeusrooli}
-import fi.oph.koski.schema.OidOrganisaatio
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessage, ValpasOperation}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppilaitos
@@ -48,20 +47,11 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
     )
   }
 
-  get("/organisaatiot/kunnat") {
-    organisaatioService.kunnat.map(oh =>
-      OidOrganisaatio(oh.oid, Some(oh.nimi), oh.kotipaikka)
-    )
-  }
-
   private def withAuditLogOppijaKatsominen
     (result: OppijaHakutilanteillaLaajatTiedot)
     (implicit session: ValpasSession)
   : OppijaHakutilanteillaLaajatTiedot = {
-    AuditLog.log(ValpasAuditLogMessage(
-      ValpasOperation.VALPAS_OPPIJA_KATSOMINEN,
-      Map(KoskiMessageField.oppijaHenkiloOid -> result.oppija.henkilö.oid)
-    ))
+    auditLogOppijaKatsominen(result.oppija.henkilö.oid)
     result
   }
 

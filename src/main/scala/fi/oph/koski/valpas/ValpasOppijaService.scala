@@ -5,6 +5,7 @@ import fi.oph.koski.henkilo.Yhteystiedot
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, ValpasHakukoosteService}
@@ -25,16 +26,25 @@ case class OppijaHakutilanteillaLaajatTiedot(
 }
 
 object OppijaHakutilanteillaLaajatTiedot {
-  def apply(oppija: ValpasOppijaLaajatTiedot, haut: Either[HttpStatus, Seq[Hakukooste]]): OppijaHakutilanteillaLaajatTiedot = {
+  def apply(oppija: ValpasOppijaLaajatTiedot, yhteystietoryhmänNimi: LocalizedString, haut: Either[HttpStatus, Seq[Hakukooste]]): OppijaHakutilanteillaLaajatTiedot = {
     OppijaHakutilanteillaLaajatTiedot(
       oppija = oppija,
       hakutilanteet = haut.map(_.map(ValpasHakutilanneLaajatTiedot.apply)).getOrElse(Seq()),
       // TODO: Pitäisikö virheet mankeloida jotenkin eikä palauttaa sellaisenaan fronttiin?
       hakutilanneError = haut.left.toOption.flatMap(_.errorString),
-      yhteystiedot = Seq.empty,
+      yhteystiedot = haut.map(uusimmatIlmoitetutYhteystiedot(yhteystietoryhmänNimi)).getOrElse(Seq.empty),
       kuntailmoitukset = Seq.empty
     )
   }
+
+  private def uusimmatIlmoitetutYhteystiedot(yhteystietoryhmänNimi: LocalizedString)(hakukoosteet: Seq[Hakukooste]): Seq[ValpasYhteystiedot] =
+    hakukoosteet
+      .sortBy(hk => hk.hakemuksenMuokkauksenAikaleima.getOrElse(hk.haunAlkamispaivamaara))
+      .lastOption
+      .map(haku => List(
+        ValpasYhteystiedot.oppijanIlmoittamatYhteystiedot(haku, yhteystietoryhmänNimi),
+      ))
+      .getOrElse(List.empty)
 }
 
 case class OppijaHakutilanteillaSuppeatTiedot(
@@ -85,7 +95,26 @@ class ValpasOppijaService(
     accessResolver.organisaatiohierarkiaOids(oppilaitosOids)
       .map(opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyvätOppijat)
       .flatMap(results => HttpStatus.foldEithers(results.map(asValpasOppijaLaajatTiedot)))
-      .map(fetchHaut(errorClue))
+      .map(fetchHautIlmanYhteystietoja(errorClue))
+  }
+
+  def getOppijatLaajatTiedotYhteystiedoilla(
+    oppilaitosOids: Set[ValpasOppilaitos.Oid],
+    oppijaOids: Seq[ValpasHenkilö.Oid]
+  )(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
+    val errorClue = oppilaitosOids.size match {
+      case 1 =>  s"oppilaitos:${oppilaitosOids.head}"
+      case n if n > 1 => s"oppilaitokset[${n}]:${oppilaitosOids.head}, ..."
+      case _ => ""
+    }
+
+    accessResolver.organisaatiohierarkiaOids(oppilaitosOids)
+      .map(opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyvätOppijat)
+      .map(_.filter(oppijaRow => oppijaOids.contains(oppijaRow.oppijaOid)))
+      .flatMap(results => HttpStatus.foldEithers(results.map(asValpasOppijaLaajatTiedot)))
+      .map(fetchHautYhteystiedoilla(errorClue))
+      .flatMap(oppijat => HttpStatus.foldEithers(oppijat.map(withVirallisetYhteystiedot)))
+      .map(oppijat => oppijat.map(_.validate(koodistoviitepalvelu)))
   }
 
   // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
@@ -106,12 +135,8 @@ class ValpasOppijaService(
     (implicit session: ValpasSession)
   : Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] = {
     getOppijaLaajatTiedot(oppijaOid)
-      .map(fetchHaku)
-      .flatMap(o => fetchVirallisetYhteystiedot(o.oppija).map(yhteystiedot => o.copy(
-        yhteystiedot = o.yhteystiedot ++ yhteystiedot.map(yt =>
-          ValpasYhteystiedot.virallinenYhteystieto(yt, localizationRepository.get("oppija__viralliset_yhteystiedot"))
-        )
-      )))
+      .map(fetchHakuYhteystiedoilla)
+      .flatMap(withVirallisetYhteystiedot)
       .map(_.validate(koodistoviitepalvelu))
   }
 
@@ -127,6 +152,7 @@ class ValpasOppijaService(
             etunimet = dbRow.etunimet,
             sukunimi = dbRow.sukunimi,
             turvakielto = dbRow.turvakielto,
+            äidinkieli = dbRow.äidinkieli
           ),
           oikeutetutOppilaitokset = dbRow.oikeutetutOppilaitokset,
           opiskeluoikeudet = opiskeluoikeudet
@@ -134,19 +160,31 @@ class ValpasOppijaService(
       )
   }
 
-  private def fetchHaku(oppija: ValpasOppijaLaajatTiedot): OppijaHakutilanteillaLaajatTiedot = {
+  private def withVirallisetYhteystiedot(
+    o: OppijaHakutilanteillaLaajatTiedot
+  )(implicit session: ValpasSession): Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] =
+    fetchVirallisetYhteystiedot(o.oppija)
+      .map(yhteystiedot => o.copy(
+        yhteystiedot = o.yhteystiedot ++ yhteystiedot.map(yt => ValpasYhteystiedot.virallinenYhteystieto(yt, localizationRepository.get("oppija__viralliset_yhteystiedot")))
+      ))
+
+  private def fetchHakuYhteystiedoilla(oppija: ValpasOppijaLaajatTiedot): OppijaHakutilanteillaLaajatTiedot = {
     val hakukoosteet = hakukoosteService.getYhteishakujenHakukoosteet(oppijaOids = Set(oppija.henkilö.oid), ainoastaanAktiivisetHaut = false, errorClue = s"oppija:${oppija.henkilö.oid}")
-    val yhteystiedot = hakukoosteet.map(ilmoitetutYhteystiedot).getOrElse(Seq.empty)
-    OppijaHakutilanteillaLaajatTiedot.apply(oppija, hakukoosteet).copy(yhteystiedot = yhteystiedot)
+    OppijaHakutilanteillaLaajatTiedot.apply(oppija = oppija, yhteystietoryhmänNimi = localizationRepository.get("oppija__yhteystiedot"), haut = hakukoosteet)
   }
 
-  private def fetchHaut(errorClue: String)(oppijat: Seq[ValpasOppijaLaajatTiedot]): Seq[OppijaHakutilanteillaLaajatTiedot] = {
-    hakukoosteService.getYhteishakujenHakukoosteet(oppijaOids = oppijat.map(_.henkilö.oid).toSet, ainoastaanAktiivisetHaut = true, errorClue = errorClue)
-      .map(_.groupBy(_.oppijaOid))
+  private def fetchHautIlmanYhteystietoja(errorClue: String)(oppijat: Seq[ValpasOppijaLaajatTiedot]): Seq[OppijaHakutilanteillaLaajatTiedot] =
+    fetchHautYhteystiedoilla(errorClue)(oppijat)
+      .map(oppija => oppija.copy(yhteystiedot = Seq.empty))
+
+  private def fetchHautYhteystiedoilla(errorClue: String)(oppijat: Seq[ValpasOppijaLaajatTiedot]): Seq[OppijaHakutilanteillaLaajatTiedot] = {
+    val hakukoosteet = hakukoosteService.getYhteishakujenHakukoosteet(oppijaOids = oppijat.map(_.henkilö.oid).toSet, ainoastaanAktiivisetHaut = true, errorClue = errorClue)
+
+    hakukoosteet.map(_.groupBy(_.oppijaOid))
       .fold(
-        error => oppijat.map(oppija => OppijaHakutilanteillaLaajatTiedot.apply(oppija, Left(error))),
+        error => oppijat.map(oppija => OppijaHakutilanteillaLaajatTiedot.apply(oppija = oppija, yhteystietoryhmänNimi = localizationRepository.get("oppija__yhteystiedot"), haut = Left(error))),
         groups => oppijat.map(oppija =>
-          OppijaHakutilanteillaLaajatTiedot.apply(oppija, Right(groups.getOrElse(oppija.henkilö.oid, Seq()))))
+          OppijaHakutilanteillaLaajatTiedot.apply(oppija = oppija, yhteystietoryhmänNimi = localizationRepository.get("oppija__yhteystiedot"), haut = Right(groups.getOrElse(oppija.henkilö.oid, Seq()))))
       )
   }
 
@@ -169,13 +207,4 @@ class ValpasOppijaService(
       }
     }
   }
-
-  private def ilmoitetutYhteystiedot(hakukoosteet: Seq[Hakukooste]): Seq[ValpasYhteystiedot] =
-    hakukoosteet
-      .sortBy(_.hakemuksenMuokkauksenAikaleima)
-      .lastOption
-      .map(haku => List(
-        ValpasYhteystiedot.oppijanIlmoittamatYhteystiedot(haku, localizationRepository.get("oppija__yhteystiedot")),
-      ))
-      .getOrElse(List.empty)
 }
