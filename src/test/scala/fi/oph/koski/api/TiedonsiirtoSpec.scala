@@ -13,17 +13,17 @@ import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.schema._
 import fi.oph.koski.tiedonsiirto._
 import fi.oph.koski.util.Wait
+import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests, KoskiHttpSpec}
 import org.scalatest.FreeSpec
 
-class TiedonsiirtoSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
-  val oppija = KoskiSpecificMockOppijat.tyhjä
-  val tiedonsiirtoService = SharedJetty.application.tiedonsiirtoService
+class TiedonsiirtoSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with DirtiesFixtures {
+  private val tiedonsiirtoService = KoskiApplicationForTests.tiedonsiirtoService
 
   "Automaattinen tiedonsiirto" - {
     "Palvelukäyttäjä" - {
       "onnistuneesta tiedonsiirrosta tallennetaan vain henkilö- ja oppilaitostiedot" in {
         resetFixtures
-        val henkilö = SharedJetty.application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(KoskiSpecificMockOppijat.eero).copy(kansalaisuus = Some(List(Koodistokoodiviite("246", "maatjavaltiot2"))))
+        val henkilö = KoskiApplicationForTests.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(KoskiSpecificMockOppijat.eero).copy(kansalaisuus = Some(List(Koodistokoodiviite("246", "maatjavaltiot2"))))
         putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = henkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatusOk()
         }

@@ -1,7 +1,6 @@
 package fi.oph.koski.etk
 
-import fi.oph.koski.DirtiesFixtures
-import fi.oph.koski.api.{KoskiHttpSpec, OpiskeluoikeusTestMethodsAmmatillinen}
+import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.henkilo.OppijaHenkilö
@@ -9,6 +8,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
+import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
 import org.scalatest.{FreeSpec, Matchers}
 
 import java.io.{File, PrintWriter}

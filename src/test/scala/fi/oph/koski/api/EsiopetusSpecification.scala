@@ -1,5 +1,6 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.ExamplesEsiopetus.{peruskoulunEsiopetuksenTunniste, päiväkodinEsiopetuksenTunniste, suoritus}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.oppilaitos
 import fi.oph.koski.documentation.{ExamplesEsiopetus, YleissivistavakoulutusExampleData}

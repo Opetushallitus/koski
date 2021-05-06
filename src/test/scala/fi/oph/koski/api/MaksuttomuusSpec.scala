@@ -1,12 +1,13 @@
 package fi.oph.koski.api
 
-import java.time.LocalDate.{of => date}
-
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExamplesInternationalSchool, LukioExampleData}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
 import org.scalatest.FreeSpec
+
+import java.time.LocalDate.{of => date}
 
 class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillinen with KoskiHttpSpec {
 

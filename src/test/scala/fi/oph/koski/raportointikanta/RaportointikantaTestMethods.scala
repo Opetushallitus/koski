@@ -1,11 +1,10 @@
 package fi.oph.koski.raportointikanta
 
-import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.api.KoskiHttpSpec
 import fi.oph.koski.db.RaportointiDatabaseConfig
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.util.Wait
+import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.json4s.DefaultFormats
 import org.json4s.jackson.JsonMethods
 

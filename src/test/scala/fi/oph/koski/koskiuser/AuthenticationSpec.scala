@@ -1,8 +1,6 @@
 package fi.oph.koski.koskiuser
 
-import java.lang.Thread.sleep
-
-import fi.oph.koski.api.KoskiHttpSpec
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.AuditLogTester

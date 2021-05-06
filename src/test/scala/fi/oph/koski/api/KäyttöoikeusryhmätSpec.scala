@@ -1,9 +1,7 @@
 package fi.oph.koski.api
 
-import java.time.LocalDate
-
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.KoskiTables
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExamplesEsiopetus
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -14,8 +12,11 @@ import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUser, MockUsers, UserWi
 import fi.oph.koski.luovutuspalvelu.{HetuRequestV1, LuovutuspalveluResponseV1}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
+import fi.oph.koski.{DatabaseTestMethods, KoskiHttpSpec}
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.scalatest.{FreeSpec, Matchers}
+
+import java.time.LocalDate
 
 class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with QueryTestMethods with DatabaseTestMethods {
   "koski-oph-pääkäyttäjä" - {

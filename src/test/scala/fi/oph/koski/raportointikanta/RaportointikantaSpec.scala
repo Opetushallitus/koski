@@ -1,7 +1,6 @@
 package fi.oph.koski.raportointikanta
 
-import fi.oph.koski.DirtiesFixtures
-import fi.oph.koski.api.{KoskiHttpSpec, OpiskeluoikeusTestMethodsAmmatillinen}
+import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -10,6 +9,7 @@ import fi.oph.koski.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Wait
+import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s.JsonAST.{JBool, JObject}
 import org.json4s.jackson.JsonMethods

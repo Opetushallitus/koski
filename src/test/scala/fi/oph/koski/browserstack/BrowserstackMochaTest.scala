@@ -1,9 +1,6 @@
 package fi.oph.koski.browserstack
 
-import java.net.URL
-import java.util.Date
-
-import fi.oph.koski.api.KoskiHttpSpec
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.util.EnvVariables
 import org.openqa.selenium.JavascriptExecutor
@@ -11,6 +8,9 @@ import org.openqa.selenium.remote.{DesiredCapabilities, RemoteWebDriver}
 import org.scalatest.concurrent.{Signaler, TimeLimits}
 import org.scalatest.time.{Seconds, Span}
 import org.scalatest.{FreeSpec, Tag}
+
+import java.net.URL
+import java.util.Date
 
 class ChromeTest extends BrowserstackMochaTest {
   object Chrome extends BrowserCapabilities {

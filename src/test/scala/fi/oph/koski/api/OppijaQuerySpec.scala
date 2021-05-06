@@ -1,8 +1,6 @@
 package fi.oph.koski.api
 
-import java.time.LocalDate
-import java.time.LocalDate.{of => date}
-
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.{ExampleData, PerusopetusExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
@@ -11,6 +9,9 @@ import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema._
 import org.scalatest.{FreeSpec, Matchers}
+
+import java.time.LocalDate
+import java.time.LocalDate.{of => date}
 
 class OppijaQuerySpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with QueryTestMethods with Matchers {
   import fi.oph.koski.util.DateOrdering._

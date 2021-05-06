@@ -1,7 +1,7 @@
 package fi.oph.koski.omaopintopolkuloki
 
-import fi.oph.koski.api.KoskiHttpSpec
-import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, KoskiSpecificMockOppijat}
+import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}

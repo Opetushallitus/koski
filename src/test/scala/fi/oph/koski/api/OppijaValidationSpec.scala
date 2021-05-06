@@ -1,8 +1,6 @@
 package fi.oph.koski.api
 
-import java.time.LocalDate
-import java.time.LocalDate.{of => date}
-
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.AmmatillinenExampleData.{stadinAmmattiopisto, _}
 import fi.oph.koski.documentation.ExampleData.{helsinki, vahvistus}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen
@@ -19,6 +17,9 @@ import fi.oph.koski.schema._
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 import org.scalatest.FreeSpec
+
+import java.time.LocalDate
+import java.time.LocalDate.{of => date}
 
 class OppijaValidationSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
   "Opiskeluoikeuden lisääminen" - {

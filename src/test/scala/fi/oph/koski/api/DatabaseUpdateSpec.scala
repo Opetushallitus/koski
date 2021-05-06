@@ -1,11 +1,12 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.KoskiTables.OpiskeluOikeudetWithAccessCheck
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.koskiuser.KoskiSpecificSession.systemUser
 import fi.oph.koski.koskiuser.MockUsers.stadinAmmattiopistoTallentaja
 import fi.oph.koski.organisaatio.MockOrganisaatiot.omnia
 import fi.oph.koski.schema._
+import fi.oph.koski.{DatabaseTestMethods, KoskiHttpSpec}
 import org.scalatest.{FreeSpec, Matchers}
 
 class DatabaseUpdateSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with KoskiHttpSpec with DatabaseTestMethods {

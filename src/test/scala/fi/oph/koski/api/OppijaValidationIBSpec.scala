@@ -1,10 +1,12 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesIB._
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema._
 import org.scalatest.FreeSpec
+
 import java.time.LocalDate.{of => date}
 
 class OppijaValidationIBSpec extends FreeSpec with KoskiHttpSpec with PutOpiskeluoikeusTestMethods[IBOpiskeluoikeus] {

@@ -1,6 +1,6 @@
 package fi.oph.koski.mocha
 
-import fi.oph.koski.api.SharedJetty
+import fi.oph.koski.SharedJetty
 import fi.oph.koski.util.Files
 import org.scalatest.Tag
 

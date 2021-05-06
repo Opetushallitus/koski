@@ -1,5 +1,6 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.ExamplesPerusopetuksenLisaopetus
 import fi.oph.koski.documentation.ExamplesPerusopetuksenLisaopetus.lisäopetuksenSuoritus
 import fi.oph.koski.documentation.OsaAikainenErityisopetusExampleData._

@@ -1,9 +1,10 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.koskiuser.MockUsers.paakayttaja
 import fi.oph.koski.schema.{YlioppilastutkinnonOpiskeluoikeus, YlioppilastutkinnonSuoritus}
-import fi.oph.koski.koskiuser.MockUsers.{paakayttaja}
 import org.scalatest.{FreeSpec, Matchers}
 
 class YlioppilastutkintoSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsYlioppilastutkinto with KoskiHttpSpec with SearchTestMethods {

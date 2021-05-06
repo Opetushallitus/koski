@@ -1,9 +1,9 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.DirtiesFixtures
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.schema.AmmatillinenOpiskeluoikeus
+import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
 import org.scalatest.FreeSpec
 
 class OppijaValidationKayttooikeudetSpec

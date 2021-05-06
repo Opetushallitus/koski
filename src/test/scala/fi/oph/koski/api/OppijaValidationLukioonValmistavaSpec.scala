@@ -1,12 +1,13 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.documentation.{ExamplesLukioonValmistavaKoulutus, Lukio2019ExampleData, LukioExampleData}
+import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesLukioonValmistavaKoulutus.{lukioonValmistavanKoulutuksenSuoritus, lukioonValmistavanKoulutuksenSuoritus2019}
+import fi.oph.koski.documentation.Lukio2019ExampleData.{moduulinSuoritusOppiaineissa, muuModuuliOppiaineissa, numeerinenArviointi, numeerinenLukionOppiaineenArviointi}
+import fi.oph.koski.documentation.LukioExampleData.{kurssisuoritus, lukionKieli, valtakunnallinenKurssi}
+import fi.oph.koski.documentation.{ExamplesLukioonValmistavaKoulutus, Lukio2019ExampleData, LukioExampleData}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
-import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.Lukio2019ExampleData.{laajuus, moduulinSuoritusOppiaineissa, muuModuuliOppiaineissa, numeerinenArviointi, numeerinenLukionOppiaineenArviointi, vieraanKielenModuuliOppiaineissa}
-import fi.oph.koski.documentation.LukioExampleData.{kurssisuoritus, lukionKieli, valtakunnallinenKurssi}
 
 import java.time.LocalDate.{of => date}
 import scala.reflect.runtime.universe.TypeTag

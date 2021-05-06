@@ -1,5 +1,6 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.ExamplesTelma
 import fi.oph.koski.documentation.ExamplesTelma.telmaKoulutuksenSuoritus
 import fi.oph.koski.schema._

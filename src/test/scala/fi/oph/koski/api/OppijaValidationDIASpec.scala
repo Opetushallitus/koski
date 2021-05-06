@@ -1,7 +1,6 @@
 package fi.oph.koski.api
 
-import java.time.LocalDate
-
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsDIA.tutkintoSuoritus
 import fi.oph.koski.documentation.DIAExampleData._
 import fi.oph.koski.documentation.ExampleData._
@@ -9,6 +8,8 @@ import fi.oph.koski.documentation.ExamplesDIA
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema.{DIAOpiskeluoikeudenTila, DIAOpiskeluoikeusjakso, Koodistokoodiviite}
 import org.scalatest.FreeSpec
+
+import java.time.LocalDate
 
 class OppijaValidationDIASpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsDIA {
   "Laajuudet" - {

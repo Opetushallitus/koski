@@ -1,17 +1,16 @@
 package fi.oph.koski.mydata
 
-import java.time.LocalDate
-
-import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.api.KoskiHttpSpec
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import fi.oph.koski.http.{BasicAuthentication, HttpTester}
+import fi.oph.koski.http.BasicAuthentication
 import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.json4s._
 import org.json4s.jackson.Serialization.write
 import org.scalatest.{FreeSpec, Matchers}
 
-class MyDataAPIProxyServletTest extends FreeSpec with KoskiHttpSpec with Matchers with HttpTester {
+import java.time.LocalDate
+
+class MyDataAPIProxyServletTest extends FreeSpec with KoskiHttpSpec with Matchers {
 
   implicit val formats = DefaultFormats
 

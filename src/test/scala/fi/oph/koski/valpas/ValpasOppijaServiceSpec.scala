@@ -8,7 +8,6 @@ import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{ValpasMockOppijat, ValpasOpiskeluoikeusExampleData}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot, ValpasOppijaSuppeatTiedot}
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
-import org.scalatest.Matchers._
 
 class ValpasOppijaServiceSpec extends ValpasTestBase {
   private val oppijaService = KoskiApplicationForTests.valpasOppijaService

@@ -1,6 +1,7 @@
 package fi.oph.koski.ytr
 
-import fi.oph.koski.api.{KoskiHttpSpec, OpiskeluoikeusTestMethods}
+import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.scalaschema.SchemaValidatingExtractor

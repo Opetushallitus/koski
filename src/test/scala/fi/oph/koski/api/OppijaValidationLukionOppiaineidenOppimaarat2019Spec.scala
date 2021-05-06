@@ -1,7 +1,8 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.documentation.LukioExampleData.{aikuistenOpetussuunnitelma}
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.ExamplesLukio2019.{oppiaineenOppimääräOpiskeluoikeus, oppiaineidenOppimäärienSuoritus}
+import fi.oph.koski.documentation.LukioExampleData.aikuistenOpetussuunnitelma
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
 

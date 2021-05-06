@@ -1,5 +1,6 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.AmmattitutkintoExample
 import fi.oph.koski.documentation.AmmattitutkintoExample.näyttötutkintoonValmistavanKoulutuksenSuoritus
 import fi.oph.koski.schema._

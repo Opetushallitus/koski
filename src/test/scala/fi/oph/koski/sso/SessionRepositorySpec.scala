@@ -1,14 +1,13 @@
 package fi.oph.koski.sso
 
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.{KoskiTables, SSOSessionRow}
+import fi.oph.koski.{DatabaseTestMethods, KoskiApplicationForTests}
+import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+
 import java.sql.Timestamp
 import java.time.ZonedDateTime
 import java.util.UUID
-
-import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.api.DatabaseTestMethods
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.{SSOSessionRow, KoskiTables}
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class SessionRepositorySpec extends FreeSpec with Matchers with DatabaseTestMethods with BeforeAndAfterAll {
   private def createDummySession(dateTime: ZonedDateTime) = {

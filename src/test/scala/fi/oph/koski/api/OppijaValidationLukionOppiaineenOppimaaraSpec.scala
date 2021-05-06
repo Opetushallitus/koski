@@ -1,13 +1,14 @@
 package fi.oph.koski.api
 
-import java.time.LocalDate.{of => date}
-
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.{LukioExampleData, PerusopetusExampleData}
+import fi.oph.koski.documentation.LukioExampleData
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
+
+import java.time.LocalDate.{of => date}
 
 // Lukiosuoritusten validointi perustuu tässä testattua diaarinumeroa lukuunottamatta domain-luokista generoituun JSON-schemaan.
 // Schemavalidoinnille on tehty kattavat testit ammatillisten opiskeluoikeuksien osalle. Yleissivistävän koulutuksen validoinnissa luotamme

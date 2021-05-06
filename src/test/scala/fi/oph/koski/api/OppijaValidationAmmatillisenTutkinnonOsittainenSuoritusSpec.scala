@@ -1,11 +1,8 @@
 package fi.oph.koski.api
 
-import java.time.LocalDate
-import java.time.LocalDate.{of => date}
-
-import fi.oph.koski.documentation.ExampleData.valtionosuusRahoitteinen
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.AmmatillinenExampleData._
-import fi.oph.koski.documentation.ExampleData.{helsinki, longTimeAgo, opiskeluoikeusLäsnä}
+import fi.oph.koski.documentation.ExampleData.{helsinki, longTimeAgo, opiskeluoikeusLäsnä, valtionosuusRahoitteinen}
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{omniaTallentaja, stadinAmmattiopistoTallentaja}
@@ -13,6 +10,9 @@ import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema._
+
+import java.time.LocalDate
+import java.time.LocalDate.{of => date}
 
 class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with KoskiHttpSpec with PutOpiskeluoikeusTestMethods[AmmatillinenOpiskeluoikeus] {
 

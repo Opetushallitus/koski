@@ -1,15 +1,13 @@
 package fi.oph.koski.api
 
-import java.time.LocalDate
-
 import com.typesafe.config.{Config, ConfigFactory}
-import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer.parse
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, MockUsers}
 import fi.oph.koski.opiskeluoikeus.ValidationResult
 import fi.oph.koski.validation.KoskiValidator
+import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.scalatest.{FreeSpec, Matchers}
 
 class OpiskeluoikeusValidationSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethods with KoskiHttpSpec {

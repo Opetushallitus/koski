@@ -1,16 +1,16 @@
 package fi.oph.koski.api
 
-import java.time.LocalDate
-
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.ExampleData.{suomenKieli, vahvistusPaikkakunnalla}
 import fi.oph.koski.documentation.PerusopetusExampleData
-import fi.oph.koski.documentation.PerusopetusExampleData.{suoritus, _}
-import fi.oph.koski.documentation.PerusopetusExampleData.{arviointi, kahdeksannenLuokanSuoritus, perusopetuksenDiaarinumero, suoritustapaErityinenTutkinto}
+import fi.oph.koski.documentation.PerusopetusExampleData.{arviointi, kahdeksannenLuokanSuoritus, perusopetuksenDiaarinumero, suoritus, suoritustapaErityinenTutkinto, _}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.schema.{NuortenPerusopetuksenOppiaineenOppimääränSuoritus, PerusopetuksenPäätasonSuoritus}
-import org.json4s.{DefaultFormats, JObject}
 import org.json4s.jackson.JsonMethods
+import org.json4s.{DefaultFormats, JObject}
 import org.scalatest.FreeSpec
+
+import java.time.LocalDate
 
 class PerusopetusOmattiedotSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsPerusopetus {
   implicit val formats = DefaultFormats

@@ -1,13 +1,14 @@
 package fi.oph.koski.api
 
-import java.time.LocalDate
-
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.ExampleData.opiskeluoikeusMitätöity
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.AmmatillinenOpiskeluoikeusjakso
 import org.scalatest.{FreeSpec, Matchers}
+
+import java.time.LocalDate
 
 class OppijaGetByOidSpec extends FreeSpec with Matchers with KoskiHttpSpec with OpiskeluoikeusTestMethods with OpiskeluoikeusTestMethodsAmmatillinen {
   "/api/oppija/" - {

@@ -1,6 +1,7 @@
 package fi.oph.koski.luovutuspalvelu
 
-import fi.oph.koski.api.{KoskiHttpSpec, OpiskeluoikeusTestMethods}
+import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer

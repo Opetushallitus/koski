@@ -6,7 +6,7 @@ import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.schema.LocalizedString.{english, finnish, swedish}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Wait
-import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
+import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests, KoskiHttpSpec}
 import org.scalatest.FreeSpec
 
 class OpiskeluoikeudenPerustiedotSpec
