@@ -6,6 +6,7 @@ import org.apache.log4j.Logger
 import org.json4s.JsonAST.JObject
 import org.json4s.jackson.JsonMethods.parse
 import org.scalatest.Matchers
+
 object AuditLogTester extends Matchers with LogTester {
   def verifyAuditLogMessage(params: Map[String, Any]): Unit = {
     val message = getLogMessages.lastOption.map(m => parse(m.getMessage.toString))

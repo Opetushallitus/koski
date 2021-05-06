@@ -7,7 +7,7 @@ import fi.oph.koski.schema._
 import org.scalatest.FreeSpec
 import java.time.LocalDate.{of => date}
 
-class OppijaValidationIBSpec extends FreeSpec with LocalJettyHttpSpecification with PutOpiskeluoikeusTestMethods[IBOpiskeluoikeus] {
+class OppijaValidationIBSpec extends FreeSpec with KoskiHttpSpec with PutOpiskeluoikeusTestMethods[IBOpiskeluoikeus] {
 
   def tag = implicitly[reflect.runtime.universe.TypeTag[IBOpiskeluoikeus]]
   override def defaultOpiskeluoikeus = opiskeluoikeus

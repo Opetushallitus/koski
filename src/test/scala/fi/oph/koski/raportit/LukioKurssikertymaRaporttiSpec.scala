@@ -11,7 +11,8 @@ import org.scalatest.{BeforeAndAfterAll, FreeSpec}
 
 class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll {
 
-  override def beforeAll = {
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
     reloadRaportointikanta
   }
 

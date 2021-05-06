@@ -16,7 +16,7 @@ import org.json4s.JsonAST.{JArray, JNothing}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.FreeSpec
 
-class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with HistoryTestMethods with DatabaseTestMethods {
+class OpiskeluoikeusHistorySpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with HistoryTestMethods with DatabaseTestMethods {
   val uusiOpiskeluoikeus = defaultOpiskeluoikeus
   val oppija = KoskiSpecificMockOppijat.tyhjä
 

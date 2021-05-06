@@ -8,7 +8,7 @@ import fi.oph.koski.schema._
 
 import scala.reflect.runtime.universe.TypeTag
 
-class OppijaValidationPerusopetukseenValmistavaSpec extends TutkinnonPerusteetTest[PerusopetukseenValmistavanOpetuksenOpiskeluoikeus] with LocalJettyHttpSpecification {
+class OppijaValidationPerusopetukseenValmistavaSpec extends TutkinnonPerusteetTest[PerusopetukseenValmistavanOpetuksenOpiskeluoikeus] with KoskiHttpSpec {
   "Nuorten perusopetuksen oppiaineen suoritus valmistavassa opetuksessa" - {
     "Luokka-astetta ei vaadita jos arvionti on 'O'" in {
       val suoritus = perusopetukseenValmistavanOpetuksenSuoritus.copy(osasuoritukset = Option(List(NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(

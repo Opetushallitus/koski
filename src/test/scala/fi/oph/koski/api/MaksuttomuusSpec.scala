@@ -8,7 +8,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
 import org.scalatest.FreeSpec
 
-class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillinen with LocalJettyHttpSpecification {
+class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillinen with KoskiHttpSpec {
 
   "Tiedon siirtäminen" - {
     lazy val opiskeluoikeus = alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))

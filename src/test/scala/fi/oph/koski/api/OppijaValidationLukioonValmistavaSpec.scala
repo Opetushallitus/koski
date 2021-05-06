@@ -11,7 +11,7 @@ import fi.oph.koski.documentation.LukioExampleData.{kurssisuoritus, lukionKieli,
 import java.time.LocalDate.{of => date}
 import scala.reflect.runtime.universe.TypeTag
 
-class OppijaValidationLukioonValmistavaSpec extends TutkinnonPerusteetTest[LukioonValmistavanKoulutuksenOpiskeluoikeus] with LocalJettyHttpSpecification {
+class OppijaValidationLukioonValmistavaSpec extends TutkinnonPerusteetTest[LukioonValmistavanKoulutuksenOpiskeluoikeus] with KoskiHttpSpec {
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(
     lukioonValmistavanKoulutuksenSuoritus.copy(koulutusmoduuli = lukioonValmistavanKoulutuksenSuoritus.koulutusmoduuli.copy(perusteenDiaarinumero = diaari))
   ))

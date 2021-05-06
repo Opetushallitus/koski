@@ -4,7 +4,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema.Suoritus
 import fi.oph.koski.koskiuser.MockUsers.paakayttaja
 
-trait PaatasonSuoritusTestMethods extends LocalJettyHttpSpecification with OpiskeluoikeusTestMethods {
+trait PaatasonSuoritusTestMethods extends KoskiHttpSpec with OpiskeluoikeusTestMethods {
   def deletePäätasonSuoritus[A](opiskeluoikeusOid: String, versionumero: Int, suoritus: Suoritus)(f: => A): A = {
     val suoritusBody = JsonSerializer.writeWithRoot(suoritus)
 

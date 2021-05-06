@@ -12,7 +12,7 @@ import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema._
 import org.scalatest.{FreeSpec, Matchers}
 
-class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with QueryTestMethods with Matchers {
+class OppijaQuerySpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with QueryTestMethods with Matchers {
   import fi.oph.koski.util.DateOrdering._
   val teija = KoskiSpecificMockOppijat.teija
   val eero = KoskiSpecificMockOppijat.eero

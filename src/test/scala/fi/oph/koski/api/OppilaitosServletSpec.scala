@@ -7,7 +7,7 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{Koodistokoodiviite, OpiskeluoikeudenTyyppi}
 import org.scalatest.{FreeSpec, Matchers}
 
-class OppilaitosServletSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with HttpTester {
+class OppilaitosServletSpec extends FreeSpec with Matchers with KoskiHttpSpec with HttpTester {
   "Mahdolliset opiskeluoikeuden tyypit organisaatiolle" - {
     "Palautetaan vain ne opiskeluoikeuden tyypit joihin annetulla käyttäjällä on oikeus" in {
       authGet(s"api/oppilaitos/opiskeluoikeustyypit/${MockOrganisaatiot.kulosaarenAlaAste}", headers = authHeaders(MockUsers.esiopetusTallentaja)) {

@@ -1,25 +1,30 @@
 package fi.oph.koski.etk
 
+import fi.oph.koski.DirtiesFixtures
+import fi.oph.koski.api.{KoskiHttpSpec, OpiskeluoikeusTestMethodsAmmatillinen}
+import fi.oph.koski.documentation.AmmatillinenExampleData
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
+import fi.oph.koski.henkilo.OppijaHenkilö
+import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
+import org.scalatest.{FreeSpec, Matchers}
+
 import java.io.{File, PrintWriter}
 import java.sql.Timestamp
 import java.time.LocalDate.{of => date}
-
-import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.MockUsers
-import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsAmmatillinen}
-import fi.oph.koski.documentation.AmmatillinenExampleData
-import fi.oph.koski.henkilo.OppijaHenkilö
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
-import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-
 import scala.io.Source
 
-class ElaketurvakeskusSpec extends FreeSpec with BeforeAndAfterAll with LocalJettyHttpSpecification with Matchers with RaportointikantaTestMethods with OpiskeluoikeusTestMethodsAmmatillinen {
+class ElaketurvakeskusSpec
+  extends FreeSpec
+    with DirtiesFixtures
+    with KoskiHttpSpec
+    with Matchers
+    with RaportointikantaTestMethods
+    with OpiskeluoikeusTestMethodsAmmatillinen {
 
-  override def beforeAll {
-    resetFixtures
+  override protected def alterFixture(): Unit = {
     insertAdditionalTestData
     reloadRaportointikanta
   }

@@ -42,12 +42,16 @@ class RemoteOrganisaatioRepositorySpec extends FreeSpec with Matchers with Befor
     }
   }
 
-  override def beforeAll {
+  override protected def beforeAll {
+    super.beforeAll()
     wireMockServer.start()
     mockEndpoints
   }
 
-  override def afterAll: Unit = wireMockServer.stop()
+  override protected def afterAll {
+    wireMockServer.stop()
+    super.afterAll()
+  }
 
   private def mockEndpoints = {
     wireMockServer.stubFor(

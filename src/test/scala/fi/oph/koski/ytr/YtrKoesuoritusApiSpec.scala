@@ -1,13 +1,13 @@
 package fi.oph.koski.ytr
 
-import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
+import fi.oph.koski.api.{KoskiHttpSpec, OpiskeluoikeusTestMethods}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s.jackson.JsonMethods
 import org.scalatest.FreeSpec
 
-class YtrKoesuoritusApiSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods {
+class YtrKoesuoritusApiSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethods {
   "Kansalainen" - {
     "voi hakea koesuorituslistauksen" in {
       post("api/ytrkoesuoritukset/" + KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid, headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.ylioppilasLukiolainen.hetu.get) ++ jsonContent) {

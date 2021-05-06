@@ -3,7 +3,7 @@ package fi.oph.koski.browserstack
 import java.net.URL
 import java.util.Date
 
-import fi.oph.koski.api.LocalJettyHttpSpecification
+import fi.oph.koski.api.KoskiHttpSpec
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.util.EnvVariables
 import org.openqa.selenium.JavascriptExecutor
@@ -71,7 +71,7 @@ class SafariTest extends BrowserstackMochaTest {
   *
   * To add more browsers, see https://www.browserstack.com/automate/junit
   */
-abstract class BrowserstackMochaTest extends FreeSpec with LocalJettyHttpSpecification with EnvVariables with TimeLimits {
+abstract class BrowserstackMochaTest extends FreeSpec with KoskiHttpSpec with EnvVariables with TimeLimits {
   lazy val USERNAME = requiredEnv("BROWSERSTACK_USERNAME")
   lazy val AUTOMATE_KEY = requiredEnv("BROWSERSTACK_AUTOMATE_KEY")
   lazy val URL: String = "https://" + USERNAME + ":" + AUTOMATE_KEY + "@hub-cloud.browserstack.com/wd/hub"

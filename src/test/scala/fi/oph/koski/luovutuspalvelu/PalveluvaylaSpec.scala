@@ -1,7 +1,7 @@
 package fi.oph.koski.luovutuspalvelu
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
+import fi.oph.koski.api.{KoskiHttpSpec, OpiskeluoikeusTestMethods}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
@@ -9,7 +9,7 @@ import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 import scala.xml.{NodeSeq, XML, Utility}
 
-class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods with Matchers with BeforeAndAfterAll {
+class PalveluvaylaSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethods with Matchers with BeforeAndAfterAll {
   "Suomi.fi rekisteritiedot" - {
     "käyttää konffattua suomi.fi oidia" in {
       KoskiApplicationForTests.config.getString("suomi-fi-user-oid") shouldEqual MockUsers.suomiFiKäyttäjä.oid

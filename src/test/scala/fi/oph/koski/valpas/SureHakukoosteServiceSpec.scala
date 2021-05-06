@@ -2,7 +2,6 @@ package fi.oph.koski.valpas
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
-import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration._
 import com.typesafe.config.ConfigFactory
 import fi.oph.koski.json.JsonSerializer
@@ -30,12 +29,12 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
 
   private val sureHakukoosteUrl = "/suoritusrekisteri/rest/v1/valpas/"
 
-  override def beforeAll() {
-    wireMockServer.start()
+  override protected def beforeAll() {
     super.beforeAll()
+    wireMockServer.start()
   }
 
-  override def afterAll() {
+  override protected def afterAll() {
     wireMockServer.stop()
     super.afterAll()
   }
@@ -43,8 +42,8 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
   "SureHakukoosteService" - {
     "käsittelee virhetilanteen kun suoritusrekisteri ei vastaa" in {
       wireMockServer.stubFor(
-        WireMock.post(urlPathEqualTo(sureHakukoosteUrl))
-          .willReturn(status(500)))
+        WireMock.post(WireMock.urlPathEqualTo(sureHakukoosteUrl))
+          .willReturn(WireMock.status(500)))
 
       val result = mockClient.getHakukoosteet(Set("asdf")).left.value
       result.statusCode should equal(503)
@@ -78,8 +77,8 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
     "osaa serialisoida aidon API-vastauksen" in {
       val queryOids = Set("1.2.246.562.24.85292063498")
       wireMockServer.stubFor(
-        WireMock.post(urlPathEqualTo(sureHakukoosteUrl))
-          .willReturn(ok().withBody(SureHakukoosteServiceSpec.realResponse))
+        WireMock.post(WireMock.urlPathEqualTo(sureHakukoosteUrl))
+          .willReturn(WireMock.ok().withBody(SureHakukoosteServiceSpec.realResponse))
       )
       val result = mockClient.getHakukoosteet(queryOids).right.value.head
       result.oppijaOid should equal(queryOids.head)
@@ -100,9 +99,9 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
       .map(alterResponse)
 
     wireMockServer.stubFor(
-      WireMock.post(urlPathEqualTo(sureHakukoosteUrl))
-        .withRequestBody(equalToJson(expectedRequest))
-        .willReturn(ok().withBody(JsonSerializer.writeWithRoot(response))))
+      WireMock.post(WireMock.urlPathEqualTo(sureHakukoosteUrl))
+        .withRequestBody(WireMock.equalToJson(expectedRequest))
+        .willReturn(WireMock.ok().withBody(JsonSerializer.writeWithRoot(response))))
   }
 }
 

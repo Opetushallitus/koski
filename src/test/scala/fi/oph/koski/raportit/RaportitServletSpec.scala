@@ -14,6 +14,11 @@ import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class RaportitServletSpec extends FreeSpec with RaportointikantaTestMethods with OpiskeluoikeusTestMethods with Matchers with BeforeAndAfterAll {
 
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
+    reloadRaportointikanta
+  }
+
   "Mahdolliset raportit -API" - {
 
     "Oppilaitoksen mahdolliset raportit" - {
@@ -153,6 +158,4 @@ class RaportitServletSpec extends FreeSpec with RaportointikantaTestMethods with
       f(response)
     }
   }
-
-  override def beforeAll(): Unit = reloadRaportointikanta
 }

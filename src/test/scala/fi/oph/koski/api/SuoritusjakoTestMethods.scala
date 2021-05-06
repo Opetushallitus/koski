@@ -11,7 +11,7 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import org.mockito.Mockito.{mock, when}
 import org.scalatra.servlet.RichRequest
 
-trait SuoritusjakoTestMethods extends LocalJettyHttpSpecification with OpiskeluoikeusTestMethods {
+trait SuoritusjakoTestMethods extends KoskiHttpSpec with OpiskeluoikeusTestMethods {
 
   val suoritusjakoHetu = "180497-112F"
   private val mockKoskiSession = {

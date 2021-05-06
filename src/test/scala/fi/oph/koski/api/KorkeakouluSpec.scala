@@ -6,7 +6,7 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import org.scalatest.{FreeSpec, Matchers}
 
-class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsKorkeakoulu with SearchTestMethods with LocalJettyHttpSpecification {
+class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsKorkeakoulu with SearchTestMethods with KoskiHttpSpec {
   "Korkeakoulun opiskeluoikeudet" - {
     "Lisättäessä/päivitettäessä" - {
       "palautetaan HTTP 501" in {

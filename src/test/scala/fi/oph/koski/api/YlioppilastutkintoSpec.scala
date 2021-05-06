@@ -6,7 +6,7 @@ import fi.oph.koski.schema.{YlioppilastutkinnonOpiskeluoikeus, Ylioppilastutkinn
 import fi.oph.koski.koskiuser.MockUsers.{paakayttaja}
 import org.scalatest.{FreeSpec, Matchers}
 
-class YlioppilastutkintoSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsYlioppilastutkinto with LocalJettyHttpSpecification with SearchTestMethods {
+class YlioppilastutkintoSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsYlioppilastutkinto with KoskiHttpSpec with SearchTestMethods {
   "Ylioppilastutkinnot" - {
     "Lisättäessä/päivitettäessä" - {
       "palautetaan HTTP 501" in {

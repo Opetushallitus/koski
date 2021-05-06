@@ -9,7 +9,7 @@ import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.AmmatillinenOpiskeluoikeusjakso
 import org.scalatest.{FreeSpec, Matchers}
 
-class OppijaGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods with OpiskeluoikeusTestMethodsAmmatillinen {
+class OppijaGetByOidSpec extends FreeSpec with Matchers with KoskiHttpSpec with OpiskeluoikeusTestMethods with OpiskeluoikeusTestMethodsAmmatillinen {
   "/api/oppija/" - {
     "GET" - {
       "with valid oid" in {

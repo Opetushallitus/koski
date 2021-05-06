@@ -75,13 +75,15 @@ class YtrClientSpec extends FreeSpec with Matchers with BeforeAndAfterAll {
     hasCompletedMandatoryExams = true
   )
 
-  override def beforeAll: Unit = {
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
     wireMockServer.start()
     mockEndpoints()
   }
 
-  override def afterAll {
+  override protected def afterAll(): Unit = {
     wireMockServer.stop()
+    super.afterAll()
   }
 
   "YtrClient" - {

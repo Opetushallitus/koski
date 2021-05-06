@@ -1,9 +1,5 @@
 package fi.oph.koski.raportit
 
-import java.sql.Date
-import java.time.LocalDate
-import java.time.LocalDate.{of => date}
-import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsLukio2015
 import fi.oph.koski.documentation.LukioExampleData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
@@ -12,20 +8,23 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.raportit.lukio.{LukioRaportitRepository, LukioRaportti}
 import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}
 import fi.oph.koski.schema._
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
+import org.scalatest.{FreeSpec, Matchers}
 
-class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll with OpiskeluoikeusTestMethodsLukio2015 {
+import java.sql.Date
+import java.time.LocalDate
+import java.time.LocalDate.{of => date}
 
-  override def beforeAll(): Unit = {
+class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with DirtiesFixtures with OpiskeluoikeusTestMethodsLukio2015 {
+
+  override protected def alterFixture(): Unit = {
     lisääPäätasonSuorituksia(lukionAineopiskelijaAktiivinen, List(LukioExampleData.lukionOppiaineenOppimääränSuoritusA1Englanti, LukioExampleData.lukionOppiaineenOppimääränSuoritusPitkäMatematiikka))
     reloadRaportointikanta
   }
 
-  override def afterAll: Unit = resetFixtures
-
-  lazy val today = LocalDate.now
-  lazy val repository = LukioRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
-  lazy val lukioRaportti = LukioRaportti(repository)
+  private lazy val today = LocalDate.now
+  private lazy val repository = LukioRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
+  private lazy val lukioRaportti = LukioRaportti(repository)
 
   "Lukion suoritustietoraportti" - {
 

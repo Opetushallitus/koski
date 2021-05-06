@@ -1,6 +1,6 @@
 package fi.oph.koski.sure
 
-import fi.oph.koski.api.{DatabaseTestMethods, LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsAmmatillinen}
+import fi.oph.koski.api.{DatabaseTestMethods, KoskiHttpSpec, OpiskeluoikeusTestMethodsAmmatillinen}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.KoskiTables.OpiskeluOikeudet
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -16,7 +16,7 @@ import org.json4s.jackson.JsonMethods
 import org.json4s.{DefaultFormats, JString, JValue}
 import org.scalatest.{FreeSpec, Matchers}
 
-class SureSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with DatabaseTestMethods with Matchers {
+class SureSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with DatabaseTestMethods with Matchers {
 
   import fi.oph.koski.schema.KoskiSchema.deserializationContext
   implicit val formats = DefaultFormats

@@ -5,7 +5,7 @@ import fi.oph.koski.documentation.ExamplesLukio2019.{oppiaineenOppimääräOpisk
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
 
-class OppijaValidationLukionOppiaineidenOppimaarat2019Spec extends TutkinnonPerusteetTest[LukionOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsLukio {
+class OppijaValidationLukionOppiaineidenOppimaarat2019Spec extends TutkinnonPerusteetTest[LukionOpiskeluoikeus] with KoskiHttpSpec with OpiskeluoikeusTestMethodsLukio {
   "Diaarinumerot" - {
     val suorituksenKoulutusmoduuliVanhallaPerusteella = oppiaineidenOppimäärienSuoritus.koulutusmoduuli.copy(perusteenDiaarinumero = Some("60/011/2015"))
     val suorituksenKoulutusmoduuliAikuistenPerusteella = oppiaineidenOppimäärienSuoritus.koulutusmoduuli.copy(perusteenDiaarinumero = Some("OPH-2267-2019"))

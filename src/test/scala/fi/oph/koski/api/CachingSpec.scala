@@ -3,7 +3,7 @@ package fi.oph.koski.api
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import org.scalatest.{FreeSpec, Matchers}
 
-class CachingSpec extends FreeSpec with LocalJettyHttpSpecification with Matchers {
+class CachingSpec extends FreeSpec with KoskiHttpSpec with Matchers {
   "API caching is disabled" - {
     "/oppija" in { verifyNoCache("api/oppija/" + KoskiSpecificMockOppijat.eero.oid)}
   }

@@ -13,7 +13,7 @@ import java.time.LocalDate.{of => date}
 
 import org.scalatest.FreeSpec
 
-class OppijaValidationLukio2019Spec extends FreeSpec with PutOpiskeluoikeusTestMethods[LukionOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsLukio {
+class OppijaValidationLukio2019Spec extends FreeSpec with PutOpiskeluoikeusTestMethods[LukionOpiskeluoikeus] with KoskiHttpSpec with OpiskeluoikeusTestMethodsLukio {
   "Laajuudet" - {
     "Oppiaineen laajuus" - {
       "Oppiaineen laajuus lasketaan moduuleiden ja paikallisten opintojaksojen laajuuksista" in {

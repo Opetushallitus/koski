@@ -12,7 +12,10 @@ import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with OpiskeluoikeusTestMethodsAmmatillinen with BeforeAndAfterAll {
 
-  override def beforeAll(): Unit = reloadRaportointikanta
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
+    reloadRaportointikanta
+  }
 
   lazy val repository = AmmatillisenRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
   lazy val defaultTestiHenkilö = KoskiSpecificMockOppijat.ammatillisenOsittainenRapsa
@@ -47,7 +50,7 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
     }
   }
 
-  val defaultExpectedRow = AmmatillinenOsittainRaporttiRow(
+  lazy val defaultExpectedRow = AmmatillinenOsittainRaporttiRow(
     opiskeluoikeusOid = lastOpiskeluoikeus(defaultTestiHenkilö.oid).oid.get,
     lähdejärjestelmä = None,
     lähdejärjestelmänId = None,

@@ -16,7 +16,7 @@ import org.scalatest.{FreeSpec, Matchers}
 
 import scala.language.reflectiveCalls
 
-class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with LocalJettyHttpSpecification with DatabaseTestMethods {
+class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with KoskiHttpSpec with DatabaseTestMethods {
   "Sisältyvä opiskeluoikeus" - {
     lazy val fixture = new {
       resetFixtures

@@ -4,7 +4,7 @@ import fi.oph.koski.documentation.AmmattitutkintoExample
 import fi.oph.koski.documentation.AmmattitutkintoExample.näyttötutkintoonValmistavanKoulutuksenSuoritus
 import fi.oph.koski.schema._
 
-class OppijaValidationNayttotutkintoonValmistavaSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
+class OppijaValidationNayttotutkintoonValmistavaSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
   override def defaultOpiskeluoikeus = AmmattitutkintoExample.opiskeluoikeus.copy(suoritukset = List(näyttötutkintoonValmistavanKoulutuksenSuoritus))
 
   override def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]): AmmatillinenOpiskeluoikeus =

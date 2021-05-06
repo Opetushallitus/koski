@@ -1,15 +1,11 @@
 package fi.oph.koski.raportit
 
-import java.time.LocalDate
-import java.time.LocalDate.{of => date}
-
-import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, valtionosuusRahoitteinen}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetuksenAlkuvaiheenSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
-import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.aikuisOpiskelija
+import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.koskiuser.KoskiMockUser
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -17,15 +13,25 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät, AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema._
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
+import org.scalatest.{FreeSpec, Matchers}
 
-class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll with PutOpiskeluoikeusTestMethods[AikuistenPerusopetuksenOpiskeluoikeus] {
+import java.time.LocalDate
+import java.time.LocalDate.{of => date}
+
+class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätSpec
+  extends FreeSpec
+    with Matchers
+    with RaportointikantaTestMethods
+    with DirtiesFixtures
+    with PutOpiskeluoikeusTestMethods[AikuistenPerusopetuksenOpiskeluoikeus] {
+
   private val application = KoskiApplicationForTests
   private val raporttiBuilder = AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(application.raportointiDatabase.db)
   private lazy val raportti =
     raporttiBuilder.build(List(jyväskylänNormaalikoulu), date(2006, 1, 1), date(2016, 12, 30))(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRow])
 
-  override def beforeAll(): Unit = {
+  override protected def alterFixture(): Unit = {
     lisääPäätasonSuorituksia(
       aikuisOpiskelija,
       List(
@@ -35,9 +41,6 @@ class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätSpec extends FreeS
     )
     reloadRaportointikanta
   }
-
-  override def afterAll: Unit = resetFixtures
-
 
   def tag = implicitly[reflect.runtime.universe.TypeTag[AikuistenPerusopetuksenOpiskeluoikeus]]
   override def defaultOpiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = longTimeAgo)

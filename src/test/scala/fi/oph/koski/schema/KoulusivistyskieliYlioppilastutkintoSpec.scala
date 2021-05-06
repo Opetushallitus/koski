@@ -1,10 +1,10 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsYlioppilastutkinto}
+import fi.oph.koski.api.{KoskiHttpSpec, OpiskeluoikeusTestMethodsYlioppilastutkinto}
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, KoskiSpecificMockOppijat}
 import org.scalatest.FreeSpec
 
-class KoulusivistyskieliYlioppilastutkintoSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsYlioppilastutkinto {
+class KoulusivistyskieliYlioppilastutkintoSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsYlioppilastutkinto {
 
   "Koulusivistyskieli - Ylioppilastutkinnon suoritus" - {
 

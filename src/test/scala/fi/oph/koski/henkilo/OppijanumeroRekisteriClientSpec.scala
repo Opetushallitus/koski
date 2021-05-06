@@ -250,13 +250,13 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
           "kielisyys": []
         }"""
 
-  override def beforeAll {
+  override protected def beforeAll {
+    super.beforeAll()
     wireMockServer.start()
     mockEndpoints()
-    super.beforeAll()
   }
 
-  override def afterAll {
+  override protected def afterAll {
     wireMockServer.stop()
     super.afterAll()
   }

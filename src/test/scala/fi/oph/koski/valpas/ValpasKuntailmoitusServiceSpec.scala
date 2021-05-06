@@ -18,14 +18,14 @@ import org.scalatest.Matchers._
 class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
   private lazy val kuntailmoitusService = KoskiApplicationForTests.valpasKuntailmoitusService
 
-  override def beforeEach() {
+  override protected def beforeEach() {
     super.beforeEach()
     AuditLogTester.clearMessages
     KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
       .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)
   }
 
-  override def afterEach(): Unit = {
+  override protected def afterEach(): Unit = {
     KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
       .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)
     super.afterEach()

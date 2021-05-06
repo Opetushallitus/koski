@@ -1,6 +1,6 @@
 package fi.oph.koski.luovutuspalvelu
 
-import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
+import fi.oph.koski.api.{KoskiHttpSpec, OpiskeluoikeusTestMethods}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
@@ -8,7 +8,7 @@ import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
-class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods with Matchers with BeforeAndAfterAll {
+class LuovutuspalveluSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethods with Matchers with BeforeAndAfterAll {
 
   "Luovutuspalvelu hetu-API" - {
     "Palauttaa oikean näköisen vastauksen" in {

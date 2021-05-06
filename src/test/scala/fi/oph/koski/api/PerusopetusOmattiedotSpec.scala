@@ -12,7 +12,7 @@ import org.json4s.{DefaultFormats, JObject}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.FreeSpec
 
-class PerusopetusOmattiedotSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsPerusopetus {
+class PerusopetusOmattiedotSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsPerusopetus {
   implicit val formats = DefaultFormats
   val suoritustenLukumäärä = PerusopetusExampleData.kaikkiAineet.get.length
 

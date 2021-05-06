@@ -6,7 +6,7 @@ import fi.oph.koski.schema._
 
 import scala.reflect.runtime.universe.TypeTag
 
-class OppijaValidationTelmaSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with LocalJettyHttpSpecification {
+class OppijaValidationTelmaSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with KoskiHttpSpec {
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(
     telmaKoulutuksenSuoritus.copy(koulutusmoduuli = telmaKoulutuksenSuoritus.koulutusmoduuli.copy(perusteenDiaarinumero = diaari))
   ))

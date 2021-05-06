@@ -6,7 +6,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema.{ErityisenKoulutustehtävänJakso, Koodistokoodiviite, LukionOpiskeluoikeudenLisätiedot}
 import org.scalatest.FreeSpec
 
-class OppijaValidationErityisenKoulutustehtävänJaksoSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsLukio2015 {
+class OppijaValidationErityisenKoulutustehtävänJaksoSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsLukio2015 {
   "Erityisen koulutustehtävän jakso" - {
     "Vanhentuneella koodilla" in {
       val ekj = ErityisenKoulutustehtävänJakso(LocalDate.now, None, Koodistokoodiviite("taide", "erityinenkoulutustehtava"))

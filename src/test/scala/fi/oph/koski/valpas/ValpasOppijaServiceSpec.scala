@@ -11,11 +11,11 @@ import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import org.scalatest.Matchers._
 
 class ValpasOppijaServiceSpec extends ValpasTestBase {
-  val oppijaService = KoskiApplicationForTests.valpasOppijaService
-  val oppilaitokset = List(MockOrganisaatiot.jyväskylänNormaalikoulu)
+  private val oppijaService = KoskiApplicationForTests.valpasOppijaService
+  private val oppilaitokset = List(MockOrganisaatiot.jyväskylänNormaalikoulu)
 
   // Jyväskylän normaalikoulusta löytyvät näytettävät oppivelvolliset aakkosjärjestyksessä
-  val oppivelvolliset = List(
+  private val oppivelvolliset = List(
     (
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
       List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true, true))
@@ -342,11 +342,11 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
     }
   }
 
-  def validateOppijaSuppeatTiedot(
+  private def validateOppijaSuppeatTiedot(
     oppija: ValpasOppijaSuppeatTiedot,
     expectedOppija: LaajatOppijaHenkilöTiedot,
     expectedData: List[ExpectedData]
-  ) = {
+  ): Unit = {
     withClue(s"ValpasOppija(${oppija.henkilö.oid}/${oppija.henkilö.sukunimi}/${oppija.henkilö.etunimet}): ") {
       oppija.henkilö.oid shouldBe expectedOppija.oid
       oppija.henkilö.etunimet shouldBe expectedOppija.etunimet
@@ -406,7 +406,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
     }
   }
 
-  def canAccessOppija(oppija: LaajatOppijaHenkilöTiedot, user: ValpasMockUser): Boolean =
+  private def canAccessOppija(oppija: LaajatOppijaHenkilöTiedot, user: ValpasMockUser): Boolean =
     oppijaService.getOppijaHakutilanteillaLaajatTiedot(oppija.oid)(session(user)).isRight
 
   private def session(user: ValpasMockUser)= user.toValpasSession(KoskiApplicationForTests.käyttöoikeusRepository)

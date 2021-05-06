@@ -20,7 +20,7 @@ import org.json4s._
 import org.json4s.jackson.JsonMethods
 import org.scalatest.FreeSpec
 
-class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
+class OppijaValidationSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
   "Opiskeluoikeuden lisääminen" - {
     "Valideilla tiedoilla" - {
       "palautetaan HTTP 200" in {

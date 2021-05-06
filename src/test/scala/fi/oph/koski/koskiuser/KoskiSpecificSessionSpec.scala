@@ -165,7 +165,8 @@ class KoskiSpecificSessionSpec extends FreeSpec with Matchers with EitherValues 
 
   private val req = mock(classOf[RichRequest])
 
-  override def beforeAll {
+  override protected def beforeAll {
+    super.beforeAll()
     when(req.header("User-Agent")).thenReturn(Some("MockUserAgent/1.0"))
     when(req.header("HTTP_X_FORWARDED_FOR")).thenReturn(Some("10.1.2.3"))
     when(req.cookies).thenReturn(Map[String, String]())
@@ -173,7 +174,10 @@ class KoskiSpecificSessionSpec extends FreeSpec with Matchers with EitherValues 
     mockEndpoints
   }
 
-  override def afterAll: Unit = wireMockServer.stop()
+  override protected def afterAll: Unit = {
+    wireMockServer.stop()
+    super.afterAll()
+  }
 
   private def mockEndpoints = {
     val käyttöoikeusUrl = "/kayttooikeus-service/kayttooikeus/kayttaja"

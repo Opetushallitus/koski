@@ -9,7 +9,7 @@ import fi.oph.koski.schema._
 
 import scala.reflect.runtime.universe.TypeTag
 
-trait EsiopetusSpecification extends LocalJettyHttpSpecification with PutOpiskeluoikeusTestMethods[EsiopetuksenOpiskeluoikeus] {
+trait EsiopetusSpecification extends KoskiHttpSpec with PutOpiskeluoikeusTestMethods[EsiopetuksenOpiskeluoikeus] {
   lazy val hki = MockOrganisaatioRepository.getOrganisaatioHierarkia(MockOrganisaatiot.helsinginKaupunki).flatMap(_.toKoulutustoimija)
   lazy val tornio = MockOrganisaatioRepository.getOrganisaatioHierarkia(MockOrganisaatiot.tornionKaupunki).flatMap(_.toKoulutustoimija)
   lazy val jyväskylä = MockOrganisaatioRepository.getOrganisaatioHierarkia(MockOrganisaatiot.jyväskylänYliopisto).flatMap(_.toKoulutustoimija)

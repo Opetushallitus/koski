@@ -8,7 +8,7 @@ import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.AmmatillinenOpiskeluoikeus
 import org.scalatest.{FreeSpec, Matchers}
 
-class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods with HttpTester with OpiskeluoikeusTestMethodsAmmatillinen {
+class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with KoskiHttpSpec with OpiskeluoikeusTestMethods with HttpTester with OpiskeluoikeusTestMethodsAmmatillinen {
   "/api/opiskeluoikeus/:oid" - {
     "GET" - {
       "with valid oid" in {

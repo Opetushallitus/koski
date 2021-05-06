@@ -3,22 +3,18 @@ package fi.oph.koski.api
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.http.HttpSpecification
 import fi.oph.koski.jettylauncher.JettyLauncher
-import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester, Logging, RootLogTester}
 import fi.oph.koski.util.PortChecker
 
-object SharedJetty extends JettyLauncher(PortChecker.findFreeLocalPort, KoskiApplicationForTests)
-
 trait LocalJettyHttpSpecification extends HttpSpecification {
-  override def baseUrl = {
-    LocalJettyHttpSpecification.setup(this)
-    LocalJettyHttpSpecification.baseUrl
-  }
+  LocalJettyHttpSpec.setup()
 
-  def defaultUser = MockUsers.kalle
+  override def baseUrl: String = LocalJettyHttpSpec.baseUrl
 }
 
-object LocalJettyHttpSpecification extends Logging {
+object SharedJetty extends JettyLauncher(PortChecker.findFreeLocalPort, KoskiApplicationForTests)
+
+object LocalJettyHttpSpec extends Logging {
   private lazy val myJetty = externalJettyPort match {
     case None => SharedJetty
     case Some(port) =>
@@ -27,14 +23,14 @@ object LocalJettyHttpSpecification extends Logging {
   }
 
   var running = false
-  def setup(spec: HttpSpecification) = synchronized {
+
+  def setup(): Unit = synchronized {
     if (!running) {
       running = true
       if (externalJettyPort.isEmpty) SharedJetty.start
       AuditLogTester.setup
       AccessLogTester.setup
       RootLogTester.setup
-      spec.resetFixtures
     }
   }
 

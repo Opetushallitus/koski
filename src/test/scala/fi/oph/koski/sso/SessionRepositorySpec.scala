@@ -25,6 +25,7 @@ class SessionRepositorySpec extends FreeSpec with Matchers with DatabaseTestMeth
   }
 
   override protected def beforeAll(): Unit = {
+    super.beforeAll()
     runDbSync(KoskiTables.CasServiceTicketSessions.delete)
   }
 

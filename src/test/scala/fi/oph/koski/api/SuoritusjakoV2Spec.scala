@@ -14,7 +14,7 @@ import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.suoritusjako.{Suoritusjako, SuoritusjakoDeleteRequest, SuoritusjakoRequest, SuoritusjakoUpdateRequest}
 import fi.oph.scalaschema.SchemaValidatingExtractor
 
-class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with LocalJettyHttpSpecification {
+class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with KoskiHttpSpec {
 
   import fi.oph.koski.schema.KoskiSchema.deserializationContext
 

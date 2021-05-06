@@ -5,7 +5,7 @@ import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 
-class ValpasAuthenticationSpec extends ValpasHttpTestBase {
+class ValpasAuthenticationSpec extends ValpasTestBase {
   val täysinAvoinUri = s"/api/koodisto/suoritustyypit"
   val sessionVaativaUri = s"/api/organisaatio/hierarkia"
   val virkailjanTaiPalvelukäyttäjänVaativaUri = s"/api/raportit/organisaatiot"
@@ -13,8 +13,6 @@ class ValpasAuthenticationSpec extends ValpasHttpTestBase {
   val valpasSessionVaativaUri = s"/valpas/api/user"
 
   "Tunnistautumaton käyttäjä" - {
-    val user = ValpasMockUsers.valpasJklNormaalikoulu
-
     "voi kutsua" - {
       "avoimia routeja" taggedAs(ValpasBackendTag) in {
         get(täysinAvoinUri) {

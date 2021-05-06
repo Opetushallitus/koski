@@ -7,7 +7,11 @@ import fi.oph.koski.schema.Opiskeluoikeus.Oid
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class OsasuorituksetSpec extends FreeSpec with Matchers with BeforeAndAfterAll with RaportointikantaTestMethods with OpiskeluoikeusTestMethods {
-  override protected def beforeAll(): Unit = reloadRaportointikanta
+
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
+    reloadRaportointikanta
+  }
 
   "Osasuoritukset" - {
     "Tunnustettu on 'true' tunnustetuille" in {

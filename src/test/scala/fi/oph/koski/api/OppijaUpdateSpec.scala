@@ -21,7 +21,7 @@ import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.schema._
 import org.scalatest.FreeSpec
 
-class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
+class OppijaUpdateSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
   val oppija = KoskiSpecificMockOppijat.tyhjä
 
   "Opiskeluoikeuden lisääminen" - {

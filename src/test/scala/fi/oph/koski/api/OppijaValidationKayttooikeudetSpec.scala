@@ -1,17 +1,16 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.DirtiesFixtures
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.schema.AmmatillinenOpiskeluoikeus
-import org.scalatest.{BeforeAndAfterAll, FreeSpec}
+import org.scalatest.FreeSpec
 
 class OppijaValidationKayttooikeudetSpec
   extends FreeSpec
-    with BeforeAndAfterAll
     with OpiskeluoikeusTestMethodsAmmatillinen
-    with LocalJettyHttpSpecification {
-
-  override def afterAll: Unit = resetFixtures
+    with KoskiHttpSpec
+    with DirtiesFixtures {
 
   "Opiskeluoikeuksien tyyppikohtainen käyttöoikeuksien tarkistus" - {
 

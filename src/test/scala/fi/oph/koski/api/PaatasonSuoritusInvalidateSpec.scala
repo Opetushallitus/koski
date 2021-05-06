@@ -1,14 +1,11 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import fi.oph.koski.http.{ErrorMatcher, HttpTester, KoskiErrorCategory}
+import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema.{PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus}
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+import org.scalatest.{FreeSpec, Matchers}
 
-class PaatasonSuoritusInvalidateSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with PaatasonSuoritusTestMethods with HttpTester with BeforeAndAfterAll {
-  override def beforeAll(): Unit = {
-    resetFixtures
-  }
+class PaatasonSuoritusInvalidateSpec extends FreeSpec with Matchers with KoskiHttpSpec with PaatasonSuoritusTestMethods {
 
   "Päätason suorituksen poistaminen" - {
     "onnistuu" - {

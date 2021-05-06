@@ -22,7 +22,10 @@ class EsiopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers wit
     raporttiBuilder.build(List(jyväskylänNormaalikoulu), localDate(2012, 1, 1))(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
   private val raporttiService = EsiopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
 
-  override def beforeAll(): Unit = reloadRaportointikanta
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
+    reloadRaportointikanta
+  }
 
   "Esiopetuksen oppijamäärien raportti" - {
     "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {

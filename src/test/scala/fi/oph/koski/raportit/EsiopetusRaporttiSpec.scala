@@ -19,7 +19,10 @@ class EsiopetusRaporttiSpec extends FreeSpec with Matchers with Raportointikanta
   private lazy val raportti =
     raporttiBuilder.build(List(jyväskylänNormaalikoulu), localDate(2007, 1, 1))(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetusRaporttiRow])
 
-  override def beforeAll(): Unit = reloadRaportointikanta
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
+    reloadRaportointikanta
+  }
 
   "Esiopetuksen raportti" - {
     "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {

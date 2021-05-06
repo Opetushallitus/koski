@@ -15,7 +15,7 @@ import fi.oph.koski.tiedonsiirto._
 import fi.oph.koski.util.Wait
 import org.scalatest.FreeSpec
 
-class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
+class TiedonsiirtoSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
   val oppija = KoskiSpecificMockOppijat.tyhjä
   val tiedonsiirtoService = SharedJetty.application.tiedonsiirtoService
 

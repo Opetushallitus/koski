@@ -8,7 +8,7 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot.omnia
 import fi.oph.koski.schema._
 import org.scalatest.{FreeSpec, Matchers}
 
-class DatabaseUpdateSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with LocalJettyHttpSpecification with DatabaseTestMethods {
+class DatabaseUpdateSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with KoskiHttpSpec with DatabaseTestMethods {
   "Kun opiskeluoikeus päivitetään" - {
     "Oppilaitoksen muuttuessa oppilaitos_oid päivittyy" in {
       val opiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja, resetFixtures = true)

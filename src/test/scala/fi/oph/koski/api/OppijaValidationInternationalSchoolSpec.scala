@@ -8,7 +8,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
 import org.scalatest.FreeSpec
 
-class OppijaValidationInternationalSchoolSpec extends FreeSpec with LocalJettyHttpSpecification with PutOpiskeluoikeusTestMethods[InternationalSchoolOpiskeluoikeus] {
+class OppijaValidationInternationalSchoolSpec extends FreeSpec with KoskiHttpSpec with PutOpiskeluoikeusTestMethods[InternationalSchoolOpiskeluoikeus] {
   "Kaksi äidinkieltä" - {
     "Samalla kielivalinnalla -> HTTP 400" in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(tutkintoSuoritus.copy(

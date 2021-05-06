@@ -3,7 +3,7 @@ package fi.oph.koski.api
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import org.scalatest.FreeSpec
 
-class LinkitettyOppijaSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsLukio2015 {
+class LinkitettyOppijaSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsLukio2015 {
   "Linkitetyt oppijat" - {
     "Kun haetaan masterilla" - {
       "Näytetään myös slaveen kytketyt opiskeluoikeudet" in {
