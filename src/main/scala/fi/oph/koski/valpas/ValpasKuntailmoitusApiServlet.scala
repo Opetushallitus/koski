@@ -6,7 +6,7 @@ import fi.oph.koski.log.{AuditLog, KoskiMessageField}
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessage, ValpasOperation}
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
-import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusLaajatTiedotJaOppijaOid}
+import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusLaajatTiedotJaOppijaOid, ValpasKuntailmoitusPohjatiedot, ValpasKuntailmoitusPohjatiedotInput}
 import fi.oph.koski.valpas.valpasuser.{RequiresValpasSession, ValpasSession}
 import org.json4s._
 
@@ -45,8 +45,31 @@ class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication)
       .flatMap(kuntailmoitusValidator.validateKuntailmoitusInput)
   }
 
+  post("/pohjatiedot") {
+    withJsonBody { (pohjatiedotInputJson: JValue) =>
+      val input = extractAndValidatePohjatiedot(pohjatiedotInputJson)
+
+      val result = input.flatMap(kuntailmoitusService.haePohjatiedot)
+        .map(withAuditLogOppijaKatsominen)
+
+      renderEither[ValpasKuntailmoitusPohjatiedot](result)
+    }(parseErrorHandler = handleUnparseableJson)
+  }
+
+  private def extractAndValidatePohjatiedot(pohjatiedotInputJson: JValue): Either[HttpStatus, ValpasKuntailmoitusPohjatiedotInput] = {
+    application.validatingAndResolvingExtractor.extract[ValpasKuntailmoitusPohjatiedotInput](pohjatiedotInputJson)
+  }
+
   private def handleUnparseableJson(status: HttpStatus) = {
     haltWithStatus(status)
+  }
+
+  private def withAuditLogOppijaKatsominen
+    (result: ValpasKuntailmoitusPohjatiedot)
+    (implicit session: ValpasSession)
+  : ValpasKuntailmoitusPohjatiedot = {
+    result.oppijat.map(oppija => auditLogOppijaKatsominen(oppija.oppijaOid))
+    result
   }
 
   private def withAuditLogOppijaKuntailmoitus
