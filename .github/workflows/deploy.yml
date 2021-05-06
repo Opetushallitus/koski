@@ -132,11 +132,6 @@ jobs:
         run: |
           echo "::set-output name=bucket-name::$(aws ssm get-parameter --name /valpas/bucket-name --output text --query 'Parameter.Value')"
 
-      - name: Backup current Valpas frontend
-        run: |
-          mkdir -p valpas_previous
-          aws s3 sync s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas valpas_previous
-
       - name: Deploy using CodeDeploy
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
