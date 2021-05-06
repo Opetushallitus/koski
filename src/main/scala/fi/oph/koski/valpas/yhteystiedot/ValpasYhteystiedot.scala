@@ -6,6 +6,7 @@ import fi.oph.koski.henkilo.Yhteystiedot
 import fi.oph.koski.schema.annotation.KoodistoUri
 import fi.oph.koski.schema.{BlankableLocalizedString, Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.valpas.hakukooste.Hakukooste
+import fi.oph.scalaschema.annotation.SyntheticProperty
 
 case class ValpasYhteystiedot(
   alkuperä: ValpasYhteystietojenAlkuperä,
@@ -48,9 +49,9 @@ case class ValpasYhteystietoOppijanumerorekisteristä (
 ) extends ValpasYhteystietojenAlkuperä
 
 object ValpasYhteystiedot {
-  def oppijanIlmoittamatYhteystiedot(hakukooste: Hakukooste, nimi: LocalizedString): ValpasYhteystiedot = ValpasYhteystiedot(
+  def oppijanIlmoittamatYhteystiedot(hakukooste: Hakukooste, yhteystietoryhmänNimi: LocalizedString): ValpasYhteystiedot = ValpasYhteystiedot(
     alkuperä = ValpasYhteystietoHakemukselta(hakukooste),
-    yhteystietoryhmänNimi = nimi,
+    yhteystietoryhmänNimi = yhteystietoryhmänNimi,
     matkapuhelinnumero = Some(hakukooste.matkapuhelin),
     lähiosoite = Some(hakukooste.lahiosoite),
     postinumero = Some(hakukooste.postinumero),
@@ -58,11 +59,11 @@ object ValpasYhteystiedot {
     sähköposti = Some(hakukooste.email),
   )
 
-  def oppijanIlmoittamatHuoltajanYhteystiedot(hakukooste: Hakukooste, nimi: LocalizedString): Option[ValpasYhteystiedot] =
+  def oppijanIlmoittamatHuoltajanYhteystiedot(hakukooste: Hakukooste, yhteystietoryhmänNimi: LocalizedString): Option[ValpasYhteystiedot] =
     if (hakukooste.huoltajanNimi.nonEmpty || hakukooste.huoltajanPuhelinnumero.nonEmpty || hakukooste.huoltajanSähkoposti.nonEmpty) {
       Some(ValpasYhteystiedot(
         alkuperä = ValpasYhteystietoHakemukselta(hakukooste),
-        yhteystietoryhmänNimi = nimi,
+        yhteystietoryhmänNimi = yhteystietoryhmänNimi,
         henkilönimi = hakukooste.huoltajanNimi,
         matkapuhelinnumero = hakukooste.huoltajanPuhelinnumero,
         sähköposti = hakukooste.huoltajanSähkoposti,
