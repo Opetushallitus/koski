@@ -59,22 +59,6 @@ class ValpasRootApiServletSpec extends ValpasHttpTestBase with BeforeAndAfterEac
     }
   }
 
-  "Palauttaa kunnat" taggedAs(ValpasBackendTag) in {
-    authGet(s"/valpas/api/organisaatiot/kunnat", ValpasMockUsers.valpasJklNormaalikoulu) {
-      verifyResponseStatusOk()
-      val actualKunnat = JsonSerializer.parse[List[OidOrganisaatio]](response.body)
-        .map(vk => (vk.nimi.get.get("fi"), vk.kotipaikka.get.koodiarvo, vk.kotipaikka.get.getNimi.get.get("fi")))
-        .sortBy(_._1)
-
-      val expectedKunnat: List[Tuple3[String, String, String]] = List(
-        ("Helsingin kaupunki", "091", "Helsinki"),
-        ("Pyhtään kunta", "624", "Pyhtää")
-      )
-
-      actualKunnat should equal (expectedKunnat)
-    }
-  }
-
   def getOppijaUrl(oppijaOid: String) = s"/valpas/api/oppija/$oppijaOid"
 
   def getOppijaListUrl(organisaatioOid: String) = s"/valpas/api/oppijat/$organisaatioOid"

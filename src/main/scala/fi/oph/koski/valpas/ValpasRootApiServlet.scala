@@ -48,12 +48,6 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
     )
   }
 
-  get("/organisaatiot/kunnat") {
-    organisaatioService.kunnat.map(oh =>
-      OidOrganisaatio(oh.oid, Some(oh.nimi), oh.kotipaikka)
-    )
-  }
-
   private def withAuditLogOppijaKatsominen
     (result: OppijaHakutilanteillaLaajatTiedot)
     (implicit session: ValpasSession)
