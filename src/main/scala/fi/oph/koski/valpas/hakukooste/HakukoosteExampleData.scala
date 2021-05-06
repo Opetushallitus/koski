@@ -59,8 +59,9 @@ object HakukoosteExampleData {
         ),
       ))),
     haku(
-      ValpasMockOppijat.turvakieltoOppija,
-      Vector(Vector(
+      henkilö = ValpasMockOppijat.turvakieltoOppija,
+      postitoimipaikka = Some("Jossain Helsingissä"),
+      hakukoosteidenToiveet = Vector(Vector(
         hakutoive(
           hakukohdeOid = generateOid(),
           hakukohdeOrganisaatio = MockOrganisaatiot.ressunLukio,
@@ -83,7 +84,13 @@ object HakukoosteExampleData {
             hakukohdeNimi = "Lukio",
             koulutusNimi = "Lukiokoulutus"
           ),
-        ),
+        )
+      )),
+    haku(
+      henkilö = ValpasMockOppijat.luokalleJäänytYsiluokkalainen,
+      muokkausaika = Some(LocalDateTime.of(2020, 4, 10, 11, 0, 0)),
+      lahiosoite = "Vanhempi esimerkkikatu 123",
+      hakukoosteidenToiveet = Vector(
         Vector(
           hakutoive(
             hakukohdeOid = generateOid(),
@@ -156,11 +163,12 @@ object HakukoosteExampleData {
   def haku(
     henkilö: OppijaHenkilö,
     hakukoosteidenToiveet: Seq[Seq[Hakutoive]],
-    hakuNimi: BlankableLocalizedString = Finnish("Yhteishaku 2021"),
+    hakuNimi: BlankableLocalizedString = yhteishaku2021HakuNimi,
     aktiivinenHaku: Some[Boolean] = Some(true),
     alkamisaika: LocalDateTime = LocalDateTime.of(2020, 3, 9, 12, 0, 0),
     muokkausaika: Option[LocalDateTime] = Some(LocalDateTime.of(2020, 4, 9, 12, 0, 0)),
-    lahiosoite: String = "Esimerkkikatu 123"
+    lahiosoite: String = "Esimerkkikatu 123",
+    postitoimipaikka: Option[String] = Some("Helsinki")
   ): Seq[Hakukooste] = hakukoosteidenToiveet.map(hakutoiveet =>
     Hakukooste(
       oppijaOid = henkilö.oid,
@@ -176,7 +184,7 @@ object HakukoosteExampleData {
       email = generateEmail(henkilö),
       lahiosoite = lahiosoite,
       postinumero = "00000",
-      postitoimipaikka = Some("Helsinki"),
+      postitoimipaikka = postitoimipaikka,
       matkapuhelin = "0401234567",
       huoltajanNimi = Some("Huoltaja Sukunimi"),
       huoltajanPuhelinnumero = Some("0407654321"),
@@ -225,6 +233,8 @@ object HakukoosteExampleData {
       hakukohdeKoulutuskoodi = Koodistokoodiviite("321152", "koulutus"),
       varasijanumero = if (valintatila == Some("VARALLA")) Some(3) else None,
     )
+
+  def yhteishaku2021HakuNimi = Finnish("Yhteishaku 2021")
 
   def yhteishakukoodi = Koodistokoodiviite("01", "hakutapa")
   def varsinaisenHaunKoodi = Koodistokoodiviite("01", "hakutyyppi")
