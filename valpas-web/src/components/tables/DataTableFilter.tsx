@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { t } from "../../i18n/i18n"
 import { Dropdown, listToOptions } from "../forms/Dropdown"
 import { TextField } from "../forms/TextField"
@@ -55,11 +55,6 @@ const FreeTextFilter = (props: FilterProps) => {
     setNeedle(value)
     props.onChange(value !== "" ? createFreeTextFilter(value) : null, value)
   }
-  useEffect(() => {
-    if (props.initialValue) {
-      emit(props.initialValue)
-    }
-  })
   return <TextField value={needle} onChange={emit} icon={<SearchIcon />} />
 }
 
@@ -76,11 +71,6 @@ const SelectFilter = (props: FilterProps) => {
     setValue(value)
     props.onChange(value ? createDropdownFilter(value) : null, value || null)
   }
-  useEffect(() => {
-    if (props.initialValue) {
-      emit(props.initialValue)
-    }
-  })
 
   return (
     <Dropdown
