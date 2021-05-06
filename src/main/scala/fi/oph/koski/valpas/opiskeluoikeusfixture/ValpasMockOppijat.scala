@@ -1,6 +1,7 @@
 package fi.oph.koski.valpas.opiskeluoikeusfixture
 
 import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 
 object ValpasMockOppijat {
   private val valpasOppijat = new MockOppijat
@@ -18,8 +19,8 @@ object ValpasMockOppijat {
   val valmistunutYsiluokkalainen = valpasOppijat.oppija("Ysiluokka-valmis-keväällä-2021", "Valpas", "190605A006K")
   val luokalleJäänytYsiluokkalainenVaihtanutKoulua = valpasOppijat.oppija("LuokallejäänytYsiluokkalainenKouluvaihto", "Valpas", "050605A7684")
   val luokalleJäänytYsiluokkalainenVaihtanutKouluaMuualta = valpasOppijat.oppija("LuokallejäänytYsiluokkalainenKouluvaihtoMuualta", "Valpas", "021105A624K")
-  val kasiinAstiToisessaKoulussaOllut = valpasOppijat.oppija("KasiinAstiToisessaKoulussaOllut", "Valpas", "170805A613F")
-  val lukionAloittanut = valpasOppijat.oppija("LukionAloittanut", "Valpas", "290405A871A")
+  val kasiinAstiToisessaKoulussaOllut = valpasOppijat.oppija("KasiinAstiToisessaKoulussaOllut", "Valpas", "170805A613F", äidinkieli = Some("sv"))
+  val lukionAloittanut = valpasOppijat.oppija("LukionAloittanut", "Valpas", "290405A871A", äidinkieli = Some("en"))
   val lukionLokakuussaAloittanut = valpasOppijat.oppija("LukionLokakuussaAloittanut", "Valpas", "180405A819J")
   val oppivelvollinenMonellaOppijaOidillaMaster = valpasOppijat.oppija("Kahdella-oppija-oidilla", "Valpas", "150205A490C")
   val oppivelvollinenMonellaOppijaOidillaToinen = valpasOppijat.duplicate(oppivelvollinenMonellaOppijaOidillaMaster)
@@ -37,6 +38,15 @@ object ValpasMockOppijat {
   val kulosaarenYsiluokkalainenJaJyväskylänLukiolainen = valpasOppijat.oppija("Jkl-Lukio-Kulosaarelainen", "Valpas", "010104A187H")
   val kulosaarenYsiluokkalainenJaJyväskylänNivelvaiheinen = valpasOppijat.oppija("Jkl-Nivel-Kulosaarelainen", "Valpas", "010104A787V")
   val kulosaarenYsiluokkalainenJaJyväskylänEsikoululainen = valpasOppijat.oppija("Jkl-Esikoulu-Kulosaarelainen", "Valpas", "220304A4173")
+
+  // Kutsumanimi ja yhteystiedot haetaan oppijanumerorekisteristä Valpas-käyttäjälle, tallennetaan siksi käyttäjä myös "oppijana" mockeihin
+  val käyttäjäValpasJklNormaalikoulu = valpasOppijat.oppija(
+    hetu = "300850-4762",
+    oid = ValpasMockUsers.valpasJklNormaalikoulu.oid,
+    suku = ValpasMockUsers.valpasJklNormaalikoulu.lastname,
+    etu = ValpasMockUsers.valpasJklNormaalikoulu.firstname,
+    kutsumanimi = Some("Kutsu")
+  )
 
   def defaultOppijat = valpasOppijat.getOppijat
 }
