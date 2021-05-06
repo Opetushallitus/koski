@@ -49,7 +49,6 @@ jobs:
 
       - name: Run perftest randomget-light
         run: |
-          export PERFTEST_NAME="randomget-light"
           export PERFTEST_THREADS=2
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.RandomOpiskeluoikeusGetter"
 
@@ -92,7 +91,6 @@ jobs:
 
       - name: Run perftest insert-light
         run: |
-          export PERFTEST_NAME="insert-light"
           export PERFTEST_THREADS=4
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.MixedOpiskeluoikeusInserterUpdater"
 
@@ -135,7 +133,6 @@ jobs:
 
       - name: Run perftest mixed-overload
         run: |
-          export PERFTEST_NAME="mixed-overload"
           export PERFTEST_THREADS=100
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.MixedPerfTester"
 
