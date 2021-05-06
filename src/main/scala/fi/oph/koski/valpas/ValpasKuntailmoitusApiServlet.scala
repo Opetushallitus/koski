@@ -20,11 +20,7 @@ class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication)
     application.valpasRajapäivätService,
     application.directoryClient
   )
-  private lazy val kuntailmoitusService = new ValpasKuntailmoitusService(
-    application.valpasKuntailmoitusQueryService,
-    application.valpasOppijaService,
-    new ValpasAccessResolver(application.organisaatioRepository)
-  )
+  private lazy val kuntailmoitusService = application.valpasKuntailmoitusService
 
   post("/") {
     withJsonBody { (kuntailmoitusInputJson: JValue) =>

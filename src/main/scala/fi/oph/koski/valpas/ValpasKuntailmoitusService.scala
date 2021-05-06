@@ -1,5 +1,6 @@
 package fi.oph.koski.valpas
 
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Timing
@@ -7,10 +8,11 @@ import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedotJaOp
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
 class ValpasKuntailmoitusService(
-  queryService: ValpasKuntailmoitusQueryService,
-  oppijaService: ValpasOppijaService,
-  accessResolver: ValpasAccessResolver
+  application: KoskiApplication
 ) extends Logging with Timing {
+  private val accessResolver = new ValpasAccessResolver(application.organisaatioRepository)
+  private val queryService = application.valpasKuntailmoitusQueryService
+  private val oppijaService = application.valpasOppijaService
 
   def createKuntailmoitus
     (kuntailmoitusInput: ValpasKuntailmoitusLaajatTiedotJaOppijaOid)
