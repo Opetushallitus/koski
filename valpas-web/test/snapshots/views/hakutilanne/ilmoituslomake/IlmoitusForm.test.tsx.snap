@@ -11,13 +11,28 @@ exports[`IlmoitusForm Renderöityy virheittä 1`] = `
       class="ilmoitusform__title"
     >
       <div
-        class="ilmoitusform__titletext"
+        class="ilmoitusform__titleindex"
       >
-        1/2 
-        Testi-Ukkeli
-         
-        Valpas
-         (TODO: hetu)
+        1
+        /
+        2
+      </div>
+      <div
+        class="ilmoitusform__titletexts"
+      >
+        <div
+          class="ilmoitusform__titletext"
+        >
+          Testi-Ukkeli
+           
+          Valpas
+        </div>
+        <h4
+          class="ilmoitusform__subtitle"
+        >
+          Oppija 
+          1.2.246.562.24.00000000001
+        </h4>
       </div>
       <div
         class="ilmoitusform__titlecaret"
@@ -30,12 +45,6 @@ exports[`IlmoitusForm Renderöityy virheittä 1`] = `
         </span>
       </div>
     </h3>
-    <h4
-      class="ilmoitusform__subtitle"
-    >
-      Oppija 
-      1.2.246.562.24.00000000001
-    </h4>
   </header>
   <div
     class="ilmoitusform__body"
@@ -70,6 +79,7 @@ exports[`IlmoitusForm Renderöityy virheittä 1`] = `
         class="dropdown__label"
       >
         ilmoituslomake__asuinkunta
+         *
       </div>
       <div
         class="dropdown__inputcontainer"
@@ -317,7 +327,6 @@ exports[`IlmoitusForm Renderöityy virheittä 1`] = `
     </label>
     <button
       class="button button--raised button--primary button--disabled"
-      disabled=""
     >
       <span
         class="button__content"

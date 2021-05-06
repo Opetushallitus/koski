@@ -20,21 +20,21 @@ describe("IlmoitusForm", () => {
   test("Pakollisten kenttien täyttäminen enabloi submit-nappulan", () => {
     const form = createForm()
     expectSubmitButtonIsEnabled(form, false)
-    selectOption(form, "ilmoituslomake__asuinkunta", 1)
+    selectOption(form, "ilmoituslomake__asuinkunta *", 1)
     expectSubmitButtonIsEnabled(form, true)
   })
 
   test("Fokuksen siirtyminen pois pakollisesta täyttämättömästä kentästä tuo esille virheilmoituksen", () => {
     const form = createForm()
 
-    expectFieldError(form, "ilmoituslomake__asuinkunta", null)
+    expectFieldError(form, "ilmoituslomake__asuinkunta *", null)
 
-    userEvent.click(form.getByText("ilmoituslomake__asuinkunta"))
+    userEvent.click(form.getByText("ilmoituslomake__asuinkunta *"))
     userEvent.click(form.getByText("ilmoituslomake__maa"))
 
     expectFieldError(
       form,
-      "ilmoituslomake__asuinkunta",
+      "ilmoituslomake__asuinkunta *",
       "ilmoituslomake__pakollinen_tieto"
     )
   })
@@ -45,7 +45,7 @@ describe("IlmoitusForm", () => {
 
     userEvent.click(getSubmitButton(form))
 
-    selectOption(form, "ilmoituslomake__asuinkunta", 1)
+    selectOption(form, "ilmoituslomake__asuinkunta *", 1)
     selectOption(form, "ilmoituslomake__yhteydenottokieli", 1)
     selectOption(form, "ilmoituslomake__maa", 1)
     fillTextField(form, "ilmoituslomake__postinumero", "00010")
@@ -126,7 +126,9 @@ const toggleCheckbox = (form: RenderResult, labelText: string) => {
 }
 
 const expectSubmitButtonIsEnabled = (form: RenderResult, enabled: boolean) => {
-  const disabled = getSubmitButton(form)?.disabled
+  const button = getSubmitButton(form)
+  const disabled =
+    button?.disabled || button?.classList.contains("button--disabled")
   expect(disabled).not.toBe(enabled)
 }
 

@@ -10,10 +10,13 @@ export type ModalProps = {
   children: React.ReactNode
   title: React.ReactNode
   onClose?: () => void
+  closeOnBackgroundClick?: boolean
 }
 
 export const Modal = (props: ModalProps) => (
-  <Background onClose={props.onClose}>
+  <Background
+    onClose={props.closeOnBackgroundClick ? props.onClose : undefined}
+  >
     <Container onClose={props.onClose} title={props.title}>
       {props.children}
     </Container>

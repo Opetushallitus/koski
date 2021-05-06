@@ -1,8 +1,9 @@
 @import "../../../style/colors.less";
-@import "../../../style/spacing.less";
 @import "../../../style/typography.less";
 
 @ilmoitusform-frame-color: @color-blue;
+@ilmoitusform-padding: 1.5rem;
+@ilmoitusform-header-indent: 2.5rem;
 
 .ilmoitusform__frame {
   border: 2px solid @ilmoitusform-frame-color;
@@ -12,25 +13,48 @@
     background: @ilmoitusform-frame-color;
     color: @color-white;
 
-    padding: @padding;
+    padding: 1rem @ilmoitusform-padding 0.8rem;
 
     .ilmoitusform__title {
       display: flex;
-      justify-content: space-between;
+      // justify-content: space-between;
+      align-items: flex-start;
 
       font-size: @font-size-large;
       font-weight: @font-weight-regular;
       margin-bottom: 0.5rem;
     }
 
+    .ilmoitusform__titleindex {
+      width: @ilmoitusform-header-indent;
+    }
+
+    .ilmoitusform__titletexts {
+      flex-grow: 1;
+    }
+
     .ilmoitusform__subtitle {
       font-size: @font-size-medium;
       font-weight: @font-weight-regular;
+      margin-top: 0.2rem;
+    }
+
+    .ilmoitusform__submitted {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.2rem;
+
+      .icon {
+        padding-left: 0.4rem;
+        width: @ilmoitusform-header-indent;
+        font-size: 130%;
+      }
     }
   }
 
   .ilmoitusform__body {
-    padding: @padding;
+    padding: @ilmoitusform-padding;
+    padding-bottom: 2rem;
 
     .ilmoitusform__prefill {
       display: flex;
@@ -53,6 +77,11 @@
 
     .ilmoitusform__muutyhteystiedototsikko {
       margin-top: 2rem;
+    }
+
+    .dropdown,
+    .textfield {
+      max-width: 75%;
     }
   }
 }

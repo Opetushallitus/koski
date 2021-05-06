@@ -1,6 +1,6 @@
 import * as A from "fp-ts/lib/Array"
 import { flow, pipe } from "fp-ts/lib/function"
-import { isNonEmpty, NonEmptyArray } from "fp-ts/lib/NonEmptyArray"
+import { NonEmptyArray } from "fp-ts/lib/NonEmptyArray"
 import * as O from "fp-ts/lib/Option"
 import * as string from "fp-ts/string"
 import React, { useMemo } from "react"
@@ -303,7 +303,7 @@ const fromNullableValue = (
 
 const valintatila = (haut: HakuSuppeatTiedot[]): Value | null => {
   const hyväksytytHakutoiveet = selectByHakutoive(haut, isHyväksytty)
-  if (isNonEmpty(hyväksytytHakutoiveet)) {
+  if (A.isNonEmpty(hyväksytytHakutoiveet)) {
     return hyväksyttyValintatila(hyväksytytHakutoiveet)
   }
 

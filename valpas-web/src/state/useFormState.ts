@@ -20,8 +20,10 @@ export type UseFormStateHook<T extends object> = {
   set: FormSetFunction<T>
   patch: FormPatchFunction<T>
   fieldProps: FormFieldPropsFunction<T>
-  isValid: boolean
   submitCallback: FormSubmitCallback<T>
+  validateAll: FormValidateFunction
+  isValid: boolean
+  allFieldsValidated: boolean
 }
 
 export type FormTouchFunction<T extends object> = (key: keyof T) => void
@@ -36,6 +38,7 @@ export type FormFieldPropsFunction<T extends object> = <K extends keyof T>(
 export type FormSubmitCallback<T extends object> = (
   callback: (t: T) => void
 ) => () => void
+export type FormValidateFunction = () => void
 
 export type FormFieldProps<T> = {
   value: T
@@ -56,6 +59,7 @@ export type FieldState<T> = {
   initialValue: T
   currentValue: T
   touched: boolean
+  validated: boolean
   errors: string[]
 }
 
@@ -77,7 +81,7 @@ export const useFormState = <T extends object>({
 
   const set: FormSetFunction<T> = (key, value) => {
     const newState = updatedField(key, value, validators, currentState)
-    return setState(softValidation(validators, newState))
+    return setState(validateTouchedFields(validators, newState))
   }
 
   const patch: FormPatchFunction<T> = (values) => {
@@ -86,7 +90,7 @@ export const useFormState = <T extends object>({
       const value = values[key] as T[typeof key]
       newState = updatedField(key, value, validators, newState)
     }
-    setState(softValidation(validators, newState))
+    setState(validateAllFields(validators, newState))
   }
 
   const touch: FormTouchFunction<T> = (key) =>
@@ -99,13 +103,6 @@ export const useFormState = <T extends object>({
     error: currentState[key].errors.join(", "),
   })
 
-  const isValid = foldFields(
-    (valid, key) =>
-      valid && A.isEmpty(getErrors(key, validators, currentState)),
-    true,
-    currentState
-  )
-
   const submitCallback: FormSubmitCallback<T> = (callback) => () => {
     if (isValid) {
       const values = foldFields(
@@ -117,14 +114,28 @@ export const useFormState = <T extends object>({
     }
   }
 
+  const validateAll: FormValidateFunction = () =>
+    setState(validateAllFields(validators, currentState))
+
+  const [isValid, allFieldsValidated] = foldFields(
+    ([accIsValid, accAllFieldsValidated], key) => [
+      accIsValid && A.isEmpty(getErrors(key, validators, currentState)),
+      accAllFieldsValidated && currentState[key].validated,
+    ],
+    [true, true],
+    currentState
+  )
+
   return {
     state: currentState,
     touch,
     set,
     patch,
     fieldProps,
-    isValid,
     submitCallback,
+    validateAll,
+    isValid,
+    allFieldsValidated,
   }
 }
 
@@ -137,6 +148,7 @@ const createInitialState = <T extends object>(values: T): FormState<T> =>
         initialValue: value,
         currentValue: value,
         touched: false,
+        validated: false,
         errors: [],
       },
     ]),
@@ -195,16 +207,27 @@ const validateField = <K extends keyof T, T extends object>(
   [key]: {
     ...state[key],
     errors: getErrors(key, validators, state),
+    validated: true,
   },
 })
 
-const softValidation = <T extends object>(
+const validateTouchedFields = <T extends object>(
   validators: FormValidators<T>,
   state: FormState<T>
 ): FormState<T> =>
   foldFields(
     (accState, key, field) =>
       field.touched ? validateField(key, validators, accState) : accState,
+    state,
+    state
+  )
+
+const validateAllFields = <T extends object>(
+  validators: FormValidators<T>,
+  state: FormState<T>
+): FormState<T> =>
+  foldFields(
+    (accState, key) => validateField(key, validators, accState),
     state,
     state
   )

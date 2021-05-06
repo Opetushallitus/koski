@@ -1,17 +1,23 @@
 import React from "react"
+import { ModalButtonGroup } from "../../../components/buttons/ModalButtonGroup"
+import { RaisedButton } from "../../../components/buttons/RaisedButton"
 import { Modal } from "../../../components/containers/Modal"
+import { t, T } from "../../../i18n/i18n"
 import { KoodistoKoodiviite } from "../../../state/apitypes/koodistot"
 import { OppijaHakutilanteillaSuppeatTiedot } from "../../../state/apitypes/oppija"
 import { IlmoitusForm, PrefilledIlmoitusFormValues } from "./IlmoitusForm"
 
 export type IlmoituslomakeProps = {
   oppijat: OppijaHakutilanteillaSuppeatTiedot[]
+  onClose: () => void
 }
 
 export const Ilmoituslomake = (props: IlmoituslomakeProps) => {
   return (
-    <Modal title="Ilman opiskelupaikkaa jäävien ilmoittaminen">
-      <p>Tarkista ilmoitettavien oppijoiden yhteystiedot.</p>
+    <Modal title={t("ilmoituslomake__otsikko")} onClose={props.onClose}>
+      <p>
+        <T id="ilmoituslomake__ohje" />
+      </p>
       {props.oppijat.map((oppija, index) => (
         <IlmoitusForm
           key={oppija.oppija.henkilö.oid}
@@ -25,9 +31,13 @@ export const Ilmoituslomake = (props: IlmoituslomakeProps) => {
             mockPrefilledYhteishakuValues,
             mockPrefilledDvvValues,
           ]}
-          onSubmit={() => {}}
         />
       ))}
+      <ModalButtonGroup>
+        <RaisedButton hierarchy="secondary" onClick={props.onClose}>
+          <T id="ilmoituslomake__sulje" />
+        </RaisedButton>
+      </ModalButtonGroup>
     </Modal>
   )
 }

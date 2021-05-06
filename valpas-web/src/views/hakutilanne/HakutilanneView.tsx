@@ -149,7 +149,10 @@ export const HakutilanneView = (props: HakutilanneViewProps) => {
             </div>
           </BottomDrawer>
           {ilmoituslomakeVisible && isSuccess(oppijatFetch) ? (
-            <Ilmoituslomake oppijat={selectedOppijat} />
+            <Ilmoituslomake
+              oppijat={selectedOppijat}
+              onClose={() => showIlmoituslomake(false)}
+            />
           ) : null}
         </>
       ) : null}

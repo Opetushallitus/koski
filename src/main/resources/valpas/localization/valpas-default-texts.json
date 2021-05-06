@@ -35,7 +35,7 @@
   "perusopetus_suoritettu__valmistuu_tulevaisuudessa_pvm": "Valmistuu {{päivämäärä}}",
   "ilmoittaminen_drawer__title": "Oppilaiden ilmoittaminen asuinkunnalle",
   "ilmoittaminen_drawer__valittuja_oppilaita": "Valittuja oppilaita: {{määrä}}",
-  "ilmoittaminen_drawer__siirry_ilmoittamiseen": "Siirry ilmoittamisen",
+  "ilmoittaminen_drawer__siirry_ilmoittamiseen": "Siirry ilmoittamiseen",
   "hakemuksentila__hakenut": "Hakenut",
   "hakemuksentila__n_hakua": "{{lukumäärä}} hakua",
   "hakemuksentila__ei_hakemusta": "Ei hakemusta",
@@ -104,6 +104,9 @@
   "kayttooikeusrooli_OPPILAITOS_MAKSUTTOMUUS": "Oppilaitoksen opiskelun maksuttomuustietojen määrittely",
   "kayttooikeusrooli_KUNTA": "Kunnan oppivelvollisuuden suorittamisen valvonta",
   "homeview_olet_onnistuneesti_kirjautunut": "Olet onnistuneesti kirjautunut Valpas-järjestelmään seuraavilla käyttöoikeuksilla",
+  "ilmoituslomake__otsikko": "Ilman opiskelupaikkaa jäävien ilmoittaminen",
+  "ilmoituslomake__ohje": "Tarkista ilmoitettavien oppijoiden yhteystiedot.",
+  "ilmoituslomake__sulje": "Sulje",
   "ilmoituslomake__esitäytä_yhteystiedoilla": "Esitäytä yhteystiedoilla:",
   "ilmoituslomake__asuinkunta": "Asuinkunta",
   "ilmoituslomake__yhteydenottokieli": "Yhteydenottokieli",
@@ -116,5 +119,7 @@
   "ilmoituslomake__sähköposti": "Sähköposti",
   "ilmoituslomake__hakenut_opiskelemaan_yhteishakujen_ulkopuolella": "Hakenut opiskelemaan yhteyshakujen ulkopuolella (esim. ulkomaille tai Ahvenanmaalle)",
   "ilmoituslomake__pakollinen_tieto": "Pakollinen tieto",
-  "ilmoituslomake__ilmoita_asuinkunnalle": "Ilmoita asuinkunnalle"
+  "ilmoituslomake__täytä_pakolliset_tiedot": "Täytä pakolliset tiedot",
+  "ilmoituslomake__ilmoita_asuinkunnalle": "Ilmoita asuinkunnalle",
+  "ilmoituslomake__ilmoitus_lähetetty": "Ilmoitus lähetetty"
 }

@@ -19,6 +19,7 @@ export type DropdownProps<T> = {
   error?: React.ReactNode
   selectorId?: string
   containerClassName?: string
+  required?: boolean
 }
 
 export type DropdownOption<T> = {
@@ -37,6 +38,7 @@ export const Dropdown = <T,>(props: DropdownProps<T>) => {
       label={props.label}
       icon={props.icon || <ArrowDropDownIcon />}
       error={props.error}
+      required={props.required}
     >
       <select
         id={props.selectorId}

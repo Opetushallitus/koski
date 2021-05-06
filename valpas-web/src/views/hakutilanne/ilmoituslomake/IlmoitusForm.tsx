@@ -4,7 +4,12 @@ import { RaisedButton } from "../../../components/buttons/RaisedButton"
 import { LabeledCheckbox } from "../../../components/forms/Checkbox"
 import { Dropdown, koodistoToOptions } from "../../../components/forms/Dropdown"
 import { TextField } from "../../../components/forms/TextField"
-import { CaretDownIcon, CaretUpIcon } from "../../../components/icons/Icon"
+import {
+  CaretDownIcon,
+  CaretUpIcon,
+  SuccessCircleIcon,
+} from "../../../components/icons/Icon"
+import { Error } from "../../../components/typography/error"
 import { SecondaryHeading } from "../../../components/typography/headings"
 import { T, t } from "../../../i18n/i18n"
 import { HenkilöSuppeatTiedot } from "../../../state/apitypes/henkilo"
@@ -63,7 +68,7 @@ export type IlmoitusFormProps = {
   formIndex: number
   numberOfForms: number
   prefilledValues: PrefilledIlmoitusFormValues[]
-  onSubmit: (values: IlmoitusFormValues) => void
+  onSubmit?: (values: IlmoitusFormValues) => void
 }
 
 export type PrefilledIlmoitusFormValues = {
@@ -74,6 +79,14 @@ export type PrefilledIlmoitusFormValues = {
 export const IlmoitusForm = (props: IlmoitusFormProps) => {
   const form = useFormState({ initialValues, validators })
   const [isOpen, setOpen] = useState(true)
+  const [isSubmitted, setSubmitted] = useState(false)
+
+  const submit = form.submitCallback((formData) => {
+    setSubmitted(true)
+    if (props.onSubmit) {
+      props.onSubmit(formData)
+    }
+  })
 
   return (
     <IlmoitusFormFrame>
@@ -82,9 +95,10 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
         formIndex={props.formIndex}
         numberOfForms={props.numberOfForms}
         isOpen={isOpen}
+        isSubmitted={isSubmitted}
         onClick={() => setOpen(!isOpen)}
       />
-      {isOpen ? (
+      {isOpen && !isSubmitted ? (
         <IlmoitusBody>
           <IlmoitusPrefillSelector
             prefilledValues={props.prefilledValues}
@@ -92,6 +106,7 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
           />
           <Dropdown
             label={t("ilmoituslomake__asuinkunta")}
+            required
             options={koodistoToOptions(props.kunnat)}
             {...form.fieldProps("asuinkunta")}
           />
@@ -134,9 +149,14 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
             )}
             {...form.fieldProps("hakenutOpiskelemaanYhteyshakujenUlkopuolella")}
           />
+          {form.allFieldsValidated && !form.isValid ? (
+            <Error>
+              <T id="ilmoituslomake__täytä_pakolliset_tiedot" />
+            </Error>
+          ) : null}
           <RaisedButton
-            disabled={!form.isValid}
-            onClick={form.submitCallback(props.onSubmit)}
+            disabled={form.isValid ? false : "byLook"}
+            onClick={form.isValid ? submit : form.validateAll}
           >
             <T id="ilmoituslomake__ilmoita_asuinkunnalle" />
           </RaisedButton>
@@ -151,32 +171,46 @@ export type IlmoitusHeaderProps = {
   formIndex: number
   numberOfForms: number
   isOpen: boolean
+  isSubmitted: boolean
   onClick: () => void
 }
 
 const IlmoitusHeader = (props: IlmoitusHeaderProps) => (
   <IlmoitusHeaderFrame onClick={props.onClick}>
     <IlmoitusTitle>
-      <IlmoitusTitleText>
-        {props.numberOfForms > 1
-          ? `${props.formIndex + 1}/${props.numberOfForms} `
-          : ""}
-        {props.henkilö.sukunimi} {props.henkilö.etunimet} (TODO: hetu)
-      </IlmoitusTitleText>
-      <IlmoitusTitleCaret>
-        {props.isOpen ? <CaretDownIcon /> : <CaretUpIcon />}
-      </IlmoitusTitleCaret>
+      <IlmoitusTitleIndex>
+        {props.formIndex + 1}/{props.numberOfForms}
+      </IlmoitusTitleIndex>
+      <IlmoitusTitleTexts>
+        <IlmoitusTitleText>
+          {props.henkilö.sukunimi} {props.henkilö.etunimet}
+        </IlmoitusTitleText>
+        <IlmoitusSubtitle>Oppija {props.henkilö.oid}</IlmoitusSubtitle>
+      </IlmoitusTitleTexts>
+      {!props.isSubmitted ? (
+        <IlmoitusTitleCaret>
+          {props.isOpen ? <CaretDownIcon /> : <CaretUpIcon />}
+        </IlmoitusTitleCaret>
+      ) : null}
     </IlmoitusTitle>
-    <IlmoitusSubtitle>Oppija {props.henkilö.oid}</IlmoitusSubtitle>
+    {props.isSubmitted ? (
+      <IlmoitusSubmitted>
+        <SuccessCircleIcon inline color="white" />
+        <T id="ilmoituslomake__ilmoitus_lähetetty" />
+      </IlmoitusSubmitted>
+    ) : null}
   </IlmoitusHeaderFrame>
 )
 
 const IlmoitusFormFrame = plainComponent("div", b("frame"))
 const IlmoitusHeaderFrame = plainComponent("header", b("header"))
 const IlmoitusTitle = plainComponent("h3", b("title"))
+const IlmoitusTitleIndex = plainComponent("div", b("titleindex"))
+const IlmoitusTitleTexts = plainComponent("div", b("titletexts"))
 const IlmoitusTitleText = plainComponent("div", b("titletext"))
 const IlmoitusTitleCaret = plainComponent("div", b("titlecaret"))
 const IlmoitusSubtitle = plainComponent("h4", b("subtitle"))
+const IlmoitusSubmitted = plainComponent("div", b("submitted"))
 const IlmoitusBody = plainComponent("div", b("body"))
 
 type IlmoitusPrefillSelectorProps = {
