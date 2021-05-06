@@ -1,5 +1,6 @@
 import bem from "bem-ts"
 import React from "react"
+import { Redirect } from "react-router"
 import { fetchOppija, fetchOppijaCache } from "../../api/api"
 import { ApiMethodState, useApiWithParams } from "../../api/apiHooks"
 import { isSuccess, mapError, mapLoading, mapSuccess } from "../../api/apiUtils"
@@ -19,6 +20,10 @@ import { Heading } from "../../components/typography/headings"
 import { T, t } from "../../i18n/i18n"
 import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import {
+  onHakeutumisVelvollisuudenValvonnanOikeuksia,
+  OrganisaatioJaKayttooikeusrooli,
+} from "../../state/common"
+import {
   createHakutilannePathWithOrg as createHakutilannePathWithOrg,
   createHakutilannePathWithoutOrg as createHakutilannePathWithoutOrg,
   OppijaViewRouteProps,
@@ -33,11 +38,24 @@ import "./OppijaView.less"
 
 const b = bem("oppijaview")
 
-export type OppijaViewProps = OppijaViewRouteProps
+export type OppijaViewProps = OppijaViewRouteProps & {
+  kayttooikeusroolit: OrganisaatioJaKayttooikeusrooli[]
+  redirectJosKäyttäjälläEiOleOikeuksiaTo: string
+}
 
 export const OppijaView = (props: OppijaViewProps) => {
+  return onHakeutumisVelvollisuudenValvonnanOikeuksia(
+    props.kayttooikeusroolit
+  ) ? (
+    <OppijaViewContent {...props} />
+  ) : (
+    <Redirect to={props.redirectJosKäyttäjälläEiOleOikeuksiaTo} />
+  )
+}
+
+const OppijaViewContent = (props: OppijaViewProps) => {
   const searchQuery = parseSearchQueryFromProps(props)
-  const queryOid = props.match.params.oppijaOid
+  const queryOid = props.match.params.oppijaOid!!
   const oppija = useApiWithParams(fetchOppija, [queryOid], fetchOppijaCache)
 
   return (

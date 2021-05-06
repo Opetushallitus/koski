@@ -18,6 +18,7 @@ import { getLocalized, t, T } from "../../i18n/i18n"
 import { useBasePath } from "../../state/basePath"
 import {
   Oid,
+  onHakeutumisVelvollisuudenValvonnanOikeuksia,
   OrganisaatioHierarkia,
   OrganisaatioJaKayttooikeusrooli,
 } from "../../state/common"
@@ -37,9 +38,20 @@ const b = bem("hakutilanneview")
 
 export type HakutilanneViewProps = HakutilanneViewRouteProps & {
   kayttooikeusroolit: OrganisaatioJaKayttooikeusrooli[]
+  redirectJosKäyttäjälläEiOleOikeuksiaTo: string
 }
 
 export const HakutilanneViewWithoutOrgOid = (props: HakutilanneViewProps) => {
+  return onHakeutumisVelvollisuudenValvonnanOikeuksia(
+    props.kayttooikeusroolit
+  ) ? (
+    <HakutilanneViewWithoutOrgOidContent {...props} />
+  ) : (
+    <Redirect to={props.redirectJosKäyttäjälläEiOleOikeuksiaTo} />
+  )
+}
+
+const HakutilanneViewWithoutOrgOidContent = (props: HakutilanneViewProps) => {
   const basePath = useBasePath()
   const organisaatio = getOrganisaatiot(props.kayttooikeusroolit)[0]
 
@@ -55,6 +67,16 @@ export const HakutilanneViewWithoutOrgOid = (props: HakutilanneViewProps) => {
 }
 
 export const HakutilanneView = (props: HakutilanneViewProps) => {
+  return onHakeutumisVelvollisuudenValvonnanOikeuksia(
+    props.kayttooikeusroolit
+  ) ? (
+    <HakutilanneViewContent {...props} />
+  ) : (
+    <Redirect to={props.redirectJosKäyttäjälläEiOleOikeuksiaTo} />
+  )
+}
+
+const HakutilanneViewContent = (props: HakutilanneViewProps) => {
   const history = useHistory()
   const organisaatiot = getOrganisaatiot(props.kayttooikeusroolit)
   const organisaatioOid =

@@ -9,8 +9,8 @@ describe("Etusivun väliaikainen näkymä", () => {
   it("Näyttää ohjetekstin", async () => {
     await loginAs(
       "/virkailija",
-      "valpas-jkl-normaali-hki",
-      "valpas-jkl-normaali-hki"
+      "valpas-maksuttomuus-hki",
+      "valpas-maksuttomuus-hki"
     )
 
     await textEventuallyEquals(
@@ -22,8 +22,8 @@ describe("Etusivun väliaikainen näkymä", () => {
   it("Näyttää käyttäjän käyttöoikeudet", async () => {
     await loginAs(
       "/virkailija",
-      "valpas-jkl-normaali-hki",
-      "valpas-jkl-normaali-hki"
+      "valpas-maksuttomuus-hki",
+      "valpas-maksuttomuus-hki"
     )
 
     await dataTableHeadersEventuallyEquals(
@@ -31,65 +31,54 @@ describe("Etusivun väliaikainen näkymä", () => {
       `
       Helsingin kaupunki
       Jyväskylän normaalikoulu
-      Jyväskylän normaalikoulu
-      Jyväskylän normaalikoulu
       `
     )
     await dataTableEventuallyEquals(
       ".kayttooikeudet",
       `
       Kunnan oppivelvollisuuden suorittamisen valvonta
-      Oppilaitoksen hakeutumisen valvonta
       Oppilaitoksen opiskelun maksuttomuustietojen määrittely
-      Oppilaitoksen oppivelvollisuuden suorittamisen valvonta
       `
     )
   })
 
-  it("Näyttää pääkäyttäjän käyttöoikeudet", async () => {
+  it("Hakeutumisvelvollisuuden valvonnallinen käyttäjä ohjautuu hakeutumisvelvollisuusvalvonnan etusivulle", async () => {
+    await loginAs("/virkailija", "valpas-jkl-normaali", "valpas-jkl-normaali")
+
+    await textEventuallyEquals(
+      ".card__header",
+      "Hakeutumisvelvollisia oppijoita (16)",
+      5000
+    )
+  })
+
+  it("Pääkäyttäjä ohjautuu hakeutumisvelvollisuusvalvonnan etusivulle", async () => {
     await loginAs("/virkailija", "valpas-pää", "valpas-pää")
 
-    await dataTableHeadersEventuallyEquals(
-      ".kayttooikeudet",
-      `
-      Opetushallitus
-      Opetushallitus
-      Opetushallitus
-      Opetushallitus
-      `
-    )
-    await dataTableEventuallyEquals(
-      ".kayttooikeudet",
-      `
-      Kunnan oppivelvollisuuden suorittamisen valvonta
-      Oppilaitoksen hakeutumisen valvonta
-      Oppilaitoksen opiskelun maksuttomuustietojen määrittely
-      Oppilaitoksen oppivelvollisuuden suorittamisen valvonta
-      `
+    await textEventuallyEquals(
+      ".card__header",
+      "Hakeutumisvelvollisia oppijoita (0)",
+      5000
     )
   })
 
   it("Ei näytä käyttäjän Koski-käyttöoikeuksia", async () => {
     await loginAs(
       "/virkailija",
-      "valpas-jkl-normaali-koski-hki",
-      "valpas-jkl-normaali-koski-hki"
+      "valpas-maksuttomuus-koski-hki",
+      "valpas-maksuttomuus-koski-hki"
     )
 
     await dataTableHeadersEventuallyEquals(
       ".kayttooikeudet",
       `
       Jyväskylän normaalikoulu
-      Jyväskylän normaalikoulu
-      Jyväskylän normaalikoulu
       `
     )
     await dataTableEventuallyEquals(
       ".kayttooikeudet",
       `
-      Oppilaitoksen hakeutumisen valvonta
       Oppilaitoksen opiskelun maksuttomuustietojen määrittely
-      Oppilaitoksen oppivelvollisuuden suorittamisen valvonta
       `
     )
   })

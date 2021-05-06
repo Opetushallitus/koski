@@ -68,5 +68,5 @@ export const createOppijaPath = (
   })
 
 export type OppijaViewRouteProps = RouteComponentProps<{
-  oppijaOid: string
+  oppijaOid?: string
 }>

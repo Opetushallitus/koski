@@ -1,5 +1,5 @@
 import React from "react"
-import { Route, Switch } from "react-router-dom"
+import { Redirect, Route, Switch } from "react-router-dom"
 import { fetchYlatasonOrganisaatiotJaKayttooikeusroolit } from "../api/api"
 import { useApiOnce } from "../api/apiHooks"
 import { isSuccess } from "../api/apiUtils"
@@ -17,7 +17,7 @@ import {
 } from "../state/auth"
 import { BasePathProvider, useBasePath } from "../state/basePath"
 import { User } from "../state/common"
-import { FeatureFlagEnabler, isFeatureFlagEnabled } from "../state/featureFlags"
+import { FeatureFlagEnabler } from "../state/featureFlags"
 import {
   createHakutilannePathWithoutOrg,
   hakutilannePathWithOrg,
@@ -52,50 +52,56 @@ const VirkailijaRoutes = ({ user }: VirkailijaRoutesProps) => {
   return (
     <Switch>
       <Route exact path={`${basePath}/pilotti2021`}>
-        <FeatureFlagEnabler
-          features={["valpas"]}
-          redirectTo={createHakutilannePathWithoutOrg(basePath)}
-        />
+        <Redirect to={createHakutilannePathWithoutOrg(basePath)} />
       </Route>
       <Route exact path={`${basePath}/koulutus2021`}>
         <FeatureFlagEnabler
-          features={["valpas", "ilmoittaminen"]}
+          features={["ilmoittaminen"]}
           redirectTo={createHakutilannePathWithoutOrg(basePath)}
         />
       </Route>
-      {isFeatureFlagEnabled("valpas") && (
-        <Route
-          exact
-          path={hakutilannePathWithoutOrg(basePath)}
-          render={(routeProps) => (
-            <HakutilanneViewWithoutOrgOid
-              kayttooikeusroolit={organisaatiotJaKayttooikeusroolit.data}
-              {...routeProps}
-            />
-          )}
-        />
-      )}
-      {isFeatureFlagEnabled("valpas") && (
-        <Route
-          exact
-          path={hakutilannePathWithOrg(basePath)}
-          render={(routeProps) => (
-            <HakutilanneView
-              kayttooikeusroolit={organisaatiotJaKayttooikeusroolit.data}
-              {...routeProps}
-            />
-          )}
-        />
-      )}
-      {isFeatureFlagEnabled("valpas") && (
-        <Route exact path={oppijaPath(basePath)} component={OppijaView} />
-      )}
+      <Route
+        exact
+        path={hakutilannePathWithoutOrg(basePath)}
+        render={(routeProps) => (
+          <HakutilanneViewWithoutOrgOid
+            kayttooikeusroolit={organisaatiotJaKayttooikeusroolit.data}
+            redirectJosKäyttäjälläEiOleOikeuksiaTo={rootPath(basePath)}
+            {...routeProps}
+          />
+        )}
+      />
+      <Route
+        exact
+        path={hakutilannePathWithOrg(basePath)}
+        render={(routeProps) => (
+          <HakutilanneView
+            kayttooikeusroolit={organisaatiotJaKayttooikeusroolit.data}
+            redirectJosKäyttäjälläEiOleOikeuksiaTo={rootPath(basePath)}
+            {...routeProps}
+          />
+        )}
+      />
+      <Route
+        exact
+        path={oppijaPath(basePath)}
+        render={(routeProps) => (
+          <OppijaView
+            kayttooikeusroolit={organisaatiotJaKayttooikeusroolit.data}
+            redirectJosKäyttäjälläEiOleOikeuksiaTo={rootPath(basePath)}
+            {...routeProps}
+          />
+        )}
+      />
       <Route exact path={rootPath(basePath)}>
         <HomeView
           user={user}
           organisaatiotJaKayttooikeusroolit={
             organisaatiotJaKayttooikeusroolit.data
           }
+          redirectJosHakeutumisoikeuksiaTo={createHakutilannePathWithoutOrg(
+            basePath
+          )}
         />
       </Route>
       <Route component={NotFoundView} />
