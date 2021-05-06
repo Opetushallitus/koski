@@ -98,6 +98,25 @@ class ValpasOppijaService(
       .map(fetchHautIlmanYhteystietoja(errorClue))
   }
 
+  def getOppijatLaajatTiedotYhteystiedoilla(
+    oppilaitosOids: Set[ValpasOppilaitos.Oid],
+    oppijaOids: Seq[ValpasHenkilö.Oid]
+  )(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
+    val errorClue = oppilaitosOids.size match {
+      case 1 =>  s"oppilaitos:${oppilaitosOids.head}"
+      case n if n > 1 => s"oppilaitokset[${n}]:${oppilaitosOids.head}, ..."
+      case _ => ""
+    }
+
+    accessResolver.organisaatiohierarkiaOids(oppilaitosOids)
+      .map(opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyvätOppijat)
+      .map(_.filter(oppijaRow => oppijaOids.contains(oppijaRow.oppijaOid)))
+      .flatMap(results => HttpStatus.foldEithers(results.map(asValpasOppijaLaajatTiedot)))
+      .map(fetchHautYhteystiedoilla(errorClue))
+      .flatMap(oppijat => HttpStatus.foldEithers(oppijat.map(withVirallisetYhteystiedot)))
+      .map(oppijat => oppijat.map(_.validate(koodistoviitepalvelu)))
+  }
+
   // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
   // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
   // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
