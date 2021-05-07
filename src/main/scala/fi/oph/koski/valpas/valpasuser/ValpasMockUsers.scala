@@ -125,8 +125,16 @@ object ValpasMockUsers {
   }
 }
 
-case class ValpasMockUser(lastname: String, firstname: String, oid: String, käyttöoikeudet: Set[Käyttöoikeus], lang: String = "fi", käyttöoikeusRyhmät: List[String] = Nil) extends MockUser {
+case class ValpasMockUser(
+  lastname: String,
+  firstname: String,
+  oid: String,
+  käyttöoikeudet: Set[Käyttöoikeus],
+  lang: String = "fi",
+  käyttöoikeusRyhmät: List[String] = Nil
+) extends MockUser {
   lazy val ldapUser = DirectoryUser(oid, käyttöoikeudet.toList, firstname, lastname, Some(lang))
+
   def toValpasSession(käyttöoikeudet: KäyttöoikeusRepository): ValpasSession = {
     val authUser: AuthenticationUser = fromDirectoryUser(username, ldapUser)
     new ValpasSession(authUser, "fi", InetAddress.getByName("192.168.0.10"), "", käyttöoikeudet.käyttäjänKäyttöoikeudet(authUser))
