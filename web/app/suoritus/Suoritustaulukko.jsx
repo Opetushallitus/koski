@@ -23,7 +23,7 @@ import {
   KoepisteetColumn,
   LaajuusColumn,
   suoritusProperties,
-  TutkintokertaColumn
+  TutkintokertaColumn, ExpandAllRows
 } from './SuoritustaulukkoCommon'
 import {UusiTutkinnonOsaMuuAmmatillinen} from '../muuammatillinen/UusiTutkinnonOsaMuuAmmatillinen'
 import {isMuutaAmmatillistaPäätasonSuoritus} from '../muuammatillinen/MuuAmmatillinen'
@@ -153,22 +153,6 @@ export class Suoritustaulukko extends React.Component {
     )
   }
 }
-
-const ExpandAllRows = ({allExpandedP, toggleExpandAll}) => (
-  <thead>
-  <tr>
-    <th className="suoritus">
-      <div>
-        {allExpandedP.map(allExpanded => (
-          <button className={'expand-all koski-button' + (allExpanded ? ' expanded' : '')} onClick={toggleExpandAll}>
-            <Text name={allExpanded ? 'Sulje kaikki' : 'Avaa kaikki'}/>
-          </button>
-        ))}
-      </div>
-    </th>
-  </tr>
-  </thead>
-)
 
 const SingleColumnRowTable = ({className, children, colSpan = 1}) => (
   <tbody className={className}>

@@ -23,6 +23,7 @@ export const isMuunAmmatillisenKoulutuksenOsasuorituksenSuoritus = suoritus => s
 export const isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus = suoritus => suoritus.value.classes.includes('tutkinnonosaapienemmistakokonaisuuksistakoostuvasuoritus')
 export const isNäyttötutkintoonValmistava = suoritus => suoritus.value.classes.includes('nayttotutkintoonvalmistavankoulutuksensuoritus')
 export const isYlioppilastutkinto = suoritus => suoritus.value.classes.includes('ylioppilastutkinnonsuoritus')
+export const isVapaanSivistystyönPäätasonSuoritus =  suoritus => suoritus.value.classes.includes('vapaansivistystyonpaatasonsuoritus')
 
 export const getLaajuusYksikkö = (suoritus) => {
   const laajuusModel = modelLookup(suoritus, 'koulutusmoduuli.laajuus')
@@ -112,6 +113,22 @@ export const suoritusProperties = suoritus => {
     .filter(shouldShowProperty(suoritus.context))
 }
 
+export const ExpandAllRows = ({allExpandedP, toggleExpandAll}) => (
+  <thead>
+  <tr>
+    <th className="suoritus">
+      <div>
+        {allExpandedP.map(allExpanded => (
+          <button className={'expand-all koski-button' + (allExpanded ? ' expanded' : '')} onClick={toggleExpandAll}>
+            <Text name={allExpanded ? 'Sulje kaikki' : 'Avaa kaikki'}/>
+          </button>
+        ))}
+      </div>
+    </th>
+  </tr>
+  </thead>
+)
+
 /*
  *
  * Shared column types
@@ -120,7 +137,7 @@ export const suoritusProperties = suoritus => {
 
 export const SuoritusColumn = {
   shouldShow : () => true,
-  renderHeader: ({parentSuoritus, groupTitles, groupId}) => (<td key="suoritus" className="tutkinnon-osan-ryhma">{isValinnanMahdollisuus(parentSuoritus) ? t('Osasuoritus') : groupTitles[groupId]}</td>),
+  renderHeader: ({parentSuoritus, groupTitles, groupId}) => <td key="suoritus" className="suoritus">{isValinnanMahdollisuus(parentSuoritus) || !groupTitles ? t('Osasuoritus') : groupTitles[groupId]}</td>,
   renderData: ({model, showTila, onExpand, hasProperties, expanded}) => {
     let koulutusmoduuli = modelLookup(model, 'koulutusmoduuli')
     let titleAsExpandLink = hasProperties && (!osanOsa(koulutusmoduuli) || !model.context.edit)
@@ -173,7 +190,11 @@ export const LaajuusColumn = {
 }
 
 export const ArvosanaColumn = {
-  shouldShow: ({parentSuoritus, suoritukset, context}) => !isNäyttötutkintoonValmistava(parentSuoritus) && (context.edit || suoritukset.find(hasArvosana) !== undefined),
+  shouldShow: ({parentSuoritus, suoritukset, context}) => (
+    !isNäyttötutkintoonValmistava(parentSuoritus)
+    && !isVapaanSivistystyönPäätasonSuoritus(parentSuoritus)
+    && (context.edit || suoritukset.find(hasArvosana) !== undefined)
+  ),
   renderHeader: () => <th key='arvosana' className='arvosana' scope='col'><Text name='Arvosana'/></th>,
   renderData: ({model, ylioppilastutkinto}) => <td key='arvosana' className={`arvosana ${ylioppilastutkinto ? 'ylioppilas' : ''}`}><ArvosanaEditor model={model} /></td>
 }

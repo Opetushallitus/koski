@@ -23,6 +23,7 @@ import TäydentääTutkintoaEditor from '../ammatillinen/TaydentaaTutkintoaEdito
 import InternationalSchoolOppiaineetEditor from '../internationalschool/InternationalSchoolOppiaineetEditor'
 import {AikuistenPerusopetuksenKurssitEditor} from '../aikuistenperusopetus/AikuistenPerusopetuksenKurssitEditor'
 import {Suoritustaulukko} from './Suoritustaulukko'
+import {VapaanSivistystyonSuoritustaulukko} from '../vapaasivistystyo/VapaanSivistystyonSuoritustaulukko'
 
 export const resolveOsasuorituksetEditor = (mdl) => {
   const oneOf = (...classes) => classes.some(c => mdl.value.classes.includes(c))
@@ -49,11 +50,13 @@ export const resolveOsasuorituksetEditor = (mdl) => {
   if (oneOf(
     'ammatillinenpaatasonsuoritus',
     'ylioppilastutkinnonsuoritus',
-    'korkeakoulusuoritus',
-    'oppivelvollisillesuunnattuvapaansivistystyonkoulutuksensuoritus'
+    'korkeakoulusuoritus'
     )) {
     const SuoritustaulukkoComponent = kansalainen ? OmatTiedotSuoritustaulukko : Suoritustaulukko
     return <SuoritustaulukkoComponent suorituksetModel={modelLookup(mdl, 'osasuoritukset')} />
+  }
+  if (oneOf('oppivelvollisillesuunnattuvapaansivistystyonkoulutuksensuoritus')) {
+    return <VapaanSivistystyonSuoritustaulukko parentSuoritus={mdl} suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
   }
   if (oneOf('lukionoppimaaransuoritus2015')) {
     return (
