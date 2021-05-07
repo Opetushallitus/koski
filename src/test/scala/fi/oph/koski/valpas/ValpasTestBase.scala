@@ -1,7 +1,7 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.valpas.opiskeluoikeusfixture.FixtureUtil
-import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
+import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers, ValpasSession}
 import fi.oph.koski.{KoskiApplicationForTests, LocalJettyHttpSpec}
 import org.scalatest.{BeforeAndAfterAll, FreeSpec}
 
@@ -17,4 +17,8 @@ trait ValpasTestBase extends FreeSpec with LocalJettyHttpSpec with BeforeAndAfte
   }
 
   override def defaultUser: ValpasMockUser = ValpasMockUsers.valpasJklNormaalikoulu
+
+  protected def session(user: ValpasMockUser): ValpasSession = user.toValpasSession(KoskiApplicationForTests.käyttöoikeusRepository)
+
+  protected val defaultSession: ValpasSession = session(defaultUser)
 }
