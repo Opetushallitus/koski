@@ -25,7 +25,6 @@
 .infotooltip__popup {
   position: absolute;
   z-index: @z-index-tooltip;
-  left: -@caret-x-position;
   min-width: 20rem;
 
   display: flex;
@@ -40,9 +39,21 @@
 
   .caret {
     position: absolute;
-    left: @caret-x-position;
-
     .caret-colors(@color-white, @color-gray-lighten-3);
+  }
+
+  &.infotooltip__popup--right {
+    left: -@caret-x-position;
+    .caret {
+      left: @caret-x-position;
+    }
+  }
+
+  &.infotooltip__popup--left {
+    right: -@caret-x-position;
+    .caret {
+      right: @caret-x-position;
+    }
   }
 
   &.infotooltip__popup--up {
