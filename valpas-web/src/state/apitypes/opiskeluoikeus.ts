@@ -73,6 +73,7 @@ export const opiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus = (
 ): boolean => {
   const tila = opiskeluoikeus.tarkastelupäivänTila.koodiarvo
   return (
+    !isPerusopetus(opiskeluoikeus) &&
     opiskeluoikeus.oppivelvollisuudenSuorittamiseenKelpaava &&
     (tila === "voimassa" || tila === "voimassatulevaisuudessa")
   )
