@@ -34,8 +34,8 @@ import {
   SuppeaHakutoive,
 } from "../../state/apitypes/hakutoive"
 import {
+  opiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus,
   OpiskeluoikeusSuppeatTiedot,
-  taulukossaNäytettäväOpiskeluoikeus,
   valvottavatOpiskeluoikeudet,
 } from "../../state/apitypes/opiskeluoikeus"
 import { OppijaHakutilanteillaSuppeatTiedot } from "../../state/apitypes/oppija"
@@ -87,6 +87,10 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
       label: t("hakutilanne__taulu_ryhma"),
       filter: "dropdown",
       size: "xsmall",
+    },
+    {
+      label: t("hakutilanne__taulu_perusopetus_suoritettu"),
+      filter: "dropdown",
     },
     {
       label: t("hakutilanne__taulu_hakemuksen_tila"),
@@ -183,6 +187,7 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
       {
         value: opiskeluoikeus?.ryhmä,
       },
+      perusopetusSuoritettu(opiskeluoikeus),
       hakemuksenTila(oppija, basePath),
       fromNullableValue(valintatila(oppija.hakutilanteet)),
       fromNullableValue(vastaanottotieto(oppija.hakutilanteet)),
@@ -195,6 +200,17 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
         : null,
     ].filter(nonNull),
   }))
+}
+
+const perusopetusSuoritettu = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
+  const date = oo.päättymispäivä
+  return date !== undefined
+    ? {
+        value: date,
+        display: formatDate(date),
+        filterValues: [t("Kyllä")],
+      }
+    : fromNullableValue(null, [t("Ei")])
 }
 
 const hakemuksenTila = (
@@ -258,9 +274,13 @@ const hakuTooltip = (haku: HakuSuppeatTiedot): string =>
     muokkausPvm: formatNullableDate(haku.muokattu),
   })
 
-const fromNullableValue = (value: Value | null): Value =>
+const fromNullableValue = (
+  value: Value | null,
+  nullFilterValues?: Array<string | number>
+): Value =>
   value || {
     value: "–",
+    filterValues: nullFilterValues,
   }
 
 const valintatila = (haut: HakuSuppeatTiedot[]): Value | null => {
@@ -357,7 +377,9 @@ const vastaanottotieto = (hakutilanteet: HakuSuppeatTiedot[]): Value | null => {
 const opiskeluoikeustiedot = (
   opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
 ): Value | null => {
-  const oos = opiskeluoikeudet.filter(taulukossaNäytettäväOpiskeluoikeus)
+  const oos = opiskeluoikeudet.filter(
+    opiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus
+  )
 
   const toValue = (oo: OpiskeluoikeusSuppeatTiedot) => {
     const kohde = [

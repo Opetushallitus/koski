@@ -28,6 +28,7 @@ export type OpiskeluoikeusSuppeatTiedot = {
   ryhmä?: string
   tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
   alkamispäivä: ISODate
+  päättymispäivä?: ISODate
   oppivelvollisuudenSuorittamiseenKelpaava: boolean
 }
 
@@ -55,12 +56,15 @@ export const isValvottavaOpiskeluoikeus = (
 ) => (oo: OpiskeluoikeusSuppeatTiedot) =>
   oo.onValvottava && oo.oppilaitos.oid == organisaatioOid
 
+export const isPerusopetus = (oo: OpiskeluoikeusSuppeatTiedot) =>
+  oo.tyyppi.koodiarvo === "perusopetus"
+
 export const valvottavatOpiskeluoikeudet = (
   organisaatioOid: string | undefined,
   opiskeluoikeudet: Array<OpiskeluoikeusSuppeatTiedot>
 ) => opiskeluoikeudet.filter(isValvottavaOpiskeluoikeus(organisaatioOid))
 
-export const taulukossaNäytettäväOpiskeluoikeus = (
+export const opiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus = (
   opiskeluoikeus: OpiskeluoikeusSuppeatTiedot
 ): boolean => {
   const tila = opiskeluoikeus.tarkastelupäivänTila.koodiarvo
