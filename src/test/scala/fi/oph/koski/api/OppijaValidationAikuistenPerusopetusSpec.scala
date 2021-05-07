@@ -1,16 +1,21 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetuksenAlkuvaiheenSuoritus, oppiaineidenSuoritukset2015, oppiaineidenSuoritukset2017}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.http._
 import fi.oph.koski.schema._
+import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
 
 import java.time.LocalDate.{of => date}
 
-class OppijaValidationAikuistenPerusopetusSpec extends TutkinnonPerusteetTest[AikuistenPerusopetuksenOpiskeluoikeus] with KoskiHttpSpec with OpiskeluoikeusTestMethodsAikuistenPerusopetus {
+class OppijaValidationAikuistenPerusopetusSpec
+  extends TutkinnonPerusteetTest[AikuistenPerusopetuksenOpiskeluoikeus]
+    with KoskiHttpSpec
+    with DirtiesFixtures
+    with OpiskeluoikeusTestMethodsAikuistenPerusopetus {
+
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = AikuistenPerusopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
     suoritukset = List(

@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
 import fi.oph.koski.documentation.ExampleData.opiskeluoikeusMitätöity
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
@@ -10,7 +10,14 @@ import org.scalatest.{FreeSpec, Matchers}
 
 import java.time.LocalDate
 
-class OppijaGetByOidSpec extends FreeSpec with Matchers with KoskiHttpSpec with OpiskeluoikeusTestMethods with OpiskeluoikeusTestMethodsAmmatillinen {
+class OppijaGetByOidSpec
+  extends FreeSpec
+    with Matchers
+    with KoskiHttpSpec
+    with OpiskeluoikeusTestMethods
+    with OpiskeluoikeusTestMethodsAmmatillinen
+    with DirtiesFixtures {
+
   "/api/oppija/" - {
     "GET" - {
       "with valid oid" in {
@@ -36,7 +43,6 @@ class OppijaGetByOidSpec extends FreeSpec with Matchers with KoskiHttpSpec with 
         }
       }
       "with mitätöity oid" in {
-        resetFixtures
         val oo = createOpiskeluoikeus(KoskiSpecificMockOppijat.eero, defaultOpiskeluoikeus)
         val mitätöity = oo.copy(tila = defaultOpiskeluoikeus.tila.copy(opiskeluoikeusjaksot =
           defaultOpiskeluoikeus.tila.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)

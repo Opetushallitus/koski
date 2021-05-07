@@ -1,10 +1,10 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
 import org.scalatest.FreeSpec
 
-class LinkitettyOppijaSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsLukio2015 {
+class LinkitettyOppijaSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsLukio2015 with DirtiesFixtures {
   "Linkitetyt oppijat" - {
     "Kun haetaan masterilla" - {
       "Näytetään myös slaveen kytketyt opiskeluoikeudet" in {

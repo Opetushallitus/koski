@@ -16,7 +16,7 @@ trait DirtiesFixtures extends HttpSpecification with BeforeAndAfterAll with Logg
 
   override protected def afterAll(): Unit = {
     logger.info("Resetting dirty fixtures")
-    resetFixtures // Siivoa fixturet takaisin oletustilaan
+    resetFixtures() // Siivoa fixturet takaisin oletustilaan
     super.afterAll()
   }
 }

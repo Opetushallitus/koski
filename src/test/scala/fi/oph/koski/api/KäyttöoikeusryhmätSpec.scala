@@ -12,17 +12,24 @@ import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUser, MockUsers, UserWi
 import fi.oph.koski.luovutuspalvelu.{HetuRequestV1, LuovutuspalveluResponseV1}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
-import fi.oph.koski.{DatabaseTestMethods, KoskiHttpSpec}
+import fi.oph.koski.{DatabaseTestMethods, DirtiesFixtures, KoskiHttpSpec}
 import fi.oph.scalaschema.SchemaValidatingExtractor
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.FreeSpec
 
 import java.time.LocalDate
 
-class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with QueryTestMethods with DatabaseTestMethods {
+class KäyttöoikeusryhmätSpec
+  extends FreeSpec
+    with KoskiHttpSpec
+    with OpiskeluoikeusTestMethodsAmmatillinen
+    with SearchTestMethods
+    with QueryTestMethods
+    with DatabaseTestMethods
+    with DirtiesFixtures {
+
   "koski-oph-pääkäyttäjä" - {
     val user = MockUsers.paakayttaja
     "voi muokata kaikkia opiskeluoikeuksia" in {
-      resetFixtures
       putOpiskeluoikeus(defaultOpiskeluoikeus, headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatusOk()
       }
@@ -126,12 +133,13 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with KoskiHttpSpe
     }
 
     "näkee luottamuksellisen datan" in {
-      resetFixtures
       authGet("api/oppija/" + KoskiSpecificMockOppijat.markkanen.oid, user) {
         verifyResponseStatusOk()
         kaikkiSensitiveDataNäkyy()
       }
     }
+
+    "alusta muutetut fixturet" in resetFixtures()
   }
 
   "vastuukäyttäjä" - {
@@ -209,7 +217,6 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with KoskiHttpSpe
     "ei voi muokata lähdejärjestelmän tallentamia opiskeluoikeuksia" - {
       val oppija = KoskiSpecificMockOppijat.tyhjä
       "ilman opiskeluoikeuden oid:ia luodaan uusi opiskeluoikeus" in {
-        resetFixtures
         putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = oppija, headers = authHeaders(MockUsers.omniaPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatusOk()
           haeOpiskeluoikeudetHetulla(oppija.hetu, user).count(_.tyyppi.koodiarvo == "ammatillinenkoulutus") should equal(1)
@@ -226,6 +233,8 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with KoskiHttpSpe
         }
       }
     }
+
+    "alusta muutetut fixturet" in resetFixtures()
   }
 
   "viranomainen jolla oikeudet kaikkiin koulutusmuotoihin muttei arkaluontoisiin tietoihin" - {

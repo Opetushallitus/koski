@@ -13,7 +13,6 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with KoskiHttpSp
   "/api/opiskeluoikeus/:oid" - {
     "GET" - {
       "with valid oid" in {
-        resetFixtures
         val oid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.eero.oid).oid.get
         AuditLogTester.clearMessages
         get("api/opiskeluoikeus/" + oid, headers = authHeaders()) {
@@ -32,19 +31,18 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with KoskiHttpSp
         }
       }
       "with mitätöity oid" in {
-        resetFixtures
         val mitätöity = mitätöiOpiskeluoikeus(createOpiskeluoikeus(KoskiSpecificMockOppijat.eero, defaultOpiskeluoikeus))
         List(defaultUser, MockUsers.paakayttaja).foreach { user =>
           get("api/opiskeluoikeus/" + mitätöity.oid.get, headers = authHeaders(user = user)) {
             verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta ei löydy annetulla oid:llä tai käyttäjällä ei ole siihen oikeuksia"))
           }
         }
+        resetFixtures() // Siivoa muutokset
       }
     }
 
     "Luottamuksellinen data" - {
       "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli" in {
-        resetFixtures
         val oid = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.eero.toHenkilötiedotJaOid).oid.get
         authGet("api/opiskeluoikeus/" + oid, stadinAmmattiopistoKatselija) {
           verifyResponseStatusOk()
