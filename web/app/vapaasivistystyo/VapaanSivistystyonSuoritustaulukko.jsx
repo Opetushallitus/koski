@@ -3,6 +3,7 @@ import * as R from 'ramda'
 import {modelData, modelItems} from '../editor/EditorModel'
 import {accumulateExpandedState} from '../editor/ExpandableItems'
 import Text from '../i18n/Text'
+import {t} from '../i18n/i18n'
 import {tutkinnonOsaPrototypes} from '../ammatillinen/TutkinnonOsa'
 import {UusiVapaanSivistystyonOsasuoritus} from '../vapaasivistystyo/UusiVapaanSivistystyonOsasuoritus'
 import {VapaanSivistystyonOsasuoritusEditor} from './VapaanSivistystyonOsasuoritusEditor'
@@ -25,8 +26,9 @@ export class VapaanSivistystyonSuoritustaulukko extends React.Component {
 
     const suoritusProtos = tutkinnonOsaPrototypes(suorituksetModel)
     const laajuusYksikkö = getLaajuusYksikkö(suoritusProtos[0])
+    const suoritusTitle = nestedLevel === 0 ? t('Osaamiskokonaisuus') : t('Opintokokonaisuus')
 
-    const columns = [SuoritusColumn, LaajuusColumn, ArvosanaColumn].filter(column => column.shouldShow({parentSuoritus, suoritukset, suorituksetModel,context}))
+    const columns = [SuoritusColumn, LaajuusColumn, ArvosanaColumn].filter(column => column.shouldShow({parentSuoritus, suoritukset, suorituksetModel, context}))
 
     return (
       <div className='suoritus-taulukko'>
@@ -40,7 +42,7 @@ export class VapaanSivistystyonSuoritustaulukko extends React.Component {
           }
           <tbody className='taulukko-headers'>
             <tr>
-              {columns.map(column => column.renderHeader({laajuusYksikkö, parentSuoritus}))}
+              {columns.map(column => column.renderHeader({laajuusYksikkö, suoritusTitle}))}
             </tr>
           </tbody>
           {

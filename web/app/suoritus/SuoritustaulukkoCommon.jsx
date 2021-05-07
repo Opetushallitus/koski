@@ -9,10 +9,7 @@ import Text from '../i18n/Text'
 import {ArvosanaEditor} from './ArvosanaEditor'
 import {Editor} from '../editor/Editor'
 import {shouldShowProperty} from '../editor/PropertiesEditor'
-import {
-  isValinnanMahdollisuus,
-  osanOsa
-} from '../ammatillinen/TutkinnonOsa'
+import {osanOsa} from '../ammatillinen/TutkinnonOsa'
 import {sortLanguages} from '../util/sorting'
 import {suorituksenTilaSymbol} from './Suoritustaulukko'
 import {isKieliaine} from './Koulutusmoduuli'
@@ -137,7 +134,7 @@ export const ExpandAllRows = ({allExpandedP, toggleExpandAll}) => (
 
 export const SuoritusColumn = {
   shouldShow : () => true,
-  renderHeader: ({parentSuoritus, groupTitles, groupId}) => <td key="suoritus" className="suoritus">{isValinnanMahdollisuus(parentSuoritus) || !groupTitles ? t('Osasuoritus') : groupTitles[groupId]}</td>,
+  renderHeader: ({suoritusTitle}) => <td key="suoritus" className="suoritus">{suoritusTitle}</td>,
   renderData: ({model, showTila, onExpand, hasProperties, expanded}) => {
     let koulutusmoduuli = modelLookup(model, 'koulutusmoduuli')
     let titleAsExpandLink = hasProperties && (!osanOsa(koulutusmoduuli) || !model.context.edit)

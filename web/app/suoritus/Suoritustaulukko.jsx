@@ -4,6 +4,7 @@ import {modelItems} from '../editor/EditorModel'
 import {accumulateExpandedState} from '../editor/ExpandableItems'
 import {suoritusValmis} from './Suoritus'
 import Text from '../i18n/Text'
+import {t} from '../i18n/i18n'
 import {fetchLaajuudet, YhteensäSuoritettu} from './YhteensaSuoritettu'
 import UusiTutkinnonOsa from '../ammatillinen/UusiTutkinnonOsa'
 import {
@@ -100,9 +101,10 @@ export class Suoritustaulukko extends React.Component {
                     <tbody key={'group-' + i} className={`group-header ${groupId}`}>
                     <tr>
                       {
-                        showColumns && columns.map(column =>
-                          column.renderHeader({parentSuoritus, suoritusProto, laajuusYksikkö, groupTitles, groupId})
-                        )
+                        showColumns && columns.map(column => {
+                          const suoritusTitle = isValinnanMahdollisuus(parentSuoritus) ? t('Osasuoritus') : groupTitles[groupId]
+                          return column.renderHeader({laajuusYksikkö, suoritusTitle})
+                        })
                       }
                     </tr>
                     </tbody>
