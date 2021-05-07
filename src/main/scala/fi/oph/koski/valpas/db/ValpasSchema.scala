@@ -82,6 +82,12 @@ object ValpasSchema extends Logging {
     ) <> (OpiskeluoikeusLisätiedotRow.tupled, OpiskeluoikeusLisätiedotRow.unapply)
   }
 
+  case class OpiskeluoikeusLisätiedotKey(
+    oppijaOid: String,
+    opiskeluoikeusOid: String,
+    oppilaitosOid: String
+  )
+
   case class OpiskeluoikeusLisätiedotRow(
     oppijaOid: String,
     opiskeluoikeusOid: String,

@@ -36,7 +36,7 @@ import fi.oph.koski.valpas.{ValpasKuntailmoitusService, ValpasOppijaService}
 import fi.oph.koski.valpas.db.ValpasDatabase
 import fi.oph.koski.valpas.localization.ValpasLocalizationConfig
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
-import fi.oph.koski.valpas.valpasrepository.ValpasKuntailmoitusRepository
+import fi.oph.koski.valpas.valpasrepository.{OpiskeluoikeusLisätiedotRepository, ValpasKuntailmoitusRepository}
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
 import fi.oph.koski.ytr.{YtrAccessChecker, YtrClient, YtrOpiskeluoikeusRepository, YtrRepository}
 
@@ -131,6 +131,7 @@ class KoskiApplication(
   lazy val valpasKuntailmoitusRepository = new ValpasKuntailmoitusRepository(
     valpasDatabase, validatingAndResolvingExtractor, valpasRajapäivätService
   )
+  lazy val valpasOpiskeluoikeusLisätiedotRepository = new OpiskeluoikeusLisätiedotRepository(valpasDatabase)
   lazy val valpasKuntailmoitusService = new ValpasKuntailmoitusService(this)
   lazy val oidGenerator = OidGenerator(config)
   lazy val hetu = new Hetu(config.getBoolean("acceptSyntheticHetus"))

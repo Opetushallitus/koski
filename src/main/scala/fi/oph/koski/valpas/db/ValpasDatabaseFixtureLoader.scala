@@ -1,12 +1,17 @@
 package fi.oph.koski.valpas.db
 
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.Logging
-import fi.oph.koski.valpas.valpasrepository.{ValpasExampleData, ValpasKuntailmoitusRepository}
+import fi.oph.koski.valpas.valpasrepository.ValpasExampleData
 
-class ValpasDatabaseFixtureLoader(kuntailmoitusRepository: ValpasKuntailmoitusRepository) extends Logging {
+class ValpasDatabaseFixtureLoader(app: KoskiApplication) extends Logging {
+  private val kuntailmoitusRepository = app.valpasKuntailmoitusRepository
+  private val lisätiedotRepository = app.valpasOpiskeluoikeusLisätiedotRepository
+
   def reset(): Unit = {
     logger.info("Resetting Valpas DB fixtures")
     kuntailmoitusRepository.truncate()
+    lisätiedotRepository.truncate()
     loadIlmoitukset()
   }
 
