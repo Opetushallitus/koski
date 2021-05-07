@@ -25,6 +25,7 @@
   "hakutilanne__taulu_valintatieto": "Valintatieto",
   "hakutilanne__taulu_opiskelupaikka_vastaanotettu": "Opiskelupaikka vastaanotettu",
   "hakutilanne__taulu_voimassaolevia_opiskeluoikeuksia": "Voimassaolevia opiskeluoikeuksia",
+  "hakutilanne__taulu_voimassaolevia_opiskeluoikeuksia_tooltip": "Oppijalle luodut opiskeluoikeudet, jotka kelpaavat perusopetuksen jälkeisen koulutuksen oppivelvollisuuden suorittamiseen.",
   "hakutilanne__taulu_data_ei_toteutettu": "Ei toteutettu",
   "hakutilanne__taulu_muu_haku": "Muu haku",
   "hakutilanne__taulu_muu_haku_tooltip": "Voit halutessasi merkitä tähän jos hakija on hakenut opintopolun ulkopuolella, esimerkiksi ulkomaille tai Ahvenanmaalle. Tieto näkyy vain omalle organisaatiolle, sekä ilmoittaessa asuinkunnalle",

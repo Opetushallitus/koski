@@ -107,7 +107,14 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
       indicatorSpace: "auto",
     },
     {
-      label: t("hakutilanne__taulu_voimassaolevia_opiskeluoikeuksia"),
+      label: (
+        <>
+          <T id="hakutilanne__taulu_voimassaolevia_opiskeluoikeuksia" />
+          <InfoTooltip>
+            <T id="hakutilanne__taulu_voimassaolevia_opiskeluoikeuksia_tooltip" />
+          </InfoTooltip>
+        </>
+      ),
       filter: "dropdown",
       indicatorSpace: "auto",
     },
