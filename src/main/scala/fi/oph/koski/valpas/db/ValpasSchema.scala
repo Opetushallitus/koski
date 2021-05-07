@@ -10,7 +10,9 @@ import java.util.UUID
 object ValpasSchema extends Logging {
   // A helper to help with creating migrations: dumps the SQL DDL to create the full schema
   def logCreateSchemaDdl(): Unit = {
-    val schema = Ilmoitukset.schema ++ IlmoitusLisätiedot.schema
+    val schema = Ilmoitukset.schema ++
+      IlmoitusLisätiedot.schema ++
+      OpiskeluoikeusLisätiedot.schema
     logger.info((schema.createStatements ++ "\n").mkString(";\n"))
   }
 
@@ -62,7 +64,36 @@ object ValpasSchema extends Logging {
   )
 
   val IlmoitusLisätiedot = TableQuery[IlmoitusLisätiedotTable]
+
+
+  class OpiskeluoikeusLisätiedotTable(tag: Tag) extends Table[OpiskeluoikeusLisätiedotRow](tag, "opiskeluoikeus_lisätiedot") {
+    val oppijaOid = column[String]("oppija_oid")
+    val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid")
+    val oppilaitosOid = column[String]("oppilaitos_oid")
+    val muuHaku = column[Boolean]("muu_haku")
+
+    def pk = primaryKey("opiskeluoikeus_lisätiedot_pk", (oppijaOid, opiskeluoikeusOid, oppilaitosOid))
+
+    def * = (
+      oppijaOid,
+      opiskeluoikeusOid,
+      oppilaitosOid,
+      muuHaku
+    ) <> (OpiskeluoikeusLisätiedotRow.tupled, OpiskeluoikeusLisätiedotRow.unapply)
+  }
+
+  case class OpiskeluoikeusLisätiedotRow(
+    oppijaOid: String,
+    opiskeluoikeusOid: String,
+    oppilaitosOid: String,
+    muuHaku: Boolean
+  )
+
+  val OpiskeluoikeusLisätiedot = TableQuery[OpiskeluoikeusLisätiedotTable]
 }
+
+
+// JSON-kenttien tietomallit:
 
 object ValpasJsonSchema {
   type Koodiarvo = String
