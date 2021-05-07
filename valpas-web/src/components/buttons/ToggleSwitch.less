@@ -1,0 +1,55 @@
+@import "../../style/colors.less";
+@import "../../style/utils.less";
+
+@toggleswitch-width: .pxToRem(42) [];
+@toggleswitch-height: .pxToRem(22) [];
+@toggleswitch-slider-size: .pxToRem(18) [];
+@toggleswitch-margin: (@toggleswitch-height - @toggleswitch-slider-size) * 0.5;
+
+.toggleswitch__container {
+  position: relative;
+  display: inline-block;
+  width: @toggleswitch-width;
+  height: @toggleswitch-height;
+
+  border-radius: @toggleswitch-height * 0.5;
+
+  input:checked + .toggleswitch__slider {
+    background-color: @color-blue;
+  }
+
+  input:checked + .toggleswitch__slider::before {
+    transform: translateX(
+      @toggleswitch-width - @toggleswitch-margin * 2 - @toggleswitch-slider-size
+    );
+  }
+
+  .toggleswitch__slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background: @color-gray-lighten-2;
+    border-radius: 99999px;
+
+    transition: 200ms;
+
+    &::before {
+      position: absolute;
+      content: "";
+
+      width: @toggleswitch-slider-size;
+      height: @toggleswitch-slider-size;
+      left: @toggleswitch-margin;
+      top: @toggleswitch-margin;
+
+      background-color: @color-white;
+      border-radius: 99999px;
+      transform: translateX(0px);
+      transition: 200ms;
+    }
+  }
+}

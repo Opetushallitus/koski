@@ -5,6 +5,7 @@ import * as O from "fp-ts/lib/Option"
 import * as string from "fp-ts/string"
 import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
+import { ToggleSwitch } from "../../components/buttons/ToggleSwitch"
 import {
   FutureSuccessIcon,
   SuccessIcon,
@@ -12,6 +13,7 @@ import {
 } from "../../components/icons/Icon"
 import { ExternalLink } from "../../components/navigation/ExternalLink"
 import {
+  Column,
   DataTable,
   Datum,
   DatumKey,
@@ -70,45 +72,53 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
     ? SelectableDataTable
     : DataTable
 
+  const columns: Column[] = [
+    {
+      label: t("hakutilanne__taulu_nimi"),
+      filter: "freetext",
+      size: "large",
+    },
+    {
+      label: t("hakutilanne__taulu_syntymäaika"),
+      size: "small",
+    },
+    {
+      label: t("hakutilanne__taulu_ryhma"),
+      filter: "dropdown",
+      size: "xsmall",
+    },
+    {
+      label: t("hakutilanne__taulu_hakemuksen_tila"),
+      filter: "dropdown",
+    },
+    {
+      label: t("hakutilanne__taulu_valintatieto"),
+      filter: "dropdown",
+      indicatorSpace: "auto",
+    },
+    {
+      label: t("hakutilanne__taulu_opiskelupaikka_vastaanotettu"),
+      filter: "dropdown",
+      indicatorSpace: "auto",
+    },
+    {
+      label: t("hakutilanne__taulu_voimassaolevia_opiskeluoikeuksia"),
+      filter: "dropdown",
+      indicatorSpace: "auto",
+    },
+  ]
+
+  if (isFeatureFlagEnabled("ilmoittaminen")) {
+    columns.push({
+      label: t("hakutilanne__taulu_muu_haku"),
+    })
+  }
+
   return (
     <TableComponent
       storageName="hakutilannetaulu"
       className="hakutilanne"
-      columns={[
-        {
-          label: t("hakutilanne__taulu_nimi"),
-          filter: "freetext",
-          size: "large",
-        },
-        {
-          label: t("hakutilanne__taulu_syntymäaika"),
-          size: "small",
-        },
-        {
-          label: t("hakutilanne__taulu_ryhma"),
-          filter: "dropdown",
-          size: "xsmall",
-        },
-        {
-          label: t("hakutilanne__taulu_hakemuksen_tila"),
-          filter: "dropdown",
-        },
-        {
-          label: t("hakutilanne__taulu_valintatieto"),
-          filter: "dropdown",
-          indicatorSpace: "auto",
-        },
-        {
-          label: t("hakutilanne__taulu_opiskelupaikka_vastaanotettu"),
-          filter: "dropdown",
-          indicatorSpace: "auto",
-        },
-        {
-          label: t("hakutilanne__taulu_voimassaolevia_opiskeluoikeuksia"),
-          filter: "dropdown",
-          indicatorSpace: "auto",
-        },
-      ]}
+      columns={columns}
       data={data}
       onCountChange={props.onCountChange}
       peerEquality={oppijaOidsEqual}
@@ -169,7 +179,13 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
       fromNullableValue(valintatila(oppija.hakutilanteet)),
       fromNullableValue(vastaanottotieto(oppija.hakutilanteet)),
       fromNullableValue(opiskeluoikeustiedot(oppija.oppija.opiskeluoikeudet)),
-    ],
+      isFeatureFlagEnabled("ilmoittaminen")
+        ? {
+            value: null,
+            display: <ToggleSwitch />,
+          }
+        : null,
+    ].filter(nonNull),
   }))
 }
 
