@@ -5,6 +5,7 @@ import fi.oph.koski.fixture.LukioKurssikertymaRaporttiFixtures
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.raportit.lukio.{LukioKurssikertymaAineopiskelijaRow, LukioKurssikertymaOppimaaraRow, LukioKurssinRahoitusmuotoRow, LukioMuutaKauttaRahoitetut, LukioOppiaineEriVuonnaKorotetutKurssit, LukioOppiaineEriVuonnaKorotetutKurssitRow, LukioOppiaineOpiskeluoikeudenUlkopuoliset, LukioOppiaineOpiskeluoikeudenUlkopuolisetRow, LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat, LukioRahoitusmuotoEiTiedossa}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import org.scalatest.{BeforeAndAfterAll, FreeSpec}
 
@@ -105,6 +106,9 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
       "Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit – arviointipäivä ei opiskeluoikeuden sisällä" in {
         ressunAineopiskelijat.suoritetutTaiRahoitetut_eiOpiskeluoikeudenSisalla shouldBe 1
       }
+      "Suoritetut kurssit, joiden arviointia nostettu myöhempänä vuonna kuin jona ensimmäinen arviointi annettu" in {
+        ressunAineopiskelijat.eriVuonnaKorotettujaKursseja shouldBe 1
+      }
     }
     "Muuta kautta rahoitetuttujen välilehti" - {
       "Listan pituus sama kuin aineopiskelijoiden välilehdellä oleva laskuri" in {
@@ -119,6 +123,11 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
     "Arviointipäivä opiskeluoikeuden ulkopuolella -välilehti" - {
       "Listan pituus sama kuin aineopiskelijoiden välilehdellä oleva laskuri" in {
         ressunOpiskeluoikeudenUlkopuolisetArvionnit.length shouldBe 1
+      }
+    }
+    "Eri vuonna korotetut kurssit -välilehti" - {
+      "Listan pituus sama kuin aineopiskelijoiden välilehdellä oleva laskuri" in {
+        ressunOpiskeluoikeudenEriVuonnaArvioidut.length shouldBe 1
       }
     }
   }
@@ -152,6 +161,12 @@ class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestM
   lazy val ressunOpiskeluoikeudenUlkopuolisetArvionnit: Seq[LukioOppiaineOpiskeluoikeudenUlkopuolisetRow] = raportti.collectFirst {
     case d: DataSheet if d.title == LukioOppiaineOpiskeluoikeudenUlkopuoliset.sheetTitle => d.rows.collect {
       case r: LukioOppiaineOpiskeluoikeudenUlkopuolisetRow => r
+    }
+  }.get
+
+  lazy val ressunOpiskeluoikeudenEriVuonnaArvioidut: Seq[LukioOppiaineEriVuonnaKorotetutKurssitRow] = raportti.collectFirst {
+    case d: DataSheet if d.title == LukioOppiaineEriVuonnaKorotetutKurssit.sheetTitle => d.rows.collect {
+      case r: LukioOppiaineEriVuonnaKorotetutKurssitRow => r
     }
   }.get
 

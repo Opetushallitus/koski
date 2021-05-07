@@ -1,11 +1,13 @@
-package fi.oph.koski.raportit
+package fi.oph.koski.raportit.lukio
+
+import fi.oph.koski.db.DatabaseConverters
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.raportit.{Column, DataSheet}
+import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
+import slick.jdbc.GetResult
 
 import java.sql.ResultSet
 import java.time.LocalDate
-import fi.oph.koski.db.DatabaseConverters
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
-import slick.jdbc.GetResult
 
 object LukioOppiaineEriVuonnaKorotetutKurssit extends DatabaseConverters {
   val sheetTitle = "Eri vuonna korotetut kurssit"
@@ -36,16 +38,6 @@ object LukioOppiaineEriVuonnaKorotetutKurssit extends DatabaseConverters {
           and (osasuoritus.arviointi_paiva between aikajakso.alku and aikajakso.loppu)
           and osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
           and osasuoritus.arviointi_arvosana_koodiarvo != 'O'
-          and (
-            osasuoritus.tunnustettu = false
-            or
-            tunnustettu_rahoituksen_piirissa
-          )
-          and (
-            osasuoritus.koulutusmoduuli_kurssin_tyyppi = 'pakollinen'
-            or
-            (koulutusmoduuli_kurssin_tyyppi = 'syventava' and koulutusmoduuli_paikallinen = false)
-          )
     """
 
   def createIndex(s: Schema) =
@@ -70,22 +62,22 @@ object LukioOppiaineEriVuonnaKorotetutKurssit extends DatabaseConverters {
     LukioOppiaineEriVuonnaKorotetutKurssitRow(
       opiskeluoikeusOid = rs.getString("opiskeluoikeus_oid"),
       oppijaOid = rs.getString("oppija_oid"),
-      kurssikoodi = rs.getString("kurssikoodi"),
-      kurssinNimi = rs.getString("kurssin_nimi")
+      koulutusmoduuliKoodiarvo = rs.getString("koulutusmoduuli_koodiarvo"),
+      koulutusmoduuliNimi = rs.getString("koulutusmoduuli_nimi")
     )
   })
 
   val columnSettings: Seq[(String, Column)] = Seq(
     "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),
     "oppijaOid" -> Column("Oppijan oid"),
-    "kurssikoodi" -> Column("Kurssikoodi"),
-    "kurssinNimi" -> Column("Kurssin nimi")
+    "koulutusmoduuliKoodiarvo" -> Column("Kurssikoodi"),
+    "koulutusmoduuliNimi" -> Column("Kurssin nimi"),
   )
 }
 
 case class LukioOppiaineEriVuonnaKorotetutKurssitRow(
   opiskeluoikeusOid: String,
   oppijaOid: String,
-  kurssikoodi: String,
-  kurssinNimi: String
+  koulutusmoduuliKoodiarvo: String,
+  koulutusmoduuliNimi: String,
 )

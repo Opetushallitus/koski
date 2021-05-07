@@ -1,14 +1,14 @@
-package fi.oph.koski.raportit
+package fi.oph.koski.raportit.lukio
 
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportit.YleissivistäväUtils._
+import fi.oph.koski.raportit._
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Futures
 
 import java.time.LocalDate
-import java.time.temporal.ChronoField
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 

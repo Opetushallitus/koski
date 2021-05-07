@@ -146,7 +146,6 @@ class AikuistenPerusopetusRaporttiSpec
         }
 
         "Oppimäärän suoritus" in {
-          println(oppiaineetRowsWithColumns)
           lazy val expectedaikuisOpiskelijaRow = Map(
             "Opiskeluoikeuden oid" -> "",
             "Oppilaitoksen nimi" -> "Jyväskylän normaalikoulu",

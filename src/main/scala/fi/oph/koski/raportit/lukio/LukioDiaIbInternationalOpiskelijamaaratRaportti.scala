@@ -1,14 +1,14 @@
-package fi.oph.koski.raportit
-
-import java.sql.ResultSet
-import java.time.LocalDate
+package fi.oph.koski.raportit.lukio
 
 import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.db.DB
+import fi.oph.koski.db.{DB, KoskiDatabaseMethods}
 import fi.oph.koski.raportit.AhvenanmaanKunnat.ahvenanmaanKunnat
-
+import fi.oph.koski.raportit._
 import slick.jdbc.GetResult
+
+import java.sql.ResultSet
+import java.time.LocalDate
 import scala.concurrent.duration.DurationInt
 
 

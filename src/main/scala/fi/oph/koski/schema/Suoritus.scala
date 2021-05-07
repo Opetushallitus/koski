@@ -40,10 +40,7 @@ trait Suoritus {
   def parasArviointi: Option[Arviointi] = arviointi.toList.flatten.reduceOption((a, b) => {
     Arviointi.korkeampiArviointi(a, b)
   })
-  def parasArviointiPäivä: Option[LocalDate] = parasArviointi match {
-    case Some(arviointi) => arviointi.arviointipäivä
-    case _ => None
-  }
+  def parasArviointiPäivä: Option[LocalDate] = parasArviointi.flatMap(_.arviointipäivä)
   def viimeisinArvosana: Option[String] = viimeisinArviointi.map(_.arvosana.koodiarvo)
   def ensimmäinenArviointi: Option[Arviointi] = {
     arviointi.toList.flatten.reduceOption((a, b) => {

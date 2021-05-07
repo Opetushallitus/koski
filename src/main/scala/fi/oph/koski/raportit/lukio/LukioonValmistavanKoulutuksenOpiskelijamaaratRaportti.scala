@@ -1,13 +1,14 @@
-package fi.oph.koski.raportit
+package fi.oph.koski.raportit.lukio
+
+import fi.oph.koski.db.DatabaseConverters
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.raportit.AhvenanmaanKunnat.ahvenanmaanKunnat
+import fi.oph.koski.raportit.{Column, CompactColumn, DataSheet}
+import fi.oph.koski.raportointikanta.RaportointiDatabase
+import slick.jdbc.GetResult
 
 import java.sql.ResultSet
 import java.time.LocalDate
-
-import fi.oph.koski.db.DatabaseConverters
-import fi.oph.koski.raportointikanta.RaportointiDatabase
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import slick.jdbc.GetResult
-import fi.oph.koski.raportit.AhvenanmaanKunnat.ahvenanmaanKunnat
 
 object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti extends DatabaseConverters {
 

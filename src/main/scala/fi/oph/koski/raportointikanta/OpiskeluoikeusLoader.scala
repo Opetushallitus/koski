@@ -307,8 +307,8 @@ object OpiskeluoikeusLoader extends Logging {
         }
       }),
       korotettuEriVuonna = (os.ensimmäinenArviointiPäivä, os.parasArviointiPäivä) match {
-        case (Some(a), Some(b)) => {
-          if (a.get(ChronoField.YEAR) != b.get(ChronoField.YEAR)) {
+        case (Some(eka), Some(paras)) => {
+          if (eka.get(ChronoField.YEAR) != paras.get(ChronoField.YEAR)) {
             true
           } else {
             false

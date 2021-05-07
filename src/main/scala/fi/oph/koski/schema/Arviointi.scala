@@ -29,20 +29,20 @@ object Arviointi {
     case e: NumberFormatException => None
   }
   def korkeampiArviointi(a: Arviointi, b: Arviointi) = {
-    val numeerinenA = numeerinen(a.arvosana.koodiarvo)
-    val numeerinenB = numeerinen(b.arvosana.koodiarvo)
-
-    if (numeerinenA.nonEmpty && numeerinenB.nonEmpty) {
-      if (numeerinenA.get > numeerinenB.get) {
-        a
-      } else {
-        b
+    (numeerinen(a.arvosana.koodiarvo), numeerinen(b.arvosana.koodiarvo)) match {
+      case (Some(aNumeerisena), Some(bNumeerisena)) => {
+        if (aNumeerisena > bNumeerisena) {
+          a
+        } else {
+          b
+        }
       }
-    } else {
-      if (!a.hyväksytty && b.hyväksytty) {
-        b
-      } else {
-        a
+      case _ => {
+        if (!a.hyväksytty && b.hyväksytty) {
+          a
+        } else {
+          b
+        }
       }
     }
   }
