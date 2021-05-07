@@ -3,13 +3,13 @@ package fi.oph.koski.raportit
 import java.sql.Date
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsLukio2015
 import fi.oph.koski.documentation.LukioExampleData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
+import fi.oph.koski.raportit.lukio.{LukioRaportitRepository, LukioRaportti}
 import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}
 import fi.oph.koski.schema._
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
@@ -73,6 +73,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           "Yhteislaajuus (suoritetut kurssit)",
           "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)",
           "Yhteislaajuus (tunnustetut kurssit)",
+          "Yhteislaajuus (eri vuonna korotetut kurssit)",
           "AI Suomen kieli ja kirjallisuus valtakunnallinen",
           "A1 Englanti valtakunnallinen",
           "B1 Ruotsi valtakunnallinen",
@@ -334,6 +335,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Yhteislaajuus (suoritetut kurssit)" -> 89.5,
     "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 1.0,
     "Yhteislaajuus (tunnustetut kurssit)" -> 1.0,
+    "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 1.0,
     "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 8.0 kurssia",
     "XX Ei tiedossa valtakunnallinen" -> "",
     "A1 Englanti valtakunnallinen" -> "Arvosana 9, 9.0 kurssia",
@@ -443,6 +445,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Yhteislaajuus (suoritetut kurssit)" -> 3.0,
       "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
       "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
+      "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
       "A1 Englanti valtakunnallinen" -> "Arvosana 7, 3.0 kurssia"
     )
 
@@ -452,6 +455,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Yhteislaajuus (suoritetut kurssit)" -> 5.0,
       "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
       "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
+      "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
       "MA Matematiikka, pitkä oppimäärä valtakunnallinen" -> "Arvosana 8, 5.0 kurssia"
     )
 
@@ -461,6 +465,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Yhteislaajuus (suoritetut kurssit)" -> 4.0,
       "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
       "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
+      "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
       "HI Historia valtakunnallinen" -> "Arvosana 9, 4.0 kurssia"
     )
 
@@ -470,6 +475,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
       "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
       "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
+      "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
       "KE Kemia valtakunnallinen" -> "Arvosana 8, 1.0 kurssia"
     )
 
@@ -480,6 +486,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
       "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
       "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
+      "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
       "FI Filosofia valtakunnallinen" -> "Arvosana 9, 1.0 kurssia"
     )
 
@@ -535,6 +542,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
       "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
       "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
+      "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
       "Opetussuunnitelma" -> None
     )
 
@@ -544,6 +552,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Yhteislaajuus (suoritetut kurssit)" -> 4.0,
       "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
       "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
+      "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
       "HI Historia valtakunnallinen" -> "Arvosana 9, 4.0 kurssia"
     )
 
@@ -553,6 +562,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
       "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
       "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
+      "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
       "KE Kemia valtakunnallinen" -> "Arvosana 8, 1.0 kurssia"
     )
 
@@ -563,6 +573,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
       "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
       "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
+      "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
       "FI Filosofia valtakunnallinen" -> "Arvosana 9, 1.0 kurssia"
     )
 
@@ -573,6 +584,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
       "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
       "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
+      "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
       "FI Filosofia valtakunnallinen" -> "Arvosana 9, 1.0 kurssia"
     )
 

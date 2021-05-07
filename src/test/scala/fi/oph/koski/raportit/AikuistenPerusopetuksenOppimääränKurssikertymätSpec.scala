@@ -86,6 +86,7 @@ class AikuistenPerusopetuksenOppimääränKurssikertymätSpec extends FreeSpec w
       r.suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitetut(2)
       r.suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa(0)
       r.suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa(1)
+      r.eriVuonnaKorotetutSuoritukset(1)
     }
   }
 

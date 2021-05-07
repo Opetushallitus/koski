@@ -81,7 +81,7 @@ object ExamplesLukio {
             suoritus(matematiikka("MAA", None)).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
               kurssisuoritus(syventäväKurssi("MAA1", "Funktiot ja yhtälöt, pa, vuositaso 1",
                 "Vahvistetaan yhtälön ratkaisemisen ja prosenttilaskennan taitoja. Syvennetään verrannollisuuden, neliöjuuren ja potenssin käsitteiden ymmärtämistä. Harjaannutaan käyttämään neliöjuuren ja potenssin laskusääntöjä. Syvennetään funktiokäsitteen ymmärtämistä tutkimalla potenssi- ja eksponenttifunktioita. Opetellaan ratkaisemaan potenssiyhtälöitä."))
-                .copy(arviointi = numeerinenArviointi(9)),
+                .copy(arviointi = Some(numeerinenArviointi(8).get ::: numeerinenArviointi(9, date(2017, 6, 4)).get)),
               kurssisuoritus(valtakunnallinenKurssi("MAA2")).copy(arviointi = numeerinenArviointi(10)),
               kurssisuoritus(valtakunnallinenKurssi("MAA3")).copy(arviointi = numeerinenArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("MAA4")).copy(arviointi = numeerinenArviointi(10)),

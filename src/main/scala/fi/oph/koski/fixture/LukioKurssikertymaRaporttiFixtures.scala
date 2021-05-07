@@ -12,7 +12,7 @@ object LukioKurssikertymaRaporttiFixtures {
 
   lazy val date = LocalDate.of(1998, 6, 6)
 
-  lazy val raportinAikajaksoAlku = date.minusMonths(2)
+  lazy val raportinAikajaksoAlku = date.minusMonths(13)
   lazy val raportinAikajaksoLoppu = date.plusMonths(2)
 
   lazy val oppimaara = LukionOpiskeluoikeus(
@@ -101,7 +101,7 @@ object LukioKurssikertymaRaporttiFixtures {
   lazy val matematiikanOppiaine = suoritus(matematiikka("MAA", None)).copy(osasuoritukset = Some(matematiikanKurssit))
 
   lazy val matematiikanKurssit = List(
-    kurssi(syventäväKurssi("MAA1", "MAA1", "MAA1")),
+    kurssi(syventäväKurssi("MAA1", "MAA1", "MAA1")).copy(arviointi = kurssinArviointiKorotettuMyöhemmin),
     kurssi(syventäväKurssi("MAA14", "MAA14", "MAA14")).copy(tunnustettu = Some(tunnustettuRahoituksenPiirissa)),
     kurssi(syventäväKurssi("MAA16", "MAA16", "MAA16")).copy(tunnustettu = Some(tunnustettu)),
     kurssi(valtakunnallinenKurssi("MAA2")).copy(tunnustettu = Some(tunnustettuRahoituksenPiirissa)),
@@ -119,6 +119,10 @@ object LukioKurssikertymaRaporttiFixtures {
   )
 
   lazy val kurssinArviointi = Some(List(NumeerinenLukionArviointi(Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"), date)))
+  lazy val kurssinArviointiKorotettuMyöhemmin= Some(List(
+    NumeerinenLukionArviointi(Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"), date.minusYears(1)),
+    NumeerinenLukionArviointi(Koodistokoodiviite(koodiarvo = "9", koodistoUri = "arviointiasteikkoyleissivistava"), date)
+  ))
   lazy val kurssinArviointiOsallistunut = Some(List(SanallinenLukionArviointi(Koodistokoodiviite(koodiarvo = "O", koodistoUri = "arviointiasteikkoyleissivistava"), None, date)))
   lazy val kurssinArviointiJaksonJalkeen = Some(List(NumeerinenLukionArviointi(Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"), raportinAikajaksoLoppu.plusDays(1))))
   lazy val kurssinArviointiJaksoaEnnen = Some(List(NumeerinenLukionArviointi(Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"), raportinAikajaksoAlku.minusDays(1))))

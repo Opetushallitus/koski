@@ -1,11 +1,12 @@
-package fi.oph.koski.raportit
-
-import java.time.LocalDate
+package fi.oph.koski.raportit.lukio
 
 import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.raportit.{Column, DataSheet}
 import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
 import slick.jdbc.GetResult
+
+import java.time.LocalDate
 
 object LukioMuutaKauttaRahoitetut {
   val sheetTitle = "Muuta kautta rah."

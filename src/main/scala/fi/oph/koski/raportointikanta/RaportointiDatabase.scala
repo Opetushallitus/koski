@@ -7,10 +7,11 @@ import java.time._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{DB, QueryMethods, RaportointiDatabaseConfig}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.raportit.{LukioOppiaineRahoitusmuodonMukaan, LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat, PaallekkaisetOpiskeluoikeudet}
+import fi.oph.koski.raportit.PaallekkaisetOpiskeluoikeudet
+import fi.oph.koski.raportit.lukio.{LukioOppiaineEriVuonnaKorotetutKurssit, LukioOppiaineRahoitusmuodonMukaan, LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat}
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
 import fi.oph.koski.schema.Organisaatio
-import fi.oph.koski.util.DateOrdering.{sqlDateOrdering, ascedingSqlTimestampOrdering}
+import fi.oph.koski.util.DateOrdering.{ascedingSqlTimestampOrdering, sqlDateOrdering}
 import fi.oph.scalaschema.annotation.SyntheticProperty
 import org.postgresql.util.PSQLException
 import slick.dbio.DBIO
@@ -94,7 +95,9 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
       LukioOppiaineenOppimaaranKurssikertymat.createMaterializedView(schema),
       LukioOppiaineenOppimaaranKurssikertymat.createIndex(schema),
       LukioOppiaineRahoitusmuodonMukaan.createMaterializedView(schema),
-      LukioOppiaineRahoitusmuodonMukaan.createIndex(schema)
+      LukioOppiaineRahoitusmuodonMukaan.createIndex(schema),
+      LukioOppiaineEriVuonnaKorotetutKurssit.createMaterializedView(schema),
+      LukioOppiaineEriVuonnaKorotetutKurssit.createIndex(schema),
     ), timeout = 120.minutes)
     val duration = (System.currentTimeMillis - started) / 1000
     setStatusLoadCompleted("materialized_views")

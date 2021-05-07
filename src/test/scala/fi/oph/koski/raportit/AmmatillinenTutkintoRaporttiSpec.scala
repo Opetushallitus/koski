@@ -408,6 +408,8 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
       arviointiArvosanaKoodisto = None,
       arviointiHyväksytty = None,
       arviointiPäivä = None,
+      ensimmäinenArviointiPäivä = None,
+      korotettuEriVuonna = false,
       näytönArviointiPäivä = None,
       tunnustettu = false,
       tunnustettuRahoituksenPiirissä = false,

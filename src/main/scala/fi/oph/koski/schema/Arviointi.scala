@@ -28,6 +28,24 @@ object Arviointi {
   def numeerinen(arviointi: String) = try { Some(arviointi.toInt) } catch {
     case e: NumberFormatException => None
   }
+  def korkeampiArviointi(a: Arviointi, b: Arviointi) = {
+    (numeerinen(a.arvosana.koodiarvo), numeerinen(b.arvosana.koodiarvo)) match {
+      case (Some(aNumeerisena), Some(bNumeerisena)) => {
+        if (aNumeerisena > bNumeerisena) {
+          a
+        } else {
+          b
+        }
+      }
+      case _ => {
+        if (!a.hyväksytty && b.hyväksytty) {
+          b
+        } else {
+          a
+        }
+      }
+    }
+  }
 }
 
 trait ArviointiPäivämäärällä extends Arviointi {
