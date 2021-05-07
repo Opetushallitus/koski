@@ -17,7 +17,10 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
 
   def defaultOppijat: List[OppijaHenkilöWithMasterInfo] = currentFixtureState.defaultOppijat
 
-  def resetFixtures(fixtureState: FixtureState = koskiSpecificFixtureState): Unit = synchronized {
+  def resetFixtures(
+    fixtureState: FixtureState = koskiSpecificFixtureState,
+    reloadRaportointikanta: Boolean = false
+  ): Unit = synchronized {
     if (shouldUseFixtures) {
       application.cacheManager.invalidateAllCaches
       currentFixtureState = fixtureState
@@ -25,7 +28,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
       application.koskiLocalizationRepository.asInstanceOf[MockLocalizationRepository].reset
       application.tiedonsiirtoService.index.deleteAll()
 
-      if (fixtureState == valpasFixtureState) {
+      if (reloadRaportointikanta) {
         raportointikantaService.loadRaportointikanta(force = true)
         Wait.until { raportointikantaService.isLoadComplete }
       }
