@@ -17,6 +17,7 @@ export type OpiskeluoikeusLaajatTiedot = {
   ryhmä?: string
   tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
   oppivelvollisuudenSuorittamiseenKelpaava: boolean
+  näytettäväPerusopetuksenSuoritus: boolean
 }
 
 export type OpiskeluoikeusSuppeatTiedot = {
@@ -30,6 +31,7 @@ export type OpiskeluoikeusSuppeatTiedot = {
   alkamispäivä: ISODate
   päättymispäivä?: ISODate
   oppivelvollisuudenSuorittamiseenKelpaava: boolean
+  näytettäväPerusopetuksenSuoritus: boolean
 }
 
 const opiskeluoikeusDateOrd = (key: keyof OpiskeluoikeusLaajatTiedot) =>

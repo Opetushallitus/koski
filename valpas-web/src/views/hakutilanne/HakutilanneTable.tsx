@@ -204,7 +204,7 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
 
 const perusopetusSuoritettu = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
   const date = oo.päättymispäivä
-  return date !== undefined
+  return date !== undefined && oo.näytettäväPerusopetuksenSuoritus
     ? {
         value: date,
         display: formatDate(date),

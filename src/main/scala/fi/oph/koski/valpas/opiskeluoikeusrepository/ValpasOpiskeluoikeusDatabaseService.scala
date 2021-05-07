@@ -61,6 +61,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     val keväänUlkopuolellaValmistumisjaksoAlku = rajapäivätService.keväänUlkopuolellaValmistumisjaksoAlku()
     val tarkastelupäivä = rajapäivätService.tarkastelupäivä
     val keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä = rajapäivätService.keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
+    val perusopetussuorituksenNäyttämisenAikaraja = rajapäivätService.perusopetussuorituksenNäyttämisenAikaraja
 
     val timedBlockname = if (oppijaOid.isDefined) "getOppijatSingle" else "getOppijatMultiple"
 
@@ -216,7 +217,8 @@ WITH
          WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
          ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
        END tarkastelupäivän_tila,
-       r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava
+       r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
+       coalesce(r_opiskeluoikeus.paattymispaiva < $perusopetussuorituksenNäyttämisenAikaraja, FALSE) AS naytettava_perusopetuksen_suoritus
      FROM
        oppija_oid
        JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
@@ -264,7 +266,8 @@ WITH
          WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
          ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
        END tarkastelupäivän_tila,
-       r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava
+       r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
+       FALSE AS naytettava_perusopetuksen_suoritus
      FROM
        oppija_oid
        JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
@@ -366,7 +369,8 @@ WITH
           'koodiarvo', opiskeluoikeus.tarkastelupäivän_tila,
           'koodistoUri', 'valpasopiskeluoikeudentila'
         ),
-        'oppivelvollisuudenSuorittamiseenKelpaava', opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava
+        'oppivelvollisuudenSuorittamiseenKelpaava', opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
+        'näytettäväPerusopetuksenSuoritus', opiskeluoikeus.naytettava_perusopetuksen_suoritus
       ) ORDER BY
         opiskeluoikeus.alkamispaiva DESC,
         -- Alkamispäivä varmaan riittäisi käyttöliitymälle, mutta lisätään muita kenttiä testien pitämiseksi deteministisempinä myös päällekäisillä opiskeluoikeuksilla:

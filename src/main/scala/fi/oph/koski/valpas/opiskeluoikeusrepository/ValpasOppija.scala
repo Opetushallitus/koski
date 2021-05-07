@@ -117,6 +117,7 @@ case class ValpasOpiskeluoikeusLaajatTiedot(
   ryhmä: Option[String],
   tarkastelupäivänTila: Koodistokoodiviite,
   oppivelvollisuudenSuorittamiseenKelpaava: Boolean,
+  näytettäväPerusopetuksenSuoritus: Boolean,
 ) extends ValpasOpiskeluoikeus {
   @SyntheticProperty
   def isOpiskelu: Boolean =
@@ -140,6 +141,7 @@ object ValpasOpiskeluoikeusSuppeatTiedot {
       alkamispäivä = laajatTiedot.alkamispäivä,
       päättymispäivä = laajatTiedot.päättymispäivä,
       oppivelvollisuudenSuorittamiseenKelpaava = laajatTiedot.oppivelvollisuudenSuorittamiseenKelpaava,
+      näytettäväPerusopetuksenSuoritus = laajatTiedot.näytettäväPerusopetuksenSuoritus,
     )
   }
 }
@@ -155,6 +157,7 @@ case class ValpasOpiskeluoikeusSuppeatTiedot(
   alkamispäivä: String,
   päättymispäivä: Option[String],
   oppivelvollisuudenSuorittamiseenKelpaava: Boolean,
+  näytettäväPerusopetuksenSuoritus: Boolean,
 ) extends ValpasOpiskeluoikeus {
   @SyntheticProperty
   def isOpiskelu: Boolean =

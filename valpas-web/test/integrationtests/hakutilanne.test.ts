@@ -22,7 +22,7 @@ const clickOppija = (index: number) =>
 
 const jklNormaalikouluTableContent = `
   Epäonninen Valpas                                       | 30.10.2005  | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
-  Eroaja-myöhemmin Valpas                                 | 29.9.2005   | 9C | 5.10.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
+  Eroaja-myöhemmin Valpas                                 | 29.9.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Kahdella-oppija-oidilla Valpas                          | 15.2.2005   | 9C | 30.5.2021  | Hakenut open_in_new  | Varasija: Ressun lukio      | –                         | doneJyväskylän normaalikoulu, Lukiokoulutus                                |
   KasiinAstiToisessaKoulussaOllut Valpas                  | 17.8.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | doneJyväskylän normaalikoulu, Perusopetus                                  |
   Kotiopetus-menneisyydessä Valpas                        | 6.2.2005    | 9C | –          | Ei hakemusta         | –                           | –                         | doneJyväskylän normaalikoulu, Perusopetus                                  |
