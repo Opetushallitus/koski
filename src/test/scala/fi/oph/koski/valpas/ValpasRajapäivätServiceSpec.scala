@@ -1,13 +1,12 @@
 package fi.oph.koski.valpas
 
+import com.typesafe.config.ConfigFactory
+import fi.oph.koski.valpas.opiskeluoikeusrepository.OletuksenaEdellinenVuosiKonfiguraattori
+
 import java.time.LocalDate.{of => date}
 
-import fi.oph.koski.valpas.opiskeluoikeusrepository.OletuksenaEdellinenVuosiKonfiguraattori
-import com.typesafe.config.ConfigFactory
-import org.scalatest._
 
-
-class ValpasRajapäivätServiceSpec extends ValpasTestBase with Matchers {
+class ValpasRajapäivätServiceSpec extends ValpasTestBase {
   private val config = ConfigFactory.parseString(
     """
       |valpas = {
