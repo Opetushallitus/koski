@@ -39,9 +39,9 @@ object Arviointi {
       }
       case _ => {
         if (!a.hyväksytty && b.hyväksytty) {
-          a
-        } else {
           b
+        } else {
+          a
         }
       }
     }
