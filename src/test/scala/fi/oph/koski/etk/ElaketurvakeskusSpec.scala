@@ -95,6 +95,23 @@ class ElaketurvakeskusSpec extends FreeSpec with BeforeAndAfterAll with LocalJet
           )
         ))
       }
+      "Hakee raportointkannasta datat jättäen alle 18 vuotiaana valmistuneet pois" in {
+        val opiskeluoikeudenOid = lastOpiskeluoikeus(etk18vSyntynytKesäkuunEnsimmäisenäPäivänä.oid).oid
+
+        aineisto.tutkinnot.filter(_.henkilö.hetu.contains(etk18vSyntynytKesäkuunEnsimmäisenäPäivänä.hetu.get)).toSet should equal(Set())
+      }
+      "Hakee raportointkannasta datat ottaen 18 vuotissyntymäpäivänä valmistuneen mukaan" in {
+        val opiskeluoikeudenOid = lastOpiskeluoikeus(etk18vSyntynytToukokuunViimeisenäPäivänä.oid).oid
+
+        aineisto.tutkinnot.filter(_.henkilö.hetu.contains(etk18vSyntynytToukokuunViimeisenäPäivänä.hetu.get)).toSet should equal(Set(
+          EtkTutkintotieto(
+            EtkHenkilö(etk18vSyntynytToukokuunViimeisenäPäivänä.hetu, Some(date(1998, 5, 31)),
+              etk18vSyntynytToukokuunViimeisenäPäivänä.sukunimi, etk18vSyntynytToukokuunViimeisenäPäivänä.etunimet),
+            EtkTutkinto(Some("ammatillinenperustutkinto"), Some(date(2012, 9, 1)), Some(date(2016, 5, 31))),
+            Some(EtkViite(opiskeluoikeudenOid, Some(1), Some(etk18vSyntynytToukokuunViimeisenäPäivänä.oid)))
+          )
+        ))
+      }
       "Slave-oidin opinnot löytyvät masterille" in {
         val opiskeluoikeudenOid = getOpiskeluoikeudet(slave.henkilö.oid).find(_.tyyppi.koodiarvo == "ammatillinenkoulutus").flatMap(_.oid)
 
@@ -185,6 +202,8 @@ class ElaketurvakeskusSpec extends FreeSpec with BeforeAndAfterAll with LocalJet
 
   def insertAdditionalTestData: Unit = {
     createOrUpdate(slave.henkilö, AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis())
+    createOrUpdate(etk18vSyntynytToukokuunViimeisenäPäivänä, AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis())
+    createOrUpdate(etk18vSyntynytKesäkuunEnsimmäisenäPäivänä, AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis())
   }
 
   def verifyAuditLogMessage(henkilö: OppijaHenkilö) = {

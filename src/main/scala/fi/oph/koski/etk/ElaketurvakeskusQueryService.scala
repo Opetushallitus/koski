@@ -54,7 +54,8 @@ class ElaketurvakeskusQueryService(val db: DB) extends QueryMethods {
         and oo.viimeisin_tila = 'valmistunut'
         and ${alku} <= oo.paattymispaiva and oo.paattymispaiva <= ${loppu}
         and ps.suorituksen_tyyppi = 'ammatillinentutkinto'
-        and (ps.koulutusmoduuli_koulutustyyppi in ('1', '4', '13', '26') or ps.koulutusmoduuli_koodisto = 'koulutus' and ps.koulutusmoduuli_koodiarvo in ('381101', '381108'))"""
+        and (ps.koulutusmoduuli_koulutustyyppi in ('1', '4', '13', '26') or ps.koulutusmoduuli_koodisto = 'koulutus' and ps.koulutusmoduuli_koodiarvo in ('381101', '381108'))
+        and (h.syntymaaika + interval '18 years') <= oo.paattymispaiva"""
   }
 }
 
