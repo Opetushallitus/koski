@@ -20,7 +20,7 @@ export const isMuunAmmatillisenKoulutuksenOsasuorituksenSuoritus = suoritus => s
 export const isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus = suoritus => suoritus.value.classes.includes('tutkinnonosaapienemmistakokonaisuuksistakoostuvasuoritus')
 export const isNäyttötutkintoonValmistava = suoritus => suoritus.value.classes.includes('nayttotutkintoonvalmistavankoulutuksensuoritus')
 export const isYlioppilastutkinto = suoritus => suoritus.value.classes.includes('ylioppilastutkinnonsuoritus')
-export const isVapaanSivistystyönPäätasonSuoritus =  suoritus => suoritus.value.classes.includes('vapaansivistystyonpaatasonsuoritus')
+export const isVapaanSivistystyönOppivelvollisitenSuoritus =  suoritus => suoritus.value.classes.includes('oppivelvollisillesuunnattuvapaansivistystyonkoulutuksensuoritus')
 
 export const getLaajuusYksikkö = (suoritus) => {
   const laajuusModel = modelLookup(suoritus, 'koulutusmoduuli.laajuus')
@@ -177,9 +177,17 @@ export const KoepisteetColumn = {
 }
 
 export const LaajuusColumn = {
-  shouldShow: ({parentSuoritus, suoritukset, suorituksetModel, context}) => (!isNäyttötutkintoonValmistava(parentSuoritus) && (context.edit
-    ? modelProperty(createTutkinnonOsanSuoritusPrototype(suorituksetModel), 'koulutusmoduuli.laajuus') !== null
-    : suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus.arvo') !== undefined) !== undefined)),
+  shouldShow: ({parentSuoritus, suoritukset, suorituksetModel, context}) => {
+    if (isNäyttötutkintoonValmistava(parentSuoritus)) {
+      return false
+    } else if (isVapaanSivistystyönOppivelvollisitenSuoritus(parentSuoritus) && context.edit) {
+      return false
+    } else {
+      return context.edit
+        ? modelProperty(createTutkinnonOsanSuoritusPrototype(suorituksetModel), 'koulutusmoduuli.laajuus') !== null
+        : suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus.arvo') !== undefined) !== undefined
+    }
+  },
   renderHeader: ({laajuusYksikkö}) => {
     return <th key='laajuus' className='laajuus' scope='col'><Text name='Laajuus'/>{((laajuusYksikkö && ' (' + laajuusYksikkö + ')') || '')}</th>
   },
@@ -189,7 +197,7 @@ export const LaajuusColumn = {
 export const ArvosanaColumn = {
   shouldShow: ({parentSuoritus, suoritukset, context}) => (
     !isNäyttötutkintoonValmistava(parentSuoritus)
-    && !isVapaanSivistystyönPäätasonSuoritus(parentSuoritus)
+    && !isVapaanSivistystyönOppivelvollisitenSuoritus(parentSuoritus)
     && (context.edit || suoritukset.find(hasArvosana) !== undefined)
   ),
   renderHeader: () => <th key='arvosana' className='arvosana' scope='col'><Text name='Arvosana'/></th>,
