@@ -70,14 +70,14 @@ class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitSpec extends Fre
 
     "Raportin kolumnit" in {
       lazy val rows = raportti.filter(_.oppilaitos.equals("Jyväskylän normaalikoulu"))
-      rows.length should equal (3)
+      rows.length should equal (1)
 
       lazy val row = rows.head
       row.oppilaitos should equal("Jyväskylän normaalikoulu")
-      row.kurssikoodi should (equal("ÄI2") or equal("AÄI1"))
-      row.kurssinNimi should (equal("Monimuotoiset tekstit") or equal("Suomen kielen ja kirjallisuuden opiskelun perustaidot"))
-      row.päätasonSuorituksenTyyppi should (equal("aikuistenperusopetuksenoppimaara") or equal("aikuistenperusopetuksenoppimaaranalkuvaihe"))
-      row.kurssinSuorituksenTyyppi should (equal("aikuistenperusopetuksenkurssi") or equal("aikuistenperusopetuksenalkuvaiheenkurssi"))
+      row.kurssikoodi should equal("AÄI1")
+      row.kurssinNimi should equal("Suomen kielen ja kirjallisuuden opiskelun perustaidot")
+      row.päätasonSuorituksenTyyppi should equal("aikuistenperusopetuksenoppimaaranalkuvaihe")
+      row.kurssinSuorituksenTyyppi should equal("aikuistenperusopetuksenalkuvaiheenkurssi")
     }
   }
 
