@@ -88,15 +88,18 @@ class ValpasOppijaService(
     getOppijatLaajatTiedot(oppilaitosOids)
       .map(_.map(OppijaHakutilanteillaSuppeatTiedot.apply))
 
+  private def oppilaitosOidsErrorClue(oppilaitosOids: Set[ValpasOppilaitos.Oid]): String =
+    oppilaitosOids.size match {
+      case 1 => s"oppilaitos: ${oppilaitosOids.head}"
+      case n if n > 1 => s"oppilaitokset[$n]: ${oppilaitosOids.head}, ..."
+      case _ => ""
+    }
+
   private def getOppijatLaajatTiedot
     (oppilaitosOids: Set[ValpasOppilaitos.Oid])
     (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
-    val errorClue = oppilaitosOids.size match {
-      case 1 => s"oppilaitos:${oppilaitosOids.head}"
-      case n if n > 1 => s"oppilaitokset[$n]:${oppilaitosOids.head}, ..."
-      case _ => ""
-    }
+    val errorClue = oppilaitosOidsErrorClue(oppilaitosOids)
 
     accessResolver.organisaatiohierarkiaOids(oppilaitosOids)
       .map(opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyvätOppijat)
@@ -108,11 +111,7 @@ class ValpasOppijaService(
     oppilaitosOids: Set[ValpasOppilaitos.Oid],
     oppijaOids: Seq[ValpasHenkilö.Oid]
   )(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
-    val errorClue = oppilaitosOids.size match {
-      case 1 =>  s"oppilaitos:${oppilaitosOids.head}"
-      case n if n > 1 => s"oppilaitokset[${n}]:${oppilaitosOids.head}, ..."
-      case _ => ""
-    }
+    val errorClue = oppilaitosOidsErrorClue(oppilaitosOids)
 
     accessResolver.organisaatiohierarkiaOids(oppilaitosOids)
       .map(opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyvätOppijat)
