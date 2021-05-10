@@ -1,8 +1,9 @@
 package fi.oph.koski.virta
 
+import fi.oph.koski.documentation.ExampleData.laajuusOpintoviikoissa
+
 import java.time.LocalDate
 import java.time.LocalDate.{parse => date}
-
 import scala.util.Try
 import scala.xml.Node
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
@@ -329,9 +330,17 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     }
   }
 
-  private def laajuus(suoritusOrOpiskeluoikeus: Node): Option[LaajuusOpintopisteissä] = for {
-    laajuus <- (suoritusOrOpiskeluoikeus \ "Laajuus" \ "Opintopiste").headOption.map(_.text.toFloat).filter(_ > 0)
-  } yield LaajuusOpintopisteissä(laajuus, opintojenlaajuusyksikkoOpintopistettä)
+  private def laajuus(suoritusOrOpiskeluoikeus: Node): Option[Laajuus] = {
+    val laajuusOpintopiste = (suoritusOrOpiskeluoikeus \ "Laajuus" \ "Opintopiste").headOption.map(_.text.toFloat).filter(_ > 0)
+    val laajuusOpintoviikko = (suoritusOrOpiskeluoikeus \ "Laajuus" \ "Opintoviikko").headOption.map(_.text.toFloat).filter(_ > 0)
+
+    (laajuusOpintopiste, laajuusOpintoviikko) match {
+      case (Some(opintopiste), Some(_)) => Some(LaajuusOpintopisteissä(opintopiste, opintojenlaajuusyksikkoOpintopistettä))
+      case (Some(opintopiste), None) => Some(LaajuusOpintopisteissä(opintopiste, opintojenlaajuusyksikkoOpintopistettä))
+      case (None, Some(opintoviikko)) => Some(LaajuusOpintoviikoissa(opintoviikko, laajuusOpintoviikoissa))
+      case _ => None
+    }
+  }
 
   private val opintojenlaajuusyksikkoOpintopistettä = koodistoViitePalvelu.validateRequired("opintojenlaajuusyksikko", "2")
 

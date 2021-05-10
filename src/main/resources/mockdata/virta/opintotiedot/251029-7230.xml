@@ -71,8 +71,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="46006079" avain="50032092">
                             <virta:SuoritusPvm>2016-04-05</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>0.0</virta:Opintopiste>
                                 <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Muu>
@@ -93,8 +93,7 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="28810317" avain="43653162">
                             <virta:SuoritusPvm>2013-11-12</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>2.0</virta:Opintopiste>
-                                <virta:Opintoviikko>1.11</virta:Opintoviikko>
+                                <virta:Opintoviikko>2.0</virta:Opintoviikko>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Viisiportainen>HYV</virta:Viisiportainen>
@@ -116,8 +115,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="31823605" avain="45397570">
                             <virta:SuoritusPvm>2013-04-17</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>4.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>4.0</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Viisiportainen>HYV</virta:Viisiportainen>
@@ -139,8 +138,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24009684" avain="43260361">
                             <virta:SuoritusPvm>2015-11-25</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>1.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>1.0</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Muu>
@@ -160,8 +159,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="37087112" avain="43260496">
                             <virta:SuoritusPvm>2015-02-05</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>2.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>2.0</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Viisiportainen>1</virta:Viisiportainen>
@@ -178,8 +177,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24744954" avain="46721798">
                             <virta:SuoritusPvm>2015-05-28</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>2.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>2.0</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Viisiportainen>5</virta:Viisiportainen>
@@ -196,8 +195,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="41784608" avain="43888738">
                             <virta:SuoritusPvm>2013-01-22</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>6.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>6.0</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Viisiportainen>HYV</virta:Viisiportainen>
@@ -219,8 +218,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24774706" avain="47260226">
                             <virta:SuoritusPvm>2015-10-26</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>3.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>3.0</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Viisiportainen>4</virta:Viisiportainen>
@@ -237,8 +236,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24774709" avain="43260338">
                             <virta:SuoritusPvm>2014-11-03</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>3.5</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>3.5</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Viisiportainen>2</virta:Viisiportainen>
@@ -255,8 +254,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24501151" avain="45203113">
                             <virta:SuoritusPvm>2015-03-31</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>2.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>2.0</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Muu>
@@ -276,8 +275,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="28534455" avain="43458215">
                             <virta:SuoritusPvm>2013-04-17</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>4.5</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>4.5</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Viisiportainen>HYV</virta:Viisiportainen>
@@ -299,8 +298,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="28534181" avain="43457380">
                             <virta:SuoritusPvm>2012-03-05</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>4.5</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>4.5</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Viisiportainen>HYV</virta:Viisiportainen>
@@ -322,8 +321,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24555878" avain="43131603">
                             <virta:SuoritusPvm>2014-10-27</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>2.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>2.0</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Viisiportainen>4</virta:Viisiportainen>
@@ -340,8 +339,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="33301020" avain="43361768">
                             <virta:SuoritusPvm>2015-03-23</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>11.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>11.0</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Viisiportainen>1</virta:Viisiportainen>
@@ -358,8 +357,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24285523" avain="43260348">
                             <virta:SuoritusPvm>2015-06-12</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>5.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>5.0</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Viisiportainen>1</virta:Viisiportainen>
@@ -376,8 +375,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24502416" avain="49298652">
                             <virta:SuoritusPvm>2016-02-18</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>1.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>1.0</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Muu>
@@ -397,8 +396,7 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="28810464" avain="43654095">
                             <virta:SuoritusPvm>2015-04-24</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>2.0</virta:Opintopiste>
-                                <virta:Opintoviikko>1.11</virta:Opintoviikko>
+                                <virta:Opintoviikko>2.0</virta:Opintoviikko>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Muu>
@@ -418,8 +416,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24264095" avain="47241945">
                             <virta:SuoritusPvm>2016-02-01</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>6.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>6.0</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Muu>
@@ -439,8 +437,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24387912" avain="47102625">
                             <virta:SuoritusPvm>2016-02-15</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>14.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>14.0</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Viisiportainen>3</virta:Viisiportainen>
@@ -457,8 +455,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="37087569" avain="43260504">
                             <virta:SuoritusPvm>2015-04-13</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>5.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>5.0</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Viisiportainen>2</virta:Viisiportainen>
@@ -475,8 +473,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="37094101" avain="43260508">
                             <virta:SuoritusPvm>2015-05-27</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>4.5</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>4.5</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Muu>
@@ -496,8 +494,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24527104" avain="43260437">
                             <virta:SuoritusPvm>2014-11-17</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>4.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>4.0</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Viisiportainen>3</virta:Viisiportainen>
@@ -514,8 +512,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="37069740" avain="47102586">
                             <virta:SuoritusPvm>2016-02-22</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>5.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>5.0</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Viisiportainen>3</virta:Viisiportainen>
@@ -532,8 +530,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="33913902" avain="43131592">
                             <virta:SuoritusPvm>2014-12-08</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>3.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>3.0</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Viisiportainen>1</virta:Viisiportainen>
@@ -550,8 +548,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24393345" avain="43357790">
                             <virta:SuoritusPvm>2015-12-02</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>1.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>1.0</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Muu>
@@ -571,8 +569,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24389956" avain="43260314">
                             <virta:SuoritusPvm>2014-12-12</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>2.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>2.0</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Muu>
@@ -592,8 +590,8 @@
                         <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24495215" avain="43968916">
                             <virta:SuoritusPvm>2014-04-07</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>3.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                                <virta:Opintoviikko>3.0</virta:Opintoviikko>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Viisiportainen>HYV</virta:Viisiportainen>

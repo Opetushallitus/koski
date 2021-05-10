@@ -127,7 +127,7 @@ case class Korkeakoulututkinto(
 case class KorkeakoulunOpintojakso(
   tunniste: PaikallinenKoodi,
   nimi: LocalizedString,
-  laajuus: Option[LaajuusOpintopisteissä]
+  laajuus: Option[Laajuus]
 ) extends KoulutusmoduuliValinnainenLaajuus
 
 @Description("Muun korkeakoulun opinnon tunnistetiedot")
@@ -136,7 +136,7 @@ case class MuuKorkeakoulunOpinto(
   @KoodistoUri("virtaopiskeluoikeudentyyppi")
   tunniste: Koodistokoodiviite,
   nimi: LocalizedString,
-  laajuus: Option[LaajuusOpintopisteissä]
+  laajuus: Option[Laajuus]
 ) extends KoulutusmoduuliValinnainenLaajuus
 
 case class KorkeakoulunOpiskeluoikeudenTila(
