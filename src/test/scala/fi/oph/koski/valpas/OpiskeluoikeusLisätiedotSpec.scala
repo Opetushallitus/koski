@@ -1,7 +1,6 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.valpas.db.ValpasSchema.OpiskeluoikeusLisätiedotKey
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
@@ -17,48 +16,65 @@ class OpiskeluoikeusLisätiedotSpec extends ValpasTestBase with BeforeAndAfterAl
     super.afterAll()
   }
 
-  private def keyFor(oppija: LaajatOppijaHenkilöTiedot, ooOrdinal: Int) = {
-    val valpasOppija = oppijaService.getOppijaHakutilanteillaLaajatTiedot(oppija.oid)(defaultSession).right.get
-    val oo = valpasOppija.oppija.opiskeluoikeudet(ooOrdinal)
+  private def keyFor(oppijaLaajatTiedot: OppijaHakutilanteillaLaajatTiedot, ooOrdinal: Int) = {
+    val oo = oppijaLaajatTiedot.oppija.opiskeluoikeudet(ooOrdinal)
     OpiskeluoikeusLisätiedotKey(
-      oppijaOid = oppija.oid,
+      oppijaOid = oppijaLaajatTiedot.oppija.henkilö.oid,
       opiskeluoikeusOid = oo.oid,
       oppilaitosOid = oo.oppilaitos.oid
     )
   }
 
+  private lazy val oppijaLaajatTiedot = {
+    val oppija = ValpasMockOppijat.päällekkäisiäOpiskeluoikeuksia
+    oppijaService.getOppijaHakutilanteillaLaajatTiedot(oppija.oid)(defaultSession).right.get
+  }
+
+  private lazy val ilmanEnsimmäistäOpiskeluoikeutta = oppijaLaajatTiedot.copy(
+    oppija = oppijaLaajatTiedot.oppija.copy(
+      opiskeluoikeudet = oppijaLaajatTiedot.oppija.opiskeluoikeudet.drop(1)
+    )
+  )
+
   "muu haku -tieto" - {
-    lazy val oo1Key = keyFor(ValpasMockOppijat.päällekkäisiäOpiskeluoikeuksia, 0)
-    lazy val oo2Key = keyFor(ValpasMockOppijat.päällekkäisiäOpiskeluoikeuksia, 1)
+    "toimii tyhjällä hakuehdolla" in {
+      repository.readForOppijat(Seq()) should equal(Seq())
+    }
 
     "ei löydy jos ei tallennettu" in {
-      repository.read(Set(oo1Key)) should equal(Seq())
+      repository.readForOppijat(Seq(oppijaLaajatTiedot)).head._2 should equal(Seq())
     }
 
     "tallentuu" in {
-      repository.setMuuHaku(oo1Key, value = false) should equal(HttpStatus.ok)
-      repository.read(Set(oo1Key)).head.muuHaku should equal(false)
+      repository.setMuuHaku(keyFor(oppijaLaajatTiedot, 0), value = false) should equal(HttpStatus.ok)
+      repository.readForOppijat(Seq(oppijaLaajatTiedot)).head._2.head.muuHaku should equal(false)
     }
 
     "päivittyy" in {
-      repository.setMuuHaku(oo1Key, value = true) should equal(HttpStatus.ok)
-      repository.read(Set(oo1Key)).head.muuHaku should equal(true)
+      repository.setMuuHaku(keyFor(oppijaLaajatTiedot, 0), value = true) should equal(HttpStatus.ok)
+      repository.readForOppijat(Seq(oppijaLaajatTiedot)).head._2.head.muuHaku should equal(true)
     }
 
-    "on opiskeluoikeuskohtainen" in {
-      repository.read(Set(oo2Key)) should equal(Seq())
-      repository.setMuuHaku(oo2Key, value = false) should equal(HttpStatus.ok)
-      repository.read(Set(oo2Key)).head.muuHaku should equal(false)
+    "on opiskeluoikeuskohtainen" - {
+      "ensimmäiselle opiskeluoikeudelle asetettu tila ei näy toisella" in {
+        repository.readForOppijat(Seq(ilmanEnsimmäistäOpiskeluoikeutta)).head._2 should equal(Seq())
+      }
+
+      "tilan voi asettaa ja hakea toiselle opiskeluoikeudelle erikseen" in {
+        repository.setMuuHaku(keyFor(oppijaLaajatTiedot, 1), value = false) should equal(HttpStatus.ok)
+        repository.readForOppijat(Seq(ilmanEnsimmäistäOpiskeluoikeutta)).head._2.head.muuHaku should equal(false)
+      }
     }
 
     "voi hakea useita kerralla" in {
-      val expected = Set(
-        (oo1Key.opiskeluoikeusOid, true),
-        (oo2Key.opiskeluoikeusOid, false)
+      val expected = Seq(
+        (oppijaLaajatTiedot.oppija.opiskeluoikeudet(0).oid, true),
+        (oppijaLaajatTiedot.oppija.opiskeluoikeudet(1).oid, false)
       )
-      repository.read(Set(oo1Key, oo2Key))
-        .map(r => (r.opiskeluoikeusOid, r.muuHaku))
-        .toSet should equal(expected)
+      repository.readForOppijat(Seq(oppijaLaajatTiedot))
+        .flatMap(r =>
+          r._2.map(s => (s.opiskeluoikeusOid, s.muuHaku))
+        ) should equal(expected)
     }
   }
 }
