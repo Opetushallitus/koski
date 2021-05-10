@@ -14,9 +14,11 @@ export type OpiskeluoikeusLaajatTiedot = {
   toimipiste?: Toimipiste
   alkamispäivä: ISODate
   päättymispäivä?: ISODate
+  päättymispäiväMerkittyTulevaisuuteen?: boolean
   ryhmä?: string
   tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
   oppivelvollisuudenSuorittamiseenKelpaava: boolean
+  näytettäväPerusopetuksenSuoritus: boolean
 }
 
 export type OpiskeluoikeusSuppeatTiedot = {
@@ -28,7 +30,10 @@ export type OpiskeluoikeusSuppeatTiedot = {
   ryhmä?: string
   tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
   alkamispäivä: ISODate
+  päättymispäivä?: ISODate
+  päättymispäiväMerkittyTulevaisuuteen?: boolean
   oppivelvollisuudenSuorittamiseenKelpaava: boolean
+  näytettäväPerusopetuksenSuoritus: boolean
 }
 
 const opiskeluoikeusDateOrd = (key: keyof OpiskeluoikeusLaajatTiedot) =>
@@ -55,16 +60,20 @@ export const isValvottavaOpiskeluoikeus = (
 ) => (oo: OpiskeluoikeusSuppeatTiedot) =>
   oo.onValvottava && oo.oppilaitos.oid == organisaatioOid
 
+export const isPerusopetus = (oo: OpiskeluoikeusSuppeatTiedot) =>
+  oo.tyyppi.koodiarvo === "perusopetus"
+
 export const valvottavatOpiskeluoikeudet = (
   organisaatioOid: string | undefined,
   opiskeluoikeudet: Array<OpiskeluoikeusSuppeatTiedot>
 ) => opiskeluoikeudet.filter(isValvottavaOpiskeluoikeus(organisaatioOid))
 
-export const taulukossaNäytettäväOpiskeluoikeus = (
+export const opiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus = (
   opiskeluoikeus: OpiskeluoikeusSuppeatTiedot
 ): boolean => {
   const tila = opiskeluoikeus.tarkastelupäivänTila.koodiarvo
   return (
+    !isPerusopetus(opiskeluoikeus) &&
     opiskeluoikeus.oppivelvollisuudenSuorittamiseenKelpaava &&
     (tila === "voimassa" || tila === "voimassatulevaisuudessa")
   )

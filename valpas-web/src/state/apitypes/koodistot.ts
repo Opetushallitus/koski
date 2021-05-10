@@ -19,7 +19,23 @@ const koodiarvoCondition = <K extends KoodistoKoodiviite, S extends string>(
   uri === koodiviite.koodistoUri &&
   truthyValues.includes(koodiviite.koodiarvo as S)
 
-export type Opiskeluoikeudentyyppi = KoodistoKoodiviite<"opiskeluoikeudentyyppi">
+export type Opiskeluoikeudentyyppi = KoodistoKoodiviite<
+  "opiskeluoikeudentyyppi",
+  | "aikuistenperusopetus"
+  | "ammatillinenkoulutus"
+  | "diatutkinto"
+  | "esiopetus"
+  | "ibtutkinto"
+  | "internationalschool"
+  | "korkeakoulutus"
+  | "lukiokoulutus"
+  | "luva"
+  | "perusopetukseenvalmistavaopetus"
+  | "perusopetuksenlisaopetus"
+  | "perusopetus"
+  | "vapaansivistystyonkoulutus"
+  | "ylioppilastutkinto"
+>
 
 // TODO: Omakeksittyjä koodistoja. Pitää tsekata mitä löytyy valmiina.
 export type OppilaitosnumeroKoodistoviite = KoodistoKoodiviite<"oppilaitosnumero">
