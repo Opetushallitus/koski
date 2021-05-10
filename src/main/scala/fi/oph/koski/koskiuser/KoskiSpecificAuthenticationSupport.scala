@@ -26,5 +26,16 @@ trait KoskiSpecificAuthenticationSupport extends AuthenticationSupport with Kosk
     }
   }
 
+  def requirePalvelurooli(rooli: Palvelurooli) = {
+    getUser match {
+      case Left(status) if status.statusCode == 401 =>
+        haltWithStatus(status)
+      case _ =>
+        if (!koskiSessionOption.exists(_.hasPalvelurooli(_ == rooli))) {
+          haltWithStatus(KoskiErrorCategory.forbidden())
+        }
+    }
+  }
+
   def createSession(user: AuthenticationUser): KoskiSpecificSession = KoskiSpecificSession(user, request, application.käyttöoikeusRepository)
 }

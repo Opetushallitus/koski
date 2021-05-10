@@ -20,6 +20,7 @@ import fi.oph.koski.omattiedot.{OmatTiedotHtmlServlet, OmatTiedotServlet}
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusServlet, OpiskeluoikeusValidationServlet}
 import fi.oph.koski.oppija.{OppijaServlet, OppijaServletV2}
 import fi.oph.koski.oppilaitos.OppilaitosServlet
+import fi.oph.koski.oppivelvollisuustieto.OppivelvollisuustietoServlet
 import fi.oph.koski.organisaatio.OrganisaatioServlet
 import fi.oph.koski.permission.PermissionCheckServlet
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotServlet
@@ -88,6 +89,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     mount("/api/oppija", new OppijaServlet)
     mount("/api/v2/oppija", new OppijaServletV2)
     mount("/api/oppilaitos", new OppilaitosServlet)
+    mount("/api/oppivelvollisuustieto", new OppivelvollisuustietoServlet)
     mount("/api/organisaatio", new OrganisaatioServlet)
     mount("/api/permission", new PermissionCheckServlet)
     mount("/api/pulssi", new PulssiServlet)
