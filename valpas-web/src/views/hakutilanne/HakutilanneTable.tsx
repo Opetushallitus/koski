@@ -23,7 +23,8 @@ import {
   SelectableDataTable,
   SelectableDataTableProps,
 } from "../../components/tables/SelectableDataTable"
-import { getLocalized, t, Translation } from "../../i18n/i18n"
+import { InfoTooltip } from "../../components/tooltip/InfoTooltip"
+import { getLocalized, T, t, Translation } from "../../i18n/i18n"
 import { HakuSuppeatTiedot, selectByHakutoive } from "../../state/apitypes/haku"
 import {
   isEiPaikkaa,
@@ -110,7 +111,14 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
 
   if (isFeatureFlagEnabled("ilmoittaminen")) {
     columns.push({
-      label: t("hakutilanne__taulu_muu_haku"),
+      label: (
+        <>
+          <T id="hakutilanne__taulu_muu_haku" />
+          <InfoTooltip>
+            <T id="hakutilanne__taulu_muu_haku_tooltip" />
+          </InfoTooltip>
+        </>
+      ),
     })
   }
 
