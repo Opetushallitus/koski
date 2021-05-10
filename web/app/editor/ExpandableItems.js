@@ -2,7 +2,7 @@ import * as R from 'ramda'
 import Bacon from 'baconjs'
 
 /** component is used to persist state inside a React.createClass component */
-export const accumulateExpandedState = ({suoritukset, keyF = s => s.arrayKey, filter, component}) => {
+export const accumulateExpandedState = ({suoritukset, keyF = s => s.arrayKey, filter = R.identity, component}) => {
   let toggleExpandAllBus = Bacon.Bus()
   let setExpandedBus = Bacon.Bus()
   let initialState = initialStateFromComponent(component)

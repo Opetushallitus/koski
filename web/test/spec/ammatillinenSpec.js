@@ -532,7 +532,7 @@ describe('Ammatillinen koulutus', function() {
         )
 
         it('Lisätty opiskeluoikeus näytetään', function() {
-          expect(textsOf(toArray(S('.tutkinnon-osan-ryhma')))).to.deep.equal([
+          expect(textsOf(toArray(S('.group-header > tr > td.suoritus')))).to.deep.equal([
             'Ammatilliset tutkinnon osat',
             'Yhteiset tutkinnon osat'])
         })

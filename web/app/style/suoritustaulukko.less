@@ -21,7 +21,20 @@
           }
         }
       }
-      > tbody.group-header {
+      tbody.vst-osasuoritus {
+        &+ tbody.vst-osasuoritus {
+          border-top: 1px solid #eee;
+        }
+        .suoritus-taulukko {
+          > table {
+            width: initial;
+            .expand-all {
+              display: none;
+            }
+          }
+        }
+      }
+      > tbody.group-header, tbody.taulukko-headers {
         background: @color-neutral-gray;
         th {
           padding-left: 13px;
@@ -34,6 +47,16 @@
           }
         }
       }
+
+      div.lisaa-uusi-suoritus {
+        margin-bottom: 8px;
+
+        a.add-link {
+          .AddSymbol;
+          margin-right: 20px;
+        }
+      }
+
       > tbody > tr, > thead > tr {
         > td, > th {
           padding: 5px 13px 5px 0;
@@ -225,7 +248,7 @@
               text-align: center;
             }
 
-            > th.tutkinnon-osan-ryhma, > td.suoritus {
+            > th.suoritus, > td.suoritus {
               width: 100%;
               text-align: left;
             }

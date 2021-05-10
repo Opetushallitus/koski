@@ -162,6 +162,7 @@ function OpinnotPage() {
     versiohistoria: Versiohistoria(),
     oppiaineet: Oppiaineet(),
     tutkinnonOsat: TutkinnonOsat,
+    vstSuoritukset: VSTSuoritukset(),
     ibYhteisetSuoritukset: IBSuoritukset(),
     avaaKaikki: click(findSingle('.expand-all')),
     suljeKaikki: click(findSingle('.expand-all.koski-button.expanded')),
@@ -586,6 +587,60 @@ function LiittyyTutkinnonOsaan(property) {
     }
   }
   return api
+}
+
+function VSTSuoritukset(prev) {
+  var selectedOsasuoritus = prev
+  var api = {
+    lisääOsaamiskokonaisuus: function(hakusana) {
+      return function () {
+        return Page(findSingle('.lisaa-uusi-suoritus.vst-osaamiskokonaisuus', selectedOsasuoritus))
+          .setInputValue(".dropdown, .autocomplete", hakusana)()
+          .then(wait.forAjax)
+      }
+    },
+    lisääSuuntautumisopinto: function(hakusana) {
+      return function () {
+        return Page(findSingle('.lisaa-uusi-suoritus.vst-suuntautumisopinnot', selectedOsasuoritus))
+          .setInputValue(".dropdown, .autocomplete", hakusana)()
+          .then(wait.forAjax)
+      }
+    },
+    lisääMuuallaSuoritettuOpinto: function(hakusana) {
+      return function () {
+        return Page(findSingle('.lisaa-uusi-suoritus.vst-muutopinnot', selectedOsasuoritus))
+          .setInputValue(".dropdown, .autocomplete", hakusana)()
+          .then(wait.forAjax)
+      }
+    },
+    lisääPaikallinen: function(nimi) {
+      return function () {
+        var modalElement = findSingle('.lisaa-paikallinen-suoritus-modal', selectedOsasuoritus)
+        return click(findSingle('.lisaa-paikallinen-suoritus a', selectedOsasuoritus))()
+          .then(Page(modalElement).setInputValue('input', nimi))
+          .then(click(subElement(modalElement, 'button.vahvista:not(:disabled)')))
+      }
+    },
+    selectOsasuoritus: function (nimi) {
+      return function () {
+        var osasuoritukset = selectedOsasuoritus ? selectedOsasuoritus.find('.vst-osasuoritus') : S('.vst-osasuoritus')
+
+        var found
+
+        osasuoritukset.each(function (i, e) {
+          if (extractAsText(S(e).find('tr > td.suoritus > button.nimi')).includes(nimi)) {
+            found = S(e)
+          }
+        })
+
+        if (!found) {
+          throw Error('Osasuoritus ' + nimi + ' not found')
+        }
+        return VSTSuoritukset(found)
+      }
+    }
+  }
+  return _.merge(api, Editor(S(selectedOsasuoritus)), Property(function () { return S(selectedOsasuoritus) }))
 }
 
 function IBSuoritukset() {
