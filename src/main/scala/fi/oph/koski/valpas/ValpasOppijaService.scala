@@ -81,11 +81,17 @@ class ValpasOppijaService(
   // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
   // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
   // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
-  def getOppijatSuppeatTiedot(oppilaitosOids: Set[ValpasOppilaitos.Oid])(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =
+  def getOppijatSuppeatTiedot
+    (oppilaitosOids: Set[ValpasOppilaitos.Oid])
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =
     getOppijatLaajatTiedot(oppilaitosOids)
       .map(_.map(OppijaHakutilanteillaSuppeatTiedot.apply))
 
-  private def getOppijatLaajatTiedot(oppilaitosOids: Set[ValpasOppilaitos.Oid])(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
+  private def getOppijatLaajatTiedot
+    (oppilaitosOids: Set[ValpasOppilaitos.Oid])
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
     val errorClue = oppilaitosOids.size match {
       case 1 => s"oppilaitos:${oppilaitosOids.head}"
       case n if n > 1 => s"oppilaitokset[$n]:${oppilaitosOids.head}, ..."

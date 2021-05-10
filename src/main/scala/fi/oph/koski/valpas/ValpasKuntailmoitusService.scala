@@ -7,7 +7,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Koodistokoodiviite, OidOrganisaatio, OrganisaatioWithOid}
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppilaitos
-import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoituksenOppijanYhteystiedot, ValpasKuntailmoituksenTekijäHenkilö, ValpasKuntailmoitusLaajatTiedotJaOppijaOid, ValpasKuntailmoitusPohjatiedot, ValpasKuntailmoitusPohjatiedotInput, ValpasOppijanPohjatiedot, ValpasPohjatietoYhteystieto}
+import fi.oph.koski.valpas.valpasrepository._
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 import fi.oph.koski.valpas.yhteystiedot.{ValpasYhteystiedot, ValpasYhteystietoHakemukselta, ValpasYhteystietoOppijanumerorekisteristä}
 
@@ -40,7 +40,6 @@ class ValpasKuntailmoitusService(
       )
       .flatMap(_ => repository.create(kuntailmoitusInput))
   }
-
 
   def haePohjatiedot(
     pohjatiedotInput: ValpasKuntailmoitusPohjatiedotInput
@@ -134,7 +133,7 @@ class ValpasKuntailmoitusService(
       }
     }
 
-    pohjatiedot.copy(maat  = maat)
+    pohjatiedot.copy(maat = maat)
   }
 
   private def täydennäYhteydenottokielillä(
@@ -161,10 +160,10 @@ class ValpasKuntailmoitusService(
   private def haeOppijat(
     pohjatiedotInput: ValpasKuntailmoitusPohjatiedotInput
   )(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
-    (pohjatiedotInput.tekijäOrganisaatio match {
+    pohjatiedotInput.tekijäOrganisaatio match {
       case Some(oppilaitos) => haeOppilaitoksenOppijat(oppilaitos.oid, pohjatiedotInput.oppijaOidit)
       case _ => haeYksittäisetOppijat(pohjatiedotInput.oppijaOidit)
-    })
+    }
   }
 
   private def haeOppilaitoksenOppijat(
@@ -186,8 +185,8 @@ class ValpasKuntailmoitusService(
     oppijatHakutilanteilla: Seq[OppijaHakutilanteillaLaajatTiedot]
   ): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
     def lessThanInputinJärjestyksenMukaan(
-      a:OppijaHakutilanteillaLaajatTiedot,
-      b:OppijaHakutilanteillaLaajatTiedot
+      a: OppijaHakutilanteillaLaajatTiedot,
+      b: OppijaHakutilanteillaLaajatTiedot
     ): Boolean = {
       pohjatiedotInput.oppijaOidit.indexOf(a.oppija.henkilö.oid) < pohjatiedotInput.oppijaOidit.indexOf(b.oppija.henkilö.oid)
     }
@@ -320,7 +319,7 @@ class ValpasKuntailmoitusService(
   private def yhteydenottokieli(äidinkieli: Option[String]): Option[Koodistokoodiviite] = {
     val koodistoviite = äidinkieli match {
       case Some("sv") => Koodistokoodiviite("SV", "kieli")
-      case _ =>  Koodistokoodiviite("FI", "kieli")
+      case _ => Koodistokoodiviite("FI", "kieli")
     }
     koodistoViitePalvelu.validate(koodistoviite)
   }
@@ -339,7 +338,7 @@ class ValpasKuntailmoitusService(
   )(implicit session: ValpasSession): ValpasKuntailmoitusPohjatiedot = {
     val kaikissaOppijoissaEsiintyvätMahdollisetTekijäOrganisaatiot =
       pohjatiedot.oppijat.map(_.mahdollisetTekijäOrganisaatiot).map(_.toSet)
-        .reduceLeft((a,b) => a.intersect(b))
+        .reduceLeft((a, b) => a.intersect(b))
         .toSeq
 
     pohjatiedot.copy(
