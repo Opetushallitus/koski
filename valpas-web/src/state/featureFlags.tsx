@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Redirect } from "react-router-dom"
 import { runningLocally } from "../utils/environment"
 
@@ -12,15 +12,20 @@ export const featureFlags: Record<Feature, string> = {
 const featureFlagEnabledValue = "enabled"
 
 export type FeatureFlagEnablerProps = {
-  feature: Feature
+  features: Feature[]
   redirectTo: string
 }
 
 export const FeatureFlagEnabler = (props: FeatureFlagEnablerProps) => {
-  window.localStorage.setItem(
-    featureFlags[props.feature],
-    featureFlagEnabledValue
-  )
+  useEffect(() => {
+    props.features.map((feature) => {
+      window.localStorage.setItem(
+        featureFlags[feature],
+        featureFlagEnabledValue
+      )
+    })
+  })
+
   return <Redirect to={props.redirectTo} />
 }
 
