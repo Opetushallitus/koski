@@ -161,7 +161,7 @@
     <dependency>
       <groupId>io.reactivex</groupId>
       <artifactId>rxscala_2.12</artifactId>
-      <version>0.26.5</version>
+      <version>0.27.0</version>
     </dependency>
     <dependency>
       <groupId>io.reactivex</groupId>
