@@ -61,6 +61,7 @@ object MockUsers {
   val valviraKäyttäjä = KoskiMockUser("Valvira", "Ville", "1.2.246.562.24.42042042040", Set(KäyttöoikeusViranomainen(List(Palvelurooli(VALVIRA)))))
   val esiopetusTallentaja = KoskiMockUser("esiopetus-tallentaja", "esiopetus-tallentaja", "1.2.246.562.24.42042042041", Set(KäyttöoikeusOrg(OidOrganisaatio(helsinginKaupunki), List(Palvelurooli(READ_UPDATE_ESIOPETUS), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)), true, None)))
   val perusopetusTallentaja =  KoskiMockUser("esiopetus-tallentaja", "esiopetus-tallentaja", "1.2.246.562.24.42042042042", Set(KäyttöoikeusOrg(OidOrganisaatio(jyväskylänNormaalikoulu), List(Palvelurooli(PERUSOPETUS), Palvelurooli(READ_UPDATE), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)), true, None)))
+  val oppivelvollisuutietoRajapinta = KoskiMockUser("oppivelvollisuustieto-rajapinnan-kutsuja", "oppivelvollisuustieto-rajapinnan-kutsuja", "1.2.246.562.24.42042042444", Set(KäyttöoikeusGlobal(List(Palvelurooli(OPPIVELVOLLISUUSTIETO_RAJAPINTA)))))
 
   val users = List(
     kalle,
@@ -105,7 +106,8 @@ object MockUsers {
     suomiFiKäyttäjä,
     tilastokeskusKäyttäjä,
     valviraKäyttäjä,
-    esiopetusTallentaja
+    esiopetusTallentaja,
+    oppivelvollisuutietoRajapinta
   )
 }
 
