@@ -1,9 +1,7 @@
 package fi.oph.koski.api
 
-import java.time.{LocalDate, LocalDateTime}
-
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.KoskiTables.{OpiskeluOikeudet, OpiskeluoikeusHistoria}
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.{AmmatillinenOldExamples, ReforminMukainenErikoisammattitutkintoExample => Reformi}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.reformitutkinto
@@ -12,11 +10,21 @@ import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.{AuditLogTester, RootLogTester}
 import fi.oph.koski.schema.Opiskeluoikeus
+import fi.oph.koski.{DatabaseTestMethods, DirtiesFixtures, KoskiHttpSpec}
 import org.json4s.JsonAST.{JArray, JNothing}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.FreeSpec
 
-class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with HistoryTestMethods with DatabaseTestMethods {
+import java.time.{LocalDate, LocalDateTime}
+
+class OpiskeluoikeusHistorySpec
+  extends FreeSpec
+    with KoskiHttpSpec
+    with OpiskeluoikeusTestMethodsAmmatillinen
+    with HistoryTestMethods
+    with DatabaseTestMethods
+    with DirtiesFixtures {
+
   val uusiOpiskeluoikeus = defaultOpiskeluoikeus
   val oppija = KoskiSpecificMockOppijat.tyhjä
 
@@ -146,10 +154,11 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
            |  "from" : "/suoritukset/0/osasuoritukset/3"
            |} ]
           """.stripMargin.trim)
+
+        resetFixtures() // Siivoa muutokset
       }
 
       "Virhe historiatiedoissa lokitetaan" in {
-        resetFixtures
         val suoritus = Reformi.tutkinnonSuoritus.copy(osasuoritukset = Some(Reformi.osasuoritukset.drop(1)))
         putOpiskeluoikeus(Reformi.opiskeluoikeus.copy(suoritukset = List(suoritus)), henkilö = reformitutkinto) {
           val oo = readPutOppijaResponse.opiskeluoikeudet.head

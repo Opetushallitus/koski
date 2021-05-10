@@ -1,8 +1,7 @@
 package fi.oph.koski.mocha
 
-import fi.oph.koski.api.SharedJetty
-
-import org.scalatest.{Tag}
+import fi.oph.koski.SharedJetty
+import org.scalatest.Tag
 
 class KoskiMochaSpec extends KoskiCommandLineSpec {
   "Mocha tests" taggedAs(MochaTag) in {

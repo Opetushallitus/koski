@@ -1,10 +1,11 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsPerusopetus}
-import org.scalatest.FreeSpec
+import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.api.OpiskeluoikeusTestMethodsPerusopetus
 import fi.oph.koski.documentation.PerusopetusExampleData._
+import org.scalatest.FreeSpec
 
-class KoulusivistyskieliPerusopetusSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsPerusopetus {
+class KoulusivistyskieliPerusopetusSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsPerusopetus {
 
   "Koulusivistyskieli - Nuorten perusopetuksen oppimäärän suoritus" - {
 

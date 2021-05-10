@@ -1,17 +1,16 @@
 package fi.oph.koski.mydata
 
-import java.time.LocalDate
-
-import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.api.LocalJettyHttpSpecification
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import fi.oph.koski.http.{BasicAuthentication, HttpTester}
+import fi.oph.koski.http.BasicAuthentication
 import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.json4s._
 import org.json4s.jackson.Serialization.write
 import org.scalatest.{FreeSpec, Matchers}
 
-class MyDataAPIProxyServletTest extends FreeSpec with LocalJettyHttpSpecification with Matchers with HttpTester {
+import java.time.LocalDate
+
+class MyDataAPIProxyServletTest extends FreeSpec with KoskiHttpSpec with Matchers {
 
   implicit val formats = DefaultFormats
 
@@ -35,6 +34,15 @@ class MyDataAPIProxyServletTest extends FreeSpec with LocalJettyHttpSpecificatio
       requestOpintoOikeudet(opiskelija.hetu.get, memberHeaders(memberCode)){
         status should equal(403)
         body should include("X-ROAD-MEMBER:llä ei ole lupaa hakea opiskelijan tietoja")
+      }
+    }
+
+    "Palauttaa 404-virheen kun opinto-oikeutta ei löydy" in {
+      KoskiApplicationForTests.mydataRepository.create(opiskelija.oid, memberId)
+
+      requestOpintoOikeudet("131047-803F", memberHeaders(memberCode)){
+        status should equal(404)
+        body should include("Oppijaa ei löydy annetulla oidilla tai käyttäjällä ei ole oikeuksia tietojen katseluun.")
       }
     }
 

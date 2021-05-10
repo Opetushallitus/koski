@@ -1,16 +1,22 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.AmmatillinenExampleData._
-import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{eerola, lukiolainen}
+import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.schema.LocalizedString.{english, finnish, swedish}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Wait
-import org.scalatest.{BeforeAndAfterAll, FreeSpec}
+import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests, KoskiHttpSpec}
+import org.scalatest.FreeSpec
 
-class OpiskeluoikeudenPerustiedotSpec extends FreeSpec with BeforeAndAfterAll with LocalJettyHttpSpecification with SearchTestMethods with MuuAmmatillinenTestMethods[MuunAmmatillisenKoulutuksenSuoritus] {
-  override protected def beforeAll(): Unit = createEnglanninkielinenSuoritus
+class OpiskeluoikeudenPerustiedotSpec
+  extends FreeSpec
+    with DirtiesFixtures
+    with KoskiHttpSpec
+    with SearchTestMethods
+    with MuuAmmatillinenTestMethods[MuunAmmatillisenKoulutuksenSuoritus] {
+
+  override protected def alterFixture(): Unit = createEnglanninkielinenSuoritus
 
   "Perustiedot" - {
     "Suomenkielinen haku toimii koulutusmoduuleilla jotka on luotu vain englanninkielisellä nimellä" in {

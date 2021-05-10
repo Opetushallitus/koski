@@ -1,12 +1,13 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.ExamplesValma
 import fi.oph.koski.documentation.ExamplesValma.valmaKoulutuksenSuoritus
 import fi.oph.koski.schema._
 
 import scala.reflect.runtime.universe.TypeTag
 
-class OppijaValidationValmaSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with LocalJettyHttpSpecification {
+class OppijaValidationValmaSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with KoskiHttpSpec {
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(
     valmaKoulutuksenSuoritus.copy(koulutusmoduuli = valmaKoulutuksenSuoritus.koulutusmoduuli.copy(perusteenDiaarinumero = diaari))
   ))

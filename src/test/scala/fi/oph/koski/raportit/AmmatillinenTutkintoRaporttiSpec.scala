@@ -14,6 +14,11 @@ import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with OpiskeluoikeusTestMethodsAmmatillinen with BeforeAndAfterAll {
 
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
+    reloadRaportointikanta
+  }
+
   lazy val repository = AmmatillisenRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
 
   "Suoritustietojen tarkistusraportti" - {
@@ -309,8 +314,6 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
       verifyRaportinLataaminen(apiUrl = "api/raportit/ammatillinentutkintosuoritustietojentarkistus", expectedRaporttiNimi = AmmatillinenTutkintoSuoritustietojenTarkistus.toString, expectedFileNamePrefix = "suoritustiedot")
     }
   }
-
-  override def beforeAll(): Unit = reloadRaportointikanta
 
   private val defaultHetu = KoskiSpecificMockOppijat.ammattilainen.hetu.get
 

@@ -1,10 +1,7 @@
 package fi.oph.koski.luovutuspalvelu
 
-import java.time.LocalDate.{of => date}
-import java.time.format.DateTimeFormatter.ISO_INSTANT
-import java.time.{LocalDate, ZonedDateTime}
-
-import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsAmmatillinen}
+import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.documentation.{ExampleData, ExamplesLukio, LukioExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
@@ -15,7 +12,11 @@ import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import org.scalatest.{FreeSpec, Matchers}
 
-class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with Matchers {
+import java.time.LocalDate.{of => date}
+import java.time.format.DateTimeFormatter.ISO_INSTANT
+import java.time.{LocalDate, ZonedDateTime}
+
+class TilastokeskusSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with Matchers {
   import fi.oph.koski.util.DateOrdering._
   "Tilastokeskus-API" - {
     "Hakee oppijoiden tiedot" in {

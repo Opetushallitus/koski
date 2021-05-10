@@ -24,7 +24,10 @@ class AikuistenPerusopetuksenOppimääränKurssikertymätSpec extends FreeSpec w
   private lazy val raportti =
     raporttiBuilder.build(List(jyväskylänNormaalikoulu), date(2006, 1, 1), date(2016, 12, 30))(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenOppimääränKurssikertymätRow])
 
-  override def beforeAll(): Unit = reloadRaportointikanta
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
+    reloadRaportointikanta
+  }
 
   def tag = implicitly[reflect.runtime.universe.TypeTag[AikuistenPerusopetuksenOpiskeluoikeus]]
   override def defaultOpiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = longTimeAgo)

@@ -1,6 +1,5 @@
 import fi.oph.koski.cache.CacheServlet
 import fi.oph.koski.config.{KoskiApplication, RunMode}
-import fi.oph.koski.db._
 import fi.oph.koski.documentation.{DocumentationApiServlet, DocumentationServlet, KoodistoServlet}
 import fi.oph.koski.util.Timing
 import fi.oph.koski.editor.{EditorKooditServlet, EditorServlet}
@@ -43,10 +42,10 @@ import javax.servlet.ServletContext
 import org.scalatra._
 
 class ScalatraBootstrap extends LifeCycle with Logging with Timing {
-  override def init(context: ServletContext) = try {
+  override def init(context: ServletContext): Unit = try {
     val application = Option(context.getAttribute("koski.application").asInstanceOf[KoskiApplication]).getOrElse(KoskiApplication.apply)
 
-    application.runMode match {
+    RunMode.get match {
       case RunMode.NORMAL => initKoskiServices(context)(application)
       case RunMode.GENERATE_RAPORTOINTIKANTA => generateRaportointikanta(application)
     }
@@ -56,8 +55,8 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
       System.exit(1)
   }
 
-  def initKoskiServices(context: ServletContext)(implicit application: KoskiApplication) = {
-    def mount(path: String, handler: Handler) = context.mount(handler, path)
+  private def initKoskiServices(context: ServletContext)(implicit application: KoskiApplication): Unit = {
+    def mount(path: String, handler: Handler): Unit = context.mount(handler, path)
 
     val initTasks = application.init() // start parallel initialization tasks
 
@@ -135,15 +134,14 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
 
     if (application.fixtureCreator.shouldUseFixtures) {
       context.mount(new FixtureServlet, "/fixtures")
-      timed("Loading fixtures")(application.fixtureCreator.resetFixtures())
+      timed("Loading fixtures")(application.fixtureCreator.resetFixtures(reloadRaportointikanta = true))
     }
   }
 
-  def generateRaportointikanta(application: KoskiApplication): Unit = {
+  private def generateRaportointikanta(application: KoskiApplication): Unit = {
     val service = new RaportointikantaService(application)
     service.loadRaportointikantaAndExit()
   }
 
-  override def destroy(context: ServletContext) = {
-  }
+  override def destroy(context: ServletContext): Unit = ()
 }

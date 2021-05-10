@@ -1,20 +1,21 @@
 package fi.oph.koski.api
 
-import java.time.LocalDate
-
+import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.{AmmatillinenExampleData, LukioExampleData}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
-import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.schema._
-import org.json4s.jackson.JsonMethods
-import org.scalatest.{FreeSpec, Matchers}
-import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.schema._
 import fi.oph.koski.suoritusjako.{Suoritusjako, SuoritusjakoDeleteRequest, SuoritusjakoRequest, SuoritusjakoUpdateRequest}
 import fi.oph.scalaschema.SchemaValidatingExtractor
+import org.json4s.jackson.JsonMethods
+import org.scalatest.{FreeSpec, Matchers}
 
-class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with LocalJettyHttpSpecification {
+import java.time.LocalDate
+
+class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with KoskiHttpSpec {
 
   import fi.oph.koski.schema.KoskiSchema.deserializationContext
 
@@ -80,7 +81,7 @@ class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestM
   }
 
   "Ei voi jakaa opiskeluoikeutta johon on lisätty suorituksia" in {
-    import fi.oph.koski.documentation.LukioExampleData.{suoritus, lukionOppiaine, arviointi, valtakunnallinenKurssi, kurssisuoritus, numeerinenArviointi}
+    import fi.oph.koski.documentation.LukioExampleData._
     val ylimääräinenSuoritus = suoritus(LukioExampleData.lukionOppiaine("FOO", None)).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
       kurssisuoritus(valtakunnallinenKurssi("BAR")).copy(arviointi = numeerinenArviointi(8), tunnustettu = Some(AmmatillinenExampleData.tunnustettu))
     )))

@@ -1,14 +1,14 @@
 package fi.oph.koski.raportit
 
-import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.koskiuser.{KoskiMockUser, MockUser}
+import fi.oph.koski.koskiuser.KoskiMockUser
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenOppijamäärätRaportti, AikuistenPerusopetuksenOppijamäärätRaporttiRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+
+import java.time.LocalDate.{of => date}
 
 class AikuistenPerusopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll {
   private val application = KoskiApplicationForTests
@@ -16,7 +16,10 @@ class AikuistenPerusopetuksenOppijamäärätRaporttiSpec extends FreeSpec with M
   private lazy val raportti =
     raporttiBuilder.build(List(jyväskylänNormaalikoulu), date(2010, 1, 1))(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenOppijamäärätRaporttiRow])
 
-  override def beforeAll(): Unit = reloadRaportointikanta
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
+    reloadRaportointikanta
+  }
 
   "Aikuisten perusopetuksen oppijamäärien raportti" - {
     "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {

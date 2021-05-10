@@ -1,16 +1,16 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import org.scalatest.{FreeSpec, Matchers}
 
-class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsKorkeakoulu with SearchTestMethods with LocalJettyHttpSpecification {
+class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsKorkeakoulu with SearchTestMethods with KoskiHttpSpec {
   "Korkeakoulun opiskeluoikeudet" - {
     "Lisättäessä/päivitettäessä" - {
       "palautetaan HTTP 501" in {
-        resetFixtures
         putOpiskeluoikeus(defaultOpiskeluoikeus) {
           verifyResponseStatus(501, KoskiErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ja ylioppilastutkintojen tietoja ei voi päivittää Koski-järjestelmässä"))
         }

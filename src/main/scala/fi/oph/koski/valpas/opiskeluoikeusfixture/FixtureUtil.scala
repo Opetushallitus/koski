@@ -14,8 +14,8 @@ object FixtureUtil {
   def resetMockData(app: KoskiApplication, tarkastelupäivä: LocalDate = DefaultTarkastelupäivä): FixtureState = synchronized {
     ValpasMockUsers.mockUsersEnabled = true
     app.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(tarkastelupäivä)
-    app.fixtureCreator.resetFixtures(app.fixtureCreator.valpasFixtureState)
-    new ValpasDatabaseFixtureLoader(app.valpasKuntailmoitusQueryService).reset()
+    app.fixtureCreator.resetFixtures(app.fixtureCreator.valpasFixtureState, reloadRaportointikanta = true)
+    new ValpasDatabaseFixtureLoader(app.valpasKuntailmoitusRepository).reset()
     FixtureState(app)
   }
 

@@ -15,7 +15,8 @@ class LukioDiaIbInternationalOpiskelijaMaaratRaporttiSpec extends FreeSpec with 
 
   override def defaultUser = MockUsers.helsinginKaupunkiPalvelukäyttäjä
 
-  override def beforeAll() = {
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
     reloadRaportointikanta
   }
 

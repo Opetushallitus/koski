@@ -1,12 +1,12 @@
 package fi.oph.koski.valpas.db
 
 import fi.oph.koski.log.Logging
-import fi.oph.koski.valpas.valpasrepository.{ValpasExampleData, ValpasKuntailmoitusQueryService}
+import fi.oph.koski.valpas.valpasrepository.{ValpasExampleData, ValpasKuntailmoitusRepository}
 
-class ValpasDatabaseFixtureLoader(kuntailmoitusQueryService: ValpasKuntailmoitusQueryService) extends Logging {
+class ValpasDatabaseFixtureLoader(kuntailmoitusRepository: ValpasKuntailmoitusRepository) extends Logging {
   def reset(): Unit = {
     logger.info("Resetting Valpas DB fixtures")
-    kuntailmoitusQueryService.truncate()
+    kuntailmoitusRepository.truncate()
     loadIlmoitukset()
   }
 
@@ -14,7 +14,7 @@ class ValpasDatabaseFixtureLoader(kuntailmoitusQueryService: ValpasKuntailmoitus
     val fixtures = ValpasExampleData.ilmoitukset
     logger.info(s"Inserting ${fixtures.length} ilmoitus fixtures")
     fixtures.foreach { fx =>
-      kuntailmoitusQueryService.create(fx).left.foreach(e => logger.error(s"Fixture insertion failed: $e"))
+      kuntailmoitusRepository.create(fx).left.foreach(e => logger.error(s"Fixture insertion failed: $e"))
     }
   }
 }

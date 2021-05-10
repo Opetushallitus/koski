@@ -42,12 +42,16 @@ class OpintopolkuDirectoryClientSpec extends FreeSpec with Matchers with EitherV
     }
   }
 
-  override def beforeAll {
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
     wireMockServer.start()
     mockEndpoints
   }
 
-  override def afterAll: Unit = wireMockServer.stop()
+  override protected def afterAll(): Unit = {
+    wireMockServer.stop()
+    super.afterAll()
+  }
 
   private def mockEndpoints = {
     val ticketUrl = "/cas/v1/tickets"

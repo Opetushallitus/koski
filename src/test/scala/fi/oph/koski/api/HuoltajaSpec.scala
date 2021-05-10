@@ -1,18 +1,15 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.AuditLogTester
 import org.json4s.jackson.JsonMethods
 import org.json4s.{DefaultFormats, JObject}
-import org.scalatest.{BeforeAndAfterAll, FreeSpec}
+import org.scalatest.FreeSpec
 
-class HuoltajaSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsPerusopetus with BeforeAndAfterAll {
-  implicit val formats = DefaultFormats
-
-  override protected def beforeAll(): Unit = {
-    resetFixtures
-  }
+class HuoltajaSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsPerusopetus {
+  private implicit val formats = DefaultFormats
 
   "Huollettavan tietojen katselu" - {
     "Tarkistaa, että huollettavat tulevat login-datan mukana" in {

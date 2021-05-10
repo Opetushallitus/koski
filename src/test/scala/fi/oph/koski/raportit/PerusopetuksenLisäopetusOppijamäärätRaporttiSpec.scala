@@ -1,16 +1,20 @@
 package fi.oph.koski.raportit
 
-import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.koskiuser.{KoskiMockUser, MockUser}
+import fi.oph.koski.koskiuser.KoskiMockUser
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
+import java.time.LocalDate.{of => date}
+
 class PerusopetuksenLisäopetusOppijamäärätRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll {
-  override def beforeAll(): Unit = reloadRaportointikanta
+
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
+    reloadRaportointikanta
+  }
 
   private def session(user: KoskiMockUser) = user.toKoskiSpecificSession(application.käyttöoikeusRepository)
 

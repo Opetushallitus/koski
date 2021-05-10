@@ -1,18 +1,14 @@
 package fi.oph.koski.valpas
 
-import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.{AuditLogTester, KoskiMessageField}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.schema.OidOrganisaatio
 import fi.oph.koski.valpas.log.ValpasOperation
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 import org.scalatest.{BeforeAndAfterEach, Tag}
 
-class ValpasRootApiServletSpec extends ValpasHttpTestBase with BeforeAndAfterEach {
-  override def defaultUser = ValpasMockUsers.valpasJklNormaalikoulu
-
-  override def beforeEach() {
+class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
+  override protected def beforeEach() {
     AuditLogTester.clearMessages
   }
 

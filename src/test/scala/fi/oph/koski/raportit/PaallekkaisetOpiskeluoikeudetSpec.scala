@@ -14,7 +14,11 @@ import org.scalatest.{BeforeAndAfterAll, FreeSpec}
 class PaallekkaisetOpiskeluoikeudetSpec extends FreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll {
 
   override def defaultUser = MockUsers.helsinginKaupunkiPalvelukäyttäjä
-  override def beforeAll() = reloadRaportointikanta
+
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
+    reloadRaportointikanta
+  }
 
   lazy val helsinginRaportti = loadRaportti(MockOrganisaatiot.helsinginKaupunki)
   lazy val stadinRaportti = loadRaportti(MockOrganisaatiot.stadinAmmattiopisto)

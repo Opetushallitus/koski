@@ -1,8 +1,6 @@
 package fi.oph.koski.api
 
-import java.time.LocalDate.{of => date}
-import java.time.{LocalDate, LocalDateTime}
-
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.AmmatillinenOldExamples.muunAmmatillisenTutkinnonOsanSuoritus
 import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo, opiskeluoikeusLäsnä, valtionosuusRahoitteinen}
@@ -21,7 +19,10 @@ import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.schema._
 import org.scalatest.FreeSpec
 
-class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
+import java.time.LocalDate.{of => date}
+import java.time.{LocalDate, LocalDateTime}
+
+class OppijaUpdateSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
   val oppija = KoskiSpecificMockOppijat.tyhjä
 
   "Opiskeluoikeuden lisääminen" - {

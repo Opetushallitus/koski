@@ -14,6 +14,11 @@ import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class AmmatillinenOpiskelijavuositiedotRaporttiSpec extends FreeSpec with RaportointikantaTestMethods with OpiskeluoikeusTestMethods with Matchers with BeforeAndAfterAll {
 
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
+    reloadRaportointikanta
+  }
+
   private lazy val raportointiDatabase = KoskiApplicationForTests.raportointiDatabase
 
   "Opiskelijavuositiedot" - {
@@ -158,6 +163,4 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec extends FreeSpec with Raport
       }
     }
   }
-
-  override def beforeAll(): Unit = reloadRaportointikanta
 }

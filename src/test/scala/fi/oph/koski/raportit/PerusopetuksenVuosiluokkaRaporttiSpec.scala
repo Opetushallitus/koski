@@ -22,10 +22,12 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     with OpiskeluoikeusTestMethodsPerusopetus
     with BeforeAndAfterAll {
 
-  override def beforeAll(): Unit = reloadRaportointikanta
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
+    reloadRaportointikanta
+  }
 
-  lazy val app = KoskiApplicationForTests
-  lazy val repository = PerusopetuksenRaportitRepository(app.raportointiDatabase.db)
+  private lazy val repository = PerusopetuksenRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
 
   "Perusopetuksenvuosiluokka raportti" - {
 

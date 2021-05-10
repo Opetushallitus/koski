@@ -1,8 +1,8 @@
 package fi.oph.koski.sure
 
-import fi.oph.koski.api.{DatabaseTestMethods, LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsAmmatillinen}
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.db.KoskiTables.OpiskeluOikeudet
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
@@ -10,13 +10,14 @@ import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVas
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema._
+import fi.oph.koski.{DatabaseTestMethods, KoskiHttpSpec}
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s.JsonAST.{JArray, JBool}
 import org.json4s.jackson.JsonMethods
 import org.json4s.{DefaultFormats, JString, JValue}
 import org.scalatest.{FreeSpec, Matchers}
 
-class SureSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with DatabaseTestMethods with Matchers {
+class SureSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with DatabaseTestMethods with Matchers {
 
   import fi.oph.koski.schema.KoskiSchema.deserializationContext
   implicit val formats = DefaultFormats

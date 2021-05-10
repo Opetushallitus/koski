@@ -1,10 +1,6 @@
 package fi.oph.koski.raportointikanta
 
-import java.sql.{Date, Timestamp}
-import java.time.LocalDate
-
-import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsAmmatillinen}
+import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -13,21 +9,27 @@ import fi.oph.koski.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Wait
+import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s.JsonAST.{JBool, JObject}
 import org.json4s.jackson.JsonMethods
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+import org.scalatest.{FreeSpec, Matchers}
 
-class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with BeforeAndAfterAll with RaportointikantaTestMethods {
-  private lazy val raportointiDatabase = KoskiApplicationForTests.raportointiDatabase
+import java.sql.{Date, Timestamp}
+import java.time.LocalDate
 
-  override def beforeAll(): Unit = {
-    LocalJettyHttpSpecification.setup(this)
+class RaportointikantaSpec
+  extends FreeSpec
+    with KoskiHttpSpec
+    with Matchers
+    with OpiskeluoikeusTestMethodsAmmatillinen
+    with RaportointikantaTestMethods
+    with DirtiesFixtures {
+
+  override protected def alterFixture(): Unit = {
     createOrUpdate(KoskiSpecificMockOppijat.slaveMasterEiKoskessa.henkilö, defaultOpiskeluoikeus)
     reloadRaportointikanta
   }
-
-  override def afterAll(): Unit = resetFixtures
 
   "Raportointikanta" - {
     "Opiskeluoikeudet on ladattu" in {
@@ -36,7 +38,7 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
     "Henkilöt on ladattu" in {
       val mockOppija = KoskiSpecificMockOppijat.eero
       henkiloCount should be > 30
-      val henkilo = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.hetu === mockOppija.hetu.get).result)
+      val henkilo = mainRaportointiDb.runDbSync(mainRaportointiDb.RHenkilöt.filter(_.hetu === mockOppija.hetu.get).result)
       henkilo should equal(Seq(RHenkilöRow(
         mockOppija.oid,
         mockOppija.oid,
@@ -56,7 +58,7 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
     "Huomioi linkitetyt oidit" in {
       val slaveOppija = KoskiSpecificMockOppijat.slave.henkilö
       val hakuOidit = Set(master.oid, slaveOppija.oid)
-      val henkilot = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.oppijaOid inSet(hakuOidit)).result).toSet
+      val henkilot = mainRaportointiDb.runDbSync(mainRaportointiDb.RHenkilöt.filter(_.oppijaOid inSet(hakuOidit)).result).toSet
       henkilot should equal (Set(
         RHenkilöRow(slaveOppija.oid, master.oid, master.hetu, None, Some(Date.valueOf("1997-10-10")), master.sukunimi, master.etunimet, Some("fi"), None, false, None, None, true),
         RHenkilöRow(master.oid, master.oid, master.hetu, None, Some(Date.valueOf("1997-10-10")), master.sukunimi, master.etunimet, Some("fi"), None, false, None, None, true)
@@ -64,7 +66,7 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
     }
     "Master oidia ei löydy koskesta" in {
       val slaveOppija = KoskiSpecificMockOppijat.slaveMasterEiKoskessa.henkilö
-      val henkilot = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.hetu === slaveOppija.hetu.get).result).toSet
+      val henkilot = mainRaportointiDb.runDbSync(mainRaportointiDb.RHenkilöt.filter(_.hetu === slaveOppija.hetu.get).result).toSet
       henkilot should equal(Set(
         RHenkilöRow(slaveOppija.oid, masterEiKoskessa.oid, masterEiKoskessa.hetu, None, Some(Date.valueOf("1966-03-27")), masterEiKoskessa.sukunimi, masterEiKoskessa.etunimet, None, None, false, Some("179"), Some("Jyväskylä"), true),
         RHenkilöRow(masterEiKoskessa.oid, masterEiKoskessa.oid, masterEiKoskessa.hetu, None, Some(Date.valueOf("1966-03-27")), masterEiKoskessa.sukunimi, masterEiKoskessa.etunimet, None, None, false, Some("179"), Some("Jyväskylä"), true)
@@ -72,7 +74,7 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
     }
     "Organisaatiot on ladattu" in {
       organisaatioCount should be > 10
-      val organisaatio = raportointiDatabase.runDbSync(raportointiDatabase.ROrganisaatiot.filter(_.organisaatioOid === MockOrganisaatiot.aapajoenKoulu).result)
+      val organisaatio = mainRaportointiDb.runDbSync(mainRaportointiDb.ROrganisaatiot.filter(_.organisaatioOid === MockOrganisaatiot.aapajoenKoulu).result)
       organisaatio should equal(Seq(ROrganisaatioRow(MockOrganisaatiot.aapajoenKoulu, "Aapajoen koulu", "OPPILAITOS", Some("11"), Some("04044"), Some("851"), None)))
     }
     "Oppilaitosten opetuskielet on ladattu" in {
@@ -81,17 +83,17 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
         (MockOrganisaatiot.yrkehögskolanArcada, "ruotsi", "2")
       )
       oppilaitoksetJaKielet.foreach{ case(oppilaitosOid, kieli, kielikoodi) =>
-        val oppilaitos = raportointiDatabase.runDbSync(
-          raportointiDatabase.ROrganisaatiot.filter(_.organisaatioOid === oppilaitosOid).result
+        val oppilaitos = mainRaportointiDb.runDbSync(
+          mainRaportointiDb.ROrganisaatiot.filter(_.organisaatioOid === oppilaitosOid).result
         ).head
-        raportointiDatabase.oppilaitoksenKielet(oppilaitos.organisaatioOid).shouldEqual(
+        mainRaportointiDb.oppilaitoksenKielet(oppilaitos.organisaatioOid).shouldEqual(
           Set(RKoodistoKoodiRow("oppilaitoksenopetuskieli", kielikoodi, kieli))
         )
       }
     }
     "Koodistot on ladattu" in {
       koodistoKoodiCount should be > 500
-      val koodi = raportointiDatabase.runDbSync(raportointiDatabase.RKoodistoKoodit.filter(_.koodistoUri === "opiskeluoikeudentyyppi").filter(_.koodiarvo === "korkeakoulutus").result)
+      val koodi = mainRaportointiDb.runDbSync(mainRaportointiDb.RKoodistoKoodit.filter(_.koodistoUri === "opiskeluoikeudentyyppi").filter(_.koodiarvo === "korkeakoulutus").result)
       koodi should equal(Seq(RKoodistoKoodiRow("opiskeluoikeudentyyppi", "korkeakoulutus", "Korkeakoulutus")))
     }
     "Status-rajapinta" in {
@@ -448,10 +450,10 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
     }
   }
 
-  private def opiskeluoikeusCount: Int = raportointiDatabase.runDbSync(raportointiDatabase.ROpiskeluoikeudet.length.result)
-  private def henkiloCount: Int = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.length.result)
-  private def organisaatioCount: Int = raportointiDatabase.runDbSync(raportointiDatabase.ROrganisaatiot.length.result)
-  private def koodistoKoodiCount: Int = raportointiDatabase.runDbSync(raportointiDatabase.RKoodistoKoodit.length.result)
+  private def opiskeluoikeusCount: Int = mainRaportointiDb.runDbSync(mainRaportointiDb.ROpiskeluoikeudet.length.result)
+  private def henkiloCount: Int = mainRaportointiDb.runDbSync(mainRaportointiDb.RHenkilöt.length.result)
+  private def organisaatioCount: Int = mainRaportointiDb.runDbSync(mainRaportointiDb.ROrganisaatiot.length.result)
+  private def koodistoKoodiCount: Int = mainRaportointiDb.runDbSync(mainRaportointiDb.RKoodistoKoodit.length.result)
 
   private def isLoading = authGet("api/raportointikanta/status") {
     (JsonMethods.parse(body) \ "etl" \ "isLoading").extract[Boolean]

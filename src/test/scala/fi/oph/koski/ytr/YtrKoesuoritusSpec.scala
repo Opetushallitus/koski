@@ -1,6 +1,7 @@
 package fi.oph.koski.ytr
 
-import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
+import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.util.ClasspathResource
@@ -8,7 +9,7 @@ import org.scalatest.FreeSpec
 
 import scala.collection.Iterator.continually
 
-class YtrKoesuoritusSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods {
+class YtrKoesuoritusSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethods {
   "Kansalainen" - {
     "näkee koesuorituksensa (PDF)" in {
       get("koesuoritus/2345K_XX_12345.pdf", headers = kansalainenLoginHeaders("080698-967F")) {

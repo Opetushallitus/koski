@@ -1,14 +1,15 @@
 package fi.oph.koski.koskiuser
 
-import java.net.URLEncoder
-import fi.oph.koski.api.LocalJettyHttpSpecification
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.sso.SSOConfigurationOverride
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{BeforeAndAfterEach, FreeSpec, Matchers}
 
-class KoskiSpecificLogoutServletTest extends FreeSpec with Matchers with MockFactory with LocalJettyHttpSpecification with BeforeAndAfterEach {
+import java.net.URLEncoder
 
-  override def afterEach = {
+class KoskiSpecificLogoutServletTest extends FreeSpec with Matchers with MockFactory with KoskiHttpSpec with BeforeAndAfterEach {
+
+  override protected def afterEach = {
     LogoutServerConfiguration.clearOverrides
     SSOConfigurationOverride.clearOverrides
   }

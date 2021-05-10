@@ -1,14 +1,12 @@
 package fi.oph.koski.koskiuser
 
-import java.lang.Thread.sleep
-
-import fi.oph.koski.api.LocalJettyHttpSpecification
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.AuditLogTester
 import org.scalatest.{FreeSpec, Matchers}
 
-class AuthenticationSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification {
+class AuthenticationSpec extends FreeSpec with Matchers with KoskiHttpSpec {
   "POST /login" - {
     "Valid credentials" in {
       post("user/login", JsonSerializer.writeWithRoot(Login("kalle", "kalle")), headers = jsonContent) {

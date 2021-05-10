@@ -1,21 +1,21 @@
 package fi.oph.koski.api
 
-import java.time.LocalDate
-import java.time.LocalDate.{of => date}
-
-import fi.oph.koski.documentation.ExampleData._
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.AmmatillinenExampleData._
-import fi.oph.koski.documentation.{AmmatillinenOldExamples, AmmattitutkintoExample, ExampleData, ExamplesValma}
 import fi.oph.koski.documentation.AmmatillinenOldExamples.muunAmmatillisenTutkinnonOsanSuoritus
 import fi.oph.koski.documentation.AmmatillinenReforminMukainenPerustutkintoExample.{jatkoOpintovalmiuksiaTukevienOpintojenSuoritus, korkeakouluopintoSuoritus}
-import fi.oph.koski.documentation.ExampleData.helsinki
+import fi.oph.koski.documentation.ExampleData.{helsinki, _}
+import fi.oph.koski.documentation.{AmmattitutkintoExample, ExampleData, ExamplesValma}
 import fi.oph.koski.http.{ErrorMatcher, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 
-class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
+import java.time.LocalDate
+import java.time.LocalDate.{of => date}
+
+class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
   "Ammatillisen koulutuksen opiskeluoikeuden lisääminen" - {
     "Valideilla tiedoilla" - {
       "palautetaan HTTP 200" in {

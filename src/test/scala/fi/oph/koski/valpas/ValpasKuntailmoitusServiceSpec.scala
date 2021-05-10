@@ -13,19 +13,18 @@ import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoituksenOppijanYhteys
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import fi.oph.koski.valpas.yhteystiedot.{ValpasYhteystietoHakemukselta, ValpasYhteystietoOppijanumerorekisteristä}
 import org.scalatest.BeforeAndAfterEach
-import org.scalatest.Matchers._
 
 class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
   private lazy val kuntailmoitusService = KoskiApplicationForTests.valpasKuntailmoitusService
 
-  override def beforeEach() {
+  override protected def beforeEach() {
     super.beforeEach()
     AuditLogTester.clearMessages
     KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
       .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)
   }
 
-  override def afterEach(): Unit = {
+  override protected def afterEach(): Unit = {
     KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
       .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)
     super.afterEach()
@@ -466,7 +465,4 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
   private def helsinginKaupunki = KoskiApplicationForTests.organisaatioService.kunnat(defaultSession).map(oh =>
     OidOrganisaatio(oh.oid, Some(oh.nimi), oh.kotipaikka)
   ).find(k => k.kotipaikka == Some(ExampleData.helsinki)).get
-
-  private def session(user: ValpasMockUser) = user.toValpasSession(KoskiApplicationForTests.käyttöoikeusRepository)
-  private def defaultSession() = session(ValpasMockUsers.valpasJklNormaalikoulu)
 }

@@ -1,9 +1,7 @@
 package fi.oph.koski.api
 
-import java.time.LocalDate
-
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.KoskiTables
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExamplesEsiopetus
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -14,14 +12,24 @@ import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUser, MockUsers, UserWi
 import fi.oph.koski.luovutuspalvelu.{HetuRequestV1, LuovutuspalveluResponseV1}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
+import fi.oph.koski.{DatabaseTestMethods, DirtiesFixtures, KoskiHttpSpec}
 import fi.oph.scalaschema.SchemaValidatingExtractor
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.FreeSpec
 
-class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with QueryTestMethods with DatabaseTestMethods {
+import java.time.LocalDate
+
+class KäyttöoikeusryhmätSpec
+  extends FreeSpec
+    with KoskiHttpSpec
+    with OpiskeluoikeusTestMethodsAmmatillinen
+    with SearchTestMethods
+    with QueryTestMethods
+    with DatabaseTestMethods
+    with DirtiesFixtures {
+
   "koski-oph-pääkäyttäjä" - {
     val user = MockUsers.paakayttaja
     "voi muokata kaikkia opiskeluoikeuksia" in {
-      resetFixtures
       putOpiskeluoikeus(defaultOpiskeluoikeus, headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatusOk()
       }
@@ -125,12 +133,13 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "näkee luottamuksellisen datan" in {
-      resetFixtures
       authGet("api/oppija/" + KoskiSpecificMockOppijat.markkanen.oid, user) {
         verifyResponseStatusOk()
         kaikkiSensitiveDataNäkyy()
       }
     }
+
+    "alusta muutetut fixturet" in resetFixtures()
   }
 
   "vastuukäyttäjä" - {
@@ -208,7 +217,6 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     "ei voi muokata lähdejärjestelmän tallentamia opiskeluoikeuksia" - {
       val oppija = KoskiSpecificMockOppijat.tyhjä
       "ilman opiskeluoikeuden oid:ia luodaan uusi opiskeluoikeus" in {
-        resetFixtures
         putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = oppija, headers = authHeaders(MockUsers.omniaPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatusOk()
           haeOpiskeluoikeudetHetulla(oppija.hetu, user).count(_.tyyppi.koodiarvo == "ammatillinenkoulutus") should equal(1)
@@ -225,6 +233,8 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
         }
       }
     }
+
+    "alusta muutetut fixturet" in resetFixtures()
   }
 
   "viranomainen jolla oikeudet kaikkiin koulutusmuotoihin muttei arkaluontoisiin tietoihin" - {

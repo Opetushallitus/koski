@@ -6,7 +6,7 @@ import org.apache.log4j.{AppenderSkeleton, Logger}
 import scala.collection.mutable.ListBuffer
 
 trait LogTester {
-  private var messages: ListBuffer[LoggingEvent] = ListBuffer.empty[LoggingEvent]
+  private val messages: ListBuffer[LoggingEvent] = ListBuffer.empty[LoggingEvent]
   private val MaxSize = 20
 
   lazy val setup: Unit = {

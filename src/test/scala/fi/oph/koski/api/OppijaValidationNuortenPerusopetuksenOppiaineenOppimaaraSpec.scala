@@ -1,5 +1,6 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.ExampleData.{suomenKieli, _}
 import fi.oph.koski.documentation.PerusopetusExampleData
 import fi.oph.koski.documentation.PerusopetusExampleData.perusopetuksenDiaarinumero
@@ -8,7 +9,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
 
 
-class OppijaValidationNuortenPerusopetuksenOppiaineenOppimaaraSpec extends TutkinnonPerusteetTest[PerusopetuksenOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsPerusopetus {
+class OppijaValidationNuortenPerusopetuksenOppiaineenOppimaaraSpec extends TutkinnonPerusteetTest[PerusopetuksenOpiskeluoikeus] with KoskiHttpSpec with OpiskeluoikeusTestMethodsPerusopetus {
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = PerusopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
     suoritukset = List(

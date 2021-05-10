@@ -1,15 +1,18 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.ExamplesEsiopetus.ostopalvelu
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData
-import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{eero, eskari, tero}
+import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import org.scalatest.{BeforeAndAfterAll, FreeSpec}
+import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
+import org.scalatest.FreeSpec
 
-class VarhaiskasvatusPerustiedotSpec extends FreeSpec with BeforeAndAfterAll with SearchTestMethods with EsiopetusSpecification {
+class VarhaiskasvatusPerustiedotSpec extends FreeSpec with DirtiesFixtures with SearchTestMethods with EsiopetusSpecification {
+
+  override protected def alterFixture(): Unit = tallennaOpiskeluoikeuksiaMajakkaan
+
   "Varhaiskasvatuksen järjestäjä koulutustoimija" - {
     "Voi hakea omat organisaatiohierarkian ulkopuoliset perustiedot" in {
       val perustiedot = searchForPerustiedot(Map("opiskeluoikeudenTyyppi" -> "esiopetus", "toimipiste" -> MockOrganisaatiot.päiväkotiMajakka), MockUsers.helsinkiTallentaja)
@@ -39,11 +42,6 @@ class VarhaiskasvatusPerustiedotSpec extends FreeSpec with BeforeAndAfterAll wit
       etunimet should contain(eero.etunimet)
       etunimet should contain(tero.etunimet)
     }
-  }
-
-  override protected def beforeAll(): Unit = {
-    resetFixtures
-    tallennaOpiskeluoikeuksiaMajakkaan
   }
 
   private def tallennaOpiskeluoikeuksiaMajakkaan = {

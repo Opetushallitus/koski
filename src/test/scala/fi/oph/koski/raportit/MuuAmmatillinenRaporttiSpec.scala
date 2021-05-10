@@ -1,26 +1,29 @@
 package fi.oph.koski.raportit
 
-import java.time.LocalDate
-
-import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillinenTutkintoSuoritus, kiinteistösihteerinMuuAmmatillinenKoulutus, puutarhuri}
 import fi.oph.koski.documentation.MuunAmmatillisenKoulutuksenExample.muunAmmatillisenKoulutuksenSuoritus
-import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, KoskiSpecificMockOppijat}
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.stadinAmmattiopisto
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
+import org.scalatest.{FreeSpec, Matchers}
 
-class MuuAmmatillinenRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll with AmmatillinenRaporttiTestMethods {
+import java.time.LocalDate
 
-  override def beforeAll: Unit = {
+class MuuAmmatillinenRaporttiSpec
+  extends FreeSpec
+    with Matchers
+    with RaportointikantaTestMethods
+    with AmmatillinenRaporttiTestMethods
+    with DirtiesFixtures {
+
+  override protected def alterFixture(): Unit = {
     insertMuuAmmatillisenSuorituksenOpiskeluoikeusPäivämäärillä(KoskiSpecificMockOppijat.amis, alkanut = LocalDate.of(2019, 1, 2), päättynyt = LocalDate.of(2019, 12, 31))
     insertMuuAmmatillisenSuorituksenOpiskeluoikeusPäivämäärillä(KoskiSpecificMockOppijat.lukiolainen, alkanut = LocalDate.of(2017, 1, 1), päättynyt = LocalDate.of(2020, 1, 1))
     insertSisällytettyOpiskeluoikeusSuorituksilla(KoskiSpecificMockOppijat.eero, innerSuoritukset = List(muunAmmatillisenKoulutuksenSuoritus, ammatillinenTutkintoSuoritus(puutarhuri)), outerSuoritukset = List(kiinteistösihteerinMuuAmmatillinenKoulutus()))
     reloadRaportointikanta
   }
-
-  override def afterAll: Unit = resetFixtures
 
   lazy val raportti = {
     val raporttiBuilder = MuuAmmatillinenRaporttiBuilder(KoskiApplicationForTests.raportointiDatabase.db)

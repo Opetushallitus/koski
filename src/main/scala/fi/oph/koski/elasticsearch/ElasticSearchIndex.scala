@@ -160,12 +160,8 @@ class ElasticSearchIndex(
     Http.runTask(http.post(uri"/$readAlias,$writeAlias/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
   }
 
-  def runSearch(query: JValue): Option[JValue] = try {
+  def runSearch(query: JValue): Option[JValue] = {
     Some(Http.runTask(http.post(uri"/$readAlias/_search", query)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue])))
-  } catch {
-    case e: HttpStatusException if e.status == 400 =>
-      logger.error(e.getMessage)
-      None
   }
 
   def updateBulk(docsAndIds: Seq[(JValue, String)], upsert: Boolean, refresh: Boolean): (Boolean, JValue) = {

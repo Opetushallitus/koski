@@ -1,15 +1,14 @@
 package fi.oph.koski.valpas.opiskeluoikeusfixture
 
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, vahvistusPaikkakunnalla}
-import fi.oph.koski.documentation.{ExampleData, ExamplesEsiopetus, ExamplesLukio2019, ExamplesPerusopetuksenLisaopetus}
-import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, kaikkiAineet, perusopetuksenDiaarinumero, perusopetuksenOppimääränSuoritus, perusopetuksenOppimääränSuoritusKesken, yhdeksännenLuokanSuoritus}
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste, oppilaitos}
-import fi.oph.koski.schema.{Aikajakso, LukionOpiskeluoikeudenTila, LukionOpiskeluoikeusjakso, NuortenPerusopetuksenOpiskeluoikeudenTila, NuortenPerusopetuksenOpiskeluoikeusjakso, PerusopetuksenLuokkaAste, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus}
-
-import java.time.{LocalDate, Month}
-import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.LukioExampleData.opiskeluoikeusAktiivinen
+import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, perusopetuksenOppimääränSuoritus, perusopetuksenOppimääränSuoritusKesken, yhdeksännenLuokanSuoritus}
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste, oppilaitos}
+import fi.oph.koski.documentation.{ExampleData, ExamplesEsiopetus, ExamplesLukio2019, ExamplesPerusopetuksenLisaopetus}
 import fi.oph.koski.organisaatio.MockOrganisaatiot.aapajoenKoulu
+import fi.oph.koski.schema._
+
+import java.time.LocalDate.{of => date}
 
 object ValpasOpiskeluoikeusExampleData {
   def oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus = PerusopetuksenOpiskeluoikeus(

@@ -17,7 +17,7 @@ import org.json4s.JValue
 import java.time.LocalTime
 import java.util.UUID
 
-class ValpasKuntailmoitusQueryService(
+class ValpasKuntailmoitusRepository(
   valpasDatabase: ValpasDatabase,
   deserializer: ValidatingAndResolvingExtractor,
   valpasRajapäivätService: ValpasRajapäivätService

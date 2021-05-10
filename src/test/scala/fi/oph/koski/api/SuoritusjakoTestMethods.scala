@@ -1,17 +1,17 @@
 package fi.oph.koski.api
 
-import java.sql.Timestamp
-import java.time.LocalDate
-
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.schema.Oppija
 import fi.oph.koski.suoritusjako.{SuoritusIdentifier, Suoritusjako, SuoritusjakoRequest, SuoritusjakoUpdateResponse}
-import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.mockito.Mockito.{mock, when}
 import org.scalatra.servlet.RichRequest
 
-trait SuoritusjakoTestMethods extends LocalJettyHttpSpecification with OpiskeluoikeusTestMethods {
+import java.sql.Timestamp
+import java.time.LocalDate
+
+trait SuoritusjakoTestMethods extends KoskiHttpSpec with OpiskeluoikeusTestMethods {
 
   val suoritusjakoHetu = "180497-112F"
   private val mockKoskiSession = {

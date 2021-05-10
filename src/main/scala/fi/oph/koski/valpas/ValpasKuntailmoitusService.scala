@@ -15,7 +15,7 @@ class ValpasKuntailmoitusService(
   application: KoskiApplication
 ) extends Logging with Timing {
   private val accessResolver = new ValpasAccessResolver(application.organisaatioRepository)
-  private val queryService = application.valpasKuntailmoitusQueryService
+  private val repository = application.valpasKuntailmoitusRepository
   private val oppijaService = application.valpasOppijaService
   private val directoryClient = application.directoryClient
   private val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
@@ -38,7 +38,7 @@ class ValpasKuntailmoitusService(
             "Käyttäjällä ei ole oikeuksia tehdä kuntailmoitusta annetusta oppijasta"
           ))
       )
-      .flatMap(_ => queryService.create(kuntailmoitusInput))
+      .flatMap(_ => repository.create(kuntailmoitusInput))
   }
 
 

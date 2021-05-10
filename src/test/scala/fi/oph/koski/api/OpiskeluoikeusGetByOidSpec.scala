@@ -1,18 +1,18 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import fi.oph.koski.http.{HttpTester, KoskiErrorCategory}
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.AmmatillinenOpiskeluoikeus
 import org.scalatest.{FreeSpec, Matchers}
 
-class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods with HttpTester with OpiskeluoikeusTestMethodsAmmatillinen {
+class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with KoskiHttpSpec with OpiskeluoikeusTestMethods with OpiskeluoikeusTestMethodsAmmatillinen {
   "/api/opiskeluoikeus/:oid" - {
     "GET" - {
       "with valid oid" in {
-        resetFixtures
         val oid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.eero.oid).oid.get
         AuditLogTester.clearMessages
         get("api/opiskeluoikeus/" + oid, headers = authHeaders()) {
@@ -31,19 +31,18 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyH
         }
       }
       "with mitätöity oid" in {
-        resetFixtures
         val mitätöity = mitätöiOpiskeluoikeus(createOpiskeluoikeus(KoskiSpecificMockOppijat.eero, defaultOpiskeluoikeus))
         List(defaultUser, MockUsers.paakayttaja).foreach { user =>
           get("api/opiskeluoikeus/" + mitätöity.oid.get, headers = authHeaders(user = user)) {
             verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta ei löydy annetulla oid:llä tai käyttäjällä ei ole siihen oikeuksia"))
           }
         }
+        resetFixtures() // Siivoa muutokset
       }
     }
 
     "Luottamuksellinen data" - {
       "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli" in {
-        resetFixtures
         val oid = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.eero.toHenkilötiedotJaOid).oid.get
         authGet("api/opiskeluoikeus/" + oid, stadinAmmattiopistoKatselija) {
           verifyResponseStatusOk()

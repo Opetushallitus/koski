@@ -1,8 +1,7 @@
 package fi.oph.koski.valvira
 
-import java.time.LocalDate
-
-import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsAmmatillinen}
+import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
@@ -11,7 +10,9 @@ import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
-class ValviraSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with Matchers with BeforeAndAfterAll {
+import java.time.LocalDate
+
+class ValviraSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with Matchers with BeforeAndAfterAll {
 
   "ValviraSpec" - {
     "Yhdistää datat taulun sarakkeista jsoniin" - {

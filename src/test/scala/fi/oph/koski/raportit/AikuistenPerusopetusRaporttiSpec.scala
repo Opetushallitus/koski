@@ -1,31 +1,31 @@
 package fi.oph.koski.raportit
 
-import java.sql.Date
-import java.time.LocalDate
-import java.time.LocalDate.{of => date}
-
-import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAikuistenPerusopetus
 import fi.oph.koski.documentation.{ExampleData, ExamplesAikuistenPerusopetus, YleissivistavakoulutusExampleData}
-import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
+import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.raportit.aikuistenperusopetus._
 import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}
 import fi.oph.koski.schema._
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
+import org.scalatest.{FreeSpec, Matchers}
+
+import java.sql.Date
+import java.time.LocalDate
+import java.time.LocalDate.{of => date}
 
 class AikuistenPerusopetusRaporttiSpec
   extends FreeSpec
     with Matchers
     with RaportointikantaTestMethods
-    with BeforeAndAfterAll
+    with DirtiesFixtures
     with OpiskeluoikeusTestMethodsAikuistenPerusopetus {
 
   private lazy val today = LocalDate.now
   private lazy val repository = AikuistenPerusopetusRaporttiRepository(KoskiApplicationForTests.raportointiDatabase.db)
 
-  override def beforeAll(): Unit = {
+  override protected def alterFixture(): Unit = {
     lisääPäätasonSuorituksia(
       aikuisOpiskelija,
       List(
@@ -35,8 +35,6 @@ class AikuistenPerusopetusRaporttiSpec
     )
     reloadRaportointikanta
   }
-
-  override def afterAll: Unit = resetFixtures
 
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = AikuistenPerusopetuksenOpiskeluoikeus(
     oppilaitos = Some(YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu),

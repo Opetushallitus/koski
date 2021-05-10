@@ -51,6 +51,6 @@ class UpdateHenkilotTaskSpec extends FreeSpec with Matchers with BeforeAndAfterE
     new UpdateHenkilotTask(application).updateHenkilöt(refresh = true)(Some(parseJson(s"""{"lastRun": ${currentTimeMillis}}""")))
   }
 
-  override def afterEach(): Unit = henkilöFacade.resetFixtures(KoskiApplicationForTests.fixtureCreator.defaultOppijat)
+  override protected def afterEach(): Unit = henkilöFacade.resetFixtures(KoskiApplicationForTests.fixtureCreator.defaultOppijat)
   private def henkilöFacade = application.opintopolkuHenkilöFacade.asInstanceOf[MockOpintopolkuHenkilöFacade]
 }

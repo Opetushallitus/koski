@@ -1,20 +1,21 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.TestMethodsLukio.päättötodistusSuoritus
-import fi.oph.koski.documentation.{ExamplesLukio, LukioExampleData}
-import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.ExampleData._
+import fi.oph.koski.documentation.ExamplesLukio2019.{lops2019AikuistenPerusteenDiaarinumero, lops2019perusteenDiaarinumero}
+import fi.oph.koski.documentation.LukioExampleData._
+import fi.oph.koski.documentation.{ExamplesLukio, LukioExampleData}
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema._
-import java.time.LocalDate.{of => date}
 
-import fi.oph.koski.documentation.ExamplesLukio2019.{lops2019AikuistenPerusteenDiaarinumero, lops2019perusteenDiaarinumero}
+import java.time.LocalDate.{of => date}
 
 // Lukiosuoritusten validointi perustuu tässä testattua diaarinumeroa lukuunottamatta domain-luokista generoituun JSON-schemaan.
 // Schemavalidoinnille on tehty kattavat testit ammatillisten opiskeluoikeuksien osalle. Yleissivistävän koulutuksen validoinnissa luotamme
 // toistaiseksi siihen, että schema itsessään on katselmoitu, ja että geneerinen mekanismi toimii.
 
-class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsLukio2015 {
+class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoikeus] with KoskiHttpSpec with OpiskeluoikeusTestMethodsLukio2015 {
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(koulutusmoduuli = päättötodistusSuoritus.koulutusmoduuli.copy(perusteenDiaarinumero = diaari))))
   def eperusteistaLöytymätönValidiDiaarinumero: String = "33/011/2003"
 

@@ -1,8 +1,9 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.KoskiHttpSpec
 import org.scalatest.{FreeSpec, Matchers}
 
-class StaticPagesSpec extends FreeSpec with LocalJettyHttpSpecification with Matchers {
+class StaticPagesSpec extends FreeSpec with KoskiHttpSpec with Matchers {
   "Single page app" - {
     //TODO: kansalainen
     verifyAppAt("virkailija")

@@ -1,8 +1,5 @@
 package fi.oph.koski.valpas
 
-import java.time.LocalDate
-import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
@@ -14,19 +11,19 @@ import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoituksenTekijäHenkilö, ValpasKuntailmoitusLaajatTiedot}
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
-import org.scalatest.{BeforeAndAfterEach, Tag}
+import org.scalatest.BeforeAndAfterEach
 
-class ValpasKuntailmoitusApiServletSpec extends ValpasHttpTestBase with BeforeAndAfterEach {
-  override def defaultUser = ValpasMockUsers.valpasJklNormaalikoulu
+import java.time.LocalDate.{of => date}
 
-  override def beforeEach() {
+class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
+  override protected def beforeEach() {
     super.beforeEach()
     AuditLogTester.clearMessages
     KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
       .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)
   }
 
-  override def afterEach(): Unit = {
+  override protected def afterEach(): Unit = {
     KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
       .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)
     super.afterEach()

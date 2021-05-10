@@ -1,14 +1,15 @@
 package fi.oph.koski.api
 
-import java.time.LocalDate.{of => date}
-
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.InternationalSchoolExampleData.{diplomaArviointi, diplomaKieliOppiaine, diplomaOppiaineenSuoritus}
 import fi.oph.koski.documentation.{InternationalSchoolExampleData, LukioExampleData}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
 import org.scalatest.FreeSpec
 
-class OppijaValidationInternationalSchoolSpec extends FreeSpec with LocalJettyHttpSpecification with PutOpiskeluoikeusTestMethods[InternationalSchoolOpiskeluoikeus] {
+import java.time.LocalDate.{of => date}
+
+class OppijaValidationInternationalSchoolSpec extends FreeSpec with KoskiHttpSpec with PutOpiskeluoikeusTestMethods[InternationalSchoolOpiskeluoikeus] {
   "Kaksi äidinkieltä" - {
     "Samalla kielivalinnalla -> HTTP 400" in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(tutkintoSuoritus.copy(
