@@ -10,20 +10,21 @@ import java.time.{LocalDate, LocalDateTime}
 
 trait ValpasOppija {
   def henkilö: ValpasHenkilö
-  def opiskeluoikeudet: Seq[ValpasOpiskeluoikeus]
-}
 
-case class ValpasOppijaLaajatTiedot(
-  henkilö: ValpasHenkilöLaajatTiedot,
-  oikeutetutOppilaitokset: Set[ValpasOppilaitos.Oid],
-  opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot]
-) extends ValpasOppija {
+  def opiskeluoikeudet: Seq[ValpasOpiskeluoikeus]
+
   @SyntheticProperty
   def opiskelee: Boolean = opiskeluoikeudet.exists(_.isOpiskelu)
 
   @SyntheticProperty
   def oppivelvollisuusVoimassaAsti: Option[LocalDate] = henkilö.syntymäaika.map(_.plusYears(18))
 }
+
+case class ValpasOppijaLaajatTiedot(
+  henkilö: ValpasHenkilöLaajatTiedot,
+  oikeutetutOppilaitokset: Set[ValpasOppilaitos.Oid],
+  opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot]
+) extends ValpasOppija
 
 object ValpasOppijaSuppeatTiedot {
   def apply(laajatTiedot: ValpasOppijaLaajatTiedot): ValpasOppijaSuppeatTiedot = {
@@ -37,13 +38,7 @@ object ValpasOppijaSuppeatTiedot {
 case class ValpasOppijaSuppeatTiedot(
   henkilö: ValpasHenkilöSuppeatTiedot,
   opiskeluoikeudet: Seq[ValpasOpiskeluoikeusSuppeatTiedot]
-) extends ValpasOppija {
-  @SyntheticProperty
-  def opiskelee: Boolean = opiskeluoikeudet.exists(_.isOpiskelu)
-
-  @SyntheticProperty
-  def oppivelvollisuusVoimassaAsti: Option[LocalDate] = henkilö.syntymäaika.map(_.plusYears(18))
-}
+) extends ValpasOppija
 
 object ValpasHenkilö {
   type Oid = String
@@ -90,20 +85,34 @@ object ValpasOpiskeluoikeus {
 
 trait ValpasOpiskeluoikeus {
   def oid: ValpasOpiskeluoikeus.Oid
+
   def onValvottava: Boolean
+
   @KoodistoUri("opiskeluoikeudentyyppi")
   def tyyppi: Koodistokoodiviite
+
   def oppilaitos: ValpasOppilaitos
+
   def toimipiste: Option[ValpasToimipiste]
+
   def ryhmä: Option[String]
 
   @KoodistoUri("valpasopiskeluoikeudentila")
   def tarkastelupäivänTila: Koodistokoodiviite
 
+  @SyntheticProperty
   def onVoimassaNytTaiTulevaisuudessa: Boolean = tarkastelupäivänTila.koodiarvo match {
     case "voimassa" | "voimassatulevaisuudessa" => true
     case _ => false
   }
+
+  @SyntheticProperty
+  def isOpiskelu: Boolean =
+    tarkastelupäivänTila.koodiarvo == "voimassa"
+
+  @SyntheticProperty
+  def isOpiskeluTulevaisuudessa: Boolean =
+    tarkastelupäivänTila.koodiarvo == "voimassatulevaisuudessa"
 }
 
 case class ValpasOpiskeluoikeusLaajatTiedot(
@@ -119,15 +128,7 @@ case class ValpasOpiskeluoikeusLaajatTiedot(
   tarkastelupäivänTila: Koodistokoodiviite,
   oppivelvollisuudenSuorittamiseenKelpaava: Boolean,
   näytettäväPerusopetuksenSuoritus: Boolean,
-) extends ValpasOpiskeluoikeus {
-  @SyntheticProperty
-  def isOpiskelu: Boolean =
-    tarkastelupäivänTila.koodiarvo == "voimassa"
-
-  @SyntheticProperty
-  def isOpiskeluTulevaisuudessa: Boolean =
-    tarkastelupäivänTila.koodiarvo == "voimassatulevaisuudessa"
-}
+) extends ValpasOpiskeluoikeus
 
 object ValpasOpiskeluoikeusSuppeatTiedot {
   def apply(laajatTiedot: ValpasOpiskeluoikeusLaajatTiedot): ValpasOpiskeluoikeusSuppeatTiedot = {
@@ -161,15 +162,7 @@ case class ValpasOpiskeluoikeusSuppeatTiedot(
   päättymispäiväMerkittyTulevaisuuteen: Option[Boolean],
   oppivelvollisuudenSuorittamiseenKelpaava: Boolean,
   näytettäväPerusopetuksenSuoritus: Boolean,
-) extends ValpasOpiskeluoikeus {
-  @SyntheticProperty
-  def isOpiskelu: Boolean =
-    tarkastelupäivänTila.koodiarvo == "voimassa"
-
-  @SyntheticProperty
-  def isOpiskeluTulevaisuudessa: Boolean =
-    tarkastelupäivänTila.koodiarvo == "voimassatulevaisuudessa"
-}
+) extends ValpasOpiskeluoikeus
 
 object ValpasOppilaitos {
   type Oid = String
