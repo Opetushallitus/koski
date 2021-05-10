@@ -230,7 +230,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     val (alku, loppu) = getAlkuLoppuParams
     val password = getStringParam("password")
     val downloadToken = params.get("downloadToken")
-    val osasuoritustenAikarajaus = getBooleanParam("osasuoritustenAikarajaus")
+    val osasuoritustenAikarajaus = getOptionalBooleanParam("osasuoritustenAikarajaus").getOrElse(false)
 
     AikajaksoRaporttiAikarajauksellaRequest(oppilaitosOid, downloadToken, password, alku, loppu, osasuoritustenAikarajaus)
   }
@@ -247,7 +247,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
       password = getStringParam("password"),
       alku = alku,
       loppu = loppu,
-      osasuoritustenAikarajaus = getBooleanParam("osasuoritustenAikarajaus"),
+      osasuoritustenAikarajaus = getOptionalBooleanParam("osasuoritustenAikarajaus").getOrElse(false),
       raportinTyyppi = raportinTyyppi
     )
   }

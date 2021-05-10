@@ -42,8 +42,8 @@ trait BaseServlet extends ScalatraServlet with Logging {
     getIntegerParam(name)
   }
 
-  def getBooleanParam(name: String, defaultValue: Boolean = false): Boolean = {
-    params.getAs[Boolean](name).getOrElse(defaultValue)
+  def getOptionalBooleanParam(name: String): Option[Boolean] = {
+    params.getAs[Boolean](name)
   }
 
   def getLocalDateParam(param: String): LocalDate = {
