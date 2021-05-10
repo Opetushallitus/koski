@@ -3,7 +3,7 @@ package fi.oph.koski.valpas
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.ExampleData
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.schema.{Koodistokoodiviite, OidOrganisaatio, Oppilaitos}
 import fi.oph.koski.util.DateOrdering
 import fi.oph.koski.valpas.hakukooste.HakukoosteExampleData
@@ -50,7 +50,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
 
   "Pohjatietojen haku ilman organisaatiota yhdelle oppijalle palauttaa samat tiedot kuin organisaation kanssa" in {
     val inputOrganisaatiolla = ValpasKuntailmoitusPohjatiedotInput(
-      tekijäOrganisaatio = Some(OidOrganisaatio(oid = MockOrganisaatiot.jyväskylänNormaalikoulu)),
+      tekijäOrganisaatio = Some(oppilaitos(MockOrganisaatiot.jyväskylänNormaalikoulu)),
       oppijaOidit = List(ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid)
     )
     val resultOrganisaatiolla = kuntailmoitusService.haePohjatiedot(inputOrganisaatiolla)(defaultSession)
@@ -247,10 +247,8 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
 
     val mahdollisetTekijäOrganisaatiot = result.map(_.oppijat(0).mahdollisetTekijäOrganisaatiot).map(_.toSet)
 
-    val expectedTekijäOrganisaatiot = Set(
-      OidOrganisaatio(oid = MockOrganisaatiot.jyväskylänNormaalikoulu),
-      OidOrganisaatio(oid = MockOrganisaatiot.aapajoenKoulu)
-    )
+    val expectedTekijäOrganisaatiot = Set(MockOrganisaatiot.jyväskylänNormaalikoulu, MockOrganisaatiot.aapajoenKoulu)
+      .map(oppilaitos)
 
     mahdollisetTekijäOrganisaatiot should equal(Right(expectedTekijäOrganisaatiot))
   }
@@ -265,7 +263,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
     val mahdollisetTekijäOrganisaatiot = result.map(_.oppijat(0).mahdollisetTekijäOrganisaatiot).map(_.toSet)
 
     val expectedTekijäOrganisaatiot = Set(
-      OidOrganisaatio(oid = MockOrganisaatiot.aapajoenKoulu)
+      oppilaitos(MockOrganisaatiot.aapajoenKoulu)
     )
 
     mahdollisetTekijäOrganisaatiot should equal(Right(expectedTekijäOrganisaatiot))
@@ -273,7 +271,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
 
   "Pohjatiedoissa annetulla organisaatiolla haettaessa, ei palauteta muita organisaatioita mahdollisina tekijäorganisaatioina" in {
     val input = ValpasKuntailmoitusPohjatiedotInput(
-      tekijäOrganisaatio = Some(OidOrganisaatio(oid = MockOrganisaatiot.jyväskylänNormaalikoulu)),
+      tekijäOrganisaatio = Some(oppilaitos(MockOrganisaatiot.jyväskylänNormaalikoulu)),
       oppijaOidit = List(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster.oid)
     )
     val result = kuntailmoitusService.haePohjatiedot(input)(session(ValpasMockUsers.valpasOphPääkäyttäjä))
@@ -281,7 +279,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
     val mahdollisetTekijäOrganisaatiot = result.map(_.oppijat(0).mahdollisetTekijäOrganisaatiot).map(_.toSet)
 
     val expectedTekijäOrganisaatiot = Set(
-      OidOrganisaatio(oid = MockOrganisaatiot.jyväskylänNormaalikoulu)
+      oppilaitos(MockOrganisaatiot.jyväskylänNormaalikoulu)
     )
 
     mahdollisetTekijäOrganisaatiot should equal(Right(expectedTekijäOrganisaatiot))
@@ -300,7 +298,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
     val mahdollisetTekijäOrganisaatiot = result.map(_.mahdollisetTekijäOrganisaatiot)
 
     val expectedTekijäOrganisaatiot = Seq(
-      OidOrganisaatio(oid = MockOrganisaatiot.aapajoenKoulu)
+      oppilaitos(MockOrganisaatiot.aapajoenKoulu)
     )
 
     mahdollisetTekijäOrganisaatiot should equal(Right(expectedTekijäOrganisaatiot))
@@ -313,7 +311,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
     val expectedKunnat = Seq(Some(helsinginKaupunki), Some(helsinginKaupunki))
 
     val input = ValpasKuntailmoitusPohjatiedotInput(
-      tekijäOrganisaatio = Some(Oppilaitos(oid = MockOrganisaatiot.jyväskylänNormaalikoulu)),
+      tekijäOrganisaatio = Some(oppilaitos(MockOrganisaatiot.jyväskylänNormaalikoulu)),
       oppijaOidit = List(oppijaOid)
     )
 
@@ -346,7 +344,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
 
   "Pohjatiedoissa palautetaan oppijan yhteydenottokielenä suomi, jos oppijan äidinkieli on suomi" in {
     val input = ValpasKuntailmoitusPohjatiedotInput(
-      tekijäOrganisaatio = Some(Oppilaitos(oid = MockOrganisaatiot.jyväskylänNormaalikoulu)),
+      tekijäOrganisaatio = Some(oppilaitos(MockOrganisaatiot.jyväskylänNormaalikoulu)),
       oppijaOidit = List(ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid)
     )
     val result =
@@ -376,7 +374,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
 
   "Pohjatiedoissa palautetaan oppijan yhteydenottokielenä suomi, jos oppijan äidinkieli on muu kuin suomi tai ruotsi" in {
     val input = ValpasKuntailmoitusPohjatiedotInput(
-      tekijäOrganisaatio = Some(Oppilaitos(oid = MockOrganisaatiot.jyväskylänNormaalikoulu)),
+      tekijäOrganisaatio = Some(oppilaitos(MockOrganisaatiot.jyväskylänNormaalikoulu)),
       oppijaOidit = List(ValpasMockOppijat.lukionAloittanut.oid)
     )
     val result =
@@ -391,7 +389,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
 
   "Pohjatiedoissa palautetaan turvakielto-tieto oppijalle, jolla sellainen on" in {
     val input = ValpasKuntailmoitusPohjatiedotInput(
-      tekijäOrganisaatio = Some(Oppilaitos(oid = MockOrganisaatiot.jyväskylänNormaalikoulu)),
+      tekijäOrganisaatio = Some(oppilaitos(MockOrganisaatiot.jyväskylänNormaalikoulu)),
       oppijaOidit = List(ValpasMockOppijat.turvakieltoOppija.oid)
     )
     val result =
@@ -449,7 +447,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
     )
 
     val input = ValpasKuntailmoitusPohjatiedotInput(
-      tekijäOrganisaatio = Some(Oppilaitos(oid = MockOrganisaatiot.jyväskylänNormaalikoulu)),
+      tekijäOrganisaatio = Some(oppilaitos(MockOrganisaatiot.jyväskylänNormaalikoulu)),
       oppijaOidit = List(oppijaOid)
     )
 
@@ -465,4 +463,8 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
   private def helsinginKaupunki = KoskiApplicationForTests.organisaatioService.kunnat(defaultSession).map(oh =>
     OidOrganisaatio(oh.oid, Some(oh.nimi), oh.kotipaikka)
   ).find(k => k.kotipaikka == Some(ExampleData.helsinki)).get
+
+  private def oppilaitos(oid: String) = {
+    MockOrganisaatioRepository.getOrganisaatioHierarkia(oid).flatMap(_.toOppilaitos).get
+  }
 }
