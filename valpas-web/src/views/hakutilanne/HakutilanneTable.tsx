@@ -204,13 +204,24 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
 
 const perusopetusSuoritettu = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
   const date = oo.päättymispäivä
-  return date !== undefined && oo.näytettäväPerusopetuksenSuoritus
-    ? {
-        value: date,
-        display: formatDate(date),
-        filterValues: [t("Kyllä")],
-      }
-    : fromNullableValue(null, [t("Ei")])
+  if (date !== undefined && oo.näytettäväPerusopetuksenSuoritus) {
+    return oo.päättymispäiväMerkittyTulevaisuuteen
+      ? {
+          value: date,
+          display: t("perusopetus_suoritettu__valmistuu_tulevaisuudessa_pvm", {
+            päivämäärä: formatDate(date),
+          }),
+          filterValues: [
+            t("perusopetus_suoritettu__valmistuu_tulevaisuudessa"),
+          ],
+        }
+      : {
+          value: date,
+          display: formatDate(date),
+          filterValues: [t("Kyllä")],
+        }
+  }
+  return fromNullableValue(null, [t("Ei")])
 }
 
 const hakemuksenTila = (

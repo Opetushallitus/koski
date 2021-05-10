@@ -209,6 +209,7 @@ WITH
        valittu_r_paatason_suoritus.toimipiste_nimi,
        r_opiskeluoikeus.alkamispaiva,
        r_opiskeluoikeus.paattymispaiva,
+       r_opiskeluoikeus.paattymispaiva > $tarkastelupäivä AS paattymispaiva_merkitty_tulevaisuuteen,
        coalesce(valittu_r_paatason_suoritus.data ->> 'luokka', r_opiskeluoikeus.luokka) AS ryhmä,
        r_opiskeluoikeus.viimeisin_tila,
        (r_opiskeluoikeus.viimeisin_tila = 'valmistunut' AND r_opiskeluoikeus.paattymispaiva < $lakiVoimassaPeruskoulustaValmistuneillaAlku) AS aiemmin_valmistunut,
@@ -218,7 +219,7 @@ WITH
          ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
        END tarkastelupäivän_tila,
        r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
-       coalesce(r_opiskeluoikeus.paattymispaiva < $perusopetussuorituksenNäyttämisenAikaraja, FALSE) AS naytettava_perusopetuksen_suoritus
+       (r_opiskeluoikeus.viimeisin_tila = 'valmistunut' AND coalesce(r_opiskeluoikeus.paattymispaiva < $perusopetussuorituksenNäyttämisenAikaraja, FALSE)) AS naytettava_perusopetuksen_suoritus
      FROM
        oppija_oid
        JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
@@ -258,6 +259,7 @@ WITH
        valittu_r_paatason_suoritus.toimipiste_nimi,
        r_opiskeluoikeus.alkamispaiva,
        r_opiskeluoikeus.paattymispaiva,
+       r_opiskeluoikeus.paattymispaiva > $tarkastelupäivä AS paattymispaiva_merkitty_tulevaisuuteen,
        coalesce(valittu_r_paatason_suoritus.data ->> 'ryhmä', r_opiskeluoikeus.luokka) AS ryhmä,
        r_opiskeluoikeus.viimeisin_tila,
        FALSE AS aiemmin_valmistunut,
@@ -364,6 +366,7 @@ WITH
         ),
         'alkamispäivä', opiskeluoikeus.alkamispaiva,
         'päättymispäivä', opiskeluoikeus.paattymispaiva,
+        'päättymispäiväMerkittyTulevaisuuteen', opiskeluoikeus.paattymispaiva_merkitty_tulevaisuuteen,
         'ryhmä', opiskeluoikeus.ryhmä,
         'tarkastelupäivänTila', json_build_object(
           'koodiarvo', opiskeluoikeus.tarkastelupäivän_tila,

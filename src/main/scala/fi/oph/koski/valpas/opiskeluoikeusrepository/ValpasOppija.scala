@@ -114,6 +114,7 @@ case class ValpasOpiskeluoikeusLaajatTiedot(
   toimipiste: Option[ValpasToimipiste],
   alkamispäivä: String,
   päättymispäivä: Option[String],
+  päättymispäiväMerkittyTulevaisuuteen: Option[Boolean],
   ryhmä: Option[String],
   tarkastelupäivänTila: Koodistokoodiviite,
   oppivelvollisuudenSuorittamiseenKelpaava: Boolean,
@@ -140,6 +141,7 @@ object ValpasOpiskeluoikeusSuppeatTiedot {
       tarkastelupäivänTila = laajatTiedot.tarkastelupäivänTila,
       alkamispäivä = laajatTiedot.alkamispäivä,
       päättymispäivä = laajatTiedot.päättymispäivä,
+      päättymispäiväMerkittyTulevaisuuteen = laajatTiedot.päättymispäiväMerkittyTulevaisuuteen,
       oppivelvollisuudenSuorittamiseenKelpaava = laajatTiedot.oppivelvollisuudenSuorittamiseenKelpaava,
       näytettäväPerusopetuksenSuoritus = laajatTiedot.näytettäväPerusopetuksenSuoritus,
     )
@@ -156,6 +158,7 @@ case class ValpasOpiskeluoikeusSuppeatTiedot(
   tarkastelupäivänTila: Koodistokoodiviite,
   alkamispäivä: String,
   päättymispäivä: Option[String],
+  päättymispäiväMerkittyTulevaisuuteen: Option[Boolean],
   oppivelvollisuudenSuorittamiseenKelpaava: Boolean,
   näytettäväPerusopetuksenSuoritus: Boolean,
 ) extends ValpasOpiskeluoikeus {
