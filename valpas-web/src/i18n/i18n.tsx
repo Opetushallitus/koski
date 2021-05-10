@@ -18,12 +18,13 @@ type LocalizationMap = Record<TranslationId, LanguageRecord>
 type ParamsMap = Record<string, string | number>
 declare global {
   interface Window {
-    valpasLocalizationMap: LocalizationMap
+    valpasLocalizationMap?: LocalizationMap
   }
 }
 
-const texts = window.valpasLocalizationMap
+const texts = window.valpasLocalizationMap || {}
 const missing: Record<string, boolean> = {}
+let logMissingTranslationWarnings = true
 
 export const getLanguage = (): Language => {
   const maybeLanguage: unknown = Cookie.get("lang")
@@ -52,7 +53,7 @@ export const t = (id: TranslationId, params?: ParamsMap): Translation => {
     const localizedString = texts[id]
 
     if (!localizedString || !localizedString[usedLanguage]) {
-      if (!missing[usedLanguage + "." + id]) {
+      if (!missing[usedLanguage + "." + id] && logMissingTranslationWarnings) {
         logWarning(`Käännös puuttuu ${usedLanguage}:`, id)
         missing[usedLanguage + "." + id] = true
       }
@@ -97,6 +98,10 @@ export const formatFixedNumber = (
 ): string | undefined => n?.toFixed(fractionDigits).replace(".", ",")
 
 export const useLanguage = () => useMemo(() => getLanguage(), [])
+
+export const disableMissingTranslationWarnings = () => {
+  logMissingTranslationWarnings = false
+}
 
 /**
  * Palauttaa koodiviitteestä aina edes jonkilaisen esitettävän merkkijonon

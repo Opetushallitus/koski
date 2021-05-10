@@ -1,5 +1,6 @@
 @import "../../style/colors.less";
 @import "../../style/typography.less";
+@import "../../style/zindex.less";
 
 body.modal__noscroll {
   overflow: hidden;
@@ -11,6 +12,7 @@ body.modal__noscroll {
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: @z-index-modal;
 
   display: flex;
   justify-content: center;

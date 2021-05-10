@@ -2,7 +2,7 @@ import bem from "bem-ts"
 import * as A from "fp-ts/Array"
 import * as Eq from "fp-ts/Eq"
 import { pipe } from "fp-ts/lib/function"
-import React, { useState } from "react"
+import React, { useMemo, useState } from "react"
 import { Redirect, useHistory } from "react-router"
 import { fetchOppijat, fetchOppijatCache } from "../../api/api"
 import { useApiWithParams } from "../../api/apiHooks"
@@ -26,9 +26,11 @@ import {
   createHakutilannePathWithOrg,
   HakutilanneViewRouteProps,
 } from "../../state/paths"
+import { nonNull } from "../../utils/arrays"
 import { ErrorView } from "../ErrorView"
 import { HakutilanneTable } from "./HakutilanneTable"
 import "./HakutilanneView.less"
+import { Ilmoituslomake } from "./ilmoituslomake/Ilmoituslomake"
 import { VirkailijaNavigation } from "./VirkailijaNavigation"
 
 const b = bem("hakutilanneview")
@@ -66,7 +68,8 @@ export const HakutilanneView = (props: HakutilanneViewProps) => {
     filteredRowCount: 0,
     unfilteredRowCount: 0,
   })
-  const [selected, setSelected] = useState<Oid[]>([])
+  const [selectedOppijaOids, setSelectedOppijaOids] = useState<Oid[]>([])
+  const [ilmoituslomakeVisible, showIlmoituslomake] = useState(false)
 
   const orgOptions = getOrgOptions(organisaatiot)
 
@@ -75,6 +78,18 @@ export const HakutilanneView = (props: HakutilanneViewProps) => {
       history.push(oid)
     }
   }
+
+  const selectedOppijat = useMemo(
+    () =>
+      isSuccess(oppijatFetch)
+        ? selectedOppijaOids
+            .map((oid) =>
+              oppijatFetch.data.find((o) => o.oppija.henkilö.oid === oid)
+            )
+            .filter(nonNull)
+        : [],
+    [oppijatFetch, selectedOppijaOids]
+  )
 
   return organisaatioOid ? (
     <div className={b("view")}>
@@ -105,30 +120,41 @@ export const HakutilanneView = (props: HakutilanneViewProps) => {
               data={oppijatFetch.data}
               organisaatioOid={organisaatioOid}
               onCountChange={setCounters}
-              onSelect={setSelected}
+              onSelect={setSelectedOppijaOids}
             />
           )}
         </CardBody>
       </Card>
       {isFeatureFlagEnabled("ilmoittaminen") ? (
-        <BottomDrawer>
-          <div className={b("ilmoittaminen")}>
-            <h4 className={b("ilmoittaminentitle")}>
-              <T id="ilmoittaminen_drawer__title" />
-            </h4>
-            <div className={b("ilmoittamisenalarivi")}>
-              <span className={b("valittujaoppilaita")}>
-                <T
-                  id="ilmoittaminen_drawer__valittuja_oppilaita"
-                  params={{ määrä: selected.length }}
-                />
-              </span>
-              <RaisedButton disabled={A.isEmpty(selected)}>
-                <T id="ilmoittaminen_drawer__siirry_ilmoittamiseen" />
-              </RaisedButton>
+        <>
+          <BottomDrawer>
+            <div className={b("ilmoittaminen")}>
+              <h4 className={b("ilmoittaminentitle")}>
+                <T id="ilmoittaminen_drawer__title" />
+              </h4>
+              <div className={b("ilmoittamisenalarivi")}>
+                <span className={b("valittujaoppilaita")}>
+                  <T
+                    id="ilmoittaminen_drawer__valittuja_oppilaita"
+                    params={{ määrä: selectedOppijaOids.length }}
+                  />
+                </span>
+                <RaisedButton
+                  disabled={A.isEmpty(selectedOppijaOids)}
+                  onClick={() => showIlmoituslomake(true)}
+                >
+                  <T id="ilmoittaminen_drawer__siirry_ilmoittamiseen" />
+                </RaisedButton>
+              </div>
             </div>
-          </div>
-        </BottomDrawer>
+          </BottomDrawer>
+          {ilmoituslomakeVisible && isSuccess(oppijatFetch) ? (
+            <Ilmoituslomake
+              oppijat={selectedOppijat}
+              onClose={() => showIlmoituslomake(false)}
+            />
+          ) : null}
+        </>
       ) : null}
     </div>
   ) : (

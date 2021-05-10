@@ -5,9 +5,11 @@ import "./buttons.less"
 
 const b = bem("button")
 
+export type DisableState = false | true | "byLook"
+
 export type RaisedButtonProps = React.HTMLAttributes<HTMLButtonElement> & {
   hierarchy?: ButtonHierarchy
-  disabled?: boolean
+  disabled?: DisableState
 }
 
 export type ButtonHierarchy = "primary" | "secondary"
@@ -17,7 +19,8 @@ export const RaisedButton = (props: RaisedButtonProps) => {
   return (
     <button
       className={raisedButtonClassName(props)}
-      onClick={disabled ? undefined : onClick}
+      onClick={disabled === true ? undefined : onClick}
+      disabled={disabled === true}
       {...rest}
     >
       <span className={b("content")}>{children}</span>

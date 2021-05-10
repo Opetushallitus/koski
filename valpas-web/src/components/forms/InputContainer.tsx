@@ -6,6 +6,7 @@ export type InputContainerProps = {
   bemBase: string
   children: React.ReactNode
   label?: React.ReactNode
+  required?: boolean
   icon?: React.ReactNode
   error?: React.ReactNode
   className?: string
@@ -20,7 +21,12 @@ export const InputContainer = (props: InputContainerProps) => {
         props.className
       )}
     >
-      {props.label && <div className={b("label")}>{props.label}</div>}
+      {props.label && (
+        <div className={b("label")}>
+          {props.label}
+          {props.required ? " *" : null}
+        </div>
+      )}
       <div className={b("inputcontainer")}>
         {props.children}
         {props.icon && <div className={b("icon")}>{props.icon}</div>}
