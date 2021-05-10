@@ -11,17 +11,19 @@ import fi.oph.koski.valpas.{OppijaHakutilanteillaLaajatTiedot, ValpasErrorCatego
 class OpiskeluoikeusLisätiedotRepository(valpasDatabase: ValpasDatabase) extends QueryMethods with Logging {
   protected val db: DB = valpasDatabase.db
 
-  def readForOppijat(oppijoidenTiedot: Seq[OppijaHakutilanteillaLaajatTiedot])
-  : Seq[(OppijaHakutilanteillaLaajatTiedot, Seq[OpiskeluoikeusLisätiedotRow])] = {
-    val keys = oppijoidenTiedot.flatMap(oppijanTiedot =>
-      oppijanTiedot.oppija.opiskeluoikeudet.map(oo =>
-        OpiskeluoikeusLisätiedotKey(
-          oppijaOid = oppijanTiedot.oppija.henkilö.oid,
-          opiskeluoikeusOid = oo.oid,
-          oppilaitosOid = oo.oppilaitos.oid
-        )
+  private def keysForOppija(oppijanTiedot: OppijaHakutilanteillaLaajatTiedot): Seq[OpiskeluoikeusLisätiedotKey] = {
+    oppijanTiedot.oppija.opiskeluoikeudet.map(oo =>
+      OpiskeluoikeusLisätiedotKey(
+        oppijaOid = oppijanTiedot.oppija.henkilö.oid,
+        opiskeluoikeusOid = oo.oid,
+        oppilaitosOid = oo.oppilaitos.oid
       )
     )
+  }
+
+  def readForOppijat(oppijoidenTiedot: Seq[OppijaHakutilanteillaLaajatTiedot])
+  : Seq[(OppijaHakutilanteillaLaajatTiedot, Seq[OpiskeluoikeusLisätiedotRow])] = {
+    val keys = oppijoidenTiedot.flatMap(keysForOppija)
     val lisätiedotByOppijaOid = read(keys).groupBy(_.oppijaOid)
     oppijoidenTiedot.map(oppijanTiedot => (
       oppijanTiedot,

@@ -9,16 +9,24 @@ import reflect.runtime.universe.TypeTag
 
 case class HttpStatus(statusCode: Int, errors: List[ErrorDetail]) {
   if (statusCode == 200 && errors.nonEmpty) throw new RuntimeException("HttpStatus 200 with error message " + errors.mkString(","))
-  def isOk = statusCode < 300
-  def isError = !isOk
+
+  def isOk: Boolean = statusCode < 300
+
+  def isError: Boolean = !isOk
 
   /** Pick given status if this one is ok. Otherwise stick with this one */
-  def onSuccess(status: => HttpStatus) = if (isOk) { status } else { this }
+  def onSuccess(status: => HttpStatus): HttpStatus = if (isOk) { status } else { this }
 
   def errorString: Option[String] = errors.headOption.flatMap(_.message match {
     case JString(s) => Some(s)
     case otherJValue => None
   })
+
+  def toEither: Either[HttpStatus, Unit] = if (isError) {
+    Left(this)
+  } else {
+    Right(Unit)
+  }
 }
 
 // Constructor is private to force force explicit usage of ErrorMessage. This allows us

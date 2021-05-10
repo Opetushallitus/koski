@@ -1,9 +1,11 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.{AuditLog, KoskiMessageField}
 import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioHierarkia, OrganisaatioHierarkiaJaKayttooikeusrooli}
 import fi.oph.koski.servlet.NoCache
+import fi.oph.koski.valpas.db.ValpasSchema.OpiskeluoikeusLisätiedotKey
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessage, ValpasOperation}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppilaitos
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
@@ -45,6 +47,20 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
       oppijaService.getOppijaHakutilanteillaLaajatTiedot(params("oid"))
         .map(withAuditLogOppijaKatsominen)
     )
+  }
+
+  put("/oppija/:oid/set-muu-haku") {
+    val oppijaOid = params("oid")
+    val ooOid = getStringParam("opiskeluoikeusOid")
+    val oppilaitosOid = getStringParam("oppilaitosOid")
+    val value = getBooleanParam("value")
+
+    val key = OpiskeluoikeusLisätiedotKey(
+      oppijaOid = oppijaOid,
+      opiskeluoikeusOid = ooOid,
+      oppilaitosOid = oppilaitosOid
+    )
+    oppijaService.setMuuHaku(key, value)
   }
 
   private def withAuditLogOppijaKatsominen

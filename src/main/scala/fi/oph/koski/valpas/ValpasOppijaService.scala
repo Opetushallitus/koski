@@ -8,7 +8,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
 import fi.oph.koski.util.Timing
-import fi.oph.koski.valpas.db.ValpasSchema.OpiskeluoikeusLisätiedotRow
+import fi.oph.koski.valpas.db.ValpasSchema.{OpiskeluoikeusLisätiedotKey, OpiskeluoikeusLisätiedotRow}
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, ValpasHakukoosteService}
 import fi.oph.koski.valpas.opiskeluoikeusrepository._
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusSuppeatTiedot}
@@ -229,5 +229,12 @@ class ValpasOppijaService(
           }))
       }
     }
+  }
+
+  def setMuuHaku(key: OpiskeluoikeusLisätiedotKey, value: Boolean)(implicit session: ValpasSession): HttpStatus = {
+    HttpStatus.justStatus(
+      getOppijaLaajatTiedot(key.oppijaOid) // Tämä tehdään käyttöoikeuksien varmistamiseksi!
+        .flatMap(_ => lisätiedotRepository.setMuuHaku(key, value).toEither)
+    )
   }
 }
