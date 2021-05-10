@@ -70,7 +70,7 @@ valmistuneeksi, jos ja vain jos suoritus sisältää vähintään yhden arvioidu
 - Ammatillisen tutkinnon yhteisiin osa-alueisiin (koodit '101053', '101054', '101055', '101056', '400012', '400013', '400014') liittyviä validaatioita Tor-982
   - Arvioidun tutkinnon osan laajuus tulee olla sama kuin sen alle siirrettyjen osa-alueiden yhteislaajuus
   - Arvioidun tutkinnon osan alta tulee aina löytyä myös osa-alueita
-  - Valmiiksi merkityn ammatillisen perustutkinnon, jonka suoritustapa on reformi, yhteisten tutkinnon osien yhteislaajuus on oltava tasan 35.
+  - Valmiiksi merkityn ammatillisen perustutkinnon, jonka suoritustapa on reformi, yhteisten tutkinnon osien yhteislaajuus on oltava 35 tai enemmän.
   - Valmiiksi merkityssä ammatillisessa perustutkinnossa ei voi esiintyä saman yhteisen tutkinnon osan koodi kuin kerran
   - Jos suoritustapa on reformi, ei sallita tutkinnon osia '101053', '101054', '101055', '101056' - jos suoritustapa ops ei sallita tutkinnon osia '400012', '400013', '400014' .
 
