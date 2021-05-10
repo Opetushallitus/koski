@@ -53,13 +53,13 @@ const VirkailijaRoutes = ({ user }: VirkailijaRoutesProps) => {
     <Switch>
       <Route exact path={`${basePath}/pilotti2021`}>
         <FeatureFlagEnabler
-          feature="valpas"
+          features={["valpas"]}
           redirectTo={createHakutilannePathWithoutOrg(basePath)}
         />
       </Route>
-      <Route exact path={`${basePath}/feature/ilmoittaminen`}>
+      <Route exact path={`${basePath}/koulutus2021`}>
         <FeatureFlagEnabler
-          feature="ilmoittaminen"
+          features={["valpas", "ilmoittaminen"]}
           redirectTo={createHakutilannePathWithoutOrg(basePath)}
         />
       </Route>
