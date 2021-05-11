@@ -123,7 +123,7 @@ const LisääPaikallinen = ({suoritusPrototype, setExpanded}) => {
         </a>
       {
         ift(showModal,
-          <ModalDialog className="lisaa-paikallinen-suoritus-modal"
+          <ModalDialog className="lisaa-paikallinen-vst-suoritus-modal"
                        onDismiss={closeModal}
                        onSubmit={addNewSuoritus}
                        okTextKey={'Lisää paikallinen opintokokonaisuus'}

@@ -615,7 +615,7 @@ function VSTSuoritukset(prev) {
     },
     lisääPaikallinen: function(nimi) {
       return function () {
-        var modalElement = findSingle('.lisaa-paikallinen-suoritus-modal', selectedOsasuoritus)
+        var modalElement = findSingle('.lisaa-paikallinen-vst-suoritus-modal', selectedOsasuoritus)
         return click(findSingle('.lisaa-paikallinen-suoritus a', selectedOsasuoritus))()
           .then(Page(modalElement).setInputValue('input', nimi))
           .then(click(subElement(modalElement, 'button.vahvista:not(:disabled)')))
