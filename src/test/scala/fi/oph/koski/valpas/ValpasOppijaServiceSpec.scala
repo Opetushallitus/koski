@@ -331,6 +331,13 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
                   withClue("päättymispäiväMerkittyTulevaisuuteen") {
                     opiskeluoikeus.päättymispäiväMerkittyTulevaisuuteen shouldBe expectedData.opiskeluoikeus.päättymispäivä.map(pp => pp.isAfter(defaultMockTarkastelupäivä) )
                   }
+                  withClue("näytettäväPerusopetuksenSuoritus") {
+                    opiskeluoikeus.näytettäväPerusopetuksenSuoritus shouldBe (
+                      expectedData.opiskeluoikeus.tyyppi.koodiarvo == "perusopetus" &&
+                        expectedData.tarkastelupäivänTila == "valmistunut" &&
+                        expectedData.opiskeluoikeus.päättymispäivä.exists(_.isBefore(defaultMockTarkastelupäivä.plusDays(28)))
+                      )
+                  }
                 }
               case (None, Some(expectedData)) =>
                 fail(s"Opiskeluoikeus puuttuu: oppija.oid:${expectedOppija.oid} oppija.hetu:${expectedOppija.hetu} opiskeluoikeus.oid:${expectedData.opiskeluoikeus.oid} opiskeluoikeus.tyyppi:${expectedData.opiskeluoikeus.tyyppi.koodiarvo}")
