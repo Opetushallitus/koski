@@ -3,7 +3,7 @@ package fi.oph.koski.valpas
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.{KäyttöoikeusOrg, Palvelurooli}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.schema.{Organisaatio, OrganisaatioWithOid}
+import fi.oph.koski.schema.{Opiskeluoikeus, Organisaatio, OrganisaatioWithOid}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppijaLaajatTiedot
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 
@@ -29,6 +29,13 @@ class ValpasAccessResolver(organisaatioRepository: OrganisaatioRepository) {
     (organisaatioOid: Organisaatio.Oid)(oppija: T)
   : Either[HttpStatus, T] = {
     Either.cond(oppija.oikeutetutOppilaitokset.contains(organisaatioOid), oppija, ValpasErrorCategory.forbidden.oppija())
+  }
+
+  def withOpiskeluoikeusAccess[T <: ValpasOppijaLaajatTiedot]
+    (opiskeluoikeusOid: Opiskeluoikeus.Oid)(oppija: T)
+  : Either[HttpStatus, T] = {
+    val valvottavat = oppija.opiskeluoikeudet.filter(_.onValvottava).map(_.oid)
+    Either.cond(valvottavat.contains(opiskeluoikeusOid), oppija, ValpasErrorCategory.forbidden.opiskeluoikeus())
   }
 
   def filterByOikeudet(organisaatioOidit: Set[Organisaatio.Oid])(implicit session: ValpasSession): Set[Organisaatio.Oid] = {

@@ -26,13 +26,13 @@ class OpiskeluoikeusLisätiedotSpec extends ValpasTestBase with BeforeAndAfterAl
   }
 
   private lazy val oppijaLaajatTiedot = {
-    val oppija = ValpasMockOppijat.päällekkäisiäOpiskeluoikeuksia
+    val oppija = ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster
     oppijaService.getOppijaHakutilanteillaLaajatTiedot(oppija.oid)(defaultSession).right.get
   }
 
-  private lazy val ilmanEnsimmäistäOpiskeluoikeutta = oppijaLaajatTiedot.copy(
+  private lazy val vainViimeinenOpiskeluoikeus = oppijaLaajatTiedot.copy(
     oppija = oppijaLaajatTiedot.oppija.copy(
-      opiskeluoikeudet = oppijaLaajatTiedot.oppija.opiskeluoikeudet.drop(1)
+      opiskeluoikeudet = oppijaLaajatTiedot.oppija.opiskeluoikeudet.drop(2)
     )
   )
 
@@ -46,30 +46,35 @@ class OpiskeluoikeusLisätiedotSpec extends ValpasTestBase with BeforeAndAfterAl
     }
 
     "tallentuu" in {
-      repository.setMuuHaku(keyFor(oppijaLaajatTiedot, 0), value = false) should equal(HttpStatus.ok)
+      repository.setMuuHaku(keyFor(oppijaLaajatTiedot, 1), value = false) should equal(HttpStatus.ok)
       repository.readForOppijat(Seq(oppijaLaajatTiedot)).head._2.head.muuHaku should equal(false)
     }
 
     "päivittyy" in {
-      repository.setMuuHaku(keyFor(oppijaLaajatTiedot, 0), value = true) should equal(HttpStatus.ok)
+      repository.setMuuHaku(keyFor(oppijaLaajatTiedot, 1), value = false) should equal(HttpStatus.ok)
+      repository.setMuuHaku(keyFor(oppijaLaajatTiedot, 1), value = true) should equal(HttpStatus.ok)
       repository.readForOppijat(Seq(oppijaLaajatTiedot)).head._2.head.muuHaku should equal(true)
     }
 
     "on opiskeluoikeuskohtainen" - {
       "ensimmäiselle opiskeluoikeudelle asetettu tila ei näy toisella" in {
-        repository.readForOppijat(Seq(ilmanEnsimmäistäOpiskeluoikeutta)).head._2 should equal(Seq())
+        repository.setMuuHaku(keyFor(oppijaLaajatTiedot, 1), value = true) should equal(HttpStatus.ok)
+        repository.readForOppijat(Seq(vainViimeinenOpiskeluoikeus)).head._2 should equal(Seq())
       }
 
       "tilan voi asettaa ja hakea toiselle opiskeluoikeudelle erikseen" in {
-        repository.setMuuHaku(keyFor(oppijaLaajatTiedot, 1), value = false) should equal(HttpStatus.ok)
-        repository.readForOppijat(Seq(ilmanEnsimmäistäOpiskeluoikeutta)).head._2.head.muuHaku should equal(false)
+        repository.setMuuHaku(keyFor(oppijaLaajatTiedot, 1), value = true) should equal(HttpStatus.ok)
+        repository.setMuuHaku(keyFor(oppijaLaajatTiedot, 2), value = false) should equal(HttpStatus.ok)
+        repository.readForOppijat(Seq(vainViimeinenOpiskeluoikeus)).head._2.head.muuHaku should equal(false)
       }
     }
 
     "voi hakea useita kerralla" in {
+      repository.setMuuHaku(keyFor(oppijaLaajatTiedot, 1), value = true) should equal(HttpStatus.ok)
+      repository.setMuuHaku(keyFor(oppijaLaajatTiedot, 2), value = false) should equal(HttpStatus.ok)
       val expected = Seq(
-        (oppijaLaajatTiedot.oppija.opiskeluoikeudet(0).oid, true),
-        (oppijaLaajatTiedot.oppija.opiskeluoikeudet(1).oid, false)
+        (oppijaLaajatTiedot.oppija.opiskeluoikeudet(1).oid, true),
+        (oppijaLaajatTiedot.oppija.opiskeluoikeudet(2).oid, false)
       )
       repository.readForOppijat(Seq(oppijaLaajatTiedot))
         .flatMap(r =>

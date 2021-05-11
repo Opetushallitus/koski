@@ -233,7 +233,10 @@ class ValpasOppijaService(
 
   def setMuuHaku(key: OpiskeluoikeusLisätiedotKey, value: Boolean)(implicit session: ValpasSession): HttpStatus = {
     HttpStatus.justStatus(
-      getOppijaLaajatTiedot(key.oppijaOid) // Tämä tehdään käyttöoikeuksien varmistamiseksi!
+      accessResolver.assertAccessToOrg(key.oppilaitosOid)
+        .flatMap(_ => getOppijaLaajatTiedot(key.oppijaOid))
+        .flatMap(accessResolver.withOppijaAccessAsOrganisaatio(key.oppilaitosOid))
+        .flatMap(accessResolver.withOpiskeluoikeusAccess(key.opiskeluoikeusOid))
         .flatMap(_ => lisätiedotRepository.setMuuHaku(key, value).toEither)
     )
   }
