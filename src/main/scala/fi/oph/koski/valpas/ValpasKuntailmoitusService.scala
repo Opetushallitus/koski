@@ -27,8 +27,8 @@ class ValpasKuntailmoitusService(
   )(implicit session: ValpasSession): Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
     val organisaatioOid = kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio.oid
 
-    accessResolver.organisaatiohierarkiaOids(Set(organisaatioOid))
-      .left.map(_ => ValpasErrorCategory.forbidden.organisaatio(
+    accessResolver.assertAccessToOrg(organisaatioOid).left.map(_ =>
+      ValpasErrorCategory.forbidden.organisaatio(
         "Käyttäjällä ei ole oikeutta tehdä kuntailmoitusta annetun organisaation nimissä"
       ))
       .flatMap(_ => oppijaService.getOppijaLaajatTiedot(kuntailmoitusInput.oppijaOid))

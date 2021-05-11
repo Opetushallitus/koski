@@ -17,6 +17,10 @@ class ValpasAccessResolver(organisaatioRepository: OrganisaatioRepository) {
     })
   }
 
+  def assertAccessToOrg(organisaatioOid: Organisaatio.Oid)(implicit session: ValpasSession): Either[HttpStatus, Unit] = {
+    withAccessToAllOrgs(Set(organisaatioOid), () => ())
+  }
+
   def withOppijaAccess[T <: ValpasOppijaLaajatTiedot](oppija: T)(implicit session: ValpasSession): Either[HttpStatus, T] = {
     Either.cond(accessToSomeOrgs(oppija.oikeutetutOppilaitokset), oppija, ValpasErrorCategory.forbidden.oppija())
   }
