@@ -8,8 +8,10 @@ import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppijaLaajatTiedot
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 
 class ValpasAccessResolver(organisaatioRepository: OrganisaatioRepository) {
-  def organisaatiohierarkiaOids(organisaatioOids: Set[Organisaatio.Oid])(implicit session: ValpasSession): Either[HttpStatus, Set[Organisaatio.Oid]] = {
-    withOrgAccess(accessToAllOrgs(organisaatioOids), { () =>
+  def organisaatiohierarkiaOids
+    (organisaatioOids: Set[Organisaatio.Oid])(implicit session: ValpasSession)
+  : Either[HttpStatus, Set[Organisaatio.Oid]] = {
+    withAccessToAllOrgs(organisaatioOids, () => {
       val childOids = organisaatioOids.flatMap(organisaatioRepository.getChildOids).flatten
       organisaatioOids ++ childOids
     })
@@ -19,7 +21,9 @@ class ValpasAccessResolver(organisaatioRepository: OrganisaatioRepository) {
     Either.cond(accessToSomeOrgs(oppija.oikeutetutOppilaitokset), oppija, ValpasErrorCategory.forbidden.oppija())
   }
 
-  def withOppijaAccessAsOrganisaatio[T <: ValpasOppijaLaajatTiedot](organisaatioOid: Organisaatio.Oid)(oppija: T): Either[HttpStatus, T] = {
+  def withOppijaAccessAsOrganisaatio[T <: ValpasOppijaLaajatTiedot]
+    (organisaatioOid: Organisaatio.Oid)(oppija: T)
+  : Either[HttpStatus, T] = {
     Either.cond(oppija.oikeutetutOppilaitokset.contains(organisaatioOid), oppija, ValpasErrorCategory.forbidden.oppija())
   }
 
@@ -27,8 +31,9 @@ class ValpasAccessResolver(organisaatioRepository: OrganisaatioRepository) {
     organisaatioOidit.filter(oid => accessToAllOrgs(Set(oid)))
   }
 
-  private def withOrgAccess[T](access: Boolean, fn: () => T): Either[HttpStatus, T] = {
-    Either.cond(access, fn(), ValpasErrorCategory.forbidden.organisaatio())
+  private def withAccessToAllOrgs[T](organisaatioOids: Set[Organisaatio.Oid], fn: () => T)(implicit session: ValpasSession)
+  : Either[HttpStatus, T] = {
+    Either.cond(accessToAllOrgs(organisaatioOids), fn(), ValpasErrorCategory.forbidden.organisaatio())
   }
 
   private def accessToAllOrgs(organisaatioOids: Set[Organisaatio.Oid])(implicit session: ValpasSession): Boolean =
