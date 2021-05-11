@@ -1,7 +1,8 @@
 package fi.oph.koski.virta
 
-import java.time.LocalDate
+import fi.oph.koski.documentation.ExampleData.{laajuusOpintopisteissä, laajuusOpintoviikoissa}
 
+import java.time.LocalDate
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.oppilaitos.MockOppilaitosRepository
 import fi.oph.koski.schema._
@@ -66,6 +67,11 @@ class VirtaXMLConverterSpec extends FreeSpec with Matchers with OptionValues {
 
   def withArvosana(arvosana: Elem, suoritus: Elem = baseSuoritus): Elem = suoritus.copy(child = for (subNode <- suoritus.child) yield subNode match {
     case <Arvosana>{ contents @ _* }</Arvosana> => arvosana
+    case other@_ => other
+  })
+
+  def withLaajuus(laajuus: Elem, suoritus: Elem = baseSuoritus): Elem = suoritus.copy(child = for (subNode <- suoritus.child) yield subNode match {
+    case <Laajuus>{ contents @ _* }</Laajuus> => laajuus
     case other@_ => other
   })
 
@@ -174,6 +180,36 @@ class VirtaXMLConverterSpec extends FreeSpec with Matchers with OptionValues {
         ))
 
         suoritus.toimipiste.nimi.get should be(Finnish("Aalto-yliopisto", Some("Aalto-universitetet"), Some("Aalto University")))
+      }
+    }
+
+    "Laajuudet" - {
+      def convertLaajuus(laajuus: Elem): Laajuus = convertSuoritus(withLaajuus(laajuus)).flatMap(_.koulutusmoduuli.getLaajuus).get
+
+      "Opintoviikkoina, jos laajuutta ei annettu opintopisteinä" in {
+        convertLaajuus(<virta:Laajuus>
+          <virta:Opintoviikko>2.0</virta:Opintoviikko>
+        </virta:Laajuus>) should equal(LaajuusOpintoviikoissa(2.0, laajuusOpintoviikoissa))
+      }
+
+      "Opintoviikkoina, jos laajuus opintopisteinä 0" in {
+        convertLaajuus(<virta:Laajuus>
+          <virta:Opintopiste>0.0</virta:Opintopiste>
+          <virta:Opintoviikko>2.0</virta:Opintoviikko>
+        </virta:Laajuus>) should equal(LaajuusOpintoviikoissa(2.0, laajuusOpintoviikoissa))
+      }
+
+      "Opintopisteinä, jos opintoviikkoa ei annettu" in {
+        convertLaajuus(<virta:Laajuus>
+          <virta:Opintopiste>2.0</virta:Opintopiste>
+        </virta:Laajuus>) should equal(LaajuusOpintopisteissä(2.0, laajuusOpintopisteissä))
+      }
+
+      "Opintopisteinä, jos opintoviikot ja opintopisteet annettu" in {
+        convertLaajuus(<virta:Laajuus>
+          <virta:Opintoviikko>2.0</virta:Opintoviikko>
+          <virta:Opintopiste>2.0</virta:Opintopiste>
+        </virta:Laajuus>) should equal(LaajuusOpintopisteissä(2.0, laajuusOpintopisteissä))
       }
     }
 
