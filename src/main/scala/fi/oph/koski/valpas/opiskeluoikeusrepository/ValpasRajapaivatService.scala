@@ -2,9 +2,9 @@ package fi.oph.koski.valpas.opiskeluoikeusrepository
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
-
 import com.typesafe.config.Config
 import fi.oph.koski.log.Logging
+import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService.defaultMockTarkastelupäivä
 
 trait ValpasRajapäivätService extends Logging {
   def tarkastelupäivä: LocalDate
@@ -29,9 +29,12 @@ object ValpasRajapäivätService {
   val IlmoitustenEnsimmäinenTallennuspäiväPath = "valpas.rajapäivät.ilmoitustenEnsimmäinenTallennuspäivä"
   val KeväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäiväPath =
     "valpas.rajapäivät.keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä"
+
   def keväänValmistumisjaksoLoppuPath(vuosi: Int) = s"valpas.rajapäivät.${vuosi}.keväänValmistumisjaksoLoppu"
+
   def keväänValmistumisjaksollaValmistuneidenOppivelvollisuudenSuorittamisenTarkistuspäiväPath(vuosi: Int) =
     s"valpas.rajapäivät.${vuosi}.keväänValmistumisjaksollaValmistuneidenOppivelvollisuudenSuorittamisenTarkistuspäivä"
+
   val tulevaisuuteenMerkitynPerusopetuksenSuorituksenAikaikkunaPäivinäPath =
     "valpas.rajapäivät.tulevaisuuteenMerkitynPerusopetuksenSuorituksenAikaikkunaPäivinä"
 
@@ -44,10 +47,14 @@ object ValpasRajapäivätService {
   }
 }
 
+object MockValpasRajapäivätService {
+  val defaultMockTarkastelupäivä: LocalDate = date(2021, 9, 5)
+}
+
 class MockValpasRajapäivätService(defaultService: ConfigValpasRajapäivätService) extends ValpasRajapäivätService {
   private var mockTarkastelupäivä: Option[LocalDate] = None
 
-  def asetaMockTarkastelupäivä(tarkastelupäivä: LocalDate = date(2021, 9, 5)): Unit = {
+  def asetaMockTarkastelupäivä(tarkastelupäivä: LocalDate = defaultMockTarkastelupäivä): Unit = {
     this.mockTarkastelupäivä = Some(tarkastelupäivä)
   }
   def poistaMockTarkastelupäivä(): Unit = {
