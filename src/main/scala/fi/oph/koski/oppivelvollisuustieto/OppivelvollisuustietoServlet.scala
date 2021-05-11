@@ -49,7 +49,7 @@ class OppivelvollisuustietoServlet(implicit val application: KoskiApplication) e
       Oppivelvollisuustieto(
         oid,
         oppivelvollisuusVoimassaAsti = LocalDate.of(2021, 8, 1),
-        oikeusMaksuttomaanKoulututukseenVoimassaAsti = LocalDate.of(2021, 8, 1)
+        oikeusMaksuttomaanKoulutukseenVoimassaAsti = LocalDate.of(2021, 8, 1)
       )
     ))
   }
@@ -58,5 +58,5 @@ class OppivelvollisuustietoServlet(implicit val application: KoskiApplication) e
 case class Oppivelvollisuustieto(
   oid: String,
   oppivelvollisuusVoimassaAsti: LocalDate,
-  oikeusMaksuttomaanKoulututukseenVoimassaAsti: LocalDate
+  oikeusMaksuttomaanKoulutukseenVoimassaAsti: LocalDate
 )
