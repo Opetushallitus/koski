@@ -67,7 +67,7 @@
     "puppeteer": "^5.5.0",
     "q": "^1.5.1",
     "set-value": "^3.0.1",
-    "snyk": "1.474.0",
+    "snyk": "1.591.0",
     "style-loader": "^0.21.0",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.11",
