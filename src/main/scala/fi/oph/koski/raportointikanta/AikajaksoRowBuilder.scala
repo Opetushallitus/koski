@@ -267,6 +267,7 @@ object AikajaksoRowBuilder {
         )
       case eol: EsiopetuksenOpiskeluoikeudenLisätiedot =>
         toSeq(
+          eol.vammainen,
           eol.vaikeastiVammainen,
           eol.sisäoppilaitosmainenMajoitus,
           eol.koulukoti
