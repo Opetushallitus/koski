@@ -14,6 +14,7 @@ import {
 // import { update } from "../../utils/arrays"
 import { toFilterableString } from "../../utils/conversions"
 import { ArrowDropDownIcon, ArrowDropUpIcon } from "../icons/Icon"
+import { InfoTooltip } from "../tooltip/InfoTooltip"
 import {
   createFilter,
   DataFilter,
@@ -48,7 +49,8 @@ export type DataTableCountChangeEvent = {
 }
 
 export type Column = {
-  label: React.ReactNode
+  label: string
+  tooltip?: string
   filter?: DataFilter
   size?: TableCellSize
   indicatorSpace?: true | false | "auto"
@@ -153,12 +155,15 @@ export const DataTable = (props: DataTableProps) => {
               onClick={() => sortByColumn(index)}
               className={b("label")}
             >
-              <div className={b("labeltext")}>
-                <span>{col.label}</span>
+              <div className={b("labelcontent")}>
+                <div className={b("labeltext")} title={col.label}>
+                  {col.label}
+                </div>
                 <SortIndicator
                   visible={sortColumnIndex === index}
                   ascending={sortAscending}
                 />
+                {col.tooltip && <InfoTooltip>{col.tooltip}</InfoTooltip>}
               </div>
             </HeaderCell>
           ))}
@@ -256,10 +261,10 @@ type SortIndicatorProps = {
 }
 
 const SortIndicator = ({ visible, ascending }: SortIndicatorProps) => (
-  <span className={b("sortindicator", { visible })}>
+  <div className={b("sortindicator", { visible })}>
     {visible &&
       (ascending ? <ArrowDropDownIcon inline /> : <ArrowDropUpIcon inline />)}
-  </span>
+  </div>
 )
 
 const compareDatum = (index: number) => (a: Datum, b: Datum) => {
