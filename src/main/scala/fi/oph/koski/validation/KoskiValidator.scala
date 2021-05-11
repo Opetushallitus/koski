@@ -105,6 +105,7 @@ class KoskiValidator(
               validatePäätasonSuoritustenStatus(opiskeluoikeus),
               validateOpiskeluoikeudenLisätiedot(opiskeluoikeus),
               validateOsaAikainenErityisopetus(opiskeluoikeus),
+              NuortenPerusopetuksenOpiskeluoikeusValidation.validateNuortenPerusopetuksenOpiskeluoikeus(opiskeluoikeus),
               TiedonSiirrostaPuuttuvatSuorituksetValidation.validateEiSamaaAlkamispaivaa(opiskeluoikeus, koskiOpiskeluoikeudet),
               HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, Nil)))
             )

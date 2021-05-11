@@ -123,7 +123,8 @@ object PerusopetusExampleData {
     suoritukset = List(
       kahdeksannenLuokanSuoritus.copy(toimipiste = jyväskylänNormaalikoulu, luokka = "8C", alkamispäivä = Some(date(2014, 8, 16))),
       kahdeksannenLuokanSuoritus.copy(toimipiste = jyväskylänNormaalikoulu, luokka = "8C")
-    )
+    ),
+    päättymispäivä = None
   )
 
   def päättötodistusLuokanTuplauksellaOpiskeluoikeus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu, toimipiste: OrganisaatioWithOid = jyväskylänNormaalikoulu,  luokka: String = "C") = opiskeluoikeus(
@@ -138,7 +139,8 @@ object PerusopetusExampleData {
 
   def vuosiluokanOpiskeluoikeus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu, toimipiste: OrganisaatioWithOid = jyväskylänNormaalikoulu,  luokka: String = "C") = opiskeluoikeus(
     oppilaitos = oppilaitos,
-    suoritukset = List(seitsemännenLuokanSuoritus.copy(toimipiste = toimipiste, luokka = "7A"))
+    suoritukset = List(seitsemännenLuokanSuoritus.copy(toimipiste = toimipiste, luokka = "7A")),
+    päättymispäivä = None
   )
 
   def nuortenPerusOpetuksenOppiaineenOppimääränSuoritus(aine: String) = {

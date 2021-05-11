@@ -140,6 +140,7 @@ object KoskiErrorCategory {
         val osasuoritusPuuttuu = subcategory("osasuoritusPuuttuu", "Opiskeluoikeutta ei voi merkitä valmiiksi kun sen suoritukselta puuttuu tarvittava osasuoritus")
         val vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus = subcategory("vapaaSivistysTyöLaajuusVäärä", "Vahvistetuksi merkatun vapaan sivistyöstyön koulutuksen laajuuden tulee olla 53")
         val vapaanSivistystyönKOTOKokonaisuudenLaajuus = subcategory("vapaaSivistysTyöKOTOKieliopintojenLaajuusVäärä", "Vahvistetuksi merkatun vapaan sivistyöstyön maahanmuuttajien kuntoutumiskoulutuksen kieliopintojen laajuuden tulee olla vähintään 30 opintoviikkoa")
+        val nuortenPerusopetuksenValmistunutTilaIlmanVahvistettuaPäättötodistusta = subcategory("nuortenPerusopetuksenValmistunutTilaIlmanVahvistettuaPäättötodistusta", "Nuorten perusopetuksen opiskeluoikeutta ei voida päättää tilalla 'valmistunut', jos opiskeluoikeudelta puuttuu vahvistettu päättötodistus")
       }
       val tila = new Tila
 
