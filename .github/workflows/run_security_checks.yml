@@ -48,7 +48,7 @@ jobs:
         run: |
           make snyk
 
-      - name: Report failure 
+      - name: Report failure
         uses: ravsamhq/notify-slack-action@v1
         if: ${{ failure() }}
         with:
