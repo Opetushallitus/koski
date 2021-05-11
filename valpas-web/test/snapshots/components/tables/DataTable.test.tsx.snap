@@ -1,367 +1,397 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DataTable Aktiivisen sarakkeen nimen uudelleen klikkaaminen kääntää järjestyksen 1`] = `
-<table
-  class="table"
+<div
+  class="table__container"
 >
-  <thead
-    class="table__head"
+  <table
+    class="table"
   >
-    <tr
-      class="table__row"
+    <thead
+      class="table__head"
     >
-      <th
-        class="table__th table__label"
+      <tr
+        class="table__row"
       >
-        <div
-          class="table__labeltext"
+        <th
+          class="table__th table__label"
         >
-          <span>
-            Nimi
-          </span>
-          <span
-            class="table__sortindicator table__sortindicator--visible"
+          <div
+            class="table__labelcontent"
           >
-            <span
-              aria-hidden="true"
-              class="material-icons icon icon--inline"
+            <div
+              class="table__labeltext"
+              title="Nimi"
             >
-              arrow_drop_up
-            </span>
-          </span>
-        </div>
-      </th>
-      <th
-        class="table__th table__label"
-      >
-        <div
-          class="table__labeltext"
+              Nimi
+            </div>
+            <div
+              class="table__sortindicator table__sortindicator--visible"
+            >
+              <span
+                aria-hidden="true"
+                class="material-icons icon icon--inline"
+              >
+                arrow_drop_up
+              </span>
+            </div>
+          </div>
+        </th>
+        <th
+          class="table__th table__label"
         >
-          <span>
-            Oppilaitos
-          </span>
-          <span
-            class="table__sortindicator"
-          />
-        </div>
-      </th>
-    </tr>
-  </thead>
-  <tbody
-    class="table__body"
-  >
-    <tr
-      class="table__row"
-      data-row="4"
+          <div
+            class="table__labelcontent"
+          >
+            <div
+              class="table__labeltext"
+              title="Oppilaitos"
+            >
+              Oppilaitos
+            </div>
+            <div
+              class="table__sortindicator"
+            />
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody
+      class="table__body"
     >
-      <td
-        class="table__td"
-        title="Osmo"
+      <tr
+        class="table__row"
+        data-row="4"
       >
-        Osmo
-      </td>
-      <td
-        class="table__td"
-        title="Celsiuksen koulu"
+        <td
+          class="table__td"
+          title="Osmo"
+        >
+          Osmo
+        </td>
+        <td
+          class="table__td"
+          title="Celsiuksen koulu"
+        >
+          Celsiuksen koulu
+        </td>
+      </tr>
+      <tr
+        class="table__row"
+        data-row="2"
       >
-        Celsiuksen koulu
-      </td>
-    </tr>
-    <tr
-      class="table__row"
-      data-row="2"
-    >
-      <td
-        class="table__td"
-        title="Heli"
+        <td
+          class="table__td"
+          title="Heli"
+        >
+          Heli
+        </td>
+        <td
+          class="table__td"
+          title="Beetakaroteenikoulu"
+        >
+          Beetakaroteenikoulu
+        </td>
+      </tr>
+      <tr
+        class="table__row"
+        data-row="1"
       >
-        Heli
-      </td>
-      <td
-        class="table__td"
-        title="Beetakaroteenikoulu"
+        <td
+          class="table__td"
+          title="Heikki"
+        >
+          Heikki
+        </td>
+        <td
+          class="table__td"
+          title="Aakkoskoulu"
+        >
+          Aakkoskoulu
+        </td>
+      </tr>
+      <tr
+        class="table__row"
+        data-row="3"
       >
-        Beetakaroteenikoulu
-      </td>
-    </tr>
-    <tr
-      class="table__row"
-      data-row="1"
-    >
-      <td
-        class="table__td"
-        title="Heikki"
-      >
-        Heikki
-      </td>
-      <td
-        class="table__td"
-        title="Aakkoskoulu"
-      >
-        Aakkoskoulu
-      </td>
-    </tr>
-    <tr
-      class="table__row"
-      data-row="3"
-    >
-      <td
-        class="table__td"
-        title="Aatu"
-      >
-        Aatu
-      </td>
-      <td
-        class="table__td"
-        title="Deltakoulu"
-      >
-        Deltakoulu
-      </td>
-    </tr>
-  </tbody>
-</table>
+        <td
+          class="table__td"
+          title="Aatu"
+        >
+          Aatu
+        </td>
+        <td
+          class="table__td"
+          title="Deltakoulu"
+        >
+          Deltakoulu
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 `;
 
 exports[`DataTable Renderöityy oikein 1`] = `
-<table
-  class="table"
+<div
+  class="table__container"
 >
-  <thead
-    class="table__head"
+  <table
+    class="table"
   >
-    <tr
-      class="table__row"
+    <thead
+      class="table__head"
     >
-      <th
-        class="table__th table__label"
+      <tr
+        class="table__row"
       >
-        <div
-          class="table__labeltext"
+        <th
+          class="table__th table__label"
         >
-          <span>
-            Nimi
-          </span>
-          <span
-            class="table__sortindicator table__sortindicator--visible"
+          <div
+            class="table__labelcontent"
           >
-            <span
-              aria-hidden="true"
-              class="material-icons icon icon--inline"
+            <div
+              class="table__labeltext"
+              title="Nimi"
             >
-              arrow_drop_down
-            </span>
-          </span>
-        </div>
-      </th>
-      <th
-        class="table__th table__label"
-      >
-        <div
-          class="table__labeltext"
+              Nimi
+            </div>
+            <div
+              class="table__sortindicator table__sortindicator--visible"
+            >
+              <span
+                aria-hidden="true"
+                class="material-icons icon icon--inline"
+              >
+                arrow_drop_down
+              </span>
+            </div>
+          </div>
+        </th>
+        <th
+          class="table__th table__label"
         >
-          <span>
-            Oppilaitos
-          </span>
-          <span
-            class="table__sortindicator"
-          />
-        </div>
-      </th>
-    </tr>
-  </thead>
-  <tbody
-    class="table__body"
-  >
-    <tr
-      class="table__row"
-      data-row="3"
+          <div
+            class="table__labelcontent"
+          >
+            <div
+              class="table__labeltext"
+              title="Oppilaitos"
+            >
+              Oppilaitos
+            </div>
+            <div
+              class="table__sortindicator"
+            />
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody
+      class="table__body"
     >
-      <td
-        class="table__td"
-        title="Aatu"
+      <tr
+        class="table__row"
+        data-row="3"
       >
-        Aatu
-      </td>
-      <td
-        class="table__td"
-        title="Deltakoulu"
+        <td
+          class="table__td"
+          title="Aatu"
+        >
+          Aatu
+        </td>
+        <td
+          class="table__td"
+          title="Deltakoulu"
+        >
+          Deltakoulu
+        </td>
+      </tr>
+      <tr
+        class="table__row"
+        data-row="1"
       >
-        Deltakoulu
-      </td>
-    </tr>
-    <tr
-      class="table__row"
-      data-row="1"
-    >
-      <td
-        class="table__td"
-        title="Heikki"
+        <td
+          class="table__td"
+          title="Heikki"
+        >
+          Heikki
+        </td>
+        <td
+          class="table__td"
+          title="Aakkoskoulu"
+        >
+          Aakkoskoulu
+        </td>
+      </tr>
+      <tr
+        class="table__row"
+        data-row="2"
       >
-        Heikki
-      </td>
-      <td
-        class="table__td"
-        title="Aakkoskoulu"
+        <td
+          class="table__td"
+          title="Heli"
+        >
+          Heli
+        </td>
+        <td
+          class="table__td"
+          title="Beetakaroteenikoulu"
+        >
+          Beetakaroteenikoulu
+        </td>
+      </tr>
+      <tr
+        class="table__row"
+        data-row="4"
       >
-        Aakkoskoulu
-      </td>
-    </tr>
-    <tr
-      class="table__row"
-      data-row="2"
-    >
-      <td
-        class="table__td"
-        title="Heli"
-      >
-        Heli
-      </td>
-      <td
-        class="table__td"
-        title="Beetakaroteenikoulu"
-      >
-        Beetakaroteenikoulu
-      </td>
-    </tr>
-    <tr
-      class="table__row"
-      data-row="4"
-    >
-      <td
-        class="table__td"
-        title="Osmo"
-      >
-        Osmo
-      </td>
-      <td
-        class="table__td"
-        title="Celsiuksen koulu"
-      >
-        Celsiuksen koulu
-      </td>
-    </tr>
-  </tbody>
-</table>
+        <td
+          class="table__td"
+          title="Osmo"
+        >
+          Osmo
+        </td>
+        <td
+          class="table__td"
+          title="Celsiuksen koulu"
+        >
+          Celsiuksen koulu
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 `;
 
 exports[`DataTable Toisen sarakkeen nimen klikkaaminen järjestää sen mukaisesti 1`] = `
-<table
-  class="table"
+<div
+  class="table__container"
 >
-  <thead
-    class="table__head"
+  <table
+    class="table"
   >
-    <tr
-      class="table__row"
+    <thead
+      class="table__head"
     >
-      <th
-        class="table__th table__label"
+      <tr
+        class="table__row"
       >
-        <div
-          class="table__labeltext"
+        <th
+          class="table__th table__label"
         >
-          <span>
-            Nimi
-          </span>
-          <span
-            class="table__sortindicator"
-          />
-        </div>
-      </th>
-      <th
-        class="table__th table__label"
-      >
-        <div
-          class="table__labeltext"
-        >
-          <span>
-            Oppilaitos
-          </span>
-          <span
-            class="table__sortindicator table__sortindicator--visible"
+          <div
+            class="table__labelcontent"
           >
-            <span
-              aria-hidden="true"
-              class="material-icons icon icon--inline"
+            <div
+              class="table__labeltext"
+              title="Nimi"
             >
-              arrow_drop_down
-            </span>
-          </span>
-        </div>
-      </th>
-    </tr>
-  </thead>
-  <tbody
-    class="table__body"
-  >
-    <tr
-      class="table__row"
-      data-row="1"
+              Nimi
+            </div>
+            <div
+              class="table__sortindicator"
+            />
+          </div>
+        </th>
+        <th
+          class="table__th table__label"
+        >
+          <div
+            class="table__labelcontent"
+          >
+            <div
+              class="table__labeltext"
+              title="Oppilaitos"
+            >
+              Oppilaitos
+            </div>
+            <div
+              class="table__sortindicator table__sortindicator--visible"
+            >
+              <span
+                aria-hidden="true"
+                class="material-icons icon icon--inline"
+              >
+                arrow_drop_down
+              </span>
+            </div>
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody
+      class="table__body"
     >
-      <td
-        class="table__td"
-        title="Heikki"
+      <tr
+        class="table__row"
+        data-row="1"
       >
-        Heikki
-      </td>
-      <td
-        class="table__td"
-        title="Aakkoskoulu"
+        <td
+          class="table__td"
+          title="Heikki"
+        >
+          Heikki
+        </td>
+        <td
+          class="table__td"
+          title="Aakkoskoulu"
+        >
+          Aakkoskoulu
+        </td>
+      </tr>
+      <tr
+        class="table__row"
+        data-row="2"
       >
-        Aakkoskoulu
-      </td>
-    </tr>
-    <tr
-      class="table__row"
-      data-row="2"
-    >
-      <td
-        class="table__td"
-        title="Heli"
+        <td
+          class="table__td"
+          title="Heli"
+        >
+          Heli
+        </td>
+        <td
+          class="table__td"
+          title="Beetakaroteenikoulu"
+        >
+          Beetakaroteenikoulu
+        </td>
+      </tr>
+      <tr
+        class="table__row"
+        data-row="4"
       >
-        Heli
-      </td>
-      <td
-        class="table__td"
-        title="Beetakaroteenikoulu"
+        <td
+          class="table__td"
+          title="Osmo"
+        >
+          Osmo
+        </td>
+        <td
+          class="table__td"
+          title="Celsiuksen koulu"
+        >
+          Celsiuksen koulu
+        </td>
+      </tr>
+      <tr
+        class="table__row"
+        data-row="3"
       >
-        Beetakaroteenikoulu
-      </td>
-    </tr>
-    <tr
-      class="table__row"
-      data-row="4"
-    >
-      <td
-        class="table__td"
-        title="Osmo"
-      >
-        Osmo
-      </td>
-      <td
-        class="table__td"
-        title="Celsiuksen koulu"
-      >
-        Celsiuksen koulu
-      </td>
-    </tr>
-    <tr
-      class="table__row"
-      data-row="3"
-    >
-      <td
-        class="table__td"
-        title="Aatu"
-      >
-        Aatu
-      </td>
-      <td
-        class="table__td"
-        title="Deltakoulu"
-      >
-        Deltakoulu
-      </td>
-    </tr>
-  </tbody>
-</table>
+        <td
+          class="table__td"
+          title="Aatu"
+        >
+          Aatu
+        </td>
+        <td
+          class="table__td"
+          title="Deltakoulu"
+        >
+          Deltakoulu
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 `;

@@ -23,8 +23,7 @@ import {
   SelectableDataTable,
   SelectableDataTableProps,
 } from "../../components/tables/SelectableDataTable"
-import { InfoTooltip } from "../../components/tooltip/InfoTooltip"
-import { getLocalized, T, t, Translation } from "../../i18n/i18n"
+import { getLocalized, t, Translation } from "../../i18n/i18n"
 import { HakuSuppeatTiedot, selectByHakutoive } from "../../state/apitypes/haku"
 import {
   isEiPaikkaa,
@@ -107,14 +106,8 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
       indicatorSpace: "auto",
     },
     {
-      label: (
-        <>
-          <T id="hakutilanne__taulu_voimassaolevia_opiskeluoikeuksia" />
-          <InfoTooltip>
-            <T id="hakutilanne__taulu_voimassaolevia_opiskeluoikeuksia_tooltip" />
-          </InfoTooltip>
-        </>
-      ),
+      label: t("hakutilanne__taulu_voimassaolevia_opiskeluoikeuksia"),
+      tooltip: t("hakutilanne__taulu_voimassaolevia_opiskeluoikeuksia_tooltip"),
       filter: "dropdown",
       indicatorSpace: "auto",
     },
@@ -122,14 +115,8 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
 
   if (isFeatureFlagEnabled("ilmoittaminen")) {
     columns.push({
-      label: (
-        <>
-          <T id="hakutilanne__taulu_muu_haku" />
-          <InfoTooltip>
-            <T id="hakutilanne__taulu_muu_haku_tooltip" />
-          </InfoTooltip>
-        </>
-      ),
+      label: t("hakutilanne__taulu_muu_haku"),
+      tooltip: t("hakutilanne__taulu_muu_haku_tooltip"),
     })
   }
 

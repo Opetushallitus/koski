@@ -29,9 +29,11 @@ export type TableCellSize =
 export type TableProps = React.HTMLAttributes<HTMLTableElement>
 
 export const Table = ({ children, className, ...rest }: TableProps) => (
-  <table {...rest} className={joinClassNames(b(), className)}>
-    {children}
-  </table>
+  <div className={b("container")}>
+    <table {...rest} className={joinClassNames(b(), className)}>
+      {children}
+    </table>
+  </div>
 )
 
 export const TableHeader = ({

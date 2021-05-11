@@ -5,9 +5,18 @@
 @table-h-padding: 0.75rem;
 @table-v-padding: 0.5rem;
 
+.table__container {
+  @media screen and (max-width: 1600px) {
+    overflow: scroll;
+    table {
+      width: auto;
+    }
+  }
+}
+
 .table {
   table-layout: fixed;
-  min-width: 100%;
+  width: 100%;
 }
 
 .table__body .table__row:nth-child(odd) {
@@ -45,6 +54,17 @@
   border-bottom: 1px solid @color-gray-lighten-3;
 }
 
+.table__labelcontent {
+  width: 100%;
+  display: flex;
+
+  .table__labeltext {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    flex: 1;
+  }
+}
+
 .table__th--xsmall {
   width: 6rem;
 }
@@ -80,19 +100,15 @@
 }
 
 .table__sortindicator {
-  display: inline-block;
-  margin-left: 0.5ex;
-  width: 2ex;
+  display: block;
   height: @font-size-medium;
-  overflow: hidden;
-
   .material-icons {
     font-size: @font-size-large;
   }
 }
 
 .card__body {
-  .table {
+  .table__container {
     margin-left: -@table-h-padding;
     margin-right: -@table-h-padding;
 
