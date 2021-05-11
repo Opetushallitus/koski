@@ -12,7 +12,7 @@ class OpiskeluoikeusLisätiedotRepository(valpasDatabase: ValpasDatabase) extend
   protected val db: DB = valpasDatabase.db
 
   private def keysForOppija(oppijanTiedot: OppijaHakutilanteillaLaajatTiedot): Seq[OpiskeluoikeusLisätiedotKey] = {
-    oppijanTiedot.oppija.opiskeluoikeudet.map(oo =>
+    oppijanTiedot.oppija.opiskeluoikeudet.filter(_.onValvottava).map(oo =>
       OpiskeluoikeusLisätiedotKey(
         oppijaOid = oppijanTiedot.oppija.henkilö.oid,
         opiskeluoikeusOid = oo.oid,
