@@ -70,8 +70,6 @@ const mockMaat = mockKoodisto("maatjavaltiot2", {
 const mockYhteydenottokielet = mockKoodisto("kielivalikoima", {
   FI: "suomi",
   SV: "ruotsi",
-  EN: "englanti",
-  AR: "arabia",
 })
 
 const mockPrefilledDvvValues: PrefilledIlmoitusFormValues = {
