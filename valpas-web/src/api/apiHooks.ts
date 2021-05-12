@@ -40,7 +40,7 @@ export const useApiWithParams = <T, P extends any[]>(
     } else {
       api.clear()
     }
-  }, params) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(params)]) // eslint-disable-line react-hooks/exhaustive-deps
   return api
 }
 

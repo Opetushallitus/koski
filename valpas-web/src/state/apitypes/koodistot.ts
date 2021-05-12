@@ -37,6 +37,9 @@ export type Opiskeluoikeudentyyppi = KoodistoKoodiviite<
   | "ylioppilastutkinto"
 >
 
+export type Kieli = KoodistoKoodiviite<"kieli", "FI" | "SV">
+export type Maa = KoodistoKoodiviite<"maatjavaltiot2">
+
 // TODO: Omakeksittyjä koodistoja. Pitää tsekata mitä löytyy valmiina.
 export type OppilaitosnumeroKoodistoviite = KoodistoKoodiviite<"oppilaitosnumero">
 export type PaikkakuntaKoodistoviite = KoodistoKoodiviite<"paikkakunta">

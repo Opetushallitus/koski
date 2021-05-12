@@ -9,8 +9,6 @@ import { Redirect, useHistory } from "react-router"
 import { fetchOppijat, fetchOppijatCache } from "../../api/api"
 import { useApiWithParams } from "../../api/apiHooks"
 import { isLoading, isSuccess } from "../../api/apiUtils"
-import { RaisedButton } from "../../components/buttons/RaisedButton"
-import { BottomDrawer } from "../../components/containers/BottomDrawer"
 import { Card, CardBody, CardHeader } from "../../components/containers/cards"
 import { Dropdown } from "../../components/forms/Dropdown"
 import { Spinner } from "../../components/icons/Spinner"
@@ -31,9 +29,9 @@ import {
 } from "../../state/paths"
 import { nonNull } from "../../utils/arrays"
 import { ErrorView } from "../ErrorView"
+import { HakutilanneDrawer } from "./HakutilanneDrawer"
 import { HakutilanneTable } from "./HakutilanneTable"
 import "./HakutilanneView.less"
-import { Ilmoituslomake } from "./ilmoituslomake/Ilmoituslomake"
 import { VirkailijaNavigation } from "./VirkailijaNavigation"
 
 const b = bem("hakutilanneview")
@@ -79,7 +77,6 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
       unfilteredRowCount: 0,
     })
     const [selectedOppijaOids, setSelectedOppijaOids] = useState<Oid[]>([])
-    const [ilmoituslomakeVisible, showIlmoituslomake] = useState(false)
 
     const orgOptions = getOrgOptions(organisaatiot)
 
@@ -136,35 +133,10 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
           </CardBody>
         </Card>
         {isFeatureFlagEnabled("ilmoittaminen") ? (
-          <>
-            <BottomDrawer>
-              <div className={b("ilmoittaminen")}>
-                <h4 className={b("ilmoittaminentitle")}>
-                  <T id="ilmoittaminen_drawer__title" />
-                </h4>
-                <div className={b("ilmoittamisenalarivi")}>
-                  <span className={b("valittujaoppilaita")}>
-                    <T
-                      id="ilmoittaminen_drawer__valittuja_oppilaita"
-                      params={{ määrä: selectedOppijaOids.length }}
-                    />
-                  </span>
-                  <RaisedButton
-                    disabled={A.isEmpty(selectedOppijaOids)}
-                    onClick={() => showIlmoituslomake(true)}
-                  >
-                    <T id="ilmoittaminen_drawer__siirry_ilmoittamiseen" />
-                  </RaisedButton>
-                </div>
-              </div>
-            </BottomDrawer>
-            {ilmoituslomakeVisible && isSuccess(oppijatFetch) ? (
-              <Ilmoituslomake
-                oppijat={selectedOppijat}
-                onClose={() => showIlmoituslomake(false)}
-              />
-            ) : null}
-          </>
+          <HakutilanneDrawer
+            selectedOppijat={selectedOppijat}
+            tekijäOrganisaatio={organisaatioOid}
+          />
         ) : null}
       </div>
     ) : (

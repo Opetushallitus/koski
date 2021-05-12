@@ -1,3 +1,4 @@
+import { KuntailmoitusPohjatiedot } from "../state/apitypes/kuntailmoituspohjatiedot"
 import {
   OppijaHakutilanteillaLaajatTiedot,
   OppijaHakutilanteillaSuppeatTiedot,
@@ -61,6 +62,24 @@ export const fetchOppija = (oppijaOid: Oid) =>
   )
 
 export const fetchOppijaCache = createCache(fetchOppija)
+
+/**
+ * Kuntailmoituksen pohjatietojen haku
+ */
+export const fetchKuntailmoituksenPohjatiedot = (
+  oppijaOids: Oid[],
+  tekijäOrganisaatioOid?: Oid
+) =>
+  handleExpiredSession(
+    apiPost<KuntailmoitusPohjatiedot>("valpas/api/kuntailmoitus/pohjatiedot", {
+      body: {
+        tekijäOrganisaatio: {
+          oid: tekijäOrganisaatioOid,
+        },
+        oppijaOidit: oppijaOids,
+      },
+    })
+  )
 
 // Virhetilanteiden hallinta
 

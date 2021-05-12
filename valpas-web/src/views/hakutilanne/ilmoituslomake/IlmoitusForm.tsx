@@ -2,7 +2,11 @@ import bem from "bem-ts"
 import React, { useState } from "react"
 import { RaisedButton } from "../../../components/buttons/RaisedButton"
 import { LabeledCheckbox } from "../../../components/forms/Checkbox"
-import { Dropdown, koodistoToOptions } from "../../../components/forms/Dropdown"
+import {
+  Dropdown,
+  koodistoToOptions,
+  organisaatiotToOptions,
+} from "../../../components/forms/Dropdown"
 import { TextField } from "../../../components/forms/TextField"
 import {
   CaretDownIcon,
@@ -11,10 +15,19 @@ import {
 } from "../../../components/icons/Icon"
 import { Error } from "../../../components/typography/error"
 import { SecondaryHeading } from "../../../components/typography/headings"
-import { T, t } from "../../../i18n/i18n"
+import { getLocalized, T, t } from "../../../i18n/i18n"
 import { HenkilöSuppeatTiedot } from "../../../state/apitypes/henkilo"
 import { KoodistoKoodiviite } from "../../../state/apitypes/koodistot"
+import {
+  OppijanPohjatiedot,
+  PohjatietoYhteystieto,
+} from "../../../state/apitypes/kuntailmoituspohjatiedot"
 import { OppijaHakutilanteillaSuppeatTiedot } from "../../../state/apitypes/oppija"
+import {
+  isAlkuperäHakemukselta,
+  isAlkuperäRekisteristä,
+} from "../../../state/apitypes/yhteystiedot"
+import { OrganisaatioWithOid } from "../../../state/common"
 import { expectNonEmptyString } from "../../../state/formValidators"
 import { FormValidators, useFormState } from "../../../state/useFormState"
 import { plainComponent } from "../../../utils/plaincomponent"
@@ -30,9 +43,9 @@ export type IlmoitusFormValues = {
   maa?: string
   postinumero: string
   postitoimipaikka: string
-  katuosoite: string
+  lähiosoite: string
   puhelinnumero: string
-  sähköposti: string
+  email: string
   hakenutOpiskelemaanYhteyshakujenUlkopuolella: boolean
 }
 
@@ -42,9 +55,9 @@ const initialValues: IlmoitusFormValues = {
   maa: koodiarvoFinland,
   postinumero: "",
   postitoimipaikka: "",
-  katuosoite: "",
+  lähiosoite: "",
   puhelinnumero: "",
-  sähköposti: "",
+  email: "",
   hakenutOpiskelemaanYhteyshakujenUlkopuolella: false,
 }
 
@@ -54,30 +67,32 @@ const validators: FormValidators<IlmoitusFormValues> = {
   maa: [],
   postitoimipaikka: [],
   postinumero: [],
-  katuosoite: [],
+  lähiosoite: [],
   puhelinnumero: [],
-  sähköposti: [],
+  email: [],
   hakenutOpiskelemaanYhteyshakujenUlkopuolella: [],
 }
 
 export type IlmoitusFormProps = {
   oppija: OppijaHakutilanteillaSuppeatTiedot
-  kunnat: Array<KoodistoKoodiviite>
+  pohjatiedot: OppijanPohjatiedot
+  kunnat: Array<OrganisaatioWithOid>
   maat: Array<KoodistoKoodiviite>
   kielet: Array<KoodistoKoodiviite>
   formIndex: number
   numberOfForms: number
-  prefilledValues: PrefilledIlmoitusFormValues[]
   onSubmit?: (values: IlmoitusFormValues) => void
 }
 
-export type PrefilledIlmoitusFormValues = {
-  label: string
-  values: Partial<IlmoitusFormValues>
-}
-
 export const IlmoitusForm = (props: IlmoitusFormProps) => {
-  const form = useFormState({ initialValues, validators })
+  const form = useFormState({
+    initialValues: {
+      ...initialValues,
+      yhteydenottokieli: props.pohjatiedot.yhteydenottokieli?.koodiarvo,
+      hakenutOpiskelemaanYhteyshakujenUlkopuolella: false, // TODO
+    },
+    validators,
+  })
   const [isOpen, setOpen] = useState(true)
   const [isSubmitted, setSubmitted] = useState(false)
 
@@ -101,13 +116,13 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
       {isOpen && !isSubmitted ? (
         <IlmoitusBody>
           <IlmoitusPrefillSelector
-            prefilledValues={props.prefilledValues}
+            pohjatiedot={props.pohjatiedot}
             onSelect={form.patch}
           />
           <Dropdown
             label={t("ilmoituslomake__asuinkunta")}
             required
-            options={koodistoToOptions(props.kunnat)}
+            options={organisaatiotToOptions(props.kunnat)}
             {...form.fieldProps("asuinkunta")}
           />
           <Dropdown
@@ -133,7 +148,7 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
           />
           <TextField
             label={t("ilmoituslomake__katuosoite")}
-            {...form.fieldProps("katuosoite")}
+            {...form.fieldProps("lähiosoite")}
           />
           <TextField
             label={t("ilmoituslomake__puhelinnumero")}
@@ -141,7 +156,7 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
           />
           <TextField
             label={t("ilmoituslomake__sähköposti")}
-            {...form.fieldProps("sähköposti")}
+            {...form.fieldProps("email")}
           />
           <LabeledCheckbox
             label={t(
@@ -214,7 +229,7 @@ const IlmoitusSubmitted = plainComponent("div", b("submitted"))
 const IlmoitusBody = plainComponent("div", b("body"))
 
 type IlmoitusPrefillSelectorProps = {
-  prefilledValues: PrefilledIlmoitusFormValues[]
+  pohjatiedot: OppijanPohjatiedot
   onSelect: (values: Partial<IlmoitusFormValues>) => void
 }
 
@@ -222,15 +237,32 @@ const IlmoitusPrefillSelector = (props: IlmoitusPrefillSelectorProps) => (
   <div className={b("prefill")}>
     <T id="ilmoituslomake__esitäytä_yhteystiedoilla" />
     <ul className={b("prefilllist")}>
-      {props.prefilledValues.map((prefill, index) => (
+      {props.pohjatiedot.yhteystiedot.map((yhteystieto, index) => (
         <li
           key={index}
           className={b("prefillitem")}
-          onClick={() => props.onSelect(prefill.values)}
+          onClick={() =>
+            props.onSelect({
+              ...yhteystieto.yhteystiedot,
+              asuinkunta: yhteystieto.kunta?.oid,
+              maa: yhteystieto.yhteystiedot.maa?.koodiarvo,
+            })
+          }
         >
-          {index + 1}) {prefill.label}
+          {index + 1}) {yhteystiedonNimi(yhteystieto)}
         </li>
       ))}
     </ul>
   </div>
 )
+
+const yhteystiedonNimi = (yhteystieto: PohjatietoYhteystieto): string => {
+  const alkuperä = yhteystieto.yhteystietojenAlkuperä
+  if (isAlkuperäRekisteristä(alkuperä)) {
+    return getLocalized(alkuperä.alkuperä.nimi) || "?"
+  }
+  if (isAlkuperäHakemukselta(alkuperä)) {
+    return getLocalized(alkuperä.hakuNimi) || "?"
+  }
+  return "?"
+}

@@ -12,8 +12,8 @@ import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import { getLocalized, t, T } from "../../i18n/i18n"
 import { HenkilöLaajatTiedot } from "../../state/apitypes/henkilo"
 import {
-  isIlmoitettu,
-  isVirallinen,
+  isHakemukselta,
+  isRekisteristä,
   Yhteystiedot,
   YhteystietojenAlkuperä,
 } from "../../state/apitypes/yhteystiedot"
@@ -29,8 +29,8 @@ export type OppijanYhteystiedotProps = {
 }
 
 export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {
-  const ilmoitetut = props.yhteystiedot.filter(isIlmoitettu)
-  const viralliset = props.yhteystiedot.filter(isVirallinen)
+  const ilmoitetut = props.yhteystiedot.filter(isHakemukselta)
+  const viralliset = props.yhteystiedot.filter(isRekisteristä)
   const viewIlmoitetut = ilmoitetut.length > 0
 
   return (
@@ -159,7 +159,7 @@ const Yhteystietolista = (props: YhteystietolistaProps) => (
         />
       )}
     </InfoTable>
-    {isIlmoitettu(props.yhteystiedot) && (
+    {isHakemukselta(props.yhteystiedot) && (
       <div className={b("lahde")}>
         <T
           id="oppija__ilmoitetun_yhteystiedon_lahde"

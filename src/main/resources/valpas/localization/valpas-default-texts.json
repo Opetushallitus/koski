@@ -36,6 +36,7 @@
   "ilmoittaminen_drawer__title": "Oppilaiden ilmoittaminen asuinkunnalle",
   "ilmoittaminen_drawer__valittuja_oppilaita": "Valittuja oppilaita: {{määrä}}",
   "ilmoittaminen_drawer__siirry_ilmoittamiseen": "Siirry ilmoittamiseen",
+  "ilmoittaminen_drawer__pohjatietojen_haku_epäonnistui": "Pohjatietojen haku epäonnistui. Yritä uudelleen myöhemmin.",
   "hakemuksentila__hakenut": "Hakenut",
   "hakemuksentila__n_hakua": "{{lukumäärä}} hakua",
   "hakemuksentila__ei_hakemusta": "Ei hakemusta",

@@ -2,6 +2,7 @@ import bem from "bem-ts"
 import React from "react"
 import { getLocalized } from "../../i18n/i18n"
 import { KoodistoKoodiviite } from "../../state/apitypes/koodistot"
+import { OrganisaatioWithOid } from "../../state/common"
 import { FilterableValue, toFilterableString } from "../../utils/conversions"
 import { ArrowDropDownIcon } from "../icons/Icon"
 import "./Dropdown.less"
@@ -74,4 +75,12 @@ export const koodistoToOptions = (
   koodiviitteet.map((koodiviite) => ({
     value: koodiviite.koodiarvo,
     display: getLocalized(koodiviite.nimi) || koodiviite.koodiarvo,
+  }))
+
+export const organisaatiotToOptions = (
+  organisaatiot: OrganisaatioWithOid[]
+): Array<DropdownOption<string>> =>
+  organisaatiot.map((org) => ({
+    value: org.oid,
+    display: getLocalized(org.nimi) || org.oid,
   }))
