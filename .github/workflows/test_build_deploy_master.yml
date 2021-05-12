@@ -795,3 +795,12 @@ jobs:
         env:
           TASKDEF_ARN: ${{ steps.raportointikanta-taskdef-deploy.outputs.task-definition-arn }}
         run: aws ssm put-parameter --overwrite --name /koski/raportointikanta/task-definition --type String --value ${TASKDEF_ARN}
+
+      - name: Report task ready
+        uses: ravsamhq/notify-slack-action@v1
+        if: always()
+        with:
+          status: ${{ job.status }}
+          notification_title: 'Prod install {status_message}'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
