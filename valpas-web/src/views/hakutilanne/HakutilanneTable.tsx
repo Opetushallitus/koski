@@ -37,7 +37,10 @@ import {
   OpiskeluoikeusSuppeatTiedot,
   valvottavatOpiskeluoikeudet,
 } from "../../state/apitypes/opiskeluoikeus"
-import { OppijaHakutilanteillaSuppeatTiedot } from "../../state/apitypes/oppija"
+import {
+  lisätietoMatches,
+  OppijaHakutilanteillaSuppeatTiedot,
+} from "../../state/apitypes/oppija"
 import {
   isVoimassa,
   isVoimassaTulevaisuudessa,
@@ -53,21 +56,36 @@ export type HakutilanneTableProps = {
   data: OppijaHakutilanteillaSuppeatTiedot[]
   organisaatioOid: string
   onSelect: (oppijaOids: Oid[]) => void
+  onSetMuuHaku: SetMuuHakuCallback
 } & Pick<SelectableDataTableProps, "onCountChange">
+
+export type SetMuuHakuCallback = (
+  oppijaOid: Oid,
+  opiskeluoikeus: OpiskeluoikeusSuppeatTiedot,
+  state: boolean
+) => void
 
 const useOppijaData = (
   organisaatioOid: Oid,
-  data: OppijaHakutilanteillaSuppeatTiedot[]
+  data: OppijaHakutilanteillaSuppeatTiedot[],
+  onSetMuuHaku: SetMuuHakuCallback
 ) => {
   const basePath = useBasePath()
   return useMemo(
-    () => A.flatten(data.map(oppijaToTableData(basePath, organisaatioOid))),
-    [organisaatioOid, data, basePath]
+    () =>
+      A.flatten(
+        data.map(oppijaToTableData(basePath, organisaatioOid, onSetMuuHaku))
+      ),
+    [data, basePath, organisaatioOid, onSetMuuHaku]
   )
 }
 
 export const HakutilanneTable = (props: HakutilanneTableProps) => {
-  const data = useOppijaData(props.organisaatioOid, props.data)
+  const data = useOppijaData(
+    props.organisaatioOid,
+    props.data,
+    props.onSetMuuHaku
+  )
   const TableComponent = isFeatureFlagEnabled("ilmoittaminen")
     ? SelectableDataTable
     : DataTable
@@ -117,6 +135,7 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
     columns.push({
       label: t("hakutilanne__taulu_muu_haku"),
       tooltip: t("hakutilanne__taulu_muu_haku_tooltip"),
+      filter: "dropdown",
     })
   }
 
@@ -150,50 +169,74 @@ const hakutilanneKeysToOppijaOids = flow(
 
 const oppijaOidsEqual = (a: DatumKey) => (b: DatumKey) => a[0] === b[0]
 
-const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
-  oppija: OppijaHakutilanteillaSuppeatTiedot
-): Array<Datum> => {
+const oppijaToTableData = (
+  basePath: string,
+  organisaatioOid: string,
+  onSetMuuHaku: SetMuuHakuCallback
+) => (oppija: OppijaHakutilanteillaSuppeatTiedot): Array<Datum> => {
   const henkilö = oppija.oppija.henkilö
 
   return valvottavatOpiskeluoikeudet(
     organisaatioOid,
     oppija.oppija.opiskeluoikeudet
-  ).map((opiskeluoikeus) => ({
-    key: createHakutilanneKey(oppija, opiskeluoikeus),
-    values: [
-      {
-        value: `${henkilö.sukunimi} ${henkilö.etunimet}`,
-        display: (
-          <Link
-            to={createOppijaPath(basePath, {
-              organisaatioOid,
-              oppijaOid: henkilö.oid,
-            })}
-          >
-            {henkilö.sukunimi} {henkilö.etunimet}
-          </Link>
-        ),
-      },
-      {
-        value: henkilö.syntymäaika,
-        display: formatNullableDate(henkilö.syntymäaika),
-      },
-      {
-        value: opiskeluoikeus?.ryhmä,
-      },
-      perusopetusSuoritettu(opiskeluoikeus),
-      hakemuksenTila(oppija, basePath),
-      fromNullableValue(valintatila(oppija.hakutilanteet)),
-      fromNullableValue(vastaanottotieto(oppija.hakutilanteet)),
-      fromNullableValue(opiskeluoikeustiedot(oppija.oppija.opiskeluoikeudet)),
-      isFeatureFlagEnabled("ilmoittaminen")
-        ? {
-            value: null,
-            display: <ToggleSwitch />,
-          }
-        : null,
-    ].filter(nonNull),
-  }))
+  ).map((opiskeluoikeus) => {
+    const lisätiedot = oppija.lisätiedot.find(
+      lisätietoMatches(
+        oppija.oppija.henkilö.oid,
+        opiskeluoikeus.oid,
+        opiskeluoikeus.oppilaitos.oid
+      )
+    )
+    const muuHaku = lisätiedot?.muuHaku || false
+
+    return {
+      key: createHakutilanneKey(oppija, opiskeluoikeus),
+      values: [
+        {
+          value: `${henkilö.sukunimi} ${henkilö.etunimet}`,
+          display: (
+            <Link
+              to={createOppijaPath(basePath, {
+                organisaatioOid,
+                oppijaOid: henkilö.oid,
+              })}
+            >
+              {henkilö.sukunimi} {henkilö.etunimet}
+            </Link>
+          ),
+        },
+        {
+          value: henkilö.syntymäaika,
+          display: formatNullableDate(henkilö.syntymäaika),
+        },
+        {
+          value: opiskeluoikeus?.ryhmä,
+        },
+        perusopetusSuoritettu(opiskeluoikeus),
+        hakemuksenTila(oppija, basePath),
+        fromNullableValue(valintatila(oppija.hakutilanteet)),
+        fromNullableValue(vastaanottotieto(oppija.hakutilanteet)),
+        fromNullableValue(opiskeluoikeustiedot(oppija.oppija.opiskeluoikeudet)),
+        isFeatureFlagEnabled("ilmoittaminen")
+          ? {
+              value: muuHaku ? t("Kyllä") : t("Ei"),
+              display: (
+                <ToggleSwitch
+                  value={muuHaku}
+                  onChanged={(state) =>
+                    onSetMuuHaku(
+                      oppija.oppija.henkilö.oid,
+                      opiskeluoikeus,
+                      state
+                    )
+                  }
+                />
+              ),
+            }
+          : null,
+      ].filter(nonNull),
+    }
+  })
 }
 
 const perusopetusSuoritettu = (oo: OpiskeluoikeusSuppeatTiedot): Value => {

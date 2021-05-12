@@ -225,6 +225,7 @@ const mockOppija: OppijaHakutilanteillaSuppeatTiedot = {
     opiskelee: true,
   },
   hakutilanteet: [],
+  lisätiedot: [],
 }
 
 const mockKoodisto = (

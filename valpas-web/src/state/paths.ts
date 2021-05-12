@@ -3,7 +3,10 @@ import { nonNull } from "../utils/arrays"
 import { fromEntries, isEntry } from "../utils/objects"
 import { Oid } from "./common"
 
-export type QueryParams = Record<string, string | undefined | null>
+export type QueryParams = Record<
+  string,
+  string | number | boolean | undefined | null
+>
 
 export const queryPath = (path: string, query: QueryParams) =>
   [path, queryString(query)].filter((s) => s.length > 0).join("?")

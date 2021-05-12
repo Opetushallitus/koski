@@ -6,9 +6,6 @@ import * as Ord from "fp-ts/Ord"
 import * as string from "fp-ts/string"
 import React, { useMemo, useState } from "react"
 import { Redirect, useHistory } from "react-router"
-import { fetchOppijat, fetchOppijatCache } from "../../api/api"
-import { useApiWithParams } from "../../api/apiHooks"
-import { isLoading, isSuccess } from "../../api/apiUtils"
 import { Card, CardBody, CardHeader } from "../../components/containers/cards"
 import { Dropdown } from "../../components/forms/Dropdown"
 import { Spinner } from "../../components/icons/Spinner"
@@ -32,6 +29,7 @@ import { ErrorView } from "../ErrorView"
 import { HakutilanneDrawer } from "./HakutilanneDrawer"
 import { HakutilanneTable } from "./HakutilanneTable"
 import "./HakutilanneView.less"
+import { useOppijatData } from "./useOppijatData"
 import { VirkailijaNavigation } from "./VirkailijaNavigation"
 
 const b = bem("hakutilanneview")
@@ -67,11 +65,9 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
 
     const organisaatioOid =
       props.match.params.organisaatioOid || organisaatiot[0]?.oid
-    const oppijatFetch = useApiWithParams(
-      fetchOppijat,
-      organisaatioOid ? [organisaatioOid] : undefined,
-      fetchOppijatCache
-    )
+
+    const { data, isLoading, setMuuHaku } = useOppijatData(organisaatioOid)
+
     const [counters, setCounters] = useState<DataTableCountChangeEvent>({
       filteredRowCount: 0,
       unfilteredRowCount: 0,
@@ -89,14 +85,12 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
 
     const selectedOppijat = useMemo(
       () =>
-        isSuccess(oppijatFetch)
+        data
           ? selectedOppijaOids
-              .map((oid) =>
-                oppijatFetch.data.find((o) => o.oppija.henkilö.oid === oid)
-              )
+              .map((oid) => data.find((o) => o.oppija.henkilö.oid === oid))
               .filter(nonNull)
           : [],
-      [oppijatFetch, selectedOppijaOids]
+      [data, selectedOppijaOids]
     )
 
     return organisaatioOid ? (
@@ -113,7 +107,7 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
         <Card>
           <CardHeader>
             <T id="hakutilannenäkymä__otsikko" />
-            {isSuccess(oppijatFetch) && (
+            {data && (
               <Counter>
                 {counters.filteredRowCount === counters.unfilteredRowCount
                   ? counters.filteredRowCount
@@ -122,13 +116,14 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
             )}
           </CardHeader>
           <CardBody>
-            {isLoading(oppijatFetch) && <Spinner />}
-            {isSuccess(oppijatFetch) && (
+            {isLoading && <Spinner />}
+            {data && (
               <HakutilanneTable
-                data={oppijatFetch.data}
+                data={data}
                 organisaatioOid={organisaatioOid}
                 onCountChange={setCounters}
                 onSelect={setSelectedOppijaOids}
+                onSetMuuHaku={setMuuHaku}
               />
             )}
           </CardBody>

@@ -86,6 +86,11 @@ export const apiPost = async <T>(
   init?: JsonRequestInit
 ): Promise<ApiResponse<T>> => apiFetch<T>(input, enrichRequest("POST", init))
 
+export const apiPut = async <T>(
+  input: RequestInfo,
+  init?: JsonRequestInit
+): Promise<ApiResponse<T>> => apiFetch<T>(input, enrichRequest("PUT", init))
+
 const prependUrl = (baseUrl: string, request: RequestInfo): RequestInfo =>
   typeof request === "string"
     ? baseUrl + "/" + request

@@ -1,12 +1,14 @@
 import { KuntailmoitusLaajatTiedot } from "../state/apitypes/kuntailmoitus"
 import { KuntailmoitusPohjatiedot } from "../state/apitypes/kuntailmoituspohjatiedot"
+import { OpiskeluoikeusSuppeatTiedot } from "../state/apitypes/opiskeluoikeus"
 import {
   OppijaHakutilanteillaLaajatTiedot,
   OppijaHakutilanteillaSuppeatTiedot,
 } from "../state/apitypes/oppija"
 import { Oid, OrganisaatioJaKayttooikeusrooli, User } from "../state/common"
+import { queryPath } from "../state/paths"
 import { tapLeftP } from "../utils/either"
-import { ApiFailure, apiGet, apiPost } from "./apiFetch"
+import { ApiFailure, apiGet, apiPost, apiPut } from "./apiFetch"
 import { createCache } from "./cache"
 
 export const healthCheck = async () =>
@@ -96,6 +98,29 @@ export const createKuntailmoitus = (
         kuntailmoitus,
       },
     })
+  )
+
+/**
+ * Tallenna muu haku -valitsimen tila
+ * @param oppijaOid
+ * @param opiskeluoikeusOid
+ * @param oppilaitosOid
+ * @param value
+ * @returns
+ */
+export const setMuuHaku = async (
+  oppijaOid: Oid,
+  opiskeluoikeus: OpiskeluoikeusSuppeatTiedot,
+  value: boolean
+) =>
+  handleExpiredSession(
+    apiPut(
+      queryPath(`valpas/api/oppija/${oppijaOid}/set-muu-haku`, {
+        opiskeluoikeusOid: opiskeluoikeus.oid,
+        oppilaitosOid: opiskeluoikeus.oppilaitos.oid,
+        value,
+      })
+    )
   )
 
 // Virhetilanteiden hallinta

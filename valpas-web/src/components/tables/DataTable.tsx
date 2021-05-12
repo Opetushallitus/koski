@@ -72,7 +72,7 @@ export const equalKeys = (a: DatumKey) => (b: DatumKey) =>
 
 export type Value = {
   /** Value for filtering and ordering */
-  value: string | number | null | undefined
+  value: string | number | boolean | null | undefined
   /** Value for rendering */
   display?: string | number | React.ReactNode
   /** Icon alongside the value */

@@ -1,8 +1,16 @@
 import * as E from "fp-ts/Either"
 import { pipe } from "fp-ts/lib/function"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react"
+import { useSafeState } from "../state/useSafeState"
 import { ApiFailure, ApiResponse, ApiSuccess } from "./apiFetch"
-import { isInitial, isSuccess } from "./apiUtils"
+import { isSuccess } from "./apiUtils"
 import { ApiCache } from "./cache"
 
 export type ApiLoading = null
@@ -62,7 +70,7 @@ export type ApiMethodStateSuccess<T> = { state: "success" } & ApiSuccess<T>
 export type ApiMethodStateError = { state: "error" } & ApiFailure
 
 export type ApiMethodHook<T, P extends any[]> = {
-  call: (...args: P) => Promise<void>
+  call: (...args: P) => Promise<ApiResponse<T>>
   clear: () => void
 } & ApiMethodState<T>
 
@@ -70,46 +78,36 @@ export const useApiMethod = <T, P extends any[]>(
   fetchFn: (...args: P) => Promise<ApiResponse<T>>,
   cache?: ApiCache<T, P>
 ): ApiMethodHook<T, P> => {
-  const [state, setState] = useState<ApiMethodState<T>>({
+  const [state, setState] = useSafeState<ApiMethodState<T>>({
     state: "initial",
   })
 
-  const [mounted, setMounted] = useState(true)
-  useEffect(() => () => setMounted(false), [])
-
-  const safeSetState = useCallback(
-    (newState: ApiMethodState<T>) => {
-      if (mounted) {
-        setState(newState)
-      }
-    },
-    [mounted]
-  )
-
   const call = useCallback(
     async (...args: P) => {
-      safeSetState({ state: "loading" })
+      setState({ state: "loading" })
       cache?.map(args, (previous) =>
-        safeSetState({ state: "reloading", ...previous })
+        setState({ state: "reloading", ...previous })
       )
-      pipe(
+      return pipe(
         await fetchFn(...args),
         E.map((result) => {
-          safeSetState({
+          setState({
             state: "success",
             ...result,
           })
           cache?.set(args, result)
+          return result
         }),
-        E.mapLeft((error) =>
-          safeSetState({
+        E.mapLeft((error) => {
+          setState({
             state: "error",
             ...error,
           })
-        )
+          return error
+        })
       )
     },
-    [cache, fetchFn, safeSetState]
+    [cache, fetchFn, setState]
   )
 
   const clear = useCallback(() => setState({ state: "initial" }), [setState])
@@ -134,8 +132,18 @@ export const useOnApiSuccess = <T, P extends any[]>(
     if (isSuccess(hook) && !triggered) {
       setTriggered(true)
       handler(hook)
-    } else if (isInitial(hook) && triggered) {
+    } else if (!isSuccess(hook) && triggered) {
       setTriggered(false)
     }
   }, [hook, handler, triggered])
+}
+
+export const useLocalDataCopy = <T, P extends any[]>(
+  hook: ApiMethodHook<T, P>
+): [T | null, Dispatch<SetStateAction<T | null>>] => {
+  const [localData, setLocalData] = useSafeState<T | null>(null)
+  useOnApiSuccess(hook, (o) => {
+    setLocalData(o.data)
+  })
+  return [localData, setLocalData]
 }
