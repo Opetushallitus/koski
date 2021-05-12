@@ -4,23 +4,47 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
-import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.db.ValpasDatabase
 import fi.oph.koski.valpas.db.ValpasSchema.{OpiskeluoikeusLisätiedot, OpiskeluoikeusLisätiedotKey, OpiskeluoikeusLisätiedotRow}
+import fi.oph.koski.valpas.{OppijaHakutilanteillaLaajatTiedot, ValpasErrorCategory}
 
 class OpiskeluoikeusLisätiedotRepository(valpasDatabase: ValpasDatabase) extends QueryMethods with Logging {
   protected val db: DB = valpasDatabase.db
 
-  def read(keys: Set[OpiskeluoikeusLisätiedotKey]): Seq[OpiskeluoikeusLisätiedotRow] = {
-    runDbSync(OpiskeluoikeusLisätiedot
-      .filter { t =>
-        keys.map(k =>
-          t.oppijaOid === k.oppijaOid &&
-            t.opiskeluoikeusOid === k.opiskeluoikeusOid &&
-            t.oppilaitosOid === k.oppilaitosOid
-        ).reduceLeft(_ || _)
-      }.result
+  private def keysForOppija(oppijanTiedot: OppijaHakutilanteillaLaajatTiedot): Seq[OpiskeluoikeusLisätiedotKey] = {
+    oppijanTiedot.oppija.opiskeluoikeudet.filter(_.onValvottava).map(oo =>
+      OpiskeluoikeusLisätiedotKey(
+        oppijaOid = oppijanTiedot.oppija.henkilö.oid,
+        opiskeluoikeusOid = oo.oid,
+        oppilaitosOid = oo.oppilaitos.oid
+      )
     )
+  }
+
+  def readForOppijat(oppijoidenTiedot: Seq[OppijaHakutilanteillaLaajatTiedot])
+  : Seq[(OppijaHakutilanteillaLaajatTiedot, Seq[OpiskeluoikeusLisätiedotRow])] = {
+    val keys = oppijoidenTiedot.flatMap(keysForOppija)
+    val lisätiedotByOppijaOid = read(keys).groupBy(_.oppijaOid)
+    oppijoidenTiedot.map(oppijanTiedot => (
+      oppijanTiedot,
+      lisätiedotByOppijaOid.getOrElse(oppijanTiedot.oppija.henkilö.oid, Seq())
+    ))
+  }
+
+  private def read(keys: Seq[OpiskeluoikeusLisätiedotKey]): Seq[OpiskeluoikeusLisätiedotRow] = {
+    if (keys.isEmpty) {
+      Seq()
+    } else {
+      runDbSync(OpiskeluoikeusLisätiedot
+        .filter { t =>
+          keys.map(k =>
+            t.oppijaOid === k.oppijaOid &&
+              t.opiskeluoikeusOid === k.opiskeluoikeusOid &&
+              t.oppilaitosOid === k.oppilaitosOid
+          ).reduceLeft(_ || _)
+        }.result
+      )
+    }
   }
 
   def setMuuHaku(key: OpiskeluoikeusLisätiedotKey, value: Boolean): HttpStatus = {

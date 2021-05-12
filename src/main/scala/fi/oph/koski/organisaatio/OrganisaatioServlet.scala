@@ -28,7 +28,7 @@ class OrganisaatioServlet(implicit val application: KoskiApplication) extends Ko
   }
 
   private def query = params.get("query")
-  private def showAll = getBooleanParam("all") || koskiSessionOption.forall(_.hasGlobalReadAccess)
+  private def showAll = getOptionalBooleanParam("all").getOrElse(false) || koskiSessionOption.forall(_.hasGlobalReadAccess)
   private def orgTypesToShow = params.get("orgTypesToShow") match {
     case None => Kaikki
     case Some(param) if param == "vainVarhaiskasvatusToimipisteet" => VarhaiskasvatusToimipisteet

@@ -21,6 +21,10 @@ trait BaseServlet extends ScalatraServlet with Logging {
     }
   }
 
+  private def getNonOptionalWith[T](name: String, fn: (String) => Option[T]): T = {
+    fn(name).getOrElse(throw InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.missing, "Missing " + name))
+  }
+
   def getIntegerParam(name: String): Int = {
     params.getAs[Int](name) match {
       case Some(id) if id >= 0 =>
@@ -30,21 +34,17 @@ trait BaseServlet extends ScalatraServlet with Logging {
     }
   }
 
-  def getStringParam(name: String): String = {
-    params.get(name).getOrElse(throw InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.missing, "Missing " + name))
+  def getOptionalIntegerParam(name: String): Option[Int] = {
+    params.get(name).map(_ => getIntegerParam(name))
   }
 
-  def getOptionalStringParam(name: String): Option[String] = params.get(name) map { _ =>
-    getStringParam(name)
-  }
+  def getOptionalStringParam(name: String): Option[String] = params.get(name)
 
-  def getOptionalIntegerParam(name: String) = params.get(name) map { _ =>
-    getIntegerParam(name)
-  }
+  def getStringParam(name: String): String = getNonOptionalWith(name, getOptionalStringParam)
 
-  def getBooleanParam(name: String, defaultValue: Boolean = false): Boolean = {
-    params.getAs[Boolean](name).getOrElse(defaultValue)
-  }
+  def getOptionalBooleanParam(name: String): Option[Boolean] = params.getAs[Boolean](name)
+
+  def getBooleanParam(name: String): Boolean = getNonOptionalWith(name, getOptionalBooleanParam)
 
   def getLocalDateParam(param: String): LocalDate = {
     try {
