@@ -15,6 +15,7 @@ import { Spinner } from "../../components/icons/Spinner"
 import { DataTableCountChangeEvent } from "../../components/tables/DataTable"
 import { Counter } from "../../components/typography/Counter"
 import { getLocalized, t, T } from "../../i18n/i18n"
+import { withRequiresHakeutumisenValvonta } from "../../state/accessRights"
 import { useBasePath } from "../../state/basePath"
 import {
   Oid,
@@ -39,128 +40,132 @@ export type HakutilanneViewProps = HakutilanneViewRouteProps & {
   kayttooikeusroolit: OrganisaatioJaKayttooikeusrooli[]
 }
 
-export const HakutilanneViewWithoutOrgOid = (props: HakutilanneViewProps) => {
-  const basePath = useBasePath()
-  const organisaatio = getOrganisaatiot(props.kayttooikeusroolit)[0]
+export const HakutilanneViewWithoutOrgOid = withRequiresHakeutumisenValvonta(
+  (props: HakutilanneViewProps) => {
+    const basePath = useBasePath()
+    const organisaatio = getOrganisaatiot(props.kayttooikeusroolit)[0]
 
-  return organisaatio ? (
-    <Redirect
-      to={createHakutilannePathWithOrg(basePath, {
-        organisaatioOid: organisaatio.oid,
-      })}
-    />
-  ) : (
-    <OrganisaatioMissingView />
-  )
-}
-
-export const HakutilanneView = (props: HakutilanneViewProps) => {
-  const history = useHistory()
-  const organisaatiot = getOrganisaatiot(props.kayttooikeusroolit)
-  const organisaatioOid =
-    props.match.params.organisaatioOid || organisaatiot[0]?.oid
-  const oppijatFetch = useApiWithParams(
-    fetchOppijat,
-    organisaatioOid ? [organisaatioOid] : undefined,
-    fetchOppijatCache
-  )
-  const [counters, setCounters] = useState<DataTableCountChangeEvent>({
-    filteredRowCount: 0,
-    unfilteredRowCount: 0,
-  })
-  const [selectedOppijaOids, setSelectedOppijaOids] = useState<Oid[]>([])
-  const [ilmoituslomakeVisible, showIlmoituslomake] = useState(false)
-
-  const orgOptions = getOrgOptions(organisaatiot)
-
-  const changeOrganisaatio = (oid?: Oid) => {
-    if (oid) {
-      history.push(oid)
-    }
-  }
-
-  const selectedOppijat = useMemo(
-    () =>
-      isSuccess(oppijatFetch)
-        ? selectedOppijaOids
-            .map((oid) =>
-              oppijatFetch.data.find((o) => o.oppija.henkilö.oid === oid)
-            )
-            .filter(nonNull)
-        : [],
-    [oppijatFetch, selectedOppijaOids]
-  )
-
-  return organisaatioOid ? (
-    <div className={b("view")}>
-      <Dropdown
-        selectorId="organisaatiovalitsin"
-        containerClassName={b("organisaatiovalitsin")}
-        label={t("Oppilaitos")}
-        options={orgOptions}
-        value={organisaatioOid || ""}
-        onChange={changeOrganisaatio}
+    return organisaatio ? (
+      <Redirect
+        to={createHakutilannePathWithOrg(basePath, {
+          organisaatioOid: organisaatio.oid,
+        })}
       />
-      <VirkailijaNavigation />
-      <Card>
-        <CardHeader>
-          <T id="hakutilannenäkymä__otsikko" />
-          {isSuccess(oppijatFetch) && (
-            <Counter>
-              {counters.filteredRowCount === counters.unfilteredRowCount
-                ? counters.filteredRowCount
-                : `${counters.filteredRowCount} / ${counters.unfilteredRowCount}`}
-            </Counter>
-          )}
-        </CardHeader>
-        <CardBody>
-          {isLoading(oppijatFetch) && <Spinner />}
-          {isSuccess(oppijatFetch) && (
-            <HakutilanneTable
-              data={oppijatFetch.data}
-              organisaatioOid={organisaatioOid}
-              onCountChange={setCounters}
-              onSelect={setSelectedOppijaOids}
-            />
-          )}
-        </CardBody>
-      </Card>
-      {isFeatureFlagEnabled("ilmoittaminen") ? (
-        <>
-          <BottomDrawer>
-            <div className={b("ilmoittaminen")}>
-              <h4 className={b("ilmoittaminentitle")}>
-                <T id="ilmoittaminen_drawer__title" />
-              </h4>
-              <div className={b("ilmoittamisenalarivi")}>
-                <span className={b("valittujaoppilaita")}>
-                  <T
-                    id="ilmoittaminen_drawer__valittuja_oppilaita"
-                    params={{ määrä: selectedOppijaOids.length }}
-                  />
-                </span>
-                <RaisedButton
-                  disabled={A.isEmpty(selectedOppijaOids)}
-                  onClick={() => showIlmoituslomake(true)}
-                >
-                  <T id="ilmoittaminen_drawer__siirry_ilmoittamiseen" />
-                </RaisedButton>
+    ) : (
+      <OrganisaatioMissingView />
+    )
+  }
+)
+
+export const HakutilanneView = withRequiresHakeutumisenValvonta(
+  (props: HakutilanneViewProps) => {
+    const history = useHistory()
+    const organisaatiot = getOrganisaatiot(props.kayttooikeusroolit)
+    const organisaatioOid =
+      props.match.params.organisaatioOid || organisaatiot[0]?.oid
+    const oppijatFetch = useApiWithParams(
+      fetchOppijat,
+      organisaatioOid ? [organisaatioOid] : undefined,
+      fetchOppijatCache
+    )
+    const [counters, setCounters] = useState<DataTableCountChangeEvent>({
+      filteredRowCount: 0,
+      unfilteredRowCount: 0,
+    })
+    const [selectedOppijaOids, setSelectedOppijaOids] = useState<Oid[]>([])
+    const [ilmoituslomakeVisible, showIlmoituslomake] = useState(false)
+
+    const orgOptions = getOrgOptions(organisaatiot)
+
+    const changeOrganisaatio = (oid?: Oid) => {
+      if (oid) {
+        history.push(oid)
+      }
+    }
+
+    const selectedOppijat = useMemo(
+      () =>
+        isSuccess(oppijatFetch)
+          ? selectedOppijaOids
+              .map((oid) =>
+                oppijatFetch.data.find((o) => o.oppija.henkilö.oid === oid)
+              )
+              .filter(nonNull)
+          : [],
+      [oppijatFetch, selectedOppijaOids]
+    )
+
+    return organisaatioOid ? (
+      <div className={b("view")}>
+        <Dropdown
+          selectorId="organisaatiovalitsin"
+          containerClassName={b("organisaatiovalitsin")}
+          label={t("Oppilaitos")}
+          options={orgOptions}
+          value={organisaatioOid || ""}
+          onChange={changeOrganisaatio}
+        />
+        <VirkailijaNavigation />
+        <Card>
+          <CardHeader>
+            <T id="hakutilannenäkymä__otsikko" />
+            {isSuccess(oppijatFetch) && (
+              <Counter>
+                {counters.filteredRowCount === counters.unfilteredRowCount
+                  ? counters.filteredRowCount
+                  : `${counters.filteredRowCount} / ${counters.unfilteredRowCount}`}
+              </Counter>
+            )}
+          </CardHeader>
+          <CardBody>
+            {isLoading(oppijatFetch) && <Spinner />}
+            {isSuccess(oppijatFetch) && (
+              <HakutilanneTable
+                data={oppijatFetch.data}
+                organisaatioOid={organisaatioOid}
+                onCountChange={setCounters}
+                onSelect={setSelectedOppijaOids}
+              />
+            )}
+          </CardBody>
+        </Card>
+        {isFeatureFlagEnabled("ilmoittaminen") ? (
+          <>
+            <BottomDrawer>
+              <div className={b("ilmoittaminen")}>
+                <h4 className={b("ilmoittaminentitle")}>
+                  <T id="ilmoittaminen_drawer__title" />
+                </h4>
+                <div className={b("ilmoittamisenalarivi")}>
+                  <span className={b("valittujaoppilaita")}>
+                    <T
+                      id="ilmoittaminen_drawer__valittuja_oppilaita"
+                      params={{ määrä: selectedOppijaOids.length }}
+                    />
+                  </span>
+                  <RaisedButton
+                    disabled={A.isEmpty(selectedOppijaOids)}
+                    onClick={() => showIlmoituslomake(true)}
+                  >
+                    <T id="ilmoittaminen_drawer__siirry_ilmoittamiseen" />
+                  </RaisedButton>
+                </div>
               </div>
-            </div>
-          </BottomDrawer>
-          {ilmoituslomakeVisible && isSuccess(oppijatFetch) ? (
-            <Ilmoituslomake
-              oppijat={selectedOppijat}
-              onClose={() => showIlmoituslomake(false)}
-            />
-          ) : null}
-        </>
-      ) : null}
-    </div>
-  ) : (
-    <OrganisaatioMissingView />
-  )
-}
+            </BottomDrawer>
+            {ilmoituslomakeVisible && isSuccess(oppijatFetch) ? (
+              <Ilmoituslomake
+                oppijat={selectedOppijat}
+                onClose={() => showIlmoituslomake(false)}
+              />
+            ) : null}
+          </>
+        ) : null}
+      </div>
+    ) : (
+      <OrganisaatioMissingView />
+    )
+  }
+)
 
 const getOrganisaatiot = (
   kayttooikeusroolit: OrganisaatioJaKayttooikeusrooli[]

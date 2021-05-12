@@ -43,3 +43,10 @@ export type OrganisaatioJaKayttooikeusrooli = {
   organisaatioHierarkia: OrganisaatioHierarkia
   kayttooikeusrooli: Kayttooikeusrooli
 }
+
+export const onHakeutumisVelvollisuudenValvonnanOikeuksia = (
+  kayttooikeusroolit: OrganisaatioJaKayttooikeusrooli[]
+) =>
+  kayttooikeusroolit.some(
+    (elem) => elem.kayttooikeusrooli == "OPPILAITOS_HAKEUTUMINEN"
+  )

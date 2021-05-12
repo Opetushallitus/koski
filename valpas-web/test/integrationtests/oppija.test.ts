@@ -157,9 +157,11 @@ describe("Oppijakohtainen näkymä", () => {
   it("Ei näytä oppijan tietoja, johon käyttäjällä ei ole lukuoikeutta", async () => {
     allowNetworkError("/valpas/api/oppija/", FORBIDDEN)
     await loginAs(ysiluokkaKeskenKeväälläPath, "valpas-helsinki")
-    await mainHeadingEquals("Oppijan tiedot")
-    await secondaryHeadingEquals(
-      "Oppijaa ei löydy tunnuksella 1.2.246.562.24.00000000001"
+
+    await textEventuallyEquals(
+      ".ohjeteksti",
+      "Olet onnistuneesti kirjautunut Valpas-järjestelmään seuraavilla käyttöoikeuksilla",
+      5000
     )
   })
 

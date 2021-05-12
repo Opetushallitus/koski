@@ -1,4 +1,5 @@
 import React from "react"
+import { Redirect } from "react-router-dom"
 import { Card, CardBody, CardHeader } from "../components/containers/cards"
 import { Page } from "../components/containers/Page"
 import {
@@ -9,34 +10,45 @@ import {
   TableBody,
 } from "../components/tables/Table"
 import { getLocalized, t } from "../i18n/i18n"
-import { OrganisaatioJaKayttooikeusrooli, User } from "../state/common"
+import {
+  onHakeutumisVelvollisuudenValvonnanOikeuksia,
+  OrganisaatioJaKayttooikeusrooli,
+  User,
+} from "../state/common"
 
 export type HomeViewProps = {
   user: User
   organisaatiotJaKayttooikeusroolit: OrganisaatioJaKayttooikeusrooli[]
+  redirectJosHakeutumisoikeuksiaTo: string
 }
 
-export const HomeView = (props: HomeViewProps) => (
-  <Page>
-    <Card>
-      <CardHeader>{t("title__Valpas")}</CardHeader>
-      <CardBody>
-        <p className={"ohjeteksti"}>
-          {t("homeview_olet_onnistuneesti_kirjautunut")}
-        </p>
-        <Table className={"kayttooikeudet"} style={{ tableLayout: "fixed" }}>
-          <TableBody>
-            <OrganisaatiotRows
-              organisaatiotJaKayttooikeusroolit={
-                props.organisaatiotJaKayttooikeusroolit
-              }
-            />
-          </TableBody>
-        </Table>
-      </CardBody>
-    </Card>
-  </Page>
-)
+export const HomeView = (props: HomeViewProps) => {
+  return onHakeutumisVelvollisuudenValvonnanOikeuksia(
+    props.organisaatiotJaKayttooikeusroolit
+  ) ? (
+    <Redirect to={props.redirectJosHakeutumisoikeuksiaTo} />
+  ) : (
+    <Page>
+      <Card>
+        <CardHeader>{t("title__Valpas")}</CardHeader>
+        <CardBody>
+          <p className={"ohjeteksti"}>
+            {t("homeview_olet_onnistuneesti_kirjautunut")}
+          </p>
+          <Table className={"kayttooikeudet"} style={{ tableLayout: "fixed" }}>
+            <TableBody>
+              <OrganisaatiotRows
+                organisaatiotJaKayttooikeusroolit={
+                  props.organisaatiotJaKayttooikeusroolit
+                }
+              />
+            </TableBody>
+          </Table>
+        </CardBody>
+      </Card>
+    </Page>
+  )
+}
 
 type OrganisaatiotListProps = {
   organisaatiotJaKayttooikeusroolit: OrganisaatioJaKayttooikeusrooli[]
