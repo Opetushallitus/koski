@@ -188,6 +188,6 @@ jobs:
         if: always()
         with:
           status: ${{ job.status }}
-          notification_title: ${{ github.event.inputs.environment }}' install {status_message}'
+          notification_title: ${{ github.event.inputs.environment }} install {status_message}
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
