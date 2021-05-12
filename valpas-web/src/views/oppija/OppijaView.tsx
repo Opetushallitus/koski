@@ -1,6 +1,5 @@
 import bem from "bem-ts"
 import React from "react"
-import { Redirect } from "react-router"
 import { fetchOppija, fetchOppijaCache } from "../../api/api"
 import { ApiMethodState, useApiWithParams } from "../../api/apiHooks"
 import { isSuccess, mapError, mapLoading, mapSuccess } from "../../api/apiUtils"
@@ -18,11 +17,8 @@ import { Spinner } from "../../components/icons/Spinner"
 import { InfoTooltip } from "../../components/tooltip/InfoTooltip"
 import { Heading } from "../../components/typography/headings"
 import { T, t } from "../../i18n/i18n"
+import { withRequiresHakeutumisenValvonta } from "../../state/accessRights"
 import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
-import {
-  onHakeutumisVelvollisuudenValvonnanOikeuksia,
-  OrganisaatioJaKayttooikeusrooli,
-} from "../../state/common"
 import {
   createHakutilannePathWithOrg as createHakutilannePathWithOrg,
   createHakutilannePathWithoutOrg as createHakutilannePathWithoutOrg,
@@ -38,95 +34,84 @@ import "./OppijaView.less"
 
 const b = bem("oppijaview")
 
-export type OppijaViewProps = OppijaViewRouteProps & {
-  kayttooikeusroolit: OrganisaatioJaKayttooikeusrooli[]
-  redirectJosKäyttäjälläEiOleOikeuksiaTo: string
-}
+export type OppijaViewProps = OppijaViewRouteProps
 
-export const OppijaView = (props: OppijaViewProps) => {
-  return onHakeutumisVelvollisuudenValvonnanOikeuksia(
-    props.kayttooikeusroolit
-  ) ? (
-    <OppijaViewContent {...props} />
-  ) : (
-    <Redirect to={props.redirectJosKäyttäjälläEiOleOikeuksiaTo} />
-  )
-}
+export const OppijaView = withRequiresHakeutumisenValvonta(
+  (props: OppijaViewProps) => {
+    const searchQuery = parseSearchQueryFromProps(props)
+    const queryOid = props.match.params.oppijaOid!!
+    const oppija = useApiWithParams(fetchOppija, [queryOid], fetchOppijaCache)
 
-const OppijaViewContent = (props: OppijaViewProps) => {
-  const searchQuery = parseSearchQueryFromProps(props)
-  const queryOid = props.match.params.oppijaOid!!
-  const oppija = useApiWithParams(fetchOppija, [queryOid], fetchOppijaCache)
+    return (
+      <Page id="oppija">
+        <BackNav
+          organisaatioRef={searchQuery.organisaatioRef}
+          oppija={isSuccess(oppija) ? oppija.data : undefined}
+        />
+        <OppijaHeadings oppija={oppija} oid={queryOid} />
 
-  return (
-    <Page id="oppija">
-      <BackNav
-        organisaatioRef={searchQuery.organisaatioRef}
-        oppija={isSuccess(oppija) ? oppija.data : undefined}
-      />
-      <OppijaHeadings oppija={oppija} oid={queryOid} />
+        {mapLoading(oppija, () => (
+          <Spinner />
+        ))}
 
-      {mapLoading(oppija, () => (
-        <Spinner />
-      ))}
-
-      {mapSuccess(oppija, (oppijaData: OppijaHakutilanteillaLaajatTiedot) => (
-        <>
-          <ColumnsContainer>
-            <Column size={4}>
-              <BorderlessCard id="oppivelvollisuustiedot">
-                <CardHeader>
-                  <T id="oppija__oppivelvollisuustiedot_otsikko" />
-                </CardHeader>
-                <CardBody>
-                  <OppijanOppivelvollisuustiedot oppija={oppijaData} />
-                </CardBody>
-              </BorderlessCard>
-            </Column>
-            <Column size={8}>
-              <BorderlessCard id="yhteystiedot">
-                <CardHeader>
-                  <T id="oppija__yhteystiedot_otsikko" />
-                  <InfoTooltip>
-                    <T id="oppija__yhteystiedot_tooltip" />
-                  </InfoTooltip>
-                </CardHeader>
-                <CardBody>
-                  <OppijanYhteystiedot
-                    henkilö={oppijaData.oppija.henkilö}
-                    yhteystiedot={oppijaData.yhteystiedot}
-                  />
-                </CardBody>
-              </BorderlessCard>
-            </Column>
-          </ColumnsContainer>
-          <ColumnsContainer>
-            <Column size={4}>
-              <BorderlessCard id="opiskeluhistoria">
-                <CardHeader>
-                  <T id="oppija__opiskeluhistoria_otsikko" />
-                </CardHeader>
-                <CardBody>
-                  <OppijanOpiskeluhistoria oppija={oppijaData} />
-                </CardBody>
-              </BorderlessCard>
-            </Column>
-            <Column size={8}>
-              <BorderlessCard id="haut">
-                <CardHeader>
-                  <T id="oppija__haut_otsikko" />
-                </CardHeader>
-                <CardBody>
-                  <OppijanHaut oppija={oppijaData} />
-                </CardBody>
-              </BorderlessCard>
-            </Column>
-          </ColumnsContainer>
-        </>
-      ))}
-    </Page>
-  )
-}
+        {mapSuccess(oppija, (oppijaData: OppijaHakutilanteillaLaajatTiedot) => (
+          <>
+            <ColumnsContainer>
+              <Column size={4}>
+                <BorderlessCard id="oppivelvollisuustiedot">
+                  <CardHeader>
+                    <T id="oppija__oppivelvollisuustiedot_otsikko" />
+                  </CardHeader>
+                  <CardBody>
+                    <OppijanOppivelvollisuustiedot oppija={oppijaData} />
+                  </CardBody>
+                </BorderlessCard>
+              </Column>
+              <Column size={8}>
+                <BorderlessCard id="yhteystiedot">
+                  <CardHeader>
+                    <T id="oppija__yhteystiedot_otsikko" />
+                    <InfoTooltip>
+                      <T id="oppija__yhteystiedot_tooltip" />
+                    </InfoTooltip>
+                  </CardHeader>
+                  <CardBody>
+                    <OppijanYhteystiedot
+                      henkilö={oppijaData.oppija.henkilö}
+                      yhteystiedot={oppijaData.yhteystiedot}
+                    />
+                  </CardBody>
+                </BorderlessCard>
+              </Column>
+            </ColumnsContainer>
+            <ColumnsContainer>
+              <Column size={4}>
+                <BorderlessCard id="opiskeluhistoria">
+                  <CardHeader>
+                    <T id="oppija__opiskeluhistoria_otsikko" />
+                  </CardHeader>
+                  <CardBody>
+                    <OppijanOpiskeluhistoria oppija={oppijaData} />
+                  </CardBody>
+                </BorderlessCard>
+              </Column>
+              <Column size={8}>
+                <BorderlessCard id="haut">
+                  <CardHeader>
+                    <T id="oppija__haut_otsikko" />
+                  </CardHeader>
+                  <CardBody>
+                    <OppijanHaut oppija={oppijaData} />
+                  </CardBody>
+                </BorderlessCard>
+              </Column>
+            </ColumnsContainer>
+          </>
+        ))}
+      </Page>
+    )
+  }
+)
 
 type BackNavProps = {
   organisaatioRef?: string
