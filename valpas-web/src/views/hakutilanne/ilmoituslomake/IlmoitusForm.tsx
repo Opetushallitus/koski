@@ -107,6 +107,7 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
     <IlmoitusFormFrame>
       <IlmoitusHeader
         henkilö={props.oppija.oppija.henkilö}
+        pohjatiedot={props.pohjatiedot}
         formIndex={props.formIndex}
         numberOfForms={props.numberOfForms}
         isOpen={isOpen}
@@ -183,6 +184,7 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
 
 export type IlmoitusHeaderProps = {
   henkilö: HenkilöSuppeatTiedot
+  pohjatiedot: OppijanPohjatiedot
   formIndex: number
   numberOfForms: number
   isOpen: boolean
@@ -199,6 +201,7 @@ const IlmoitusHeader = (props: IlmoitusHeaderProps) => (
       <IlmoitusTitleTexts>
         <IlmoitusTitleText>
           {props.henkilö.sukunimi} {props.henkilö.etunimet}
+          {props.pohjatiedot.hetu && ` (${props.pohjatiedot.hetu})`}
         </IlmoitusTitleText>
         <IlmoitusSubtitle>Oppija {props.henkilö.oid}</IlmoitusSubtitle>
       </IlmoitusTitleTexts>

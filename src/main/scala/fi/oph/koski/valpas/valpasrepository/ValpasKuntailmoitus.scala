@@ -123,7 +123,8 @@ case class ValpasOppijanPohjatiedot(
   @KoodistoKoodiarvo("SV")
   yhteydenottokieli: Option[Koodistokoodiviite],
   turvakielto: Boolean,
-  yhteystiedot: Seq[ValpasPohjatietoYhteystieto]
+  yhteystiedot: Seq[ValpasPohjatietoYhteystieto],
+  hetu: Option[String],
 )
 
 case class ValpasPohjatietoYhteystieto(

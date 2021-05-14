@@ -26,6 +26,7 @@ export type OppijanPohjatiedot = {
   yhteydenottokieli?: Kieli
   turvakielto: Boolean
   yhteystiedot: PohjatietoYhteystieto[]
+  hetu?: string
 }
 
 export type PohjatietoYhteystieto = {
