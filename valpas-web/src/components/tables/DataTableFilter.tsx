@@ -40,7 +40,6 @@ export const createFilter = (
   }
   switch (type) {
     case "freetext":
-      console.log("freetype", needle)
       return createFreeTextFilter(needle)
     case "dropdown":
       return createDropdownFilter(needle)

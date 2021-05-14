@@ -10,7 +10,7 @@ import { Spinner } from "../../components/icons/Spinner"
 import { Error } from "../../components/typography/error"
 import { T } from "../../i18n/i18n"
 import { OppijaHakutilanteillaSuppeatTiedot } from "../../state/apitypes/oppija"
-import { Oid } from "../../state/common"
+import { Organisaatio } from "../../state/apitypes/organisaatiot"
 import "./HakutilanneDrawer.less"
 import { Ilmoituslomake } from "./ilmoituslomake/Ilmoituslomake"
 
@@ -18,7 +18,7 @@ const b = bem("hakutilannedrawer")
 
 export type HakutilanneDrawerProps = {
   selectedOppijat: OppijaHakutilanteillaSuppeatTiedot[]
-  tekijäOrganisaatio: Oid
+  tekijäorganisaatio: Organisaatio
 }
 
 export const HakutilanneDrawer = (props: HakutilanneDrawerProps) => {
@@ -30,7 +30,7 @@ export const HakutilanneDrawer = (props: HakutilanneDrawerProps) => {
   ])
   const pohjatiedot = useApiWithParams(
     fetchKuntailmoituksenPohjatiedot,
-    modalVisible ? [oppijaOids, props.tekijäOrganisaatio] : undefined
+    modalVisible ? [oppijaOids, props.tekijäorganisaatio.oid] : undefined
   )
 
   return (
@@ -69,6 +69,7 @@ export const HakutilanneDrawer = (props: HakutilanneDrawerProps) => {
         <Ilmoituslomake
           oppijat={oppijat}
           pohjatiedot={pohjatiedot.data}
+          tekijäorganisaatio={props.tekijäorganisaatio}
           onClose={() => setModalVisible(false)}
         />
       ) : null}

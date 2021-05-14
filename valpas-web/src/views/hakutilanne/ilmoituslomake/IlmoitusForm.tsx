@@ -1,5 +1,8 @@
 import bem from "bem-ts"
 import React, { useMemo, useState } from "react"
+import { createKuntailmoitus } from "../../../api/api"
+import { useApiMethod, useOnApiSuccess } from "../../../api/apiHooks"
+import { isError, isLoading } from "../../../api/apiUtils"
 import { RaisedButton } from "../../../components/buttons/RaisedButton"
 import { LabeledCheckbox } from "../../../components/forms/Checkbox"
 import {
@@ -19,20 +22,28 @@ import { Error } from "../../../components/typography/error"
 import { SecondaryHeading } from "../../../components/typography/headings"
 import { getLocalized, T, t } from "../../../i18n/i18n"
 import { HenkilöSuppeatTiedot } from "../../../state/apitypes/henkilo"
-import { KoodistoKoodiviite } from "../../../state/apitypes/koodistot"
+import { Kieli, Maa } from "../../../state/apitypes/koodistot"
 import {
   KuntailmoitusKunta,
+  KuntailmoitusLaajatTiedot,
+} from "../../../state/apitypes/kuntailmoitus"
+import {
   OppijanPohjatiedot,
   PohjatietoYhteystieto,
 } from "../../../state/apitypes/kuntailmoituspohjatiedot"
 import { OppijaHakutilanteillaSuppeatTiedot } from "../../../state/apitypes/oppija"
 import {
+  Organisaatio,
+  trimOrganisaatio,
+} from "../../../state/apitypes/organisaatiot"
+import {
   isAlkuperäHakemukselta,
   isAlkuperäRekisteristä,
 } from "../../../state/apitypes/yhteystiedot"
-import { Oid, OrganisaatioWithOid } from "../../../state/common"
+import { Oid } from "../../../state/common"
 import { expectNonEmptyString } from "../../../state/formValidators"
 import { FormValidators, useFormState } from "../../../state/useFormState"
+import { nonNull } from "../../../utils/arrays"
 import { plainComponent } from "../../../utils/plaincomponent"
 import "./IlmoitusForm.less"
 
@@ -76,12 +87,51 @@ const validators: FormValidators<IlmoitusFormValues> = {
   hakenutOpiskelemaanYhteyshakujenUlkopuolella: [],
 }
 
+const toKuntailmoitusLaajatTiedot = (
+  form: IlmoitusFormValues,
+  tekijäOrganisaatio: Organisaatio,
+  kunnat: KuntailmoitusKunta[]
+): KuntailmoitusLaajatTiedot | null => {
+  const kunta = kunnat.find((k) => k.oid === form.asuinkunta)
+
+  return nonNull(kunta)
+    ? {
+        kunta,
+        tekijä: {
+          organisaatio: trimOrganisaatio(tekijäOrganisaatio),
+          henkilö: undefined, // TODO: Pitää lisätä tekijän yhteystietojen tarkastuslomake ensin
+        },
+        yhteydenottokieli: nonNull(form.yhteydenottokieli)
+          ? {
+              koodistoUri: "kieli",
+              koodiarvo: form.yhteydenottokieli as Kieli["koodiarvo"],
+            }
+          : undefined,
+        oppijanYhteystiedot: {
+          puhelinnumero: form.puhelinnumero,
+          email: form.email,
+          lähiosoite: form.lähiosoite,
+          postinumero: form.postinumero,
+          postitoimipaikka: form.postitoimipaikka,
+          maa: nonNull(form.maa)
+            ? {
+                koodistoUri: "maatjavaltiot2",
+                koodiarvo: form.maa,
+              }
+            : undefined,
+        },
+        hakenutMuualle: form.hakenutOpiskelemaanYhteyshakujenUlkopuolella,
+      }
+    : null
+}
+
 export type IlmoitusFormProps = {
   oppija: OppijaHakutilanteillaSuppeatTiedot
   pohjatiedot: OppijanPohjatiedot
-  kunnat: Array<OrganisaatioWithOid>
-  maat: Array<KoodistoKoodiviite>
-  kielet: Array<KoodistoKoodiviite>
+  kunnat: Array<KuntailmoitusKunta>
+  maat: Array<Maa>
+  kielet: Array<Kieli>
+  tekijäorganisaatio: Organisaatio
   formIndex: number
   numberOfForms: number
   onSubmit?: (values: IlmoitusFormValues) => void
@@ -98,11 +148,24 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
   })
   const [isOpen, setOpen] = useState(true)
   const [isSubmitted, setSubmitted] = useState(false)
+  const send = useApiMethod(createKuntailmoitus)
 
-  const submit = form.submitCallback((formData) => {
+  const submit = form.submitCallback(async (formData) => {
+    const kuntailmoitus = toKuntailmoitusLaajatTiedot(
+      formData,
+      props.tekijäorganisaatio,
+      props.kunnat
+    )
+
+    if (kuntailmoitus) {
+      await send.call(props.oppija.oppija.henkilö.oid, kuntailmoitus)
+    }
+  })
+
+  useOnApiSuccess(send, () => {
     setSubmitted(true)
     if (props.onSubmit) {
-      props.onSubmit(formData)
+      form.submitCallback(props.onSubmit)()
     }
   })
 
@@ -178,9 +241,22 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
               <T id="ilmoituslomake__täytä_pakolliset_tiedot" />
             </Error>
           ) : null}
+          {isError(send) &&
+            send.errors.map((error, index) => (
+              <Error key={index}>{error.message}</Error>
+            ))}
+
           <RaisedButton
             disabled={form.isValid ? false : "byLook"}
-            onClick={form.isValid ? submit : form.validateAll}
+            onClick={() => {
+              if (!isLoading(send)) {
+                if (form.isValid) {
+                  submit()
+                } else {
+                  form.validateAll()
+                }
+              }
+            }}
           >
             <T id="ilmoituslomake__ilmoita_asuinkunnalle" />
           </RaisedButton>

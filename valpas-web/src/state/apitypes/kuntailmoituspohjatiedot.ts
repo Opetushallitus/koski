@@ -1,32 +1,23 @@
-import { Oid, OrganisaatioWithOid } from "../common"
-import { Kieli, Kunta, Maa } from "./koodistot"
+import { Kieli, Maa } from "./koodistot"
+import {
+  KuntailmoituksenTekijäHenkilö,
+  KuntailmoitusKunta,
+} from "./kuntailmoitus"
+import { Organisaatio } from "./organisaatiot"
 import { YhteystietojenAlkuperä } from "./yhteystiedot"
 
 export type KuntailmoitusPohjatiedot = {
   tekijäHenkilö?: KuntailmoituksenTekijäHenkilö
-  mahdollisetTekijäOrganisaatiot: OrganisaatioWithOid[]
+  mahdollisetTekijäOrganisaatiot: Organisaatio[]
   oppijat: OppijanPohjatiedot[]
   kunnat: KuntailmoitusKunta[]
   maat: Maa[]
   yhteydenottokielet: Kieli[]
 }
 
-export type KuntailmoituksenTekijäHenkilö = {
-  oid?: Oid
-  etunimet?: string
-  sukunimi?: string
-  kutsumanimi?: string
-  email?: string
-  puhelinnumero?: string
-}
-
-export type KuntailmoitusKunta = OrganisaatioWithOid & {
-  kotipaikka?: Kunta
-}
-
 export type OppijanPohjatiedot = {
   oppijaOid: string
-  mahdollisetTekijäOrganisaatiot: OrganisaatioWithOid[]
+  mahdollisetTekijäOrganisaatiot: Organisaatio[]
   yhteydenottokieli?: Kieli
   turvakielto: Boolean
   yhteystiedot: PohjatietoYhteystieto[]
@@ -36,7 +27,7 @@ export type OppijanPohjatiedot = {
 export type PohjatietoYhteystieto = {
   yhteystietojenAlkuperä: YhteystietojenAlkuperä
   yhteystiedot: KuntailmoituksenOppijanYhteystiedot
-  kunta?: OrganisaatioWithOid
+  kunta?: Organisaatio
 }
 
 export type KuntailmoituksenOppijanYhteystiedot = {

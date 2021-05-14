@@ -5,7 +5,7 @@ import * as string from "fp-ts/string"
 import React from "react"
 import { getLocalized } from "../../i18n/i18n"
 import { KoodistoKoodiviite } from "../../state/apitypes/koodistot"
-import { OrganisaatioWithOid } from "../../state/common"
+import { Organisaatio } from "../../state/apitypes/organisaatiot"
 import { FilterableValue, toFilterableString } from "../../utils/conversions"
 import { ArrowDropDownIcon } from "../icons/Icon"
 import "./Dropdown.less"
@@ -85,7 +85,7 @@ export const koodistoToOptions = (
   }))
 
 export const organisaatiotToOptions = (
-  organisaatiot: OrganisaatioWithOid[]
+  organisaatiot: Organisaatio[]
 ): Array<DropdownOption<string>> =>
   organisaatiot.map((org) => ({
     value: org.oid,
