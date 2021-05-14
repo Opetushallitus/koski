@@ -90,15 +90,30 @@ describe("IlmoitusForm", () => {
       yhteydenottokieli: "FI",
     })
   })
+
+  test("Näytä varoitus, jos oppijalla on turvakielto", () => {
+    const formEiTurvakieltoa = createForm(undefined, { turvakielto: false })
+    expect(
+      formEiTurvakieltoa.queryByText("ilmoituslomake__turvakielto_ohje")
+    ).toBeNull()
+
+    const formTurvakielto = createForm(undefined, { turvakielto: true })
+    expect(
+      formTurvakielto.queryByText("ilmoituslomake__turvakielto_ohje")
+    ).not.toBeNull()
+  })
 })
 
-const createForm = (onSubmit?: (values: IlmoitusFormValues) => void) =>
+const createForm = (
+  onSubmit?: (values: IlmoitusFormValues) => void,
+  oppijanPohjatiedotPatch?: Partial<OppijanPohjatiedot>
+) =>
   render(
     <IlmoitusForm
       formIndex={0}
       numberOfForms={2}
       oppija={mockOppija}
-      pohjatiedot={mockOppijanPohjatiedot}
+      pohjatiedot={{ ...mockOppijanPohjatiedot, ...oppijanPohjatiedotPatch }}
       kunnat={mockAsuinkunnat}
       maat={mockMaat}
       kielet={mockYhteydenottokielet}
@@ -121,7 +136,10 @@ const fillTextField = (form: RenderResult, labelText: string, text: string) => {
 }
 
 const toggleCheckbox = (form: RenderResult, labelText: string) => {
-  const c = form.getByText(labelText).getElementsByTagName("input").item(0)
+  const c = form
+    .getByText(labelText)
+    .parentElement?.getElementsByTagName("input")
+    .item(0)
   userEvent.click(c!!)
 }
 

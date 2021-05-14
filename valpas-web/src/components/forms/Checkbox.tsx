@@ -33,6 +33,6 @@ export const LabeledCheckbox = ({
 }: LabeledCheckboxProps) => (
   <label className={b("label")}>
     <Checkbox {...checkboxProps} />
-    {label}
+    <div className={b("labeltext")}>{label}</div>
   </label>
 )

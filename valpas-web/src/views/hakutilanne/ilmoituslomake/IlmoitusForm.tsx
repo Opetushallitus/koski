@@ -12,6 +12,7 @@ import {
   CaretDownIcon,
   CaretUpIcon,
   SuccessCircleIcon,
+  WarningIcon,
 } from "../../../components/icons/Icon"
 import { Error } from "../../../components/typography/error"
 import { SecondaryHeading } from "../../../components/typography/headings"
@@ -120,6 +121,7 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
             pohjatiedot={props.pohjatiedot}
             onSelect={form.patch}
           />
+          {props.pohjatiedot.turvakielto && <TurvakieltoWarning />}
           <Dropdown
             label={t("ilmoituslomake__asuinkunta")}
             required
@@ -269,3 +271,12 @@ const yhteystiedonNimi = (yhteystieto: PohjatietoYhteystieto): string => {
   }
   return "?"
 }
+
+const TurvakieltoWarning = () => (
+  <div className={b("turvakielto")}>
+    <WarningIcon />
+    <div className={b("turvakieltotext")}>
+      <T id="ilmoituslomake__turvakielto_ohje" />
+    </div>
+  </div>
+)
