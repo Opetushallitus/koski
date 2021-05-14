@@ -55,8 +55,3 @@ class OppivelvollisuustietoServlet(implicit val application: KoskiApplication) e
   }
 }
 
-case class Oppivelvollisuustieto(
-  oid: String,
-  oppivelvollisuusVoimassaAsti: LocalDate,
-  oikeusMaksuttomaanKoulutukseenVoimassaAsti: LocalDate
-)

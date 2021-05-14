@@ -4,9 +4,11 @@ import java.sql.Timestamp.{valueOf => toTimestamp}
 import java.sql.{Date, Timestamp}
 import java.time.LocalDateTime.now
 import java.time._
+
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{DB, QueryMethods, RaportointiDatabaseConfig}
 import fi.oph.koski.log.Logging
+import fi.oph.koski.oppivelvollisuustieto.{Oppivelvollisuustiedot}
 import fi.oph.koski.raportit.PaallekkaisetOpiskeluoikeudet
 import fi.oph.koski.raportit.lukio.{LukioOppiaineEriVuonnaKorotetutKurssit, LukioOppiaineRahoitusmuodonMukaan, LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat}
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
@@ -98,6 +100,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
       LukioOppiaineRahoitusmuodonMukaan.createIndex(schema),
       LukioOppiaineEriVuonnaKorotetutKurssit.createMaterializedView(schema),
       LukioOppiaineEriVuonnaKorotetutKurssit.createIndex(schema),
+      Oppivelvollisuustiedot.createMaterializedView(schema)
     ), timeout = 120.minutes)
     val duration = (System.currentTimeMillis - started) / 1000
     setStatusLoadCompleted("materialized_views")
