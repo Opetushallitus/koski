@@ -29,8 +29,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   def getPeruskoulunValvojalleNäkyväOppija(oppijaOid: String): Option[ValpasOppijaRow] =
     getOppijat(Some(oppijaOid), None).headOption
 
-  def getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOids: Set[String]): Seq[ValpasOppijaRow] =
-    getOppijat(None, Some(oppilaitosOids.toSeq))
+  def getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOid: String): Seq[ValpasOppijaRow] =
+    getOppijat(None, Some(Seq(oppilaitosOid)))
 
   private implicit def getResult: GetResult[ValpasOppijaRow] = GetResult(r => {
     ValpasOppijaRow(

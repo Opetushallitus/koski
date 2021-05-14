@@ -8,15 +8,6 @@ import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppijaLaajatTiedot
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 
 class ValpasAccessResolver(organisaatioRepository: OrganisaatioRepository) {
-  def organisaatiohierarkiaOids
-    (organisaatioOids: Set[Organisaatio.Oid])(implicit session: ValpasSession)
-  : Either[HttpStatus, Set[Organisaatio.Oid]] = {
-    withAccessToAllOrgs(organisaatioOids, () => {
-      val childOids = organisaatioOids.flatMap(organisaatioRepository.getChildOids).flatten
-      organisaatioOids ++ childOids
-    })
-  }
-
   def assertAccessToOrg(organisaatioOid: Organisaatio.Oid)(implicit session: ValpasSession): Either[HttpStatus, Unit] = {
     withAccessToAllOrgs(Set(organisaatioOid), () => ())
   }
