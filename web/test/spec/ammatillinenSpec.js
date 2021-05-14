@@ -442,11 +442,11 @@ describe('Ammatillinen koulutus', function() {
           insertExample('ammatillinen - reformin mukainen perustutkinto.json'),
           page.openPage,
           page.oppijaHaku.searchAndSelect('280618-402H'),
-          opinnot.avaaKaikki
+          click(findFirst('.expand-all'))
         )
 
         it('näytetään', function() {
-          expect(extractAsText(S('.ammatillisentutkinnonsuoritus > .osasuoritukset'))).to.equalIgnoreNewlines(
+          expect(extractAsText(findSingle('.ammatillisentutkinnonsuoritus:first > .osasuoritukset'))).to.equalIgnoreNewlines(
             'Sulje kaikki\n' +
             'Ammatilliset tutkinnon osat Laajuus (osp) Arvosana\n' +
             'Huolto- ja korjaustyöt 5\n' +
