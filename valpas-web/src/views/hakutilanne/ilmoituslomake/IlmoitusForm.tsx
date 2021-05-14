@@ -1,11 +1,12 @@
 import bem from "bem-ts"
-import React, { useState } from "react"
+import React, { useMemo, useState } from "react"
 import { RaisedButton } from "../../../components/buttons/RaisedButton"
 import { LabeledCheckbox } from "../../../components/forms/Checkbox"
 import {
+  displayOrd,
   Dropdown,
+  DropdownOption,
   koodistoToOptions,
-  organisaatiotToOptions,
 } from "../../../components/forms/Dropdown"
 import { TextField } from "../../../components/forms/TextField"
 import {
@@ -20,6 +21,7 @@ import { getLocalized, T, t } from "../../../i18n/i18n"
 import { HenkilöSuppeatTiedot } from "../../../state/apitypes/henkilo"
 import { KoodistoKoodiviite } from "../../../state/apitypes/koodistot"
 import {
+  KuntailmoitusKunta,
   OppijanPohjatiedot,
   PohjatietoYhteystieto,
 } from "../../../state/apitypes/kuntailmoituspohjatiedot"
@@ -28,7 +30,7 @@ import {
   isAlkuperäHakemukselta,
   isAlkuperäRekisteristä,
 } from "../../../state/apitypes/yhteystiedot"
-import { OrganisaatioWithOid } from "../../../state/common"
+import { Oid, OrganisaatioWithOid } from "../../../state/common"
 import { expectNonEmptyString } from "../../../state/formValidators"
 import { FormValidators, useFormState } from "../../../state/useFormState"
 import { plainComponent } from "../../../utils/plaincomponent"
@@ -104,6 +106,9 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
     }
   })
 
+  const kunnat = props.kunnat
+  const kuntaOptions = useMemo(() => kunnatToOptions(kunnat), [kunnat])
+
   return (
     <IlmoitusFormFrame>
       <IlmoitusHeader
@@ -125,7 +130,8 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
           <Dropdown
             label={t("ilmoituslomake__asuinkunta")}
             required
-            options={organisaatiotToOptions(props.kunnat)}
+            options={kuntaOptions}
+            sort={displayOrd}
             {...form.fieldProps("asuinkunta")}
           />
           <Dropdown
@@ -280,3 +286,9 @@ const TurvakieltoWarning = () => (
     </div>
   </div>
 )
+
+const kunnatToOptions = (kunnat: KuntailmoitusKunta[]): DropdownOption<Oid>[] =>
+  kunnat.map((kunta) => ({
+    value: kunta.oid,
+    display: getLocalized(kunta.kotipaikka?.nimi || kunta.nimi) || kunta.oid,
+  }))

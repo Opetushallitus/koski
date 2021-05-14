@@ -3,9 +3,11 @@ import userEvent from "@testing-library/user-event"
 import React from "react"
 import { disableMissingTranslationWarnings } from "../../../i18n/i18n"
 import { KoodistoKoodiviite } from "../../../state/apitypes/koodistot"
-import { OppijanPohjatiedot } from "../../../state/apitypes/kuntailmoituspohjatiedot"
+import {
+  KuntailmoitusKunta,
+  OppijanPohjatiedot,
+} from "../../../state/apitypes/kuntailmoituspohjatiedot"
 import { OppijaHakutilanteillaSuppeatTiedot } from "../../../state/apitypes/oppija"
-import { OrganisaatioWithOid } from "../../../state/common"
 import { IlmoitusForm, IlmoitusFormValues } from "./IlmoitusForm"
 
 describe("IlmoitusForm", () => {
@@ -208,10 +210,34 @@ const mockKoodisto = (
     },
   }))
 
-const mockAsuinkunnat: OrganisaatioWithOid[] = [
-  { oid: "oid.helsinki", nimi: { fi: "Helsinki" } },
-  { oid: "oid.jyvaskyla", nimi: { fi: "Jyväskylä" } },
-  { oid: "oid.kokkola", nimi: { fi: "Kokkola" } },
+const mockAsuinkunnat: KuntailmoitusKunta[] = [
+  {
+    oid: "oid.helsinki",
+    nimi: { fi: "Helsingin kaupunki" },
+    kotipaikka: {
+      koodistoUri: "kunta",
+      koodiarvo: "123",
+      nimi: { fi: "Helsinki" },
+    },
+  },
+  {
+    oid: "oid.jyvaskyla",
+    nimi: { fi: "Jyväskylän kaupunki" },
+    kotipaikka: {
+      koodistoUri: "kunta",
+      koodiarvo: "321",
+      nimi: { fi: "Jyväskylä" },
+    },
+  },
+  {
+    oid: "oid.kokkola",
+    nimi: { fi: "Kokkolan kaupunki" },
+    kotipaikka: {
+      koodistoUri: "kunta",
+      koodiarvo: "222",
+      nimi: { fi: "Kokkola" },
+    },
+  },
 ]
 
 const mockMaat = mockKoodisto("maatjavaltiot2", {
