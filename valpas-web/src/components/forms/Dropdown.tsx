@@ -1,4 +1,7 @@
 import bem from "bem-ts"
+import * as A from "fp-ts/Array"
+import * as Ord from "fp-ts/Ord"
+import * as string from "fp-ts/string"
 import React from "react"
 import { getLocalized } from "../../i18n/i18n"
 import { KoodistoKoodiviite } from "../../state/apitypes/koodistot"
@@ -21,6 +24,7 @@ export type DropdownProps<T> = {
   selectorId?: string
   containerClassName?: string
   required?: boolean
+  sort?: Ord.Ord<DropdownOption<T>>
 }
 
 export type DropdownOption<T> = {
@@ -32,6 +36,9 @@ export const Dropdown = <T,>(props: DropdownProps<T>) => {
   const showEmptyValue = !props.options.some(
     (option) => option.value === props.value
   )
+  const sortedOptions = props.sort
+    ? A.sort(props.sort)(props.options)
+    : props.options
   return (
     <InputContainer
       className={props.containerClassName}
@@ -46,12 +53,12 @@ export const Dropdown = <T,>(props: DropdownProps<T>) => {
         className={b("input", { error: Boolean(props.error) })}
         value={props.options.findIndex((opt) => opt.value === props.value)}
         onChange={(event) =>
-          props.onChange(props.options[parseInt(event.target.value, 10)]?.value)
+          props.onChange(sortedOptions[parseInt(event.target.value, 10)]?.value)
         }
         onBlur={props.onBlur}
       >
         {showEmptyValue ? <option>-</option> : null}
-        {props.options.map((option, index) => (
+        {sortedOptions.map((option, index) => (
           <option key={index} value={index}>
             {option.display}
           </option>
@@ -84,3 +91,7 @@ export const organisaatiotToOptions = (
     value: org.oid,
     display: getLocalized(org.nimi) || org.oid,
   }))
+
+export const displayOrd = Ord.contramap((a: DropdownOption<any>) => a.display)(
+  string.Ord
+)
