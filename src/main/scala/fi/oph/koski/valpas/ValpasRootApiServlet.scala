@@ -27,9 +27,7 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
       )
     )).sortBy(r => (r.organisaatioHierarkia.nimi.get(session.lang), r.kayttooikeusrooli))
 
-    val organisaatiokohtaiset = organisaatioService.omatOrganisaatiotJaKayttooikeusroolit.map(o =>
-      o.copy(organisaatioHierarkia = o.organisaatioHierarkia.copy(children = List()))
-    )
+    val organisaatiokohtaiset = organisaatioService.omatOrganisaatiotJaKayttooikeusroolit
 
     globaalit ++ organisaatiokohtaiset
   }
