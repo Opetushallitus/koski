@@ -27,18 +27,16 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
       )
     )).sortBy(r => (r.organisaatioHierarkia.nimi.get(session.lang), r.kayttooikeusrooli))
 
-    val organisaatiokohtaiset = organisaatioService.omatOrganisaatiotJaKayttooikeusroolit.map(o =>
-      o.copy(organisaatioHierarkia = o.organisaatioHierarkia.copy(children = List()))
-    )
+    val organisaatiokohtaiset = organisaatioService.omatOrganisaatiotJaKayttooikeusroolit
 
     globaalit ++ organisaatiokohtaiset
   }
 
   get("/oppijat/:organisaatio") {
-    val oppilaitosOids: Set[ValpasOppilaitos.Oid] = Set(params("organisaatio"))
+    val oppilaitosOid: ValpasOppilaitos.Oid = params("organisaatio")
     renderEither(
-      oppijaService.getOppijatSuppeatTiedot(oppilaitosOids)
-        .map(withAuditLogOppilaitostenKatsominen(oppilaitosOids))
+      oppijaService.getOppijatSuppeatTiedot(oppilaitosOid)
+        .map(withAuditLogOppilaitostenKatsominen(oppilaitosOid))
     )
   }
 
@@ -72,14 +70,12 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
   }
 
   private def withAuditLogOppilaitostenKatsominen[T]
-    (oppilaitosOids: Set[ValpasOppilaitos.Oid])(result: T)(implicit session: ValpasSession)
+    (oppilaitosOid: ValpasOppilaitos.Oid)(result: T)(implicit session: ValpasSession)
   : T = {
-    oppilaitosOids.foreach { oppilaitosOid =>
-      AuditLog.log(ValpasAuditLogMessage(
-        ValpasOperation.VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN,
-        Map(KoskiMessageField.juuriOrganisaatio -> oppilaitosOid)
-      ))
-    }
+    AuditLog.log(ValpasAuditLogMessage(
+      ValpasOperation.VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN,
+      Map(KoskiMessageField.juuriOrganisaatio -> oppilaitosOid)
+    ))
     result
   }
 }

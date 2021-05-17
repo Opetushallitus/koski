@@ -2,6 +2,8 @@ import bem from "bem-ts"
 import * as A from "fp-ts/Array"
 import * as Eq from "fp-ts/Eq"
 import { pipe } from "fp-ts/lib/function"
+import * as Ord from "fp-ts/Ord"
+import * as string from "fp-ts/string"
 import React, { useMemo, useState } from "react"
 import { Redirect, useHistory } from "react-router"
 import { fetchOppijat, fetchOppijatCache } from "../../api/api"
@@ -60,7 +62,11 @@ export const HakutilanneViewWithoutOrgOid = withRequiresHakeutumisenValvonta(
 export const HakutilanneView = withRequiresHakeutumisenValvonta(
   (props: HakutilanneViewProps) => {
     const history = useHistory()
-    const organisaatiot = getOrganisaatiot(props.kayttooikeusroolit)
+    const organisaatiot = useMemo(
+      () => getOrganisaatiot(props.kayttooikeusroolit),
+      [props.kayttooikeusroolit]
+    )
+
     const organisaatioOid =
       props.match.params.organisaatioOid || organisaatiot[0]?.oid
     const oppijatFetch = useApiWithParams(
@@ -169,8 +175,61 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
 
 const getOrganisaatiot = (
   kayttooikeusroolit: OrganisaatioJaKayttooikeusrooli[]
-) =>
-  kayttooikeusroolit.map((kayttooikeus) => kayttooikeus.organisaatioHierarkia)
+): OrganisaatioHierarkia[] => {
+  const hakeutumisKayttooikeusroolit = kayttooikeusroolit.filter(
+    (kayttooikeusrooli) =>
+      kayttooikeusrooli.kayttooikeusrooli == "OPPILAITOS_HAKEUTUMINEN"
+  )
+  const kaikki = pipe(
+    hakeutumisKayttooikeusroolit,
+    A.map((kayttooikeus) =>
+      getOrganisaatiotHierarkiastaRecur([kayttooikeus.organisaatioHierarkia])
+    ),
+    A.flatten
+  )
+
+  return pipe(
+    kaikki,
+    A.filter((organisaatioHierarkia) =>
+      organisaatioHierarkia.organisaatiotyypit.includes("OPPILAITOS")
+    ),
+    A.sortBy([byLocalizedNimi])
+  )
+}
+
+const byLocalizedNimi = pipe(
+  string.Ord,
+  Ord.contramap(
+    (organisaatioHierarkia: OrganisaatioHierarkia) =>
+      `${getLocalized(organisaatioHierarkia.nimi)}`
+  )
+)
+
+const getOrganisaatiotHierarkiastaRecur = (
+  organisaatioHierarkiat: OrganisaatioHierarkia[]
+): OrganisaatioHierarkia[] => {
+  if (!organisaatioHierarkiat.length) {
+    return []
+  } else {
+    const lapset = pipe(
+      organisaatioHierarkiat,
+      A.map((organisaatioHierarkia) =>
+        getOrganisaatiotHierarkiastaRecur(organisaatioHierarkia.children)
+      ),
+      A.flatten,
+      A.map(removeChildren)
+    )
+
+    return organisaatioHierarkiat.map(removeChildren).concat(lapset)
+  }
+}
+
+const removeChildren = (
+  organisaatioHierarkia: OrganisaatioHierarkia
+): OrganisaatioHierarkia => ({
+  ...organisaatioHierarkia,
+  children: [],
+})
 
 const eqOrgs = Eq.fromEquals(
   (a: OrganisaatioHierarkia, b: OrganisaatioHierarkia) => a.oid === b.oid

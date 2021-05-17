@@ -12,11 +12,17 @@ import {
   urlIsEventually,
 } from "../integrationtests-env/browser/core"
 import { dataTableEventuallyEquals } from "../integrationtests-env/browser/datatable"
-import { dropdownSelect } from "../integrationtests-env/browser/forms"
+import {
+  dropdownSelect,
+  dropdownSelectContains,
+} from "../integrationtests-env/browser/forms"
 import { loginAs } from "../integrationtests-env/browser/reset"
 
 const selectOrganisaatio = (index: number) =>
   dropdownSelect("#organisaatiovalitsin", index)
+const selectOrganisaatioByNimi = (text: string) =>
+  dropdownSelectContains("#organisaatiovalitsin", text)
+
 const clickOppija = (index: number) =>
   clickElement(`.hakutilanne tr:nth-child(${index + 1}) td:first-child a`)
 
@@ -37,6 +43,13 @@ const jklNormaalikouluTableContent = `
   UseampiYsiluokkaSamassaKoulussa Valpas                  | 25.8.2005   | 9D | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   UseampiYsiluokkaSamassaKoulussa Valpas                  | 25.8.2005   | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
   Ysiluokka-valmis-keväällä-2021 Valpas                   | 19.6.2005   | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
+`
+
+const kulosaarenAlaAsteTableContent = `
+  Jkl-Esikoulu-Kulosaarelainen Valpas                     | 22.3.2004   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
+  Jkl-Lukio-Kulosaarelainen Valpas                        | 1.1.2004    | 9C | –          | Ei hakemusta         | –                           | –                         | doneJyväskylän normaalikoulu, Lukiokoulutus                                |
+  Jkl-Nivel-Kulosaarelainen Valpas                        | 1.1.2004    | 9C | –          | Ei hakemusta         | –                           | –                         | doneJyväskylän normaalikoulu, Perusopetuksen lisäopetus                    |
+  Kulosaarelainen Oppija                                  | 19.1.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
 `
 
 const hakutilannePath = createHakutilannePathWithoutOrg("/virkailija")
@@ -103,6 +116,23 @@ describe("Hakutilannenäkymä", () => {
     )
   })
 
+  it("Toimii koulutustoimijatason käyttäjällä", async () => {
+    await loginAs(hakutilannePath, "valpas-helsinki-peruskoulu")
+
+    await selectOrganisaatioByNimi("Kulosaaren ala-aste")
+    await urlIsEventually(pathToUrl(kulosaariHakutilannePath))
+    await textEventuallyEquals(
+      ".card__header",
+      "Hakeutumisvelvollisia oppijoita (4)"
+    )
+
+    await dataTableEventuallyEquals(
+      ".hakutilanne",
+      kulosaarenAlaAsteTableContent,
+      "|"
+    )
+  })
+
   it("Käyminen oppijakohtaisessa näkymässä ei hukkaa valittua organisaatiota", async () => {
     await loginAs(hakutilannePath, "valpas-useampi-peruskoulu")
 
@@ -132,6 +162,6 @@ describe("Hakutilannenäkymä", () => {
     )
 
     await clickElement(".oppijaview__backbutton a")
-    await urlIsEventually(pathToUrl(kulosaariHakutilannePath))
+    await urlIsEventually(pathToUrl(kulosaariHakutilannePath), 5000)
   })
 })

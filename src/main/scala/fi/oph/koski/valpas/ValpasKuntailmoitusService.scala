@@ -169,7 +169,7 @@ class ValpasKuntailmoitusService(
   private def haeOppilaitoksenOppijat(
     oppilaitosOid: ValpasOppilaitos.Oid, oppijaOidit: Seq[String]
   )(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
-    oppijaService.getOppijatLaajatTiedotYhteystiedoilla(Set(oppilaitosOid), oppijaOidit)
+    oppijaService.getOppijatLaajatTiedotYhteystiedoilla(oppilaitosOid, oppijaOidit)
   }
 
   private def haeYksittäisetOppijat(

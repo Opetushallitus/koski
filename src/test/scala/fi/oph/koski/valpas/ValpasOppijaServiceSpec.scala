@@ -12,7 +12,7 @@ import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 
 class ValpasOppijaServiceSpec extends ValpasTestBase {
   private val oppijaService = KoskiApplicationForTests.valpasOppijaService
-  private val oppilaitokset = List(MockOrganisaatiot.jyväskylänNormaalikoulu)
+  private val oppilaitos = MockOrganisaatiot.jyväskylänNormaalikoulu
 
   // Jyväskylän normaalikoulusta löytyvät näytettävät oppivelvolliset aakkosjärjestyksessä
   private val oppivelvolliset = List(
@@ -177,7 +177,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
   }
 
   "getOppijat palauttaa yhden oppilaitoksen oppijat oikein" in {
-    val oppijat = oppijaService.getOppijatSuppeatTiedot(oppilaitokset.toSet)(defaultSession).toOption.get.map(_.oppija)
+    val oppijat = oppijaService.getOppijatSuppeatTiedot(oppilaitos)(defaultSession).toOption.get.map(_.oppija)
 
     oppijat.map(_.henkilö.oid) shouldBe oppivelvolliset.map(_._1.oid)
 
@@ -190,45 +190,18 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
     }
   }
 
-  "getOppijat palauttaa useamman oppilaitoksen oppijat oikein käyttäjälle, jolla globaalit oikeudet" in {
-    val queryOids = (oppilaitokset ++ List(MockOrganisaatiot.aapajoenKoulu)).toSet
-    val oppijat = oppijaService.getOppijatSuppeatTiedot(queryOids)(session(ValpasMockUsers.valpasOphPääkäyttäjä)).toOption.get.map(_.oppija)
+  "getOppijat palauttaa yhden oppilaitoksen oppijat oikein käyttäjälle, jolla globaalit oikeudet" in {
+    val oppijat = oppijaService.getOppijatSuppeatTiedot(oppilaitos)(session(ValpasMockUsers.valpasOphPääkäyttäjä))
+      .toOption.get.map(_.oppija)
 
-    val expectedOppivelvolliset = (
-      oppivelvolliset.map({
-        case (ht: LaajatOppijaHenkilöTiedot, ed: List[ExpectedData]) => (
-          ht,
-          ed.map({
-            case ExpectedData(opiskeluoikeus, tarkastelupäivänTila, onValvottavaOpiskeluoikeus, onValvottavaOpiskeluoikeusGlobaalilleKäyttäjälle, onOikeutettuOppilaitos) =>
-              ExpectedData(opiskeluoikeus, tarkastelupäivänTila, onValvottavaOpiskeluoikeusGlobaalilleKäyttäjälle, onValvottavaOpiskeluoikeusGlobaalilleKäyttäjälle, onOikeutettuOppilaitos)
-          })
-        )
-      }) ++
-      List(
-        (
-          ValpasMockOppijat.aapajoenPeruskoulustaValmistunut,
-          List(
-            ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut", true, true, true)
-          )
-        ),
-        (
-          ValpasMockOppijat.luokalleJäänytYsiluokkalainenVaihtanutKoulua,
-          List(
-            ExpectedData(ValpasOpiskeluoikeusExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaJälkimmäinen, "voimassa", true, true, true),
-            ExpectedData(ValpasOpiskeluoikeusExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaEdellinen, "eronnut", false, false, true)
-          )
-        )
-      )
-      ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
+    oppijat.map(_.henkilö.oid) shouldBe oppivelvolliset.map(_._1.oid)
 
-    oppijat.map(_.henkilö.oid) shouldBe expectedOppivelvolliset.map(_._1.oid)
-
-    (oppijat zip expectedOppivelvolliset).foreach { actualAndExpected =>
-      val (oppija, (expectedOppija, expectedOppivelvollisuus)) = actualAndExpected
+    (oppijat zip oppivelvolliset).foreach { actualAndExpected =>
+      val (oppija, (expectedOppija, expectedData)) = actualAndExpected
       validateOppijaSuppeatTiedot(
         oppija,
         expectedOppija,
-        expectedOppivelvollisuus)
+        expectedData)
     }
   }
 
