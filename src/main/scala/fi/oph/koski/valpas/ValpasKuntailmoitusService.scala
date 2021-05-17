@@ -223,7 +223,8 @@ class ValpasKuntailmoitusService(
         turvakielto =
           oppija.oppija.henkilö.turvakielto,
         yhteystiedot =
-          järjestäYhteystiedot(uudetPohjatietojenYhteystiedot)
+          järjestäYhteystiedot(uudetPohjatietojenYhteystiedot),
+        hetu = oppija.oppija.henkilö.hetu,
       )
     })
 

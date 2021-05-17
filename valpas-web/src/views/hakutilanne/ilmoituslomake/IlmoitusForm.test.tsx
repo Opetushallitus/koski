@@ -3,18 +3,17 @@ import userEvent from "@testing-library/user-event"
 import React from "react"
 import { disableMissingTranslationWarnings } from "../../../i18n/i18n"
 import { KoodistoKoodiviite } from "../../../state/apitypes/koodistot"
-import { OppijaHakutilanteillaSuppeatTiedot } from "../../../state/apitypes/oppija"
-import { expectToMatchSnapshot } from "../../../utils/tests"
 import {
-  IlmoitusForm,
-  IlmoitusFormValues,
-  PrefilledIlmoitusFormValues,
-} from "./IlmoitusForm"
+  KuntailmoitusKunta,
+  OppijanPohjatiedot,
+} from "../../../state/apitypes/kuntailmoituspohjatiedot"
+import { OppijaHakutilanteillaSuppeatTiedot } from "../../../state/apitypes/oppija"
+import { IlmoitusForm, IlmoitusFormValues } from "./IlmoitusForm"
 
 describe("IlmoitusForm", () => {
   test("Renderöityy virheittä", () => {
     disableMissingTranslationWarnings()
-    expectToMatchSnapshot(createForm())
+    createForm()
   })
 
   test("Pakollisten kenttien täyttäminen enabloi submit-nappulan", () => {
@@ -62,14 +61,14 @@ describe("IlmoitusForm", () => {
 
     expect(callback).toHaveBeenCalledTimes(1)
     expect(callback).toHaveBeenLastCalledWith({
-      asuinkunta: "272",
+      asuinkunta: "oid.jyvaskyla",
       hakenutOpiskelemaanYhteyshakujenUlkopuolella: true,
-      katuosoite: "Testitie 5",
+      lähiosoite: "Testitie 5",
       maa: "752",
       postinumero: "00010",
       postitoimipaikka: "Helsinki",
       puhelinnumero: "0401234567",
-      sähköposti: "testi@gmail.com",
+      email: "testi@gmail.com",
       yhteydenottokieli: "SV",
     })
   })
@@ -82,26 +81,44 @@ describe("IlmoitusForm", () => {
     userEvent.click(getSubmitButton(form))
 
     expect(callback).toHaveBeenLastCalledWith({
+      asuinkunta: "oid.jyvaskyla",
+      email: "",
       hakenutOpiskelemaanYhteyshakujenUlkopuolella: false,
-      maa: "246",
+      lähiosoite: "Jytäraitti 83",
+      maa: undefined,
+      postinumero: "12345",
+      postitoimipaikka: "Jyväskylä",
       puhelinnumero: "",
-      sähköposti: "",
       yhteydenottokieli: "FI",
-      ...mockPrefilledYhteishakuValues.values,
     })
+  })
+
+  test("Näytä varoitus, jos oppijalla on turvakielto", () => {
+    const formEiTurvakieltoa = createForm(undefined, { turvakielto: false })
+    expect(
+      formEiTurvakieltoa.queryByText("ilmoituslomake__turvakielto_ohje")
+    ).toBeNull()
+
+    const formTurvakielto = createForm(undefined, { turvakielto: true })
+    expect(
+      formTurvakielto.queryByText("ilmoituslomake__turvakielto_ohje")
+    ).not.toBeNull()
   })
 })
 
-const createForm = (onSubmit?: (values: IlmoitusFormValues) => void) =>
+const createForm = (
+  onSubmit?: (values: IlmoitusFormValues) => void,
+  oppijanPohjatiedotPatch?: Partial<OppijanPohjatiedot>
+) =>
   render(
     <IlmoitusForm
       formIndex={0}
       numberOfForms={2}
       oppija={mockOppija}
+      pohjatiedot={{ ...mockOppijanPohjatiedot, ...oppijanPohjatiedotPatch }}
       kunnat={mockAsuinkunnat}
       maat={mockMaat}
       kielet={mockYhteydenottokielet}
-      prefilledValues={[mockPrefilledYhteishakuValues, mockPrefilledDvvValues]}
       onSubmit={onSubmit || (() => {})}
     />
   )
@@ -121,7 +138,10 @@ const fillTextField = (form: RenderResult, labelText: string, text: string) => {
 }
 
 const toggleCheckbox = (form: RenderResult, labelText: string) => {
-  const c = form.getByText(labelText).getElementsByTagName("input").item(0)
+  const c = form
+    .getByText(labelText)
+    .parentElement?.getElementsByTagName("input")
+    .item(0)
   userEvent.click(c!!)
 }
 
@@ -190,11 +210,35 @@ const mockKoodisto = (
     },
   }))
 
-const mockAsuinkunnat = mockKoodisto("kunta", {
-  "091": "Helsinki",
-  "179": "Jyväskylä",
-  "272": "Kokkola",
-})
+const mockAsuinkunnat: KuntailmoitusKunta[] = [
+  {
+    oid: "oid.helsinki",
+    nimi: { fi: "Helsingin kaupunki" },
+    kotipaikka: {
+      koodistoUri: "kunta",
+      koodiarvo: "123",
+      nimi: { fi: "Helsinki" },
+    },
+  },
+  {
+    oid: "oid.jyvaskyla",
+    nimi: { fi: "Jyväskylän kaupunki" },
+    kotipaikka: {
+      koodistoUri: "kunta",
+      koodiarvo: "321",
+      nimi: { fi: "Jyväskylä" },
+    },
+  },
+  {
+    oid: "oid.kokkola",
+    nimi: { fi: "Kokkolan kaupunki" },
+    kotipaikka: {
+      koodistoUri: "kunta",
+      koodiarvo: "222",
+      nimi: { fi: "Kokkola" },
+    },
+  },
+]
 
 const mockMaat = mockKoodisto("maatjavaltiot2", {
   "004": "Afganistan",
@@ -206,26 +250,49 @@ const mockMaat = mockKoodisto("maatjavaltiot2", {
 const mockYhteydenottokielet = mockKoodisto("kielivalikoima", {
   FI: "suomi",
   SV: "ruotsi",
-  EN: "englanti",
-  AR: "arabia",
 })
 
-const mockPrefilledDvvValues: PrefilledIlmoitusFormValues = {
-  label: "DVV yhteystiedot",
-  values: {
-    asuinkunta: "272",
-    postinumero: "67100",
-    postitoimipaikka: "Kokkola",
-    katuosoite: "Esimerkkikatu 123",
-  },
-}
-
-const mockPrefilledYhteishakuValues: PrefilledIlmoitusFormValues = {
-  label: "Yhteishaku kevät 2021",
-  values: {
-    asuinkunta: "179",
-    postinumero: "12345",
-    postitoimipaikka: "Jyväskylä",
-    katuosoite: "Jytäraitti 83",
-  },
+const mockOppijanPohjatiedot: OppijanPohjatiedot = {
+  oppijaOid: "123",
+  mahdollisetTekijäOrganisaatiot: [],
+  yhteydenottokieli: { koodistoUri: "kieli", koodiarvo: "FI" },
+  turvakielto: false,
+  yhteystiedot: [
+    {
+      yhteystietojenAlkuperä: {
+        hakemusOid: "13232",
+        hakuNimi: { fi: "Yhteishaku kevät 2021" },
+        hakuOid: "2321",
+        haunAlkamispaivämäärä: "2021-03-01",
+      },
+      yhteystiedot: {
+        postinumero: "12345",
+        postitoimipaikka: "Jyväskylä",
+        lähiosoite: "Jytäraitti 83",
+      },
+      kunta: mockAsuinkunnat[1],
+    },
+    {
+      yhteystietojenAlkuperä: {
+        alkuperä: {
+          koodiarvo: "alkupera1",
+          nimi: {
+            fi: "VTJ",
+          },
+          koodistoUri: "yhteystietojenalkupera",
+          koodistoVersio: 1,
+        },
+        tyyppi: {
+          koodistoUri: "yhteystietotyypit",
+          koodiarvo: "",
+        },
+      },
+      yhteystiedot: {
+        postinumero: "67100",
+        postitoimipaikka: "KOKKOLA",
+        lähiosoite: "Esimerkkikatu 123",
+      },
+      kunta: mockAsuinkunnat[2],
+    },
+  ],
 }

@@ -29,10 +29,15 @@ export type AlkuperäRekisteristä = {
   tyyppi: KoodistoKoodiviite<"yhteystietotyypit">
 }
 
-export const isIlmoitettu = (
+export const isHakemukselta = (
   yhteystiedot: Yhteystiedot<YhteystietojenAlkuperä>
-): yhteystiedot is Yhteystiedot<AlkuperäHakemukselta> => {
-  const a = yhteystiedot.alkuperä as AlkuperäHakemukselta
+): yhteystiedot is Yhteystiedot<AlkuperäHakemukselta> =>
+  isAlkuperäHakemukselta(yhteystiedot.alkuperä)
+
+export const isAlkuperäHakemukselta = (
+  alkuperä: YhteystietojenAlkuperä
+): alkuperä is AlkuperäHakemukselta => {
+  const a = alkuperä as AlkuperäHakemukselta
   return (
     a.hakuNimi !== undefined &&
     a.haunAlkamispaivämäärä !== undefined &&
@@ -41,9 +46,14 @@ export const isIlmoitettu = (
   )
 }
 
-export const isVirallinen = (
+export const isRekisteristä = (
   yhteystiedot: Yhteystiedot<YhteystietojenAlkuperä>
-): yhteystiedot is Yhteystiedot<AlkuperäRekisteristä> => {
-  const a = yhteystiedot.alkuperä as AlkuperäRekisteristä
+): yhteystiedot is Yhteystiedot<AlkuperäRekisteristä> =>
+  isAlkuperäRekisteristä(yhteystiedot.alkuperä)
+
+export const isAlkuperäRekisteristä = (
+  alkuperä: YhteystietojenAlkuperä
+): alkuperä is AlkuperäRekisteristä => {
+  const a = alkuperä as AlkuperäRekisteristä
   return a.alkuperä !== undefined && a.tyyppi !== undefined
 }
