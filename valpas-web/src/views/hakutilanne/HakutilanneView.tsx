@@ -190,8 +190,10 @@ const getOrganisaatiot = (
 
   return pipe(
     kaikki,
-    A.filter((organisaatioHierarkia) =>
-      organisaatioHierarkia.organisaatiotyypit.includes("OPPILAITOS")
+    A.filter(
+      (organisaatioHierarkia) =>
+        organisaatioHierarkia.organisaatiotyypit.includes("OPPILAITOS") &&
+        organisaatioHierarkia.aktiivinen
     ),
     A.sortBy([byLocalizedNimi])
   )
