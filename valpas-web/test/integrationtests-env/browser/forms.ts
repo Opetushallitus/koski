@@ -1,6 +1,6 @@
 import { Key } from "selenium-webdriver"
 import { attributeEventuallyEquals } from "./content"
-import { $ } from "./core"
+import { $, $$ } from "./core"
 import { driver } from "./driver"
 import { eventually } from "./utils"
 
@@ -32,4 +32,19 @@ export const dropdownSelect = async (selector: string, index: number) => {
   const optionSelector = `${selector} > option[value='${index}']`
   const option = await $(optionSelector)
   option.click()
+}
+
+export const dropdownSelectContains = async (
+  selector: string,
+  text: string
+) => {
+  const allOptionsSelector = `${selector} > option`
+  const options = await $$(allOptionsSelector)
+  for (const option of options) {
+    const optionText = await option.getText()
+    if (optionText.includes(text)) {
+      await option.click()
+      break
+    }
+  }
 }

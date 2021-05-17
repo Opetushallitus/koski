@@ -52,14 +52,40 @@ describe("Etusivun väliaikainen näkymä", () => {
     )
   })
 
-  it("Pääkäyttäjä ohjautuu hakeutumisvelvollisuusvalvonnan etusivulle", async () => {
-    await loginAs("/virkailija", "valpas-pää", "valpas-pää")
+  it("Hakeutumisvelvollisuuden valvonnallinen koulutustoimijatason käyttäjä ohjautuu hakeutumisvelvollisuusvalvonnan etusivulle", async () => {
+    await loginAs(
+      "/virkailija",
+      "valpas-helsinki-peruskoulu",
+      "valpas-helsinki-peruskoulu"
+    )
 
     await textEventuallyEquals(
       ".card__header",
       "Hakeutumisvelvollisia oppijoita (0)",
       5000
     )
+  })
+
+  // TODO: Testin pitäisi olla pelkästään "Pääkäyttäjä ohjautuu hakeutumisvelvollisuusvalvonnan etusivulle"
+  // Toistaiseksi pääkäyttäjälle ei osata kuitenkaan palauttaa backendistä listaa kaikista oppilaitoksista, minkä vuoksi käyttöliittymä
+  // tulkitsee, ettei hänellä niitä ole. Koko organisaatiohierarkian palauttaminen backendistä olisi helppo tehdä, mutta koska nykyinen
+  // toteutus palauttaa koko organisaatiohierarkian detaljitietoineen vieläpä monta kertaa, niin datan määrä kasvaisi pääkäyttäjäjällä
+  // todella isoksi. Pitäisi korjata tekemällä tarvittavat filtteröinnit organisaatiohierarkiaan jo backendissä, ja palauttaa vain
+  // käyttöliittymän tarvitsemat kentät.
+  it("Pääkäyttäjä ohjautuu hakutumisvelvollisuusvalvonnan etusivulle ja hänelle kerrotaan (virheellisesti), että hänellä ei olisi oikeuksia oppilaitoksiin", async () => {
+    await loginAs("/virkailija", "valpas-pää", "valpas-pää")
+
+    await textEventuallyEquals(
+      ".error-message",
+      "Sinulla ei ole oikeuksia nähdä yhdenkään oppilaitoksen tietoja",
+      5000
+    )
+
+    // await textEventuallyEquals(
+    //   ".card__header",
+    //   "Hakeutumisvelvollisia oppijoita (0)",
+    //   5000
+    // )
   })
 
   it("Ei näytä käyttäjän Koski-käyttöoikeuksia", async () => {
