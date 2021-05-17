@@ -17,7 +17,9 @@ describe('Ammatillisten koulutusten arviointiasteikko', function () {
       it('Näytetään käyttöliittymässä', function () {
         verifyArviointiasteikko(
           'Tutkinnon osien arviointiasteikko :\n' +
-          '1-5, Hylätty tai Hyväksytty'
+          '1-5, Hylätty tai Hyväksytty\n\n' +
+          'Tutkinnon osien arviointiasteikko :\n' +
+          '1-3, Hylätty tai Hyväksytty'
         )
       })
     })

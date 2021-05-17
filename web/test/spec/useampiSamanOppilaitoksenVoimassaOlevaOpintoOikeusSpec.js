@@ -72,7 +72,7 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
       addOppija.submitModal
     )
     it('on sallittu', function() {
-      expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienMäärä()).to.equal(3)
+      expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienMäärä()).to.equal(4)
     })
   })
 })

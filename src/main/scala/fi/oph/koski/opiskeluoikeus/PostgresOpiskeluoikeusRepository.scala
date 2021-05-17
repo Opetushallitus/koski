@@ -176,7 +176,12 @@ class PostgresOpiskeluoikeusRepository(
       case i:OppijaOidOrganisaatioJaTyyppi =>
         findOpiskeluoikeudetWithSlaves(i.oppijaOid).map(_.filter { row =>
           val opiskeluoikeus = row.toOpiskeluoikeus
-          OppijaOidOrganisaatioJaTyyppi(i.oppijaOid, opiskeluoikeus.getOppilaitos.oid, opiskeluoikeus.koulutustoimija.map(_.oid), opiskeluoikeus.tyyppi.koodiarvo, opiskeluoikeus.lähdejärjestelmänId) == identifier
+          OppijaOidOrganisaatioJaTyyppi(i.oppijaOid,
+            opiskeluoikeus.getOppilaitos.oid,
+            opiskeluoikeus.koulutustoimija.map(_.oid),
+            opiskeluoikeus.tyyppi.koodiarvo,
+            opiskeluoikeus.suoritukset.headOption.map(_.koulutusmoduuli.tunniste.koodiarvo),
+            opiskeluoikeus.lähdejärjestelmänId) == identifier
         }).map(_.toList).map(Right(_))
     }
   }
