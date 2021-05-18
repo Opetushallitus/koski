@@ -4,7 +4,7 @@ import { YhteystietojenAlkuperä } from "./yhteystiedot"
 
 export type KuntailmoitusPohjatiedot = {
   tekijäHenkilö?: KuntailmoituksenTekijäHenkilö
-  mahdollisetTekijäOrganisaatiot: OrganisaatioWithOid[]
+  mahdollisetTekijäorganisaatiot: OrganisaatioWithOid[]
   oppijat: OppijanPohjatiedot[]
   kunnat: KuntailmoitusKunta[]
   maat: Maa[]
@@ -26,11 +26,16 @@ export type KuntailmoitusKunta = OrganisaatioWithOid & {
 
 export type OppijanPohjatiedot = {
   oppijaOid: string
-  mahdollisetTekijäOrganisaatiot: OrganisaatioWithOid[]
+  mahdollisetTekijäorganisaatiot: TekijäorganisaationPohjatiedot[]
   yhteydenottokieli?: Kieli
   turvakielto: Boolean
   yhteystiedot: PohjatietoYhteystieto[]
   hetu?: string
+}
+
+export type TekijäorganisaationPohjatiedot = {
+  organisaatio: OrganisaatioWithOid
+  hakenutMuualle?: Boolean
 }
 
 export type PohjatietoYhteystieto = {

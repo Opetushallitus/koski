@@ -51,7 +51,7 @@ class ValpasKuntailmoitusService(
       .map(täydennäMailla)
       .map(täydennäYhteydenottokielillä)
       .flatMap(täydennäOppijoidenTiedoilla(pohjatiedotInput))
-      .map(täydennäTekijäOrganisaatioilla)
+      .map(täydennäTekijäorganisaatioilla)
   }
 
   private def haeDirectoryKäyttäjä(implicit session: ValpasSession): Either[HttpStatus, ValpasKuntailmoituksenTekijäHenkilö] =
@@ -216,8 +216,8 @@ class ValpasKuntailmoitusService(
       ValpasOppijanPohjatiedot(
         oppijaOid =
           oppija.oppija.henkilö.oid,
-        mahdollisetTekijäOrganisaatiot =
-          mahdollisetTekijäOrganisaatiot(tekijäOrganisaatio, oppija.oppija.oikeutetutOppilaitokset),
+        mahdollisetTekijäorganisaatiot =
+          mahdollisetTekijäorganisaatiot(tekijäOrganisaatio, oppija.oppija.oikeutetutOppilaitokset),
         yhteydenottokieli =
           yhteydenottokieli(oppija.oppija.henkilö.äidinkieli),
         turvakielto =
@@ -303,17 +303,17 @@ class ValpasKuntailmoitusService(
     kunta
   }
 
-  private def mahdollisetTekijäOrganisaatiot(
+  private def mahdollisetTekijäorganisaatiot(
     tekijäOrganisaatio: Option[OrganisaatioWithOid],
     oppijanOppilaitokset: Set[ValpasOppilaitos.Oid]
-  )(implicit session: ValpasSession): Seq[OrganisaatioWithOid] = {
+  )(implicit session: ValpasSession): Seq[ValpasTekijäorganisaationPohjatiedot] = {
     tekijäOrganisaatio match {
       // Jos organisaatio on annettu, ei palauteta toistaiseksi mitään muita vaihtoehtoja,
       // vaikka jollekin yksittäiselle oppijalle voisikin lähettää ilmoituksen muusta oppilaitoksesta käsin.
-      case Some(o) if accessResolver.filterByOikeudet(Set(o.oid)) == Set(o.oid) => Seq(o)
+      case Some(o) if accessResolver.filterByOikeudet(Set(o.oid)) == Set(o.oid) => Seq(ValpasTekijäorganisaationPohjatiedot(o, None)) // TODO: listää hakenutMuualle
       case Some(o) => Seq.empty
       case _ => accessResolver.filterByOikeudet(oppijanOppilaitokset)
-        .toSeq.map(oid => OidOrganisaatio(oid = oid))
+        .toSeq.map(oid => ValpasTekijäorganisaationPohjatiedot(OidOrganisaatio(oid = oid), None)) // TODO: lisää hakenutMuualle
     }
   }
 
@@ -334,16 +334,16 @@ class ValpasKuntailmoitusService(
     hakemusYhteystiedot ++ oppijanumerorekisterinYhteystiedot ++ muutYhteystiedot
   }
 
-  private def täydennäTekijäOrganisaatioilla(
+  private def täydennäTekijäorganisaatioilla(
     pohjatiedot: ValpasKuntailmoitusPohjatiedot
   )(implicit session: ValpasSession): ValpasKuntailmoitusPohjatiedot = {
-    val kaikissaOppijoissaEsiintyvätMahdollisetTekijäOrganisaatiot =
-      pohjatiedot.oppijat.map(_.mahdollisetTekijäOrganisaatiot).map(_.toSet)
+    val kaikissaOppijoissaEsiintyvätMahdollisetTekijäorganisaatiot =
+      pohjatiedot.oppijat.map(_.mahdollisetTekijäorganisaatiot.map(_.organisaatio)).map(_.toSet)
         .reduceLeft((a, b) => a.intersect(b))
         .toSeq
 
     pohjatiedot.copy(
-      mahdollisetTekijäOrganisaatiot = kaikissaOppijoissaEsiintyvätMahdollisetTekijäOrganisaatiot
+      mahdollisetTekijäorganisaatiot = kaikissaOppijoissaEsiintyvätMahdollisetTekijäorganisaatiot
     )
   }
 }

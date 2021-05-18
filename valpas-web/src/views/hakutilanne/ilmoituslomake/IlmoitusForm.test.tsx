@@ -254,7 +254,7 @@ const mockYhteydenottokielet = mockKoodisto("kielivalikoima", {
 
 const mockOppijanPohjatiedot: OppijanPohjatiedot = {
   oppijaOid: "123",
-  mahdollisetTekijäOrganisaatiot: [],
+  mahdollisetTekijäorganisaatiot: [],
   yhteydenottokieli: { koodistoUri: "kieli", koodiarvo: "FI" },
   turvakielto: false,
   yhteystiedot: [

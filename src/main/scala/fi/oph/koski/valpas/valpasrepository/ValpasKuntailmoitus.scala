@@ -98,7 +98,7 @@ case class ValpasKuntailmoituksenOppijanYhteystiedot(
 case class ValpasKuntailmoitusPohjatiedotInput(
   /**
    * Option, koska detaljinäkymästä ilmoitusta tehtäessä tekijäroganisaatiota ei välttämättä tiedetä. Paluuarvossa
-   * palautetaan sen vuoksi mahdollisetTekijäOrganisaatiot, jotka voi tarjota käyttäjälle valitsimessa.
+   * palautetaan sen vuoksi mahdollisetTekijäorganisaatiot, jotka voi tarjota käyttäjälle valitsimessa.
    */
   tekijäOrganisaatio: Option[OrganisaatioWithOid],
   oppijaOidit: List[String]
@@ -106,7 +106,7 @@ case class ValpasKuntailmoitusPohjatiedotInput(
 
 case class ValpasKuntailmoitusPohjatiedot(
   tekijäHenkilö: Option[ValpasKuntailmoituksenTekijäHenkilö] = None,
-  mahdollisetTekijäOrganisaatiot: Seq[OrganisaatioWithOid] = Seq.empty,
+  mahdollisetTekijäorganisaatiot: Seq[OrganisaatioWithOid] = Seq.empty,
   oppijat: Seq[ValpasOppijanPohjatiedot] = Seq.empty,
   kunnat: Seq[OrganisaatioWithOid] = Seq.empty,
   @KoodistoUri("maatjavaltiot2")
@@ -117,7 +117,7 @@ case class ValpasKuntailmoitusPohjatiedot(
 
 case class ValpasOppijanPohjatiedot(
   oppijaOid: String,
-  mahdollisetTekijäOrganisaatiot: Seq[OrganisaatioWithOid],
+  mahdollisetTekijäorganisaatiot: Seq[ValpasTekijäorganisaationPohjatiedot],
   @KoodistoUri("kieli")
   @KoodistoKoodiarvo("FI")
   @KoodistoKoodiarvo("SV")
@@ -125,6 +125,11 @@ case class ValpasOppijanPohjatiedot(
   turvakielto: Boolean,
   yhteystiedot: Seq[ValpasPohjatietoYhteystieto],
   hetu: Option[String],
+)
+
+case class ValpasTekijäorganisaationPohjatiedot(
+  organisaatio: OrganisaatioWithOid,
+  hakenutMuualle: Option[Boolean]
 )
 
 case class ValpasPohjatietoYhteystieto(
