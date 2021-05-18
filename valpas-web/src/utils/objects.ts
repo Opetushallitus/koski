@@ -12,3 +12,13 @@ export const fromEntries = <T>(entries: [string, T][]): Record<string, T> =>
 
 export const isEmptyObject = <T extends object>(obj: T): boolean =>
   Object.entries(obj).length === 0
+
+export const removeFalsyValues = <T extends object>(obj: T): Partial<T> => {
+  const partial: Partial<T> = {}
+  for (const key in obj) {
+    if (obj[key]) {
+      partial[key] = obj[key]
+    }
+  }
+  return partial
+}

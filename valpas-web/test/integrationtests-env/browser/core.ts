@@ -54,3 +54,5 @@ export const $$ = async (selector: string, timeout = 200) => {
     throw new Error(`Could not find elements by "${selector}"`)
   }
 }
+
+export const testIdIs = (testId: string) => By.css(`[data-testid="${testId}"]`)

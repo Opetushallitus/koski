@@ -24,6 +24,13 @@ describe("IlmoitusForm", () => {
     expectSubmitButtonIsEnabled(form, false)
     selectOption(form, "ilmoituslomake__asuinkunta *", 1)
     expectSubmitButtonIsEnabled(form, true)
+
+    fillTextField(form, "ilmoituslomake__postinumero", "00150")
+    fillTextField(form, "ilmoituslomake__postitoimipaikka", "Helsinki")
+    fillTextField(form, "ilmoituslomake__katuosoite", "Katu 5")
+    fillTextField(form, "ilmoituslomake__puhelinnumero", "04012345678")
+    fillTextField(form, "ilmoituslomake__sähköposti", "valpas@gmail.com")
+    expectSubmitButtonIsEnabled(form, true)
   })
 
   test("Fokuksen siirtyminen pois pakollisesta täyttämättömästä kentästä tuo esille virheilmoituksen", () => {
@@ -85,13 +92,13 @@ describe("IlmoitusForm", () => {
 
     expect(callback).toHaveBeenLastCalledWith({
       asuinkunta: "oid.jyvaskyla",
-      email: "",
+      email: "osoite@email.com",
       hakenutOpiskelemaanYhteyshakujenUlkopuolella: false,
       lähiosoite: "Jytäraitti 83",
       maa: undefined,
       postinumero: "12345",
       postitoimipaikka: "Jyväskylä",
-      puhelinnumero: "",
+      puhelinnumero: "04012345678",
       yhteydenottokieli: "FI",
     })
   })
@@ -286,6 +293,8 @@ const mockOppijanPohjatiedot: OppijanPohjatiedot = {
         postinumero: "12345",
         postitoimipaikka: "Jyväskylä",
         lähiosoite: "Jytäraitti 83",
+        email: "osoite@email.com",
+        puhelinnumero: "04012345678",
       },
       kunta: mockAsuinkunnat[1],
     },

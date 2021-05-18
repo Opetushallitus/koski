@@ -25,6 +25,7 @@ export type DropdownProps<T> = {
   containerClassName?: string
   required?: boolean
   sort?: Ord.Ord<DropdownOption<T>>
+  testId?: string
 }
 
 export type DropdownOption<T> = {
@@ -56,6 +57,7 @@ export const Dropdown = <T,>(props: DropdownProps<T>) => {
           props.onChange(sortedOptions[parseInt(event.target.value, 10)]?.value)
         }
         onBlur={props.onBlur}
+        data-testid={props.testId}
       >
         {showEmptyValue ? <option>-</option> : null}
         {sortedOptions.map((option, index) => (

@@ -1,12 +1,16 @@
 import * as E from "fp-ts/lib/Either"
 import { pipe } from "fp-ts/lib/function"
+import { parseErrors } from "./apiErrors"
 
 export type ApiSuccess<T> = {
   status: number
   data: T
 }
 
-export type ApiErrorKey = "invalid.json" | "unauthorized.loginFail"
+export type ApiErrorKey =
+  | "invalid.json"
+  | "unauthorized.loginFail"
+  | "badRequest.validation.jsonSchema"
 
 export type ApiError = {
   key?: ApiErrorKey
@@ -35,7 +39,7 @@ const apiFetch = async <T>(
             data,
           })
         : E.left({
-            errors: data,
+            errors: parseErrors(data),
             status: response.status,
           })
     } catch (err) {
@@ -51,7 +55,7 @@ const apiFetch = async <T>(
     }
   } catch (err) {
     return E.left({
-      errors: [{ message: err.message }],
+      errors: parseErrors(err),
     })
   }
 }

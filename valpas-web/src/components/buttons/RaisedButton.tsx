@@ -15,7 +15,7 @@ export type RaisedButtonProps = React.HTMLAttributes<HTMLButtonElement> & {
 export type ButtonHierarchy = "primary" | "secondary"
 
 export const RaisedButton = (props: RaisedButtonProps) => {
-  const { children, disabled, onClick, ...rest } = props
+  const { children, disabled, onClick, className, ...rest } = props
   return (
     <button
       className={raisedButtonClassName(props)}

@@ -26,7 +26,7 @@ const selectOrganisaatioByNimi = (text: string) =>
 const clickOppija = (index: number) =>
   clickElement(`.hakutilanne tr:nth-child(${index + 1}) td:first-child a`)
 
-const jklNormaalikouluTableContent = `
+export const jklNormaalikouluTableContent = `
   Epäonninen Valpas                                       | 30.10.2005  | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Eroaja-myöhemmin Valpas                                 | 29.9.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Kahdella-oppija-oidilla Valpas                          | 15.2.2005   | 9C | 30.5.2021  | Hakenut open_in_new  | Varasija: Ressun lukio      | –                         | doneJyväskylän normaalikoulu, Lukiokoulutus                                |
@@ -52,7 +52,7 @@ const kulosaarenAlaAsteTableContent = `
   Kulosaarelainen Oppija                                  | 19.1.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
 `
 
-const hakutilannePath = createHakutilannePathWithoutOrg("/virkailija")
+export const hakutilannePath = createHakutilannePathWithoutOrg("/virkailija")
 const jklHakutilannePath = createHakutilannePathWithOrg("/virkailija", {
   organisaatioOid: "1.2.246.562.10.14613773812",
 })
