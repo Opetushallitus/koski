@@ -129,15 +129,18 @@ object ExamplesLukioonValmistavaKoulutus {
     Example("lukioon valmistava koulutus, Lukion 2019-opsilla", "Oppija on suorittanut lukioon valmistavan koulutuksen (LUVA). Mukana lukion 2019 opsin mukaisia osasuorituksia.", luvaTodistus2019, 200)
   )
 
-  private def luvaKurssinSuoritus(kurssi: LukioonValmistavanKoulutuksenKurssi) = LukioonValmistavanKurssinSuoritus(
+  def luvaKurssinSuoritus(kurssi: LukioonValmistavanKoulutuksenKurssi) = LukioonValmistavanKurssinSuoritus(
     koulutusmoduuli = kurssi,
     arviointi = sanallinenArviointi("S")
   )
 
-  private def valtakunnallinenLuvaKurssi(kurssi: String) =
+  def valtakunnallinenLuvaKurssi(kurssi: String) =
     ValtakunnallinenLukioonValmistavanKoulutuksenKurssi(Koodistokoodiviite(koodistoUri = "lukioonvalmistavankoulutuksenkurssit2015", koodiarvo = kurssi), Some(laajuus(1.0f)))
 
-  private def paikallinenLuvaKurssi(koodi: String, nimi: String, kuvaus: String) =
+  def valtakunnallinenLuvaKurssi2019(kurssi: String) =
+    ValtakunnallinenLukioonValmistavanKoulutuksenKurssi(Koodistokoodiviite(koodistoUri = "lukioonvalmistavankoulutuksenkurssit2019", koodiarvo = kurssi), Some(laajuus(1.0f)))
+
+  def paikallinenLuvaKurssi(koodi: String, nimi: String, kuvaus: String) =
     PaikallinenLukioonValmistavanKoulutuksenKurssi(PaikallinenKoodi(koodi, LocalizedString.finnish(nimi)), Some(laajuus(1.0f)), LocalizedString.finnish(kuvaus))
 
   def laajuus2019(arvo: Double): LaajuusOpintopisteissä = LaajuusOpintopisteissä(arvo = arvo, yksikkö = laajuusOpintopisteissä)
