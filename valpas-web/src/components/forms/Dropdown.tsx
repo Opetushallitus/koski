@@ -51,7 +51,7 @@ export const Dropdown = <T,>(props: DropdownProps<T>) => {
       <select
         id={props.selectorId}
         className={b("input", { error: Boolean(props.error) })}
-        value={props.options.findIndex((opt) => opt.value === props.value)}
+        value={sortedOptions.findIndex((opt) => opt.value === props.value)}
         onChange={(event) =>
           props.onChange(sortedOptions[parseInt(event.target.value, 10)]?.value)
         }
