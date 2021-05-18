@@ -169,7 +169,7 @@ class ValpasKuntailmoitusService(
   private def haeOppilaitoksenOppijat(
     oppilaitosOid: ValpasOppilaitos.Oid, oppijaOidit: Seq[String]
   )(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
-    oppijaService.getOppijatLaajatTiedotYhteystiedoilla(oppilaitosOid, oppijaOidit)
+    oppijaService.getOppijatLaajatTiedotYhteystiedoillaJaLisätiedoilla(oppilaitosOid, oppijaOidit)
   }
 
   private def haeYksittäisetOppijat(
@@ -178,7 +178,7 @@ class ValpasKuntailmoitusService(
     // Tämä hakeminen aiheuttaa monta SQL-queryä. Tätä voisi optimoida, mutta käytännössä tähän metodiin ei toistaiseksi
     // koskaan päädytä kuin yhden oppijan näkymästä, koska listanäkymässä ilmoituksia tehtäessä tekijän
     // oppilaitos on aina tiedossa.
-    HttpStatus.foldEithers(oppijaOidit.map(oppijaOid => oppijaService.getOppijaHakutilanteillaLaajatTiedot(oppijaOid)).toSeq)
+    HttpStatus.foldEithers(oppijaOidit.map(oppijaOid => oppijaService.getOppijaHakutilanteillaLaajatTiedotJaLisätiedot(oppijaOid)).toSeq)
   }
 
   private def tarkistaOikeudetJaJärjestäOppijat(pohjatiedotInput: ValpasKuntailmoitusPohjatiedotInput)(

@@ -21,6 +21,7 @@ case class OppijaHakutilanteillaLaajatTiedot(
   hakutilanneError: Option[String],
   yhteystiedot: Seq[ValpasYhteystiedot],
   kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot],
+  lisätiedot: Seq[OpiskeluoikeusLisätiedot]
 ) {
   def validate(koodistoviitepalvelu: KoodistoViitePalvelu): OppijaHakutilanteillaLaajatTiedot =
     this.copy(hakutilanteet = hakutilanteet.map(_.validate(koodistoviitepalvelu)))
@@ -34,9 +35,20 @@ object OppijaHakutilanteillaLaajatTiedot {
       // TODO: Pitäisikö virheet mankeloida jotenkin eikä palauttaa sellaisenaan fronttiin?
       hakutilanneError = haut.left.toOption.flatMap(_.errorString),
       yhteystiedot = haut.map(uusimmatIlmoitetutYhteystiedot(yhteystietoryhmänNimi)).getOrElse(Seq.empty),
-      kuntailmoitukset = Seq.empty
+      kuntailmoitukset = Seq.empty,
+      lisätiedot = Seq.empty
     )
   }
+
+  def apply(oppija: OppijaHakutilanteillaLaajatTiedot, lisätiedot: Seq[OpiskeluoikeusLisätiedotRow]): OppijaHakutilanteillaLaajatTiedot =
+    OppijaHakutilanteillaLaajatTiedot(
+      oppija = oppija.oppija,
+      hakutilanteet = oppija.hakutilanteet,
+      hakutilanneError = oppija.hakutilanneError,
+      yhteystiedot = oppija.yhteystiedot,
+      kuntailmoitukset = oppija.kuntailmoitukset,
+      lisätiedot = lisätiedot.map(OpiskeluoikeusLisätiedot.apply)
+    )
 
   private def uusimmatIlmoitetutYhteystiedot(yhteystietoryhmänNimi: LocalizedString)(hakukoosteet: Seq[Hakukooste]): Seq[ValpasYhteystiedot] =
     hakukoosteet
@@ -55,6 +67,17 @@ case class OpiskeluoikeusLisätiedot(
   muuHaku: Boolean
 )
 
+object OpiskeluoikeusLisätiedot {
+  def apply(lisätiedotRow: OpiskeluoikeusLisätiedotRow): OpiskeluoikeusLisätiedot = {
+    OpiskeluoikeusLisätiedot(
+      oppijaOid = lisätiedotRow.oppijaOid,
+      opiskeluoikeusOid = lisätiedotRow.opiskeluoikeusOid,
+      oppilaitosOid = lisätiedotRow.oppilaitosOid,
+      muuHaku = lisätiedotRow.muuHaku
+    )
+  }
+}
+
 case class OppijaHakutilanteillaSuppeatTiedot(
   oppija: ValpasOppijaSuppeatTiedot,
   hakutilanteet: Seq[ValpasHakutilanneSuppeatTiedot],
@@ -71,12 +94,7 @@ object OppijaHakutilanteillaSuppeatTiedot {
       hakutilanteet = laajatTiedot.hakutilanteet.map(ValpasHakutilanneSuppeatTiedot.apply),
       hakutilanneError = laajatTiedot.hakutilanneError,
       kuntailmoitukset = laajatTiedot.kuntailmoitukset.map(ValpasKuntailmoitusSuppeatTiedot.apply),
-      lisätiedot = lisätiedot.map(l => OpiskeluoikeusLisätiedot(
-        oppijaOid = l.oppijaOid,
-        opiskeluoikeusOid = l.opiskeluoikeusOid,
-        oppilaitosOid = l.oppilaitosOid,
-        muuHaku = l.muuHaku
-      )),
+      lisätiedot = lisätiedot.map(OpiskeluoikeusLisätiedot.apply)
     )
   }
 }
@@ -121,7 +139,7 @@ class ValpasOppijaService(
       .map(fetchHautIlmanYhteystietoja(errorClue))
   }
 
-  def getOppijatLaajatTiedotYhteystiedoilla(
+  def getOppijatLaajatTiedotYhteystiedoillaJaLisätiedoilla(
     oppilaitosOid: ValpasOppilaitos.Oid,
     oppijaOids: Seq[ValpasHenkilö.Oid]
   )(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
@@ -134,6 +152,8 @@ class ValpasOppijaService(
       .map(fetchHautYhteystiedoilla(errorClue))
       .flatMap(oppijat => HttpStatus.foldEithers(oppijat.map(withVirallisetYhteystiedot)))
       .map(oppijat => oppijat.map(_.validate(koodistoviitepalvelu)))
+      .map(lisätiedotRepository.readForOppijat)
+      .map(_.map(Function.tupled(OppijaHakutilanteillaLaajatTiedot.apply)))
   }
 
   // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
@@ -147,6 +167,16 @@ class ValpasOppijaService(
       .toRight(ValpasErrorCategory.forbidden.oppija())
       .flatMap(asValpasOppijaLaajatTiedot)
       .flatMap(accessResolver.withOppijaAccess)
+  }
+
+  def getOppijaHakutilanteillaLaajatTiedotJaLisätiedot
+    (oppijaOid: ValpasHenkilö.Oid)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] = {
+    getOppijaHakutilanteillaLaajatTiedot(oppijaOid)
+      .map(o => lisätiedotRepository.readForOppijat(Seq(o)))
+      .map(_.map(Function.tupled(OppijaHakutilanteillaLaajatTiedot.apply)))
+      .map(_.head)
   }
 
   def getOppijaHakutilanteillaLaajatTiedot
