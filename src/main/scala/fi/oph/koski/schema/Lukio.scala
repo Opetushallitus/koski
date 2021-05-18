@@ -88,7 +88,7 @@ case class LukionOppiaineenArviointi(
 }
 
 object LukionOppiaineenArviointi {
-  def apply(arvosana: String) = new LukionOppiaineenArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)
+  def apply(arvosana: String, päivä: Option[LocalDate] = None) = new LukionOppiaineenArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), päivä)
 }
 
 trait LukionArviointi extends ArviointiPäivämäärällä

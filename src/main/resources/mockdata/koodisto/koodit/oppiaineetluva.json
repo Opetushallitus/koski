@@ -148,4 +148,25 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
-} ]
+}, {
+  "koodiUri" : "oppiaineetluva_lvhiyh",
+  "koodiArvo" : "LVHIYH",
+  "metadata" : [ {
+    "nimi" : "Historia ja yhteiskuntaoppi",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Historia ja yhteiskuntaoppi",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Historia ja yhteiskuntaoppi",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}  ]

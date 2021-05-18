@@ -175,7 +175,8 @@ case class LukioonValmistavanKurssinSuoritus(
   arviointi: Option[List[LukionArviointi]],
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("luvakurssi")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("luvakurssi", koodistoUri = "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("luvakurssi", koodistoUri = "suorituksentyyppi"),
+  override val alkamispäivä: Option[LocalDate] = None
 ) extends KurssinSuoritus with MahdollisestiSuorituskielellinen
 
 sealed trait LukioonValmistavanKoulutuksenKurssi extends KoulutusmoduuliValinnainenLaajuus {
@@ -186,6 +187,7 @@ sealed trait LukioonValmistavanKoulutuksenKurssi extends KoulutusmoduuliValinnai
 case class ValtakunnallinenLukioonValmistavanKoulutuksenKurssi(
   @Description("Lukioon valmistavan koulutuksen kurssi")
   @KoodistoUri("lukioonvalmistavankoulutuksenkurssit2015")
+  @KoodistoUri("lukioonvalmistavankoulutuksenkurssit2019")
   @OksaUri("tmpOKSAID873", "kurssi")
   @Title("Nimi")
   tunniste: Koodistokoodiviite,
