@@ -129,15 +129,12 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
       filter: "dropdown",
       indicatorSpace: "auto",
     },
-  ]
-
-  if (isFeatureFlagEnabled("ilmoittaminen")) {
-    columns.push({
+    {
       label: t("hakutilanne__taulu_muu_haku"),
       tooltip: t("hakutilanne__taulu_muu_haku_tooltip"),
       filter: "dropdown",
-    })
-  }
+    },
+  ]
 
   return (
     <TableComponent
@@ -180,15 +177,6 @@ const oppijaToTableData = (
     organisaatioOid,
     oppija.oppija.opiskeluoikeudet
   ).map((opiskeluoikeus) => {
-    const lisätiedot = oppija.lisätiedot.find(
-      lisätietoMatches(
-        oppija.oppija.henkilö.oid,
-        opiskeluoikeus.oid,
-        opiskeluoikeus.oppilaitos.oid
-      )
-    )
-    const muuHaku = lisätiedot?.muuHaku || false
-
     return {
       key: createHakutilanneKey(oppija, opiskeluoikeus),
       values: [
@@ -217,24 +205,8 @@ const oppijaToTableData = (
         fromNullableValue(valintatila(oppija.hakutilanteet)),
         fromNullableValue(vastaanottotieto(oppija.hakutilanteet)),
         fromNullableValue(opiskeluoikeustiedot(oppija.oppija.opiskeluoikeudet)),
-        isFeatureFlagEnabled("ilmoittaminen")
-          ? {
-              value: muuHaku ? t("Kyllä") : t("Ei"),
-              display: (
-                <ToggleSwitch
-                  value={muuHaku}
-                  onChanged={(state) =>
-                    onSetMuuHaku(
-                      oppija.oppija.henkilö.oid,
-                      opiskeluoikeus,
-                      state
-                    )
-                  }
-                />
-              ),
-            }
-          : null,
-      ].filter(nonNull),
+        muuHakuSwitch(oppija, opiskeluoikeus, onSetMuuHaku),
+      ],
     }
   })
 }
@@ -466,5 +438,32 @@ const opiskeluoikeustiedot = (
         tooltip: filterValues.join("\n"),
         icon,
       }
+  }
+}
+
+const muuHakuSwitch = (
+  oppija: OppijaHakutilanteillaSuppeatTiedot,
+  opiskeluoikeus: OpiskeluoikeusSuppeatTiedot,
+  onSetMuuHaku: SetMuuHakuCallback
+): Value => {
+  const lisätiedot = oppija.lisätiedot.find(
+    lisätietoMatches(
+      oppija.oppija.henkilö.oid,
+      opiskeluoikeus.oid,
+      opiskeluoikeus.oppilaitos.oid
+    )
+  )
+  const muuHaku = lisätiedot?.muuHaku || false
+
+  return {
+    value: muuHaku ? t("Kyllä") : t("Ei"),
+    display: (
+      <ToggleSwitch
+        value={muuHaku}
+        onChanged={(state) =>
+          onSetMuuHaku(oppija.oppija.henkilö.oid, opiskeluoikeus, state)
+        }
+      />
+    ),
   }
 }
