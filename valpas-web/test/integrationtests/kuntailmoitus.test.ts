@@ -12,7 +12,7 @@ import { eventually } from "../integrationtests-env/browser/utils"
 import {
   hakutilannePath,
   jklNormaalikouluTableContent,
-} from "./hakutilanne.test"
+} from "./hakutilanne.shared"
 
 type Oppija = {
   oid: Oid
