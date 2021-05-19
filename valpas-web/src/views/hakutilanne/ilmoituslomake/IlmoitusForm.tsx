@@ -143,7 +143,9 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
     initialValues: {
       ...initialValues,
       yhteydenottokieli: props.pohjatiedot.yhteydenottokieli?.koodiarvo,
-      hakenutOpiskelemaanYhteyshakujenUlkopuolella: false, // TODO
+      hakenutOpiskelemaanYhteyshakujenUlkopuolella: defaultMuuHakuValue(
+        props.oppija
+      ),
     },
     validators,
   })
@@ -272,6 +274,14 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
       ) : null}
     </IlmoitusFormFrame>
   )
+}
+
+const defaultMuuHakuValue = (
+  oppija: OppijaHakutilanteillaSuppeatTiedot
+): boolean => {
+  const muuHakuCount = oppija.lisätiedot.filter((lt) => lt.muuHaku).length
+  const opiskeluoikeusCount = oppija.oppija.opiskeluoikeudet.length
+  return muuHakuCount === opiskeluoikeusCount && muuHakuCount > 0
 }
 
 export type IlmoitusHeaderProps = {
