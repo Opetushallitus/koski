@@ -174,7 +174,13 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
 
   const kunnat = props.kunnat
   const kuntaOptions = useMemo(() => kunnatToOptions(kunnat), [kunnat])
-  const showError = (form.allFieldsValidated && !form.isValid) || isError(send)
+
+  const errorMessages = [
+    form.allFieldsValidated && !form.isValid
+      ? t("ilmoituslomake__täytä_pakolliset_tiedot")
+      : null,
+    ...(isError(send) ? send.errors.map((e) => e.message) : []),
+  ].filter(nonNull)
 
   return (
     <IlmoitusFormFrame>
@@ -249,11 +255,9 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
             {...form.fieldProps("hakenutOpiskelemaanYhteyshakujenUlkopuolella")}
           />
 
-          {showError ? (
-            <Error>
-              <T id="ilmoituslomake__täytä_pakolliset_tiedot" />
-            </Error>
-          ) : null}
+          {errorMessages.map((error, index) => (
+            <Error key={index}>{error}</Error>
+          ))}
 
           <RaisedButton
             className={b("submit")}
