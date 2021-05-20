@@ -18,6 +18,7 @@ export type OppijaHakutilanteillaSuppeatTiedot = {
   oppija: OppijaSuppeatTiedot
   hakutilanteet: HakuSuppeatTiedot[]
   hakutilanneError?: string
+  lisätiedot: OpiskeluoikeusLisätiedot[]
 }
 
 export type OppijaLaajatTiedot = {
@@ -34,3 +35,19 @@ export type OppijaSuppeatTiedot = {
   opiskelee: boolean
   oppivelvollisuusVoimassaAsti?: ISODate
 }
+
+export type OpiskeluoikeusLisätiedot = {
+  oppijaOid: Oid
+  opiskeluoikeusOid: Oid
+  oppilaitosOid: Oid
+  muuHaku: boolean
+}
+
+export const lisätietoMatches = (
+  oppijaOid: Oid,
+  opiskeluoikeusOid: Oid,
+  oppilaitosOid: Oid
+) => (lisätiedot: OpiskeluoikeusLisätiedot) =>
+  lisätiedot.oppijaOid === oppijaOid &&
+  lisätiedot.opiskeluoikeusOid === opiskeluoikeusOid &&
+  oppilaitosOid === oppilaitosOid

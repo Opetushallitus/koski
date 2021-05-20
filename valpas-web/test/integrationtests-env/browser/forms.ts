@@ -48,3 +48,8 @@ export const dropdownSelectContains = async (
     }
   }
 }
+
+export const isCheckboxChecked = async (selector: string): Promise<boolean> => {
+  const input = await $(selector)
+  return input.getAttribute("checked").then((c) => !!c)
+}

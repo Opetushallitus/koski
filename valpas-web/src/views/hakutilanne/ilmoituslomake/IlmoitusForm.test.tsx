@@ -23,6 +23,11 @@ describe("IlmoitusForm", () => {
     const form = createForm()
     expectSubmitButtonIsEnabled(form, false)
     selectOption(form, "ilmoituslomake__asuinkunta *", 1)
+    fillTextField(form, "ilmoituslomake__postinumero", "00150")
+    fillTextField(form, "ilmoituslomake__postitoimipaikka", "Helsinki")
+    fillTextField(form, "ilmoituslomake__katuosoite", "Katu 5")
+    fillTextField(form, "ilmoituslomake__puhelinnumero", "04012345678")
+    fillTextField(form, "ilmoituslomake__sähköposti", "valpas@gmail.com")
     expectSubmitButtonIsEnabled(form, true)
 
     fillTextField(form, "ilmoituslomake__postinumero", "00150")
@@ -220,6 +225,7 @@ const mockOppija: OppijaHakutilanteillaSuppeatTiedot = {
     opiskelee: true,
   },
   hakutilanteet: [],
+  lisätiedot: [],
 }
 
 const mockKoodisto = (

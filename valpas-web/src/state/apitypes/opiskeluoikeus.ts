@@ -34,6 +34,7 @@ export type OpiskeluoikeusSuppeatTiedot = {
   päättymispäiväMerkittyTulevaisuuteen?: boolean
   oppivelvollisuudenSuorittamiseenKelpaava: boolean
   näytettäväPerusopetuksenSuoritus: boolean
+  muuHaku?: boolean
 }
 
 const opiskeluoikeusDateOrd = (key: keyof OpiskeluoikeusLaajatTiedot) =>
@@ -64,8 +65,8 @@ export const isPerusopetus = (oo: OpiskeluoikeusSuppeatTiedot) =>
   oo.tyyppi.koodiarvo === "perusopetus"
 
 export const valvottavatOpiskeluoikeudet = (
-  organisaatioOid: string | undefined,
-  opiskeluoikeudet: Array<OpiskeluoikeusSuppeatTiedot>
+  organisaatioOid: Oid | undefined,
+  opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
 ) => opiskeluoikeudet.filter(isValvottavaOpiskeluoikeus(organisaatioOid))
 
 export const opiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus = (

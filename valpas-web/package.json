@@ -19,7 +19,7 @@
     "lint:problems": "eslint . --ext .ts --ext .tsx",
     "fix": "npm run fix:format",
     "fix:format": "prettier --write ./src ./local_modules ./devserver",
-    "clean": "rm -rf dist && rm -rf .cache",
+    "clean": "jest --clearCache && rm -rf dist && rm -rf .cache",
     "preinstall": "npx npm-force-resolutions"
   },
   "repository": {

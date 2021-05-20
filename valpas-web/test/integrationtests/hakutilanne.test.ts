@@ -1,6 +1,5 @@
 import {
   createHakutilannePathWithOrg,
-  createHakutilannePathWithoutOrg,
   createOppijaPath,
 } from "../../src/state/paths"
 import {
@@ -15,8 +14,14 @@ import { dataTableEventuallyEquals } from "../integrationtests-env/browser/datat
 import {
   dropdownSelect,
   dropdownSelectContains,
+  isCheckboxChecked,
 } from "../integrationtests-env/browser/forms"
 import { loginAs } from "../integrationtests-env/browser/reset"
+import { eventually } from "../integrationtests-env/browser/utils"
+import {
+  hakutilannePath,
+  jklNormaalikouluTableContent,
+} from "./hakutilanne.shared"
 
 const selectOrganisaatio = (index: number) =>
   dropdownSelect("#organisaatiovalitsin", index)
@@ -26,24 +31,21 @@ const selectOrganisaatioByNimi = (text: string) =>
 const clickOppija = (index: number) =>
   clickElement(`.hakutilanne tr:nth-child(${index + 1}) td:first-child a`)
 
-export const jklNormaalikouluTableContent = `
-  Epäonninen Valpas                                       | 30.10.2005  | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
-  Eroaja-myöhemmin Valpas                                 | 29.9.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
-  Kahdella-oppija-oidilla Valpas                          | 15.2.2005   | 9C | 30.5.2021  | Hakenut open_in_new  | Varasija: Ressun lukio      | –                         | doneJyväskylän normaalikoulu, Lukiokoulutus                                |
-  KasiinAstiToisessaKoulussaOllut Valpas                  | 17.8.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
-  Kotiopetus-menneisyydessä Valpas                        | 6.2.2005    | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
-  LukionAloittanut Valpas                                 | 29.4.2005   | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | doneJyväskylän normaalikoulu, Lukiokoulutus                                |
-  LukionLokakuussaAloittanut Valpas                       | 18.4.2005   | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | hourglass_empty3.10.2021 alkaen: Jyväskylän normaalikoulu, Lukiokoulutus   |
-  LuokallejäänytYsiluokkalainen Valpas                    | 2.8.2005    | 9A | –          | 2 hakua              | –                           | –                         | –                                                                          |
-  LuokallejäänytYsiluokkalainenJatkaa Valpas              | 6.2.2005    | 9B | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
-  LuokallejäänytYsiluokkalainenKouluvaihtoMuualta Valpas  | 2.11.2005   | 9B | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
-  Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas   | 22.11.2005  | 9C | –          | Hakenut open_in_new  | 2. Helsingin medialukio     | doneHelsingin medialukio  | –                                                                          |
-  Päällekkäisiä Oppivelvollisuuksia                       | 6.6.2005    | 9B | –          | Hakenut open_in_new  | Hyväksytty (2 hakukohdetta) | doneOmnia                 | –                                                                          |
-  Turvakielto Valpas                                      | 29.9.2004   | 9C | –          | Hakenut open_in_new  | warningEi opiskelupaikkaa   | –                         | –                                                                          |
-  UseampiYsiluokkaSamassaKoulussa Valpas                  | 25.8.2005   | 9D | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
-  UseampiYsiluokkaSamassaKoulussa Valpas                  | 25.8.2005   | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
-  Ysiluokka-valmis-keväällä-2021 Valpas                   | 19.6.2005   | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
-`
+const clickAndVerifyMuuHaku = async (index: number) => {
+  const currentState = await isMuuHakuChecked(index)
+  await clickElement(
+    `.hakutilanne tr:nth-child(${
+      index + 1
+    }) td:last-child .toggleswitch__container`
+  )
+  await eventually(async () =>
+    expect(await isMuuHakuChecked(index)).toBe(!currentState)
+  )
+}
+const isMuuHakuChecked = (index: number) =>
+  isCheckboxChecked(
+    `.hakutilanne tr:nth-child(${index + 1}) td:last-child input`
+  )
 
 const kulosaarenAlaAsteTableContent = `
   Jkl-Esikoulu-Kulosaarelainen Valpas                     | 22.3.2004   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
@@ -52,7 +54,6 @@ const kulosaarenAlaAsteTableContent = `
   Kulosaarelainen Oppija                                  | 19.1.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
 `
 
-export const hakutilannePath = createHakutilannePathWithoutOrg("/virkailija")
 const jklHakutilannePath = createHakutilannePathWithOrg("/virkailija", {
   organisaatioOid: "1.2.246.562.10.14613773812",
 })
@@ -163,5 +164,29 @@ describe("Hakutilannenäkymä", () => {
 
     await clickElement(".oppijaview__backbutton a")
     await urlIsEventually(pathToUrl(kulosaariHakutilannePath), 5000)
+  })
+
+  it("Muu haku -täppä toimii ja tallentuu", async () => {
+    const loadPage = async () => {
+      await loginAs(hakutilannePath, "valpas-jkl-normaali")
+      await urlIsEventually(pathToUrl(jklHakutilannePath))
+      await textEventuallyEquals(
+        ".card__header",
+        "Hakeutumisvelvollisia oppijoita (16)"
+      )
+    }
+
+    const getState = () => Promise.all([1, 2, 3, 4].map(isMuuHakuChecked))
+
+    await loadPage()
+    for (const rowIndex of [1, 3, 4, 3, 1, 1]) {
+      await clickAndVerifyMuuHaku(rowIndex)
+    }
+
+    const stateBeforeReload = await getState()
+    await loadPage()
+    const stateAfterReload = await getState()
+
+    expect(stateAfterReload).toEqual(stateBeforeReload)
   })
 })

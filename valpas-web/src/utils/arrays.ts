@@ -1,5 +1,5 @@
 import * as A from "fp-ts/Array"
-import { pipe } from "fp-ts/lib/function"
+import { pipe, Predicate } from "fp-ts/lib/function"
 import { NonEmptyArray } from "fp-ts/lib/NonEmptyArray"
 import * as O from "fp-ts/Option"
 
@@ -8,6 +8,17 @@ export const update = <T>(arr: T[], index: number, value: T): T[] =>
     A.updateAt(index, value)(arr),
     O.getOrElse(() => arr)
   )
+
+export const upsert = <T>(
+  arr: T[],
+  predicate: Predicate<T>,
+  value: T
+): NonEmptyArray<T> => {
+  const index = arr.findIndex(predicate)
+  return index >= 0
+    ? (A.unsafeUpdateAt(index, value, arr) as NonEmptyArray<T>)
+    : A.append(value)(arr)
+}
 
 export const nonNull = <T>(a: T | undefined | null): a is T =>
   a !== undefined && a !== null
