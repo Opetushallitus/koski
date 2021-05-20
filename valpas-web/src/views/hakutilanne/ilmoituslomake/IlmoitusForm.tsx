@@ -24,6 +24,7 @@ import { getLocalized, T, t } from "../../../i18n/i18n"
 import { HenkilöSuppeatTiedot } from "../../../state/apitypes/henkilo"
 import { Kieli, Maa } from "../../../state/apitypes/koodistot"
 import {
+  KuntailmoituksenTekijäLaajatTiedot,
   KuntailmoitusKunta,
   KuntailmoitusLaajatTiedot,
 } from "../../../state/apitypes/kuntailmoitus"
@@ -32,10 +33,7 @@ import {
   PohjatietoYhteystieto,
 } from "../../../state/apitypes/kuntailmoituspohjatiedot"
 import { OppijaHakutilanteillaSuppeatTiedot } from "../../../state/apitypes/oppija"
-import {
-  Organisaatio,
-  trimOrganisaatio,
-} from "../../../state/apitypes/organisaatiot"
+import { trimOrganisaatio } from "../../../state/apitypes/organisaatiot"
 import {
   isAlkuperäHakemukselta,
   isAlkuperäRekisteristä,
@@ -90,7 +88,7 @@ const validators: FormValidators<IlmoitusFormValues> = {
 
 const toKuntailmoitusLaajatTiedot = (
   form: IlmoitusFormValues,
-  tekijäOrganisaatio: Organisaatio,
+  tekijä: KuntailmoituksenTekijäLaajatTiedot,
   kunnat: KuntailmoitusKunta[]
 ): KuntailmoitusLaajatTiedot | null => {
   const kunta = kunnat.find((k) => k.oid === form.asuinkunta)
@@ -99,8 +97,8 @@ const toKuntailmoitusLaajatTiedot = (
     ? {
         kunta,
         tekijä: {
-          organisaatio: trimOrganisaatio(tekijäOrganisaatio),
-          henkilö: undefined, // TODO: Pitää lisätä tekijän yhteystietojen tarkastuslomake ensin
+          organisaatio: trimOrganisaatio(tekijä.organisaatio),
+          henkilö: tekijä.henkilö,
         },
         yhteydenottokieli: nonNull(form.yhteydenottokieli)
           ? {
@@ -132,7 +130,7 @@ export type IlmoitusFormProps = {
   kunnat: Array<KuntailmoitusKunta>
   maat: Array<Maa>
   kielet: Array<Kieli>
-  tekijäorganisaatio: Organisaatio
+  tekijä: KuntailmoituksenTekijäLaajatTiedot
   formIndex: number
   numberOfForms: number
   onSubmit?: (values: IlmoitusFormValues) => void
@@ -156,7 +154,7 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
   const submit = form.submitCallback(async (formData) => {
     const kuntailmoitus = toKuntailmoitusLaajatTiedot(
       formData,
-      props.tekijäorganisaatio,
+      props.tekijä,
       props.kunnat
     )
 
