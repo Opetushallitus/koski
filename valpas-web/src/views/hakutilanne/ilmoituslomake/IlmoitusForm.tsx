@@ -1,5 +1,8 @@
 import bem from "bem-ts"
 import React, { useMemo, useState } from "react"
+import { createKuntailmoitus } from "../../../api/api"
+import { useApiMethod, useOnApiSuccess } from "../../../api/apiHooks"
+import { isError, isLoading } from "../../../api/apiUtils"
 import { RaisedButton } from "../../../components/buttons/RaisedButton"
 import { LabeledCheckbox } from "../../../components/forms/Checkbox"
 import {
@@ -19,20 +22,29 @@ import { Error } from "../../../components/typography/error"
 import { SecondaryHeading } from "../../../components/typography/headings"
 import { getLocalized, T, t } from "../../../i18n/i18n"
 import { HenkilöSuppeatTiedot } from "../../../state/apitypes/henkilo"
-import { KoodistoKoodiviite } from "../../../state/apitypes/koodistot"
+import { Kieli, Maa } from "../../../state/apitypes/koodistot"
 import {
   KuntailmoitusKunta,
+  KuntailmoitusLaajatTiedot,
+} from "../../../state/apitypes/kuntailmoitus"
+import {
   OppijanPohjatiedot,
   PohjatietoYhteystieto,
 } from "../../../state/apitypes/kuntailmoituspohjatiedot"
 import { OppijaHakutilanteillaSuppeatTiedot } from "../../../state/apitypes/oppija"
 import {
+  Organisaatio,
+  trimOrganisaatio,
+} from "../../../state/apitypes/organisaatiot"
+import {
   isAlkuperäHakemukselta,
   isAlkuperäRekisteristä,
 } from "../../../state/apitypes/yhteystiedot"
-import { Oid, OrganisaatioWithOid } from "../../../state/common"
+import { Oid } from "../../../state/common"
 import { expectNonEmptyString } from "../../../state/formValidators"
 import { FormValidators, useFormState } from "../../../state/useFormState"
+import { nonNull } from "../../../utils/arrays"
+import { removeFalsyValues } from "../../../utils/objects"
 import { plainComponent } from "../../../utils/plaincomponent"
 import "./IlmoitusForm.less"
 
@@ -76,12 +88,51 @@ const validators: FormValidators<IlmoitusFormValues> = {
   hakenutOpiskelemaanYhteyshakujenUlkopuolella: [],
 }
 
+const toKuntailmoitusLaajatTiedot = (
+  form: IlmoitusFormValues,
+  tekijäOrganisaatio: Organisaatio,
+  kunnat: KuntailmoitusKunta[]
+): KuntailmoitusLaajatTiedot | null => {
+  const kunta = kunnat.find((k) => k.oid === form.asuinkunta)
+
+  return nonNull(kunta)
+    ? {
+        kunta,
+        tekijä: {
+          organisaatio: trimOrganisaatio(tekijäOrganisaatio),
+          henkilö: undefined, // TODO: Pitää lisätä tekijän yhteystietojen tarkastuslomake ensin
+        },
+        yhteydenottokieli: nonNull(form.yhteydenottokieli)
+          ? {
+              koodistoUri: "kieli",
+              koodiarvo: form.yhteydenottokieli as Kieli["koodiarvo"],
+            }
+          : undefined,
+        oppijanYhteystiedot: removeFalsyValues({
+          puhelinnumero: form.puhelinnumero,
+          email: form.email,
+          lähiosoite: form.lähiosoite,
+          postinumero: form.postinumero,
+          postitoimipaikka: form.postitoimipaikka,
+          maa: nonNull(form.maa)
+            ? {
+                koodistoUri: "maatjavaltiot2",
+                koodiarvo: form.maa,
+              }
+            : undefined,
+        }),
+        hakenutMuualle: form.hakenutOpiskelemaanYhteyshakujenUlkopuolella,
+      }
+    : null
+}
+
 export type IlmoitusFormProps = {
   oppija: OppijaHakutilanteillaSuppeatTiedot
   pohjatiedot: OppijanPohjatiedot
-  kunnat: Array<OrganisaatioWithOid>
-  maat: Array<KoodistoKoodiviite>
-  kielet: Array<KoodistoKoodiviite>
+  kunnat: Array<KuntailmoitusKunta>
+  maat: Array<Maa>
+  kielet: Array<Kieli>
+  tekijäorganisaatio: Organisaatio
   formIndex: number
   numberOfForms: number
   onSubmit?: (values: IlmoitusFormValues) => void
@@ -98,16 +149,30 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
   })
   const [isOpen, setOpen] = useState(true)
   const [isSubmitted, setSubmitted] = useState(false)
+  const send = useApiMethod(createKuntailmoitus)
 
-  const submit = form.submitCallback((formData) => {
+  const submit = form.submitCallback(async (formData) => {
+    const kuntailmoitus = toKuntailmoitusLaajatTiedot(
+      formData,
+      props.tekijäorganisaatio,
+      props.kunnat
+    )
+
+    if (kuntailmoitus) {
+      await send.call(props.oppija.oppija.henkilö.oid, kuntailmoitus)
+    }
+  })
+
+  useOnApiSuccess(send, () => {
     setSubmitted(true)
     if (props.onSubmit) {
-      props.onSubmit(formData)
+      form.submitCallback(props.onSubmit)()
     }
   })
 
   const kunnat = props.kunnat
   const kuntaOptions = useMemo(() => kunnatToOptions(kunnat), [kunnat])
+  const showError = (form.allFieldsValidated && !form.isValid) || isError(send)
 
   return (
     <IlmoitusFormFrame>
@@ -132,11 +197,13 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
             required
             options={kuntaOptions}
             sort={displayOrd}
+            testId="asuinkunta"
             {...form.fieldProps("asuinkunta")}
           />
           <Dropdown
             label={t("ilmoituslomake__yhteydenottokieli")}
             options={koodistoToOptions(props.kielet)}
+            testId="yhteydenottokieli"
             {...form.fieldProps("yhteydenottokieli")}
           />
           <SecondaryHeading className={b("muutyhteystiedototsikko")}>
@@ -145,26 +212,32 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
           <Dropdown
             label={t("ilmoituslomake__maa")}
             options={koodistoToOptions(props.maat)}
+            testId="maa"
             {...form.fieldProps("maa")}
           />
           <TextField
             label={t("ilmoituslomake__postinumero")}
+            testId="postinumero"
             {...form.fieldProps("postinumero")}
           />
           <TextField
             label={t("ilmoituslomake__postitoimipaikka")}
+            testId="postitoimipaikka"
             {...form.fieldProps("postitoimipaikka")}
           />
           <TextField
             label={t("ilmoituslomake__katuosoite")}
+            testId="katuosoite"
             {...form.fieldProps("lähiosoite")}
           />
           <TextField
             label={t("ilmoituslomake__puhelinnumero")}
+            testId="puhelinnumero"
             {...form.fieldProps("puhelinnumero")}
           />
           <TextField
             label={t("ilmoituslomake__sähköposti")}
+            testId="sähköposti"
             {...form.fieldProps("email")}
           />
           <LabeledCheckbox
@@ -173,14 +246,25 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
             )}
             {...form.fieldProps("hakenutOpiskelemaanYhteyshakujenUlkopuolella")}
           />
-          {form.allFieldsValidated && !form.isValid ? (
+
+          {showError ? (
             <Error>
               <T id="ilmoituslomake__täytä_pakolliset_tiedot" />
             </Error>
           ) : null}
+
           <RaisedButton
+            className={b("submit")}
             disabled={form.isValid ? false : "byLook"}
-            onClick={form.isValid ? submit : form.validateAll}
+            onClick={() => {
+              if (!isLoading(send)) {
+                if (form.isValid) {
+                  submit()
+                } else {
+                  form.validateAll()
+                }
+              }
+            }}
           >
             <T id="ilmoituslomake__ilmoita_asuinkunnalle" />
           </RaisedButton>
@@ -220,7 +304,7 @@ const IlmoitusHeader = (props: IlmoitusHeaderProps) => (
       ) : null}
     </IlmoitusTitle>
     {props.isSubmitted ? (
-      <IlmoitusSubmitted>
+      <IlmoitusSubmitted data-testid="submitted">
         <SuccessCircleIcon inline color="white" />
         <T id="ilmoituslomake__ilmoitus_lähetetty" />
       </IlmoitusSubmitted>
@@ -244,28 +328,29 @@ type IlmoitusPrefillSelectorProps = {
   onSelect: (values: Partial<IlmoitusFormValues>) => void
 }
 
-const IlmoitusPrefillSelector = (props: IlmoitusPrefillSelectorProps) => (
-  <div className={b("prefill")}>
-    <T id="ilmoituslomake__esitäytä_yhteystiedoilla" />
-    <ul className={b("prefilllist")}>
-      {props.pohjatiedot.yhteystiedot.map((yhteystieto, index) => (
-        <li
-          key={index}
-          className={b("prefillitem")}
-          onClick={() =>
-            props.onSelect({
-              ...yhteystieto.yhteystiedot,
-              asuinkunta: yhteystieto.kunta?.oid,
-              maa: yhteystieto.yhteystiedot.maa?.koodiarvo,
-            })
-          }
-        >
-          {index + 1}) {yhteystiedonNimi(yhteystieto)}
-        </li>
-      ))}
-    </ul>
-  </div>
-)
+const IlmoitusPrefillSelector = (props: IlmoitusPrefillSelectorProps) =>
+  props.pohjatiedot.yhteystiedot.length > 0 ? (
+    <div className={b("prefill")}>
+      <T id="ilmoituslomake__esitäytä_yhteystiedoilla" />
+      <ul className={b("prefilllist")}>
+        {props.pohjatiedot.yhteystiedot.map((yhteystieto, index) => (
+          <li
+            key={index}
+            className={b("prefillitem")}
+            onClick={() =>
+              props.onSelect({
+                ...yhteystieto.yhteystiedot,
+                asuinkunta: yhteystieto.kunta?.oid,
+                maa: yhteystieto.yhteystiedot.maa?.koodiarvo,
+              })
+            }
+          >
+            {index + 1}) {yhteystiedonNimi(yhteystieto)}
+          </li>
+        ))}
+      </ul>
+    </div>
+  ) : null
 
 const yhteystiedonNimi = (yhteystieto: PohjatietoYhteystieto): string => {
   const alkuperä = yhteystieto.yhteystietojenAlkuperä

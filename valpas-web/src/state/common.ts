@@ -23,11 +23,6 @@ export type User = {
   huollettava: boolean
 }
 
-export type OrganisaatioWithOid = {
-  oid: Oid
-  nimi: LocalizedString
-}
-
 export type OrganisaatioHierarkia = {
   oid: Oid
   nimi: LocalizedString

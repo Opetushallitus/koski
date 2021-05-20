@@ -1,3 +1,4 @@
+import { KuntailmoitusLaajatTiedot } from "../state/apitypes/kuntailmoitus"
 import { KuntailmoitusPohjatiedot } from "../state/apitypes/kuntailmoituspohjatiedot"
 import {
   OppijaHakutilanteillaLaajatTiedot,
@@ -77,6 +78,22 @@ export const fetchKuntailmoituksenPohjatiedot = (
           oid: tekijäOrganisaatioOid,
         },
         oppijaOidit: oppijaOids,
+      },
+    })
+  )
+
+/**
+ * Kuntailmoituksen tallennus
+ */
+export const createKuntailmoitus = (
+  oppijaOid: Oid,
+  kuntailmoitus: KuntailmoitusLaajatTiedot
+) =>
+  handleExpiredSession(
+    apiPost<void>("valpas/api/kuntailmoitus", {
+      body: {
+        oppijaOid,
+        kuntailmoitus,
       },
     })
   )

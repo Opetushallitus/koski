@@ -2,6 +2,7 @@ import * as E from "fp-ts/Either"
 import { pipe } from "fp-ts/lib/function"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { ApiFailure, ApiResponse, ApiSuccess } from "./apiFetch"
+import { isInitial, isSuccess } from "./apiUtils"
 import { ApiCache } from "./cache"
 
 export type ApiLoading = null
@@ -63,7 +64,6 @@ export type ApiMethodStateError = { state: "error" } & ApiFailure
 export type ApiMethodHook<T, P extends any[]> = {
   call: (...args: P) => Promise<void>
   clear: () => void
-  flatMap: <R>(fn: (data: T) => R) => R | undefined
 } & ApiMethodState<T>
 
 export const useApiMethod = <T, P extends any[]>(
@@ -74,38 +74,68 @@ export const useApiMethod = <T, P extends any[]>(
     state: "initial",
   })
 
+  const [mounted, setMounted] = useState(true)
+  useEffect(() => () => setMounted(false), [])
+
+  const safeSetState = useCallback(
+    (newState: ApiMethodState<T>) => {
+      if (mounted) {
+        setState(newState)
+      }
+    },
+    [mounted]
+  )
+
+  const call = useCallback(
+    async (...args: P) => {
+      safeSetState({ state: "loading" })
+      cache?.map(args, (previous) =>
+        safeSetState({ state: "reloading", ...previous })
+      )
+      pipe(
+        await fetchFn(...args),
+        E.map((result) => {
+          safeSetState({
+            state: "success",
+            ...result,
+          })
+          cache?.set(args, result)
+        }),
+        E.mapLeft((error) =>
+          safeSetState({
+            state: "error",
+            ...error,
+          })
+        )
+      )
+    },
+    [cache, fetchFn, safeSetState]
+  )
+
   const clear = useCallback(() => setState({ state: "initial" }), [setState])
 
   return useMemo(
     () => ({
       ...state,
-      call: async (...args: P) => {
-        setState({ state: "loading" })
-        cache?.map(args, (previous) =>
-          setState({ state: "reloading", ...previous })
-        )
-        pipe(
-          await fetchFn(...args),
-          E.map((result) => {
-            setState({
-              state: "success",
-              ...result,
-            })
-            cache?.set(args, result)
-          }),
-          E.mapLeft((error) =>
-            setState({
-              state: "error",
-              ...error,
-            })
-          )
-        )
-      },
+      call,
       clear,
-      flatMap(fn) {
-        return state.state === "success" ? fn(state.data) : undefined
-      },
     }),
-    [state, setState, fetchFn, cache, clear]
+    [state, call, clear]
   )
+}
+
+export const useOnApiSuccess = <T, P extends any[]>(
+  hook: ApiMethodHook<T, P>,
+  handler: (hook: ApiMethodStateSuccess<T>) => void
+) => {
+  const [triggered, setTriggered] = useState(false)
+
+  useEffect(() => {
+    if (isSuccess(hook) && !triggered) {
+      setTriggered(true)
+      handler(hook)
+    } else if (isInitial(hook) && triggered) {
+      setTriggered(false)
+    }
+  }, [hook, handler, triggered])
 }

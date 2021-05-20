@@ -5,7 +5,7 @@ import * as string from "fp-ts/string"
 import React from "react"
 import { getLocalized } from "../../i18n/i18n"
 import { KoodistoKoodiviite } from "../../state/apitypes/koodistot"
-import { OrganisaatioWithOid } from "../../state/common"
+import { Organisaatio } from "../../state/apitypes/organisaatiot"
 import { FilterableValue, toFilterableString } from "../../utils/conversions"
 import { ArrowDropDownIcon } from "../icons/Icon"
 import "./Dropdown.less"
@@ -25,6 +25,7 @@ export type DropdownProps<T> = {
   containerClassName?: string
   required?: boolean
   sort?: Ord.Ord<DropdownOption<T>>
+  testId?: string
 }
 
 export type DropdownOption<T> = {
@@ -56,6 +57,7 @@ export const Dropdown = <T,>(props: DropdownProps<T>) => {
           props.onChange(sortedOptions[parseInt(event.target.value, 10)]?.value)
         }
         onBlur={props.onBlur}
+        data-testid={props.testId}
       >
         {showEmptyValue ? <option>-</option> : null}
         {sortedOptions.map((option, index) => (
@@ -85,7 +87,7 @@ export const koodistoToOptions = (
   }))
 
 export const organisaatiotToOptions = (
-  organisaatiot: OrganisaatioWithOid[]
+  organisaatiot: Organisaatio[]
 ): Array<DropdownOption<string>> =>
   organisaatiot.map((org) => ({
     value: org.oid,

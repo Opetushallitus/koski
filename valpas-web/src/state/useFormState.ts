@@ -2,7 +2,7 @@ import * as A from "fp-ts/Array"
 import * as E from "fp-ts/Either"
 import { pipe } from "fp-ts/lib/function"
 import * as Separated from "fp-ts/Separated"
-import { useMemo, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { fromEntries } from "../utils/objects"
 
 export type UseFormStateOptions<T extends object> = {
@@ -79,64 +79,97 @@ export const useFormState = <T extends object>({
   ])
   const [currentState, setState] = useState(initialState)
 
-  const set: FormSetFunction<T> = (key, value) => {
-    const newState = updatedField(key, value, validators, currentState)
-    return setState(validateTouchedFields(validators, newState))
-  }
-
-  const patch: FormPatchFunction<T> = (values) => {
-    let newState = currentState
-    for (const key in values) {
-      const value = values[key] as T[typeof key]
-      newState = updatedField(key, value, validators, newState)
-    }
-    setState(validateAllFields(validators, newState))
-  }
-
-  const touch: FormTouchFunction<T> = (key) =>
-    setState(touched(key, validators, currentState))
-
-  const fieldProps: FormFieldPropsFunction<T> = (key) => ({
-    value: currentState[key].currentValue,
-    onChange: (value) => set(key, value),
-    onBlur: () => touch(key),
-    error: currentState[key].errors.join(", "),
-  })
-
-  const submitCallback: FormSubmitCallback<T> = (callback) => () => {
-    if (isValid) {
-      const values = foldFields(
-        (acc, key, field) => ({ ...acc, [key]: field.currentValue }),
-        {},
-        currentState
-      ) as T
-      callback(values)
-    }
-  }
-
-  const validateAll: FormValidateFunction = () =>
-    setState(validateAllFields(validators, currentState))
-
-  const [isValid, allFieldsValidated] = foldFields(
-    ([accIsValid, accAllFieldsValidated], key) => [
-      accIsValid && A.isEmpty(getErrors(key, validators, currentState)),
-      accAllFieldsValidated && currentState[key].validated,
-    ],
-    [true, true],
-    currentState
+  const set: FormSetFunction<T> = useCallback(
+    (key, value) => {
+      const newState = updatedField(key, value, validators, currentState)
+      return setState(validateTouchedFields(validators, newState))
+    },
+    [currentState, validators]
   )
 
-  return {
-    state: currentState,
-    touch,
-    set,
-    patch,
-    fieldProps,
-    submitCallback,
-    validateAll,
-    isValid,
-    allFieldsValidated,
-  }
+  const patch: FormPatchFunction<T> = useCallback(
+    (values) => {
+      let newState = currentState
+      for (const key in values) {
+        const value = values[key] as T[typeof key]
+        newState = updatedField(key, value, validators, newState)
+      }
+      setState(validateAllFields(validators, newState))
+    },
+    [currentState, validators]
+  )
+
+  const touch: FormTouchFunction<T> = useCallback(
+    (key) => setState(touched(key, validators, currentState)),
+    [currentState, validators]
+  )
+
+  const fieldProps: FormFieldPropsFunction<T> = useCallback(
+    (key) => ({
+      value: currentState[key].currentValue,
+      onChange: (value) => set(key, value),
+      onBlur: () => touch(key),
+      error: currentState[key].errors.join(", "),
+    }),
+    [currentState, set, touch]
+  )
+
+  const [isValid, allFieldsValidated] = useMemo(
+    () =>
+      foldFields(
+        ([accIsValid, accAllFieldsValidated], key) => [
+          accIsValid && A.isEmpty(getErrors(key, validators, currentState)),
+          accAllFieldsValidated && currentState[key].validated,
+        ],
+        [true, true],
+        currentState
+      ),
+    [currentState, validators]
+  )
+
+  const submitCallback: FormSubmitCallback<T> = useCallback(
+    (callback) => () => {
+      if (isValid) {
+        const values = foldFields(
+          (acc, key, field) => ({ ...acc, [key]: field.currentValue }),
+          {},
+          currentState
+        ) as T
+        callback(values)
+      }
+    },
+    [currentState, isValid]
+  )
+
+  const validateAll: FormValidateFunction = useCallback(
+    () => setState(validateAllFields(validators, currentState)),
+    [currentState, validators]
+  )
+
+  return useMemo(
+    () => ({
+      state: currentState,
+      touch,
+      set,
+      patch,
+      fieldProps,
+      submitCallback,
+      validateAll,
+      isValid,
+      allFieldsValidated,
+    }),
+    [
+      allFieldsValidated,
+      currentState,
+      fieldProps,
+      isValid,
+      patch,
+      set,
+      submitCallback,
+      touch,
+      validateAll,
+    ]
+  )
 }
 
 const createInitialState = <T extends object>(values: T): FormState<T> =>

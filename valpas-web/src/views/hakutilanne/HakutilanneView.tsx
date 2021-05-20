@@ -79,6 +79,7 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
     const [selectedOppijaOids, setSelectedOppijaOids] = useState<Oid[]>([])
 
     const orgOptions = getOrgOptions(organisaatiot)
+    const organisaatio = organisaatiot.find((o) => o.oid === organisaatioOid)
 
     const changeOrganisaatio = (oid?: Oid) => {
       if (oid) {
@@ -132,10 +133,10 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
             )}
           </CardBody>
         </Card>
-        {isFeatureFlagEnabled("ilmoittaminen") ? (
+        {isFeatureFlagEnabled("ilmoittaminen") && organisaatio ? (
           <HakutilanneDrawer
             selectedOppijat={selectedOppijat}
-            tekijäOrganisaatio={organisaatioOid}
+            tekijäorganisaatio={organisaatio}
           />
         ) : null}
       </div>

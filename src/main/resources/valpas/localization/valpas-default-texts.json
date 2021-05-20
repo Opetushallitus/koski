@@ -109,6 +109,7 @@
   "ilmoituslomake__ohje": "Tarkista ilmoitettavien oppijoiden yhteystiedot.",
   "ilmoituslomake__turvakielto_ohje": "Oppijalla on turvakielto, yhteystietoja ei saada DVV:sta. Välitettäviä tietoja saa käyttää vain oppivelvollisuuden valvontaan.",
   "ilmoituslomake__sulje": "Sulje",
+  "ilmoituslomake__valmis": "Valmis",
   "ilmoituslomake__esitäytä_yhteystiedoilla": "Esitäytä yhteystiedoilla:",
   "ilmoituslomake__asuinkunta": "Asuinkunta",
   "ilmoituslomake__yhteydenottokieli": "Yhteydenottokieli",

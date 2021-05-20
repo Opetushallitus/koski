@@ -16,6 +16,8 @@ export type TextFieldProps = {
   icon?: React.ReactNode
   error?: React.ReactNode
   id?: string
+  required?: boolean
+  testId?: string
 }
 
 export const TextField = (props: TextFieldProps) => (
@@ -24,6 +26,7 @@ export const TextField = (props: TextFieldProps) => (
     label={props.label}
     icon={props.icon}
     error={props.error}
+    required={props.required}
   >
     <input
       id={props.id}
@@ -36,6 +39,7 @@ export const TextField = (props: TextFieldProps) => (
       onChange={(event) => props.onChange(event.target.value)}
       onBlur={props.onBlur}
       disabled={props.disabled}
+      data-testid={props.testId}
     />
   </InputContainer>
 )

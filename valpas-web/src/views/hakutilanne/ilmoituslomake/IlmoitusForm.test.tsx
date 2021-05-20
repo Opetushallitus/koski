@@ -1,18 +1,21 @@
-import { render, RenderResult } from "@testing-library/react"
+import { act, render, RenderResult, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
+import fetchMock from "jest-fetch-mock"
 import React from "react"
 import { disableMissingTranslationWarnings } from "../../../i18n/i18n"
-import { KoodistoKoodiviite } from "../../../state/apitypes/koodistot"
 import {
-  KuntailmoitusKunta,
-  OppijanPohjatiedot,
-} from "../../../state/apitypes/kuntailmoituspohjatiedot"
+  Kieli,
+  KoodistoKoodiviite,
+  Maa,
+} from "../../../state/apitypes/koodistot"
+import { KuntailmoitusKunta } from "../../../state/apitypes/kuntailmoitus"
+import { OppijanPohjatiedot } from "../../../state/apitypes/kuntailmoituspohjatiedot"
 import { OppijaHakutilanteillaSuppeatTiedot } from "../../../state/apitypes/oppija"
+import { organisaatioWithOid } from "../../../state/apitypes/organisaatiot"
 import { IlmoitusForm, IlmoitusFormValues } from "./IlmoitusForm"
 
 describe("IlmoitusForm", () => {
   test("Renderöityy virheittä", () => {
-    disableMissingTranslationWarnings()
     createForm()
   })
 
@@ -20,6 +23,13 @@ describe("IlmoitusForm", () => {
     const form = createForm()
     expectSubmitButtonIsEnabled(form, false)
     selectOption(form, "ilmoituslomake__asuinkunta *", 1)
+    expectSubmitButtonIsEnabled(form, true)
+
+    fillTextField(form, "ilmoituslomake__postinumero", "00150")
+    fillTextField(form, "ilmoituslomake__postitoimipaikka", "Helsinki")
+    fillTextField(form, "ilmoituslomake__katuosoite", "Katu 5")
+    fillTextField(form, "ilmoituslomake__puhelinnumero", "04012345678")
+    fillTextField(form, "ilmoituslomake__sähköposti", "valpas@gmail.com")
     expectSubmitButtonIsEnabled(form, true)
   })
 
@@ -38,11 +48,11 @@ describe("IlmoitusForm", () => {
     )
   })
 
-  test("Lomake palauttaa täytetyt arvot", () => {
+  test("Lomake palauttaa täytetyt arvot", async () => {
     const callback = jest.fn()
     const form = createForm(callback)
 
-    userEvent.click(getSubmitButton(form))
+    await submit(form)
 
     selectOption(form, "ilmoituslomake__asuinkunta *", 1)
     selectOption(form, "ilmoituslomake__yhteydenottokieli", 1)
@@ -57,7 +67,7 @@ describe("IlmoitusForm", () => {
       "ilmoituslomake__hakenut_opiskelemaan_yhteishakujen_ulkopuolella"
     )
 
-    userEvent.click(getSubmitButton(form))
+    await submit(form, callback)
 
     expect(callback).toHaveBeenCalledTimes(1)
     expect(callback).toHaveBeenLastCalledWith({
@@ -73,22 +83,22 @@ describe("IlmoitusForm", () => {
     })
   })
 
-  test("Lomakkeen yhteystiedot täydentyvät esitäytöllä", () => {
+  test("Lomakkeen yhteystiedot täydentyvät esitäytöllä", async () => {
     const callback = jest.fn()
     const form = createForm(callback)
 
     userEvent.click(form.getByText("1) Yhteishaku kevät 2021"))
-    userEvent.click(getSubmitButton(form))
+    await submit(form, callback)
 
     expect(callback).toHaveBeenLastCalledWith({
       asuinkunta: "oid.jyvaskyla",
-      email: "",
+      email: "osoite@email.com",
       hakenutOpiskelemaanYhteyshakujenUlkopuolella: false,
       lähiosoite: "Jytäraitti 83",
       maa: undefined,
       postinumero: "12345",
       postitoimipaikka: "Jyväskylä",
-      puhelinnumero: "",
+      puhelinnumero: "04012345678",
       yhteydenottokieli: "FI",
     })
   })
@@ -106,11 +116,14 @@ describe("IlmoitusForm", () => {
   })
 })
 
+function ignoreOnSubmit(_values: IlmoitusFormValues) {}
+
 const createForm = (
   onSubmit?: (values: IlmoitusFormValues) => void,
   oppijanPohjatiedotPatch?: Partial<OppijanPohjatiedot>
-) =>
-  render(
+) => {
+  disableMissingTranslationWarnings()
+  return render(
     <IlmoitusForm
       formIndex={0}
       numberOfForms={2}
@@ -119,9 +132,11 @@ const createForm = (
       kunnat={mockAsuinkunnat}
       maat={mockMaat}
       kielet={mockYhteydenottokielet}
-      onSubmit={onSubmit || (() => {})}
+      tekijäorganisaatio={organisaatioWithOid("tekijäorganisaatio.oid")}
+      onSubmit={onSubmit || ignoreOnSubmit}
     />
   )
+}
 
 const selectOption = (form: RenderResult, labelText: string, index: number) => {
   const s = getInputContainer(form, labelText)
@@ -143,6 +158,15 @@ const toggleCheckbox = (form: RenderResult, labelText: string) => {
     .parentElement?.getElementsByTagName("input")
     .item(0)
   userEvent.click(c!!)
+}
+
+const submit = async (form: RenderResult, onSubmitMock?: jest.Mock) => {
+  const numberOfCalls = fetchMock.mock.calls.length
+  act(() => userEvent.click(getSubmitButton(form)))
+  if (onSubmitMock) {
+    await waitFor(() => expect(onSubmitMock).toHaveBeenCalledTimes(1))
+    expect(fetchMock).toHaveBeenCalledTimes(numberOfCalls + 1)
+  }
 }
 
 const expectSubmitButtonIsEnabled = (form: RenderResult, enabled: boolean) => {
@@ -245,12 +269,12 @@ const mockMaat = mockKoodisto("maatjavaltiot2", {
   "246": "Suomi",
   "752": "Ruotsi",
   "840": "Yhdysvallat (USA)",
-})
+}) as Maa[]
 
 const mockYhteydenottokielet = mockKoodisto("kielivalikoima", {
   FI: "suomi",
   SV: "ruotsi",
-})
+}) as Kieli[]
 
 const mockOppijanPohjatiedot: OppijanPohjatiedot = {
   oppijaOid: "123",
@@ -269,6 +293,8 @@ const mockOppijanPohjatiedot: OppijanPohjatiedot = {
         postinumero: "12345",
         postitoimipaikka: "Jyväskylä",
         lähiosoite: "Jytäraitti 83",
+        email: "osoite@email.com",
+        puhelinnumero: "04012345678",
       },
       kunta: mockAsuinkunnat[1],
     },
