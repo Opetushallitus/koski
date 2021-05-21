@@ -52,6 +52,18 @@ class OppivelvollisuustietoSpec
         reloadRaportointikanta
         queryOids(oppivelvollisuustietoLiianVanha.oid) shouldBe(Nil)
       }
+      "Henkilö on suorittanut aikuisten perusopetuksen oppimäärän ennen vuotta 2021" in {
+        resetFixtures
+        insert(oikeusOpiskelunMaksuttomuuteen, ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen)
+        reloadRaportointikanta
+        queryOids(oikeusOpiskelunMaksuttomuuteen.oid) shouldBe(Nil)
+      }
+      "Henkilö on suorittanut international schoolin ysiluokan" in {
+        resetFixtures
+        insert(oikeusOpiskelunMaksuttomuuteen, ExamplesInternationalSchool.opiskeluoikeus)
+        reloadRaportointikanta
+        queryOids(oikeusOpiskelunMaksuttomuuteen.oid) shouldBe(Nil)
+      }
     }
 
     "Jos oppija on oppivelvollisuuden piirissä, löytyy samat tiedot hänen kaikilla oideilla" - {
