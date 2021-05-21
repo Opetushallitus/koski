@@ -87,10 +87,10 @@ object Oppivelvollisuustiedot {
           end
             oppivelvollisuusVoimassaAsti,
           case
-            when suorittaa_ammattitutkintoa and suorittaa_lukionoppimaaraa then (syntymaaika + interval '20 year')::date
-            when suorittaa_ammattitutkintoa then least(ammattitutkinnon_vahvistus_paiva, (syntymaaika + interval '20 year')::date)
-            when suorittaa_lukionoppimaaraa then (syntymaaika + interval '20 year')::date
-            else (syntymaaika + interval '20 year')::date
+            when suorittaa_ammattitutkintoa and suorittaa_lukionoppimaaraa then #${s.name}.vuodenViimeinenPaivamaara(syntymaaika)
+            when suorittaa_ammattitutkintoa then least(ammattitutkinnon_vahvistus_paiva, #${s.name}.vuodenViimeinenPaivamaara(syntymaaika))
+            when suorittaa_lukionoppimaaraa then #${s.name}.vuodenViimeinenPaivamaara(syntymaaika)
+            else #${s.name}.vuodenViimeinenPaivamaara(syntymaaika)
           end
             oikeusKoulutuksenMaksuttomuuteenVoimassaAsti
         from

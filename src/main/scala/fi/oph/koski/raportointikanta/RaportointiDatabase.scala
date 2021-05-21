@@ -107,6 +107,18 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
     logger.info(s"Materialized views created in $duration s")
   }
 
+  def createCustomFunctions: Unit = {
+    logger.info("Creating custom functions")
+    val started = System.currentTimeMillis
+    setStatusLoadStarted("custom_functions")
+    runDbSync(DBIO.seq(
+      RaportointiDatabaseCustomFunctions.vuodenViimeinenPäivämäärä(schema)
+    ), timeout = 120.minutes)
+    val duration = (System.currentTimeMillis - started) / 1000
+    setStatusLoadCompleted("custom_functions")
+    logger.info(s"Custom functions created in $duration s")
+  }
+
   def loadOpiskeluoikeudet(opiskeluoikeudet: Seq[ROpiskeluoikeusRow]): Unit = {
     runDbSync(ROpiskeluoikeudet ++= opiskeluoikeudet, timeout = 5.minutes)
   }
