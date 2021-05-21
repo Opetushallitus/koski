@@ -14,13 +14,15 @@ case class Maksuttomuus(
   }
 }
 
-case class OikeuttaMaksuttomuuteenPidennetty(
+case class OikeuttaMaksuttomuuteenPidennetty (
   alku: LocalDate,
   loppu: LocalDate
-) extends Alkupäivällinen {
+) extends Alkupäivällinen with DateContaining {
   def overlaps(other: OikeuttaMaksuttomuuteenPidennetty): Boolean = {
     !alku.isBefore(other.alku) && !alku.isAfter(other.loppu) || !loppu.isBefore(other.alku) && !loppu.isAfter(other.loppu)
   }
+
+  def contains(d: LocalDate): Boolean = !d.isBefore(alku) && d.isAfter(loppu)
 }
 
 @Description("Laajennetun oppivelvollisuuden suoritus")
