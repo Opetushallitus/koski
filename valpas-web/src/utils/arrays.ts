@@ -33,3 +33,10 @@ export const nonEmptyEvery = <T>(
 
 export const asArray = <T>(arrayOrSingular: T | T[]): T[] =>
   Array.isArray(arrayOrSingular) ? arrayOrSingular : [arrayOrSingular]
+
+export const joinToString = (
+  arr: Array<string | null | undefined>
+): string | null => {
+  const definedStrings = arr.filter(nonNull)
+  return A.isNonEmpty(definedStrings) ? definedStrings.join(" ") : null
+}
