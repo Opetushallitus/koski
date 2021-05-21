@@ -12,6 +12,11 @@ export type KuntailmoitusLaajatTiedot = {
   hakenutMuualle?: boolean
 }
 
+export type KuntailmoitusLaajatTiedotLisätiedoilla = {
+  kuntailmoitus: KuntailmoitusLaajatTiedot
+  aktiivinen: boolean
+}
+
 export type KuntailmoituksenTekijäLaajatTiedot = {
   organisaatio: Organisaatio
   henkilö?: KuntailmoituksenTekijäHenkilö
@@ -38,3 +43,7 @@ export type KuntailmoituksenOppijanYhteystiedot = {
   postitoimipaikka?: string
   maa?: Maa
 }
+
+export const isAktiivinenKuntailmoitus = (
+  kuntailmoitus: KuntailmoitusLaajatTiedotLisätiedoilla
+): boolean => kuntailmoitus.aktiivinen

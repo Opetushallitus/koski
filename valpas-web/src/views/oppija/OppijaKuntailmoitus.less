@@ -1,0 +1,62 @@
+@import "../../style/colors.less";
+@import "../../style/typography.less";
+
+@kuntailmoitus-padding: 1rem;
+@kuntailmoitus-icon-container-size: 3.5rem;
+@kuntailmoitus-frame-color: @color-gray-lighten-1;
+
+.kuntailmoitus__frame {
+  border: 1px solid @kuntailmoitus-frame-color;
+  box-shadow: 0px 3px 4px 1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+
+  .kuntailmoitus__header {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid @kuntailmoitus-frame-color;
+
+    .kuntailmoitus__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: @kuntailmoitus-icon-container-size;
+      min-height: @kuntailmoitus-icon-container-size;
+      padding: @kuntailmoitus-padding;
+
+      background: @color-gray;
+      .icon {
+        color: @color-white;
+      }
+    }
+
+    .kuntailmoitus__icon--aktiivinen {
+      background: @color-red;
+      color: @color-white;
+    }
+
+    .kuntailmoitus__title {
+      padding: @kuntailmoitus-padding;
+      font-size: @font-size-large;
+      font-weight: @font-weight-bold;
+    }
+  }
+
+  .kuntailmoitus__body {
+    padding: @kuntailmoitus-padding;
+    padding-left: @kuntailmoitus-padding + @kuntailmoitus-icon-container-size;
+
+    .kuntailmoitus__columnheading {
+      font-weight: @font-weight-x-bold;
+      margin-bottom: 1rem;
+    }
+
+    .kuntailmoitus__section {
+      margin-bottom: 1rem;
+
+      .kuntailmoitus__sectionname {
+        font-weight: @font-weight-bold;
+      }
+    }
+  }
+}

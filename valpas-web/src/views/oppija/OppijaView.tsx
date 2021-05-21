@@ -18,6 +18,7 @@ import { InfoTooltip } from "../../components/tooltip/InfoTooltip"
 import { Heading } from "../../components/typography/headings"
 import { T, t } from "../../i18n/i18n"
 import { withRequiresHakeutumisenValvonta } from "../../state/accessRights"
+import { isAktiivinenKuntailmoitus } from "../../state/apitypes/kuntailmoitus"
 import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import {
   createHakutilannePathWithOrg as createHakutilannePathWithOrg,
@@ -26,6 +27,7 @@ import {
   parseQueryFromProps as parseSearchQueryFromProps,
 } from "../../state/paths"
 import { plainComponent } from "../../utils/plaincomponent"
+import { OppijaKuntailmoitus } from "./OppijaKuntailmoitus"
 import { OppijanHaut } from "./OppijanHaut"
 import { OppijanOpiskeluhistoria } from "./OppijanOpiskeluhistoria"
 import { OppijanOppivelvollisuustiedot } from "./OppijanOppivelvollisuustiedot"
@@ -36,11 +38,63 @@ const b = bem("oppijaview")
 
 export type OppijaViewProps = OppijaViewRouteProps
 
+// TODO: Testidataa UI:n kehittämistä varten ennen kuin API alkaa palauttaa näitä
+const concatOppijaMockData = (
+  oppija: OppijaHakutilanteillaLaajatTiedot
+): OppijaHakutilanteillaLaajatTiedot => ({
+  ...oppija,
+  kuntailmoitukset: [
+    ...oppija.kuntailmoitukset,
+    {
+      aktiivinen: true,
+      kuntailmoitus: {
+        kunta: {
+          oid: "123",
+          nimi: { fi: "Kokkola" },
+        },
+        aikaleima: "2020-05-21T15:38:00Z",
+        tekijä: {
+          organisaatio: {
+            oid: "321",
+            nimi: { fi: "Elämäm koulu" },
+          },
+          henkilö: {
+            etunimet: "Heikki Kalevi",
+            sukunimi: "Randelin",
+            email: "randelin@sposti.fi",
+            puhelinnumero: "04012345666",
+          },
+        },
+        yhteydenottokieli: {
+          koodistoUri: "kieli",
+          koodiarvo: "FI",
+        },
+        oppijanYhteystiedot: {
+          puhelinnumero: "05012322121",
+          email: "oppija@spot.fi",
+          lähiosoite: "Lähikatu 5",
+          postinumero: "04444",
+          postitoimipaikka: "Järvenpää",
+          maa: {
+            koodistoUri: "maatjavaltiot2",
+            koodiarvo: "123",
+            nimi: { fi: "Suomi" },
+          },
+        },
+        hakenutMuualle: true,
+      },
+    },
+  ],
+})
+
 export const OppijaView = withRequiresHakeutumisenValvonta(
   (props: OppijaViewProps) => {
     const searchQuery = parseSearchQueryFromProps(props)
     const queryOid = props.match.params.oppijaOid!!
     const oppija = useApiWithParams(fetchOppija, [queryOid], fetchOppijaCache)
+    const kuntailmoitukset = isSuccess(oppija)
+      ? concatOppijaMockData(oppija.data).kuntailmoitukset
+      : []
 
     return (
       <Page id="oppija">
@@ -53,6 +107,12 @@ export const OppijaView = withRequiresHakeutumisenValvonta(
         {mapLoading(oppija, () => (
           <Spinner />
         ))}
+
+        {kuntailmoitukset
+          .filter(isAktiivinenKuntailmoitus)
+          .map((kuntailmoitus, index) => (
+            <OppijaKuntailmoitus key={index} kuntailmoitus={kuntailmoitus} />
+          ))}
 
         {mapSuccess(oppija, (oppijaData: OppijaHakutilanteillaLaajatTiedot) => (
           <>

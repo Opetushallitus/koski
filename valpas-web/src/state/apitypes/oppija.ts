@@ -1,6 +1,7 @@
 import { ISODate, Oid } from "../common"
 import { HakuLaajatTiedot, HakuSuppeatTiedot } from "./haku"
 import { HenkilöLaajatTiedot, HenkilöSuppeatTiedot } from "./henkilo"
+import { KuntailmoitusLaajatTiedotLisätiedoilla } from "./kuntailmoitus"
 import {
   OpiskeluoikeusLaajatTiedot,
   OpiskeluoikeusSuppeatTiedot,
@@ -12,6 +13,7 @@ export type OppijaHakutilanteillaLaajatTiedot = {
   hakutilanteet: HakuLaajatTiedot[]
   hakutilanneError?: string
   yhteystiedot: Yhteystiedot<YhteystietojenAlkuperä>[]
+  kuntailmoitukset: KuntailmoitusLaajatTiedotLisätiedoilla[]
 }
 
 export type OppijaHakutilanteillaSuppeatTiedot = {
