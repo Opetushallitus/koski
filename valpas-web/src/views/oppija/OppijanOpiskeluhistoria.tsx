@@ -1,13 +1,21 @@
-import React from "react"
+import * as A from "fp-ts/Array"
+import { pipe } from "fp-ts/lib/function"
+import * as Ord from "fp-ts/Ord"
+import * as string from "fp-ts/string"
+import React, { useMemo } from "react"
 import {
   IconSection,
   IconSectionHeading,
 } from "../../components/containers/IconSection"
-import { OpiskeluIcon } from "../../components/icons/Icon"
+import { IlmoitusListIcon, OpiskeluIcon } from "../../components/icons/Icon"
 import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import { getLocalized, T, t, useLanguage } from "../../i18n/i18n"
 import { KoodistoKoodiviite } from "../../state/apitypes/koodistot"
+import {
+  KuntailmoitusLaajatTiedotLisätiedoilla,
+  sortKuntailmoitusLaajatTiedotLisätiedoilla,
+} from "../../state/apitypes/kuntailmoitus"
 import {
   OpiskeluoikeusLaajatTiedot,
   sortOpiskeluoikeusLaajatTiedot,
@@ -15,61 +23,147 @@ import {
 import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import { ISODate } from "../../state/common"
 import { formatDate, formatNullableDate, parseYear } from "../../utils/date"
+import { pick } from "../../utils/objects"
 
 export type OppijanOpiskeluhistoriaProps = {
   oppija: OppijaHakutilanteillaLaajatTiedot
 }
 
+type OpiskeluhistoriaItem = {
+  order: string
+  child: React.ReactNode
+}
+
+const opiskeluhistoriaItemOrd = Ord.reverse(
+  Ord.contramap((item: OpiskeluhistoriaItem) => item.order)(string.Ord)
+)
+
+const orderString = (
+  priority: string,
+  time: string | undefined,
+  index: number
+) => `${time || "0000-00-00"}-${priority}-${(9999999 - index).toString()}`
+
 export const OppijanOpiskeluhistoria = (
   props: OppijanOpiskeluhistoriaProps
 ) => {
   const language = useLanguage()
-  const sort = sortOpiskeluoikeusLaajatTiedot(language)
 
-  return props.oppija.oppija.opiskeluoikeudet.length > 0 ? (
-    <>
-      {sort(props.oppija.oppija.opiskeluoikeudet).map((opiskeluoikeus) => {
-        const nimi = koodistonimi(opiskeluoikeus.tyyppi)
-        const range = yearRangeString(
-          opiskeluoikeus.alkamispäivä,
-          opiskeluoikeus.päättymispäivä
-        )
+  const items = useMemo(() => {
+    // Järjestele listat ensin niiden omien kriteerien mukaan
+    const opiskeluoikeudet = sortOpiskeluoikeusLaajatTiedot(language)(
+      props.oppija.oppija.opiskeluoikeudet
+    )
 
-        return (
-          <IconSection
-            key={opiskeluoikeus.oid}
-            icon={<OpiskeluIcon color="gray" />}
-          >
-            <IconSectionHeading>
-              {nimi} {range}
-            </IconSectionHeading>
-            <InfoTable size="tighter">
-              <InfoTableRow
-                value={getLocalized(opiskeluoikeus.oppilaitos.nimi)}
-              />
-              {opiskeluoikeus.ryhmä && (
-                <InfoTableRow
-                  label={t("oppija__ryhma")}
-                  value={opiskeluoikeus.ryhmä}
-                />
-              )}
-              {opiskeluoikeus.tarkastelupäivänTila && (
-                <InfoTableRow
-                  label={t("oppija__tila")}
-                  value={tilaString(opiskeluoikeus)}
-                />
-              )}
-            </InfoTable>
-          </IconSection>
-        )
-      })}
-    </>
+    const ilmoitukset = sortKuntailmoitusLaajatTiedotLisätiedoilla(
+      props.oppija.kuntailmoitukset
+    )
+
+    // Yhdistä erilaatuiset asiat yhtenäiseksi listaksi
+    return pipe(
+      [
+        ...ilmoitukset.map((ilmoitus, index) => ({
+          order: orderString("A", ilmoitus.kuntailmoitus.aikaleima, index),
+          child: (
+            <OpiskeluhistoriaIlmoitus
+              key={`i-${index}`}
+              kuntailmoitus={ilmoitus}
+            />
+          ),
+        })),
+        ...opiskeluoikeudet.map((oo, index) => ({
+          order: orderString("B", oo.alkamispäivä, index),
+          child: (
+            <OpiskeluhistoriaOpinto key={`oo-${index}`} opiskeluoikeus={oo} />
+          ),
+        })),
+      ],
+      A.sort(opiskeluhistoriaItemOrd),
+      pick("child")
+    )
+  }, [
+    language,
+    props.oppija.kuntailmoitukset,
+    props.oppija.oppija.opiskeluoikeudet,
+  ])
+
+  return items.length > 0 ? (
+    <>{items}</>
   ) : (
     <NoDataMessage>
       <T id="oppija__ei_opiskeluhistoriaa" />
     </NoDataMessage>
   )
 }
+
+type OpiskeluhistoriaOpintoProps = {
+  opiskeluoikeus: OpiskeluoikeusLaajatTiedot
+}
+
+const OpiskeluhistoriaOpinto = ({
+  opiskeluoikeus,
+}: OpiskeluhistoriaOpintoProps) => {
+  const nimi = koodistonimi(opiskeluoikeus.tyyppi)
+  const range = yearRangeString(
+    opiskeluoikeus.alkamispäivä,
+    opiskeluoikeus.päättymispäivä
+  )
+
+  return (
+    <IconSection icon={<OpiskeluIcon color="gray" />}>
+      <IconSectionHeading>
+        {nimi} {range}
+      </IconSectionHeading>
+      <InfoTable size="tighter">
+        <InfoTableRow value={getLocalized(opiskeluoikeus.oppilaitos.nimi)} />
+        {opiskeluoikeus.ryhmä && (
+          <InfoTableRow
+            label={t("oppija__ryhma")}
+            value={opiskeluoikeus.ryhmä}
+          />
+        )}
+        {opiskeluoikeus.tarkastelupäivänTila && (
+          <InfoTableRow
+            label={t("oppija__tila")}
+            value={tilaString(opiskeluoikeus)}
+          />
+        )}
+      </InfoTable>
+    </IconSection>
+  )
+}
+
+type OpiskeluhistoriaIlmoitusProps = {
+  kuntailmoitus: KuntailmoitusLaajatTiedotLisätiedoilla
+}
+
+const OpiskeluhistoriaIlmoitus = ({
+  kuntailmoitus,
+}: OpiskeluhistoriaIlmoitusProps) => (
+  <IconSection icon={<IlmoitusListIcon color="gray" />}>
+    <IconSectionHeading>
+      <T id="oppija__ilmoitushistoria_otsikko" />
+    </IconSectionHeading>
+    <InfoTable size="tighter">
+      {kuntailmoitus.kuntailmoitus.aikaleima && (
+        <InfoTableRow
+          label={t("oppija__ilmoitushistoria_päivämäärä")}
+          value={formatDate(kuntailmoitus.kuntailmoitus.aikaleima)}
+        />
+      )}
+      <InfoTableRow
+        label={t("oppija__ilmoitushistoria_ilmoittaja")}
+        value={getLocalized(
+          kuntailmoitus.kuntailmoitus.tekijä.organisaatio.nimi
+        )}
+      />
+      <InfoTableRow
+        label={t("oppija__ilmoitushistoria_kohde")}
+        value={getLocalized(kuntailmoitus.kuntailmoitus.kunta.nimi)}
+      />
+    </InfoTable>
+  </IconSection>
+)
 
 const koodistonimi = (k: KoodistoKoodiviite<string, string>): string =>
   getLocalized(k.nimi) || k.koodiarvo
