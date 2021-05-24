@@ -1,4 +1,5 @@
 import bem from "bem-ts"
+import { isEmpty } from "fp-ts/lib/Array"
 import React from "react"
 import { fetchOppija, fetchOppijaCache } from "../../api/api"
 import { ApiMethodState, useApiWithParams } from "../../api/apiHooks"
@@ -12,7 +13,7 @@ import {
 } from "../../components/containers/cards"
 import { Column, ColumnsContainer } from "../../components/containers/Columns"
 import { Page } from "../../components/containers/Page"
-import { BackIcon } from "../../components/icons/Icon"
+import { BackIcon, SuccessCircleIcon } from "../../components/icons/Icon"
 import { Spinner } from "../../components/icons/Spinner"
 import { InfoTooltip } from "../../components/tooltip/InfoTooltip"
 import { Heading } from "../../components/typography/headings"
@@ -20,6 +21,7 @@ import { T, t } from "../../i18n/i18n"
 import { withRequiresHakeutumisenValvonta } from "../../state/accessRights"
 import { isAktiivinenKuntailmoitus } from "../../state/apitypes/kuntailmoitus"
 import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
+import { isFeatureFlagEnabled } from "../../state/featureFlags"
 import {
   createHakutilannePathWithOrg as createHakutilannePathWithOrg,
   createHakutilannePathWithoutOrg as createHakutilannePathWithoutOrg,
@@ -41,60 +43,105 @@ export type OppijaViewProps = OppijaViewRouteProps
 // TODO: Testidataa UI:n kehittämistä varten ennen kuin API alkaa palauttaa näitä
 const concatOppijaMockData = (
   oppija: OppijaHakutilanteillaLaajatTiedot
-): OppijaHakutilanteillaLaajatTiedot => ({
-  ...oppija,
-  kuntailmoitukset: [
-    ...oppija.kuntailmoitukset,
-    {
-      aktiivinen: true,
-      kuntailmoitus: {
-        kunta: {
-          oid: "123",
-          nimi: { fi: "Kokkola" },
-        },
-        aikaleima: "2020-05-21T15:38:00Z",
-        tekijä: {
-          organisaatio: {
-            oid: "321",
-            nimi: { fi: "Elämäm koulu" },
+): OppijaHakutilanteillaLaajatTiedot =>
+  !isFeatureFlagEnabled("mock") ||
+  oppija.oppija.henkilö.oid !== "1.2.246.562.24.00000000028"
+    ? oppija
+    : {
+        ...oppija,
+        kuntailmoitukset: [
+          ...oppija.kuntailmoitukset,
+          {
+            aktiivinen: true,
+            kuntailmoitus: {
+              kunta: {
+                oid: "123",
+                nimi: { fi: "Kokkola" },
+              },
+              aikaleima: "2020-05-21T15:38:00Z",
+              tekijä: {
+                organisaatio: {
+                  oid: "321",
+                  nimi: { fi: "Elämäm koulu" },
+                },
+                henkilö: {
+                  etunimet: "Heikki Kalevi",
+                  sukunimi: "Randelin",
+                  email: "randelin@sposti.fi",
+                  puhelinnumero: "04012345666",
+                },
+              },
+              yhteydenottokieli: {
+                koodistoUri: "kieli",
+                koodiarvo: "FI",
+              },
+              oppijanYhteystiedot: {
+                puhelinnumero: "05012322121",
+                email: "oppija@spot.fi",
+                lähiosoite: "Lähikatu 5",
+                postinumero: "04444",
+                postitoimipaikka: "Järvenpää",
+                maa: {
+                  koodistoUri: "maatjavaltiot2",
+                  koodiarvo: "123",
+                  nimi: { fi: "Suomi" },
+                },
+              },
+              hakenutMuualle: true,
+            },
           },
-          henkilö: {
-            etunimet: "Heikki Kalevi",
-            sukunimi: "Randelin",
-            email: "randelin@sposti.fi",
-            puhelinnumero: "04012345666",
+          {
+            aktiivinen: false,
+            kuntailmoitus: {
+              kunta: {
+                oid: "123",
+                nimi: { fi: "Kokkola" },
+              },
+              aikaleima: "2000-04-21T15:38:00Z",
+              tekijä: {
+                organisaatio: {
+                  oid: "321",
+                  nimi: { fi: "Elämäm koulu" },
+                },
+                henkilö: {
+                  etunimet: "Heikki Kalevi",
+                  sukunimi: "Randelin",
+                  email: "randelin@sposti.fi",
+                  puhelinnumero: "04012345666",
+                },
+              },
+              yhteydenottokieli: {
+                koodistoUri: "kieli",
+                koodiarvo: "FI",
+              },
+              oppijanYhteystiedot: {
+                puhelinnumero: "05012322121",
+                email: "oppija@spot.fi",
+                lähiosoite: "Lähikatu 5",
+                postinumero: "04444",
+                postitoimipaikka: "Järvenpää",
+                maa: {
+                  koodistoUri: "maatjavaltiot2",
+                  koodiarvo: "123",
+                  nimi: { fi: "Suomi" },
+                },
+              },
+              hakenutMuualle: true,
+            },
           },
-        },
-        yhteydenottokieli: {
-          koodistoUri: "kieli",
-          koodiarvo: "FI",
-        },
-        oppijanYhteystiedot: {
-          puhelinnumero: "05012322121",
-          email: "oppija@spot.fi",
-          lähiosoite: "Lähikatu 5",
-          postinumero: "04444",
-          postitoimipaikka: "Järvenpää",
-          maa: {
-            koodistoUri: "maatjavaltiot2",
-            koodiarvo: "123",
-            nimi: { fi: "Suomi" },
-          },
-        },
-        hakenutMuualle: true,
-      },
-    },
-  ],
-})
+        ],
+      }
 
 export const OppijaView = withRequiresHakeutumisenValvonta(
   (props: OppijaViewProps) => {
     const searchQuery = parseSearchQueryFromProps(props)
     const queryOid = props.match.params.oppijaOid!!
     const oppija = useApiWithParams(fetchOppija, [queryOid], fetchOppijaCache)
-    const kuntailmoitukset = isSuccess(oppija)
-      ? concatOppijaMockData(oppija.data).kuntailmoitukset
-      : []
+    const oppijaData = isSuccess(oppija)
+      ? concatOppijaMockData(oppija.data)
+      : null
+    const aktiivisetKuntailmoitukset =
+      oppijaData?.kuntailmoitukset.filter(isAktiivinenKuntailmoitus) || []
 
     return (
       <Page id="oppija">
@@ -108,13 +155,12 @@ export const OppijaView = withRequiresHakeutumisenValvonta(
           <Spinner />
         ))}
 
-        {kuntailmoitukset
-          .filter(isAktiivinenKuntailmoitus)
-          .map((kuntailmoitus, index) => (
-            <OppijaKuntailmoitus key={index} kuntailmoitus={kuntailmoitus} />
-          ))}
+        {isEmpty(aktiivisetKuntailmoitukset) && <EiIlmoituksiaMessage />}
+        {aktiivisetKuntailmoitukset.map((kuntailmoitus, index) => (
+          <OppijaKuntailmoitus key={index} kuntailmoitus={kuntailmoitus} />
+        ))}
 
-        {mapSuccess(oppija, (oppijaData: OppijaHakutilanteillaLaajatTiedot) => (
+        {oppijaData && (
           <>
             <ColumnsContainer>
               <Column size={4}>
@@ -167,7 +213,7 @@ export const OppijaView = withRequiresHakeutumisenValvonta(
               </Column>
             </ColumnsContainer>
           </>
-        ))}
+        )}
       </Page>
     )
   }
@@ -221,3 +267,10 @@ const OppijaHeadings = (props: {
 )
 
 const SecondaryOppijaHeading = plainComponent("h2", b("secondaryheading"))
+
+const EiIlmoituksiaMessage = () => (
+  <div className={b("eiilmoituksia")}>
+    <SuccessCircleIcon color="green" />
+    <T id="oppija__ei_ilmoituksia" />
+  </div>
+)

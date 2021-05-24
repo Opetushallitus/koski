@@ -1,3 +1,5 @@
+import * as A from "fp-ts/Array"
+
 export const isEntry = (arr: string[]): arr is [string, string] =>
   arr.length === 2
 
@@ -22,3 +24,10 @@ export const removeFalsyValues = <T extends object>(obj: T): Partial<T> => {
   }
   return partial
 }
+
+export const pluck = <T extends object, K extends keyof T>(key: K) => (
+  obj: T
+): T[K] => obj[key]
+
+export const pick = <T extends object, K extends keyof T>(key: K) =>
+  A.map<T, T[K]>(pluck(key))

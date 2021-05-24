@@ -1,5 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom"
+import { enableFeature, Feature } from "./state/featureFlags"
 import "./style/index.less"
 import { ValpasApp } from "./views/ValpasApp"
 
@@ -8,6 +9,7 @@ declare global {
     environment?: string
     virkailija_raamit_set_to_load?: boolean
     opintopolkuVirkailijaUrl?: string
+    enableFeature?: (feature: Feature) => void
   }
 }
 
@@ -16,3 +18,5 @@ async function main() {
 }
 
 main()
+
+window.enableFeature = enableFeature
