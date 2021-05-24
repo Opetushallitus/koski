@@ -331,6 +331,14 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
+  def lukionAineopintojenOpiskeluoikeusAlkaa2021Syksyllä = ExamplesLukio2019.aktiivinenOppiaineenOppimääräOpiskeluoikeus.copy(
+    tila = LukionOpiskeluoikeudenTila(
+      List(
+        LukionOpiskeluoikeusjakso(alku = date(2021, 8, 15), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+      )
+    )
+  )
+
   def lukionOpiskeluoikeusAlkaa2021Lokakuussa = ExamplesLukio2019.aktiivinenOpiskeluoikeus.copy(
     tila = LukionOpiskeluoikeudenTila(
       List(

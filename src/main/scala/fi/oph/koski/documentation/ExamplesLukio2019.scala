@@ -85,6 +85,18 @@ object ExamplesLukio2019 {
 
   lazy val oppiaineenOppimääräOpiskeluoikeus: LukionOpiskeluoikeus = opiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus))
 
+  lazy val aktiivinenOppiaineenOppimääräOpiskeluoikeus: LukionOpiskeluoikeus =
+    LukionOpiskeluoikeus(
+      tila = LukionOpiskeluoikeudenTila(
+        List(
+          LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+        )
+      ),
+      oppilaitos = Some(jyväskylänNormaalikoulu),
+      suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(vahvistus = None))
+    )
+
+
   lazy val oppija = Oppija(asUusiOppija(uusiLukio), List(opiskeluoikeus))
   lazy val oppiaineidenOppimäärienOppija = Oppija(asUusiOppija(uusiLukionAineopiskelija), List(oppiaineenOppimääräOpiskeluoikeus))
 

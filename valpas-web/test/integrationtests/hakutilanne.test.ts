@@ -82,7 +82,7 @@ describe("Hakutilannenäkymä", () => {
     await urlIsEventually(pathToUrl(jklHakutilannePath))
     await textEventuallyEquals(
       ".card__header",
-      "Hakeutumisvelvollisia oppijoita (16)"
+      "Hakeutumisvelvollisia oppijoita (18)"
     )
     await dataTableEventuallyEquals(
       ".hakutilanne",
@@ -107,7 +107,7 @@ describe("Hakutilannenäkymä", () => {
     await urlIsEventually(pathToUrl(jklHakutilannePath))
     await textEventuallyEquals(
       ".card__header",
-      "Hakeutumisvelvollisia oppijoita (16)"
+      "Hakeutumisvelvollisia oppijoita (18)"
     )
     await dataTableEventuallyEquals(
       ".hakutilanne",
@@ -200,7 +200,7 @@ describe("Hakutilannenäkymä", () => {
       await urlIsEventually(pathToUrl(jklHakutilannePath))
       await textEventuallyEquals(
         ".card__header",
-        "Hakeutumisvelvollisia oppijoita (16)"
+        "Hakeutumisvelvollisia oppijoita (18)"
       )
     }
 

@@ -1,18 +1,41 @@
 package fi.oph.koski.valpas
 
+import java.time.{LocalDate, LocalDateTime}
+import java.time.LocalDate.{of => date}
+
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus, Ryhmällinen}
 import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
-import fi.oph.koski.valpas.opiskeluoikeusfixture.{ValpasMockOppijat, ValpasOpiskeluoikeusExampleData}
+import fi.oph.koski.valpas.db.ValpasDatabaseFixtureLoader
+import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat, ValpasOpiskeluoikeusExampleData}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService.defaultMockTarkastelupäivä
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot, ValpasOppijaSuppeatTiedot}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{MockValpasRajapäivätService, ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot, ValpasOppijaSuppeatTiedot, ValpasRajapäivätService}
+import fi.oph.koski.valpas.valpasrepository.{ValpasExampleData, ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusLaajatTiedotJaOppijaOid}
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
+import org.scalatest.BeforeAndAfterEach
 
-class ValpasOppijaServiceSpec extends ValpasTestBase {
+class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
+  override protected def beforeEach() {
+    super.beforeEach()
+    KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+      .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)
+    new ValpasDatabaseFixtureLoader(KoskiApplicationForTests).reset()
+  }
+
+  override protected def afterEach(): Unit = {
+    KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+      .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)
+    new ValpasDatabaseFixtureLoader(KoskiApplicationForTests).reset()
+    super.afterEach()
+  }
+
   private val oppijaService = KoskiApplicationForTests.valpasOppijaService
+  private val rajapäivätService = KoskiApplicationForTests.valpasRajapäivätService
   private val oppilaitos = MockOrganisaatiot.jyväskylänNormaalikoulu
+  private val organisaatioRepository = KoskiApplicationForTests.organisaatioRepository
+  private val kuntailmoitusRepository = KoskiApplicationForTests.valpasKuntailmoitusRepository
 
   // Jyväskylän normaalikoulusta löytyvät näytettävät oppivelvolliset aakkosjärjestyksessä
   private val oppivelvolliset = List(
@@ -65,6 +88,13 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
       )
     ),
     (
+      ValpasMockOppijat.lukionAineopinnotAloittanut,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionAineopintojenOpiskeluoikeusAlkaa2021Syksyllä, "voimassa", false, false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true, true)
+      )
+    ),
+    (
       ValpasMockOppijat.lukionLokakuussaAloittanut,
       List(
         ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaa2021Lokakuussa, "voimassatulevaisuudessa", false, false, false),
@@ -101,18 +131,26 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
     (
       ValpasMockOppijat.hakukohteidenHakuEpäonnistuu,
       List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true, true))
+    ),
+    (
+      ValpasMockOppijat.kahdenKoulunYsiluokkalainen,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true, true),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut", false, true, true),
+      )
     )
+
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
   "getOppija palauttaa vain annetun oppijanumeron mukaisen oppijan" in {
     val (expectedOppija, expectedData) = oppivelvolliset(1)
-    val result = oppijaService.getOppijaHakutilanteillaLaajatTiedot(expectedOppija.oid)(defaultSession).toOption.get
+    val result = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(expectedOppija.oid)(defaultSession).toOption.get
 
     validateOppijaLaajatTiedot(result.oppija, expectedOppija, expectedData)
   }
 
   "getOppijan palauttaman oppijan valintatilat ovat oikein" in {
-    val result = oppijaService.getOppijaHakutilanteillaLaajatTiedot(ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid)(defaultSession).toOption.get
+    val result = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid)(defaultSession).toOption.get
 
     val valintatilat = result.hakutilanteet.map(_.hakutoiveet.flatMap(_.valintatila.map(_.koodiarvo)))
 
@@ -128,7 +166,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
   }
 
   "getOppija palauttaa oppijan tiedot, vaikka oid ei olisikaan master oid" in {
-    val result = oppijaService.getOppijaHakutilanteillaLaajatTiedot(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaToinen.oid)(defaultSession)
+    val result = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaToinen.oid)(defaultSession)
     validateOppijaLaajatTiedot(
       result.toOption.get.oppija,
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
@@ -142,7 +180,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
   }
 
   "getOppija palauttaa oppijan tiedot, vaikka hakukoostekysely epäonnistuisi" in {
-    val result = oppijaService.getOppijaHakutilanteillaLaajatTiedot(ValpasMockOppijat.hakukohteidenHakuEpäonnistuu.oid)(defaultSession).toOption.get
+    val result = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.hakukohteidenHakuEpäonnistuu.oid)(defaultSession).toOption.get
     result.hakutilanneError.get should equal("Hakukoosteita ei juuri nyt saada haettua suoritusrekisteristä. Yritä myöhemmin uudelleen.")
     validateOppijaLaajatTiedot(
       result.oppija,
@@ -152,7 +190,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
   }
 
   "getOppija palauttaa oppijan tiedot, vaikka kysely tehtäisiin oidilla, jonka suoriin opiskeluoikeuksiin ei ole pääsyä" in {
-    val result = oppijaService.getOppijaHakutilanteillaLaajatTiedot(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaKolmas.oid)(defaultSession)
+    val result = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaKolmas.oid)(defaultSession)
     validateOppijaLaajatTiedot(
       result.toOption.get.oppija,
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
@@ -166,7 +204,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
   }
 
   "getOppija palauttaa oppijan tiedot, vaikka kysely tehtäisiin master-oidilla, jonka suoriin opiskeluoikeuksiin ei ole pääsyä" in {
-    val result = oppijaService.getOppijaHakutilanteillaLaajatTiedot(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster.oid)(session(ValpasMockUsers.valpasAapajoenKoulu))
+    val result = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster.oid)(session(ValpasMockUsers.valpasAapajoenKoulu))
     validateOppijaLaajatTiedot(
       result.toOption.get.oppija,
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
@@ -206,6 +244,260 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
         expectedOppija,
         expectedData)
     }
+  }
+
+  "kuntailmoitukset: getOppija palauttaa kuntailmoituksettoman oppijan ilman kuntailmoituksia" in {
+    val oppija = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.useampiYsiluokkaSamassaKoulussa.oid)(defaultSession)
+      .toOption.get
+
+    oppija.kuntailmoitukset should equal(Seq.empty)
+  }
+
+  "kuntailmoitukset: getOppija palauttaa oppijasta tehdyn kuntailmoituksen kaikki tiedot ilmoituksen tekijälle" in {
+    val oppija = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.valmistunutYsiluokkalainen.oid)(defaultSession)
+      .toOption.get
+
+    val expectedIlmoitus = täydennäAikaleimallaJaOrganisaatiotiedoilla(ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla)
+    val expectedIlmoitukset = Seq(ValpasKuntailmoitusLaajatTiedotLisätiedoilla(expectedIlmoitus, true))
+
+    validateKuntailmoitukset(oppija, expectedIlmoitukset)
+  }
+
+  "kuntailmoitukset: getOppija palauttaa oppijasta tehdyn kuntailmoituksen kaikki tiedot ilmoituksen kohdekunnalle" in {
+    // Tässä testissä pitää toistaiseksi temppuilla oppijalla, jolla on monta opiskeluoikeutta, koska pelkällä kuntakäyttäjällä ei vielä ole oikeuksia
+    // oppijan tietoihin. Oppijalla on siis ilmoitus Jyväskylä normaalikoulusta Pyhtäälle, ja lisäksi oppija opiskelee Aapajoen peruskoulussa.
+    val oppija = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.kahdenKoulunYsiluokkalainen.oid)(session(ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu))
+      .toOption.get
+
+    val expectedIlmoitus = täydennäAikaleimallaJaOrganisaatiotiedoilla(ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla)
+    val expectedIlmoitukset = Seq(ValpasKuntailmoitusLaajatTiedotLisätiedoilla(expectedIlmoitus, true))
+
+    validateKuntailmoitukset(oppija, expectedIlmoitukset)
+  }
+
+  "kuntailmoitukset: getOppija palauttaa oppijasta tehdystä kuntailmoituksesta vain perustiedot muulle kuin tekijälle tai kunnalle" in {
+    // Tässä testissä pitää toistaiseksi temppuilla oppijalla, jolla on monta opiskeluoikeutta, koska pelkällä kuntakäyttäjällä ei vielä ole oikeuksia
+    // oppijan tietoihin. Oppijalla on siis ilmoitus Jyväskylän normaalikoulusta Pyhtäälle, ja lisäksi oppija opiskelee Aapajoen peruskoulussa.
+    val oppija = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.kahdenKoulunYsiluokkalainen.oid)(session(ValpasMockUsers.valpasHelsinkiJaAapajoenPeruskoulu))
+      .toOption.get
+
+    val expectedIlmoitusKaikkiTiedot = täydennäAikaleimallaJaOrganisaatiotiedoilla(ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla)
+    val expectedIlmoitus: ValpasKuntailmoitusLaajatTiedot = karsiPerustietoihin(expectedIlmoitusKaikkiTiedot)
+
+    val expectedIlmoitukset = Seq(ValpasKuntailmoitusLaajatTiedotLisätiedoilla(expectedIlmoitus, true))
+
+    validateKuntailmoitukset(oppija, expectedIlmoitukset)
+  }
+
+  "kuntailmoitukset: palauttaa kaikki master- ja slave-oideille tehdyt ilmoitukset pyydettäessä master-oidilla" in {
+    val oppija = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster.oid)(defaultSession)
+      .toOption.get
+
+    val expectedIlmoitukset = Seq(
+      ValpasKuntailmoitusLaajatTiedotLisätiedoilla(
+        täydennäAikaleimallaJaOrganisaatiotiedoilla(karsiPerustietoihin(ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoillaAapajoenPeruskoulusta)),
+        true
+      ),
+      ValpasKuntailmoitusLaajatTiedotLisätiedoilla(
+        täydennäAikaleimallaJaOrganisaatiotiedoilla(ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla),
+        false
+      )
+    )
+
+    validateKuntailmoitukset(oppija, expectedIlmoitukset)
+  }
+
+  "kuntailmoitukset: palauttaa kaikki master- ja slave-oideille tehdyt ilmoitukset pyydettäessä slave-oidilla" in {
+    val oppija = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaKolmas.oid)(session(ValpasMockUsers.valpasHelsinkiJaAapajoenPeruskoulu))
+      .toOption.get
+
+    val expectedIlmoitukset = Seq(
+      ValpasKuntailmoitusLaajatTiedotLisätiedoilla(
+        täydennäAikaleimallaJaOrganisaatiotiedoilla(ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoillaAapajoenPeruskoulusta),
+        true
+      ),
+      ValpasKuntailmoitusLaajatTiedotLisätiedoilla(
+        täydennäAikaleimallaJaOrganisaatiotiedoilla(karsiPerustietoihin(ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla)),
+        false
+      )
+    )
+
+    validateKuntailmoitukset(oppija, expectedIlmoitukset)
+  }
+
+  "kuntailmoitukset: aktiivinen jos on ilmoituksen tekemisen jälkeen vasta tulevaisuudessa alkava ov-suorittamiseen kelpaava opiskeluoikeus" in {
+    val ilmoituksenTekopäivä = date(2021,8,1)
+
+    rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(ilmoituksenTekopäivä)
+    val ilmoitus = ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      ValpasMockOppijat.lukionAloittanut.oid,
+      ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla
+    )
+    kuntailmoitusRepository.create(ilmoitus)
+
+    val oppija = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.lukionAloittanut.oid)(defaultSession)
+      .toOption.get
+
+    val expectedIlmoitus = ValpasKuntailmoitusLaajatTiedotLisätiedoilla(
+      täydennäAikaleimallaJaOrganisaatiotiedoilla(ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla, ilmoituksenTekopäivä.atStartOfDay),
+      true
+    )
+
+    validateKuntailmoitukset(oppija, Seq(expectedIlmoitus))
+  }
+
+  "kuntailmoitukset: ei-aktiivinen jos on ilmoituksen tekemisen jälkeen alkanut ov-suorittamiseen kelpaava opiskeluoikeus" in {
+    val ilmoituksenTekopäivä = date(2021,8,1)
+    val tarkastelupäivä = date(2021,8,30)
+
+    rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(ilmoituksenTekopäivä)
+    val ilmoitus = ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      ValpasMockOppijat.lukionAloittanut.oid,
+      ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla
+    )
+    kuntailmoitusRepository.create(ilmoitus)
+
+    rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(tarkastelupäivä)
+    val oppija = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.lukionAloittanut.oid)(defaultSession)
+      .toOption.get
+
+    val expectedIlmoitus = ValpasKuntailmoitusLaajatTiedotLisätiedoilla(
+      täydennäAikaleimallaJaOrganisaatiotiedoilla(ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla, ilmoituksenTekopäivä.atStartOfDay),
+      false
+    )
+
+    validateKuntailmoitukset(oppija, Seq(expectedIlmoitus))
+  }
+
+  "kuntailmoitukset: aktiivinen, jos on alle 30 päivää ilmoituksesta, ei ole ilmoituksen jälkeen alkanutta opiskeluoikeutta, ja on voimassaoleva aiemmin alkanut opiskeluoikeus tarkastelupäivänä" in {
+    val ilmoituksenTekopäivä = date(2021,8,1)
+    val tarkastelupäivä = date(2021,8,31)
+
+    rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(ilmoituksenTekopäivä)
+
+    val ilmoitus = ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      ValpasMockOppijat.luokalleJäänytYsiluokkalainen.oid,
+      ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla
+    )
+    kuntailmoitusRepository.create(ilmoitus)
+
+    rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(tarkastelupäivä)
+    val oppija = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.luokalleJäänytYsiluokkalainen.oid)(defaultSession)
+      .toOption.get
+
+    val expectedIlmoitus = ValpasKuntailmoitusLaajatTiedotLisätiedoilla(
+      täydennäAikaleimallaJaOrganisaatiotiedoilla(ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla, ilmoituksenTekopäivä.atStartOfDay),
+      true
+    )
+
+    validateKuntailmoitukset(oppija, Seq(expectedIlmoitus))
+  }
+
+  "kuntailmoitukset: ei-aktiivinen, jos on yli 30 päivää ilmoituksesta, ei ole ilmoituksen jälkeen alkanutta opiskeluoikeutta, ja on voimassaoleva aiemmin alkanut opiskeluoikeus tarkastelupäivänä" in {
+    val ilmoituksenTekopäivä = date(2021,8,1)
+    val tarkastelupäivä = date(2021,9,1)
+
+    rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(ilmoituksenTekopäivä)
+    val ilmoitus = ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      ValpasMockOppijat.luokalleJäänytYsiluokkalainen.oid,
+      ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla
+    )
+    kuntailmoitusRepository.create(ilmoitus)
+
+    rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(tarkastelupäivä)
+    val oppija = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.luokalleJäänytYsiluokkalainen.oid)(defaultSession)
+      .toOption.get
+
+    val expectedIlmoitus = ValpasKuntailmoitusLaajatTiedotLisätiedoilla(
+      täydennäAikaleimallaJaOrganisaatiotiedoilla(ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla, ilmoituksenTekopäivä.atStartOfDay),
+      false
+    )
+
+    validateKuntailmoitukset(oppija, Seq(expectedIlmoitus))
+  }
+
+  "kuntailmoitukset: aktiivinen, vaikka on yli 30 päivää ilmoituksesta, ei ole ilmoituksen jälkeen alkanutta opiskeluoikeutta ja ei ole voimassaolevaa opiskeluoikeutta" in {
+    val ilmoituksenTekopäivä = date(2021,8,10)
+    val tarkastelupäivä = date(2021,9,29)
+
+    rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(ilmoituksenTekopäivä)
+    val ilmoitus = ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      ValpasMockOppijat.aapajoenPeruskoulustaValmistunut.oid,
+      ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoillaAapajoenPeruskoulusta
+    )
+    kuntailmoitusRepository.create(ilmoitus)
+
+    rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(tarkastelupäivä)
+    val oppija = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.aapajoenPeruskoulustaValmistunut.oid)(session(ValpasMockUsers.valpasAapajoenKoulu))
+      .toOption.get
+
+    val expectedIlmoitus = täydennäAikaleimallaJaOrganisaatiotiedoilla(ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoillaAapajoenPeruskoulusta, ilmoituksenTekopäivä.atStartOfDay)
+    val expectedIlmoitukset = Seq(ValpasKuntailmoitusLaajatTiedotLisätiedoilla(expectedIlmoitus, true))
+
+    validateKuntailmoitukset(oppija, expectedIlmoitukset)
+  }
+
+  "kuntailmoitukset: aktiivinen jos on ilmoituksen tekemisen jälkeen alkanut ov-suorittamiseen kelpaamaton opiskeluoikeus" in {
+    val ilmoituksenTekopäivä = date(2021,8,1)
+    val tarkastelupäivä = date(2021,8,30)
+
+    rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(ilmoituksenTekopäivä)
+    val ilmoitus = ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      ValpasMockOppijat.lukionAineopinnotAloittanut.oid,
+      ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla
+    )
+    kuntailmoitusRepository.create(ilmoitus)
+
+    rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(tarkastelupäivä)
+    val oppija = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.lukionAineopinnotAloittanut.oid)(defaultSession)
+      .toOption.get
+
+    val expectedIlmoitus = ValpasKuntailmoitusLaajatTiedotLisätiedoilla(
+      täydennäAikaleimallaJaOrganisaatiotiedoilla(ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla, ilmoituksenTekopäivä.atStartOfDay),
+      true
+    )
+
+    validateKuntailmoitukset(oppija, Seq(expectedIlmoitus))
+  }
+
+  "kuntailmoitukset: palautetaan ilmoitukset aikajärjestyksessä ja vain uusin on aktiivinen" in {
+    val ilmoituksenTekopäivät = (1 to 3).map(date(2021,8,_))
+    val tarkastelupäivä = date(2021,8,30)
+
+    ilmoituksenTekopäivät.map(
+      tekopäivä => {
+        rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(tekopäivä)
+        val ilmoitus = ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+          ValpasMockOppijat.lukionAineopinnotAloittanut.oid,
+          oppijanPuhelinnumerolla(
+            tekopäivä.toString, // Tehdään varmuuden vuoksi ilmoituksista erilaisia myös muuten kuin aikaleiman osalta
+            ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla
+          )
+        )
+        kuntailmoitusRepository.create(ilmoitus)
+      }
+    )
+
+    rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(tarkastelupäivä)
+    val oppija = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.lukionAineopinnotAloittanut.oid)(defaultSession)
+      .toOption.get
+
+    val expectedIlmoitukset = Seq(
+      ValpasKuntailmoitusLaajatTiedotLisätiedoilla(
+        täydennäAikaleimallaJaOrganisaatiotiedoilla(oppijanPuhelinnumerolla("2021-08-03", ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla), date(2021, 8, 3).atStartOfDay),
+        true
+      ),
+      ValpasKuntailmoitusLaajatTiedotLisätiedoilla(
+        täydennäAikaleimallaJaOrganisaatiotiedoilla(oppijanPuhelinnumerolla("2021-08-02", ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla), date(2021, 8, 2).atStartOfDay),
+        false
+      ),
+      ValpasKuntailmoitusLaajatTiedotLisätiedoilla(
+        täydennäAikaleimallaJaOrganisaatiotiedoilla(oppijanPuhelinnumerolla("2021-08-01", ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla), date(2021, 8, 1).atStartOfDay),
+        false
+      )
+    )
+
+    validateKuntailmoitukset(oppija, expectedIlmoitukset)
   }
 
   "Peruskoulun opo saa haettua oman oppilaitoksen oppijan tiedot" in {
@@ -405,8 +697,87 @@ class ValpasOppijaServiceSpec extends ValpasTestBase {
     }
   }
 
+  private def täydennäAikaleimallaJaOrganisaatiotiedoilla(
+    kuntailmoitus: ValpasKuntailmoitusLaajatTiedot,
+    aikaleima: LocalDateTime = rajapäivätService.tarkastelupäivä.atStartOfDay
+  ): ValpasKuntailmoitusLaajatTiedot  = {
+    // Yksinkertaista vertailukoodia testissä tekemällä samat aikaleiman ja organisaatiodatan täydennykset mitkä tehdään tuotantokoodissa.
+    kuntailmoitus.copy(
+      aikaleima = Some(aikaleima),
+      tekijä = kuntailmoitus.tekijä.copy(
+        organisaatio = organisaatioRepository.getOrganisaatio(kuntailmoitus.tekijä.organisaatio.oid).get
+      ),
+      kunta = organisaatioRepository.getOrganisaatio(kuntailmoitus.kunta.oid).get
+    )
+  }
+
+  private def karsiPerustietoihin(kuntailmoitus: ValpasKuntailmoitusLaajatTiedot): ValpasKuntailmoitusLaajatTiedot = {
+    kuntailmoitus.copy(
+      tekijä = kuntailmoitus.tekijä.copy(
+        henkilö = None
+      ),
+      yhteydenottokieli = None,
+      oppijanYhteystiedot = None,
+      hakenutMuualle = None
+    )
+  }
+
+  private def oppijanPuhelinnumerolla(puhelinnumero: String, kuntailmoitus: ValpasKuntailmoitusLaajatTiedot): ValpasKuntailmoitusLaajatTiedot =
+    kuntailmoitus.copy(
+      oppijanYhteystiedot = Some(kuntailmoitus.oppijanYhteystiedot.get.copy(
+        puhelinnumero = Some(puhelinnumero)
+      ))
+    )
+
+  private def validateKuntailmoitukset(oppija: OppijaHakutilanteillaLaajatTiedot, expectedIlmoitukset: Seq[ValpasKuntailmoitusLaajatTiedotLisätiedoilla]) = {
+    def clueMerkkijono(kuntailmoitus: ValpasKuntailmoitusLaajatTiedot): String =
+      s"${kuntailmoitus.tekijä.organisaatio.nimi.get.get("fi")}=>${kuntailmoitus.kunta.kotipaikka.get.nimi.get.get("fi")}"
+
+    val maybeIlmoitukset = oppija.kuntailmoitukset.map(o => Some(o))
+    val maybeExpectedData = expectedIlmoitukset.map(o => Some(o))
+
+    maybeIlmoitukset.zipAll(maybeExpectedData, None, None).zipWithIndex.foreach {
+      case (element, index) => {
+        withClue(s"index ${index}: ") {
+          element match {
+            case (Some(kuntailmoitusLisätiedoilla), Some(expectedData)) =>
+              withClue(s"ValpasKuntailmoitusLaajatTiedotLisätiedoilla(${kuntailmoitusLisätiedoilla.kuntailmoitus.id}/${clueMerkkijono(kuntailmoitusLisätiedoilla.kuntailmoitus)}):") {
+                withClue("aktiivinen") {
+                  kuntailmoitusLisätiedoilla.aktiivinen should equal(expectedData.aktiivinen)
+                }
+                withClue("kunta") {
+                  kuntailmoitusLisätiedoilla.kuntailmoitus.kunta should equal(expectedData.kuntailmoitus.kunta)
+                }
+                withClue("aikaleiman päivämäärä") {
+                  kuntailmoitusLisätiedoilla.kuntailmoitus.aikaleima.map(_.toLocalDate) should equal(expectedData.kuntailmoitus.aikaleima.map(_.toLocalDate))
+                }
+                withClue("tekijä") {
+                  kuntailmoitusLisätiedoilla.kuntailmoitus.tekijä should equal(expectedData.kuntailmoitus.tekijä)
+                }
+                withClue("yhteydenottokieli") {
+                  kuntailmoitusLisätiedoilla.kuntailmoitus.yhteydenottokieli should equal(expectedData.kuntailmoitus.yhteydenottokieli)
+                }
+                withClue("oppijanYhteystiedot") {
+                  kuntailmoitusLisätiedoilla.kuntailmoitus.oppijanYhteystiedot should equal(expectedData.kuntailmoitus.oppijanYhteystiedot)
+                }
+                withClue("hakenutMuualle") {
+                  kuntailmoitusLisätiedoilla.kuntailmoitus.hakenutMuualle should equal(expectedData.kuntailmoitus.hakenutMuualle)
+                }
+              }
+            case (None, Some(expectedData)) =>
+              fail(s"Ilmoitus puuttuu: oppija.oid:${oppija.oppija.henkilö.oid} oppija.hetu:${oppija.oppija.henkilö.hetu} ilmoitus:${clueMerkkijono(expectedData.kuntailmoitus)}")
+            case (Some(kuntailmoitusLisätiedoilla), None) =>
+              fail(s"Saatiin ylimääräinen ilmoitus: oppija.oid:${oppija.oppija.henkilö.oid} oppija.hetu:${oppija.oppija.henkilö.hetu} ilmoitus:${clueMerkkijono(kuntailmoitusLisätiedoilla.kuntailmoitus)}")
+            case _ =>
+              fail("Internal error")
+          }
+        }
+      }
+    }
+  }
+
   private def canAccessOppija(oppija: LaajatOppijaHenkilöTiedot, user: ValpasMockUser): Boolean =
-    oppijaService.getOppijaHakutilanteillaLaajatTiedot(oppija.oid)(session(user)).isRight
+    oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(oppija.oid)(session(user)).isRight
 }
 
 case class ExpectedData(

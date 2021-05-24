@@ -18,6 +18,18 @@ object ValpasExampleData {
     ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
       oppijaOid = ValpasMockOppijat.kasiinAstiToisessaKoulussaOllut.oid,
       kuntailmoitus = oppilaitoksenIlmoitusMinimitiedoilla
+    ),
+    ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      oppijaOid =  ValpasMockOppijat.kahdenKoulunYsiluokkalainen.oid,
+      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla
+    ),
+    ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      oppijaOid =  ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster.oid,
+      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla
+    ),
+    ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      oppijaOid =  ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaKolmas.oid,
+      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoillaAapajoenPeruskoulusta
     )
   )
 
@@ -42,6 +54,13 @@ object ValpasExampleData {
   )
 
   def oppilaitoksenIlmoitusKaikillaTiedoilla = ilmoitus
+
+  def oppilaitoksenIlmoitusKaikillaTiedoillaAapajoenPeruskoulusta =
+    oppilaitoksenIlmoitusKaikillaTiedoilla.copy(
+      tekijä = oppilaitoksenIlmoitusKaikillaTiedoilla.tekijä.copy(
+        organisaatio = aapajoenPeruskoulu
+      )
+    )
 
   def oppilaitoksenIlmoitusMinimitiedoilla = ValpasKuntailmoitusLaajatTiedot(
     id = None,
@@ -89,6 +108,11 @@ object ValpasExampleData {
   lazy val jyväskylänNormaalikoulu = OidOrganisaatio(
     oid = MockOrganisaatiot.jyväskylänNormaalikoulu,
     nimi = Some("Jyväskylän normaalikoulu")
+  )
+
+  lazy val aapajoenPeruskoulu = OidOrganisaatio(
+    oid = MockOrganisaatiot.aapajoenKoulu,
+    nimi = Some("Aapajoen koulu")
   )
 
   def tekijäHenkilö(mockUser: ValpasMockUser) = ValpasKuntailmoituksenTekijäHenkilö(

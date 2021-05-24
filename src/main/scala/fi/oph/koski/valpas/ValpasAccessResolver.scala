@@ -70,7 +70,7 @@ class ValpasAccessResolver(organisaatioRepository: OrganisaatioRepository) {
   ): Boolean =
     onGlobaaliOikeus(rooli) || organisaatioOids.diff(oppilaitosOrganisaatioOids(rooli)).isEmpty
 
-  private def accessToSomeOrgs(
+  def accessToSomeOrgs(
     rooli: ValpasRooli.Role
   )(
     organisaatioOids: Set[Organisaatio.Oid],
