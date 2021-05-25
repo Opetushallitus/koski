@@ -111,6 +111,7 @@
   "oppija__ilmoitushistoria_päivämäärä": "Päivämäärä",
   "oppija__ilmoitushistoria_ilmoittaja": "Ilmoittaja",
   "oppija__ilmoitushistoria_kohde": "Taho jolle ilmoitettu",
+  "oppija__ilmoitushistoria_lisätiedot": "Lisätiedot",
   "kayttooikeusrooli_OPPILAITOS_HAKEUTUMINEN": "Oppilaitoksen hakeutumisen valvonta",
   "kayttooikeusrooli_OPPILAITOS_SUORITTAMINEN": "Oppilaitoksen oppivelvollisuuden suorittamisen valvonta",
   "kayttooikeusrooli_OPPILAITOS_MAKSUTTOMUUS": "Oppilaitoksen opiskelun maksuttomuustietojen määrittely",
