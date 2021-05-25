@@ -105,6 +105,12 @@
   "kayttooikeusrooli_OPPILAITOS_MAKSUTTOMUUS": "Oppilaitoksen opiskelun maksuttomuustietojen määrittely",
   "kayttooikeusrooli_KUNTA": "Kunnan oppivelvollisuuden suorittamisen valvonta",
   "homeview_olet_onnistuneesti_kirjautunut": "Olet onnistuneesti kirjautunut Valpas-järjestelmään seuraavilla käyttöoikeuksilla",
+  "ilmoituksentekijälomake__ohje": "Tarkista ensin, että yhteystietosi ovat oikein. Nämä välitetään ilmoitettavien opiskelijoiden asuinkunnalle.",
+  "ilmoituksentekijälomake__nimi": "Nimi",
+  "ilmoituksentekijälomake__organisaatio": "Organisaatio",
+  "ilmoituksentekijälomake__sähköposti": "Sähköposti",
+  "ilmoituksentekijälomake__puhelinnumero": "Puhelinnumero",
+  "ilmoituksentekijälomake__jatka": "Jatka",
   "ilmoituslomake__otsikko": "Ilman opiskelupaikkaa jäävien ilmoittaminen",
   "ilmoituslomake__ohje": "Tarkista ilmoitettavien oppijoiden yhteystiedot.",
   "ilmoituslomake__turvakielto_ohje": "Oppijalla on turvakielto, yhteystietoja ei saada DVV:sta. Välitettäviä tietoja saa käyttää vain oppivelvollisuuden valvontaan.",
@@ -124,5 +130,9 @@
   "ilmoituslomake__pakollinen_tieto": "Pakollinen tieto",
   "ilmoituslomake__täytä_pakolliset_tiedot": "Täytä pakolliset tiedot",
   "ilmoituslomake__ilmoita_asuinkunnalle": "Ilmoita asuinkunnalle",
-  "ilmoituslomake__ilmoitus_lähetetty": "Ilmoitus lähetetty"
+  "ilmoituslomake__ilmoitus_lähetetty": "Ilmoitus lähetetty",
+  "apivirhe__virheellinen_pyyntö": "Virhe: Pyyntöä ei voitu suorittaa siinä olleen virheen takia ({{virhe}})",
+  "apivirhe__palvelinongelma": "Virhe: Pyyntöä ei voitu suorittaa palvelimen ongelman takia ({{virhe}})",
+  "apivirhe__aikakatkaisu": "Virhe: Pyyntö aikakatkaistiin. Syynä voi olla esimerkiksi liian monta yhtäaikaista käyttäjää. Yritä myöhemmin uudestaan.",
+  "apivirhe__virheellinen_vastaus": "Virhe: Palvelimelta saatu vastaus on virheellisesti muodostettu"
 }

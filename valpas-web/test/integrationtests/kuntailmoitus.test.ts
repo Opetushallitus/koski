@@ -132,6 +132,7 @@ const selectOppija = async (oppijaOid: string) => {
 const openKuntailmoitus = async () => {
   await clickElement(".hakutilannedrawer__ilmoittaminen button")
   await expectElementEventuallyVisible(".modal__container")
+  await clickElement(".ilmoitusform__continue")
 }
 
 const getForms = async () => {

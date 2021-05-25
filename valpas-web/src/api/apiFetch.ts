@@ -1,5 +1,6 @@
 import * as E from "fp-ts/lib/Either"
 import { pipe } from "fp-ts/lib/function"
+import { t } from "../i18n/i18n"
 import { parseErrors } from "./apiErrors"
 
 export type ApiSuccess<T> = {
@@ -33,21 +34,23 @@ const apiFetch = async <T>(
     const response = await fetch(prependUrl("/koski", input), init)
     try {
       const data = await response.json()
-      return response.status < 400
-        ? E.right({
-            status: response.status,
-            data,
-          })
-        : E.left({
-            errors: parseErrors(data),
-            status: response.status,
-          })
+      if (response.status < 400) {
+        return E.right({
+          status: response.status,
+          data,
+        })
+      }
+      const message = apiErrorMessage(response.status)
+      return E.left({
+        errors: message ? [{ message }] : parseErrors(data),
+        status: response.status,
+      })
     } catch (err) {
       return E.left({
         errors: [
           {
             key: "invalid.json",
-            message: "Response is not valid JSON",
+            message: t("apivirhe__virheellinen_vastaus"),
           },
         ],
         status: response.status,
@@ -108,4 +111,17 @@ export const mockApi = <T, P extends any[]>(
     E.map((data) => ({ status: 200, data })),
     E.mapLeft((error) => ({ errors: [error] }))
   )
+}
+
+const apiErrorMessage = (status: number): string | null => {
+  if (status >= 400 && status < 500) {
+    return t("apivirhe__virheellinen_pyyntö", { virhe: status })
+  }
+  if (status === 504) {
+    return t("apivirhe__aikakatkaisu")
+  }
+  if (status >= 500 && status < 600) {
+    return t("apivirhe__palvelinongelma", { virhe: status })
+  }
+  return null
 }

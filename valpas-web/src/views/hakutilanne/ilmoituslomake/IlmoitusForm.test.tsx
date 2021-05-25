@@ -137,7 +137,7 @@ const createForm = (
       kunnat={mockAsuinkunnat}
       maat={mockMaat}
       kielet={mockYhteydenottokielet}
-      tekijäorganisaatio={organisaatioWithOid("tekijäorganisaatio.oid")}
+      tekijä={{ organisaatio: organisaatioWithOid("tekijäorganisaatio.oid") }}
       onSubmit={onSubmit || ignoreOnSubmit}
     />
   )
