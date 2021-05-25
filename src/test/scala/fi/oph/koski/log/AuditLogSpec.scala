@@ -18,7 +18,7 @@ class AuditLogSpec extends FreeSpec with Assertions with Matchers {
 
   "AuditLog" - {
     "Logs in JSON format" in {
-      audit.log(AuditLogMessage(KoskiOperation.OPISKELUOIKEUS_LISAYS, MockUsers.omniaPalvelukäyttäjä.toKoskiSpecificSession(käyttöoikeuspalvelu), Map(KoskiMessageField.oppijaHenkiloOid ->  "1.2.246.562.24.00000000001")))
+      audit.log(KoskiAuditLogMessage(KoskiOperation.OPISKELUOIKEUS_LISAYS, MockUsers.omniaPalvelukäyttäjä.toKoskiSpecificSession(käyttöoikeuspalvelu), Map(AuditLogMessageField.oppijaHenkiloOid ->  "1.2.246.562.24.00000000001")))
       verifyLogMessage("""\{"version":1,"logSeq":\d+,"type":"log","bootTime":".*","hostname":"","timestamp":".*","serviceName":"koski","applicationType":"backend","user":\{"oid":"1.2.246.562.24.99999999989","ip":"192.168.0.10","session":"","userAgent":""\},"operation":"OPISKELUOIKEUS_LISAYS","target":\{"oppijaHenkiloOid":"1.2.246.562.24.00000000001"\},"changes":\{\}\}""".r)
     }
   }

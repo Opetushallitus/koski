@@ -3,7 +3,7 @@ package fi.oph.koski.valpas
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.log.{AuditLogTester, KoskiMessageField}
+import fi.oph.koski.log.{AuditLogTester, AuditLogMessageField}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{Finnish, Koodistokoodiviite}
 import fi.oph.koski.valpas.log.ValpasOperation
@@ -144,7 +144,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
       AuditLogTester.verifyAuditLogMessage(Map(
         "operation" -> ValpasOperation.VALPAS_OPPIJA_KUNTAILMOITUS.toString,
         "target" -> Map(
-          KoskiMessageField.oppijaHenkiloOid.toString ->
+          AuditLogMessageField.oppijaHenkiloOid.toString ->
           ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid)
         )
       )
@@ -500,7 +500,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
       AuditLogTester.verifyAuditLogMessage(Map(
         "operation" -> ValpasOperation.VALPAS_OPPIJA_KATSOMINEN.toString,
         "target" -> Map(
-          KoskiMessageField.oppijaHenkiloOid.toString ->
+          AuditLogMessageField.oppijaHenkiloOid.toString ->
             ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid)
       ))
     }

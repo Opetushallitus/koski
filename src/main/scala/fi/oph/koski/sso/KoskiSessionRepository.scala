@@ -9,7 +9,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.huoltaja.HuollettavatSearchResult
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AuthenticationUser, SessionTimeout}
-import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiOperation, Logging}
+import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiOperation, Logging}
 import fi.oph.koski.util.Timing
 import org.json4s.JsonAST.JValue
 
@@ -17,7 +17,7 @@ class KoskiSessionRepository(val db: DB, sessionTimeout: SessionTimeout) extends
 
   def store(ticket: String, user: AuthenticationUser, clientIp: InetAddress, userAgent: String) = {
     val operation = if (user.kansalainen) KoskiOperation.KANSALAINEN_LOGIN else KoskiOperation.LOGIN
-    AuditLog.log(AuditLogMessage(operation, user, clientIp, ticket, userAgent))
+    AuditLog.log(KoskiAuditLogMessage(operation, user, clientIp, ticket, userAgent))
     runDbSync(KoskiTables.CasServiceTicketSessions += SSOSessionRow(ticket, user.username, user.oid, user.name, now, now, user.huollettavat.map(serialize)))
   }
 

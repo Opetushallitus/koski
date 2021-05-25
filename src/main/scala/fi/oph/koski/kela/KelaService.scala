@@ -55,8 +55,8 @@ class KelaService(application: KoskiApplication) extends Logging {
 
 
   private def auditLogOpiskeluoikeusKatsominen(oppija: KelaOppija)(koskiSession: KoskiSpecificSession): Unit =
-    AuditLog.log(AuditLogMessage(KoskiOperation.OPISKELUOIKEUS_KATSOMINEN, koskiSession, Map(KoskiMessageField.oppijaHenkiloOid -> oppija.henkilö.oid)))
+    AuditLog.log(KoskiAuditLogMessage(KoskiOperation.OPISKELUOIKEUS_KATSOMINEN, koskiSession, Map(AuditLogMessageField.oppijaHenkiloOid -> oppija.henkilö.oid)))
 
   private def auditLogHistoryView(opiskeluoikeusOid: String)(koskiSession: KoskiSpecificSession): Unit =
-    AuditLog.log(AuditLogMessage(KoskiOperation.MUUTOSHISTORIA_KATSOMINEN, koskiSession, Map(KoskiMessageField.opiskeluoikeusOid -> opiskeluoikeusOid)))
+    AuditLog.log(KoskiAuditLogMessage(KoskiOperation.MUUTOSHISTORIA_KATSOMINEN, koskiSession, Map(AuditLogMessageField.opiskeluoikeusOid -> opiskeluoikeusOid)))
 }

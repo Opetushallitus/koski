@@ -8,9 +8,9 @@ import fi.oph.koski.editor.EditorModel
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.log.{AuditLog, AuditLogMessage}
+import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage}
 import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_SUORITUSJAKO_KATSOMINEN, KANSALAINEN_SUORITUSJAKO_LISAYS}
-import fi.oph.koski.log.KoskiMessageField.oppijaHenkiloOid
+import fi.oph.koski.log.AuditLogMessageField.oppijaHenkiloOid
 import fi.oph.koski.omattiedot.OmatTiedotEditorModel
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
 import fi.oph.koski.schema.{Opiskeluoikeus, Oppija, Suoritus}
@@ -22,7 +22,7 @@ class SuoritusjakoServiceV2(suoritusjakoRepositoryV2: SuoritusjakoRepositoryV2, 
     HttpStatus.foldEithers(opiskeluoikeudet.map(validateIsUsersOpiskeluoikeus))
       .map(opiskeluoikeudet => suoritusjakoRepositoryV2.createSuoritusjako(opiskeluoikeudet))
       .map(ok => {
-        AuditLog.log(AuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS, user, Map(oppijaHenkiloOid -> user.oid)))
+        AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS, user, Map(oppijaHenkiloOid -> user.oid)))
         ok
       })
        .merge
@@ -34,7 +34,7 @@ class SuoritusjakoServiceV2(suoritusjakoRepositoryV2: SuoritusjakoRepositoryV2, 
       .flatMap { case (oppijaOid, opiskeluoikeudet) =>
         henkiloRepository.findByOid(oppijaOid)
           .map(henkilo => {
-            AuditLog.log(AuditLogMessage(KANSALAINEN_SUORITUSJAKO_KATSOMINEN, user, Map(oppijaHenkiloOid -> henkilo.oid)))
+            AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_KATSOMINEN, user, Map(oppijaHenkiloOid -> henkilo.oid)))
             Oppija(henkiloRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilo), opiskeluoikeudet)
           })
           .toRight(KoskiErrorCategory.internalError())

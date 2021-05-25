@@ -7,7 +7,7 @@ import fi.oph.koski.henkilo._
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.log.KoskiMessageField.{opiskeluoikeusId, opiskeluoikeusVersio, oppijaHenkiloOid}
+import fi.oph.koski.log.AuditLogMessageField.{opiskeluoikeusId, opiskeluoikeusVersio, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, _}
 import fi.oph.koski.opiskeluoikeus._
@@ -175,7 +175,7 @@ class KoskiOppijaFacade(
       case _: Created => Some(OPISKELUOIKEUS_LISAYS)
       case _ => None
     }).foreach { operaatio =>
-      AuditLog.log(AuditLogMessage(operaatio, user,
+      AuditLog.log(KoskiAuditLogMessage(operaatio, user,
         Map(oppijaHenkiloOid -> oppijaOid.oppijaOid, opiskeluoikeusId -> result.id.toString, opiskeluoikeusVersio -> result.versionumero.toString))
       )
     }
@@ -280,7 +280,7 @@ class KoskiOppijaFacade(
       } else {
         OPISKELUOIKEUS_KATSOMINEN
       }
-      AuditLog.log(AuditLogMessage(operation, user, Map(oppijaHenkiloOid -> oid)))
+      AuditLog.log(KoskiAuditLogMessage(operation, user, Map(oppijaHenkiloOid -> oid)))
     }
   }
 

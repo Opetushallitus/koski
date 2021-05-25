@@ -6,9 +6,9 @@ import java.time.LocalDate
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
+import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.log.KoskiOperation.KANSALAINEN_SUORITUSJAKO_LISAYS
-import fi.oph.koski.log.KoskiMessageField.oppijaHenkiloOid
+import fi.oph.koski.log.AuditLogMessageField.oppijaHenkiloOid
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.schema._
 import fi.oph.koski.util.WithWarnings
@@ -18,7 +18,7 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
     assertSuorituksetExist(oppijaOid, suoritusIds).toLeft(SuoritusjakoSecret.generateNew)
       .flatMap { secret =>
         val suoritusjako = suoritusjakoRepository.create(secret, oppijaOid, suoritusIds)
-        AuditLog.log(AuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS, koskiSession, Map(oppijaHenkiloOid -> oppijaOid)))
+        AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS, koskiSession, Map(oppijaHenkiloOid -> oppijaOid)))
         suoritusjako
       }
   }

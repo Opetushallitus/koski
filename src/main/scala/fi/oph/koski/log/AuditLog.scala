@@ -1,14 +1,14 @@
 package fi.oph.koski.log
 
-import java.net.InetAddress
-
-import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession}
-import fi.oph.koski.log.KoskiMessageField.KoskiMessageField
+import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, Session}
+import fi.oph.koski.log.AuditLogMessageField.AuditLogMessageField
 import fi.oph.koski.log.KoskiOperation.KoskiOperation
 import fi.vm.sade.auditlog._
 import io.prometheus.client.Counter
 import org.ietf.jgss.Oid
-import org.slf4j.{Logger => SLogger, LoggerFactory}
+import org.slf4j.{LoggerFactory, Logger => SLogger}
+
+import java.net.InetAddress
 
 class AuditLogger(logger: SLogger) extends Logger {
   override def log(msg: String): Unit = logger.info(msg)
@@ -34,29 +34,54 @@ class AuditLog(logger: Logger) {
 case class AuditLogMessage(user: User, operation: Operation, target: Target, changes: Changes)
 
 object AuditLogMessage {
-  def apply(operation: KoskiOperation, user: AuthenticationUser, clientIp: InetAddress, serviceTicket: String, userAgent: String): AuditLogMessage = {
-    build(operation, new User(new Oid(user.oid), clientIp, serviceTicket, userAgent), Map())
-  }
+  type ExtraFields = Map[AuditLogMessageField, String]
 
-  def apply(operation: KoskiOperation, session: KoskiSpecificSession, extraFields: Map[KoskiMessageField, String]): AuditLogMessage = {
-    val user = if (session.user.isSuoritusjakoKatsominen) {
-      new User(session.clientIp, "", session.userAgent)
-    } else {
-      new User(new Oid(session.user.oid), session.clientIp, session.user.serviceTicket.getOrElse(""), session.userAgent)
-    }
-    build(operation, user, extraFields)
-  }
-
-  private def build(operation: KoskiOperation, user: User, extraFields: Map[KoskiMessageField, String]): AuditLogMessage = {
+  def apply(operation: AuditLogOperation, user: User, extraFields: ExtraFields): AuditLogMessage = {
     val target = extraFields.foldLeft(new Target.Builder()) { case (builder, (name, value)) =>
       builder.setField(name.toString, value)
     }.build
-    AuditLogMessage(user = user, operation = new AuditLogOperation(operation), target = target, changes = new Changes.Builder().build)
+    AuditLogMessage(
+      user = user,
+      operation = operation,
+      target = target,
+      changes = new Changes.Builder().build
+    )
+  }
+
+  def apply(operation: AuditLogOperation, session: Session, extraFields: ExtraFields): AuditLogMessage = {
+    val user = new User(
+      new Oid(session.user.oid),
+      session.clientIp,
+      session.user.serviceTicket.getOrElse(""),
+      session.userAgent
+    )
+    apply(operation, user, extraFields)
   }
 }
 
-object KoskiMessageField extends Enumeration {
-  type KoskiMessageField = Value
+object KoskiAuditLogMessage {
+  def apply(operation: KoskiOperation, user: AuthenticationUser, clientIp: InetAddress, serviceTicket: String, userAgent: String): AuditLogMessage = {
+    val extraFields: AuditLogMessage.ExtraFields = Map()
+    AuditLogMessage(
+      new KoskiAuditLogOperation(operation),
+      new User(new Oid(user.oid), clientIp, serviceTicket, userAgent),
+      extraFields
+    )
+  }
+
+  def apply(operation: KoskiOperation, session: KoskiSpecificSession, extraFields: AuditLogMessage.ExtraFields): AuditLogMessage = {
+    val logOp = new KoskiAuditLogOperation(operation)
+    if (session.user.isSuoritusjakoKatsominen) {
+      val user = new User(session.clientIp, "", session.userAgent)
+      AuditLogMessage(logOp, user, extraFields)
+    } else {
+      AuditLogMessage(logOp, session, extraFields)
+    }
+  }
+}
+
+object AuditLogMessageField extends Enumeration {
+  type AuditLogMessageField = Value
   val clientIp, oppijaHenkiloOid, kayttajaHenkiloOid, kayttajaHenkiloNimi, opiskeluoikeusOid, opiskeluoikeusId, opiskeluoikeusVersio, hakuEhto, juuriOrganisaatio, omaDataKumppani = Value
 }
 
@@ -83,8 +108,11 @@ object KoskiOperation extends Enumeration {
   KANSALAINEN_SUOMIFI_KATSOMINEN = Value
 }
 
-class AuditLogOperation(op: KoskiOperation) extends Operation {
+private class KoskiAuditLogOperation(op: KoskiOperation) extends AuditLogOperation(op)
+
+class AuditLogOperation(op: Enumeration#Value) extends Operation {
   override def name(): String = op.toString
+
   override def toString: String = op.toString
 }
 
