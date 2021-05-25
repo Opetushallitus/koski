@@ -33,7 +33,11 @@ object Arviointi {
       case (Some(aNumeerisena), Some(bNumeerisena)) => {
         if (aNumeerisena > bNumeerisena) {
           a
-        } else {
+          } else if (aNumeerisena == bNumeerisena &&
+              a.arviointipäivä.getOrElse(LocalDate.of(2999, 10, 10))
+              .isBefore(b.arviointipäivä.getOrElse(LocalDate.of(2999, 10, 10)))) {
+            a
+          } else {
           b
         }
       }
