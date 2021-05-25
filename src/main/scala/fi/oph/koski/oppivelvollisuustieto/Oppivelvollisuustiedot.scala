@@ -93,10 +93,10 @@ object Oppivelvollisuustiedot {
           end
             oppivelvollisuusVoimassaAsti,
           case
-            when suorittaa_ammattitutkintoa and suorittaa_lukionoppimaaraa then #${s.name}.vuodenViimeinenPaivamaara(syntymaaika) + oikeutta_maksuttomuuteen_pidennetty_yhteensa * interval '1 day'
-            when suorittaa_ammattitutkintoa then least(ammattitutkinnon_vahvistus_paiva, #${s.name}.vuodenViimeinenPaivamaara(syntymaaika)) + oikeutta_maksuttomuuteen_pidennetty_yhteensa * interval '1 day'
-            when suorittaa_lukionoppimaaraa then #${s.name}.vuodenViimeinenPaivamaara(syntymaaika) + oikeutta_maksuttomuuteen_pidennetty_yhteensa * interval '1 day'
-            else #${s.name}.vuodenViimeinenPaivamaara(syntymaaika) + oikeutta_maksuttomuuteen_pidennetty_yhteensa * interval '1 day'
+            when suorittaa_ammattitutkintoa and suorittaa_lukionoppimaaraa then #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '20 year') + oikeutta_maksuttomuuteen_pidennetty_yhteensa * interval '1 day'
+            when suorittaa_ammattitutkintoa then least(ammattitutkinnon_vahvistus_paiva, #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '20 year')) + oikeutta_maksuttomuuteen_pidennetty_yhteensa * interval '1 day'
+            when suorittaa_lukionoppimaaraa then #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '20 year') + oikeutta_maksuttomuuteen_pidennetty_yhteensa * interval '1 day'
+            else #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '20 year') + oikeutta_maksuttomuuteen_pidennetty_yhteensa * interval '1 day'
           end
             oikeusKoulutuksenMaksuttomuuteenVoimassaAsti
         from
