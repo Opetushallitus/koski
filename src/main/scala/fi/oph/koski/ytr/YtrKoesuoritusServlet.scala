@@ -5,7 +5,7 @@ import fi.oph.koski.henkilo.HenkilönTunnisteet
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresKansalainen}
 import fi.oph.koski.log.KoskiOperation.KoskiOperation
-import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiMessageField}
+import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiAuditLogMessageField}
 import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_HUOLTAJA_YLIOPPILASKOE_HAKU, KANSALAINEN_YLIOPPILASKOE_HAKU}
 import fi.oph.koski.servlet.OppijaHtmlServlet
 
@@ -53,7 +53,7 @@ class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends 
   }
 
   private def mkAuditLog(session: KoskiSpecificSession, operation: KoskiOperation): Unit = mkAuditLog(session.oid, operation)
-  private def mkAuditLog(oid: String, operation: KoskiOperation): Unit = AuditLog.log(AuditLogMessage(operation, session, Map(KoskiMessageField.oppijaHenkiloOid -> oid)))
+  private def mkAuditLog(oid: String, operation: KoskiOperation): Unit = AuditLog.log(KoskiAuditLogMessage(operation, session, Map(KoskiAuditLogMessageField.oppijaHenkiloOid -> oid)))
 
   private def isHuollettava = getOptionalStringParam("huollettava").isDefined
 }

@@ -1,10 +1,8 @@
 package fi.oph.koski.valpas.servlet
 
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.log.{AuditLog, KoskiMessageField}
 import fi.oph.koski.servlet.ApiServlet
 import fi.oph.koski.util.PaginatedResponse
-import fi.oph.koski.valpas.log.{ValpasAuditLogMessage, ValpasOperation}
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
 import scala.reflect.runtime.universe.{TypeRefApi, TypeTag}
@@ -22,10 +20,4 @@ trait ValpasApiServlet extends ApiServlet with ValpasBaseServlet {
         JsonSerializer.write(x, pretty)
     }
   }
-
-  protected def auditLogOppijaKatsominen(oppijaOid: String)(implicit session: ValpasSession): Unit =
-    AuditLog.log(ValpasAuditLogMessage(
-      ValpasOperation.VALPAS_OPPIJA_KATSOMINEN,
-      Map(KoskiMessageField.oppijaHenkiloOid -> oppijaOid)
-    ))
 }

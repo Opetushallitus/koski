@@ -11,9 +11,9 @@ import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.json._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser._
-import fi.oph.koski.log.KoskiMessageField._
+import fi.oph.koski.log.KoskiAuditLogMessageField._
 import fi.oph.koski.log.KoskiOperation._
-import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
+import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema._
 import fi.oph.koski.util.OptionalLists.optionalList
@@ -154,7 +154,7 @@ class TiedonsiirtoService(
                                paginationSettings: Option[PaginationSettings])
                               (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
     koskiSession.juuriOrganisaatiot.map(_.oid).foreach { oid =>
-      AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiSession, Map(juuriOrganisaatio -> oid)))
+      AuditLog.log(KoskiAuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiSession, Map(juuriOrganisaatio -> oid)))
     }
 
     val query = toJValue(ElasticSearch.applyPagination(paginationSettings, Map(

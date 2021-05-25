@@ -4,9 +4,9 @@ import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.log.KoskiMessageField.hakuEhto
+import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
-import fi.oph.koski.log.{AuditLog, AuditLogMessage}
+import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage}
 import fi.oph.koski.schema.Organisaatio.Oid
 
 class EsiopetusRaporttiService(application: KoskiApplication) {
@@ -24,7 +24,7 @@ class EsiopetusRaporttiService(application: KoskiApplication) {
   }
 
   private def auditLog(date: LocalDate, session: KoskiSpecificSession, organisaatio: String) = {
-    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=esiopetus&oppilaitosOid=$organisaatio&paiva=$date")))
+    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=esiopetus&oppilaitosOid=$organisaatio&paiva=$date")))
   }
 
   private def buildRaportti(date: LocalDate, password: String, downloadToken: Option[String], oppilaitokset: List[Oid], filename: String)(implicit session: KoskiSpecificSession): OppilaitosRaporttiResponse =

@@ -1,8 +1,8 @@
 package fi.oph.koski.valpas
 
-import fi.oph.koski.log.{AuditLogTester, KoskiMessageField}
+import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.valpas.log.ValpasOperation
+import fi.oph.koski.valpas.log.{ValpasAuditLogMessageField, ValpasOperation}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 import org.scalatest.{BeforeAndAfterEach, Tag}
@@ -18,7 +18,7 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
       verifyResponseStatusOk()
       AuditLogTester.verifyAuditLogMessage(Map(
         "operation" -> ValpasOperation.VALPAS_OPPIJA_KATSOMINEN.toString,
-        "target" -> Map(KoskiMessageField.oppijaHenkiloOid.toString -> oppijaOid)))
+        "target" -> Map(ValpasAuditLogMessageField.oppijaHenkilöOid.toString -> oppijaOid)))
     }
   }
 
@@ -28,7 +28,7 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
       verifyResponseStatusOk()
       AuditLogTester.verifyAuditLogMessage(Map(
         "operation" -> ValpasOperation.VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN.toString,
-        "target" -> Map(KoskiMessageField.juuriOrganisaatio.toString -> oppilaitosOid)))
+        "target" -> Map(ValpasAuditLogMessageField.juuriOrganisaatio.toString -> oppilaitosOid)))
     }
   }
 

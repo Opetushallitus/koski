@@ -2,15 +2,15 @@ package fi.oph.koski.henkilo
 
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.log.KoskiMessageField.{apply => _, _}
+import fi.oph.koski.log.KoskiAuditLogMessageField.{apply => _, _}
 import fi.oph.koski.log.KoskiOperation._
-import fi.oph.koski.log.{AuditLog, AuditLogMessage}
+import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage}
 import fi.oph.koski.opiskeluoikeus.{CompositeOpiskeluoikeusRepository, KoskiOpiskeluoikeusRepository}
 import fi.oph.koski.schema.{Henkilö, HenkilötiedotJaOid}
 
 private[henkilo] case class HenkilötiedotSearchFacade(henkilöRepository: HenkilöRepository, kaikkiOpiskeluoikeudet: CompositeOpiskeluoikeusRepository, koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository, hetuValidator: Hetu) {
   def searchOrPossiblyCreateIfInYtrOrVirta(query: String)(implicit koskiSession: KoskiSpecificSession): HenkilötiedotSearchResponse = {
-    AuditLog.log(AuditLogMessage(OPPIJA_HAKU, koskiSession, Map(hakuEhto -> query)))
+    AuditLog.log(KoskiAuditLogMessage(OPPIJA_HAKU, koskiSession, Map(hakuEhto -> query)))
     if (Hetu.validFormat(query).isRight) {
       searchByHetuOrPossiblyCreateIfInYtrOrVirta(query)
     } else if (Henkilö.isValidHenkilöOid(query)) {
@@ -22,13 +22,13 @@ private[henkilo] case class HenkilötiedotSearchFacade(henkilöRepository: Henki
 
   // huom: tässä kutsussa ei ole organisaatiorajausta.
   def findByHetuOrCreateIfInYtrOrVirta(hetu: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, List[HenkilötiedotJaOid]] = {
-    AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> hetu)))
+    AuditLog.log(KoskiAuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> hetu)))
     hetuValidator.validate(hetu).right.map(henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(_)).map(_.map(_.toHenkilötiedotJaOid).toList)
   }
 
   // huom, tässä kutsussa ei ole organisaatiorajausta.
   def findByOid(oid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, List[HenkilötiedotJaOid]] = {
-    AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> oid)))
+    AuditLog.log(KoskiAuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> oid)))
     HenkilöOid.validateHenkilöOid(oid)
       .map(henkilöRepository.findByOid(_))
       .map(_.map(_.toHenkilötiedotJaOid).toList)

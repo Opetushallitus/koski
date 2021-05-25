@@ -6,7 +6,7 @@ import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö, Suppeat
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiMessageField, KoskiOperation}
+import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiAuditLogMessageField, KoskiOperation}
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{OneOfOpiskeluoikeudenTyypit, OppijaOidHaku}
 import fi.oph.koski.schema._
@@ -45,7 +45,7 @@ class LuovutuspalveluService(application: KoskiApplication) {
     OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, None)
 
   private def auditLogOpiskeluoikeusKatsominen(henkilöt: Seq[OppijaHenkilö])(implicit koskiSession: KoskiSpecificSession): Unit = henkilöt
-    .map(h => AuditLogMessage(KoskiOperation.OPISKELUOIKEUS_KATSOMINEN, koskiSession, Map(KoskiMessageField.oppijaHenkiloOid -> h.oid)))
+    .map(h => KoskiAuditLogMessage(KoskiOperation.OPISKELUOIKEUS_KATSOMINEN, koskiSession, Map(KoskiAuditLogMessageField.oppijaHenkiloOid -> h.oid)))
     .foreach(AuditLog.log)
 
   private def opiskeluoikeusTyyppiQueryFilters(opiskeluoikeusTyypit: List[String]): OneOfOpiskeluoikeudenTyypit =
