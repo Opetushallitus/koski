@@ -26,6 +26,10 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
     putOppija(makeOppija(henkilö, List(opiskeluoikeus)), headers)(f)
   }
 
+  def putOpiskeluoikeudet[A](opiskeluoikeudet: List[Opiskeluoikeus], henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
+    putOppija(makeOppija(henkilö, opiskeluoikeudet), headers)(f)
+  }
+
   def putHenkilö[A](henkilö: Henkilö)(f: => A): Unit = {
     import fi.oph.koski.schema.KoskiSchema.deserializationContext
     putOppija(JsonSerializer.serializeWithRoot(SchemaValidatingExtractor.extract[Oppija](makeOppija(opiskeluOikeudet = List(defaultOpiskeluoikeus))(tag)).right.get.copy(henkilö = henkilö)))(f)

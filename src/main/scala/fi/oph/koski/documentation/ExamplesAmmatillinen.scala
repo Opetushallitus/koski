@@ -500,7 +500,7 @@ object AmmatillinenOldExamples {
     )
   )
 
-  private lazy val tutkinnonOsat = List(
+  lazy val tutkinnonOsat = List(
     MuunAmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(
         Koodistokoodiviite("100016", Some("Huolto- ja korjaustyöt"), "tutkinnonosat", Some(1)),

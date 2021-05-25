@@ -1,8 +1,9 @@
 package fi.oph.koski.schema
 
 import java.time.LocalDate
-
 import fi.oph.scalaschema.annotation.Description
+
+import scala.collection.mutable
 
 case class Maksuttomuus(
   alku: LocalDate,
@@ -14,12 +15,30 @@ case class Maksuttomuus(
   }
 }
 
-case class OikeuttaMaksuttomuuteenPidennetty(
+case class OikeuttaMaksuttomuuteenPidennetty (
   alku: LocalDate,
   loppu: LocalDate
-) extends Alkupäivällinen {
+) extends Alkupäivällinen with DateContaining {
   def overlaps(other: OikeuttaMaksuttomuuteenPidennetty): Boolean = {
     !alku.isBefore(other.alku) && !alku.isAfter(other.loppu) || !loppu.isBefore(other.alku) && !loppu.isAfter(other.loppu)
+  }
+
+  def contains(d: LocalDate): Boolean = !d.isBefore(alku) && d.isAfter(loppu)
+}
+
+object OikeuttaMaksuttomuuteenPidennetty {
+  def maksuttomuusJaksojenYhteenlaskettuPituus(jaksot: Seq[OikeuttaMaksuttomuuteenPidennetty]): Int = {
+    val uniikitPäivät = mutable.HashSet.empty[Long]
+    jaksot.foreach(
+      jakso => {
+        var päivä = jakso.alku
+        while (päivä.isBefore(jakso.loppu)) {
+          uniikitPäivät.add(päivä.toEpochDay)
+          päivä = päivä.plusDays(1)
+        }
+      }
+    )
+    uniikitPäivät.size
   }
 }
 

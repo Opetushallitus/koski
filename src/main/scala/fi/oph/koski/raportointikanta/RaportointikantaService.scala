@@ -41,7 +41,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   }
 
   def loadHenkilöt(db: RaportointiDatabase = raportointiDatabase): Int =
-    HenkilöLoader.loadHenkilöt(application.opintopolkuHenkilöFacade, db, application.koodistoPalvelu)
+    HenkilöLoader.loadHenkilöt(application.opintopolkuHenkilöFacade, db, application.koodistoPalvelu, application.opiskeluoikeusRepository)
 
   def loadOrganisaatiot(db: RaportointiDatabase = raportointiDatabase): Int =
     OrganisaatioLoader.loadOrganisaatiot(application.organisaatioRepository, db)
@@ -102,6 +102,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     loadHenkilöt(loadDatabase)
     loadOrganisaatiot(loadDatabase)
     loadKoodistot(loadDatabase)
+    loadDatabase.createCustomFunctions
     loadDatabase.createMaterializedViews
     swapRaportointikanta()
     raportointiDatabase.vacuumAnalyze()
