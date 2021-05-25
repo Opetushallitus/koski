@@ -379,8 +379,7 @@ object RaportointiDatabaseSchema {
     val kotikunta = column[Option[String]]("kotikunta")
     val kotikuntaNimiFi = column[Option[String]]("kotikunta_nimi_fi")
     val yksiloity = column[Boolean]("yksiloity")
-    val oikeuttaMaksuttomuuteenPidennettyYhteensä = column[Int]("oikeutta_maksuttomuuteen_pidennetty_yhteensa")
-    def * = (oppijaOid, masterOid, hetu, sukupuoli, syntymäaika, sukunimi, etunimet, äidinkieli, kansalaisuus, turvakielto, kotikunta, kotikuntaNimiFi, yksiloity, oikeuttaMaksuttomuuteenPidennettyYhteensä) <> (RHenkilöRow.tupled, RHenkilöRow.unapply)
+    def * = (oppijaOid, masterOid, hetu, sukupuoli, syntymäaika, sukunimi, etunimet, äidinkieli, kansalaisuus, turvakielto, kotikunta, kotikuntaNimiFi, yksiloity) <> (RHenkilöRow.tupled, RHenkilöRow.unapply)
   }
   class RHenkilöTableTemp(tag: Tag) extends RHenkilöTable(tag, Temp)
 
@@ -636,8 +635,7 @@ case class RHenkilöRow(
   turvakielto: Boolean,
   kotikunta: Option[String] = None,
   kotikuntaNimiFi: Option[String] = None,
-  yksiloity: Boolean,
-  oikeuttaMaksuttomuuteenPidennettyYhteensä: Int
+  yksiloity: Boolean
 )
 
 case class ROrganisaatioRow(

@@ -67,12 +67,11 @@ object HenkilöLoader extends Logging {
       turvakielto = oppija.turvakielto,
       kotikunta = oppija.kotikunta,
       kotikuntaNimiFi = Kunta.getKunnanNimi(oppija.kotikunta, koodistoPalvelu),
-      yksiloity =  oppija.yksilöity,
+      yksiloity =  oppija.yksilöity
       // TODO: Disabloitu ainakin väliaikaiseksi, kun kokeillaan SQL-pohjaista tapaa näiden laskemiseen.
       // Nyt jos tämä maksuttomuuden pidennys lasketaan tässä kohtaa, joudutaan käymään kokonaisuutena
       // kaksi kertaa läpi kaikki opiskeluoikeudet, mitä Koskessa on, kun raportointikantaa luodaan.
       //oikeuttaMaksuttomuuteenPidennettyYhteensä = oikeuttaMaksuttomuuteenPidennettyYhteensä(oppija, opiskeluoikeusRepository)
-      oikeuttaMaksuttomuuteenPidennettyYhteensä = 0
     )
 
   private def oikeuttaMaksuttomuuteenPidennettyYhteensä(oppija: LaajatOppijaHenkilöTiedot, opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository): Int = {
