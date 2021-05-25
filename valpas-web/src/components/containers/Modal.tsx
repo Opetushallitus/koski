@@ -8,7 +8,7 @@ const b = bem("modal")
 
 export type ModalProps = {
   children: React.ReactNode
-  title: React.ReactNode
+  title?: React.ReactNode
   onClose?: () => void
   closeOnBackgroundClick?: boolean
 }

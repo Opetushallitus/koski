@@ -1,12 +1,14 @@
+import bem from "bem-ts"
 import * as A from "fp-ts/Array"
 import { pipe } from "fp-ts/lib/function"
 import * as Ord from "fp-ts/Ord"
 import * as string from "fp-ts/string"
-import React, { useMemo } from "react"
+import React, { useMemo, useState } from "react"
 import {
   IconSection,
   IconSectionHeading,
 } from "../../components/containers/IconSection"
+import { Modal } from "../../components/containers/Modal"
 import { IlmoitusListIcon, OpiskeluIcon } from "../../components/icons/Icon"
 import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
@@ -24,6 +26,10 @@ import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import { ISODate } from "../../state/common"
 import { formatDate, formatNullableDate, parseYear } from "../../utils/date"
 import { pick } from "../../utils/objects"
+import { OppijaKuntailmoitus } from "./OppijaKuntailmoitus"
+import "./OppijanOpiskeluhistoria.less"
+
+const b = bem("oppijanopiskeluhistoria")
 
 export type OppijanOpiskeluhistoriaProps = {
   oppija: OppijaHakutilanteillaLaajatTiedot
@@ -161,9 +167,27 @@ const OpiskeluhistoriaIlmoitus = ({
         label={t("oppija__ilmoitushistoria_kohde")}
         value={getLocalized(kuntailmoitus.kuntailmoitus.kunta.nimi)}
       />
+      <InfoTableRow value={<IlmoitusLink kuntailmoitus={kuntailmoitus} />} />
     </InfoTable>
   </IconSection>
 )
+
+const IlmoitusLink = (props: OpiskeluhistoriaIlmoitusProps) => {
+  const [modalVisible, setModalVisibility] = useState(false)
+
+  return (
+    <>
+      <div className={b("lisatiedot")} onClick={() => setModalVisibility(true)}>
+        <T id="oppija__ilmoitushistoria_lisätiedot" />
+      </div>
+      {modalVisible && (
+        <Modal onClose={() => setModalVisibility(false)} closeOnBackgroundClick>
+          <OppijaKuntailmoitus kuntailmoitus={props.kuntailmoitus} />
+        </Modal>
+      )}
+    </>
+  )
+}
 
 const koodistonimi = (k: KoodistoKoodiviite<string, string>): string =>
   getLocalized(k.nimi) || k.koodiarvo
