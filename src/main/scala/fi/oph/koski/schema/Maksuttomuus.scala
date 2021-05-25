@@ -1,8 +1,9 @@
 package fi.oph.koski.schema
 
 import java.time.LocalDate
-
 import fi.oph.scalaschema.annotation.Description
+
+import scala.collection.mutable
 
 case class Maksuttomuus(
   alku: LocalDate,
@@ -23,6 +24,22 @@ case class OikeuttaMaksuttomuuteenPidennetty (
   }
 
   def contains(d: LocalDate): Boolean = !d.isBefore(alku) && d.isAfter(loppu)
+}
+
+object OikeuttaMaksuttomuuteenPidennetty {
+  def maksuttomuusJaksojenYhteenlaskettuPituus(jaksot: Seq[OikeuttaMaksuttomuuteenPidennetty]): Int = {
+    val uniikitPäivät = mutable.HashSet.empty[Long]
+    jaksot.foreach(
+      jakso => {
+        var päivä = jakso.alku
+        while (päivä.isBefore(jakso.loppu)) {
+          uniikitPäivät.add(päivä.toEpochDay)
+          päivä = päivä.plusDays(1)
+        }
+      }
+    )
+    uniikitPäivät.size
+  }
 }
 
 @Description("Laajennetun oppivelvollisuuden suoritus")

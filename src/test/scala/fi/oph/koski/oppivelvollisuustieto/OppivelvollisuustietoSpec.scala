@@ -2,7 +2,6 @@ package fi.oph.koski.oppivelvollisuustieto
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
@@ -10,7 +9,7 @@ import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus}
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeudenTila, AmmatillisenOpiskeluoikeudenLisätiedot, Henkilö, Maksuttomuus, OikeuttaMaksuttomuuteenPidennetty, Opiskeluoikeus}
 import org.scalatest.{FreeSpec, Matchers}
 
 class OppivelvollisuustietoSpec
@@ -145,6 +144,33 @@ class OppivelvollisuustietoSpec
           ))
         }
       }
+
+      "Jos opiskeluoikeuksissa on pidennetty oikeutta maksuttomuuteen" in {
+        resetFixtures
+
+        val alkamispaiva = date(2021, 8, 1)
+
+        val maksuttomuusJaksot = Some(List(
+          Maksuttomuus(alkamispaiva, None, maksuton = true),
+        ))
+
+        val pidennykset = Some(List(
+          OikeuttaMaksuttomuuteenPidennetty(alkamispaiva, alkamispaiva.plusDays(20)),
+        ))
+
+        insert(oikeusOpiskelunMaksuttomuuteen, ammatillinenTutkintoMaksuttomuusJaksoilla(vahvistus = None,
+          maksuttomuusJaksot = maksuttomuusJaksot,
+          maksuttomuudenPidennyksenJaksot = pidennykset))
+        reloadRaportointikanta
+
+        queryOids(oikeusOpiskelunMaksuttomuuteen.oid) should equal(List(
+          Oppivelvollisuustieto(
+            oikeusOpiskelunMaksuttomuuteen.oid,
+            oppivelvollisuusVoimassaAsti = date(2022, 1, 1),
+            oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2025, 1, 20)
+          )
+        ))
+      }
     }
   }
 
@@ -155,6 +181,25 @@ class OppivelvollisuustietoSpec
         osasuoritukset = Some(AmmatillinenOldExamples.tutkinnonOsat)
       )
     ))
+  }
+
+  private def ammatillinenTutkintoMaksuttomuusJaksoilla(vahvistus: Option[LocalDate],
+                                   maksuttomuusJaksot: Option[List[Maksuttomuus]] = None,
+                                   maksuttomuudenPidennyksenJaksot: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None): Opiskeluoikeus = {
+    val alkamispaiva = date(2021, 8, 1)
+
+    val opiskeluoikeus = alkamispäivällä(defaultOpiskeluoikeus, alkamispaiva)
+
+    opiskeluoikeus.copy(suoritukset = List(
+      autoalanPerustutkinnonSuoritus().copy(
+        alkamispäivä = Some(date(2021, 8, 1)),
+        vahvistus = vahvistus.flatMap(date => ExampleData.vahvistus(date, stadinAmmattiopisto, Some(helsinki))),
+        osasuoritukset = Some(AmmatillinenOldExamples.tutkinnonOsat)
+      )
+    ),
+      lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(hojks = None,
+        maksuttomuus = maksuttomuusJaksot,
+        oikeuttaMaksuttomuuteenPidennetty = maksuttomuudenPidennyksenJaksot)))
   }
 
   private def lukionOppimäärä(vahvistus: Option[LocalDate]): Opiskeluoikeus = {
@@ -176,6 +221,11 @@ class OppivelvollisuustietoSpec
     putOpiskeluoikeudet(opiskeluoikeudet.toList, oppija) {
       verifyResponseStatusOk()
     }
+  }
+
+  private def maksuttomuudenPidennyksenJakso = {
+    OikeuttaMaksuttomuuteenPidennetty(LocalDate.of(2020, 10, 10),
+      LocalDate.of(2020, 10, 15))
   }
 
   private def queryTestioidit = queryOids(testiOidit)

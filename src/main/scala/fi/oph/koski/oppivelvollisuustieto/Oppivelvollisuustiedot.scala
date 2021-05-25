@@ -32,7 +32,8 @@ object Oppivelvollisuustiedot {
               select
                 oppija_oid,
                 master_oid,
-                syntymaaika
+                syntymaaika,
+                oikeutta_maksuttomuuteen_pidennetty_yhteensa
               from
                 #${s.name}.r_henkilo henkilo
               where date_part('year', syntymaaika) >= 2004
@@ -92,10 +93,10 @@ object Oppivelvollisuustiedot {
           end
             oppivelvollisuusVoimassaAsti,
           case
-            when suorittaa_ammattitutkintoa and suorittaa_lukionoppimaaraa then #${s.name}.vuodenViimeinenPaivamaara(syntymaaika)
-            when suorittaa_ammattitutkintoa then least(ammattitutkinnon_vahvistus_paiva, #${s.name}.vuodenViimeinenPaivamaara(syntymaaika))
-            when suorittaa_lukionoppimaaraa then #${s.name}.vuodenViimeinenPaivamaara(syntymaaika)
-            else #${s.name}.vuodenViimeinenPaivamaara(syntymaaika)
+            when suorittaa_ammattitutkintoa and suorittaa_lukionoppimaaraa then #${s.name}.vuodenViimeinenPaivamaara(syntymaaika) + oikeutta_maksuttomuuteen_pidennetty_yhteensa * interval '1 day'
+            when suorittaa_ammattitutkintoa then least(ammattitutkinnon_vahvistus_paiva, #${s.name}.vuodenViimeinenPaivamaara(syntymaaika)) + oikeutta_maksuttomuuteen_pidennetty_yhteensa * interval '1 day'
+            when suorittaa_lukionoppimaaraa then #${s.name}.vuodenViimeinenPaivamaara(syntymaaika) + oikeutta_maksuttomuuteen_pidennetty_yhteensa * interval '1 day'
+            else #${s.name}.vuodenViimeinenPaivamaara(syntymaaika) + oikeutta_maksuttomuuteen_pidennetty_yhteensa * interval '1 day'
           end
             oikeusKoulutuksenMaksuttomuuteenVoimassaAsti
         from
