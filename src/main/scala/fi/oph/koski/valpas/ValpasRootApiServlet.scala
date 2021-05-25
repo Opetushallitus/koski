@@ -1,15 +1,14 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.log.{AuditLog, KoskiMessageField}
 import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioHierarkia, OrganisaatioHierarkiaJaKayttooikeusrooli}
 import fi.oph.koski.servlet.NoCache
+import fi.oph.koski.util.ChainingSyntax._
 import fi.oph.koski.valpas.db.ValpasSchema.OpiskeluoikeusLisätiedotKey
-import fi.oph.koski.valpas.log.{ValpasAuditLogMessage, ValpasOperation}
+import fi.oph.koski.valpas.log.ValpasAuditLog.{auditLogOppijaKatsominen, auditLogOppilaitosKatsominen}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppilaitos
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
-import fi.oph.koski.valpas.valpasuser.{RequiresValpasSession, ValpasSession}
+import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
 
 class ValpasRootApiServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with RequiresValpasSession {
   private lazy val organisaatioService = application.organisaatioService
@@ -36,14 +35,14 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
     val oppilaitosOid: ValpasOppilaitos.Oid = params("organisaatio")
     renderEither(
       oppijaService.getOppijatSuppeatTiedot(oppilaitosOid)
-        .map(withAuditLogOppilaitostenKatsominen(oppilaitosOid))
+        .tap(_ => auditLogOppilaitosKatsominen(oppilaitosOid))
     )
   }
 
   get("/oppija/:oid") {
     renderEither(
       oppijaService.getOppijaHakutilanteillaLaajatTiedot(params("oid"))
-        .map(withAuditLogOppijaKatsominen)
+        .tap(result => auditLogOppijaKatsominen(result.oppija.henkilö.oid))
     )
   }
 
@@ -59,23 +58,5 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
       oppilaitosOid = oppilaitosOid
     )
     oppijaService.setMuuHaku(key, value)
-  }
-
-  private def withAuditLogOppijaKatsominen
-    (result: OppijaHakutilanteillaLaajatTiedot)
-    (implicit session: ValpasSession)
-  : OppijaHakutilanteillaLaajatTiedot = {
-    auditLogOppijaKatsominen(result.oppija.henkilö.oid)
-    result
-  }
-
-  private def withAuditLogOppilaitostenKatsominen[T]
-    (oppilaitosOid: ValpasOppilaitos.Oid)(result: T)(implicit session: ValpasSession)
-  : T = {
-    AuditLog.log(ValpasAuditLogMessage(
-      ValpasOperation.VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN,
-      Map(KoskiMessageField.juuriOrganisaatio -> oppilaitosOid)
-    ))
-    result
   }
 }
