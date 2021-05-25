@@ -1,9 +1,18 @@
 import * as A from "fp-ts/Array"
 
+export type ObjectEntry<T> = [string, T]
+
 export const isEntry = (arr: string[]): arr is [string, string] =>
   arr.length === 2
 
-export const fromEntries = <T>(entries: [string, T][]): Record<string, T> =>
+export const objectEntry = <T>(key: string, value: T): ObjectEntry<T> => [
+  key,
+  value,
+]
+
+export const fromEntries = <T>(
+  entries: Array<ObjectEntry<T>>
+): Record<string, T> =>
   entries.reduce(
     (obj, entry) => ({
       ...obj,

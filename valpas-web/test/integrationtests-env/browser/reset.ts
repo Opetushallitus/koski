@@ -11,12 +11,12 @@ import { getTextInput, setTextInput } from "./forms"
 export const loginAs = async (
   initialPath: string,
   username: string,
-  password?: string
+  forceReset: boolean = false
 ) => {
-  await reset(initialPath)
+  await reset(initialPath, forceReset)
   await expectElementEventuallyVisible("#username")
   ;(await $("#username")).sendKeys(username)
-  ;(await $("#password")).sendKeys(password || username, Key.ENTER)
+  ;(await $("#password")).sendKeys(username, Key.ENTER)
   await driver.wait(
     until.elementLocated(By.css("article.page:not(#login-app)")),
     5000
@@ -25,16 +25,19 @@ export const loginAs = async (
 }
 
 export const defaultLogin = async (initialPath: string) =>
-  loginAs(initialPath, "valpas-helsinki", "valpas-helsinki")
+  loginAs(initialPath, "valpas-helsinki")
 
-export const reset = async (initialPath: string) => {
+export const reset = async (initialPath: string, force: boolean = false) => {
   await deleteCookies()
   await goToLocation(initialPath)
   await driver.wait(until.elementLocated(By.css("article")), 5000)
-  await resetMockData()
+  await resetMockData(undefined, force)
 }
 
-export const resetMockData = async (tarkastelupäivä: string = "2021-09-05") => {
+export const resetMockData = async (
+  tarkastelupäivä: string = "2021-09-05",
+  force: boolean = false
+) => {
   const inputSelector = "#tarkastelupäivä"
 
   const currentTarkastelupäivä = await getTextInput(inputSelector)
@@ -42,7 +45,8 @@ export const resetMockData = async (tarkastelupäivä: string = "2021-09-05") =>
 
   if (
     currentTarkastelupäivä !== tarkastelupäivä ||
-    currentFixture !== "VALPAS"
+    currentFixture !== "VALPAS" ||
+    force
   ) {
     await setTextInput(inputSelector, tarkastelupäivä)
     await clickElement("#resetMockData")

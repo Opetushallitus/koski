@@ -35,7 +35,7 @@ describe("Login / Logout / kirjautuminen", () => {
   })
 
   it("Kirjautuminen ei-Valpas-tunnuksilla näyttää virheen ja logout-painikkeen", async () => {
-    await loginAs("/virkailija", "kalle", "kalle")
+    await loginAs("/virkailija", "kalle")
     await expectElementVisible("article.page#error-view")
     await expectElementVisible(".localraamit__logoutbutton")
   })
@@ -48,7 +48,7 @@ describe("Login / Logout / kirjautuminen", () => {
   })
 
   it("Ei-Valpas-tunnuksilla kirjautunut käyttäjä palaa uloskirjautumisen jälkeen login-sivulle", async () => {
-    await loginAs("/virkailija", "kalle", "kalle")
+    await loginAs("/virkailija", "kalle")
     await expectElementVisible(".localraamit__logoutbutton")
     await clickElement(".localraamit__logoutbutton")
     await expectElementEventuallyVisible("article.page#login-app")

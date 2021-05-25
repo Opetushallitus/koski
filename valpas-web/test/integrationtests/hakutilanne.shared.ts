@@ -1,4 +1,9 @@
+import { Oid } from "../../src/state/common"
 import { createHakutilannePathWithoutOrg } from "../../src/state/paths"
+import {
+  clickElement,
+  expectElementEventuallyVisible,
+} from "../integrationtests-env/browser/content"
 
 export const jklNormaalikouluTableContent = `
   Epäonninen Valpas                                       | 30.10.2005  | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
@@ -27,3 +32,12 @@ export const jklNormaalikouluTableContent = `
 `
 
 export const hakutilannePath = createHakutilannePathWithoutOrg("/virkailija")
+
+export const openOppijaView = async (oppijaOid: Oid) => {
+  const selector = `.hakutilanne .table__row[data-row*="${oppijaOid}"] td:first-child a`
+  await expectElementEventuallyVisible(selector)
+  await clickElement(selector)
+}
+
+export const openAnyOppijaView = () =>
+  clickElement(`.hakutilanne .table__row:first-child td:first-child a`)

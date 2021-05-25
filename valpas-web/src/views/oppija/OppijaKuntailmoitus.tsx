@@ -36,7 +36,10 @@ export const OppijaKuntailmoitus = (props: OppijaKuntailmoitusProps) => {
             <ColumnHeading>
               <T id="oppija__perustiedot" />
             </ColumnHeading>
-            <KuntailmoitusSection label={t("oppija__ilmoituksen_kohde")}>
+            <KuntailmoitusSection
+              label={t("oppija__ilmoituksen_kohde")}
+              testId="kohde"
+            >
               {getLocalized(kuntailmoitus.kunta.nimi)}
             </KuntailmoitusSection>
             <IlmoituksenTekijä tekijä={kuntailmoitus.tekijä} />
@@ -90,12 +93,13 @@ const KuntailmoitusIcon = (props: KuntailmoitusIconProps) => (
 type KuntailmoitusSectionProps = {
   label?: string
   children: React.ReactNode
+  testId?: string
 }
 
 const KuntailmoitusSection = (props: KuntailmoitusSectionProps) => (
   <section className={b("section")}>
     {props.label && <SectionName>{props.label}:</SectionName>}
-    {props.children}
+    <div data-testid={props.testId}>{props.children}</div>
   </section>
 )
 
@@ -115,7 +119,10 @@ const IlmoituksenTekijä = (props: IlmoituksenTekijäProps) => {
   ].filter(nonNull)
 
   return (
-    <KuntailmoitusSection label={t("oppija__ilmoittajan_yhteystiedot")}>
+    <KuntailmoitusSection
+      label={t("oppija__ilmoittajan_yhteystiedot")}
+      testId="tekijä"
+    >
       {rows.map((row, index) => (
         <div key={index}>{row}</div>
       ))}
@@ -133,6 +140,7 @@ const TiedotOppijasta = (props: TiedotOppijastaProps) => {
     {
       label: t("oppija__lähiosoite"),
       value: props.yhteystiedot.lähiosoite,
+      testId: "lähiosoite",
     },
     {
       label: t("oppija__postitoimipaikka"),
@@ -140,27 +148,32 @@ const TiedotOppijasta = (props: TiedotOppijastaProps) => {
         props.yhteystiedot.postinumero,
         props.yhteystiedot.postitoimipaikka,
       ]),
+      testId: "postitoimipaikka",
     },
     {
       label: t("oppija__maa"),
       value: getLocalized(props.yhteystiedot.maa?.nimi),
+      testId: "maa",
     },
     {
       label: t("oppija__puhelin"),
       value: props.yhteystiedot.puhelinnumero,
+      testId: "puhelin",
     },
     {
       label: t("oppija__email"),
       value: props.yhteystiedot.email,
+      testId: "email",
     },
     {
       label: t("oppija__hakenut_muualle"),
       value: props.hakenutMuualle ? "Kyllä" : "Ei",
+      testId: "muuHaku",
     },
-  ].filter((row) => row.value !== undefined)
+  ].filter((row) => nonNull(row.value))
 
   return (
-    <KuntailmoitusSection>
+    <KuntailmoitusSection testId="oppija">
       <InfoTable size="tighter">
         {rows.map((row, index) => (
           <InfoTableRow key={index} {...row} />

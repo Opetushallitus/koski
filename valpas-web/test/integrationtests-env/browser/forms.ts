@@ -1,4 +1,4 @@
-import { Key } from "selenium-webdriver"
+import { Key, WebElement } from "selenium-webdriver"
 import { attributeEventuallyEquals } from "./content"
 import { $, $$ } from "./core"
 import { driver } from "./driver"
@@ -18,11 +18,15 @@ export const getTextInput = async (selector: string) => {
   return element.getAttribute("value")
 }
 
-// https://stackoverflow.com/questions/53698075/how-to-clear-text-input
 export const clearTextInput = async (selector: string, timeout = 1000) =>
+  clearTextInputElement(await $(selector), timeout)
+
+export const clearTextInputElement = async (
+  element: WebElement,
+  timeout = 1000
+) =>
   // Pitää tehdä silmukassa, koska tämä ei aina toimi, välillä BACK_SPACE poistaa vain viimeisen merkin
   eventually(async () => {
-    const element = await $(selector)
     await driver.executeScript((element: any) => element.select(), element)
     await element.sendKeys(Key.BACK_SPACE)
     expect(await element.getAttribute("value")).toEqual("")
