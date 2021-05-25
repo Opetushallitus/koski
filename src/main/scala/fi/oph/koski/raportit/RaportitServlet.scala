@@ -6,7 +6,7 @@ import java.time.format.DateTimeParseException
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
-import fi.oph.koski.log.AuditLogMessageField.hakuEhto
+import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.raportit.aikuistenperusopetus.AikuistenPerusopetusRaportti

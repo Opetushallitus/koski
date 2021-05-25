@@ -5,7 +5,7 @@ import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.{HasKoskiSpecificSession, KoskiSpecificSession}
-import fi.oph.koski.log.AuditLogMessageField._
+import fi.oph.koski.log.KoskiAuditLogMessageField._
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.schema.Henkilö._

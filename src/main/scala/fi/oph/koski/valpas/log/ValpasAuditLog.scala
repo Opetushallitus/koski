@@ -1,6 +1,6 @@
 package fi.oph.koski.valpas.log
 
-import fi.oph.koski.log.{AuditLog, AuditLogMessage, AuditLogMessageField, AuditLogOperation}
+import fi.oph.koski.log.{AuditLog, AuditLogMessage, AuditLogOperation}
 import fi.oph.koski.valpas.log.ValpasOperation.ValpasOperation
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOppilaitos}
 import fi.oph.koski.valpas.valpasrepository.ValpasKuntailmoitusLaajatTiedotJaOppijaOid
@@ -11,7 +11,7 @@ object ValpasAuditLog {
     AuditLog.log(ValpasAuditLogMessage(
       ValpasOperation.VALPAS_OPPIJA_KATSOMINEN,
       session,
-      Map(AuditLogMessageField.oppijaHenkiloOid -> oppijaOid)
+      Map(ValpasAuditLogMessageField.oppijaHenkiloOid -> oppijaOid)
     ))
 
   def auditLogOppilaitosKatsominen
@@ -20,7 +20,7 @@ object ValpasAuditLog {
     AuditLog.log(ValpasAuditLogMessage(
       ValpasOperation.VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN,
       session,
-      Map(AuditLogMessageField.juuriOrganisaatio -> oppilaitosOid)
+      Map(ValpasAuditLogMessageField.juuriOrganisaatio -> oppilaitosOid)
     ))
   }
 
@@ -32,7 +32,7 @@ object ValpasAuditLog {
       session,
       // TODO: pitäisikö olla muutakin dataa kuin oppijan oid? Ts. pitäisikö auditlogista näkyä,
       //  että mikä oppilaitos/kunta on tehnyt ilmoituksen mihin kuntaan?
-      Map(AuditLogMessageField.oppijaHenkiloOid -> ilmoitus.oppijaOid)
+      Map(ValpasAuditLogMessageField.oppijaHenkiloOid -> ilmoitus.oppijaOid)
     ))
   }
 }
@@ -41,6 +41,11 @@ object ValpasAuditLogMessage {
   def apply(operation: ValpasOperation, session: ValpasSession, extraFields: AuditLogMessage.ExtraFields): AuditLogMessage = {
     AuditLogMessage(new ValpasAuditLogOperation(operation), session, extraFields)
   }
+}
+
+object ValpasAuditLogMessageField extends Enumeration {
+  type ValpasAuditLogMessageField = Value
+  val oppijaHenkiloOid, juuriOrganisaatio = Value
 }
 
 object ValpasOperation extends Enumeration {

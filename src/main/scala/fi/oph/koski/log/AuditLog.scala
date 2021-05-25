@@ -1,7 +1,6 @@
 package fi.oph.koski.log
 
 import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, Session}
-import fi.oph.koski.log.AuditLogMessageField.AuditLogMessageField
 import fi.oph.koski.log.KoskiOperation.KoskiOperation
 import fi.vm.sade.auditlog._
 import io.prometheus.client.Counter
@@ -34,6 +33,7 @@ class AuditLog(logger: Logger) {
 case class AuditLogMessage(user: User, operation: Operation, target: Target, changes: Changes)
 
 object AuditLogMessage {
+  type AuditLogMessageField = Enumeration#Value
   type ExtraFields = Map[AuditLogMessageField, String]
 
   def apply(operation: AuditLogOperation, user: User, extraFields: ExtraFields): AuditLogMessage = {
@@ -80,9 +80,18 @@ object KoskiAuditLogMessage {
   }
 }
 
-object AuditLogMessageField extends Enumeration {
-  type AuditLogMessageField = Value
-  val clientIp, oppijaHenkiloOid, kayttajaHenkiloOid, kayttajaHenkiloNimi, opiskeluoikeusOid, opiskeluoikeusId, opiskeluoikeusVersio, hakuEhto, juuriOrganisaatio, omaDataKumppani = Value
+object KoskiAuditLogMessageField extends Enumeration {
+  type KoskiAuditLogMessageField = Value
+  val clientIp,
+  oppijaHenkiloOid,
+  kayttajaHenkiloOid,
+  kayttajaHenkiloNimi,
+  opiskeluoikeusOid,
+  opiskeluoikeusId,
+  opiskeluoikeusVersio,
+  hakuEhto,
+  juuriOrganisaatio,
+  omaDataKumppani = Value
 }
 
 object KoskiOperation extends Enumeration {

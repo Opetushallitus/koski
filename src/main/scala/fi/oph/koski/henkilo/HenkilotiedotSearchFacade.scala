@@ -2,7 +2,7 @@ package fi.oph.koski.henkilo
 
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.log.AuditLogMessageField.{apply => _, _}
+import fi.oph.koski.log.KoskiAuditLogMessageField.{apply => _, _}
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage}
 import fi.oph.koski.opiskeluoikeus.{CompositeOpiskeluoikeusRepository, KoskiOpiskeluoikeusRepository}

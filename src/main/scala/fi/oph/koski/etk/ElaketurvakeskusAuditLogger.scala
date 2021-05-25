@@ -2,7 +2,7 @@ package fi.oph.koski.etk
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, AuditLogMessageField, KoskiOperation}
+import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiAuditLogMessageField, KoskiOperation}
 import fi.oph.koski.schema.Henkilö
 import fi.oph.koski.schema.Henkilö.Hetu
 import fi.oph.koski.schema.Henkilö.Oid
@@ -15,7 +15,7 @@ object ElaketurvakeskusAuditLogger {
   }
 
   private def auditLogOpiskeluoikeusKatsominen(oids: List[Oid])(implicit koskiSession: KoskiSpecificSession): Unit = oids
-    .map(oid => KoskiAuditLogMessage(KoskiOperation.OPISKELUOIKEUS_KATSOMINEN, koskiSession, Map(AuditLogMessageField.oppijaHenkiloOid -> oid)))
+    .map(oid => KoskiAuditLogMessage(KoskiOperation.OPISKELUOIKEUS_KATSOMINEN, koskiSession, Map(KoskiAuditLogMessageField.oppijaHenkiloOid -> oid)))
     .foreach(AuditLog.log)
 
   private def getOids(response: EtkResponse, application: KoskiApplication) = {

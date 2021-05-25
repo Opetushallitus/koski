@@ -11,7 +11,7 @@ import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.json._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser._
-import fi.oph.koski.log.AuditLogMessageField._
+import fi.oph.koski.log.KoskiAuditLogMessageField._
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
