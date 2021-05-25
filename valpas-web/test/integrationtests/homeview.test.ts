@@ -7,11 +7,7 @@ import { loginAs } from "../integrationtests-env/browser/reset"
 
 describe("Etusivun väliaikainen näkymä", () => {
   it("Näyttää ohjetekstin", async () => {
-    await loginAs(
-      "/virkailija",
-      "valpas-maksuttomuus-hki",
-      "valpas-maksuttomuus-hki"
-    )
+    await loginAs("/virkailija", "valpas-maksuttomuus-hki")
 
     await textEventuallyEquals(
       ".ohjeteksti",
@@ -20,11 +16,7 @@ describe("Etusivun väliaikainen näkymä", () => {
   })
 
   it("Näyttää käyttäjän käyttöoikeudet", async () => {
-    await loginAs(
-      "/virkailija",
-      "valpas-maksuttomuus-hki",
-      "valpas-maksuttomuus-hki"
-    )
+    await loginAs("/virkailija", "valpas-maksuttomuus-hki")
 
     await dataTableHeadersEventuallyEquals(
       ".kayttooikeudet",
@@ -43,7 +35,7 @@ describe("Etusivun väliaikainen näkymä", () => {
   })
 
   it("Hakeutumisvelvollisuuden valvonnallinen käyttäjä ohjautuu hakeutumisvelvollisuusvalvonnan etusivulle", async () => {
-    await loginAs("/virkailija", "valpas-jkl-normaali", "valpas-jkl-normaali")
+    await loginAs("/virkailija", "valpas-jkl-normaali")
 
     await textEventuallyEquals(
       ".card__header",
@@ -53,11 +45,7 @@ describe("Etusivun väliaikainen näkymä", () => {
   })
 
   it("Hakeutumisvelvollisuuden valvonnallinen koulutustoimijatason käyttäjä ohjautuu hakeutumisvelvollisuusvalvonnan etusivulle", async () => {
-    await loginAs(
-      "/virkailija",
-      "valpas-helsinki-peruskoulu",
-      "valpas-helsinki-peruskoulu"
-    )
+    await loginAs("/virkailija", "valpas-helsinki-peruskoulu")
 
     await textEventuallyEquals(
       ".card__header",
@@ -73,7 +61,7 @@ describe("Etusivun väliaikainen näkymä", () => {
   // todella isoksi. Pitäisi korjata tekemällä tarvittavat filtteröinnit organisaatiohierarkiaan jo backendissä, ja palauttaa vain
   // käyttöliittymän tarvitsemat kentät.
   it("Pääkäyttäjä ohjautuu hakutumisvelvollisuusvalvonnan etusivulle ja hänelle kerrotaan (virheellisesti), että hänellä ei olisi oikeuksia oppilaitoksiin", async () => {
-    await loginAs("/virkailija", "valpas-pää", "valpas-pää")
+    await loginAs("/virkailija", "valpas-pää")
 
     await textEventuallyEquals(
       ".error-message",
@@ -89,11 +77,7 @@ describe("Etusivun väliaikainen näkymä", () => {
   })
 
   it("Ei näytä käyttäjän Koski-käyttöoikeuksia", async () => {
-    await loginAs(
-      "/virkailija",
-      "valpas-maksuttomuus-koski-hki",
-      "valpas-maksuttomuus-koski-hki"
-    )
+    await loginAs("/virkailija", "valpas-maksuttomuus-koski-hki")
 
     await dataTableHeadersEventuallyEquals(
       ".kayttooikeudet",

@@ -1,23 +1,41 @@
+import { NonEmptyArray } from "fp-ts/lib/NonEmptyArray"
 import { By, WebElement } from "selenium-webdriver"
 import { Oid } from "../../src/state/common"
+import { createOppijaPath } from "../../src/state/paths"
+import { fromEntries, objectEntry } from "../../src/utils/objects"
 import {
   clickElement,
   expectElementEventuallyVisible,
   expectElementNotVisible,
 } from "../integrationtests-env/browser/content"
-import { $, $$, testIdIs } from "../integrationtests-env/browser/core"
+import {
+  $,
+  $$,
+  goToLocation,
+  pathToUrl,
+  testIdIs,
+  urlIsEventually,
+} from "../integrationtests-env/browser/core"
 import { dataTableEventuallyEquals } from "../integrationtests-env/browser/datatable"
+import { clearTextInputElement } from "../integrationtests-env/browser/forms"
 import { loginAs } from "../integrationtests-env/browser/reset"
 import { eventually } from "../integrationtests-env/browser/utils"
 import {
   hakutilannePath,
   jklNormaalikouluTableContent,
+  openOppijaView,
 } from "./hakutilanne.shared"
+import { jyväskylänNormaalikouluOid } from "./oids"
 
 type Oppija = {
   oid: Oid
   title: string
   prefill?: number
+  fill?: OppijaFillValues
+  expected: DisplayedIlmoitusData
+}
+
+type OppijaFillValues = {
   asuinkunta?: string
   postinumero?: string
   postitoimipaikka?: string
@@ -26,20 +44,74 @@ type Oppija = {
   sähköposti?: string
 }
 
-const oppijat: Oppija[] = [
+type DisplayedRequiredIlmoitusData = {
+  kohde: string
+  tekijä: string
+}
+
+type DisplayedOptionalIlmoitusData = {
+  lähiosoite?: string
+  postitoimipaikka?: string
+  maa?: string
+  puhelin?: string
+  email?: string
+  muuHaku?: string
+}
+
+type DisplayedIlmoitusData = DisplayedRequiredIlmoitusData &
+  DisplayedOptionalIlmoitusData
+
+const opo = {
+  email: "integraatiotesti@oph.fi",
+  puhelin: "0505050505050",
+}
+
+const oppijat: NonEmptyArray<Oppija> = [
   {
     oid: "1.2.246.562.24.00000000001",
     title:
       "Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas (221105A3023)",
     prefill: 0,
+    expected: {
+      kohde: "Helsingin kaupunki",
+      tekijä: [
+        "käyttäjä valpas-jkl-normaali",
+        opo.email,
+        opo.puhelin,
+        "Jyväskylän normaalikoulu",
+      ].join("\n"),
+      lähiosoite: "Esimerkkikatu 123",
+      postitoimipaikka: "00000 Helsinki",
+      maa: "Suomi",
+      puhelin: "0401234567",
+      email: "Valpas.Oppivelvollinen-ysiluokka-kesken-keväällä-2021@gmail.com",
+      muuHaku: "Ei",
+    },
   },
   {
     oid: "1.2.246.562.24.00000000028",
     title: "Epäonninen Valpas (301005A336J)",
-    asuinkunta: "Helsinki",
-    postinumero: "00150",
-    postitoimipaikka: "Helsinki",
-    katuosoite: "Esimerkkikatu 1234",
+    fill: {
+      asuinkunta: "Pyhtää",
+      postinumero: "12345",
+      postitoimipaikka: "Pyhtää",
+      katuosoite: "Esimerkkikatu 1234",
+    },
+    expected: {
+      kohde: "Pyhtään kunta",
+      tekijä: [
+        "käyttäjä valpas-jkl-normaali",
+        opo.email,
+        opo.puhelin,
+        "Jyväskylän normaalikoulu",
+      ].join("\n"),
+      lähiosoite: "Esimerkkikatu 1234",
+      postitoimipaikka: "12345 Pyhtää",
+      maa: "Suomi",
+      puhelin: undefined,
+      email: undefined,
+      muuHaku: "Ei",
+    },
   },
   {
     oid: "1.2.246.562.24.00000000014",
@@ -57,8 +129,9 @@ describe("Kuntailmoituksen tekeminen", () => {
     }
 
     await openKuntailmoitus()
+    await fillTekijänTiedot()
 
-    const forms = await getForms()
+    const forms = await getIlmoitusForm()
     expect(
       forms.length,
       "Lomakkeita näkyy yhtä monta kuin valittuja oppijoita"
@@ -79,23 +152,26 @@ describe("Kuntailmoituksen tekeminen", () => {
       }
 
       // Täytä lomake
-      if (oppija.asuinkunta !== undefined) {
-        await selectOption(form.asuinkuntaSelect, oppija.asuinkunta)
+      if (oppija.fill?.asuinkunta !== undefined) {
+        await selectOption(form.asuinkuntaSelect, oppija.fill?.asuinkunta)
       }
-      if (oppija.postinumero !== undefined) {
-        await fillField(form.postinumeroInput, oppija.postinumero)
+      if (oppija.fill?.postinumero !== undefined) {
+        await fillField(form.postinumeroInput, oppija.fill?.postinumero)
       }
-      if (oppija.postitoimipaikka !== undefined) {
-        await fillField(form.postitoimipaikkaInput, oppija.postitoimipaikka)
+      if (oppija.fill?.postitoimipaikka !== undefined) {
+        await fillField(
+          form.postitoimipaikkaInput,
+          oppija.fill?.postitoimipaikka
+        )
       }
-      if (oppija.katuosoite !== undefined) {
-        await fillField(form.katuosoiteInput, oppija.katuosoite)
+      if (oppija.fill?.katuosoite !== undefined) {
+        await fillField(form.katuosoiteInput, oppija.fill?.katuosoite)
       }
-      if (oppija.puhelinnumero !== undefined) {
-        await fillField(form.puhelinnumeroInput, oppija.puhelinnumero)
+      if (oppija.fill?.puhelinnumero !== undefined) {
+        await fillField(form.puhelinnumeroInput, oppija.fill?.puhelinnumero)
       }
-      if (oppija.sähköposti !== undefined) {
-        await fillField(form.sähköpostiInput, oppija.sähköposti)
+      if (oppija.fill?.sähköposti !== undefined) {
+        await fillField(form.sähköpostiInput, oppija.fill?.sähköposti)
       }
 
       // Lähetä
@@ -116,12 +192,26 @@ describe("Kuntailmoituksen tekeminen", () => {
     await button.click()
     await expectElementNotVisible(".modal__container")
 
-    // TODO: Tarkista kuntailmoituslistasta, että oppijat ovat nyt siellä. Tämä odottaa listan toteutusta.
+    // Tarkista oppijakohtaisista näkymistä, että ilmoituksen tiedot ovat siellä
+    for (const oppija of oppijat) {
+      await goToLocation(hakutilannePath)
+      await openOppijaView(oppija.oid)
+      await urlIsEventually(
+        pathToUrl(
+          createOppijaPath("/virkailija", {
+            oppijaOid: oppija.oid,
+            organisaatioOid: jyväskylänNormaalikouluOid,
+          })
+        )
+      )
+
+      expect(await getIlmoitusData()).toEqual(oppija.expected)
+    }
   })
 })
 
 const openHakutilanneView = async () => {
-  await loginAs(hakutilannePath, "valpas-jkl-normaali")
+  await loginAs(hakutilannePath, "valpas-jkl-normaali", true)
   await dataTableEventuallyEquals(
     ".hakutilanne",
     jklNormaalikouluTableContent,
@@ -137,20 +227,36 @@ const selectOppija = async (oppijaOid: string) => {
 const openKuntailmoitus = async () => {
   await clickElement(".hakutilannedrawer__ilmoittaminen button")
   await expectElementEventuallyVisible(".modal__container")
-  await clickElement(".ilmoitusform__continue")
 }
 
-const getForms = async () => {
+const fillTekijänTiedot = async () => {
+  const form = await getTekijänYhteystiedotForm()
+  await fillField(form.email, opo.email)
+  await fillField(form.puhelin, opo.puhelin)
+  await form.submit.click()
+}
+
+const getTekijänYhteystiedotForm = async () => {
+  const form = await $(".ilmoitusform__frame")
+  return {
+    organisaatio: await form.findElement(testIdIs("organisaatio")),
+    email: await form.findElement(testIdIs("email")),
+    puhelin: await form.findElement(testIdIs("puhelin")),
+    submit: await form.findElement({ className: "ilmoitusform__continue" }),
+  }
+}
+
+const getIlmoitusForm = async () => {
   const forms = await $$(".ilmoitusform__frame")
   return Promise.all(
     forms.map(async (form) => ({
       root: form,
       title: await form
         .findElement({ className: "ilmoitusform__titletext" })
-        .then((e) => e.getText()),
+        .then(getText),
       subtitle: await form
         .findElement({ className: "ilmoitusform__subtitle" })
-        .then((e) => e.getText()),
+        .then(getText),
       prefills: await form.findElements(
         By.css(".ilmoitusform__prefilllist li")
       ),
@@ -178,8 +284,46 @@ const selectOption = async (select: WebElement, text: string) => {
 }
 
 const fillField = async (input: WebElement, text: string) => {
-  await input.clear()
+  await clearTextInputElement(input)
   await input.sendKeys(text)
 }
 
 const getCloseButton = () => $(".modalbuttongroup button")
+
+const getIlmoitusData = async (): Promise<DisplayedIlmoitusData> => {
+  const requiredTestIds: Array<keyof DisplayedRequiredIlmoitusData> = [
+    "kohde",
+    "tekijä",
+  ]
+  const optionalTestIds: Array<keyof DisplayedOptionalIlmoitusData> = [
+    "lähiosoite",
+    "postitoimipaikka",
+    "maa",
+    "puhelin",
+    "email",
+    "muuHaku",
+  ]
+
+  const ilmoitukset = await $$(".kuntailmoitus__frame")
+  expect(
+    ilmoitukset.length,
+    "Aktiivisia ilmoituksia tulisi näkyä tasan yksi"
+  ).toEqual(1)
+  const ilmoitus = ilmoitukset[0]!!
+
+  return Promise.all([
+    ...requiredTestIds.map(async (id) =>
+      objectEntry(id, await ilmoitus.findElement(testIdIs(id)).then(getText))
+    ),
+    ...optionalTestIds.map(async (id) =>
+      objectEntry(
+        id,
+        await ilmoitus.findElements(testIdIs(id)).then(getOptionalText)
+      )
+    ),
+  ]).then((x) => fromEntries(x) as DisplayedIlmoitusData)
+}
+
+const getText = (webElement: WebElement) => webElement.getText()
+const getOptionalText = async (webElements: WebElement[]) =>
+  webElements[0]?.getText()

@@ -76,14 +76,17 @@ export const IlmoituksenTekijäForm = (props: IlmoituksenTekijäFormProps) => {
           label={t("ilmoituksentekijälomake__organisaatio")}
           options={organisaatiotToOptions(props.organisaatiot)}
           {...form.fieldProps("organisaatio")}
+          testId="organisaatio"
         />
         <TextField
           label={t("ilmoituksentekijälomake__sähköposti")}
           {...form.fieldProps("email")}
+          testId="email"
         />
         <TextField
           label={t("ilmoituksentekijälomake__puhelinnumero")}
           {...form.fieldProps("puhelinnumero")}
+          testId="puhelin"
         />
         <RaisedButton
           onClick={form.submitCallback(submit)}

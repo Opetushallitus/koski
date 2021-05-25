@@ -17,7 +17,7 @@ describe("Paikalliset raamit", () => {
   })
 
   it("näytetään ilman Valpas-oikeuksia kirjautuneelle käyttäjlle virhesivulle", async () => {
-    await loginAs("/virkailija", "kalle", "kalle")
+    await loginAs("/virkailija", "kalle")
     await expectElementVisible(".localraamit")
   })
 })
