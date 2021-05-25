@@ -18,7 +18,7 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
       verifyResponseStatusOk()
       AuditLogTester.verifyAuditLogMessage(Map(
         "operation" -> ValpasOperation.VALPAS_OPPIJA_KATSOMINEN.toString,
-        "target" -> Map(ValpasAuditLogMessageField.oppijaHenkiloOid.toString -> oppijaOid)))
+        "target" -> Map(ValpasAuditLogMessageField.oppijaHenkilöOid.toString -> oppijaOid)))
     }
   }
 

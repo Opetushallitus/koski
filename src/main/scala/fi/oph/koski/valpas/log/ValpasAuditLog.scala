@@ -11,7 +11,7 @@ object ValpasAuditLog {
     AuditLog.log(ValpasAuditLogMessage(
       ValpasOperation.VALPAS_OPPIJA_KATSOMINEN,
       session,
-      Map(ValpasAuditLogMessageField.oppijaHenkiloOid -> oppijaOid)
+      Map(ValpasAuditLogMessageField.oppijaHenkilöOid -> oppijaOid)
     ))
 
   def auditLogOppilaitosKatsominen
@@ -30,9 +30,12 @@ object ValpasAuditLog {
     AuditLog.log(ValpasAuditLogMessage(
       ValpasOperation.VALPAS_OPPIJA_KUNTAILMOITUS,
       session,
-      // TODO: pitäisikö olla muutakin dataa kuin oppijan oid? Ts. pitäisikö auditlogista näkyä,
-      //  että mikä oppilaitos/kunta on tehnyt ilmoituksen mihin kuntaan?
-      Map(ValpasAuditLogMessageField.oppijaHenkiloOid -> ilmoitus.oppijaOid)
+      Map(
+        ValpasAuditLogMessageField.oppijaHenkilöOid -> ilmoitus.oppijaOid,
+        ValpasAuditLogMessageField.ilmoittajaHenkilöOid -> ilmoitus.kuntailmoitus.tekijä.henkilö.map(_.oid.toString).getOrElse(""),
+        ValpasAuditLogMessageField.ilmoittajaOrganisaatioOid -> ilmoitus.kuntailmoitus.tekijä.organisaatio.oid,
+        ValpasAuditLogMessageField.kohdeOrganisaatioOid -> ilmoitus.kuntailmoitus.kunta.oid
+      )
     ))
   }
 }
@@ -45,7 +48,7 @@ object ValpasAuditLogMessage {
 
 object ValpasAuditLogMessageField extends Enumeration {
   type ValpasAuditLogMessageField = Value
-  val oppijaHenkiloOid, juuriOrganisaatio = Value
+  val oppijaHenkilöOid, juuriOrganisaatio, ilmoittajaHenkilöOid, ilmoittajaOrganisaatioOid, kohdeOrganisaatioOid = Value
 }
 
 object ValpasOperation extends Enumeration {

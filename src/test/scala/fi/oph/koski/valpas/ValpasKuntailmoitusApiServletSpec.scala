@@ -144,7 +144,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
       AuditLogTester.verifyAuditLogMessage(Map(
         "operation" -> ValpasOperation.VALPAS_OPPIJA_KUNTAILMOITUS.toString,
         "target" -> Map(
-          ValpasAuditLogMessageField.oppijaHenkiloOid.toString ->
+          ValpasAuditLogMessageField.oppijaHenkilöOid.toString ->
           ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid)
         )
       )
@@ -500,7 +500,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
       AuditLogTester.verifyAuditLogMessage(Map(
         "operation" -> ValpasOperation.VALPAS_OPPIJA_KATSOMINEN.toString,
         "target" -> Map(
-          ValpasAuditLogMessageField.oppijaHenkiloOid.toString ->
+          ValpasAuditLogMessageField.oppijaHenkilöOid.toString ->
             ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid)
       ))
     }
