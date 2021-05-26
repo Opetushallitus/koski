@@ -25,7 +25,7 @@ trait ValpasKuntailmoituksenTekijä {
 }
 
 case class ValpasKuntailmoitusSuppeatTiedot(
-  id: Option[String],
+  id: Option[String], // Oikeasti UUID - scala-schemasta puuttuu tuki UUID-tyypille
   tekijä: ValpasKuntailmoituksenTekijäSuppeatTiedot,
   kunta: OrganisaatioWithOid,
   aikaleima: Option[LocalDateTime]
@@ -43,7 +43,7 @@ object ValpasKuntailmoitusSuppeatTiedot {
 }
 
 case class ValpasKuntailmoitusLaajatTiedot(
-  id: Option[String],
+  id: Option[String], // Oikeasti UUID - scala-schemasta puuttuu tuki UUID-tyypille
   kunta: OrganisaatioWithOid,
   aikaleima: Option[LocalDateTime], // Option, koska create-operaatiossa bäkkäri täyttää ilmoitusajan
   tekijä: ValpasKuntailmoituksenTekijäLaajatTiedot,
