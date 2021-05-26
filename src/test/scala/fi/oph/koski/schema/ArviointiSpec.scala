@@ -1,6 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.documentation.AmmatillinenExampleData.{hylätty, hyväksytty}
 import fi.oph.koski.json.JsonSerializer
 import org.json4s.jackson.JsonMethods.parse
 import org.scalatest.{FreeSpec, Matchers}
@@ -82,7 +83,44 @@ class ArviointiSpec extends FreeSpec with Matchers {
     }
   }
 
+  "Arviointien vertaus" - {
+    val matalaArviointiAikaisempi = numeerinenArviointi(5, LocalDate.of(2016, 6, 4))
+    val matalaArviointiMyöhempi = numeerinenArviointi(5, LocalDate.of(2017, 6, 4))
+    val korkeaArviointi = numeerinenArviointi(9)
+
+    val hyväksyttyArviointiAikaisempi = hyväksyttyArviointi(LocalDate.of(2016, 6, 4))
+    val hyväksyttyArviointiMyöhempi = hyväksyttyArviointi(LocalDate.of(2017, 6, 4))
+    val hylättyArviointi = hyväksyttyArviointi(LocalDate.of(2016, 6, 4))
+
+    "Sama numeerinen arvosana palauttaa aikaisemman arvioinnin" in {
+      Arviointi.korkeampiArviointi(matalaArviointiAikaisempi, matalaArviointiMyöhempi).arviointipäivä.get should equal (LocalDate.of(2016, 6, 4))
+      Arviointi.korkeampiArviointi(matalaArviointiMyöhempi, matalaArviointiAikaisempi).arviointipäivä.get should equal (LocalDate.of(2016, 6, 4))
+    }
+
+    "Arvosanan ollessa eri, palautetaan korkeampi arviointi" in {
+      Arviointi.korkeampiArviointi(matalaArviointiAikaisempi, korkeaArviointi).arvosana.koodiarvo should equal ("9")
+      Arviointi.korkeampiArviointi(korkeaArviointi, matalaArviointiAikaisempi).arvosana.koodiarvo should equal ("9")
+    }
+
+    "Sama hyväksytty/hylätty arviointi palauttaa aikaisemman arvioinnin" in {
+      Arviointi.korkeampiArviointi(hyväksyttyArviointiAikaisempi, hyväksyttyArviointiMyöhempi).arviointipäivä.get should equal (LocalDate.of(2016, 6, 4))
+      Arviointi.korkeampiArviointi(hyväksyttyArviointiMyöhempi, hyväksyttyArviointiAikaisempi).arviointipäivä.get should equal (LocalDate.of(2016, 6, 4))
+    }
+
+    "Eri hyväksytty/hylätty arviointi palauttaa hyväksytyn arvioinnin" in {
+      Arviointi.korkeampiArviointi(hyväksyttyArviointiAikaisempi, hylättyArviointi).arvosana.koodiarvo should equal ("Hyväksytty")
+      Arviointi.korkeampiArviointi(hylättyArviointi, hyväksyttyArviointiAikaisempi).arvosana.koodiarvo should equal ("Hyväksytty")
+    }
+  }
+
   private lazy val app = KoskiApplicationForTests
 
   private def read[T](s: String)(implicit mf : Manifest[T]) = app.validatingAndResolvingExtractor.extract[T](parse(s)).toOption.get
+
+  def numeerinenArviointi(arvosana: Int, päivä: LocalDate = LocalDate.of(2016, 6, 4)): LukionArviointi = {
+    NumeerinenLukionArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana.toString, koodistoUri = "arviointiasteikkoyleissivistava"), päivä)
+  }
+
+  def hyväksyttyArviointi(päivä: LocalDate = LocalDate.of(2016, 6, 4)) = AmmatillinenArviointi(arvosana = hyväksytty, päivä)
+  def hylättyArviointi(päivä: LocalDate = LocalDate.of(2016, 6, 4)) = AmmatillinenArviointi(arvosana = hylätty, päivä)
 }
