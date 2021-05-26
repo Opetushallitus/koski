@@ -90,55 +90,61 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
     ? SelectableDataTable
     : DataTable
 
-  const columns: Column[] = [
-    {
-      label: t("hakutilanne__taulu_nimi"),
-      filter: "freetext",
-      size: "large",
-    },
-    {
-      label: t("hakutilanne__taulu_syntymäaika"),
-      size: "small",
-    },
-    {
-      label: t("hakutilanne__taulu_ryhma"),
-      filter: "dropdown",
-      size: "xsmall",
-    },
-    {
-      label: t("hakutilanne__taulu_perusopetus_suoritettu"),
-      filter: "dropdown",
-    },
-    {
-      label: t("hakutilanne__taulu_hakemuksen_tila"),
-      filter: "dropdown",
-    },
-    {
-      label: t("hakutilanne__taulu_valintatieto"),
-      filter: "dropdown",
-      indicatorSpace: "auto",
-    },
-    {
-      label: t("hakutilanne__taulu_opiskelupaikka_vastaanotettu"),
-      filter: "dropdown",
-      indicatorSpace: "auto",
-    },
-    {
-      label: t("hakutilanne__taulu_voimassaolevia_opiskeluoikeuksia"),
-      tooltip: t("hakutilanne__taulu_voimassaolevia_opiskeluoikeuksia_tooltip"),
-      filter: "dropdown",
-      indicatorSpace: "auto",
-    },
-    {
-      label: t("hakutilanne__taulu_muu_haku"),
-      tooltip: t("hakutilanne__taulu_muu_haku_tooltip"),
-      filter: "dropdown",
-    },
-  ]
+  const columns: Column[] = useMemo(
+    () => [
+      {
+        label: t("hakutilanne__taulu_nimi"),
+        filter: "freetext",
+        size: "large",
+      },
+      {
+        label: t("hakutilanne__taulu_syntymäaika"),
+        size: "small",
+      },
+      {
+        label: t("hakutilanne__taulu_ryhma"),
+        filter: "dropdown",
+        size: "xsmall",
+      },
+      {
+        label: t("hakutilanne__taulu_perusopetus_suoritettu"),
+        filter: "dropdown",
+      },
+      {
+        label: t("hakutilanne__taulu_hakemuksen_tila"),
+        filter: "dropdown",
+      },
+      {
+        label: t("hakutilanne__taulu_valintatieto"),
+        filter: "dropdown",
+        indicatorSpace: "auto",
+      },
+      {
+        label: t("hakutilanne__taulu_opiskelupaikka_vastaanotettu"),
+        filter: "dropdown",
+        indicatorSpace: "auto",
+      },
+      {
+        label: t("hakutilanne__taulu_voimassaolevia_opiskeluoikeuksia"),
+        tooltip: t(
+          "hakutilanne__taulu_voimassaolevia_opiskeluoikeuksia_tooltip"
+        ),
+        filter: "dropdown",
+        indicatorSpace: "auto",
+      },
+      {
+        label: t("hakutilanne__taulu_muu_haku"),
+        tooltip: t("hakutilanne__taulu_muu_haku_tooltip"),
+        filter: "dropdown",
+      },
+    ],
+    []
+  )
 
   return (
     <TableComponent
-      storageName="hakutilannetaulu"
+      key={props.organisaatioOid}
+      storageName={`hakutilannetaulu-${props.organisaatioOid}`}
       className="hakutilanne"
       columns={columns}
       data={data}
