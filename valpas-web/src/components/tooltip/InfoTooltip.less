@@ -6,6 +6,7 @@
 
 @caret-height: 15px;
 @caret-x-position: 20px;
+@caret-half-width: 10px;
 
 .infotooltip {
   position: relative;
@@ -20,6 +21,14 @@
     cursor: pointer;
     color: @color-blue-lighten-1;
   }
+}
+
+.infotooltip__popupcontainer {
+  position: absolute;
+}
+
+.infotooltip__iconwrapper {
+  display: inline-block;
 }
 
 .infotooltip__popup {
@@ -43,14 +52,14 @@
   }
 
   &.infotooltip__popup--right {
-    left: -@caret-x-position;
+    left: -@caret-x-position - @caret-half-width;
     .caret {
       left: @caret-x-position;
     }
   }
 
   &.infotooltip__popup--left {
-    right: -@caret-x-position;
+    right: -@caret-x-position - @caret-half-width;
     .caret {
       right: @caret-x-position;
     }
