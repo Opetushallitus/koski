@@ -8,12 +8,24 @@ import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppijaLaajatTiedot
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 
 class ValpasAccessResolver(organisaatioRepository: OrganisaatioRepository) {
-  def assertAccessToOrg(organisaatioOid: Organisaatio.Oid)(implicit session: ValpasSession): Either[HttpStatus, Unit] = {
-    withAccessToAllOrgs(Set(organisaatioOid), () => ())
+  def assertAccessToOrg(
+    rooli: ValpasRooli.Role
+  )(
+    organisaatioOid: Organisaatio.Oid
+  )(
+    implicit session: ValpasSession
+  ): Either[HttpStatus, Unit] = {
+    withAccessToAllOrgs(rooli)(Set(organisaatioOid), () => ())
   }
 
-  def withOppijaAccess[T <: ValpasOppijaLaajatTiedot](oppija: T)(implicit session: ValpasSession): Either[HttpStatus, T] = {
-    Either.cond(accessToSomeOrgs(oppija.oikeutetutOppilaitokset), oppija, ValpasErrorCategory.forbidden.oppija())
+  def withOppijaAccess[T <: ValpasOppijaLaajatTiedot](
+    rooli: ValpasRooli.Role
+  )(
+    oppija: T
+  )(
+    implicit session: ValpasSession
+  ): Either[HttpStatus, T] = {
+    Either.cond(accessToSomeOrgs(rooli)(oppija.oikeutetutOppilaitokset), oppija, ValpasErrorCategory.forbidden.oppija())
   }
 
   def withOppijaAccessAsOrganisaatio[T <: ValpasOppijaLaajatTiedot]
@@ -29,36 +41,67 @@ class ValpasAccessResolver(organisaatioRepository: OrganisaatioRepository) {
     Either.cond(valvottavat.contains(opiskeluoikeusOid), oppija, ValpasErrorCategory.forbidden.opiskeluoikeus())
   }
 
-  def filterByOikeudet(organisaatioOidit: Set[Organisaatio.Oid])(implicit session: ValpasSession): Set[Organisaatio.Oid] = {
-    organisaatioOidit.filter(oid => accessToAllOrgs(Set(oid)))
+  def filterByOikeudet(
+    rooli: ValpasRooli.Role
+  )(
+    organisaatioOidit: Set[Organisaatio.Oid]
+  )(
+    implicit session: ValpasSession
+  ): Set[Organisaatio.Oid] = {
+    organisaatioOidit.filter(oid => accessToAllOrgs(rooli)(Set(oid)))
   }
 
-  private def withAccessToAllOrgs[T](organisaatioOids: Set[Organisaatio.Oid], fn: () => T)(implicit session: ValpasSession)
+  private def withAccessToAllOrgs[T](
+    roolit: ValpasRooli.Role
+  )(
+    organisaatioOids: Set[Organisaatio.Oid],
+    fn: () => T
+  )(implicit session: ValpasSession)
   : Either[HttpStatus, T] = {
-    Either.cond(accessToAllOrgs(organisaatioOids), fn(), ValpasErrorCategory.forbidden.organisaatio())
+    Either.cond(accessToAllOrgs(roolit)(organisaatioOids), fn(), ValpasErrorCategory.forbidden.organisaatio())
   }
 
-  private def accessToAllOrgs(organisaatioOids: Set[Organisaatio.Oid])(implicit session: ValpasSession): Boolean =
-    onGlobaaliOppilaitosHakeutuminenOikeus || organisaatioOids.diff(oppilaitosHakeutuminenOrganisaatioOids).isEmpty
+  private def accessToAllOrgs(
+    rooli: ValpasRooli.Role
+  )(
+    organisaatioOids: Set[Organisaatio.Oid],
+  )(
+    implicit session: ValpasSession
+  ): Boolean =
+    onGlobaaliOikeus(rooli) || organisaatioOids.diff(oppilaitosOrganisaatioOids(rooli)).isEmpty
 
-  private def accessToSomeOrgs(organisaatioOids: Set[Organisaatio.Oid])(implicit session: ValpasSession): Boolean =
-    onGlobaaliOppilaitosHakeutuminenOikeus || organisaatioOids.intersect(oppilaitosHakeutuminenOrganisaatioOids).nonEmpty
+  private def accessToSomeOrgs(
+    rooli: ValpasRooli.Role
+  )(
+    organisaatioOids: Set[Organisaatio.Oid],
+  )(
+    implicit session: ValpasSession
+  ): Boolean =
+    onGlobaaliOikeus(rooli) || organisaatioOids.intersect(oppilaitosOrganisaatioOids(rooli)).nonEmpty
 
-  private def oppilaitosHakeutuminenOrganisaatioOids(implicit session: ValpasSession): Set[Organisaatio.Oid] =
-    valpasOrganisaatiot(ValpasRooli.OPPILAITOS_HAKEUTUMINEN).map(_.oid)
+  private def oppilaitosOrganisaatioOids(
+    rooli: ValpasRooli.Role
+  )(implicit session: ValpasSession): Set[Organisaatio.Oid] =
+    valpasOrganisaatiot(rooli).map(_.oid)
 
-  private def valpasOrganisaatiot(rooli: String)(implicit session: ValpasSession): Set[OrganisaatioWithOid] =
+  private def valpasOrganisaatiot(
+    rooli: ValpasRooli.Role
+  )(implicit session: ValpasSession): Set[OrganisaatioWithOid] =
     session.orgKäyttöoikeudet
       .flatMap(asValpasOrgKäyttöoikeus(rooli))
       .map(_.organisaatio)
 
-  private def asValpasOrgKäyttöoikeus(rooli: String)(orgKäyttöoikeus: KäyttöoikeusOrg): Option[KäyttöoikeusOrg] =
+  private def asValpasOrgKäyttöoikeus(
+    rooli: ValpasRooli.Role
+  )(
+    orgKäyttöoikeus: KäyttöoikeusOrg
+  ): Option[KäyttöoikeusOrg] =
     if (orgKäyttöoikeus.organisaatiokohtaisetPalveluroolit.contains(Palvelurooli("VALPAS", rooli))) {
       Some(orgKäyttöoikeus)
     } else {
       None
     }
 
-  private def onGlobaaliOppilaitosHakeutuminenOikeus(implicit session: ValpasSession): Boolean =
-    session.hasGlobalValpasOikeus(Set(ValpasRooli.OPPILAITOS_HAKEUTUMINEN))
+  private def onGlobaaliOikeus(rooli: ValpasRooli.Role)(implicit session: ValpasSession): Boolean =
+    session.hasGlobalValpasOikeus(Set(rooli))
 }
