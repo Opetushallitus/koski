@@ -1,7 +1,6 @@
 package fi.oph.koski.schema
 
 import java.time.LocalDate
-
 import fi.oph.koski.schema.LocalizedString.unlocalized
 import fi.oph.koski.schema.annotation.{Hidden, MultiLineString, Representative}
 import fi.oph.scalaschema.annotation._
@@ -25,6 +24,8 @@ trait Arviointi {
 }
 
 object Arviointi {
+  lazy val longTimeIntoFuture = LocalDate.of(9999, 12, 31)
+
   def numeerinen(arviointi: String) = try { Some(arviointi.toInt) } catch {
     case e: NumberFormatException => None
   }
@@ -33,15 +34,23 @@ object Arviointi {
       case (Some(aNumeerisena), Some(bNumeerisena)) => {
         if (aNumeerisena > bNumeerisena) {
           a
-        } else {
+          } else if (aNumeerisena == bNumeerisena &&
+              a.arviointipäivä.getOrElse(longTimeIntoFuture)
+              .isBefore(b.arviointipäivä.getOrElse(longTimeIntoFuture))) {
+            a
+          } else {
           b
         }
       }
       case _ => {
-        if (!a.hyväksytty && b.hyväksytty) {
-          b
-        } else {
+        if (a.hyväksytty && !b.hyväksytty) {
           a
+        } else if (a.hyväksytty == b.hyväksytty &&
+          a.arviointipäivä.getOrElse(longTimeIntoFuture)
+          .isBefore(b.arviointipäivä.getOrElse(longTimeIntoFuture))) {
+          a
+        } else {
+          b
         }
       }
     }
