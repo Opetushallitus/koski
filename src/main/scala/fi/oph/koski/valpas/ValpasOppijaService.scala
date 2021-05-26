@@ -98,7 +98,7 @@ class ValpasOppijaService(
   private lazy val kuntailmoitusService = application.valpasKuntailmoitusService
   private val rajapäivätService = application.valpasRajapäivätService
 
-  private val accessResolver = new ValpasAccessResolver(application.organisaatioRepository)
+  private val accessResolver = new ValpasAccessResolver
 
   private val validatingAndResolvingExtractor = application.validatingAndResolvingExtractor
 
