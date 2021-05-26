@@ -53,6 +53,7 @@ trait ValpasHenkilö {
 
 case class ValpasHenkilöLaajatTiedot(
   oid: ValpasHenkilö.Oid,
+  kaikkiOidit: Seq[ValpasHenkilö.Oid],
   hetu: Option[String],
   syntymäaika: Option[LocalDate],
   etunimet: String,

@@ -12,6 +12,7 @@ import fi.oph.koski.util.Timing
 
 case class ValpasOppijaRow(
   oppijaOid: String,
+  kaikkiOppijaOidit: Seq[ValpasHenkilö.Oid],
   hetu: Option[String],
   syntymäaika: Option[LocalDate],
   etunimet: String,
@@ -35,6 +36,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   private implicit def getResult: GetResult[ValpasOppijaRow] = GetResult(r => {
     ValpasOppijaRow(
       oppijaOid = r.rs.getString("oppija_oid"),
+      kaikkiOppijaOidit = r.getArray("kaikkiOppijaOidit").toSeq,
       hetu = Option(r.rs.getString("hetu")),
       syntymäaika = Option(r.getLocalDate("syntymaaika")),
       etunimet = r.rs.getString("etunimet"),
@@ -94,7 +96,8 @@ WITH
       array_agg(DISTINCT r_opiskeluoikeus.oppilaitos_oid) AS oikeutettu_oppilaitos_oids,
       array_agg(DISTINCT r_opiskeluoikeus.opiskeluoikeus_oid) AS valvottava_opiskeluoikeus_oids,
       r_henkilo.turvakielto,
-      r_henkilo.aidinkieli
+      r_henkilo.aidinkieli,
+      array_agg(DISTINCT kaikki_henkilot.oppija_oid) AS kaikkiOppijaOidit
     FROM
       r_henkilo
       JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = r_henkilo.oppija_oid
@@ -116,6 +119,8 @@ WITH
           jaksot ->> 'loppu' IS NULL
             OR $tarkastelupäivä BETWEEN jaksot ->> 'alku' AND jaksot ->> 'loppu'
       ) kotiopetusjaksoja
+      -- Haetaan kaikki oppijan oidit: pitää palauttaa esim. kuntailmoitusten kyselyä varten
+      JOIN r_henkilo kaikki_henkilot ON kaikki_henkilot.master_oid = r_henkilo.master_oid
     WHERE
       -- (1) oppija on potentiaalisesti oppivelvollinen, eli syntynyt 2004 tai myöhemmin
       r_henkilo.syntymaaika >= $lakiVoimassaVanhinSyntymäaika
@@ -308,6 +313,7 @@ WITH
   , oppivelvollinen_oppija AS (
     SELECT
       DISTINCT oppija.master_oid,
+      oppija.kaikkiOppijaOidit,
       oppija.hetu,
       oppija.syntymaaika,
       oppija.etunimet,
@@ -337,6 +343,7 @@ WITH
   -- Päätason SELECT: Muodostetaan palautettava rakenne
   SELECT
     oppivelvollinen_oppija.master_oid AS oppija_oid,
+    oppivelvollinen_oppija.kaikkiOppijaOidit,
     oppivelvollinen_oppija.hetu,
     oppivelvollinen_oppija.syntymaaika,
     oppivelvollinen_oppija.etunimet,
@@ -387,6 +394,7 @@ WITH
     JOIN oppivelvollinen_oppija ON oppivelvollinen_oppija.master_oid = opiskeluoikeus.master_oid
   GROUP BY
     oppivelvollinen_oppija.master_oid,
+    oppivelvollinen_oppija.kaikkiOppijaOidit,
     oppivelvollinen_oppija.hetu,
     oppivelvollinen_oppija.syntymaaika,
     oppivelvollinen_oppija.etunimet,

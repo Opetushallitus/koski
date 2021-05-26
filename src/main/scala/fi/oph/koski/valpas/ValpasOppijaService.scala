@@ -166,6 +166,7 @@ class ValpasOppijaService(
         ValpasOppijaLaajatTiedot(
           henkilö = ValpasHenkilöLaajatTiedot(
             oid = dbRow.oppijaOid,
+            kaikkiOidit = dbRow.kaikkiOppijaOidit,
             hetu = dbRow.hetu,
             syntymäaika = dbRow.syntymäaika,
             etunimet = dbRow.etunimet,
