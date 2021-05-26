@@ -5,33 +5,20 @@ import * as number from "fp-ts/lib/number"
 import * as O from "fp-ts/lib/Option"
 import * as Ord from "fp-ts/lib/Ord"
 import * as string from "fp-ts/lib/string"
-import React, { useEffect, useMemo, useState } from "react"
-import {
-  nonStoredState,
-  sessionStateStorage,
-  useStoredState,
-} from "../../state/useSessionStoreState"
+import React, { useEffect, useMemo } from "react"
 // import { update } from "../../utils/arrays"
 import { toFilterableString } from "../../utils/conversions"
 import { ArrowDropDownIcon, ArrowDropUpIcon } from "../icons/Icon"
 import { InfoTooltip } from "../tooltip/InfoTooltip"
-import {
-  createFilter,
-  DataFilter,
-  dataFilterUsesValueList,
-  DataTableFilter,
-  FilterFn,
-} from "./DataTableFilter"
-import {
-  Data,
-  HeaderCell,
-  Row,
-  Table,
-  TableBody,
-  TableCellSize,
-  TableHeader,
-} from "./Table"
+import { dataFilterUsesValueList, DataTableFilter } from "./DataTableFilter"
+import { Data, HeaderCell, Row, Table, TableBody, TableHeader } from "./Table"
 import "./Table.less"
+import {
+  Column,
+  setFilters,
+  sortByColumn,
+  useDataTableState,
+} from "./useDataTableState"
 
 const b = bem("table")
 
@@ -43,17 +30,11 @@ export type DataTableProps = {
   onCountChange?: (event: DataTableCountChangeEvent) => void
 }
 
+export { Column } from "./useDataTableState"
+
 export type DataTableCountChangeEvent = {
   filteredRowCount: number
   unfilteredRowCount: number
-}
-
-export type Column = {
-  label: string
-  tooltip?: string
-  filter?: DataFilter
-  size?: TableCellSize
-  indicatorSpace?: true | false | "auto"
 }
 
 /** Represents a piece of table data - a row */
@@ -81,23 +62,15 @@ export type Value = {
   tooltip?: string
 }
 
-type FilterArray = Array<{ fn: FilterFn | null; value: string | null }>
-
 export const DataTable = (props: DataTableProps) => {
-  const [sortColumnIndex, setSortColumnIndex] = useState(0)
-  const [sortAscending, setSortAscending] = useState(true)
+  const [state, setState] = useDataTableState(props.storageName, props.columns)
 
-  const [filters, setFilters] = useStoredState<FilterArray>(
-    props.storageName
-      ? createFilterStorage(props.storageName, props.columns)
-      : nonStoredState(initialFilters(props.columns.length))
-  )
+  // TODO: Datan muljuttamiset voisi myöhemmin siirtää omaan hookkiinsa
 
   const filteredData = useMemo(
     () =>
-      // TODO: Tän sotkun vois kirjoittaa kauniimmaksi
       props.data.filter((datum) =>
-        filters.every(
+        state.filters.every(
           (filter, index) =>
             !filter?.fn ||
             (datum.values[index]?.filterValues
@@ -107,27 +80,20 @@ export const DataTable = (props: DataTableProps) => {
               : filter.fn?.(toFilterableString(datum.values[index]?.value)))
         )
       ),
-    [filters, props.data]
+    [state.filters, props.data]
   )
 
   const sortedData = useMemo(() => {
-    const compare = compareDatum(sortColumnIndex)
-    const ordDatum = Ord.fromCompare(sortAscending ? compare : flip(compare))
+    const compare = compareDatum(state.sort.columnIndex)
+    const ordDatum = Ord.fromCompare(
+      state.sort.ascending ? compare : flip(compare)
+    )
     return A.sortBy([ordDatum])(filteredData)
-  }, [sortColumnIndex, sortAscending, filteredData])
+  }, [state.sort.columnIndex, state.sort.ascending, filteredData])
 
   useEmitCountChanges(props.data, sortedData, props.onCountChange)
 
   const optionsForFilters = useOptionsForFilters(props.columns, props.data)
-
-  const sortByColumn = (index: number) => {
-    if (index === sortColumnIndex) {
-      setSortAscending(!sortAscending)
-    } else {
-      setSortColumnIndex(index)
-      setSortAscending(true)
-    }
-  }
 
   const containsFilters = props.columns.some((col) => col.filter)
 
@@ -152,7 +118,7 @@ export const DataTable = (props: DataTableProps) => {
               key={index}
               size={col.size}
               indicatorSpace={!!col.indicatorSpace}
-              onClick={() => sortByColumn(index)}
+              onClick={() => setState(sortByColumn(index))}
               className={b("label")}
             >
               <div className={b("labelcontent")}>
@@ -160,8 +126,8 @@ export const DataTable = (props: DataTableProps) => {
                   {col.label}
                 </div>
                 <SortIndicator
-                  visible={sortColumnIndex === index}
-                  ascending={sortAscending}
+                  visible={state.sort.columnIndex === index}
+                  ascending={state.sort.ascending}
                 />
                 {col.tooltip && <InfoTooltip>{col.tooltip}</InfoTooltip>}
               </div>
@@ -182,12 +148,12 @@ export const DataTable = (props: DataTableProps) => {
                   <DataTableFilter
                     type={col.filter}
                     values={optionsForFilters[index] || []}
-                    initialValue={filters[index]?.value}
+                    initialValue={state.filters[index]?.value}
                     onChange={(filter, value) =>
                       pipe(
-                        filters,
+                        state.filters,
                         A.updateAt(index, { fn: filter, value }),
-                        O.map(setFilters)
+                        O.map((filters) => setState(setFilters(filters)))
                       )
                     }
                   />
@@ -286,18 +252,3 @@ const selectFilterValues = (index: number) => (datum: Datum) => {
   const item = datum.values[index]
   return item?.filterValues || (item?.value ? [item.value] : [])
 }
-
-const createFilterStorage = (storageName: string, columns: Column[]) =>
-  sessionStateStorage<FilterArray, Array<string | null>>(
-    `${storageName}-${columns.map((c) => c.filter?.slice(0, 2)).join(".")}`,
-    initialFilters(columns.length),
-    (filts) => filts.map((f) => f.value),
-    (values) =>
-      values.map((value, index) => ({
-        value,
-        fn: createFilter(columns[index]?.filter, value),
-      }))
-  )
-
-const initialFilters = (length: number): FilterArray =>
-  new Array(length).fill({ value: null, fn: null })
