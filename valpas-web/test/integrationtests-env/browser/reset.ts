@@ -54,3 +54,11 @@ export const clearMockData = async () => {
   await clickElement("#clearMockData")
   await textEventuallyEquals("#clearMockDataState", "success", 30000)
 }
+
+export const clearLocalStorage = async () => {
+  await driver.executeScript("window.localStorage.clear()")
+}
+
+export const clearSessionStorage = async () => {
+  await driver.executeScript("window.sessionStorage.clear()")
+}

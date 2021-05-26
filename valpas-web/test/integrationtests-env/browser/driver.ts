@@ -5,6 +5,7 @@ import {
   expectCleanConsoleLogs,
   resetTestSpecificNetworkErrors,
 } from "./fail-on-console"
+import { clearLocalStorage, clearSessionStorage } from "./reset"
 
 declare namespace global {
   let __driver__: undefined | (() => Promise<WebDriver>)
@@ -25,6 +26,10 @@ afterAll(() => driver?.quit())
 
 afterEach(async () => {
   await expectCleanConsoleLogs(driver)
+
+  // Storaget voi siivota vasta kun ollaan siirrytty johonkin osoitteeseen, joten niitä ei voi siivota vielä kun testiä alustetaan
+  await clearLocalStorage()
+  await clearSessionStorage()
 })
 
 const buildBrowserStackDriver = async (): Promise<WebDriver | undefined> =>

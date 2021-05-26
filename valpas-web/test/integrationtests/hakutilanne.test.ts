@@ -4,13 +4,19 @@ import {
 } from "../../src/state/paths"
 import {
   clickElement,
+  expectElementEventuallyVisible,
   textEventuallyEquals,
 } from "../integrationtests-env/browser/content"
 import {
   pathToUrl,
   urlIsEventually,
 } from "../integrationtests-env/browser/core"
-import { dataTableEventuallyEquals } from "../integrationtests-env/browser/datatable"
+import {
+  dataTableEventuallyEquals,
+  getTableContents,
+  setTableTextFilter,
+  toggleTableSort,
+} from "../integrationtests-env/browser/datatable"
 import {
   dropdownSelect,
   dropdownSelectContains,
@@ -152,6 +158,28 @@ describe("Hakutilannenäkymä", () => {
 
     await clickElement(".oppijaview__backbutton a")
     await urlIsEventually(pathToUrl(kulosaariHakutilannePath))
+  })
+
+  it("Käyminen oppijakohtaisessa näkymässä ei hukkaa filttereiden tai järjestyksen tilaa", async () => {
+    await loginAs(hakutilannePath, "valpas-jkl-normaali")
+
+    // Vaihda filtteriä ja järjestyksen suuntaa nimen perusteella
+    const selector = ".hakutilanne"
+    await setTableTextFilter(selector, 1, "luoka")
+    await toggleTableSort(selector, 1)
+
+    // Ota snapshot talteen taulukon tilasta
+    const contentsBefore = await getTableContents(selector)
+
+    // Käy jossakin oppijanäkymässä
+    await clickOppija(1)
+    await expectElementEventuallyVisible(".oppijaview__backbutton a")
+    await clickElement(".oppijaview__backbutton a")
+
+    // Taulukon tilan pitäisi olla sama kuin aiemmin
+    await urlIsEventually(pathToUrl(jklHakutilannePath))
+    const contentsAfter = await getTableContents(selector)
+    expect(contentsAfter).toEqual(contentsBefore)
   })
 
   it("Oppijasivulta, jolta puuttuu organisaatioreferenssi, ohjataan oikean organisaation hakutilannenäkymään", async () => {

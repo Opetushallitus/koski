@@ -1,5 +1,6 @@
 import * as A from "fp-ts/Array"
-import { $$ } from "./core"
+import { $, $$ } from "./core"
+import { clearTextInput, setTextInput } from "./forms"
 import { eventually } from "./utils"
 
 export const dataTableEventuallyEquals = async (
@@ -45,10 +46,30 @@ const dataTableCellsEventuallyEquals = async (
   )
 
   await eventually(async () => {
-    const cells = await $$(`${selector}`)
-    const actualData = (
-      await Promise.all(cells.map((cell) => cell.getText()))
-    ).map((value) => value.replace(/\n/g, ""))
+    const actualData = await getTableContents(selector)
     expect(actualData).toEqual(expectedData)
   }, timeout)
+}
+
+export const getTableContents = async (selector: string) => {
+  const cells = await $$(`${selector}`)
+  return (await Promise.all(cells.map((cell) => cell.getText()))).map((value) =>
+    value.replace(/\n/g, "")
+  )
+}
+
+export const setTableTextFilter = async (
+  selector: string,
+  nthColumn: number,
+  filterValue: string
+) => {
+  const inputSelector = `${selector} .table__head .table__row:nth-child(2) .table__filter:nth-child(${nthColumn}) input`
+  await clearTextInput(inputSelector)
+  await setTextInput(inputSelector, filterValue)
+}
+
+export const toggleTableSort = async (selector: string, nthColumn: number) => {
+  const labelSelector = `${selector} .table__head .table__row:first-child .table__label:nth-child(${nthColumn})`
+  const label = await $(labelSelector)
+  await label.click()
 }
