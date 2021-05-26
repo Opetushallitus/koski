@@ -10,7 +10,7 @@ import {
 } from "react"
 import { useSafeState } from "../state/useSafeState"
 import { ApiFailure, ApiResponse, ApiSuccess } from "./apiFetch"
-import { isSuccess } from "./apiUtils"
+import { isSuccessAndFinished } from "./apiUtils"
 import { ApiCache } from "./cache"
 
 export type ApiLoading = null
@@ -129,10 +129,10 @@ export const useOnApiSuccess = <T, P extends any[]>(
   const [triggered, setTriggered] = useState(false)
 
   useEffect(() => {
-    if (isSuccess(hook) && !triggered) {
+    if (isSuccessAndFinished(hook) && !triggered) {
       setTriggered(true)
       handler(hook)
-    } else if (!isSuccess(hook) && triggered) {
+    } else if (!isSuccessAndFinished(hook) && triggered) {
       setTriggered(false)
     }
   }, [hook, handler, triggered])
