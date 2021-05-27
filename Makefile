@@ -49,6 +49,10 @@ build: logdir
 	mvn compile
 	# Built the whole application, ready for running or testing
 
+.PHONY: build-snapshot-image
+build-snapshot-image: build
+	docker build -t local-snapshot --build-arg KOSKI_VERSION=master-SNAPSHOT .
+
 .PHONY: front
 front: logdir
 	cd web && npm ci && npm run build:prod
