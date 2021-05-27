@@ -157,7 +157,10 @@ class OppijaUpdateSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTe
         import fi.oph.koski.util.DateOrdering._
         val d: LocalDate = date(2020, 1, 1)
         var aikaleima: Option[LocalDateTime] = None
-        verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => aikaleima = existing.aikaleima ; existing.copy(arvioituPäättymispäivä = Some(d))}) {
+        verifyChange(change = { existing: AmmatillinenOpiskeluoikeus =>
+          aikaleima = existing.aikaleima
+          existing.copy(arvioituPäättymispäivä = Some(d))
+        }) {
           verifyResponseStatusOk()
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
           result.arvioituPäättymispäivä should equal(Some(d))
