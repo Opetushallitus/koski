@@ -263,16 +263,16 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
 
     "Pidennyksen yhteenlasku" - {
       "Peräkkäiset aikajaksot tyhjällä välillä" in {
-        OikeuttaMaksuttomuuteenPidennetty.maksuttomuusJaksojenYhteenlaskettuPituus(List(jaksoAikainen, jaksoMyöhäinen)) should equal (10)
+        OikeuttaMaksuttomuuteenPidennetty.maksuttomuusJaksojenYhteenlaskettuPituus(List(jaksoAikainen, jaksoMyöhäinen)) should equal (12)
       }
-      "Peräkkäiset aikajaksot, suoraan toisiaan sueraavat" in {
-        OikeuttaMaksuttomuuteenPidennetty.maksuttomuusJaksojenYhteenlaskettuPituus(List(jaksoMyöhäinen, jaksoMyöhäinenHetiPerään)) should equal (10)
+      "Peräkkäiset aikajaksot, suoraan toisiaan suraavat" in {
+        OikeuttaMaksuttomuuteenPidennetty.maksuttomuusJaksojenYhteenlaskettuPituus(List(jaksoMyöhäinen, jaksoMyöhäinenHetiPerään)) should equal (11)
       }
       "Päällekkäiset aikajaksot" in {
-        OikeuttaMaksuttomuuteenPidennetty.maksuttomuusJaksojenYhteenlaskettuPituus(List(jaksoAikainen, jaksoAikainenPäällekäinen)) should equal (15)
+        OikeuttaMaksuttomuuteenPidennetty.maksuttomuusJaksojenYhteenlaskettuPituus(List(jaksoAikainen, jaksoAikainenPäällekäinen)) should equal (16)
       }
       "Sisäkkäiset aikajaksot" in {
-        OikeuttaMaksuttomuuteenPidennetty.maksuttomuusJaksojenYhteenlaskettuPituus(List(jaksoKeskimmäinen, jaksoKeskimmäinenSisäkkäinen)) should equal (36)
+        OikeuttaMaksuttomuuteenPidennetty.maksuttomuusJaksojenYhteenlaskettuPituus(List(jaksoKeskimmäinen, jaksoKeskimmäinenSisäkkäinen)) should equal (37)
       }
       "Peräkkäisiä, sisäkkäisiä ja erillisiä yhdessä" in {
         OikeuttaMaksuttomuuteenPidennetty.maksuttomuusJaksojenYhteenlaskettuPituus(List(
@@ -281,10 +281,10 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
           jaksoMyöhäinen,
           jaksoKeskimmäinen,
           jaksoAikainenPäällekäinen,
-          jaksoKeskimmäinenSisäkkäinen)) should equal (61)
+          jaksoKeskimmäinenSisäkkäinen)) should equal (64)
       }
       "Sama aikajakso kahdesti" in {
-        OikeuttaMaksuttomuuteenPidennetty.maksuttomuusJaksojenYhteenlaskettuPituus(List(jaksoKeskimmäinen, jaksoKeskimmäinen)) should equal (36)
+        OikeuttaMaksuttomuuteenPidennetty.maksuttomuusJaksojenYhteenlaskettuPituus(List(jaksoKeskimmäinen, jaksoKeskimmäinen)) should equal (37)
       }
     }
   }

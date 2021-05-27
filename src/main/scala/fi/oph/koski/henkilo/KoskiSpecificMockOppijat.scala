@@ -132,6 +132,8 @@ object KoskiSpecificMockOppijat {
   val oppivelvollisuustietoMaster = koskiSpecificOppijat.oppija("Oppivelvollisuustieto", "Master", "260904A350B", syntymäaika = Some(LocalDate.of(2004, 1, 1)))
   val oppivelvollisuustietoSlave1 = koskiSpecificOppijat.addOppija(OppijaHenkilöWithMasterInfo(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.00000051491", sukunimi = "Oppivelvollisuustieto", etunimet = "Slave1", kutsumanimi = "Slave1", hetu = Some("260904A350B"), syntymäaika = None), Some(oppivelvollisuustietoMaster)))
   val oppivelvollisuustietoSlave2 = koskiSpecificOppijat.addOppija(OppijaHenkilöWithMasterInfo(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.00000051492", sukunimi = "Oppivelvollisuustieto", etunimet = "Slave2", kutsumanimi = "Slave2", hetu = Some("260904A350B"), syntymäaika = None), Some(oppivelvollisuustietoMaster)))
+  val maksuttomuuttaPidennetty1 = koskiSpecificOppijat.oppija("Pidennetty1", "Maksuttomuutta1", "190525-0401", syntymäaika = Some(LocalDate.of(2004, 1, 1)))
+  val maksuttomuuttaPidennetty2 = koskiSpecificOppijat.oppija("Pidennetty2", "Maksuttomuutta2", "220835-2325", syntymäaika = Some(LocalDate.of(2004, 1, 1)))
   //Jos luot uuden oppijan voi hetun generoida täältä: http://www.lintukoto.net/muut/henkilotunnus/index.php
   //Huomaa, että hetun pitää olla oikean kaltainen
 

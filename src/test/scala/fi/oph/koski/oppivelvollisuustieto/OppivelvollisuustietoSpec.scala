@@ -167,7 +167,7 @@ class OppivelvollisuustietoSpec
           Oppivelvollisuustieto(
             oikeusOpiskelunMaksuttomuuteen.oid,
             oppivelvollisuusVoimassaAsti = date(2022, 1, 1),
-            oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2024, 12, 31)
+            oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2025, 1, 21)
           )
         ))
       }

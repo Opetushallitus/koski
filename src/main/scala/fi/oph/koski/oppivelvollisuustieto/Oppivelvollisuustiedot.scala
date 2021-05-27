@@ -32,7 +32,15 @@ object Oppivelvollisuustiedot {
               select
                 oppija_oid,
                 master_oid,
-                syntymaaika
+                syntymaaika,
+                (select count(distinct paivat) from (
+                    select generate_series(alku, loppu, interval '1 day') paivat
+                    from #${s.name}.r_opiskeluoikeus_aikajakso ra
+                    inner join #${s.name}.r_opiskeluoikeus oo on (oo.oppija_oid = henkilo.oppija_oid)
+                    where oikeutta_maksuttomuuteen_pidennetty = true
+                    and ra.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
+                    )
+                pidennyspaivat) as maksuttomuutta_pidennetty_yhteensa
               from
                 #${s.name}.r_henkilo henkilo
               where date_part('year', syntymaaika) >= 2004
@@ -51,7 +59,6 @@ object Oppivelvollisuustiedot {
                                   and koulutusmoduuli_koodiarvo = '9'
                                   and vahvistus_paiva < '2021-01-01'::date)
                 )
-
         ),
 
         ammattitutkinto as (
@@ -92,10 +99,10 @@ object Oppivelvollisuustiedot {
           end
             oppivelvollisuusVoimassaAsti,
           case
-            when suorittaa_ammattitutkintoa and suorittaa_lukionoppimaaraa then #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '20 year')
-            when suorittaa_ammattitutkintoa then least(ammattitutkinnon_vahvistus_paiva, #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '20 year'))
-            when suorittaa_lukionoppimaaraa then #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '20 year')
-            else #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '20 year')
+            when suorittaa_ammattitutkintoa and suorittaa_lukionoppimaaraa then #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '20 year') + interval '1 day' * maksuttomuutta_pidennetty_yhteensa
+            when suorittaa_ammattitutkintoa then least(ammattitutkinnon_vahvistus_paiva, #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '20 year')) + interval '1 day' * maksuttomuutta_pidennetty_yhteensa
+            when suorittaa_lukionoppimaaraa then #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '20 year') + interval '1 day' * maksuttomuutta_pidennetty_yhteensa
+            else #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '20 year') + interval '1 day' * maksuttomuutta_pidennetty_yhteensa
           end
             oikeusKoulutuksenMaksuttomuuteenVoimassaAsti
         from
