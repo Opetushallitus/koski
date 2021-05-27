@@ -254,37 +254,36 @@ class ValpasOppijaService(
   )(implicit session: ValpasSession): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotLisätiedoilla]] = {
     timed("fetchKuntailmoitukset", 10) {
       kuntailmoitusService.getKuntailmoitukset(oppija)
-        .map(_.zipWithIndex.map {
-          case (kuntailmoitus, 0) => { // Vain uusin ilmoitus voi olla aktiivinen
-
-            // Jos ilmoituksen teon jälkeen on alkanut ov-suorittamiseen kelpaava opiskeluoikeus, ilmoitus ei ole enää
-            // aktiiviinen. Spekulatiivisia tulevaisuudessa alkavia opiskeluoikeuksia ei kuitenkaan oteta huomioon.
-            def onMyöhempiOpiskeluoikeus =
-              oppija.opiskeluoikeudet.exists(oo =>
-                oo.oppivelvollisuudenSuorittamiseenKelpaava &&
-                  (oo.alkamispäivä >= kuntailmoitus.aikaleima.get.toLocalDate.toString) &&
-                  (oo.alkamispäivä <= rajapäivätService.tarkastelupäivä.toString)
-              )
-
-            // Jos on kulunut yli 30 päivää ilmoituksen teosta, eikä ole myöhempää opiskeluoikeutta, mutta ilmoituksen
-            // tekemistä ennen alkanut opiskeluoikeus on edelleen voimassa, näytetään ilmoitus ei-aktiivisena.
-            def ilmoituksestaKulunutTarpeeksiKauan =
-              kuntailmoitus.aikaleima.get.toLocalDate.plusDays(rajapäivätService.kuntailmoituksenVoimassoloaikaOpiskeluoikeudenJatkuessaPäivinä)
-                .isBefore(rajapäivätService.tarkastelupäivä)
-            def onIlmoitustaEnnenAlkanutEdelleenVoimassaolevaOpiskeluoikeus =
-              oppija.opiskeluoikeudet.exists(oo =>
-                oo.oppivelvollisuudenSuorittamiseenKelpaava &&
-                  (oo.alkamispäivä <= kuntailmoitus.aikaleima.get.toLocalDate.toString) &&
-                  (oo.päättymispäivä.map(_ >= rajapäivätService.tarkastelupäivä.toString).getOrElse(true)))
-
-            val eiEnääAktiivinen = onMyöhempiOpiskeluoikeus ||
-              (ilmoituksestaKulunutTarpeeksiKauan && onIlmoitustaEnnenAlkanutEdelleenVoimassaolevaOpiskeluoikeus)
-
-            ValpasKuntailmoitusLaajatTiedotLisätiedoilla(kuntailmoitus, !eiEnääAktiivinen)
-          }
-          case (kuntailmoitus, _) => ValpasKuntailmoitusLaajatTiedotLisätiedoilla(kuntailmoitus, false)
-        })
+        .map(lisääAktiivisuustiedot(oppija))
     }
+  }
+
+  private def lisääAktiivisuustiedot(
+    oppija: ValpasOppijaLaajatTiedot
+  )(
+    kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot]
+  ): Seq[ValpasKuntailmoitusLaajatTiedotLisätiedoilla] = {
+    kuntailmoitukset.zipWithIndex.map(kuntailmoitusWithIndex => {
+      val aktiivinen = kuntailmoitusWithIndex match {
+
+        // Alle 2 kk vanha ilmoitus on aina aktiivinen
+        case (kuntailmoitus, 0) if !rajapäivätService.tarkastelupäivä.isAfter(
+          kuntailmoitus.aikaleima.get.toLocalDate.plusMonths(rajapäivätService.kuntailmoitusAktiivisuusKuukausina)
+        ) => true
+
+        // Jos yli 2 kk, ilmoitus on aktiivinen,
+        // jos mikään ov-suorittamiseen kelpaava opiskeluoikeus ei ole voimassa
+        case (kuntailmoitus, 0) =>
+          oppija.opiskeluoikeudet.forall(oo =>
+            !oo.oppivelvollisuudenSuorittamiseenKelpaava || oo.tarkastelupäivänTila.koodiarvo != "voimassa"
+          )
+
+        // Muut kuin uusin ilmoitus ovat aina ei-aktiivisia
+        case (kuntailmoitus, _) => false
+      }
+
+      ValpasKuntailmoitusLaajatTiedotLisätiedoilla(kuntailmoitusWithIndex._1, aktiivinen)
+    })
   }
 
   def setMuuHaku(key: OpiskeluoikeusLisätiedotKey, value: Boolean)(implicit session: ValpasSession): HttpStatus = {
@@ -296,6 +295,4 @@ class ValpasOppijaService(
         .flatMap(_ => lisätiedotRepository.setMuuHaku(key, value).toEither)
     )
   }
-
-
 }

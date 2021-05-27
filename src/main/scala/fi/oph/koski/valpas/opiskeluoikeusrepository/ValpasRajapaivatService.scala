@@ -20,7 +20,7 @@ trait ValpasRajapäivätService extends Logging {
   def keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä: LocalDate
   def perusopetussuorituksenNäyttämisenAikaraja: LocalDate
 
-  def kuntailmoituksenVoimassoloaikaOpiskeluoikeudenJatkuessaPäivinä: Long
+  def kuntailmoitusAktiivisuusKuukausina: Long
 }
 
 object ValpasRajapäivätService {
@@ -40,8 +40,8 @@ object ValpasRajapäivätService {
   val tulevaisuuteenMerkitynPerusopetuksenSuorituksenAikaikkunaPäivinäPath =
     "valpas.rajapäivät.tulevaisuuteenMerkitynPerusopetuksenSuorituksenAikaikkunaPäivinä"
 
-  val kuntailmoituksenVoimassoloaikaOpiskeluoikeudenJatkuessaPäivinäPath =
-    "valpas.rajapäivät.kuntailmoituksenVoimassoloaikaOpiskeluoikeudenJatkuessaPäivinä"
+  val kuntailmoitusAktiivisuusKuukausina =
+    "valpas.rajapäivät.kuntailmoitusAktiivisuusKuukausina"
 
   def apply(config: Config) = {
     if (config.getBoolean(UseMockPath)) {
@@ -95,8 +95,8 @@ class MockValpasRajapäivätService(defaultService: ConfigValpasRajapäivätServ
   def perusopetussuorituksenNäyttämisenAikaraja: LocalDate =
     tarkastelupäivä.plusDays(defaultService.tulevaisuuteenMerkitynPerusopetuksenSuorituksenAikaikkunaPäivinä)
 
-  def kuntailmoituksenVoimassoloaikaOpiskeluoikeudenJatkuessaPäivinä: Long =
-    defaultService.kuntailmoituksenVoimassoloaikaOpiskeluoikeudenJatkuessaPäivinä
+  def kuntailmoitusAktiivisuusKuukausina: Long =
+    defaultService.kuntailmoitusAktiivisuusKuukausina
 }
 
 class ConfigValpasRajapäivätService(config: Config) extends ValpasRajapäivätService {
@@ -143,8 +143,8 @@ class ConfigValpasRajapäivätService(config: Config) extends ValpasRajapäivät
   val tulevaisuuteenMerkitynPerusopetuksenSuorituksenAikaikkunaPäivinä: Long =
     config.getLong(ValpasRajapäivätService.tulevaisuuteenMerkitynPerusopetuksenSuorituksenAikaikkunaPäivinäPath)
 
-  val kuntailmoituksenVoimassoloaikaOpiskeluoikeudenJatkuessaPäivinä: Long =
-    config.getLong(ValpasRajapäivätService.kuntailmoituksenVoimassoloaikaOpiskeluoikeudenJatkuessaPäivinäPath)
+  val kuntailmoitusAktiivisuusKuukausina: Long =
+    config.getLong(ValpasRajapäivätService.kuntailmoitusAktiivisuusKuukausina)
 }
 
 case class OletuksenaEdellinenVuosiKonfiguraattori(
