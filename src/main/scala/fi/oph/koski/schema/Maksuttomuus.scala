@@ -23,7 +23,7 @@ case class OikeuttaMaksuttomuuteenPidennetty (
     !alku.isBefore(other.alku) && !alku.isAfter(other.loppu) || !loppu.isBefore(other.alku) && !loppu.isAfter(other.loppu)
   }
 
-  def contains(d: LocalDate): Boolean = !d.isBefore(alku) && d.isAfter(loppu)
+  def contains(d: LocalDate): Boolean = !d.isBefore(alku) && !d.isAfter(loppu)
 }
 
 object OikeuttaMaksuttomuuteenPidennetty {
