@@ -73,3 +73,10 @@ export const createOppijaPath = (
 export type OppijaViewRouteProps = RouteComponentProps<{
   oppijaOid?: string
 }>
+
+// Maksuttomuusnäkymä
+
+export const maksuttomuusPath = (basePath: string = "") =>
+  `${basePath}/maksuttomuus`
+
+export const createMaksuttomuusPath = maksuttomuusPath

@@ -5,7 +5,7 @@ import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioHierarkia, Organis
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.ChainingSyntax._
 import fi.oph.koski.valpas.db.ValpasSchema.OpiskeluoikeusLisätiedotKey
-import fi.oph.koski.valpas.log.ValpasAuditLog.{auditLogOppijaKatsominen, auditLogOppilaitosKatsominen}
+import fi.oph.koski.valpas.log.ValpasAuditLog.{auditLogHenkilöHaku, auditLogOppijaKatsominen, auditLogOppilaitosKatsominen}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppilaitos
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
@@ -13,6 +13,7 @@ import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
 class ValpasRootApiServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with RequiresValpasSession {
   private lazy val organisaatioService = application.organisaatioService
   private lazy val oppijaService = application.valpasOppijaService
+  private lazy val oppijaSearchService = application.valpasOppijaSearchService
 
   get("/user") {
     session.user
@@ -43,6 +44,13 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
     renderEither(
       oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(params("oid"))
         .tap(result => auditLogOppijaKatsominen(result.oppija.henkilö.oid))
+    )
+  }
+
+  get("/henkilohaku/:query") {
+    renderEither(
+      oppijaSearchService.findHenkilö(params("query"))
+        .tap(auditLogHenkilöHaku)
     )
   }
 

@@ -1,3 +1,4 @@
+import { HenkilöHakutiedot } from "../state/apitypes/henkilo"
 import { KuntailmoitusLaajatTiedot } from "../state/apitypes/kuntailmoitus"
 import { KuntailmoitusPohjatiedot } from "../state/apitypes/kuntailmoituspohjatiedot"
 import { OpiskeluoikeusSuppeatTiedot } from "../state/apitypes/opiskeluoikeus"
@@ -5,7 +6,12 @@ import {
   OppijaHakutilanteillaLaajatTiedot,
   OppijaHakutilanteillaSuppeatTiedot,
 } from "../state/apitypes/oppija"
-import { Oid, OrganisaatioJaKayttooikeusrooli, User } from "../state/common"
+import {
+  Hetu,
+  Oid,
+  OrganisaatioJaKayttooikeusrooli,
+  User,
+} from "../state/common"
 import { queryPath } from "../state/paths"
 import { tapLeftP } from "../utils/either"
 import { ApiFailure, apiGet, apiPost, apiPut } from "./apiFetch"
@@ -65,6 +71,16 @@ export const fetchOppija = (oppijaOid: Oid) =>
   )
 
 export const fetchOppijaCache = createCache(fetchOppija)
+
+/**
+ * Etsi henkilöä hetulla/oidilla
+ */
+export const fetchHenkilöhaku = (query: Oid | Hetu) =>
+  handleExpiredSession(
+    apiGet<HenkilöHakutiedot>(`valpas/api/henkilohaku/${query}`)
+  )
+
+export const fetchHenkilöhakuCache = createCache(fetchHenkilöhaku)
 
 /**
  * Kuntailmoituksen pohjatietojen haku

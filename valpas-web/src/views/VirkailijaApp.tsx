@@ -21,6 +21,7 @@ import {
   createHakutilannePathWithoutOrg,
   hakutilannePathWithOrg,
   hakutilannePathWithoutOrg,
+  maksuttomuusPath,
   oppijaPath,
   rootPath,
 } from "../state/paths"
@@ -30,6 +31,7 @@ import {
   HakutilanneViewWithoutOrgOid,
 } from "./hakutilanne/HakutilanneView"
 import { HomeView } from "./HomeView"
+import { MaksuttomuusView } from "./maksuttomuus/MaksuttomuusView"
 import { OppijaView } from "./oppija/OppijaView"
 import { Raamit } from "./Raamit"
 
@@ -92,6 +94,9 @@ const VirkailijaRoutes = ({ user }: VirkailijaRoutesProps) => {
           />
         )}
       />
+      <Route exact path={maksuttomuusPath(basePath)}>
+        <MaksuttomuusView />
+      </Route>
       <Route exact path={rootPath(basePath)}>
         <HomeView
           user={user}

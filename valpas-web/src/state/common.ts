@@ -10,6 +10,7 @@ import {
 export type Oid = string
 export type ISODate = string
 export type ISODateTime = string
+export type Hetu = string
 
 export type Language = "fi" | "sv" | "en"
 export type LocalizedString = Partial<Record<Language, string>>

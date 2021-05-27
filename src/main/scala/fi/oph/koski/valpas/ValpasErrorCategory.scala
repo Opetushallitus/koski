@@ -23,6 +23,13 @@ object ValpasErrorCategory {
     val kuntailmoituksenIlmoituspäivä = subcategory("kuntailmoituksenIlmoituspäivä", "Kuntailmoituksia ei voi tehdä ennen lain voimaantuloa 1.8.2021")
   }
 
+  object searchNotFound extends ErrorCategory("notFound", statusCode = 403, "Käyttäjää ei löydy") {
+    val hetu = subcategory("hetu", "Henkilöä ei löydy annetulla henkilötunnuksella")
+    val oid = subcategory("hetu", "Henkilöä ei löydy annetulla oppijatunnuksella")
+  }
+
+  object searchValidation extends ErrorCategory("validation", statusCode = 400, "Hakutermi ei ollut validi suomalainen henkilötunnus tai oppijatunnus")
+
   object notImplemented extends ErrorCategory("notImplemented", 501, "Not implemented") {
     val kuntailmoituksenMuokkaus = subcategory("kuntailmoituksenMuokkaus", "Kuntailmoitusta ei voi muokata")
   }
