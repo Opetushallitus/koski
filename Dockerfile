@@ -4,6 +4,15 @@ ARG KOSKI_VERSION
 ARG PROMETHEUS_JMX_EXPORTER_VERSION="0.14.0"
 ARG PROMETHEUS_JMX_EXPORTER_JAR_HASH="5ead661727d1e7ed4cf660c0904c71d93e01ebb8c744160bd122442580fe5206"
 
+# Install tzdata for timezones
+RUN apk add --no-cache tzdata
+
+# Set timezone
+RUN cp /usr/share/zoneinfo/Europe/Helsinki /etc/localtime && apk del tzdata
+
+# JVM reads timezone from this file instead:
+RUN echo 'Europe/Helsinki' > /etc/timezone
+
 # Install Prometheus JMX exporter
 RUN wget -q https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/${PROMETHEUS_JMX_EXPORTER_VERSION}/jmx_prometheus_javaagent-${PROMETHEUS_JMX_EXPORTER_VERSION}.jar \
     -O /usr/local/bin/jmx_prometheus_javaagent.jar && \
