@@ -7,6 +7,7 @@ import * as string from "fp-ts/string"
 import React, { useMemo, useState } from "react"
 import { Redirect, useHistory } from "react-router"
 import { Card, CardBody, CardHeader } from "../../components/containers/cards"
+import { Page } from "../../components/containers/Page"
 import { Dropdown } from "../../components/forms/Dropdown"
 import { Spinner } from "../../components/icons/Spinner"
 import { DataTableCountChangeEvent } from "../../components/tables/DataTable"
@@ -94,7 +95,7 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
     )
 
     return organisaatioOid ? (
-      <div className={b("view")}>
+      <Page className={b("view")}>
         <Dropdown
           selectorId="organisaatiovalitsin"
           containerClassName={b("organisaatiovalitsin")}
@@ -134,7 +135,7 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
             tekijäorganisaatio={organisaatio}
           />
         ) : null}
-      </div>
+      </Page>
     ) : (
       <OrganisaatioMissingView />
     )

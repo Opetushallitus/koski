@@ -3,7 +3,6 @@ import { Redirect, Route, Switch } from "react-router-dom"
 import { fetchYlatasonOrganisaatiotJaKayttooikeusroolit } from "../api/api"
 import { useApiOnce } from "../api/apiHooks"
 import { isSuccess } from "../api/apiUtils"
-import { Page } from "../components/containers/Page"
 import { LoadingModal } from "../components/icons/Spinner"
 import { t } from "../i18n/i18n"
 import {
@@ -154,9 +153,9 @@ const VirkailijaApp = ({ basePath }: VirkailijaAppProps) => {
       <Raamit user={user} />
       {isLoggedIn(user) ? (
         hasValpasAccess(user) ? (
-          <Page id="virkailija-app">
+          <div id="virkailija-app">
             <VirkailijaRoutes user={user} />
-          </Page>
+          </div>
         ) : (
           <ErrorView
             title={t("login__ei_valpas-oikeuksia_otsikko")}

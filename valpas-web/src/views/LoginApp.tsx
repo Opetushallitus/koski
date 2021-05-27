@@ -31,7 +31,7 @@ export default () => {
   }, [login])
 
   return (
-    <Page id="login-app">
+    <Page id="login-app" hideNavigation>
       <Card>
         <CardHeader>
           <T id="login__otsikko" />

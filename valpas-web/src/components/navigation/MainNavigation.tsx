@@ -1,40 +1,46 @@
 import bem from "bem-ts"
 import React from "react"
-import { Caret } from "../icons/Caret"
+import { NavLink } from "react-router-dom"
+import { useBasePath } from "../../state/basePath"
 import "./MainNavigation.less"
 
 const b = bem("mainnavigation")
 
 export type MainNavigationProps = {
-  selected: string
-  options: NavigationItem[]
-  onChange: (key: string) => void
+  title: string
+  options: MainNavigationItem[]
 }
 
-export type NavigationItem = {
-  key: string
+export type MainNavigationItem = {
   display: React.ReactNode
+  linkTo: string
 }
 
-export const MainNavigation = (props: MainNavigationProps) => (
-  <nav className={b()}>
-    <ul className={b("list")}>
-      {props.options.map((option) => (
-        <li
-          key={option.key}
-          className={b("item", {
-            selected: props.selected === option.key,
-          })}
-          onClick={() => props.onChange(option.key)}
-        >
-          <span className={b("display")}>{option.display}</span>
-          {props.selected === option.key && (
-            <div className={b("caretwrapper")}>
-              <Caret width={24} direction="down" />
-            </div>
-          )}
-        </li>
+export const MainNavigation = (props: MainNavigationProps) => {
+  const basePath = useBasePath()
+  return (
+    <nav className={b()}>
+      <div className={b("title")}>{props.title}:</div>
+      {props.options.map((option, index) => (
+        <MainNavigationLink key={index} to={`${basePath}${option.linkTo}`}>
+          {option.display}
+        </MainNavigationLink>
       ))}
-    </ul>
-  </nav>
+    </nav>
+  )
+}
+
+type MainNavigationLinkProps = {
+  to: string
+  children: React.ReactNode
+}
+
+const MainNavigationLink = (props: MainNavigationLinkProps) => (
+  <NavLink
+    to={props.to}
+    className={b("item")}
+    activeClassName={b("item", ["selected"])}
+  >
+    {props.children}
+  </NavLink>
 )
