@@ -13,8 +13,7 @@ import fi.oph.koski.valpas.db._
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import fi.oph.scalaschema.{SerializationContext, Serializer}
 import org.json4s.JValue
-
-import java.time.LocalTime
+import java.time.{Instant, LocalDateTime, LocalTime, ZoneId, ZoneOffset}
 import java.util.UUID
 
 class ValpasKuntailmoitusRepository(
@@ -44,8 +43,12 @@ class ValpasKuntailmoitusRepository(
         ValpasErrorCategory.internalError("'Hakenut ulkomaille' puuttuu")
       )
     } yield {
+      val localAikaleima: LocalDateTime = valpasRajapäivätService.tarkastelupäivä.atTime(LocalTime.now())
+      val aikavyöhykeOffset: ZoneOffset = ZoneId.systemDefault().getRules().getOffset(localAikaleima)
+      val aikaleima: Instant = localAikaleima.toInstant(aikavyöhykeOffset)
+
       val ilmoitus = IlmoitusRow(
-        luotu = valpasRajapäivätService.tarkastelupäivä.atTime(LocalTime.now()),
+        luotu = aikaleima,
         oppijaOid = data.oppijaOid,
         kuntaOid = data.kuntailmoitus.kunta.oid,
         tekijäOrganisaatioOid = data.kuntailmoitus.tekijä.organisaatio.oid,
@@ -90,7 +93,7 @@ class ValpasKuntailmoitusRepository(
       kuntailmoitus = ValpasKuntailmoitusLaajatTiedot(
         id = Some(il.uuid.toString),
         kunta = li.kunta,
-        aikaleima = Some(il.luotu),
+        aikaleima = Some(il.luotu.atZone(ZoneId.systemDefault()).toLocalDateTime),
         tekijä = ValpasKuntailmoituksenTekijäLaajatTiedot(
           organisaatio = li.tekijäOrganisaatio,
           henkilö = Some(ValpasKuntailmoituksenTekijäHenkilö(

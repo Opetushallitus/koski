@@ -4,7 +4,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
 import org.json4s.JValue
-import java.time.LocalDateTime
+import java.time.{Instant, LocalDateTime}
 import java.util.UUID
 
 object ValpasSchema extends Logging {
@@ -19,7 +19,7 @@ object ValpasSchema extends Logging {
 
   class IlmoitusTable(tag: Tag) extends Table[IlmoitusRow](tag, "ilmoitus") {
     val uuid = column[UUID]("uuid", O.SqlType("uuid"), O.PrimaryKey)
-    val luotu = column[LocalDateTime]("luotu", O.SqlType("timestamp"))
+    val luotu = column[Instant]("luotu", O.SqlType("timestamptz"))
     val oppijaOid = column[String]("oppija_oid")
     val kuntaOid = column[String]("kunta_oid")
     val tekijäOrganisaatioOid = column[String]("tekijä_organisaatio_oid")
@@ -37,7 +37,7 @@ object ValpasSchema extends Logging {
 
   case class IlmoitusRow(
     uuid: UUID = UUID.randomUUID(),
-    luotu: LocalDateTime,
+    luotu: Instant,
     oppijaOid: String,
     kuntaOid: String,
     tekijäOrganisaatioOid: String,
