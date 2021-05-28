@@ -26,7 +26,9 @@ object HenkilöLoader extends Logging {
     var masterOids = scala.collection.mutable.Set[String]()
     val count = oids.toList.grouped(BatchSize).map(batchOids => {
       val batchOppijat = opintopolkuHenkilöFacade.findMasterOppijat(batchOids)
-      val batchRows = batchOppijat.map { case (oid, oppija) => buildRHenkilöRow(oid, oppija, koodistoPalvelu, opiskeluoikeusRepository) }.toList
+      val batchRows = batchOppijat.map { case (oid, oppija) => {
+        buildRHenkilöRow(oid, oppija, koodistoPalvelu, opiskeluoikeusRepository)
+      } }.toList
       db.loadHenkilöt(batchRows)
       db.setLastUpdate(name)
       batchRows.foreach(masterOids += _.masterOid)
@@ -57,6 +59,7 @@ object HenkilöLoader extends Logging {
     RHenkilöRow(
       oppijaOid = oid,
       masterOid = oppija.oid,
+      linkitetytOidit = oppija.linkitetytOidit,
       hetu = oppija.hetu,
       sukupuoli = oppija.sukupuoli,
       syntymäaika = oppija.syntymäaika.orElse(oppija.hetu.flatMap(Hetu.toBirthday)).map(Date.valueOf),

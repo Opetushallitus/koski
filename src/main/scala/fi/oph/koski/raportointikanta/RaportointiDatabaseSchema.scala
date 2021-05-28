@@ -368,6 +368,7 @@ object RaportointiDatabaseSchema {
   class RHenkilöTable(tag: Tag, schema: Schema = Public) extends Table[RHenkilöRow](tag, schema.nameOpt, "r_henkilo") {
     val oppijaOid = column[String]("oppija_oid", O.PrimaryKey, StringIdentifierType)
     val masterOid = column[String]("master_oid", StringIdentifierType)
+    val linkitetytOidit = column[List[String]]("linkitetyt_oidit")
     val hetu = column[Option[String]]("hetu", StringIdentifierType)
     val sukupuoli = column[Option[String]]("sukupuoli")
     val syntymäaika = column[Option[Date]]("syntymaaika")
@@ -379,7 +380,7 @@ object RaportointiDatabaseSchema {
     val kotikunta = column[Option[String]]("kotikunta")
     val kotikuntaNimiFi = column[Option[String]]("kotikunta_nimi_fi")
     val yksiloity = column[Boolean]("yksiloity")
-    def * = (oppijaOid, masterOid, hetu, sukupuoli, syntymäaika, sukunimi, etunimet, äidinkieli, kansalaisuus, turvakielto, kotikunta, kotikuntaNimiFi, yksiloity) <> (RHenkilöRow.tupled, RHenkilöRow.unapply)
+    def * = (oppijaOid, masterOid, linkitetytOidit, hetu, sukupuoli, syntymäaika, sukunimi, etunimet, äidinkieli, kansalaisuus, turvakielto, kotikunta, kotikuntaNimiFi, yksiloity) <> (RHenkilöRow.tupled, RHenkilöRow.unapply)
   }
   class RHenkilöTableTemp(tag: Tag) extends RHenkilöTable(tag, Temp)
 
@@ -625,6 +626,7 @@ case class ROsasuoritusRow(
 case class RHenkilöRow(
   oppijaOid: String,
   masterOid: String,
+  linkitetytOidit: List[String],
   hetu: Option[String],
   sukupuoli: Option[String],
   syntymäaika: Option[Date],
