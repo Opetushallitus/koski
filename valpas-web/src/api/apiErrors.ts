@@ -42,6 +42,6 @@ export const parseErrors = (error: unknown): ApiError[] => {
       message: `${message.error.errorType}: ${message.path}`,
     }))
   } else {
-    return [{ message: (error as any)?.toString() || "???" }]
+    return []
   }
 }

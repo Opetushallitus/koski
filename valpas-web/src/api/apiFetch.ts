@@ -40,9 +40,8 @@ const apiFetch = async <T>(
           data,
         })
       }
-      const message = apiErrorMessage(response.status)
       return E.left({
-        errors: message ? [{ message }] : parseErrors(data),
+        errors: apiErrorMessages(response.status, data),
         status: response.status,
       })
     } catch (err) {
@@ -113,15 +112,27 @@ export const mockApi = <T, P extends any[]>(
   )
 }
 
-const apiErrorMessage = (status: number): string | null => {
+const apiErrorMessages = (status: number, error: unknown): ApiError[] => {
+  const errorMessages = parseErrors(error)
+  if (errorMessages.length > 0) {
+    return errorMessages
+  }
+
   if (status >= 400 && status < 500) {
-    return t("apivirhe__virheellinen_pyyntö", { virhe: status })
+    return [
+      {
+        message: t("apivirhe__virheellinen_pyyntö", { virhe: status }),
+      },
+    ]
   }
+
   if (status === 504) {
-    return t("apivirhe__aikakatkaisu")
+    return [{ message: t("apivirhe__aikakatkaisu") }]
   }
+
   if (status >= 500 && status < 600) {
-    return t("apivirhe__palvelinongelma", { virhe: status })
+    return [{ message: t("apivirhe__palvelinongelma", { virhe: status }) }]
   }
-  return null
+
+  return []
 }
