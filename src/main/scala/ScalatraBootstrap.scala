@@ -77,6 +77,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     mount("/api/elaketurvakeskus", new ElaketurvakeskusServlet)
     mount("/api/elasticsearch", new ElasticSearchServlet)
     mount("/api/healthcheck", new HealthCheckApiServlet)
+    mount("/api/status", new StatusApiServlet)
     mount("/api/henkilo", new HenkilötiedotServlet)
     mount("/api/koodisto", new KoodistoServlet)
     mount("/api/omattiedot", new OmatTiedotServlet)
