@@ -38,8 +38,15 @@ object ValpasMockOppijat {
   val kulosaarenYsiluokkalainenJaJyväskylänLukiolainen = valpasOppijat.oppija("Jkl-Lukio-Kulosaarelainen", "Valpas", "010104A187H")
   val kulosaarenYsiluokkalainenJaJyväskylänNivelvaiheinen = valpasOppijat.oppija("Jkl-Nivel-Kulosaarelainen", "Valpas", "010104A787V")
   val kulosaarenYsiluokkalainenJaJyväskylänEsikoululainen = valpasOppijat.oppija("Jkl-Esikoulu-Kulosaarelainen", "Valpas", "220304A4173")
-  val kahdenKoulunYsiluokkalainen = valpasOppijat.oppija("KahdenKoulunYsi", "Valpas", "211104A0546")
   val lukionAineopinnotAloittanut = valpasOppijat.oppija("LukionAineopinnotAloittanut", "Valpas", "040305A559A")
+  val valmistunutYsiluokkalainenJollaIlmoitus = valpasOppijat.oppija("Ysiluokka-valmis-keväällä-2021-ilmo", "Valpas", "260805A3571")
+  val kasiinAstiToisessaKoulussaOllutJollaIlmoitus = valpasOppijat.oppija("KasiinAstiToisessaKoulussaOllut-ilmo", "Valpas", "020505A164W", äidinkieli = Some("sv"))
+  val kahdenKoulunYsiluokkalainenJollaIlmoitus = valpasOppijat.oppija("KahdenKoulunYsi-ilmo", "Valpas", "211104A0546")
+  val oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster = valpasOppijat.oppija("Kahdella-oppija-oidilla-ilmo", "Valpas", "040605A0123")
+  val oppivelvollinenMonellaOppijaOidillaJollaIlmoitusToinen = valpasOppijat.duplicate(oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster)
+  val oppivelvollinenMonellaOppijaOidillaJollaIlmoitusKolmas = valpasOppijat.duplicate(oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster)
+  val lukionAloittanutJollaVanhaIlmoitus = valpasOppijat.oppija("LukionAloittanut-ilmo", "Valpas", "110405A435M")
+  val lukionAloittanutJaLopettanutJollaIlmoituksia = valpasOppijat.oppija("LukionAloittanutJaLopettanut-ilmo", "Valpas", "050405A249S")
 
   // Kutsumanimi ja yhteystiedot haetaan oppijanumerorekisteristä Valpas-käyttäjälle, tallennetaan siksi käyttäjä myös "oppijana" mockeihin
   val käyttäjäValpasJklNormaalikoulu = valpasOppijat.oppija(

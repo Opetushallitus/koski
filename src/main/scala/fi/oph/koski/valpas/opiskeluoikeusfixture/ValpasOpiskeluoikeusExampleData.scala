@@ -1,13 +1,12 @@
 package fi.oph.koski.valpas.opiskeluoikeusfixture
 
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, vahvistusPaikkakunnalla}
-import fi.oph.koski.documentation.LukioExampleData.opiskeluoikeusAktiivinen
+import fi.oph.koski.documentation.LukioExampleData.{opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt}
 import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, perusopetuksenOppimääränSuoritus, perusopetuksenOppimääränSuoritusKesken, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste, oppilaitos}
 import fi.oph.koski.documentation.{ExampleData, ExamplesEsiopetus, ExamplesLukio2019, ExamplesPerusopetuksenLisaopetus}
 import fi.oph.koski.organisaatio.MockOrganisaatiot.aapajoenKoulu
 import fi.oph.koski.schema._
-
 import java.time.LocalDate.{of => date}
 
 object ValpasOpiskeluoikeusExampleData {
@@ -327,6 +326,15 @@ object ValpasOpiskeluoikeusExampleData {
     tila = LukionOpiskeluoikeudenTila(
       List(
         LukionOpiskeluoikeusjakso(alku = date(2021, 8, 15), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+      )
+    )
+  )
+
+  def lukionOpiskeluoikeusAlkaaJaLoppuu2021Syksyllä = ExamplesLukio2019.aktiivinenOpiskeluoikeus.copy(
+    tila = LukionOpiskeluoikeudenTila(
+      List(
+        LukionOpiskeluoikeusjakso(alku = date(2021, 8, 15), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+        LukionOpiskeluoikeusjakso(alku = date(2021, 9, 19), tila = opiskeluoikeusEronnut, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
       )
     )
   )
