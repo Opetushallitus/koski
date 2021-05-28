@@ -1,10 +1,9 @@
 package fi.oph.koski.oppivelvollisuustieto
 
 import java.time.LocalDate
-
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.db.RaportointiDatabaseConfig
 import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
-
 import slick.jdbc.GetResult
 
 
@@ -23,7 +22,8 @@ object Oppivelvollisuustiedot {
 
       - Jos oppija suorittaa lukion oppimäärää, voimassaolot päättyvät kun molemmat lukion oppimäärä ja ylioppilastutkinto ovat valmiita, jos henkilön ikä sitä ei aikaisemmin päätä.
   */
-  def createMaterializedView(s: Schema)= {
+  def createMaterializedView(s: Schema, config: RaportointiDatabaseConfig)= {
+    val valpasLakiVoimassaVanhinSyntymävuosi = config.valpasLakiVoimassaVanhinSyntymävuosi
     sqlu"""
       create materialized view #${s.name}.oppivelvollisuustiedot as
         with
@@ -43,7 +43,7 @@ object Oppivelvollisuustiedot {
                 pidennyspaivat) as maksuttomuutta_pidennetty_yhteensa
               from
                 #${s.name}.r_henkilo henkilo
-              where date_part('year', syntymaaika) >= 2004
+              where date_part('year', syntymaaika) >= #${valpasLakiVoimassaVanhinSyntymävuosi}
                 and master_oid not in (
                                 select
                                   henkilo.master_oid
