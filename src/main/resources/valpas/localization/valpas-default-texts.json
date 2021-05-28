@@ -112,6 +112,8 @@
   "oppija__ilmoitushistoria_ilmoittaja": "Ilmoittaja",
   "oppija__ilmoitushistoria_kohde": "Taho jolle ilmoitettu",
   "oppija__ilmoitushistoria_lisätiedot": "Lisätiedot",
+  "oppija__ei_tietoja_ilmotuksella": "Ei tietoja ilmoituksella",
+  "oppija__tiedot_näkyvät_vain_vastaanottajalle_ja_lähettäjälle": "Tarkemmat tiedot näkyvät ainoataan ilmoituksen vastaanottajalle ja tekijälle",
   "kayttooikeusrooli_OPPILAITOS_HAKEUTUMINEN": "Oppilaitoksen hakeutumisen valvonta",
   "kayttooikeusrooli_OPPILAITOS_SUORITTAMINEN": "Oppilaitoksen oppivelvollisuuden suorittamisen valvonta",
   "kayttooikeusrooli_OPPILAITOS_MAKSUTTOMUUS": "Oppilaitoksen opiskelun maksuttomuustietojen määrittely",

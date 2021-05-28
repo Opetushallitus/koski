@@ -1,8 +1,10 @@
 import bem from "bem-ts"
+import { isEmpty } from "fp-ts/lib/Array"
 import React from "react"
 import { Column, ColumnsContainer } from "../../components/containers/Columns"
 import { IlmoitusIcon } from "../../components/icons/Icon"
 import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
+import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import { getLocalized, T, t } from "../../i18n/i18n"
 import {
   KuntailmoituksenTekijäLaajatTiedot,
@@ -48,12 +50,10 @@ export const OppijaKuntailmoitus = (props: OppijaKuntailmoitusProps) => {
             <ColumnHeading>
               <T id="oppija__tiedot_oppilaasta" />
             </ColumnHeading>
-            {kuntailmoitus.oppijanYhteystiedot && (
-              <TiedotOppijasta
-                yhteystiedot={kuntailmoitus.oppijanYhteystiedot}
-                hakenutMuualle={kuntailmoitus.hakenutMuualle}
-              />
-            )}
+            <TiedotOppijasta
+              yhteystiedot={kuntailmoitus.oppijanYhteystiedot}
+              hakenutMuualle={kuntailmoitus.hakenutMuualle}
+            />
           </Column>
         </ColumnsContainer>
       </Body>
@@ -131,50 +131,58 @@ const IlmoituksenTekijä = (props: IlmoituksenTekijäProps) => {
 }
 
 type TiedotOppijastaProps = {
-  yhteystiedot: KuntailmoituksenOppijanYhteystiedot
+  yhteystiedot?: KuntailmoituksenOppijanYhteystiedot
   hakenutMuualle?: boolean
 }
 
 const TiedotOppijasta = (props: TiedotOppijastaProps) => {
-  const rows: InfoTableRow[] = [
-    {
-      label: t("oppija__lähiosoite"),
-      value: props.yhteystiedot.lähiosoite,
-      testId: "lähiosoite",
-    },
-    {
-      label: t("oppija__postitoimipaikka"),
-      value: joinToString([
-        props.yhteystiedot.postinumero,
-        props.yhteystiedot.postitoimipaikka,
-      ]),
-      testId: "postitoimipaikka",
-    },
-    {
-      label: t("oppija__maa"),
-      value: getLocalized(props.yhteystiedot.maa?.nimi),
-      testId: "maa",
-    },
-    {
-      label: t("oppija__puhelin"),
-      value: props.yhteystiedot.puhelinnumero,
-      testId: "puhelin",
-    },
-    {
-      label: t("oppija__email"),
-      value: props.yhteystiedot.email,
-      testId: "email",
-    },
-    {
-      label: t("oppija__hakenut_muualle"),
-      value: props.hakenutMuualle ? "Kyllä" : "Ei",
-      testId: "muuHaku",
-    },
-  ].filter((row) => nonNull(row.value))
+  const rows: InfoTableRow[] = props.yhteystiedot
+    ? [
+        {
+          label: t("oppija__lähiosoite"),
+          value: props.yhteystiedot.lähiosoite,
+          testId: "lähiosoite",
+        },
+        {
+          label: t("oppija__postitoimipaikka"),
+          value: joinToString([
+            props.yhteystiedot.postinumero,
+            props.yhteystiedot.postitoimipaikka,
+          ]),
+          testId: "postitoimipaikka",
+        },
+        {
+          label: t("oppija__maa"),
+          value: getLocalized(props.yhteystiedot.maa?.nimi),
+          testId: "maa",
+        },
+        {
+          label: t("oppija__puhelin"),
+          value: props.yhteystiedot.puhelinnumero,
+          testId: "puhelin",
+        },
+        {
+          label: t("oppija__email"),
+          value: props.yhteystiedot.email,
+          testId: "email",
+        },
+        {
+          label: t("oppija__hakenut_muualle"),
+          value: props.hakenutMuualle ? "Kyllä" : "Ei",
+          testId: "muuHaku",
+        },
+      ].filter((row) => nonNull(row.value))
+    : []
 
   return (
     <KuntailmoitusSection testId="oppija">
       <InfoTable size="tighter">
+        {!props.yhteystiedot && (
+          <TiedotOppijastaError textId="oppija__tiedot_näkyvät_vain_vastaanottajalle_ja_lähettäjälle" />
+        )}
+        {props.yhteystiedot && isEmpty(rows) && (
+          <TiedotOppijastaError textId="oppija__ei_tietoja_ilmotuksella" />
+        )}
         {rows.map((row, index) => (
           <InfoTableRow key={index} {...row} />
         ))}
@@ -182,6 +190,20 @@ const TiedotOppijasta = (props: TiedotOppijastaProps) => {
     </KuntailmoitusSection>
   )
 }
+
+type TiedotOppijastaErrorProps = {
+  textId: string
+}
+
+const TiedotOppijastaError = (props: TiedotOppijastaErrorProps) => (
+  <InfoTableRow
+    value={
+      <NoDataMessage>
+        <T id={props.textId} />
+      </NoDataMessage>
+    }
+  />
+)
 
 const Frame = plainComponent("article", b("frame"))
 const Header = plainComponent("header", b("header"))
