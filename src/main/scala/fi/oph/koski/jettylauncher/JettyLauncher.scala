@@ -21,13 +21,16 @@ import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.eclipse.jetty.webapp.WebAppContext
 
 object JettyLauncher extends App with Logging {
-  lazy val globalPort = System.getProperty("koski.port","7021").toInt
-  def config: Config = if (Environment.usesAwsAppConfig) {
+  private val globalPort = System.getProperty("koski.port", "7021").toInt
+
+  private val config: Config = if (Environment.usesAwsAppConfig) {
     ConfigFactory.load(AppConfig.createConfig)
   } else {
     ConfigFactory.load
   }
+
   logger.info(s"Starting koski in ${Environment.currentEnvironment(config)}")
+
   try {
     val application = new KoskiApplication(config, new JMXCacheManager)
     new JettyLauncher(globalPort, application).start.join
