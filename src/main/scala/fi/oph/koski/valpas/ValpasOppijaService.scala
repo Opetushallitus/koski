@@ -12,7 +12,7 @@ import fi.oph.koski.valpas.db.ValpasSchema.{OpiskeluoikeusLisätiedotKey, Opiske
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, ValpasHakukoosteService}
 import fi.oph.koski.valpas.opiskeluoikeusrepository._
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusSuppeatTiedot}
-import fi.oph.koski.valpas.valpasuser.ValpasSession
+import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystiedot
 
 case class OppijaHakutilanteillaLaajatTiedot(
@@ -20,11 +20,16 @@ case class OppijaHakutilanteillaLaajatTiedot(
   hakutilanteet: Seq[ValpasHakutilanneLaajatTiedot],
   hakutilanneError: Option[String],
   yhteystiedot: Seq[ValpasYhteystiedot],
-  kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot],
+  kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedotLisätiedoilla],
 ) {
   def validate(koodistoviitepalvelu: KoodistoViitePalvelu): OppijaHakutilanteillaLaajatTiedot =
     this.copy(hakutilanteet = hakutilanteet.map(_.validate(koodistoviitepalvelu)))
 }
+
+case class ValpasKuntailmoitusLaajatTiedotLisätiedoilla(
+  kuntailmoitus: ValpasKuntailmoitusLaajatTiedot,
+  aktiivinen: Boolean
+)
 
 object OppijaHakutilanteillaLaajatTiedot {
   def apply(oppija: ValpasOppijaLaajatTiedot, yhteystietoryhmänNimi: LocalizedString, haut: Either[HttpStatus, Seq[Hakukooste]]): OppijaHakutilanteillaLaajatTiedot = {
@@ -90,6 +95,8 @@ class ValpasOppijaService(
   private val localizationRepository = application.valpasLocalizationRepository
   private val koodistoviitepalvelu = application.koodistoViitePalvelu
   private val lisätiedotRepository = application.valpasOpiskeluoikeusLisätiedotRepository
+  private lazy val kuntailmoitusService = application.valpasKuntailmoitusService
+  private val rajapäivätService = application.valpasRajapäivätService
 
   private val accessResolver = new ValpasAccessResolver(application.organisaatioRepository)
 
@@ -115,7 +122,7 @@ class ValpasOppijaService(
   : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
     val errorClue = oppilaitosOidErrorClue(oppilaitosOid)
 
-    accessResolver.assertAccessToOrg(oppilaitosOid)
+    accessResolver.assertAccessToOrg(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)(oppilaitosOid)
       .map(_ => opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOid))
       .flatMap(results => HttpStatus.foldEithers(results.map(asValpasOppijaLaajatTiedot)))
       .map(fetchHautIlmanYhteystietoja(errorClue))
@@ -127,7 +134,7 @@ class ValpasOppijaService(
   )(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
     val errorClue = oppilaitosOidErrorClue(oppilaitosOid)
 
-    accessResolver.assertAccessToOrg(oppilaitosOid)
+    accessResolver.assertAccessToOrg(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)(oppilaitosOid)
       .map(_ => opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOid))
       .map(_.filter(oppijaRow => oppijaOids.contains(oppijaRow.oppijaOid)))
       .flatMap(results => HttpStatus.foldEithers(results.map(asValpasOppijaLaajatTiedot)))
@@ -146,10 +153,18 @@ class ValpasOppijaService(
     opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyväOppija(oppijaOid)
       .toRight(ValpasErrorCategory.forbidden.oppija())
       .flatMap(asValpasOppijaLaajatTiedot)
-      .flatMap(accessResolver.withOppijaAccess)
+      .flatMap(accessResolver.withOppijaAccess(ValpasRooli.OPPILAITOS_HAKEUTUMINEN))
   }
 
-  def getOppijaHakutilanteillaLaajatTiedot
+  def getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla
+    (oppijaOid: ValpasHenkilö.Oid)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] = {
+    getOppijaLaajatTiedotYhteystiedoilla(oppijaOid)
+      .flatMap(withKuntailmoitukset)
+  }
+
+  def getOppijaLaajatTiedotYhteystiedoilla
     (oppijaOid: ValpasHenkilö.Oid)
     (implicit session: ValpasSession)
   : Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] = {
@@ -166,6 +181,7 @@ class ValpasOppijaService(
         ValpasOppijaLaajatTiedot(
           henkilö = ValpasHenkilöLaajatTiedot(
             oid = dbRow.oppijaOid,
+            kaikkiOidit = dbRow.kaikkiOppijaOidit,
             hetu = dbRow.hetu,
             syntymäaika = dbRow.syntymäaika,
             etunimet = dbRow.etunimet,
@@ -227,9 +243,52 @@ class ValpasOppijaService(
     }
   }
 
+  private def withKuntailmoitukset(
+    o: OppijaHakutilanteillaLaajatTiedot
+  )(implicit session: ValpasSession): Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] =
+    fetchKuntailmoitukset(o.oppija)
+      .map(kuntailmoitukset => o.copy(kuntailmoitukset = kuntailmoitukset))
+
+  private def fetchKuntailmoitukset(
+    oppija: ValpasOppijaLaajatTiedot
+  )(implicit session: ValpasSession): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotLisätiedoilla]] = {
+    timed("fetchKuntailmoitukset", 10) {
+      kuntailmoitusService.getKuntailmoitukset(oppija)
+        .map(lisääAktiivisuustiedot(oppija))
+    }
+  }
+
+  private def lisääAktiivisuustiedot(
+    oppija: ValpasOppijaLaajatTiedot
+  )(
+    kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot]
+  ): Seq[ValpasKuntailmoitusLaajatTiedotLisätiedoilla] = {
+    kuntailmoitukset.zipWithIndex.map(kuntailmoitusWithIndex => {
+      val aktiivinen = kuntailmoitusWithIndex match {
+
+        // Alle 2 kk vanha ilmoitus on aina aktiivinen
+        case (kuntailmoitus, 0) if !rajapäivätService.tarkastelupäivä.isAfter(
+          kuntailmoitus.aikaleima.get.toLocalDate.plusMonths(rajapäivätService.kuntailmoitusAktiivisuusKuukausina)
+        ) => true
+
+        // Jos yli 2 kk, ilmoitus on aktiivinen,
+        // jos mikään ov-suorittamiseen kelpaava opiskeluoikeus ei ole voimassa
+        case (kuntailmoitus, 0) =>
+          oppija.opiskeluoikeudet.forall(oo =>
+            !oo.oppivelvollisuudenSuorittamiseenKelpaava || oo.tarkastelupäivänTila.koodiarvo != "voimassa"
+          )
+
+        // Muut kuin uusin ilmoitus ovat aina ei-aktiivisia
+        case (kuntailmoitus, _) => false
+      }
+
+      ValpasKuntailmoitusLaajatTiedotLisätiedoilla(kuntailmoitusWithIndex._1, aktiivinen)
+    })
+  }
+
   def setMuuHaku(key: OpiskeluoikeusLisätiedotKey, value: Boolean)(implicit session: ValpasSession): HttpStatus = {
     HttpStatus.justStatus(
-      accessResolver.assertAccessToOrg(key.oppilaitosOid)
+      accessResolver.assertAccessToOrg(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)(key.oppilaitosOid)
         .flatMap(_ => getOppijaLaajatTiedot(key.oppijaOid))
         .flatMap(accessResolver.withOppijaAccessAsOrganisaatio(key.oppilaitosOid))
         .flatMap(accessResolver.withOpiskeluoikeusAccess(key.opiskeluoikeusOid))

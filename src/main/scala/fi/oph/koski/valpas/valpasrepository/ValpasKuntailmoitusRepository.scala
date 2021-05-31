@@ -131,15 +131,17 @@ class ValpasKuntailmoitusRepository(
       }
   }
 
-  def read(uuid: UUID): Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
-    runDbSync(
-      Ilmoitukset
-        .filter(_.uuid === uuid)
-        .join(IlmoitusLisätiedot).on(_.uuid === _.ilmoitusUuid)
-        .take(1).result
+  def queryOppijat(oppijaOids: Set[String]): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedot]] = {
+    HttpStatus.foldEithers(
+      runDbSync(
+        Ilmoitukset
+          .filter(_.oppijaOid inSetBind oppijaOids)
+          .join(IlmoitusLisätiedot).on(_.uuid === _.ilmoitusUuid) // TODO: Tämän pitäisi olla left join ja queryn toimia, vaikka koko lisätiedot taulu olisi tyhjä: lisätiedot ovat oppivelvollisuusrekisterin ulkopuolista dataa
+          .sortBy(_._1.luotu.desc)
+          .result
+      ).map(res => fromDbRows(res._1, res._2))
+        .map(_.map(_.kuntailmoitus))
     )
-      .headOption.toRight(ValpasErrorCategory.forbidden.ilmoitus())
-      .flatMap(res => fromDbRows(res._1, res._2))
   }
 
   def truncate(): Unit = runDbSync(Ilmoitukset.delete) // TODO: Lisää tsekki ettei olla tuotannossa?

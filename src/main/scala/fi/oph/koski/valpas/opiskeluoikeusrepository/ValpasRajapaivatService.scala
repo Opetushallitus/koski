@@ -19,6 +19,8 @@ trait ValpasRajapäivätService extends Logging {
 
   def keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä: LocalDate
   def perusopetussuorituksenNäyttämisenAikaraja: LocalDate
+
+  def kuntailmoitusAktiivisuusKuukausina: Long
 }
 
 object ValpasRajapäivätService {
@@ -37,6 +39,9 @@ object ValpasRajapäivätService {
 
   val tulevaisuuteenMerkitynPerusopetuksenSuorituksenAikaikkunaPäivinäPath =
     "valpas.rajapäivät.tulevaisuuteenMerkitynPerusopetuksenSuorituksenAikaikkunaPäivinä"
+
+  val kuntailmoitusAktiivisuusKuukausina =
+    "valpas.rajapäivät.kuntailmoitusAktiivisuusKuukausina"
 
   def apply(config: Config) = {
     if (config.getBoolean(UseMockPath)) {
@@ -89,6 +94,9 @@ class MockValpasRajapäivätService(defaultService: ConfigValpasRajapäivätServ
 
   def perusopetussuorituksenNäyttämisenAikaraja: LocalDate =
     tarkastelupäivä.plusDays(defaultService.tulevaisuuteenMerkitynPerusopetuksenSuorituksenAikaikkunaPäivinä)
+
+  def kuntailmoitusAktiivisuusKuukausina: Long =
+    defaultService.kuntailmoitusAktiivisuusKuukausina
 }
 
 class ConfigValpasRajapäivätService(config: Config) extends ValpasRajapäivätService {
@@ -134,6 +142,9 @@ class ConfigValpasRajapäivätService(config: Config) extends ValpasRajapäivät
 
   val tulevaisuuteenMerkitynPerusopetuksenSuorituksenAikaikkunaPäivinä: Long =
     config.getLong(ValpasRajapäivätService.tulevaisuuteenMerkitynPerusopetuksenSuorituksenAikaikkunaPäivinäPath)
+
+  val kuntailmoitusAktiivisuusKuukausina: Long =
+    config.getLong(ValpasRajapäivätService.kuntailmoitusAktiivisuusKuukausina)
 }
 
 case class OletuksenaEdellinenVuosiKonfiguraattori(

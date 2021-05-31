@@ -27,7 +27,7 @@ class OpiskeluoikeusLisätiedotSpec extends ValpasTestBase with BeforeAndAfterAl
 
   private lazy val oppijaLaajatTiedot = {
     val oppija = ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster
-    oppijaService.getOppijaHakutilanteillaLaajatTiedot(oppija.oid)(defaultSession).right.get
+    oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(oppija.oid)(defaultSession).right.get
   }
 
   private lazy val vainViimeinenOpiskeluoikeus = oppijaLaajatTiedot.copy(

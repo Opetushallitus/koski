@@ -3,8 +3,9 @@ package fi.oph.koski.valpas.valpasrepository
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
 import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
 import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystietojenAlkuperä
-
 import java.time.LocalDateTime
+
+import fi.oph.koski.valpas.ValpasKuntailmoitusLaajatTiedotLisätiedoilla
 
 case class ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
   oppijaOid: String,
@@ -31,12 +32,12 @@ case class ValpasKuntailmoitusSuppeatTiedot(
 ) extends ValpasKuntailmoitus
 
 object ValpasKuntailmoitusSuppeatTiedot {
-  def apply(laajatTiedot: ValpasKuntailmoitusLaajatTiedot): ValpasKuntailmoitusSuppeatTiedot = {
+  def apply(laajatTiedot: ValpasKuntailmoitusLaajatTiedotLisätiedoilla): ValpasKuntailmoitusSuppeatTiedot = {
     ValpasKuntailmoitusSuppeatTiedot(
-      laajatTiedot.id,
-      ValpasKuntailmoituksenTekijäSuppeatTiedot(laajatTiedot.tekijä),
-      laajatTiedot.kunta,
-      laajatTiedot.aikaleima
+      laajatTiedot.kuntailmoitus.id,
+      ValpasKuntailmoituksenTekijäSuppeatTiedot(laajatTiedot.kuntailmoitus.tekijä),
+      laajatTiedot.kuntailmoitus.kunta,
+      laajatTiedot.kuntailmoitus.aikaleima
     )
   }
 }

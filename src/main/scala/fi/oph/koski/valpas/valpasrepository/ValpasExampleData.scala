@@ -1,23 +1,72 @@
 package fi.oph.koski.valpas.valpasrepository
 
+import java.time.LocalDate.{of => date}
+
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{Koodistokoodiviite, OidOrganisaatio}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
+import java.time.{LocalDate, LocalDateTime}
 
-import java.time.LocalDateTime
+case class ValpasKuntailmoitusFixture(
+  kuntailmoitus: ValpasKuntailmoitusLaajatTiedotJaOppijaOid,
+  aikaleimaOverride: Option[LocalDate] = None
+)
 
 object ValpasExampleData {
+  val foo: (String, Int) = ("a", 1)
 
-  def ilmoitukset: Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = Seq(
-    ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
-      oppijaOid = ValpasMockOppijat.valmistunutYsiluokkalainen.oid,
+  def ilmoitukset: Seq[ValpasKuntailmoitusFixture] = Seq(
+    ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      oppijaOid = ValpasMockOppijat.valmistunutYsiluokkalainenJollaIlmoitus.oid,
+      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla
+    )),
+    ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      oppijaOid = ValpasMockOppijat.kasiinAstiToisessaKoulussaOllutJollaIlmoitus.oid,
+      kuntailmoitus = oppilaitoksenIlmoitusMinimitiedoilla
+    )),
+    ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      oppijaOid =  ValpasMockOppijat.kahdenKoulunYsiluokkalainenJollaIlmoitus.oid,
+      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla
+    )),
+    ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      oppijaOid =  ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster.oid,
+      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla
+    )),
+      ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      oppijaOid =  ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusKolmas.oid,
+      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoillaAapajoenPeruskoulusta
+    )),
+    ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      oppijaOid =  ValpasMockOppijat.lukionAloittanutJollaVanhaIlmoitus.oid,
       kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla
     ),
-    ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
-      oppijaOid = ValpasMockOppijat.kasiinAstiToisessaKoulussaOllut.oid,
-      kuntailmoitus = oppilaitoksenIlmoitusMinimitiedoilla
+      Some(date(2021, 6, 15))
+    ),
+    ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      oppijaOid =  ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia.oid,
+      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla
+    ),
+      Some(date(2021, 6, 15))
+    ),
+    ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      oppijaOid =  ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia.oid,
+      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla.copy(kunta = helsinginKaupunki)
+    ),
+      Some(date(2021, 9, 15))
+    ),
+    ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      oppijaOid =  ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia.oid,
+      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla
+    ),
+      Some(date(2021, 9, 20))
+    ),
+    ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      oppijaOid =  ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia.oid,
+      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla.copy(kunta = helsinginKaupunki)
+    ),
+      Some(date(2021, 11, 30))
     )
   )
 
@@ -42,6 +91,13 @@ object ValpasExampleData {
   )
 
   def oppilaitoksenIlmoitusKaikillaTiedoilla = ilmoitus
+
+  def oppilaitoksenIlmoitusKaikillaTiedoillaAapajoenPeruskoulusta =
+    oppilaitoksenIlmoitusKaikillaTiedoilla.copy(
+      tekijä = oppilaitoksenIlmoitusKaikillaTiedoilla.tekijä.copy(
+        organisaatio = aapajoenPeruskoulu
+      )
+    )
 
   def oppilaitoksenIlmoitusMinimitiedoilla = ValpasKuntailmoitusLaajatTiedot(
     id = None,
@@ -86,9 +142,20 @@ object ValpasExampleData {
     kotipaikka = Some(Koodistokoodiviite(koodistoUri = "kunta", koodiarvo = "624", nimi = Some("Pyhtää")))
   )
 
+  lazy val helsinginKaupunki = OidOrganisaatio(
+    oid = MockOrganisaatiot.helsinginKaupunki,
+    nimi = Some("Helsingin kaupunki"),
+    kotipaikka = Some(Koodistokoodiviite(koodistoUri = "kunta", koodiarvo = "091", nimi = Some("Helsinki")))
+  )
+
   lazy val jyväskylänNormaalikoulu = OidOrganisaatio(
     oid = MockOrganisaatiot.jyväskylänNormaalikoulu,
     nimi = Some("Jyväskylän normaalikoulu")
+  )
+
+  lazy val aapajoenPeruskoulu = OidOrganisaatio(
+    oid = MockOrganisaatiot.aapajoenKoulu,
+    nimi = Some("Aapajoen koulu")
   )
 
   def tekijäHenkilö(mockUser: ValpasMockUser) = ValpasKuntailmoituksenTekijäHenkilö(
