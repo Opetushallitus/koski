@@ -5,6 +5,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.kela.KelaSchema
 import fi.oph.koski.koodisto.Koodistot
 import fi.oph.koski.koskiuser.Unauthenticated
+import fi.oph.koski.migri.MigriSchema
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.valvira.ValviraSchema
@@ -45,6 +46,10 @@ class DocumentationApiServlet extends KoskiSpecificApiServlet with Unauthenticat
 
   get("/kela-oppija-schema.json") {
     KelaSchema.schemaJson
+  }
+
+  get("/migri-oppija-schema.json") {
+    MigriSchema.schemaJson
   }
 
   get("/koodistot.json") {
