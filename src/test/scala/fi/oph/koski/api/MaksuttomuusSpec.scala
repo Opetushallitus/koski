@@ -265,7 +265,7 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
       "Peräkkäiset aikajaksot tyhjällä välillä" in {
         OikeuttaMaksuttomuuteenPidennetty.maksuttomuusJaksojenYhteenlaskettuPituus(List(jaksoAikainen, jaksoMyöhäinen)) should equal (12)
       }
-      "Peräkkäiset aikajaksot, suoraan toisiaan suraavat" in {
+      "Peräkkäiset aikajaksot, suoraan toisiaan seuraavat" in {
         OikeuttaMaksuttomuuteenPidennetty.maksuttomuusJaksojenYhteenlaskettuPituus(List(jaksoMyöhäinen, jaksoMyöhäinenHetiPerään)) should equal (11)
       }
       "Päällekkäiset aikajaksot" in {

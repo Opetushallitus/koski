@@ -169,9 +169,14 @@ class OppivelvollisuustietoSpec
           maksuttomuudenPidennyksenJaksot = pidennyksetSlave))
         reloadRaportointikanta
 
-        queryOids(master.oid) should equal(List(
+        queryOids(List(master.oid, slave1.oid)) should equal(List(
           Oppivelvollisuustieto(
             master.oid,
+            oppivelvollisuusVoimassaAsti = date(2022, 1, 1),
+            oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2025, 1, 27)
+          ),
+          Oppivelvollisuustieto(
+            slave1.oid,
             oppivelvollisuusVoimassaAsti = date(2022, 1, 1),
             oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2025, 1, 27)
           )

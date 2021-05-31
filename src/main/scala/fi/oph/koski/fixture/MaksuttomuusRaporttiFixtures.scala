@@ -14,13 +14,13 @@ import java.time.LocalDate
 object MaksuttomuusRaporttiFixtures {
   val oppilaitos = MockOrganisaatiot.stadinAmmattiopisto
   val toimipiste = AmmatillinenExampleData.stadinToimipiste
-  val alkamispäivä = longTimeAgo
+  val alkamispäivä = LocalDate.of(2021, 8, 1)
 
-  val maksuttomuusJakso = Maksuttomuus(alku = LocalDate.of(2020, 10, 10), loppu = None, maksuton = true)
+  val maksuttomuusJakso = Maksuttomuus(alku = LocalDate.of(2021, 10, 10), loppu = None, maksuton = true)
 
-  val maksuttomuuttaPidennettyAikaisempi = OikeuttaMaksuttomuuteenPidennetty(alku = LocalDate.of(2020, 10, 10), loppu = LocalDate.of(2020, 10, 15))
-  val maksuttomuuttaPidennetty = OikeuttaMaksuttomuuteenPidennetty(alku = LocalDate.of(2020, 10, 20), loppu = LocalDate.of(2020, 10, 25))
-  val maksuttomuuttaPidennettyMyöhempi = OikeuttaMaksuttomuuteenPidennetty(alku = LocalDate.of(2020, 12, 30), loppu = LocalDate.of(2021, 1, 10))
+  val maksuttomuuttaPidennettyAikaisempi = OikeuttaMaksuttomuuteenPidennetty(alku = LocalDate.of(2021, 10, 10), loppu = LocalDate.of(2021, 10, 15))
+  val maksuttomuuttaPidennetty = OikeuttaMaksuttomuuteenPidennetty(alku = LocalDate.of(2021, 10, 20), loppu = LocalDate.of(2021, 10, 25))
+  val maksuttomuuttaPidennettyMyöhempi = OikeuttaMaksuttomuuteenPidennetty(alku = LocalDate.of(2021, 12, 30), loppu = LocalDate.of(2022, 1, 10))
 
   val lisätiedotAmmatillinen = AmmatillisenOpiskeluoikeudenLisätiedot(
     hojks = None,
@@ -43,7 +43,7 @@ object MaksuttomuusRaporttiFixtures {
   val opiskeluoikeusLukioMaksuttomuuttaPidennetty = LukionOpiskeluoikeus(
     tila = LukionOpiskeluoikeudenTila(
       List(
-        LukionOpiskeluoikeusjakso(alku = LocalDate.of(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+        LukionOpiskeluoikeusjakso(alku = LocalDate.of(2021, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
       )
     ),
     oppilaitos = Some(jyväskylänNormaalikoulu),

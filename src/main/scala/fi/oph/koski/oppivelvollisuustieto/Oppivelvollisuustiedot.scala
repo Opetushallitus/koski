@@ -36,9 +36,11 @@ object Oppivelvollisuustiedot {
                 (select count(distinct paivat) from (
                     select generate_series(alku, loppu, interval '1 day') paivat
                     from #${s.name}.r_opiskeluoikeus_aikajakso ooaj
-                    inner join #${s.name}.r_opiskeluoikeus oo on (oo.oppija_oid = henkilo.oppija_oid or oo.oppija_oid = any(henkilo.linkitetyt_oidit))
+                    inner join #${s.name}.r_opiskeluoikeus oo on (oo.oppija_oid = henkilo.oppija_oid
+                      or oo.oppija_oid = any(henkilo.linkitetyt_oidit)
+                      or oo.oppija_oid = henkilo.master_oid)
                     where oikeutta_maksuttomuuteen_pidennetty = true
-                    and ooaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
+                    and (ooaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid)
                     )
                 pidennyspaivat) as maksuttomuutta_pidennetty_yhteensa
               from
