@@ -5,6 +5,7 @@ import { useApiOnce } from "../api/apiHooks"
 import { isSuccess } from "../api/apiUtils"
 import { LoadingModal } from "../components/icons/Spinner"
 import { t } from "../i18n/i18n"
+import { KäyttöoikeusroolitProvider } from "../state/accessRights"
 import {
   CurrentUser,
   getCurrentUser,
@@ -51,65 +52,61 @@ const VirkailijaRoutes = ({ user }: VirkailijaRoutesProps) => {
   }
 
   return (
-    <Switch>
-      <Route exact path={`${basePath}/pilotti2021`}>
-        <Redirect to={createHakutilannePathWithoutOrg(basePath)} />
-      </Route>
-      <Route exact path={`${basePath}/koulutus2021`}>
-        <FeatureFlagEnabler
-          features={["ilmoittaminen"]}
-          redirectTo={createHakutilannePathWithoutOrg(basePath)}
-        />
-      </Route>
-      <Route
-        exact
-        path={hakutilannePathWithoutOrg(basePath)}
-        render={(routeProps) => (
-          <HakutilanneViewWithoutOrgOid
-            kayttooikeusroolit={organisaatiotJaKayttooikeusroolit.data}
-            redirectJosKäyttäjälläEiOleOikeuksiaTo={rootPath(basePath)}
-            {...routeProps}
+    <KäyttöoikeusroolitProvider value={organisaatiotJaKayttooikeusroolit.data}>
+      <Switch>
+        <Route exact path={`${basePath}/pilotti2021`}>
+          <Redirect to={createHakutilannePathWithoutOrg(basePath)} />
+        </Route>
+        <Route exact path={`${basePath}/koulutus2021`}>
+          <FeatureFlagEnabler
+            features={["ilmoittaminen"]}
+            redirectTo={createHakutilannePathWithoutOrg(basePath)}
           />
-        )}
-      />
-      <Route
-        exact
-        path={hakutilannePathWithOrg(basePath)}
-        render={(routeProps) => (
-          <HakutilanneView
-            kayttooikeusroolit={organisaatiotJaKayttooikeusroolit.data}
-            redirectJosKäyttäjälläEiOleOikeuksiaTo={rootPath(basePath)}
-            {...routeProps}
-          />
-        )}
-      />
-      <Route
-        exact
-        path={oppijaPath(basePath)}
-        render={(routeProps) => (
-          <OppijaView
-            kayttooikeusroolit={organisaatiotJaKayttooikeusroolit.data}
-            redirectJosKäyttäjälläEiOleOikeuksiaTo={rootPath(basePath)}
-            {...routeProps}
-          />
-        )}
-      />
-      <Route exact path={maksuttomuusPath(basePath)}>
-        <MaksuttomuusView />
-      </Route>
-      <Route exact path={rootPath(basePath)}>
-        <HomeView
-          user={user}
-          organisaatiotJaKayttooikeusroolit={
-            organisaatiotJaKayttooikeusroolit.data
-          }
-          redirectJosHakeutumisoikeuksiaTo={createHakutilannePathWithoutOrg(
-            basePath
+        </Route>
+        <Route
+          exact
+          path={hakutilannePathWithoutOrg(basePath)}
+          render={(routeProps) => (
+            <HakutilanneViewWithoutOrgOid
+              redirectJosKäyttäjälläEiOleOikeuksiaTo={rootPath(basePath)}
+              {...routeProps}
+            />
           )}
         />
-      </Route>
-      <Route component={NotFoundView} />
-    </Switch>
+        <Route
+          exact
+          path={hakutilannePathWithOrg(basePath)}
+          render={(routeProps) => (
+            <HakutilanneView
+              redirectJosKäyttäjälläEiOleOikeuksiaTo={rootPath(basePath)}
+              {...routeProps}
+            />
+          )}
+        />
+        <Route
+          exact
+          path={oppijaPath(basePath)}
+          render={(routeProps) => (
+            <OppijaView
+              redirectJosKäyttäjälläEiOleOikeuksiaTo={rootPath(basePath)}
+              {...routeProps}
+            />
+          )}
+        />
+        <Route exact path={maksuttomuusPath(basePath)}>
+          <MaksuttomuusView />
+        </Route>
+        <Route exact path={rootPath(basePath)}>
+          <HomeView
+            user={user}
+            redirectJosHakeutumisoikeuksiaTo={createHakutilannePathWithoutOrg(
+              basePath
+            )}
+          />
+        </Route>
+        <Route component={NotFoundView} />
+      </Switch>
+    </KäyttöoikeusroolitProvider>
   )
 }
 

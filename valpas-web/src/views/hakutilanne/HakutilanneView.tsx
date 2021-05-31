@@ -13,7 +13,10 @@ import { Spinner } from "../../components/icons/Spinner"
 import { DataTableCountChangeEvent } from "../../components/tables/DataTable"
 import { Counter } from "../../components/typography/Counter"
 import { getLocalized, t, T } from "../../i18n/i18n"
-import { withRequiresHakeutumisenValvonta } from "../../state/accessRights"
+import {
+  useOrganisaatiotJaKäyttöoikeusroolit,
+  withRequiresHakeutumisenValvonta,
+} from "../../state/accessRights"
 import { useBasePath } from "../../state/basePath"
 import {
   Oid,
@@ -35,14 +38,13 @@ import { VirkailijaNavigation } from "./VirkailijaNavigation"
 
 const b = bem("hakutilanneview")
 
-export type HakutilanneViewProps = HakutilanneViewRouteProps & {
-  kayttooikeusroolit: OrganisaatioJaKayttooikeusrooli[]
-}
+export type HakutilanneViewProps = HakutilanneViewRouteProps
 
 export const HakutilanneViewWithoutOrgOid = withRequiresHakeutumisenValvonta(
-  (props: HakutilanneViewProps) => {
+  () => {
     const basePath = useBasePath()
-    const organisaatio = getOrganisaatiot(props.kayttooikeusroolit)[0]
+    const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
+    const organisaatio = getOrganisaatiot(organisaatiotJaKäyttöoikeusroolit)[0]
 
     return organisaatio ? (
       <Redirect
@@ -59,9 +61,10 @@ export const HakutilanneViewWithoutOrgOid = withRequiresHakeutumisenValvonta(
 export const HakutilanneView = withRequiresHakeutumisenValvonta(
   (props: HakutilanneViewProps) => {
     const history = useHistory()
+    const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
     const organisaatiot = useMemo(
-      () => getOrganisaatiot(props.kayttooikeusroolit),
-      [props.kayttooikeusroolit]
+      () => getOrganisaatiot(organisaatiotJaKäyttöoikeusroolit),
+      [organisaatiotJaKäyttöoikeusroolit]
     )
 
     const organisaatioOid =

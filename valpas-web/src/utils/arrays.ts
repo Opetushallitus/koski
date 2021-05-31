@@ -1,4 +1,5 @@
 import * as A from "fp-ts/Array"
+import { Eq } from "fp-ts/lib/Eq"
 import { pipe, Predicate } from "fp-ts/lib/function"
 import { NonEmptyArray } from "fp-ts/lib/NonEmptyArray"
 import * as O from "fp-ts/Option"
@@ -40,3 +41,6 @@ export const joinToString = (
   const definedStrings = arr.filter(nonNull)
   return A.isNonEmpty(definedStrings) ? definedStrings.join(" ") : null
 }
+
+export const intersects = <T>(eq: Eq<T>) => (xs: T[]) => (ys: T[]): boolean =>
+  pipe(A.intersection(eq)(xs)(ys), A.isNonEmpty)

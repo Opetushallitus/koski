@@ -1,3 +1,5 @@
+import { Eq } from "fp-ts/lib/Eq"
+import * as string from "fp-ts/string"
 import {
   OppilaitosnumeroKoodistoviite,
   PaikkakuntaKoodistoviite,
@@ -40,14 +42,9 @@ export type Kayttooikeusrooli =
   | "OPPILAITOS_MAKSUTTOMUUS"
   | "KUNTA"
 
+export const käyttöoikeusrooliEq: Eq<Kayttooikeusrooli> = string.Eq
+
 export type OrganisaatioJaKayttooikeusrooli = {
   organisaatioHierarkia: OrganisaatioHierarkia
   kayttooikeusrooli: Kayttooikeusrooli
 }
-
-export const onHakeutumisVelvollisuudenValvonnanOikeuksia = (
-  kayttooikeusroolit: OrganisaatioJaKayttooikeusrooli[]
-) =>
-  kayttooikeusroolit.some(
-    (elem) => elem.kayttooikeusrooli == "OPPILAITOS_HAKEUTUMINEN"
-  )
