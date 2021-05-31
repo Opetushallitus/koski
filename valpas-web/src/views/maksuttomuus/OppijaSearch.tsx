@@ -18,7 +18,7 @@ import {
   expectValidHetu,
   expectValidOid,
 } from "../../state/formValidators"
-import { createOppijaPath } from "../../state/paths"
+import { createMaksuttomuusPath, createOppijaPath } from "../../state/paths"
 import { FormValidators, useFormState } from "../../state/useFormState"
 import "./OppijaSearch.less"
 
@@ -94,7 +94,12 @@ const OppijaSearchResults = (props: OppijaSearchResultsProps) => {
     <div>
       <T id="oppijahaku__löytyi" />
       {": "}
-      <Link to={createOppijaPath(basePath, { oppijaOid: result.oid })}>
+      <Link
+        to={createOppijaPath(basePath, {
+          oppijaOid: result.oid,
+          prev: createMaksuttomuusPath(),
+        })}
+      >
         {result.sukunimi} {result.etunimet} {result.hetu && `(${result.hetu})`}
       </Link>
     </div>

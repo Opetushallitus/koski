@@ -53,6 +53,7 @@ export const OppijaView = withRequiresHakeutumisenValvonta(
         <BackNav
           organisaatioRef={searchQuery.organisaatioRef}
           oppija={isSuccess(oppija) ? oppija.data : undefined}
+          prevPage={searchQuery.prev}
         />
         <OppijaHeadings oppija={oppija} oid={queryOid} />
 
@@ -127,14 +128,17 @@ export const OppijaView = withRequiresHakeutumisenValvonta(
 type BackNavProps = {
   organisaatioRef?: string
   oppija?: OppijaHakutilanteillaLaajatTiedot
+  prevPage?: string
 }
 
 const BackNav = (props: BackNavProps) => {
   const organisaatioOid =
     props.organisaatioRef || props.oppija?.oppija.oikeutetutOppilaitokset[0]
-  const targetPath = organisaatioOid
-    ? createHakutilannePathWithOrg("", { organisaatioOid })
-    : createHakutilannePathWithoutOrg("")
+  const targetPath =
+    props.prevPage ||
+    (organisaatioOid
+      ? createHakutilannePathWithOrg("", { organisaatioOid })
+      : createHakutilannePathWithoutOrg(""))
 
   return (
     <div className={b("backbutton")}>
