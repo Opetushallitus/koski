@@ -20,7 +20,7 @@ import fi.oph.koski.schema._
 import org.scalatest.FreeSpec
 
 import java.time.LocalDate.{of => date}
-import java.time.{LocalDate, LocalDateTime}
+import java.time.{LocalDate, LocalDateTime, ZoneId, ZonedDateTime}
 
 class OppijaUpdateSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
   val oppija = KoskiSpecificMockOppijat.tyhjä
@@ -157,12 +157,28 @@ class OppijaUpdateSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTe
         import fi.oph.koski.util.DateOrdering._
         val d: LocalDate = date(2020, 1, 1)
         var aikaleima: Option[LocalDateTime] = None
-        verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => aikaleima = existing.aikaleima ; existing.copy(arvioituPäättymispäivä = Some(d))}) {
+        verifyChange(change = { existing: AmmatillinenOpiskeluoikeus =>
+          aikaleima = existing.aikaleima
+          existing.copy(arvioituPäättymispäivä = Some(d))
+        }) {
           verifyResponseStatusOk()
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
           result.arvioituPäättymispäivä should equal(Some(d))
           result.versionumero should equal(Some(2))
           result.aikaleima.get should be > aikaleima.get
+        }
+      }
+
+      "Aikaleima on Suomen aikavyöhykkeessä" in {
+        resetFixtures
+        verifyChange(change = { existing: AmmatillinenOpiskeluoikeus =>
+          existing.copy(arvioituPäättymispäivä = Some(date(2020, 1, 1)))
+        }) {
+          verifyResponseStatusOk()
+          val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
+          val aikaleima = result.aikaleima.get
+          val helsinkiTime = ZonedDateTime.now(ZoneId.of("Europe/Helsinki"))
+          Math.abs(aikaleima.getHour - helsinkiTime.getHour) should be < 2
         }
       }
 

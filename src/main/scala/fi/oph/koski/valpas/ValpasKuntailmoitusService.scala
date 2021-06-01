@@ -14,7 +14,7 @@ import fi.oph.koski.valpas.yhteystiedot.{ValpasYhteystiedot, ValpasYhteystietoHa
 class ValpasKuntailmoitusService(
   application: KoskiApplication
 ) extends Logging with Timing {
-  private val accessResolver = new ValpasAccessResolver(application.organisaatioRepository)
+  private val accessResolver = new ValpasAccessResolver
   private val repository = application.valpasKuntailmoitusRepository
   private lazy val oppijaService = application.valpasOppijaService
   private val directoryClient = application.directoryClient

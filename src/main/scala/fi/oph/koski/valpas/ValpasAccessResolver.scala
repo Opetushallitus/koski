@@ -2,12 +2,11 @@ package fi.oph.koski.valpas
 
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.{KäyttöoikeusOrg, Palvelurooli}
-import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.{Opiskeluoikeus, Organisaatio, OrganisaatioWithOid}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppijaLaajatTiedot
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 
-class ValpasAccessResolver(organisaatioRepository: OrganisaatioRepository) {
+class ValpasAccessResolver {
   def assertAccessToOrg(
     rooli: ValpasRooli.Role
   )(
