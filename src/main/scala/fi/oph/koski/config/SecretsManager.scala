@@ -11,7 +11,6 @@ import fi.oph.koski.log.{Logging, NotLoggable}
 case class DatabaseConnectionConfig(
   host: String,
   port: Int,
-  dbname: String,
   username: String,
   password: String
 ) extends NotLoggable

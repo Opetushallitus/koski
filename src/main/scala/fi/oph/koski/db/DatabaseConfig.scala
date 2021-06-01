@@ -74,7 +74,6 @@ trait DatabaseConfig extends NotLoggable with Logging {
       config
         .withValue("host", fromAnyRef(secretConfig.host))
         .withValue("port", fromAnyRef(secretConfig.port))
-        .withValue("name", fromAnyRef(secretConfig.dbname))
         .withValue("user", fromAnyRef(secretConfig.username))
         .withValue("password", fromAnyRef(secretConfig.password))
         .withValue("secretId", fromAnyRef(secretId))
