@@ -50,6 +50,7 @@ class RaportointiDatabaseConfig(val rootConfig: Config, val schema: Schema) exte
       .withValue("poolName", fromAnyRef(s"koskiRaportointiPool-${schema.name}"))
 
   val valpasLakiVoimassaVanhinSyntymävuosi = LocalDate.parse(rootConfig.getString(ValpasRajapäivätService.LakiVoimassaVanhinSyntymäaikaPath)).getYear
+  val valpasLakiVoimassaPeruskoulustaValmistuneilla = LocalDate.parse(rootConfig.getString(ValpasRajapäivätService.LakiVoimassaPeruskoulustaValmistuneillaAlkuPath)).toString
 }
 
 class ValpasDatabaseConfig(val rootConfig: Config) extends DatabaseConfig {

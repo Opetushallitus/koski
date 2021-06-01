@@ -8,7 +8,7 @@ import slick.jdbc.GetResult
 
 
 object Oppivelvollisuustiedot {
-  def queryByOids(oids: List[String], db: RaportointiDatabase): Seq[Oppivelvollisuustieto] = {
+  def queryByOids(oids: Seq[String], db: RaportointiDatabase): Seq[Oppivelvollisuustieto] = {
     db.runDbSync(
       sql"select * from oppivelvollisuustiedot where oppija_oid = any($oids)".as[Oppivelvollisuustieto]
     )
@@ -24,6 +24,7 @@ object Oppivelvollisuustiedot {
   */
   def createMaterializedView(s: Schema, config: RaportointiDatabaseConfig)= {
     val valpasLakiVoimassaVanhinSyntymävuosi = config.valpasLakiVoimassaVanhinSyntymävuosi
+    val valpasLakiVoimassaPeruskoulustaValmistuneilla = config.valpasLakiVoimassaPeruskoulustaValmistuneilla
     sqlu"""
       create materialized view #${s.name}.oppivelvollisuustiedot as
         with
@@ -54,12 +55,12 @@ object Oppivelvollisuustiedot {
                                   join #${s.name}.r_opiskeluoikeus opiskeluoikeus on henkilo.oppija_oid = opiskeluoikeus.oppija_oid
                                   join #${s.name}.r_paatason_suoritus paatason_suoritus on opiskeluoikeus.opiskeluoikeus_oid = paatason_suoritus.opiskeluoikeus_oid
                                 where (suorituksen_tyyppi = 'perusopetuksenoppimaara'
-                                  and vahvistus_paiva < '2021-01-01'::date) or
+                                  and vahvistus_paiva < '#${valpasLakiVoimassaPeruskoulustaValmistuneilla}'::date) or
                                   (suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaara'
-                                  and vahvistus_paiva < '2021-01-01'::date) or
+                                  and vahvistus_paiva < '#${valpasLakiVoimassaPeruskoulustaValmistuneilla}'::date) or
                                   (suorituksen_tyyppi = 'internationalschoolmypvuosiluokka'
                                   and koulutusmoduuli_koodiarvo = '9'
-                                  and vahvistus_paiva < '2021-01-01'::date)
+                                  and vahvistus_paiva < '#${valpasLakiVoimassaPeruskoulustaValmistuneilla}'::date)
                 )
         ),
 

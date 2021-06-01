@@ -1,7 +1,6 @@
 package fi.oph.koski.oppivelvollisuustieto
 
 import java.time.LocalDate
-
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
@@ -23,7 +22,7 @@ class OppivelvollisuustietoServlet(implicit val application: KoskiApplication) e
     withJsonBody { json =>
       val response = for {
         oids <- extractAndValidate(json)
-        oppivelvollisuustiedot <- mockResponseForTestingPurposes(oids)
+        oppivelvollisuustiedot <- queryByOids(oids)
       } yield oppivelvollisuustiedot
 
       renderEither(response)
@@ -43,6 +42,9 @@ class OppivelvollisuustietoServlet(implicit val application: KoskiApplication) e
   private def validateOid(oid: String): Either[HttpStatus, Oid] =
     if (Henkilö.isValidHenkilöOid(oid)) Right(oid) else Left(HttpStatus.ok)
 
+  private def queryByOids(oids: Seq[String]): Either[HttpStatus, Seq[Oppivelvollisuustieto]] = {
+    Right(Oppivelvollisuustiedot.queryByOids(oids, application.raportointiDatabase))
+  }
 
   private def mockResponseForTestingPurposes(oids: Seq[Oid]): Either[HttpStatus, Seq[Oppivelvollisuustieto]] = {
     Right(oids.map(oid =>
