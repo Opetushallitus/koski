@@ -17,7 +17,6 @@ export type OpiskeluoikeusLaajatTiedot = {
   päättymispäiväMerkittyTulevaisuuteen?: boolean
   ryhmä?: string
   tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
-  oppivelvollisuudenSuorittamiseenKelpaava: boolean
   näytettäväPerusopetuksenSuoritus: boolean
 }
 
@@ -32,7 +31,6 @@ export type OpiskeluoikeusSuppeatTiedot = {
   alkamispäivä: ISODate
   päättymispäivä?: ISODate
   päättymispäiväMerkittyTulevaisuuteen?: boolean
-  oppivelvollisuudenSuorittamiseenKelpaava: boolean
   näytettäväPerusopetuksenSuoritus: boolean
   muuHaku?: boolean
 }
@@ -75,7 +73,6 @@ export const opiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus = (
   const tila = opiskeluoikeus.tarkastelupäivänTila.koodiarvo
   return (
     !isPerusopetus(opiskeluoikeus) &&
-    opiskeluoikeus.oppivelvollisuudenSuorittamiseenKelpaava &&
     (tila === "voimassa" || tila === "voimassatulevaisuudessa")
   )
 }

@@ -41,6 +41,9 @@ const montaHakuaJoistaYksiPäättynytOppijaPath = createOppijaPath(
     oppijaOid: "1.2.246.562.24.00000000009",
   }
 )
+const lukionAineopinnotAloittanutPath = createOppijaPath("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000033",
+})
 
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
@@ -362,6 +365,18 @@ describe("Oppijakohtainen näkymä", () => {
         Hyväksytty	–	–
         3. Omnia, Puhtaus- ja kiinteistöpalveluala	Hyväksytty	–	–
         1) Hakenut harkinnanvaraisesti
+    `)
+  })
+
+  it("Oppivelvollisuuden suorittamiseen kelpaamattomia opintoja ei näytetä", async () => {
+    await loginAs(lukionAineopinnotAloittanutPath, "valpas-jkl-normaali")
+    await mainHeadingEquals("LukionAineopinnotAloittanut Valpas (040305A559A)")
+    await opiskeluhistoriaEquals(`
+      school
+      Perusopetus 2012 – 2021
+      Jyväskylän normaalikoulu
+      Ryhmä: 9C
+      Tila: Valmistunut 30.5.2021
     `)
   })
 })

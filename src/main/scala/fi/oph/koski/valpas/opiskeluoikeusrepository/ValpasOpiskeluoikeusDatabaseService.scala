@@ -355,7 +355,6 @@ WITH
           'koodiarvo', opiskeluoikeus.tarkastelupäivän_tila,
           'koodistoUri', 'valpasopiskeluoikeudentila'
         ),
-        'oppivelvollisuudenSuorittamiseenKelpaava', opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
         'näytettäväPerusopetuksenSuoritus', opiskeluoikeus.naytettava_perusopetuksen_suoritus
       ) ORDER BY
         opiskeluoikeus.alkamispaiva DESC,
@@ -368,6 +367,8 @@ WITH
   FROM
     opiskeluoikeus
     JOIN oppija ON oppija.master_oid = opiskeluoikeus.master_oid
+  WHERE
+    opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava is true
   GROUP BY
     oppija.master_oid,
     oppija.kaikkiOppijaOidit,
