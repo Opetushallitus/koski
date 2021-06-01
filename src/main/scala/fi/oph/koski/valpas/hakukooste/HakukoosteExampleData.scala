@@ -118,7 +118,10 @@ object HakukoosteExampleData {
       )),
     haku(
       ValpasMockOppijat.päällekkäisiäOpiskeluoikeuksia,
-      Vector(Vector(
+      lahiosoite = "Kungsgatan 123",
+      postitoimipaikka = Some("STOCKHOLM"),
+      maa = Some(Koodistokoodiviite("752", Some(Finnish("Ruotsi", Some("Sverige"), Some("Sweden"))), None, "maatjavaltiot2", None)),
+      hakukoosteidenToiveet = Vector(Vector(
         hakutoive(
           hakukohdeOid = generateOid(),
           hakukohdeOrganisaatio = MockOrganisaatiot.helsinginMedialukio,
@@ -168,7 +171,8 @@ object HakukoosteExampleData {
     alkamisaika: LocalDateTime = LocalDateTime.of(2020, 3, 9, 12, 0, 0),
     muokkausaika: Option[LocalDateTime] = Some(LocalDateTime.of(2020, 4, 9, 12, 0, 0)),
     lahiosoite: String = "Esimerkkikatu 123",
-    postitoimipaikka: Option[String] = Some("Helsinki")
+    postitoimipaikka: Option[String] = Some("Helsinki"),
+    maa: Option[Koodistokoodiviite] = Some(Koodistokoodiviite("FIN", "maatjavaltiot1"))
   ): Seq[Hakukooste] = hakukoosteidenToiveet.map(hakutoiveet =>
     Hakukooste(
       oppijaOid = henkilö.oid,
@@ -185,6 +189,7 @@ object HakukoosteExampleData {
       lahiosoite = lahiosoite,
       postinumero = "00000",
       postitoimipaikka = postitoimipaikka,
+      maa = maa,
       matkapuhelin = "0401234567",
       huoltajanNimi = Some("Huoltaja Sukunimi"),
       huoltajanPuhelinnumero = Some("0407654321"),

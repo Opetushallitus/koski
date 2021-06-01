@@ -292,7 +292,7 @@ class ValpasKuntailmoitusService(
     maat: Seq[Koodistokoodiviite],
     yhteystiedot: ValpasYhteystiedot
   ): Option[Koodistokoodiviite] = {
-    val haluttuMaanNimiTrimmattuna: Option[String] = yhteystiedot.maa.map(_.trim.toLowerCase)
+    val haluttuMaanNimiTrimmattuna: Option[String] = yhteystiedot.maa.map(_.get("fi").trim.toLowerCase)
 
     val maa: Option[Koodistokoodiviite] = (haluttuMaanNimiTrimmattuna match {
       case Some("") => None // Varmuuden vuoksi hylätään kokonaan tyhjä maan nimi, koska jonkin maan nimi

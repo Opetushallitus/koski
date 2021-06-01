@@ -24,6 +24,9 @@ case class Hakukooste(
   lahiosoite: String,
   postinumero: String,
   postitoimipaikka: Option[String],
+  @KoodistoUri("maatjavaltiot1")
+  @KoodistoUri("maatjavaltiot2")
+  maa: Option[Koodistokoodiviite],
   matkapuhelin: String,
   huoltajanNimi: Option[String],
   huoltajanPuhelinnumero: Option[String],
