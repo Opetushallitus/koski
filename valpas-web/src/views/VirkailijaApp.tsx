@@ -16,7 +16,6 @@ import {
   storeLoginReturnUrl,
 } from "../state/auth"
 import { BasePathProvider, useBasePath } from "../state/basePath"
-import { User } from "../state/common"
 import { FeatureFlagEnabler } from "../state/featureFlags"
 import {
   createHakutilannePathWithoutOrg,
@@ -36,11 +35,7 @@ import { MaksuttomuusView } from "./maksuttomuus/MaksuttomuusView"
 import { OppijaView } from "./oppija/OppijaView"
 import { Raamit } from "./Raamit"
 
-type VirkailijaRoutesProps = {
-  user: User
-}
-
-const VirkailijaRoutes = ({ user }: VirkailijaRoutesProps) => {
+const VirkailijaRoutes = () => {
   const basePath = useBasePath()
 
   const organisaatiotJaKayttooikeusroolit = useApiOnce(
@@ -68,7 +63,7 @@ const VirkailijaRoutes = ({ user }: VirkailijaRoutesProps) => {
           path={hakutilannePathWithoutOrg(basePath)}
           render={(routeProps) => (
             <HakutilanneViewWithoutOrgOid
-              redirectJosKäyttäjälläEiOleOikeuksiaTo={rootPath(basePath)}
+              redirectUserWithoutAccessTo={rootPath(basePath)}
               {...routeProps}
             />
           )}
@@ -78,7 +73,7 @@ const VirkailijaRoutes = ({ user }: VirkailijaRoutesProps) => {
           path={hakutilannePathWithOrg(basePath)}
           render={(routeProps) => (
             <HakutilanneView
-              redirectJosKäyttäjälläEiOleOikeuksiaTo={rootPath(basePath)}
+              redirectUserWithoutAccessTo={rootPath(basePath)}
               {...routeProps}
             />
           )}
@@ -88,7 +83,7 @@ const VirkailijaRoutes = ({ user }: VirkailijaRoutesProps) => {
           path={oppijaPath(basePath)}
           render={(routeProps) => (
             <OppijaView
-              redirectJosKäyttäjälläEiOleOikeuksiaTo={rootPath(basePath)}
+              redirectUserWithoutAccessTo={rootPath(basePath)}
               {...routeProps}
             />
           )}
@@ -97,12 +92,7 @@ const VirkailijaRoutes = ({ user }: VirkailijaRoutesProps) => {
           <MaksuttomuusView />
         </Route>
         <Route exact path={rootPath(basePath)}>
-          <HomeView
-            user={user}
-            redirectJosHakeutumisoikeuksiaTo={createHakutilannePathWithoutOrg(
-              basePath
-            )}
-          />
+          <HomeView />
         </Route>
         <Route component={NotFoundView} />
       </Switch>
@@ -156,7 +146,7 @@ const VirkailijaApp = ({ basePath }: VirkailijaAppProps) => {
       {isLoggedIn(user) ? (
         hasValpasAccess(user) ? (
           <div id="virkailija-app">
-            <VirkailijaRoutes user={user} />
+            <VirkailijaRoutes />
           </div>
         ) : (
           <ErrorView

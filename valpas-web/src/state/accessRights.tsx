@@ -8,27 +8,30 @@ import {
   OrganisaatioJaKayttooikeusrooli,
 } from "../state/common"
 
-export type WithRequiresHakeutumisenValvontaProps = {
-  redirectJosKäyttäjälläEiOleOikeuksiaTo: string
+export const hakeutumisenValvontaAllowed = (roles: Kayttooikeusrooli[]) =>
+  roles.includes("OPPILAITOS_HAKEUTUMINEN")
+
+export const maksuttomuudenValvontaAllowed = (roles: Kayttooikeusrooli[]) =>
+  roles.includes("OPPILAITOS_MAKSUTTOMUUS")
+
+export type WithRequiresAccessRightsProps = {
+  redirectUserWithoutAccessTo: string
 }
 
 const accessRightGuardHoc = (
   hasAccess: (roles: Kayttooikeusrooli[]) => boolean
 ) => <P extends object>(
   Component: React.ComponentType<P>
-): React.FC<P & WithRequiresHakeutumisenValvontaProps> => (
-  props: WithRequiresHakeutumisenValvontaProps
+): React.FC<P & WithRequiresAccessRightsProps> => (
+  props: WithRequiresAccessRightsProps
 ) => {
   const roles = useKäyttöoikeusroolit()
   return hasAccess(roles) ? (
     <Component {...(props as P)} />
   ) : (
-    <Redirect to={props.redirectJosKäyttäjälläEiOleOikeuksiaTo} />
+    <Redirect to={props.redirectUserWithoutAccessTo} />
   )
 }
-
-export const hakeutumisenValvontaAllowed = (roles: Kayttooikeusrooli[]) =>
-  roles.includes("OPPILAITOS_HAKEUTUMINEN")
 
 export const withRequiresHakeutumisenValvonta = accessRightGuardHoc(
   hakeutumisenValvontaAllowed
