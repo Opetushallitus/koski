@@ -41,6 +41,11 @@ const oppijat: Oppija[] = [
     postitoimipaikka: "Helsinki",
     katuosoite: "Esimerkkikatu 1234",
   },
+  {
+    oid: "1.2.246.562.24.00000000014",
+    title: "KasiinAstiToisessaKoulussaOllut Valpas (170805A613F)",
+    asuinkunta: "Pyhtää",
+  },
 ]
 
 describe("Kuntailmoituksen tekeminen", () => {

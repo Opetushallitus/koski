@@ -32,7 +32,14 @@ import {
   OppijanPohjatiedot,
   PohjatietoYhteystieto,
 } from "../../../state/apitypes/kuntailmoituspohjatiedot"
-import { OppijaHakutilanteillaSuppeatTiedot } from "../../../state/apitypes/oppija"
+import {
+  OpiskeluoikeusSuppeatTiedot,
+  valvottavatOpiskeluoikeudet,
+} from "../../../state/apitypes/opiskeluoikeus"
+import {
+  lisätietoMatches,
+  OppijaHakutilanteillaSuppeatTiedot,
+} from "../../../state/apitypes/oppija"
 import { trimOrganisaatio } from "../../../state/apitypes/organisaatiot"
 import {
   isAlkuperäHakemukselta,
@@ -41,7 +48,7 @@ import {
 import { Oid } from "../../../state/common"
 import { expectNonEmptyString } from "../../../state/formValidators"
 import { FormValidators, useFormState } from "../../../state/useFormState"
-import { nonNull } from "../../../utils/arrays"
+import { nonEmptyEvery, nonNull } from "../../../utils/arrays"
 import { removeFalsyValues } from "../../../utils/objects"
 import { plainComponent } from "../../../utils/plaincomponent"
 import "./IlmoitusForm.less"
@@ -142,7 +149,8 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
       ...initialValues,
       yhteydenottokieli: props.pohjatiedot.yhteydenottokieli?.koodiarvo,
       hakenutOpiskelemaanYhteyshakujenUlkopuolella: defaultMuuHakuValue(
-        props.oppija
+        props.oppija,
+        props.tekijä.organisaatio.oid
       ),
     },
     validators,
@@ -279,11 +287,22 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
 }
 
 const defaultMuuHakuValue = (
-  oppija: OppijaHakutilanteillaSuppeatTiedot
+  oppija: OppijaHakutilanteillaSuppeatTiedot,
+  organisaatioOid: Oid
 ): boolean => {
-  const muuHakuCount = oppija.lisätiedot.filter((lt) => lt.muuHaku).length
-  const opiskeluoikeusCount = oppija.oppija.opiskeluoikeudet.length
-  return muuHakuCount === opiskeluoikeusCount && muuHakuCount > 0
+  const matchesOpiskeluoikeus = (opiskeluoikeus: OpiskeluoikeusSuppeatTiedot) =>
+    lisätietoMatches(
+      oppija.oppija.henkilö.oid,
+      opiskeluoikeus.oid,
+      opiskeluoikeus.oppilaitos.oid
+    )
+  return nonEmptyEvery(
+    valvottavatOpiskeluoikeudet(
+      organisaatioOid,
+      oppija.oppija.opiskeluoikeudet
+    ),
+    (oo) => oppija.lisätiedot.find(matchesOpiskeluoikeus(oo))?.muuHaku === true
+  )
 }
 
 export type IlmoitusHeaderProps = {
