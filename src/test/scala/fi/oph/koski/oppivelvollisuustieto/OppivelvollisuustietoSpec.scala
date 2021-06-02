@@ -138,7 +138,7 @@ class OppivelvollisuustietoSpec
           queryOids(oikeusOpiskelunMaksuttomuuteen.oid) should equal(List(
             Oppivelvollisuustieto(
               oikeusOpiskelunMaksuttomuuteen.oid,
-              oppivelvollisuusVoimassaAsti = date(2022, 1, 1),
+              oppivelvollisuusVoimassaAsti = date(2022, 12, 31),
               oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2024, 12, 31)
             )
           ))

@@ -124,7 +124,7 @@ object KoskiSpecificMockOppijat {
   val vapaaSivistystyöOppivelvollinen = koskiSpecificOppijat.oppija("Vapaa-Sivistys", "Oppivelvollinen", "080177-870W")
   val vapaaSivistystyöMaahanmuuttajienKotoutus = koskiSpecificOppijat.oppija("Vapaa-Sivistys", "Kotoutuja", "260769-598H")
   val vapaaSivistystyöLukutaitoKotoutus = koskiSpecificOppijat.oppija("Vapaa-Sivistys", "Lukutaitokouluttautuja", "231158-467R")
-  val oikeusOpiskelunMaksuttomuuteen = koskiSpecificOppijat.oppija("Oikeus", "Maksuttomuuteen", "010104A6094", syntymäaika = Some(LocalDate.of(2004, 1, 1)))
+  val oikeusOpiskelunMaksuttomuuteen = koskiSpecificOppijat.oppija("Oikeus", "Maksuttomuuteen", "010104A6094", syntymäaika = Some(LocalDate.of(2004, 12, 31)))
   val eiOikeuttaMaksuttomuuteen = koskiSpecificOppijat.oppija("EiOikeutta", "Maksuttomuuteen", "311203A1454", syntymäaika = Some(LocalDate.of(2003, 12, 31)))
   val etk18vSyntynytKesäkuunEnsimmäisenäPäivänä = koskiSpecificOppijat.oppija("Nopea", "Nina", "010698-6646", syntymäaika = Some(LocalDate.of(1998, 6, 1)))
   val etk18vSyntynytToukokuunViimeisenäPäivänä = koskiSpecificOppijat.oppija("Nopea", "Noa", "310598-4959", syntymäaika = Some(LocalDate.of(1998, 5, 31)))
