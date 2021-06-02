@@ -20,6 +20,7 @@ export const InfoTable = (props: InfoTableProps) => (
 export type InfoTableRow = {
   label?: React.ReactNode
   value: React.ReactNode
+  testId?: string
 }
 
 export const InfoTableRow = (props: InfoTableRow) => (
@@ -27,10 +28,12 @@ export const InfoTableRow = (props: InfoTableRow) => (
     {props.label ? (
       <>
         <th className={b("label")}>{props.label}:</th>
-        <td className={b("value")}>{props.value}</td>
+        <td className={b("value")} data-testid={props.testId}>
+          {props.value}
+        </td>
       </>
     ) : (
-      <td className={b("value")} colSpan={2}>
+      <td className={b("value")} colSpan={2} data-testid={props.testId}>
         {props.value}
       </td>
     )}

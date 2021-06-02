@@ -1,3 +1,6 @@
+import * as A from "fp-ts/Array"
+import * as Ord from "fp-ts/Ord"
+import * as string from "fp-ts/string"
 import { ISODateTime, Oid } from "../common"
 import { Kieli, Kunta, Maa } from "./koodistot"
 import { Organisaatio } from "./organisaatiot"
@@ -10,6 +13,11 @@ export type KuntailmoitusLaajatTiedot = {
   yhteydenottokieli?: Kieli
   oppijanYhteystiedot?: KuntailmoituksenOppijanYhteystiedot
   hakenutMuualle?: boolean
+}
+
+export type KuntailmoitusLaajatTiedotLisätiedoilla = {
+  kuntailmoitus: KuntailmoitusLaajatTiedot
+  aktiivinen: boolean
 }
 
 export type KuntailmoituksenTekijäLaajatTiedot = {
@@ -38,3 +46,16 @@ export type KuntailmoituksenOppijanYhteystiedot = {
   postitoimipaikka?: string
   maa?: Maa
 }
+
+export const isAktiivinenKuntailmoitus = (
+  kuntailmoitus: KuntailmoitusLaajatTiedotLisätiedoilla
+): boolean => kuntailmoitus.aktiivinen
+
+export const aikaleimaOrd = Ord.contramap(
+  (kuntailmoitus: KuntailmoitusLaajatTiedotLisätiedoilla) =>
+    kuntailmoitus.kuntailmoitus.aikaleima || "0000-00-00"
+)(string.Ord)
+
+export const sortKuntailmoitusLaajatTiedotLisätiedoilla = A.sort(
+  Ord.reverse(aikaleimaOrd)
+)

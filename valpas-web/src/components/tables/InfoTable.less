@@ -2,7 +2,7 @@
 @import "../../style/typography.less";
 
 @infotable-cell-bottom-padding: .pxToRem(16) [];
-@infotable-cell-bottom-tighter-padding: .pxToRem(12) [];
+@infotable-cell-bottom-tighter-padding: .pxToRem(4) [];
 
 .infotable {
   width: 100%;
@@ -12,6 +12,7 @@
 .infotable__label,
 .infotable__value {
   padding: 0 0 @infotable-cell-bottom-padding 0;
+  vertical-align: bottom;
 }
 
 .infotable__label {

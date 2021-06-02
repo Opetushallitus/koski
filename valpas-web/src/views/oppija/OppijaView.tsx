@@ -1,4 +1,5 @@
 import bem from "bem-ts"
+import { isEmpty } from "fp-ts/lib/Array"
 import React from "react"
 import { fetchOppija, fetchOppijaCache } from "../../api/api"
 import { ApiMethodState, useApiWithParams } from "../../api/apiHooks"
@@ -12,12 +13,13 @@ import {
 } from "../../components/containers/cards"
 import { Column, ColumnsContainer } from "../../components/containers/Columns"
 import { Page } from "../../components/containers/Page"
-import { BackIcon } from "../../components/icons/Icon"
+import { BackIcon, SuccessCircleIcon } from "../../components/icons/Icon"
 import { Spinner } from "../../components/icons/Spinner"
 import { InfoTooltip } from "../../components/tooltip/InfoTooltip"
 import { Heading } from "../../components/typography/headings"
 import { T, t } from "../../i18n/i18n"
 import { withRequiresHakeutumisenValvonta } from "../../state/accessRights"
+import { isAktiivinenKuntailmoitus } from "../../state/apitypes/kuntailmoitus"
 import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import {
   createHakutilannePathWithOrg as createHakutilannePathWithOrg,
@@ -26,6 +28,7 @@ import {
   parseQueryFromProps as parseSearchQueryFromProps,
 } from "../../state/paths"
 import { plainComponent } from "../../utils/plaincomponent"
+import { OppijaKuntailmoitus } from "./OppijaKuntailmoitus"
 import { OppijanHaut } from "./OppijanHaut"
 import { OppijanOpiskeluhistoria } from "./OppijanOpiskeluhistoria"
 import { OppijanOppivelvollisuustiedot } from "./OppijanOppivelvollisuustiedot"
@@ -41,6 +44,9 @@ export const OppijaView = withRequiresHakeutumisenValvonta(
     const searchQuery = parseSearchQueryFromProps(props)
     const queryOid = props.match.params.oppijaOid!!
     const oppija = useApiWithParams(fetchOppija, [queryOid], fetchOppijaCache)
+    const oppijaData = isSuccess(oppija) ? oppija.data : null
+    const aktiivisetKuntailmoitukset =
+      oppijaData?.kuntailmoitukset.filter(isAktiivinenKuntailmoitus) || []
 
     return (
       <Page id="oppija">
@@ -54,7 +60,12 @@ export const OppijaView = withRequiresHakeutumisenValvonta(
           <Spinner />
         ))}
 
-        {mapSuccess(oppija, (oppijaData: OppijaHakutilanteillaLaajatTiedot) => (
+        {isEmpty(aktiivisetKuntailmoitukset) && <EiIlmoituksiaMessage />}
+        {aktiivisetKuntailmoitukset.map((kuntailmoitus, index) => (
+          <OppijaKuntailmoitus key={index} kuntailmoitus={kuntailmoitus} />
+        ))}
+
+        {oppijaData && (
           <>
             <ColumnsContainer>
               <Column size={4}>
@@ -107,7 +118,7 @@ export const OppijaView = withRequiresHakeutumisenValvonta(
               </Column>
             </ColumnsContainer>
           </>
-        ))}
+        )}
       </Page>
     )
   }
@@ -161,3 +172,10 @@ const OppijaHeadings = (props: {
 )
 
 const SecondaryOppijaHeading = plainComponent("h2", b("secondaryheading"))
+
+const EiIlmoituksiaMessage = () => (
+  <div className={b("eiilmoituksia")}>
+    <SuccessCircleIcon color="green" />
+    <T id="oppija__ei_ilmoituksia" />
+  </div>
+)

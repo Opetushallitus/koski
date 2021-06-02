@@ -62,7 +62,7 @@ const turvakieltoVaroitusNotVisible = () =>
 
 describe("Oppijakohtainen näkymä", () => {
   it("Näyttää oppijan tiedot, johon käyttäjällä on lukuoikeus", async () => {
-    await loginAs(ysiluokkaKeskenKeväälläPath, "valpas-jkl-normaali")
+    await loginAs(ysiluokkaKeskenKeväälläPath, "valpas-jkl-normaali", true)
     await mainHeadingEquals(
       "Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas (221105A3023)"
     )
