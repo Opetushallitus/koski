@@ -11,7 +11,7 @@ export type Yhteystiedot<T extends YhteystietojenAlkuperä> = {
   lähiosoite?: string
   postitoimipaikka?: string
   postinumero?: string
-  maa?: string
+  maa?: LocalizedString
 }
 
 export type YhteystietojenAlkuperä = AlkuperäHakemukselta | AlkuperäRekisteristä

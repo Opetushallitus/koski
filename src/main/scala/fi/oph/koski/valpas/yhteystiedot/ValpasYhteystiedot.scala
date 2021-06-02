@@ -18,7 +18,9 @@ case class ValpasYhteystiedot(
   lähiosoite: Option[String] = None,
   postitoimipaikka: Option[String] = None,
   postinumero: Option[String] = None,
-  maa: Option[String] = None,
+  // Käytetään tässä yleisenä tyyppinä LocalizedString:iä, koska maatieto tulee DVV:ltä merkkijonona ja
+  // hakukoostepalvelusta koodistokoodiarvona, jossa koodistona joko maatjavaltiot1 tai maatjavaltiot2
+  maa: Option[LocalizedString] = None
 )
 
 trait ValpasYhteystietojenAlkuperä
@@ -56,6 +58,10 @@ object ValpasYhteystiedot {
     lähiosoite = Some(hakukooste.lahiosoite),
     postinumero = Some(hakukooste.postinumero),
     postitoimipaikka = hakukooste.postitoimipaikka,
+    maa = hakukooste.maa match {
+      case Some(maa) if !onSuomi(maa) => maa.nimi // Suomi on oletus, ei haluta näyttää
+      case _ => None
+    },
     sähköposti = Some(hakukooste.email),
   )
 
@@ -81,6 +87,12 @@ object ValpasYhteystiedot {
     lähiosoite = yhteystiedot.katuosoite,
     postitoimipaikka = yhteystiedot.kunta.orElse(yhteystiedot.kaupunki),
     postinumero = yhteystiedot.postinumero,
-    maa = yhteystiedot.maa,
+    maa = yhteystiedot.maa.map(LocalizedString.finnish), // Oletetaan DVV:ltä tulevan maan nimen olevan aina suomeksi
   )
+
+  private def onSuomi(koodi: Koodistokoodiviite) =
+    Seq(
+      Koodistokoodiviite("FIN", "maatjavaltiot1"),
+      Koodistokoodiviite("246", "maatjavaltiot2")
+    ).contains(koodi)
 }

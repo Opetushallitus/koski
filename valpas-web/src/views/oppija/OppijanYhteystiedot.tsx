@@ -136,7 +136,10 @@ const Yhteystietolista = (props: YhteystietolistaProps) => (
         />
       )}
       {props.yhteystiedot.maa && (
-        <InfoTableRow label={t("oppija__maa")} value={props.yhteystiedot.maa} />
+        <InfoTableRow
+          label={t("oppija__maa")}
+          value={getLocalized(props.yhteystiedot.maa)}
+        />
       )}
       {props.yhteystiedot.puhelinnumero && (
         <InfoTableRow

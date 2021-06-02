@@ -298,6 +298,21 @@ describe("Oppijakohtainen näkymä", () => {
     `)
   })
 
+  it("Näyttää oppijalta ruotsissa olevan ilmotukselta tulevan osoitteen", async () => {
+    await loginAs(päällekkäisiäOppivelvollisuuksiaPath, "valpas-jkl-normaali")
+
+    await ilmoitetutYhteystiedotEquals(`
+      Ilmoitetut yhteystiedot
+      keyboard_arrow_downYhteystiedot – 9.4.2020
+      Lähiosoite:	Kungsgatan 123
+      Postitoimipaikka:  00000 STOCKHOLM
+      Maa: Ruotsi
+      Matkapuhelin:	0401234567
+      Sähköposti:	Oppivelvollisuuksia.Päällekkäisiä@gmail.com
+      Lähde: Hakulomake – Yhteishaku 2021
+    `)
+  })
+
   it("Yhteystietoja ei näytetä, jos oppijalla on turvakielto", async () => {
     await loginAs(turvakiellollinenOppijaPath, "valpas-jkl-normaali")
 

@@ -98,6 +98,7 @@ object Koodistot {
     KoodistoAsetus("koulutustyyppi"),
     KoodistoAsetus("kunta"),
     KoodistoAsetus("lukionkurssit"),
+    KoodistoAsetus("maatjavaltiot1"),
     KoodistoAsetus("maatjavaltiot2"),
     KoodistoAsetus("opintojenlaajuusyksikko"),
     KoodistoAsetus("oppilaitosnumero", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
