@@ -7,7 +7,7 @@ import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.ValpasErrorCategory
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasHenkilöLaajatTiedot}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö
 
 
 class SureHakukoosteService(config: Config) extends ValpasHakukoosteService with Logging with Timing {
@@ -15,7 +15,9 @@ class SureHakukoosteService(config: Config) extends ValpasHakukoosteService with
 
   private val http = VirkailijaHttpClient(ServiceConfig.apply(config, "opintopolku.virkailija"), baseUrl)
 
-  def getHakukoosteet(oppijaOids: Set[ValpasHenkilö.Oid], ainoastaanAktiivisetHaut: Boolean = false, errorClue: String = ""): Either[HttpStatus, Seq[Hakukooste]] = {
+  def getHakukoosteet
+    (oppijaOids: Set[ValpasHenkilö.Oid], ainoastaanAktiivisetHaut: Boolean = false, errorClue: String = "")
+  : Either[HttpStatus, Seq[Hakukooste]] = {
     val encoder = json4sEncoderOf[Seq[ValpasHenkilö.Oid]]
     val decoder = parseJson[Seq[Hakukooste]] _
 
