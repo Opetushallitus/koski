@@ -13,31 +13,34 @@ trait ValpasOppija {
 
   def opiskeluoikeudet: Seq[ValpasOpiskeluoikeus]
 
-  @SyntheticProperty
-  def opiskelee: Boolean = opiskeluoikeudet.exists(_.isOpiskelu)
+  def oppivelvollisuusVoimassaAsti: LocalDate
 
   @SyntheticProperty
-  def oppivelvollisuusVoimassaAsti: Option[LocalDate] = henkilö.syntymäaika.map(_.plusYears(18))
+  def opiskelee: Boolean = opiskeluoikeudet.exists(_.isOpiskelu)
 }
 
 case class ValpasOppijaLaajatTiedot(
   henkilö: ValpasHenkilöLaajatTiedot,
   oikeutetutOppilaitokset: Set[ValpasOppilaitos.Oid],
-  opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot]
+  opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot],
+  oppivelvollisuusVoimassaAsti: LocalDate,
+  oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate
 ) extends ValpasOppija
 
 object ValpasOppijaSuppeatTiedot {
   def apply(laajatTiedot: ValpasOppijaLaajatTiedot): ValpasOppijaSuppeatTiedot = {
     ValpasOppijaSuppeatTiedot(
       ValpasHenkilöSuppeatTiedot(laajatTiedot.henkilö),
-      laajatTiedot.opiskeluoikeudet.map(ValpasOpiskeluoikeusSuppeatTiedot.apply)
+      laajatTiedot.opiskeluoikeudet.map(ValpasOpiskeluoikeusSuppeatTiedot.apply),
+      laajatTiedot.oppivelvollisuusVoimassaAsti
     )
   }
 }
 
 case class ValpasOppijaSuppeatTiedot(
   henkilö: ValpasHenkilöSuppeatTiedot,
-  opiskeluoikeudet: Seq[ValpasOpiskeluoikeusSuppeatTiedot]
+  opiskeluoikeudet: Seq[ValpasOpiskeluoikeusSuppeatTiedot],
+  oppivelvollisuusVoimassaAsti: LocalDate
 ) extends ValpasOppija
 
 object ValpasHenkilö {
