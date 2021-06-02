@@ -14,6 +14,10 @@ object ValpasErrorCategory {
 
   object internalError extends ErrorCategory("internalError", 500, "Internal server error")
 
+  object badGateway extends ErrorCategory("badGateway", 502, "Bad gateway") {
+    val sure = subcategory("sure", "Suoritusrekisterin palauttama hakukoostetieto oli viallinen.")
+  }
+
   object unavailable extends ErrorCategory("unavailable", 503, "Service unavailable") {
     val sure = subcategory("sure", "Hakukoosteita ei juuri nyt saada haettua suoritusrekisteristä. Yritä myöhemmin uudelleen.")
   }

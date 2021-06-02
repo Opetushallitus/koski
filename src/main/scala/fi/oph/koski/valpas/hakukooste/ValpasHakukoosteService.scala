@@ -2,6 +2,7 @@ package fi.oph.koski.valpas.hakukooste
 
 import com.typesafe.config.Config
 import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.validation.ValidatingAndResolvingExtractor
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö
 
 
@@ -14,10 +15,10 @@ trait ValpasHakukoosteService {
 }
 
 object ValpasHakukoosteService {
-  def apply(config: Config): ValpasHakukoosteService = {
+  def apply(config: Config, validatingAndResolvingExtractor: ValidatingAndResolvingExtractor): ValpasHakukoosteService = {
     config.getString("opintopolku.virkailija.url") match {
       case "mock" => new MockHakukoosteService()
-      case _ => new SureHakukoosteService(config)
+      case _ => new SureHakukoosteService(config, validatingAndResolvingExtractor)
     }
   }
 }

@@ -10,6 +10,7 @@ import org.json4s.{DefaultFormats, Formats}
 import org.scalatest._
 import java.time.LocalDateTime
 
+import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
 
 class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with EitherValues with BeforeAndAfterAll {
@@ -23,7 +24,7 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
       |opintopolku.virkailija.password = "bar"
     """.stripMargin)
 
-  private val mockClient = ValpasHakukoosteService(config)
+  private val mockClient = ValpasHakukoosteService(config, KoskiApplicationForTests.validatingAndResolvingExtractor)
 
   private val wireMockServer = new WireMockServer(wireMockConfig().port(9875))
 
@@ -56,8 +57,8 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
         hakutoiveet = hakukooste.hakutoiveet.map(_.copy(valintatila = Some("kielletty arvo")))
       ))
       val result = mockClient.getHakukoosteet(queryOids).left.value
-      result.statusCode should equal(500)
-      result.errorString.get should startWith("Internal server error")
+      result.statusCode should equal(502)
+      result.errorString.get should startWith("Suoritusrekisterin palauttama hakukoostetieto oli viallinen")
     }
 
     "toimii kun vastaus on tyhjä" in {
@@ -78,7 +79,7 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
       val queryOids = Set("1.2.246.562.24.85292063498")
       wireMockServer.stubFor(
         WireMock.post(WireMock.urlPathEqualTo(sureHakukoosteUrl))
-          .willReturn(WireMock.ok().withBody(SureHakukoosteServiceSpec.realResponse))
+          .willReturn(WireMock.ok().withBody(SureHakukoosteServiceSpec.realResponse()))
       )
       val result = mockClient.getHakukoosteet(queryOids).right.value.head
       result.oppijaOid should equal(queryOids.head)
@@ -86,6 +87,17 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
       result.hakuNimi.get("en") should startWith("Joint Application")
       result.hakutoiveet.map(_.hakukohdeOid) should equal(List("1.2.246.562.20.80878445842", "1.2.246.562.20.24492106752"))
       result.haunAlkamispaivamaara should equal(LocalDateTime.of(2021, 4, 20, 9, 0))
+    }
+
+    "ei osaa serialisoida API vastausta, jossa olemattomia koodiarvoja" in {
+      val queryOids = Set("1.2.246.562.24.85292063498")
+      wireMockServer.stubFor(
+        WireMock.post(WireMock.urlPathEqualTo(sureHakukoosteUrl))
+          .willReturn(WireMock.ok().withBody(SureHakukoosteServiceSpec.realResponse("01#1")))
+      )
+      val result = mockClient.getHakukoosteet(queryOids).left.value
+      result.statusCode should equal(502)
+      result.errorString.get should startWith("Suoritusrekisterin palauttama hakukoostetieto oli viallinen")
     }
   }
 
@@ -106,11 +118,11 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
 }
 
 object SureHakukoosteServiceSpec {
-  private val realResponse =
-    """[
+  private def realResponse(hakutapaKoodiarvo: String = "01") =
+    s"""[
       |  {
       |    "hakutapa": {
-      |      "koodiarvo": "01",
+      |      "koodiarvo": "${hakutapaKoodiarvo}",
       |      "nimi": {
       |        "fi": "Yhteishaku",
       |        "sv": "Gemensam ansökan"
