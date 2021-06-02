@@ -15,10 +15,3 @@ export type HenkilöSuppeatTiedot = {
   etunimet: string
   sukunimi: string
 }
-
-export type HenkilöHakutiedot = {
-  oid: Oid
-  hetu?: string
-  etunimet: string
-  sukunimi: string
-}

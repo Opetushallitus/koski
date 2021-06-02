@@ -1,7 +1,7 @@
 package fi.oph.koski.valpas.log
 
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, AuditLogOperation}
-import fi.oph.koski.valpas.ValpasHenkilöHakutiedot
+import fi.oph.koski.valpas.{ValpasHenkilöMaksuttomuushakutulos, ValpasHenkilöMaksuttomuushakuResult}
 import fi.oph.koski.valpas.log.ValpasOperation.ValpasOperation
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasHenkilöLaajatTiedot, ValpasOppilaitos}
 import fi.oph.koski.valpas.valpasrepository.ValpasKuntailmoitusLaajatTiedotJaOppijaOid
@@ -41,14 +41,20 @@ object ValpasAuditLog {
   }
 
   def auditLogHenkilöHaku
-    (henkilö: ValpasHenkilöHakutiedot)(implicit session: ValpasSession)
+  (query: String)(henkilö: ValpasHenkilöMaksuttomuushakuResult)(implicit session: ValpasSession)
   : Unit = {
     AuditLog.log(ValpasAuditLogMessage(
       ValpasOperation.VALPAS_OPPIJA_HAKU,
       session,
-      Map(
-        ValpasAuditLogMessageField.oppijaHenkilöOid -> henkilö.oid,
-      )
+      henkilö match {
+        case tulos: ValpasHenkilöMaksuttomuushakutulos => Map(
+          ValpasAuditLogMessageField.hakulause -> query,
+          ValpasAuditLogMessageField.oppijaHenkilöOid -> tulos.oid,
+        )
+        case _ => Map(
+          ValpasAuditLogMessageField.hakulause -> query,
+        )
+      }
     ))
   }
 }
@@ -65,7 +71,9 @@ object ValpasAuditLogMessageField extends Enumeration {
       juuriOrganisaatio,
       ilmoittajaHenkilöOid,
       ilmoittajaOrganisaatioOid,
-      kohdeOrganisaatioOid = Value
+      kohdeOrganisaatioOid,
+      hakulause,
+      hakutulosOppijaOid = Value
 }
 
 object ValpasOperation extends Enumeration {

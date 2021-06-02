@@ -10,9 +10,9 @@ export type PageProps = React.HTMLAttributes<HTMLDivElement> & {
   hideNavigation?: boolean
 }
 
-export const Page = ({ className, ...props }: PageProps) => (
+export const Page = ({ className, hideNavigation, ...props }: PageProps) => (
   <>
-    {!props.hideNavigation && <VirkailijaMainNavigation />}
+    {!hideNavigation && <VirkailijaMainNavigation />}
     <article className={joinClassNames(b(), className)} {...props} />
   </>
 )

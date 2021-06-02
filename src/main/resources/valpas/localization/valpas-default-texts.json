@@ -155,6 +155,7 @@
   "oppijahaku__löytyi": "Löytyi",
   "oppijahaku__ei_tuloksia": "Hakuehdolla ei löytynyt oppijaa tai sinulla ei ole oikeuksia nähdä kyseisen oppijan tietoja",
   "oppijahaku__validointivirhe": "Syötetty arvo ei ole validi henkilötunnus tai oppijatunnus",
+  "oppijahaku__ei_oikeuksia_tietoihin": "Sinulla ei ole oikeuksia nähdä tämän henkilön tietoja",
   "apivirhe__virheellinen_pyyntö": "Virhe: Pyyntöä ei voitu suorittaa siinä olleen virheen takia ({{virhe}})",
   "apivirhe__palvelinongelma": "Virhe: Pyyntöä ei voitu suorittaa palvelimen ongelman takia ({{virhe}})",
   "apivirhe__aikakatkaisu": "Virhe: Pyyntö aikakatkaistiin. Syynä voi olla esimerkiksi liian monta yhtäaikaista käyttäjää. Yritä myöhemmin uudestaan.",

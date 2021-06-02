@@ -8,10 +8,12 @@ import { SubmitButton } from "../../components/buttons/SubmitButton"
 import { Form } from "../../components/forms/Form"
 import { TextField } from "../../components/forms/TextField"
 import { Spinner } from "../../components/icons/Spinner"
-import { Error } from "../../components/typography/error"
-import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import { T, t } from "../../i18n/i18n"
-import { HenkilöHakutiedot } from "../../state/apitypes/henkilo"
+import {
+  HenkilöMaksuttomuushakuResult,
+  HenkilöMaksuttomuushakutulos,
+  isMaksuttomuushakutulos,
+} from "../../state/apitypes/maksuttomuushakutiedot"
 import { useBasePath } from "../../state/basePath"
 import {
   expectAtLeastOne,
@@ -65,36 +67,43 @@ export const OppijaSearch = (_props: OppijaSearchProps) => {
         />
         <div className={b("results")}>
           {isLoading(search) && <Spinner />}
-          {isSuccess(search) && <OppijaSearchResults henkilö={search.data} />}
-          {isError(search) &&
-            (search.status === 403 ? (
-              <NoDataMessage>
-                <T id="oppijahaku__ei_tuloksia" />
-              </NoDataMessage>
-            ) : (
-              <Error>
-                {search.errors.map((error) => error.message).join("; ")}
-              </Error>
-            ))}
+          {isSuccess(search) && <OppijaSearchResults hakutulos={search.data} />}
+          {isError(search) && <OppijaSearchError statusCode={search.status} />}
         </div>
       </TextField>
     </Form>
   )
 }
 
-export type OppijaSearchResultsProps = {
-  henkilö: HenkilöHakutiedot
+type OppijaSearchResultsProps = {
+  hakutulos: HenkilöMaksuttomuushakuResult
 }
 
 const OppijaSearchResults = (props: OppijaSearchResultsProps) => {
+  if (isMaksuttomuushakutulos(props.hakutulos)) {
+    return <OppijaSearchMatchResult henkilö={props.hakutulos} />
+  }
+  return <OppijaSearchUndefinedResult />
+}
+
+const OppijaSearchUndefinedResult = () => (
+  <div className={b("resultvalue")}>Maksuttomuutta ei pystytä päättelemään</div>
+)
+
+type OppijaSearchMatchResultProps = {
+  henkilö: HenkilöMaksuttomuushakutulos
+}
+
+const OppijaSearchMatchResult = (props: OppijaSearchMatchResultProps) => {
   const basePath = useBasePath()
   const result = props.henkilö
 
   return (
-    <div>
+    <div className={b("resultvalue")}>
       <T id="oppijahaku__löytyi" />
       {": "}
       <Link
+        className={b("resultlink")}
         to={createOppijaPath(basePath, {
           oppijaOid: result.oid,
           prev: createMaksuttomuusPath(),
@@ -104,4 +113,26 @@ const OppijaSearchResults = (props: OppijaSearchResultsProps) => {
       </Link>
     </div>
   )
+}
+
+type OppijaSearchErrorProps = {
+  statusCode?: number
+}
+
+const OppijaSearchError = (props: OppijaSearchErrorProps) => {
+  const [message, showAsError] = getErrorText(props.statusCode)
+  return (
+    <div className={b("resultvalue", { error: showAsError })}>{message}</div>
+  )
+}
+
+const getErrorText = (statusCode?: number): [string, boolean] => {
+  switch (statusCode) {
+    case 400:
+      return [t("oppijahaku__validointivirhe"), true]
+    case 403:
+      return [t("oppijahaku__ei_näytettävä_oppija"), false]
+    default:
+      return [t("apivirhe__virheellinen_pyyntö", { virhe: status }), true]
+  }
 }

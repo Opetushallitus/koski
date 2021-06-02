@@ -47,10 +47,11 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
     )
   }
 
-  get("/henkilohaku/:query") {
+  get("/henkilohaku/maksuttomuus/:query") {
+    val query = params("query")
     renderEither(
-      oppijaSearchService.findHenkilö(params("query"))
-        .tap(auditLogHenkilöHaku)
+      oppijaSearchService.findHenkilöMaksuttomuus(query)
+        .tap(auditLogHenkilöHaku(query))
     )
   }
 
