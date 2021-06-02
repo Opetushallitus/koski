@@ -73,6 +73,8 @@
   "oppija__opiskelutilanne__ei_opiskelupaikkaa": "Ei opiskelupaikkaa",
   "oppija__oppivelvollisuus_voimassa": "Oppivelvollisuus",
   "oppija__oppivelvollisuus_voimassa_value": "{{date}} asti",
+  "oppija__maksuttomuus_voimassa": "Oikeus opintojen maksuttomuuteen",
+  "oppija__maksuttomuus_voimassa_value": "{{date}} asti",
   "oppija__ilmoitetut_yhteystiedot": "Ilmoitetut yhteystiedot",
   "oppija__ilmoitetun_yhteystiedon_lahde": "Lähde: Hakulomake – {{haku}}",
   "oppija__viralliset_yhteystiedot": "Viralliset yhteystiedot",

@@ -70,6 +70,7 @@ describe("Oppijakohtainen näkymä", () => {
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
       Oppivelvollisuus:	22.11.2023 asti
+      Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
     `)
     await opiskeluhistoriaEquals(`
       school
@@ -138,6 +139,7 @@ describe("Oppijakohtainen näkymä", () => {
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Ei opiskelupaikkaa
       Oppivelvollisuus:	19.6.2023 asti
+      Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
     `)
     await opiskeluhistoriaEquals(`
       school
@@ -187,6 +189,7 @@ describe("Oppijakohtainen näkymä", () => {
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
       Oppivelvollisuus:	6.6.2023 asti
+      Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
     `)
     await opiskeluhistoriaEquals(`
       school
@@ -209,6 +212,7 @@ describe("Oppijakohtainen näkymä", () => {
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
       Oppivelvollisuus:	29.4.2023 asti
+      Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
     `)
     await opiskeluhistoriaEquals(`
       school
@@ -231,6 +235,7 @@ describe("Oppijakohtainen näkymä", () => {
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Ei opiskelupaikkaa
       Oppivelvollisuus:	18.4.2023 asti
+      Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
     `)
     await opiskeluhistoriaEquals(`
       school

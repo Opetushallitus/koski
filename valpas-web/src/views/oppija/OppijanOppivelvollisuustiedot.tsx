@@ -28,5 +28,13 @@ export const OppijanOppivelvollisuustiedot = (
         ),
       })}
     />
+    <InfoTableRow
+      label={t("oppija__maksuttomuus_voimassa")}
+      value={t("oppija__maksuttomuus_voimassa_value", {
+        date: formatNullableDate(
+          props.oppija.oppija.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti
+        ),
+      })}
+    />
   </InfoTable>
 )
