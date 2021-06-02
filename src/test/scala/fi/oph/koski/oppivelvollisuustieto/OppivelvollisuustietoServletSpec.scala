@@ -1,9 +1,9 @@
 package fi.oph.koski.oppivelvollisuustieto
 
 import java.time.LocalDate
-
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.OpiskeluoikeusTestMethods
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
@@ -31,11 +31,19 @@ class OppivelvollisuustietoServletSpec extends FreeSpec with KoskiHttpSpec with 
     }
 
     "Rajapintaa voi kutsua oikeilla käyttöoikeuksilla" in {
-      val expectedResult = koskeenTallennettujenOppijoidenOidit.map(oid =>
-        Oppivelvollisuustieto(oid, LocalDate.of(2021, 8, 1), LocalDate.of(2021, 8, 1))
+      val eiKuuluMaksuttomuudenPiiriinOid = KoskiSpecificMockOppijat.lukiolainen.oid
+
+      val expectedResult = List(
+        Oppivelvollisuustieto(KoskiSpecificMockOppijat.maksuttomuuttaPidennetty1.oid, LocalDate.of(2022, 1, 1), LocalDate.of(2025, 1, 12)),
+        Oppivelvollisuustieto(KoskiSpecificMockOppijat.maksuttomuuttaPidennetty2.oid, LocalDate.of(2022, 1, 1), LocalDate.of(2025, 1, 24))
+      )
+      val oids = List(
+        KoskiSpecificMockOppijat.maksuttomuuttaPidennetty1.oid,
+        KoskiSpecificMockOppijat.maksuttomuuttaPidennetty2.oid,
+        eiKuuluMaksuttomuudenPiiriinOid
       )
 
-      postOids(koskeenTallennettujenOppijoidenOidit, MockUsers.oppivelvollisuutietoRajapinta) {
+      postOids(oids, MockUsers.oppivelvollisuutietoRajapinta) {
         verifyResponseStatusOk()
         val response = JsonSerializer.parse[Seq[Oppivelvollisuustieto]](body)
         response should contain theSameElementsAs(expectedResult)

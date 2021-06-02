@@ -100,7 +100,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
       LukioOppiaineRahoitusmuodonMukaan.createIndex(schema),
       LukioOppiaineEriVuonnaKorotetutKurssit.createMaterializedView(schema),
       LukioOppiaineEriVuonnaKorotetutKurssit.createIndex(schema),
-      Oppivelvollisuustiedot.createMaterializedView(schema)
+      Oppivelvollisuustiedot.createMaterializedView(schema, config)
     ), timeout = 120.minutes)
     val duration = (System.currentTimeMillis - started) / 1000
     setStatusLoadCompleted("materialized_views")

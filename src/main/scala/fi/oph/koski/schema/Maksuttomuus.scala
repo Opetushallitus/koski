@@ -32,7 +32,7 @@ object OikeuttaMaksuttomuuteenPidennetty {
     jaksot.foreach(
       jakso => {
         var päivä = jakso.alku
-        while (päivä.isBefore(jakso.loppu)) {
+        while (päivä.isBefore(jakso.loppu.plusDays(1))) { // plusDays koska maksuttomuuden pidennyksen kesto on loppupäivä-inklusiivinen. 1.10 - 2.10 = 2 päivää.
           uniikitPäivät.add(päivä.toEpochDay)
           päivä = päivä.plusDays(1)
         }

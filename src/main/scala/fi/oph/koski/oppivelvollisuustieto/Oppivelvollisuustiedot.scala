@@ -1,15 +1,14 @@
 package fi.oph.koski.oppivelvollisuustieto
 
 import java.time.LocalDate
-
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.db.RaportointiDatabaseConfig
 import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
-
 import slick.jdbc.GetResult
 
 
 object Oppivelvollisuustiedot {
-  def queryByOids(oids: List[String], db: RaportointiDatabase): Seq[Oppivelvollisuustieto] = {
+  def queryByOids(oids: Seq[String], db: RaportointiDatabase): Seq[Oppivelvollisuustieto] = {
     db.runDbSync(
       sql"select * from oppivelvollisuustiedot where oppija_oid = any($oids)".as[Oppivelvollisuustieto]
     )
@@ -23,7 +22,9 @@ object Oppivelvollisuustiedot {
 
       - Jos oppija suorittaa lukion oppimäärää, voimassaolot päättyvät kun molemmat lukion oppimäärä ja ylioppilastutkinto ovat valmiita, jos henkilön ikä sitä ei aikaisemmin päätä.
   */
-  def createMaterializedView(s: Schema)= {
+  def createMaterializedView(s: Schema, config: RaportointiDatabaseConfig)= {
+    val valpasLakiVoimassaVanhinSyntymävuosi = config.valpasLakiVoimassaVanhinSyntymävuosi
+    val valpasLakiVoimassaPeruskoulustaValmistuneilla = config.valpasLakiVoimassaPeruskoulustaValmistuneilla
     sqlu"""
       create materialized view #${s.name}.oppivelvollisuustiedot as
         with
@@ -32,10 +33,20 @@ object Oppivelvollisuustiedot {
               select
                 oppija_oid,
                 master_oid,
-                syntymaaika
+                syntymaaika,
+                (select count(distinct paivat) from (
+                    select generate_series(alku, loppu, interval '1 day') paivat
+                    from #${s.name}.r_opiskeluoikeus_aikajakso ooaj
+                    inner join #${s.name}.r_opiskeluoikeus oo on (oo.oppija_oid = henkilo.oppija_oid
+                      or oo.oppija_oid = any(henkilo.linkitetyt_oidit)
+                      or oo.oppija_oid = henkilo.master_oid)
+                    where oikeutta_maksuttomuuteen_pidennetty = true
+                    and (ooaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid)
+                    )
+                pidennyspaivat) as maksuttomuutta_pidennetty_yhteensa
               from
                 #${s.name}.r_henkilo henkilo
-              where date_part('year', syntymaaika) >= 2004
+              where date_part('year', syntymaaika) >= #${valpasLakiVoimassaVanhinSyntymävuosi}
                 and master_oid not in (
                                 select
                                   henkilo.master_oid
@@ -44,14 +55,13 @@ object Oppivelvollisuustiedot {
                                   join #${s.name}.r_opiskeluoikeus opiskeluoikeus on henkilo.oppija_oid = opiskeluoikeus.oppija_oid
                                   join #${s.name}.r_paatason_suoritus paatason_suoritus on opiskeluoikeus.opiskeluoikeus_oid = paatason_suoritus.opiskeluoikeus_oid
                                 where (suorituksen_tyyppi = 'perusopetuksenoppimaara'
-                                  and vahvistus_paiva < '2021-01-01'::date) or
+                                  and vahvistus_paiva < '#${valpasLakiVoimassaPeruskoulustaValmistuneilla}'::date) or
                                   (suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaara'
-                                  and vahvistus_paiva < '2021-01-01'::date) or
+                                  and vahvistus_paiva < '#${valpasLakiVoimassaPeruskoulustaValmistuneilla}'::date) or
                                   (suorituksen_tyyppi = 'internationalschoolmypvuosiluokka'
                                   and koulutusmoduuli_koodiarvo = '9'
-                                  and vahvistus_paiva < '2021-01-01'::date)
+                                  and vahvistus_paiva < '#${valpasLakiVoimassaPeruskoulustaValmistuneilla}'::date)
                 )
-
         ),
 
         ammattitutkinto as (
@@ -92,10 +102,10 @@ object Oppivelvollisuustiedot {
           end
             oppivelvollisuusVoimassaAsti,
           case
-            when suorittaa_ammattitutkintoa and suorittaa_lukionoppimaaraa then #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '20 year')
-            when suorittaa_ammattitutkintoa then least(ammattitutkinnon_vahvistus_paiva, #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '20 year'))
-            when suorittaa_lukionoppimaaraa then #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '20 year')
-            else #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '20 year')
+            when suorittaa_ammattitutkintoa and suorittaa_lukionoppimaaraa then (#${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '20 year') + interval '1 day' * maksuttomuutta_pidennetty_yhteensa)::date
+            when suorittaa_ammattitutkintoa then (least(ammattitutkinnon_vahvistus_paiva, #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '20 year')) + interval '1 day' * maksuttomuutta_pidennetty_yhteensa)::date
+            when suorittaa_lukionoppimaaraa then (#${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '20 year') + interval '1 day' * maksuttomuutta_pidennetty_yhteensa)::date
+            else (#${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '20 year') + interval '1 day' * maksuttomuutta_pidennetty_yhteensa)::date
           end
             oikeusKoulutuksenMaksuttomuuteenVoimassaAsti
         from

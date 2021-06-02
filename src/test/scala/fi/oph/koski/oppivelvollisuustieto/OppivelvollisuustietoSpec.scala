@@ -138,7 +138,7 @@ class OppivelvollisuustietoSpec
           queryOids(oikeusOpiskelunMaksuttomuuteen.oid) should equal(List(
             Oppivelvollisuustieto(
               oikeusOpiskelunMaksuttomuuteen.oid,
-              oppivelvollisuusVoimassaAsti = date(2022, 1, 1),
+              oppivelvollisuusVoimassaAsti = date(2022, 12, 31),
               oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2024, 12, 31)
             )
           ))
@@ -154,20 +154,31 @@ class OppivelvollisuustietoSpec
           Maksuttomuus(alkamispaiva, None, maksuton = true),
         ))
 
-        val pidennykset = Some(List(
+        val pidennyksetMaster = Some(List(
           OikeuttaMaksuttomuuteenPidennetty(alkamispaiva, alkamispaiva.plusDays(20)),
         ))
+        val pidennyksetSlave = Some(List(
+          OikeuttaMaksuttomuuteenPidennetty(alkamispaiva.plusDays(25), alkamispaiva.plusDays(30)),
+        ))
 
-        insert(oikeusOpiskelunMaksuttomuuteen, ammatillinenTutkintoMaksuttomuusJaksoilla(vahvistus = None,
+        insert(master, ammatillinenTutkintoMaksuttomuusJaksoilla(vahvistus = None,
           maksuttomuusJaksot = maksuttomuusJaksot,
-          maksuttomuudenPidennyksenJaksot = pidennykset))
+          maksuttomuudenPidennyksenJaksot = pidennyksetMaster))
+        insert(slave1, ammatillinenTutkintoMaksuttomuusJaksoilla(vahvistus = None,
+          maksuttomuusJaksot = maksuttomuusJaksot,
+          maksuttomuudenPidennyksenJaksot = pidennyksetSlave))
         reloadRaportointikanta
 
-        queryOids(oikeusOpiskelunMaksuttomuuteen.oid) should equal(List(
+        queryOids(List(master.oid, slave1.oid)) should equal(List(
           Oppivelvollisuustieto(
-            oikeusOpiskelunMaksuttomuuteen.oid,
+            master.oid,
             oppivelvollisuusVoimassaAsti = date(2022, 1, 1),
-            oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2024, 12, 31)
+            oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2025, 1, 27)
+          ),
+          Oppivelvollisuustieto(
+            slave1.oid,
+            oppivelvollisuusVoimassaAsti = date(2022, 1, 1),
+            oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2025, 1, 27)
           )
         ))
       }
