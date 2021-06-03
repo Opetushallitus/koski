@@ -1,13 +1,15 @@
 package fi.oph.koski.valpas.opiskeluoikeusfixture
 
-import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, vahvistusPaikkakunnalla}
+import fi.oph.koski.documentation.ExampleData.{helsinki, opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, vahvistus, vahvistusPaikkakunnalla}
 import fi.oph.koski.documentation.LukioExampleData.{opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt}
 import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, perusopetuksenOppimääränSuoritus, perusopetuksenOppimääränSuoritusKesken, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste, oppilaitos}
-import fi.oph.koski.documentation.{ExampleData, ExamplesEsiopetus, ExamplesLukio2019, ExamplesPerusopetuksenLisaopetus}
+import fi.oph.koski.documentation.{AmmattitutkintoExample, ExampleData, ExamplesEsiopetus, ExamplesLukio2019, ExamplesPerusopetuksenLisaopetus}
 import fi.oph.koski.organisaatio.MockOrganisaatiot.aapajoenKoulu
 import fi.oph.koski.schema._
 import java.time.LocalDate.{of => date}
+
+import fi.oph.koski.documentation.AmmatillinenExampleData.stadinAmmattiopisto
 
 object ValpasOpiskeluoikeusExampleData {
   def oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus = PerusopetuksenOpiskeluoikeus(
@@ -321,6 +323,19 @@ object ValpasOpiskeluoikeusExampleData {
   )
 
   def lukionOpiskeluoikeus = ExamplesLukio2019.aktiivinenOpiskeluoikeus
+
+  def ammattikouluValmistunutOpiskeluoikeus = AmmattitutkintoExample.opiskeluoikeus.copy(
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+      AmmatillinenOpiskeluoikeusjakso(date(2021, 9, 2), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
+    )),
+    suoritukset = List(
+      AmmattitutkintoExample.näyttötutkintoonValmistavanKoulutuksenSuoritus,
+      AmmattitutkintoExample.ammatillisenTutkinnonSuoritus.copy(
+        vahvistus = vahvistus(date(2021, 9, 2), stadinAmmattiopisto, Some(helsinki))
+      )
+    )
+  )
 
   def lukionOpiskeluoikeusAlkaa2021Syksyllä = ExamplesLukio2019.aktiivinenOpiskeluoikeus.copy(
     tila = LukionOpiskeluoikeudenTila(
