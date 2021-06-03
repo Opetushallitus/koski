@@ -1,9 +1,9 @@
 {
-  "koodistoUri" : "lukioonvalmistavankoulutuksenkurssit2019",
+  "koodistoUri" : "lukioonvalmistavankoulutuksenmoduulit2019",
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "FI",
-    "nimi" : "Lukioon valmistavan koulutuksen kurssit 2019"
+    "nimi" : "Lukioon valmistavan koulutuksen moduulit 2019"
   } ],
   "codesGroupUri" : "http://koski",
   "voimassaAlkuPvm" : "2021-08-01",

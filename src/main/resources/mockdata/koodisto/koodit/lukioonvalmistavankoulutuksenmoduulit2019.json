@@ -1,5 +1,5 @@
 [ {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvs1",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs1",
   "koodiArvo" : "LVS1",
   "metadata" : [ {
     "nimi" : "Kielitietoisuus",
@@ -18,7 +18,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvs2",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs2",
   "koodiArvo" : "LVS2",
   "metadata" : [ {
     "nimi" : "Tekstitietoisuus",
@@ -37,7 +37,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvs3",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs3",
   "koodiArvo" : "LVS3",
   "metadata" : [ {
     "nimi" : "Eri tiedonalojen kieli",
@@ -56,7 +56,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvs4",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs4",
   "koodiArvo" : "LVS4",
   "metadata" : [ {
     "nimi" : "Tekstien kirjoittaminen",
@@ -75,7 +75,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvs5",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs5",
   "koodiArvo" : "LVS5",
   "metadata" : [ {
     "nimi" : "Eri tiedonalojen tekstien kirjoittaminen",
@@ -94,7 +94,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvs6",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs6",
   "koodiArvo" : "LVS6",
   "metadata" : [ {
     "nimi" : "Vuorovaikutus 1",
@@ -113,7 +113,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvs7",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs7",
   "koodiArvo" : "LVS7",
   "metadata" : [ {
     "nimi" : "Kirjallisuus 1",
@@ -132,7 +132,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvs8",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs8",
   "koodiArvo" : "LVS8",
   "metadata" : [ {
     "nimi" : "Kirjallisuus 2",
@@ -151,7 +151,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvs9",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs9",
   "koodiArvo" : "LVS9",
   "metadata" : [ {
     "nimi" : "Kulttuurinen moninaisuus",
@@ -170,7 +170,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvs10",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs10",
   "koodiArvo" : "LVS10",
   "metadata" : [ {
     "nimi" : "Vuorovaikutus 2",
@@ -189,7 +189,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvs11",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs11",
   "koodiArvo" : "LVS11",
   "metadata" : [ {
     "nimi" : "Digitaaliset tekstitaidot",
@@ -208,7 +208,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvs12",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs12",
   "koodiArvo" : "LVS12",
   "metadata" : [ {
     "nimi" : "Mediakulttuuri",
@@ -227,7 +227,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvka1",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvka1",
   "koodiArvo" : "LVKA1",
   "metadata" : [ {
     "nimi" : "Kielitaito osana opiskelua ja muita elämänalueita",
@@ -246,7 +246,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvka2",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvka2",
   "koodiArvo" : "LVKA2",
   "metadata" : [ {
     "nimi" : "Arkipäivän vuorovaikutusta",
@@ -265,7 +265,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvka3",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvka3",
   "koodiArvo" : "LVKA3",
   "metadata" : [ {
     "nimi" : "Mediat",
@@ -284,7 +284,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvkb1",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvkb1",
   "koodiArvo" : "LVKB1",
   "metadata" : [ {
     "nimi" : "Kieleen tutustuminen",
@@ -303,7 +303,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvkb2",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvkb2",
   "koodiArvo" : "LVKB2",
   "metadata" : [ {
     "nimi" : "Asioiminen ja harrastukset",
@@ -322,7 +322,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvkb3",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvkb3",
   "koodiArvo" : "LVKB3",
   "metadata" : [ {
     "nimi" : "Elinympäristö ja sosiaaliset verkostot",
@@ -341,7 +341,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvmai1",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvmai1",
   "koodiArvo" : "LVMAI1",
   "metadata" : [ {
     "nimi" : "Kieli ja identiteetti",
@@ -360,7 +360,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvmai2",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvmai2",
   "koodiArvo" : "LVMAI2",
   "metadata" : [ {
     "nimi" : "Kirjoittaminen ja nykykulttuuri",
@@ -379,7 +379,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvmai3",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvmai3",
   "koodiArvo" : "LVMAI3",
   "metadata" : [ {
     "nimi" : "Puheviestinnän taitojen syventäminen",
@@ -398,7 +398,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvma",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvma",
   "koodiArvo" : "LVMA",
   "metadata" : [ {
     "nimi" : "Matematiikka",
@@ -417,7 +417,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvfyke",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvfyke",
   "koodiArvo" : "LVFYKE",
   "metadata" : [ {
     "nimi" : "Fysiikka ja kemia",
@@ -436,7 +436,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvbg",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvbg",
   "koodiArvo" : "LVBG",
   "metadata" : [ {
     "nimi" : "Biologia ja maantiede",
@@ -455,7 +455,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvhy1",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvhy1",
   "koodiArvo" : "LVHY1",
   "metadata" : [ {
     "nimi" : "Historian perusteita",
@@ -474,7 +474,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvhy2",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvhy2",
   "koodiArvo" : "LVHY2",
   "metadata" : [ {
     "nimi" : "Suomen yhteiskunta ja kulttuurit",
@@ -493,7 +493,7 @@
     "passive" : false
   } ]
 },{
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2019_lvop",
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvop",
   "koodiArvo" : "LVOP",
   "metadata" : [ {
     "nimi" : "Opinto-ohjaus",
