@@ -24,7 +24,9 @@ case class ValpasOppijaLaajatTiedot(
   oikeutetutOppilaitokset: Set[ValpasOppilaitos.Oid],
   opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot],
   oppivelvollisuusVoimassaAsti: LocalDate,
-  oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate
+  oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate,
+  onOikeusValvoaMaksuttomuutta: Boolean,
+  onOikeusValvoaKunnalla: Boolean
 ) extends ValpasOppija
 
 object ValpasOppijaSuppeatTiedot {

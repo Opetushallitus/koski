@@ -22,7 +22,9 @@ case class ValpasOppijaRow(
   turvakielto: Boolean,
   äidinkieli: Option[String],
   oppivelvollisuusVoimassaAsti: LocalDate,
-  oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate
+  oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate,
+  onOikeusValvoaMaksuttomuutta: Boolean,
+  onOikeusValvoaKunnalla: Boolean
 )
 
 class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends DatabaseConverters with Logging with Timing {
@@ -48,7 +50,9 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       turvakielto = r.rs.getBoolean("turvakielto"),
       äidinkieli = Option(r.rs.getString("aidinkieli")),
       oppivelvollisuusVoimassaAsti = r.getLocalDate("oppivelvollisuusVoimassaAsti"),
-      oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = r.getLocalDate("oikeusKoulutuksenMaksuttomuuteenVoimassaAsti")
+      oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = r.getLocalDate("oikeusKoulutuksenMaksuttomuuteenVoimassaAsti"),
+      onOikeusValvoaMaksuttomuutta = r.rs.getBoolean("onOikeusValvoaMaksuttomuutta"),
+      onOikeusValvoaKunnalla = r.rs.getBoolean("onOikeusValvoaKunnalla")
     )
   })
 
@@ -359,6 +363,8 @@ WITH
     oppija.aidinkieli AS aidinkieli,
     oppija.oppivelvollisuus_voimassa_asti AS oppivelvollisuusVoimassaAsti,
     oppija.oikeus_koulutuksen_maksuttomuuteen_voimassa_asti AS oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
+    (oppija.oikeus_koulutuksen_maksuttomuuteen_voimassa_asti >= $tarkastelupäivä) AS onOikeusValvoaMaksuttomuutta,
+    (oppija.oppivelvollisuus_voimassa_asti >= $tarkastelupäivä) AS onOikeusValvoaKunnalla,
     json_agg(
       json_build_object(
         'oid', opiskeluoikeus.opiskeluoikeus_oid,

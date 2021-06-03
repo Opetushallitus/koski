@@ -192,7 +192,9 @@ class ValpasOppijaService(
           oikeutetutOppilaitokset = dbRow.oikeutetutOppilaitokset,
           opiskeluoikeudet = opiskeluoikeudet,
           oppivelvollisuusVoimassaAsti = dbRow.oppivelvollisuusVoimassaAsti,
-          oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = dbRow.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti
+          oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = dbRow.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
+          onOikeusValvoaKunnalla = dbRow.onOikeusValvoaKunnalla,
+          onOikeusValvoaMaksuttomuutta = dbRow.onOikeusValvoaMaksuttomuutta,
         )
       )
   }
