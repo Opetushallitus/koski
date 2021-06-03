@@ -28,13 +28,16 @@ class ValpasKuntailmoitusService(
   )(implicit session: ValpasSession): Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
     val organisaatioOid = kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio.oid
 
+    // TODO: Kuntailmoitus pitää voida tehdä myös OPPILAITOS_SUORITTAMINEN- ja KUNTA-oikeuksilla. Pitää tarkistaa
+    // myös organisaation tyyppi: kuntaoikeuksilla saa tehdä ilmoituksen ainoastaan kunnan nimissä, ja muilla
+    // oikeuksilla ainoastaan oppilaitoksen nimissä.
     accessResolver.assertAccessToOrg(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)(organisaatioOid).left.map(_ =>
       ValpasErrorCategory.forbidden.organisaatio(
         "Käyttäjällä ei ole oikeutta tehdä kuntailmoitusta annetun organisaation nimissä"
       ))
-      .flatMap(_ => oppijaService.getOppijaLaajatTiedot(kuntailmoitusInput.oppijaOid))
+      .flatMap(_ => oppijaService.getOppijaLaajatTiedot(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, kuntailmoitusInput.oppijaOid))
       .flatMap(oppija =>
-        accessResolver.withOppijaAccessAsOrganisaatio(organisaatioOid)(oppija)
+        accessResolver.withOppijaAccessAsOrganisaatio(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)(organisaatioOid)(oppija)
           .left.map(_ => ValpasErrorCategory.forbidden.oppija(
             "Käyttäjällä ei ole oikeuksia tehdä kuntailmoitusta annetusta oppijasta"
           ))
@@ -45,7 +48,7 @@ class ValpasKuntailmoitusService(
   def getKuntailmoitukset(
     oppija: ValpasOppijaLaajatTiedot
   )(implicit session: ValpasSession): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedot]] = {
-    accessResolver.withOppijaAccess(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)(oppija)
+    accessResolver.withOppijaAccess(oppija)
       .flatMap(oppija => repository.queryOppijat(oppija.henkilö.kaikkiOidit.toSet))
       .map(_.map(karsiHenkilötiedotJosEiOikeuksia(oppija)))
   }
@@ -215,7 +218,7 @@ class ValpasKuntailmoitusService(
 
   private def tarkistaOikeudetJaJärjestäOppijat(pohjatiedotInput: ValpasKuntailmoitusPohjatiedotInput)(
     oppijatHakutilanteilla: Seq[OppijaHakutilanteillaLaajatTiedot]
-  ): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
+  )(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
     def lessThanInputinJärjestyksenMukaan(
       a: OppijaHakutilanteillaLaajatTiedot,
       b: OppijaHakutilanteillaLaajatTiedot
@@ -223,16 +226,31 @@ class ValpasKuntailmoitusService(
       pohjatiedotInput.oppijaOidit.indexOf(a.oppija.henkilö.oid) < pohjatiedotInput.oppijaOidit.indexOf(b.oppija.henkilö.oid)
     }
 
-    // Tarkista, että jokainen inputtina annettu oppija löytyy saadulta listalta samalla oppija-oidilla. Oppijoiden
-    // master-slave-oideja ei tässä siis käsitellä, vaan palautetaan vaan virhe, jos kysely on tehty slave oidilla.
-    // Tämä ei käytännössä haittaa, koska käyttöliittymä perustuu aina master-oideina palautettuun oppija-dataan.
-    val oppijaOidsTietokannasta = oppijatHakutilanteilla.map(_.oppija.henkilö.oid)
-    if (pohjatiedotInput.oppijaOidit.toSet == oppijaOidsTietokannasta.toSet) {
-      // Järjestä oppijat samaan järjestykseen kuin pyynnössä. Melko tehoton sorttaus, mutta dataa ei ole paljon.
-      Right(oppijatHakutilanteilla.sortWith(lessThanInputinJärjestyksenMukaan))
-    } else {
-      Left(ValpasErrorCategory.forbidden.oppijat("Käyttäjällä ei ole oikeuksia kaikkien oppijoiden tietoihin"))
-    }
+    // Käyttäjällä pitää olla oikeus tehdä kuntailmoitus jokaiselle oppijalle:
+    // Oikeus on kaikilla muilla paitsi maksuttomuuskäyttäjillä.
+    HttpStatus.foldEithers(
+      oppijatHakutilanteilla.map(oppijaHakutilanteilla =>
+        accessResolver.withOppijaAccessAsAnyRole(
+          Seq(
+            ValpasRooli.OPPILAITOS_HAKEUTUMINEN,
+            ValpasRooli.OPPILAITOS_SUORITTAMINEN,
+            ValpasRooli.KUNTA
+          )
+        )(oppijaHakutilanteilla.oppija)
+      )
+    )
+      .flatMap(_ => {
+        // Tarkista, että jokainen inputtina annettu oppija löytyy saadulta listalta samalla oppija-oidilla. Oppijoiden
+        // master-slave-oideja ei tässä siis käsitellä, vaan palautetaan vaan virhe, jos kysely on tehty slave oidilla.
+        // Tämä ei käytännössä haittaa, koska käyttöliittymä perustuu aina master-oideina palautettuun oppija-dataan.
+        val oppijaOidsTietokannasta = oppijatHakutilanteilla.map(_.oppija.henkilö.oid)
+        if (pohjatiedotInput.oppijaOidit.toSet == oppijaOidsTietokannasta.toSet) {
+          // Järjestä oppijat samaan järjestykseen kuin pyynnössä. Melko tehoton sorttaus, mutta dataa ei ole paljon.
+          Right(oppijatHakutilanteilla.sortWith(lessThanInputinJärjestyksenMukaan))
+        } else {
+          Left(ValpasErrorCategory.forbidden.oppijat("Käyttäjällä ei ole oikeuksia kaikkien oppijoiden tietoihin"))
+        }
+      })
   }
 
   private def täydennäPohjatiedotOppijoidenTiedoilla(

@@ -123,8 +123,9 @@ class ValpasOppijaService(
     val errorClue = oppilaitosOidErrorClue(oppilaitosOid)
 
     accessResolver.assertAccessToOrg(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)(oppilaitosOid)
-      .map(_ => opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOid))
+      .map(_ => opiskeluoikeusDbService.getOppijat(oppilaitosOid))
       .flatMap(results => HttpStatus.foldEithers(results.map(asValpasOppijaLaajatTiedot)))
+      .map(accessResolver.filterByOppijaAccess(ValpasRooli.OPPILAITOS_HAKEUTUMINEN))
       .map(fetchHautIlmanYhteystietoja(errorClue))
   }
 
@@ -135,25 +136,33 @@ class ValpasOppijaService(
     val errorClue = oppilaitosOidErrorClue(oppilaitosOid)
 
     accessResolver.assertAccessToOrg(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)(oppilaitosOid)
-      .map(_ => opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOid))
+      .map(_ => opiskeluoikeusDbService.getOppijat(oppilaitosOid))
       .map(_.filter(oppijaRow => oppijaOids.contains(oppijaRow.oppijaOid)))
       .flatMap(results => HttpStatus.foldEithers(results.map(asValpasOppijaLaajatTiedot)))
+      .map(accessResolver.filterByOppijaAccess(ValpasRooli.OPPILAITOS_HAKEUTUMINEN))
       .map(fetchHautYhteystiedoilla(errorClue))
       .flatMap(oppijat => HttpStatus.foldEithers(oppijat.map(withVirallisetYhteystiedot)))
       .map(oppijat => oppijat.map(_.validate(koodistoviitepalvelu)))
   }
 
-  // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
-  // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
-  // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
+  def getOppijaLaajatTiedot
+    (rooli: ValpasRooli.Role, oppijaOid: ValpasHenkilö.Oid)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
+    opiskeluoikeusDbService.getOppija(oppijaOid)
+      .toRight(ValpasErrorCategory.forbidden.oppija())
+      .flatMap(asValpasOppijaLaajatTiedot)
+      .flatMap(accessResolver.withOppijaAccessAsRole(rooli))
+  }
+
   def getOppijaLaajatTiedot
     (oppijaOid: ValpasHenkilö.Oid)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
-    opiskeluoikeusDbService.getPeruskoulunValvojalleNäkyväOppija(oppijaOid)
+    opiskeluoikeusDbService.getOppija(oppijaOid)
       .toRight(ValpasErrorCategory.forbidden.oppija())
       .flatMap(asValpasOppijaLaajatTiedot)
-      .flatMap(accessResolver.withOppijaAccess(ValpasRooli.OPPILAITOS_HAKEUTUMINEN))
+      .flatMap(accessResolver.withOppijaAccess)
   }
 
   def getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla
@@ -291,9 +300,9 @@ class ValpasOppijaService(
   def setMuuHaku(key: OpiskeluoikeusLisätiedotKey, value: Boolean)(implicit session: ValpasSession): HttpStatus = {
     HttpStatus.justStatus(
       accessResolver.assertAccessToOrg(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)(key.oppilaitosOid)
-        .flatMap(_ => getOppijaLaajatTiedot(key.oppijaOid))
-        .flatMap(accessResolver.withOppijaAccessAsOrganisaatio(key.oppilaitosOid))
-        .flatMap(accessResolver.withOpiskeluoikeusAccess(key.opiskeluoikeusOid))
+        .flatMap(_ => getOppijaLaajatTiedot(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, key.oppijaOid))
+        .flatMap(accessResolver.withOppijaAccessAsOrganisaatio(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)(key.oppilaitosOid))
+        .flatMap(accessResolver.withOpiskeluoikeusAccess(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)(key.opiskeluoikeusOid))
         .flatMap(_ => lisätiedotRepository.setMuuHaku(key, value).toEither)
     )
   }

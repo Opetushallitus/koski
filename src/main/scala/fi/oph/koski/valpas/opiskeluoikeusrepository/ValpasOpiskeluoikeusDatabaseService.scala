@@ -31,11 +31,11 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   private val db = application.raportointiDatabase
   private val rajapäivätService = application.valpasRajapäivätService
 
-  def getPeruskoulunValvojalleNäkyväOppija(oppijaOid: String): Option[ValpasOppijaRow] =
-    getOppijat(Some(oppijaOid), None).filterNot(_.hakeutumisvalvovatOppilaitokset.isEmpty).headOption
+  def getOppija(oppijaOid: String): Option[ValpasOppijaRow] =
+    getOppijat(Some(oppijaOid), None).headOption
 
-  def getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOid: String): Seq[ValpasOppijaRow] =
-    getOppijat(None, Some(Seq(oppilaitosOid))).filterNot(_.hakeutumisvalvovatOppilaitokset.isEmpty)
+  def getOppijat(oppilaitosOid: String): Seq[ValpasOppijaRow] =
+    getOppijat(None, Some(Seq(oppilaitosOid)))
 
   private implicit def getResult: GetResult[ValpasOppijaRow] = GetResult(r => {
     ValpasOppijaRow(
@@ -180,8 +180,8 @@ WITH
         )
       )
   )
-  -- CTE: kaikki uuden lain piirissä olevat oppijat, joilla on vähintään yksi hakeutumisvalvottava opiskeluoikeus,
-  -- mukana myös taulukko kelpuutettavien opiskeluoikeuksien oppilaitoksista käyttöoikeustarkastelua varten.
+  -- CTE: kaikki uuden lain piirissä olevat oppijat, joilla on vähintään yksi oppivelvollisuuden suorittamiseen kelpaava opiskeluoikeus,
+  -- mukana myös taulukko hakeutumisvalvontaan kelpuutettavien opiskeluoikeuksien oppilaitoksista käyttöoikeustarkastelua varten.
   , oppija AS (
     SELECT
       DISTINCT r_henkilo.master_oid,
@@ -204,6 +204,9 @@ WITH
       LEFT JOIN hakeutumisvalvottava_opiskeluoikeus ON hakeutumisvalvottava_opiskeluoikeus.master_oid = r_henkilo.master_oid
       -- Haetaan kaikki oppijan oidit: pitää palauttaa esim. kuntailmoitusten kyselyä varten
       JOIN r_henkilo kaikki_henkilot ON kaikki_henkilot.master_oid = r_henkilo.master_oid
+    WHERE
+      -- Oppijalla on oltava vähintään yksi oppivelvollisuuskelvollinen opiskeluoikeus:
+      EXISTS (SELECT 1 FROM ov_kelvollinen_opiskeluoikeus WHERE ov_kelvollinen_opiskeluoikeus.master_oid = r_henkilo.master_oid)
     GROUP BY
       r_henkilo.master_oid,
       r_henkilo.hetu,

@@ -22,7 +22,7 @@ object ValpasMockUsers {
     "pääkäyttäjä",
     "valpas-pää-hakeutuminen",
     "1.2.246.562.24.12312312200",
-    pääkäyttäjä
+    hakeutuminenPääkäyttäjä
   )
 
   val valpasHelsinki = ValpasMockUser(
@@ -58,6 +58,13 @@ object ValpasMockUsers {
     "valpas-jkl-normaali",
     "1.2.246.562.24.12312312302",
     peruskoulunJossa10LuokkaKäyttäjä(jyväskylänNormaalikoulu) ++ toisenAsteenKäyttäjä(jyväskylänNormaalikoulu)
+  )
+
+  val valpasJklNormaalikouluPelkkäPeruskoulu = ValpasMockUser(
+    "käyttäjä",
+    "valpas-jkl-normaali-perus",
+    "1.2.246.562.24.12312312392",
+    peruskoulunKäyttäjä(jyväskylänNormaalikoulu)
   )
 
   val valpasAapajoenKoulu = ValpasMockUser(
@@ -109,11 +116,18 @@ object ValpasMockUsers {
     peruskoulunKäyttäjä(saksalainenKoulu)
   )
 
-  val valpasPelkkäMaksuttomuuskäyttäjä = ValpasMockUser(
+  val valpasPelkkäMaksuttomuusKäyttäjä = ValpasMockUser(
     "käyttäjä",
     "valpas-pelkkä-maksuttomuus",
     "1.2.246.562.24.12315312647",
     oppilaitosKäyttäjäPelkkäMaksuttomuus(jyväskylänNormaalikoulu)
+  )
+
+  val valpasPelkkäSuorittaminenkäyttäjä = ValpasMockUser(
+    "käyttäjä",
+    "valpas-pelkkä-suorittaminen",
+    "1.2.246.562.24.12315312356",
+    oppilaitosKäyttäjäPelkkäSuorittaminen(jyväskylänNormaalikoulu)
   )
 
   val valpasMaksuttomuusJaHelsinkiKäyttäjä = ValpasMockUser(
@@ -140,6 +154,7 @@ object ValpasMockUsers {
         valpasPyhtääJaAapajoenPeruskoulu,
         valpasHelsinkiPeruskoulu,
         valpasJklNormaalikoulu,
+        valpasJklNormaalikouluPelkkäPeruskoulu,
         valpasAapajoenKoulu,
         valpasJklYliopisto,
         valpasJklNormaalikouluJaKoskiHelsinkiTallentaja,
@@ -147,9 +162,10 @@ object ValpasMockUsers {
         valpasKulosaariPeruskoulu,
         valpasUseampiPeruskoulu,
         valpasSaksalainenKoulu,
-        valpasPelkkäMaksuttomuuskäyttäjä,
+        valpasPelkkäMaksuttomuusKäyttäjä,
         valpasMaksuttomuusJaHelsinkiKäyttäjä,
-        valpasMaksuttomuusJaHelsinkiKoskiKäyttäjä
+        valpasMaksuttomuusJaHelsinkiKoskiKäyttäjä,
+        valpasPelkkäSuorittaminenkäyttäjä
       )
     } else {
       List()

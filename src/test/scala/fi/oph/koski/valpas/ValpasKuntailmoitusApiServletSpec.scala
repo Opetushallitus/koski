@@ -459,7 +459,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
 
     post("/valpas/api/kuntailmoitus",
       body = minimiKuntailmoitus,
-      headers = authHeaders(ValpasMockUsers.valpasPelkkäMaksuttomuuskäyttäjä) ++ jsonContent
+      headers = authHeaders(ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä) ++ jsonContent
     ) {
       verifyResponseStatus(
         403,

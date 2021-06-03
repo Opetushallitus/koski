@@ -13,7 +13,7 @@ import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService.defaultMockTarkastelupäivä
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{MockValpasRajapäivätService, ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot, ValpasOppijaSuppeatTiedot, ValpasRajapäivätService}
 import fi.oph.koski.valpas.valpasrepository.{ValpasExampleData, ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusLaajatTiedotJaOppijaOid}
-import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
+import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers, ValpasRooli}
 import org.scalatest.BeforeAndAfterEach
 
 class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
@@ -263,7 +263,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
   }
 
   "getOppijat palauttaa yhden oppilaitoksen oppijat oikein käyttäjälle, jolla globaalit oikeudet" in {
-    val oppijat = oppijaService.getOppijatSuppeatTiedot(oppilaitos)(session(ValpasMockUsers.valpasOphPääkäyttäjä))
+    val oppijat = oppijaService.getOppijatSuppeatTiedot(oppilaitos)(session(ValpasMockUsers.valpasOphHakeutuminenPääkäyttäjä))
       .toOption.get.map(_.oppija)
 
     oppijat.map(_.henkilö.oid) shouldBe oppivelvolliset.map(_._1.oid)
@@ -508,67 +508,94 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
   }
 
   "Peruskoulun opo saa haettua oman oppilaitoksen oppijan tiedot" in {
-    canAccessOppija(
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
       ValpasMockUsers.valpasJklNormaalikoulu
     ) shouldBe true
   }
 
   "Peruskoulun opo ei saa haettua toisen oppilaitoksen oppijan tietoja" in {
-    canAccessOppija(
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
       ValpasMockUsers.valpasHelsinkiPeruskoulu
     ) shouldBe false
   }
 
   "Käyttäjä, jolla hakeutumisen tarkastelun oikeudet ja koulutusjärjestäjän organisaatio, näkee oppijan" in {
-    canAccessOppija(
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
       ValpasMockUsers.valpasJklYliopisto
     ) shouldBe true
   }
 
   "Käyttäjä, jolla globaalit oikeudet, näkee oppijan" in {
-    canAccessOppija(
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
       ValpasMockOppijat.aapajoenPeruskoulustaValmistunut,
       ValpasMockUsers.valpasOphPääkäyttäjä
     ) shouldBe true
   }
 
+  "Käyttäjä, jolla maksuttomuusoikeudet, näkee peruskoulusta valmistuneen oppijan" in {
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
+      ValpasMockOppijat.aapajoenPeruskoulustaValmistunut,
+      ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä
+    ) shouldBe true
+  }
+
+  "Käyttäjä, jolla kunnan oikeudet, näkee peruskoulusta valmistuneen oppijan" in {
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
+      ValpasMockOppijat.aapajoenPeruskoulustaValmistunut,
+      ValpasMockUsers.valpasHelsinki
+    ) shouldBe true
+  }
+
   "Käyttäjä, jolla globaalit oikeudet, ei näe liian vanhaa oppijaa" in {
-    canAccessOppija(
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
       ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004,
       ValpasMockUsers.valpasOphPääkäyttäjä
     ) shouldBe false
   }
 
   "Käyttäjä, jolla globaalit oikeudet, ei näe oppijaa, joka on valmistunut peruskoulusta ennen lain rajapäivää" in {
-    canAccessOppija(
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
       ValpasMockOppijat.ennenLainRajapäivääPeruskoulustaValmistunut,
       ValpasMockUsers.valpasOphPääkäyttäjä
     ) shouldBe false
   }
 
-  "Käyttäjä, jolla globaalit oikeudet, ei näe oppijaa, joka on valmistunut peruskoulusta yli 2 kk aiemmin" in {
-    canAccessOppija(
+  "Käyttäjä, jolla OPPILAITOS_HAKEUTUMINEN globaalit oikeudet, ei näe oppijaa, joka on valmistunut peruskoulusta yli 2 kk aiemmin" in {
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
       ValpasMockOppijat.yli2kkAiemminPeruskoulustaValmistunut,
-      ValpasMockUsers.valpasOphPääkäyttäjä
-    ) shouldBe false
-  }
-
-  "Käyttäjä, jolla OPPILAITOS_HAKEUTUMINEN globaalit oikeudet, ei näe lukio-oppijaa" in {
-    canAccessOppija(
-      ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004,
       ValpasMockUsers.valpasOphHakeutuminenPääkäyttäjä
     ) shouldBe false
   }
 
-  "Käyttäjä, jolla globaalit oikeudet, ei näe lukio-oppijaa" in {
-    // TODO: Tämä tulee muuttumaan, kun toteutetaan muut kuin OPPILAITOS_HAKEUTUMINEN oikeudet
-    canAccessOppija(
-      ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004,
-      ValpasMockUsers.valpasOphPääkäyttäjä
+  "Käyttäjä, jolla vain globaalit OPPILAITOS_HAKEUTUMINEN oikeudet, ei näe lukio-oppijaa" in {
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
+      ValpasMockOppijat.lukioOpiskelija,
+      ValpasMockUsers.valpasOphHakeutuminenPääkäyttäjä
     ) shouldBe false
+  }
+
+  "Käyttäjä, jolla globaalit oikeudet näkee lukio-oppijan" in {
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
+      ValpasMockOppijat.lukioOpiskelija,
+      ValpasMockUsers.valpasOphPääkäyttäjä
+    ) shouldBe true
+  }
+
+  "Käyttäjä, jolla maksuttomuusoikeudet näkee lukio-oppijan" in {
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
+      ValpasMockOppijat.lukioOpiskelija,
+      ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä
+    ) shouldBe true
+  }
+
+  "Käyttäjä, jolla kunnan oikeudet näkee lukio-oppijan" in {
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
+      ValpasMockOppijat.lukioOpiskelija,
+      ValpasMockUsers.valpasHelsinki
+    ) shouldBe true
   }
 
   def validateOppijaLaajatTiedot(
@@ -786,8 +813,9 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     }
   }
 
-  private def canAccessOppija(oppija: LaajatOppijaHenkilöTiedot, user: ValpasMockUser): Boolean =
+  private def canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(oppija: LaajatOppijaHenkilöTiedot, user: ValpasMockUser): Boolean =
     oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(oppija.oid)(session(user)).isRight
+
 }
 
 case class ExpectedData(

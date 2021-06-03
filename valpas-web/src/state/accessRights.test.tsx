@@ -5,7 +5,7 @@ import { Route } from "react-router-dom"
 import {
   KäyttöoikeusroolitProvider,
   WithRequiresAccessRightsProps,
-  withRequiresHakeutumisenOrMaksuttomuudenValvonta,
+  withRequiresHakeutumisenOrMaksuttomuudenValvontaOrKunta,
   withRequiresHakeutumisenValvonta,
 } from "./accessRights"
 import { Kayttooikeusrooli, OrganisaatioJaKayttooikeusrooli } from "./common"
@@ -15,8 +15,8 @@ describe("accessRights hocit", () => {
     <div>Hakeutumisen valvonta</div>
   ))
 
-  const HakeutumisenTaiMaksuttomuudenValvonta = withRequiresHakeutumisenOrMaksuttomuudenValvonta(
-    () => <div>Hakeutumisen tai maksuttomuuden valvonta</div>
+  const HakeutumisenTaiMaksuttomuudenTaiKunnanValvonta = withRequiresHakeutumisenOrMaksuttomuudenValvontaOrKunta(
+    () => <div>Hakeutumisen tai maksuttomuuden valvonta tai kunta</div>
   )
 
   it("Hakeutumisen valvonta: ei käyttöoikeuksia", async () => {
@@ -40,26 +40,43 @@ describe("accessRights hocit", () => {
     await expectResult(app, "Ei oikeuksia")
   })
 
-  it("Hakeutumisen- tai maksuttomuuden valvonta: hakeutumisoikeudet", async () => {
+  it("Hakeutumisen- tai maksuttomuuden tai kunnan valvonta: hakeutumisoikeudet", async () => {
     const app = renderApp(
       [rooli("OPPILAITOS_HAKEUTUMINEN")],
-      HakeutumisenTaiMaksuttomuudenValvonta
+      HakeutumisenTaiMaksuttomuudenTaiKunnanValvonta
     )
-    await expectResult(app, "Hakeutumisen tai maksuttomuuden valvonta")
+    await expectResult(
+      app,
+      "Hakeutumisen tai maksuttomuuden valvonta tai kunta"
+    )
   })
 
-  it("Hakeutumisen- tai maksuttomuuden valvonta: maksuttomuusoikeudet", async () => {
+  it("Hakeutumisen- tai maksuttomuuden tai kunnan valvonta: maksuttomuusoikeudet", async () => {
     const app = renderApp(
       [rooli("OPPILAITOS_MAKSUTTOMUUS")],
-      HakeutumisenTaiMaksuttomuudenValvonta
+      HakeutumisenTaiMaksuttomuudenTaiKunnanValvonta
     )
-    await expectResult(app, "Hakeutumisen tai maksuttomuuden valvonta")
+    await expectResult(
+      app,
+      "Hakeutumisen tai maksuttomuuden valvonta tai kunta"
+    )
   })
 
-  it("Hakeutumisen- tai maksuttomuuden valvonta: väärät käyttöoikeudet", async () => {
+  it("Hakeutumisen- tai maksuttomuuden tai kunnan valvonta: kunnan oikeudet", async () => {
+    const app = renderApp(
+      [rooli("KUNTA")],
+      HakeutumisenTaiMaksuttomuudenTaiKunnanValvonta
+    )
+    await expectResult(
+      app,
+      "Hakeutumisen tai maksuttomuuden valvonta tai kunta"
+    )
+  })
+
+  it("Hakeutumisen- tai maksuttomuuden tai kunnan valvonta: väärät käyttöoikeudet", async () => {
     const app = renderApp(
       [rooli("OPPILAITOS_SUORITTAMINEN")],
-      HakeutumisenTaiMaksuttomuudenValvonta
+      HakeutumisenTaiMaksuttomuudenTaiKunnanValvonta
     )
     await expectResult(app, "Ei oikeuksia")
   })
