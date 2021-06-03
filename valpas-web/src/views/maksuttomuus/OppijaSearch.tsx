@@ -87,7 +87,9 @@ const OppijaSearchResults = (props: OppijaSearchResultsProps) => {
 }
 
 const OppijaSearchUndefinedResult = () => (
-  <div className={b("resultvalue")}>Maksuttomuutta ei pystytä päättelemään</div>
+  <div className={b("resultvalue")}>
+    <T id="oppijahaku__maksuttomuutta_ei_pysty_päättelemään" />
+  </div>
 )
 
 type OppijaSearchMatchResultProps = {

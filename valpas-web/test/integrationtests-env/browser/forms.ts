@@ -57,3 +57,8 @@ export const isCheckboxChecked = async (selector: string): Promise<boolean> => {
   const input = await $(selector)
   return input.getAttribute("checked").then((c) => !!c)
 }
+
+export const inputIsEnabled = async (selector: string): Promise<boolean> => {
+  const input = await $(selector)
+  return input.getAttribute("disabled").then((c) => !c)
+}
