@@ -245,7 +245,7 @@ class ValpasKuntailmoitusService(
       val uudetPohjatietojenYhteystiedot =
         oppija.yhteystiedot.map(yhteystiedotOppijanYhteystiedoista(pohjatiedot.maat, pohjatiedot.kunnat))
 
-      mahdollisetTekijäOrganisaatiot(tekijäOrganisaatio, oppija.oppija.oikeutetutOppilaitokset)
+      mahdollisetTekijäOrganisaatiot(tekijäOrganisaatio, oppija.oppija.hakeutumisvalvovatOppilaitokset)
         .map(mahdollisetTekijäOrganisaatiot => ValpasOppijanPohjatiedot(
           oppijaOid =
             oppija.oppija.henkilö.oid,

@@ -21,7 +21,7 @@ trait ValpasOppija {
 
 case class ValpasOppijaLaajatTiedot(
   henkilö: ValpasHenkilöLaajatTiedot,
-  oikeutetutOppilaitokset: Set[ValpasOppilaitos.Oid],
+  hakeutumisvalvovatOppilaitokset: Set[ValpasOppilaitos.Oid],
   opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot],
   oppivelvollisuusVoimassaAsti: LocalDate,
   oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate,

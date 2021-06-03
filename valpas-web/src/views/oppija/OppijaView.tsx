@@ -133,7 +133,8 @@ type BackNavProps = {
 
 const BackNav = (props: BackNavProps) => {
   const organisaatioOid =
-    props.organisaatioRef || props.oppija?.oppija.oikeutetutOppilaitokset[0]
+    props.organisaatioRef ||
+    props.oppija?.oppija.hakeutumisvalvovatOppilaitokset[0]
   const targetPath =
     props.prevPage ||
     (organisaatioOid

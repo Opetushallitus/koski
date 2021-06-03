@@ -32,13 +32,13 @@ class ValpasAccessResolver {
   )(
     implicit session: ValpasSession
   ): Either[HttpStatus, T] = {
-    Either.cond(accessToSomeOrgs(rooli)(oppija.oikeutetutOppilaitokset), oppija, ValpasErrorCategory.forbidden.oppija())
+    Either.cond(accessToSomeOrgs(rooli)(oppija.hakeutumisvalvovatOppilaitokset), oppija, ValpasErrorCategory.forbidden.oppija())
   }
 
   def withOppijaAccessAsOrganisaatio[T <: ValpasOppijaLaajatTiedot]
     (organisaatioOid: Organisaatio.Oid)(oppija: T)
   : Either[HttpStatus, T] = {
-    Either.cond(oppija.oikeutetutOppilaitokset.contains(organisaatioOid), oppija, ValpasErrorCategory.forbidden.oppija())
+    Either.cond(oppija.hakeutumisvalvovatOppilaitokset.contains(organisaatioOid), oppija, ValpasErrorCategory.forbidden.oppija())
   }
 
   def withOpiskeluoikeusAccess[T <: ValpasOppijaLaajatTiedot]

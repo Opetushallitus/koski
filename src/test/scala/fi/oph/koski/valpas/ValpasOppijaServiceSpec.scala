@@ -598,7 +598,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       oppija.henkilö.äidinkieli shouldBe expectedOppija.äidinkieli
 
       val expectedOikeutetutOppilaitokset = expectedData.filter(_.onOikeutettuOppilaitos).map(_.opiskeluoikeus.oppilaitos.get.oid).toSet
-      oppija.oikeutetutOppilaitokset shouldBe expectedOikeutetutOppilaitokset
+      oppija.hakeutumisvalvovatOppilaitokset shouldBe expectedOikeutetutOppilaitokset
 
       oppija.onOikeusValvoaMaksuttomuutta shouldBe true // TODO: true aina, koska toistaiseksi tutkitaan vain peruskoulun hakeutumisvalvottavia
       oppija.onOikeusValvoaKunnalla shouldBe true // TODO: true aina, koska toistaiseksi tutkitaan vain peruskoulun hakeutumisvalvottavia

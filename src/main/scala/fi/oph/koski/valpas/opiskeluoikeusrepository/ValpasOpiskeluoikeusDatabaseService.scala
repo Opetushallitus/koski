@@ -17,7 +17,7 @@ case class ValpasOppijaRow(
   syntymäaika: Option[LocalDate],
   etunimet: String,
   sukunimi: String,
-  oikeutetutOppilaitokset: Set[ValpasOppilaitos.Oid],
+  hakeutumisvalvovatOppilaitokset: Set[ValpasOppilaitos.Oid],
   opiskeluoikeudet: JValue,
   turvakielto: Boolean,
   äidinkieli: Option[String],
@@ -32,10 +32,10 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   private val rajapäivätService = application.valpasRajapäivätService
 
   def getPeruskoulunValvojalleNäkyväOppija(oppijaOid: String): Option[ValpasOppijaRow] =
-    getOppijat(Some(oppijaOid), None).filterNot(_.oikeutetutOppilaitokset.isEmpty).headOption
+    getOppijat(Some(oppijaOid), None).filterNot(_.hakeutumisvalvovatOppilaitokset.isEmpty).headOption
 
   def getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOid: String): Seq[ValpasOppijaRow] =
-    getOppijat(None, Some(Seq(oppilaitosOid))).filterNot(_.oikeutetutOppilaitokset.isEmpty)
+    getOppijat(None, Some(Seq(oppilaitosOid))).filterNot(_.hakeutumisvalvovatOppilaitokset.isEmpty)
 
   private implicit def getResult: GetResult[ValpasOppijaRow] = GetResult(r => {
     ValpasOppijaRow(
@@ -45,7 +45,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       syntymäaika = Option(r.getLocalDate("syntymaaika")),
       etunimet = r.rs.getString("etunimet"),
       sukunimi = r.rs.getString("sukunimi"),
-      oikeutetutOppilaitokset = r.getArray("oikeutetutOppilaitokset").toSet,
+      hakeutumisvalvovatOppilaitokset = r.getArray("hakeutumisvalvovatOppilaitokset").toSet,
       opiskeluoikeudet = r.getJson("opiskeluoikeudet"),
       turvakielto = r.rs.getBoolean("turvakielto"),
       äidinkieli = Option(r.rs.getString("aidinkieli")),
@@ -189,7 +189,7 @@ WITH
       r_henkilo.syntymaaika,
       r_henkilo.etunimet,
       r_henkilo.sukunimi,
-      array_remove(array_agg(DISTINCT hakeutumisvalvottava_opiskeluoikeus.oppilaitos_oid), NULL) AS oikeutettu_oppilaitos_oids,
+      array_remove(array_agg(DISTINCT hakeutumisvalvottava_opiskeluoikeus.oppilaitos_oid), NULL) AS hakeutumisvalvova_oppilaitos_oids,
       array_remove(array_agg(DISTINCT hakeutumisvalvottava_opiskeluoikeus.opiskeluoikeus_oid), NULL) AS hakeutumisvalvottava_opiskeluoikeus_oids,
       r_henkilo.turvakielto,
       r_henkilo.aidinkieli,
@@ -358,7 +358,7 @@ WITH
     oppija.syntymaaika,
     oppija.etunimet,
     oppija.sukunimi,
-    oppija.oikeutettu_oppilaitos_oids AS oikeutetutOppilaitokset,
+    oppija.hakeutumisvalvova_oppilaitos_oids AS hakeutumisvalvovatOppilaitokset,
     oppija.turvakielto AS turvakielto,
     oppija.aidinkieli AS aidinkieli,
     oppija.oppivelvollisuus_voimassa_asti AS oppivelvollisuusVoimassaAsti,
@@ -414,7 +414,7 @@ WITH
     oppija.syntymaaika,
     oppija.etunimet,
     oppija.sukunimi,
-    oppija.oikeutettu_oppilaitos_oids,
+    oppija.hakeutumisvalvova_oppilaitos_oids,
     oppija.turvakielto,
     oppija.aidinkieli,
     oppija.oppivelvollisuus_voimassa_asti,
