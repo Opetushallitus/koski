@@ -86,40 +86,56 @@ WITH
       """),
         Some(
           sql"""
-  -- CTE: opiskeluoikeudet, joiden hakeutumista oppilaitoksella on oikeus valvoa tällä hetkellä
-  -- TODO: Tämä toimii vain peruskoulun hakeutumisen valvojille tällä hetkellä. Pitää laajentaa kattamaan myös nivelvaihe.
-  hakeutumisvalvottava_opiskeluoikeus AS (
+  -- CTE: Kaikki opiskeluoikeudet, jotka ovat oppivelvollisuuden suorittamiseen kelpaavia
+  ov_kelvollinen_opiskeluoikeus AS (
     SELECT
       DISTINCT r_opiskeluoikeus.opiskeluoikeus_oid,
       r_opiskeluoikeus.oppilaitos_oid,
+      r_opiskeluoikeus.alkamispaiva,
+      r_opiskeluoikeus.paattymispaiva,
+      r_opiskeluoikeus.viimeisin_tila,
+      r_opiskeluoikeus.data,
+      r_opiskeluoikeus.koulutusmuoto,
       r_henkilo.master_oid
     FROM
       r_henkilo
       -- oppivelvollisuustiedot-näkymä hoitaa syntymäaika- ja mahdollisen peruskoulusta ennen lain voimaantuloa valmistumisen
-      -- tarkistuksen: siinä ei ole tietoja kuin oppijoista, jotka ovat oppivelvollisuuden laajentamislain piirissä eivätkä
-      -- vielä valmistuneet
+      -- tarkistuksen: siinä ei ole tietoja kuin oppijoista, jotka ovat oppivelvollisuuden laajentamislain piirissä
       JOIN oppivelvollisuustiedot ON oppivelvollisuustiedot.oppija_oid = r_henkilo.oppija_oid
-      JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = r_henkilo.oppija_oid      """),
+      JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = r_henkilo.oppija_oid
+      """),
         oppilaitosOids.map(oids => sql"AND r_opiskeluoikeus.oppilaitos_oid = any($oids)"),
         oppijaOid.map(oid => sql"JOIN pyydetty_oppija ON pyydetty_oppija.master_oid = r_henkilo.master_oid"),
         Some(
           sql"""
-      JOIN r_paatason_suoritus ON r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-      LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella ON aikajakson_keskella.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+    WHERE
+      r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE
+  )
+  -- CTE: opiskeluoikeudet, joiden hakeutumista oppilaitoksella on oikeus valvoa tällä hetkellä
+  -- TODO: Tämä toimii vain peruskoulun hakeutumisen valvojille tällä hetkellä. Pitää laajentaa kattamaan myös nivelvaihe.
+  , hakeutumisvalvottava_opiskeluoikeus AS (
+    SELECT
+      DISTINCT ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid,
+      ov_kelvollinen_opiskeluoikeus.oppilaitos_oid,
+      ov_kelvollinen_opiskeluoikeus.master_oid
+    FROM
+      ov_kelvollinen_opiskeluoikeus
+      JOIN r_paatason_suoritus ON r_paatason_suoritus.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
+      LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella ON aikajakson_keskella.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
         AND $tarkastelupäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
       -- Lasketaan voimassaolevien kotiopetusjaksojen määrä ehtoa varten
       CROSS JOIN LATERAL (
         SELECT
           count(*) AS count
         FROM
-          jsonb_array_elements(r_opiskeluoikeus.data -> 'lisätiedot' -> 'kotiopetusjaksot') jaksot
+          jsonb_array_elements(ov_kelvollinen_opiskeluoikeus.data -> 'lisätiedot' -> 'kotiopetusjaksot') jaksot
         WHERE
           jaksot ->> 'loppu' IS NULL
             OR $tarkastelupäivä BETWEEN jaksot ->> 'alku' AND jaksot ->> 'loppu'
       ) kotiopetusjaksoja
     WHERE
       -- (1) oppijalla on peruskoulun opiskeluoikeus
-      r_opiskeluoikeus.koulutusmuoto = 'perusopetus'
+      ov_kelvollinen_opiskeluoikeus.koulutusmuoto = 'perusopetus'
       AND r_paatason_suoritus.suorituksen_tyyppi = 'perusopetuksenvuosiluokka'
       -- (2) kyseisessä opiskeluoikeudessa on yhdeksännen luokan suoritus.
       AND r_paatason_suoritus.koulutusmoduuli_koodiarvo = '9'
@@ -129,8 +145,8 @@ WITH
       -- (4)  opiskeluoikeus ei ole eronnut tilassa tällä hetkellä
       AND (
         (aikajakson_keskella.tila IS NOT NULL AND NOT aikajakson_keskella.tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
-        OR (aikajakson_keskella.tila IS NULL AND $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva)
-        OR (aikajakson_keskella.tila IS NULL AND $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva AND NOT r_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
+        OR (aikajakson_keskella.tila IS NULL AND $tarkastelupäivä < ov_kelvollinen_opiskeluoikeus.alkamispaiva)
+        OR (aikajakson_keskella.tila IS NULL AND $tarkastelupäivä > ov_kelvollinen_opiskeluoikeus.paattymispaiva AND NOT ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
       )
       AND (
         -- (5a) opiskeluoikeus on läsnä tai väliaikaisesti keskeytynyt tai lomalla tällä hetkellä. Huomaa, että tulevaisuuteen luotuja opiskeluoikeuksia ei tarkoituksella haluta näkyviin.
@@ -140,25 +156,26 @@ WITH
         -- TAI:
         OR (
           -- (5b.1 ) opiskeluoikeus on valmistunut-tilassa, ja siitä löytyy vahvistettu päättötodistus
-          ($tarkastelupäivä >= r_opiskeluoikeus.paattymispaiva AND r_opiskeluoikeus.viimeisin_tila = 'valmistunut')
+          ($tarkastelupäivä >= ov_kelvollinen_opiskeluoikeus.paattymispaiva AND ov_kelvollinen_opiskeluoikeus.viimeisin_tila = 'valmistunut')
           -- (5b.2 ) ministeriön määrittelemä aikaraja ei ole kulunut umpeen henkilön valmistumisajasta.
           AND (
             (
               -- keväällä valmistunut ja tarkastellaan heille määrättyä rajapäivää aiemmin
-              (r_opiskeluoikeus.paattymispaiva BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
+              (ov_kelvollinen_opiskeluoikeus.paattymispaiva BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
               AND $tarkastelupäivä <= $keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
             )
             OR (
               -- tai muuna aikana valmistunut ja tarkastellaan heille määrättyä rajapäivää aiemmin
-              (r_opiskeluoikeus.paattymispaiva NOT BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
-              AND (r_opiskeluoikeus.paattymispaiva >= $keväänUlkopuolellaValmistumisjaksoAlku)
+              (ov_kelvollinen_opiskeluoikeus.paattymispaiva NOT BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
+              AND (ov_kelvollinen_opiskeluoikeus.paattymispaiva >= $keväänUlkopuolellaValmistumisjaksoAlku)
             )
           )
         )
       )
   )
-  -- CTE: kaikki uuden lain piirissä olevat oppijat, joilla on vähintään yksi kelpuutettava peruskoulun opiskeluoikeus,
+  -- CTE: kaikki uuden lain piirissä olevat oppijat, joilla on vähintään yksi hakeutumisvalvottava opiskeluoikeus,
   -- mukana myös taulukko kelpuutettavien opiskeluoikeuksien oppilaitoksista käyttöoikeustarkastelua varten.
+  -- TODO: Ei pitäisi rajoittua hakeutumisvalvottaviin: mukaan myös muut käyttöoikeudet.
   , oppija AS (
     SELECT
       DISTINCT r_henkilo.master_oid,
@@ -176,8 +193,7 @@ WITH
     FROM
       r_henkilo
       -- oppivelvollisuustiedot-näkymä hoitaa syntymäaika- ja mahdollisen peruskoulusta ennen lain voimaantuloa valmistumisen
-      -- tarkistuksen: siinä ei ole tietoja kuin oppijoista, jotka ovat oppivelvollisuuden laajentamislain piirissä eivätkä
-      -- vielä valmistuneet
+      -- tarkistuksen: siinä ei ole tietoja kuin oppijoista, jotka ovat oppivelvollisuuden laajentamislain piirissä
       JOIN oppivelvollisuustiedot ON oppivelvollisuustiedot.oppija_oid = r_henkilo.oppija_oid
       JOIN hakeutumisvalvottava_opiskeluoikeus ON hakeutumisvalvottava_opiskeluoikeus.master_oid = r_henkilo.master_oid
       -- Haetaan kaikki oppijan oidit: pitää palauttaa esim. kuntailmoitusten kyselyä varten
