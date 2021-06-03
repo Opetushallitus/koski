@@ -115,6 +115,15 @@ object Oppivelvollisuustiedot {
       """
   }
 
+  def createIndexes(s: Schema) = {
+    sqlu"""
+          create index on #${s.name}.oppivelvollisuustiedot (
+               oppija_oid,
+               oppivelvollisuusvoimassaasti,
+               oikeuskoulutuksenmaksuttomuuteenvoimassaasti
+          )"""
+  }
+
   implicit private val oppivelvollisuustietoGetResult: GetResult[Oppivelvollisuustieto] = GetResult(row =>
     Oppivelvollisuustieto(
       oid = row.rs.getString("oppija_oid"),
