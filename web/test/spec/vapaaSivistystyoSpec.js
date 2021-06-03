@@ -3,6 +3,7 @@ describe('VST', function () {
   var vst = VSTSuoritukset()
   var editor = opinnot.opiskeluoikeusEditor()
   var addOppija = AddOppijaPage()
+  var page = KoskiPage()
 
   describe('Opiskeluoikeuden lisääminen oppivelollisten suorituksella', function () {
     before(
@@ -106,6 +107,22 @@ describe('VST', function () {
           expect(extractAsText(S('.yhteislaajuus'))).to.equal('Yhteensä 55 op')
         })
       })
+    })
+  })
+
+  describe('Kotoutuskoulutus', function () {
+    before(
+      Authentication().login(),
+      page.openPage,
+      page.oppijaHaku.searchAndSelect('260769-598H'),
+      opinnot.avaaKaikki
+    )
+
+    it('kielisuorituksen arvioinnin taitotasot näkyvät', function () {
+      expect(extractAsText(S('.kuullunYmmärtämisenTaitotaso'))).to.equal('Kuullun ymmärtämisen taitotaso Yli C1.1')
+      expect(extractAsText(S('.puhumisenTaitotaso'))).to.equal('Puhumisen taitotaso Yli C1.1')
+      expect(extractAsText(S('.luetunYmmärtämisenTaitotaso'))).to.equal('Luetun ymmärtämisen taitotaso Yli C1.1')
+      expect(extractAsText(S('.kirjoittamisenTaitotaso'))).to.equal('Kirjoittamisen taitotaso Yli C1.1')
     })
   })
 })

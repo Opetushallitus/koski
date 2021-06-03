@@ -20,7 +20,8 @@ export const isMuunAmmatillisenKoulutuksenOsasuorituksenSuoritus = suoritus => s
 export const isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus = suoritus => suoritus.value.classes.includes('tutkinnonosaapienemmistakokonaisuuksistakoostuvasuoritus')
 export const isNäyttötutkintoonValmistava = suoritus => suoritus.value.classes.includes('nayttotutkintoonvalmistavankoulutuksensuoritus')
 export const isYlioppilastutkinto = suoritus => suoritus.value.classes.includes('ylioppilastutkinnonsuoritus')
-export const isVapaanSivistystyönOppivelvollisitenSuoritus =  suoritus => suoritus.value.classes.includes('oppivelvollisillesuunnattuvapaansivistystyonkoulutuksensuoritus')
+export const isVapaanSivistystyönOppivelvollistenSuoritus = suoritus => suoritus.value.classes.includes('oppivelvollisillesuunnattuvapaansivistystyonkoulutuksensuoritus')
+export const isMaahanmuuttajienKotoutumiskoulutuksenSuoritus = suoritus => suoritus.value.classes.includes('oppivelvollisillesuunnattumaahanmuuttajienkotoutumiskoulutuksensuoritus')
 
 export const getLaajuusYksikkö = (suoritus) => {
   const laajuusModel = modelLookup(suoritus, 'koulutusmoduuli.laajuus')
@@ -83,12 +84,17 @@ export const suoritusProperties = suoritus => {
     const showPakollinen = (tyyppi !== 'nayttotutkintoonvalmistavakoulutus') && modelData(suoritus, 'koulutusmoduuli.pakollinen') !== undefined
     const pakollinen = showPakollinen ? modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'pakollinen') : []
 
+    const taitotasot = modelProperties(modelLookup(suoritus, 'arviointi.-1'),
+      p => isEdit && ['kuullunYmmärtämisenTaitotaso', 'puhumisenTaitotaso', 'luetunYmmärtämisenTaitotaso', 'kirjoittamisenTaitotaso'].includes(p.key))
+
     const defaultsForEdit = pakollinen
       .concat(arviointipäivä)
+      .concat(taitotasot)
       .concat(includeProperties('näyttö', 'tunnustettu', 'lisätiedot', 'liittyyTutkinnonOsaan'))
 
     const defaultsForView = pakollinen
       .concat(excludeProperties('koulutusmoduuli', 'arviointi', 'tutkinnonOsanRyhmä', 'tutkintokerta'))
+      .concat(taitotasot)
       .concat(simplifiedArviointi)
 
     switch (tyyppi) {
@@ -180,7 +186,7 @@ export const LaajuusColumn = {
   shouldShow: ({parentSuoritus, suoritukset, suorituksetModel, context}) => {
     if (isNäyttötutkintoonValmistava(parentSuoritus)) {
       return false
-    } else if (isVapaanSivistystyönOppivelvollisitenSuoritus(parentSuoritus) && context.edit) {
+    } else if (isVapaanSivistystyönOppivelvollistenSuoritus(parentSuoritus) && context.edit) {
       return false
     } else {
       return context.edit
@@ -197,7 +203,7 @@ export const LaajuusColumn = {
 export const ArvosanaColumn = {
   shouldShow: ({parentSuoritus, suoritukset, context}) => (
     !isNäyttötutkintoonValmistava(parentSuoritus)
-    && !isVapaanSivistystyönOppivelvollisitenSuoritus(parentSuoritus)
+    && !isVapaanSivistystyönOppivelvollistenSuoritus(parentSuoritus)
     && (context.edit || suoritukset.find(hasArvosana) !== undefined)
   ),
   renderHeader: () => <th key='arvosana' className='arvosana' scope='col'><Text name='Arvosana'/></th>,
