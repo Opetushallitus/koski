@@ -30,10 +30,10 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   private val rajapäivätService = application.valpasRajapäivätService
 
   def getPeruskoulunValvojalleNäkyväOppija(oppijaOid: String): Option[ValpasOppijaRow] =
-    getOppijat(Some(oppijaOid), None).headOption
+    getOppijat(Some(oppijaOid), None).filterNot(_.oikeutetutOppilaitokset.isEmpty).headOption
 
   def getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOid: String): Seq[ValpasOppijaRow] =
-    getOppijat(None, Some(Seq(oppilaitosOid)))
+    getOppijat(None, Some(Seq(oppilaitosOid))).filterNot(_.oikeutetutOppilaitokset.isEmpty)
 
   private implicit def getResult: GetResult[ValpasOppijaRow] = GetResult(r => {
     ValpasOppijaRow(
@@ -178,7 +178,6 @@ WITH
   )
   -- CTE: kaikki uuden lain piirissä olevat oppijat, joilla on vähintään yksi hakeutumisvalvottava opiskeluoikeus,
   -- mukana myös taulukko kelpuutettavien opiskeluoikeuksien oppilaitoksista käyttöoikeustarkastelua varten.
-  -- TODO: Ei pitäisi rajoittua hakeutumisvalvottaviin: mukaan myös muut käyttöoikeudet.
   , oppija AS (
     SELECT
       DISTINCT r_henkilo.master_oid,
@@ -186,8 +185,8 @@ WITH
       r_henkilo.syntymaaika,
       r_henkilo.etunimet,
       r_henkilo.sukunimi,
-      array_agg(DISTINCT hakeutumisvalvottava_opiskeluoikeus.oppilaitos_oid) AS oikeutettu_oppilaitos_oids,
-      array_agg(DISTINCT hakeutumisvalvottava_opiskeluoikeus.opiskeluoikeus_oid) AS hakeutumisvalvottava_opiskeluoikeus_oids,
+      array_remove(array_agg(DISTINCT hakeutumisvalvottava_opiskeluoikeus.oppilaitos_oid), NULL) AS oikeutettu_oppilaitos_oids,
+      array_remove(array_agg(DISTINCT hakeutumisvalvottava_opiskeluoikeus.opiskeluoikeus_oid), NULL) AS hakeutumisvalvottava_opiskeluoikeus_oids,
       r_henkilo.turvakielto,
       r_henkilo.aidinkieli,
       array_agg(DISTINCT kaikki_henkilot.oppija_oid) AS kaikkiOppijaOidit,
@@ -198,7 +197,7 @@ WITH
       -- oppivelvollisuustiedot-näkymä hoitaa syntymäaika- ja mahdollisen peruskoulusta ennen lain voimaantuloa valmistumisen
       -- tarkistuksen: siinä ei ole tietoja kuin oppijoista, jotka ovat oppivelvollisuuden laajentamislain piirissä
       JOIN oppivelvollisuustiedot ON oppivelvollisuustiedot.oppija_oid = r_henkilo.oppija_oid
-      JOIN hakeutumisvalvottava_opiskeluoikeus ON hakeutumisvalvottava_opiskeluoikeus.master_oid = r_henkilo.master_oid
+      LEFT JOIN hakeutumisvalvottava_opiskeluoikeus ON hakeutumisvalvottava_opiskeluoikeus.master_oid = r_henkilo.master_oid
       -- Haetaan kaikki oppijan oidit: pitää palauttaa esim. kuntailmoitusten kyselyä varten
       JOIN r_henkilo kaikki_henkilot ON kaikki_henkilot.master_oid = r_henkilo.master_oid
     GROUP BY
