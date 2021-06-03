@@ -90,7 +90,7 @@ object ValpasOpiskeluoikeus {
 trait ValpasOpiskeluoikeus {
   def oid: ValpasOpiskeluoikeus.Oid
 
-  def onValvottava: Boolean
+  def onHakeutumisValvottava: Boolean
 
   @KoodistoUri("opiskeluoikeudentyyppi")
   def tyyppi: Koodistokoodiviite
@@ -121,7 +121,7 @@ trait ValpasOpiskeluoikeus {
 
 case class ValpasOpiskeluoikeusLaajatTiedot(
   oid: ValpasOpiskeluoikeus.Oid,
-  onValvottava: Boolean,
+  onHakeutumisValvottava: Boolean,
   tyyppi: Koodistokoodiviite,
   oppilaitos: ValpasOppilaitos,
   toimipiste: Option[ValpasToimipiste],
@@ -137,7 +137,7 @@ object ValpasOpiskeluoikeusSuppeatTiedot {
   def apply(laajatTiedot: ValpasOpiskeluoikeusLaajatTiedot): ValpasOpiskeluoikeusSuppeatTiedot = {
     ValpasOpiskeluoikeusSuppeatTiedot(
       oid = laajatTiedot.oid,
-      onValvottava = laajatTiedot.onValvottava,
+      onHakeutumisValvottava = laajatTiedot.onHakeutumisValvottava,
       tyyppi = laajatTiedot.tyyppi,
       oppilaitos = laajatTiedot.oppilaitos,
       toimipiste = laajatTiedot.toimipiste,
@@ -153,7 +153,7 @@ object ValpasOpiskeluoikeusSuppeatTiedot {
 
 case class ValpasOpiskeluoikeusSuppeatTiedot(
   oid: ValpasOpiskeluoikeus.Oid,
-  onValvottava: Boolean,
+  onHakeutumisValvottava: Boolean,
   tyyppi: Koodistokoodiviite,
   oppilaitos: ValpasOppilaitos,
   toimipiste: Option[ValpasToimipiste],

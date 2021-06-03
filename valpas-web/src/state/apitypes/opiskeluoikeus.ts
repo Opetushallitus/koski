@@ -8,7 +8,7 @@ import { ValpasOpiskeluoikeudenTila } from "./valpasopiskeluoikeudentila"
 
 export type OpiskeluoikeusLaajatTiedot = {
   oid: Oid
-  onValvottava: boolean
+  onHakeutumisValvottava: boolean
   tyyppi: Opiskeluoikeudentyyppi
   oppilaitos: Oppilaitos
   toimipiste?: Toimipiste
@@ -22,7 +22,7 @@ export type OpiskeluoikeusLaajatTiedot = {
 
 export type OpiskeluoikeusSuppeatTiedot = {
   oid: Oid
-  onValvottava: boolean
+  onHakeutumisValvottava: boolean
   tyyppi: Opiskeluoikeudentyyppi
   oppilaitos: Oppilaitos
   toimipiste?: Toimipiste
@@ -57,7 +57,7 @@ export const sortOpiskeluoikeusLaajatTiedot = (lang: Language) =>
 export const isValvottavaOpiskeluoikeus = (
   organisaatioOid: string | undefined
 ) => (oo: OpiskeluoikeusSuppeatTiedot) =>
-  oo.onValvottava && oo.oppilaitos.oid == organisaatioOid
+  oo.onHakeutumisValvottava && oo.oppilaitos.oid == organisaatioOid
 
 export const isPerusopetus = (oo: OpiskeluoikeusSuppeatTiedot) =>
   oo.tyyppi.koodiarvo === "perusopetus"

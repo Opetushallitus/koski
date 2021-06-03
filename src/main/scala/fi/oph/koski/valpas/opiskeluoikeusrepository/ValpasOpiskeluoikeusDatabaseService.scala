@@ -86,30 +86,20 @@ WITH
       """),
         Some(
           sql"""
-  -- CTE: kaikki uuden lain piirissä olevat oppijat, joilla on vähintään yksi kelpuutettava peruskoulun opiskeluoikeus,
-  -- mukana myös taulukko kelpuutettavien opiskeluoikeuksien oppilaitoksista käyttöoikeustarkastelua varten.
-  oppija AS (
+  -- CTE: opiskeluoikeudet, joiden hakeutumista oppilaitoksella on oikeus valvoa tällä hetkellä
+  -- TODO: Tämä toimii vain peruskoulun hakeutumisen valvojille tällä hetkellä. Pitää laajentaa kattamaan myös nivelvaihe.
+  hakeutumisvalvottava_opiskeluoikeus AS (
     SELECT
-      DISTINCT r_henkilo.master_oid,
-      r_henkilo.hetu,
-      r_henkilo.syntymaaika,
-      r_henkilo.etunimet,
-      r_henkilo.sukunimi,
-      array_agg(DISTINCT r_opiskeluoikeus.oppilaitos_oid) AS oikeutettu_oppilaitos_oids,
-      array_agg(DISTINCT r_opiskeluoikeus.opiskeluoikeus_oid) AS valvottava_opiskeluoikeus_oids,
-      r_henkilo.turvakielto,
-      r_henkilo.aidinkieli,
-      array_agg(DISTINCT kaikki_henkilot.oppija_oid) AS kaikkiOppijaOidit,
-      oppivelvollisuustiedot.oppivelvollisuusvoimassaasti AS oppivelvollisuus_voimassa_asti,
-      oppivelvollisuustiedot.oikeuskoulutuksenmaksuttomuuteenvoimassaasti AS oikeus_koulutuksen_maksuttomuuteen_voimassa_asti
+      DISTINCT r_opiskeluoikeus.opiskeluoikeus_oid,
+      r_opiskeluoikeus.oppilaitos_oid,
+      r_henkilo.master_oid
     FROM
       r_henkilo
       -- oppivelvollisuustiedot-näkymä hoitaa syntymäaika- ja mahdollisen peruskoulusta ennen lain voimaantuloa valmistumisen
       -- tarkistuksen: siinä ei ole tietoja kuin oppijoista, jotka ovat oppivelvollisuuden laajentamislain piirissä eivätkä
       -- vielä valmistuneet
       JOIN oppivelvollisuustiedot ON oppivelvollisuustiedot.oppija_oid = r_henkilo.oppija_oid
-      JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = r_henkilo.oppija_oid
-      """),
+      JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = r_henkilo.oppija_oid      """),
         oppilaitosOids.map(oids => sql"AND r_opiskeluoikeus.oppilaitos_oid = any($oids)"),
         oppijaOid.map(oid => sql"JOIN pyydetty_oppija ON pyydetty_oppija.master_oid = r_henkilo.master_oid"),
         Some(
@@ -117,7 +107,7 @@ WITH
       JOIN r_paatason_suoritus ON r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
       LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella ON aikajakson_keskella.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
         AND $tarkastelupäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
-      -- Lasketaan voimassaolevien kotiopetusjaksojen määrä ehtoa 4a varten
+      -- Lasketaan voimassaolevien kotiopetusjaksojen määrä ehtoa varten
       CROSS JOIN LATERAL (
         SELECT
           count(*) AS count
@@ -127,8 +117,6 @@ WITH
           jaksot ->> 'loppu' IS NULL
             OR $tarkastelupäivä BETWEEN jaksot ->> 'alku' AND jaksot ->> 'loppu'
       ) kotiopetusjaksoja
-      -- Haetaan kaikki oppijan oidit: pitää palauttaa esim. kuntailmoitusten kyselyä varten
-      JOIN r_henkilo kaikki_henkilot ON kaikki_henkilot.master_oid = r_henkilo.master_oid
     WHERE
       -- (1) oppijalla on peruskoulun opiskeluoikeus
       r_opiskeluoikeus.koulutusmuoto = 'perusopetus'
@@ -168,6 +156,32 @@ WITH
           )
         )
       )
+  )
+  -- CTE: kaikki uuden lain piirissä olevat oppijat, joilla on vähintään yksi kelpuutettava peruskoulun opiskeluoikeus,
+  -- mukana myös taulukko kelpuutettavien opiskeluoikeuksien oppilaitoksista käyttöoikeustarkastelua varten.
+  , oppija AS (
+    SELECT
+      DISTINCT r_henkilo.master_oid,
+      r_henkilo.hetu,
+      r_henkilo.syntymaaika,
+      r_henkilo.etunimet,
+      r_henkilo.sukunimi,
+      array_agg(DISTINCT hakeutumisvalvottava_opiskeluoikeus.oppilaitos_oid) AS oikeutettu_oppilaitos_oids,
+      array_agg(DISTINCT hakeutumisvalvottava_opiskeluoikeus.opiskeluoikeus_oid) AS hakeutumisvalvottava_opiskeluoikeus_oids,
+      r_henkilo.turvakielto,
+      r_henkilo.aidinkieli,
+      array_agg(DISTINCT kaikki_henkilot.oppija_oid) AS kaikkiOppijaOidit,
+      oppivelvollisuustiedot.oppivelvollisuusvoimassaasti AS oppivelvollisuus_voimassa_asti,
+      oppivelvollisuustiedot.oikeuskoulutuksenmaksuttomuuteenvoimassaasti AS oikeus_koulutuksen_maksuttomuuteen_voimassa_asti
+    FROM
+      r_henkilo
+      -- oppivelvollisuustiedot-näkymä hoitaa syntymäaika- ja mahdollisen peruskoulusta ennen lain voimaantuloa valmistumisen
+      -- tarkistuksen: siinä ei ole tietoja kuin oppijoista, jotka ovat oppivelvollisuuden laajentamislain piirissä eivätkä
+      -- vielä valmistuneet
+      JOIN oppivelvollisuustiedot ON oppivelvollisuustiedot.oppija_oid = r_henkilo.oppija_oid
+      JOIN hakeutumisvalvottava_opiskeluoikeus ON hakeutumisvalvottava_opiskeluoikeus.master_oid = r_henkilo.master_oid
+      -- Haetaan kaikki oppijan oidit: pitää palauttaa esim. kuntailmoitusten kyselyä varten
+      JOIN r_henkilo kaikki_henkilot ON kaikki_henkilot.master_oid = r_henkilo.master_oid
     GROUP BY
       r_henkilo.master_oid,
       r_henkilo.hetu,
@@ -330,7 +344,7 @@ WITH
     json_agg(
       json_build_object(
         'oid', opiskeluoikeus.opiskeluoikeus_oid,
-        'onValvottava', opiskeluoikeus.opiskeluoikeus_oid = ANY(oppija.valvottava_opiskeluoikeus_oids),
+        'onHakeutumisValvottava', opiskeluoikeus.opiskeluoikeus_oid = ANY(oppija.hakeutumisvalvottava_opiskeluoikeus_oids),
         'tyyppi', json_build_object(
           'koodiarvo', opiskeluoikeus.koulutusmuoto,
           'koodistoUri', 'opiskeluoikeudentyyppi'

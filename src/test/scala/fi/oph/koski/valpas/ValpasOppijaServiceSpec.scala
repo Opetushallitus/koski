@@ -675,8 +675,8 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
   }
 
   private def validateOpiskeluoikeus(opiskeluoikeus: ValpasOpiskeluoikeus, expectedData: ExpectedData) = {
-    withClue("onValvottava") {
-      opiskeluoikeus.onValvottava shouldBe expectedData.onValvottavaOpiskeluoikeus
+    withClue("onHakeutumisValvottava") {
+      opiskeluoikeus.onHakeutumisValvottava shouldBe expectedData.onHakeutumisValvottavaOpiskeluoikeus
     }
     withClue("oppilaitos.oid") {
       opiskeluoikeus.oppilaitos.oid shouldBe expectedData.opiskeluoikeus.oppilaitos.get.oid
@@ -790,7 +790,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
 case class ExpectedData(
   opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
   tarkastelupäivänTila: String,
-  onValvottavaOpiskeluoikeus: Boolean,
-  onValvottavaOpiskeluoikeusGlobaalilleKäyttäjälle: Boolean,
+  onHakeutumisValvottavaOpiskeluoikeus: Boolean,
+  onHakeutumisValvottavaOpiskeluoikeusGlobaalilleKäyttäjälle: Boolean,
   onOikeutettuOppilaitos: Boolean
 )

@@ -44,7 +44,7 @@ class ValpasAccessResolver {
   def withOpiskeluoikeusAccess[T <: ValpasOppijaLaajatTiedot]
     (opiskeluoikeusOid: Opiskeluoikeus.Oid)(oppija: T)
   : Either[HttpStatus, T] = {
-    val valvottavat = oppija.opiskeluoikeudet.filter(_.onValvottava).map(_.oid)
+    val valvottavat = oppija.opiskeluoikeudet.filter(_.onHakeutumisValvottava).map(_.oid)
     Either.cond(valvottavat.contains(opiskeluoikeusOid), oppija, ValpasErrorCategory.forbidden.opiskeluoikeus())
   }
 
