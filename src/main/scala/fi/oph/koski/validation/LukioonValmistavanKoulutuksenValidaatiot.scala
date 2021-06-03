@@ -32,7 +32,7 @@ object LukioonValmistavanKoulutuksenValidaatiot {
     val kurssiSuorituksetLuva2019Voimassa = suoritus.osasuoritukset.toList.flatten.flatMap(_.osasuoritusLista.filter(_.alkamispäivä.exists(_.isAfter(LocalDate.of(2021, 7, 31)))))
 
     val virheellisetSuoritukset = kurssiSuorituksetLuva2019Voimassa.filter(_.koulutusmoduuli.tunniste match {
-      case viite: Koodistokoodiviite if viite.koodistoUri != "lukioonvalmistavankoulutuksenkurssit2019" => {
+      case viite: Koodistokoodiviite if viite.koodistoUri != "lukioonvalmistavankoulutuksenmoduulit2019" => {
         true
       }
       case _ => false

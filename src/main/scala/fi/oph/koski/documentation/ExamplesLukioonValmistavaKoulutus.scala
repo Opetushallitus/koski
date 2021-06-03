@@ -138,7 +138,7 @@ object ExamplesLukioonValmistavaKoulutus {
     ValtakunnallinenLukioonValmistavanKoulutuksenKurssi(Koodistokoodiviite(koodistoUri = "lukioonvalmistavankoulutuksenkurssit2015", koodiarvo = kurssi), Some(laajuus(1.0f)))
 
   def valtakunnallinenLuvaKurssi2019(kurssi: String) =
-    ValtakunnallinenLukioonValmistavanKoulutuksenKurssi(Koodistokoodiviite(koodistoUri = "lukioonvalmistavankoulutuksenkurssit2019", koodiarvo = kurssi), Some(laajuus(1.0f)))
+    ValtakunnallinenLukioonValmistavanKoulutuksenKurssi(Koodistokoodiviite(koodistoUri = "lukioonvalmistavankoulutuksenmoduulit2019", koodiarvo = kurssi), Some(laajuus(1.0f)))
 
   def paikallinenLuvaKurssi(koodi: String, nimi: String, kuvaus: String) =
     PaikallinenLukioonValmistavanKoulutuksenKurssi(PaikallinenKoodi(koodi, LocalizedString.finnish(nimi)), Some(laajuus(1.0f)), LocalizedString.finnish(kuvaus))

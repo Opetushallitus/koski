@@ -155,6 +155,8 @@ case class MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine(
   @KoodistoKoodiarvo("LVMALUO")
   @KoodistoKoodiarvo("LVYHKU")
   @KoodistoKoodiarvo("LVOPO")
+  @KoodistoKoodiarvo("LVMFKBM")
+  @KoodistoKoodiarvo("LVHIYH")
   @KoodistoUri("oppiaineetluva")
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean = true,
@@ -168,6 +170,7 @@ case class PaikallinenLukioonValmistavanKoulutuksenOppiaine(
   override val laajuus: Option[LaajuusKursseissa] = None
 ) extends LukioonValmistavanKoulutuksenOppiaine with PaikallinenKoulutusmoduuli with StorablePreference
 
+@Title("Lukioon valmistavan kurssin tai moduulin suoritus")
 case class LukioonValmistavanKurssinSuoritus(
   koulutusmoduuli: LukioonValmistavanKoulutuksenKurssi,
   @Description("Kurssit arvioidaan suoritettu/hylätty-asteikolla")
@@ -183,17 +186,19 @@ sealed trait LukioonValmistavanKoulutuksenKurssi extends KoulutusmoduuliValinnai
   def laajuus: Option[LaajuusKursseissa]
 }
 
-@Description("Valtakunnallisen lukioon valmistavan koulutuksen kurssin tunnistetiedot")
+@Title("Valtakunnallisen lukioon valmistavan koulutuksen kurssi tai moduuli")
+@Description("Valtakunnallisen lukioon valmistavan koulutuksen kurssin tai moduulin tunnistetiedot")
 case class ValtakunnallinenLukioonValmistavanKoulutuksenKurssi(
   @Description("Lukioon valmistavan koulutuksen kurssi")
   @KoodistoUri("lukioonvalmistavankoulutuksenkurssit2015")
-  @KoodistoUri("lukioonvalmistavankoulutuksenkurssit2019")
+  @KoodistoUri("lukioonvalmistavankoulutuksenmoduulit2019")
   @OksaUri("tmpOKSAID873", "kurssi")
   @Title("Nimi")
   tunniste: Koodistokoodiviite,
   override val laajuus: Option[LaajuusKursseissa]
 ) extends LukioonValmistavanKoulutuksenKurssi with KoodistostaLöytyväKoulutusmoduuli
 
+@Title("Paikallisen lukioon valmistavan koulutuksen kurssi tai moduuli")
 @Description("Paikallisen lukioon valmistavan koulutuksen kurssin tunnistetiedot")
 case class PaikallinenLukioonValmistavanKoulutuksenKurssi(
   @FlattenInUI
