@@ -162,7 +162,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       addKeskeneräinenTutkinnonSuoritus(tila, suoritukset, opiskeluoikeusNode, viimeisinTutkinto)
     } else {
       val opiskeluoikeusTila = tila.opiskeluoikeusjaksot.lastOption.map(_.tila)
-      logger.warn(s"Tutkintoon johtavaa päätason suoritusta ei löydy tai opiskeluoikeus on päättynyt. Opiskeluoikeus(avain: ${avain(opiskeluoikeusNode)}, tila: $opiskeluoikeusTila, jaksot: ${opiskeluoikeusJaksot.map(_.koulutuskoodi)}, laji: '${laji(opiskeluoikeusNode)}')")
+      logger.info(s"Tutkintoon johtavaa päätason suoritusta ei löydy tai opiskeluoikeus on päättynyt. Opiskeluoikeus(avain: ${avain(opiskeluoikeusNode)}, tila: $opiskeluoikeusTila, jaksot: ${opiskeluoikeusJaksot.map(_.koulutuskoodi)}, laji: '${laji(opiskeluoikeusNode)}')")
       addMuuKorkeakoulunSuoritus(tila, suoritukset, opiskeluoikeusNode)
     }
   }
@@ -239,7 +239,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       case "2" => // opintojakso
         Some(convertOpintojaksonSuoritus(suoritus, allNodes))
       case laji: String =>
-        logger.warn("Tuntematon laji: " + laji)
+        logger.info("Tuntematon laji: " + laji)
         None
     }
   } catch {
