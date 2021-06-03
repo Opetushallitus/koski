@@ -41,6 +41,7 @@ object RaportointiDatabaseSchema {
 
     sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus_aikajakso(opiskeluoikeus_oid, loppu, alku, tila)",
     sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus_aikajakso(loppu, alku, opiskeluoikeus_oid)",
+    sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus_aikajakso(oikeutta_maksuttomuuteen_pidennetty)",
 
     sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_paatason_suoritus(paatason_suoritus_id)",
     sqlu"CREATE INDEX ON #${s.name}.r_paatason_suoritus(opiskeluoikeus_oid, suorituksen_tyyppi, koulutusmoduuli_koulutustyyppi)",
@@ -59,6 +60,7 @@ object RaportointiDatabaseSchema {
   def createOtherIndexes(s: Schema) = DBIO.seq(
     sqlu"CREATE INDEX ON #${s.name}.r_henkilo(hetu)",
     sqlu"CREATE INDEX ON #${s.name}.r_henkilo(oppija_oid, aidinkieli)",
+    sqlu"CREATE INDEX ON #${s.name}.r_henkilo(linkitetyt_oidit)",
 
     sqlu"CREATE INDEX ON #${s.name}.r_organisaatio(oppilaitosnumero)",
 
