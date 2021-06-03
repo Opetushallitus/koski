@@ -32,6 +32,7 @@ case class MigriOpiskeluoikeus(
   tila: MigriOpiskeluoikeudenTila,
   arvioituPäättymispäivä: Option[LocalDate],
   alkamispäivä: Option[LocalDate],
+  päättymispäivä: Option[LocalDate],
   tyyppi: Koodistokoodiviite,
   lisätiedot: Option[MigriOpiskeluoikeudenLisätiedot],
   suoritukset: List[MigriSuoritus]
@@ -45,6 +46,7 @@ case class MigriOpiskeluoikeusJakso(
   alku: LocalDate,
   tila: Koodistokoodiviite
 )
+
 case class MigriOppilaitos(
   nimi: Option[LocalizedString]
 )
@@ -52,9 +54,11 @@ case class MigriOppilaitos(
 case class MigriOpiskeluoikeudenLisätiedot(
   virtaOpiskeluoikeudenTyyppi: Option[Koodistokoodiviite],
   lukukausiIlmoittautuminen: Option[MigriLukukausi_Ilmoittautuminen],
+  maksettavatLukuvuosimaksut: Option[List[KorkeakoulunOpiskeluoikeudenLukuvuosimaksu]],
   majoitusetu: Option[Aikajakso],
+  majoitus: Option[List[Aikajakso]],
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]],
-  ulkomaanjaksot: Option[List[Ulkomaanjakso]],
+  ulkomaanjaksot: Option[List[Aikajakso]],
   koulutusvienti: Option[Boolean]
 )
 
@@ -83,7 +87,7 @@ case class MigriSuoritus(
   tyyppi: Koodistokoodiviite,
   tutkintonimike: Option[List[Koodistokoodiviite]],
   alkamispäivä: Option[LocalDate],
-  osaamisenHankkimistapa: Option[List[OsaamisenHankkimistapajakso]],
+  osaamisenHankkimistapa: Option[List[MigriOsaamisenHankkimistapajakso]],
   theoryOfKnowledge: Option[IBTheoryOfKnowledgeSuoritus],
   extendedEssay: Option[IBExtendedEssaySuoritus],
   creativityActionService: Option[IBCASSuoritus],
@@ -105,12 +109,27 @@ case class MigriVahvistus(
   päivä: LocalDate
 )
 
+case class MigriOsaamisenHankkimistapajakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  osaamisenHankkimistapa: MigriOsaamisenHankkimistapa
+)
+
+case class MigriOsaamisenHankkimistapa(
+  tunniste: Koodistokoodiviite,
+  oppisopimus: Option[MigriOppisopimus]
+)
+
+case class MigriOppisopimus(
+  työnantaja: Yritys
+)
+
 case class MigriOsasuoritus(
   koulutusmoduuli: MigriOsasuorituksenKoulutusmoduuli,
   arviointi: Option[List[MigriArviointi]],
   tyyppi: Koodistokoodiviite,
   tutkinnonOsanRyhmä: Option[Koodistokoodiviite],
-  tunnustettu: Option[OsaamisenTunnustaminen], //vain jos tunnisteen koodiarvo "mukautettu"
+  tunnustettu: Option[MigriOsaamisenTunnustaminen], //vain jos koulutusmoduulin tunnisteen koodiarvo "mukautettu"
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]],
   osasuoritukset: Option[List[MigriOsasuorituksenOsasuoritus]],
   suoritettuErityisenäTutkintona: Option[Boolean]
@@ -120,7 +139,7 @@ case class MigriOsasuorituksenOsasuoritus(
   koulutusmoduuli: MigriOsasuorituksenKoulutusmoduuli,
   arviointi: Option[List[MigriArviointi]],
   tyyppi: Koodistokoodiviite,
-  tunnustettu: Option[OsaamisenTunnustaminen], //vain jos tunnisteen koodiarvo "mukautettu"
+  tunnustettu: Option[MigriOsaamisenTunnustaminen], //vain jos koulutusmoduulin tunnisteen koodiarvo "mukautettu"
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]
 )
 
@@ -137,4 +156,8 @@ case class MigriArviointi(
   arvosana: KoodiViite,
   hyväksytty: Boolean,
   arviointiPäivä: Option[LocalDate]
+)
+
+case class MigriOsaamisenTunnustaminen(
+  selite: LocalizedString
 )
