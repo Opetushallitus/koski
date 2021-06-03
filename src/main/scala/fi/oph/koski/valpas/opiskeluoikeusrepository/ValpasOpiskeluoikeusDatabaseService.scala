@@ -96,7 +96,8 @@ WITH
       r_opiskeluoikeus.viimeisin_tila,
       r_opiskeluoikeus.data,
       r_opiskeluoikeus.koulutusmuoto,
-      r_henkilo.master_oid
+      r_henkilo.master_oid,
+      (oppivelvollisuustiedot.oppivelvollisuusvoimassaasti >= $tarkastelupäivä) AS henkilo_on_oppivelvollinen
     FROM
       r_henkilo
       -- oppivelvollisuustiedot-näkymä hoitaa syntymäaika- ja mahdollisen peruskoulusta ennen lain voimaantuloa valmistumisen
@@ -134,8 +135,10 @@ WITH
             OR $tarkastelupäivä BETWEEN jaksot ->> 'alku' AND jaksot ->> 'loppu'
       ) kotiopetusjaksoja
     WHERE
+      -- (0) Henkilö on oppivelvollinen: hakeutumisvalvontaa ei voi suorittaa enää sen jälkeen kun henkilön oppivelvollisuus on päättynyt
+      ov_kelvollinen_opiskeluoikeus.henkilo_on_oppivelvollinen IS TRUE
       -- (1) oppijalla on peruskoulun opiskeluoikeus
-      ov_kelvollinen_opiskeluoikeus.koulutusmuoto = 'perusopetus'
+      AND ov_kelvollinen_opiskeluoikeus.koulutusmuoto = 'perusopetus'
       AND r_paatason_suoritus.suorituksen_tyyppi = 'perusopetuksenvuosiluokka'
       -- (2) kyseisessä opiskeluoikeudessa on yhdeksännen luokan suoritus.
       AND r_paatason_suoritus.koulutusmoduuli_koodiarvo = '9'
