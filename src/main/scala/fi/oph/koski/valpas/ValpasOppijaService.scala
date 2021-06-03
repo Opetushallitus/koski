@@ -190,7 +190,9 @@ class ValpasOppijaService(
             äidinkieli = dbRow.äidinkieli
           ),
           oikeutetutOppilaitokset = dbRow.oikeutetutOppilaitokset,
-          opiskeluoikeudet = opiskeluoikeudet
+          opiskeluoikeudet = opiskeluoikeudet,
+          oppivelvollisuusVoimassaAsti = dbRow.oppivelvollisuusVoimassaAsti,
+          oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = dbRow.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti
         )
       )
   }
