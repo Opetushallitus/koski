@@ -276,9 +276,7 @@ class ValpasOppijaService(
         // Jos yli 2 kk, ilmoitus on aktiivinen,
         // jos mikään ov-suorittamiseen kelpaava opiskeluoikeus ei ole voimassa
         case (kuntailmoitus, 0) =>
-          oppija.opiskeluoikeudet.forall(oo =>
-            !oo.oppivelvollisuudenSuorittamiseenKelpaava || oo.tarkastelupäivänTila.koodiarvo != "voimassa"
-          )
+          oppija.opiskeluoikeudet.forall(oo => oo.tarkastelupäivänTila.koodiarvo != "voimassa")
 
         // Muut kuin uusin ilmoitus ovat aina ei-aktiivisia
         case (kuntailmoitus, _) => false

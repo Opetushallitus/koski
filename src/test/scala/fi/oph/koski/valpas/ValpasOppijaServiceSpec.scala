@@ -101,7 +101,6 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     (
       ValpasMockOppijat.lukionAineopinnotAloittanut,
       List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionAineopintojenOpiskeluoikeusAlkaa2021Syksyllä, "voimassa", false, false, false),
         ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true, true)
       )
     ),
