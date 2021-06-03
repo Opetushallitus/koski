@@ -30,7 +30,7 @@ describe("Login / Logout / kirjautuminen", () => {
 
   it("Kirjautumisen jälkeen käyttäjä näkee varsinaisen sovelluksen ja logout-painikkeen", async () => {
     await defaultLogin("/virkailija")
-    await expectElementVisible("article.page#virkailija-app")
+    await expectElementVisible("#virkailija-app")
     await expectElementVisible(".localraamit__logoutbutton")
   })
 

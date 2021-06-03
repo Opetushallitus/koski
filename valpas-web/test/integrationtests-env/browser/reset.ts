@@ -14,7 +14,6 @@ export const loginAs = async (
   forceReset: boolean = false
 ) => {
   await reset(initialPath, forceReset)
-  await expectElementEventuallyVisible("#username")
   ;(await $("#username")).sendKeys(username)
   ;(await $("#password")).sendKeys(username, Key.ENTER)
   await driver.wait(
@@ -40,6 +39,7 @@ export const resetMockData = async (
 ) => {
   const inputSelector = "#tarkastelupäivä"
 
+  await expectElementEventuallyVisible(inputSelector)
   const currentTarkastelupäivä = await getTextInput(inputSelector)
   const currentFixture = await (await $("#current-fixture")).getText()
 

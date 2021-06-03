@@ -1,4 +1,5 @@
 import { By, Condition, until } from "selenium-webdriver"
+import { Feature } from "../../../src/state/featureFlags"
 import { driver } from "./driver"
 import { eventually } from "./utils"
 
@@ -8,12 +9,17 @@ const wait = async <T>(condition: Condition<T>, timeout: number) => {
 
 export const goToLocation = async (path: string) => {
   await driver.get(
-    `http://localhost:1234${process.env.PUBLIC_URL || ""}${path}`
+    `http://localhost:1234${process.env.PUBLIC_URL || ""}${path}` +
+      featureQuery()
   )
 }
 
 export const deleteCookies = async () => {
   await driver.manage().deleteAllCookies()
+  await eventually(async () => {
+    const cookies = await driver.manage().getCookies()
+    expect(cookies.length, "Expected all cookies to be deleted").toBe(0)
+  })
 }
 
 export const getCurrentUrl = () => driver.getCurrentUrl()
@@ -56,3 +62,23 @@ export const $$ = async (selector: string, timeout = 200) => {
 }
 
 export const testIdIs = (testId: string) => By.css(`[data-testid="${testId}"]`)
+
+// Mekanismi featureflagien väliaikaiseen sulkemiseen
+
+const disabledFeatures = new Set<Feature>()
+
+export const resetFeatures = () => {
+  disabledFeatures.clear()
+}
+
+export const disableFeature = (feature: Feature) => {
+  disabledFeatures.add(feature)
+}
+
+const featureQuery = () => {
+  const collection: Feature[] = []
+  disabledFeatures.forEach((f) => collection.push(f))
+  return collection.length === 0
+    ? ""
+    : "?" + collection.map((f) => `disable-${f}`).join("&")
+}

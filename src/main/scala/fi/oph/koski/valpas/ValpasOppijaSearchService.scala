@@ -12,7 +12,7 @@ import fi.oph.scalaschema.annotation.SyntheticProperty
 class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
   private val henkilöRepository = application.henkilöRepository
   private val hetuValidator = application.hetu
-  private val accessResolver = new ValpasAccessResolver(application.organisaatioRepository)
+  private val accessResolver = new ValpasAccessResolver
   private val oppijaService = application.valpasOppijaService
 
 

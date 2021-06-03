@@ -21,10 +21,12 @@ import {
   createHakutilannePathWithoutOrg,
   hakutilannePathWithOrg,
   hakutilannePathWithoutOrg,
+  käyttöoikeusPath,
   maksuttomuusPath,
   oppijaPath,
   rootPath,
 } from "../state/paths"
+import { AccessRightsView } from "./AccessRightsView"
 import { ErrorView, NotFoundView } from "./ErrorView"
 import {
   HakutilanneView,
@@ -90,6 +92,9 @@ const VirkailijaRoutes = () => {
         />
         <Route exact path={maksuttomuusPath(basePath)}>
           <MaksuttomuusView />
+        </Route>
+        <Route exact path={käyttöoikeusPath(basePath)}>
+          <AccessRightsView />
         </Route>
         <Route exact path={rootPath(basePath)}>
           <HomeView />

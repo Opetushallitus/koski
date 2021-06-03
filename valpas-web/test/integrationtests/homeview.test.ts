@@ -1,11 +1,23 @@
 import { textEventuallyEquals } from "../integrationtests-env/browser/content"
 import {
+  disableFeature,
+  resetFeatures,
+} from "../integrationtests-env/browser/core"
+import {
   dataTableEventuallyEquals,
   dataTableHeadersEventuallyEquals,
 } from "../integrationtests-env/browser/datatable"
 import { loginAs } from "../integrationtests-env/browser/reset"
 
 describe("Etusivun väliaikainen näkymä", () => {
+  beforeAll(() => {
+    disableFeature("maksuttomuus")
+  })
+
+  afterAll(() => {
+    resetFeatures()
+  })
+
   it("Näyttää ohjetekstin", async () => {
     await loginAs("/virkailija", "valpas-maksuttomuus-hki")
 

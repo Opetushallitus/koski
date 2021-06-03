@@ -85,3 +85,10 @@ export const maksuttomuusPath = (basePath: string = "") =>
   `${basePath}/maksuttomuus`
 
 export const createMaksuttomuusPath = maksuttomuusPath
+
+// Käyttöoikeusnäkymä
+
+export const käyttöoikeusPath = (basePath: string = "") =>
+  `${basePath}/kayttooikeudet`
+
+export const createKäyttöoikeusPath = käyttöoikeusPath

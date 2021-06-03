@@ -7,12 +7,14 @@ import {
   käyttöoikeusrooliEq,
   OrganisaatioJaKayttooikeusrooli,
 } from "../state/common"
+import { isFeatureFlagEnabled } from "./featureFlags"
 
 export const hakeutumisenValvontaAllowed = (roles: Kayttooikeusrooli[]) =>
   roles.includes("OPPILAITOS_HAKEUTUMINEN")
 
 export const maksuttomuudenValvontaAllowed = (roles: Kayttooikeusrooli[]) =>
-  roles.includes("OPPILAITOS_MAKSUTTOMUUS")
+  roles.includes("OPPILAITOS_MAKSUTTOMUUS") &&
+  isFeatureFlagEnabled("maksuttomuus")
 
 export type WithRequiresAccessRightsProps = {
   redirectUserWithoutAccessTo: string
