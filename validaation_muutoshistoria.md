@@ -1,5 +1,11 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 28.4.2021
+- Perusopetuksen laajuus vaaditaan pakollisille oppiaineille 1.8.2020 tai sen jälkeen vahvistetuilta vuosiluokan
+suorituksilta ja päättötodistuksilta. Laajuutta ei kuitenkaan vaadita jos suoritustapana on erityinen tutkinto tai
+kotiopetusjakso on voimassa suorituksen vahvistuspäivänä.
+- Yksittäiseltä oppiaineelta ei vaadita laajuutta mikäli sen suoritustapa on erityinen tutkinto.
+
 ## 8.1.2021
 - Lops2021 laajuuksien laskenta korjattu: Aiemmin laajuudet asetettiin osana validaatioita ainoastaan oppiaineelle sen
 sisältämien moduulien ja paikallisten oppiaineiden laajuuksien perusteella. Lisäksi oppiaineelle mahdollisesti
