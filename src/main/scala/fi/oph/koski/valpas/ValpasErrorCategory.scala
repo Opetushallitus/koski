@@ -9,6 +9,7 @@ object ValpasErrorCategory {
     val opiskeluoikeus = subcategory("opiskeluoikeus", "Käyttäjällä ei ole oikeuksia opiskeluoikeuden tietoihin")
     val organisaatio = subcategory("oppijat", "Käyttäjällä ei ole oikeuksia annetun organisaation tietoihin")
     val ilmoitus = subcategory("oppijat", "Käyttäjällä ei ole oikeuksia ilmoitukseen")
+    val toiminto = subcategory("toiminto", "Käyttäjällä ei ole oikeuksia toimintoon")
   }
 
   object internalError extends ErrorCategory("internalError", 500, "Internal server error")

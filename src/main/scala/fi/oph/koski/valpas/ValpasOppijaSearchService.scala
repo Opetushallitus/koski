@@ -19,14 +19,18 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
   def findHenkilöMaksuttomuus
     (query: String)
     (implicit session: ValpasSession)
-  : Either[HttpStatus, ValpasHenkilöMaksuttomuushakuResult] =
-    if (hetuValidator.validate(query).isRight) {
-      searchByHetu(query)
-    } else if (Henkilö.isValidHenkilöOid(query)) {
-      searchByOppijaOid(query)
-    } else {
-      Left(ValpasErrorCategory.searchValidation())
-    }
+  : Either[HttpStatus, ValpasHenkilöMaksuttomuushakuResult] = {
+    accessResolver.assertAccessToAnyOrg(ValpasRooli.OPPILAITOS_MAKSUTTOMUUS)
+      .flatMap(_ => {
+        if (hetuValidator.validate(query).isRight) {
+          searchByHetu(query)
+        } else if (Henkilö.isValidHenkilöOid(query)) {
+          searchByOppijaOid(query)
+        } else {
+          Left(ValpasErrorCategory.searchValidation())
+        }
+      })
+  }
 
   private def searchByHetu
     (hetu: String)

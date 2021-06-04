@@ -17,6 +17,14 @@ class ValpasAccessResolver {
     withAccessToAllOrgs(rooli)(Set(organisaatioOid), () => ())
   }
 
+  def assertAccessToAnyOrg(
+    rooli: ValpasRooli.Role
+  )(
+    implicit session: ValpasSession
+  ): Either[HttpStatus, Unit] = {
+    Either.cond(accessToAnyOrg(rooli), () => (), ValpasErrorCategory.forbidden.toiminto())
+  }
+
   def withOppijaAccess[T <: ValpasOppijaLaajatTiedot](
     rooli: ValpasRooli.Role
   )(
@@ -77,6 +85,13 @@ class ValpasAccessResolver {
     implicit session: ValpasSession
   ): Boolean =
     onGlobaaliOikeus(rooli) || organisaatioOids.intersect(oppilaitosOrganisaatioOids(rooli)).nonEmpty
+
+  private def accessToAnyOrg(
+    rooli: ValpasRooli.Role
+  )(
+    implicit session: ValpasSession
+  ): Boolean =
+    onGlobaaliOikeus(rooli) || oppilaitosOrganisaatioOids(rooli).nonEmpty
 
   private def oppilaitosOrganisaatioOids(
     rooli: ValpasRooli.Role
