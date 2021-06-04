@@ -18,6 +18,7 @@ export type TextFieldProps = {
   id?: string
   required?: boolean
   testId?: string
+  children?: React.ReactNode
 }
 
 export const TextField = (props: TextFieldProps) => (
@@ -41,5 +42,6 @@ export const TextField = (props: TextFieldProps) => (
       disabled={props.disabled || !props.onChange}
       data-testid={props.testId}
     />
+    {props.children}
   </InputContainer>
 )

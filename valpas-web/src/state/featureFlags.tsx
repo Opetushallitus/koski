@@ -2,12 +2,12 @@ import React, { useEffect } from "react"
 import { Redirect } from "react-router-dom"
 import { runningLocally } from "../utils/environment"
 
-export type Feature = "valpas" | "ilmoittaminen" | "mock"
+export type Feature = "valpas" | "ilmoittaminen" | "maksuttomuus"
 
 export const featureFlags: Record<Feature, string> = {
   valpas: "valpas-feature",
   ilmoittaminen: "valpas-ilmoittaminen",
-  mock: "valpas-mock",
+  maksuttomuus: "valpas-maksuttomuus",
 }
 
 const featureFlagEnabledValue = "enabled"
@@ -26,8 +26,10 @@ export const FeatureFlagEnabler = (props: FeatureFlagEnablerProps) => {
 }
 
 export const isFeatureFlagEnabled = (feature: Feature) =>
-  runningLocally ||
-  window.localStorage.getItem(featureFlags[feature]) === featureFlagEnabledValue
+  (runningLocally ||
+    window.localStorage.getItem(featureFlags[feature]) ===
+      featureFlagEnabledValue) &&
+  !window.location.search.includes(`disable-${feature}`)
 
 export const enableFeature = (feature: Feature) => {
   window.localStorage.setItem(featureFlags[feature], featureFlagEnabledValue)

@@ -1,3 +1,5 @@
+import { Eq } from "fp-ts/lib/Eq"
+import * as string from "fp-ts/string"
 import {
   OppilaitosnumeroKoodistoviite,
   PaikkakuntaKoodistoviite,
@@ -10,6 +12,7 @@ import {
 export type Oid = string
 export type ISODate = string
 export type ISODateTime = string
+export type Hetu = string
 
 export type Language = "fi" | "sv" | "en"
 export type LocalizedString = Partial<Record<Language, string>>
@@ -39,14 +42,9 @@ export type Kayttooikeusrooli =
   | "OPPILAITOS_MAKSUTTOMUUS"
   | "KUNTA"
 
+export const käyttöoikeusrooliEq: Eq<Kayttooikeusrooli> = string.Eq
+
 export type OrganisaatioJaKayttooikeusrooli = {
   organisaatioHierarkia: OrganisaatioHierarkia
   kayttooikeusrooli: Kayttooikeusrooli
 }
-
-export const onHakeutumisVelvollisuudenValvonnanOikeuksia = (
-  kayttooikeusroolit: OrganisaatioJaKayttooikeusrooli[]
-) =>
-  kayttooikeusroolit.some(
-    (elem) => elem.kayttooikeusrooli == "OPPILAITOS_HAKEUTUMINEN"
-  )

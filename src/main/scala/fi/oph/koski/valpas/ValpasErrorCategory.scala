@@ -7,8 +7,9 @@ object ValpasErrorCategory {
     val oppija = subcategory("oppija", "Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin")
     val oppijat = subcategory("oppijat", "Käyttäjällä ei ole oikeuksia oppijoiden tietoihin")
     val opiskeluoikeus = subcategory("opiskeluoikeus", "Käyttäjällä ei ole oikeuksia opiskeluoikeuden tietoihin")
-    val organisaatio = subcategory("oppijat", "Käyttäjällä ei ole oikeuksia annetun organisaation tietoihin")
-    val ilmoitus = subcategory("oppijat", "Käyttäjällä ei ole oikeuksia ilmoitukseen")
+    val organisaatio = subcategory("organisaatio", "Käyttäjällä ei ole oikeuksia annetun organisaation tietoihin")
+    val ilmoitus = subcategory("ilmoitus", "Käyttäjällä ei ole oikeuksia ilmoitukseen")
+    val toiminto = subcategory("toiminto", "Käyttäjällä ei ole oikeuksia toimintoon")
   }
 
   object internalError extends ErrorCategory("internalError", 500, "Internal server error")
@@ -22,6 +23,8 @@ object ValpasErrorCategory {
     val kuntailmoituksenTekijä = subcategory("kuntailmoituksenTekijä", "Kuntailmoituksen tekijän validointi epäonnistui.")
     val kuntailmoituksenIlmoituspäivä = subcategory("kuntailmoituksenIlmoituspäivä", "Kuntailmoituksia ei voi tehdä ennen lain voimaantuloa 1.8.2021")
   }
+
+  object searchValidation extends ErrorCategory("validation", statusCode = 400, "Hakutermi ei ollut validi suomalainen henkilötunnus tai oppijatunnus")
 
   object notImplemented extends ErrorCategory("notImplemented", 501, "Not implemented") {
     val kuntailmoituksenMuokkaus = subcategory("kuntailmoituksenMuokkaus", "Kuntailmoitusta ei voi muokata")

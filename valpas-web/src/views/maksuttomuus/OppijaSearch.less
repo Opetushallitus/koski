@@ -1,0 +1,32 @@
+@import "../../style/colors.less";
+
+.oppijasearch {
+  .spinner {
+    transform: scale(0.5);
+    height: 1px;
+  }
+
+  .textfield {
+    max-width: none;
+
+    .textfield__input {
+      max-width: 20rem;
+    }
+  }
+
+  .oppijasearch__submit {
+    margin-left: 0.25rem;
+  }
+
+  .oppijasearch__results {
+    display: flex;
+    align-items: center;
+
+    white-space: nowrap;
+    margin-left: 1rem;
+  }
+
+  .oppijasearch__resultvalue--error {
+    color: @color-red;
+  }
+}

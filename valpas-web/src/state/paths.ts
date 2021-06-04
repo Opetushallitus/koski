@@ -64,12 +64,31 @@ export const oppijaPath = (basePath: string = "") =>
 
 export const createOppijaPath = (
   basePath: string = "",
-  params: { oppijaOid: Oid; organisaatioOid?: Oid }
+  params: {
+    oppijaOid: Oid
+    organisaatioOid?: Oid
+    prev?: string
+  }
 ) =>
   queryPath(`${basePath}/oppija/${params.oppijaOid}`, {
     organisaatioRef: params.organisaatioOid,
+    prev: params.prev,
   })
 
 export type OppijaViewRouteProps = RouteComponentProps<{
   oppijaOid?: string
 }>
+
+// Maksuttomuusnäkymä
+
+export const maksuttomuusPath = (basePath: string = "") =>
+  `${basePath}/maksuttomuus`
+
+export const createMaksuttomuusPath = maksuttomuusPath
+
+// Käyttöoikeusnäkymä
+
+export const käyttöoikeusPath = (basePath: string = "") =>
+  `${basePath}/kayttooikeudet`
+
+export const createKäyttöoikeusPath = käyttöoikeusPath

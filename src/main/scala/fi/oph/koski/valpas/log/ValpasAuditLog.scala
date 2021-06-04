@@ -1,8 +1,9 @@
 package fi.oph.koski.valpas.log
 
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, AuditLogOperation}
+import fi.oph.koski.valpas.{ValpasHenkilöMaksuttomuushakutulos, ValpasHenkilöMaksuttomuushakuResult}
 import fi.oph.koski.valpas.log.ValpasOperation.ValpasOperation
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOppilaitos}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasHenkilöLaajatTiedot, ValpasOppilaitos}
 import fi.oph.koski.valpas.valpasrepository.ValpasKuntailmoitusLaajatTiedotJaOppijaOid
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
@@ -38,6 +39,24 @@ object ValpasAuditLog {
       )
     ))
   }
+
+  def auditLogHenkilöHaku
+  (query: String)(henkilö: ValpasHenkilöMaksuttomuushakuResult)(implicit session: ValpasSession)
+  : Unit = {
+    AuditLog.log(ValpasAuditLogMessage(
+      ValpasOperation.VALPAS_OPPIJA_HAKU,
+      session,
+      henkilö match {
+        case tulos: ValpasHenkilöMaksuttomuushakutulos => Map(
+          ValpasAuditLogMessageField.hakulause -> query,
+          ValpasAuditLogMessageField.oppijaHenkilöOid -> tulos.oid,
+        )
+        case _ => Map(
+          ValpasAuditLogMessageField.hakulause -> query,
+        )
+      }
+    ))
+  }
 }
 
 object ValpasAuditLogMessage {
@@ -48,14 +67,21 @@ object ValpasAuditLogMessage {
 
 object ValpasAuditLogMessageField extends Enumeration {
   type ValpasAuditLogMessageField = Value
-  val oppijaHenkilöOid, juuriOrganisaatio, ilmoittajaHenkilöOid, ilmoittajaOrganisaatioOid, kohdeOrganisaatioOid = Value
+  val oppijaHenkilöOid,
+      juuriOrganisaatio,
+      ilmoittajaHenkilöOid,
+      ilmoittajaOrganisaatioOid,
+      kohdeOrganisaatioOid,
+      hakulause,
+      hakutulosOppijaOid = Value
 }
 
 object ValpasOperation extends Enumeration {
   type ValpasOperation = Value
   val VALPAS_OPPIJA_KATSOMINEN,
       VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN,
-      VALPAS_OPPIJA_KUNTAILMOITUS = Value
+      VALPAS_OPPIJA_KUNTAILMOITUS,
+      VALPAS_OPPIJA_HAKU = Value
 }
 
 private class ValpasAuditLogOperation(op: ValpasOperation) extends AuditLogOperation(op)

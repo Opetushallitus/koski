@@ -96,7 +96,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
       oppijaOidit = List(ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid)
     )
     val result = kuntailmoitusService.haePohjatiedot(input)(session(ValpasMockUsers.valpasAapajoenKoulu))
-    result should equal(Left(ValpasErrorCategory.forbidden.oppijat("Käyttäjällä ei ole oikeuksia annetun organisaation tietoihin")))
+    result should equal(Left(ValpasErrorCategory.forbidden.organisaatio("Käyttäjällä ei ole oikeuksia annetun organisaation tietoihin")))
   }
 
   "Pohjatiedoissa jos inputtina on annettu organisaatio, palautetaan virhe, jos kyseisestä organisaatiosta käsin ei saa tehdä kaikille oppijoille ilmoitusta" in {
