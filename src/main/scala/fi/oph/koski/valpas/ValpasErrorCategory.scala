@@ -7,8 +7,8 @@ object ValpasErrorCategory {
     val oppija = subcategory("oppija", "Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin")
     val oppijat = subcategory("oppijat", "Käyttäjällä ei ole oikeuksia oppijoiden tietoihin")
     val opiskeluoikeus = subcategory("opiskeluoikeus", "Käyttäjällä ei ole oikeuksia opiskeluoikeuden tietoihin")
-    val organisaatio = subcategory("oppijat", "Käyttäjällä ei ole oikeuksia annetun organisaation tietoihin")
-    val ilmoitus = subcategory("oppijat", "Käyttäjällä ei ole oikeuksia ilmoitukseen")
+    val organisaatio = subcategory("organisaatio", "Käyttäjällä ei ole oikeuksia annetun organisaation tietoihin")
+    val ilmoitus = subcategory("ilmoitus", "Käyttäjällä ei ole oikeuksia ilmoitukseen")
     val toiminto = subcategory("toiminto", "Käyttäjällä ei ole oikeuksia toimintoon")
   }
 
