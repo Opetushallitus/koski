@@ -61,6 +61,7 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE INDEX ON #${s.name}.r_henkilo(hetu)",
     sqlu"CREATE INDEX ON #${s.name}.r_henkilo(oppija_oid, aidinkieli)",
     sqlu"CREATE INDEX ON #${s.name}.r_henkilo(linkitetyt_oidit)",
+    sqlu"CREATE INDEX ON #${s.name}.r_henkilo(master_oid)",
 
     sqlu"CREATE INDEX ON #${s.name}.r_organisaatio(oppilaitosnumero)",
 

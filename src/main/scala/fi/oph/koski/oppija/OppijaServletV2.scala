@@ -55,7 +55,7 @@ case class UpdateContextV2(user: KoskiSpecificSession, application: KoskiApplica
     val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = validationResult.flatMap(application.oppijaFacadeV2.createOrUpdate(_, allowUpdate)(user))
 
     result.left.foreach { case HttpStatus(code, errors) =>
-      logger(user).warn("Opiskeluoikeuden lisäys/päivitys estetty: " + code + " " + errors + " for request " + logSafeDescription(request))
+      logger(user).info("Opiskeluoikeuden lisäys/päivitys estetty: " + code + " " + errors + " for request " + logSafeDescription(request))
     }
 
     val error = result.left.toOption.map(status => TiedonsiirtoError(oppijaJsonFromRequest, status.errors))
