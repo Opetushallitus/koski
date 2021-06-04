@@ -10,6 +10,8 @@ import org.http4s.EntityEncoder
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 
+import scala.concurrent.duration.DurationInt
+
 class ElasticSearchIndex(
   val name: String,
   private val elastic: ElasticSearch,
@@ -80,8 +82,10 @@ class ElasticSearchIndex(
 
   def migrateWriteAlias(toVersion: Int, fromVersion: Option[Int] = None): String = migrateAlias(writeAlias, toVersion, fromVersion)
 
+  def isOnline: Boolean = indexExists(currentIndexName)
+
   private def indexExists(indexName: String): Boolean = {
-    Http.runTask(http.head(uri"/$indexName")(Http.statusCode)) match {
+    Http.runTask(http.head(uri"/$indexName")(Http.statusCode), timeout = 5.seconds) match {
       case 200 => true
       case 404 => false
       case statusCode: Int => throw new RuntimeException("Unexpected status code from elasticsearch: " + statusCode)

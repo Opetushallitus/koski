@@ -82,7 +82,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
   perustiedotSyncRepository: PerustiedotSyncRepository
 ) extends Logging {
 
-  var index = new ElasticSearchIndex(
+  val index = new ElasticSearchIndex(
     elastic = elastic,
     name = "perustiedot",
     mappingVersion = 3,
