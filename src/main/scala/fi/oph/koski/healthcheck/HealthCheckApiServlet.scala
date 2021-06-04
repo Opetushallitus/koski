@@ -13,4 +13,3 @@ class HealthCheckApiServlet(implicit val application: KoskiApplication) extends 
     renderStatus(application.healthCheck.internalHealthcheck)
   }
 }
-

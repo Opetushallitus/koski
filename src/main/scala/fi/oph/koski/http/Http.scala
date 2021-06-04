@@ -15,7 +15,7 @@ import org.http4s.client.{Client, blaze}
 import org.http4s.headers.`Content-Type`
 import org.json4s.jackson.JsonMethods.parse
 
-import scala.concurrent.duration.DurationInt
+import scala.concurrent.duration.{Duration, DurationInt}
 import scala.reflect.runtime.universe.TypeTag
 import scala.xml.Elem
 import scalaz.concurrent.Task
@@ -116,7 +116,7 @@ object Http extends Logging {
   }
 
   // Http task runner: runs at most 2 minutes. We must avoid using the timeout-less run method, that may block forever.
-  def runTask[A](task: Task[A]): A = task.unsafePerformSyncFor(2.minutes)
+  def runTask[A](task: Task[A], timeout: Duration = 2.minutes): A = task.unsafePerformSyncFor(timeout)
 
   type Decode[ResultType] = (Int, String, Request) => ResultType
 

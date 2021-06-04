@@ -41,7 +41,7 @@ trait HealthCheck extends Logging {
       () => casCheck
     )
 
-    val status = HttpStatus.fold(checks.par.map(_.apply).toList)
+    val status = HttpStatus.fold(checks.par.map(_.apply).seq)
     if (status.isError) {
       logger.warn(s"Healthcheck with external systems status failed $status")
     }
@@ -49,9 +49,16 @@ trait HealthCheck extends Logging {
   }
 
   def internalHealthcheck: HttpStatus = {
-    val status = oppijaCheck(findOrCreateOppija)
+    val checks: Seq[() => HttpStatus] = List(
+      () => assertTrue("koski database", application.masterDatabase.util.databaseIsOnline),
+      () => assertTrue("raportointi database", application.raportointiDatabase.util.databaseIsOnline),
+      () => assertTrue("valpas database", application.valpasDatabase.util.databaseIsOnline),
+      () => assertTrue("perustiedot index", application.perustiedotIndexer.index.isOnline),
+      () => assertTrue("tiedonsiirrot index", application.tiedonsiirtoService.index.isOnline)
+    )
+    val status = HttpStatus.fold(checks.par.map(_.apply).seq)
     if (status.isError) {
-      logger.warn(s"Internal healtcheck status failed $status")
+      logger.error(s"Internal healthcheck failed: $status")
     }
     status
   }
@@ -156,6 +163,14 @@ trait HealthCheck extends Logging {
     case e: Exception =>
       logger.warn(e)("healthcheck failed")
       Left(KoskiErrorCategory.internalError.subcategory(key, "healthcheck failed")())
+  }
+
+  private def assertTrue(key: String, f: => Boolean): HttpStatus = {
+    get(key, f) match {
+      case Left(err) => err
+      case Right(false) => KoskiErrorCategory.internalError.subcategory(key, s"healthcheck for $key failed")()
+      case Right(true) => HttpStatus.ok
+    }
   }
 
   def application: KoskiApplication
