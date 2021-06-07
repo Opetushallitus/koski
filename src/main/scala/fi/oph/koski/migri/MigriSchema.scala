@@ -99,10 +99,18 @@ case class MigriSuoritus(
 )
 
 case class MigriSuorituksenKoulutusmoduuli(
-  tunniste: KoodiViite,
+  tunniste: MigriKoodiviite,
   diplomaType: Option[Koodistokoodiviite],
   nimi: LocalizedString,
   laajuus: Option[Laajuus]
+)
+
+case class MigriKoodiviite(
+  koodiarvo: String,
+  nimi: Option[LocalizedString],
+  lyhytNimi: Option[LocalizedString],
+  koodistoUri: Option[String],
+  koodistoVersio: Option[Int]
 )
 
 case class MigriVahvistus(
@@ -129,7 +137,7 @@ case class MigriOsasuoritus(
   arviointi: Option[List[MigriArviointi]],
   tyyppi: Koodistokoodiviite,
   tutkinnonOsanRyhmä: Option[Koodistokoodiviite],
-  tunnustettu: Option[MigriOsaamisenTunnustaminen], //vain jos koulutusmoduulin tunnisteen koodiarvo "mukautettu"
+  tunnustettu: Option[MigriOsaamisenTunnustaminen], //vain jos lisätiedoissta löytyy koodiarvo "mukautettu"
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]],
   osasuoritukset: Option[List[MigriOsasuorituksenOsasuoritus]],
   suoritettuErityisenäTutkintona: Option[Boolean]
@@ -139,12 +147,12 @@ case class MigriOsasuorituksenOsasuoritus(
   koulutusmoduuli: MigriOsasuorituksenKoulutusmoduuli,
   arviointi: Option[List[MigriArviointi]],
   tyyppi: Koodistokoodiviite,
-  tunnustettu: Option[MigriOsaamisenTunnustaminen], //vain jos koulutusmoduulin tunnisteen koodiarvo "mukautettu"
+  tunnustettu: Option[MigriOsaamisenTunnustaminen], //vain jos lisätiedoissta löytyy koodiarvo "mukautettu"
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]
 )
 
 case class MigriOsasuorituksenKoulutusmoduuli(
-  tunniste: KoodiViite,
+  tunniste: MigriKoodiviite,
   nimi: LocalizedString,
   oppimäärä: Option[Koodistokoodiviite],
   kieli: Option[Koodistokoodiviite],
@@ -153,7 +161,7 @@ case class MigriOsasuorituksenKoulutusmoduuli(
 )
 
 case class MigriArviointi(
-  arvosana: KoodiViite,
+  arvosana: MigriKoodiviite,
   hyväksytty: Boolean,
   arviointiPäivä: Option[LocalDate]
 )

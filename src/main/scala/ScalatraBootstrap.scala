@@ -14,6 +14,7 @@ import fi.oph.koski.koskiuser._
 import fi.oph.koski.localization.KoskiSpecificLocalizationServlet
 import fi.oph.koski.log.Logging
 import fi.oph.koski.luovutuspalvelu.{LuovutuspalveluServlet, PalveluvaylaServlet, TilastokeskusServlet}
+import fi.oph.koski.migri.MigriServlet
 import fi.oph.koski.mydata.{ApiProxyServlet, MyDataReactServlet, MyDataServlet}
 import fi.oph.koski.omaopintopolkuloki.OmaOpintoPolkuLokiServlet
 import fi.oph.koski.omattiedot.{OmatTiedotHtmlServlet, OmatTiedotServlet}
@@ -104,6 +105,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     mount("/api/luovutuspalvelu", new LuovutuspalveluServlet)
     mount("/api/luovutuspalvelu/valvira", new ValviraServlet)
     mount("/api/luovutuspalvelu/kela", new KelaServlet)
+    mount("/api/luovutuspalvelu/migri", new MigriServlet)
     mount("/api/palveluvayla", new PalveluvaylaServlet)
     mount("/api/luovutuspalvelu/haku", new TilastokeskusServlet)
     mount("/api/omadata/oppija", new ApiProxyServlet)

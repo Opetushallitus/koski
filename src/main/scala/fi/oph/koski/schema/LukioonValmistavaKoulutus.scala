@@ -109,7 +109,7 @@ case class LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa201
   override val osasuoritukset: Option[List[LukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019]],
   @KoodistoKoodiarvo("luvalukionoppiaine2019")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "luvalukionoppiaine2019", koodistoUri = "suorituksentyyppi")
-) extends LukioonValmistavanKoulutuksenOsasuoritus with Vahvistukseton
+) extends LukioonValmistavanKoulutuksenOsasuoritus with Vahvistukseton with SuoritettavissaErityisenäTutkintona2019
 
 trait LukioonValmistavanKoulutuksenOppiaine extends KoulutusmoduuliValinnainenLaajuus with Valinnaisuus {
   @Title("Oppiaine")
