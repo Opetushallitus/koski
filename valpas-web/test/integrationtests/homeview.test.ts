@@ -12,6 +12,7 @@ import { loginAs } from "../integrationtests-env/browser/reset"
 describe("Etusivun väliaikainen näkymä", () => {
   beforeAll(() => {
     disableFeature("maksuttomuus")
+    disableFeature("kuntavalvonta")
   })
 
   afterAll(() => {

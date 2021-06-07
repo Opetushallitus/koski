@@ -15,8 +15,8 @@ export const goToLocation = async (path: string) => {
 }
 
 export const deleteCookies = async () => {
-  await driver.manage().deleteAllCookies()
   await eventually(async () => {
+    await driver.manage().deleteAllCookies()
     const cookies = await driver.manage().getCookies()
     expect(cookies.length, "Expected all cookies to be deleted").toBe(0)
   })

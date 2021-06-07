@@ -92,3 +92,10 @@ export const käyttöoikeusPath = (basePath: string = "") =>
   `${basePath}/kayttooikeudet`
 
 export const createKäyttöoikeusPath = käyttöoikeusPath
+
+// Kuntailmoitusnäkymä
+
+export const kuntailmoitusPath = (basePath: string = "") =>
+  `${basePath}/kuntailmoitukset`
+
+export const createKuntailmoitusPath = kuntailmoitusPath

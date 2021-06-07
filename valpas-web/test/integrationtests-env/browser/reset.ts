@@ -7,13 +7,17 @@ import {
 import { $, deleteCookies, goToLocation } from "./core"
 import { driver } from "./driver"
 import { getTextInput, setTextInput } from "./forms"
+import { eventually } from "./utils"
 
 export const loginAs = async (
   initialPath: string,
   username: string,
   forceReset: boolean = false
 ) => {
-  await reset(initialPath, forceReset)
+  await eventually(async () => {
+    await reset(initialPath, forceReset)
+    await expectElementEventuallyVisible("#username")
+  }, 30000)
   ;(await $("#username")).sendKeys(username)
   ;(await $("#password")).sendKeys(username, Key.ENTER)
   await driver.wait(

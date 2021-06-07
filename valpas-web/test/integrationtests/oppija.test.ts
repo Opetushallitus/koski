@@ -4,7 +4,12 @@ import {
   expectElementNotVisible,
   textEventuallyEquals,
 } from "../integrationtests-env/browser/content"
-import { $$, goToLocation } from "../integrationtests-env/browser/core"
+import {
+  $$,
+  disableFeature,
+  goToLocation,
+  resetFeatures,
+} from "../integrationtests-env/browser/core"
 import {
   allowNetworkError,
   FORBIDDEN,
@@ -64,6 +69,14 @@ const turvakieltoVaroitusNotVisible = () =>
   expectElementNotVisible("#turvakielto-varoitus")
 
 describe("Oppijakohtainen näkymä", () => {
+  beforeAll(() => {
+    disableFeature("kuntavalvonta")
+  })
+
+  afterAll(() => {
+    resetFeatures()
+  })
+
   it("Näyttää oppijan tiedot, johon käyttäjällä on lukuoikeus", async () => {
     await loginAs(ysiluokkaKeskenKeväälläPath, "valpas-jkl-normaali", true)
     await mainHeadingEquals(

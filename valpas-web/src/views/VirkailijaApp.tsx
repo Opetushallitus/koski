@@ -3,9 +3,14 @@ import { Redirect, Route, Switch } from "react-router-dom"
 import { fetchYlatasonOrganisaatiotJaKayttooikeusroolit } from "../api/api"
 import { useApiOnce } from "../api/apiHooks"
 import { isSuccess } from "../api/apiUtils"
+import { Page } from "../components/containers/Page"
 import { LoadingModal } from "../components/icons/Spinner"
+import { NotImplemented } from "../components/typography/NoDataMessage"
 import { t } from "../i18n/i18n"
-import { KäyttöoikeusroolitProvider } from "../state/accessRights"
+import {
+  KäyttöoikeusroolitProvider,
+  withRequiresKuntavalvonta,
+} from "../state/accessRights"
 import {
   CurrentUser,
   getCurrentUser,
@@ -21,6 +26,7 @@ import {
   createHakutilannePathWithoutOrg,
   hakutilannePathWithOrg,
   hakutilannePathWithoutOrg,
+  kuntailmoitusPath,
   käyttöoikeusPath,
   maksuttomuusPath,
   oppijaPath,
@@ -93,6 +99,11 @@ const VirkailijaRoutes = () => {
         <Route exact path={maksuttomuusPath(basePath)}>
           <MaksuttomuusView />
         </Route>
+        <Route exact path={kuntailmoitusPath(basePath)}>
+          <MockKuntailmoitusView
+            redirectUserWithoutAccessTo={rootPath(basePath)}
+          />
+        </Route>
         <Route exact path={käyttöoikeusPath(basePath)}>
           <AccessRightsView />
         </Route>
@@ -104,6 +115,12 @@ const VirkailijaRoutes = () => {
     </KäyttöoikeusroolitProvider>
   )
 }
+
+const MockKuntailmoitusView = withRequiresKuntavalvonta(() => (
+  <Page>
+    <NotImplemented>TODO: Tänne tulevat kuntailmoitukset</NotImplemented>
+  </Page>
+))
 
 const Login = () => {
   React.useEffect(() => {
