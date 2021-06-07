@@ -19,7 +19,7 @@ export const maksuttomuudenValvontaAllowed: AccessGuard = (roles) =>
   isFeatureFlagEnabled("maksuttomuus")
 
 export const kuntavalvontaAllowed: AccessGuard = (roles) =>
-  roles.includes("KUNTA")
+  roles.includes("KUNTA") && isFeatureFlagEnabled("kuntavalvonta")
 
 const someOf = (...accessGuards: AccessGuard[]): AccessGuard => (roles) =>
   accessGuards.some((guard) => guard(roles))
