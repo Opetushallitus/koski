@@ -9,20 +9,23 @@ import {
 } from "../state/common"
 import { isFeatureFlagEnabled } from "./featureFlags"
 
-export const hakeutumisenValvontaAllowed = (roles: Kayttooikeusrooli[]) =>
+type AccessGuard = (roles: Kayttooikeusrooli[]) => boolean
+
+export const hakeutumisenValvontaAllowed: AccessGuard = (roles) =>
   roles.includes("OPPILAITOS_HAKEUTUMINEN")
 
-export const maksuttomuudenValvontaAllowed = (roles: Kayttooikeusrooli[]) =>
+export const maksuttomuudenValvontaAllowed: AccessGuard = (roles) =>
   roles.includes("OPPILAITOS_MAKSUTTOMUUS") &&
   isFeatureFlagEnabled("maksuttomuus")
+
+const someOf = (...accessGuards: AccessGuard[]): AccessGuard => (roles) =>
+  accessGuards.some((guard) => guard(roles))
 
 export type WithRequiresAccessRightsProps = {
   redirectUserWithoutAccessTo: string
 }
 
-const accessRightGuardHoc = (
-  hasAccess: (roles: Kayttooikeusrooli[]) => boolean
-) => <P extends object>(
+const accessRightGuardHoc = (hasAccess: AccessGuard) => <P extends object>(
   Component: React.ComponentType<P>
 ): React.FC<P & WithRequiresAccessRightsProps> => (
   props: WithRequiresAccessRightsProps
@@ -37,6 +40,10 @@ const accessRightGuardHoc = (
 
 export const withRequiresHakeutumisenValvonta = accessRightGuardHoc(
   hakeutumisenValvontaAllowed
+)
+
+export const withRequiresHakeutumisenOrMaksuttomuudenValvonta = accessRightGuardHoc(
+  someOf(hakeutumisenValvontaAllowed, maksuttomuudenValvontaAllowed)
 )
 
 const käyttöoikeusroolitContext = React.createContext<
