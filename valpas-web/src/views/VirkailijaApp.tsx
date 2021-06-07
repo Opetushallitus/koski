@@ -7,7 +7,10 @@ import { Page } from "../components/containers/Page"
 import { LoadingModal } from "../components/icons/Spinner"
 import { NotImplemented } from "../components/typography/NoDataMessage"
 import { t } from "../i18n/i18n"
-import { KäyttöoikeusroolitProvider } from "../state/accessRights"
+import {
+  KäyttöoikeusroolitProvider,
+  withRequiresKuntavalvonta,
+} from "../state/accessRights"
 import {
   CurrentUser,
   getCurrentUser,
@@ -97,11 +100,9 @@ const VirkailijaRoutes = () => {
           <MaksuttomuusView />
         </Route>
         <Route exact path={kuntailmoitusPath(basePath)}>
-          <Page>
-            <NotImplemented>
-              TODO: Tänne tulevat kuntailmoitukset
-            </NotImplemented>
-          </Page>
+          <MockKuntailmoitusView
+            redirectUserWithoutAccessTo={rootPath(basePath)}
+          />
         </Route>
         <Route exact path={käyttöoikeusPath(basePath)}>
           <AccessRightsView />
@@ -114,6 +115,12 @@ const VirkailijaRoutes = () => {
     </KäyttöoikeusroolitProvider>
   )
 }
+
+const MockKuntailmoitusView = withRequiresKuntavalvonta(() => (
+  <Page>
+    <NotImplemented>TODO: Tänne tulevat kuntailmoitukset</NotImplemented>
+  </Page>
+))
 
 const Login = () => {
   React.useEffect(() => {

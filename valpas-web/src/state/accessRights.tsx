@@ -18,6 +18,9 @@ export const maksuttomuudenValvontaAllowed: AccessGuard = (roles) =>
   roles.includes("OPPILAITOS_MAKSUTTOMUUS") &&
   isFeatureFlagEnabled("maksuttomuus")
 
+export const kuntavalvontaAllowed: AccessGuard = (roles) =>
+  roles.includes("KUNTA")
+
 const someOf = (...accessGuards: AccessGuard[]): AccessGuard => (roles) =>
   accessGuards.some((guard) => guard(roles))
 
@@ -44,6 +47,10 @@ export const withRequiresHakeutumisenValvonta = accessRightGuardHoc(
 
 export const withRequiresHakeutumisenOrMaksuttomuudenValvonta = accessRightGuardHoc(
   someOf(hakeutumisenValvontaAllowed, maksuttomuudenValvontaAllowed)
+)
+
+export const withRequiresKuntavalvonta = accessRightGuardHoc(
+  kuntavalvontaAllowed
 )
 
 const käyttöoikeusroolitContext = React.createContext<
