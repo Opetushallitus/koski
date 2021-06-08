@@ -76,6 +76,11 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
   @Tooltip("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden tiedot. Nämä tiedot kertovat, että kyseessä on ns. ulkopuolisen sopimuskumppanin suoritustieto, joka liittyy päävastuullisen koulutuksen järjestäjän luomaan opiskeluoikeuteen. Ks. tarkemmin ohjeet ja käyttötapaukset [usein kysyttyjen kysymysten](https://confluence.csc.fi/pages/viewpage.action?pageId=72811652) kohdasta Milloin ja miten käytetään linkitystä eri organisaatioissa olevien opintosuoritusten välillä KOSKI-palvelussa?")
   def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus]
   def mitätöity: Boolean = tila.opiskeluoikeusjaksot.lastOption.exists(_.tila.koodiarvo == "mitatoity")
+
+  import mojave._
+  def withSuoritukset(suoritukset: List[PäätasonSuoritus]): Opiskeluoikeus = {
+    shapeless.lens[Opiskeluoikeus].field[List[PäätasonSuoritus]]("suoritukset").set(this)(suoritukset)
+  }
 }
 
 object OpiskeluoikeudenTyyppi {
@@ -119,7 +124,7 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
     val withOid = shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[Option[String]]("oid").set(this)(oid)
     shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[Option[Int]]("versionumero").set(withOid)(versionumero)
   }
-  final def withSuoritukset(suoritukset: List[PäätasonSuoritus]): KoskeenTallennettavaOpiskeluoikeus = {
+  override final def withSuoritukset(suoritukset: List[PäätasonSuoritus]): KoskeenTallennettavaOpiskeluoikeus = {
     shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[List[PäätasonSuoritus]]("suoritukset").set(this)(suoritukset)
   }
   final def withHistoria(historia: Option[List[OpiskeluoikeudenOrganisaatiohistoria]]): KoskeenTallennettavaOpiskeluoikeus = {
