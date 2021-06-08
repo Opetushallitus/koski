@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{Koodistokoodiviite, OidOrganisaatio, OrganisaatioWithOid}
+import fi.oph.koski.schema.{Koodistokoodiviite, OidOrganisaatio, Organisaatio, OrganisaatioWithOid}
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOppijaLaajatTiedot, ValpasOppilaitos}
 import fi.oph.koski.valpas.valpasrepository._
@@ -51,6 +51,13 @@ class ValpasKuntailmoitusService(
     accessResolver.withOppijaAccess(oppija)
       .flatMap(oppija => repository.queryOppijat(oppija.henkilö.kaikkiOidit.toSet))
       .map(_.map(karsiHenkilötiedotJosEiOikeuksia(oppija)))
+  }
+
+  def getKuntailmoituksetKunnalle
+    (kuntaOid: Organisaatio.Oid)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]] = {
+    repository.queryByKunta(kuntaOid)
   }
 
   private def karsiHenkilötiedotJosEiOikeuksia(

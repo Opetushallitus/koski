@@ -1,7 +1,10 @@
 import { ISODate, Oid } from "../common"
 import { HakuLaajatTiedot, HakuSuppeatTiedot } from "./haku"
 import { HenkilöLaajatTiedot, HenkilöSuppeatTiedot } from "./henkilo"
-import { KuntailmoitusLaajatTiedotLisätiedoilla } from "./kuntailmoitus"
+import {
+  KuntailmoitusLaajatTiedotLisätiedoilla,
+  KuntailmoitusSuppeatTiedot,
+} from "./kuntailmoitus"
 import {
   OpiskeluoikeusLaajatTiedot,
   OpiskeluoikeusSuppeatTiedot,
@@ -54,3 +57,8 @@ export const lisätietoMatches = (
   lisätiedot.oppijaOid === oppijaOid &&
   lisätiedot.opiskeluoikeusOid === opiskeluoikeusOid &&
   oppilaitosOid === oppilaitosOid
+
+export type OppijaKuntailmoituksillaSuppeatTiedot = {
+  oppija: OppijaSuppeatTiedot
+  kuntailmoitukset: KuntailmoitusSuppeatTiedot[]
+}

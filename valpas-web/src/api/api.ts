@@ -5,6 +5,7 @@ import { OpiskeluoikeusSuppeatTiedot } from "../state/apitypes/opiskeluoikeus"
 import {
   OppijaHakutilanteillaLaajatTiedot,
   OppijaHakutilanteillaSuppeatTiedot,
+  OppijaKuntailmoituksillaSuppeatTiedot,
 } from "../state/apitypes/oppija"
 import {
   Hetu,
@@ -116,6 +117,13 @@ export const createKuntailmoitus = (
         kuntailmoitus,
       },
     })
+  )
+
+export const fetchKuntailmoitukset = (kuntaOid: Oid) =>
+  handleExpiredSession(
+    apiGet<OppijaKuntailmoituksillaSuppeatTiedot[]>(
+      `valpas/api/kuntailmoitus/oppijat/${kuntaOid}/aktiiviset`
+    )
   )
 
 /**

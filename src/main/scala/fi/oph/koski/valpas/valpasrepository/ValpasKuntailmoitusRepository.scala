@@ -5,7 +5,7 @@ import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.{skipSyntheticProperties, strictDeserialization}
-import fi.oph.koski.schema.{Koodistokoodiviite, KoskiSchema}
+import fi.oph.koski.schema.{Koodistokoodiviite, KoskiSchema, Organisaatio}
 import fi.oph.koski.validation.ValidatingAndResolvingExtractor
 import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.db.ValpasSchema._
@@ -140,6 +140,18 @@ class ValpasKuntailmoitusRepository(
           .result
       ).map(res => fromDbRows(res._1, res._2))
         .map(_.map(_.kuntailmoitus))
+    )
+  }
+
+  def queryByKunta(kuntaOid: Organisaatio.Oid): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]] = {
+    HttpStatus.foldEithers(
+      runDbSync(
+        Ilmoitukset
+          .filter(_.kuntaOid === kuntaOid)
+          .join(IlmoitusLisätiedot).on(_.uuid === _.ilmoitusUuid) // TODO: Tämän pitäisi olla left join ja queryn toimia, vaikka koko lisätiedot taulu olisi tyhjä: lisätiedot ovat oppivelvollisuusrekisterin ulkopuolista dataa
+          .sortBy(_._1.luotu.desc)
+          .result
+      ).map(Function.tupled(fromDbRows))
     )
   }
 

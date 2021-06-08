@@ -1,12 +1,13 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.{Hetu, Yhteystiedot}
+import fi.oph.koski.henkilo.Yhteystiedot
 import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.http.HttpStatus.foldEithers
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
-import fi.oph.koski.schema.LocalizedString
+import fi.oph.koski.schema.{LocalizedString, Organisaatio}
 import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.db.ValpasSchema.{OpiskeluoikeusLisätiedotKey, OpiskeluoikeusLisätiedotRow}
@@ -87,6 +88,11 @@ object OppijaHakutilanteillaSuppeatTiedot {
   }
 }
 
+case class OppijaKuntailmoituksillaSuppeatTiedot (
+  oppija: ValpasOppijaSuppeatTiedot,
+  kuntailmoitukset: Seq[ValpasKuntailmoitusSuppeatTiedot],
+)
+
 class ValpasOppijaService(
   application: KoskiApplication
 ) extends Logging with Timing {
@@ -113,6 +119,44 @@ class ValpasOppijaService(
     getOppijatLaajatTiedot(oppilaitosOid)
       .map(lisätiedotRepository.readForOppijat)
       .map(_.map(Function.tupled(OppijaHakutilanteillaSuppeatTiedot.apply)))
+
+  def getKunnanOppijatSuppeatTiedot
+    (kuntaOid: Organisaatio.Oid, haeAktiiviset: Boolean)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, Seq[OppijaKuntailmoituksillaSuppeatTiedot]] = {
+    accessResolver.assertAccessToOrg(ValpasRooli.KUNTA)(kuntaOid)
+      // Haetaan kuntailmoitukset Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]
+      .flatMap(_ => kuntailmoitusService.getKuntailmoituksetKunnalle(kuntaOid))
+
+      // Haetaan jokaiselle ilmoitukselle oppija ja mapataan Seq[(ValpasOppijaLaajatTiedot, ValpasKuntailmoitusLaajatTiedot)]
+      // TODO: Tässä on optimoinnin paikka, koska jos samalla oppijatunnuksella on useampi ilmoitus, haetaan oppijan tiedot turhaan moneen kertaan
+      .flatMap(kuntailmoitukset => foldEithers(kuntailmoitukset.map(kuntailmoitusJaOppijaOid => {
+        opiskeluoikeusDbService.getOppija(kuntailmoitusJaOppijaOid.oppijaOid)
+          .toRight(ValpasErrorCategory.forbidden.oppija())
+          .flatMap(asValpasOppijaLaajatTiedot)
+          .map(oppija => (oppija, kuntailmoitusJaOppijaOid.kuntailmoitus))
+      })))
+
+      // Ryhmitellään henkilöiden master-oidien perusteella Seq[Seq[(ValpasOppijaLaajatTiedot, ValpasKuntailmoitusLaajatTiedot)]]
+      .map(_.groupBy(_._1.henkilö.oid).values.toSeq)
+
+      // Kääräistään tuplelistat muotoon Seq[OppijaKuntailmoituksillaSuppeatTiedot]
+      .map(_.map(oppijaJaKuntailmoitusTuples => {
+        val oppija = oppijaJaKuntailmoitusTuples.head._1
+        val kuntailmoituksetLaajatTiedot = oppijaJaKuntailmoitusTuples.map(_._2)
+        val kuntailmoitukset = lisääAktiivisuustiedot(oppija)(kuntailmoituksetLaajatTiedot)
+
+        OppijaKuntailmoituksillaSuppeatTiedot(
+          oppija = ValpasOppijaSuppeatTiedot(oppija),
+          kuntailmoitukset = kuntailmoitukset
+            .filter(_.aktiivinen == haeAktiiviset)
+            .map(ValpasKuntailmoitusSuppeatTiedot.apply)
+        )
+      }))
+
+      // Siivotaan hakutuloksista pois tapaukset, joilla ei ole kuntailmoituksia
+      .map(_.filter(_.kuntailmoitukset.nonEmpty))
+  }
 
   private def oppilaitosOidErrorClue(oppilaitosOid: ValpasOppilaitos.Oid): String =
     s"oppilaitos: ${oppilaitosOid}"

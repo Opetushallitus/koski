@@ -3,6 +3,7 @@ package fi.oph.koski.valpas
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
+import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.ChainingSyntax._
 import fi.oph.koski.valpas.log.ValpasAuditLog.{auditLogOppijaKatsominen, auditLogOppijaKuntailmoitus}
@@ -22,6 +23,14 @@ class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication)
     application.directoryClient
   )
   private lazy val kuntailmoitusService = application.valpasKuntailmoitusService
+  private lazy val oppijaService = application.valpasOppijaService
+
+  get("/oppijat/:kuntaOid/aktiiviset") {
+    val kuntaOid: Organisaatio.Oid = params("kuntaOid")
+    renderEither(
+      oppijaService.getKunnanOppijatSuppeatTiedot(kuntaOid, true)
+    )
+  }
 
   post("/") {
     withJsonBody { (kuntailmoitusInputJson: JValue) =>
