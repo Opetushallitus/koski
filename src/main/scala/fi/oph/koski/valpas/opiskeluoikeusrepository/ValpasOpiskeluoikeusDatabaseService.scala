@@ -109,10 +109,13 @@ WITH
       JOIN oppivelvollisuustiedot ON oppivelvollisuustiedot.oppija_oid = r_henkilo.oppija_oid
       JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = r_henkilo.oppija_oid
       """),
-        oppilaitosOids.map(oids => sql"AND r_opiskeluoikeus.oppilaitos_oid = any($oids)"),
-        oppijaOid.map(oid => sql"JOIN pyydetty_oppija ON pyydetty_oppija.master_oid = r_henkilo.master_oid"),
-        Some(
-          sql"""
+        oppilaitosOids.map(oids => sql"""
+        AND r_opiskeluoikeus.oppilaitos_oid = any($oids)
+          """),
+        oppijaOid.map(oid => sql"""
+      JOIN pyydetty_oppija ON pyydetty_oppija.master_oid = r_henkilo.master_oid
+          """),
+        Some(sql"""
     WHERE
       r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE
   )
