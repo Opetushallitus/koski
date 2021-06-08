@@ -1,7 +1,8 @@
 package fi.oph.koski.valpas.log
 
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, AuditLogOperation}
-import fi.oph.koski.valpas.{ValpasHenkilöMaksuttomuushakutulos, ValpasHenkilöMaksuttomuushakuResult}
+import fi.oph.koski.schema.Organisaatio
+import fi.oph.koski.valpas.{ValpasHenkilöMaksuttomuushakuResult, ValpasHenkilöMaksuttomuushakutulos}
 import fi.oph.koski.valpas.log.ValpasOperation.ValpasOperation
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasHenkilöLaajatTiedot, ValpasOppilaitos}
 import fi.oph.koski.valpas.valpasrepository.ValpasKuntailmoitusLaajatTiedotJaOppijaOid
@@ -22,6 +23,16 @@ object ValpasAuditLog {
       ValpasOperation.VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN,
       session,
       Map(ValpasAuditLogMessageField.juuriOrganisaatio -> oppilaitosOid)
+    ))
+  }
+
+  def auditLogKuntaKatsominen
+    (kuntaOid: Organisaatio.Oid)(implicit session: ValpasSession)
+  : Unit = {
+    AuditLog.log(ValpasAuditLogMessage(
+      ValpasOperation.VALPAS_KUNNAT_OPPIJAT_KATSOMINEN,
+      session,
+      Map(ValpasAuditLogMessageField.juuriOrganisaatio -> kuntaOid)
     ))
   }
 
@@ -80,6 +91,7 @@ object ValpasOperation extends Enumeration {
   type ValpasOperation = Value
   val VALPAS_OPPIJA_KATSOMINEN,
       VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN,
+      VALPAS_KUNNAT_OPPIJAT_KATSOMINEN,
       VALPAS_OPPIJA_KUNTAILMOITUS,
       VALPAS_OPPIJA_HAKU = Value
 }

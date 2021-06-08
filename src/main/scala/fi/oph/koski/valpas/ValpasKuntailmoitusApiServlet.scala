@@ -6,7 +6,7 @@ import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.ChainingSyntax._
-import fi.oph.koski.valpas.log.ValpasAuditLog.{auditLogOppijaKatsominen, auditLogOppijaKuntailmoitus}
+import fi.oph.koski.valpas.log.ValpasAuditLog.{auditLogKuntaKatsominen, auditLogOppijaKatsominen, auditLogOppijaKuntailmoitus}
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusLaajatTiedotJaOppijaOid, ValpasKuntailmoitusPohjatiedot, ValpasKuntailmoitusPohjatiedotInput}
 import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
@@ -29,6 +29,7 @@ class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication)
     val kuntaOid: Organisaatio.Oid = params("kuntaOid")
     renderEither(
       oppijaService.getKunnanOppijatSuppeatTiedot(kuntaOid, true)
+        .tap(_ => auditLogKuntaKatsominen(kuntaOid))
     )
   }
 
