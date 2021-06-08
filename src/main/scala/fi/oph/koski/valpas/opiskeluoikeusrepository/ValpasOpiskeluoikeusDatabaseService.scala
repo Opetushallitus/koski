@@ -201,12 +201,32 @@ WITH
       -- oppivelvollisuustiedot-näkymä hoitaa syntymäaika- ja mahdollisen peruskoulusta ennen lain voimaantuloa valmistumisen
       -- tarkistuksen: siinä ei ole tietoja kuin oppijoista, jotka ovat oppivelvollisuuden laajentamislain piirissä
       JOIN oppivelvollisuustiedot ON oppivelvollisuustiedot.oppija_oid = r_henkilo.oppija_oid
-      LEFT JOIN hakeutumisvalvottava_opiskeluoikeus ON hakeutumisvalvottava_opiskeluoikeus.master_oid = r_henkilo.master_oid
+      """),
+        oppilaitosOids.map(_ => sql"""
+      -- Optimointi: Kun haetaan oppilaitoksen perusteella, palautetaan vain oppilaitoksen valvottavat oppijat. Muuten esim.
+      -- peruskoulussa palautettaisiin turhaan kaikki tiedot ekaluokkalaisista lähtien, mikä hidastaa queryä ja kasvattaa
+      -- resultsettiä huomattavasti.
+      JOIN
+               """)
+          .orElse(
+            Some(sql"""
+      LEFT JOIN
+                 """)),
+        Some(sql"""
+      hakeutumisvalvottava_opiskeluoikeus ON hakeutumisvalvottava_opiskeluoikeus.master_oid = r_henkilo.master_oid
       -- Haetaan kaikki oppijan oidit: pitää palauttaa esim. kuntailmoitusten kyselyä varten
       JOIN r_henkilo kaikki_henkilot ON kaikki_henkilot.master_oid = r_henkilo.master_oid
+      """),
+        oppilaitosOids.map(_ => sql"""
+      -- Optimointi: Poistetaan turha where-ehto haettaessa kaikki oppilaitoksen tiedot. Koska oppijalla on vähintään yksi
+      -- valvottava opiskeluoikeus, on hänellä pakko olla myös yksi oppivelvollisuuskelvollinen opiskeluoikeus.
+             """
+        ).orElse(Some(sql"""
     WHERE
       -- Oppijalla on oltava vähintään yksi oppivelvollisuuskelvollinen opiskeluoikeus:
       EXISTS (SELECT 1 FROM ov_kelvollinen_opiskeluoikeus WHERE ov_kelvollinen_opiskeluoikeus.master_oid = r_henkilo.master_oid)
+      """)),
+      Some(sql"""
     GROUP BY
       r_henkilo.master_oid,
       r_henkilo.hetu,
