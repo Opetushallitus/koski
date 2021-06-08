@@ -45,8 +45,12 @@ export const withRequiresHakeutumisenValvonta = accessRightGuardHoc(
   hakeutumisenValvontaAllowed
 )
 
-export const withRequiresHakeutumisenOrMaksuttomuudenValvonta = accessRightGuardHoc(
-  someOf(hakeutumisenValvontaAllowed, maksuttomuudenValvontaAllowed)
+export const withRequiresHakeutumisenOrMaksuttomuudenValvontaOrKunta = accessRightGuardHoc(
+  someOf(
+    hakeutumisenValvontaAllowed,
+    maksuttomuudenValvontaAllowed,
+    kuntavalvontaAllowed
+  )
 )
 
 export const withRequiresKuntavalvonta = accessRightGuardHoc(

@@ -18,7 +18,7 @@ import { Spinner } from "../../components/icons/Spinner"
 import { InfoTooltip } from "../../components/tooltip/InfoTooltip"
 import { Heading } from "../../components/typography/headings"
 import { T, t } from "../../i18n/i18n"
-import { withRequiresHakeutumisenOrMaksuttomuudenValvonta } from "../../state/accessRights"
+import { withRequiresHakeutumisenOrMaksuttomuudenValvontaOrKunta } from "../../state/accessRights"
 import { isAktiivinenKuntailmoitus } from "../../state/apitypes/kuntailmoitus"
 import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import {
@@ -39,7 +39,7 @@ const b = bem("oppijaview")
 
 export type OppijaViewProps = OppijaViewRouteProps
 
-export const OppijaView = withRequiresHakeutumisenOrMaksuttomuudenValvonta(
+export const OppijaView = withRequiresHakeutumisenOrMaksuttomuudenValvontaOrKunta(
   (props: OppijaViewProps) => {
     const searchQuery = parseSearchQueryFromProps(props)
     const queryOid = props.match.params.oppijaOid!!
@@ -133,7 +133,8 @@ type BackNavProps = {
 
 const BackNav = (props: BackNavProps) => {
   const organisaatioOid =
-    props.organisaatioRef || props.oppija?.oppija.oikeutetutOppilaitokset[0]
+    props.organisaatioRef ||
+    props.oppija?.oppija.hakeutumisvalvovatOppilaitokset[0]
   const targetPath =
     props.prevPage ||
     (organisaatioOid

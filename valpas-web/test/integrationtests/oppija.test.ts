@@ -4,12 +4,7 @@ import {
   expectElementNotVisible,
   textEventuallyEquals,
 } from "../integrationtests-env/browser/content"
-import {
-  $$,
-  disableFeature,
-  goToLocation,
-  resetFeatures,
-} from "../integrationtests-env/browser/core"
+import { $$, goToLocation } from "../integrationtests-env/browser/core"
 import {
   allowNetworkError,
   FORBIDDEN,
@@ -49,6 +44,9 @@ const montaHakuaJoistaYksiPäättynytOppijaPath = createOppijaPath(
 const lukionAineopinnotAloittanutPath = createOppijaPath("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000033",
 })
+const lukioOpiskelijaPath = createOppijaPath("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000004",
+})
 
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
@@ -69,14 +67,6 @@ const turvakieltoVaroitusNotVisible = () =>
   expectElementNotVisible("#turvakielto-varoitus")
 
 describe("Oppijakohtainen näkymä", () => {
-  beforeAll(() => {
-    disableFeature("kuntavalvonta")
-  })
-
-  afterAll(() => {
-    resetFeatures()
-  })
-
   it("Näyttää oppijan tiedot, johon käyttäjällä on lukuoikeus", async () => {
     await loginAs(ysiluokkaKeskenKeväälläPath, "valpas-jkl-normaali", true)
     await mainHeadingEquals(
@@ -174,7 +164,7 @@ describe("Oppijakohtainen näkymä", () => {
 
   it("Ei näytä oppijan tietoja, johon käyttäjällä ei ole lukuoikeutta", async () => {
     allowNetworkError("/valpas/api/oppija/", FORBIDDEN)
-    await loginAs(ysiluokkaKeskenKeväälläPath, "valpas-helsinki")
+    await loginAs(ysiluokkaKeskenKeväälläPath, "valpas-pelkkä-suorittaminen")
 
     await textEventuallyEquals(
       ".ohjeteksti",
@@ -185,7 +175,7 @@ describe("Oppijakohtainen näkymä", () => {
 
   it("Ei näytä oppijan tietoja, johon käyttäjällä ei ole lukuoikeutta vaihdetun tarkastelupäivän jälkeen", async () => {
     allowNetworkError("/valpas/api/oppija/", FORBIDDEN)
-    await loginAs(ysiluokkaValmisKeväälläPath, "valpas-jkl-normaali")
+    await loginAs(ysiluokkaValmisKeväälläPath, "valpas-jkl-normaali-perus")
     await mainHeadingEquals(
       "Ysiluokka-valmis-keväällä-2021 Valpas (190605A006K)"
     )
@@ -391,5 +381,90 @@ describe("Oppijakohtainen näkymä", () => {
       Ryhmä: 9C
       Tila: Valmistunut 30.5.2021
     `)
+  })
+
+  it("Näyttää detaljisivun maksuttomuuskäyttäjälle lukio-oppijasta", async () => {
+    await loginAs(lukioOpiskelijaPath, "valpas-pelkkä-maksuttomuus")
+
+    await mainHeadingEquals("Lukio-opiskelija Valpas (070504A717P)")
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000004")
+    await oppivelvollisuustiedotEquals(`
+      Opiskelutilanne:	Opiskelemassa
+      Oppivelvollisuus:	7.5.2022 asti
+      Oikeus opintojen maksuttomuuteen: 31.12.2024 asti
+    `)
+    await opiskeluhistoriaEquals(`
+      school
+      Lukiokoulutus 2019 –
+      Jyväskylän normaalikoulu
+      Ryhmä: AH
+      Tila: Opiskeluoikeus voimassa
+    `)
+  })
+
+  it("Näyttää detaljisivun maksuttomuuskäyttäjälle lukio-oppijasta oppivelvollisuuden päättymisen jälkeenkin", async () => {
+    await loginAs(lukioOpiskelijaPath, "valpas-pelkkä-maksuttomuus")
+
+    await resetMockData("2022-08-10")
+
+    await mainHeadingEquals("Lukio-opiskelija Valpas (070504A717P)")
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000004")
+    await oppivelvollisuustiedotEquals(`
+      Opiskelutilanne:	Opiskelemassa
+      Oppivelvollisuus:	7.5.2022 asti
+      Oikeus opintojen maksuttomuuteen: 31.12.2024 asti
+    `)
+    await opiskeluhistoriaEquals(`
+      school
+      Lukiokoulutus 2019 –
+      Jyväskylän normaalikoulu
+      Ryhmä: AH
+      Tila: Opiskeluoikeus voimassa
+    `)
+  })
+
+  it("Ei näytä detaljisivua maksuttomuuskäyttäjälle maksuttomuuden päättymisen jälkeen", async () => {
+    allowNetworkError("/valpas/api/oppija/", FORBIDDEN)
+    await loginAs(lukioOpiskelijaPath, "valpas-pelkkä-maksuttomuus")
+
+    await resetMockData("2025-01-01")
+    await goToLocation(lukioOpiskelijaPath)
+
+    await mainHeadingEquals("Oppijan tiedot")
+    await secondaryHeadingEquals(
+      "Oppijaa ei löydy tunnuksella 1.2.246.562.24.00000000004"
+    )
+  })
+
+  it("Näyttää detaljisivun kuntakäyttäjälle lukio-oppijasta", async () => {
+    await loginAs(lukioOpiskelijaPath, "valpas-helsinki")
+
+    await mainHeadingEquals("Lukio-opiskelija Valpas (070504A717P)")
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000004")
+    await oppivelvollisuustiedotEquals(`
+      Opiskelutilanne:	Opiskelemassa
+      Oppivelvollisuus:	7.5.2022 asti
+      Oikeus opintojen maksuttomuuteen: 31.12.2024 asti
+    `)
+    await opiskeluhistoriaEquals(`
+      school
+      Lukiokoulutus 2019 –
+      Jyväskylän normaalikoulu
+      Ryhmä: AH
+      Tila: Opiskeluoikeus voimassa
+    `)
+  })
+
+  it("Ei näytä detaljisivua kuntakäyttäjälle lukio-oppijasta oppivelvollisuuden päätyttyä", async () => {
+    allowNetworkError("/valpas/api/oppija/", FORBIDDEN)
+    await loginAs(lukioOpiskelijaPath, "valpas-helsinki")
+
+    await resetMockData("2022-08-10")
+    await goToLocation(lukioOpiskelijaPath)
+
+    await mainHeadingEquals("Oppijan tiedot")
+    await secondaryHeadingEquals(
+      "Oppijaa ei löydy tunnuksella 1.2.246.562.24.00000000004"
+    )
   })
 })

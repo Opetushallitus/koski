@@ -40,6 +40,32 @@ describe("Maksuttomuushaku", () => {
     )
   })
 
+  it("Haku löytää henkilötunnuksen perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on vain maksuttomuusoikeus, ja linkkaa detaljisivulle", async () => {
+    await maksuttomuusLogin("valpas-pelkkä-maksuttomuus")
+    await fillQueryField("070504A717P")
+    await submit()
+    await expectResultToBe(
+      "Löytyi: Lukio-opiskelija Valpas (070504A717P)",
+      createOppijaPath("/virkailija", {
+        oppijaOid: "1.2.246.562.24.00000000004",
+        prev: createMaksuttomuusPath(),
+      })
+    )
+  })
+
+  it("Haku löytää oppijatunnuksen perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on vain maksuttomuusoikeus, ja linkkaa detaljisivulle", async () => {
+    await maksuttomuusLogin("valpas-pelkkä-maksuttomuus")
+    await fillQueryField("1.2.246.562.24.00000000004")
+    await submit()
+    await expectResultToBe(
+      "Löytyi: Lukio-opiskelija Valpas (070504A717P)",
+      createOppijaPath("/virkailija", {
+        oppijaOid: "1.2.246.562.24.00000000004",
+        prev: createMaksuttomuusPath(),
+      })
+    )
+  })
+
   it("Haku kertoo ettei maksuttomuutta voida päätellä, jos oppijan tietoja ei löydy rekistereistä", async () => {
     await maksuttomuusLogin()
     await fillQueryField("040392-530U")
@@ -47,20 +73,20 @@ describe("Maksuttomuushaku", () => {
     await expectResultToBe("Maksuttomuutta ei pystytä päättelemään")
   })
 
-  it("Haku näyttää virheilmoituksen, jos käyttäjällä ei ole oikeuksia nähdä oppijan tietoja", async () => {
+  it("Haku näyttää virheilmoituksen, jos oppija ei ole enää oppivelvollinen, koska on jo valmistunut lukiosta", async () => {
     allowNetworkError(
-      "api/henkilohaku/maksuttomuus/221105A3023",
+      "api/henkilohaku/maksuttomuus/180304A082P",
       "403 (Forbidden)"
     )
     await maksuttomuusLogin("valpas-maksuttomuus-hki")
-    await fillQueryField("221105A3023")
+    await fillQueryField("180304A082P")
     await submit()
     await expectResultToBe(
       "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen."
     )
   })
 
-  it("Haku näyttää virheilmoituksen, jos oppija ei ole enää oppivelvollinen", async () => {
+  it("Haku näyttää virheilmoituksen, jos oppija ei ole oppivelvollinen, koska on valmistunut perukoulusta ennen lain voimaantuloa", async () => {
     allowNetworkError(
       "api/henkilohaku/maksuttomuus/080905A0798",
       "403 (Forbidden)"

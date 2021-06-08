@@ -26,26 +26,166 @@ class ValpasAccessResolver {
   }
 
   def withOppijaAccess[T <: ValpasOppijaLaajatTiedot](
+    oppija: T
+  )(
+    implicit session: ValpasSession
+  ): Either[HttpStatus, T] =
+    withOppijaAccessAsAnyRole(
+      Seq(
+        ValpasRooli.OPPILAITOS_HAKEUTUMINEN,
+        ValpasRooli.OPPILAITOS_MAKSUTTOMUUS,
+        ValpasRooli.OPPILAITOS_SUORITTAMINEN,
+        ValpasRooli.KUNTA
+      )
+    )(oppija)
+
+  def withOppijaAccessAsAnyRole[T <: ValpasOppijaLaajatTiedot](
+    roolit: Seq[ValpasRooli.Role]
+  )(
+    oppija: T
+  )(
+    implicit session: ValpasSession
+  ): Either[HttpStatus, T] = {
+    if (roolit.exists(withOppijaAccessAsRole(_)(oppija).isRight)) {
+      Right(oppija)
+    } else {
+      Left(ValpasErrorCategory.forbidden.oppija())
+    }
+  }
+
+  def withOppijaAccessAsRole[T <: ValpasOppijaLaajatTiedot](
     rooli: ValpasRooli.Role
   )(
     oppija: T
   )(
     implicit session: ValpasSession
   ): Either[HttpStatus, T] = {
-    Either.cond(accessToSomeOrgs(rooli)(oppija.oikeutetutOppilaitokset), oppija, ValpasErrorCategory.forbidden.oppija())
+    rooli match {
+      case ValpasRooli.OPPILAITOS_HAKEUTUMINEN =>
+        Either.cond(
+          !oppija.hakeutumisvalvovatOppilaitokset.isEmpty &&
+            accessToSomeOrgs(rooli)(oppija.hakeutumisvalvovatOppilaitokset),
+          oppija,
+          ValpasErrorCategory.forbidden.oppija()
+        )
+      case ValpasRooli.OPPILAITOS_MAKSUTTOMUUS =>
+        Either.cond(
+          accessToAnyOrg(rooli) && oppija.onOikeusValvoaMaksuttomuutta,
+          oppija,
+          ValpasErrorCategory.forbidden.oppija()
+        )
+      case ValpasRooli.KUNTA =>
+        Either.cond(
+          accessToAnyOrg(rooli) && oppija.onOikeusValvoaKunnalla,
+          oppija,
+          ValpasErrorCategory.forbidden.oppija()
+        )
+      case ValpasRooli.OPPILAITOS_SUORITTAMINEN =>
+        Left(ValpasErrorCategory.forbidden.oppija()) // TODO: suorittamisen valvontaa ei toteutettu
+      case _ =>
+        Left(ValpasErrorCategory.internalError(s"Tuntematon rooli ${rooli}"))
+    }
   }
 
-  def withOppijaAccessAsOrganisaatio[T <: ValpasOppijaLaajatTiedot]
-    (organisaatioOid: Organisaatio.Oid)(oppija: T)
-  : Either[HttpStatus, T] = {
-    Either.cond(oppija.oikeutetutOppilaitokset.contains(organisaatioOid), oppija, ValpasErrorCategory.forbidden.oppija())
+  def filterByOppijaAccess[T <: ValpasOppijaLaajatTiedot](
+    rooli: ValpasRooli.Role
+  )(
+    oppijat: Seq[T]
+  )(
+    implicit session: ValpasSession
+  ): Seq[T] = {
+    rooli match {
+      case ValpasRooli.OPPILAITOS_HAKEUTUMINEN =>
+        oppijat.filter(
+          oppija => !oppija.hakeutumisvalvovatOppilaitokset.isEmpty &&
+            accessToSomeOrgs(rooli)(oppija.hakeutumisvalvovatOppilaitokset)
+        )
+      case ValpasRooli.OPPILAITOS_MAKSUTTOMUUS if accessToAnyOrg(rooli) =>
+        oppijat.filter(_.onOikeusValvoaMaksuttomuutta)
+      case ValpasRooli.OPPILAITOS_MAKSUTTOMUUS => Seq.empty
+      case ValpasRooli.KUNTA if accessToAnyOrg(rooli) =>
+        oppijat.filter(_.onOikeusValvoaKunnalla)
+      case ValpasRooli.KUNTA => Seq.empty
+      case ValpasRooli.OPPILAITOS_SUORITTAMINEN =>
+        Seq.empty // TODO: suorittamisen valvontaa ei toteutettu
+      case _ =>
+        throw new InternalError(s"Tuntematon rooli ${rooli}")
+    }
   }
 
-  def withOpiskeluoikeusAccess[T <: ValpasOppijaLaajatTiedot]
-    (opiskeluoikeusOid: Opiskeluoikeus.Oid)(oppija: T)
+  def withOppijaAccessAsOrganisaatio[T <: ValpasOppijaLaajatTiedot](
+    rooli: ValpasRooli.Role
+  )(
+    organisaatioOid: Organisaatio.Oid
+  )(
+    oppija: T
+  )(
+    implicit session: ValpasSession
+  ) : Either[HttpStatus, T] = {
+    rooli match {
+      case ValpasRooli.OPPILAITOS_HAKEUTUMINEN =>
+        Either.cond(
+          accessToAllOrgs(rooli)(Set(organisaatioOid)) &&
+            oppija.hakeutumisvalvovatOppilaitokset.contains(organisaatioOid),
+          oppija,
+          ValpasErrorCategory.forbidden.oppija()
+        )
+      case ValpasRooli.OPPILAITOS_MAKSUTTOMUUS =>
+        Either.cond(
+          accessToAnyOrg(rooli) && oppija.onOikeusValvoaMaksuttomuutta,
+          oppija,
+          ValpasErrorCategory.forbidden.oppija()
+        )
+      case ValpasRooli.KUNTA =>
+        Either.cond(
+          accessToAnyOrg(rooli) && oppija.onOikeusValvoaKunnalla,
+          oppija,
+          ValpasErrorCategory.forbidden.oppija()
+        )
+      case ValpasRooli.OPPILAITOS_SUORITTAMINEN =>
+        Left(ValpasErrorCategory.forbidden.oppija()) // TODO: suorittamisen valvontaa ei toteutettu
+      case _ =>
+        Left(ValpasErrorCategory.internalError(s"Tuntematon rooli ${rooli}"))
+    }
+  }
+
+  def withOpiskeluoikeusAccess[T <: ValpasOppijaLaajatTiedot](
+    rooli: ValpasRooli.Role
+  )(
+    opiskeluoikeusOid: Opiskeluoikeus.Oid
+  )(
+    oppija: T
+  )(
+    implicit session: ValpasSession
+  )
   : Either[HttpStatus, T] = {
-    val valvottavat = oppija.opiskeluoikeudet.filter(_.onValvottava).map(_.oid)
-    Either.cond(valvottavat.contains(opiskeluoikeusOid), oppija, ValpasErrorCategory.forbidden.opiskeluoikeus())
+    rooli match {
+      case ValpasRooli.OPPILAITOS_HAKEUTUMINEN => {
+        val valvottavat = oppija.opiskeluoikeudet.filter(_.onHakeutumisValvottava).map(_.oid)
+        Either.cond(
+          accessToSomeOrgs(rooli)(oppija.hakeutumisvalvovatOppilaitokset) &&
+            valvottavat.contains(opiskeluoikeusOid),
+          oppija,
+          ValpasErrorCategory.forbidden.opiskeluoikeus()
+        )
+      }
+      case ValpasRooli.OPPILAITOS_MAKSUTTOMUUS =>
+        Either.cond(
+          accessToAnyOrg(rooli) && oppija.onOikeusValvoaMaksuttomuutta,
+          oppija,
+          ValpasErrorCategory.forbidden.oppija()
+        )
+      case ValpasRooli.KUNTA =>
+        Either.cond(
+          accessToAnyOrg(rooli) && oppija.onOikeusValvoaKunnalla,
+          oppija,
+          ValpasErrorCategory.forbidden.oppija()
+        )
+      case ValpasRooli.OPPILAITOS_SUORITTAMINEN =>
+        Left(ValpasErrorCategory.forbidden.oppija()) // TODO: suorittamisen valvontaa ei toteutettu
+      case _ =>
+        Left(ValpasErrorCategory.internalError(s"Tuntematon rooli ${rooli}"))
+    }
   }
 
   def filterByOikeudet(
@@ -59,13 +199,13 @@ class ValpasAccessResolver {
   }
 
   private def withAccessToAllOrgs[T](
-    roolit: ValpasRooli.Role
+    rooli: ValpasRooli.Role
   )(
     organisaatioOids: Set[Organisaatio.Oid],
     fn: () => T
   )(implicit session: ValpasSession)
   : Either[HttpStatus, T] = {
-    Either.cond(accessToAllOrgs(roolit)(organisaatioOids), fn(), ValpasErrorCategory.forbidden.organisaatio())
+    Either.cond(accessToAllOrgs(rooli)(organisaatioOids), fn(), ValpasErrorCategory.forbidden.organisaatio())
   }
 
   private def accessToAllOrgs(

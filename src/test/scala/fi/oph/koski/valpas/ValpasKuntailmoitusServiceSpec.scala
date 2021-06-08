@@ -90,6 +90,15 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
     result should equal(Left(ValpasErrorCategory.forbidden.oppija("Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin")))
   }
 
+  "Pohjatietojen haku ilman organisaatiota aiheuttaa virheen käyttäjälle, jolla on ainoastaan maksuttomuusoikeudet" in {
+    val input = ValpasKuntailmoitusPohjatiedotInput(
+      tekijäOrganisaatio = None,
+      oppijaOidit = List(ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid)
+    )
+    val result = kuntailmoitusService.haePohjatiedot(input)(session(ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä))
+    result should equal(Left(ValpasErrorCategory.forbidden.oppija("Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin")))
+  }
+
   "Pohjatietojen haku organisaation kanssa aiheuttaa virheen oppijalla, jonka organisaatioon ei käyttäjällä ole oikeuksia" in {
     val input = ValpasKuntailmoitusPohjatiedotInput(
       tekijäOrganisaatio = Some(OidOrganisaatio(oid = MockOrganisaatiot.jyväskylänNormaalikoulu)),

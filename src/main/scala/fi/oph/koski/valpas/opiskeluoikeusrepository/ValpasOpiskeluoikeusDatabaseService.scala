@@ -17,22 +17,24 @@ case class ValpasOppijaRow(
   syntymäaika: Option[LocalDate],
   etunimet: String,
   sukunimi: String,
-  oikeutetutOppilaitokset: Set[ValpasOppilaitos.Oid],
+  hakeutumisvalvovatOppilaitokset: Set[ValpasOppilaitos.Oid],
   opiskeluoikeudet: JValue,
   turvakielto: Boolean,
   äidinkieli: Option[String],
   oppivelvollisuusVoimassaAsti: LocalDate,
-  oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate
+  oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate,
+  onOikeusValvoaMaksuttomuutta: Boolean,
+  onOikeusValvoaKunnalla: Boolean
 )
 
 class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends DatabaseConverters with Logging with Timing {
   private val db = application.raportointiDatabase
   private val rajapäivätService = application.valpasRajapäivätService
 
-  def getPeruskoulunValvojalleNäkyväOppija(oppijaOid: String): Option[ValpasOppijaRow] =
+  def getOppija(oppijaOid: String): Option[ValpasOppijaRow] =
     getOppijat(Some(oppijaOid), None).headOption
 
-  def getPeruskoulunValvojalleNäkyvätOppijat(oppilaitosOid: String): Seq[ValpasOppijaRow] =
+  def getOppijat(oppilaitosOid: String): Seq[ValpasOppijaRow] =
     getOppijat(None, Some(Seq(oppilaitosOid)))
 
   private implicit def getResult: GetResult[ValpasOppijaRow] = GetResult(r => {
@@ -43,12 +45,14 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       syntymäaika = Option(r.getLocalDate("syntymaaika")),
       etunimet = r.rs.getString("etunimet"),
       sukunimi = r.rs.getString("sukunimi"),
-      oikeutetutOppilaitokset = r.getArray("oikeutetutOppilaitokset").toSet,
+      hakeutumisvalvovatOppilaitokset = r.getArray("hakeutumisvalvovatOppilaitokset").toSet,
       opiskeluoikeudet = r.getJson("opiskeluoikeudet"),
       turvakielto = r.rs.getBoolean("turvakielto"),
       äidinkieli = Option(r.rs.getString("aidinkieli")),
       oppivelvollisuusVoimassaAsti = r.getLocalDate("oppivelvollisuusVoimassaAsti"),
-      oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = r.getLocalDate("oikeusKoulutuksenMaksuttomuuteenVoimassaAsti")
+      oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = r.getLocalDate("oikeusKoulutuksenMaksuttomuuteenVoimassaAsti"),
+      onOikeusValvoaMaksuttomuutta = r.rs.getBoolean("onOikeusValvoaMaksuttomuutta"),
+      onOikeusValvoaKunnalla = r.rs.getBoolean("onOikeusValvoaKunnalla")
     )
   })
 
@@ -86,52 +90,62 @@ WITH
       """),
         Some(
           sql"""
-  -- CTE: kaikki uuden lain piirissä olevat oppijat, joilla on vähintään yksi kelpuutettava peruskoulun opiskeluoikeus,
-  -- mukana myös taulukko kelpuutettavien opiskeluoikeuksien oppilaitoksista käyttöoikeustarkastelua varten.
-  oppija AS (
+  -- CTE: Kaikki opiskeluoikeudet, jotka ovat oppivelvollisuuden suorittamiseen kelpaavia
+  ov_kelvollinen_opiskeluoikeus AS (
     SELECT
-      DISTINCT r_henkilo.master_oid,
-      r_henkilo.hetu,
-      r_henkilo.syntymaaika,
-      r_henkilo.etunimet,
-      r_henkilo.sukunimi,
-      array_agg(DISTINCT r_opiskeluoikeus.oppilaitos_oid) AS oikeutettu_oppilaitos_oids,
-      array_agg(DISTINCT r_opiskeluoikeus.opiskeluoikeus_oid) AS valvottava_opiskeluoikeus_oids,
-      r_henkilo.turvakielto,
-      r_henkilo.aidinkieli,
-      array_agg(DISTINCT kaikki_henkilot.oppija_oid) AS kaikkiOppijaOidit,
-      oppivelvollisuustiedot.oppivelvollisuusvoimassaasti AS oppivelvollisuus_voimassa_asti,
-      oppivelvollisuustiedot.oikeuskoulutuksenmaksuttomuuteenvoimassaasti AS oikeus_koulutuksen_maksuttomuuteen_voimassa_asti
+      DISTINCT r_opiskeluoikeus.opiskeluoikeus_oid,
+      r_opiskeluoikeus.oppilaitos_oid,
+      r_opiskeluoikeus.alkamispaiva,
+      r_opiskeluoikeus.paattymispaiva,
+      r_opiskeluoikeus.viimeisin_tila,
+      r_opiskeluoikeus.data,
+      r_opiskeluoikeus.koulutusmuoto,
+      r_henkilo.master_oid,
+      (oppivelvollisuustiedot.oppivelvollisuusvoimassaasti >= $tarkastelupäivä) AS henkilo_on_oppivelvollinen
     FROM
       r_henkilo
       -- oppivelvollisuustiedot-näkymä hoitaa syntymäaika- ja mahdollisen peruskoulusta ennen lain voimaantuloa valmistumisen
-      -- tarkistuksen: siinä ei ole tietoja kuin oppijoista, jotka ovat oppivelvollisuuden laajentamislain piirissä eivätkä
-      -- vielä valmistuneet
+      -- tarkistuksen: siinä ei ole tietoja kuin oppijoista, jotka ovat oppivelvollisuuden laajentamislain piirissä
       JOIN oppivelvollisuustiedot ON oppivelvollisuustiedot.oppija_oid = r_henkilo.oppija_oid
       JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = r_henkilo.oppija_oid
       """),
-        oppilaitosOids.map(oids => sql"AND r_opiskeluoikeus.oppilaitos_oid = any($oids)"),
-        oppijaOid.map(oid => sql"JOIN pyydetty_oppija ON pyydetty_oppija.master_oid = r_henkilo.master_oid"),
-        Some(
-          sql"""
-      JOIN r_paatason_suoritus ON r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-      LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella ON aikajakson_keskella.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+        oppilaitosOids.map(oids => sql"""
+        AND r_opiskeluoikeus.oppilaitos_oid = any($oids)
+          """),
+        oppijaOid.map(oid => sql"""
+      JOIN pyydetty_oppija ON pyydetty_oppija.master_oid = r_henkilo.master_oid
+          """),
+        Some(sql"""
+    WHERE
+      r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE
+  )
+  -- CTE: opiskeluoikeudet, joiden hakeutumista oppilaitoksella on oikeus valvoa tällä hetkellä
+  -- TODO: Tämä toimii vain peruskoulun hakeutumisen valvojille tällä hetkellä. Pitää laajentaa kattamaan myös nivelvaihe.
+  , hakeutumisvalvottava_opiskeluoikeus AS (
+    SELECT
+      DISTINCT ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid,
+      ov_kelvollinen_opiskeluoikeus.oppilaitos_oid,
+      ov_kelvollinen_opiskeluoikeus.master_oid
+    FROM
+      ov_kelvollinen_opiskeluoikeus
+      JOIN r_paatason_suoritus ON r_paatason_suoritus.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
+      LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella ON aikajakson_keskella.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
         AND $tarkastelupäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
-      -- Lasketaan voimassaolevien kotiopetusjaksojen määrä ehtoa 4a varten
+      -- Lasketaan voimassaolevien kotiopetusjaksojen määrä ehtoa varten
       CROSS JOIN LATERAL (
         SELECT
           count(*) AS count
         FROM
-          jsonb_array_elements(r_opiskeluoikeus.data -> 'lisätiedot' -> 'kotiopetusjaksot') jaksot
+          jsonb_array_elements(ov_kelvollinen_opiskeluoikeus.data -> 'lisätiedot' -> 'kotiopetusjaksot') jaksot
         WHERE
           jaksot ->> 'loppu' IS NULL
             OR $tarkastelupäivä BETWEEN jaksot ->> 'alku' AND jaksot ->> 'loppu'
       ) kotiopetusjaksoja
-      -- Haetaan kaikki oppijan oidit: pitää palauttaa esim. kuntailmoitusten kyselyä varten
-      JOIN r_henkilo kaikki_henkilot ON kaikki_henkilot.master_oid = r_henkilo.master_oid
     WHERE
+      -- (0) Henkilö on oppivelvollinen: hakeutumisvalvontaa ei voi suorittaa enää sen jälkeen kun henkilön oppivelvollisuus on päättynyt
+      ov_kelvollinen_opiskeluoikeus.henkilo_on_oppivelvollinen IS TRUE
       -- (1) oppijalla on peruskoulun opiskeluoikeus
-      r_opiskeluoikeus.koulutusmuoto = 'perusopetus'
+      AND ov_kelvollinen_opiskeluoikeus.koulutusmuoto = 'perusopetus'
       AND r_paatason_suoritus.suorituksen_tyyppi = 'perusopetuksenvuosiluokka'
       -- (2) kyseisessä opiskeluoikeudessa on yhdeksännen luokan suoritus.
       AND r_paatason_suoritus.koulutusmoduuli_koodiarvo = '9'
@@ -141,8 +155,8 @@ WITH
       -- (4)  opiskeluoikeus ei ole eronnut tilassa tällä hetkellä
       AND (
         (aikajakson_keskella.tila IS NOT NULL AND NOT aikajakson_keskella.tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
-        OR (aikajakson_keskella.tila IS NULL AND $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva)
-        OR (aikajakson_keskella.tila IS NULL AND $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva AND NOT r_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
+        OR (aikajakson_keskella.tila IS NULL AND $tarkastelupäivä < ov_kelvollinen_opiskeluoikeus.alkamispaiva)
+        OR (aikajakson_keskella.tila IS NULL AND $tarkastelupäivä > ov_kelvollinen_opiskeluoikeus.paattymispaiva AND NOT ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
       )
       AND (
         -- (5a) opiskeluoikeus on läsnä tai väliaikaisesti keskeytynyt tai lomalla tällä hetkellä. Huomaa, että tulevaisuuteen luotuja opiskeluoikeuksia ei tarkoituksella haluta näkyviin.
@@ -152,22 +166,70 @@ WITH
         -- TAI:
         OR (
           -- (5b.1 ) opiskeluoikeus on valmistunut-tilassa, ja siitä löytyy vahvistettu päättötodistus
-          ($tarkastelupäivä >= r_opiskeluoikeus.paattymispaiva AND r_opiskeluoikeus.viimeisin_tila = 'valmistunut')
+          ($tarkastelupäivä >= ov_kelvollinen_opiskeluoikeus.paattymispaiva AND ov_kelvollinen_opiskeluoikeus.viimeisin_tila = 'valmistunut')
           -- (5b.2 ) ministeriön määrittelemä aikaraja ei ole kulunut umpeen henkilön valmistumisajasta.
           AND (
             (
               -- keväällä valmistunut ja tarkastellaan heille määrättyä rajapäivää aiemmin
-              (r_opiskeluoikeus.paattymispaiva BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
+              (ov_kelvollinen_opiskeluoikeus.paattymispaiva BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
               AND $tarkastelupäivä <= $keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
             )
             OR (
               -- tai muuna aikana valmistunut ja tarkastellaan heille määrättyä rajapäivää aiemmin
-              (r_opiskeluoikeus.paattymispaiva NOT BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
-              AND (r_opiskeluoikeus.paattymispaiva >= $keväänUlkopuolellaValmistumisjaksoAlku)
+              (ov_kelvollinen_opiskeluoikeus.paattymispaiva NOT BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
+              AND (ov_kelvollinen_opiskeluoikeus.paattymispaiva >= $keväänUlkopuolellaValmistumisjaksoAlku)
             )
           )
         )
       )
+  )
+  -- CTE: kaikki uuden lain piirissä olevat oppijat, joilla on vähintään yksi oppivelvollisuuden suorittamiseen kelpaava opiskeluoikeus,
+  -- mukana myös taulukko hakeutumisvalvontaan kelpuutettavien opiskeluoikeuksien oppilaitoksista käyttöoikeustarkastelua varten.
+  , oppija AS (
+    SELECT
+      DISTINCT r_henkilo.master_oid,
+      r_henkilo.hetu,
+      r_henkilo.syntymaaika,
+      r_henkilo.etunimet,
+      r_henkilo.sukunimi,
+      array_remove(array_agg(DISTINCT hakeutumisvalvottava_opiskeluoikeus.oppilaitos_oid), NULL) AS hakeutumisvalvova_oppilaitos_oids,
+      array_remove(array_agg(DISTINCT hakeutumisvalvottava_opiskeluoikeus.opiskeluoikeus_oid), NULL) AS hakeutumisvalvottava_opiskeluoikeus_oids,
+      r_henkilo.turvakielto,
+      r_henkilo.aidinkieli,
+      array_agg(DISTINCT kaikki_henkilot.oppija_oid) AS kaikkiOppijaOidit,
+      oppivelvollisuustiedot.oppivelvollisuusvoimassaasti AS oppivelvollisuus_voimassa_asti,
+      oppivelvollisuustiedot.oikeuskoulutuksenmaksuttomuuteenvoimassaasti AS oikeus_koulutuksen_maksuttomuuteen_voimassa_asti
+    FROM
+      r_henkilo
+      -- oppivelvollisuustiedot-näkymä hoitaa syntymäaika- ja mahdollisen peruskoulusta ennen lain voimaantuloa valmistumisen
+      -- tarkistuksen: siinä ei ole tietoja kuin oppijoista, jotka ovat oppivelvollisuuden laajentamislain piirissä
+      JOIN oppivelvollisuustiedot ON oppivelvollisuustiedot.oppija_oid = r_henkilo.oppija_oid
+      """),
+        oppilaitosOids.map(_ => sql"""
+      -- Optimointi: Kun haetaan oppilaitoksen perusteella, palautetaan vain oppilaitoksen valvottavat oppijat. Muuten esim.
+      -- peruskoulussa palautettaisiin turhaan kaikki tiedot ekaluokkalaisista lähtien, mikä hidastaa queryä ja kasvattaa
+      -- resultsettiä huomattavasti.
+      JOIN
+               """)
+          .orElse(
+            Some(sql"""
+      LEFT JOIN
+                 """)),
+        Some(sql"""
+      hakeutumisvalvottava_opiskeluoikeus ON hakeutumisvalvottava_opiskeluoikeus.master_oid = r_henkilo.master_oid
+      -- Haetaan kaikki oppijan oidit: pitää palauttaa esim. kuntailmoitusten kyselyä varten
+      JOIN r_henkilo kaikki_henkilot ON kaikki_henkilot.master_oid = r_henkilo.master_oid
+      """),
+        oppilaitosOids.map(_ => sql"""
+      -- Optimointi: Poistetaan turha where-ehto haettaessa kaikki oppilaitoksen tiedot. Koska oppijalla on vähintään yksi
+      -- valvottava opiskeluoikeus, on hänellä pakko olla myös yksi oppivelvollisuuskelvollinen opiskeluoikeus.
+             """
+        ).orElse(Some(sql"""
+    WHERE
+      -- Oppijalla on oltava vähintään yksi oppivelvollisuuskelvollinen opiskeluoikeus:
+      EXISTS (SELECT 1 FROM ov_kelvollinen_opiskeluoikeus WHERE ov_kelvollinen_opiskeluoikeus.master_oid = r_henkilo.master_oid)
+      """)),
+      Some(sql"""
     GROUP BY
       r_henkilo.master_oid,
       r_henkilo.hetu,
@@ -322,15 +384,17 @@ WITH
     oppija.syntymaaika,
     oppija.etunimet,
     oppija.sukunimi,
-    oppija.oikeutettu_oppilaitos_oids AS oikeutetutOppilaitokset,
+    oppija.hakeutumisvalvova_oppilaitos_oids AS hakeutumisvalvovatOppilaitokset,
     oppija.turvakielto AS turvakielto,
     oppija.aidinkieli AS aidinkieli,
     oppija.oppivelvollisuus_voimassa_asti AS oppivelvollisuusVoimassaAsti,
     oppija.oikeus_koulutuksen_maksuttomuuteen_voimassa_asti AS oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
+    (oppija.oikeus_koulutuksen_maksuttomuuteen_voimassa_asti >= $tarkastelupäivä) AS onOikeusValvoaMaksuttomuutta,
+    (oppija.oppivelvollisuus_voimassa_asti >= $tarkastelupäivä) AS onOikeusValvoaKunnalla,
     json_agg(
       json_build_object(
         'oid', opiskeluoikeus.opiskeluoikeus_oid,
-        'onValvottava', opiskeluoikeus.opiskeluoikeus_oid = ANY(oppija.valvottava_opiskeluoikeus_oids),
+        'onHakeutumisValvottava', opiskeluoikeus.opiskeluoikeus_oid = ANY(oppija.hakeutumisvalvottava_opiskeluoikeus_oids),
         'tyyppi', json_build_object(
           'koodiarvo', opiskeluoikeus.koulutusmuoto,
           'koodistoUri', 'opiskeluoikeudentyyppi'
@@ -376,7 +440,7 @@ WITH
     oppija.syntymaaika,
     oppija.etunimet,
     oppija.sukunimi,
-    oppija.oikeutettu_oppilaitos_oids,
+    oppija.hakeutumisvalvova_oppilaitos_oids,
     oppija.turvakielto,
     oppija.aidinkieli,
     oppija.oppivelvollisuus_voimassa_asti,

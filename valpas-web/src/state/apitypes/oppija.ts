@@ -29,7 +29,7 @@ export type OppijaLaajatTiedot = {
   opiskelee: boolean
   oppivelvollisuusVoimassaAsti?: ISODate
   oikeusKoulutuksenMaksuttomuuteenVoimassaAsti?: ISODate
-  oikeutetutOppilaitokset: Oid[]
+  hakeutumisvalvovatOppilaitokset: Oid[]
 }
 
 export type OppijaSuppeatTiedot = {

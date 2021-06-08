@@ -51,8 +51,7 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
     oppijaHenkilö match {
       case None => Right(ValpasHenkilöHakutiedotMaksuttomuusEiPääteltävissä())
       case Some(henkilö) => {
-        oppijaService.getOppijaLaajatTiedot (henkilö.oid)
-          .flatMap(accessResolver.withOppijaAccess(ValpasRooli.OPPILAITOS_MAKSUTTOMUUS) )
+        oppijaService.getOppijaLaajatTiedot(ValpasRooli.OPPILAITOS_MAKSUTTOMUUS, henkilö.oid)
           .map(ValpasHenkilöMaksuttomuushakutulos.apply)
       }
     }

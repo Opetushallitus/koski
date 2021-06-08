@@ -8,7 +8,7 @@ import fi.oph.koski.valpas.db.ValpasSchema.OpiskeluoikeusLisätiedotKey
 import fi.oph.koski.valpas.log.ValpasAuditLog.{auditLogHenkilöHaku, auditLogOppijaKatsominen, auditLogOppilaitosKatsominen}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppilaitos
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
-import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
+import fi.oph.koski.valpas.valpasuser.{RequiresValpasSession, ValpasRooli}
 
 class ValpasRootApiServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with RequiresValpasSession {
   private lazy val organisaatioService = application.organisaatioService

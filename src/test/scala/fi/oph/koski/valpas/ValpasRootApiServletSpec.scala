@@ -42,11 +42,11 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
 
   "Oppija, johon ei ole oikeuksia, ja jota ei ole olemassa tuottavat saman vastaukset" taggedAs(ValpasBackendTag) in {
     val jklOppija = ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021
-    authGet(getOppijaUrl(jklOppija.oid), ValpasMockUsers.valpasHelsinki) {
+    authGet(getOppijaUrl(jklOppija.oid), ValpasMockUsers.valpasHelsinkiPeruskoulu) {
       verifyResponseStatus(403, ValpasErrorCategory.forbidden.oppija())
       val firstResponse = response
 
-      authGet(getOppijaUrl("1.2.3.4.5.6.7"), ValpasMockUsers.valpasHelsinki) {
+      authGet(getOppijaUrl("1.2.3.4.5.6.7"), ValpasMockUsers.valpasHelsinkiPeruskoulu) {
         verifyResponseStatus(403, ValpasErrorCategory.forbidden.oppija())
         response.body should equal (firstResponse.body)
         withoutVariatingEntries(response.headers) should equal (withoutVariatingEntries(firstResponse.headers))
