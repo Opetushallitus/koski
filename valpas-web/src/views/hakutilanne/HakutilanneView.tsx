@@ -104,7 +104,7 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
           containerClassName={b("organisaatiovalitsin")}
           label={t("Oppilaitos")}
           options={orgOptions}
-          value={organisaatioOid || ""}
+          value={organisaatioOid}
           onChange={changeOrganisaatio}
         />
         <VirkailijaNavigation />
