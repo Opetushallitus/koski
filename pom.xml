@@ -211,7 +211,7 @@
     <dependency>
       <groupId>org.http4s</groupId>
       <artifactId>http4s-dsl_2.12</artifactId>
-      <version>0.16.6a</version>
+      <version>1.0-81-ce14ddb</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
