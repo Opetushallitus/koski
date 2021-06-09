@@ -66,6 +66,12 @@ const VirkailijaRoutes = () => {
             redirectTo={createHakutilannePathWithoutOrg(basePath)}
           />
         </Route>
+        <Route exact path={`${basePath}/kunta2021`}>
+          <FeatureFlagEnabler
+            features={["kuntavalvonta"]}
+            redirectTo={createHakutilannePathWithoutOrg(basePath)}
+          />
+        </Route>
         <Route
           exact
           path={hakutilannePathWithoutOrg(basePath)}
