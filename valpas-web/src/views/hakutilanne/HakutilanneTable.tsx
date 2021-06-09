@@ -41,6 +41,7 @@ import {
 import {
   lisätietoMatches,
   OppijaHakutilanteillaSuppeatTiedot,
+  OppijaSuppeatTiedot,
 } from "../../state/apitypes/oppija"
 import {
   isVoimassa,
@@ -165,9 +166,9 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
 type HakutilanneKey = [Oid, Oid]
 
 const createHakutilanneKey = (
-  oppija: OppijaHakutilanteillaSuppeatTiedot,
+  oppija: OppijaSuppeatTiedot,
   opiskeluoikeus: OpiskeluoikeusSuppeatTiedot
-): HakutilanneKey => [oppija.oppija.henkilö.oid, opiskeluoikeus.oid]
+): HakutilanneKey => [oppija.henkilö.oid, opiskeluoikeus.oid]
 
 const hakutilanneKeysToOppijaOids = flow(
   A.map((key: HakutilanneKey) => key[0]),
@@ -188,7 +189,7 @@ const oppijaToTableData = (
     oppija.oppija.opiskeluoikeudet
   ).map((opiskeluoikeus) => {
     return {
-      key: createHakutilanneKey(oppija, opiskeluoikeus),
+      key: createHakutilanneKey(oppija.oppija, opiskeluoikeus),
       values: [
         {
           value: `${henkilö.sukunimi} ${henkilö.etunimet}`,
