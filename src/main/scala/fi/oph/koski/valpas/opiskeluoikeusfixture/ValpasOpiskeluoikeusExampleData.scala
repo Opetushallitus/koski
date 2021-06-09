@@ -431,6 +431,36 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
+  def eronnutOpiskeluoikeusEiYsiluokkaaKeväänAlussa = kasiluokkaEronnutKeväällä2020Opiskeluoikeus.copy(
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2012, 8, 15), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 3, 3), opiskeluoikeusEronnut),
+      )
+    )
+  )
+
+  def eronnutOpiskeluoikeusEiYsiluokkaaKeväänJaksolla = kasiluokkaEronnutKeväällä2020Opiskeluoikeus.copy(
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2012, 8, 15), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 5, 30), opiskeluoikeusEronnut),
+      )
+    )
+  )
+
+  def eronnutOpiskeluoikeusEiYsiluokkaaElokuussa = kasiluokkaEronnutKeväällä2020Opiskeluoikeus.copy(
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2012, 8, 15), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 8, 5), opiskeluoikeusEronnut),
+      )
+    )
+  )
+
   def oppivelvollinenAloittanutJaEronnutTarkastelupäivänJälkeenOpiskeluoikeus = PerusopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
     koulutustoimija = None,

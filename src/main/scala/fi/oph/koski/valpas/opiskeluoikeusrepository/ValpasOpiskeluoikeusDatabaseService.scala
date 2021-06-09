@@ -101,7 +101,8 @@ WITH
       r_opiskeluoikeus.data,
       r_opiskeluoikeus.koulutusmuoto,
       r_henkilo.master_oid,
-      (oppivelvollisuustiedot.oppivelvollisuusvoimassaasti >= $tarkastelupäivä) AS henkilo_on_oppivelvollinen
+      (oppivelvollisuustiedot.oppivelvollisuusvoimassaasti >= $tarkastelupäivä) AS henkilo_on_oppivelvollinen,
+      (date_part('year', syntymaaika) <= (date_part('year', to_date($tarkastelupäivä,'YYYY-MM-DD'))-17)) AS henkilo_tayttaa_vahintaan_17_tarkasteluvuonna
     FROM
       r_henkilo
       -- oppivelvollisuustiedot-näkymä hoitaa syntymäaika- ja mahdollisen peruskoulusta ennen lain voimaantuloa valmistumisen
@@ -146,17 +147,36 @@ WITH
       ov_kelvollinen_opiskeluoikeus.henkilo_on_oppivelvollinen IS TRUE
       -- (1) oppijalla on peruskoulun opiskeluoikeus
       AND ov_kelvollinen_opiskeluoikeus.koulutusmuoto = 'perusopetus'
-      AND r_paatason_suoritus.suorituksen_tyyppi = 'perusopetuksenvuosiluokka'
-      -- (2) kyseisessä opiskeluoikeudessa on yhdeksännen luokan suoritus.
-      AND r_paatason_suoritus.koulutusmoduuli_koodiarvo = '9'
+      AND (
+        -- (2.1) kyseisessä opiskeluoikeudessa on yhdeksännen luokan suoritus.
+        (
+          r_paatason_suoritus.suorituksen_tyyppi = 'perusopetuksenvuosiluokka'
+          AND r_paatason_suoritus.koulutusmoduuli_koodiarvo = '9'
+        )
+        -- (2.2) tai oppija täyttää vähintään 17 vuotta tarkasteluvuonna: heidät näytetään luokka-asteesta riippumatta, koska voivat lopettaa
+        -- peruskoulun ja siirtyä seuraavaan opetukseen, vaikka olisivat esim. vasta 8. luokalla
+        OR (
+          ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna IS TRUE
+        )
+      )
       -- (3a) valvojalla on oppilaitostason oppilaitosoikeus ja opiskeluoikeuden lisätiedoista ei löydy kotiopetusjaksoa, joka osuu tälle hetkelle
       --      TODO (3b): puuttuu, koska ei vielä ole selvää, miten kotiopetusoppilaat halutaan käsitellä
       AND kotiopetusjaksoja.count = 0
-      -- (4)  opiskeluoikeus ei ole eronnut tilassa tällä hetkellä
       AND (
-        (aikajakson_keskella.tila IS NOT NULL AND NOT aikajakson_keskella.tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
-        OR (aikajakson_keskella.tila IS NULL AND $tarkastelupäivä < ov_kelvollinen_opiskeluoikeus.alkamispaiva)
-        OR (aikajakson_keskella.tila IS NULL AND $tarkastelupäivä > ov_kelvollinen_opiskeluoikeus.paattymispaiva AND NOT ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
+        -- (4,1) opiskeluoikeus ei ole eronnut tilassa tällä hetkellä
+        (
+          (aikajakson_keskella.tila IS NOT NULL AND NOT aikajakson_keskella.tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
+          OR (aikajakson_keskella.tila IS NULL AND $tarkastelupäivä < ov_kelvollinen_opiskeluoikeus.alkamispaiva)
+          OR (aikajakson_keskella.tila IS NULL AND $tarkastelupäivä > ov_kelvollinen_opiskeluoikeus.paattymispaiva AND NOT ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
+        )
+        OR (
+        -- (4.2) tai täyttää vähintään 17 tarkasteluvuonna ja on eronnut tilassa
+          ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna IS TRUE
+          AND (
+            (aikajakson_keskella.tila IS NOT NULL AND aikajakson_keskella.tila = any('{eronnut, katsotaaneronneeksi}'))
+            OR (aikajakson_keskella.tila IS NULL AND $tarkastelupäivä > ov_kelvollinen_opiskeluoikeus.paattymispaiva AND ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi}'))
+          )
+        )
       )
       AND (
         -- (5a) opiskeluoikeus on läsnä tai väliaikaisesti keskeytynyt tai lomalla tällä hetkellä. Huomaa, että tulevaisuuteen luotuja opiskeluoikeuksia ei tarkoituksella haluta näkyviin.
@@ -170,17 +190,28 @@ WITH
         )
         -- TAI:
         OR (
-          -- (5b.1 ) opiskeluoikeus on valmistunut-tilassa, ja siitä löytyy vahvistettu päättötodistus
-          ($tarkastelupäivä >= ov_kelvollinen_opiskeluoikeus.paattymispaiva AND ov_kelvollinen_opiskeluoikeus.viimeisin_tila = 'valmistunut')
-          -- (5b.2 ) ministeriön määrittelemä aikaraja ei ole kulunut umpeen henkilön valmistumisajasta.
+          -- (5b.1 ) opiskeluoikeus on päättynyt menneisyydessä
+          ($tarkastelupäivä >= ov_kelvollinen_opiskeluoikeus.paattymispaiva)
+          AND (
+            -- (5b.1.1 ) ja opiskeluoikeus on valmistunut-tilassa (joten siitä löytyy vahvistettu päättötodistus)
+            (
+              ov_kelvollinen_opiskeluoikeus.viimeisin_tila = 'valmistunut'
+            )
+            -- (5b.1.2 ) tai oppija täyttää tarkasteluvuonna vähintään 17 ja opiskeluoikeus on eronnut-tilassa
+            OR (
+              ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna IS TRUE
+              AND ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi}')
+            )
+          )
+          -- (5b.2 ) ministeriön määrittelemä aikaraja ei ole kulunut umpeen henkilön valmistumis-/eroamisajasta.
           AND (
             (
-              -- keväällä valmistunut ja tarkastellaan heille määrättyä rajapäivää aiemmin
+              -- keväällä valmistunut/eronnut ja tarkastellaan heille määrättyä rajapäivää aiemmin
               (ov_kelvollinen_opiskeluoikeus.paattymispaiva BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
               AND $tarkastelupäivä <= $keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
             )
             OR (
-              -- tai muuna aikana valmistunut ja tarkastellaan heille määrättyä rajapäivää aiemmin
+              -- tai muuna aikana valmistunut/eronnut ja tarkastellaan heille määrättyä rajapäivää aiemmin
               (ov_kelvollinen_opiskeluoikeus.paattymispaiva NOT BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
               AND (ov_kelvollinen_opiskeluoikeus.paattymispaiva >= $keväänUlkopuolellaValmistumisjaksoAlku)
             )

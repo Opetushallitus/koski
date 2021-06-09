@@ -163,6 +163,18 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
         ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä, "voimassa", false, false),
         ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true)
       )
+    ),
+    (
+      ValpasMockOppijat.eronnutKeväänValmistumisJaksolla17VuottaTäyttäväKasiluokkalainen,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.eronnutOpiskeluoikeusEiYsiluokkaaKeväänJaksolla, "eronnut", true, true),
+      )
+    ),
+    (
+      ValpasMockOppijat.eronnutElokuussa17VuottaTäyttäväKasiluokkalainen,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.eronnutOpiskeluoikeusEiYsiluokkaaElokuussa, "eronnut", true, true),
+      )
     )
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
@@ -238,6 +250,12 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     (
       ValpasMockOppijat.oppivelvollinenAloittanutJaEronnutTarkastelupäivänJälkeen,
       List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenAloittanutJaEronnutTarkastelupäivänJälkeenOpiskeluoikeus, "voimassa", true, true)),
+    ),
+    (
+      ValpasMockOppijat.eronnutElokuussa17VuottaTäyttäväKasiluokkalainen,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.eronnutOpiskeluoikeusEiYsiluokkaaElokuussa, "eronnut", true, true),
+      )
     )
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
