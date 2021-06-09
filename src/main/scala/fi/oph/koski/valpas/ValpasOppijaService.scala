@@ -89,7 +89,7 @@ object OppijaHakutilanteillaSuppeatTiedot {
 class ValpasOppijaService(
   application: KoskiApplication
 ) extends Logging with Timing {
-  private val hakukoosteService = ValpasHakukoosteService(application.config)
+  private val hakukoosteService = ValpasHakukoosteService(application.config, application.validatingAndResolvingExtractor)
   private val opiskeluoikeusDbService = new ValpasOpiskeluoikeusDatabaseService(application)
   private val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
   private val localizationRepository = application.valpasLocalizationRepository

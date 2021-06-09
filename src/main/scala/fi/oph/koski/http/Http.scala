@@ -7,12 +7,12 @@ import fi.oph.koski.http.Http.{Decode, ParameterizedUriWrapper}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.LogUtils.maskSensitiveInformation
 import fi.oph.koski.log.{LoggerWithContext, Logging}
-
 import io.prometheus.client.{Counter, Summary}
 import org.http4s._
 import org.http4s.client.blaze.BlazeClientConfig
 import org.http4s.client.{Client, blaze}
 import org.http4s.headers.`Content-Type`
+import org.json4s.JValue
 import org.json4s.jackson.JsonMethods.parse
 
 import scala.concurrent.duration.{Duration, DurationInt}
@@ -80,9 +80,16 @@ object Http extends Logging {
     case (status, text) => throw HttpStatusException(status, text, request)
   }
 
-  def parseJson[T : TypeTag](status: Int, text: String, request: Request)(implicit mf : scala.reflect.Manifest[T]): T = {
+  def parseJson[T : TypeTag](status: Int, text: String, request: Request): T = {
     (status, text) match {
       case (status, text) if (List(200, 201).contains(status)) => JsonSerializer.extract[T](parse(text), ignoreExtras = true)
+      case (status, text) => throw HttpStatusException(status, text, request)
+    }
+  }
+
+  def parseJsonWithDeserialize[T : TypeTag](deserialize: JValue => T)(status: Int, text: String, request: Request): T = {
+    (status, text) match {
+      case (status, text) if (List(200, 201).contains(status)) => deserialize(parse(text))
       case (status, text) => throw HttpStatusException(status, text, request)
     }
   }
