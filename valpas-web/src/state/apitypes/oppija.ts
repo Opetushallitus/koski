@@ -3,7 +3,7 @@ import { HakuLaajatTiedot, HakuSuppeatTiedot } from "./haku"
 import { HenkilöLaajatTiedot, HenkilöSuppeatTiedot } from "./henkilo"
 import {
   KuntailmoitusLaajatTiedotLisätiedoilla,
-  KuntailmoitusSuppeatTiedot,
+  LuotuKuntailmoitusSuppeatTiedot,
 } from "./kuntailmoitus"
 import {
   OpiskeluoikeusLaajatTiedot,
@@ -60,5 +60,5 @@ export const lisätietoMatches = (
 
 export type OppijaKuntailmoituksillaSuppeatTiedot = {
   oppija: OppijaSuppeatTiedot
-  kuntailmoitukset: KuntailmoitusSuppeatTiedot[]
+  kuntailmoitukset: LuotuKuntailmoitusSuppeatTiedot[]
 }

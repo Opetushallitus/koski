@@ -32,6 +32,10 @@ export type KuntailmoitusSuppeatTiedot = {
   aikaleima?: ISODateTime
 }
 
+export type LuotuKuntailmoitusSuppeatTiedot = KuntailmoitusSuppeatTiedot & {
+  id: string
+}
+
 export type KuntailmoituksenTekijäSuppeatTiedot = {
   organisaatio: Organisaatio
 }

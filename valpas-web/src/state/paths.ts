@@ -99,3 +99,11 @@ export const kuntailmoitusPath = (basePath: string = "") =>
   `${basePath}/kuntailmoitukset`
 
 export const createKuntailmoitusPath = kuntailmoitusPath
+
+export const kuntailmoitusPathWithOrg = (basePath: string = "") =>
+  `${kuntailmoitusPath(basePath)}/:organisaatioOid`
+
+export const createKuntailmoitusPathWithOrg = (
+  basePath: string,
+  organisaatioOid: Oid
+) => `${kuntailmoitusPath(basePath)}/${organisaatioOid}`

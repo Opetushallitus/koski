@@ -3,14 +3,9 @@ import { Redirect, Route, Switch } from "react-router-dom"
 import { fetchYlatasonOrganisaatiotJaKayttooikeusroolit } from "../api/api"
 import { useApiOnce } from "../api/apiHooks"
 import { isSuccess } from "../api/apiUtils"
-import { Page } from "../components/containers/Page"
 import { LoadingModal } from "../components/icons/Spinner"
-import { NotImplemented } from "../components/typography/NoDataMessage"
 import { t } from "../i18n/i18n"
-import {
-  KäyttöoikeusroolitProvider,
-  withRequiresKuntavalvonta,
-} from "../state/accessRights"
+import { KäyttöoikeusroolitProvider } from "../state/accessRights"
 import {
   CurrentUser,
   getCurrentUser,
@@ -27,11 +22,16 @@ import {
   hakutilannePathWithOrg,
   hakutilannePathWithoutOrg,
   kuntailmoitusPath,
+  kuntailmoitusPathWithOrg,
   käyttöoikeusPath,
   maksuttomuusPath,
   oppijaPath,
   rootPath,
 } from "../state/paths"
+import {
+  KuntailmoitusView,
+  KuntailmoitusViewWithoutOrgOid,
+} from "../views/kuntailmoitus/KuntailmoitusView"
 import { AccessRightsView } from "./AccessRightsView"
 import { ErrorView, NotFoundView } from "./ErrorView"
 import {
@@ -105,11 +105,26 @@ const VirkailijaRoutes = () => {
         <Route exact path={maksuttomuusPath(basePath)}>
           <MaksuttomuusView />
         </Route>
-        <Route exact path={kuntailmoitusPath(basePath)}>
-          <MockKuntailmoitusView
-            redirectUserWithoutAccessTo={rootPath(basePath)}
-          />
-        </Route>
+        <Route
+          exact
+          path={kuntailmoitusPath(basePath)}
+          render={(routeProps) => (
+            <KuntailmoitusViewWithoutOrgOid
+              redirectUserWithoutAccessTo={rootPath(basePath)}
+              {...routeProps}
+            />
+          )}
+        />
+        <Route
+          exact
+          path={kuntailmoitusPathWithOrg(basePath)}
+          render={(routeProps) => (
+            <KuntailmoitusView
+              redirectUserWithoutAccessTo={rootPath(basePath)}
+              {...routeProps}
+            />
+          )}
+        />
         <Route exact path={käyttöoikeusPath(basePath)}>
           <AccessRightsView />
         </Route>
@@ -121,12 +136,6 @@ const VirkailijaRoutes = () => {
     </KäyttöoikeusroolitProvider>
   )
 }
-
-const MockKuntailmoitusView = withRequiresKuntavalvonta(() => (
-  <Page>
-    <NotImplemented>TODO: Tänne tulevat kuntailmoitukset</NotImplemented>
-  </Page>
-))
 
 const Login = () => {
   React.useEffect(() => {
