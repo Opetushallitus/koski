@@ -129,7 +129,8 @@ object SureHakukoosteServiceSpec {
       |      },
       |      "lyhytNimi": {
       |        "fi": "YH",
-      |        "sv": "GA"
+      |        "sv": "GA",
+      |        "en": ""
       |      },
       |      "koodistoUri": "hakutapa",
       |      "koodistoVersio": 1
@@ -185,7 +186,8 @@ object SureHakukoosteServiceSpec {
       |        },
       |        "hakukohdeOrganisaatio": "1.2.246.562.10.38864316104",
       |        "organisaatioNimi": {},
-      |        "koulutusOid": "1.2.246.562.17.83264128444"
+      |        "koulutusOid": "1.2.246.562.17.83264128444",
+      |        "valintakoe": []
       |      },
       |      {
       |        "hakukohdeNimi": {},
