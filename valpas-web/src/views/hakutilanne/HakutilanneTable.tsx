@@ -196,7 +196,7 @@ const oppijaToTableData = (
           display: (
             <Link
               to={createOppijaPath(basePath, {
-                organisaatioOid,
+                hakutilanneRef: organisaatioOid,
                 oppijaOid: henkilö.oid,
               })}
             >

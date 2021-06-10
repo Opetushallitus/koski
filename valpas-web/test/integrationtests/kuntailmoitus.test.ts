@@ -217,7 +217,7 @@ describe("Kuntailmoituksen tekeminen", () => {
         pathToUrl(
           createOppijaPath("/virkailija", {
             oppijaOid: oppija.oid,
-            organisaatioOid: jyväskylänNormaalikouluOid,
+            hakutilanneRef: jyväskylänNormaalikouluOid,
           })
         )
       )

@@ -99,7 +99,7 @@ const ilmoitusToTableData = (basePath: string, organisaatioOid: string) => (
         display: (
           <Link
             to={createOppijaPath(basePath, {
-              organisaatioOid,
+              kuntailmoitusRef: organisaatioOid,
               oppijaOid: henkilö.oid,
             })}
           >

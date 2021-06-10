@@ -66,12 +66,14 @@ export const createOppijaPath = (
   basePath: string = "",
   params: {
     oppijaOid: Oid
-    organisaatioOid?: Oid
+    hakutilanneRef?: Oid
+    kuntailmoitusRef?: Oid
     prev?: string
   }
 ) =>
   queryPath(`${basePath}/oppija/${params.oppijaOid}`, {
-    organisaatioRef: params.organisaatioOid,
+    hakutilanneRef: params.hakutilanneRef,
+    kuntailmoitusRef: params.kuntailmoitusRef,
     prev: params.prev,
   })
 
