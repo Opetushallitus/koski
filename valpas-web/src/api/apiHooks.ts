@@ -1,5 +1,6 @@
 import * as E from "fp-ts/Either"
 import { pipe } from "fp-ts/lib/function"
+import * as O from "fp-ts/Option"
 import {
   Dispatch,
   SetStateAction,
@@ -84,6 +85,12 @@ export const useApiMethod = <T, P extends any[]>(
 
   const call = useCallback(
     async (...args: P) => {
+      const fresh = cache?.getOnlyFresh(args) || O.none
+      if (O.isSome(fresh)) {
+        setState({ state: "success", ...fresh.value })
+        return E.right(fresh.value)
+      }
+
       setState({ state: "loading" })
       cache?.map(args, (previous) =>
         setState({ state: "reloading", ...previous })

@@ -5,20 +5,21 @@ import { ApiFailure, ApiSuccess } from "./apiFetch"
 
 export type ApiCache<T, S> = {
   get: (key: S) => O.Option<ApiSuccess<T>>
+  getOnlyFresh: (key: S) => O.Option<ApiSuccess<T>>
   set: (key: S, value: ApiSuccess<T>) => void
   map: <U>(key: S, fn: (value: ApiSuccess<T>) => U) => O.Option<U>
 }
 
-export const createCache = <T, S extends any[]>(
+export const createPreferLocalCache = <T, S extends any[]>(
   _fn: (...args: S) => Promise<E.Either<ApiFailure, ApiSuccess<T>>>
 ): ApiCache<T, S> => {
   let cachedValues: Record<string, ApiSuccess<T>> = {}
   const keyToString = (key: S) => JSON.stringify(key)
+  const get = (key: S) => O.fromNullable(cachedValues[keyToString(key)])
 
   return {
-    get(key) {
-      return O.fromNullable(cachedValues[keyToString(key)])
-    },
+    get,
+    getOnlyFresh: get,
     set(key, value) {
       cachedValues[keyToString(key)] = value
     },
@@ -27,3 +28,10 @@ export const createCache = <T, S extends any[]>(
     },
   }
 }
+
+export const createLocalThenApiCache = <T, S extends any[]>(
+  fn: (...args: S) => Promise<E.Either<ApiFailure, ApiSuccess<T>>>
+): ApiCache<T, S> => ({
+  ...createPreferLocalCache(fn),
+  getOnlyFresh: (_key) => O.none, // Pakottaa kutsun backendille, vaikka data löytyisikin muistista
+})
