@@ -128,13 +128,27 @@ class ValpasOppijaService(
       // Haetaan kuntailmoitukset Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]
       .flatMap(_ => kuntailmoitusService.getKuntailmoituksetKunnalle(kuntaOid))
 
-      // Haetaan jokaiselle ilmoitukselle oppija ja mapataan Seq[(ValpasOppijaLaajatTiedot, ValpasKuntailmoitusLaajatTiedot)]
-      // TODO: Tässä on optimoinnin paikka, koska jos samalla oppijatunnuksella on useampi ilmoitus, haetaan oppijan tiedot turhaan moneen kertaan
-      .map(kuntailmoitukset => kuntailmoitukset.flatMap(kuntailmoitusJaOppijaOid => {
-        opiskeluoikeusDbService.getOppija(kuntailmoitusJaOppijaOid.oppijaOid)
-          .flatMap(asValpasOppijaLaajatTiedot(_).toOption)
-          .map(oppija => (oppija, kuntailmoitusJaOppijaOid.kuntailmoitus))
-      }))
+      // Haetaan kaikki oppijat, (Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid], Seq[ValpasOppijaLaajatTiedot])
+      .map(kuntailmoitukset => (
+        kuntailmoitukset,
+        accessResolver.filterByOppijaAccess(ValpasRooli.KUNTA)(
+          kuntailmoitukset
+            .map(_.oppijaOid)
+            .toSet
+            .flatMap((oid: String) =>
+              opiskeluoikeusDbService.getOppija(oid)
+                .flatMap(asValpasOppijaLaajatTiedot(_).toOption)
+            )
+            .toSeq
+        )
+      ))
+
+      // Yhdistetään kuntailmoitukset ja oppijat Seq[(ValpasOppijaLaajatTiedot, ValpasKuntailmoitusLaajatTiedot)]
+      .map(kuntailmoituksetOppijat => kuntailmoituksetOppijat._1.flatMap(ilmoitus =>
+        kuntailmoituksetOppijat._2
+          .find(_.henkilö.oid == ilmoitus.oppijaOid)
+          .map(oppija => (oppija, ilmoitus.kuntailmoitus)
+      )))
 
       // Ryhmitellään henkilöiden master-oidien perusteella Seq[Seq[(ValpasOppijaLaajatTiedot, ValpasKuntailmoitusLaajatTiedot)]]
       .map(_.groupBy(_._1.henkilö.oid).values.toSeq)
