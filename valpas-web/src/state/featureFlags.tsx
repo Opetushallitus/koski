@@ -2,11 +2,7 @@ import React, { useEffect } from "react"
 import { Redirect } from "react-router-dom"
 import { runningLocally } from "../utils/environment"
 
-export type Feature =
-  | "valpas"
-  | "ilmoittaminen"
-  | "maksuttomuus"
-  | "kuntavalvonta"
+export type Feature = "valpas" | "ilmoittaminen" | "kuntavalvonta"
 
 const disabledFeatures: string[] = window.location.search
   .split("&")
@@ -18,7 +14,6 @@ const disabledFeatures: string[] = window.location.search
 export const featureFlags: Record<Feature, string> = {
   valpas: "valpas-feature",
   ilmoittaminen: "valpas-ilmoittaminen",
-  maksuttomuus: "valpas-maksuttomuus",
   kuntavalvonta: "valpas-kuntavalvonta",
 }
 

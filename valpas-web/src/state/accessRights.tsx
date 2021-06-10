@@ -15,8 +15,7 @@ export const hakeutumisenValvontaAllowed: AccessGuard = (roles) =>
   roles.includes("OPPILAITOS_HAKEUTUMINEN")
 
 export const maksuttomuudenValvontaAllowed: AccessGuard = (roles) =>
-  roles.includes("OPPILAITOS_MAKSUTTOMUUS") &&
-  isFeatureFlagEnabled("maksuttomuus")
+  roles.includes("OPPILAITOS_MAKSUTTOMUUS")
 
 export const kuntavalvontaAllowed: AccessGuard = (roles) =>
   roles.includes("KUNTA") && isFeatureFlagEnabled("kuntavalvonta")

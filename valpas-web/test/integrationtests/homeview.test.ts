@@ -11,7 +11,6 @@ import { loginAs } from "../integrationtests-env/browser/reset"
 
 describe("Etusivun väliaikainen näkymä", () => {
   beforeAll(() => {
-    disableFeature("maksuttomuus")
     disableFeature("kuntavalvonta")
   })
 
@@ -20,7 +19,7 @@ describe("Etusivun väliaikainen näkymä", () => {
   })
 
   it("Näyttää ohjetekstin", async () => {
-    await loginAs("/virkailija", "valpas-maksuttomuus-hki")
+    await loginAs("/virkailija", "valpas-helsinki")
 
     await textEventuallyEquals(
       ".ohjeteksti",
@@ -29,7 +28,7 @@ describe("Etusivun väliaikainen näkymä", () => {
   })
 
   it("Näyttää käyttäjän käyttöoikeudet", async () => {
-    await loginAs("/virkailija", "valpas-maksuttomuus-hki")
+    await loginAs("/virkailija/kayttooikeudet", "valpas-maksuttomuus-hki")
 
     await dataTableHeadersEventuallyEquals(
       ".kayttooikeudet",
@@ -90,7 +89,7 @@ describe("Etusivun väliaikainen näkymä", () => {
   })
 
   it("Ei näytä käyttäjän Koski-käyttöoikeuksia", async () => {
-    await loginAs("/virkailija", "valpas-maksuttomuus-koski-hki")
+    await loginAs("/virkailija/kayttooikeudet", "valpas-maksuttomuus-koski-hki")
 
     await dataTableHeadersEventuallyEquals(
       ".kayttooikeudet",

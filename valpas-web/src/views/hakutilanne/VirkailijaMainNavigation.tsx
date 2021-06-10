@@ -12,7 +12,6 @@ import {
   maksuttomuudenValvontaAllowed,
   useKäyttöoikeusroolit,
 } from "../../state/accessRights"
-import { isFeatureFlagEnabled } from "../../state/featureFlags"
 import {
   createHakutilannePathWithoutOrg,
   createKuntailmoitusPath,
@@ -49,7 +48,7 @@ export const VirkailijaMainNavigation = () => {
     return allNavOptions.filter((item) => item.visibleToRoles(roles))
   }, [roles, allNavOptions])
 
-  return isFeatureFlagEnabled("maksuttomuus") && A.isNonEmpty(navOptions) ? (
+  return A.isNonEmpty(navOptions) ? (
     <MainNavigation title={t("ylänavi__otsikko")} options={navOptions} />
   ) : null
 }

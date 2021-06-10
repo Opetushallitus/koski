@@ -62,7 +62,7 @@ const VirkailijaRoutes = () => {
         </Route>
         <Route exact path={`${basePath}/koulutus2021`}>
           <FeatureFlagEnabler
-            features={["ilmoittaminen", "maksuttomuus"]}
+            features={["ilmoittaminen"]}
             redirectTo={createHakutilannePathWithoutOrg(basePath)}
           />
         </Route>
