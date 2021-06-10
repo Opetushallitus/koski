@@ -51,7 +51,7 @@ describe("Etusivun väliaikainen näkymä", () => {
 
     await textEventuallyEquals(
       ".card__header",
-      "Hakeutumisvelvollisia oppijoita (25)",
+      "Hakeutumisvelvollisia oppijoita (26)",
       5000
     )
   })

@@ -68,6 +68,26 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
+  def valmistunutKasiluokkalainen = PerusopetuksenOpiskeluoikeus(
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    koulutustoimija = None,
+    suoritukset = List(
+      perusopetuksenOppimääränSuoritus.copy(
+        vahvistus = vahvistusPaikkakunnalla(date(2021, 5, 30))
+      ),
+      kahdeksannenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2020, 8, 15)),
+        vahvistus = vahvistusPaikkakunnalla(date(2021, 5, 30)),
+      )
+    ),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2012, 8, 15), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 5, 30), opiskeluoikeusValmistunut)
+      )
+    )
+  )
+
   def valmistunutYsiluokkalainenVsop = {
     val edellisetLisätiedot = valmistunutYsiluokkalainen
       .lisätiedot.getOrElse(PerusopetuksenOpiskeluoikeudenLisätiedot())

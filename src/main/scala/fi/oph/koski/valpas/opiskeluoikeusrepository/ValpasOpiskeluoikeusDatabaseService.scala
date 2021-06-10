@@ -158,6 +158,11 @@ WITH
         OR (
           ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna IS TRUE
         )
+        -- (2.3) tai oppija on valmistunut peruskoulusta: heidät näytetään luokka-asteesta riippumatta, koska poikkeustapauksissa peruskoulusta
+        -- voi valmistua myös ilman 9. luokan suoritusmerkintää Koskessa
+        OR (
+          ov_kelvollinen_opiskeluoikeus.viimeisin_tila = 'valmistunut'
+        )
       )
       -- (3a) valvojalla on oppilaitostason oppilaitosoikeus ja opiskeluoikeuden lisätiedoista ei löydy kotiopetusjaksoa, joka osuu tälle hetkelle
       --      TODO (3b): puuttuu, koska ei vielä ole selvää, miten kotiopetusoppilaat halutaan käsitellä
