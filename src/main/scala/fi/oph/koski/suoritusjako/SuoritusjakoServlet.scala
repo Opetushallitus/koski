@@ -7,7 +7,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiSpecificAuthenticationSupport, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.omattiedot.OmatTiedotEditorModel
-import fi.oph.koski.schema.KoskiSchema.deserializationContext
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.servlet.NoCache
 import org.json4s.JValue
 
@@ -72,7 +72,7 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ed
   private def user = koskiSessionOption.get
 
   private def extract[T: TypeTag](body: JValue) = {
-    application.validatingAndResolvingExtractor.extract[T](body, deserializationContext.copy(allowEmptyStrings = true))
+    application.validatingAndResolvingExtractor.extract[T](body, strictDeserialization.copy(allowEmptyStrings = true))
   }
 }
 

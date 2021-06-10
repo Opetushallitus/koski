@@ -2,6 +2,7 @@ package fi.oph.koski.valpas
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.ChainingSyntax._
 import fi.oph.koski.valpas.log.ValpasAuditLog.{auditLogOppijaKatsominen, auditLogOppijaKuntailmoitus}
@@ -34,7 +35,8 @@ class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication)
   }
 
   private def extractAndValidateKuntailmoitus(kuntailmoitusInputJson: JValue) = {
-    application.validatingAndResolvingExtractor.extract[ValpasKuntailmoitusLaajatTiedotJaOppijaOid](kuntailmoitusInputJson)
+    application.validatingAndResolvingExtractor
+      .extract[ValpasKuntailmoitusLaajatTiedotJaOppijaOid](strictDeserialization)(kuntailmoitusInputJson)
       .flatMap(kuntailmoitusInput =>
         Either.cond(
           kuntailmoitusInput.kuntailmoitus.id.isEmpty,
@@ -57,7 +59,8 @@ class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication)
   }
 
   private def extractAndValidatePohjatiedot(pohjatiedotInputJson: JValue): Either[HttpStatus, ValpasKuntailmoitusPohjatiedotInput] = {
-    application.validatingAndResolvingExtractor.extract[ValpasKuntailmoitusPohjatiedotInput](pohjatiedotInputJson)
+    application.validatingAndResolvingExtractor
+      .extract[ValpasKuntailmoitusPohjatiedotInput](strictDeserialization)(pohjatiedotInputJson)
   }
 
   private def handleUnparseableJson(status: HttpStatus) = {

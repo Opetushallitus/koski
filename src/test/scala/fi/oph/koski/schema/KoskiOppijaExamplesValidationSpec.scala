@@ -1,15 +1,14 @@
 package fi.oph.koski.schema
 
 import java.time.LocalDate
-
 import com.fasterxml.jackson.databind.JsonNode
 import com.github.fge.jackson.JsonLoader
 import com.github.fge.jsonschema.main.{JsonSchemaFactory, JsonValidator}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.Examples
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.schema.KoskiSchema.deserializationContext
-import fi.oph.scalaschema.SchemaValidatingExtractor
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
+import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import fi.oph.scalaschema.extraction.{EmptyString, RegExMismatch, ValidationError}
 import org.json4s.JsonAST.JString
 import org.scalatest.{FreeSpec, Matchers}
@@ -79,6 +78,7 @@ class KoskiOppijaExamplesValidationSpec extends FreeSpec with Matchers {
   }
 
   def deserialize[T : TypeTag](obj: T): Either[List[ValidationError], T] = {
+    implicit val context: ExtractionContext = strictDeserialization
     SchemaValidatingExtractor.extract(JsonSerializer.serializeWithRoot(obj))
   }
 }

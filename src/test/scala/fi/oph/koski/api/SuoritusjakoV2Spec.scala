@@ -7,18 +7,16 @@ import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
 import fi.oph.koski.suoritusjako.{Suoritusjako, SuoritusjakoDeleteRequest, SuoritusjakoRequest, SuoritusjakoUpdateRequest}
-import fi.oph.scalaschema.SchemaValidatingExtractor
+import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.{FreeSpec, Matchers}
 
 import java.time.LocalDate
 
 class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with KoskiHttpSpec {
-
-  import fi.oph.koski.schema.KoskiSchema.deserializationContext
-
   "Voi jakaa koko opiskeluoikeuden" in {
     val oppija = KoskiSpecificMockOppijat.lukiolainen
     val oppimääränOpiskeluoikeus = getOpiskeluoikeudet(oppija.oid).collectFirst {
@@ -172,6 +170,7 @@ class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestM
   def getSuoritusjaot(oppija: OppijaHenkilö) = {
     get("api/suoritusjakoV2/available", headers = kansalainenLoginHeaders(oppija.hetu.get)) {
       verifyResponseStatusOk()
+      implicit val context: ExtractionContext = strictDeserialization
       SchemaValidatingExtractor.extract[List[Suoritusjako]](body).right.get
     }
   }

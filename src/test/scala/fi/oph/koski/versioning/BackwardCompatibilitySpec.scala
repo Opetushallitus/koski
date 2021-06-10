@@ -2,17 +2,16 @@ package fi.oph.koski.versioning
 
 import java.io.File
 import java.time.LocalDate
-
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.Example
 import fi.oph.koski.documentation.Examples.examples
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.KoskiSchema.deserializationContext
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Oppija}
 import fi.oph.koski.util.EnvVariables
-import fi.oph.scalaschema.SchemaValidatingExtractor
+import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.JValue
 import org.json4s.JsonAST.{JArray, JBool, JObject}
 import org.json4s.jackson.JsonMethods
@@ -103,6 +102,7 @@ class BackwardCompatibilitySpec extends FreeSpec with Matchers with Logging with
     filename in {
       val (json, skipRoundtripCheck, skipKoskiValidator) = readFile(filename)
 
+      implicit val context: ExtractionContext = strictDeserialization
       SchemaValidatingExtractor.extract[Oppija](json) match {
         case Left(errors) => fail("Backwards compatibility problem: " + errors)
         case Right(oppija) =>

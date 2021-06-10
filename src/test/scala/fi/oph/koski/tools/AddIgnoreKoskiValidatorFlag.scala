@@ -2,21 +2,20 @@ package fi.oph.koski.tools
 
 
 import java.io.File
-
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.json.JsonFiles
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
-import fi.oph.koski.schema.KoskiSchema.deserializationContext
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.Oppija
-import fi.oph.scalaschema.SchemaValidatingExtractor
+import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.JsonAST.{JBool, JField, JObject, JValue}
 
 object AddIgnoreKoskiValidatorFlag extends App {
-
-  val dirName = "src/test/resources/backwardcompatibility"
-  lazy val koskiValidator = KoskiApplicationForTests.validator
-  implicit val user = KoskiSpecificSession.systemUser
-  implicit val accessType = AccessType.read
+  private val dirName = "src/test/resources/backwardcompatibility"
+  private lazy val koskiValidator = KoskiApplicationForTests.validator
+  private implicit val user = KoskiSpecificSession.systemUser
+  private implicit val accessType = AccessType.read
+  private implicit val context: ExtractionContext = strictDeserialization
 
   def modifyJsons = {
     val existingFiles = new File(dirName).list().filter(_.endsWith(".json")).map(fullName)

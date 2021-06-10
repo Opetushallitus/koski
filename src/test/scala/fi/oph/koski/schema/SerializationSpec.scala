@@ -5,12 +5,13 @@ import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilöWithMasterI
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenHenkilötiedot, OpiskeluoikeudenOsittaisetTiedot, OpiskeluoikeudenPerustiedot}
-import fi.oph.scalaschema.SchemaValidatingExtractor
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
+import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.scalatest.{FreeSpec, Matchers}
 
 class SerializationSpec extends FreeSpec with Matchers with Logging {
+  private implicit val context: ExtractionContext = strictDeserialization
   "Serialization / deserialization" - {
-    import fi.oph.koski.schema.KoskiSchema.deserializationContext
     "Tunnustaminen" in {
       val json = JsonSerializer.serializeWithRoot(AmmatillinenExampleData.tunnustettu)
       val tunnustettu = SchemaValidatingExtractor.extract[OsaamisenTunnustaminen](json).right.get
@@ -80,7 +81,7 @@ class SerializationSpec extends FreeSpec with Matchers with Logging {
 
           kaikkiSuoritukset.foreach { s =>
             val jsonString = JsonSerializer.serializeWithRoot(s)
-            val suoritus = SchemaValidatingExtractor.extract[Suoritus](jsonString) match {
+            SchemaValidatingExtractor.extract[Suoritus](jsonString) match {
               case Right(suoritus) => suoritus should (equal(s))
               case Left(error) => fail(s"deserialization of $s failed: $error")
             }

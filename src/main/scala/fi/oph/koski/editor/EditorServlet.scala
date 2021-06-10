@@ -7,6 +7,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{AccessType, RequiresVirkailijaOrPalvelukäyttäjä}
 import fi.oph.koski.organisaatio.OrganisaatioOid
 import fi.oph.koski.preferences.PreferencesService
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{PäätasonSuoritus, SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta}
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.WithWarnings
@@ -83,7 +84,7 @@ class EditorServlet(implicit val application: KoskiApplication)
   post("/check-vaatiiko-suoritus-maksuttomuus-tiedon") {
     withJsonBody { body =>
       render[Boolean](
-        application.validatingAndResolvingExtractor.extract[PäätasonSuoritus](body)
+        application.validatingAndResolvingExtractor.extract[PäätasonSuoritus](strictDeserialization)(body)
         .map(_.isInstanceOf[SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta])
         .getOrElse(false)
       )

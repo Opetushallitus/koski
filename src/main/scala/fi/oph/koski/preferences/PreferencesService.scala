@@ -1,13 +1,14 @@
 package fi.oph.koski.preferences
 
 import fi.oph.koski.db.DB
-import fi.oph.koski.db.{QueryMethods, PreferenceRow, KoskiTables}
+import fi.oph.koski.db.{KoskiTables, PreferenceRow, QueryMethods}
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.InvalidRequestException
-import fi.oph.scalaschema.SchemaValidatingExtractor
+import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import fi.oph.scalaschema.extraction.ValidationError
 import org.json4s._
 
@@ -66,7 +67,7 @@ case class PreferencesService(protected val db: DB) extends Logging with QueryMe
   }
 
   private def extract[T : TypeTag](value: JValue, klass: Class[_ <: T]): Either[List[ValidationError], T] = {
-    import fi.oph.koski.schema.KoskiSchema.deserializationContext
+    implicit val context: ExtractionContext = strictDeserialization
     SchemaValidatingExtractor.extract(value, klass).right.map(_.asInstanceOf[T])
   }
 

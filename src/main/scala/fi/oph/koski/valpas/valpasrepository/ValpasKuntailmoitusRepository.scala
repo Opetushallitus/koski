@@ -4,7 +4,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.KoskiSchema.skipSyntheticProperties
+import fi.oph.koski.schema.KoskiSchema.{skipSyntheticProperties, strictDeserialization}
 import fi.oph.koski.schema.{Koodistokoodiviite, KoskiSchema}
 import fi.oph.koski.validation.ValidatingAndResolvingExtractor
 import fi.oph.koski.valpas.ValpasErrorCategory
@@ -15,7 +15,6 @@ import fi.oph.scalaschema.{SerializationContext, Serializer}
 import org.json4s.JValue
 
 import java.time.LocalTime
-import java.util.UUID
 
 class ValpasKuntailmoitusRepository(
   valpasDatabase: ValpasDatabase,
@@ -29,7 +28,7 @@ class ValpasKuntailmoitusRepository(
     Serializer.serialize(model, SerializationContext(KoskiSchema.schemaFactory, skipSyntheticProperties))
 
   private def deserialize(data: JValue): Either[HttpStatus, IlmoitusLisätiedotData] =
-    deserializer.extract[IlmoitusLisätiedotData](data)
+    deserializer.extract[IlmoitusLisätiedotData](strictDeserialization)(data)
 
   private def toDbRows(data: ValpasKuntailmoitusLaajatTiedotJaOppijaOid)(tekijäHenkilöOid: String)
   : Either[HttpStatus, (IlmoitusRow, IlmoitusLisätiedotRow)] = {

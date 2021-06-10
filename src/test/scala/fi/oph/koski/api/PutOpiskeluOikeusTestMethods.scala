@@ -4,8 +4,9 @@ import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, UserWithPassword}
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
-import fi.oph.scalaschema.SchemaValidatingExtractor
+import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 
@@ -13,6 +14,8 @@ import scala.language.implicitConversions
 import scala.reflect.runtime.universe.TypeTag
 
 trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends OpiskeluoikeusTestMethods with OpiskeluoikeusData[Oikeus] {
+  private implicit val context: ExtractionContext = strictDeserialization
+
   def tag: TypeTag[Oikeus]
 
   val koodisto: KoodistoViitePalvelu = MockKoodistoViitePalvelu
@@ -31,7 +34,6 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
   }
 
   def putHenkilö[A](henkilö: Henkilö)(f: => A): Unit = {
-    import fi.oph.koski.schema.KoskiSchema.deserializationContext
     putOppija(JsonSerializer.serializeWithRoot(SchemaValidatingExtractor.extract[Oppija](makeOppija(opiskeluOikeudet = List(defaultOpiskeluoikeus))(tag)).right.get.copy(henkilö = henkilö)))(f)
   }
 
@@ -62,7 +64,6 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
     "opiskeluoikeudet" -> JsonSerializer.serializeWithRoot(opiskeluOikeudet)
   )
 
-  import fi.oph.koski.schema.KoskiSchema.deserializationContext
   def readPutOppijaResponse: PutOppijaResponse = {
     SchemaValidatingExtractor.extract[PutOppijaResponse](JsonMethods.parse(body)).right.get
   }
