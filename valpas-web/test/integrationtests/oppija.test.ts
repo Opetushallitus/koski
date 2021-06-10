@@ -65,6 +65,8 @@ const turvakieltoVaroitusEquals = (expected: string) =>
   contentEventuallyEquals("#turvakielto-varoitus", expected)
 const turvakieltoVaroitusNotVisible = () =>
   expectElementNotVisible("#turvakielto-varoitus")
+const expectEiKuntailmoituksiaNotVisible = () =>
+  expectElementNotVisible(".oppijaview__eiilmoituksia")
 
 describe("Oppijakohtainen näkymä", () => {
   it("Näyttää oppijan tiedot, johon käyttäjällä on lukuoikeus", async () => {
@@ -186,6 +188,7 @@ describe("Oppijakohtainen näkymä", () => {
     await secondaryHeadingEquals(
       "Oppijaa ei löydy tunnuksella 1.2.246.562.24.00000000011"
     )
+    await expectEiKuntailmoituksiaNotVisible()
   })
 
   it("Näyttää oppijalta, jolla on useampia päällekäisiä opiskeluoikeuksia kaikki opiskeluoikeudet", async () => {
@@ -434,6 +437,7 @@ describe("Oppijakohtainen näkymä", () => {
     await secondaryHeadingEquals(
       "Oppijaa ei löydy tunnuksella 1.2.246.562.24.00000000004"
     )
+    await expectEiKuntailmoituksiaNotVisible()
   })
 
   it("Näyttää detaljisivun kuntakäyttäjälle lukio-oppijasta", async () => {
@@ -466,5 +470,6 @@ describe("Oppijakohtainen näkymä", () => {
     await secondaryHeadingEquals(
       "Oppijaa ei löydy tunnuksella 1.2.246.562.24.00000000004"
     )
+    await expectEiKuntailmoituksiaNotVisible()
   })
 })
