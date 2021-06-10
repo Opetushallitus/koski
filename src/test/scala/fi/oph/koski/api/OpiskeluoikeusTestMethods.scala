@@ -6,13 +6,14 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.paakayttajaMitatoidytOpiskeluoikeudet
 import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.schema.Henkilö.Oid
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
-import fi.oph.scalaschema.SchemaValidatingExtractor
+import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.Matchers
 
 trait OpiskeluoikeusTestMethods extends HttpSpecification with Matchers {
-  import fi.oph.koski.schema.KoskiSchema.deserializationContext
+  private implicit val context: ExtractionContext = strictDeserialization
 
   def lastOpiskeluoikeusByHetu(oppija: Henkilö, user: UserWithPassword = defaultUser): KoskeenTallennettavaOpiskeluoikeus = {
     val hetu = oppija match {

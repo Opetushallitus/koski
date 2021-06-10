@@ -2,11 +2,12 @@ package fi.oph.koski.api
 
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
-import fi.oph.scalaschema.SchemaValidatingExtractor
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
+import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.jackson.JsonMethods
 
 trait HistoryTestMethods extends OpiskeluoikeusTestMethods {
-  import fi.oph.koski.schema.KoskiSchema.deserializationContext
+  private implicit val context: ExtractionContext = strictDeserialization
 
   def readHistory = SchemaValidatingExtractor.extract[List[OpiskeluoikeusHistoryPatch]](JsonMethods.parse(body)).right.get
 

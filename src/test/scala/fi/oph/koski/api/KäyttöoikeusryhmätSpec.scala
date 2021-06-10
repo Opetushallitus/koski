@@ -11,9 +11,10 @@ import fi.oph.koski.koskiuser.MockUsers.{evira, korkeakouluViranomainen, perusop
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUser, MockUsers, UserWithPassword}
 import fi.oph.koski.luovutuspalvelu.{HetuRequestV1, LuovutuspalveluResponseV1}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
 import fi.oph.koski.{DatabaseTestMethods, DirtiesFixtures, KoskiHttpSpec}
-import fi.oph.scalaschema.SchemaValidatingExtractor
+import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.scalatest.FreeSpec
 
 import java.time.LocalDate
@@ -425,7 +426,7 @@ class KäyttöoikeusryhmätSpec
   private def readLisätiedot(opiskeluoikeudet: Seq[Opiskeluoikeus]) = opiskeluoikeudet.head.lisätiedot.get.asInstanceOf[AmmatillisenOpiskeluoikeudenLisätiedot]
 
   private def getLuovutuspalveluOpiskeluoikeudet = {
-    import fi.oph.koski.schema.KoskiSchema.deserializationContext
+    implicit val context: ExtractionContext = strictDeserialization
     SchemaValidatingExtractor.extract[LuovutuspalveluResponseV1](body).right.get.opiskeluoikeudet
   }
 

@@ -7,10 +7,11 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{master, masterEiKoskessa}
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Wait
 import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
-import fi.oph.scalaschema.SchemaValidatingExtractor
+import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.JsonAST.{JBool, JObject}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.{FreeSpec, Matchers}
@@ -122,7 +123,8 @@ class RaportointikantaSpec
   }
 
   "Opiskeluoikeuksien lataus" - {
-    import fi.oph.koski.schema.KoskiSchema.deserializationContext
+    implicit val context: ExtractionContext = strictDeserialization
+
     val ammatillinenJson = JsonFiles.readFile("src/test/resources/backwardcompatibility/ammatillinen-perustutkinto_2020-04-24.json")
     val oid = "1.2.246.562.15.123456"
     val ammatillinenOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](ammatillinenJson).right.get.opiskeluoikeudet.head.asInstanceOf[AmmatillinenOpiskeluoikeus].copy(oid = Some(oid))

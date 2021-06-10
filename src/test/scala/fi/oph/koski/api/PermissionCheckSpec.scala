@@ -5,8 +5,9 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.permission.PermissionCheckResponse
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{Henkilö, Organisaatio}
-import fi.oph.scalaschema.SchemaValidatingExtractor
+import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.scalatest.{FreeSpec, Matchers}
 
 class PermissionCheckSpec extends FreeSpec with KoskiHttpSpec with Matchers {
@@ -38,8 +39,6 @@ class PermissionCheckSpec extends FreeSpec with KoskiHttpSpec with Matchers {
     }
   }
 
-  import fi.oph.koski.schema.KoskiSchema.deserializationContext
-
   def permissionCheck(personOidsForSamePerson: List[Henkilö.Oid], organisationOids: List[Organisaatio.Oid], loggedInUserRoles: List[String] = List("ROLE_APP_KOSKI", "ROLE_APP_OPPIJANUMEROREKISTERI_HENKILON_RU")): Boolean = {
     post(
       "api/permission/checkpermission",
@@ -51,6 +50,7 @@ class PermissionCheckSpec extends FreeSpec with KoskiHttpSpec with Matchers {
       headers = jsonContent
     ) {
       verifyResponseStatusOk()
+      implicit val context: ExtractionContext = strictDeserialization
       SchemaValidatingExtractor.extract[PermissionCheckResponse](body).right.get.accessAllowed
     }
   }

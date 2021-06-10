@@ -8,9 +8,10 @@ import fi.oph.koski.log.KoskiAuditLogMessageField.{apply => _, _}
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, PäätasonSuoritus}
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
-import fi.oph.scalaschema.SchemaValidatingExtractor
+import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import fi.oph.scalaschema.extraction.ValidationError
 import org.json4s.JValue
 
@@ -23,8 +24,7 @@ class OpiskeluoikeusServlet(implicit val application: KoskiApplication) extends 
 
   post("/:oid/:versionumero/delete-paatason-suoritus") {
     withJsonBody { oppijaJson: JValue =>
-      import fi.oph.koski.schema.KoskiSchema.deserializationContext
-
+      implicit val context: ExtractionContext = strictDeserialization
       val validationResult = SchemaValidatingExtractor.extract[PäätasonSuoritus](oppijaJson) match {
         case Right(t) => Right(t)
         case Left(errors: List[ValidationError]) => Left(KoskiErrorCategory.badRequest.validation.jsonSchema.apply(JsonErrorMessage(errors)))

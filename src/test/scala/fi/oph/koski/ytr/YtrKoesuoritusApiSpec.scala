@@ -3,12 +3,14 @@ package fi.oph.koski.ytr
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import fi.oph.koski.json.JsonSerializer
-import fi.oph.scalaschema.SchemaValidatingExtractor
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
+import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.FreeSpec
 
 class YtrKoesuoritusApiSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethods {
+  private implicit val context: ExtractionContext = strictDeserialization
+
   "Kansalainen" - {
     "voi hakea koesuorituslistauksen" in {
       post("api/ytrkoesuoritukset/" + KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid, headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.ylioppilasLukiolainen.hetu.get) ++ jsonContent) {
@@ -42,7 +44,6 @@ class YtrKoesuoritusApiSpec extends FreeSpec with KoskiHttpSpec with Opiskeluoik
   lazy val huoltaja = JsonSerializer.writeWithRoot(Map("huollettava" -> false))
   lazy val huollettava = JsonSerializer.writeWithRoot(Map("huollettava" -> true))
 
-  import fi.oph.koski.schema.KoskiSchema.deserializationContext
   private def readExams: List[ExamResponse] =
     SchemaValidatingExtractor.extract[List[ExamResponse]](JsonMethods.parse(body)).right.get
 

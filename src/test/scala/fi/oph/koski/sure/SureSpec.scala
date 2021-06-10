@@ -9,18 +9,18 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
 import fi.oph.koski.{DatabaseTestMethods, KoskiHttpSpec}
-import fi.oph.scalaschema.SchemaValidatingExtractor
+import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.JsonAST.{JArray, JBool}
 import org.json4s.jackson.JsonMethods
 import org.json4s.{DefaultFormats, JString, JValue}
 import org.scalatest.{FreeSpec, Matchers}
 
 class SureSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with DatabaseTestMethods with Matchers {
-
-  import fi.oph.koski.schema.KoskiSchema.deserializationContext
-  implicit val formats = DefaultFormats
+  private implicit val context: ExtractionContext = strictDeserialization
+  private implicit val formats = DefaultFormats
 
   "Sure-rajapinnat" - {
     "/api/sure/oids" - {
