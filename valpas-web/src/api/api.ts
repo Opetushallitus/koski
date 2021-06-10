@@ -15,7 +15,7 @@ import {
 import { queryPath } from "../state/paths"
 import { tapLeftP } from "../utils/either"
 import { ApiFailure, apiGet, apiPost, apiPut } from "./apiFetch"
-import { createCache } from "./cache"
+import { createLocalThenApiCache, createPreferLocalCache } from "./cache"
 
 export const healthCheck = async () =>
   apiGet<string>("api/healthcheck/internal")
@@ -46,7 +46,7 @@ export const fetchYlatasonOrganisaatiotJaKayttooikeusroolit = async () =>
     )
   )
 
-export const fetchYlatasonOrganisaatiotJaKayttooikeusroolitCache = createCache(
+export const fetchYlatasonOrganisaatiotJaKayttooikeusroolitCache = createLocalThenApiCache(
   fetchYlatasonOrganisaatiotJaKayttooikeusroolit
 )
 
@@ -60,7 +60,7 @@ export const fetchOppijat = (organisaatioOid: Oid) =>
     )
   )
 
-export const fetchOppijatCache = createCache(fetchOppijat)
+export const fetchOppijatCache = createPreferLocalCache(fetchOppijat)
 
 /**
  * Hae yksittäisen oppijan laajat tiedot
@@ -70,7 +70,7 @@ export const fetchOppija = (oppijaOid: Oid) =>
     apiGet<OppijaHakutilanteillaLaajatTiedot>(`valpas/api/oppija/${oppijaOid}`)
   )
 
-export const fetchOppijaCache = createCache(fetchOppija)
+export const fetchOppijaCache = createLocalThenApiCache(fetchOppija)
 
 /**
  * Etsi henkilöä hetulla/oidilla
@@ -82,7 +82,7 @@ export const fetchHenkilöhaku = (query: Oid | Hetu) =>
     )
   )
 
-export const fetchHenkilöhakuCache = createCache(fetchHenkilöhaku)
+export const fetchHenkilöhakuCache = createLocalThenApiCache(fetchHenkilöhaku)
 
 /**
  * Kuntailmoituksen pohjatietojen haku
