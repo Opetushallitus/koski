@@ -5,7 +5,7 @@ import fi.oph.koski.http.Http.{StringToUriConverter, parseJsonWithDeserialize}
 import fi.oph.koski.http.{HttpStatus, HttpStatusException, ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.KoskiSchema.strictDeserialization
+import fi.oph.koski.schema.KoskiSchema.lenientDeserialization
 import fi.oph.koski.util.Timing
 import fi.oph.koski.validation.ValidatingAndResolvingExtractor
 import fi.oph.koski.valpas.ValpasErrorCategory
@@ -24,7 +24,7 @@ class SureHakukoosteService(config: Config, validatingAndResolvingExtractor: Val
     val encoder = json4sEncoderOf[Seq[ValpasHenkilö.Oid]]
 
     def deserialize(parsedJson: JValue): Either[HttpStatus, Seq[Hakukooste]] =
-      validatingAndResolvingExtractor.extract[Seq[Hakukooste]](strictDeserialization)(parsedJson)
+      validatingAndResolvingExtractor.extract[Seq[Hakukooste]](lenientDeserialization)(parsedJson)
         .left.map(e => {
           logger.error(s"Error deserializing JSON response from Suoritusrekisteri for ${errorClue}: " + e.toString)
           ValpasErrorCategory.badGateway.sure()
