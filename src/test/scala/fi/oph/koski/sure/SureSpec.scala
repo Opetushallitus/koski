@@ -240,7 +240,7 @@ class SureSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethod
   }
 
   private def muuttuneetKursorillaIteroi(firstCursor: String): Seq[MuuttuneetOppijatResponse] = {
-    var responses = collection.mutable.ArrayBuffer[MuuttuneetOppijatResponse]()
+    val responses = collection.mutable.ArrayBuffer[MuuttuneetOppijatResponse]()
     var cursor = firstCursor
     while (true) {
       val res = muuttuneetKursorilla(cursor)
