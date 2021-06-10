@@ -9,7 +9,7 @@ import {
 } from "../state/common"
 import { isFeatureFlagEnabled } from "./featureFlags"
 
-type AccessGuard = (roles: Kayttooikeusrooli[]) => boolean
+export type AccessGuard = (roles: Kayttooikeusrooli[]) => boolean
 
 export const hakeutumisenValvontaAllowed: AccessGuard = (roles) =>
   roles.includes("OPPILAITOS_HAKEUTUMINEN")
@@ -21,8 +21,9 @@ export const maksuttomuudenValvontaAllowed: AccessGuard = (roles) =>
 export const kuntavalvontaAllowed: AccessGuard = (roles) =>
   roles.includes("KUNTA") && isFeatureFlagEnabled("kuntavalvonta")
 
-const someOf = (...accessGuards: AccessGuard[]): AccessGuard => (roles) =>
-  accessGuards.some((guard) => guard(roles))
+export const someOf = (...accessGuards: AccessGuard[]): AccessGuard => (
+  roles
+) => accessGuards.some((guard) => guard(roles))
 
 export type WithRequiresAccessRightsProps = {
   redirectUserWithoutAccessTo: string

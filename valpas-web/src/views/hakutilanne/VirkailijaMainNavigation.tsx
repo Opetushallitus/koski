@@ -5,17 +5,21 @@ import {
   MainNavigationItem,
 } from "../../components/navigation/MainNavigation"
 import { t } from "../../i18n/i18n"
-import { useKäyttöoikeusroolit } from "../../state/accessRights"
-import { Kayttooikeusrooli, käyttöoikeusrooliEq } from "../../state/common"
+import {
+  AccessGuard,
+  hakeutumisenValvontaAllowed,
+  kuntavalvontaAllowed,
+  maksuttomuudenValvontaAllowed,
+  useKäyttöoikeusroolit,
+} from "../../state/accessRights"
 import { isFeatureFlagEnabled } from "../../state/featureFlags"
 import {
   createHakutilannePathWithoutOrg,
   createKuntailmoitusPath,
   createMaksuttomuusPath,
 } from "../../state/paths"
-import { intersects } from "../../utils/arrays"
 
-type NavOption = MainNavigationItem & { visibleToRoles: Kayttooikeusrooli[] }
+type NavOption = MainNavigationItem & { visibleToRoles: AccessGuard }
 
 export const VirkailijaMainNavigation = () => {
   const roles = useKäyttöoikeusroolit()
@@ -25,25 +29,24 @@ export const VirkailijaMainNavigation = () => {
       {
         display: t("ylänavi__kuntailmoitukset"),
         linkTo: createKuntailmoitusPath(),
-        visibleToRoles: ["KUNTA"],
+        visibleToRoles: kuntavalvontaAllowed,
       },
       {
         display: t("ylänavi__hakeutumisvelvolliset"),
         linkTo: createHakutilannePathWithoutOrg(),
-        visibleToRoles: ["OPPILAITOS_HAKEUTUMINEN"],
+        visibleToRoles: hakeutumisenValvontaAllowed,
       },
       {
         display: t("ylänavi__maksuttomuusoikeuden_arviointi"),
         linkTo: createMaksuttomuusPath(),
-        visibleToRoles: ["OPPILAITOS_MAKSUTTOMUUS"],
+        visibleToRoles: maksuttomuudenValvontaAllowed,
       },
     ],
     []
   )
 
   const navOptions: MainNavigationItem[] = useMemo(() => {
-    const hasRole = intersects(käyttöoikeusrooliEq)(roles)
-    return allNavOptions.filter((item) => hasRole(item.visibleToRoles))
+    return allNavOptions.filter((item) => item.visibleToRoles(roles))
   }, [roles, allNavOptions])
 
   return isFeatureFlagEnabled("maksuttomuus") && A.isNonEmpty(navOptions) ? (
