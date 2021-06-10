@@ -11,6 +11,17 @@ import org.scalatest.FreeSpec
 class YtrKoesuoritusApiSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethods {
   private implicit val context: ExtractionContext = strictDeserialization
 
+  private def readExams: List[ExamResponse] =
+    SchemaValidatingExtractor.extract[List[ExamResponse]](JsonMethods.parse(body)).right.get
+
+  private val expected = List(
+    ExamResponse(period = "2012K", examId = "A", copyOfExamPaper = Some("2345K_XX_12345.pdf")),
+    ExamResponse(period = "2012K", examId = "BB", copyOfExamPaper = Some("not-found-from-s3.pdf")),
+    ExamResponse(period = "2012K", examId = "EA", copyOfExamPaper = Some("1.pdf")),
+    ExamResponse(period = "2012K", examId = "GE", copyOfExamPaper = Some("2.pdf")),
+    ExamResponse(period = "2012K", examId = "N", copyOfExamPaper = Some("1234S_YY_420.html"))
+  )
+
   "Kansalainen" - {
     "voi hakea koesuorituslistauksen" in {
       post("api/ytrkoesuoritukset/" + KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid, headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.ylioppilasLukiolainen.hetu.get) ++ jsonContent) {
@@ -40,18 +51,4 @@ class YtrKoesuoritusApiSpec extends FreeSpec with KoskiHttpSpec with Opiskeluoik
       }
     }
   }
-
-  lazy val huoltaja = JsonSerializer.writeWithRoot(Map("huollettava" -> false))
-  lazy val huollettava = JsonSerializer.writeWithRoot(Map("huollettava" -> true))
-
-  private def readExams: List[ExamResponse] =
-    SchemaValidatingExtractor.extract[List[ExamResponse]](JsonMethods.parse(body)).right.get
-
-  private val expected = List(
-    ExamResponse(period = "2012K", examId = "A", copyOfExamPaper = Some("2345K_XX_12345.pdf")),
-    ExamResponse(period = "2012K", examId = "BB", copyOfExamPaper = Some("not-found-from-s3.pdf")),
-    ExamResponse(period = "2012K", examId = "EA", copyOfExamPaper = Some("1.pdf")),
-    ExamResponse(period = "2012K", examId = "GE", copyOfExamPaper = Some("2.pdf")),
-    ExamResponse(period = "2012K", examId = "N", copyOfExamPaper = Some("1234S_YY_420.html"))
-  )
 }
