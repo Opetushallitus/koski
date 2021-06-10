@@ -130,12 +130,11 @@ class ValpasOppijaService(
 
       // Haetaan jokaiselle ilmoitukselle oppija ja mapataan Seq[(ValpasOppijaLaajatTiedot, ValpasKuntailmoitusLaajatTiedot)]
       // TODO: Tässä on optimoinnin paikka, koska jos samalla oppijatunnuksella on useampi ilmoitus, haetaan oppijan tiedot turhaan moneen kertaan
-      .flatMap(kuntailmoitukset => foldEithers(kuntailmoitukset.map(kuntailmoitusJaOppijaOid => {
+      .map(kuntailmoitukset => kuntailmoitukset.flatMap(kuntailmoitusJaOppijaOid => {
         opiskeluoikeusDbService.getOppija(kuntailmoitusJaOppijaOid.oppijaOid)
-          .toRight(ValpasErrorCategory.forbidden.oppija())
-          .flatMap(asValpasOppijaLaajatTiedot)
+          .flatMap(asValpasOppijaLaajatTiedot(_).toOption)
           .map(oppija => (oppija, kuntailmoitusJaOppijaOid.kuntailmoitus))
-      })))
+      }))
 
       // Ryhmitellään henkilöiden master-oidien perusteella Seq[Seq[(ValpasOppijaLaajatTiedot, ValpasKuntailmoitusLaajatTiedot)]]
       .map(_.groupBy(_._1.henkilö.oid).values.toSeq)
