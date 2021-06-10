@@ -45,8 +45,6 @@ export const OppijaView = withRequiresHakeutumisenOrMaksuttomuudenValvontaOrKunt
     const queryOid = props.match.params.oppijaOid!!
     const oppija = useApiWithParams(fetchOppija, [queryOid], fetchOppijaCache)
     const oppijaData = isSuccess(oppija) ? oppija.data : null
-    const aktiivisetKuntailmoitukset =
-      oppijaData?.kuntailmoitukset.filter(isAktiivinenKuntailmoitus) || []
 
     return (
       <Page id="oppija">
@@ -61,13 +59,9 @@ export const OppijaView = withRequiresHakeutumisenOrMaksuttomuudenValvontaOrKunt
           <Spinner />
         ))}
 
-        {isEmpty(aktiivisetKuntailmoitukset) && <EiIlmoituksiaMessage />}
-        {aktiivisetKuntailmoitukset.map((kuntailmoitus, index) => (
-          <OppijaKuntailmoitus key={index} kuntailmoitus={kuntailmoitus} />
-        ))}
-
         {oppijaData && (
           <>
+            <Kuntailmoitus oppija={oppijaData} />
             <ColumnsContainer>
               <Column size={4}>
                 <BorderlessCard id="oppivelvollisuustiedot">
@@ -177,6 +171,28 @@ const OppijaHeadings = (props: {
 )
 
 const SecondaryOppijaHeading = plainComponent("h2", b("secondaryheading"))
+
+type KuntailmoitusProps = {
+  oppija: OppijaHakutilanteillaLaajatTiedot
+}
+
+const Kuntailmoitus = (props: KuntailmoitusProps) => {
+  const aktiivisetKuntailmoitukset = props.oppija.kuntailmoitukset.filter(
+    isAktiivinenKuntailmoitus
+  )
+
+  return (
+    <>
+      {isEmpty(aktiivisetKuntailmoitukset) ? (
+        <EiIlmoituksiaMessage />
+      ) : (
+        aktiivisetKuntailmoitukset.map((kuntailmoitus, index) => (
+          <OppijaKuntailmoitus key={index} kuntailmoitus={kuntailmoitus} />
+        ))
+      )}
+    </>
+  )
+}
 
 const EiIlmoituksiaMessage = () => (
   <div className={b("eiilmoituksia")}>
