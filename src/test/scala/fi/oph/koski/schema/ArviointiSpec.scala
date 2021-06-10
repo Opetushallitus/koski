@@ -3,6 +3,7 @@ package fi.oph.koski.schema
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.AmmatillinenExampleData.{hylätty, hyväksytty}
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import org.json4s.jackson.JsonMethods.parse
 import org.scalatest.{FreeSpec, Matchers}
 
@@ -115,7 +116,8 @@ class ArviointiSpec extends FreeSpec with Matchers {
 
   private lazy val app = KoskiApplicationForTests
 
-  private def read[T](s: String)(implicit mf : Manifest[T]) = app.validatingAndResolvingExtractor.extract[T](parse(s)).toOption.get
+  private def read[T](s: String)(implicit mf : Manifest[T]) = app.validatingAndResolvingExtractor
+    .extract[T](strictDeserialization)(parse(s)).toOption.get
 
   def numeerinenArviointi(arvosana: Int, päivä: LocalDate = LocalDate.of(2016, 6, 4)): LukionArviointi = {
     NumeerinenLukionArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana.toString, koodistoUri = "arviointiasteikkoyleissivistava"), päivä)

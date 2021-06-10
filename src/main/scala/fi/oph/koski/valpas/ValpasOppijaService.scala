@@ -5,6 +5,7 @@ import fi.oph.koski.henkilo.{Hetu, Yhteystiedot}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
 import fi.oph.koski.util.Timing
@@ -185,7 +186,7 @@ class ValpasOppijaService(
 
   private def asValpasOppijaLaajatTiedot(dbRow: ValpasOppijaRow): Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
     validatingAndResolvingExtractor
-      .extract[List[ValpasOpiskeluoikeusLaajatTiedot]](dbRow.opiskeluoikeudet)
+      .extract[List[ValpasOpiskeluoikeusLaajatTiedot]](strictDeserialization)(dbRow.opiskeluoikeudet)
       .map(opiskeluoikeudet =>
         ValpasOppijaLaajatTiedot(
           henkilö = ValpasHenkilöLaajatTiedot(

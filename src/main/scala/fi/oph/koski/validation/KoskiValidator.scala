@@ -13,6 +13,7 @@ import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.Henkilö.Oid
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.Opiskeluoikeus.{koulutustoimijaTraversal, oppilaitosTraversal, toimipisteetTraversal}
 import fi.oph.koski.schema.{VapaanSivistystyönPäätasonSuoritus, _}
 import fi.oph.koski.tutkinto.Koulutustyyppi._
@@ -52,7 +53,7 @@ class KoskiValidator(
   def extractAndValidateOppija(parsedJson: JValue)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
     timed("extractAndValidateOppija", 200) {
       val extractionResult: Either[HttpStatus, Oppija] = {
-        validatingAndResolvingExtractor.extract[Oppija](parsedJson)
+        validatingAndResolvingExtractor.extract[Oppija](strictDeserialization)(parsedJson)
       }
       extractionResult.right.flatMap(validateOpiskeluoikeudet)
     }
@@ -68,7 +69,7 @@ class KoskiValidator(
 
   def extractOpiskeluoikeus(parsedJson: JValue): Either[HttpStatus, Opiskeluoikeus] = {
     timed("extract")(
-      validatingAndResolvingExtractor.extract[Opiskeluoikeus](parsedJson)
+      validatingAndResolvingExtractor.extract[Opiskeluoikeus](strictDeserialization)(parsedJson)
     )
   }
 

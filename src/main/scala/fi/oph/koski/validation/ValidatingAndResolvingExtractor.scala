@@ -12,13 +12,12 @@ import scala.reflect.runtime.universe.TypeTag
 
 class ValidatingAndResolvingExtractor(
   koodistoPalvelu: KoodistoViitePalvelu,
-  organisaatioRepository: OrganisaatioRepository,
-  deserializationContext: ExtractionContext
+  organisaatioRepository: OrganisaatioRepository
 ) {
   /**
    * Extracts object from json value, and validates/resolves all KoodistoKoodiViite objects on the way.
    */
-  def extract[T](json: JValue)(implicit tag: TypeTag[T])
+  def extract[T](deserializationContext: ExtractionContext)(json: JValue)(implicit tag: TypeTag[T])
   : Either[HttpStatus, T] = {
     val customDeserializers = List(
       OrganisaatioResolvingCustomDeserializer(organisaatioRepository),
