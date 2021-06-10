@@ -81,7 +81,7 @@ class SerializationSpec extends FreeSpec with Matchers with Logging {
 
           kaikkiSuoritukset.foreach { s =>
             val jsonString = JsonSerializer.serializeWithRoot(s)
-            val suoritus = SchemaValidatingExtractor.extract[Suoritus](jsonString) match {
+            SchemaValidatingExtractor.extract[Suoritus](jsonString) match {
               case Right(suoritus) => suoritus should (equal(s))
               case Left(error) => fail(s"deserialization of $s failed: $error")
             }
