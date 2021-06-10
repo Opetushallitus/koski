@@ -326,7 +326,8 @@ WITH
          ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
        END tarkastelupäivän_tila,
        r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
-       (r_opiskeluoikeus.viimeisin_tila = 'valmistunut' AND coalesce(r_opiskeluoikeus.paattymispaiva < $perusopetussuorituksenNäyttämisenAikaraja, FALSE)) AS naytettava_perusopetuksen_suoritus
+       (r_opiskeluoikeus.viimeisin_tila = 'valmistunut' AND coalesce(r_opiskeluoikeus.paattymispaiva < $perusopetussuorituksenNäyttämisenAikaraja, FALSE)) AS naytettava_perusopetuksen_suoritus,
+       coalesce((r_opiskeluoikeus.data -> 'lisätiedot' ->> 'vuosiluokkiinSitoutumatonOpetus')::boolean, FALSE) AS vuosiluokkiin_sitomaton_opetus
      FROM
        oppija_oid
        JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
@@ -375,7 +376,8 @@ WITH
          ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
        END tarkastelupäivän_tila,
        r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
-       FALSE AS naytettava_perusopetuksen_suoritus
+       FALSE AS naytettava_perusopetuksen_suoritus,
+       FALSE AS vuosiluokkiin_sitomaton_opetus
      FROM
        oppija_oid
        JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
@@ -455,7 +457,8 @@ WITH
           'koodiarvo', opiskeluoikeus.tarkastelupäivän_tila,
           'koodistoUri', 'valpasopiskeluoikeudentila'
         ),
-        'näytettäväPerusopetuksenSuoritus', opiskeluoikeus.naytettava_perusopetuksen_suoritus
+        'näytettäväPerusopetuksenSuoritus', opiskeluoikeus.naytettava_perusopetuksen_suoritus,
+        'vuosiluokkiinSitomatonOpetus', opiskeluoikeus.vuosiluokkiin_sitomaton_opetus
       ) ORDER BY
         opiskeluoikeus.alkamispaiva DESC,
         -- Alkamispäivä varmaan riittäisi käyttöliitymälle, mutta lisätään muita kenttiä testien pitämiseksi deteministisempinä myös päällekäisillä opiskeluoikeuksilla:

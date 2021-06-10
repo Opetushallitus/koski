@@ -47,6 +47,9 @@ const lukionAineopinnotAloittanutPath = createOppijaPath("/virkailija", {
 const lukioOpiskelijaPath = createOppijaPath("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000004",
 })
+const vsopPath = createOppijaPath("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000046",
+})
 
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
@@ -155,6 +158,21 @@ describe("Oppijakohtainen näkymä", () => {
       Jyväskylän normaalikoulu
       Ryhmä: 9C
       Tila: Valmistunut 30.5.2021
+    `)
+  })
+
+  it("Näyttää oppijan vsop-tiedon", async () => {
+    await loginAs(vsopPath, "valpas-jkl-normaali", true)
+    await mainHeadingEquals(
+      "Ysiluokka-valmis-keväällä-2021-vsop Valpas (190705A575R)"
+    )
+    await opiskeluhistoriaEquals(`
+      school
+      Perusopetus 2012 – 2021
+      Jyväskylän normaalikoulu
+      Ryhmä: 9C
+      Tila: Valmistunut 30.5.2021
+      Muuta: Vuosiluokkiin sitomaton opetus
     `)
   })
 
