@@ -186,7 +186,7 @@ sealed trait LukioonValmistavanKoulutuksenKurssi extends KoulutusmoduuliValinnai
   def laajuus: Option[LaajuusKursseissa]
 }
 
-@Title("Valtakunnallisen lukioon valmistavan koulutuksen kurssi tai moduuli")
+@Title("Valtakunnallinen lukioon valmistavan koulutuksen kurssi tai moduuli")
 @Description("Valtakunnallisen lukioon valmistavan koulutuksen kurssin tai moduulin tunnistetiedot")
 case class ValtakunnallinenLukioonValmistavanKoulutuksenKurssi(
   @Description("Lukioon valmistavan koulutuksen kurssi")
@@ -198,7 +198,7 @@ case class ValtakunnallinenLukioonValmistavanKoulutuksenKurssi(
   override val laajuus: Option[LaajuusKursseissa]
 ) extends LukioonValmistavanKoulutuksenKurssi with KoodistostaLöytyväKoulutusmoduuli
 
-@Title("Paikallisen lukioon valmistavan koulutuksen kurssi tai moduuli")
+@Title("Paikallinen lukioon valmistavan koulutuksen kurssi tai moduuli")
 @Description("Paikallisen lukioon valmistavan koulutuksen kurssin tunnistetiedot")
 case class PaikallinenLukioonValmistavanKoulutuksenKurssi(
   @FlattenInUI
