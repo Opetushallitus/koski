@@ -32,10 +32,13 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   private val rajapäivätService = application.valpasRajapäivätService
 
   def getOppija(oppijaOid: String): Option[ValpasOppijaRow] =
-    getOppijat(Some(oppijaOid), None).headOption
+    getOppijat(List(oppijaOid), None).headOption
 
-  def getOppijat(oppilaitosOid: String): Seq[ValpasOppijaRow] =
-    getOppijat(None, Some(Seq(oppilaitosOid)))
+  def getOppijat(oppijaOids: Seq[String]): Seq[ValpasOppijaRow] =
+    if (oppijaOids.nonEmpty) getOppijat(oppijaOids, None) else Seq.empty
+
+  def getOppijatByOppilaitos(oppilaitosOid: String): Seq[ValpasOppijaRow] =
+    getOppijat(Seq.empty, Some(Seq(oppilaitosOid)))
 
   private implicit def getResult: GetResult[ValpasOppijaRow] = GetResult(r => {
     ValpasOppijaRow(
@@ -61,7 +64,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   // Huom3: Tämä ei filteröi opiskeluoikeuksia sen mukaan, minkä tiedot kuuluisi näyttää listanäkymässä, jos samalla oppijalla on useita opiskeluoikeuksia.
   //        Valinta voidaan jättää joko Scalalle, käyttöliitymälle tai tehdä toinen query, joka tekee valinnan SQL:ssä.
   private def getOppijat(
-    oppijaOid: Option[String],
+    oppijaOids: Seq[String],
     oppilaitosOids: Option[Seq[String]]
   ): Seq[ValpasOppijaRow] = {
     val keväänValmistumisjaksoAlku = rajapäivätService.keväänValmistumisjaksoAlku
@@ -71,21 +74,27 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     val keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä = rajapäivätService.keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
     val perusopetussuorituksenNäyttämisenAikaraja = rajapäivätService.perusopetussuorituksenNäyttämisenAikaraja
 
-    val timedBlockname = if (oppijaOid.isDefined) "getOppijatSingle" else "getOppijatMultiple"
+    val timedBlockname = oppijaOids.size match {
+      case 0 => "getOppijatMultiple"
+      case 1 => "getOppijatSingle"
+      case _ => "getOppijatMultipleOids"
+    }
+
+    val nonEmptyOppijaOids = if (oppijaOids.nonEmpty) Some(oppijaOids) else None
 
     timed(timedBlockname, 10) {
       db.runDbSync(SQLHelpers.concatMany(
         Some(
           sql"""
-WITH
-  """),
-        oppijaOid.map(oid =>
+  WITH
+      """),
+        nonEmptyOppijaOids.map(oids =>
           sql"""
   -- CTE: jos pyydettiin vain yhtä oppijaa, hae hänen master oid:nsa
   pyydetty_oppija AS (
     SELECT r_henkilo.master_oid
     FROM r_henkilo
-    WHERE r_henkilo.oppija_oid = $oid
+    WHERE r_henkilo.oppija_oid = any($oids)
   ),
       """),
         Some(
@@ -115,7 +124,7 @@ WITH
         oppilaitosOids.map(oids => sql"""
         AND r_opiskeluoikeus.oppilaitos_oid = any($oids)
           """),
-        oppijaOid.map(oid => sql"""
+        nonEmptyOppijaOids.map(_ => sql"""
       JOIN pyydetty_oppija ON pyydetty_oppija.master_oid = r_henkilo.master_oid
           """),
         Some(sql"""

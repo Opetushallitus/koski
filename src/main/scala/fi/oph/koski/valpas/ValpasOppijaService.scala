@@ -132,14 +132,9 @@ class ValpasOppijaService(
       .map(kuntailmoitukset => (
         kuntailmoitukset,
         accessResolver.filterByOppijaAccess(ValpasRooli.KUNTA)(
-          kuntailmoitukset
-            .map(_.oppijaOid)
-            .toSet
-            .flatMap((oid: String) =>
-              opiskeluoikeusDbService.getOppija(oid)
-                .flatMap(asValpasOppijaLaajatTiedot(_).toOption)
-            )
-            .toSeq
+          opiskeluoikeusDbService
+            .getOppijat(kuntailmoitukset.map(_.oppijaOid).distinct)
+            .flatMap(asValpasOppijaLaajatTiedot(_).toOption)
         )
       ))
 
@@ -181,7 +176,7 @@ class ValpasOppijaService(
     val errorClue = oppilaitosOidErrorClue(oppilaitosOid)
 
     accessResolver.assertAccessToOrg(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)(oppilaitosOid)
-      .map(_ => opiskeluoikeusDbService.getOppijat(oppilaitosOid))
+      .map(_ => opiskeluoikeusDbService.getOppijatByOppilaitos(oppilaitosOid))
       .flatMap(results => HttpStatus.foldEithers(results.map(asValpasOppijaLaajatTiedot)))
       .map(accessResolver.filterByOppijaAccess(ValpasRooli.OPPILAITOS_HAKEUTUMINEN))
       .map(fetchHautIlmanYhteystietoja(errorClue))
@@ -194,7 +189,7 @@ class ValpasOppijaService(
     val errorClue = oppilaitosOidErrorClue(oppilaitosOid)
 
     accessResolver.assertAccessToOrg(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)(oppilaitosOid)
-      .map(_ => opiskeluoikeusDbService.getOppijat(oppilaitosOid))
+      .map(_ => opiskeluoikeusDbService.getOppijatByOppilaitos(oppilaitosOid))
       .map(_.filter(oppijaRow => oppijaOids.contains(oppijaRow.oppijaOid)))
       .flatMap(results => HttpStatus.foldEithers(results.map(asValpasOppijaLaajatTiedot)))
       .map(accessResolver.filterByOppijaAccess(ValpasRooli.OPPILAITOS_HAKEUTUMINEN))
