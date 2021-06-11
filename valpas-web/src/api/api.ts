@@ -15,7 +15,7 @@ import {
 import { queryPath } from "../state/paths"
 import { tapLeftP } from "../utils/either"
 import { ApiFailure, apiGet, apiPost, apiPut } from "./apiFetch"
-import { createLocalThenApiCache, createPreferLocalCache } from "./cache"
+import { createLocalThenApiCache } from "./cache"
 
 export const healthCheck = async () =>
   apiGet<string>("api/healthcheck/internal")
@@ -60,7 +60,7 @@ export const fetchOppijat = (organisaatioOid: Oid) =>
     )
   )
 
-export const fetchOppijatCache = createPreferLocalCache(fetchOppijat)
+export const fetchOppijatCache = createLocalThenApiCache(fetchOppijat)
 
 /**
  * Hae yksittäisen oppijan laajat tiedot
