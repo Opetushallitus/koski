@@ -134,6 +134,12 @@ const OpiskeluhistoriaOpinto = ({
             value={tilaString(opiskeluoikeus)}
           />
         )}
+        {opiskeluoikeus.vuosiluokkiinSitomatonOpetus && (
+          <InfoTableRow
+            label={t("oppija__muuta")}
+            value={t("oppija__vuosiluokkiin_sitomaton_opetus")}
+          />
+        )}
       </InfoTable>
     </IconSection>
   )

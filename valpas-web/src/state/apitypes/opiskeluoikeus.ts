@@ -18,6 +18,7 @@ export type OpiskeluoikeusLaajatTiedot = {
   ryhmä?: string
   tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
   näytettäväPerusopetuksenSuoritus: boolean
+  vuosiluokkiinSitomatonOpetus: boolean
 }
 
 export type OpiskeluoikeusSuppeatTiedot = {
@@ -32,6 +33,7 @@ export type OpiskeluoikeusSuppeatTiedot = {
   päättymispäivä?: ISODate
   päättymispäiväMerkittyTulevaisuuteen?: boolean
   näytettäväPerusopetuksenSuoritus: boolean
+  vuosiluokkiinSitomatonOpetus: boolean
   muuHaku?: boolean
 }
 

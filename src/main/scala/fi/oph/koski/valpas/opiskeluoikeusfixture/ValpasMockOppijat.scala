@@ -48,6 +48,12 @@ object ValpasMockOppijat {
   val lukionAloittanutJollaVanhaIlmoitus = valpasOppijat.oppija("LukionAloittanut-ilmo", "Valpas", "110405A435M")
   val lukionAloittanutJaLopettanutJollaIlmoituksia = valpasOppijat.oppija("LukionAloittanutJaLopettanut-ilmo", "Valpas", "050405A249S")
   val ammattikoulustaValmistunutOpiskelija = valpasOppijat.oppija("Amis-valmistunut-opiskelija", "Valpas", "180304A082P")
+  val eronnutMaaliskuussa17VuottaTäyttäväKasiluokkalainen = valpasOppijat.oppija("Eronnut-maaliskuussa-17-vuotta-täyttävä-8-luokkalainen", "Valpas", "280904A2768")
+  val eronnutKeväänValmistumisJaksolla17VuottaTäyttäväKasiluokkalainen = valpasOppijat.oppija("Eronnut-kevään-valmistumisjaksolla-17-vuotta-täyttävä-8-luokkalainen", "Valpas", "121004A189X")
+  val eronnutElokuussa17VuottaTäyttäväKasiluokkalainen = valpasOppijat.oppija("Eronnut-elokuussa-17-vuotta-täyttävä-8-luokkalainen", "Valpas", "110904A007L")
+  val valmistunutYsiluokkalainenVsop = valpasOppijat.oppija("Ysiluokka-valmis-keväällä-2021-vsop", "Valpas", "190705A575R")
+  val ysiluokkaKeskenVsop = valpasOppijat.oppija("Oppivelvollinen-ysiluokka-kesken-vsop", "Valpas", "240305A7103")
+  val valmistunutKasiluokkalainen = valpasOppijat.oppija("Valmistunut-kasiluokkalainen-alle-17-vuotias", "Valpas", "090605A768P")
 
   // Kutsumanimi ja yhteystiedot haetaan oppijanumerorekisteristä Valpas-käyttäjälle, tallennetaan siksi käyttäjä myös "oppijana" mockeihin
   val käyttäjäValpasJklNormaalikoulu = valpasOppijat.oppija(

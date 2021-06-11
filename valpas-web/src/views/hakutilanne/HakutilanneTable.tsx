@@ -1,3 +1,4 @@
+import bem from "bem-ts"
 import * as A from "fp-ts/lib/Array"
 import { flow, pipe } from "fp-ts/lib/function"
 import { NonEmptyArray } from "fp-ts/lib/NonEmptyArray"
@@ -51,6 +52,9 @@ import { isFeatureFlagEnabled } from "../../state/featureFlags"
 import { createOppijaPath } from "../../state/paths"
 import { nonEmptyEvery, nonNull } from "../../utils/arrays"
 import { formatDate, formatNullableDate } from "../../utils/date"
+import "./HakutilanneTable.less"
+
+const b = bem("hakutilannetable")
 
 export type HakutilanneTableProps = {
   data: OppijaHakutilanteillaSuppeatTiedot[]
@@ -203,9 +207,7 @@ const oppijaToTableData = (
           value: henkilö.syntymäaika,
           display: formatNullableDate(henkilö.syntymäaika),
         },
-        {
-          value: opiskeluoikeus?.ryhmä,
-        },
+        ryhmä(opiskeluoikeus),
         perusopetusSuoritettu(opiskeluoikeus),
         hakemuksenTila(oppija, basePath),
         fromNullableValue(valintatila(oppija.hakutilanteet)),
@@ -215,6 +217,36 @@ const oppijaToTableData = (
       ],
     }
   })
+}
+
+const ryhmä = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
+  const ryhmä = oo.ryhmä
+    ? {
+        value: oo.ryhmä,
+        filterValues: [oo.ryhmä],
+        display: oo.ryhmä,
+      }
+    : {
+        value: "–",
+        filterValues: ["–"],
+        display: oo.ryhmä,
+      }
+
+  if (oo.vuosiluokkiinSitomatonOpetus) {
+    const vsop = t("hakutilanne__vsop")
+    return {
+      value: `${vsop} ${ryhmä.value}`,
+      filterValues: [vsop].concat(ryhmä.filterValues),
+      display: (
+        <>
+          <span className={b("vsop")}>{`${vsop}`}</span>
+          {` ${ryhmä.display}`}
+        </>
+      ),
+    }
+  } else {
+    return ryhmä
+  }
 }
 
 const perusopetusSuoritettu = (oo: OpiskeluoikeusSuppeatTiedot): Value => {

@@ -103,6 +103,16 @@ trait ValpasOpiskeluoikeus {
 
   def ryhmä: Option[String]
 
+  def vuosiluokkiinSitomatonOpetus: Boolean
+
+  def alkamispäivä: String
+
+  def päättymispäivä: Option[String]
+
+  def päättymispäiväMerkittyTulevaisuuteen: Option[Boolean]
+
+  def näytettäväPerusopetuksenSuoritus: Boolean
+
   @KoodistoUri("valpasopiskeluoikeudentila")
   def tarkastelupäivänTila: Koodistokoodiviite
 
@@ -133,6 +143,7 @@ case class ValpasOpiskeluoikeusLaajatTiedot(
   ryhmä: Option[String],
   tarkastelupäivänTila: Koodistokoodiviite,
   näytettäväPerusopetuksenSuoritus: Boolean,
+  vuosiluokkiinSitomatonOpetus: Boolean
 ) extends ValpasOpiskeluoikeus
 
 object ValpasOpiskeluoikeusSuppeatTiedot {
@@ -149,6 +160,7 @@ object ValpasOpiskeluoikeusSuppeatTiedot {
       päättymispäivä = laajatTiedot.päättymispäivä,
       päättymispäiväMerkittyTulevaisuuteen = laajatTiedot.päättymispäiväMerkittyTulevaisuuteen,
       näytettäväPerusopetuksenSuoritus = laajatTiedot.näytettäväPerusopetuksenSuoritus,
+      vuosiluokkiinSitomatonOpetus = laajatTiedot.vuosiluokkiinSitomatonOpetus
     )
   }
 }
@@ -165,6 +177,7 @@ case class ValpasOpiskeluoikeusSuppeatTiedot(
   päättymispäivä: Option[String],
   päättymispäiväMerkittyTulevaisuuteen: Option[Boolean],
   näytettäväPerusopetuksenSuoritus: Boolean,
+  vuosiluokkiinSitomatonOpetus: Boolean
 ) extends ValpasOpiskeluoikeus
 
 object ValpasOppilaitos {

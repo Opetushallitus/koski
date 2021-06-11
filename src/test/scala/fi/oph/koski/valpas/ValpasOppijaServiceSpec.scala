@@ -37,138 +37,260 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
   private val organisaatioRepository = KoskiApplicationForTests.organisaatioRepository
   private val kuntailmoitusRepository = KoskiApplicationForTests.valpasKuntailmoitusRepository
 
-  // Jyväskylän normaalikoulusta löytyvät näytettävät oppivelvolliset aakkosjärjestyksessä
+  // Jyväskylän normaalikoulusta löytyvät näytettävät oppivelvolliset aakkosjärjestyksessä, tutkittaessa ennen syksyn rajapäivää
   private val oppivelvolliset = List(
     (
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
-      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true, true))
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true))
     ),
     (
       ValpasMockOppijat.päällekkäisiäOpiskeluoikeuksia,
       List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenVaihtanutKouluaMuttaOpiskeluoikeusMerkkaamattaOikein2, "voimassa", true, true, true),
-        ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenVaihtanutKouluaMuttaOpiskeluoikeusMerkkaamattaOikein1, "voimassa", false, false, true)
+        ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenVaihtanutKouluaMuttaOpiskeluoikeusMerkkaamattaOikein2, "voimassa", true, true),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenVaihtanutKouluaMuttaOpiskeluoikeusMerkkaamattaOikein1, "voimassa", false, true)
       )
     ),
     (
       ValpasMockOppijat.valmistunutYsiluokkalainen,
-      List(ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true, true))
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true))
     ),
     (
       ValpasMockOppijat.valmistunutYsiluokkalainenJollaIlmoitus,
-      List(ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true, true))
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true))
     ),
     (
       ValpasMockOppijat.kotiopetusMenneisyydessäOppija,
-      List(ExpectedData(ValpasOpiskeluoikeusExampleData.kotiopetusMenneisyydessäOpiskeluoikeus, "voimassa", true, true, true))
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.kotiopetusMenneisyydessäOpiskeluoikeus, "voimassa", true, true))
     ),
     (
       ValpasMockOppijat.luokalleJäänytYsiluokkalainen,
-      List(ExpectedData(ValpasOpiskeluoikeusExampleData.luokallejäänytYsiluokkalainen, "voimassa", true, true, true))
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.luokallejäänytYsiluokkalainen, "voimassa", true, true))
     ),
     (
       ValpasMockOppijat.luokallejäänytYsiluokkalainenJollaUusiYsiluokka,
-      List(ExpectedData(ValpasOpiskeluoikeusExampleData.luokallejäänytYsiluokkalainenJollaUusiYsiluokka, "voimassa", true, true, true))
-    ),
-    (
-      ValpasMockOppijat.luokalleJäänytYsiluokkalainenVaihtanutKouluaMuualta,
-      List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaJälkimmäinen2, "voimassa", true, true, true),
-        ExpectedData(ValpasOpiskeluoikeusExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaEdellinen2, "eronnut", false, false, true)
-      )
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.luokallejäänytYsiluokkalainenJollaUusiYsiluokka, "voimassa", true, true))
     ),
     (
       ValpasMockOppijat.kasiinAstiToisessaKoulussaOllut,
       List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.pelkkäYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true, true),
-        ExpectedData(ValpasOpiskeluoikeusExampleData.kasiluokkaEronnutKeväällä2020Opiskeluoikeus, "eronnut", false, false, false)
+        ExpectedData(ValpasOpiskeluoikeusExampleData.pelkkäYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.kasiluokkaEronnutKeväällä2020Opiskeluoikeus, "eronnut", false, false)
       )
     ),
     (
       ValpasMockOppijat.kasiinAstiToisessaKoulussaOllutJollaIlmoitus,
       List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.pelkkäYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true, true),
-        ExpectedData(ValpasOpiskeluoikeusExampleData.kasiluokkaEronnutKeväällä2020Opiskeluoikeus, "eronnut", false, false, false)
+        ExpectedData(ValpasOpiskeluoikeusExampleData.pelkkäYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.kasiluokkaEronnutKeväällä2020Opiskeluoikeus, "eronnut", false, false)
       )
     ),
     (
       ValpasMockOppijat.lukionAloittanut,
       List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä, "voimassa", false, false, false),
-        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true, true)
+        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä, "voimassa", false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true)
       )
     ),
     (
       ValpasMockOppijat.lukionAineopinnotAloittanut,
       List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true, true)
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true)
       )
     ),
     (
       ValpasMockOppijat.lukionLokakuussaAloittanut,
       List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaa2021Lokakuussa, "voimassatulevaisuudessa", false, false, false),
-        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true, true)
+        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaa2021Lokakuussa, "voimassatulevaisuudessa", false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true)
       )
     ),
     (
       ValpasMockOppijat.turvakieltoOppija,
       List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true, true)
+        ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true)
       )
     ),
     (
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
       List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus, "voimassa", false, false, false),
-        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true, true),
-        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut", false, true, false)
+        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus, "voimassa", false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut", false, false)
       )
     ),
     (
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster,
       List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus, "voimassa", false, false, false),
-        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true, true),
-        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut", false, true, false)
+        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus, "voimassa", false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut", false, false)
       )
     ),
     (
       ValpasMockOppijat.useampiYsiluokkaSamassaKoulussa,
       List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.kesäYsiluokkaKesken, "voimassa", true, true, false),
-        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true, true)
+        ExpectedData(ValpasOpiskeluoikeusExampleData.kesäYsiluokkaKesken, "voimassa", false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true)
       )
     ),
     (
       ValpasMockOppijat.eronnutOppijaTarkastelupäivänJälkeen,
       List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.eronnutOpiskeluoikeusTarkastelupäivänJälkeen, "voimassa", true, true, true)
+        ExpectedData(ValpasOpiskeluoikeusExampleData.eronnutOpiskeluoikeusTarkastelupäivänJälkeen, "voimassa", true, true)
       )
     ),
     (
       ValpasMockOppijat.hakukohteidenHakuEpäonnistuu,
-      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true, true))
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true))
     ),
     (
       ValpasMockOppijat.kahdenKoulunYsiluokkalainenJollaIlmoitus,
       List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true, true),
-        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut", false, true, true),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut", false, true),
       )
     ),
     (
       ValpasMockOppijat.lukionAloittanutJollaVanhaIlmoitus,
       List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä, "voimassa", false, false, false),
-        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true, true)
+        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä, "voimassa", false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true)
       )
     ),
     (
       ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia,
       List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä, "voimassa", false, false, false),
-        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true, true)
+        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä, "voimassa", false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true)
+      )
+    ),
+    (
+      ValpasMockOppijat.eronnutKeväänValmistumisJaksolla17VuottaTäyttäväKasiluokkalainen,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.eronnutOpiskeluoikeusEiYsiluokkaaKeväänJaksolla, "eronnut", true, true),
+      )
+    ),
+    (
+      ValpasMockOppijat.eronnutElokuussa17VuottaTäyttäväKasiluokkalainen,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.eronnutOpiskeluoikeusEiYsiluokkaaElokuussa, "eronnut", true, true),
+      )
+    ),
+    (
+      ValpasMockOppijat.valmistunutYsiluokkalainenVsop,
+      List(
+        ExpectedData(opiskeluoikeus = ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenVsop,
+          tarkastelupäivänTila = "valmistunut",
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onOikeutettuOppilaitos = true,
+          vuosiluokkiinSitomatonOpetus = true)
+      )
+    ),
+    (
+      ValpasMockOppijat.ysiluokkaKeskenVsop,
+      List(
+        ExpectedData(opiskeluoikeus = ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenVsop,
+          tarkastelupäivänTila = "voimassa",
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onOikeutettuOppilaitos = true,
+          vuosiluokkiinSitomatonOpetus = true)
+      )
+    ),
+    (
+      ValpasMockOppijat.valmistunutKasiluokkalainen,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutKasiluokkalainen, "valmistunut", true, true),
+      )
+    )
+  ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
+
+  // Jyväskylän normaalikoulusta löytyvät näytettävät oppivelvolliset aakkosjärjestyksessä, tutkittaessa syksyn rajapäivän jälkeen
+  private val oppivelvollisetRajapäivänJälkeen = List(
+    (
+      ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true))
+    ),
+    (
+      ValpasMockOppijat.päällekkäisiäOpiskeluoikeuksia,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenVaihtanutKouluaMuttaOpiskeluoikeusMerkkaamattaOikein2, "voimassa", true, true),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenVaihtanutKouluaMuttaOpiskeluoikeusMerkkaamattaOikein1, "voimassa", false, true)
+      )
+    ),
+    (
+      ValpasMockOppijat.kotiopetusMenneisyydessäOppija,
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.kotiopetusMenneisyydessäOpiskeluoikeus, "voimassa", true, true))
+    ),
+    (
+      ValpasMockOppijat.luokalleJäänytYsiluokkalainen,
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.luokallejäänytYsiluokkalainen, "voimassa", true, true))
+    ),
+    (
+      ValpasMockOppijat.luokallejäänytYsiluokkalainenJollaUusiYsiluokka,
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.luokallejäänytYsiluokkalainenJollaUusiYsiluokka, "voimassa", true, true))
+    ),
+    (
+      ValpasMockOppijat.luokalleJäänytYsiluokkalainenVaihtanutKouluaMuualta,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaJälkimmäinen2, "voimassa", true, true),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.luokallejäänytYsiluokkalainenVaihtanutKouluaEdellinen2, "eronnut", false, true)
+      )
+    ),
+    (
+      ValpasMockOppijat.kasiinAstiToisessaKoulussaOllut,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.pelkkäYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.kasiluokkaEronnutKeväällä2020Opiskeluoikeus, "eronnut", false, false)
+      )
+    ),
+    (
+      ValpasMockOppijat.kasiinAstiToisessaKoulussaOllutJollaIlmoitus,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.pelkkäYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.kasiluokkaEronnutKeväällä2020Opiskeluoikeus, "eronnut", false, false)
+      )
+    ),
+    (
+      ValpasMockOppijat.turvakieltoOppija,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true)
+      )
+    ),
+    (
+      ValpasMockOppijat.useampiYsiluokkaSamassaKoulussa,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.kesäYsiluokkaKesken, "voimassa", true, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", false, true)
+      )
+    ),
+    (
+      ValpasMockOppijat.eronnutOppijaTarkastelupäivänJälkeen,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.eronnutOpiskeluoikeusTarkastelupäivänJälkeen, "voimassa", true, true)
+      )
+    ),
+    (
+      ValpasMockOppijat.hakukohteidenHakuEpäonnistuu,
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true))
+    ),
+    (
+      ValpasMockOppijat.oppivelvollinenAloittanutJaEronnutTarkastelupäivänJälkeen,
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenAloittanutJaEronnutTarkastelupäivänJälkeenOpiskeluoikeus, "voimassa", true, true)),
+    ),
+    (
+      ValpasMockOppijat.eronnutElokuussa17VuottaTäyttäväKasiluokkalainen,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.eronnutOpiskeluoikeusEiYsiluokkaaElokuussa, "eronnut", true, true),
+      )
+    ),
+    (
+      ValpasMockOppijat.ysiluokkaKeskenVsop,
+      List(
+        ExpectedData(opiskeluoikeus = ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenVsop,
+          tarkastelupäivänTila = "voimassa",
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onOikeutettuOppilaitos = true,
+          vuosiluokkiinSitomatonOpetus = true)
       )
     )
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
@@ -203,9 +325,9 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
       Set(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster.oid, ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaToinen.oid, ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaKolmas.oid),
       List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus, "voimassa", false, false, false),
-        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true, true),
-        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut", true, true, true)
+        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus, "voimassa", false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut", true, true)
       )
     )
   }
@@ -216,7 +338,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     validateOppijaLaajatTiedot(
       result.oppija,
       ValpasMockOppijat.hakukohteidenHakuEpäonnistuu,
-      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true, true))
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true))
     )
   }
 
@@ -227,9 +349,9 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
       Set(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster.oid, ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaToinen.oid, ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaKolmas.oid),
       List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus, "voimassa", false, false, false),
-        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true, true),
-        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut", true, true, true)
+        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus, "voimassa", false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut", true, true)
       )
     )
   }
@@ -241,14 +363,14 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
       Set(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster.oid, ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaToinen.oid, ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaKolmas.oid),
       List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus, "voimassa", false, false, false),
-        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true, true),
-        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut", true, true, true)
+        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus, "voimassa", false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenToinenKoulu, "valmistunut", true, true)
       )
     )
   }
 
-  "getOppijat palauttaa yhden oppilaitoksen oppijat oikein" in {
+  "getOppijat palauttaa yhden oppilaitoksen oppijat oikein tarkasteltaessa ennen syksyn rajapäivää" in {
     val oppijat = oppijaService.getOppijatSuppeatTiedot(oppilaitos)(defaultSession).toOption.get.map(_.oppija)
 
     oppijat.map(_.henkilö.oid) shouldBe oppivelvolliset.map(_._1.oid)
@@ -262,13 +384,29 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     }
   }
 
-  "getOppijat palauttaa yhden oppilaitoksen oppijat oikein käyttäjälle, jolla globaalit oikeudet" in {
+  "getOppijat palauttaa yhden oppilaitoksen oppijat oikein käyttäjälle, jolla globaalit oikeudet, tarkasteltaessa ennen syksyn rajapäivää" in {
     val oppijat = oppijaService.getOppijatSuppeatTiedot(oppilaitos)(session(ValpasMockUsers.valpasOphHakeutuminenPääkäyttäjä))
       .toOption.get.map(_.oppija)
 
     oppijat.map(_.henkilö.oid) shouldBe oppivelvolliset.map(_._1.oid)
 
     (oppijat zip oppivelvolliset).foreach { actualAndExpected =>
+      val (oppija, (expectedOppija, expectedData)) = actualAndExpected
+      validateOppijaSuppeatTiedot(
+        oppija,
+        expectedOppija,
+        expectedData)
+    }
+  }
+
+  "getOppijat palauttaa yhden oppilaitoksen oppijat oikein tarkasteltaessa syksyn rajapäivän jälkeen" in {
+    rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(date(2021, 10, 1))
+
+    val oppijat = oppijaService.getOppijatSuppeatTiedot(oppilaitos)(defaultSession).toOption.get.map(_.oppija)
+
+    oppijat.map(_.henkilö.oid) shouldBe oppivelvollisetRajapäivänJälkeen.map(_._1.oid)
+
+    (oppijat zip oppivelvollisetRajapäivänJälkeen).foreach { actualAndExpected =>
       val (oppija, (expectedOppija, expectedData)) = actualAndExpected
       validateOppijaSuppeatTiedot(
         oppija,
@@ -714,6 +852,9 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     withClue("tarkastelupäivänTila") {
       opiskeluoikeus.tarkastelupäivänTila.koodiarvo shouldBe expectedData.tarkastelupäivänTila
     }
+    withClue("vuosiluokkiinSitomatonOpetus") {
+      opiskeluoikeus.vuosiluokkiinSitomatonOpetus shouldBe expectedData.vuosiluokkiinSitomatonOpetus
+    }
 
     val luokkatietoExpectedFromSuoritus = expectedData.opiskeluoikeus match {
       case oo: PerusopetuksenOpiskeluoikeus =>
@@ -822,6 +963,6 @@ case class ExpectedData(
   opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
   tarkastelupäivänTila: String,
   onHakeutumisValvottavaOpiskeluoikeus: Boolean,
-  onHakeutumisValvottavaOpiskeluoikeusGlobaalilleKäyttäjälle: Boolean,
-  onOikeutettuOppilaitos: Boolean
+  onOikeutettuOppilaitos: Boolean,
+  vuosiluokkiinSitomatonOpetus: Boolean = false
 )
