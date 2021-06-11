@@ -1,0 +1,142 @@
+[
+  {
+  "koodiUri": "arviointiasteikkovstvapaatavoitteinen_hylatty",
+  "koodiArvo": "Hylätty",
+  "metadata": [
+    {
+      "nimi": "Hylätty",
+      "lyhytNimi": "Hylätty",
+      "kieli": "FI"
+    },
+    {
+      "nimi": "Underkänd",
+      "lyhytNimi": "Underkänd",
+      "kieli": "SV"
+    },
+    {
+      "nimi": "Hylätty",
+      "lyhytNimi": "Hylätty",
+      "kieli": "EN"
+    }
+  ],
+  "versio": 1,
+  "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkovstvapaatavoitteinen_hyvaksytty",
+    "koodiArvo": "Hyväksytty",
+    "metadata": [
+      {
+        "nimi": "Hyväksytty",
+        "lyhytNimi": "Hyväksytty",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Godkänd",
+        "lyhytNimi": "Godkänd",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Hyväksytty",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }, {
+    "koodiUri": "arviointiasteikkovstvapaatavoitteinen_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "1",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "1",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "1",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }, {
+    "koodiUri": "arviointiasteikkovstvapaatavoitteinen_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "2",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "2",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "2",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }, {
+    "koodiUri": "arviointiasteikkovstvapaatavoitteinen_3",
+    "koodiArvo": "3",
+    "metadata": [
+      {
+        "nimi": "3",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "3",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "3",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }, {
+    "koodiUri": "arviointiasteikkovstvapaatavoitteinen_4",
+    "koodiArvo": "4",
+    "metadata": [
+      {
+        "nimi": "4",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "4",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "4",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }, {
+    "koodiUri": "arviointiasteikkovstvapaatavoitteinen_5",
+    "koodiArvo": "5",
+    "metadata": [
+      {
+        "nimi": "5",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "5",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "5",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

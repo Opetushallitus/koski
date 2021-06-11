@@ -29,6 +29,7 @@ object Koodistot {
     KoodistoAsetus("arviointiasteikkomuuammatillinenkoulutus"),
     KoodistoAsetus("arviointiasteikkovst"),
     KoodistoAsetus("arviointiasteikkovstkoto"),
+    KoodistoAsetus("arviointiasteikkovstvapaatavoitteinen"),
     KoodistoAsetus("arviointiasteikkoyleissivistava"),
     KoodistoAsetus("arviointiasteikkokehittyvankielitaidontasot"),
     KoodistoAsetus("dialukukausi", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),

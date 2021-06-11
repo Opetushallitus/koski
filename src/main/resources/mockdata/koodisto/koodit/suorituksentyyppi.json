@@ -1571,5 +1571,35 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstvapaatavoitteinenkoulutus",
+  "koodiArvo" : "vstvapaatavoitteinenkoulutus",
+  "metadata" : [ {
+    "nimi" : "Vapaan sivistystyön vapaatavoitteinen koulutus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vapaan sivistystyön vapaatavoitteinen koulutus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaan sivistystyön vapaatavoitteinen koulutus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstvapaatavoitteisenkoulutuksenosasuoritus",
+  "koodiArvo" : "vstvapaatavoitteisenkoulutuksenosasuoritus",
+  "metadata" : [ {
+    "nimi" : "Vapaan sivistystyön vapaatavoitteisen koulutuksen osasuoritus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vapaan sivistystyön vapaatavoitteisen koulutuksen osasuoritus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaan sivistystyön vapaatavoitteisen koulutuksen osasuoritus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }
 ]
