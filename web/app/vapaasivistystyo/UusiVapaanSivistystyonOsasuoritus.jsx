@@ -22,6 +22,11 @@ export const UusiVapaanSivistystyonOsasuoritus = ({suoritusPrototypes, setExpand
   const muuallaSuoritettuOpinto = suoritusPrototypes.find(s => s.value.classes.includes('muuallasuoritettuoppivelvollisillesuunnatunvapaansivistystyonopintojensuoritus'))
   const opintokokonaisuus = suoritusPrototypes.find(s => s.value.classes.includes('oppivelvollisillesuunnatunvapaansivistystyonopintokokonaisuudensuoritus'))
 
+  const kotoOsaAlue = suoritusPrototypes.find(s => s.value.classes.includes('vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenkokonaisuudensuoritus'))
+  const kotoTyöelämäJaYhteiskuntataidot = suoritusPrototypes.find(s => s.value.classes.includes('vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataidot'))
+  const kotoTyöelämäJaYhteiskuntataidotTyöelämäjakso = suoritusPrototypes.find(s => s.value.classes.includes('vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojentyoelamajakso'))
+  const kotoValinnaisetOpinnot= suoritusPrototypes.find(s => s.value.classes.includes('vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojenosasuoritus'))
+
   return (
     <>
       {
@@ -54,6 +59,41 @@ export const UusiVapaanSivistystyonOsasuoritus = ({suoritusPrototypes, setExpand
       {
         opintokokonaisuus &&
         <LisääPaikallinen suoritusPrototype={opintokokonaisuus}
+                          setExpanded={setExpanded}
+                          lisääText={'Lisää paikallinen opintokokonaisuus'}
+                          lisääTitle={'Paikallisen opintokokonaisuuden lisäys'}
+        />
+      }
+      {
+        kotoTyöelämäJaYhteiskuntataidot &&
+        <LisääPaikallinen suoritusPrototype={kotoTyöelämäJaYhteiskuntataidotTyöelämäjakso}
+                          setExpanded={setExpanded}
+                          lisääText={'Lisää työelämäjakso'}
+                          lisääTitle={'Työelämäjakson lisäys'}
+        />
+      }
+      {
+        kotoTyöelämäJaYhteiskuntataidot &&
+        <LisääPaikallinen suoritusPrototype={kotoTyöelämäJaYhteiskuntataidot}
+                          setExpanded={setExpanded}
+                          lisääText={'Lisää työelämä- ja yhteiskuntataidon opintokokonaisuus'}
+                          lisääTitle={'Työelämä- ja yhteiskuntataidon opintokokonaisuuden lisäys'}
+        />
+      }
+      {
+        kotoValinnaisetOpinnot &&
+        <LisääPaikallinen suoritusPrototype={kotoValinnaisetOpinnot}
+                          setExpanded={setExpanded}
+                          lisääText={'Lisää valinnainen opintosuoritus'}
+                          lisääTitle={'Valinnaisen opintosuorituksen lisäys'}
+        />
+      }
+      {
+        kotoOsaAlue &&
+        <LisääKoodistosta koodistoUri={'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus'}
+                          suoritusPrototype={kotoOsaAlue}
+                          className={'vst-osaamiskokonaisuus'}
+                          selectionText={'Lisää osa-alue'}
                           setExpanded={setExpanded}
         />
       }
@@ -90,7 +130,7 @@ const LisääKoodistosta = ({
   )
 }
 
-const LisääPaikallinen = ({suoritusPrototype, setExpanded}) => {
+const LisääPaikallinen = ({suoritusPrototype, setExpanded, lisääText, lisääTitle}) => {
   const showModal = Atom(false)
   const inputState = Atom('')
   const validP = inputState
@@ -119,16 +159,16 @@ const LisääPaikallinen = ({suoritusPrototype, setExpanded}) => {
       <span className="lisaa-paikallinen-suoritus">
         <a className='add-link'
            onClick={() => showModal.set(true)}>
-          <Text name={'Lisää paikallinen opintokokonaisuus'}/>
+          <Text name={lisääText}/>
         </a>
       {
         ift(showModal,
           <ModalDialog className="lisaa-paikallinen-vst-suoritus-modal"
                        onDismiss={closeModal}
                        onSubmit={addNewSuoritus}
-                       okTextKey={'Lisää paikallinen opintokokonaisuus'}
+                       okTextKey={lisääText}
                        validP={validP}>
-            <h2><Text name={'Paikallisen opintokokonaisuuden lisäys'}/></h2>
+            <h2><Text name={lisääTitle}/></h2>
             <label>
               <Text name={'Opintokokonaisuuden nimi'} />
               <input className='paikallinen-koulutusmoduuli-nimi'

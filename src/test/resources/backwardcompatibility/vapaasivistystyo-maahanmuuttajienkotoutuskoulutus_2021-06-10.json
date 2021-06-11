@@ -168,8 +168,8 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "Suoritettu",
-            "koodistoUri" : "arviointiasteikkovstkoto"
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkovst"
           },
           "kuullunYmmärtämisenTaitotaso" : {
             "koodiarvo" : "yli_C1.1",

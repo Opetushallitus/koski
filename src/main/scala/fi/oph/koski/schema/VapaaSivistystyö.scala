@@ -1,6 +1,6 @@
 package fi.oph.koski.schema
 
-import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, OnlyWhen, Title}
+import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, Title}
 
 import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, MultiLineString, OksaUri, Representative, Tooltip}
@@ -205,7 +205,6 @@ case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus(
 trait VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus extends Suoritus with Vahvistukseton
 
 @Title("Maahanmuuttajien kotoutumiskoulutuksen kieliopintojen suoritus")
-@OnlyWhen("koulutusmoduuli/tunniste/koodiarvo","vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus")
 case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus(
  @Title("Kotoutumiskoulutuksen kieliopinnot")
  koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönMaahanmuuttajienKotoutumisKokonaisuus,
@@ -217,9 +216,9 @@ case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintoje
 
 @Title("Kieliopintojen arviointi")
 case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi(
-  @KoodistoUri("arviointiasteikkovstkoto")
-  @KoodistoKoodiarvo("Suoritettu")
-  arvosana: Koodistokoodiviite = Koodistokoodiviite("Suoritettu", "arviointiasteikkovstkoto"),
+  @KoodistoKoodiarvo("Hyväksytty")
+  @KoodistoKoodiarvo("Hylätty")
+  arvosana: Koodistokoodiviite = Koodistokoodiviite("Hyväksytty", "arviointiasteikkovst"),
   @KoodistoUri("arviointiasteikkokehittyvankielitaidontasot")
   kuullunYmmärtämisenTaitotaso: Koodistokoodiviite,
   @KoodistoUri("arviointiasteikkokehittyvankielitaidontasot")
@@ -232,7 +231,6 @@ case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintoje
 ) extends ArviointiPäivämäärällä with VapaanSivistystyönKoulutuksenArviointi
 
 @Title("Maahanmuuttajien kotoutumiskoulutuksen opinto-ohjauksen suoritus")
-@OnlyWhen("koulutusmoduuli/tunniste/koodiarvo","vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus")
 case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus(
   @Title("Kotoutumiskoulutuksen ohjaus")
   koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönMaahanmuuttajienKotoutumisKokonaisuus,
@@ -242,7 +240,6 @@ case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuor
 ) extends VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus
 
 @Title("Maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen opintojen suoritus")
-@OnlyWhen("koulutusmoduuli/tunniste/koodiarvo","vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus")
 case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus(
   @Title("Kotoutumiskoulutuksen työelämä- ja yhteiskuntaopinnot")
   koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönMaahanmuuttajienKotoutumisKokonaisuus,
@@ -254,7 +251,6 @@ case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJa
 
 
 @Title("Maahanmuuttajien kotoutumiskoulutuksen valinnaisten opintojen suoritus")
-@OnlyWhen("koulutusmoduuli/tunniste/koodiarvo","vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus")
 case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus(
   @Title("Kotoutumiskoulutuksen valinnaiset opinnot")
   koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönMaahanmuuttajienKotoutumisKokonaisuus,
@@ -275,8 +271,6 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönMaahanmuuttajienKotoutum
   laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends OppivelvollisilleSuunnatunVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenKoulutusmoduuli with KoodistostaLöytyväKoulutusmoduuli with LaajuuttaEiValidoida
 
-trait VapaanSivistystyönMaahanmuuttajienKuntoutuskoulutuksenValinnaistenOpintojenOsasuoritus extends Suoritus with Vahvistukseton
-
 @Title("Valinnaisten opintojen osasuoritus")
 case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus(
   @Title("Valinnaiset opinnot")
@@ -284,7 +278,7 @@ case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenO
   arviointi: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi]],
   @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojenosasuoritus")
   override val tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojenosasuoritus", koodistoUri = "suorituksentyyppi")
-) extends VapaanSivistystyönMaahanmuuttajienKuntoutuskoulutuksenValinnaistenOpintojenOsasuoritus
+) extends Suoritus with Vahvistukseton
 
 trait VapaanSivistystyönMaahanmuuttajienKuntoutuskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenOsasuoritus extends Suoritus with Vahvistukseton
 

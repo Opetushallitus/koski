@@ -17,8 +17,9 @@ export class VapaanSivistystyonSuoritustaulukko extends React.Component {
     const {parentSuoritus, suorituksetModel, nestedLevel = 0} = this.props
     const context = parentSuoritus.context
     const suoritukset = modelItems(suorituksetModel) || []
+    const parentOneOf = (...classes) => classes.some(c => parentSuoritus.value.classes.includes(c))
 
-    if (suoritukset.length === 0 && !context.edit || nestedLevel >= MAX_NESTED_LEVEL) {
+    if (suoritukset.length === 0 && !context.edit || nestedLevel >= MAX_NESTED_LEVEL || suorituksetModel === undefined) {
       return null
     }
 
@@ -26,7 +27,8 @@ export class VapaanSivistystyonSuoritustaulukko extends React.Component {
 
     const suoritusProtos = tutkinnonOsaPrototypes(suorituksetModel)
     const laajuusYksikkö = getLaajuusYksikkö(suoritusProtos[0])
-    const suoritusTitle = nestedLevel === 0 ? t('Osaamiskokonaisuus') : t('Opintokokonaisuus')
+    const osaAlueTitle = parentOneOf('oppivelvollisillesuunnattuvapaansivistystyonkoulutuksensuoritus') ? t('Osaamiskokonaisuus') : t('Osa-alue')
+    const suoritusTitle = nestedLevel === 0 ? osaAlueTitle : t('Opintokokonaisuus')
 
     const columns = [SuoritusColumn, LaajuusColumn, ArvosanaColumn].filter(column => column.shouldShow({parentSuoritus, suoritukset, suorituksetModel, context}))
 

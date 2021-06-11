@@ -55,7 +55,7 @@ export const resolveOsasuorituksetEditor = (mdl) => {
     const SuoritustaulukkoComponent = kansalainen ? OmatTiedotSuoritustaulukko : Suoritustaulukko
     return <SuoritustaulukkoComponent suorituksetModel={modelLookup(mdl, 'osasuoritukset')} />
   }
-  if (oneOf('oppivelvollisillesuunnattuvapaansivistystyonkoulutuksensuoritus')) {
+  if (oneOf('oppivelvollisillesuunnattuvapaansivistystyonkoulutuksensuoritus', 'oppivelvollisillesuunnattumaahanmuuttajienkotoutumiskoulutuksensuoritus')) {
     return <VapaanSivistystyonSuoritustaulukko parentSuoritus={mdl} suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
   }
   if (oneOf('lukionoppimaaransuoritus2015')) {
