@@ -144,7 +144,7 @@ WITH
       ) kotiopetusjaksoja
     WHERE
       -- (0) Henkilö on oppivelvollinen: hakeutumisvalvontaa ei voi suorittaa enää sen jälkeen kun henkilön oppivelvollisuus on päättynyt
-      ov_kelvollinen_opiskeluoikeus.henkilo_on_oppivelvollinen IS TRUE
+      ov_kelvollinen_opiskeluoikeus.henkilo_on_oppivelvollinen
       -- (1) oppijalla on peruskoulun opiskeluoikeus
       AND ov_kelvollinen_opiskeluoikeus.koulutusmuoto = 'perusopetus'
       AND (
@@ -156,7 +156,7 @@ WITH
         -- (2.2) tai oppija täyttää vähintään 17 vuotta tarkasteluvuonna: heidät näytetään luokka-asteesta riippumatta, koska voivat lopettaa
         -- peruskoulun ja siirtyä seuraavaan opetukseen, vaikka olisivat esim. vasta 8. luokalla
         OR (
-          ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna IS TRUE
+          ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna
         )
         -- (2.3) tai oppija on valmistunut peruskoulusta: heidät näytetään luokka-asteesta riippumatta, koska poikkeustapauksissa peruskoulusta
         -- voi valmistua myös ilman 9. luokan suoritusmerkintää Koskessa
@@ -176,7 +176,7 @@ WITH
         )
         OR (
         -- (4.2) tai täyttää vähintään 17 tarkasteluvuonna ja on eronnut tilassa
-          ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna IS TRUE
+          ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna
           AND (
             (aikajakson_keskella.tila IS NOT NULL AND aikajakson_keskella.tila = any('{eronnut, katsotaaneronneeksi}'))
             OR (aikajakson_keskella.tila IS NULL AND $tarkastelupäivä > ov_kelvollinen_opiskeluoikeus.paattymispaiva AND ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi}'))
@@ -204,7 +204,7 @@ WITH
             )
             -- (5b.1.2 ) tai oppija täyttää tarkasteluvuonna vähintään 17 ja opiskeluoikeus on eronnut-tilassa
             OR (
-              ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna IS TRUE
+              ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna
               AND ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi}')
             )
           )
@@ -476,7 +476,7 @@ WITH
     opiskeluoikeus
     JOIN oppija ON oppija.master_oid = opiskeluoikeus.master_oid
   WHERE
-    opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava is true
+    opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE
   GROUP BY
     oppija.master_oid,
     oppija.kaikkiOppijaOidit,
