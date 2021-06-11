@@ -175,6 +175,26 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       List(
         ExpectedData(ValpasOpiskeluoikeusExampleData.eronnutOpiskeluoikeusEiYsiluokkaaElokuussa, "eronnut", true, true),
       )
+    ),
+    (
+      ValpasMockOppijat.valmistunutYsiluokkalainenVsop,
+      List(
+        ExpectedData(opiskeluoikeus = ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenVsop,
+          tarkastelupäivänTila = "valmistunut",
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onOikeutettuOppilaitos = true,
+          vuosiluokkiinSitomatonOpetus = true)
+      )
+    ),
+    (
+      ValpasMockOppijat.ysiluokkaKeskenVsop,
+      List(
+        ExpectedData(opiskeluoikeus = ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenVsop,
+          tarkastelupäivänTila = "voimassa",
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onOikeutettuOppilaitos = true,
+          vuosiluokkiinSitomatonOpetus = true)
+      )
     )
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
@@ -255,6 +275,16 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       ValpasMockOppijat.eronnutElokuussa17VuottaTäyttäväKasiluokkalainen,
       List(
         ExpectedData(ValpasOpiskeluoikeusExampleData.eronnutOpiskeluoikeusEiYsiluokkaaElokuussa, "eronnut", true, true),
+      )
+    ),
+    (
+      ValpasMockOppijat.ysiluokkaKeskenVsop,
+      List(
+        ExpectedData(opiskeluoikeus = ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenVsop,
+          tarkastelupäivänTila = "voimassa",
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onOikeutettuOppilaitos = true,
+          vuosiluokkiinSitomatonOpetus = true)
       )
     )
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
@@ -816,6 +846,9 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     withClue("tarkastelupäivänTila") {
       opiskeluoikeus.tarkastelupäivänTila.koodiarvo shouldBe expectedData.tarkastelupäivänTila
     }
+    withClue("vuosiluokkiinSitomatonOpetus") {
+      opiskeluoikeus.vuosiluokkiinSitomatonOpetus shouldBe expectedData.vuosiluokkiinSitomatonOpetus
+    }
 
     val luokkatietoExpectedFromSuoritus = expectedData.opiskeluoikeus match {
       case oo: PerusopetuksenOpiskeluoikeus =>
@@ -924,5 +957,6 @@ case class ExpectedData(
   opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
   tarkastelupäivänTila: String,
   onHakeutumisValvottavaOpiskeluoikeus: Boolean,
-  onOikeutettuOppilaitos: Boolean
+  onOikeutettuOppilaitos: Boolean,
+  vuosiluokkiinSitomatonOpetus: Boolean = false
 )
