@@ -32,6 +32,8 @@ export const useOppijatData = (organisaatioOid?: Oid) => {
       opiskeluoikeus: OpiskeluoikeusSuppeatTiedot,
       value: boolean
     ) => {
+      fetchOppijatCache.clear([organisaatioOid!!])
+
       const response = await saveMuuHakuState.call(
         oppijaOid,
         opiskeluoikeus,
@@ -66,7 +68,7 @@ export const useOppijatData = (organisaatioOid?: Oid) => {
         }
       }
     },
-    [localData, saveMuuHakuState, setLocalData]
+    [localData, organisaatioOid, saveMuuHakuState, setLocalData]
   )
 
   return {

@@ -216,4 +216,36 @@ describe("Hakutilannenäkymä", () => {
 
     expect(stateAfterReload).toEqual(stateBeforeReload)
   })
+
+  it("Organisaation vaihtaminen muistaa muu haku -valinnat", async () => {
+    await loginAs(hakutilannePath, "valpas-useampi-peruskoulu")
+    await urlIsEventually(pathToUrl(jklHakutilannePath))
+    await textEventuallyEquals(
+      ".card__header",
+      "Hakeutumisvelvollisia oppijoita (26)"
+    )
+
+    const getState = () => Promise.all([1, 2, 3, 4].map(isMuuHakuChecked))
+
+    for (const rowIndex of [1, 3, 4, 3, 1, 1]) {
+      await clickAndVerifyMuuHaku(rowIndex)
+    }
+
+    const stateBeforeOrgChange = await getState()
+    await selectOrganisaatio(1)
+    await textEventuallyEquals(
+      ".card__header",
+      "Hakeutumisvelvollisia oppijoita (4)"
+    )
+
+    await selectOrganisaatio(0)
+    await textEventuallyEquals(
+      ".card__header",
+      "Hakeutumisvelvollisia oppijoita (26)"
+    )
+
+    const stateAfterOrgChange = await getState()
+
+    expect(stateBeforeOrgChange).toEqual(stateAfterOrgChange)
+  })
 })

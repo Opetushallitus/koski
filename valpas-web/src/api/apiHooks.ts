@@ -7,11 +7,12 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react"
 import { useSafeState } from "../state/useSafeState"
 import { ApiFailure, ApiResponse, ApiSuccess } from "./apiFetch"
-import { isSuccessAndFinished } from "./apiUtils"
+import { isSuccess, isSuccessAndFinished } from "./apiUtils"
 import { ApiCache } from "./cache"
 
 export type ApiLoading = null
@@ -133,16 +134,18 @@ export const useOnApiSuccess = <T, P extends any[]>(
   hook: ApiMethodHook<T, P>,
   handler: (hook: ApiMethodStateSuccess<T>) => void
 ) => {
-  const [triggered, setTriggered] = useState(false)
+  const dataRef = useRef(isSuccess(hook) ? hook.data : null)
 
   useEffect(() => {
-    if (isSuccessAndFinished(hook) && !triggered) {
-      setTriggered(true)
-      handler(hook)
-    } else if (!isSuccessAndFinished(hook) && triggered) {
-      setTriggered(false)
+    if (isSuccessAndFinished(hook)) {
+      if (hook.data !== dataRef.current) {
+        dataRef.current = hook.data
+        handler(hook)
+      }
+    } else {
+      dataRef.current = null
     }
-  }, [hook, handler, triggered])
+  }, [hook, handler])
 }
 
 export const useLocalDataCopy = <T, P extends any[]>(

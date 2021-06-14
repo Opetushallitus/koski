@@ -8,6 +8,7 @@ export type ApiCache<T, S> = {
   getOnlyFresh: (key: S) => O.Option<ApiSuccess<T>>
   set: (key: S, value: ApiSuccess<T>) => void
   map: <U>(key: S, fn: (value: ApiSuccess<T>) => U) => O.Option<U>
+  clear: (key: S) => void
 }
 
 export const createPreferLocalCache = <T, S extends any[]>(
@@ -25,6 +26,9 @@ export const createPreferLocalCache = <T, S extends any[]>(
     },
     map(key, fn) {
       return pipe(cachedValues[keyToString(key)], O.fromNullable, O.map(fn))
+    },
+    clear(key) {
+      delete cachedValues[keyToString(key)]
     },
   }
 }
