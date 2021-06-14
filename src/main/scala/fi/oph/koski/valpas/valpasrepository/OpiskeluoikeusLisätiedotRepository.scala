@@ -1,5 +1,6 @@
 package fi.oph.koski.valpas.valpasrepository
 
+import com.typesafe.config.Config
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.http.HttpStatus
@@ -8,7 +9,7 @@ import fi.oph.koski.valpas.db.ValpasDatabase
 import fi.oph.koski.valpas.db.ValpasSchema.{OpiskeluoikeusLisätiedot, OpiskeluoikeusLisätiedotKey, OpiskeluoikeusLisätiedotRow}
 import fi.oph.koski.valpas.{OppijaHakutilanteillaLaajatTiedot, ValpasErrorCategory}
 
-class OpiskeluoikeusLisätiedotRepository(valpasDatabase: ValpasDatabase) extends QueryMethods with Logging {
+class OpiskeluoikeusLisätiedotRepository(valpasDatabase: ValpasDatabase, config: Config) extends QueryMethods with Logging {
   protected val db: DB = valpasDatabase.db
 
   private def keysForOppija(oppijanTiedot: OppijaHakutilanteillaLaajatTiedot): Seq[OpiskeluoikeusLisätiedotKey] = {
@@ -59,5 +60,11 @@ class OpiskeluoikeusLisätiedotRepository(valpasDatabase: ValpasDatabase) extend
     }
   }
 
-  def truncate(): Unit = runDbSync(OpiskeluoikeusLisätiedot.delete) // TODO: Lisää tsekki ettei olla tuotannossa
+  def truncate(): Unit = {
+    if (config.getString("opintopolku.virkailija.url") == "mock") {
+      runDbSync(OpiskeluoikeusLisätiedot.delete)
+    } else {
+      throw new RuntimeException("Opiskeluoikeuden lisätietoja ei voi tyhjentää tuotantotilassa")
+    }
+  }
 }

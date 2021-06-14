@@ -8,7 +8,7 @@ import fi.oph.koski.schema.{Koodistokoodiviite, OidOrganisaatio, Oppilaitos}
 import fi.oph.koski.util.DateOrdering
 import fi.oph.koski.valpas.hakukooste.HakukoosteExampleData
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
-import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{MockValpasRajapäivätService, ValpasOppijaLaajatTiedot}
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoituksenOppijanYhteystiedot, ValpasKuntailmoituksenTekijäHenkilö, ValpasKuntailmoitusPohjatiedotInput, ValpasPohjatietoYhteystieto}
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import fi.oph.koski.valpas.yhteystiedot.{ValpasYhteystietoHakemukselta, ValpasYhteystietoOppijanumerorekisteristä}

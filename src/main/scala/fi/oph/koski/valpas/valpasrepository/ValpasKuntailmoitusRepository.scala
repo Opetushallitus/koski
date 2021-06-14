@@ -175,9 +175,9 @@ class ValpasKuntailmoitusRepository(
     query(_.kuntaOid === kuntaOid)
   }
 
-  def query[T <: slick.lifted.Rep[_]]
+  private def query[T <: slick.lifted.Rep[_]]
     (filterFn: (IlmoitusTable) => T)
-    (implicit wt : slick.lifted.CanBeQueryCondition[T])
+    (implicit wt: slick.lifted.CanBeQueryCondition[T])
   : Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]] = {
     HttpStatus.foldEithers(
       runDbSync(
@@ -190,9 +190,19 @@ class ValpasKuntailmoitusRepository(
     )
   }
 
+  def deleteLisätiedot(oppijaOid: String) = {
+    runDbSync(
+      IlmoitusLisätiedot
+        .filter(lt => lt.ilmoitusUuid in Ilmoitukset.filter(_.oppijaOid === oppijaOid).map(_.uuid))
+        .delete
+    )
+  }
+
   def truncate(): Unit = {
     if (config.getString("opintopolku.virkailija.url") == "mock") {
       runDbSync(Ilmoitukset.delete)
+    } else {
+      throw new RuntimeException("Ilmoituksia ei voi tyhjentää tuotantotilassa")
     }
   }
 }

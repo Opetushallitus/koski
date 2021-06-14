@@ -81,7 +81,7 @@ describe("Kunnan listanäkymä", () => {
     )
     await textEventuallyEquals(
       ".card__header",
-      "Ilmoitetut oppivelvolliset ilman opiskelupaikkaa (6)"
+      "Ilmoitetut oppivelvolliset ilman opiskelupaikkaa (7)"
     )
   })
 

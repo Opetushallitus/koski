@@ -71,7 +71,15 @@ object ValpasExampleData {
       kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla.copy(kunta = helsinginKaupunki)
     ),
       Some(date(2021, 11, 30))
-    )
+    ),
+    ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      oppijaOid =  ValpasMockOppijat.ilmoituksenLisätiedotPoistettu.oid,
+      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla,
+    ))
+  )
+
+  def ilmoitustenLisätietojenPoistot = Seq(
+    ValpasMockOppijat.ilmoituksenLisätiedotPoistettu.oid,
   )
 
   def ilmoitus = ValpasKuntailmoitusLaajatTiedot(

@@ -30,5 +30,7 @@ class ValpasDatabaseFixtureLoader(app: KoskiApplication) extends Logging {
 
       rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(tallennettuTarkastelupäivä)
     }}
+
+    ValpasExampleData.ilmoitustenLisätietojenPoistot.foreach(kuntailmoitusRepository.deleteLisätiedot)
   }
 }

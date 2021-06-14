@@ -27,6 +27,7 @@ import { eventually } from "../integrationtests-env/browser/utils"
 import {
   hakutilannePath,
   jklNormaalikouluTableContent,
+  jklNormaalikouluTableHead,
   openAnyOppijaView,
   openOppijaView,
 } from "./hakutilanne.shared"
@@ -79,10 +80,7 @@ describe("Hakutilannenäkymä", () => {
   it("Näyttää listan oppijoista", async () => {
     await loginAs(hakutilannePath, "valpas-jkl-normaali")
     await urlIsEventually(pathToUrl(jklHakutilannePath))
-    await textEventuallyEquals(
-      ".card__header",
-      "Hakeutumisvelvollisia oppijoita (27)"
-    )
+    await textEventuallyEquals(".card__header", jklNormaalikouluTableHead)
     await dataTableEventuallyEquals(
       ".hakutilanne",
       jklNormaalikouluTableContent,
@@ -104,10 +102,7 @@ describe("Hakutilannenäkymä", () => {
 
     await selectOrganisaatio(0)
     await urlIsEventually(pathToUrl(jklHakutilannePath))
-    await textEventuallyEquals(
-      ".card__header",
-      "Hakeutumisvelvollisia oppijoita (27)"
-    )
+    await textEventuallyEquals(".card__header", jklNormaalikouluTableHead)
     await dataTableEventuallyEquals(
       ".hakutilanne",
       jklNormaalikouluTableContent,
@@ -197,10 +192,7 @@ describe("Hakutilannenäkymä", () => {
     const loadPage = async () => {
       await loginAs(hakutilannePath, "valpas-jkl-normaali")
       await urlIsEventually(pathToUrl(jklHakutilannePath))
-      await textEventuallyEquals(
-        ".card__header",
-        "Hakeutumisvelvollisia oppijoita (27)"
-      )
+      await textEventuallyEquals(".card__header", jklNormaalikouluTableHead)
     }
 
     const getState = () => Promise.all([1, 2, 3, 4].map(isMuuHakuChecked))
@@ -220,10 +212,7 @@ describe("Hakutilannenäkymä", () => {
   it("Organisaation vaihtaminen muistaa muu haku -valinnat", async () => {
     await loginAs(hakutilannePath, "valpas-useampi-peruskoulu")
     await urlIsEventually(pathToUrl(jklHakutilannePath))
-    await textEventuallyEquals(
-      ".card__header",
-      "Hakeutumisvelvollisia oppijoita (27)"
-    )
+    await textEventuallyEquals(".card__header", jklNormaalikouluTableHead)
 
     const getState = () => Promise.all([1, 2, 3, 4].map(isMuuHakuChecked))
 
@@ -239,10 +228,7 @@ describe("Hakutilannenäkymä", () => {
     )
 
     await selectOrganisaatio(0)
-    await textEventuallyEquals(
-      ".card__header",
-      "Hakeutumisvelvollisia oppijoita (27)"
-    )
+    await textEventuallyEquals(".card__header", jklNormaalikouluTableHead)
 
     const stateAfterOrgChange = await getState()
 

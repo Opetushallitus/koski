@@ -8,6 +8,7 @@ import {
   dataTableHeadersEventuallyEquals,
 } from "../integrationtests-env/browser/datatable"
 import { loginAs } from "../integrationtests-env/browser/reset"
+import { jklNormaalikouluTableHead } from "./hakutilanne.shared"
 
 describe("Etusivun väliaikainen näkymä", () => {
   beforeAll(() => {
@@ -49,11 +50,7 @@ describe("Etusivun väliaikainen näkymä", () => {
   it("Hakeutumisvelvollisuuden valvonnallinen käyttäjä ohjautuu hakeutumisvelvollisuusvalvonnan etusivulle", async () => {
     await loginAs("/virkailija", "valpas-jkl-normaali")
 
-    await textEventuallyEquals(
-      ".card__header",
-      "Hakeutumisvelvollisia oppijoita (27)",
-      5000
-    )
+    await textEventuallyEquals(".card__header", jklNormaalikouluTableHead, 5000)
   })
 
   it("Hakeutumisvelvollisuuden valvonnallinen koulutustoimijatason käyttäjä ohjautuu hakeutumisvelvollisuusvalvonnan etusivulle", async () => {
