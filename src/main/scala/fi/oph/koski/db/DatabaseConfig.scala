@@ -5,10 +5,7 @@ import com.typesafe.config.ConfigValueFactory._
 import fi.oph.koski.config.{Environment, FluentConfig, SecretsManager}
 import fi.oph.koski.log.{Logging, NotLoggable}
 import fi.oph.koski.raportointikanta.Schema
-import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import slick.jdbc.PostgresProfile
-
-import java.time.LocalDate
 
 
 object DatabaseConfig {
@@ -48,9 +45,6 @@ class RaportointiDatabaseConfig(val rootConfig: Config, val schema: Schema) exte
   override protected def databaseSpecificConfig: Config =
     rootConfig.getConfig("dbs.raportointi")
       .withValue("poolName", fromAnyRef(s"koskiRaportointiPool-${schema.name}"))
-
-  val valpasLakiVoimassaVanhinSyntymävuosi = LocalDate.parse(rootConfig.getString(ValpasRajapäivätService.LakiVoimassaVanhinSyntymäaikaPath)).getYear
-  val valpasLakiVoimassaPeruskoulustaValmistuneilla = LocalDate.parse(rootConfig.getString(ValpasRajapäivätService.LakiVoimassaPeruskoulustaValmistuneillaAlkuPath)).toString
 }
 
 class ValpasDatabaseConfig(val rootConfig: Config) extends DatabaseConfig {
