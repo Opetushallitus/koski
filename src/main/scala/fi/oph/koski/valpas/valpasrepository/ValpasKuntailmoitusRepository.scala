@@ -5,7 +5,7 @@ import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.{skipSyntheticProperties, strictDeserialization}
-import fi.oph.koski.schema.{Koodistokoodiviite, KoskiSchema, Organisaatio}
+import fi.oph.koski.schema.{Koodistokoodiviite, KoskiSchema, OidOrganisaatio, Organisaatio}
 import fi.oph.koski.validation.ValidatingAndResolvingExtractor
 import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.db.ValpasSchema._
@@ -80,6 +80,14 @@ class ValpasKuntailmoitusRepository(
     }
   }
 
+  private def fromDbRows(il: IlmoitusRow, lisätiedotRow: Option[IlmoitusLisätiedotRow])
+  : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
+    lisätiedotRow match {
+      case Some(lisätiedot) => fromDbRows(il, lisätiedot)
+      case None => Right(fromDbRows(il))
+    }
+  }
+
   private def fromDbRows(il: IlmoitusRow, lisätiedotRow: IlmoitusLisätiedotRow)
   : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
     for {
@@ -115,6 +123,32 @@ class ValpasKuntailmoitusRepository(
     )
   }
 
+  private def fromDbRows(il: IlmoitusRow)
+  : ValpasKuntailmoitusLaajatTiedotJaOppijaOid = {
+    ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      oppijaOid = il.oppijaOid,
+      kuntailmoitus = ValpasKuntailmoitusLaajatTiedot(
+        id = Some(il.uuid.toString),
+        kunta = OidOrganisaatio(oid = il.kuntaOid),
+        aikaleima = Some(il.luotu),
+        tekijä = ValpasKuntailmoituksenTekijäLaajatTiedot(
+          organisaatio = OidOrganisaatio(oid = il.tekijäOrganisaatioOid),
+          henkilö = Some(ValpasKuntailmoituksenTekijäHenkilö(
+            oid = Some(il.tekijäOid),
+            etunimet = None,
+            sukunimi = None,
+            kutsumanimi = None,
+            email = None,
+            puhelinnumero = None
+          ))
+        ),
+        yhteydenottokieli = None,
+        oppijanYhteystiedot = None,
+        hakenutMuualle = None,
+      )
+    )
+  }
+
   def create(model: ValpasKuntailmoitusLaajatTiedotJaOppijaOid)
   : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
     model.kuntailmoitus.tekijä.henkilö
@@ -135,7 +169,7 @@ class ValpasKuntailmoitusRepository(
       runDbSync(
         Ilmoitukset
           .filter(_.oppijaOid inSetBind oppijaOids)
-          .join(IlmoitusLisätiedot).on(_.uuid === _.ilmoitusUuid) // TODO: Tämän pitäisi olla left join ja queryn toimia, vaikka koko lisätiedot taulu olisi tyhjä: lisätiedot ovat oppivelvollisuusrekisterin ulkopuolista dataa
+          .joinLeft(IlmoitusLisätiedot).on(_.uuid === _.ilmoitusUuid)
           .sortBy(_._1.luotu.desc)
           .result
       ).map(res => fromDbRows(res._1, res._2))
@@ -148,7 +182,7 @@ class ValpasKuntailmoitusRepository(
       runDbSync(
         Ilmoitukset
           .filter(_.kuntaOid === kuntaOid)
-          .join(IlmoitusLisätiedot).on(_.uuid === _.ilmoitusUuid) // TODO: Tämän pitäisi olla left join ja queryn toimia, vaikka koko lisätiedot taulu olisi tyhjä: lisätiedot ovat oppivelvollisuusrekisterin ulkopuolista dataa
+          .joinLeft(IlmoitusLisätiedot).on(_.uuid === _.ilmoitusUuid)
           .sortBy(_._1.luotu.desc)
           .result
       ).map(Function.tupled(fromDbRows))
