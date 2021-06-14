@@ -3,6 +3,7 @@ package fi.oph.koski.valpas
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{Finnish, Koodistokoodiviite}
@@ -14,6 +15,7 @@ import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 import org.scalatest.BeforeAndAfterEach
 
 import java.time.LocalDate.{of => date}
+import fi.oph.koski.koskiuser.UserWithPassword
 
 class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
   override protected def beforeEach() {
@@ -565,6 +567,46 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
         400,
         ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*Organisaatiota 1.2.246.562.10.99999111112 ei löydy organisaatiopalvelusta.*".r
         )
+      )
+    }
+  }
+
+  "Oppijoiden hakeminen kuntailmoitus-apin kautta jättää auditlogimerkinnän" in {
+    get(
+      uri = s"/valpas/api/kuntailmoitus/oppijat/${MockOrganisaatiot.helsinginKaupunki}/aktiiviset",
+      headers = authHeaders(ValpasMockUsers.valpasHelsinki)
+    ) {
+      verifyResponseStatusOk()
+
+      AuditLogTester.verifyAuditLogMessage(Map(
+        "operation" -> ValpasOperation.VALPAS_KUNNAT_OPPIJAT_KATSOMINEN.toString,
+        "target" -> Map(
+          ValpasAuditLogMessageField.juuriOrganisaatio.toString -> MockOrganisaatiot.helsinginKaupunki)
+        )
+      )
+    }
+  }
+
+  "Oppijoiden hakeminen kuntailmoitus-apin kautta väärästä organisaatiosta palauttaa virheen" in {
+    get(
+      uri = s"/valpas/api/kuntailmoitus/oppijat/${MockOrganisaatiot.pyhtäänKunta}/aktiiviset",
+      headers = authHeaders(ValpasMockUsers.valpasHelsinki)
+    ) {
+      verifyResponseStatus(
+        expectedStatus = 403,
+        ErrorMatcher.regex(ValpasErrorCategory.forbidden.organisaatio, ".*Käyttäjällä ei ole oikeuksia annetun organisaation tietoihin.*".r)
+      )
+    }
+  }
+
+  "Oppijoiden hakeminen kuntailmoitus-apin kautta ilman kuntaoikeuksia palauttaa virheen" in {
+    get(
+      uri = s"/valpas/api/kuntailmoitus/oppijat/${MockOrganisaatiot.helsinginKaupunki}/aktiiviset",
+      headers = authHeaders(ValpasMockUsers.valpasHelsinkiPeruskoulu)
+    ) {
+      verifyResponseStatus(
+        expectedStatus = 403,
+        ErrorMatcher.regex(ValpasErrorCategory.forbidden.organisaatio, ".*Käyttäjällä ei ole oikeuksia annetun organisaation tietoihin.*".r)
       )
     }
   }

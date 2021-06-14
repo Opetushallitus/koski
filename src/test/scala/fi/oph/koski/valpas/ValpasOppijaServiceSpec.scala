@@ -2,10 +2,10 @@ package fi.oph.koski.valpas
 
 import java.time.{LocalDate, LocalDateTime}
 import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus, Ryhmällinen}
 import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
 import fi.oph.koski.valpas.db.ValpasDatabaseFixtureLoader
@@ -734,6 +734,48 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       ValpasMockOppijat.lukioOpiskelija,
       ValpasMockUsers.valpasHelsinki
     ) shouldBe true
+  }
+
+  "Kuntailmoitusten hakeminen kunnalle: palauttaa oikeat oppijat, case #1" in {
+    rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(date(2021,8,30))
+
+    validateKunnanIlmoitetutOppijat(
+      organisaatioOid = MockOrganisaatiot.helsinginKaupunki,
+      aktiiviset = true,
+      user = ValpasMockUsers.valpasHelsinki
+    )(Seq(
+      ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia
+    ))
+  }
+
+  "Kuntailmoitusten hakeminen kunnalle: palauttaa oikeat oppijat, case #2" in {
+    rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(date(2021,8,30))
+
+    validateKunnanIlmoitetutOppijat(
+      organisaatioOid = MockOrganisaatiot.pyhtäänKunta,
+      aktiiviset = true,
+      user = ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu
+    )(Seq(
+      ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia,
+      ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster,
+      ValpasMockOppijat.kahdenKoulunYsiluokkalainenJollaIlmoitus,
+      ValpasMockOppijat.kasiinAstiToisessaKoulussaOllutJollaIlmoitus,
+      ValpasMockOppijat.valmistunutYsiluokkalainenJollaIlmoitus,
+    ))
+  }
+
+  def validateKunnanIlmoitetutOppijat(
+    organisaatioOid: Oid,
+    aktiiviset: Boolean,
+    user: ValpasMockUser
+  )(expectedOppijat: Seq[LaajatOppijaHenkilöTiedot]) = {
+    val result = getKunnanIlmoitetutOppijat(organisaatioOid, aktiiviset, user)
+    val henkiöt = result.map(_.toList)
+    result.map(_.map(_.oppija.henkilö.oid).sorted) shouldBe Right(expectedOppijat.map(_.oid).sorted)
+  }
+
+  def getKunnanIlmoitetutOppijat(organisaatioOid: Oid, aktiiviset: Boolean, user: ValpasMockUser) = {
+    oppijaService.getKunnanOppijatSuppeatTiedot(organisaatioOid, aktiiviset)(session(user))
   }
 
   def validateOppijaLaajatTiedot(

@@ -25,6 +25,17 @@ export type KuntailmoituksenTekijäLaajatTiedot = {
   henkilö?: KuntailmoituksenTekijäHenkilö
 }
 
+export type KuntailmoitusSuppeatTiedot = {
+  id?: string
+  tekijä: KuntailmoituksenTekijäSuppeatTiedot
+  kunta: Organisaatio
+  aikaleima?: ISODateTime
+}
+
+export type KuntailmoituksenTekijäSuppeatTiedot = {
+  organisaatio: Organisaatio
+}
+
 export type KuntailmoituksenTekijäHenkilö = {
   oid?: Oid
   etunimet?: string

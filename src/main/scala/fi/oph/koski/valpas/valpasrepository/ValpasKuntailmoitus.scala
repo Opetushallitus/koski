@@ -33,11 +33,15 @@ case class ValpasKuntailmoitusSuppeatTiedot(
 
 object ValpasKuntailmoitusSuppeatTiedot {
   def apply(laajatTiedot: ValpasKuntailmoitusLaajatTiedotLisätiedoilla): ValpasKuntailmoitusSuppeatTiedot = {
+    ValpasKuntailmoitusSuppeatTiedot(laajatTiedot.kuntailmoitus)
+  }
+
+  def apply(laajatTiedot: ValpasKuntailmoitusLaajatTiedot): ValpasKuntailmoitusSuppeatTiedot = {
     ValpasKuntailmoitusSuppeatTiedot(
-      laajatTiedot.kuntailmoitus.id,
-      ValpasKuntailmoituksenTekijäSuppeatTiedot(laajatTiedot.kuntailmoitus.tekijä),
-      laajatTiedot.kuntailmoitus.kunta,
-      laajatTiedot.kuntailmoitus.aikaleima
+      id = laajatTiedot.id,
+      tekijä = ValpasKuntailmoituksenTekijäSuppeatTiedot(laajatTiedot.tekijä),
+      kunta = laajatTiedot.kunta,
+      aikaleima = laajatTiedot.aikaleima,
     )
   }
 }
