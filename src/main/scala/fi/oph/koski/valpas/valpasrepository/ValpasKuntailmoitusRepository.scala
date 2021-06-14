@@ -1,5 +1,6 @@
 package fi.oph.koski.valpas.valpasrepository
 
+import com.typesafe.config.Config
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.http.HttpStatus
@@ -19,7 +20,8 @@ import java.time.LocalTime
 class ValpasKuntailmoitusRepository(
   valpasDatabase: ValpasDatabase,
   deserializer: ValidatingAndResolvingExtractor,
-  valpasRajapäivätService: ValpasRajapäivätService
+  valpasRajapäivätService: ValpasRajapäivätService,
+  config: Config
 ) extends QueryMethods with Logging {
 
   protected val db: DB = valpasDatabase.db
@@ -188,5 +190,9 @@ class ValpasKuntailmoitusRepository(
     )
   }
 
-  def truncate(): Unit = runDbSync(Ilmoitukset.delete) // TODO: Lisää tsekki ettei olla tuotannossa?
+  def truncate(): Unit = {
+    if (config.getString("opintopolku.virkailija.url") == "mock") {
+      runDbSync(Ilmoitukset.delete)
+    }
+  }
 }
