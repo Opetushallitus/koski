@@ -165,23 +165,22 @@ class ValpasKuntailmoitusRepository(
   }
 
   def queryOppijat(oppijaOids: Set[String]): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedot]] = {
-    HttpStatus.foldEithers(
-      runDbSync(
-        Ilmoitukset
-          .filter(_.oppijaOid inSetBind oppijaOids)
-          .joinLeft(IlmoitusLisätiedot).on(_.uuid === _.ilmoitusUuid)
-          .sortBy(_._1.luotu.desc)
-          .result
-      ).map(res => fromDbRows(res._1, res._2))
-        .map(_.map(_.kuntailmoitus))
-    )
+    query(_.oppijaOid inSetBind oppijaOids)
+      .map(_.map(_.kuntailmoitus))
   }
 
   def queryByKunta(kuntaOid: Organisaatio.Oid): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]] = {
+    query(_.kuntaOid === kuntaOid)
+  }
+
+  def query[T <: slick.lifted.Rep[_]]
+    (filterFn: (IlmoitusTable) => T)
+    (implicit wt : slick.lifted.CanBeQueryCondition[T])
+  : Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]] = {
     HttpStatus.foldEithers(
       runDbSync(
         Ilmoitukset
-          .filter(_.kuntaOid === kuntaOid)
+          .filter(filterFn)
           .joinLeft(IlmoitusLisätiedot).on(_.uuid === _.ilmoitusUuid)
           .sortBy(_._1.luotu.desc)
           .result
