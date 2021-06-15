@@ -107,7 +107,7 @@ object ValpasExampleData {
     OppivelvollisuudenKeskeytysRow(
       oppijaOid = ValpasMockOppijat.oppivelvollisuusKeskeytetty.oid,
       alku = date(2021, 3, 1),
-      loppu = Some(date(2021, 9, 1)),
+      loppu = Some(date(2021, 9, 30)),
       luotu = LocalDateTime.of(2021, 2, 28, 8, 0),
       tekijäOid = ValpasMockUsers.valpasJklNormaalikoulu.oid,
     ),

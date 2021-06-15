@@ -1,8 +1,11 @@
+import * as A from "fp-ts/Array"
+import { pipe } from "fp-ts/lib/function"
+import * as O from "fp-ts/Option"
 import React from "react"
 import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
 import { t } from "../../i18n/i18n"
 import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
-import { formatNullableDate } from "../../utils/date"
+import { formatDate, formatNullableDate } from "../../utils/date"
 
 export type OppijanOppivelvollisuustiedotProps = {
   oppija: OppijaHakutilanteillaLaajatTiedot
@@ -22,11 +25,7 @@ export const OppijanOppivelvollisuustiedot = (
     />
     <InfoTableRow
       label={t("oppija__oppivelvollisuus_voimassa")}
-      value={t("oppija__oppivelvollisuus_voimassa_value", {
-        date: formatNullableDate(
-          props.oppija.oppija.oppivelvollisuusVoimassaAsti
-        ),
-      })}
+      value={oppivelvollisuusValue(props.oppija)}
     />
     <InfoTableRow
       label={t("oppija__maksuttomuus_voimassa")}
@@ -38,3 +37,27 @@ export const OppijanOppivelvollisuustiedot = (
     />
   </InfoTable>
 )
+
+const oppivelvollisuusValue = (
+  oppija: OppijaHakutilanteillaLaajatTiedot
+): string =>
+  pipe(
+    oppija.oppivelvollisuudenKeskeytykset,
+    A.filter((ovk) => ovk.voimassa),
+    A.head,
+    O.map((ovk) =>
+      ovk.loppu !== undefined
+        ? t("oppija__oppivelvollisuus_keskeytetty_value", {
+            alkuPvm: formatDate(ovk.alku),
+            loppuPvm: formatDate(ovk.loppu),
+          })
+        : t("oppija__oppivelvollisuus_keskeytetty_toistaiseksi_value", {
+            alkuPvm: formatDate(ovk.alku),
+          })
+    ),
+    O.getOrElse(() =>
+      t("oppija__oppivelvollisuus_voimassa_value", {
+        date: formatNullableDate(oppija.oppija.oppivelvollisuusVoimassaAsti),
+      })
+    )
+  )

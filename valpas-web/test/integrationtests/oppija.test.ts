@@ -50,6 +50,18 @@ const lukioOpiskelijaPath = createOppijaPath("/virkailija", {
 const vsopPath = createOppijaPath("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000046",
 })
+const oppivelvollisuusKeskeytettyMääräajaksiPath = createOppijaPath(
+  "/virkailija",
+  {
+    oppijaOid: "1.2.246.562.24.00000000049",
+  }
+)
+const oppivelvollisuusKeskeytettyToistaiseksiPath = createOppijaPath(
+  "/virkailija",
+  {
+    oppijaOid: "1.2.246.562.24.00000000050",
+  }
+)
 
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
@@ -522,5 +534,54 @@ describe("Oppijakohtainen näkymä", () => {
       "Oppijaa ei löydy tunnuksella 1.2.246.562.24.00000000004"
     )
     await expectEiKuntailmoituksiaNotVisible()
+  })
+
+  it("Näyttää oppijan oppivelvollisuuden määräaikaisen keskeytyksen", async () => {
+    await loginAs(
+      oppivelvollisuusKeskeytettyMääräajaksiPath,
+      "valpas-jkl-normaali"
+    )
+    await mainHeadingEquals(
+      "Oppivelvollisuus-keskeytetty-määräajaksi Valpas (181005A1560)"
+    )
+    await oppivelvollisuustiedotEquals(`
+      Opiskelutilanne:	Opiskelemassa
+      Oppivelvollisuus:	Keskeytetty 1.3.2021 – 30.9.2021
+      Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
+    `)
+  })
+
+  it("Näyttää oppijan oppivelvollisuuden keskeytyksen toistaiseksi", async () => {
+    await loginAs(
+      oppivelvollisuusKeskeytettyToistaiseksiPath,
+      "valpas-jkl-normaali"
+    )
+    await mainHeadingEquals(
+      "Oppivelvollisuus-keskeytetty-toistaiseksi Valpas (150905A1823)"
+    )
+    await oppivelvollisuustiedotEquals(`
+      Opiskelutilanne:	Opiskelemassa
+      Oppivelvollisuus:	Keskeytetty toistaiseksi 1.1.2021 alkaen
+      Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
+    `)
+  })
+
+  it("Näyttää oppijan oppivelvollisuuden umpeutuneen määräaikaisen keskeytyksen oikein", async () => {
+    await loginAs(
+      oppivelvollisuusKeskeytettyMääräajaksiPath,
+      "valpas-jkl-normaali"
+    )
+
+    await resetMockData("2022-10-01")
+    await goToLocation(oppivelvollisuusKeskeytettyMääräajaksiPath)
+
+    await mainHeadingEquals(
+      "Oppivelvollisuus-keskeytetty-määräajaksi Valpas (181005A1560)"
+    )
+    await oppivelvollisuustiedotEquals(`
+      Opiskelutilanne:	Opiskelemassa
+      Oppivelvollisuus:	18.10.2023 asti
+      Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
+    `)
   })
 })

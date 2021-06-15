@@ -79,6 +79,8 @@
   "oppija__opiskelutilanne__ei_opiskelupaikkaa": "Ei opiskelupaikkaa",
   "oppija__oppivelvollisuus_voimassa": "Oppivelvollisuus",
   "oppija__oppivelvollisuus_voimassa_value": "{{date}} asti",
+  "oppija__oppivelvollisuus_keskeytetty_value": "Keskeytetty {{alkuPvm}} – {{loppuPvm}}",
+  "oppija__oppivelvollisuus_keskeytetty_toistaiseksi_value": "Keskeytetty toistaiseksi {{alkuPvm}} alkaen",
   "oppija__maksuttomuus_voimassa": "Oikeus opintojen maksuttomuuteen",
   "oppija__maksuttomuus_voimassa_value": "{{date}} asti",
   "oppija__ilmoitetut_yhteystiedot": "Ilmoitetut yhteystiedot",

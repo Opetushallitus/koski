@@ -17,6 +17,7 @@ export type OppijaHakutilanteillaLaajatTiedot = {
   hakutilanneError?: string
   yhteystiedot: Yhteystiedot<YhteystietojenAlkuperä>[]
   kuntailmoitukset: KuntailmoitusLaajatTiedotLisätiedoilla[]
+  oppivelvollisuudenKeskeytykset: OppivelvollisuudenKeskeytys[]
 }
 
 export type OppijaHakutilanteillaSuppeatTiedot = {
@@ -61,4 +62,10 @@ export const lisätietoMatches = (
 export type OppijaKuntailmoituksillaSuppeatTiedot = {
   oppija: OppijaSuppeatTiedot
   kuntailmoitukset: LuotuKuntailmoitusSuppeatTiedot[]
+}
+
+export type OppivelvollisuudenKeskeytys = {
+  alku: ISODate
+  loppu?: ISODate
+  voimassa: boolean
 }
