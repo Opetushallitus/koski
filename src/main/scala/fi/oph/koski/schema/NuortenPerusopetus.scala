@@ -546,11 +546,6 @@ trait PerusopetuksenÄidinkieliJaKirjallisuus extends PerusopetuksenOppiaine wit
 @Title("Vieras tai toinen kotimainen kieli")
 @Description("Oppiaineena vieras tai toinen kotimainen kieli")
 trait PerusopetuksenVierasTaiToinenKotimainenKieli extends PerusopetuksenOppiaine with Kieliaine {
-  @KoodistoKoodiarvo("A1")
-  @KoodistoKoodiarvo("A2")
-  @KoodistoKoodiarvo("B1")
-  @KoodistoKoodiarvo("B2")
-  @KoodistoKoodiarvo("B3")
   def tunniste: Koodistokoodiviite
   @Description("Mikä kieli on kyseessä")
   @KoodistoUri("kielivalikoima")
@@ -631,6 +626,12 @@ case class NuortenPerusopetuksenÄidinkieliJaKirjallisuus(
 ) extends PerusopetuksenÄidinkieliJaKirjallisuus with NuortenPerusopetuksenKoodistostaLöytyväOppiaine
 
 case class NuortenPerusopetuksenVierasTaiToinenKotimainenKieli(
+  @KoodistoKoodiarvo("A1")
+  @KoodistoKoodiarvo("A2")
+  @KoodistoKoodiarvo("B1")
+  @KoodistoKoodiarvo("B2")
+  @KoodistoKoodiarvo("B3")
+  @KoodistoKoodiarvo("AOM")
   tunniste: Koodistokoodiviite,
   kieli: Koodistokoodiviite,
   pakollinen: Boolean = true,

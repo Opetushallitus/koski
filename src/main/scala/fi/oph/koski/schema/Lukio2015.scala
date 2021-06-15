@@ -231,6 +231,7 @@ case class VierasTaiToinenKotimainenKieli2015(
   @KoodistoKoodiarvo("B1")
   @KoodistoKoodiarvo("B2")
   @KoodistoKoodiarvo("B3")
+  @KoodistoKoodiarvo("AOM")
   tunniste: Koodistokoodiviite,
   @Description("Mikä kieli on kyseessä")
   @KoodistoUri("kielivalikoima")

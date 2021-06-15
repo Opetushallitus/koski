@@ -500,4 +500,35 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       }
     }
   }
+
+  "Äidinkielen omainen oppiaine" - {
+    def verify[A](kieliKoodiarvo: String)(expect: => A): A = {
+      val oo = defaultOpiskeluoikeus.copy(
+        suoritukset = List(päättötodistusSuoritus.copy(
+          vahvistus = None,
+          osasuoritukset = Some(List(suoritus(kieli("AOM", kieliKoodiarvo))))
+        ))
+      )
+
+      putOpiskeluoikeus(oo) {
+        expect
+      }
+    }
+
+    "FI sallittu" in {
+      verify("FI") {
+        verifyResponseStatusOk()
+      }
+    }
+    "SV sallittu" in {
+      verify("SV") {
+        verifyResponseStatusOk()
+      }
+    }
+    "Muita ei sallita" in {
+      verify("SE") {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.deprekoituKielikoodi("Äidinkielen omaisen oppiaineen kieli tulee olla suomi tai ruotsi"))
+      }
+    }
+  }
 }
