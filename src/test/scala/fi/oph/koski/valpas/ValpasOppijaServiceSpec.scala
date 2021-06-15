@@ -182,7 +182,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
         ExpectedData(opiskeluoikeus = ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenVsop,
           tarkastelupäivänTila = "valmistunut",
           onHakeutumisValvottavaOpiskeluoikeus = true,
-          onOikeutettuOppilaitos = true,
+          onHakeutumisvalvovaOppilaitos = true,
           vuosiluokkiinSitomatonOpetus = true)
       )
     ),
@@ -192,7 +192,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
         ExpectedData(opiskeluoikeus = ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenVsop,
           tarkastelupäivänTila = "voimassa",
           onHakeutumisValvottavaOpiskeluoikeus = true,
-          onOikeutettuOppilaitos = true,
+          onHakeutumisvalvovaOppilaitos = true,
           vuosiluokkiinSitomatonOpetus = true)
       )
     ),
@@ -300,7 +300,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
         ExpectedData(opiskeluoikeus = ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenVsop,
           tarkastelupäivänTila = "voimassa",
           onHakeutumisValvottavaOpiskeluoikeus = true,
-          onOikeutettuOppilaitos = true,
+          onHakeutumisvalvovaOppilaitos = true,
           vuosiluokkiinSitomatonOpetus = true)
       )
     ),
@@ -875,7 +875,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       oppija.henkilö.turvakielto shouldBe expectedOppija.turvakielto
       oppija.henkilö.äidinkieli shouldBe expectedOppija.äidinkieli
 
-      val expectedOikeutetutOppilaitokset = expectedData.filter(_.onOikeutettuOppilaitos).map(_.opiskeluoikeus.oppilaitos.get.oid).toSet
+      val expectedOikeutetutOppilaitokset = expectedData.filter(_.onHakeutumisvalvovaOppilaitos).map(_.opiskeluoikeus.oppilaitos.get.oid).toSet
       oppija.hakeutumisvalvovatOppilaitokset shouldBe expectedOikeutetutOppilaitokset
 
       oppija.onOikeusValvoaMaksuttomuutta shouldBe true // TODO: true aina, koska toistaiseksi tutkitaan vain peruskoulun hakeutumisvalvottavia
@@ -1076,6 +1076,6 @@ case class ExpectedData(
   opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
   tarkastelupäivänTila: String,
   onHakeutumisValvottavaOpiskeluoikeus: Boolean,
-  onOikeutettuOppilaitos: Boolean,
+  onHakeutumisvalvovaOppilaitos: Boolean,
   vuosiluokkiinSitomatonOpetus: Boolean = false
 )
