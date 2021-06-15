@@ -98,6 +98,33 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "arviointiasteikkokehittyvankielitaidontasot_c12",
+  "koodiArvo" : "C1.2",
+  "metadata" : [ {
+    "nimi" : "C1.2",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkokehittyvankielitaidontasot_c21",
+  "koodiArvo" : "C2.1",
+  "metadata" : [ {
+    "nimi" : "C2.1",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkokehittyvankielitaidontasot_c22",
+  "koodiArvo" : "C2.2",
+  "metadata" : [ {
+    "nimi" : "C2.2",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "arviointiasteikkokehittyvankielitaidontasot_ylic11",
   "koodiArvo" : "yli_C1.1",
   "metadata" : [ {

@@ -9,6 +9,7 @@ import fi.oph.koski.tutkinto.Perusteet.sallitutPerusteet
 class TutkinnonPerusteetService(application: KoskiApplication) {
   def diaarinumerotBySuorituksenTyyppi(suorituksenTyyppi: SuorituksenTyyppi): List[Koodistokoodiviite] = {
     val koulutustyypit: Set[Koulutustyyppi] = Koulutustyyppi.fromSuorituksenTyyppi(suorituksenTyyppi)
+    println(koulutustyypit)
     val diaarinumerot: List[Koodistokoodiviite] = diaarinumerotByKoulutustyypit(koulutustyypit)
     diaarinumerot.filter(diaarinumero => sallitutPerusteet(suorituksenTyyppi).matches(diaarinumero.koodiarvo))
   }

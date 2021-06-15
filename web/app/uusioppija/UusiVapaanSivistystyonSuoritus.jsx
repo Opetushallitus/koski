@@ -43,7 +43,20 @@ const makeSuoritus = (oppilaitos, suoritustyyppi, peruste, suorituskieli) => {
         }
       )
     case 'vstmaahanmuuttajienkotoutumiskoulutus':
-      console.error(suoritustyyppi, 'not implemented yet'); return undefined
+      return (
+        {
+          suorituskieli : suorituskieli,
+          koulutusmoduuli: {
+            tunniste: {
+              koodiarvo: '999910',
+              koodistoUri: 'koulutus'
+            },
+            perusteenDiaarinumero: peruste
+          },
+          toimipiste: oppilaitos,
+          tyyppi: suoritustyyppi
+        }
+      )
     case 'vstlukutaitokoulutus':
       console.error(suoritustyyppi, 'not implemented yet'); return undefined
     default:

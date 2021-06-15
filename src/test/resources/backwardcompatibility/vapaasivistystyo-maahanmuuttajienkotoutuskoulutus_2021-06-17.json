@@ -43,7 +43,7 @@
           "koodiarvo" : "999910",
           "koodistoUri" : "koulutus"
         },
-        "perusteenDiaarinumero" : "OPH-58-2021",
+        "perusteenDiaarinumero" : "OPH-123-2021",
         "laajuus" : {
           "arvo" : 54.0,
           "yksikkö" : {
@@ -172,20 +172,28 @@
             "koodistoUri" : "arviointiasteikkovst"
           },
           "kuullunYmmärtämisenTaitotaso" : {
-            "koodiarvo" : "yli_C1.1",
-            "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
+            "taso" : {
+              "koodiarvo" : "C2.2",
+              "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
+            }
           },
           "puhumisenTaitotaso" : {
-            "koodiarvo" : "yli_C1.1",
-            "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
+            "taso" : {
+              "koodiarvo" : "C2.2",
+              "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
+            }
           },
           "luetunYmmärtämisenTaitotaso" : {
-            "koodiarvo" : "yli_C1.1",
-            "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
+            "taso" : {
+              "koodiarvo" : "C2.2",
+              "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
+            }
           },
           "kirjoittamisenTaitotaso" : {
-            "koodiarvo" : "yli_C1.1",
-            "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
+            "taso" : {
+              "koodiarvo" : "C2.2",
+              "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
+            }
           },
           "päivä" : "2020-01-01",
           "hyväksytty" : true
@@ -229,7 +237,7 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus",
+            "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
             "koodistoUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"
           },
           "laajuus" : {

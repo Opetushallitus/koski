@@ -4,7 +4,8 @@ import {
   modelSet,
   modelSetTitle,
   modelSetValues,
-  pushModel
+  pushModel,
+  modelLookup
 } from '../editor/EditorModel'
 import * as R from 'ramda'
 import {koodistoValues} from '../uusioppija/koodisto'
@@ -16,16 +17,27 @@ import ModalDialog from '../editor/ModalDialog'
 import Text from '../i18n/Text'
 import {ift} from '../util/util'
 
-export const UusiVapaanSivistystyonOsasuoritus = ({suoritusPrototypes, setExpanded}) => {
-  const osaamiskokonaisuus = suoritusPrototypes.find(s => s.value.classes.includes('oppivelvollisillesuunnatunvapaansivistystyonosaamiskokonaisuudensuoritus'))
-  const suuntautumisopinnot = suoritusPrototypes.find(s => s.value.classes.includes('oppivelvollisillesuunnatunvapaansivistystyonvalinnaistensuuntautumisopintojensuoritus'))
-  const muuallaSuoritettuOpinto = suoritusPrototypes.find(s => s.value.classes.includes('muuallasuoritettuoppivelvollisillesuunnatunvapaansivistystyonopintojensuoritus'))
-  const opintokokonaisuus = suoritusPrototypes.find(s => s.value.classes.includes('oppivelvollisillesuunnatunvapaansivistystyonopintokokonaisuudensuoritus'))
+export const UusiVapaanSivistystyonOsasuoritus = ({suoritusPrototypes, setExpanded, suoritukset}) => {
+  const findSuoritus = (tyyppi) => suoritukset.find(s => s.value.classes.includes(tyyppi))
+  const findSuoritusPrototyyppi = (tyyppi) => suoritusPrototypes.find(s => s.value.classes.includes(tyyppi))
 
-  const kotoOsaAlue = suoritusPrototypes.find(s => s.value.classes.includes('vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenkokonaisuudensuoritus'))
-  const kotoTyöelämäJaYhteiskuntataidot = suoritusPrototypes.find(s => s.value.classes.includes('vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataidot'))
-  const kotoTyöelämäJaYhteiskuntataidotTyöelämäjakso = suoritusPrototypes.find(s => s.value.classes.includes('vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojentyoelamajakso'))
-  const kotoValinnaisetOpinnot= suoritusPrototypes.find(s => s.value.classes.includes('vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojenosasuoritus'))
+  const osaamiskokonaisuus = findSuoritusPrototyyppi('oppivelvollisillesuunnatunvapaansivistystyonosaamiskokonaisuudensuoritus')
+  const suuntautumisopinnot = findSuoritusPrototyyppi('oppivelvollisillesuunnatunvapaansivistystyonvalinnaistensuuntautumisopintojensuoritus')
+  const muuallaSuoritettuOpinto = findSuoritusPrototyyppi('muuallasuoritettuoppivelvollisillesuunnatunvapaansivistystyonopintojensuoritus')
+  const opintokokonaisuus = findSuoritusPrototyyppi('oppivelvollisillesuunnatunvapaansivistystyonopintokokonaisuudensuoritus')
+
+  const kotoOsaAlueKieliOpinnot = !findSuoritus('vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus')
+    && findSuoritusPrototyyppi('vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus')
+  const kotoOsaAlueTyöelämäJaYhteiskuntataidot = !findSuoritus('vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenopintojensuoritus')
+    && findSuoritusPrototyyppi('vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenopintojensuoritus')
+  const kotoOsaAlueOhjaus = !findSuoritus('vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus')
+    && findSuoritusPrototyyppi('vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus')
+  const kotoOsaAlueVapaavalintaiset = !findSuoritus('vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojensuoritus')
+    && findSuoritusPrototyyppi('vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojensuoritus')
+
+  const kotoTyöelämäJaYhteiskuntataidot = findSuoritusPrototyyppi('vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataidot')
+  const kotoTyöelämäJaYhteiskuntataidotTyöelämäjakso = findSuoritusPrototyyppi('vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojentyoelamajakso')
+  const kotoValinnaisetOpinnot = findSuoritusPrototyyppi('vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojenosasuoritus')
 
   return (
     <>
@@ -84,16 +96,35 @@ export const UusiVapaanSivistystyonOsasuoritus = ({suoritusPrototypes, setExpand
         kotoValinnaisetOpinnot &&
         <LisääPaikallinen suoritusPrototype={kotoValinnaisetOpinnot}
                           setExpanded={setExpanded}
-                          lisääText={'Lisää valinnainen opintosuoritus'}
+                          lisääText={'Lisää valinnaiset'}
                           lisääTitle={'Valinnaisen opintosuorituksen lisäys'}
         />
       }
       {
-        kotoOsaAlue &&
-        <LisääKoodistosta koodistoUri={'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus'}
-                          suoritusPrototype={kotoOsaAlue}
-                          className={'vst-osaamiskokonaisuus'}
-                          selectionText={'Lisää osa-alue'}
+        kotoOsaAlueKieliOpinnot &&
+        <LisääOsaAlue suoritusPrototype={kotoOsaAlueKieliOpinnot}
+                          selectionText={'Lisää kieliopintojen osa-alue'}
+                          setExpanded={setExpanded}
+        />
+      }
+      {
+        kotoOsaAlueTyöelämäJaYhteiskuntataidot &&
+        <LisääOsaAlue suoritusPrototype={kotoOsaAlueTyöelämäJaYhteiskuntataidot}
+                          selectionText={'Lisää työelämän ja yhteiskuntataitojen opintojen osa-alue'}
+                          setExpanded={setExpanded}
+        />
+      }
+      {
+        kotoOsaAlueOhjaus &&
+        <LisääOsaAlue suoritusPrototype={kotoOsaAlueOhjaus}
+                          selectionText={'Lisää opintojen ohjauksen osa-alue'}
+                          setExpanded={setExpanded}
+        />
+      }
+      {
+        kotoOsaAlueVapaavalintaiset &&
+        <LisääOsaAlue suoritusPrototype={kotoOsaAlueVapaavalintaiset}
+                          selectionText={'Lisää valinnaisten opintojen osa-alue'}
                           setExpanded={setExpanded}
         />
       }
@@ -126,6 +157,32 @@ const LisääKoodistosta = ({
                         selected={selectedAtom.view(enumValueToKoodiviiteLens)}
                         selectionText={t(selectionText)}
       />
+    </div>
+  )
+}
+
+const LisääOsaAlue = ({
+  suoritusPrototype,
+  selectionText,
+  setExpanded
+}) => {
+  const koulutusmoduuliPrototype = koulutusModuuliprototypes(suoritusPrototype)[0]
+
+  const addNewOsaAlue = () => {
+    const koulutusmoduuli = modelSetTitle(modelSetValues(koulutusmoduuliPrototype, {tunniste: modelLookup(koulutusmoduuliPrototype, 'tunniste').value}), modelLookup(koulutusmoduuliPrototype, 'tunniste').value.title)
+    const suoritus = modelSet(suoritusPrototype, koulutusmoduuli, 'koulutusmoduuli')
+    pushModel(suoritus)
+    setExpanded(suoritus)(true)
+  }
+
+  return (
+    <div className={'lisaa-uusi-suoritus'}>
+      <span className="lisaa-osa-alueen-suoritus">
+        <a className='add-link'
+           onClick={() => addNewOsaAlue()}>
+          <Text name={selectionText}/>
+        </a>
+      </span>
     </div>
   )
 }

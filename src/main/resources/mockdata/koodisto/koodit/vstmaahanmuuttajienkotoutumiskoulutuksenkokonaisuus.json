@@ -1,15 +1,15 @@
 [
   {
-    "koodiUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus",
-    "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus",
+    "koodiUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
+    "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
     "metadata" : [ {
-      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen opintojen suoritus",
+      "nimi" : "Työelämä- ja yhteiskuntataidot",
       "kieli" : "FI"
     }, {
-      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen opintojen suoritus",
+      "nimi" : "Färdigheter för arbetsliv och samhälle",
       "kieli" : "SV"
     }, {
-      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen opintojen suoritus",
+      "nimi" : "Työelämä- ja yhteiskuntataidot",
       "kieli" : "EN"
     } ],
     "versio" : 1,
@@ -18,13 +18,13 @@
     "koodiUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
     "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
     "metadata" : [ {
-      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen valinnaisten opintojen suoritus",
+      "nimi" : "Valinnaiset opinnot",
       "kieli" : "FI"
     }, {
-      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen valinnaisten opintojen suoritus",
+      "nimi" : "Valfria studier",
       "kieli" : "SV"
     }, {
-      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen valinnaisten opintojen suoritus",
+      "nimi" : "Valinnaiset opinnot",
       "kieli" : "EN"
     } ],
     "versio" : 1,
@@ -33,13 +33,13 @@
     "koodiUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
     "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
     "metadata" : [ {
-      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kieliopintojen suoritus",
+      "nimi" : "Suomen kieli ja viestintätaidot",
       "kieli" : "FI"
     }, {
-      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kieliopintojen suoritus",
+      "nimi" : "Svenska och kommunikativa färdigheter",
       "kieli" : "SV"
     }, {
-      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kieliopintojen suoritus",
+      "nimi" : "Suomen kieli ja viestintätaidot",
       "kieli" : "EN"
     } ],
     "versio" : 1,
@@ -48,13 +48,13 @@
     "koodiUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
     "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
     "metadata" : [ {
-      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen ohjauksen suoritus",
+      "nimi" : "Ohjaus",
       "kieli" : "FI"
     }, {
-      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen ohjauksen suoritus",
+      "nimi" : "Handledning",
       "kieli" : "SV"
     }, {
-      "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen ohjauksen suoritus",
+      "nimi" : "Ohjaus",
       "kieli" : "EN"
     } ],
     "versio" : 1,

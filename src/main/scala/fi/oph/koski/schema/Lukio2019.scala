@@ -467,6 +467,18 @@ case class SuullisenKielitaidonKoe2019(
   @KoodistoKoodiarvo("H")
   arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
   @KoodistoUri("arviointiasteikkokehittyvankielitaidontasot")
+  @KoodistoKoodiarvo("alle_A1.1")
+  @KoodistoKoodiarvo("A1.1")
+  @KoodistoKoodiarvo("A1.2")
+  @KoodistoKoodiarvo("A1.3")
+  @KoodistoKoodiarvo("A2.1")
+  @KoodistoKoodiarvo("A2.2")
+  @KoodistoKoodiarvo("B1.1")
+  @KoodistoKoodiarvo("B1.2")
+  @KoodistoKoodiarvo("B2.1")
+  @KoodistoKoodiarvo("B2.2")
+  @KoodistoKoodiarvo("C1.1")
+  @KoodistoKoodiarvo("yli_C1.1")
   taitotaso: Koodistokoodiviite,
   kuvaus: Option[LocalizedString],
   päivä: LocalDate
