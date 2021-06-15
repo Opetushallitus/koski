@@ -126,6 +126,10 @@ export const fetchKuntailmoitukset = (kuntaOid: Oid) =>
     )
   )
 
+export const fetchKuntailmoituksetCache = createPreferLocalCache(
+  fetchKuntailmoitukset
+)
+
 /**
  * Tallenna muu haku -valitsimen tila
  * @param oppijaOid

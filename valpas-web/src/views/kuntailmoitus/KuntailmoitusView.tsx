@@ -1,21 +1,28 @@
 import bem from "bem-ts"
 import * as A from "fp-ts/Array"
 import * as Eq from "fp-ts/Eq"
-import { pipe } from "fp-ts/lib/function"
+import { pipe } from "fp-ts/function"
 import * as Ord from "fp-ts/Ord"
 import * as string from "fp-ts/string"
 import React, { useMemo, useState } from "react"
-import { Redirect, useHistory } from "react-router"
+import { Redirect, RouteComponentProps, useHistory } from "react-router"
+import {
+  fetchKuntailmoitukset,
+  fetchKuntailmoituksetCache,
+} from "../../api/api"
+import { useApiWithParams } from "../../api/apiHooks"
+import { isLoading, isSuccess } from "../../api/apiUtils"
 import { Card, CardBody, CardHeader } from "../../components/containers/cards"
 import { Page } from "../../components/containers/Page"
 import { Dropdown } from "../../components/forms/Dropdown"
 import { Spinner } from "../../components/icons/Spinner"
 import { DataTableCountChangeEvent } from "../../components/tables/DataTable"
 import { Counter } from "../../components/typography/Counter"
+import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import { getLocalized, t, T } from "../../i18n/i18n"
 import {
   useOrganisaatiotJaKäyttöoikeusroolit,
-  withRequiresHakeutumisenValvonta,
+  withRequiresKuntavalvonta,
 } from "../../state/accessRights"
 import { useBasePath } from "../../state/basePath"
 import {
@@ -23,63 +30,49 @@ import {
   OrganisaatioHierarkia,
   OrganisaatioJaKayttooikeusrooli,
 } from "../../state/common"
-import { isFeatureFlagEnabled } from "../../state/featureFlags"
-import {
-  createHakutilannePathWithOrg,
-  HakutilanneViewRouteProps,
-} from "../../state/paths"
-import { nonNull } from "../../utils/arrays"
+import { createKuntailmoitusPathWithOrg } from "../../state/paths"
 import { ErrorView } from "../ErrorView"
-import { HakutilanneDrawer } from "./HakutilanneDrawer"
-import { HakutilanneTable } from "./HakutilanneTable"
-import "./HakutilanneView.less"
-import { useOppijatData } from "./useOppijatData"
-import { VirkailijaNavigation } from "./VirkailijaNavigation"
+import { KuntailmoitusTable } from "./KuntailmoitusTable"
 
-const b = bem("hakutilanneview")
+const b = bem("kuntailmoitusview")
 
-export type HakutilanneViewProps = HakutilanneViewRouteProps
+export const KuntailmoitusViewWithoutOrgOid = withRequiresKuntavalvonta(() => {
+  const basePath = useBasePath()
 
-export const HakutilanneViewWithoutOrgOid = withRequiresHakeutumisenValvonta(
-  () => {
-    const basePath = useBasePath()
-    const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
-    const organisaatio = getOrganisaatiot(organisaatiotJaKäyttöoikeusroolit)[0]
+  const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
+  const organisaatiot = useMemo(
+    () => getOrganisaatiot(organisaatiotJaKäyttöoikeusroolit),
+    [organisaatiotJaKäyttöoikeusroolit]
+  )
+  const organisaatio = organisaatiot[0]
 
-    return organisaatio ? (
-      <Redirect
-        to={createHakutilannePathWithOrg(basePath, {
-          organisaatioOid: organisaatio.oid,
-        })}
-      />
-    ) : (
-      <OrganisaatioMissingView />
-    )
-  }
-)
+  return organisaatio ? (
+    <Redirect to={createKuntailmoitusPathWithOrg(basePath, organisaatio.oid)} />
+  ) : (
+    <OrganisaatioMissingView />
+  )
+})
 
-export const HakutilanneView = withRequiresHakeutumisenValvonta(
-  (props: HakutilanneViewProps) => {
+export type KuntailmoitusViewProps = RouteComponentProps<{
+  organisaatioOid?: string
+}>
+
+export const KuntailmoitusView = withRequiresKuntavalvonta(
+  (props: KuntailmoitusViewProps) => {
     const history = useHistory()
+
+    const [counters, setCounters] = useState<DataTableCountChangeEvent>({
+      filteredRowCount: 0,
+      unfilteredRowCount: 0,
+    })
+
     const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
     const organisaatiot = useMemo(
       () => getOrganisaatiot(organisaatiotJaKäyttöoikeusroolit),
       [organisaatiotJaKäyttöoikeusroolit]
     )
 
-    const organisaatioOid =
-      props.match.params.organisaatioOid || organisaatiot[0]?.oid
-
-    const { data, isLoading, setMuuHaku } = useOppijatData(organisaatioOid)
-
-    const [counters, setCounters] = useState<DataTableCountChangeEvent>({
-      filteredRowCount: 0,
-      unfilteredRowCount: 0,
-    })
-    const [selectedOppijaOids, setSelectedOppijaOids] = useState<Oid[]>([])
-
     const orgOptions = getOrgOptions(organisaatiot)
-    const organisaatio = organisaatiot.find((o) => o.oid === organisaatioOid)
 
     const changeOrganisaatio = (oid?: Oid) => {
       if (oid) {
@@ -87,31 +80,28 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
       }
     }
 
-    const selectedOppijat = useMemo(
-      () =>
-        data
-          ? selectedOppijaOids
-              .map((oid) => data.find((o) => o.oppija.henkilö.oid === oid))
-              .filter(nonNull)
-          : [],
-      [data, selectedOppijaOids]
+    const organisaatioOid = props.match.params.organisaatioOid!
+
+    const fetch = useApiWithParams(
+      fetchKuntailmoitukset,
+      [organisaatioOid],
+      fetchKuntailmoituksetCache
     )
 
-    return organisaatioOid ? (
-      <Page className={b("view")}>
+    return (
+      <Page>
         <Dropdown
           selectorId="organisaatiovalitsin"
           containerClassName={b("organisaatiovalitsin")}
-          label={t("Oppilaitos")}
+          label={t("Kunta")}
           options={orgOptions}
           value={organisaatioOid}
           onChange={changeOrganisaatio}
         />
-        <VirkailijaNavigation />
         <Card>
           <CardHeader>
-            <T id="hakutilannenäkymä__otsikko" />
-            {data && (
+            <T id="kuntailmoitusnäkymä__ilmoitetut__otsikko" />
+            {isSuccess(fetch) && (
               <Counter>
                 {counters.filteredRowCount === counters.unfilteredRowCount
                   ? counters.filteredRowCount
@@ -120,42 +110,44 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
             )}
           </CardHeader>
           <CardBody>
-            {isLoading && <Spinner />}
-            {data && (
-              <HakutilanneTable
-                data={data}
+            {isLoading(fetch) && <Spinner />}
+            {isSuccess(fetch) && fetch.data.length == 0 && (
+              <NoDataMessage>
+                <T id="kuntailmoitusnäkymä__ei_ilmoituksia" />
+              </NoDataMessage>
+            )}
+            {isSuccess(fetch) && fetch.data.length > 0 && (
+              <KuntailmoitusTable
+                data={fetch.data}
                 organisaatioOid={organisaatioOid}
                 onCountChange={setCounters}
-                onSelect={setSelectedOppijaOids}
-                onSetMuuHaku={setMuuHaku}
               />
             )}
           </CardBody>
         </Card>
-        {isFeatureFlagEnabled("ilmoittaminen") && organisaatio ? (
-          <HakutilanneDrawer
-            selectedOppijat={selectedOppijat}
-            tekijäorganisaatio={organisaatio}
-          />
-        ) : null}
       </Page>
-    ) : (
-      <OrganisaatioMissingView />
     )
   }
 )
 
+const OrganisaatioMissingView = () => (
+  <ErrorView
+    title={t("kuntailmoitusnäkymä__ei_oikeuksia_title")}
+    message={t("kuntailmoitusnäkymä__ei_oikeuksia_teksti")}
+  />
+)
+
+// TODO: Copypastea - korvataan paremmalla organisaatiovalitsimella myöhemmin
 const getOrganisaatiot = (
   kayttooikeusroolit: OrganisaatioJaKayttooikeusrooli[]
 ): OrganisaatioHierarkia[] => {
-  const hakeutumisKayttooikeusroolit = kayttooikeusroolit.filter(
-    (kayttooikeusrooli) =>
-      kayttooikeusrooli.kayttooikeusrooli == "OPPILAITOS_HAKEUTUMINEN"
+  const kuntaKäyttöoikeusRoolit = kayttooikeusroolit.filter(
+    (kayttooikeusrooli) => kayttooikeusrooli.kayttooikeusrooli == "KUNTA"
   )
   const kaikki = pipe(
-    hakeutumisKayttooikeusroolit,
-    A.map((kayttooikeus) =>
-      getOrganisaatiotHierarkiastaRecur([kayttooikeus.organisaatioHierarkia])
+    kuntaKäyttöoikeusRoolit,
+    A.map((käyttöoikeus) =>
+      getOrganisaatiotHierarkiastaRecur([käyttöoikeus.organisaatioHierarkia])
     ),
     A.flatten
   )
@@ -164,13 +156,12 @@ const getOrganisaatiot = (
     kaikki,
     A.filter(
       (organisaatioHierarkia) =>
-        organisaatioHierarkia.organisaatiotyypit.includes("OPPILAITOS") &&
+        organisaatioHierarkia.organisaatiotyypit.includes("KUNTA") &&
         organisaatioHierarkia.aktiivinen
     ),
     A.sortBy([byLocalizedNimi])
   )
 }
-
 const byLocalizedNimi = pipe(
   string.Ord,
   Ord.contramap(
@@ -178,7 +169,6 @@ const byLocalizedNimi = pipe(
       `${getLocalized(organisaatioHierarkia.nimi)}`
   )
 )
-
 const getOrganisaatiotHierarkiastaRecur = (
   organisaatioHierarkiat: OrganisaatioHierarkia[]
 ): OrganisaatioHierarkia[] => {
@@ -197,7 +187,6 @@ const getOrganisaatiotHierarkiastaRecur = (
     return organisaatioHierarkiat.map(removeChildren).concat(lapset)
   }
 }
-
 const removeChildren = (
   organisaatioHierarkia: OrganisaatioHierarkia
 ): OrganisaatioHierarkia => ({
@@ -218,10 +207,3 @@ const getOrgOptions = (orgs: OrganisaatioHierarkia[]) =>
       display: `${getLocalized(org.nimi)} (${org.oid})`,
     }))
   )
-
-const OrganisaatioMissingView = () => (
-  <ErrorView
-    title={t("hakutilanne__ei_oikeuksia_title")}
-    message={t("hakutilanne__ei_oikeuksia_teksti")}
-  />
-)

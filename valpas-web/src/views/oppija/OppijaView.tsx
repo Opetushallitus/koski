@@ -24,6 +24,7 @@ import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import {
   createHakutilannePathWithOrg as createHakutilannePathWithOrg,
   createHakutilannePathWithoutOrg as createHakutilannePathWithoutOrg,
+  createKuntailmoitusPathWithOrg,
   OppijaViewRouteProps,
   parseQueryFromProps as parseSearchQueryFromProps,
 } from "../../state/paths"
@@ -49,7 +50,8 @@ export const OppijaView = withRequiresHakeutumisenOrMaksuttomuudenValvontaOrKunt
     return (
       <Page id="oppija">
         <BackNav
-          organisaatioRef={searchQuery.organisaatioRef}
+          hakutilanneRef={searchQuery.hakutilanneRef}
+          kuntailmoitusRef={searchQuery.kuntailmoitusRef}
           oppija={isSuccess(oppija) ? oppija.data : undefined}
           prevPage={searchQuery.prev}
         />
@@ -120,24 +122,33 @@ export const OppijaView = withRequiresHakeutumisenOrMaksuttomuudenValvontaOrKunt
 )
 
 type BackNavProps = {
-  organisaatioRef?: string
+  hakutilanneRef?: string
+  kuntailmoitusRef?: string
   oppija?: OppijaHakutilanteillaLaajatTiedot
   prevPage?: string
 }
 
 const BackNav = (props: BackNavProps) => {
-  const organisaatioOid =
-    props.organisaatioRef ||
-    props.oppija?.oppija.hakeutumisvalvovatOppilaitokset[0]
-  const targetPath =
-    props.prevPage ||
-    (organisaatioOid
-      ? createHakutilannePathWithOrg("", { organisaatioOid })
-      : createHakutilannePathWithoutOrg(""))
+  const targetPath = () => {
+    const fallback = props.oppija?.oppija.hakeutumisvalvovatOppilaitokset[0]
+    if (props.prevPage) {
+      return props.prevPage
+    } else if (props.hakutilanneRef) {
+      return createHakutilannePathWithOrg("", {
+        organisaatioOid: props.hakutilanneRef,
+      })
+    } else if (props.kuntailmoitusRef) {
+      return createKuntailmoitusPathWithOrg("", props.kuntailmoitusRef)
+    } else if (fallback) {
+      return createHakutilannePathWithOrg("", { organisaatioOid: fallback })
+    } else {
+      return createHakutilannePathWithoutOrg("")
+    }
+  }
 
   return (
     <div className={b("backbutton")}>
-      <FlatLink to={targetPath}>
+      <FlatLink to={targetPath()}>
         <BackIcon />
         <ButtonLabel>
           <T id="oppija__takaisin" />

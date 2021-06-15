@@ -150,7 +150,7 @@ describe("Hakutilannenäkymä", () => {
       pathToUrl(
         createOppijaPath("/virkailija", {
           oppijaOid: kulosaarenOppijaOid,
-          organisaatioOid: kulosaarenAlaAsteOid,
+          hakutilanneRef: kulosaarenAlaAsteOid,
         })
       )
     )
