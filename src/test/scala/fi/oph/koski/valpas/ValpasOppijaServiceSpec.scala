@@ -215,6 +215,14 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       ValpasMockOppijat.ilmoituksenLisätiedotPoistettu,
       List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true, false))
     ),
+    (
+      ValpasMockOppijat.oppivelvollisuusKeskeytetty,
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true))
+    ),
+    (
+      ValpasMockOppijat.oppivelvollisuusKeskeytettyToistaiseksi,
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true))
+    ),
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
   // Jyväskylän normaalikoulusta löytyvät näytettävät oppivelvolliset aakkosjärjestyksessä, tutkittaessa syksyn rajapäivän jälkeen
@@ -310,7 +318,15 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     (
       ValpasMockOppijat.ilmoituksenLisätiedotPoistettu,
       List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true, false))
-    )
+    ),
+    (
+      ValpasMockOppijat.oppivelvollisuusKeskeytetty,
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true, false))
+    ),
+    (
+      ValpasMockOppijat.oppivelvollisuusKeskeytettyToistaiseksi,
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true, false))
+    ),
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
   "getOppija palauttaa vain annetun oppijanumeron mukaisen oppijan" in {
