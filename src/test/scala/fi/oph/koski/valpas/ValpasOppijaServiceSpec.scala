@@ -201,6 +201,13 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       List(
         ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutKasiluokkalainen, "valmistunut", true, true),
       )
+    ),
+    (
+      ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster2,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus, "voimassa", false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true)
+      )
     )
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
@@ -758,6 +765,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     )(Seq(
       ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia,
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster,
+      ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster2,
       ValpasMockOppijat.kahdenKoulunYsiluokkalainenJollaIlmoitus,
       ValpasMockOppijat.kasiinAstiToisessaKoulussaOllutJollaIlmoitus,
       ValpasMockOppijat.valmistunutYsiluokkalainenJollaIlmoitus,

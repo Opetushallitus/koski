@@ -39,6 +39,10 @@ object ValpasExampleData {
       kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoillaAapajoenPeruskoulusta
     )),
     ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      oppijaOid =  ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusToinen2.oid,
+      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla
+    )),
+    ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
       oppijaOid =  ValpasMockOppijat.lukionAloittanutJollaVanhaIlmoitus.oid,
       kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla
     ),
