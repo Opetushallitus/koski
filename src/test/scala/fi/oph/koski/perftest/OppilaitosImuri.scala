@@ -12,17 +12,16 @@ import fi.oph.koski.util.EnvVariables
 object OppilaitosImuri extends App with EnvVariables {
   lazy val virkailijaRoot = env("VIRKAILIJA", "https://virkailija.untuvaopintopolku.fi")
 
-  lazy val lukiot: List[OidOrganisaatio] = haeOppilaitostyypillä("oppilaitostyyppi_15#1")
-  lazy val ammatillisetOppilaitokset: List[OidOrganisaatio] = haeOppilaitostyypillä("oppilaitostyyppi_21#1")
-  lazy val peruskoulut: List[OidOrganisaatio] = haeOppilaitostyypillä("oppilaitostyyppi_11#1")
+  lazy val lukiot: List[OidOrganisaatio] = haeOppilaitostyypillä("oppilaitostyyppi_15#1", "Peruskoulu")
+  lazy val ammatillisetOppilaitokset: List[OidOrganisaatio] = haeOppilaitostyypillä("oppilaitostyyppi_21#1", "Lukio")
+  lazy val peruskoulut: List[OidOrganisaatio] = haeOppilaitostyypillä("oppilaitostyyppi_11#1", "Ammatillinen")
 
-  println("Peruskouluja: " + peruskoulut.length)
-  println("Lukioita: " + lukiot.length)
-  println("Ammatillisia: " + ammatillisetOppilaitokset.length)
 
-  def haeOppilaitostyypillä(tyyppi: String) = {
+  def haeOppilaitostyypillä(tyyppi: String, tyypinNimi: String) = {
     val url: String = s"$virkailijaRoot/organisaatio-service/rest/organisaatio/v2/hae/tyyppi?aktiiviset=true&suunnitellut=true&lakkautetut=false&oppilaitostyyppi=${URLEncoder.encode(tyyppi, "UTF-8")}"
-    EasyHttp.getJson[OrganisaatioTyyppiHakuTulos](url).organisaatiot.map { org: OrganisaatioPalveluOrganisaatioTyyppi => OidOrganisaatio(org.oid) }
+    val organisaatiOidit = EasyHttp.getJson[OrganisaatioTyyppiHakuTulos](url).organisaatiot.map { org: OrganisaatioPalveluOrganisaatioTyyppi => OidOrganisaatio(org.oid) }
+    println(tyypinNimi + " määrä: " + organisaatiOidit.length)
+    organisaatiOidit
   }
 }
 
