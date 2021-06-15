@@ -243,7 +243,7 @@ class ValpasOppijaService(
         ValpasOppijaLaajatTiedot(
           henkilö = ValpasHenkilöLaajatTiedot(
             oid = dbRow.oppijaOid,
-            kaikkiOidit = dbRow.kaikkiOppijaOidit,
+            kaikkiOidit = dbRow.kaikkiOppijaOidit.toSet,
             hetu = dbRow.hetu,
             syntymäaika = dbRow.syntymäaika,
             etunimet = dbRow.etunimet,

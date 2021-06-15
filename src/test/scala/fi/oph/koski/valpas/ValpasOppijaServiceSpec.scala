@@ -805,7 +805,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
   ): Unit = {
     withClue(s"ValpasOppija(${oppija.henkilö.oid}/${oppija.henkilö.hetu}): ") {
       oppija.henkilö.oid shouldBe expectedOppija.oid
-      oppija.henkilö.kaikkiOidit.toSet shouldBe expectedOppijaOidit
+      oppija.henkilö.kaikkiOidit shouldBe expectedOppijaOidit
       oppija.henkilö.hetu shouldBe expectedOppija.hetu
       oppija.henkilö.etunimet shouldBe expectedOppija.etunimet
       oppija.henkilö.sukunimi shouldBe expectedOppija.sukunimi
