@@ -9,7 +9,10 @@ import {
   IconSectionHeading,
 } from "../../components/containers/IconSection"
 import { Modal } from "../../components/containers/Modal"
-import { IlmoitusListIcon, OpiskeluIcon } from "../../components/icons/Icon"
+import {
+  OpiskeluhistoriaTapahtumaIcon,
+  OpiskeluIcon,
+} from "../../components/icons/Icon"
 import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import { getLocalized, T, t, useLanguage } from "../../i18n/i18n"
@@ -22,7 +25,10 @@ import {
   OpiskeluoikeusLaajatTiedot,
   sortOpiskeluoikeusLaajatTiedot,
 } from "../../state/apitypes/opiskeluoikeus"
-import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
+import {
+  OppijaHakutilanteillaLaajatTiedot,
+  OppivelvollisuudenKeskeytys,
+} from "../../state/apitypes/oppija"
 import { ISODate } from "../../state/common"
 import { formatDate, formatNullableDate, parseYear } from "../../utils/date"
 import { pick } from "../../utils/objects"
@@ -65,6 +71,8 @@ export const OppijanOpiskeluhistoria = (
       props.oppija.kuntailmoitukset
     )
 
+    const keskeytykset = props.oppija.oppivelvollisuudenKeskeytykset
+
     // Yhdistä erilaatuiset asiat yhtenäiseksi listaksi
     return pipe(
       [
@@ -83,6 +91,15 @@ export const OppijanOpiskeluhistoria = (
             <OpiskeluhistoriaOpinto key={`oo-${index}`} opiskeluoikeus={oo} />
           ),
         })),
+        ...keskeytykset.map((ovk, index) => ({
+          order: orderString("C", ovk.alku, index),
+          child: (
+            <OpiskeluhistoriaOppivelvollisuudenKeskeytys
+              key={`ovk-${index}`}
+              keskeytys={ovk}
+            />
+          ),
+        })),
       ],
       A.sort(opiskeluhistoriaItemOrd),
       pick("child")
@@ -91,6 +108,7 @@ export const OppijanOpiskeluhistoria = (
     language,
     props.oppija.kuntailmoitukset,
     props.oppija.oppija.opiskeluoikeudet,
+    props.oppija.oppivelvollisuudenKeskeytykset,
   ])
 
   return items.length > 0 ? (
@@ -152,7 +170,7 @@ type OpiskeluhistoriaIlmoitusProps = {
 const OpiskeluhistoriaIlmoitus = ({
   kuntailmoitus,
 }: OpiskeluhistoriaIlmoitusProps) => (
-  <IconSection icon={<IlmoitusListIcon color="gray" />}>
+  <IconSection icon={<OpiskeluhistoriaTapahtumaIcon color="gray" />}>
     <IconSectionHeading>
       <T id="oppija__ilmoitushistoria_otsikko" />
     </IconSectionHeading>
@@ -175,6 +193,28 @@ const OpiskeluhistoriaIlmoitus = ({
       />
       <InfoTableRow value={<IlmoitusLink kuntailmoitus={kuntailmoitus} />} />
     </InfoTable>
+  </IconSection>
+)
+
+type OpiskeluhistoriaOppivelvollisuudenKeskeytysProps = {
+  keskeytys: OppivelvollisuudenKeskeytys
+}
+
+const OpiskeluhistoriaOppivelvollisuudenKeskeytys = (
+  props: OpiskeluhistoriaOppivelvollisuudenKeskeytysProps
+) => (
+  <IconSection icon={<OpiskeluhistoriaTapahtumaIcon color="gray" />}>
+    <IconSectionHeading>Oppivelvollisuus</IconSectionHeading>
+    <div>
+      {props.keskeytys.loppu
+        ? t("oppija__oppivelvollisuus_keskeytetty_value", {
+            alkuPvm: formatDate(props.keskeytys.alku),
+            loppuPvm: formatDate(props.keskeytys.loppu),
+          })
+        : t("oppija__oppivelvollisuus_keskeytetty_toistaiseksi_value", {
+            alkuPvm: formatDate(props.keskeytys.alku),
+          })}
+    </div>
   </IconSection>
 )
 

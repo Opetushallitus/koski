@@ -549,6 +549,19 @@ describe("Oppijakohtainen näkymä", () => {
       Oppivelvollisuus:	Keskeytetty 1.3.2021 – 30.9.2021
       Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
     `)
+    await opiskeluhistoriaEquals(`
+      schedule
+      Oppivelvollisuus
+      Keskeytetty 1.3.2021 – 30.9.2021
+      schedule
+      Oppivelvollisuus
+      Keskeytetty 1.1.2020 – 30.1.2020
+      school
+      Perusopetus 2012 –
+      Jyväskylän normaalikoulu
+      Ryhmä:	9C
+      Tila:	Opiskeluoikeus voimassa
+    `)
   })
 
   it("Näyttää oppijan oppivelvollisuuden keskeytyksen toistaiseksi", async () => {
@@ -563,6 +576,16 @@ describe("Oppijakohtainen näkymä", () => {
       Opiskelutilanne:	Opiskelemassa
       Oppivelvollisuus:	Keskeytetty toistaiseksi 1.1.2021 alkaen
       Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
+    `)
+    await opiskeluhistoriaEquals(`
+      schedule
+      Oppivelvollisuus
+      Keskeytetty toistaiseksi 1.1.2021 alkaen
+      school
+      Perusopetus 2012 –
+      Jyväskylän normaalikoulu
+      Ryhmä:	9C
+      Tila:	Opiskeluoikeus voimassa
     `)
   })
 
@@ -582,6 +605,19 @@ describe("Oppijakohtainen näkymä", () => {
       Opiskelutilanne:	Opiskelemassa
       Oppivelvollisuus:	18.10.2023 asti
       Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
+    `)
+    await opiskeluhistoriaEquals(`
+      schedule
+      Oppivelvollisuus
+      Keskeytetty 1.3.2021 – 30.9.2021
+      schedule
+      Oppivelvollisuus
+      Keskeytetty 1.1.2020 – 30.1.2020
+      school
+      Perusopetus 2012 –
+      Jyväskylän normaalikoulu
+      Ryhmä:	9C
+      Tila:	Opiskeluoikeus voimassa
     `)
   })
 })

@@ -42,7 +42,7 @@ export const SuccessIcon = defineIcon("done", "success")
 export const SuccessCircleIcon = defineIcon("check_circle", "success")
 export const FutureSuccessIcon = defineIcon("hourglass_empty", "success")
 export const IlmoitusIcon = defineIcon("error_outline")
-export const IlmoitusListIcon = defineIcon("schedule")
+export const OpiskeluhistoriaTapahtumaIcon = defineIcon("schedule")
 
 type MaterialDesignIconProps = IconProps & {
   name: string // Ikonien nimet löytyvät osoitteesta https://material.io/resources/icons/?style=baseline
