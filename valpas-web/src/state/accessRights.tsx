@@ -17,6 +17,10 @@ export const hakeutumisenValvontaAllowed: AccessGuard = (roles) =>
 export const maksuttomuudenValvontaAllowed: AccessGuard = (roles) =>
   roles.includes("OPPILAITOS_MAKSUTTOMUUS")
 
+export const suorittamisenValvontaAllowed: AccessGuard = (roles) =>
+  roles.includes("OPPILAITOS_SUORITTAMINEN") &&
+  isFeatureFlagEnabled("suorittamisenvalvonta")
+
 export const kuntavalvontaAllowed: AccessGuard = (roles) =>
   roles.includes("KUNTA") && isFeatureFlagEnabled("kuntavalvonta")
 
@@ -45,11 +49,12 @@ export const withRequiresHakeutumisenValvonta = accessRightGuardHoc(
   hakeutumisenValvontaAllowed
 )
 
-export const withRequiresHakeutumisenOrMaksuttomuudenValvontaOrKunta = accessRightGuardHoc(
+export const withRequiresJokinOikeus = accessRightGuardHoc(
   someOf(
     hakeutumisenValvontaAllowed,
     maksuttomuudenValvontaAllowed,
-    kuntavalvontaAllowed
+    kuntavalvontaAllowed,
+    suorittamisenValvontaAllowed
   )
 )
 

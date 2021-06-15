@@ -72,6 +72,12 @@ const VirkailijaRoutes = () => {
             redirectTo={createHakutilannePathWithoutOrg(basePath)}
           />
         </Route>
+        <Route exact path={`${basePath}/suorittaminen2021`}>
+          <FeatureFlagEnabler
+            features={["suorittamisenvalvonta"]}
+            redirectTo={createHakutilannePathWithoutOrg(basePath)}
+          />
+        </Route>
         <Route
           exact
           path={hakutilannePathWithoutOrg(basePath)}

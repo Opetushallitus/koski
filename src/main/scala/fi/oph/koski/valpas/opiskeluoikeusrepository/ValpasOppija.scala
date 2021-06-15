@@ -22,6 +22,7 @@ trait ValpasOppija {
 case class ValpasOppijaLaajatTiedot(
   henkilö: ValpasHenkilöLaajatTiedot,
   hakeutumisvalvovatOppilaitokset: Set[ValpasOppilaitos.Oid],
+  suorittamisvalvovatOppilaitokset: Set[ValpasOppilaitos.Oid],
   opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot],
   oppivelvollisuusVoimassaAsti: LocalDate,
   oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate,
@@ -94,6 +95,8 @@ trait ValpasOpiskeluoikeus {
 
   def onHakeutumisValvottava: Boolean
 
+  def onSuorittamisValvottava: Boolean
+
   @KoodistoUri("opiskeluoikeudentyyppi")
   def tyyppi: Koodistokoodiviite
 
@@ -134,6 +137,7 @@ trait ValpasOpiskeluoikeus {
 case class ValpasOpiskeluoikeusLaajatTiedot(
   oid: ValpasOpiskeluoikeus.Oid,
   onHakeutumisValvottava: Boolean,
+  onSuorittamisValvottava: Boolean,
   tyyppi: Koodistokoodiviite,
   oppilaitos: ValpasOppilaitos,
   toimipiste: Option[ValpasToimipiste],
@@ -151,6 +155,7 @@ object ValpasOpiskeluoikeusSuppeatTiedot {
     ValpasOpiskeluoikeusSuppeatTiedot(
       oid = laajatTiedot.oid,
       onHakeutumisValvottava = laajatTiedot.onHakeutumisValvottava,
+      onSuorittamisValvottava = laajatTiedot.onSuorittamisValvottava,
       tyyppi = laajatTiedot.tyyppi,
       oppilaitos = laajatTiedot.oppilaitos,
       toimipiste = laajatTiedot.toimipiste,
@@ -168,6 +173,7 @@ object ValpasOpiskeluoikeusSuppeatTiedot {
 case class ValpasOpiskeluoikeusSuppeatTiedot(
   oid: ValpasOpiskeluoikeus.Oid,
   onHakeutumisValvottava: Boolean,
+  onSuorittamisValvottava: Boolean,
   tyyppi: Koodistokoodiviite,
   oppilaitos: ValpasOppilaitos,
   toimipiste: Option[ValpasToimipiste],
