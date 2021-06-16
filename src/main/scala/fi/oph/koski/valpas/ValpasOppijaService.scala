@@ -141,7 +141,7 @@ class ValpasOppijaService(
       // Yhdistetään kuntailmoitukset ja oppijat Seq[(ValpasOppijaLaajatTiedot, ValpasKuntailmoitusLaajatTiedot)]
       .map(kuntailmoituksetOppijat => kuntailmoituksetOppijat._1.flatMap(ilmoitus =>
         kuntailmoituksetOppijat._2
-          .find(_.henkilö.oid == ilmoitus.oppijaOid)
+          .find(oppija => oppija.henkilö.kaikkiOidit.contains(ilmoitus.oppijaOid))
           .map(oppija => (oppija, ilmoitus.kuntailmoitus)
       )))
 
@@ -243,7 +243,7 @@ class ValpasOppijaService(
         ValpasOppijaLaajatTiedot(
           henkilö = ValpasHenkilöLaajatTiedot(
             oid = dbRow.oppijaOid,
-            kaikkiOidit = dbRow.kaikkiOppijaOidit,
+            kaikkiOidit = dbRow.kaikkiOppijaOidit.toSet,
             hetu = dbRow.hetu,
             syntymäaika = dbRow.syntymäaika,
             etunimet = dbRow.etunimet,

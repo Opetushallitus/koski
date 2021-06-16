@@ -54,6 +54,8 @@ object ValpasMockOppijat {
   val valmistunutYsiluokkalainenVsop = valpasOppijat.oppija("Ysiluokka-valmis-keväällä-2021-vsop", "Valpas", "190705A575R")
   val ysiluokkaKeskenVsop = valpasOppijat.oppija("Oppivelvollinen-ysiluokka-kesken-vsop", "Valpas", "240305A7103")
   val valmistunutKasiluokkalainen = valpasOppijat.oppija("Valmistunut-kasiluokkalainen-alle-17-vuotias", "Valpas", "090605A768P")
+  val oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster2 = valpasOppijat.oppija("Kahdella-oppija-oidilla-ilmo-2", "Valpas", "030605A476D")
+  val oppivelvollinenMonellaOppijaOidillaJollaIlmoitusToinen2 = valpasOppijat.duplicate(oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster2)
 
   // Kutsumanimi ja yhteystiedot haetaan oppijanumerorekisteristä Valpas-käyttäjälle, tallennetaan siksi käyttäjä myös "oppijana" mockeihin
   val käyttäjäValpasJklNormaalikoulu = valpasOppijat.oppija(

@@ -81,7 +81,7 @@ describe("Hakutilannenäkymä", () => {
     await urlIsEventually(pathToUrl(jklHakutilannePath))
     await textEventuallyEquals(
       ".card__header",
-      "Hakeutumisvelvollisia oppijoita (26)"
+      "Hakeutumisvelvollisia oppijoita (27)"
     )
     await dataTableEventuallyEquals(
       ".hakutilanne",
@@ -106,7 +106,7 @@ describe("Hakutilannenäkymä", () => {
     await urlIsEventually(pathToUrl(jklHakutilannePath))
     await textEventuallyEquals(
       ".card__header",
-      "Hakeutumisvelvollisia oppijoita (26)"
+      "Hakeutumisvelvollisia oppijoita (27)"
     )
     await dataTableEventuallyEquals(
       ".hakutilanne",
@@ -199,7 +199,7 @@ describe("Hakutilannenäkymä", () => {
       await urlIsEventually(pathToUrl(jklHakutilannePath))
       await textEventuallyEquals(
         ".card__header",
-        "Hakeutumisvelvollisia oppijoita (26)"
+        "Hakeutumisvelvollisia oppijoita (27)"
       )
     }
 
@@ -222,7 +222,7 @@ describe("Hakutilannenäkymä", () => {
     await urlIsEventually(pathToUrl(jklHakutilannePath))
     await textEventuallyEquals(
       ".card__header",
-      "Hakeutumisvelvollisia oppijoita (26)"
+      "Hakeutumisvelvollisia oppijoita (27)"
     )
 
     const getState = () => Promise.all([1, 2, 3, 4].map(isMuuHakuChecked))
@@ -241,7 +241,7 @@ describe("Hakutilannenäkymä", () => {
     await selectOrganisaatio(0)
     await textEventuallyEquals(
       ".card__header",
-      "Hakeutumisvelvollisia oppijoita (26)"
+      "Hakeutumisvelvollisia oppijoita (27)"
     )
 
     const stateAfterOrgChange = await getState()

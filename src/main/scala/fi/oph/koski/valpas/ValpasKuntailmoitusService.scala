@@ -49,7 +49,7 @@ class ValpasKuntailmoitusService(
     oppija: ValpasOppijaLaajatTiedot
   )(implicit session: ValpasSession): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedot]] = {
     accessResolver.withOppijaAccess(oppija)
-      .flatMap(oppija => repository.queryOppijat(oppija.henkilö.kaikkiOidit.toSet))
+      .flatMap(oppija => repository.queryOppijat(oppija.henkilö.kaikkiOidit))
       .map(_.map(karsiHenkilötiedotJosEiOikeuksia(oppija)))
   }
 

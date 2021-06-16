@@ -201,6 +201,13 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       List(
         ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutKasiluokkalainen, "valmistunut", true, true),
       )
+    ),
+    (
+      ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster2,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus, "voimassa", false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true)
+      )
     )
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
@@ -758,6 +765,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     )(Seq(
       ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia,
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster,
+      ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster2,
       ValpasMockOppijat.kahdenKoulunYsiluokkalainenJollaIlmoitus,
       ValpasMockOppijat.kasiinAstiToisessaKoulussaOllutJollaIlmoitus,
       ValpasMockOppijat.valmistunutYsiluokkalainenJollaIlmoitus,
@@ -797,7 +805,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
   ): Unit = {
     withClue(s"ValpasOppija(${oppija.henkilö.oid}/${oppija.henkilö.hetu}): ") {
       oppija.henkilö.oid shouldBe expectedOppija.oid
-      oppija.henkilö.kaikkiOidit.toSet shouldBe expectedOppijaOidit
+      oppija.henkilö.kaikkiOidit shouldBe expectedOppijaOidit
       oppija.henkilö.hetu shouldBe expectedOppija.hetu
       oppija.henkilö.etunimet shouldBe expectedOppija.etunimet
       oppija.henkilö.sukunimi shouldBe expectedOppija.sukunimi
