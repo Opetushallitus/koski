@@ -182,7 +182,6 @@ class ValpasOppijaService(
       .flatMap(results => HttpStatus.foldEithers(results.map(asValpasOppijaLaajatTiedot)))
       .map(accessResolver.filterByOppijaAccess(ValpasRooli.OPPILAITOS_HAKEUTUMINEN))
       .map(fetchHautIlmanYhteystietoja(errorClue))
-      .map(_.map(fetchOppivelvollisuudenKeskeytykset))
   }
 
   def getOppijatLaajatTiedotYhteystiedoilla(
@@ -199,7 +198,6 @@ class ValpasOppijaService(
       .map(fetchHautYhteystiedoilla(errorClue))
       .flatMap(oppijat => HttpStatus.foldEithers(oppijat.map(withVirallisetYhteystiedot)))
       .map(oppijat => oppijat.map(_.validate(koodistoviitepalvelu)))
-      .map(_.map(fetchOppivelvollisuudenKeskeytykset))
   }
 
   def getOppijaLaajatTiedot
@@ -228,7 +226,6 @@ class ValpasOppijaService(
   : Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] = {
     getOppijaLaajatTiedotYhteystiedoilla(oppijaOid)
       .flatMap(withKuntailmoitukset)
-      .map(fetchOppivelvollisuudenKeskeytykset)
   }
 
   def getOppijaLaajatTiedotYhteystiedoilla
