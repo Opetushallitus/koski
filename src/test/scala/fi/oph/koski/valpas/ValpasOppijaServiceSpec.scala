@@ -655,10 +655,44 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
   "Peruskoulun opo saa haettua oman oppilaitoksen oppijan tiedot" in {
     canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
-      ValpasMockUsers.valpasJklNormaalikoulu
+      ValpasMockUsers.valpasJklNormaalikouluPelkkäPeruskoulu
     ) shouldBe true
   }
 
+  "Peruskoulun opo saa haettua 17 vuotta tänä vuonna täyttävän oman oppilaitoksen oppijan tiedot rajapäivään asti" in {
+    rajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+      .asetaMockTarkastelupäivä(
+        rajapäivätService.keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
+      )
+
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
+      ValpasMockOppijat.turvakieltoOppija,
+      ValpasMockUsers.valpasJklNormaalikouluPelkkäPeruskoulu
+    ) shouldBe true
+  }
+
+  "Peruskoulun opo saa haettua 17 vuotta tänä vuonna täyttävän oman oppilaitoksen oppijan tiedot rajapäivän jälkeen" in {
+    rajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+      .asetaMockTarkastelupäivä(
+        rajapäivätService.keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä.plusDays(1)
+      )
+
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
+      ValpasMockOppijat.turvakieltoOppija,
+      ValpasMockUsers.valpasJklNormaalikouluPelkkäPeruskoulu
+    ) shouldBe true
+  }
+
+  "Peruskoulun opo saa haettua 18 vuotta tänä vuonna täyttävän oman oppilaitoksen oppijan tiedot" in {
+    val päivä2022 = date(2022,1,15)
+
+    rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(päivä2022)
+
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
+      ValpasMockOppijat.turvakieltoOppija,
+      ValpasMockUsers.valpasJklNormaalikouluPelkkäPeruskoulu
+    ) shouldBe true
+  }
   "Peruskoulun opo ei saa haettua toisen oppilaitoksen oppijan tietoja" in {
     canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
