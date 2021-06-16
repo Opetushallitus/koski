@@ -10,13 +10,14 @@ export type CheckboxProps = Omit<
 > & {
   value: boolean
   onChange: (selected: boolean) => void
+  disabled: boolean
 }
 
 // TODO: Tuunaa tästä hienompi
 export const Checkbox = ({ value, onChange, ...rest }: CheckboxProps) => (
   <input
     {...rest}
-    className={b()}
+    className={b({ disabled: rest.disabled })}
     type="checkbox"
     checked={value}
     onChange={(event) => onChange(event.target.checked)}
@@ -33,6 +34,8 @@ export const LabeledCheckbox = ({
 }: LabeledCheckboxProps) => (
   <label className={b("label")}>
     <Checkbox {...checkboxProps} />
-    <div className={b("labeltext")}>{label}</div>
+    <div className={b("labeltext", { disabled: checkboxProps.disabled })}>
+      {label}
+    </div>
   </label>
 )
