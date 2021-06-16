@@ -15,7 +15,6 @@ object Lukio2019VieraatKieletValidation {
       validateMuutModuulitMuissaOpinnoissa(suoritus),
       validateDeprekoituKielikoodi(suoritus),
       validateÄidinkielenOmainenKieliÄidinkielessä(suoritus),
-      validateÄidinkielenOmainenKieli(suoritus),
       validateSuullisenKielitaidonKokeet(suoritus, parents),
       validateOmanÄidinkielenOpinnotModuuleina(suoritus)
     ))
@@ -105,12 +104,6 @@ object Lukio2019VieraatKieletValidation {
         KoskiErrorCategory.badRequest.validation.rakenne.deprekoituOppimäärä(s"Suorituksessa ${s.tunniste} käytettyä kieltä ${kiellettyKielikoodi} ei sallita. Oman äidinkielen opinnot kuuluu siirtää vieraan kielen opintoina.")
       case _ => HttpStatus.ok
     }
-  }
-
-  private def validateÄidinkielenOmainenKieli(suoritus: Suoritus) = suoritus.koulutusmoduuli match {
-    case k: VierasTaiToinenKotimainenKieli2019 if k.tunniste.koodiarvo == "AOM" =>
-      HttpStatus.validate(List("SV", "FI").contains(k.kieli.koodiarvo)) { KoskiErrorCategory.badRequest.validation.rakenne.deprekoituKielikoodi("Äidinkielen omaisen oppiaineen kieli tulee olla suomi tai ruotsi")}
-    case _ => HttpStatus.ok
   }
 
   private def validateSuullisenKielitaidonKokeet(suoritus: Suoritus, parents: List[Suoritus]): HttpStatus = {

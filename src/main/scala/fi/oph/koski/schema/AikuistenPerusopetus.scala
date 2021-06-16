@@ -179,6 +179,11 @@ case class AikuistenPerusopetuksenÄidinkieliJaKirjallisuus(
 ) extends PerusopetuksenÄidinkieliJaKirjallisuus with AikuistenPerusopetuksenKoodistostaLöytyväOppiaine
 
 case class AikuistenPerusopetuksenVierasTaiToinenKotimainenKieli(
+  @KoodistoKoodiarvo("A1")
+  @KoodistoKoodiarvo("A2")
+  @KoodistoKoodiarvo("B1")
+  @KoodistoKoodiarvo("B2")
+  @KoodistoKoodiarvo("B3")
   tunniste: Koodistokoodiviite,
   kieli: Koodistokoodiviite,
   pakollinen: Boolean = true,
