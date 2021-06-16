@@ -57,7 +57,7 @@ class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication)
       .flatMap(kuntailmoitusValidator.validateKuntailmoitusInput)
   }
 
-  post("/pohjatiedot") {
+  post("/pohjatiedot") { // Huom: ei REST - tällä haetaan dataa
     withJsonBody { (pohjatiedotInputJson: JValue) =>
       val input = extractAndValidatePohjatiedot(pohjatiedotInputJson)
 
