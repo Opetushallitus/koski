@@ -126,9 +126,9 @@ class KoskiApplication(
   lazy val valpasOppijaService = new ValpasOppijaService(this)
   lazy val valpasOppijaSearchService = new ValpasOppijaSearchService(this)
   lazy val valpasKuntailmoitusRepository = new ValpasKuntailmoitusRepository(
-    valpasDatabase, validatingAndResolvingExtractor, valpasRajapäivätService
+    valpasDatabase, validatingAndResolvingExtractor, valpasRajapäivätService, config
   )
-  lazy val valpasOpiskeluoikeusLisätiedotRepository = new OpiskeluoikeusLisätiedotRepository(valpasDatabase)
+  lazy val valpasOpiskeluoikeusLisätiedotRepository = new OpiskeluoikeusLisätiedotRepository(valpasDatabase, config)
   lazy val valpasKuntailmoitusService = new ValpasKuntailmoitusService(this)
   lazy val oidGenerator = OidGenerator(config)
   lazy val hetu = new Hetu(config.getBoolean("acceptSyntheticHetus"))

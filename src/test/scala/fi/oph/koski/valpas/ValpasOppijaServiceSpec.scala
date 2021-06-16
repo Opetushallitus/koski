@@ -6,13 +6,13 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.Organisaatio.Oid
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus, Ryhmällinen}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, OidOrganisaatio, PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus, Ryhmällinen}
 import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
 import fi.oph.koski.valpas.db.ValpasDatabaseFixtureLoader
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat, ValpasOpiskeluoikeusExampleData}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService.defaultMockTarkastelupäivä
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{MockValpasRajapäivätService, ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot, ValpasOppijaSuppeatTiedot, ValpasRajapäivätService}
-import fi.oph.koski.valpas.valpasrepository.{ValpasExampleData, ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusLaajatTiedotJaOppijaOid}
+import fi.oph.koski.valpas.valpasrepository.{ValpasExampleData, ValpasKuntailmoituksenTekijäHenkilö, ValpasKuntailmoituksenTekijäLaajatTiedot, ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusLaajatTiedotJaOppijaOid}
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers, ValpasRooli}
 import org.scalatest.BeforeAndAfterEach
 
@@ -208,7 +208,11 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
         ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus, "voimassa", false, false),
         ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true)
       )
-    )
+    ),
+    (
+      ValpasMockOppijat.ilmoituksenLisätiedotPoistettu,
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true))
+    ),
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
   // Jyväskylän normaalikoulusta löytyvät näytettävät oppivelvolliset aakkosjärjestyksessä, tutkittaessa syksyn rajapäivän jälkeen
@@ -299,6 +303,10 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
           onOikeutettuOppilaitos = true,
           vuosiluokkiinSitomatonOpetus = true)
       )
+    ),
+    (
+      ValpasMockOppijat.ilmoituksenLisätiedotPoistettu,
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true))
     )
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
@@ -803,7 +811,29 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       ValpasMockOppijat.kahdenKoulunYsiluokkalainenJollaIlmoitus,
       ValpasMockOppijat.kasiinAstiToisessaKoulussaOllutJollaIlmoitus,
       ValpasMockOppijat.valmistunutYsiluokkalainenJollaIlmoitus,
+      ValpasMockOppijat.ilmoituksenLisätiedotPoistettu,
     ))
+  }
+
+  "Oppijalle, jonka kuntailmoituksista on poistettu lisätiedot, palautuu kuntailmoitukset vajailla tiedoilla" in {
+    val oppija = ValpasMockOppijat.ilmoituksenLisätiedotPoistettu
+    val result = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(oppija.oid)(defaultSession)
+
+    result.map(_.kuntailmoitukset.map(_.kuntailmoitus.tekijä)) shouldBe Right(Seq(
+      ValpasKuntailmoituksenTekijäLaajatTiedot(
+        organisaatio = OidOrganisaatio(MockOrganisaatiot.jyväskylänNormaalikoulu),
+        henkilö = Some(ValpasKuntailmoituksenTekijäHenkilö(
+          oid = Some(ValpasMockUsers.valpasJklNormaalikoulu.oid),
+          etunimet = None,
+          sukunimi = None,
+          kutsumanimi = None,
+          email = None,
+          puhelinnumero = None,
+        )),
+      ))
+    )
+
+    result.map(_.kuntailmoitukset.map(_.kuntailmoitus.oppijanYhteystiedot)) shouldBe Right(Seq(None))
   }
 
   def validateKunnanIlmoitetutOppijat(
@@ -812,7 +842,6 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     user: ValpasMockUser
   )(expectedOppijat: Seq[LaajatOppijaHenkilöTiedot]) = {
     val result = getKunnanIlmoitetutOppijat(organisaatioOid, aktiiviset, user)
-    val henkiöt = result.map(_.toList)
     result.map(_.map(_.oppija.henkilö.oid).sorted) shouldBe Right(expectedOppijat.map(_.oid).sorted)
   }
 

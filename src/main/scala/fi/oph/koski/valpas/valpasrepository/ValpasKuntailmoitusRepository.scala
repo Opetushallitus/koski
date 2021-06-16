@@ -1,11 +1,12 @@
 package fi.oph.koski.valpas.valpasrepository
 
+import com.typesafe.config.Config
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.{skipSyntheticProperties, strictDeserialization}
-import fi.oph.koski.schema.{Koodistokoodiviite, KoskiSchema, Organisaatio}
+import fi.oph.koski.schema.{Koodistokoodiviite, KoskiSchema, OidOrganisaatio, Organisaatio}
 import fi.oph.koski.validation.ValidatingAndResolvingExtractor
 import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.db.ValpasSchema._
@@ -19,7 +20,8 @@ import java.time.LocalTime
 class ValpasKuntailmoitusRepository(
   valpasDatabase: ValpasDatabase,
   deserializer: ValidatingAndResolvingExtractor,
-  valpasRajapäivätService: ValpasRajapäivätService
+  valpasRajapäivätService: ValpasRajapäivätService,
+  config: Config
 ) extends QueryMethods with Logging {
 
   protected val db: DB = valpasDatabase.db
@@ -80,6 +82,14 @@ class ValpasKuntailmoitusRepository(
     }
   }
 
+  private def fromDbRows(il: IlmoitusRow, lisätiedotRow: Option[IlmoitusLisätiedotRow])
+  : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
+    lisätiedotRow match {
+      case Some(lisätiedot) => fromDbRows(il, lisätiedot)
+      case None => Right(fromDbRows(il))
+    }
+  }
+
   private def fromDbRows(il: IlmoitusRow, lisätiedotRow: IlmoitusLisätiedotRow)
   : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
     for {
@@ -115,6 +125,32 @@ class ValpasKuntailmoitusRepository(
     )
   }
 
+  private def fromDbRows(il: IlmoitusRow)
+  : ValpasKuntailmoitusLaajatTiedotJaOppijaOid = {
+    ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
+      oppijaOid = il.oppijaOid,
+      kuntailmoitus = ValpasKuntailmoitusLaajatTiedot(
+        id = Some(il.uuid.toString),
+        kunta = OidOrganisaatio(oid = il.kuntaOid),
+        aikaleima = Some(il.luotu),
+        tekijä = ValpasKuntailmoituksenTekijäLaajatTiedot(
+          organisaatio = OidOrganisaatio(oid = il.tekijäOrganisaatioOid),
+          henkilö = Some(ValpasKuntailmoituksenTekijäHenkilö(
+            oid = Some(il.tekijäOid),
+            etunimet = None,
+            sukunimi = None,
+            kutsumanimi = None,
+            email = None,
+            puhelinnumero = None
+          ))
+        ),
+        yhteydenottokieli = None,
+        oppijanYhteystiedot = None,
+        hakenutMuualle = None,
+      )
+    )
+  }
+
   def create(model: ValpasKuntailmoitusLaajatTiedotJaOppijaOid)
   : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
     model.kuntailmoitus.tekijä.henkilö
@@ -131,29 +167,42 @@ class ValpasKuntailmoitusRepository(
   }
 
   def queryOppijat(oppijaOids: Set[String]): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedot]] = {
-    HttpStatus.foldEithers(
-      runDbSync(
-        Ilmoitukset
-          .filter(_.oppijaOid inSetBind oppijaOids)
-          .join(IlmoitusLisätiedot).on(_.uuid === _.ilmoitusUuid) // TODO: Tämän pitäisi olla left join ja queryn toimia, vaikka koko lisätiedot taulu olisi tyhjä: lisätiedot ovat oppivelvollisuusrekisterin ulkopuolista dataa
-          .sortBy(_._1.luotu.desc)
-          .result
-      ).map(res => fromDbRows(res._1, res._2))
-        .map(_.map(_.kuntailmoitus))
-    )
+    query(_.oppijaOid inSetBind oppijaOids)
+      .map(_.map(_.kuntailmoitus))
   }
 
   def queryByKunta(kuntaOid: Organisaatio.Oid): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]] = {
+    query(_.kuntaOid === kuntaOid)
+  }
+
+  private def query[T <: slick.lifted.Rep[_]]
+    (filterFn: (IlmoitusTable) => T)
+    (implicit wt: slick.lifted.CanBeQueryCondition[T])
+  : Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]] = {
     HttpStatus.foldEithers(
       runDbSync(
         Ilmoitukset
-          .filter(_.kuntaOid === kuntaOid)
-          .join(IlmoitusLisätiedot).on(_.uuid === _.ilmoitusUuid) // TODO: Tämän pitäisi olla left join ja queryn toimia, vaikka koko lisätiedot taulu olisi tyhjä: lisätiedot ovat oppivelvollisuusrekisterin ulkopuolista dataa
+          .filter(filterFn)
+          .joinLeft(IlmoitusLisätiedot).on(_.uuid === _.ilmoitusUuid)
           .sortBy(_._1.luotu.desc)
           .result
       ).map(Function.tupled(fromDbRows))
     )
   }
 
-  def truncate(): Unit = runDbSync(Ilmoitukset.delete) // TODO: Lisää tsekki ettei olla tuotannossa?
+  def deleteLisätiedot(oppijaOid: String) = {
+    runDbSync(
+      IlmoitusLisätiedot
+        .filter(lt => lt.ilmoitusUuid in Ilmoitukset.filter(_.oppijaOid === oppijaOid).map(_.uuid))
+        .delete
+    )
+  }
+
+  def truncate(): Unit = {
+    if (config.getString("opintopolku.virkailija.url") == "mock") {
+      runDbSync(Ilmoitukset.delete)
+    } else {
+      throw new RuntimeException("Ilmoituksia ei voi tyhjentää tuotantotilassa")
+    }
+  }
 }
