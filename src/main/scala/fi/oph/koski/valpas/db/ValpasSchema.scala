@@ -106,6 +106,7 @@ object ValpasSchema extends Logging {
     val loppu = column[Option[LocalDate]]("loppu")
     val luotu = column[LocalDateTime]("luotu")
     val tekijäOid = column[String]("tekijä_oid")
+    val tekijäOrganisaatioOid = column[String]("tekijä_organisaatio_oid")
     val peruttu = column[Boolean]("peruttu")
 
     val * = (
@@ -115,6 +116,7 @@ object ValpasSchema extends Logging {
       loppu,
       luotu,
       tekijäOid,
+      tekijäOrganisaatioOid,
       peruttu,
     ) <> (OppivelvollisuudenKeskeytysRow.tupled, OppivelvollisuudenKeskeytysRow.unapply)
   }
@@ -126,6 +128,7 @@ object ValpasSchema extends Logging {
     loppu: Option[LocalDate],
     luotu: LocalDateTime,
     tekijäOid: String,
+    tekijäOrganisaatioOid: String,
     peruttu: Boolean = false,
   )
 
