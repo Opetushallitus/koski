@@ -5,7 +5,7 @@ import {
   expectElementEventuallyVisible,
 } from "../integrationtests-env/browser/content"
 
-export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia oppijoita (28)"
+export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia oppijoita (30)"
 export const jklNormaalikouluTableContent = `
   Epäonninen Valpas                                       | 30.10.2005  | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Eroaja-myöhemmin Valpas                                 | 29.9.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |

@@ -217,11 +217,11 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     ),
     (
       ValpasMockOppijat.oppivelvollisuusKeskeytetty,
-      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true))
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true, false))
     ),
     (
       ValpasMockOppijat.oppivelvollisuusKeskeytettyToistaiseksi,
-      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true))
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", true, true, false))
     ),
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 

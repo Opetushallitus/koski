@@ -53,13 +53,13 @@ const vsopPath = createOppijaPath("/virkailija", {
 const oppivelvollisuusKeskeytettyMääräajaksiPath = createOppijaPath(
   "/virkailija",
   {
-    oppijaOid: "1.2.246.562.24.00000000049",
+    oppijaOid: "1.2.246.562.24.00000000056",
   }
 )
 const oppivelvollisuusKeskeytettyToistaiseksiPath = createOppijaPath(
   "/virkailija",
   {
-    oppijaOid: "1.2.246.562.24.00000000050",
+    oppijaOid: "1.2.246.562.24.00000000057",
   }
 )
 
