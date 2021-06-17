@@ -144,6 +144,13 @@ object ValpasMockUsers {
     oppilaitosKäyttäjäPelkkäSuorittaminen(jyväskylänNormaalikoulu)
   )
 
+  val valpasPelkkäSuorittaminenkäyttäjäAmmattikoulu = ValpasMockUser(
+    "käyttäjä",
+    "valpas-pelkkä-suorittaminen-amis",
+    "1.2.246.562.24.12315312847",
+    oppilaitosKäyttäjäPelkkäSuorittaminen(stadinAmmattiopisto)
+  )
+
   val valpasMaksuttomuusJaHelsinkiKäyttäjä = ValpasMockUser(
     "käyttäjä",
     "valpas-maksuttomuus-hki",
@@ -181,7 +188,8 @@ object ValpasMockUsers {
         valpasPelkkäMaksuttomuusKäyttäjä,
         valpasMaksuttomuusJaHelsinkiKäyttäjä,
         valpasMaksuttomuusJaHelsinkiKoskiKäyttäjä,
-        valpasPelkkäSuorittaminenkäyttäjä
+        valpasPelkkäSuorittaminenkäyttäjä,
+        valpasPelkkäSuorittaminenkäyttäjäAmmattikoulu
       )
     } else {
       List()

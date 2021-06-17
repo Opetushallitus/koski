@@ -795,6 +795,57 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     ) shouldBe true
   }
 
+  "Käyttäjä, jolla pelkät suorittamisen valvonnan oikeudet näkee lukio-oppijan vielä valmstumisen jälkeenkin, koska YO-tutkinto oletetaan olevan suorittamatta" in {
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
+      ValpasMockOppijat.lukiostaValmistunutOpiskelija,
+      ValpasMockUsers.valpasPelkkäSuorittaminenkäyttäjä
+    ) shouldBe true
+  }
+
+  "Käyttäjä, jolla pelkät suorittamisen valvonnan oikeudet näkee ammattiopiskelijan" in {
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
+      ValpasMockOppijat.ammattikouluOpiskelija,
+      ValpasMockUsers.valpasPelkkäSuorittaminenkäyttäjäAmmattikoulu
+    ) shouldBe true
+  }
+
+  "Käyttäjä, jolla pelkät suorittamisen valvonnan oikeudet ei näe ammattiopiskelijaa valmistumisen jälkeen" in {
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
+      ValpasMockOppijat.ammattikoulustaValmistunutOpiskelija,
+      ValpasMockUsers.valpasPelkkäSuorittaminenkäyttäjäAmmattikoulu
+    ) shouldBe false
+  }
+
+
+  "Käyttäjä, jolla pelkät suorittamisen valvonnan oikeudet näkee nivelvaiheen opiskelijan" in {
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
+      ValpasMockOppijat.kulosaarenYsiluokkalainenJaJyväskylänNivelvaiheinen,
+      ValpasMockUsers.valpasPelkkäSuorittaminenkäyttäjä
+    ) shouldBe true
+  }
+
+  "Käyttäjä, jolla pelkät suorittamisen valvonnan oikeudet ei näe nivelvaiheen opiskelijaa valmistumisen jälkeen" in {
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
+      ValpasMockOppijat.nivelvaiheestaValmistunutOpiskelija,
+      ValpasMockUsers.valpasPelkkäSuorittaminenkäyttäjä
+    ) shouldBe false
+  }
+
+  "Käyttäjä, jolla pelkät suorittamisen valvonnan oikeudet ammattikouluun ei näe kaksoistutkinnon opiskelijaa valmistumisen jälkeen." in {
+    // Näkyy ainoastaan lukiolle, päätetty niin.
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
+      ValpasMockOppijat.kaksoistutkinnostaValmistunutOpiskelija,
+      ValpasMockUsers.valpasPelkkäSuorittaminenkäyttäjäAmmattikoulu
+    ) shouldBe false
+  }
+
+  "Käyttäjä, jolla pelkät suorittamisen valvonnan oikeudet lukioon näkee yhteistutkinnon opiskelijan vielä valmistumisen jälkeenkin, koska YO-tutkinto oletetaan olevan suorittamatta" in {
+    canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
+      ValpasMockOppijat.kaksoistutkinnostaValmistunutOpiskelija,
+      ValpasMockUsers.valpasPelkkäSuorittaminenkäyttäjä
+    ) shouldBe true
+  }
+
   "Käyttäjä, jolla pelkät suorittamisen valvonnan oikeudet ei näe peruskoulun oppijaa" in {
     canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,

@@ -283,11 +283,20 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         )
         -- TAI:
         OR (
-          -- (2b.1) opiskeluoikeus on päättynyt menneisyydessä eroamiseen. Valmistuneita ei näytetä lainkaan:
-          -- toiselta asteelta valmistuminen tarkoittaa, että oppivelvollisuus päättyy kokonaan, ja nivelvaiheen
-          -- valmistuneiden käsittely tehdään hakeutumisen valvonnn kautta.
+          -- (2b.1) opiskeluoikeus on päättynyt menneisyydessä eroamiseen. Valmistuneita ei pääsääntöisesti
+          -- näytetä lainkaan toiselta asteelta valmistuminen tarkoittaa, että oppivelvollisuus päättyy
+          -- kokonaan, ja nivelvaiheen valmistuneiden käsittely tehdään hakeutumisen valvonnn kautta.
           ($tarkastelupäivä >= ov_kelvollinen_opiskeluoikeus.paattymispaiva)
           AND (ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
+        )
+        -- TAI
+        OR (
+          -- (2b.3) Oppija on valmistunut lukiosta: toistaiseksi oletetaan, että hänellä on vielä YO-tutkinto
+          -- suorittamatta, koska tietoa sen suorittamisesta ei ole helposti saatavilla ja oppivelvollisuus
+          -- päättyy vasta YO-tutkinnon suorittamiseen.
+          ($tarkastelupäivä >= ov_kelvollinen_opiskeluoikeus.paattymispaiva)
+          AND (ov_kelvollinen_opiskeluoikeus.viimeisin_tila = 'valmistunut')
+          AND (ov_kelvollinen_opiskeluoikeus.koulutusmuoto = 'lukiokoulutus')
         )
       )
   )
