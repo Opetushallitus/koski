@@ -1,0 +1,48 @@
+@import "../../style/colors.less";
+
+.datepicker__input {
+  .react-date-picker__wrapper {
+    border: 1px solid @color-gray-lighten-3;
+    border-radius: 3px;
+    padding: 0.185rem 0.75rem;
+  }
+
+  .react-date-picker__button {
+    .react-date-picker__button__icon {
+      stroke: @color-blue-lighten-1;
+    }
+
+    &:enabled:hover {
+      .react-date-picker__button__icon {
+        stroke: @color-blue-lighten-2;
+      }
+    }
+  }
+}
+
+.react-calendar {
+  border: 1px solid @color-gray-lighten-3;
+  border-radius: 3px;
+}
+
+.react-calendar__tile:enabled {
+  background: @color-white;
+
+  &:hover,
+  &:focus {
+    background: @color-blue-lighten-3;
+  }
+}
+
+.react-calendar__tile--now:enabled {
+  background: @color-blue-lighten-4;
+
+  &:hover,
+  &:focus {
+    background: @color-blue-lighten-3;
+  }
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: @color-red;
+}
