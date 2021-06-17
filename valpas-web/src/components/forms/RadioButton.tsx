@@ -19,6 +19,8 @@ export const RadioButton = (props: RadioButtonProps) => (
       checked={props.selected}
       onChange={(event) => props.onChange(event.target.checked)}
     />
-    <span className={b("checkmark")} />
+    <span className={b("checkmark")}>
+      <span className={b("checkmarkdot")} />
+    </span>
   </label>
 )

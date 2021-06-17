@@ -1,10 +1,10 @@
 import * as A from "fp-ts/Array"
-import { pipe } from "fp-ts/lib/function"
-import * as O from "fp-ts/Option"
 import React, { useState } from "react"
 import { RaisedButton } from "../../components/buttons/RaisedButton"
+import { VisibleForKäyttöoikeusrooli } from "../../components/containers/VisibleForKäyttöoikeusrooli"
 import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
-import { t } from "../../i18n/i18n"
+import { T, t } from "../../i18n/i18n"
+import { kuntavalvontaAllowed } from "../../state/accessRights"
 import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import { formatDate, formatNullableDate } from "../../utils/date"
 import { OppivelvollisuudenKeskeytysModal } from "./OppivelvollisuudenKeskeytysModal"
@@ -43,31 +43,32 @@ export const OppijanOppivelvollisuustiedot = (
         />
       </InfoTable>
 
-      <RaisedButton
-        hierarchy="secondary"
-        onClick={() => setKeskeytysModalVisible(true)}
-      >
-        Muokkaa oppivelvollisuuden keskeytystä
-      </RaisedButton>
+      <VisibleForKäyttöoikeusrooli rooli={kuntavalvontaAllowed}>
+        <RaisedButton
+          hierarchy="secondary"
+          onClick={() => setKeskeytysModalVisible(true)}
+        >
+          <T id="oppija__keskeytä_oppivelvollisuus" />
+        </RaisedButton>
 
-      {keskeytysModalVisible && (
-        <OppivelvollisuudenKeskeytysModal
-          oppija={props.oppija.oppija}
-          onClose={() => setKeskeytysModalVisible(false)}
-        />
-      )}
+        {keskeytysModalVisible && (
+          <OppivelvollisuudenKeskeytysModal
+            oppija={props.oppija.oppija}
+            onClose={() => setKeskeytysModalVisible(false)}
+            onSubmit={() => window.location.reload()}
+          />
+        )}
+      </VisibleForKäyttöoikeusrooli>
     </>
   )
 }
 
 const oppivelvollisuusValue = (
   oppija: OppijaHakutilanteillaLaajatTiedot
-): string =>
-  pipe(
-    oppija.oppivelvollisuudenKeskeytykset,
-    A.filter((ovk) => ovk.voimassa),
-    A.head,
-    O.map((ovk) =>
+): React.ReactNode => {
+  const keskeytykset = oppija.oppivelvollisuudenKeskeytykset
+    .filter((ovk) => ovk.voimassa)
+    .map((ovk) =>
       ovk.loppu !== undefined
         ? t("oppija__oppivelvollisuus_keskeytetty_value", {
             alkuPvm: formatDate(ovk.alku),
@@ -76,10 +77,23 @@ const oppivelvollisuusValue = (
         : t("oppija__oppivelvollisuus_keskeytetty_toistaiseksi_value", {
             alkuPvm: formatDate(ovk.alku),
           })
-    ),
-    O.getOrElse(() =>
-      t("oppija__oppivelvollisuus_voimassa_value", {
-        date: formatNullableDate(oppija.oppija.oppivelvollisuusVoimassaAsti),
-      })
     )
+
+  const strs = A.isEmpty(keskeytykset)
+    ? [
+        t("oppija__oppivelvollisuus_voimassa_value", {
+          date: formatNullableDate(oppija.oppija.oppivelvollisuusVoimassaAsti),
+        }),
+      ]
+    : keskeytykset
+
+  return strs.length > 1 ? (
+    <ul>
+      {strs.map((str, index) => (
+        <li key={index}>{str}</li>
+      ))}
+    </ul>
+  ) : (
+    <>{strs.join("")}</>
   )
+}

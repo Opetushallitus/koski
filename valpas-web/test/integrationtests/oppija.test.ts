@@ -67,9 +67,17 @@ const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
 const secondaryHeadingEquals = (expected: string) =>
   textEventuallyEquals(".oppijaview__secondaryheading", expected)
-const cardBodyEquals = (id: string) => (expected: string) =>
-  contentEventuallyEquals(`#${id} .card__body`, expected)
-const oppivelvollisuustiedotEquals = cardBodyEquals("oppivelvollisuustiedot")
+const cardBodyEquals = (id: string, innerSelector?: string) => (
+  expected: string
+) =>
+  contentEventuallyEquals(
+    `#${id} .card__body ${innerSelector || ""}`.trim(),
+    expected
+  )
+const oppivelvollisuustiedotEquals = cardBodyEquals(
+  "oppivelvollisuustiedot",
+  ".infotable"
+)
 const opiskeluhistoriaEquals = cardBodyEquals("opiskeluhistoria")
 const hautEquals = cardBodyEquals("haut")
 const ilmoitetutYhteystiedotEquals = (expected: string) =>
@@ -477,7 +485,7 @@ describe("Oppijakohtainen näkymä", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000004")
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:	7.5.2022 asti
+      Oppivelvollisuus: 7.5.2022 asti
       Oikeus opintojen maksuttomuuteen: 31.12.2024 asti
     `)
     await opiskeluhistoriaEquals(`
@@ -546,7 +554,7 @@ describe("Oppijakohtainen näkymä", () => {
     )
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:	Keskeytetty 1.3.2021 – 30.9.2021
+      Oppivelvollisuus: Keskeytetty 1.3.2021 – 30.9.2021
       Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
     `)
     await opiskeluhistoriaEquals(`
@@ -574,7 +582,7 @@ describe("Oppijakohtainen näkymä", () => {
     )
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:	Keskeytetty toistaiseksi 1.1.2021 alkaen
+      Oppivelvollisuus: Keskeytetty toistaiseksi 1.1.2021 alkaen
       Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
     `)
     await opiskeluhistoriaEquals(`
@@ -603,7 +611,7 @@ describe("Oppijakohtainen näkymä", () => {
     )
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:	18.10.2023 asti
+      Oppivelvollisuus: 18.10.2023 asti
       Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
     `)
     await opiskeluhistoriaEquals(`

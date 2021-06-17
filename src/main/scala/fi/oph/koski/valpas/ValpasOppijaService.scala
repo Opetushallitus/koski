@@ -12,9 +12,11 @@ import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.db.ValpasSchema.{OpiskeluoikeusLisätiedotKey, OpiskeluoikeusLisätiedotRow}
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, ValpasHakukoosteService}
 import fi.oph.koski.valpas.opiskeluoikeusrepository._
-import fi.oph.koski.valpas.valpasrepository.{OppivelvollisuudenKeskeytysService, ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusSuppeatTiedot, ValpasOppivelvollisuudenKeskeytys}
+import fi.oph.koski.valpas.valpasrepository.{OppivelvollisuudenKeskeytysService, UusiOppivelvollisuudenKeskeytys, ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusSuppeatTiedot, ValpasOppivelvollisuudenKeskeytys}
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystiedot
+
+import java.time.{LocalDate, LocalDateTime}
 
 case class OppijaHakutilanteillaLaajatTiedot(
   oppija: ValpasOppijaLaajatTiedot,
@@ -237,6 +239,17 @@ class ValpasOppijaService(
       .flatMap(withVirallisetYhteystiedot)
       .map(_.validate(koodistoviitepalvelu))
       .map(fetchOppivelvollisuudenKeskeytykset)
+  }
+
+  def addOppivelvollisuudenKeskeytys
+    (keskeytys: UusiOppivelvollisuudenKeskeytys)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, Unit] = {
+    accessResolver
+      .assertAccessToOrg(ValpasRooli.KUNTA)(keskeytys.tekijäOrganisaatioOid)
+      .flatMap(_ => getOppijaLaajatTiedot(keskeytys.oppijaOid))
+      .flatMap(accessResolver.withOppijaAccess)
+      .map(_ => ovKeskeytysService.create(keskeytys))
   }
 
   private def asValpasOppijaLaajatTiedot(dbRow: ValpasOppijaRow): Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
