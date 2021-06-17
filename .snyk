@@ -10,4 +10,8 @@ ignore:
     - '*':
         reason: vulnerable code not in use
         expires: 2100-03-18T14:01:55.550Z
+  SNYK-JAVA-IONETTY-1042268:
+    - '*':
+        reason: AWS configures to use the hostname verification: https://github.com/aws/aws-sdk-java-v2/blob/584ccb59e770177aeaa4c3b6bda4e24015b8ece9/http-clients/netty-nio-client/src/main/java/software/amazon/awssdk/http/nio/netty/internal/utils/NettyUtils.java#L201
+        expires: 2100-03-18T14:01:55.550Z
 patch: {}
