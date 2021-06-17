@@ -2,12 +2,13 @@ import bem from "bem-ts"
 import React, { useState } from "react"
 import { Modal } from "../../components/containers/Modal"
 import { LabeledCheckbox } from "../../components/forms/Checkbox"
-import { DatePicker } from "../../components/forms/DatePicker"
+import {
+  DateRange,
+  DateRangePicker,
+} from "../../components/forms/DateRangePicker"
 import { RadioButton } from "../../components/forms/RadioButton"
-import { TextField } from "../../components/forms/TextField"
 import { SecondaryHeading } from "../../components/typography/headings"
 import { OppijaLaajatTiedot } from "../../state/apitypes/oppija"
-import { ISODate } from "../../state/common"
 import "./OppivelvollisuudenKeskeytysModal.less"
 
 const b = bem("ovkeskeytys")
@@ -39,7 +40,7 @@ const OppivelvollisuudenKeskeytysForm = (
 ) => {
   const [aikavalinta, setAikavalinta] = useState<Aikavalinta>("määräaikainen")
   const [toistaiseksiVahvistettu, setToistaiseksiVahvistettu] = useState(false)
-  const [startDate, setStartDate] = useState<ISODate | null>(null)
+  const [dateRange, setDateRange] = useState<DateRange>([null, null])
 
   const määräaikainenSelected = aikavalinta === "määräaikainen"
   const toistaiseksiSelected = aikavalinta === "toistaiseksi"
@@ -51,8 +52,7 @@ const OppivelvollisuudenKeskeytysForm = (
         onSelect={() => setAikavalinta("määräaikainen")}
         label="Oppivelvollisuus keskeytetään määräajaksi ajalle"
       >
-        <TextField value="Esimerkki" onChange={console.log} />
-        <DatePicker value={startDate} onChange={setStartDate} />
+        <DateRangePicker value={dateRange} onChange={setDateRange} />
       </OppivelvollisuudenKeskeytysOption>
 
       <OppivelvollisuudenKeskeytysOption
