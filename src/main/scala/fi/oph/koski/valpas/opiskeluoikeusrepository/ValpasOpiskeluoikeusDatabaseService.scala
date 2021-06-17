@@ -135,7 +135,18 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   )
   -- CTE: opiskeluoikeudet, joiden hakeutumista oppilaitoksella on oikeus valvoa tällä hetkellä
   -- TODO: Tämä toimii vain peruskoulun hakeutumisen valvojille tällä hetkellä.
-  -- Pitää laajentaa kattamaan myös nivelvaihe.
+  -- Pitää laajentaa kattamaan myös nivelvaihe. Tässä dokumentaatio valmiiksi siitä, mitkä katsotaan
+  -- nivelvaiheeksi. Juteltu asiantuntijoiden kanssa 2021-06-17:
+  -- (opiskeluoikeudentyyppi, päätason suorituksen tyyppi) on nivelvaiheen opiskeluoikeus, jos ja vain jos ne ovat:
+  --
+  -- (aikuistenperusopetus, *)
+  -- (ammatillinenkoulutus, telma/valma) , jos opiskeluoikeudessa ei ole mitään muuta kuin telmaa/valmaa
+  --                                       päätason suorituksina
+  -- (luva, *)
+  -- (perusopetukseenvalmistavaopetus, *)
+  -- (vapaansivistystyonkoulutus, vstmaahanmuuttajienkotoutumiskoulutus)
+  -- (vapaansivistystyonkoulutus, vstoppivelvollisillesuunnattukoulutus)
+  -- (vapaansivistystyonkoulutus, vstlukutaitokoulutus)
   , hakeutumisvalvottava_opiskeluoikeus AS (
     SELECT
       DISTINCT ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid,
