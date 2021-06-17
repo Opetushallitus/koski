@@ -173,15 +173,13 @@ class ValpasAccessResolver {
   )
   : Either[HttpStatus, T] = {
     rooli match {
-      case ValpasRooli.OPPILAITOS_HAKEUTUMINEN => {
-        val valvottavat = oppija.opiskeluoikeudet.filter(_.onHakeutumisValvottava).map(_.oid)
-        Either.cond(
-          accessToSomeOrgs(rooli)(oppija.hakeutumisvalvovatOppilaitokset) &&
-            valvottavat.contains(opiskeluoikeusOid),
-          oppija,
-          ValpasErrorCategory.forbidden.opiskeluoikeus()
-        )
-      }
+      case ValpasRooli.OPPILAITOS_HAKEUTUMINEN =>
+        oppija.opiskeluoikeudet
+          .find(oo => oo.oid == opiskeluoikeusOid &&
+            oo.onHakeutumisValvottava &&
+            accessToOrg(rooli)(oo.oppilaitos.oid))
+          .toRight(ValpasErrorCategory.forbidden.opiskeluoikeus())
+          .map(_ => oppija)
       case ValpasRooli.OPPILAITOS_MAKSUTTOMUUS =>
         Either.cond(
           accessToAnyOrg(rooli) && oppija.onOikeusValvoaMaksuttomuutta,
@@ -195,13 +193,12 @@ class ValpasAccessResolver {
           ValpasErrorCategory.forbidden.oppija()
         )
       case ValpasRooli.OPPILAITOS_SUORITTAMINEN => {
-        val valvottavat = oppija.opiskeluoikeudet.filter(_.onSuorittamisValvottava).map(_.oid)
-        Either.cond(
-          accessToSomeOrgs(rooli)(oppija.suorittamisvalvovatOppilaitokset) &&
-            valvottavat.contains(opiskeluoikeusOid),
-          oppija,
-          ValpasErrorCategory.forbidden.opiskeluoikeus()
-        )
+        oppija.opiskeluoikeudet
+          .find(oo => oo.oid == opiskeluoikeusOid &&
+            oo.onSuorittamisValvottava &&
+            accessToOrg(rooli)(oo.oppilaitos.oid))
+          .toRight(ValpasErrorCategory.forbidden.opiskeluoikeus())
+          .map(_ => oppija)
       }
       case _ =>
         Left(ValpasErrorCategory.internalError(s"Tuntematon rooli ${rooli}"))
@@ -236,6 +233,15 @@ class ValpasAccessResolver {
     implicit session: ValpasSession
   ): Boolean =
     onGlobaaliOikeus(rooli) || organisaatioOids.diff(oppilaitosOrganisaatioOids(rooli)).isEmpty
+
+  private def accessToOrg(
+    rooli: ValpasRooli.Role
+  )(
+    organisaatioOid: Organisaatio.Oid,
+  )(
+    implicit session: ValpasSession
+  ): Boolean =
+    accessToSomeOrgs(rooli)(Set(organisaatioOid))
 
   def accessToSomeOrgs(
     rooli: ValpasRooli.Role
