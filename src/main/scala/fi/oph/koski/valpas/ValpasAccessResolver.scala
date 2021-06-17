@@ -63,7 +63,7 @@ class ValpasAccessResolver {
     rooli match {
       case ValpasRooli.OPPILAITOS_HAKEUTUMINEN =>
         Either.cond(
-          !oppija.hakeutumisvalvovatOppilaitokset.isEmpty &&
+          oppija.hakeutumisvalvovatOppilaitokset.nonEmpty &&
             accessToSomeOrgs(rooli)(oppija.hakeutumisvalvovatOppilaitokset),
           oppija,
           ValpasErrorCategory.forbidden.oppija()
@@ -82,7 +82,7 @@ class ValpasAccessResolver {
         )
       case ValpasRooli.OPPILAITOS_SUORITTAMINEN =>
         Either.cond(
-          !oppija.suorittamisvalvovatOppilaitokset.isEmpty &&
+          oppija.suorittamisvalvovatOppilaitokset.nonEmpty &&
             accessToSomeOrgs(rooli)(oppija.suorittamisvalvovatOppilaitokset),
           oppija,
           ValpasErrorCategory.forbidden.oppija()
@@ -102,7 +102,7 @@ class ValpasAccessResolver {
     rooli match {
       case ValpasRooli.OPPILAITOS_HAKEUTUMINEN =>
         oppijat.filter(
-          oppija => !oppija.hakeutumisvalvovatOppilaitokset.isEmpty &&
+          oppija => oppija.hakeutumisvalvovatOppilaitokset.nonEmpty &&
             accessToSomeOrgs(rooli)(oppija.hakeutumisvalvovatOppilaitokset)
         )
       case ValpasRooli.OPPILAITOS_MAKSUTTOMUUS if accessToAnyOrg(rooli) =>
@@ -113,7 +113,7 @@ class ValpasAccessResolver {
       case ValpasRooli.KUNTA => Seq.empty
       case ValpasRooli.OPPILAITOS_SUORITTAMINEN =>
         oppijat.filter(
-          oppija => !oppija.suorittamisvalvovatOppilaitokset.isEmpty &&
+          oppija => oppija.suorittamisvalvovatOppilaitokset.nonEmpty &&
             accessToSomeOrgs(rooli)(oppija.suorittamisvalvovatOppilaitokset)
         )
       case _ =>
