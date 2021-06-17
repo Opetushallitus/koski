@@ -880,7 +880,7 @@ describe('Ammatillinen koulutus', function() {
         'Aikaisempi oppilaitos Stadin ammatti- ja aikuisopisto\n' +
         'Aikaisempi koulutustoimija Helsingin kaupunki\n' +
         'Muutospäivä 2.2.2002\n' +
-        'Aikaisempi oppilaitos Omnian oppilaitos\n' +
+        'Aikaisempi oppilaitos Ressun lukio\n' +
         'Aikaisempi koulutustoimija Helsingin kaupunki'
       )
     })

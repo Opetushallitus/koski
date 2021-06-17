@@ -495,4 +495,64 @@ class OppijaUpdateSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTe
       }
     }
   }
+
+  "Oppilaitoksen muutos opiskeluoikeudessa" - {
+    "Jos koulutustoimija pysyy samana" - {
+      "Vanha oppilaitos on aktiivinen, mutta opiskeluoikeus on aikaisemmin ollut osana oppilaitosta johon opiskeluoikeutta ollaan nyt siirtämässä -> muutos sallitaan" in {
+        resetFixtures
+        val oppija = KoskiSpecificMockOppijat.organisaatioHistoria
+        val opiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
+        val muutos = opiskeluoikeus.withOppilaitos(Oppilaitos(MockOrganisaatiot.ressunLukio))
+        putOppija(Oppija(oppija, List(muutos))) {
+          verifyResponseStatusOk()
+        }
+      }
+      "Vanha oppilaitos on aktiivinen -> muutos on estetty" in {
+        resetFixtures
+
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.ressunLukio)))
+        putOppija(Oppija(oppija, List(opiskeluoikeus))) {
+          verifyResponseStatusOk()
+        }
+        val ensimmäinenOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
+
+        val muutos = ensimmäinenOpiskeluoikeus.withOppilaitos(Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto))
+        putOppija(Oppija(oppija, List(muutos))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation())
+        }
+      }
+      "Vanha oppilaitos on passivoitu -> muutos sallitaan" in {
+        resetFixtures
+
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.lakkautettuOppilaitosHelsingissä)))
+        putOppija(Oppija(oppija, List(opiskeluoikeus))) {
+          verifyResponseStatusOk()
+        }
+        val ensimmäinenOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
+
+        val muutos = ensimmäinenOpiskeluoikeus.withOppilaitos(Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto))
+        putOppija(Oppija(oppija, List(muutos))) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
+    "Jos koulutustoimija muuttuu, voi aktiivisesta oppilaitosta muuttaa" in {
+      resetFixtures
+
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.ressunLukio)))
+      putOppija(Oppija(oppija, List(opiskeluoikeus))) {
+        verifyResponseStatusOk()
+      }
+
+      val ensimmäinenOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
+
+      val muutos = ensimmäinenOpiskeluoikeus
+        .withOppilaitos(Oppilaitos(MockOrganisaatiot.aapajoenKoulu))
+        .withKoulutustoimija(Koulutustoimija(MockOrganisaatiot.tornionKaupunki))
+
+      putOppija(Oppija(oppija, List(muutos))) {
+        verifyResponseStatusOk()
+      }
+    }
+  }
 }

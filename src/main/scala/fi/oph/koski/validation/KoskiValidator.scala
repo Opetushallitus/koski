@@ -106,6 +106,7 @@ class KoskiValidator(
               validatePäätasonSuoritustenStatus(opiskeluoikeus),
               validateOpiskeluoikeudenLisätiedot(opiskeluoikeus),
               validateOsaAikainenErityisopetus(opiskeluoikeus),
+              validateOppilaitoksenMuutos(opiskeluoikeus),
               NuortenPerusopetuksenOpiskeluoikeusValidation.validateNuortenPerusopetuksenOpiskeluoikeus(opiskeluoikeus),
               TiedonSiirrostaPuuttuvatSuorituksetValidation.validateEiSamaaAlkamispaivaa(opiskeluoikeus, koskiOpiskeluoikeudet),
               HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, Nil)))
@@ -1084,7 +1085,8 @@ class KoskiValidator(
    }
  }
 
-  private def validateÄidinkielenOmainenKieli(suoritus: Suoritus) =  {
+
+  private def validateÄidinkielenOmainenKieli(suoritus: Suoritus) = {
     def validateSuomiTaiRuotsi(koodiarvo: String) = HttpStatus.validate(List("SV", "FI").contains(koodiarvo)) {
       KoskiErrorCategory.badRequest.validation.rakenne.deprekoituKielikoodi("Äidinkielen omaisen oppiaineen kieli tulee olla suomi tai ruotsi")
     }
@@ -1094,6 +1096,34 @@ class KoskiValidator(
       case k: VierasTaiToinenKotimainenKieli2019 if k.tunniste.koodiarvo == "AOM" => validateSuomiTaiRuotsi(k.kieli.koodiarvo)
       case k: VierasTaiToinenKotimainenKieli2015 if k.tunniste.koodiarvo == "AOM" => validateSuomiTaiRuotsi(k.kieli.koodiarvo)
       case _ => HttpStatus.ok
+    }
+  }
+
+  private def validateOppilaitoksenMuutos(uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+    val validaatioAstuuVoimaan = LocalDate.parse(config.getString("oppilaitoksenMuutosValidaatioAstuuVoimaan"))
+    if (LocalDate.now.isBefore(validaatioAstuuVoimaan)) {
+      HttpStatus.ok
+    } else {
+      uusiOpiskeluoikeus.oid.map(opiskeluoikeudenOid =>
+        koskiOpiskeluoikeudet.findByOid(opiskeluoikeudenOid)(KoskiSpecificSession.systemUser).map(_.toOpiskeluoikeus).toOption match {
+          case Some(vanhaOpiskeluoikeus) => {
+            val uusiOppilaitos = uusiOpiskeluoikeus.oppilaitos.map(_.oid)
+            val vanhaOppilaitos = vanhaOpiskeluoikeus.oppilaitos.map(_.oid)
+            val koulutustoimijaPysynytSamana = uusiOpiskeluoikeus.koulutustoimija.map(_.oid).exists(uusiOid => vanhaOpiskeluoikeus.koulutustoimija.map(_.oid).contains(uusiOid))
+            val vanhaAktiivinen = vanhaOppilaitos.flatMap(oid => organisaatioRepository.getOrganisaatioHierarkia(oid).map(_.aktiivinen)).getOrElse(false)
+            val uusiAktiivinen = uusiOppilaitos.flatMap(oid => organisaatioRepository.getOrganisaatioHierarkia(oid).map(_.aktiivinen)).getOrElse(false)
+            val uusiOrganisaatioLöytyyOrganisaatioHistoriasta = vanhaOpiskeluoikeus.organisaatiohistoria.exists(_.exists(_.oppilaitos.exists(x => uusiOppilaitos.contains(x.oid))))
+            val oppilaitoksenVaihtoSallittu = uusiOrganisaatioLöytyyOrganisaatioHistoriasta || (!vanhaAktiivinen && uusiAktiivinen)
+
+            if (koulutustoimijaPysynytSamana && uusiOppilaitos != vanhaOppilaitos) {
+              HttpStatus.validate(oppilaitoksenVaihtoSallittu) { KoskiErrorCategory.badRequest.validation() }
+            } else {
+              HttpStatus.ok
+            }
+          }
+          case None => HttpStatus.ok
+        }
+      ).getOrElse(HttpStatus.ok)
     }
   }
 }

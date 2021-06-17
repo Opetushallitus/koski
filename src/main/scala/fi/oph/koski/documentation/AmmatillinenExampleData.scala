@@ -327,8 +327,8 @@ object AmmatillinenExampleData {
     OpiskeluoikeudenOrganisaatiohistoria(
       muutospäivä = date(2002, 2, 2),
       Some(Oppilaitos(
-        oid = MockOrganisaatiot.omnia,
-        nimi = Some(Finnish(fi = "Omnian oppilaitos"))
+        oid = MockOrganisaatiot.ressunLukio,
+        nimi = Some(Finnish(fi = "Ressun lukio"))
       )),
       Some(Koulutustoimija(
         oid = MockOrganisaatiot.helsinginKaupunki,
