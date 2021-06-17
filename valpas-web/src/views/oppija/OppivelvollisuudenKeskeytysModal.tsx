@@ -1,5 +1,6 @@
 import bem from "bem-ts"
-import React, { useState } from "react"
+import React, { useCallback, useState } from "react"
+import { RaisedButton } from "../../components/buttons/RaisedButton"
 import { Modal } from "../../components/containers/Modal"
 import { LabeledCheckbox } from "../../components/forms/Checkbox"
 import {
@@ -20,23 +21,30 @@ export type OppivelvollisuudenKeskeytysModalProps = {
 
 export const OppivelvollisuudenKeskeytysModal = (
   props: OppivelvollisuudenKeskeytysModalProps
-) => (
-  <Modal title="Oppivelvollisuuden keskeytys" onClose={props.onClose}>
-    <SecondaryHeading>
-      {props.oppija.henkilö.sukunimi} {props.oppija.henkilö.etunimet}
-      {props.oppija.henkilö.hetu && ` (${props.oppija.henkilö.hetu})`}
-    </SecondaryHeading>
-    <OppivelvollisuudenKeskeytysForm />
-  </Modal>
-)
+) => {
+  const submit = console.log
+
+  return (
+    <Modal title="Oppivelvollisuuden keskeytys" onClose={props.onClose}>
+      <SecondaryHeading>
+        {props.oppija.henkilö.sukunimi} {props.oppija.henkilö.etunimet}
+        {props.oppija.henkilö.hetu && ` (${props.oppija.henkilö.hetu})`}
+      </SecondaryHeading>
+      <OppivelvollisuudenKeskeytysForm onSubmit={submit} />
+    </Modal>
+  )
+}
 
 // Lomake
 
-type OppivelvollisuudenKeskeytysFormProps = {}
+type OppivelvollisuudenKeskeytysFormProps = {
+  onSubmit: (range: DateRange) => void
+}
+
 type Aikavalinta = "määräaikainen" | "toistaiseksi"
 
 const OppivelvollisuudenKeskeytysForm = (
-  _props: OppivelvollisuudenKeskeytysFormProps
+  props: OppivelvollisuudenKeskeytysFormProps
 ) => {
   const [aikavalinta, setAikavalinta] = useState<Aikavalinta>("määräaikainen")
   const [toistaiseksiVahvistettu, setToistaiseksiVahvistettu] = useState(false)
@@ -44,15 +52,27 @@ const OppivelvollisuudenKeskeytysForm = (
 
   const määräaikainenSelected = aikavalinta === "määräaikainen"
   const toistaiseksiSelected = aikavalinta === "toistaiseksi"
+  const isOk = määräaikainenSelected
+    ? dateRange.every((d) => d != null)
+    : toistaiseksiVahvistettu
+
+  const { onSubmit } = props
+  const submit = useCallback(() => {
+    onSubmit(määräaikainenSelected ? dateRange : [null, null])
+  }, [dateRange, määräaikainenSelected, onSubmit])
 
   return (
-    <div>
+    <section className={b()}>
       <OppivelvollisuudenKeskeytysOption
         selected={määräaikainenSelected}
         onSelect={() => setAikavalinta("määräaikainen")}
         label="Oppivelvollisuus keskeytetään määräajaksi ajalle"
       >
-        <DateRangePicker value={dateRange} onChange={setDateRange} />
+        <DateRangePicker
+          value={dateRange}
+          onChange={setDateRange}
+          disabled={!määräaikainenSelected}
+        />
       </OppivelvollisuudenKeskeytysOption>
 
       <OppivelvollisuudenKeskeytysOption
@@ -60,14 +80,19 @@ const OppivelvollisuudenKeskeytysForm = (
         onSelect={() => setAikavalinta("toistaiseksi")}
         label="Oppivelvollisuus keskeytetään toistaiseksi"
       >
-        <LabeledCheckbox
-          label="Vahvistan, että oppivelvollisuuden keskeytyksen syynä on oppivelvollisuuden suorittamisen estävä pysyvä sairaus tai vamma."
-          value={toistaiseksiVahvistettu}
-          onChange={setToistaiseksiVahvistettu}
-          disabled={!toistaiseksiSelected}
-        />
+        {toistaiseksiSelected && (
+          <LabeledCheckbox
+            label="Vahvistan, että oppivelvollisuuden keskeytyksen syynä on oppivelvollisuuden suorittamisen estävä pysyvä sairaus tai vamma."
+            value={toistaiseksiVahvistettu}
+            onChange={setToistaiseksiVahvistettu}
+          />
+        )}
       </OppivelvollisuudenKeskeytysOption>
-    </div>
+
+      <RaisedButton onClick={submit} disabled={!isOk}>
+        Keskeytä oppivelvollisuus
+      </RaisedButton>
+    </section>
   )
 }
 

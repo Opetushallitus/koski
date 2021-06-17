@@ -10,7 +10,7 @@ export type CheckboxProps = Omit<
 > & {
   value: boolean
   onChange: (selected: boolean) => void
-  disabled: boolean
+  disabled?: boolean
 }
 
 // TODO: Tuunaa tästä hienompi
