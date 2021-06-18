@@ -30,4 +30,12 @@ ignore:
     - '*':
         reason: vulnerable code not in use
         expires: 2100-03-18T14:01:55.550Z
+  SNYK-JAVA-NETMINIDEV-1298655:
+    - '*':
+        reason: Method JSONParserByteArray not used in Logstash
+        expires: 2100-03-18T14:01:55.550Z
+  SNYK-JAVA-NETMINIDEV-1078499:
+    - '*':
+        reason: highly unlikely that log message would cause JSON formatting exceptions
+        expires: 2100-03-18T14:01:55.550Z
 patch: {}
