@@ -23,6 +23,7 @@ case class OppijaHakutilanteillaLaajatTiedot(
   yhteystiedot: Seq[ValpasYhteystiedot],
   kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedotLisätiedoilla],
   oppivelvollisuudenKeskeytykset: Seq[ValpasOppivelvollisuudenKeskeytys],
+  onOikeusTehdäKuntailmoitus: Option[Boolean]
 ) {
   def validate(koodistoviitepalvelu: KoodistoViitePalvelu): OppijaHakutilanteillaLaajatTiedot =
     this.copy(hakutilanteet = hakutilanteet.map(_.validate(koodistoviitepalvelu)))
@@ -43,6 +44,7 @@ object OppijaHakutilanteillaLaajatTiedot {
       yhteystiedot = haut.map(uusimmatIlmoitetutYhteystiedot(yhteystietoryhmänNimi)).getOrElse(Seq.empty),
       kuntailmoitukset = Seq.empty,
       oppivelvollisuudenKeskeytykset = Seq.empty,
+      onOikeusTehdäKuntailmoitus = None
     )
   }
 
@@ -225,6 +227,7 @@ class ValpasOppijaService(
   : Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] = {
     getOppijaLaajatTiedotYhteystiedoilla(oppijaOid)
       .flatMap(withKuntailmoitukset)
+      .map(withOikeusTehdäKuntailmoitus)
   }
 
   def getOppijaLaajatTiedotYhteystiedoilla
@@ -374,6 +377,14 @@ class ValpasOppijaService(
     oppija.copy(
       oppivelvollisuudenKeskeytykset = ovKeskeytysService.getKeskeytykset(oppija.oppija.henkilö.kaikkiOidit.toSeq)
     )
+  }
+
+  private def withOikeusTehdäKuntailmoitus(
+    oppija: OppijaHakutilanteillaLaajatTiedot
+  )(implicit session: ValpasSession): OppijaHakutilanteillaLaajatTiedot = {
+    val onOikeus = application.valpasKuntailmoitusService.withOikeusTehdäKuntailmoitusOppijalle(oppija.oppija)
+      .fold(_ => false, _ => true)
+    oppija.copy(onOikeusTehdäKuntailmoitus = Some(onOikeus))
   }
 
   def setMuuHaku(key: OpiskeluoikeusLisätiedotKey, value: Boolean)(implicit session: ValpasSession): HttpStatus = {
