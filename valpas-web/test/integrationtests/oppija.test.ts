@@ -186,11 +186,11 @@ describe("Oppijakohtainen näkymä", () => {
     allowNetworkError("/valpas/api/oppija/", FORBIDDEN)
     await loginAs(ysiluokkaKeskenKeväälläPath, "valpas-pelkkä-suorittaminen")
 
-    await textEventuallyEquals(
-      ".ohjeteksti",
-      "Olet onnistuneesti kirjautunut Valpas-järjestelmään seuraavilla käyttöoikeuksilla",
-      5000
+    await mainHeadingEquals("Oppijan tiedot")
+    await secondaryHeadingEquals(
+      "Oppijaa ei löydy tunnuksella 1.2.246.562.24.00000000001"
     )
+    await expectEiKuntailmoituksiaNotVisible()
   })
 
   it("Ei näytä oppijan tietoja, johon käyttäjällä ei ole lukuoikeutta vaihdetun tarkastelupäivän jälkeen", async () => {
@@ -477,9 +477,42 @@ describe("Oppijakohtainen näkymä", () => {
     `)
   })
 
+  it("Näyttää detaljisivun suorittamisen valvojalle lukio-oppijasta", async () => {
+    await loginAs(lukioOpiskelijaPath, "valpas-pelkkä-suorittaminen")
+
+    await mainHeadingEquals("Lukio-opiskelija Valpas (070504A717P)")
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000004")
+    await oppivelvollisuustiedotEquals(`
+      Opiskelutilanne:	Opiskelemassa
+      Oppivelvollisuus:	7.5.2022 asti
+      Oikeus opintojen maksuttomuuteen: 31.12.2024 asti
+    `)
+    await opiskeluhistoriaEquals(`
+      school
+      Lukiokoulutus 2019 –
+      Jyväskylän normaalikoulu
+      Ryhmä: AH
+      Tila: Opiskeluoikeus voimassa
+    `)
+  })
+
   it("Ei näytä detaljisivua kuntakäyttäjälle lukio-oppijasta oppivelvollisuuden päätyttyä", async () => {
     allowNetworkError("/valpas/api/oppija/", FORBIDDEN)
     await loginAs(lukioOpiskelijaPath, "valpas-helsinki")
+
+    await resetMockData("2022-08-10")
+    await goToLocation(lukioOpiskelijaPath)
+
+    await mainHeadingEquals("Oppijan tiedot")
+    await secondaryHeadingEquals(
+      "Oppijaa ei löydy tunnuksella 1.2.246.562.24.00000000004"
+    )
+    await expectEiKuntailmoituksiaNotVisible()
+  })
+
+  it("Ei näytä detaljisivua suorittamisen valvojalle lukio-oppijasta oppivelvollisuuden päätyttyä", async () => {
+    allowNetworkError("/valpas/api/oppija/", FORBIDDEN)
+    await loginAs(lukioOpiskelijaPath, "valpas-pelkkä-suorittaminen")
 
     await resetMockData("2022-08-10")
     await goToLocation(lukioOpiskelijaPath)

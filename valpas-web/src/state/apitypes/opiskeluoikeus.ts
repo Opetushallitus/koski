@@ -9,6 +9,7 @@ import { ValpasOpiskeluoikeudenTila } from "./valpasopiskeluoikeudentila"
 export type OpiskeluoikeusLaajatTiedot = {
   oid: Oid
   onHakeutumisValvottava: boolean
+  onSuorittamisValvottava: boolean
   tyyppi: Opiskeluoikeudentyyppi
   oppilaitos: Oppilaitos
   toimipiste?: Toimipiste
@@ -24,6 +25,7 @@ export type OpiskeluoikeusLaajatTiedot = {
 export type OpiskeluoikeusSuppeatTiedot = {
   oid: Oid
   onHakeutumisValvottava: boolean
+  onSuorittamisValvottava: boolean
   tyyppi: Opiskeluoikeudentyyppi
   oppilaitos: Oppilaitos
   toimipiste?: Toimipiste

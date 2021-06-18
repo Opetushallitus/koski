@@ -18,6 +18,7 @@ case class ValpasOppijaRow(
   etunimet: String,
   sukunimi: String,
   hakeutumisvalvovatOppilaitokset: Set[ValpasOppilaitos.Oid],
+  suorittamisvalvovatOppilaitokset: Set[ValpasOppilaitos.Oid],
   opiskeluoikeudet: JValue,
   turvakielto: Boolean,
   äidinkieli: Option[String],
@@ -49,6 +50,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       etunimet = r.rs.getString("etunimet"),
       sukunimi = r.rs.getString("sukunimi"),
       hakeutumisvalvovatOppilaitokset = r.getArray("hakeutumisvalvovatOppilaitokset").toSet,
+      suorittamisvalvovatOppilaitokset = r.getArray("suorittamisvalvovatOppilaitokset").toSet,
       opiskeluoikeudet = r.getJson("opiskeluoikeudet"),
       turvakielto = r.rs.getBoolean("turvakielto"),
       äidinkieli = Option(r.rs.getString("aidinkieli")),
@@ -133,7 +135,18 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   )
   -- CTE: opiskeluoikeudet, joiden hakeutumista oppilaitoksella on oikeus valvoa tällä hetkellä
   -- TODO: Tämä toimii vain peruskoulun hakeutumisen valvojille tällä hetkellä.
-  -- Pitää laajentaa kattamaan myös nivelvaihe.
+  -- Pitää laajentaa kattamaan myös nivelvaihe. Tässä dokumentaatio valmiiksi siitä, mitkä katsotaan
+  -- nivelvaiheeksi. Juteltu asiantuntijoiden kanssa 2021-06-17:
+  -- (opiskeluoikeudentyyppi, päätason suorituksen tyyppi) on nivelvaiheen opiskeluoikeus, jos ja vain jos ne ovat:
+  --
+  -- (aikuistenperusopetus, *)
+  -- (ammatillinenkoulutus, telma/valma) , jos opiskeluoikeudessa ei ole mitään muuta kuin telmaa/valmaa
+  --                                       päätason suorituksina
+  -- (luva, *)
+  -- (perusopetukseenvalmistavaopetus, *)
+  -- (vapaansivistystyonkoulutus, vstmaahanmuuttajienkotoutumiskoulutus)
+  -- (vapaansivistystyonkoulutus, vstoppivelvollisillesuunnattukoulutus)
+  -- (vapaansivistystyonkoulutus, vstlukutaitokoulutus)
   , hakeutumisvalvottava_opiskeluoikeus AS (
     SELECT
       DISTINCT ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid,
@@ -254,9 +267,53 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         )
       )
   )
+  -- CTE: opiskeluoikeudet, joissa oppivelvollisuuden suorittamista oppilaitoksella on oikeus
+  -- valvoa tällä hetkellä
+  , suorittamisvalvottava_opiskeluoikeus AS (
+    SELECT
+      DISTINCT ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid,
+      ov_kelvollinen_opiskeluoikeus.oppilaitos_oid,
+      ov_kelvollinen_opiskeluoikeus.master_oid
+    FROM
+      ov_kelvollinen_opiskeluoikeus
+      LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella
+        ON aikajakson_keskella.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
+        AND $tarkastelupäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
+    WHERE
+      -- (0) henkilö on oppivelvollinen: suorittamisvalvontaa ei voi suorittaa enää sen jälkeen kun henkilön
+      -- oppivelvollisuus on päättynyt
+      ov_kelvollinen_opiskeluoikeus.henkilo_on_oppivelvollinen
+      -- (1) oppijalla on muu kuin peruskoulun opetusoikeus
+      AND ov_kelvollinen_opiskeluoikeus.koulutusmuoto <> 'perusopetus'
+      AND (
+        -- (2a) opiskeluoikeus on läsnä tai väliaikaisesti keskeytynyt tai lomalla tällä hetkellä.
+        -- Huomaa, että tulevaisuuteen luotuja opiskeluoikeuksia ei tarkoituksella haluta näkyviin.
+        (
+          (aikajakson_keskella.tila IS NOT NULL
+            AND aikajakson_keskella.tila = any('{lasna, valiaikaisestikeskeytynyt, loma}'))
+        )
+        -- TAI:
+        OR (
+          -- (2b.1) opiskeluoikeus on päättynyt menneisyydessä eroamiseen. Valmistuneita ei pääsääntöisesti
+          -- näytetä lainkaan toiselta asteelta valmistuminen tarkoittaa, että oppivelvollisuus päättyy
+          -- kokonaan, ja nivelvaiheen valmistuneiden käsittely tehdään hakeutumisen valvonnn kautta.
+          ($tarkastelupäivä >= ov_kelvollinen_opiskeluoikeus.paattymispaiva)
+          AND (ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
+        )
+        -- TAI
+        OR (
+          -- (2b.3) Oppija on valmistunut lukiosta: toistaiseksi oletetaan, että hänellä on vielä YO-tutkinto
+          -- suorittamatta, koska tietoa sen suorittamisesta ei ole helposti saatavilla ja oppivelvollisuus
+          -- päättyy vasta YO-tutkinnon suorittamiseen.
+          ($tarkastelupäivä >= ov_kelvollinen_opiskeluoikeus.paattymispaiva)
+          AND (ov_kelvollinen_opiskeluoikeus.viimeisin_tila = 'valmistunut')
+          AND (ov_kelvollinen_opiskeluoikeus.koulutusmuoto = 'lukiokoulutus')
+        )
+      )
+  )
   -- CTE: kaikki uuden lain piirissä olevat oppijat, joilla on vähintään yksi oppivelvollisuuden suorittamiseen
-  -- kelpaava opiskeluoikeus. Mukana myös taulukko hakeutumisvalvontaan kelpuutettavien opiskeluoikeuksien
-  -- oppilaitoksista käyttöoikeustarkastelua varten.
+  -- kelpaava opiskeluoikeus. Mukana myös taulukko hakeutumisvalvontaan ja suoritusvalvontaan
+  -- kelpuutettavien opiskeluoikeuksien oppilaitoksista käyttöoikeustarkastelua varten.
   , oppija AS (
     SELECT
       DISTINCT r_henkilo.master_oid,
@@ -268,6 +325,10 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         AS hakeutumisvalvova_oppilaitos_oids,
       array_remove(array_agg(DISTINCT hakeutumisvalvottava_opiskeluoikeus.opiskeluoikeus_oid), NULL)
         AS hakeutumisvalvottava_opiskeluoikeus_oids,
+      array_remove(array_agg(DISTINCT suorittamisvalvottava_opiskeluoikeus.oppilaitos_oid), NULL)
+        AS suorittamisvalvova_oppilaitos_oids,
+      array_remove(array_agg(DISTINCT suorittamisvalvottava_opiskeluoikeus.opiskeluoikeus_oid), NULL)
+        AS suorittamisvalvottava_opiskeluoikeus_oids,
       r_henkilo.turvakielto,
       r_henkilo.aidinkieli,
       array_agg(DISTINCT kaikki_henkilot.oppija_oid) AS kaikkiOppijaOidit,
@@ -284,29 +345,27 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         oppilaitosOids.map(_ => sql"""
       -- Optimointi: Kun haetaan oppilaitoksen perusteella, palautetaan vain oppilaitoksen valvottavat oppijat.
       -- Muuten esim. peruskoulussa palautettaisiin turhaan kaikki tiedot ekaluokkalaisista lähtien, mikä hidastaa
-      -- queryä ja kasvattaa resultsettiä huomattavasti.
-      JOIN
-               """)
-          .orElse(
-            Some(sql"""
-      LEFT JOIN
-                 """)),
+      -- queryä ja kasvattaa resultsettiä huomattavasti. Subselect unionista on tässä 2 kertaluokkaa nopeampi käytännössä kuin
+      -- WHERE-ehto, jossa tarkistettaisiin, onko jommassa kummassa non-NULL -sisältö.
+      JOIN (
+        SELECT * FROM hakeutumisvalvottava_opiskeluoikeus
+          UNION
+        SELECT * FROM suorittamisvalvottava_opiskeluoikeus
+      ) AS valvottava_opiskeluoikeus ON valvottava_opiskeluoikeus.master_oid = r_henkilo.master_oid
+      """),
         Some(sql"""
-      hakeutumisvalvottava_opiskeluoikeus ON hakeutumisvalvottava_opiskeluoikeus.master_oid = r_henkilo.master_oid
+      LEFT JOIN hakeutumisvalvottava_opiskeluoikeus ON hakeutumisvalvottava_opiskeluoikeus.master_oid = r_henkilo.master_oid
+      LEFT JOIN suorittamisvalvottava_opiskeluoikeus ON suorittamisvalvottava_opiskeluoikeus.master_oid = r_henkilo.master_oid
       -- Haetaan kaikki oppijan oidit: pitää palauttaa esim. kuntailmoitusten kyselyä varten
       JOIN r_henkilo kaikki_henkilot ON kaikki_henkilot.master_oid = r_henkilo.master_oid
       """),
-        oppilaitosOids.map(_ => sql"""
-      -- Optimointi: Poistetaan turha where-ehto haettaessa kaikki oppilaitoksen tiedot. Koska oppijalla on
-      -- vähintään yksi valvottava opiskeluoikeus, on hänellä pakko olla myös yksi oppivelvollisuuskelvollinen
-      -- opiskeluoikeus.
-             """
-        ).orElse(Some(sql"""
+        nonEmptyOppijaOids.map(_ => sql"""
+      -- Jos haetaan oppijan oid:n perusteella, on oppijalla oltava vähintään yksi oppivelvollisuuskelvollinen
+      -- opiskeluoikeus:
     WHERE
-      -- Oppijalla on oltava vähintään yksi oppivelvollisuuskelvollinen opiskeluoikeus:
       EXISTS (SELECT 1 FROM ov_kelvollinen_opiskeluoikeus
         WHERE ov_kelvollinen_opiskeluoikeus.master_oid = r_henkilo.master_oid)
-      """)),
+      """),
       Some(sql"""
     GROUP BY
       r_henkilo.master_oid,
@@ -482,6 +541,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     oppija.etunimet,
     oppija.sukunimi,
     oppija.hakeutumisvalvova_oppilaitos_oids AS hakeutumisvalvovatOppilaitokset,
+    oppija.suorittamisvalvova_oppilaitos_oids AS suorittamisvalvovatOppilaitokset,
     oppija.turvakielto AS turvakielto,
     oppija.aidinkieli AS aidinkieli,
     oppija.oppivelvollisuus_voimassa_asti AS oppivelvollisuusVoimassaAsti,
@@ -493,6 +553,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         'oid', opiskeluoikeus.opiskeluoikeus_oid,
         'onHakeutumisValvottava',
           opiskeluoikeus.opiskeluoikeus_oid = ANY(oppija.hakeutumisvalvottava_opiskeluoikeus_oids),
+        'onSuorittamisValvottava',
+          opiskeluoikeus.opiskeluoikeus_oid = ANY(oppija.suorittamisvalvottava_opiskeluoikeus_oids),
         'tyyppi', json_build_object(
           'koodiarvo', opiskeluoikeus.koulutusmuoto,
           'koodistoUri', 'opiskeluoikeudentyyppi'
@@ -541,6 +603,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     oppija.etunimet,
     oppija.sukunimi,
     oppija.hakeutumisvalvova_oppilaitos_oids,
+    oppija.suorittamisvalvova_oppilaitos_oids,
     oppija.turvakielto,
     oppija.aidinkieli,
     oppija.oppivelvollisuus_voimassa_asti,

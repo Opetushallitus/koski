@@ -63,7 +63,7 @@ class ValpasAccessResolver {
     rooli match {
       case ValpasRooli.OPPILAITOS_HAKEUTUMINEN =>
         Either.cond(
-          !oppija.hakeutumisvalvovatOppilaitokset.isEmpty &&
+          oppija.hakeutumisvalvovatOppilaitokset.nonEmpty &&
             accessToSomeOrgs(rooli)(oppija.hakeutumisvalvovatOppilaitokset),
           oppija,
           ValpasErrorCategory.forbidden.oppija()
@@ -81,7 +81,12 @@ class ValpasAccessResolver {
           ValpasErrorCategory.forbidden.oppija()
         )
       case ValpasRooli.OPPILAITOS_SUORITTAMINEN =>
-        Left(ValpasErrorCategory.forbidden.oppija()) // TODO: suorittamisen valvontaa ei toteutettu
+        Either.cond(
+          oppija.suorittamisvalvovatOppilaitokset.nonEmpty &&
+            accessToSomeOrgs(rooli)(oppija.suorittamisvalvovatOppilaitokset),
+          oppija,
+          ValpasErrorCategory.forbidden.oppija()
+        )
       case _ =>
         Left(ValpasErrorCategory.internalError(s"Tuntematon rooli ${rooli}"))
     }
@@ -97,7 +102,7 @@ class ValpasAccessResolver {
     rooli match {
       case ValpasRooli.OPPILAITOS_HAKEUTUMINEN =>
         oppijat.filter(
-          oppija => !oppija.hakeutumisvalvovatOppilaitokset.isEmpty &&
+          oppija => oppija.hakeutumisvalvovatOppilaitokset.nonEmpty &&
             accessToSomeOrgs(rooli)(oppija.hakeutumisvalvovatOppilaitokset)
         )
       case ValpasRooli.OPPILAITOS_MAKSUTTOMUUS if accessToAnyOrg(rooli) =>
@@ -107,7 +112,10 @@ class ValpasAccessResolver {
         oppijat.filter(_.onOikeusValvoaKunnalla)
       case ValpasRooli.KUNTA => Seq.empty
       case ValpasRooli.OPPILAITOS_SUORITTAMINEN =>
-        Seq.empty // TODO: suorittamisen valvontaa ei toteutettu
+        oppijat.filter(
+          oppija => oppija.suorittamisvalvovatOppilaitokset.nonEmpty &&
+            accessToSomeOrgs(rooli)(oppija.suorittamisvalvovatOppilaitokset)
+        )
       case _ =>
         throw new InternalError(s"Tuntematon rooli ${rooli}")
     }
@@ -143,7 +151,12 @@ class ValpasAccessResolver {
           ValpasErrorCategory.forbidden.oppija()
         )
       case ValpasRooli.OPPILAITOS_SUORITTAMINEN =>
-        Left(ValpasErrorCategory.forbidden.oppija()) // TODO: suorittamisen valvontaa ei toteutettu
+        Either.cond(
+          accessToAllOrgs(rooli)(Set(organisaatioOid)) &&
+            oppija.suorittamisvalvovatOppilaitokset.contains(organisaatioOid),
+          oppija,
+          ValpasErrorCategory.forbidden.oppija()
+        )
       case _ =>
         Left(ValpasErrorCategory.internalError(s"Tuntematon rooli ${rooli}"))
     }
@@ -160,15 +173,13 @@ class ValpasAccessResolver {
   )
   : Either[HttpStatus, T] = {
     rooli match {
-      case ValpasRooli.OPPILAITOS_HAKEUTUMINEN => {
-        val valvottavat = oppija.opiskeluoikeudet.filter(_.onHakeutumisValvottava).map(_.oid)
-        Either.cond(
-          accessToSomeOrgs(rooli)(oppija.hakeutumisvalvovatOppilaitokset) &&
-            valvottavat.contains(opiskeluoikeusOid),
-          oppija,
-          ValpasErrorCategory.forbidden.opiskeluoikeus()
-        )
-      }
+      case ValpasRooli.OPPILAITOS_HAKEUTUMINEN =>
+        oppija.opiskeluoikeudet
+          .find(oo => oo.oid == opiskeluoikeusOid &&
+            oo.onHakeutumisValvottava &&
+            accessToOrg(rooli)(oo.oppilaitos.oid))
+          .toRight(ValpasErrorCategory.forbidden.opiskeluoikeus())
+          .map(_ => oppija)
       case ValpasRooli.OPPILAITOS_MAKSUTTOMUUS =>
         Either.cond(
           accessToAnyOrg(rooli) && oppija.onOikeusValvoaMaksuttomuutta,
@@ -181,8 +192,14 @@ class ValpasAccessResolver {
           oppija,
           ValpasErrorCategory.forbidden.oppija()
         )
-      case ValpasRooli.OPPILAITOS_SUORITTAMINEN =>
-        Left(ValpasErrorCategory.forbidden.oppija()) // TODO: suorittamisen valvontaa ei toteutettu
+      case ValpasRooli.OPPILAITOS_SUORITTAMINEN => {
+        oppija.opiskeluoikeudet
+          .find(oo => oo.oid == opiskeluoikeusOid &&
+            oo.onSuorittamisValvottava &&
+            accessToOrg(rooli)(oo.oppilaitos.oid))
+          .toRight(ValpasErrorCategory.forbidden.opiskeluoikeus())
+          .map(_ => oppija)
+      }
       case _ =>
         Left(ValpasErrorCategory.internalError(s"Tuntematon rooli ${rooli}"))
     }
@@ -216,6 +233,15 @@ class ValpasAccessResolver {
     implicit session: ValpasSession
   ): Boolean =
     onGlobaaliOikeus(rooli) || organisaatioOids.diff(oppilaitosOrganisaatioOids(rooli)).isEmpty
+
+  private def accessToOrg(
+    rooli: ValpasRooli.Role
+  )(
+    organisaatioOid: Organisaatio.Oid,
+  )(
+    implicit session: ValpasSession
+  ): Boolean =
+    accessToSomeOrgs(rooli)(Set(organisaatioOid))
 
   def accessToSomeOrgs(
     rooli: ValpasRooli.Role

@@ -57,6 +57,10 @@ object ValpasMockOppijat {
   val oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster2 = valpasOppijat.oppija("Kahdella-oppija-oidilla-ilmo-2", "Valpas", "030605A476D")
   val oppivelvollinenMonellaOppijaOidillaJollaIlmoitusToinen2 = valpasOppijat.duplicate(oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster2)
   val ilmoituksenLisätiedotPoistettu = valpasOppijat.oppija("Ilmoituksen-lisätiedot–poistettu", "Valpas", "190505A3019")
+  val lukiostaValmistunutOpiskelija = valpasOppijat.oppija("Lukio-opiskelija-valmistunut", "Valpas", "271105A835H")
+  val ammattikouluOpiskelija = valpasOppijat.oppija("Amis-opiskelija", "Valpas", "231005A2431")
+  val kaksoistutkinnostaValmistunutOpiskelija = valpasOppijat.oppija("Kaksois-tutkinnosta-valmistunut", "Valpas", "260905A7672")
+  val nivelvaiheestaValmistunutOpiskelija = valpasOppijat.oppija("Nivelvaiheesta-valmistunut", "Valpas", "201005A022Y")
 
   // Kutsumanimi ja yhteystiedot haetaan oppijanumerorekisteristä Valpas-käyttäjälle, tallennetaan siksi käyttäjä myös "oppijana" mockeihin
   val käyttäjäValpasJklNormaalikoulu = valpasOppijat.oppija(

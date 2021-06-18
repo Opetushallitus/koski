@@ -252,6 +252,7 @@ class ValpasOppijaService(
             äidinkieli = dbRow.äidinkieli
           ),
           hakeutumisvalvovatOppilaitokset = dbRow.hakeutumisvalvovatOppilaitokset,
+          suorittamisvalvovatOppilaitokset = dbRow.suorittamisvalvovatOppilaitokset,
           opiskeluoikeudet = opiskeluoikeudet,
           oppivelvollisuusVoimassaAsti = dbRow.oppivelvollisuusVoimassaAsti,
           oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = dbRow.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
