@@ -18,4 +18,16 @@ ignore:
     - '*':
         reason: Used as test dependency in testng, vulnerable code not in use
         expires: 2100-03-18T14:01:55.550Z
+  SNYK-JAVA-LOG4J-1300176:
+    - '*':
+        reason: vulnerable code not in use
+        expires: 2100-03-18T14:01:55.550Z
+  SNYK-JAVA-JUNIT-1017047:
+    - '*':
+        reason: vulnerable code not in use
+        expires: 2100-03-18T14:01:55.550Z
+  SNYK-JAVA-ORGAPACHEPOI-548686:
+    - '*':
+        reason: vulnerable code not in use
+        expires: 2100-03-18T14:01:55.550Z
 patch: {}
