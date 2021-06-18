@@ -108,9 +108,11 @@ export const fetchKuntailmoituksenPohjatiedot = (
   handleExpiredSession(
     apiPost<KuntailmoitusPohjatiedot>("valpas/api/kuntailmoitus/pohjatiedot", {
       body: {
-        tekijäOrganisaatio: tekijäOrganisaatioOid && {
-          oid: tekijäOrganisaatioOid,
-        },
+        tekijäOrganisaatio: tekijäOrganisaatioOid
+          ? {
+              oid: tekijäOrganisaatioOid,
+            }
+          : undefined,
         oppijaOidit: oppijaOids,
       },
     })
