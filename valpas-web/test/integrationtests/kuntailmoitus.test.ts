@@ -137,8 +137,44 @@ const oppijat: NonEmptyArray<Oppija> = [
   },
 ]
 
+async function täytäJaLähetäLomake(oppija: Oppija, form: any) {
+  // Esitäytä lomake
+  if (oppija.prefill !== undefined) {
+    await form.prefills[oppija.prefill]!!.click()
+  }
+
+  // Täytä lomake
+  if (oppija.fill?.asuinkunta !== undefined) {
+    await selectOption(form.asuinkuntaSelect, oppija.fill?.asuinkunta)
+  }
+  if (oppija.fill?.postinumero !== undefined) {
+    await fillField(form.postinumeroInput, oppija.fill?.postinumero)
+  }
+  if (oppija.fill?.postitoimipaikka !== undefined) {
+    await fillField(form.postitoimipaikkaInput, oppija.fill?.postitoimipaikka)
+  }
+  if (oppija.fill?.katuosoite !== undefined) {
+    await fillField(form.katuosoiteInput, oppija.fill?.katuosoite)
+  }
+  if (oppija.fill?.puhelinnumero !== undefined) {
+    await fillField(form.puhelinnumeroInput, oppija.fill?.puhelinnumero)
+  }
+  if (oppija.fill?.sähköposti !== undefined) {
+    await fillField(form.sähköpostiInput, oppija.fill?.sähköposti)
+  }
+
+  // Lähetä
+  await form.submitButton.click()
+  await eventually(async () => {
+    const submitted = await form.root.findElement(
+      By.css('[data-testid="submitted"]')
+    )
+    expect(submitted).toBeDefined()
+  })
+}
+
 describe("Kuntailmoituksen tekeminen", () => {
-  it("happy path", async () => {
+  it("happy path hakeutumisen valvojana", async () => {
     await openHakutilanneView()
 
     for (const oppija of oppijat) {
@@ -163,42 +199,7 @@ describe("Kuntailmoituksen tekeminen", () => {
       ).toBeDefined()
       expect(form.title).toBe(oppija.title)
 
-      // Esitäytä lomake
-      if (oppija.prefill !== undefined) {
-        form.prefills[oppija.prefill]!!.click()
-      }
-
-      // Täytä lomake
-      if (oppija.fill?.asuinkunta !== undefined) {
-        await selectOption(form.asuinkuntaSelect, oppija.fill?.asuinkunta)
-      }
-      if (oppija.fill?.postinumero !== undefined) {
-        await fillField(form.postinumeroInput, oppija.fill?.postinumero)
-      }
-      if (oppija.fill?.postitoimipaikka !== undefined) {
-        await fillField(
-          form.postitoimipaikkaInput,
-          oppija.fill?.postitoimipaikka
-        )
-      }
-      if (oppija.fill?.katuosoite !== undefined) {
-        await fillField(form.katuosoiteInput, oppija.fill?.katuosoite)
-      }
-      if (oppija.fill?.puhelinnumero !== undefined) {
-        await fillField(form.puhelinnumeroInput, oppija.fill?.puhelinnumero)
-      }
-      if (oppija.fill?.sähköposti !== undefined) {
-        await fillField(form.sähköpostiInput, oppija.fill?.sähköposti)
-      }
-
-      // Lähetä
-      await form.submitButton.click()
-      await eventually(async () => {
-        const submitted = await form.root.findElement(
-          By.css('[data-testid="submitted"]')
-        )
-        expect(submitted).toBeDefined()
-      })
+      await täytäJaLähetäLomake(oppija, form)
     }
 
     // Tarkista, että sulkemisnappulan teksti on vaihtunut
@@ -225,6 +226,48 @@ describe("Kuntailmoituksen tekeminen", () => {
       expect(await getIlmoitusData()).toEqual(oppija.expected)
     }
   })
+
+  it("happy path oppijanäkymistä hakeutumisen valvojana", async () => {
+    await openHakutilanneView()
+
+    for (const oppija of oppijat) {
+      // Tee ilmoitus oppijakohtaisesta näkymästä käsin, ja tarkista, että uuden ilmoituksen tiedot ilmestyvät näkyviin
+      await goToLocation(
+        createOppijaPath("/virkailija", {
+          oppijaOid: oppija.oid,
+        })
+      )
+      await urlIsEventually(
+        pathToUrl(
+          createOppijaPath("/virkailija", {
+            oppijaOid: oppija.oid,
+          })
+        )
+      )
+
+      await openKuntailmoitusOppijanäkymässä()
+      await fillTekijänTiedot()
+
+      const forms = await getIlmoitusForm()
+      expect(forms.length, "Lomakkeita näkyy vain yksi").toBe(1)
+      const form = forms[0]!!
+      expect(form.title).toBe(oppija.title)
+
+      await täytäJaLähetäLomake(oppija, form)
+
+      // Tarkista, että sulkemisnappulan teksti on vaihtunut
+      const button = await getCloseButton()
+      expect(await button.getText()).toBe("Valmis")
+
+      // Sulje lomake
+      await button.click()
+      await expectElementNotVisible(".modal__container")
+
+      // Tarkista, että ilmoituksen tiedot ovat tulleet näkyviin (automaattinen reload lomakkeen sulkemisen jälkeen)
+
+      expect(await getIlmoitusData()).toEqual(oppija.expected)
+    }
+  })
 })
 
 const openHakutilanneView = async () => {
@@ -246,10 +289,17 @@ const openKuntailmoitus = async () => {
   await expectElementEventuallyVisible(".modal__container")
 }
 
-const fillTekijänTiedot = async () => {
+const openKuntailmoitusOppijanäkymässä = async () => {
+  await clickElement(".oppijaview__ilmoitusbuttonwithinfo button")
+  await expectElementEventuallyVisible(".modal__container")
+}
+
+const fillTekijänTiedot = async (
+  tekijä: { puhelin: string; email: string } = opo
+) => {
   const form = await getTekijänYhteystiedotForm()
-  await fillField(form.email, opo.email)
-  await fillField(form.puhelin, opo.puhelin)
+  await fillField(form.email, tekijä.email)
+  await fillField(form.puhelin, tekijä.puhelin)
   await form.submit.click()
 }
 
