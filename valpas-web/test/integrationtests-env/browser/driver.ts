@@ -38,7 +38,7 @@ const buildBrowserStackDriver = async (): Promise<WebDriver | undefined> =>
   global.__driver__ && global.__driver__()
 
 const buildChromeDriver = async (): Promise<WebDriver> => {
-  const options = new chrome.Options().windowSize({ width: 1920, height: 1440 })
+  const options = new chrome.Options().windowSize({ width: 1920, height: 1920 })
   if (!process.env.SHOW_BROWSER) {
     options.headless()
   }
