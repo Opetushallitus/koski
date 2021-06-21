@@ -1,5 +1,6 @@
 import { createOppijaPath } from "../../src/state/paths"
 import {
+  clickElement,
   contentEventuallyEquals,
   expectElementNotVisible,
   textEventuallyEquals,
@@ -626,6 +627,36 @@ describe("Oppijakohtainen näkymä", () => {
       Jyväskylän normaalikoulu
       Ryhmä:	9C
       Tila:	Opiskeluoikeus voimassa
+    `)
+  })
+
+  it("Oppivelvollisuuden keskeytys toimii oikein", async () => {
+    await loginAs(oppivelvollisuusKeskeytettyMääräajaksiPath, "valpas-helsinki")
+
+    await resetMockData("2022-11-11")
+    await goToLocation(oppivelvollisuusKeskeytettyMääräajaksiPath)
+    await mainHeadingEquals(
+      "Oppivelvollisuus-keskeytetty-määräajaksi Valpas (181005A1560)"
+    )
+
+    // Avaa ov-keskeytysmodaali
+    await clickElement("#ovkeskeytys-btn")
+    await textEventuallyEquals(
+      ".modal__container .heading--secondary",
+      "Oppivelvollisuus-keskeytetty-määräajaksi Valpas (181005A1560)"
+    )
+
+    // Valitse "Oppivelvollisuus keskeytetään toistaiseksi", hyväksy ehto
+    await clickElement(
+      ".ovkeskeytys__option:nth-child(2) .radiobutton__container"
+    )
+    await clickElement(".ovkeskeytys__option:nth-child(2) .checkbox__labeltext")
+    await clickElement("#ovkeskeytys-submit")
+
+    await oppivelvollisuustiedotEquals(`
+      Opiskelutilanne:	Opiskelemassa
+      Oppivelvollisuus: Keskeytetty toistaiseksi 11.11.2022 alkaen
+      Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
     `)
   })
 })

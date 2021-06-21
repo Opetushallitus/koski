@@ -45,6 +45,7 @@ export const OppijanOppivelvollisuustiedot = (
 
       <VisibleForKäyttöoikeusrooli rooli={kuntavalvontaAllowed}>
         <RaisedButton
+          id="ovkeskeytys-btn"
           hierarchy="secondary"
           onClick={() => setKeskeytysModalVisible(true)}
         >
