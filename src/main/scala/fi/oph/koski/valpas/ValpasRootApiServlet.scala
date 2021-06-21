@@ -7,7 +7,7 @@ import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.ChainingSyntax._
 import fi.oph.koski.valpas.db.ValpasSchema.OpiskeluoikeusLisätiedotKey
-import fi.oph.koski.valpas.log.ValpasAuditLog.{auditLogHenkilöHaku, auditLogOppijaKatsominen, auditLogOppilaitosKatsominen}
+import fi.oph.koski.valpas.log.ValpasAuditLog.{auditLogHenkilöHaku, auditLogOppijaKatsominen, auditLogOppilaitosKatsominen, auditLogOppivelvollisuudenKeskeytys}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppilaitos
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasrepository.UusiOppivelvollisuudenKeskeytys
@@ -81,6 +81,7 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
 
       val result = keskeytys
         .flatMap(oppijaService.addOppivelvollisuudenKeskeytys)
+        .tap(_ => keskeytys.tap(auditLogOppivelvollisuudenKeskeytys))
         .map(_ => "ok")
 
       renderEither(result)
