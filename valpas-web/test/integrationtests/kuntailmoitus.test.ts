@@ -25,6 +25,7 @@ import {
   jklNormaalikouluTableContent,
   openOppijaView,
 } from "./hakutilanne.shared"
+import { hkiTableContent } from "./kuntailmoitus.shared"
 import { jyväskylänNormaalikouluOid } from "./oids"
 
 type Oppija = {
@@ -58,15 +59,46 @@ type DisplayedOptionalIlmoitusData = {
   muuHaku?: string
 }
 
+type Tekijä = {
+  nimi: string
+  email: string
+  puhelin: string
+  organisaatio: string
+}
+
 type DisplayedIlmoitusData = DisplayedRequiredIlmoitusData &
   DisplayedOptionalIlmoitusData
 
 const opo = {
+  nimi: "käyttäjä valpas-jkl-normaali",
   email: "integraatiotesti@oph.fi",
   puhelin: "0505050505050",
+  organisaatio: "Jyväskylän normaalikoulu",
 }
 
-const oppijat: NonEmptyArray<Oppija> = [
+const koulutustoimijaHakeutumisenValvoja = {
+  nimi: "käyttäjä valpas-jkl-yliopisto",
+  email: "integraatiotesti@oph.fi",
+  puhelin: "0505050505050",
+  // koulutustoimijatasollakin ilmoitukset tehdään aina oppilaitoksen nimissä, siksi normaalikoulu eikä yliopisto:
+  organisaatio: "Jyväskylän normaalikoulu",
+}
+
+const kuntakäyttäjä = {
+  nimi: "käyttäjä valpas-helsinki",
+  email: "integraatiotesti.kunta@oph.fi",
+  puhelin: "04040404040",
+  organisaatio: "Helsingin kaupunki",
+}
+
+const suorittamisenValvoja = {
+  nimi: "käyttäjä valpas-pelkkä-suorittaminen",
+  email: "integraatiotesti.suorittaminen@oph.fi",
+  puhelin: "090909",
+  organisaatio: "Jyväskylän normaalikoulu",
+}
+
+const teeOppijat = (tekijä: Tekijä): NonEmptyArray<Oppija> => [
   {
     oid: "1.2.246.562.24.00000000001",
     title:
@@ -75,10 +107,10 @@ const oppijat: NonEmptyArray<Oppija> = [
     expected: {
       kohde: "Helsingin kaupunki",
       tekijä: [
-        "käyttäjä valpas-jkl-normaali",
-        opo.email,
-        opo.puhelin,
-        "Jyväskylän normaalikoulu",
+        tekijä.nimi,
+        tekijä.email,
+        tekijä.puhelin,
+        tekijä.organisaatio,
       ].join("\n"),
       lähiosoite: "Esimerkkikatu 123",
       postitoimipaikka: "00000 Helsinki",
@@ -100,10 +132,10 @@ const oppijat: NonEmptyArray<Oppija> = [
     expected: {
       kohde: "Pyhtään kunta",
       tekijä: [
-        "käyttäjä valpas-jkl-normaali",
-        opo.email,
-        opo.puhelin,
-        "Jyväskylän normaalikoulu",
+        tekijä.nimi,
+        tekijä.email,
+        tekijä.puhelin,
+        tekijä.organisaatio,
       ].join("\n"),
       lähiosoite: "Esimerkkikatu 1234",
       postitoimipaikka: "12345 Pyhtää",
@@ -122,10 +154,10 @@ const oppijat: NonEmptyArray<Oppija> = [
     expected: {
       kohde: "Pyhtään kunta",
       tekijä: [
-        "käyttäjä valpas-jkl-normaali",
-        opo.email,
-        opo.puhelin,
-        "Jyväskylän normaalikoulu",
+        tekijä.nimi,
+        tekijä.email,
+        tekijä.puhelin,
+        tekijä.organisaatio,
       ].join("\n"),
       lähiosoite: undefined,
       postitoimipaikka: undefined,
@@ -137,70 +169,165 @@ const oppijat: NonEmptyArray<Oppija> = [
   },
 ]
 
-async function täytäJaLähetäLomake(oppija: Oppija, form: any) {
-  // Esitäytä lomake
-  if (oppija.prefill !== undefined) {
-    await form.prefills[oppija.prefill]!!.click()
-  }
+const kunnanOppijat: NonEmptyArray<Oppija> = teeOppijat(kuntakäyttäjä)
 
-  // Täytä lomake
-  if (oppija.fill?.asuinkunta !== undefined) {
-    await selectOption(form.asuinkuntaSelect, oppija.fill?.asuinkunta)
-  }
-  if (oppija.fill?.postinumero !== undefined) {
-    await fillField(form.postinumeroInput, oppija.fill?.postinumero)
-  }
-  if (oppija.fill?.postitoimipaikka !== undefined) {
-    await fillField(form.postitoimipaikkaInput, oppija.fill?.postitoimipaikka)
-  }
-  if (oppija.fill?.katuosoite !== undefined) {
-    await fillField(form.katuosoiteInput, oppija.fill?.katuosoite)
-  }
-  if (oppija.fill?.puhelinnumero !== undefined) {
-    await fillField(form.puhelinnumeroInput, oppija.fill?.puhelinnumero)
-  }
-  if (oppija.fill?.sähköposti !== undefined) {
-    await fillField(form.sähköpostiInput, oppija.fill?.sähköposti)
-  }
-
-  // Lähetä
-  await form.submitButton.click()
-  await eventually(async () => {
-    const submitted = await form.root.findElement(
-      By.css('[data-testid="submitted"]')
-    )
-    expect(submitted).toBeDefined()
-  })
-}
+const suorittamisenValvojanOppijat: NonEmptyArray<Oppija> = [
+  {
+    oid: "1.2.246.562.24.00000000004",
+    title: "Lukio-opiskelija Valpas (070504A717P)",
+    prefill: 0,
+    expected: {
+      kohde: "Helsingin kaupunki",
+      tekijä: [
+        "käyttäjä valpas-pelkkä-suorittaminen",
+        suorittamisenValvoja.email,
+        suorittamisenValvoja.puhelin,
+        "Jyväskylän normaalikoulu",
+      ].join("\n"),
+      lähiosoite: "Esimerkkikatu 123",
+      postitoimipaikka: "00000 Helsinki",
+      maa: "Suomi",
+      puhelin: "0401234567",
+      email: "Lukio-opiskelija.Valpas@gmail.com",
+      muuHaku: "Ei",
+    },
+  },
+]
 
 describe("Kuntailmoituksen tekeminen", () => {
   it("happy path hakeutumisen valvojana", async () => {
-    await openHakutilanneView()
+    await testaaListanäkymästä("valpas-jkl-normaali", opo)
+  })
 
-    for (const oppija of oppijat) {
-      await selectOppija(oppija.oid)
-    }
+  it("happy path hakeutumisen valvojana koulutustoimijana", async () => {
+    await testaaListanäkymästä(
+      "valpas-jkl-yliopisto",
+      koulutustoimijaHakeutumisenValvoja
+    )
+  })
 
-    await openKuntailmoitus()
-    await fillTekijänTiedot()
+  it("happy path oppijanäkymistä hakeutumisen valvojana", async () => {
+    const oppijat = teeOppijat(opo)
+
+    await openHakutilanneView("valpas-jkl-normaali")
+
+    await testaaOppijanäkymistä(oppijat, opo)
+  })
+
+  it("happy path oppijanäkymistä hakeutumisen valvojana koulutustoimijana", async () => {
+    const oppijat = teeOppijat(koulutustoimijaHakeutumisenValvoja)
+
+    await openHakutilanneView("valpas-jkl-yliopisto")
+
+    await testaaOppijanäkymistä(oppijat, koulutustoimijaHakeutumisenValvoja)
+  })
+
+  it("happy path kunnan käyttäjänä", async () => {
+    await loginAs(hakutilannePath, "valpas-helsinki", true)
+    await dataTableEventuallyEquals(".kuntailmoitus", hkiTableContent, "|")
+
+    await testaaOppijanäkymistä(kunnanOppijat, kuntakäyttäjä)
+  })
+
+  it("happy path suorittamisen valvojana", async () => {
+    await loginAs(hakutilannePath, "valpas-pelkkä-suorittaminen", true)
+    await dataTableEventuallyEquals(
+      ".kayttooikeudet",
+      `
+      Oppilaitoksen oppivelvollisuuden suorittamisen valvonta
+      `
+    )
+
+    await testaaOppijanäkymistä(
+      suorittamisenValvojanOppijat,
+      suorittamisenValvoja
+    )
+  })
+})
+
+const testaaListanäkymästä = async (username: string, tekijä: Tekijä) => {
+  const oppijat = teeOppijat(tekijä)
+
+  await openHakutilanneView(username)
+
+  for (const oppija of oppijat) {
+    await selectOppija(oppija.oid)
+  }
+
+  await openKuntailmoitus()
+  await fillTekijänTiedot(tekijä)
+
+  const forms = await getIlmoitusForm()
+  expect(
+    forms.length,
+    "Lomakkeita näkyy yhtä monta kuin valittuja oppijoita"
+  ).toBe(oppijat.length)
+
+  for (const form of forms) {
+    // Tarkista että valitut oppijat ja lomakkeet mäppäytyvät toisiinsa
+    const oppija = oppijat.find((o) => form.subtitle.includes(o.oid))!!
+    expect(
+      oppija,
+      `Lomakkeen oppija "${form.title}" "${form.subtitle}" on valittujen oppijoiden joukossa`
+    ).toBeDefined()
+    expect(form.title).toBe(oppija.title)
+
+    await täytäJaLähetäLomake(oppija, form)
+  }
+
+  // Tarkista, että sulkemisnappulan teksti on vaihtunut
+  const button = await getCloseButton()
+  expect(await button.getText()).toBe("Valmis")
+
+  // Sulje lomake
+  await button.click()
+  await expectElementNotVisible(".modal__container")
+
+  // Tarkista oppijakohtaisista näkymistä, että ilmoituksen tiedot ovat siellä
+  for (const oppija of oppijat) {
+    await goToLocation(hakutilannePath)
+    await openOppijaView(oppija.oid)
+    await urlIsEventually(
+      pathToUrl(
+        createOppijaPath("/virkailija", {
+          oppijaOid: oppija.oid,
+          hakutilanneRef: jyväskylänNormaalikouluOid,
+        })
+      )
+    )
+
+    expect(await getIlmoitusData()).toEqual(oppija.expected)
+  }
+}
+
+const testaaOppijanäkymistä = async (
+  oppijat: NonEmptyArray<Oppija>,
+  tekijä: Tekijä
+) => {
+  for (const oppija of oppijat) {
+    // Tee ilmoitus oppijakohtaisesta näkymästä käsin, ja tarkista, että uuden ilmoituksen tiedot ilmestyvät näkyviin
+    await goToLocation(
+      createOppijaPath("/virkailija", {
+        oppijaOid: oppija.oid,
+      })
+    )
+    await urlIsEventually(
+      pathToUrl(
+        createOppijaPath("/virkailija", {
+          oppijaOid: oppija.oid,
+        })
+      )
+    )
+
+    await openKuntailmoitusOppijanäkymässä()
+    await fillTekijänTiedot(tekijä)
 
     const forms = await getIlmoitusForm()
-    expect(
-      forms.length,
-      "Lomakkeita näkyy yhtä monta kuin valittuja oppijoita"
-    ).toBe(oppijat.length)
+    expect(forms.length, "Lomakkeita näkyy vain yksi").toBe(1)
+    const form = forms[0]!!
+    expect(form.title).toBe(oppija.title)
 
-    for (const form of forms) {
-      // Tarkista että valitut oppijat ja lomakkeet mäppäytyvät toisiinsa
-      const oppija = oppijat.find((o) => form.subtitle.includes(o.oid))!!
-      expect(
-        oppija,
-        `Lomakkeen oppija "${form.title}" "${form.subtitle}" on valittujen oppijoiden joukossa`
-      ).toBeDefined()
-      expect(form.title).toBe(oppija.title)
-
-      await täytäJaLähetäLomake(oppija, form)
-    }
+    await täytäJaLähetäLomake(oppija, form)
 
     // Tarkista, että sulkemisnappulan teksti on vaihtunut
     const button = await getCloseButton()
@@ -210,68 +337,14 @@ describe("Kuntailmoituksen tekeminen", () => {
     await button.click()
     await expectElementNotVisible(".modal__container")
 
-    // Tarkista oppijakohtaisista näkymistä, että ilmoituksen tiedot ovat siellä
-    for (const oppija of oppijat) {
-      await goToLocation(hakutilannePath)
-      await openOppijaView(oppija.oid)
-      await urlIsEventually(
-        pathToUrl(
-          createOppijaPath("/virkailija", {
-            oppijaOid: oppija.oid,
-            hakutilanneRef: jyväskylänNormaalikouluOid,
-          })
-        )
-      )
+    // Tarkista, että ilmoituksen tiedot ovat tulleet näkyviin (automaattinen reload lomakkeen sulkemisen jälkeen)
 
-      expect(await getIlmoitusData()).toEqual(oppija.expected)
-    }
-  })
+    expect(await getIlmoitusData()).toEqual(oppija.expected)
+  }
+}
 
-  it("happy path oppijanäkymistä hakeutumisen valvojana", async () => {
-    await openHakutilanneView()
-
-    for (const oppija of oppijat) {
-      // Tee ilmoitus oppijakohtaisesta näkymästä käsin, ja tarkista, että uuden ilmoituksen tiedot ilmestyvät näkyviin
-      await goToLocation(
-        createOppijaPath("/virkailija", {
-          oppijaOid: oppija.oid,
-        })
-      )
-      await urlIsEventually(
-        pathToUrl(
-          createOppijaPath("/virkailija", {
-            oppijaOid: oppija.oid,
-          })
-        )
-      )
-
-      await openKuntailmoitusOppijanäkymässä()
-      await fillTekijänTiedot()
-
-      const forms = await getIlmoitusForm()
-      expect(forms.length, "Lomakkeita näkyy vain yksi").toBe(1)
-      const form = forms[0]!!
-      expect(form.title).toBe(oppija.title)
-
-      await täytäJaLähetäLomake(oppija, form)
-
-      // Tarkista, että sulkemisnappulan teksti on vaihtunut
-      const button = await getCloseButton()
-      expect(await button.getText()).toBe("Valmis")
-
-      // Sulje lomake
-      await button.click()
-      await expectElementNotVisible(".modal__container")
-
-      // Tarkista, että ilmoituksen tiedot ovat tulleet näkyviin (automaattinen reload lomakkeen sulkemisen jälkeen)
-
-      expect(await getIlmoitusData()).toEqual(oppija.expected)
-    }
-  })
-})
-
-const openHakutilanneView = async () => {
-  await loginAs(hakutilannePath, "valpas-jkl-normaali", true)
+const openHakutilanneView = async (username: string) => {
+  await loginAs(hakutilannePath, username, true)
   await dataTableEventuallyEquals(
     ".hakutilanne",
     jklNormaalikouluTableContent,
@@ -294,9 +367,10 @@ const openKuntailmoitusOppijanäkymässä = async () => {
   await expectElementEventuallyVisible(".modal__container")
 }
 
-const fillTekijänTiedot = async (
-  tekijä: { puhelin: string; email: string } = opo
-) => {
+const fillTekijänTiedot = async (tekijä: {
+  puhelin: string
+  email: string
+}) => {
   const form = await getTekijänYhteystiedotForm()
   await fillField(form.email, tekijä.email)
   await fillField(form.puhelin, tekijä.puhelin)
@@ -340,6 +414,42 @@ const getIlmoitusForm = async () => {
       }),
     }))
   )
+}
+
+const täytäJaLähetäLomake = async (oppija: Oppija, form: any) => {
+  // Esitäytä lomake
+  if (oppija.prefill !== undefined) {
+    await form.prefills[oppija.prefill]!!.click()
+  }
+
+  // Täytä lomake
+  if (oppija.fill?.asuinkunta !== undefined) {
+    await selectOption(form.asuinkuntaSelect, oppija.fill?.asuinkunta)
+  }
+  if (oppija.fill?.postinumero !== undefined) {
+    await fillField(form.postinumeroInput, oppija.fill?.postinumero)
+  }
+  if (oppija.fill?.postitoimipaikka !== undefined) {
+    await fillField(form.postitoimipaikkaInput, oppija.fill?.postitoimipaikka)
+  }
+  if (oppija.fill?.katuosoite !== undefined) {
+    await fillField(form.katuosoiteInput, oppija.fill?.katuosoite)
+  }
+  if (oppija.fill?.puhelinnumero !== undefined) {
+    await fillField(form.puhelinnumeroInput, oppija.fill?.puhelinnumero)
+  }
+  if (oppija.fill?.sähköposti !== undefined) {
+    await fillField(form.sähköpostiInput, oppija.fill?.sähköposti)
+  }
+
+  // Lähetä
+  await form.submitButton.click()
+  await eventually(async () => {
+    const submitted = await form.root.findElement(
+      By.css('[data-testid="submitted"]')
+    )
+    expect(submitted).toBeDefined()
+  })
 }
 
 const selectOption = async (select: WebElement, text: string) => {
