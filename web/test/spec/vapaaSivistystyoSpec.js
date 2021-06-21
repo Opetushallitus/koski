@@ -119,10 +119,10 @@ describe('VST', function () {
     )
 
     it('kielisuorituksen arvioinnin taitotasot näkyvät', function () {
-      expect(extractAsText(S('.kuullunYmmärtämisenTaitotaso'))).to.equal('Kuullun ymmärtämisen taitotaso Yli C1.1')
-      expect(extractAsText(S('.puhumisenTaitotaso'))).to.equal('Puhumisen taitotaso Yli C1.1')
-      expect(extractAsText(S('.luetunYmmärtämisenTaitotaso'))).to.equal('Luetun ymmärtämisen taitotaso Yli C1.1')
-      expect(extractAsText(S('.kirjoittamisenTaitotaso'))).to.equal('Kirjoittamisen taitotaso Yli C1.1')
+      expect(extractAsText(S('.kuullunYmmärtämisenTaitotaso'))).to.equal('Kuullun ymmärtämisen taitotaso Taso C2.2')
+      expect(extractAsText(S('.puhumisenTaitotaso'))).to.equal('Puhumisen taitotaso Taso C2.2')
+      expect(extractAsText(S('.luetunYmmärtämisenTaitotaso'))).to.equal('Luetun ymmärtämisen taitotaso Taso C2.2')
+      expect(extractAsText(S('.kirjoittamisenTaitotaso'))).to.equal('Kirjoittamisen taitotaso Taso C2.2')
     })
   })
 })

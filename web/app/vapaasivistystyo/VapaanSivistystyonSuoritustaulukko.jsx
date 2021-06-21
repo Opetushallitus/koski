@@ -64,6 +64,7 @@ export class VapaanSivistystyonSuoritustaulukko extends React.Component {
             <SingleColumnRowTable colSpan={4}>
               <UusiVapaanSivistystyonOsasuoritus suoritusPrototypes={suoritusProtos}
                                                  setExpanded={setExpanded}
+                                                 suoritukset={suoritukset}
 
               />
             </SingleColumnRowTable>
