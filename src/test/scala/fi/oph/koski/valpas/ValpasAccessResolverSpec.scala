@@ -99,7 +99,7 @@ class ValpasAccessResolverSpec extends ValpasTestBase {
       oppivelvollisuusVoimassaAsti = date(2021, 10, 1),
       oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = date(2023, 12, 31),
       onOikeusValvoaMaksuttomuutta = onOikeusValvoaMaksuttomuutta,
-      onOikeusValvoaKunnalla = onOikeusValvoaMaksuttomuutta
+      onOikeusValvoaKunnalla = onOikeusValvoaKunnalla
     )
 
   def henkilö = ValpasHenkilöLaajatTiedot(
