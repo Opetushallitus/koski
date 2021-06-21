@@ -12,11 +12,9 @@ import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.db.ValpasSchema.{OpiskeluoikeusLisätiedotKey, OpiskeluoikeusLisätiedotRow}
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, ValpasHakukoosteService}
 import fi.oph.koski.valpas.opiskeluoikeusrepository._
-import fi.oph.koski.valpas.valpasrepository.{OppivelvollisuudenKeskeytysService, UusiOppivelvollisuudenKeskeytys, ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusSuppeatTiedot, ValpasOppivelvollisuudenKeskeytys}
+import fi.oph.koski.valpas.valpasrepository._
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystiedot
-
-import java.time.{LocalDate, LocalDateTime}
 
 case class OppijaHakutilanteillaLaajatTiedot(
   oppija: ValpasOppijaLaajatTiedot,

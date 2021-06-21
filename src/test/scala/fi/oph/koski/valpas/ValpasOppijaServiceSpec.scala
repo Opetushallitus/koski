@@ -4,15 +4,17 @@ import java.time.{LocalDate, LocalDateTime}
 import java.time.LocalDate.{of => date}
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
+import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, OidOrganisaatio, PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus, Ryhmällinen}
 import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
+import fi.oph.koski.valpas.ValpasErrorCategory.forbidden
 import fi.oph.koski.valpas.db.ValpasDatabaseFixtureLoader
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat, ValpasOpiskeluoikeusExampleData}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService.defaultMockTarkastelupäivä
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{MockValpasRajapäivätService, ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot, ValpasOppijaSuppeatTiedot, ValpasRajapäivätService}
-import fi.oph.koski.valpas.valpasrepository.{ValpasExampleData, ValpasKuntailmoituksenTekijäHenkilö, ValpasKuntailmoituksenTekijäLaajatTiedot, ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusLaajatTiedotJaOppijaOid}
+import fi.oph.koski.valpas.valpasrepository.{UusiOppivelvollisuudenKeskeytys, ValpasExampleData, ValpasKuntailmoituksenTekijäHenkilö, ValpasKuntailmoituksenTekijäLaajatTiedot, ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusLaajatTiedotJaOppijaOid, ValpasOppivelvollisuudenKeskeytys}
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers, ValpasRooli}
 import org.scalatest.BeforeAndAfterEach
 
