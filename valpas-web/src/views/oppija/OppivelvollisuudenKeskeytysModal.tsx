@@ -188,7 +188,12 @@ const OppivelvollisuudenKeskeytysForm = (
         </Error>
       )}
 
-      <RaisedButton id="ovkeskeytys-submit" onClick={submit} disabled={!isOk}>
+      <RaisedButton
+        id="ovkeskeytys-submit"
+        className={b("submit")}
+        onClick={submit}
+        disabled={!isOk}
+      >
         <T id="ovkeskeytys__keskeytä_oppivelvollisuus_nappi" />
       </RaisedButton>
     </section>
