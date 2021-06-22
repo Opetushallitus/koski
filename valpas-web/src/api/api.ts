@@ -7,6 +7,7 @@ import {
   OppijaHakutilanteillaSuppeatTiedot,
   OppijaKuntailmoituksillaSuppeatTiedot,
 } from "../state/apitypes/oppija"
+import { UusiOppivelvollisuudenKeskeytys } from "../state/apitypes/oppivelvollisuudenkeskeytys"
 import {
   Hetu,
   Oid,
@@ -95,7 +96,7 @@ export const fetchKuntailmoituksenPohjatiedot = (
   handleExpiredSession(
     apiPost<KuntailmoitusPohjatiedot>("valpas/api/kuntailmoitus/pohjatiedot", {
       body: {
-        tekijäOrganisaatio: {
+        tekijäOrganisaatio: tekijäOrganisaatioOid && {
           oid: tekijäOrganisaatioOid,
         },
         oppijaOidit: oppijaOids,
@@ -119,6 +120,9 @@ export const createKuntailmoitus = (
     })
   )
 
+/**
+ * Kuntailmoitusten hakeminen
+ */
 export const fetchKuntailmoitukset = (kuntaOid: Oid) =>
   handleExpiredSession(
     apiGet<OppijaKuntailmoituksillaSuppeatTiedot[]>(
@@ -151,6 +155,16 @@ export const setMuuHaku = async (
         value,
       })
     )
+  )
+
+/**
+ * Oppivelvollisuuden keskeytyksen lisäys
+ */
+export const createOppivelvollisuudenKeskeytys = (
+  keskeytys: UusiOppivelvollisuudenKeskeytys
+) =>
+  handleExpiredSession(
+    apiPost<void>("valpas/api/oppija/ovkeskeytys", { body: keskeytys })
   )
 
 // Virhetilanteiden hallinta

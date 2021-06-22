@@ -1,5 +1,7 @@
 import { createOppijaPath } from "../../src/state/paths"
+import { formatDate, today } from "../../src/utils/date"
 import {
+  clickElement,
   contentEventuallyEquals,
   expectElementNotVisible,
   textEventuallyEquals,
@@ -67,9 +69,17 @@ const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
 const secondaryHeadingEquals = (expected: string) =>
   textEventuallyEquals(".oppijaview__secondaryheading", expected)
-const cardBodyEquals = (id: string) => (expected: string) =>
-  contentEventuallyEquals(`#${id} .card__body`, expected)
-const oppivelvollisuustiedotEquals = cardBodyEquals("oppivelvollisuustiedot")
+const cardBodyEquals = (id: string, innerSelector?: string) => (
+  expected: string
+) =>
+  contentEventuallyEquals(
+    `#${id} .card__body ${innerSelector || ""}`.trim(),
+    expected
+  )
+const oppivelvollisuustiedotEquals = cardBodyEquals(
+  "oppivelvollisuustiedot",
+  ".infotable"
+)
 const opiskeluhistoriaEquals = cardBodyEquals("opiskeluhistoria")
 const hautEquals = cardBodyEquals("haut")
 const ilmoitetutYhteystiedotEquals = (expected: string) =>
@@ -477,7 +487,7 @@ describe("Oppijakohtainen näkymä", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000004")
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:	7.5.2022 asti
+      Oppivelvollisuus: 7.5.2022 asti
       Oikeus opintojen maksuttomuuteen: 31.12.2024 asti
     `)
     await opiskeluhistoriaEquals(`
@@ -546,7 +556,7 @@ describe("Oppijakohtainen näkymä", () => {
     )
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:	Keskeytetty 1.3.2021 – 30.9.2021
+      Oppivelvollisuus: Keskeytetty 1.3.2021 – 30.9.2021
       Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
     `)
     await opiskeluhistoriaEquals(`
@@ -574,7 +584,7 @@ describe("Oppijakohtainen näkymä", () => {
     )
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:	Keskeytetty toistaiseksi 1.1.2021 alkaen
+      Oppivelvollisuus: Keskeytetty toistaiseksi 1.1.2021 alkaen
       Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
     `)
     await opiskeluhistoriaEquals(`
@@ -603,7 +613,7 @@ describe("Oppijakohtainen näkymä", () => {
     )
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:	18.10.2023 asti
+      Oppivelvollisuus: 18.10.2023 asti
       Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
     `)
     await opiskeluhistoriaEquals(`
@@ -618,6 +628,36 @@ describe("Oppijakohtainen näkymä", () => {
       Jyväskylän normaalikoulu
       Ryhmä:	9C
       Tila:	Opiskeluoikeus voimassa
+    `)
+  })
+
+  it("Oppivelvollisuuden keskeytys toimii oikein", async () => {
+    await loginAs(oppivelvollisuusKeskeytettyMääräajaksiPath, "valpas-helsinki")
+
+    await resetMockData("2022-11-11")
+    await goToLocation(oppivelvollisuusKeskeytettyMääräajaksiPath)
+    await mainHeadingEquals(
+      "Oppivelvollisuus-keskeytetty-määräajaksi Valpas (181005A1560)"
+    )
+
+    // Avaa ov-keskeytysmodaali
+    await clickElement("#ovkeskeytys-btn")
+    await textEventuallyEquals(
+      ".modal__container .heading--secondary",
+      "Oppivelvollisuus-keskeytetty-määräajaksi Valpas (181005A1560)"
+    )
+
+    // Valitse "Oppivelvollisuus keskeytetään toistaiseksi", säilytä alkupäivänä nykyinen päivä, hyväksy ehto
+    await clickElement(
+      ".ovkeskeytys__option:nth-child(2) .radiobutton__container"
+    )
+    await clickElement(".ovkeskeytys__option:nth-child(2) .checkbox__labeltext")
+    await clickElement("#ovkeskeytys-submit")
+
+    await oppivelvollisuustiedotEquals(`
+      Opiskelutilanne:	Opiskelemassa
+      Oppivelvollisuus: Keskeytetty toistaiseksi ${formatDate(today())} alkaen
+      Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
     `)
   })
 })

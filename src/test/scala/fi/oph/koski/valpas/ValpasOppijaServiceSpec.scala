@@ -1,20 +1,21 @@
 package fi.oph.koski.valpas
 
-import java.time.{LocalDate, LocalDateTime}
-import java.time.LocalDate.{of => date}
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.Organisaatio.Oid
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, OidOrganisaatio, PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus, Ryhmällinen}
+import fi.oph.koski.schema._
 import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
 import fi.oph.koski.valpas.db.ValpasDatabaseFixtureLoader
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat, ValpasOpiskeluoikeusExampleData}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService.defaultMockTarkastelupäivä
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{MockValpasRajapäivätService, ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot, ValpasOppijaSuppeatTiedot, ValpasRajapäivätService}
-import fi.oph.koski.valpas.valpasrepository.{ValpasExampleData, ValpasKuntailmoituksenTekijäHenkilö, ValpasKuntailmoituksenTekijäLaajatTiedot, ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusLaajatTiedotJaOppijaOid}
-import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers, ValpasRooli}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{MockValpasRajapäivätService, ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot, ValpasOppijaSuppeatTiedot}
+import fi.oph.koski.valpas.valpasrepository._
+import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import org.scalatest.BeforeAndAfterEach
+
+import java.time.LocalDate.{of => date}
+import java.time.LocalDateTime
 
 class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
   override protected def beforeEach() {
@@ -918,6 +919,116 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     )
 
     result.map(_.kuntailmoitukset.map(_.kuntailmoitus.oppijanYhteystiedot)) shouldBe Right(Seq(None))
+  }
+
+  "Oppivelvollisuutta ei pysty keskeyttämään ilman kunnan valvontaoikeuksia" in {
+    val oppija = ValpasMockOppijat.valmistunutYsiluokkalainen
+    val tekijäOrganisaatioOid = MockOrganisaatiot.jyväskylänNormaalikoulu
+    val alku = rajapäivätService.tarkastelupäivä
+
+    val result = oppijaService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
+      oppijaOid = oppija.oid,
+      alku = alku,
+      loppu = None,
+      tekijäOrganisaatioOid = tekijäOrganisaatioOid,
+    ))(defaultSession)
+
+    result.left.map(_.statusCode) shouldBe Left(403)
+  }
+
+  "Oppivelvollisuutta ei pysty keskeyttämään organisaation nimissä, johon ei ole oikeuksia" in {
+    val oppija = ValpasMockOppijat.valmistunutYsiluokkalainen
+    val tekijäOrganisaatioOid = MockOrganisaatiot.jyväskylänNormaalikoulu
+    val kuntaSession = session(ValpasMockUsers.valpasPyhtääJaHelsinki)
+    val alku = rajapäivätService.tarkastelupäivä
+
+    val result = oppijaService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
+      oppijaOid = oppija.oid,
+      alku = alku,
+      loppu = None,
+      tekijäOrganisaatioOid = tekijäOrganisaatioOid,
+    ))(kuntaSession)
+
+    result.left.map(_.statusCode) shouldBe Left(403)
+  }
+
+  "Oppivelvollisuuden pystyy keskeyttämään toistaiseksi kunnan valvontaoikeuksilla" in {
+    val oppija = ValpasMockOppijat.valmistunutYsiluokkalainen
+    val tekijäOrganisaatioOid = MockOrganisaatiot.helsinginKaupunki
+    val kuntaSession = session(ValpasMockUsers.valpasPyhtääJaHelsinki)
+    val alku = rajapäivätService.tarkastelupäivä
+
+    val keskeytykset = oppijaService
+      .getOppijaLaajatTiedotYhteystiedoilla(oppija.oid)(kuntaSession)
+      .map(_.oppivelvollisuudenKeskeytykset)
+
+    keskeytykset shouldBe Right(Seq.empty)
+
+    val result = oppijaService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
+      oppijaOid = oppija.oid,
+      alku = alku,
+      loppu = None,
+      tekijäOrganisaatioOid = tekijäOrganisaatioOid,
+    ))(kuntaSession)
+
+    val expectedKeskeytys = ValpasOppivelvollisuudenKeskeytys(
+      alku = alku,
+      loppu = None,
+      voimassa = true,
+    )
+
+    result shouldBe Right(expectedKeskeytys)
+
+    val keskeytykset2 = oppijaService
+      .getOppijaLaajatTiedotYhteystiedoilla(oppija.oid)(kuntaSession)
+      .map(_.oppivelvollisuudenKeskeytykset)
+
+    keskeytykset2 shouldBe Right(List(expectedKeskeytys))
+  }
+
+  "Oppivelvollisuuden pystyy keskeyttämään määräaikaisesti kunnan valvontaoikeuksilla" in {
+    val oppija = ValpasMockOppijat.valmistunutYsiluokkalainen
+    val tekijäOrganisaatioOid = MockOrganisaatiot.helsinginKaupunki
+    val kuntaSession = session(ValpasMockUsers.valpasPyhtääJaHelsinki)
+    val alku = rajapäivätService.tarkastelupäivä
+    val loppu = alku.plusMonths(3)
+
+    val result = oppijaService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
+      oppijaOid = oppija.oid,
+      alku = alku,
+      loppu = Some(loppu),
+      tekijäOrganisaatioOid = tekijäOrganisaatioOid,
+    ))(kuntaSession)
+
+    val expectedKeskeytys = ValpasOppivelvollisuudenKeskeytys(
+      alku = alku,
+      loppu = Some(loppu),
+      voimassa = true,
+    )
+
+    result shouldBe Right(expectedKeskeytys)
+
+    val keskeytykset = oppijaService
+      .getOppijaLaajatTiedotYhteystiedoilla(oppija.oid)(kuntaSession)
+      .map(_.oppivelvollisuudenKeskeytykset)
+
+    keskeytykset shouldBe Right(List(expectedKeskeytys))
+  }
+
+  "Oppivelvollisuutta ei voi keskeyttää ellei oppija ole ovl-lain alainen" in {
+    val oppija = ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004
+    val tekijäOrganisaatioOid = MockOrganisaatiot.helsinginKaupunki
+    val kuntaSession = session(ValpasMockUsers.valpasPyhtääJaHelsinki)
+    val alku = rajapäivätService.tarkastelupäivä
+
+    val result = oppijaService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
+      oppijaOid = oppija.oid,
+      alku = alku,
+      loppu = None,
+      tekijäOrganisaatioOid = tekijäOrganisaatioOid,
+    ))(kuntaSession)
+
+    result.left.map(_.statusCode) shouldBe Left(403)
   }
 
   def validateKunnanIlmoitetutOppijat(

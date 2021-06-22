@@ -7,6 +7,7 @@ import {
   käyttöoikeusrooliEq,
   OrganisaatioJaKayttooikeusrooli,
 } from "../state/common"
+import { Organisaatio } from "./apitypes/organisaatiot"
 import { isFeatureFlagEnabled } from "./featureFlags"
 
 export type AccessGuard = (roles: Kayttooikeusrooli[]) => boolean
@@ -83,3 +84,29 @@ export const useKäyttöoikeusroolit = (): Kayttooikeusrooli[] => {
     [data]
   )
 }
+
+export const useOrganisaatiot = () => {
+  const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
+  return useMemo(() => getOrganisaatiot(organisaatiotJaKäyttöoikeusroolit), [
+    organisaatiotJaKäyttöoikeusroolit,
+  ])
+}
+
+export const useOrganisaatiotOfRole = (accessGuard: AccessGuard) => {
+  const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
+  return useMemo(
+    () => getOrganisaatiot(organisaatiotJaKäyttöoikeusroolit, accessGuard),
+    [accessGuard, organisaatiotJaKäyttöoikeusroolit]
+  )
+}
+
+const getOrganisaatiot = (
+  orgs: OrganisaatioJaKayttooikeusrooli[],
+  accessGuard?: AccessGuard
+): Organisaatio[] =>
+  orgs
+    .filter((org) => !accessGuard || accessGuard([org.kayttooikeusrooli]))
+    .map((org) => ({
+      nimi: org.organisaatioHierarkia.nimi,
+      oid: org.organisaatioHierarkia.oid,
+    }))

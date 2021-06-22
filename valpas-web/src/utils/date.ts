@@ -1,4 +1,4 @@
-import { format, getYear, parseISO } from "date-fns"
+import { format, formatISO, getYear, parseISO } from "date-fns"
 import { ISODate } from "../state/common"
 
 export const DATE_FORMAT = "d.M.yyyy"
@@ -12,3 +12,6 @@ export const formatNullableDate = (date?: ISODate): string =>
 export const currentYear = () => getYear(new Date())
 
 export const parseYear = (date: ISODate): number => getYear(parseISO(date))
+
+export const today = (): ISODate =>
+  formatISO(new Date(), { representation: "date" })

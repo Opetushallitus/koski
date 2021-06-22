@@ -5,7 +5,7 @@ import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.valpas.{ValpasHenkilöMaksuttomuushakuResult, ValpasHenkilöMaksuttomuushakutulos}
 import fi.oph.koski.valpas.log.ValpasOperation.ValpasOperation
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasHenkilöLaajatTiedot, ValpasOppilaitos}
-import fi.oph.koski.valpas.valpasrepository.ValpasKuntailmoitusLaajatTiedotJaOppijaOid
+import fi.oph.koski.valpas.valpasrepository.{UusiOppivelvollisuudenKeskeytys, ValpasKuntailmoitusLaajatTiedotJaOppijaOid}
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
 object ValpasAuditLog {
@@ -68,6 +68,20 @@ object ValpasAuditLog {
       }
     ))
   }
+
+  def auditLogOppivelvollisuudenKeskeytys
+    (keskeytys: UusiOppivelvollisuudenKeskeytys)
+    (implicit session: ValpasSession)
+  : Unit = {
+    AuditLog.log(ValpasAuditLogMessage(
+      ValpasOperation.VALPAS_OPPIVELVOLLISUUDEN_KESKEYTYS,
+      session,
+      Map(
+        ValpasAuditLogMessageField.oppijaHenkilöOid -> keskeytys.oppijaOid,
+        ValpasAuditLogMessageField.ilmoittajaOrganisaatioOid -> keskeytys.tekijäOrganisaatioOid,
+      )
+    ))
+  }
 }
 
 object ValpasAuditLogMessage {
@@ -93,7 +107,8 @@ object ValpasOperation extends Enumeration {
       VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN,
       VALPAS_KUNNAT_OPPIJAT_KATSOMINEN,
       VALPAS_OPPIJA_KUNTAILMOITUS,
-      VALPAS_OPPIJA_HAKU = Value
+      VALPAS_OPPIJA_HAKU,
+      VALPAS_OPPIVELVOLLISUUDEN_KESKEYTYS = Value
 }
 
 private class ValpasAuditLogOperation(op: ValpasOperation) extends AuditLogOperation(op)

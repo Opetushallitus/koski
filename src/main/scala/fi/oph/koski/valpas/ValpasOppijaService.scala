@@ -9,10 +9,10 @@ import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{LocalizedString, Organisaatio}
 import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
 import fi.oph.koski.util.Timing
-import fi.oph.koski.valpas.db.ValpasSchema.{OpiskeluoikeusLisätiedotKey, OpiskeluoikeusLisätiedotRow}
+import fi.oph.koski.valpas.db.ValpasSchema.{OpiskeluoikeusLisätiedotKey, OpiskeluoikeusLisätiedotRow, OppivelvollisuudenKeskeytysRow}
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, ValpasHakukoosteService}
 import fi.oph.koski.valpas.opiskeluoikeusrepository._
-import fi.oph.koski.valpas.valpasrepository.{OppivelvollisuudenKeskeytysService, ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusSuppeatTiedot, ValpasOppivelvollisuudenKeskeytys}
+import fi.oph.koski.valpas.valpasrepository._
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystiedot
 
@@ -237,6 +237,21 @@ class ValpasOppijaService(
       .flatMap(withVirallisetYhteystiedot)
       .map(_.validate(koodistoviitepalvelu))
       .map(fetchOppivelvollisuudenKeskeytykset)
+  }
+
+  def addOppivelvollisuudenKeskeytys
+    (keskeytys: UusiOppivelvollisuudenKeskeytys)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, ValpasOppivelvollisuudenKeskeytys] = {
+    accessResolver
+      .assertAccessToOrg(ValpasRooli.KUNTA)(keskeytys.tekijäOrganisaatioOid)
+      .flatMap(_ => getOppijaLaajatTiedot(keskeytys.oppijaOid))
+      .flatMap(accessResolver.withOppijaAccess)
+      .flatMap(_ =>
+        ovKeskeytysService
+          .create(keskeytys)
+          .toRight(ValpasErrorCategory.internalError("Oppivelvollisuuden keskeytyksen lisääminen epäonnistui"))
+      )
   }
 
   private def asValpasOppijaLaajatTiedot(dbRow: ValpasOppijaRow): Either[HttpStatus, ValpasOppijaLaajatTiedot] = {

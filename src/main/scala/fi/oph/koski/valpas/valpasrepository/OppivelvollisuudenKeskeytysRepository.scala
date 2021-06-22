@@ -19,9 +19,11 @@ class OppivelvollisuudenKeskeytysRepository(database: ValpasDatabase, config: Co
     )
   }
 
-  def setKeskeytys(row: OppivelvollisuudenKeskeytysRow): Unit = {
+  def setKeskeytys(row: OppivelvollisuudenKeskeytysRow): Option[OppivelvollisuudenKeskeytysRow] = {
     runDbSync(
-      OppivelvollisuudenKeskeytys.insertOrUpdate(row)
+      OppivelvollisuudenKeskeytys
+        .returning(OppivelvollisuudenKeskeytys)
+        .insertOrUpdate(row)
     )
   }
 
