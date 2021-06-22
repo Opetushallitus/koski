@@ -1,12 +1,13 @@
 package fi.oph.koski.valpas.valpasrepository
 
 import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{Koodistokoodiviite, OidOrganisaatio}
+import fi.oph.koski.valpas.db.ValpasSchema.OppivelvollisuudenKeskeytysRow
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
+
 import java.time.{LocalDate, LocalDateTime}
 
 case class ValpasKuntailmoitusFixture(
@@ -100,6 +101,33 @@ object ValpasExampleData {
       maa = Some(Koodistokoodiviite("246", "maatjavaltiot2"))
     )),
     hakenutMuualle = Some(false)
+  )
+
+  def oppivelvollisuudenKeskeytykset: Seq[OppivelvollisuudenKeskeytysRow] = Seq(
+    OppivelvollisuudenKeskeytysRow(
+      oppijaOid = ValpasMockOppijat.oppivelvollisuusKeskeytetty.oid,
+      alku = date(2021, 3, 1),
+      loppu = Some(date(2021, 9, 30)),
+      luotu = LocalDateTime.of(2021, 2, 28, 8, 0),
+      tekijäOid = ValpasMockUsers.valpasJklNormaalikoulu.oid,
+      tekijäOrganisaatioOid = MockOrganisaatiot.jyväskylänNormaalikoulu,
+    ),
+    OppivelvollisuudenKeskeytysRow(
+      oppijaOid = ValpasMockOppijat.oppivelvollisuusKeskeytetty.oid,
+      alku = date(2020, 1, 1),
+      loppu = Some(date(2020, 1, 30)),
+      luotu = LocalDateTime.of(2021, 1, 1, 10, 15),
+      tekijäOid = ValpasMockUsers.valpasJklNormaalikoulu.oid,
+      tekijäOrganisaatioOid = MockOrganisaatiot.jyväskylänNormaalikoulu,
+    ),
+    OppivelvollisuudenKeskeytysRow(
+      oppijaOid = ValpasMockOppijat.oppivelvollisuusKeskeytettyToistaiseksi.oid,
+      alku = date(2021, 1, 1),
+      loppu = None,
+      luotu = LocalDateTime.of(2021, 1, 1, 12, 30),
+      tekijäOid = ValpasMockUsers.valpasJklNormaalikoulu.oid,
+      tekijäOrganisaatioOid = MockOrganisaatiot.jyväskylänNormaalikoulu,
+    )
   )
 
   def oppilaitoksenIlmoitusKaikillaTiedoilla = ilmoitus

@@ -3,7 +3,6 @@ package fi.oph.koski.valpas
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.Yhteystiedot
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.http.HttpStatus.foldEithers
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
@@ -13,7 +12,7 @@ import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.db.ValpasSchema.{OpiskeluoikeusLisätiedotKey, OpiskeluoikeusLisätiedotRow}
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, ValpasHakukoosteService}
 import fi.oph.koski.valpas.opiskeluoikeusrepository._
-import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusSuppeatTiedot}
+import fi.oph.koski.valpas.valpasrepository.{OppivelvollisuudenKeskeytysService, ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusSuppeatTiedot, ValpasOppivelvollisuudenKeskeytys}
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystiedot
 
@@ -23,6 +22,7 @@ case class OppijaHakutilanteillaLaajatTiedot(
   hakutilanneError: Option[String],
   yhteystiedot: Seq[ValpasYhteystiedot],
   kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedotLisätiedoilla],
+  oppivelvollisuudenKeskeytykset: Seq[ValpasOppivelvollisuudenKeskeytys],
 ) {
   def validate(koodistoviitepalvelu: KoodistoViitePalvelu): OppijaHakutilanteillaLaajatTiedot =
     this.copy(hakutilanteet = hakutilanteet.map(_.validate(koodistoviitepalvelu)))
@@ -41,7 +41,8 @@ object OppijaHakutilanteillaLaajatTiedot {
       // TODO: Pitäisikö virheet mankeloida jotenkin eikä palauttaa sellaisenaan fronttiin?
       hakutilanneError = haut.left.toOption.flatMap(_.errorString),
       yhteystiedot = haut.map(uusimmatIlmoitetutYhteystiedot(yhteystietoryhmänNimi)).getOrElse(Seq.empty),
-      kuntailmoitukset = Seq.empty
+      kuntailmoitukset = Seq.empty,
+      oppivelvollisuudenKeskeytykset = Seq.empty,
     )
   }
 
@@ -98,6 +99,7 @@ class ValpasOppijaService(
 ) extends Logging with Timing {
   private val hakukoosteService = ValpasHakukoosteService(application.config, application.validatingAndResolvingExtractor)
   private val opiskeluoikeusDbService = new ValpasOpiskeluoikeusDatabaseService(application)
+  private val ovKeskeytysService = new OppivelvollisuudenKeskeytysService(application)
   private val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
   private val localizationRepository = application.valpasLocalizationRepository
   private val koodistoviitepalvelu = application.koodistoViitePalvelu
@@ -234,6 +236,7 @@ class ValpasOppijaService(
       .map(fetchHakuYhteystiedoilla)
       .flatMap(withVirallisetYhteystiedot)
       .map(_.validate(koodistoviitepalvelu))
+      .map(fetchOppivelvollisuudenKeskeytykset)
   }
 
   private def asValpasOppijaLaajatTiedot(dbRow: ValpasOppijaRow): Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
@@ -349,6 +352,14 @@ class ValpasOppijaService(
 
       ValpasKuntailmoitusLaajatTiedotLisätiedoilla(kuntailmoitusWithIndex._1, aktiivinen)
     })
+  }
+
+  private def fetchOppivelvollisuudenKeskeytykset(
+    oppija: OppijaHakutilanteillaLaajatTiedot
+  ): OppijaHakutilanteillaLaajatTiedot = {
+    oppija.copy(
+      oppivelvollisuudenKeskeytykset = ovKeskeytysService.getKeskeytykset(oppija.oppija.henkilö.kaikkiOidit.toSeq)
+    )
   }
 
   def setMuuHaku(key: OpiskeluoikeusLisätiedotKey, value: Boolean)(implicit session: ValpasSession): HttpStatus = {

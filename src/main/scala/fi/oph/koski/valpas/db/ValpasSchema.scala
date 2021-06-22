@@ -4,7 +4,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
 import org.json4s.JValue
-import java.time.LocalDateTime
+import java.time.{LocalDate, LocalDateTime}
 import java.util.UUID
 
 object ValpasSchema extends Logging {
@@ -12,7 +12,8 @@ object ValpasSchema extends Logging {
   def logCreateSchemaDdl(): Unit = {
     val schema = Ilmoitukset.schema ++
       IlmoitusLisätiedot.schema ++
-      OpiskeluoikeusLisätiedot.schema
+      OpiskeluoikeusLisätiedot.schema ++
+      OppivelvollisuudenKeskeytys.schema
     logger.info((schema.createStatements ++ "\n").mkString(";\n"))
   }
 
@@ -96,6 +97,42 @@ object ValpasSchema extends Logging {
   )
 
   val OpiskeluoikeusLisätiedot = TableQuery[OpiskeluoikeusLisätiedotTable]
+
+
+  class OppivelvollisuudenKeskeytysTable(tag: Tag) extends Table[OppivelvollisuudenKeskeytysRow](tag, "oppivelvollisuuden_keskeytys") {
+    val uuid = column[UUID]("uuid", O.SqlType("uuid"), O.PrimaryKey)
+    val oppijaOid = column[String]("oppija_oid")
+    val alku = column[LocalDate]("alku")
+    val loppu = column[Option[LocalDate]]("loppu")
+    val luotu = column[LocalDateTime]("luotu")
+    val tekijäOid = column[String]("tekijä_oid")
+    val tekijäOrganisaatioOid = column[String]("tekijä_organisaatio_oid")
+    val peruttu = column[Boolean]("peruttu")
+
+    val * = (
+      uuid,
+      oppijaOid,
+      alku,
+      loppu,
+      luotu,
+      tekijäOid,
+      tekijäOrganisaatioOid,
+      peruttu,
+    ) <> (OppivelvollisuudenKeskeytysRow.tupled, OppivelvollisuudenKeskeytysRow.unapply)
+  }
+
+  case class OppivelvollisuudenKeskeytysRow(
+    uuid: UUID = UUID.randomUUID(),
+    oppijaOid: String,
+    alku: LocalDate,
+    loppu: Option[LocalDate],
+    luotu: LocalDateTime,
+    tekijäOid: String,
+    tekijäOrganisaatioOid: String,
+    peruttu: Boolean = false,
+  )
+
+  val OppivelvollisuudenKeskeytys = TableQuery[OppivelvollisuudenKeskeytysTable]
 }
 
 
