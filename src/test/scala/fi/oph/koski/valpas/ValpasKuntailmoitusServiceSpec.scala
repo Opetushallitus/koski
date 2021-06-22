@@ -159,7 +159,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
     val tekijä =
       result.map(_.tekijäHenkilö)
 
-    tekijä should equal(Right(Some(
+    tekijä should equal(Right(
       ValpasKuntailmoituksenTekijäHenkilö(
         oid = Some(ValpasMockOppijat.käyttäjäValpasJklNormaalikoulu.oid),
         etunimet = Some(ValpasMockOppijat.käyttäjäValpasJklNormaalikoulu.etunimet),
@@ -168,7 +168,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
         email = Some(s"${ValpasMockOppijat.käyttäjäValpasJklNormaalikoulu.kutsumanimi.toLowerCase}@gmail.com"),
         puhelinnumero = Some("0401122334, 09777 888")
       )
-    )))
+    ))
   }
 
   "Pohjatiedoissa palautetaan yksinkertaiset tekijän yhteystiedot, jos niitä ei ole saatavilla oppijanumerorekisterissä" in {
@@ -183,7 +183,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
     val tekijä =
       result.map(_.tekijäHenkilö)
 
-    tekijä should equal(Right(Some(
+    tekijä should equal(Right(
       ValpasKuntailmoituksenTekijäHenkilö(
         oid = Some(ValpasMockUsers.valpasAapajoenKoulu.oid),
         etunimet = Some(ValpasMockUsers.valpasAapajoenKoulu.firstname),
@@ -192,7 +192,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
         email = None,
         puhelinnumero = None
       )
-    )))
+    ))
   }
 
   "Pohjatiedoissa palautetaan lista kunnista" in {

@@ -1,7 +1,7 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
+import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, Yhteystiedot}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
@@ -91,118 +91,86 @@ class ValpasKuntailmoitusService(
   def haePohjatiedot(
     pohjatiedotInput: ValpasKuntailmoitusPohjatiedotInput
   )(implicit session: ValpasSession): Either[HttpStatus, ValpasKuntailmoitusPohjatiedot] = {
-    haeDirectoryKäyttäjä
-      .flatMap(täydennäOppijanumerorekisterinTiedoilla)
-      .map(teePohjatiedot)
-      .map(täydennäKunnilla)
-      .map(täydennäMailla)
-      .map(täydennäYhteydenottokielillä)
-      .flatMap(täydennäOppijoidenTiedoilla(pohjatiedotInput))
-      .map(täydennäTekijäOrganisaatioilla)
+    val kunnat = organisaatioService.kunnat
+    val maat = haeMaat()
+
+    for {
+      tekijä <- tekijänKäyttäjätiedot()
+      oppijat <- haeOppijat(pohjatiedotInput)
+        .flatMap(tarkistaOikeudetJaJärjestäOppijat(pohjatiedotInput))
+        .flatMap(oppijoidenPohjatiedot(pohjatiedotInput.tekijäOrganisaatio, maat, kunnat))
+    } yield {
+      ValpasKuntailmoitusPohjatiedot(
+        tekijäHenkilö = tekijä,
+        mahdollisetTekijäOrganisaatiot =
+          oppijat.map(_.mahdollisetTekijäOrganisaatiot).map(_.toSet)
+            .reduceLeft((a, b) => a.intersect(b))
+            .toSeq,
+        oppijat = oppijat,
+        kunnat = kunnat,
+        maat = maat,
+        yhteydenottokielet = tuetutYhteydenottokielet()
+      )
+    }
   }
 
-  private def haeDirectoryKäyttäjä(implicit session: ValpasSession): Either[HttpStatus, ValpasKuntailmoituksenTekijäHenkilö] =
-    directoryClient.findUser(session.username) match {
-      case Some(directoryUser) =>
-        Right(ValpasKuntailmoituksenTekijäHenkilö(
-          oid = Some(session.oid),
-          etunimet = Some(directoryUser.etunimet),
-          sukunimi = Some(directoryUser.sukunimi),
-          kutsumanimi = None,
-          email = None,
-          puhelinnumero = None
-        ))
-      case _ => Left(ValpasErrorCategory.internalError("Käyttäjän tietoja ei saatu haettua"))
-    }
+  private def tekijänKäyttäjätiedot()(implicit session: ValpasSession)
+  : Either[HttpStatus, ValpasKuntailmoituksenTekijäHenkilö] = {
+    for {
+      user <- directoryClient
+        .findUser(session.username)
+        .toRight(ValpasErrorCategory.internalError("Käyttäjän tietoja ei saatu haettua"))
+    } yield {
+      val oppijanumerorekisteriTiedot = haeOppijanumerorekisteriTiedot(user.oid)
 
-  private def täydennäOppijanumerorekisterinTiedoilla(
-    tekijä: ValpasKuntailmoituksenTekijäHenkilö
-  ): Either[HttpStatus, ValpasKuntailmoituksenTekijäHenkilö] =
-    oppijanumerorekisteri.findOppijaJaYhteystiedotByOid(tekijä.oid.get) match {
-      case Some(laajatOppijaHenkilöTiedot) =>
-        Right(täydennäTekijänTiedoilla(tekijä, laajatOppijaHenkilöTiedot))
-      case _ =>
-        Right(tekijä)
+      ValpasKuntailmoituksenTekijäHenkilö(
+        oid = Some(session.oid),
+        etunimet = Some(user.etunimet),
+        sukunimi = Some(user.sukunimi),
+        kutsumanimi = oppijanumerorekisteriTiedot.map(_.kutsumanimi),
+        email = oppijanumerorekisteriTiedot.flatMap(emails),
+        puhelinnumero = oppijanumerorekisteriTiedot.flatMap(puhelinnumerot)
+      )
     }
+  }
 
-  private def täydennäTekijänTiedoilla(
-    tekijä: ValpasKuntailmoituksenTekijäHenkilö,
-    laajatOppijaHenkilöTiedot: LaajatOppijaHenkilöTiedot
-  ): ValpasKuntailmoituksenTekijäHenkilö = {
-    val työosoitteet = laajatOppijaHenkilöTiedot.yhteystiedot.filter(_.tyyppi.koodiarvo == "yhteystietotyyppi2") // "Työosoite"
-    val emails: Seq[String] = työosoitteet
-      .filter(_.sähköposti.isDefined)
+  private def haeOppijanumerorekisteriTiedot(userOid: String): Option[LaajatOppijaHenkilöTiedot] =
+    oppijanumerorekisteri.findOppijaJaYhteystiedotByOid(userOid)
+
+  private def työosoitteet(tiedot: LaajatOppijaHenkilöTiedot) =
+    tiedot.yhteystiedot.filter(_.tyyppi.koodiarvo == "yhteystietotyyppi2") // "Työosoite"
+
+  private def emails(tiedot: LaajatOppijaHenkilöTiedot) = {
+    val emails = työosoitteet(tiedot)
       .flatMap(_.sähköposti)
       .map(_.trim)
       .filter(_ != "")
+    if (emails.isEmpty) None else Some(emails.distinct.sorted.mkString(", "))
+  }
 
-    val email = if (emails.isEmpty) None else Some(emails.toSet.toSeq.sorted.mkString(", "))
-
-    val puhelinnumerot: Seq[String] = työosoitteet
-      .flatMap(o => Seq(o.matkapuhelinnumero, o.puhelinnumero))
-      .flatten
+  private def puhelinnumerot(tiedot: LaajatOppijaHenkilöTiedot) = {
+    val puhelinnumerot = työosoitteet(tiedot)
+      .flatMap(o => Seq(o.matkapuhelinnumero, o.puhelinnumero).flatten)
       .map(_.trim)
       .filter(_ != "")
-
-    val puhelinnumero = if (puhelinnumerot.isEmpty) None else Some(puhelinnumerot.toSet.toSeq.sorted.mkString(", "))
-
-    tekijä.copy(
-      kutsumanimi = Some(laajatOppijaHenkilöTiedot.kutsumanimi),
-      email = email,
-      puhelinnumero = puhelinnumero
-    )
+    if (puhelinnumerot.isEmpty) None else Some(puhelinnumerot.distinct.sorted.mkString(", "))
   }
 
-  private def teePohjatiedot(tekijäHenkilö: ValpasKuntailmoituksenTekijäHenkilö): ValpasKuntailmoitusPohjatiedot = {
-    ValpasKuntailmoitusPohjatiedot(
-      tekijäHenkilö = Some(tekijäHenkilö)
-    )
-  }
-
-  private def täydennäKunnilla(
-    pohjatiedot: ValpasKuntailmoitusPohjatiedot
-  )(implicit session: ValpasSession): ValpasKuntailmoitusPohjatiedot = {
-    pohjatiedot.copy(
-      kunnat = organisaatioService.kunnat
-    )
-  }
-
-  private def täydennäMailla(
-    pohjatiedot: ValpasKuntailmoitusPohjatiedot
-  )(implicit session: ValpasSession): ValpasKuntailmoitusPohjatiedot = {
+  private def haeMaat()(implicit session: ValpasSession): Seq[Koodistokoodiviite] = {
     val koodistoUri = "maatjavaltiot2"
     val koodisto = koodistoViitePalvelu.getLatestVersionOptional(koodistoUri)
-    val maat = koodisto match {
+    koodisto match {
       case Some(koodisto) => koodistoViitePalvelu.getKoodistoKoodiViitteet(koodisto)
-      case _ => {
+      case _ =>
         logger.warn("Koodistoa ei löydy koodistopalvelusta: " + koodistoUri)
         Seq.empty
-      }
     }
-
-    pohjatiedot.copy(maat = maat)
   }
 
-  private def täydennäYhteydenottokielillä(
-    pohjatiedot: ValpasKuntailmoitusPohjatiedot
-  )(implicit session: ValpasSession): ValpasKuntailmoitusPohjatiedot = {
-    pohjatiedot.copy(
-      yhteydenottokielet = tuetutYhteydenottokielet
-    )
-  }
-
-  private def tuetutYhteydenottokielet: Seq[Koodistokoodiviite] = Seq(
+  private def tuetutYhteydenottokielet(): Seq[Koodistokoodiviite] = Seq(
     Koodistokoodiviite("FI", "kieli"),
     Koodistokoodiviite("SV", "kieli")
   ).map(koodistoViitePalvelu.validate).flatten
-
-  private def täydennäOppijoidenTiedoilla(pohjatiedotInput: ValpasKuntailmoitusPohjatiedotInput)(
-    pohjatiedot: ValpasKuntailmoitusPohjatiedot
-  )(implicit session: ValpasSession): Either[HttpStatus, ValpasKuntailmoitusPohjatiedot] = {
-    haeOppijat(pohjatiedotInput)
-      .flatMap(tarkistaOikeudetJaJärjestäOppijat(pohjatiedotInput))
-      .flatMap(täydennäPohjatiedotOppijoidenTiedoilla(pohjatiedotInput.tekijäOrganisaatio, pohjatiedot))
-  }
 
   private def haeOppijat(
     pohjatiedotInput: ValpasKuntailmoitusPohjatiedotInput
@@ -251,57 +219,59 @@ class ValpasKuntailmoitusService(
           oppijaHakutilanteilla.oppija
         )
       )
-    )
-      .flatMap(_ => {
-        // Tarkista, että jokainen inputtina annettu oppija löytyy saadulta listalta samalla oppija-oidilla. Oppijoiden
-        // master-slave-oideja ei tässä siis käsitellä, vaan palautetaan vaan virhe, jos kysely on tehty slave oidilla.
-        // Tämä ei käytännössä haittaa, koska käyttöliittymä perustuu aina master-oideina palautettuun oppija-dataan.
-        val oppijaOidsTietokannasta = oppijatHakutilanteilla.map(_.oppija.henkilö.oid)
-        if (pohjatiedotInput.oppijaOidit.toSet == oppijaOidsTietokannasta.toSet) {
-          // Järjestä oppijat samaan järjestykseen kuin pyynnössä. Melko tehoton sorttaus, mutta dataa ei ole paljon.
-          Right(oppijatHakutilanteilla.sortWith(lessThanInputinJärjestyksenMukaan))
-        } else {
-          Left(ValpasErrorCategory.forbidden.oppijat("Käyttäjällä ei ole oikeuksia kaikkien oppijoiden tietoihin"))
-        }
-      })
-  }
-
-  private def täydennäPohjatiedotOppijoidenTiedoilla(
-    tekijäOrganisaatio: Option[OrganisaatioWithOid],
-    pohjatiedot: ValpasKuntailmoitusPohjatiedot
-  )(
-    oppijat: Seq[OppijaHakutilanteillaLaajatTiedot]
-  )(implicit session: ValpasSession): Either[HttpStatus, ValpasKuntailmoitusPohjatiedot] = {
-    val täydennetytOppijoidenPohjatiedot: Seq[Either[HttpStatus, ValpasOppijanPohjatiedot]] = oppijat.map(oppija => {
-      val uudetPohjatietojenYhteystiedot =
-        oppija.yhteystiedot.map(yhteystiedotOppijanYhteystiedoista(pohjatiedot.maat, pohjatiedot.kunnat))
-
-      mahdollisetTekijäOrganisaatiot(tekijäOrganisaatio, oppija.oppija.hakeutumisvalvovatOppilaitokset)
-        .map(mahdollisetTekijäOrganisaatiot => ValpasOppijanPohjatiedot(
-          oppijaOid =
-            oppija.oppija.henkilö.oid,
-          mahdollisetTekijäOrganisaatiot =
-            mahdollisetTekijäOrganisaatiot.toSeq,
-          yhteydenottokieli =
-            yhteydenottokieli(oppija.oppija.henkilö.äidinkieli),
-          turvakielto =
-            oppija.oppija.henkilö.turvakielto,
-          yhteystiedot =
-            järjestäYhteystiedot(uudetPohjatietojenYhteystiedot),
-          hetu = oppija.oppija.henkilö.hetu
-          ))
+    ).flatMap(_ => {
+      // Tarkista, että jokainen inputtina annettu oppija löytyy saadulta listalta samalla oppija-oidilla. Oppijoiden
+      // master-slave-oideja ei tässä siis käsitellä, vaan palautetaan vaan virhe, jos kysely on tehty slave oidilla.
+      // Tämä ei käytännössä haittaa, koska käyttöliittymä perustuu aina master-oideina palautettuun oppija-dataan.
+      val oppijaOidsTietokannasta = oppijatHakutilanteilla.map(_.oppija.henkilö.oid)
+      if (pohjatiedotInput.oppijaOidit.toSet == oppijaOidsTietokannasta.toSet) {
+        // Järjestä oppijat samaan järjestykseen kuin pyynnössä. Melko tehoton sorttaus, mutta dataa ei ole paljon.
+        Right(oppijatHakutilanteilla.sortWith(lessThanInputinJärjestyksenMukaan))
+      } else {
+        Left(ValpasErrorCategory.forbidden.oppijat("Käyttäjällä ei ole oikeuksia kaikkien oppijoiden tietoihin"))
+      }
     })
-
-    HttpStatus.foldEithers(täydennetytOppijoidenPohjatiedot)
-      .map(täydennetytOppijat => pohjatiedot.copy(oppijat = täydennetytOppijat))
   }
 
-  private def yhteystiedotOppijanYhteystiedoista(
+  private def oppijoidenPohjatiedot
+    (tekijäOrganisaatio: Option[OrganisaatioWithOid], maat: Seq[Koodistokoodiviite], kunnat: Seq[OrganisaatioWithOid])
+    (oppijat: Seq[OppijaHakutilanteillaLaajatTiedot])
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, Seq[ValpasOppijanPohjatiedot]] = {
+    HttpStatus.foldEithers(oppijat.map(oppija => {
+      mahdollisetTekijäOrganisaatiot(tekijäOrganisaatio, oppija.oppija.hakeutumisvalvovatOppilaitokset)
+        .map(organisaatiot =>
+          ValpasOppijanPohjatiedot(
+            oppijaOid = oppija.oppija.henkilö.oid,
+            mahdollisetTekijäOrganisaatiot = organisaatiot.toSeq,
+            yhteydenottokieli = yhteydenottokieli(oppija.oppija.henkilö.äidinkieli),
+            turvakielto = oppija.oppija.henkilö.turvakielto,
+            yhteystiedot = teeYhteystiedot(oppija.yhteystiedot, maat, kunnat),
+            hetu = oppija.oppija.henkilö.hetu
+          )
+        )
+    }))
+  }
+
+  private def teeYhteystiedot(
+    oppijaYhteystiedot: Seq[ValpasYhteystiedot],
     maat: Seq[Koodistokoodiviite],
-    kunnat: Seq[OrganisaatioWithOid],
-  )(
-    valpasYhteystiedot: ValpasYhteystiedot
-  ): ValpasPohjatietoYhteystieto = {
+    kunnat: Seq[OrganisaatioWithOid]
+  ): Seq[ValpasPohjatietoYhteystieto] = {
+    val yhteystiedot = oppijaYhteystiedot.map(yhteystiedotOppijanYhteystiedoista(maat, kunnat))
+
+    val hakemusYhteystiedot = yhteystiedot.filter(_.yhteystietojenAlkuperä.isInstanceOf[ValpasYhteystietoHakemukselta])
+    val oppijanumerorekisterinYhteystiedot =
+      yhteystiedot.filter(_.yhteystietojenAlkuperä.isInstanceOf[ValpasYhteystietoOppijanumerorekisteristä])
+    val muutYhteystiedot = yhteystiedot.diff(hakemusYhteystiedot ++ oppijanumerorekisterinYhteystiedot)
+
+    hakemusYhteystiedot ++ oppijanumerorekisterinYhteystiedot ++ muutYhteystiedot
+  }
+
+  private def yhteystiedotOppijanYhteystiedoista
+    (maat: Seq[Koodistokoodiviite], kunnat: Seq[OrganisaatioWithOid])
+    (valpasYhteystiedot: ValpasYhteystiedot)
+  : ValpasPohjatietoYhteystieto = {
     val maa = maaOppijanYhteystiedoista(maat, valpasYhteystiedot)
     val kunta = kuntaOppijanYhteystiedoista(kunnat, valpasYhteystiedot)
 
@@ -407,27 +377,5 @@ class ValpasKuntailmoitusService(
       case _ => Koodistokoodiviite("FI", "kieli")
     }
     koodistoViitePalvelu.validate(koodistoviite)
-  }
-
-  private def järjestäYhteystiedot(yhteystiedot: Seq[ValpasPohjatietoYhteystieto]): Seq[ValpasPohjatietoYhteystieto] = {
-    val hakemusYhteystiedot = yhteystiedot.filter(_.yhteystietojenAlkuperä.isInstanceOf[ValpasYhteystietoHakemukselta])
-    val oppijanumerorekisterinYhteystiedot =
-      yhteystiedot.filter(_.yhteystietojenAlkuperä.isInstanceOf[ValpasYhteystietoOppijanumerorekisteristä])
-    val muutYhteystiedot = yhteystiedot.diff(hakemusYhteystiedot ++ oppijanumerorekisterinYhteystiedot)
-
-    hakemusYhteystiedot ++ oppijanumerorekisterinYhteystiedot ++ muutYhteystiedot
-  }
-
-  private def täydennäTekijäOrganisaatioilla(
-    pohjatiedot: ValpasKuntailmoitusPohjatiedot
-  )(implicit session: ValpasSession): ValpasKuntailmoitusPohjatiedot = {
-    val kaikissaOppijoissaEsiintyvätMahdollisetTekijäOrganisaatiot =
-      pohjatiedot.oppijat.map(_.mahdollisetTekijäOrganisaatiot).map(_.toSet)
-        .reduceLeft((a, b) => a.intersect(b))
-        .toSeq
-
-    pohjatiedot.copy(
-      mahdollisetTekijäOrganisaatiot = kaikissaOppijoissaEsiintyvätMahdollisetTekijäOrganisaatiot
-    )
   }
 }

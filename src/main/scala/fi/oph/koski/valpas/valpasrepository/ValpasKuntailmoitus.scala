@@ -110,14 +110,14 @@ case class ValpasKuntailmoitusPohjatiedotInput(
 )
 
 case class ValpasKuntailmoitusPohjatiedot(
-  tekijäHenkilö: Option[ValpasKuntailmoituksenTekijäHenkilö] = None,
-  mahdollisetTekijäOrganisaatiot: Seq[OrganisaatioWithOid] = Seq.empty,
-  oppijat: Seq[ValpasOppijanPohjatiedot] = Seq.empty,
-  kunnat: Seq[OrganisaatioWithOid] = Seq.empty,
+  tekijäHenkilö: ValpasKuntailmoituksenTekijäHenkilö,
+  mahdollisetTekijäOrganisaatiot: Seq[OrganisaatioWithOid],
+  oppijat: Seq[ValpasOppijanPohjatiedot],
+  kunnat: Seq[OrganisaatioWithOid],
   @KoodistoUri("maatjavaltiot2")
-  maat: Seq[Koodistokoodiviite] = Seq.empty,
+  maat: Seq[Koodistokoodiviite],
   @KoodistoUri("kieli")
-  yhteydenottokielet: Seq[Koodistokoodiviite] = Seq.empty,
+  yhteydenottokielet: Seq[Koodistokoodiviite],
 )
 
 case class ValpasOppijanPohjatiedot(
