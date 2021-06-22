@@ -7,6 +7,7 @@ import { isError } from "../../api/apiUtils"
 import { RaisedButton } from "../../components/buttons/RaisedButton"
 import { Modal } from "../../components/containers/Modal"
 import { LabeledCheckbox } from "../../components/forms/Checkbox"
+import { DatePicker } from "../../components/forms/DatePicker"
 import {
   DateRange,
   DateRangePicker,
@@ -26,6 +27,7 @@ import {
 import { OppijaLaajatTiedot } from "../../state/apitypes/oppija"
 import { Organisaatio } from "../../state/apitypes/organisaatiot"
 import { ISODate, Oid } from "../../state/common"
+import { today } from "../../utils/date"
 import "./OppivelvollisuudenKeskeytysModal.less"
 
 const b = bem("ovkeskeytys")
@@ -77,7 +79,7 @@ type OppivelvollisuudenKeskeytysFormProps = {
 }
 
 type OppivelvollisuudenKeskeytysFormValues = {
-  alku?: ISODate
+  alku: ISODate
   loppu?: ISODate
   tekijäOrganisaatioOid: Oid
 }
@@ -89,7 +91,7 @@ const OppivelvollisuudenKeskeytysForm = (
 ) => {
   const [aikavalinta, setAikavalinta] = useState<Aikavalinta>("määräaikainen")
   const [toistaiseksiVahvistettu, setToistaiseksiVahvistettu] = useState(false)
-  const [dateRange, setDateRange] = useState<DateRange>([null, null])
+  const [dateRange, setDateRange] = useState<DateRange>([today(), null])
   const [organisaatio, setOrganisaatio] = useState<Oid | undefined>(
     props.organisaatiot[0]?.oid
   )
@@ -114,8 +116,13 @@ const OppivelvollisuudenKeskeytysForm = (
         loppu: dateRange[1],
         tekijäOrganisaatioOid: organisaatio!,
       })
-    } else if (toistaiseksiSelected && toistaiseksiVahvistettu) {
+    } else if (
+      toistaiseksiSelected &&
+      dateRange[0] &&
+      toistaiseksiVahvistettu
+    ) {
       onSubmit({
+        alku: dateRange[0],
         tekijäOrganisaatioOid: organisaatio!,
       })
     }
@@ -157,13 +164,18 @@ const OppivelvollisuudenKeskeytysForm = (
         onSelect={() => setAikavalinta("toistaiseksi")}
         label={t("ovkeskeytys__keskeytys_toistaiseksi")}
       >
-        {toistaiseksiSelected && (
-          <LabeledCheckbox
-            label={t("ovkeskeytys__keskeytys_toistaiseksi_vahvistus")}
-            value={toistaiseksiVahvistettu}
-            onChange={setToistaiseksiVahvistettu}
-          />
-        )}
+        <DatePicker
+          value={dateRange[0]}
+          onChange={(startDate) => setDateRange([startDate, dateRange[1]])}
+          disabled={!toistaiseksiSelected}
+        />
+        <LabeledCheckbox
+          label={t("ovkeskeytys__keskeytys_toistaiseksi_vahvistus")}
+          value={toistaiseksiVahvistettu}
+          onChange={setToistaiseksiVahvistettu}
+          disabled={!toistaiseksiSelected}
+          className={b("confirmcb")}
+        />
       </OppivelvollisuudenKeskeytysOption>
 
       {isNonEmpty(props.errors) && (

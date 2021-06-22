@@ -1,22 +1,21 @@
 package fi.oph.koski.valpas
 
-import java.time.{LocalDate, LocalDateTime}
-import java.time.LocalDate.{of => date}
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
-import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.Organisaatio.Oid
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, OidOrganisaatio, PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus, Ryhmällinen}
+import fi.oph.koski.schema._
 import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
-import fi.oph.koski.valpas.ValpasErrorCategory.forbidden
 import fi.oph.koski.valpas.db.ValpasDatabaseFixtureLoader
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat, ValpasOpiskeluoikeusExampleData}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService.defaultMockTarkastelupäivä
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{MockValpasRajapäivätService, ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot, ValpasOppijaSuppeatTiedot, ValpasRajapäivätService}
-import fi.oph.koski.valpas.valpasrepository.{UusiOppivelvollisuudenKeskeytys, ValpasExampleData, ValpasKuntailmoituksenTekijäHenkilö, ValpasKuntailmoituksenTekijäLaajatTiedot, ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusLaajatTiedotJaOppijaOid, ValpasOppivelvollisuudenKeskeytys}
-import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers, ValpasRooli}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{MockValpasRajapäivätService, ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot, ValpasOppijaSuppeatTiedot}
+import fi.oph.koski.valpas.valpasrepository._
+import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import org.scalatest.BeforeAndAfterEach
+
+import java.time.LocalDate.{of => date}
+import java.time.LocalDateTime
 
 class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
   override protected def beforeEach() {
@@ -925,10 +924,11 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
   "Oppivelvollisuutta ei pysty keskeyttämään ilman kunnan valvontaoikeuksia" in {
     val oppija = ValpasMockOppijat.valmistunutYsiluokkalainen
     val tekijäOrganisaatioOid = MockOrganisaatiot.jyväskylänNormaalikoulu
+    val alku = rajapäivätService.tarkastelupäivä
 
     val result = oppijaService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
       oppijaOid = oppija.oid,
-      alku = None,
+      alku = alku,
       loppu = None,
       tekijäOrganisaatioOid = tekijäOrganisaatioOid,
     ))(defaultSession)
@@ -940,10 +940,11 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     val oppija = ValpasMockOppijat.valmistunutYsiluokkalainen
     val tekijäOrganisaatioOid = MockOrganisaatiot.jyväskylänNormaalikoulu
     val kuntaSession = session(ValpasMockUsers.valpasPyhtääJaHelsinki)
+    val alku = rajapäivätService.tarkastelupäivä
 
     val result = oppijaService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
       oppijaOid = oppija.oid,
-      alku = None,
+      alku = alku,
       loppu = None,
       tekijäOrganisaatioOid = tekijäOrganisaatioOid,
     ))(kuntaSession)
@@ -955,6 +956,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     val oppija = ValpasMockOppijat.valmistunutYsiluokkalainen
     val tekijäOrganisaatioOid = MockOrganisaatiot.helsinginKaupunki
     val kuntaSession = session(ValpasMockUsers.valpasPyhtääJaHelsinki)
+    val alku = rajapäivätService.tarkastelupäivä
 
     val keskeytykset = oppijaService
       .getOppijaLaajatTiedotYhteystiedoilla(oppija.oid)(kuntaSession)
@@ -964,13 +966,13 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
 
     val result = oppijaService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
       oppijaOid = oppija.oid,
-      alku = None,
+      alku = alku,
       loppu = None,
       tekijäOrganisaatioOid = tekijäOrganisaatioOid,
     ))(kuntaSession)
 
     val expectedKeskeytys = ValpasOppivelvollisuudenKeskeytys(
-      alku = rajapäivätService.tarkastelupäivä,
+      alku = alku,
       loppu = None,
       voimassa = true,
     )
@@ -993,7 +995,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
 
     val result = oppijaService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
       oppijaOid = oppija.oid,
-      alku = Some(alku),
+      alku = alku,
       loppu = Some(loppu),
       tekijäOrganisaatioOid = tekijäOrganisaatioOid,
     ))(kuntaSession)
@@ -1017,10 +1019,11 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     val oppija = ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004
     val tekijäOrganisaatioOid = MockOrganisaatiot.helsinginKaupunki
     val kuntaSession = session(ValpasMockUsers.valpasPyhtääJaHelsinki)
+    val alku = rajapäivätService.tarkastelupäivä
 
     val result = oppijaService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
       oppijaOid = oppija.oid,
-      alku = None,
+      alku = alku,
       loppu = None,
       tekijäOrganisaatioOid = tekijäOrganisaatioOid,
     ))(kuntaSession)

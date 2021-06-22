@@ -1,5 +1,6 @@
 import bem from "bem-ts"
 import React from "react"
+import { joinClassNames } from "../../utils/classnames"
 import "./Checkbox.less"
 
 const b = bem("checkbox")
@@ -30,9 +31,10 @@ export type LabeledCheckboxProps = CheckboxProps & {
 
 export const LabeledCheckbox = ({
   label,
+  className,
   ...checkboxProps
 }: LabeledCheckboxProps) => (
-  <label className={b("label")}>
+  <label className={joinClassNames(className, b("label"))}>
     <Checkbox {...checkboxProps} />
     <div className={b("labeltext", { disabled: checkboxProps.disabled })}>
       {label}

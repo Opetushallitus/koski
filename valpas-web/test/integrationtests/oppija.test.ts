@@ -1,4 +1,5 @@
 import { createOppijaPath } from "../../src/state/paths"
+import { formatDate, today } from "../../src/utils/date"
 import {
   clickElement,
   contentEventuallyEquals,
@@ -646,7 +647,7 @@ describe("Oppijakohtainen näkymä", () => {
       "Oppivelvollisuus-keskeytetty-määräajaksi Valpas (181005A1560)"
     )
 
-    // Valitse "Oppivelvollisuus keskeytetään toistaiseksi", hyväksy ehto
+    // Valitse "Oppivelvollisuus keskeytetään toistaiseksi", säilytä alkupäivänä nykyinen päivä, hyväksy ehto
     await clickElement(
       ".ovkeskeytys__option:nth-child(2) .radiobutton__container"
     )
@@ -655,7 +656,7 @@ describe("Oppijakohtainen näkymä", () => {
 
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus: Keskeytetty toistaiseksi 11.11.2022 alkaen
+      Oppivelvollisuus: Keskeytetty toistaiseksi ${formatDate(today())} alkaen
       Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
     `)
   })

@@ -22,7 +22,7 @@ class OppivelvollisuudenKeskeytysService(application: KoskiApplication) extends 
   : Option[ValpasOppivelvollisuudenKeskeytys] = {
     db.setKeskeytys(OppivelvollisuudenKeskeytysRow(
       oppijaOid = keskeytys.oppijaOid,
-      alku = keskeytys.alku.getOrElse(rajapäivät.tarkastelupäivä),
+      alku = keskeytys.alku,
       loppu = keskeytys.loppu,
       tekijäOid = session.oid,
       tekijäOrganisaatioOid = keskeytys.tekijäOrganisaatioOid,
@@ -62,7 +62,7 @@ object ValpasOppivelvollisuudenKeskeytys {
 
 case class UusiOppivelvollisuudenKeskeytys(
   oppijaOid: String,
-  alku: Option[LocalDate], // Jos None --> käytetään tarkastelupäivää
+  alku: LocalDate,
   loppu: Option[LocalDate], // Jos None --> voimassa toistaiseksi
   tekijäOrganisaatioOid: String,
 )
