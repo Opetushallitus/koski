@@ -1,9 +1,10 @@
 package fi.oph.koski.organisaatio
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.{Session, KoskiSpecificSession, KäyttöoikeusOrg}
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, KäyttöoikeusOrg, Session}
 import fi.oph.koski.perustiedot.VarhaiskasvatusToimipistePerustiedot
 import fi.oph.koski.schema.Organisaatio.Oid
+import fi.oph.koski.schema.OrganisaatioWithOid
 
 class OrganisaatioService(application: KoskiApplication) {
   val ostopalveluRootOid = "OSTOPALVELUTAIPALVELUSETELI"
@@ -62,8 +63,7 @@ class OrganisaatioService(application: KoskiApplication) {
       }
     }.sortBy(r => (r.organisaatioHierarkia.nimi.get(user.lang), r.kayttooikeusrooli))
 
-  def kunnat(implicit user: Session): List[OrganisaatioHierarkia] =
-    organisaatioRepository.findKunnat
+  def kunnat: List[OrganisaatioWithOid] = organisaatioRepository.findKunnat.flatMap(_.toKunta)
 
   private def koulutustoimijoidenOstopalveluOrganisaatiot(koulutustoimijat: Set[Oid])(implicit user: Session): List[OrganisaatioHierarkia] =
     perustiedot.haeVarhaiskasvatustoimipisteet(koulutustoimijat) match {

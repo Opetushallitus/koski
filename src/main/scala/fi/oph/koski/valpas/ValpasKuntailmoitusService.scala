@@ -158,7 +158,7 @@ class ValpasKuntailmoitusService(
     pohjatiedot: ValpasKuntailmoitusPohjatiedot
   )(implicit session: ValpasSession): ValpasKuntailmoitusPohjatiedot = {
     pohjatiedot.copy(
-      kunnat = organisaatioService.kunnat.map(oh => OidOrganisaatio(oh.oid, Some(oh.nimi), oh.kotipaikka))
+      kunnat = organisaatioService.kunnat
     )
   }
 

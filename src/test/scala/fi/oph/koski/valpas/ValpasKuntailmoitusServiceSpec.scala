@@ -8,9 +8,9 @@ import fi.oph.koski.schema.{Koodistokoodiviite, OidOrganisaatio, Oppilaitos}
 import fi.oph.koski.util.DateOrdering
 import fi.oph.koski.valpas.hakukooste.HakukoosteExampleData
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{MockValpasRajapäivätService, ValpasOppijaLaajatTiedot}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoituksenOppijanYhteystiedot, ValpasKuntailmoituksenTekijäHenkilö, ValpasKuntailmoitusPohjatiedotInput, ValpasPohjatietoYhteystieto}
-import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
+import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 import fi.oph.koski.valpas.yhteystiedot.{ValpasYhteystietoHakemukselta, ValpasYhteystietoOppijanumerorekisteristä}
 import org.scalatest.BeforeAndAfterEach
 
@@ -29,6 +29,14 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
       .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)
     super.afterEach()
   }
+
+  private def oppilaitos(oid: String) =
+    MockOrganisaatioRepository.getOrganisaatioHierarkia(oid).flatMap(_.toOppilaitos).get
+
+  private def kunta(oid: String) =
+    MockOrganisaatioRepository.getOrganisaatioHierarkia(oid).head.toKunta.get
+
+  private val helsinginKaupunki = kunta(MockOrganisaatiot.helsinginKaupunki)
 
   "Pohjatietojen haku ilman organisaatiota yhdelle oppijalle onnistuu" in {
     val input = ValpasKuntailmoitusPohjatiedotInput(
@@ -188,9 +196,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
   }
 
   "Pohjatiedoissa palautetaan lista kunnista" in {
-    val expectedKunnat = KoskiApplicationForTests.organisaatioService.kunnat(defaultSession).map(oh =>
-      OidOrganisaatio(oh.oid, Some(oh.nimi), oh.kotipaikka)
-    )
+    val expectedKunnat = KoskiApplicationForTests.organisaatioService.kunnat
 
     val input = ValpasKuntailmoitusPohjatiedotInput(
       tekijäOrganisaatio = Some(Oppilaitos(oid = MockOrganisaatiot.jyväskylänNormaalikoulu)),
@@ -467,13 +473,5 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
     val yhteystiedot = result.map(_.oppijat(0).yhteystiedot)
 
     yhteystiedot should equal(Right(expectedYhteystiedot))
-  }
-
-  private def helsinginKaupunki = KoskiApplicationForTests.organisaatioService.kunnat(defaultSession).map(oh =>
-    OidOrganisaatio(oh.oid, Some(oh.nimi), oh.kotipaikka)
-  ).find(k => k.kotipaikka == Some(ExampleData.helsinki)).get
-
-  private def oppilaitos(oid: String) = {
-    MockOrganisaatioRepository.getOrganisaatioHierarkia(oid).flatMap(_.toOppilaitos).get
   }
 }
