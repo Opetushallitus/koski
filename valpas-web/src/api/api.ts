@@ -1,6 +1,6 @@
+import { HenkilöhakuResult } from "../state/apitypes/henkilohaku"
 import { KuntailmoitusLaajatTiedot } from "../state/apitypes/kuntailmoitus"
 import { KuntailmoitusPohjatiedot } from "../state/apitypes/kuntailmoituspohjatiedot"
-import { HenkilöMaksuttomuushakuResult } from "../state/apitypes/maksuttomuushakutiedot"
 import { OpiskeluoikeusSuppeatTiedot } from "../state/apitypes/opiskeluoikeus"
 import {
   OppijaHakutilanteillaLaajatTiedot,
@@ -79,9 +79,7 @@ export const fetchOppijaCache = createLocalThenApiCache(fetchOppija)
  */
 export const fetchHenkilöhaku = (query: Oid | Hetu) =>
   handleExpiredSession(
-    apiGet<HenkilöMaksuttomuushakuResult>(
-      `valpas/api/henkilohaku/maksuttomuus/${query}`
-    )
+    apiGet<HenkilöhakuResult>(`valpas/api/henkilohaku/maksuttomuus/${query}`)
   )
 
 export const fetchHenkilöhakuCache = createLocalThenApiCache(fetchHenkilöhaku)

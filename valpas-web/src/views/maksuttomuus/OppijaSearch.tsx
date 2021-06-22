@@ -10,10 +10,10 @@ import { TextField } from "../../components/forms/TextField"
 import { Spinner } from "../../components/icons/Spinner"
 import { T, t } from "../../i18n/i18n"
 import {
-  HenkilöMaksuttomuushakuResult,
-  HenkilöMaksuttomuushakutulos,
-  isMaksuttomuushakutulos,
-} from "../../state/apitypes/maksuttomuushakutiedot"
+  HenkilöhakuResult,
+  isLöytyiHenkilöhakuResult,
+  LöytyiHenkilöhakuResult,
+} from "../../state/apitypes/henkilohaku"
 import { useBasePath } from "../../state/basePath"
 import {
   expectAtLeastOne,
@@ -76,11 +76,11 @@ export const OppijaSearch = (_props: OppijaSearchProps) => {
 }
 
 type OppijaSearchResultsProps = {
-  hakutulos: HenkilöMaksuttomuushakuResult
+  hakutulos: HenkilöhakuResult
 }
 
 const OppijaSearchResults = (props: OppijaSearchResultsProps) => {
-  if (isMaksuttomuushakutulos(props.hakutulos)) {
+  if (isLöytyiHenkilöhakuResult(props.hakutulos)) {
     return <OppijaSearchMatchResult henkilö={props.hakutulos} />
   }
   return <OppijaSearchUndefinedResult />
@@ -93,7 +93,7 @@ const OppijaSearchUndefinedResult = () => (
 )
 
 type OppijaSearchMatchResultProps = {
-  henkilö: HenkilöMaksuttomuushakutulos
+  henkilö: LöytyiHenkilöhakuResult
 }
 
 const OppijaSearchMatchResult = (props: OppijaSearchMatchResultProps) => {
