@@ -54,7 +54,7 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
   get("/henkilohaku/maksuttomuus/:query") {
     val query = params("query")
     renderEither(
-      oppijaSearchService.findHenkilöMaksuttomuus(query)
+      oppijaSearchService.findHenkilö(ValpasRooli.OPPILAITOS_MAKSUTTOMUUS, query)
         .tap(auditLogHenkilöHaku(query))
     )
   }

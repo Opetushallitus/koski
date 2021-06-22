@@ -15,43 +15,42 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
   private val accessResolver = new ValpasAccessResolver
   private val oppijaService = application.valpasOppijaService
 
-
-  def findHenkilöMaksuttomuus
-    (query: String)
+  def findHenkilö
+    (rooli: ValpasRooli.Role, query: String)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasHenkilöhakuResult] = {
-    accessResolver.assertAccessToAnyOrg(ValpasRooli.OPPILAITOS_MAKSUTTOMUUS)
+    accessResolver.assertAccessToAnyOrg(rooli)
       .flatMap(_ => {
         if (hetuValidator.validate(query).isRight) {
-          searchByHetu(query)
+          searchByHetu(rooli, query)
         } else if (Henkilö.isValidHenkilöOid(query)) {
-          searchByOppijaOid(query)
+          searchByOppijaOid(rooli, query)
         } else {
           Left(ValpasErrorCategory.searchValidation())
         }
       })
   }
-
+  
   private def searchByHetu
-    (hetu: String)
+    (rooli: ValpasRooli.Role, hetu: String)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasHenkilöhakuResult] =
-    asSearchResult(henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu))
+    asSearchResult(rooli, henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu))
 
   private def searchByOppijaOid
-    (oid: String)
+    (rooli: ValpasRooli.Role, oid: String)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasHenkilöhakuResult] =
-    asSearchResult(henkilöRepository.findByOid(oid))
+    asSearchResult(rooli, henkilöRepository.findByOid(oid))
 
   private def asSearchResult
-    (oppijaHenkilö: Option[OppijaHenkilö])
+    (rooli: ValpasRooli.Role, oppijaHenkilö: Option[OppijaHenkilö])
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasHenkilöhakuResult] = {
     oppijaHenkilö match {
       case None => Right(ValpasEiLöytynytHenkilöhakuResult())
       case Some(henkilö) => {
-        oppijaService.getOppijaLaajatTiedot(ValpasRooli.OPPILAITOS_MAKSUTTOMUUS, henkilö.oid)
+        oppijaService.getOppijaLaajatTiedot(rooli, henkilö.oid)
           .map(ValpasLöytyiHenkilöhakuResult.apply)
       }
     }
