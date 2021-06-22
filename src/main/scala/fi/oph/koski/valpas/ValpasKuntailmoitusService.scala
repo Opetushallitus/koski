@@ -4,9 +4,9 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{Koodistokoodiviite, OidOrganisaatio, Organisaatio, OrganisaatioWithOid}
+import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOppijaLaajatTiedot, ValpasOppilaitos}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOppijaLaajatTiedot, ValpasOppilaitos}
 import fi.oph.koski.valpas.valpasrepository._
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.koski.valpas.yhteystiedot.{ValpasYhteystiedot, ValpasYhteystietoHakemukselta, ValpasYhteystietoOppijanumerorekisteristä}
@@ -28,21 +28,27 @@ class ValpasKuntailmoitusService(
   )(implicit session: ValpasSession): Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
     val organisaatioOid = kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio.oid
 
-    // TODO: Kuntailmoitus pitää voida tehdä myös OPPILAITOS_SUORITTAMINEN- ja KUNTA-oikeuksilla. Pitää tarkistaa
-    // myös organisaation tyyppi: kuntaoikeuksilla saa tehdä ilmoituksen ainoastaan kunnan nimissä, ja muilla
-    // oikeuksilla ainoastaan oppilaitoksen nimissä.
-    accessResolver.assertAccessToOrg(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)(organisaatioOid).left.map(_ =>
-      ValpasErrorCategory.forbidden.organisaatio(
-        "Käyttäjällä ei ole oikeutta tehdä kuntailmoitusta annetun organisaation nimissä"
-      ))
-      .flatMap(_ => oppijaService.getOppijaLaajatTiedot(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, kuntailmoitusInput.oppijaOid))
-      .flatMap(oppija =>
-        accessResolver.withOppijaAccessAsOrganisaatio(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)(organisaatioOid)(oppija)
-          .left.map(_ => ValpasErrorCategory.forbidden.oppija(
-            "Käyttäjällä ei ole oikeuksia tehdä kuntailmoitusta annetusta oppijasta"
-          ))
-      )
-      .flatMap(_ => repository.create(kuntailmoitusInput))
+    val rooli = kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio match {
+      case o: OrganisaatioWithOid if organisaatioRepository.isKunta(o) => Right(ValpasRooli.KUNTA)
+      case _: Oppilaitos => Right(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)
+      case _: Any => Left(ValpasErrorCategory.validation.kuntailmoituksenTekijä())
+    }
+
+    for {
+      r <- rooli
+      _ <- accessResolver.assertAccessToOrg(r, organisaatioOid)
+        .left
+        .map(_ => ValpasErrorCategory.forbidden.organisaatio(
+          "Käyttäjällä ei ole oikeutta tehdä kuntailmoitusta annetun organisaation nimissä"
+        ))
+      o <- oppijaService.getOppijaLaajatTiedot(r, kuntailmoitusInput.oppijaOid)
+      _ <- accessResolver.withOppijaAccessAsOrganisaatio(r, organisaatioOid)(o)
+        .left
+        .map(_ => ValpasErrorCategory.forbidden.oppija(
+          "Käyttäjällä ei ole oikeuksia tehdä kuntailmoitusta annetusta oppijasta"
+        ))
+      result <- repository.create(kuntailmoitusInput)
+    } yield result
   }
 
   def getKuntailmoitukset(
@@ -50,7 +56,7 @@ class ValpasKuntailmoitusService(
   )(implicit session: ValpasSession): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedot]] = {
     accessResolver.withOppijaAccess(oppija)
       .flatMap(oppija => repository.queryOppijat(oppija.henkilö.kaikkiOidit))
-      .map(_.map(karsiHenkilötiedotJosEiOikeuksia(oppija)))
+      .map(_.map(karsiHenkilötiedotJosEiOikeuksia))
   }
 
   def getKuntailmoituksetKunnalle
@@ -60,15 +66,14 @@ class ValpasKuntailmoitusService(
     repository.queryByKunta(kuntaOid)
   }
 
-  private def karsiHenkilötiedotJosEiOikeuksia(
-    oppija: ValpasOppijaLaajatTiedot
-  )(
-    kuntailmoitus: ValpasKuntailmoitusLaajatTiedot
-  )(implicit session: ValpasSession) : ValpasKuntailmoitusLaajatTiedot = {
+  private def karsiHenkilötiedotJosEiOikeuksia
+    (kuntailmoitus: ValpasKuntailmoitusLaajatTiedot)
+    (implicit session: ValpasSession)
+  : ValpasKuntailmoitusLaajatTiedot = {
     val oikeutetutOrganisaatiot = Set(kuntailmoitus.tekijä.organisaatio.oid, kuntailmoitus.kunta.oid)
 
     if (Seq(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, ValpasRooli.KUNTA)
-      .exists(rooli => accessResolver.accessToSomeOrgs(rooli)(oikeutetutOrganisaatiot))
+      .exists(rooli => accessResolver.accessToSomeOrgs(rooli, oikeutetutOrganisaatiot))
     ) {
       kuntailmoitus
     } else {
@@ -237,13 +242,14 @@ class ValpasKuntailmoitusService(
     // Oikeus on kaikilla muilla paitsi maksuttomuuskäyttäjillä.
     HttpStatus.foldEithers(
       oppijatHakutilanteilla.map(oppijaHakutilanteilla =>
-        accessResolver.withOppijaAccessAsAnyRole(
+        accessResolver.withOppijaAccess(
           Seq(
             ValpasRooli.OPPILAITOS_HAKEUTUMINEN,
             ValpasRooli.OPPILAITOS_SUORITTAMINEN,
             ValpasRooli.KUNTA
-          )
-        )(oppijaHakutilanteilla.oppija)
+          ),
+          oppijaHakutilanteilla.oppija
+        )
       )
     )
       .flatMap(_ => {
@@ -366,21 +372,32 @@ class ValpasKuntailmoitusService(
     tekijäOrganisaatio: Option[OrganisaatioWithOid],
     oppijanOppilaitokset: Set[ValpasOppilaitos.Oid]
   )(implicit session: ValpasSession): Either[HttpStatus, Set[OrganisaatioWithOid]] = {
-    tekijäOrganisaatio match {
-      // Jos organisaatio on annettu, ei palauteta toistaiseksi mitään muita vaihtoehtoja,
-      // vaikka jollekin yksittäiselle oppijalle voisikin lähettää ilmoituksen muusta oppilaitoksesta käsin.
-      case Some(o) if accessResolver.filterByOikeudet(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)(Set(o.oid)) == Set(o.oid) => Right(Set(o))
-      case Some(o) => Right(Set.empty)
-      case None => {
-        val maybeOrganisaatiot = accessResolver.filterByOikeudet(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)(oppijanOppilaitokset)
-          .map(oid => organisaatioRepository.getOrganisaatio(oid))
+    val sallitutRoolit = Set(
+      ValpasRooli.OPPILAITOS_HAKEUTUMINEN,
+      ValpasRooli.OPPILAITOS_SUORITTAMINEN,
+      ValpasRooli.KUNTA
+    )
 
-        if (maybeOrganisaatiot.contains(None)) {
-          Left(ValpasErrorCategory.internalError("Kaikkia oppijan organisaatioita ei löydy organisaatiopalvelusta"))
-        } else {
-          Right(maybeOrganisaatiot.flatten)
-        }
-      }
+    val oidsToCheck = tekijäOrganisaatio match {
+      // Jos organisaatio on jo annettu, ei palauteta toistaiseksi mitään muita vaihtoehtoja,
+      // vaikka jollekin yksittäiselle oppijalle voisikin lähettää ilmoituksen muusta oppilaitoksesta käsin.
+      case Some(o) => Set(o.oid)
+      case None => oppijanOppilaitokset
+    }
+
+    val organisaatiot = oidsToCheck
+      .filter(oid => sallitutRoolit.exists(rooli => accessResolver.accessToOrg(rooli, oid)))
+      .map(organisaatioRepository.getOrganisaatio)
+
+    val kunnat = organisaatioService.omatOrganisaatiotJaKayttooikeusroolit
+      .filter(_.kayttooikeusrooli == ValpasRooli.KUNTA)
+      .flatMap(_.organisaatioHierarkia.toKunta)
+      .filter(kunta => accessResolver.accessToOrg(ValpasRooli.KUNTA, kunta.oid))
+
+    if (organisaatiot.contains(None)) {
+      Left(ValpasErrorCategory.internalError("Kaikkia oppijan organisaatioita ei löydy organisaatiopalvelusta"))
+    } else {
+      Right(organisaatiot.flatten ++ kunnat)
     }
   }
 
