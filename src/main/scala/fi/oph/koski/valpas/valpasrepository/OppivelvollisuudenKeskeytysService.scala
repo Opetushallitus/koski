@@ -12,20 +12,14 @@ class OppivelvollisuudenKeskeytysService(application: KoskiApplication) extends 
   protected lazy val db = application.valpasOppivelvollisuudenKeskeytysRepository
   protected lazy val rajapäivät = application.valpasRajapäivätService
 
-  def getKeskeytykset(oppijaOids: Seq[String]): Seq[ValpasOppivelvollisuudenKeskeytys] = {
-    val tarkastelupäiväAikavälillä = isBetween(rajapäivät.tarkastelupäivä) _
+  def getKeskeytykset(oppijaOids: Seq[String]): Seq[ValpasOppivelvollisuudenKeskeytys] =
     db.getKeskeytykset(oppijaOids)
-      .map(keskeytys => ValpasOppivelvollisuudenKeskeytys(
-        alku = keskeytys.alku,
-        loppu = keskeytys.loppu,
-        voimassa = !keskeytys.peruttu && tarkastelupäiväAikavälillä(keskeytys.alku, keskeytys.loppu)
-      ))
-  }
+      .map(ValpasOppivelvollisuudenKeskeytys.apply(rajapäivät.tarkastelupäivä))
 
   def create
     (keskeytys: UusiOppivelvollisuudenKeskeytys)
     (implicit session: ValpasSession)
-  : Unit = {
+  : Option[ValpasOppivelvollisuudenKeskeytys] = {
     db.setKeskeytys(OppivelvollisuudenKeskeytysRow(
       oppijaOid = keskeytys.oppijaOid,
       alku = keskeytys.alku.getOrElse(rajapäivät.tarkastelupäivä),
@@ -34,6 +28,7 @@ class OppivelvollisuudenKeskeytysService(application: KoskiApplication) extends 
       tekijäOrganisaatioOid = keskeytys.tekijäOrganisaatioOid,
       luotu = LocalDateTime.now(),
     ))
+      .map(ValpasOppivelvollisuudenKeskeytys.apply(rajapäivät.tarkastelupäivä))
   }
 
   private def isBetween(date: LocalDate)(start: LocalDate, end: Option[LocalDate]): Boolean = {
@@ -46,6 +41,24 @@ case class ValpasOppivelvollisuudenKeskeytys(
   loppu: Option[LocalDate],
   voimassa: Boolean,
 )
+
+object ValpasOppivelvollisuudenKeskeytys {
+  def apply
+    (tarkastelupäivä: LocalDate)
+    (row: OppivelvollisuudenKeskeytysRow)
+  : ValpasOppivelvollisuudenKeskeytys = {
+    val tarkastelupäiväAikavälillä = isBetween(tarkastelupäivä) _
+    ValpasOppivelvollisuudenKeskeytys(
+      alku = row.alku,
+      loppu = row.loppu,
+      voimassa = !row.peruttu && tarkastelupäiväAikavälillä(row.alku, row.loppu)
+    )
+  }
+
+  private def isBetween(date: LocalDate)(start: LocalDate, end: Option[LocalDate]): Boolean = {
+    date.compareTo(start) >= 0 && end.forall(date.compareTo(_) <= 0)
+  }
+}
 
 case class UusiOppivelvollisuudenKeskeytys(
   oppijaOid: String,

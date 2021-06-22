@@ -969,19 +969,19 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       tekijäOrganisaatioOid = tekijäOrganisaatioOid,
     ))(kuntaSession)
 
-    result shouldBe Right(())
+    val expectedKeskeytys = ValpasOppivelvollisuudenKeskeytys(
+      alku = rajapäivätService.tarkastelupäivä,
+      loppu = None,
+      voimassa = true,
+    )
+
+    result shouldBe Right(expectedKeskeytys)
 
     val keskeytykset2 = oppijaService
       .getOppijaLaajatTiedotYhteystiedoilla(oppija.oid)(kuntaSession)
       .map(_.oppivelvollisuudenKeskeytykset)
 
-    keskeytykset2 shouldBe Right(List(
-      ValpasOppivelvollisuudenKeskeytys(
-        alku = rajapäivätService.tarkastelupäivä,
-        loppu = None,
-        voimassa = true,
-      )
-    ))
+    keskeytykset2 shouldBe Right(List(expectedKeskeytys))
   }
 
   "Oppivelvollisuuden pystyy keskeyttämään määräaikaisesti kunnan valvontaoikeuksilla" in {
@@ -998,19 +998,19 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       tekijäOrganisaatioOid = tekijäOrganisaatioOid,
     ))(kuntaSession)
 
-    result shouldBe Right(())
+    val expectedKeskeytys = ValpasOppivelvollisuudenKeskeytys(
+      alku = alku,
+      loppu = Some(loppu),
+      voimassa = true,
+    )
+
+    result shouldBe Right(expectedKeskeytys)
 
     val keskeytykset = oppijaService
       .getOppijaLaajatTiedotYhteystiedoilla(oppija.oid)(kuntaSession)
       .map(_.oppivelvollisuudenKeskeytykset)
 
-    keskeytykset shouldBe Right(List(
-      ValpasOppivelvollisuudenKeskeytys(
-        alku = alku,
-        loppu = Some(loppu),
-        voimassa = true,
-      )
-    ))
+    keskeytykset shouldBe Right(List(expectedKeskeytys))
   }
 
   "Oppivelvollisuutta ei voi keskeyttää ellei oppija ole ovl-lain alainen" in {

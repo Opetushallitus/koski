@@ -82,7 +82,6 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
       val result = keskeytys
         .flatMap(oppijaService.addOppivelvollisuudenKeskeytys)
         .tap(_ => keskeytys.tap(auditLogOppivelvollisuudenKeskeytys))
-        .map(_ => "ok")
 
       renderEither(result)
     } } (parseErrorHandler = handleUnparseableJson)
