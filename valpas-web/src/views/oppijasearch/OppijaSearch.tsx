@@ -1,8 +1,7 @@
 import bem from "bem-ts"
 import React from "react"
 import { Link } from "react-router-dom"
-import { fetchHenkilöhaku, fetchHenkilöhakuCache } from "../../api/api"
-import { useApiMethod } from "../../api/apiHooks"
+import { ApiMethodHook } from "../../api/apiHooks"
 import { isError, isLoading, isSuccess } from "../../api/apiUtils"
 import { SubmitButton } from "../../components/buttons/SubmitButton"
 import { Form } from "../../components/forms/Form"
@@ -20,7 +19,7 @@ import {
   expectValidHetu,
   expectValidOid,
 } from "../../state/formValidators"
-import { createMaksuttomuusPath, createOppijaPath } from "../../state/paths"
+import { createOppijaPath } from "../../state/paths"
 import { FormValidators, useFormState } from "../../state/useFormState"
 import "./OppijaSearch.less"
 
@@ -43,14 +42,18 @@ const validators: FormValidators<OppijaSearchValues> = {
   ],
 }
 
-export type OppijaSearchProps = {}
+export type OppijaSearchProps = {
+  searchApiMethod: ApiMethodHook<HenkilöhakuResult, [query: string]>
+  prevPath: string
+  eiLöytynytIlmoitusId: string
+  error403Id: string
+}
 
-export const OppijaSearch = (_props: OppijaSearchProps) => {
+export const OppijaSearch = (props: OppijaSearchProps) => {
   const form = useFormState({ initialValues, validators })
-  const search = useApiMethod(fetchHenkilöhaku, fetchHenkilöhakuCache)
 
   const submit = form.submitCallback((data) => {
-    search.call(data.query)
+    props.searchApiMethod.call(data.query)
   })
 
   return (
@@ -62,13 +65,24 @@ export const OppijaSearch = (_props: OppijaSearchProps) => {
         <SubmitButton
           className={b("submit")}
           onClick={form.submitCallback(console.log)}
-          disabled={!form.isValid || isLoading(search)}
+          disabled={!form.isValid || isLoading(props.searchApiMethod)}
           value={t("oppijahaku__hae")}
         />
         <div className={b("results")}>
-          {isLoading(search) && <Spinner />}
-          {isSuccess(search) && <OppijaSearchResults hakutulos={search.data} />}
-          {isError(search) && <OppijaSearchError statusCode={search.status} />}
+          {isLoading(props.searchApiMethod) && <Spinner />}
+          {isSuccess(props.searchApiMethod) && (
+            <OppijaSearchResults
+              hakutulos={props.searchApiMethod.data}
+              eiLöytynytIlmoitusId={props.eiLöytynytIlmoitusId}
+              prevPath={props.prevPath}
+            />
+          )}
+          {isError(props.searchApiMethod) && (
+            <OppijaSearchError
+              statusCode={props.searchApiMethod.status}
+              error403Id={props.error403Id}
+            />
+          )}
         </div>
       </TextField>
     </Form>
@@ -77,23 +91,39 @@ export const OppijaSearch = (_props: OppijaSearchProps) => {
 
 type OppijaSearchResultsProps = {
   hakutulos: HenkilöhakuResult
+  eiLöytynytIlmoitusId: string
+  prevPath: string
 }
 
 const OppijaSearchResults = (props: OppijaSearchResultsProps) => {
   if (isLöytyiHenkilöhakuResult(props.hakutulos)) {
-    return <OppijaSearchMatchResult henkilö={props.hakutulos} />
+    return (
+      <OppijaSearchMatchResult
+        henkilö={props.hakutulos}
+        prevPath={props.prevPath}
+      />
+    )
   }
-  return <OppijaSearchUndefinedResult />
+  return (
+    <OppijaSearchUndefinedResult
+      eiLöytynytIlmoitusId={props.eiLöytynytIlmoitusId}
+    />
+  )
 }
 
-const OppijaSearchUndefinedResult = () => (
+type OppijaSearchUndefinedResult = {
+  eiLöytynytIlmoitusId: string
+}
+
+const OppijaSearchUndefinedResult = (props: OppijaSearchUndefinedResult) => (
   <div className={b("resultvalue")}>
-    <T id="oppijahaku__maksuttomuutta_ei_pysty_päättelemään" />
+    <T id={props.eiLöytynytIlmoitusId} />
   </div>
 )
 
 type OppijaSearchMatchResultProps = {
   henkilö: LöytyiHenkilöhakuResult
+  prevPath: string
 }
 
 const OppijaSearchMatchResult = (props: OppijaSearchMatchResultProps) => {
@@ -108,7 +138,7 @@ const OppijaSearchMatchResult = (props: OppijaSearchMatchResultProps) => {
         className={b("resultlink")}
         to={createOppijaPath(basePath, {
           oppijaOid: result.oid,
-          prev: createMaksuttomuusPath(),
+          prev: props.prevPath,
         })}
       >
         {result.sukunimi} {result.etunimet} {result.hetu && `(${result.hetu})`}
@@ -119,21 +149,28 @@ const OppijaSearchMatchResult = (props: OppijaSearchMatchResultProps) => {
 
 type OppijaSearchErrorProps = {
   statusCode?: number
+  error403Id: string
 }
 
 const OppijaSearchError = (props: OppijaSearchErrorProps) => {
-  const [message, showAsError] = getErrorText(props.statusCode)
+  const [message, showAsError] = getErrorText(
+    props.error403Id,
+    props.statusCode
+  )
   return (
     <div className={b("resultvalue", { error: showAsError })}>{message}</div>
   )
 }
 
-const getErrorText = (statusCode?: number): [string, boolean] => {
+const getErrorText = (
+  error403Id: string,
+  statusCode?: number
+): [string, boolean] => {
   switch (statusCode) {
     case 400:
       return [t("oppijahaku__validointivirhe"), true]
     case 403:
-      return [t("oppijahaku__ei_näytettävä_oppija"), false]
+      return [t(error403Id), false]
     default:
       return [t("apivirhe__virheellinen_pyyntö", { virhe: status }), true]
   }

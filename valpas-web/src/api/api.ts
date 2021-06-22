@@ -75,14 +75,16 @@ export const fetchOppija = (oppijaOid: Oid) =>
 export const fetchOppijaCache = createLocalThenApiCache(fetchOppija)
 
 /**
- * Etsi henkilöä hetulla/oidilla
+ * Etsi henkilöä hetulla/oidilla maksuttomuuskäyttäjänä
  */
-export const fetchHenkilöhaku = (query: Oid | Hetu) =>
+export const fetchHenkilöhakuMaksuttomuus = (query: Oid | Hetu) =>
   handleExpiredSession(
     apiGet<HenkilöhakuResult>(`valpas/api/henkilohaku/maksuttomuus/${query}`)
   )
 
-export const fetchHenkilöhakuCache = createLocalThenApiCache(fetchHenkilöhaku)
+export const fetchHenkilöhakuMaksuttomuusCache = createLocalThenApiCache(
+  fetchHenkilöhakuMaksuttomuus
+)
 
 /**
  * Kuntailmoituksen pohjatietojen haku
