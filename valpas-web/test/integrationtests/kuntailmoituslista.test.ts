@@ -48,7 +48,7 @@ describe("Kunnan listanäkymä", () => {
       LukionAloittanutJaLopettanut-ilmo Valpas | 30.11.2021 | Jyväskylän normaalikoulu | 5.4.2005 | doneJyväskylän normaalikoulu, Lukiokoulutus
     `
 
-    await loginAs(rootPath, "valpas-monikunta")
+    await loginAs(rootPath, "valpas-pyhtää-ja-helsinki")
     await urlIsEventually(
       pathToUrl(
         createKuntailmoitusPathWithOrg("/virkailija", helsinginKaupunkiOid)
@@ -62,7 +62,7 @@ describe("Kunnan listanäkymä", () => {
   })
 
   it("Vaihtaa taulun sisällön organisaatiovalitsimesta", async () => {
-    await loginAs(rootPath, "valpas-monikunta")
+    await loginAs(rootPath, "valpas-pyhtää-ja-helsinki")
 
     await selectOrganisaatio(0)
     await urlIsEventually(
@@ -88,7 +88,7 @@ describe("Kunnan listanäkymä", () => {
   it("Käyminen oppijakohtaisessa näkymässä ei hukkaa valittua organisaatiota", async () => {
     const pyhtäänOppijaOid = "1.2.246.562.24.00000000036"
 
-    await loginAs(rootPath, "valpas-monikunta")
+    await loginAs(rootPath, "valpas-pyhtää-ja-helsinki")
 
     await selectOrganisaatio(1)
     await urlIsEventually(
