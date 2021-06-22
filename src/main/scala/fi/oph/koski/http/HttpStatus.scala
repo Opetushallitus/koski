@@ -5,7 +5,7 @@ import org.json4s.JValue
 import org.json4s.JsonAST.JString
 import org.json4s.jackson.JsonMethods
 
-import reflect.runtime.universe.TypeTag
+import scala.reflect.runtime.universe.TypeTag
 
 case class HttpStatus(statusCode: Int, errors: List[ErrorDetail]) {
   if (statusCode == 200 && errors.nonEmpty) throw new RuntimeException("HttpStatus 200 with error message " + errors.mkString(","))
@@ -57,11 +57,13 @@ object HttpStatus {
   def fold(statuses: Iterable[HttpStatus]): HttpStatus = statuses.fold(ok)(append)
   def fold(statuses: HttpStatus*): HttpStatus = fold(statuses)
 
-  def foldEithers[T](xs: Seq[Either[HttpStatus, T]]): Either[HttpStatus, Seq[T]] =
-    xs.collect { case Left(e) => e } match {
-      case Nil => Right(xs.collect { case Right(oo) => oo })
+  def foldEithers[T](xs: Seq[Either[HttpStatus, T]]): Either[HttpStatus, Seq[T]] = {
+    val lefts = xs.collect { case Left(e) => e }
+    lefts match {
+      case Nil => Right(xs.collect { case Right(value) => value })
       case errors: Iterable[HttpStatus] => Left(HttpStatus.fold(errors))
     }
+  }
 
   def justStatus[A](either: Either[HttpStatus, A]): HttpStatus = either match {
     case Right(_) => HttpStatus.ok
