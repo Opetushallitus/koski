@@ -17,6 +17,11 @@ object VapaaSivistystyöValidation {
           validateVapaaSivistystyöKOTOVahvistetunPäätasonOsaSuoritukset(koto)
         ))
       }
+      case vapaa: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus if suoritus.vahvistettu => {
+        HttpStatus.fold(List(
+          validateVapaaSivistystyöVapaatavoitteinenVahvistetunPäätasonOsaSuoritukset(vapaa)
+        ))
+      }
       case _ => {
         HttpStatus.ok
       }
@@ -57,6 +62,13 @@ object VapaaSivistystyöValidation {
       HttpStatus.ok
     } else {
       KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönKOTOVahvistettuPäätasoHylätyilläOsasuorituksilla()
+    }
+  }
+
+  private def validateVapaaSivistystyöVapaatavoitteinenVahvistetunPäätasonOsaSuoritukset(suoritus: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus): HttpStatus = {
+    suoritus.osasuoritusLista.exists(_.arviointi.isEmpty) match {
+      case true => KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteisenKoulutuksenVahvistettuPäätasoArvioimattomillaOsasuorituksilla()
+      case false => HttpStatus.ok
     }
   }
 
