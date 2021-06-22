@@ -104,7 +104,6 @@ class ValpasOppijaService(
   private val localizationRepository = application.valpasLocalizationRepository
   private val koodistoviitepalvelu = application.koodistoViitePalvelu
   private val lisätiedotRepository = application.valpasOpiskeluoikeusLisätiedotRepository
-  private lazy val kuntailmoitusService = application.valpasKuntailmoitusService
   private val rajapäivätService = application.valpasRajapäivätService
 
   private val accessResolver = new ValpasAccessResolver
@@ -128,7 +127,7 @@ class ValpasOppijaService(
   : Either[HttpStatus, Seq[OppijaKuntailmoituksillaSuppeatTiedot]] = {
     accessResolver.assertAccessToOrg(ValpasRooli.KUNTA)(kuntaOid)
       // Haetaan kuntailmoitukset Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]
-      .flatMap(_ => kuntailmoitusService.getKuntailmoituksetKunnalle(kuntaOid))
+      .flatMap(_ => application.valpasKuntailmoitusService.getKuntailmoituksetKunnalle(kuntaOid))
 
       // Haetaan kaikki oppijat, (Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid], Seq[ValpasOppijaLaajatTiedot])
       .map(kuntailmoitukset => (
@@ -338,7 +337,7 @@ class ValpasOppijaService(
     oppija: ValpasOppijaLaajatTiedot
   )(implicit session: ValpasSession): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotLisätiedoilla]] = {
     timed("fetchKuntailmoitukset", 10) {
-      kuntailmoitusService.getKuntailmoitukset(oppija)
+      application.valpasKuntailmoitusService.getKuntailmoitukset(oppija)
         .map(lisääAktiivisuustiedot(oppija))
     }
   }
