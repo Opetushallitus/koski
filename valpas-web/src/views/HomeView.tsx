@@ -4,6 +4,7 @@ import {
   hakeutumisenValvontaAllowed,
   kuntavalvontaAllowed,
   maksuttomuudenValvontaAllowed,
+  suorittamisenValvontaAllowed,
   useKäyttöoikeusroolit,
 } from "../state/accessRights"
 import { useBasePath } from "../state/basePath"
@@ -11,6 +12,7 @@ import {
   createHakutilannePathWithoutOrg,
   createKuntailmoitusPath,
   createMaksuttomuusPath,
+  createSuorittaminenPath,
 } from "../state/paths"
 import { AccessRightsView } from "./AccessRightsView"
 
@@ -33,6 +35,10 @@ const useRedirectPath = (): string | null => {
 
   if (maksuttomuudenValvontaAllowed(roles)) {
     return createMaksuttomuusPath(basePath)
+  }
+
+  if (suorittamisenValvontaAllowed(roles)) {
+    return createSuorittaminenPath(basePath)
   }
 
   return null

@@ -87,6 +87,18 @@ export const fetchHenkilöhakuMaksuttomuusCache = createLocalThenApiCache(
 )
 
 /**
+ * Etsi henkilöä hetulla/oidilla suorittamisen valvojana
+ */
+export const fetchHenkilöhakuSuorittaminen = (query: Oid | Hetu) =>
+  handleExpiredSession(
+    apiGet<HenkilöhakuResult>(`valpas/api/henkilohaku/suorittaminen/${query}`)
+  )
+
+export const fetchHenkilöhakuSuorittaminenCache = createLocalThenApiCache(
+  fetchHenkilöhakuSuorittaminen
+)
+
+/**
  * Kuntailmoituksen pohjatietojen haku
  */
 export const fetchKuntailmoituksenPohjatiedot = (

@@ -1,5 +1,5 @@
 import React from "react"
-import { createMaksuttomuusPath } from "../../state/paths"
+import { createMaksuttomuusPath } from "~state/paths"
 import {
   fetchHenkilöhakuMaksuttomuus,
   fetchHenkilöhakuMaksuttomuusCache,
