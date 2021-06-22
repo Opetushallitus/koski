@@ -65,6 +65,15 @@ object HttpStatus {
     }
   }
 
+  /** Returns the first Right in the given Seq of Eithers; if none are Right, returns the first Left */
+  def any[S, T]: Seq[Either[S, T]] => Either[S, T] = {
+    case Seq() => throw new RuntimeException("Cannot take 'any' from an empty Seq")
+    case nonEmpty: Any => nonEmpty.find(_.isRight) match {
+      case Some(either) => either
+      case None => nonEmpty.head
+    }
+  }
+
   def justStatus[A](either: Either[HttpStatus, A]): HttpStatus = either match {
     case Right(_) => HttpStatus.ok
     case Left(status) => status
