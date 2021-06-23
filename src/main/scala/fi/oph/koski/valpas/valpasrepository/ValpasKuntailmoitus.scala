@@ -122,7 +122,6 @@ case class ValpasKuntailmoitusPohjatiedot(
 
 case class ValpasOppijanPohjatiedot(
   oppijaOid: String,
-  mahdollisetTekijäOrganisaatiot: Seq[OrganisaatioWithOid],
   @KoodistoUri("kieli")
   @KoodistoKoodiarvo("FI")
   @KoodistoKoodiarvo("SV")

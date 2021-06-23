@@ -101,16 +101,15 @@ class ValpasKuntailmoitusService(
     for {
       tekijä <- tekijänKäyttäjätiedot()
       oppijat <- haeOppijat(pohjatiedotInput)
-        .flatMap(tarkistaOikeudetJaJärjestäOppijat(pohjatiedotInput))
-        .flatMap(oppijoidenPohjatiedot(pohjatiedotInput.tekijäOrganisaatio, maat, kunnat))
+      mahdollisetTekijäOrganisaatiot <- haeMahdollisetTekijäOrganisaatiot(pohjatiedotInput.tekijäOrganisaatio, oppijat)
+      oppijoidenPohjatiedot <-
+        tarkistaOikeudetJaJärjestäOppijat(pohjatiedotInput, oppijat)
+          .map(oppijoidenPohjatiedot(maat, kunnat))
     } yield {
       ValpasKuntailmoitusPohjatiedot(
         tekijäHenkilö = tekijä,
-        mahdollisetTekijäOrganisaatiot =
-          oppijat.map(_.mahdollisetTekijäOrganisaatiot).map(_.toSet)
-            .reduceLeft((a, b) => a.intersect(b))
-            .toSeq,
-        oppijat = oppijat,
+        mahdollisetTekijäOrganisaatiot = mahdollisetTekijäOrganisaatiot.toSeq,
+        oppijat = oppijoidenPohjatiedot,
         kunnat = kunnat,
         maat = maat,
         yhteydenottokielet = tuetutYhteydenottokielet()
@@ -120,22 +119,21 @@ class ValpasKuntailmoitusService(
 
   private def tekijänKäyttäjätiedot()(implicit session: ValpasSession)
   : Either[HttpStatus, ValpasKuntailmoituksenTekijäHenkilö] = {
-    for {
-      user <- directoryClient
-        .findUser(session.username)
-        .toRight(ValpasErrorCategory.internalError("Käyttäjän tietoja ei saatu haettua"))
-    } yield {
-      val oppijanumerorekisteriTiedot = haeOppijanumerorekisteriTiedot(user.oid)
+    directoryClient
+      .findUser(session.username)
+      .toRight(ValpasErrorCategory.internalError("Käyttäjän tietoja ei saatu haettua"))
+      .map { user =>
+        val oppijanumerorekisteriTiedot = haeOppijanumerorekisteriTiedot(user.oid)
 
-      ValpasKuntailmoituksenTekijäHenkilö(
-        oid = Some(session.oid),
-        etunimet = Some(user.etunimet),
-        sukunimi = Some(user.sukunimi),
-        kutsumanimi = oppijanumerorekisteriTiedot.map(_.kutsumanimi),
-        email = oppijanumerorekisteriTiedot.flatMap(emails),
-        puhelinnumero = oppijanumerorekisteriTiedot.flatMap(puhelinnumerot)
-      )
-    }
+        ValpasKuntailmoituksenTekijäHenkilö(
+          oid = Some(session.oid),
+          etunimet = Some(user.etunimet),
+          sukunimi = Some(user.sukunimi),
+          kutsumanimi = oppijanumerorekisteriTiedot.map(_.kutsumanimi),
+          email = oppijanumerorekisteriTiedot.flatMap(emails),
+          puhelinnumero = oppijanumerorekisteriTiedot.flatMap(puhelinnumerot)
+        )
+      }
   }
 
   private def haeOppijanumerorekisteriTiedot(userOid: String): Option[LaajatOppijaHenkilöTiedot] =
@@ -200,7 +198,8 @@ class ValpasKuntailmoitusService(
     HttpStatus.foldEithers(oppijaOidit.map(oppijaOid => oppijaService.getOppijaLaajatTiedotYhteystiedoilla(oppijaOid)).toSeq)
   }
 
-  private def tarkistaOikeudetJaJärjestäOppijat(pohjatiedotInput: ValpasKuntailmoitusPohjatiedotInput)(
+  private def tarkistaOikeudetJaJärjestäOppijat(
+    pohjatiedotInput: ValpasKuntailmoitusPohjatiedotInput,
     oppijatHakutilanteilla: Seq[OppijaHakutilanteillaLaajatTiedot]
   )(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
     def lessThanInputinJärjestyksenMukaan(
@@ -238,24 +237,19 @@ class ValpasKuntailmoitusService(
   }
 
   private def oppijoidenPohjatiedot
-    (tekijäOrganisaatio: Option[OrganisaatioWithOid], maat: Seq[Koodistokoodiviite], kunnat: Seq[OrganisaatioWithOid])
-    (oppijat: Seq[OppijaHakutilanteillaLaajatTiedot])
+    (maat: Seq[Koodistokoodiviite], kunnat: Seq[OrganisaatioWithOid])
+    (oppijaTiedot: Seq[OppijaHakutilanteillaLaajatTiedot])
     (implicit session: ValpasSession)
-  : Either[HttpStatus, Seq[ValpasOppijanPohjatiedot]] = {
-    HttpStatus.foldEithers(oppijat.map(oppija => {
-      mahdollisetTekijäOrganisaatiot(tekijäOrganisaatio, oppija.oppija.hakeutumisvalvovatOppilaitokset)
-        .map(organisaatiot =>
-          ValpasOppijanPohjatiedot(
-            oppijaOid = oppija.oppija.henkilö.oid,
-            mahdollisetTekijäOrganisaatiot = organisaatiot.toSeq,
-            yhteydenottokieli = yhteydenottokieli(oppija.oppija.henkilö.äidinkieli),
-            turvakielto = oppija.oppija.henkilö.turvakielto,
-            yhteystiedot = teeYhteystiedot(oppija.yhteystiedot, maat, kunnat),
-            hetu = oppija.oppija.henkilö.hetu
-          )
-        )
-    }))
-  }
+  : Seq[ValpasOppijanPohjatiedot] =
+    oppijaTiedot.map(oppija =>
+      ValpasOppijanPohjatiedot(
+        oppijaOid = oppija.oppija.henkilö.oid,
+        yhteydenottokieli = yhteydenottokieli(oppija.oppija.henkilö.äidinkieli),
+        turvakielto = oppija.oppija.henkilö.turvakielto,
+        yhteystiedot = teeYhteystiedot(oppija.yhteystiedot, maat, kunnat),
+        hetu = oppija.oppija.henkilö.hetu
+      )
+    )
 
   private def teeYhteystiedot(
     oppijaYhteystiedot: Seq[ValpasYhteystiedot],
@@ -342,36 +336,47 @@ class ValpasKuntailmoitusService(
     kunta
   }
 
-  private def mahdollisetTekijäOrganisaatiot(
+  private def haeMahdollisetTekijäOrganisaatiot(
     tekijäOrganisaatio: Option[OrganisaatioWithOid],
-    oppijanOppilaitokset: Set[ValpasOppilaitos.Oid]
+    oppijaTiedot: Seq[OppijaHakutilanteillaLaajatTiedot]
   )(implicit session: ValpasSession): Either[HttpStatus, Set[OrganisaatioWithOid]] = {
-    val sallitutRoolit = Set(
-      ValpasRooli.OPPILAITOS_HAKEUTUMINEN,
-      ValpasRooli.OPPILAITOS_SUORITTAMINEN,
-      ValpasRooli.KUNTA
-    )
-
-    val oidsToCheck = tekijäOrganisaatio match {
-      // Jos organisaatio on jo annettu, ei palauteta toistaiseksi mitään muita vaihtoehtoja,
-      // vaikka jollekin yksittäiselle oppijalle voisikin lähettää ilmoituksen muusta oppilaitoksesta käsin.
-      case Some(o) => Set(o.oid)
-      case None => oppijanOppilaitokset
-    }
-
-    val organisaatiot = oidsToCheck
-      .filter(oid => sallitutRoolit.exists(rooli => accessResolver.accessToOrg(rooli, oid)))
+    // Jos tekijäorganisaatio on jo annettu, käytetään ainoastaan sitä. Muuten haetaan oppijoiden yhteiset oppilaitokset.
+    val organisaatiot = tekijäOrganisaatio
+      .map(o => Set(o.oid))
+      .getOrElse(haeOppijoidenTekijäOrganisaatiot(oppijaTiedot))
+      .filter(oid => accessResolver.accessToOrg(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, oid))
       .map(organisaatioRepository.getOrganisaatio)
-
-    val kunnat = organisaatioService.omatOrganisaatiotJaKayttooikeusroolit
-      .filter(_.kayttooikeusrooli == ValpasRooli.KUNTA)
-      .flatMap(_.organisaatioHierarkia.toKunta)
-      .filter(kunta => accessResolver.accessToOrg(ValpasRooli.KUNTA, kunta.oid))
 
     if (organisaatiot.contains(None)) {
       Left(ValpasErrorCategory.internalError("Kaikkia oppijan organisaatioita ei löydy organisaatiopalvelusta"))
     } else {
+      // Haetaan kunnat vain jos tekijäorganisaatiota ei ole annettu
+      val kunnat = tekijäOrganisaatio
+        .map(_ => Seq())
+        .getOrElse(haeKuntaTekijäOrganisaatiot(oppijaTiedot))
+
       Right(organisaatiot.flatten ++ kunnat)
+    }
+  }
+
+  private def haeOppijoidenTekijäOrganisaatiot
+    (oppijaTiedot: Seq[OppijaHakutilanteillaLaajatTiedot])
+  : Set[ValpasOppilaitos.Oid] =
+    oppijaTiedot
+      .map(_.oppija.hakeutumisvalvovatOppilaitokset)
+      .reduceLeft((a, b) => a.intersect(b)) // Valitaan ainoastaan kaikille oppijoille yhteiset organisaatiot
+
+  private def haeKuntaTekijäOrganisaatiot
+    (oppijaTiedot: Seq[OppijaHakutilanteillaLaajatTiedot])
+    (implicit session: ValpasSession)
+  : Seq[OrganisaatioWithOid] = {
+    if (oppijaTiedot.forall(_.oppija.onOikeusValvoaKunnalla)) {
+      organisaatioService.omatOrganisaatiotJaKayttooikeusroolit
+        .filter(_.kayttooikeusrooli == ValpasRooli.KUNTA)
+        .flatMap(_.organisaatioHierarkia.toKunta)
+        .filter(kunta => accessResolver.accessToOrg(ValpasRooli.KUNTA, kunta.oid))
+    } else {
+      Seq()
     }
   }
 

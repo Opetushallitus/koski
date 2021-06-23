@@ -260,12 +260,12 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
     )
     val result = kuntailmoitusService.haePohjatiedot(input)(session(ValpasMockUsers.valpasOphPääkäyttäjä))
 
-    val mahdollisetTekijäOrganisaatiot = result.map(_.oppijat(0).mahdollisetTekijäOrganisaatiot).map(_.toSet)
+    val mahdollisetTekijäOrganisaatiot = result.right.get.mahdollisetTekijäOrganisaatiot.toSet
 
     val expectedTekijäOrganisaatiot = Set(MockOrganisaatiot.jyväskylänNormaalikoulu, MockOrganisaatiot.aapajoenKoulu)
       .map(oppilaitos)
 
-    mahdollisetTekijäOrganisaatiot should equal(Right(expectedTekijäOrganisaatiot))
+    mahdollisetTekijäOrganisaatiot should equal(expectedTekijäOrganisaatiot)
   }
 
   "Pohjatiedoissa yhden organisaation käyttäjän kyselyssä ilman organisaatiota palautetaan oppijan mahdollisina tekijäorganisaatioina lista vain niistä, mihin käyttäjällä on oikeus" in {
@@ -275,13 +275,13 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
     )
     val result = kuntailmoitusService.haePohjatiedot(input)(session(ValpasMockUsers.valpasAapajoenKoulu))
 
-    val mahdollisetTekijäOrganisaatiot = result.map(_.oppijat(0).mahdollisetTekijäOrganisaatiot).map(_.toSet)
+    val mahdollisetTekijäOrganisaatiot = result.right.get.mahdollisetTekijäOrganisaatiot.toSet
 
     val expectedTekijäOrganisaatiot = Set(
       oppilaitos(MockOrganisaatiot.aapajoenKoulu)
     )
 
-    mahdollisetTekijäOrganisaatiot should equal(Right(expectedTekijäOrganisaatiot))
+    mahdollisetTekijäOrganisaatiot should equal(expectedTekijäOrganisaatiot)
   }
 
   "Pohjatiedoissa kuntakäyttäjän kyselyssä ilman organisaatiota palautetaan oppijan mahdollisina tekijäorganisaatioina myös kunnat" in {
@@ -291,10 +291,9 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
     )
     val result = kuntailmoitusService.haePohjatiedot(input)(session(ValpasMockUsers.valpasPyhtääJaHelsinki))
 
-    val mahdollisetTekijäOrganisaatiot = result.right.get.oppijat.flatMap(_.mahdollisetTekijäOrganisaatiot).toSet
+    val mahdollisetTekijäOrganisaatiot = result.right.get.mahdollisetTekijäOrganisaatiot.toSet
 
     val expectedTekijäOrganisaatiot = Set(
-      oppilaitos(MockOrganisaatiot.kulosaarenAlaAste),
       helsinginKaupunki,
       kunta(MockOrganisaatiot.pyhtäänKunta)
     )
@@ -309,13 +308,13 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
     )
     val result = kuntailmoitusService.haePohjatiedot(input)(session(ValpasMockUsers.valpasOphPääkäyttäjä))
 
-    val mahdollisetTekijäOrganisaatiot = result.map(_.oppijat(0).mahdollisetTekijäOrganisaatiot).map(_.toSet)
+    val mahdollisetTekijäOrganisaatiot = result.right.get.mahdollisetTekijäOrganisaatiot.toSet
 
     val expectedTekijäOrganisaatiot = Set(
       oppilaitos(MockOrganisaatiot.jyväskylänNormaalikoulu)
     )
 
-    mahdollisetTekijäOrganisaatiot should equal(Right(expectedTekijäOrganisaatiot))
+    mahdollisetTekijäOrganisaatiot should equal(expectedTekijäOrganisaatiot)
   }
 
   "Pohjatiedoissa ylätason mahdollisina tekijäorganisaatioina palautetaan oppijoiden tekijäorganisaatioiden leikkaus" in {
