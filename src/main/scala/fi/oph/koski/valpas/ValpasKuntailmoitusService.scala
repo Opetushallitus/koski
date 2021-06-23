@@ -38,17 +38,19 @@ class ValpasKuntailmoitusService(
 
     for {
       r <- rooli
-      _ <- accessResolver.assertAccessToOrg(r, organisaatioOid)
-        .left
-        .map(_ => ValpasErrorCategory.forbidden.organisaatio(
-          "Käyttäjällä ei ole oikeutta tehdä kuntailmoitusta annetun organisaation nimissä"
-        ))
+      _ <-
+        accessResolver.assertAccessToOrg(r, organisaatioOid)
+          .left
+          .map(_ => ValpasErrorCategory.forbidden.organisaatio(
+            "Käyttäjällä ei ole oikeutta tehdä kuntailmoitusta annetun organisaation nimissä"
+          ))
       o <- oppijaService.getOppijaLaajatTiedot(r, kuntailmoitusInput.oppijaOid)
-      _ <- accessResolver.withOppijaAccessAsOrganisaatio(r, organisaatioOid)(o)
-        .left
-        .map(_ => ValpasErrorCategory.forbidden.oppija(
-          "Käyttäjällä ei ole oikeuksia tehdä kuntailmoitusta annetusta oppijasta"
-        ))
+      _ <-
+        accessResolver.withOppijaAccessAsOrganisaatio(r, organisaatioOid)(o)
+          .left
+          .map(_ => ValpasErrorCategory.forbidden.oppija(
+            "Käyttäjällä ei ole oikeuksia tehdä kuntailmoitusta annetusta oppijasta"
+          ))
       result <- repository.create(kuntailmoitusInput)
     } yield result
   }
@@ -93,7 +95,7 @@ class ValpasKuntailmoitusService(
   def haePohjatiedot(
     pohjatiedotInput: ValpasKuntailmoitusPohjatiedotInput
   )(implicit session: ValpasSession): Either[HttpStatus, ValpasKuntailmoitusPohjatiedot] = {
-    val kunnat = organisaatioService.kunnat
+    val kunnat = organisaatioService.kunnat()
     val maat = haeMaat()
 
     for {
