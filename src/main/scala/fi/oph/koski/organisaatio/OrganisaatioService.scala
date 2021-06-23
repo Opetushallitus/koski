@@ -63,7 +63,7 @@ class OrganisaatioService(application: KoskiApplication) {
       }
     }.sortBy(r => (r.organisaatioHierarkia.nimi.get(user.lang), r.kayttooikeusrooli))
 
-  def kunnat: List[OrganisaatioWithOid] = organisaatioRepository.findKunnat.flatMap(_.toKunta)
+  def kunnat(): Seq[OrganisaatioWithOid] = organisaatioRepository.findKunnat().flatMap(_.toKunta)
 
   private def koulutustoimijoidenOstopalveluOrganisaatiot(koulutustoimijat: Set[Oid])(implicit user: Session): List[OrganisaatioHierarkia] =
     perustiedot.haeVarhaiskasvatustoimipisteet(koulutustoimijat) match {

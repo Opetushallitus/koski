@@ -75,7 +75,7 @@ trait OrganisaatioRepository extends Logging {
     filter(_.organisaatiotyypit.contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA))
   }
 
-  def findKunnat: List[OrganisaatioHierarkia] = {
+  def findKunnat(): Seq[OrganisaatioHierarkia] = {
     filter(_.organisaatiotyypit.contains(Organisaatiotyyppi.KUNTA))
   }
 
