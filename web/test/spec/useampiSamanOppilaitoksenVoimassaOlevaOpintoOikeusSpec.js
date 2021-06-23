@@ -51,6 +51,22 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
     it('ei ole sallittu', function() {
       expect(page.getErrorMessage()).to.equal('Opiskeluoikeutta ei voida lisätä, koska oppijalla on jo vastaava opiskeluoikeus.')
     })
+    describe('kun suoritustyyppi eroaa', function() {
+      before(
+        opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
+        addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'),
+        addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
+        addOppija.selectOppimäärä('Ammatillisen tutkinnon osa/osia'),
+        addOppija.selectTutkinto('Autoalan perustutkinto'),
+        addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
+        addOppija.selectAloituspäivä('1.1.2018'),
+        addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
+        addOppija.submitModal
+      )
+      it('on sallittu', function() {
+        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienMäärä()).to.equal(3)
+      })
+    })
   })
   describe('muussa ammatillisessa koulutuksessa', function() {
     before(
@@ -72,7 +88,7 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
       addOppija.submitModal
     )
     it('on sallittu', function() {
-      expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienMäärä()).to.equal(4)
+      expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienMäärä()).to.equal(5)
     })
   })
 })

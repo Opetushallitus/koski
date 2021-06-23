@@ -181,6 +181,7 @@ class PostgresOpiskeluoikeusRepository(
             opiskeluoikeus.koulutustoimija.map(_.oid),
             opiskeluoikeus.tyyppi.koodiarvo,
             opiskeluoikeus.suoritukset.headOption.map(_.koulutusmoduuli.tunniste.koodiarvo),
+            opiskeluoikeus.suoritukset.headOption.map(_.tyyppi.koodiarvo),
             opiskeluoikeus.lähdejärjestelmänId) == identifier
         }).map(_.toList).map(Right(_))
     }
