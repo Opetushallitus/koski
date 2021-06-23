@@ -172,6 +172,16 @@ object ValpasMockUsers {
     peruskoulunJossa10LuokkaKäyttäjä(aapajoenKoulu) ++ toisenAsteenKäyttäjä(aapajoenKoulu) ++ peruskoulunKäyttäjä(jyväskylänNormaalikoulu)
   )
 
+  val valpasJklAapajokiHkiPyhtää = ValpasMockUser(
+    "käyttäjä",
+    "valpas-jkl-aapajoki-hki-pyhtää",
+    "1.2.246.562.24.12312312536",
+    peruskoulunJossa10LuokkaKäyttäjä(jyväskylänNormaalikoulu) ++
+      peruskoulunJossa10LuokkaKäyttäjä(aapajoenKoulu) ++
+      kuntakäyttäjä(helsinginKaupunki) ++
+      kuntakäyttäjä(pyhtäänKunta)
+  )
+
   def users: List[ValpasMockUser] = {
     if (mockUsersEnabled) {
       List(
@@ -197,7 +207,8 @@ object ValpasMockUsers {
         valpasMaksuttomuusJaHelsinkiKoskiKäyttäjä,
         valpasPelkkäSuorittaminenkäyttäjä,
         valpasPelkkäSuorittaminenkäyttäjäAmmattikoulu,
-        valpasAapajoenKouluJaJklNormaalikoulu
+        valpasAapajoenKouluJaJklNormaalikoulu,
+        valpasJklAapajokiHkiPyhtää
       )
     } else {
       List()
