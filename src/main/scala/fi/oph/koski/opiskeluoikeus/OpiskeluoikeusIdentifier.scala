@@ -10,6 +10,7 @@ object OpiskeluoikeusIdentifier {
         opiskeluoikeus.koulutustoimija.map(_.oid),
         opiskeluoikeus.tyyppi.koodiarvo,
         opiskeluoikeus.suoritukset.headOption.map(_.koulutusmoduuli.tunniste.koodiarvo),
+        opiskeluoikeus.suoritukset.headOption.map(_.tyyppi.koodiarvo),
         None)
   }
 }
@@ -22,5 +23,6 @@ case class OppijaOidOrganisaatioJaTyyppi(oppijaOid: String,
                                          koulutustoimija: Option[String],
                                          opiskeluoikeudenTyyppi: String,
                                          päätasonSuorituksenKoulutusmoduulinTyyppi: Option[String],
+                                         päätasonSuorituksenSuoritustyyppi: Option[String],
                                          lähdejärjestelmäId: Option[LähdejärjestelmäId]) extends OpiskeluoikeusIdentifier
 case class OpiskeluoikeusByOid(oid: String) extends OpiskeluoikeusIdentifier
