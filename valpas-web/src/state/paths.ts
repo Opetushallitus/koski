@@ -81,6 +81,12 @@ export type OppijaViewRouteProps = RouteComponentProps<{
   oppijaOid?: string
 }>
 
+// Suorittamisnäkymä
+export const suorittaminenPath = (basePath: string = "") =>
+  `${basePath}/suorittaminen`
+
+export const createSuorittaminenPath = suorittaminenPath
+
 // Maksuttomuusnäkymä
 
 export const maksuttomuusPath = (basePath: string = "") =>

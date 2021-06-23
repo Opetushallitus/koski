@@ -27,11 +27,13 @@ import {
   maksuttomuusPath,
   oppijaPath,
   rootPath,
+  suorittaminenPath,
 } from "../state/paths"
 import {
   KuntailmoitusView,
   KuntailmoitusViewWithoutOrgOid,
 } from "../views/kuntailmoitus/KuntailmoitusView"
+import { SuorittaminenView } from "../views/suorittaminen/SuorittaminenView"
 import { AccessRightsView } from "./AccessRightsView"
 import { ErrorView, NotFoundView } from "./ErrorView"
 import {
@@ -108,6 +110,9 @@ const VirkailijaRoutes = () => {
             />
           )}
         />
+        <Route exact path={suorittaminenPath(basePath)}>
+          <SuorittaminenView />
+        </Route>
         <Route exact path={maksuttomuusPath(basePath)}>
           <MaksuttomuusView />
         </Route>

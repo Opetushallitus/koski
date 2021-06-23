@@ -1,6 +1,6 @@
+import { HenkilöhakuResult } from "../state/apitypes/henkilohaku"
 import { KuntailmoitusLaajatTiedot } from "../state/apitypes/kuntailmoitus"
 import { KuntailmoitusPohjatiedot } from "../state/apitypes/kuntailmoituspohjatiedot"
-import { HenkilöMaksuttomuushakuResult } from "../state/apitypes/maksuttomuushakutiedot"
 import { OpiskeluoikeusSuppeatTiedot } from "../state/apitypes/opiskeluoikeus"
 import {
   OppijaHakutilanteillaLaajatTiedot,
@@ -75,16 +75,28 @@ export const fetchOppija = (oppijaOid: Oid) =>
 export const fetchOppijaCache = createLocalThenApiCache(fetchOppija)
 
 /**
- * Etsi henkilöä hetulla/oidilla
+ * Etsi henkilöä hetulla/oidilla maksuttomuuskäyttäjänä
  */
-export const fetchHenkilöhaku = (query: Oid | Hetu) =>
+export const fetchHenkilöhakuMaksuttomuus = (query: Oid | Hetu) =>
   handleExpiredSession(
-    apiGet<HenkilöMaksuttomuushakuResult>(
-      `valpas/api/henkilohaku/maksuttomuus/${query}`
-    )
+    apiGet<HenkilöhakuResult>(`valpas/api/henkilohaku/maksuttomuus/${query}`)
   )
 
-export const fetchHenkilöhakuCache = createLocalThenApiCache(fetchHenkilöhaku)
+export const fetchHenkilöhakuMaksuttomuusCache = createLocalThenApiCache(
+  fetchHenkilöhakuMaksuttomuus
+)
+
+/**
+ * Etsi henkilöä hetulla/oidilla suorittamisen valvojana
+ */
+export const fetchHenkilöhakuSuorittaminen = (query: Oid | Hetu) =>
+  handleExpiredSession(
+    apiGet<HenkilöhakuResult>(`valpas/api/henkilohaku/suorittaminen/${query}`)
+  )
+
+export const fetchHenkilöhakuSuorittaminenCache = createLocalThenApiCache(
+  fetchHenkilöhakuSuorittaminen
+)
 
 /**
  * Kuntailmoituksen pohjatietojen haku

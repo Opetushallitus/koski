@@ -2,7 +2,7 @@ package fi.oph.koski.valpas.log
 
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, AuditLogOperation}
 import fi.oph.koski.schema.Organisaatio
-import fi.oph.koski.valpas.{ValpasHenkilöMaksuttomuushakuResult, ValpasHenkilöMaksuttomuushakutulos}
+import fi.oph.koski.valpas.{ValpasHenkilöhakuResult, ValpasLöytyiHenkilöhakuResult}
 import fi.oph.koski.valpas.log.ValpasOperation.ValpasOperation
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasHenkilöLaajatTiedot, ValpasOppilaitos}
 import fi.oph.koski.valpas.valpasrepository.{UusiOppivelvollisuudenKeskeytys, ValpasKuntailmoitusLaajatTiedotJaOppijaOid}
@@ -52,13 +52,13 @@ object ValpasAuditLog {
   }
 
   def auditLogHenkilöHaku
-  (query: String)(henkilö: ValpasHenkilöMaksuttomuushakuResult)(implicit session: ValpasSession)
+    (query: String)(henkilö: ValpasHenkilöhakuResult)(implicit session: ValpasSession)
   : Unit = {
     AuditLog.log(ValpasAuditLogMessage(
       ValpasOperation.VALPAS_OPPIJA_HAKU,
       session,
       henkilö match {
-        case tulos: ValpasHenkilöMaksuttomuushakutulos => Map(
+        case tulos: ValpasLöytyiHenkilöhakuResult => Map(
           ValpasAuditLogMessageField.hakulause -> query,
           ValpasAuditLogMessageField.oppijaHenkilöOid -> tulos.oid,
         )

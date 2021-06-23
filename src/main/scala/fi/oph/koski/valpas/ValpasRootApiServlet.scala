@@ -11,7 +11,7 @@ import fi.oph.koski.valpas.log.ValpasAuditLog.{auditLogHenkilöHaku, auditLogOpp
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppilaitos
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasrepository.UusiOppivelvollisuudenKeskeytys
-import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
+import fi.oph.koski.valpas.valpasuser.{RequiresValpasSession, ValpasRooli}
 import org.json4s.JValue
 
 class ValpasRootApiServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with RequiresValpasSession {
@@ -54,7 +54,15 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
   get("/henkilohaku/maksuttomuus/:query") {
     val query = params("query")
     renderEither(
-      oppijaSearchService.findHenkilöMaksuttomuus(query)
+      oppijaSearchService.findHenkilö(ValpasRooli.OPPILAITOS_MAKSUTTOMUUS, query)
+        .tap(auditLogHenkilöHaku(query))
+    )
+  }
+
+  get("/henkilohaku/suorittaminen/:query") {
+    val query = params("query")
+    renderEither(
+      oppijaSearchService.findHenkilö(ValpasRooli.OPPILAITOS_SUORITTAMINEN, query)
         .tap(auditLogHenkilöHaku(query))
     )
   }
