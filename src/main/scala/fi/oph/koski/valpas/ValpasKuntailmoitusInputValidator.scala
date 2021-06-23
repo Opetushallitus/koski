@@ -20,7 +20,6 @@ class ValpasKuntailmoitusInputValidator(
       .flatMap(validateTekijänOid)
       .flatMap(validateKunta)
       .flatMap(fillTekijänHenkilöTiedot)
-      .flatMap(validateTekijä)
   }
 
   private def validateIlmoituspäivä(
@@ -89,17 +88,6 @@ class ValpasKuntailmoitusInputValidator(
       case _: Toimipiste => virheIlmoitus
       case k: OrganisaatioWithOid if !organisaatioRepository.isKunta(k) => virheIlmoitus
       case _ => Right(kuntailmoitusInput)
-    }
-  }
-
-  private def validateTekijä(kuntailmoitusInput: ValpasKuntailmoitusLaajatTiedotJaOppijaOid)
-  : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
-    kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio match {
-      case _: Oppilaitos => Right(kuntailmoitusInput) // TODO: Tarpeeton tuplatsekki?
-      case k: OrganisaatioWithOid if organisaatioRepository.isKunta(k) => Right(kuntailmoitusInput)
-      case o: Any => Left(ValpasErrorCategory.validation.kuntailmoituksenTekijä(
-        s"Organisaatio ${o.oid} ei voi olla kuntailmoituksen tekijä (organisaation tyyppi ei ole sallittu)"
-      ))
     }
   }
 }
