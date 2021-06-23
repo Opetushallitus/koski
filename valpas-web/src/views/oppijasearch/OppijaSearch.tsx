@@ -1,7 +1,7 @@
 import bem from "bem-ts"
 import React from "react"
 import { Link } from "react-router-dom"
-import { ApiMethodHook } from "../../api/apiHooks"
+import { ApiMethodState } from "../../api/apiHooks"
 import { isError, isLoading, isSuccess } from "../../api/apiUtils"
 import { SubmitButton } from "../../components/buttons/SubmitButton"
 import { Form } from "../../components/forms/Form"
@@ -43,7 +43,8 @@ const validators: FormValidators<OppijaSearchValues> = {
 }
 
 export type OppijaSearchProps = {
-  searchApiMethod: ApiMethodHook<HenkilöhakuResult, [query: string]>
+  searchState: ApiMethodState<HenkilöhakuResult>
+  onQuery: (query: string) => void
   prevPath: string
   eiLöytynytIlmoitusId: string
   error403Id: string
@@ -53,7 +54,7 @@ export const OppijaSearch = (props: OppijaSearchProps) => {
   const form = useFormState({ initialValues, validators })
 
   const submit = form.submitCallback((data) => {
-    props.searchApiMethod.call(data.query)
+    props.onQuery(data.query)
   })
 
   return (
@@ -65,21 +66,21 @@ export const OppijaSearch = (props: OppijaSearchProps) => {
         <SubmitButton
           className={b("submit")}
           onClick={form.submitCallback(console.log)}
-          disabled={!form.isValid || isLoading(props.searchApiMethod)}
+          disabled={!form.isValid || isLoading(props.searchState)}
           value={t("oppijahaku__hae")}
         />
         <div className={b("results")}>
-          {isLoading(props.searchApiMethod) && <Spinner />}
-          {isSuccess(props.searchApiMethod) && (
+          {isLoading(props.searchState) && <Spinner />}
+          {isSuccess(props.searchState) && (
             <OppijaSearchResults
-              hakutulos={props.searchApiMethod.data}
+              hakutulos={props.searchState.data}
               eiLöytynytIlmoitusId={props.eiLöytynytIlmoitusId}
               prevPath={props.prevPath}
             />
           )}
-          {isError(props.searchApiMethod) && (
+          {isError(props.searchState) && (
             <OppijaSearchError
-              statusCode={props.searchApiMethod.status}
+              statusCode={props.searchState.status}
               error403Id={props.error403Id}
             />
           )}
