@@ -398,6 +398,35 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     }
   }
 
+  "Kuntailmoituksen tekeminen hakeutumisen valvojana (oppilaitos) onnistuu" in {
+    val user = ValpasMockUsers.valpasJklYliopisto
+
+    val jyväskylänNormaalikoulunOppilas = ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021
+    val ilmoitus = teeMinimiKuntailmoitusInput(
+      oppijaOid = jyväskylänNormaalikoulunOppilas.oid,
+      tekijäOid = MockOrganisaatiot.jyväskylänNormaalikoulu
+    )
+
+    post("/valpas/api/kuntailmoitus",
+      body = ilmoitus,
+      headers = authHeaders(user) ++ jsonContent
+    )(verifyResponseStatusOk())
+  }
+
+  "Kuntailmoituksen tekeminen hakeutumisen valvojana (kunta) onnistuu" in {
+    val user = ValpasMockUsers.valpasHelsinkiPeruskoulu
+
+    val ilmoitus = teeMinimiKuntailmoitusInput(
+      oppijaOid = ValpasMockOppijat.kulosaarenYsiluokkalainen.oid,
+      tekijäOid = MockOrganisaatiot.kulosaarenAlaAste
+    )
+
+    post("/valpas/api/kuntailmoitus",
+      body = ilmoitus,
+      headers = authHeaders(user) ++ jsonContent
+    )(verifyResponseStatusOk())
+  }
+
   "Kuntailmoituksen tekeminen hakeutumisen valvojana oppijalle, joka ei opiskele oppilaitoksessa lainkaan, palauttaa virheen" in {
     val minimikuntailmoitusAapajoenOppilaasta =
       teeMinimiKuntailmoitusInput(oppijaOid = ValpasMockOppijat.aapajoenPeruskoulustaValmistunut.oid)
