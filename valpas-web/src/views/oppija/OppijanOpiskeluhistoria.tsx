@@ -25,10 +25,8 @@ import {
   OpiskeluoikeusLaajatTiedot,
   sortOpiskeluoikeusLaajatTiedot,
 } from "../../state/apitypes/opiskeluoikeus"
-import {
-  OppijaHakutilanteillaLaajatTiedot,
-  OppivelvollisuudenKeskeytys,
-} from "../../state/apitypes/oppija"
+import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
+import { OppivelvollisuudenKeskeytys } from "../../state/apitypes/oppivelvollisuudenkeskeytys"
 import { ISODate } from "../../state/common"
 import { formatDate, formatNullableDate, parseYear } from "../../utils/date"
 import { pick } from "../../utils/objects"

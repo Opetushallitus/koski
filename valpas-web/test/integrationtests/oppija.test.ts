@@ -556,7 +556,9 @@ describe("Oppijakohtainen näkymä", () => {
     )
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus: Keskeytetty 1.3.2021 – 30.9.2021
+      Oppivelvollisuus:
+        18.10.2023 asti
+        Keskeytetty 1.3.2021 – 30.9.2021
       Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
     `)
     await opiskeluhistoriaEquals(`

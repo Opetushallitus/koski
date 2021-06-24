@@ -9,6 +9,7 @@ import {
   OpiskeluoikeusLaajatTiedot,
   OpiskeluoikeusSuppeatTiedot,
 } from "./opiskeluoikeus"
+import { OppivelvollisuudenKeskeytys } from "./oppivelvollisuudenkeskeytys"
 import { Yhteystiedot, YhteystietojenAlkuperä } from "./yhteystiedot"
 
 export type OppijaHakutilanteillaLaajatTiedot = {
@@ -62,10 +63,4 @@ export const lisätietoMatches = (
 export type OppijaKuntailmoituksillaSuppeatTiedot = {
   oppija: OppijaSuppeatTiedot
   kuntailmoitukset: LuotuKuntailmoitusSuppeatTiedot[]
-}
-
-export type OppivelvollisuudenKeskeytys = {
-  alku: ISODate
-  loppu?: ISODate
-  voimassa: boolean
 }

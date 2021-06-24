@@ -6,3 +6,14 @@ export type UusiOppivelvollisuudenKeskeytys = {
   alku: ISODate
   loppu?: ISODate
 }
+
+export type OppivelvollisuudenKeskeytys = {
+  alku: ISODate
+  loppu?: ISODate
+  voimassa: boolean
+  tulevaisuudessa: boolean
+}
+
+export const isKeskeytysToistaiseksi = (
+  keskeytys: OppivelvollisuudenKeskeytys
+): boolean => keskeytys.loppu === undefined
