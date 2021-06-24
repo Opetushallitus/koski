@@ -37,8 +37,9 @@ class OpiskeluoikeusValidationSpec extends FreeSpec with Matchers with Opiskeluo
             ]
           }
         """.stripMargin)
+      val config = KoskiApplicationForTests.config.withoutPath("features").withFallback(mockConfig)
       val opiskelija = oppija(KoskiSpecificMockOppijat.valma.oid)
-      mockKoskiValidator(mockConfig).validateAsJson(opiskelija).left.get should equal (KoskiErrorCategory.notImplemented("Päätason suorituksen tyyppi valma ei ole käytössä tässä ympäristössä"))
+      mockKoskiValidator(config).validateAsJson(opiskelija).left.get should equal (KoskiErrorCategory.notImplemented("Päätason suorituksen tyyppi valma ei ole käytössä tässä ympäristössä"))
     }
 
     "Päätason suorituksen luokka jonka käyttö on estetty" in {
@@ -55,8 +56,9 @@ class OpiskeluoikeusValidationSpec extends FreeSpec with Matchers with Opiskeluo
             ]
           }
         """.stripMargin)
+      val config = KoskiApplicationForTests.config.withoutPath("features").withFallback(mockConfig)
       val opiskelija = oppija(KoskiSpecificMockOppijat.valma.oid)
-      mockKoskiValidator(mockConfig).validateAsJson(opiskelija).left.get should equal (KoskiErrorCategory.notImplemented("Päätason suorituksen luokka ValmaKoulutuksenSuoritus ei ole käytössä tässä ympäristössä"))
+      mockKoskiValidator(config).validateAsJson(opiskelija).left.get should equal (KoskiErrorCategory.notImplemented("Päätason suorituksen luokka ValmaKoulutuksenSuoritus ei ole käytössä tässä ympäristössä"))
     }
 
     "Osasuorituksen tyyppi jonka käyttö on estetty" in {
@@ -73,8 +75,9 @@ class OpiskeluoikeusValidationSpec extends FreeSpec with Matchers with Opiskeluo
             ]
           }
         """.stripMargin)
+      val config = KoskiApplicationForTests.config.withoutPath("features").withFallback(mockConfig)
       val opiskelija = oppija(KoskiSpecificMockOppijat.valma.oid)
-      mockKoskiValidator(mockConfig).validateAsJson(opiskelija).left.get should equal (KoskiErrorCategory.notImplemented("Osasuorituksen tyyppi valmakoulutuksenosa ei ole käytössä tässä ympäristössä"))
+      mockKoskiValidator(config).validateAsJson(opiskelija).left.get should equal (KoskiErrorCategory.notImplemented("Osasuorituksen tyyppi valmakoulutuksenosa ei ole käytössä tässä ympäristössä"))
     }
   }
 

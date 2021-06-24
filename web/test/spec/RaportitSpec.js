@@ -12,6 +12,7 @@ const kaikkiOrganisaatiot = [
   'Omnia',
   'PK Vironniemi',
   'Ressun lukio',
+  'Sockenbacka lågstadieskola',
   'Stadin ammatti- ja aikuisopisto',
   "Varsinais-Suomen kansanopisto",
   'WinNova',
