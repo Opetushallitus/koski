@@ -975,6 +975,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       alku = alku,
       loppu = None,
       voimassa = true,
+      tulevaisuudessa = false,
     )
 
     result shouldBe Right(expectedKeskeytys)
@@ -1004,6 +1005,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       alku = alku,
       loppu = Some(loppu),
       voimassa = true,
+      tulevaisuudessa = false,
     )
 
     result shouldBe Right(expectedKeskeytys)

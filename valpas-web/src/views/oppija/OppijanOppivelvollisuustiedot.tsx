@@ -1,4 +1,3 @@
-import * as A from "fp-ts/Array"
 import React, { useState } from "react"
 import { RaisedButton } from "../../components/buttons/RaisedButton"
 import { VisibleForKäyttöoikeusrooli } from "../../components/containers/VisibleForKäyttöoikeusrooli"
@@ -6,6 +5,7 @@ import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
 import { T, t } from "../../i18n/i18n"
 import { kuntavalvontaAllowed } from "../../state/accessRights"
 import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
+import { isKeskeytysToistaiseksi } from "../../state/apitypes/oppivelvollisuudenkeskeytys"
 import { formatDate, formatNullableDate } from "../../utils/date"
 import { OppivelvollisuudenKeskeytysModal } from "./OppivelvollisuudenKeskeytysModal"
 
@@ -68,7 +68,7 @@ const oppivelvollisuusValue = (
   oppija: OppijaHakutilanteillaLaajatTiedot
 ): React.ReactNode => {
   const keskeytykset = oppija.oppivelvollisuudenKeskeytykset
-    .filter((ovk) => ovk.voimassa)
+    .filter((ovk) => ovk.voimassa || ovk.tulevaisuudessa)
     .map((ovk) =>
       ovk.loppu !== undefined
         ? t("oppija__oppivelvollisuus_keskeytetty_value", {
@@ -80,11 +80,16 @@ const oppivelvollisuusValue = (
           })
     )
 
-  const strs = A.isEmpty(keskeytykset)
+  const keskeytysToistaiseksi = oppija.oppivelvollisuudenKeskeytykset.some(
+    isKeskeytysToistaiseksi
+  )
+
+  const strs = !keskeytysToistaiseksi
     ? [
         t("oppija__oppivelvollisuus_voimassa_value", {
           date: formatNullableDate(oppija.oppija.oppivelvollisuusVoimassaAsti),
         }),
+        ...keskeytykset,
       ]
     : keskeytykset
 

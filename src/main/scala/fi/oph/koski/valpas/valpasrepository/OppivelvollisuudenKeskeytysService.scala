@@ -40,6 +40,7 @@ case class ValpasOppivelvollisuudenKeskeytys(
   alku: LocalDate,
   loppu: Option[LocalDate],
   voimassa: Boolean,
+  tulevaisuudessa: Boolean,
 )
 
 object ValpasOppivelvollisuudenKeskeytys {
@@ -48,10 +49,13 @@ object ValpasOppivelvollisuudenKeskeytys {
     (row: OppivelvollisuudenKeskeytysRow)
   : ValpasOppivelvollisuudenKeskeytys = {
     val tarkastelupäiväAikavälillä = isBetween(tarkastelupäivä) _
+    def keskeytysTulevaisuudessa(alku: LocalDate) = isBetween(alku)(tarkastelupäivä.plusDays(1), None)
+
     ValpasOppivelvollisuudenKeskeytys(
       alku = row.alku,
       loppu = row.loppu,
-      voimassa = !row.peruttu && tarkastelupäiväAikavälillä(row.alku, row.loppu)
+      voimassa = !row.peruttu && tarkastelupäiväAikavälillä(row.alku, row.loppu),
+      tulevaisuudessa = !row.peruttu && keskeytysTulevaisuudessa(row.alku),
     )
   }
 
