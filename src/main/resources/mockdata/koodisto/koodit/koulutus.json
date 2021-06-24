@@ -250,19 +250,6 @@
   } ],
   "versio" : 1
 }, {
-  "koodiUri" : "koulutus_999912",
-  "koodiArvo" : "999912",
-  "metadata" : [ {
-    "nimi" : "Kansanopistojen vapaatavoitteinen vapaan sivistystyön koulutus",
-    "lyhytNimi" : "Kansanopistojen vapaatavoitteinen vapaan sivistystyön koulutus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kansanopistojen vapaatavoitteinen vapaan sivistystyön koulutus",
-    "lyhytNimi" : "Kansanopistojen vapaatavoitteinen vapaan sivistystyön koulutus",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
   "koodiUri" : "koulutus_100000",
   "koodiArvo" : "100000",
   "metadata" : [ {

@@ -19,12 +19,12 @@ case class VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(
   override val osasuoritukset: Option[List[VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus]],
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
-) extends VapaanSivistystyönPäätasonSuoritus with Laajuudellinen with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+) extends VapaanSivistystyönPäätasonSuoritus with Laajuudellinen
 
 @Description("Vapaatavoitteisen vapaan sivistystyön koulutuksen tunnistetiedot")
 case class VapaanSivistystyönVapaatavoitteinenKoulutus(
-@KoodistoKoodiarvo("999912")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("999912", koodistoUri = "koulutus"),
+@KoodistoKoodiarvo("099999")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("099999", koodistoUri = "koulutus"),
   koulutustyyppi: Option[Koodistokoodiviite] = None,
   laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends Koulutus with Tutkinto

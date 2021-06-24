@@ -40,7 +40,7 @@
       },
       "koulutusmoduuli" : {
         "tunniste" : {
-          "koodiarvo" : "999912",
+          "koodiarvo" : "099999",
           "koodistoUri" : "koulutus"
         },
         "laajuus" : {
