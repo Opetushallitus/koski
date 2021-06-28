@@ -140,6 +140,7 @@ const OrganisaatioMissingView = () => (
   <ErrorView
     title={t("kuntailmoitusnäkymä__ei_oikeuksia_title")}
     message={t("kuntailmoitusnäkymä__ei_oikeuksia_teksti")}
+    head={<KuntaNavigation />}
   />
 )
 

@@ -1,9 +1,11 @@
 import React from "react"
+import { VisibleForKäyttöoikeusrooli } from "../../components/containers/VisibleForKäyttöoikeusrooli"
 import {
   TabNavigation,
   TabNavigationItem,
 } from "../../components/navigation/TabNavigation"
 import { t } from "../../i18n/i18n"
+import { kuntavalvontaAllowed } from "../../state/accessRights"
 import { Oid } from "../../state/common"
 import {
   createKunnanHetuhakuPath,
@@ -29,5 +31,9 @@ export const KuntaNavigation = (props: KuntaNavigationProps) => {
     },
   ]
 
-  return <TabNavigation options={navOptions} />
+  return (
+    <VisibleForKäyttöoikeusrooli rooli={kuntavalvontaAllowed}>
+      <TabNavigation options={navOptions} />
+    </VisibleForKäyttöoikeusrooli>
+  )
 }
