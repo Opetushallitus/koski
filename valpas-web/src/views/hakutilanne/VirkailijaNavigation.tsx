@@ -1,20 +1,25 @@
 import React from "react"
-import { TabNavigation } from "../../components/navigation/TabNavigation"
+import {
+  TabNavigation,
+  TabNavigationItem,
+} from "../../components/navigation/TabNavigation"
 import { t } from "../../i18n/i18n"
+import { Oid } from "../../state/common"
+import { createHakutilannePathWithOrg } from "../../state/paths"
 
-export const VirkailijaNavigation = () => {
-  const navOptions = [
+export type VirkailijaNavigationProps = {
+  selectedOrganisaatio: Oid
+}
+
+export const VirkailijaNavigation = (props: VirkailijaNavigationProps) => {
+  const navOptions: TabNavigationItem[] = [
     {
-      key: "hakutilanne",
       display: t("hakeutumisvelvollisetnavi__hakutilanne"),
+      linkTo: createHakutilannePathWithOrg(undefined, {
+        organisaatioOid: props.selectedOrganisaatio,
+      }),
     },
   ]
 
-  return (
-    <TabNavigation
-      selected="hakutilanne"
-      options={navOptions}
-      onChange={() => null}
-    />
-  )
+  return <TabNavigation options={navOptions} />
 }

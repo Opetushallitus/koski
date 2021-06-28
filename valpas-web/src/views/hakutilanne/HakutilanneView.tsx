@@ -108,7 +108,7 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
           value={organisaatioOid}
           onChange={changeOrganisaatio}
         />
-        <VirkailijaNavigation />
+        <VirkailijaNavigation selectedOrganisaatio={organisaatioOid} />
         <Card>
           <CardHeader>
             <T id="hakutilannenäkymä__otsikko" />
