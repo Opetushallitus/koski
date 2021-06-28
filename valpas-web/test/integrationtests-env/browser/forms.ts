@@ -53,6 +53,12 @@ export const dropdownSelectContains = async (
   }
 }
 
+export const dropdownSelectAllOptionTexts = async (selector: string) => {
+  const allOptionsSelector = `${selector} > option`
+  const options = await $$(allOptionsSelector)
+  return await Promise.all(options.map(async (opt) => opt.getText()))
+}
+
 export const isCheckboxChecked = async (selector: string): Promise<boolean> => {
   const input = await $(selector)
   return input.getAttribute("checked").then((c) => !!c)
