@@ -26,7 +26,7 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
         } else if (Henkilö.isValidHenkilöOid(query)) {
           searchByOppijaOid(rooli, query)
         } else {
-          Left(ValpasErrorCategory.searchValidation())
+          Left(ValpasErrorCategory.validation.epävalidiHenkilöhakutermi())
         }
       })
   }

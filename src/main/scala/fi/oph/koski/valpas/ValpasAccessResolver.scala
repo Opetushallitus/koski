@@ -7,89 +7,57 @@ import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppijaLaajatTiedot
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 
 class ValpasAccessResolver {
-  def assertAccessToOrg(
-    rooli: ValpasRooli.Role
-  )(
-    organisaatioOid: Organisaatio.Oid
-  )(
-    implicit session: ValpasSession
-  ): Either[HttpStatus, Unit] = {
-    withAccessToAllOrgs(rooli)(Set(organisaatioOid), () => ())
-  }
+  def assertAccessToOrg
+    (rooli: ValpasRooli.Role, organisaatioOid: Organisaatio.Oid)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, Unit] =
+    Either.cond(
+      accessToOrg(rooli, organisaatioOid),
+      Unit,
+      ValpasErrorCategory.forbidden.organisaatio()
+    )
 
-  def assertAccessToAnyOrg(
-    rooli: ValpasRooli.Role
-  )(
-    implicit session: ValpasSession
-  ): Either[HttpStatus, Unit] = {
-    Either.cond(accessToAnyOrg(rooli), () => (), ValpasErrorCategory.forbidden.toiminto())
-  }
+  def assertAccessToAnyOrg(rooli: ValpasRooli.Role)(implicit session: ValpasSession)
+  : Either[HttpStatus, Unit] =
+    Either.cond(
+      accessToAnyOrg(rooli),
+      Unit,
+      ValpasErrorCategory.forbidden.toiminto()
+    )
 
-  def withOppijaAccess[T <: ValpasOppijaLaajatTiedot](
-    oppija: T
-  )(
-    implicit session: ValpasSession
-  ): Either[HttpStatus, T] =
-    withOppijaAccessAsAnyRole(
+  def withOppijaAccess[T <: ValpasOppijaLaajatTiedot](oppija: T)(implicit session: ValpasSession)
+  : Either[HttpStatus, T] =
+    withOppijaAccess(
       Seq(
         ValpasRooli.OPPILAITOS_HAKEUTUMINEN,
         ValpasRooli.OPPILAITOS_MAKSUTTOMUUS,
         ValpasRooli.OPPILAITOS_SUORITTAMINEN,
         ValpasRooli.KUNTA
-      )
-    )(oppija)
+      ),
+      oppija
+    )
 
-  def withOppijaAccessAsAnyRole[T <: ValpasOppijaLaajatTiedot](
-    roolit: Seq[ValpasRooli.Role]
-  )(
-    oppija: T
-  )(
-    implicit session: ValpasSession
-  ): Either[HttpStatus, T] = {
-    if (roolit.exists(withOppijaAccessAsRole(_)(oppija).isRight)) {
-      Right(oppija)
-    } else {
-      Left(ValpasErrorCategory.forbidden.oppija())
-    }
-  }
+  def withOppijaAccess[T <: ValpasOppijaLaajatTiedot]
+    (roolit: Seq[ValpasRooli.Role], oppija: T)(implicit session: ValpasSession)
+  : Either[HttpStatus, T] = HttpStatus.any(roolit.map(withOppijaAccessAsRole(_)(oppija)))
 
-  def withOppijaAccessAsRole[T <: ValpasOppijaLaajatTiedot](
-    rooli: ValpasRooli.Role
-  )(
-    oppija: T
-  )(
-    implicit session: ValpasSession
-  ): Either[HttpStatus, T] = {
-    rooli match {
+  def withOppijaAccessAsRole[T <: ValpasOppijaLaajatTiedot]
+    (rooli: ValpasRooli.Role)(oppija: T)(implicit session: ValpasSession)
+  : Either[HttpStatus, T] = {
+    val hasAccess = rooli match {
       case ValpasRooli.OPPILAITOS_HAKEUTUMINEN =>
-        Either.cond(
-          oppija.hakeutumisvalvovatOppilaitokset.nonEmpty &&
-            accessToSomeOrgs(rooli)(oppija.hakeutumisvalvovatOppilaitokset),
-          oppija,
-          ValpasErrorCategory.forbidden.oppija()
-        )
+        oppija.hakeutumisvalvovatOppilaitokset.nonEmpty &&
+          accessToSomeOrgs(rooli, oppija.hakeutumisvalvovatOppilaitokset)
       case ValpasRooli.OPPILAITOS_MAKSUTTOMUUS =>
-        Either.cond(
-          accessToAnyOrg(rooli) && oppija.onOikeusValvoaMaksuttomuutta,
-          oppija,
-          ValpasErrorCategory.forbidden.oppija()
-        )
+        accessToAnyOrg(rooli) && oppija.onOikeusValvoaMaksuttomuutta
       case ValpasRooli.KUNTA =>
-        Either.cond(
-          accessToAnyOrg(rooli) && oppija.onOikeusValvoaKunnalla,
-          oppija,
-          ValpasErrorCategory.forbidden.oppija()
-        )
+        accessToAnyOrg(rooli) && oppija.onOikeusValvoaKunnalla
       case ValpasRooli.OPPILAITOS_SUORITTAMINEN =>
-        Either.cond(
-          oppija.suorittamisvalvovatOppilaitokset.nonEmpty &&
-            accessToSomeOrgs(rooli)(oppija.suorittamisvalvovatOppilaitokset),
-          oppija,
-          ValpasErrorCategory.forbidden.oppija()
-        )
-      case _ =>
-        Left(ValpasErrorCategory.internalError(s"Tuntematon rooli ${rooli}"))
+        oppija.suorittamisvalvovatOppilaitokset.nonEmpty &&
+          accessToSomeOrgs(rooli, oppija.suorittamisvalvovatOppilaitokset)
+      case _ => false
     }
+    Either.cond(hasAccess, oppija, ValpasErrorCategory.forbidden.oppija())
   }
 
   def filterByOppijaAccess[T <: ValpasOppijaLaajatTiedot](
@@ -103,7 +71,7 @@ class ValpasAccessResolver {
       case ValpasRooli.OPPILAITOS_HAKEUTUMINEN =>
         oppijat.filter(
           oppija => oppija.hakeutumisvalvovatOppilaitokset.nonEmpty &&
-            accessToSomeOrgs(rooli)(oppija.hakeutumisvalvovatOppilaitokset)
+            accessToSomeOrgs(rooli, oppija.hakeutumisvalvovatOppilaitokset)
         )
       case ValpasRooli.OPPILAITOS_MAKSUTTOMUUS if accessToAnyOrg(rooli) =>
         oppijat.filter(_.onOikeusValvoaMaksuttomuutta)
@@ -114,52 +82,32 @@ class ValpasAccessResolver {
       case ValpasRooli.OPPILAITOS_SUORITTAMINEN =>
         oppijat.filter(
           oppija => oppija.suorittamisvalvovatOppilaitokset.nonEmpty &&
-            accessToSomeOrgs(rooli)(oppija.suorittamisvalvovatOppilaitokset)
+            accessToSomeOrgs(rooli, oppija.suorittamisvalvovatOppilaitokset)
         )
       case _ =>
         throw new InternalError(s"Tuntematon rooli ${rooli}")
     }
   }
 
-  def withOppijaAccessAsOrganisaatio[T <: ValpasOppijaLaajatTiedot](
-    rooli: ValpasRooli.Role
-  )(
-    organisaatioOid: Organisaatio.Oid
-  )(
-    oppija: T
-  )(
-    implicit session: ValpasSession
-  ) : Either[HttpStatus, T] = {
-    rooli match {
+  def withOppijaAccessAsOrganisaatio[T <: ValpasOppijaLaajatTiedot]
+    (rooli: ValpasRooli.Role, organisaatioOid: Organisaatio.Oid)
+    (oppija: T)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, T] = {
+    val hasAccess = rooli match {
       case ValpasRooli.OPPILAITOS_HAKEUTUMINEN =>
-        Either.cond(
-          accessToAllOrgs(rooli)(Set(organisaatioOid)) &&
-            oppija.hakeutumisvalvovatOppilaitokset.contains(organisaatioOid),
-          oppija,
-          ValpasErrorCategory.forbidden.oppija()
-        )
+        accessToOrg(rooli, organisaatioOid) &&
+          oppija.hakeutumisvalvovatOppilaitokset.contains(organisaatioOid)
       case ValpasRooli.OPPILAITOS_MAKSUTTOMUUS =>
-        Either.cond(
-          accessToAnyOrg(rooli) && oppija.onOikeusValvoaMaksuttomuutta,
-          oppija,
-          ValpasErrorCategory.forbidden.oppija()
-        )
+        accessToAnyOrg(rooli) && oppija.onOikeusValvoaMaksuttomuutta
       case ValpasRooli.KUNTA =>
-        Either.cond(
-          accessToAnyOrg(rooli) && oppija.onOikeusValvoaKunnalla,
-          oppija,
-          ValpasErrorCategory.forbidden.oppija()
-        )
+        accessToAnyOrg(rooli) && oppija.onOikeusValvoaKunnalla
       case ValpasRooli.OPPILAITOS_SUORITTAMINEN =>
-        Either.cond(
-          accessToAllOrgs(rooli)(Set(organisaatioOid)) &&
-            oppija.suorittamisvalvovatOppilaitokset.contains(organisaatioOid),
-          oppija,
-          ValpasErrorCategory.forbidden.oppija()
-        )
-      case _ =>
-        Left(ValpasErrorCategory.internalError(s"Tuntematon rooli ${rooli}"))
+        accessToOrg(rooli, organisaatioOid) &&
+          oppija.suorittamisvalvovatOppilaitokset.contains(organisaatioOid)
+      case _ => false
     }
+    Either.cond(hasAccess, oppija, ValpasErrorCategory.forbidden.oppija())
   }
 
   def withOpiskeluoikeusAccess[T <: ValpasOppijaLaajatTiedot](
@@ -177,7 +125,7 @@ class ValpasAccessResolver {
         oppija.opiskeluoikeudet
           .find(oo => oo.oid == opiskeluoikeusOid &&
             oo.onHakeutumisValvottava &&
-            accessToOrg(rooli)(oo.oppilaitos.oid))
+            accessToOrg(rooli, oo.oppilaitos.oid))
           .toRight(ValpasErrorCategory.forbidden.opiskeluoikeus())
           .map(_ => oppija)
       case ValpasRooli.OPPILAITOS_MAKSUTTOMUUS =>
@@ -192,65 +140,27 @@ class ValpasAccessResolver {
           oppija,
           ValpasErrorCategory.forbidden.oppija()
         )
-      case ValpasRooli.OPPILAITOS_SUORITTAMINEN => {
+      case ValpasRooli.OPPILAITOS_SUORITTAMINEN =>
         oppija.opiskeluoikeudet
           .find(oo => oo.oid == opiskeluoikeusOid &&
             oo.onSuorittamisValvottava &&
-            accessToOrg(rooli)(oo.oppilaitos.oid))
+            accessToOrg(rooli, oo.oppilaitos.oid))
           .toRight(ValpasErrorCategory.forbidden.opiskeluoikeus())
           .map(_ => oppija)
-      }
       case _ =>
         Left(ValpasErrorCategory.internalError(s"Tuntematon rooli ${rooli}"))
     }
   }
 
-  def filterByOikeudet(
-    rooli: ValpasRooli.Role
-  )(
-    organisaatioOidit: Set[Organisaatio.Oid]
-  )(
-    implicit session: ValpasSession
-  ): Set[Organisaatio.Oid] = {
-    organisaatioOidit.filter(oid => accessToAllOrgs(rooli)(Set(oid)))
-  }
+  def accessToOrg
+    (rooli: ValpasRooli.Role, organisaatioOid: Organisaatio.Oid)
+    (implicit session: ValpasSession)
+  : Boolean = accessToSomeOrgs(rooli, Set(organisaatioOid))
 
-  private def withAccessToAllOrgs[T](
-    rooli: ValpasRooli.Role
-  )(
-    organisaatioOids: Set[Organisaatio.Oid],
-    fn: () => T
-  )(implicit session: ValpasSession)
-  : Either[HttpStatus, T] = {
-    Either.cond(accessToAllOrgs(rooli)(organisaatioOids), fn(), ValpasErrorCategory.forbidden.organisaatio())
-  }
-
-  private def accessToAllOrgs(
-    rooli: ValpasRooli.Role
-  )(
-    organisaatioOids: Set[Organisaatio.Oid],
-  )(
-    implicit session: ValpasSession
-  ): Boolean =
-    onGlobaaliOikeus(rooli) || organisaatioOids.diff(oppilaitosOrganisaatioOids(rooli)).isEmpty
-
-  private def accessToOrg(
-    rooli: ValpasRooli.Role
-  )(
-    organisaatioOid: Organisaatio.Oid,
-  )(
-    implicit session: ValpasSession
-  ): Boolean =
-    accessToSomeOrgs(rooli)(Set(organisaatioOid))
-
-  def accessToSomeOrgs(
-    rooli: ValpasRooli.Role
-  )(
-    organisaatioOids: Set[Organisaatio.Oid],
-  )(
-    implicit session: ValpasSession
-  ): Boolean =
-    onGlobaaliOikeus(rooli) || organisaatioOids.intersect(oppilaitosOrganisaatioOids(rooli)).nonEmpty
+  def accessToSomeOrgs
+    (rooli: ValpasRooli.Role, organisaatioOids: Set[Organisaatio.Oid])
+    (implicit session: ValpasSession)
+  : Boolean = onGlobaaliOikeus(rooli) || organisaatioOids.intersect(oppilaitosOrganisaatioOids(rooli)).nonEmpty
 
   private def accessToAnyOrg(
     rooli: ValpasRooli.Role

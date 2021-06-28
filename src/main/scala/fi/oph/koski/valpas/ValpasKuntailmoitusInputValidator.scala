@@ -2,7 +2,7 @@ package fi.oph.koski.valpas
 
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.schema.{Oppilaitos, Toimipiste}
+import fi.oph.koski.schema.{Oppilaitos, OrganisaatioWithOid, Toimipiste}
 import fi.oph.koski.userdirectory.{DirectoryClient, DirectoryUser}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoituksenTekijäHenkilö, ValpasKuntailmoitusLaajatTiedotJaOppijaOid}
@@ -20,7 +20,6 @@ class ValpasKuntailmoitusInputValidator(
       .flatMap(validateTekijänOid)
       .flatMap(validateKunta)
       .flatMap(fillTekijänHenkilöTiedot)
-      .flatMap(validateTekijä)
   }
 
   private def validateIlmoituspäivä(
@@ -85,20 +84,10 @@ class ValpasKuntailmoitusInputValidator(
 
     kuntailmoitusInput.kuntailmoitus.kunta match {
       // Tarkistetaan osa suoraan tyypeistä, koska silloin ei tarvitse tehdä hakua organisaatioRepositoryyn
-      case o: Oppilaitos => virheIlmoitus
-      case t: Toimipiste => virheIlmoitus
-      case _ if !organisaatioRepository.isKunta(kuntailmoitusInput.kuntailmoitus.kunta) => virheIlmoitus
+      case _: Oppilaitos => virheIlmoitus
+      case _: Toimipiste => virheIlmoitus
+      case k: OrganisaatioWithOid if !organisaatioRepository.isKunta(k) => virheIlmoitus
       case _ => Right(kuntailmoitusInput)
-    }
-  }
-
-  private def validateTekijä(kuntailmoitusInput: ValpasKuntailmoitusLaajatTiedotJaOppijaOid)
-  : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
-    kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio match {
-      case o: Oppilaitos => Right(kuntailmoitusInput)
-      case _ => Left(ValpasErrorCategory.validation.kuntailmoituksenTekijä(
-        s"Kuntailmoituksen tekijä ${kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio.oid} ei ole oppilaitos"
-      ))
     }
   }
 }

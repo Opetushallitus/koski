@@ -38,6 +38,9 @@ case class OrganisaatioHierarkia(
       OidOrganisaatio(oid, Some(nimi), kotipaikka)
     }
 
+  def toKunta: Option[OrganisaatioWithOid] =
+    organisaatiotyypit.find(_ == KUNTA).map(_ => OidOrganisaatio(oid, Some(nimi), kotipaikka))
+
   def toKoulutustoimija: Option[Koulutustoimija] = toOrganisaatio match {
     case k: Koulutustoimija => Some(k)
     case _ => None

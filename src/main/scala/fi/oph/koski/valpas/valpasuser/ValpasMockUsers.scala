@@ -55,7 +55,7 @@ object ValpasMockUsers {
 
   val valpasPyhtääJaHelsinki = ValpasMockUser(
     "käyttäjä",
-    "valpas-monikunta",
+    "valpas-pyhtää-ja-helsinki",
     "1.2.246.562.24.12312312369",
     kuntakäyttäjä(pyhtäänKunta) ++ kuntakäyttäjä(helsinginKaupunki)
   )

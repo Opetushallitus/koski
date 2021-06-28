@@ -28,7 +28,7 @@ trait RequiresValpasSession extends ValpasAuthenticationSupport with HasValpasSe
   private def hasValpasPalvelurooli(palveluroolit: Set[Palvelurooli]): Boolean =
     palveluroolit.exists(hyväksytytValpasPalveluroolit.contains)
 
-  private lazy val hyväksytytValpasPalveluroolit: List[Palvelurooli] = List(
+  private val hyväksytytValpasPalveluroolit: List[Palvelurooli] = List(
     ValpasPalvelurooli(ValpasRooli.OPPILAITOS_HAKEUTUMINEN),
     ValpasPalvelurooli(ValpasRooli.OPPILAITOS_SUORITTAMINEN),
     ValpasPalvelurooli(ValpasRooli.OPPILAITOS_MAKSUTTOMUUS),
