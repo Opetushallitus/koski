@@ -32,10 +32,10 @@ import {
 import { nonNull } from "../../utils/arrays"
 import { ErrorView } from "../ErrorView"
 import { HakutilanneDrawer } from "./HakutilanneDrawer"
+import { HakutilanneNavigation } from "./HakutilanneNavigation"
 import { HakutilanneTable } from "./HakutilanneTable"
 import "./HakutilanneView.less"
 import { useOppijatData } from "./useOppijatData"
-import { VirkailijaNavigation } from "./VirkailijaNavigation"
 
 const b = bem("hakutilanneview")
 
@@ -108,7 +108,7 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
           value={organisaatioOid}
           onChange={changeOrganisaatio}
         />
-        <VirkailijaNavigation selectedOrganisaatio={organisaatioOid} />
+        <HakutilanneNavigation selectedOrganisaatio={organisaatioOid} />
         <Card>
           <CardHeader>
             <T id="hakutilannenäkymä__otsikko" />

@@ -7,11 +7,11 @@ import { t } from "../../i18n/i18n"
 import { Oid } from "../../state/common"
 import { createHakutilannePathWithOrg } from "../../state/paths"
 
-export type VirkailijaNavigationProps = {
+export type HakutilanneNavigationProps = {
   selectedOrganisaatio: Oid
 }
 
-export const VirkailijaNavigation = (props: VirkailijaNavigationProps) => {
+export const HakutilanneNavigation = (props: HakutilanneNavigationProps) => {
   const navOptions: TabNavigationItem[] = [
     {
       display: t("hakeutumisvelvollisetnavi__hakutilanne"),
