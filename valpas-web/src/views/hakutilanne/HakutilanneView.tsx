@@ -1,4 +1,5 @@
 import bem from "bem-ts"
+import { boolean } from "fp-ts"
 import * as A from "fp-ts/Array"
 import * as Eq from "fp-ts/Eq"
 import { pipe } from "fp-ts/lib/function"
@@ -162,14 +163,20 @@ const getOrganisaatiot = (
 
   return pipe(
     kaikki,
-    A.filter(
-      (organisaatioHierarkia) =>
-        organisaatioHierarkia.organisaatiotyypit.includes("OPPILAITOS") &&
-        organisaatioHierarkia.aktiivinen
+    A.filter((organisaatioHierarkia) =>
+      organisaatioHierarkia.organisaatiotyypit.includes("OPPILAITOS")
     ),
-    A.sortBy([byLocalizedNimi])
+    A.sortBy([Ord.reverse(byAktiivinen), byLocalizedNimi])
   )
 }
+
+const byAktiivinen = pipe(
+  boolean.Ord,
+  Ord.contramap(
+    (organisaatioHierarkia: OrganisaatioHierarkia) =>
+      organisaatioHierarkia.aktiivinen
+  )
+)
 
 const byLocalizedNimi = pipe(
   string.Ord,
@@ -215,7 +222,11 @@ const getOrgOptions = (orgs: OrganisaatioHierarkia[]) =>
     A.uniq(eqOrgs),
     A.map((org: OrganisaatioHierarkia) => ({
       value: org.oid,
-      display: `${getLocalized(org.nimi)} (${org.oid})`,
+      display: `${
+        !org.aktiivinen
+          ? t("organisaatiovalitsin__lakkautettu_prefix") + ": "
+          : ""
+      }${getLocalized(org.nimi)} (${org.oid})`,
     }))
   )
 

@@ -19,6 +19,7 @@ import {
 } from "../integrationtests-env/browser/datatable"
 import {
   dropdownSelect,
+  dropdownSelectAllOptionTexts,
   dropdownSelectContains,
   isCheckboxChecked,
 } from "../integrationtests-env/browser/forms"
@@ -31,12 +32,18 @@ import {
   openAnyOppijaView,
   openOppijaView,
 } from "./hakutilanne.shared"
-import { jyväskylänNormaalikouluOid, kulosaarenAlaAsteOid } from "./oids"
+import {
+  aapajoenKouluOid,
+  jyväskylänNormaalikouluOid,
+  kulosaarenAlaAsteOid,
+} from "./oids"
 
 const selectOrganisaatio = (index: number) =>
   dropdownSelect("#organisaatiovalitsin", index)
 const selectOrganisaatioByNimi = (text: string) =>
   dropdownSelectContains("#organisaatiovalitsin", text)
+const valitsimenOrganisaatiot = () =>
+  dropdownSelectAllOptionTexts("#organisaatiovalitsin")
 
 const clickAndVerifyMuuHaku = async (index: number) => {
   const currentState = await isMuuHakuChecked(index)
@@ -61,12 +68,26 @@ const kulosaarenAlaAsteTableContent = `
   Kulosaarelainen Oppija                                  | 19.1.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
 `
 
+const aapajaoenKouluTableContent = `
+  Aaapajoen-peruskoulusta-valmistunut Valpas              | 16.2.2005   | 9C | 29.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
+  Kahdella-oppija-oidilla Valpas                          | 15.2.2005   | 9C | 29.5.2021  | Hakenut open_in_new  | Varasija: Ressun lukio      | –                         | doneJyväskylän normaalikoulu, Lukiokoulutus                                |
+  Kahdella-oppija-oidilla-ilmo Valpas                     | 4.6.2005    | 9C | 29.5.2021  | Ei hakemusta         | –                           | –                         | doneJyväskylän normaalikoulu, Lukiokoulutus                                |
+  KahdenKoulunYsi-ilmo Valpas                             | 21.11.2004  | 9C | 29.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
+`
+
 const jklHakutilannePath = createHakutilannePathWithOrg("/virkailija", {
   organisaatioOid: jyväskylänNormaalikouluOid,
 })
 const kulosaariHakutilannePath = createHakutilannePathWithOrg("/virkailija", {
   organisaatioOid: kulosaarenAlaAsteOid,
 })
+const aapajoenKouluHakutilannePath = createHakutilannePathWithOrg(
+  "/virkailija",
+  {
+    organisaatioOid: aapajoenKouluOid,
+  }
+)
+
 const kulosaarenOppijaOid = "1.2.246.562.24.00000000029"
 const saksalainenKouluOid = "1.2.246.562.10.45093614456"
 const saksalainenKouluHakutilannePath = createHakutilannePathWithOrg(
@@ -130,6 +151,36 @@ describe("Hakutilannenäkymä", () => {
     await dataTableEventuallyEquals(
       ".hakutilanne",
       kulosaarenAlaAsteTableContent,
+      "|"
+    )
+  })
+
+  it("Passiiviset organisaatiot listataan aktiivisten jälkeen", async () => {
+    await loginAs(hakutilannePath, "valpas-aapajoen-koulu-jkl-normaali")
+
+    const organisaatiot = await valitsimenOrganisaatiot()
+
+    const expectedOrganisaatiot = [
+      "Jyväskylän normaalikoulu (1.2.246.562.10.14613773812)",
+      "LAKKAUTETTU: Aapajoen koulu (1.2.246.562.10.26197302388)",
+    ]
+
+    expect(organisaatiot).toEqual(expectedOrganisaatiot)
+  })
+
+  it("Toimii passivoidun organisaation käyttäjällä", async () => {
+    await loginAs(hakutilannePath, "valpas-aapajoen-koulu")
+
+    await selectOrganisaatioByNimi("LAKKAUTETTU: Aapajoen koulu")
+    await urlIsEventually(pathToUrl(aapajoenKouluHakutilannePath))
+    await textEventuallyEquals(
+      ".card__header",
+      "Hakeutumisvelvollisia oppijoita (4)"
+    )
+
+    await dataTableEventuallyEquals(
+      ".hakutilanne",
+      aapajaoenKouluTableContent,
       "|"
     )
   })
