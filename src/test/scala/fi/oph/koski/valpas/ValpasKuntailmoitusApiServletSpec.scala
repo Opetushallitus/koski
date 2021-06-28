@@ -398,7 +398,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     }
   }
 
-  "Kuntailmoituksen tekeminen hakeutumisen valvojana (oppilaitos) onnistuu" in {
+  "Kuntailmoituksen tekeminen hakeutumisen valvojana (koulutustoimija) onnistuu" in {
     val user = ValpasMockUsers.valpasJklYliopisto
 
     val jyväskylänNormaalikoulunOppilas = ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021
