@@ -9,29 +9,34 @@ import { Redirect, RouteComponentProps, useHistory } from "react-router"
 import {
   fetchKuntailmoitukset,
   fetchKuntailmoituksetCache,
-} from "../../api/api"
-import { useApiWithParams } from "../../api/apiHooks"
-import { isLoading, isSuccess } from "../../api/apiUtils"
-import { Card, CardBody, CardHeader } from "../../components/containers/cards"
-import { Page } from "../../components/containers/Page"
-import { Dropdown } from "../../components/forms/Dropdown"
-import { Spinner } from "../../components/icons/Spinner"
-import { DataTableCountChangeEvent } from "../../components/tables/DataTable"
-import { Counter } from "../../components/typography/Counter"
-import { NoDataMessage } from "../../components/typography/NoDataMessage"
-import { getLocalized, t, T } from "../../i18n/i18n"
+} from "../../../api/api"
+import { useApiWithParams } from "../../../api/apiHooks"
+import { isLoading, isSuccess } from "../../../api/apiUtils"
+import {
+  Card,
+  CardBody,
+  CardHeader,
+} from "../../../components/containers/cards"
+import { Page } from "../../../components/containers/Page"
+import { Dropdown } from "../../../components/forms/Dropdown"
+import { Spinner } from "../../../components/icons/Spinner"
+import { DataTableCountChangeEvent } from "../../../components/tables/DataTable"
+import { Counter } from "../../../components/typography/Counter"
+import { NoDataMessage } from "../../../components/typography/NoDataMessage"
+import { getLocalized, t, T } from "../../../i18n/i18n"
 import {
   useOrganisaatiotJaKäyttöoikeusroolit,
   withRequiresKuntavalvonta,
-} from "../../state/accessRights"
-import { useBasePath } from "../../state/basePath"
+} from "../../../state/accessRights"
+import { useBasePath } from "../../../state/basePath"
 import {
   Oid,
   OrganisaatioHierarkia,
   OrganisaatioJaKayttooikeusrooli,
-} from "../../state/common"
-import { createKuntailmoitusPathWithOrg } from "../../state/paths"
-import { ErrorView } from "../ErrorView"
+} from "../../../state/common"
+import { createKuntailmoitusPathWithOrg } from "../../../state/paths"
+import { ErrorView } from "../../ErrorView"
+import { KuntaNavigation } from "../KuntaNavigation"
 import { KuntailmoitusTable } from "./KuntailmoitusTable"
 
 const b = bem("kuntailmoitusview")
@@ -98,6 +103,7 @@ export const KuntailmoitusView = withRequiresKuntavalvonta(
           value={organisaatioOid}
           onChange={changeOrganisaatio}
         />
+        <KuntaNavigation selectedOrganisaatio={organisaatioOid} />
         <Card>
           <CardHeader>
             <T id="kuntailmoitusnäkymä__ilmoitetut__otsikko" />

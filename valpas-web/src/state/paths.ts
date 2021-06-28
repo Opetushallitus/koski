@@ -101,17 +101,28 @@ export const käyttöoikeusPath = (basePath: string = "") =>
 
 export const createKäyttöoikeusPath = käyttöoikeusPath
 
+// Kuntanäkymien juuri
+
+export const kuntaRootPath = (basePath: string = "") =>
+  `${basePath}/kuntailmoitukset`
+
 // Kuntailmoitusnäkymä
 
-export const kuntailmoitusPath = (basePath: string = "") =>
-  `${basePath}/kuntailmoitukset`
+export const kuntailmoitusPath = kuntaRootPath
 
 export const createKuntailmoitusPath = kuntailmoitusPath
 
 export const kuntailmoitusPathWithOrg = (basePath: string = "") =>
-  `${kuntailmoitusPath(basePath)}/:organisaatioOid`
+  `${kuntailmoitusPath(basePath)}/organisaatio/:organisaatioOid`
 
 export const createKuntailmoitusPathWithOrg = (
-  basePath: string,
+  basePath: string = "",
   organisaatioOid: Oid
-) => `${kuntailmoitusPath(basePath)}/${organisaatioOid}`
+) => `${kuntailmoitusPath(basePath)}/organisaatio/${organisaatioOid}`
+
+// Kuntakäyttäjän hakunäkymä
+
+export const kunnanHetuhakuPath = (basePath: string = "") =>
+  `${kuntaRootPath(basePath)}/haku`
+
+export const createKunnanHetuhakuPath = kunnanHetuhakuPath

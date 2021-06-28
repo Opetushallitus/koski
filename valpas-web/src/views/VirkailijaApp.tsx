@@ -21,6 +21,7 @@ import {
   createHakutilannePathWithoutOrg,
   hakutilannePathWithOrg,
   hakutilannePathWithoutOrg,
+  kunnanHetuhakuPath,
   kuntailmoitusPath,
   kuntailmoitusPathWithOrg,
   käyttöoikeusPath,
@@ -29,10 +30,6 @@ import {
   rootPath,
   suorittaminenPath,
 } from "../state/paths"
-import {
-  KuntailmoitusView,
-  KuntailmoitusViewWithoutOrgOid,
-} from "../views/kuntailmoitus/KuntailmoitusView"
 import { SuorittaminenView } from "../views/suorittaminen/SuorittaminenView"
 import { AccessRightsView } from "./AccessRightsView"
 import { ErrorView, NotFoundView } from "./ErrorView"
@@ -41,6 +38,11 @@ import {
   HakutilanneViewWithoutOrgOid,
 } from "./hakutilanne/HakutilanneView"
 import { HomeView } from "./HomeView"
+import { KuntaHetuhaku } from "./kunta/hetuhaku/KuntaHetuhaku"
+import {
+  KuntailmoitusView,
+  KuntailmoitusViewWithoutOrgOid,
+} from "./kunta/kuntailmoitus/KuntailmoitusView"
 import { MaksuttomuusView } from "./maksuttomuus/MaksuttomuusView"
 import { OppijaView } from "./oppija/OppijaView"
 import { Raamit } from "./Raamit"
@@ -136,6 +138,9 @@ const VirkailijaRoutes = () => {
             />
           )}
         />
+        <Route exact path={kunnanHetuhakuPath(basePath)}>
+          <KuntaHetuhaku />
+        </Route>
         <Route exact path={käyttöoikeusPath(basePath)}>
           <AccessRightsView />
         </Route>
