@@ -67,6 +67,14 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
     )
   }
 
+  get("/henkilohaku/kunta/:query") {
+    val query = params("query")
+    renderEither(
+      oppijaSearchService.findHenkilö(ValpasRooli.KUNTA, query)
+        .tap(auditLogHenkilöHaku(query))
+    )
+  }
+
   put("/oppija/:oid/set-muu-haku") {
     val oppijaOid = params("oid")
     val ooOid = getStringParam("opiskeluoikeusOid")
