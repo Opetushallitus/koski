@@ -51,6 +51,7 @@ import { FormValidators, useFormState } from "../../state/useFormState"
 import { nonEmptyEvery, nonNull } from "../../utils/arrays"
 import { removeFalsyValues } from "../../utils/objects"
 import { plainComponent } from "../../utils/plaincomponent"
+import { withScroll, WithScrollProps } from "../../utils/withScroll"
 import "./IlmoitusForm.less"
 
 const b = bem("ilmoitusform")
@@ -131,7 +132,7 @@ const toKuntailmoitusLaajatTiedot = (
     : null
 }
 
-export type IlmoitusFormProps = {
+export type IlmoitusFormProps = WithScrollProps & {
   oppijaTiedot: HenkilöTiedot
   opiskeluoikeudet?: OpiskeluoikeusSuppeatTiedot[]
   lisätiedot?: OpiskeluoikeusLisätiedot[]
@@ -145,7 +146,7 @@ export type IlmoitusFormProps = {
   onSubmit?: (values: IlmoitusFormValues) => void
 }
 
-export const IlmoitusForm = (props: IlmoitusFormProps) => {
+export const IlmoitusForm = withScroll((props: IlmoitusFormProps) => {
   const form = useFormState({
     initialValues: {
       ...initialValues,
@@ -180,6 +181,7 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
     if (props.onSubmit) {
       form.submitCallback(props.onSubmit)()
     }
+    props.scrollTop()
   })
 
   const kunnat = props.kunnat
@@ -288,7 +290,7 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
       ) : null}
     </IlmoitusFormFrame>
   )
-}
+})
 
 const defaultMuuHakuValue = (
   oppijaOid: Oid,
