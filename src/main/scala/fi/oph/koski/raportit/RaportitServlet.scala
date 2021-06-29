@@ -199,7 +199,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
   private def writeExcel(raportti: OppilaitosRaporttiResponse) = {
     contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     response.setHeader("Content-Disposition", s"""attachment; filename="${raportti.filename}"""")
-    raportti.downloadToken.foreach { t => response.addCookie(Cookie("koskiDownloadToken", t)(CookieOptions(path = "/", maxAge = 600))) }
+    raportti.downloadToken.foreach { t => response.addCookie(Cookie("koskiDownloadToken", t)(CookieOptions(secure = true, path = "/", maxAge = 600))) }
     ExcelWriter.writeExcel(
       raportti.workbookSettings,
       raportti.sheets,

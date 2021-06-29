@@ -124,7 +124,7 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
 
   private def setNimitiedotCookie = {
     val name = nimitiedot.map(n => n.etunimet + " " + n.sukunimi)
-    response.addCookie(Cookie("eisuorituksia", encode(writeWithRoot(name), "UTF-8"))(CookieOptions(secure = isHttps, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
+    response.addCookie(Cookie("eisuorituksia", encode(writeWithRoot(name), "UTF-8"))(CookieOptions(secure = true, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
   }
 
   private def nimitiedot: Option[Nimitiedot] = {

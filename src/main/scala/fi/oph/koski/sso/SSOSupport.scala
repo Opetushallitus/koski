@@ -29,7 +29,7 @@ trait SSOSupport extends ScalatraBase with Logging {
   }
 
 
-  private def removeCookie(name: String, domain: String = "") = response.addCookie(Cookie(name, "")(CookieOptions(domain = domain, secure = isHttps, path = "/", maxAge = 0, httpOnly = true)))
+  private def removeCookie(name: String, domain: String = "") = response.addCookie(Cookie(name, "")(CookieOptions(domain = domain, secure = true, path = "/", maxAge = 0, httpOnly = true)))
 
   def setUserCookie(user: AuthenticationUser) = {
     setCookie("koskiUser", user)
@@ -41,7 +41,7 @@ trait SSOSupport extends ScalatraBase with Logging {
   }
 
   private def setCookie(name: String, user: AuthenticationUser, domain: String = "") =
-    response.addCookie(Cookie(name, URLEncoder.encode(JsonSerializer.writeWithRoot(user), "UTF-8"))(CookieOptions(domain = domain, secure = isHttps, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
+    response.addCookie(Cookie(name, URLEncoder.encode(JsonSerializer.writeWithRoot(user), "UTF-8"))(CookieOptions(domain = domain, secure = true, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
 
   def getUserCookie: Option[AuthenticationUser] = getAuthCookie("koskiUser")
   def getKansalaisCookie: Option[AuthenticationUser] = getAuthCookie("koskiOppija")
@@ -80,7 +80,7 @@ trait SSOSupport extends ScalatraBase with Logging {
   }
 
   def redirectToVirkailijaLogin = {
-    response.addCookie(Cookie("koskiReturnUrl", currentUrl)(CookieOptions(secure = isHttps, path = "/", maxAge = 60, httpOnly = true)))
+    response.addCookie(Cookie("koskiReturnUrl", currentUrl)(CookieOptions(secure = true, path = "/", maxAge = 60, httpOnly = true)))
     if (ssoConfig.isCasSsoUsed) {
       redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/login?service=" + casVirkailijaServiceUrl)
     } else {
@@ -89,7 +89,7 @@ trait SSOSupport extends ScalatraBase with Logging {
   }
 
   def redirectToOppijaLogin = {
-    response.addCookie(Cookie("koskiReturnUrl", currentUrl)(CookieOptions(secure = isHttps, path = "/", maxAge = 60, httpOnly = true)))
+    response.addCookie(Cookie("koskiReturnUrl", currentUrl)(CookieOptions(secure = true, path = "/", maxAge = 60, httpOnly = true)))
     if (ssoConfig.isCasSsoUsed) {
       redirect(application.config.getString("opintopolku.oppija.url") + "/cas-oppija/login?service=" + casOppijaServiceUrl + "&valtuudet=false")
     } else {

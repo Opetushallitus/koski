@@ -52,13 +52,13 @@ export const getLogin = (): Login => {
 }
 
 export const storeLoginReturnUrl = (url: string) => {
-  Cookies.set(RETURN_URL_KEY, url)
+  Cookies.set(RETURN_URL_KEY, url, { secure: true })
 }
 
 export const redirectToLoginReturnUrl = (): boolean => {
   const url = Cookies.get(RETURN_URL_KEY)
   if (url) {
-    Cookies.remove(RETURN_URL_KEY)
+    Cookies.remove(RETURN_URL_KEY, { secure: true })
     location.replace(url)
     return true
   }

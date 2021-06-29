@@ -23,7 +23,7 @@ object UserLanguage extends Logging {
   def getLanguageFromCookie(request: RichRequest): String = sanitizeLanguage(request.cookies.get("lang")).getOrElse("fi")
 
   def setLanguageCookie(lang: String, response: RichResponse): Unit = {
-    response.addCookie(Cookie("lang", lang)(CookieOptions(path = "/")))
+    response.addCookie(Cookie("lang", lang)(CookieOptions(secure = true, path = "/")))
   }
 
   def sanitizeLanguage(possibleLanguage: Option[String]): Option[String] = {
