@@ -229,7 +229,7 @@ describe("Kuntailmoituksen tekeminen", () => {
     await testaaOppijanäkymistä(kunnanOppijat, kuntakäyttäjä)
   })
 
-  it("happy path suorittamisen valvojana", async () => {
+  it.skip("happy path suorittamisen valvojana", async () => {
     await loginAs(hakutilannePath, "valpas-pelkkä-suorittaminen", true)
     await dataTableEventuallyEquals(
       ".kayttooikeudet",
