@@ -2,16 +2,12 @@ import { act, render, RenderResult, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import fetchMock from "jest-fetch-mock"
 import React from "react"
-import { disableMissingTranslationWarnings } from "../../../i18n/i18n"
-import {
-  Kieli,
-  KoodistoKoodiviite,
-  Maa,
-} from "../../../state/apitypes/koodistot"
-import { KuntailmoitusKunta } from "../../../state/apitypes/kuntailmoitus"
-import { OppijanPohjatiedot } from "../../../state/apitypes/kuntailmoituspohjatiedot"
-import { OppijaHakutilanteillaSuppeatTiedot } from "../../../state/apitypes/oppija"
-import { organisaatioWithOid } from "../../../state/apitypes/organisaatiot"
+import { disableMissingTranslationWarnings } from "../../i18n/i18n"
+import { Kieli, KoodistoKoodiviite, Maa } from "../../state/apitypes/koodistot"
+import { KuntailmoitusKunta } from "../../state/apitypes/kuntailmoitus"
+import { OppijanPohjatiedot } from "../../state/apitypes/kuntailmoituspohjatiedot"
+import { OppijaHakutilanteillaSuppeatTiedot } from "../../state/apitypes/oppija"
+import { organisaatioWithOid } from "../../state/apitypes/organisaatiot"
 import { IlmoitusForm, IlmoitusFormValues } from "./IlmoitusForm"
 
 describe("IlmoitusForm", () => {
@@ -132,7 +128,9 @@ const createForm = (
     <IlmoitusForm
       formIndex={0}
       numberOfForms={2}
-      oppija={mockOppija}
+      oppijaTiedot={mockOppija.oppija.henkilö}
+      opiskeluoikeudet={mockOppija.oppija.opiskeluoikeudet}
+      lisätiedot={mockOppija.lisätiedot}
       pohjatiedot={{ ...mockOppijanPohjatiedot, ...oppijanPohjatiedotPatch }}
       kunnat={mockAsuinkunnat}
       maat={mockMaat}

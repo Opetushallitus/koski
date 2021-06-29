@@ -1,56 +1,56 @@
 import bem from "bem-ts"
 import React, { useMemo, useState } from "react"
-import { createKuntailmoitus } from "../../../api/api"
-import { useApiMethod, useOnApiSuccess } from "../../../api/apiHooks"
-import { isError, isLoading } from "../../../api/apiUtils"
-import { RaisedButton } from "../../../components/buttons/RaisedButton"
-import { LabeledCheckbox } from "../../../components/forms/Checkbox"
+import { createKuntailmoitus } from "../../api/api"
+import { useApiMethod, useOnApiSuccess } from "../../api/apiHooks"
+import { isError, isLoading } from "../../api/apiUtils"
+import { RaisedButton } from "../../components/buttons/RaisedButton"
+import { LabeledCheckbox } from "../../components/forms/Checkbox"
 import {
   displayOrd,
   Dropdown,
   DropdownOption,
   koodistoToOptions,
-} from "../../../components/forms/Dropdown"
-import { TextField } from "../../../components/forms/TextField"
+} from "../../components/forms/Dropdown"
+import { TextField } from "../../components/forms/TextField"
 import {
   CaretDownIcon,
   CaretUpIcon,
   SuccessCircleIcon,
   WarningIcon,
-} from "../../../components/icons/Icon"
-import { Error } from "../../../components/typography/error"
-import { SecondaryHeading } from "../../../components/typography/headings"
-import { getLocalized, T, t } from "../../../i18n/i18n"
-import { HenkilöSuppeatTiedot } from "../../../state/apitypes/henkilo"
-import { Kieli, Maa } from "../../../state/apitypes/koodistot"
+} from "../../components/icons/Icon"
+import { Error } from "../../components/typography/error"
+import { SecondaryHeading } from "../../components/typography/headings"
+import { getLocalized, T, t } from "../../i18n/i18n"
+import { HenkilöTiedot } from "../../state/apitypes/henkilo"
+import { Kieli, Maa } from "../../state/apitypes/koodistot"
 import {
   KuntailmoituksenTekijäLaajatTiedot,
   KuntailmoitusKunta,
   KuntailmoitusLaajatTiedot,
-} from "../../../state/apitypes/kuntailmoitus"
+} from "../../state/apitypes/kuntailmoitus"
 import {
   OppijanPohjatiedot,
   PohjatietoYhteystieto,
-} from "../../../state/apitypes/kuntailmoituspohjatiedot"
+} from "../../state/apitypes/kuntailmoituspohjatiedot"
 import {
   OpiskeluoikeusSuppeatTiedot,
   valvottavatOpiskeluoikeudet,
-} from "../../../state/apitypes/opiskeluoikeus"
+} from "../../state/apitypes/opiskeluoikeus"
 import {
   lisätietoMatches,
-  OppijaHakutilanteillaSuppeatTiedot,
-} from "../../../state/apitypes/oppija"
-import { trimOrganisaatio } from "../../../state/apitypes/organisaatiot"
+  OpiskeluoikeusLisätiedot,
+} from "../../state/apitypes/oppija"
+import { trimOrganisaatio } from "../../state/apitypes/organisaatiot"
 import {
   isAlkuperäHakemukselta,
   isAlkuperäRekisteristä,
-} from "../../../state/apitypes/yhteystiedot"
-import { Oid } from "../../../state/common"
-import { expectNonEmptyString } from "../../../state/formValidators"
-import { FormValidators, useFormState } from "../../../state/useFormState"
-import { nonEmptyEvery, nonNull } from "../../../utils/arrays"
-import { removeFalsyValues } from "../../../utils/objects"
-import { plainComponent } from "../../../utils/plaincomponent"
+} from "../../state/apitypes/yhteystiedot"
+import { Oid } from "../../state/common"
+import { expectNonEmptyString } from "../../state/formValidators"
+import { FormValidators, useFormState } from "../../state/useFormState"
+import { nonEmptyEvery, nonNull } from "../../utils/arrays"
+import { removeFalsyValues } from "../../utils/objects"
+import { plainComponent } from "../../utils/plaincomponent"
 import "./IlmoitusForm.less"
 
 const b = bem("ilmoitusform")
@@ -132,7 +132,9 @@ const toKuntailmoitusLaajatTiedot = (
 }
 
 export type IlmoitusFormProps = {
-  oppija: OppijaHakutilanteillaSuppeatTiedot
+  oppijaTiedot: HenkilöTiedot
+  opiskeluoikeudet?: OpiskeluoikeusSuppeatTiedot[]
+  lisätiedot?: OpiskeluoikeusLisätiedot[]
   pohjatiedot: OppijanPohjatiedot
   kunnat: Array<KuntailmoitusKunta>
   maat: Array<Maa>
@@ -149,8 +151,10 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
       ...initialValues,
       yhteydenottokieli: props.pohjatiedot.yhteydenottokieli?.koodiarvo,
       hakenutOpiskelemaanYhteyshakujenUlkopuolella: defaultMuuHakuValue(
-        props.oppija,
-        props.tekijä.organisaatio.oid
+        props.oppijaTiedot.oid,
+        props.tekijä.organisaatio.oid,
+        props.lisätiedot,
+        props.opiskeluoikeudet
       ),
     },
     validators,
@@ -167,7 +171,7 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
     )
 
     if (kuntailmoitus) {
-      await send.call(props.oppija.oppija.henkilö.oid, kuntailmoitus)
+      await send.call(props.oppijaTiedot.oid, kuntailmoitus)
     }
   })
 
@@ -191,7 +195,7 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
   return (
     <IlmoitusFormFrame>
       <IlmoitusHeader
-        henkilö={props.oppija.oppija.henkilö}
+        henkilö={props.oppijaTiedot}
         pohjatiedot={props.pohjatiedot}
         formIndex={props.formIndex}
         numberOfForms={props.numberOfForms}
@@ -287,26 +291,27 @@ export const IlmoitusForm = (props: IlmoitusFormProps) => {
 }
 
 const defaultMuuHakuValue = (
-  oppija: OppijaHakutilanteillaSuppeatTiedot,
-  organisaatioOid: Oid
+  oppijaOid: Oid,
+  organisaatioOid: Oid,
+  lisätiedot?: OpiskeluoikeusLisätiedot[],
+  opiskeluoikeudet?: OpiskeluoikeusSuppeatTiedot[]
 ): boolean => {
+  const definedLisätiedot = lisätiedot || []
+  const definedOpiskeluoikeudet = opiskeluoikeudet || []
   const matchesOpiskeluoikeus = (opiskeluoikeus: OpiskeluoikeusSuppeatTiedot) =>
     lisätietoMatches(
-      oppija.oppija.henkilö.oid,
+      oppijaOid,
       opiskeluoikeus.oid,
       opiskeluoikeus.oppilaitos.oid
     )
   return nonEmptyEvery(
-    valvottavatOpiskeluoikeudet(
-      organisaatioOid,
-      oppija.oppija.opiskeluoikeudet
-    ),
-    (oo) => oppija.lisätiedot.find(matchesOpiskeluoikeus(oo))?.muuHaku === true
+    valvottavatOpiskeluoikeudet(organisaatioOid, definedOpiskeluoikeudet),
+    (oo) => definedLisätiedot.find(matchesOpiskeluoikeus(oo))?.muuHaku === true
   )
 }
 
 export type IlmoitusHeaderProps = {
-  henkilö: HenkilöSuppeatTiedot
+  henkilö: HenkilöTiedot
   pohjatiedot: OppijanPohjatiedot
   formIndex: number
   numberOfForms: number

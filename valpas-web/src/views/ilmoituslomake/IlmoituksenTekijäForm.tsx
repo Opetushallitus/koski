@@ -1,18 +1,18 @@
 import bem from "bem-ts"
 import React from "react"
-import { RaisedButton } from "../../../components/buttons/RaisedButton"
+import { RaisedButton } from "../../components/buttons/RaisedButton"
 import {
   Dropdown,
   organisaatiotToOptions,
-} from "../../../components/forms/Dropdown"
-import { TextField } from "../../../components/forms/TextField"
-import { t, T } from "../../../i18n/i18n"
-import { KuntailmoituksenTekijäLaajatTiedot } from "../../../state/apitypes/kuntailmoitus"
-import { Organisaatio } from "../../../state/apitypes/organisaatiot"
-import { expectNonEmptyString } from "../../../state/formValidators"
-import { FormValidators, useFormState } from "../../../state/useFormState"
-import { removeFalsyValues } from "../../../utils/objects"
-import { plainComponent } from "../../../utils/plaincomponent"
+} from "../../components/forms/Dropdown"
+import { TextField } from "../../components/forms/TextField"
+import { t, T } from "../../i18n/i18n"
+import { KuntailmoituksenTekijäLaajatTiedot } from "../../state/apitypes/kuntailmoitus"
+import { Organisaatio } from "../../state/apitypes/organisaatiot"
+import { expectNonEmptyString } from "../../state/formValidators"
+import { FormValidators, useFormState } from "../../state/useFormState"
+import { removeFalsyValues } from "../../utils/objects"
+import { plainComponent } from "../../utils/plaincomponent"
 import "./IlmoitusForm.less"
 
 const b = bem("ilmoitusform")

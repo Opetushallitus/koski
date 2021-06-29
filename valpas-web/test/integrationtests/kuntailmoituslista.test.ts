@@ -16,6 +16,7 @@ import {
 import { dataTableEventuallyEquals } from "../integrationtests-env/browser/datatable"
 import { dropdownSelect } from "../integrationtests-env/browser/forms"
 import { loginAs, reset } from "../integrationtests-env/browser/reset"
+import { hkiTableContent } from "./kuntailmoitus.shared"
 import { helsinginKaupunkiOid, pyhtäänKuntaOid } from "./oids"
 
 const openOppijaView = async (oppijaOid: Oid) => {
@@ -44,10 +45,6 @@ describe("Kunnan listanäkymä", () => {
   })
 
   it("Ohjaa ensisijaiseen organisaatioon ja näyttää listan ilmoituksista", async () => {
-    const expectedContent = `
-      LukionAloittanutJaLopettanut-ilmo Valpas | 30.11.2021 | Jyväskylän normaalikoulu | 5.4.2005 | doneJyväskylän normaalikoulu, Lukiokoulutus
-    `
-
     await loginAs(rootPath, "valpas-pyhtää-ja-helsinki")
     await urlIsEventually(
       pathToUrl(
@@ -58,7 +55,7 @@ describe("Kunnan listanäkymä", () => {
       ".card__header",
       "Ilmoitetut oppivelvolliset ilman opiskelupaikkaa (1)"
     )
-    await dataTableEventuallyEquals(".kuntailmoitus", expectedContent, "|")
+    await dataTableEventuallyEquals(".kuntailmoitus", hkiTableContent, "|")
   })
 
   it("Vaihtaa taulun sisällön organisaatiovalitsimesta", async () => {

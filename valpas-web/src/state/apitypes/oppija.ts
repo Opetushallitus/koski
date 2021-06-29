@@ -19,6 +19,7 @@ export type OppijaHakutilanteillaLaajatTiedot = {
   yhteystiedot: Yhteystiedot<YhteystietojenAlkuperä>[]
   kuntailmoitukset: KuntailmoitusLaajatTiedotLisätiedoilla[]
   oppivelvollisuudenKeskeytykset: OppivelvollisuudenKeskeytys[]
+  onOikeusTehdäKuntailmoitus?: boolean
 }
 
 export type OppijaHakutilanteillaSuppeatTiedot = {

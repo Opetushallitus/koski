@@ -11,8 +11,8 @@ import { Error } from "../../components/typography/error"
 import { T } from "../../i18n/i18n"
 import { OppijaHakutilanteillaSuppeatTiedot } from "../../state/apitypes/oppija"
 import { Organisaatio } from "../../state/apitypes/organisaatiot"
+import { Ilmoituslomake } from "../../views/ilmoituslomake/Ilmoituslomake"
 import "./HakutilanneDrawer.less"
-import { Ilmoituslomake } from "./ilmoituslomake/Ilmoituslomake"
 
 const b = bem("hakutilannedrawer")
 
@@ -67,7 +67,11 @@ export const HakutilanneDrawer = (props: HakutilanneDrawerProps) => {
 
       {modalVisible && isSuccess(pohjatiedot) ? (
         <Ilmoituslomake
-          oppijat={oppijat}
+          oppijat={oppijat.map((o) => ({
+            henkilö: o.oppija.henkilö,
+            opiskeluoikeudet: o.oppija.opiskeluoikeudet,
+            lisätiedot: o.lisätiedot,
+          }))}
           pohjatiedot={pohjatiedot.data}
           tekijäorganisaatio={props.tekijäorganisaatio}
           onClose={() => setModalVisible(false)}
