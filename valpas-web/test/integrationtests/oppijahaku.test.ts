@@ -1,4 +1,5 @@
 import {
+  createKunnanHetuhakuPath,
   createMaksuttomuusPath,
   createOppijaPath,
   createSuorittaminenPath,
@@ -74,6 +75,23 @@ describe("Oppijahaku", () => {
     )
   })
 
+  it("Kunta: Haku löytää henkilötunnuksen perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on vain kuntaoikeus, ja linkkaa detaljisivulle", async () => {
+    await hakuLogin(
+      "valpas-helsinki",
+      createKunnanHetuhakuPath("/virkailija"),
+      "article#kuntahetuhaku"
+    )
+    await fillQueryField("070504A717P")
+    await submit()
+    await expectResultToBe(
+      "Löytyi: Lukio-opiskelija Valpas (070504A717P)",
+      createOppijaPath("/virkailija", {
+        oppijaOid: "1.2.246.562.24.00000000004",
+        prev: createKunnanHetuhakuPath(),
+      })
+    )
+  })
+
   it("Maksuttomuus: Haku löytää oppijatunnuksen perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on vain maksuttomuusoikeus, ja linkkaa detaljisivulle", async () => {
     await hakuLogin("valpas-pelkkä-maksuttomuus")
     await fillQueryField("1.2.246.562.24.00000000004")
@@ -104,6 +122,23 @@ describe("Oppijahaku", () => {
     )
   })
 
+  it("Kunta: Haku löytää oppijatunnuksen perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on vain kuntaoikeus, ja linkkaa detaljisivulle", async () => {
+    await hakuLogin(
+      "valpas-helsinki",
+      createKunnanHetuhakuPath("/virkailija"),
+      "article#kuntahetuhaku"
+    )
+    await fillQueryField("1.2.246.562.24.00000000004")
+    await submit()
+    await expectResultToBe(
+      "Löytyi: Lukio-opiskelija Valpas (070504A717P)",
+      createOppijaPath("/virkailija", {
+        oppijaOid: "1.2.246.562.24.00000000004",
+        prev: createKunnanHetuhakuPath(),
+      })
+    )
+  })
+
   it("Maksuttomuus: Haku kertoo ettei maksuttomuutta voida päätellä, jos oppijan tietoja ei löydy rekistereistä", async () => {
     await hakuLogin()
     await fillQueryField("040392-530U")
@@ -116,6 +151,19 @@ describe("Oppijahaku", () => {
       "valpas-pelkkä-suorittaminen",
       createSuorittaminenPath("/virkailija"),
       "article#suorittaminen"
+    )
+    await fillQueryField("040392-530U")
+    await submit()
+    await expectResultToBe(
+      "Hakuehdolla ei löytynyt oppijaa tai sinulla ei ole oikeuksia nähdä kyseisen oppijan tietoja"
+    )
+  })
+
+  it("Kunta: Haku kertoo ettei oppijaa löydy, jos oppijan tietoja ei löydy rekistereistä", async () => {
+    await hakuLogin(
+      "valpas-helsinki",
+      createKunnanHetuhakuPath("/virkailija"),
+      "article#kuntahetuhaku"
     )
     await fillQueryField("040392-530U")
     await submit()
@@ -146,6 +194,20 @@ describe("Oppijahaku", () => {
       "valpas-pelkkä-suorittaminen",
       createSuorittaminenPath("/virkailija"),
       "article#suorittaminen"
+    )
+    await fillQueryField("180304A082P")
+    await submit()
+    await expectResultToBe(
+      "Hakuehdolla ei löytynyt oppijaa tai sinulla ei ole oikeuksia nähdä kyseisen oppijan tietoja"
+    )
+  })
+
+  it("Kunta: Haku näyttää virheilmoituksen, jos oppija ei ole enää oppivelvollinen, koska on jo valmistunut ammattikoulusta", async () => {
+    allowNetworkError("api/henkilohaku/kunta/180304A082P", "403 (Forbidden)")
+    await hakuLogin(
+      "valpas-helsinki",
+      createKunnanHetuhakuPath("/virkailija"),
+      "article#kuntahetuhaku"
     )
     await fillQueryField("180304A082P")
     await submit()

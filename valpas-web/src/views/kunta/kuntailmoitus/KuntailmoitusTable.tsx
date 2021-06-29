@@ -1,29 +1,29 @@
 import * as A from "fp-ts/lib/Array"
 import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
-import { FutureSuccessIcon, SuccessIcon } from "../../components/icons/Icon"
+import { FutureSuccessIcon, SuccessIcon } from "../../../components/icons/Icon"
 import {
   Column,
   DataTable,
   DataTableCountChangeEvent,
   Datum,
   Value,
-} from "../../components/tables/DataTable"
-import { getLocalized, t } from "../../i18n/i18n"
+} from "../../../components/tables/DataTable"
+import { getLocalized, t } from "../../../i18n/i18n"
 import {
   opiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus,
   OpiskeluoikeusSuppeatTiedot,
-} from "../../state/apitypes/opiskeluoikeus"
-import { OppijaKuntailmoituksillaSuppeatTiedot } from "../../state/apitypes/oppija"
+} from "../../../state/apitypes/opiskeluoikeus"
+import { OppijaKuntailmoituksillaSuppeatTiedot } from "../../../state/apitypes/oppija"
 import {
   isVoimassa,
   isVoimassaTulevaisuudessa,
-} from "../../state/apitypes/valpasopiskeluoikeudentila"
-import { useBasePath } from "../../state/basePath"
-import { Oid } from "../../state/common"
-import { createOppijaPath } from "../../state/paths"
-import { nonNull } from "../../utils/arrays"
-import { formatDate, formatNullableDate } from "../../utils/date"
+} from "../../../state/apitypes/valpasopiskeluoikeudentila"
+import { useBasePath } from "../../../state/basePath"
+import { Oid } from "../../../state/common"
+import { createOppijaPath } from "../../../state/paths"
+import { nonNull } from "../../../utils/arrays"
+import { formatDate, formatNullableDate } from "../../../utils/date"
 
 export type KuntailmoitusTableProps = {
   data: OppijaKuntailmoituksillaSuppeatTiedot[]

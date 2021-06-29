@@ -5,6 +5,7 @@
 @main-navigation-color: @color-blue;
 @main-navigation-h-padding: .pxToRem(64) [];
 @main-navigation-v-padding: .pxToRem(12) [];
+@main-navigation-caret-height: 16.8px;
 
 .tabnavigation {
   margin-bottom: 3rem;
@@ -15,19 +16,9 @@
   border-bottom: 2px solid @main-navigation-color;
 }
 
-.tabnavigation__item {
-  position: relative;
-
-  text-align: center;
-  padding: @main-navigation-v-padding @main-navigation-h-padding;
-  margin: 0 (.pxToRem(8) []) 0 0;
-  max-width: 20rem;
-
-  background: @color-white;
-  color: @main-navigation-color;
-
-  border: 2px solid @main-navigation-color;
-  border-bottom: none;
+.tabnavigation__itemcontainer {
+  display: block;
+  margin-bottom: -@main-navigation-caret-height;
 
   &:first-child {
     margin-left: 0;
@@ -37,17 +28,29 @@
     margin-right: 0;
   }
 
-  &.tabnavigation__item--selected {
-    background: @main-navigation-color;
-    color: @color-white;
+  .tabnavigation__item {
+    display: block;
+
+    text-align: center;
+    padding: @main-navigation-v-padding @main-navigation-h-padding;
+    margin: 0 (.pxToRem(8) []) 0 0;
+    max-width: 20rem;
+
+    background: @color-white;
+    color: @main-navigation-color;
+
+    border: 2px solid @main-navigation-color;
+    border-bottom: none;
+
+    &.tabnavigation__item--selected {
+      background: @main-navigation-color;
+      color: @color-white;
+    }
   }
 
   .tabnavigation__caretwrapper {
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    bottom: -(.pxToRem(20) []);
+    text-align: center;
+    height: @main-navigation-caret-height;
 
     .caret {
       .caret-colors(@main-navigation-color, @main-navigation-color);
