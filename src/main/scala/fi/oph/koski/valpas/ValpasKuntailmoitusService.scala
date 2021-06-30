@@ -28,25 +28,25 @@ class ValpasKuntailmoitusService(
   )(implicit session: ValpasSession): Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
     val organisaatioOid = kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio.oid
 
-    val rooli = kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio match {
-      case o: OrganisaatioWithOid if organisaatioRepository.isKunta(o) => Right(ValpasRooli.KUNTA)
-      case _: Oppilaitos => Right(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)
+    val sallitutRoolit = kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio match {
+      case o: OrganisaatioWithOid if organisaatioRepository.isKunta(o) => Right(Seq(ValpasRooli.KUNTA))
+      case _: Oppilaitos => Right(Seq(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, ValpasRooli.OPPILAITOS_SUORITTAMINEN))
       case o: Any => Left(ValpasErrorCategory.validation.kuntailmoituksenTekijä(
         s"Organisaatio ${o.oid} ei voi olla kuntailmoituksen tekijä (organisaation tyyppi ei ole sallittu)"
       ))
     }
 
     for {
-      r <- rooli
-      _ <-
-        accessResolver.assertAccessToOrg(r, organisaatioOid)
+      roolit <- sallitutRoolit
+      sallittuRooli <-
+        accessResolver.assertAccessToOrg(roolit, organisaatioOid)
           .left
           .map(_ => ValpasErrorCategory.forbidden.organisaatio(
             "Käyttäjällä ei ole oikeutta tehdä kuntailmoitusta annetun organisaation nimissä"
           ))
-      o <- oppijaService.getOppijaLaajatTiedot(r, kuntailmoitusInput.oppijaOid)
+      o <- oppijaService.getOppijaLaajatTiedot(sallittuRooli, kuntailmoitusInput.oppijaOid)
       _ <-
-        accessResolver.withOppijaAccessAsOrganisaatio(r, organisaatioOid)(o)
+        accessResolver.withOppijaAccessAsOrganisaatio(sallittuRooli, organisaatioOid)(o)
           .left
           .map(_ => ValpasErrorCategory.forbidden.oppija(
             "Käyttäjällä ei ole oikeuksia tehdä kuntailmoitusta annetusta oppijasta"

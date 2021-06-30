@@ -8,12 +8,17 @@ import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 
 class ValpasAccessResolver {
   def assertAccessToOrg
+    (roolit: Seq[ValpasRooli.Role], organisaatioOid: Organisaatio.Oid)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, ValpasRooli.Role] = HttpStatus.any(roolit.map(r => assertAccessToOrg(r, organisaatioOid)))
+
+  def assertAccessToOrg
     (rooli: ValpasRooli.Role, organisaatioOid: Organisaatio.Oid)
     (implicit session: ValpasSession)
-  : Either[HttpStatus, Unit] =
+  : Either[HttpStatus, ValpasRooli.Role] =
     Either.cond(
       accessToOrg(rooli, organisaatioOid),
-      Unit,
+      rooli,
       ValpasErrorCategory.forbidden.organisaatio()
     )
 
