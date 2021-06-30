@@ -18,7 +18,13 @@ body.modal__noscroll {
   justify-content: center;
   align-items: flex-start;
 
-  background: fade(@color-black, 50%);
+  background-color: fade(@color-black, 50%);
+  transition: all 1s ease;
+
+  &.modal__background--init {
+    background-color: transparent;
+    transition: all 200ms ease;
+  }
 }
 
 .modal__container {
@@ -48,5 +54,14 @@ body.modal__noscroll {
       top: 0;
       right: -0.5rem;
     }
+  }
+
+  transform: none;
+  opacity: 1;
+  transition: all 200ms ease;
+
+  &.modal__container--init {
+    opacity: 0;
+    transform: translateY(20px);
   }
 }
