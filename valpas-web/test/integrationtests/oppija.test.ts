@@ -315,7 +315,7 @@ describe("Oppijakohtainen näkymä", () => {
 
     await ilmoitetutYhteystiedotEquals(`
       Ilmoitetut yhteystiedot
-      keyboard_arrow_downYhteystiedot – 9.4.2020
+      keyboard_arrow_rightYhteystiedot – 9.4.2020
       Lähiosoite:	Esimerkkikatu 123
       Postitoimipaikka:  00000 Helsinki
       Matkapuhelin:	0401234567
@@ -325,7 +325,7 @@ describe("Oppijakohtainen näkymä", () => {
 
     await virallisetYhteystiedotEquals(`
       Viralliset yhteystiedot
-      keyboard_arrow_downVTJ: Kotiosoite
+      keyboard_arrow_rightVTJ: Kotiosoite
       Lähiosoite:	Esimerkkitie 10
       Postitoimipaikka:	00000 Helsinki
       Maa: Costa rica
@@ -353,7 +353,7 @@ describe("Oppijakohtainen näkymä", () => {
 
     await ilmoitetutYhteystiedotEquals(`
       Ilmoitetut yhteystiedot
-      keyboard_arrow_downYhteystiedot – 10.4.2020
+      keyboard_arrow_rightYhteystiedot – 10.4.2020
       Lähiosoite:	Uudempi esimerkkikatu 987
       Postitoimipaikka:  00000 Helsinki
       Matkapuhelin:	0401234567
@@ -367,7 +367,7 @@ describe("Oppijakohtainen näkymä", () => {
 
     await ilmoitetutYhteystiedotEquals(`
       Ilmoitetut yhteystiedot
-      keyboard_arrow_downYhteystiedot – 9.4.2020
+      keyboard_arrow_rightYhteystiedot – 9.4.2020
       Lähiosoite:	Kungsgatan 123
       Postitoimipaikka:  00000 STOCKHOLM
       Maa: Ruotsi

@@ -1,7 +1,7 @@
 import bem from "bem-ts"
 import React, { useState } from "react"
 import { nonNull, toggleItemExistence } from "../../utils/arrays"
-import { CaretDownIcon, CaretRightIcon } from "../icons/Icon"
+import { CaretRightIcon } from "../icons/Icon"
 import "./Accordion.less"
 
 const b = bem("accordion")
@@ -52,7 +52,7 @@ const AccordionItem = ({
 }: AccordionItemProps) => (
   <li {...rest} className={b("item", { open })}>
     <h4 className={b("label")} onClick={onClick}>
-      {open ? <CaretDownIcon inline /> : <CaretRightIcon inline />}
+      <CaretRightIcon inline />
       {label}
     </h4>
     <div className={b("content")}>{children}</div>

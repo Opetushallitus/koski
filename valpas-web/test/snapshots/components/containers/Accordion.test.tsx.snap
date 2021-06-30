@@ -34,7 +34,7 @@ exports[`Accordion kaikki sivut avatutuvat klikkauksesta 1`] = `
         aria-hidden="true"
         class="material-icons icon icon--inline"
       >
-        keyboard_arrow_down
+        keyboard_arrow_right
       </span>
       Kaksi
     </h4>
@@ -54,7 +54,7 @@ exports[`Accordion kaikki sivut avatutuvat klikkauksesta 1`] = `
         aria-hidden="true"
         class="material-icons icon icon--inline"
       >
-        keyboard_arrow_down
+        keyboard_arrow_right
       </span>
       Kolmas
     </h4>
@@ -81,7 +81,7 @@ exports[`Accordion renderöityy oikein 1`] = `
         aria-hidden="true"
         class="material-icons icon icon--inline"
       >
-        keyboard_arrow_down
+        keyboard_arrow_right
       </span>
       Yksi
     </h4>
