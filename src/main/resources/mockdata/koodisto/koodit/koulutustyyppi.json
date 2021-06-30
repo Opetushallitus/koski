@@ -32599,4 +32599,53 @@
     "codeElementVersion" : 1,
     "passive" : false
   } ]
+},
+{
+  "koodiUri" : "koulutustyyppi_35",
+  "koodiArvo" : "35",
+  "metadata" : [ {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutust st",
+    "lyhytNimi" : "Vapaan sivistystyön lukutaitokoulutus",
+    "kuvaus" : "Vapaan sivistystyön lukutaitokoulutus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutus",
+    "lyhytNimi" : "Vapaan sivistystyön lukutaitokoulutus",
+    "kuvaus" : "Vapaan sivistystyön lukutaitokoulutus",
+    "kieli" : "SV"
+  } ],
+  "versio" : 2,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "haunkohdejoukko_18",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_999911",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_21",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_62",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_63",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_64",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_66",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_99",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }]
 }]

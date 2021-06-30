@@ -1,5 +1,6 @@
 describe('VST', function () {
   var opinnot = OpinnotPage()
+  var tilaJaVahvistus = opinnot.tilaJaVahvistus
   var vst = VSTSuoritukset()
   var editor = opinnot.opiskeluoikeusEditor()
   var addOppija = AddOppijaPage()
@@ -123,6 +124,55 @@ describe('VST', function () {
       expect(extractAsText(S('.puhumisenTaitotaso'))).to.equal('Puhumisen taitotaso Taso C2.2')
       expect(extractAsText(S('.luetunYmmärtämisenTaitotaso'))).to.equal('Luetun ymmärtämisen taitotaso Taso C2.2')
       expect(extractAsText(S('.kirjoittamisenTaitotaso'))).to.equal('Kirjoittamisen taitotaso Taso C2.2')
+    })
+  })
+
+  describe('Opiskeluoikeuden lisääminen lukutaito koulutuksella', function () {
+    before(
+      prepareForNewOppija('kalle', '230872-7258'),
+      addOppija.enterValidDataVSTLukutaito(),
+      addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Kansanopistojen vapaan sivistystyön lukutaitokoulutus')
+    )
+
+    it('toimii', function () {
+      expect(opinnot.getTutkinto()).to.equal('Kansanopistojen vapaan sivistystyön lukutaitokoulutus')
+      expect(opinnot.getOppilaitos()).to.equal('Varsinais-Suomen kansanopisto')
+      expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('OPH-2984-2017')
+      expect(extractAsText(S('.tunniste-koodiarvo'))).to.equal('999911')
+    })
+
+    describe('Osasuorituksen voi lisätä', function () {
+      before(
+        editor.edit,
+        vst.lisääLukutaitokoulutuksenKokonaisuus('Vapaan sivistystyön lukutaitokoulutuksen numeeristen taitojen suoritus'),
+        function () {
+          return vst.selectOsasuoritus('Vapaan sivistystyön lukutaitokoulutuksen numeeristen taitojen suoritus')().property('laajuus').setValue(5)()
+        },
+        function () {
+          return vst.selectOsasuoritus('Vapaan sivistystyön lukutaitokoulutuksen numeeristen taitojen suoritus')().propertyBySelector('.arvosana').selectValue('Hyväksytty')()
+        },
+        editor.saveChanges
+      )
+
+      it('toimii', function () {
+        expect(extractAsText(S('.vst-osasuoritus'))).to.include('Vapaan sivistystyön lukutaitokoulutuksen numeeristen taitojen suoritus 5 op Hyväksytty')
+      })
+
+      describe('Suorituksen merkkaaminen valmiiksi', function () {
+        before(
+          editor.edit,
+          tilaJaVahvistus.merkitseValmiiksi,
+          tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).setValue('Lisää henkilö'),
+          tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).propertyBySelector('.nimi').setValue('Reijo Reksi'),
+          tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).propertyBySelector('.titteli').setValue('rehtori'),
+          tilaJaVahvistus.merkitseValmiiksiDialog.merkitseValmiiksi,
+          editor.saveChanges
+        )
+
+        it('toimii', function () {
+          expect(extractAsText(S('.tila-vahvistus'))).to.include('Suoritus valmis')
+        })
+      })
     })
   })
 })
