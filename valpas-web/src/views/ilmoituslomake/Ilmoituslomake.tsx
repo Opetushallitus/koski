@@ -59,9 +59,11 @@ export const Ilmoituslomake = (props: IlmoituslomakeProps) => {
 
   return (
     <Modal title={t("ilmoituslomake__otsikko")} onClose={props.onClose}>
-      <p>
-        <T id="ilmoituslomake__ohje" />
-      </p>
+      {!allFormsSubmitted && (
+        <p>
+          <T id="ilmoituslomake__ohje" />
+        </p>
+      )}
 
       {props.pohjatiedot.oppijat.map((oppija, index) => {
         const oppijaTiedot = props.oppijat.find(
