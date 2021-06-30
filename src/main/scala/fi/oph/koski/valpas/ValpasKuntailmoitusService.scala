@@ -360,8 +360,12 @@ class ValpasKuntailmoitusService(
       val kunnat = tekijäOrganisaatio
         .map(_ => Seq())
         .getOrElse(haeKuntaTekijäOrganisaatiot(oppijaTiedot))
-
-      Right(organisaatiot.flatten ++ kunnat)
+      val kaikki = organisaatiot.flatten ++ kunnat
+      if (kaikki.isEmpty) {
+		Left(ValpasErrorCategory.forbidden.oppija())
+      } else {
+        Right(kaikki)
+      }
     }
   }
 
