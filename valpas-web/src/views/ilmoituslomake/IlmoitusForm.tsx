@@ -205,89 +205,87 @@ export const IlmoitusForm = withScroll((props: IlmoitusFormProps) => {
         isSubmitted={isSubmitted}
         onClick={() => setOpen(!isOpen)}
       />
-      {isOpen && !isSubmitted ? (
-        <IlmoitusBody>
-          <IlmoitusPrefillSelector
-            pohjatiedot={props.pohjatiedot}
-            onSelect={form.patch}
-          />
-          {props.pohjatiedot.turvakielto && <TurvakieltoWarning />}
-          <Dropdown
-            label={t("ilmoituslomake__asuinkunta")}
-            required
-            options={kuntaOptions}
-            sort={displayOrd}
-            testId="asuinkunta"
-            {...form.fieldProps("asuinkunta")}
-          />
-          <Dropdown
-            label={t("ilmoituslomake__yhteydenottokieli")}
-            options={koodistoToOptions(props.kielet)}
-            testId="yhteydenottokieli"
-            {...form.fieldProps("yhteydenottokieli")}
-          />
-          <SecondaryHeading className={b("muutyhteystiedototsikko")}>
-            <T id="ilmoituslomake__muut_yhteystiedot" />
-          </SecondaryHeading>
-          <Dropdown
-            label={t("ilmoituslomake__maa")}
-            options={koodistoToOptions(props.maat)}
-            testId="maa"
-            {...form.fieldProps("maa")}
-          />
-          <TextField
-            label={t("ilmoituslomake__postinumero")}
-            testId="postinumero"
-            {...form.fieldProps("postinumero")}
-          />
-          <TextField
-            label={t("ilmoituslomake__postitoimipaikka")}
-            testId="postitoimipaikka"
-            {...form.fieldProps("postitoimipaikka")}
-          />
-          <TextField
-            label={t("ilmoituslomake__katuosoite")}
-            testId="katuosoite"
-            {...form.fieldProps("lähiosoite")}
-          />
-          <TextField
-            label={t("ilmoituslomake__puhelinnumero")}
-            testId="puhelinnumero"
-            {...form.fieldProps("puhelinnumero")}
-          />
-          <TextField
-            label={t("ilmoituslomake__sähköposti")}
-            testId="sähköposti"
-            {...form.fieldProps("email")}
-          />
-          <LabeledCheckbox
-            label={t(
-              "ilmoituslomake__hakenut_opiskelemaan_yhteishakujen_ulkopuolella"
-            )}
-            {...form.fieldProps("hakenutOpiskelemaanYhteyshakujenUlkopuolella")}
-          />
+      <IlmoitusBody open={isOpen && !isSubmitted}>
+        <IlmoitusPrefillSelector
+          pohjatiedot={props.pohjatiedot}
+          onSelect={form.patch}
+        />
+        {props.pohjatiedot.turvakielto && <TurvakieltoWarning />}
+        <Dropdown
+          label={t("ilmoituslomake__asuinkunta")}
+          required
+          options={kuntaOptions}
+          sort={displayOrd}
+          testId="asuinkunta"
+          {...form.fieldProps("asuinkunta")}
+        />
+        <Dropdown
+          label={t("ilmoituslomake__yhteydenottokieli")}
+          options={koodistoToOptions(props.kielet)}
+          testId="yhteydenottokieli"
+          {...form.fieldProps("yhteydenottokieli")}
+        />
+        <SecondaryHeading className={b("muutyhteystiedototsikko")}>
+          <T id="ilmoituslomake__muut_yhteystiedot" />
+        </SecondaryHeading>
+        <Dropdown
+          label={t("ilmoituslomake__maa")}
+          options={koodistoToOptions(props.maat)}
+          testId="maa"
+          {...form.fieldProps("maa")}
+        />
+        <TextField
+          label={t("ilmoituslomake__postinumero")}
+          testId="postinumero"
+          {...form.fieldProps("postinumero")}
+        />
+        <TextField
+          label={t("ilmoituslomake__postitoimipaikka")}
+          testId="postitoimipaikka"
+          {...form.fieldProps("postitoimipaikka")}
+        />
+        <TextField
+          label={t("ilmoituslomake__katuosoite")}
+          testId="katuosoite"
+          {...form.fieldProps("lähiosoite")}
+        />
+        <TextField
+          label={t("ilmoituslomake__puhelinnumero")}
+          testId="puhelinnumero"
+          {...form.fieldProps("puhelinnumero")}
+        />
+        <TextField
+          label={t("ilmoituslomake__sähköposti")}
+          testId="sähköposti"
+          {...form.fieldProps("email")}
+        />
+        <LabeledCheckbox
+          label={t(
+            "ilmoituslomake__hakenut_opiskelemaan_yhteishakujen_ulkopuolella"
+          )}
+          {...form.fieldProps("hakenutOpiskelemaanYhteyshakujenUlkopuolella")}
+        />
 
-          {errorMessages.map((error, index) => (
-            <Error key={index}>{error}</Error>
-          ))}
+        {errorMessages.map((error, index) => (
+          <Error key={index}>{error}</Error>
+        ))}
 
-          <RaisedButton
-            className={b("submit")}
-            disabled={form.isValid ? false : "byLook"}
-            onClick={() => {
-              if (!isLoading(send)) {
-                if (form.isValid) {
-                  submit()
-                } else {
-                  form.validateAll()
-                }
+        <RaisedButton
+          className={b("submit")}
+          disabled={form.isValid ? false : "byLook"}
+          onClick={() => {
+            if (!isLoading(send)) {
+              if (form.isValid) {
+                submit()
+              } else {
+                form.validateAll()
               }
-            }}
-          >
-            <T id="ilmoituslomake__ilmoita_asuinkunnalle" />
-          </RaisedButton>
-        </IlmoitusBody>
-      ) : null}
+            }
+          }}
+        >
+          <T id="ilmoituslomake__ilmoita_asuinkunnalle" />
+        </RaisedButton>
+      </IlmoitusBody>
     </IlmoitusFormFrame>
   )
 })
@@ -359,7 +357,14 @@ const IlmoitusTitleText = plainComponent("div", b("titletext"))
 const IlmoitusTitleCaret = plainComponent("div", b("titlecaret"))
 const IlmoitusSubtitle = plainComponent("h4", b("subtitle"))
 const IlmoitusSubmitted = plainComponent("div", b("submitted"))
-const IlmoitusBody = plainComponent("div", b("body"))
+
+type IlmoitusBodyProps = React.HTMLAttributes<HTMLElement> & {
+  open: boolean
+}
+
+const IlmoitusBody = ({ open, ...props }: IlmoitusBodyProps) => (
+  <div {...props} className={b("body", { accordion: true, open })} />
+)
 
 type IlmoitusPrefillSelectorProps = {
   pohjatiedot: OppijanPohjatiedot
