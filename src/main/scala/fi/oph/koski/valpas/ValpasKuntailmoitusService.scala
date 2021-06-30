@@ -368,10 +368,13 @@ class ValpasKuntailmoitusService(
     (implicit session: ValpasSession)
   : Either[HttpStatus, Set[OrganisaatioWithOid]] = {
     val organisaatiot = oppijaTiedot
-      .map(tiedot =>
-        tiedot.oppija.hakeutumisvalvovatOppilaitokset
+      .map { tiedot =>
+        val h = tiedot.oppija.hakeutumisvalvovatOppilaitokset
           .filter(oid => accessResolver.accessToOrg(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, oid))
-      )
+        val s = tiedot.oppija.suorittamisvalvovatOppilaitokset
+          .filter(oid => accessResolver.accessToOrg(ValpasRooli.OPPILAITOS_SUORITTAMINEN, oid))
+        h ++ s
+      }
       .reduceLeft((a, b) => a.intersect(b)) // Valitaan ainoastaan kaikille oppijoille yhteiset organisaatiot
       .map(organisaatioRepository.getOrganisaatio)
     if (organisaatiot.contains(None)) {
