@@ -51,6 +51,7 @@ export const isKorkeakouluOpintosuoritus = suoritus => suoritus.value.classes.in
 export const isJatkoOpintovalmiuksiaTukevienOpintojenSuoritus = suoritus => suoritus.value.classes.includes('jatkoopintovalmiuksiatukevienopintojensuoritus')
 export const isVälisuoritus = suoritus => suoritus.value.classes.includes('valisuoritus')
 export const isKorkeakouluOpintojenTutkinnonOsaaPienempiKokonaisuus = km => km && km.value.classes.includes('korkeakouluopintojentutkinnonosaapienempikokonaisuus')
+export const isYlioppilastutkinnonKokeenSuoritus = suoritus => suoritus.value.classes.includes('ylioppilastutkinnonkokeensuoritus')
 
 const muutKieliaineet = ['TK1', 'VK', 'VVAI', 'VVTK', 'VVVK']
 const äidinkieli = 'AI'

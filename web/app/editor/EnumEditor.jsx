@@ -10,9 +10,10 @@ import {t} from '../i18n/i18n.js'
 import {parseBool} from '../util/util'
 import {buildClassNames} from '../components/classnames'
 import {hyphenate} from '../util/hyphenate'
+import {sortGrades} from '../util/sorting'
 
 export const EnumEditor = ({model, inline, asRadiogroup, disabledValue, sortBy, fetchAlternatives = EnumEditor.fetchAlternatives, displayValue = option => option.title, showEmptyOption, className}) => {
-  if (!sortBy) sortBy = R.identity
+  if (!sortBy) sortBy = model.alternativesPath && model.alternativesPath.includes('arviointi') ? sortGrades : R.identity
   let wrappedModel = wrapOptional(model)
   showEmptyOption = parseBool(showEmptyOption, wrappedModel.optional)
   inline = parseBool(inline)

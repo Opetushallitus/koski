@@ -3,6 +3,7 @@ import {modelLookup} from '../editor/EditorModel.js'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {modelErrorMessages, pushRemoval} from '../editor/EditorModel'
 import {buildClassNames} from '../components/classnames'
+import {modelProperties} from '../editor/EditorModel'
 import {
   isValinnanMahdollisuus,
   isYhteinenTutkinnonOsa
@@ -10,11 +11,12 @@ import {
 import LiittyyTutkinnonOsaanEditor from '../ammatillinen/LiittyyTutkinnonOsaanEditor'
 import {Suoritustaulukko} from '../suoritus/Suoritustaulukko'
 import {isMuunAmmatillisenKoulutuksenOsasuorituksenSuoritus, suoritusProperties} from '../suoritus/SuoritustaulukkoCommon'
+import {isYlioppilastutkinnonKokeenSuoritus} from './TutkinnonOsa'
 
 export class TutkinnonOsanSuoritusEditor extends React.Component {
   render() {
     let {model, showScope, showTila, onExpand, expanded, groupId, columns, nestedLevel} = this.props
-    let properties = suoritusProperties(model)
+    let properties = suoritusProperties(model, !isYlioppilastutkinnonKokeenSuoritus(model))
     let displayProperties = properties.filter(p => p.key !== 'osasuoritukset')
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
     let showOsasuoritukset = (osasuoritukset && osasuoritukset.value) || isYhteinenTutkinnonOsa(model) || isMuunAmmatillisenKoulutuksenOsasuorituksenSuoritus(model) || isValinnanMahdollisuus(model)
