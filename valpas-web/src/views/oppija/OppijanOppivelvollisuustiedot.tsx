@@ -3,7 +3,7 @@ import * as A from "fp-ts/Array"
 import React, { useState } from "react"
 import { fetchKuntailmoituksenPohjatiedot } from "../../api/api"
 import { useApiMethod } from "../../api/apiHooks"
-import { isLoading, isSuccess, mapError, mapLoading } from "../../api/apiUtils"
+import { isError, isLoading, isSuccess, mapLoading } from "../../api/apiUtils"
 import { RaisedButton } from "../../components/buttons/RaisedButton"
 import { VisibleForKäyttöoikeusrooli } from "../../components/containers/VisibleForKäyttöoikeusrooli"
 import { Spinner } from "../../components/icons/Spinner"
@@ -103,11 +103,17 @@ export const OppijanOppivelvollisuustiedot = (
                   {mapLoading(pohjatiedot, () => (
                     <Spinner />
                   ))}
-                  {mapError(pohjatiedot, () => (
+                  {isError(pohjatiedot) && (
                     <Error>
-                      <T id="oppija__pohjatietojen_haku_epäonnistui" />
+                      <T
+                        id={
+                          pohjatiedot.status == 403
+                            ? "oppija__ei_oikeuksia_tehdä_ilmoitusta"
+                            : "oppija__pohjatietojen_haku_epäonnistui"
+                        }
+                      />
                     </Error>
-                  ))}
+                  )}
                   {isSuccess(pohjatiedot) &&
                   !A.isEmpty(
                     pohjatiedot.data.mahdollisetTekijäOrganisaatiot
