@@ -3,7 +3,6 @@ import {modelLookup} from '../editor/EditorModel.js'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {modelErrorMessages, pushRemoval} from '../editor/EditorModel'
 import {buildClassNames} from '../components/classnames'
-import {modelProperties} from '../editor/EditorModel'
 import {
   isValinnanMahdollisuus,
   isYhteinenTutkinnonOsa

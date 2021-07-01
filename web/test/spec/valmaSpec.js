@@ -96,23 +96,33 @@ describe('VALMA koulutus', function() {
             'Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen 10 Hyväksytty\n' +
             'Kuvaus Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen\n' +
             'Pakollinen kyllä\n' +
+            'Arviointi Arvosana Hyväksytty\n' +
             'Arviointipäivä 20.3.2013\n' +
+            'Arvioijat Jaana Arstila Pekka Saurmann Juhani Mykkänen\n' +
             'Opiskeluvalmiuksien vahvistaminen 10 Hyväksytty\n' +
             'Kuvaus Opiskeluvalmiuksien vahvistaminen\n' +
             'Pakollinen ei\n' +
+            'Arviointi Arvosana Hyväksytty\n' +
             'Arviointipäivä 20.3.2013\n' +
+            'Arvioijat Jaana Arstila Pekka Saurmann Juhani Mykkänen\n' +
             'Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen 15 Hyväksytty\n' +
             'Kuvaus Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen\n' +
             'Pakollinen ei\n' +
+            'Arviointi Arvosana Hyväksytty\n' +
             'Arviointipäivä 20.3.2013\n' +
+            'Arvioijat Jaana Arstila Pekka Saurmann Juhani Mykkänen\n' +
             'Arjen taitojen ja hyvinvoinnin vahvistaminen 10 Hyväksytty\n' +
             'Kuvaus Arjen taitojen ja hyvinvoinnin vahvistaminen\n' +
             'Pakollinen ei\n' +
+            'Arviointi Arvosana Hyväksytty\n' +
             'Arviointipäivä 20.3.2013\n' +
+            'Arvioijat Jaana Arstila Pekka Saurmann Juhani Mykkänen\n' +
             'Tietokoneen käyttäjän AB-kortti 5 Hyväksytty\n' +
             'Kuvaus Tietokoneen käyttäjän AB-kortti\n' +
             'Pakollinen ei\n' +
+            'Arviointi Arvosana Hyväksytty\n' +
             'Arviointipäivä 20.3.2013\n' +
+            'Arvioijat Jaana Arstila Pekka Saurmann Juhani Mykkänen\n' +
             'Auton lisävarustetyöt 15 Hyväksytty\n' +
             'Kuvaus Tuunaus\n' +
             'Pakollinen ei\n' +
@@ -123,21 +133,28 @@ describe('VALMA koulutus', function() {
             'Vahvistus 3.10.2015 Helsinki Reijo Reksi , rehtori\n' +
             'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\n' +
             'Rahoituksen piirissä ei\n' +
+            'Arviointi Arvosana Hyväksytty\n' +
             'Arviointipäivä 20.3.2013\n' +
+            'Arvioijat Jaana Arstila Pekka Saurmann Juhani Mykkänen\n' +
             'Äidinkieli, Suomen kieli ja kirjallisuus 5 3\n' +
             'Pakollinen kyllä\n' +
+            'Arviointi Arvosana 3\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Äidinkieli, Suomen kieli ja kirjallisuus 3 3\n' +
             'Pakollinen ei\n' +
+            'Arviointi Arvosana 3\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Toinen kotimainen kieli, ruotsi, ruotsi 1 3\n' +
             'Pakollinen kyllä\n' +
+            'Arviointi Arvosana 3\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Toinen kotimainen kieli, suomi, suomi 1 3\n' +
             'Pakollinen kyllä\n' +
+            'Arviointi Arvosana 3\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Vieraat kielet, englanti 2 3\n' +
             'Pakollinen kyllä\n' +
+            'Arviointi Arvosana 3\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Yhteensä 77 osp'
           )
