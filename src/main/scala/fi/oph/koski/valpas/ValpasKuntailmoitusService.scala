@@ -75,10 +75,9 @@ class ValpasKuntailmoitusService(
     (implicit session: ValpasSession)
   : ValpasKuntailmoitusLaajatTiedot = {
     val oikeutetutOrganisaatiot = Set(kuntailmoitus.tekijä.organisaatio.oid, kuntailmoitus.kunta.oid)
+    val mahdollisetRoolit = Set(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, ValpasRooli.OPPILAITOS_SUORITTAMINEN, ValpasRooli.KUNTA)
 
-    if (Seq(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, ValpasRooli.KUNTA)
-      .exists(rooli => accessResolver.accessToSomeOrgs(rooli, oikeutetutOrganisaatiot))
-    ) {
+    if (mahdollisetRoolit.exists(r => accessResolver.accessToSomeOrgs(r, oikeutetutOrganisaatiot))) {
       kuntailmoitus
     } else {
       kuntailmoitus.copy(
