@@ -184,11 +184,11 @@ const suorittamisenValvojanOppijat: NonEmptyArray<Oppija> = [
         suorittamisenValvoja.puhelin,
         "Jyväskylän normaalikoulu",
       ].join("\n"),
-      lähiosoite: "Esimerkkikatu 123",
+      lähiosoite: "Esimerkkitie 10",
       postitoimipaikka: "00000 Helsinki",
-      maa: "Suomi",
-      puhelin: "0401234567",
-      email: "Lukio-opiskelija.Valpas@gmail.com",
+      maa: "Costa Rica",
+      puhelin: "0401122334",
+      email: "valpas@gmail.com",
       muuHaku: "Ei",
     },
   },
@@ -231,13 +231,6 @@ describe("Kuntailmoituksen tekeminen", () => {
 
   it("happy path suorittamisen valvojana", async () => {
     await loginAs(hakutilannePath, "valpas-pelkkä-suorittaminen", true)
-    await dataTableEventuallyEquals(
-      ".kayttooikeudet",
-      `
-      Oppilaitoksen oppivelvollisuuden suorittamisen valvonta
-      `
-    )
-
     await testaaOppijanäkymistä(
       suorittamisenValvojanOppijat,
       suorittamisenValvoja
