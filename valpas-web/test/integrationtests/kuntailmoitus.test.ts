@@ -13,6 +13,7 @@ import {
   $$,
   goToLocation,
   pathToUrl,
+  scrollIntoView,
   testIdIs,
   urlIsEventually,
 } from "../integrationtests-env/browser/core"
@@ -380,7 +381,21 @@ const getTekijänYhteystiedotForm = async () => {
   }
 }
 
-const getIlmoitusForm = async () => {
+type Form = {
+  root: WebElement
+  title: string
+  subtitle: string
+  prefills: WebElement[]
+  asuinkuntaSelect: WebElement
+  postinumeroInput: WebElement
+  postitoimipaikkaInput: WebElement
+  katuosoiteInput: WebElement
+  puhelinnumeroInput: WebElement
+  sähköpostiInput: WebElement
+  submitButton: WebElement
+}
+
+const getIlmoitusForm = async (): Promise<Form[]> => {
   const forms = await $$(".ilmoitusform__frame")
   return Promise.all(
     forms.map(async (form) => ({
@@ -409,7 +424,7 @@ const getIlmoitusForm = async () => {
   )
 }
 
-const täytäJaLähetäLomake = async (oppija: Oppija, form: any) => {
+const täytäJaLähetäLomake = async (oppija: Oppija, form: Form) => {
   // Esitäytä lomake
   if (oppija.prefill !== undefined) {
     await form.prefills[oppija.prefill]!!.click()
@@ -436,12 +451,15 @@ const täytäJaLähetäLomake = async (oppija: Oppija, form: any) => {
   }
 
   // Lähetä
-  await form.submitButton.click()
   await eventually(async () => {
-    const submitted = await form.root.findElement(
-      By.css('[data-testid="submitted"]')
-    )
-    expect(submitted).toBeDefined()
+    await scrollIntoView(form.submitButton)
+    await form.submitButton.click()
+    await eventually(async () => {
+      const submitted = await form.root.findElement(
+        By.css('[data-testid="submitted"]')
+      )
+      expect(submitted).toBeDefined()
+    }, 1000)
   })
 }
 
