@@ -30,7 +30,7 @@ case class OrganisaatioHierarkia(
   def toOrganisaatio: OrganisaatioWithOid =
     if (organisaatiotyypit.intersect(oppilaitosTyypit).nonEmpty) {
       Oppilaitos(oid, oppilaitosnumero, Some(nimi), kotipaikka)
-    } else if (organisaatiotyypit.contains(KOULUTUSTOIMIJA)) {
+    } else if (organisaatiotyypit.contains(KOULUTUSTOIMIJA) || organisaatiotyypit.contains(VARHAISKASVATUKSEN_JARJESTAJA)) {
       Koulutustoimija(oid, Some(nimi), yTunnus, kotipaikka)
     } else if (organisaatiotyypit.contains(TOIMIPISTE)) {
       Toimipiste(oid, Some(nimi), kotipaikka)
