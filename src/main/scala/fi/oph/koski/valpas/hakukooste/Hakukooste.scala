@@ -66,7 +66,8 @@ object Vastaanottotieto {
     "KESKEN",
     "VASTAANOTTANUT_SITOVASTI",
     "EI_VASTAANOTETTU_MAARA_AIKANA",
-    "PERUNUT", "PERUUTETTU",
+    "PERUNUT",
+    "PERUUTETTU",
     "OTTANUT_VASTAAN_TOISEN_PAIKAN",
     "EHDOLLISESTI_VASTAANOTTANUT"
   )
@@ -84,12 +85,13 @@ object Valintatila {
     "HYVAKSYTTY",
     "HARKINNANVARAISESTI_HYVAKSYTTY",
     "VARASIJALTA_HYVAKSYTTY",
-    "VARALLA",
-    "KESKEN",
-    "PERUUTETTU",
-    "PERUNUT",
     "HYLATTY",
-    "PERUUNTUNUT"
+    "VARALLA",
+    "PERUUNTUNUT",
+    "PERUUTETTU",
+    "PERUTTU",
+    "PERUNUT",
+    "KESKEN",
   )
 
   def valpasKoodiviiteOption(valintatila: Option[String]): Option[Koodistokoodiviite] =
@@ -100,6 +102,7 @@ object Valintatila {
       case Some("PERUUNTUNUT") => Some("peruuntunut")
       case Some("PERUUTETTU") => Some("peruutettu")
       case Some("PERUTTU") => Some("peruttu")
+      case Some("PERUNUT") => Some("perunut")
       case Some("KESKEN") => Some("kesken")
       case _ => None
     }).map(Koodistokoodiviite(_, "valpashaunvalintatila"))

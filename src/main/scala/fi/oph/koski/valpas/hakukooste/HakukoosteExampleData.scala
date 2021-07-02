@@ -124,6 +124,13 @@ object HakukoosteExampleData {
       hakukoosteidenToiveet = Vector(Vector(
         hakutoive(
           hakukohdeOid = generateOid(),
+          hakukohdeOrganisaatio = MockOrganisaatiot.omnia,
+          hakukohdeNimi = "Peruuntumisala",
+          koulutusNimi = "Ala, jonka hakija on perunut",
+          valintatila = Some("PERUNUT"),
+        ),
+        hakutoive(
+          hakukohdeOid = generateOid(),
           hakukohdeOrganisaatio = MockOrganisaatiot.helsinginMedialukio,
           hakukohdeNimi = "Lukio",
           koulutusNimi = "Lukiokoulutus",
