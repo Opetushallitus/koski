@@ -96,5 +96,19 @@
     ],
     "versio": 1,
     "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpashaunvalintatila_perunut",
+    "koodiArvo": "perunut",
+    "metadata": [
+      {
+        "nimi": "Perunut",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
   }
 ]

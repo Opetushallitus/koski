@@ -415,11 +415,12 @@ describe("Oppijakohtainen näkymä", () => {
         Valinta
         Pisteet
         Alin pistemäärä
-        1. Helsingin medialukio, Lukio	Hylätty	7,50	8,20
-        2. Omnia, Leipomoala1
+        1. Omnia, Peruuntumisala  Perunut –	–
+        2. Helsingin medialukio, Lukio	Hylätty	7,50	8,20
+        3. Omnia, Leipomoala1
         Otettu vastaan ehdollisesti
         Hyväksytty	–	–
-        3. Omnia, Puhtaus- ja kiinteistöpalveluala	Hyväksytty	–	–
+        4. Omnia, Puhtaus- ja kiinteistöpalveluala	Hyväksytty	–	–
         1) Hakenut harkinnanvaraisesti
     `)
   })
