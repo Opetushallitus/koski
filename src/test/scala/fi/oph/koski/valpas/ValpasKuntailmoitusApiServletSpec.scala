@@ -413,6 +413,21 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     )(verifyResponseStatusOk())
   }
 
+  "Kuntailmoituksen tekeminen suorittamisen valvojana onnistuu" in {
+    val user = ValpasMockUsers.valpasPelkkäSuorittaminenkäyttäjä
+
+    val jyväskylänNormaalikoulunOppilas = ValpasMockOppijat.lukionAloittanut
+    val ilmoitus = teeMinimiKuntailmoitusInput(
+      oppijaOid = jyväskylänNormaalikoulunOppilas.oid,
+      tekijäOid = MockOrganisaatiot.jyväskylänNormaalikoulu
+    )
+
+    post("/valpas/api/kuntailmoitus",
+      body = ilmoitus,
+      headers = authHeaders(user) ++ jsonContent
+    )(verifyResponseStatusOk())
+  }
+
   "Kuntailmoituksen tekeminen hakeutumisen valvojana (kunta) onnistuu" in {
     val user = ValpasMockUsers.valpasHelsinkiPeruskoulu
 

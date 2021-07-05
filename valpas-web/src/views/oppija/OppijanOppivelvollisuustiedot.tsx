@@ -2,8 +2,8 @@ import bem from "bem-ts"
 import * as A from "fp-ts/Array"
 import React, { useState } from "react"
 import { fetchKuntailmoituksenPohjatiedot } from "../../api/api"
-import { useApiWithParams } from "../../api/apiHooks"
-import { isLoading, isSuccess, mapError, mapLoading } from "../../api/apiUtils"
+import { useApiMethod } from "../../api/apiHooks"
+import { isError, isLoading, isSuccess, mapLoading } from "../../api/apiUtils"
 import { RaisedButton } from "../../components/buttons/RaisedButton"
 import { VisibleForKäyttöoikeusrooli } from "../../components/containers/VisibleForKäyttöoikeusrooli"
 import { Spinner } from "../../components/icons/Spinner"
@@ -30,14 +30,10 @@ export const OppijanOppivelvollisuustiedot = (
   props: OppijanOppivelvollisuustiedotProps
 ) => {
   const [keskeytysModalVisible, setKeskeytysModalVisible] = useState(false)
-  const [modalVisible, setModalVisible] = useState(false)
 
   const oppijaOids = [props.oppija.oppija.henkilö.oid]
 
-  const pohjatiedot = useApiWithParams(
-    fetchKuntailmoituksenPohjatiedot,
-    modalVisible ? [oppijaOids] : undefined
-  )
+  const pohjatiedot = useApiMethod(fetchKuntailmoituksenPohjatiedot)
 
   return (
     <>
@@ -92,7 +88,7 @@ export const OppijanOppivelvollisuustiedot = (
                     <RaisedButton
                       disabled={isLoading(pohjatiedot)}
                       hierarchy="secondary"
-                      onClick={() => setModalVisible(true)}
+                      onClick={() => pohjatiedot.call(oppijaOids)}
                     >
                       <T id="oppija__tee_ilmoitus_valvontavastuusta" />
                     </RaisedButton>
@@ -107,13 +103,18 @@ export const OppijanOppivelvollisuustiedot = (
                   {mapLoading(pohjatiedot, () => (
                     <Spinner />
                   ))}
-                  {mapError(pohjatiedot, () => (
+                  {isError(pohjatiedot) && (
                     <Error>
-                      <T id="oppija__pohjatietojen_haku_epäonnistui" />
+                      <T
+                        id={
+                          pohjatiedot.status == 403
+                            ? "oppija__ei_oikeuksia_tehdä_ilmoitusta"
+                            : "oppija__pohjatietojen_haku_epäonnistui"
+                        }
+                      />
                     </Error>
-                  ))}
-                  {modalVisible &&
-                  isSuccess(pohjatiedot) &&
+                  )}
+                  {isSuccess(pohjatiedot) &&
                   !A.isEmpty(
                     pohjatiedot.data.mahdollisetTekijäOrganisaatiot
                   ) ? (
@@ -124,7 +125,7 @@ export const OppijanOppivelvollisuustiedot = (
                         pohjatiedot.data.mahdollisetTekijäOrganisaatiot[0]!!
                       }
                       onClose={() => {
-                        setModalVisible(false)
+                        pohjatiedot.clear()
                         window.location.reload()
                       }}
                     />

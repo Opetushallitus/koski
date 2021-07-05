@@ -131,6 +131,7 @@
   "oppija__tee_ilmoitus_valvontavastuusta": "Tee ilmoitus valvontavastuusta",
   "oppija__tee_ilmoitus_valvontavastuusta_tooltip": "Ilmoitus tulee tehdä seuraavista syistä:\n1. Oppijan opiskeluoikeus on päättynyt, eikä tämä ole määräaikaan mennessä saanut uutta opiskelupaikkaa.\n2. Ilman opiskelupaikkaa olevan oppijan asuinkunta on muuttunut.",
   "oppija__pohjatietojen_haku_epäonnistui": "Pohjatietojen haku epäonnistui. Yritä uudelleen myöhemmin.",
+  "oppija__ei_oikeuksia_tehdä_ilmoitusta": "Sinulla ei ole oikeuksia tehdä kuntailmoitusta tästä oppijasta.",
   "ovkeskeytys__otsikko": "Oppivelvollisuuden keskeytys",
   "ovkeskeytys__organisaatio": "Organisaatio",
   "ovkeskeytys__keskeytys_määräajalle": "Oppivelvollisuus keskeytetään määräajaksi ajalle",
