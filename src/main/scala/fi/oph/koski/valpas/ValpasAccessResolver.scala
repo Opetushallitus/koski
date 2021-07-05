@@ -167,7 +167,7 @@ class ValpasAccessResolver {
     (implicit session: ValpasSession)
   : Boolean = onGlobaaliOikeus(rooli) || organisaatioOids.intersect(oppilaitosOrganisaatioOids(rooli)).nonEmpty
 
-  private def accessToAnyOrg(
+  def accessToAnyOrg(
     rooli: ValpasRooli.Role
   )(
     implicit session: ValpasSession

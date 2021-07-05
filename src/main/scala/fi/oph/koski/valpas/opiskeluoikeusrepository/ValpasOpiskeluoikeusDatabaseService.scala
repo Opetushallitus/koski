@@ -32,8 +32,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   private val db = application.raportointiDatabase
   private val rajapäivätService = application.valpasRajapäivätService
 
-  def getOppija(oppijaOid: String): Option[ValpasOppijaRow] =
-    getOppijat(List(oppijaOid), None).headOption
+  def getOppija(oppijaOid: String, rajaaOpiskeluoikeudenKelpaavuudellaOppivelvollisuuteen: Boolean = true): Option[ValpasOppijaRow] =
+    getOppijat(List(oppijaOid), None, rajaaOpiskeluoikeudenKelpaavuudellaOppivelvollisuuteen).headOption
 
   def getOppijat(oppijaOids: Seq[String]): Seq[ValpasOppijaRow] =
     if (oppijaOids.nonEmpty) getOppijat(oppijaOids, None) else Seq.empty
@@ -67,7 +67,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   //        Valinta voidaan jättää joko Scalalle, käyttöliitymälle tai tehdä toinen query, joka tekee valinnan SQL:ssä.
   private def getOppijat(
     oppijaOids: Seq[String],
-    oppilaitosOids: Option[Seq[String]]
+    oppilaitosOids: Option[Seq[String]],
+    rajaaOpiskeluoikeudenKelpaavuudellaOppivelvollisuuteen: Boolean = true,
   ): Seq[ValpasOppijaRow] = {
     val keväänValmistumisjaksoAlku = rajapäivätService.keväänValmistumisjaksoAlku
     val keväänValmistumisjaksoLoppu = rajapäivätService.keväänValmistumisjaksoLoppu
@@ -129,9 +130,12 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         nonEmptyOppijaOids.map(_ => sql"""
       JOIN pyydetty_oppija ON pyydetty_oppija.master_oid = r_henkilo.master_oid
           """),
-        Some(sql"""
-    WHERE
-      r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE
+        if (rajaaOpiskeluoikeudenKelpaavuudellaOppivelvollisuuteen) {
+          Some(sql"""WHERE r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE""") }
+        else {
+          None
+        },
+          Some(sql"""
   )
   -- CTE: opiskeluoikeudet, joiden hakeutumista oppilaitoksella on oikeus valvoa tällä hetkellä
   -- TODO: Tämä toimii vain peruskoulun hakeutumisen valvojille tällä hetkellä.
@@ -580,7 +584,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           'koodistoUri', 'valpasopiskeluoikeudentila'
         ),
         'näytettäväPerusopetuksenSuoritus', opiskeluoikeus.naytettava_perusopetuksen_suoritus,
-        'vuosiluokkiinSitomatonOpetus', opiskeluoikeus.vuosiluokkiin_sitomaton_opetus
+        'vuosiluokkiinSitomatonOpetus', opiskeluoikeus.vuosiluokkiin_sitomaton_opetus,
+        'oppivelvollisuudenSuorittamiseenKelpaava', opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE
       ) ORDER BY
         opiskeluoikeus.alkamispaiva DESC,
         -- Alkamispäivä varmaan riittäisi käyttöliitymälle, mutta lisätään muita kenttiä testien pitämiseksi
@@ -593,8 +598,13 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   FROM
     opiskeluoikeus
     JOIN oppija ON oppija.master_oid = opiskeluoikeus.master_oid
-  WHERE
-    opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE
+  """),
+  if (rajaaOpiskeluoikeudenKelpaavuudellaOppivelvollisuuteen) {
+    Some(sql"""WHERE opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE""")
+  } else {
+    None
+  },
+  Some(sql"""
   GROUP BY
     oppija.master_oid,
     oppija.kaikkiOppijaOidit,

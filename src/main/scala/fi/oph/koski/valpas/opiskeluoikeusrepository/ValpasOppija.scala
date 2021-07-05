@@ -147,7 +147,8 @@ case class ValpasOpiskeluoikeusLaajatTiedot(
   ryhmä: Option[String],
   tarkastelupäivänTila: Koodistokoodiviite,
   näytettäväPerusopetuksenSuoritus: Boolean,
-  vuosiluokkiinSitomatonOpetus: Boolean
+  vuosiluokkiinSitomatonOpetus: Boolean,
+  oppivelvollisuudenSuorittamiseenKelpaava: Boolean,
 ) extends ValpasOpiskeluoikeus
 
 object ValpasOpiskeluoikeusSuppeatTiedot {

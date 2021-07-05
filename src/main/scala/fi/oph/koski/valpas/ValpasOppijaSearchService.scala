@@ -30,7 +30,7 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
         }
       })
   }
-  
+
   private def searchByHetu
     (rooli: ValpasRooli.Role, hetu: String)
     (implicit session: ValpasSession)

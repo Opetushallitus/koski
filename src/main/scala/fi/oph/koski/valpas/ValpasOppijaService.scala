@@ -205,7 +205,7 @@ class ValpasOppijaService(
     (rooli: ValpasRooli.Role, oppijaOid: ValpasHenkilö.Oid)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
-    opiskeluoikeusDbService.getOppija(oppijaOid)
+    opiskeluoikeusDbService.getOppija(oppijaOid, rooli != ValpasRooli.OPPILAITOS_MAKSUTTOMUUS)
       .toRight(ValpasErrorCategory.forbidden.oppija())
       .flatMap(asValpasOppijaLaajatTiedot)
       .flatMap(accessResolver.withOppijaAccessAsRole(rooli))
@@ -225,16 +225,21 @@ class ValpasOppijaService(
     (oppijaOid: ValpasHenkilö.Oid)
     (implicit session: ValpasSession)
   : Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] = {
-    getOppijaLaajatTiedotYhteystiedoilla(oppijaOid)
+    val rooli = Some(ValpasRooli.OPPILAITOS_MAKSUTTOMUUS)
+      .filter(accessResolver.accessToAnyOrg)
+    getOppijaLaajatTiedotYhteystiedoilla(oppijaOid, rooli)
       .flatMap(withKuntailmoitukset)
       .map(withOikeusTehdäKuntailmoitus)
   }
 
   def getOppijaLaajatTiedotYhteystiedoilla
-    (oppijaOid: ValpasHenkilö.Oid)
+    (oppijaOid: ValpasHenkilö.Oid, rooli: Option[ValpasRooli.Role] = None)
     (implicit session: ValpasSession)
   : Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] = {
-    getOppijaLaajatTiedot(oppijaOid)
+    (rooli match {
+      case None => getOppijaLaajatTiedot(oppijaOid)
+      case Some(r) => getOppijaLaajatTiedot(r, oppijaOid)
+    })
       .map(fetchHakuYhteystiedoilla)
       .flatMap(withVirallisetYhteystiedot)
       .map(_.validate(koodistoviitepalvelu))
@@ -273,7 +278,7 @@ class ValpasOppijaService(
           ),
           hakeutumisvalvovatOppilaitokset = dbRow.hakeutumisvalvovatOppilaitokset,
           suorittamisvalvovatOppilaitokset = dbRow.suorittamisvalvovatOppilaitokset,
-          opiskeluoikeudet = opiskeluoikeudet,
+          opiskeluoikeudet = opiskeluoikeudet.filter(_.oppivelvollisuudenSuorittamiseenKelpaava),
           oppivelvollisuusVoimassaAsti = dbRow.oppivelvollisuusVoimassaAsti,
           oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = dbRow.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
           onOikeusValvoaKunnalla = dbRow.onOikeusValvoaKunnalla,
