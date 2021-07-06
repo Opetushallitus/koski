@@ -7,6 +7,7 @@ import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{LocalizedString, Organisaatio}
+import fi.oph.koski.util.ChainingSyntax.chainingOps
 import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.db.ValpasSchema.{OpiskeluoikeusLisätiedotKey, OpiskeluoikeusLisätiedotRow, OppivelvollisuudenKeskeytysRow}
@@ -112,6 +113,11 @@ class ValpasOppijaService(
 
   private val validatingAndResolvingExtractor = application.validatingAndResolvingExtractor
 
+  private val roolitJoilleHaetaanKaikistaOVLPiirinOppijoista = Seq(
+    ValpasRooli.OPPILAITOS_MAKSUTTOMUUS,
+    ValpasRooli.KUNTA,
+  )
+
   // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
   // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
   // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
@@ -205,7 +211,9 @@ class ValpasOppijaService(
     (rooli: ValpasRooli.Role, oppijaOid: ValpasHenkilö.Oid)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
-    opiskeluoikeusDbService.getOppija(oppijaOid, rooli != ValpasRooli.OPPILAITOS_MAKSUTTOMUUS)
+    val rajaaOVKelposillaOppivelvollisuuksilla = !roolitJoilleHaetaanKaikistaOVLPiirinOppijoista.contains(rooli)
+
+    opiskeluoikeusDbService.getOppija(oppijaOid, rajaaOVKelposillaOppivelvollisuuksilla)
       .toRight(ValpasErrorCategory.forbidden.oppija())
       .flatMap(asValpasOppijaLaajatTiedot)
       .flatMap(accessResolver.withOppijaAccessAsRole(rooli))
@@ -225,8 +233,8 @@ class ValpasOppijaService(
     (oppijaOid: ValpasHenkilö.Oid)
     (implicit session: ValpasSession)
   : Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] = {
-    val rooli = Some(ValpasRooli.OPPILAITOS_MAKSUTTOMUUS)
-      .filter(accessResolver.accessToAnyOrg)
+    val rooli = roolitJoilleHaetaanKaikistaOVLPiirinOppijoista.find(accessResolver.accessToAnyOrg)
+
     getOppijaLaajatTiedotYhteystiedoilla(oppijaOid, rooli)
       .flatMap(withKuntailmoitukset)
       .map(withOikeusTehdäKuntailmoitus)

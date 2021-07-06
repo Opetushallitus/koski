@@ -32,8 +32,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   private val db = application.raportointiDatabase
   private val rajapäivätService = application.valpasRajapäivätService
 
-  def getOppija(oppijaOid: String, rajaaOpiskeluoikeudenKelpaavuudellaOppivelvollisuuteen: Boolean = true): Option[ValpasOppijaRow] =
-    getOppijat(List(oppijaOid), None, rajaaOpiskeluoikeudenKelpaavuudellaOppivelvollisuuteen).headOption
+  def getOppija(oppijaOid: String, rajaaOVKelposillaOppivelvollisuuksilla: Boolean = true): Option[ValpasOppijaRow] =
+    getOppijat(List(oppijaOid), None, rajaaOVKelposillaOppivelvollisuuksilla).headOption
 
   def getOppijat(oppijaOids: Seq[String]): Seq[ValpasOppijaRow] =
     if (oppijaOids.nonEmpty) getOppijat(oppijaOids, None) else Seq.empty
@@ -68,7 +68,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   private def getOppijat(
     oppijaOids: Seq[String],
     oppilaitosOids: Option[Seq[String]],
-    rajaaOpiskeluoikeudenKelpaavuudellaOppivelvollisuuteen: Boolean = true,
+    rajaaOVKelposillaOppivelvollisuuksilla: Boolean = true,
   ): Seq[ValpasOppijaRow] = {
     val keväänValmistumisjaksoAlku = rajapäivätService.keväänValmistumisjaksoAlku
     val keväänValmistumisjaksoLoppu = rajapäivätService.keväänValmistumisjaksoLoppu
@@ -130,7 +130,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         nonEmptyOppijaOids.map(_ => sql"""
       JOIN pyydetty_oppija ON pyydetty_oppija.master_oid = r_henkilo.master_oid
           """),
-        if (rajaaOpiskeluoikeudenKelpaavuudellaOppivelvollisuuteen) {
+        if (rajaaOVKelposillaOppivelvollisuuksilla) {
           Some(sql"""WHERE r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE""") }
         else {
           None
@@ -599,7 +599,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     opiskeluoikeus
     JOIN oppija ON oppija.master_oid = opiskeluoikeus.master_oid
   """),
-  if (rajaaOpiskeluoikeudenKelpaavuudellaOppivelvollisuuteen) {
+  if (rajaaOVKelposillaOppivelvollisuuksilla) {
     Some(sql"""WHERE opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE""")
   } else {
     None
