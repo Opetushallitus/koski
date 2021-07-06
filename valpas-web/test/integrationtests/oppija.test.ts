@@ -64,6 +64,12 @@ const oppivelvollisuusKeskeytettyToistaiseksiPath = createOppijaPath(
     oppijaOid: "1.2.246.562.24.00000000057",
   }
 )
+const eiOppivelvollisuudenSuorittamiseenKelpaaviaOpiskeluoikeuksiaPath = createOppijaPath(
+  "/virkailija",
+  {
+    oppijaOid: "1.2.246.562.24.00000000058",
+  }
+)
 
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
@@ -532,6 +538,16 @@ describe("Oppijakohtainen näkymä", () => {
       Ryhmä: AH
       Tila: Opiskeluoikeus voimassa
     `)
+  })
+
+  it("Näyttää detaljisivun maksuttomuuden oppijasta, jolla ei ole oppivelvollisuuden suorittamiseen kelpaavaa opiskeluoikeutta", async () => {
+    await loginAs(
+      eiOppivelvollisuudenSuorittamiseenKelpaaviaOpiskeluoikeuksiaPath,
+      "valpas-maksuttomuus-hki"
+    )
+    await mainHeadingEquals(
+      "Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas (061005A671V)"
+    )
   })
 
   it("Ei näytä detaljisivua kuntakäyttäjälle lukio-oppijasta oppivelvollisuuden päätyttyä", async () => {

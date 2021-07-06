@@ -246,6 +246,36 @@ describe("Oppijahaku", () => {
       await expectFieldErrorToBe(null)
     }
   })
+
+  it("Maksuttomuus: Haku löytää oppijan, vaikka hänellä ei ole opiskeluoikeuden suorittamiseen kelpaavia opintoja", async () => {
+    await hakuLogin("valpas-maksuttomuus-hki")
+    await fillQueryField("061005A671V") // Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas
+    await submit()
+    await expectResultToBe(
+      "Löytyi: Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas (061005A671V)",
+      createOppijaPath("/virkailija", {
+        oppijaOid: "1.2.246.562.24.00000000058",
+        prev: createMaksuttomuusPath(),
+      })
+    )
+  })
+
+  it("Kunta: Haku löytää oppijan, vaikka hänellä ei ole opiskeluoikeuden suorittamiseen kelpaavia opintoja", async () => {
+    await hakuLogin(
+      "valpas-helsinki",
+      createKunnanHetuhakuPath("/virkailija"),
+      "article#kuntahetuhaku"
+    )
+    await fillQueryField("061005A671V") // Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas
+    await submit()
+    await expectResultToBe(
+      "Löytyi: Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas (061005A671V)",
+      createOppijaPath("/virkailija", {
+        oppijaOid: "1.2.246.562.24.00000000058",
+        prev: createKunnanHetuhakuPath(),
+      })
+    )
+  })
 })
 
 const hakuLogin = async (
@@ -274,7 +304,9 @@ const submit = async () => {
 }
 
 const expectResultToBe = async (text: string, linkTo?: string) => {
-  const result = await $(".oppijasearch__resultvalue").then((e) => e.getText())
+  const result = await $(".oppijasearch__resultvalue", 2000).then((e) =>
+    e.getText()
+  )
   expect(result).toBe(text)
   if (linkTo) {
     const href = await $(".oppijasearch__resultlink").then((e) =>

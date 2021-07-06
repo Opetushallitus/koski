@@ -135,6 +135,7 @@ class ValpasAccessResolverSpec extends ValpasTestBase {
     päättymispäiväMerkittyTulevaisuuteen = None,
     tarkastelupäivänTila = Koodistokoodiviite("voimassa", "valpasopiskeluoikeudentila"),
     näytettäväPerusopetuksenSuoritus = false,
-    vuosiluokkiinSitomatonOpetus = false
+    vuosiluokkiinSitomatonOpetus = false,
+    oppivelvollisuudenSuorittamiseenKelpaava = true,
   )
 }
