@@ -1,5 +1,6 @@
 import bem from "bem-ts"
 import React, { useEffect } from "react"
+import { useComponentAppearDisappear } from "../../state/animations"
 import { FlatButton } from "../buttons/FlatButton"
 import { CloseIcon } from "../icons/Icon"
 import "./Modal.less"
@@ -13,17 +14,30 @@ export type ModalProps = {
   closeOnBackgroundClick?: boolean
 }
 
-export const Modal = (props: ModalProps) => (
-  <Background
-    onClose={props.closeOnBackgroundClick ? props.onClose : undefined}
-  >
-    <Container onClose={props.onClose} title={props.title}>
-      {props.children}
-    </Container>
-  </Background>
-)
+export const Modal = (props: ModalProps) => {
+  const animation = useComponentAppearDisappear({
+    hideDuration: 200,
+    onHidden: props.onClose,
+  })
+
+  return (
+    <Background
+      hidden={animation.hidden}
+      onClose={props.closeOnBackgroundClick ? animation.hide : undefined}
+    >
+      <Container
+        hidden={animation.hidden}
+        onClose={animation.hide}
+        title={props.title}
+      >
+        {props.children}
+      </Container>
+    </Background>
+  )
+}
 
 type BackgroundProps = {
+  hidden: boolean
   children: React.ReactNode
   onClose?: () => void
 }
@@ -36,17 +50,25 @@ const Background = (props: BackgroundProps) => {
   })
 
   return (
-    <div className={b("background")} onClick={props.onClose}>
+    <div
+      className={b("background", { init: props.hidden })}
+      onClick={props.onClose}
+    >
       {props.children}
     </div>
   )
 }
 
-type ContainerProps = ModalProps
+type ContainerProps = ModalProps & {
+  hidden: boolean
+}
 
 const Container = (props: ContainerProps) => (
   <div
-    className={b("container", { closeable: !!props.onClose })}
+    className={b("container", {
+      closeable: !!props.onClose,
+      init: props.hidden,
+    })}
     onClick={(event) => event.stopPropagation()}
   >
     <div className={b("header")}>

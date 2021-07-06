@@ -1,10 +1,10 @@
 export const sleep = (time: number) =>
   new Promise((resolve) => setTimeout(resolve, time))
 
-export const eventually = async (
-  test: () => Promise<void>,
+export const eventually = async <T>(
+  test: () => Promise<T>,
   timeout = 10000
-) => {
+): Promise<T> => {
   const expirationTime = new Date().getTime() + timeout
   let error = null
   while (true) {
@@ -12,8 +12,7 @@ export const eventually = async (
       throw error
     }
     try {
-      await test()
-      return
+      return await test()
     } catch (err) {
       error = err
       await sleep(timeout / 10)

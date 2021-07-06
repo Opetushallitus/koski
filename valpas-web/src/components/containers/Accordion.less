@@ -2,14 +2,6 @@
 @import "../../style/spacing.less";
 @import "../../style/typography.less";
 
-.accordion__item .accordion__content {
-  display: none;
-}
-
-.accordion__item--open .accordion__content {
-  display: block;
-}
-
 .accordion__label {
   font-size: @font-size-medium;
   font-weight: @font-weight-regular;
@@ -25,8 +17,28 @@
 }
 
 .accordion__content {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 500ms cubic-bezier(0, 1, 0, 1), opacity 500ms ease;
+
   margin: @padding-v 0;
   border-left: 2px solid @color-gray-lighten-4;
   padding-left: @padding-h;
   margin-left: 0.7rem;
+}
+
+.accordion__item--open .accordion__content {
+  max-height: 1000px;
+  opacity: 1;
+  transition: max-height 500ms ease-in-out, opacity 500ms ease;
+}
+
+.accordion__item .icon {
+  transform: rotateZ(0deg);
+  transition: transform 500ms ease;
+}
+
+.accordion__item--open .icon {
+  transform: rotateZ(90deg);
 }
