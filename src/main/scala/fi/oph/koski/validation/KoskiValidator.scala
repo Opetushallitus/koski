@@ -1116,7 +1116,7 @@ class KoskiValidator(
             val oppilaitoksenVaihtoSallittu = uusiOrganisaatioLöytyyOrganisaatioHistoriasta || (!vanhaAktiivinen && uusiAktiivinen)
 
             if (koulutustoimijaPysynytSamana && uusiOppilaitos != vanhaOppilaitos) {
-              HttpStatus.validate(oppilaitoksenVaihtoSallittu) { KoskiErrorCategory.badRequest.validation() }
+              HttpStatus.validate(oppilaitoksenVaihtoSallittu) { KoskiErrorCategory.badRequest.validation.organisaatio.oppilaitoksenVaihto()}
             } else {
               HttpStatus.ok
             }

@@ -518,7 +518,7 @@ class OppijaUpdateSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTe
 
         val muutos = ensimmäinenOpiskeluoikeus.withOppilaitos(Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto))
         putOppija(Oppija(oppija, List(muutos))) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation())
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.oppilaitoksenVaihto())
         }
       }
       "Vanha oppilaitos on passivoitu -> muutos sallitaan" in {
