@@ -1730,8 +1730,33 @@ describe('Ammatillinen koulutus', function() {
           return opinnot.tutkinnonOsat('1').tutkinnonOsa(0).arviointi()
         }
 
+        function lisääArviointi() {
+          const addItemElems = opinnot.tutkinnonOsat('1').tutkinnonOsa(0).arviointi().elem().find('.add-item a')
+          click(addItemElems[addItemElems.length-1])()
+        }
+
+        function arviointiNth(nth) {
+          return opinnot.tutkinnonOsat('1').tutkinnonOsa(0).arviointiNth(nth)
+        }
+
+        function poistaArvioinnit() {
+          const items = opinnot.tutkinnonOsat('1').tutkinnonOsa(0).arviointi().elem().find('.remove-item')
+          click(items)()
+        }
+
         before(
-            page.oppijaHaku.searchAndSelect('280608-6619'),
+            prepareForNewOppija('kalle', '060918-7919'),
+            addOppija.enterHenkilötiedot({etunimet: 'Tero', kutsumanimi: 'Tero', sukunimi: 'Tyhjä'}),
+            addOppija.selectOppilaitos('Stadin'),
+            addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
+            function() {
+              return wait.until(Page().getInput('.tutkinto input').isVisible)()
+                .then(Page().setInputValue('.tutkinto input', 'Autoalan perustutkinto'))
+                .then(click('.results li:last()'))
+            },
+            addOppija.selectAloituspäivä('1.1.2018'),
+            addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
+            addOppija.submitAndExpectSuccess('Tyhjä, Tero (060918-7919)'),
             editor.edit,
             opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTutkinnonOsa,
             opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt'),
@@ -1746,7 +1771,8 @@ describe('Ammatillinen koulutus', function() {
 
         describe('Lisääminen', function()  {
           before(
-              arviointi().addItem,
+              lisääArviointi,
+              lisääArviointi,
               opinnot.expandAll
           )
 
@@ -1756,7 +1782,8 @@ describe('Ammatillinen koulutus', function() {
 
           describe('Muokkaus', function() {
             before(
-              arviointi().propertyBySelector('.arvosana').selectValue(3)
+              arviointiNth(0).propertyBySelector('.arvosana').selectValue(3),
+              arviointiNth(1).propertyBySelector('.arvosana').selectValue(4)
             )
 
             it('toimii', function() {
@@ -1771,7 +1798,10 @@ describe('Ammatillinen koulutus', function() {
             )
 
             it('näkyy oikein', function () {
-              expect(arviointi().getText()).to.equal('Arviointi Arvosana 3\nArviointipäivä 5.7.2021')
+                const date = new Date()
+                const arviointipäivä = date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear()
+                expect(arviointi().getText()).to.equal('Arviointi Arvosana 3\nArviointipäivä ' +
+                  arviointipäivä + '\nArvosana 4\nArviointipäivä ' + arviointipäivä)
             })
           })
 
@@ -1779,7 +1809,7 @@ describe('Ammatillinen koulutus', function() {
             before(
                 editor.edit,
                 opinnot.expandAll,
-                opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaArviointi,
+                poistaArvioinnit,
                 editor.saveChanges,
                 editor.edit,
                 opinnot.expandAll
