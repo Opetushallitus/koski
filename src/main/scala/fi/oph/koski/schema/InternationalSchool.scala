@@ -209,14 +209,14 @@ trait InternationalSchoolArviointi extends KoodistostaLöytyväArviointi {
 }
 
 case class SanallinenInternationalSchoolOppiaineenArviointi(
-  @KoodistoKoodiarvo("learningtoward")
-  @KoodistoKoodiarvo("achievedoutcomes")
   @KoodistoUri("arviointiasteikkointernationalschool")
   arvosana: Koodistokoodiviite,
   päivä: Option[LocalDate] = None
 ) extends InternationalSchoolArviointi
 
 trait InternationalSchoolNumeerinenOppiaineenArviointi extends InternationalSchoolArviointi with DiplomaArviointi{
+  @KoodistoKoodiarvo("F")
+  @KoodistoKoodiarvo("S")
   @KoodistoKoodiarvo("1")
   @KoodistoKoodiarvo("2")
   @KoodistoKoodiarvo("3")
@@ -267,6 +267,7 @@ case class LanguageAcquisition(
   @KoodistoKoodiarvo("ES")
   @KoodistoKoodiarvo("FI")
   @KoodistoKoodiarvo("FR")
+  @KoodistoKoodiarvo("EN")
   kieli: Koodistokoodiviite
 ) extends InternationalSchoolKieliOppiaine
 
@@ -294,6 +295,8 @@ case class MYPOppiaineMuu(
   @KoodistoKoodiarvo("SCI")
   @KoodistoKoodiarvo("SMA")
   @KoodistoKoodiarvo("VA")
+  @KoodistoKoodiarvo("INS")
+  @KoodistoKoodiarvo("MF")
   tunniste: Koodistokoodiviite
 ) extends MYPOppiaine
 
@@ -318,6 +321,8 @@ case class PYPOppiaineMuu(
   @KoodistoKoodiarvo("SCI")
   @KoodistoKoodiarvo("SS")
   @KoodistoKoodiarvo("VA")
+  @KoodistoKoodiarvo("ART")
+  @KoodistoKoodiarvo("FFL")
   tunniste: Koodistokoodiviite
 ) extends PYPOppiaine
 
@@ -350,6 +355,7 @@ case class MuuDiplomaOppiaine(
   @KoodistoKoodiarvo("PHY")
   @KoodistoKoodiarvo("PSY")
   @KoodistoKoodiarvo("VA")
+  @KoodistoKoodiarvo("INS")
   tunniste: Koodistokoodiviite,
   taso: Option[Koodistokoodiviite]
 ) extends InternationalSchoolIBOppiaine with IBOppiaine with IBTaso
