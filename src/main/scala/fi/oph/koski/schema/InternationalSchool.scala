@@ -215,8 +215,8 @@ case class SanallinenInternationalSchoolOppiaineenArviointi(
 ) extends InternationalSchoolArviointi
 
 trait InternationalSchoolNumeerinenOppiaineenArviointi extends InternationalSchoolArviointi with DiplomaArviointi{
-  @KoodistoKoodiarvo("F")
-  @KoodistoKoodiarvo("S")
+  @KoodistoKoodiarvo("pass")
+  @KoodistoKoodiarvo("fail")
   @KoodistoKoodiarvo("1")
   @KoodistoKoodiarvo("2")
   @KoodistoKoodiarvo("3")
@@ -340,6 +340,7 @@ case class InternationalSchoolMuuDiplomaOppiaine(
   @KoodistoKoodiarvo("ITGS")
   @KoodistoKoodiarvo("MAA")
   @KoodistoKoodiarvo("MAI")
+  @KoodistoKoodiarvo("INS")
   tunniste: Koodistokoodiviite,
   taso: Option[Koodistokoodiviite]
 ) extends InternationalSchoolOppiaine with InternationalSchoolIBOppiaine with IBTaso
@@ -355,7 +356,6 @@ case class MuuDiplomaOppiaine(
   @KoodistoKoodiarvo("PHY")
   @KoodistoKoodiarvo("PSY")
   @KoodistoKoodiarvo("VA")
-  @KoodistoKoodiarvo("INS")
   tunniste: Koodistokoodiviite,
   taso: Option[Koodistokoodiviite]
 ) extends InternationalSchoolIBOppiaine with IBOppiaine with IBTaso
