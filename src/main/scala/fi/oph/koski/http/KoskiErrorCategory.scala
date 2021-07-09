@@ -53,6 +53,7 @@ object KoskiErrorCategory {
         val järjestämismuoto = subcategory("järjestämismuoto", "Opiskeluoikeutta ei voi tallentaa oman organisaation toimipaikkaan jos järjestämismuotona ostopalvelu tai palveluseteli")
         val koulutustoimijaPakollinen = subcategory("koulutustoimijaPakollinen", "Koulutustoimijaa ei voi yksiselitteisesti päätellä.")
         val oppilaitosPuuttuu = subcategory("oppilaitosPuuttuu", "Oppilaitos puuttuu")
+        val oppilaitoksenVaihto = subcategory("oppilaitoksenVaihto", "Oppilaitoksen vaihtaminen ei ole sallittua")
       }
       val organisaatio = new Organisaatio
 
