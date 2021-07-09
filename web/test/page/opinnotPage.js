@@ -438,6 +438,12 @@ function TutkinnonOsat(groupId, base) {
         lisätiedot: function() {
           return api.property('lisätiedot')
         },
+        arviointi: function() {
+          return api.property('arviointi')
+        },
+        arviointiNth: function(nth) {
+          return api.propertyBySelector('.arviointi > .value > ul > li:nth-child(' + (nth + 1) + ')')
+        },
         liittyyTutkinnonOsaan: function() {
           return LiittyyTutkinnonOsaan(api.property('liittyyTutkinnonOsaan'))
         },

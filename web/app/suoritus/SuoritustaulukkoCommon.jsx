@@ -69,7 +69,7 @@ export const groupSuoritukset = (parentSuoritus, suoritukset, context, suoritusP
   })
 }
 
-export const suoritusProperties = suoritus => {
+export const suoritusProperties = (suoritus, complexArviointi) => {
   const filterProperties = filter => modelProperties(suoritus, filter)
   const includeProperties = (...properties) => filterProperties(p => properties.includes(p.key))
   const excludeProperties = (...properties) => filterProperties(p => !properties.includes(p.key))
@@ -83,19 +83,20 @@ export const suoritusProperties = suoritus => {
     const arviointipäivä = modelProperties(modelLookup(suoritus, 'arviointi.-1'), p => p.key === 'päivä')
     const showPakollinen = (tyyppi !== 'nayttotutkintoonvalmistavakoulutus') && modelData(suoritus, 'koulutusmoduuli.pakollinen') !== undefined
     const pakollinen = showPakollinen ? modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'pakollinen') : []
+    const arviointi = modelProperties(suoritus).filter(p => p.key === 'arviointi')
 
     const taitotasot = modelProperties(modelLookup(suoritus, 'arviointi.-1'),
       p => isEdit && ['kuullunYmmärtämisenTaitotaso', 'puhumisenTaitotaso', 'luetunYmmärtämisenTaitotaso', 'kirjoittamisenTaitotaso'].includes(p.key))
 
     const defaultsForEdit = pakollinen
-      .concat(arviointipäivä)
+      .concat(complexArviointi ? arviointi : arviointipäivä)
       .concat(taitotasot)
       .concat(includeProperties('näyttö', 'tunnustettu', 'lisätiedot', 'liittyyTutkinnonOsaan'))
 
     const defaultsForView = pakollinen
       .concat(excludeProperties('koulutusmoduuli', 'arviointi', 'tutkinnonOsanRyhmä', 'tutkintokerta'))
       .concat(taitotasot)
-      .concat(simplifiedArviointi)
+      .concat(complexArviointi ? arviointi : simplifiedArviointi)
 
     switch (tyyppi) {
       case 'valma':

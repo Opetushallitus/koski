@@ -270,29 +270,42 @@ describe('Muu ammatillinen koulutus', function() {
             'Asunto- ja kiinteistöosakeyhtiön talous ja verotus Hyväksytty\n' +
             'Kuvaus Kurssilla opitaan hallitsemaan asunto- ja kiinteistöosakeyhtiön taloutta ja verotusta.\n' +
             'Liittyy tutkinnon osaan Varaosatyö ja varaston hallinta\n' +
+            'Arviointi Arvosana Hyväksytty\n' +
             'Arviointipäivä 20.3.2013\n' +
-            '\nTietokoneiden huolto 4 osp\n' +
+            'Arvioijat Jaana Arstila Pekka Saurmann Juhani Mykkänen\n' +
+            '\n' +
+            'Tietokoneiden huolto 4 osp\n' +
             'Kuvaus Kurssilla opitaan korjaamaan tietokoneita.\n' +
             'Liittyy tutkinnon osaan Asunto-osakeyhtiön hallinnon hoitaminen\n' +
-            '\nFysiikka ja kemia Hyväksytty\n' +
+            '\n' +
+            'Fysiikka ja kemia Hyväksytty\n' +
             'Pakollinen kyllä\n' +
+            'Arviointi Arvosana Hyväksytty\n' +
             'Arviointipäivä 20.3.2013\n' +
-            '\nÄidinkieli, Suomen kieli ja kirjallisuus Hyväksytty\n' +
+            'Arvioijat Jaana Arstila Pekka Saurmann Juhani Mykkänen\n' +
+            '\n' +
+            'Äidinkieli, Suomen kieli ja kirjallisuus Hyväksytty\n' +
             'Pakollinen ei\n' +
+            'Arviointi Arvosana Hyväksytty\n' +
             'Arviointipäivä 20.3.2013\n' +
-            '\nEtiikka\n' +
+            'Arvioijat Jaana Arstila Pekka Saurmann Juhani Mykkänen\n' +
+            '\n' +
+            'Etiikka\n' +
             'Pakollinen kyllä\n' +
             'Tunnustettu\n' +
             'Tutkinnon osa Asennushitsaus\n' +
             'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\n' +
             'Rahoituksen piirissä ei\n' +
-            '\nPsykologia 5 osp Hyväksytty\n' +
+            '\n' +
+            'Psykologia 5 osp Hyväksytty\n' +
             'Pakollinen kyllä\n' +
             'Tunnustettu\n' +
             'Tutkinnon osa Asennushitsaus\n' +
             'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\n' +
             'Rahoituksen piirissä kyllä\n' +
-            'Arviointipäivä 20.3.2013'
+            'Arviointi Arvosana Hyväksytty\n' +
+            'Arviointipäivä 20.3.2013\n' +
+            'Arvioijat Jaana Arstila Pekka Saurmann Juhani Mykkänen'
           )
         })
       })
