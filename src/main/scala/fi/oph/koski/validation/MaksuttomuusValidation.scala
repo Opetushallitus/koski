@@ -2,22 +2,32 @@ package fi.oph.koski.validation
 
 
 import java.time.LocalDate
-
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
 import fi.oph.koski.schema._
 import fi.oph.koski.util.DateOrdering
 
 object MaksuttomuusValidation {
 
-  def checkOpiskeluoikeudenMaksuttomuus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, oppijanSyntymäpäivä: Option[LocalDate]): HttpStatus = {
+  def checkOpiskeluoikeudenMaksuttomuus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
+                                        oppijanSyntymäpäivä: Option[LocalDate],
+                                        oppijanOid: String,
+                                        opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository)
+                                       (implicit user: KoskiSpecificSession): HttpStatus = {
     val suoritusVaatiiMaksuttomuusTiedon = oppivelvollisuudenSuorittamiseenKelpaavaMuuKuinPeruskoulunOpiskeluoikeus(opiskeluoikeus)
     val oppijanIkäOikeuttaaMaksuttomuuden = oppijanSyntymäpäivä.exists(bd => !LocalDate.of(2004, 1, 1).isAfter(bd))
     val alkamispäiväOikeuttaaMaksuttomuuden = opiskeluoikeus.alkamispäivä.exists(d => !d.isBefore(LocalDate.of(2021, 8, 1)))
     val maksuttomuusTietoOnSiirretty = opiskeluoikeus.lisätiedot.collect { case l: MaksuttomuusTieto => l.maksuttomuus.toList.flatten.length > 0 }.getOrElse(false)
     val maksuttomuuttaPidennettyOnSiirretty = opiskeluoikeus.lisätiedot.collect { case l : MaksuttomuusTieto => l.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.length > 0 }.getOrElse(false)
 
-    if (suoritusVaatiiMaksuttomuusTiedon && oppijanIkäOikeuttaaMaksuttomuuden && alkamispäiväOikeuttaaMaksuttomuuden) {
+    val piirissä = !opiskeluoikeusRepository.checkValpasLainUlkopuolisiaPerusopetuksenVahvistettujaSuorituksia(oppijanOid)
+    val eiPiirissäMuttaMaksuttomuusTietojaSiirretty = !piirissä && (maksuttomuusTietoOnSiirretty || maksuttomuuttaPidennettyOnSiirretty)
+
+    if (suoritusVaatiiMaksuttomuusTiedon && oppijanIkäOikeuttaaMaksuttomuuden && alkamispäiväOikeuttaaMaksuttomuuden && piirissä) {
       HttpStatus.validate(maksuttomuusTietoOnSiirretty) { KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta puuttuu.") }
+    } else if (!piirissä) {
+      HttpStatus.validate(!eiPiirissäMuttaMaksuttomuusTietojaSiirretty) { KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskelija on suorittanut perusopetuksen, aikuisten perusopetuksen oppimäärän tai International Schoolin 9. vuosiluokan ennen 1.1.2021.")}
     } else {
       HttpStatus.fold(
         HttpStatus.validate(!maksuttomuusTietoOnSiirretty) { KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskeluoikeus on alkanut ennen 1.8.2021 ja/tai oppija ei annetun syntymäajan perusteella ole ikänsä puolesta laajennetun oppivelvollisuuden piirissä.")},

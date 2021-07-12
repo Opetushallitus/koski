@@ -21,6 +21,7 @@ trait KoskiOpiskeluoikeusRepository {
   def findByOppijaOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus]
   def findByCurrentUserOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus]
   def findHuollettavaByOppijaOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus]
+  def checkValpasLainUlkopuolisiaPerusopetuksenVahvistettujaSuorituksia(oid: String)(implicit user: KoskiSpecificSession): Boolean
 }
 
 trait AuxiliaryOpiskeluoikeusRepository {

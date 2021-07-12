@@ -1,7 +1,6 @@
 package fi.oph.koski.opiskeluoikeus
 
 import java.sql.SQLException
-
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.KoskiTables._
@@ -17,6 +16,7 @@ import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedot, PerustiedotSyncRep
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
 import fi.oph.koski.schema._
+import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import org.json4s.jackson.JsonMethods
 import org.json4s.{JArray, JObject, JString, JValue}
 import slick.dbio
@@ -30,7 +30,8 @@ class PostgresOpiskeluoikeusRepository(
   henkilöCache: KoskiHenkilöCache,
   oidGenerator: OidGenerator,
   henkilöRepository: OpintopolkuHenkilöRepository,
-  perustiedotSyncRepository: PerustiedotSyncRepository
+  perustiedotSyncRepository: PerustiedotSyncRepository,
+  valpasRajapäivätService: ValpasRajapäivätService
 ) extends KoskiOpiskeluoikeusRepository with DatabaseExecutionContext with QueryMethods with Logging {
   override def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSpecificSession): List[A] = {
     val queryOppijaOids = sequence(oppijat.map { o =>
@@ -184,6 +185,29 @@ class PostgresOpiskeluoikeusRepository(
             opiskeluoikeus.suoritukset.headOption.map(_.tyyppi.koodiarvo),
             opiskeluoikeus.lähdejärjestelmänId) == identifier
         }).map(_.toList).map(Right(_))
+    }
+  }
+
+  def checkValpasLainUlkopuolisiaPerusopetuksenVahvistettujaSuorituksia(oid: String)(implicit user: KoskiSpecificSession): Boolean = {
+    val valpasLakiVoimassaPeruskoulustaValmistuneilla = valpasRajapäivätService.lakiVoimassaPeruskoulustaValmistuneillaAlku
+
+    val query =
+      sql"""
+        select *
+        from opiskeluoikeus
+        cross join jsonb_array_elements(data -> 'suoritukset') suoritukset
+          where (suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'perusopetuksenoppimaara'
+            or suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'aikuistenperusopetuksenoppimaara'
+            or suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'internationalschoolmypvuosiluokka'
+            and suoritukset -> 'koulutusmoduuli' -> 'tunniste' ->> 'koodiarvo' = '9')
+          and (suoritukset -> 'vahvistus' ->> 'päivä')::date < $valpasLakiVoimassaPeruskoulustaValmistuneilla::date
+          and oppija_oid = $oid
+      """
+
+    val result = runDbSync(query.as[Int])
+    result.headOption match {
+      case Some(c) if c > 0 => true
+      case _ => false
     }
   }
 

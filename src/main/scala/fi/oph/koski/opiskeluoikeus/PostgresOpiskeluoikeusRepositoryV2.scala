@@ -8,6 +8,7 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.perustiedot.PerustiedotSyncRepository
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, MuunAmmatillisenKoulutuksenSuoritus}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import slick.dbio
 import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.NoStream
@@ -17,13 +18,15 @@ class PostgresOpiskeluoikeusRepositoryV2(override val db: DB,
                                          henkilöCache: KoskiHenkilöCache,
                                          oidGenerator: OidGenerator,
                                          henkilöRepository: OpintopolkuHenkilöRepository,
-                                         perustiedotSyncRepository: PerustiedotSyncRepository)
+                                         perustiedotSyncRepository: PerustiedotSyncRepository,
+                                         valpasRajapäivätService: ValpasRajapäivätService)
   extends PostgresOpiskeluoikeusRepository(db,
     historyRepository,
     henkilöCache,
     oidGenerator,
     henkilöRepository,
-    perustiedotSyncRepository) {
+    perustiedotSyncRepository,
+    valpasRajapäivätService) {
 
   override protected def createOrUpdateActionBasedOnDbResult(oppijaOid: PossiblyUnverifiedHenkilöOid,
                                                              opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
