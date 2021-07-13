@@ -1,9 +1,10 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.documentation.ExampleData.{vahvistusPaikkakunnalla}
+import fi.oph.koski.documentation.ExampleData.vahvistusPaikkakunnalla
 import fi.oph.koski.documentation.PerusopetusExampleData.perusopetuksenOppimääränSuoritus
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExamplesAikuistenPerusopetus, ExamplesInternationalSchool, LukioExampleData, PerusopetusExampleData}
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.koskiSpecificOppijat
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
@@ -117,6 +118,40 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
           putMaksuttomuus(
             List(Maksuttomuus(date(2021, 8, 1), None, true)),
             KoskiSpecificMockOppijat.oikeusOpiskelunMaksuttomuuteen,
+            alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
+          ) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskelija on suorittanut perusopetuksen, aikuisten perusopetuksen oppimäärän tai International Schoolin 9. vuosiluokan ennen 1.1.2021."))
+          }
+
+          resetFixtures()
+        }
+        "Linkitetty oppija - slavella siirron estävä oppimäärä" in {
+          val opiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen
+
+          putOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.oppivelvollisuustietoSlave1.henkilö) {
+            verifyResponseStatusOk()
+          }
+
+          putMaksuttomuus(
+            List(Maksuttomuus(date(2021, 8, 1), None, true)),
+            KoskiSpecificMockOppijat.oppivelvollisuustietoMaster,
+            alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
+          ) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskelija on suorittanut perusopetuksen, aikuisten perusopetuksen oppimäärän tai International Schoolin 9. vuosiluokan ennen 1.1.2021."))
+          }
+
+          resetFixtures()
+        }
+        "Linkitetty oppija - masterilla siirron estävä oppimäärä" in {
+          val opiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen
+
+          putOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.oppivelvollisuustietoMaster) {
+            verifyResponseStatusOk()
+          }
+
+          putMaksuttomuus(
+            List(Maksuttomuus(date(2021, 8, 1), None, true)),
+            KoskiSpecificMockOppijat.oppivelvollisuustietoSlave1.henkilö,
             alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
           ) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskelija on suorittanut perusopetuksen, aikuisten perusopetuksen oppimäärän tai International Schoolin 9. vuosiluokan ennen 1.1.2021."))

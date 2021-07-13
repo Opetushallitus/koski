@@ -193,6 +193,15 @@ class PostgresOpiskeluoikeusRepository(
 
     val query =
       sql"""
+        with master as (
+          select case when master_oid is not null then master_oid else oid end as oid
+          from henkilo
+          where oid = $oid
+        ), linkitetyt as (
+          select oid as oids
+          from henkilo
+          where henkilo.oid = (select oid from master) or henkilo.master_oid = (select oid from master)
+        )
         select *
         from opiskeluoikeus
         cross join jsonb_array_elements(data -> 'suoritukset') suoritukset
@@ -201,7 +210,7 @@ class PostgresOpiskeluoikeusRepository(
             or suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'internationalschoolmypvuosiluokka'
             and suoritukset -> 'koulutusmoduuli' -> 'tunniste' ->> 'koodiarvo' = '9')
           and (suoritukset -> 'vahvistus' ->> 'päivä')::date < $valpasLakiVoimassaPeruskoulustaValmistuneilla::date
-          and oppija_oid = $oid
+          and oppija_oid = any(select oids from linkitetyt)
       """
 
     val result = runDbSync(query.as[Int])
