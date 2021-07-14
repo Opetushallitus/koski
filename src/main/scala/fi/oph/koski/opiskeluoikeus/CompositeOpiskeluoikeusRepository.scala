@@ -83,6 +83,10 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
     WithWarnings(mainResult ++ virtaResult.getIgnoringWarnings ++ ytrResult.getIgnoringWarnings, virtaResult.warnings ++ ytrResult.warnings)
   }
 
+  def checkValpasLainUlkopuolisiaPerusopetuksenVahvistettujaSuorituksia(oppijaOid: String)(implicit user: KoskiSpecificSession): Boolean = {
+    main.checkValpasLainUlkopuolisiaPerusopetuksenVahvistettujaSuorituksia(oppijaOid)
+  }
+
   def getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, List[Oid]] =
     main.getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid)
 }
