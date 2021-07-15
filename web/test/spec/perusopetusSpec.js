@@ -1719,6 +1719,29 @@ describe('Perusopetus', function() {
           })
         })
       })
+
+      // kts. TOR-1208
+      // Oppiaineella Uskonto/Elämänkatsomustieto sama nimi, joten näytetään myös koodiarvo oppiainetta
+      // valittaessa, jotta homma pelittää oikein
+      describe('Uskonto/Elämänkatsomustieto -vaihtoehdossa näkyy mukana koodiarvo', function() {
+        var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.pakolliset')
+        before(
+          opinnot.valitseSuoritus(undefined, 'Päättötodistus'),
+          editor.edit,
+          editor.subEditor('.pakollinen.KT').propertyBySelector('>tr:first-child').removeValue
+        )
+
+        it('Uskonto/Elämänkatsomustieto-vaihtoehto puuttuu', function() {
+           expect(uusiOppiaine.getOptions()).to.not.include('Uskonto/Elämänkatsomustieto')
+        })
+
+        it('Uskonto/Elämänkatsomustieto ja koodiarvo -vaihtoehto löytyy', function() {
+          expect(uusiOppiaine.getOptions()).to.include('Uskonto/Elämänkatsomustieto ET')
+          expect(uusiOppiaine.getOptions()).to.include('Uskonto/Elämänkatsomustieto KT')
+        })
+
+        after(editor.cancelChanges)
+      })
     })
 
     describe('Päätason suorituksen poistaminen', function() {
