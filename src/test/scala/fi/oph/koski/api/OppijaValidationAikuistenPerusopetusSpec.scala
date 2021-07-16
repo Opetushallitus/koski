@@ -8,6 +8,7 @@ import fi.oph.koski.http._
 import fi.oph.koski.schema._
 import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
 
+import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 class OppijaValidationAikuistenPerusopetusSpec
@@ -198,6 +199,19 @@ class OppijaValidationAikuistenPerusopetusSpec
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = tila, suoritukset = List(aikuistenPerusopetuksenOppimääränSuoritus()))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta valmistunut puuttuu rahoitusmuoto"))
       }
+    }
+  }
+
+  "Kun suorituksen tila 'vahvistettu', opiskeluoikeuden tila ei voi olla 'eronnut' tai 'katsotaan eronneeksi'" in {
+    val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+      oppilaitos = Some(jyväskylänNormaalikoulu),
+      suoritukset = List(aikuistenPerusopetuksenOppimääränSuoritus()),
+      tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(
+        AikuistenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2016, 1, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+        AikuistenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2017, 1, 1), opiskeluoikeusEronnut)
+      )))
+    putOpiskeluoikeus(opiskeluoikeus) {
+      verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaEronnutTaiKatsotaanEronneeksiVaikkaVahvistettuPäätasonSuoritus())
     }
   }
 }

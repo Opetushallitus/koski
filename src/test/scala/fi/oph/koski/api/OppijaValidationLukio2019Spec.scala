@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.documentation.ExampleData.{englanti, ruotsinKieli, suomenKieli, vahvistusPaikkakunnalla}
+import fi.oph.koski.documentation.ExampleData.{englanti, opiskeluoikeusEronnut, opiskeluoikeusLäsnä, ruotsinKieli, suomenKieli, vahvistusPaikkakunnalla, valtionosuusRahoitteinen}
 import fi.oph.koski.documentation.ExamplesLukio2019.{aktiivinenOpiskeluoikeus, oppiaineidenOppimäärienSuoritus, oppimääränSuoritus, vahvistamatonOppimääränSuoritus}
 import fi.oph.koski.documentation.Lukio2019ExampleData._
 import fi.oph.koski.documentation.LukioExampleData.opiskeluoikeusAktiivinen
@@ -12,6 +12,7 @@ import fi.oph.koski.localization.LocalizedStringImplicits.str2localized
 import fi.oph.koski.schema._
 import org.scalatest.FreeSpec
 
+import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 class OppijaValidationLukio2019Spec extends FreeSpec with PutOpiskeluoikeusTestMethods[LukionOpiskeluoikeus] with KoskiHttpSpec with OpiskeluoikeusTestMethodsLukio {
@@ -1556,6 +1557,20 @@ class OppijaValidationLukio2019Spec extends FreeSpec with PutOpiskeluoikeusTestM
       }
     }
   }
+
+  "Kun suorituksen tila 'vahvistettu', opiskeluoikeuden tila ei voi olla 'eronnut' tai 'katsotaan eronneeksi'" in {
+    val opiskeluoikeus = aktiivinenOpiskeluoikeus.copy(
+      tila = LukionOpiskeluoikeudenTila(List(
+        LukionOpiskeluoikeusjakso(LocalDate.of(2016, 1, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+        LukionOpiskeluoikeusjakso(LocalDate.of(2020, 5, 15), opiskeluoikeusEronnut)
+      )),
+      suoritukset = List(oppimääränSuoritus)
+    )
+    putOpiskeluoikeus(opiskeluoikeus) {
+      verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaEronnutTaiKatsotaanEronneeksiVaikkaVahvistettuPäätasonSuoritus())
+    }
+  }
+
 
   private def oppimääränSuoritusIlmanSuullisenKielitaidonKokeita = oppimääränSuoritus.copy(suullisenKielitaidonKokeet = None)
 

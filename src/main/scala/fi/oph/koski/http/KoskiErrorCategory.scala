@@ -144,6 +144,7 @@ object KoskiErrorCategory {
         val vapaanSivistystyönKOTOVahvistettuPäätasoHylätyilläOsasuorituksilla = subcategory("vapaanSivistystyönKOTOVahvistettuPäätasoHylätyilläOsasuorituksilla", "Vapaan sivistyöstyön maahanmuuttajien kotoutumiskoulutuksen suoritus on vahvistettu, vaikka sillä on osasuorituksia, joita ei ole arvioitu hyväksytyksi")
         val vapaanSivistystyönVapaatavoitteisenKoulutuksenVahvistettuPäätasoArvioimattomillaOsasuorituksilla= subcategory("vapaanSivistystyönVapaatavoitteisenKoulutuksenVahvistettuPäätasoArvioimattomillaOsasuorituksilla", "Vapaatavoitteisen vapaan sivistyöstyön koulutuksen suoritus on vahvistettu, vaikka sillä on osasuorituksia, joilta puuttuu arviointi")
         val nuortenPerusopetuksenValmistunutTilaIlmanVahvistettuaPäättötodistusta = subcategory("nuortenPerusopetuksenValmistunutTilaIlmanVahvistettuaPäättötodistusta", "Nuorten perusopetuksen opiskeluoikeutta ei voida päättää tilalla 'valmistunut', jos opiskeluoikeudelta puuttuu vahvistettu päättötodistus")
+        val tilaEronnutTaiKatsotaanEronneeksiVaikkaVahvistettuPäätasonSuoritus = subcategory("tilaEronnutTaiKatsotaanEronneeksiVaikkaVahvistettuPäätasonSuoritus", "Opiskeluoikeutta ei voi merkitä eronneeksi sillä päätason suoritus on vahvistettu. Suorituksen vahvistus tulee poistaa jos opiskeluoikeus halutaan päättää tilaan \"eronnut tai katsotaan eronneeksi\"")
       }
       val tila = new Tila
 
