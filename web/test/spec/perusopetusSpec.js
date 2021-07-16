@@ -777,6 +777,8 @@ describe('Perusopetus', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'))
 
     describe('Opiskeluoikeuden tiedot', function() {
+      var tilaJaVahvistus = opinnot.tilaJaVahvistus
+
       it('Alkutila', function() {
         expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal('4.6.2016')
         expect(opinnot.opiskeluoikeusEditor().subEditor('.property.tila').propertyBySelector('label.tila:contains("Valmistunut")').isVisible()).to.equal(true)
@@ -807,7 +809,15 @@ describe('Perusopetus', function() {
           })
 
           describe('Kun lisätään', function() {
-            before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('eronnut'), opiskeluoikeus.tallenna, editor.saveChanges)
+            before(
+              editor.edit,
+              opinnot.avaaLisaysDialogi,
+              opiskeluoikeus.tila().aseta('eronnut'),
+              tilaJaVahvistus.merkitseKeskeneräiseksi,
+              opiskeluoikeus.tallenna,
+              editor.saveChanges
+            )
+
             it('Opiskeluoikeuden päättymispäivä asetetaan', function() {
               expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal(currentDateStr)
             })
@@ -841,7 +851,15 @@ describe('Perusopetus', function() {
           })
 
           describe('Kun lisätään', function() {
-            before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('valmistunut'), opiskeluoikeus.tallenna, editor.saveChanges)
+            before(
+              editor.edit,
+              tilaJaVahvistus.merkitseValmiiksi,
+              tilaJaVahvistus.lisääVahvistus('1.1.2021'),
+              opinnot.avaaLisaysDialogi,
+              opiskeluoikeus.tila().aseta('valmistunut'),
+              opiskeluoikeus.tallenna,
+              editor.saveChanges
+            )
 
             it('Opiskeluoikeuden päättymispäivä asetetaan', function() {
               expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal(currentDateStr)
