@@ -485,6 +485,21 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               }
             }
           }
+
+          "Kun suorituksen tila 'vahvistettu', opiskeluoikeuden tila ei voi olla 'eronnut' tai 'katsotaan eronneeksi'" in {
+            val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+              tila = AmmatillinenOpiskeluoikeudenTila(List(
+                AmmatillinenOpiskeluoikeusjakso(LocalDate.of(2016, 1, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+                AmmatillinenOpiskeluoikeusjakso(LocalDate.of(2017, 1, 1), opiskeluoikeusEronnut)
+              )),
+              suoritukset = List(autoalanPerustutkinnonSuoritus().copy(
+                vahvistus = vahvistus(date(2017, 1, 1)),
+                osasuoritukset = Some(List(muunAmmatillisenTutkinnonOsanSuoritus))
+              )))
+            putOpiskeluoikeus(opiskeluoikeus) {
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaEronnutTaiKatsotaanEronneeksiVaikkaVahvistettuPäätasonSuoritus())
+            }
+          }
         }
       }
     }

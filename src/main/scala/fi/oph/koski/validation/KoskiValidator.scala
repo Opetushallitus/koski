@@ -109,7 +109,8 @@ class KoskiValidator(
               validateOppilaitoksenMuutos(opiskeluoikeus),
               NuortenPerusopetuksenOpiskeluoikeusValidation.validateNuortenPerusopetuksenOpiskeluoikeus(opiskeluoikeus),
               TiedonSiirrostaPuuttuvatSuorituksetValidation.validateEiSamaaAlkamispaivaa(opiskeluoikeus, koskiOpiskeluoikeudet),
-              HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, Nil)))
+              HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, Nil))),
+              TilanAsettaminenKunVahvistettuSuoritusValidation.validateOpiskeluoikeus(opiskeluoikeus)
             )
           } match {
           case HttpStatus.ok => Right(opiskeluoikeus)

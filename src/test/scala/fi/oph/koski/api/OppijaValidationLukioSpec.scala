@@ -9,6 +9,7 @@ import fi.oph.koski.documentation.{ExamplesLukio, LukioExampleData}
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema._
 
+import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 // Lukiosuoritusten validointi perustuu tässä testattua diaarinumeroa lukuunottamatta domain-luokista generoituun JSON-schemaan.
@@ -126,6 +127,22 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
       )))
       putOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
+      }
+    }
+    "Kun suorituksen tila 'vahvistettu', opiskeluoikeuden tila ei voi olla 'eronnut' tai 'katsotaan eronneeksi'" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        tila = LukionOpiskeluoikeudenTila(List(
+          LukionOpiskeluoikeusjakso(LocalDate.of(2016, 1, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+          LukionOpiskeluoikeusjakso(LocalDate.of(2017, 1, 1), opiskeluoikeusEronnut)
+        )),
+        suoritukset = List(päättötodistusSuoritus.copy(
+          vahvistus = vahvistusPaikkakunnalla(date(2016, 6, 4)),
+          osasuoritukset = Some(List(
+            suoritus(LukioExampleData.lukionÄidinkieli("AI1", laajuus(1.0f, "4"), pakollinen = true)).copy(arviointi = arviointi("9"))
+          ))
+        )))
+      putOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaEronnutTaiKatsotaanEronneeksiVaikkaVahvistettuPäätasonSuoritus())
       }
     }
   }
