@@ -62,13 +62,25 @@ export const UusiOppiaineDropdown = (
     deleteOrganizationalPreference(organisaatioOid, paikallinenProto.value.classes[0], localKey).onValue(setPaikallisetOppiaineet)
   }
 
+  const getDisplayValue = oppiaine => {
+    // TOR-1208 - Uskonnon ja elämänkatsomustiedon oppiaineilla on sama nimi, jolloin niitä ei voi erottaa toisistaan.
+    // Näytetään siis näiden tapauksessa myös tunnisteen koodiarvo, jotta ne voidaan erottaa toisistaan dropdownissa.
+    const tunniste = modelLookup(oppiaine, 'tunniste')
+    var displayValue = tunniste.value.title
+    if (['koskioppiaineetyleissivistava_KT', 'koskioppiaineetyleissivistava_ET'].includes(tunniste.value.value)) {
+      displayValue += ' ' + tunniste.value.data.koodiarvo
+    }
+
+    return displayValue
+  }
+
   return (<div className={'uusi-oppiaine'}>
     {
       elementWithLoadingIndicator(oppiaineet.map('.length').map(length => length || paikallinenProto
         ? <DropDown
           options={oppiaineet}
           keyValue={oppiaine => isUusi(oppiaine) ? 'uusi' : key(oppiaine)}
-          displayValue={oppiaine => isUusi(oppiaine) ? t('Lisää') + '...' : modelLookup(oppiaine, 'tunniste').value.title}
+          displayValue={oppiaine => isUusi(oppiaine) ? t('Lisää') + '...' : getDisplayValue(oppiaine)}
           onSelectionChanged={resultCallback}
           selectionText={placeholder}
           newItem={allowPaikallinen && paikallinenProto}
