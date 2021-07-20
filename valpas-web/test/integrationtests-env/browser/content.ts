@@ -3,10 +3,12 @@ import { $ } from "./core"
 import { driver } from "./driver"
 import { eventually } from "./utils"
 
+const defaultTimeout = 5000
+
 export const textEventuallyEquals = (
   selector: string,
   expected: string,
-  timeout = 1000
+  timeout = defaultTimeout
 ) =>
   eventually(async () => {
     const element = await $(selector)
@@ -16,7 +18,7 @@ export const textEventuallyEquals = (
 export const contentEventuallyEquals = (
   selector: string,
   expected: string,
-  timeout = 1000
+  timeout = defaultTimeout
 ) =>
   textEventuallyEquals(
     selector,
@@ -32,7 +34,7 @@ export const attributeEventuallyEquals = (
   selector: string,
   attributeName: string,
   expected: string,
-  timeout = 1000
+  timeout = defaultTimeout
 ) =>
   eventually(async () => {
     const element = await $(selector)
