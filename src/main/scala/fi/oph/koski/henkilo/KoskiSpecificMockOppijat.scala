@@ -114,6 +114,7 @@ object KoskiSpecificMockOppijat {
   val perusopetusOppijaMaaratRaportti_erikois = koskiSpecificOppijat.oppija("e", "erikois", "180900A2298")
   val perusopetusOppijaMaaratRaportti_virheellisestiSiirretty = koskiSpecificOppijat.oppija("v", "virheellisestiSiirretty", "050501A093H")
   val perusopetusOppijaMaaratRaportti_virheellisestiSiirrettyVieraskielinen = koskiSpecificOppijat.oppija("v", "virheellisestiSiirrettyVieraskielinen", "131100A355P", äidinkieli = Some("en"))
+  val perusopetusOppijaMaaratRaportti_kotiopetus= koskiSpecificOppijat.oppija("k", "kotiopetus", "190371-103A")
   val organisaatioHistoriallinen = koskiSpecificOppijat.oppija("o", "organisaatioHistoriallinen", "210728-156E")
   val lukioKurssikertymaRaportti_oppimaara = koskiSpecificOppijat.oppija("Kurssikertyma", "Oppimaara", "280900A945T")
   val lukioKurssikertymaRaportti_aineopiskelija_eronnut = koskiSpecificOppijat.oppija("Kurssikertyma", "Eronnut Aineopiskelija", "280900A9554")

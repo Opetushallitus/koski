@@ -163,6 +163,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.perusopetusOppijaMaaratRaportti_erikois, PerusopetusOppijaMaaratRaporttiFixtures.erikoisLisäopetus),
       (KoskiSpecificMockOppijat.perusopetusOppijaMaaratRaportti_virheellisestiSiirretty, PerusopetusOppijaMaaratRaporttiFixtures.virheellisestiSiirrettyVaikeastiVammainenLisäopetus),
       (KoskiSpecificMockOppijat.perusopetusOppijaMaaratRaportti_virheellisestiSiirrettyVieraskielinen, PerusopetusOppijaMaaratRaporttiFixtures.virheellisestiSiirrettyVammainenLisäopetus),
+      (KoskiSpecificMockOppijat.perusopetusOppijaMaaratRaportti_kotiopetus, PerusopetusOppijaMaaratRaporttiFixtures.kotiopetus),
       (KoskiSpecificMockOppijat.lukioKurssikertymaRaportti_oppimaara, LukioKurssikertymaRaporttiFixtures.oppimaara),
       (KoskiSpecificMockOppijat.lukioKurssikertymaRaportti_aineopiskelija_eronnut, LukioKurssikertymaRaporttiFixtures.aineopiskelijaEronnut),
       (KoskiSpecificMockOppijat.lukioKurssikertymaRaportti_aineopiskelija_valmistunut, LukioKurssikertymaRaporttiFixtures.aineopiskelijaValmistunut),
