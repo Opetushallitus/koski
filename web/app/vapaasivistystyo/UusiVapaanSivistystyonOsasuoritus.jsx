@@ -39,6 +39,8 @@ export const UusiVapaanSivistystyonOsasuoritus = ({suoritusPrototypes, setExpand
   const kotoTyöelämäJaYhteiskuntataidotTyöelämäjakso = findSuoritusPrototyyppi('vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojentyoelamajakso')
   const kotoValinnaisetOpinnot = findSuoritusPrototyyppi('vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojenosasuoritus')
 
+  const lukutaitokoulutuksenKokonaisuus = findSuoritusPrototyyppi('vapaansivistystyonlukutaitokoulutuksenkokonaisuudensuoritus')
+
   return (
     <>
       {
@@ -125,6 +127,15 @@ export const UusiVapaanSivistystyonOsasuoritus = ({suoritusPrototypes, setExpand
         kotoOsaAlueVapaavalintaiset &&
         <LisääOsaAlue suoritusPrototype={kotoOsaAlueVapaavalintaiset}
                           selectionText={'Lisää valinnaisten opintojen osa-alue'}
+                          setExpanded={setExpanded}
+        />
+      }
+      {
+        lukutaitokoulutuksenKokonaisuus &&
+        <LisääKoodistosta koodistoUri={'vstlukutaitokoulutuksenkokonaisuus'}
+                          suoritusPrototype={lukutaitokoulutuksenKokonaisuus}
+                          className={'vst-lukutaitokoulutuksenkokonaisuudensuoritus'}
+                          selectionText={'Lisää kokonaisuus'}
                           setExpanded={setExpanded}
         />
       }
