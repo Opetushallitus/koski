@@ -12,11 +12,6 @@ object VapaaSivistystyöValidation {
           validateVapaanSivistystyönPäätasonKOPSSuorituksenOsaamiskokonaisuuksienLaajuudet(kops)
         ))
       }
-      case koto: OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus if suoritus.vahvistettu => {
-        HttpStatus.fold(List(
-          validateVapaaSivistystyöKOTOVahvistetunPäätasonOsaSuoritukset(koto)
-        ))
-      }
       case vapaa: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus if suoritus.vahvistettu => {
         HttpStatus.fold(List(
           validateVapaaSivistystyöVapaatavoitteinenVahvistetunPäätasonOsaSuoritukset(vapaa)
@@ -29,7 +24,7 @@ object VapaaSivistystyöValidation {
   }
 
   private def validateVapaanSivistystyönPäätasonKOPSSuorituksenLaajuus(suoritus: OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus): HttpStatus = {
-    if (hyväksytystiArvioidutOsasuoritukset(suoritus.osasuoritusLista.map(_.osasuoritusLista).flatten).map(_.koulutusmoduuli.laajuusArvo(0)).sum < 53.0) {
+    if (suoritus.osasuoritusLista.map(_.osasuoritusLista).flatten.map(_.koulutusmoduuli.laajuusArvo(0)).sum < 53.0) {
       KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus("Päätason suoritus " + suorituksenTunniste(suoritus) + " on vahvistettu, mutta sillä ei ole 53 opintopisteen edestä hyväksytyksi arvioituja suorituksia")
     }
     else {
@@ -42,26 +37,11 @@ object VapaaSivistystyöValidation {
       case _:OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus => true
       case _ => false
     })
-      .exists(s => hyväksytystiArvioidutOsasuoritukset(s.osasuoritusLista).map(_.koulutusmoduuli.laajuusArvo(0)).sum < 4.0)) {
+      .exists(s => s.osasuoritusLista.map(_.koulutusmoduuli.laajuusArvo(0)).sum < 4.0)) {
       KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus("Päätason suoritus " + suorituksenTunniste(suoritus) + " on vahvistettu, mutta sillä on hyväksytyksi arvioituja osaamiskokonaisuuksia, joiden laajuus on alle 4 opintopistettä")
     }
     else {
       HttpStatus.ok
-    }
-  }
-
-  private def hyväksytystiArvioidutOsasuoritukset(suoritukset: List[Suoritus]): List[Suoritus] = {
-    suoritukset.filter(_.viimeisinArviointi match {
-      case Some(arviointi) if arviointi.hyväksytty => true
-      case _ => false
-    })
-  }
-
-  private def validateVapaaSivistystyöKOTOVahvistetunPäätasonOsaSuoritukset(suoritus: OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus): HttpStatus = {
-    if (hyväksytystiArvioidutOsasuoritukset(suoritus.osasuoritusLista).length == suoritus.osasuoritusLista.length) {
-      HttpStatus.ok
-    } else {
-      KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönKOTOVahvistettuPäätasoHylätyilläOsasuorituksilla()
     }
   }
 

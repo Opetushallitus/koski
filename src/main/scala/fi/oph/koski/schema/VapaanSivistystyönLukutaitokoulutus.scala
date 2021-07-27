@@ -41,7 +41,6 @@ case class VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus(
 @Title("Arviointi")
 case class LukutaitokoulutuksenArviointi(
   @KoodistoKoodiarvo("Hyväksytty")
-  @KoodistoKoodiarvo("Hylätty")
   arvosana: Koodistokoodiviite = Koodistokoodiviite("Hyväksytty", "arviointiasteikkovst"),
   päivä: LocalDate,
   @KoodistoUri("arviointiasteikkokehittyvankielitaidontasot")

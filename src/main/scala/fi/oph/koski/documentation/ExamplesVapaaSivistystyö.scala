@@ -91,7 +91,7 @@ object VapaaSivistystyöExample {
         ),
         opintokokonaisuudenSuoritus(
           opintokokonaisuus("Mat06", "Trigonometria", "Trigonometrian perusteet", 2.0),
-          vstArviointi("Hylätty", date(2021, 12, 10))
+          vstArviointi("Hyväksytty", date(2021, 12, 10))
         )
       )),
       osaamiskokonaisuudenSuoritus("1006", List(

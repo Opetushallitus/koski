@@ -148,7 +148,6 @@ case class MuuallaSuoritetutVapaanSivistystyönOpinnot(
 @Title("Arviointi")
 case class OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi(
   @KoodistoKoodiarvo("Hyväksytty")
-  @KoodistoKoodiarvo("Hylätty")
   arvosana: Koodistokoodiviite = Koodistokoodiviite("Hyväksytty", "arviointiasteikkovst"),
   päivä: LocalDate
 ) extends ArviointiPäivämäärällä with VapaanSivistystyönKoulutuksenArviointi
@@ -157,10 +156,7 @@ trait VapaanSivistystyönKoulutuksenArviointi extends KoodistostaLöytyväArvioi
   @KoodistoUri("arviointiasteikkovst")
   def arvosana: Koodistokoodiviite
   def arvioitsijat = None
-  def hyväksytty = arvosana.koodiarvo match {
-    case "Hylätty" => false
-    case _ => true
-  }
+  def hyväksytty = arvosana.koodiarvo == "Hyväksytty"
 }
 
 @Description("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")
@@ -218,7 +214,6 @@ case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintoje
 @Title("Kieliopintojen arviointi")
 case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi(
   @KoodistoKoodiarvo("Hyväksytty")
-  @KoodistoKoodiarvo("Hylätty")
   arvosana: Koodistokoodiviite = Koodistokoodiviite("Hyväksytty", "arviointiasteikkovst"),
   kuullunYmmärtämisenTaitotaso: Option[VSTKehittyvänKielenTaitotasonArviointi],
   puhumisenTaitotaso: Option[VSTKehittyvänKielenTaitotasonArviointi],
