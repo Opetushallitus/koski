@@ -1,7 +1,8 @@
 package fi.oph.koski.schema
 
-import fi.oph.scalaschema.annotation.{Description, Title}
+import java.time.LocalDate
 
+import fi.oph.scalaschema.annotation.{Description, Title}
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
 
 case class VapaanSivistystyönLukutaitokoulutuksenSuoritus(
@@ -34,8 +35,31 @@ case class VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus(
   koulutusmoduuli: VapaanSivistystyönLukutaidonKokonaisuus,
   @KoodistoKoodiarvo("vstlukutaitokoulutuksenkokonaisuudensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstlukutaitokoulutuksenkokonaisuudensuoritus", koodistoUri = "suorituksentyyppi"),
-  override val arviointi: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi]] = None
+  override val arviointi: Option[List[LukutaitokoulutuksenArviointi]] = None
 ) extends Suoritus with Vahvistukseton
+
+@Title("Arviointi")
+case class LukutaitokoulutuksenArviointi(
+  @KoodistoKoodiarvo("Hyväksytty")
+  @KoodistoKoodiarvo("Hylätty")
+  arvosana: Koodistokoodiviite = Koodistokoodiviite("Hyväksytty", "arviointiasteikkovst"),
+  päivä: LocalDate,
+  @KoodistoUri("arviointiasteikkokehittyvankielitaidontasot")
+  @KoodistoKoodiarvo("A1.1")
+  @KoodistoKoodiarvo("A1.2")
+  @KoodistoKoodiarvo("A1.3")
+  @KoodistoKoodiarvo("A2.1")
+  @KoodistoKoodiarvo("A2.2")
+  @KoodistoKoodiarvo("B1.1")
+  @KoodistoKoodiarvo("B1.2")
+  @KoodistoKoodiarvo("B2.1")
+  @KoodistoKoodiarvo("B2.2")
+  @KoodistoKoodiarvo("C1.1")
+  @KoodistoKoodiarvo("C1.2")
+  @KoodistoKoodiarvo("C2.1")
+  @KoodistoKoodiarvo("C2.2")
+  taitotaso: Koodistokoodiviite
+) extends ArviointiPäivämäärällä with VapaanSivistystyönKoulutuksenArviointi
 
 trait VapaanSivistystyönLukutaitokoulutuksenOsasuoritustenKoulutusmoduuli extends KoulutusmoduuliValinnainenLaajuus with KoodistostaLöytyväKoulutusmoduuli {
   def laajuus: Option[LaajuusOpintopisteissä]

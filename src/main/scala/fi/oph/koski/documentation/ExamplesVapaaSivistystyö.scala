@@ -286,6 +286,10 @@ object VapaaSivistystyöExampleData {
     OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi(Koodistokoodiviite(arvosana, "arviointiasteikkovst"), päivä)
   }
 
+  def lukutaitokoulutuksenArviointi(arvosana: String, päivä: LocalDate = date(2021, 10, 30), taitotaso: String = "C2.2") = {
+    LukutaitokoulutuksenArviointi(Koodistokoodiviite(arvosana, "arviointiasteikkovst"), päivä, Koodistokoodiviite(taitotaso, "arviointiasteikkokehittyvankielitaidontasot"))
+  }
+
   def laajuus(arvo: Double): LaajuusOpintopisteissä = LaajuusOpintopisteissä(arvo = arvo, yksikkö = laajuusOpintopisteissä)
 
   // Maahanmuuttajien kotoutumiskoulutuksen rakenteen osia
@@ -398,7 +402,7 @@ object VapaaSivistystyöExampleData {
         Koodistokoodiviite(koodiarvo = "vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus", koodistoUri = "vstlukutaitokoulutuksenkokonaisuus"),
         Some(LaajuusOpintopisteissä(20))
       ),
-      arviointi = Some(List(vstArviointi()))
+      arviointi = Some(List(lukutaitokoulutuksenArviointi("Hyväksytty")))
     )
   }
 
@@ -408,7 +412,7 @@ object VapaaSivistystyöExampleData {
         Koodistokoodiviite(koodiarvo = "vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus", koodistoUri = "vstlukutaitokoulutuksenkokonaisuus"),
         Some(LaajuusOpintopisteissä(20))
       ),
-      arviointi = Some(List(vstArviointi()))
+      arviointi = Some(List(lukutaitokoulutuksenArviointi("Hyväksytty")))
     )
   }
 
@@ -418,7 +422,7 @@ object VapaaSivistystyöExampleData {
         Koodistokoodiviite(koodiarvo = "vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus", koodistoUri = "vstlukutaitokoulutuksenkokonaisuus"),
         Some(LaajuusOpintopisteissä(20))
       ),
-      arviointi = Some(List(vstArviointi()))
+      arviointi = Some(List(lukutaitokoulutuksenArviointi("Hyväksytty")))
     )
   }
 
@@ -428,7 +432,7 @@ object VapaaSivistystyöExampleData {
         Koodistokoodiviite(koodiarvo = "vstlukutaitokoulutuksennumeeristentaitojenkokonaisuudensuoritus", koodistoUri = "vstlukutaitokoulutuksenkokonaisuus"),
         Some(LaajuusOpintopisteissä(20))
       ),
-      arviointi = Some(List(vstArviointi()))
+      arviointi = Some(List(lukutaitokoulutuksenArviointi("Hyväksytty")))
     )
   }
 

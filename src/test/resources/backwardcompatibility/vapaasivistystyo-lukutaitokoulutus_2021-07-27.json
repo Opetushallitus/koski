@@ -172,6 +172,10 @@
             "koodistoUri" : "arviointiasteikkovst"
           },
           "päivä" : "2021-10-30",
+          "taitotaso" : {
+            "koodiarvo" : "C2.2",
+            "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
+          },
           "hyväksytty" : true
         } ]
       }, {
@@ -208,6 +212,10 @@
             "koodistoUri" : "arviointiasteikkovst"
           },
           "päivä" : "2021-10-30",
+          "taitotaso" : {
+            "koodiarvo" : "C2.2",
+            "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
+          },
           "hyväksytty" : true
         } ]
       }, {
@@ -244,6 +252,10 @@
             "koodistoUri" : "arviointiasteikkovst"
           },
           "päivä" : "2021-10-30",
+          "taitotaso" : {
+            "koodiarvo" : "C2.2",
+            "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
+          },
           "hyväksytty" : true
         } ]
       }, {
@@ -280,6 +292,10 @@
             "koodistoUri" : "arviointiasteikkovst"
           },
           "päivä" : "2021-10-30",
+          "taitotaso" : {
+            "koodiarvo" : "C2.2",
+            "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
+          },
           "hyväksytty" : true
         } ]
       } ]

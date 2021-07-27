@@ -155,7 +155,7 @@ describe('VST', function () {
       )
 
       it('toimii', function () {
-        expect(extractAsText(S('.vst-osasuoritus'))).to.include('Vapaan sivistystyön lukutaitokoulutuksen numeeristen taitojen suoritus 5 op Hyväksytty')
+        expect(extractAsText(S('.vst-osasuoritus'))).to.include('Vapaan sivistystyön lukutaitokoulutuksen numeeristen taitojen suoritus 5 op Hyväksytty A1.1')
       })
 
       describe('Suorituksen merkkaaminen valmiiksi', function () {
