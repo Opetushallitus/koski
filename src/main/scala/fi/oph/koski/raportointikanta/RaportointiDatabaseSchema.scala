@@ -188,6 +188,7 @@ object RaportointiDatabaseSchema {
     val koulukoti = column[Boolean]("koulukoti")
     val oppimääränSuorittaja = column[Boolean]("oppimaaran_suorittaja")
     val oikeuttaMaksuttomuuteenPidennetty = column[Boolean]("oikeutta_maksuttomuuteen_pidennetty")
+    val kotiopetus = column[Boolean]("kotiopetus")
 
     def * = (
       opiskeluoikeusOid ::
@@ -219,6 +220,7 @@ object RaportointiDatabaseSchema {
       koulukoti ::
       oppimääränSuorittaja ::
       oikeuttaMaksuttomuuteenPidennetty ::
+      kotiopetus ::
       id ::
       HNil
     ).mappedWith(Generic[ROpiskeluoikeusAikajaksoRow])
@@ -499,6 +501,7 @@ case class ROpiskeluoikeusAikajaksoRow(
   koulukoti: Boolean = false,
   oppimääränSuorittaja: Boolean = false,
   oikeuttaMaksuttomuuteenPidennetty: Boolean = false,
+  kotiopetus: Boolean = false,
   id: Long = 0
 ) extends AikajaksoRow[ROpiskeluoikeusAikajaksoRow] {
   def truncateToDates(start: Date, end: Date): ROpiskeluoikeusAikajaksoRow = this.copy(

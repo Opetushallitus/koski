@@ -200,6 +200,32 @@ object PerusopetusOppijaMaaratRaporttiFixtures {
     lisätiedot = None
   )
 
+  val kotiopetus = PerusopetuksenOpiskeluoikeus(
+    tila = tilaLäsnä,
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    suoritukset = List(
+      PerusopetuksenVuosiluokanSuoritus(
+        koulutusmoduuli = PerusopetuksenLuokkaAste(6, perusopetuksenDiaarinumero),
+        luokka = "6-7C",
+        toimipiste = jyväskylänNormaalikoulu,
+        suorituskieli = suomenKieli,
+        alkamispäivä = Some(date)
+      ),
+      PerusopetuksenVuosiluokanSuoritus(
+        koulutusmoduuli = PerusopetuksenLuokkaAste(5, perusopetuksenDiaarinumero),
+        luokka = "5C",
+        toimipiste = jyväskylänNormaalikoulu,
+        suorituskieli = suomenKieli,
+        alkamispäivä = Some(date.minusYears(1)),
+        vahvistus = vahvistusPaikkakunnalla(date),
+        osasuoritukset = kaikkiAineet
+      )
+    ),
+    lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+      kotiopetusjaksot = Some(List(aikajakso))
+    ))
+  )
+
   val organisaatiohistoria = Some(List(
     OpiskeluoikeudenOrganisaatiohistoria(
       muutospäivä = date.plusYears(1),

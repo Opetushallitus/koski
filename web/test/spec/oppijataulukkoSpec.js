@@ -94,7 +94,7 @@ describe('Oppijataulukko', function() {
           page.oppijataulukko.filterBy('luokka', '6-7')
         )
         it('toimii', function() {
-          expect(page.oppijataulukko.data().map(function(row) { return row[8]})).to.deep.equal(['6-7C'])
+          expect(page.oppijataulukko.data().map(function(row) { return row[8]})).to.deep.equal(['6-7C', '6-7C'])
         })
       })
     })
@@ -188,6 +188,7 @@ describe('Oppijataulukko', function() {
         expect(page.oppijataulukko.names()).to.deep.equal([
           'e, erikois',
           'Hetuton, Heikki',
+          "k, kotiopetus",
           'Kelalle, Useita',
           'Koululainen, Kaisa',
           'Lukiolainen, Liisa',
@@ -227,6 +228,7 @@ describe('Oppijataulukko', function() {
             'Lukiolainen, Liisa',
             'Koululainen, Kaisa',
             'Kelalle, Useita',
+            "k, kotiopetus",
             'Hetuton, Heikki',
             'e, erikois'
           ])

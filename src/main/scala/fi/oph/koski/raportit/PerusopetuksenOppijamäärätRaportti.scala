@@ -29,7 +29,8 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
       kuljetusetu = r.rs.getInt("kuljetusetu"),
       sisäoppilaitosmainenMajoitus = r.rs.getInt("sisäoppilaitosmainenMajoitus"),
       koulukoti = r.rs.getInt("koulukoti"),
-      joustavaPerusopetus = r.rs.getInt("joustava_perusopetus")
+      joustavaPerusopetus = r.rs.getInt("joustava_perusopetus"),
+      kotiopetus = r.rs.getInt("kotiopetus")
     )
   )
 
@@ -51,18 +52,19 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
         oh.oppilaitos_oid,
         opetuskieli_koodisto.nimi as opetuskieli,
         pts.koulutusmoduuli_koodiarvo as vuosiluokka,
-        count(distinct oo.opiskeluoikeus_oid) as oppilaita,
-        count(distinct (case when r_henkilo.aidinkieli not in ('fi', 'sv', 'se', 'ri', 'vk') then oo.opiskeluoikeus_oid end)) as vieraskielisiä,
-        count(distinct (case when                   vaikeasti_vammainen and pidennetty_oppivelvollisuus then oo.opiskeluoikeus_oid end)) as pidennettyOppivelvollisuusJaVaikeastiVammainen,
-        count(distinct (case when vammainen and not vaikeasti_vammainen and pidennetty_oppivelvollisuus then oo.opiskeluoikeus_oid end)) as pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen,
-        count(distinct (case when                   vaikeasti_vammainen and not (pidennetty_oppivelvollisuus and erityinen_tuki) then oo.opiskeluoikeus_oid end)) as virheellisestiSiirretytVaikeastiVammaiset,
-        count(distinct (case when vammainen and not vaikeasti_vammainen and not (pidennetty_oppivelvollisuus and erityinen_tuki) then oo.opiskeluoikeus_oid end)) as virheellisestiSiirretytMuutKuinVaikeimminVammaiset,
-        count(distinct (case when erityinen_tuki then oo.opiskeluoikeus_oid end)) as erityiselläTuella,
-        count(distinct (case when majoitusetu then oo.opiskeluoikeus_oid end)) as majoitusetu,
-        count(distinct (case when kuljetusetu then oo.opiskeluoikeus_oid end)) as kuljetusetu,
-        count(distinct (case when sisaoppilaitosmainen_majoitus then oo.opiskeluoikeus_oid end)) as sisäoppilaitosmainenMajoitus,
-        count(distinct (case when koulukoti then oo.opiskeluoikeus_oid end)) as koulukoti,
-        count(distinct (case when joustava_perusopetus then oo.opiskeluoikeus_oid end)) as joustava_perusopetus
+        count(distinct (case when not kotiopetus then oo.opiskeluoikeus_oid end)) as oppilaita,
+        count(distinct (case when not kotiopetus and r_henkilo.aidinkieli not in ('fi', 'sv', 'se', 'ri', 'vk') then oo.opiskeluoikeus_oid end)) as vieraskielisiä,
+        count(distinct (case when not kotiopetus and                   vaikeasti_vammainen and pidennetty_oppivelvollisuus then oo.opiskeluoikeus_oid end)) as pidennettyOppivelvollisuusJaVaikeastiVammainen,
+        count(distinct (case when not kotiopetus and vammainen and not vaikeasti_vammainen and pidennetty_oppivelvollisuus then oo.opiskeluoikeus_oid end)) as pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen,
+        count(distinct (case when not kotiopetus and                   vaikeasti_vammainen and not (pidennetty_oppivelvollisuus and erityinen_tuki) then oo.opiskeluoikeus_oid end)) as virheellisestiSiirretytVaikeastiVammaiset,
+        count(distinct (case when not kotiopetus and vammainen and not vaikeasti_vammainen and not (pidennetty_oppivelvollisuus and erityinen_tuki) then oo.opiskeluoikeus_oid end)) as virheellisestiSiirretytMuutKuinVaikeimminVammaiset,
+        count(distinct (case when not kotiopetus and erityinen_tuki then oo.opiskeluoikeus_oid end)) as erityiselläTuella,
+        count(distinct (case when not kotiopetus and majoitusetu then oo.opiskeluoikeus_oid end)) as majoitusetu,
+        count(distinct (case when not kotiopetus and kuljetusetu then oo.opiskeluoikeus_oid end)) as kuljetusetu,
+        count(distinct (case when not kotiopetus and sisaoppilaitosmainen_majoitus then oo.opiskeluoikeus_oid end)) as sisäoppilaitosmainenMajoitus,
+        count(distinct (case when not kotiopetus and koulukoti then oo.opiskeluoikeus_oid end)) as koulukoti,
+        count(distinct (case when not kotiopetus and joustava_perusopetus then oo.opiskeluoikeus_oid end)) as joustava_perusopetus,
+        count(distinct (case when kotiopetus then oo.opiskeluoikeus_oid end)) as kotiopetus
       from r_opiskeluoikeus oo
       join r_organisaatiohistoria oh on oh.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
       join r_organisaatio oppilaitos on oppilaitos.organisaatio_oid = oh.oppilaitos_oid
@@ -103,7 +105,8 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
         sum(kuljetusetu),
         sum(sisäoppilaitosmainenMajoitus),
         sum(koulukoti),
-        sum(joustava_perusopetus)
+        sum(joustava_perusopetus),
+        sum(kotiopetus)
       from q
       group by oppilaitos_nimi, oppilaitos_oid, opetuskieli
     ) select *
@@ -128,7 +131,8 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
     "kuljetusetu" -> Column("Kuljetusetu", comment = Some("Perusopetuksen oppilaat, joille löytyy opiskeluoikeuden lisätiedoista raportin tulostusparametreissa määritellylle päivälle osuva kuljetusetujakso.")),
     "sisäoppilaitosmainenMajoitus" -> Column("Sisäoppilaitosmainen majoitus", comment = Some("Perusopetuksen oppilaat, joille löytyy opiskeluoikeuden lisätiedoista raportin tulostusparametreissa määritellylle päivälle osuva sisäoppilaitosmaisen majoituksen jakso.")),
     "koulukoti" -> Column("Koulukotioppilas", comment = Some("Perusopetuksen oppilaat, joille löytyy opiskeluoikeuden lisätiedoista raportin tulostusparametreissa määritellylle päivälle osuva koulukotijakso.")),
-    "joustavaPerusopetus" -> Column("Joustava perusopetus", comment = Some("Perusopetuksen oppilaat, joille löytyy opiskeluoikeuden lisätiedoista raportin tulostusparametreissa määritellylle päivälle osuva joustavan perusopetuksen jakso."))
+    "joustavaPerusopetus" -> Column("Joustava perusopetus", comment = Some("Perusopetuksen oppilaat, joille löytyy opiskeluoikeuden lisätiedoista raportin tulostusparametreissa määritellylle päivälle osuva joustavan perusopetuksen jakso.")),
+    "kotiopetus" -> Column("kotiopetus", comment = Some("Perusopetuksen oppilaat, joille löytyy opiskeluoikeuden lisätiedoista raportin tulostusparametreissa määritellylle päivälle osuva kotiopetusjakso."))
   )
 }
 
@@ -148,5 +152,6 @@ case class PerusopetuksenOppijamäärätRaporttiRow(
   kuljetusetu: Int,
   sisäoppilaitosmainenMajoitus: Int,
   koulukoti: Int,
-  joustavaPerusopetus: Int
+  joustavaPerusopetus: Int,
+  kotiopetus: Int
 )
