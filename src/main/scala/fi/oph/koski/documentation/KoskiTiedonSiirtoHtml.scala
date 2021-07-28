@@ -18,6 +18,7 @@ object KoskiTiedonSiirtoHtml {
     "IB-koulutus",
     "Ammatillinen koulutus",
     "Valmentava koulutus",
+    "Vapaa sivistystyö",
     "Korkeakoulu (Virrasta)",
     "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)"
   )
@@ -31,6 +32,7 @@ object KoskiTiedonSiirtoHtml {
     "IB-koulutus" -> ExamplesIB.examples,
     "Ammatillinen koulutus" -> ExamplesAmmatillinen.examples,
     "Valmentava koulutus" -> (ExamplesValma.examples ++ ExamplesTelma.examples),
+    "Vapaa sivistystyö" -> ExamplesVapaaSivistystyö.examples,
     "Korkeakoulu (Virrasta)" -> ExamplesKorkeakoulu.examples,
     "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)" -> ExamplesYlioppilastutkinto.examples
   )
