@@ -77,7 +77,7 @@ trait Suoritus {
   def ryhmittelytekijä: Option[String] = None
   def salliDuplikaatit = false
 
-  final def withKoulutusmoduuli(km: Koulutusmoduuli): Suoritus = {
+  def withKoulutusmoduuli(km: Koulutusmoduuli): Suoritus = {
     import mojave._
     shapeless.lens[Suoritus].field[Koulutusmoduuli]("koulutusmoduuli").set(this)(km)
   }
@@ -198,6 +198,11 @@ trait PäätasonSuoritus extends Suoritus {
   final def withOsasuoritukset(oss: Option[List[Suoritus]]): PäätasonSuoritus = {
     import mojave._
     shapeless.lens[PäätasonSuoritus].field[Option[List[Suoritus]]]("osasuoritukset").set(this)(oss)
+  }
+
+  override def withKoulutusmoduuli(km: Koulutusmoduuli): PäätasonSuoritus = {
+    import mojave._
+    shapeless.lens[PäätasonSuoritus].field[Koulutusmoduuli]("koulutusmoduuli").set(this)(km)
   }
 }
 

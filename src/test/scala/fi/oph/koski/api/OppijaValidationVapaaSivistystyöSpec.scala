@@ -103,6 +103,32 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
     }
   }
 
+  "KOTO" - {
+    "Päätason suorituksen laajuus lasketaan automaattisesti osasuoritusten laajuuksista" in {
+      val opiskeluoikeus = opiskeluoikeusKOTO.withSuoritukset(List(
+        suoritusKOTO.withOsasuoritukset(Some(List(
+          vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus(laajuus = LaajuusOpintopisteissä(60)),
+          vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus(laajuus = LaajuusOpintopisteissä(9))
+        )))
+      ))
+      val result = putAndGetOpiskeluoikeus(opiskeluoikeus)
+      result.suoritukset.head.koulutusmoduuli.laajuusArvo(0) shouldBe(69)
+    }
+  }
+
+  "Lukutaitokoulutus" - {
+    "Päätason suorituksen laajuus lasketaan automaattisesit osasuoritusten laajuuksista" in {
+      val opiskeluoikeus = opiskeluoikeusLukutaito.withSuoritukset(List(
+        suoritusLukutaito.withOsasuoritukset(Some(List(
+          vapaanSivistystyönLukutaitokoulutuksenVuorovaikutustilanteissaToimimisenSuoritus(laajuus = LaajuusOpintopisteissä(60)),
+          vapaanSivistystyönLukutaitokoulutuksenTekstienLukeminenJaTulkitseminenSuoritus(laajuus = LaajuusOpintopisteissä(9))
+        )))
+      ))
+      val result = putAndGetOpiskeluoikeus(opiskeluoikeus)
+      result.suoritukset.head.koulutusmoduuli.laajuusArvo(0) shouldBe(69)
+    }
+  }
+
   "Vapaatavoitteinen" - {
     "Päätason suoritusta ei voida vahvistaa, jos osasuorituksia ei ole arvioitu" in {
       val oo = VapaatavoitteinenOpiskeluoikeus.copy(suoritukset = List(suoritusVapaatavoitteinenKoulutus.copy(
@@ -119,7 +145,7 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
     }
   }
 
-  private def putAndGetOpiskeluoikeus(oo: VapaanSivistystyönOpiskeluoikeus): Opiskeluoikeus = putOpiskeluoikeus(oo) {
+  private def putAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): Opiskeluoikeus = putOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
   }

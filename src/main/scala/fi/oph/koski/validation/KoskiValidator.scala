@@ -150,7 +150,11 @@ class KoskiValidator(
   }
 
   private def fillLaajuudet(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus =
-    oo.withSuoritukset(oo.suoritukset.map(fillOsasuoritustenLaajuudet))
+    oo.withSuoritukset(
+      oo.suoritukset
+        .map(fillOsasuoritustenLaajuudet)
+        .map(fillPäätasonSuorituksenLaajuus)
+    )
 
   private def fillOsasuoritustenLaajuudet(suoritus: PäätasonSuoritus): PäätasonSuoritus = suoritus match {
     case _: OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus =>
@@ -163,6 +167,18 @@ class KoskiValidator(
         })
       }))
     case _ => suoritus
+  }
+
+  private def fillPäätasonSuorituksenLaajuus(suoritus: PäätasonSuoritus): PäätasonSuoritus = suoritus match {
+    case koto: OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus => laajuusYlimpienOsasuoritustenLaajuuksista(koto)
+    case lukutaito: VapaanSivistystyönLukutaitokoulutuksenSuoritus => laajuusYlimpienOsasuoritustenLaajuuksista(lukutaito)
+    case _ => suoritus
+  }
+
+  private def laajuusYlimpienOsasuoritustenLaajuuksista[A <: OpintopistelaajuuksienYhteislaskennallinenSuoritus with PäätasonSuoritus](s: A): PäätasonSuoritus = {
+    val yhteislaajuus = s.osasuoritusLista.map(_.koulutusmoduuli.laajuusArvo(0)).map(BigDecimal.decimal).sum.toDouble
+    val laajuus = if (yhteislaajuus > 0) Some(LaajuusOpintopisteissä(yhteislaajuus)) else None
+    s.withKoulutusmoduuli(s.koulutusmoduuli.withLaajuus(laajuus))
   }
 
   private def fillVieraatKielet(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus =

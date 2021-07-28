@@ -187,7 +187,7 @@ case class OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuorit
   override val osasuoritukset: Option[List[VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus]],
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
-) extends VapaanSivistystyönPäätasonSuoritus with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+) extends VapaanSivistystyönPäätasonSuoritus with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta with OpintopistelaajuuksienYhteislaskennallinenSuoritus
 
 @Description("Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen tunnistetiedot")
 case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus(
@@ -196,7 +196,7 @@ case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus(
  perusteenDiaarinumero: Option[String] = None,
  koulutustyyppi: Option[Koodistokoodiviite] = None,
  laajuus: Option[LaajuusOpintopisteissä] = None
-) extends DiaarinumerollinenKoulutus with Tutkinto
+) extends DiaarinumerollinenKoulutus with Tutkinto with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli
 
 trait VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus extends Suoritus with Vahvistukseton
 

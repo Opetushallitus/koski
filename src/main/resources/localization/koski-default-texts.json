@@ -1556,5 +1556,6 @@
   "Suullisen kielitaidon kokeen arvioinnissa käytetään": "Suullisen kielitaidon kokeen arvioinnissa käytetään",
   "kehittyvän kielitaidon tasojen kuvausasteikkoa": "kehittyvän kielitaidon tasojen kuvausasteikkoa",
   "description:Vapaatavoitteisen vapaan sivistystyön koulutuksen tunnistetiedot" : "Vapaatavoitteisen vapaan sivistystyön koulutuksen tunnistetiedot",
-  "Vapaatavoitteisen vapaan sivistyön koulutuksen osasuoritus" : "Vapaatavoitteisen vapaan sivistyön koulutuksen osasuoritus"
+  "Vapaatavoitteisen vapaan sivistyön koulutuksen osasuoritus" : "Vapaatavoitteisen vapaan sivistyön koulutuksen osasuoritus",
+  "tooltip:Lasketaan automaattisesti tallentamisen jälkeen osasuoritusten..." : "Lasketaan automaattisesti tallentamisen jälkeen osasuoritusten laajuuksista"
 }

@@ -3,7 +3,7 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 
 import fi.oph.scalaschema.annotation.{Description, Title}
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, ReadOnly, Tooltip}
 
 case class VapaanSivistystyönLukutaitokoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
@@ -18,7 +18,7 @@ case class VapaanSivistystyönLukutaitokoulutuksenSuoritus(
   override val osasuoritukset: Option[List[VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus]],
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
-) extends VapaanSivistystyönPäätasonSuoritus with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+) extends VapaanSivistystyönPäätasonSuoritus with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta with OpintopistelaajuuksienYhteislaskennallinenSuoritus
 
 @Description("Vapaan sivistystyön lukutaitokoulutuksen tunnistetiedot")
 case class VapaanSivistystyönLukutaitokoulutus(
@@ -26,8 +26,10 @@ case class VapaanSivistystyönLukutaitokoulutus(
  tunniste: Koodistokoodiviite = Koodistokoodiviite("999911", koodistoUri = "koulutus"),
  perusteenDiaarinumero: Option[String] = None,
  koulutustyyppi: Option[Koodistokoodiviite] = None,
+ @ReadOnly("Täytetään tiedonsiirrossa automaattisesti osasuoritusten yhteislaajuudella")
+ @Tooltip("Lasketaan automaattisesti tallentamisen jälkeen osasuoritusten laajuuksista")
  laajuus: Option[LaajuusOpintopisteissä] = None
-) extends DiaarinumerollinenKoulutus with Tutkinto
+) extends DiaarinumerollinenKoulutus with Tutkinto with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli
 
 @Title("Lukutaitokoulutuksen kokonaisuuden suoritus")
 case class VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus(

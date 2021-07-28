@@ -131,10 +131,10 @@ object VapaaSivistystyöExample {
     suorituskieli = suomenKieli,
     todistuksellaNäkyvätLisätiedot = None,
     osasuoritukset = Some(List(
-      vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus,
-      vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus,
-      vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus,
-      vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus
+      vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus(),
+      vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus(),
+      vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus(),
+      vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus()
     ))
   )
 
@@ -146,10 +146,10 @@ object VapaaSivistystyöExample {
     suorituskieli = suomenKieli,
     todistuksellaNäkyvätLisätiedot = None,
     osasuoritukset = Some(List(
-      vapaanSivistystyönLukutaitokoulutuksenVuorovaikutustilanteissaToimimisenSuoritus,
-      vapaanSivistystyönLukutaitokoulutuksenTekstienLukeminenJaTulkitseminenSuoritus,
-      vapaanSivistystyönLukutaitokoulutuksenTekstienKirjoittaminenJaTuottaminenToimimisenSuoritus,
-      vapaanSivistystyönLukutaitokoulutuksenNumeeristenTaitojenSuoritus
+      vapaanSivistystyönLukutaitokoulutuksenVuorovaikutustilanteissaToimimisenSuoritus(),
+      vapaanSivistystyönLukutaitokoulutuksenTekstienLukeminenJaTulkitseminenSuoritus(),
+      vapaanSivistystyönLukutaitokoulutuksenTekstienKirjoittaminenJaTuottaminenToimimisenSuoritus(),
+      vapaanSivistystyönLukutaitokoulutuksenNumeeristenTaitojenSuoritus()
     ))
   )
 
@@ -294,11 +294,11 @@ object VapaaSivistystyöExampleData {
 
   // Maahanmuuttajien kotoutumiskoulutuksen rakenteen osia
 
-  def vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus() = {
+  def vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus(laajuus: LaajuusOpintopisteissä = LaajuusOpintopisteissä(30)) = {
     VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus(
       koulutusmoduuli = VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli(
         Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus", koodistoUri = "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"),
-        Some(LaajuusOpintopisteissä(30))
+        Some(laajuus)
       ),
       arviointi = Some(List(vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi))
     )
@@ -330,21 +330,21 @@ object VapaaSivistystyöExampleData {
     )
   }
 
-  def vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus() = {
+  def vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus(laajuus: LaajuusOpintopisteissä = LaajuusOpintopisteissä(5)) = {
     VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus(
       koulutusmoduuli = VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenKoulutusmoduuli(
         Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus", koodistoUri = "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"),
-        Some(LaajuusOpintopisteissä(5))
+        Some(laajuus)
       ),
       arviointi = Some(List(vstArviointi()))
     )
   }
 
-  def vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus() = {
+  def vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus(laajuus: LaajuusOpintopisteissä = LaajuusOpintopisteissä(15)) = {
     VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus(
       koulutusmoduuli = VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenKoulutusmoduuli(
         Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus", koodistoUri = "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"),
-        Some(LaajuusOpintopisteissä(15))
+        Some(laajuus)
       ),
       arviointi = Some(List(vstArviointi())),
       osasuoritukset = Some(List(
@@ -368,11 +368,11 @@ object VapaaSivistystyöExampleData {
     )
   }
 
-  def vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus() = {
+  def vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus(laajuus: LaajuusOpintopisteissä = LaajuusOpintopisteissä(4)) = {
     VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus(
       koulutusmoduuli = VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli(
         Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus", koodistoUri = "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"),
-        Some(LaajuusOpintopisteissä(4))
+        Some(laajuus)
       ),
       arviointi = Some(List(vstArviointi())),
       osasuoritukset = Some(List(vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus))
@@ -396,41 +396,41 @@ object VapaaSivistystyöExampleData {
 
   // Lukutaitokoulutuksen rakenteen osia
 
-  def vapaanSivistystyönLukutaitokoulutuksenVuorovaikutustilanteissaToimimisenSuoritus() = {
+  def vapaanSivistystyönLukutaitokoulutuksenVuorovaikutustilanteissaToimimisenSuoritus(laajuus: LaajuusOpintopisteissä = LaajuusOpintopisteissä(20)) = {
     VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus(
       koulutusmoduuli = VapaanSivistystyönLukutaidonKokonaisuus(
         Koodistokoodiviite(koodiarvo = "vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus", koodistoUri = "vstlukutaitokoulutuksenkokonaisuus"),
-        Some(LaajuusOpintopisteissä(20))
+        Some(laajuus)
       ),
       arviointi = Some(List(lukutaitokoulutuksenArviointi("Hyväksytty")))
     )
   }
 
-  def vapaanSivistystyönLukutaitokoulutuksenTekstienLukeminenJaTulkitseminenSuoritus() = {
+  def vapaanSivistystyönLukutaitokoulutuksenTekstienLukeminenJaTulkitseminenSuoritus(laajuus: LaajuusOpintopisteissä = LaajuusOpintopisteissä(20)) = {
     VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus(
       koulutusmoduuli = VapaanSivistystyönLukutaidonKokonaisuus(
         Koodistokoodiviite(koodiarvo = "vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus", koodistoUri = "vstlukutaitokoulutuksenkokonaisuus"),
-        Some(LaajuusOpintopisteissä(20))
+        Some(laajuus)
       ),
       arviointi = Some(List(lukutaitokoulutuksenArviointi("Hyväksytty")))
     )
   }
 
-  def vapaanSivistystyönLukutaitokoulutuksenTekstienKirjoittaminenJaTuottaminenToimimisenSuoritus() = {
+  def vapaanSivistystyönLukutaitokoulutuksenTekstienKirjoittaminenJaTuottaminenToimimisenSuoritus(laajuus: LaajuusOpintopisteissä = LaajuusOpintopisteissä(20)) = {
     VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus(
       koulutusmoduuli = VapaanSivistystyönLukutaidonKokonaisuus(
         Koodistokoodiviite(koodiarvo = "vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus", koodistoUri = "vstlukutaitokoulutuksenkokonaisuus"),
-        Some(LaajuusOpintopisteissä(20))
+        Some(laajuus)
       ),
       arviointi = Some(List(lukutaitokoulutuksenArviointi("Hyväksytty")))
     )
   }
 
-  def vapaanSivistystyönLukutaitokoulutuksenNumeeristenTaitojenSuoritus() = {
+  def vapaanSivistystyönLukutaitokoulutuksenNumeeristenTaitojenSuoritus(laajuus: LaajuusOpintopisteissä = LaajuusOpintopisteissä(20)) = {
     VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus(
       koulutusmoduuli = VapaanSivistystyönLukutaidonKokonaisuus(
         Koodistokoodiviite(koodiarvo = "vstlukutaitokoulutuksennumeeristentaitojenkokonaisuudensuoritus", koodistoUri = "vstlukutaitokoulutuksenkokonaisuus"),
-        Some(LaajuusOpintopisteissä(20))
+        Some(laajuus)
       ),
       arviointi = Some(List(lukutaitokoulutuksenArviointi("Hyväksytty")))
     )
