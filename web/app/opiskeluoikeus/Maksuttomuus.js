@@ -5,7 +5,7 @@ import {t} from '../i18n/i18n'
 
 export const checkAlkamispäivä = d => {
   const validDate = formatISODate(d)
-  return validDate && parseISODate(validDate) >= new Date(2021, 7, 1) // 7=Elokuu, month indexing starts from 0
+  return validDate && parseISODate(validDate) >= new Date(2021, 0, 1) // 0=Tammikuu, month indexing starts from 0
 }
 
 export const checkSuoritus = (s) => s
