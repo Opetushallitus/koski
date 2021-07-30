@@ -17,7 +17,7 @@ object MaksuttomuusValidation {
                                        (implicit user: KoskiSpecificSession): HttpStatus = {
     val suoritusVaatiiMaksuttomuusTiedon = oppivelvollisuudenSuorittamiseenKelpaavaMuuKuinPeruskoulunOpiskeluoikeus(opiskeluoikeus)
     val oppijanIkäOikeuttaaMaksuttomuuden = oppijanSyntymäpäivä.exists(bd => !LocalDate.of(2004, 1, 1).isAfter(bd))
-    val alkamispäiväOikeuttaaMaksuttomuuden = opiskeluoikeus.alkamispäivä.exists(d => !d.isBefore(LocalDate.of(2021, 8, 1)))
+    val alkamispäiväOikeuttaaMaksuttomuuden = opiskeluoikeus.alkamispäivä.exists(d => !d.isBefore(LocalDate.of(2021, 1, 1)))
     val maksuttomuusTietoOnSiirretty = opiskeluoikeus.lisätiedot.collect { case l: MaksuttomuusTieto => l.maksuttomuus.toList.flatten.length > 0 }.getOrElse(false)
     val maksuttomuuttaPidennettyOnSiirretty = opiskeluoikeus.lisätiedot.collect { case l : MaksuttomuusTieto => l.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.length > 0 }.getOrElse(false)
 
@@ -30,8 +30,8 @@ object MaksuttomuusValidation {
       HttpStatus.validate(!eiPiirissäMuttaMaksuttomuusTietojaSiirretty) { KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskelija on suorittanut perusopetuksen, aikuisten perusopetuksen oppimäärän tai International Schoolin 9. vuosiluokan ennen 1.1.2021.")}
     } else {
       HttpStatus.fold(
-        HttpStatus.validate(!maksuttomuusTietoOnSiirretty) { KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskeluoikeus on alkanut ennen 1.8.2021 ja/tai oppija ei annetun syntymäajan perusteella ole ikänsä puolesta laajennetun oppivelvollisuuden piirissä.")},
-        HttpStatus.validate(!maksuttomuuttaPidennettyOnSiirretty) { KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskeluoikeus on alkanut ennen 1.8.2021 ja/tai oppija ei annetun syntymäajan perusteella ole ikänsä puolesta laajennetun oppivelvollisuuden piirissä.")}
+        HttpStatus.validate(!maksuttomuusTietoOnSiirretty) { KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskeluoikeus on alkanut ennen 1.1.2021 ja/tai oppija ei annetun syntymäajan perusteella ole ikänsä puolesta laajennetun oppivelvollisuuden piirissä.")},
+        HttpStatus.validate(!maksuttomuuttaPidennettyOnSiirretty) { KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskeluoikeus on alkanut ennen 1.1.2021 ja/tai oppija ei annetun syntymäajan perusteella ole ikänsä puolesta laajennetun oppivelvollisuuden piirissä.")}
       )
     }
   }

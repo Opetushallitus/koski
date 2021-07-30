@@ -16,24 +16,24 @@ import java.time.LocalDate.{of => date}
 class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillinen with KoskiHttpSpec {
 
   "Tiedon siirtäminen" - {
-    lazy val opiskeluoikeus = alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
+    lazy val opiskeluoikeus = alkamispäivällä(defaultOpiskeluoikeus, date(2021, 1, 1))
     "Testattavan opiskeluoikeuden suoritus on merkitty vaativan maksuttomuustiedon lisätiedoilta" in {
       opiskeluoikeus.suoritukset.collectFirst { case s: SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta => s }.isDefined shouldBe(true)
     }
-    "Vaaditaan vuonna 2004 tai sen jälkeen syntyneiltä, joiden opiskeluoikeus on alkanut 1.8.2021 ja sisältää suorituksen joka vaatii maksuttomuus tiedon" in {
+    "Vaaditaan vuonna 2004 tai sen jälkeen syntyneiltä, joiden opiskeluoikeus on alkanut 1.1.2021 ja sisältää suorituksen joka vaatii maksuttomuus tiedon" in {
       putOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.oikeusOpiskelunMaksuttomuuteen) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta puuttuu."))
       }
     }
-    "Ei saa siirtää jos opiskeluoikeus on alkanut ennen 1.8.2021" in {
+    "Ei saa siirtää jos opiskeluoikeus on alkanut ennen 1.1.2021" in {
       putMaksuttomuus(
         List(
-          Maksuttomuus(date(2021, 8, 1), None, true)
+          Maksuttomuus(date(2020, 12, 31), None, true)
         ),
         KoskiSpecificMockOppijat.oikeusOpiskelunMaksuttomuuteen,
-        alkamispäivällä(defaultOpiskeluoikeus, date(2021, 7, 31))
+        alkamispäivällä(defaultOpiskeluoikeus, date(2020, 12, 31))
       ) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskeluoikeus on alkanut ennen 1.8.2021 ja/tai oppija ei annetun syntymäajan perusteella ole ikänsä puolesta laajennetun oppivelvollisuuden piirissä."))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskeluoikeus on alkanut ennen 1.1.2021 ja/tai oppija ei annetun syntymäajan perusteella ole ikänsä puolesta laajennetun oppivelvollisuuden piirissä."))
       }
     }
     "Ei saa siirtää jos henkilö on syntynyt ennen vuotta 2004" in {
@@ -44,7 +44,7 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
         KoskiSpecificMockOppijat.eiOikeuttaMaksuttomuuteen,
         alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
       ) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskeluoikeus on alkanut ennen 1.8.2021 ja/tai oppija ei annetun syntymäajan perusteella ole ikänsä puolesta laajennetun oppivelvollisuuden piirissä."))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskeluoikeus on alkanut ennen 1.1.2021 ja/tai oppija ei annetun syntymäajan perusteella ole ikänsä puolesta laajennetun oppivelvollisuuden piirissä."))
       }
     }
     "Ei saa siirtää jos opiskeluoikeus ei sisällä suoritusta joka vaatii maksuttomuus tiedon" in {
@@ -58,7 +58,7 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
         ),
         KoskiSpecificMockOppijat.oikeusOpiskelunMaksuttomuuteen, oo
       ) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskeluoikeus on alkanut ennen 1.8.2021 ja/tai oppija ei annetun syntymäajan perusteella ole ikänsä puolesta laajennetun oppivelvollisuuden piirissä."))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskeluoikeus on alkanut ennen 1.1.2021 ja/tai oppija ei annetun syntymäajan perusteella ole ikänsä puolesta laajennetun oppivelvollisuuden piirissä."))
       }
     }
     "Siirto kun opiskelijalla perusopetuksen päättötodistus tai siihen verrattavissa oleva suoritus" - {
@@ -166,7 +166,7 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
             vahvistus = vahvistusPaikkakunnalla(päivä = date(2021, 1, 1))
           )),
           alkamispäivä = date(2010, 8, 1),
-          päättymispäivä = Some(date(2021, 8, 1)),
+          päättymispäivä = Some(date(2021, 8, 1))
         )
 
         putOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.oikeusOpiskelunMaksuttomuuteen) {
@@ -203,7 +203,7 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
     }
     "Maksuttomuus-tietoa ei voi siirtää jos on pelkästään muun vuosiluokan MYP-suorituksia" in {
       putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(ysiLuokka)), KoskiSpecificMockOppijat.oikeusOpiskelunMaksuttomuuteen) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskeluoikeus on alkanut ennen 1.8.2021 ja/tai oppija ei annetun syntymäajan perusteella ole ikänsä puolesta laajennetun oppivelvollisuuden piirissä."))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskeluoikeus on alkanut ennen 1.1.2021 ja/tai oppija ei annetun syntymäajan perusteella ole ikänsä puolesta laajennetun oppivelvollisuuden piirissä."))
       }
     }
   }
