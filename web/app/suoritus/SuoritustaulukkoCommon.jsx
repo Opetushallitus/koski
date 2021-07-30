@@ -22,6 +22,7 @@ export const isNäyttötutkintoonValmistava = suoritus => suoritus.value.classes
 export const isYlioppilastutkinto = suoritus => suoritus.value.classes.includes('ylioppilastutkinnonsuoritus')
 export const isVapaanSivistystyönOppivelvollistenSuoritus = suoritus => suoritus.value.classes.includes('oppivelvollisillesuunnattuvapaansivistystyonkoulutuksensuoritus')
 export const isMaahanmuuttajienKotoutumiskoulutuksenSuoritus = suoritus => suoritus.value.classes.includes('oppivelvollisillesuunnattumaahanmuuttajienkotoutumiskoulutuksensuoritus')
+export const isLukutaitokoulutuksenSuoritus = suoritus => suoritus.value.classes.includes('vapaansivistystyonlukutaitokoulutuksensuoritus')
 
 export const getLaajuusYksikkö = (suoritus) => {
   const laajuusModel = modelLookup(suoritus, 'koulutusmoduuli.laajuus')
@@ -209,4 +210,10 @@ export const ArvosanaColumn = {
   ),
   renderHeader: () => <th key='arvosana' className='arvosana' scope='col'><Text name='Arvosana'/></th>,
   renderData: ({model, ylioppilastutkinto}) => <td key='arvosana' className={`arvosana ${ylioppilastutkinto ? 'ylioppilas' : ''}`}><ArvosanaEditor model={model} /></td>
+}
+
+export const TaitotasoColmn = {
+  shouldShow: ({parentSuoritus}) => isLukutaitokoulutuksenSuoritus(parentSuoritus),
+  renderHeader: () => <th key='taitotaso'><Text name={'Taitotaso'}/></th>,
+  renderData: ({model}) => <td key='taitotaso' className={'taitotaso'}><Editor model={model} path={'arviointi.-1.taitotaso'}/></td>
 }

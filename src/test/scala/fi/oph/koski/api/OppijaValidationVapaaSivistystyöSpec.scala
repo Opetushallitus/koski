@@ -77,26 +77,6 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
           opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.getLaajuus should equal(None)
         }
 
-        "Jos päätason suorituksella on väärä yhteenlaskettu laajuus, päätason suoritusta ei voida merkitä valmiiksi" in {
-          val oo = defaultOpiskeluoikeus.copy(suoritukset = List(suoritusKOPS.copy(
-            osasuoritukset = Some(List(
-              osaamiskokonaisuudenSuoritus("1002", List(
-                opintokokonaisuudenSuoritus(
-                  opintokokonaisuus("A01", "Arjen rahankäyttö", "Arjen rahankäyttö", 4.0)
-                ),
-                opintokokonaisuudenSuoritus(
-                  opintokokonaisuus("M01", "Mielen liikkeet", "Mielen liikkeet ja niiden havaitseminen", 49),
-                  vstArviointi("Hylätty", date(2021, 11, 2))
-                )
-              ))
-            ))
-          )))
-
-          putOpiskeluoikeus(oo) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus("Päätason suoritus koulutus/999909 on vahvistettu, mutta sillä ei ole 53 opintopisteen edestä hyväksytyksi arvioituja suorituksia"))
-          }
-        }
-
         "Jos päätason suorituksella on osaamiskokonaisuuksia, joiden laajuus on alle 4, päätason suoritusta ei voida merkitä valmiiksi" in {
           val oo = defaultOpiskeluoikeus.copy(suoritukset = List(suoritusKOPS.copy(
             osasuoritukset = Some(List(
@@ -124,21 +104,28 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
   }
 
   "KOTO" - {
-    "Päätason suoritusta ei voida vahvistaa, jos osasuorituksia ei ole arvioitu hyväksyttävästi" in {
-      val oo = KOTOOPiskeluoikeus.copy(suoritukset = List(suoritusKOTO.copy(
-        osasuoritukset = Some(List(
-            vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus,
-            vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus,
-            vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus,
-            vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus.copy(
-              arviointi = Some(List(vstArviointi("Hylätty")))
-            )
-        ))
-      )))
+    "Päätason suorituksen laajuus lasketaan automaattisesti osasuoritusten laajuuksista" in {
+      val opiskeluoikeus = opiskeluoikeusKOTO.withSuoritukset(List(
+        suoritusKOTO.withOsasuoritukset(Some(List(
+          vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus(laajuus = LaajuusOpintopisteissä(60)),
+          vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus(laajuus = LaajuusOpintopisteissä(9))
+        )))
+      ))
+      val result = putAndGetOpiskeluoikeus(opiskeluoikeus)
+      result.suoritukset.head.koulutusmoduuli.laajuusArvo(0) shouldBe(69)
+    }
+  }
 
-      putOpiskeluoikeus(oo) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönKOTOVahvistettuPäätasoHylätyilläOsasuorituksilla("Vapaan sivistyöstyön maahanmuuttajien kotoutumiskoulutuksen suoritus on vahvistettu, vaikka sillä on osasuorituksia, joita ei ole arvioitu hyväksytyksi"))
-      }
+  "Lukutaitokoulutus" - {
+    "Päätason suorituksen laajuus lasketaan automaattisesit osasuoritusten laajuuksista" in {
+      val opiskeluoikeus = opiskeluoikeusLukutaito.withSuoritukset(List(
+        suoritusLukutaito.withOsasuoritukset(Some(List(
+          vapaanSivistystyönLukutaitokoulutuksenVuorovaikutustilanteissaToimimisenSuoritus(laajuus = LaajuusOpintopisteissä(60)),
+          vapaanSivistystyönLukutaitokoulutuksenTekstienLukeminenJaTulkitseminenSuoritus(laajuus = LaajuusOpintopisteissä(9))
+        )))
+      ))
+      val result = putAndGetOpiskeluoikeus(opiskeluoikeus)
+      result.suoritukset.head.koulutusmoduuli.laajuusArvo(0) shouldBe(69)
     }
   }
 
@@ -158,7 +145,7 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
     }
   }
 
-  private def putAndGetOpiskeluoikeus(oo: VapaanSivistystyönOpiskeluoikeus): Opiskeluoikeus = putOpiskeluoikeus(oo) {
+  private def putAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): Opiskeluoikeus = putOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
   }

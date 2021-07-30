@@ -388,11 +388,11 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "Hylätty",
+              "koodiarvo" : "Hyväksytty",
               "koodistoUri" : "arviointiasteikkovst"
             },
             "päivä" : "2021-12-10",
-            "hyväksytty" : false
+            "hyväksytty" : true
           } ],
           "tyyppi" : {
             "koodiarvo" : "vstopintokokonaisuus",
