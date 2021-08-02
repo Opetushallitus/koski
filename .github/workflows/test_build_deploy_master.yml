@@ -328,7 +328,6 @@ jobs:
 
   valpas_integration_tests:
     name: Valpas integration tests
-    if: ${{ false }}
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -414,7 +413,7 @@ jobs:
         run_frontend_tests_2,
         run_frontend_tests_3,
         run_frontend_tests_4,
-        #valpas_integration_tests,
+        valpas_integration_tests,
         valpas_frontend_unit_tests,
       ]
     runs-on: ubuntu-20.04
