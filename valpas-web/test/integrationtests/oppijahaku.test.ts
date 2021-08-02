@@ -17,6 +17,7 @@ import {
   setTextInput,
 } from "../integrationtests-env/browser/forms"
 import { loginAs } from "../integrationtests-env/browser/reset"
+import { defaultTimeout } from "../integrationtests-env/browser/timeouts"
 
 describe("Oppijahaku", () => {
   it("Maksuttomuus: Haku löytää henkilötunnuksen perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on oikeus, ja linkkaa detaljisivulle", async () => {
@@ -304,9 +305,10 @@ const submit = async () => {
 }
 
 const expectResultToBe = async (text: string, linkTo?: string) => {
-  const result = await $(".oppijasearch__resultvalue", 2000).then((e) =>
-    e.getText()
-  )
+  const result = await $(
+    ".oppijasearch__resultvalue",
+    defaultTimeout
+  ).then((e) => e.getText())
   expect(result).toBe(text)
   if (linkTo) {
     const href = await $(".oppijasearch__resultlink").then((e) =>

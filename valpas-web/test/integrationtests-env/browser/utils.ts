@@ -1,9 +1,11 @@
+import { defaultTimeout } from "./timeouts"
+
 export const sleep = (time: number) =>
   new Promise((resolve) => setTimeout(resolve, time))
 
 export const eventually = async <T>(
   test: () => Promise<T>,
-  timeout = 10000
+  timeout = defaultTimeout
 ): Promise<T> => {
   const expirationTime = new Date().getTime() + timeout
   let error = null

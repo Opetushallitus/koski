@@ -7,6 +7,7 @@ import {
 import { $, deleteCookies, goToLocation } from "./core"
 import { driver } from "./driver"
 import { getTextInput, setTextInput } from "./forms"
+import { defaultTimeout, longTimeout } from "./timeouts"
 import { eventually } from "./utils"
 
 export const loginAs = async (
@@ -17,12 +18,12 @@ export const loginAs = async (
   await eventually(async () => {
     await reset(initialPath, forceReset)
     await expectElementEventuallyVisible("#username")
-  }, 30000)
+  }, longTimeout)
   ;(await $("#username")).sendKeys(username)
   ;(await $("#password")).sendKeys(username, Key.ENTER)
   await driver.wait(
     until.elementLocated(By.css("article.page:not(#login-app)")),
-    5000
+    defaultTimeout
   )
   await driver.wait(until.elementLocated(By.css("article.page")), 5000)
 }

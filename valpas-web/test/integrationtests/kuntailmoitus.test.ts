@@ -20,6 +20,7 @@ import {
 import { dataTableEventuallyEquals } from "../integrationtests-env/browser/datatable"
 import { clearTextInputElement } from "../integrationtests-env/browser/forms"
 import { loginAs } from "../integrationtests-env/browser/reset"
+import { shortTimeout } from "../integrationtests-env/browser/timeouts"
 import { eventually } from "../integrationtests-env/browser/utils"
 import {
   hakutilannePath,
@@ -459,7 +460,7 @@ const täytäJaLähetäLomake = async (oppija: Oppija, form: Form) => {
         By.css('[data-testid="submitted"]')
       )
       expect(submitted).toBeDefined()
-    }, 1000)
+    }, shortTimeout)
   })
 }
 

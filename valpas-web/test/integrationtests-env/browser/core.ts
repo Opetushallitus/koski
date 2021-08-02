@@ -2,6 +2,7 @@ import fs from "fs/promises"
 import { By, Condition, until, WebElement } from "selenium-webdriver"
 import { Feature } from "../../../src/state/featureFlags"
 import { driver } from "./driver"
+import { defaultSleepTime, defaultTimeout, shortTimeout } from "./timeouts"
 import { eventually, sleep } from "./utils"
 
 const wait = async <T>(condition: Condition<T>, timeout: number) => {
@@ -27,7 +28,7 @@ export const getCurrentUrl = () => driver.getCurrentUrl()
 
 export const urlIsEventually = async (
   expectedUrl: string,
-  timeout: number = 10000
+  timeout: number = defaultTimeout
 ) => {
   try {
     await eventually(async () => {
@@ -45,7 +46,7 @@ export const pathToUrl = (path: string) => `http://localhost:1234/valpas${path}`
 export const pathToApiUrl = (path: string) =>
   `http://localhost:1234/koski/valpas${path}`
 
-export const $ = async (selector: string, timeout = 500) => {
+export const $ = async (selector: string, timeout = shortTimeout) => {
   try {
     const el = await wait(until.elementLocated(By.css(selector)), timeout)
     return await wait(until.elementIsVisible(el), timeout)
@@ -54,7 +55,7 @@ export const $ = async (selector: string, timeout = 500) => {
   }
 }
 
-export const $$ = async (selector: string, timeout = 500) => {
+export const $$ = async (selector: string, timeout = shortTimeout) => {
   try {
     return await wait(until.elementsLocated(By.css(selector)), timeout)
   } catch (_err) {
@@ -66,7 +67,7 @@ export const testIdIs = (testId: string) => By.css(`[data-testid="${testId}"]`)
 
 export const scrollIntoView = async (element: WebElement) => {
   driver.executeScript("arguments[0].scrollIntoView(true);", element)
-  await sleep(500)
+  await sleep(defaultSleepTime)
 }
 
 export const takeScreenshot = async (filename: string) => {

@@ -2,6 +2,7 @@ import { Key, WebElement } from "selenium-webdriver"
 import { attributeEventuallyEquals } from "./content"
 import { $, $$ } from "./core"
 import { driver } from "./driver"
+import { shortTimeout } from "./timeouts"
 import { eventually } from "./utils"
 
 export const setTextInput = async (selector: string, value: string) => {
@@ -18,12 +19,14 @@ export const getTextInput = async (selector: string) => {
   return element.getAttribute("value")
 }
 
-export const clearTextInput = async (selector: string, timeout = 1000) =>
-  clearTextInputElement(await $(selector), timeout)
+export const clearTextInput = async (
+  selector: string,
+  timeout = shortTimeout
+) => clearTextInputElement(await $(selector), timeout)
 
 export const clearTextInputElement = async (
   element: WebElement,
-  timeout = 1000
+  timeout = shortTimeout
 ) =>
   // Pitää tehdä silmukassa, koska tämä ei aina toimi, välillä BACK_SPACE poistaa vain viimeisen merkin
   eventually(async () => {

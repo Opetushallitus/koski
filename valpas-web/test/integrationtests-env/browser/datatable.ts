@@ -1,13 +1,14 @@
 import * as A from "fp-ts/Array"
 import { $, $$ } from "./core"
 import { clearTextInput, setTextInput } from "./forms"
+import { shortTimeout } from "./timeouts"
 import { eventually } from "./utils"
 
 export const dataTableEventuallyEquals = async (
   selector: string,
   displayValues: string,
   columnSeparator = "\t",
-  timeout = 1000
+  timeout = shortTimeout
 ) => {
   await dataTableCellsEventuallyEquals(
     `${selector} .table__body .table__td`,
@@ -21,7 +22,7 @@ export const dataTableHeadersEventuallyEquals = async (
   selector: string,
   displayValues: string,
   columnSeparator = "\t",
-  timeout = 1000
+  timeout = shortTimeout
 ) => {
   await dataTableCellsEventuallyEquals(
     `${selector} .table__body .table__th`,
@@ -35,7 +36,7 @@ const dataTableCellsEventuallyEquals = async (
   selector: string,
   displayValues: string,
   columnSeparator = "\t",
-  timeout = 1000
+  timeout = shortTimeout
 ) => {
   const expectedData = A.flatten(
     displayValues
