@@ -66,7 +66,7 @@ export const $$ = async (selector: string, timeout = shortTimeout) => {
 export const testIdIs = (testId: string) => By.css(`[data-testid="${testId}"]`)
 
 export const scrollIntoView = async (element: WebElement) => {
-  driver.executeScript("arguments[0].scrollIntoView(true);", element)
+  await driver.executeScript("arguments[0].scrollIntoView(true);", element)
   await sleep(defaultSleepTime)
 }
 
