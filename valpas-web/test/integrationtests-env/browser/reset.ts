@@ -25,7 +25,10 @@ export const loginAs = async (
     until.elementLocated(By.css("article.page:not(#login-app)")),
     defaultTimeout
   )
-  await driver.wait(until.elementLocated(By.css("article.page")), 5000)
+  await driver.wait(
+    until.elementLocated(By.css("article.page")),
+    defaultTimeout
+  )
 }
 
 export const defaultLogin = async (initialPath: string) =>
@@ -34,7 +37,7 @@ export const defaultLogin = async (initialPath: string) =>
 export const reset = async (initialPath: string, force: boolean = false) => {
   await deleteCookies()
   await goToLocation(initialPath)
-  await driver.wait(until.elementLocated(By.css("article")), 5000)
+  await driver.wait(until.elementLocated(By.css("article")), defaultTimeout)
   await resetMockData(undefined, force)
 }
 
@@ -55,13 +58,13 @@ export const resetMockData = async (
   ) {
     await setTextInput(inputSelector, tarkastelupäivä)
     await clickElement("#resetMockData")
-    await textEventuallyEquals("#resetMockDataState", "success", 30000)
+    await textEventuallyEquals("#resetMockDataState", "success", longTimeout)
   }
 }
 
 export const clearMockData = async () => {
   await clickElement("#clearMockData")
-  await textEventuallyEquals("#clearMockDataState", "success", 30000)
+  await textEventuallyEquals("#clearMockDataState", "success", longTimeout)
 }
 
 export const clearLocalStorage = async () => {
