@@ -1,9 +1,8 @@
 import { By } from "selenium-webdriver"
 import { $ } from "./core"
 import { driver } from "./driver"
+import { defaultTimeout } from "./timeouts"
 import { eventually } from "./utils"
-
-const defaultTimeout = 5000
 
 export const textEventuallyEquals = (
   selector: string,

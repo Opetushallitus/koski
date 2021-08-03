@@ -4,6 +4,7 @@ import {
   dataTableHeadersEventuallyEquals,
 } from "../integrationtests-env/browser/datatable"
 import { loginAs } from "../integrationtests-env/browser/reset"
+import { defaultTimeout } from "../integrationtests-env/browser/timeouts"
 import { jklNormaalikouluTableHead } from "./hakutilanne.shared"
 
 describe("Etusivun väliaikainen näkymä", () => {
@@ -29,7 +30,11 @@ describe("Etusivun väliaikainen näkymä", () => {
   it("Hakeutumisvelvollisuuden valvonnallinen käyttäjä ohjautuu hakeutumisvelvollisuusvalvonnan etusivulle", async () => {
     await loginAs("/virkailija", "valpas-jkl-normaali")
 
-    await textEventuallyEquals(".card__header", jklNormaalikouluTableHead, 5000)
+    await textEventuallyEquals(
+      ".card__header",
+      jklNormaalikouluTableHead,
+      defaultTimeout
+    )
   })
 
   it("Hakeutumisvelvollisuuden valvonnallinen koulutustoimijatason käyttäjä ohjautuu hakeutumisvelvollisuusvalvonnan etusivulle", async () => {
@@ -38,7 +43,7 @@ describe("Etusivun väliaikainen näkymä", () => {
     await textEventuallyEquals(
       ".card__header",
       "Hakeutumisvelvollisia oppijoita (0)",
-      5000
+      defaultTimeout
     )
   })
 
@@ -54,13 +59,13 @@ describe("Etusivun väliaikainen näkymä", () => {
     await textEventuallyEquals(
       ".error-message",
       "Sinulla ei ole oikeuksia nähdä yhdenkään oppilaitoksen tietoja",
-      5000
+      defaultTimeout
     )
 
     // await textEventuallyEquals(
     //   ".card__header",
     //   "Hakeutumisvelvollisia oppijoita (0)",
-    //   5000
+    //   defaultTimeout
     // )
   })
 

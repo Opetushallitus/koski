@@ -6,6 +6,7 @@ import {
   resetTestSpecificNetworkErrors,
 } from "./fail-on-console"
 import { clearLocalStorage, clearSessionStorage } from "./reset"
+import { longTimeout } from "./timeouts"
 
 declare namespace global {
   let __driver__: undefined | (() => Promise<WebDriver>)
@@ -16,7 +17,7 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000 * 60 * 5
 
 beforeAll(async () => {
   driver = (await buildBrowserStackDriver()) || (await buildChromeDriver())
-}, 20000)
+}, longTimeout)
 
 beforeEach(() => {
   resetTestSpecificNetworkErrors()
