@@ -20,6 +20,7 @@ import {
   loginAs,
   reset,
 } from "../integrationtests-env/browser/reset"
+import { longTimeout } from "../integrationtests-env/browser/timeouts"
 
 describe("Login / Logout / kirjautuminen", () => {
   it("Kirjautumattomalle käyttäjälle näytetään kirjautumisruutu, jossa ei näy logout-painiketta", async () => {
@@ -79,6 +80,6 @@ describe("Login / Logout / kirjautuminen", () => {
     // Yritä selailla eteenpäin ja päädy kirjautumiseen
     allowNetworkError("/valpas/api/oppija/", "401 (Unauthorized)")
     await clickElement(".hakutilanne tbody tr td:first-child a")
-    await expectElementEventuallyVisible("article.page#login-app")
+    await expectElementEventuallyVisible("article.page#login-app", longTimeout)
   })
 })

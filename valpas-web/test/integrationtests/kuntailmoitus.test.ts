@@ -5,8 +5,8 @@ import { createOppijaPath } from "../../src/state/paths"
 import { fromEntries, objectEntry } from "../../src/utils/objects"
 import {
   clickElement,
+  expectElementEventuallyNotVisible,
   expectElementEventuallyVisible,
-  expectElementNotVisible,
 } from "../integrationtests-env/browser/content"
 import {
   $,
@@ -276,7 +276,7 @@ const testaaListanäkymästä = async (username: string, tekijä: Tekijä) => {
 
   // Sulje lomake
   await button.click()
-  await expectElementNotVisible(".modal__container")
+  await expectElementEventuallyNotVisible(".modal__container")
 
   // Tarkista oppijakohtaisista näkymistä, että ilmoituksen tiedot ovat siellä
   for (const oppija of oppijat) {
@@ -330,7 +330,7 @@ const testaaOppijanäkymistä = async (
 
     // Sulje lomake
     await button.click()
-    await expectElementNotVisible(".modal__container")
+    await expectElementEventuallyNotVisible(".modal__container")
 
     // Tarkista, että ilmoituksen tiedot ovat tulleet näkyviin (automaattinen reload lomakkeen sulkemisen jälkeen)
 

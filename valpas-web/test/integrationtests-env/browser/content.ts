@@ -40,14 +40,17 @@ export const attributeEventuallyEquals = (
     expect(await element.getAttribute(attributeName)).toEqual(expected)
   }, timeout)
 
-export const expectElementEventuallyVisible = async (selector: string) => {
-  eventually(async () => {
+export const expectElementEventuallyVisible = async (
+  selector: string,
+  timeout = defaultTimeout
+) => {
+  await eventually(async () => {
     const elements = await driver.findElements(By.css(selector))
     expect(
       elements.length > 0,
       `Element ${selector} expected to exist`
     ).toBeTruthy()
-  })
+  }, timeout)
 }
 
 export const expectElementVisible = async (selector: string) => {
@@ -56,6 +59,16 @@ export const expectElementVisible = async (selector: string) => {
     elements.length > 0,
     `Element ${selector} expected to exist`
   ).toBeTruthy()
+}
+
+export const expectElementEventuallyNotVisible = async (selector: string) => {
+  await eventually(async () => {
+    const elements = await driver.findElements(By.css(selector))
+    expect(
+      elements.length === 0,
+      `Element ${selector} expected NOT to exist`
+    ).toBeTruthy()
+  })
 }
 
 export const expectElementNotVisible = async (selector: string) => {
