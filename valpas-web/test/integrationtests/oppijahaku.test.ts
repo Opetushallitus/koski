@@ -2,6 +2,7 @@ import {
   createKunnanHetuhakuPath,
   createMaksuttomuusPath,
   createOppijaPath,
+  createSuorittaminenHetuhakuPath,
   createSuorittaminenPath,
 } from "../../src/state/paths"
 import {
@@ -62,8 +63,8 @@ describe("Oppijahaku", () => {
   it("Suorittaminen: Haku löytää henkilötunnuksen perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on vain suorittamisoikeus, ja linkkaa detaljisivulle", async () => {
     await hakuLogin(
       "valpas-pelkkä-suorittaminen",
-      createSuorittaminenPath("/virkailija"),
-      "article#suorittaminen"
+      createSuorittaminenHetuhakuPath("/virkailija"),
+      "article#suorittaminenhetuhaku"
     )
     await fillQueryField("070504A717P")
     await submit()
@@ -109,8 +110,8 @@ describe("Oppijahaku", () => {
   it("Suorittaminen: Haku löytää oppijatunnuksen perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on vain suorittamisoikeus, ja linkkaa detaljisivulle", async () => {
     await hakuLogin(
       "valpas-pelkkä-suorittaminen",
-      createSuorittaminenPath("/virkailija"),
-      "article#suorittaminen"
+      createSuorittaminenHetuhakuPath("/virkailija"),
+      "article#suorittaminenhetuhaku"
     )
     await fillQueryField("1.2.246.562.24.00000000004")
     await submit()
@@ -150,8 +151,8 @@ describe("Oppijahaku", () => {
   it("Suorittaminen: Haku kertoo ettei oppijaa löydy, jos oppijan tietoja ei löydy rekistereistä", async () => {
     await hakuLogin(
       "valpas-pelkkä-suorittaminen",
-      createSuorittaminenPath("/virkailija"),
-      "article#suorittaminen"
+      createSuorittaminenHetuhakuPath("/virkailija"),
+      "article#suorittaminenhetuhaku"
     )
     await fillQueryField("040392-530U")
     await submit()
@@ -193,8 +194,8 @@ describe("Oppijahaku", () => {
     )
     await hakuLogin(
       "valpas-pelkkä-suorittaminen",
-      createSuorittaminenPath("/virkailija"),
-      "article#suorittaminen"
+      createSuorittaminenHetuhakuPath("/virkailija"),
+      "article#suorittaminenhetuhaku"
     )
     await fillQueryField("180304A082P")
     await submit()

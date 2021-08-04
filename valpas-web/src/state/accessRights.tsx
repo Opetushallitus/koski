@@ -48,6 +48,10 @@ export const withRequiresHakeutumisenValvonta = accessRightGuardHoc(
   hakeutumisenValvontaAllowed
 )
 
+export const withRequiresSuorittamisenValvonta = accessRightGuardHoc(
+  suorittamisenValvontaAllowed
+)
+
 export const withRequiresJokinOikeus = accessRightGuardHoc(
   someOf(
     hakeutumisenValvontaAllowed,

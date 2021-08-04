@@ -29,6 +29,7 @@ import {
   hakutilannePath,
   jklNormaalikouluTableContent,
   openOppijaView,
+  suorittaminenPath,
 } from "./hakutilanne.shared"
 import { hkiTableContent } from "./kuntailmoitus.shared"
 import { jyväskylänNormaalikouluOid } from "./oids"
@@ -235,7 +236,7 @@ describe("Kuntailmoituksen tekeminen", () => {
   })
 
   it("happy path suorittamisen valvojana", async () => {
-    await loginAs(hakutilannePath, "valpas-pelkkä-suorittaminen", true)
+    await loginAs(suorittaminenPath, "valpas-pelkkä-suorittaminen", true)
     await testaaOppijanäkymistä(
       suorittamisenValvojanOppijat,
       suorittamisenValvoja

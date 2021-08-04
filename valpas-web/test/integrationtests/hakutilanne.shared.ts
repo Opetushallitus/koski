@@ -1,5 +1,8 @@
 import { Oid } from "../../src/state/common"
-import { createHakutilannePathWithoutOrg } from "../../src/state/paths"
+import {
+  createHakutilannePathWithoutOrg,
+  createSuorittaminenHetuhakuPath,
+} from "../../src/state/paths"
 import {
   clickElement,
   expectElementEventuallyVisible,
@@ -40,6 +43,7 @@ export const jklNormaalikouluTableContent = `
 `
 
 export const hakutilannePath = createHakutilannePathWithoutOrg("/virkailija")
+export const suorittaminenPath = createSuorittaminenHetuhakuPath("/virkailija")
 
 export const openOppijaView = async (oppijaOid: Oid) => {
   const selector = `.hakutilanne .table__row[data-row*="${oppijaOid}"] td:first-child a`

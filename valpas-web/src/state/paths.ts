@@ -87,6 +87,20 @@ export const suorittaminenPath = (basePath: string = "") =>
 
 export const createSuorittaminenPath = suorittaminenPath
 
+export const suorittaminenPathWithOrg = (basePath: string = "") =>
+  `${suorittaminenPath(basePath)}/organisaatio/:organisaatioOid`
+
+export const createSuorittaminenPathWithOrg = (
+  basePath: string = "",
+  organisaatioOid: Oid
+) => `${suorittaminenPath(basePath)}/organisaatio/${organisaatioOid}`
+
+// Suorittamisen hakunäkymä
+export const suorittaminenHetuhakuPath = (basePath: string = "") =>
+  `${suorittaminenPath(basePath)}/haku`
+
+export const createSuorittaminenHetuhakuPath = suorittaminenHetuhakuPath
+
 // Maksuttomuusnäkymä
 
 export const maksuttomuusPath = (basePath: string = "") =>
