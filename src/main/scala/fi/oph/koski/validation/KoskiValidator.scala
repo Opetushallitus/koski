@@ -182,16 +182,16 @@ class KoskiValidator(
   }
 
   private def fillVieraatKielet(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus =
-    oo.withSuoritukset(oo.suoritukset.map(s => s match {
-      case (_: LukionPäätasonSuoritus2019 | _: PreIBSuoritus2019) => Lukio2019VieraatKieletValidation.fillVieraatKielet(s)
-      case s => s
-    }))
+    oo.withSuoritukset(oo.suoritukset.map {
+      case s@(_: LukionPäätasonSuoritus2019 | _: PreIBSuoritus2019) => Lukio2019VieraatKieletValidation.fillVieraatKielet(s)
+      case s: Any => s
+    })
 
   private def clearVahvistukset(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus =
-    oo.withSuoritukset(oo.suoritukset.map({
+    oo.withSuoritukset(oo.suoritukset.map {
       case l: LukionOppiaineidenOppimäärienSuoritus2019 => l.copy(vahvistus = None)
-      case l => l
-    }))
+      case l: Any => l
+    })
 
   private def perusteenNimi(diaariNumero: String): Option[LocalizedString] =
     ePerusteet.findPerusteenYksilöintitiedot(diaariNumero).map(_.nimi).flatMap(LocalizedString.sanitize)
