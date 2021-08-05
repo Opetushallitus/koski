@@ -70,7 +70,7 @@ export const fetchOppijatCache = createPreferLocalCache(fetchOppijat)
 export const fetchOppijatSuorittaminen = (organisaatioOid: Oid) =>
   handleExpiredSession(
     apiGet<OppijaHakutilanteillaSuppeatTiedot[]>(
-      `valpas/api/oppijat/${organisaatioOid}` // TODO: uusi route
+      `valpas/api/oppijat-suorittaminen/${organisaatioOid}`
     )
   )
 
