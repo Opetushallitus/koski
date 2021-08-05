@@ -6,12 +6,6 @@ import * as Ord from "fp-ts/Ord"
 import * as string from "fp-ts/string"
 import React, { useMemo, useState } from "react"
 import { Redirect, RouteComponentProps, useHistory } from "react-router"
-import { Counter } from "~components/typography/Counter"
-import { isFeatureFlagEnabled } from "~state/featureFlags"
-import { createSuorittaminenPathWithOrg } from "~state/paths"
-import { SuorittaminenHetuhaku } from "~views/suorittaminen/hetuhaku/SuorittaminenHetuhaku"
-import { SuorittaminenOppivelvollisetTable } from "~views/suorittaminen/oppivelvolliset/SuorittaminenOppivelvollisetTable"
-import { SuorittaminenNavigation } from "~views/suorittaminen/SuorittaminenNavigation"
 import {
   fetchOppijatSuorittaminen,
   fetchOppijatSuorittaminenCache,
@@ -27,6 +21,7 @@ import { Page } from "../../../components/containers/Page"
 import { Dropdown } from "../../../components/forms/Dropdown"
 import { Spinner } from "../../../components/icons/Spinner"
 import { DataTableCountChangeEvent } from "../../../components/tables/DataTable"
+import { Counter } from "../../../components/typography/Counter"
 import { NoDataMessage } from "../../../components/typography/NoDataMessage"
 import { getLocalized, t, T } from "../../../i18n/i18n"
 import {
@@ -39,6 +34,11 @@ import {
   OrganisaatioHierarkia,
   OrganisaatioJaKayttooikeusrooli,
 } from "../../../state/common"
+import { isFeatureFlagEnabled } from "../../../state/featureFlags"
+import { createSuorittaminenPathWithOrg } from "../../../state/paths"
+import { SuorittaminenHetuhaku } from "../../../views/suorittaminen/hetuhaku/SuorittaminenHetuhaku"
+import { SuorittaminenOppivelvollisetTable } from "../../../views/suorittaminen/oppivelvolliset/SuorittaminenOppivelvollisetTable"
+import { SuorittaminenNavigation } from "../../../views/suorittaminen/SuorittaminenNavigation"
 import { ErrorView } from "../../ErrorView"
 
 const b = bem("suorittaminenoppivelvollisetview")

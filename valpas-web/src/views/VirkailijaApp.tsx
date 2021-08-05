@@ -1,10 +1,5 @@
 import React from "react"
 import { Redirect, Route, Switch } from "react-router-dom"
-import { FeatureFlagEnabler } from "~state/featureFlags"
-import {
-  SuorittaminenOppivelvollisetView,
-  SuorittaminenOppivelvollisetViewWithoutOrgOid,
-} from "~views/suorittaminen/oppivelvolliset/SuorittaminenOppivelvollisetView"
 import { fetchYlatasonOrganisaatiotJaKayttooikeusroolit } from "../api/api"
 import { useApiOnce } from "../api/apiHooks"
 import { isSuccess } from "../api/apiUtils"
@@ -21,6 +16,7 @@ import {
   storeLoginReturnUrl,
 } from "../state/auth"
 import { BasePathProvider, useBasePath } from "../state/basePath"
+import { FeatureFlagEnabler } from "../state/featureFlags"
 import {
   createHakutilannePathWithoutOrg,
   hakutilannePathWithOrg,
@@ -37,6 +33,10 @@ import {
   suorittaminenPathWithOrg,
 } from "../state/paths"
 import { SuorittaminenHetuhaku } from "../views/suorittaminen/hetuhaku/SuorittaminenHetuhaku"
+import {
+  SuorittaminenOppivelvollisetView,
+  SuorittaminenOppivelvollisetViewWithoutOrgOid,
+} from "../views/suorittaminen/oppivelvolliset/SuorittaminenOppivelvollisetView"
 import { AccessRightsView } from "./AccessRightsView"
 import { ErrorView, NotFoundView } from "./ErrorView"
 import {

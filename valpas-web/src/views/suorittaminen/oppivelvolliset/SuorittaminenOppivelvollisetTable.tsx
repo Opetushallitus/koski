@@ -1,33 +1,33 @@
 import * as A from "fp-ts/Array"
 import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
-import { FutureSuccessIcon, SuccessIcon } from "~components/icons/Icon"
-import { SelectableDataTableProps } from "~components/tables/SelectableDataTable"
-import { getLocalized, t } from "~i18n/i18n"
-import {
-  OpiskeluoikeusSuppeatTiedot,
-  suorittamisvalvottavatOpiskeluoikeudet,
-} from "~state/apitypes/opiskeluoikeus"
-import {
-  isVoimassa,
-  isVoimassaTulevaisuudessa,
-} from "~state/apitypes/valpasopiskeluoikeudentila"
-import { useBasePath } from "~state/basePath"
-import { Oid } from "~state/common"
-import { createOppijaPath } from "~state/paths"
-import { nonNull } from "~utils/arrays"
-import { FilterableValue } from "~utils/conversions"
-import { formatDate, formatNullableDate } from "~utils/date"
+import { FutureSuccessIcon, SuccessIcon } from "../../../components/icons/Icon"
 import {
   Column,
   DataTable,
   Datum,
   Value,
 } from "../../../components/tables/DataTable"
+import { SelectableDataTableProps } from "../../../components/tables/SelectableDataTable"
+import { getLocalized, t } from "../../../i18n/i18n"
+import {
+  OpiskeluoikeusSuppeatTiedot,
+  suorittamisvalvottavatOpiskeluoikeudet,
+} from "../../../state/apitypes/opiskeluoikeus"
 import {
   OppijaHakutilanteillaSuppeatTiedot,
   OppijaSuppeatTiedot,
 } from "../../../state/apitypes/oppija"
+import {
+  isVoimassa,
+  isVoimassaTulevaisuudessa,
+} from "../../../state/apitypes/valpasopiskeluoikeudentila"
+import { useBasePath } from "../../../state/basePath"
+import { Oid } from "../../../state/common"
+import { createOppijaPath } from "../../../state/paths"
+import { nonNull } from "../../../utils/arrays"
+import { FilterableValue } from "../../../utils/conversions"
+import { formatDate, formatNullableDate } from "../../../utils/date"
 
 export type SuorittaminenOppivelvollisetTableProps = {
   data: OppijaHakutilanteillaSuppeatTiedot[]
