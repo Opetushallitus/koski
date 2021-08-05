@@ -75,6 +75,7 @@ export const createOppijaPath = (
   queryPath(`${basePath}/oppija/${params.oppijaOid}`, {
     hakutilanneRef: params.hakutilanneRef,
     kuntailmoitusRef: params.kuntailmoitusRef,
+    suorittaminenRef: params.suorittaminenRef,
     prev: params.prev,
   })
 
