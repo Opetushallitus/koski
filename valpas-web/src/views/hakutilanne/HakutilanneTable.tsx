@@ -17,6 +17,7 @@ import {
   Column,
   Datum,
   DatumKey,
+  fromNullableValue,
   Value,
 } from "../../components/tables/DataTable"
 import {
@@ -327,15 +328,6 @@ const hakuTooltip = (haku: HakuSuppeatTiedot): string =>
     haku: getLocalized(haku.hakuNimi) || "?",
     muokkausPvm: formatNullableDate(haku.muokattu),
   })
-
-const fromNullableValue = (
-  value: Value | null,
-  nullFilterValues?: Array<string | number>
-): Value =>
-  value || {
-    value: "–",
-    filterValues: nullFilterValues,
-  }
 
 const valintatila = (haut: HakuSuppeatTiedot[]): Value | null => {
   const hyväksytytHakutoiveet = selectByHakutoive(haut, isHyväksytty)

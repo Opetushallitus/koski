@@ -62,6 +62,22 @@ export type Value = {
   tooltip?: string
 }
 
+export const fromNullableValue = (
+  value: Value | null | undefined,
+  nullFilterValues?: Array<string | number>
+): Value =>
+  value || {
+    value: "–",
+    filterValues: nullFilterValues,
+  }
+
+export const fromNullable = (
+  value: FilterableValue | null | undefined
+): Value =>
+  fromNullableValue({
+    value: value ? value : "-",
+  })
+
 export const DataTable = (props: DataTableProps) => {
   const [state, setState] = useDataTableState(props.storageName, props.columns)
 

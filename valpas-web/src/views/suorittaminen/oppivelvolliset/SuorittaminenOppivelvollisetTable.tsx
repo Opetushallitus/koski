@@ -6,6 +6,8 @@ import {
   Column,
   DataTable,
   Datum,
+  fromNullable,
+  fromNullableValue,
   Value,
 } from "../../../components/tables/DataTable"
 import { SelectableDataTableProps } from "../../../components/tables/SelectableDataTable"
@@ -26,7 +28,6 @@ import { useBasePath } from "../../../state/basePath"
 import { Oid } from "../../../state/common"
 import { createOppijaPath } from "../../../state/paths"
 import { nonNull } from "../../../utils/arrays"
-import { FilterableValue } from "../../../utils/conversions"
 import { formatDate, formatNullableDate } from "../../../utils/date"
 
 export type SuorittaminenOppivelvollisetTableProps = {
@@ -203,20 +204,6 @@ const tilaString = (opiskeluoikeus: OpiskeluoikeusSuppeatTiedot): string => {
   const tila = opiskeluoikeus.tarkastelupäivänTila
   return getLocalized(tila.nimi) || tila.koodiarvo
 }
-
-const fromNullableValue = (
-  value: Value | null | undefined,
-  nullFilterValues?: Array<string | number>
-): Value =>
-  value || {
-    value: "–",
-    filterValues: nullFilterValues,
-  }
-
-const fromNullable = (value: FilterableValue | null | undefined): Value =>
-  fromNullableValue({
-    value: value ? value : "-",
-  })
 
 const opiskeluoikeustiedot = (
   opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[],
