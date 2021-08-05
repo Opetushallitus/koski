@@ -72,7 +72,7 @@ export const hakeutumisvalvottavatOpiskeluoikeudet = (
 ) =>
   opiskeluoikeudet.filter(isHakeutumisvalvottavaOpiskeluoikeus(organisaatioOid))
 
-export const opiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus = (
+export const hakeutumisvalvonnanOpiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus = (
   opiskeluoikeus: OpiskeluoikeusSuppeatTiedot
 ): boolean => {
   const tila = opiskeluoikeus.tarkastelupäivänTila.koodiarvo

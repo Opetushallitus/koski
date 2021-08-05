@@ -33,8 +33,8 @@ import {
   SuppeaHakutoive,
 } from "../../state/apitypes/hakutoive"
 import {
+  hakeutumisvalvonnanOpiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus,
   hakeutumisvalvottavatOpiskeluoikeudet,
-  opiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus,
   OpiskeluoikeusSuppeatTiedot,
 } from "../../state/apitypes/opiskeluoikeus"
 import {
@@ -432,7 +432,7 @@ const opiskeluoikeustiedot = (
   opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
 ): Value | null => {
   const oos = opiskeluoikeudet.filter(
-    opiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus
+    hakeutumisvalvonnanOpiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus
   )
 
   const toValue = (oo: OpiskeluoikeusSuppeatTiedot) => {
