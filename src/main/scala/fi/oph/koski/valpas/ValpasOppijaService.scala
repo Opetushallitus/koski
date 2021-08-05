@@ -121,7 +121,7 @@ class ValpasOppijaService(
   // TODO: Tästä puuttuu oppijan tietoihin käsiksi pääsy seuraavilta käyttäjäryhmiltä:
   // (1) muut kuin peruskoulun hakeutumisen valvojat (esim. nivelvaihe ja aikuisten perusopetus)
   // (4) OPPILAITOS_SUORITTAMINEN-, OPPILAITOS_MAKSUTTOMUUS- ja KUNTA -käyttäjät.
-  def getOppijatSuppeatTiedot
+  def getHakeutumisvalvottavatOppijatSuppeatTiedot
     (oppilaitosOid: ValpasOppilaitos.Oid)
     (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =

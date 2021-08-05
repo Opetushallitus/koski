@@ -406,7 +406,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
   }
 
   "getOppijat palauttaa yhden oppilaitoksen oppijat oikein tarkasteltaessa ennen syksyn rajapäivää" in {
-    val oppijat = oppijaService.getOppijatSuppeatTiedot(oppilaitos)(defaultSession).toOption.get.map(_.oppija)
+    val oppijat = oppijaService.getHakeutumisvalvottavatOppijatSuppeatTiedot(oppilaitos)(defaultSession).toOption.get.map(_.oppija)
 
     oppijat.map(_.henkilö.oid) shouldBe oppivelvolliset.map(_._1.oid)
 
@@ -420,7 +420,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
   }
 
   "getOppijat palauttaa yhden oppilaitoksen oppijat oikein käyttäjälle, jolla globaalit oikeudet, tarkasteltaessa ennen syksyn rajapäivää" in {
-    val oppijat = oppijaService.getOppijatSuppeatTiedot(oppilaitos)(session(ValpasMockUsers.valpasOphHakeutuminenPääkäyttäjä))
+    val oppijat = oppijaService.getHakeutumisvalvottavatOppijatSuppeatTiedot(oppilaitos)(session(ValpasMockUsers.valpasOphHakeutuminenPääkäyttäjä))
       .toOption.get.map(_.oppija)
 
     oppijat.map(_.henkilö.oid) shouldBe oppivelvolliset.map(_._1.oid)
@@ -437,7 +437,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
   "getOppijat palauttaa yhden oppilaitoksen oppijat oikein tarkasteltaessa syksyn rajapäivän jälkeen" in {
     rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(date(2021, 10, 1))
 
-    val oppijat = oppijaService.getOppijatSuppeatTiedot(oppilaitos)(defaultSession).toOption.get.map(_.oppija)
+    val oppijat = oppijaService.getHakeutumisvalvottavatOppijatSuppeatTiedot(oppilaitos)(defaultSession).toOption.get.map(_.oppija)
 
     oppijat.map(_.henkilö.oid) shouldBe oppivelvollisetRajapäivänJälkeen.map(_._1.oid)
 
