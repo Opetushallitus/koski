@@ -155,7 +155,9 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
           value: opiskeluoikeus.päättymispäivä,
           display: formatNullableDate(opiskeluoikeus.päättymispäivä),
         },
-        fromNullableValue(opiskeluoikeustiedot(oppija.oppija.opiskeluoikeudet)),
+        fromNullableValue(
+          opiskeluoikeustiedot(oppija.oppija.opiskeluoikeudet, opiskeluoikeus)
+        ),
         {
           // TODO: käsittele keskeytykset, ota mallia OppijanOppivelvollisuustiedot.tsx:stä. Tällä hetkellä dataa ei tule.
           value: oppija.oppija.oppivelvollisuusVoimassaAsti,
@@ -205,11 +207,14 @@ const fromNullableValue = (
   }
 
 const opiskeluoikeustiedot = (
-  opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
+  opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[],
+  käsiteltäväOpiskeluoikeus: OpiskeluoikeusSuppeatTiedot
 ): Value | null => {
-  const oos = opiskeluoikeudet.filter(
-    suorittamisvalvonnanOpiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus
-  )
+  const oos = opiskeluoikeudet
+    .filter((oo) => oo.oid != käsiteltäväOpiskeluoikeus.oid)
+    .filter(
+      suorittamisvalvonnanOpiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus
+    )
 
   const toValue = (oo: OpiskeluoikeusSuppeatTiedot) => {
     const kohde = [
