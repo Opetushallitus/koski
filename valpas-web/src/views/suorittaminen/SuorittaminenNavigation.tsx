@@ -15,6 +15,7 @@ import {
 
 export type SuorittaminenNavigationProps = {
   selectedOrganisaatio?: Oid
+  oppivelvollisetCount?: number | false
 }
 
 export const SuorittaminenNavigation = (
@@ -22,7 +23,9 @@ export const SuorittaminenNavigation = (
 ) => {
   const navOptions: TabNavigationItem[] = [
     {
-      display: t("suorittaminen_nav__oppivelvolliset"),
+      display:
+        t("suorittaminen_nav__oppivelvolliset") +
+        (props.oppivelvollisetCount ? ` (${props.oppivelvollisetCount})` : ""),
       linkTo: props.selectedOrganisaatio
         ? createSuorittaminenPathWithOrg("", props.selectedOrganisaatio)
         : createSuorittaminenPath(),

@@ -119,7 +119,10 @@ export const SuorittaminenOppivelvollisetView = withRequiresSuorittamisenValvont
               value={organisaatioOid}
               onChange={changeOrganisaatio}
             />
-            <SuorittaminenNavigation selectedOrganisaatio={organisaatioOid} />
+            <SuorittaminenNavigation
+              selectedOrganisaatio={organisaatioOid}
+              oppivelvollisetCount={isSuccess(fetch) && fetch.data.length}
+            />
             <Card>
               <CardHeader>
                 <T id="suorittaminennäkymä__oppivelvolliset__otsikko" />
