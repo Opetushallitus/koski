@@ -147,10 +147,22 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
         },
         koulutustyyppi(opiskeluoikeus),
         tila(opiskeluoikeus),
-        alkamispäivä(opiskeluoikeus),
-        päättymispäivä(opiskeluoikeus),
+        {
+          value: opiskeluoikeus.alkamispäivä,
+          display: formatNullableDate(opiskeluoikeus.alkamispäivä),
+        },
+        {
+          value: opiskeluoikeus.päättymispäivä,
+          display: formatNullableDate(opiskeluoikeus.päättymispäivä),
+        },
         fromNullableValue(opiskeluoikeustiedot(oppija.oppija.opiskeluoikeudet)),
-        oppivelvollisuus(oppija.oppija),
+        {
+          // TODO: käsittele keskeytykset, ota mallia OppijanOppivelvollisuustiedot.tsx:stä. Tällä hetkellä dataa ei tule.
+          value: oppija.oppija.oppivelvollisuusVoimassaAsti,
+          display: formatNullableDate(
+            oppija.oppija.oppivelvollisuusVoimassaAsti
+          ),
+        },
       ],
     }
   })
@@ -181,27 +193,6 @@ const tila = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
 const tilaString = (opiskeluoikeus: OpiskeluoikeusSuppeatTiedot): string => {
   const tila = opiskeluoikeus.tarkastelupäivänTila
   return getLocalized(tila.nimi) || tila.koodiarvo
-}
-
-const alkamispäivä = (opiskeluoikeus: OpiskeluoikeusSuppeatTiedot): Value => {
-  const päiväString = formatDate(opiskeluoikeus.alkamispäivä)
-  return {
-    value: opiskeluoikeus.alkamispäivä.toString(),
-    filterValues: [päiväString],
-    display: päiväString,
-  }
-}
-
-const päättymispäivä = (opiskeluoikeus: OpiskeluoikeusSuppeatTiedot): Value => {
-  const päiväValue = opiskeluoikeus.päättymispäivä
-    ? opiskeluoikeus.päättymispäivä.toString()
-    : "–"
-  const päiväString = formatNullableDate(opiskeluoikeus.päättymispäivä)
-  return {
-    value: päiväValue,
-    filterValues: [päiväString],
-    display: päiväString,
-  }
 }
 
 const fromNullableValue = (
@@ -266,20 +257,4 @@ const suorittamisvalvonnanOpiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus =
 ): boolean => {
   const tila = opiskeluoikeus.tarkastelupäivänTila.koodiarvo
   return tila === "voimassa" || tila === "voimassatulevaisuudessa"
-}
-
-// TODO: käsittele keskeytykset, ota mallia OppijanOppivelvollisuustiedot.tsx:stä. Tällä hetkellä dataa ei tule.
-const oppivelvollisuus = (oppija: OppijaSuppeatTiedot): Value => {
-  const oppivalvollisuusValue = oppija.oppivelvollisuusVoimassaAsti
-    ? oppija.oppivelvollisuusVoimassaAsti.toString()
-    : "–"
-  const oppivelvollisuusString = formatNullableDate(
-    oppija.oppivelvollisuusVoimassaAsti
-  )
-
-  return {
-    value: oppivalvollisuusValue,
-    filterValues: [oppivelvollisuusString],
-    display: oppivelvollisuusString,
-  }
 }
