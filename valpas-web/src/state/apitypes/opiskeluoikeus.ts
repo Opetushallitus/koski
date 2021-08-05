@@ -58,7 +58,7 @@ export const sortOpiskeluoikeusLaajatTiedot = (lang: Language) =>
     tyyppiNimiOrd(lang),
   ])
 
-export const isValvottavaOpiskeluoikeus = (
+export const isHakeutumisvalvottavaOpiskeluoikeus = (
   organisaatioOid: string | undefined
 ) => (oo: OpiskeluoikeusSuppeatTiedot) =>
   oo.onHakeutumisValvottava && oo.oppilaitos.oid == organisaatioOid
@@ -66,10 +66,11 @@ export const isValvottavaOpiskeluoikeus = (
 export const isPerusopetus = (oo: OpiskeluoikeusSuppeatTiedot) =>
   oo.tyyppi.koodiarvo === "perusopetus"
 
-export const valvottavatOpiskeluoikeudet = (
+export const hakeutumisvalvottavatOpiskeluoikeudet = (
   organisaatioOid: Oid | undefined,
   opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
-) => opiskeluoikeudet.filter(isValvottavaOpiskeluoikeus(organisaatioOid))
+) =>
+  opiskeluoikeudet.filter(isHakeutumisvalvottavaOpiskeluoikeus(organisaatioOid))
 
 export const opiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus = (
   opiskeluoikeus: OpiskeluoikeusSuppeatTiedot

@@ -33,9 +33,9 @@ import {
   SuppeaHakutoive,
 } from "../../state/apitypes/hakutoive"
 import {
+  hakeutumisvalvottavatOpiskeluoikeudet,
   opiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus,
   OpiskeluoikeusSuppeatTiedot,
-  valvottavatOpiskeluoikeudet,
 } from "../../state/apitypes/opiskeluoikeus"
 import {
   lisätietoMatches,
@@ -179,7 +179,7 @@ const oppijaToTableData = (
 ) => (oppija: OppijaHakutilanteillaSuppeatTiedot): Array<Datum> => {
   const henkilö = oppija.oppija.henkilö
 
-  return valvottavatOpiskeluoikeudet(
+  return hakeutumisvalvottavatOpiskeluoikeudet(
     organisaatioOid,
     oppija.oppija.opiskeluoikeudet
   ).map((opiskeluoikeus) => {

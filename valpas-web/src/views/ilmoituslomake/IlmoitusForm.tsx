@@ -33,8 +33,8 @@ import {
   PohjatietoYhteystieto,
 } from "../../state/apitypes/kuntailmoituspohjatiedot"
 import {
+  hakeutumisvalvottavatOpiskeluoikeudet,
   OpiskeluoikeusSuppeatTiedot,
-  valvottavatOpiskeluoikeudet,
 } from "../../state/apitypes/opiskeluoikeus"
 import {
   lisätietoMatches,
@@ -305,7 +305,10 @@ const defaultMuuHakuValue = (
       opiskeluoikeus.oppilaitos.oid
     )
   return nonEmptyEvery(
-    valvottavatOpiskeluoikeudet(organisaatioOid, definedOpiskeluoikeudet),
+    hakeutumisvalvottavatOpiskeluoikeudet(
+      organisaatioOid,
+      definedOpiskeluoikeudet
+    ),
     (oo) => definedLisätiedot.find(matchesOpiskeluoikeus(oo))?.muuHaku === true
   )
 }
