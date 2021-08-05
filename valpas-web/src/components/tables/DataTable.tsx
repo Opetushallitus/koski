@@ -7,7 +7,7 @@ import * as Ord from "fp-ts/lib/Ord"
 import * as string from "fp-ts/lib/string"
 import React, { useEffect, useMemo } from "react"
 // import { update } from "../../utils/arrays"
-import { toFilterableString } from "../../utils/conversions"
+import { FilterableValue, toFilterableString } from "../../utils/conversions"
 import { ArrowDropDownIcon, ArrowDropUpIcon } from "../icons/Icon"
 import { InfoTooltip } from "../tooltip/InfoTooltip"
 import { dataFilterUsesValueList, DataTableFilter } from "./DataTableFilter"
@@ -53,7 +53,7 @@ export const equalKeys = (a: DatumKey) => (b: DatumKey) =>
 
 export type Value = {
   /** Value for filtering and ordering */
-  value: string | number | boolean | null | undefined
+  value: FilterableValue
   /** Value for rendering */
   display?: string | number | React.ReactNode
   /** Icon alongside the value */
