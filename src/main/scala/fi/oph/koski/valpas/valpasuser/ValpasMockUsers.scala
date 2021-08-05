@@ -148,7 +148,7 @@ object ValpasMockUsers {
     "käyttäjä",
     "valpas-pelkkä-suorittaminen",
     "1.2.246.562.24.12315312356",
-    oppilaitosKäyttäjäPelkkäSuorittaminen(jyväskylänNormaalikoulu)
+    oppilaitosKäyttäjäPelkkäSuorittaminen(jyväskylänNormaalikoulu) ++ oppilaitosKäyttäjäPelkkäSuorittaminen(helsinginMedialukio)
   )
 
   val valpasPelkkäSuorittaminenkäyttäjäAmmattikoulu = ValpasMockUser(
