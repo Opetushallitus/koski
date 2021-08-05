@@ -154,8 +154,9 @@ class ValpasOppijaService(
     (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =
     getOppijatLaajatTiedotIlmanHakutilanteita(ValpasRooli.OPPILAITOS_SUORITTAMINEN, oppilaitosOid)
-      // TODO: Jos näin päätetään: Filtteröi pois suorittamisvalvottavat oppijat, jotka ovat eronneet, mutta
+      // TODO: Filtteröi pois suorittamisvalvottavat oppijat, jotka ovat eronneet, mutta
       // jotka ovat aktiivisia jo muissa opinnoissa tarkastelupäivänä. Heihin pääsee käsiksi ainoastaan hetuhaulla.
+      // Nivelvaiheessa opiskelevia ei poisteta, jos on jo joku muu nivelvaihe suoritettuna.
       .map(_.map(OppijaHakutilanteillaSuppeatTiedot.apply))
 
   def getKunnanOppijatSuppeatTiedot

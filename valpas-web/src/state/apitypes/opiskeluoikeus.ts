@@ -63,6 +63,11 @@ export const isHakeutumisvalvottavaOpiskeluoikeus = (
 ) => (oo: OpiskeluoikeusSuppeatTiedot) =>
   oo.onHakeutumisValvottava && oo.oppilaitos.oid == organisaatioOid
 
+export const isSuorittamisvalvottavaOpiskeluoikeus = (
+  organisaatioOid: string | undefined
+) => (oo: OpiskeluoikeusSuppeatTiedot) =>
+  oo.onSuorittamisValvottava && oo.oppilaitos.oid == organisaatioOid
+
 export const isPerusopetus = (oo: OpiskeluoikeusSuppeatTiedot) =>
   oo.tyyppi.koodiarvo === "perusopetus"
 
@@ -71,6 +76,14 @@ export const hakeutumisvalvottavatOpiskeluoikeudet = (
   opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
 ) =>
   opiskeluoikeudet.filter(isHakeutumisvalvottavaOpiskeluoikeus(organisaatioOid))
+
+export const suorittamisvalvottavatOpiskeluoikeudet = (
+  organisaatioOid: Oid | undefined,
+  opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
+) =>
+  opiskeluoikeudet.filter(
+    isSuorittamisvalvottavaOpiskeluoikeus(organisaatioOid)
+  )
 
 export const hakeutumisvalvonnanOpiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus = (
   opiskeluoikeus: OpiskeluoikeusSuppeatTiedot

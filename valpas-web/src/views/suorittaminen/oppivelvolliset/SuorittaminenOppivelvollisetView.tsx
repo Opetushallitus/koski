@@ -101,7 +101,6 @@ export const SuorittaminenOppivelvollisetView = withRequiresSuorittamisenValvont
 
     const organisaatioOid = props.match.params.organisaatioOid!
 
-    // TODO, käytä dummy dataa eikä väärästä routesta haettua
     const fetch = useApiWithParams(
       fetchOppijatSuorittaminen,
       [organisaatioOid],

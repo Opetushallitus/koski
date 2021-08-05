@@ -1,26 +1,285 @@
-import React from "react"
-import { DataTableCountChangeEvent } from "../../../components/tables/DataTable"
-import { OppijaHakutilanteillaSuppeatTiedot } from "../../../state/apitypes/oppija"
+import * as A from "fp-ts/Array"
+import React, { useMemo } from "react"
+import { Link } from "react-router-dom"
+import { FutureSuccessIcon, SuccessIcon } from "~components/icons/Icon"
+import { SelectableDataTableProps } from "~components/tables/SelectableDataTable"
+import { getLocalized, t } from "~i18n/i18n"
+import {
+  OpiskeluoikeusSuppeatTiedot,
+  suorittamisvalvottavatOpiskeluoikeudet,
+} from "~state/apitypes/opiskeluoikeus"
+import {
+  isVoimassa,
+  isVoimassaTulevaisuudessa,
+} from "~state/apitypes/valpasopiskeluoikeudentila"
+import { useBasePath } from "~state/basePath"
+import { Oid } from "~state/common"
+import { createOppijaPath } from "~state/paths"
+import { nonNull } from "~utils/arrays"
+import { formatDate, formatNullableDate } from "~utils/date"
+import {
+  Column,
+  DataTable,
+  Datum,
+  Value,
+} from "../../../components/tables/DataTable"
+import {
+  OppijaHakutilanteillaSuppeatTiedot,
+  OppijaSuppeatTiedot,
+} from "../../../state/apitypes/oppija"
 
-// TODO: Oikea data
 export type SuorittaminenOppivelvollisetTableProps = {
   data: OppijaHakutilanteillaSuppeatTiedot[]
-  onCountChange: (event: DataTableCountChangeEvent) => void
   organisaatioOid: string
+} & Pick<SelectableDataTableProps, "onCountChange">
+
+const useOppijaData = (
+  organisaatioOid: Oid,
+  data: OppijaHakutilanteillaSuppeatTiedot[]
+) => {
+  const basePath = useBasePath()
+  return useMemo(
+    () => A.flatten(data.map(oppijaToTableData(basePath, organisaatioOid))),
+    [data, basePath, organisaatioOid]
+  )
 }
 
 export const SuorittaminenOppivelvollisetTable = (
   props: SuorittaminenOppivelvollisetTableProps
 ) => {
-  return (
-    <p>TODO {props.data && props.data.length}</p>
-    //<DataTable
-    //  key={props.organisaatioOid}
-    //  storageName={`kuntailmoitustaulu-${props.organisaatioOid}`}
-    //  className="kuntailmoitus"
-    //  columns={columns}
-    //  data={data}
-    //  onCountChange={props.onCountChange}
-    ///>
+  const data = useOppijaData(props.organisaatioOid, props.data)
+
+  const columns: Column[] = useMemo(
+    () => [
+      {
+        label: t("suorittaminennäkymä__taulu_nimi"),
+        filter: "freetext",
+        size: "large",
+      },
+      {
+        label: t("suorittaminennäkymä__taulu_syntymäaika"),
+        size: "small",
+      },
+      {
+        label: t("suorittaminennäkymä__taulu_koulutustyyppi"),
+        size: "small",
+      },
+      {
+        label: t("suorittaminennäkymä__taulu_tila"),
+        filter: "dropdown",
+        size: "small",
+      },
+      {
+        label: t("suorittaminennäkymä__taulu_alkamispäivä"),
+        filter: "dropdown",
+        size: "small",
+      },
+      {
+        label: t("suorittaminennäkymä__taulu_päättymispäivä"),
+        filter: "dropdown",
+        size: "small",
+      },
+      {
+        label: t("suorittaminennäkymä__taulu_voimassaolevia_opiskeluoikeuksia"),
+        tooltip: t(
+          "suorittaminennäkymä__taulu_voimassaolevia_opiskeluoikeuksia_tooltip"
+        ),
+        filter: "dropdown",
+        indicatorSpace: "auto",
+      },
+      {
+        label: t("suorittaminennäkymä__taulu_oppivelvollisuus"),
+        filter: "dropdown",
+        size: "small",
+      },
+    ],
+    []
   )
+
+  return (
+    <DataTable
+      key={props.organisaatioOid}
+      storageName={`suorittamistaulu-${props.organisaatioOid}`}
+      className="suorittaminen"
+      columns={columns}
+      data={data}
+      onCountChange={props.onCountChange}
+    />
+  )
+}
+
+/** Tuple: [Oppijan oid, Opiskeluoikeuden oid] */
+type SuorittaminenKey = [Oid, Oid]
+
+const createSuorittaminenKey = (
+  oppija: OppijaSuppeatTiedot,
+  opiskeluoikeus: OpiskeluoikeusSuppeatTiedot
+): SuorittaminenKey => [oppija.henkilö.oid, opiskeluoikeus.oid]
+
+const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
+  oppija: OppijaHakutilanteillaSuppeatTiedot
+): Array<Datum> => {
+  const henkilö = oppija.oppija.henkilö
+
+  return suorittamisvalvottavatOpiskeluoikeudet(
+    organisaatioOid,
+    oppija.oppija.opiskeluoikeudet
+  ).map((opiskeluoikeus) => {
+    return {
+      key: createSuorittaminenKey(oppija.oppija, opiskeluoikeus),
+      values: [
+        {
+          value: `${henkilö.sukunimi} ${henkilö.etunimet}`,
+          display: (
+            <Link
+              to={createOppijaPath(basePath, {
+                suorittaminenRef: organisaatioOid,
+                oppijaOid: henkilö.oid,
+              })}
+            >
+              {henkilö.sukunimi} {henkilö.etunimet}
+            </Link>
+          ),
+        },
+        {
+          value: henkilö.syntymäaika,
+          display: formatNullableDate(henkilö.syntymäaika),
+        },
+        koulutustyyppi(opiskeluoikeus),
+        tila(opiskeluoikeus),
+        alkamispäivä(opiskeluoikeus),
+        päättymispäivä(opiskeluoikeus),
+        fromNullableValue(opiskeluoikeustiedot(oppija.oppija.opiskeluoikeudet)),
+        oppivelvollisuus(oppija.oppija),
+      ],
+    }
+  })
+}
+
+// TODO: Tästä vastauksena 2. aste/VALMA/TELMA/...
+const koulutustyyppi = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
+  const koulutustyyppi = {
+    value: `TODO ${oo.tyyppi.koodiarvo}`,
+    filterValues: [`TODO ${oo.tyyppi.koodiarvo}`],
+    display: `TODO ${oo.tyyppi.koodiarvo}`,
+  }
+
+  return koulutustyyppi
+}
+
+const tila = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
+  oo.tarkastelupäivänTila
+  const koulutustyyppi = {
+    value: tilaString(oo),
+    filterValues: [tilaString(oo)],
+    display: tilaString(oo),
+  }
+
+  return koulutustyyppi
+}
+
+const tilaString = (opiskeluoikeus: OpiskeluoikeusSuppeatTiedot): string => {
+  const tila = opiskeluoikeus.tarkastelupäivänTila
+  return getLocalized(tila.nimi) || tila.koodiarvo
+}
+
+const alkamispäivä = (opiskeluoikeus: OpiskeluoikeusSuppeatTiedot): Value => {
+  const päiväString = formatDate(opiskeluoikeus.alkamispäivä)
+  return {
+    value: opiskeluoikeus.alkamispäivä.toString(),
+    filterValues: [päiväString],
+    display: päiväString,
+  }
+}
+
+const päättymispäivä = (opiskeluoikeus: OpiskeluoikeusSuppeatTiedot): Value => {
+  const päiväValue = opiskeluoikeus.päättymispäivä
+    ? opiskeluoikeus.päättymispäivä.toString()
+    : "–"
+  const päiväString = formatNullableDate(opiskeluoikeus.päättymispäivä)
+  return {
+    value: päiväValue,
+    filterValues: [päiväString],
+    display: päiväString,
+  }
+}
+
+const fromNullableValue = (
+  value: Value | null,
+  nullFilterValues?: Array<string | number>
+): Value =>
+  value || {
+    value: "–",
+    filterValues: nullFilterValues,
+  }
+
+const opiskeluoikeustiedot = (
+  opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
+): Value | null => {
+  const oos = opiskeluoikeudet.filter(
+    suorittamisvalvonnanOpiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus
+  )
+
+  const toValue = (oo: OpiskeluoikeusSuppeatTiedot) => {
+    const kohde = [
+      getLocalized(oo.oppilaitos.nimi),
+      getLocalized(oo.tyyppi.nimi),
+    ]
+      .filter(nonNull)
+      .join(", ")
+
+    return isVoimassa(oo.tarkastelupäivänTila)
+      ? kohde
+      : t("opiskeluoikeudet__pvm_alkaen_kohde", {
+          päivämäärä: formatDate(oo.alkamispäivä),
+          kohde,
+        })
+  }
+
+  const icon = oos.some((oo) => isVoimassa(oo.tarkastelupäivänTila)) ? (
+    <SuccessIcon />
+  ) : oos.some((oo) => isVoimassaTulevaisuudessa(oo.tarkastelupäivänTila)) ? (
+    <FutureSuccessIcon />
+  ) : undefined
+
+  switch (oos.length) {
+    case 0:
+      return null
+    case 1:
+      return { value: toValue(oos[0]!!), icon }
+    default:
+      const filterValues = oos.map(toValue).filter(nonNull)
+      return {
+        value: t("opiskeluoikeudet__n_opiskeluoikeutta", {
+          lukumäärä: oos.length,
+        }),
+        filterValues,
+        tooltip: filterValues.join("\n"),
+        icon,
+      }
+  }
+}
+
+// TODO: Filtteröi pois opiskeluoikeus, jonka riviä ollaan näyttämässä
+const suorittamisvalvonnanOpiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus = (
+  opiskeluoikeus: OpiskeluoikeusSuppeatTiedot
+): boolean => {
+  const tila = opiskeluoikeus.tarkastelupäivänTila.koodiarvo
+  return tila === "voimassa" || tila === "voimassatulevaisuudessa"
+}
+
+// TODO: käsittele keskeytykset, ota mallia OppijanOppivelvollisuustiedot.tsx:stä. Tällä hetkellä dataa ei tule.
+const oppivelvollisuus = (oppija: OppijaSuppeatTiedot): Value => {
+  const oppivalvollisuusValue = oppija.oppivelvollisuusVoimassaAsti
+    ? oppija.oppivelvollisuusVoimassaAsti.toString()
+    : "–"
+  const oppivelvollisuusString = formatNullableDate(
+    oppija.oppivelvollisuusVoimassaAsti
+  )
+
+  return {
+    value: oppivalvollisuusValue,
+    filterValues: [oppivelvollisuusString],
+    display: oppivelvollisuusString,
+  }
 }

@@ -199,5 +199,19 @@
   "suorittaminennäkymä__oppivelvolliset__otsikko": "Oppivelvolliset",
   "suorittaminennäkymä__ei_oppivelvollisia": "Ei oppivelvollisia",
   "suorittaminennäkymä__ei_oikeuksia_title": "Virhe",
-  "suorittaminennäkymä__ei_oikeuksia_teksti": "Sinulla ei ole oikeuksia nähdä yhdenkään oppilaitoksen tietoja"
+  "suorittaminennäkymä__ei_oikeuksia_teksti": "Sinulla ei ole oikeuksia nähdä yhdenkään oppilaitoksen tietoja",
+  "suorittaminennäkymä__tila_voimassatulevaisuudessa": "Alkaa tulevaisuudessa",
+  "suorittaminennäkymä__tila_valmistunut": "Valmistunut",
+  "suorittaminennäkymä__tila_eronnut": "Eronnut",
+  "suorittaminennäkymä__tila_katsotaaneronneeksi": "Katsotaan eronneeksi",
+  "suorittaminennäkymä__tila_mitatoity": "Mitätöity",
+  "suorittaminennäkymä__taulu_nimi": "Nimi",
+  "suorittaminennäkymä__taulu_syntymäaika": "Syntymäaika",
+  "suorittaminennäkymä__taulu_koulutustyyppi": "Koulutus",
+  "suorittaminennäkymä__taulu_tila": "Opiskeluoikeuden tila",
+  "suorittaminennäkymä__taulu_alkamispäivä": "Opintojen alkupäivä",
+  "suorittaminennäkymä__taulu_päättymispäivä": "Opintojen päättymispäivä",
+  "suorittaminennäkymä__taulu_voimassaolevia_opiskeluoikeuksia": "Opiskeluoikeus toisessa oppilaitoksessa",
+  "suorittaminennäkymä__taulu_voimassaolevia_opiskeluoikeuksia_tooltip": "Muut oppijalle luodut opiskeluoikeudet, jotka kelpaavat perusopetuksen jälkeisen koulutuksen oppivelvollisuuden suorittamiseen.",
+  "suorittaminennäkymä__taulu_oppivelvollisuus": "Oppivelvollisuus"
 }
