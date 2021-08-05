@@ -209,6 +209,7 @@
   "suorittaminennäkymä__taulu_syntymäaika": "Syntymäaika",
   "suorittaminennäkymä__taulu_koulutustyyppi": "Koulutus",
   "suorittaminennäkymä__taulu_tila": "Opiskeluoikeuden tila",
+  "suorittaminennäkymä__taulu_toimipipste": "Toimipiste",
   "suorittaminennäkymä__taulu_alkamispäivä": "Opintojen alkupäivä",
   "suorittaminennäkymä__taulu_päättymispäivä": "Opintojen päättymispäivä",
   "suorittaminennäkymä__taulu_voimassaolevia_opiskeluoikeuksia": "Opiskeluoikeus toisessa oppilaitoksessa",

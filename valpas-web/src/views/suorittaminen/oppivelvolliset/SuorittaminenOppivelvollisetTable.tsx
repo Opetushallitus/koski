@@ -16,6 +16,7 @@ import { useBasePath } from "~state/basePath"
 import { Oid } from "~state/common"
 import { createOppijaPath } from "~state/paths"
 import { nonNull } from "~utils/arrays"
+import { FilterableValue } from "~utils/conversions"
 import { formatDate, formatNullableDate } from "~utils/date"
 import {
   Column,
@@ -66,6 +67,11 @@ export const SuorittaminenOppivelvollisetTable = (
       },
       {
         label: t("suorittaminennäkymä__taulu_tila"),
+        filter: "dropdown",
+        size: "small",
+      },
+      {
+        label: t("suorittaminennäkymä__taulu_toimipipste"),
         filter: "dropdown",
         size: "small",
       },
@@ -147,6 +153,7 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
         },
         koulutustyyppi(opiskeluoikeus),
         tila(opiskeluoikeus),
+        fromNullable(getLocalized(opiskeluoikeus.toimipiste?.nimi)),
         {
           value: opiskeluoikeus.alkamispäivä,
           display: formatNullableDate(opiskeluoikeus.alkamispäivä),
@@ -198,13 +205,18 @@ const tilaString = (opiskeluoikeus: OpiskeluoikeusSuppeatTiedot): string => {
 }
 
 const fromNullableValue = (
-  value: Value | null,
+  value: Value | null | undefined,
   nullFilterValues?: Array<string | number>
 ): Value =>
   value || {
     value: "–",
     filterValues: nullFilterValues,
   }
+
+const fromNullable = (value: FilterableValue | null | undefined): Value =>
+  fromNullableValue({
+    value: value ? value : "-",
+  })
 
 const opiskeluoikeustiedot = (
   opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[],
