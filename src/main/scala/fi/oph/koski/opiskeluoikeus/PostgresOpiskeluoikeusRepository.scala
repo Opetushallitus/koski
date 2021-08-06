@@ -205,7 +205,8 @@ class PostgresOpiskeluoikeusRepository(
         select *
         from opiskeluoikeus
         cross join jsonb_array_elements(data -> 'suoritukset') suoritukset
-          where (suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'perusopetuksenoppimaara'
+        where not opiskeluoikeus.mitatoity
+          and (suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'perusopetuksenoppimaara'
             or suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'aikuistenperusopetuksenoppimaara'
             or suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'internationalschoolmypvuosiluokka'
             and suoritukset -> 'koulutusmoduuli' -> 'tunniste' ->> 'koodiarvo' = '9')

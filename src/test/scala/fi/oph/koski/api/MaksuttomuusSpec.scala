@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.documentation.ExampleData.vahvistusPaikkakunnalla
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusMitätöity, vahvistusPaikkakunnalla}
 import fi.oph.koski.documentation.PerusopetusExampleData.perusopetuksenOppimääränSuoritus
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExamplesAikuistenPerusopetus, ExamplesInternationalSchool, LukioExampleData, PerusopetusExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.koskiSpecificOppijat
@@ -9,7 +9,6 @@ import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
 import org.scalatest.FreeSpec
-
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
@@ -160,6 +159,28 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
           resetFixtures()
         }
       }
+      "Saa siirtää, jos ennen rajapäivää tehty vahvistus on mitätöidyssä opiskeluoikeudessa" in {
+        val opiskeluoikeus = PerusopetusExampleData.opiskeluoikeus(
+          suoritukset = List(perusopetuksenOppimääränSuoritus.copy(
+            vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 1, 1))
+          )),
+          alkamispäivä = date(2010, 8, 1),
+          päättymispäivä = Some(date(2020, 8, 1))
+        )
+
+        val mitätöity = mitätöiOpiskeluoikeus(createOpiskeluoikeus(KoskiSpecificMockOppijat.oikeusOpiskelunMaksuttomuuteen, opiskeluoikeus))
+
+        putMaksuttomuus(
+          List(Maksuttomuus(date(2021, 8, 1), None, true)),
+          KoskiSpecificMockOppijat.oikeusOpiskelunMaksuttomuuteen,
+          alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
+        ) {
+          verifyResponseStatusOk()
+        }
+
+        resetFixtures()
+      }
+
       "Saa siirtää jos suoritus vahvistettu Valpas-lain voimaantulopäivän jälkeen" in {
         val opiskeluoikeus = PerusopetusExampleData.opiskeluoikeus(
           suoritukset = List(perusopetuksenOppimääränSuoritus.copy(
@@ -447,5 +468,10 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
     }
     jaksot shouldBe defined
     jaksot.get
+  }
+
+  private def mitätöiOpiskeluoikeus(oo: PerusopetuksenOpiskeluoikeus) = {
+    delete(s"api/opiskeluoikeus/${oo.oid.get}", headers = authHeaders())(verifyResponseStatusOk())
+    oo
   }
 }
