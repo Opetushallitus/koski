@@ -20,8 +20,11 @@ import {
 import { dataTableEventuallyEquals } from "../integrationtests-env/browser/datatable"
 import { clearTextInputElement } from "../integrationtests-env/browser/forms"
 import { loginAs } from "../integrationtests-env/browser/reset"
-import { shortTimeout } from "../integrationtests-env/browser/timeouts"
-import { eventually } from "../integrationtests-env/browser/utils"
+import {
+  defaultAnimationSleepTime,
+  shortTimeout,
+} from "../integrationtests-env/browser/timeouts"
+import { eventually, sleep } from "../integrationtests-env/browser/utils"
 import {
   hakutilannePath,
   jklNormaalikouluTableContent,
@@ -462,6 +465,11 @@ const täytäJaLähetäLomake = async (oppija: Oppija, form: Form) => {
       expect(submitted).toBeDefined()
     }, shortTimeout)
   })
+
+  // Odota, että animaatiot ovat päättyneet. Myöhemmät operaatiot, erityisesti buttonien painaminen voivat epäonnistua,
+  // jos animaatiot ovat käynnissä. Tähän ei oikein ole muuta helppoa keinoa kuin sleep: vaihtoehto voisi olla
+  // jotenkin tutkia jonkin siirtyvän elementin koordinaatteja, ja jatkaa vasta kun koordinaatit ovat stabiloituneet.
+  await sleep(defaultAnimationSleepTime)
 }
 
 const selectOption = async (select: WebElement, text: string) => {
