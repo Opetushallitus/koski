@@ -24,7 +24,10 @@ export const MaksuttomuusView = withRequiresMaksuttomuudenValvonta(() => {
         eiLöytynytIlmoitusId={
           "oppijahaku__maksuttomuutta_ei_pysty_päättelemään"
         }
-        error403Id={"oppijahaku__maksuttomuus_ei_näytettävä_oppija"}
+        eiLöytynytEiLainTaiMaksuttomuudenPiirissäId={
+          "oppijahaku__maksuttomuus_ei_näytettävä_oppija"
+        }
+        error403Id={"oppijahaku__maksuttomuus_sisäinen_virhe"}
       />
     </Page>
   )

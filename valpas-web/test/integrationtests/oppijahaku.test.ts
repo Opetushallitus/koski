@@ -147,6 +147,22 @@ describe("Oppijahaku", () => {
     await expectResultToBe("Maksuttomuutta ei pystytä päättelemään")
   })
 
+  it("Maksuttomuus: Haku kertoo ettei maksuttomuutta voida päätellä, jos ikänsä puolesta uuden lain mukaan oppivelvollinen löytyy oppijanumerorekisteristä mutta ei Koskesta", async () => {
+    await hakuLogin()
+    await fillQueryField("110405A6951")
+    await submit()
+    await expectResultToBe("Maksuttomuutta ei pystytä päättelemään")
+  })
+
+  it("Maksuttomuus: Haku kertoo ettei henkilö ole maksuttomuuden piirissä, jos ikänsä puolesta uuden lain ulkopuolella oleva oppija löytyy oppijanumerorekisteristä mutta ei Koskesta", async () => {
+    await hakuLogin()
+    await fillQueryField("070302A402D")
+    await submit()
+    await expectResultToBe(
+      "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen."
+    )
+  })
+
   it("Suorittaminen: Haku kertoo ettei oppijaa löydy, jos oppijan tietoja ei löydy rekistereistä", async () => {
     await hakuLogin(
       "valpas-pelkkä-suorittaminen",

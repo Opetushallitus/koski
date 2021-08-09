@@ -356,6 +356,14 @@ class ValpasOppijaService(
       .flatMap(accessResolver.withOppijaAccessAsRole(rooli))
   }
 
+  def getOppijaLaajatTiedotIlmanOikeustarkastusta(oppijaOid: ValpasHenkilö.Oid) : Either[HttpStatus, Option[ValpasOppijaLaajatTiedot]] = {
+    val rajaaOVKelpoisiinOpiskeluoikeuksiin = false
+    opiskeluoikeusDbService.getOppija(oppijaOid, rajaaOVKelpoisiinOpiskeluoikeuksiin) match {
+      case Some(dbRow) => asValpasOppijaLaajatTiedot(dbRow).map(Some(_))
+      case _ => Right(None)
+    }
+  }
+
   def getOppijaLaajatTiedot
     (roolit: Seq[ValpasRooli.Role], oppijaOid: ValpasHenkilö.Oid)
     (implicit session: ValpasSession)

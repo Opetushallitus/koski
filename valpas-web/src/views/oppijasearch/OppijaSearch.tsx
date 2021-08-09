@@ -10,6 +10,7 @@ import { Spinner } from "../../components/icons/Spinner"
 import { T, t } from "../../i18n/i18n"
 import {
   HenkilöhakuResult,
+  isEiLöytynytEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult,
   isLöytyiHenkilöhakuResult,
   LöytyiHenkilöhakuResult,
 } from "../../state/apitypes/henkilohaku"
@@ -47,6 +48,7 @@ export type OppijaSearchProps = {
   onQuery: (query: string) => void
   prevPath: string
   eiLöytynytIlmoitusId: string
+  eiLöytynytEiLainTaiMaksuttomuudenPiirissäId?: string
   error403Id: string
 }
 
@@ -75,6 +77,9 @@ export const OppijaSearch = (props: OppijaSearchProps) => {
             <OppijaSearchResults
               hakutulos={props.searchState.data}
               eiLöytynytIlmoitusId={props.eiLöytynytIlmoitusId}
+              eiLöytynytEiLainTaiMaksuttomuudenPiirissäId={
+                props.eiLöytynytEiLainTaiMaksuttomuudenPiirissäId
+              }
               prevPath={props.prevPath}
             />
           )}
@@ -93,6 +98,7 @@ export const OppijaSearch = (props: OppijaSearchProps) => {
 type OppijaSearchResultsProps = {
   hakutulos: HenkilöhakuResult
   eiLöytynytIlmoitusId: string
+  eiLöytynytEiLainTaiMaksuttomuudenPiirissäId?: string
   prevPath: string
 }
 
@@ -102,6 +108,17 @@ const OppijaSearchResults = (props: OppijaSearchResultsProps) => {
       <OppijaSearchMatchResult
         henkilö={props.hakutulos}
         prevPath={props.prevPath}
+      />
+    )
+  } else if (
+    props.eiLöytynytEiLainTaiMaksuttomuudenPiirissäId &&
+    isEiLöytynytEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(
+      props.hakutulos
+    )
+  ) {
+    return (
+      <OppijaSearchUndefinedResult
+        eiLöytynytIlmoitusId={props.eiLöytynytEiLainTaiMaksuttomuudenPiirissäId}
       />
     )
   }

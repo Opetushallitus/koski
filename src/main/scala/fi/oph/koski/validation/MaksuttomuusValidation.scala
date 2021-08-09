@@ -48,6 +48,7 @@ object MaksuttomuusValidation {
       case s: SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta => s
     }.isDefined
 
+  // Huom! Valpas käyttää myös tätä funktiota!
   def eiOppivelvollisuudenLaajentamislainPiirissäSyyt(
     oppijanSyntymäpäivä: Option[LocalDate],
     oppijanOid: String,

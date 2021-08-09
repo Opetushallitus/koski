@@ -1,3 +1,4 @@
+
 package fi.oph.koski.valpas
 
 import fi.oph.koski.config.KoskiApplication
@@ -5,7 +6,9 @@ import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Henkilö
+import fi.oph.koski.validation.MaksuttomuusValidation
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasHenkilöLaajatTiedot, ValpasOppijaLaajatTiedot}
+import fi.oph.koski.valpas.valpasuser.ValpasRooli.Role
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.scalaschema.annotation.SyntheticProperty
 
@@ -14,6 +17,8 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
   private val hetuValidator = application.hetu
   private val accessResolver = new ValpasAccessResolver
   private val oppijaService = application.valpasOppijaService
+  private val opiskeluoikeusRepository = application.opiskeluoikeusRepository
+  private val rajapäivätService = application.valpasRajapäivätService
 
   def findHenkilö
     (rooli: ValpasRooli.Role, query: String)
@@ -50,10 +55,47 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
     oppijaHenkilö match {
       case None => Right(ValpasEiLöytynytHenkilöhakuResult())
       case Some(henkilö) => {
-        oppijaService.getOppijaLaajatTiedot(rooli, henkilö.oid)
-          .map(ValpasLöytyiHenkilöhakuResult.apply)
+        if (rooli == ValpasRooli.OPPILAITOS_MAKSUTTOMUUS) {
+          asMaksuttomuusHenkilöhakuResult(henkilö)
+        } else {
+          asValpasHenkilöhakuResult(rooli, henkilö)
+        }
       }
     }
+  }
+
+  private def asMaksuttomuusHenkilöhakuResult
+    (henkilö: OppijaHenkilö)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, ValpasHenkilöhakuResult] = {
+    val onMahdollisestiLainPiirissä =
+      MaksuttomuusValidation.eiOppivelvollisuudenLaajentamislainPiirissäSyyt(
+        henkilö.syntymäaika,
+        henkilö.oid,
+        opiskeluoikeusRepository,
+        rajapäivätService
+      ).isEmpty
+
+    if (onMahdollisestiLainPiirissä) {
+      oppijaService.getOppijaLaajatTiedotIlmanOikeustarkastusta(henkilö.oid)
+        .map({
+          case Some(o) if o.onOikeusValvoaMaksuttomuutta => ValpasLöytyiHenkilöhakuResult(o)
+          // Henkilö, jonka tiedot löytyvät, mutta jolla maksuttomuus on päättynyt esim. toiselta asteelta
+          // valmistumiseen, ei ole enää maksuttomuuden piirissä:
+          case Some(_) => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult()
+          case _ => ValpasEiLöytynytHenkilöhakuResult()
+        })
+    } else {
+      Right(ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult())
+    }
+  }
+
+  private def asValpasHenkilöhakuResult
+    (rooli: Role, henkilö: OppijaHenkilö)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, ValpasLöytyiHenkilöhakuResult] = {
+    oppijaService.getOppijaLaajatTiedot(rooli, henkilö.oid)
+      .map(ValpasLöytyiHenkilöhakuResult.apply)
   }
 }
 
@@ -79,6 +121,12 @@ case class ValpasLöytyiHenkilöhakuResult(
   sukunimi: String,
 ) extends ValpasHenkilöhakuResult {
   def ok = true
+}
+
+case class ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(
+  eiLainTaiMaksuttomuudenPiirissä: Boolean = true
+) extends ValpasHenkilöhakuResult {
+  def ok = false
 }
 
 case class ValpasEiLöytynytHenkilöhakuResult() extends ValpasHenkilöhakuResult {
