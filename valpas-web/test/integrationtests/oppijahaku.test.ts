@@ -33,7 +33,7 @@ describe("Oppijahaku", () => {
     )
   })
 
-  it("Maksuttomuus: Haku löytää oppijatunnuksen perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on oikeus, ja linkkaa detaljisivulle", async () => {
+  it("Maksuttomuus: Haku löytää oppijanumeron perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on oikeus, ja linkkaa detaljisivulle", async () => {
     await hakuLogin()
     await fillQueryField("1.2.246.562.24.00000000001")
     await submit()
@@ -93,7 +93,7 @@ describe("Oppijahaku", () => {
     )
   })
 
-  it("Maksuttomuus: Haku löytää oppijatunnuksen perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on vain maksuttomuusoikeus, ja linkkaa detaljisivulle", async () => {
+  it("Maksuttomuus: Haku löytää oppijanumeron perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on vain maksuttomuusoikeus, ja linkkaa detaljisivulle", async () => {
     await hakuLogin("valpas-pelkkä-maksuttomuus")
     await fillQueryField("1.2.246.562.24.00000000004")
     await submit()
@@ -106,7 +106,7 @@ describe("Oppijahaku", () => {
     )
   })
 
-  it("Suorittaminen: Haku löytää oppijatunnuksen perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on vain suorittamisoikeus, ja linkkaa detaljisivulle", async () => {
+  it("Suorittaminen: Haku löytää oppijanumeron perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on vain suorittamisoikeus, ja linkkaa detaljisivulle", async () => {
     await hakuLogin(
       "valpas-pelkkä-suorittaminen",
       createSuorittaminenHetuhakuPath("/virkailija"),
@@ -123,7 +123,7 @@ describe("Oppijahaku", () => {
     )
   })
 
-  it("Kunta: Haku löytää oppijatunnuksen perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on vain kuntaoikeus, ja linkkaa detaljisivulle", async () => {
+  it("Kunta: Haku löytää oppijanumeron perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on vain kuntaoikeus, ja linkkaa detaljisivulle", async () => {
     await hakuLogin(
       "valpas-helsinki",
       createKunnanHetuhakuPath("/virkailija"),
@@ -248,7 +248,7 @@ describe("Oppijahaku", () => {
     }
   })
 
-  it("Maksuttomuus: Haku löytää oppijan, vaikka hänellä ei ole opiskeluoikeuden suorittamiseen kelpaavia opintoja", async () => {
+  it("Maksuttomuus: Haku löytää oppijan, vaikka hänellä ei ole oppivelvollisuuden suorittamiseen kelpaavia opintoja", async () => {
     await hakuLogin("valpas-maksuttomuus-hki")
     await fillQueryField("061005A671V") // Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas
     await submit()
@@ -290,7 +290,7 @@ describe("Oppijahaku", () => {
     )
   })
 
-  it("Kunta: Haku löytää oppijan, vaikka hänellä ei ole opiskeluoikeuden suorittamiseen kelpaavia opintoja", async () => {
+  it("Kunta: Haku löytää oppijan, vaikka hänellä ei ole oppivelvollisuuden suorittamiseen kelpaavia opintoja", async () => {
     await hakuLogin(
       "valpas-helsinki",
       createKunnanHetuhakuPath("/virkailija"),
