@@ -4,41 +4,23 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.KoskiTables._
-import fi.oph.koski.db._
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusMitätöity, suomenKieli}
 import fi.oph.koski.documentation.ExamplesEsiopetus.{ostopalveluOpiskeluoikeus, päiväkotisuoritus}
 import fi.oph.koski.documentation.ExamplesPerusopetus.ysinOpiskeluoikeusKesken
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.oppilaitos
 import fi.oph.koski.documentation.{ExamplesEsiopetus, _}
-import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, MockOppijat, OppijaHenkilö, VerifiedHenkilöOid}
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, MockUsers}
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.päiväkotiMajakka
-import fi.oph.koski.perustiedot.{OpiskeluoikeudenOsittaisetTiedot, OpiskeluoikeudenPerustiedot}
 import fi.oph.koski.schema._
-import fi.oph.koski.util.Timing
-import slick.dbio.DBIO
+import fi.oph.koski.validation.MaksuttomuusValidation
 
 import scala.reflect.runtime.universe.TypeTag
 
 class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends DatabaseFixtureCreator(application, "opiskeluoikeus_fixture", "opiskeluoikeushistoria_fixture") {
   protected def oppijat = KoskiSpecificMockOppijat.defaultOppijat
-
-  protected lazy val validatedOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
-    defaultOpiskeluOikeudet.zipWithIndex.map { case ((henkilö, oikeus), index) =>
-      timed(s"Validating fixture ${index}", 500) {
-        validator.validateAsJson(Oppija(henkilö.toHenkilötiedotJaOid, List(oikeus))) match {
-          case Right(oppija) => (henkilö, oppija.tallennettavatOpiskeluoikeudet.head)
-          case Left(status) => throw new RuntimeException(
-            s"Fixture insert failed for ${henkilö.etunimet} ${henkilö.sukunimi} with data ${JsonSerializer.write(oikeus)}: ${status}"
-          )
-        }
-      }
-    }
-  }
 
   protected lazy val invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
     val validOpiskeluoikeus: AmmatillinenOpiskeluoikeus = validateOpiskeluoikeus(AmmatillinenExampleData.opiskeluoikeus())
@@ -76,7 +58,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
     )
   }
 
-  private def defaultOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
+  protected def defaultOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
     List(
       (KoskiSpecificMockOppijat.eero, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)),
       (KoskiSpecificMockOppijat.eero, AmmatillinenOpiskeluoikeusTestData.mitätöityOpiskeluoikeus),

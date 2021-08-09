@@ -75,7 +75,21 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
 
   protected def oppijat: List[OppijaHenkilöWithMasterInfo]
 
-  protected def validatedOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]
+  protected lazy val validatedOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
+    defaultOpiskeluOikeudet.zipWithIndex.map { case ((henkilö, oikeus), index) =>
+      timed(s"Validating fixture ${index}", 500) {
+
+        validator.validateAsJson(Oppija(henkilö.toHenkilötiedotJaOid, List(oikeus))) match {
+          case Right(oppija) => (henkilö, oppija.tallennettavatOpiskeluoikeudet.head)
+          case Left(status) => throw new RuntimeException(
+            s"Fixture insert failed for ${henkilö.etunimet} ${henkilö.sukunimi} with data ${JsonSerializer.write(oikeus)}: ${status}"
+          )
+        }
+      }
+    }
+  }
 
   protected def invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]
+
+  protected def defaultOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]
 }
