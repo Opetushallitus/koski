@@ -348,9 +348,9 @@ class ValpasOppijaService(
     (rooli: ValpasRooli.Role, oppijaOid: ValpasHenkilö.Oid)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
-    val rajaaOVKelposillaOppivelvollisuuksilla = !roolitJoilleHaetaanKaikistaOVLPiirinOppijoista.contains(rooli)
+    val rajaaOVKelpoisiinOpiskeluoikeuksiin = !roolitJoilleHaetaanKaikistaOVLPiirinOppijoista.contains(rooli)
 
-    opiskeluoikeusDbService.getOppija(oppijaOid, rajaaOVKelposillaOppivelvollisuuksilla)
+    opiskeluoikeusDbService.getOppija(oppijaOid, rajaaOVKelpoisiinOpiskeluoikeuksiin)
       .toRight(ValpasErrorCategory.forbidden.oppija())
       .flatMap(asValpasOppijaLaajatTiedot)
       .flatMap(accessResolver.withOppijaAccessAsRole(rooli))
