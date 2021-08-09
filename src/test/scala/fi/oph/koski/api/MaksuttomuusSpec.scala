@@ -60,6 +60,19 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskeluoikeus on alkanut ennen 1.1.2021 ja/tai oppija ei annetun syntymäajan perusteella ole ikänsä puolesta laajennetun oppivelvollisuuden piirissä."))
       }
     }
+
+    "Ei saa siirtää, jos oppijalla ei ole hetua" in {
+      putMaksuttomuus(
+        List(
+          Maksuttomuus(date(2021, 8, 1), None, true)
+        ),
+        KoskiSpecificMockOppijat.hetuton,
+        alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
+      ) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskelijalla ei ole henkilötunnusta."))
+      }
+    }
+
     "Siirto kun opiskelijalla perusopetuksen päättötodistus tai siihen verrattavissa oleva suoritus" - {
       "Ei saa siirtää jos suoritus vahvistettu ennen Valpas-lain voimaantuloaikaa" - {
         "Aikuisten perusopetuksen oppimäärä" in {

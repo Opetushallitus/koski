@@ -80,7 +80,7 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
     defaultOpiskeluOikeudet.zipWithIndex.map { case ((henkilö, oikeus), index) =>
       timed(s"Validating fixture ${index}", 500) {
 
-        val maksuttomuusStatus = MaksuttomuusValidation.checkOpiskeluoikeudenMaksuttomuus(oikeus, henkilö.syntymäaika, henkilö.oid, application.opiskeluoikeusRepository)
+        val maksuttomuusStatus = MaksuttomuusValidation.checkOpiskeluoikeudenMaksuttomuus(oikeus, henkilö.syntymäaika, henkilö.oid, henkilö.hetu, application.opiskeluoikeusRepository)
         if (!maksuttomuusStatus.isOk) {
           throw new RuntimeException(
             s"Fixture insert failed for ${henkilö.etunimet} ${henkilö.sukunimi} with data ${JsonSerializer.write(oikeus)}: ${maksuttomuusStatus}"

@@ -13,6 +13,7 @@ object MaksuttomuusValidation {
   def checkOpiskeluoikeudenMaksuttomuus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
                                         oppijanSyntymäpäivä: Option[LocalDate],
                                         oppijanOid: String,
+                                        oppijanHetu: Option[String],
                                         opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository)
                                        (implicit user: KoskiSpecificSession): HttpStatus = {
     val suoritusVaatiiMaksuttomuusTiedon = oppivelvollisuudenSuorittamiseenKelpaavaMuuKuinPeruskoulunOpiskeluoikeus(opiskeluoikeus)
@@ -21,11 +22,13 @@ object MaksuttomuusValidation {
     val maksuttomuusTietoOnSiirretty = opiskeluoikeus.lisätiedot.collect { case l: MaksuttomuusTieto => l.maksuttomuus.toList.flatten.length > 0 }.getOrElse(false)
     val maksuttomuuttaPidennettyOnSiirretty = opiskeluoikeus.lisätiedot.collect { case l : MaksuttomuusTieto => l.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.length > 0 }.getOrElse(false)
 
-    val piirissä = !opiskeluoikeusRepository.checkValpasLainUlkopuolisiaPerusopetuksenVahvistettujaSuorituksia(oppijanOid)
+    val piirissä = !opiskeluoikeusRepository.checkValpasLainUlkopuolisiaPerusopetuksenVahvistettujaSuorituksia(oppijanOid) && oppijanHetu.isDefined
     val eiPiirissäMuttaMaksuttomuusTietojaSiirretty = !piirissä && (maksuttomuusTietoOnSiirretty || maksuttomuuttaPidennettyOnSiirretty)
 
     if (suoritusVaatiiMaksuttomuusTiedon && oppijanIkäOikeuttaaMaksuttomuuden && alkamispäiväOikeuttaaMaksuttomuuden && piirissä) {
       HttpStatus.validate(maksuttomuusTietoOnSiirretty) { KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta puuttuu.") }
+    } else if (oppijanHetu.isEmpty) {
+      HttpStatus.validate(!maksuttomuusTietoOnSiirretty) { KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskelijalla ei ole henkilötunnusta.") }
     } else if (!piirissä) {
       HttpStatus.validate(!eiPiirissäMuttaMaksuttomuusTietojaSiirretty) { KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskelija on suorittanut perusopetuksen, aikuisten perusopetuksen oppimäärän tai International Schoolin 9. vuosiluokan ennen 1.1.2021.")}
     } else {
