@@ -32,6 +32,7 @@ import {
 } from "./hakutilanne.shared"
 import { hkiTableContent } from "./kuntailmoitus.shared"
 import { jyväskylänNormaalikouluOid } from "./oids"
+import { suorittaminenHetuhakuPath } from "./suorittaminen.shared"
 
 type Oppija = {
   oid: Oid
@@ -235,7 +236,11 @@ describe("Kuntailmoituksen tekeminen", () => {
   })
 
   it("happy path suorittamisen valvojana", async () => {
-    await loginAs(hakutilannePath, "valpas-pelkkä-suorittaminen", true)
+    await loginAs(
+      suorittaminenHetuhakuPath,
+      "valpas-pelkkä-suorittaminen",
+      true
+    )
     await testaaOppijanäkymistä(
       suorittamisenValvojanOppijat,
       suorittamisenValvoja

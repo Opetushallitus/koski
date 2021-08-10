@@ -7,7 +7,7 @@ import * as Ord from "fp-ts/lib/Ord"
 import * as string from "fp-ts/lib/string"
 import React, { useEffect, useMemo } from "react"
 // import { update } from "../../utils/arrays"
-import { toFilterableString } from "../../utils/conversions"
+import { FilterableValue, toFilterableString } from "../../utils/conversions"
 import { ArrowDropDownIcon, ArrowDropUpIcon } from "../icons/Icon"
 import { InfoTooltip } from "../tooltip/InfoTooltip"
 import { dataFilterUsesValueList, DataTableFilter } from "./DataTableFilter"
@@ -53,7 +53,7 @@ export const equalKeys = (a: DatumKey) => (b: DatumKey) =>
 
 export type Value = {
   /** Value for filtering and ordering */
-  value: string | number | boolean | null | undefined
+  value: FilterableValue
   /** Value for rendering */
   display?: string | number | React.ReactNode
   /** Icon alongside the value */
@@ -61,6 +61,22 @@ export type Value = {
   filterValues?: Array<string | number>
   tooltip?: string
 }
+
+export const fromNullableValue = (
+  value: Value | null | undefined,
+  nullFilterValues?: Array<string | number>
+): Value =>
+  value || {
+    value: "–",
+    filterValues: nullFilterValues,
+  }
+
+export const fromNullable = (
+  value: FilterableValue | null | undefined
+): Value =>
+  fromNullableValue({
+    value: value ? value : "-",
+  })
 
 export const DataTable = (props: DataTableProps) => {
   const [state, setState] = useDataTableState(props.storageName, props.columns)
@@ -241,8 +257,13 @@ const compareDatum = (index: number) => (a: Datum, b: Datum) => {
     return string.Ord.compare(av, bv)
   } else if (typeof av === "number" && typeof bv === "number") {
     return number.Ord.compare(av, bv)
+  } else if (av == null && bv != null) {
+    return 1
+  } else if (bv == null && av != null) {
+    return -1
+  } else {
+    return 0
   }
-  return 0
 }
 
 const selectValue = (index: number) => (datum: Datum) =>

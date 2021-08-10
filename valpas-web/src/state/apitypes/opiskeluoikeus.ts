@@ -1,6 +1,7 @@
 import * as A from "fp-ts/Array"
 import * as Ord from "fp-ts/Ord"
 import * as string from "fp-ts/string"
+import { KoskiOpiskeluoikeudenTila } from "~state/apitypes/koskiopiskeluoikeudentila"
 import { ISODate, Language, Oid } from "../common"
 import { Opiskeluoikeudentyyppi } from "./koodistot"
 import { Oppilaitos, Toimipiste } from "./organisaatiot"
@@ -31,6 +32,7 @@ export type OpiskeluoikeusSuppeatTiedot = {
   toimipiste?: Toimipiste
   ryhmä?: string
   tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
+  tarkastelupäivänKoskiTila: KoskiOpiskeluoikeudenTila
   alkamispäivä: ISODate
   päättymispäivä?: ISODate
   päättymispäiväMerkittyTulevaisuuteen?: boolean
@@ -58,20 +60,34 @@ export const sortOpiskeluoikeusLaajatTiedot = (lang: Language) =>
     tyyppiNimiOrd(lang),
   ])
 
-export const isValvottavaOpiskeluoikeus = (
+export const isHakeutumisvalvottavaOpiskeluoikeus = (
   organisaatioOid: string | undefined
 ) => (oo: OpiskeluoikeusSuppeatTiedot) =>
   oo.onHakeutumisValvottava && oo.oppilaitos.oid == organisaatioOid
 
+export const isSuorittamisvalvottavaOpiskeluoikeus = (
+  organisaatioOid: string | undefined
+) => (oo: OpiskeluoikeusSuppeatTiedot) =>
+  oo.onSuorittamisValvottava && oo.oppilaitos.oid == organisaatioOid
+
 export const isPerusopetus = (oo: OpiskeluoikeusSuppeatTiedot) =>
   oo.tyyppi.koodiarvo === "perusopetus"
 
-export const valvottavatOpiskeluoikeudet = (
+export const hakeutumisvalvottavatOpiskeluoikeudet = (
   organisaatioOid: Oid | undefined,
   opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
-) => opiskeluoikeudet.filter(isValvottavaOpiskeluoikeus(organisaatioOid))
+) =>
+  opiskeluoikeudet.filter(isHakeutumisvalvottavaOpiskeluoikeus(organisaatioOid))
 
-export const opiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus = (
+export const suorittamisvalvottavatOpiskeluoikeudet = (
+  organisaatioOid: Oid | undefined,
+  opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
+) =>
+  opiskeluoikeudet.filter(
+    isSuorittamisvalvottavaOpiskeluoikeus(organisaatioOid)
+  )
+
+export const hakeutumisvalvonnanOpiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus = (
   opiskeluoikeus: OpiskeluoikeusSuppeatTiedot
 ): boolean => {
   const tila = opiskeluoikeus.tarkastelupäivänTila.koodiarvo

@@ -16,6 +16,7 @@ import {
   storeLoginReturnUrl,
 } from "../state/auth"
 import { BasePathProvider, useBasePath } from "../state/basePath"
+import { FeatureFlagEnabler } from "../state/featureFlags"
 import {
   createHakutilannePathWithoutOrg,
   hakutilannePathWithOrg,
@@ -27,9 +28,15 @@ import {
   maksuttomuusPath,
   oppijaPath,
   rootPath,
+  suorittaminenHetuhakuPath,
   suorittaminenPath,
+  suorittaminenPathWithOrg,
 } from "../state/paths"
-import { SuorittaminenView } from "../views/suorittaminen/SuorittaminenView"
+import { SuorittaminenHetuhaku } from "../views/suorittaminen/hetuhaku/SuorittaminenHetuhaku"
+import {
+  SuorittaminenOppivelvollisetView,
+  SuorittaminenOppivelvollisetViewWithoutOrgOid,
+} from "../views/suorittaminen/oppivelvolliset/SuorittaminenOppivelvollisetView"
 import { AccessRightsView } from "./AccessRightsView"
 import { ErrorView, NotFoundView } from "./ErrorView"
 import {
@@ -63,6 +70,12 @@ const VirkailijaRoutes = () => {
         <Route exact path={`${basePath}/pilotti2021`}>
           <Redirect to={createHakutilannePathWithoutOrg(basePath)} />
         </Route>
+        <Route exact path={`${basePath}/suorittamisenvalvontalista`}>
+          <FeatureFlagEnabler
+            features={["suorittamisenvalvontalista"]}
+            redirectTo={createHakutilannePathWithoutOrg(basePath)}
+          />
+        </Route>
         <Route
           exact
           path={hakutilannePathWithoutOrg(basePath)}
@@ -93,8 +106,28 @@ const VirkailijaRoutes = () => {
             />
           )}
         />
-        <Route exact path={suorittaminenPath(basePath)}>
-          <SuorittaminenView />
+        <Route
+          exact
+          path={suorittaminenPath(basePath)}
+          render={(routeProps) => (
+            <SuorittaminenOppivelvollisetViewWithoutOrgOid
+              redirectUserWithoutAccessTo={rootPath(basePath)}
+              {...routeProps}
+            />
+          )}
+        />
+        <Route
+          exact
+          path={suorittaminenPathWithOrg(basePath)}
+          render={(routeProps) => (
+            <SuorittaminenOppivelvollisetView
+              redirectUserWithoutAccessTo={rootPath(basePath)}
+              {...routeProps}
+            />
+          )}
+        />
+        <Route exact path={suorittaminenHetuhakuPath(basePath)}>
+          <SuorittaminenHetuhaku />
         </Route>
         <Route exact path={maksuttomuusPath(basePath)}>
           <MaksuttomuusView />

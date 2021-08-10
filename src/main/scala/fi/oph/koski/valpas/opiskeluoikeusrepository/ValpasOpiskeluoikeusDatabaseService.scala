@@ -431,6 +431,14 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
          WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
          ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
        END tarkastelupäivän_tila,
+       CASE
+         -- Jos opiskeluoikeus on tulevaisuudessa, käytetään läsnä-tilaa toistaiseksi. Tätä tilannetta ei tällä hetkellä koskaan
+         -- Valppaassa näytetä, joten jos vaikka opiskeluoikeus alkaisikin muuten kuin läsnä-tilaisena, ei tämä aiheuta mitään
+         -- ongelmaa.
+         WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'lasna'
+         WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.viimeisin_tila
+         ELSE aikajakson_keskella.tila
+       END tarkastelupäivän_koski_tila,
        r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
        (
          r_opiskeluoikeus.viimeisin_tila = 'valmistunut'
@@ -492,6 +500,14 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
          WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
          ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
        END tarkastelupäivän_tila,
+       CASE
+         -- Jos opiskeluoikeus on tulevaisuudessa, käytetään läsnä-tilaa toistaiseksi. Tätä tilannetta ei tällä hetkellä koskaan
+         -- Valppaassa näytetä, joten jos vaikka opiskeluoikeus alkaisikin muuten kuin läsnä-tilaisena, ei tämä aiheuta mitään
+         -- ongelmaa.
+         WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'lasna'
+         WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.viimeisin_tila
+         ELSE aikajakson_keskella.tila
+       END tarkastelupäivän_koski_tila,
        r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
        FALSE AS naytettava_perusopetuksen_suoritus,
        FALSE AS vuosiluokkiin_sitomaton_opetus
@@ -582,6 +598,10 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         'tarkastelupäivänTila', json_build_object(
           'koodiarvo', opiskeluoikeus.tarkastelupäivän_tila,
           'koodistoUri', 'valpasopiskeluoikeudentila'
+        ),
+        'tarkastelupäivänKoskiTila', json_build_object(
+          'koodiarvo', opiskeluoikeus.tarkastelupäivän_koski_tila,
+          'koodistoUri', 'koskiopiskeluoikeudentila'
         ),
         'näytettäväPerusopetuksenSuoritus', opiskeluoikeus.naytettava_perusopetuksen_suoritus,
         'vuosiluokkiinSitomatonOpetus', opiskeluoikeus.vuosiluokkiin_sitomaton_opetus,

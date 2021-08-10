@@ -130,6 +130,13 @@ object ValpasMockUsers {
     peruskoulunKäyttäjä(saksalainenKoulu)
   )
 
+  val valpasSaksalainenKouluToinenAste = ValpasMockUser(
+    "käyttäjä",
+    "valpas-saksalainen-2-aste",
+    "1.2.246.562.24.12312312839",
+    toisenAsteenKäyttäjä(saksalainenKoulu)
+  )
+
   val valpasPelkkäMaksuttomuusKäyttäjä = ValpasMockUser(
     "käyttäjä",
     "valpas-pelkkä-maksuttomuus",
@@ -141,7 +148,7 @@ object ValpasMockUsers {
     "käyttäjä",
     "valpas-pelkkä-suorittaminen",
     "1.2.246.562.24.12315312356",
-    oppilaitosKäyttäjäPelkkäSuorittaminen(jyväskylänNormaalikoulu)
+    oppilaitosKäyttäjäPelkkäSuorittaminen(jyväskylänNormaalikoulu) ++ oppilaitosKäyttäjäPelkkäSuorittaminen(helsinginMedialukio)
   )
 
   val valpasPelkkäSuorittaminenkäyttäjäAmmattikoulu = ValpasMockUser(
@@ -202,6 +209,7 @@ object ValpasMockUsers {
         valpasKulosaariPeruskoulu,
         valpasUseampiPeruskoulu,
         valpasSaksalainenKoulu,
+        valpasSaksalainenKouluToinenAste,
         valpasPelkkäMaksuttomuusKäyttäjä,
         valpasMaksuttomuusJaHelsinkiKäyttäjä,
         valpasMaksuttomuusJaHelsinkiKoskiKäyttäjä,

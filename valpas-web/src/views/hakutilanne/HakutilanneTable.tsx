@@ -17,6 +17,7 @@ import {
   Column,
   Datum,
   DatumKey,
+  fromNullableValue,
   Value,
 } from "../../components/tables/DataTable"
 import {
@@ -33,9 +34,9 @@ import {
   SuppeaHakutoive,
 } from "../../state/apitypes/hakutoive"
 import {
-  opiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus,
+  hakeutumisvalvonnanOpiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus,
+  hakeutumisvalvottavatOpiskeluoikeudet,
   OpiskeluoikeusSuppeatTiedot,
-  valvottavatOpiskeluoikeudet,
 } from "../../state/apitypes/opiskeluoikeus"
 import {
   lisätietoMatches,
@@ -179,7 +180,7 @@ const oppijaToTableData = (
 ) => (oppija: OppijaHakutilanteillaSuppeatTiedot): Array<Datum> => {
   const henkilö = oppija.oppija.henkilö
 
-  return valvottavatOpiskeluoikeudet(
+  return hakeutumisvalvottavatOpiskeluoikeudet(
     organisaatioOid,
     oppija.oppija.opiskeluoikeudet
   ).map((opiskeluoikeus) => {
@@ -328,15 +329,6 @@ const hakuTooltip = (haku: HakuSuppeatTiedot): string =>
     muokkausPvm: formatNullableDate(haku.muokattu),
   })
 
-const fromNullableValue = (
-  value: Value | null,
-  nullFilterValues?: Array<string | number>
-): Value =>
-  value || {
-    value: "–",
-    filterValues: nullFilterValues,
-  }
-
 const valintatila = (haut: HakuSuppeatTiedot[]): Value | null => {
   const hyväksytytHakutoiveet = selectByHakutoive(haut, isHyväksytty)
   if (A.isNonEmpty(hyväksytytHakutoiveet)) {
@@ -432,7 +424,7 @@ const opiskeluoikeustiedot = (
   opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
 ): Value | null => {
   const oos = opiskeluoikeudet.filter(
-    opiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus
+    hakeutumisvalvonnanOpiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus
   )
 
   const toValue = (oo: OpiskeluoikeusSuppeatTiedot) => {

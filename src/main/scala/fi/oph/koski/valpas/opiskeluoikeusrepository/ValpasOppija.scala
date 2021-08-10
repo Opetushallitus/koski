@@ -119,6 +119,9 @@ trait ValpasOpiskeluoikeus {
   @KoodistoUri("valpasopiskeluoikeudentila")
   def tarkastelupäivänTila: Koodistokoodiviite
 
+  @KoodistoUri("koskiopiskeluoikeudentila")
+  def tarkastelupäivänKoskiTila: Koodistokoodiviite
+
   @SyntheticProperty
   def onVoimassaNytTaiTulevaisuudessa: Boolean = tarkastelupäivänTila.koodiarvo match {
     case "voimassa" | "voimassatulevaisuudessa" => true
@@ -146,6 +149,7 @@ case class ValpasOpiskeluoikeusLaajatTiedot(
   päättymispäiväMerkittyTulevaisuuteen: Option[Boolean],
   ryhmä: Option[String],
   tarkastelupäivänTila: Koodistokoodiviite,
+  tarkastelupäivänKoskiTila: Koodistokoodiviite,
   näytettäväPerusopetuksenSuoritus: Boolean,
   vuosiluokkiinSitomatonOpetus: Boolean,
   oppivelvollisuudenSuorittamiseenKelpaava: Boolean,
@@ -162,6 +166,7 @@ object ValpasOpiskeluoikeusSuppeatTiedot {
       toimipiste = laajatTiedot.toimipiste,
       ryhmä = laajatTiedot.ryhmä,
       tarkastelupäivänTila = laajatTiedot.tarkastelupäivänTila,
+      tarkastelupäivänKoskiTila = laajatTiedot.tarkastelupäivänKoskiTila,
       alkamispäivä = laajatTiedot.alkamispäivä,
       päättymispäivä = laajatTiedot.päättymispäivä,
       päättymispäiväMerkittyTulevaisuuteen = laajatTiedot.päättymispäiväMerkittyTulevaisuuteen,
@@ -180,6 +185,7 @@ case class ValpasOpiskeluoikeusSuppeatTiedot(
   toimipiste: Option[ValpasToimipiste],
   ryhmä: Option[String],
   tarkastelupäivänTila: Koodistokoodiviite,
+  tarkastelupäivänKoskiTila: Koodistokoodiviite,
   alkamispäivä: String,
   päättymispäivä: Option[String],
   päättymispäiväMerkittyTulevaisuuteen: Option[Boolean],
