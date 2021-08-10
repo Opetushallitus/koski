@@ -1,6 +1,7 @@
 import * as A from "fp-ts/Array"
 import * as Ord from "fp-ts/Ord"
 import * as string from "fp-ts/string"
+import { KoskiOpiskeluoikeudenTila } from "~state/apitypes/koskiopiskeluoikeudentila"
 import { ISODate, Language, Oid } from "../common"
 import { Opiskeluoikeudentyyppi } from "./koodistot"
 import { Oppilaitos, Toimipiste } from "./organisaatiot"
@@ -31,6 +32,7 @@ export type OpiskeluoikeusSuppeatTiedot = {
   toimipiste?: Toimipiste
   ryhmä?: string
   tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
+  tarkastelupäivänKoskiTila: KoskiOpiskeluoikeudenTila
   alkamispäivä: ISODate
   päättymispäivä?: ISODate
   päättymispäiväMerkittyTulevaisuuteen?: boolean

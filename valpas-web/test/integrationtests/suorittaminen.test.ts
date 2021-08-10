@@ -1,11 +1,12 @@
 import { createSuorittaminenPathWithOrg } from "../../src/state/paths"
 import { textEventuallyEquals } from "../integrationtests-env/browser/content"
 import {
+  goToLocation,
   pathToUrl,
   urlIsEventually,
 } from "../integrationtests-env/browser/core"
 import { dataTableEventuallyEquals } from "../integrationtests-env/browser/datatable"
-import { loginAs } from "../integrationtests-env/browser/reset"
+import { loginAs, resetMockData } from "../integrationtests-env/browser/reset"
 import { jyväskylänNormaalikouluOid } from "./oids"
 import {
   jklNormaalikouluSuorittaminenTableContent,
@@ -28,6 +29,10 @@ describe("Suorittamisen valvonta -näkymä", () => {
   it("Näyttää listan oppijoista", async () => {
     await loginAs(suorittaminenListaPath, "valpas-jkl-normaali")
     await urlIsEventually(pathToUrl(jklSuorittaminenPath))
+
+    await resetMockData("2021-12-12")
+    await goToLocation(jklSuorittaminenPath)
+
     await textEventuallyEquals(
       ".card__header",
       jklNormaalikouluSuorittaminenTableHead

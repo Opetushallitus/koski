@@ -8,19 +8,20 @@ import {
   expectElementEventuallyVisible,
 } from "../integrationtests-env/browser/content"
 
-export const jklNormaalikouluSuorittaminenTableHead = "Oppivelvolliset (11)"
+export const jklNormaalikouluSuorittaminenTableHead = "Oppivelvolliset (12)"
 export const jklNormaalikouluSuorittaminenTableContent = `
-  Jkl-Lukio-Kulosaarelainen Valpas          |  1.1.2004  | TODO lukiokoulutus            | Opiskeluoikeus voimassa | Jyväskylän normaalikoulu |  1.8.2019  | –         | doneKulosaaren ala-aste, Perusopetus         |  1.1.2022
-  Jkl-Nivel-Kulosaarelainen Valpas          |  1.1.2004  | TODO perusopetuksenlisaopetus | Opiskeluoikeus voimassa | Jyväskylän normaalikoulu | 15.8.2012  | –         | doneKulosaaren ala-aste, Perusopetus         |  1.1.2022
-  Kahdella-oppija-oidilla Valpas            | 15.2.2005  | TODO lukiokoulutus            | Opiskeluoikeus voimassa | Jyväskylän normaalikoulu |  1.8.2019  | –         | –                                            | 15.2.2023
-  Kahdella-oppija-oidilla-ilmo Valpas       |  4.6.2005  | TODO lukiokoulutus            | Opiskeluoikeus voimassa | Jyväskylän normaalikoulu |  1.8.2019  | –         | –                                            |  4.6.2023
-  Kahdella-oppija-oidilla-ilmo-2 Valpas     |  3.6.2005  | TODO lukiokoulutus            | Opiskeluoikeus voimassa | Jyväskylän normaalikoulu |  1.8.2019  | –         | –                                            |  3.6.2023
+  Jkl-Lukio-Kulosaarelainen Valpas          |  1.1.2004  | TODO lukiokoulutus            | Läsnä                   | Jyväskylän normaalikoulu |  1.8.2019  | –         | doneKulosaaren ala-aste, Perusopetus         |  1.1.2022
+  Jkl-Nivel-Kulosaarelainen Valpas          |  1.1.2004  | TODO perusopetuksenlisaopetus | Läsnä                   | Jyväskylän normaalikoulu | 15.8.2012  | –         | doneKulosaaren ala-aste, Perusopetus         |  1.1.2022
+  Kahdella-oppija-oidilla Valpas            | 15.2.2005  | TODO lukiokoulutus            | Läsnä                   | Jyväskylän normaalikoulu |  1.8.2019  | –         | –                                            | 15.2.2023
+  Kahdella-oppija-oidilla-ilmo Valpas       |  4.6.2005  | TODO lukiokoulutus            | Läsnä                   | Jyväskylän normaalikoulu |  1.8.2019  | –         | –                                            |  4.6.2023
+  Kahdella-oppija-oidilla-ilmo-2 Valpas     |  3.6.2005  | TODO lukiokoulutus            | Läsnä                   | Jyväskylän normaalikoulu |  1.8.2019  | –         | –                                            |  3.6.2023
   Kaksois-tutkinnosta-valmistunut Valpas    | 26.9.2005  | TODO lukiokoulutus            | Valmistunut             | Jyväskylän normaalikoulu |  1.8.2019  | 2.9.2021  | –                                            | 26.9.2023
-  Lukio-opiskelija Valpas                   |  7.5.2004  | TODO lukiokoulutus            | Opiskeluoikeus voimassa | Jyväskylän normaalikoulu |  1.8.2019  | –         | –                                            |  7.5.2022
+  Lukio-opiskelija Valpas                   |  7.5.2004  | TODO lukiokoulutus            | Läsnä                   | Jyväskylän normaalikoulu |  1.8.2019  | –         | –                                            |  7.5.2022
   Lukio-opiskelija-valmistunut Valpas       | 27.11.2005 | TODO lukiokoulutus            | Valmistunut             | Jyväskylän normaalikoulu |  1.8.2019  | 2.9.2021  | –                                            | 27.11.2023
-  LukionAloittanut Valpas                   | 29.4.2005  | TODO lukiokoulutus            | Opiskeluoikeus voimassa | Jyväskylän normaalikoulu | 15.8.2021  | –         | –                                            | 29.4.2023
-  LukionAloittanut-ilmo Valpas              | 11.4.2005  | TODO lukiokoulutus            | Opiskeluoikeus voimassa | Jyväskylän normaalikoulu | 15.8.2021  | –         | –                                            | 11.4.2023
-  LukionAloittanutJaLopettanut-ilmo Valpas  |  5.4.2005  | TODO lukiokoulutus            | Opiskeluoikeus voimassa | Jyväskylän normaalikoulu | 15.8.2021  | 19.9.2021 | –                                            |  5.4.2023
+  LukionAloittanut Valpas                   | 29.4.2005  | TODO lukiokoulutus            | Läsnä                   | Jyväskylän normaalikoulu | 15.8.2021  | –         | –                                            | 29.4.2023
+  LukionAloittanut-ilmo Valpas              | 11.4.2005  | TODO lukiokoulutus            | Läsnä                   | Jyväskylän normaalikoulu | 15.8.2021  | –         | –                                            | 11.4.2023
+  LukionAloittanutJaLopettanut-ilmo Valpas  |  5.4.2005  | TODO lukiokoulutus            | warningEronnut          | Jyväskylän normaalikoulu | 15.8.2021  | 19.9.2021 | –                                            |  5.4.2023
+  LukionLokakuussaAloittanut Valpas         | 18.4.2005  | TODO lukiokoulutus            | Läsnä                   | Jyväskylän normaalikoulu |  3.10.2021 | –         | –                                            | 18.4.2023
     `
 
 export const suorittaminenHetuhakuPath = createSuorittaminenHetuhakuPath(

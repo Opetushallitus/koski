@@ -1,7 +1,12 @@
 import * as A from "fp-ts/Array"
 import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
-import { FutureSuccessIcon, SuccessIcon } from "../../../components/icons/Icon"
+import { isSuorittamisenValvonnassaIlmoitettavaTila } from "~state/apitypes/koskiopiskeluoikeudentila"
+import {
+  FutureSuccessIcon,
+  SuccessIcon,
+  WarningIcon,
+} from "../../../components/icons/Icon"
 import {
   Column,
   DataTable,
@@ -70,6 +75,7 @@ export const SuorittaminenOppivelvollisetTable = (
         label: t("suorittaminennäkymä__taulu_tila"),
         filter: "dropdown",
         size: "small",
+        indicatorSpace: "auto",
       },
       {
         label: t("suorittaminennäkymä__taulu_toimipipste"),
@@ -190,18 +196,20 @@ const koulutustyyppi = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
 }
 
 const tila = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
-  oo.tarkastelupäivänTila
-  const koulutustyyppi = {
+  const tila = {
     value: tilaString(oo),
-    filterValues: [tilaString(oo)],
-    display: tilaString(oo),
+    icon: isSuorittamisenValvonnassaIlmoitettavaTila(
+      oo.tarkastelupäivänKoskiTila
+    ) ? (
+      <WarningIcon />
+    ) : undefined,
   }
 
-  return koulutustyyppi
+  return tila
 }
 
 const tilaString = (opiskeluoikeus: OpiskeluoikeusSuppeatTiedot): string => {
-  const tila = opiskeluoikeus.tarkastelupäivänTila
+  const tila = opiskeluoikeus.tarkastelupäivänKoskiTila
   return getLocalized(tila.nimi) || tila.koodiarvo
 }
 
