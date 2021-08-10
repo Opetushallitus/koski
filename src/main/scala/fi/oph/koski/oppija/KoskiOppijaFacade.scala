@@ -93,9 +93,11 @@ class KoskiOppijaFacade(
 
     val maksuttomuusCheck = oppijaOid.map(_.verified).flatMap {
       case Some(henkilö) =>
-        val syntymäaika = henkilöRepository.findByOid(henkilö.oid, findMasterIfSlaveOid = true).flatMap(_.syntymäaika)
+        val henkilöMaster = henkilöRepository.findByOid(henkilö.oid, findMasterIfSlaveOid = true)
+        val syntymäaika = henkilöMaster.flatMap(_.syntymäaika)
+        val hetu = henkilöMaster.flatMap(_.hetu)
         val validation = HttpStatus.fold(oppija.tallennettavatOpiskeluoikeudet.map(opiskeluoikeus => {
-          MaksuttomuusValidation.checkOpiskeluoikeudenMaksuttomuus(opiskeluoikeus, syntymäaika, henkilö.oid, opiskeluoikeusRepository)
+          MaksuttomuusValidation.checkOpiskeluoikeudenMaksuttomuus(opiskeluoikeus, syntymäaika, henkilö.oid, hetu, opiskeluoikeusRepository)
         }))
         if (validation.isOk) Right(Unit) else Left(validation)
       case None => Left(KoskiErrorCategory.notFound.oppijaaEiLöydy("Oppijaa " + oppijaOid.right.get.oppijaOid + " ei löydy."))
