@@ -276,6 +276,21 @@ describe("Oppijahaku", () => {
     )
   })
 
+  it("Maksuttomuus: Haku löytää slave-oidilla haetun oppijan, vaikka slavella ei olekaan hetua, kunhan masterilla on", async () => {
+    const oppijaMasterOid = "1.2.246.562.24.00000000060"
+    const oppijaSlaveOid = "1.2.246.562.24.00000000061"
+    await hakuLogin("valpas-jkl-normaali")
+    await fillQueryField(oppijaSlaveOid)
+    await submit()
+    await expectResultToBe(
+      "Löytyi: Oppivelvollinen-hetullinen Valpas (030105A7507)",
+      createOppijaPath("/virkailija", {
+        oppijaOid: oppijaMasterOid,
+        prev: createMaksuttomuusPath(),
+      })
+    )
+  })
+
   it("Kunta: Haku löytää oppijan, vaikka hänellä ei ole opiskeluoikeuden suorittamiseen kelpaavia opintoja", async () => {
     await hakuLogin(
       "valpas-helsinki",

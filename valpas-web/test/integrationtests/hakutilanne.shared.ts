@@ -5,7 +5,7 @@ import {
   expectElementEventuallyVisible,
 } from "../integrationtests-env/browser/content"
 
-export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia oppijoita (30)"
+export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia oppijoita (31)"
 export const jklNormaalikouluTableContent = `
   Epäonninen Valpas                                       | 30.10.2005  | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Eroaja-myöhemmin Valpas                                 | 29.9.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
@@ -26,6 +26,7 @@ export const jklNormaalikouluTableContent = `
   LukionLokakuussaAloittanut Valpas                       | 18.4.2005   | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | hourglass_empty3.10.2021 alkaen: Jyväskylän normaalikoulu, Lukiokoulutus   |
   LuokallejäänytYsiluokkalainen Valpas                    | 2.8.2005    | 9A | –          | 2 hakua              | –                           | –                         | –                                                                          |
   LuokallejäänytYsiluokkalainenJatkaa Valpas              | 6.2.2005    | 9B | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
+  Oppivelvollinen-hetullinen Valpas                       | 3.1.2005    | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas   | 22.11.2005  | 9C | –          | Hakenut open_in_new  | 2. Helsingin medialukio     | doneHelsingin medialukio  | –                                                                          |
   Oppivelvollinen-ysiluokka-kesken-vsop Valpas            | 24.3.2005   | vsop 9C | –     | Ei hakemusta         | –                           | –                         | –                                                                          |
   Oppivelvollisuus-keskeytetty-määräajaksi Valpas         | 18.10.2005  | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
