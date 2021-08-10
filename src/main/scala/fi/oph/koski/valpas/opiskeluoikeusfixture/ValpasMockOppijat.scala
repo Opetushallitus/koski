@@ -1,5 +1,7 @@
 package fi.oph.koski.valpas.opiskeluoikeusfixture
 
+import java.time.LocalDate
+
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 
@@ -9,7 +11,7 @@ object ValpasMockOppijat {
   val oppivelvollinenYsiluokkaKeskenKeväällä2021 = valpasOppijat.oppija("Oppivelvollinen-ysiluokka-kesken-keväällä-2021", "Valpas", "221105A3023")
   val eiOppivelvollinenSyntynytEnnen2004 = valpasOppijat.oppija("Ei-oppivelvollinen-syntynyt-ennen-2004", "Valpas", "210303A707J")
   val päällekkäisiäOpiskeluoikeuksia = valpasOppijat.oppija("Päällekkäisiä", "Oppivelvollisuuksia", "060605A083N")
-  val lukioOpiskelija = valpasOppijat.oppija("Lukio-opiskelija", "Valpas", "070504A717P")
+  val lukioOpiskelija = valpasOppijat.oppija("Lukio-opiskelija", "Valpas", "070504A717P", syntymäaika = Some(LocalDate.of(2004, 5, 7)))
   val kasiluokkaKeskenKeväällä2021 = valpasOppijat.oppija("Kasiluokka-kesken-keväällä-2021", "Valpas", "191106A1384")
   val kotiopetusMeneilläänOppija = valpasOppijat.oppija("Kotiopetus-meneillä", "Valpas", "210905A2151")
   val kotiopetusMenneisyydessäOppija = valpasOppijat.oppija("Kotiopetus-menneisyydessä", "Valpas", "060205A8805")
@@ -20,7 +22,7 @@ object ValpasMockOppijat {
   val luokalleJäänytYsiluokkalainenVaihtanutKoulua = valpasOppijat.oppija("LuokallejäänytYsiluokkalainenKouluvaihto", "Valpas", "050605A7684")
   val luokalleJäänytYsiluokkalainenVaihtanutKouluaMuualta = valpasOppijat.oppija("LuokallejäänytYsiluokkalainenKouluvaihtoMuualta", "Valpas", "021105A624K")
   val kasiinAstiToisessaKoulussaOllut = valpasOppijat.oppija("KasiinAstiToisessaKoulussaOllut", "Valpas", "170805A613F", äidinkieli = Some("sv"))
-  val lukionAloittanut = valpasOppijat.oppija("LukionAloittanut", "Valpas", "290405A871A", äidinkieli = Some("en"))
+  val lukionAloittanut = valpasOppijat.oppija("LukionAloittanut", "Valpas", "290405A871A", äidinkieli = Some("en"), syntymäaika = Some(LocalDate.of(2005, 4, 29)))
   val lukionLokakuussaAloittanut = valpasOppijat.oppija("LukionLokakuussaAloittanut", "Valpas", "180405A819J")
   val oppivelvollinenMonellaOppijaOidillaMaster = valpasOppijat.oppija("Kahdella-oppija-oidilla", "Valpas", "150205A490C")
   val oppivelvollinenMonellaOppijaOidillaToinen = valpasOppijat.duplicate(oppivelvollinenMonellaOppijaOidillaMaster)
