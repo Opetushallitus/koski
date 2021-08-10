@@ -10,6 +10,7 @@ import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenOsittaisetTiedot, OpiskeluoikeudenPerustiedot}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
+import fi.oph.koski.validation.MaksuttomuusValidation
 import slick.dbio.DBIO
 
 import scala.reflect.runtime.universe.TypeTag
@@ -75,7 +76,28 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
 
   protected def oppijat: List[OppijaHenkilöWithMasterInfo]
 
-  protected def validatedOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]
+  protected lazy val validatedOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
+    defaultOpiskeluOikeudet.zipWithIndex.map { case ((henkilö, oikeus), index) =>
+      timed(s"Validating fixture ${index}", 500) {
+
+        val maksuttomuusStatus = MaksuttomuusValidation.checkOpiskeluoikeudenMaksuttomuus(oikeus, henkilö.syntymäaika, henkilö.oid, application.opiskeluoikeusRepository)
+        if (!maksuttomuusStatus.isOk) {
+          throw new RuntimeException(
+            s"Fixture insert failed for ${henkilö.etunimet} ${henkilö.sukunimi} with data ${JsonSerializer.write(oikeus)}: ${maksuttomuusStatus}"
+          )
+        }
+
+        validator.validateAsJson(Oppija(henkilö.toHenkilötiedotJaOid, List(oikeus))) match {
+          case Right(oppija) => (henkilö, oppija.tallennettavatOpiskeluoikeudet.head)
+          case Left(status) => throw new RuntimeException(
+            s"Fixture insert failed for ${henkilö.etunimet} ${henkilö.sukunimi} with data ${JsonSerializer.write(oikeus)}: ${status}"
+          )
+        }
+      }
+    }
+  }
 
   protected def invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]
+
+  protected def defaultOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]
 }

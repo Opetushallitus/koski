@@ -88,7 +88,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     (
       ValpasMockOppijat.lukionAloittanut,
       List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä, "voimassa", false, false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä(), "voimassa", false, false, false),
         ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true, false)
       )
     ),
@@ -101,7 +101,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     (
       ValpasMockOppijat.lukionLokakuussaAloittanut,
       List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaa2021Lokakuussa, "voimassatulevaisuudessa", false, false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaa2021Lokakuussa(), "voimassatulevaisuudessa", false, false, false),
         ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true, false)
       )
     ),
@@ -154,14 +154,14 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     (
       ValpasMockOppijat.lukionAloittanutJollaVanhaIlmoitus,
       List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä, "voimassa", false, false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä(), "voimassa", false, false, false),
         ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true, false)
       )
     ),
     (
       ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia,
       List(
-        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä, "voimassa", false, false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä(), "voimassa", false, false, false),
         ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", true, true, false)
       )
     ),

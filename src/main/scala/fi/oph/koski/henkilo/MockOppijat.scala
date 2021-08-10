@@ -43,6 +43,23 @@ class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil)
       kotikunta = kotikunta
     ))
 
+  def oppijaSyntymäaikaHetusta(
+    suku: String,
+    etu: String,
+    hetu: String,
+    oid: String = generateId(),
+    kutsumanimi: Option[String] = None,
+    turvakielto: Boolean = false,
+    vanhaHetu: Option[String] = None,
+    sukupuoli: Option[String] = None,
+    kotikunta: Option[String] = None,
+    äidinkieli: Option[String] = Some("fi")
+  ): LaajatOppijaHenkilöTiedot = {
+    val syntymäaika = Hetu.century(hetu).map(century => Hetu.birthday(hetu, century))
+    oppija(
+      suku, etu, hetu, oid, kutsumanimi, turvakielto, vanhaHetu, sukupuoli, kotikunta, äidinkieli, syntymäaika)
+  }
+
   def addOppija(oppija: LaajatOppijaHenkilöTiedot): LaajatOppijaHenkilöTiedot = addOppija(OppijaHenkilöWithMasterInfo(oppija, None)).henkilö.asInstanceOf[LaajatOppijaHenkilöTiedot]
 
   def addOppija(oppija: OppijaHenkilöWithMasterInfo): OppijaHenkilöWithMasterInfo = {
