@@ -4,6 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
+import java.time.LocalDate
 
 object ValpasMockOppijat {
   private val valpasOppijat = new MockOppijat
@@ -66,6 +67,7 @@ object ValpasMockOppijat {
   val oppivelvollisuusKeskeytetty = valpasOppijat.oppijaSyntymäaikaHetusta("Oppivelvollisuus-keskeytetty-määräajaksi", "Valpas", "181005A1560")
   val oppivelvollisuusKeskeytettyToistaiseksi = valpasOppijat.oppijaSyntymäaikaHetusta("Oppivelvollisuus-keskeytetty-toistaiseksi", "Valpas", "150905A1823")
   val eiOppivelvollisuudenSuorittamiseenKelpaaviaOpiskeluoikeuksia = valpasOppijat.oppijaSyntymäaikaHetusta("Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia", "Valpas", "061005A671V")
+  val hetuton = valpasOppijat.oppija("Hetuton", "Valpas", "", syntymäaika = Some(LocalDate.of(2005, 1, 1)))
 
   // Kutsumanimi ja yhteystiedot haetaan oppijanumerorekisteristä Valpas-käyttäjälle, tallennetaan siksi käyttäjä myös "oppijana" mockeihin
   val käyttäjäValpasJklNormaalikoulu = valpasOppijat.oppija(

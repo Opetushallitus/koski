@@ -262,6 +262,20 @@ describe("Oppijahaku", () => {
     )
   })
 
+  it("Maksuttomuus: Haku näyttää virheilmoituksen, jos oppijalla ei ole suomalaista hetua ja ei täten kuuluu oppivelvollisuuden piiriin", async () => {
+    const hetutonOppijaOid = "1.2.246.562.24.00000000059"
+    allowNetworkError(
+      `api/henkilohaku/maksuttomuus/${hetutonOppijaOid}`,
+      "403 (Forbidden)"
+    )
+    await hakuLogin("valpas-jkl-normaali")
+    await fillQueryField(hetutonOppijaOid)
+    await submit()
+    await expectResultToBe(
+      "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen."
+    )
+  })
+
   it("Kunta: Haku löytää oppijan, vaikka hänellä ei ole opiskeluoikeuden suorittamiseen kelpaavia opintoja", async () => {
     await hakuLogin(
       "valpas-helsinki",
