@@ -7,6 +7,7 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
 import fi.oph.koski.schema._
 import fi.oph.koski.util.DateOrdering
+import fi.oph.koski.util.DateOrdering.localDateOrdering
 
 object MaksuttomuusValidation {
 
@@ -17,7 +18,8 @@ object MaksuttomuusValidation {
                                        (implicit user: KoskiSpecificSession): HttpStatus = {
     val suoritusVaatiiMaksuttomuusTiedon = oppivelvollisuudenSuorittamiseenKelpaavaMuuKuinPeruskoulunOpiskeluoikeus(opiskeluoikeus)
     val oppijanIkäOikeuttaaMaksuttomuuden = oppijanSyntymäpäivä.exists(bd => !LocalDate.of(2004, 1, 1).isAfter(bd))
-    val alkamispäiväOikeuttaaMaksuttomuuden = opiskeluoikeus.alkamispäivä.exists(d => !d.isBefore(LocalDate.of(2021, 1, 1)))
+    val alkamispäivä = if (opiskeluoikeus.tila.opiskeluoikeusjaksot.nonEmpty) Some(opiskeluoikeus.tila.opiskeluoikeusjaksot.minBy(_.alku).alku) else None
+    val alkamispäiväOikeuttaaMaksuttomuuden = alkamispäivä.exists(d => !d.isBefore(LocalDate.of(2021, 1, 1)))
     val maksuttomuusTietoOnSiirretty = opiskeluoikeus.lisätiedot.collect { case l: MaksuttomuusTieto => l.maksuttomuus.toList.flatten.length > 0 }.getOrElse(false)
     val maksuttomuuttaPidennettyOnSiirretty = opiskeluoikeus.lisätiedot.collect { case l : MaksuttomuusTieto => l.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.length > 0 }.getOrElse(false)
 
