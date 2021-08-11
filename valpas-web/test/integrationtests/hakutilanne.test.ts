@@ -89,11 +89,12 @@ const aapajoenKouluHakutilannePath = createHakutilannePathWithOrg(
 )
 
 const kulosaarenOppijaOid = "1.2.246.562.24.00000000029"
-const saksalainenKouluOid = "1.2.246.562.10.45093614456"
-const saksalainenKouluHakutilannePath = createHakutilannePathWithOrg(
+const viikinNormaalikouluOid = "1.2.246.562.10.81927839589"
+
+const viikinNormaalikouluHakutilannePath = createHakutilannePathWithOrg(
   "/virkailija",
   {
-    organisaatioOid: saksalainenKouluOid,
+    organisaatioOid: viikinNormaalikouluOid,
   }
 )
 
@@ -110,8 +111,8 @@ describe("Hakutilannenäkymä", () => {
   })
 
   it("Näyttää tyhjän listan virheittä, jos ei oppijoita", async () => {
-    await loginAs(hakutilannePath, "valpas-saksalainen")
-    await urlIsEventually(pathToUrl(saksalainenKouluHakutilannePath))
+    await loginAs(hakutilannePath, "valpas-viikin-normaalikoulu")
+    await urlIsEventually(pathToUrl(viikinNormaalikouluHakutilannePath))
     await textEventuallyEquals(
       ".card__header",
       "Hakeutumisvelvollisia oppijoita (0)"

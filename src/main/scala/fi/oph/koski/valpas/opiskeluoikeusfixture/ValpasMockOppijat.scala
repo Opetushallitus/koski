@@ -71,6 +71,15 @@ object ValpasMockOppijat {
   val oppivelvollinenJollaHetuHetutonSlave = valpasOppijat.duplicate(oppivelvollinenJollaHetu.copy(hetu = None))
   val ammattikouluOpiskelijaValma = valpasOppijat.oppijaSyntymäaikaHetusta("Valma-opiskelija", "Valpas", "190105A839D")
   val ammattikouluOpiskelijaTelma = valpasOppijat.oppijaSyntymäaikaHetusta("Telma-opiskelija", "Valpas", "020805A7784")
+  val amisEronnutEiUuttaOpiskeluoikeutta = valpasOppijat.oppijaSyntymäaikaHetusta("Amis-eronnut", "Valpas", "010805A852V")
+  val amisEronnutUusiOpiskeluoikeusTulevaisuudessa = valpasOppijat.oppijaSyntymäaikaHetusta("Amis-eronnut-uusi-oo-tulevaisuudessa", "Valpas", "240905A539D")
+  val amisEronnutUusiOpiskeluoikeusVoimassa = valpasOppijat.oppijaSyntymäaikaHetusta("Amis-eronnut-uusi-oo-voimassa", "Valpas", "241005A214R")
+  val amisEronnutUusiOpiskeluoikeusPeruskoulussa = valpasOppijat.oppijaSyntymäaikaHetusta("Amis-eronnut-uusi-peruskoulussa", "Valpas", "100205A291R")
+  val amisEronnutUusiOpiskeluoikeusNivelvaiheessa = valpasOppijat.oppijaSyntymäaikaHetusta("Amis-eronnut-uusi-nivelvaiheessa", "Valpas", "180605A898P")
+  val amisEronnutUusiOpiskeluoikeusNivelvaiheessa2 = valpasOppijat.oppijaSyntymäaikaHetusta("Amis-eronnut-uusi-nivelvaiheessa-valmassa", "Valpas", "040804A0600")
+  val amisEronnutMontaUuttaOpiskeluoikeutta = valpasOppijat.oppijaSyntymäaikaHetusta("Amis-eronnut-monta-uutta-oota", "Valpas", "241005A449A")
+  val amisEronnutUusiKelpaamatonOpiskeluoikeusNivelvaiheessa = valpasOppijat.oppijaSyntymäaikaHetusta("Amis-eronnut-nivelvaihe-ei-kelpaa", "Valpas", "101105A1703")
+  val amisEronnutUusiKelpaamatonOpiskeluoikeusNivelvaiheessa2 = valpasOppijat.oppijaSyntymäaikaHetusta("Amis-eronnut-nivelvaihe-vstssa-ei-kelpaa", "Valpas", "090604A305H")
 
   // Kutsumanimi ja yhteystiedot haetaan oppijanumerorekisteristä Valpas-käyttäjälle, tallennetaan siksi käyttäjä myös "oppijana" mockeihin
   val käyttäjäValpasJklNormaalikoulu = valpasOppijat.oppija(
