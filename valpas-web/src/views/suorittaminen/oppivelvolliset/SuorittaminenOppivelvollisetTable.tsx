@@ -81,17 +81,15 @@ export const SuorittaminenOppivelvollisetTable = (
       {
         label: t("suorittaminennäkymä__taulu_toimipipste"),
         filter: "dropdown",
-        size: "small",
+        size: "large",
       },
       {
         label: t("suorittaminennäkymä__taulu_alkamispäivä"),
         filter: "dropdown",
-        size: "small",
       },
       {
         label: t("suorittaminennäkymä__taulu_päättymispäivä"),
         filter: "dropdown",
-        size: "small",
       },
       {
         label: t("suorittaminennäkymä__taulu_voimassaolevia_opiskeluoikeuksia"),
@@ -103,7 +101,6 @@ export const SuorittaminenOppivelvollisetTable = (
       },
       {
         label: t("suorittaminennäkymä__taulu_oppivelvollisuus"),
-        size: "small",
       },
     ],
     []
