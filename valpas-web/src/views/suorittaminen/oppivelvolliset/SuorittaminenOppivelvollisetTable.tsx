@@ -69,6 +69,7 @@ export const SuorittaminenOppivelvollisetTable = (
       },
       {
         label: t("suorittaminennäkymä__taulu_koulutustyyppi"),
+        filter: "dropdown",
         size: "small",
       },
       {
