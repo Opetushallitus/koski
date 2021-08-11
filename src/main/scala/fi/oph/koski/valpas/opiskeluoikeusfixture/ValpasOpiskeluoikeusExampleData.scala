@@ -4,11 +4,11 @@ import fi.oph.koski.documentation.ExampleData.{helsinki, opiskeluoikeusEronnut, 
 import fi.oph.koski.documentation.LukioExampleData.{opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt}
 import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, perusopetuksenOppimääränSuoritus, perusopetuksenOppimääränSuoritusKesken, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste, oppilaitos}
-import fi.oph.koski.documentation.{AmmattitutkintoExample, ExampleData, ExamplesEsiopetus, ExamplesLukio2019, ExamplesPerusopetuksenLisaopetus}
+import fi.oph.koski.documentation.{AmmattitutkintoExample, ExampleData, ExamplesEsiopetus, ExamplesLukio2019, ExamplesPerusopetuksenLisaopetus, ExamplesTelma, ExamplesValma}
 import fi.oph.koski.organisaatio.MockOrganisaatiot.aapajoenKoulu
 import fi.oph.koski.schema._
-import java.time.LocalDate.{of => date}
 
+import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.AmmatillinenExampleData.stadinAmmattiopisto
 
 object ValpasOpiskeluoikeusExampleData {
@@ -382,6 +382,28 @@ object ValpasOpiskeluoikeusExampleData {
     suoritukset = List(
       AmmattitutkintoExample.näyttötutkintoonValmistavanKoulutuksenSuoritus,
       AmmattitutkintoExample.ammatillisenTutkinnonSuoritus.copy(
+        vahvistus = None
+      )
+    )
+  )
+
+  def ammattikouluValmaOpiskeluoikeus = ammattikouluValmistunutOpiskeluoikeus.copy(
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+    )),
+    suoritukset = List(
+      ExamplesValma.valmaKoulutuksenSuoritus.copy(
+        vahvistus = None
+      )
+    )
+  )
+
+  def ammattikouluTelmaOpiskeluoikeus = ammattikouluValmistunutOpiskeluoikeus.copy(
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+    )),
+    suoritukset = List(
+      ExamplesTelma.telmaKoulutuksenSuoritus.copy(
         vahvistus = None
       )
     )

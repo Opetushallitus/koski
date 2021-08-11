@@ -69,6 +69,8 @@ object ValpasMockOppijat {
   val hetuton = valpasOppijat.oppija("Hetuton", "Valpas", "", syntymäaika = Some(LocalDate.of(2005, 1, 1)))
   val oppivelvollinenJollaHetu = valpasOppijat.oppijaSyntymäaikaHetusta("Oppivelvollinen-hetullinen", "Valpas", "030105A7507")
   val oppivelvollinenJollaHetuHetutonSlave = valpasOppijat.duplicate(oppivelvollinenJollaHetu.copy(hetu = None))
+  val ammattikouluOpiskelijaValma = valpasOppijat.oppijaSyntymäaikaHetusta("Valma-opiskelija", "Valpas", "190105A839D")
+  val ammattikouluOpiskelijaTelma = valpasOppijat.oppijaSyntymäaikaHetusta("Telma-opiskelija", "Valpas", "020805A7784")
 
   // Kutsumanimi ja yhteystiedot haetaan oppijanumerorekisteristä Valpas-käyttäjälle, tallennetaan siksi käyttäjä myös "oppijana" mockeihin
   val käyttäjäValpasJklNormaalikoulu = valpasOppijat.oppija(
