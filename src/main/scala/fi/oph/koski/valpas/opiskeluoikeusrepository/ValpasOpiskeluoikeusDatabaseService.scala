@@ -566,26 +566,26 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     oppija.oikeus_koulutuksen_maksuttomuuteen_voimassa_asti AS oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
     (oppija.oikeus_koulutuksen_maksuttomuuteen_voimassa_asti >= $tarkastelupäivä) AS onOikeusValvoaMaksuttomuutta,
     (oppija.oppivelvollisuus_voimassa_asti >= $tarkastelupäivä) AS onOikeusValvoaKunnalla,
-    json_agg(
-      json_build_object(
+    jsonb_agg(
+      jsonb_build_object(
         'oid', opiskeluoikeus.opiskeluoikeus_oid,
         'onHakeutumisValvottava',
           opiskeluoikeus.opiskeluoikeus_oid = ANY(oppija.hakeutumisvalvottava_opiskeluoikeus_oids),
         'onSuorittamisValvottava',
           opiskeluoikeus.opiskeluoikeus_oid = ANY(oppija.suorittamisvalvottava_opiskeluoikeus_oids),
-        'tyyppi', json_build_object(
+        'tyyppi', jsonb_build_object(
           'koodiarvo', opiskeluoikeus.koulutusmuoto,
           'koodistoUri', 'opiskeluoikeudentyyppi'
         ),
-        'oppilaitos', json_build_object(
+        'oppilaitos', jsonb_build_object(
           'oid', opiskeluoikeus.oppilaitos_oid,
-          'nimi', json_build_object(
+          'nimi', jsonb_build_object(
             'fi', opiskeluoikeus.oppilaitos_nimi
           )
         ),
-        'toimipiste', json_build_object(
+        'toimipiste', jsonb_build_object(
           'oid', opiskeluoikeus.toimipiste_oid,
-          'nimi', json_build_object(
+          'nimi', jsonb_build_object(
             'fi', opiskeluoikeus.toimipiste_nimi
           )
         ),
@@ -593,11 +593,11 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         'päättymispäivä', opiskeluoikeus.paattymispaiva,
         'päättymispäiväMerkittyTulevaisuuteen', opiskeluoikeus.paattymispaiva_merkitty_tulevaisuuteen,
         'ryhmä', opiskeluoikeus.ryhmä,
-        'tarkastelupäivänTila', json_build_object(
+        'tarkastelupäivänTila', jsonb_build_object(
           'koodiarvo', opiskeluoikeus.tarkastelupäivän_tila,
           'koodistoUri', 'valpasopiskeluoikeudentila'
         ),
-        'tarkastelupäivänKoskiTila', json_build_object(
+        'tarkastelupäivänKoskiTila', jsonb_build_object(
           'koodiarvo', opiskeluoikeus.tarkastelupäivän_koski_tila,
           'koodistoUri', 'koskiopiskeluoikeudentila'
         ),
