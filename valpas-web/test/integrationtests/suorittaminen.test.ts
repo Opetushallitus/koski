@@ -19,10 +19,10 @@ const jklSuorittaminenPath = createSuorittaminenPathWithOrg(
   jyväskylänNormaalikouluOid
 )
 
-const saksalainenKouluOid = "1.2.246.562.10.45093614456"
-const saksalainenKouluSuorittaminenPath = createSuorittaminenPathWithOrg(
+const viikinNormaalikouluId = "1.2.246.562.10.81927839589"
+const viikinNormaalikouluSuorittaminenPath = createSuorittaminenPathWithOrg(
   "/virkailija",
-  saksalainenKouluOid
+  viikinNormaalikouluId
 )
 
 describe("Suorittamisen valvonta -näkymä", () => {
@@ -45,8 +45,8 @@ describe("Suorittamisen valvonta -näkymä", () => {
   })
 
   it("Näyttää tyhjän listan virheittä, jos ei oppijoita", async () => {
-    await loginAs(suorittaminenListaPath, "valpas-saksalainen-2-aste")
-    await urlIsEventually(pathToUrl(saksalainenKouluSuorittaminenPath))
+    await loginAs(suorittaminenListaPath, "valpas-viikin-normaalikoulu-2-aste")
+    await urlIsEventually(pathToUrl(viikinNormaalikouluSuorittaminenPath))
     await textEventuallyEquals(".card__header", "Oppivelvolliset (0)")
   })
 

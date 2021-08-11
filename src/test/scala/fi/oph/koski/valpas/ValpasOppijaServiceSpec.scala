@@ -35,6 +35,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
   private val oppijaService = KoskiApplicationForTests.valpasOppijaService
   private val rajapäivätService = KoskiApplicationForTests.valpasRajapäivätService
   private val oppilaitos = MockOrganisaatiot.jyväskylänNormaalikoulu
+  private val amisOppilaitos = MockOrganisaatiot.stadinAmmattiopisto
   private val organisaatioRepository = KoskiApplicationForTests.organisaatioRepository
   private val kuntailmoitusRepository = KoskiApplicationForTests.valpasKuntailmoitusRepository
 
@@ -347,6 +348,64 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     ),
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
+
+  // Stadin ammattiopistosta löytyvät suorittamisvalvottavat oppijat 5.9.2021
+  private val suorittamisvalvottavatAmis = List(
+    (
+      ValpasMockOppijat.ammattikouluOpiskelija,
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.ammattikouluOpiskeluoikeus, "voimassa", "lasna", false, false, true))
+    ),
+    (
+      ValpasMockOppijat.ammattikouluOpiskelijaValma,
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.ammattikouluValmaOpiskeluoikeus, "voimassa", "lasna", false, false, true))
+    ),
+    (
+      ValpasMockOppijat.ammattikouluOpiskelijaTelma,
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.ammattikouluTelmaOpiskeluoikeus, "voimassa", "lasna", false, false, true))
+    ),
+    (
+      ValpasMockOppijat.amisEronnutEiUuttaOpiskeluoikeutta,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus, "eronnut", "eronnut", false, false, true),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenSaksalainenKoulu, "valmistunut", "valmistunut", false, false, false),
+      ),
+    ),
+    (
+      ValpasMockOppijat.amisEronnutUusiOpiskeluoikeusTulevaisuudessa,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.ammattikouluAlkaaOmniaLoka2021, "voimassatulevaisuudessa", "lasna", false, false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus, "eronnut", "eronnut", false, false, true),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenSaksalainenKoulu, "valmistunut", "valmistunut", false, false, false),
+      ),
+    ),
+    (
+      ValpasMockOppijat.amisEronnutUusiOpiskeluoikeusPeruskoulussa,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.alkaaYsiluokkalainenSaksalainenKouluSyys2021, "voimassa", "lasna", false, false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus, "eronnut", "eronnut", false, false, true),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenSaksalainenKoulu, "valmistunut", "valmistunut", false, false, false),
+      ),
+    ),
+    (
+      ValpasMockOppijat.amisEronnutUusiKelpaamatonOpiskeluoikeusNivelvaiheessa,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.kymppiluokkaAlkaaSyys2021, "voimassa", "lasna", false, false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus, "eronnut", "eronnut", false, false, true),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenSaksalainenKoulu, "valmistunut", "valmistunut", false, false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutKymppiluokkalainen, "valmistunut", "valmistunut", false, false, false),
+      ),
+    ),
+    (
+      ValpasMockOppijat.amisEronnutUusiKelpaamatonOpiskeluoikeusNivelvaiheessa2,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.vstAlkaaSyys2021, "voimassa", "lasna", false, false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus, "eronnut", "eronnut", false, false, true),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenSaksalainenKoulu, "valmistunut", "valmistunut", false, false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutKymppiluokkalainen, "valmistunut", "valmistunut", false, false, false),
+      ),
+    ),
+  ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
+
   "getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla palauttaa vain annetun oppijanumeron mukaisen oppijan" in {
     val (expectedOppija, expectedData) = hakeutumisvelvolliset(1)
     val result = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(expectedOppija.oid)(defaultSession).toOption.get
@@ -459,6 +518,20 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     oppijat.map(_.henkilö.oid) shouldBe hakeutumisvelvollisetRajapäivänJälkeen.map(_._1.oid)
 
     (oppijat zip hakeutumisvelvollisetRajapäivänJälkeen).foreach { actualAndExpected =>
+      val (oppija, (expectedOppija, expectedData)) = actualAndExpected
+      validateOppijaSuppeatTiedot(
+        oppija,
+        expectedOppija,
+        expectedData)
+    }
+  }
+
+  "getSuorittamisvalvottavatOppijatSuppeatTiedot palauttaa yhden oppilaitoksen oppijat oikein tarkasteltaessa syksyn alussa" in {
+    val oppijat = oppijaService.getSuorittamisvalvottavatOppijatSuppeatTiedot(amisOppilaitos)((session(ValpasMockUsers.valpasPelkkäSuorittaminenkäyttäjäAmmattikoulu))).toOption.get.map(_.oppija)
+
+    oppijat.map(_.henkilö.oid) shouldBe suorittamisvalvottavatAmis.map(_._1.oid)
+
+    (oppijat zip suorittamisvalvottavatAmis).foreach { actualAndExpected =>
       val (oppija, (expectedOppija, expectedData)) = actualAndExpected
       validateOppijaSuppeatTiedot(
         oppija,
