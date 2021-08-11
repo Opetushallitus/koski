@@ -30,7 +30,7 @@ import {
   isVoimassaTulevaisuudessa,
 } from "../../../state/apitypes/valpasopiskeluoikeudentila"
 import { useBasePath } from "../../../state/basePath"
-import { Oid } from "../../../state/common"
+import { ISODate, Oid } from "../../../state/common"
 import { createOppijaPath } from "../../../state/paths"
 import { nonNull } from "../../../utils/arrays"
 import { formatDate, formatNullableDate } from "../../../utils/date"
@@ -69,6 +69,7 @@ export const SuorittaminenOppivelvollisetTable = (
       },
       {
         label: t("suorittaminennäkymä__taulu_koulutustyyppi"),
+        filter: "dropdown",
         size: "small",
       },
       {
@@ -80,17 +81,13 @@ export const SuorittaminenOppivelvollisetTable = (
       {
         label: t("suorittaminennäkymä__taulu_toimipipste"),
         filter: "dropdown",
-        size: "small",
+        size: "large",
       },
       {
         label: t("suorittaminennäkymä__taulu_alkamispäivä"),
-        filter: "dropdown",
-        size: "small",
       },
       {
         label: t("suorittaminennäkymä__taulu_päättymispäivä"),
-        filter: "dropdown",
-        size: "small",
       },
       {
         label: t("suorittaminennäkymä__taulu_voimassaolevia_opiskeluoikeuksia"),
@@ -102,8 +99,6 @@ export const SuorittaminenOppivelvollisetTable = (
       },
       {
         label: t("suorittaminennäkymä__taulu_oppivelvollisuus"),
-        filter: "dropdown",
-        size: "small",
       },
     ],
     []
@@ -161,24 +156,12 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
         koulutustyyppi(opiskeluoikeus),
         tila(opiskeluoikeus),
         fromNullable(getLocalized(opiskeluoikeus.toimipiste?.nimi)),
-        {
-          value: opiskeluoikeus.alkamispäivä,
-          display: formatNullableDate(opiskeluoikeus.alkamispäivä),
-        },
-        {
-          value: opiskeluoikeus.päättymispäivä,
-          display: formatNullableDate(opiskeluoikeus.päättymispäivä),
-        },
+        fromNullableValue(päivä(opiskeluoikeus.alkamispäivä)),
+        fromNullableValue(päivä(opiskeluoikeus.päättymispäivä)),
         fromNullableValue(
           opiskeluoikeustiedot(oppija.oppija.opiskeluoikeudet, opiskeluoikeus)
         ),
-        {
-          // TODO: käsittele keskeytykset, ota mallia OppijanOppivelvollisuustiedot.tsx:stä. Tällä hetkellä dataa ei tule.
-          value: oppija.oppija.oppivelvollisuusVoimassaAsti,
-          display: formatNullableDate(
-            oppija.oppija.oppivelvollisuusVoimassaAsti
-          ),
-        },
+        fromNullableValue(oppivelvollisuus(oppija.oppija)),
       ],
     }
   })
@@ -211,6 +194,16 @@ const tila = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
 const tilaString = (opiskeluoikeus: OpiskeluoikeusSuppeatTiedot): string => {
   const tila = opiskeluoikeus.tarkastelupäivänKoskiTila
   return getLocalized(tila.nimi) || tila.koodiarvo
+}
+
+const päivä = (date?: ISODate): Value | null => {
+  return date
+    ? {
+        value: date,
+        filterValues: [date],
+        display: formatNullableDate(date),
+      }
+    : null
 }
 
 const opiskeluoikeustiedot = (
@@ -263,10 +256,22 @@ const opiskeluoikeustiedot = (
   }
 }
 
-// TODO: Filtteröi pois opiskeluoikeus, jonka riviä ollaan näyttämässä
 const suorittamisvalvonnanOpiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus = (
   opiskeluoikeus: OpiskeluoikeusSuppeatTiedot
 ): boolean => {
   const tila = opiskeluoikeus.tarkastelupäivänTila.koodiarvo
   return tila === "voimassa" || tila === "voimassatulevaisuudessa"
+}
+
+const oppivelvollisuus = (oppija: OppijaSuppeatTiedot): Value | null => {
+  return oppija.oppivelvollisuusVoimassaAsti
+    ? {
+        // TODO: käsittele keskeytykset, ota mallia OppijanOppivelvollisuustiedot.tsx:stä. Tällä hetkellä dataa ei tule.
+        value: oppija.oppivelvollisuusVoimassaAsti,
+        filterValues: [oppija.oppivelvollisuusVoimassaAsti],
+        display: t("suorittaminennäkymä__oppivelvollisuus_voimassa_value", {
+          date: formatDate(oppija.oppivelvollisuusVoimassaAsti),
+        }),
+      }
+    : null
 }
