@@ -102,7 +102,6 @@ export const SuorittaminenOppivelvollisetTable = (
       },
       {
         label: t("suorittaminennäkymä__taulu_oppivelvollisuus"),
-        filter: "dropdown",
         size: "small",
       },
     ],
@@ -274,7 +273,9 @@ const oppivelvollisuus = (oppija: OppijaSuppeatTiedot): Value | null => {
         // TODO: käsittele keskeytykset, ota mallia OppijanOppivelvollisuustiedot.tsx:stä. Tällä hetkellä dataa ei tule.
         value: oppija.oppivelvollisuusVoimassaAsti,
         filterValues: [oppija.oppivelvollisuusVoimassaAsti],
-        display: formatNullableDate(oppija.oppivelvollisuusVoimassaAsti),
+        display: t("suorittaminennäkymä__oppivelvollisuus_voimassa_value", {
+          date: formatDate(oppija.oppivelvollisuusVoimassaAsti),
+        }),
       }
     : null
 }
