@@ -38,8 +38,8 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
   private val organisaatioRepository = KoskiApplicationForTests.organisaatioRepository
   private val kuntailmoitusRepository = KoskiApplicationForTests.valpasKuntailmoitusRepository
 
-  // Jyväskylän normaalikoulusta löytyvät näytettävät oppivelvolliset aakkosjärjestyksessä, tutkittaessa ennen syksyn rajapäivää
-  private val oppivelvolliset = List(
+  // Jyväskylän normaalikoulusta löytyvät näytettävät hakeutumisvelvolliset aakkosjärjestyksessä, tutkittaessa ennen syksyn rajapäivää
+  private val hakeutumisvelvolliset = List(
     (
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
       List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", "lasna", true, true, false))
@@ -235,8 +235,8 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     ),
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
-  // Jyväskylän normaalikoulusta löytyvät näytettävät oppivelvolliset aakkosjärjestyksessä, tutkittaessa syksyn rajapäivän jälkeen
-  private val oppivelvollisetRajapäivänJälkeen = List(
+  // Jyväskylän normaalikoulusta löytyvät näytettävät hakeutumisvelvolliset aakkosjärjestyksessä, tutkittaessa syksyn rajapäivän jälkeen
+  private val hakeutumisvelvollisetRajapäivänJälkeen = List(
     (
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
       List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", "lasna", true, true, false))
@@ -347,14 +347,14 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     ),
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
-  "getOppija palauttaa vain annetun oppijanumeron mukaisen oppijan" in {
-    val (expectedOppija, expectedData) = oppivelvolliset(1)
+  "getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla palauttaa vain annetun oppijanumeron mukaisen oppijan" in {
+    val (expectedOppija, expectedData) = hakeutumisvelvolliset(1)
     val result = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(expectedOppija.oid)(defaultSession).toOption.get
 
     validateOppijaLaajatTiedot(result.oppija, expectedOppija, expectedData)
   }
 
-  "getOppijan palauttaman oppijan valintatilat ovat oikein" in {
+  "getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksillan palauttaman oppijan valintatilat ovat oikein" in {
     val result = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid)(defaultSession).toOption.get
 
     val valintatilat = result.hakutilanteet.map(_.hakutoiveet.flatMap(_.valintatila.map(_.koodiarvo)))
@@ -370,7 +370,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     )
   }
 
-  "getOppija palauttaa oppijan tiedot, vaikka oid ei olisikaan master oid" in {
+  "getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla palauttaa oppijan tiedot, vaikka oid ei olisikaan master oid" in {
     val result = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaToinen.oid)(defaultSession)
     validateOppijaLaajatTiedot(
       result.toOption.get.oppija,
@@ -384,7 +384,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     )
   }
 
-  "getOppija palauttaa oppijan tiedot, vaikka hakukoostekysely epäonnistuisi" in {
+  "getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla palauttaa oppijan tiedot, vaikka hakukoostekysely epäonnistuisi" in {
     val result = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.hakukohteidenHakuEpäonnistuu.oid)(defaultSession).toOption.get
     result.hakutilanneError.get should equal("Hakukoosteita ei juuri nyt saada haettua suoritusrekisteristä. Yritä myöhemmin uudelleen.")
     validateOppijaLaajatTiedot(
@@ -394,7 +394,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     )
   }
 
-  "getOppija palauttaa oppijan tiedot, vaikka kysely tehtäisiin oidilla, jonka suoriin opiskeluoikeuksiin ei ole pääsyä" in {
+  "getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla palauttaa oppijan tiedot, vaikka kysely tehtäisiin oidilla, jonka suoriin opiskeluoikeuksiin ei ole pääsyä" in {
     val result = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaKolmas.oid)(defaultSession)
     validateOppijaLaajatTiedot(
       result.toOption.get.oppija,
@@ -408,7 +408,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     )
   }
 
-  "getOppija palauttaa oppijan tiedot, vaikka kysely tehtäisiin master-oidilla, jonka suoriin opiskeluoikeuksiin ei ole pääsyä" in {
+  "getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla palauttaa oppijan tiedot, vaikka kysely tehtäisiin master-oidilla, jonka suoriin opiskeluoikeuksiin ei ole pääsyä" in {
     val result = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster.oid)(session(ValpasMockUsers.valpasAapajoenKoulu))
     validateOppijaLaajatTiedot(
       result.toOption.get.oppija,
@@ -422,12 +422,12 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     )
   }
 
-  "getOppijat palauttaa yhden oppilaitoksen oppijat oikein tarkasteltaessa ennen syksyn rajapäivää" in {
+  "getHakeutumisvalvottavatOppijatSuppeatTiedot palauttaa yhden oppilaitoksen oppijat oikein tarkasteltaessa ennen syksyn rajapäivää" in {
     val oppijat = oppijaService.getHakeutumisvalvottavatOppijatSuppeatTiedot(oppilaitos)(defaultSession).toOption.get.map(_.oppija)
 
-    oppijat.map(_.henkilö.oid) shouldBe oppivelvolliset.map(_._1.oid)
+    oppijat.map(_.henkilö.oid) shouldBe hakeutumisvelvolliset.map(_._1.oid)
 
-    (oppijat zip oppivelvolliset).foreach { actualAndExpected =>
+    (oppijat zip hakeutumisvelvolliset).foreach { actualAndExpected =>
       val (oppija, (expectedOppija, expectedData)) = actualAndExpected
       validateOppijaSuppeatTiedot(
         oppija,
@@ -436,13 +436,13 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     }
   }
 
-  "getOppijat palauttaa yhden oppilaitoksen oppijat oikein käyttäjälle, jolla globaalit oikeudet, tarkasteltaessa ennen syksyn rajapäivää" in {
+  "getHakeutumisvalvottavatOppijatSuppeatTiedot palauttaa yhden oppilaitoksen oppijat oikein käyttäjälle, jolla globaalit oikeudet, tarkasteltaessa ennen syksyn rajapäivää" in {
     val oppijat = oppijaService.getHakeutumisvalvottavatOppijatSuppeatTiedot(oppilaitos)(session(ValpasMockUsers.valpasOphHakeutuminenPääkäyttäjä))
       .toOption.get.map(_.oppija)
 
-    oppijat.map(_.henkilö.oid) shouldBe oppivelvolliset.map(_._1.oid)
+    oppijat.map(_.henkilö.oid) shouldBe hakeutumisvelvolliset.map(_._1.oid)
 
-    (oppijat zip oppivelvolliset).foreach { actualAndExpected =>
+    (oppijat zip hakeutumisvelvolliset).foreach { actualAndExpected =>
       val (oppija, (expectedOppija, expectedData)) = actualAndExpected
       validateOppijaSuppeatTiedot(
         oppija,
@@ -451,14 +451,14 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     }
   }
 
-  "getOppijat palauttaa yhden oppilaitoksen oppijat oikein tarkasteltaessa syksyn rajapäivän jälkeen" in {
+  "getHakeutumisvalvottavatOppijatSuppeatTiedot palauttaa yhden oppilaitoksen oppijat oikein tarkasteltaessa syksyn rajapäivän jälkeen" in {
     rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(date(2021, 10, 1))
 
     val oppijat = oppijaService.getHakeutumisvalvottavatOppijatSuppeatTiedot(oppilaitos)(defaultSession).toOption.get.map(_.oppija)
 
-    oppijat.map(_.henkilö.oid) shouldBe oppivelvollisetRajapäivänJälkeen.map(_._1.oid)
+    oppijat.map(_.henkilö.oid) shouldBe hakeutumisvelvollisetRajapäivänJälkeen.map(_._1.oid)
 
-    (oppijat zip oppivelvollisetRajapäivänJälkeen).foreach { actualAndExpected =>
+    (oppijat zip hakeutumisvelvollisetRajapäivänJälkeen).foreach { actualAndExpected =>
       val (oppija, (expectedOppija, expectedData)) = actualAndExpected
       validateOppijaSuppeatTiedot(
         oppija,
@@ -697,14 +697,14 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     validateKuntailmoitukset(oppija, expectedIlmoitukset)
   }
 
-  "Peruskoulun opo saa haettua oman oppilaitoksen oppijan tiedot" in {
+  "Peruskoulun hakeutumisen valvoja saa haettua oman oppilaitoksen oppijan tiedot" in {
     canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
       ValpasMockUsers.valpasJklNormaalikouluPelkkäPeruskoulu
     ) shouldBe true
   }
 
-  "Peruskoulun opo saa haettua 17 vuotta tänä vuonna täyttävän oman oppilaitoksen oppijan tiedot rajapäivään asti" in {
+  "Peruskoulun hakeutumisen valvoja saa haettua 17 vuotta tänä vuonna täyttävän oman oppilaitoksen oppijan tiedot rajapäivään asti" in {
     rajapäivätService.asInstanceOf[MockValpasRajapäivätService]
       .asetaMockTarkastelupäivä(
         rajapäivätService.keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
@@ -716,7 +716,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     ) shouldBe true
   }
 
-  "Peruskoulun opo saa haettua 17 vuotta tänä vuonna täyttävän oman oppilaitoksen oppijan tiedot rajapäivän jälkeen" in {
+  "Peruskoulun hakeutumisen valvoja saa haettua 17 vuotta tänä vuonna täyttävän oman oppilaitoksen oppijan tiedot rajapäivän jälkeen" in {
     rajapäivätService.asInstanceOf[MockValpasRajapäivätService]
       .asetaMockTarkastelupäivä(
         rajapäivätService.keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä.plusDays(1)
@@ -728,7 +728,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     ) shouldBe true
   }
 
-  "Peruskoulun opo saa haettua 18 vuotta tänä vuonna täyttävän oman oppilaitoksen oppijan tiedot" in {
+  "Peruskoulun hakeutumisen valvoja saa haettua 18 vuotta tänä vuonna täyttävän oman oppilaitoksen oppijan tiedot" in {
     val päivä2022 = date(2022,1,15)
 
     rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(päivä2022)
@@ -738,14 +738,14 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       ValpasMockUsers.valpasJklNormaalikouluPelkkäPeruskoulu
     ) shouldBe true
   }
-  "Peruskoulun opo ei saa haettua toisen oppilaitoksen oppijan tietoja" in {
+  "Peruskoulun hakeutumisen valvoja ei saa haettua toisen oppilaitoksen oppijan tietoja" in {
     canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
       ValpasMockUsers.valpasHelsinkiPeruskoulu
     ) shouldBe false
   }
 
-  "Käyttäjä, jolla hakeutumisen tarkastelun oikeudet ja koulutusjärjestäjän organisaatio, näkee oppijan" in {
+  "Käyttäjä, jolla hakeutumisen valvontaoikeudet koulutustoimijatasolla, näkee oppilaitoksen oppijan" in {
     canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
       ValpasMockUsers.valpasJklYliopisto
@@ -829,7 +829,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     ) shouldBe true
   }
 
-  "Käyttäjä, jolla pelkät suorittamisen valvonnan oikeudet näkee lukio-oppijan vielä valmstumisen jälkeenkin, koska YO-tutkinto oletetaan olevan suorittamatta" in {
+  "Käyttäjä, jolla pelkät suorittamisen valvonnan oikeudet näkee lukio-oppijan vielä valmistumisen jälkeenkin, koska YO-tutkinto oletetaan olevan suorittamatta" in {
     canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
       ValpasMockOppijat.lukiostaValmistunutOpiskelija,
       ValpasMockUsers.valpasPelkkäSuorittaminenkäyttäjä
@@ -953,7 +953,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
     result.left.map(_.statusCode) shouldBe Left(403)
   }
 
-  "Oppivelvollisuutta ei pysty keskeyttämään organisaation nimissä, johon ei ole oikeuksia" in {
+  "Oppivelvollisuutta ei pysty keskeyttämään organisaation nimissä, jos siihen ei ole oikeuksia" in {
     val oppija = ValpasMockOppijat.valmistunutYsiluokkalainen
     val tekijäOrganisaatioOid = MockOrganisaatiot.jyväskylänNormaalikoulu
     val kuntaSession = session(ValpasMockUsers.valpasPyhtääJaHelsinki)
