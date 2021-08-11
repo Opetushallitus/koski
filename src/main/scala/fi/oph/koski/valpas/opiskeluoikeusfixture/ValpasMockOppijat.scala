@@ -1,9 +1,8 @@
 package fi.oph.koski.valpas.opiskeluoikeusfixture
 
-import java.time.LocalDate
-
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
+
 import java.time.LocalDate
 
 object ValpasMockOppijat {
