@@ -138,10 +138,10 @@ const OpiskeluhistoriaOpinto = ({
       </IconSectionHeading>
       <InfoTable size="tighter">
         <InfoTableRow value={getLocalized(opiskeluoikeus.oppilaitos.nimi)} />
-        {opiskeluoikeus.ryhmä && (
+        {opiskeluoikeus.tarkasteltavaPäätasonSuoritus.ryhmä && (
           <InfoTableRow
             label={t("oppija__ryhma")}
-            value={opiskeluoikeus.ryhmä}
+            value={opiskeluoikeus.tarkasteltavaPäätasonSuoritus.ryhmä}
           />
         )}
         {opiskeluoikeus.tarkastelupäivänTila && (
