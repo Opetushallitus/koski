@@ -413,132 +413,130 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   -- peräkkäisiä muita peruskoulun opiskeluoikeuksia. Teoriassa varmaan voisi tehostaa kyselyä jotenkin ja välttää
   -- näiden hakeminen uudestaan, mutta kysely voisi mennä melko monimutkaiseksi.
   , peruskoulun_opiskeluoikeus AS (
-     SELECT
-       oppija_oid.master_oid,
-       r_opiskeluoikeus.opiskeluoikeus_oid,
-       r_opiskeluoikeus.koulutusmuoto,
-       r_opiskeluoikeus.oppilaitos_oid,
-       r_opiskeluoikeus.oppilaitos_nimi,
-       valittu_r_paatason_suoritus.toimipiste_oid,
-       valittu_r_paatason_suoritus.toimipiste_nimi,
-       r_opiskeluoikeus.alkamispaiva,
-       r_opiskeluoikeus.paattymispaiva,
-       r_opiskeluoikeus.paattymispaiva > $tarkastelupäivä AS paattymispaiva_merkitty_tulevaisuuteen,
-       coalesce(valittu_r_paatason_suoritus.data ->> 'luokka', r_opiskeluoikeus.luokka) AS ryhmä,
-       r_opiskeluoikeus.viimeisin_tila,
-       CASE
-         WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
-         WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
-         ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
-       END tarkastelupäivän_tila,
-       CASE
-         -- Jos opiskeluoikeus on tulevaisuudessa, käytetään läsnä-tilaa toistaiseksi. Tätä tilannetta ei tällä hetkellä koskaan
-         -- Valppaassa näytetä, joten jos vaikka opiskeluoikeus alkaisikin muuten kuin läsnä-tilaisena, ei tämä aiheuta mitään
-         -- ongelmaa.
-         WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'lasna'
-         WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.viimeisin_tila
-         ELSE aikajakson_keskella.tila
-       END tarkastelupäivän_koski_tila,
-       r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
-       (
-         r_opiskeluoikeus.viimeisin_tila = 'valmistunut'
-         AND coalesce(r_opiskeluoikeus.paattymispaiva < $perusopetussuorituksenNäyttämisenAikaraja, FALSE)
-       ) AS naytettava_perusopetuksen_suoritus,
-       coalesce((r_opiskeluoikeus.data -> 'lisätiedot' ->> 'vuosiluokkiinSitoutumatonOpetus')::boolean, FALSE)
-         AS vuosiluokkiin_sitomaton_opetus
-     FROM
-       oppija_oid
-       JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
-         AND r_opiskeluoikeus.koulutusmuoto = 'perusopetus'
-       LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella
-         ON aikajakson_keskella.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-         AND $tarkastelupäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
-       LEFT JOIN valpastila valpastila_aikajakson_keskella
-         ON valpastila_aikajakson_keskella.koskiopiskeluoikeudentila = aikajakson_keskella.tila
-       LEFT JOIN valpastila valpastila_viimeisin
-         ON valpastila_viimeisin.koskiopiskeluoikeudentila = r_opiskeluoikeus.viimeisin_tila
-       -- Haetaan päätason suoritus, jonka dataa halutaan näyttää (toistaiseksi valitaan alkamispäivän perusteella uusin)
-       -- TODO: Ei välttämättä osu oikeaan, koska voi olla esim. monen eri tyyppisiä peruskoulun päätason suorituksia,
-       -- ja pitäisi oikeasti filteröidä myös tyypin perusteella.
-       -- TODO: Voisi toteuttaa tutkittavan ajanhetken tarkistuksen tähänkin, että näytetään luokkatieto sen mukaan,
-       -- millä luokalla on ollut tutkittavalla ajanhetkellä. Menneisyyden tarkastelulle tällä tarkkuudella ei
-       -- kuitenkaan ole toistaiseksi ilmennyt tarvetta.
-       CROSS JOIN LATERAL (
-         SELECT
-           *
-         FROM
-           r_paatason_suoritus inner_r_paatason_suoritus
-         WHERE
-           inner_r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-           AND inner_r_paatason_suoritus.suorituksen_tyyppi = 'perusopetuksenvuosiluokka'
-         ORDER BY
-           -- hae vain uusin vuosiluokan suoritus (toistaiseksi, myöhemmin voisi pystyä valitsemaan myös esim.
-           -- edelliseltä keväältä parametrina annetun päivämäärän perusteella)
-           inner_r_paatason_suoritus.DATA ->> 'alkamispäivä' DESC
-        LIMIT
-          1
-        ) valittu_r_paatason_suoritus
+    SELECT
+      oppija_oid.master_oid,
+      r_opiskeluoikeus.opiskeluoikeus_oid,
+      r_opiskeluoikeus.koulutusmuoto,
+      r_opiskeluoikeus.oppilaitos_oid,
+      r_opiskeluoikeus.oppilaitos_nimi,
+      valittu_r_paatason_suoritus.toimipiste_oid,
+      valittu_r_paatason_suoritus.toimipiste_nimi,
+      r_opiskeluoikeus.alkamispaiva,
+      r_opiskeluoikeus.paattymispaiva,
+      r_opiskeluoikeus.paattymispaiva > $tarkastelupäivä AS paattymispaiva_merkitty_tulevaisuuteen,
+      coalesce(valittu_r_paatason_suoritus.data ->> 'luokka', r_opiskeluoikeus.luokka) AS ryhmä,
+      r_opiskeluoikeus.viimeisin_tila,
+      CASE
+        WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
+        WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
+        ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
+      END tarkastelupäivän_tila,
+      CASE
+        -- Jos opiskeluoikeus on tulevaisuudessa, käytetään läsnä-tilaa toistaiseksi. Tätä tilannetta ei tällä hetkellä koskaan
+        -- Valppaassa näytetä, joten jos vaikka opiskeluoikeus alkaisikin muuten kuin läsnä-tilaisena, ei tämä aiheuta mitään
+        -- ongelmaa.
+        WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'lasna'
+        WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.viimeisin_tila
+        ELSE aikajakson_keskella.tila
+      END tarkastelupäivän_koski_tila,
+      r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
+      (
+        r_opiskeluoikeus.viimeisin_tila = 'valmistunut'
+        AND coalesce(r_opiskeluoikeus.paattymispaiva < $perusopetussuorituksenNäyttämisenAikaraja, FALSE)
+      ) AS naytettava_perusopetuksen_suoritus,
+      coalesce((r_opiskeluoikeus.data -> 'lisätiedot' ->> 'vuosiluokkiinSitoutumatonOpetus')::boolean, FALSE)
+        AS vuosiluokkiin_sitomaton_opetus
+    FROM
+      oppija_oid
+      JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
+        AND r_opiskeluoikeus.koulutusmuoto = 'perusopetus'
+      LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella
+        ON aikajakson_keskella.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+        AND $tarkastelupäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
+      LEFT JOIN valpastila valpastila_aikajakson_keskella
+        ON valpastila_aikajakson_keskella.koskiopiskeluoikeudentila = aikajakson_keskella.tila
+      LEFT JOIN valpastila valpastila_viimeisin
+        ON valpastila_viimeisin.koskiopiskeluoikeudentila = r_opiskeluoikeus.viimeisin_tila
+      -- Haetaan päätason suoritus, jonka dataa halutaan näyttää (toistaiseksi valitaan alkamispäivän perusteella uusin)
+      -- TODO: Ei välttämättä osu oikeaan, koska voi olla esim. monen eri tyyppisiä peruskoulun päätason suorituksia,
+      -- ja pitäisi oikeasti filteröidä myös tyypin perusteella.
+      -- TODO: Voisi toteuttaa tutkittavan ajanhetken tarkistuksen tähänkin, että näytetään luokkatieto sen mukaan,
+      -- millä luokalla on ollut tutkittavalla ajanhetkellä. Menneisyyden tarkastelulle tällä tarkkuudella ei
+      -- kuitenkaan ole toistaiseksi ilmennyt tarvetta.
+      CROSS JOIN LATERAL (
+        SELECT
+          *
+        FROM
+          r_paatason_suoritus inner_r_paatason_suoritus
+        WHERE
+          inner_r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+          AND inner_r_paatason_suoritus.suorituksen_tyyppi = 'perusopetuksenvuosiluokka'
+        ORDER BY
+          -- hae vain uusin vuosiluokan suoritus (toistaiseksi, myöhemmin voisi pystyä valitsemaan myös esim.
+          -- edelliseltä keväältä parametrina annetun päivämäärän perusteella)
+          inner_r_paatason_suoritus.DATA ->> 'alkamispäivä' DESC
+        LIMIT 1
+      ) valittu_r_paatason_suoritus
   )
   -- CTE: Muut kuin peruskoulun opiskeluoikeudet
   -- Pitää hakea erikseen, koska säännöt päätason suorituksen kenttien osalta ovat erilaiset, koska datat ovat erilaiset
   , muu_opiskeluoikeus AS (
-     SELECT
-       oppija_oid.master_oid,
-       r_opiskeluoikeus.opiskeluoikeus_oid,
-       r_opiskeluoikeus.koulutusmuoto,
-       r_opiskeluoikeus.oppilaitos_oid,
-       r_opiskeluoikeus.oppilaitos_nimi,
-       valittu_r_paatason_suoritus.toimipiste_oid,
-       valittu_r_paatason_suoritus.toimipiste_nimi,
-       r_opiskeluoikeus.alkamispaiva,
-       r_opiskeluoikeus.paattymispaiva,
-       r_opiskeluoikeus.paattymispaiva > $tarkastelupäivä AS paattymispaiva_merkitty_tulevaisuuteen,
-       coalesce(valittu_r_paatason_suoritus.data ->> 'ryhmä', r_opiskeluoikeus.luokka) AS ryhmä,
-       r_opiskeluoikeus.viimeisin_tila,
-       CASE
-         WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
-         WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
-         ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
-       END tarkastelupäivän_tila,
-       CASE
-         -- Jos opiskeluoikeus on tulevaisuudessa, käytetään läsnä-tilaa toistaiseksi. Tätä tilannetta ei tällä hetkellä koskaan
-         -- Valppaassa näytetä, joten jos vaikka opiskeluoikeus alkaisikin muuten kuin läsnä-tilaisena, ei tämä aiheuta mitään
-         -- ongelmaa.
-         WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'lasna'
-         WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.viimeisin_tila
-         ELSE aikajakson_keskella.tila
-       END tarkastelupäivän_koski_tila,
-       r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
-       FALSE AS naytettava_perusopetuksen_suoritus,
-       FALSE AS vuosiluokkiin_sitomaton_opetus
-     FROM
-       oppija_oid
-       JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
-         AND r_opiskeluoikeus.koulutusmuoto <> 'perusopetus'
-       LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella
-         ON aikajakson_keskella.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-         AND $tarkastelupäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
-       LEFT JOIN valpastila valpastila_aikajakson_keskella
-         ON valpastila_aikajakson_keskella.koskiopiskeluoikeudentila = aikajakson_keskella.tila
-       LEFT JOIN valpastila valpastila_viimeisin
-         ON valpastila_viimeisin.koskiopiskeluoikeudentila = r_opiskeluoikeus.viimeisin_tila
-       -- Haetaan päätason suoritus, jonka dataa halutaan näyttää (TODO: toistaiseksi tulos on random, jos ei ole
-       -- vahvistusta tai arviointia, mutta data ei riitä muuten.
-       -- Teoriassa voisi tutkia päätason suorituksen osasuorituksiin kirjattuja päivämääriä, mutta se on aika
-       -- monimutkaista ja luultavasti myös hidasta.
-       CROSS JOIN LATERAL (
-         SELECT
-           *
-         FROM
-           r_paatason_suoritus inner_r_paatason_suoritus
-         WHERE
-           inner_r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-         ORDER BY
-           inner_r_paatason_suoritus.vahvistus_paiva DESC NULLS FIRST,
-           inner_r_paatason_suoritus.arviointi_paiva DESC NULLS FIRST
-        LIMIT
-          1
-        ) valittu_r_paatason_suoritus
+    SELECT
+      oppija_oid.master_oid,
+      r_opiskeluoikeus.opiskeluoikeus_oid,
+      r_opiskeluoikeus.koulutusmuoto,
+      r_opiskeluoikeus.oppilaitos_oid,
+      r_opiskeluoikeus.oppilaitos_nimi,
+      valittu_r_paatason_suoritus.toimipiste_oid,
+      valittu_r_paatason_suoritus.toimipiste_nimi,
+      r_opiskeluoikeus.alkamispaiva,
+      r_opiskeluoikeus.paattymispaiva,
+      r_opiskeluoikeus.paattymispaiva > $tarkastelupäivä AS paattymispaiva_merkitty_tulevaisuuteen,
+      coalesce(valittu_r_paatason_suoritus.data ->> 'ryhmä', r_opiskeluoikeus.luokka) AS ryhmä,
+      r_opiskeluoikeus.viimeisin_tila,
+      CASE
+        WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
+        WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
+        ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
+      END tarkastelupäivän_tila,
+      CASE
+        -- Jos opiskeluoikeus on tulevaisuudessa, käytetään läsnä-tilaa toistaiseksi. Tätä tilannetta ei tällä hetkellä koskaan
+        -- Valppaassa näytetä, joten jos vaikka opiskeluoikeus alkaisikin muuten kuin läsnä-tilaisena, ei tämä aiheuta mitään
+        -- ongelmaa.
+        WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'lasna'
+        WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.viimeisin_tila
+        ELSE aikajakson_keskella.tila
+      END tarkastelupäivän_koski_tila,
+      r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
+      FALSE AS naytettava_perusopetuksen_suoritus,
+      FALSE AS vuosiluokkiin_sitomaton_opetus
+    FROM
+      oppija_oid
+      JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
+        AND r_opiskeluoikeus.koulutusmuoto <> 'perusopetus'
+      LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella
+        ON aikajakson_keskella.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+        AND $tarkastelupäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
+      LEFT JOIN valpastila valpastila_aikajakson_keskella
+        ON valpastila_aikajakson_keskella.koskiopiskeluoikeudentila = aikajakson_keskella.tila
+      LEFT JOIN valpastila valpastila_viimeisin
+        ON valpastila_viimeisin.koskiopiskeluoikeudentila = r_opiskeluoikeus.viimeisin_tila
+      -- Haetaan päätason suoritus, jonka dataa halutaan näyttää (TODO: toistaiseksi tulos on random, jos ei ole
+      -- vahvistusta tai arviointia, mutta data ei riitä muuten.
+      -- Teoriassa voisi tutkia päätason suorituksen osasuorituksiin kirjattuja päivämääriä, mutta se on aika
+      -- monimutkaista ja luultavasti myös hidasta.
+      CROSS JOIN LATERAL (
+        SELECT
+          *
+        FROM
+          r_paatason_suoritus inner_r_paatason_suoritus
+        WHERE
+          inner_r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+        ORDER BY
+          inner_r_paatason_suoritus.vahvistus_paiva DESC NULLS FIRST,
+          inner_r_paatason_suoritus.arviointi_paiva DESC NULLS FIRST
+        LIMIT 1
+      ) valittu_r_paatason_suoritus
   )
   -- CTE: Yhdistettynä peruskoulun ja muut opiskeluoikeudet
   , opiskeluoikeus AS (
