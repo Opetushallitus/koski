@@ -319,6 +319,10 @@ class ValpasOppijaService(
   private def asValpasOppijaLaajatTiedot(dbRow: ValpasOppijaRow): Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
     validatingAndResolvingExtractor
       .extract[List[ValpasOpiskeluoikeusLaajatTiedot]](strictDeserialization)(dbRow.opiskeluoikeudet)
+      .left.map(e => {
+        logger.error(e.toString)
+        ValpasErrorCategory.internalError("Oppijan tietojen haku epäonnistui")
+      })
       .map(opiskeluoikeudet =>
         ValpasOppijaLaajatTiedot(
           henkilö = ValpasHenkilöLaajatTiedot(
