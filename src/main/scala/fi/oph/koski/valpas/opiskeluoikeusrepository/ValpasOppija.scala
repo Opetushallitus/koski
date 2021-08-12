@@ -136,7 +136,14 @@ trait ValpasOpiskeluoikeus {
 
   @SyntheticProperty
   def tarkasteltavaPäätasonSuoritus: Option[ValpasPäätasonSuoritus] = {
-    päätasonSuoritukset.headOption
+    päätasonSuoritukset.headOption match {
+      case Some(pts) if pts.suorituksenTyyppi.koodiarvo == "nayttotutkintoonvalmistavakoulutus" =>
+        päätasonSuoritukset.find(_.suorituksenTyyppi.koodiarvo == "ammatillinentutkinto") match {
+          case Some(ammatillinen) => Some(ammatillinen)
+          case None => päätasonSuoritukset.headOption
+        }
+      case _ => päätasonSuoritukset.headOption
+    }
   }
 }
 
