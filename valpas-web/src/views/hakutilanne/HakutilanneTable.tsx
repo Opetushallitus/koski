@@ -217,32 +217,33 @@ const oppijaToTableData = (
 }
 
 const ryhmä = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
-  const ryhmä = oo.ryhmä
+  const ryhmä = oo.tarkasteltavaPäätasonSuoritus?.ryhmä
+  const ryhmäValue = ryhmä
     ? {
-        value: oo.ryhmä,
-        filterValues: [oo.ryhmä],
-        display: oo.ryhmä,
+        value: ryhmä,
+        filterValues: [ryhmä],
+        display: ryhmä,
       }
     : {
         value: "–",
         filterValues: ["–"],
-        display: oo.ryhmä,
+        display: ryhmä,
       }
 
   if (oo.vuosiluokkiinSitomatonOpetus) {
     const vsop = t("hakutilanne__vsop")
     return {
-      value: `${vsop} ${ryhmä.value}`,
-      filterValues: [vsop].concat(ryhmä.filterValues),
+      value: `${vsop} ${ryhmäValue.value}`,
+      filterValues: [vsop].concat(ryhmäValue.filterValues),
       display: (
         <>
           <span className={b("vsop")}>{`${vsop}`}</span>
-          {` ${ryhmä.display}`}
+          {` ${ryhmäValue.display}`}
         </>
       ),
     }
   } else {
-    return ryhmä
+    return ryhmäValue
   }
 }
 

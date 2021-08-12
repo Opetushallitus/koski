@@ -215,5 +215,7 @@
   "suorittaminennäkymä__taulu_voimassaolevia_opiskeluoikeuksia": "Opiskeluoikeus toisessa oppilaitoksessa",
   "suorittaminennäkymä__taulu_voimassaolevia_opiskeluoikeuksia_tooltip": "Muut oppijalle luodut opiskeluoikeudet, jotka kelpaavat perusopetuksen jälkeisen koulutuksen oppivelvollisuuden suorittamiseen.",
   "suorittaminennäkymä__taulu_oppivelvollisuus": "Oppivelvollisuus",
-  "suorittaminennäkymä__oppivelvollisuus_voimassa_value": "{{date}} asti"
+  "suorittaminennäkymä__oppivelvollisuus_voimassa_value": "{{date}} asti",
+  "koulutustyyppi_valma": "VALMA",
+  "koulutustyyppi_telma": "TELMA"
 }

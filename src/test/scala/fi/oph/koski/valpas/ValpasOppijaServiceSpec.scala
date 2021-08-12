@@ -1198,14 +1198,14 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
         }).sortBy(s => s.alkamispäivä)(localDateOptionOrdering).reverse.headOption.map(r => r.luokka)
       // Esim. lukiossa jne. voi olla monta päätason suoritusta, eikä mitään järkevää sorttausparametria päätasolla (paitsi mahdollisesti oleva vahvistus).
       // => oletetaan, että saadaan taulukossa viimeisenä olevan suorituksen ryhmä
-      case oo =>
+      case oo: Any =>
         oo.suoritukset.flatMap({
           case r: Ryhmällinen => Some(r)
           case _ => None
         }).reverse.headOption.flatMap(_.ryhmä)
     }
     withClue("ryhmä") {
-      opiskeluoikeus.ryhmä shouldBe luokkatietoExpectedFromSuoritus
+      opiskeluoikeus.tarkasteltavaPäätasonSuoritus.get.ryhmä shouldBe luokkatietoExpectedFromSuoritus
     }
   }
 

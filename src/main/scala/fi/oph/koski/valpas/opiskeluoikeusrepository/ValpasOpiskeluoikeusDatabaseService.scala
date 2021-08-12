@@ -419,12 +419,9 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       r_opiskeluoikeus.koulutusmuoto,
       r_opiskeluoikeus.oppilaitos_oid,
       r_opiskeluoikeus.oppilaitos_nimi,
-      valittu_r_paatason_suoritus.toimipiste_oid,
-      valittu_r_paatason_suoritus.toimipiste_nimi,
       r_opiskeluoikeus.alkamispaiva,
       r_opiskeluoikeus.paattymispaiva,
       r_opiskeluoikeus.paattymispaiva > $tarkastelupäivä AS paattymispaiva_merkitty_tulevaisuuteen,
-      coalesce(valittu_r_paatason_suoritus.data ->> 'luokka', r_opiskeluoikeus.luokka) AS ryhmä,
       r_opiskeluoikeus.viimeisin_tila,
       CASE
         WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
@@ -445,7 +442,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         AND coalesce(r_opiskeluoikeus.paattymispaiva < $perusopetussuorituksenNäyttämisenAikaraja, FALSE)
       ) AS naytettava_perusopetuksen_suoritus,
       coalesce((r_opiskeluoikeus.data -> 'lisätiedot' ->> 'vuosiluokkiinSitoutumatonOpetus')::boolean, FALSE)
-        AS vuosiluokkiin_sitomaton_opetus
+        AS vuosiluokkiin_sitomaton_opetus,
+      valittu_paatason_suoritus.data AS paatason_suoritukset
     FROM
       oppija_oid
       JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
@@ -457,6 +455,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         ON valpastila_aikajakson_keskella.koskiopiskeluoikeudentila = aikajakson_keskella.tila
       LEFT JOIN valpastila valpastila_viimeisin
         ON valpastila_viimeisin.koskiopiskeluoikeudentila = r_opiskeluoikeus.viimeisin_tila
+
       -- Haetaan päätason suoritus, jonka dataa halutaan näyttää (toistaiseksi valitaan alkamispäivän perusteella uusin)
       -- TODO: Ei välttämättä osu oikeaan, koska voi olla esim. monen eri tyyppisiä peruskoulun päätason suorituksia,
       -- ja pitäisi oikeasti filteröidä myös tyypin perusteella.
@@ -465,18 +464,29 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       -- kuitenkaan ole toistaiseksi ilmennyt tarvetta.
       CROSS JOIN LATERAL (
         SELECT
-          *
-        FROM
-          r_paatason_suoritus inner_r_paatason_suoritus
-        WHERE
-          inner_r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-          AND inner_r_paatason_suoritus.suorituksen_tyyppi = 'perusopetuksenvuosiluokka'
-        ORDER BY
-          -- hae vain uusin vuosiluokan suoritus (toistaiseksi, myöhemmin voisi pystyä valitsemaan myös esim.
-          -- edelliseltä keväältä parametrina annetun päivämäärän perusteella)
-          inner_r_paatason_suoritus.DATA ->> 'alkamispäivä' DESC
+          jsonb_build_array(
+            jsonb_build_object(
+              'suorituksenTyyppi', jsonb_build_object(
+                'koodiarvo', pts.suorituksen_tyyppi,
+                'koodistoUri', 'suorituksentyyppi'
+              ),
+              'toimipiste', jsonb_build_object(
+                'oid', pts.toimipiste_oid,
+                'nimi', jsonb_build_object(
+                  'fi', pts.toimipiste_nimi
+                )
+              ),
+              'ryhmä', pts.data->>'luokka'
+            )
+          ) AS data
+        FROM r_paatason_suoritus pts
+        WHERE pts.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+          AND pts.suorituksen_tyyppi = 'perusopetuksenvuosiluokka'
+        -- Hae vain uusin vuosiluokan suoritus (toistaiseksi, myöhemmin voisi pystyä valitsemaan
+        -- myös esim. edelliseltä keväältä parametrina annetun päivämäärän perusteella)
+        ORDER BY pts.data->>'alkamispäivä' DESC
         LIMIT 1
-      ) valittu_r_paatason_suoritus
+      ) AS valittu_paatason_suoritus
   )
   -- CTE: Muut kuin peruskoulun opiskeluoikeudet
   -- Pitää hakea erikseen, koska säännöt päätason suorituksen kenttien osalta ovat erilaiset, koska datat ovat erilaiset
@@ -487,12 +497,9 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       r_opiskeluoikeus.koulutusmuoto,
       r_opiskeluoikeus.oppilaitos_oid,
       r_opiskeluoikeus.oppilaitos_nimi,
-      valittu_r_paatason_suoritus.toimipiste_oid,
-      valittu_r_paatason_suoritus.toimipiste_nimi,
       r_opiskeluoikeus.alkamispaiva,
       r_opiskeluoikeus.paattymispaiva,
       r_opiskeluoikeus.paattymispaiva > $tarkastelupäivä AS paattymispaiva_merkitty_tulevaisuuteen,
-      coalesce(valittu_r_paatason_suoritus.data ->> 'ryhmä', r_opiskeluoikeus.luokka) AS ryhmä,
       r_opiskeluoikeus.viimeisin_tila,
       CASE
         WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
@@ -509,7 +516,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       END tarkastelupäivän_koski_tila,
       r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
       FALSE AS naytettava_perusopetuksen_suoritus,
-      FALSE AS vuosiluokkiin_sitomaton_opetus
+      FALSE AS vuosiluokkiin_sitomaton_opetus,
+      kaikki_paatason_suoritukset.data AS paatason_suoritukset
     FROM
       oppija_oid
       JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
@@ -521,22 +529,33 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         ON valpastila_aikajakson_keskella.koskiopiskeluoikeudentila = aikajakson_keskella.tila
       LEFT JOIN valpastila valpastila_viimeisin
         ON valpastila_viimeisin.koskiopiskeluoikeudentila = r_opiskeluoikeus.viimeisin_tila
-      -- Haetaan päätason suoritus, jonka dataa halutaan näyttää (TODO: toistaiseksi tulos on random, jos ei ole
-      -- vahvistusta tai arviointia, mutta data ei riitä muuten.
-      -- Teoriassa voisi tutkia päätason suorituksen osasuorituksiin kirjattuja päivämääriä, mutta se on aika
-      -- monimutkaista ja luultavasti myös hidasta.
       CROSS JOIN LATERAL (
-        SELECT
-          *
-        FROM
-          r_paatason_suoritus inner_r_paatason_suoritus
-        WHERE
-          inner_r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-        ORDER BY
-          inner_r_paatason_suoritus.vahvistus_paiva DESC NULLS FIRST,
-          inner_r_paatason_suoritus.arviointi_paiva DESC NULLS FIRST
-        LIMIT 1
-      ) valittu_r_paatason_suoritus
+        SELECT jsonb_agg(
+          jsonb_build_object(
+            'suorituksenTyyppi', jsonb_build_object(
+              'koodiarvo', pts.suorituksen_tyyppi,
+              'koodistoUri', 'suorituksentyyppi'
+            ),
+            'toimipiste', jsonb_build_object(
+              'oid', pts.toimipiste_oid,
+              'nimi', jsonb_build_object(
+                'fi', pts.toimipiste_nimi
+              )
+            ),
+            'ryhmä', pts.data->>'ryhmä'
+          )
+          -- Haetaan päätason suoritukset vahvistus- tai arviointipäivien mukaisessa järjestyksessä.
+          -- Yleensä käytetään tässä järjestyksessä ensimmäistä, mutta tähän on poikkeus.
+          -- Teoriassa voisi tutkia päätason suorituksen osasuorituksiin kirjattuja päivämääriä, mutta se on aika
+          -- monimutkaista ja luultavasti myös hidasta.
+          ORDER BY
+            pts.vahvistus_paiva DESC NULLS FIRST,
+            pts.arviointi_paiva DESC NULLS FIRST
+        ) AS data
+        FROM r_paatason_suoritus pts
+        WHERE pts.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+        GROUP BY pts.opiskeluoikeus_oid
+      ) AS kaikki_paatason_suoritukset
   )
   -- CTE: Yhdistettynä peruskoulun ja muut opiskeluoikeudet
   , opiskeluoikeus AS (
@@ -583,16 +602,9 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
             'fi', opiskeluoikeus.oppilaitos_nimi
           )
         ),
-        'toimipiste', jsonb_build_object(
-          'oid', opiskeluoikeus.toimipiste_oid,
-          'nimi', jsonb_build_object(
-            'fi', opiskeluoikeus.toimipiste_nimi
-          )
-        ),
         'alkamispäivä', opiskeluoikeus.alkamispaiva,
         'päättymispäivä', opiskeluoikeus.paattymispaiva,
         'päättymispäiväMerkittyTulevaisuuteen', opiskeluoikeus.paattymispaiva_merkitty_tulevaisuuteen,
-        'ryhmä', opiskeluoikeus.ryhmä,
         'tarkastelupäivänTila', jsonb_build_object(
           'koodiarvo', opiskeluoikeus.tarkastelupäivän_tila,
           'koodistoUri', 'valpasopiskeluoikeudentila'
@@ -603,14 +615,15 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         ),
         'näytettäväPerusopetuksenSuoritus', opiskeluoikeus.naytettava_perusopetuksen_suoritus,
         'vuosiluokkiinSitomatonOpetus', opiskeluoikeus.vuosiluokkiin_sitomaton_opetus,
-        'oppivelvollisuudenSuorittamiseenKelpaava', opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE
+        'oppivelvollisuudenSuorittamiseenKelpaava', opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE,
+        'päätasonSuoritukset', opiskeluoikeus.paatason_suoritukset
       ) ORDER BY
         opiskeluoikeus.alkamispaiva DESC,
         -- Alkamispäivä varmaan riittäisi käyttöliitymälle, mutta lisätään muita kenttiä testien pitämiseksi
         -- deteministisempinä myös päällekäisillä opiskeluoikeuksilla:
         opiskeluoikeus.paattymispaiva DESC,
         opiskeluoikeus.koulutusmuoto,
-        opiskeluoikeus.ryhmä DESC NULLS LAST,
+        opiskeluoikeus.paatason_suoritukset->0->>'ryhmä' DESC NULLS LAST,
         opiskeluoikeus.tarkastelupäivän_tila
     ) opiskeluoikeudet
   FROM
