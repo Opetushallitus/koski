@@ -179,14 +179,25 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
 const koulutusTyyppi = (
   tyyppi: Suorituksentyyppi | undefined
 ): TranslationId => {
-  if (tyyppi === undefined) return ""
-  switch (tyyppi.koodiarvo) {
-    case "valma":
-      return t("koulutustyyppi_valma")
-    case "telma":
-      return t("koulutustyyppi_telma")
-    default:
-      return getLocalizedMaybe(tyyppi.nimi) || tyyppi.koodiarvo
+  if (tyyppi === undefined) {
+    return ""
+  } else if (tyyppi.koodiarvo === "valma") {
+    return t("koulutustyyppi_valma")
+  } else if (tyyppi.koodiarvo === "telma") {
+    return t("koulutustyyppi_telma")
+  } else if (tyyppi.koodiarvo.startsWith("vst")) {
+    return t("koulutustyyppi_vst")
+  } else if (
+    tyyppi.koodiarvo.startsWith("ib") ||
+    tyyppi.koodiarvo.startsWith("preib")
+  ) {
+    return t("koulutustyyppi_ib")
+  } else if (tyyppi.koodiarvo.startsWith("internationalschool")) {
+    return t("koulutustyyppi_internationalschool")
+  } else if (tyyppi.koodiarvo.startsWith("dia")) {
+    return t("koulutustyyppi_dia")
+  } else {
+    return getLocalizedMaybe(tyyppi.nimi) || tyyppi.koodiarvo
   }
 }
 
