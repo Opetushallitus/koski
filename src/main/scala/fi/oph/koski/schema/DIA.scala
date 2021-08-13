@@ -309,7 +309,6 @@ case class DIAOppiaineMuu(
   @KoodistoKoodiarvo("US")
   @KoodistoKoodiarvo("FI")
   @KoodistoKoodiarvo("ET")
-  @KoodistoKoodiarvo("VT")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusVuosiviikkotunneissa],
   @Description("Oppiaineen osa-alue (1-3)")
