@@ -19,6 +19,7 @@ export type OpiskeluoikeusLaajatTiedot = {
   tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
   näytettäväPerusopetuksenSuoritus: boolean
   vuosiluokkiinSitomatonOpetus: boolean
+  päätasonSuoritukset: PäätasonSuoritus[]
   tarkasteltavaPäätasonSuoritus: PäätasonSuoritus
 }
 
@@ -36,6 +37,7 @@ export type OpiskeluoikeusSuppeatTiedot = {
   näytettäväPerusopetuksenSuoritus: boolean
   vuosiluokkiinSitomatonOpetus: boolean
   muuHaku?: boolean
+  päätasonSuoritukset: PäätasonSuoritus[]
   tarkasteltavaPäätasonSuoritus?: PäätasonSuoritus
 }
 
