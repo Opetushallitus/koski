@@ -164,11 +164,7 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
           ),
         },
         tila(opiskeluoikeus),
-        {
-          value: getLocalizedMaybe(
-            opiskeluoikeus.tarkasteltavaPäätasonSuoritus?.toimipiste.nimi
-          ),
-        },
+        toimipiste(opiskeluoikeus),
         fromNullableValue(päivä(opiskeluoikeus.alkamispäivä)),
         fromNullableValue(päivä(opiskeluoikeus.päättymispäivä)),
         fromNullableValue(
@@ -206,6 +202,26 @@ const tila = (oo: OpiskeluoikeusSuppeatTiedot): Value => ({
 const tilaString = (opiskeluoikeus: OpiskeluoikeusSuppeatTiedot): string => {
   const tila = opiskeluoikeus.tarkastelupäivänKoskiTila
   return getLocalizedMaybe(tila.nimi) || tila.koodiarvo
+}
+
+const toimipiste = (opiskeluoikeus: OpiskeluoikeusSuppeatTiedot): Value => {
+  const uniikit: string[] = Array.from(
+    new Set(
+      opiskeluoikeus.päätasonSuoritukset.map((pts) =>
+        getLocalized(pts.toimipiste.nimi)
+      )
+    )
+  )
+  return {
+    value:
+      uniikit.length > 1
+        ? t("suorittaminennäkymä__taulu_useita_toimipisteitä")
+        : getLocalizedMaybe(
+            opiskeluoikeus.tarkasteltavaPäätasonSuoritus?.toimipiste.nimi
+          ),
+    tooltip: uniikit.join("; "),
+    filterValues: uniikit,
+  }
 }
 
 const päivä = (date?: ISODate): Value | null => {
