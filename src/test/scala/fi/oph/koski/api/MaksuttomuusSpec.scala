@@ -43,7 +43,7 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
         KoskiSpecificMockOppijat.eiOikeuttaMaksuttomuuteen,
         alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
       ) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on syntynyt ennen vuotta 2004."))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on syntynyt ennen vuotta 2004 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin."))
       }
     }
     "Ei saa siirtää jos opiskeluoikeus ei sisällä suoritusta joka vaatii maksuttomuus tiedon" in {
@@ -57,7 +57,7 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
         ),
         KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021, oo
       ) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä koulutus ei ole peruskoulun jälkeiseksi oppivelvollisuuskoulutukseksi kelpaavaa (esim. väärä diaarinumero tai opiskeluoikeus- tai suoritustyyppi)."))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä koulutus ei siirrettyjen tietojen perusteella kelpaa oppivelvollisuuden suorittamiseen (tarkista, että koulutuskoodi, käytetyn opetussuunnitelman perusteen diaarinumero, suorituksen tyyppi ja/tai suoritustapa ovat oikein)."))
       }
     }
 
@@ -69,7 +69,7 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
         KoskiSpecificMockOppijat.hetuton,
         alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
       ) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppijalla ei ole henkilötunnusta ja oppija on syntynyt ennen vuotta 2004."))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppijalla ei ole henkilötunnusta ja oppija on syntynyt ennen vuotta 2004 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin."))
       }
     }
 
@@ -87,7 +87,7 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
             KoskiSpecificMockOppijat.vuonna2004SyntynytMuttaPeruskouluValmisEnnen2021,
             alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
           ) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on suorittanut perusopetuksen, aikuisten perusopetuksen oppimäärän tai International Schoolin 9. vuosiluokan ennen 1.1.2021."))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on suorittanut oppivelvollisuutensa ennen 1.1.2021 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin."))
           }
 
           resetFixtures()
@@ -111,7 +111,7 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
             KoskiSpecificMockOppijat.vuonna2004SyntynytMuttaPeruskouluValmisEnnen2021,
             alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
           ) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on suorittanut perusopetuksen, aikuisten perusopetuksen oppimäärän tai International Schoolin 9. vuosiluokan ennen 1.1.2021."))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on suorittanut oppivelvollisuutensa ennen 1.1.2021 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin."))
           }
 
           resetFixtures()
@@ -132,7 +132,7 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
             KoskiSpecificMockOppijat.vuonna2004SyntynytMuttaPeruskouluValmisEnnen2021,
             alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
           ) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on suorittanut perusopetuksen, aikuisten perusopetuksen oppimäärän tai International Schoolin 9. vuosiluokan ennen 1.1.2021."))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on suorittanut oppivelvollisuutensa ennen 1.1.2021 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin."))
           }
 
           resetFixtures()
@@ -149,7 +149,7 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
             KoskiSpecificMockOppijat.oppivelvollisuustietoMaster,
             alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
           ) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on suorittanut perusopetuksen, aikuisten perusopetuksen oppimäärän tai International Schoolin 9. vuosiluokan ennen 1.1.2021."))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on suorittanut oppivelvollisuutensa ennen 1.1.2021 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin."))
           }
 
           resetFixtures()
@@ -166,7 +166,7 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
             KoskiSpecificMockOppijat.oppivelvollisuustietoSlave1.henkilö,
             alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
           ) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on suorittanut perusopetuksen, aikuisten perusopetuksen oppimäärän tai International Schoolin 9. vuosiluokan ennen 1.1.2021."))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on suorittanut oppivelvollisuutensa ennen 1.1.2021 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin."))
           }
 
           resetFixtures()
@@ -237,7 +237,7 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
     }
     "Maksuttomuus-tietoa ei voi siirtää jos on pelkästään muun vuosiluokan MYP-suorituksia" in {
       putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(ysiLuokka)), KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä koulutus ei ole peruskoulun jälkeiseksi oppivelvollisuuskoulutukseksi kelpaavaa (esim. väärä diaarinumero tai opiskeluoikeus- tai suoritustyyppi)."))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä koulutus ei siirrettyjen tietojen perusteella kelpaa oppivelvollisuuden suorittamiseen (tarkista, että koulutuskoodi, käytetyn opetussuunnitelman perusteen diaarinumero, suorituksen tyyppi ja/tai suoritustapa ovat oikein)."))
       }
     }
   }

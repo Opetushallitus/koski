@@ -50,11 +50,11 @@ object MaksuttomuusValidation {
 
     // Tilanteet, joissa maksuttomuustietoja ei saa siirtää. Jos tuplen ensimmäinen arvo on true, ehto aktivoituu ja toinen arvon kertoo syyn.
     val maksuttomuustietoEiSallittuSyyt = List(
-      (oppijanHetu.isEmpty, "oppijalla ei ole henkilötunnusta"),
-      (valmistunutPeruskoulustaEnnen2021, s"oppija on suorittanut perusopetuksen, aikuisten perusopetuksen oppimäärän tai International Schoolin 9. vuosiluokan ennen ${lakiVoimassaPeruskoulustaValmistuneille.format(FinnishDateFormat.finnishDateFormat)}"),
-      (oppijanSyntymäpäivä.isEmpty, "oppijan syntymäpäivä ei ole tiedossa"),
-      (oppijanSyntymäpäivä.isDefined && !oppijanIkäOikeuttaaMaksuttomuuden, s"oppija on syntynyt ennen vuotta ${lakiVoimassaVanhinSyntymäaika.getYear()}"),
-      (!koulutusOppivelvollisuuskoulutukseksiKelpaavaa, "koulutus ei ole peruskoulun jälkeiseksi oppivelvollisuuskoulutukseksi kelpaavaa (esim. väärä diaarinumero tai opiskeluoikeus- tai suoritustyyppi)")
+      (oppijanHetu.isEmpty, "oppijalla ei ole henkilötunnusta"), // TODO: pois
+      (valmistunutPeruskoulustaEnnen2021, s"oppija on suorittanut oppivelvollisuutensa ennen ${lakiVoimassaPeruskoulustaValmistuneille.format(FinnishDateFormat.finnishDateFormat)} eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin"),
+      (oppijanSyntymäpäivä.isEmpty, "oppijan syntymäaika puuttuu oppijanumerorekisteristä"),
+      (oppijanSyntymäpäivä.isDefined && !oppijanIkäOikeuttaaMaksuttomuuden, s"oppija on syntynyt ennen vuotta ${lakiVoimassaVanhinSyntymäaika.getYear()} eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin"),
+      (!koulutusOppivelvollisuuskoulutukseksiKelpaavaa, "koulutus ei siirrettyjen tietojen perusteella kelpaa oppivelvollisuuden suorittamiseen (tarkista, että koulutuskoodi, käytetyn opetussuunnitelman perusteen diaarinumero, suorituksen tyyppi ja/tai suoritustapa ovat oikein)")
     ).filter(_._1).map(_._2)
 
     if (maksuttomuustiedotVaaditaan) {
