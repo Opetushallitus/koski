@@ -5,7 +5,7 @@ import { Column, ColumnsContainer } from "../../components/containers/Columns"
 import { IlmoitusIcon } from "../../components/icons/Icon"
 import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
-import { getLocalized, T, t } from "../../i18n/i18n"
+import { getLocalized, getLocalizedMaybe, T, t } from "../../i18n/i18n"
 import {
   KuntailmoituksenTekijäLaajatTiedot,
   KuntailmoitusLaajatTiedotLisätiedoilla,
@@ -153,7 +153,7 @@ const TiedotOppijasta = (props: TiedotOppijastaProps) => {
         },
         {
           label: t("oppija__maa"),
-          value: getLocalized(props.yhteystiedot.maa?.nimi),
+          value: getLocalizedMaybe(props.yhteystiedot.maa?.nimi),
           testId: "maa",
         },
         {

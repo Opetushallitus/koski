@@ -15,7 +15,13 @@ import {
 } from "../../components/icons/Icon"
 import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
-import { getLocalized, T, t, useLanguage } from "../../i18n/i18n"
+import {
+  getLocalized,
+  getLocalizedMaybe,
+  T,
+  t,
+  useLanguage,
+} from "../../i18n/i18n"
 import { KoodistoKoodiviite } from "../../state/apitypes/koodistot"
 import {
   KuntailmoitusLaajatTiedotLisätiedoilla,
@@ -234,7 +240,7 @@ const IlmoitusLink = (props: OpiskeluhistoriaIlmoitusProps) => {
 }
 
 const koodistonimi = (k: KoodistoKoodiviite<string, string>): string =>
-  getLocalized(k.nimi) || k.koodiarvo
+  getLocalizedMaybe(k.nimi) || k.koodiarvo
 
 const yearRangeString = (a?: ISODate, b?: ISODate): string =>
   a || b ? [yearString(a), "–", yearString(b)].filter((s) => !!s).join(" ") : ""

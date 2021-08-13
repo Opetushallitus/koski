@@ -9,7 +9,7 @@ import {
   Datum,
   Value,
 } from "../../../components/tables/DataTable"
-import { getLocalized, t } from "../../../i18n/i18n"
+import { getLocalized, getLocalizedMaybe, t } from "../../../i18n/i18n"
 import {
   hakeutumisvalvonnanOpiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus,
   OpiskeluoikeusSuppeatTiedot,
@@ -134,7 +134,7 @@ const opiskeluoikeustiedot = (
   const toValue = (oo: OpiskeluoikeusSuppeatTiedot) => {
     const kohde = [
       getLocalized(oo.oppilaitos.nimi),
-      getLocalized(oo.tyyppi.nimi),
+      getLocalizedMaybe(oo.tyyppi.nimi),
     ]
       .filter(nonNull)
       .join(", ")

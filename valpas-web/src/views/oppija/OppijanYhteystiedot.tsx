@@ -9,7 +9,7 @@ import { WarningIcon } from "../../components/icons/Icon"
 import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
 import { TertiaryHeading } from "../../components/typography/headings"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
-import { getLocalized, t, T } from "../../i18n/i18n"
+import { getLocalized, getLocalizedMaybe, t, T } from "../../i18n/i18n"
 import { HenkilöLaajatTiedot } from "../../state/apitypes/henkilo"
 import {
   isHakemukselta,
@@ -49,8 +49,7 @@ export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {
             <YhteystietoAccordion
               yhteystiedot={ilmoitetut}
               label={(yt) =>
-                (getLocalized(yt.yhteystietoryhmänNimi) ||
-                  t("oppija__yhteystiedot")) +
+                getLocalized(yt.yhteystietoryhmänNimi) +
                 (yt.alkuperä.hakemuksenMuokkauksenAikaleima !== undefined
                   ? " – " +
                     formatDate(yt.alkuperä.hakemuksenMuokkauksenAikaleima)
@@ -68,8 +67,8 @@ export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {
             yhteystiedot={viralliset}
             label={(yt) =>
               uniq(string.Eq)([
-                getLocalized(yt.alkuperä.alkuperä.nimi)!,
-                getLocalized(yt.alkuperä.tyyppi.nimi)!,
+                getLocalizedMaybe(yt.alkuperä.alkuperä.nimi)!,
+                getLocalizedMaybe(yt.alkuperä.tyyppi.nimi)!,
               ]).join(": ")
             }
             noDataMessage={t(
@@ -138,7 +137,7 @@ const Yhteystietolista = (props: YhteystietolistaProps) => (
       {props.yhteystiedot.maa && (
         <InfoTableRow
           label={t("oppija__maa")}
-          value={getLocalized(props.yhteystiedot.maa)}
+          value={getLocalizedMaybe(props.yhteystiedot.maa)}
         />
       )}
       {props.yhteystiedot.puhelinnumero && (
@@ -167,7 +166,7 @@ const Yhteystietolista = (props: YhteystietolistaProps) => (
         <T
           id="oppija__ilmoitetun_yhteystiedon_lahde"
           params={{
-            haku: getLocalized(props.yhteystiedot.alkuperä.hakuNimi) || "?",
+            haku: getLocalized(props.yhteystiedot.alkuperä.hakuNimi),
           }}
         />
       </div>
