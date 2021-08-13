@@ -24,7 +24,7 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta puuttuu."))
       }
     }
-    "Ei saa siirtää jos opiskeluoikeus on alkanut ennen 1.1.2021" in {
+    "Saa siirtää jos opiskeluoikeus on alkanut ennen 1.1.2021" in {
       putMaksuttomuus(
         List(
           Maksuttomuus(date(2020, 12, 31), None, true)
@@ -32,7 +32,7 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
         KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021,
         alkamispäivällä(defaultOpiskeluoikeus, date(2020, 12, 31))
       ) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä koulutuksen suoritus on alkanut ennen 1.1.2021."))
+        verifyResponseStatusOk()
       }
     }
     "Ei saa siirtää jos henkilö on syntynyt ennen vuotta 2004" in {

@@ -40,9 +40,6 @@ object MaksuttomuusValidation {
     // Oppijalla on Koskessa valmistumismerkintä peruskoulusta (tai vastaavasta) 31.12.2020 tai aiemmin
     val valmistunutPeruskoulustaEnnen2021 = perusopetuksenAikavälit.exists(p => p.loppu.exists(_.isBefore(lakiVoimassaPeruskoulustaValmistuneille)))
 
-    // Peruskoulun jälkeisen koulutuksen suoritus on alkanut 31.12.2020 tai aiemmin
-    val peruskoulunJälkeinenKoulutusAlkannutEnnen2021 = !peruskoulunJälkeinenKoulutusAlkanutAikaisintaan2021
-
     val oppijanIkäOikeuttaaMaksuttomuuden = oppijanSyntymäpäivä.exists(bd => !lakiVoimassaVanhinSyntymäaika.isAfter(bd))
 
     val maksuttomuustiedotVaaditaan =
@@ -55,7 +52,6 @@ object MaksuttomuusValidation {
     val maksuttomuustietoEiSallittuSyyt = List(
       (oppijanHetu.isEmpty, "oppijalla ei ole henkilötunnusta"),
       (valmistunutPeruskoulustaEnnen2021, s"oppija on suorittanut perusopetuksen, aikuisten perusopetuksen oppimäärän tai International Schoolin 9. vuosiluokan ennen ${lakiVoimassaPeruskoulustaValmistuneille.format(FinnishDateFormat.finnishDateFormat)}"),
-      (peruskoulunJälkeinenKoulutusAlkannutEnnen2021, s"koulutuksen suoritus on alkanut ennen ${lakiVoimassaPeruskoulustaValmistuneille.format(FinnishDateFormat.finnishDateFormat)}"),
       (oppijanSyntymäpäivä.isEmpty, "oppijan syntymäpäivä ei ole tiedossa"),
       (oppijanSyntymäpäivä.isDefined && !oppijanIkäOikeuttaaMaksuttomuuden, s"oppija on syntynyt ennen vuotta ${lakiVoimassaVanhinSyntymäaika.getYear()}"),
       (!koulutusOppivelvollisuuskoulutukseksiKelpaavaa, "koulutus ei ole peruskoulun jälkeiseksi oppivelvollisuuskoulutukseksi kelpaavaa (esim. väärä diaarinumero tai opiskeluoikeus- tai suoritustyyppi)")
