@@ -1,11 +1,7 @@
 import * as A from "fp-ts/Array"
 import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
-import {
-  FutureSuccessIcon,
-  SuccessIcon,
-  WarningIcon,
-} from "../../../components/icons/Icon"
+import { FutureSuccessIcon, WarningIcon } from "../../../components/icons/Icon"
 import {
   Column,
   DataTable,
@@ -270,9 +266,9 @@ const opiskeluoikeustiedot = (
         })
   }
 
-  const icon = oos.some((oo) => isVoimassa(oo.tarkastelupäivänTila)) ? (
-    <SuccessIcon />
-  ) : oos.some((oo) => isVoimassaTulevaisuudessa(oo.tarkastelupäivänTila)) ? (
+  const icon = oos.some((oo) =>
+    isVoimassaTulevaisuudessa(oo.tarkastelupäivänTila)
+  ) ? (
     <FutureSuccessIcon />
   ) : undefined
 

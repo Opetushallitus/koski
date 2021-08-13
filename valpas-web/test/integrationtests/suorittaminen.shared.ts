@@ -10,8 +10,8 @@ import {
 
 export const jklNormaalikouluSuorittaminenTableHead = "Oppivelvolliset (12)"
 export const jklNormaalikouluSuorittaminenTableContent = `
-  Jkl-Lukio-Kulosaarelainen Valpas          |  1.1.2004  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  1.8.2019  | –         | doneKulosaaren ala-aste, Perusopetus         |  1.1.2022 asti
-  Jkl-Nivel-Kulosaarelainen Valpas          |  1.1.2004  | Perusopetuksen lisäopetus | Läsnä                   | Jyväskylän normaalikoulu | 15.8.2012  | –         | doneKulosaaren ala-aste, Perusopetus         |  1.1.2022 asti
+  Jkl-Lukio-Kulosaarelainen Valpas          |  1.1.2004  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  1.8.2019  | –         | Kulosaaren ala-aste, Perusopetus             |  1.1.2022 asti
+  Jkl-Nivel-Kulosaarelainen Valpas          |  1.1.2004  | Perusopetuksen lisäopetus | Läsnä                   | Jyväskylän normaalikoulu | 15.8.2012  | –         | Kulosaaren ala-aste, Perusopetus             |  1.1.2022 asti
   Kahdella-oppija-oidilla Valpas            | 15.2.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  1.8.2019  | –         | –                                            | 15.2.2023 asti
   Kahdella-oppija-oidilla-ilmo Valpas       |  4.6.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  1.8.2019  | –         | –                                            |  4.6.2023 asti
   Kahdella-oppija-oidilla-ilmo-2 Valpas     |  3.6.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  1.8.2019  | –         | –                                            |  3.6.2023 asti
