@@ -1,7 +1,5 @@
 package fi.oph.koski.oppija
 
-import java.time.LocalDate.now
-
 import com.typesafe.config.Config
 import fi.oph.koski.henkilo._
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
@@ -9,16 +7,20 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.KoskiAuditLogMessageField.{opiskeluoikeusId, opiskeluoikeusVersio, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation._
-import fi.oph.koski.log.{AuditLog, _}
+import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.schema._
 import fi.oph.koski.util.{Timing, WithWarnings}
 import fi.oph.koski.validation.MaksuttomuusValidation
+import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
+
+import java.time.LocalDate.now
 
 class KoskiOppijaFacade(
   henkilöRepository: HenkilöRepository,
   opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
   historyRepository: OpiskeluoikeusHistoryRepository,
+  rajapäivätService: ValpasRajapäivätService,
   config: Config,
   hetu: Hetu
 ) extends Logging with Timing {
@@ -97,7 +99,14 @@ class KoskiOppijaFacade(
         val syntymäaika = henkilöMaster.flatMap(_.syntymäaika)
         val hetu = henkilöMaster.flatMap(_.hetu)
         val validation = HttpStatus.fold(oppija.tallennettavatOpiskeluoikeudet.map(opiskeluoikeus => {
-          MaksuttomuusValidation.checkOpiskeluoikeudenMaksuttomuus(opiskeluoikeus, syntymäaika, henkilö.oid, hetu, opiskeluoikeusRepository)
+          MaksuttomuusValidation.checkOpiskeluoikeudenMaksuttomuus(
+            opiskeluoikeus,
+            syntymäaika,
+            henkilö.oid,
+            hetu,
+            opiskeluoikeusRepository,
+            rajapäivätService,
+          )
         }))
         if (validation.isOk) Right(Unit) else Left(validation)
       case None => Left(KoskiErrorCategory.notFound.oppijaaEiLöydy("Oppijaa " + oppijaOid.right.get.oppijaOid + " ei löydy."))
