@@ -24,7 +24,12 @@ import {
   SelectableDataTable,
   SelectableDataTableProps,
 } from "../../components/tables/SelectableDataTable"
-import { getLocalized, t, Translation } from "../../i18n/i18n"
+import {
+  getLocalized,
+  getLocalizedMaybe,
+  t,
+  Translation,
+} from "../../i18n/i18n"
 import { HakuSuppeatTiedot, selectByHakutoive } from "../../state/apitypes/haku"
 import {
   isEiPaikkaa,
@@ -326,7 +331,7 @@ const hakemuksenTilaDisplay = (
 
 const hakuTooltip = (haku: HakuSuppeatTiedot): string =>
   t("hakemuksentila__tooltip", {
-    haku: getLocalized(haku.hakuNimi) || "?",
+    haku: getLocalizedMaybe(haku.hakuNimi) || "?",
     muokkausPvm: formatNullableDate(haku.muokattu),
   })
 
@@ -341,7 +346,7 @@ const valintatila = (haut: HakuSuppeatTiedot[]): Value | null => {
     return {
       value: t("valintatieto__varasija"),
       display: t("valintatieto__varasija_hakukohde", {
-        hakukohde: getLocalized(varasija.organisaatioNimi) || "?",
+        hakukohde: getLocalizedMaybe(varasija.organisaatioNimi) || "?",
       }),
     }
   }
@@ -371,7 +376,7 @@ const hyväksyttyValintatila = (
       }),
       display: orderedHakukohde(
         hakutoive.hakutoivenumero,
-        getLocalized(hakutoive.organisaatioNimi) || "?"
+        getLocalizedMaybe(hakutoive.organisaatioNimi) || "?"
       ),
     }
   }
@@ -405,7 +410,7 @@ const vastaanottotieto = (hakutilanteet: HakuSuppeatTiedot[]): Value | null => {
       return null
     case 1:
       return {
-        value: getLocalized(vastaanotetut[0]?.organisaatioNimi),
+        value: getLocalizedMaybe(vastaanotetut[0]?.organisaatioNimi),
         icon: <SuccessIcon />,
       }
     default:
@@ -414,7 +419,7 @@ const vastaanottotieto = (hakutilanteet: HakuSuppeatTiedot[]): Value | null => {
           lukumäärä: vastaanotetut.length,
         }),
         tooltip: vastaanotetut
-          .map((vo) => getLocalized(vo.organisaatioNimi))
+          .map((vo) => getLocalizedMaybe(vo.organisaatioNimi))
           .join("\n"),
         icon: <SuccessIcon />,
       }
@@ -431,7 +436,7 @@ const opiskeluoikeustiedot = (
   const toValue = (oo: OpiskeluoikeusSuppeatTiedot) => {
     const kohde = [
       getLocalized(oo.oppilaitos.nimi),
-      getLocalized(oo.tyyppi.nimi),
+      getLocalizedMaybe(oo.tyyppi.nimi),
     ]
       .filter(nonNull)
       .join(", ")

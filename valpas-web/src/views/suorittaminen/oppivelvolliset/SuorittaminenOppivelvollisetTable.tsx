@@ -14,7 +14,12 @@ import {
   Value,
 } from "../../../components/tables/DataTable"
 import { SelectableDataTableProps } from "../../../components/tables/SelectableDataTable"
-import { getLocalized, t, TranslationId } from "../../../i18n/i18n"
+import {
+  getLocalized,
+  getLocalizedMaybe,
+  t,
+  TranslationId,
+} from "../../../i18n/i18n"
 import { Suorituksentyyppi } from "../../../state/apitypes/koodistot"
 import { isSuorittamisenValvonnassaIlmoitettavaTila } from "../../../state/apitypes/koskiopiskeluoikeudentila"
 import {
@@ -160,7 +165,7 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
         },
         tila(opiskeluoikeus),
         {
-          value: getLocalized(
+          value: getLocalizedMaybe(
             opiskeluoikeus.tarkasteltavaPäätasonSuoritus?.toimipiste.nimi
           ),
         },
@@ -185,7 +190,7 @@ const koulutusTyyppi = (
     case "telma":
       return t("koulutustyyppi_telma")
     default:
-      return getLocalized(tyyppi.nimi) || tyyppi.koodiarvo
+      return getLocalizedMaybe(tyyppi.nimi) || tyyppi.koodiarvo
   }
 }
 
@@ -200,7 +205,7 @@ const tila = (oo: OpiskeluoikeusSuppeatTiedot): Value => ({
 
 const tilaString = (opiskeluoikeus: OpiskeluoikeusSuppeatTiedot): string => {
   const tila = opiskeluoikeus.tarkastelupäivänKoskiTila
-  return getLocalized(tila.nimi) || tila.koodiarvo
+  return getLocalizedMaybe(tila.nimi) || tila.koodiarvo
 }
 
 const päivä = (date?: ISODate): Value | null => {
@@ -227,7 +232,7 @@ const opiskeluoikeustiedot = (
   const toValue = (oo: OpiskeluoikeusSuppeatTiedot) => {
     const kohde = [
       getLocalized(oo.oppilaitos.nimi),
-      getLocalized(oo.tyyppi.nimi),
+      getLocalizedMaybe(oo.tyyppi.nimi),
     ]
       .filter(nonNull)
       .join(", ")

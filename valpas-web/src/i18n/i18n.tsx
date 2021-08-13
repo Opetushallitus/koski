@@ -81,16 +81,17 @@ export type LocalizedTextProps = {
 
 export const T = (props: LocalizedTextProps) => <>{t(props.id, props.params)}</>
 
-export const getLocalized = (
+export const getLocalized = (localizedString: LocalizedString): string =>
+  localizedString[getLanguage()] ||
+  localizedString["fi"] ||
+  localizedString["sv"] ||
+  localizedString["en"] ||
+  "KÄÄNNÖS PUUTTUU"
+
+export const getLocalizedMaybe = (
   localizedString?: LocalizedString
 ): string | undefined =>
-  localizedString === undefined
-    ? undefined
-    : localizedString[getLanguage()] ||
-      localizedString["fi"] ||
-      localizedString["sv"] ||
-      localizedString["en"] ||
-      "KÄÄNNÖS PUUTTUU"
+  localizedString === undefined ? undefined : getLocalized(localizedString)
 
 export const formatFixedNumber = (
   n: number | undefined,
@@ -109,6 +110,6 @@ export const disableMissingTranslationWarnings = () => {
 export const koodiviiteToShortString = (
   koodiviite: KoodistoKoodiviite
 ): string =>
-  getLocalized(koodiviite.lyhytNimi) ||
-  getLocalized(koodiviite.nimi) ||
+  getLocalizedMaybe(koodiviite.lyhytNimi) ||
+  getLocalizedMaybe(koodiviite.nimi) ||
   koodiviite.koodiarvo
