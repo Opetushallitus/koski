@@ -23,9 +23,10 @@ object MaksuttomuusValidation {
     val maksuttomuudenPidennysSiirretty = opiskeluoikeus.lisätiedot.collect { case l : MaksuttomuusTieto => l.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.length > 0 }.getOrElse(false)
 
     // A2. Koskessa on jokin merkintä peruskoulun (tai vastaavan) suorituksesta, joka on joko päättynyt 1.1.2021 tai myöhemmin, tai on ollut aktiivisena 1.1.2021 tai myöhemmin, jos ei ole vielä päättynyt.
-    val peruskoulussaVuoden2021Alussa = perusopetuksenAikavälit.exists(p =>
-      p.loppu.exists(!_.isBefore(aikaraja)) || (!p.alku.isAfter(aikaraja) && p.loppu.isEmpty)
-    )
+    val peruskoulussaVuoden2021Alussa = perusopetuksenAikavälit.exists(p => {
+      p.loppu.isEmpty ||                            // Aktiivinen tällä hetkellä, tai
+        p.loppu.exists(!_.isBefore(aikaraja))       // suoritettu lain voimassaoloaikana
+    })
 
     // A3. Peruskoulun jälkeisen koulutuksen suoritus on alkanut 1.1.2021 tai myöhemmin
     val peruskoulunJälkeinenKoulutusAlkanutAikaisintaan2021 = opiskeluoikeus.alkamispäivä.exists(p => !p.isBefore(aikaraja))
