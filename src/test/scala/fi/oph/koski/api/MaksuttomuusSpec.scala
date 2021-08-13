@@ -61,15 +61,29 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
       }
     }
 
-    "Ei saa siirtää, jos oppijalla ei ole hetua" in {
-      putMaksuttomuus(
-        List(
-          Maksuttomuus(date(2021, 8, 1), None, true)
-        ),
-        KoskiSpecificMockOppijat.hetuton,
-        alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
-      ) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppijalla ei ole henkilötunnusta ja oppija on syntynyt ennen vuotta 2004 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin."))
+    "Oppijalla ei ole hetua" - {
+      "Ei saa siirtää, jos oppija on syntynyt ennen vuotta 2004" in {
+        putMaksuttomuus(
+          List(
+            Maksuttomuus(date(2021, 8, 1), None, true)
+          ),
+          KoskiSpecificMockOppijat.hetuton,
+          alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
+        ) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on syntynyt ennen vuotta 2004 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin."))
+        }
+      }
+
+      "Saa siirtää, jos oppija on syntynyt vuonna 2004 tai myöhemmin" in {
+        putMaksuttomuus(
+          List(
+            Maksuttomuus(date(2021, 8, 1), None, true)
+          ),
+          KoskiSpecificMockOppijat.nuoriHetuton,
+          alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
+        ) {
+          verifyResponseStatusOk()
+        }
       }
     }
 
