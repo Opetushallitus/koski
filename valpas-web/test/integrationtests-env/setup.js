@@ -8,14 +8,17 @@ module.exports = async () => {
 /*
  * TODO:
  *
- * Parcel API ei toimi kunnolla (tilanne versiolla 2.0.0-nightly.754):
- * palvelin ei lähde käyntiin ja koko prosessi vain kuolee ilman virheilmoitusta.
+ * Parcel API ei toimi kunnolla (tilanne versiolla 2.0.0-rc.0).
+ * Lisäksi tämänhetkisestä APIsta puuttuu keino sulkea palvelin siististi.
  *
  * Korjauksena käynnistetään palvelin tällä tavalla rumasti omaan prosessiin
  * ja kuunnellaan stdoutista milloinko bundle on saatu käännettyä.
  *
  * Kunhan tuo API joskus taas toimii, sen voisi ottaa käyttöön.
- * Lisätietoja: https://v2.parceljs.org/features/parcel-api/
+ *
+ * Lisätietoja:
+ *  - https://v2.parceljs.org/features/parcel-api/
+ *  - https://github.com/parcel-bundler/parcel/issues/6523
  */
 const serve = () =>
   new Promise((resolve, _reject) => {

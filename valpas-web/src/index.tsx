@@ -1,6 +1,7 @@
 import * as E from "fp-ts/Either"
 import React from "react"
 import ReactDOM from "react-dom"
+import "regenerator-runtime/runtime"
 import { fetchWindowProperties } from "./api/api"
 import { enableFeature, Feature } from "./state/featureFlags"
 import "./style/index.less"
