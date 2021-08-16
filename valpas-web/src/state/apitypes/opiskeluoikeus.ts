@@ -1,9 +1,9 @@
 import * as A from "fp-ts/Array"
 import * as Ord from "fp-ts/Ord"
 import * as string from "fp-ts/string"
-import { KoskiOpiskeluoikeudenTila } from "~state/apitypes/koskiopiskeluoikeudentila"
+import { KoskiOpiskeluoikeudenTila } from "../../state/apitypes/koskiopiskeluoikeudentila"
 import { ISODate, Language, Oid } from "../common"
-import { Opiskeluoikeudentyyppi } from "./koodistot"
+import { Opiskeluoikeudentyyppi, Suorituksentyyppi } from "./koodistot"
 import { Oppilaitos, Toimipiste } from "./organisaatiot"
 import { ValpasOpiskeluoikeudenTila } from "./valpasopiskeluoikeudentila"
 
@@ -13,14 +13,14 @@ export type OpiskeluoikeusLaajatTiedot = {
   onSuorittamisValvottava: boolean
   tyyppi: Opiskeluoikeudentyyppi
   oppilaitos: Oppilaitos
-  toimipiste?: Toimipiste
   alkamispäivä: ISODate
   päättymispäivä?: ISODate
   päättymispäiväMerkittyTulevaisuuteen?: boolean
-  ryhmä?: string
   tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
   näytettäväPerusopetuksenSuoritus: boolean
   vuosiluokkiinSitomatonOpetus: boolean
+  päätasonSuoritukset: PäätasonSuoritus[]
+  tarkasteltavaPäätasonSuoritus: PäätasonSuoritus
 }
 
 export type OpiskeluoikeusSuppeatTiedot = {
@@ -29,8 +29,6 @@ export type OpiskeluoikeusSuppeatTiedot = {
   onSuorittamisValvottava: boolean
   tyyppi: Opiskeluoikeudentyyppi
   oppilaitos: Oppilaitos
-  toimipiste?: Toimipiste
-  ryhmä?: string
   tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
   tarkastelupäivänKoskiTila: KoskiOpiskeluoikeudenTila
   alkamispäivä: ISODate
@@ -39,6 +37,14 @@ export type OpiskeluoikeusSuppeatTiedot = {
   näytettäväPerusopetuksenSuoritus: boolean
   vuosiluokkiinSitomatonOpetus: boolean
   muuHaku?: boolean
+  päätasonSuoritukset: PäätasonSuoritus[]
+  tarkasteltavaPäätasonSuoritus?: PäätasonSuoritus
+}
+
+type PäätasonSuoritus = {
+  toimipiste: Toimipiste
+  ryhmä?: string
+  suorituksenTyyppi: Suorituksentyyppi
 }
 
 const opiskeluoikeusDateOrd = (key: keyof OpiskeluoikeusLaajatTiedot) =>

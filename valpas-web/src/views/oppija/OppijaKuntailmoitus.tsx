@@ -5,12 +5,13 @@ import { Column, ColumnsContainer } from "../../components/containers/Columns"
 import { IlmoitusIcon } from "../../components/icons/Icon"
 import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
-import { getLocalized, T, t } from "../../i18n/i18n"
+import { getLocalizedMaybe, T, t } from "../../i18n/i18n"
 import {
   KuntailmoituksenTekijäLaajatTiedot,
   KuntailmoitusLaajatTiedotLisätiedoilla,
 } from "../../state/apitypes/kuntailmoitus"
 import { KuntailmoituksenOppijanYhteystiedot } from "../../state/apitypes/kuntailmoituspohjatiedot"
+import { organisaatioNimi } from "../../state/apitypes/organisaatiot"
 import { ISODateTime } from "../../state/common"
 import { joinToString, nonNull } from "../../utils/arrays"
 import { formatDate } from "../../utils/date"
@@ -42,7 +43,7 @@ export const OppijaKuntailmoitus = (props: OppijaKuntailmoitusProps) => {
               label={t("oppija__ilmoituksen_kohde")}
               testId="kohde"
             >
-              {getLocalized(kuntailmoitus.kunta.nimi)}
+              {organisaatioNimi(kuntailmoitus.kunta)}
             </KuntailmoitusSection>
             <IlmoituksenTekijä tekijä={kuntailmoitus.tekijä} />
           </Column>
@@ -115,7 +116,7 @@ const IlmoituksenTekijä = (props: IlmoituksenTekijäProps) => {
     ]),
     props.tekijä.henkilö?.email,
     props.tekijä.henkilö?.puhelinnumero,
-    getLocalized(props.tekijä.organisaatio.nimi),
+    organisaatioNimi(props.tekijä.organisaatio),
   ].filter(nonNull)
 
   return (
@@ -153,7 +154,7 @@ const TiedotOppijasta = (props: TiedotOppijastaProps) => {
         },
         {
           label: t("oppija__maa"),
-          value: getLocalized(props.yhteystiedot.maa?.nimi),
+          value: getLocalizedMaybe(props.yhteystiedot.maa?.nimi),
           testId: "maa",
         },
         {

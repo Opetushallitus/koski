@@ -3,9 +3,12 @@ import * as A from "fp-ts/Array"
 import * as Ord from "fp-ts/Ord"
 import * as string from "fp-ts/string"
 import React from "react"
-import { getLocalized } from "../../i18n/i18n"
+import { getLocalizedMaybe } from "../../i18n/i18n"
 import { KoodistoKoodiviite } from "../../state/apitypes/koodistot"
-import { Organisaatio } from "../../state/apitypes/organisaatiot"
+import {
+  Organisaatio,
+  organisaatioNimi,
+} from "../../state/apitypes/organisaatiot"
 import { FilterableValue, toFilterableString } from "../../utils/conversions"
 import { ArrowDropDownIcon } from "../icons/Icon"
 import "./Dropdown.less"
@@ -83,7 +86,7 @@ export const koodistoToOptions = (
 ): Array<DropdownOption<string>> =>
   koodiviitteet.map((koodiviite) => ({
     value: koodiviite.koodiarvo,
-    display: getLocalized(koodiviite.nimi) || koodiviite.koodiarvo,
+    display: getLocalizedMaybe(koodiviite.nimi) || koodiviite.koodiarvo,
   }))
 
 export const organisaatiotToOptions = (
@@ -91,7 +94,7 @@ export const organisaatiotToOptions = (
 ): Array<DropdownOption<string>> =>
   organisaatiot.map((org) => ({
     value: org.oid,
-    display: getLocalized(org.nimi) || org.oid,
+    display: organisaatioNimi(org),
   }))
 
 export const displayOrd = Ord.contramap((a: DropdownOption<any>) => a.display)(

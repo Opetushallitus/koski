@@ -20,7 +20,7 @@ import {
 } from "../../components/icons/Icon"
 import { Error } from "../../components/typography/error"
 import { SecondaryHeading } from "../../components/typography/headings"
-import { getLocalized, T, t } from "../../i18n/i18n"
+import { getLocalized, getLocalizedMaybe, T, t } from "../../i18n/i18n"
 import { HenkilöTiedot } from "../../state/apitypes/henkilo"
 import { Kieli, Maa } from "../../state/apitypes/koodistot"
 import {
@@ -40,7 +40,10 @@ import {
   lisätietoMatches,
   OpiskeluoikeusLisätiedot,
 } from "../../state/apitypes/oppija"
-import { trimOrganisaatio } from "../../state/apitypes/organisaatiot"
+import {
+  organisaatioNimi,
+  trimOrganisaatio,
+} from "../../state/apitypes/organisaatiot"
 import {
   isAlkuperäHakemukselta,
   isAlkuperäRekisteristä,
@@ -401,10 +404,10 @@ const IlmoitusPrefillSelector = (props: IlmoitusPrefillSelectorProps) =>
 const yhteystiedonNimi = (yhteystieto: PohjatietoYhteystieto): string => {
   const alkuperä = yhteystieto.yhteystietojenAlkuperä
   if (isAlkuperäRekisteristä(alkuperä)) {
-    return getLocalized(alkuperä.alkuperä.nimi) || "?"
+    return getLocalizedMaybe(alkuperä.alkuperä.nimi) || "?"
   }
   if (isAlkuperäHakemukselta(alkuperä)) {
-    return getLocalized(alkuperä.hakuNimi) || "?"
+    return getLocalized(alkuperä.hakuNimi)
   }
   return "?"
 }
@@ -421,5 +424,8 @@ const TurvakieltoWarning = () => (
 const kunnatToOptions = (kunnat: KuntailmoitusKunta[]): DropdownOption<Oid>[] =>
   kunnat.map((kunta) => ({
     value: kunta.oid,
-    display: getLocalized(kunta.kotipaikka?.nimi || kunta.nimi) || kunta.oid,
+    display:
+      kunta.kotipaikka && kunta.kotipaikka.nimi
+        ? getLocalized(kunta.kotipaikka.nimi)
+        : organisaatioNimi(kunta),
   }))

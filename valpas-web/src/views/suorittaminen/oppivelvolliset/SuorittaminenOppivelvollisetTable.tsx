@@ -1,22 +1,18 @@
 import * as A from "fp-ts/Array"
 import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
-import { isSuorittamisenValvonnassaIlmoitettavaTila } from "~state/apitypes/koskiopiskeluoikeudentila"
-import {
-  FutureSuccessIcon,
-  SuccessIcon,
-  WarningIcon,
-} from "../../../components/icons/Icon"
+import { FutureSuccessIcon, WarningIcon } from "../../../components/icons/Icon"
 import {
   Column,
   DataTable,
   Datum,
-  fromNullable,
   fromNullableValue,
   Value,
 } from "../../../components/tables/DataTable"
 import { SelectableDataTableProps } from "../../../components/tables/SelectableDataTable"
-import { getLocalized, t } from "../../../i18n/i18n"
+import { getLocalizedMaybe, t, TranslationId } from "../../../i18n/i18n"
+import { Suorituksentyyppi } from "../../../state/apitypes/koodistot"
+import { isSuorittamisenValvonnassaIlmoitettavaTila } from "../../../state/apitypes/koskiopiskeluoikeudentila"
 import {
   OpiskeluoikeusSuppeatTiedot,
   suorittamisvalvottavatOpiskeluoikeudet,
@@ -25,6 +21,7 @@ import {
   OppijaHakutilanteillaSuppeatTiedot,
   OppijaSuppeatTiedot,
 } from "../../../state/apitypes/oppija"
+import { organisaatioNimi } from "../../../state/apitypes/organisaatiot"
 import {
   isVoimassa,
   isVoimassaTulevaisuudessa,
@@ -153,9 +150,13 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
           value: henkilö.syntymäaika,
           display: formatNullableDate(henkilö.syntymäaika),
         },
-        koulutustyyppi(opiskeluoikeus),
+        {
+          value: koulutusTyyppi(
+            opiskeluoikeus.tarkasteltavaPäätasonSuoritus?.suorituksenTyyppi
+          ),
+        },
         tila(opiskeluoikeus),
-        fromNullable(getLocalized(opiskeluoikeus.toimipiste?.nimi)),
+        toimipiste(opiskeluoikeus),
         fromNullableValue(päivä(opiskeluoikeus.alkamispäivä)),
         fromNullableValue(päivä(opiskeluoikeus.päättymispäivä)),
         fromNullableValue(
@@ -167,33 +168,65 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
   })
 }
 
-// TODO: Tästä vastauksena 2. aste/VALMA/TELMA/...
-const koulutustyyppi = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
-  const koulutustyyppi = {
-    value: `TODO ${oo.tyyppi.koodiarvo}`,
-    filterValues: [`TODO ${oo.tyyppi.koodiarvo}`],
-    display: `TODO ${oo.tyyppi.koodiarvo}`,
+const koulutusTyyppi = (
+  tyyppi: Suorituksentyyppi | undefined
+): TranslationId => {
+  if (tyyppi === undefined) {
+    return ""
+  } else if (tyyppi.koodiarvo === "valma") {
+    return t("koulutustyyppi_valma")
+  } else if (tyyppi.koodiarvo === "telma") {
+    return t("koulutustyyppi_telma")
+  } else if (tyyppi.koodiarvo.startsWith("vst")) {
+    return t("koulutustyyppi_vst")
+  } else if (
+    tyyppi.koodiarvo.startsWith("ib") ||
+    tyyppi.koodiarvo.startsWith("preib")
+  ) {
+    return t("koulutustyyppi_ib")
+  } else if (tyyppi.koodiarvo.startsWith("internationalschool")) {
+    return t("koulutustyyppi_internationalschool")
+  } else if (tyyppi.koodiarvo.startsWith("dia")) {
+    return t("koulutustyyppi_dia")
+  } else {
+    return getLocalizedMaybe(tyyppi.nimi) || tyyppi.koodiarvo
   }
-
-  return koulutustyyppi
 }
 
-const tila = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
-  const tila = {
-    value: tilaString(oo),
-    icon: isSuorittamisenValvonnassaIlmoitettavaTila(
-      oo.tarkastelupäivänKoskiTila
-    ) ? (
-      <WarningIcon />
-    ) : undefined,
-  }
-
-  return tila
-}
+const tila = (oo: OpiskeluoikeusSuppeatTiedot): Value => ({
+  value: tilaString(oo),
+  icon: isSuorittamisenValvonnassaIlmoitettavaTila(
+    oo.tarkastelupäivänKoskiTila
+  ) ? (
+    <WarningIcon />
+  ) : undefined,
+})
 
 const tilaString = (opiskeluoikeus: OpiskeluoikeusSuppeatTiedot): string => {
   const tila = opiskeluoikeus.tarkastelupäivänKoskiTila
-  return getLocalized(tila.nimi) || tila.koodiarvo
+  return getLocalizedMaybe(tila.nimi) || tila.koodiarvo
+}
+
+const toimipiste = (opiskeluoikeus: OpiskeluoikeusSuppeatTiedot): Value => {
+  const uniikit: string[] = Array.from(
+    new Set(
+      opiskeluoikeus.päätasonSuoritukset.map((pts) =>
+        organisaatioNimi(pts.toimipiste)
+      )
+    )
+  )
+  return {
+    value:
+      uniikit.length > 1
+        ? t("suorittaminennäkymä__taulu_useita_toimipisteitä")
+        : opiskeluoikeus.tarkasteltavaPäätasonSuoritus
+        ? organisaatioNimi(
+            opiskeluoikeus.tarkasteltavaPäätasonSuoritus.toimipiste
+          )
+        : undefined,
+    tooltip: uniikit.join("; "),
+    filterValues: uniikit,
+  }
 }
 
 const päivä = (date?: ISODate): Value | null => {
@@ -216,10 +249,11 @@ const opiskeluoikeustiedot = (
       suorittamisvalvonnanOpiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus
     )
 
+  // TODO: Copypaste HakutilanneTablesta, poista duplikoitu koodi
   const toValue = (oo: OpiskeluoikeusSuppeatTiedot) => {
     const kohde = [
-      getLocalized(oo.oppilaitos.nimi),
-      getLocalized(oo.tyyppi.nimi),
+      organisaatioNimi(oo.oppilaitos),
+      getLocalizedMaybe(oo.tyyppi.nimi),
     ]
       .filter(nonNull)
       .join(", ")
@@ -232,9 +266,9 @@ const opiskeluoikeustiedot = (
         })
   }
 
-  const icon = oos.some((oo) => isVoimassa(oo.tarkastelupäivänTila)) ? (
-    <SuccessIcon />
-  ) : oos.some((oo) => isVoimassaTulevaisuudessa(oo.tarkastelupäivänTila)) ? (
+  const icon = oos.some((oo) =>
+    isVoimassaTulevaisuudessa(oo.tarkastelupäivänTila)
+  ) ? (
     <FutureSuccessIcon />
   ) : undefined
 

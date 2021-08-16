@@ -31,6 +31,9 @@ class ValidatingAndResolvingExtractor(
   def extract[T](json: JValue, deserializationContext: ExtractionContext)(implicit tag: TypeTag[T]): Either[HttpStatus, T] = {
     SchemaValidatingExtractor.extract(json)(deserializationContext, tag) match {
       case Right(t) => Right(t)
+      // TODO: Validaatiovirhe ei aina tarkoita bad request -virhettä koska virhe
+      //  voi olla sisäisessä datan käsittelyssä. Refaktoroi tämä palauttamaan
+      //  kaikki validaatiovirheet ja muuta se HttpStatukseksi muualla.
       case Left(errors: List[ValidationError]) => Left(KoskiErrorCategory.badRequest.validation.jsonSchema.apply(JsonErrorMessage(errors)))
     }
   }

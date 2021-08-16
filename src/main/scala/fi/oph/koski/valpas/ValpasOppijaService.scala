@@ -154,10 +154,90 @@ class ValpasOppijaService(
     (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =
     getOppijatLaajatTiedotIlmanHakutilanteita(ValpasRooli.OPPILAITOS_SUORITTAMINEN, oppilaitosOid)
-      // TODO: Filtteröi pois suorittamisvalvottavat oppijat, jotka ovat eronneet, mutta
-      // jotka ovat aktiivisia jo muissa opinnoissa tarkastelupäivänä. Heihin pääsee käsiksi ainoastaan hetuhaulla.
-      // Nivelvaiheessa opiskelevia ei poisteta, jos on jo joku muu nivelvaihe suoritettuna.
+      .map(_.map(poistaEronneetOpiskeluoikeudetJoillaUusiKelpaavaOpiskelupaikka))
+      // poista oppijat, joille ei eronneiden poiston jälkeen jäänyt jäljelle yhtään suorittamisvalvottavia opiskeluoikeuksia
+      .map(_.filter(onSuorittamisvalvottaviaOpiskeluoikeuksia))
       .map(_.map(OppijaHakutilanteillaSuppeatTiedot.apply))
+
+  private def poistaEronneetOpiskeluoikeudetJoillaUusiKelpaavaOpiskelupaikka(
+    oppija: OppijaHakutilanteillaLaajatTiedot
+  ): OppijaHakutilanteillaLaajatTiedot = {
+    val uudetOpiskeluoikeudet =
+      oppija.oppija.opiskeluoikeudet.filterNot(
+        opiskeluoikeus => onEronnutJaUusiOpiskelupaikkaVoimassa(
+          opiskeluoikeus = opiskeluoikeus,
+          muutOppijanOpiskeluoikeudet =
+            oppija.oppija.opiskeluoikeudet.filterNot(opiskeluoikeus2 => opiskeluoikeus2.equals(opiskeluoikeus))
+        )
+      )
+
+    oppija.copy(
+      oppija = oppija.oppija.copy(
+        opiskeluoikeudet = uudetOpiskeluoikeudet
+      )
+    )
+  }
+
+  private def onEronnutJaUusiOpiskelupaikkaVoimassa(
+    opiskeluoikeus: ValpasOpiskeluoikeusLaajatTiedot,
+    muutOppijanOpiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot]
+  ): Boolean = {
+    val onEronnut =
+      opiskeluoikeus.onSuorittamisValvottava &&
+      Seq("eronnut", "katsotaaneronneeksi", "peruutettu").contains(opiskeluoikeus.tarkastelupäivänTila.koodiarvo)
+
+    val onValmistunutNivelvaiheesta =
+      muutOppijanOpiskeluoikeudet.exists(oo => onNivelvaiheenOpiskeluoikeus(oo) && oo.tarkastelupäivänTila.koodiarvo == "valmistunut")
+
+    val onLasnaUudessaOpiskeluoikeudessa =
+      sisältääVoimassaolevanToisenAsteenOpiskeluoikeuden(muutOppijanOpiskeluoikeudet) ||
+      (!onValmistunutNivelvaiheesta && sisältääVoimassaolevanNivelvaiheenOpiskeluoikeuden(muutOppijanOpiskeluoikeudet))
+
+    onEronnut && onLasnaUudessaOpiskeluoikeudessa
+  }
+
+  private def sisältääVoimassaolevanToisenAsteenOpiskeluoikeuden(
+    opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot]
+  ): Boolean =
+    opiskeluoikeudet.exists(oo => onToisenAsteenOpiskeluoikeus(oo) && oo.tarkastelupäivänTila.koodiarvo == "voimassa")
+
+  private def onToisenAsteenOpiskeluoikeus(oo: ValpasOpiskeluoikeusLaajatTiedot): Boolean =
+    !(onNivelvaiheenOpiskeluoikeus(oo) || onNuortenPerusopetuksenOpiskeluoikeus(oo))
+
+  private def sisältääVoimassaolevanNivelvaiheenOpiskeluoikeuden(
+    opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot]
+  ): Boolean =
+  opiskeluoikeudet.exists(oo => onNivelvaiheenOpiskeluoikeus(oo) && oo.tarkastelupäivänTila.koodiarvo == "voimassa")
+
+  private def onNivelvaiheenOpiskeluoikeus(oo: ValpasOpiskeluoikeusLaajatTiedot): Boolean = {
+    oo.tyyppi.koodiarvo match {
+      // Ammatillinen opiskeluoikeus: Jos opiskeluoikeudessa on yksikin VALMA tai TELMA-päätason suoritus, se on nivelvaihetta.
+      case "ammatillinenkoulutus"
+        if oo.päätasonSuoritukset.exists(pts => List("valma", "telma").contains(pts.suorituksenTyyppi.koodiarvo)) => true
+      // Aikuisten perusopetuksen opiskeluoikeus: On nivelvaihetta, jos siinä on alku- tai loppuvaiheen suoritus
+      case "aikuistenperusopetus"
+        if oo.päätasonSuoritukset.exists(
+          pts => List(
+            "aikuistenperusopetuksenoppimaaranalkuvaihe",
+            "aikuistenperusopetuksenoppimaara"
+          ).contains(pts.suorituksenTyyppi.koodiarvo)) => true
+      // VST: on nivelvaihetta, jos ei ole vapaatavoitteista
+      case "vapaansivistystyonkoulutus"
+        if oo.päätasonSuoritukset.exists(pts => pts.suorituksenTyyppi.koodiarvo != "vstvapaatavoitteinenkoulutus") => true
+      // Luva: aina nivelvaihetta
+      case "luva" => true
+      // Perusopetuksen lisäopetus: aina nivelvaihetta
+      case "perusopetuksenlisaopetus" => true
+      // Esim. lukio, DIA, IB tai international school ei ole ikinä nivelvaihetta:
+      case _ => false
+    }
+  }
+
+  private def onNuortenPerusopetuksenOpiskeluoikeus(oo: ValpasOpiskeluoikeusLaajatTiedot): Boolean =
+    oo.tyyppi.koodiarvo == "perusopetus"
+
+  private def onSuorittamisvalvottaviaOpiskeluoikeuksia(oppija: OppijaHakutilanteillaLaajatTiedot): Boolean =
+    oppija.oppija.opiskeluoikeudet.exists(_.onSuorittamisValvottava)
 
   def getKunnanOppijatSuppeatTiedot
     (kuntaOid: Organisaatio.Oid, haeAktiiviset: Boolean)
@@ -319,6 +399,10 @@ class ValpasOppijaService(
   private def asValpasOppijaLaajatTiedot(dbRow: ValpasOppijaRow): Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
     validatingAndResolvingExtractor
       .extract[List[ValpasOpiskeluoikeusLaajatTiedot]](strictDeserialization)(dbRow.opiskeluoikeudet)
+      .left.map(e => {
+        logger.error(e.toString)
+        ValpasErrorCategory.internalError("Oppijan tietojen haku epäonnistui")
+      })
       .map(opiskeluoikeudet =>
         ValpasOppijaLaajatTiedot(
           henkilö = ValpasHenkilöLaajatTiedot(

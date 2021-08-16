@@ -1,11 +1,9 @@
 package fi.oph.koski.valpas
 
-import java.time.{LocalDate, LocalDateTime}
 import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{Finnish, Koodistokoodiviite}
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilöLaajatTiedot, ValpasOpiskeluoikeus, ValpasOpiskeluoikeusLaajatTiedot, ValpasOppijaLaajatTiedot, ValpasOppilaitos}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilöLaajatTiedot, ValpasOpiskeluoikeus, ValpasOpiskeluoikeusLaajatTiedot, ValpasOppijaLaajatTiedot, ValpasOppilaitos, ValpasPäätasonSuoritus, ValpasToimipiste}
 import fi.oph.koski.valpas.valpasuser.ValpasRooli
 
 
@@ -115,7 +113,8 @@ class ValpasAccessResolverSpec extends ValpasTestBase {
 
   def opiskeluoikeus(
     oid : ValpasOpiskeluoikeus.Oid,
-    tyyppi: String = "lukiokoulutus",
+    opiskeluoikeudenTyyppi: String = "lukiokoulutus",
+    suorituksenTyyppi: String = "lukionoppimaara",
     oppilaitosOid:  ValpasOppilaitos.Oid,
     onHakeutumisValvottava: Boolean = false,
     onSuorittamisValvottava: Boolean = false
@@ -123,13 +122,11 @@ class ValpasAccessResolverSpec extends ValpasTestBase {
     oid = oid,
     onHakeutumisValvottava = onHakeutumisValvottava,
     onSuorittamisValvottava = onSuorittamisValvottava,
-    tyyppi = Koodistokoodiviite(tyyppi, "opiskeluoikeudentyyppi"),
+    tyyppi = Koodistokoodiviite(opiskeluoikeudenTyyppi, "opiskeluoikeudentyyppi"),
     oppilaitos = ValpasOppilaitos(
       oid = oppilaitosOid,
       nimi = Finnish("Oppilaitoksen nimi")
     ),
-    toimipiste = None,
-    ryhmä = None,
     alkamispäivä = "2012-08-01",
     päättymispäivä = None,
     päättymispäiväMerkittyTulevaisuuteen = None,
@@ -138,5 +135,15 @@ class ValpasAccessResolverSpec extends ValpasTestBase {
     näytettäväPerusopetuksenSuoritus = false,
     vuosiluokkiinSitomatonOpetus = false,
     oppivelvollisuudenSuorittamiseenKelpaava = true,
+    päätasonSuoritukset = Seq(
+      ValpasPäätasonSuoritus(
+        toimipiste = ValpasToimipiste(
+          oid = oppilaitosOid,
+          nimi = Finnish("Oppilaitoksen nimi")
+        ),
+        ryhmä = None,
+        suorituksenTyyppi = Koodistokoodiviite(suorituksenTyyppi, "suorituksentyyppi")
+      )
+    )
   )
 }

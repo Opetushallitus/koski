@@ -11,7 +11,7 @@ import { TertiaryHeading } from "../../components/typography/headings"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import {
   formatFixedNumber,
-  getLocalized,
+  getLocalizedMaybe,
   koodiviiteToShortString,
   t,
   T,
@@ -114,7 +114,7 @@ type HaunNimiProps = {
 }
 
 const HaunNimi = (props: HaunNimiProps) => {
-  const haunNimi = getLocalized(props.haku.hakuNimi)
+  const haunNimi = getLocalizedMaybe(props.haku.hakuNimi)
   return (
     <span
       className={b("hakunimititle", { paattynyt: !props.haku.aktiivinenHaku })}
@@ -132,22 +132,22 @@ const hakutoiveToTableValue = (hakutoive: Hakutoive, index: number): Datum => ({
     {
       value:
         formatOrderNumber(hakutoive.hakutoivenumero) +
-        (getLocalized(hakutoive.organisaatioNimi) || t("tieto_puuttuu")) +
+        (getLocalizedMaybe(hakutoive.organisaatioNimi) || t("tieto_puuttuu")) +
         (hakutoive.hakukohdeNimi
-          ? ", " + getLocalized(hakutoive.hakukohdeNimi)
+          ? ", " + getLocalizedMaybe(hakutoive.hakukohdeNimi)
           : ""),
       display: (
         <>
           {formatOrderNumber(hakutoive.hakutoivenumero)}
           {hakutoive.organisaatioNimi ? (
-            getLocalized(hakutoive.organisaatioNimi)
+            getLocalizedMaybe(hakutoive.organisaatioNimi)
           ) : (
             <NoDataMessage>
               <T id="tieto_puuttuu" />
             </NoDataMessage>
           )}
           {hakutoive.hakukohdeNimi &&
-            ", " + getLocalized(hakutoive.hakukohdeNimi)}
+            ", " + getLocalizedMaybe(hakutoive.hakukohdeNimi)}
           {hakutoive.harkinnanvarainen ? (
             <FootnoteReference>1</FootnoteReference>
           ) : null}
