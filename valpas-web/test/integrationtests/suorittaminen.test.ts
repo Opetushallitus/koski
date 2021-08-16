@@ -1,11 +1,20 @@
 import { createSuorittaminenPathWithOrg } from "../../src/state/paths"
-import { textEventuallyEquals } from "../integrationtests-env/browser/content"
+import {
+  clickElement,
+  expectElementEventuallyVisible,
+  textEventuallyEquals,
+} from "../integrationtests-env/browser/content"
 import {
   goToLocation,
   pathToUrl,
   urlIsEventually,
 } from "../integrationtests-env/browser/core"
-import { dataTableEventuallyEquals } from "../integrationtests-env/browser/datatable"
+import {
+  dataTableEventuallyEquals,
+  getTableContents,
+  setTableTextFilter,
+  toggleTableSort,
+} from "../integrationtests-env/browser/datatable"
 import { loginAs, resetMockData } from "../integrationtests-env/browser/reset"
 import { jyväskylänNormaalikouluOid, stadinAmmattiopistoOid } from "./oids"
 import { selectOrganisaatio } from "./organisaatiovalitsin-helpers"
@@ -108,11 +117,30 @@ describe("Suorittamisen valvonta -näkymä", () => {
     // TODO
   })
 
-  it("Käyminen oppijakohtaisessa näkymässä ei hukkaa valittua organisaatiota", async () => {
-    // TODO
-  })
+  it("Käyminen oppijakohtaisessa näkymässä ei hukkaa valittua organisaatiota, filttereiden tai järjestyksen tilaa", async () => {
+    await loginAs(suorittaminenListaPath, "valpas-pelkkä-suorittaminen")
 
-  it("Käyminen oppijakohtaisessa näkymässä ei hukkaa filttereiden tai järjestyksen tilaa", async () => {
-    // TODO
+    await selectOrganisaatio(1)
+    await urlIsEventually(pathToUrl(suorittaminenListaJklPath))
+
+    // Vaihda filtteriä ja järjestyksen suuntaa nimen perusteella
+    const selector = ".suorittaminen"
+    await setTableTextFilter(selector, 1, "lukio")
+    await toggleTableSort(selector, 1)
+
+    // Ota snapshot talteen taulukon tilasta
+    const contentsBefore = await getTableContents(selector)
+
+    // Käy jossakin oppijanäkymässä
+    await clickElement(
+      `.suorittaminen .table__row:first-child td:first-child a`
+    )
+    await expectElementEventuallyVisible(".oppijaview__backbutton a")
+    await clickElement(".oppijaview__backbutton a")
+
+    // Taulukon tilan pitäisi olla sama kuin aiemmin
+    await urlIsEventually(pathToUrl(suorittaminenListaJklPath))
+    const contentsAfter = await getTableContents(selector)
+    expect(contentsAfter).toEqual(contentsBefore)
   })
 })
