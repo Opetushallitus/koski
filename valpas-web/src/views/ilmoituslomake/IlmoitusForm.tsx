@@ -40,7 +40,10 @@ import {
   lisätietoMatches,
   OpiskeluoikeusLisätiedot,
 } from "../../state/apitypes/oppija"
-import { trimOrganisaatio } from "../../state/apitypes/organisaatiot"
+import {
+  organisaatioNimi,
+  trimOrganisaatio,
+} from "../../state/apitypes/organisaatiot"
 import {
   isAlkuperäHakemukselta,
   isAlkuperäRekisteristä,
@@ -421,5 +424,8 @@ const TurvakieltoWarning = () => (
 const kunnatToOptions = (kunnat: KuntailmoitusKunta[]): DropdownOption<Oid>[] =>
   kunnat.map((kunta) => ({
     value: kunta.oid,
-    display: getLocalized(kunta.kotipaikka?.nimi || kunta.nimi),
+    display:
+      kunta.kotipaikka && kunta.kotipaikka.nimi
+        ? getLocalized(kunta.kotipaikka.nimi)
+        : organisaatioNimi(kunta),
   }))
