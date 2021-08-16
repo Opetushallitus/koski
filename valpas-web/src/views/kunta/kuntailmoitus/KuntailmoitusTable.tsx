@@ -9,12 +9,13 @@ import {
   Datum,
   Value,
 } from "../../../components/tables/DataTable"
-import { getLocalized, getLocalizedMaybe, t } from "../../../i18n/i18n"
+import { getLocalizedMaybe, t } from "../../../i18n/i18n"
 import {
   hakeutumisvalvonnanOpiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus,
   OpiskeluoikeusSuppeatTiedot,
 } from "../../../state/apitypes/opiskeluoikeus"
 import { OppijaKuntailmoituksillaSuppeatTiedot } from "../../../state/apitypes/oppija"
+import { organisaatioNimi } from "../../../state/apitypes/organisaatiot"
 import {
   isVoimassa,
   isVoimassaTulevaisuudessa,
@@ -112,7 +113,7 @@ const ilmoitusToTableData = (basePath: string, organisaatioOid: string) => (
         display: formatNullableDate(ilmoitus.aikaleima),
       },
       {
-        value: getLocalized(ilmoitus.tekijä.organisaatio.nimi),
+        value: organisaatioNimi(ilmoitus.tekijä.organisaatio),
       },
       {
         value: henkilö.syntymäaika,
@@ -133,7 +134,7 @@ const opiskeluoikeustiedot = (
 
   const toValue = (oo: OpiskeluoikeusSuppeatTiedot) => {
     const kohde = [
-      getLocalized(oo.oppilaitos.nimi),
+      organisaatioNimi(oo.oppilaitos),
       getLocalizedMaybe(oo.tyyppi.nimi),
     ]
       .filter(nonNull)

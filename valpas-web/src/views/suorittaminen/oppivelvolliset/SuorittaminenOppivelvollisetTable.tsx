@@ -14,12 +14,7 @@ import {
   Value,
 } from "../../../components/tables/DataTable"
 import { SelectableDataTableProps } from "../../../components/tables/SelectableDataTable"
-import {
-  getLocalized,
-  getLocalizedMaybe,
-  t,
-  TranslationId,
-} from "../../../i18n/i18n"
+import { getLocalizedMaybe, t, TranslationId } from "../../../i18n/i18n"
 import { Suorituksentyyppi } from "../../../state/apitypes/koodistot"
 import { isSuorittamisenValvonnassaIlmoitettavaTila } from "../../../state/apitypes/koskiopiskeluoikeudentila"
 import {
@@ -30,6 +25,7 @@ import {
   OppijaHakutilanteillaSuppeatTiedot,
   OppijaSuppeatTiedot,
 } from "../../../state/apitypes/oppija"
+import { organisaatioNimi } from "../../../state/apitypes/organisaatiot"
 import {
   isVoimassa,
   isVoimassaTulevaisuudessa,
@@ -219,7 +215,7 @@ const toimipiste = (opiskeluoikeus: OpiskeluoikeusSuppeatTiedot): Value => {
   const uniikit: string[] = Array.from(
     new Set(
       opiskeluoikeus.päätasonSuoritukset.map((pts) =>
-        getLocalized(pts.toimipiste.nimi)
+        organisaatioNimi(pts.toimipiste)
       )
     )
   )
@@ -227,9 +223,11 @@ const toimipiste = (opiskeluoikeus: OpiskeluoikeusSuppeatTiedot): Value => {
     value:
       uniikit.length > 1
         ? t("suorittaminennäkymä__taulu_useita_toimipisteitä")
-        : getLocalizedMaybe(
-            opiskeluoikeus.tarkasteltavaPäätasonSuoritus?.toimipiste.nimi
-          ),
+        : opiskeluoikeus.tarkasteltavaPäätasonSuoritus
+        ? organisaatioNimi(
+            opiskeluoikeus.tarkasteltavaPäätasonSuoritus.toimipiste
+          )
+        : undefined,
     tooltip: uniikit.join("; "),
     filterValues: uniikit,
   }
@@ -258,7 +256,7 @@ const opiskeluoikeustiedot = (
   // TODO: Copypaste HakutilanneTablesta, poista duplikoitu koodi
   const toValue = (oo: OpiskeluoikeusSuppeatTiedot) => {
     const kohde = [
-      getLocalized(oo.oppilaitos.nimi),
+      organisaatioNimi(oo.oppilaitos),
       getLocalizedMaybe(oo.tyyppi.nimi),
     ]
       .filter(nonNull)

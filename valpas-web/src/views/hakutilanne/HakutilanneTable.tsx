@@ -24,12 +24,7 @@ import {
   SelectableDataTable,
   SelectableDataTableProps,
 } from "../../components/tables/SelectableDataTable"
-import {
-  getLocalized,
-  getLocalizedMaybe,
-  t,
-  Translation,
-} from "../../i18n/i18n"
+import { getLocalizedMaybe, t, Translation } from "../../i18n/i18n"
 import { HakuSuppeatTiedot, selectByHakutoive } from "../../state/apitypes/haku"
 import {
   isEiPaikkaa,
@@ -48,6 +43,7 @@ import {
   OppijaHakutilanteillaSuppeatTiedot,
   OppijaSuppeatTiedot,
 } from "../../state/apitypes/oppija"
+import { organisaatioNimi } from "../../state/apitypes/organisaatiot"
 import {
   isVoimassa,
   isVoimassaTulevaisuudessa,
@@ -435,7 +431,7 @@ const opiskeluoikeustiedot = (
 
   const toValue = (oo: OpiskeluoikeusSuppeatTiedot) => {
     const kohde = [
-      getLocalized(oo.oppilaitos.nimi),
+      organisaatioNimi(oo.oppilaitos),
       getLocalizedMaybe(oo.tyyppi.nimi),
     ]
       .filter(nonNull)

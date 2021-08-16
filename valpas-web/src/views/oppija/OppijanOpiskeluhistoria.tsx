@@ -15,13 +15,7 @@ import {
 } from "../../components/icons/Icon"
 import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
-import {
-  getLocalized,
-  getLocalizedMaybe,
-  T,
-  t,
-  useLanguage,
-} from "../../i18n/i18n"
+import { getLocalizedMaybe, T, t, useLanguage } from "../../i18n/i18n"
 import { KoodistoKoodiviite } from "../../state/apitypes/koodistot"
 import {
   KuntailmoitusLaajatTiedotLisätiedoilla,
@@ -33,6 +27,7 @@ import {
 } from "../../state/apitypes/opiskeluoikeus"
 import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import { OppivelvollisuudenKeskeytys } from "../../state/apitypes/oppivelvollisuudenkeskeytys"
+import { organisaatioNimi } from "../../state/apitypes/organisaatiot"
 import { ISODate } from "../../state/common"
 import { formatDate, formatNullableDate, parseYear } from "../../utils/date"
 import { pick } from "../../utils/objects"
@@ -143,7 +138,7 @@ const OpiskeluhistoriaOpinto = ({
         {nimi} {range}
       </IconSectionHeading>
       <InfoTable size="tighter">
-        <InfoTableRow value={getLocalized(opiskeluoikeus.oppilaitos.nimi)} />
+        <InfoTableRow value={organisaatioNimi(opiskeluoikeus.oppilaitos)} />
         {opiskeluoikeus.tarkasteltavaPäätasonSuoritus.ryhmä && (
           <InfoTableRow
             label={t("oppija__ryhma")}
@@ -187,13 +182,13 @@ const OpiskeluhistoriaIlmoitus = ({
       )}
       <InfoTableRow
         label={t("oppija__ilmoitushistoria_ilmoittaja")}
-        value={getLocalized(
-          kuntailmoitus.kuntailmoitus.tekijä.organisaatio.nimi
+        value={organisaatioNimi(
+          kuntailmoitus.kuntailmoitus.tekijä.organisaatio
         )}
       />
       <InfoTableRow
         label={t("oppija__ilmoitushistoria_kohde")}
-        value={getLocalized(kuntailmoitus.kuntailmoitus.kunta.nimi)}
+        value={organisaatioNimi(kuntailmoitus.kuntailmoitus.kunta)}
       />
       <InfoTableRow value={<IlmoitusLink kuntailmoitus={kuntailmoitus} />} />
     </InfoTable>
