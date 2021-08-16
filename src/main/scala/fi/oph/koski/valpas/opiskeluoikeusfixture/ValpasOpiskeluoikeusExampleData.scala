@@ -4,11 +4,11 @@ import fi.oph.koski.documentation.ExampleData.{helsinki, opiskeluoikeusEronnut, 
 import fi.oph.koski.documentation.LukioExampleData.{opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt}
 import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, perusopetuksenOppimääränSuoritus, perusopetuksenOppimääränSuoritusKesken, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste, oppilaitos}
-import fi.oph.koski.documentation.{AmmattitutkintoExample, ExampleData, ExamplesEsiopetus, ExamplesLukio2019, ExamplesPerusopetuksenLisaopetus, ExamplesTelma, ExamplesValma, VapaaSivistystyöExample}
-import fi.oph.koski.organisaatio.MockOrganisaatiot.aapajoenKoulu
+import fi.oph.koski.documentation.{AmmattitutkintoExample, ExampleData, ExamplesAmmatillinen, ExamplesEsiopetus, ExamplesLukio2019, ExamplesPerusopetuksenLisaopetus, ExamplesTelma, ExamplesValma, VapaaSivistystyöExample}
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{aapajoenKoulu, lehtikuusentienToimipiste}
 import fi.oph.koski.schema._
-import java.time.LocalDate.{of => date}
 
+import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.AmmatillinenExampleData.{hyväksytty, järjestämismuotoOppilaitos, järjestämismuotoOppisopimus, stadinAmmattiopisto, stadinToimipiste, suoritustapaNäyttö, tutkinnonOsanSuoritus}
 import fi.oph.koski.documentation.AmmattitutkintoExample.tutkinto
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -769,5 +769,23 @@ object ValpasOpiskeluoikeusExampleData {
     lisätiedot = Some(VapaanSivistystyönOpiskeluoikeudenLisätiedot(
       maksuttomuus = Some(List(Maksuttomuus(alku = date(2021, 9, 1) , loppu = None, maksuton = true))),
     ))
+  )
+
+  def amisAmmatillinenJaNäyttötutkintoonValmistavaOpiskeluoikeus = ammattikouluValmistunutOpiskeluoikeus.copy(
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+    )),
+    suoritukset = List(
+      AmmattitutkintoExample.näyttötutkintoonValmistavanKoulutuksenSuoritus.copy(
+        vahvistus = None,
+        toimipiste = stadinToimipiste,
+        ryhmä = Some("A")
+      ),
+      AmmattitutkintoExample.ammatillisenTutkinnonSuoritus.copy(
+        vahvistus = None,
+        toimipiste = stadinAmmattiopisto,
+        ryhmä = Some("B")
+      )
+    )
   )
 }
