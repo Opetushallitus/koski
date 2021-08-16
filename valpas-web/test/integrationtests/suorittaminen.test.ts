@@ -7,16 +7,23 @@ import {
 } from "../integrationtests-env/browser/core"
 import { dataTableEventuallyEquals } from "../integrationtests-env/browser/datatable"
 import { loginAs, resetMockData } from "../integrationtests-env/browser/reset"
-import { jyväskylänNormaalikouluOid } from "./oids"
+import { jyväskylänNormaalikouluOid, stadinAmmattiopistoOid } from "./oids"
 import {
   jklNormaalikouluSuorittaminenTableContent,
   jklNormaalikouluSuorittaminenTableHead,
+  stadinAmmattiopistoSuorittaminenTableContent,
+  stadinAmmattiopistoSuorittaminenTableHead,
   suorittaminenListaPath,
 } from "./suorittaminen.shared"
 
 const jklSuorittaminenPath = createSuorittaminenPathWithOrg(
   "/virkailija",
   jyväskylänNormaalikouluOid
+)
+
+const stadinAmmattiopistoSuorittaminenPath = createSuorittaminenPathWithOrg(
+  "/virkailija",
+  stadinAmmattiopistoOid
 )
 
 const viikinNormaalikouluId = "1.2.246.562.10.81927839589"
@@ -26,7 +33,22 @@ const viikinNormaalikouluSuorittaminenPath = createSuorittaminenPathWithOrg(
 )
 
 describe("Suorittamisen valvonta -näkymä", () => {
-  it("Näyttää listan oppijoista", async () => {
+  it("Näyttää listan oppijoista Stadin ammattiopiston käyttäjälle", async () => {
+    await loginAs(suorittaminenListaPath, "valpas-pelkkä-suorittaminen-amis")
+    await urlIsEventually(pathToUrl(stadinAmmattiopistoSuorittaminenPath))
+
+    await textEventuallyEquals(
+      ".card__header",
+      stadinAmmattiopistoSuorittaminenTableHead
+    )
+    await dataTableEventuallyEquals(
+      ".suorittaminen",
+      stadinAmmattiopistoSuorittaminenTableContent,
+      "|"
+    )
+  })
+
+  it("Näyttää listan oppijoista Jyväskylän normaalikoulun käyttäjälle", async () => {
     await loginAs(suorittaminenListaPath, "valpas-jkl-normaali")
     await urlIsEventually(pathToUrl(jklSuorittaminenPath))
 
