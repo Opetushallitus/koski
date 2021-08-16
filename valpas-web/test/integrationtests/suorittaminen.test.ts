@@ -8,11 +8,14 @@ import {
 import { dataTableEventuallyEquals } from "../integrationtests-env/browser/datatable"
 import { loginAs, resetMockData } from "../integrationtests-env/browser/reset"
 import { jyväskylänNormaalikouluOid, stadinAmmattiopistoOid } from "./oids"
+import { selectOrganisaatio } from "./organisaatiovalitsin-helpers"
 import {
   jklNormaalikouluSuorittaminenTableContent,
   jklNormaalikouluSuorittaminenTableHead,
   stadinAmmattiopistoSuorittaminenTableContent,
   stadinAmmattiopistoSuorittaminenTableHead,
+  suorittaminenListaHkiPath,
+  suorittaminenListaJklPath,
   suorittaminenListaPath,
 } from "./suorittaminen.shared"
 
@@ -82,7 +85,15 @@ describe("Suorittamisen valvonta -näkymä", () => {
   })
 
   it("Vaihtaa taulun sisällön organisaatiovalitsimesta", async () => {
-    // TODO
+    await loginAs(suorittaminenListaPath, "valpas-pelkkä-suorittaminen")
+
+    await selectOrganisaatio(0)
+    await urlIsEventually(pathToUrl(suorittaminenListaHkiPath))
+    await textEventuallyEquals(".card__header", "Oppivelvolliset (0)")
+
+    await selectOrganisaatio(1)
+    await urlIsEventually(pathToUrl(suorittaminenListaJklPath))
+    await textEventuallyEquals(".card__header", "Oppivelvolliset (11)")
   })
 
   it("Toimii koulutustoimijatason käyttäjällä", async () => {

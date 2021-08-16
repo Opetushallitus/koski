@@ -2,11 +2,16 @@ import { Oid } from "../../src/state/common"
 import {
   createSuorittaminenHetuhakuPath,
   createSuorittaminenPath,
+  createSuorittaminenPathWithOrg,
 } from "../../src/state/paths"
 import {
   clickElement,
   expectElementEventuallyVisible,
 } from "../integrationtests-env/browser/content"
+import {
+  helsinginMedialukioOid,
+  jyväskylänNormaalikouluOid,
+} from "../integrationtests/oids"
 
 export const jklNormaalikouluSuorittaminenTableHead = "Oppivelvolliset (12)"
 export const jklNormaalikouluSuorittaminenTableContent = `
@@ -44,6 +49,16 @@ export const suorittaminenHetuhakuPath = createSuorittaminenHetuhakuPath(
   "/virkailija"
 )
 export const suorittaminenListaPath = createSuorittaminenPath("/virkailija")
+
+export const suorittaminenListaJklPath = createSuorittaminenPathWithOrg(
+  "/virkailija",
+  jyväskylänNormaalikouluOid
+)
+
+export const suorittaminenListaHkiPath = createSuorittaminenPathWithOrg(
+  "/virkailija",
+  helsinginMedialukioOid
+)
 
 export const openSuorittaminenOppijaView = async (oppijaOid: Oid) => {
   const selector = `.suorittaminen .table__row[data-row*="${oppijaOid}"] td:first-child a`
