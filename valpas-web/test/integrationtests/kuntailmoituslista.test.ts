@@ -14,19 +14,16 @@ import {
   urlIsEventually,
 } from "../integrationtests-env/browser/core"
 import { dataTableEventuallyEquals } from "../integrationtests-env/browser/datatable"
-import { dropdownSelect } from "../integrationtests-env/browser/forms"
 import { loginAs, reset } from "../integrationtests-env/browser/reset"
 import { hkiTableContent } from "./kuntailmoitus.shared"
 import { helsinginKaupunkiOid, pyhtäänKuntaOid } from "./oids"
+import { selectOrganisaatio } from "./organisaatiovalitsin-helpers"
 
 const openOppijaView = async (oppijaOid: Oid) => {
   const selector = `.kuntailmoitus .table__row td:first-child a[href*="${oppijaOid}"]`
   await expectElementEventuallyVisible(selector)
   await clickElement(selector)
 }
-
-const selectOrganisaatio = (index: number) =>
-  dropdownSelect("#organisaatiovalitsin", index)
 
 const rootPath = createKuntailmoitusPath("/virkailija")
 

@@ -17,12 +17,7 @@ import {
   setTableTextFilter,
   toggleTableSort,
 } from "../integrationtests-env/browser/datatable"
-import {
-  dropdownSelect,
-  dropdownSelectAllOptionTexts,
-  dropdownSelectContains,
-  isCheckboxChecked,
-} from "../integrationtests-env/browser/forms"
+import { isCheckboxChecked } from "../integrationtests-env/browser/forms"
 import { loginAs } from "../integrationtests-env/browser/reset"
 import { eventually } from "../integrationtests-env/browser/utils"
 import {
@@ -37,13 +32,11 @@ import {
   jyväskylänNormaalikouluOid,
   kulosaarenAlaAsteOid,
 } from "./oids"
-
-const selectOrganisaatio = (index: number) =>
-  dropdownSelect("#organisaatiovalitsin", index)
-const selectOrganisaatioByNimi = (text: string) =>
-  dropdownSelectContains("#organisaatiovalitsin", text)
-const valitsimenOrganisaatiot = () =>
-  dropdownSelectAllOptionTexts("#organisaatiovalitsin")
+import {
+  selectOrganisaatio,
+  selectOrganisaatioByNimi,
+  valitsimenOrganisaatiot,
+} from "./organisaatiovalitsin-helpers"
 
 const clickAndVerifyMuuHaku = async (index: number) => {
   const currentState = await isMuuHakuChecked(index)
