@@ -43,21 +43,24 @@ object ValpasMockUsers {
     "käyttäjä",
     "valpas-helsinki-aapajoen-peruskoulu",
     "1.2.246.562.24.12312312375",
-    kuntakäyttäjä(helsinginKaupunki) ++ peruskoulunKäyttäjä(aapajoenKoulu)
+    kuntakäyttäjä(helsinginKaupunki)
+      ++ peruskoulunKäyttäjä(aapajoenKoulu)
   )
 
   val valpasPyhtääJaAapajoenPeruskoulu = ValpasMockUser(
     "käyttäjä",
     "valpas-pyhtää",
     "1.2.246.562.24.12312312399",
-    kuntakäyttäjä(pyhtäänKunta) ++ peruskoulunKäyttäjä(aapajoenKoulu)
+    kuntakäyttäjä(pyhtäänKunta)
+      ++ peruskoulunKäyttäjä(aapajoenKoulu)
   )
 
   val valpasPyhtääJaHelsinki = ValpasMockUser(
     "käyttäjä",
     "valpas-pyhtää-ja-helsinki",
     "1.2.246.562.24.12312312369",
-    kuntakäyttäjä(pyhtäänKunta) ++ kuntakäyttäjä(helsinginKaupunki)
+    kuntakäyttäjä(pyhtäänKunta)
+      ++ kuntakäyttäjä(helsinginKaupunki)
   )
 
   val valpasHelsinkiPeruskoulu = ValpasMockUser(
@@ -71,7 +74,8 @@ object ValpasMockUsers {
     "käyttäjä",
     "valpas-jkl-normaali",
     "1.2.246.562.24.12312312302",
-    peruskoulunJossa10LuokkaKäyttäjä(jyväskylänNormaalikoulu) ++ toisenAsteenKäyttäjä(jyväskylänNormaalikoulu)
+    peruskoulunJossa10LuokkaKäyttäjä(jyväskylänNormaalikoulu)
+      ++ toisenAsteenKäyttäjä(jyväskylänNormaalikoulu)
   )
 
   val valpasJklNormaalikouluPelkkäPeruskoulu = ValpasMockUser(
@@ -85,7 +89,8 @@ object ValpasMockUsers {
     "käyttäjä",
     "valpas-aapajoen-koulu",
     "1.2.246.562.24.12312312309",
-    peruskoulunJossa10LuokkaKäyttäjä(aapajoenKoulu) ++ toisenAsteenKäyttäjä(aapajoenKoulu)
+    peruskoulunJossa10LuokkaKäyttäjä(aapajoenKoulu)
+      ++ toisenAsteenKäyttäjä(aapajoenKoulu)
   )
 
   val valpasJklYliopisto = ValpasMockUser(
@@ -99,14 +104,18 @@ object ValpasMockUsers {
     "käyttäjä",
     "valpas-jkl-normaali-koski-hki",
     "1.2.246.562.24.12312312303",
-    peruskoulunJossa10LuokkaKäyttäjä(jyväskylänNormaalikoulu) ++ toisenAsteenKäyttäjä(jyväskylänNormaalikoulu) ++ Set(MockKäyttöoikeusryhmät.oppilaitosTallentaja(helsinginKaupunki))
+    peruskoulunJossa10LuokkaKäyttäjä(jyväskylänNormaalikoulu)
+      ++ toisenAsteenKäyttäjä(jyväskylänNormaalikoulu)
+      ++ Set(MockKäyttöoikeusryhmät.oppilaitosTallentaja(helsinginKaupunki))
   )
 
   val valpasJklNormaalikouluJaValpasHelsinki = ValpasMockUser(
     "käyttäjä",
     "valpas-jkl-normaali-hki",
     "1.2.246.562.24.12312312304",
-    peruskoulunJossa10LuokkaKäyttäjä(jyväskylänNormaalikoulu) ++ toisenAsteenKäyttäjä(jyväskylänNormaalikoulu) ++ kuntakäyttäjä(helsinginKaupunki)
+    peruskoulunJossa10LuokkaKäyttäjä(jyväskylänNormaalikoulu)
+      ++ toisenAsteenKäyttäjä(jyväskylänNormaalikoulu)
+      ++ kuntakäyttäjä(helsinginKaupunki)
   )
 
   val valpasKulosaariPeruskoulu = ValpasMockUser(
@@ -120,7 +129,8 @@ object ValpasMockUsers {
     "käyttäjä",
     "valpas-useampi-peruskoulu",
     "1.2.246.562.24.12315312323",
-    peruskoulunKäyttäjä(jyväskylänNormaalikoulu) ++ peruskoulunKäyttäjä(kulosaarenAlaAste)
+    peruskoulunKäyttäjä(jyväskylänNormaalikoulu)
+      ++ peruskoulunKäyttäjä(kulosaarenAlaAste)
   )
 
   val valpasSaksalainenKoulu = ValpasMockUser(
@@ -155,7 +165,9 @@ object ValpasMockUsers {
     "käyttäjä",
     "valpas-pelkkä-suorittaminen",
     "1.2.246.562.24.12315312356",
-    oppilaitosKäyttäjäPelkkäSuorittaminen(jyväskylänNormaalikoulu) ++ oppilaitosKäyttäjäPelkkäSuorittaminen(helsinginMedialukio)
+    oppilaitosKäyttäjäPelkkäSuorittaminen(jyväskylänNormaalikoulu)
+      ++ oppilaitosKäyttäjäPelkkäSuorittaminen(helsinginMedialukio)
+      ++ oppilaitosKäyttäjäPelkkäSuorittaminen(aapajoenKoulu)
   )
 
   val valpasPelkkäSuorittaminenkäyttäjäAmmattikoulu = ValpasMockUser(
@@ -169,21 +181,25 @@ object ValpasMockUsers {
     "käyttäjä",
     "valpas-maksuttomuus-hki",
     "1.2.246.562.24.12315312754",
-    oppilaitosKäyttäjäPelkkäMaksuttomuus(jyväskylänNormaalikoulu) ++ kuntakäyttäjä(helsinginKaupunki)
+    oppilaitosKäyttäjäPelkkäMaksuttomuus(jyväskylänNormaalikoulu)
+      ++ kuntakäyttäjä(helsinginKaupunki)
   )
 
   val valpasMaksuttomuusJaHelsinkiKoskiKäyttäjä = ValpasMockUser(
     "käyttäjä",
     "valpas-maksuttomuus-koski-hki",
     "1.2.246.562.24.12315312759",
-    oppilaitosKäyttäjäPelkkäMaksuttomuus(jyväskylänNormaalikoulu) ++ Set(MockKäyttöoikeusryhmät.oppilaitosTallentaja(helsinginKaupunki))
+    oppilaitosKäyttäjäPelkkäMaksuttomuus(jyväskylänNormaalikoulu)
+      ++ Set(MockKäyttöoikeusryhmät.oppilaitosTallentaja(helsinginKaupunki))
   )
 
   val valpasAapajoenKouluJaJklNormaalikoulu = ValpasMockUser(
     "käyttäjä",
     "valpas-aapajoen-koulu-jkl-normaali",
     "1.2.246.562.24.12312318582",
-    peruskoulunJossa10LuokkaKäyttäjä(aapajoenKoulu) ++ toisenAsteenKäyttäjä(aapajoenKoulu) ++ peruskoulunKäyttäjä(jyväskylänNormaalikoulu)
+    peruskoulunJossa10LuokkaKäyttäjä(aapajoenKoulu)
+      ++ toisenAsteenKäyttäjä(aapajoenKoulu)
+      ++ peruskoulunKäyttäjä(jyväskylänNormaalikoulu)
   )
 
   val valpasJklAapajokiHkiPyhtää = ValpasMockUser(
