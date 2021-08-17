@@ -131,7 +131,7 @@ describe('MyData', function() {
     })
 
     it('Ja kumppanin nimi vaihtuu ruotsinkieliseksi', function() {
-      expect(mydata.getMemberName()).equal('HRT Helsingforsregionens trafik')
+      expect(mydata.getMemberName()).equal('HRT Helsingforsregionens trafik') // Flaky?
     })
   })
 })
