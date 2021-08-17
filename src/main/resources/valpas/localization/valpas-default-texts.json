@@ -217,6 +217,8 @@
   "suorittaminennäkymä__taulu_oppivelvollisuus": "Oppivelvollisuus",
   "suorittaminennäkymä__taulu_useita_toimipisteitä": "Useita toimipisteitä",
   "suorittaminennäkymä__oppivelvollisuus_voimassa_value": "{{date}} asti",
+  "suorittaminennäkymä__oppivelvollisuus_keskeytetty_value": "Keskeytetty {{alkuPvm}} – {{loppuPvm}}",
+  "suorittaminennäkymä__oppivelvollisuus_keskeytetty_toistaiseksi_value": "Keskeytetty toistaiseksi {{alkuPvm}} alkaen",
   "koulutustyyppi_valma": "VALMA",
   "koulutustyyppi_telma": "TELMA",
   "koulutustyyppi_vst": "VST",

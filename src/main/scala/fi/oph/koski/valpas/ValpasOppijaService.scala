@@ -83,6 +83,7 @@ case class OppijaHakutilanteillaSuppeatTiedot(
   hakutilanteet: Seq[ValpasHakutilanneSuppeatTiedot],
   hakutilanneError: Option[String],
   kuntailmoitukset: Seq[ValpasKuntailmoitusSuppeatTiedot],
+  oppivelvollisuudenKeskeytykset: Seq[ValpasOppivelvollisuudenKeskeytys],
   lisätiedot: Seq[OpiskeluoikeusLisätiedot],
 )
 
@@ -94,6 +95,7 @@ object OppijaHakutilanteillaSuppeatTiedot {
       hakutilanteet = laajatTiedot.hakutilanteet.map(ValpasHakutilanneSuppeatTiedot.apply),
       hakutilanneError = laajatTiedot.hakutilanneError,
       kuntailmoitukset = laajatTiedot.kuntailmoitukset.map(ValpasKuntailmoitusSuppeatTiedot.apply),
+      oppivelvollisuudenKeskeytykset = laajatTiedot.oppivelvollisuudenKeskeytykset,
       lisätiedot = Seq.empty
     )
   }
@@ -105,6 +107,7 @@ object OppijaHakutilanteillaSuppeatTiedot {
       hakutilanteet = laajatTiedot.hakutilanteet.map(ValpasHakutilanneSuppeatTiedot.apply),
       hakutilanneError = laajatTiedot.hakutilanneError,
       kuntailmoitukset = laajatTiedot.kuntailmoitukset.map(ValpasKuntailmoitusSuppeatTiedot.apply),
+      oppivelvollisuudenKeskeytykset = laajatTiedot.oppivelvollisuudenKeskeytykset,
       lisätiedot = lisätiedot.map(l => OpiskeluoikeusLisätiedot(
         oppijaOid = l.oppijaOid,
         opiskeluoikeusOid = l.opiskeluoikeusOid,
@@ -157,7 +160,9 @@ class ValpasOppijaService(
       .map(_.map(poistaEronneetOpiskeluoikeudetJoillaUusiKelpaavaOpiskelupaikka))
       // poista oppijat, joille ei eronneiden poiston jälkeen jäänyt jäljelle yhtään suorittamisvalvottavia opiskeluoikeuksia
       .map(_.filter(onSuorittamisvalvottaviaOpiskeluoikeuksia))
+      .map(_.map(fetchOppivelvollisuudenKeskeytykset))
       .map(_.map(OppijaHakutilanteillaSuppeatTiedot.apply))
+      .map(_.map(poistaMuutKuinVoimassaolevatKeskeytykset))
 
   private def poistaEronneetOpiskeluoikeudetJoillaUusiKelpaavaOpiskelupaikka(
     oppija: OppijaHakutilanteillaLaajatTiedot
@@ -238,6 +243,11 @@ class ValpasOppijaService(
 
   private def onSuorittamisvalvottaviaOpiskeluoikeuksia(oppija: OppijaHakutilanteillaLaajatTiedot): Boolean =
     oppija.oppija.opiskeluoikeudet.exists(_.onSuorittamisValvottava)
+
+  private def poistaMuutKuinVoimassaolevatKeskeytykset(
+    oppija: OppijaHakutilanteillaSuppeatTiedot
+  ): OppijaHakutilanteillaSuppeatTiedot =
+    oppija.copy(oppivelvollisuudenKeskeytykset = oppija.oppivelvollisuudenKeskeytykset.filter(_.voimassa))
 
   def getKunnanOppijatSuppeatTiedot
     (kuntaOid: Organisaatio.Oid, haeAktiiviset: Boolean)
