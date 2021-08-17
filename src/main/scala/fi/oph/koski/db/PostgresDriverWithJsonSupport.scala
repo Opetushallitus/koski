@@ -42,6 +42,12 @@ trait PostgresDriverWithJsonSupport extends PostgresProfile
       def getJson(columnName: String): JValue = jsonMethods.parse(r.rs.getString(columnName))
 
       def getLocalDate(columnName: String): LocalDate = r.rs.getObject(columnName, classOf[LocalDate])
+
+      def getLocalDateOption(columnName: String): Option[LocalDate] =
+        getLocalDate(columnName) match {
+          case d: LocalDate => Some(d)
+          case _ => None
+        }
     }
   }
 

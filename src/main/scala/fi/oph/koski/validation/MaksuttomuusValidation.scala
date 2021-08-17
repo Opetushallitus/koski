@@ -1,12 +1,14 @@
 package fi.oph.koski.validation
 
 
-import java.time.LocalDate
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
 import fi.oph.koski.schema._
-import fi.oph.koski.util.DateOrdering
+import fi.oph.koski.util.{DateOrdering, FinnishDateFormat}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
+
+import java.time.LocalDate
 
 object MaksuttomuusValidation {
 
@@ -14,28 +16,56 @@ object MaksuttomuusValidation {
                                         oppijanSyntymäpäivä: Option[LocalDate],
                                         oppijanOid: String,
                                         oppijanHetu: Option[String],
-                                        opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository)
+                                        opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
+                                        rajapäivät: ValpasRajapäivätService)
                                        (implicit user: KoskiSpecificSession): HttpStatus = {
-    val suoritusVaatiiMaksuttomuusTiedon = oppivelvollisuudenSuorittamiseenKelpaavaMuuKuinPeruskoulunOpiskeluoikeus(opiskeluoikeus)
-    val oppijanIkäOikeuttaaMaksuttomuuden = oppijanSyntymäpäivä.exists(bd => !LocalDate.of(2004, 1, 1).isAfter(bd))
-    val alkamispäiväOikeuttaaMaksuttomuuden = opiskeluoikeus.alkamispäivä.exists(d => !d.isBefore(LocalDate.of(2021, 1, 1)))
-    val maksuttomuusTietoOnSiirretty = opiskeluoikeus.lisätiedot.collect { case l: MaksuttomuusTieto => l.maksuttomuus.toList.flatten.length > 0 }.getOrElse(false)
-    val maksuttomuuttaPidennettyOnSiirretty = opiskeluoikeus.lisätiedot.collect { case l : MaksuttomuusTieto => l.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.length > 0 }.getOrElse(false)
+    val lakiVoimassaPeruskoulustaValmistuneille = rajapäivät.lakiVoimassaPeruskoulustaValmistuneillaAlku
+    val lakiVoimassaVanhinSyntymäaika = rajapäivät.lakiVoimassaVanhinSyntymäaika
 
-    val piirissä = !opiskeluoikeusRepository.checkValpasLainUlkopuolisiaPerusopetuksenVahvistettujaSuorituksia(oppijanOid) && oppijanHetu.isDefined
-    val eiPiirissäMuttaMaksuttomuusTietojaSiirretty = !piirissä && (maksuttomuusTietoOnSiirretty || maksuttomuuttaPidennettyOnSiirretty)
+    val perusopetuksenAikavälit = opiskeluoikeusRepository.getPerusopetuksenAikavälit(oppijanOid)
+    val maksuttomuustietoSiirretty = opiskeluoikeus.lisätiedot.collect { case l: MaksuttomuusTieto => l.maksuttomuus.toList.flatten.length > 0 }.getOrElse(false)
+    val maksuttomuudenPidennysSiirretty = opiskeluoikeus.lisätiedot.collect { case l : MaksuttomuusTieto => l.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.length > 0 }.getOrElse(false)
 
-    if (suoritusVaatiiMaksuttomuusTiedon && oppijanIkäOikeuttaaMaksuttomuuden && alkamispäiväOikeuttaaMaksuttomuuden && piirissä) {
-      HttpStatus.validate(maksuttomuusTietoOnSiirretty) { KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta puuttuu.") }
-    } else if (oppijanHetu.isEmpty) {
-      HttpStatus.validate(!maksuttomuusTietoOnSiirretty) { KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskelijalla ei ole henkilötunnusta.") }
-    } else if (!piirissä) {
-      HttpStatus.validate(!eiPiirissäMuttaMaksuttomuusTietojaSiirretty) { KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskelija on suorittanut perusopetuksen, aikuisten perusopetuksen oppimäärän tai International Schoolin 9. vuosiluokan ennen 1.1.2021.")}
+    // A2. Koskessa on jokin merkintä peruskoulun (tai vastaavan) suorituksesta, joka on joko päättynyt 1.1.2021 tai myöhemmin, tai on ollut aktiivisena 1.1.2021 tai myöhemmin, jos ei ole vielä päättynyt.
+    val peruskoulussaVuoden2021Alussa = perusopetuksenAikavälit.exists(p =>
+      p.loppu.isEmpty || p.loppu.exists(!_.isBefore(lakiVoimassaPeruskoulustaValmistuneille))
+    )
+
+    // A3. Peruskoulun jälkeisen koulutuksen suoritus on alkanut 1.1.2021 tai myöhemmin
+    val peruskoulunJälkeinenKoulutusAlkanutAikaisintaan2021 = opiskeluoikeus.alkamispäivä.exists(p => !p.isBefore(lakiVoimassaPeruskoulustaValmistuneille))
+
+    // A4. Peruskoulun jälkienen koulutus on uuden lain mukaiseksi peruskoulun jälkeiseksi oppivelvollisuuskoulutukseksi kelpaavaa
+    val koulutusOppivelvollisuuskoulutukseksiKelpaavaa = oppivelvollisuudenSuorittamiseenKelpaavaMuuKuinPeruskoulunOpiskeluoikeus(opiskeluoikeus)
+
+    // Oppijalla on Koskessa valmistumismerkintä peruskoulusta (tai vastaavasta) 31.12.2020 tai aiemmin
+    val valmistunutPeruskoulustaEnnen2021 = perusopetuksenAikavälit.exists(p => p.loppu.exists(_.isBefore(lakiVoimassaPeruskoulustaValmistuneille)))
+
+    val oppijanIkäOikeuttaaMaksuttomuuden = oppijanSyntymäpäivä.exists(bd => !lakiVoimassaVanhinSyntymäaika.isAfter(bd))
+
+    val maksuttomuustiedotVaaditaan =
+      oppijanHetu.isDefined &&
+        peruskoulussaVuoden2021Alussa &&
+        peruskoulunJälkeinenKoulutusAlkanutAikaisintaan2021 &&
+        koulutusOppivelvollisuuskoulutukseksiKelpaavaa
+
+    // Tilanteet, joissa maksuttomuustietoja ei saa siirtää. Jos tuplen ensimmäinen arvo on true, ehto aktivoituu ja toinen arvon kertoo syyn.
+    val maksuttomuustietoEiSallittuSyyt = List(
+      (valmistunutPeruskoulustaEnnen2021, s"oppija on suorittanut oppivelvollisuutensa ennen ${lakiVoimassaPeruskoulustaValmistuneille.format(FinnishDateFormat.finnishDateFormat)} eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin"),
+      (oppijanSyntymäpäivä.isEmpty, "oppijan syntymäaika puuttuu oppijanumerorekisteristä"),
+      (oppijanSyntymäpäivä.isDefined && !oppijanIkäOikeuttaaMaksuttomuuden, s"oppija on syntynyt ennen vuotta ${lakiVoimassaVanhinSyntymäaika.getYear()} eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin"),
+      (!koulutusOppivelvollisuuskoulutukseksiKelpaavaa, "koulutus ei siirrettyjen tietojen perusteella kelpaa oppivelvollisuuden suorittamiseen (tarkista, että koulutuskoodi, käytetyn opetussuunnitelman perusteen diaarinumero, suorituksen tyyppi ja/tai suoritustapa ovat oikein)")
+    ).filter(_._1).map(_._2)
+
+    if (maksuttomuustiedotVaaditaan) {
+      HttpStatus.validate(maksuttomuustietoSiirretty) { KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta puuttuu.") }
+    } else if (maksuttomuustietoEiSallittuSyyt.nonEmpty) {
+      val maksuttomuustietojaSiirretty = maksuttomuustietoSiirretty || maksuttomuudenPidennysSiirretty
+      HttpStatus.validate(!maksuttomuustietojaSiirretty) {
+        val syyt = maksuttomuustietoEiSallittuSyyt.mkString(" ja ")
+        KoskiErrorCategory.badRequest.validation(s"Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä $syyt.")
+      }
     } else {
-      HttpStatus.fold(
-        HttpStatus.validate(!maksuttomuusTietoOnSiirretty) { KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskeluoikeus on alkanut ennen 1.1.2021 ja/tai oppija ei annetun syntymäajan perusteella ole ikänsä puolesta laajennetun oppivelvollisuuden piirissä.")},
-        HttpStatus.validate(!maksuttomuuttaPidennettyOnSiirretty) { KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskeluoikeus on alkanut ennen 1.1.2021 ja/tai oppija ei annetun syntymäajan perusteella ole ikänsä puolesta laajennetun oppivelvollisuuden piirissä.")}
-      )
+      HttpStatus.ok
     }
   }
 

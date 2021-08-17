@@ -1,9 +1,7 @@
 package fi.oph.koski.opiskeluoikeus
 
-import java.sql.SQLException
-import fi.oph.koski.db.DB
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.KoskiTables._
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db._
 import fi.oph.koski.henkilo._
 import fi.oph.koski.history.{JsonPatchException, OpiskeluoikeusHistory, OpiskeluoikeusHistoryRepository}
@@ -23,6 +21,10 @@ import slick.dbio
 import slick.dbio.DBIOAction.sequence
 import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.{DBIOAction, NoStream}
+import slick.jdbc.GetResult
+
+import java.sql.SQLException
+import java.time.LocalDate
 
 class PostgresOpiskeluoikeusRepository(
   val db: DB,
@@ -188,21 +190,21 @@ class PostgresOpiskeluoikeusRepository(
     }
   }
 
-  def checkValpasLainUlkopuolisiaPerusopetuksenVahvistettujaSuorituksia(oid: String)(implicit user: KoskiSpecificSession): Boolean = {
-    val valpasLakiVoimassaPeruskoulustaValmistuneilla = valpasRajapäivätService.lakiVoimassaPeruskoulustaValmistuneillaAlku
-
-    val query =
+  def getPerusopetuksenAikavälit(oppijaOid: String)(implicit user: KoskiSpecificSession): Seq[Päivämääräväli] = {
+    runDbSync(
       sql"""
         with master as (
           select case when master_oid is not null then master_oid else oid end as oid
           from henkilo
-          where oid = $oid
+          where oid = $oppijaOid
         ), linkitetyt as (
           select oid as oids
           from henkilo
           where henkilo.oid = (select oid from master) or henkilo.master_oid = (select oid from master)
         )
-        select *
+        select
+          alkamispaiva,
+          paattymispaiva
         from opiskeluoikeus
         cross join jsonb_array_elements(data -> 'suoritukset') suoritukset
         where not opiskeluoikeus.mitatoity
@@ -210,16 +212,16 @@ class PostgresOpiskeluoikeusRepository(
             or suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'aikuistenperusopetuksenoppimaara'
             or suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'internationalschoolmypvuosiluokka'
             and suoritukset -> 'koulutusmoduuli' -> 'tunniste' ->> 'koodiarvo' = '9')
-          and (suoritukset -> 'vahvistus' ->> 'päivä')::date < $valpasLakiVoimassaPeruskoulustaValmistuneilla::date
           and oppija_oid = any(select oids from linkitetyt)
-      """
-
-    val result = runDbSync(query.as[Int])
-    result.headOption match {
-      case Some(c) if c > 0 => true
-      case _ => false
-    }
+      """.as[Päivämääräväli])
   }
+
+  private implicit def getPäivämääräväli: GetResult[Päivämääräväli] = GetResult(r => {
+    Päivämääräväli(
+      alku = r.getLocalDate("alkamispaiva"),
+      loppu = r.getLocalDateOption("paattymispaiva"),
+    )
+  })
 
   private def findOpiskeluoikeudetWithSlaves(oid: String)(implicit user: KoskiSpecificSession): dbio.DBIOAction[Seq[OpiskeluoikeusRow], NoStream, Read] =
     (Henkilöt.filter(_.masterOid === oid) ++ Henkilöt.filter(_.oid === oid)).map(_.oid)
@@ -337,3 +339,8 @@ class PostgresOpiskeluoikeusRepository(
     case e: JsonPatchException => Some(s"Virhe opiskeluoikeushistorian validoinnissa: ${e.getMessage}")
   }
 }
+
+case class Päivämääräväli(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+)
