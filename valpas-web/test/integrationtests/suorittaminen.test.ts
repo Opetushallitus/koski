@@ -16,8 +16,12 @@ import {
   toggleTableSort,
 } from "../integrationtests-env/browser/datatable"
 import { loginAs, resetMockData } from "../integrationtests-env/browser/reset"
+import { hakutilannePath } from "../integrationtests/hakutilanne.shared"
 import { jyväskylänNormaalikouluOid, stadinAmmattiopistoOid } from "./oids"
-import { selectOrganisaatio } from "./organisaatiovalitsin-helpers"
+import {
+  selectOrganisaatio,
+  selectOrganisaatioByNimi,
+} from "./organisaatiovalitsin-helpers"
 import {
   jklNormaalikouluSuorittaminenTableContent,
   jklNormaalikouluSuorittaminenTableHead,
@@ -106,7 +110,19 @@ describe("Suorittamisen valvonta -näkymä", () => {
   })
 
   it("Toimii koulutustoimijatason käyttäjällä", async () => {
-    // TODO
+    await loginAs(hakutilannePath, "valpas-hki-suorittaminen")
+    await selectOrganisaatioByNimi("Stadin ammatti- ja aikuisopisto")
+
+    await urlIsEventually(pathToUrl(stadinAmmattiopistoSuorittaminenPath))
+    await textEventuallyEquals(
+      ".card__header",
+      stadinAmmattiopistoSuorittaminenTableHead
+    )
+    await dataTableEventuallyEquals(
+      ".suorittaminen",
+      stadinAmmattiopistoSuorittaminenTableContent,
+      "|"
+    )
   })
 
   it("Passiiviset organisaatiot listataan aktiivisten jälkeen", async () => {
