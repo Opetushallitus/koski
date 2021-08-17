@@ -1,7 +1,7 @@
 import bem from "bem-ts"
-import { plainComponent } from "../../utils/plaincomponent"
+import { forwardRefComponent } from "../../utils/plaincomponent"
 import "./BottomDrawer.less"
 
 const b = bem("bottomdrawer")
 
-export const BottomDrawer = plainComponent("aside", b("container"))
+export const BottomDrawer = forwardRefComponent("aside", b("container"))
