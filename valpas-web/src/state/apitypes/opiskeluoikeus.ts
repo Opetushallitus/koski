@@ -93,7 +93,7 @@ export const suorittamisvalvottavatOpiskeluoikeudet = (
     isSuorittamisvalvottavaOpiskeluoikeus(organisaatioOid)
   )
 
-export const hakeutumisvalvonnanOpiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus = (
+export const voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus = (
   opiskeluoikeus: OpiskeluoikeusSuppeatTiedot
 ): boolean => {
   const tila = opiskeluoikeus.tarkastelupäivänTila.koodiarvo
@@ -102,5 +102,3 @@ export const hakeutumisvalvonnanOpiskeluoikeusSarakkeessaNäytettäväOpiskeluoi
     (tila === "voimassa" || tila === "voimassatulevaisuudessa")
   )
 }
-
-export const

@@ -11,8 +11,8 @@ import {
 } from "../../../components/tables/DataTable"
 import { getLocalizedMaybe, t } from "../../../i18n/i18n"
 import {
-  hakeutumisvalvonnanOpiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus,
   OpiskeluoikeusSuppeatTiedot,
+  voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus,
 } from "../../../state/apitypes/opiskeluoikeus"
 import { OppijaKuntailmoituksillaSuppeatTiedot } from "../../../state/apitypes/oppija"
 import { organisaatioNimi } from "../../../state/apitypes/organisaatiot"
@@ -129,7 +129,7 @@ const opiskeluoikeustiedot = (
   opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
 ): Value => {
   const oos = opiskeluoikeudet.filter(
-    hakeutumisvalvonnanOpiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus
+    voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus
   )
 
   const toValue = (oo: OpiskeluoikeusSuppeatTiedot) => {
