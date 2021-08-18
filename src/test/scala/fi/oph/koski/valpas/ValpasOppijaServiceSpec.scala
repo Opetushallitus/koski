@@ -371,7 +371,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       ),
     ),
     (
-      ValpasMockOppijat.amisEronnutUusiOpiskeluoikeusTulevaisuudessa,
+      ValpasMockOppijat.amisEronnutUusiOpiskeluoikeusTulevaisuudessaKeskeyttänyt,
       List(
         ExpectedData(ValpasOpiskeluoikeusExampleData.ammattikouluAlkaaOmniaLoka2021, "voimassatulevaisuudessa", "lasna", false, false, false),
         ExpectedData(ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus, "eronnut", "eronnut", false, false, true),
@@ -379,7 +379,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       ),
     ),
     (
-      ValpasMockOppijat.amisEronnutUusiOpiskeluoikeusPeruskoulussa,
+      ValpasMockOppijat.amisEronnutUusiOpiskeluoikeusPeruskoulussaKeskeyttänytTulevaisuudessa,
       List(
         ExpectedData(ValpasOpiskeluoikeusExampleData.alkaaYsiluokkalainenSaksalainenKouluSyys2021, "voimassa", "lasna", false, false, false),
         ExpectedData(ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus, "eronnut", "eronnut", false, false, true),

@@ -127,7 +127,24 @@ object ValpasExampleData {
       luotu = LocalDateTime.of(2021, 1, 1, 12, 30),
       tekijäOid = ValpasMockUsers.valpasJklNormaalikoulu.oid,
       tekijäOrganisaatioOid = MockOrganisaatiot.jyväskylänNormaalikoulu,
+    ),
+    OppivelvollisuudenKeskeytysRow(
+      oppijaOid = ValpasMockOppijat.amisEronnutUusiOpiskeluoikeusTulevaisuudessaKeskeyttänyt.oid,
+      alku = date(2021, 8, 15),
+      loppu = Some(date(2021, 10, 30)),
+      luotu = LocalDateTime.of(2021, 1, 1, 12, 30),
+      tekijäOid = ValpasMockUsers.valpasHelsinki.oid,
+      tekijäOrganisaatioOid = MockOrganisaatiot.helsinginKaupunki,
+    ),
+    OppivelvollisuudenKeskeytysRow(
+      oppijaOid = ValpasMockOppijat.amisEronnutUusiOpiskeluoikeusPeruskoulussaKeskeyttänytTulevaisuudessa.oid,
+      alku = date(2021, 9, 30),
+      loppu = None,
+      luotu = LocalDateTime.of(2021, 1, 1, 12, 30),
+      tekijäOid = ValpasMockUsers.valpasHelsinki.oid,
+      tekijäOrganisaatioOid = MockOrganisaatiot.helsinginKaupunki,
     )
+
   )
 
   def oppilaitoksenIlmoitusKaikillaTiedoilla = ilmoitus

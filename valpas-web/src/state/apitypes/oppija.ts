@@ -26,6 +26,7 @@ export type OppijaHakutilanteillaSuppeatTiedot = {
   oppija: OppijaSuppeatTiedot
   hakutilanteet: HakuSuppeatTiedot[]
   hakutilanneError?: string
+  oppivelvollisuudenKeskeytykset: OppivelvollisuudenKeskeytys[]
   lisätiedot: OpiskeluoikeusLisätiedot[]
 }
 

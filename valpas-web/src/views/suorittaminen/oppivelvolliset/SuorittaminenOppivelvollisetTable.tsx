@@ -21,6 +21,7 @@ import {
   OppijaHakutilanteillaSuppeatTiedot,
   OppijaSuppeatTiedot,
 } from "../../../state/apitypes/oppija"
+import { OppivelvollisuudenKeskeytys } from "../../../state/apitypes/oppivelvollisuudenkeskeytys"
 import { organisaatioNimi } from "../../../state/apitypes/organisaatiot"
 import {
   isVoimassa,
@@ -162,7 +163,7 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
         fromNullableValue(
           opiskeluoikeustiedot(oppija.oppija.opiskeluoikeudet, opiskeluoikeus)
         ),
-        fromNullableValue(oppivelvollisuus(oppija.oppija)),
+        fromNullableValue(oppivelvollisuus(oppija)),
       ],
     }
   })
@@ -297,15 +298,50 @@ const suorittamisvalvonnanOpiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus =
   return tila === "voimassa" || tila === "voimassatulevaisuudessa"
 }
 
-const oppivelvollisuus = (oppija: OppijaSuppeatTiedot): Value | null => {
-  return oppija.oppivelvollisuusVoimassaAsti
+const oppivelvollisuus = (
+  oppija: OppijaHakutilanteillaSuppeatTiedot
+): Value | null => {
+  const oppivelvollisuusVoimassaAsti =
+    oppija.oppija.oppivelvollisuusVoimassaAsti
+
+  return oppivelvollisuusVoimassaAsti
     ? {
-        // TODO: käsittele keskeytykset, ota mallia OppijanOppivelvollisuustiedot.tsx:stä. Tällä hetkellä dataa ei tule.
-        value: oppija.oppivelvollisuusVoimassaAsti,
-        filterValues: [oppija.oppivelvollisuusVoimassaAsti],
-        display: t("suorittaminennäkymä__oppivelvollisuus_voimassa_value", {
-          date: formatDate(oppija.oppivelvollisuusVoimassaAsti),
-        }),
+        value: oppivelvollisuusVoimassaAsti,
+        filterValues: [oppivelvollisuusVoimassaAsti],
+        display: (
+          <>
+            {t("suorittaminennäkymä__oppivelvollisuus_voimassa_value", {
+              date: formatDate(oppivelvollisuusVoimassaAsti),
+            })}
+            {keskeytysMerkintä(oppija.oppivelvollisuudenKeskeytykset)}
+          </>
+        ),
+        tooltip: keskeytysTooltip(oppija.oppivelvollisuudenKeskeytykset),
       }
     : null
 }
+
+const keskeytysMerkintä = (
+  oppivelvollisuudenKeskeytykset: OppivelvollisuudenKeskeytys[]
+): string | null => (oppivelvollisuudenKeskeytykset.length ? "*" : null)
+
+const keskeytysTooltip = (
+  oppivelvollisuudenKeskeytykset: OppivelvollisuudenKeskeytys[]
+): string | undefined =>
+  oppivelvollisuudenKeskeytykset.length
+    ? oppivelvollisuudenKeskeytykset
+        .map((keskeytys) =>
+          keskeytys.loppu
+            ? t("suorittaminennäkymä__oppivelvollisuus_keskeytetty_value", {
+                alkuPvm: formatDate(keskeytys.alku),
+                loppuPvm: formatDate(keskeytys.loppu),
+              })
+            : t(
+                "suorittaminennäkymä__oppivelvollisuus_keskeytetty_toistaiseksi_value",
+                {
+                  alkuPvm: formatDate(keskeytys.alku),
+                }
+              )
+        )
+        .join("\n")
+    : undefined

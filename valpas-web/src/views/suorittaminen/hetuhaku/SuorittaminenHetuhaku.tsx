@@ -20,7 +20,12 @@ export const SuorittaminenHetuhaku = () => {
   return (
     <Page id="suorittaminenhetuhaku">
       {isFeatureFlagEnabled("suorittamisenvalvontalista") ? (
-        <SuorittaminenNavigation />
+        <>
+          <SuorittaminenNavigation />
+          <p>
+            <T id={"suorittaminenhaku__ohje"} />
+          </p>
+        </>
       ) : (
         <p>
           <T id={"oppijahaku__suorittaminen_väliaikainen_viesti"} />

@@ -76,7 +76,7 @@ export const isSuorittamisvalvottavaOpiskeluoikeus = (
 ) => (oo: OpiskeluoikeusSuppeatTiedot) =>
   oo.onSuorittamisValvottava && oo.oppilaitos.oid == organisaatioOid
 
-export const isPerusopetus = (oo: OpiskeluoikeusSuppeatTiedot) =>
+export const isNuortenPerusopetus = (oo: OpiskeluoikeusSuppeatTiedot) =>
   oo.tyyppi.koodiarvo === "perusopetus"
 
 export const hakeutumisvalvottavatOpiskeluoikeudet = (
@@ -93,12 +93,12 @@ export const suorittamisvalvottavatOpiskeluoikeudet = (
     isSuorittamisvalvottavaOpiskeluoikeus(organisaatioOid)
   )
 
-export const hakeutumisvalvonnanOpiskeluoikeusSarakkeessaNäytettäväOpiskeluoikeus = (
+export const voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus = (
   opiskeluoikeus: OpiskeluoikeusSuppeatTiedot
 ): boolean => {
   const tila = opiskeluoikeus.tarkastelupäivänTila.koodiarvo
   return (
-    !isPerusopetus(opiskeluoikeus) &&
+    !isNuortenPerusopetus(opiskeluoikeus) &&
     (tila === "voimassa" || tila === "voimassatulevaisuudessa")
   )
 }
