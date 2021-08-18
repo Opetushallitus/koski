@@ -22690,6 +22690,33 @@
         "organisaatiotyyppi_01"
       ],
       "status": "AKTIIVINEN"
+    },
+    {
+      "oid": "1.2.246.562.10.69417312937",
+      "alkuPvm": 258760800000,
+      "lakkautusPvm": 1280610000000,
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "|1.2.246.562.10.00000000001|",
+      "ytunnus": "",
+      "toimipistekoodi": "",
+      "match": true,
+      "nimi": {
+        "fi": "Lakkautettu kunta"
+      },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1",
+        "oppilaitoksenopetuskieli_2#1",
+        "oppilaitoksenopetuskieli_3#1"
+      ],
+      "kotipaikkaUri": "kunta_666",
+      "children": [],
+      "aliOrganisaatioMaara": 0,
+      "organisaatiotyypit": [
+        "organisaatiotyyppi_01",
+        "organisaatiotyyppi_07",
+        "organisaatiotyyppi_09"
+      ],
+      "status": "PASSIIVINEN"
     }
   ]
 }
