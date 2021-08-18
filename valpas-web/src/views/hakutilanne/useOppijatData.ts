@@ -6,7 +6,7 @@ import {
   useApiWithParams,
   useLocalDataCopy,
 } from "../../api/apiHooks"
-import { isLoading } from "../../api/apiUtils"
+import { isError, isLoading } from "../../api/apiUtils"
 import { OpiskeluoikeusSuppeatTiedot } from "../../state/apitypes/opiskeluoikeus"
 import {
   lisätietoMatches,
@@ -75,6 +75,7 @@ export const useOppijatData = (organisaatioOid?: Oid) => {
     data: localData,
     setMuuHaku: storeMuuHakuState,
     isLoading: isLoading(oppijatFetch),
+    errors: isError(oppijatFetch) ? oppijatFetch.errors : undefined,
   }
 }
 

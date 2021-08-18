@@ -11,7 +11,7 @@ import {
   fetchOppijatSuorittaminenCache,
 } from "../../../api/api"
 import { useApiWithParams } from "../../../api/apiHooks"
-import { isLoading, isSuccess } from "../../../api/apiUtils"
+import { isError, isLoading, isSuccess } from "../../../api/apiUtils"
 import {
   Card,
   CardHeader,
@@ -22,6 +22,7 @@ import { Dropdown } from "../../../components/forms/Dropdown"
 import { Spinner } from "../../../components/icons/Spinner"
 import { DataTableCountChangeEvent } from "../../../components/tables/DataTable"
 import { Counter } from "../../../components/typography/Counter"
+import { ApiErrors } from "../../../components/typography/error"
 import { NoDataMessage } from "../../../components/typography/NoDataMessage"
 import { getLocalized, t, T } from "../../../i18n/i18n"
 import {
@@ -155,6 +156,7 @@ export const SuorittaminenOppivelvollisetView = withRequiresSuorittamisenValvont
                     onCountChange={setCounters}
                   />
                 )}
+                {isError(fetch) && <ApiErrors errors={fetch.errors} />}
               </ConstrainedCardBody>
             </Card>
           </Page>

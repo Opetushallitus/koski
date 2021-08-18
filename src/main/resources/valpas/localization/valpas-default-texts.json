@@ -193,6 +193,7 @@
   "apivirhe__palvelinongelma": "Virhe: Pyyntöä ei voitu suorittaa palvelimen ongelman takia ({{virhe}})",
   "apivirhe__aikakatkaisu": "Virhe: Pyyntö aikakatkaistiin. Syynä voi olla esimerkiksi liian monta yhtäaikaista käyttäjää. Yritä myöhemmin uudestaan.",
   "apivirhe__virheellinen_vastaus": "Virhe: Palvelimelta saatu vastaus on virheellisesti muodostettu",
+  "apivirhe__tuntematon": "Virhe: Pyyntö epäonnistui tuntemattomasta syystä",
   "organisaatiovalitsin__lakkautettu_prefix": "LAKKAUTETTU",
   "suorittaminen_nav__oppivelvolliset": "Oppivelvolliset",
   "suorittaminen_nav__hae_hetulla": "Hae hetulla",
