@@ -28,6 +28,7 @@ import {
   useOrganisaatiotJaKäyttöoikeusroolit,
   withRequiresSuorittamisenValvonta,
 } from "../../../state/accessRights"
+import { suorittamisvalvottaviaOpiskeluoikeuksiaCount } from "../../../state/apitypes/opiskeluoikeus"
 import { useBasePath } from "../../../state/basePath"
 import {
   Oid,
@@ -121,7 +122,13 @@ export const SuorittaminenOppivelvollisetView = withRequiresSuorittamisenValvont
             />
             <SuorittaminenNavigation
               selectedOrganisaatio={organisaatioOid}
-              oppivelvollisetCount={isSuccess(fetch) && fetch.data.length}
+              oppivelvollisetCount={
+                isSuccess(fetch) &&
+                suorittamisvalvottaviaOpiskeluoikeuksiaCount(
+                  organisaatioOid,
+                  fetch.data
+                )
+              }
             />
             <Card>
               <CardHeader>

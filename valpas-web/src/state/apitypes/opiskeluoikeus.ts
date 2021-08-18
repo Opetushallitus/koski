@@ -4,6 +4,7 @@ import * as string from "fp-ts/string"
 import { KoskiOpiskeluoikeudenTila } from "../../state/apitypes/koskiopiskeluoikeudentila"
 import { ISODate, Language, Oid } from "../common"
 import { Opiskeluoikeudentyyppi, Suorituksentyyppi } from "./koodistot"
+import { OppijaHakutilanteillaSuppeatTiedot } from "./oppija"
 import { Oppilaitos, Toimipiste } from "./organisaatiot"
 import { ValpasOpiskeluoikeudenTila } from "./valpasopiskeluoikeudentila"
 
@@ -84,6 +85,19 @@ export const hakeutumisvalvottavatOpiskeluoikeudet = (
   opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
 ) =>
   opiskeluoikeudet.filter(isHakeutumisvalvottavaOpiskeluoikeus(organisaatioOid))
+
+export const suorittamisvalvottaviaOpiskeluoikeuksiaCount = (
+  organisaatioOid: Oid | undefined,
+  oppijat: OppijaHakutilanteillaSuppeatTiedot[]
+): number =>
+  A.flatten(
+    oppijat.map((oppija: OppijaHakutilanteillaSuppeatTiedot) =>
+      suorittamisvalvottavatOpiskeluoikeudet(
+        organisaatioOid,
+        oppija.oppija.opiskeluoikeudet
+      )
+    )
+  ).length
 
 export const suorittamisvalvottavatOpiskeluoikeudet = (
   organisaatioOid: Oid | undefined,

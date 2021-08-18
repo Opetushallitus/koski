@@ -404,6 +404,13 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
         ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutKymppiluokkalainen, "valmistunut", "valmistunut", false, false, false),
       ),
     ),
+    (
+      ValpasMockOppijat.ammattikouluOpiskelijaMontaOpiskeluoikeutta,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.ammattikouluValmaOpiskeluoikeus, "voimassa", "lasna", false, false, true),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.ammattikouluOpiskeluoikeus, "voimassa", "lasna", false, false, true)
+      )
+    ),
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
   "getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla palauttaa vain annetun oppijanumeron mukaisen oppijan" in {
