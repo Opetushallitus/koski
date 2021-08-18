@@ -7,7 +7,11 @@ import * as Ord from "fp-ts/Ord"
 import * as string from "fp-ts/string"
 import React, { useMemo, useState } from "react"
 import { Redirect, useHistory } from "react-router"
-import { Card, CardBody, CardHeader } from "../../components/containers/cards"
+import {
+  Card,
+  CardHeader,
+  ConstrainedCardBody,
+} from "../../components/containers/cards"
 import { Page } from "../../components/containers/Page"
 import { Dropdown } from "../../components/forms/Dropdown"
 import { Spinner } from "../../components/icons/Spinner"
@@ -28,6 +32,7 @@ import {
   createHakutilannePathWithOrg,
   HakutilanneViewRouteProps,
 } from "../../state/paths"
+import { useBoundingClientRect } from "../../state/useBoundingClientRect"
 import { nonNull } from "../../utils/arrays"
 import { ErrorView } from "../ErrorView"
 import { HakutilanneDrawer } from "./HakutilanneDrawer"
@@ -81,6 +86,8 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
     const orgOptions = getOrgOptions(organisaatiot)
     const organisaatio = organisaatiot.find((o) => o.oid === organisaatioOid)
 
+    const drawerRect = useBoundingClientRect()
+
     const changeOrganisaatio = (oid?: Oid) => {
       if (oid) {
         history.push(oid)
@@ -119,7 +126,7 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
               </Counter>
             )}
           </CardHeader>
-          <CardBody>
+          <ConstrainedCardBody extraMargin={drawerRect.rect?.height}>
             {isLoading && <Spinner />}
             {data && (
               <HakutilanneTable
@@ -130,10 +137,11 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
                 onSetMuuHaku={setMuuHaku}
               />
             )}
-          </CardBody>
+          </ConstrainedCardBody>
         </Card>
         {organisaatio && (
           <HakutilanneDrawer
+            ref={drawerRect.ref}
             selectedOppijat={selectedOppijat}
             tekijäorganisaatio={organisaatio}
           />

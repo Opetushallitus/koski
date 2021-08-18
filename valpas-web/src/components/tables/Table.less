@@ -6,12 +6,10 @@
 @table-v-padding: 0.5rem;
 
 .table__container {
-  @media screen and (max-width: 1600px) {
-    overflow: scroll;
-    table {
-      width: auto;
-      min-width: 100%;
-    }
+  overflow: scroll;
+  table {
+    width: auto;
+    min-width: 100%;
   }
 }
 
@@ -115,5 +113,11 @@
     &:first-child {
       margin-top: -(.pxToRem(16) []);
     }
+  }
+}
+
+.card__body--constrained {
+  .table__container {
+    display: contents;
   }
 }

@@ -14,8 +14,8 @@ import { useApiWithParams } from "../../../api/apiHooks"
 import { isLoading, isSuccess } from "../../../api/apiUtils"
 import {
   Card,
-  CardBody,
   CardHeader,
+  ConstrainedCardBody,
 } from "../../../components/containers/cards"
 import { Page } from "../../../components/containers/Page"
 import { Dropdown } from "../../../components/forms/Dropdown"
@@ -141,7 +141,7 @@ export const SuorittaminenOppivelvollisetView = withRequiresSuorittamisenValvont
                   </Counter>
                 )}
               </CardHeader>
-              <CardBody>
+              <ConstrainedCardBody>
                 {isLoading(fetch) && <Spinner />}
                 {isSuccess(fetch) && fetch.data.length == 0 && (
                   <NoDataMessage>
@@ -155,7 +155,7 @@ export const SuorittaminenOppivelvollisetView = withRequiresSuorittamisenValvont
                     onCountChange={setCounters}
                   />
                 )}
-              </CardBody>
+              </ConstrainedCardBody>
             </Card>
           </Page>
         ) : (

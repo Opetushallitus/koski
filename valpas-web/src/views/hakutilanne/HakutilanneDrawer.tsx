@@ -21,62 +21,64 @@ export type HakutilanneDrawerProps = {
   tekijäorganisaatio: Organisaatio
 }
 
-export const HakutilanneDrawer = (props: HakutilanneDrawerProps) => {
-  const oppijat = props.selectedOppijat
+export const HakutilanneDrawer = React.forwardRef(
+  (props: HakutilanneDrawerProps, ref: React.ForwardedRef<HTMLElement>) => {
+    const oppijat = props.selectedOppijat
 
-  const [modalVisible, setModalVisible] = useState(false)
-  const oppijaOids = useMemo(() => oppijat.map((o) => o.oppija.henkilö.oid), [
-    oppijat,
-  ])
-  const pohjatiedot = useApiWithParams(
-    fetchKuntailmoituksenPohjatiedot,
-    modalVisible ? [oppijaOids, props.tekijäorganisaatio.oid] : undefined
-  )
+    const [modalVisible, setModalVisible] = useState(false)
+    const oppijaOids = useMemo(() => oppijat.map((o) => o.oppija.henkilö.oid), [
+      oppijat,
+    ])
+    const pohjatiedot = useApiWithParams(
+      fetchKuntailmoituksenPohjatiedot,
+      modalVisible ? [oppijaOids, props.tekijäorganisaatio.oid] : undefined
+    )
 
-  return (
-    <>
-      <BottomDrawer>
-        <div className={b("ilmoittaminen")}>
-          <h4 className={b("ilmoittaminentitle")}>
-            <T id="ilmoittaminen_drawer__title" />
-          </h4>
-          <div className={b("ilmoittamisenalarivi")}>
-            <span className={b("valittujaoppilaita")}>
-              <T
-                id="ilmoittaminen_drawer__valittuja_oppilaita"
-                params={{ määrä: oppijat.length }}
-              />
-            </span>
-            <RaisedButton
-              disabled={A.isEmpty(oppijat) || isLoading(pohjatiedot)}
-              onClick={() => setModalVisible(true)}
-            >
-              <T id="ilmoittaminen_drawer__siirry_ilmoittamiseen" />
-            </RaisedButton>
-            {mapLoading(pohjatiedot, () => (
-              <Spinner />
-            ))}
-            {mapError(pohjatiedot, () => (
-              <Error>
-                <T id="ilmoittaminen_drawer__pohjatietojen_haku_epäonnistui" />
-              </Error>
-            ))}
+    return (
+      <>
+        <BottomDrawer ref={ref}>
+          <div className={b("ilmoittaminen")}>
+            <h4 className={b("ilmoittaminentitle")}>
+              <T id="ilmoittaminen_drawer__title" />
+            </h4>
+            <div className={b("ilmoittamisenalarivi")}>
+              <span className={b("valittujaoppilaita")}>
+                <T
+                  id="ilmoittaminen_drawer__valittuja_oppilaita"
+                  params={{ määrä: oppijat.length }}
+                />
+              </span>
+              <RaisedButton
+                disabled={A.isEmpty(oppijat) || isLoading(pohjatiedot)}
+                onClick={() => setModalVisible(true)}
+              >
+                <T id="ilmoittaminen_drawer__siirry_ilmoittamiseen" />
+              </RaisedButton>
+              {mapLoading(pohjatiedot, () => (
+                <Spinner />
+              ))}
+              {mapError(pohjatiedot, () => (
+                <Error>
+                  <T id="ilmoittaminen_drawer__pohjatietojen_haku_epäonnistui" />
+                </Error>
+              ))}
+            </div>
           </div>
-        </div>
-      </BottomDrawer>
+        </BottomDrawer>
 
-      {modalVisible && isSuccess(pohjatiedot) ? (
-        <Ilmoituslomake
-          oppijat={oppijat.map((o) => ({
-            henkilö: o.oppija.henkilö,
-            opiskeluoikeudet: o.oppija.opiskeluoikeudet,
-            lisätiedot: o.lisätiedot,
-          }))}
-          pohjatiedot={pohjatiedot.data}
-          tekijäorganisaatio={props.tekijäorganisaatio}
-          onClose={() => setModalVisible(false)}
-        />
-      ) : null}
-    </>
-  )
-}
+        {modalVisible && isSuccess(pohjatiedot) ? (
+          <Ilmoituslomake
+            oppijat={oppijat.map((o) => ({
+              henkilö: o.oppija.henkilö,
+              opiskeluoikeudet: o.oppija.opiskeluoikeudet,
+              lisätiedot: o.lisätiedot,
+            }))}
+            pohjatiedot={pohjatiedot.data}
+            tekijäorganisaatio={props.tekijäorganisaatio}
+            onClose={() => setModalVisible(false)}
+          />
+        ) : null}
+      </>
+    )
+  }
+)
