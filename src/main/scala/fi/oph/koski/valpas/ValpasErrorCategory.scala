@@ -19,17 +19,17 @@ object ValpasErrorCategory {
     val toiminto = subcategory("toiminto", "Käyttäjällä ei ole oikeuksia toimintoon")
   }
 
-  object internalError extends ErrorCategory("internalError", 500, "Internal server error")
+  object internalError extends ErrorCategory("internalError", 500, "Palvelinvirhe")
 
-  object notImplemented extends ErrorCategory("notImplemented", 501, "Not implemented") {
+  object notImplemented extends ErrorCategory("notImplemented", 501, "Ei toteutettu") {
     val kuntailmoituksenMuokkaus = subcategory("kuntailmoituksenMuokkaus", "Kuntailmoitusta ei voi muokata")
   }
 
-  object badGateway extends ErrorCategory("badGateway", 502, "Bad gateway") {
+  object badGateway extends ErrorCategory("badGateway", 502, "Virhe yhdyskäytävässä tai ulkoisessa palvelussa") {
     val sure = subcategory("sure", "Suoritusrekisterin palauttama hakukoostetieto oli viallinen.")
   }
 
-  object unavailable extends ErrorCategory("unavailable", 503, "Service unavailable") {
+  object unavailable extends ErrorCategory("unavailable", 503, "Palvelu ei ole juuri nyt käytettävissä") {
     val sure = subcategory("sure", "Hakukoosteita ei juuri nyt saada haettua suoritusrekisteristä. Yritä myöhemmin uudelleen.")
   }
 }
