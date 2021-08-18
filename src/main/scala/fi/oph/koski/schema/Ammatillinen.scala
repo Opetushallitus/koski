@@ -267,7 +267,6 @@ case class AmmatillisenTutkinnonSuoritus(
   with Todistus
   with Järjestämismuodollinen
   with OsaamisenHankkimistavallinen
-  with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
 
 @ReadFlattened
 case class Osaamisalajakso(
@@ -344,6 +343,7 @@ trait AmmatillisenTutkinnonOsittainenTaiKokoSuoritus extends AmmatillinenPääta
   with Ryhmällinen
   with Tutkintonimikkeellinen
   with Osaamisalallinen
+  with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
 {
   def koulutusmoduuli: AmmatillinenTutkintoKoulutus
   @Description("Tutkinnon suoritustapa (näyttö / ops / reformi). Ammatillisen perustutkinnon voi suorittaa joko opetussuunnitelmaperusteisesti tai näyttönä. Ammatillisen reformin (531/2017) mukaiset suoritukset välitetään suoritustavalla reformi. ")
