@@ -289,7 +289,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
       tekijäOrganisaatio = None,
       oppijaOidit = List(ValpasMockOppijat.kulosaarenYsiluokkalainen.oid)
     )
-    val result = kuntailmoitusService.haePohjatiedot(input)(session(ValpasMockUsers.valpasPyhtääJaHelsinki))
+    val result = kuntailmoitusService.haePohjatiedot(input)(session(ValpasMockUsers.valpasUseitaKuntia))
 
     val mahdollisetTekijäOrganisaatiot = result.right.get.mahdollisetTekijäOrganisaatiot.toSet
 

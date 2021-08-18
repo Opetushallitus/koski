@@ -42,7 +42,7 @@ describe("Kunnan listanäkymä", () => {
   })
 
   it("Ohjaa ensisijaiseen organisaatioon ja näyttää listan ilmoituksista", async () => {
-    await loginAs(rootPath, "valpas-pyhtää-ja-helsinki")
+    await loginAs(rootPath, "valpas-useita-kuntia")
     await urlIsEventually(
       pathToUrl(
         createKuntailmoitusPathWithOrg("/virkailija", helsinginKaupunkiOid)
@@ -56,7 +56,7 @@ describe("Kunnan listanäkymä", () => {
   })
 
   it("Vaihtaa taulun sisällön organisaatiovalitsimesta", async () => {
-    await loginAs(rootPath, "valpas-pyhtää-ja-helsinki")
+    await loginAs(rootPath, "valpas-useita-kuntia")
 
     await selectOrganisaatio(0)
     await urlIsEventually(
@@ -82,7 +82,7 @@ describe("Kunnan listanäkymä", () => {
   it("Käyminen oppijakohtaisessa näkymässä ei hukkaa valittua organisaatiota", async () => {
     const pyhtäänOppijaOid = "1.2.246.562.24.00000000036"
 
-    await loginAs(rootPath, "valpas-pyhtää-ja-helsinki")
+    await loginAs(rootPath, "valpas-useita-kuntia")
 
     await selectOrganisaatio(1)
     await urlIsEventually(

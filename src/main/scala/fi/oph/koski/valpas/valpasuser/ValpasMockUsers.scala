@@ -55,12 +55,13 @@ object ValpasMockUsers {
       ++ peruskoulunKäyttäjä(aapajoenKoulu)
   )
 
-  val valpasPyhtääJaHelsinki = ValpasMockUser(
+  val valpasUseitaKuntia = ValpasMockUser(
     "käyttäjä",
-    "valpas-pyhtää-ja-helsinki",
+    "valpas-useita-kuntia",
     "1.2.246.562.24.12312312369",
     kuntakäyttäjä(pyhtäänKunta)
       ++ kuntakäyttäjä(helsinginKaupunki)
+      ++ kuntakäyttäjä(lakkautettuKunta)
   )
 
   val valpasHelsinkiPeruskoulu = ValpasMockUser(
@@ -243,7 +244,7 @@ object ValpasMockUsers {
         valpasTornio,
         valpasHelsinkiJaAapajoenPeruskoulu,
         valpasPyhtääJaAapajoenPeruskoulu,
-        valpasPyhtääJaHelsinki,
+        valpasUseitaKuntia,
         valpasHelsinkiPeruskoulu,
         valpasJklNormaalikoulu,
         valpasJklNormaalikouluPelkkäPeruskoulu,
