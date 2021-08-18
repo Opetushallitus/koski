@@ -17,7 +17,10 @@ import { dataTableEventuallyEquals } from "../integrationtests-env/browser/datat
 import { loginAs, reset } from "../integrationtests-env/browser/reset"
 import { hkiTableContent } from "./kuntailmoitus.shared"
 import { helsinginKaupunkiOid, pyhtäänKuntaOid } from "./oids"
-import { selectOrganisaatio } from "./organisaatiovalitsin-helpers"
+import {
+  selectOrganisaatio,
+  valitsimenOrganisaatiot,
+} from "./organisaatiovalitsin-helpers"
 
 const openOppijaView = async (oppijaOid: Oid) => {
   const selector = `.kuntailmoitus .table__row td:first-child a[href*="${oppijaOid}"]`
@@ -103,5 +106,18 @@ describe("Kunnan listanäkymä", () => {
     await urlIsEventually(
       createKuntailmoitusPathWithOrg("/virkailija", pyhtäänKuntaOid)
     )
+  })
+
+  it("Passiivisia organisaatioita ei listata", async () => {
+    await loginAs(rootPath, "valpas-useita-kuntia")
+
+    const organisaatiot = await valitsimenOrganisaatiot()
+
+    const expectedOrganisaatiot = [
+      "Helsingin kaupunki (1.2.246.562.10.346830761110)",
+      "Pyhtään kunta (1.2.246.562.10.69417312936)",
+    ]
+
+    expect(organisaatiot).toEqual(expectedOrganisaatiot)
   })
 })
