@@ -91,6 +91,7 @@ object ValpasMockUsers {
     "1.2.246.562.24.12312312309",
     peruskoulunJossa10LuokkaKäyttäjä(aapajoenKoulu)
       ++ toisenAsteenKäyttäjä(aapajoenKoulu)
+      ++ oppilaitosKäyttäjäPelkkäSuorittaminen(aapajoenKoulu)
   )
 
   val valpasJklYliopisto = ValpasMockUser(

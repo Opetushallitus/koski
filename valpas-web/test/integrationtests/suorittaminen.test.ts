@@ -17,10 +17,15 @@ import {
 } from "../integrationtests-env/browser/datatable"
 import { loginAs, resetMockData } from "../integrationtests-env/browser/reset"
 import { hakutilannePath } from "../integrationtests/hakutilanne.shared"
-import { jyväskylänNormaalikouluOid, stadinAmmattiopistoOid } from "./oids"
+import {
+  aapajoenKouluOid,
+  jyväskylänNormaalikouluOid,
+  stadinAmmattiopistoOid,
+} from "./oids"
 import {
   selectOrganisaatio,
   selectOrganisaatioByNimi,
+  valitsimenOrganisaatiot,
 } from "./organisaatiovalitsin-helpers"
 import {
   jklNormaalikouluSuorittaminenTableContent,
@@ -35,6 +40,11 @@ import {
 const jklSuorittaminenPath = createSuorittaminenPathWithOrg(
   "/virkailija",
   jyväskylänNormaalikouluOid
+)
+
+const aapajokiSuorittaminenPath = createSuorittaminenPathWithOrg(
+  "/virkailija",
+  aapajoenKouluOid
 )
 
 const stadinAmmattiopistoSuorittaminenPath = createSuorittaminenPathWithOrg(
@@ -126,11 +136,25 @@ describe("Suorittamisen valvonta -näkymä", () => {
   })
 
   it("Passiiviset organisaatiot listataan aktiivisten jälkeen", async () => {
-    // TODO
+    await loginAs(hakutilannePath, "valpas-pelkkä-suorittaminen")
+
+    const organisaatiot = await valitsimenOrganisaatiot()
+
+    const expectedOrganisaatiot = [
+      "Helsingin medialukio (1.2.246.562.10.70411521654)",
+      "Jyväskylän normaalikoulu (1.2.246.562.10.14613773812)",
+      "LAKKAUTETTU: Aapajoen koulu (1.2.246.562.10.26197302388)",
+    ]
+
+    expect(organisaatiot).toEqual(expectedOrganisaatiot)
   })
 
   it("Toimii passivoidun organisaation käyttäjällä", async () => {
-    // TODO
+    await loginAs(hakutilannePath, "valpas-aapajoen-koulu")
+    await goToLocation(aapajokiSuorittaminenPath)
+    await selectOrganisaatioByNimi("LAKKAUTETTU: Aapajoen koulu")
+    await urlIsEventually(pathToUrl(aapajokiSuorittaminenPath))
+    await textEventuallyEquals(".card__header", "Oppivelvolliset (0)")
   })
 
   it("Käyminen oppijakohtaisessa näkymässä ei hukkaa valittua organisaatiota, filttereiden tai järjestyksen tilaa", async () => {
