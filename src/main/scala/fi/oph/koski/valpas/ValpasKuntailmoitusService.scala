@@ -36,6 +36,8 @@ class ValpasKuntailmoitusService(
       ))
     }
 
+    // TODO: Tässä pitäisi käydä läpi kaikki oikeustarkastusstepit kaikille rooleille, eikä katkaista
+    // kaikkien roolien tarkistusta kesken kaiken.
     for {
       roolit <- sallitutRoolit
       sallittuRooli <-

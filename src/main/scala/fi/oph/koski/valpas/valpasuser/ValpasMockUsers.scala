@@ -210,6 +210,13 @@ object ValpasMockUsers {
     oppilaitosKäyttäjäPelkkäSuorittaminen(helsinginKaupunki)
   )
 
+  val valpasNivelvaiheenKäyttäjä = ValpasMockUser(
+    "käyttäjä",
+    "valpas-nivelvaihe",
+    "1.2.246.562.24.12315318397",
+    nivelvaiheenKäyttäjä(jyväskylänNormaalikoulu) ++ nivelvaiheenKäyttäjä(helsinginMedialukio)
+  )
+
   def users: List[ValpasMockUser] = {
     if (mockUsersEnabled) {
       List(
@@ -240,7 +247,9 @@ object ValpasMockUsers {
         valpasAapajoenKouluJaJklNormaalikoulu,
         valpasJklAapajokiHkiPyhtää,
         valpasJklYliopistoSuorittaminen,
-        valpasHkiSuorittaminen
+        valpasHkiSuorittaminen,
+        valpasNivelvaiheenKäyttäjä
+
       )
     } else {
       List()
