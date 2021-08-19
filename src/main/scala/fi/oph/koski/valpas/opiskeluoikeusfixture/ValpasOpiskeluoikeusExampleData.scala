@@ -4,14 +4,11 @@ import fi.oph.koski.documentation.ExampleData.{helsinki, opiskeluoikeusEronnut, 
 import fi.oph.koski.documentation.LukioExampleData.{opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt}
 import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, perusopetuksenOppimääränSuoritus, perusopetuksenOppimääränSuoritusKesken, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste, oppilaitos}
-import fi.oph.koski.documentation.{AmmattitutkintoExample, ExampleData, ExamplesEsiopetus, ExamplesLukio2019, ExamplesPerusopetuksenLisaopetus, ExamplesTelma, ExamplesValma, VapaaSivistystyöExample}
-import fi.oph.koski.organisaatio.MockOrganisaatiot.aapajoenKoulu
-import fi.oph.koski.schema._
-import java.time.LocalDate.{of => date}
-
-import fi.oph.koski.documentation.AmmatillinenExampleData.{hyväksytty, järjestämismuotoOppilaitos, järjestämismuotoOppisopimus, stadinAmmattiopisto, stadinToimipiste, suoritustapaNäyttö, tutkinnonOsanSuoritus}
-import fi.oph.koski.documentation.AmmattitutkintoExample.tutkinto
+import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample, ExampleData, ExamplesEsiopetus, ExamplesLukio2019, ExamplesPerusopetuksenLisaopetus, ExamplesTelma, ExamplesValma, VapaaSivistystyöExample}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.schema._
+
+import java.time.LocalDate.{of => date}
 
 object ValpasOpiskeluoikeusExampleData {
   def oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus = PerusopetuksenOpiskeluoikeus(
@@ -124,7 +121,7 @@ object ValpasOpiskeluoikeusExampleData {
   }
 
   def ennenLainRajapäivääToisestaKoulustaValmistunutYsiluokkalainen = PerusopetuksenOpiskeluoikeus(
-    oppilaitos = Some(oppilaitos(aapajoenKoulu)),
+    oppilaitos = Some(oppilaitos(MockOrganisaatiot.aapajoenKoulu)),
     koulutustoimija = None,
     suoritukset = List(
       perusopetuksenOppimääränSuoritus.copy(
@@ -173,7 +170,7 @@ object ValpasOpiskeluoikeusExampleData {
 
   def valmistunutYsiluokkalainenToinenKoulu =
     valmistunutYsiluokkalainen.copy(
-      oppilaitos = Some(oppilaitos(aapajoenKoulu)),
+      oppilaitos = Some(oppilaitos(MockOrganisaatiot.aapajoenKoulu)),
       suoritukset = List(
         perusopetuksenOppimääränSuoritus.copy(
           vahvistus = vahvistusPaikkakunnalla(date(2021, 5, 29))
@@ -272,7 +269,7 @@ object ValpasOpiskeluoikeusExampleData {
   )
 
   def luokallejäänytYsiluokkalainenVaihtanutKouluaJälkimmäinen = PerusopetuksenOpiskeluoikeus(
-    oppilaitos = Some(oppilaitos(aapajoenKoulu)),
+    oppilaitos = Some(oppilaitos(MockOrganisaatiot.aapajoenKoulu)),
     koulutustoimija = None,
     suoritukset = List(
       yhdeksännenLuokanSuoritus.copy(
@@ -289,7 +286,7 @@ object ValpasOpiskeluoikeusExampleData {
   )
 
   def luokallejäänytYsiluokkalainenVaihtanutKouluaEdellinen2 = luokallejäänytYsiluokkalainenVaihtanutKouluaEdellinen.copy(
-    oppilaitos = Some(oppilaitos(aapajoenKoulu))
+    oppilaitos = Some(oppilaitos(MockOrganisaatiot.aapajoenKoulu))
   )
   def luokallejäänytYsiluokkalainenVaihtanutKouluaJälkimmäinen2 = luokallejäänytYsiluokkalainenVaihtanutKouluaJälkimmäinen.copy(
     oppilaitos = Some(jyväskylänNormaalikoulu)
@@ -441,7 +438,7 @@ object ValpasOpiskeluoikeusExampleData {
     suoritukset = List(
       AmmattitutkintoExample.näyttötutkintoonValmistavanKoulutuksenSuoritus,
       AmmattitutkintoExample.ammatillisenTutkinnonSuoritus.copy(
-        vahvistus = vahvistus(date(2021, 9, 2), stadinAmmattiopisto, Some(helsinki))
+        vahvistus = vahvistus(date(2021, 9, 2), AmmatillinenExampleData.stadinAmmattiopisto, Some(helsinki))
       )
     )
   )
@@ -500,23 +497,23 @@ object ValpasOpiskeluoikeusExampleData {
   )
 
   lazy val ammatillisenTutkinnonSuoritus2021 = AmmatillisenTutkinnonSuoritus(
-    koulutusmoduuli = tutkinto,
-    suoritustapa = suoritustapaNäyttö,
+    koulutusmoduuli = AmmattitutkintoExample.tutkinto,
+    suoritustapa = AmmatillinenExampleData.suoritustapaNäyttö,
     järjestämismuodot = Some(List(
-      Järjestämismuotojakso(date(2021, 8, 1), None, järjestämismuotoOppilaitos),
-      Järjestämismuotojakso(date(2021, 8, 2), None, järjestämismuotoOppisopimus),
-      Järjestämismuotojakso(date(2021, 8, 3), None, järjestämismuotoOppilaitos)
+      Järjestämismuotojakso(date(2021, 8, 1), None, AmmatillinenExampleData.järjestämismuotoOppilaitos),
+      Järjestämismuotojakso(date(2021, 8, 2), None, AmmatillinenExampleData.järjestämismuotoOppisopimus),
+      Järjestämismuotojakso(date(2021, 8, 3), None, AmmatillinenExampleData.järjestämismuotoOppilaitos)
     )),
     suorituskieli = suomenKieli,
     alkamispäivä = None,
-    toimipiste = stadinToimipiste,
-    vahvistus = vahvistus(date(2021, 8, 5), stadinAmmattiopisto, Some(helsinki)),
+    toimipiste = AmmatillinenExampleData.stadinToimipiste,
+    vahvistus = vahvistus(date(2021, 8, 5), AmmatillinenExampleData.stadinAmmattiopisto, Some(helsinki)),
     osasuoritukset = Some(List(
-      tutkinnonOsanSuoritus("104052", "Johtaminen ja henkilöstön kehittäminen", None, hyväksytty),
-      tutkinnonOsanSuoritus("104053", "Asiakaspalvelu ja korjaamopalvelujen markkinointi", None, hyväksytty),
-      tutkinnonOsanSuoritus("104054", "Työnsuunnittelu ja organisointi", None, hyväksytty),
-      tutkinnonOsanSuoritus("104055", "Taloudellinen toiminta", None, hyväksytty),
-      tutkinnonOsanSuoritus("104059", "Yrittäjyys", None, hyväksytty)
+      AmmatillinenExampleData.tutkinnonOsanSuoritus("104052", "Johtaminen ja henkilöstön kehittäminen", None, AmmatillinenExampleData.hyväksytty),
+      AmmatillinenExampleData.tutkinnonOsanSuoritus("104053", "Asiakaspalvelu ja korjaamopalvelujen markkinointi", None, AmmatillinenExampleData.hyväksytty),
+      AmmatillinenExampleData.tutkinnonOsanSuoritus("104054", "Työnsuunnittelu ja organisointi", None, AmmatillinenExampleData.hyväksytty),
+      AmmatillinenExampleData.tutkinnonOsanSuoritus("104055", "Taloudellinen toiminta", None, AmmatillinenExampleData.hyväksytty),
+      AmmatillinenExampleData.tutkinnonOsanSuoritus("104059", "Yrittäjyys", None, AmmatillinenExampleData.hyväksytty)
     ))
   )
 
@@ -769,5 +766,23 @@ object ValpasOpiskeluoikeusExampleData {
     lisätiedot = Some(VapaanSivistystyönOpiskeluoikeudenLisätiedot(
       maksuttomuus = Some(List(Maksuttomuus(alku = date(2021, 9, 1) , loppu = None, maksuton = true))),
     ))
+  )
+
+  def amisAmmatillinenJaNäyttötutkintoonValmistavaOpiskeluoikeus = ammattikouluValmistunutOpiskeluoikeus.copy(
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+    )),
+    suoritukset = List(
+      AmmattitutkintoExample.näyttötutkintoonValmistavanKoulutuksenSuoritus.copy(
+        vahvistus = None,
+        toimipiste = AmmatillinenExampleData.stadinToimipiste,
+        ryhmä = Some("A")
+      ),
+      AmmattitutkintoExample.ammatillisenTutkinnonSuoritus.copy(
+        vahvistus = None,
+        toimipiste = AmmatillinenExampleData.stadinAmmattiopisto,
+        ryhmä = Some("B")
+      )
+    )
   )
 }

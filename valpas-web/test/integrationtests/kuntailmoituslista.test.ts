@@ -14,19 +14,19 @@ import {
   urlIsEventually,
 } from "../integrationtests-env/browser/core"
 import { dataTableEventuallyEquals } from "../integrationtests-env/browser/datatable"
-import { dropdownSelect } from "../integrationtests-env/browser/forms"
 import { loginAs, reset } from "../integrationtests-env/browser/reset"
 import { hkiTableContent } from "./kuntailmoitus.shared"
 import { helsinginKaupunkiOid, pyhtäänKuntaOid } from "./oids"
+import {
+  selectOrganisaatio,
+  valitsimenOrganisaatiot,
+} from "./organisaatiovalitsin-helpers"
 
 const openOppijaView = async (oppijaOid: Oid) => {
   const selector = `.kuntailmoitus .table__row td:first-child a[href*="${oppijaOid}"]`
   await expectElementEventuallyVisible(selector)
   await clickElement(selector)
 }
-
-const selectOrganisaatio = (index: number) =>
-  dropdownSelect("#organisaatiovalitsin", index)
 
 const rootPath = createKuntailmoitusPath("/virkailija")
 
@@ -45,7 +45,7 @@ describe("Kunnan listanäkymä", () => {
   })
 
   it("Ohjaa ensisijaiseen organisaatioon ja näyttää listan ilmoituksista", async () => {
-    await loginAs(rootPath, "valpas-pyhtää-ja-helsinki")
+    await loginAs(rootPath, "valpas-useita-kuntia")
     await urlIsEventually(
       pathToUrl(
         createKuntailmoitusPathWithOrg("/virkailija", helsinginKaupunkiOid)
@@ -59,7 +59,7 @@ describe("Kunnan listanäkymä", () => {
   })
 
   it("Vaihtaa taulun sisällön organisaatiovalitsimesta", async () => {
-    await loginAs(rootPath, "valpas-pyhtää-ja-helsinki")
+    await loginAs(rootPath, "valpas-useita-kuntia")
 
     await selectOrganisaatio(0)
     await urlIsEventually(
@@ -85,7 +85,7 @@ describe("Kunnan listanäkymä", () => {
   it("Käyminen oppijakohtaisessa näkymässä ei hukkaa valittua organisaatiota", async () => {
     const pyhtäänOppijaOid = "1.2.246.562.24.00000000036"
 
-    await loginAs(rootPath, "valpas-pyhtää-ja-helsinki")
+    await loginAs(rootPath, "valpas-useita-kuntia")
 
     await selectOrganisaatio(1)
     await urlIsEventually(
@@ -106,5 +106,18 @@ describe("Kunnan listanäkymä", () => {
     await urlIsEventually(
       createKuntailmoitusPathWithOrg("/virkailija", pyhtäänKuntaOid)
     )
+  })
+
+  it("Passiivisia organisaatioita ei listata", async () => {
+    await loginAs(rootPath, "valpas-useita-kuntia")
+
+    const organisaatiot = await valitsimenOrganisaatiot()
+
+    const expectedOrganisaatiot = [
+      "Helsingin kaupunki (1.2.246.562.10.346830761110)",
+      "Pyhtään kunta (1.2.246.562.10.69417312936)",
+    ]
+
+    expect(organisaatiot).toEqual(expectedOrganisaatiot)
   })
 })

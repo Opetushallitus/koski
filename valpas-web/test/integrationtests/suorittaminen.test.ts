@@ -1,24 +1,50 @@
 import { createSuorittaminenPathWithOrg } from "../../src/state/paths"
-import { textEventuallyEquals } from "../integrationtests-env/browser/content"
+import {
+  clickElement,
+  expectElementEventuallyVisible,
+  textEventuallyEquals,
+} from "../integrationtests-env/browser/content"
 import {
   goToLocation,
   pathToUrl,
   urlIsEventually,
 } from "../integrationtests-env/browser/core"
-import { dataTableEventuallyEquals } from "../integrationtests-env/browser/datatable"
+import {
+  dataTableEventuallyEquals,
+  getTableContents,
+  setTableTextFilter,
+  toggleTableSort,
+} from "../integrationtests-env/browser/datatable"
 import { loginAs, resetMockData } from "../integrationtests-env/browser/reset"
-import { jyväskylänNormaalikouluOid, stadinAmmattiopistoOid } from "./oids"
+import { hakutilannePath } from "../integrationtests/hakutilanne.shared"
+import {
+  aapajoenKouluOid,
+  jyväskylänNormaalikouluOid,
+  stadinAmmattiopistoOid,
+} from "./oids"
+import {
+  selectOrganisaatio,
+  selectOrganisaatioByNimi,
+  valitsimenOrganisaatiot,
+} from "./organisaatiovalitsin-helpers"
 import {
   jklNormaalikouluSuorittaminenTableContent,
   jklNormaalikouluSuorittaminenTableHead,
   stadinAmmattiopistoSuorittaminenTableContent,
   stadinAmmattiopistoSuorittaminenTableHead,
+  suorittaminenListaHkiPath,
+  suorittaminenListaJklPath,
   suorittaminenListaPath,
 } from "./suorittaminen.shared"
 
 const jklSuorittaminenPath = createSuorittaminenPathWithOrg(
   "/virkailija",
   jyväskylänNormaalikouluOid
+)
+
+const aapajokiSuorittaminenPath = createSuorittaminenPathWithOrg(
+  "/virkailija",
+  aapajoenKouluOid
 )
 
 const stadinAmmattiopistoSuorittaminenPath = createSuorittaminenPathWithOrg(
@@ -82,26 +108,79 @@ describe("Suorittamisen valvonta -näkymä", () => {
   })
 
   it("Vaihtaa taulun sisällön organisaatiovalitsimesta", async () => {
-    // TODO
+    await loginAs(suorittaminenListaPath, "valpas-pelkkä-suorittaminen")
+
+    await selectOrganisaatio(0)
+    await urlIsEventually(pathToUrl(suorittaminenListaHkiPath))
+    await textEventuallyEquals(".card__header", "Oppivelvolliset (0)")
+
+    await selectOrganisaatio(1)
+    await urlIsEventually(pathToUrl(suorittaminenListaJklPath))
+    await textEventuallyEquals(".card__header", "Oppivelvolliset (11)")
   })
 
   it("Toimii koulutustoimijatason käyttäjällä", async () => {
-    // TODO
+    await loginAs(hakutilannePath, "valpas-hki-suorittaminen")
+    await selectOrganisaatioByNimi("Stadin ammatti- ja aikuisopisto")
+
+    await urlIsEventually(pathToUrl(stadinAmmattiopistoSuorittaminenPath))
+    await textEventuallyEquals(
+      ".card__header",
+      stadinAmmattiopistoSuorittaminenTableHead
+    )
+    await dataTableEventuallyEquals(
+      ".suorittaminen",
+      stadinAmmattiopistoSuorittaminenTableContent,
+      "|"
+    )
   })
 
   it("Passiiviset organisaatiot listataan aktiivisten jälkeen", async () => {
-    // TODO
+    await loginAs(hakutilannePath, "valpas-pelkkä-suorittaminen")
+
+    const organisaatiot = await valitsimenOrganisaatiot()
+
+    const expectedOrganisaatiot = [
+      "Helsingin medialukio (1.2.246.562.10.70411521654)",
+      "Jyväskylän normaalikoulu (1.2.246.562.10.14613773812)",
+      "LAKKAUTETTU: Aapajoen koulu (1.2.246.562.10.26197302388)",
+    ]
+
+    expect(organisaatiot).toEqual(expectedOrganisaatiot)
   })
 
   it("Toimii passivoidun organisaation käyttäjällä", async () => {
-    // TODO
+    await loginAs(hakutilannePath, "valpas-aapajoen-koulu")
+    await goToLocation(aapajokiSuorittaminenPath)
+    await selectOrganisaatioByNimi("LAKKAUTETTU: Aapajoen koulu")
+    await urlIsEventually(pathToUrl(aapajokiSuorittaminenPath))
+    await textEventuallyEquals(".card__header", "Oppivelvolliset (0)")
   })
 
-  it("Käyminen oppijakohtaisessa näkymässä ei hukkaa valittua organisaatiota", async () => {
-    // TODO
-  })
+  it("Käyminen oppijakohtaisessa näkymässä ei hukkaa valittua organisaatiota, filttereiden tai järjestyksen tilaa", async () => {
+    await loginAs(suorittaminenListaPath, "valpas-pelkkä-suorittaminen")
 
-  it("Käyminen oppijakohtaisessa näkymässä ei hukkaa filttereiden tai järjestyksen tilaa", async () => {
-    // TODO
+    await selectOrganisaatio(1)
+    await urlIsEventually(pathToUrl(suorittaminenListaJklPath))
+
+    // Vaihda filtteriä ja järjestyksen suuntaa nimen perusteella
+    const selector = ".suorittaminen"
+    await setTableTextFilter(selector, 1, "lukio")
+    await toggleTableSort(selector, 1)
+
+    // Ota snapshot talteen taulukon tilasta
+    const contentsBefore = await getTableContents(selector)
+
+    // Käy jossakin oppijanäkymässä
+    await clickElement(
+      `.suorittaminen .table__row:first-child td:first-child a`
+    )
+    await expectElementEventuallyVisible(".oppijaview__backbutton a")
+    await clickElement(".oppijaview__backbutton a")
+
+    // Taulukon tilan pitäisi olla sama kuin aiemmin
+    await urlIsEventually(pathToUrl(suorittaminenListaJklPath))
+    const contentsAfter = await getTableContents(selector)
+    expect(contentsAfter).toEqual(contentsBefore)
   })
 })

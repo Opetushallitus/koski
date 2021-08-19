@@ -119,16 +119,6 @@ describe('MyData', function() {
     })
   })
 
-  /*describe('Ruotsinkielisenä voidaan kirjautua sisään', function() {
-    before.apply(null, login('sv', '100869-192W', 'Dippainssi', 'Dilbert'))
-    before(wait.until(mydata.isVisible))
-
-
-    it('Ja sivusto on ruotsiksi', function() {
-      expect(mydata.isInSwedish()).equal(true) // Korhopankki forces lang cookie to 'fi'
-    })
-  })*/
-
   describe('Käyttäjä voi vaihtaa kielen', function() {
     before.apply(null, login('fi', '100869-192W', 'Dippainssi', 'Dilbert'))
     before(
@@ -141,7 +131,7 @@ describe('MyData', function() {
     })
 
     it('Ja kumppanin nimi vaihtuu ruotsinkieliseksi', function() {
-      expect(mydata.getMemberName()).equal('HRT Helsingforsregionens trafik')
+      expect(mydata.getMemberName()).equal('HRT Helsingforsregionens trafik') // Flaky?
     })
   })
 })

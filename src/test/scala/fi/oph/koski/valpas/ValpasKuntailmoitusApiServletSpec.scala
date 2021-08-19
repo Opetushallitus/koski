@@ -291,7 +291,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
 
   "Kuntailmoituksen tekeminen kunta-oikeuksilla käyttäen kuntaa tekijänä onnistuu" in {
     val ilmoitus = teeMinimiKuntailmoitusInput(tekijäOid = MockOrganisaatiot.helsinginKaupunki)
-    val user = ValpasMockUsers.valpasPyhtääJaHelsinki
+    val user = ValpasMockUsers.valpasUseitaKuntia
 
     post("/valpas/api/kuntailmoitus",
       body = ilmoitus,
