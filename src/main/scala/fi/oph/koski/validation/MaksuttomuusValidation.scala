@@ -46,7 +46,8 @@ object MaksuttomuusValidation {
       oppijanHetu.isDefined &&
         peruskoulussaVuoden2021Alussa &&
         peruskoulunJälkeinenKoulutusAlkanutAikaisintaan2021 &&
-        koulutusOppivelvollisuuskoulutukseksiKelpaavaa
+        koulutusOppivelvollisuuskoulutukseksiKelpaavaa &&
+        oppijanIkäOikeuttaaMaksuttomuuden
 
     // Tilanteet, joissa maksuttomuustietoja ei saa siirtää. Jos tuplen ensimmäinen arvo on true, ehto aktivoituu ja toinen arvon kertoo syyn.
     val maksuttomuustietoEiSallittuSyyt = List(
