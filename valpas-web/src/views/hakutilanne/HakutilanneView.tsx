@@ -17,6 +17,7 @@ import { Dropdown } from "../../components/forms/Dropdown"
 import { Spinner } from "../../components/icons/Spinner"
 import { DataTableCountChangeEvent } from "../../components/tables/DataTable"
 import { Counter } from "../../components/typography/Counter"
+import { ApiErrors } from "../../components/typography/error"
 import { getLocalized, t, T } from "../../i18n/i18n"
 import {
   useOrganisaatiotJaKäyttöoikeusroolit,
@@ -75,7 +76,9 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
     const organisaatioOid =
       props.match.params.organisaatioOid || organisaatiot[0]?.oid
 
-    const { data, isLoading, setMuuHaku } = useOppijatData(organisaatioOid)
+    const { data, isLoading, errors, setMuuHaku } = useOppijatData(
+      organisaatioOid
+    )
 
     const [counters, setCounters] = useState<DataTableCountChangeEvent>({
       filteredRowCount: 0,
@@ -137,6 +140,7 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
                 onSetMuuHaku={setMuuHaku}
               />
             )}
+            {errors !== undefined && <ApiErrors errors={errors} />}
           </ConstrainedCardBody>
         </Card>
         {organisaatio && (

@@ -2,6 +2,7 @@ import bem from "bem-ts"
 import { isNonEmpty } from "fp-ts/lib/Array"
 import React, { useCallback, useState } from "react"
 import { createOppivelvollisuudenKeskeytys } from "../../api/api"
+import { ApiError } from "../../api/apiFetch"
 import { useApiMethod, useOnApiSuccess } from "../../api/apiHooks"
 import { isError } from "../../api/apiUtils"
 import { RaisedButton } from "../../components/buttons/RaisedButton"
@@ -17,7 +18,7 @@ import {
   organisaatiotToOptions,
 } from "../../components/forms/Dropdown"
 import { RadioButton } from "../../components/forms/RadioButton"
-import { Error } from "../../components/typography/error"
+import { ApiErrors } from "../../components/typography/error"
 import { SecondaryHeading } from "../../components/typography/headings"
 import { T, t } from "../../i18n/i18n"
 import {
@@ -64,7 +65,7 @@ export const OppivelvollisuudenKeskeytysModal = (
       <OppivelvollisuudenKeskeytysForm
         organisaatiot={organisaatiot}
         onSubmit={submit}
-        errors={isError(create) ? create.errors.map((e) => e.message) : []}
+        errors={isError(create) ? create.errors : []}
       />
     </Modal>
   )
@@ -75,7 +76,7 @@ export const OppivelvollisuudenKeskeytysModal = (
 type OppivelvollisuudenKeskeytysFormProps = {
   organisaatiot: Organisaatio[]
   onSubmit: (aikaväli: OppivelvollisuudenKeskeytysFormValues) => void
-  errors: string[]
+  errors: ApiError[]
 }
 
 type OppivelvollisuudenKeskeytysFormValues = {
@@ -178,15 +179,7 @@ const OppivelvollisuudenKeskeytysForm = (
         />
       </OppivelvollisuudenKeskeytysOption>
 
-      {isNonEmpty(props.errors) && (
-        <Error>
-          <ul>
-            {props.errors.map((error, index) => (
-              <li key={index}>{error}</li>
-            ))}
-          </ul>
-        </Error>
-      )}
+      {isNonEmpty(props.errors) && <ApiErrors errors={props.errors} />}
 
       <RaisedButton
         id="ovkeskeytys-submit"
