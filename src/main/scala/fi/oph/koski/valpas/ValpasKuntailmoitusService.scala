@@ -36,19 +36,19 @@ class ValpasKuntailmoitusService(
       ))
     }
 
-    // TODO: Tässä pitäisi käydä läpi kaikki oikeustarkastusstepit kaikille rooleille, eikä katkaista
-    // kaikkien roolien tarkistusta kesken kaiken.
+    val kaikkiKäyttäjänRoolitOrganisaatiolle = accessResolver.valpasRoolitOrganisaatiolle(organisaatioOid).toSeq
+
     for {
       roolit <- sallitutRoolit
-      sallittuRooli <-
-        accessResolver.assertAccessToOrg(roolit, organisaatioOid)
+      sallitutRoolitOrganisaatiolle <-
+        accessResolver.assertAccessListToOrg(roolit, organisaatioOid)
           .left
           .map(_ => ValpasErrorCategory.forbidden.organisaatio(
             "Käyttäjällä ei ole oikeutta tehdä kuntailmoitusta annetun organisaation nimissä"
           ))
-      o <- oppijaService.getOppijaLaajatTiedot(sallittuRooli, kuntailmoitusInput.oppijaOid)
+      o <- oppijaService.getOppijaLaajatTiedot(kaikkiKäyttäjänRoolitOrganisaatiolle, kuntailmoitusInput.oppijaOid)
       _ <-
-        accessResolver.withOppijaAccessAsOrganisaatio(sallittuRooli, organisaatioOid)(o)
+        accessResolver.withOppijaAccessAsOrganisaatio(sallitutRoolitOrganisaatiolle, organisaatioOid)(o)
           .left
           .map(_ => ValpasErrorCategory.forbidden.oppija(
             "Käyttäjällä ei ole oikeuksia tehdä kuntailmoitusta annetusta oppijasta"

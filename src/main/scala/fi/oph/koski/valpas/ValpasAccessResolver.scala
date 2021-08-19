@@ -7,10 +7,17 @@ import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppijaLaajatTiedot
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 
 class ValpasAccessResolver {
-  def assertAccessToOrg
+  def assertAccessListToOrg
     (roolit: Seq[ValpasRooli.Role], organisaatioOid: Organisaatio.Oid)
     (implicit session: ValpasSession)
-  : Either[HttpStatus, ValpasRooli.Role] = HttpStatus.any(roolit.map(r => assertAccessToOrg(r, organisaatioOid)))
+  : Either[HttpStatus, Seq[ValpasRooli.Role]] = {
+    val okRoolit = roolit.filter(r => assertAccessToOrg(r, organisaatioOid).isRight)
+    if (okRoolit.nonEmpty) {
+      Right(okRoolit)
+    } else {
+      Left(ValpasErrorCategory.forbidden.organisaatio())
+    }
+  }
 
   def assertAccessToOrg
     (rooli: ValpasRooli.Role, organisaatioOid: Organisaatio.Oid)
@@ -115,6 +122,15 @@ class ValpasAccessResolver {
     Either.cond(hasAccess, oppija, ValpasErrorCategory.forbidden.oppija())
   }
 
+  def withOppijaAccessAsOrganisaatio[T <: ValpasOppijaLaajatTiedot]
+    (roolit: Seq[ValpasRooli.Role], organisaatioOid: Organisaatio.Oid)
+    (oppija: T)
+  (implicit session: ValpasSession)
+  : Either[HttpStatus, T] = {
+    val hasAccess = roolit.exists(r => withOppijaAccessAsOrganisaatio(r, organisaatioOid)(oppija).isRight)
+    Either.cond(hasAccess, oppija, ValpasErrorCategory.forbidden.oppija())
+  }
+
   def withOpiskeluoikeusAccess[T <: ValpasOppijaLaajatTiedot](
     rooli: ValpasRooli.Role
   )(
@@ -173,6 +189,21 @@ class ValpasAccessResolver {
     implicit session: ValpasSession
   ): Boolean =
     onGlobaaliOikeus(rooli) || oppilaitosOrganisaatioOids(rooli).nonEmpty
+
+  def valpasRoolitOrganisaatiolle
+    (organisaatioOid: Organisaatio.Oid)
+    (implicit session: ValpasSession)
+  : Set[ValpasRooli.Role] = {
+    session.orgKäyttöoikeudet
+      .filter(o => o.organisaatio.oid == organisaatioOid)
+      .flatMap(_.organisaatiokohtaisetPalveluroolit)
+      .filter(_.palveluName == "VALPAS")
+      .map(_.rooli) ++
+    session.globalKäyttöoikeudet
+      .flatMap(_.globalPalveluroolit)
+      .filter(_.palveluName == "VALPAS")
+      .map(_.rooli)
+  }
 
   private def oppilaitosOrganisaatioOids(
     rooli: ValpasRooli.Role
