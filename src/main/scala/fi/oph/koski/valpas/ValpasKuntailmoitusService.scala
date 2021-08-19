@@ -392,6 +392,7 @@ class ValpasKuntailmoitusService(
     if (oppijaTiedot.forall(_.oppija.onOikeusValvoaKunnalla)) {
       organisaatioService.omatOrganisaatiotJaKayttooikeusroolit
         .filter(_.kayttooikeusrooli == ValpasRooli.KUNTA)
+        .filter(_.organisaatioHierarkia.aktiivinen)
         .flatMap(_.organisaatioHierarkia.toKunta)
         .filter(kunta => accessResolver.accessToOrg(ValpasRooli.KUNTA, kunta.oid))
     } else {
