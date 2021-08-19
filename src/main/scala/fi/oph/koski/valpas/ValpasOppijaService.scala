@@ -357,6 +357,25 @@ class ValpasOppijaService(
   }
 
   def getOppijaLaajatTiedot
+    (roolit: Seq[ValpasRooli.Role], oppijaOid: ValpasHenkilö.Oid)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
+    // Käyttäjän antaessa useamman roolin yritetään hakea niistä sillä, jolla on laajimmat valtuudet nähdä oppijoita.
+    // Tällä vältetään turhien tietokantakyselyiden tekeminen, sillä granulariteettitaso on nyt ValpasOpiskeluoikeusDatabaseServicen
+    // rajaaOVKelposillaOppivelvollisuuksilla-lippu. Naiivimpi vaihtoehto olisi hakea kaikilla rooleilla ja tarkastaa mitkä kyselyt onnistuivat.
+    // Jos granulariteettia jatkossa kasvatetaan, tämä funktio pitää toteuttaa myös eri tavalla.
+
+    val laajimmatRoolit = roolit.intersect(roolitJoilleHaetaanKaikistaOVLPiirinOppijoista)
+    if (roolit.isEmpty) {
+      Left(ValpasErrorCategory.forbidden.oppija())
+    } else if (laajimmatRoolit.nonEmpty) {
+      getOppijaLaajatTiedot(laajimmatRoolit.head, oppijaOid)
+    } else {
+      getOppijaLaajatTiedot(roolit.head, oppijaOid)
+    }
+  }
+
+    def getOppijaLaajatTiedot
     (oppijaOid: ValpasHenkilö.Oid)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasOppijaLaajatTiedot] = {

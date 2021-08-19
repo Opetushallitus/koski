@@ -104,6 +104,13 @@ const suorittamisenValvoja = {
   organisaatio: "Jyväskylän normaalikoulu",
 }
 
+const nivelvaiheenValvoja = {
+  nimi: "käyttäjä valpas-nivelvaihe",
+  email: "integraatiotesti.nivelvaihe@oph.fi",
+  puhelin: "1010",
+  organisaatio: "Jyväskylän normaalikoulu",
+}
+
 const teeOppijat = (tekijä: Tekijä): NonEmptyArray<Oppija> => [
   {
     oid: "1.2.246.562.24.00000000001",
@@ -200,6 +207,29 @@ const suorittamisenValvojanOppijat: NonEmptyArray<Oppija> = [
   },
 ]
 
+const nivelvaiheenValvojanOppijat: NonEmptyArray<Oppija> = [
+  {
+    oid: "1.2.246.562.24.00000000004",
+    title: "Lukio-opiskelija Valpas (070504A717P)",
+    prefill: 0,
+    expected: {
+      kohde: "Helsingin kaupunki",
+      tekijä: [
+        "käyttäjä valpas-nivelvaihe",
+        nivelvaiheenValvoja.email,
+        nivelvaiheenValvoja.puhelin,
+        "Jyväskylän normaalikoulu",
+      ].join("\n"),
+      lähiosoite: "Esimerkkitie 10",
+      postitoimipaikka: "00000 Helsinki",
+      maa: "Costa Rica",
+      puhelin: "0401122334",
+      email: "valpas@gmail.com",
+      muuHaku: "Ei",
+    },
+  },
+]
+
 describe("Kuntailmoituksen tekeminen", () => {
   it("happy path hakeutumisen valvojana", async () => {
     await testaaListanäkymästä("valpas-jkl-normaali", opo)
@@ -244,6 +274,14 @@ describe("Kuntailmoituksen tekeminen", () => {
     await testaaOppijanäkymistä(
       suorittamisenValvojanOppijat,
       suorittamisenValvoja
+    )
+  })
+
+  it("happy path hakeutumisen ja suorittamisen valvojana", async () => {
+    await loginAs(suorittaminenHetuhakuPath, "valpas-nivelvaihe", true)
+    await testaaOppijanäkymistä(
+      nivelvaiheenValvojanOppijat,
+      nivelvaiheenValvoja
     )
   })
 })
