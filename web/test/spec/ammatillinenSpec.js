@@ -766,6 +766,7 @@ describe('Ammatillinen koulutus', function() {
         addOppija.selectTutkinto('Autoalan perust'),
         addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
         addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
+        addOppija.selectMaksuttomuus(0),
         addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)')
       )
 

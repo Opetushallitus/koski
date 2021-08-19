@@ -138,7 +138,9 @@ trait ValpasOpiskeluoikeus {
   def tarkasteltavaPäätasonSuoritus: Option[ValpasPäätasonSuoritus] = {
     päätasonSuoritukset.headOption match {
       case Some(pts) if pts.suorituksenTyyppi.koodiarvo == "nayttotutkintoonvalmistavakoulutus" =>
-        päätasonSuoritukset.find(_.suorituksenTyyppi.koodiarvo == "ammatillinentutkinto") match {
+        päätasonSuoritukset.find(oo =>
+          Seq("ammatillinentutkinto", "ammatillinentutkintoosittainen").contains(oo.suorituksenTyyppi.koodiarvo)
+        ) match {
           case Some(ammatillinen) => Some(ammatillinen)
           case None => päätasonSuoritukset.headOption
         }
