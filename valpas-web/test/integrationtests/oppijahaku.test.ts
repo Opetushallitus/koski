@@ -3,7 +3,6 @@ import {
   createMaksuttomuusPath,
   createOppijaPath,
   createSuorittaminenHetuhakuPath,
-  createSuorittaminenPath,
 } from "../../src/state/paths"
 import {
   clickElement,
@@ -72,7 +71,7 @@ describe("Oppijahaku", () => {
       "Löytyi: Lukio-opiskelija Valpas (070504A717P)",
       createOppijaPath("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000004",
-        prev: createSuorittaminenPath(),
+        prev: createSuorittaminenHetuhakuPath(),
       })
     )
   })
@@ -119,7 +118,7 @@ describe("Oppijahaku", () => {
       "Löytyi: Lukio-opiskelija Valpas (070504A717P)",
       createOppijaPath("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000004",
-        prev: createSuorittaminenPath(),
+        prev: createSuorittaminenHetuhakuPath(),
       })
     )
   })
