@@ -22,7 +22,7 @@
     "es6-promise": "^4.2.4",
     "fecha": "^2.3.3",
     "js-cookie": "^2.2.1",
-    "node-gyp": "^7.1.2",
+    "node-gyp": "8.1.0",
     "partial.lenses": "^9.8.0",
     "prop-types": "^15.6.1",
     "ramda": "^0.27.1",
@@ -71,7 +71,7 @@
     "puppeteer": "^5.5.0",
     "q": "^1.5.1",
     "set-value": "^3.0.1",
-    "snyk": "1.591.0",
+    "snyk": "1.683",
     "style-loader": "^0.21.0",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.11",
@@ -83,6 +83,10 @@
     "watch": "webpack -d --progress --colors --watch --define process.env.NODE_ENV=${NODE_ENV:=undefined}",
     "unit-test": "mocha --require @babel/register --reporter spec ./test/unit-test",
     "unit-test-watch": "mocha -w --require @babel/register --reporter spec ./test/unit-test",
-    "test": "node/node test/mocha-chrome-wrapper.js ${MOCHA_URL:=http://localhost:7021/koski/test/runner.html}?grep=${MOCHA_GREP} --chrome-flags '[\"--use-mock-keychain\"]'"
+    "test": "node/node test/mocha-chrome-wrapper.js ${MOCHA_URL:=http://localhost:7021/koski/test/runner.html}?grep=${MOCHA_GREP} --chrome-flags '[\"--use-mock-keychain\"]'",
+    "preinstall": "npx npm-force-resolutions"
+  },
+  "resolutions": {
+    "tar": "^6.1.1"
   }
 }
