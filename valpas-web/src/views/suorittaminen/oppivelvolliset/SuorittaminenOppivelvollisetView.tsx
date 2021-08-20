@@ -30,9 +30,7 @@ import {
 import { suorittamisvalvottaviaOpiskeluoikeuksiaCount } from "../../../state/apitypes/opiskeluoikeus"
 import { useBasePath } from "../../../state/basePath"
 import { Oid } from "../../../state/common"
-import { isFeatureFlagEnabled } from "../../../state/featureFlags"
 import { createSuorittaminenPathWithOrg } from "../../../state/paths"
-import { SuorittaminenHetuhaku } from "../../../views/suorittaminen/hetuhaku/SuorittaminenHetuhaku"
 import { SuorittaminenOppivelvollisetTable } from "../../../views/suorittaminen/oppivelvolliset/SuorittaminenOppivelvollisetTable"
 import { SuorittaminenNavigation } from "../../../views/suorittaminen/SuorittaminenNavigation"
 import { ErrorView } from "../../ErrorView"
@@ -57,20 +55,12 @@ export const SuorittaminenOppivelvollisetViewWithoutOrgOid = withRequiresSuoritt
     )
     const organisaatio = organisaatiot[0]
 
-    return (
-      <>
-        {isFeatureFlagEnabled("suorittamisenvalvontalista") ? (
-          organisaatio ? (
-            <Redirect
-              to={createSuorittaminenPathWithOrg(basePath, organisaatio.oid)}
-            />
-          ) : (
-            <OrganisaatioMissingView />
-          )
-        ) : (
-          <SuorittaminenHetuhaku />
-        )}
-      </>
+    return organisaatio ? (
+      <Redirect
+        to={createSuorittaminenPathWithOrg(basePath, organisaatio.oid)}
+      />
+    ) : (
+      <OrganisaatioMissingView />
     )
   }
 )
@@ -114,59 +104,53 @@ export const SuorittaminenOppivelvollisetView = withRequiresSuorittamisenValvont
     )
 
     return (
-      <>
-        {isFeatureFlagEnabled("suorittamisenvalvontalista") ? (
-          <Page>
-            <OrganisaatioValitsin
-              containerClassName={b("organisaatiovalitsin")}
-              organisaatioHierarkia={organisaatiot}
-              valittuOrganisaatioOid={organisaatioOid}
-              label={t("Oppilaitos")}
-              onChange={changeOrganisaatio}
-            />
-            <SuorittaminenNavigation
-              selectedOrganisaatio={organisaatioOid}
-              oppivelvollisetCount={
-                isSuccess(fetch) &&
-                suorittamisvalvottaviaOpiskeluoikeuksiaCount(
-                  organisaatioOid,
-                  fetch.data
-                )
-              }
-            />
-            <Card>
-              <CardHeader>
-                <T id="suorittaminennäkymä__oppivelvolliset__otsikko" />
-                {isSuccess(fetch) && (
-                  <Counter>
-                    {counters.filteredRowCount === counters.unfilteredRowCount
-                      ? counters.filteredRowCount
-                      : `${counters.filteredRowCount} / ${counters.unfilteredRowCount}`}
-                  </Counter>
-                )}
-              </CardHeader>
-              <ConstrainedCardBody>
-                {isLoading(fetch) && <Spinner />}
-                {isSuccess(fetch) && fetch.data.length == 0 && (
-                  <NoDataMessage>
-                    <T id="suorittaminennäkymä__ei_oppivelvollisia" />
-                  </NoDataMessage>
-                )}
-                {isSuccess(fetch) && fetch.data.length > 0 && (
-                  <SuorittaminenOppivelvollisetTable
-                    data={fetch.data}
-                    organisaatioOid={organisaatioOid}
-                    onCountChange={setCounters}
-                  />
-                )}
-                {isError(fetch) && <ApiErrors errors={fetch.errors} />}
-              </ConstrainedCardBody>
-            </Card>
-          </Page>
-        ) : (
-          <SuorittaminenHetuhaku />
-        )}
-      </>
+      <Page>
+        <OrganisaatioValitsin
+          containerClassName={b("organisaatiovalitsin")}
+          organisaatioHierarkia={organisaatiot}
+          valittuOrganisaatioOid={organisaatioOid}
+          label={t("Oppilaitos")}
+          onChange={changeOrganisaatio}
+        />
+        <SuorittaminenNavigation
+          selectedOrganisaatio={organisaatioOid}
+          oppivelvollisetCount={
+            isSuccess(fetch) &&
+            suorittamisvalvottaviaOpiskeluoikeuksiaCount(
+              organisaatioOid,
+              fetch.data
+            )
+          }
+        />
+        <Card>
+          <CardHeader>
+            <T id="suorittaminennäkymä__oppivelvolliset__otsikko" />
+            {isSuccess(fetch) && (
+              <Counter>
+                {counters.filteredRowCount === counters.unfilteredRowCount
+                  ? counters.filteredRowCount
+                  : `${counters.filteredRowCount} / ${counters.unfilteredRowCount}`}
+              </Counter>
+            )}
+          </CardHeader>
+          <ConstrainedCardBody>
+            {isLoading(fetch) && <Spinner />}
+            {isSuccess(fetch) && fetch.data.length == 0 && (
+              <NoDataMessage>
+                <T id="suorittaminennäkymä__ei_oppivelvollisia" />
+              </NoDataMessage>
+            )}
+            {isSuccess(fetch) && fetch.data.length > 0 && (
+              <SuorittaminenOppivelvollisetTable
+                data={fetch.data}
+                organisaatioOid={organisaatioOid}
+                onCountChange={setCounters}
+              />
+            )}
+            {isError(fetch) && <ApiErrors errors={fetch.errors} />}
+          </ConstrainedCardBody>
+        </Card>
+      </Page>
     )
   }
 )
