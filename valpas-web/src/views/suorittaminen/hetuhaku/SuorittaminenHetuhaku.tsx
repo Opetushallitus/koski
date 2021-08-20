@@ -6,7 +6,6 @@ import {
 import { useApiMethod } from "../../../api/apiHooks"
 import { Page } from "../../../components/containers/Page"
 import { T } from "../../../i18n/i18n"
-import { isFeatureFlagEnabled } from "../../../state/featureFlags"
 import { createSuorittaminenHetuhakuPath } from "../../../state/paths"
 import { OppijaSearch } from "../../../views/oppijasearch/OppijaSearch"
 import { SuorittaminenNavigation } from "../SuorittaminenNavigation"
@@ -19,18 +18,10 @@ export const SuorittaminenHetuhaku = () => {
 
   return (
     <Page id="suorittaminenhetuhaku">
-      {isFeatureFlagEnabled("suorittamisenvalvontalista") ? (
-        <>
-          <SuorittaminenNavigation />
-          <p>
-            <T id={"suorittaminenhaku__ohje"} />
-          </p>
-        </>
-      ) : (
-        <p>
-          <T id={"oppijahaku__suorittaminen_väliaikainen_viesti"} />
-        </p>
-      )}
+      <SuorittaminenNavigation />
+      <p>
+        <T id={"suorittaminenhaku__ohje"} />
+      </p>
       <OppijaSearch
         searchState={search}
         onQuery={search.call}
