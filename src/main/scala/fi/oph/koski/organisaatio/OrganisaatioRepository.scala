@@ -79,13 +79,6 @@ trait OrganisaatioRepository extends Logging {
     filter(_.organisaatiotyypit.contains(Organisaatiotyyppi.KUNTA))
   }
 
-  def isKunta(organisaatio: OrganisaatioWithOid): Boolean = {
-    getOrganisaatioHierarkia(organisaatio.oid) match {
-      case Some(o) => o.organisaatiotyypit.contains(Organisaatiotyyppi.KUNTA)
-      case _ => false
-    }
-  }
-
   def convertOrganisaatio(org: OrganisaatioPalveluOrganisaatio): OrganisaatioHierarkia = {
     val oppilaitosnumero = org.oppilaitosKoodi.flatMap(oppilaitosnumero => koodisto.validate("oppilaitosnumero", oppilaitosnumero))
     val kotipaikka = org.kotipaikkaUri.map(str => str.split("_")).flatMap {

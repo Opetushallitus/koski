@@ -1,7 +1,7 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.organisaatio.OrganisaatioRepository
+import fi.oph.koski.organisaatio.{OrganisaatioRepository, Organisaatiotyyppi}
 import fi.oph.koski.schema.{Oppilaitos, OrganisaatioWithOid, Toimipiste}
 import fi.oph.koski.userdirectory.{DirectoryClient, DirectoryUser}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
@@ -75,18 +75,23 @@ class ValpasKuntailmoitusInputValidator(
     Right(kuntailmoitusInputTäydennettynä)
   }
 
+  private def isAktiivinenKunta(o: OrganisaatioWithOid): Boolean =
+    organisaatioRepository.getOrganisaatioHierarkia(o.oid).exists(h =>
+      h.aktiivinen && h.organisaatiotyypit.contains(Organisaatiotyyppi.KUNTA)
+    )
+
   private def validateKunta(kuntailmoitusInput: ValpasKuntailmoitusLaajatTiedotJaOppijaOid)
   : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
     val virheIlmoitus = Left(
       ValpasErrorCategory.validation.kuntailmoituksenKohde(
-        s"Kuntailmoituksen kohde ${kuntailmoitusInput.kuntailmoitus.kunta.oid} ei ole kunta"
+        s"Kuntailmoituksen kohde ${kuntailmoitusInput.kuntailmoitus.kunta.oid} ei ole aktiivinen kunta"
       ))
 
     kuntailmoitusInput.kuntailmoitus.kunta match {
       // Tarkistetaan osa suoraan tyypeistä, koska silloin ei tarvitse tehdä hakua organisaatioRepositoryyn
       case _: Oppilaitos => virheIlmoitus
       case _: Toimipiste => virheIlmoitus
-      case k: OrganisaatioWithOid if !organisaatioRepository.isKunta(k) => virheIlmoitus
+      case o: OrganisaatioWithOid if !isAktiivinenKunta(o) => virheIlmoitus
       case _ => Right(kuntailmoitusInput)
     }
   }

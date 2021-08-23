@@ -1,9 +1,10 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, Yhteystiedot}
+import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
+import fi.oph.koski.organisaatio.Organisaatiotyyppi
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOppijaLaajatTiedot, ValpasOppilaitos}
@@ -29,7 +30,7 @@ class ValpasKuntailmoitusService(
     val organisaatioOid = kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio.oid
 
     val sallitutRoolit = kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio match {
-      case o: OrganisaatioWithOid if organisaatioRepository.isKunta(o) => Right(Seq(ValpasRooli.KUNTA))
+      case o: OrganisaatioWithOid if isAktiivinenKunta(o) => Right(Seq(ValpasRooli.KUNTA))
       case _: Oppilaitos => Right(Seq(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, ValpasRooli.OPPILAITOS_SUORITTAMINEN))
       case o: Any => Left(ValpasErrorCategory.validation.kuntailmoituksenTekijä(
         s"Organisaatio ${o.oid} ei voi olla kuntailmoituksen tekijä (organisaation tyyppi ei ole sallittu)"
@@ -72,6 +73,11 @@ class ValpasKuntailmoitusService(
   : Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]] = {
     repository.queryByKunta(kuntaOid)
   }
+
+  private def isAktiivinenKunta(o: OrganisaatioWithOid): Boolean =
+    organisaatioRepository.getOrganisaatioHierarkia(o.oid).exists(h =>
+      h.aktiivinen && h.organisaatiotyypit.contains(Organisaatiotyyppi.KUNTA)
+    )
 
   private def karsiHenkilötiedotJosEiOikeuksia
     (kuntailmoitus: ValpasKuntailmoitusLaajatTiedot)

@@ -270,7 +270,24 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
       verifyResponseStatus(
         400,
         ValpasErrorCategory.validation.kuntailmoituksenKohde(
-          s"Kuntailmoituksen kohde ${MockOrganisaatiot.jyväskylänNormaalikoulu} ei ole kunta"
+          s"Kuntailmoituksen kohde ${MockOrganisaatiot.jyväskylänNormaalikoulu} ei ole aktiivinen kunta"
+        )
+      )
+    }
+  }
+
+  "Kuntailmoituksen tekeminen käyttäen lakkautettua kuntaa kohdeorganisaationa palauttaa virheen" in {
+    val minimikuntailmoitusKäyttäenMuutaKuinKuntaaKohteena =
+      teeMinimiKuntailmoitusInput(kuntaOid = MockOrganisaatiot.lakkautettuKunta)
+
+    post("/valpas/api/kuntailmoitus",
+      body = minimikuntailmoitusKäyttäenMuutaKuinKuntaaKohteena,
+      headers = authHeaders() ++ jsonContent
+    ) {
+      verifyResponseStatus(
+        400,
+        ValpasErrorCategory.validation.kuntailmoituksenKohde(
+          s"Kuntailmoituksen kohde ${MockOrganisaatiot.lakkautettuKunta} ei ole aktiivinen kunta"
         )
       )
     }
@@ -313,6 +330,22 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
         400,
         ValpasErrorCategory.validation.kuntailmoituksenTekijä(
           s"Organisaatio ${MockOrganisaatiot.lehtikuusentienToimipiste} ei voi olla kuntailmoituksen tekijä (organisaation tyyppi ei ole sallittu)"
+        )
+      )
+    }
+  }
+
+  "Kuntailmoituksen tekeminen käyttäen lakkautettua kuntaa tekijänä palauttaa virheen" in {
+    val ilmoitus = teeMinimiKuntailmoitusInput(tekijäOid = MockOrganisaatiot.lakkautettuKunta)
+
+    post("/valpas/api/kuntailmoitus",
+      body = ilmoitus,
+      headers = authHeaders() ++ jsonContent
+    ) {
+      verifyResponseStatus(
+        400,
+        ValpasErrorCategory.validation.kuntailmoituksenTekijä(
+          s"Organisaatio ${MockOrganisaatiot.lakkautettuKunta} ei voi olla kuntailmoituksen tekijä (organisaation tyyppi ei ole sallittu)"
         )
       )
     }
