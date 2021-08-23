@@ -1557,5 +1557,6 @@
   "kehittyvän kielitaidon tasojen kuvausasteikkoa": "kehittyvän kielitaidon tasojen kuvausasteikkoa",
   "description:Vapaatavoitteisen vapaan sivistystyön koulutuksen tunnistetiedot" : "Vapaatavoitteisen vapaan sivistystyön koulutuksen tunnistetiedot",
   "Vapaatavoitteisen vapaan sivistyön koulutuksen osasuoritus" : "Vapaatavoitteisen vapaan sivistyön koulutuksen osasuoritus",
-  "tooltip:Lasketaan automaattisesti tallentamisen jälkeen osasuoritusten..." : "Lasketaan automaattisesti tallentamisen jälkeen osasuoritusten laajuuksista"
+  "tooltip:Lasketaan automaattisesti tallentamisen jälkeen osasuoritusten..." : "Lasketaan automaattisesti tallentamisen jälkeen osasuoritusten laajuuksista",
+  "tooltip:Opiskelija on suorittanut koko lukion...": "Opiskelija on suorittanut koko lukion oppimäärän ja saanut lukion päättötodistuksen"
 }
