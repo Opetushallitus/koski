@@ -17,6 +17,7 @@ import { Spinner } from "../../../components/icons/Spinner"
 import {
   getOrganisaatiot,
   OrganisaatioValitsin,
+  useStoredOrgState,
 } from "../../../components/shared/OrganisaatioValitsin"
 import { DataTableCountChangeEvent } from "../../../components/tables/DataTable"
 import { Counter } from "../../../components/typography/Counter"
@@ -37,27 +38,29 @@ import { ErrorView } from "../../ErrorView"
 
 const b = bem("suorittaminenoppivelvollisetview")
 
+const organisaatioTyyppi = "OPPILAITOS"
 const organisaatioHakuRooli = "OPPILAITOS_SUORITTAMINEN"
 
 export const SuorittaminenOppivelvollisetViewWithoutOrgOid = withRequiresSuorittamisenValvonta(
   () => {
     const basePath = useBasePath()
-
     const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
     const organisaatiot = useMemo(
       () =>
         getOrganisaatiot(
           organisaatiotJaKäyttöoikeusroolit,
           organisaatioHakuRooli,
-          "OPPILAITOS"
+          organisaatioTyyppi
         ),
       [organisaatiotJaKäyttöoikeusroolit]
     )
-    const organisaatio = organisaatiot[0]
-
-    return organisaatio ? (
+    const [storedOrFallbackOrg] = useStoredOrgState(
+      organisaatioTyyppi,
+      organisaatiot
+    )
+    return storedOrFallbackOrg ? (
       <Redirect
-        to={createSuorittaminenPathWithOrg(basePath, organisaatio.oid)}
+        to={createSuorittaminenPathWithOrg(basePath, storedOrFallbackOrg)}
       />
     ) : (
       <OrganisaatioMissingView />
@@ -84,7 +87,7 @@ export const SuorittaminenOppivelvollisetView = withRequiresSuorittamisenValvont
         getOrganisaatiot(
           organisaatiotJaKäyttöoikeusroolit,
           organisaatioHakuRooli,
-          "OPPILAITOS"
+          organisaatioTyyppi
         ),
       [organisaatiotJaKäyttöoikeusroolit]
     )
@@ -106,6 +109,7 @@ export const SuorittaminenOppivelvollisetView = withRequiresSuorittamisenValvont
     return (
       <Page>
         <OrganisaatioValitsin
+          organisaatioTyyppi={organisaatioTyyppi}
           containerClassName={b("organisaatiovalitsin")}
           organisaatioHierarkia={organisaatiot}
           valittuOrganisaatioOid={organisaatioOid}

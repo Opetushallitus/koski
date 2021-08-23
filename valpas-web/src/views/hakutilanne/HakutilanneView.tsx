@@ -11,6 +11,7 @@ import { Spinner } from "../../components/icons/Spinner"
 import {
   getOrganisaatiot,
   OrganisaatioValitsin,
+  useStoredOrgState,
 } from "../../components/shared/OrganisaatioValitsin"
 import { DataTableCountChangeEvent } from "../../components/tables/DataTable"
 import { Counter } from "../../components/typography/Counter"
@@ -37,6 +38,7 @@ import { useOppijatData } from "./useOppijatData"
 
 const b = bem("hakutilanneview")
 
+const organisaatioTyyppi = "OPPILAITOS"
 const organisaatioHakuRooli = "OPPILAITOS_HAKEUTUMINEN"
 
 export type HakutilanneViewProps = HakutilanneViewRouteProps
@@ -45,16 +47,23 @@ export const HakutilanneViewWithoutOrgOid = withRequiresHakeutumisenValvonta(
   () => {
     const basePath = useBasePath()
     const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
-    const organisaatio = getOrganisaatiot(
-      organisaatiotJaKäyttöoikeusroolit,
-      organisaatioHakuRooli,
-      "OPPILAITOS"
-    )[0]
-
-    return organisaatio ? (
+    const organisaatiot = useMemo(
+      () =>
+        getOrganisaatiot(
+          organisaatiotJaKäyttöoikeusroolit,
+          organisaatioHakuRooli,
+          organisaatioTyyppi
+        ),
+      [organisaatiotJaKäyttöoikeusroolit]
+    )
+    const [storedOrFallbackOrg] = useStoredOrgState(
+      organisaatioTyyppi,
+      organisaatiot
+    )
+    return storedOrFallbackOrg ? (
       <Redirect
         to={createHakutilannePathWithOrg(basePath, {
-          organisaatioOid: organisaatio.oid,
+          organisaatioOid: storedOrFallbackOrg,
         })}
       />
     ) : (
@@ -72,13 +81,12 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
         getOrganisaatiot(
           organisaatiotJaKäyttöoikeusroolit,
           organisaatioHakuRooli,
-          "OPPILAITOS"
+          organisaatioTyyppi
         ),
       [organisaatiotJaKäyttöoikeusroolit]
     )
 
-    const organisaatioOid =
-      props.match.params.organisaatioOid || organisaatiot[0]?.oid
+    const organisaatioOid = props.match.params.organisaatioOid!
 
     const { data, isLoading, errors, setMuuHaku } = useOppijatData(
       organisaatioOid
@@ -113,6 +121,7 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
     return organisaatioOid ? (
       <Page className={b("view")}>
         <OrganisaatioValitsin
+          organisaatioTyyppi={organisaatioTyyppi}
           containerClassName={b("organisaatiovalitsin")}
           organisaatioHierarkia={organisaatiot}
           valittuOrganisaatioOid={organisaatioOid}
