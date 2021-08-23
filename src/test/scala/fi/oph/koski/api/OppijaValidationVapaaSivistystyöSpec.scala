@@ -1,6 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusKatsotaanEronneeksi, opiskeluoikeusValmistunut}
 import fi.oph.koski.documentation.VapaaSivistystyöExample._
 import fi.oph.koski.documentation.VapaaSivistystyöExampleData._
 import fi.oph.koski.http.KoskiErrorCategory
@@ -117,7 +118,7 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
   }
 
   "Lukutaitokoulutus" - {
-    "Päätason suorituksen laajuus lasketaan automaattisesit osasuoritusten laajuuksista" in {
+    "Päätason suorituksen laajuus lasketaan automaattisesti osasuoritusten laajuuksista" in {
       val opiskeluoikeus = opiskeluoikeusLukutaito.withSuoritukset(List(
         suoritusLukutaito.withOsasuoritukset(Some(List(
           vapaanSivistystyönLukutaitokoulutuksenVuorovaikutustilanteissaToimimisenSuoritus(laajuus = LaajuusOpintopisteissä(60)),
@@ -126,6 +127,44 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
       ))
       val result = putAndGetOpiskeluoikeus(opiskeluoikeus)
       result.suoritukset.head.koulutusmoduuli.laajuusArvo(0) shouldBe(69)
+    }
+
+    "Opiskeluoikeus ei voi käyttää tilaa 'hyvaksytystisuoritettu'" in {
+      val opiskeluoikeus = opiskeluoikeusLukutaito.withSuoritukset(List(
+        suoritusLukutaito.withOsasuoritukset(Some(List(
+          vapaanSivistystyönLukutaitokoulutuksenVuorovaikutustilanteissaToimimisenSuoritus(laajuus = LaajuusOpintopisteissä(60)),
+          vapaanSivistystyönLukutaitokoulutuksenTekstienLukeminenJaTulkitseminenSuoritus(laajuus = LaajuusOpintopisteissä(9))
+        )))
+      )).withTila(
+        VapaanSivistystyönOpiskeluoikeudenTila(
+          List(
+            VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusHyväksytystiSuoritettu)
+          )
+        )
+      )
+
+      putOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönOpiskeluoikeudellaVääräTila())
+      }
+    }
+
+    "Opiskeluoikeus ei voi käyttää tilaa 'keskeytynyt'" in {
+      val opiskeluoikeus = opiskeluoikeusLukutaito.withSuoritukset(List(
+        suoritusLukutaito.withOsasuoritukset(Some(List(
+          vapaanSivistystyönLukutaitokoulutuksenVuorovaikutustilanteissaToimimisenSuoritus(laajuus = LaajuusOpintopisteissä(60)),
+          vapaanSivistystyönLukutaitokoulutuksenTekstienLukeminenJaTulkitseminenSuoritus(laajuus = LaajuusOpintopisteissä(9))
+        )))
+      )).withTila(
+        VapaanSivistystyönOpiskeluoikeudenTila(
+          List(
+            VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusKeskeytynyt)
+          )
+        )
+      )
+
+      putOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönOpiskeluoikeudellaVääräTila())
+      }
     }
   }
 
@@ -141,6 +180,62 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
 
       putOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteisenKoulutuksenVahvistettuPäätasoArvioimattomillaOsasuorituksilla())
+      }
+    }
+
+    "Opiskeluoikeuden tila voi olla 'hyvaksytystisuoritettu'" in {
+      val oo = VapaatavoitteinenOpiskeluoikeus.withTila(
+        VapaanSivistystyönOpiskeluoikeudenTila(
+          List(
+            VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusHyväksytystiSuoritettu)
+          )
+        )
+      )
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Opiskeluoikeuden tila voi olla 'keskeytynyt'" in {
+      val oo = VapaatavoitteinenOpiskeluoikeus.withTila(
+        VapaanSivistystyönOpiskeluoikeudenTila(
+          List(
+            VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusKeskeytynyt)
+          )
+        )
+      )
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Opiskeluoikeuden tila ei voi olla 'katsotaaneronneeksi'" in {
+      val oo = VapaatavoitteinenOpiskeluoikeus.withTila(
+        VapaanSivistystyönOpiskeluoikeudenTila(
+          List(
+            VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusKatsotaanEronneeksi)
+          )
+        )
+      )
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönOpiskeluoikeudellaVääräTila())
+      }
+    }
+
+    "Opiskeluoikeuden tila ei voi olla 'valmistunut'" in {
+      val oo = VapaatavoitteinenOpiskeluoikeus.withTila(
+        VapaanSivistystyönOpiskeluoikeudenTila(
+          List(
+            VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusValmistunut)
+          )
+        )
+      )
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönOpiskeluoikeudellaVääräTila())
       }
     }
   }

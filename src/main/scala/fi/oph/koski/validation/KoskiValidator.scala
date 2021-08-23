@@ -635,7 +635,7 @@ class KoskiValidator(
 
   private def validatePäätasonSuorituksenStatus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, suoritus: KoskeenTallennettavaPäätasonSuoritus) = suoritus match {
     case a: AmmatillisenTutkinnonOsittainenSuoritus => validateValmiinAmmatillisenTutkinnonOsittainenSuoritus(a, opiskeluoikeus)
-    case vst: VapaanSivistystyönPäätasonSuoritus => VapaaSivistystyöValidation.validateVapaanSivistystyönPäätasonSuoritus(vst)
+    case vst: VapaanSivistystyönPäätasonSuoritus => VapaaSivistystyöValidation.validateVapaanSivistystyönPäätasonSuoritus(vst, opiskeluoikeus)
     case s => validateValmiinSuorituksenStatus(s)
   }
 

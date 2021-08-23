@@ -170,7 +170,8 @@ trait Opiskeluoikeusjakso extends Alkupäivällinen {
 }
 
 object KoskiSuppeaOpiskeluoikeusjakso {
-  def päätöstilat = List("valmistunut", "katsotaaneronneeksi")
+  // Jälkimmäiset kaksi tilakoodia ovat Vapaan sivistystyön koulutusta varten
+  def päätöstilat = List("valmistunut", "katsotaaneronneeksi", "hyvaksytystisuoritettu", "keskeytynyt")
 }
 
 trait KoskiSuppeaOpiskeluoikeusjakso extends Opiskeluoikeusjakso {
@@ -185,7 +186,8 @@ trait KoskiSuppeaOpiskeluoikeusjakso extends Opiskeluoikeusjakso {
 }
 
 object KoskiOpiskeluoikeusjakso {
-  def päätöstilat = List("valmistunut", "eronnut", "peruutettu", "katsotaaneronneeksi")
+  // Jälkimmäiset kaksi tilakoodia ovat Vapaan sivistystyön koulutusta varten
+  def päätöstilat = List("valmistunut", "eronnut", "peruutettu", "katsotaaneronneeksi", "hyvaksytystisuoritettu", "keskeytynyt")
 }
 
 trait KoskiOpiskeluoikeusjakso extends KoskiSuppeaOpiskeluoikeusjakso {
