@@ -12,9 +12,14 @@ import {
   OrganisaatioHierarkia,
   OrganisaatioJaKayttooikeusrooli,
 } from "../../state/common"
+import {
+  sessionStateStorage,
+  useStoredState,
+} from "../../state/useSessionStoreState"
 import { Dropdown } from "../forms/Dropdown"
 
 export type OrganisaatioValitsinProps = {
+  organisaatioTyyppi: string
   organisaatioHierarkia: OrganisaatioHierarkia[]
   valittuOrganisaatioOid: Oid
   onChange: (value?: Oid) => void
@@ -22,16 +27,49 @@ export type OrganisaatioValitsinProps = {
   containerClassName?: string
 }
 
-export const OrganisaatioValitsin = (props: OrganisaatioValitsinProps) => (
-  <Dropdown
-    selectorId="organisaatiovalitsin"
-    containerClassName={props.containerClassName}
-    label={props.label}
-    options={getOrgOptions(props.organisaatioHierarkia)}
-    value={props.valittuOrganisaatioOid}
-    onChange={props.onChange}
-  />
-)
+export const useStoredOrgState = (
+  organisaatioTyyppiKey: string,
+  allowedOrgs: OrganisaatioHierarkia[]
+) => {
+  const organisaatioOids = allowedOrgs.map((o) => o.oid)
+  const fallback = organisaatioOids[0] || null
+  return useStoredState<string | null>(
+    sessionStateStorage<string | null, string | null>(
+      `organisaatioOid-${organisaatioTyyppiKey}`,
+      fallback,
+      (value) => value,
+      (serialized) =>
+        serialized && organisaatioOids.includes(serialized)
+          ? serialized
+          : fallback
+    )
+  )
+}
+
+export const OrganisaatioValitsin = (props: OrganisaatioValitsinProps) => {
+  const [, setStoredOrgOid] = useStoredOrgState(
+    props.organisaatioTyyppi,
+    props.organisaatioHierarkia
+  )
+
+  const onChange = (oid?: Oid) => {
+    if (oid) {
+      setStoredOrgOid(oid)
+    }
+    props.onChange(oid)
+  }
+
+  return (
+    <Dropdown
+      selectorId="organisaatiovalitsin"
+      containerClassName={props.containerClassName}
+      label={props.label}
+      options={getOrgOptions(props.organisaatioHierarkia)}
+      value={props.valittuOrganisaatioOid}
+      onChange={onChange}
+    />
+  )
+}
 
 export const getOrganisaatiot = (
   käyttöoikeusroolit: OrganisaatioJaKayttooikeusrooli[],

@@ -17,6 +17,7 @@ import { Spinner } from "../../../components/icons/Spinner"
 import {
   getOrganisaatiot,
   OrganisaatioValitsin,
+  useStoredOrgState,
 } from "../../../components/shared/OrganisaatioValitsin"
 import { DataTableCountChangeEvent } from "../../../components/tables/DataTable"
 import { Counter } from "../../../components/typography/Counter"
@@ -35,26 +36,30 @@ import { KuntailmoitusTable } from "./KuntailmoitusTable"
 
 const b = bem("kuntailmoitusview")
 
+const organisaatioTyyppi = "KUNTA"
 const organisaatioHakuRooli = "KUNTA"
 
 export const KuntailmoitusViewWithoutOrgOid = withRequiresKuntavalvonta(() => {
   const basePath = useBasePath()
-
   const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
   const organisaatiot = useMemo(
     () =>
       getOrganisaatiot(
         organisaatiotJaKäyttöoikeusroolit,
         organisaatioHakuRooli,
-        "KUNTA",
+        organisaatioTyyppi,
         false
       ),
     [organisaatiotJaKäyttöoikeusroolit]
   )
-  const organisaatio = organisaatiot[0]
-
-  return organisaatio ? (
-    <Redirect to={createKuntailmoitusPathWithOrg(basePath, organisaatio.oid)} />
+  const [storedOrFallbackOrg] = useStoredOrgState(
+    organisaatioTyyppi,
+    organisaatiot
+  )
+  return storedOrFallbackOrg ? (
+    <Redirect
+      to={createKuntailmoitusPathWithOrg(basePath, storedOrFallbackOrg)}
+    />
   ) : (
     <OrganisaatioMissingView />
   )
@@ -79,7 +84,7 @@ export const KuntailmoitusView = withRequiresKuntavalvonta(
         getOrganisaatiot(
           organisaatiotJaKäyttöoikeusroolit,
           organisaatioHakuRooli,
-          "KUNTA",
+          organisaatioTyyppi,
           false
         ),
       [organisaatiotJaKäyttöoikeusroolit]
@@ -102,6 +107,7 @@ export const KuntailmoitusView = withRequiresKuntavalvonta(
     return (
       <Page>
         <OrganisaatioValitsin
+          organisaatioTyyppi={organisaatioTyyppi}
           containerClassName={b("organisaatiovalitsin")}
           organisaatioHierarkia={organisaatiot}
           valittuOrganisaatioOid={organisaatioOid}
