@@ -11,11 +11,11 @@ import fi.oph.koski.validation.ValidatingAndResolvingExtractor
 import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.db.ValpasSchema._
 import fi.oph.koski.valpas.db._
-import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeus, ValpasRajapäivätService}
 import fi.oph.scalaschema.{SerializationContext, Serializer}
 import org.json4s.JValue
-
 import java.time.LocalTime
+import java.util.UUID
 
 class ValpasKuntailmoitusRepository(
   valpasDatabase: ValpasDatabase,
@@ -32,8 +32,12 @@ class ValpasKuntailmoitusRepository(
   private def deserialize(data: JValue): Either[HttpStatus, IlmoitusLisätiedotData] =
     deserializer.extract[IlmoitusLisätiedotData](strictDeserialization)(data)
 
-  private def toDbRows(data: ValpasKuntailmoitusLaajatTiedotJaOppijaOid)(tekijäHenkilöOid: String)
-  : Either[HttpStatus, (IlmoitusRow, IlmoitusLisätiedotRow)] = {
+  private def toDbRows(
+    data: ValpasKuntailmoitusLaajatTiedotJaOppijaOid,
+    kontekstiOpiskeluoikeudet: Seq[ValpasOpiskeluoikeus.Oid]
+  )(
+    tekijäHenkilöOid: String
+  ) : Either[HttpStatus, (IlmoitusRow, IlmoitusLisätiedotRow, Seq[IlmoitusOpiskeluoikeusKontekstiRow])] = {
     for {
       tekijäHenkilö <- data.kuntailmoitus.tekijä.henkilö.toRight(
         ValpasErrorCategory.internalError("Tekijähenkilö puuttuu")
@@ -78,7 +82,13 @@ class ValpasKuntailmoitusRepository(
           )
         )
       )
-      (ilmoitus, lisätiedot)
+      val opiskeluoikeusKontekstiRivit = kontekstiOpiskeluoikeudet.map(opiskeluoikeusOid =>
+        IlmoitusOpiskeluoikeusKontekstiRow(
+          ilmoitusUuid = ilmoitus.uuid,
+          opiskeluoikeusOid = opiskeluoikeusOid
+        )
+      )
+      (ilmoitus, lisätiedot, opiskeluoikeusKontekstiRivit)
     }
   }
 
@@ -151,16 +161,17 @@ class ValpasKuntailmoitusRepository(
     )
   }
 
-  def create(model: ValpasKuntailmoitusLaajatTiedotJaOppijaOid)
+  def create(model: ValpasKuntailmoitusLaajatTiedotJaOppijaOid, kontekstiOpiskeluoikeudet: Seq[ValpasOpiskeluoikeus.Oid])
   : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
     model.kuntailmoitus.tekijä.henkilö
       .toRight(ValpasErrorCategory.internalError("tekijä puuttuu"))
       .flatMap(_.oid.toRight(ValpasErrorCategory.internalError("tekijän oid puuttuu")))
-      .flatMap(toDbRows(model))
-      .flatMap { case (ilmoitus: IlmoitusRow, lisätiedot: IlmoitusLisätiedotRow) =>
+      .flatMap(toDbRows(model, kontekstiOpiskeluoikeudet))
+      .flatMap { case (ilmoitus: IlmoitusRow, lisätiedot: IlmoitusLisätiedotRow, kontekstiRivit: Seq[IlmoitusOpiskeluoikeusKontekstiRow]) =>
         runDbSync(DBIO.seq(
           Ilmoitukset += ilmoitus,
-          IlmoitusLisätiedot += lisätiedot
+          IlmoitusLisätiedot += lisätiedot,
+          IlmoitusOpiskeluoikeusKonteksti ++= kontekstiRivit
         ).transactionally)
         fromDbRows(ilmoitus, lisätiedot)
       }
@@ -187,6 +198,24 @@ class ValpasKuntailmoitusRepository(
           .sortBy(_._1.luotu.desc)
           .result
       ).map(Function.tupled(fromDbRows))
+    )
+  }
+
+  def queryOpiskeluoikeusKontekstiByIlmoitus(ilmoitusUuid: UUID): Either[HttpStatus, Seq[String]] = {
+    queryOpiskeluoikeusKonteksti(_.ilmoitusUuid === ilmoitusUuid)
+      .map(_.map(_.opiskeluoikeusOid))
+  }
+
+  private def queryOpiskeluoikeusKonteksti[T <: slick.lifted.Rep[_]]
+    (filterFn: (IlmoitusOpiskeluoikeusKontekstiTable) => T)
+    (implicit wt: slick.lifted.CanBeQueryCondition[T])
+  : Either[HttpStatus, Seq[ValpasKuntailmoitusOpiskeluoikeusKonteksti]] = {
+    HttpStatus.foldEithers(
+      runDbSync(
+        IlmoitusOpiskeluoikeusKonteksti
+          .filter(filterFn)
+          .result
+      ).map(k => Right(ValpasKuntailmoitusOpiskeluoikeusKonteksti(k.ilmoitusUuid.toString, k.opiskeluoikeusOid)))
     )
   }
 

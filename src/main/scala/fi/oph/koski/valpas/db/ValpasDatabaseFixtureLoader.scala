@@ -29,7 +29,7 @@ class ValpasDatabaseFixtureLoader(app: KoskiApplication) extends Logging {
         .asetaMockTarkastelupäivä(fx.aikaleimaOverride.getOrElse(rajapäivätService.tarkastelupäivä))
 
       val kuntailmoitus = fx.kuntailmoitus
-      kuntailmoitusRepository.create(kuntailmoitus).left.foreach(e => logger.error(s"Fixture insertion failed: $e"))
+      kuntailmoitusRepository.create(kuntailmoitus, Seq.empty).left.foreach(e => logger.error(s"Fixture insertion failed: $e"))
 
       rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(tallennettuTarkastelupäivä)
     }}

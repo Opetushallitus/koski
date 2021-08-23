@@ -1,21 +1,24 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
+import fi.oph.koski.http.{ErrorMatcher, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{Finnish, Koodistokoodiviite}
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessageField, ValpasOperation}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
-import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{MockValpasRajapäivätService, ValpasHenkilö, ValpasOpiskeluoikeus, ValpasOppilaitos}
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoituksenTekijäHenkilö, ValpasKuntailmoitusLaajatTiedot}
-import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
+import fi.oph.koski.valpas.valpasuser.{ValpasMockUsers, ValpasSession}
+import fi.oph.koski.db.{DB, QueryMethods}
 import org.scalatest.BeforeAndAfterEach
-
 import java.time.LocalDate.{of => date}
+import java.util.UUID
 
-class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
+class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAfterEach with QueryMethods {
+  protected val db: DB = KoskiApplicationForTests.valpasDatabase.db
+
   override protected def beforeEach() {
     super.beforeEach()
     AuditLogTester.clearMessages
@@ -659,6 +662,65 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     }
   }
 
+  "Kuntailmoituksen kontekstiin tallennetaan oppijan opiskeluoikeudet oppilaitoksessa" in {
+    val kuntailmoitusInput = teeMinimiKuntailmoitusInput()
+
+    post("/valpas/api/kuntailmoitus", body = kuntailmoitusInput, headers = authHeaders() ++ jsonContent) {
+      verifyResponseStatusOk()
+      val responseKuntailmoitus = JsonSerializer.parse[ValpasKuntailmoitusLaajatTiedot](response.body)
+
+      val expectedOpiskeluoikeusOidit = haeOppijanValppaassaNäkyvätOpiskeluoikeusOidit(
+        ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid,
+        MockOrganisaatiot.jyväskylänNormaalikoulu
+      )
+
+      val opiskeluoikeusOidit = haeIlmoituksenKontekstinOpiskeluoikeusOidit(responseKuntailmoitus.id.get)
+
+      opiskeluoikeusOidit.isRight should equal(true)
+      opiskeluoikeusOidit should equal(expectedOpiskeluoikeusOidit)
+    }
+  }
+
+  "Kuntailmoituksen kontekstiin tallennetaan oppijan opiskeluoikeudet oppilaitoksessa, jos oppijalla monta opiskeluoikeutta eri oppija-oideilla" in {
+    val kuntailmoitusInput = teeMinimiKuntailmoitusInput(
+      oppijaOid = ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaKolmas.oid
+    )
+
+    post("/valpas/api/kuntailmoitus", body = kuntailmoitusInput, headers = authHeaders() ++ jsonContent) {
+      verifyResponseStatusOk()
+      val responseKuntailmoitus = JsonSerializer.parse[ValpasKuntailmoitusLaajatTiedot](response.body)
+
+      val expectedOpiskeluoikeusOidit = haeOppijanValppaassaNäkyvätOpiskeluoikeusOidit(
+        ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaKolmas.oid,
+        MockOrganisaatiot.jyväskylänNormaalikoulu
+      )
+
+      val opiskeluoikeusOidit = haeIlmoituksenKontekstinOpiskeluoikeusOidit(responseKuntailmoitus.id.get)
+
+      opiskeluoikeusOidit.isRight should equal(true)
+      expectedOpiskeluoikeusOidit.getOrElse(Seq.empty) should have size 2
+      opiskeluoikeusOidit should equal(expectedOpiskeluoikeusOidit)
+    }
+  }
+
+  "Kuntailmoituksen kontekstiin ei tallenneta mitään opiskeluoikeus-oideja, jos ilmoituksen tekijä on kunta" in {
+    val user = ValpasMockUsers.valpasUseitaKuntia
+
+    val kuntailmoitusInput = teeMinimiKuntailmoitusInput(
+      tekijäOid = MockOrganisaatiot.helsinginKaupunki
+    )
+
+    post("/valpas/api/kuntailmoitus", body = kuntailmoitusInput, headers = authHeaders(user) ++ jsonContent) {
+      verifyResponseStatusOk()
+      val responseKuntailmoitus = JsonSerializer.parse[ValpasKuntailmoitusLaajatTiedot](response.body)
+
+      val opiskeluoikeusOidit = haeIlmoituksenKontekstinOpiskeluoikeusOidit(responseKuntailmoitus.id.get)
+
+      opiskeluoikeusOidit.isRight should equal(true)
+      opiskeluoikeusOidit should equal(Right(Set.empty))
+    }
+  }
+
   private def teeMinimiKuntailmoitusInput(
     oppijaOid: String = ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid,
     tekijäOid: String = MockOrganisaatiot.jyväskylänNormaalikoulu,
@@ -767,5 +829,26 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
        |}
        |""".stripMargin
 
+  }
+
+  private def haeOppijanValppaassaNäkyvätOpiskeluoikeusOidit(
+    oppijaOid: ValpasHenkilö.Oid,
+    oppilaitosOid: ValpasOppilaitos.Oid
+  ) : Either[HttpStatus, Set[ValpasOpiskeluoikeus.Oid]] =
+  {
+    val oppijaService = KoskiApplicationForTests.valpasOppijaService
+
+    val oppija = oppijaService.getOppijaLaajatTiedot(oppijaOid)(defaultSession)
+
+    oppija.map(_.opiskeluoikeudet.filter(_.oppilaitos.oid == oppilaitosOid).map(_.oid)).map(_.toSet)
+  }
+
+  private def haeIlmoituksenKontekstinOpiskeluoikeusOidit(
+    ilmoitusUuid: String
+  ): Either[HttpStatus, Set[ValpasOpiskeluoikeus.Oid]] =
+  {
+    val kuntailmoitusRepository = KoskiApplicationForTests.valpasKuntailmoitusRepository
+
+    kuntailmoitusRepository.queryOpiskeluoikeusKontekstiByIlmoitus(UUID.fromString(ilmoitusUuid)).map(_.toSet)
   }
 }

@@ -6,6 +6,7 @@ import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystietojenAlkuperä
 import java.time.LocalDateTime
 
 import fi.oph.koski.valpas.ValpasKuntailmoitusLaajatTiedotLisätiedoilla
+import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOpiskeluoikeus
 
 case class ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
   oppijaOid: String,
@@ -135,4 +136,9 @@ case class ValpasPohjatietoYhteystieto(
   yhteystietojenAlkuperä: ValpasYhteystietojenAlkuperä,
   yhteystiedot: ValpasKuntailmoituksenOppijanYhteystiedot,
   kunta: Option[OrganisaatioWithOid]
+)
+
+case class ValpasKuntailmoitusOpiskeluoikeusKonteksti(
+  ilmoitusId: String, // Oikeasti UUID - scala-schemasta puuttuu tuki UUID-tyypille
+  opiskeluoikeusOid: ValpasOpiskeluoikeus.Oid
 )

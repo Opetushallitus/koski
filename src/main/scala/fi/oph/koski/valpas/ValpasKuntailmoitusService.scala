@@ -53,7 +53,8 @@ class ValpasKuntailmoitusService(
           .map(_ => ValpasErrorCategory.forbidden.oppija(
             "Käyttäjällä ei ole oikeuksia tehdä kuntailmoitusta annetusta oppijasta"
           ))
-      result <- repository.create(kuntailmoitusInput)
+      kontekstiOpiskeluoikeudet = o.opiskeluoikeudet.filter(_.oppilaitos.oid == kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio.oid).map(_.oid)
+      result <- repository.create(kuntailmoitusInput, kontekstiOpiskeluoikeudet)
     } yield result
   }
 
