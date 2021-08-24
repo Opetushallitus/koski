@@ -640,7 +640,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       ValpasMockOppijat.lukionAloittanut.oid,
       ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla
     )
-    kuntailmoitusRepository.create(ilmoitus)
+    kuntailmoitusRepository.create(ilmoitus, Seq.empty)
 
     val oppija = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.lukionAloittanut.oid)(defaultSession)
       .toOption.get
@@ -662,7 +662,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       ValpasMockOppijat.lukionAloittanut.oid,
       ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla
     )
-    kuntailmoitusRepository.create(ilmoitus)
+    kuntailmoitusRepository.create(ilmoitus, Seq.empty)
 
     rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(tarkastelupäivä)
     val oppija = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.lukionAloittanut.oid)(defaultSession)
@@ -685,7 +685,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       ValpasMockOppijat.lukionAloittanut.oid,
       ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla
     )
-    kuntailmoitusRepository.create(ilmoitus)
+    kuntailmoitusRepository.create(ilmoitus, Seq.empty)
 
     rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(tarkastelupäivä)
     val oppija = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.lukionAloittanut.oid)(defaultSession)
@@ -708,7 +708,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       ValpasMockOppijat.aapajoenPeruskoulustaValmistunut.oid,
       ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoillaAapajoenPeruskoulusta
     )
-    kuntailmoitusRepository.create(ilmoitus)
+    kuntailmoitusRepository.create(ilmoitus, Seq.empty)
 
     rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(tarkastelupäivä)
     val oppija = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.aapajoenPeruskoulustaValmistunut.oid)(session(ValpasMockUsers.valpasAapajoenKoulu))
@@ -729,7 +729,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       ValpasMockOppijat.lukionAineopinnotAloittanut.oid,
       ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla
     )
-    kuntailmoitusRepository.create(ilmoitus)
+    kuntailmoitusRepository.create(ilmoitus, Seq.empty)
 
     rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(tarkastelupäivä)
     val oppija = oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.lukionAineopinnotAloittanut.oid)(defaultSession)
@@ -757,7 +757,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
             ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla
           )
         )
-        kuntailmoitusRepository.create(ilmoitus)
+        kuntailmoitusRepository.create(ilmoitus, Seq.empty)
       }
     )
 

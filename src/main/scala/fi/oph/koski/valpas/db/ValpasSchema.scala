@@ -13,7 +13,8 @@ object ValpasSchema extends Logging {
     val schema = Ilmoitukset.schema ++
       IlmoitusLisätiedot.schema ++
       OpiskeluoikeusLisätiedot.schema ++
-      OppivelvollisuudenKeskeytys.schema
+      OppivelvollisuudenKeskeytys.schema ++
+      IlmoitusOpiskeluoikeusKonteksti.schema
     logger.info((schema.createStatements ++ "\n").mkString(";\n"))
   }
 
@@ -133,6 +134,31 @@ object ValpasSchema extends Logging {
   )
 
   val OppivelvollisuudenKeskeytys = TableQuery[OppivelvollisuudenKeskeytysTable]
+
+  class IlmoitusOpiskeluoikeusKontekstiTable(tag: Tag) extends Table[IlmoitusOpiskeluoikeusKontekstiRow](tag, "ilmoitus_opiskeluoikeus_konteksti") {
+    val ilmoitusUuid = column[UUID]("ilmoitus_uuid", O.SqlType("uuid"))
+    val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid")
+
+    def pk = primaryKey("ilmoitus_opiskeluoikeus_konteksti_pk", (ilmoitusUuid, opiskeluoikeusOid))
+
+    def * = (
+      ilmoitusUuid,
+      opiskeluoikeusOid
+    ) <> (IlmoitusOpiskeluoikeusKontekstiRow.tupled, IlmoitusOpiskeluoikeusKontekstiRow.unapply)
+  }
+
+  case class IlmoitusOpiskeluoikeusKontekstiKey(
+    ilmoitusUuid: UUID,
+    opiskeluoikeusOid: String,
+  )
+
+  case class IlmoitusOpiskeluoikeusKontekstiRow(
+    ilmoitusUuid: UUID,
+    opiskeluoikeusOid: String,
+  )
+
+  val IlmoitusOpiskeluoikeusKonteksti = TableQuery[IlmoitusOpiskeluoikeusKontekstiTable]
+
 }
 
 

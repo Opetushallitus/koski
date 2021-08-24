@@ -375,7 +375,7 @@ class ValpasOppijaService(
     }
   }
 
-    def getOppijaLaajatTiedot
+  def getOppijaLaajatTiedot
     (oppijaOid: ValpasHenkilö.Oid)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
