@@ -7,6 +7,10 @@
     "type": "git",
     "url": "https://github.com/Opetushallitus/koski.git"
   },
+  "engines": {
+    "node": "14",
+    "npm": "7"
+  },
   "dependencies": {
     "@skidding/react-codemirror": "^1.0.2",
     "bacon.atom": "^5.0.5",
