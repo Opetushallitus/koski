@@ -19,11 +19,6 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
     "Testattavan opiskeluoikeuden suoritus on merkitty vaativan maksuttomuustiedon lisätiedoilta" in {
       opiskeluoikeus.suoritukset.collectFirst { case s: SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta => s }.isDefined shouldBe(true)
     }
-    "Vaaditaan vuonna 2004 tai sen jälkeen syntyneiltä, joiden opiskeluoikeus on alkanut 1.1.2021 ja sisältää suorituksen joka vaatii maksuttomuus tiedon" in {
-      putOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta puuttuu."))
-      }
-    }
     "Saa siirtää jos opiskeluoikeus on alkanut ennen 1.1.2021" in {
       putMaksuttomuus(
         List(
