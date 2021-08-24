@@ -321,10 +321,12 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   , oppija AS (
     SELECT
       DISTINCT r_henkilo.master_oid,
-      r_henkilo.hetu,
       r_henkilo.syntymaaika,
       r_henkilo.etunimet,
       r_henkilo.sukunimi,
+      -- Jos oppijalla on eri hetu-tieto slave/master:eilla, ei hänen kuitenkaan kuulu näkyä kuin kerran Valppaassa:
+      (array_remove(array_agg(DISTINCT r_henkilo.hetu), NULL))[1]
+        AS hetu,
       array_remove(array_agg(DISTINCT hakeutumisvalvottava_opiskeluoikeus.oppilaitos_oid), NULL)
         AS hakeutumisvalvova_oppilaitos_oids,
       array_remove(array_agg(DISTINCT hakeutumisvalvottava_opiskeluoikeus.opiskeluoikeus_oid), NULL)
@@ -373,7 +375,6 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       Some(sql"""
     GROUP BY
       r_henkilo.master_oid,
-      r_henkilo.hetu,
       r_henkilo.syntymaaika,
       r_henkilo.etunimet,
       r_henkilo.sukunimi,
