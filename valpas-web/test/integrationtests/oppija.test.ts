@@ -70,6 +70,12 @@ const eiOppivelvollisuudenSuorittamiseenKelpaaviaOpiskeluoikeuksiaPath = createO
     oppijaOid: "1.2.246.562.24.00000000058",
   }
 )
+const hetutonPath = createOppijaPath(
+  "/virkailija",
+  {
+    oppijaOid: "1.2.246.562.24.00000000059",
+  }
+)
 
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
@@ -547,6 +553,16 @@ describe("Oppijakohtainen näkymä", () => {
     )
     await mainHeadingEquals(
       "Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas (061005A671V)"
+    )
+  })
+
+  it("Näyttää detaljisivun hetuttomasta oppijasta", async () => {
+    await loginAs(
+      hetutonPath,
+      "valpas-maksuttomuus-hki"
+    )
+    await mainHeadingEquals(
+      "Hetuton Valpas"
     )
   })
 

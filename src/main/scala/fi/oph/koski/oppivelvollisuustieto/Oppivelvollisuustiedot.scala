@@ -49,8 +49,6 @@ object Oppivelvollisuustiedot {
               from
                 #${s.name}.r_henkilo henkilo
               where syntymaaika >= '#$valpasLakiVoimassaVanhinSyntymäaika'::date
-                and hetu is not null
-                and hetu <> ''
                 and master_oid not in (
                                 select
                                   henkilo.master_oid
