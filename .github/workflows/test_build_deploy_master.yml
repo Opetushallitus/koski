@@ -555,34 +555,34 @@ jobs:
           invalidation_id=$(aws cloudfront create-invalidation --distribution-id $distribution_id --paths '/valpas/*' --query Invalidation.Id --output text)
           aws cloudfront wait invalidation-completed --distribution-id $distribution_id --id $invalidation_id
 
-      - name: Get raportointikanta loader task definition ARN
-        id: get-raportointikanta-taskdef-arn
+      - name: Get raportointikanta-loader loader task definition ARN
+        id: get-raportointikanta-loader-taskdef-arn
         run: |
-          echo "::set-output name=taskdef-arn::$(aws ssm get-parameter --name /koski/raportointikanta/task-definition-skeleton --output text --query 'Parameter.Value')"
+          echo "::set-output name=taskdef-arn::$(aws ssm get-parameter --name /koski/raportointikanta-loader/task-definition-skeleton --output text --query 'Parameter.Value')"
 
       - name: Get task definition skeleton
         run: |
-          aws ecs describe-task-definition --task-definition ${{ steps.get-raportointikanta-taskdef-arn.outputs.taskdef-arn }} --query 'taskDefinition' > raportointikanta-task-definition.json
+          aws ecs describe-task-definition --task-definition ${{ steps.get-raportointikanta-loader-taskdef-arn.outputs.taskdef-arn }} --query 'taskDefinition' > raportointikanta-loader-task-definition.json
 
       - name: Render Amazon ECS task definition
-        id: raportointikanta-task-def
+        id: raportointikanta-loader-task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: raportointikanta-task-definition.json
-          container-name: RaportointikantaContainer
+          task-definition: raportointikanta-loader-task-definition.json
+          container-name: RaportointikantaLoaderContainer
           image: ${{ steps.login-ecr.outputs.registry }}/koski:${{ github.sha }}
 
       - name: Deploy Amazon ECS task definition
-        id: raportointikanta-taskdef-deploy
+        id: raportointikanta-loader-taskdef-deploy
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          task-definition: ${{ steps.raportointikanta-task-def.outputs.task-definition }}
+          task-definition: ${{ steps.raportointikanta-loader-task-def.outputs.task-definition }}
           cluster: koski-cluster
 
       - name: Write task definition ARN to parameter store
         env:
-          TASKDEF_ARN: ${{ steps.raportointikanta-taskdef-deploy.outputs.task-definition-arn }}
-        run: aws ssm put-parameter --overwrite --name /koski/raportointikanta/task-definition --type String --value ${TASKDEF_ARN}
+          TASKDEF_ARN: ${{ steps.raportointikanta-loader-taskdef-deploy.outputs.task-definition-arn }}
+        run: aws ssm put-parameter --overwrite --name /koski/raportointikanta-loader/task-definition --type String --value ${TASKDEF_ARN}
 
   deploy_qa:
     name: Deploy to qa environment
