@@ -1,4 +1,3 @@
-import bem from "bem-ts"
 import React, { useMemo, useState } from "react"
 import { Redirect, RouteComponentProps, useHistory } from "react-router"
 import {
@@ -34,8 +33,6 @@ import { ErrorView } from "../../ErrorView"
 import { KuntaNavigation } from "../KuntaNavigation"
 import { KuntailmoitusTable } from "./KuntailmoitusTable"
 import "./KuntailmoitusView.less"
-
-const b = bem("kuntailmoitusview")
 
 const organisaatioTyyppi = "KUNTA"
 const organisaatioHakuRooli = "KUNTA"
@@ -109,7 +106,6 @@ export const KuntailmoitusView = withRequiresKuntavalvonta(
       <Page>
         <OrganisaatioValitsin
           organisaatioTyyppi={organisaatioTyyppi}
-          containerClassName={b("organisaatiovalitsin")}
           organisaatioHierarkia={organisaatiot}
           valittuOrganisaatioOid={organisaatioOid}
           label={t("Kunta")}
