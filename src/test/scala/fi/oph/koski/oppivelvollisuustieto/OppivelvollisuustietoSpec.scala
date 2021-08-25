@@ -63,12 +63,6 @@ class OppivelvollisuustietoSpec
         reloadRaportointikanta
         queryOids(oikeusOpiskelunMaksuttomuuteen.oid) shouldBe(Nil)
       }
-      "Henkilöllä ei ole (suomalaista) hetua" in {
-        resetFixtures
-        insert(hetuton, perusopetuksenOppimäärä(Some(date(2021, 1, 1))))
-        reloadRaportointikanta
-        queryOids(hetuton.oid) shouldBe(Nil)
-      }
     }
 
     "Jos oppija on oppivelvollisuuden piirissä, löytyy samat tiedot hänen kaikilla oideilla" - {

@@ -19,6 +19,7 @@ import { InfoTooltip } from "../../components/tooltip/InfoTooltip"
 import { Heading } from "../../components/typography/headings"
 import { T, t } from "../../i18n/i18n"
 import { withRequiresJokinOikeus } from "../../state/accessRights"
+import { HenkilöLaajatTiedot } from "../../state/apitypes/henkilo"
 import { isAktiivinenKuntailmoitus } from "../../state/apitypes/kuntailmoitus"
 import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import {
@@ -168,10 +169,8 @@ const OppijaHeadings = (props: {
   <>
     <Heading>
       {mapLoading(props.oppija, () => t("oppija__oletusotsikko"))}
-      {mapSuccess(
-        props.oppija,
-        (oppija) =>
-          `${oppija.oppija.henkilö.sukunimi} ${oppija.oppija.henkilö.etunimet} (${oppija.oppija.henkilö.hetu})`
+      {mapSuccess(props.oppija, (oppija) =>
+        nimiWithOptionalHetu(oppija.oppija.henkilö)
       )}
       {mapError(props.oppija, () => t("oppija__oletusotsikko"))}
     </Heading>
@@ -183,6 +182,10 @@ const OppijaHeadings = (props: {
     </SecondaryOppijaHeading>
   </>
 )
+
+const nimiWithOptionalHetu = (henkilö: HenkilöLaajatTiedot): string =>
+  `${henkilö.sukunimi} ${henkilö.etunimet}` +
+  (henkilö.hetu ? ` (${henkilö.hetu})` : "")
 
 const SecondaryOppijaHeading = plainComponent("h2", b("secondaryheading"))
 

@@ -59,6 +59,7 @@ const kulosaarenAlaAsteTableContent = `
   Jkl-Lukio-Kulosaarelainen Valpas                        | 1.1.2004    | 9C | –          | Ei hakemusta         | –                           | –                         | doneJyväskylän normaalikoulu, Lukiokoulutus                                |
   Jkl-Nivel-Kulosaarelainen Valpas                        | 1.1.2004    | 9C | –          | Ei hakemusta         | –                           | –                         | doneJyväskylän normaalikoulu, Perusopetuksen lisäopetus                    |
   Kulosaarelainen Oppija                                  | 19.1.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
+  Oppivelvollinen-hetullinen Valpas                       | 3.1.2005    | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
 `
 
 const aapajaoenKouluTableContent = `
@@ -128,7 +129,7 @@ describe("Hakutilannenäkymä", () => {
     await urlIsEventually(pathToUrl(kulosaariHakutilannePath))
     await textEventuallyEquals(
       ".card__header",
-      "Hakeutumisvelvollisia oppijoita (4)"
+      "Hakeutumisvelvollisia oppijoita (5)"
     )
   })
 
@@ -139,7 +140,7 @@ describe("Hakutilannenäkymä", () => {
     await urlIsEventually(pathToUrl(kulosaariHakutilannePath))
     await textEventuallyEquals(
       ".card__header",
-      "Hakeutumisvelvollisia oppijoita (4)"
+      "Hakeutumisvelvollisia oppijoita (5)"
     )
 
     await dataTableEventuallyEquals(
@@ -269,7 +270,7 @@ describe("Hakutilannenäkymä", () => {
     await selectOrganisaatio(1)
     await textEventuallyEquals(
       ".card__header",
-      "Hakeutumisvelvollisia oppijoita (4)"
+      "Hakeutumisvelvollisia oppijoita (5)"
     )
 
     await selectOrganisaatio(0)

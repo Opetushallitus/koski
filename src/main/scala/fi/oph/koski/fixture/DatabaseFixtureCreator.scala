@@ -84,7 +84,6 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
           oikeus,
           henkilö.syntymäaika,
           henkilö.oid,
-          henkilö.hetu,
           application.opiskeluoikeusRepository,
           application.valpasRajapäivätService,
         )

@@ -126,12 +126,15 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       """),
         oppilaitosOids.map(oids => sql"""
         AND r_opiskeluoikeus.oppilaitos_oid = any($oids)
-          """),
+      """),
         nonEmptyOppijaOids.map(_ => sql"""
       JOIN pyydetty_oppija ON pyydetty_oppija.master_oid = r_henkilo.master_oid
-          """),
+      """),
         if (rajaaOVKelposillaOppivelvollisuuksilla) {
-          Some(sql"""WHERE r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE""") }
+          Some(
+            sql"""
+      WHERE r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE
+      """) }
         else {
           None
         },
@@ -321,10 +324,12 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   , oppija AS (
     SELECT
       DISTINCT r_henkilo.master_oid,
-      r_henkilo.hetu,
       r_henkilo.syntymaaika,
       r_henkilo.etunimet,
       r_henkilo.sukunimi,
+      -- Jos oppijalla on eri hetu-tieto slave/master:eilla, ei hänen kuitenkaan kuulu näkyä kuin kerran Valppaassa:
+      (array_remove(array_agg(DISTINCT r_henkilo.hetu), NULL))[1]
+        AS hetu,
       array_remove(array_agg(DISTINCT hakeutumisvalvottava_opiskeluoikeus.oppilaitos_oid), NULL)
         AS hakeutumisvalvova_oppilaitos_oids,
       array_remove(array_agg(DISTINCT hakeutumisvalvottava_opiskeluoikeus.opiskeluoikeus_oid), NULL)
@@ -373,7 +378,6 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       Some(sql"""
     GROUP BY
       r_henkilo.master_oid,
-      r_henkilo.hetu,
       r_henkilo.syntymaaika,
       r_henkilo.etunimet,
       r_henkilo.sukunimi,
@@ -455,7 +459,6 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         ON valpastila_aikajakson_keskella.koskiopiskeluoikeudentila = aikajakson_keskella.tila
       LEFT JOIN valpastila valpastila_viimeisin
         ON valpastila_viimeisin.koskiopiskeluoikeudentila = r_opiskeluoikeus.viimeisin_tila
-
       -- Haetaan päätason suoritus, jonka dataa halutaan näyttää (toistaiseksi valitaan alkamispäivän perusteella uusin)
       -- TODO: Ei välttämättä osu oikeaan, koska voi olla esim. monen eri tyyppisiä peruskoulun päätason suorituksia,
       -- ja pitäisi oikeasti filteröidä myös tyypin perusteella.
@@ -624,14 +627,20 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         opiskeluoikeus.paattymispaiva DESC,
         opiskeluoikeus.koulutusmuoto,
         opiskeluoikeus.paatason_suoritukset->0->>'ryhmä' DESC NULLS LAST,
-        opiskeluoikeus.tarkastelupäivän_tila
+        opiskeluoikeus.tarkastelupäivän_tila,
+        opiskeluoikeus.oppilaitos_oid,
+        opiskeluoikeus.paatason_suoritukset->0->'suorituksentyyppi'->>'koodiarvo',
+        opiskeluoikeus.paatason_suoritukset->0->'toimipiste'->>'oid'
     ) opiskeluoikeudet
   FROM
     opiskeluoikeus
     JOIN oppija ON oppija.master_oid = opiskeluoikeus.master_oid
   """),
   if (rajaaOVKelposillaOppivelvollisuuksilla) {
-    Some(sql"""WHERE opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE""")
+    Some(
+      sql"""
+  WHERE opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE
+    """)
   } else {
     None
   },

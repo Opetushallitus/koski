@@ -5,12 +5,13 @@ import {
   expectElementEventuallyVisible,
 } from "../integrationtests-env/browser/content"
 
-export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia oppijoita (31)"
+export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia oppijoita (32)"
 export const jklNormaalikouluTableContent = `
   Epäonninen Valpas                                       | 30.10.2005  | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Eroaja-myöhemmin Valpas                                 | 29.9.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Eronnut-elokuussa-17-vuotta-täyttävä-8-luokkalainen Valpas | 11.9.2004 | 8C | –         | Ei hakemusta         | –                           | –                         | –                                                                          |
   Eronnut-kevään-valmistumisjaksolla-17-vuotta-täyttävä-8-luokkalainen Valpas | 12.10.2004 | 8C | – | Ei hakemusta | –                         | –                         | –                                                                          |
+  Hetuton Valpas                                          | 1.1.2005    | 9C |–           | Ei hakemusta         | –                           | –                         | –                                                                          |
   Ilmoituksen-lisätiedot–poistettu Valpas                 | 19.5.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Kahdella-oppija-oidilla Valpas                          | 15.2.2005   | 9C | 30.5.2021  | Hakenut open_in_new  | Varasija: Ressun lukio      | –                         | doneJyväskylän normaalikoulu, Lukiokoulutus                                |
   Kahdella-oppija-oidilla-ilmo Valpas                     | 4.6.2005    | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | doneJyväskylän normaalikoulu, Lukiokoulutus                                |
