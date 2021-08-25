@@ -29,6 +29,7 @@ export type DropdownProps<T> = {
   required?: boolean
   sort?: Ord.Ord<DropdownOption<T>>
   testId?: string
+  disabled?: boolean
 }
 
 export type DropdownOption<T> = {
@@ -61,6 +62,7 @@ export const Dropdown = <T,>(props: DropdownProps<T>) => {
         }
         onBlur={props.onBlur}
         data-testid={props.testId}
+        disabled={props.disabled || false}
       >
         {showEmptyValue ? <option>-</option> : null}
         {sortedOptions.map((option, index) => (

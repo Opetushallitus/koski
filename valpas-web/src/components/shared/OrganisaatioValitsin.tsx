@@ -71,6 +71,25 @@ export const OrganisaatioValitsin = (props: OrganisaatioValitsinProps) => {
   )
 }
 
+export type DummyOrganisaatioValitsinProps = {
+  label: string
+  placeholderText: string
+}
+
+export const DummyOrganisaatioValitsin = (
+  props: DummyOrganisaatioValitsinProps
+) => (
+  <Dropdown
+    disabled
+    selectorId="organisaatiovalitsin"
+    containerClassName="organisaatiovalitsin"
+    label={props.label}
+    options={[{ value: "placeholder", display: props.placeholderText }]}
+    value="placeholder"
+    onChange={() => {}}
+  />
+)
+
 export const getOrganisaatiot = (
   käyttöoikeusroolit: OrganisaatioJaKayttooikeusrooli[],
   käytettäväKäyttöoikeus: Kayttooikeusrooli,
