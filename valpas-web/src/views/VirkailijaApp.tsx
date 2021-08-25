@@ -120,10 +120,12 @@ const VirkailijaRoutes = () => {
           )}
         />
         <Route exact path={suorittaminenHetuhakuPath(basePath)}>
-          <SuorittaminenHetuhaku />
+          <SuorittaminenHetuhaku
+            redirectUserWithoutAccessTo={rootPath(basePath)}
+          />
         </Route>
         <Route exact path={maksuttomuusPath(basePath)}>
-          <MaksuttomuusView />
+          <MaksuttomuusView redirectUserWithoutAccessTo={rootPath(basePath)} />
         </Route>
         <Route
           exact
@@ -146,7 +148,7 @@ const VirkailijaRoutes = () => {
           )}
         />
         <Route exact path={kunnanHetuhakuPath(basePath)}>
-          <KuntaHetuhaku />
+          <KuntaHetuhaku redirectUserWithoutAccessTo={rootPath(basePath)} />
         </Route>
         <Route exact path={käyttöoikeusPath(basePath)}>
           <AccessRightsView />

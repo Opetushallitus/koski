@@ -6,11 +6,12 @@ import {
 import { useApiMethod } from "../../../api/apiHooks"
 import { Page } from "../../../components/containers/Page"
 import { T } from "../../../i18n/i18n"
+import { withRequiresSuorittamisenValvonta } from "../../../state/accessRights"
 import { createSuorittaminenHetuhakuPath } from "../../../state/paths"
 import { OppijaSearch } from "../../../views/oppijasearch/OppijaSearch"
 import { SuorittaminenNavigation } from "../SuorittaminenNavigation"
 
-export const SuorittaminenHetuhaku = () => {
+export const SuorittaminenHetuhaku = withRequiresSuorittamisenValvonta(() => {
   const search = useApiMethod(
     fetchHenkilöhakuSuorittaminen,
     fetchHenkilöhakuSuorittaminenCache
@@ -31,4 +32,4 @@ export const SuorittaminenHetuhaku = () => {
       />
     </Page>
   )
-}
+})

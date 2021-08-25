@@ -5,10 +5,11 @@ import {
 } from "../../api/api"
 import { useApiMethod } from "../../api/apiHooks"
 import { Page } from "../../components/containers/Page"
+import { withRequiresMaksuttomuudenValvonta } from "../../state/accessRights"
 import { createMaksuttomuusPath } from "../../state/paths"
 import { OppijaSearch } from "../oppijasearch/OppijaSearch"
 
-export const MaksuttomuusView = () => {
+export const MaksuttomuusView = withRequiresMaksuttomuudenValvonta(() => {
   const search = useApiMethod(
     fetchHenkilöhakuMaksuttomuus,
     fetchHenkilöhakuMaksuttomuusCache
@@ -27,4 +28,4 @@ export const MaksuttomuusView = () => {
       />
     </Page>
   )
-}
+})
