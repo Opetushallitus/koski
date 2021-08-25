@@ -126,12 +126,15 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       """),
         oppilaitosOids.map(oids => sql"""
         AND r_opiskeluoikeus.oppilaitos_oid = any($oids)
-          """),
+      """),
         nonEmptyOppijaOids.map(_ => sql"""
       JOIN pyydetty_oppija ON pyydetty_oppija.master_oid = r_henkilo.master_oid
-          """),
+      """),
         if (rajaaOVKelposillaOppivelvollisuuksilla) {
-          Some(sql"""WHERE r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE""") }
+          Some(
+            sql"""
+      WHERE r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE
+      """) }
         else {
           None
         },
@@ -456,7 +459,6 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         ON valpastila_aikajakson_keskella.koskiopiskeluoikeudentila = aikajakson_keskella.tila
       LEFT JOIN valpastila valpastila_viimeisin
         ON valpastila_viimeisin.koskiopiskeluoikeudentila = r_opiskeluoikeus.viimeisin_tila
-
       -- Haetaan päätason suoritus, jonka dataa halutaan näyttää (toistaiseksi valitaan alkamispäivän perusteella uusin)
       -- TODO: Ei välttämättä osu oikeaan, koska voi olla esim. monen eri tyyppisiä peruskoulun päätason suorituksia,
       -- ja pitäisi oikeasti filteröidä myös tyypin perusteella.
@@ -635,7 +637,10 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     JOIN oppija ON oppija.master_oid = opiskeluoikeus.master_oid
   """),
   if (rajaaOVKelposillaOppivelvollisuuksilla) {
-    Some(sql"""WHERE opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE""")
+    Some(
+      sql"""
+  WHERE opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE
+    """)
   } else {
     None
   },
