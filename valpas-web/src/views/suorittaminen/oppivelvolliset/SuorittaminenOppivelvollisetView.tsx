@@ -35,6 +35,7 @@ import { createSuorittaminenPathWithOrg } from "../../../state/paths"
 import { SuorittaminenOppivelvollisetTable } from "../../../views/suorittaminen/oppivelvolliset/SuorittaminenOppivelvollisetTable"
 import { SuorittaminenNavigation } from "../../../views/suorittaminen/SuorittaminenNavigation"
 import { ErrorView } from "../../ErrorView"
+import "./SuorittaminenOppivelvollisetView.less"
 
 const b = bem("suorittaminenoppivelvollisetview")
 

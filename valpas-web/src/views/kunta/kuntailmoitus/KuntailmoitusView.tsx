@@ -33,6 +33,7 @@ import { createKuntailmoitusPathWithOrg } from "../../../state/paths"
 import { ErrorView } from "../../ErrorView"
 import { KuntaNavigation } from "../KuntaNavigation"
 import { KuntailmoitusTable } from "./KuntailmoitusTable"
+import "./KuntailmoitusView.less"
 
 const b = bem("kuntailmoitusview")
 
