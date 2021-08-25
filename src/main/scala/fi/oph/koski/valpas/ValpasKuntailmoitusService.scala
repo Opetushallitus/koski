@@ -103,7 +103,7 @@ class ValpasKuntailmoitusService(
   def haePohjatiedot(
     pohjatiedotInput: ValpasKuntailmoitusPohjatiedotInput
   )(implicit session: ValpasSession): Either[HttpStatus, ValpasKuntailmoitusPohjatiedot] = {
-    val kunnat = organisaatioService.kunnat()
+    val kunnat = organisaatioService.aktiivisetKunnat()
     val maat = haeMaat()
 
     for {

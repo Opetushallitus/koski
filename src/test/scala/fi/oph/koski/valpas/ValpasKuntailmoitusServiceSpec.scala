@@ -196,7 +196,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
   }
 
   "Pohjatiedoissa palautetaan lista kunnista" in {
-    val expectedKunnat = KoskiApplicationForTests.organisaatioService.kunnat()
+    val expectedKunnat = KoskiApplicationForTests.organisaatioService.aktiivisetKunnat()
 
     val input = ValpasKuntailmoitusPohjatiedotInput(
       tekijäOrganisaatio = Some(Oppilaitos(oid = MockOrganisaatiot.jyväskylänNormaalikoulu)),
