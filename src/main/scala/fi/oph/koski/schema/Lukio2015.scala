@@ -40,6 +40,10 @@ case class LukionOppiaineenOppimääränSuoritus2015(
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
+  @Description("Merkitään, jos lukion oppimäärä on tullut suoritetuksi aineopintoina.")
+  @Tooltip("Opiskelija on suorittanut koko lukion oppimäärän ja saanut lukion päättötodistuksen")
+  @DefaultValue(false)
+  lukionOppimääräSuoritettu: Boolean = false,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
   @Title("Kurssit")
   override val osasuoritukset: Option[List[LukionKurssinSuoritus2015]],
