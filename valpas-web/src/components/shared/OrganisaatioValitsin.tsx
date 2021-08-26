@@ -17,6 +17,7 @@ import {
   useStoredState,
 } from "../../state/useSessionStoreState"
 import { Dropdown } from "../forms/Dropdown"
+import "./OrganisaatioValitsin.less"
 
 export type OrganisaatioValitsinProps = {
   organisaatioTyyppi: string
@@ -24,7 +25,6 @@ export type OrganisaatioValitsinProps = {
   valittuOrganisaatioOid: Oid
   onChange: (value?: Oid) => void
   label: string
-  containerClassName?: string
 }
 
 export const useStoredOrgState = (
@@ -62,7 +62,7 @@ export const OrganisaatioValitsin = (props: OrganisaatioValitsinProps) => {
   return (
     <Dropdown
       selectorId="organisaatiovalitsin"
-      containerClassName={props.containerClassName}
+      containerClassName="organisaatiovalitsin"
       label={props.label}
       options={getOrgOptions(props.organisaatioHierarkia)}
       value={props.valittuOrganisaatioOid}
@@ -70,6 +70,25 @@ export const OrganisaatioValitsin = (props: OrganisaatioValitsinProps) => {
     />
   )
 }
+
+export type DummyOrganisaatioValitsinProps = {
+  label: string
+  placeholderText: string
+}
+
+export const DummyOrganisaatioValitsin = (
+  props: DummyOrganisaatioValitsinProps
+) => (
+  <Dropdown
+    disabled
+    selectorId="organisaatiovalitsin"
+    containerClassName="organisaatiovalitsin"
+    label={props.label}
+    options={[{ value: "placeholder", display: props.placeholderText }]}
+    value="placeholder"
+    onChange={() => {}}
+  />
+)
 
 export const getOrganisaatiot = (
   käyttöoikeusroolit: OrganisaatioJaKayttooikeusrooli[],

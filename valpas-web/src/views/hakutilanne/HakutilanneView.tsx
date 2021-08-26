@@ -122,7 +122,6 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
       <Page className={b("view")}>
         <OrganisaatioValitsin
           organisaatioTyyppi={organisaatioTyyppi}
-          containerClassName={b("organisaatiovalitsin")}
           organisaatioHierarkia={organisaatiot}
           valittuOrganisaatioOid={organisaatioOid}
           label={t("Oppilaitos")}

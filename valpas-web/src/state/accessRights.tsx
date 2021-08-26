@@ -52,6 +52,10 @@ export const withRequiresSuorittamisenValvonta = accessRightGuardHoc(
   suorittamisenValvontaAllowed
 )
 
+export const withRequiresMaksuttomuudenValvonta = accessRightGuardHoc(
+  maksuttomuudenValvontaAllowed
+)
+
 export const withRequiresJokinOikeus = accessRightGuardHoc(
   someOf(
     hakeutumisenValvontaAllowed,

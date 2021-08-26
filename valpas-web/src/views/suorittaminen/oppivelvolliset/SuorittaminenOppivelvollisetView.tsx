@@ -1,4 +1,3 @@
-import bem from "bem-ts"
 import React, { useMemo, useState } from "react"
 import { Redirect, RouteComponentProps, useHistory } from "react-router"
 import {
@@ -35,8 +34,7 @@ import { createSuorittaminenPathWithOrg } from "../../../state/paths"
 import { SuorittaminenOppivelvollisetTable } from "../../../views/suorittaminen/oppivelvolliset/SuorittaminenOppivelvollisetTable"
 import { SuorittaminenNavigation } from "../../../views/suorittaminen/SuorittaminenNavigation"
 import { ErrorView } from "../../ErrorView"
-
-const b = bem("suorittaminenoppivelvollisetview")
+import "./SuorittaminenOppivelvollisetView.less"
 
 const organisaatioTyyppi = "OPPILAITOS"
 const organisaatioHakuRooli = "OPPILAITOS_SUORITTAMINEN"
@@ -110,7 +108,6 @@ export const SuorittaminenOppivelvollisetView = withRequiresSuorittamisenValvont
       <Page>
         <OrganisaatioValitsin
           organisaatioTyyppi={organisaatioTyyppi}
-          containerClassName={b("organisaatiovalitsin")}
           organisaatioHierarkia={organisaatiot}
           valittuOrganisaatioOid={organisaatioOid}
           label={t("Oppilaitos")}
