@@ -2,12 +2,11 @@ package fi.oph.koski.validation
 
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
 import fi.oph.koski.schema._
 import fi.oph.koski.util.{DateOrdering, FinnishDateFormat}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
-
 import java.time.LocalDate
 
 object MaksuttomuusValidation {
@@ -54,7 +53,7 @@ object MaksuttomuusValidation {
     oppijanOid: String,
     opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
     rajapäivät: ValpasRajapäivätService
-  )(implicit user: KoskiSpecificSession): List[String] =
+  )(implicit user: Session): List[String] =
   {
     val lakiVoimassaPeruskoulustaValmistuneille = rajapäivät.lakiVoimassaPeruskoulustaValmistuneillaAlku
     val lakiVoimassaVanhinSyntymäaika = rajapäivät.lakiVoimassaVanhinSyntymäaika

@@ -4,7 +4,7 @@ import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.henkilo.{HenkilönTunnisteet, PossiblyUnverifiedHenkilöOid}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
@@ -83,7 +83,7 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
     WithWarnings(mainResult ++ virtaResult.getIgnoringWarnings ++ ytrResult.getIgnoringWarnings, virtaResult.warnings ++ ytrResult.warnings)
   }
 
-  def getPerusopetuksenAikavälit(oppijaOid: String)(implicit user: KoskiSpecificSession): Seq[Päivämääräväli] = {
+  def getPerusopetuksenAikavälit(oppijaOid: String)(implicit user: Session): Seq[Päivämääräväli] = {
     main.getPerusopetuksenAikavälit(oppijaOid)
   }
 

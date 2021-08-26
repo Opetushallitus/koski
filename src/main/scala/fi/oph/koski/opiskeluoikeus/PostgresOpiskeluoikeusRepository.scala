@@ -7,7 +7,7 @@ import fi.oph.koski.henkilo._
 import fi.oph.koski.history.{JsonPatchException, OpiskeluoikeusHistory, OpiskeluoikeusHistoryRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonDiff.jsonDiff
-import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusChangeValidator.validateOpiskeluoikeusChange
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedot, PerustiedotSyncRepository}
@@ -22,7 +22,6 @@ import slick.dbio.DBIOAction.sequence
 import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.{DBIOAction, NoStream}
 import slick.jdbc.GetResult
-
 import java.sql.SQLException
 import java.time.LocalDate
 
@@ -190,7 +189,7 @@ class PostgresOpiskeluoikeusRepository(
     }
   }
 
-  def getPerusopetuksenAikavälit(oppijaOid: String)(implicit user: KoskiSpecificSession): Seq[Päivämääräväli] = {
+  def getPerusopetuksenAikavälit(oppijaOid: String)(implicit user: Session): Seq[Päivämääräväli] = {
     runDbSync(
       sql"""
         with master as (
