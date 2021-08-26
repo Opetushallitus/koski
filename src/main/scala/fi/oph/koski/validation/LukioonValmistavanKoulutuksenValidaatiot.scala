@@ -1,7 +1,7 @@
 package fi.oph.koski.validation
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.schema.{Koodistokoodiviite, LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa, LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa2019, LukioonValmistavanKoulutuksenSuoritus, Suoritus}
+import fi.oph.koski.schema.{Koodistokoodiviite, Laajuus, LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa, LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa2019, LukioonValmistavanKoulutuksenSuoritus, Suoritus}
 
 import java.time.LocalDate
 
@@ -10,7 +10,8 @@ object LukioonValmistavanKoulutuksenValidaatiot {
     suoritus match {
       case s: LukioonValmistavanKoulutuksenSuoritus => HttpStatus.fold(List(
           validateLukioonValmistava2019Osasuoritukset(s),
-          validateOikeatKoodistotKäytössä(s)
+          validateOikeatKoodistotKäytössä(s),
+          validateLaajuudenYksiköt(s)
         )
       )
       case _ => HttpStatus.ok
@@ -44,6 +45,24 @@ object LukioonValmistavanKoulutuksenValidaatiot {
       }
       case _ => HttpStatus.ok
     }
+  }
+
+  private def validateLaajuudenYksiköt(suoritus: LukioonValmistavanKoulutuksenSuoritus) = {
+    if (suoritus.koulutusmoduuli.perusteenDiaarinumero.getOrElse("") == "OPH-4958-2020") {
+      laajuudetRekursiivisesti(suoritus).exists(_.yksikkö.koodiarvo != "2") match {
+        case true => KoskiErrorCategory.badRequest.validation.laajuudet.lukioonValmistavallaKoulutuksellaVääräLaajuudenArvo()
+        case false => HttpStatus.ok
+      }
+    } else {
+      HttpStatus.ok
+    }
+  }
+
+  private def laajuudetRekursiivisesti(suoritus: Suoritus): List[Laajuus] = {
+    List(suoritus.koulutusmoduuli.getLaajuus.toList).flatten  :::
+      suoritus.osasuoritukset.toList.flatten.flatMap(
+        laajuudetRekursiivisesti(_)
+      )
   }
 }
 

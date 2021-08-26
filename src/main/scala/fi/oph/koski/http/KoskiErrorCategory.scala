@@ -152,6 +152,7 @@ object KoskiErrorCategory {
         val osasuoritustenLaajuuksienSumma = subcategory("osasuoritustenLaajuuksienSumma", "Osasuoritusten laajuuksien summa ei täsmää")
         val oppiaineenLaajuusPuuttuu = subcategory("oppiaineenLaajuusPuuttuu", "Oppiaineen laajuus puuttuu")
         val lukiodiplominLaajuusEiOle2Opintopistettä = subcategory("lukiodiplominLaajuusVäärä", "Lukiodiplomin laajuuden on oltava aina 2 opintopistettä")
+        val lukioonValmistavallaKoulutuksellaVääräLaajuudenArvo = subcategory("lukioonValmistavallaKoulutuksellaVääräLaajuudenArvo", "Lukioon valmistavan koulutuksen suorituksella voi olla laajuuden koodiyksikkönä vain '2', jos suorituksen diaarinumero on 'OPH-4958-2020'")
       }
       val laajuudet = new Laajuudet
 
