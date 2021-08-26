@@ -124,5 +124,7 @@ class ValpasOpiskeluoikeusDatabaseFixtureCreator(application: KoskiApplication) 
     (ValpasMockOppijat.ammattikouluOpiskelijaMontaOpiskeluoikeutta, ValpasOpiskeluoikeusExampleData.ammattikouluValmaOpiskeluoikeus),
     (ValpasMockOppijat.ammattikouluOpiskelijaMontaOpiskeluoikeutta, ValpasOpiskeluoikeusExampleData.ammattikouluOpiskeluoikeus),
     (ValpasMockOppijat.amisAmmatillinenJaNäyttötutkintoonValmistava, ValpasOpiskeluoikeusExampleData.amisAmmatillinenJaNäyttötutkintoonValmistavaOpiskeluoikeus),
+    (ValpasMockOppijat.lukioVäliaikaisestiKeskeytynyt, ValpasOpiskeluoikeusExampleData.lukionVäliaikaisestiKeskeytettyOpiskeluoikeus),
+    (ValpasMockOppijat.amisLomalla, ValpasOpiskeluoikeusExampleData.ammattikouluLomallaOpiskeluoikeus),
   )
 }

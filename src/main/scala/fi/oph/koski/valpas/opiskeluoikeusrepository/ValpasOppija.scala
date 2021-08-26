@@ -160,6 +160,7 @@ case class ValpasOpiskeluoikeusLaajatTiedot(
   päättymispäiväMerkittyTulevaisuuteen: Option[Boolean],
   tarkastelupäivänTila: Koodistokoodiviite,
   tarkastelupäivänKoskiTila: Koodistokoodiviite,
+  tarkastelupäivänAikajaksonAlku: String,
   näytettäväPerusopetuksenSuoritus: Boolean,
   vuosiluokkiinSitomatonOpetus: Boolean,
   oppivelvollisuudenSuorittamiseenKelpaava: Boolean,

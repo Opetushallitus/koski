@@ -1,10 +1,10 @@
 package fi.oph.koski.valpas.opiskeluoikeusfixture
 
-import fi.oph.koski.documentation.ExampleData.{helsinki, opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, suomenKieli, vahvistus, vahvistusPaikkakunnalla}
+import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.LukioExampleData.{opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt}
 import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, perusopetuksenOppimääränSuoritus, perusopetuksenOppimääränSuoritusKesken, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste, oppilaitos}
-import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample, ExampleData, ExamplesEsiopetus, ExamplesLukio2019, ExamplesPerusopetuksenLisaopetus, ExamplesTelma, ExamplesValma, VapaaSivistystyöExample}
+import fi.oph.koski.documentation._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 
@@ -496,6 +496,23 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
+  def ammattikouluLomallaOpiskeluoikeus = AmmattitutkintoExample.opiskeluoikeus.copy(
+    arvioituPäättymispäivä = Some(date(2023, 5, 31)),
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2021, 8, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+      AmmatillinenOpiskeluoikeusjakso(date(2021, 8, 2), opiskeluoikeusLoma, Some(ExampleData.valtionosuusRahoitteinen))
+    )),
+    lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+      hojks = None,
+      maksuttomuus = Some(List(Maksuttomuus(alku = date(2021, 8, 1) , loppu = None, maksuton = true)))
+    )),
+    suoritukset = List(
+      ammatillisenTutkinnonSuoritus2021.copy(
+        vahvistus = None
+      )
+    )
+  )
+
   lazy val ammatillisenTutkinnonSuoritus2021 = AmmatillisenTutkinnonSuoritus(
     koulutusmoduuli = AmmattitutkintoExample.tutkinto,
     suoritustapa = AmmatillinenExampleData.suoritustapaNäyttö,
@@ -784,5 +801,14 @@ object ValpasOpiskeluoikeusExampleData {
         ryhmä = Some("B")
       )
     )
+  )
+
+  def lukionVäliaikaisestiKeskeytettyOpiskeluoikeus = ExamplesLukio2019.opiskeluoikeus.copy(
+    tila = LukionOpiskeluoikeudenTila(
+      List(
+        LukionOpiskeluoikeusjakso(alku = date(2021, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+        LukionOpiskeluoikeusjakso(alku = date(2021, 8, 2), tila = opiskeluoikeusValiaikaisestiKeskeytynyt, opintojenRahoitus = None),
+      )
+    ),
   )
 }

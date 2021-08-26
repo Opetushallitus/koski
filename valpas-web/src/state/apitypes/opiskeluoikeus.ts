@@ -18,6 +18,8 @@ export type OpiskeluoikeusLaajatTiedot = {
   päättymispäivä?: ISODate
   päättymispäiväMerkittyTulevaisuuteen?: boolean
   tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
+  tarkastelupäivänKoskiTila: KoskiOpiskeluoikeudenTila
+  tarkastelupäivänAikajaksonAlku: ISODate
   näytettäväPerusopetuksenSuoritus: boolean
   vuosiluokkiinSitomatonOpetus: boolean
   päätasonSuoritukset: PäätasonSuoritus[]

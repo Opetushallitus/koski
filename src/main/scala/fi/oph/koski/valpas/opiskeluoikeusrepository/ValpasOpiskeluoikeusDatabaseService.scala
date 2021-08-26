@@ -442,6 +442,11 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.viimeisin_tila
         ELSE aikajakson_keskella.tila
       END tarkastelupäivän_koski_tila,
+      CASE
+        WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN r_opiskeluoikeus.alkamispaiva
+        WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.paattymispaiva
+        ELSE aikajakson_keskella.alku
+      END tarkastelupaivan_aikajakson_alku,
       r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
       (
         r_opiskeluoikeus.viimeisin_tila = 'valmistunut'
@@ -519,6 +524,11 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.viimeisin_tila
         ELSE aikajakson_keskella.tila
       END tarkastelupäivän_koski_tila,
+      CASE
+        WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN r_opiskeluoikeus.alkamispaiva
+        WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.paattymispaiva
+        ELSE aikajakson_keskella.alku
+      END tarkastelupaivan_aikajakson_alku,
       r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
       FALSE AS naytettava_perusopetuksen_suoritus,
       FALSE AS vuosiluokkiin_sitomaton_opetus,
@@ -618,6 +628,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           'koodiarvo', opiskeluoikeus.tarkastelupäivän_koski_tila,
           'koodistoUri', 'koskiopiskeluoikeudentila'
         ),
+        'tarkastelupäivänAikajaksonAlku', tarkastelupaivan_aikajakson_alku,
         'näytettäväPerusopetuksenSuoritus', opiskeluoikeus.naytettava_perusopetuksen_suoritus,
         'vuosiluokkiinSitomatonOpetus', opiskeluoikeus.vuosiluokkiin_sitomaton_opetus,
         'oppivelvollisuudenSuorittamiseenKelpaava', opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE,

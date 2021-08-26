@@ -29,7 +29,7 @@ import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import { OppivelvollisuudenKeskeytys } from "../../state/apitypes/oppivelvollisuudenkeskeytys"
 import { organisaatioNimi } from "../../state/apitypes/organisaatiot"
 import { ISODate } from "../../state/common"
-import { formatDate, formatNullableDate, parseYear } from "../../utils/date"
+import { formatDate, parseYear } from "../../utils/date"
 import { pick } from "../../utils/objects"
 import { OppijaKuntailmoitus } from "./OppijaKuntailmoitus"
 import "./OppijanOpiskeluhistoria.less"
@@ -126,7 +126,9 @@ type OpiskeluhistoriaOpintoProps = {
 const OpiskeluhistoriaOpinto = ({
   opiskeluoikeus,
 }: OpiskeluhistoriaOpintoProps) => {
-  const nimi = koodistonimi(opiskeluoikeus.tyyppi)
+  const nimi = koodistonimi(
+    opiskeluoikeus.tarkasteltavaPäätasonSuoritus.suorituksenTyyppi
+  )
   const range = yearRangeString(
     opiskeluoikeus.alkamispäivä,
     opiskeluoikeus.päättymispäivä
@@ -155,6 +157,16 @@ const OpiskeluhistoriaOpinto = ({
           <InfoTableRow
             label={t("oppija__muuta")}
             value={t("oppija__vuosiluokkiin_sitomaton_opetus")}
+          />
+        )}
+        <InfoTableRow
+          label="Opiskeluoikeuden alkamispäivä"
+          value={formatDate(opiskeluoikeus.alkamispäivä)}
+        />
+        {opiskeluoikeus.päättymispäivä && (
+          <InfoTableRow
+            label="Opiskeluoikeuden päättymispäivä"
+            value={formatDate(opiskeluoikeus.päättymispäivä)}
           />
         )}
       </InfoTable>
@@ -244,29 +256,25 @@ const yearString = (date?: ISODate): string | undefined =>
   date && parseYear(date).toString()
 
 const tilaString = (opiskeluoikeus: OpiskeluoikeusLaajatTiedot): string => {
-  const tila = opiskeluoikeus.tarkastelupäivänTila
-  const alkamispäivä = formatDate(opiskeluoikeus.alkamispäivä)
-  const päättymispäivä = formatNullableDate(opiskeluoikeus.päättymispäivä)
+  const valpasTila = opiskeluoikeus.tarkastelupäivänTila
+  const koskiTila = opiskeluoikeus.tarkastelupäivänKoskiTila
 
-  switch (tila.koodiarvo) {
-    case "voimassatulevaisuudessa":
-      return t("oppija__tila_voimassatulevaisuudessa", {
-        päivämäärä: alkamispäivä,
+  if (valpasTila.koodiarvo === "voimassatulevaisuudessa") {
+    const alkamispäivä = formatDate(opiskeluoikeus.alkamispäivä)
+    return t("oppija__tila_voimassatulevaisuudessa", {
+      päivämäärä: alkamispäivä,
+    })
+  }
+
+  switch (koskiTila.koodiarvo) {
+    case "valiaikaisestikeskeytynyt":
+      const tarkastelujaksonAlku = formatDate(
+        opiskeluoikeus.tarkastelupäivänAikajaksonAlku
+      )
+      return t("oppija__tila_valiaikaisesti_keskeytetty", {
+        päivämäärä: tarkastelujaksonAlku,
       })
-    case "valmistunut":
-      return t("oppija__tila_valmistunut", { päivämäärä: päättymispäivä })
-    case "eronnut":
-      return t("oppija__tila_eronnut", { päivämäärä: päättymispäivä })
-    case "katsotaaneronneeksi":
-      return t("oppija__tila_katsotaaneronneeksi", {
-        päivämäärä: päättymispäivä,
-      })
-    case "mitatoity":
-      return t("oppija__tila_mitatoity", { päivämäärä: päättymispäivä })
-    case "voimassa":
-    case "peruutettu":
-    case "tuntematon":
     default:
-      return koodistonimi(tila)
+      return koodistonimi(koskiTila)
   }
 }

@@ -101,6 +101,7 @@
   "oppija__tila_eronnut": "Eronnut {{päivämäärä}}",
   "oppija__tila_katsotaaneronneeksi": "Katsotaan eronneeksi {{päivämäärä}}",
   "oppija__tila_mitatoity": "Mitätöity {{päivämäärä}}",
+  "oppija__tila_valiaikaisesti_keskeytetty": "Väliaikaisesti keskeytetty {{päivämäärä}}",
   "oppija__yhteystietoja_ei_löytynyt": "Yhteystietoja ei löytynyt",
   "oppija__henkilöllä_turvakielto": "Henkilöllä on turvakielto",
   "oppija__hakukohde": "Hakukohde",
