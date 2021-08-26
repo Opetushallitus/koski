@@ -20,11 +20,14 @@ class EPerusteetLocalizationTest extends FreeSpec with Matchers {
   private lazy val eperusteetHttp = Http(root + "/eperusteet-service", "eperusteet-localization-test")
 
   private def haePerusteidenInfot(startingFromPage: Int = 0): List[EPerusteInfo] = {
-    val thisPage = eperusteetHttp.get(uri"/api/perusteet/info?sivukoko=100&sivu=$startingFromPage")(Http.parseJson[EPerusteInfot]).unsafePerformSync.data
+    val thisPage = Http.runIO(
+      eperusteetHttp.get(uri"/api/perusteet/info?sivukoko=100&sivu=$startingFromPage")(Http.parseJson[EPerusteInfot])
+    ).data
     if (thisPage.isEmpty) thisPage else thisPage ++ haePerusteidenInfot(startingFromPage + 1)
   }
-  private def haeRakenne(id: Int): EPerusteRakenneLocalization =
-    eperusteetHttp.get(uri"/api/perusteet/$id/kaikki")(Http.parseJson[EPerusteRakenneLocalization]).unsafePerformSync
+  private def haeRakenne(id: Int): EPerusteRakenneLocalization = Http.runIO(
+    eperusteetHttp.get(uri"/api/perusteet/$id/kaikki")(Http.parseJson[EPerusteRakenneLocalization])
+  )
 
   private def kanoninenNimi(s: String) =
     s.stripSuffix("*").stripSuffix("(*)").replace('\u00a0', ' ').replaceAll("\\s+", " ").trim

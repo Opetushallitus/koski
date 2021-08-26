@@ -1,7 +1,6 @@
 package fi.oph.koski.mydata
 
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import fi.oph.koski.http.BasicAuthentication
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.json4s._
@@ -72,7 +71,7 @@ class MyDataAPIProxyServletTest extends FreeSpec with KoskiHttpSpec with Matcher
     "Palauttaa 401 mikäli luovutuspalvelukäyttäjän tunnukset ovat väärät" in {
       KoskiApplicationForTests.mydataRepository.create(opiskelija.oid, memberId)
 
-      val wrongPasswordHeader = Map(BasicAuthentication.basicAuthHeader(MockUsers.luovutuspalveluKäyttäjä.username, "wrong password"))
+      val wrongPasswordHeader = Map(basicAuthHeader(MockUsers.luovutuspalveluKäyttäjä.username, "wrong password"))
       requestOpintoOikeudetWithoutAuthHeaders(opiskelija.hetu.get, wrongPasswordHeader ++ memberHeaders(memberCode)) {
         status should equal(401)
       }

@@ -6,6 +6,7 @@ import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
 import fi.oph.koski.log.Logging
 
+
 trait HuollettavatRepository {
   def getHuollettavat(huoltajaHetu: String): Either[HttpStatus, List[VtjHuollettavaHenkilö]]
 }
@@ -24,14 +25,16 @@ object HuollettavatRepository {
 
 class RemoteHuollettavatRepository(val http: Http) extends HuollettavatRepository with Logging {
   def getHuollettavat(huoltajanHetu: String): Either[HttpStatus, List[VtjHuollettavaHenkilö]] = {
-    http.get(uri"/vtj-service/resources/vtj/$huoltajanHetu")(Http.parseJson[VtjHuoltajaHenkilöResponse])
-      .map(x => Right(x.huollettavat))
-      .handle {
-        case e: Exception =>
-          logger.error(e.toString)
-          Left(KoskiErrorCategory.unavailable.huollettavat())
-      }
-      .unsafePerformSync
+    runIO(
+      http.get(uri"/vtj-service/resources/vtj/$huoltajanHetu")(Http
+        .parseJson[VtjHuoltajaHenkilöResponse])
+        .map(x => Right(x.huollettavat))
+        .handleError {
+          case e: Exception =>
+            logger.error(e.toString)
+            Left(KoskiErrorCategory.unavailable.huollettavat())
+        }
+    )
   }
 }
 

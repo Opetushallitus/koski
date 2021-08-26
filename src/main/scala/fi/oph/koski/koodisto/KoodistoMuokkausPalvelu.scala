@@ -19,11 +19,11 @@ class KoodistoMuokkausPalvelu(serviceConfig: ServiceConfig) extends Logging {
   val secureHttp = VirkailijaHttpClient(serviceConfig, "/koodisto-service", sessionCookieName = "SESSION")
 
   def updateKoodisto(koodisto: Koodisto): Unit = {
-    runTask(secureHttp.put(uri"/koodisto-service/rest/codes/save", koodisto)(json4sEncoderOf[Koodisto])(Http.unitDecoder))
+    runIO(secureHttp.put(uri"/koodisto-service/rest/codes/save", koodisto)(json4sEncoderOf[Koodisto])(Http.unitDecoder))
   }
   def createKoodisto(koodisto: Koodisto): Unit = {
     try {
-      runTask(secureHttp.post(uri"/koodisto-service/rest/codes", koodisto)(json4sEncoderOf[Koodisto])(Http.unitDecoder))
+      runIO(secureHttp.post(uri"/koodisto-service/rest/codes", koodisto)(json4sEncoderOf[Koodisto])(Http.unitDecoder))
     } catch {
       case HttpStatusException(500, "error.codesgroup.not.found", _, _) =>
         createKoodistoRyhmä(KoodistoRyhmä(koodisto.codesGroupUri.replaceAll("http://", "")))
@@ -32,7 +32,7 @@ class KoodistoMuokkausPalvelu(serviceConfig: ServiceConfig) extends Logging {
   }
 
   def createKoodi(koodistoUri: String, koodi: KoodistoKoodi) = {
-    runTask(secureHttp.post(uri"/koodisto-service/rest/codeelement/${koodistoUri}", koodi)(json4sEncoderOf[KoodistoKoodi])(Http.unitDecoder))
+    runIO(secureHttp.post(uri"/koodisto-service/rest/codeelement/${koodistoUri}", koodi)(json4sEncoderOf[KoodistoKoodi])(Http.unitDecoder))
     updateKoodi(koodistoUri, koodi)
   }
 
@@ -49,12 +49,12 @@ class KoodistoMuokkausPalvelu(serviceConfig: ServiceConfig) extends Logging {
     }
 
   private def runUpdateKoodi(koodi: KoodistoKoodi) =
-    runTask(secureHttp.put(uri"/koodisto-service/rest/codeelement/save", koodi)(json4sEncoderOf[KoodistoKoodi])(Http.unitDecoder))
+    runIO(secureHttp.put(uri"/koodisto-service/rest/codeelement/save", koodi)(json4sEncoderOf[KoodistoKoodi])(Http.unitDecoder))
 
   def createKoodistoRyhmä(ryhmä: KoodistoRyhmä) = {
-    runTask(secureHttp.post(uri"/koodisto-service/rest/codesgroup", ryhmä)(json4sEncoderOf[KoodistoRyhmä])(Http.unitDecoder))
+    runIO(secureHttp.post(uri"/koodisto-service/rest/codesgroup", ryhmä)(json4sEncoderOf[KoodistoRyhmä])(Http.unitDecoder))
   }
 
   def getKoodistoKoodi(koodi: KoodistoKoodi): KoodistoKoodi =
-    runTask(secureHttp.get(uri"/koodisto-service/rest/codeelement/${koodi.koodiUri}/${koodi.versio}")(Http.parseJson[KoodistoKoodi]))
+    runIO(secureHttp.get(uri"/koodisto-service/rest/codeelement/${koodi.koodiUri}/${koodi.versio}")(Http.parseJson[KoodistoKoodi]))
 }

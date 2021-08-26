@@ -10,7 +10,7 @@ import scala.reflect.runtime.universe.TypeTag
 
 object EasyHttp {
   lazy val httpclient = TrustingHttpsClient.createClient
-  def getJson[A : TypeTag](url: String)(implicit mf: Manifest[A]) = {
+  def getJson[A : TypeTag](url: String) = {
     val httpGet = new HttpGet(url)
     httpGet.addHeader("Caller-Id", OpintopolkuCallerId.koski)
 

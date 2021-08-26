@@ -72,7 +72,7 @@ class ElasticSearchIndex(
 
     val ops = addOp :: removeOp.toList
     val query = Map("actions" -> ops)
-    Http.runTask(http.post(uri"/_aliases", toJValue(query))(Json4sHttp4s.json4sEncoderOf[JValue]) {
+    Http.runIO(http.post(uri"/_aliases", toJValue(query))(Json4sHttp4s.json4sEncoderOf[JValue]) {
       case (200, _text, _request) => aliasName
       case (status, text, request) => throw HttpStatusException(status, text, request)
     })
@@ -85,7 +85,7 @@ class ElasticSearchIndex(
   def isOnline: Boolean = indexExists(currentIndexName)
 
   private def indexExists(indexName: String): Boolean = {
-    Http.runTask(http.head(uri"/$indexName")(Http.statusCode), timeout = 5.seconds) match {
+    Http.runIO(http.head(uri"/$indexName")(Http.statusCode), timeout = 5.seconds) match {
       case 200 => true
       case 404 => false
       case statusCode: Int => throw new RuntimeException("Unexpected status code from elasticsearch: " + statusCode)
@@ -93,7 +93,7 @@ class ElasticSearchIndex(
   }
 
   private def aliasExists(aliasName: String): Boolean = {
-    Http.runTask(http.head(uri"/_alias/$aliasName")(Http.statusCode)) match {
+    Http.runIO(http.head(uri"/_alias/$aliasName")(Http.statusCode)) match {
       case 200 => true
       case 404 => false
       case statusCode: Int => throw new RuntimeException("Unexpected status code from elasticsearch: " + statusCode)
@@ -110,7 +110,7 @@ class ElasticSearchIndex(
   }
 
   private def settingsChanged(): Boolean = {
-    val response = Http.runTask(http.get(uri"/$currentIndexName/_settings")(Http.parseJson[JValue]))
+    val response = Http.runIO(http.get(uri"/$currentIndexName/_settings")(Http.parseJson[JValue]))
     val serverSettings = response \ currentIndexName \ "settings" \ "index"
     val mergedSettings = serverSettings.merge(toJValue(settings))
     val alreadyApplied = mergedSettings == serverSettings
@@ -126,7 +126,7 @@ class ElasticSearchIndex(
   def createIndex(version: Int): String = {
     val indexName = versionedIndexName(version)
     logger.info(s"Creating Elasticsearch index $indexName")
-    Http.runTask(http.put(uri"/$indexName", toJValue(Map(
+    Http.runIO(http.put(uri"/$indexName", toJValue(Map(
       "settings" -> settings,
       "mappings" -> mapping
     )))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
@@ -147,7 +147,7 @@ class ElasticSearchIndex(
       ),
       "conflicts" -> "proceed"
     )
-    Http.runTask(http.post(uri"/_reindex?wait_for_completion=false&refresh", toJValue(query))(Json4sHttp4s.json4sEncoderOf)(Http.statusCode)) match {
+    Http.runIO(http.post(uri"/_reindex?wait_for_completion=false&refresh", toJValue(query))(Json4sHttp4s.json4sEncoderOf)(Http.statusCode)) match {
       case 200 => Unit
       case statusCode: Int => throw new RuntimeException(s"Reindexing failed with $statusCode. Response: ")
     }
@@ -161,11 +161,11 @@ class ElasticSearchIndex(
   }
 
   private def refreshIndex(): Unit = {
-    Http.runTask(http.post(uri"/$readAlias,$writeAlias/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
+    Http.runIO(http.post(uri"/$readAlias,$writeAlias/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
   }
 
   def runSearch(query: JValue): Option[JValue] = {
-    Some(Http.runTask(http.post(uri"/$readAlias/_search", query)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue])))
+    Some(Http.runIO(http.post(uri"/$readAlias/_search", query)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue])))
   }
 
   def updateBulk(docsAndIds: Seq[(JValue, String)], upsert: Boolean, refresh: Boolean): (Boolean, JValue) = {
@@ -173,7 +173,7 @@ class ElasticSearchIndex(
       .flatMap { case (doc, id) => buildUpdateQuery(doc, id, upsert) }
       .map(q => toJValue(q))
     val url = uri"/$writeAlias/_bulk?refresh=${refresh}"
-    val response: JValue = Http.runTask(http.post(url, queries)(Json4sHttp4s.multiLineJson4sEncoderOf[JValue])(Http.parseJson[JValue]))
+    val response: JValue = Http.runIO(http.post(url, queries)(Json4sHttp4s.multiLineJson4sEncoderOf[JValue])(Http.parseJson[JValue]))
     (extract[Boolean](response \ "errors"), response)
   }
 
@@ -199,7 +199,7 @@ class ElasticSearchIndex(
   }
 
   def deleteByQuery(query: JValue, refresh: Boolean): Int = {
-    val deletedCount = Http.runTask(http.post(uri"/$writeAlias/_delete_by_query?refresh=${refresh}", query)(Json4sHttp4s.json4sEncoderOf[JValue]) {
+    val deletedCount = Http.runIO(http.post(uri"/$writeAlias/_delete_by_query?refresh=${refresh}", query)(Json4sHttp4s.json4sEncoderOf[JValue]) {
       case (200, text, request) => extract[Int](JsonMethods.parse(text) \ "deleted")
       case (status, text, request) if List(404, 409).contains(status) => 0
       case (status, text, request) => throw HttpStatusException(status, text, request)
@@ -209,7 +209,7 @@ class ElasticSearchIndex(
 
   def analyze(string: String): List[String] = {
     val query = JObject("analyzer" -> JString("default"), "text" -> JString(string))
-    val response: JValue = Http.runTask(
+    val response: JValue = Http.runIO(
       http.post(uri"/$readAlias/_analyze", query)
       (Json4sHttp4s.json4sEncoderOf[JObject])(Http.parseJson[JValue])
     )

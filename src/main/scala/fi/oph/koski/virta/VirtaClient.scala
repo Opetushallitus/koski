@@ -129,7 +129,7 @@ case class RemoteVirtaClient(config: VirtaConfig) extends VirtaClient {
   }
 
   private def performHaku(xmlBody: Elem): Option[Elem] = {
-    Some(runTask(http.post(uri"", soapEnvelope(xmlBody))(Http.Encoders.xml)(Http.parseXml)))
+    Some(runIO(http.post(uri"", soapEnvelope(xmlBody))(Http.Encoders.xml)(Http.parseXml)))
   }
 
   private def hakuehdotXml(hakuehto: VirtaHakuehto) = hakuehto match {

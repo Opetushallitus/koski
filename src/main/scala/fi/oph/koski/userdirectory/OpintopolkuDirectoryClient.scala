@@ -1,46 +1,53 @@
 package fi.oph.koski.userdirectory
 
-import fi.vm.sade.utils.cas.CasClient.TGTUrl
+import cats.effect.IO
 import com.typesafe.config.Config
+import fi.oph.koski.cas.CasClient.TGTUrl
+import fi.oph.koski.cas.{FetchHelper, CasClientException}
 import fi.oph.koski.henkilo.{KäyttäjäHenkilö, OppijanumeroRekisteriClient}
 import fi.oph.koski.http.{Http, OpintopolkuCallerId}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema.OidOrganisaatio
-import fi.vm.sade.utils.cas.CasClientException
+import org.http4s._
+import org.typelevel.ci.CIString
+import org.http4s.Status.{Created, Locked}
 
 /**
   * Replacement for the LDAP-based directory client
   */
 class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends DirectoryClient with Logging {
 
-  import org.http4s.Status.Created
-  import org.http4s._
-  import org.http4s.client._
-  import org.http4s.dsl._
-  import org.http4s.headers.Location
-  import scalaz.concurrent.Task
   private val tgtPattern = "(.*TGT-.*)".r
   private val http = Http(virkailijaUrl, "kayttoikeuspalvelu")
   private val käyttöoikeusServiceClient = KäyttöoikeusServiceClient(config)
   private val oppijanumeroRekisteriClient = OppijanumeroRekisteriClient(config)
 
   override def findUser(userid: String): Option[DirectoryUser] =
-    Http.runTask(käyttöoikeusServiceClient.findKäyttöoikeudetByUsername(userid).map {
+    Http.runIO(käyttöoikeusServiceClient.findKäyttöoikeudetByUsername(userid).map {
       case List(käyttäjä) => Some(resolveKäyttöoikeudet(käyttäjä))
       case Nil => None
       case _ => throw new RuntimeException(s"More than 1 user found with username $userid")
     }).flatMap { case (oid: String, käyttöoikeudet: List[Käyttöoikeus]) => findKäyttäjä(oid, käyttöoikeudet) }
 
+  // TODO: Miksi täällä on copypaste CAS-toteutus? Pystyisikö hyödyntämään scala-cas:n validateServiceTicketWithVirkailijaUsername
   override def authenticate(userid: String, wrappedPassword: Password): Boolean = {
-    val tgtUri: TGTUrl = resolve(Uri.fromString(virkailijaUrl).toOption.get, uri("/cas/v1/tickets"))
+    val tgtUri: TGTUrl = Uri.fromString(virkailijaUrl).toOption.get.withPath(Uri.Path.unsafeFromString("/cas/v1/tickets"))
+    val urlForm = UrlForm("username" -> userid, "password" -> wrappedPassword.password)
 
-    Http.runTask(http.client.fetch(
-      POST(tgtUri, UrlForm("username" -> userid, "password" -> wrappedPassword.password))
-        .putHeaders(Header("Caller-Id", OpintopolkuCallerId.koski))) {
+    val request = FetchHelper.addDefaultHeaders(
+      Request[IO](
+        Method.POST,
+        tgtUri
+      ).withEntity(urlForm)(UrlForm.entityEncoder),
+      OpintopolkuCallerId.koski
+    )
+
+    Http.runIO(http.client.run(request).use {
       case Created(resp) =>
-        val found: TGTUrl = resp.headers.get(Location).map(_.value) match {
+        val locationHeader = resp.headers.get(CIString("Location")).map(_.head)
+        val found: TGTUrl = locationHeader.map(_.value) match {
           case Some(tgtPattern(tgtUrl)) =>
             Uri.fromString(tgtUrl).fold(
               (pf: ParseFailure) => throw new CasClientException(pf.message),
@@ -51,15 +58,15 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
           case None =>
             throw new CasClientException(s"TGT decoding failed at ${tgtUri}: No location header at")
         }
-        Task.now(true)
+        IO.pure(true)
       case Locked(resp) =>
         logger.warn(s"Access denied, username $userid is locked")
-        Task.now(false)
-      case r => r.as[String].map { body =>
+        IO.pure(false)
+      case resp: Response[IO] => resp.as[String].map { body =>
         if (body.contains("authentication_exceptions") || body.contains("error.authentication.credentials.bad")) {
           false
         } else {
-          throw new CasClientException(s"TGT decoding failed at ${tgtUri}: invalid TGT creation status: ${r.status.code}: ${body.take(200).replace('\n', ' ').replace('\r', ' ')}")
+          throw new CasClientException(s"TGT decoding failed at ${tgtUri}: invalid TGT creation status: ${resp.status.code}: ${body.take(200).replace('\n', ' ').replace('\r', ' ')}")
         }
       }
     })
@@ -81,7 +88,7 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
     })
 
   private def findKäyttäjä(oid: String, käyttöoikeudet: List[Käyttöoikeus]) = {
-    Http.runTask(oppijanumeroRekisteriClient.findKäyttäjäByOid(oid)).map { (käyttäjä: KäyttäjäHenkilö) =>
+    Http.runIO(oppijanumeroRekisteriClient.findKäyttäjäByOid(oid)).map { (käyttäjä: KäyttäjäHenkilö) =>
       DirectoryUser(käyttäjä.oidHenkilo, käyttöoikeudet, käyttäjä.etunimet, käyttäjä.sukunimi, käyttäjä.asiointiKieli.map(_.kieliKoodi))
     }
   }

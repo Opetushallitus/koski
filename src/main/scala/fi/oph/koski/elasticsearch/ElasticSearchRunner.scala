@@ -24,7 +24,7 @@ class ElasticSearchRunner(dataDirName: String, httpPort: Int, tcpPort: Int) exte
       val elasticSearchHttp = Http(url, "elasticsearchrunner")
 
       def clusterHealthOk = {
-        val healthResponse: JValue = Http.runTask(elasticSearchHttp.get(uri"/_cluster/health")(Http.parseJson[JValue]))
+        val healthResponse: JValue = Http.runIO(elasticSearchHttp.get(uri"/_cluster/health")(Http.parseJson[JValue]))
         val healthCode = JsonSerializer.extract[String](healthResponse \ "status")
         List("green", "yellow").contains(healthCode)
       }

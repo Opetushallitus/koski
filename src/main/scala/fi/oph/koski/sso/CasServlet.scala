@@ -1,21 +1,20 @@
 package fi.oph.koski.sso
 
-import java.net.URLEncoder.encode
-import java.nio.charset.StandardCharsets
-
-import fi.oph.koski.config.{KoskiApplication}
+import fi.oph.koski.cas.CasClient.Username
+import fi.oph.koski.cas.{CasClient, CasLogout}
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{Http, KoskiErrorCategory, OpintopolkuCallerId}
+import fi.oph.koski.json.JsonSerializer.writeWithRoot
 import fi.oph.koski.koskiuser.{AuthenticationUser, DirectoryClientLogin, KoskiSpecificAuthenticationSupport, UserLanguage}
 import fi.oph.koski.log.LogUserContext
-import fi.oph.koski.servlet.{NoCache, VirkailijaHtmlServlet}
-import fi.vm.sade.utils.cas.{CasClient, CasClientException, CasLogout}
-import fi.vm.sade.utils.cas.CasClient.{OppijaAttributes, Username}
-import fi.oph.koski.json.JsonSerializer.writeWithRoot
-import scalaz.concurrent.Task
 import fi.oph.koski.schema.{Nimitiedot, UusiHenkilö}
+import fi.oph.koski.servlet.{NoCache, VirkailijaHtmlServlet}
 import org.scalatra.{Cookie, CookieOptions}
 
-import scala.util.control.NonFatal
+import java.net.URLEncoder.encode
+import java.nio.charset.StandardCharsets
+import java.util.concurrent.TimeUnit
+import scala.concurrent.duration.DurationInt
 
 /**
   *  This is where the user lands after a CAS login / logout
@@ -164,36 +163,20 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
       case Some(onSuccessRedirectUrl) => casOppijaServiceUrl + "?onSuccess=" + onSuccessRedirectUrl
       case None => casOppijaServiceUrl
     }
+    val oppijaAttributes = Http.runIO(
+      casOppijaClient.validateServiceTicketWithOppijaAttributes(url)(ticket),
+      timeout = 10.seconds
+    )
 
-    val attrs: Either[Throwable, OppijaAttributes] = casOppijaClient.validateServiceTicket(url)(ticket, casOppijaClient.decodeOppijaAttributes).handleWith {
-      case NonFatal(t) => Task.fail(new CasClientException(s"Failed to validate service ticket $t"))
-    }.unsafePerformSyncAttemptFor(10000).toEither
-    logger.debug(s"attrs response: $attrs")
-    attrs match {
-      case Right(attrs) => {
-        val hetu = attrs("nationalIdentificationNumber")
-        hetu
-      }
-      case Left(t) => {
-        throw new CasClientException(s"Unable to process CAS Oppija login request, hetu cannot be resolved from ticket $ticket")
-      }
-    }
+    oppijaAttributes("nationalIdentificationNumber")
   }
 
   def validateVirkailijaServiceTicket(ticket: String): Username = {
     mockUsernameForAllVirkailijaTickets.getOrElse({
-      val attrs: Either[Throwable, Username] = casVirkailijaClient.validateServiceTicket(casVirkailijaServiceUrl)(ticket, casVirkailijaClient.decodeVirkailijaUsername).handleWith {
-        case NonFatal(t) => Task.fail(new CasClientException(s"Failed to validate service ticket $t"))
-      }.unsafePerformSyncAttemptFor(10000).toEither
-      logger.debug(s"attrs response: $attrs")
-      attrs match {
-        case Right(attrs) => {
-          attrs
-        }
-        case Left(t) => {
-          throw new CasClientException(s"Unable to process CAS Virkailija login request, username cannot be resolved from ticket $ticket")
-        }
-      }
+      Http.runIO(
+        casVirkailijaClient.validateServiceTicketWithVirkailijaUsername(casVirkailijaServiceUrl)(ticket),
+        timeout = 10.seconds
+      )
     })
   }
 }
