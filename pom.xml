@@ -137,6 +137,11 @@
       <version>${slick.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.scalaz</groupId>
+      <artifactId>scalaz-core_2.12</artifactId>
+      <version>7.3.5</version>
+    </dependency>
+    <dependency>
       <groupId>com.typesafe.slick</groupId>
       <artifactId>slick-hikaricp_2.12</artifactId>
       <version>${slick.version}</version>
