@@ -1,10 +1,9 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusMitätöity, vahvistusPaikkakunnalla}
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, vahvistusPaikkakunnalla}
 import fi.oph.koski.documentation.PerusopetusExampleData.perusopetuksenOppimääränSuoritus
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExamplesAikuistenPerusopetus, ExamplesInternationalSchool, LukioExampleData, PerusopetusExampleData}
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.koskiSpecificOppijat
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
@@ -202,7 +201,37 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
 
         resetFixtures()
       }
+      "Saa siirtää, jos ennen rajapäivää loppunut peruskoulun suoritus on päättynyt eroamiseen" in {
+        val peruskoulunAlkamispäivä = date(2010, 8, 1)
+        val peruskoulunPäättymispäivä = date(2020, 8, 1)
+        val opiskeluoikeus = PerusopetusExampleData.opiskeluoikeus(
+          suoritukset = List(perusopetuksenOppimääränSuoritus.copy(
+            vahvistus = None
+          )),
+          alkamispäivä = peruskoulunAlkamispäivä,
+          päättymispäivä = Some(peruskoulunPäättymispäivä)
+        ).copy(
+          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+            List(
+              NuortenPerusopetuksenOpiskeluoikeusjakso(peruskoulunAlkamispäivä, opiskeluoikeusLäsnä),
+              NuortenPerusopetuksenOpiskeluoikeusjakso(peruskoulunPäättymispäivä, opiskeluoikeusEronnut)
+            )
+          )
+        )
 
+        createOpiskeluoikeus(KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021, opiskeluoikeus)
+
+        val peruskoulunJälkeisenAlkamispäivä = date(2021, 8, 1)
+        putMaksuttomuus(
+          List(Maksuttomuus(peruskoulunJälkeisenAlkamispäivä, None, true)),
+          KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021,
+          alkamispäivällä(defaultOpiskeluoikeus, peruskoulunJälkeisenAlkamispäivä)
+        ) {
+          verifyResponseStatusOk()
+        }
+
+        resetFixtures()
+      }
       "Saa siirtää jos suoritus vahvistettu Valpas-lain voimaantulopäivän jälkeen" in {
         val opiskeluoikeus = PerusopetusExampleData.opiskeluoikeus(
           suoritukset = List(perusopetuksenOppimääränSuoritus.copy(
