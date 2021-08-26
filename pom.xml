@@ -25,6 +25,7 @@
   </properties>
   <dependencies>
     <!-- OPH internal deps -->
+    <!--
     <dependency>
       <groupId>fi.vm.sade</groupId>
       <artifactId>scala-cas_2.12</artifactId>
@@ -36,6 +37,7 @@
         </exclusion>
       </exclusions>
     </dependency>
+    -->
     <!-- OPH internal deps -->
     <!-- for local development -->
     <!--
