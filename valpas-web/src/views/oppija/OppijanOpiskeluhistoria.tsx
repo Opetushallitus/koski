@@ -140,17 +140,22 @@ const OpiskeluhistoriaOpinto = ({
         {nimi} {range}
       </IconSectionHeading>
       <InfoTable size="tighter">
-        <InfoTableRow value={organisaatioNimi(opiskeluoikeus.oppilaitos)} />
-        {opiskeluoikeus.tarkasteltavaPäätasonSuoritus.ryhmä && (
-          <InfoTableRow
-            label={t("oppija__ryhma")}
-            value={opiskeluoikeus.tarkasteltavaPäätasonSuoritus.ryhmä}
-          />
-        )}
         {opiskeluoikeus.tarkastelupäivänTila && (
           <InfoTableRow
             label={t("oppija__tila")}
             value={tilaString(opiskeluoikeus)}
+          />
+        )}
+        <InfoTableRow
+          label={t("oppija__toimipiste")}
+          value={organisaatioNimi(
+            opiskeluoikeus.tarkasteltavaPäätasonSuoritus.toimipiste
+          )}
+        />
+        {opiskeluoikeus.tarkasteltavaPäätasonSuoritus.ryhmä && (
+          <InfoTableRow
+            label={t("oppija__ryhma")}
+            value={opiskeluoikeus.tarkasteltavaPäätasonSuoritus.ryhmä}
           />
         )}
         {opiskeluoikeus.vuosiluokkiinSitomatonOpetus && (

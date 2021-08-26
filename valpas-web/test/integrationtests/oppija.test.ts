@@ -130,9 +130,9 @@ describe("Oppijakohtainen näkymä", () => {
     await opiskeluhistoriaEquals(`
       school
       Perusopetuksen vuosiluokka 2012 –
-      Jyväskylän normaalikoulu
-      Ryhmä: 9C
       Tila: Läsnä
+      Toimipiste: Jyväskylän normaalikoulu
+      Ryhmä: 9C
       Opiskeluoikeuden alkamispäivä: 15.8.2012
     `)
     await hautEquals(`
@@ -202,9 +202,9 @@ describe("Oppijakohtainen näkymä", () => {
     await opiskeluhistoriaEquals(`
       school
       Perusopetuksen vuosiluokka 2012 – 2021
-      Jyväskylän normaalikoulu
-      Ryhmä: 9C
       Tila: Valmistunut
+      Toimipiste: Jyväskylän normaalikoulu
+      Ryhmä: 9C
       Opiskeluoikeuden alkamispäivä: 15.8.2012
       Opiskeluoikeuden päättymispäivä: 30.5.2021
     `)
@@ -218,9 +218,9 @@ describe("Oppijakohtainen näkymä", () => {
     await opiskeluhistoriaEquals(`
       school
       Perusopetuksen vuosiluokka 2012 – 2021
-      Jyväskylän normaalikoulu
-      Ryhmä: 9C
       Tila: Valmistunut
+      Toimipiste: Jyväskylän normaalikoulu
+      Ryhmä: 9C
       Muuta: Vuosiluokkiin sitomaton opetus
       Opiskeluoikeuden alkamispäivä: 15.8.2012
       Opiskeluoikeuden päättymispäivä: 30.5.2021
@@ -274,15 +274,15 @@ describe("Oppijakohtainen näkymä", () => {
     await opiskeluhistoriaEquals(`
       school
       Perusopetuksen vuosiluokka 2012 –
-      Jyväskylän normaalikoulu
-      Ryhmä: 9B
       Tila: Läsnä
+      Toimipiste: Jyväskylän normaalikoulu
+      Ryhmä: 9B
       Opiskeluoikeuden alkamispäivä: 15.8.2012
       school
       Perusopetuksen vuosiluokka 2012 –
-      Kulosaaren ala-aste
-      Ryhmä: 8A
       Tila: Läsnä
+      Toimipiste: Kulosaaren ala-aste
+      Ryhmä: 8A
       Opiskeluoikeuden alkamispäivä: 15.8.2012
     `)
   })
@@ -301,15 +301,15 @@ describe("Oppijakohtainen näkymä", () => {
     await opiskeluhistoriaEquals(`
       school
       Lukion oppimäärä 2021 –
-      Jyväskylän normaalikoulu
-      Ryhmä: AH
       Tila: Läsnä
+      Toimipiste: Jyväskylän normaalikoulu
+      Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 15.8.2021
       school
       Perusopetuksen vuosiluokka 2012 – 2021
-      Jyväskylän normaalikoulu
-      Ryhmä: 9C
       Tila: Valmistunut
+      Toimipiste: Jyväskylän normaalikoulu
+      Ryhmä: 9C
       Opiskeluoikeuden alkamispäivä: 15.8.2012
       Opiskeluoikeuden päättymispäivä: 30.5.2021
     `)
@@ -329,15 +329,15 @@ describe("Oppijakohtainen näkymä", () => {
     await opiskeluhistoriaEquals(`
       school
       Lukion oppimäärä 2021 –
-      Jyväskylän normaalikoulu
-      Ryhmä: AH
       Tila: Opiskeluoikeus alkaa 3.10.2021
+      Toimipiste: Jyväskylän normaalikoulu
+      Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 3.10.2021
       school
       Perusopetuksen vuosiluokka 2012 – 2021
-      Jyväskylän normaalikoulu
-      Ryhmä: 9C
       Tila: Valmistunut
+      Toimipiste: Jyväskylän normaalikoulu
+      Ryhmä: 9C
       Opiskeluoikeuden alkamispäivä: 15.8.2012
       Opiskeluoikeuden päättymispäivä: 30.5.2021
     `)
@@ -464,9 +464,9 @@ describe("Oppijakohtainen näkymä", () => {
     await opiskeluhistoriaEquals(`
       school
       Perusopetuksen vuosiluokka 2012 – 2021
-      Jyväskylän normaalikoulu
-      Ryhmä: 9C
       Tila: Valmistunut
+      Toimipiste: Jyväskylän normaalikoulu
+      Ryhmä: 9C
       Opiskeluoikeuden alkamispäivä: 15.8.2012
       Opiskeluoikeuden päättymispäivä: 30.5.2021
     `)
@@ -485,9 +485,9 @@ describe("Oppijakohtainen näkymä", () => {
     await opiskeluhistoriaEquals(`
       school
       Lukion oppimäärä 2019 –
-      Jyväskylän normaalikoulu
-      Ryhmä: AH
       Tila: Läsnä
+      Toimipiste: Jyväskylän normaalikoulu
+      Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 1.8.2019
     `)
   })
@@ -507,9 +507,9 @@ describe("Oppijakohtainen näkymä", () => {
     await opiskeluhistoriaEquals(`
       school
       Lukion oppimäärä 2019 –
-      Jyväskylän normaalikoulu
-      Ryhmä: AH
       Tila: Läsnä
+      Toimipiste: Jyväskylän normaalikoulu
+      Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 1.8.2019
     `)
   })
@@ -544,9 +544,9 @@ describe("Oppijakohtainen näkymä", () => {
     await opiskeluhistoriaEquals(`
       school
       Lukion oppimäärä 2019 –
-      Jyväskylän normaalikoulu
-      Ryhmä: AH
       Tila: Läsnä
+      Toimipiste: Jyväskylän normaalikoulu
+      Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 1.8.2019
     `)
   })
@@ -566,9 +566,9 @@ describe("Oppijakohtainen näkymä", () => {
     await opiskeluhistoriaEquals(`
       school
       Lukion oppimäärä 2019 –
-      Jyväskylän normaalikoulu
-      Ryhmä: AH
       Tila: Läsnä
+      Toimipiste: Jyväskylän normaalikoulu
+      Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 1.8.2019
     `)
   })
@@ -642,9 +642,9 @@ describe("Oppijakohtainen näkymä", () => {
       Keskeytetty 1.1.2020 – 30.1.2020
       school
       Perusopetuksen vuosiluokka 2012 –
-      Jyväskylän normaalikoulu
-      Ryhmä:	9C
       Tila: Läsnä
+      Toimipiste: Jyväskylän normaalikoulu
+      Ryhmä:	9C
       Opiskeluoikeuden alkamispäivä: 15.8.2012
     `)
   })
@@ -670,9 +670,9 @@ describe("Oppijakohtainen näkymä", () => {
       Keskeytetty toistaiseksi 1.1.2021 alkaen
       school
       Perusopetuksen vuosiluokka 2012 –
-      Jyväskylän normaalikoulu
-      Ryhmä:	9C
       Tila: Läsnä
+      Toimipiste: Jyväskylän normaalikoulu
+      Ryhmä:	9C
       Opiskeluoikeuden alkamispäivä: 15.8.2012
     `)
   })
@@ -705,9 +705,9 @@ describe("Oppijakohtainen näkymä", () => {
       Keskeytetty 1.1.2020 – 30.1.2020
       school
       Perusopetuksen vuosiluokka 2012 –
-      Jyväskylän normaalikoulu
-      Ryhmä:	9C
       Tila: Läsnä
+      Toimipiste: Jyväskylän normaalikoulu
+      Ryhmä:	9C
       Opiskeluoikeuden alkamispäivä: 15.8.2012
     `)
   })
@@ -756,9 +756,9 @@ describe("Oppijakohtainen näkymä", () => {
     await opiskeluhistoriaEquals(`
       school
       Lukion oppimäärä 2021 –
-      Jyväskylän normaalikoulu
-      Ryhmä:	AH
       Tila:	Väliaikaisesti keskeytetty 2.8.2021
+      Toimipiste: Jyväskylän normaalikoulu
+      Ryhmä:	AH
       Opiskeluoikeuden alkamispäivä:	1.8.2021
     `)
   })
@@ -771,8 +771,8 @@ describe("Oppijakohtainen näkymä", () => {
     await opiskeluhistoriaEquals(`
       school
       Ammatillinen tutkinto 2021 –
-      Stadin ammatti- ja aikuisopisto
       Tila:	Loma
+      Toimipiste: Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka
       Opiskeluoikeuden alkamispäivä:	1.8.2021
     `)
   })
