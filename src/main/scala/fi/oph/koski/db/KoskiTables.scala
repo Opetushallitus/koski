@@ -243,11 +243,8 @@ case class OpiskeluoikeusRow(id: Int,
   mitätöity: Boolean,
   koulutusmuoto: String,
   alkamispäivä: Date,
-  päättymispäivä: Option[Date]) {
-
-  lazy val toOpiskeluoikeusData: JValue = {
-    KoskiTables.OpiskeluoikeusTable.readAsJValue(data, oid, versionumero, aikaleima)
-  }
+  päättymispäivä: Option[Date]
+) {
   lazy val toOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus = {
     KoskiTables.OpiskeluoikeusTable.readAsOpiskeluoikeus(data, oid, versionumero, aikaleima) match {
       case Right(oo) =>
