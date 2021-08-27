@@ -28,7 +28,7 @@ class KelaService(application: KoskiApplication) extends Logging {
     val queryFilters = List(OpiskeluoikeusQueryFilter.OppijaOidHaku(masterOids ++ application.henkilöCache.resolveLinkedOids(masterOids)))
 
     streamingQuery(queryFilters)
-      .map(t => Oppija(oidToHenkilo(t._1.oid).toHenkilötiedotJaOid, t._2.map(_.toOpiskeluoikeus)))
+      .map(t => Oppija(oidToHenkilo(t._1.oid).toHenkilötiedotJaOid, t._2.map(_.toOpiskeluoikeusUnsafe)))
       .map(KelaOppijaConverter.convertOppijaToKelaOppija)
       .collect {
         case Right(kelaOppija) => kelaOppija

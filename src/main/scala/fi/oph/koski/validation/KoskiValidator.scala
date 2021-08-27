@@ -1122,7 +1122,7 @@ class KoskiValidator(
       HttpStatus.ok
     } else {
       uusiOpiskeluoikeus.oid.map(opiskeluoikeudenOid =>
-        koskiOpiskeluoikeudet.findByOid(opiskeluoikeudenOid)(KoskiSpecificSession.systemUser).map(_.toOpiskeluoikeus).toOption match {
+        koskiOpiskeluoikeudet.findByOid(opiskeluoikeudenOid)(KoskiSpecificSession.systemUser).map(_.toOpiskeluoikeusUnsafe).toOption match {
           case Some(vanhaOpiskeluoikeus) => {
             val uusiOppilaitos = uusiOpiskeluoikeus.oppilaitos.map(_.oid)
             val vanhaOppilaitos = vanhaOpiskeluoikeus.oppilaitos.map(_.oid)

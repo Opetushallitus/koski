@@ -122,7 +122,7 @@ object OpiskeluoikeusLoader extends Logging {
 
   private def buildRow(inputRow: OpiskeluoikeusRow): Either[LoadErrorResult, OutputRows] = {
     Try {
-      val oo = inputRow.toOpiskeluoikeus
+      val oo = inputRow.toOpiskeluoikeusUnsafe
       val ooRow = buildROpiskeluoikeusRow(inputRow.oppijaOid, inputRow.aikaleima, oo, inputRow.data)
       val aikajaksoRows: AikajaksoRows = buildAikajaksoRows(inputRow.oid, oo)
       val suoritusRows: SuoritusRows = oo.suoritukset.zipWithIndex.map {
@@ -161,7 +161,7 @@ object OpiskeluoikeusLoader extends Logging {
       oppilaitosNimi = convertLocalizedString(o.oppilaitos.flatMap(_.nimi)),
       oppilaitosKotipaikka = o.oppilaitos.flatMap(_.kotipaikka).map(_.koodiarvo.stripPrefix("kunta_")),
       oppilaitosnumero = o.oppilaitos.flatMap(_.oppilaitosnumero).map(_.koodiarvo),
-      koulutustoimijaOid = o.koulutustoimija.map(_.oid).headOption.getOrElse(""),
+      koulutustoimijaOid = o.koulutustoimija.map(_.oid).getOrElse(""),
       koulutustoimijaNimi = convertLocalizedString(o.koulutustoimija.flatMap(_.nimi)),
       koulutusmuoto = o.tyyppi.koodiarvo,
       alkamispäivä = o.alkamispäivä.map(Date.valueOf),

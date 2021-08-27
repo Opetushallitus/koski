@@ -245,10 +245,13 @@ case class OpiskeluoikeusRow(id: Int,
   alkamispäivä: Date,
   päättymispäivä: Option[Date]
 ) {
-  lazy val toOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus = {
-    KoskiTables.OpiskeluoikeusTable.readAsOpiskeluoikeus(data, oid, versionumero, aikaleima) match {
-      case Right(oo) =>
-        oo.asInstanceOf[KoskeenTallennettavaOpiskeluoikeus]
+  def toOpiskeluoikeus: Either[List[ValidationError], KoskeenTallennettavaOpiskeluoikeus] = {
+    KoskiTables.OpiskeluoikeusTable.readAsOpiskeluoikeus(data, oid, versionumero, aikaleima)
+  }
+
+  def toOpiskeluoikeusUnsafe: KoskeenTallennettavaOpiskeluoikeus = {
+    toOpiskeluoikeus match {
+      case Right(oo) => oo
       case Left(errors) =>
         throw new MappingException(s"Error deserializing opiskeluoikeus ${oid} for oppija ${oppijaOid}: ${errors}")
     }

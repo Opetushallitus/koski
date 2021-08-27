@@ -48,7 +48,7 @@ class PostgresOpiskeluoikeusRepository(
 
 
   override def findByOppijaOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus] = {
-    runDbSync(findByOppijaOidsAction(oids).map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
+    runDbSync(findByOppijaOidsAction(oids).map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeusUnsafe)))
   }
 
   override def findByCurrentUserOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus] = {
@@ -66,7 +66,7 @@ class PostgresOpiskeluoikeusRepository(
       .filterNot(_.mitätöity)
       .filter(_.oppijaOid inSetBind oids)
 
-    runDbSync(query.result.map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
+    runDbSync(query.result.map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeusUnsafe)))
   }
 
   override def findByOid(oid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, OpiskeluoikeusRow] = withOidCheck(oid) {
@@ -172,12 +172,12 @@ class PostgresOpiskeluoikeusRepository(
 
       case OppijaOidJaLähdejärjestelmänId(oppijaOid, lähdejärjestelmäId) =>
         findOpiskeluoikeudetWithSlaves(oppijaOid).map(_.filter { row =>
-          row.toOpiskeluoikeus.lähdejärjestelmänId == Some(lähdejärjestelmäId)
+          row.toOpiskeluoikeusUnsafe.lähdejärjestelmänId == Some(lähdejärjestelmäId)
         }).map(_.toList).map(Right(_))
 
       case i:OppijaOidOrganisaatioJaTyyppi =>
         findOpiskeluoikeudetWithSlaves(i.oppijaOid).map(_.filter { row =>
-          val opiskeluoikeus = row.toOpiskeluoikeus
+          val opiskeluoikeus = row.toOpiskeluoikeusUnsafe
           OppijaOidOrganisaatioJaTyyppi(i.oppijaOid,
             opiskeluoikeus.getOppilaitos.oid,
             opiskeluoikeus.koulutustoimija.map(_.oid),
@@ -252,7 +252,7 @@ class PostgresOpiskeluoikeusRepository(
     case (true, Right(rows)) =>
       DBIO.successful(Left(KoskiErrorCategory.internalError(s"Löytyi enemmän kuin yksi rivi päivitettäväksi (${rows.map(_.oid)})")))
     case (false, Right(rows)) =>
-      rows.find(!_.toOpiskeluoikeus.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt) match {
+      rows.find(!_.toOpiskeluoikeusUnsafe.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt) match {
         case None => createAction(oppijaOid, opiskeluoikeus) // Tehdään uusi opiskeluoikeus, koska vanha on päättynyt
         case Some(_) => DBIO.successful(Left(KoskiErrorCategory.conflict.exists())) // Ei tehdä uutta, koska vanha vastaava opiskeluoikeus on voimassa
       }
@@ -296,7 +296,7 @@ class PostgresOpiskeluoikeusRepository(
       case Some(requestedVersionumero) if requestedVersionumero != versionumero =>
         DBIO.successful(Left(KoskiErrorCategory.conflict.versionumero("Annettu versionumero " + requestedVersionumero + " <> " + versionumero)))
       case _ =>
-        val vanhaOpiskeluoikeus = oldRow.toOpiskeluoikeus
+        val vanhaOpiskeluoikeus = oldRow.toOpiskeluoikeusUnsafe
 
         val tallennettavaOpiskeluoikeus =  OpiskeluoikeusChangeMigrator.migrate(vanhaOpiskeluoikeus, uusiOpiskeluoikeus, allowDeleteCompletedSuoritukset)
 

@@ -49,7 +49,7 @@ case class TilastokeskusQueryContext(request: HttpServletRequest)(implicit koski
       query(filters, paginationSettings)
     }.map {
       _.map(x => (laajatHenkilötiedotToTilastokeskusHenkilötiedot(x._1), x._2))
-       .map(tuple => JsonSerializer.serialize(TilastokeskusOppija(tuple._1, tuple._2.map(_.toOpiskeluoikeus))))
+       .map(tuple => JsonSerializer.serialize(TilastokeskusOppija(tuple._1, tuple._2.map(_.toOpiskeluoikeusUnsafe))))
     }
   }
 

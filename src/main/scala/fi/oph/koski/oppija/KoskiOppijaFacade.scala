@@ -135,7 +135,7 @@ class KoskiOppijaFacade(
 
   private def invalidate(opiskeluoikeusOid: String, invalidationFn: Oppija => Either[HttpStatus, Oppija], updateFn: Oppija => Either[HttpStatus, HenkilönOpiskeluoikeusVersiot])(implicit user: KoskiSpecificSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
     opiskeluoikeusRepository.findByOid(opiskeluoikeusOid).flatMap { row =>
-      if (!OpiskeluoikeusAccessChecker.isInvalidatable(row.toOpiskeluoikeus, user)) {
+      if (!OpiskeluoikeusAccessChecker.isInvalidatable(row.toOpiskeluoikeusUnsafe, user)) {
         Left(KoskiErrorCategory.forbidden("Mitätöinti ei sallittu"))
       } else {
         findOppija(row.oppijaOid, useVirta = false, useYtr = false).map(_.getIgnoringWarnings).flatMap(invalidationFn)
