@@ -61,6 +61,13 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
     mapKaikkiSivuittain(pageSize, user)(kaikkiSivuittain(OpiskeluOikeudetWithAccessCheck(user)))(mapFn)
   }
 
+  def mapKaikkiMitätöidytOpiskeluoikeudetSivuittain[A]
+    (pageSize: Int, user: KoskiSpecificSession)
+    (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
+  : Observable[A] = {
+    mapKaikkiSivuittain(pageSize, user)(kaikkiSivuittain(OpiskeluOikeudet.filter(_.mitätöity)))(mapFn)
+  }
+
   private def mapKaikkiSivuittain[A]
     (pageSize: Int, user: KoskiSpecificSession)
     (queryFn: (PaginationSettings, KoskiSpecificSession) => Seq[OpiskeluoikeusRow])

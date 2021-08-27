@@ -35,6 +35,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
 
   val tables = List(
     ROpiskeluoikeudet,
+    RMitätöidytOpiskeluoikeudet,
     ROrganisaatioHistoriat,
     ROpiskeluoikeusAikajaksot,
     EsiopetusOpiskeluoikeusAikajaksot,
@@ -129,6 +130,10 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
 
   def loadOpiskeluoikeudet(opiskeluoikeudet: Seq[ROpiskeluoikeusRow]): Unit = {
     runDbSync(ROpiskeluoikeudet ++= opiskeluoikeudet, timeout = 5.minutes)
+  }
+
+  def loadMitätöidytOpiskeluoikeudet(rows: Seq[RMitätöityOpiskeluoikeusRow]): Unit = {
+    runDbSync(RMitätöidytOpiskeluoikeudet ++= rows, timeout = 5.minutes)
   }
 
   def oppijaOidsFromOpiskeluoikeudet: Seq[String] = {
@@ -267,6 +272,11 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
   lazy val ROpiskeluoikeudet = schema match {
     case Public => TableQuery[ROpiskeluoikeusTable]
     case Temp => TableQuery[ROpiskeluoikeusTableTemp]
+  }
+
+  lazy val RMitätöidytOpiskeluoikeudet = schema match {
+    case Public => TableQuery[RMitätöityOpiskeluoikeusTable]
+    case Temp => TableQuery[RMitätöityOpiskeluoikeusTableTemp]
   }
 
   lazy val ROrganisaatioHistoriat = schema match {

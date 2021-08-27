@@ -76,6 +76,8 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
   @Tooltip("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden tiedot. Nämä tiedot kertovat, että kyseessä on ns. ulkopuolisen sopimuskumppanin suoritustieto, joka liittyy päävastuullisen koulutuksen järjestäjän luomaan opiskeluoikeuteen. Ks. tarkemmin ohjeet ja käyttötapaukset [usein kysyttyjen kysymysten](https://confluence.csc.fi/pages/viewpage.action?pageId=72811652) kohdasta Milloin ja miten käytetään linkitystä eri organisaatioissa olevien opintosuoritusten välillä KOSKI-palvelussa?")
   def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus]
   def mitätöity: Boolean = tila.opiskeluoikeusjaksot.lastOption.exists(_.tila.koodiarvo == "mitatoity")
+  def mitätöintiPäivä: Option[LocalDate] =
+    tila.opiskeluoikeusjaksot.filter(_.tila.koodiarvo == "mitatoity").lastOption.map(_.alku)
 
   import mojave._
   def withSuoritukset(suoritukset: List[PäätasonSuoritus]): Opiskeluoikeus = {

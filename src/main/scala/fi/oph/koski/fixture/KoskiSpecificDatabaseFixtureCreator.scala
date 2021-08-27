@@ -86,6 +86,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.kymppiluokkalainen, ExamplesPerusopetuksenLisaopetus.lisäopetuksenPäättötodistus.tallennettavatOpiskeluoikeudet.head),
       (KoskiSpecificMockOppijat.lukiolainen, PerusopetusExampleData.päättötodistusOpiskeluoikeus(luokka = "B")),
       (KoskiSpecificMockOppijat.lukiolainen, ExamplesLukio.päättötodistus()),
+      (KoskiSpecificMockOppijat.lukiolainen, AmmatillinenOpiskeluoikeusTestData.mitätöityOpiskeluoikeus),
       (KoskiSpecificMockOppijat.lukioKesken, ExamplesLukio.lukioKesken),
       (KoskiSpecificMockOppijat.lukionAineopiskelija, ExamplesLukio.aineopiskelija),
       (KoskiSpecificMockOppijat.lukionAineopiskelijaAktiivinen, ExamplesLukio.aineOpiskelijaAktiivinen),
@@ -189,7 +190,15 @@ object AmmatillinenOpiskeluoikeusTestData {
 
   lazy val lähdejärjestelmällinenOpiskeluoikeus: AmmatillinenOpiskeluoikeus =
     opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto).copy(lähdejärjestelmänId = Some(AmmatillinenExampleData.winnovaLähdejärjestelmäId))
-}
+
+  lazy val mitätöityOpiskeluoikeus: AmmatillinenOpiskeluoikeus = {
+    val baseOo = opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)
+    baseOo.copy(
+      tila = baseOo.tila.copy(
+        opiskeluoikeusjaksot = baseOo.tila.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
+      )
+    )
+  }}
 
 object PerusopetuksenOpiskeluoikeusTestData {
   lazy val lähdejärjestelmällinenOpiskeluoikeus: PerusopetuksenOpiskeluoikeus =
