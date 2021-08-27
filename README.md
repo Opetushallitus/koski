@@ -291,8 +291,14 @@ CI-palvelimella sovellus testataan jokaisen commitin yhteydessä. Paikallisten t
 
 Myös staattinen analyysi [ScalaStyle](http://www.scalastyle.org/) ja [ESLint](http://eslint.org/) -työkaluilla ajetaan joka commitille.
 
-Suorituskykytestit ajetaan joka aamu.
+Suorituskykytestit ajetaan joka aamuyö.
 
+## Asennukset
+
+Github Actions asentaa kehitys- ja testiympäristöön automaattisesti kaikki master haaraan tulleet muutokset.
+Tuotantoasennus tapahtuu hyväksymällä tuotantoasennus Github Actionsin käyttöliittymästä. Lisäksi kaikkiin ympäristöihin
+voi viedä muutokset käyttämällä Github Actionsista löytyvää deploy jobia, joka vie annetun commit hashin mukaisen
+version valittuun ympäristöön.
 
 ## Loggaus
 
