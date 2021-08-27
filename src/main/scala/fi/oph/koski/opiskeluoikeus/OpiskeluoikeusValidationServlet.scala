@@ -18,6 +18,8 @@ import org.scalatra._
 import rx.lang.scala.Observable
 
 class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache with ObservableSupport with ContentEncodingSupport {
+
+  // Massavalidointi-API
   get("/", request.getRemoteHost == "127.0.0.1") {
     if (!session.hasGlobalReadAccess) {
       haltWithStatus(KoskiErrorCategory.forbidden())
