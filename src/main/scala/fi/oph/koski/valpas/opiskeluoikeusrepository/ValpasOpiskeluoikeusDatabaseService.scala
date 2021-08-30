@@ -210,22 +210,22 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         -- (4.1) opiskeluoikeus ei ole eronnut tilassa tällä hetkellä
         (
           (aikajakson_keskella.tila IS NOT NULL
-            AND NOT aikajakson_keskella.tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
+            AND NOT aikajakson_keskella.tila = any('{eronnut, katsotaaneronneeksi, peruutettu, keskeytynyt}'))
           OR (aikajakson_keskella.tila IS NULL
             AND $tarkastelupäivä < ov_kelvollinen_opiskeluoikeus.alkamispaiva)
           OR (aikajakson_keskella.tila IS NULL
             AND $tarkastelupäivä > ov_kelvollinen_opiskeluoikeus.paattymispaiva
-            AND NOT ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
+            AND NOT ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu, keskeytynyt}'))
         )
         OR (
         -- (4.2) TAI oppija täyttää vähintään 17 tarkasteluvuonna ja on eronnut tilassa
           ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna
           AND (
             (aikajakson_keskella.tila IS NOT NULL
-              AND aikajakson_keskella.tila = any('{eronnut, katsotaaneronneeksi}'))
+              AND aikajakson_keskella.tila = any('{eronnut, katsotaaneronneeksi, keskeytynyt}'))
             OR (aikajakson_keskella.tila IS NULL
               AND $tarkastelupäivä > ov_kelvollinen_opiskeluoikeus.paattymispaiva
-              AND ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi}'))
+              AND ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, keskeytynyt}'))
           )
         )
       )
@@ -248,12 +248,12 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           AND (
             -- (5b.1.1) ja opiskeluoikeus on valmistunut-tilassa (joten siitä löytyy vahvistettu päättötodistus)
             (
-              ov_kelvollinen_opiskeluoikeus.viimeisin_tila = 'valmistunut'
+              ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{valmistunut, hyvaksytystisuoritettu}')
             )
             -- (5b.1.2) tai oppija täyttää tarkasteluvuonna vähintään 17 ja opiskeluoikeus on eronnut-tilassa
             OR (
               ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna
-              AND ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi}')
+              AND ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, keskeytynyt}')
             )
           )
           -- (5b.2) ministeriön määrittelemä aikaraja ei ole kulunut umpeen henkilön valmistumis-/eroamisajasta.
@@ -305,7 +305,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           -- näytetä lainkaan toiselta asteelta valmistuminen tarkoittaa, että oppivelvollisuus päättyy
           -- kokonaan, ja nivelvaiheen valmistuneiden käsittely tehdään hakeutumisen valvonnn kautta.
           ($tarkastelupäivä >= ov_kelvollinen_opiskeluoikeus.paattymispaiva)
-          AND (ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
+          AND (ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu, keskeytynyt}'))
         )
         -- TAI
         OR (
@@ -410,6 +410,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         ('katsotaaneronneeksi', 'katsotaaneronneeksi'),
         ('peruutettu', 'peruutettu'),
         ('mitatoity', 'mitatoity'),
+        ('keskeytynyt', 'keskeytynyt'),
+        ('hyvaksytystisuoritettu', 'hyvaksytystisuoritettu'),
         (NULL, 'tuntematon')
       ) t
   )

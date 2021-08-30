@@ -34,6 +34,8 @@ case class VapaanSivistystyönOpiskeluoikeudenTila(
 
 case class VapaanSivistystyönOpiskeluoikeusjakso(
   alku: LocalDate,
+  @KoodistoKoodiarvo("hyvaksytystisuoritettu")
+  @KoodistoKoodiarvo("keskeytynyt")
   tila: Koodistokoodiviite
 ) extends KoskiSuppeaOpiskeluoikeusjakso
 

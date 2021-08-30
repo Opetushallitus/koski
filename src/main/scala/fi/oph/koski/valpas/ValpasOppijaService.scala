@@ -189,10 +189,10 @@ class ValpasOppijaService(
   ): Boolean = {
     val onEronnut =
       opiskeluoikeus.onSuorittamisValvottava &&
-      Seq("eronnut", "katsotaaneronneeksi", "peruutettu").contains(opiskeluoikeus.tarkastelupäivänTila.koodiarvo)
+      Seq("eronnut", "katsotaaneronneeksi", "peruutettu", "keskeytynyt").contains(opiskeluoikeus.tarkastelupäivänTila.koodiarvo)
 
     val onValmistunutNivelvaiheesta =
-      muutOppijanOpiskeluoikeudet.exists(oo => onNivelvaiheenOpiskeluoikeus(oo) && oo.tarkastelupäivänTila.koodiarvo == "valmistunut")
+      muutOppijanOpiskeluoikeudet.exists(oo => onNivelvaiheenOpiskeluoikeus(oo) && List("valmistunut", "hyvaksytystisuoritettu").contains(oo.tarkastelupäivänTila.koodiarvo))
 
     val onLasnaUudessaOpiskeluoikeudessa =
       sisältääVoimassaolevanToisenAsteenOpiskeluoikeuden(muutOppijanOpiskeluoikeudet) ||

@@ -30,7 +30,7 @@ object TilanAsettaminenKunVahvistettuSuoritusValidation {
   }
 
   private def onEronnut(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Boolean = {
-    opiskeluoikeus.tila.opiskeluoikeusjaksot.exists(ooj => List("katsotaaneronneeksi", "eronnut").contains(ooj.tila.koodiarvo))
+    opiskeluoikeus.tila.opiskeluoikeusjaksot.exists(ooj => List("katsotaaneronneeksi", "eronnut", "keskeytynyt").contains(ooj.tila.koodiarvo))
   }
 
   private def validateYleisetSuoritukset(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {

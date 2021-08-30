@@ -20,6 +20,9 @@ object ExamplesVapaaSivistystyö {
 }
 
 object VapaaSivistystyöExample {
+  val opiskeluoikeusHyväksytystiSuoritettu = Koodistokoodiviite("hyvaksytystisuoritettu", Some("Hyväksytysti suoritettu"), "koskiopiskeluoikeudentila", Some(1))
+  val opiskeluoikeusKeskeytynyt = Koodistokoodiviite("keskeytynyt", Some("Keskeytynyt"), "koskiopiskeluoikeudentila", Some(1))
+
   lazy val opiskeluoikeusKOPS = VapaanSivistystyönOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2022, 5, 31)),
     tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
