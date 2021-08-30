@@ -85,6 +85,10 @@ const opiskeluoikeusLomaPath = createOppijaPath("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000078",
 })
 
+const opiskeluoikeusValmaPath = createOppijaPath("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000062",
+})
+
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
 const secondaryHeadingEquals = (expected: string) =>
@@ -774,6 +778,20 @@ describe("Oppijakohtainen näkymä", () => {
       Tila:	Loma
       Toimipiste: Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka
       Opiskeluoikeuden alkamispäivä:	1.8.2021
+    `)
+  })
+
+  it("Näytä koulutustyyppi oikein", async () => {
+    await loginAs(opiskeluoikeusValmaPath, "valpas-pelkkä-suorittaminen-amis")
+
+    await resetMockData("2021-08-15")
+
+    await opiskeluhistoriaEquals(`
+      school
+      VALMA 2012 –
+      Tila:	Läsnä
+      Toimipiste:	Stadin ammatti- ja aikuisopisto
+      Opiskeluoikeuden alkamispäivä:	1.9.2012
     `)
   })
 })

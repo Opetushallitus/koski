@@ -3,9 +3,10 @@ import * as Ord from "fp-ts/Ord"
 import * as string from "fp-ts/string"
 import { KoskiOpiskeluoikeudenTila } from "../../state/apitypes/koskiopiskeluoikeudentila"
 import { ISODate, Language, Oid } from "../common"
-import { Opiskeluoikeudentyyppi, Suorituksentyyppi } from "./koodistot"
+import { Opiskeluoikeudentyyppi } from "./koodistot"
 import { OppijaHakutilanteillaSuppeatTiedot } from "./oppija"
 import { Oppilaitos, Toimipiste } from "./organisaatiot"
+import { Suorituksentyyppi } from "./suorituksentyyppi"
 import { ValpasOpiskeluoikeudenTila } from "./valpasopiskeluoikeudentila"
 
 export type OpiskeluoikeusLaajatTiedot = {

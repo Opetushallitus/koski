@@ -10,8 +10,7 @@ import {
   Value,
 } from "../../../components/tables/DataTable"
 import { SelectableDataTableProps } from "../../../components/tables/SelectableDataTable"
-import { getLocalizedMaybe, t, TranslationId } from "../../../i18n/i18n"
-import { Suorituksentyyppi } from "../../../state/apitypes/koodistot"
+import { getLocalizedMaybe, t } from "../../../i18n/i18n"
 import { isSuorittamisenValvonnassaIlmoitettavaTila } from "../../../state/apitypes/koskiopiskeluoikeudentila"
 import {
   OpiskeluoikeusSuppeatTiedot,
@@ -23,6 +22,10 @@ import {
 } from "../../../state/apitypes/oppija"
 import { OppivelvollisuudenKeskeytys } from "../../../state/apitypes/oppivelvollisuudenkeskeytys"
 import { organisaatioNimi } from "../../../state/apitypes/organisaatiot"
+import {
+  Suorituksentyyppi,
+  suorituksenTyyppiToKoulutustyyppi,
+} from "../../../state/apitypes/suorituksentyyppi"
 import {
   isVoimassa,
   isVoimassaTulevaisuudessa,
@@ -152,7 +155,7 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
           display: formatNullableDate(henkilö.syntymäaika),
         },
         {
-          value: koulutusTyyppi(
+          value: koulutustyyppi(
             opiskeluoikeus.tarkasteltavaPäätasonSuoritus?.suorituksenTyyppi
           ),
         },
@@ -169,30 +172,8 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
   })
 }
 
-const koulutusTyyppi = (
-  tyyppi: Suorituksentyyppi | undefined
-): TranslationId => {
-  if (tyyppi === undefined) {
-    return ""
-  } else if (tyyppi.koodiarvo === "valma") {
-    return t("koulutustyyppi_valma")
-  } else if (tyyppi.koodiarvo === "telma") {
-    return t("koulutustyyppi_telma")
-  } else if (tyyppi.koodiarvo.startsWith("vst")) {
-    return t("koulutustyyppi_vst")
-  } else if (
-    tyyppi.koodiarvo.startsWith("ib") ||
-    tyyppi.koodiarvo.startsWith("preib")
-  ) {
-    return t("koulutustyyppi_ib")
-  } else if (tyyppi.koodiarvo.startsWith("internationalschool")) {
-    return t("koulutustyyppi_internationalschool")
-  } else if (tyyppi.koodiarvo.startsWith("dia")) {
-    return t("koulutustyyppi_dia")
-  } else {
-    return getLocalizedMaybe(tyyppi.nimi) || tyyppi.koodiarvo
-  }
-}
+const koulutustyyppi = (tyyppi?: Suorituksentyyppi): string =>
+  tyyppi === undefined ? "" : suorituksenTyyppiToKoulutustyyppi(tyyppi)
 
 const tila = (oo: OpiskeluoikeusSuppeatTiedot): Value => ({
   value: tilaString(oo),

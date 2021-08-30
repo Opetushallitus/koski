@@ -28,6 +28,7 @@ import {
 import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import { OppivelvollisuudenKeskeytys } from "../../state/apitypes/oppivelvollisuudenkeskeytys"
 import { organisaatioNimi } from "../../state/apitypes/organisaatiot"
+import { suorituksenTyyppiToKoulutustyyppi } from "../../state/apitypes/suorituksentyyppi"
 import { ISODate } from "../../state/common"
 import { formatDate, parseYear } from "../../utils/date"
 import { pick } from "../../utils/objects"
@@ -126,7 +127,7 @@ type OpiskeluhistoriaOpintoProps = {
 const OpiskeluhistoriaOpinto = ({
   opiskeluoikeus,
 }: OpiskeluhistoriaOpintoProps) => {
-  const nimi = koodistonimi(
+  const nimi = suorituksenTyyppiToKoulutustyyppi(
     opiskeluoikeus.tarkasteltavaPäätasonSuoritus.suorituksenTyyppi
   )
   const range = yearRangeString(
