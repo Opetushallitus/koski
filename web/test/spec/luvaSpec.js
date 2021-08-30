@@ -3,6 +3,7 @@ describe('Lukioon valmistava koulutus', function() {
   var page = KoskiPage()
   var opinnot = OpinnotPage()
   var editor = opinnot.opiskeluoikeusEditor()
+  var addOppija = AddOppijaPage()
 
   before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('211007-442N'))
 
@@ -429,5 +430,24 @@ describe('Lukioon valmistava koulutus', function() {
       })
     })
   })
+
+  describe('Opiskeluoikeuden lisääminen', function() {
+      before(
+        prepareForNewOppija('kalle', '040958-558T'),
+        addOppija.enterValidDataLuva({ oppilaitos: 'Ressun', peruste: '56/011/2015', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus' }),
+        addOppija.submitAndExpectSuccess('Tyhjä, Tero (040958-558T)', 'Lukiokoulutukseen valmistava koulutus')
+      )
+
+      describe('Lisäyksen jälkeen', function () {
+        describe('Opiskeluoikeuden tiedot', function() {
+          it('näytetään oikein', function () {
+            expect(S('.koulutusmoduuli .tunniste').text()).to.equal('Lukiokoulutukseen valmistava koulutus')
+            expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('56/011/2015')
+            expect(editor.propertyBySelector('.toimipiste').getValue()).to.equal('Ressun lukio')
+            expect(opinnot.getSuorituskieli()).to.equal('suomi')
+          })
+        })
+      })
+    })
 
 })

@@ -769,7 +769,11 @@
     "kieli" : "SV"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [ ]
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutustyyppi_23",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "koskikoulutustendiaarinumerot_570112015",
   "koodiArvo" : "57/011/2015",

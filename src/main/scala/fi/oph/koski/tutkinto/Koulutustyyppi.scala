@@ -64,6 +64,8 @@ object Koulutustyyppi {
         Set(vapaanSivistystyönMaahanmuuttajienKotoutumisKoulutus)
       case SuorituksenTyyppi.vstlukutaitokoulutus =>
         Set(vstlukutaitokoulutus)
+      case SuorituksenTyyppi.luva =>
+        Set(luva)
       case _ => Set.empty[Koulutustyyppi]
     }
   }
