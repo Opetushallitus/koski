@@ -83,8 +83,8 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
     WithWarnings(mainResult ++ virtaResult.getIgnoringWarnings ++ ytrResult.getIgnoringWarnings, virtaResult.warnings ++ ytrResult.warnings)
   }
 
-  def getPerusopetuksenAikavälit(oppijaOid: String)(implicit user: Session): Seq[Päivämääräväli] = {
-    main.getPerusopetuksenAikavälit(oppijaOid)
+  def getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(oppijaOid: String): Seq[Päivämääräväli] = {
+    main.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(oppijaOid)
   }
 
   def getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, List[Oid]] =

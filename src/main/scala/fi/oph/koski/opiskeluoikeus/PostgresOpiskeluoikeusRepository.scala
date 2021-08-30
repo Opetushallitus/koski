@@ -189,7 +189,7 @@ class PostgresOpiskeluoikeusRepository(
     }
   }
 
-  def getPerusopetuksenAikavälit(oppijaOid: String)(implicit user: Session): Seq[Päivämääräväli] = {
+  def getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(oppijaOid: String): Seq[Päivämääräväli] = {
     runDbSync(
       sql"""
         with master as (
