@@ -133,7 +133,7 @@ describe("Oppijakohtainen näkymä", () => {
     `)
     await opiskeluhistoriaEquals(`
       school
-      Perusopetuksen vuosiluokka 2012 –
+      Perusopetus 2012 –
       Tila: Läsnä
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: 9C
@@ -205,7 +205,7 @@ describe("Oppijakohtainen näkymä", () => {
     `)
     await opiskeluhistoriaEquals(`
       school
-      Perusopetuksen vuosiluokka 2012 – 2021
+      Perusopetus 2012 – 2021
       Tila: Valmistunut
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: 9C
@@ -221,7 +221,7 @@ describe("Oppijakohtainen näkymä", () => {
     )
     await opiskeluhistoriaEquals(`
       school
-      Perusopetuksen vuosiluokka 2012 – 2021
+      Perusopetus 2012 – 2021
       Tila: Valmistunut
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: 9C
@@ -277,13 +277,13 @@ describe("Oppijakohtainen näkymä", () => {
     `)
     await opiskeluhistoriaEquals(`
       school
-      Perusopetuksen vuosiluokka 2012 –
+      Perusopetus 2012 –
       Tila: Läsnä
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: 9B
       Opiskeluoikeuden alkamispäivä: 15.8.2012
       school
-      Perusopetuksen vuosiluokka 2012 –
+      Perusopetus 2012 –
       Tila: Läsnä
       Toimipiste: Kulosaaren ala-aste
       Ryhmä: 8A
@@ -310,7 +310,7 @@ describe("Oppijakohtainen näkymä", () => {
       Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 15.8.2021
       school
-      Perusopetuksen vuosiluokka 2012 – 2021
+      Perusopetus 2012 – 2021
       Tila: Valmistunut
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: 9C
@@ -338,7 +338,7 @@ describe("Oppijakohtainen näkymä", () => {
       Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 3.10.2021
       school
-      Perusopetuksen vuosiluokka 2012 – 2021
+      Perusopetus 2012 – 2021
       Tila: Valmistunut
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: 9C
@@ -467,7 +467,7 @@ describe("Oppijakohtainen näkymä", () => {
     await mainHeadingEquals("LukionAineopinnotAloittanut Valpas (040305A559A)")
     await opiskeluhistoriaEquals(`
       school
-      Perusopetuksen vuosiluokka 2012 – 2021
+      Perusopetus 2012 – 2021
       Tila: Valmistunut
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: 9C
@@ -645,7 +645,7 @@ describe("Oppijakohtainen näkymä", () => {
       Oppivelvollisuus
       Keskeytetty 1.1.2020 – 30.1.2020
       school
-      Perusopetuksen vuosiluokka 2012 –
+      Perusopetus 2012 –
       Tila: Läsnä
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä:	9C
@@ -673,7 +673,7 @@ describe("Oppijakohtainen näkymä", () => {
       Oppivelvollisuus
       Keskeytetty toistaiseksi 1.1.2021 alkaen
       school
-      Perusopetuksen vuosiluokka 2012 –
+      Perusopetus 2012 –
       Tila: Läsnä
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä:	9C
@@ -708,7 +708,7 @@ describe("Oppijakohtainen näkymä", () => {
       Oppivelvollisuus
       Keskeytetty 1.1.2020 – 30.1.2020
       school
-      Perusopetuksen vuosiluokka 2012 –
+      Perusopetus 2012 –
       Tila: Läsnä
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä:	9C

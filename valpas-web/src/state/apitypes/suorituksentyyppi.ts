@@ -21,6 +21,8 @@ export const suorituksenTyyppiToKoulutustyyppi = (
     return t("koulutustyyppi_internationalschool")
   } else if (tyyppi.koodiarvo.startsWith("dia")) {
     return t("koulutustyyppi_dia")
+  } else if (tyyppi.koodiarvo === "perusopetuksenvuosiluokka") {
+    return t("koulutustyyppi_perusopetus")
   } else {
     return getLocalizedMaybe(tyyppi.nimi) || tyyppi.koodiarvo
   }

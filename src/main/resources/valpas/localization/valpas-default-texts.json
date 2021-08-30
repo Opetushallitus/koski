@@ -230,5 +230,6 @@
   "koulutustyyppi_vst": "VST",
   "koulutustyyppi_ib": "IB",
   "koulutustyyppi_internationalschool": "International school",
-  "koulutustyyppi_dia": "DIA"
+  "koulutustyyppi_dia": "DIA",
+  "koulutustyyppi_perusopetus": "Perusopetus"
 }
