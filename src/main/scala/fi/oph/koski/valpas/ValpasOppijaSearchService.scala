@@ -20,46 +20,69 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
   private val opiskeluoikeusRepository = application.opiskeluoikeusRepository
   private val rajapäivätService = application.valpasRajapäivätService
 
-  def findHenkilö
+  def findHenkilöSuorittaminen
+    (query: String)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, ValpasHenkilöhakuResult] = {
+    findHenkilö(ValpasRooli.OPPILAITOS_SUORITTAMINEN, query)
+  }
+
+  def findHenkilöKunta
+    (query: String)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, ValpasHenkilöhakuResult] = {
+    findHenkilö(ValpasRooli.KUNTA, query)
+  }
+
+  def findHenkilöMaksuttomuus
+    (query: String)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, ValpasHenkilöhakuResult] = {
+    accessResolver.assertAccessToAnyOrg(ValpasRooli.OPPILAITOS_MAKSUTTOMUUS)
+      .flatMap(_ => findHenkilö(asMaksuttomuusHenkilöhakuResult _, query))
+  }
+
+  private def findHenkilö
     (rooli: ValpasRooli.Role, query: String)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasHenkilöhakuResult] = {
     accessResolver.assertAccessToAnyOrg(rooli)
-      .flatMap(_ => {
-        if (hetuValidator.validate(query).isRight) {
-          searchByHetu(rooli, query)
-        } else if (Henkilö.isValidHenkilöOid(query)) {
-          searchByOppijaOid(rooli, query)
-        } else {
-          Left(ValpasErrorCategory.validation.epävalidiHenkilöhakutermi())
-        }
-      })
+      .flatMap(_ => findHenkilö(asYksinkertainenHenkilöhakuResult(rooli) _, query))
+  }
+
+  private def findHenkilö
+    (asHenkilöhakuResult: (OppijaHenkilö) => Either[HttpStatus, ValpasHenkilöhakuResult], query: String)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, ValpasHenkilöhakuResult] = {
+    if (hetuValidator.validate(query).isRight) {
+      searchByHetu(asHenkilöhakuResult, query)
+    } else if (Henkilö.isValidHenkilöOid(query)) {
+      searchByOppijaOid(asHenkilöhakuResult, query)
+    } else {
+      Left(ValpasErrorCategory.validation.epävalidiHenkilöhakutermi())
+    }
   }
 
   private def searchByHetu
-    (rooli: ValpasRooli.Role, hetu: String)
+    (asHenkilöhakuResult: (OppijaHenkilö) => Either[HttpStatus, ValpasHenkilöhakuResult], hetu: String)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasHenkilöhakuResult] =
-    asSearchResult(rooli, henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu))
+    asSearchResult(asHenkilöhakuResult, henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu))
 
   private def searchByOppijaOid
-    (rooli: ValpasRooli.Role, oid: String)
+    (asHenkilöhakuResult: (OppijaHenkilö) => Either[HttpStatus, ValpasHenkilöhakuResult], oid: String)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasHenkilöhakuResult] =
-    asSearchResult(rooli, henkilöRepository.findByOid(oid))
+    asSearchResult(asHenkilöhakuResult, henkilöRepository.findByOid(oid))
 
   private def asSearchResult
-    (rooli: ValpasRooli.Role, oppijaHenkilö: Option[OppijaHenkilö])
+    (asResult: (OppijaHenkilö) => Either[HttpStatus, ValpasHenkilöhakuResult], oppijaHenkilö: Option[OppijaHenkilö])
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasHenkilöhakuResult] = {
     oppijaHenkilö match {
       case None => Right(ValpasEiLöytynytHenkilöhakuResult())
       case Some(henkilö) => {
-        if (rooli == ValpasRooli.OPPILAITOS_MAKSUTTOMUUS) {
-          asMaksuttomuusHenkilöhakuResult(henkilö)
-        } else {
-          asValpasHenkilöhakuResult(rooli, henkilö)
-        }
+        asResult(henkilö)
       }
     }
   }
@@ -90,8 +113,9 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
     }
   }
 
-  private def asValpasHenkilöhakuResult
-    (rooli: Role, henkilö: OppijaHenkilö)
+  private def asYksinkertainenHenkilöhakuResult
+    (rooli: ValpasRooli.Role)
+    (henkilö: OppijaHenkilö)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasLöytyiHenkilöhakuResult] = {
     oppijaService.getOppijaLaajatTiedot(rooli, henkilö.oid)
