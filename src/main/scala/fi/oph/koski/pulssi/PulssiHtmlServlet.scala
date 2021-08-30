@@ -49,28 +49,6 @@ class PulssiHtmlServlet(implicit val application: KoskiApplication) extends Scal
             </ul>
           </li>
         </ul>
-        <h3>Koski tiedonsiirrot</h3>
-        <ul>
-          <li class="siirtäneiden-oppilaitosten-määrä">Siirtäneitä oppilaitoksia: <span class="value">{pulssi.opiskeluoikeusTilasto.siirtäneitäOppilaitoksiaYhteensä}</span></li>
-          <li class="oppilaitoksien-määrä">Oppilaitoksia yhteensä: <span class="value">{pulssi.oppilaitosMäärät.yhteensä}</span></li>
-          <li class="siirtoprosentti">Siirtoprosentti: <span class="value">{percent(pulssi.opiskeluoikeusTilasto.siirtäneitäOppilaitoksiaYhteensä, pulssi.oppilaitosMäärät.yhteensä)}</span></li>
-          <li>
-            Koulutusmuodoittain:
-            <ul>
-              {pulssi.opiskeluoikeusTilasto.koulutusmuotoTilastot.flatMap { tilasto =>
-                pulssi.oppilaitosMäärät.koulutusmuodoittain.get(tilasto.koulutusmuoto).map { oppilaitoksia =>
-                  <li class={"siirtäneiden-oppilaitosten-määrä-" + tilasto.koulutusmuotoStr}>{tilasto.koulutusmuoto}: <span class="value">{tilasto.siirtäneitäOppilaitoksia}</span> ({percent(tilasto.siirtäneitäOppilaitoksia, oppilaitoksia)} %)</li>
-              }
-            }}
-            </ul>
-          </li>
-          <li>Virheellisiä tällä hetkellä: {pulssi.tiedonsiirtoTilasto.virheellisiä} ({pulssi.tiedonsiirtoTilasto.oppilaitoksiaJoillaVirheellisiä} eri oppilaitoksesta)</li>
-          <li>Virhekoodit:
-            <ul>
-              {pulssi.tiedonsiirtoTilasto.virhekoodiTilastot.map { v => <li>{v.key}: {v.doc_count}</li> }}
-            </ul>
-          </li>
-        </ul>
         <h3>Koski käyttöoikeudet</h3>
         <ul>
           <li class="käyttöoikeuksien-määrä">Käyttöoikeuksien määrä: <span class="value">{pulssi.käyttöoikeudet.kokonaismäärä}</span></li>

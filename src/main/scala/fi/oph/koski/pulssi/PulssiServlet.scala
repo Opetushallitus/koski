@@ -7,10 +7,10 @@ import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 
 class PulssiServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with NoCache with KoskiSpecificAuthenticationSupport {
   get("/") {
-    KoskiPulssiData(pulssi.opiskeluoikeusTilasto, pulssi.metriikka, pulssi.oppilaitosMäärät)
+    KoskiPulssiData(pulssi.opiskeluoikeusTilasto, pulssi.metriikka)
   }
 
   private def pulssi = application.koskiPulssi
 }
 
-case class KoskiPulssiData(opiskeluoikeudet: OpiskeluoikeusTilasto, metriikka: JulkinenMetriikka, oppilaitosMäärät: OppilaitosMäärät)
+case class KoskiPulssiData(opiskeluoikeudet: OpiskeluoikeusTilasto, metriikka: JulkinenMetriikka)

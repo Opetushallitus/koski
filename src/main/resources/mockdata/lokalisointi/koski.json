@@ -4290,45 +4290,6 @@
   "value" : "Se hur utdraget över prestationerna ser ut i webbläsaren"
 }, {
   "accesscount" : 0,
-  "accessed" : 1507555670554,
-  "category" : "koski",
-  "created" : 1507555670554,
-  "createdBy" : "1.2.246.562.24.34119902638",
-  "force" : false,
-  "id" : 16945,
-  "key" : "Kattavuus",
-  "locale" : "en",
-  "modified" : 1507555669047,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
-}, {
-  "accesscount" : 0,
-  "accessed" : 1507555670549,
-  "category" : "koski",
-  "created" : 1507555670549,
-  "createdBy" : "1.2.246.562.24.34119902638",
-  "force" : false,
-  "id" : 16943,
-  "key" : "Kattavuus",
-  "locale" : "fi",
-  "modified" : 1507555669047,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : "Kattavuus"
-}, {
-  "accesscount" : 0,
-  "accessed" : 1507555670552,
-  "category" : "koski",
-  "created" : 1507555670552,
-  "createdBy" : "1.2.246.562.24.34119902638",
-  "force" : false,
-  "id" : 16944,
-  "key" : "Kattavuus",
-  "locale" : "sv",
-  "modified" : 1514385608610,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : "Omfattning"
-}, {
-  "accesscount" : 0,
   "accessed" : 1507555671374,
   "category" : "koski",
   "created" : 1507555671374,

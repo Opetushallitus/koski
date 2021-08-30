@@ -15,7 +15,6 @@ trait KoskiPulssi {
   def opiskeluoikeusTilasto: OpiskeluoikeusTilasto
   def tiedonsiirtoTilasto: TiedonsiirtoTilasto
   def metriikka: JulkinenMetriikka
-  def oppilaitosMäärät: OppilaitosMäärät
   def oppijoidenMäärä: Int
   def käyttöoikeudet: KäyttöoikeusTilasto
   def metrics: KoskiMetriikka
@@ -54,11 +53,6 @@ class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
 
   def metrics: KoskiMetriikka = application.prometheusRepository.koskiMetrics
 
-  def oppilaitosMäärät = OppilaitosMäärät(Map(
-    "Perusopetus" -> 2433,
-    "Lukiokoulutus" -> 381,
-    "Ammatillinen koulutus" -> 208
-  ))
 }
 
 object KoskiPulssi {
@@ -68,10 +62,6 @@ object KoskiPulssi {
       new KoskiStats(application)
     )
   }
-}
-
-case class OppilaitosMäärät(koulutusmuodoittain: Map[String, Int]) {
-  def yhteensä: Int = koulutusmuodoittain.values.sum
 }
 
 case class KäyttöoikeusTilasto(kokonaismäärä: Int, ryhmienMäärät: Map[String, Int])

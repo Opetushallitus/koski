@@ -69,30 +69,6 @@ describe('Raportti', function() {
       expect(page.metric('opiskeluoikeuksien-määrä-perusopetuksen-lisäopetus').value() >= 0).to.equal(true)
     })
 
-    it('siirtäneiden oppilaitosten määrä', function () {
-      expect(page.metric('siirtäneiden-oppilaitosten-määrä').value() >= 0).to.equal(true)
-    })
-
-    it('oppilaitoksien määrä', function () {
-      expect(page.metric('oppilaitoksien-määrä').value() >= 0).to.equal(true)
-    })
-
-    it('siirtoprosentti', function () {
-      expect(page.metric('siirtoprosentti').value() >= 0).to.equal(true)
-    })
-
-    it('siirtäneitä oppilaitoksia, ammatillinen', function () {
-      expect(page.metric('siirtäneiden-oppilaitosten-määrä-ammatillinen-koulutus').value() >= 0).to.equal(true)
-    })
-
-    it('siirtäneitä oppilaitoksia, perusopetus', function () {
-      expect(page.metric('siirtäneiden-oppilaitosten-määrä-perusopetus').value() >= 0).to.equal(true)
-    })
-
-    it('siirtäneitä oppilaitoksia, lukio', function () {
-      expect(page.metric('siirtäneiden-oppilaitosten-määrä-lukiokoulutus').value() >= 0).to.equal(true)
-    })
-
     it('pääkäyttäjien määrä', function () {
       expect(page.metric('käyttöoikeuksien-määrä-koski-oppilaitos-pääkäyttäjä_1494486198456').value() >= 0).to.equal(true)
     })
