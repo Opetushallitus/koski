@@ -22,40 +22,46 @@ import { defaultTimeout } from "../integrationtests-env/browser/timeouts"
 describe("Oppijahaku", () => {
   it("Maksuttomuus: Haku löytää henkilötunnuksen perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on oikeus, ja linkkaa detaljisivulle", async () => {
     await hakuLogin()
-    await fillQueryField("221105A3023")
-    await submit()
+    await fillQueryField("221105A3023", "maksuttomuusoppijasearch")
+    await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
       "Löytyi: Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas (221105A3023)",
       createOppijaPath("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000001",
         prev: createMaksuttomuusPath(),
-      })
+      }),
+      "maksuttomuusoppijasearch"
     )
   })
 
   it("Maksuttomuus: Haku löytää oppijanumeron perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on oikeus, ja linkkaa detaljisivulle", async () => {
     await hakuLogin()
-    await fillQueryField("1.2.246.562.24.00000000001")
-    await submit()
+    await fillQueryField(
+      "1.2.246.562.24.00000000001",
+      "maksuttomuusoppijasearch"
+    )
+    await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
       "Löytyi: Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas (221105A3023)",
       createOppijaPath("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000001",
         prev: createMaksuttomuusPath(),
-      })
+      }),
+      "maksuttomuusoppijasearch"
     )
   })
 
   it("Maksuttomuus: Haku löytää henkilötunnuksen perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on vain maksuttomuusoikeus, ja linkkaa detaljisivulle", async () => {
     await hakuLogin("valpas-pelkkä-maksuttomuus")
-    await fillQueryField("070504A717P")
-    await submit()
+    await fillQueryField("070504A717P", "maksuttomuusoppijasearch")
+    await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
       "Löytyi: Lukio-opiskelija Valpas (070504A717P)",
       createOppijaPath("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000004",
         prev: createMaksuttomuusPath(),
-      })
+      }),
+      "maksuttomuusoppijasearch"
     )
   })
 
@@ -95,14 +101,18 @@ describe("Oppijahaku", () => {
 
   it("Maksuttomuus: Haku löytää oppijanumeron perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on vain maksuttomuusoikeus, ja linkkaa detaljisivulle", async () => {
     await hakuLogin("valpas-pelkkä-maksuttomuus")
-    await fillQueryField("1.2.246.562.24.00000000004")
-    await submit()
+    await fillQueryField(
+      "1.2.246.562.24.00000000004",
+      "maksuttomuusoppijasearch"
+    )
+    await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
       "Löytyi: Lukio-opiskelija Valpas (070504A717P)",
       createOppijaPath("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000004",
         prev: createMaksuttomuusPath(),
-      })
+      }),
+      "maksuttomuusoppijasearch"
     )
   })
 
@@ -142,24 +152,34 @@ describe("Oppijahaku", () => {
 
   it("Maksuttomuus: Haku kertoo ettei maksuttomuutta voida päätellä, jos oppijan tietoja ei löydy rekistereistä", async () => {
     await hakuLogin()
-    await fillQueryField("040392-530U")
-    await submit()
-    await expectResultToBe("Maksuttomuutta ei pystytä päättelemään")
+    await fillQueryField("040392-530U", "maksuttomuusoppijasearch")
+    await submit("maksuttomuusoppijasearch")
+    await expectResultToBe(
+      "Maksuttomuutta ei pystytä päättelemään",
+      undefined,
+      "maksuttomuusoppijasearch"
+    )
   })
 
   it("Maksuttomuus: Haku kertoo ettei maksuttomuutta voida päätellä, jos ikänsä puolesta uuden lain mukaan oppivelvollinen löytyy oppijanumerorekisteristä mutta ei Koskesta", async () => {
     await hakuLogin()
-    await fillQueryField("110405A6951")
-    await submit()
-    await expectResultToBe("Maksuttomuutta ei pystytä päättelemään")
+    await fillQueryField("110405A6951", "maksuttomuusoppijasearch")
+    await submit("maksuttomuusoppijasearch")
+    await expectResultToBe(
+      "Maksuttomuutta ei pystytä päättelemään",
+      undefined,
+      "maksuttomuusoppijasearch"
+    )
   })
 
   it("Maksuttomuus: Haku kertoo ettei henkilö ole maksuttomuuden piirissä, jos ikänsä puolesta uuden lain ulkopuolella oleva oppija löytyy oppijanumerorekisteristä mutta ei Koskesta", async () => {
     await hakuLogin()
-    await fillQueryField("070302A402D")
-    await submit()
+    await fillQueryField("070302A402D", "maksuttomuusoppijasearch")
+    await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
-      "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen."
+      "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
+      undefined,
+      "maksuttomuusoppijasearch"
     )
   })
 
@@ -195,10 +215,12 @@ describe("Oppijahaku", () => {
       "403 (Forbidden)"
     )
     await hakuLogin("valpas-maksuttomuus-hki")
-    await fillQueryField("180304A082P")
-    await submit()
+    await fillQueryField("180304A082P", "maksuttomuusoppijasearch")
+    await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
-      "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen."
+      "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
+      undefined,
+      "maksuttomuusoppijasearch"
     )
   })
 
@@ -239,10 +261,12 @@ describe("Oppijahaku", () => {
       "403 (Forbidden)"
     )
     await hakuLogin("valpas-jkl-normaali")
-    await fillQueryField("080905A0798")
-    await submit()
+    await fillQueryField("080905A0798", "maksuttomuusoppijasearch")
+    await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
-      "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen."
+      "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
+      undefined,
+      "maksuttomuusoppijasearch"
     )
   })
 
@@ -251,7 +275,7 @@ describe("Oppijahaku", () => {
 
     const invalidInputs = ["123456-7890", "1.2.3.4", "Kekkonen"]
     for (const invalidInput of invalidInputs) {
-      await fillQueryField(invalidInput)
+      await fillQueryField(invalidInput, "maksuttomuusoppijasearch")
       await expectFieldErrorToBe(
         "Syötetty arvo ei ole validi henkilötunnus tai oppijatunnus"
       )
@@ -259,35 +283,37 @@ describe("Oppijahaku", () => {
 
     const validInputs = ["221105-3023", "1.2.246.562.24.00000000001"]
     for (const validInput of validInputs) {
-      await fillQueryField(validInput)
+      await fillQueryField(validInput, "maksuttomuusoppijasearch")
       await expectFieldErrorToBe(null)
     }
   })
 
   it("Maksuttomuus: Haku löytää oppijan, vaikka hänellä ei ole oppivelvollisuuden suorittamiseen kelpaavia opintoja", async () => {
     await hakuLogin("valpas-maksuttomuus-hki")
-    await fillQueryField("061005A671V") // Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas
-    await submit()
+    await fillQueryField("061005A671V", "maksuttomuusoppijasearch") // Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas
+    await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
       "Löytyi: Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas (061005A671V)",
       createOppijaPath("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000058",
         prev: createMaksuttomuusPath(),
-      })
+      }),
+      "maksuttomuusoppijasearch"
     )
   })
 
   it("Maksuttomuus: Haku löytää myös hetuttoman oppijan", async () => {
     const hetutonOppijaOid = "1.2.246.562.24.00000000059"
     await hakuLogin("valpas-jkl-normaali")
-    await fillQueryField(hetutonOppijaOid)
-    await submit()
+    await fillQueryField(hetutonOppijaOid, "maksuttomuusoppijasearch")
+    await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
       "Löytyi: Hetuton Valpas",
       createOppijaPath("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000059",
         prev: createMaksuttomuusPath(),
-      })
+      }),
+      "maksuttomuusoppijasearch"
     )
   })
 
@@ -295,14 +321,15 @@ describe("Oppijahaku", () => {
     const oppijaMasterOid = "1.2.246.562.24.00000000060"
     const oppijaSlaveOid = "1.2.246.562.24.00000000061"
     await hakuLogin("valpas-jkl-normaali")
-    await fillQueryField(oppijaSlaveOid)
-    await submit()
+    await fillQueryField(oppijaSlaveOid, "maksuttomuusoppijasearch")
+    await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
       "Löytyi: Oppivelvollinen-hetullinen Valpas (030105A7507)",
       createOppijaPath("/virkailija", {
         oppijaOid: oppijaMasterOid,
         prev: createMaksuttomuusPath(),
-      })
+      }),
+      "maksuttomuusoppijasearch"
     )
   })
 
@@ -333,30 +360,37 @@ const hakuLogin = async (
   await expectElementEventuallyVisible(selector)
 }
 
-const fillQueryField = async (query: string) => {
-  const inputSelector = ".oppijasearch .textfield__input"
+const fillQueryField = async (
+  query: string,
+  className: string = "oppijasearch"
+) => {
+  const inputSelector = `.${className} .textfield__input`
   await clearTextInput(inputSelector)
   await setTextInput(inputSelector, query)
 }
 
-const submit = async () => {
-  const buttonSelector = ".oppijasearch__submit"
+const submit = async (className: string = "oppijasearch") => {
+  const buttonSelector = `.${className}__submit`
   expect(
     await inputIsEnabled(buttonSelector),
     "Expect submit button to be enabled"
   ).toBeTruthy()
   await clickElement(buttonSelector)
-  await expectElementEventuallyVisible(".oppijasearch__resultvalue")
+  await expectElementEventuallyVisible(`.${className}__resultvalue`)
 }
 
-const expectResultToBe = async (text: string, linkTo?: string) => {
+const expectResultToBe = async (
+  text: string,
+  linkTo?: string,
+  className: string = "oppijasearch"
+) => {
   const result = await $(
-    ".oppijasearch__resultvalue",
+    `.${className}__resultvalue`,
     defaultTimeout
   ).then((e) => e.getText())
   expect(result).toBe(text)
   if (linkTo) {
-    const href = await $(".oppijasearch__resultlink").then((e) =>
+    const href = await $(`.${className}__resultlink`).then((e) =>
       e.getAttribute("href")
     )
     expect(href).toBe(pathToUrl(linkTo))
