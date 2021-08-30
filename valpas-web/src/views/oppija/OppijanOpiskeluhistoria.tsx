@@ -274,7 +274,7 @@ const tilaString = (opiskeluoikeus: OpiskeluoikeusLaajatTiedot): string => {
   switch (koskiTila.koodiarvo) {
     case "valiaikaisestikeskeytynyt":
       const tarkastelujaksonAlku = formatDate(
-        opiskeluoikeus.tarkastelupäivänAikajaksonAlku
+        opiskeluoikeus.tarkastelupäivänTilanAlkamispäivä
       )
       return t("oppija__tila_valiaikaisesti_keskeytetty", {
         päivämäärä: tarkastelujaksonAlku,
