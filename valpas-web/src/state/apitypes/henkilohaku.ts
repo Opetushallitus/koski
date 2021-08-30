@@ -3,6 +3,7 @@ import { Oid } from "../common"
 export type HenkilöhakuResult =
   | LöytyiHenkilöhakuResult
   | EiLöytynytHenkilöhakuResult
+  | EiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult
 
 export type LöytyiHenkilöhakuResult = {
   ok: true
@@ -10,9 +11,16 @@ export type LöytyiHenkilöhakuResult = {
   hetu?: string
   etunimet: string
   sukunimi: string
+  eiLainTaiMaksuttomuudenPiirissä?: boolean
 }
 
 export type EiLöytynytHenkilöhakuResult = {
+  eiLainTaiMaksuttomuudenPiirissä?: false
+  ok: false
+}
+
+export type EiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult = {
+  eiLainTaiMaksuttomuudenPiirissä: true
   ok: false
 }
 
@@ -22,4 +30,10 @@ export const isLöytyiHenkilöhakuResult = (
 
 export const isEiLöytynytHenkilöhakuResult = (
   hakutieto: HenkilöhakuResult
-): hakutieto is EiLöytynytHenkilöhakuResult => hakutieto.ok === false
+): hakutieto is EiLöytynytHenkilöhakuResult =>
+  hakutieto.ok === false && !hakutieto.eiLainTaiMaksuttomuudenPiirissä
+
+export const isEiLöytynytEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult = (
+  hakutieto: HenkilöhakuResult
+): hakutieto is EiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult =>
+  hakutieto.ok === false && !!hakutieto.eiLainTaiMaksuttomuudenPiirissä
