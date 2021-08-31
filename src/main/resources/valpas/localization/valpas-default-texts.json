@@ -70,6 +70,7 @@
   "oppija__haut_otsikko": "Haut",
   "oppija__haut_hyvaksytty": "Hyväksytty",
   "oppija__haut_hylatty": "Hylätty",
+  "oppija__toimipiste": "Toimipiste",
   "oppija__ryhma": "Ryhmä",
   "oppija__tila": "Tila",
   "oppija__ei_hakuhistoriaa": "Oppijalle ei löytynyt hakuhistoriaa",
@@ -101,6 +102,7 @@
   "oppija__tila_eronnut": "Eronnut {{päivämäärä}}",
   "oppija__tila_katsotaaneronneeksi": "Katsotaan eronneeksi {{päivämäärä}}",
   "oppija__tila_mitatoity": "Mitätöity {{päivämäärä}}",
+  "oppija__tila_valiaikaisesti_keskeytetty": "Väliaikaisesti keskeytetty {{päivämäärä}}",
   "oppija__yhteystietoja_ei_löytynyt": "Yhteystietoja ei löytynyt",
   "oppija__henkilöllä_turvakielto": "Henkilöllä on turvakielto",
   "oppija__hakukohde": "Hakukohde",
@@ -228,5 +230,6 @@
   "koulutustyyppi_vst": "VST",
   "koulutustyyppi_ib": "IB",
   "koulutustyyppi_internationalschool": "International school",
-  "koulutustyyppi_dia": "DIA"
+  "koulutustyyppi_dia": "DIA",
+  "koulutustyyppi_perusopetus": "Perusopetus"
 }
