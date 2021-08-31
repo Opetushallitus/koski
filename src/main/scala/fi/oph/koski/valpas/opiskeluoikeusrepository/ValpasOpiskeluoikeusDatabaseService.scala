@@ -491,10 +491,17 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           ) AS data
         FROM r_paatason_suoritus pts
         WHERE pts.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-          AND pts.suorituksen_tyyppi = 'perusopetuksenvuosiluokka'
-        -- Hae vain uusin vuosiluokan suoritus (toistaiseksi, myöhemmin voisi pystyä valitsemaan
-        -- myös esim. edelliseltä keväältä parametrina annetun päivämäärän perusteella)
-        ORDER BY pts.data->>'alkamispäivä' DESC
+          AND (
+            pts.suorituksen_tyyppi = 'perusopetuksenvuosiluokka'
+            OR pts.suorituksen_tyyppi = 'perusopetuksenoppimaara'
+          )
+        -- Ensisijaisesti uusin vuosiluokan suoritus, koska siinä on luultavasti relevantein ryhmätieto.
+        ORDER BY
+          CASE
+            WHEN (pts.suorituksen_tyyppi = 'perusopetuksenvuosiluokka') THEN 1
+            WHEN (pts.suorituksen_tyyppi = 'perusopetuksenoppimaara') THEN 2
+          END,
+          pts.data->>'alkamispäivä' DESC
         LIMIT 1
       ) AS valittu_paatason_suoritus
   )
