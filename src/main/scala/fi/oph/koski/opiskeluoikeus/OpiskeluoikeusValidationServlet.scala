@@ -18,6 +18,8 @@ import org.scalatra._
 import rx.lang.scala.Observable
 
 class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache with ObservableSupport with ContentEncodingSupport {
+
+  // Massavalidointi-API
   get("/", request.getRemoteHost == "127.0.0.1") {
     if (!session.hasGlobalReadAccess) {
       haltWithStatus(KoskiErrorCategory.forbidden())
@@ -72,7 +74,7 @@ class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication
 case class ValidateContext(validator: KoskiValidator, historyRepository: OpiskeluoikeusHistoryRepository, henkilöRepository: HenkilöRepository)(implicit user: KoskiSpecificSession) extends Logging {
   def validateHistory(row: OpiskeluoikeusRow): ValidationResult = {
     try {
-      val opiskeluoikeus = row.toOpiskeluoikeus
+      val opiskeluoikeus = row.toOpiskeluoikeusUnsafe
       (historyRepository.findVersion(row.oid, row.versionumero)(user) match {
         case Right(latestVersion) =>
           HttpStatus.validate(latestVersion == opiskeluoikeus) {

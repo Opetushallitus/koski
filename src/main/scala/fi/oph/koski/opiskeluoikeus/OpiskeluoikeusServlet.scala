@@ -19,7 +19,7 @@ class OpiskeluoikeusServlet(implicit val application: KoskiApplication) extends 
   get("/:oid") {
     val result: Either[HttpStatus, OpiskeluoikeusRow] = application.opiskeluoikeusRepository.findByOid(getStringParam("oid"))(session)
     result.map(oo => KoskiAuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, session, Map(oppijaHenkiloOid -> oo.oppijaOid))).foreach(AuditLog.log)
-    renderEither[KoskeenTallennettavaOpiskeluoikeus](result.map(_.toOpiskeluoikeus))
+    renderEither[KoskeenTallennettavaOpiskeluoikeus](result.map(_.toOpiskeluoikeusUnsafe))
   }
 
   post("/:oid/:versionumero/delete-paatason-suoritus") {

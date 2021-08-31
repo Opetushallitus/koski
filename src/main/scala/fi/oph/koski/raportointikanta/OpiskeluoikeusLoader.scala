@@ -28,33 +28,38 @@ object OpiskeluoikeusLoader extends Logging {
     batchSize: Int = DefaultBatchSize
   ): Observable[LoadResult] = {
     db.setStatusLoadStarted(statusName)
-    val result = opiskeluoikeusQueryRepository.mapKaikkiOpiskeluoikeudetSivuittain(batchSize, systemUser) { opiskeluoikeusRows =>
-      if (opiskeluoikeusRows.nonEmpty) {
-        val (errors, outputRows) = opiskeluoikeusRows.par.map(buildRow).seq.partition(_.isLeft)
-        db.loadOpiskeluoikeudet(outputRows.map(_.right.get.rOpiskeluoikeusRow))
-        db.loadOrganisaatioHistoria(outputRows.flatMap(_.right.get.organisaatioHistoriaRows))
-        val aikajaksoRows = outputRows.flatMap(_.right.get.rOpiskeluoikeusAikajaksoRows)
-        val esiopetusOpiskeluoikeusAikajaksoRows = outputRows.flatMap(_.right.get.esiopetusOpiskeluoikeusAikajaksoRows)
-        val päätasonSuoritusRows = outputRows.flatMap(_.right.get.rPäätasonSuoritusRows)
-        val osasuoritusRows = outputRows.flatMap(_.right.get.rOsasuoritusRows)
-        val muuAmmatillinenRaportointiRows = outputRows.flatMap(_.right.get.muuAmmatillinenOsasuoritusRaportointiRows)
-        val topksAmmatillinenRaportointiRows = outputRows.flatMap(_.right.get.topksAmmatillinenRaportointiRows)
-        db.loadOpiskeluoikeusAikajaksot(aikajaksoRows)
-        db.loadEsiopetusOpiskeluoikeusAikajaksot(esiopetusOpiskeluoikeusAikajaksoRows)
-        db.loadPäätasonSuoritukset(päätasonSuoritusRows)
-        db.loadOsasuoritukset(osasuoritusRows)
-        db.loadMuuAmmatillinenRaportointi(muuAmmatillinenRaportointiRows)
-        db.loadTOPKSAmmatillinenRaportointi(topksAmmatillinenRaportointiRows)
-        db.setLastUpdate(statusName)
-        db.updateStatusCount(statusName, outputRows.size)
-        errors.map(_.left.get) :+ LoadProgressResult(outputRows.size, päätasonSuoritusRows.size + osasuoritusRows.size)
+    val result = opiskeluoikeusQueryRepository.mapKaikkiOpiskeluoikeudetSivuittain(batchSize, systemUser) { batch =>
+      if (batch.nonEmpty) {
+        loadBatch(db, batch)
       } else {
+        // Last batch processed; finalize
         createIndexes(db)
         db.setStatusLoadCompleted(statusName)
         Seq(LoadCompleted())
       }
     }
     result.doOnEach(progressLogger)
+  }
+
+  private def loadBatch(db: RaportointiDatabase, batch: Seq[OpiskeluoikeusRow]) = {
+    val (errors, outputRows) = batch.par.map(buildRow).seq.partition(_.isLeft)
+    db.loadOpiskeluoikeudet(outputRows.map(_.right.get.rOpiskeluoikeusRow))
+    db.loadOrganisaatioHistoria(outputRows.flatMap(_.right.get.organisaatioHistoriaRows))
+    val aikajaksoRows = outputRows.flatMap(_.right.get.rOpiskeluoikeusAikajaksoRows)
+    val esiopetusOpiskeluoikeusAikajaksoRows = outputRows.flatMap(_.right.get.esiopetusOpiskeluoikeusAikajaksoRows)
+    val päätasonSuoritusRows = outputRows.flatMap(_.right.get.rPäätasonSuoritusRows)
+    val osasuoritusRows = outputRows.flatMap(_.right.get.rOsasuoritusRows)
+    val muuAmmatillinenRaportointiRows = outputRows.flatMap(_.right.get.muuAmmatillinenOsasuoritusRaportointiRows)
+    val topksAmmatillinenRaportointiRows = outputRows.flatMap(_.right.get.topksAmmatillinenRaportointiRows)
+    db.loadOpiskeluoikeusAikajaksot(aikajaksoRows)
+    db.loadEsiopetusOpiskeluoikeusAikajaksot(esiopetusOpiskeluoikeusAikajaksoRows)
+    db.loadPäätasonSuoritukset(päätasonSuoritusRows)
+    db.loadOsasuoritukset(osasuoritusRows)
+    db.loadMuuAmmatillinenRaportointi(muuAmmatillinenRaportointiRows)
+    db.loadTOPKSAmmatillinenRaportointi(topksAmmatillinenRaportointiRows)
+    db.setLastUpdate(statusName)
+    db.updateStatusCount(statusName, outputRows.size)
+    errors.map(_.left.get) :+ LoadProgressResult(outputRows.size, päätasonSuoritusRows.size + osasuoritusRows.size)
   }
 
   private def progressLogger: Subscriber[LoadResult] = new Subscriber[LoadResult] {
@@ -117,7 +122,7 @@ object OpiskeluoikeusLoader extends Logging {
 
   private def buildRow(inputRow: OpiskeluoikeusRow): Either[LoadErrorResult, OutputRows] = {
     Try {
-      val oo = inputRow.toOpiskeluoikeus
+      val oo = inputRow.toOpiskeluoikeusUnsafe
       val ooRow = buildROpiskeluoikeusRow(inputRow.oppijaOid, inputRow.aikaleima, oo, inputRow.data)
       val aikajaksoRows: AikajaksoRows = buildAikajaksoRows(inputRow.oid, oo)
       val suoritusRows: SuoritusRows = oo.suoritukset.zipWithIndex.map {
@@ -156,7 +161,7 @@ object OpiskeluoikeusLoader extends Logging {
       oppilaitosNimi = convertLocalizedString(o.oppilaitos.flatMap(_.nimi)),
       oppilaitosKotipaikka = o.oppilaitos.flatMap(_.kotipaikka).map(_.koodiarvo.stripPrefix("kunta_")),
       oppilaitosnumero = o.oppilaitos.flatMap(_.oppilaitosnumero).map(_.koodiarvo),
-      koulutustoimijaOid = o.koulutustoimija.map(_.oid).headOption.getOrElse(""),
+      koulutustoimijaOid = o.koulutustoimija.map(_.oid).getOrElse(""),
       koulutustoimijaNimi = convertLocalizedString(o.koulutustoimija.flatMap(_.nimi)),
       koulutusmuoto = o.tyyppi.koodiarvo,
       alkamispäivä = o.alkamispäivä.map(Date.valueOf),
