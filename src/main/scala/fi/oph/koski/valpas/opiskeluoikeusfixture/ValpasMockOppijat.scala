@@ -86,6 +86,8 @@ object ValpasMockOppijat {
   val opiskeluoikeudetonEiOppivelvollisuusikäinenOppija = valpasOppijat.oppijaSyntymäaikaHetusta("Ei-opiskeluoikeuksia-vanha", "Valpas", "070302A402D")
   val lukioVäliaikaisestiKeskeytynyt = valpasOppijat.oppijaSyntymäaikaHetusta("Lukio-väliaikaisesti-keskeytynyt", "Valpas", "300504A157F")
   val amisLomalla = valpasOppijat.oppijaSyntymäaikaHetusta("Amis-lomalla", "Valpas", "030905A194R")
+  val internationalSchoolista9LuokaltaEnnen2021Valmistunut = valpasOppijat.oppijaSyntymäaikaHetusta("Inter-valmistunut-9-2020", "Valpas", "090605A517L")
+  val internationalSchoolista9Luokalta2021Valmistunut = valpasOppijat.oppijaSyntymäaikaHetusta("Inter-valmistunut-9-2021", "Valpas", "200405A780K")
 
   // Kutsumanimi ja yhteystiedot haetaan oppijanumerorekisteristä Valpas-käyttäjälle, tallennetaan siksi käyttäjä myös "oppijana" mockeihin
   val käyttäjäValpasJklNormaalikoulu = valpasOppijat.oppija(

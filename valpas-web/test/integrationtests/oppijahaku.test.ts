@@ -209,7 +209,7 @@ describe("Oppijahaku", () => {
     )
   })
 
-  it("Maksuttomuus: Haku näyttää virheilmoituksen, jos oppija ei ole enää oppivelvollinen, koska on jo valmistunut ammattikoulusta", async () => {
+  it("Maksuttomuus: Haku näyttää ilmoituksen maksuttomuusoikeudettomuudesta, jos oppija ei ole enää oppivelvollinen, koska on jo valmistunut ammattikoulusta", async () => {
     allowNetworkError(
       "api/henkilohaku/maksuttomuus/180304A082P",
       "403 (Forbidden)"
@@ -255,13 +255,28 @@ describe("Oppijahaku", () => {
     )
   })
 
-  it("Maksuttomuus: Haku näyttää virheilmoituksen, jos oppija ei ole oppivelvollinen, koska on valmistunut perukoulusta ennen lain voimaantuloa", async () => {
+  it("Maksuttomuus: Haku näyttää ilmoituksen maksuttomuusoikeudettomuudesta, jos oppija ei ole oppivelvollinen, koska on valmistunut perukoulusta ennen lain voimaantuloa", async () => {
     allowNetworkError(
       "api/henkilohaku/maksuttomuus/080905A0798",
       "403 (Forbidden)"
     )
     await hakuLogin("valpas-jkl-normaali")
     await fillQueryField("080905A0798", "maksuttomuusoppijasearch")
+    await submit("maksuttomuusoppijasearch")
+    await expectResultToBe(
+      "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
+      undefined,
+      "maksuttomuusoppijasearch"
+    )
+  })
+
+  it("Maksuttomuus: Haku näyttää ilmoituksen maksuttomuusoikeudettomuudesta, jos oppija ei ole oppivelvollinen, koska on vahvistettu international schoolin 9. luokan suoritus ennen lain voimaantuloa", async () => {
+    allowNetworkError(
+      "api/henkilohaku/maksuttomuus/090605A517L",
+      "403 (Forbidden)"
+    )
+    await hakuLogin("valpas-jkl-normaali")
+    await fillQueryField("090605A517L", "maksuttomuusoppijasearch")
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
       "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
@@ -296,6 +311,20 @@ describe("Oppijahaku", () => {
       "Löytyi: Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas (061005A671V)",
       createOppijaPath("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000058",
+        prev: createMaksuttomuusPath(),
+      }),
+      "maksuttomuusoppijasearch"
+    )
+  })
+
+  it("Maksuttomuus: Haku löytää oppijan, vaikka hänellä ei ole oppivelvollisuuden suorittamiseen kelpaavia opintoja paitsi International school jota ei tällä hetkellä Valppaassa näytetä", async () => {
+    await hakuLogin("valpas-maksuttomuus-hki")
+    await fillQueryField("200405A780K", "maksuttomuusoppijasearch")
+    await submit("maksuttomuusoppijasearch")
+    await expectResultToBe(
+      "Löytyi: Inter-valmistunut-9-2021 Valpas (200405A780K)",
+      createOppijaPath("/virkailija", {
+        oppijaOid: "1.2.246.562.24.00000000078",
         prev: createMaksuttomuusPath(),
       }),
       "maksuttomuusoppijasearch"

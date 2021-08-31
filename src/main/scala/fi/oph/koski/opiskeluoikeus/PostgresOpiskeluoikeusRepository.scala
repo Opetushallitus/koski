@@ -190,6 +190,8 @@ class PostgresOpiskeluoikeusRepository(
   }
 
   def getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(oppijaOid: String): Seq[Päivämääräväli] = {
+    // HUOMIOI, JOS TÄTÄ MUUTAT: Pitää olla synkassa Oppivelvollisuustiedot.scala:n createMaterializedView-metodissa
+    // raportointikantaan tehtävän tarkistuksen kanssa. Muuten Valppaan maksuttomuushaku menee rikki.
     runDbSync(
       sql"""
         with master as (
@@ -203,18 +205,14 @@ class PostgresOpiskeluoikeusRepository(
         )
         select
           alkamispaiva,
-          paattymispaiva
+          ((suoritukset -> 'vahvistus' ->> 'päivä')::date) as vahvistuspaiva
         from opiskeluoikeus
         cross join jsonb_array_elements(data -> 'suoritukset') suoritukset
         where not opiskeluoikeus.mitatoity
-          and not (
-            data -> 'tila' -> 'opiskeluoikeusjaksot' @> '[{"tila": {"koodiarvo": "eronnut"}}]' or
-            data -> 'tila' -> 'opiskeluoikeusjaksot' @> '[{"tila": {"koodiarvo": "katsotaaneronneeksi"}}]'
-          )
           and (suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'perusopetuksenoppimaara'
             or suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'aikuistenperusopetuksenoppimaara'
             or suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'internationalschoolmypvuosiluokka'
-            and suoritukset -> 'koulutusmoduuli' -> 'tunniste' ->> 'koodiarvo' = '9')
+              and suoritukset -> 'koulutusmoduuli' -> 'tunniste' ->> 'koodiarvo' = '9')
           and oppija_oid = any(select oids from linkitetyt)
       """.as[Päivämääräväli])
   }
@@ -222,7 +220,7 @@ class PostgresOpiskeluoikeusRepository(
   private implicit def getPäivämääräväli: GetResult[Päivämääräväli] = GetResult(r => {
     Päivämääräväli(
       alku = r.getLocalDate("alkamispaiva"),
-      loppu = r.getLocalDateOption("paattymispaiva"),
+      loppu = r.getLocalDateOption("vahvistuspaiva"),
     )
   })
 
