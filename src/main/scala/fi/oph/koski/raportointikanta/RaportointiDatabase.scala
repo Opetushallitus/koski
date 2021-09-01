@@ -87,6 +87,11 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
     logger.info(s"${schema.name} created")
   }
 
+  // A helper to help with creating migrations: dumps the SQL DDL to create the full schema
+  def logCreateSchemaDdl(): Unit = {
+    logger.info((tables.flatMap(_.schema.createStatements) ++ "\n").mkString(";\n"))
+  }
+
   def createOpiskeluoikeusIndexes: Unit = {
     runDbSync(RaportointiDatabaseSchema.createOpiskeluoikeusIndexes(schema), timeout = 120.minutes)
   }
