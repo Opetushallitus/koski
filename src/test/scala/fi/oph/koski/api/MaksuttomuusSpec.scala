@@ -40,6 +40,17 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on syntynyt ennen vuotta 2004 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin."))
       }
     }
+    "Ei saa siirtää jos opiskeluoikeus on alkamassa vuonna, jona henkilö täyttää 21 tai enemmän" in {
+      putMaksuttomuus(
+        List(
+          Maksuttomuus(date(2025, 1, 1), None, true)
+        ),
+        KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021,
+        alkamispäivällä(defaultOpiskeluoikeus, date(2025, 1, 1))
+      ) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä opiskeluoikeus on merkitty alkavaksi vuonna, jona oppija täyttää enemmän kuin 20 vuotta."))
+      }
+    }
     "Ei saa siirtää jos opiskeluoikeus ei sisällä suoritusta joka vaatii maksuttomuus tiedon" in {
       val o = alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
       val oo = o.copy(suoritukset = List(AmmatillinenExampleData.kiinteistösihteerinMuuAmmatillinenKoulutus().copy(alkamispäivä = Some(date(2021, 8, 1)))))
@@ -64,7 +75,7 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
           KoskiSpecificMockOppijat.hetuton,
           alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
         ) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on syntynyt ennen vuotta 2004 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin."))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on syntynyt ennen vuotta 2004 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin ja opiskeluoikeus on merkitty alkavaksi vuonna, jona oppija täyttää enemmän kuin 20 vuotta."))
         }
       }
 
