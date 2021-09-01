@@ -324,7 +324,7 @@ describe("Oppijahaku", () => {
     await expectResultToBe(
       "Löytyi: Inter-valmistunut-9-2021 Valpas (200405A780K)",
       createOppijaPath("/virkailija", {
-        oppijaOid: "1.2.246.562.24.00000000078",
+        oppijaOid: "1.2.246.562.24.00000000080",
         prev: createMaksuttomuusPath(),
       }),
       "maksuttomuusoppijasearch"
