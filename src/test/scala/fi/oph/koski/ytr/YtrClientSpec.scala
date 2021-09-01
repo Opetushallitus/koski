@@ -18,7 +18,6 @@ class YtrClientSpec extends FreeSpec with Matchers with BeforeAndAfterAll {
     """
       |authentication-service.useCas = false
       |ytr.url = "http://localhost:9877"
-      |ytr.insecure = false
       |ytr.username  = "foo"
       |ytr.password = "bar"
     """.stripMargin)
