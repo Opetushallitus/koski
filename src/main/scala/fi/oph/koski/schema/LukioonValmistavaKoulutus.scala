@@ -1,7 +1,8 @@
 package fi.oph.koski.schema
 
-import java.time.{LocalDate, LocalDateTime}
+import fi.oph.koski.documentation.ExampleData.laajuusOpintopisteissä
 
+import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, MaxItems, Title}
@@ -59,7 +60,7 @@ case class LukioonValmistavaKoulutus(
   @KoodistoKoodiarvo("999906")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999906", koodistoUri = "koulutus"),
   perusteenDiaarinumero: Option[String],
-  laajuus: Option[LaajuusKursseissa] = None,
+  laajuus: Option[LaajuusOpintopisteissäTaiKursseissa] = None,
   koulutustyyppi: Option[Koodistokoodiviite] = None
 ) extends DiaarinumerollinenKoulutus with KoulutusmoduuliValinnainenLaajuus
 
@@ -183,7 +184,7 @@ case class LukioonValmistavanKurssinSuoritus(
 ) extends KurssinSuoritus with MahdollisestiSuorituskielellinen
 
 sealed trait LukioonValmistavanKoulutuksenKurssi extends KoulutusmoduuliValinnainenLaajuus {
-  def laajuus: Option[LaajuusKursseissa]
+  def laajuus: Option[LaajuusOpintopisteissäTaiKursseissa]
 }
 
 @Title("Valtakunnallinen lukioon valmistavan koulutuksen kurssi tai moduuli")
@@ -195,7 +196,7 @@ case class ValtakunnallinenLukioonValmistavanKoulutuksenKurssi(
   @OksaUri("tmpOKSAID873", "kurssi")
   @Title("Nimi")
   tunniste: Koodistokoodiviite,
-  override val laajuus: Option[LaajuusKursseissa]
+  override val laajuus: Option[LaajuusOpintopisteissäTaiKursseissa]
 ) extends LukioonValmistavanKoulutuksenKurssi with KoodistostaLöytyväKoulutusmoduuli
 
 @Title("Paikallinen lukioon valmistavan koulutuksen kurssi tai moduuli")
@@ -203,7 +204,7 @@ case class ValtakunnallinenLukioonValmistavanKoulutuksenKurssi(
 case class PaikallinenLukioonValmistavanKoulutuksenKurssi(
   @FlattenInUI
   tunniste: PaikallinenKoodi,
-  override val laajuus: Option[LaajuusKursseissa],
+  override val laajuus: Option[LaajuusOpintopisteissäTaiKursseissa],
   kuvaus: LocalizedString
 ) extends LukioonValmistavanKoulutuksenKurssi with PaikallinenKoulutusmoduuli with StorablePreference
 

@@ -458,7 +458,7 @@ object LukioExampleData {
   def matematiikka(matematiikka: String, perusteenDiaarinumero: Option[String]) =
     LukionMatematiikka2015(oppimäärä = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"), perusteenDiaarinumero = perusteenDiaarinumero)
 
-  def laajuus(laajuus: Float, yksikkö: String = "4"): LaajuusKursseissa = LaajuusKursseissa(laajuus, Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = yksikkö))
+  def laajuus(laajuus: Double, yksikkö: String = laajuusKursseissa.koodiarvo): LaajuusKursseissa = LaajuusKursseissa(laajuus, Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = yksikkö))
 
   def lukionOppiaine(aine: String, laajuus: LaajuusKursseissa, diaarinumero: Option[String]) =
     LukionMuuValtakunnallinenOppiaine2015(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), perusteenDiaarinumero = diaarinumero, laajuus = Some(laajuus))
