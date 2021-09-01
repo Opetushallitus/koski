@@ -93,5 +93,5 @@ object InternationalSchoolExampleData {
   def arviointi(arvosana: String) = Some(SanallinenInternationalSchoolOppiaineenArviointi(Koodistokoodiviite(arvosana, "arviointiasteikkointernationalschool")))
   def tokArvionti(arvosana: String) = Some(InternationalSchoolCoreRequirementsArviointi(arvosana = Koodistokoodiviite(arvosana, "arviointiasteikkocorerequirementsib")))
 
-  private def vahvistus(päivä: LocalDate) = ExampleData.vahvistusPaikkakunnalla(päivä, internationalSchoolOfHelsinki, ExampleData.helsinki)
+  def vahvistus(päivä: LocalDate) = ExampleData.vahvistusPaikkakunnalla(päivä, internationalSchoolOfHelsinki, ExampleData.helsinki)
 }

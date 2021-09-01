@@ -53,10 +53,14 @@ object MaksuttomuusRaporttiFixtures {
     lisätiedot = Some(lisätiedotLukio)
   )
 
-  val peruskouluSuoritettu2021 = PerusopetuksenOpiskeluoikeus(
+  val peruskouluSuoritettu2021 = peruskouluSuoritettu(LocalDate.of(2021, 6, 4))
+
+  val peruskouluSuoritettu2020 = peruskouluSuoritettu(LocalDate.of(2020, 12, 31))
+
+  private def peruskouluSuoritettu(päivä: LocalDate) = PerusopetuksenOpiskeluoikeus(
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
       NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2012, 8, 15), opiskeluoikeusLäsnä),
-      NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2021, 6, 4), opiskeluoikeusValmistunut),
+      NuortenPerusopetuksenOpiskeluoikeusjakso(päivä, opiskeluoikeusValmistunut),
     )),
     oppilaitos = Some(jyväskylänNormaalikoulu),
     suoritukset = List(
@@ -64,7 +68,7 @@ object MaksuttomuusRaporttiFixtures {
         koulutusmoduuli = perusopetus,
         suorituskieli = suomenKieli,
         toimipiste = jyväskylänNormaalikoulu,
-        vahvistus = vahvistusPaikkakunnalla(),
+        vahvistus = vahvistusPaikkakunnalla(päivä),
         suoritustapa = suoritustapaErityinenTutkinto,
         osasuoritukset = Some(List(
           toimintaAlueenSuoritus("1").copy(arviointi = arviointi("S", Some(Finnish("Motoriset taidot kehittyneet hyvin perusopetuksen aikana")))),
@@ -75,12 +79,5 @@ object MaksuttomuusRaporttiFixtures {
         ))
       )),
     lisätiedot = None,
-  )
-
-  val peruskouluSuoritettu2020 = peruskouluSuoritettu2021.copy(
-    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
-      NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2012, 8, 15), opiskeluoikeusLäsnä),
-      NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2020, 12, 31), opiskeluoikeusValmistunut),
-    ))
   )
 }
