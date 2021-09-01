@@ -7,6 +7,10 @@ Tässä git-repositoriossa on Koski-järjestelmän ohjelmakoodi, tietokannan rak
 
 Koski on [EUPL](LICENSE.txt)-lisensoitu sovellus, josta on mahdollista käynnistää kehitysinstanssi omalla työasemalla, alla olevien kehitysohjeiden mukaisesti. Koski-sovellus on alustariippumaton, sillä se pyörii Java-virtuaalikoneella. Kehitysympäristö toimii sellaisenaan ainakin Linux ja OSX-käyttöjärjestelmissä.
 
+## Valpas
+
+Kosken kanssa tässä samassa git-repositoriossa on myös Valpas-palvelun toteutus. Valpas on oppivelvollisuuden valvontapalvelu, joka käyttää mm. Koski-tietovarannon tietoja. Yleinen Valpas-dokumentaatio on [wikissä](https://wiki.eduuni.fi/display/OPHPALV/Valpas-palvelu). Valppaan käyttöliittymän toteutuksesta on erillinen [README.md](valpas-web/README.md).
+
 ## Käsitteet
 
 Keskeiset entiteetit, ja järjestelmät, joihin nämä tallennetaan.
@@ -32,7 +36,7 @@ B Kosken REST-rajapintoja käytettäessä HTTP-pyynnössä on HTTP Basic Authent
 Käyttäjä kuuluu käyttöoikeusryhmiin, joiden kautta hänelle määräytyvät hänen käyttöoikeutensa (roolit) Koskessa.
 Käyttäjän käyttöoikeudet haetaan Opintopolun käyttöoikeuspalvelusta. Käyttöoikeudet muodostuvat kolmesta osasta:
 
-* Sovellus: joko KOSKI tai LOKALISOINTI,
+* Sovellus: joko KOSKI, LOKALISOINTI tai VALPAS,
 * Rooli: kertoo käyttäjäoikeustyypin, ja
 * Oid: organisaation oid-tunniste.
 
@@ -57,8 +61,17 @@ KOSKI | GLOBAALI_LUKU_PERUSOPETUS | (Viranomaisen organisaation oid) | Globaali 
 KOSKI | GLOBAALI_LUKU_TOINEN_ASTE | (Viranomaisen organisaation oid) | Globaali lukuoikeus kaikkien organisaatioiden toisen asteen opiskeluoikeuksiin
 KOSKI | GLOBAALI_LUKU_KORKEAKOULU | (Viranomaisen organisaation oid) | Globaali lukuoikeus kaikkien organisaatioiden korkeakoulutuksen opiskeluoikeuksiin
 LOKALISOINTI | CRUD | (OPH:n organisaation oid) | Lokalisointitekstien lukeminen ja muuttaminen Kosken API:n kautta, jos _oid_ on OPH:n organisaation oid
+VALPAS | OPPILAITOS_HAKEUTUMINEN | (koulutustoimijan tai oppilaitoksen oid) | Oikeus valvoa oppilaitoksen oppijoiden hakeutumista jatko-opintoihin peruskoulun tai nivelvaiheen opintojen jälkeen ja tehdä tarvittaessa ilmoituksia kunnalle
+VALPAS | OPPILAITOS_HAKEUTUMINEN | (OPH:n organisaation oid) | Oikeus valvoa kaikkien oppilaitosten peruskoulun ja nivelvaiheen oppijoiden hakeutumista
+VALPAS | OPPILAITOS_SUORITTAMINEN | (koulutustoimijan tai oppilaitoksen oid) | Oikeus valvoa oppilaitoksen oppijoiden oppivelvollisuuden suorittamista nivelvaiheen ja toisen asteen opinnoissa ja tehdä tarvittaessa ilmoituksia kunnalle
+VALPAS | OPPILAITOS_SUORITTAMINEN | (OPH:n organisaation oid) | Oikeus valvoa kaikkien oppilaitosten oppijoiden oppivelvollisuuden suorittamista
+VALPAS | OPPILAITOS_MAKSUTTOMUUS | (organisaation oid) | Oikeus hakea tiedot sen päättämiseen, saako oppija suorittaa peruskoulun jälkeisiä opintoja maksuttomasti vai ei
+VALPAS | KUNTA | (kuntaorganisaation oid) | Oikeus valvoa oppivelvollisia oppijoita oppilaitosten tekemien ilmoitusten tai oppijan henkilötunnuksen tai oppijanumeron perusteella ja hallita oppivelvollisuuden keskeytystietoja
+VALPAS | KUNTA | (OPH:n organisaation oid) | Kunnan oikeudet kaikkiin kuntiin.
 
 Lähdekoodissa [MockUsers](src/main/scala/fi/oph/koski/koskiuser/MockUsers.scala) on käyttäjät testitarkoituksia varten. Koski-palvelu käyttää niitä, jos Koski on käynnistetty konfiguraatiolla `opintopolku.virkailija.url = "mock"` (katso [Konfigurointi](#konfigurointi)). Tätä voi käyttää ajaessa Koskea lokaalisti.
+
+Valppaan testikäyttäjistä on tietoa Valppaan käyttöliittymän [README.md:ssä](valpas-web/README.md).
 
 ## Teknologiat
 
