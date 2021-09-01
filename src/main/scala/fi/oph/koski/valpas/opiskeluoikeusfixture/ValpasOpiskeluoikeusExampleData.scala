@@ -4,11 +4,8 @@ import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.LukioExampleData.{opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt}
 import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, perusopetuksenOppimääränSuoritus, perusopetuksenOppimääränSuoritusKesken, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste, oppilaitos}
-<<<<<<< HEAD
 import fi.oph.koski.documentation._
-=======
 import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample, ExampleData, ExamplesEsiopetus, ExamplesInternationalSchool, ExamplesLukio2019, ExamplesPerusopetuksenLisaopetus, ExamplesTelma, ExamplesValma, InternationalSchoolExampleData, LukioExampleData, VapaaSivistystyöExample}
->>>>>>> Korjaa maksuttomuusvalidaatio käyttämään vahvistuspäiviä;
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import java.time.LocalDate.{of => date}
@@ -62,6 +59,22 @@ object ValpasOpiskeluoikeusExampleData {
       yhdeksännenLuokanSuoritus.copy(
         alkamispäivä = Some(date(2020, 8, 15)),
         vahvistus = vahvistusPaikkakunnalla(date(2021, 5, 30)),
+      )
+    ),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2012, 8, 15), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 5, 30), opiskeluoikeusValmistunut)
+      )
+    )
+  )
+
+  def valmistunutIlmanYsiluokkaa = PerusopetuksenOpiskeluoikeus(
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    koulutustoimija = None,
+    suoritukset = List(
+      perusopetuksenOppimääränSuoritus.copy(
+        vahvistus = vahvistusPaikkakunnalla(date(2021, 5, 30))
       )
     ),
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
