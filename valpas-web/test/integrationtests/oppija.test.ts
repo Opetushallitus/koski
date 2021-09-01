@@ -749,7 +749,7 @@ describe("Oppijakohtainen näkymä", () => {
     `)
   })
 
-  it("Näytä väliaikaisesti keskeytetty opiskeluoikeus", async () => {
+  it("Näytä väliaikaisesti keskeytynyt opiskeluoikeus", async () => {
     await loginAs(
       opiskeluoikeusKeskeytettyMääräajaksiPath,
       "valpas-jkl-yliopisto-suorittaminen"
@@ -760,7 +760,7 @@ describe("Oppijakohtainen näkymä", () => {
     await opiskeluhistoriaEquals(`
       school
       Lukion oppimäärä 2021 –
-      Tila:	Väliaikaisesti keskeytetty 2.8.2021
+      Tila:	Väliaikaisesti keskeytynyt 2.8.2021
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä:	AH
       Opiskeluoikeuden alkamispäivä:	1.8.2021
