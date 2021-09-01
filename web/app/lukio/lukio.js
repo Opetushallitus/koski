@@ -7,6 +7,7 @@ const perusteenDiaarinumeroToOppimäärä = diaarinumero => {
     case '60/011/2015':
     case '33/011/2003':
     case 'OPH-2263-2019':
+    case '56/011/2015':
       return 'nuortenops'
     case '70/011/2015':
     case '4/011/2004':

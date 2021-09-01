@@ -15,7 +15,7 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends Kosk
   val perusopetuksenTyypit = List(OpiskeluoikeudenTyyppi.perusopetus, OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus, OpiskeluoikeudenTyyppi.perusopetuksenlisaopetus, OpiskeluoikeudenTyyppi.aikuistenperusopetus)
   val esiopetuksenTyypit = List(OpiskeluoikeudenTyyppi.esiopetus, OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus)
   val ammatillisenTyypit = List(OpiskeluoikeudenTyyppi.ammatillinenkoulutus)
-  val lukionTyypit = List(OpiskeluoikeudenTyyppi.lukiokoulutus, OpiskeluoikeudenTyyppi.ibtutkinto)
+  val lukionTyypit = List(OpiskeluoikeudenTyyppi.lukiokoulutus, OpiskeluoikeudenTyyppi.ibtutkinto, OpiskeluoikeudenTyyppi.luva)
   val saksalaisenKoulunTyypit = List(OpiskeluoikeudenTyyppi.diatutkinto)
   val internationalSchoolTyypit = List(OpiskeluoikeudenTyyppi.internationalschool)
   val vapaanSivistysTyönTyypit = List(OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus)

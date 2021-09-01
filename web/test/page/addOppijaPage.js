@@ -134,6 +134,15 @@ function AddOppijaPage() {
           .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
       }
     },
+    enterValidDataLuva: function(params) {
+      params = _.merge({ oppilaitos: 'Ressun', peruste: '56/011/2015', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus', alkamispäivä: '1.1.2018' }, {}, params)
+      return function() {
+        return api.enterData(params)()
+          .then(api.selectOpiskeluoikeudenTyyppi('Lukioon valmistava koulutus (LUVA)'))
+          .then(api.selectAloituspäivä(params.alkamispäivä))
+          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
+      }
+    },
     enterValidDataIB: function(params) {
       params = _.merge({ oppilaitos: 'Ressun', oppimäärä: 'IB-tutkinto', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus', alkamispäivä: '1.1.2018' }, {}, params)
       return function() {
