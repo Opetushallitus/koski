@@ -1,7 +1,7 @@
 # Koski
 
 Koski toimii kattavana opetustoimialan tietovarantona, joka tarjoaa
-tutkintoon johtavat suoritustiedot eri koulutusasteilta. Yleinen Koski-dokumentaatio kootaan [wikiin](https://confluence.csc.fi/display/OPHPALV/Koski).
+tutkintoon johtavat suoritustiedot eri koulutusasteilta. Yleinen Koski-dokumentaatio kootaan [wikiin](https://wiki.eduuni.fi/display/OPHPALV/Koski).
 
 Tässä git-repositoriossa on Koski-järjestelmän ohjelmakoodi, tietokannan rakennuslausekkeet ja tekninen dokumentaatio ohjelmistokehitystä varten.
 
@@ -322,15 +322,23 @@ Koski-sovelluskoodissa audit-loggaus tehdään `AuditLog`-luokan kautta ja sovel
 
 Kuvaus | URL | Muuta
 --------|-----|-------
-Koski | [hallinta-ui](https://koski.opintopolku.fi/koski/) [api][koski-api] [pulssi-ui](https://koski.opintopolku.fi/koski/pulssi) |
-CAS | [palvelukortti](https://confluence.csc.fi/display/oppija/Rajapintojen+autentikaatio) | Käyttäjän autentikointi Koskeen ja muihin OPH:n palveluihin.
-Vanha henkilöpalvelu | [palvelukortti](https://confluence.csc.fi/pages/viewpage.action?pageId=46204851) [api](https://testi.virkailija.opintopolku.fi/authentication-service/swagger/index.html) | Koski käyttää vain [henkilo](https://testi.virkailija.opintopolku.fi/authentication-service/swagger/index.html#!/henkilo)-resurssia tiedonsiirron virheen lähettämiseksi organistaatiolle.
-Oppijanumerorekisteri | [palvelukortti](https://confluence.csc.fi/display/OPHPALV/Oppijanumerorekisteri) [api](https://testi.virkailija.opintopolku.fi/oppijanumerorekisteri-service/swagger-ui.html) | Oppijan haku oid:lla tai hetulla. Uuden oppijan luonti.
-Käyttöoikeuspalvelu | [palvelukortti](https://confluence.csc.fi/pages/viewpage.action?pageId=68725146) [api](https://testi.virkailija.opintopolku.fi/kayttooikeus-service/swagger-ui.html) | Käyttäjän käyttöoikeusryhmien haku.
-Organisaatiopalvelu | [palvelukortti](https://confluence.csc.fi/display/OPHPALV/Organisaatiotietojen+hallintapalvelu) [api](https://testi.virkailija.opintopolku.fi/organisaatio-service/swagger/index.html) | Organisaation tai -hierarkian haku.
-Koodistopalvelu | [palvelukortti](https://confluence.csc.fi/display/OPHPALV/Koodistopalvelu) [api][koodisto-api] [hallinta-ui](https://testi.virkailija.opintopolku.fi/koodisto-ui/html/index.html#/etusivu) | Koodien ja metatietojen haku ja luonti.
-Lokalisointipalvelu | [palvelukortti](https://confluence.csc.fi/display/OPHPALV/Lokalisointipalvelu) | Palveluiden käyttöliittymien käännöksien hallinta.
-ePerusteet | [palvelukortti](https://confluence.csc.fi/display/OPHPALV/ePerusteet) [api][eperusteet-api] [api-dokumentaatio](https://confluence.csc.fi/display/oppija/ePerusteet+julkiset+rajapinnat) [ui](https://eperusteet.opintopolku.fi/) | Tuotantoversio
+Koski | [hallinta-ui](https://virkailija.opintopolku.fi/koski/) [api][koski-api] [pulssi-ui](https://koski.opintopolku.fi/koski/pulssi) |
+Valpas | [palvelukuvaus](https://wiki.eduuni.fi/display/OPHPALV/Valpas-palvelu) [käyttöliittymä](https://virkailija.opintopolku.fi/valpas/virkailija/) [UI-toteutus](valpas-web/README.md) | Kosken yhteyteen toteutettu oppivelvollisuuden valvontapalvelu.
+CAS | [palvelukortti](https://wiki.eduuni.fi/display/ophpolku/Rajapintojen+autentikaatio) | Käyttäjän autentikointi Koskeen ja muihin OPH:n palveluihin.
+Lokalisointipalvelu | [palvelukortti](https://wiki.eduuni.fi/display/ophpolku/Lokalisointipalvelu) | Palveluiden käyttöliittymien käännöksien hallinta.
+ePerusteet | [palvelukortti](https://wiki.eduuni.fi/display/OPHPALV/ePerusteet) [api][eperusteet-api] [api-dokumentaatio](https://wiki.eduuni.fi/display/ophpolku/ePerusteet+julkiset+rajapinnat) [ui](https://eperusteet.opintopolku.fi/) | ePerusteet-palvelu
+Suoritusrekisteri | [palvelukortti](https://wiki.eduuni.fi/display/ophpolku/SURE-suoritustiedot) [api](https://virkailija.testiopintopolku.fi/suoritusrekisteri/swagger/index.html#/Valpas-resource) | Suoritusrekisteri, jonka kautta Valpas hakee tietoja opiskelijahauista ja valinnoista
+
+### OPH:n yleiskäyttöiset palvelut
+
+Yleiskäyttöisten palveluiden dokumentaatio löytyy [OPH yleiskäyttöiset palvelut](https://wiki.eduuni.fi/pages/viewpage.action?pageId=190612676) wikisivulta, minkä kautta löytyvät myös API-linkit.
+
+Kuvaus | Muuta
+-------|-------
+Oppijanumerorekisteri | Oppijan haku oid:lla tai hetulla. Uuden oppijan luonti.
+Käyttöoikeuspalvelu | Käyttäjän käyttöoikeusryhmien haku.
+Organisaatiopalvelu | Organisaation tai -hierarkian haku.
+Koodistopalvelu | Koodien ja metatietojen haku ja luonti.
 
 ### Kolmansien osapuolten palvelut
 
@@ -364,16 +372,16 @@ Kehityskäytössä voit käyttää erilaisia asetuksia tekemällä asetustiedost
 
 ### Oppijanumerorekisteri, organisaatiopalvelu ja käyttöoikeuspalvelu
 
-Koski ei tallenna henkilötietoja omaan tietokantaansa, vaan hakee ja tallentaa ne Opintopolun [oppijanumerorekisteriin](https://confluence.csc.fi/display/OPHPALV/Oppijanumerorekisteri) ([toteutus](src/main/scala/fi/oph/koski/henkilo/AuthenticationServiceClient.scala)).
+Koski ei tallenna henkilötietoja omaan tietokantaansa, vaan hakee ja tallentaa ne Opintopolun [oppijanumerorekisteriin](https://wiki.eduuni.fi/display/OPHPALV/Oppijanumerorekisteri) ([toteutus](src/main/scala/fi/oph/koski/henkilo/AuthenticationServiceClient.scala)).
 
 Kun käyttäjä hakee henkilön tietoja esimerkiksi sukunimellä, hakee Koski listan mahdollisista henkilöistä ensin oppinumerorekisteristä, jonka jälkeen Koski suodattaa hakutuloksen Koskessa olevien opinto-oikeuksien perusteella ([toteutus](src/main/scala/fi/oph/koski/henkilo/HenkilotiedotSearchFacade.scala)).
 
-Käyttäjä voi nähdä vain ne opinto-oikeudet, jotka liittyvät oppilaitokseen, johon hänellä on käyttöoikeus. Koski hakee henkilön organisaatioliitokset [organisaatiopalvelusta](https://confluence.csc.fi/display/OPHPALV/Organisaatiotietojen+hallintapalvelu) ja käyttöoikeudet [käyttöoikeuspalvelusta](https://confluence.csc.fi/pages/viewpage.action?pageId=68725146).
+Käyttäjä voi nähdä vain ne opinto-oikeudet, jotka liittyvät oppilaitokseen, johon hänellä on käyttöoikeus. Koski hakee henkilön organisaatioliitokset [organisaatiopalvelusta](https://wiki.eduuni.fi/display/OPHPALV/Organisaatiopalveluu) ja käyttöoikeudet [käyttöoikeuspalvelusta](https://wiki.eduuni.fi/pages/viewpage.action?pageId=190613734).
 
-Esimerkki [organisaatiohierarkian](https://testi.virkailija.opintopolku.fi/organisaatio-service/swagger/index.html#!/organisaatiov2/searchOrganisaatioHierarkia) hakemisesta:
+Esimerkki [organisaatiohierarkian](https://virkailija.testiopintopolku.fi/organisaatio-service/swagger/index.html#!/organisaatiov2/searchOrganisaatioHierarkia) hakemisesta:
 
 ``` shell
-curl -X GET --header 'Accept: application/json' 'https://testi.virkailija.opintopolku.fi/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&suunnitellut=true&lakkautetut=false&oid=1.2.246.562.10.50822930082'
+curl -X GET --header 'Accept: application/json' 'https://virkailija.testiopintopolku.fi/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&suunnitellut=true&lakkautetut=false&oid=1.2.246.562.10.50822930082'
 ```
 
 ### Koodistopalvelu
@@ -382,9 +390,9 @@ Koski käyttää [Koodistopalvelua](https://github.com/Opetushallitus/koodisto) 
 
 Testiurleja ([api][koodisto-api]):
 
-> https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codes/arviointiasteikkoammatillinenhyvaksyttyhylatty/1
+> https://virkailija.testiopintopolku.fi/koodisto-service/rest/codes/arviointiasteikkoammatillinenhyvaksyttyhylatty/1
 >
-> https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/arviointiasteikkoammatillinenhyvaksyttyhylatty/1
+> https://virkailija.testiopintopolku.fi/koodisto-service/rest/codeelement/codes/arviointiasteikkoammatillinenhyvaksyttyhylatty/1
 
 Koski osaa tarvittaessa luoda käytettävät koodistot ja koodistopalveluun. Käynnistä parametrillä `-Dkoodisto.create=true`.
 
@@ -417,8 +425,8 @@ Koski-järjestelmän [rajapinta-dokumentaatio][koski-api] generoidaan lähdekood
 
 JSON-scheman visualisointiin on käytetty json-schema-viewer nimistä kirjastoa, johon on tehty joitakin Koski-projektin vaatimia [muutoksia](https://github.com/Opetushallitus/json-schema-viewer).
 
-[koski-api]: https://koski.opintopolku.fi/koski/dokumentaatio
-[koodisto-api]: https://testi.virkailija.opintopolku.fi/koodisto-service/swagger/index.html
+[koski-api]: https://virkailija.opintopolku.fi/koski/dokumentaatio
+[koodisto-api]: https://virkailija.testiopintopolku.fi/koodisto-service/rest/api-docs?url=/koodisto-service/rest/swagger.json
 [eperusteet-api]: https://eperusteet.opintopolku.fi/eperusteet-service/
-[virta-description]: https://confluence.csc.fi/display/VIRTA/VIRTA-opintotietopalvelu
-[virta-api]: https://confluence.csc.fi/display/VIRTA/WS-rajapinta
+[virta-description]: https://wiki.eduuni.fi/display/CSCVIRTA/VIRTA-opintotietopalvelu
+[virta-api]: https://wiki.eduuni.fi/display/CSCVIRTA/WS-rajapinta
