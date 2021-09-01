@@ -189,10 +189,10 @@ class ValpasOppijaService(
   ): Boolean = {
     val onEronnut =
       opiskeluoikeus.onSuorittamisValvottava &&
-      Seq("eronnut", "katsotaaneronneeksi", "peruutettu").contains(opiskeluoikeus.tarkastelupäivänTila.koodiarvo)
+      Seq("eronnut", "katsotaaneronneeksi", "peruutettu", "keskeytynyt").contains(opiskeluoikeus.tarkastelupäivänTila.koodiarvo)
 
     val onValmistunutNivelvaiheesta =
-      muutOppijanOpiskeluoikeudet.exists(oo => onNivelvaiheenOpiskeluoikeus(oo) && oo.tarkastelupäivänTila.koodiarvo == "valmistunut")
+      muutOppijanOpiskeluoikeudet.exists(oo => onNivelvaiheenOpiskeluoikeus(oo) && List("valmistunut", "hyvaksytystisuoritettu").contains(oo.tarkastelupäivänTila.koodiarvo))
 
     val onLasnaUudessaOpiskeluoikeudessa =
       sisältääVoimassaolevanToisenAsteenOpiskeluoikeuden(muutOppijanOpiskeluoikeudet) ||
@@ -348,12 +348,20 @@ class ValpasOppijaService(
     (rooli: ValpasRooli.Role, oppijaOid: ValpasHenkilö.Oid)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
-    val rajaaOVKelposillaOppivelvollisuuksilla = !roolitJoilleHaetaanKaikistaOVLPiirinOppijoista.contains(rooli)
+    val rajaaOVKelpoisiinOpiskeluoikeuksiin = !roolitJoilleHaetaanKaikistaOVLPiirinOppijoista.contains(rooli)
 
-    opiskeluoikeusDbService.getOppija(oppijaOid, rajaaOVKelposillaOppivelvollisuuksilla)
+    opiskeluoikeusDbService.getOppija(oppijaOid, rajaaOVKelpoisiinOpiskeluoikeuksiin)
       .toRight(ValpasErrorCategory.forbidden.oppija())
       .flatMap(asValpasOppijaLaajatTiedot)
       .flatMap(accessResolver.withOppijaAccessAsRole(rooli))
+  }
+
+  def getOppijaLaajatTiedotIlmanOikeustarkastusta(oppijaOid: ValpasHenkilö.Oid) : Either[HttpStatus, Option[ValpasOppijaLaajatTiedot]] = {
+    val rajaaOVKelpoisiinOpiskeluoikeuksiin = false
+    opiskeluoikeusDbService.getOppija(oppijaOid, rajaaOVKelpoisiinOpiskeluoikeuksiin) match {
+      case Some(dbRow) => asValpasOppijaLaajatTiedot(dbRow).map(Some(_))
+      case _ => Right(None)
+    }
   }
 
   def getOppijaLaajatTiedot

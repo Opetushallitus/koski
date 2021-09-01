@@ -1,8 +1,5 @@
 package fi.oph.koski.fixture
 
-import java.time.LocalDate
-import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusMitätöity, suomenKieli}
 import fi.oph.koski.documentation.ExamplesEsiopetus.{ostopalveluOpiskeluoikeus, päiväkotisuoritus}
@@ -10,14 +7,13 @@ import fi.oph.koski.documentation.ExamplesPerusopetus.ysinOpiskeluoikeusKesken
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.oppilaitos
 import fi.oph.koski.documentation.{ExamplesEsiopetus, _}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
-import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.päiväkotiMajakka
 import fi.oph.koski.schema._
-import fi.oph.koski.validation.MaksuttomuusValidation
 
-import scala.reflect.runtime.universe.TypeTag
+import java.time.LocalDate
+import java.time.LocalDate.{of => date}
 
 class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends DatabaseFixtureCreator(application, "opiskeluoikeus_fixture", "opiskeluoikeushistoria_fixture") {
   protected def oppijat = KoskiSpecificMockOppijat.defaultOppijat
@@ -61,7 +57,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
   protected def defaultOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
     List(
       (KoskiSpecificMockOppijat.eero, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)),
-      (KoskiSpecificMockOppijat.eero, AmmatillinenOpiskeluoikeusTestData.mitätöityOpiskeluoikeus),
+      (KoskiSpecificMockOppijat.eero, PerusopetuksenOpiskeluoikeusTestData.mitätöityOpiskeluoikeus),
       (KoskiSpecificMockOppijat.eerola, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)),
       (KoskiSpecificMockOppijat.teija, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)),
       (KoskiSpecificMockOppijat.syntymäajallinen, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)),
@@ -90,6 +86,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.kymppiluokkalainen, ExamplesPerusopetuksenLisaopetus.lisäopetuksenPäättötodistus.tallennettavatOpiskeluoikeudet.head),
       (KoskiSpecificMockOppijat.lukiolainen, PerusopetusExampleData.päättötodistusOpiskeluoikeus(luokka = "B")),
       (KoskiSpecificMockOppijat.lukiolainen, ExamplesLukio.päättötodistus()),
+      (KoskiSpecificMockOppijat.lukiolainen, AmmatillinenOpiskeluoikeusTestData.mitätöityOpiskeluoikeus),
       (KoskiSpecificMockOppijat.lukioKesken, ExamplesLukio.lukioKesken),
       (KoskiSpecificMockOppijat.lukionAineopiskelija, ExamplesLukio.aineopiskelija),
       (KoskiSpecificMockOppijat.lukionAineopiskelijaAktiivinen, ExamplesLukio.aineOpiskelijaAktiivinen),
@@ -191,20 +188,28 @@ object AmmatillinenOpiskeluoikeusTestData {
     )
   }
 
-  lazy val mitätöityOpiskeluoikeus: PerusopetuksenOpiskeluoikeus =
-    ysinOpiskeluoikeusKesken.copy(tila =
-      ysinOpiskeluoikeusKesken.tila.copy(opiskeluoikeusjaksot =
-        ysinOpiskeluoikeusKesken.tila.opiskeluoikeusjaksot :+ NuortenPerusopetuksenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
-      )
-    )
-
   lazy val lähdejärjestelmällinenOpiskeluoikeus: AmmatillinenOpiskeluoikeus =
     opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto).copy(lähdejärjestelmänId = Some(AmmatillinenExampleData.winnovaLähdejärjestelmäId))
-}
+
+  lazy val mitätöityOpiskeluoikeus: AmmatillinenOpiskeluoikeus = {
+    val baseOo = opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)
+    baseOo.copy(
+      tila = baseOo.tila.copy(
+        opiskeluoikeusjaksot = baseOo.tila.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
+      )
+    )
+  }}
 
 object PerusopetuksenOpiskeluoikeusTestData {
   lazy val lähdejärjestelmällinenOpiskeluoikeus: PerusopetuksenOpiskeluoikeus =
     PerusopetusExampleData.päättötodistusOpiskeluoikeus(oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto, None, None)).copy(
       lähdejärjestelmänId = Some(AmmatillinenExampleData.primusLähdejärjestelmäId)
+    )
+
+  lazy val mitätöityOpiskeluoikeus: PerusopetuksenOpiskeluoikeus =
+    ysinOpiskeluoikeusKesken.copy(tila =
+      ysinOpiskeluoikeusKesken.tila.copy(opiskeluoikeusjaksot =
+        ysinOpiskeluoikeusKesken.tila.opiskeluoikeusjaksot :+ NuortenPerusopetuksenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
+      )
     )
 }

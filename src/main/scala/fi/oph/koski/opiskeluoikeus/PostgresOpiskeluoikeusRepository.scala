@@ -7,7 +7,7 @@ import fi.oph.koski.henkilo._
 import fi.oph.koski.history.{JsonPatchException, OpiskeluoikeusHistory, OpiskeluoikeusHistoryRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonDiff.jsonDiff
-import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusChangeValidator.validateOpiskeluoikeusChange
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedot, PerustiedotSyncRepository}
@@ -22,7 +22,6 @@ import slick.dbio.DBIOAction.sequence
 import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.{DBIOAction, NoStream}
 import slick.jdbc.GetResult
-
 import java.sql.SQLException
 import java.time.LocalDate
 
@@ -49,7 +48,7 @@ class PostgresOpiskeluoikeusRepository(
 
 
   override def findByOppijaOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus] = {
-    runDbSync(findByOppijaOidsAction(oids).map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
+    runDbSync(findByOppijaOidsAction(oids).map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeusUnsafe)))
   }
 
   override def findByCurrentUserOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus] = {
@@ -67,7 +66,7 @@ class PostgresOpiskeluoikeusRepository(
       .filterNot(_.mitätöity)
       .filter(_.oppijaOid inSetBind oids)
 
-    runDbSync(query.result.map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
+    runDbSync(query.result.map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeusUnsafe)))
   }
 
   override def findByOid(oid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, OpiskeluoikeusRow] = withOidCheck(oid) {
@@ -173,12 +172,12 @@ class PostgresOpiskeluoikeusRepository(
 
       case OppijaOidJaLähdejärjestelmänId(oppijaOid, lähdejärjestelmäId) =>
         findOpiskeluoikeudetWithSlaves(oppijaOid).map(_.filter { row =>
-          row.toOpiskeluoikeus.lähdejärjestelmänId == Some(lähdejärjestelmäId)
+          row.toOpiskeluoikeusUnsafe.lähdejärjestelmänId == Some(lähdejärjestelmäId)
         }).map(_.toList).map(Right(_))
 
       case i:OppijaOidOrganisaatioJaTyyppi =>
         findOpiskeluoikeudetWithSlaves(i.oppijaOid).map(_.filter { row =>
-          val opiskeluoikeus = row.toOpiskeluoikeus
+          val opiskeluoikeus = row.toOpiskeluoikeusUnsafe
           OppijaOidOrganisaatioJaTyyppi(i.oppijaOid,
             opiskeluoikeus.getOppilaitos.oid,
             opiskeluoikeus.koulutustoimija.map(_.oid),
@@ -190,7 +189,9 @@ class PostgresOpiskeluoikeusRepository(
     }
   }
 
-  def getPerusopetuksenAikavälit(oppijaOid: String)(implicit user: KoskiSpecificSession): Seq[Päivämääräväli] = {
+  def getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(oppijaOid: String): Seq[Päivämääräväli] = {
+    // HUOMIOI, JOS TÄTÄ MUUTAT: Pitää olla synkassa Oppivelvollisuustiedot.scala:n createMaterializedView-metodissa
+    // raportointikantaan tehtävän tarkistuksen kanssa. Muuten Valppaan maksuttomuushaku menee rikki.
     runDbSync(
       sql"""
         with master as (
@@ -204,18 +205,14 @@ class PostgresOpiskeluoikeusRepository(
         )
         select
           alkamispaiva,
-          paattymispaiva
+          ((suoritukset -> 'vahvistus' ->> 'päivä')::date) as vahvistuspaiva
         from opiskeluoikeus
         cross join jsonb_array_elements(data -> 'suoritukset') suoritukset
         where not opiskeluoikeus.mitatoity
-          and not (
-            data -> 'tila' -> 'opiskeluoikeusjaksot' @> '[{"tila": {"koodiarvo": "eronnut"}}]' or
-            data -> 'tila' -> 'opiskeluoikeusjaksot' @> '[{"tila": {"koodiarvo": "katsotaaneronneeksi"}}]'
-          )
           and (suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'perusopetuksenoppimaara'
             or suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'aikuistenperusopetuksenoppimaara'
             or suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'internationalschoolmypvuosiluokka'
-            and suoritukset -> 'koulutusmoduuli' -> 'tunniste' ->> 'koodiarvo' = '9')
+              and suoritukset -> 'koulutusmoduuli' -> 'tunniste' ->> 'koodiarvo' = '9')
           and oppija_oid = any(select oids from linkitetyt)
       """.as[Päivämääräväli])
   }
@@ -223,7 +220,7 @@ class PostgresOpiskeluoikeusRepository(
   private implicit def getPäivämääräväli: GetResult[Päivämääräväli] = GetResult(r => {
     Päivämääräväli(
       alku = r.getLocalDate("alkamispaiva"),
-      loppu = r.getLocalDateOption("paattymispaiva"),
+      loppu = r.getLocalDateOption("vahvistuspaiva"),
     )
   })
 
@@ -253,7 +250,7 @@ class PostgresOpiskeluoikeusRepository(
     case (true, Right(rows)) =>
       DBIO.successful(Left(KoskiErrorCategory.internalError(s"Löytyi enemmän kuin yksi rivi päivitettäväksi (${rows.map(_.oid)})")))
     case (false, Right(rows)) =>
-      rows.find(!_.toOpiskeluoikeus.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt) match {
+      rows.find(!_.toOpiskeluoikeusUnsafe.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt) match {
         case None => createAction(oppijaOid, opiskeluoikeus) // Tehdään uusi opiskeluoikeus, koska vanha on päättynyt
         case Some(_) => DBIO.successful(Left(KoskiErrorCategory.conflict.exists())) // Ei tehdä uutta, koska vanha vastaava opiskeluoikeus on voimassa
       }
@@ -297,7 +294,7 @@ class PostgresOpiskeluoikeusRepository(
       case Some(requestedVersionumero) if requestedVersionumero != versionumero =>
         DBIO.successful(Left(KoskiErrorCategory.conflict.versionumero("Annettu versionumero " + requestedVersionumero + " <> " + versionumero)))
       case _ =>
-        val vanhaOpiskeluoikeus = oldRow.toOpiskeluoikeus
+        val vanhaOpiskeluoikeus = oldRow.toOpiskeluoikeusUnsafe
 
         val tallennettavaOpiskeluoikeus =  OpiskeluoikeusChangeMigrator.migrate(vanhaOpiskeluoikeus, uusiOpiskeluoikeus, allowDeleteCompletedSuoritukset)
 

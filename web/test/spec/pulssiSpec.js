@@ -14,12 +14,6 @@ describe('Pulssi', function() {
     it('Opiskeluoikeudet koulutusmuodoittain näytetään', function() {
       expect(page.metric('opiskeluoikeudet-koulutusmuodoittain').sum()).to.equal(page.metric('opiskeluoikeudet-total').value())
     })
-    it('Kattavuus näytetään', function() {
-      expect(page.metric('kattavuus-total').value() >= 0).to.equal(true)
-    })
-    it('Kattavuus koulutusmuodoittain näytetään', function() {
-      expect(page.metric('kattavuus-koulutusmuodoittain').sum() > 0).to.equal(true)
-    })
     it('Suoritettujen koulutusten määrä näytetään', function() {
       expect(page.metric('valmiit-tutkinnot-total').value() > 0).to.equal(true)
     })

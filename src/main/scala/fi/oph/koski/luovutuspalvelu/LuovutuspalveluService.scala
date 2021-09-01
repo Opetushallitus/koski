@@ -63,7 +63,7 @@ class LuovutuspalveluService(application: KoskiApplication) {
   private def buildResponse(h: OppijaHenkilö, oo: List[OpiskeluoikeusRow]): LuovutuspalveluResponseV1 =
     LuovutuspalveluResponseV1(
       LuovutuspalveluHenkilöV1(h.oid, h.hetu, h.syntymäaika, h.turvakielto),
-      oo.map(_.toOpiskeluoikeus))
+      oo.map(_.toOpiskeluoikeusUnsafe))
 
   private def toLuovutuspalveluHenkilöV1(henkilö: Henkilö): LuovutuspalveluHenkilöV1 = henkilö match {
     case th: TäydellisetHenkilötiedot => LuovutuspalveluHenkilöV1(th.oid, th.hetu, th.syntymäaika, th.turvakielto.getOrElse(false))

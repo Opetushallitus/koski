@@ -70,12 +70,24 @@ const eiOppivelvollisuudenSuorittamiseenKelpaaviaOpiskeluoikeuksiaPath = createO
     oppijaOid: "1.2.246.562.24.00000000058",
   }
 )
-const hetutonPath = createOppijaPath(
+const hetutonPath = createOppijaPath("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000059",
+})
+
+const opiskeluoikeusKeskeytettyMääräajaksiPath = createOppijaPath(
   "/virkailija",
   {
-    oppijaOid: "1.2.246.562.24.00000000059",
+    oppijaOid: "1.2.246.562.24.00000000077",
   }
 )
+
+const opiskeluoikeusLomaPath = createOppijaPath("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000078",
+})
+
+const opiskeluoikeusValmaPath = createOppijaPath("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000062",
+})
 
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
@@ -122,9 +134,10 @@ describe("Oppijakohtainen näkymä", () => {
     await opiskeluhistoriaEquals(`
       school
       Perusopetus 2012 –
-      Jyväskylän normaalikoulu
+      Tila: Läsnä
+      Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: 9C
-      Tila: Opiskeluoikeus voimassa
+      Opiskeluoikeuden alkamispäivä: 15.8.2012
     `)
     await hautEquals(`
       list_alt
@@ -193,9 +206,11 @@ describe("Oppijakohtainen näkymä", () => {
     await opiskeluhistoriaEquals(`
       school
       Perusopetus 2012 – 2021
-      Jyväskylän normaalikoulu
+      Tila: Valmistunut
+      Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: 9C
-      Tila: Valmistunut 30.5.2021
+      Opiskeluoikeuden alkamispäivä: 15.8.2012
+      Opiskeluoikeuden päättymispäivä: 30.5.2021
     `)
   })
 
@@ -207,10 +222,12 @@ describe("Oppijakohtainen näkymä", () => {
     await opiskeluhistoriaEquals(`
       school
       Perusopetus 2012 – 2021
-      Jyväskylän normaalikoulu
+      Tila: Valmistunut
+      Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: 9C
-      Tila: Valmistunut 30.5.2021
       Muuta: Vuosiluokkiin sitomaton opetus
+      Opiskeluoikeuden alkamispäivä: 15.8.2012
+      Opiskeluoikeuden päättymispäivä: 30.5.2021
     `)
   })
 
@@ -261,14 +278,16 @@ describe("Oppijakohtainen näkymä", () => {
     await opiskeluhistoriaEquals(`
       school
       Perusopetus 2012 –
-      Jyväskylän normaalikoulu
+      Tila: Läsnä
+      Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: 9B
-      Tila: Opiskeluoikeus voimassa
+      Opiskeluoikeuden alkamispäivä: 15.8.2012
       school
       Perusopetus 2012 –
-      Kulosaaren ala-aste
+      Tila: Läsnä
+      Toimipiste: Kulosaaren ala-aste
       Ryhmä: 8A
-      Tila: Opiskeluoikeus voimassa
+      Opiskeluoikeuden alkamispäivä: 15.8.2012
     `)
   })
 
@@ -285,15 +304,18 @@ describe("Oppijakohtainen näkymä", () => {
     `)
     await opiskeluhistoriaEquals(`
       school
-      Lukiokoulutus 2021 –
-      Jyväskylän normaalikoulu
+      Lukion oppimäärä 2021 –
+      Tila: Läsnä
+      Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: AH
-      Tila: Opiskeluoikeus voimassa
+      Opiskeluoikeuden alkamispäivä: 15.8.2021
       school
       Perusopetus 2012 – 2021
-      Jyväskylän normaalikoulu
+      Tila: Valmistunut
+      Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: 9C
-      Tila: Valmistunut 30.5.2021
+      Opiskeluoikeuden alkamispäivä: 15.8.2012
+      Opiskeluoikeuden päättymispäivä: 30.5.2021
     `)
   })
 
@@ -310,15 +332,18 @@ describe("Oppijakohtainen näkymä", () => {
     `)
     await opiskeluhistoriaEquals(`
       school
-      Lukiokoulutus 2021 –
-      Jyväskylän normaalikoulu
-      Ryhmä: AH
+      Lukion oppimäärä 2021 –
       Tila: Opiskeluoikeus alkaa 3.10.2021
+      Toimipiste: Jyväskylän normaalikoulu
+      Ryhmä: AH
+      Opiskeluoikeuden alkamispäivä: 3.10.2021
       school
       Perusopetus 2012 – 2021
-      Jyväskylän normaalikoulu
+      Tila: Valmistunut
+      Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: 9C
-      Tila: Valmistunut 30.5.2021
+      Opiskeluoikeuden alkamispäivä: 15.8.2012
+      Opiskeluoikeuden päättymispäivä: 30.5.2021
     `)
   })
 
@@ -443,9 +468,11 @@ describe("Oppijakohtainen näkymä", () => {
     await opiskeluhistoriaEquals(`
       school
       Perusopetus 2012 – 2021
-      Jyväskylän normaalikoulu
+      Tila: Valmistunut
+      Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: 9C
-      Tila: Valmistunut 30.5.2021
+      Opiskeluoikeuden alkamispäivä: 15.8.2012
+      Opiskeluoikeuden päättymispäivä: 30.5.2021
     `)
   })
 
@@ -461,10 +488,11 @@ describe("Oppijakohtainen näkymä", () => {
     `)
     await opiskeluhistoriaEquals(`
       school
-      Lukiokoulutus 2019 –
-      Jyväskylän normaalikoulu
+      Lukion oppimäärä 2019 –
+      Tila: Läsnä
+      Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: AH
-      Tila: Opiskeluoikeus voimassa
+      Opiskeluoikeuden alkamispäivä: 1.8.2019
     `)
   })
 
@@ -482,10 +510,11 @@ describe("Oppijakohtainen näkymä", () => {
     `)
     await opiskeluhistoriaEquals(`
       school
-      Lukiokoulutus 2019 –
-      Jyväskylän normaalikoulu
+      Lukion oppimäärä 2019 –
+      Tila: Läsnä
+      Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: AH
-      Tila: Opiskeluoikeus voimassa
+      Opiskeluoikeuden alkamispäivä: 1.8.2019
     `)
   })
 
@@ -518,10 +547,11 @@ describe("Oppijakohtainen näkymä", () => {
     `)
     await opiskeluhistoriaEquals(`
       school
-      Lukiokoulutus 2019 –
-      Jyväskylän normaalikoulu
+      Lukion oppimäärä 2019 –
+      Tila: Läsnä
+      Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: AH
-      Tila: Opiskeluoikeus voimassa
+      Opiskeluoikeuden alkamispäivä: 1.8.2019
     `)
   })
 
@@ -539,10 +569,11 @@ describe("Oppijakohtainen näkymä", () => {
     `)
     await opiskeluhistoriaEquals(`
       school
-      Lukiokoulutus 2019 –
-      Jyväskylän normaalikoulu
+      Lukion oppimäärä 2019 –
+      Tila: Läsnä
+      Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: AH
-      Tila: Opiskeluoikeus voimassa
+      Opiskeluoikeuden alkamispäivä: 1.8.2019
     `)
   })
 
@@ -557,13 +588,8 @@ describe("Oppijakohtainen näkymä", () => {
   })
 
   it("Näyttää detaljisivun hetuttomasta oppijasta", async () => {
-    await loginAs(
-      hetutonPath,
-      "valpas-maksuttomuus-hki"
-    )
-    await mainHeadingEquals(
-      "Hetuton Valpas"
-    )
+    await loginAs(hetutonPath, "valpas-maksuttomuus-hki")
+    await mainHeadingEquals("Hetuton Valpas")
   })
 
   it("Ei näytä detaljisivua kuntakäyttäjälle lukio-oppijasta oppivelvollisuuden päätyttyä", async () => {
@@ -620,9 +646,10 @@ describe("Oppijakohtainen näkymä", () => {
       Keskeytetty 1.1.2020 – 30.1.2020
       school
       Perusopetus 2012 –
-      Jyväskylän normaalikoulu
+      Tila: Läsnä
+      Toimipiste: Jyväskylän normaalikoulu
       Ryhmä:	9C
-      Tila:	Opiskeluoikeus voimassa
+      Opiskeluoikeuden alkamispäivä: 15.8.2012
     `)
   })
 
@@ -647,9 +674,10 @@ describe("Oppijakohtainen näkymä", () => {
       Keskeytetty toistaiseksi 1.1.2021 alkaen
       school
       Perusopetus 2012 –
-      Jyväskylän normaalikoulu
+      Tila: Läsnä
+      Toimipiste: Jyväskylän normaalikoulu
       Ryhmä:	9C
-      Tila:	Opiskeluoikeus voimassa
+      Opiskeluoikeuden alkamispäivä: 15.8.2012
     `)
   })
 
@@ -681,9 +709,10 @@ describe("Oppijakohtainen näkymä", () => {
       Keskeytetty 1.1.2020 – 30.1.2020
       school
       Perusopetus 2012 –
-      Jyväskylän normaalikoulu
+      Tila: Läsnä
+      Toimipiste: Jyväskylän normaalikoulu
       Ryhmä:	9C
-      Tila:	Opiskeluoikeus voimassa
+      Opiskeluoikeuden alkamispäivä: 15.8.2012
     `)
   })
 
@@ -717,6 +746,52 @@ describe("Oppijakohtainen näkymä", () => {
       Keskeytä oppivelvollisuus
       Tee ilmoitus valvontavastuusta
       info_outline
+    `)
+  })
+
+  it("Näytä väliaikaisesti keskeytynyt opiskeluoikeus", async () => {
+    await loginAs(
+      opiskeluoikeusKeskeytettyMääräajaksiPath,
+      "valpas-jkl-yliopisto-suorittaminen"
+    )
+
+    await resetMockData("2021-08-15")
+
+    await opiskeluhistoriaEquals(`
+      school
+      Lukion oppimäärä 2021 –
+      Tila:	Väliaikaisesti keskeytynyt 2.8.2021
+      Toimipiste: Jyväskylän normaalikoulu
+      Ryhmä:	AH
+      Opiskeluoikeuden alkamispäivä:	1.8.2021
+    `)
+  })
+
+  it("Näytä lomailevan ammattikoululaisen opiskeluoikeus", async () => {
+    await loginAs(opiskeluoikeusLomaPath, "valpas-pelkkä-suorittaminen-amis")
+
+    await resetMockData("2021-08-15")
+
+    await opiskeluhistoriaEquals(`
+      school
+      Ammatillinen tutkinto 2021 –
+      Tila:	Loma
+      Toimipiste: Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka
+      Opiskeluoikeuden alkamispäivä:	1.8.2021
+    `)
+  })
+
+  it("Näytä koulutustyyppi oikein", async () => {
+    await loginAs(opiskeluoikeusValmaPath, "valpas-pelkkä-suorittaminen-amis")
+
+    await resetMockData("2021-08-15")
+
+    await opiskeluhistoriaEquals(`
+      school
+      VALMA 2012 –
+      Tila:	Läsnä
+      Toimipiste:	Stadin ammatti- ja aikuisopisto
+      Opiskeluoikeuden alkamispäivä:	1.9.2012
     `)
   })
 })

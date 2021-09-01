@@ -54,16 +54,39 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
     streamingQuery(paginatedQuery)
   }
 
-  def mapKaikkiOpiskeluoikeudetSivuittain[A](pageSize: Int, user: KoskiSpecificSession)(f: Seq[OpiskeluoikeusRow] => Seq[A]): Observable[A] = {
-    processByPage[OpiskeluoikeusRow, A](page => kaikkiOpiskeluoikeudetSivuittain(PaginationSettings(page, pageSize))(user), f)
+  def mapKaikkiOpiskeluoikeudetSivuittain[A]
+    (pageSize: Int, user: KoskiSpecificSession)
+    (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
+  : Observable[A] = {
+    mapKaikkiSivuittain(pageSize, user)(kaikkiSivuittain(OpiskeluOikeudetWithAccessCheck(user)))(mapFn)
   }
 
-  private def kaikkiOpiskeluoikeudetSivuittain(pagination: PaginationSettings)(implicit user: KoskiSpecificSession): Seq[OpiskeluoikeusRow] = {
+  def mapKaikkiMitätöidytOpiskeluoikeudetSivuittain[A]
+    (pageSize: Int, user: KoskiSpecificSession)
+    (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
+  : Observable[A] = {
+    mapKaikkiSivuittain(pageSize, user)(kaikkiSivuittain(OpiskeluOikeudet.filter(_.mitätöity)))(mapFn)
+  }
+
+  private def mapKaikkiSivuittain[A]
+    (pageSize: Int, user: KoskiSpecificSession)
+    (queryFn: (PaginationSettings, KoskiSpecificSession) => Seq[OpiskeluoikeusRow])
+    (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
+  : Observable[A] = {
+    processByPage[OpiskeluoikeusRow, A](page => queryFn(PaginationSettings(page, pageSize), user), mapFn)
+  }
+
+  private def kaikkiSivuittain(
+    query: Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq]
+  )(
+    pagination: PaginationSettings,
+    user: KoskiSpecificSession
+  ): Seq[OpiskeluoikeusRow] = {
     if (!user.hasGlobalReadAccess) throw new RuntimeException("Query does not make sense without global read access")
     // this approach to pagination ("limit 500 offset 176500") is not perfect (the query gets slower as offset
     // increases), but seems tolerable here (with join to henkilot, as in mkQuery below, it's much slower)
     retryWithInterval(5, intervalMs = 30000) {
-      runDbSync(defaultPagination.applyPagination(OpiskeluOikeudetWithAccessCheck.sortBy(_.id), pagination).result, timeout = 5.minutes)
+      runDbSync(defaultPagination.applyPagination(query.sortBy(_.id), pagination).result, timeout = 5.minutes)
     }
   }
 

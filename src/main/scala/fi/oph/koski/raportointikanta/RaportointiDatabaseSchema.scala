@@ -55,6 +55,8 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(paatason_suoritus_id, suorituksen_tyyppi, arviointi_paiva)",
 
     sqlu"CREATE INDEX ON #${s.name}.esiopetus_opiskeluoik_aikajakso(opiskeluoikeus_oid)",
+
+    sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_mitatoitu_opiskeluoikeus(opiskeluoikeus_oid)",
   )
 
   def createOtherIndexes(s: Schema) = DBIO.seq(
@@ -72,6 +74,7 @@ object RaportointiDatabaseSchema {
 
   def dropAllIfExists(s: Schema) = DBIO.seq(
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_opiskeluoikeus CASCADE",
+    sqlu"DROP TABLE IF EXISTS #${s.name}.r_mitatoitu_opiskeluoikeus CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_organisaatiohistoria CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_opiskeluoikeus_aikajakso CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.esiopetus_opiskeluoik_aikajakso CASCADE",
@@ -144,6 +147,29 @@ object RaportointiDatabaseSchema {
       oppivelvollisuudenSuorittamiseenKelpaava, data) <> (ROpiskeluoikeusRow.tupled, ROpiskeluoikeusRow.unapply)
   }
   class ROpiskeluoikeusTableTemp(tag: Tag) extends ROpiskeluoikeusTable(tag, Temp)
+
+  class RMitätöityOpiskeluoikeusTable(tag: Tag, schema: Schema = Public)
+    extends Table[RMitätöityOpiskeluoikeusRow](tag, schema.nameOpt, "r_mitatoitu_opiskeluoikeus") {
+
+    val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
+    val versionumero = column[Int]("versionumero")
+    val aikaleima = column[Timestamp]("aikaleima", SqlType("timestamptz"))
+    val oppijaOid = column[String]("oppija_oid", StringIdentifierType)
+    val mitätöity = column[LocalDate]("mitatoitu")
+    val tyyppi = column[String]("tyyppi", StringIdentifierType)
+    val päätasonSuoritusTyypit = column[List[String]]("paatason_suoritus_tyypit")
+
+    def * = (
+      opiskeluoikeusOid,
+      versionumero,
+      aikaleima,
+      oppijaOid,
+      mitätöity,
+      tyyppi,
+      päätasonSuoritusTyypit
+    ) <> (RMitätöityOpiskeluoikeusRow.tupled, RMitätöityOpiskeluoikeusRow.unapply)
+  }
+  class RMitätöityOpiskeluoikeusTableTemp(tag: Tag) extends RMitätöityOpiskeluoikeusTable(tag, Temp)
 
   class ROrganisaatioHistoriaTable(tag: Tag, schema: Schema = Public) extends Table[ROrganisaatioHistoriaRow](tag, schema.nameOpt, "r_organisaatiohistoria") {
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
@@ -461,6 +487,16 @@ case class ROpiskeluoikeusRow(
   luokka: Option[String],
   oppivelvollisuudenSuorittamiseenKelpaava: Boolean,
   data: JValue
+)
+
+case class RMitätöityOpiskeluoikeusRow(
+  opiskeluoikeusOid: String,
+  versionumero: Int,
+  aikaleima: Timestamp,
+  oppijaOid: String,
+  mitätöity: LocalDate,
+  tyyppi: String,
+  päätasonSuoritusTyypit: List[String]
 )
 
 case class ROrganisaatioHistoriaRow(

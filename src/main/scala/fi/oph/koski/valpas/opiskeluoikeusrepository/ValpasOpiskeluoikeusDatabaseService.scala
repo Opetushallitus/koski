@@ -32,8 +32,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   private val db = application.raportointiDatabase
   private val rajapäivätService = application.valpasRajapäivätService
 
-  def getOppija(oppijaOid: String, rajaaOVKelposillaOppivelvollisuuksilla: Boolean = true): Option[ValpasOppijaRow] =
-    getOppijat(List(oppijaOid), None, rajaaOVKelposillaOppivelvollisuuksilla).headOption
+  def getOppija(oppijaOid: String, rajaaOVKelpoisiinOpiskeluoikeuksiin: Boolean = true): Option[ValpasOppijaRow] =
+    getOppijat(List(oppijaOid), None, rajaaOVKelpoisiinOpiskeluoikeuksiin).headOption
 
   def getOppijat(oppijaOids: Seq[String]): Seq[ValpasOppijaRow] =
     if (oppijaOids.nonEmpty) getOppijat(oppijaOids, None) else Seq.empty
@@ -68,7 +68,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   private def getOppijat(
     oppijaOids: Seq[String],
     oppilaitosOids: Option[Seq[String]],
-    rajaaOVKelposillaOppivelvollisuuksilla: Boolean = true,
+    rajaaOVKelpoisiinOpiskeluoikeuksiin: Boolean = true,
   ): Seq[ValpasOppijaRow] = {
     val keväänValmistumisjaksoAlku = rajapäivätService.keväänValmistumisjaksoAlku
     val keväänValmistumisjaksoLoppu = rajapäivätService.keväänValmistumisjaksoLoppu
@@ -130,7 +130,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         nonEmptyOppijaOids.map(_ => sql"""
       JOIN pyydetty_oppija ON pyydetty_oppija.master_oid = r_henkilo.master_oid
       """),
-        if (rajaaOVKelposillaOppivelvollisuuksilla) {
+        if (rajaaOVKelpoisiinOpiskeluoikeuksiin) {
           Some(
             sql"""
       WHERE r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE
@@ -210,22 +210,22 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         -- (4.1) opiskeluoikeus ei ole eronnut tilassa tällä hetkellä
         (
           (aikajakson_keskella.tila IS NOT NULL
-            AND NOT aikajakson_keskella.tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
+            AND NOT aikajakson_keskella.tila = any('{eronnut, katsotaaneronneeksi, peruutettu, keskeytynyt}'))
           OR (aikajakson_keskella.tila IS NULL
             AND $tarkastelupäivä < ov_kelvollinen_opiskeluoikeus.alkamispaiva)
           OR (aikajakson_keskella.tila IS NULL
             AND $tarkastelupäivä > ov_kelvollinen_opiskeluoikeus.paattymispaiva
-            AND NOT ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
+            AND NOT ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu, keskeytynyt}'))
         )
         OR (
         -- (4.2) TAI oppija täyttää vähintään 17 tarkasteluvuonna ja on eronnut tilassa
           ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna
           AND (
             (aikajakson_keskella.tila IS NOT NULL
-              AND aikajakson_keskella.tila = any('{eronnut, katsotaaneronneeksi}'))
+              AND aikajakson_keskella.tila = any('{eronnut, katsotaaneronneeksi, keskeytynyt}'))
             OR (aikajakson_keskella.tila IS NULL
               AND $tarkastelupäivä > ov_kelvollinen_opiskeluoikeus.paattymispaiva
-              AND ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi}'))
+              AND ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, keskeytynyt}'))
           )
         )
       )
@@ -248,12 +248,12 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           AND (
             -- (5b.1.1) ja opiskeluoikeus on valmistunut-tilassa (joten siitä löytyy vahvistettu päättötodistus)
             (
-              ov_kelvollinen_opiskeluoikeus.viimeisin_tila = 'valmistunut'
+              ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{valmistunut, hyvaksytystisuoritettu}')
             )
             -- (5b.1.2) tai oppija täyttää tarkasteluvuonna vähintään 17 ja opiskeluoikeus on eronnut-tilassa
             OR (
               ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna
-              AND ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi}')
+              AND ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, keskeytynyt}')
             )
           )
           -- (5b.2) ministeriön määrittelemä aikaraja ei ole kulunut umpeen henkilön valmistumis-/eroamisajasta.
@@ -305,7 +305,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           -- näytetä lainkaan toiselta asteelta valmistuminen tarkoittaa, että oppivelvollisuus päättyy
           -- kokonaan, ja nivelvaiheen valmistuneiden käsittely tehdään hakeutumisen valvonnn kautta.
           ($tarkastelupäivä >= ov_kelvollinen_opiskeluoikeus.paattymispaiva)
-          AND (ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu}'))
+          AND (ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu, keskeytynyt}'))
         )
         -- TAI
         OR (
@@ -410,6 +410,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         ('katsotaaneronneeksi', 'katsotaaneronneeksi'),
         ('peruutettu', 'peruutettu'),
         ('mitatoity', 'mitatoity'),
+        ('keskeytynyt', 'keskeytynyt'),
+        ('hyvaksytystisuoritettu', 'hyvaksytystisuoritettu'),
         (NULL, 'tuntematon')
       ) t
   )
@@ -440,6 +442,11 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.viimeisin_tila
         ELSE aikajakson_keskella.tila
       END tarkastelupäivän_koski_tila,
+      CASE
+        WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN r_opiskeluoikeus.alkamispaiva
+        WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.paattymispaiva
+        ELSE aikajakson_keskella.tila_alkanut
+      END tarkastelupaivan_tilan_alkupaiva,
       r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
       (
         r_opiskeluoikeus.viimeisin_tila = 'valmistunut'
@@ -484,10 +491,17 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           ) AS data
         FROM r_paatason_suoritus pts
         WHERE pts.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-          AND pts.suorituksen_tyyppi = 'perusopetuksenvuosiluokka'
-        -- Hae vain uusin vuosiluokan suoritus (toistaiseksi, myöhemmin voisi pystyä valitsemaan
-        -- myös esim. edelliseltä keväältä parametrina annetun päivämäärän perusteella)
-        ORDER BY pts.data->>'alkamispäivä' DESC
+          AND (
+            pts.suorituksen_tyyppi = 'perusopetuksenvuosiluokka'
+            OR pts.suorituksen_tyyppi = 'perusopetuksenoppimaara'
+          )
+        -- Ensisijaisesti uusin vuosiluokan suoritus, koska siinä on luultavasti relevantein ryhmätieto.
+        ORDER BY
+          CASE
+            WHEN (pts.suorituksen_tyyppi = 'perusopetuksenvuosiluokka') THEN 1
+            WHEN (pts.suorituksen_tyyppi = 'perusopetuksenoppimaara') THEN 2
+          END,
+          pts.data->>'alkamispäivä' DESC
         LIMIT 1
       ) AS valittu_paatason_suoritus
   )
@@ -517,6 +531,11 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.viimeisin_tila
         ELSE aikajakson_keskella.tila
       END tarkastelupäivän_koski_tila,
+      CASE
+        WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN r_opiskeluoikeus.alkamispaiva
+        WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.paattymispaiva
+        ELSE aikajakson_keskella.tila_alkanut
+      END tarkastelupaivan_tilan_alkupaiva,
       r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
       FALSE AS naytettava_perusopetuksen_suoritus,
       FALSE AS vuosiluokkiin_sitomaton_opetus,
@@ -616,6 +635,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           'koodiarvo', opiskeluoikeus.tarkastelupäivän_koski_tila,
           'koodistoUri', 'koskiopiskeluoikeudentila'
         ),
+        'tarkastelupäivänTilanAlkamispäivä', tarkastelupaivan_tilan_alkupaiva,
         'näytettäväPerusopetuksenSuoritus', opiskeluoikeus.naytettava_perusopetuksen_suoritus,
         'vuosiluokkiinSitomatonOpetus', opiskeluoikeus.vuosiluokkiin_sitomaton_opetus,
         'oppivelvollisuudenSuorittamiseenKelpaava', opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE,
@@ -636,7 +656,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     opiskeluoikeus
     JOIN oppija ON oppija.master_oid = opiskeluoikeus.master_oid
   """),
-  if (rajaaOVKelposillaOppivelvollisuuksilla) {
+  if (rajaaOVKelpoisiinOpiskeluoikeuksiin) {
     Some(
       sql"""
   WHERE opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE

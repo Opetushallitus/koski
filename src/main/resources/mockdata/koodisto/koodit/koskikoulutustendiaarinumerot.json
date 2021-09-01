@@ -922,4 +922,24 @@
     "codeElementVersion" : 2,
     "passive" : false
   } ]
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_oph49582020",
+  "koodiArvo" : "OPH-4958-2020",
+  "metadata" : [ {
+    "nimi" : "Lukiokoulutukseen valmistavan koulutuksen opetussuunnitelman perusteet 2021",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Lukiokoulutukseen valmistavan koulutuksen opetussuunnitelman perusteet 2021",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutustyyppi_23",
+    "codeElementVersion" : 2,
+    "passive" : false
+  } ]
 } ]

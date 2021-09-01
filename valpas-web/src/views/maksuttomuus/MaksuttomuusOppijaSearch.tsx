@@ -10,6 +10,7 @@ import { Spinner } from "../../components/icons/Spinner"
 import { T, t } from "../../i18n/i18n"
 import {
   HenkilöhakuResult,
+  isEiLöytynytEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult,
   isLöytyiHenkilöhakuResult,
   LöytyiHenkilöhakuResult,
 } from "../../state/apitypes/henkilohaku"
@@ -21,9 +22,9 @@ import {
 } from "../../state/formValidators"
 import { createOppijaPath } from "../../state/paths"
 import { FormValidators, useFormState } from "../../state/useFormState"
-import "./OppijaSearch.less"
+import "./MaksuttomuusOppijaSearch.less"
 
-const b = bem("oppijasearch")
+const b = bem("maksuttomuusoppijasearch")
 
 type OppijaSearchValues = {
   query: string
@@ -42,13 +43,15 @@ const validators: FormValidators<OppijaSearchValues> = {
   ],
 }
 
-export type OppijaSearchProps = {
+export type MaksuttomuusOppijaSearchProps = {
   searchState: ApiMethodState<HenkilöhakuResult>
   onQuery: (query: string) => void
   prevPath: string
 }
 
-export const OppijaSearch = (props: OppijaSearchProps) => {
+export const MaksuttomuusOppijaSearch = (
+  props: MaksuttomuusOppijaSearchProps
+) => {
   const form = useFormState({ initialValues, validators })
 
   const submit = form.submitCallback((data) => {
@@ -70,13 +73,15 @@ export const OppijaSearch = (props: OppijaSearchProps) => {
         <div className={b("results")}>
           {isLoading(props.searchState) && <Spinner />}
           {isSuccess(props.searchState) && (
-            <OppijaSearchResults
+            <MaksuttomuusOppijaSearchResults
               hakutulos={props.searchState.data}
               prevPath={props.prevPath}
             />
           )}
           {isError(props.searchState) && (
-            <OppijaSearchError statusCode={props.searchState.status} />
+            <MaksuttomuusOppijaSearchError
+              statusCode={props.searchState.status}
+            />
           )}
         </div>
       </TextField>
@@ -84,35 +89,59 @@ export const OppijaSearch = (props: OppijaSearchProps) => {
   )
 }
 
-type OppijaSearchResultsProps = {
+type MaksuttomuusOppijaSearchResultsProps = {
   hakutulos: HenkilöhakuResult
   prevPath: string
 }
 
-const OppijaSearchResults = (props: OppijaSearchResultsProps) => {
+const MaksuttomuusOppijaSearchResults = (
+  props: MaksuttomuusOppijaSearchResultsProps
+) => {
   if (isLöytyiHenkilöhakuResult(props.hakutulos)) {
     return (
-      <OppijaSearchMatchResult
+      <MaksuttomuusOppijaSearchMatchResult
         henkilö={props.hakutulos}
         prevPath={props.prevPath}
       />
     )
+  } else if (
+    isEiLöytynytEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(
+      props.hakutulos
+    )
+  ) {
+    return (
+      <MaksuttomuusOppijaSearchUndefinedResult
+        eiLöytynytIlmoitusId={"oppijahaku__maksuttomuus_ei_näytettävä_oppija"}
+      />
+    )
   }
-  return <OppijaSearchUndefinedResult />
+  return (
+    <MaksuttomuusOppijaSearchUndefinedResult
+      eiLöytynytIlmoitusId={"oppijahaku__maksuttomuutta_ei_pysty_päättelemään"}
+    />
+  )
 }
 
-const OppijaSearchUndefinedResult = () => (
+type MaksuttomuusOppijaSearchUndefinedResultProps = {
+  eiLöytynytIlmoitusId: string
+}
+
+const MaksuttomuusOppijaSearchUndefinedResult = (
+  props: MaksuttomuusOppijaSearchUndefinedResultProps
+) => (
   <div className={b("resultvalue")}>
-    <T id={"oppijahaku__ei_tuloksia"} />
+    <T id={props.eiLöytynytIlmoitusId} />
   </div>
 )
 
-type OppijaSearchMatchResultProps = {
+type MaksuttomuusOppijaSearchMatchResultProps = {
   henkilö: LöytyiHenkilöhakuResult
   prevPath: string
 }
 
-const OppijaSearchMatchResult = (props: OppijaSearchMatchResultProps) => {
+const MaksuttomuusOppijaSearchMatchResult = (
+  props: MaksuttomuusOppijaSearchMatchResultProps
+) => {
   const basePath = useBasePath()
   const result = props.henkilö
 
@@ -133,23 +162,25 @@ const OppijaSearchMatchResult = (props: OppijaSearchMatchResultProps) => {
   )
 }
 
-type OppijaSearchErrorProps = {
+type MaksuttomuusOppijaSearchErrorProps = {
   statusCode?: number
 }
 
-const OppijaSearchError = (props: OppijaSearchErrorProps) => {
-  const [message, showAsError] = getErrorText(props.statusCode)
+const MaksuttomuusOppijaSearchError = (
+  props: MaksuttomuusOppijaSearchErrorProps
+) => {
+  const [message, showAsError] = getMaksuttomuusErrorText(props.statusCode)
   return (
     <div className={b("resultvalue", { error: showAsError })}>{message}</div>
   )
 }
 
-const getErrorText = (statusCode?: number): [string, boolean] => {
+const getMaksuttomuusErrorText = (statusCode?: number): [string, boolean] => {
   switch (statusCode) {
     case 400:
       return [t("oppijahaku__validointivirhe"), true]
     case 403:
-      return [t("oppijahaku__ei_tuloksia"), false]
+      return [t("oppijahaku__maksuttomuus_sisäinen_virhe"), false]
     default:
       return [t("apivirhe__virheellinen_pyyntö", { virhe: status }), true]
   }

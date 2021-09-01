@@ -1,0 +1,32 @@
+@import "../../style/colors.less";
+
+.maksuttomuusoppijasearch {
+  .spinner {
+    transform: scale(0.5);
+    height: 1px;
+  }
+
+  .textfield {
+    max-width: none;
+
+    .textfield__input {
+      max-width: 20rem;
+    }
+  }
+
+  .maksuttomuusoppijasearch__submit {
+    margin-left: 0.25rem;
+  }
+
+  .maksuttomuusoppijasearch__results {
+    display: flex;
+    align-items: center;
+
+    white-space: nowrap;
+    margin-left: 1rem;
+  }
+
+  .maksuttomuusoppijasearch__resultvalue--error {
+    color: @color-red;
+  }
+}

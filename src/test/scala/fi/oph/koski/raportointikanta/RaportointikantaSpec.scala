@@ -1,6 +1,7 @@
 package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
+import fi.oph.koski.db.KoskiTables.OpiskeluOikeudet
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -10,7 +11,7 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Wait
-import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
+import fi.oph.koski.{DatabaseTestMethods, DirtiesFixtures, KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.JsonAST.{JBool, JObject}
 import org.json4s.jackson.JsonMethods
@@ -25,11 +26,12 @@ class RaportointikantaSpec
     with Matchers
     with OpiskeluoikeusTestMethodsAmmatillinen
     with RaportointikantaTestMethods
+    with DatabaseTestMethods
     with DirtiesFixtures {
 
   override protected def alterFixture(): Unit = {
     createOrUpdate(KoskiSpecificMockOppijat.slaveMasterEiKoskessa.henkilö, defaultOpiskeluoikeus)
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   "Raportointikanta" - {
@@ -450,6 +452,39 @@ class RaportointikantaSpec
         ps.toimipisteOid should equal(AmmatillinenExampleData.stadinToimipiste.oid)
         ps.toimipisteNimi should equal(AmmatillinenExampleData.stadinToimipiste.nimi.get.get("fi"))
       }
+    }
+  }
+
+  "Mitätöityjen opiskeluoikeuksien lataus" - {
+    "Kaikki mitätöidyt opiskeluoikeudet ladataan erilliseen tauluun" in {
+      val mitätöidyt = runDbSync(OpiskeluOikeudet.filter(_.mitätöity).result)
+      val result = mainRaportointiDb.runDbSync(mainRaportointiDb.RMitätöidytOpiskeluoikeudet.result)
+
+      result.length should equal(mitätöidyt.length)
+
+      result should equal(Seq(
+        RMitätöityOpiskeluoikeusRow(
+          opiskeluoikeusOid = mitätöidyt(0).oid,
+          versionumero = mitätöidyt(0).versionumero,
+          aikaleima = mitätöidyt(0).aikaleima,
+          oppijaOid = KoskiSpecificMockOppijat.eero.oid,
+          mitätöity = LocalDate.now(),
+          tyyppi = "perusopetus",
+          päätasonSuoritusTyypit = List("perusopetuksenoppimaara", "perusopetuksenvuosiluokka")
+        ),
+        RMitätöityOpiskeluoikeusRow(
+          opiskeluoikeusOid = mitätöidyt(1).oid,
+          versionumero = mitätöidyt(1).versionumero,
+          aikaleima = mitätöidyt(1).aikaleima,
+          oppijaOid = KoskiSpecificMockOppijat.lukiolainen.oid,
+          mitätöity = LocalDate.now(),
+          tyyppi = "ammatillinenkoulutus",
+          päätasonSuoritusTyypit = List("ammatillinentutkinto")
+        )
+      ))
+    }
+
+    "Mitätöityjä opiskeluoikeuksia ei ladata varsinaiseen opiskeluoikeudet-tauluun" in {
     }
   }
 

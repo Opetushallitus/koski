@@ -32,8 +32,6 @@ export const SuorittaminenHetuhaku = withRequiresSuorittamisenValvonta(() => {
         searchState={search}
         onQuery={search.call}
         prevPath={createSuorittaminenHetuhakuPath()}
-        eiLöytynytIlmoitusId={"oppijahaku__ei_tuloksia"}
-        error403Id={"oppijahaku__ei_tuloksia"}
       />
     </Page>
   )

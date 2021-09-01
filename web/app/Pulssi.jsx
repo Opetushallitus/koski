@@ -34,8 +34,6 @@ class Pulssi extends React.Component {
         acc + koulutusmuoto.valmistuneidenMäärä, 0
     )
 
-    let schoolsTotal = R.values(pulssi.oppilaitosMäärät.koulutusmuodoittain).reduce((acc, k) => acc + k, 0)
-
     return (
         <div className="column">
           <h1><span><Text name="Koski"/></span><img src="images/pulssi.png"/><span><Text name="Pulssi"/></span><img className="logo" src="images/oph_fin_vaaka.png" /></h1>
@@ -67,26 +65,6 @@ class Pulssi extends React.Component {
               </section>
             </div>
             <div className="column">
-              <section className="kattavuus-panel">
-                <div className="primary-metric kattavuus-total">
-                  <h3><Text name="Kattavuus"/></h3>
-                  <div className="metric-large">{toPercent(opiskeluoikeudet.siirtäneitäOppilaitoksiaYhteensä / schoolsTotal)}{' %'}</div>
-                  {opiskeluoikeudet.siirtäneitäOppilaitoksiaYhteensä}{' / '}{schoolsTotal}
-                </div>
-                <div className="metric-details kattavuus-koulutusmuodoittain">
-                  <ul>
-                    <li>
-                      <Kattavuus koulutusmuoto="Perusopetus" pulssi={pulssi} />
-                    </li>
-                    <li>
-                      <Kattavuus koulutusmuoto="Ammatillinen koulutus" pulssi={pulssi} />
-                    </li>
-                    <li>
-                      <Kattavuus koulutusmuoto="Lukiokoulutus" pulssi={pulssi} />
-                    </li>
-                  </ul>
-                </div>
-              </section>
               <section className="metric operaatiot">
                 <h3><Text name="Operaatiot / kk"/></h3>
                 <div className="metric-medium">{R.values(pulssi.metriikka.operaatiot).reduce((acc, määrä) => acc + määrä, 0)}</div>
@@ -138,23 +116,6 @@ class Pulssi extends React.Component {
 const minuteInterval = () => Bacon.once().concat(Bacon.interval(60 * 1000))
 
 const toPercent = x => Math.min(100, Math.round(x * 100 * 10) / 10)
-
-const Kattavuus = ({koulutusmuoto, pulssi}) => {
-  let kmuoto = pulssi.opiskeluoikeudet.koulutusmuotoTilastot.find(o => o.koulutusmuoto === koulutusmuoto)
-  let count =  (kmuoto && kmuoto.siirtäneitäOppilaitoksia) || 0
-  let total = pulssi.oppilaitosMäärät.koulutusmuodoittain[koulutusmuoto]
-  let percentage = (count && total && toPercent(count / total)) || 0
-
-  return (
-      <div>
-        <span>{koulutusmuoto}</span>
-        <span className="metric-value">{`${percentage} %  (${count} / ${total})`}</span>
-        <div className="progress-bar">
-          <div style={{width: percentage + '%'}} />
-        </div>
-      </div>
-  )
-}
 
 const KoulutusmuotoTilasto = ({tilasto}) => {
   let valmiitPercent = toPercent(tilasto.valmistuneidenMäärä / tilasto.opiskeluoikeuksienMäärä)

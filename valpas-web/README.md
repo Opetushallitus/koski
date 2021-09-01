@@ -33,17 +33,9 @@ npm install
 
 ```
 ├── src                     Lähdekoodit ja yksikkötestit niiden rinnalla
-│   ├── components          Uudelleenkäytettävat React-komponentit, niiden tyylit
-│   ├── style               Globaalit tyylitiedostot sekä muuttujat: värit, fonttikoot, mitat jne.
-│   ├── utils               Omat apukirjastot
-│   └── views               Näkymäkomponentit, tilanhallinta
-├── test                    Testien lisäkonfiguraatiot, apukirjastot ja testidata
-│   ├── integrationtests    Integraatiotestit
-│   ├── mocks               Mockit
-│   └── snapshots           Jestin snapshotit (eivät tallennu testitiedoston luo, kuten oletuksena)
-└── local_modules
-    └── parcel-plugin-skip-external-assets
-                            Paikallinen parcel-plugin raamien käsittelyä varten
+│   ├── views               Näkymäkomponentit
+│   └── *                   Uudelleenkäytettävät komponentit ja tyylit yms.
+└── test                    Integraatiotestit
 ```
 
 ## Backend
@@ -82,9 +74,9 @@ BROWSERSTACK_OS               Käyttöjärjestelmä (ja versio), esim. "windows 
 
 ## Käyttäjätunnukset
 
-Omalta koneelta ajaessa sisään voi kirjautua tunnuksilla `valpas-helsinki` tai `valpas-jkl-normaali` (käyttäjätunnus ja salasana ovat samat).
+Omalta koneelta ajaessa sisään voi kirjautua mm. tunnuksilla `valpas-helsinki` tai `valpas-jkl-normaali` (käyttäjätunnus ja salasana ovat samat).
 
-Mock-käyttäjät luodaan `ValpasMockUsers.scala` -tiedostossa.
+Mock-käyttäjät luodaan `ValpasMockUsers.scala` -tiedostossa
 
 ## Virkailija-raamit
 
@@ -92,16 +84,6 @@ Paikallisen palvelimen käynnistys untuvaopintopolusta ladattavien raamien kanss
 
 ```
 npm run start:raamit
-```
-
-Hakemistossa `local_modules/parcel-plugin-skip-external-assets` on paikallinen parcel-plugin raamiskriptin
-käsittelyä varten. Jos päivität plugin-koodia, ota muutokset käyttöön paikallisesti:
-
-```
-                                                  $ cd local_modules/parcel-plugin-skip-external-assets
- local_modules/parcel-plugin-skip-external-assets $ npm version minor
-                                                  $ cd ../..
-                                                  $ npm upgrade parcel-plugin-skip-external-assets
 ```
 
 ## CAS-kirjautumisen testaaminen lokaalisti

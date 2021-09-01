@@ -26,8 +26,6 @@ export const KuntaHetuhaku = withRequiresKuntavalvonta(() => {
         searchState={search}
         onQuery={search.call}
         prevPath={createKunnanHetuhakuPath()}
-        eiLöytynytIlmoitusId={"oppijahaku__ei_tuloksia"}
-        error403Id={"oppijahaku__ei_tuloksia"}
       />
     </Page>
   )

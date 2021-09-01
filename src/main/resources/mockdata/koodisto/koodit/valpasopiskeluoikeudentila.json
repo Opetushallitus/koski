@@ -166,4 +166,46 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "valpasopiskeluoikeudentila_keskeytynyt",
+  "koodiArvo" : "keskeytynyt",
+  "metadata" : [ {
+    "nimi" : "Keskeytynyt",
+    "lyhytNimi" : "",
+    "kuvaus" : "Opiskeluoikeus keskeytynyt",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Stoppat",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Halted",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "valpasopiskeluoikeudentila_hyvaksytystisuoritettu",
+  "koodiArvo" : "hyvaksytystisuoritettu",
+  "metadata" : [ {
+    "nimi" : "Hyväksytysti suoritettu",
+    "lyhytNimi" : "",
+    "kuvaus" : "Opiskeluoikeus suoritettu hyväksytysti",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Slutförd",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Completed",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]
