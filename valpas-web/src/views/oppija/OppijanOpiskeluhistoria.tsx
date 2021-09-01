@@ -277,7 +277,7 @@ const tilaString = (opiskeluoikeus: OpiskeluoikeusLaajatTiedot): string => {
       const tarkastelujaksonAlku = formatDate(
         opiskeluoikeus.tarkastelupäivänTilanAlkamispäivä
       )
-      return t("oppija__tila_valiaikaisesti_keskeytetty", {
+      return t("oppija__tila_valiaikaisesti_keskeytynyt", {
         päivämäärä: tarkastelujaksonAlku,
       })
     default:
