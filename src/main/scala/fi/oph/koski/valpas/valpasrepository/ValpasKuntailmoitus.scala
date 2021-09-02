@@ -3,10 +3,10 @@ package fi.oph.koski.valpas.valpasrepository
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
 import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
 import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystietojenAlkuperä
-import java.time.LocalDateTime
 
+import java.time.LocalDateTime
 import fi.oph.koski.valpas.ValpasKuntailmoitusLaajatTiedotLisätiedoilla
-import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOpiskeluoikeus
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeus, ValpasOpiskeluoikeusLaajatTiedot, ValpasOppijaLaajatTiedot, ValpasRajapäivätService}
 
 case class ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
   oppijaOid: String,
@@ -21,6 +21,34 @@ trait ValpasKuntailmoitus {
   def aikaleima: Option[LocalDateTime]
 }
 
+object ValpasKuntailmoitus {
+  def automaattisestiArkistoitava(
+    opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot],
+    kaikkiIlmoitukset: Seq[ValpasKuntailmoitus],
+  )(
+    ilmoitus: ValpasKuntailmoitus
+  ): Boolean = {
+    val saanutOpiskelupaikan = opiskeluoikeudet.exists(oo =>
+      oo.oppivelvollisuudenSuorittamiseenKelpaava &&
+        (oo.tarkastelupäivänTila.koodiarvo == "voimassa" || oo.tarkastelupäivänTila.koodiarvo == "voimassatulevaisuudessa")
+    )
+
+    val uudemmatIlmoitukset = ilmoitus.aikaleima match {
+      case None => Seq.empty
+      case Some(käsiteltäväAikaleima) => {
+        kaikkiIlmoitukset.filter(_.aikaleima match {
+          case None => false
+          case Some(aikaleima) => aikaleima.isAfter(käsiteltäväAikaleima)
+        })
+      }
+    }
+
+    val asuinkuntaVaihtunut = uudemmatIlmoitukset.exists(_.kunta.oid != ilmoitus.kunta.oid)
+
+    saanutOpiskelupaikan || asuinkuntaVaihtunut
+  }
+}
+
 trait ValpasKuntailmoituksenTekijä {
   def organisaatio: OrganisaatioWithOid // Tekijä voi olla joko kunta tai oppilaitos. Validointi, että on jompikumpi, tehdään erikseen.
 }
@@ -29,7 +57,8 @@ case class ValpasKuntailmoitusSuppeatTiedot(
   id: Option[String], // Oikeasti UUID - scala-schemasta puuttuu tuki UUID-tyypille
   tekijä: ValpasKuntailmoituksenTekijäSuppeatTiedot,
   kunta: OrganisaatioWithOid,
-  aikaleima: Option[LocalDateTime]
+  aikaleima: Option[LocalDateTime],
+  uudempiIlmoitusToiseenKuntaan: Option[Boolean] // Option, koska relevantti kenttä vain haettaessa ilmoituksia tietylle kunnalle
 ) extends ValpasKuntailmoitus
 
 object ValpasKuntailmoitusSuppeatTiedot {
@@ -43,6 +72,7 @@ object ValpasKuntailmoitusSuppeatTiedot {
       tekijä = ValpasKuntailmoituksenTekijäSuppeatTiedot(laajatTiedot.tekijä),
       kunta = laajatTiedot.kunta,
       aikaleima = laajatTiedot.aikaleima,
+      uudempiIlmoitusToiseenKuntaan = laajatTiedot.uudempiIlmoitusToiseenKuntaan,
     )
   }
 }
@@ -59,8 +89,9 @@ case class ValpasKuntailmoitusLaajatTiedot(
                                                  // tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa.
   oppijanYhteystiedot: Option[ValpasKuntailmoituksenOppijanYhteystiedot], // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn
                                                                          // ilmoituksen tiedoista, tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa
-  hakenutMuualle: Option[Boolean]             // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn ilmoituksen tiedoista,
+  hakenutMuualle: Option[Boolean],               // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn ilmoituksen tiedoista,
                                                  // tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa.
+  uudempiIlmoitusToiseenKuntaan: Option[Boolean] // Option, koska relevantti kenttä vain haettaessa ilmoituksia tietylle kunnalle
 ) extends ValpasKuntailmoitus
 
 case class ValpasKuntailmoituksenTekijäSuppeatTiedot(
