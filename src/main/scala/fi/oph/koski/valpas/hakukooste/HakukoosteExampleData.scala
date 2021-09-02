@@ -188,7 +188,7 @@ object HakukoosteExampleData {
       hakemusOid = generateHakemusOid(),
       hakemusUrl = "/placeholder-hakemus-url",
       hakutapa = yhteishakukoodi,
-      hakutyyppi = varsinaisenHaunKoodi,
+      hakutyyppi = Some(varsinaisenHaunKoodi),
       haunAlkamispaivamaara = alkamisaika,
       hakemuksenMuokkauksenAikaleima = muokkausaika,
       hakuNimi = hakuNimi,
