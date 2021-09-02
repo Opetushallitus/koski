@@ -17,7 +17,7 @@ case class Hakukooste(
   @KoodistoUri("hakutapa")
   hakutapa: Koodistokoodiviite,
   @KoodistoUri("hakutyyppi")
-  hakutyyppi: Koodistokoodiviite,
+  hakutyyppi: Option[Koodistokoodiviite],
   haunAlkamispaivamaara: LocalDateTime,
   hakuNimi: BlankableLocalizedString,
   email: String,
