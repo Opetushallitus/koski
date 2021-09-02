@@ -1,3 +1,4 @@
+import bem from "bem-ts"
 import * as A from "fp-ts/Array"
 import { pipe } from "fp-ts/lib/function"
 import React, { useMemo, useState } from "react"
@@ -14,6 +15,7 @@ import {
   CardHeader,
 } from "../../../components/containers/cards"
 import { Page } from "../../../components/containers/Page"
+import { LabeledCheckbox } from "../../../components/forms/Checkbox"
 import { Spinner } from "../../../components/icons/Spinner"
 import {
   getOrganisaatiot,
@@ -40,6 +42,8 @@ import { ErrorView } from "../../ErrorView"
 import { KuntaNavigation } from "../KuntaNavigation"
 import { KuntailmoitusTable } from "./KuntailmoitusTable"
 import "./KuntailmoitusView.less"
+
+const b = bem("kuntailmoitusview")
 
 const organisaatioTyyppi = "KUNTA"
 const organisaatioHakuRooli = "KUNTA"
@@ -109,12 +113,14 @@ export const KuntailmoitusView = withRequiresKuntavalvonta(
       fetchKuntailmoituksetCache
     )
 
-    const [näytäVanhentuneet] = useState(false)
-    const data = useMemo(() => {
+    const [näytäVanhentuneet, setNäytäVanhentuneet] = useState(false)
+    const [data, vanhentuneita] = useMemo(() => {
       const arr = isSuccess(fetch) ? fetch.data : []
-      return näytäVanhentuneet
-        ? arr
-        : arr.map(poistaOppijanVanhentuneetIlmoitukset)
+      const arrIlmanVanhoja = arr.map(poistaOppijanVanhentuneetIlmoitukset)
+      return [
+        näytäVanhentuneet ? arr : arrIlmanVanhoja,
+        kuntailmoitustenMäärä(arr) - kuntailmoitustenMäärä(arrIlmanVanhoja),
+      ]
     }, [fetch, näytäVanhentuneet])
 
     return (
@@ -137,6 +143,17 @@ export const KuntailmoitusView = withRequiresKuntavalvonta(
                   : `${counters.filteredRowCount} / ${counters.unfilteredRowCount}`}
               </Counter>
             )}
+            <LabeledCheckbox
+              inline
+              label={
+                t("kuntailmoitusnäkymä__näytä_arkistoidut_ilmoitukset") +
+                ` (${vanhentuneita})`
+              }
+              value={näytäVanhentuneet}
+              onChange={setNäytäVanhentuneet}
+              className={b("vanhatilmoituksetcb")}
+              testId="arkistoidutcb"
+            />
           </CardHeader>
           <CardBody>
             {isLoading(fetch) && <Spinner />}
@@ -189,4 +206,13 @@ const oppijallaOnOpiskelupaikka = (
     opiskeluoikeudet,
     A.filter(voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus),
     A.isNonEmpty
+  )
+
+const kuntailmoitustenMäärä = (
+  tiedot: OppijaKuntailmoituksillaSuppeatTiedot[]
+): number =>
+  pipe(
+    tiedot,
+    A.map((t) => t.kuntailmoitukset.length),
+    A.reduce(0, (a, b) => a + b)
   )

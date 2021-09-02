@@ -12,29 +12,38 @@ export type CheckboxProps = Omit<
   value: boolean
   onChange: (selected: boolean) => void
   disabled?: boolean
+  testId?: string
 }
 
 // TODO: Tuunaa tästä hienompi
-export const Checkbox = ({ value, onChange, ...rest }: CheckboxProps) => (
+export const Checkbox = ({
+  value,
+  onChange,
+  testId,
+  ...rest
+}: CheckboxProps) => (
   <input
     {...rest}
     className={b({ disabled: rest.disabled })}
     type="checkbox"
     checked={value}
     onChange={(event) => onChange(event.target.checked)}
+    data-testid={testId}
   />
 )
 
 export type LabeledCheckboxProps = CheckboxProps & {
   label: string
+  inline?: boolean
 }
 
 export const LabeledCheckbox = ({
   label,
   className,
+  inline,
   ...checkboxProps
 }: LabeledCheckboxProps) => (
-  <label className={joinClassNames(className, b("label"))}>
+  <label className={joinClassNames(className, b("label", { inline }))}>
     <Checkbox {...checkboxProps} />
     <div className={b("labeltext", { disabled: checkboxProps.disabled })}>
       {label}

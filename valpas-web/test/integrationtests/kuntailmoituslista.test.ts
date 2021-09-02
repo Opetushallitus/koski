@@ -15,7 +15,11 @@ import {
 } from "../integrationtests-env/browser/core"
 import { dataTableEventuallyEquals } from "../integrationtests-env/browser/datatable"
 import { loginAs, reset } from "../integrationtests-env/browser/reset"
-import { hkiTableContent_20211201 } from "./kuntailmoitus.shared"
+import {
+  hkiTableContent_20211201,
+  pyhtääTableContent,
+  pyhtääTableContent_kaikkiIlmoitukset,
+} from "./kuntailmoitus.shared"
 import { helsinginKaupunkiOid, pyhtäänKuntaOid } from "./oids"
 import {
   selectOrganisaatio,
@@ -30,6 +34,12 @@ const openOppijaView = async (oppijaOid: Oid) => {
 
 const rootPath = createKuntailmoitusPath("/virkailija")
 
+const ilmoitustitle = (
+  näkyviäIlmoituksia: number,
+  arkistoitujaIlmoituksia: number
+) =>
+  `Ilmoitetut oppivelvolliset ilman opiskelupaikkaa (${näkyviäIlmoituksia})Näytä arkistoidut ilmoitukset (${arkistoitujaIlmoituksia})`
+
 describe("Kunnan listanäkymä", () => {
   beforeAll(async () => {
     await reset(rootPath, true)
@@ -38,10 +48,7 @@ describe("Kunnan listanäkymä", () => {
   it("Näyttää tyhjän listan virheittä, jos ei oppijoita", async () => {
     await loginAs(rootPath, "valpas-tornio")
     await urlIsEventually(pathToUrl(rootPath))
-    await textEventuallyEquals(
-      ".card__header",
-      "Ilmoitetut oppivelvolliset ilman opiskelupaikkaa (0)"
-    )
+    await textEventuallyEquals(".card__header", ilmoitustitle(0, 0))
   })
 
   it("Ohjaa ensisijaiseen organisaatioon ja näyttää listan ilmoituksista", async () => {
@@ -51,10 +58,7 @@ describe("Kunnan listanäkymä", () => {
         createKuntailmoitusPathWithOrg("/virkailija", helsinginKaupunkiOid)
       )
     )
-    await textEventuallyEquals(
-      ".card__header",
-      "Ilmoitetut oppivelvolliset ilman opiskelupaikkaa (1)"
-    )
+    await textEventuallyEquals(".card__header", ilmoitustitle(1, 0))
     await dataTableEventuallyEquals(
       ".kuntailmoitus",
       hkiTableContent_20211201,
@@ -71,19 +75,13 @@ describe("Kunnan listanäkymä", () => {
         createKuntailmoitusPathWithOrg("/virkailija", helsinginKaupunkiOid)
       )
     )
-    await textEventuallyEquals(
-      ".card__header",
-      "Ilmoitetut oppivelvolliset ilman opiskelupaikkaa (0)"
-    )
+    await textEventuallyEquals(".card__header", ilmoitustitle(0, 1))
 
     await selectOrganisaatio(1)
     await urlIsEventually(
       pathToUrl(createKuntailmoitusPathWithOrg("/virkailija", pyhtäänKuntaOid))
     )
-    await textEventuallyEquals(
-      ".card__header",
-      "Ilmoitetut oppivelvolliset ilman opiskelupaikkaa (4)"
-    )
+    await textEventuallyEquals(".card__header", ilmoitustitle(4, 3))
   })
 
   it("Käyminen oppijakohtaisessa näkymässä ei hukkaa valittua organisaatiota", async () => {
@@ -123,5 +121,25 @@ describe("Kunnan listanäkymä", () => {
     ]
 
     expect(organisaatiot).toEqual(expectedOrganisaatiot)
+  })
+
+  it("Valitsin näyttää ja piilottaa arkistoidut ilmoitukset", async () => {
+    await loginAs(rootPath, "valpas-useita-kuntia")
+
+    await selectOrganisaatio(1)
+    await urlIsEventually(
+      pathToUrl(createKuntailmoitusPathWithOrg("/virkailija", pyhtäänKuntaOid))
+    )
+
+    await textEventuallyEquals(".card__header", ilmoitustitle(4, 3))
+    await dataTableEventuallyEquals(".kuntailmoitus", pyhtääTableContent, "|")
+
+    await clickElement('[data-testid="arkistoidutcb"]')
+
+    await dataTableEventuallyEquals(
+      ".kuntailmoitus",
+      pyhtääTableContent_kaikkiIlmoitukset,
+      "|"
+    )
   })
 })
