@@ -1,3 +1,5 @@
+import * as A from "fp-ts/Array"
+import { pipe } from "fp-ts/lib/function"
 import React, { useMemo, useState } from "react"
 import { Redirect, RouteComponentProps, useHistory } from "react-router"
 import {
@@ -26,6 +28,11 @@ import {
   useOrganisaatiotJaKäyttöoikeusroolit,
   withRequiresKuntavalvonta,
 } from "../../../state/accessRights"
+import {
+  OpiskeluoikeusSuppeatTiedot,
+  voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus,
+} from "../../../state/apitypes/opiskeluoikeus"
+import { OppijaKuntailmoituksillaSuppeatTiedot } from "../../../state/apitypes/oppija"
 import { useBasePath } from "../../../state/basePath"
 import { Oid } from "../../../state/common"
 import { createKuntailmoitusPathWithOrg } from "../../../state/paths"
@@ -102,6 +109,14 @@ export const KuntailmoitusView = withRequiresKuntavalvonta(
       fetchKuntailmoituksetCache
     )
 
+    const [näytäVanhentuneet] = useState(false)
+    const data = useMemo(() => {
+      const arr = isSuccess(fetch) ? fetch.data : []
+      return näytäVanhentuneet
+        ? arr
+        : arr.map(poistaOppijanVanhentuneetIlmoitukset)
+    }, [fetch, näytäVanhentuneet])
+
     return (
       <Page>
         <OrganisaatioValitsin
@@ -130,9 +145,9 @@ export const KuntailmoitusView = withRequiresKuntavalvonta(
                 <T id="kuntailmoitusnäkymä__ei_ilmoituksia" />
               </NoDataMessage>
             )}
-            {isSuccess(fetch) && fetch.data.length > 0 && (
+            {isSuccess(fetch) && data.length > 0 && (
               <KuntailmoitusTable
-                data={fetch.data}
+                data={data}
                 organisaatioOid={organisaatioOid}
                 onCountChange={setCounters}
               />
@@ -151,3 +166,27 @@ const OrganisaatioMissingView = () => (
     head={<KuntaNavigation />}
   />
 )
+
+const poistaOppijanVanhentuneetIlmoitukset = (
+  tiedot: OppijaKuntailmoituksillaSuppeatTiedot
+) => {
+  const eiOpiskelupaikkaa = !oppijallaOnOpiskelupaikka(
+    tiedot.oppija.opiskeluoikeudet
+  )
+
+  return {
+    ...tiedot,
+    kuntailmoitukset: tiedot.kuntailmoitukset.filter(
+      (i) => eiOpiskelupaikkaa && !i.uudempiIlmoitusToiseenKuntaan
+    ),
+  }
+}
+
+const oppijallaOnOpiskelupaikka = (
+  opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
+): boolean =>
+  pipe(
+    opiskeluoikeudet,
+    A.filter(voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus),
+    A.isNonEmpty
+  )

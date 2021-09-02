@@ -15,7 +15,7 @@ import {
 } from "../integrationtests-env/browser/core"
 import { dataTableEventuallyEquals } from "../integrationtests-env/browser/datatable"
 import { loginAs, reset } from "../integrationtests-env/browser/reset"
-import { hkiTableContent } from "./kuntailmoitus.shared"
+import { hkiTableContent_20211201 } from "./kuntailmoitus.shared"
 import { helsinginKaupunkiOid, pyhtäänKuntaOid } from "./oids"
 import {
   selectOrganisaatio,
@@ -45,7 +45,7 @@ describe("Kunnan listanäkymä", () => {
   })
 
   it("Ohjaa ensisijaiseen organisaatioon ja näyttää listan ilmoituksista", async () => {
-    await loginAs(rootPath, "valpas-useita-kuntia")
+    await loginAs(rootPath, "valpas-useita-kuntia", false, "2021-12-01")
     await urlIsEventually(
       pathToUrl(
         createKuntailmoitusPathWithOrg("/virkailija", helsinginKaupunkiOid)
@@ -55,7 +55,11 @@ describe("Kunnan listanäkymä", () => {
       ".card__header",
       "Ilmoitetut oppivelvolliset ilman opiskelupaikkaa (1)"
     )
-    await dataTableEventuallyEquals(".kuntailmoitus", hkiTableContent, "|")
+    await dataTableEventuallyEquals(
+      ".kuntailmoitus",
+      hkiTableContent_20211201,
+      "|"
+    )
   })
 
   it("Vaihtaa taulun sisällön organisaatiovalitsimesta", async () => {
@@ -69,7 +73,7 @@ describe("Kunnan listanäkymä", () => {
     )
     await textEventuallyEquals(
       ".card__header",
-      "Ilmoitetut oppivelvolliset ilman opiskelupaikkaa (1)"
+      "Ilmoitetut oppivelvolliset ilman opiskelupaikkaa (0)"
     )
 
     await selectOrganisaatio(1)
@@ -78,7 +82,7 @@ describe("Kunnan listanäkymä", () => {
     )
     await textEventuallyEquals(
       ".card__header",
-      "Ilmoitetut oppivelvolliset ilman opiskelupaikkaa (7)"
+      "Ilmoitetut oppivelvolliset ilman opiskelupaikkaa (4)"
     )
   })
 

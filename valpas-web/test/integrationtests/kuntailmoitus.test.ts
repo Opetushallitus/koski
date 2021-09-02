@@ -30,7 +30,7 @@ import {
   jklNormaalikouluTableContent,
   openOppijaView,
 } from "./hakutilanne.shared"
-import { hkiTableContent } from "./kuntailmoitus.shared"
+import { hkiTableContent_20211201 } from "./kuntailmoitus.shared"
 import { jyväskylänNormaalikouluOid } from "./oids"
 import { suorittaminenHetuhakuPath } from "./suorittaminen.shared"
 
@@ -259,8 +259,12 @@ describe("Kuntailmoituksen tekeminen", () => {
   })
 
   it("happy path kunnan käyttäjänä", async () => {
-    await loginAs(hakutilannePath, "valpas-helsinki", true)
-    await dataTableEventuallyEquals(".kuntailmoitus", hkiTableContent, "|")
+    await loginAs(hakutilannePath, "valpas-helsinki", true, "2021-12-01")
+    await dataTableEventuallyEquals(
+      ".kuntailmoitus",
+      hkiTableContent_20211201,
+      "|"
+    )
 
     await testaaOppijanäkymistä(kunnanOppijat, kuntakäyttäjä)
   })

@@ -30,6 +30,7 @@ export type KuntailmoitusSuppeatTiedot = {
   tekijä: KuntailmoituksenTekijäSuppeatTiedot
   kunta: Organisaatio
   aikaleima?: ISODateTime
+  uudempiIlmoitusToiseenKuntaan?: boolean
 }
 
 export type LuotuKuntailmoitusSuppeatTiedot = KuntailmoitusSuppeatTiedot & {
