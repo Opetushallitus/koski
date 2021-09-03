@@ -28,7 +28,7 @@
     <dependency>
       <groupId>fi.vm.sade</groupId>
       <artifactId>scala-cas_2.12</artifactId>
-      <version>2.3.0-YKI-SNAPSHOT</version>
+      <version>2.2.2-SNAPSHOT</version>
       <exclusions>
         <exclusion>
           <groupId>org.http4s</groupId>
