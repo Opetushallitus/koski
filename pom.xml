@@ -39,15 +39,6 @@
       </exclusions>
     </dependency>
     -->
-    <!-- OPH internal deps -->
-    <!-- for local development -->
-    <!--
-    <dependency>
-      <groupId>fi.vm.sade</groupId>
-      <artifactId>scala-cas_2.12</artifactId>
-      <version>10</version>
-    </dependency>
-    -->
     <dependency>
       <groupId>com.github.Opetushallitus</groupId>
       <artifactId>auditlogger</artifactId>
