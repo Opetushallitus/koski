@@ -151,7 +151,9 @@ class OppijaValidationLukioonValmistavaSpec extends TutkinnonPerusteetTest[Lukio
         )
 
         putOpiskeluoikeus(opiskeluoikeus) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.lukioonValmistavallaKoulutuksellaVääräLaajuudenArvo("Lukioon valmistavan koulutuksen suorituksella voi olla laajuuden koodiyksikkönä vain '4', jos suorituksen diaarinumero on '56/011/2015'"))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.lukioonValmistavallaKoulutuksellaVääräLaajuudenArvo(
+            "Lukioon valmistavan koulutuksen suorituksella voi olla laajuuden koodiyksikkönä vain '4', jos suorituksen diaarinumero on '56/011/2015'"
+          ))
         }
       }
     }

@@ -73,11 +73,21 @@
           "koodiarvo" : "999906",
           "koodistoUri" : "koulutus"
         },
-        "perusteenDiaarinumero" : "56/011/2015",
+        "perusteenDiaarinumero" : "OPH-4958-2020",
         "laajuus" : {
-          "arvo" : 2.0,
+          "arvo" : 3.0,
           "yksikkö" : {
-            "koodiarvo" : "4",
+            "koodiarvo" : "2",
+            "nimi" : {
+              "fi" : "opintopistettä",
+              "sv" : "studiepoäng",
+              "en" : "ECTS credits"
+            },
+            "lyhytNimi" : {
+              "fi" : "op",
+              "sv" : "sp",
+              "en" : "ECTS cr"
+            },
             "koodistoUri" : "opintojenlaajuusyksikko"
           }
         }
@@ -232,9 +242,19 @@
               }
             },
             "laajuus" : {
-              "arvo" : 1.0,
+              "arvo" : 2.0,
               "yksikkö" : {
-                "koodiarvo" : "4",
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },

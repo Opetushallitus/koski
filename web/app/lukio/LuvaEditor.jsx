@@ -4,17 +4,17 @@ import Text from '../i18n/Text'
 import {modelItems} from '../editor/EditorModel'
 import OmatTiedotLukionOppiaineet from './OmatTiedotLukionOppiaineet'
 
-import {modelData, modelLookup} from '../editor/EditorModel'
+import {modelData} from '../editor/EditorModel'
 
 export const LuvaEditor = ({suorituksetModel}) => {
   const {edit, kansalainen} = suorituksetModel.context
 
   const lukionkurssinsuorituksetFilter = s => s.value.classes.includes('lukionoppiaineenopintojensuorituslukioonvalmistavassakoulutuksessa')
-  const lukio2019ModuuliennsuorituksetFilter = s => s.value.classes.includes('lukionoppiaineenopintojensuorituslukioonvalmistavassakoulutuksessa2019')
+  const lukio2019moduuliensuorituksetFilter = s => s.value.classes.includes('lukionoppiaineenopintojensuorituslukioonvalmistavassakoulutuksessa2019')
   const lukioonvalmistavankurssinsuorituksetFilter = s => s.value.classes.includes('lukioonvalmistavankoulutuksenoppiaineensuoritus')
 
   const hasLukionKursseja = modelItems(suorituksetModel).filter(lukionkurssinsuorituksetFilter).length > 0
-  const hasLukion2019Moduuleja = modelItems(suorituksetModel).filter(lukio2019ModuuliennsuorituksetFilter).length > 0
+  const hasLukion2019Moduuleja = modelItems(suorituksetModel).filter(lukio2019moduuliensuorituksetFilter).length > 0
   const hasValmistaviaKursseja = modelItems(suorituksetModel).filter(lukioonvalmistavankurssinsuorituksetFilter).length > 0
 
   const LukionOppiaineetComponent = kansalainen ? OmatTiedotLukionOppiaineet : LukionOppiaineetEditor
@@ -53,11 +53,11 @@ export const LuvaEditor = ({suorituksetModel}) => {
           <LukionOppiaineetComponent
             suorituksetModel={suorituksetModel}
             classesForUusiOppiaineenSuoritus={['lukionoppiaineenopintojensuorituslukioonvalmistavassakoulutuksessa2019']}
-            suoritusFilter={lukio2019ModuuliennsuorituksetFilter}
+            suoritusFilter={lukio2019moduuliensuorituksetFilter}
             useOppiaineLaajuus={true}
             showKeskiarvo={false}
             additionalOnlyEditableProperties={['suorituskieli', 'suoritettuErityisenäTutkintona']}
-            additionalEditableKoulutusmoduuliProperties={['pakollinen']}
+            additionalEditableKoulutusmoduuliProperties={['pakollinen', 'oppimäärä']}
             laajuusHeaderText={'Arvioitu'}
             showHyväksytystiArvioitujenLaajuus={true}
             useHylkäämättömätLaajuus={false}

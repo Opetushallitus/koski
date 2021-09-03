@@ -63,7 +63,7 @@ export class LukionOppiaineEditor extends React.Component {
 
     const laajuusArvo = () => {
       if (forceLaajuusOpintopisteinä) {
-        return "2"
+        return '2'
       }
       else if (useOppiaineLaajuus) {
         return modelData(oppiaine, 'koulutusmoduuli.laajuus.arvo')

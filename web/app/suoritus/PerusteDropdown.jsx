@@ -5,7 +5,7 @@ import Dropdown from '../components/Dropdown'
 import {elementWithLoadingIndicator} from '../components/AjaxLoadingIndicator'
 import {t} from '../i18n/i18n'
 
-const preferred = ['OPH-1280-2017', '104/011/2014']
+const preferred = ['OPH-1280-2017', '104/011/2014', 'OPH-4958-2020']
 
 export const PerusteDropdown = ({suoritusTyyppiP, perusteAtom}) => {
   let diaarinumerotP = suoritusTyyppiP.flatMapLatest(tyyppi =>  !tyyppi ? Bacon.never() : diaarinumerot(tyyppi)).toProperty()

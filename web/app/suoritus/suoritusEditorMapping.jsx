@@ -31,8 +31,6 @@ export const resolveOsasuorituksetEditor = (mdl) => {
   const {kansalainen} = mdl.context
   const LukionOppiaineetComponent = kansalainen ? OmatTiedotLukionOppiaineet : LukionOppiaineetEditor
 
-
-
   if (firstClassOneOf(
       'perusopetuksenvuosiluokansuoritus',
       'nuortenperusopetuksenoppimaaransuoritus',
@@ -80,7 +78,7 @@ export const resolveOsasuorituksetEditor = (mdl) => {
         useOppiaineLaajuus={true}
         showKeskiarvo={false}
         additionalOnlyEditableProperties={['suorituskieli', 'suoritettuErityisenäTutkintona']}
-        additionalEditableKoulutusmoduuliProperties={['pakollinen']}
+        additionalEditableKoulutusmoduuliProperties={['pakollinen', 'oppimäärä']}
         laajuusHeaderText={'Arvioitu'}
         showHyväksytystiArvioitujenLaajuus={true}
         useHylkäämättömätLaajuus={false}

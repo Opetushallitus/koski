@@ -10,23 +10,11 @@ object LukioonValmistavanKoulutuksenValidaatiot {
   def validateLukioonValmistava2019(suoritus: Suoritus) = {
     suoritus match {
       case s: LukioonValmistavanKoulutuksenSuoritus => HttpStatus.fold(List(
-          validateLukioonValmistava2019Osasuoritukset(s),
           validateOikeatKoodistotKäytössä(s),
           validateLaajuudenYksiköt(s)
         )
       )
       case _ => HttpStatus.ok
-    }
-  }
-
-  private def validateLukioonValmistava2019Osasuoritukset(suoritus: LukioonValmistavanKoulutuksenSuoritus) = {
-    if (suoritus.osasuoritukset.getOrElse(List()).exists(_.isInstanceOf[LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa2019]) &&
-      suoritus.osasuoritukset.getOrElse(List()).exists(_.isInstanceOf[LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa]))
-    {
-      KoskiErrorCategory.badRequest.validation.rakenne.lukioonValmistavassaEriLukioOpsienOsasuorituksia()
-    }
-    else {
-      HttpStatus.ok
     }
   }
 
@@ -56,7 +44,8 @@ object LukioonValmistavanKoulutuksenValidaatiot {
       }
     } else if (suoritus.koulutusmoduuli.perusteenDiaarinumero.getOrElse("") == "56/011/2015") {
       laajuudetRekursiivisesti(suoritus).exists(_.yksikkö.koodiarvo != laajuusKursseissa.koodiarvo) match {
-        case true => KoskiErrorCategory.badRequest.validation.laajuudet.lukioonValmistavallaKoulutuksellaVääräLaajuudenArvo("Lukioon valmistavan koulutuksen suorituksella voi olla laajuuden koodiyksikkönä vain '4', jos suorituksen diaarinumero on '56/011/2015'")
+        case true => KoskiErrorCategory.badRequest.validation.laajuudet.lukioonValmistavallaKoulutuksellaVääräLaajuudenArvo(
+          "Lukioon valmistavan koulutuksen suorituksella voi olla laajuuden koodiyksikkönä vain '4', jos suorituksen diaarinumero on '56/011/2015'")
         case false => HttpStatus.ok
       }
     } else {

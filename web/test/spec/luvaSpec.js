@@ -434,7 +434,7 @@ describe('Lukioon valmistava koulutus', function() {
   describe('Opiskeluoikeuden lisääminen', function() {
       before(
         prepareForNewOppija('kalle', '040958-558T'),
-        addOppija.enterValidDataLuva({ oppilaitos: 'Ressun', peruste: '56/011/2015', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus' }),
+        addOppija.enterValidDataLuva({ oppilaitos: 'Ressun', peruste: 'OPH-4958-2020', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus' }),
         addOppija.submitAndExpectSuccess('Tyhjä, Tero (040958-558T)', 'Lukiokoulutukseen valmistava koulutus')
       )
 
@@ -442,7 +442,7 @@ describe('Lukioon valmistava koulutus', function() {
         describe('Opiskeluoikeuden tiedot', function() {
           it('näytetään oikein', function () {
             expect(S('.koulutusmoduuli .tunniste').text()).to.equal('Lukiokoulutukseen valmistava koulutus')
-            expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('56/011/2015')
+            expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('OPH-4958-2020')
             expect(editor.propertyBySelector('.toimipiste').getValue()).to.equal('Ressun lukio')
             expect(opinnot.getSuorituskieli()).to.equal('suomi')
           })

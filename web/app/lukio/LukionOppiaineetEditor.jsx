@@ -6,7 +6,7 @@ import {modelErrorMessages, modelItems, modelLookup, modelTitle} from '../editor
 import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTableHead'
 import {t} from '../i18n/i18n'
 import {flatMapArray} from '../util/util'
-import {arvioidutOsasuoritukset, hyväksytystiArvioidutOsasuoritukset, hylkäämättömätOsasuoritukset, isLukioOps2019, isLuva2019, isPreIbLukioOps2019, laajuudet} from './lukio'
+import {arvioidutOsasuoritukset, hyväksytystiArvioidutOsasuoritukset, hylkäämättömätOsasuoritukset, isLukioOps2019, isLuvaOps2019, isPreIbLukioOps2019, laajuudet} from './lukio'
 import {numberToString} from '../util/format.js'
 import {isPaikallinen} from '../suoritus/Koulutusmoduuli'
 import {FootnoteDescriptions} from '../components/footnote'
@@ -47,7 +47,7 @@ export const LukionOppiaineetEditor = ({
     )
   )
   const oppiaineetWithErrorRows = R.zip(oppiaineRows, errorRows)
-  const laajuusyksikkö = (forceLaajuusOpintopisteinä && "opintopistettä") ||
+  const laajuusyksikkö = (forceLaajuusOpintopisteinä && 'opintopistettä') ||
     modelTitle(oppiaineet[0], 'koulutusmoduuli.laajuus.yksikkö') || 'kurssia'
 
   const arvosanaHeaderText = showKeskiarvo ? 'Arvosana (keskiarvo)' : 'Arvosana'
@@ -86,6 +86,7 @@ export const paikallisiaOsasuorituksia = oppiaine => modelItems(oppiaine, 'osasu
 export const OsasuorituksetYhteensa = ({suorituksetModel, oppiaineet}) => {
   const isLukio2019 = isLukioOps2019(suorituksetModel.context.suoritus)
   const isPreIB2019 = isPreIbLukioOps2019(suorituksetModel.context.suoritus)
+  const isLuva2019 = isLuvaOps2019(suorituksetModel.context.suoritus)
 
   return (isLukio2019 || isPreIB2019 || isLuva2019) ? (
     <div className="kurssit-yhteensä">
@@ -99,5 +100,5 @@ export const OsasuorituksetYhteensa = ({suorituksetModel, oppiaineet}) => {
   )
 }
 
-export const paikallinenOsasuoritusTaiOppiaineText = päätasonSuoritus => (isLukioOps2019(päätasonSuoritus) || isPreIbLukioOps2019(päätasonSuoritus)) ?
+export const paikallinenOsasuoritusTaiOppiaineText = päätasonSuoritus => (isLukioOps2019(päätasonSuoritus) || isPreIbLukioOps2019(päätasonSuoritus) || isLuvaOps2019(päätasonSuoritus)) ?
   'Paikallinen opintojakso tai oppiaine' : 'Paikallinen kurssi tai oppiaine'
