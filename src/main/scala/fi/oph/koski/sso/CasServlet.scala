@@ -1,9 +1,8 @@
 package fi.oph.koski.sso
 
-import fi.oph.koski.cas.CasClient.Username
-import fi.oph.koski.cas.{CasClient, CasLogout}
+import fi.oph.koski.cas.CasLogout
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.http.{Http, KoskiErrorCategory, OpintopolkuCallerId}
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer.writeWithRoot
 import fi.oph.koski.koskiuser.{AuthenticationUser, DirectoryClientLogin, KoskiSpecificAuthenticationSupport, UserLanguage}
 import fi.oph.koski.log.LogUserContext
@@ -13,23 +12,13 @@ import org.scalatra.{Cookie, CookieOptions}
 
 import java.net.URLEncoder.encode
 import java.nio.charset.StandardCharsets
-import java.util.concurrent.TimeUnit
-import scala.concurrent.duration.DurationInt
 
 /**
   *  This is where the user lands after a CAS login / logout
   */
 class CasServlet()(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with KoskiSpecificAuthenticationSupport with NoCache {
-  private val casVirkailijaClient = new CasClient(application.config.getString("opintopolku.virkailija.url") + "/cas", Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
-  private val casOppijaClient = new CasClient(application.config.getString("opintopolku.oppija.url") + "/cas-oppija", Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
   private val koskiSessions = application.koskiSessionRepository
-  private val mockUsernameForAllVirkailijaTickets = {
-    if (application.config.getString("opintopolku.virkailija.url") == "mock" && application.config.hasPath("mock.casClient.usernameForAllVirkailijaTickets")) {
-      Some(application.config.getString("mock.casClient.usernameForAllVirkailijaTickets"))
-    } else {
-      None
-    }
-  }
+  private val casService = application.casService
 
   protected def onSuccess: String = params.get("onSuccess").getOrElse("/omattiedot")
   protected def onFailure: String = params.get("onFailure").getOrElse("/virhesivu")
@@ -54,7 +43,11 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
       params.get("ticket") match {
         case Some(ticket) =>
           try {
-            val hetu = validateKansalainenServiceTicket(ticket)
+            val url = params.get("onSuccess") match {
+              case Some(onSuccessRedirectUrl) => casOppijaServiceUrl + "?onSuccess=" + onSuccessRedirectUrl
+              case None => casOppijaServiceUrl
+            }
+            val hetu = casService.validateKansalainenServiceTicket(url, ticket)
             findOrCreate(hetu) match {
               case Some(oppija) =>
                 val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
@@ -81,7 +74,7 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
     params.get("ticket") match {
       case Some(ticket) =>
         try {
-          val username = validateVirkailijaServiceTicket(ticket)
+          val username = casService.validateVirkailijaServiceTicket(casVirkailijaServiceUrl, ticket)
           DirectoryClientLogin.findUser(application.directoryClient, request, username) match {
             case Some(user) =>
               setUser(Right(user.copy(serviceTicket = Some(ticket))))
@@ -156,27 +149,5 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
       case None =>
         logger.warn("Got CAS logout POST without logoutRequest parameter")
     }
-  }
-
-  def validateKansalainenServiceTicket(ticket: String): String = {
-    val url = params.get("onSuccess") match {
-      case Some(onSuccessRedirectUrl) => casOppijaServiceUrl + "?onSuccess=" + onSuccessRedirectUrl
-      case None => casOppijaServiceUrl
-    }
-    val oppijaAttributes = Http.runIO(
-      casOppijaClient.validateServiceTicketWithOppijaAttributes(url)(ticket),
-      timeout = 10.seconds
-    )
-
-    oppijaAttributes("nationalIdentificationNumber")
-  }
-
-  def validateVirkailijaServiceTicket(ticket: String): Username = {
-    mockUsernameForAllVirkailijaTickets.getOrElse({
-      Http.runIO(
-        casVirkailijaClient.validateServiceTicketWithVirkailijaUsername(casVirkailijaServiceUrl)(ticket),
-        timeout = 10.seconds
-      )
-    })
   }
 }
