@@ -233,5 +233,11 @@
   "koulutustyyppi_ib": "IB",
   "koulutustyyppi_internationalschool": "International school",
   "koulutustyyppi_dia": "DIA",
-  "koulutustyyppi_perusopetus": "Perusopetus"
+  "koulutustyyppi_perusopetus": "Perusopetus",
+  "kunnalleilmoitetut_otsikko": "Ilmoitettu asuinkunnalle",
+  "kunnalleilmoitetut_nimi": "Nimi",
+  "kunnalleilmoitetut_syntymäaika": "Syntymäaika",
+  "kunnalleilmoitetut_ilmoitettu_kunnalle": "Ilmoitettu kunnalle",
+  "kunnalleilmoitetut_ilmoituksen_tekopäivä": "Ilmoituksen tekopäivä",
+  "kunnalleilmoitetut_muu_haku": "Muu haku"
 }

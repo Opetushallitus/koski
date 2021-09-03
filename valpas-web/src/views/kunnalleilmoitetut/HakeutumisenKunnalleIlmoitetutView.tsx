@@ -1,5 +1,4 @@
 import React from "react"
-import { Page } from "../../components/containers/Page"
 import { t } from "../../i18n/i18n"
 import { withRequiresHakeutumisenValvonta } from "../../state/accessRights"
 import {
@@ -8,12 +7,16 @@ import {
 } from "../../state/paths"
 import { ErrorView } from "../ErrorView"
 import { OrganisaatioAutoRedirect } from "../OrganisaatioAutoRedirect"
+import { KunnalleIlmoitetutView } from "./KunnalleIlmoitetutView"
+
+const organisaatioTyyppi = "OPPILAITOS"
+const organisaatioHakuRooli = "OPPILAITOS_HAKEUTUMINEN"
 
 export const HakeutumisenKunnalleIlmoitetutViewWithoutOrgOid = withRequiresHakeutumisenValvonta(
   () => (
     <OrganisaatioAutoRedirect
-      organisaatioHakuRooli="OPPILAITOS_HAKEUTUMINEN"
-      organisaatioTyyppi="OPPILAITOS"
+      organisaatioHakuRooli={organisaatioHakuRooli}
+      organisaatioTyyppi={organisaatioTyyppi}
       redirectTo={(basePath, organisaatioOid) =>
         createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg(basePath, {
           organisaatioOid,
@@ -24,12 +27,15 @@ export const HakeutumisenKunnalleIlmoitetutViewWithoutOrgOid = withRequiresHakeu
   )
 )
 
+export type HakeutumisenKunnalleIlmoitetutViewProps = KunnalleIlmoitetutViewRouteProps
+
 export const HakeutumisenKunnalleIlmoitetutView = withRequiresHakeutumisenValvonta(
   (props: KunnalleIlmoitetutViewRouteProps) => (
-    <Page>
-      TODO: HakeutumisenKunnalleIlmoitetutView{" "}
-      {props.match.params.organisaatioOid}
-    </Page>
+    <KunnalleIlmoitetutView
+      organisaatioOid={props.match.params.organisaatioOid!}
+      organisaatioHakuRooli={organisaatioHakuRooli}
+      organisaatioTyyppi={organisaatioTyyppi}
+    />
   )
 )
 
