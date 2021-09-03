@@ -18,6 +18,8 @@ import {
 import { BasePathProvider, useBasePath } from "../state/basePath"
 import {
   createHakutilannePathWithoutOrg,
+  hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
+  hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg,
   hakutilannePathWithOrg,
   hakutilannePathWithoutOrg,
   kunnanHetuhakuPath,
@@ -43,6 +45,10 @@ import {
   HakutilanneViewWithoutOrgOid,
 } from "./hakutilanne/HakutilanneView"
 import { HomeView } from "./HomeView"
+import {
+  HakeutumisenKunnalleIlmoitetutView,
+  HakeutumisenKunnalleIlmoitetutViewWithoutOrgOid,
+} from "./kunnalleilmoitetut/HakeutumisenKunnalleIlmoitetutView"
 import { KuntaHetuhaku } from "./kunta/hetuhaku/KuntaHetuhaku"
 import {
   KuntailmoitusView,
@@ -81,9 +87,29 @@ const VirkailijaRoutes = () => {
         />
         <Route
           exact
+          path={hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg(basePath)}
+          render={(routeProps) => (
+            <HakeutumisenKunnalleIlmoitetutViewWithoutOrgOid
+              redirectUserWithoutAccessTo={rootPath(basePath)}
+              {...routeProps}
+            />
+          )}
+        />
+        <Route
+          exact
           path={hakutilannePathWithOrg(basePath)}
           render={(routeProps) => (
             <HakutilanneView
+              redirectUserWithoutAccessTo={rootPath(basePath)}
+              {...routeProps}
+            />
+          )}
+        />
+        <Route
+          exact
+          path={hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg(basePath)}
+          render={(routeProps) => (
+            <HakeutumisenKunnalleIlmoitetutView
               redirectUserWithoutAccessTo={rootPath(basePath)}
               {...routeProps}
             />

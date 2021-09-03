@@ -57,6 +57,27 @@ export type HakutilanneViewRouteProps = RouteComponentProps<{
   organisaatioOid?: string
 }>
 
+// Ilmoitettu kunnalle -näkymä
+
+export const hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg = (
+  basePath: string = ""
+) => `${basePath}/hakutilanne/ilmoitetut`
+
+export const createHakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg = hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg
+
+export const hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg = (
+  basePath: string = ""
+) => `${basePath}/hakutilanne/:organisaatioOid/ilmoitetut`
+
+export const createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg = (
+  basePath: string = "",
+  params: { organisaatioOid: Oid }
+) => `${basePath}/hakutilanne/${params.organisaatioOid}/ilmoitetut`
+
+export type KunnalleIlmoitetutViewRouteProps = RouteComponentProps<{
+  organisaatioOid?: string
+}>
+
 // Oppijakohtainen näkymä
 
 export const oppijaPath = (basePath: string = "") =>

@@ -5,7 +5,10 @@ import {
 } from "../../components/navigation/TabNavigation"
 import { t } from "../../i18n/i18n"
 import { Oid } from "../../state/common"
-import { createHakutilannePathWithOrg } from "../../state/paths"
+import {
+  createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
+  createHakutilannePathWithOrg,
+} from "../../state/paths"
 
 export type HakutilanneNavigationProps = {
   selectedOrganisaatio: Oid
@@ -18,6 +21,15 @@ export const HakutilanneNavigation = (props: HakutilanneNavigationProps) => {
       linkTo: createHakutilannePathWithOrg(undefined, {
         organisaatioOid: props.selectedOrganisaatio,
       }),
+    },
+    {
+      display: t("hakeutumisvelvollisetnavi__ilmoitettu_kunnalle"),
+      linkTo: createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg(
+        undefined,
+        {
+          organisaatioOid: props.selectedOrganisaatio,
+        }
+      ),
     },
   ]
 
