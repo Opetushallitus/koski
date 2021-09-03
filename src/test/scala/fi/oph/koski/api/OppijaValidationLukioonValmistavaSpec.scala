@@ -2,11 +2,10 @@ package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.ExamplesLukioonValmistavaKoulutus.{lukioonValmistavanKoulutuksenSuoritus, lukioonValmistavanKoulutuksenSuoritus2019, luvaKurssinSuoritus, valtakunnallinenLuvaKurssi}
-import fi.oph.koski.documentation.Lukio2019ExampleData.{moduulinSuoritusOppiaineissa, muuModuuliOppiaineissa, numeerinenArviointi, numeerinenLukionOppiaineenArviointi}
-import fi.oph.koski.documentation.LukioExampleData.{kurssisuoritus, laajuus, lukionKieli, valtakunnallinenKurssi}
-import fi.oph.koski.documentation.{ExamplesLukioonValmistavaKoulutus, Lukio2019ExampleData, LukioExampleData}
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.documentation.ExamplesLukioonValmistavaKoulutus.{lukioonValmistavanKoulutuksenSuoritus, lukioonValmistavanKoulutuksenSuoritus2019}
+import fi.oph.koski.documentation.LukioExampleData.{laajuus}
+import fi.oph.koski.documentation.{ExamplesLukioonValmistavaKoulutus, LukioExampleData}
+import fi.oph.koski.http.{KoskiErrorCategory}
 import fi.oph.koski.schema._
 
 import java.time.LocalDate
@@ -56,33 +55,6 @@ class OppijaValidationLukioonValmistavaSpec extends TutkinnonPerusteetTest[Lukio
   }
 
   "Opintojen osasuoritukset" - {
-    "osasuorituksissa ei voi olla samaan aikaan lukion 2015 ja lukion 2019 opsien mukaisia lukion oppiaineiden suorituksia" in {
-      val opiskeluoikeus = ExamplesLukioonValmistavaKoulutus.lukioonValmistavanKoulutuksenOpiskeluoikeus2019.copy(
-        suoritukset = List(lukioonValmistavanKoulutuksenSuoritus2019.copy(
-          osasuoritukset = Some(List(
-            LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa(
-              lukionKieli("A1", "EN"),
-              arviointi = LukioExampleData.arviointi("S"),
-              osasuoritukset = Some(List(
-                kurssisuoritus(valtakunnallinenKurssi("ENA1")).copy(arviointi = LukioExampleData.numeerinenArviointi(8))
-              ))
-            ),
-            LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa2019(
-              koulutusmoduuli = Lukio2019ExampleData.lukionUskonto(Some("MU")),
-              arviointi = numeerinenLukionOppiaineenArviointi(9),
-              osasuoritukset = Some(List(
-                moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("UE1").copy(laajuus = Lukio2019ExampleData.laajuus(1.5))).copy(arviointi = numeerinenArviointi(4))
-              ))
-            )
-          ))
-        ))
-      )
-
-      putOpiskeluoikeus(opiskeluoikeus) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.lukioonValmistavassaEriLukioOpsienOsasuorituksia())
-      }
-    }
-
     "sallitaan vain luva2019-koodiston mukaisia osasuorituksia 1.8.2021 ja jälkeen" - {
       "estetään luva2015-opsin mukainen kurssisuoritus" in {
         val opiskeluoikeus = ExamplesLukioonValmistavaKoulutus.lukioonValmistavanKoulutuksenOpiskeluoikeus2019.copy(
@@ -131,31 +103,6 @@ class OppijaValidationLukioonValmistavaSpec extends TutkinnonPerusteetTest[Lukio
         }
       }
 
-      "sallitaan laajuus sekä kursseina että opintopisteinä" in {
-        val opiskeluoikeus = ExamplesLukioonValmistavaKoulutus.lukioonValmistavanKoulutuksenOpiskeluoikeus2019.copy(
-          suoritukset = List(lukioonValmistavanKoulutuksenSuoritus2019.copy(
-            osasuoritukset = Some(List(
-              LukioonValmistavanKoulutuksenOppiaineenSuoritus(
-                LukioonValmistavaÄidinkieliJaKirjallisuus(Koodistokoodiviite("LVAIK", "oppiaineetluva"), kieli = Koodistokoodiviite(koodiarvo = "AI7", koodistoUri = "oppiaineaidinkielijakirjallisuus")),
-                arviointi = arviointiPäivämäärällä("S", LocalDate.of(2021, 8, 1)),
-                osasuoritukset = Some(List(
-                  ExamplesLukioonValmistavaKoulutus.luvaKurssinSuoritus(ExamplesLukioonValmistavaKoulutus.valtakunnallinenLuvaKurssi2019("LVS1").copy(
-                    laajuus = Some(laajuus(2.0, laajuusKursseissa.koodiarvo))
-                  )),
-                  ExamplesLukioonValmistavaKoulutus.luvaKurssinSuoritus(ExamplesLukioonValmistavaKoulutus.valtakunnallinenLuvaKurssi2019("LVS2").copy(
-                    laajuus = Some(laajuus(2.0, laajuusOpintopisteissä.koodiarvo))
-                  ))
-                ))
-              )
-            ))
-          ))
-        )
-
-        putOpiskeluoikeus(opiskeluoikeus) {
-          verifyResponseStatusOk()
-        }
-      }
-
       "ei sallita laajuutta kursseissa jos diaarinumero 'OPH-4958-2020'" in {
         val opiskeluoikeus = ExamplesLukioonValmistavaKoulutus.lukioonValmistavanKoulutuksenOpiskeluoikeus2019.copy(
           suoritukset = List(lukioonValmistavanKoulutuksenSuoritus2019.copy(
@@ -179,6 +126,32 @@ class OppijaValidationLukioonValmistavaSpec extends TutkinnonPerusteetTest[Lukio
 
         putOpiskeluoikeus(opiskeluoikeus) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.lukioonValmistavallaKoulutuksellaVääräLaajuudenArvo())
+        }
+      }
+
+      "ei sallita laajuutta opintopisteissä jos diaarinumero '56/011/2015'" in {
+        val opiskeluoikeus = ExamplesLukioonValmistavaKoulutus.lukioonValmistavanKoulutuksenOpiskeluoikeus2019.copy(
+          suoritukset = List(lukioonValmistavanKoulutuksenSuoritus2019.copy(
+            koulutusmoduuli = lukioonValmistavanKoulutuksenSuoritus2019.koulutusmoduuli.copy(
+              laajuus = Some(laajuus(2.0, yksikkö = laajuusOpintopisteissä.koodiarvo)),
+              perusteenDiaarinumero = Some("56/011/2015")
+            ),
+            osasuoritukset = Some(List(
+              LukioonValmistavanKoulutuksenOppiaineenSuoritus(
+                LukioonValmistavaÄidinkieliJaKirjallisuus(Koodistokoodiviite("LVAIK", "oppiaineetluva"), kieli = Koodistokoodiviite(koodiarvo = "AI7", koodistoUri = "oppiaineaidinkielijakirjallisuus")),
+                arviointi = arviointiPäivämäärällä("S", LocalDate.of(2021, 8, 1)),
+                osasuoritukset = Some(List(
+                  ExamplesLukioonValmistavaKoulutus.luvaKurssinSuoritus(ExamplesLukioonValmistavaKoulutus.valtakunnallinenLuvaKurssi2019("LVS1").copy(
+                    laajuus = Some(laajuus(2.0, yksikkö = laajuusOpintopisteissä.koodiarvo))
+                  ))
+                ))
+              )
+            ))
+          ))
+        )
+
+        putOpiskeluoikeus(opiskeluoikeus) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.lukioonValmistavallaKoulutuksellaVääräLaajuudenArvo("Lukioon valmistavan koulutuksen suorituksella voi olla laajuuden koodiyksikkönä vain '4', jos suorituksen diaarinumero on '56/011/2015'"))
         }
       }
     }
