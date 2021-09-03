@@ -939,7 +939,7 @@
   "versio" : 1,
   "withinCodeElements" : [ {
     "codeElementUri" : "koulutustyyppi_23",
-    "codeElementVersion" : 2,
+    "codeElementVersion" : 1,
     "passive" : false
   } ]
 } ]

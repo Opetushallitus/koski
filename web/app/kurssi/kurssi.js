@@ -24,6 +24,7 @@ export const findKoodistoByDiaarinumero = (kurssiKoodistot, oppimaaranDiaarinume
             return 'lukionkurssitops2004aikuiset'
           case 'OPH-2263-2019':
           case 'OPH-2267-2019':
+          case 'OPH-4958-2020':
             return 'moduulikoodistolops2021'
         }
       }

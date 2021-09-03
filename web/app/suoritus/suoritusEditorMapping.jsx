@@ -31,6 +31,8 @@ export const resolveOsasuorituksetEditor = (mdl) => {
   const {kansalainen} = mdl.context
   const LukionOppiaineetComponent = kansalainen ? OmatTiedotLukionOppiaineet : LukionOppiaineetEditor
 
+
+
   if (firstClassOneOf(
       'perusopetuksenvuosiluokansuoritus',
       'nuortenperusopetuksenoppimaaransuoritus',

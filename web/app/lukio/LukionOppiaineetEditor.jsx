@@ -6,7 +6,7 @@ import {modelErrorMessages, modelItems, modelLookup, modelTitle} from '../editor
 import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTableHead'
 import {t} from '../i18n/i18n'
 import {flatMapArray} from '../util/util'
-import {arvioidutOsasuoritukset, hyväksytystiArvioidutOsasuoritukset, hylkäämättömätOsasuoritukset, isLukioOps2019, isPreIbLukioOps2019, laajuudet} from './lukio'
+import {arvioidutOsasuoritukset, hyväksytystiArvioidutOsasuoritukset, hylkäämättömätOsasuoritukset, isLukioOps2019, isLuva2019, isPreIbLukioOps2019, laajuudet} from './lukio'
 import {numberToString} from '../util/format.js'
 import {isPaikallinen} from '../suoritus/Koulutusmoduuli'
 import {FootnoteDescriptions} from '../components/footnote'
@@ -21,7 +21,8 @@ export const LukionOppiaineetEditor = ({
     showKeskiarvo = true,
     laajuusHeaderText = 'Laajuus',
     useHylkäämättömätLaajuus = true,
-    showHyväksytystiArvioitujenLaajuus = false
+    showHyväksytystiArvioitujenLaajuus = false,
+    forceLaajuusOpintopisteinä = false
   }) => {
   const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context
   const oppiaineet = modelItems(suorituksetModel).filter(suoritusFilter || R.identity)
@@ -46,7 +47,8 @@ export const LukionOppiaineetEditor = ({
     )
   )
   const oppiaineetWithErrorRows = R.zip(oppiaineRows, errorRows)
-  const laajuusyksikkö = modelTitle(oppiaineet[0], 'koulutusmoduuli.laajuus.yksikkö') || 'kurssia'
+  const laajuusyksikkö = (forceLaajuusOpintopisteinä && "opintopistettä") ||
+    modelTitle(oppiaineet[0], 'koulutusmoduuli.laajuus.yksikkö') || 'kurssia'
 
   const arvosanaHeaderText = showKeskiarvo ? 'Arvosana (keskiarvo)' : 'Arvosana'
 
@@ -85,7 +87,7 @@ export const OsasuorituksetYhteensa = ({suorituksetModel, oppiaineet}) => {
   const isLukio2019 = isLukioOps2019(suorituksetModel.context.suoritus)
   const isPreIB2019 = isPreIbLukioOps2019(suorituksetModel.context.suoritus)
 
-  return (isLukio2019 || isPreIB2019) ? (
+  return (isLukio2019 || isPreIB2019 || isLuva2019) ? (
     <div className="kurssit-yhteensä">
       {t('Arvioitujen osasuoritusten laajuus yhteensä') + ': ' + numberToString(laajuudet(flatMapArray(oppiaineet, oppiaine => arvioidutOsasuoritukset(modelItems(oppiaine, 'osasuoritukset')))), 1)}<br/>
       {t('Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä') + ': ' + numberToString(laajuudet(flatMapArray(oppiaineet, oppiaine => hyväksytystiArvioidutOsasuoritukset(modelItems(oppiaine, 'osasuoritukset')))), 1)}
