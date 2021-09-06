@@ -3,6 +3,7 @@ import { HakuLaajatTiedot, HakuSuppeatTiedot } from "./haku"
 import { HenkilöLaajatTiedot, HenkilöSuppeatTiedot } from "./henkilo"
 import {
   KuntailmoitusLaajatTiedotLisätiedoilla,
+  KuntailmoitusSuppeatTiedot,
   LuotuKuntailmoitusSuppeatTiedot,
 } from "./kuntailmoitus"
 import {
@@ -26,6 +27,7 @@ export type OppijaHakutilanteillaSuppeatTiedot = {
   oppija: OppijaSuppeatTiedot
   hakutilanteet: HakuSuppeatTiedot[]
   hakutilanneError?: string
+  kuntailmoitukset: KuntailmoitusSuppeatTiedot[]
   oppivelvollisuudenKeskeytykset: OppivelvollisuudenKeskeytys[]
   lisätiedot: OpiskeluoikeusLisätiedot[]
 }

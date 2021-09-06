@@ -74,6 +74,13 @@ class ValpasKuntailmoitusService(
     repository.queryByKunta(kuntaOid)
   }
 
+  def getOppilaitoksenTekemätIlmoitukset
+    (organisaatioOid: Organisaatio.Oid)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]] = {
+    repository.queryByTekijäOrganisaatio(organisaatioOid)
+  }
+
   private def isAktiivinenKunta(o: OrganisaatioWithOid): Boolean =
     organisaatioRepository.getOrganisaatioHierarkia(o.oid).exists(h =>
       h.aktiivinen && h.organisaatiotyypit.contains(Organisaatiotyyppi.KUNTA)

@@ -72,6 +72,7 @@ object ValpasHenkilöSuppeatTiedot {
   def apply(laajatTiedot: ValpasHenkilöLaajatTiedot): ValpasHenkilöSuppeatTiedot = {
     ValpasHenkilöSuppeatTiedot(
       laajatTiedot.oid,
+      laajatTiedot.kaikkiOidit,
       laajatTiedot.syntymäaika,
       laajatTiedot.etunimet,
       laajatTiedot.sukunimi
@@ -81,6 +82,7 @@ object ValpasHenkilöSuppeatTiedot {
 
 case class ValpasHenkilöSuppeatTiedot(
   oid: ValpasHenkilö.Oid,
+  kaikkiOidit: Set[ValpasHenkilö.Oid],
   syntymäaika: Option[LocalDate],
   etunimet: String,
   sukunimi: String

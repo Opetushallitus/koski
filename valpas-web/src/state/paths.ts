@@ -85,20 +85,18 @@ export const oppijaPath = (basePath: string = "") =>
 
 export const createOppijaPath = (
   basePath: string = "",
-  params: {
+  {
+    oppijaOid,
+    ...params
+  }: {
     oppijaOid: Oid
     hakutilanneRef?: Oid
+    hakutilanneIlmoitetutRef?: Oid
     kuntailmoitusRef?: Oid
     suorittaminenRef?: Oid
     prev?: string
   }
-) =>
-  queryPath(`${basePath}/oppija/${params.oppijaOid}`, {
-    hakutilanneRef: params.hakutilanneRef,
-    kuntailmoitusRef: params.kuntailmoitusRef,
-    suorittaminenRef: params.suorittaminenRef,
-    prev: params.prev,
-  })
+) => queryPath(`${basePath}/oppija/${oppijaOid}`, params as QueryParams)
 
 export type OppijaViewRouteProps = RouteComponentProps<{
   oppijaOid?: string

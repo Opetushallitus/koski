@@ -1,23 +1,32 @@
-import React, { useMemo } from "react"
+import React, { useMemo, useState } from "react"
 import { useHistory } from "react-router-dom"
-import { Card, CardBody, CardHeader } from "../../components/containers/cards"
+import {
+  Card,
+  CardHeader,
+  ConstrainedCardBody,
+} from "../../components/containers/cards"
 import { Page } from "../../components/containers/Page"
+import { Spinner } from "../../components/icons/Spinner"
 import {
   getOrganisaatiot,
   OrganisaatioValitsin,
 } from "../../components/shared/OrganisaatioValitsin"
-import { Counter } from "../../components/typography/Counter"
+import { DataTableCountChangeEvent } from "../../components/tables/DataTable"
+import { NumberCounter } from "../../components/typography/Counter"
+import { ApiErrors } from "../../components/typography/error"
 import { t, T } from "../../i18n/i18n"
 import { useOrganisaatiotJaKäyttöoikeusroolit } from "../../state/accessRights"
-import { OppijaHakutilanteillaSuppeatTiedot } from "../../state/apitypes/oppija"
 import { Kayttooikeusrooli, Oid } from "../../state/common"
 import { HakutilanneNavigation } from "../hakutilanne/HakutilanneNavigation"
+import { useOppijatKuntailmoituksillaData } from "../hakutilanne/useOppijatData"
+import { OppijaViewBackNavProps } from "../oppija/OppijaView"
 import { KunnalleIlmoitetutTable } from "./KunnalleIlmoitetutTable"
 
 export type KunnalleIlmoitetutViewProps = {
   organisaatioOid: Oid
   organisaatioTyyppi: string
   organisaatioHakuRooli: Kayttooikeusrooli
+  backRefName: keyof OppijaViewBackNavProps
 }
 
 export const KunnalleIlmoitetutView = (props: KunnalleIlmoitetutViewProps) => {
@@ -43,7 +52,15 @@ export const KunnalleIlmoitetutView = (props: KunnalleIlmoitetutViewProps) => {
     }
   }
 
-  const data: OppijaHakutilanteillaSuppeatTiedot[] = []
+  const organisaatioOid = props.organisaatioOid
+  const { data, isLoading, errors } = useOppijatKuntailmoituksillaData(
+    organisaatioOid
+  )
+
+  const [counters, setCounters] = useState<DataTableCountChangeEvent>({
+    filteredRowCount: 0,
+    unfilteredRowCount: 0,
+  })
 
   return (
     <Page>
@@ -57,11 +74,26 @@ export const KunnalleIlmoitetutView = (props: KunnalleIlmoitetutViewProps) => {
       <HakutilanneNavigation selectedOrganisaatio={props.organisaatioOid} />
       <Card>
         <CardHeader>
-          <T id="kunnalleilmoitetut_otsikko" /> <Counter>{data.length}</Counter>
+          <T id="kunnalleilmoitetut_otsikko" />{" "}
+          {data && (
+            <NumberCounter
+              value={counters.filteredRowCount}
+              max={counters.unfilteredRowCount}
+            />
+          )}
         </CardHeader>
-        <CardBody>
-          <KunnalleIlmoitetutTable data={data} />
-        </CardBody>
+        <ConstrainedCardBody>
+          {isLoading && <Spinner />}
+          {data && (
+            <KunnalleIlmoitetutTable
+              data={data}
+              organisaatioOid={organisaatioOid}
+              backRefName={props.backRefName}
+              onCountChange={setCounters}
+            />
+          )}
+          {errors !== undefined && <ApiErrors errors={errors} />}
+        </ConstrainedCardBody>
       </Card>
     </Page>
   )

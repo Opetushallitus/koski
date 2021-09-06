@@ -191,6 +191,10 @@ class ValpasKuntailmoitusRepository(
       .map(withUudempiIlmoitusToiseenKuntaan)
   }
 
+  def queryByTekijäOrganisaatio(organisaatioOid: Organisaatio.Oid): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]] = {
+    query(_.tekijäOrganisaatioOid === organisaatioOid)
+  }
+
   private def query[T <: slick.lifted.Rep[_]]
     (filterFn: (IlmoitusTable) => T)
     (implicit wt: slick.lifted.CanBeQueryCondition[T])

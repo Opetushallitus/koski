@@ -35,6 +35,7 @@ export const HakeutumisenKunnalleIlmoitetutView = withRequiresHakeutumisenValvon
       organisaatioOid={props.match.params.organisaatioOid!}
       organisaatioHakuRooli={organisaatioHakuRooli}
       organisaatioTyyppi={organisaatioTyyppi}
+      backRefName="hakutilanneIlmoitetutRef"
     />
   )
 )

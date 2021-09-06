@@ -44,6 +44,14 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
     )
   }
 
+  get("/oppijat/:organisaatio/ilmoitukset") {
+    val oppilaitosOid: ValpasOppilaitos.Oid = params("organisaatio")
+    renderEither(
+      oppijaService.getKunnalleTehdytIlmoitukset(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, oppilaitosOid)
+        .tap(_ => auditLogOppilaitosKatsominen(oppilaitosOid))
+    )
+  }
+
   get("/oppijat-suorittaminen/:organisaatio") {
     val oppilaitosOid: ValpasOppilaitos.Oid = params("organisaatio")
     renderEither(
