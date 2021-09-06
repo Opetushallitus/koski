@@ -8,6 +8,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.util.{DateOrdering, FinnishDateFormat}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import java.time.LocalDate
+import java.time.LocalDate.{of => date}
 
 object MaksuttomuusValidation {
 
@@ -23,11 +24,18 @@ object MaksuttomuusValidation {
     // Peruskoulun jälkeinen koulutus on uuden lain mukaiseksi peruskoulun jälkeiseksi oppivelvollisuuskoulutukseksi kelpaavaa
     val koulutusOppivelvollisuuskoulutukseksiKelpaavaa = oppivelvollisuudenSuorittamiseenKelpaavaMuuKuinPeruskoulunOpiskeluoikeus(opiskeluoikeus)
 
+    // Maksuttomuutta ei voi olla opiskeluoikeudessa, joka alkaa myöhemmin kuin vuonna, jolloin oppija täyttää 20 vuotta
+    val opiskeluoikeusAlkanutHenkilönOllessaLiianVanha = (oppijanSyntymäpäivä.map(_.getYear), opiskeluoikeus.alkamispäivä.map(_.getYear)) match {
+      case (Some(oppijanSyntymävuosi), Some(opiskeluoikeudenAlkamisvuosi)) if opiskeluoikeudenAlkamisvuosi > oppijanSyntymävuosi + rajapäivät.maksuttomuusLoppuuIka => true
+      case _ => false
+    }
+
     // Tilanteet, joissa maksuttomuustietoja ei saa siirtää. Jos tuplen ensimmäinen arvo on true, ehto aktivoituu ja toinen arvon kertoo syyn.
     val maksuttomuustietoEiSallittuSyyt =
       eiOppivelvollisuudenLaajentamislainPiirissäSyyt(oppijanSyntymäpäivä, oppijanOid, opiskeluoikeusRepository, rajapäivät) ++
         List(
-          (!koulutusOppivelvollisuuskoulutukseksiKelpaavaa, "koulutus ei siirrettyjen tietojen perusteella kelpaa oppivelvollisuuden suorittamiseen (tarkista, että koulutuskoodi, käytetyn opetussuunnitelman perusteen diaarinumero, suorituksen tyyppi ja/tai suoritustapa ovat oikein)")
+          (!koulutusOppivelvollisuuskoulutukseksiKelpaavaa, "koulutus ei siirrettyjen tietojen perusteella kelpaa oppivelvollisuuden suorittamiseen (tarkista, että koulutuskoodi, käytetyn opetussuunnitelman perusteen diaarinumero, suorituksen tyyppi ja/tai suoritustapa ovat oikein)"),
+          (opiskeluoikeusAlkanutHenkilönOllessaLiianVanha, s"opiskeluoikeus on merkitty alkavaksi vuonna, jona oppija täyttää enemmän kuin ${rajapäivät.maksuttomuusLoppuuIka} vuotta")
         ).filter(_._1).map(_._2)
 
     if (maksuttomuustietoEiSallittuSyyt.nonEmpty) {
