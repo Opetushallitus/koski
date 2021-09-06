@@ -15,6 +15,7 @@
     <slick.version>3.3.3</slick.version>
     <slick-pg.version>0.19.6</slick-pg.version>
     <scalatra.version>2.6.5</scalatra.version>
+    <http4s.version>0.23.3</http4s.version>
     <json4s.version>3.6.11</json4s.version>
     <awssdk.version>2.16.70</awssdk.version>
     <jetty.version>9.4.43.v20210629</jetty.version>
@@ -208,12 +209,17 @@
     <dependency>
       <groupId>org.http4s</groupId>
       <artifactId>http4s-blaze-client_2.12</artifactId>
-      <version>0.16.6a</version>
+      <version>${http4s.version}</version>
     </dependency>
     <dependency>
       <groupId>org.http4s</groupId>
       <artifactId>http4s-dsl_2.12</artifactId>
-      <version>0.16.6a</version>
+      <version>${http4s.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.http4s</groupId>
+      <artifactId>http4s-scala-xml_2.12</artifactId>
+      <version>${http4s.version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
