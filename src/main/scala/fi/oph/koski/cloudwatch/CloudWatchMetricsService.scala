@@ -36,7 +36,7 @@ class AwsCloudWatchMetricsService extends CloudWatchMetricsService {
   private val client = CloudWatchClient.builder().build()
 
   def putRaportointikantaLoadtime(start: Timestamp, end: Timestamp): Unit = {
-    val namespace = "Raportointikanta"
+    val namespace = "RaportointikantaLoader"
 
     val dimension = Dimension.builder()
       .name("LOAD_TIMES")
@@ -44,7 +44,7 @@ class AwsCloudWatchMetricsService extends CloudWatchMetricsService {
       .build()
 
     val metric = MetricDatum.builder()
-      .metricName("RAPORTOINTIKANTA_LOAD_TIME")
+      .metricName("RAPORTOINTIKANTALOADER_LOAD_TIME")
       .unit(StandardUnit.SECONDS)
       .value(durationInSeconds(start, end))
       .dimensions(dimension)
