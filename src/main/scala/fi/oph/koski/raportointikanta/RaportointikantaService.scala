@@ -62,8 +62,9 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
 
   def putUploadEvents(): Unit = {
     eventBridgeClient.putEvents(
-      EventBridgeEvent(raportointikantaGeneration, Map("event" -> "start-upload", "uploadTarget" -> "lampi")),
-      EventBridgeEvent(raportointikantaGeneration, Map("event" -> "start-upload", "uploadTarget" -> "csc"))
+      EventBridgeEvent(tietokantaUpload, Map("event" -> "start-upload", "uploadTarget" -> "lampi-raportointikanta")),
+      EventBridgeEvent(tietokantaUpload, Map("event" -> "start-upload", "uploadTarget" -> "lampi-valpas")),
+      EventBridgeEvent(tietokantaUpload, Map("event" -> "start-upload", "uploadTarget" -> "csc"))
     )
   }
 
@@ -117,7 +118,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   private lazy val loadDatabase = new RaportointiDatabase(new RaportointiDatabaseConfig(application.config, schema = Temp))
   private lazy val raportointiDatabase = application.raportointiDatabase
 
-  private val raportointikantaGeneration = "raportointikanta-generation"
+  private val tietokantaUpload = "database-upload"
 
   private def shutdown = {
     LogManager.shutdown()
