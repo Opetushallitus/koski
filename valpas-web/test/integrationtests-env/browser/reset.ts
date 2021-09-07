@@ -13,10 +13,11 @@ import { eventually } from "./utils"
 export const loginAs = async (
   initialPath: string,
   username: string,
-  forceReset: boolean = false
+  forceReset: boolean = false,
+  tarkastelupäivä?: string
 ) => {
   await eventually(async () => {
-    await reset(initialPath, forceReset)
+    await reset(initialPath, forceReset, tarkastelupäivä)
     await expectElementEventuallyVisible("#username")
   }, longTimeout)
   ;(await $("#username")).sendKeys(username)
@@ -34,11 +35,15 @@ export const loginAs = async (
 export const defaultLogin = async (initialPath: string) =>
   loginAs(initialPath, "valpas-helsinki")
 
-export const reset = async (initialPath: string, force: boolean = false) => {
+export const reset = async (
+  initialPath: string,
+  force: boolean = false,
+  tarkastelupäivä?: string
+) => {
   await deleteCookies()
   await goToLocation(initialPath)
   await driver.wait(until.elementLocated(By.css("article")), defaultTimeout)
-  await resetMockData(undefined, force)
+  await resetMockData(tarkastelupäivä, force)
 }
 
 export const resetMockData = async (

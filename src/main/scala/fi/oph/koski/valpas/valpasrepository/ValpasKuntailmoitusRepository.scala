@@ -1,7 +1,7 @@
 package fi.oph.koski.valpas.valpasrepository
 
 import com.typesafe.config.Config
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
@@ -14,6 +14,8 @@ import fi.oph.koski.valpas.db._
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeus, ValpasRajapäivätService}
 import fi.oph.scalaschema.{SerializationContext, Serializer}
 import org.json4s.JValue
+import slick.jdbc.GetResult
+
 import java.time.LocalTime
 import java.util.UUID
 
@@ -130,7 +132,8 @@ class ValpasKuntailmoitusRepository(
           postitoimipaikka = li.oppijaYhteystiedot.postitoimipaikka,
           maa = li.oppijaYhteystiedot.maa
         )),
-        hakenutMuualle = Some(li.hakenutMuualle)
+        hakenutMuualle = Some(li.hakenutMuualle),
+        onUudempiaIlmoituksiaMuihinKuntiin = None,
       )
     )
   }
@@ -157,6 +160,7 @@ class ValpasKuntailmoitusRepository(
         yhteydenottokieli = None,
         oppijanYhteystiedot = None,
         hakenutMuualle = None,
+        onUudempiaIlmoituksiaMuihinKuntiin = None,
       )
     )
   }
@@ -184,6 +188,7 @@ class ValpasKuntailmoitusRepository(
 
   def queryByKunta(kuntaOid: Organisaatio.Oid): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]] = {
     query(_.kuntaOid === kuntaOid)
+      .map(withUudempiIlmoitusToiseenKuntaan)
   }
 
   private def query[T <: slick.lifted.Rep[_]]
@@ -200,6 +205,42 @@ class ValpasKuntailmoitusRepository(
       ).map(Function.tupled(fromDbRows))
     )
   }
+
+  private def withUudempiIlmoitusToiseenKuntaan(ilmoitukset: Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]): Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
+    val ids = ilmoitukset.map(_.kuntailmoitus.id).collect { case Some(id) => id }
+
+    val ilmoituksiaMuualle = queryUudempiaIlmoituksiaMuualla(ids)
+
+    ilmoitukset.map(i => i.copy(
+      kuntailmoitus = i.kuntailmoitus.copy(
+        onUudempiaIlmoituksiaMuihinKuntiin = ilmoituksiaMuualle
+          .find(muu => i.kuntailmoitus.id.contains(muu.uuid))
+          .map(_.uudempiaIlmoituksiaMuualle)
+      )
+    ))
+  }
+
+  private def queryUudempiaIlmoituksiaMuualla(uuids: Seq[String]): Seq[UudempiaIlmoituksiaMuuallaRow] =
+    runDbSync(sql"""
+      SELECT
+        uuid,
+        (
+          SELECT COUNT(*) > 0
+          FROM ilmoitus AS v
+          WHERE v.oppija_oid = ilmoitus.oppija_oid
+            AND v.luotu > ilmoitus.luotu
+            AND v.kunta_oid <> ilmoitus.kunta_oid
+        ) as "uudempia_ilmoituksia_muualle"
+      FROM ilmoitus
+      WHERE CAST (uuid AS TEXT) = any($uuids);
+    """.as[UudempiaIlmoituksiaMuuallaRow])
+
+  private implicit def getResult: GetResult[UudempiaIlmoituksiaMuuallaRow] = GetResult(r => {
+    UudempiaIlmoituksiaMuuallaRow(
+      uuid = r.rs.getString("uuid"),
+      uudempiaIlmoituksiaMuualle = r.rs.getBoolean("uudempia_ilmoituksia_muualle"),
+    )
+  })
 
   def queryOpiskeluoikeusKontekstiByIlmoitus(ilmoitusUuid: UUID): Either[HttpStatus, Seq[String]] = {
     queryOpiskeluoikeusKonteksti(_.ilmoitusUuid === ilmoitusUuid)
@@ -235,3 +276,8 @@ class ValpasKuntailmoitusRepository(
     }
   }
 }
+
+case class UudempiaIlmoituksiaMuuallaRow(
+  uuid: String,
+  uudempiaIlmoituksiaMuualle: Boolean
+)
