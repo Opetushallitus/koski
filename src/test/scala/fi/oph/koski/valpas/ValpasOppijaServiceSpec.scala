@@ -244,6 +244,13 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       ValpasMockOppijat.peruskoulustaValmistunutIlman9Luokkaa,
       List(ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutIlmanYsiluokkaa, "valmistunut", "valmistunut", true, true, false))
     ),
+    (
+      ValpasMockOppijat.lukioVanhallaOpsilla,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.lukionVanhanOpsinOpiskeluoikeusAlkaa2021Keväällä(), "voimassa", "lasna", false, false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", "valmistunut", true, true, false)
+      )
+    ),
   ).sortBy(item => (item._1.sukunimi.toLowerCase, item._1.etunimet.toLowerCase))
 
   // Jyväskylän normaalikoulusta löytyvät näytettävät hakeutumisvelvolliset aakkosjärjestyksessä, tutkittaessa syksyn rajapäivän jälkeen

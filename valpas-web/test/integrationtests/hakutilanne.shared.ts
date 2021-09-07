@@ -5,7 +5,7 @@ import {
   expectElementEventuallyVisible,
 } from "../integrationtests-env/browser/content"
 
-export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia oppijoita (33)"
+export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia oppijoita (34)"
 export const jklNormaalikouluTableContent = `
   Epäonninen Valpas                                       | 30.10.2005  | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Eroaja-myöhemmin Valpas                                 | 29.9.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
@@ -20,6 +20,7 @@ export const jklNormaalikouluTableContent = `
   KasiinAstiToisessaKoulussaOllut Valpas                  | 17.8.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   KasiinAstiToisessaKoulussaOllut-ilmo Valpas             | 2.5.2005    | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Kotiopetus-menneisyydessä Valpas                        | 6.2.2005    | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
+  LukioVanhallaOpsilla Valpas                             | 6.7.2004    | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | doneJyväskylän normaalikoulu, Lukiokoulutus                                |
   LukionAineopinnotAloittanut Valpas                      | 4.3.2005    | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
   LukionAloittanut Valpas                                 | 29.4.2005   | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | doneJyväskylän normaalikoulu, Lukiokoulutus                                |
   LukionAloittanut-ilmo Valpas                            | 11.4.2005   | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | doneJyväskylän normaalikoulu, Lukiokoulutus                                |

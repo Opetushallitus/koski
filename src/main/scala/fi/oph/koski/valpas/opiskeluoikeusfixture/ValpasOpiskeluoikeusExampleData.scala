@@ -626,6 +626,24 @@ object ValpasOpiskeluoikeusExampleData {
     )
   }
 
+  def lukionVanhanOpsinOpiskeluoikeusAlkaa2021Keväällä(
+    maksuttomuus: Option[List[Maksuttomuus]] = Some(List(Maksuttomuus(alku = date(2021, 8, 1) , loppu = None, maksuton = true)))
+  ) = {
+    val oo = ExamplesLukio.lukioKesken
+    val edellisetLisätiedot = oo.lisätiedot.getOrElse(LukionOpiskeluoikeudenLisätiedot())
+
+    oo.copy(
+      lisätiedot = Some(edellisetLisätiedot.copy(
+        maksuttomuus = maksuttomuus
+      )),
+      tila = LukionOpiskeluoikeudenTila(
+        List(
+          LukionOpiskeluoikeusjakso(alku = date(2021, 3, 3), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+        )
+      )
+    )
+  }
+
   def kasiluokkaKeskenKeväällä2021Opiskeluoikeus = PerusopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
     koulutustoimija = None,
