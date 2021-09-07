@@ -244,7 +244,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       ValpasMockOppijat.peruskoulustaValmistunutIlman9Luokkaa,
       List(ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutIlmanYsiluokkaa, "valmistunut", "valmistunut", true, true, false))
     ),
-  ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
+  ).sortBy(item => (item._1.sukunimi.toLowerCase, item._1.etunimet.toLowerCase))
 
   // Jyväskylän normaalikoulusta löytyvät näytettävät hakeutumisvelvolliset aakkosjärjestyksessä, tutkittaessa syksyn rajapäivän jälkeen
   private val hakeutumisvelvollisetRajapäivänJälkeen = List(
@@ -362,7 +362,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
         ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", "lasna", true, true, false)
       )
     ),
-  ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
+  ).sortBy(item => (item._1.sukunimi.toLowerCase, item._1.etunimet.toLowerCase))
 
 
   // Stadin ammattiopistosta löytyvät suorittamisvalvottavat oppijat 5.9.2021
@@ -439,7 +439,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
         ExpectedData(ValpasOpiskeluoikeusExampleData.ammattikouluLomallaOpiskeluoikeus, "voimassa", "loma", false, false, true),
       )
     )
-  ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
+  ).sortBy(item => (item._1.sukunimi.toLowerCase, item._1.etunimet.toLowerCase))
 
   "getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla palauttaa vain annetun oppijanumeron mukaisen oppijan" in {
     val (expectedOppija, expectedData) = hakeutumisvelvolliset(1)
