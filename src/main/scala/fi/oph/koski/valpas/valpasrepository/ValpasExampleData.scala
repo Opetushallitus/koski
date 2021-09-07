@@ -101,7 +101,7 @@ object ValpasExampleData {
       maa = Some(Koodistokoodiviite("246", "maatjavaltiot2"))
     )),
     hakenutMuualle = Some(false),
-    uudempiIlmoitusToiseenKuntaan = None,
+    onUudempiaIlmoituksiaMuihinKuntiin = None,
   )
 
   def oppivelvollisuudenKeskeytykset: Seq[OppivelvollisuudenKeskeytysRow] = Seq(
@@ -189,7 +189,7 @@ object ValpasExampleData {
       maa = None
     )),
     hakenutMuualle = Some(false),
-    uudempiIlmoitusToiseenKuntaan = None,
+    onUudempiaIlmoituksiaMuihinKuntiin = None,
   )
 
   lazy val suomi = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli"))

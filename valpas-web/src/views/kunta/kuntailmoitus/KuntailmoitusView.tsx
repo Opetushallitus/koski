@@ -194,7 +194,7 @@ const poistaOppijanVanhentuneetIlmoitukset = (
   return {
     ...tiedot,
     kuntailmoitukset: tiedot.kuntailmoitukset.filter(
-      (i) => eiOpiskelupaikkaa && !i.uudempiIlmoitusToiseenKuntaan
+      (i) => eiOpiskelupaikkaa && !i.onUudempiaIlmoituksiaMuihinKuntiin
     ),
   }
 }

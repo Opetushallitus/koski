@@ -58,7 +58,7 @@ case class ValpasKuntailmoitusSuppeatTiedot(
   tekijä: ValpasKuntailmoituksenTekijäSuppeatTiedot,
   kunta: OrganisaatioWithOid,
   aikaleima: Option[LocalDateTime],
-  uudempiIlmoitusToiseenKuntaan: Option[Boolean] // Option, koska relevantti kenttä vain haettaessa ilmoituksia tietylle kunnalle
+  onUudempiaIlmoituksiaMuihinKuntiin: Option[Boolean] // Option, koska relevantti kenttä vain haettaessa ilmoituksia tietylle kunnalle
 ) extends ValpasKuntailmoitus
 
 object ValpasKuntailmoitusSuppeatTiedot {
@@ -72,7 +72,7 @@ object ValpasKuntailmoitusSuppeatTiedot {
       tekijä = ValpasKuntailmoituksenTekijäSuppeatTiedot(laajatTiedot.tekijä),
       kunta = laajatTiedot.kunta,
       aikaleima = laajatTiedot.aikaleima,
-      uudempiIlmoitusToiseenKuntaan = laajatTiedot.uudempiIlmoitusToiseenKuntaan,
+      onUudempiaIlmoituksiaMuihinKuntiin = laajatTiedot.onUudempiaIlmoituksiaMuihinKuntiin,
     )
   }
 }
@@ -85,13 +85,21 @@ case class ValpasKuntailmoitusLaajatTiedot(
   @KoodistoUri("kieli")
   @KoodistoKoodiarvo("FI")
   @KoodistoKoodiarvo("SV")
-  yhteydenottokieli: Option[Koodistokoodiviite], // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn ilmoituksen tiedoista,
-                                                 // tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa.
-  oppijanYhteystiedot: Option[ValpasKuntailmoituksenOppijanYhteystiedot], // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn
-                                                                         // ilmoituksen tiedoista, tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa
-  hakenutMuualle: Option[Boolean],               // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn ilmoituksen tiedoista,
-                                                 // tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa.
-  uudempiIlmoitusToiseenKuntaan: Option[Boolean] // Option, koska relevantti kenttä vain haettaessa ilmoituksia tietylle kunnalle
+
+  // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn ilmoituksen tiedoista,
+  // tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa.
+  yhteydenottokieli: Option[Koodistokoodiviite],
+
+  // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn
+  // ilmoituksen tiedoista, tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa
+  oppijanYhteystiedot: Option[ValpasKuntailmoituksenOppijanYhteystiedot],
+
+  // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn ilmoituksen tiedoista,
+  // tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa.
+  hakenutMuualle: Option[Boolean],
+
+  // Option, koska relevantti kenttä vain haettaessa ilmoituksia tietylle kunnalle
+  onUudempiaIlmoituksiaMuihinKuntiin: Option[Boolean]
 ) extends ValpasKuntailmoitus
 
 case class ValpasKuntailmoituksenTekijäSuppeatTiedot(

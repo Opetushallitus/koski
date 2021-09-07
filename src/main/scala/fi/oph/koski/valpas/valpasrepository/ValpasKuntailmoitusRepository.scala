@@ -133,7 +133,7 @@ class ValpasKuntailmoitusRepository(
           maa = li.oppijaYhteystiedot.maa
         )),
         hakenutMuualle = Some(li.hakenutMuualle),
-        uudempiIlmoitusToiseenKuntaan = None,
+        onUudempiaIlmoituksiaMuihinKuntiin = None,
       )
     )
   }
@@ -160,7 +160,7 @@ class ValpasKuntailmoitusRepository(
         yhteydenottokieli = None,
         oppijanYhteystiedot = None,
         hakenutMuualle = None,
-        uudempiIlmoitusToiseenKuntaan = None,
+        onUudempiaIlmoituksiaMuihinKuntiin = None,
       )
     )
   }
@@ -213,7 +213,7 @@ class ValpasKuntailmoitusRepository(
 
     ilmoitukset.map(i => i.copy(
       kuntailmoitus = i.kuntailmoitus.copy(
-        uudempiIlmoitusToiseenKuntaan = ilmoituksiaMuualle
+        onUudempiaIlmoituksiaMuihinKuntiin = ilmoituksiaMuualle
           .find(muu => i.kuntailmoitus.id.contains(muu.uuid))
           .map(_.uudempiaIlmoituksiaMuualle)
       )
