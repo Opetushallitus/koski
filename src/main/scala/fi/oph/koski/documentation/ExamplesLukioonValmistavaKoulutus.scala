@@ -71,12 +71,15 @@ object ExamplesLukioonValmistavaKoulutus {
   )
 
   val lukioonValmistavanKoulutuksenSuoritus2019 = lukioonValmistavanKoulutuksenSuoritus.copy(
+    koulutusmoduuli = LukioonValmistavaKoulutus(perusteenDiaarinumero = Some("OPH-4958-2020"), laajuus = Some(laajuus2019(3.0))),
     osasuoritukset = Some(List(
       LukioonValmistavanKoulutuksenOppiaineenSuoritus(
         PaikallinenLukioonValmistavanKoulutuksenOppiaine(PaikallinenKoodi("LVATK", "Tietojenkäsittely"), "Tietojenkäsittely", pakollinen = false),
         arviointi = arviointi("S"),
         osasuoritukset = Some(List(
-          luvaKurssinSuoritus(paikallinenLuvaKurssi("ATK1", "Tietokoneen käytön peruskurssi", "Kurssilla opiskellaan tietokoneen, toimisto-ohjelmien sekä internetin ja sähköpostin peruskäyttöä."))
+          luvaKurssinSuoritus(paikallinenLuvaKurssi("ATK1", "Tietokoneen käytön peruskurssi", "Kurssilla opiskellaan tietokoneen, toimisto-ohjelmien sekä internetin ja sähköpostin peruskäyttöä.")
+            .copy(laajuus = Some(laajuus2019(2.0)))
+          )
         ))
       ),
       LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa2019(

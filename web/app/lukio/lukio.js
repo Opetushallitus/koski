@@ -8,6 +8,7 @@ const perusteenDiaarinumeroToOppimäärä = diaarinumero => {
     case '33/011/2003':
     case 'OPH-2263-2019':
     case '56/011/2015':
+    case 'OPH-4958-2020':
       return 'nuortenops'
     case '70/011/2015':
     case '4/011/2004':
@@ -38,6 +39,9 @@ const isPreIbLukioOps2019 = suoritusModel =>
 const isLukionOppiaineidenOppimaarienSuoritus2019 = suoritusModel => isLukioOps2019(suoritusModel) &&
   [ 'lukionaineopinnot' ].includes(modelData(suoritusModel, 'koulutusmoduuli.tunniste.koodiarvo'))
 
+const isLuvaOps2019 = suoritusModel =>
+  [ 'OPH-4958-2020' ].includes(modelData(suoritusModel, 'koulutusmoduuli.perusteenDiaarinumero'))
+
 export {
   perusteenDiaarinumeroToOppimäärä,
   sallitutRahoituskoodiarvot,
@@ -46,6 +50,7 @@ export {
   laajuudet,
   isLukioOps2019,
   isPreIbLukioOps2019,
+  isLuvaOps2019,
   isLukionOppiaineidenOppimaarienSuoritus2019,
   arvioidutOsasuoritukset,
   hyväksytystiArvioidutOsasuoritukset

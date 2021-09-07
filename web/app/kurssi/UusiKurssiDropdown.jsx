@@ -84,15 +84,24 @@ const fetchKurssiKoodit = (oppiaine, kurssiPrototypes) => {
     if (!oppiaineKoodisto) return []
 
     const koodistoAlternativesPath = modelLookup(model, 'tunniste').alternativesPath
+
     const kurssiKoodistot = koodistoAlternativesPath && R.last(koodistoAlternativesPath.split('/'))
 
     if (!kurssiKoodistot) return []
 
-    const koodistot = kurssiKoodistot.split(',')
+    const koodistot = kurssiKoodistot.split(',').filter(koodisto => {
+      if ((koodisto === 'lukioonvalmistavankoulutuksenmoduulit2019' && oppimaaraDiaarinumero === '56/011/2015') ||
+        (koodisto === 'lukioonvalmistavankoulutuksenkurssit2015' && oppimaaraDiaarinumero === 'OPH-4958-2020')) {
+        return false
+      }
+      return true
+    })
+
     const queryKoodistot =
       findKoodistoByDiaarinumero(koodistot, oppimaaraDiaarinumero) ||
       findDefaultKoodisto(koodistot) ||
       kurssiKoodistot
+
     const loc = parseLocation(`/koski/api/editor/koodit/${oppiaineKoodisto}/${oppiaineKoodiarvo}/kurssit/${queryKoodistot}`)
       .addQueryParams({oppimaaraKoodisto, oppimaaraKoodiarvo, oppimaaraDiaarinumero})
 

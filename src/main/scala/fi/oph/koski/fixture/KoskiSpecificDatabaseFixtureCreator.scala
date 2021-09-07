@@ -94,6 +94,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.uusiLukio, ExamplesLukio2019.opiskeluoikeus),
       (KoskiSpecificMockOppijat.uusiLukionAineopiskelija, ExamplesLukio2019.oppiaineenOppimääräOpiskeluoikeus),
       (KoskiSpecificMockOppijat.luva, ExamplesLukioonValmistavaKoulutus.luvaTodistus.tallennettavatOpiskeluoikeudet.head),
+      (KoskiSpecificMockOppijat.luva2019, ExamplesLukioonValmistavaKoulutus.luvaTodistus2019.tallennettavatOpiskeluoikeudet.head),
       (KoskiSpecificMockOppijat.ammattilainen, AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis()),
       (KoskiSpecificMockOppijat.tutkinnonOsaaPienempiKokonaisuus, TutkinnonOsaaPienempiKokonaisuusExample.opiskeluoikeus),
       (KoskiSpecificMockOppijat.muuAmmatillinen, MuunAmmatillisenKoulutuksenExample.muuAmmatillinenKoulutusOpiskeluoikeus),

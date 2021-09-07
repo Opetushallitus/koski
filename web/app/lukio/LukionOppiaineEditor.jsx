@@ -53,7 +53,8 @@ export class LukionOppiaineEditor extends React.Component {
       customKurssitSortFn,
       showKeskiarvo = true,
       useHylkäämättömätLaajuus = true,
-      showHyväksytystiArvioitujenLaajuus = false
+      showHyväksytystiArvioitujenLaajuus = false,
+      forceLaajuusOpintopisteinä = false
     } = this.props
 
     const kurssit = modelItems(oppiaine, 'osasuoritukset')
@@ -61,7 +62,10 @@ export class LukionOppiaineEditor extends React.Component {
     const {edit} = oppiaine.context
 
     const laajuusArvo = () => {
-      if (useOppiaineLaajuus) {
+      if (forceLaajuusOpintopisteinä) {
+        return '2'
+      }
+      else if (useOppiaineLaajuus) {
         return modelData(oppiaine, 'koulutusmoduuli.laajuus.arvo')
       } else {
         return numberToString(laajuudet(

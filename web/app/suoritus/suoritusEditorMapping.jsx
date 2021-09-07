@@ -78,7 +78,7 @@ export const resolveOsasuorituksetEditor = (mdl) => {
         useOppiaineLaajuus={true}
         showKeskiarvo={false}
         additionalOnlyEditableProperties={['suorituskieli', 'suoritettuErityisenäTutkintona']}
-        additionalEditableKoulutusmoduuliProperties={['pakollinen']}
+        additionalEditableKoulutusmoduuliProperties={['pakollinen', 'oppimäärä']}
         laajuusHeaderText={'Arvioitu'}
         showHyväksytystiArvioitujenLaajuus={true}
         useHylkäämättömätLaajuus={false}
