@@ -559,7 +559,7 @@ object ValpasOpiskeluoikeusExampleData {
     val oo = ExamplesLukio2019.aktiivinenOpiskeluoikeus
     val edellisetLisätiedot = oo.lisätiedot.getOrElse(LukionOpiskeluoikeudenLisätiedot())
 
-    ExamplesLukio2019.aktiivinenOpiskeluoikeus.copy(
+    oo.copy(
       lisätiedot = Some(edellisetLisätiedot.copy(
         maksuttomuus = maksuttomuus
       )),
@@ -577,7 +577,7 @@ object ValpasOpiskeluoikeusExampleData {
     val oo = ExamplesLukio2019.aktiivinenOpiskeluoikeus
     val edellisetLisätiedot = oo.lisätiedot.getOrElse(LukionOpiskeluoikeudenLisätiedot())
 
-    ExamplesLukio2019.aktiivinenOpiskeluoikeus.copy(
+    oo.copy(
       lisätiedot = Some(edellisetLisätiedot.copy(
         maksuttomuus = maksuttomuus
       )),
@@ -596,7 +596,7 @@ object ValpasOpiskeluoikeusExampleData {
     val oo = ExamplesLukio2019.aktiivinenOppiaineenOppimääräOpiskeluoikeus
     val edellisetLisätiedot = oo.lisätiedot.getOrElse(LukionOpiskeluoikeudenLisätiedot())
 
-    ExamplesLukio2019.aktiivinenOppiaineenOppimääräOpiskeluoikeus.copy(
+    oo.copy(
       lisätiedot = Some(edellisetLisätiedot.copy(
         maksuttomuus = maksuttomuus
       )),
@@ -614,7 +614,7 @@ object ValpasOpiskeluoikeusExampleData {
     val oo = ExamplesLukio2019.aktiivinenOpiskeluoikeus
     val edellisetLisätiedot = oo.lisätiedot.getOrElse(LukionOpiskeluoikeudenLisätiedot())
 
-    ExamplesLukio2019.aktiivinenOpiskeluoikeus.copy(
+    oo.copy(
       lisätiedot = Some(edellisetLisätiedot.copy(
         maksuttomuus = maksuttomuus
       )),
