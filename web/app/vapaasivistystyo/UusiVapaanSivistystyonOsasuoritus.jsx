@@ -105,7 +105,7 @@ export const UusiVapaanSivistystyonOsasuoritus = ({suoritusPrototypes, setExpand
       {
         kotoOsaAlueKieliOpinnot &&
         <LisääOsaAlue suoritusPrototype={kotoOsaAlueKieliOpinnot}
-                          selectionText={'Lisää kieliopintojen osa-alue'}
+                          selectionText={'Lisää suomen/ruotsin kielen ja viestintätaitojen osa-alue'}
                           setExpanded={setExpanded}
         />
       }
@@ -119,7 +119,7 @@ export const UusiVapaanSivistystyonOsasuoritus = ({suoritusPrototypes, setExpand
       {
         kotoOsaAlueOhjaus &&
         <LisääOsaAlue suoritusPrototype={kotoOsaAlueOhjaus}
-                          selectionText={'Lisää opintojen ohjauksen osa-alue'}
+                          selectionText={'Lisää kotoutumiskoulutuksen ohjauksen osa-alue'}
                           setExpanded={setExpanded}
         />
       }
