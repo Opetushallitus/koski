@@ -29,6 +29,45 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
         verifyResponseStatusOk()
       }
     }
+    "Saa siirtää jos lukion aiemman kuin 2019 opsin mukainen opiskeluoikeus on alkanut 1.1.2021-31.7.2021" in {
+      val alkamispäivä = date(2021, 1, 1)
+      putMaksuttomuus(
+        List(
+          Maksuttomuus(alkamispäivä, None, true)
+        ),
+        KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021,
+        LukioExampleData.alkamispäivällä(LukioExampleData.lukionOpiskeluoikeus(), alkamispäivä)
+      ) {
+        verifyResponseStatusOk()
+      }
+    }
+    "Saa siirtää jos lukion aiemman kuin 2019 opsin mukainen opiskeluoikeus on alkanut 1.8.2021 tai myöhemmin" in {
+      val alkamispäivä = date(2021, 8, 1)
+      putMaksuttomuus(
+        List(
+          Maksuttomuus(alkamispäivä, None, true)
+        ),
+        KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021,
+        LukioExampleData.alkamispäivällä(LukioExampleData.lukionOpiskeluoikeus(), alkamispäivä)
+      ) {
+        verifyResponseStatusOk()
+      }
+    }
+    "Ei saa siirtää jos lukion aiemman kuin 2019 opsin mukainen opiskeluoikeus on alkanut aiemmin kuin 1.1.2021" in {
+      val alkamispäivä = date(2020, 12, 31)
+      putMaksuttomuus(
+        List(
+          Maksuttomuus(alkamispäivä, None, true)
+        ),
+        KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021,
+        LukioExampleData.alkamispäivällä(LukioExampleData.lukionOpiskeluoikeus(), alkamispäivä)
+      ) {
+        verifyResponseStatus(
+          400,
+          KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on aloittanut vanhojen lukion opetussuunnitelman perusteiden mukaisen koulutuksen aiemmin kuin 2021-01-01.")
+        )
+      }
+    }
     "Ei saa siirtää jos henkilö on syntynyt ennen vuotta 2004" in {
       putMaksuttomuus(
         List(
@@ -550,6 +589,15 @@ class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
 
   private def putMaksuttomuus(jaksot: List[Maksuttomuus], oppija: OppijaHenkilö, oo: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus)(verifyStatus: => Any) = {
     val lisatiedot = AmmatillisenOpiskeluoikeudenLisätiedot(hojks = None, maksuttomuus = Some(jaksot))
+    val opiskeluoikeus = oo.copy(lisätiedot = Some(lisatiedot))
+
+    putOpiskeluoikeus(opiskeluoikeus, oppija) {
+      verifyStatus
+    }
+  }
+
+  private def putMaksuttomuus(jaksot: List[Maksuttomuus], oppija: OppijaHenkilö, oo: LukionOpiskeluoikeus)(verifyStatus: => Any) = {
+    val lisatiedot = LukionOpiskeluoikeudenLisätiedot(maksuttomuus = Some(jaksot))
     val opiskeluoikeus = oo.copy(lisätiedot = Some(lisatiedot))
 
     putOpiskeluoikeus(opiskeluoikeus, oppija) {

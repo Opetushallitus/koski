@@ -521,4 +521,15 @@ object LukioExampleData {
       )
     )
   )
+
+  def alkamispäivällä(oo: LukionOpiskeluoikeus, alkamispäivä: LocalDate): LukionOpiskeluoikeus =
+    lisääTila(
+      oo.copy(tila = new LukionOpiskeluoikeudenTila(opiskeluoikeusjaksot = List())),
+      alkamispäivä,
+      ExampleData.opiskeluoikeusLäsnä
+    )
+
+  def lisääTila(oo: LukionOpiskeluoikeus, päivä: LocalDate, tila: Koodistokoodiviite): LukionOpiskeluoikeus = oo.copy(
+    tila = LukionOpiskeluoikeudenTila(oo.tila.opiskeluoikeusjaksot ++ List(LukionOpiskeluoikeusjakso(päivä, tila, Some(ExampleData.valtionosuusRahoitteinen))))
+  )
 }

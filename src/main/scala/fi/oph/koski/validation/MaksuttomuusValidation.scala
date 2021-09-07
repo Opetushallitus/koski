@@ -29,12 +29,25 @@ object MaksuttomuusValidation {
       case _ => false
     }
 
+    // Lukion vanhan opsin mukaiseen opiskeluoikeuteen maksuttomuustiedon saa siirtää vain jos se on alkanut 1.1.2021 tai myöhemmin
+    val lukioVanhallaOpsillaSallittuAlkamisjakso = new Aikajakso(
+      date(2021, 1, 1),
+      None
+    )
+    val kelpaamatonLukionVanhanOpsinOpiskeluoikeus = (opiskeluoikeus, opiskeluoikeus.alkamispäivä) match {
+      case (oo: LukionOpiskeluoikeus, Some(alkamispäivä))
+        if (oo.on2015Opiskeluoikeus && !lukioVanhallaOpsillaSallittuAlkamisjakso.contains(alkamispäivä)) => true
+      case _ => false
+    }
+
     // Tilanteet, joissa maksuttomuustietoja ei saa siirtää. Jos tuplen ensimmäinen arvo on true, ehto aktivoituu ja toinen arvon kertoo syyn.
     val maksuttomuustietoEiSallittuSyyt =
       eiOppivelvollisuudenLaajentamislainPiirissäSyyt(oppijanSyntymäpäivä, oppijanOid, opiskeluoikeusRepository, rajapäivät) ++
         List(
           (!koulutusOppivelvollisuuskoulutukseksiKelpaavaa, "koulutus ei siirrettyjen tietojen perusteella kelpaa oppivelvollisuuden suorittamiseen (tarkista, että koulutuskoodi, käytetyn opetussuunnitelman perusteen diaarinumero, suorituksen tyyppi ja/tai suoritustapa ovat oikein)"),
-          (opiskeluoikeusAlkanutHenkilönOllessaLiianVanha, s"opiskeluoikeus on merkitty alkavaksi vuonna, jona oppija täyttää enemmän kuin ${rajapäivät.maksuttomuusLoppuuIka} vuotta")
+          (opiskeluoikeusAlkanutHenkilönOllessaLiianVanha, s"opiskeluoikeus on merkitty alkavaksi vuonna, jona oppija täyttää enemmän kuin ${rajapäivät.maksuttomuusLoppuuIka} vuotta"),
+          (kelpaamatonLukionVanhanOpsinOpiskeluoikeus,
+            s"oppija on aloittanut vanhojen lukion opetussuunnitelman perusteiden mukaisen koulutuksen aiemmin kuin ${lukioVanhallaOpsillaSallittuAlkamisjakso.alku}")
         ).filter(_._1).map(_._2)
 
     if (maksuttomuustietoEiSallittuSyyt.nonEmpty) {
