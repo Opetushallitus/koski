@@ -209,6 +209,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       case (_, ("nuortenperusopetuksenoppiaineenoppimaara", _)) => "Perusopetuksen aineopiskelija"
       case (_, ("perusopetuksenoppimaara", _)) => "Perusopetuksen oppimäärä"
       case (_, ("perusopetuksenvuosiluokka", _)) => "Perusopetuksen oppimäärä"
+      case (_, ("vstoppivelvollisillesuunnattukoulutus", _)) => "Oppivelvollisille suunnattu vapaan sivistystyön koulutus"
       case (acc, (_, _)) => acc
     }
     if (nimi.forall(_.isLower)) logger.error(s"Unhandled suorituksen tyyppi $nimi. Raportin voi ladata, mutta päällekkäisen opiskeluoikeuden suorituksen nimenä käytettiin suorituksen tyyppiä")
