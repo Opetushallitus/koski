@@ -16,8 +16,7 @@ object MaksuttomuusValidation {
                                         oppijanSyntymäpäivä: Option[LocalDate],
                                         oppijanOid: String,
                                         opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
-                                        rajapäivät: ValpasRajapäivätService)
-                                       (implicit user: KoskiSpecificSession): HttpStatus = {
+                                        rajapäivät: ValpasRajapäivätService): HttpStatus = {
     val maksuttomuustietoSiirretty = opiskeluoikeus.lisätiedot.collect { case l: MaksuttomuusTieto => l.maksuttomuus.toList.flatten.length > 0 }.getOrElse(false)
     val maksuttomuudenPidennysSiirretty = opiskeluoikeus.lisätiedot.collect { case l : MaksuttomuusTieto => l.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.length > 0 }.getOrElse(false)
 
@@ -62,7 +61,7 @@ object MaksuttomuusValidation {
     oppijanOid: String,
     opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
     rajapäivät: ValpasRajapäivätService
-  )(implicit user: Session): List[String] =
+  ): List[String] =
   {
     val lakiVoimassaPeruskoulustaValmistuneille = rajapäivät.lakiVoimassaPeruskoulustaValmistuneillaAlku
     val lakiVoimassaVanhinSyntymäaika = rajapäivät.lakiVoimassaVanhinSyntymäaika
