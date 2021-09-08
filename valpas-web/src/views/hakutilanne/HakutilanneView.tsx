@@ -13,7 +13,7 @@ import {
   OrganisaatioValitsin,
 } from "../../components/shared/OrganisaatioValitsin"
 import { DataTableCountChangeEvent } from "../../components/tables/DataTable"
-import { Counter } from "../../components/typography/Counter"
+import { NumberCounter } from "../../components/typography/Counter"
 import { ApiErrors } from "../../components/typography/error"
 import { t, T } from "../../i18n/i18n"
 import {
@@ -117,11 +117,10 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
           <CardHeader>
             <T id="hakutilannenäkymä__otsikko" />
             {data && (
-              <Counter>
-                {counters.filteredRowCount === counters.unfilteredRowCount
-                  ? counters.filteredRowCount
-                  : `${counters.filteredRowCount} / ${counters.unfilteredRowCount}`}
-              </Counter>
+              <NumberCounter
+                value={counters.filteredRowCount}
+                max={counters.unfilteredRowCount}
+              />
             )}
           </CardHeader>
           <ConstrainedCardBody extraMargin={drawerRect.rect?.height}>
