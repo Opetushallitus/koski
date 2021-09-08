@@ -21,6 +21,7 @@ export type KunnalleIlmoitetutTableProps = {
   data: OppijaHakutilanteillaSuppeatTiedot[]
   organisaatioOid: Oid
   backRefName: keyof OppijaViewBackNavProps
+  storageName: string
 } & Pick<DataTableProps, "onCountChange">
 
 export const KunnalleIlmoitetutTable = (
@@ -61,6 +62,7 @@ export const KunnalleIlmoitetutTable = (
       columns={columns}
       data={data}
       onCountChange={props.onCountChange}
+      storageName={props.storageName}
     />
   )
 }

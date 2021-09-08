@@ -36,6 +36,7 @@ export const HakeutumisenKunnalleIlmoitetutView = withRequiresHakeutumisenValvon
       organisaatioHakuRooli={organisaatioHakuRooli}
       organisaatioTyyppi={organisaatioTyyppi}
       backRefName="hakutilanneIlmoitetutRef"
+      storageName="hakutilanneIlmoitetut"
     />
   )
 )

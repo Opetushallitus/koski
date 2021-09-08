@@ -27,6 +27,7 @@ export type KunnalleIlmoitetutViewProps = {
   organisaatioTyyppi: string
   organisaatioHakuRooli: Kayttooikeusrooli
   backRefName: keyof OppijaViewBackNavProps
+  storageName: string
 }
 
 export const KunnalleIlmoitetutView = (props: KunnalleIlmoitetutViewProps) => {
@@ -90,6 +91,7 @@ export const KunnalleIlmoitetutView = (props: KunnalleIlmoitetutViewProps) => {
               organisaatioOid={organisaatioOid}
               backRefName={props.backRefName}
               onCountChange={setCounters}
+              storageName={`${props.storageName}-${organisaatioOid}`}
             />
           )}
           {errors !== undefined && <ApiErrors errors={errors} />}
