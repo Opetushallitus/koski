@@ -23,7 +23,7 @@ export const HakutilanneNavigation = (props: HakutilanneNavigationProps) => {
       }),
     },
     {
-      display: t("hakeutumisvelvollisetnavi__ilmoitettu_kunnalle"),
+      display: t("hakeutumisvelvollisetnavi__kunnalle_tehdyt_ilmoitukset"),
       linkTo: createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg(
         undefined,
         {
