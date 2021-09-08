@@ -2,7 +2,7 @@ package fi.oph.koski.luovutuspalvelu
 
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
-import fi.oph.koski.documentation.{ExampleData, ExamplesLukio, LukioExampleData}
+import fi.oph.koski.documentation.{ExampleData, ExamplesLukio, ExamplesLukio2019, LukioExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
@@ -11,7 +11,6 @@ import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import org.scalatest.{FreeSpec, Matchers}
-
 import java.time.LocalDate.{of => date}
 import java.time.format.DateTimeFormatter.ISO_INSTANT
 import java.time.{LocalDate, ZonedDateTime}
@@ -122,7 +121,7 @@ class TilastokeskusSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusT
         insert(makeOpiskeluoikeus(date(2100, 1, 2)), KoskiSpecificMockOppijat.eero)
         performQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=ammatillinenkoulutus").flatMap(_.opiskeluoikeudet).length should equal(1)
         performQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=perusopetus").flatMap(_.opiskeluoikeudet).length should equal(0)
-        insert(makeLukioOpiskeluoikeus(date(2100, 1, 2)), KoskiSpecificMockOppijat.eero)
+        insert(makeLukio2019Opiskeluoikeus(date(2100, 1, 2)), KoskiSpecificMockOppijat.eero)
         performQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=ammatillinenkoulutus&opiskeluoikeudenTyyppi=lukiokoulutus").flatMap(_.opiskeluoikeudet).length should equal(2)
       }
 
@@ -170,4 +169,10 @@ class TilastokeskusSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusT
   private def makeLukioOpiskeluoikeus(alkamispäivä: LocalDate) = ExamplesLukio.päättötodistus().copy(
     tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alku = alkamispäivä, tila = LukioExampleData.opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))))
   )
+
+  private def makeLukio2019Opiskeluoikeus(alkamispäivä: LocalDate) = ExamplesLukio2019.opiskeluoikeus.copy(
+    tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alku = alkamispäivä, tila = LukioExampleData.opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))))
+  )
+
+
 }

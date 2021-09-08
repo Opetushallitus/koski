@@ -29,7 +29,22 @@ class KoskiGlobaaliValidator(
     oppijanOid: String): HttpStatus =
   {
     timed("validateOpiskeluoikeus")(
-      MaksuttomuusValidation.checkOpiskeluoikeudenMaksuttomuus(opiskeluoikeus, oppijanSyntymäpäivä, oppijanOid, opiskeluoikeusRepository, rajapäivät)
+      HttpStatus.fold(Seq(
+        MaksuttomuusValidation.checkOpiskeluoikeudenMaksuttomuus(
+          opiskeluoikeus,
+          oppijanSyntymäpäivä,
+          oppijanOid,
+          opiskeluoikeusRepository,
+          rajapäivät
+        ),
+        Lukio2015Validation.validateAlkamispäivä(
+          opiskeluoikeus,
+          oppijanSyntymäpäivä,
+          oppijanOid,
+          opiskeluoikeusRepository,
+          rajapäivät
+        )
+      ))
     )
   }
 }

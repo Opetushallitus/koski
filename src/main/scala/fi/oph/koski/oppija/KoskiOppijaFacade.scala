@@ -12,6 +12,7 @@ import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.schema._
 import fi.oph.koski.util.{Timing, WithWarnings}
 import fi.oph.koski.validation.KoskiGlobaaliValidator
+import fi.oph.koski.validation.MaksuttomuusValidation
 import java.time.LocalDate.now
 
 class KoskiOppijaFacade(

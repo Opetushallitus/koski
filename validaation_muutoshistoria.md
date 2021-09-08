@@ -2,6 +2,9 @@
 
 ## 8.9.2021
 
+- Lukion aiemman kuin 2019 opetussuunnitelman perusteiden mukaisen opiskeluoikeuden siirto on estetty alkamispäivästä
+1.8.2021 alkaen oppijoilta, jos oppija ei ole käynyt lukiota jo jossain muussa oppilaitoksessa aiemmin. Siirrossa
+kuuluu käyttää lukin 2019 opetussuunnitelman diaarinumeroa ja rakenteita.
 - Lukion aiemman kuin 2019 opetussuunitelman perusteiden mukaisen oppimäärän opiskeluikeuteen saa siirtää
 maksuttomuustiedon, jos se on alkanut 1.1.2021 tai myöhemmin. Siirto on estetty vanhemmista opiskeluoikeuksista.
 

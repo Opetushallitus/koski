@@ -10,7 +10,7 @@ import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenOsittaisetTiedot, OpiskeluoikeudenPerustiedot}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
-import fi.oph.koski.validation.MaksuttomuusValidation
+import fi.oph.koski.validation.{Lukio2015Validation, MaksuttomuusValidation}
 import slick.dbio.DBIO
 
 import scala.reflect.runtime.universe.TypeTag
