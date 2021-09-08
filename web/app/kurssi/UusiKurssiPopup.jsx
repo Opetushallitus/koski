@@ -10,7 +10,8 @@ import {
   isIBOppiaine,
   isLukio2019ModuuliTaiOpintojakso,
   isLukionKurssi,
-  isPaikallinen
+  isPaikallinen,
+  isLukioonValmistavanKoulutuksenKurssi
 } from '../suoritus/Koulutusmoduuli'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {t} from '../i18n/i18n'
@@ -73,4 +74,5 @@ const validKurssi = proto =>
   isPaikallinen(proto) ||
   isLukionKurssi(proto) ||
   isIBKurssi(proto) ||
-  isLukio2019ModuuliTaiOpintojakso(proto)
+  isLukio2019ModuuliTaiOpintojakso(proto) ||
+  isLukioonValmistavanKoulutuksenKurssi(proto)
