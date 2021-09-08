@@ -11,16 +11,14 @@ import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.schema._
 import fi.oph.koski.util.{Timing, WithWarnings}
-import fi.oph.koski.validation.MaksuttomuusValidation
-import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
-
+import fi.oph.koski.validation.KoskiGlobaaliValidator
 import java.time.LocalDate.now
 
 class KoskiOppijaFacade(
   henkilöRepository: HenkilöRepository,
   opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
   historyRepository: OpiskeluoikeusHistoryRepository,
-  rajapäivätService: ValpasRajapäivätService,
+  globaaliValidator: KoskiGlobaaliValidator,
   config: Config,
   hetu: Hetu
 ) extends Logging with Timing {
@@ -98,12 +96,10 @@ class KoskiOppijaFacade(
         val henkilöMaster = henkilöRepository.findByOid(henkilö.oid, findMasterIfSlaveOid = true)
         val syntymäaika = henkilöMaster.flatMap(_.syntymäaika)
         val validation = HttpStatus.fold(oppija.tallennettavatOpiskeluoikeudet.map(opiskeluoikeus => {
-          MaksuttomuusValidation.checkOpiskeluoikeudenMaksuttomuus(
+          globaaliValidator.validateOpiskeluoikeus(
             opiskeluoikeus,
             syntymäaika,
-            henkilö.oid,
-            opiskeluoikeusRepository,
-            rajapäivätService,
+            henkilö.oid
           )
         }))
         if (validation.isOk) Right(Unit) else Left(validation)
