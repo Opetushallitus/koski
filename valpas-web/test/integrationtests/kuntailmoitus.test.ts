@@ -28,7 +28,6 @@ import { eventually, sleep } from "../integrationtests-env/browser/utils"
 import {
   hakutilannePath,
   jklNormaalikouluTableContent,
-  openOppijaView,
 } from "./hakutilanne.shared"
 import { hkiTableContent_20211201 } from "./kuntailmoitus.shared"
 import { jyväskylänNormaalikouluOid } from "./oids"
@@ -330,17 +329,12 @@ const testaaListanäkymästä = async (username: string, tekijä: Tekijä) => {
 
   // Tarkista oppijakohtaisista näkymistä, että ilmoituksen tiedot ovat siellä
   for (const oppija of oppijat) {
-    await goToLocation(hakutilannePath)
-    await openOppijaView(oppija.oid)
-    await urlIsEventually(
-      pathToUrl(
-        createOppijaPath("/virkailija", {
-          oppijaOid: oppija.oid,
-          hakutilanneRef: jyväskylänNormaalikouluOid,
-        })
-      )
-    )
-
+    const oppijaPath = createOppijaPath("/virkailija", {
+      oppijaOid: oppija.oid,
+      hakutilanneRef: jyväskylänNormaalikouluOid,
+    })
+    await goToLocation(oppijaPath)
+    await urlIsEventually(pathToUrl(oppijaPath))
     expect(await getIlmoitusData()).toEqual(oppija.expected)
   }
 }

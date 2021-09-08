@@ -7,7 +7,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.Organisaatiotyyppi
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOppijaLaajatTiedot, ValpasOppilaitos}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeusSuppeatTiedot, ValpasOppijaLaajatTiedot, ValpasOppilaitos}
 import fi.oph.koski.valpas.valpasrepository._
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.koski.valpas.yhteystiedot.{ValpasYhteystiedot, ValpasYhteystietoHakemukselta, ValpasYhteystietoOppijanumerorekisteristä}
@@ -80,6 +80,9 @@ class ValpasKuntailmoitusService(
   : Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]] = {
     repository.queryByTekijäOrganisaatio(organisaatioOid)
   }
+
+  def queryOpiskeluoikeudetWithIlmoitus(opiskeluoikeudet: Seq[String]): Seq[String] =
+    repository.queryOpiskeluoikeudetWithIlmoitus(opiskeluoikeudet)
 
   private def isAktiivinenKunta(o: OrganisaatioWithOid): Boolean =
     organisaatioRepository.getOrganisaatioHierarkia(o.oid).exists(h =>

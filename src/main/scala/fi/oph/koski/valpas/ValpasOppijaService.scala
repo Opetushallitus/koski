@@ -149,6 +149,7 @@ class ValpasOppijaService(
     (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =
     getOppijatLaajatTiedotHakutilanteilla(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, oppilaitosOid)
+      .map(poistaKuntailmoitetutOpiskeluoikeudet)
       .map(lisätiedotRepository.readForOppijat)
       .map(_.map(Function.tupled(OppijaHakutilanteillaSuppeatTiedot.apply)))
 
@@ -600,5 +601,24 @@ class ValpasOppijaService(
         .flatMap(accessResolver.withOpiskeluoikeusAccess(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)(key.opiskeluoikeusOid))
         .flatMap(_ => lisätiedotRepository.setMuuHaku(key, value).toEither)
     )
+  }
+
+  private def poistaKuntailmoitetutOpiskeluoikeudet
+    (oppijat: Seq[OppijaHakutilanteillaLaajatTiedot])
+    (implicit session: ValpasSession)
+  : Seq[OppijaHakutilanteillaLaajatTiedot] = {
+    val kaikkiOpiskeluoikeudet = oppijat.flatMap(_.oppija.opiskeluoikeudet.map(_.oid))
+    val ilmoituksellisetOpiskeluoikeudet = application.valpasKuntailmoitusService
+      .queryOpiskeluoikeudetWithIlmoitus(kaikkiOpiskeluoikeudet)
+
+    oppijat.flatMap(oppija => {
+      val opiskeluoikeudet = oppija.oppija.opiskeluoikeudet
+        .filterNot(oo => ilmoituksellisetOpiskeluoikeudet.contains(oo.oid))
+      if (opiskeluoikeudet.nonEmpty) {
+        Some(oppija.copy(oppija = oppija.oppija.copy(opiskeluoikeudet = opiskeluoikeudet)))
+      } else {
+        None
+      }
+    })
   }
 }
