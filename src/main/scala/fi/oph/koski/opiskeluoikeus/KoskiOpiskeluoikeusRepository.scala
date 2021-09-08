@@ -1,5 +1,7 @@
 package fi.oph.koski.opiskeluoikeus
 
+import java.time.LocalDate
+
 import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.henkilo.{HenkilönTunnisteet, OppijaHenkilöWithMasterInfo, PossiblyUnverifiedHenkilöOid}
 import fi.oph.koski.http.HttpStatus
@@ -22,6 +24,7 @@ trait KoskiOpiskeluoikeusRepository {
   def findByCurrentUserOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus]
   def findHuollettavaByOppijaOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus]
   def getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(oppijaOid: String): Seq[Päivämääräväli]
+  def getLukionOpiskeluoikeuksienAlkamisajatIlmanKäyttöoikeustarkistusta(oppijaOid: String): Seq[LocalDate]
 }
 
 trait AuxiliaryOpiskeluoikeusRepository {

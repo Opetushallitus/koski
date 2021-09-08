@@ -224,6 +224,31 @@ class PostgresOpiskeluoikeusRepository(
     )
   })
 
+  def getLukionOpiskeluoikeuksienAlkamisajatIlmanKäyttöoikeustarkistusta(oppijaOid: String): Seq[LocalDate] = {
+    runDbSync(
+      sql"""
+        with master as (
+          select case when master_oid is not null then master_oid else oid end as oid
+          from henkilo
+          where oid = $oppijaOid
+        ), linkitetyt as (
+          select oid as oids
+          from henkilo
+          where henkilo.oid = (select oid from master) or henkilo.master_oid = (select oid from master)
+        )
+        select
+          alkamispaiva as paiva
+        from opiskeluoikeus
+        where not opiskeluoikeus.mitatoity
+          and opiskeluoikeus.koulutusmuoto = 'lukiokoulutus'
+          and oppija_oid = any(select oids from linkitetyt)
+      """.as[LocalDate])
+  }
+
+  private implicit def getLocalDate: GetResult[LocalDate] = GetResult(r => {
+    r.getLocalDate("paiva")
+  })
+
   private def findOpiskeluoikeudetWithSlaves(oid: String)(implicit user: KoskiSpecificSession): dbio.DBIOAction[Seq[OpiskeluoikeusRow], NoStream, Read] =
     (Henkilöt.filter(_.masterOid === oid) ++ Henkilöt.filter(_.oid === oid)).map(_.oid)
       .flatMap(oid => OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oid))
