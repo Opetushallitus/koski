@@ -249,7 +249,7 @@ private[cas] object SessionCookieClient {
         case resp: Response[IO] if resp.status.isSuccess =>
           IO.pure(
             resp.cookies.find(_.name == sessionCookieName).map(_.content)
-              .getOrElse(throw new CasClientException(s"Decoding $sessionCookieName failed at ${sessionIdUri}: no cookie found for JSESSIONID"))
+              .getOrElse(throw new CasClientException(s"Decoding $sessionCookieName failed at ${sessionIdUri}: no cookie found"))
           )
         case resp: Response[IO] =>
           resp.as[String].map(body =>
