@@ -61,11 +61,13 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     List(loadDatabase.status, raportointiDatabase.status).groupBy(_.schema).mapValues(_.head)
 
   def putUploadEvents(): Unit = {
+    logger.info("Sending lampi and csc upload events")
     eventBridgeClient.putEvents(
       EventBridgeEvent(tietokantaUpload, Map("event" -> "start-upload", "uploadTarget" -> "lampi-raportointikanta")),
       EventBridgeEvent(tietokantaUpload, Map("event" -> "start-upload", "uploadTarget" -> "lampi-valpas")),
       EventBridgeEvent(tietokantaUpload, Map("event" -> "start-upload", "uploadTarget" -> "csc"))
     )
+    logger.info("Events sent")
   }
 
   def putLoadTimeMetric(): Unit = {
