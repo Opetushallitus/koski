@@ -1,3 +1,7 @@
+## 1.5.2021 - 1.8.2021
+- Uuden oppivelvollisuuslain mukaisiin peruskoulun jälkeisten opintojen opiskeluoikeuksiin on lisätty mahdollisuus siirtää
+tieto koulutuksen maksuttomuudesta opiskeluoikeuden lisätiedoissa.
+
 ## 22.12.2020
 - Lisätty tietomalliluonnos Vapaan sivistystyön oppivelvollisuuslinjoille. Tämä on vielä luonnos kommentointia varten ja
 tunnettuja selvityksessä olevista avoimista kysymyksistä johtuvia puutteita on vielä useita.

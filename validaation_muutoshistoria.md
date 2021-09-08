@@ -1,5 +1,11 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 1.5.2021 - 8.9.2021
+- Maksuttommuustietojen siirron validaatioita on kehitetty useammassa vaiheessa. Maksuttomuustiedon
+siirto estetään sellaisille oppijoille, joista voi Kosken tietojen perusteella päätellä, että he eivät ole
+uuden oppivelvollisuuslain piirissä. Tämä perustuu oppijan ikään ja siihen, onko oppijalla Koskessa merkintä
+peruskoulusta valmistumisesta siten, että hänen oppivelvollisuutensa on tullut valmiiksi vanhan lain mukaan.
+
 ## 28.4.2021
 - Perusopetuksen laajuus vaaditaan pakollisille oppiaineille 1.8.2020 tai sen jälkeen vahvistetuilta vuosiluokan
 suorituksilta ja päättötodistuksilta. Laajuutta ei kuitenkaan vaadita jos suoritustapana on erityinen tutkinto tai
