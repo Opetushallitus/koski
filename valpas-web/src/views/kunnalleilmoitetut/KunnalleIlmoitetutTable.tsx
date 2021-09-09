@@ -63,6 +63,7 @@ export const KunnalleIlmoitetutTable = (
       data={data}
       onCountChange={props.onCountChange}
       storageName={props.storageName}
+      className="kuntailmoitukset"
     />
   )
 }

@@ -1,7 +1,10 @@
 import { NonEmptyArray } from "fp-ts/lib/NonEmptyArray"
 import { By, WebElement } from "selenium-webdriver"
 import { Oid } from "../../src/state/common"
-import { createOppijaPath } from "../../src/state/paths"
+import {
+  createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
+  createOppijaPath,
+} from "../../src/state/paths"
 import { fromEntries, objectEntry } from "../../src/utils/objects"
 import {
   clickElement,
@@ -28,6 +31,8 @@ import { eventually, sleep } from "../integrationtests-env/browser/utils"
 import {
   hakutilannePath,
   jklNormaalikouluTableContent,
+  kuntailmoitusRowSelector,
+  oppijaRowSelector,
 } from "./hakutilanne.shared"
 import { hkiTableContent_20211201 } from "./kuntailmoitus.shared"
 import { jyväskylänNormaalikouluOid } from "./oids"
@@ -69,31 +74,35 @@ type Tekijä = {
   email: string
   puhelin: string
   organisaatio: string
+  organisaatioOid: Oid
 }
 
 type DisplayedIlmoitusData = DisplayedRequiredIlmoitusData &
   DisplayedOptionalIlmoitusData
 
-const opo = {
+const opo: Tekijä = {
   nimi: "käyttäjä valpas-jkl-normaali",
   email: "integraatiotesti@oph.fi",
   puhelin: "0505050505050",
   organisaatio: "Jyväskylän normaalikoulu",
+  organisaatioOid: "1.2.246.562.10.14613773812",
 }
 
-const koulutustoimijaHakeutumisenValvoja = {
+const koulutustoimijaHakeutumisenValvoja: Tekijä = {
   nimi: "käyttäjä valpas-jkl-yliopisto",
   email: "integraatiotesti@oph.fi",
   puhelin: "0505050505050",
   // koulutustoimijatasollakin ilmoitukset tehdään aina oppilaitoksen nimissä, siksi normaalikoulu eikä yliopisto:
   organisaatio: "Jyväskylän normaalikoulu",
+  organisaatioOid: "1.2.246.562.10.14613773812",
 }
 
-const kuntakäyttäjä = {
+const kuntakäyttäjä: Tekijä = {
   nimi: "käyttäjä valpas-helsinki",
   email: "integraatiotesti.kunta@oph.fi",
   puhelin: "04040404040",
   organisaatio: "Helsingin kaupunki",
+  organisaatioOid: "1.2.246.562.10.346830761110",
 }
 
 const suorittamisenValvoja = {
@@ -101,6 +110,7 @@ const suorittamisenValvoja = {
   email: "integraatiotesti.suorittaminen@oph.fi",
   puhelin: "090909",
   organisaatio: "Jyväskylän normaalikoulu",
+  organisaatioOid: "1.2.246.562.10.14613773812",
 }
 
 const nivelvaiheenValvoja = {
@@ -108,6 +118,7 @@ const nivelvaiheenValvoja = {
   email: "integraatiotesti.nivelvaihe@oph.fi",
   puhelin: "1010",
   organisaatio: "Jyväskylän normaalikoulu",
+  organisaatioOid: "1.2.246.562.10.14613773812",
 }
 
 const teeOppijat = (tekijä: Tekijä): NonEmptyArray<Oppija> => [
@@ -326,6 +337,24 @@ const testaaListanäkymästä = async (username: string, tekijä: Tekijä) => {
   // Sulje lomake
   await button.click()
   await expectElementEventuallyNotVisible(".modal__container")
+
+  // Tarkista että oppijat ovat poistuneet listasta
+  for (const oppija of oppijat) {
+    await expectElementEventuallyNotVisible(oppijaRowSelector(oppija.oid))
+  }
+
+  // Tarkista että oppijat ovat ilmestyneet "kunnalle tehdyt ilmoitukset" -tauluun
+  for (const oppija of oppijat) {
+    const ilmotuksetPath = createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg(
+      "/virkailija",
+      {
+        organisaatioOid: tekijä.organisaatioOid,
+      }
+    )
+    await goToLocation(ilmotuksetPath)
+    await urlIsEventually(pathToUrl(ilmotuksetPath))
+    await expectElementEventuallyVisible(kuntailmoitusRowSelector(oppija.oid))
+  }
 
   // Tarkista oppijakohtaisista näkymistä, että ilmoituksen tiedot ovat siellä
   for (const oppija of oppijat) {
