@@ -66,7 +66,7 @@ class CasClient(casBaseUrl: Uri, client: Client[IO], callerId: String) extends L
    *  Returns the session that can be used for communications later.
    */
   def fetchCasSession(params: CasParams, sessionCookieName: String = "JSESSIONID"): IO[SessionCookie] = {
-    val serviceUri = Uri.resolve(casBaseUrl / "", params.service.securityUri)
+    val serviceUri = Uri.resolve(casBaseUrl, params.service.securityUri)
 
     for (
       st <- getServiceTicketWithRetryOnce(params, serviceUri);

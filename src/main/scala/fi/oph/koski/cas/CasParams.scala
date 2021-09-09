@@ -12,19 +12,28 @@ case class CasParams(service: CasService, user: CasUser) {
 }
 
 object CasParams {
-  def apply(service: String, securityUriSuffix: String, username: String, password: String): CasParams ={
-    Uri.fromString(ensureTrailingSlash(service)).fold(
+  def apply(servicePath: String, securityUriSuffix: String, username: String, password: String): CasParams = {
+    Uri.fromString(ensureTrailingSlash(ensureLeadingSlash(servicePath))).fold(
       (e: ParseFailure) => throw new IllegalArgumentException(e),
       (service: Uri) => CasParams(CasService(Uri.resolve(service / "", Uri.fromString(securityUriSuffix).getOrElse {
         throw new IllegalArgumentException(s"Could not parse securityUriSuffix $securityUriSuffix")
       })), CasUser(username, password)))
   }
 
-  def apply(service: String, username: String, password: String): CasParams = apply(service = service,
-    securityUriSuffix = "j_spring_cas_security_check", username = username, password = password)
+  def apply(servicePath: String, username: String, password: String): CasParams = apply(
+    servicePath = servicePath,
+    securityUriSuffix = "j_spring_cas_security_check",
+    username = username,
+    password = password
+  )
 
-  private def ensureTrailingSlash(service:String) = service.last match {
-    case '/' => service
-    case _ => service + "/"
+  private def ensureTrailingSlash(servicePath: String): String = servicePath.last match {
+    case '/' => servicePath
+    case _ => servicePath + "/"
+  }
+
+  private def ensureLeadingSlash(servicePath: String): String = servicePath.head match {
+    case '/' => servicePath
+    case _ => "/" + servicePath
   }
 }
