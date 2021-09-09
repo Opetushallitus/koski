@@ -38,7 +38,7 @@ const ilmoitustitle = (
   näkyviäIlmoituksia: number,
   arkistoitujaIlmoituksia: number
 ) =>
-  `Ilmoitetut oppivelvolliset ilman opiskelupaikkaa (${näkyviäIlmoituksia})Näytä arkistoidut ilmoitukset (${arkistoitujaIlmoituksia})`
+  `Ilmoitetut oppivelvolliset ilman opiskelupaikkaa (${näkyviäIlmoituksia})Näytä aiemmin tehdyt ilmoitukset (${arkistoitujaIlmoituksia})`
 
 describe("Kunnan listanäkymä", () => {
   beforeAll(async () => {
@@ -123,7 +123,7 @@ describe("Kunnan listanäkymä", () => {
     expect(organisaatiot).toEqual(expectedOrganisaatiot)
   })
 
-  it("Valitsin näyttää ja piilottaa arkistoidut ilmoitukset", async () => {
+  it("Valitsin näyttää ja piilottaa aiemmin tehdyt ilmoitukset", async () => {
     await loginAs(rootPath, "valpas-useita-kuntia")
 
     await selectOrganisaatio(1)
