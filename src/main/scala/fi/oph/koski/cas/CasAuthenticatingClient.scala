@@ -1,86 +1,80 @@
 package fi.oph.koski.cas
 
-import fi.vm.sade.utils.cas.CasClient._
-import scala.collection.mutable.ListBuffer
-
-import org.http4s.{headers, _}
-import org.http4s.client.{Client, DisposableResponse}
-import org.http4s.headers.Location
-
-import scalaz.concurrent.Task
+import cats.effect.std.Hotswap
+import cats.effect.{IO, Resource}
+import fi.oph.koski.cas.CasClient.SessionCookie
+import org.http4s._
+import org.http4s.client.Client
+import org.typelevel.ci.CIString
 
 
 /**
- *  HTTP client implementation that handles CAS authentication automatically. Sessions are maintained by keeping
+ *  Middleware that handles CAS authentication automatically. Sessions are maintained by keeping
  *  a central cache of session cookies per service url. If a session cookie is not found for requested service, it is obtained using
  *  CasClient. Stale sessions are detected and refreshed automatically.
  */
+
 object CasAuthenticatingClient extends Logging {
-  def apply(casClient: CasClient,
-            casParams: CasParams,
-            serviceClient: Client,
-            clientCallerId: String,
-            sessionCookieName: String): Client = {
-    new CasAuthenticatingClient(casClient, casParams, serviceClient, clientCallerId, sessionCookieName).httpClient
-  }
-}
-
-class CasAuthenticatingClient(casClient: CasClient,
-                              casParams: CasParams,
-                              serviceClient: Client,
-                              clientCallerId: String,
-                              sessionCookieName: String) extends Logging {
-  lazy val httpClient = Client(
-    open = Service.lift(open),
-    shutdown = serviceClient.shutdown
-  )
-
   private val sessions: collection.mutable.Map[CasParams, SessionCookie] = collection.mutable.Map.empty
 
-  private def open(req: Request): Task[DisposableResponse] = {
-    openWithCasSession(getCasSession(casParams), req).flatMap {
-      case resp if sessionExpired(resp.response) =>
-        logger.debug("Session for " + casParams + " expired")
-        resp.dispose.flatMap(_ => openWithCasSession(refreshSession(casParams), req))
-      case resp =>
-        Task.now(resp)
+  def apply(
+    casClient: CasClient,
+    casParams: CasParams,
+    serviceClient: Client[IO],
+    clientCallerId: String,
+    sessionCookieName: String
+  ): Client[IO] = {
+    def openWithCasSession(request: Request[IO], hotswap: Hotswap[IO, Response[IO]]): IO[Response[IO]] = {
+      getCasSession(casParams).flatMap(requestWithCasSession(request, hotswap, retry = true))
     }
-  }
 
-  private def addHeaders(req: Request, session: SessionCookie): Request = {
-    val list: List[Header] = List(headers.Cookie(Cookie(sessionCookieName, session), Cookie("CSRF", clientCallerId)), Header("CSRF", clientCallerId), Header("Caller-Id", clientCallerId))
-    req.putHeaders(list: _*)
-  }
-
-  private def openWithCasSession(sessionIdTask: Task[SessionCookie], request: Request): Task[DisposableResponse] = {
-    sessionIdTask.flatMap { jsessionid =>
-      val requestWithHeaders = addHeaders(request, jsessionid)
-      serviceClient.open(requestWithHeaders)
+    def requestWithCasSession
+      (request: Request[IO], hotswap: Hotswap[IO, Response[IO]], retry: Boolean)
+      (sessionCookie: SessionCookie)
+    : IO[Response[IO]] = {
+      val fullRequest = FetchHelper.addDefaultHeaders(
+        request.addCookie(sessionCookieName, sessionCookie),
+        clientCallerId
+      )
+      // Hotswap use inspired by http4s Retry middleware:
+      hotswap.swap(serviceClient.run(fullRequest)).flatMap {
+        case r: Response[IO] if sessionExpired(r) && retry =>
+          logger.info("Session for " + casParams + " expired")
+          refreshSession(casParams).flatMap(requestWithCasSession(request, hotswap, retry = false))
+        case r: Response[IO] => IO.pure(r)
+      }
     }
-  }
 
-  private def isRedirectToLogin(resp: Response): Boolean =
-    resp.headers.get(Location).exists(t => t.value.contains("/cas/login") || t.value.contains("/cas-oppija/login"))
+    def isRedirectToLogin(resp: Response[IO]): Boolean =
+      resp.headers.get(CIString("Location")).exists(_.exists(header =>
+        header.value.contains("/cas/login") || header.value.contains("/cas-oppija/login")
+      ))
 
-  private def sessionExpired(resp: Response): Boolean = {
-    isRedirectToLogin(resp) || resp.status.code == Status.Unauthorized.code
-}
+    def sessionExpired(resp: Response[IO]): Boolean =
+      isRedirectToLogin(resp) || resp.status == Status.Unauthorized
 
-  private def getCasSession(params: CasParams): Task[SessionCookie] = {
-    synchronized(sessions.get(params)) match {
-      case None =>
-        logger.debug(s"No existing $sessionCookieName found for " + params + ", creating new")
-        refreshSession(params)
-      case Some(session) =>
-        Task.now(session)
+    def getCasSession(params: CasParams): IO[SessionCookie] = {
+      synchronized(sessions.get(params)) match {
+        case None =>
+          logger.debug(s"No existing $sessionCookieName found for " + params + ", creating new")
+          refreshSession(params)
+        case Some(session) =>
+          IO.pure(session)
+      }
     }
-  }
 
-  private def refreshSession(params: CasParams): Task[SessionCookie] = {
-    casClient.fetchCasSession(params, sessionCookieName).map { session =>
-      logger.debug("Storing new jsessionid for " + params)
-      synchronized(sessions.put(params, session))
-      session
+    def refreshSession(params: CasParams): IO[SessionCookie] = {
+      casClient.fetchCasSession(params, sessionCookieName).map { session =>
+        logger.debug("Storing new jsessionid for " + params)
+        synchronized(sessions.put(params, session))
+        session
+      }
+    }
+
+    Client { req =>
+      Hotswap.create[IO, Response[IO]].flatMap { hotswap =>
+        Resource.eval(openWithCasSession(req, hotswap))
+      }
     }
   }
 }

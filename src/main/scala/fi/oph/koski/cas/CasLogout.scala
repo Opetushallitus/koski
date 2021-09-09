@@ -11,4 +11,3 @@ object CasLogout {
     }
   }
 }
-
