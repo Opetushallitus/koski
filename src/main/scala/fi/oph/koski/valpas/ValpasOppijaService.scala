@@ -149,7 +149,7 @@ class ValpasOppijaService(
     (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =
     getOppijatLaajatTiedotHakutilanteilla(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, oppilaitosOid)
-      .map(poistaKuntailmoitetutOpiskeluoikeudet)
+      .map(poistaKuntailmoitetutOpiskeluoikeudet(säästäJosOpiskeluoikeusVoimassa = false))
       .map(lisätiedotRepository.readForOppijat)
       .map(_.map(Function.tupled(OppijaHakutilanteillaSuppeatTiedot.apply)))
 
@@ -183,6 +183,7 @@ class ValpasOppijaService(
   : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =
     getOppijatLaajatTiedotIlmanHakutilanteita(ValpasRooli.OPPILAITOS_SUORITTAMINEN, oppilaitosOid)
       .map(_.map(poistaEronneetOpiskeluoikeudetJoillaUusiKelpaavaOpiskelupaikka))
+      .map(poistaKuntailmoitetutOpiskeluoikeudet(säästäJosOpiskeluoikeusVoimassa = true))
       // poista oppijat, joille ei eronneiden poiston jälkeen jäänyt jäljelle yhtään suorittamisvalvottavia opiskeluoikeuksia
       .map(_.filter(onSuorittamisvalvottaviaOpiskeluoikeuksia))
       .map(_.map(fetchOppivelvollisuudenKeskeytykset))
@@ -604,6 +605,7 @@ class ValpasOppijaService(
   }
 
   private def poistaKuntailmoitetutOpiskeluoikeudet
+    (säästäJosOpiskeluoikeusVoimassa: Boolean)
     (oppijat: Seq[OppijaHakutilanteillaLaajatTiedot])
     (implicit session: ValpasSession)
   : Seq[OppijaHakutilanteillaLaajatTiedot] = {
@@ -613,7 +615,8 @@ class ValpasOppijaService(
 
     oppijat.flatMap(oppija => {
       val opiskeluoikeudet = oppija.oppija.opiskeluoikeudet
-        .filterNot(oo => ilmoituksellisetOpiskeluoikeudet.contains(oo.oid))
+        .filter(oo => !ilmoituksellisetOpiskeluoikeudet.contains(oo.oid) ||
+          (säästäJosOpiskeluoikeusVoimassa && oo.tarkastelupäivänTila.koodiarvo == "voimassa"))
       if (opiskeluoikeudet.nonEmpty) {
         Some(oppija.copy(oppija = oppija.oppija.copy(opiskeluoikeudet = opiskeluoikeudet)))
       } else {

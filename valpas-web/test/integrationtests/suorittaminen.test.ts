@@ -1,6 +1,8 @@
+import { Oid } from "../../src/state/common"
 import { createSuorittaminenPathWithOrg } from "../../src/state/paths"
 import {
   clickElement,
+  expectElementEventuallyNotVisible,
   expectElementEventuallyVisible,
   textEventuallyEquals,
 } from "../integrationtests-env/browser/content"
@@ -15,8 +17,17 @@ import {
   setTableTextFilter,
   toggleTableSort,
 } from "../integrationtests-env/browser/datatable"
-import { loginAs, resetMockData } from "../integrationtests-env/browser/reset"
+import {
+  loginAs,
+  reset,
+  resetMockData,
+} from "../integrationtests-env/browser/reset"
 import { hakutilannePath } from "../integrationtests/hakutilanne.shared"
+import {
+  Oppija,
+  teeKuntailmoitusOppijanäkymistä,
+  Tekijä,
+} from "./kuntailmoitus.shared"
 import {
   aapajoenKouluOid,
   jyväskylänNormaalikouluOid,
@@ -183,4 +194,73 @@ describe("Suorittamisen valvonta -näkymä", () => {
     const contentsAfter = await getTableContents(selector)
     expect(contentsAfter).toEqual(contentsBefore)
   })
+
+  it("Kuntailmoituksen tekeminen oppijasta, jolla on voimassaoleva opiskeluoikeus, ei poista riviä listasta", async () => {
+    const oppijaOid = "1.2.246.562.24.00000000030"
+    const oppijaRowSelector = `.suorittaminen .table__row[data-row*="${oppijaOid}"]`
+
+    await reset(suorittaminenListaPath, true)
+    await loginAs(suorittaminenListaPath, "valpas-jkl-normaali")
+    await expectElementEventuallyVisible(oppijaRowSelector)
+
+    await teeKuntailmoitus(
+      oppijaOid,
+      "Jkl-Lukio-Kulosaarelainen Valpas",
+      "010104A187H"
+    )
+
+    await goToLocation(suorittaminenListaJklPath)
+    await expectElementEventuallyVisible(oppijaRowSelector)
+  })
+
+  it("Kuntailmoituksen tekeminen oppijasta, jolla ei ole voimassaolevaa opiskeluoikeuttaa, poistaa rivin listasta", async () => {
+    const oppijaOid = "1.2.246.562.24.00000000052"
+    const oppijaRowSelector = `.suorittaminen .table__row[data-row*="${oppijaOid}"]`
+
+    await reset(suorittaminenListaPath, true)
+    await loginAs(suorittaminenListaPath, "valpas-jkl-normaali")
+    await expectElementEventuallyVisible(oppijaRowSelector)
+
+    await teeKuntailmoitus(
+      oppijaOid,
+      "Lukio-opiskelija-valmistunut Valpas",
+      "271105A835H"
+    )
+
+    await goToLocation(suorittaminenListaJklPath)
+    await expectElementEventuallyNotVisible(oppijaRowSelector)
+  })
 })
+
+const teeKuntailmoitus = async (oppijaOid: Oid, nimi: string, hetu: string) => {
+  const tekijä: Tekijä = {
+    nimi: "käyttäjä valpas-jkl-normaali",
+    email: "suorittaminen@oph.fi",
+    puhelin: "0505050505050",
+    organisaatio: "Jyväskylän normaalikoulu",
+    organisaatioOid: "1.2.246.562.10.14613773812",
+  }
+
+  const oppija: Oppija = {
+    oid: oppijaOid,
+    title: `${nimi} (${hetu})`,
+    prefill: 0,
+    expected: {
+      kohde: "Helsingin kaupunki",
+      tekijä: [
+        tekijä.nimi,
+        tekijä.email,
+        tekijä.puhelin,
+        tekijä.organisaatio,
+      ].join("\n"),
+      email: "valpas@gmail.com",
+      lähiosoite: "Esimerkkitie 10",
+      maa: "Costa Rica",
+      muuHaku: "Ei",
+      postitoimipaikka: "00000 Helsinki",
+      puhelin: "0401122334",
+    },
+  }
+
+  await teeKuntailmoitusOppijanäkymistä([oppija], tekijä)
+}
