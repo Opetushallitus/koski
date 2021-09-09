@@ -1,7 +1,11 @@
 import * as A from "fp-ts/lib/Array"
 import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
-import { FutureSuccessIcon, SuccessIcon } from "../../../components/icons/Icon"
+import {
+  FutureSuccessIcon,
+  OpiskeluhistoriaTapahtumaIcon,
+  SuccessIcon,
+} from "../../../components/icons/Icon"
 import {
   Column,
   DataTable,
@@ -10,6 +14,7 @@ import {
   Value,
 } from "../../../components/tables/DataTable"
 import { getLocalizedMaybe, t } from "../../../i18n/i18n"
+import { getNäytettävätIlmoitukset } from "../../../state/apitypes/kuntailmoitus"
 import {
   OpiskeluoikeusSuppeatTiedot,
   voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus,
@@ -52,6 +57,7 @@ export const KuntailmoitusTable = (props: KuntailmoitusTableProps) => {
         label: t("kuntailmoitus__taulu_nimi"),
         filter: "freetext",
         size: "large",
+        indicatorSpace: "auto",
       },
       {
         label: t("kuntailmoitus__taulu_ilmoituspäivä"),
@@ -91,6 +97,9 @@ const ilmoitusToTableData = (basePath: string, organisaatioOid: string) => (
   tiedot: OppijaKuntailmoituksillaSuppeatTiedot
 ): Array<Datum> => {
   const henkilö = tiedot.oppija.henkilö
+  const ainaNäytetävätIlmoitukset = getNäytettävätIlmoitukset(tiedot).map(
+    (i) => i.id
+  )
 
   return tiedot.kuntailmoitukset.map((ilmoitus) => ({
     key: [ilmoitus.id],
@@ -107,6 +116,9 @@ const ilmoitusToTableData = (basePath: string, organisaatioOid: string) => (
             {henkilö.sukunimi} {henkilö.etunimet}
           </Link>
         ),
+        icon: !ainaNäytetävätIlmoitukset.includes(ilmoitus.id) ? (
+          <OpiskeluhistoriaTapahtumaIcon color="blue" />
+        ) : null,
       },
       {
         value: ilmoitus.aikaleima,

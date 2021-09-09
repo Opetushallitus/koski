@@ -1,4 +1,5 @@
 import * as A from "fp-ts/Array"
+import { pipe } from "fp-ts/lib/function"
 import * as Ord from "fp-ts/Ord"
 import * as string from "fp-ts/string"
 import { KoskiOpiskeluoikeudenTila } from "../../state/apitypes/koskiopiskeluoikeudentila"
@@ -119,3 +120,12 @@ export const voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus = (
     (tila === "voimassa" || tila === "voimassatulevaisuudessa")
   )
 }
+
+export const oppijallaOnOpiskelupaikka = (
+  opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
+): boolean =>
+  pipe(
+    opiskeluoikeudet,
+    A.filter(voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus),
+    A.isNonEmpty
+  )

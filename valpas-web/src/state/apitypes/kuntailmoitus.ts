@@ -3,6 +3,8 @@ import * as Ord from "fp-ts/Ord"
 import * as string from "fp-ts/string"
 import { ISODateTime, Oid } from "../common"
 import { Kieli, Kunta, Maa } from "./koodistot"
+import { oppijallaOnOpiskelupaikka } from "./opiskeluoikeus"
+import { OppijaKuntailmoituksillaSuppeatTiedot } from "./oppija"
 import { Organisaatio } from "./organisaatiot"
 
 export type KuntailmoitusLaajatTiedot = {
@@ -75,3 +77,15 @@ export const aikaleimaOrd = Ord.contramap(
 export const sortKuntailmoitusLaajatTiedotLisätiedoilla = A.sort(
   Ord.reverse(aikaleimaOrd)
 )
+
+export const getNäytettävätIlmoitukset = (
+  tiedot: OppijaKuntailmoituksillaSuppeatTiedot
+): LuotuKuntailmoitusSuppeatTiedot[] => {
+  const eiOpiskelupaikkaa = !oppijallaOnOpiskelupaikka(
+    tiedot.oppija.opiskeluoikeudet
+  )
+
+  return tiedot.kuntailmoitukset.filter(
+    (i) => eiOpiskelupaikkaa && !i.onUudempiaIlmoituksiaMuihinKuntiin
+  )
+}

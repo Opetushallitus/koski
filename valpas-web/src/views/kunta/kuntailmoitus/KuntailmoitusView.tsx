@@ -30,10 +30,7 @@ import {
   useOrganisaatiotJaKäyttöoikeusroolit,
   withRequiresKuntavalvonta,
 } from "../../../state/accessRights"
-import {
-  OpiskeluoikeusSuppeatTiedot,
-  voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus,
-} from "../../../state/apitypes/opiskeluoikeus"
+import { getNäytettävätIlmoitukset } from "../../../state/apitypes/kuntailmoitus"
 import { OppijaKuntailmoituksillaSuppeatTiedot } from "../../../state/apitypes/oppija"
 import { useBasePath } from "../../../state/basePath"
 import { Oid } from "../../../state/common"
@@ -190,26 +187,17 @@ const OrganisaatioMissingView = () => (
 const poistaAiemminTehdytIlmoitukset = (
   tiedot: OppijaKuntailmoituksillaSuppeatTiedot
 ) => {
-  const eiOpiskelupaikkaa = !oppijallaOnOpiskelupaikka(
-    tiedot.oppija.opiskeluoikeudet
+  const näytettävätIlmoitukset = getNäytettävätIlmoitukset(tiedot).map(
+    (i) => i.id
   )
 
   return {
     ...tiedot,
-    kuntailmoitukset: tiedot.kuntailmoitukset.filter(
-      (i) => eiOpiskelupaikkaa && !i.onUudempiaIlmoituksiaMuihinKuntiin
+    kuntailmoitukset: tiedot.kuntailmoitukset.filter((i) =>
+      näytettävätIlmoitukset.includes(i.id)
     ),
   }
 }
-
-const oppijallaOnOpiskelupaikka = (
-  opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
-): boolean =>
-  pipe(
-    opiskeluoikeudet,
-    A.filter(voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus),
-    A.isNonEmpty
-  )
 
 const kuntailmoitustenMäärä = (
   tiedot: OppijaKuntailmoituksillaSuppeatTiedot[]
