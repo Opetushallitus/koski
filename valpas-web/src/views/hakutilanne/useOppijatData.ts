@@ -35,14 +35,30 @@ export type UseOppijatDataApi = {
   errors?: ApiError[]
 }
 
-export const useOppijatData = (organisaatioOid?: Oid): UseOppijatDataApi => {
+export type UseOppijatDataApiReload = {
+  reload: () => void
+}
+
+export const useOppijatData = (
+  organisaatioOid?: Oid
+): UseOppijatDataApi & UseOppijatDataApiReload => {
   const oppijatFetch = useApiWithParams(
     fetchOppijat,
     organisaatioOid ? [organisaatioOid] : undefined,
     fetchOppijatCache
   )
 
-  return useOppijatDataAPI(organisaatioOid, oppijatFetch)
+  const reload = useCallback(() => {
+    if (organisaatioOid) {
+      fetchOppijatCache.clearAll()
+      oppijatFetch.call(organisaatioOid)
+    }
+  }, [oppijatFetch, organisaatioOid])
+
+  return {
+    ...useOppijatDataAPI(organisaatioOid, oppijatFetch),
+    reload,
+  }
 }
 
 export const useOppijatKuntailmoituksillaData = (

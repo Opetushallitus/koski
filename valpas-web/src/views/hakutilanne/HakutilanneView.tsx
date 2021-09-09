@@ -73,7 +73,7 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
 
     const organisaatioOid = props.match.params.organisaatioOid!
 
-    const { data, isLoading, errors, setMuuHaku } = useOppijatData(
+    const { data, isLoading, errors, setMuuHaku, reload } = useOppijatData(
       organisaatioOid
     )
 
@@ -142,6 +142,7 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
             ref={drawerRect.ref}
             selectedOppijat={selectedOppijat}
             tekijäorganisaatio={organisaatio}
+            onKuntailmoituksetCreated={reload}
           />
         )}
       </Page>

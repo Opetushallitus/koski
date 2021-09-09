@@ -9,12 +9,13 @@ export type ApiCache<T, S> = {
   set: (key: S, value: ApiSuccess<T>) => void
   map: <U>(key: S, fn: (value: ApiSuccess<T>) => U) => O.Option<U>
   clear: (key: S) => void
+  clearAll: () => void
 }
 
 export const createPreferLocalCache = <T, S extends any[]>(
   _fn: (...args: S) => Promise<E.Either<ApiFailure, ApiSuccess<T>>>
 ): ApiCache<T, S> => {
-  let cachedValues: Record<string, ApiSuccess<T>> = {}
+  const cachedValues: Record<string, ApiSuccess<T>> = {}
   const keyToString = (key: S) => JSON.stringify(key)
   const get = (key: S) => O.fromNullable(cachedValues[keyToString(key)])
 
@@ -29,6 +30,11 @@ export const createPreferLocalCache = <T, S extends any[]>(
     },
     clear(key) {
       delete cachedValues[keyToString(key)]
+    },
+    clearAll() {
+      Object.keys(cachedValues).forEach((key) => {
+        delete cachedValues[key]
+      })
     },
   }
 }

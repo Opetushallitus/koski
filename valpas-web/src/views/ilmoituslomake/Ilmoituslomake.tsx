@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useCallback, useState } from "react"
 import { ModalButtonGroup } from "../../components/buttons/ModalButtonGroup"
 import { RaisedButton } from "../../components/buttons/RaisedButton"
 import { Modal } from "../../components/containers/Modal"
@@ -23,7 +23,7 @@ export type IlmoituslomakeProps = {
   oppijat: IlmoituslomakeOppijaTiedot[]
   pohjatiedot: KuntailmoitusPohjatiedot
   tekijäorganisaatio: Organisaatio
-  onClose: () => void
+  onClose: (submittedForms: Oid[]) => void
 }
 
 export const Ilmoituslomake = (props: IlmoituslomakeProps) => {
@@ -41,9 +41,14 @@ export const Ilmoituslomake = (props: IlmoituslomakeProps) => {
     setTekijä,
   ] = useState<KuntailmoituksenTekijäLaajatTiedot | null>(null)
 
+  const onClose = props.onClose
+  const close = useCallback(() => {
+    onClose(submittedForms)
+  }, [onClose, submittedForms])
+
   if (!tekijä) {
     return (
-      <Modal title={t("ilmoituslomake__otsikko")} onClose={props.onClose}>
+      <Modal title={t("ilmoituslomake__otsikko")} onClose={close}>
         <p>
           <T id="ilmoituksentekijälomake__ohje" />
         </p>
@@ -58,7 +63,7 @@ export const Ilmoituslomake = (props: IlmoituslomakeProps) => {
   }
 
   return (
-    <Modal title={t("ilmoituslomake__otsikko")} onClose={props.onClose}>
+    <Modal title={t("ilmoituslomake__otsikko")} onClose={close}>
       {!allFormsSubmitted && (
         <p>
           <T id="ilmoituslomake__ohje" />
@@ -92,11 +97,11 @@ export const Ilmoituslomake = (props: IlmoituslomakeProps) => {
 
       <ModalButtonGroup>
         {allFormsSubmitted ? (
-          <RaisedButton hierarchy="primary" onClick={props.onClose}>
+          <RaisedButton hierarchy="primary" onClick={close}>
             <T id="ilmoituslomake__valmis" />
           </RaisedButton>
         ) : (
-          <RaisedButton hierarchy="secondary" onClick={props.onClose}>
+          <RaisedButton hierarchy="secondary" onClick={close}>
             <T id="ilmoituslomake__sulje" />
           </RaisedButton>
         )}
