@@ -30,10 +30,7 @@ import {
   useOrganisaatiotJaKäyttöoikeusroolit,
   withRequiresKuntavalvonta,
 } from "../../../state/accessRights"
-import {
-  OpiskeluoikeusSuppeatTiedot,
-  voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus,
-} from "../../../state/apitypes/opiskeluoikeus"
+import { getNäytettävätIlmoitukset } from "../../../state/apitypes/kuntailmoitus"
 import { OppijaKuntailmoituksillaSuppeatTiedot } from "../../../state/apitypes/oppija"
 import { useBasePath } from "../../../state/basePath"
 import { Oid } from "../../../state/common"
@@ -113,15 +110,18 @@ export const KuntailmoitusView = withRequiresKuntavalvonta(
       fetchKuntailmoituksetCache
     )
 
-    const [näytäVanhentuneet, setNäytäVanhentuneet] = useState(false)
-    const [data, vanhentuneita] = useMemo(() => {
+    const [
+      näytäAiemminTehdytIlmoitukset,
+      setNäytäAiemminTehdytIlmoitukset,
+    ] = useState(false)
+    const [data, aiemminTehdytIlmoituksetLkm] = useMemo(() => {
       const arr = isSuccess(fetch) ? fetch.data : []
-      const arrIlmanVanhoja = arr.map(poistaOppijanVanhentuneetIlmoitukset)
+      const arrIlmanVanhoja = arr.map(poistaAiemminTehdytIlmoitukset)
       return [
-        näytäVanhentuneet ? arr : arrIlmanVanhoja,
+        näytäAiemminTehdytIlmoitukset ? arr : arrIlmanVanhoja,
         kuntailmoitustenMäärä(arr) - kuntailmoitustenMäärä(arrIlmanVanhoja),
       ]
-    }, [fetch, näytäVanhentuneet])
+    }, [fetch, näytäAiemminTehdytIlmoitukset])
 
     return (
       <Page>
@@ -146,11 +146,11 @@ export const KuntailmoitusView = withRequiresKuntavalvonta(
             <LabeledCheckbox
               inline
               label={
-                t("kuntailmoitusnäkymä__näytä_arkistoidut_ilmoitukset") +
-                ` (${vanhentuneita})`
+                t("kuntailmoitusnäkymä__näytä_aiemmin_tehdyt_ilmoitukset") +
+                ` (${aiemminTehdytIlmoituksetLkm})`
               }
-              value={näytäVanhentuneet}
-              onChange={setNäytäVanhentuneet}
+              value={näytäAiemminTehdytIlmoitukset}
+              onChange={setNäytäAiemminTehdytIlmoitukset}
               className={b("vanhatilmoituksetcb")}
               testId="arkistoidutcb"
             />
@@ -184,29 +184,20 @@ const OrganisaatioMissingView = () => (
   />
 )
 
-const poistaOppijanVanhentuneetIlmoitukset = (
+const poistaAiemminTehdytIlmoitukset = (
   tiedot: OppijaKuntailmoituksillaSuppeatTiedot
 ) => {
-  const eiOpiskelupaikkaa = !oppijallaOnOpiskelupaikka(
-    tiedot.oppija.opiskeluoikeudet
+  const näytettävätIlmoitukset = getNäytettävätIlmoitukset(tiedot).map(
+    (i) => i.id
   )
 
   return {
     ...tiedot,
-    kuntailmoitukset: tiedot.kuntailmoitukset.filter(
-      (i) => eiOpiskelupaikkaa && !i.onUudempiaIlmoituksiaMuihinKuntiin
+    kuntailmoitukset: tiedot.kuntailmoitukset.filter((i) =>
+      näytettävätIlmoitukset.includes(i.id)
     ),
   }
 }
-
-const oppijallaOnOpiskelupaikka = (
-  opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
-): boolean =>
-  pipe(
-    opiskeluoikeudet,
-    A.filter(voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus),
-    A.isNonEmpty
-  )
 
 const kuntailmoitustenMäärä = (
   tiedot: OppijaKuntailmoituksillaSuppeatTiedot[]
