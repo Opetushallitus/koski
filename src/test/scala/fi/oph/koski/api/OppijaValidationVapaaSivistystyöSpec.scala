@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusKatsotaanEronneeksi, opiskeluoikeusValmistunut}
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusKatsotaanEronneeksi, opiskeluoikeusValmistunut, vahvistus}
 import fi.oph.koski.documentation.VapaaSivistystyöExample._
 import fi.oph.koski.documentation.VapaaSivistystyöExampleData._
 import fi.oph.koski.http.KoskiErrorCategory
@@ -107,11 +107,13 @@ class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoik
   "KOTO" - {
     "Päätason suorituksen laajuus lasketaan automaattisesti osasuoritusten laajuuksista" in {
       val opiskeluoikeus = opiskeluoikeusKOTO.withSuoritukset(List(
-        suoritusKOTO.withOsasuoritukset(Some(List(
-          vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus(laajuus = LaajuusOpintopisteissä(60)),
-          vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus(laajuus = LaajuusOpintopisteissä(9))
-        )))
-      ))
+        suoritusKOTO.copy(
+          vahvistus = None,
+          osasuoritukset = Some(List(
+            vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus(laajuus = LaajuusOpintopisteissä(60)),
+            vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus(laajuus = LaajuusOpintopisteissä(9))
+          ))
+      )))
       val result = putAndGetOpiskeluoikeus(opiskeluoikeus)
       result.suoritukset.head.koulutusmoduuli.laajuusArvo(0) shouldBe(69)
     }

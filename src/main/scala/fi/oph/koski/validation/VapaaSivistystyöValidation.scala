@@ -4,27 +4,31 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.schema._
 
 object VapaaSivistystyöValidation {
-  def validateVapaanSivistystyönPäätasonSuoritus(suoritus: VapaanSivistystyönPäätasonSuoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
-    HttpStatus.fold(List(
-        validateTilanKoodiarvot(suoritus, opiskeluoikeus),
-        suoritus match {
-          case kops: OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus if suoritus.vahvistettu => {
-            HttpStatus.fold(List(
-              validateVapaanSivistystyönPäätasonKOPSSuorituksenLaajuus(kops),
-              validateVapaanSivistystyönPäätasonKOPSSuorituksenOsaamiskokonaisuuksienLaajuudet(kops)
-            ))
+  def validateVapaanSivistystyönPäätasonSuoritus(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+    suoritus match {
+      case suoritus:VapaanSivistystyönPäätasonSuoritus => {
+        HttpStatus.fold(List(
+          validateTilanKoodiarvot(suoritus, opiskeluoikeus),
+          suoritus match {
+            case kops: OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus if suoritus.vahvistettu => {
+              HttpStatus.fold(List(
+                validateVapaanSivistystyönPäätasonKOPSSuorituksenLaajuus(kops),
+                validateVapaanSivistystyönPäätasonKOPSSuorituksenOsaamiskokonaisuuksienLaajuudet(kops)
+              ))
+            }
+            case vapaa: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus if suoritus.vahvistettu => {
+              HttpStatus.fold(List(
+                validateVapaaSivistystyöVapaatavoitteinenVahvistetunPäätasonOsaSuoritukset(vapaa)
+              ))
+            }
+            case _ => {
+              HttpStatus.ok
+            }
           }
-          case vapaa: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus if suoritus.vahvistettu => {
-            HttpStatus.fold(List(
-              validateVapaaSivistystyöVapaatavoitteinenVahvistetunPäätasonOsaSuoritukset(vapaa)
-            ))
-          }
-          case _ => {
-            HttpStatus.ok
-          }
-        }
-      )
-    )
+        ))
+      }
+      case _ => HttpStatus.ok
+    }
   }
 
   private def validateTilanKoodiarvot(suoritus: VapaanSivistystyönPäätasonSuoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {

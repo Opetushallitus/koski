@@ -539,6 +539,7 @@ class KoskiValidator(
         :: Lukio2019VieraatKieletValidation.validate(suoritus, parent)
         :: Lukio2019ArvosanaValidation.validateOsasuoritus(suoritus)
         :: LukioonValmistavanKoulutuksenValidaatiot.validateLukioonValmistava2019(suoritus)
+        :: VapaaSivistystyöValidation.validateVapaanSivistystyönPäätasonSuoritus(suoritus, opiskeluoikeus)
         :: HttpStatus.validate(!suoritus.isInstanceOf[PäätasonSuoritus])(validateDuplicates(suoritus.osasuoritukset.toList.flatten))
         :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, suoritus :: parent))
     )
@@ -635,7 +636,7 @@ class KoskiValidator(
 
   private def validatePäätasonSuorituksenStatus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, suoritus: KoskeenTallennettavaPäätasonSuoritus) = suoritus match {
     case a: AmmatillisenTutkinnonOsittainenSuoritus => validateValmiinAmmatillisenTutkinnonOsittainenSuoritus(a, opiskeluoikeus)
-    case vst: VapaanSivistystyönPäätasonSuoritus => VapaaSivistystyöValidation.validateVapaanSivistystyönPäätasonSuoritus(vst, opiskeluoikeus)
+    case _: VapaanSivistystyönPäätasonSuoritus => HttpStatus.ok // Osalle VST:n opiskeluoikeustyyppejä tämä validaatio ei päde. VST:llä omia validaatio tätä tapausta varten.
     case s => validateValmiinSuorituksenStatus(s)
   }
 
