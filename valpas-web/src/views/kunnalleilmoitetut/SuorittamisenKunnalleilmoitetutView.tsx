@@ -6,7 +6,7 @@ import {
   KunnalleIlmoitetutViewRouteProps,
 } from "../../state/paths"
 import { ErrorView } from "../ErrorView"
-import { useHakeutumisvalvonnanKunnalleTehdytIlmoitukset } from "../hakutilanne/useOppijatData"
+import { useSuorittamisvalvonnanKunnalleTehdytIlmoitukset } from "../hakutilanne/useOppijatData"
 import { OrganisaatioAutoRedirect } from "../OrganisaatioAutoRedirect"
 import { SuorittaminenNavigation } from "../suorittaminen/SuorittaminenNavigation"
 import { KunnalleIlmoitetutView } from "./KunnalleIlmoitetutView"
@@ -37,7 +37,7 @@ export const SuorittamisenKunnalleIlmoitetutView = withRequiresSuorittamisenValv
       organisaatioOid={props.match.params.organisaatioOid!}
       organisaatioHakuRooli={organisaatioHakuRooli}
       organisaatioTyyppi={organisaatioTyyppi}
-      dataFetcher={useHakeutumisvalvonnanKunnalleTehdytIlmoitukset} // TODO: Vaihda oikeaksi, kunhan API on valmisteltu
+      dataFetcher={useSuorittamisvalvonnanKunnalleTehdytIlmoitukset}
       backRefName="suorittaminenIlmoitetutRef"
       storageName="suorittaminenIlmoitetut"
       navigation={

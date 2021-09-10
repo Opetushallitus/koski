@@ -43,6 +43,7 @@ import {
   jklNormaalikouluSuorittaminenTableHead,
   stadinAmmattiopistoSuorittaminenTableContent,
   stadinAmmattiopistoSuorittaminenTableHead,
+  suorittaminenKuntailmoitusListaJklPath,
   suorittaminenListaHkiPath,
   suorittaminenListaJklPath,
   suorittaminenListaPath,
@@ -195,9 +196,9 @@ describe("Suorittamisen valvonta -näkymä", () => {
     expect(contentsAfter).toEqual(contentsBefore)
   })
 
-  it("Kuntailmoituksen tekeminen oppijasta, jolla on voimassaoleva opiskeluoikeus, ei poista riviä listasta", async () => {
+  it("Kuntailmoituksen tekeminen oppijasta, jolla on voimassaoleva opiskeluoikeus, ei poista riviä listasta, mutta lisää rivin ilmoituslistaan", async () => {
     const oppijaOid = "1.2.246.562.24.00000000030"
-    const oppijaRowSelector = `.suorittaminen .table__row[data-row*="${oppijaOid}"]`
+    const oppijaRowSelector = `.table__row[data-row*="${oppijaOid}"]`
 
     await reset(suorittaminenListaPath, true)
     await loginAs(suorittaminenListaPath, "valpas-jkl-normaali")
@@ -211,11 +212,14 @@ describe("Suorittamisen valvonta -näkymä", () => {
 
     await goToLocation(suorittaminenListaJklPath)
     await expectElementEventuallyVisible(oppijaRowSelector)
+
+    await goToLocation(suorittaminenKuntailmoitusListaJklPath)
+    await expectElementEventuallyVisible(oppijaRowSelector)
   })
 
-  it("Kuntailmoituksen tekeminen oppijasta, jolla ei ole voimassaolevaa opiskeluoikeuttaa, poistaa rivin listasta", async () => {
+  it("Kuntailmoituksen tekeminen oppijasta, jolla ei ole voimassaolevaa opiskeluoikeuttaa, poistaa rivin listasta ja lisää uuden rivin ilmoituslistaan", async () => {
     const oppijaOid = "1.2.246.562.24.00000000052"
-    const oppijaRowSelector = `.suorittaminen .table__row[data-row*="${oppijaOid}"]`
+    const oppijaRowSelector = `.table__row[data-row*="${oppijaOid}"]`
 
     await reset(suorittaminenListaPath, true)
     await loginAs(suorittaminenListaPath, "valpas-jkl-normaali")
@@ -229,6 +233,9 @@ describe("Suorittamisen valvonta -näkymä", () => {
 
     await goToLocation(suorittaminenListaJklPath)
     await expectElementEventuallyNotVisible(oppijaRowSelector)
+
+    await goToLocation(suorittaminenKuntailmoitusListaJklPath)
+    await expectElementEventuallyVisible(oppijaRowSelector)
   })
 })
 

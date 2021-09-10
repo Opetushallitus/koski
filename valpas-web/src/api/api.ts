@@ -76,17 +76,19 @@ export const fetchOppijat = (organisaatioOid: Oid) =>
 export const fetchOppijatCache = createPreferLocalCache(fetchOppijat)
 
 /**
- * Hae kunnalle tehdyt ilmoitukset
+ * Hae hakeutumisvalvonnan kunnalle tekemät ilmoitukset
  */
-export const fetchOppijatKuntailmoituksilla = (organisaatioOid: Oid) =>
+export const fetchHakeutumisvalvonnanKunnalleTehdytIlmoitukset = (
+  organisaatioOid: Oid
+) =>
   handleExpiredSession(
     apiGet<OppijaHakutilanteillaSuppeatTiedot[]>(
       `valpas/api/oppijat/${organisaatioOid}/ilmoitukset`
     )
   )
 
-export const fetchOppijatKuntailmoituksillaCache = createLocalThenApiCache(
-  fetchOppijat
+export const fetchHakeutumisvalvonnanKunnalleTehdytIlmoituksetCache = createLocalThenApiCache(
+  fetchHakeutumisvalvonnanKunnalleTehdytIlmoitukset
 )
 
 /**
@@ -101,6 +103,22 @@ export const fetchOppijatSuorittaminen = (organisaatioOid: Oid) =>
 
 export const fetchOppijatSuorittaminenCache = createPreferLocalCache(
   fetchOppijatSuorittaminen
+)
+
+/**
+ * Hae suorittammisvalvonnan kunnalle tekemät ilmoitukset
+ */
+export const fetchSuorittamisvalvonnanKunnalleTehdytIlmoitukset = (
+  organisaatioOid: Oid
+) =>
+  handleExpiredSession(
+    apiGet<OppijaHakutilanteillaSuppeatTiedot[]>(
+      `valpas/api/oppijat-suorittaminen/${organisaatioOid}/ilmoitukset`
+    )
+  )
+
+export const fetchSuorittamisvalvonnanKunnalleTehdytIlmoituksetCache = createLocalThenApiCache(
+  fetchSuorittamisvalvonnanKunnalleTehdytIlmoitukset
 )
 
 /**

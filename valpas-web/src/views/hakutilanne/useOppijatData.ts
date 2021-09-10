@@ -1,10 +1,12 @@
 import * as E from "fp-ts/Either"
 import { useCallback } from "react"
 import {
+  fetchHakeutumisvalvonnanKunnalleTehdytIlmoitukset,
+  fetchHakeutumisvalvonnanKunnalleTehdytIlmoituksetCache,
   fetchOppijat,
   fetchOppijatCache,
-  fetchOppijatKuntailmoituksilla,
-  fetchOppijatKuntailmoituksillaCache,
+  fetchSuorittamisvalvonnanKunnalleTehdytIlmoitukset,
+  fetchSuorittamisvalvonnanKunnalleTehdytIlmoituksetCache,
   setMuuHaku,
 } from "../../api/api"
 import { ApiError } from "../../api/apiFetch"
@@ -65,9 +67,21 @@ export const useHakeutumisvalvonnanKunnalleTehdytIlmoitukset = (
   organisaatioOid?: Oid
 ): UseOppijatDataApi => {
   const oppijatFetch = useApiWithParams(
-    fetchOppijatKuntailmoituksilla,
+    fetchHakeutumisvalvonnanKunnalleTehdytIlmoitukset,
     organisaatioOid ? [organisaatioOid] : undefined,
-    fetchOppijatKuntailmoituksillaCache
+    fetchHakeutumisvalvonnanKunnalleTehdytIlmoituksetCache
+  )
+
+  return useOppijatDataAPI(organisaatioOid, oppijatFetch)
+}
+
+export const useSuorittamisvalvonnanKunnalleTehdytIlmoitukset = (
+  organisaatioOid?: Oid
+): UseOppijatDataApi => {
+  const oppijatFetch = useApiWithParams(
+    fetchSuorittamisvalvonnanKunnalleTehdytIlmoitukset,
+    organisaatioOid ? [organisaatioOid] : undefined,
+    fetchSuorittamisvalvonnanKunnalleTehdytIlmoituksetCache
   )
 
   return useOppijatDataAPI(organisaatioOid, oppijatFetch)

@@ -153,30 +153,6 @@ class ValpasOppijaService(
       .map(lisätiedotRepository.readForOppijat)
       .map(_.map(Function.tupled(OppijaHakutilanteillaSuppeatTiedot.apply)))
 
-  def getKunnalleTehdytIlmoitukset
-    (rooli: ValpasRooli.Role, oppilaitosOid: ValpasOppilaitos.Oid)
-    (implicit session: ValpasSession)
-  : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] = {
-    application.valpasKuntailmoitusService.getOppilaitoksenTekemätIlmoitukset(oppilaitosOid)
-      .map(ilmoitukset => {
-        val oppijaOids = ilmoitukset.map(_.oppijaOid)
-        val oppijat = opiskeluoikeusDbService
-          .getOppijat(oppijaOids)
-          .flatMap(asValpasOppijaLaajatTiedot(_).toOption)
-        val oppijatJoihinKatseluoikeus = accessResolver
-          .filterByOppijaAccess(rooli)(oppijat)
-          .map(OppijaHakutilanteillaLaajatTiedot.apply)
-        val oppijatLisätiedoilla = lisätiedotRepository.readForOppijat(oppijatJoihinKatseluoikeus)
-        val oppijatSuppeatTiedot = oppijatLisätiedoilla.map(Function.tupled(OppijaHakutilanteillaSuppeatTiedot.apply))
-        oppijatSuppeatTiedot.map(oppija => oppija.copy(
-          kuntailmoitukset = ilmoitukset
-            .filter(ilmoitus => oppija.oppija.henkilö.kaikkiOidit.contains(ilmoitus.oppijaOid))
-            .map(_.kuntailmoitus)
-            .map(ValpasKuntailmoitusSuppeatTiedot.apply)
-        ))
-      })
-  }
-
   def getSuorittamisvalvottavatOppijatSuppeatTiedot
     (oppilaitosOid: ValpasOppilaitos.Oid)
     (implicit session: ValpasSession)
@@ -602,6 +578,46 @@ class ValpasOppijaService(
         .flatMap(accessResolver.withOpiskeluoikeusAccess(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)(key.opiskeluoikeusOid))
         .flatMap(_ => lisätiedotRepository.setMuuHaku(key, value).toEither)
     )
+  }
+
+  def getHakeutumisenvalvonnanKunnalleTehdytIlmoitukset
+    (oppilaitosOid: ValpasOppilaitos.Oid)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =
+    getOppilaitoksenKunnalleTekemätIlmoitukset(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, oppilaitosOid)
+
+  def getSuorittamisvalvonnanKunnalleTehdytIlmoitukset
+    (oppilaitosOid: ValpasOppilaitos.Oid)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =
+    getOppilaitoksenKunnalleTekemätIlmoitukset(ValpasRooli.OPPILAITOS_SUORITTAMINEN, oppilaitosOid)
+
+  private def getOppilaitoksenKunnalleTekemätIlmoitukset(
+    rooli: ValpasRooli.Role,
+    oppilaitosOid: ValpasOppilaitos.Oid
+  )(
+    implicit session: ValpasSession
+  ) : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] = {
+    application.valpasKuntailmoitusService.getOppilaitoksenTekemätIlmoitukset(oppilaitosOid)
+      .map(ilmoitukset => {
+        val oppijaOids = ilmoitukset.map(_.oppijaOid)
+        val oppijat = opiskeluoikeusDbService
+          .getOppijat(oppijaOids)
+          .flatMap(asValpasOppijaLaajatTiedot(_).toOption)
+        val oppijatJoihinKatseluoikeus = accessResolver
+          .filterByOppijaAccess(rooli)(oppijat)
+          .map(OppijaHakutilanteillaLaajatTiedot.apply)
+        val oppijatLisätiedoilla = lisätiedotRepository.readForOppijat(oppijatJoihinKatseluoikeus)
+        val oppijatSuppeatTiedot = oppijatLisätiedoilla.map(Function.tupled(OppijaHakutilanteillaSuppeatTiedot.apply))
+
+        // Lisää kuntailmoitukset oppijan tietoihin
+        oppijatSuppeatTiedot.map(oppija => oppija.copy(
+          kuntailmoitukset = ilmoitukset
+            .filter(ilmoitus => oppija.oppija.henkilö.kaikkiOidit.contains(ilmoitus.oppijaOid))
+            .map(_.kuntailmoitus)
+            .map(ValpasKuntailmoitusSuppeatTiedot.apply)
+        ))
+      })
   }
 
   private def poistaKuntailmoitetutOpiskeluoikeudet
