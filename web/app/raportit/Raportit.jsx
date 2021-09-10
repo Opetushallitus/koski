@@ -496,7 +496,7 @@ function PerusopetuksenVuosiluokka({ stateP }) {
 function Lukioraportti({ stateP }) {
   const titleText = <Text name='Lukioraportti-title' />
   const shortDescriptionText = <Text name='Lukioraportti-short-description' />
-  const exampleText = <Text name='Lukioraportti-example' />
+  const exampleText = <Paragraphs name='Lukioraportti-example' />
 
   return (
     <AikajaksoRaporttiAikarajauksella
@@ -514,7 +514,7 @@ function LukioKurssikertyma({ stateP }) {
   const title = <Text name='lukion-kurssikertyma-title' />
   const shortDescriptionText = <Text name='lukion-kurssikertyma-short-description' />
   const dateInputHelpText = <Text name='lukion-kurssikertyma-date-input-help' />
-  const exampleText = <Paragraphs name='Lukioraportti-example' />
+  const exampleText = <Paragraphs name='lukion-kurssikertyma-example' />
 
   return (
     <AikajaksoRaportti stateP={stateP}
