@@ -97,7 +97,6 @@ case class InternationalSchoolOpiskeluoikeudenLisätiedot(
 ) extends OpiskeluoikeudenLisätiedot with ErityisenKoulutustehtävänJaksollinen with Ulkomaajaksollinen with MaksuttomuusTieto
 
 trait InternationalSchoolVuosiluokanSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Suorituskielellinen {
-  @KoodistoKoodiarvo("internationalschoolvuosiluokka")
   def tyyppi: Koodistokoodiviite
   @Description("Luokan tunniste, esimerkiksi 9C.")
   @Tooltip("Luokan tunniste, esimerkiksi 9C.")
