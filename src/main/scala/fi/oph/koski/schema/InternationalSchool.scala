@@ -25,6 +25,54 @@ case class InternationalSchoolOpiskeluoikeus(
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
 }
 
+object InternationalSchoolOpiskeluoikeus {
+  def onPeruskouluaVastaavaInternationalSchoolinSuoritus(
+    suorituksenTyyppi: String,
+    koulutusmoduulinKoodiarvo: String
+  ): Boolean =
+  {
+    (suorituksenTyyppi, koulutusmoduulinKoodiarvo) match {
+      case ("internationalschoolpypvuosiluokka", vuosiluokka) => true
+      case ("internationalschoolmypvuosiluokka", vuosiluokka) if vuosiluokka != "10" => true
+      case _ => false
+    }
+  }
+
+  def onLukiotaVastaavaInternationalSchoolinSuoritus(
+    suorituksenTyyppi: String,
+    koulutusmoduulinKoodiarvo: String
+  ): Boolean =
+  {
+    (suorituksenTyyppi, koulutusmoduulinKoodiarvo) match {
+      case ("internationalschooldiplomavuosiluokka", _) => true
+      case ("internationalschoolmypvuosiluokka", "10") => true
+      case _ => false
+    }
+  }
+
+  def onPeruskoulunPäättötodistustaVastaavaInternationalSchoolinSuoritus(
+    suorituksenTyyppi: String,
+    koulutusmoduulinKoodiarvo: String
+  ): Boolean =
+  {
+    (suorituksenTyyppi, koulutusmoduulinKoodiarvo) match {
+      case ("internationalschoolmypvuosiluokka", "9") => true
+      case _ => false
+    }
+  }
+
+  def onLukionPäättötodistustaVastaavaInternationalSchoolinSuoritus(
+    suorituksenTyyppi: String,
+    koulutusmoduulinKoodiarvo: String
+  ): Boolean =
+  {
+    (suorituksenTyyppi, koulutusmoduulinKoodiarvo) match {
+      case ("internationalschooldiplomavuosiluokka", "12") => true
+      case _ => false
+    }
+  }
+}
+
 case class InternationalSchoolOpiskeluoikeudenTila(
   @MinItems(1)
   opiskeluoikeusjaksot: List[InternationalSchoolOpiskeluoikeusjakso]

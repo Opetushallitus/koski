@@ -7,8 +7,9 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
-
+import fi.oph.koski.schema.InternationalSchoolOpiskeluoikeus
 import slick.jdbc.GetResult
+
 import scala.concurrent.duration.DurationInt
 
 object PaallekkaisetOpiskeluoikeudet extends Logging {
@@ -195,11 +196,11 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       case (_, ("esiopetuksensuoritus", _)) => "Esiopetuksen suoritus"
       case (_, ("ibtutkinto", _)) => "IB-tutkinnon suoritus"
       case (_, ("preiboppimaara", _)) => "IB-tutkinnon suoritus"
-      case (_, ("internationalschooldiplomavuosiluokka", _)) => "International school lukio"
-      case (_, ("internationalschoolmypvuosiluokka", "10")) => "International school lukio"
+      case (_, (suorituksenTyyppi, koodiarvo))
+        if InternationalSchoolOpiskeluoikeus.onLukiotaVastaavaInternationalSchoolinSuoritus(suorituksenTyyppi, koodiarvo) => "International school lukio"
       case ("International school lukio", (_, _)) => "International school lukio"
-      case (_, ("internationalschoolmypvuosiluokka", _)) => "International school perusopetus"
-      case (_, ("internationalschoolpypvuosiluokka", _)) => "International school perusopetus"
+      case (_, (suorituksenTyyppi, koodiarvo))
+        if InternationalSchoolOpiskeluoikeus.onPeruskouluaVastaavaInternationalSchoolinSuoritus(suorituksenTyyppi, koodiarvo) => "International school perusopetus"
       case (_, ("lukionoppiaineenoppimaara", _)) => "Lukion aineopiskelija"
       case (_, ("lukionaineopinnot", _)) => "Lukion aineopiskelija"
       case (_, ("lukionoppimaara", _)) => "Lukion oppimäärä"
