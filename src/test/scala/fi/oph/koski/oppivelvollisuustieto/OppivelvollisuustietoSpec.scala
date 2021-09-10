@@ -164,6 +164,49 @@ class OppivelvollisuustietoSpec
         }
       }
 
+      "Jos on suorittanut IB-tutkinnon ja international schoolin, käytetään päättymispäivänä aiempaa vahvistuspäivää" - {
+        "Vahvistuspäivä päättää molemmat aikaisemmin" in {
+          resetFixtures
+          insert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 3, 3))))
+          insert(slave1, ibTutkinto(ibTutkinnonVahvistus = Some(date(2025, 1, 1))))
+          insert(slave2, internationalSchoolToinenAste(vahvistusGrade12 = Some(date(2021, 1, 1))))
+          reloadRaportointikanta
+          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+        }
+      }
+
+      "Jos suorittaa vain IB-tutkintoa, käytetään päättymispäivänä päivää, joka lopettaa aikaisemmin oikeuden maksuttomuuteen tai oppivelvollisuuteen" - {
+        "Vahvistuspäivä päättää molemmat aikaisemmin" in {
+          resetFixtures
+          insert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 1, 1))))
+          insert(slave1, ibTutkinto(ibTutkinnonVahvistus = Some(date(2025, 1, 1))))
+          insert(slave2, ibTutkinto(ibTutkinnonVahvistus = None))
+          reloadRaportointikanta
+          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+        }
+      }
+
+      "Jos suorittaa IB-tutkintoa ja lukiota, käytetään päättymispäivän IB-tutkinnon vahvistuspäivää" - {
+        "Vahvistuspäivä päättää molemmat aikaisemmin" in {
+          resetFixtures
+          insert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 1, 1))))
+          insert(slave1, ibTutkinto(ibTutkinnonVahvistus = Some(date(2025, 1, 1))))
+          insert(slave2, lukionOppimäärä(vahvistus = None))
+          reloadRaportointikanta
+          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+        }
+      }
+
+      "Jos suorittaa IB-tutkintoa, lukiota ja ammattikoulua, käytetään päättymispäivän IB-tutkinnon vahvistuspäivää" - {
+        "Vahvistuspäivä päättää molemmat aikaisemmin" in {
+          resetFixtures
+          insert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 1, 1))))
+          insert(slave1, ammatillinenTutkinto(vahvistus = None))
+          insert(slave2, lukionOppimäärä(vahvistus = None))
+          reloadRaportointikanta
+          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+        }
+      }
 
       "Ei ole vielä suorittamassa toisen asteen tutkintoa" - {
         "Käytetään syntymäaikaa" in {
@@ -251,6 +294,18 @@ class OppivelvollisuustietoSpec
         ExamplesInternationalSchool.grade11.copy(vahvistus = None),
         ExamplesInternationalSchool.grade12.copy(
           vahvistus = vahvistusGrade12.flatMap(InternationalSchoolExampleData.vahvistus)
+        )
+      )
+    )
+  }
+
+  private def ibTutkinto(ibTutkinnonVahvistus: Option[LocalDate]): Opiskeluoikeus = {
+    ExamplesIB.aktiivinenOpiskeluoikeus.copy(
+      lisätiedot = None,
+      suoritukset = List(
+        ExamplesIB.preIBSuoritus,
+        ExamplesIB.ibTutkinnonSuoritus(predicted = false).copy(
+          vahvistus = ibTutkinnonVahvistus.flatMap(date => ExampleData.vahvistusPaikkakunnalla(päivä=date, org = YleissivistavakoulutusExampleData.ressunLukio, kunta = helsinki))
         )
       )
     )
