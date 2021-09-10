@@ -175,4 +175,51 @@ describe('VST', function () {
       })
     })
   })
+
+  describe('Opiskeluoikeuden lisääminen vapaatavoitteiselle VST-koulutukselle', function () {
+      before(
+        prepareForNewOppija('kalle', '230872-7258'),
+        addOppija.enterValidDataVSTVapaatavoitteinen(),
+        addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Vapaan sivistystyön koulutus')
+      )
+
+      it('toimii', function () {
+        expect(opinnot.getTutkinto()).to.equal('Vapaan sivistystyön koulutus')
+        expect(opinnot.getOppilaitos()).to.equal('Varsinais-Suomen kansanopisto')
+      })
+
+      describe('Osasuorituksen voi lisätä', function () {
+        before(
+          editor.edit,
+          vst.lisääPaikallinen('Paikallinen vapaan sivistystyön koulutuksen osasuoritus'),
+          function () {
+            return vst.selectOsasuoritus('Paikallinen vapaan sivistystyön koulutuksen osasuoritus')().property('laajuus').setValue(5)()
+          },
+          editor.saveChanges
+        )
+
+        it('toimii', function () {
+          expect(extractAsText(S('.vst-osasuoritus'))).to.include('Paikallinen vapaan sivistystyön koulutuksen osasuoritus 5 op')
+        })
+
+        describe('Osasuoritukselle voi lisätä osassuorituksen', function () {
+          before(
+            editor.edit,
+            opinnot.avaaKaikki,
+            function () {
+              return vst.selectOsasuoritus('Paikallinen vapaan sivistystyön koulutuksen osasuoritus')().lisääPaikallinen('Osasuorituksen osasuoritus')()
+            },
+            function () {
+              return vst.selectOsasuoritus('Osasuorituksen osasuoritus')().property('laajuus').setValue(5)()
+            },
+            editor.saveChanges,
+            opinnot.avaaKaikki
+          )
+
+          it('toimii', function () {
+            expect(extractAsText(S('.suoritus-taulukko'))).to.include('Osasuorituksen osasuoritus 5 op')
+          })
+        })
+      })
+    })
 })

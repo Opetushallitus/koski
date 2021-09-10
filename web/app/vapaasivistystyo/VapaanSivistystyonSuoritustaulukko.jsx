@@ -17,7 +17,7 @@ import {
 } from '../suoritus/SuoritustaulukkoCommon'
 import {numberToString} from '../util/format'
 
-const MAX_NESTED_LEVEL = 2
+const MAX_NESTED_LEVEL = 3
 
 export class VapaanSivistystyonSuoritustaulukko extends React.Component {
   render() {
@@ -34,8 +34,16 @@ export class VapaanSivistystyonSuoritustaulukko extends React.Component {
 
     const suoritusProtos = tutkinnonOsaPrototypes(suorituksetModel)
     const laajuusYksikkö = getLaajuusYksikkö(suoritusProtos[0])
-    const osaAlueTitle = parentOneOf('oppivelvollisillesuunnattuvapaansivistystyonkoulutuksensuoritus') ? t('Osaamiskokonaisuus') : t('Osa-alue')
-    const suoritusTitle = nestedLevel === 0 ? osaAlueTitle : t('Opintokokonaisuus')
+    const osaAlueTitle = () => {
+      if (parentOneOf('oppivelvollisillesuunnattuvapaansivistystyonkoulutuksensuoritus')) {
+        return (t('Osaamiskokonaisuus'))
+      } else if (parentOneOf('vapaansivistystyonvapaatavoitteisenkoulutuksensuoritus')) {
+        return (t('Koulutus'))
+      } else {
+       return t('Osa-alue')
+      }
+    }
+    const suoritusTitle = nestedLevel === 0 ? osaAlueTitle() : t('Opintokokonaisuus')
 
     const columns = [SuoritusColumn, LaajuusColumn, ArvosanaColumn, TaitotasoColmn]
       .filter(column => column.shouldShow({parentSuoritus, suoritukset, suorituksetModel, context}))

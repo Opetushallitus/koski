@@ -98,6 +98,20 @@ function AddOppijaPage() {
           .then(api.selectMaksuttomuus(0))
       }
     },
+    enterValidDataVSTVapaatavoitteinen: function(params) {
+      params = _.merge({
+        oppilaitos: 'Varsinais-Suomen kansanopisto',
+        oppimäärä: 'Vapaan sivistystyön vapaatavoitteinen koulutus',
+        suorituskieli: 'suomi',
+        alkamispäivä: '1.8.2021'
+      })
+      return function() {
+        return api.enterData(params)()
+          .then(api.selectOpiskeluoikeudenTyyppi('Vapaan sivistystyön koulutus'))
+          .then(api.selectOppimäärä(params.oppimäärä))
+          .then(api.selectAloituspäivä(params.alkamispäivä))
+      }
+    },
     enterValidDataAmmatillinen: function(params) {
       params = _.merge({  oppilaitos: 'Stadin', tutkinto: 'Autoalan perust', suoritustapa: 'Ammatillinen perustutkinto', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus', alkamispäivä: '1.1.2018' }, {}, params)
       return function() {

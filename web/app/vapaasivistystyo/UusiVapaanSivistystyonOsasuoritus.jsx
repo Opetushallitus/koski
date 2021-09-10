@@ -41,6 +41,8 @@ export const UusiVapaanSivistystyonOsasuoritus = ({suoritusPrototypes, setExpand
 
   const lukutaitokoulutuksenKokonaisuus = findSuoritusPrototyyppi('vapaansivistystyonlukutaitokoulutuksenkokonaisuudensuoritus')
 
+  const vapaatavoitteisenOsasuoritus = findSuoritusPrototyyppi('vapaansivistystyonvapaatavoitteisenkoulutuksenosasuorituksensuoritus')
+
   return (
     <>
       {
@@ -137,6 +139,14 @@ export const UusiVapaanSivistystyonOsasuoritus = ({suoritusPrototypes, setExpand
                           className={'vst-lukutaitokoulutuksenkokonaisuudensuoritus'}
                           selectionText={'Lisää kokonaisuus'}
                           setExpanded={setExpanded}
+        />
+      }
+      {
+        vapaatavoitteisenOsasuoritus &&
+        <LisääPaikallinen suoritusPrototype={vapaatavoitteisenOsasuoritus}
+                          setExpanded={setExpanded}
+                          lisääText={'Lisää osasuoritus'}
+                          lisääTitle={'Osasuorituksen lisäys'}
         />
       }
     </>
