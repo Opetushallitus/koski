@@ -11,6 +11,8 @@ import {
   createSuorittaminenHetuhakuPath,
   createSuorittaminenPath,
   createSuorittaminenPathWithOrg,
+  createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg,
+  createSuorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg,
 } from "../../state/paths"
 
 export type SuorittaminenNavigationProps = {
@@ -29,6 +31,14 @@ export const SuorittaminenNavigation = (
       linkTo: props.selectedOrganisaatio
         ? createSuorittaminenPathWithOrg("", props.selectedOrganisaatio)
         : createSuorittaminenPath(),
+    },
+    {
+      display: t("suorittaminen_nav__kunnalle_tehdyt_ilmoitukset"),
+      linkTo: props.selectedOrganisaatio
+        ? createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg("", {
+            organisaatioOid: props.selectedOrganisaatio,
+          })
+        : createSuorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg(),
     },
     {
       display: t("suorittaminen_nav__hae_hetulla"),

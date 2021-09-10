@@ -202,6 +202,7 @@
   "apivirhe__tuntematon": "Virhe: Pyyntö epäonnistui tuntemattomasta syystä",
   "organisaatiovalitsin__lakkautettu_prefix": "LAKKAUTETTU",
   "suorittaminen_nav__oppivelvolliset": "Oppivelvolliset",
+  "suorittaminen_nav__kunnalle_tehdyt_ilmoitukset": "Kunnalle tehdyt ilmoitukset",
   "suorittaminen_nav__hae_hetulla": "Hae hetulla",
   "suorittaminennäkymä__oppivelvolliset__otsikko": "Oppivelvolliset",
   "suorittaminennäkymä__ei_oppivelvollisia": "Ei oppivelvollisia",

@@ -61,7 +61,7 @@ export const useOppijatData = (
   }
 }
 
-export const useOppijatKuntailmoituksillaData = (
+export const useHakeutumisvalvonnanKunnalleTehdytIlmoitukset = (
   organisaatioOid?: Oid
 ): UseOppijatDataApi => {
   const oppijatFetch = useApiWithParams(

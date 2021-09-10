@@ -17,8 +17,7 @@ import { ApiErrors } from "../../components/typography/error"
 import { t, T } from "../../i18n/i18n"
 import { useOrganisaatiotJaKäyttöoikeusroolit } from "../../state/accessRights"
 import { Kayttooikeusrooli, Oid } from "../../state/common"
-import { HakutilanneNavigation } from "../hakutilanne/HakutilanneNavigation"
-import { useOppijatKuntailmoituksillaData } from "../hakutilanne/useOppijatData"
+import { UseOppijatDataApi } from "../hakutilanne/useOppijatData"
 import { OppijaViewBackNavProps } from "../oppija/OppijaView"
 import { KunnalleIlmoitetutTable } from "./KunnalleIlmoitetutTable"
 
@@ -26,8 +25,10 @@ export type KunnalleIlmoitetutViewProps = {
   organisaatioOid: Oid
   organisaatioTyyppi: string
   organisaatioHakuRooli: Kayttooikeusrooli
+  dataFetcher: (organisaatioOid?: Oid) => UseOppijatDataApi
   backRefName: keyof OppijaViewBackNavProps
   storageName: string
+  navigation?: React.ReactNode
 }
 
 export const KunnalleIlmoitetutView = (props: KunnalleIlmoitetutViewProps) => {
@@ -54,9 +55,7 @@ export const KunnalleIlmoitetutView = (props: KunnalleIlmoitetutViewProps) => {
   }
 
   const organisaatioOid = props.organisaatioOid
-  const { data, isLoading, errors } = useOppijatKuntailmoituksillaData(
-    organisaatioOid
-  )
+  const { data, isLoading, errors } = props.dataFetcher(organisaatioOid)
 
   const [counters, setCounters] = useState<DataTableCountChangeEvent>({
     filteredRowCount: 0,
@@ -72,7 +71,7 @@ export const KunnalleIlmoitetutView = (props: KunnalleIlmoitetutViewProps) => {
         label={t("Oppilaitos")}
         onChange={changeOrganisaatio}
       />
-      <HakutilanneNavigation selectedOrganisaatio={props.organisaatioOid} />
+      {props.navigation}
       <Card>
         <CardHeader>
           <T id="kunnalleilmoitetut_otsikko" />{" "}

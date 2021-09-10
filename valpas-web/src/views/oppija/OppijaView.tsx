@@ -28,6 +28,7 @@ import {
   createHakutilannePathWithoutOrg as createHakutilannePathWithoutOrg,
   createKuntailmoitusPathWithOrg,
   createSuorittaminenPathWithOrg,
+  createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg,
   OppijaViewRouteProps,
   parseQueryFromProps as parseSearchQueryFromProps,
 } from "../../state/paths"
@@ -56,6 +57,7 @@ export const OppijaView = withRequiresJokinOikeus((props: OppijaViewProps) => {
         hakutilanneIlmoitetutRef={searchQuery.hakutilanneIlmoitetutRef}
         kuntailmoitusRef={searchQuery.kuntailmoitusRef}
         suorittaminenRef={searchQuery.suorittaminenRef}
+        suorittaminenIlmoitetutRef={searchQuery.suorittaminenIlmoitetutRef}
         oppija={isSuccess(oppija) ? oppija.data : undefined}
         prevPage={searchQuery.prev}
       />
@@ -129,6 +131,7 @@ export type OppijaViewBackNavProps = {
   hakutilanneIlmoitetutRef?: string
   kuntailmoitusRef?: string
   suorittaminenRef?: string
+  suorittaminenIlmoitetutRef?: string
   oppija?: OppijaHakutilanteillaLaajatTiedot
   prevPage?: string
 }
@@ -150,6 +153,10 @@ const BackNav = (props: OppijaViewBackNavProps) => {
       return createKuntailmoitusPathWithOrg("", props.kuntailmoitusRef)
     } else if (props.suorittaminenRef) {
       return createSuorittaminenPathWithOrg("", props.suorittaminenRef)
+    } else if (props.suorittaminenIlmoitetutRef) {
+      return createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg("", {
+        organisaatioOid: props.suorittaminenIlmoitetutRef,
+      })
     } else if (fallback) {
       return createHakutilannePathWithOrg("", { organisaatioOid: fallback })
     } else {
