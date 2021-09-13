@@ -8,16 +8,17 @@
     "npm": "7"
   },
   "scripts": {
-    "start": "parcel serve src/index.html",
+    "start": "node autoclear.js && parcel serve src/index.html",
     "start:watch": "concurrently npm:start npm:lint:types:watch",
-    "start:raamit": "npm run clean && VIRKAILIJA_RAAMIT_HOST=\"https://virkailija.untuvaopintopolku.fi/\" parcel serve src/index.html",
+    "start:raamit": "node autoclear.js --dev-raamit && VIRKAILIJA_RAAMIT_HOST=\"https://virkailija.untuvaopintopolku.fi/\" parcel serve src/index.html",
+    "start:integration": "node autoclear.js --integration && parcel serve src/index.html --no-hmr --no-cache",
     "test": "npm run test:unit && npm run test:integration",
-    "test:unit": "jest --runInBand src",
+    "test:unit": "node autoclear.js --unittest && jest --runInBand src",
     "test:integration": "jest --config jest.integrationtests.config.js --runInBand test/integrationtests",
     "test:integration:debug": "SHOW_BROWSER=true jest --config jest.integrationtests.config.js --runInBand test/integrationtests",
     "test:integration:browserstack": "jest --config jest.integrationtests.browserstack.config.js --runInBand test/integrationtests",
-    "build:local": "NODE_ENV=development parcel build src/index.html --no-scope-hoist",
-    "build:prod": "parcel build src/index.html --public-url /valpas --no-scope-hoist",
+    "build:local": "node autoclear.js && NODE_ENV=development parcel build src/index.html --no-scope-hoist",
+    "build:prod": "node autoclear.js --prod && parcel build src/index.html --public-url /valpas --no-scope-hoist",
     "lint": "npm run lint:types && npm run lint:format && npm run lint:problems",
     "lint:types": "tsc --noEmit",
     "lint:types:watch": "tsc --noEmit --watch --preserveWatchOutput",
@@ -31,7 +32,6 @@
     "type": "git",
     "url": "git+https://github.com/Opetushallitus/koski.git"
   },
-  "license": "EUPL-1.1",
   "homepage": "https://github.com/Opetushallitus/koski#readme",
   "browserslist": [
     "defaults"

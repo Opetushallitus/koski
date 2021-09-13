@@ -22,7 +22,7 @@ module.exports = async () => {
  */
 const serve = () =>
   new Promise((resolve, _reject) => {
-    const parcel = spawn("npm", ["start", "--", "--no-hmr", "--no-cache"])
+    const parcel = spawn("npm", ["run", "start:integration"])
     parcel.stdout.on("data", (stdout) => {
       log(stdout)
       if (stdout.includes("✨ Built in")) {
