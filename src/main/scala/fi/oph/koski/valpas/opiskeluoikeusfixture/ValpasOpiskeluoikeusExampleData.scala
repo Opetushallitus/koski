@@ -85,6 +85,26 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
+  def valmistunutLokakuussaIlmanYsiluokkaa = {
+    val valmistumispäivä = date(2021, 10, 1)
+
+    PerusopetuksenOpiskeluoikeus(
+      oppilaitos = Some(jyväskylänNormaalikoulu),
+      koulutustoimija = None,
+      suoritukset = List(
+        perusopetuksenOppimääränSuoritus.copy(
+          vahvistus = vahvistusPaikkakunnalla(valmistumispäivä)
+        )
+      ),
+      tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+        List(
+          NuortenPerusopetuksenOpiskeluoikeusjakso(date(2012, 8, 15), opiskeluoikeusLäsnä),
+          NuortenPerusopetuksenOpiskeluoikeusjakso(valmistumispäivä, opiskeluoikeusValmistunut)
+        )
+      )
+    )
+  }
+
   def alkaaYsiluokkalainenSaksalainenKouluSyys2021 =
     PerusopetuksenOpiskeluoikeus(
       oppilaitos = Some(oppilaitos(MockOrganisaatiot.saksalainenKoulu)),
@@ -865,4 +885,228 @@ object ValpasOpiskeluoikeusExampleData {
     ),
     suoritukset = List(gradeExplorer, grade1, grade2, grade3, grade4, grade5, grade6, grade7, grade8, grade9.copy(vahvistus = InternationalSchoolExampleData.vahvistus(date(2021, 5, 30))))
   )
+
+  def oppivelvollinenIntSchoolYsiluokkaKeskenKeväällä2021Opiskeluoikeus = ExamplesInternationalSchool.opiskeluoikeus.copy(
+    tila = InternationalSchoolOpiskeluoikeudenTila(
+      List(
+        InternationalSchoolOpiskeluoikeusjakso(date(2004, 8, 15), LukioExampleData.opiskeluoikeusAktiivinen)
+      )
+    ),
+    suoritukset = List(gradeExplorer, grade1, grade2, grade3, grade4, grade5, grade6, grade7, grade8,
+      grade9.copy(
+       alkamispäivä = Some(date(2020, 8, 1)),
+       vahvistus = None
+      )
+    )
+  )
+
+  def internationalSchool10LuokaltaAloittanut = ExamplesInternationalSchool.opiskeluoikeus.copy(
+    tila = InternationalSchoolOpiskeluoikeudenTila(
+      List(
+        InternationalSchoolOpiskeluoikeusjakso(date(2021, 1, 1), LukioExampleData.opiskeluoikeusAktiivinen)
+      )
+    ),
+    suoritukset = List(
+      grade10.copy(
+        alkamispäivä = Some(date(2021, 1, 1)),
+        vahvistus = None
+      )
+    )
+  )
+
+  def internationalSchool11LuokaltaAloittanut = ExamplesInternationalSchool.opiskeluoikeus.copy(
+    tila = InternationalSchoolOpiskeluoikeudenTila(
+      List(
+        InternationalSchoolOpiskeluoikeusjakso(date(2021, 1, 1), LukioExampleData.opiskeluoikeusAktiivinen)
+      )
+    ),
+    suoritukset = List(
+      grade11.copy(
+        alkamispäivä = Some(date(2021, 1, 1)),
+        vahvistus = None
+      )
+    )
+  )
+
+  def internationalSchool8LuokanSyksyllä2021Aloittanut = ExamplesInternationalSchool.opiskeluoikeus.copy(
+    tila = InternationalSchoolOpiskeluoikeudenTila(
+      List(
+        InternationalSchoolOpiskeluoikeusjakso(date(2004, 8, 15), LukioExampleData.opiskeluoikeusAktiivinen)
+      )
+    ),
+    suoritukset = List(gradeExplorer, grade1, grade2, grade3, grade4, grade5, grade6,
+      grade7.copy(
+        vahvistus = InternationalSchoolExampleData.vahvistus(date(2021, 5, 30))
+      ),
+      grade8.copy(
+        alkamispäivä = Some(date(2021, 8, 1)),
+        vahvistus = None
+      )
+    )
+  )
+
+  def internationalSchool9LuokanSyksyllä2021Aloittanut = ExamplesInternationalSchool.opiskeluoikeus.copy(
+    tila = InternationalSchoolOpiskeluoikeudenTila(
+      List(
+        InternationalSchoolOpiskeluoikeusjakso(date(2004, 8, 15), LukioExampleData.opiskeluoikeusAktiivinen)
+      )
+    ),
+    suoritukset = List(gradeExplorer, grade1, grade2, grade3, grade4, grade5, grade6, grade7,
+      grade8.copy(
+        vahvistus = InternationalSchoolExampleData.vahvistus(date(2021, 5, 30))
+      ),
+      grade9.copy(
+        alkamispäivä = Some(date(2021, 8, 1)),
+        vahvistus = None
+      )
+    )
+  )
+
+  def intSchoolKasiluokkaKeskenKeväällä2021Opiskeluoikeus = ExamplesInternationalSchool.opiskeluoikeus.copy(
+    tila = InternationalSchoolOpiskeluoikeudenTila(
+      List(
+        InternationalSchoolOpiskeluoikeusjakso(date(2004, 8, 15), LukioExampleData.opiskeluoikeusAktiivinen)
+      )
+    ),
+    suoritukset = List(gradeExplorer, grade1, grade2, grade3, grade4, grade5, grade6, grade7,
+      grade8.copy(
+        alkamispäivä = Some(date(2020, 8, 1)),
+        vahvistus = None
+      )
+    )
+  )
+
+  def intSchool9LuokaltaKeskenEronnutOpiskeluoikeusTarkastelupäivääEnnen = oppivelvollinenIntSchoolYsiluokkaKeskenKeväällä2021Opiskeluoikeus.copy(
+    tila = InternationalSchoolOpiskeluoikeudenTila(
+      List(
+        InternationalSchoolOpiskeluoikeusjakso(date(2004, 8, 15), opiskeluoikeusLäsnä),
+        InternationalSchoolOpiskeluoikeusjakso(date(2021, 1, 1), opiskeluoikeusEronnut)
+      )
+    )
+  )
+
+  def intSchool9LuokaltaValmistumisenJälkeenEronnutOpiskeluoikeusTarkastelupäivääEnnen = internationalSchool9LuokaltaValmistunut2021.copy(
+    tila = InternationalSchoolOpiskeluoikeudenTila(
+      List(
+        InternationalSchoolOpiskeluoikeusjakso(date(2004, 8, 15), opiskeluoikeusLäsnä),
+        InternationalSchoolOpiskeluoikeusjakso(date(2021, 1, 1), opiskeluoikeusEronnut)
+      )
+    ),
+    suoritukset = List(gradeExplorer, grade1, grade2, grade3, grade4, grade5, grade6, grade7, grade8, grade9.copy(vahvistus = InternationalSchoolExampleData.vahvistus(date(2021, 1, 1))))
+  )
+
+  def intSchool9LuokaltaKeskenEronnutOpiskeluoikeusTarkastelupäivänä = oppivelvollinenIntSchoolYsiluokkaKeskenKeväällä2021Opiskeluoikeus.copy(
+    tila = InternationalSchoolOpiskeluoikeudenTila(
+      List(
+        InternationalSchoolOpiskeluoikeusjakso(date(2004, 8, 15), opiskeluoikeusLäsnä),
+        InternationalSchoolOpiskeluoikeusjakso(date(2021, 9, 5), opiskeluoikeusEronnut)
+      )
+    )
+  )
+
+  def intSchool9LuokaltaValmistumisenJälkeenEronnutOpiskeluoikeusTarkastelupäivänä = internationalSchool9LuokaltaValmistunut2021.copy(
+    tila = InternationalSchoolOpiskeluoikeudenTila(
+      List(
+        InternationalSchoolOpiskeluoikeusjakso(date(2004, 8, 15), opiskeluoikeusLäsnä),
+        InternationalSchoolOpiskeluoikeusjakso(date(2021, 9, 5), opiskeluoikeusEronnut)
+      )
+    ),
+    suoritukset = List(gradeExplorer, grade1, grade2, grade3, grade4, grade5, grade6, grade7, grade8, grade9.copy(vahvistus = InternationalSchoolExampleData.vahvistus(date(2021, 9, 5))))
+  )
+
+  def intSchool9LuokaltaKeskenEronnutOpiskeluoikeusTarkastelupäivänJälkeen = oppivelvollinenIntSchoolYsiluokkaKeskenKeväällä2021Opiskeluoikeus.copy(
+    tila = InternationalSchoolOpiskeluoikeudenTila(
+      List(
+        InternationalSchoolOpiskeluoikeusjakso(date(2004, 8, 15), opiskeluoikeusLäsnä),
+        InternationalSchoolOpiskeluoikeusjakso(date(2021, 10, 5), opiskeluoikeusEronnut)
+      )
+    )
+  )
+
+  def intSchool9LuokaltaValmistumisenJälkeenEronnutOpiskeluoikeusTarkastelupäivänJälkeen = internationalSchool9LuokaltaValmistunut2021.copy(
+    tila = InternationalSchoolOpiskeluoikeudenTila(
+      List(
+        InternationalSchoolOpiskeluoikeusjakso(date(2004, 8, 15), opiskeluoikeusLäsnä),
+        InternationalSchoolOpiskeluoikeusjakso(date(2021, 10, 5), opiskeluoikeusEronnut)
+      )
+    ),
+    suoritukset = List(gradeExplorer, grade1, grade2, grade3, grade4, grade5, grade6, grade7, grade8, grade9.copy(vahvistus = InternationalSchoolExampleData.vahvistus(date(2021, 10, 5))))
+  )
+
+  def intSchool9LuokaltaValmistunut2021ja10LuokallaAloittanut = internationalSchool9LuokaltaValmistunut2021.copy(
+    suoritukset = List(gradeExplorer, grade1, grade2, grade3, grade4, grade5, grade6, grade7, grade8,
+      grade9.copy(vahvistus = InternationalSchoolExampleData.vahvistus(date(2021, 5, 30))),
+      grade10.copy(
+        alkamispäivä = Some(date(2021, 8, 1)),
+        vahvistus = None
+      )
+    )
+  )
+
+  def intSchool9LuokaltaValmistunutLokakuussa2021ja10LuokallaAloittanut = internationalSchool9LuokaltaValmistunut2021.copy(
+    suoritukset = List(gradeExplorer, grade1, grade2, grade3, grade4, grade5, grade6, grade7, grade8,
+      grade9.copy(vahvistus = InternationalSchoolExampleData.vahvistus(date(2021, 10, 1))),
+      grade10.copy(
+        alkamispäivä = Some(date(2021, 10, 15)),
+        vahvistus = None
+      )
+    )
+  )
+
+  def intSchool9LuokaltaValmistunut2021ja10LuokallaLokakuussaAloittanut = internationalSchool9LuokaltaValmistunut2021.copy(
+    suoritukset = List(gradeExplorer, grade1, grade2, grade3, grade4, grade5, grade6, grade7, grade8,
+      grade9.copy(vahvistus = InternationalSchoolExampleData.vahvistus(date(2021, 5, 30))),
+      grade10.copy(
+        alkamispäivä = Some(date(2021, 10, 3)),
+        vahvistus = None
+      )
+    )
+  )
+
+  def intSchool9LuokaltaValmistunut2021ja10LuokallaIlmanAlkamispäivää = internationalSchool9LuokaltaValmistunut2021.copy(
+    suoritukset = List(gradeExplorer, grade1, grade2, grade3, grade4, grade5, grade6, grade7, grade8,
+      grade9.copy(vahvistus = InternationalSchoolExampleData.vahvistus(date(2021, 5, 30))),
+      grade10.copy(
+        alkamispäivä = None,
+        vahvistus = None
+      )
+    )
+  )
+
+  def yli2kkAiemminIntSchoolin9LuokaltaValmistunut  = internationalSchool9LuokaltaValmistunut2021.copy(
+    suoritukset = List(gradeExplorer, grade1, grade2, grade3, grade4, grade5, grade6, grade7, grade8,
+      grade9.copy(vahvistus = InternationalSchoolExampleData.vahvistus(date(2021, 7, 4)))
+    )
+  )
+
+  def yli2kkAiemminIntSchoolin9LuokaltaValmistunut10Jatkanut  = internationalSchool9LuokaltaValmistunut2021.copy(
+    suoritukset = List(gradeExplorer, grade1, grade2, grade3, grade4, grade5, grade6, grade7, grade8,
+      grade9.copy(vahvistus = InternationalSchoolExampleData.vahvistus(date(2021, 7, 4))),
+      grade10.copy(
+        alkamispäivä = Some(date(2021, 8, 1)),
+        vahvistus = None
+      )
+    )
+  )
+
+  def intSchoolistaEronnutOpiskeluoikeusEiYsiluokkaaKeväänAlussa = intSchoolKasiluokkaKeskenKeväällä2021Opiskeluoikeus.copy(
+    tila = InternationalSchoolOpiskeluoikeudenTila(
+      List(
+        InternationalSchoolOpiskeluoikeusjakso(date(2004, 8, 15), opiskeluoikeusLäsnä),
+        InternationalSchoolOpiskeluoikeusjakso(date(2021, 3, 3), opiskeluoikeusEronnut),
+      )
+    )
+  )
+
+  def intSchoolistaEronnutOpiskeluoikeusEiYsiluokkaaElokuussa = intSchoolKasiluokkaKeskenKeväällä2021Opiskeluoikeus.copy(
+    tila = InternationalSchoolOpiskeluoikeudenTila(
+      List(
+        InternationalSchoolOpiskeluoikeusjakso(date(2004, 8, 15), opiskeluoikeusLäsnä),
+        InternationalSchoolOpiskeluoikeusjakso(date(2021, 8, 5), opiskeluoikeusEronnut),
+      )
+    )
+  )
+
+
+
 }
