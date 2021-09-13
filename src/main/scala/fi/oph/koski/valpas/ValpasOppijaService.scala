@@ -257,7 +257,7 @@ class ValpasOppijaService(
   : Either[HttpStatus, Seq[OppijaKuntailmoituksillaSuppeatTiedot]] = {
     accessResolver.assertAccessToOrg(ValpasRooli.KUNTA, kuntaOid)
       // Haetaan kuntailmoitukset Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]
-      .flatMap(_ => application.valpasKuntailmoitusService.getKuntailmoituksetKunnalle(kuntaOid))
+      .flatMap(_ => application.valpasKuntailmoitusService.getKuntailmoituksetKunnalleIlmanKäyttöoikeustarkistusta(kuntaOid))
 
       // Haetaan kaikki oppijat, (Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid], Seq[ValpasOppijaLaajatTiedot])
       .map(kuntailmoitukset => (
@@ -598,7 +598,7 @@ class ValpasOppijaService(
   )(
     implicit session: ValpasSession
   ) : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] = {
-    application.valpasKuntailmoitusService.getOppilaitoksenTekemätIlmoitukset(oppilaitosOid)
+    application.valpasKuntailmoitusService.getOppilaitoksenTekemätIlmoituksetIlmanKäyttöoikeustarkistusta(oppilaitosOid)
       .map(ilmoitukset => {
         val oppijaOids = ilmoitukset.map(_.oppijaOid)
         val oppijat = opiskeluoikeusDbService

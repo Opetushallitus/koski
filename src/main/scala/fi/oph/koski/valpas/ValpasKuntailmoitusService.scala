@@ -67,16 +67,14 @@ class ValpasKuntailmoitusService(
       .map(_.map(karsiHenkilötiedotJosEiOikeuksia))
   }
 
-  def getKuntailmoituksetKunnalle
+  def getKuntailmoituksetKunnalleIlmanKäyttöoikeustarkistusta
     (kuntaOid: Organisaatio.Oid)
-    (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]] = {
     repository.queryByKunta(kuntaOid)
   }
 
-  def getOppilaitoksenTekemätIlmoitukset
+  def getOppilaitoksenTekemätIlmoituksetIlmanKäyttöoikeustarkistusta
     (organisaatioOid: Organisaatio.Oid)
-    (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]] = {
     repository.queryByTekijäOrganisaatio(organisaatioOid)
   }
