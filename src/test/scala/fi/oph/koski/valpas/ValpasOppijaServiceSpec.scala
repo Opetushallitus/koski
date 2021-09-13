@@ -377,8 +377,11 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       ValpasMockOppijat.turvakieltoOppijaTyhjälläKotikunnalla,
       List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", "lasna", true, true, false))
     ),
+    (
+      ValpasMockOppijat.peruskoulustaLokakuussaValmistunutIlman9Luokkaa,
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutLokakuussaIlmanYsiluokkaa, "valmistunut", "valmistunut", true, true, false))
+    ),
   ).sortBy(item => (item._1.sukunimi.toLowerCase, item._1.etunimet.toLowerCase))
-
 
   // Stadin ammattiopistosta löytyvät suorittamisvalvottavat oppijat 5.9.2021
   private val suorittamisvalvottavatAmis = List(
