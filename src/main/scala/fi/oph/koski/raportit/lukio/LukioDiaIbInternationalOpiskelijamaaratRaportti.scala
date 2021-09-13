@@ -148,7 +148,7 @@ with oppija as (select
     count(case when kotikunta isnull then 1 end) ei_kotikuntaa,
     count(case when kotikunta = any($ahvenanmaanKunnat) then 1 end) kotikunta_ahvenanmaa
   from oppija
-  where oppimaara_koodiarvo = 'nuortenops'
+  where (oppimaara_koodiarvo = 'nuortenops' and suorituksen_tyyppi = 'lukionoppimaara')
     or suorituksen_tyyppi in (
     'internationalschooldiplomavuosiluokka',
     'internationalschoolmypvuosiluokka',
@@ -171,7 +171,7 @@ with oppija as (select
       count(case when kotikunta isnull then 1 end) ei_kotikuntaa,
       count(case when kotikunta = any($ahvenanmaanKunnat) then 1 end) kotikunta_ahvenanmaa
     from oppija
-    where oppimaara_koodiarvo = 'aikuistenops'
+    where (oppimaara_koodiarvo = 'aikuistenops' and suorituksen_tyyppi = 'lukionoppimaara')
     group by oppilaitos_oid
 ), aineopiskelija as (
     select
