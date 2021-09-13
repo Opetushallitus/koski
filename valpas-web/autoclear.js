@@ -13,7 +13,7 @@ const run = (command) =>
     })
   })
 
-const readFileNeverFail = (filepath) => readFile(filepath).catch(() => null)
+const readFileNeverFail = (filepath) => readFile(filepath).catch(() => "none")
 
 const getCurrentBranch = () => run("git rev-parse --abbrev-ref HEAD")
 const getGitRootDir = () => run("git rev-parse --show-toplevel")
