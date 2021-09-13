@@ -240,5 +240,6 @@
   "kunnalleilmoitetut_syntymäaika": "Syntymäaika",
   "kunnalleilmoitetut_ilmoitettu_kunnalle": "Ilmoitettu kunnalle",
   "kunnalleilmoitetut_ilmoituksen_tekopäivä": "Ilmoituksen tekopäivä",
-  "kunnalleilmoitetut_muu_haku": "Muu haku"
+  "kunnalleilmoitetut_muu_haku": "Muu haku",
+  "kunnalleilmoitetut_muu_haku_tooltip": "Hakija on hakenut opintopolun ulkopuolella, esimerkiksi ulkomaille tai Ahvenanmaalle."
 }

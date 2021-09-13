@@ -44,6 +44,7 @@ export const KunnalleIlmoitetutTable = (
       },
       {
         label: t("kunnalleilmoitetut_muu_haku"),
+        tooltip: t("kunnalleilmoitetut_muu_haku_tooltip"),
       },
     ],
     []
@@ -88,7 +89,7 @@ const oppijaToTableData = (
       syntymäaika(oppija),
       ilmoitettuKunnalle(kuntailmoitus),
       ilmoituksenTekopäivä(kuntailmoitus),
-      muuHaku(oppija),
+      muuHaku(kuntailmoitus),
     ],
   }))
 
@@ -124,9 +125,11 @@ const ilmoituksenTekopäivä = (ilmoitus: KuntailmoitusSuppeatTiedot): Value => 
   display: formatNullableDate(ilmoitus.aikaleima),
 })
 
-const muuHaku = (oppija: OppijaHakutilanteillaSuppeatTiedot): Value => ({
+const muuHaku = (ilmoitus: KuntailmoitusSuppeatTiedot): Value => ({
   value:
-    oppija.lisätiedot.find((t) => t.muuHaku) !== undefined
+    ilmoitus.hakenutMuualle === undefined
+      ? "–"
+      : ilmoitus.hakenutMuualle
       ? t("Kyllä")
       : t("Ei"),
 })
