@@ -22,7 +22,7 @@
     "es6-promise": "^4.2.4",
     "fecha": "^2.3.3",
     "js-cookie": "^2.2.1",
-    "node-gyp": "8.1.0",
+    "node-gyp": "8.2.0",
     "partial.lenses": "^9.8.0",
     "prop-types": "^15.6.1",
     "ramda": "^0.27.1",
