@@ -283,6 +283,16 @@ function Oppiaine(oppiaineElem) {
       oppiaineApi.lisääKurssiDialog.valitseKurssinTyyppi('Soveltava'),
       oppiaineApi.lisääKurssiDialog.lisääKurssi
     )},
+    lisääLaajuudellinenPaikallinenKurssi: function(tunniste, nimi, kuvaus, laajuus) { return seq(
+      oppiaineApi.avaaLisääKurssiDialog,
+      oppiaineApi.lisääKurssiDialog.valitseKurssi('paikallinen'),
+      oppiaineApi.lisääKurssiDialog.asetaTunniste(tunniste),
+      oppiaineApi.lisääKurssiDialog.asetaNimi(nimi),
+      oppiaineApi.lisääKurssiDialog.asetaKuvaus(kuvaus),
+      oppiaineApi.lisääKurssiDialog.valitseKurssinTyyppi('Soveltava'),
+      oppiaineApi.lisääKurssiDialog.asetaLaajuus(laajuus || '2'),
+      oppiaineApi.lisääKurssiDialog.lisääKurssi
+    )},
     poista: function() {
       return oppiaineApi.propertyBySelector('.remove-row').removeValue
     },

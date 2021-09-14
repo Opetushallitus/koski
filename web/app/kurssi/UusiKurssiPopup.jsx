@@ -36,8 +36,7 @@ export default ({
   let selectedAtom = Atom()
   let validP = selectedAtom
   const valtakunnallisetKurssiProtot = kurssiPrototypes.filter(R.complement(isPaikallinen))
-  // TODO: Lisää editori myös lops2021:n paikallisille opintojaksoille tai moduuleille, nyt ne filtteröidään tässä pois
-  const paikallinenKurssiProto = kurssiPrototypes.find(R.both(isIBOppiaine(oppiaine) ? isIBKurssi : isPaikallinen, R.complement(isLukio2019ModuuliTaiOpintojakso)))
+  const paikallinenKurssiProto = kurssiPrototypes.find(isIBOppiaine(oppiaine) ? isIBKurssi : isPaikallinen)
   let kurssiSuoritukset = modelItems(oppiaineenSuoritus, 'osasuoritukset')
   selectedPrototypeAtom.map(proto => isPaikallinen(proto) ? undefined : proto).forEach(proto => selectedAtom.set(proto))
 
