@@ -16,8 +16,8 @@ import {
 
 export const jklNormaalikouluSuorittaminenTableHead = "Oppivelvolliset (16)"
 export const jklNormaalikouluSuorittaminenTableContent = `
-  Int-school-9-luokan-jälkeen-lukion-aloittanut Valpas            | 12.5.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu | 15.8.2021  | –         | –                                            | 12.5.2023 asti
-  Int-school-9-luokan-jälkeen-lukion-lokakuussa-aloittanut Valpas |  7.1.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu | 3.10.2021  | –         | –                                            |  7.1.2023 asti
+  Int-school-9-luokan-jälkeen-lukion-aloittanut Valpas            | 12.5.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu | 15.8.2021  | –         | International School of Helsinki, International school | 12.5.2023 asti
+  Int-school-9-luokan-jälkeen-lukion-lokakuussa-aloittanut Valpas |  7.1.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu | 3.10.2021  | –         | International School of Helsinki, International school |  7.1.2023 asti
   Jkl-Lukio-Kulosaarelainen Valpas                                |  1.1.2004  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  1.8.2019  | –         | Kulosaaren ala-aste, Perusopetus             |  1.1.2022 asti
   Jkl-Nivel-Kulosaarelainen Valpas                                |  1.1.2004  | Perusopetuksen lisäopetus | Läsnä                   | Jyväskylän normaalikoulu | 15.8.2012  | –         | Kulosaaren ala-aste, Perusopetus             |  1.1.2022 asti
   Kahdella-oppija-oidilla Valpas                                  | 15.2.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  1.8.2019  | –         | –                                            | 15.2.2023 asti

@@ -183,6 +183,7 @@ object OpiskeluoikeusLoader extends Logging {
   private def oppivelvollisuudenSuorittamiseenKelpaava(o: KoskeenTallennettavaOpiskeluoikeus): Boolean =
     o.tyyppi.koodiarvo match {
       case "perusopetus" => true
+      case "internationalschool" => true
       case _ => MaksuttomuusValidation.oppivelvollisuudenSuorittamiseenKelpaavaMuuKuinPeruskoulunOpiskeluoikeus(o)
     }
 

@@ -89,6 +89,10 @@ const opiskeluoikeusValmaPath = createOppijaPath("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000062",
 })
 
+const opiskeluoikeusIntSchoolPerusopetusPath = createOppijaPath("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000092",
+})
+
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
 const secondaryHeadingEquals = (expected: string) =>
@@ -211,6 +215,35 @@ describe("Oppijakohtainen näkymä", () => {
       Ryhmä: 9C
       Opiskeluoikeuden alkamispäivä: 15.8.2012
       Opiskeluoikeuden päättymispäivä: 30.5.2021
+    `)
+  })
+
+  it("Näyttää oppijan tiedot int schoolissa olevalle ysiluokkalaiselle", async () => {
+    await loginAs(opiskeluoikeusIntSchoolPerusopetusPath, "valpas-jkl-normaali")
+    await mainHeadingEquals(
+      "Int-school-9-luokan-jälkeen-lukion-aloittanut Valpas (120505A3434)"
+    )
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000092")
+    await oppivelvollisuustiedotEquals(`
+      Opiskelutilanne:	Opiskelemassa
+      Oppivelvollisuus:	12.5.2023 asti
+      Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
+      Tee ilmoitus valvontavastuusta
+      info_outline
+    `)
+    await opiskeluhistoriaEquals(`
+      school
+      Lukion oppimäärä 2021 –
+      Tila: Läsnä
+      Toimipiste: Jyväskylän normaalikoulu
+      Ryhmä: AH
+      Opiskeluoikeuden alkamispäivä: 15.8.2021
+      school
+      International school 2004 –
+      Tila: Läsnä
+      Toimipiste: International School of Helsinki
+      Ryhmä: 9B
+      Opiskeluoikeuden alkamispäivä: 15.8.2004
     `)
   })
 
