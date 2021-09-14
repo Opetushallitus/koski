@@ -1,7 +1,7 @@
 package fi.oph.koski.servlet
 
 import fi.oph.koski.http.{ErrorCategory, HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.{Session, KoskiSpecificSession}
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.log.{LoggerWithContext, Logging}
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import org.eclipse.jetty.http.BadMessageException
@@ -10,6 +10,7 @@ import org.scalatra._
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
 import scala.reflect.runtime.{universe => ru}
+import scala.util.Try
 import scala.xml.Elem
 
 trait BaseServlet extends ScalatraServlet with Logging {
@@ -73,13 +74,17 @@ trait BaseServlet extends ScalatraServlet with Logging {
       renderStatus(s)
     case e: Elem =>
       renderHtml(e)
+    case e: Throwable =>
+      haltWithInternalError(e)
     case x: AnyRef =>
       renderObject(x)
   }: RenderPipeline) orElse super.renderPipeline
 
-  def haltWithInternalError(e: Throwable) = {
+  private def haltWithInternalError(e: Throwable): Nothing = try {
     logger.error(e)("Error while processing request " + logSafeDescription(request))
     haltWithStatus(KoskiErrorCategory.internalError())
+  } catch {
+    case _: Throwable => halt(500, "Unknown internal error")
   }
 
   def renderOption[T: ru.TypeTag](errorCategory: ErrorCategory)(result: Option[T]): Unit = {
