@@ -29,7 +29,7 @@ import {
   Tekijä,
 } from "./kuntailmoitus.shared"
 import {
-  aapajoenKouluOid,
+  aapajoenKouluOid, internationalSchoolOid,
   jyväskylänNormaalikouluOid,
   stadinAmmattiopistoOid,
 } from "./oids"
@@ -39,6 +39,8 @@ import {
   valitsimenOrganisaatiot,
 } from "./organisaatiovalitsin-helpers"
 import {
+  internationalSchoolSuorittaminenTableContent,
+  internationalSchoolSuorittaminenTableHead,
   jklNormaalikouluSuorittaminenTableContent,
   jklNormaalikouluSuorittaminenTableHead,
   stadinAmmattiopistoSuorittaminenTableContent,
@@ -62,6 +64,11 @@ const aapajokiSuorittaminenPath = createSuorittaminenPathWithOrg(
 const stadinAmmattiopistoSuorittaminenPath = createSuorittaminenPathWithOrg(
   "/virkailija",
   stadinAmmattiopistoOid
+)
+
+const internationalSchoolSuorittaminenPath = createSuorittaminenPathWithOrg(
+  "/virkailija",
+  internationalSchoolOid
 )
 
 const viikinNormaalikouluId = "1.2.246.562.10.81927839589"
@@ -109,6 +116,27 @@ describe("Suorittamisen valvonta -näkymä", () => {
     await dataTableEventuallyEquals(
       ".suorittaminen",
       jklNormaalikouluSuorittaminenTableContent,
+      "|"
+    )
+  })
+
+  it("Näyttää listan oppijoista International schoolin käyttäjälle", async () => {
+    await loginAs(suorittaminenListaPath, "valpas-int-school")
+    await urlIsEventually(pathToUrl(internationalSchoolSuorittaminenPath))
+
+    await goToLocation(internationalSchoolSuorittaminenPath)
+
+    await textEventuallyEquals(
+      ".card__header",
+      internationalSchoolSuorittaminenTableHead
+    )
+    await textEventuallyEquals(
+      ".tabnavigation__item--selected",
+      internationalSchoolSuorittaminenTableHead
+    )
+    await dataTableEventuallyEquals(
+      ".suorittaminen",
+      internationalSchoolSuorittaminenTableContent,
       "|"
     )
   })

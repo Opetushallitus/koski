@@ -27,6 +27,10 @@ export type OpiskeluoikeusLaajatTiedot = {
   päätasonSuoritukset: PäätasonSuoritus[]
   tarkasteltavaPäätasonSuoritus: PäätasonSuoritus
   onTehtyIlmoitus?: boolean
+  internationalSchoolPerusopetuksenVahvistuspäivä?: ISODate
+  internationalSchoolToisenAsteenAlkamispäivä?: ISODate
+  internationalSchoolToinenAsteOnVoimassa?: boolean
+  internationalSchoolPerusopetuksenVahvistuspäiväMerkittyTulevaisuuteen?: boolean
 }
 
 export type OpiskeluoikeusSuppeatTiedot = {
@@ -46,6 +50,10 @@ export type OpiskeluoikeusSuppeatTiedot = {
   päätasonSuoritukset: PäätasonSuoritus[]
   tarkasteltavaPäätasonSuoritus?: PäätasonSuoritus
   onTehtyIlmoitus?: boolean
+  internationalSchoolPerusopetuksenVahvistuspäivä?: ISODate
+  internationalSchoolToisenAsteenAlkamispäivä?: ISODate
+  internationalSchoolToinenAsteOnVoimassa?: boolean
+  internationalSchoolPerusopetuksenVahvistuspäiväMerkittyTulevaisuuteen?: boolean
 }
 
 type PäätasonSuoritus = {
@@ -86,6 +94,9 @@ export const isSuorittamisvalvottavaOpiskeluoikeus = (
 export const isNuortenPerusopetus = (oo: OpiskeluoikeusSuppeatTiedot) =>
   oo.tyyppi.koodiarvo === "perusopetus"
 
+export const isInternationalSchool = (oo: OpiskeluoikeusSuppeatTiedot) =>
+  oo.tyyppi.koodiarvo === "internationalschool"
+
 export const hakeutumisvalvottavatOpiskeluoikeudet = (
   organisaatioOid: Oid | undefined,
   opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
@@ -119,7 +130,10 @@ export const voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus = (
   const tila = opiskeluoikeus.tarkastelupäivänTila.koodiarvo
   return (
     !isNuortenPerusopetus(opiskeluoikeus) &&
-    (tila === "voimassa" || tila === "voimassatulevaisuudessa")
+    (tila === "voimassa" || tila === "voimassatulevaisuudessa") &&
+    (!isInternationalSchool(opiskeluoikeus) ||
+      opiskeluoikeus.internationalSchoolToinenAsteOnVoimassa ||
+      opiskeluoikeus.internationalSchoolToisenAsteenAlkamispäivä !== undefined)
   )
 }
 

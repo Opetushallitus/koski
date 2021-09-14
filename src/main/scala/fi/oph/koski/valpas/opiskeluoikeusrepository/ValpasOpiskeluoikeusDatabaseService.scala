@@ -141,7 +141,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           Some(sql"""
   )
   -- CTE: opiskeluoikeudet, joiden hakeutumista oppilaitoksella on oikeus valvoa tällä hetkellä
-  -- TODO: Tämä toimii vain peruskoulun hakeutumisen valvojille tällä hetkellä.
+  -- TODO: Tämä toimii vain peruskoulun ja international schoolin hakeutumisen valvojille tällä hetkellä.
   -- Pitää laajentaa kattamaan myös nivelvaihe. Tässä dokumentaatio valmiiksi siitä, mitkä katsotaan
   -- nivelvaiheeksi. Juteltu asiantuntijoiden kanssa 2021-06-17:
   -- (opiskeluoikeudentyyppi, päätason suorituksen tyyppi) on nivelvaiheen opiskeluoikeus, jos ja vain jos ne ovat:
@@ -182,30 +182,61 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       -- (0) henkilö on oppivelvollinen: hakeutumisvalvontaa ei voi suorittaa enää sen jälkeen kun henkilön
       -- oppivelvollisuus on päättynyt
       ov_kelvollinen_opiskeluoikeus.henkilo_on_oppivelvollinen
-      -- (1) oppijalla on peruskoulun opiskeluoikeus
-      AND ov_kelvollinen_opiskeluoikeus.koulutusmuoto = 'perusopetus'
       AND (
-        -- (2.1) kyseisessä opiskeluoikeudessa on yhdeksännen luokan suoritus.
         (
-          r_paatason_suoritus.suorituksen_tyyppi = 'perusopetuksenvuosiluokka'
-          AND r_paatason_suoritus.koulutusmoduuli_koodiarvo = '9'
+          -- (A1) oppijalla on peruskoulun opiskeluoikeus
+          ov_kelvollinen_opiskeluoikeus.koulutusmuoto = 'perusopetus'
+          AND (
+            -- (A2.1) kyseisessä opiskeluoikeudessa on yhdeksännen luokan suoritus.
+            (
+              r_paatason_suoritus.suorituksen_tyyppi = 'perusopetuksenvuosiluokka'
+              AND r_paatason_suoritus.koulutusmoduuli_koodiarvo = '9'
+            )
+            -- (A2.2) TAI oppija täyttää vähintään 17 vuotta tarkasteluvuonna: heidät näytetään luokka-asteesta
+            -- riippumatta, koska voivat lopettaa peruskoulun ja siirtyä seuraavaan opetukseen, vaikka olisivat esim.
+            -- vasta 8. luokalla
+            OR (
+              ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna
+            )
+            -- (A2.3) TAI oppija on valmistunut peruskoulusta: heidät näytetään luokka-asteesta riippumatta,
+            -- koska poikkeustapauksissa peruskoulusta voi valmistua myös ilman 9. luokan suoritusmerkintää Koskessa
+            OR (
+              ov_kelvollinen_opiskeluoikeus.viimeisin_tila = 'valmistunut'
+            )
+          )
+          -- (A3a) valvojalla on oppilaitostason oppilaitosoikeus ja opiskeluoikeuden lisätiedoista ei löydy
+          -- kotiopetusjaksoa, joka osuu tälle hetkelle
+          -- TODO (A3b): puuttuu, koska ei vielä ole selvää, miten kotiopetusoppilaat halutaan käsitellä
+          AND kotiopetusjaksoja.count = 0
         )
-        -- (2.2) TAI oppija täyttää vähintään 17 vuotta tarkasteluvuonna: heidät näytetään luokka-asteesta
-        -- riippumatta, koska voivat lopettaa peruskoulun ja siirtyä seuraavaan opetukseen, vaikka olisivat esim.
-        -- vasta 8. luokalla
         OR (
-          ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna
-        )
-        -- (2.3) TAI oppija on valmistunut peruskoulusta: heidät näytetään luokka-asteesta riippumatta,
-        -- koska poikkeustapauksissa peruskoulusta voi valmistua myös ilman 9. luokan suoritusmerkintää Koskessa
-        OR (
-          ov_kelvollinen_opiskeluoikeus.viimeisin_tila = 'valmistunut'
+          -- (B1) oppijalla on international schoolin opiskeluoikeus
+          ov_kelvollinen_opiskeluoikeus.koulutusmuoto = 'internationalschool'
+          AND (
+            -- (B2.1) kyseisessä opiskeluoikeudessa on yhdeksännen luokan suoritus.
+            (
+              r_paatason_suoritus.koulutusmoduuli_koodiarvo = '9'
+            )
+            -- (B2.2) TAI oppija täyttää vähintään 17 vuotta tarkasteluvuonna ja hänellä on jokin international schoolin
+            -- perusopetuksen päätason suoritus: heidät näytetään luokka-asteesta
+            -- riippumatta, koska voivat lopettaa international schoolin ja siirtyä seuraavaan opetukseen, vaikka
+            -- olisivat esim. vasta 8. luokalla
+            OR (
+              ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna
+              AND (
+                r_paatason_suoritus.koulutusmoduuli_koodiarvo = '8'
+                OR r_paatason_suoritus.koulutusmoduuli_koodiarvo = '7'
+                OR r_paatason_suoritus.koulutusmoduuli_koodiarvo = '6'
+                OR r_paatason_suoritus.koulutusmoduuli_koodiarvo = '5'
+                OR r_paatason_suoritus.koulutusmoduuli_koodiarvo = '4'
+                OR r_paatason_suoritus.koulutusmoduuli_koodiarvo = '3'
+                OR r_paatason_suoritus.koulutusmoduuli_koodiarvo = '2'
+                OR r_paatason_suoritus.koulutusmoduuli_koodiarvo = '1'
+              )
+            )
+          )
         )
       )
-      -- (3a) valvojalla on oppilaitostason oppilaitosoikeus ja opiskeluoikeuden lisätiedoista ei löydy
-      -- kotiopetusjaksoa, joka osuu tälle hetkelle
-      -- TODO (3b): puuttuu, koska ei vielä ole selvää, miten kotiopetusoppilaat halutaan käsitellä
-      AND kotiopetusjaksoja.count = 0
       AND (
         -- (4.1) opiskeluoikeus ei ole eronnut tilassa tällä hetkellä
         (
@@ -230,45 +261,112 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         )
       )
       AND (
-        -- (5a) opiskeluoikeus on läsnä tai väliaikaisesti keskeytynyt tai lomalla tällä hetkellä.
-        -- Huomaa, että tulevaisuuteen luotuja opiskeluoikeuksia ei tarkoituksella haluta näkyviin.
         (
-          (aikajakson_keskella.tila IS NOT NULL
-            AND aikajakson_keskella.tila = any('{lasna, valiaikaisestikeskeytynyt, loma}'))
-          -- 5a.1 vasta syksyllä (1.8. tai myöhemmin) 9. luokan aloittavia ei näytetä ennen kevään viimeistä rajapäivää.
+          ov_kelvollinen_opiskeluoikeus.koulutusmuoto = 'perusopetus'
           AND (
-            r_paatason_suoritus.data ->> 'alkamispäivä' <= $keväänValmistumisjaksoLoppu
-            OR $tarkastelupäivä > $keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
+            -- (A5a) opiskeluoikeus on läsnä tai väliaikaisesti keskeytynyt tai lomalla tällä hetkellä.
+            -- Huomaa, että tulevaisuuteen luotuja opiskeluoikeuksia ei tarkoituksella haluta näkyviin.
+            (
+              (aikajakson_keskella.tila IS NOT NULL
+                AND aikajakson_keskella.tila = any('{lasna, valiaikaisestikeskeytynyt, loma}'))
+              -- A5a.1 vasta syksyllä (1.8. tai myöhemmin) 9. luokan aloittavia ei näytetä ennen kevään viimeistä rajapäivää.
+              AND (
+                r_paatason_suoritus.data ->> 'alkamispäivä' <= $keväänValmistumisjaksoLoppu
+                OR $tarkastelupäivä > $keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
+              )
+            )
+            -- TAI:
+            OR (
+              -- (A5b.1) opiskeluoikeus on päättynyt menneisyydessä
+              ($tarkastelupäivä >= ov_kelvollinen_opiskeluoikeus.paattymispaiva)
+              AND (
+                -- (A5b.1.1) ja opiskeluoikeus on valmistunut-tilassa (joten siitä löytyy vahvistettu päättötodistus)
+                (
+                  ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{valmistunut, hyvaksytystisuoritettu}')
+                )
+                -- (A5b.1.2) tai oppija täyttää tarkasteluvuonna vähintään 17 ja opiskeluoikeus on eronnut-tilassa
+                OR (
+                  ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna
+                  AND ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, keskeytynyt}')
+                )
+              )
+              -- (A5b.2) ministeriön määrittelemä aikaraja ei ole kulunut umpeen henkilön valmistumis-/eroamisajasta.
+              AND (
+                (
+                  -- keväällä valmistunut/eronnut ja tarkastellaan heille määrättyä rajapäivää aiemmin
+                  (ov_kelvollinen_opiskeluoikeus.paattymispaiva
+                    BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
+                  AND $tarkastelupäivä <= $keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
+                )
+                OR (
+                  -- tai muuna aikana valmistunut/eronnut ja tarkastellaan heille määrättyä rajapäivää aiemmin
+                  (ov_kelvollinen_opiskeluoikeus.paattymispaiva
+                    NOT BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
+                  AND (ov_kelvollinen_opiskeluoikeus.paattymispaiva >= $keväänUlkopuolellaValmistumisjaksoAlku)
+                )
+              )
+            )
           )
         )
-        -- TAI:
         OR (
-          -- (5b.1) opiskeluoikeus on päättynyt menneisyydessä
-          ($tarkastelupäivä >= ov_kelvollinen_opiskeluoikeus.paattymispaiva)
+          ov_kelvollinen_opiskeluoikeus.koulutusmuoto = 'internationalschool'
+          -- Aiemmassa where-ehdossa on varmistettu, että päätason suorituksen luokka-aste on 1-9.
           AND (
-            -- (5b.1.1) ja opiskeluoikeus on valmistunut-tilassa (joten siitä löytyy vahvistettu päättötodistus)
+            -- (B5a) opiskeluoikeus on läsnä tai väliaikaisesti keskeytynyt tai lomalla tällä hetkellä.
+            -- Huomaa, että tulevaisuuteen luotuja opiskeluoikeuksia ei tarkoituksella haluta näkyviin.
             (
-              ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{valmistunut, hyvaksytystisuoritettu}')
+              (aikajakson_keskella.tila IS NOT NULL
+                AND aikajakson_keskella.tila = any('{lasna, valiaikaisestikeskeytynyt, loma}'))
+              -- B5a.1 vasta syksyllä (1.8. tai myöhemmin) 9. luokan aloittavia ei näytetä ennen kevään viimeistä rajapäivää.
+              AND (
+                r_paatason_suoritus.data ->> 'alkamispäivä' <= $keväänValmistumisjaksoLoppu
+                OR $tarkastelupäivä > $keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
+              )
             )
-            -- (5b.1.2) tai oppija täyttää tarkasteluvuonna vähintään 17 ja opiskeluoikeus on eronnut-tilassa
+            -- TAI:
             OR (
-              ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna
-              AND ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, keskeytynyt}')
-            )
-          )
-          -- (5b.2) ministeriön määrittelemä aikaraja ei ole kulunut umpeen henkilön valmistumis-/eroamisajasta.
-          AND (
-            (
-              -- keväällä valmistunut/eronnut ja tarkastellaan heille määrättyä rajapäivää aiemmin
-              (ov_kelvollinen_opiskeluoikeus.paattymispaiva
-                BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
-              AND $tarkastelupäivä <= $keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
-            )
-            OR (
-              -- tai muuna aikana valmistunut/eronnut ja tarkastellaan heille määrättyä rajapäivää aiemmin
-              (ov_kelvollinen_opiskeluoikeus.paattymispaiva
-                NOT BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
-              AND (ov_kelvollinen_opiskeluoikeus.paattymispaiva >= $keväänUlkopuolellaValmistumisjaksoAlku)
+              -- (B5b.1) 9. luokka on tullut suoritetetuksi menneisyydessä
+              (
+                (
+                  r_paatason_suoritus.vahvistus_paiva IS NOT NULL
+                  AND $tarkastelupäivä >= r_paatason_suoritus.vahvistus_paiva
+                  -- (B5b.2) ministeriön määrittelemä aikaraja ei ole kulunut umpeen henkilön 9. luokan suorittamisajasta.
+                  AND (
+                    (
+                      -- keväällä 9. luokan suorittanut ja tarkastellaan heille määrättyä rajapäivää aiemmin
+                      (r_paatason_suoritus.vahvistus_paiva
+                        BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
+                      AND $tarkastelupäivä <= $keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
+                    )
+                    OR (
+                      -- tai muuna aikana 9. luokan suorittanut ja tarkastellaan heille määrättyä rajapäivää aiemmin
+                      (r_paatason_suoritus.vahvistus_paiva
+                        NOT BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
+                      AND (r_paatason_suoritus.vahvistus_paiva >= $keväänUlkopuolellaValmistumisjaksoAlku)
+                    )
+                  )
+                )
+                -- (B5b.1.2) tai oppija täyttää tarkasteluvuonna vähintään 17 ja opiskeluoikeus on eronnut-tilassa
+                OR (
+                  ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna
+                  AND ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, keskeytynyt}')
+                  -- (B5b.2) ministeriön määrittelemä aikaraja ei ole kulunut umpeen henkilön eroamisajasta.
+                  AND (
+                    (
+                      -- keväällä eronnut ja tarkastellaan heille määrättyä rajapäivää aiemmin
+                      (ov_kelvollinen_opiskeluoikeus.paattymispaiva
+                        BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
+                      AND $tarkastelupäivä <= $keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
+                    )
+                    OR (
+                      -- tai muuna aikana eronnut ja tarkastellaan heille määrättyä rajapäivää aiemmin
+                      (ov_kelvollinen_opiskeluoikeus.paattymispaiva
+                        NOT BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
+                      AND (ov_kelvollinen_opiskeluoikeus.paattymispaiva >= $keväänUlkopuolellaValmistumisjaksoAlku)
+                    )
+                  )
+                )
+              )
             )
           )
         )
@@ -286,12 +384,20 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella
         ON aikajakson_keskella.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
         AND $tarkastelupäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
+      JOIN r_paatason_suoritus ON r_paatason_suoritus.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
     WHERE
       -- (0) henkilö on oppivelvollinen: suorittamisvalvontaa ei voi suorittaa enää sen jälkeen kun henkilön
       -- oppivelvollisuus on päättynyt
       ov_kelvollinen_opiskeluoikeus.henkilo_on_oppivelvollinen
       -- (1) oppijalla on muu kuin peruskoulun opetusoikeus
       AND ov_kelvollinen_opiskeluoikeus.koulutusmuoto <> 'perusopetus'
+      -- (1b) International school on suorittamisvalvottava vain, jos siinä on 10, 11 tai 12 luokan suoritus
+      AND (
+        ov_kelvollinen_opiskeluoikeus.koulutusmuoto <> 'internationalschool'
+          OR r_paatason_suoritus.koulutusmoduuli_koodiarvo = '10'
+          OR r_paatason_suoritus.koulutusmoduuli_koodiarvo = '11'
+          OR r_paatason_suoritus.koulutusmoduuli_koodiarvo = '12'
+      )
       AND (
         -- (2a) opiskeluoikeus on läsnä tai väliaikaisesti keskeytynyt tai lomalla tällä hetkellä.
         -- Huomaa, että tulevaisuuteen luotuja opiskeluoikeuksia ei tarkoituksella haluta näkyviin.
@@ -303,7 +409,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         OR (
           -- (2b.1) opiskeluoikeus on päättynyt menneisyydessä eroamiseen. Valmistuneita ei pääsääntöisesti
           -- näytetä lainkaan toiselta asteelta valmistuminen tarkoittaa, että oppivelvollisuus päättyy
-          -- kokonaan, ja nivelvaiheen valmistuneiden käsittely tehdään hakeutumisen valvonnn kautta.
+          -- kokonaan, ja nivelvaiheen valmistuneiden käsittely tehdään hakeutumisen valvonnan kautta.
           ($tarkastelupäivä >= ov_kelvollinen_opiskeluoikeus.paattymispaiva)
           AND (ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu, keskeytynyt}'))
         )
@@ -454,7 +560,11 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       ) AS naytettava_perusopetuksen_suoritus,
       coalesce((r_opiskeluoikeus.data -> 'lisätiedot' ->> 'vuosiluokkiinSitoutumatonOpetus')::boolean, FALSE)
         AS vuosiluokkiin_sitomaton_opetus,
-      valittu_paatason_suoritus.data AS paatason_suoritukset
+      valittu_paatason_suoritus.data AS paatason_suoritukset,
+      NULL::date AS international_school_perusopetuksen_vahvistuspaiva,
+      NULL::date AS international_school_toisen_asteen_alkamispaiva,
+      NULL::boolean AS international_school_toinen_aste_on_voimassa,
+      NULL::boolean AS international_school_perusopetuksen_vahvistuspaiva_merkitty_tulevaisuuteen
     FROM
       oppija_oid
       JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
@@ -537,9 +647,23 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         ELSE aikajakson_keskella.tila_alkanut
       END tarkastelupaivan_tilan_alkupaiva,
       r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
-      FALSE AS naytettava_perusopetuksen_suoritus,
+      (
+        r_opiskeluoikeus.koulutusmuoto = 'internationalschool'
+        AND coalesce(international_school_ysiluokan_suoritus.vahvistus_paiva < $perusopetussuorituksenNäyttämisenAikaraja, FALSE)
+      ) AS naytettava_perusopetuksen_suoritus,
       FALSE AS vuosiluokkiin_sitomaton_opetus,
-      kaikki_paatason_suoritukset.data AS paatason_suoritukset
+      kaikki_paatason_suoritukset.data AS paatason_suoritukset,
+      international_school_ysiluokan_suoritus.vahvistus_paiva AS international_school_perusopetuksen_vahvistuspaiva,
+      CASE
+        WHEN international_school_aikaisin_toisen_asteen_suoritus.lukumaara > 0 THEN international_school_aikaisin_toisen_asteen_suoritus.alkamispaiva
+        ELSE NULL::date
+      END AS international_school_toisen_asteen_alkamispaiva,
+      CASE
+        WHEN international_school_aikaisin_toisen_asteen_suoritus.lukumaara > 0 THEN coalesce(international_school_aikaisin_toisen_asteen_suoritus.alkamispaiva, r_opiskeluoikeus.alkamispaiva) <= $tarkastelupäivä
+        ELSE NULL::boolean
+      END AS international_school_toinen_aste_on_voimassa,
+      (international_school_ysiluokan_suoritus.vahvistus_paiva > $tarkastelupäivä)
+        AS international_school_perusopetuksen_vahvistuspaiva_merkitty_tulevaisuuteen
     FROM
       oppija_oid
       JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
@@ -564,7 +688,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
                 'fi', pts.toimipiste_nimi
               )
             ),
-            'ryhmä', pts.data->>'ryhmä'
+            -- International schoolissa tietomallissa on luokka eikä ryhmä
+            'ryhmä', COALESCE(pts.data->>'ryhmä', pts.data->>'luokka')
           )
           -- Haetaan päätason suoritukset vahvistus- tai arviointipäivien mukaisessa järjestyksessä.
           -- Yleensä käytetään tässä järjestyksessä ensimmäistä, mutta tähän on poikkeus.
@@ -578,6 +703,24 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         WHERE pts.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
         GROUP BY pts.opiskeluoikeus_oid
       ) AS kaikki_paatason_suoritukset
+      LEFT JOIN r_paatason_suoritus international_school_ysiluokan_suoritus
+        ON (international_school_ysiluokan_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+          AND international_school_ysiluokan_suoritus.suorituksen_tyyppi = 'internationalschoolmypvuosiluokka'
+          AND international_school_ysiluokan_suoritus.koulutusmoduuli_koodiarvo = '9')
+      CROSS JOIN LATERAL (
+        SELECT
+          COUNT(*) AS lukumaara,
+          MIN(pts.data->>'alkamispäivä')::date alkamispaiva
+        FROM
+          r_paatason_suoritus pts
+        WHERE
+          pts.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+          AND (
+            (pts.suorituksen_tyyppi = 'internationalschoolmypvuosiluokka'
+              AND pts.koulutusmoduuli_koodiarvo = '10')
+            OR pts.suorituksen_tyyppi = 'internationalschooldiplomavuosiluokka'
+          )
+      ) AS international_school_aikaisin_toisen_asteen_suoritus
   )
   -- CTE: Yhdistettynä peruskoulun ja muut opiskeluoikeudet
   , opiskeluoikeus AS (
@@ -639,12 +782,17 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         'näytettäväPerusopetuksenSuoritus', opiskeluoikeus.naytettava_perusopetuksen_suoritus,
         'vuosiluokkiinSitomatonOpetus', opiskeluoikeus.vuosiluokkiin_sitomaton_opetus,
         'oppivelvollisuudenSuorittamiseenKelpaava', opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE,
-        'päätasonSuoritukset', opiskeluoikeus.paatason_suoritukset
+        'päätasonSuoritukset', opiskeluoikeus.paatason_suoritukset,
+        'internationalSchoolPerusopetuksenVahvistuspäivä', opiskeluoikeus.international_school_perusopetuksen_vahvistuspaiva,
+        'internationalSchoolToisenAsteenAlkamispäivä', opiskeluoikeus.international_school_toisen_asteen_alkamispaiva,
+        'internationalSchoolToinenAsteOnVoimassa', opiskeluoikeus.international_school_toinen_aste_on_voimassa,
+        'internationalSchoolPerusopetuksenVahvistuspäiväMerkittyTulevaisuuteen', opiskeluoikeus.international_school_perusopetuksen_vahvistuspaiva_merkitty_tulevaisuuteen
       ) ORDER BY
         opiskeluoikeus.alkamispaiva DESC,
         -- Alkamispäivä varmaan riittäisi käyttöliitymälle, mutta lisätään muita kenttiä testien pitämiseksi
         -- deteministisempinä myös päällekäisillä opiskeluoikeuksilla:
         opiskeluoikeus.paattymispaiva DESC,
+        opiskeluoikeus.international_school_perusopetuksen_vahvistuspaiva DESC NULLS LAST,
         opiskeluoikeus.koulutusmuoto,
         opiskeluoikeus.paatason_suoritukset->0->>'ryhmä' DESC NULLS LAST,
         opiskeluoikeus.tarkastelupäivän_tila,

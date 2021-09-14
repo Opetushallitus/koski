@@ -35,6 +35,7 @@ import {
 } from "../../state/apitypes/hakutoive"
 import {
   hakeutumisvalvottavatOpiskeluoikeudet,
+  isInternationalSchool,
   OpiskeluoikeusSuppeatTiedot,
   voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus,
 } from "../../state/apitypes/opiskeluoikeus"
@@ -249,9 +250,14 @@ const ryhmä = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
 }
 
 const perusopetusSuoritettu = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
-  const date = oo.päättymispäivä
+  const date = isInternationalSchool(oo)
+    ? oo.internationalSchoolPerusopetuksenVahvistuspäivä
+    : oo.päättymispäivä
   if (date !== undefined && oo.näytettäväPerusopetuksenSuoritus) {
-    return oo.päättymispäiväMerkittyTulevaisuuteen
+    return (!isInternationalSchool(oo) &&
+      oo.päättymispäiväMerkittyTulevaisuuteen) ||
+      (isInternationalSchool(oo) &&
+        oo.internationalSchoolPerusopetuksenVahvistuspäiväMerkittyTulevaisuuteen)
       ? {
           value: date,
           display: t("perusopetus_suoritettu__valmistuu_tulevaisuudessa_pvm", {
@@ -429,6 +435,26 @@ const opiskeluoikeustiedot = (
     voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus
   )
 
+  const isToinenAsteVoimassa = (oo: OpiskeluoikeusSuppeatTiedot) =>
+    isVoimassa(oo.tarkastelupäivänTila) &&
+    (!isInternationalSchool(oo) || oo.internationalSchoolToinenAsteOnVoimassa)
+
+  const isToinenAsteVoimassaTulevaisuudessa = (
+    oo: OpiskeluoikeusSuppeatTiedot
+  ) =>
+    (!isInternationalSchool(oo) &&
+      isVoimassaTulevaisuudessa(oo.tarkastelupäivänTila)) ||
+    (isInternationalSchool(oo) &&
+      oo.internationalSchoolToinenAsteOnVoimassa !== undefined &&
+      !oo.internationalSchoolToinenAsteOnVoimassa)
+
+  const isToinenAsteVoimassaAlkamispäivätiedolla = (
+    oo: OpiskeluoikeusSuppeatTiedot
+  ) =>
+    isToinenAsteVoimassa(oo) &&
+    (!isInternationalSchool(oo) ||
+      oo.internationalSchoolToisenAsteenAlkamispäivä !== undefined)
+
   const toValue = (oo: OpiskeluoikeusSuppeatTiedot) => {
     const kohde = [
       organisaatioNimi(oo.oppilaitos),
@@ -437,17 +463,23 @@ const opiskeluoikeustiedot = (
       .filter(nonNull)
       .join(", ")
 
-    return isVoimassa(oo.tarkastelupäivänTila)
+    const toisenAsteenAlkamispäivä = isInternationalSchool(oo)
+      ? oo.internationalSchoolToisenAsteenAlkamispäivä
+      : oo.alkamispäivä
+
+    return isToinenAsteVoimassa(oo)
       ? kohde
       : t("opiskeluoikeudet__pvm_alkaen_kohde", {
-          päivämäärä: formatDate(oo.alkamispäivä),
+          päivämäärä: formatNullableDate(toisenAsteenAlkamispäivä),
           kohde,
         })
   }
 
-  const icon = oos.some((oo) => isVoimassa(oo.tarkastelupäivänTila)) ? (
+  const icon = oos.some((oo) =>
+    isToinenAsteVoimassaAlkamispäivätiedolla(oo)
+  ) ? (
     <SuccessIcon />
-  ) : oos.some((oo) => isVoimassaTulevaisuudessa(oo.tarkastelupäivänTila)) ? (
+  ) : oos.some((oo) => isToinenAsteVoimassaTulevaisuudessa(oo)) ? (
     <FutureSuccessIcon />
   ) : undefined
 

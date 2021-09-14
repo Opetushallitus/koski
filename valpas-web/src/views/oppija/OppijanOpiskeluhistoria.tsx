@@ -169,6 +169,16 @@ const OpiskeluhistoriaOpinto = ({
           label={t("oppija__opiskeluoikeuden_alkamispäivä")}
           value={formatDate(opiskeluoikeus.alkamispäivä)}
         />
+        {opiskeluoikeus.internationalSchoolPerusopetuksenVahvistuspäivä && (
+          <InfoTableRow
+            label={t(
+              "oppija__international_school_perusopetuksen_vahvistuspäivä"
+            )}
+            value={formatDate(
+              opiskeluoikeus.internationalSchoolPerusopetuksenVahvistuspäivä
+            )}
+          />
+        )}
         {opiskeluoikeus.päättymispäivä && (
           <InfoTableRow
             label={t("oppija__opiskeluoikeuden_päättymispäivä")}

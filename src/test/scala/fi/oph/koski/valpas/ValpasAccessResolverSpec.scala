@@ -147,5 +147,9 @@ class ValpasAccessResolverSpec extends ValpasTestBase {
       )
     ),
     onTehtyIlmoitus = None,
+    internationalSchoolPerusopetuksenVahvistuspäivä = None,
+    internationalSchoolToisenAsteenAlkamispäivä = None,
+    internationalSchoolToinenAsteOnVoimassa = None,
+    internationalSchoolPerusopetuksenVahvistuspäiväMerkittyTulevaisuuteen = None
   )
 }

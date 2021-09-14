@@ -43,6 +43,24 @@ export const jklNormaalikouluTableContent = `
   Ysiluokka-valmis-keväällä-2021-vsop Valpas              | 19.7.2005   | vsop 9C | 30.5.2021 | Ei hakemusta     | –                           | –                         | –                                                                          |
 `
 
+export const internationalSchoolTableHead =
+  "Hakeutumisvelvollisia oppijoita (13)"
+export const internationalSchoolTableContent = `
+  Int-school-10-luokalla-ilman-alkamispäivää Valpas                                 | 14.3.2005  | 10B | 30.5.2021           | Ei hakemusta | – | – | International School of Helsinki, International school                                   |
+  Int-school-9-luokalta-kesken-eroaja-myöhemmin Valpas                              | 21.4.2005  | 9B  | –                   | Ei hakemusta | – | – | –                                                                                        |
+  Int-school-9-luokalta-valmistumisen-jälkeen-eronnut-myöhemmin Valpas              | 10.7.2005  | 9B  | –                   | Ei hakemusta | – | – | –                                                                                        |
+  Int-school-9-luokan-jälkeen-int-schoolin-10-luokalla-aloittanut Valpas            | 22.2.2005  | 10B | 30.5.2021           | Ei hakemusta | – | – | doneInternational School of Helsinki, International school                               |
+  Int-school-9-luokan-jälkeen-int-schoolin-10-luokalla-lokakuussa-aloittanut Valpas | 8.4.2005   | 10B | 30.5.2021           | Ei hakemusta | – | – | hourglass_empty3.10.2021 alkaen: International School of Helsinki, International school  |
+  Int-school-9-luokan-jälkeen-lukion-aloittanut Valpas                              | 12.5.2005  | 9B  | 30.5.2021           | Ei hakemusta | – | – | doneJyväskylän normaalikoulu, Lukiokoulutus                                              |
+  Int-school-9-luokan-jälkeen-lukion-lokakuussa-aloittanut Valpas                   | 7.1.2005   | 9B  | 30.5.2021           | Ei hakemusta | – | – | hourglass_empty3.10.2021 alkaen: Jyväskylän normaalikoulu, Lukiokoulutus                 |
+  Int-school-9-vahvistettu-lokakuussa Valpas                                        | 22.11.2005 | 10B | Valmistuu 1.10.2021 | Ei hakemusta | – | – | hourglass_empty15.10.2021 alkaen: International School of Helsinki, International school |
+  Int-school-eronnut-elokuussa-17-vuotta-täyttävä-8-luokkalainen Valpas             | 22.8.2004  | 8B  | –                   | Ei hakemusta | – | – | –                                                                                        |
+  Int-school-yli-2kk-aiemmin-9-valmistunut Valpas                                   | 23.10.2005 | 9B  | 4.7.2021            | Ei hakemusta | – | – | –                                                                                        |
+  Int-school-yli-2kk-aiemmin-9-valmistunut-10-jatkanut Valpas                       | 11.11.2005 | 10B | 4.7.2021            | Ei hakemusta | – | – | doneInternational School of Helsinki, International school                               |
+  Inter-valmistunut-9-2021 Valpas                                                   | 20.4.2005  | 9B  | 30.5.2021           | Ei hakemusta | – | – | –                                                                                        |
+  Oppivelvollinen-int-school-kesken-keväällä-2021 Valpas                            | 18.2.2005  | 9B  | –                   | Ei hakemusta | – | – | –                                                                                        |
+`
+
 export const hakutilannePath = createHakutilannePathWithoutOrg("/virkailija")
 
 export const oppijaRowSelector = (oppijaOid: Oid) =>

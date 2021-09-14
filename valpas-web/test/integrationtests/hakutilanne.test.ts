@@ -22,6 +22,8 @@ import { loginAs } from "../integrationtests-env/browser/reset"
 import { eventually } from "../integrationtests-env/browser/utils"
 import {
   hakutilannePath,
+  internationalSchoolTableContent,
+  internationalSchoolTableHead,
   jklNormaalikouluTableContent,
   jklNormaalikouluTableHead,
   openAnyOppijaView,
@@ -29,6 +31,7 @@ import {
 } from "./hakutilanne.shared"
 import {
   aapajoenKouluOid,
+  internationalSchoolOid,
   jyväskylänNormaalikouluOid,
   kulosaarenAlaAsteOid,
 } from "./oids"
@@ -79,6 +82,12 @@ const aapajoenKouluHakutilannePath = createHakutilannePathWithOrg(
   "/virkailija",
   {
     organisaatioOid: aapajoenKouluOid,
+  }
+)
+const internationalSchoolHakutilannePath = createHakutilannePathWithOrg(
+  "/virkailija",
+  {
+    organisaatioOid: internationalSchoolOid,
   }
 )
 
@@ -279,5 +288,16 @@ describe("Hakutilannenäkymä", () => {
     const stateAfterOrgChange = await getState()
 
     expect(stateBeforeOrgChange).toEqual(stateAfterOrgChange)
+  })
+
+  it("Näyttää listan oppijoista international schoolille", async () => {
+    await loginAs(hakutilannePath, "valpas-int-school")
+    await urlIsEventually(pathToUrl(internationalSchoolHakutilannePath))
+    await textEventuallyEquals(".card__header", internationalSchoolTableHead)
+    await dataTableEventuallyEquals(
+      ".hakutilanne",
+      internationalSchoolTableContent,
+      "|"
+    )
   })
 })

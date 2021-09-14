@@ -110,6 +110,22 @@ trait ValpasOpiskeluoikeus {
 
   def päättymispäivä: Option[String]
 
+  // Tarvitaan erikseen, koska international schoolista perusopetus on samassa opiskeluoikeudessa 2. asteen opintojen
+  // suoritusten kanssa, ja perusopetuksen päättymispäivä halutaan nähdä erikseen Valppaan käyttöliittymässä
+  def internationalSchoolPerusopetuksenVahvistuspäivä: Option[String]
+
+  // Tarvitaan erikseen, koska international schoolista perusopetus on samassa opiskeluoikeudessa 2. asteen opintojen
+  // suoritusten kanssa, ja toisen asteen aloituspäivä vaikuttaa osaan käyttöliittymälogiikasta
+  def internationalSchoolToisenAsteenAlkamispäivä: Option[String]
+
+  // Tarvitaan erikseen, koska international schoolin kanssa käyttöliittymän pitää pystyä päättelemään, onko
+  // opiskeluoikeus toisella asteella jo voimassa vai alkamassa tulevaisuudessa
+  def internationalSchoolToinenAsteOnVoimassa: Option[Boolean]
+
+  // Tarvitaan erikseen, koska international schoolissa pitää tutkia perusopetuksen vahvistuspäivän merkitsemistä
+  // eikä koko opiskeluoikeuden päättymispäivän merkitsemistä tulevaisuuteen
+  def internationalSchoolPerusopetuksenVahvistuspäiväMerkittyTulevaisuuteen: Option[Boolean]
+
   def päättymispäiväMerkittyTulevaisuuteen: Option[Boolean]
 
   def näytettäväPerusopetuksenSuoritus: Boolean
@@ -169,6 +185,10 @@ case class ValpasOpiskeluoikeusLaajatTiedot(
   päätasonSuoritukset: Seq[ValpasPäätasonSuoritus],
   // Option, koska tämä tieto rikastetaan mukaan vain tietyissä tilanteissa
   onTehtyIlmoitus: Option[Boolean],
+  internationalSchoolPerusopetuksenVahvistuspäivä: Option[String],
+  internationalSchoolToisenAsteenAlkamispäivä: Option[String],
+  internationalSchoolToinenAsteOnVoimassa: Option[Boolean],
+  internationalSchoolPerusopetuksenVahvistuspäiväMerkittyTulevaisuuteen: Option[Boolean],
 ) extends ValpasOpiskeluoikeus
 
 object ValpasOpiskeluoikeusSuppeatTiedot {
@@ -188,6 +208,10 @@ object ValpasOpiskeluoikeusSuppeatTiedot {
       vuosiluokkiinSitomatonOpetus = laajatTiedot.vuosiluokkiinSitomatonOpetus,
       päätasonSuoritukset = laajatTiedot.päätasonSuoritukset,
       onTehtyIlmoitus = laajatTiedot.onTehtyIlmoitus,
+      internationalSchoolPerusopetuksenVahvistuspäivä = laajatTiedot.internationalSchoolPerusopetuksenVahvistuspäivä,
+      internationalSchoolToisenAsteenAlkamispäivä = laajatTiedot.internationalSchoolToisenAsteenAlkamispäivä,
+      internationalSchoolToinenAsteOnVoimassa = laajatTiedot.internationalSchoolToinenAsteOnVoimassa,
+      internationalSchoolPerusopetuksenVahvistuspäiväMerkittyTulevaisuuteen = laajatTiedot.internationalSchoolPerusopetuksenVahvistuspäiväMerkittyTulevaisuuteen
     )
   }
 }
@@ -208,6 +232,10 @@ case class ValpasOpiskeluoikeusSuppeatTiedot(
   päätasonSuoritukset: Seq[ValpasPäätasonSuoritus],
   // Option, koska tämä tieto rikastetaan mukaan vain tietyissä tilanteissa
   onTehtyIlmoitus: Option[Boolean],
+  internationalSchoolPerusopetuksenVahvistuspäivä: Option[String],
+  internationalSchoolToisenAsteenAlkamispäivä: Option[String],
+  internationalSchoolToinenAsteOnVoimassa: Option[Boolean],
+  internationalSchoolPerusopetuksenVahvistuspäiväMerkittyTulevaisuuteen: Option[Boolean],
 ) extends ValpasOpiskeluoikeus
 
 case class ValpasPäätasonSuoritus(
