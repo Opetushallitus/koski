@@ -64,20 +64,18 @@ export const oppijaPath = (basePath: string = "") =>
 
 export const createOppijaPath = (
   basePath: string = "",
-  params: {
+  {
+    oppijaOid,
+    ...params
+  }: {
     oppijaOid: Oid
     hakutilanneRef?: Oid
+    hakutilanneIlmoitetutRef?: Oid
     kuntailmoitusRef?: Oid
     suorittaminenRef?: Oid
     prev?: string
   }
-) =>
-  queryPath(`${basePath}/oppija/${params.oppijaOid}`, {
-    hakutilanneRef: params.hakutilanneRef,
-    kuntailmoitusRef: params.kuntailmoitusRef,
-    suorittaminenRef: params.suorittaminenRef,
-    prev: params.prev,
-  })
+) => queryPath(`${basePath}/oppija/${oppijaOid}`, params as QueryParams)
 
 export type OppijaViewRouteProps = RouteComponentProps<{
   oppijaOid?: string
@@ -142,3 +140,41 @@ export const kunnanHetuhakuPath = (basePath: string = "") =>
   `${kuntaRootPath(basePath)}/haku`
 
 export const createKunnanHetuhakuPath = kunnanHetuhakuPath
+
+// Hakeutumisvalvonnan 'kunnalle tehdyt ilmoitukset' -näkymä
+
+export const hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg = (
+  basePath: string = ""
+) => `${basePath}/hakutilanne/ilmoitetut`
+
+export const createHakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg = hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg
+
+export const hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg = (
+  basePath: string = ""
+) => `${basePath}/hakutilanne/:organisaatioOid/ilmoitetut`
+
+export const createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg = (
+  basePath: string = "",
+  params: { organisaatioOid: Oid }
+) => `${basePath}/hakutilanne/${params.organisaatioOid}/ilmoitetut`
+
+export type KunnalleIlmoitetutViewRouteProps = RouteComponentProps<{
+  organisaatioOid?: string
+}>
+
+// Suorittamisvalvonnan 'kunnalle tehdyt ilmoitukset' -näkymä
+
+export const suorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg = (
+  basePath: string = ""
+) => `${basePath}/suorittaminen/ilmoitukset`
+
+export const createSuorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg = suorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg
+
+export const suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg = (
+  basePath: string = ""
+) => `${basePath}/suorittaminen/ilmoitukset/:organisaatioOid`
+
+export const createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg = (
+  basePath: string = "",
+  params: { organisaatioOid: Oid }
+) => `${basePath}/suorittaminen/ilmoitukset/${params.organisaatioOid}`

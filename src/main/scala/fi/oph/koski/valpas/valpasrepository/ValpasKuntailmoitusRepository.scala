@@ -191,6 +191,10 @@ class ValpasKuntailmoitusRepository(
       .map(withUudempiIlmoitusToiseenKuntaan)
   }
 
+  def queryByTekijäOrganisaatio(organisaatioOid: Organisaatio.Oid): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]] = {
+    query(_.tekijäOrganisaatioOid === organisaatioOid)
+  }
+
   private def query[T <: slick.lifted.Rep[_]]
     (filterFn: (IlmoitusTable) => T)
     (implicit wt: slick.lifted.CanBeQueryCondition[T])
@@ -204,6 +208,14 @@ class ValpasKuntailmoitusRepository(
           .result
       ).map(Function.tupled(fromDbRows))
     )
+  }
+
+  def queryOpiskeluoikeudetWithIlmoitus(opiskeluoikeudet: Seq[String]): Seq[String] = {
+    runDbSync(
+      IlmoitusOpiskeluoikeusKonteksti
+        .filter(_.opiskeluoikeusOid inSetBind opiskeluoikeudet)
+        .result)
+      .map(_.opiskeluoikeusOid)
   }
 
   private def withUudempiIlmoitusToiseenKuntaan(ilmoitukset: Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]): Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {

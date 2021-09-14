@@ -1,7 +1,11 @@
 import * as A from "fp-ts/Array"
 import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
-import { FutureSuccessIcon, WarningIcon } from "../../../components/icons/Icon"
+import {
+  FutureSuccessIcon,
+  OpiskeluhistoriaTapahtumaIcon,
+  WarningIcon,
+} from "../../../components/icons/Icon"
 import {
   Column,
   DataTable,
@@ -63,6 +67,7 @@ export const SuorittaminenOppivelvollisetTable = (
         label: t("suorittaminennäkymä__taulu_nimi"),
         filter: "freetext",
         size: "large",
+        indicatorSpace: "auto",
       },
       {
         label: t("suorittaminennäkymä__taulu_syntymäaika"),
@@ -138,7 +143,7 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
       key: createSuorittaminenKey(oppija.oppija, opiskeluoikeus),
       values: [
         {
-          value: `${henkilö.sukunimi} ${henkilö.etunimet}`,
+          value: `${henkilö.sukunimi} ${henkilö.etunimet}${opiskeluoikeus.onTehtyIlmoitus}`,
           display: (
             <Link
               to={createOppijaPath(basePath, {
@@ -149,6 +154,9 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
               {henkilö.sukunimi} {henkilö.etunimet}
             </Link>
           ),
+          icon: opiskeluoikeus.onTehtyIlmoitus ? (
+            <OpiskeluhistoriaTapahtumaIcon color="blue" />
+          ) : null,
         },
         {
           value: henkilö.syntymäaika,

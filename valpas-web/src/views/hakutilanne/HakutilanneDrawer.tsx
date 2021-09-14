@@ -1,6 +1,6 @@
 import bem from "bem-ts"
 import * as A from "fp-ts/Array"
-import React, { useMemo, useState } from "react"
+import React, { useCallback, useMemo, useState } from "react"
 import { fetchKuntailmoituksenPohjatiedot } from "../../api/api"
 import { useApiWithParams } from "../../api/apiHooks"
 import { isLoading, isSuccess, mapError, mapLoading } from "../../api/apiUtils"
@@ -11,6 +11,7 @@ import { Error } from "../../components/typography/error"
 import { T } from "../../i18n/i18n"
 import { OppijaHakutilanteillaSuppeatTiedot } from "../../state/apitypes/oppija"
 import { Organisaatio } from "../../state/apitypes/organisaatiot"
+import { Oid } from "../../state/common"
 import { Ilmoituslomake } from "../../views/ilmoituslomake/Ilmoituslomake"
 import "./HakutilanneDrawer.less"
 
@@ -19,6 +20,7 @@ const b = bem("hakutilannedrawer")
 export type HakutilanneDrawerProps = {
   selectedOppijat: OppijaHakutilanteillaSuppeatTiedot[]
   tekijäorganisaatio: Organisaatio
+  onKuntailmoituksetCreated: () => void
 }
 
 export const HakutilanneDrawer = React.forwardRef(
@@ -32,6 +34,17 @@ export const HakutilanneDrawer = React.forwardRef(
     const pohjatiedot = useApiWithParams(
       fetchKuntailmoituksenPohjatiedot,
       modalVisible ? [oppijaOids, props.tekijäorganisaatio.oid] : undefined
+    )
+
+    const onKuntailmoituksetCreated = props.onKuntailmoituksetCreated
+    const onClose = useCallback(
+      (submittedForms: Oid[]) => {
+        setModalVisible(false)
+        if (A.isNonEmpty(submittedForms)) {
+          onKuntailmoituksetCreated()
+        }
+      },
+      [onKuntailmoituksetCreated]
     )
 
     return (
@@ -75,7 +88,7 @@ export const HakutilanneDrawer = React.forwardRef(
             }))}
             pohjatiedot={pohjatiedot.data}
             tekijäorganisaatio={props.tekijäorganisaatio}
-            onClose={() => setModalVisible(false)}
+            onClose={onClose}
           />
         ) : null}
       </>

@@ -77,6 +77,11 @@ export const takeScreenshot = async (filename: string) => {
   await fs.writeFile(filename, image, "base64")
 }
 
+export const getText = (webElement: WebElement) => webElement.getText()
+
+export const getOptionalText = async (webElements: WebElement[]) =>
+  webElements[0]?.getText()
+
 // Mekanismi featureflagien väliaikaiseen sulkemiseen
 
 const disabledFeatures = new Set<Feature>()

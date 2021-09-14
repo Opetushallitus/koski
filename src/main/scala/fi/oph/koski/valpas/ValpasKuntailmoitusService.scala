@@ -7,7 +7,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.Organisaatiotyyppi
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOppijaLaajatTiedot, ValpasOppilaitos}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeusSuppeatTiedot, ValpasOppijaLaajatTiedot, ValpasOppilaitos}
 import fi.oph.koski.valpas.valpasrepository._
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.koski.valpas.yhteystiedot.{ValpasYhteystiedot, ValpasYhteystietoHakemukselta, ValpasYhteystietoOppijanumerorekisteristä}
@@ -67,11 +67,28 @@ class ValpasKuntailmoitusService(
       .map(_.map(karsiHenkilötiedotJosEiOikeuksia))
   }
 
-  def getKuntailmoituksetKunnalle
+  def getKuntailmoituksetKunnalleIlmanKäyttöoikeustarkistusta
     (kuntaOid: Organisaatio.Oid)
-    (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]] = {
     repository.queryByKunta(kuntaOid)
+  }
+
+  def getOppilaitoksenTekemätIlmoituksetIlmanKäyttöoikeustarkistusta
+    (organisaatioOid: Organisaatio.Oid)
+  : Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]] = {
+    repository.queryByTekijäOrganisaatio(organisaatioOid)
+  }
+
+  def queryOpiskeluoikeudetWithIlmoitus(opiskeluoikeudet: Seq[String]): Seq[String] =
+    repository.queryOpiskeluoikeudetWithIlmoitus(opiskeluoikeudet)
+
+  def addOpiskeluoikeusOnTehtyIlmoitusProperties(oppijat: Seq[OppijaHakutilanteillaLaajatTiedot]): Seq[OppijaHakutilanteillaLaajatTiedot] = {
+    val ilmoituksellisetOpiskeluoikeudet = queryOpiskeluoikeudetWithIlmoitus(oppijat.flatMap(_.oppija.opiskeluoikeudet.map(_.oid)))
+    oppijat.map(oppija => {
+      val opiskeluoikeudet = oppija.oppija.opiskeluoikeudet
+        .map(oo => oo.copy(onTehtyIlmoitus = Some(ilmoituksellisetOpiskeluoikeudet.contains(oo.oid))))
+      oppija.copy(oppija = oppija.oppija.copy(opiskeluoikeudet = opiskeluoikeudet))
+    })
   }
 
   private def isAktiivinenKunta(o: OrganisaatioWithOid): Boolean =

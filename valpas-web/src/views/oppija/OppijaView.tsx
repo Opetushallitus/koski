@@ -23,10 +23,12 @@ import { HenkilöLaajatTiedot } from "../../state/apitypes/henkilo"
 import { isAktiivinenKuntailmoitus } from "../../state/apitypes/kuntailmoitus"
 import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import {
+  createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
   createHakutilannePathWithOrg as createHakutilannePathWithOrg,
   createHakutilannePathWithoutOrg as createHakutilannePathWithoutOrg,
   createKuntailmoitusPathWithOrg,
   createSuorittaminenPathWithOrg,
+  createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg,
   OppijaViewRouteProps,
   parseQueryFromProps as parseSearchQueryFromProps,
 } from "../../state/paths"
@@ -52,8 +54,10 @@ export const OppijaView = withRequiresJokinOikeus((props: OppijaViewProps) => {
     <Page id="oppija">
       <BackNav
         hakutilanneRef={searchQuery.hakutilanneRef}
+        hakutilanneIlmoitetutRef={searchQuery.hakutilanneIlmoitetutRef}
         kuntailmoitusRef={searchQuery.kuntailmoitusRef}
         suorittaminenRef={searchQuery.suorittaminenRef}
+        suorittaminenIlmoitetutRef={searchQuery.suorittaminenIlmoitetutRef}
         oppija={isSuccess(oppija) ? oppija.data : undefined}
         prevPage={searchQuery.prev}
       />
@@ -122,15 +126,17 @@ export const OppijaView = withRequiresJokinOikeus((props: OppijaViewProps) => {
   )
 })
 
-type BackNavProps = {
+export type OppijaViewBackNavProps = {
   hakutilanneRef?: string
+  hakutilanneIlmoitetutRef?: string
   kuntailmoitusRef?: string
   suorittaminenRef?: string
+  suorittaminenIlmoitetutRef?: string
   oppija?: OppijaHakutilanteillaLaajatTiedot
   prevPage?: string
 }
 
-const BackNav = (props: BackNavProps) => {
+const BackNav = (props: OppijaViewBackNavProps) => {
   const targetPath = () => {
     const fallback = props.oppija?.oppija.hakeutumisvalvovatOppilaitokset[0]
     if (props.prevPage) {
@@ -139,10 +145,18 @@ const BackNav = (props: BackNavProps) => {
       return createHakutilannePathWithOrg("", {
         organisaatioOid: props.hakutilanneRef,
       })
+    } else if (props.hakutilanneIlmoitetutRef) {
+      return createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg("", {
+        organisaatioOid: props.hakutilanneIlmoitetutRef,
+      })
     } else if (props.kuntailmoitusRef) {
       return createKuntailmoitusPathWithOrg("", props.kuntailmoitusRef)
     } else if (props.suorittaminenRef) {
       return createSuorittaminenPathWithOrg("", props.suorittaminenRef)
+    } else if (props.suorittaminenIlmoitetutRef) {
+      return createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg("", {
+        organisaatioOid: props.suorittaminenIlmoitetutRef,
+      })
     } else if (fallback) {
       return createHakutilannePathWithOrg("", { organisaatioOid: fallback })
     } else {

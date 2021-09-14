@@ -44,11 +44,17 @@ export const jklNormaalikouluTableContent = `
 
 export const hakutilannePath = createHakutilannePathWithoutOrg("/virkailija")
 
+export const oppijaRowSelector = (oppijaOid: Oid) =>
+  `.hakutilanne .table__row[data-row*="${oppijaOid}"] td:first-child a`
+
 export const openOppijaView = async (oppijaOid: Oid) => {
-  const selector = `.hakutilanne .table__row[data-row*="${oppijaOid}"] td:first-child a`
+  const selector = oppijaRowSelector(oppijaOid)
   await expectElementEventuallyVisible(selector)
   await clickElement(selector)
 }
 
 export const openAnyOppijaView = () =>
   clickElement(`.hakutilanne .table__row:first-child td:first-child a`)
+
+export const kuntailmoitusRowSelector = (oppijaOid: Oid) =>
+  `.kuntailmoitukset .table__row[data-row*="${oppijaOid}"] td:first-child a`

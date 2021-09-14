@@ -72,6 +72,7 @@ object ValpasHenkilöSuppeatTiedot {
   def apply(laajatTiedot: ValpasHenkilöLaajatTiedot): ValpasHenkilöSuppeatTiedot = {
     ValpasHenkilöSuppeatTiedot(
       laajatTiedot.oid,
+      laajatTiedot.kaikkiOidit,
       laajatTiedot.syntymäaika,
       laajatTiedot.etunimet,
       laajatTiedot.sukunimi
@@ -81,6 +82,7 @@ object ValpasHenkilöSuppeatTiedot {
 
 case class ValpasHenkilöSuppeatTiedot(
   oid: ValpasHenkilö.Oid,
+  kaikkiOidit: Set[ValpasHenkilö.Oid],
   syntymäaika: Option[LocalDate],
   etunimet: String,
   sukunimi: String
@@ -165,6 +167,8 @@ case class ValpasOpiskeluoikeusLaajatTiedot(
   vuosiluokkiinSitomatonOpetus: Boolean,
   oppivelvollisuudenSuorittamiseenKelpaava: Boolean,
   päätasonSuoritukset: Seq[ValpasPäätasonSuoritus],
+  // Option, koska tämä tieto rikastetaan mukaan vain tietyissä tilanteissa
+  onTehtyIlmoitus: Option[Boolean],
 ) extends ValpasOpiskeluoikeus
 
 object ValpasOpiskeluoikeusSuppeatTiedot {
@@ -182,7 +186,8 @@ object ValpasOpiskeluoikeusSuppeatTiedot {
       päättymispäiväMerkittyTulevaisuuteen = laajatTiedot.päättymispäiväMerkittyTulevaisuuteen,
       näytettäväPerusopetuksenSuoritus = laajatTiedot.näytettäväPerusopetuksenSuoritus,
       vuosiluokkiinSitomatonOpetus = laajatTiedot.vuosiluokkiinSitomatonOpetus,
-      päätasonSuoritukset = laajatTiedot.päätasonSuoritukset
+      päätasonSuoritukset = laajatTiedot.päätasonSuoritukset,
+      onTehtyIlmoitus = laajatTiedot.onTehtyIlmoitus,
     )
   }
 }
@@ -201,6 +206,8 @@ case class ValpasOpiskeluoikeusSuppeatTiedot(
   näytettäväPerusopetuksenSuoritus: Boolean,
   vuosiluokkiinSitomatonOpetus: Boolean,
   päätasonSuoritukset: Seq[ValpasPäätasonSuoritus],
+  // Option, koska tämä tieto rikastetaan mukaan vain tietyissä tilanteissa
+  onTehtyIlmoitus: Option[Boolean],
 ) extends ValpasOpiskeluoikeus
 
 case class ValpasPäätasonSuoritus(

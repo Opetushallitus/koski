@@ -71,3 +71,8 @@ export const inputIsEnabled = async (selector: string): Promise<boolean> => {
   const input = await $(selector)
   return input.getAttribute("disabled").then((c) => !c)
 }
+
+export const fillField = async (input: WebElement, text: string) => {
+  await clearTextInputElement(input)
+  await input.sendKeys(text)
+}

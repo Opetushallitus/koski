@@ -1,6 +1,6 @@
 import bem from "bem-ts"
 import React, { useMemo, useState } from "react"
-import { Redirect, useHistory } from "react-router"
+import { useHistory } from "react-router"
 import {
   Card,
   CardHeader,
@@ -11,17 +11,15 @@ import { Spinner } from "../../components/icons/Spinner"
 import {
   getOrganisaatiot,
   OrganisaatioValitsin,
-  useStoredOrgState,
 } from "../../components/shared/OrganisaatioValitsin"
 import { DataTableCountChangeEvent } from "../../components/tables/DataTable"
-import { Counter } from "../../components/typography/Counter"
+import { NumberCounter } from "../../components/typography/Counter"
 import { ApiErrors } from "../../components/typography/error"
 import { t, T } from "../../i18n/i18n"
 import {
   useOrganisaatiotJaKäyttöoikeusroolit,
   withRequiresHakeutumisenValvonta,
 } from "../../state/accessRights"
-import { useBasePath } from "../../state/basePath"
 import { Oid } from "../../state/common"
 import {
   createHakutilannePathWithOrg,
@@ -30,6 +28,7 @@ import {
 import { useBoundingClientRect } from "../../state/useBoundingClientRect"
 import { nonNull } from "../../utils/arrays"
 import { ErrorView } from "../ErrorView"
+import { OrganisaatioAutoRedirect } from "../OrganisaatioAutoRedirect"
 import { HakutilanneDrawer } from "./HakutilanneDrawer"
 import { HakutilanneNavigation } from "./HakutilanneNavigation"
 import { HakutilanneTable } from "./HakutilanneTable"
@@ -44,32 +43,18 @@ const organisaatioHakuRooli = "OPPILAITOS_HAKEUTUMINEN"
 export type HakutilanneViewProps = HakutilanneViewRouteProps
 
 export const HakutilanneViewWithoutOrgOid = withRequiresHakeutumisenValvonta(
-  () => {
-    const basePath = useBasePath()
-    const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
-    const organisaatiot = useMemo(
-      () =>
-        getOrganisaatiot(
-          organisaatiotJaKäyttöoikeusroolit,
-          organisaatioHakuRooli,
-          organisaatioTyyppi
-        ),
-      [organisaatiotJaKäyttöoikeusroolit]
-    )
-    const [storedOrFallbackOrg] = useStoredOrgState(
-      organisaatioTyyppi,
-      organisaatiot
-    )
-    return storedOrFallbackOrg ? (
-      <Redirect
-        to={createHakutilannePathWithOrg(basePath, {
-          organisaatioOid: storedOrFallbackOrg,
-        })}
-      />
-    ) : (
-      <OrganisaatioMissingView />
-    )
-  }
+  () => (
+    <OrganisaatioAutoRedirect
+      organisaatioHakuRooli={organisaatioHakuRooli}
+      organisaatioTyyppi={organisaatioTyyppi}
+      redirectTo={(basePath, organisaatioOid) =>
+        createHakutilannePathWithOrg(basePath, {
+          organisaatioOid,
+        })
+      }
+      renderError={() => <OrganisaatioMissingView />}
+    />
+  )
 )
 
 export const HakutilanneView = withRequiresHakeutumisenValvonta(
@@ -88,7 +73,7 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
 
     const organisaatioOid = props.match.params.organisaatioOid!
 
-    const { data, isLoading, errors, setMuuHaku } = useOppijatData(
+    const { data, isLoading, errors, setMuuHaku, reload } = useOppijatData(
       organisaatioOid
     )
 
@@ -132,11 +117,10 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
           <CardHeader>
             <T id="hakutilannenäkymä__otsikko" />
             {data && (
-              <Counter>
-                {counters.filteredRowCount === counters.unfilteredRowCount
-                  ? counters.filteredRowCount
-                  : `${counters.filteredRowCount} / ${counters.unfilteredRowCount}`}
-              </Counter>
+              <NumberCounter
+                value={counters.filteredRowCount}
+                max={counters.unfilteredRowCount}
+              />
             )}
           </CardHeader>
           <ConstrainedCardBody extraMargin={drawerRect.rect?.height}>
@@ -158,6 +142,7 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
             ref={drawerRect.ref}
             selectedOppijat={selectedOppijat}
             tekijäorganisaatio={organisaatio}
+            onKuntailmoituksetCreated={reload}
           />
         )}
       </Page>

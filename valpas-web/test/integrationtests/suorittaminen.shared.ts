@@ -3,6 +3,7 @@ import {
   createSuorittaminenHetuhakuPath,
   createSuorittaminenPath,
   createSuorittaminenPathWithOrg,
+  createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg,
 } from "../../src/state/paths"
 import {
   clickElement,
@@ -60,6 +61,11 @@ export const suorittaminenListaJklPath = createSuorittaminenPathWithOrg(
 export const suorittaminenListaHkiPath = createSuorittaminenPathWithOrg(
   "/virkailija",
   helsinginMedialukioOid
+)
+
+export const suorittaminenKuntailmoitusListaJklPath = createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg(
+  "/virkailija",
+  { organisaatioOid: jyväskylänNormaalikouluOid }
 )
 
 export const openSuorittaminenOppijaView = async (oppijaOid: Oid) => {

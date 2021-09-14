@@ -58,7 +58,11 @@ case class ValpasKuntailmoitusSuppeatTiedot(
   tekijä: ValpasKuntailmoituksenTekijäSuppeatTiedot,
   kunta: OrganisaatioWithOid,
   aikaleima: Option[LocalDateTime],
-  onUudempiaIlmoituksiaMuihinKuntiin: Option[Boolean] // Option, koska relevantti kenttä vain haettaessa ilmoituksia tietylle kunnalle
+  // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn ilmoituksen tiedoista,
+  // tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa.
+  hakenutMuualle: Option[Boolean],
+  // Option, koska relevantti kenttä vain haettaessa ilmoituksia tietylle kunnalle
+  onUudempiaIlmoituksiaMuihinKuntiin: Option[Boolean]
 ) extends ValpasKuntailmoitus
 
 object ValpasKuntailmoitusSuppeatTiedot {
@@ -72,6 +76,7 @@ object ValpasKuntailmoitusSuppeatTiedot {
       tekijä = ValpasKuntailmoituksenTekijäSuppeatTiedot(laajatTiedot.tekijä),
       kunta = laajatTiedot.kunta,
       aikaleima = laajatTiedot.aikaleima,
+      hakenutMuualle = laajatTiedot.hakenutMuualle,
       onUudempiaIlmoituksiaMuihinKuntiin = laajatTiedot.onUudempiaIlmoituksiaMuihinKuntiin,
     )
   }

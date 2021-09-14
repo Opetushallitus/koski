@@ -18,6 +18,8 @@ import {
 import { BasePathProvider, useBasePath } from "../state/basePath"
 import {
   createHakutilannePathWithoutOrg,
+  hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
+  hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg,
   hakutilannePathWithOrg,
   hakutilannePathWithoutOrg,
   kunnanHetuhakuPath,
@@ -30,6 +32,8 @@ import {
   suorittaminenHetuhakuPath,
   suorittaminenPath,
   suorittaminenPathWithOrg,
+  suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg,
+  suorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg,
 } from "../state/paths"
 import { SuorittaminenHetuhaku } from "../views/suorittaminen/hetuhaku/SuorittaminenHetuhaku"
 import {
@@ -43,6 +47,14 @@ import {
   HakutilanneViewWithoutOrgOid,
 } from "./hakutilanne/HakutilanneView"
 import { HomeView } from "./HomeView"
+import {
+  HakeutumisenKunnalleIlmoitetutView,
+  HakeutumisenKunnalleIlmoitetutViewWithoutOrgOid,
+} from "./kunnalleilmoitetut/HakeutumisenKunnalleIlmoitetutView"
+import {
+  SuorittamisenKunnalleIlmoitetutView,
+  SuorittamisenKunnalleIlmoitetutViewWithoutOrgOid,
+} from "./kunnalleilmoitetut/SuorittamisenKunnalleilmoitetutView"
 import { KuntaHetuhaku } from "./kunta/hetuhaku/KuntaHetuhaku"
 import {
   KuntailmoitusView,
@@ -81,9 +93,29 @@ const VirkailijaRoutes = () => {
         />
         <Route
           exact
+          path={hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg(basePath)}
+          render={(routeProps) => (
+            <HakeutumisenKunnalleIlmoitetutViewWithoutOrgOid
+              redirectUserWithoutAccessTo={rootPath(basePath)}
+              {...routeProps}
+            />
+          )}
+        />
+        <Route
+          exact
           path={hakutilannePathWithOrg(basePath)}
           render={(routeProps) => (
             <HakutilanneView
+              redirectUserWithoutAccessTo={rootPath(basePath)}
+              {...routeProps}
+            />
+          )}
+        />
+        <Route
+          exact
+          path={hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg(basePath)}
+          render={(routeProps) => (
+            <HakeutumisenKunnalleIlmoitetutView
               redirectUserWithoutAccessTo={rootPath(basePath)}
               {...routeProps}
             />
@@ -101,9 +133,29 @@ const VirkailijaRoutes = () => {
         />
         <Route
           exact
+          path={suorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg(basePath)}
+          render={(routeProps) => (
+            <SuorittamisenKunnalleIlmoitetutViewWithoutOrgOid
+              redirectUserWithoutAccessTo={rootPath(basePath)}
+              {...routeProps}
+            />
+          )}
+        />
+        <Route
+          exact
           path={suorittaminenPath(basePath)}
           render={(routeProps) => (
             <SuorittaminenOppivelvollisetViewWithoutOrgOid
+              redirectUserWithoutAccessTo={rootPath(basePath)}
+              {...routeProps}
+            />
+          )}
+        />
+        <Route
+          exact
+          path={suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg(basePath)}
+          render={(routeProps) => (
+            <SuorittamisenKunnalleIlmoitetutView
               redirectUserWithoutAccessTo={rootPath(basePath)}
               {...routeProps}
             />
