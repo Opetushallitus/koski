@@ -75,6 +75,12 @@ export const newOsasuoritusProto = (suoritus, osasuoritusClass) => {
   const newItemIndex = modelItems(_osasuoritukset).length
   const osasuorituksenProto = contextualizeSubModel(_osasuoritukset.arrayPrototype, _osasuoritukset, newItemIndex)
   const options = oneOfPrototypes(osasuorituksenProto)
+  console.log(options.length)
+  console.log(osasuoritusClass)
+  if (!osasuoritusClass && options.length > 0) {
+    throwError('osasuoritusClass -argumentti vaaditaan')
+  }
+
   const proto = osasuoritusClass && options.find(p => p.value.classes.includes(osasuoritusClass)) || options[0]
   return contextualizeSubModel(proto, _osasuoritukset, newItemIndex)
 }
@@ -103,4 +109,9 @@ export const fixArviointi = (model) => {
     }
     return m
   }))
+}
+
+let throwError = (msg, ...args) => {
+  console.error(msg, ...args)
+  throw new Error(msg)
 }

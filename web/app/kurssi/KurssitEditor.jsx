@@ -22,7 +22,7 @@ export const KurssitEditor = ({model, customTitle, customAlternativesCompletionF
   const showUusiKurssiAtom = Atom(false)
   const isPreIb = suorituksenTyyppi(model.context.suoritus) === 'preiboppimaara'
   const kurssinSuoritusProto = newOsasuoritusProto(model,
-    isPaikallinen(modelLookup(model, 'koulutusmoduuli')) ? 'lukionpaikallisenopintojaksonsuoritus2019' : undefined)
+    isPaikallinen(modelLookup(model, 'koulutusmoduuli')) ? 'lukionpaikallisenopintojaksonsuoritus2019' : 'lukionmoduulinsuoritusoppiaineissa2019')
   const kurssiPrototypes = koulutusModuuliprototypes(kurssinSuoritusProto)
 
   return (

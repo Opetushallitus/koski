@@ -27,7 +27,7 @@ export class LukionOppiaineEditor extends React.Component {
     const data = modelData(oppiaine, 'koulutusmoduuli')
     const organisaatioOid = modelData(oppiaine.context.toimipiste).oid
     const key = data.tunniste.koodiarvo
-
+    console.log(oppiaine.value.classes[0])
     saveOrganizationalPreference(
       organisaatioOid,
       paikallinenOppiainePrototype(newOsasuoritusProto(oppiaine.context.suoritus, oppiaine.value.classes[0])).value.classes[0],
