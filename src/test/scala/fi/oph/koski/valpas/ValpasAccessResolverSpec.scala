@@ -145,6 +145,7 @@ class ValpasAccessResolverSpec extends ValpasTestBase {
         ryhmä = None,
         suorituksenTyyppi = Koodistokoodiviite(suorituksenTyyppi, "suorituksentyyppi")
       )
-    )
+    ),
+    onTehtyIlmoitus = None,
   )
 }

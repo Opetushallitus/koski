@@ -625,19 +625,16 @@ class ValpasOppijaService(
     (oppijat: Seq[OppijaHakutilanteillaLaajatTiedot])
     (implicit session: ValpasSession)
   : Seq[OppijaHakutilanteillaLaajatTiedot] = {
-    val kaikkiOpiskeluoikeudet = oppijat.flatMap(_.oppija.opiskeluoikeudet.map(_.oid))
-    val ilmoituksellisetOpiskeluoikeudet = application.valpasKuntailmoitusService
-      .queryOpiskeluoikeudetWithIlmoitus(kaikkiOpiskeluoikeudet)
-
-    oppijat.flatMap(oppija => {
-      val opiskeluoikeudet = oppija.oppija.opiskeluoikeudet
-        .filter(oo => !ilmoituksellisetOpiskeluoikeudet.contains(oo.oid) ||
-          (säästäJosOpiskeluoikeusVoimassa && oo.tarkastelupäivänTila.koodiarvo == "voimassa"))
-      if (opiskeluoikeudet.nonEmpty) {
-        Some(oppija.copy(oppija = oppija.oppija.copy(opiskeluoikeudet = opiskeluoikeudet)))
-      } else {
-        None
-      }
-    })
+    application.valpasKuntailmoitusService
+      .addOpiskeluoikeusOnTehtyIlmoitusProperties(oppijat)
+      .flatMap(oppija => {
+        val opiskeluoikeudet = oppija.oppija.opiskeluoikeudet
+          .filter(oo => !oo.onTehtyIlmoitus.contains(true) || (säästäJosOpiskeluoikeusVoimassa && oo.tarkastelupäivänTila.koodiarvo == "voimassa"))
+        if (opiskeluoikeudet.nonEmpty) {
+          Some(oppija.copy(oppija = oppija.oppija.copy(opiskeluoikeudet = opiskeluoikeudet)))
+        } else {
+          None
+        }
+      })
   }
 }

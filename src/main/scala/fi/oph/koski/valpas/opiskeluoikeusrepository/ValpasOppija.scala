@@ -167,6 +167,8 @@ case class ValpasOpiskeluoikeusLaajatTiedot(
   vuosiluokkiinSitomatonOpetus: Boolean,
   oppivelvollisuudenSuorittamiseenKelpaava: Boolean,
   päätasonSuoritukset: Seq[ValpasPäätasonSuoritus],
+  // Option, koska tämä tieto rikastetaan mukaan vain tietyissä tilanteissa
+  onTehtyIlmoitus: Option[Boolean],
 ) extends ValpasOpiskeluoikeus
 
 object ValpasOpiskeluoikeusSuppeatTiedot {
@@ -184,7 +186,8 @@ object ValpasOpiskeluoikeusSuppeatTiedot {
       päättymispäiväMerkittyTulevaisuuteen = laajatTiedot.päättymispäiväMerkittyTulevaisuuteen,
       näytettäväPerusopetuksenSuoritus = laajatTiedot.näytettäväPerusopetuksenSuoritus,
       vuosiluokkiinSitomatonOpetus = laajatTiedot.vuosiluokkiinSitomatonOpetus,
-      päätasonSuoritukset = laajatTiedot.päätasonSuoritukset
+      päätasonSuoritukset = laajatTiedot.päätasonSuoritukset,
+      onTehtyIlmoitus = laajatTiedot.onTehtyIlmoitus,
     )
   }
 }
@@ -203,6 +206,8 @@ case class ValpasOpiskeluoikeusSuppeatTiedot(
   näytettäväPerusopetuksenSuoritus: Boolean,
   vuosiluokkiinSitomatonOpetus: Boolean,
   päätasonSuoritukset: Seq[ValpasPäätasonSuoritus],
+  // Option, koska tämä tieto rikastetaan mukaan vain tietyissä tilanteissa
+  onTehtyIlmoitus: Option[Boolean],
 ) extends ValpasOpiskeluoikeus
 
 case class ValpasPäätasonSuoritus(

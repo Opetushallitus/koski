@@ -82,6 +82,15 @@ class ValpasKuntailmoitusService(
   def queryOpiskeluoikeudetWithIlmoitus(opiskeluoikeudet: Seq[String]): Seq[String] =
     repository.queryOpiskeluoikeudetWithIlmoitus(opiskeluoikeudet)
 
+  def addOpiskeluoikeusOnTehtyIlmoitusProperties(oppijat: Seq[OppijaHakutilanteillaLaajatTiedot]): Seq[OppijaHakutilanteillaLaajatTiedot] = {
+    val ilmoituksellisetOpiskeluoikeudet = queryOpiskeluoikeudetWithIlmoitus(oppijat.flatMap(_.oppija.opiskeluoikeudet.map(_.oid)))
+    oppijat.map(oppija => {
+      val opiskeluoikeudet = oppija.oppija.opiskeluoikeudet
+        .map(oo => oo.copy(onTehtyIlmoitus = Some(ilmoituksellisetOpiskeluoikeudet.contains(oo.oid))))
+      oppija.copy(oppija = oppija.oppija.copy(opiskeluoikeudet = opiskeluoikeudet))
+    })
+  }
+
   private def isAktiivinenKunta(o: OrganisaatioWithOid): Boolean =
     organisaatioRepository.getOrganisaatioHierarkia(o.oid).exists(h =>
       h.aktiivinen && h.organisaatiotyypit.contains(Organisaatiotyyppi.KUNTA)
