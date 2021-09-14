@@ -96,7 +96,7 @@ object ValpasExampleData {
       puhelinnumero = Some("0401234567"),
       email = Some("Veijo.Valpas@gmail.com"),
       lähiosoite = Some("Esimerkkikatu 123"),
-      postinumero = Some("000000"),
+      postinumero = Some("99999"),
       postitoimipaikka = Some("Pyhtää"),
       maa = Some(Koodistokoodiviite("246", "maatjavaltiot2"))
     )),

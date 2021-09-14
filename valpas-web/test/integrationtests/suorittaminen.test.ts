@@ -264,7 +264,7 @@ const teeKuntailmoitus = async (oppijaOid: Oid, nimi: string, hetu: string) => {
       lähiosoite: "Esimerkkitie 10",
       maa: "Costa Rica",
       muuHaku: "Ei",
-      postitoimipaikka: "00000 Helsinki",
+      postitoimipaikka: "99999 Helsinki",
       puhelin: "0401122334",
     },
   }

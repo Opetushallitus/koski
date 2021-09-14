@@ -5,7 +5,7 @@ import {
   expectElementEventuallyVisible,
 } from "../integrationtests-env/browser/content"
 
-export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia oppijoita (34)"
+export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia oppijoita (35)"
 export const jklNormaalikouluTableContent = `
   Epäonninen Valpas                                       | 30.10.2005  | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Eroaja-myöhemmin Valpas                                 | 29.9.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
@@ -35,6 +35,7 @@ export const jklNormaalikouluTableContent = `
   Oppivelvollisuus-keskeytetty-toistaiseksi Valpas        | 15.9.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Päällekkäisiä Oppivelvollisuuksia                       | 6.6.2005    | 9B | –          | Hakenut open_in_new  | Hyväksytty (2 hakukohdetta) | doneOmnia                 | –                                                                          |
   Turvakielto Valpas                                      | 29.9.2004   | 9C | –          | Hakenut open_in_new  | warningEi opiskelupaikkaa   | –                         | –                                                                          |
+  TurvakieltoTyhjälläKotikunnalla Valpas                  | 28.7.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   UseampiYsiluokkaSamassaKoulussa Valpas                  | 25.8.2005   | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
   Valmistunut-ei-ysiluokkaa Valpas                        | 24.9.2005   | –  | 30.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
   Valmistunut-kasiluokkalainen-alle-17-vuotias Valpas     | 9.6.2005    | 8C | 30.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |

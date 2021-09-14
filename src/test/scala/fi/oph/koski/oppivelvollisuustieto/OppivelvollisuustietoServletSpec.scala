@@ -17,7 +17,7 @@ class OppivelvollisuustietoServletSpec extends FreeSpec with KoskiHttpSpec with 
   "Oppivelvollisuustieto" - {
     "Rajapinnan kutsuminen vaatii käyttöoikeuden" in {
       def verifyForbidden(user: KoskiMockUser) = {
-        postOids(koskeenTallennettujenOppijoidenOidit, user) {
+        haeOppivelvollisuustiedot(koskeenTallennettujenOppijoidenOidit, user) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden())
         }
       }
@@ -37,13 +37,14 @@ class OppivelvollisuustietoServletSpec extends FreeSpec with KoskiHttpSpec with 
         Oppivelvollisuustieto(KoskiSpecificMockOppijat.maksuttomuuttaPidennetty1.oid, LocalDate.of(2022, 1, 1), LocalDate.of(2025, 1, 12)),
         Oppivelvollisuustieto(KoskiSpecificMockOppijat.maksuttomuuttaPidennetty2.oid, LocalDate.of(2022, 1, 1), LocalDate.of(2025, 1, 24))
       )
+
       val oids = List(
         KoskiSpecificMockOppijat.maksuttomuuttaPidennetty1.oid,
         KoskiSpecificMockOppijat.maksuttomuuttaPidennetty2.oid,
         eiKuuluMaksuttomuudenPiiriinOid
       )
 
-      postOids(oids, MockUsers.oppivelvollisuutietoRajapinta) {
+      haeOppivelvollisuustiedot(oids, MockUsers.oppivelvollisuutietoRajapinta) {
         verifyResponseStatusOk()
         val response = JsonSerializer.parse[Seq[Oppivelvollisuustieto]](body)
         response should contain theSameElementsAs(expectedResult)
@@ -53,13 +54,13 @@ class OppivelvollisuustietoServletSpec extends FreeSpec with KoskiHttpSpec with 
     "Rajapinnasta kerralla haettavien tietojen määrä on rajoitettu" in {
       val oids = List.fill(10001)(koskeenTallennettujenOppijoidenOidit.head)
 
-      postOids(oids, MockUsers.oppivelvollisuutietoRajapinta) {
+      haeOppivelvollisuustiedot(oids, MockUsers.oppivelvollisuutietoRajapinta) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest("Rajapinnasta ei voi hakea yli 10000 oidia"))
       }
     }
   }
 
-  private def postOids[A](oids: List[String], user: KoskiMockUser)(f: => A): A = {
+  private def haeOppivelvollisuustiedot[A](oids: List[String], user: KoskiMockUser)(f: => A): A = {
     post(
       "api/oppivelvollisuustieto/oids",
       JsonSerializer.writeWithRoot(oids),

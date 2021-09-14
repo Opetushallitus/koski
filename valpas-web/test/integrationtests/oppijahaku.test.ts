@@ -378,6 +378,17 @@ describe("Oppijahaku", () => {
       })
     )
   })
+
+  it("Maksuttomuus: Oppija, jonka kotikunta ei ole Suomessa, ei löydy oppijahaulla", async () => {
+    await hakuLogin()
+    await fillQueryField("130805A850J", "maksuttomuusoppijasearch")
+    await submit("maksuttomuusoppijasearch")
+    await expectResultToBe(
+      "Maksuttomuutta ei pystytä päättelemään",
+      undefined,
+      "maksuttomuusoppijasearch"
+    )
+  })
 })
 
 const hakuLogin = async (

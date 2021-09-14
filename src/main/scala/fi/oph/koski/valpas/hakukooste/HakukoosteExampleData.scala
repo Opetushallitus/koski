@@ -194,7 +194,7 @@ object HakukoosteExampleData {
       hakuNimi = hakuNimi,
       email = generateEmail(henkilö),
       lahiosoite = lahiosoite,
-      postinumero = "00000",
+      postinumero = "99999",
       postitoimipaikka = postitoimipaikka,
       maa = maa,
       matkapuhelin = "0401234567",

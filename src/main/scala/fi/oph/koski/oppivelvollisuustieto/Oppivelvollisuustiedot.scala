@@ -2,6 +2,7 @@ package fi.oph.koski.oppivelvollisuustieto
 
 import java.time.LocalDate
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.raportit.AhvenanmaanKunnat.ahvenanmaanKunnat
 import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import slick.jdbc.GetResult
@@ -27,6 +28,13 @@ object Oppivelvollisuustiedot {
     val valpasLakiVoimassaPeruskoulustaValmistuneilla = valpasRajapäivätService.lakiVoimassaPeruskoulustaValmistuneillaAlku
     val oppivelvollisuusLoppuuIka = valpasRajapäivätService.oppivelvollisuusLoppuuIka
     val maksuttomuusLoppuuIka = valpasRajapäivätService.maksuttomuusLoppuuIka
+
+    val oppivelvollisuudenUlkopuolisetKunnat = validatedUnboundCodeList(ahvenanmaanKunnat ++ List(
+      "198", // Ei kotikuntaa Suomessa
+      "200", // Ulkomaat
+      // TODO: Odottaa päätöstä, filtteröidäänkö pois myös 199 (kotikunta tuntematon), 999 (ei tiedossa) ja tyhjä merkkijono niissä tapauksissa, joissa henkilöllä ei ole turvakieltoa
+    ))
+
     sqlu"""
       create materialized view #${s.name}.oppivelvollisuustiedot as
         with
@@ -49,6 +57,10 @@ object Oppivelvollisuustiedot {
               from
                 #${s.name}.r_henkilo henkilo
               where syntymaaika >= '#$valpasLakiVoimassaVanhinSyntymäaika'::date
+                and (
+                  turvakielto = true
+                  or not (kotikunta is null or kotikunta = any(#$oppivelvollisuudenUlkopuolisetKunnat))
+                )
                 and master_oid not in (
                                 select
                                   henkilo.master_oid
@@ -135,6 +147,11 @@ object Oppivelvollisuustiedot {
       oikeusMaksuttomaanKoulutukseenVoimassaAsti = row.getLocalDate("oikeusKoulutuksenMaksuttomuuteenVoimassaAsti")
     )
   )
+
+  private def validatedUnboundCodeList(list: Seq[String]): String = {
+    assert(list.forall(_.forall(Character.isDigit)), "Annettu kuntakoodilista sisälsi ei-numeerisia merkkejä")
+    s"'{${list.mkString(",")}}'"
+  }
 }
 
 case class Oppivelvollisuustieto(
