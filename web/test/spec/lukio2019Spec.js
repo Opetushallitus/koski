@@ -242,6 +242,19 @@ describe('Lukiokoulutus2019', function( ){
                 it('tallennus toimii', function () {
                   expect(extractAsText(S('.oppiaineet'))).to.contain('Paikallinen oppiaine')
                 })
+
+                describe('Paikallisen oppiaineen osasuoritus/kurssi', function () {
+                  before(editor.edit,
+                    opinnot.oppiaineet.oppiaine('PAI').lisääLaajuudellinenPaikallinenKurssi(),
+                    opinnot.oppiaineet.oppiaine('PAI').kurssi('PA').arvosana.selectValue('9'),
+                    editor.saveChanges,
+                    wait.until(page.isSavedLabelShown)
+                  )
+
+                  it('lisätty kurssi näkyy oikein', function () {
+                    expect(extractAsText(S('.oppiaineet .PAI'))).to.contain('PA')
+                  })
+                })
               })
             })
 

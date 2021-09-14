@@ -7,7 +7,7 @@ import {ift} from '../util/util'
 import UusiKurssiPopup from './UusiKurssiPopup'
 import {lisääKurssi, osasuoritusCountOk} from './kurssi'
 import {newOsasuoritusProto, suorituksenTyyppi} from '../suoritus/Suoritus'
-import {isLukio2019ModuuliTaiOpintojakso, koulutusModuuliprototypes} from '../suoritus/Koulutusmoduuli'
+import {isLukio2019ModuuliTaiOpintojakso, koulutusModuuliprototypes, isPaikallinen} from '../suoritus/Koulutusmoduuli'
 
 export const KurssitEditor = ({model, customTitle, customAlternativesCompletionFn, customKurssitSortFn}) => {
   const osasuoritukset = modelLookup(model, 'osasuoritukset')
@@ -21,7 +21,8 @@ export const KurssitEditor = ({model, customTitle, customAlternativesCompletionF
 
   const showUusiKurssiAtom = Atom(false)
   const isPreIb = suorituksenTyyppi(model.context.suoritus) === 'preiboppimaara'
-  const kurssinSuoritusProto = newOsasuoritusProto(model)
+  const kurssinSuoritusProto = newOsasuoritusProto(model,
+    isPaikallinen(modelLookup(model, 'koulutusmoduuli')) ? 'lukionpaikallisenopintojaksonsuoritus2019' : undefined)
   const kurssiPrototypes = koulutusModuuliprototypes(kurssinSuoritusProto)
 
   return (
