@@ -64,6 +64,27 @@ class OppijaValidationLukioAlkamispäiväSpec
           ))
         }
       }
+      "Ei sallita 2004 tai myöhemmin syntyneelle, jos ei ole aiempia lukion opiskeluoikeuksia, paitsi se, jota ollaan parhaillaan muokkaamassa" in {
+        val luodunOpiskeluoikeudenOid = putOpiskeluoikeus(
+          defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(aiempiAlkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))),
+          KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
+        ) {
+          verifyResponseStatusOk()
+          readPutOppijaResponse.opiskeluoikeudet.head.oid
+        }
+
+        putOpiskeluoikeus(
+          defaultOpiskeluoikeus.copy(
+            oid = Some(luodunOpiskeluoikeudenOid),
+            tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))
+          ),
+          KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
+        ) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.liianVanhaOpetussuunnitelma(
+            "Uusi lukion opiskelija ei voi aloittaa vanhojen opetussuunnitelman perusteiden mukaisia opintoja 1.8.2021 tai myöhemmin. Käytä lukion opetussuunnitelman perusteen diaarinumeroa OPH-2263-2019. Jos tosiasiassa oppija on aloittanut vanhojen perusteiden mukaiset lukio-opinnot ennen 1.8.2021, häneltä puuttuu KOSKI-tietovarannosta tämä opiskeluoikeus"
+          ))
+        }
+      }
     }
     "Lukion oppiaineen oppimäärässä" - {
       "Sallitaan 2004 tai myöhemmin syntyneelle, jos on aiempi lukion opiskeluoikeus" in {

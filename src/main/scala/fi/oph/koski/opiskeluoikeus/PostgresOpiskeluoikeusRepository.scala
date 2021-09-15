@@ -224,7 +224,11 @@ class PostgresOpiskeluoikeusRepository(
     )
   })
 
-  def getLukionOpiskeluoikeuksienAlkamisajatIlmanKäyttöoikeustarkistusta(oppijaOid: String): Seq[LocalDate] = {
+  def getLukionMuidenOpiskeluoikeuksienAlkamisajatIlmanKäyttöoikeustarkistusta(
+    oppijaOid: String,
+    muutettavanOpiskeluoikeudenOid: Option[String]
+  ) : Seq[LocalDate] =
+  {
     runDbSync(
       sql"""
         with master as (
@@ -240,6 +244,7 @@ class PostgresOpiskeluoikeusRepository(
           alkamispaiva as paiva
         from opiskeluoikeus
         where not opiskeluoikeus.mitatoity
+          and ($muutettavanOpiskeluoikeudenOid is null or opiskeluoikeus.oid <> $muutettavanOpiskeluoikeudenOid)
           and opiskeluoikeus.koulutusmuoto = 'lukiokoulutus'
           and oppija_oid = any(select oids from linkitetyt)
       """.as[LocalDate])

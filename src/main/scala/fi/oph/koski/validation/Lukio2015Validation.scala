@@ -20,8 +20,9 @@ object Lukio2015Validation {
       opiskeluoikeus.alkamispäivä match {
         case Some(alkamispäivä) if alkamispäivä.isBefore(rajapäivä) =>
           HttpStatus.ok
-        case Some(alkamispäivä) if eiRajapäivääEdeltäviäMuitaOpiskeluoikeuksia(oppijanOid, opiskeluoikeusRepository) =>
-          KoskiErrorCategory.badRequest.validation.rakenne.liianVanhaOpetussuunnitelma()
+        case Some(alkamispäivä)
+          if eiRajapäivääEdeltäviäMuitaOpiskeluoikeuksia(oppijanOid, opiskeluoikeus.oid, opiskeluoikeusRepository) =>
+            KoskiErrorCategory.badRequest.validation.rakenne.liianVanhaOpetussuunnitelma()
         case _ =>
           HttpStatus.ok
       }
@@ -46,8 +47,17 @@ object Lukio2015Validation {
     }
   }
 
-  private def eiRajapäivääEdeltäviäMuitaOpiskeluoikeuksia(henkilöOid: Henkilö.Oid, repository: CompositeOpiskeluoikeusRepository): Boolean = {
-    val muutAlkamisajat = repository.getLukionOpiskeluoikeuksienAlkamisajatIlmanKäyttöoikeustarkistusta(henkilöOid)
+  private def eiRajapäivääEdeltäviäMuitaOpiskeluoikeuksia(
+    henkilöOid: Henkilö.Oid,
+    muutettavanOpiskeluoikeudenOid: Option[String],
+    repository: CompositeOpiskeluoikeusRepository
+  ): Boolean =
+  {
+    val muutAlkamisajat =
+      repository.getLukionOpiskeluoikeuksienAlkamisajatIlmanKäyttöoikeustarkistusta(
+        henkilöOid,
+        muutettavanOpiskeluoikeudenOid
+      )
 
     muutAlkamisajat.forall(!_.isBefore(rajapäivä))
   }

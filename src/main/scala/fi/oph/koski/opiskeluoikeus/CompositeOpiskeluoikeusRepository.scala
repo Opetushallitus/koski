@@ -89,8 +89,15 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
     main.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(oppijaOid)
   }
 
-  def getLukionOpiskeluoikeuksienAlkamisajatIlmanKäyttöoikeustarkistusta(oppijaOid: String): Seq[LocalDate] = {
-    main.getLukionOpiskeluoikeuksienAlkamisajatIlmanKäyttöoikeustarkistusta(oppijaOid)
+  def getLukionOpiskeluoikeuksienAlkamisajatIlmanKäyttöoikeustarkistusta(
+    oppijaOid: String,
+    muutettavanOpiskeluoikeudenOid: Option[String]
+  ): Seq[LocalDate] =
+  {
+    main.getLukionMuidenOpiskeluoikeuksienAlkamisajatIlmanKäyttöoikeustarkistusta(
+      oppijaOid,
+      muutettavanOpiskeluoikeudenOid
+    )
   }
 
   def getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, List[Oid]] =
