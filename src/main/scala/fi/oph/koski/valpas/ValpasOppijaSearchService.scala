@@ -105,7 +105,10 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
           // Henkilö, jonka tiedot löytyvät, mutta jolla maksuttomuus on päättynyt esim. toiselta asteelta
           // valmistumiseen, ei ole enää maksuttomuuden piirissä:
           case Some(_) => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult()
-          case _ => ValpasEiLöytynytHenkilöhakuResult()
+          case None => henkilöRepository.findByOid(henkilö.oid) match {
+            case Some(h) if h.kotikunta.isEmpty => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult()
+            case _ => ValpasEiLöytynytHenkilöhakuResult()
+          }
         })
     } else {
       Right(ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult())
