@@ -166,12 +166,12 @@ const OpiskeluhistoriaOpinto = ({
           />
         )}
         <InfoTableRow
-          label="Opiskeluoikeuden alkamispäivä"
+          label={t("oppija__opiskeluoikeuden_alkamispäivä")}
           value={formatDate(opiskeluoikeus.alkamispäivä)}
         />
         {opiskeluoikeus.päättymispäivä && (
           <InfoTableRow
-            label="Opiskeluoikeuden päättymispäivä"
+            label={t("oppija__opiskeluoikeuden_päättymispäivä")}
             value={formatDate(opiskeluoikeus.päättymispäivä)}
           />
         )}
