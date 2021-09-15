@@ -129,6 +129,8 @@
   "oppija__ei_tietoja_ilmotuksella": "Ei tietoja ilmoituksella",
   "oppija__tiedot_näkyvät_vain_vastaanottajalle_ja_lähettäjälle": "Tarkemmat tiedot näkyvät ainoataan ilmoituksen vastaanottajalle ja tekijälle",
   "oppija__muuta": "Muuta",
+  "oppija__opiskeluoikeuden_alkamispäivä": "Opiskeluoikeuden alkamispäivä",
+  "oppija__opiskeluoikeuden_päättymispäivä": "Opiskeluoikeuden päättymispäivä",
   "oppija__keskeytä_oppivelvollisuus": "Keskeytä oppivelvollisuus",
   "oppija__vuosiluokkiin_sitomaton_opetus": "Vuosiluokkiin sitomaton opetus",
   "oppija__tee_ilmoitus_valvontavastuusta": "Tee ilmoitus valvontavastuusta",
