@@ -39,7 +39,7 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasHenkilöhakuResult] = {
     accessResolver.assertAccessToAnyOrg(ValpasRooli.OPPILAITOS_MAKSUTTOMUUS)
-      .flatMap(_ => findHenkilö(asMaksuttomuusHenkilöhakuResult _, query))
+      .flatMap(_ => findHenkilö(asMaksuttomuusHenkilöhakuResultIlmanOikeustarkistusta _, query))
   }
 
   private def findHenkilö
@@ -87,9 +87,8 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
     }
   }
 
-  private def asMaksuttomuusHenkilöhakuResult
+  private def asMaksuttomuusHenkilöhakuResultIlmanOikeustarkistusta
     (henkilö: OppijaHenkilö)
-    (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasHenkilöhakuResult] = {
     val onMahdollisestiLainPiirissä =
       MaksuttomuusValidation.eiOppivelvollisuudenLaajentamislainPiirissäSyyt(

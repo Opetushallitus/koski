@@ -30,7 +30,7 @@ import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoRepository
 import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.userdirectory.DirectoryClient
-import fi.oph.koski.validation.{KoskiValidator, ValidatingAndResolvingExtractor}
+import fi.oph.koski.validation.{KoskiGlobaaliValidator, KoskiValidator, ValidatingAndResolvingExtractor}
 import fi.oph.koski.valpas.{ValpasKuntailmoitusService, ValpasOppijaSearchService, ValpasOppijaService}
 import fi.oph.koski.valpas.db.ValpasDatabase
 import fi.oph.koski.valpas.localization.ValpasLocalizationConfig
@@ -102,8 +102,8 @@ class KoskiApplication(
   lazy val perustiedotRepository = new OpiskeluoikeudenPerustiedotRepository(perustiedotIndexer, opiskeluoikeusQueryRepository)
   lazy val perustiedotSyncRepository = new PerustiedotSyncRepository(masterDatabase.db)
   lazy val perustiedotSyncScheduler = new PerustiedotSyncScheduler(this)
-  lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepository, historyRepository, valpasRajapäivätService, config, hetu)
-  lazy val oppijaFacadeV2 = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepositoryV2, historyRepository, valpasRajapäivätService, config, hetu)
+  lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepository, historyRepository, globaaliValidator, config, hetu)
+  lazy val oppijaFacadeV2 = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepositoryV2, historyRepository, globaaliValidatorV2, config, hetu)
   lazy val suoritusjakoRepository = new SuoritusjakoRepository(masterDatabase.db)
   lazy val suoritusjakoService = new SuoritusjakoService(suoritusjakoRepository, oppijaFacade)
   lazy val suoritusjakoRepositoryV2 = new SuoritusjakoRepositoryV2(masterDatabase.db)
@@ -133,6 +133,14 @@ class KoskiApplication(
   lazy val oidGenerator = OidGenerator(config)
   lazy val hetu = new Hetu(config.getBoolean("acceptSyntheticHetus"))
   lazy val indexManager = new IndexManager(List(perustiedotIndexer.index, tiedonsiirtoService.index))
+  lazy val globaaliValidator: KoskiGlobaaliValidator = new KoskiGlobaaliValidator(
+    opiskeluoikeusRepository,
+    valpasRajapäivätService
+  )
+  lazy val globaaliValidatorV2: KoskiGlobaaliValidator = new KoskiGlobaaliValidator(
+    opiskeluoikeusRepositoryV2,
+    valpasRajapäivätService
+  )
 
   def init(): Future[Any] = {
     AuditLog.startHeartbeat()

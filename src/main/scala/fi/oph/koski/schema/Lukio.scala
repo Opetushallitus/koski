@@ -28,6 +28,11 @@ case class LukionOpiskeluoikeus(
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
+
+  def on2015Opiskeluoikeus: Boolean = suoritukset.exists({
+    case _:LukionPäätasonSuoritus2015 => true
+    case _ => false
+  })
 }
 
 @Description("Lukion opiskeluoikeuden lisätiedot")

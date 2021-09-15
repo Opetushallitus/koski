@@ -89,6 +89,7 @@ object ValpasMockOppijat {
   val internationalSchoolista9LuokaltaEnnen2021Valmistunut = valpasOppijat.oppijaSyntymäaikaHetusta("Inter-valmistunut-9-2020", "Valpas", "090605A517L")
   val internationalSchoolista9Luokalta2021Valmistunut = valpasOppijat.oppijaSyntymäaikaHetusta("Inter-valmistunut-9-2021", "Valpas", "200405A780K")
   val peruskoulustaValmistunutIlman9Luokkaa = valpasOppijat.oppijaSyntymäaikaHetusta("Valmistunut-ei-ysiluokkaa", "Valpas", "240905A4064")
+  val lukioVanhallaOpsilla = valpasOppijat.oppijaSyntymäaikaHetusta("LukioVanhallaOpsilla", "Valpas", "060704A687P")
 
   // Kutsumanimi ja yhteystiedot haetaan oppijanumerorekisteristä Valpas-käyttäjälle, tallennetaan siksi käyttäjä myös "oppijana" mockeihin
   val käyttäjäValpasJklNormaalikoulu = valpasOppijat.oppija(

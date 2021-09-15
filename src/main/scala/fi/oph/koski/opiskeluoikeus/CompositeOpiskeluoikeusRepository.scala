@@ -1,5 +1,7 @@
 package fi.oph.koski.opiskeluoikeus
 
+import java.time.LocalDate
+
 import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.henkilo.{HenkilönTunnisteet, PossiblyUnverifiedHenkilöOid}
@@ -85,6 +87,17 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
 
   def getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(oppijaOid: String): Seq[Päivämääräväli] = {
     main.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(oppijaOid)
+  }
+
+  def getLukionOpiskeluoikeuksienAlkamisajatIlmanKäyttöoikeustarkistusta(
+    oppijaOid: String,
+    muutettavanOpiskeluoikeudenOid: Option[String]
+  ): Seq[LocalDate] =
+  {
+    main.getLukionMuidenOpiskeluoikeuksienAlkamisajatIlmanKäyttöoikeustarkistusta(
+      oppijaOid,
+      muutettavanOpiskeluoikeudenOid
+    )
   }
 
   def getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, List[Oid]] =

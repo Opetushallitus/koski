@@ -1,5 +1,19 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 8.9.2021
+
+- Lukion aiemman kuin 2019 opetussuunnitelman perusteiden mukaisen opiskeluoikeuden siirto on estetty alkamispäivästä
+1.8.2021 alkaen oppijoilta, jos oppija ei ole käynyt lukiota jo jossain muussa oppilaitoksessa aiemmin. Siirrossa
+kuuluu käyttää lukin 2019 opetussuunnitelman diaarinumeroa ja rakenteita.
+- Lukion aiemman kuin 2019 opetussuunitelman perusteiden mukaisen oppimäärän opiskeluikeuteen saa siirtää
+maksuttomuustiedon, jos se on alkanut 1.1.2021 tai myöhemmin. Siirto on estetty vanhemmista opiskeluoikeuksista.
+
+## 1.5.2021 - 8.9.2021
+- Maksuttommuustietojen siirron validaatioita on kehitetty useammassa vaiheessa. Maksuttomuustiedon
+siirto estetään sellaisille oppijoille, joista voi Kosken tietojen perusteella päätellä, että he eivät ole
+uuden oppivelvollisuuslain piirissä. Tämä perustuu oppijan ikään ja siihen, onko oppijalla Koskessa merkintä
+peruskoulusta valmistumisesta siten, että hänen oppivelvollisuutensa on tullut valmiiksi vanhan lain mukaan.
+
 ## 28.4.2021
 - Perusopetuksen laajuus vaaditaan pakollisille oppiaineille 1.8.2020 tai sen jälkeen vahvistetuilta vuosiluokan
 suorituksilta ja päättötodistuksilta. Laajuutta ei kuitenkaan vaadita jos suoritustapana on erityinen tutkinto tai
