@@ -1,5 +1,6 @@
 package fi.oph.koski.integrationtest
 
+import org.apache.http.client.config.{CookieSpecs, RequestConfig}
 import org.apache.http.conn.ssl.{NoopHostnameVerifier, SSLConnectionSocketFactory}
 import org.apache.http.impl.client.{CloseableHttpClient, HttpClients}
 import org.apache.http.ssl.{SSLContextBuilder, TrustStrategy}
@@ -9,9 +10,10 @@ import java.security.cert.X509Certificate
 object TrustingHttpsClient {
   def createClient: CloseableHttpClient = {
     HttpClients
-      .custom()
+      .custom
       .setSSLSocketFactory(makeSslConnectionSocketFactory)
       .disableRedirectHandling
+      .setDefaultRequestConfig(RequestConfig.custom.setCookieSpec(CookieSpecs.STANDARD).build)
       .build
   }
 

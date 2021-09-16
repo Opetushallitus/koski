@@ -9,7 +9,8 @@ import org.json4s.jackson.JsonMethods
 import scala.reflect.runtime.universe.TypeTag
 
 object EasyHttp {
-  lazy val httpclient = TrustingHttpsClient.createClient
+  private lazy val httpclient = TrustingHttpsClient.createClient
+
   def getJson[A : TypeTag](url: String) = {
     val httpGet = new HttpGet(url)
     httpGet.addHeader("Caller-Id", OpintopolkuCallerId.koski)
