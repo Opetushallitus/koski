@@ -457,29 +457,33 @@ class RaportointikantaSpec
 
   "Mitätöityjen opiskeluoikeuksien lataus" - {
     "Kaikki mitätöidyt opiskeluoikeudet ladataan erilliseen tauluun" in {
-      val mitätöidyt = runDbSync(OpiskeluOikeudet.filter(_.mitätöity).result)
-      val result = mainRaportointiDb.runDbSync(mainRaportointiDb.RMitätöidytOpiskeluoikeudet.result)
+      val mitätöidytKoskessa = runDbSync(
+        OpiskeluOikeudet.filter(_.mitätöity).sortBy(_.oid).result
+      )
+      val mitätöidytRaportointikannassa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RMitätöidytOpiskeluoikeudet.sortBy(_.opiskeluoikeusOid).result
+      )
 
-      result.length should equal(mitätöidyt.length)
+      mitätöidytRaportointikannassa.length should equal(mitätöidytKoskessa.length)
 
-      result should equal(Seq(
+      mitätöidytRaportointikannassa should equal(Seq(
         RMitätöityOpiskeluoikeusRow(
-          opiskeluoikeusOid = mitätöidyt(0).oid,
-          versionumero = mitätöidyt(0).versionumero,
-          aikaleima = mitätöidyt(0).aikaleima,
-          oppijaOid = KoskiSpecificMockOppijat.eero.oid,
-          mitätöity = LocalDate.now(),
-          tyyppi = "perusopetus",
-          päätasonSuoritusTyypit = List("perusopetuksenoppimaara", "perusopetuksenvuosiluokka")
-        ),
-        RMitätöityOpiskeluoikeusRow(
-          opiskeluoikeusOid = mitätöidyt(1).oid,
-          versionumero = mitätöidyt(1).versionumero,
-          aikaleima = mitätöidyt(1).aikaleima,
+          opiskeluoikeusOid = mitätöidytKoskessa(0).oid,
+          versionumero = mitätöidytKoskessa(0).versionumero,
+          aikaleima = mitätöidytKoskessa(0).aikaleima,
           oppijaOid = KoskiSpecificMockOppijat.lukiolainen.oid,
           mitätöity = LocalDate.now(),
           tyyppi = "ammatillinenkoulutus",
           päätasonSuoritusTyypit = List("ammatillinentutkinto")
+        ),
+        RMitätöityOpiskeluoikeusRow(
+          opiskeluoikeusOid = mitätöidytKoskessa(1).oid,
+          versionumero = mitätöidytKoskessa(1).versionumero,
+          aikaleima = mitätöidytKoskessa(1).aikaleima,
+          oppijaOid = KoskiSpecificMockOppijat.eero.oid,
+          mitätöity = LocalDate.now(),
+          tyyppi = "perusopetus",
+          päätasonSuoritusTyypit = List("perusopetuksenoppimaara", "perusopetuksenvuosiluokka")
         )
       ))
     }
