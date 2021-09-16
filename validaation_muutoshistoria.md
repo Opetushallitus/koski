@@ -12,6 +12,10 @@ kuuluu käyttää lukin 2019 opetussuunnitelman diaarinumeroa ja rakenteita.
 - Lukion aiemman kuin 2019 opetussuunitelman perusteiden mukaisen oppimäärän opiskeluikeuteen saa siirtää
 maksuttomuustiedon, jos se on alkanut 1.1.2021 tai myöhemmin. Siirto on estetty vanhemmista opiskeluoikeuksista.
 
+## 1.9.2021
+
+- Vanha opsin mukaisessa Luva-koulutuksessa sallitaan laajuudet vain kursseina. Uuden opsin mukaisessa koulutuksessa vain opintopisteinä.
+
 ## 1.5.2021 - 8.9.2021
 - Maksuttommuustietojen siirron validaatioita on kehitetty useammassa vaiheessa. Maksuttomuustiedon
 siirto estetään sellaisille oppijoille, joista voi Kosken tietojen perusteella päätellä, että he eivät ole
