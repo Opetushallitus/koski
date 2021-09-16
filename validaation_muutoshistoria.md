@@ -1,6 +1,6 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
-## 16.9.2021
+## 14.9.2021
 
 - VST:n terminaalitilat: Muilla kuin vapaatavoitteisella ei ole hyväksytty "Hyväksytysti suoritettu"/"Keskeytynyt". Vapaatavoitteisella ei ole hyväksytty "Valmistunut"/"Katsotaan eronneeksi"
 
