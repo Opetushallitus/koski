@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 16.9.2021
+
+- VST:n terminaalitilat: Muilla kuin vapaatavoitteisella ei ole hyväksytty "Hyväksytysti suoritettu"/"Keskeytynyt". Vapaatavoitteisella ei ole hyväksytty "Valmistunut"/"Katsotaan eronneeksi"
+
 ## 8.9.2021
 
 - Lukion aiemman kuin 2019 opetussuunnitelman perusteiden mukaisen opiskeluoikeuden siirto on estetty alkamispäivästä
