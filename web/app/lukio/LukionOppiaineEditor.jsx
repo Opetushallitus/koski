@@ -4,10 +4,9 @@ import * as R from 'ramda'
 import {modelData, modelItems, modelLookup, pushRemoval} from '../editor/EditorModel.js'
 import {suorituksenTilaSymbol} from '../suoritus/Suoritustaulukko'
 import {KurssitEditor} from '../kurssi/KurssitEditor'
-import {newOsasuoritusProto, tilaText} from '../suoritus/Suoritus'
+import {tilaText} from '../suoritus/Suoritus'
 import {isPaikallinen} from '../suoritus/Koulutusmoduuli'
 import {saveOrganizationalPreference} from '../virkailija/organizationalPreferences'
-import {paikallinenOppiainePrototype} from '../perusopetus/PerusopetuksenOppiaineEditor'
 import {doActionWhileMounted} from '../util/util'
 import {
   arvioidutOsasuoritukset,
@@ -22,18 +21,28 @@ import {PropertiesEditor} from '../editor/PropertiesEditor'
 
 export class LukionOppiaineEditor extends React.Component {
   saveChangedPreferences() {
+    if (!this.state || !this.state.changed) return null
+
     const {oppiaine} = this.props
 
-    const data = modelData(oppiaine, 'koulutusmoduuli')
-    const organisaatioOid = modelData(oppiaine.context.toimipiste).oid
-    const key = data.tunniste.koodiarvo
+    const osasuoritukset = modelItems(oppiaine, 'osasuoritukset')
 
-    saveOrganizationalPreference(
-      organisaatioOid,
-      paikallinenOppiainePrototype(newOsasuoritusProto(oppiaine.context.suoritus, oppiaine.value.classes[0])).value.classes[0],
-      key,
-      data
-    )
+    const tallennettavatSuoritukset = [oppiaine, ...osasuoritukset].filter(os => isPaikallinen(modelLookup(os, 'koulutusmoduuli')))
+
+    tallennettavatSuoritukset.forEach(suoritus => {
+      const data = modelData(suoritus, 'koulutusmoduuli')
+      const organisaatioOid = modelData(suoritus.context.toimipiste).oid
+      const key = data.tunniste.koodiarvo
+
+      const moduulinTyyppi = modelLookup(suoritus, 'koulutusmoduuli').value.classes[0]
+
+      saveOrganizationalPreference(
+        organisaatioOid,
+        moduulinTyyppi,
+        key,
+        data
+      )
+    })
   }
 
   render() {
@@ -134,8 +143,9 @@ export class LukionOppiaineEditor extends React.Component {
           )
         }
         {
-          this.state && this.state.changed && isPaikallinen(modelLookup(oppiaine, 'koulutusmoduuli')) &&
-          doActionWhileMounted(oppiaine.context.saveChangesBus, this.saveChangedPreferences.bind(this))
+          doActionWhileMounted(oppiaine.context.saveChangesBus, () => {
+            this.saveChangedPreferences()
+          })
         }
       </tr>
     )

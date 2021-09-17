@@ -70,13 +70,25 @@ export const newSuoritusProto = (opiskeluoikeus, prototypeKey) => {
   return contextualizeSubModel(selectedProto, suoritukset, indexForNewItem)
 }
 
+const osasuorituksetProtoOptionsAndNewItemIndex = (suoritus) => {
+    const _osasuoritukset = wrapOptional(modelLookup(suoritus, 'osasuoritukset'))
+    const newItemIndex = modelItems(_osasuoritukset).length
+    const osasuorituksenProto = contextualizeSubModel(_osasuoritukset.arrayPrototype, _osasuoritukset, newItemIndex)
+    const options = oneOfPrototypes(osasuorituksenProto)
+
+    return [_osasuoritukset, options, newItemIndex]
+}
+
 export const newOsasuoritusProto = (suoritus, osasuoritusClass) => {
-  const _osasuoritukset = wrapOptional(modelLookup(suoritus, 'osasuoritukset'))
-  const newItemIndex = modelItems(_osasuoritukset).length
-  const osasuorituksenProto = contextualizeSubModel(_osasuoritukset.arrayPrototype, _osasuoritukset, newItemIndex)
-  const options = oneOfPrototypes(osasuorituksenProto)
+  const [_osasuoritukset, options, newItemIndex] = osasuorituksetProtoOptionsAndNewItemIndex(suoritus)
   const proto = osasuoritusClass && options.find(p => p.value.classes.includes(osasuoritusClass)) || options[0]
   return contextualizeSubModel(proto, _osasuoritukset, newItemIndex)
+}
+
+export const newOsasuoritusProtos = (suoritus) => {
+  const [_osasuoritukset, options, newItemIndex] = osasuorituksetProtoOptionsAndNewItemIndex(suoritus)
+  const protos = options.map(proto => contextualizeSubModel(proto, _osasuoritukset, newItemIndex))
+  return protos
 }
 
 export const copySuorituskieli = (from, to) => modelSet(to, modelLookup(from, 'suorituskieli'), 'suorituskieli')

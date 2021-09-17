@@ -275,7 +275,9 @@ describe('Lukioon valmistava koulutus', function() {
                   lvyhku.avaaLisääKurssiDialog
                 )
                 it('näytetään vain oikean oppiaineen kurssit', function () {
-                  expect(lvyhku.lisääKurssiDialog.kurssit()).to.deep.equal(['LVHY2 Suomen yhteiskunta ja kulttuurit',
+                  expect(lvyhku.lisääKurssiDialog.kurssit()).to.deep.equal(['ATK1 Tietokoneen käytön peruskurssi',
+                    'LVHY2 Suomen yhteiskunta ja kulttuurit',
+                    'PA Paikallinen kurssi',
                     'Lisää paikallinen kurssi...'])
                 })
                 after(

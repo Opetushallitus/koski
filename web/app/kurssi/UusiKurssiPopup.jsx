@@ -1,7 +1,7 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
 import * as R from 'ramda'
-import {accumulateModelState, modelItems, modelLookup, modelValid} from '../editor/EditorModel'
+import {accumulateModelState, modelItems, modelLookup, modelValid, modelSetValue} from '../editor/EditorModel'
 import Text from '../i18n/Text'
 import ModalDialog from '../editor/ModalDialog'
 import {UusiKurssiDropdown} from './UusiKurssiDropdown'
@@ -60,7 +60,11 @@ export default ({
         { // TODO: check placeholders from i18n
           selectedPrototypeAtom.flatMap(selectedProto => {
             if (!validKurssi(selectedProto)) return null
-            let modelP = accumulateModelState(selectedProto)
+            const suorituksenKoulutusmoduuli = isPaikallinen(selectedProto) ? modelSetValue(
+              paikallinenKurssiProto,
+              selectedProto.value
+            ) : selectedProto
+            const modelP = accumulateModelState(suorituksenKoulutusmoduuli)
             modelP.map(model => modelValid(model) ? model : undefined).forEach(model => selectedAtom.set(model)) // set selected atom to non-empty only when valid data
             return modelP.map(model => <PropertiesEditor key="kurssi-props" model={model} propertyFilter={propertyFilterForModel(model)}/>)
           }).toProperty()
