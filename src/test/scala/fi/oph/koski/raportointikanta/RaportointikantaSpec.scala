@@ -463,29 +463,29 @@ class RaportointikantaSpec
       val mitätöidytRaportointikannassa = mainRaportointiDb.runDbSync(
         mainRaportointiDb.RMitätöidytOpiskeluoikeudet.sortBy(_.opiskeluoikeusOid).result
       )
+      val mitätöintipäivä = LocalDate.now()
 
       mitätöidytRaportointikannassa.length should equal(mitätöidytKoskessa.length)
 
-      mitätöidytRaportointikannassa should equal(Seq(
-        RMitätöityOpiskeluoikeusRow(
-          opiskeluoikeusOid = mitätöidytKoskessa(0).oid,
-          versionumero = mitätöidytKoskessa(0).versionumero,
-          aikaleima = mitätöidytKoskessa(0).aikaleima,
-          oppijaOid = KoskiSpecificMockOppijat.lukiolainen.oid,
-          mitätöity = LocalDate.now(),
-          tyyppi = "ammatillinenkoulutus",
-          päätasonSuoritusTyypit = List("ammatillinentutkinto")
-        ),
-        RMitätöityOpiskeluoikeusRow(
-          opiskeluoikeusOid = mitätöidytKoskessa(1).oid,
-          versionumero = mitätöidytKoskessa(1).versionumero,
-          aikaleima = mitätöidytKoskessa(1).aikaleima,
-          oppijaOid = KoskiSpecificMockOppijat.eero.oid,
-          mitätöity = LocalDate.now(),
-          tyyppi = "perusopetus",
-          päätasonSuoritusTyypit = List("perusopetuksenoppimaara", "perusopetuksenvuosiluokka")
-        )
-      ))
+      mitätöidytRaportointikannassa should equal(
+        (mitätöidytKoskessa zip mitätöidytRaportointikannassa).map(t => RMitätöityOpiskeluoikeusRow(
+          opiskeluoikeusOid = t._1.oid,
+          versionumero = t._1.versionumero,
+          aikaleima = t._1.aikaleima,
+          oppijaOid = t._1.oppijaOid,
+          mitätöity = mitätöintipäivä,
+          tyyppi = t._1.oppijaOid match {
+            case "1.2.246.562.24.00000000001" => "perusopetus"
+            case "1.2.246.562.24.00000000013" => "ammatillinenkoulutus"
+            case _ => "???"
+          },
+          päätasonSuoritusTyypit = t._1.oppijaOid match {
+            case "1.2.246.562.24.00000000001" => List("perusopetuksenoppimaara", "perusopetuksenvuosiluokka")
+            case "1.2.246.562.24.00000000013" => List("ammatillinentutkinto")
+            case _ => List("???")
+          },
+        ))
+      )
     }
 
     "Mitätöityjä opiskeluoikeuksia ei ladata varsinaiseen opiskeluoikeudet-tauluun" in {
