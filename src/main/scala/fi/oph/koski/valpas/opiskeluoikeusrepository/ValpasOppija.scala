@@ -112,7 +112,7 @@ trait ValpasOpiskeluoikeus {
 
   def päättymispäiväMerkittyTulevaisuuteen: Option[Boolean]
 
-  def näytettäväPerusopetuksenSuoritus: Boolean
+  def perusopetusPäättynytAiemminTaiLähitulevaisuudessa: Boolean
 
   @KoodistoUri("valpasopiskeluoikeudentila")
   def tarkastelupäivänTila: Koodistokoodiviite
@@ -162,8 +162,8 @@ case class ValpasOpiskeluoikeusLaajatTiedot(
   päättymispäiväMerkittyTulevaisuuteen: Option[Boolean],
   tarkastelupäivänTila: Koodistokoodiviite,
   tarkastelupäivänKoskiTila: Koodistokoodiviite,
-  tarkastelupäivänTilanAlkamispäivä: String,
-  näytettäväPerusopetuksenSuoritus: Boolean,
+  tarkastelupäivänKoskiTilanAlkamispäivä: String,
+  perusopetusPäättynytAiemminTaiLähitulevaisuudessa: Boolean,
   vuosiluokkiinSitomatonOpetus: Boolean,
   oppivelvollisuudenSuorittamiseenKelpaava: Boolean,
   päätasonSuoritukset: Seq[ValpasPäätasonSuoritus],
@@ -184,7 +184,7 @@ object ValpasOpiskeluoikeusSuppeatTiedot {
       alkamispäivä = laajatTiedot.alkamispäivä,
       päättymispäivä = laajatTiedot.päättymispäivä,
       päättymispäiväMerkittyTulevaisuuteen = laajatTiedot.päättymispäiväMerkittyTulevaisuuteen,
-      näytettäväPerusopetuksenSuoritus = laajatTiedot.näytettäväPerusopetuksenSuoritus,
+      perusopetusPäättynytAiemminTaiLähitulevaisuudessa = laajatTiedot.perusopetusPäättynytAiemminTaiLähitulevaisuudessa,
       vuosiluokkiinSitomatonOpetus = laajatTiedot.vuosiluokkiinSitomatonOpetus,
       päätasonSuoritukset = laajatTiedot.päätasonSuoritukset,
       onTehtyIlmoitus = laajatTiedot.onTehtyIlmoitus,
@@ -203,7 +203,7 @@ case class ValpasOpiskeluoikeusSuppeatTiedot(
   alkamispäivä: String,
   päättymispäivä: Option[String],
   päättymispäiväMerkittyTulevaisuuteen: Option[Boolean],
-  näytettäväPerusopetuksenSuoritus: Boolean,
+  perusopetusPäättynytAiemminTaiLähitulevaisuudessa: Boolean,
   vuosiluokkiinSitomatonOpetus: Boolean,
   päätasonSuoritukset: Seq[ValpasPäätasonSuoritus],
   // Option, koska tämä tieto rikastetaan mukaan vain tietyissä tilanteissa

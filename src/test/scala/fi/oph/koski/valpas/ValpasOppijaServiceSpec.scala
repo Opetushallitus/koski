@@ -1243,8 +1243,8 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
                   withClue("päättymispäiväMerkittyTulevaisuuteen") {
                     opiskeluoikeus.päättymispäiväMerkittyTulevaisuuteen shouldBe expectedData.opiskeluoikeus.päättymispäivä.map(pp => pp.isAfter(defaultMockTarkastelupäivä) )
                   }
-                  withClue("näytettäväPerusopetuksenSuoritus") {
-                    opiskeluoikeus.näytettäväPerusopetuksenSuoritus shouldBe (
+                  withClue("perusopetusPäättynytAiemminTaiLähitulevaisuudessa") {
+                    opiskeluoikeus.perusopetusPäättynytAiemminTaiLähitulevaisuudessa shouldBe (
                       expectedData.opiskeluoikeus.tyyppi.koodiarvo == "perusopetus" &&
                         expectedData.tarkastelupäivänTila == "valmistunut" &&
                         expectedData.tarkastelupäivänKoskiTila == "valmistunut" &&

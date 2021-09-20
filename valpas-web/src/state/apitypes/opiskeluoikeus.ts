@@ -21,8 +21,8 @@ export type OpiskeluoikeusLaajatTiedot = {
   päättymispäiväMerkittyTulevaisuuteen?: boolean
   tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
   tarkastelupäivänKoskiTila: KoskiOpiskeluoikeudenTila
-  tarkastelupäivänTilanAlkamispäivä: ISODate
-  näytettäväPerusopetuksenSuoritus: boolean
+  tarkastelupäivänKoskiTilanAlkamispäivä: ISODate
+  perusopetusPäättynytAiemminTaiLähitulevaisuudessa: boolean
   vuosiluokkiinSitomatonOpetus: boolean
   päätasonSuoritukset: PäätasonSuoritus[]
   tarkasteltavaPäätasonSuoritus: PäätasonSuoritus
@@ -40,7 +40,7 @@ export type OpiskeluoikeusSuppeatTiedot = {
   alkamispäivä: ISODate
   päättymispäivä?: ISODate
   päättymispäiväMerkittyTulevaisuuteen?: boolean
-  näytettäväPerusopetuksenSuoritus: boolean
+  perusopetusPäättynytAiemminTaiLähitulevaisuudessa: boolean
   vuosiluokkiinSitomatonOpetus: boolean
   muuHaku?: boolean
   päätasonSuoritukset: PäätasonSuoritus[]

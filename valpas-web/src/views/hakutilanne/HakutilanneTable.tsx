@@ -250,7 +250,10 @@ const ryhmä = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
 
 const perusopetusSuoritettu = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
   const date = oo.päättymispäivä
-  if (date !== undefined && oo.näytettäväPerusopetuksenSuoritus) {
+  if (
+    date !== undefined &&
+    oo.perusopetusPäättynytAiemminTaiLähitulevaisuudessa
+  ) {
     return oo.päättymispäiväMerkittyTulevaisuuteen
       ? {
           value: date,
