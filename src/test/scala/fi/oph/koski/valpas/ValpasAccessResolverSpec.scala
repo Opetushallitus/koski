@@ -1,9 +1,10 @@
 package fi.oph.koski.valpas
 
 import java.time.LocalDate.{of => date}
+
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{Finnish, Koodistokoodiviite}
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilöLaajatTiedot, ValpasOpiskeluoikeus, ValpasOpiskeluoikeusLaajatTiedot, ValpasOppijaLaajatTiedot, ValpasOppilaitos, ValpasPäätasonSuoritus, ValpasToimipiste}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilöLaajatTiedot, ValpasOpiskeluoikeus, ValpasOpiskeluoikeusLaajatTiedot, ValpasOpiskeluoikeusPerusopetusLaajatTiedot, ValpasOppijaLaajatTiedot, ValpasOppilaitos, ValpasPäätasonSuoritus, ValpasToimipiste}
 import fi.oph.koski.valpas.valpasuser.ValpasRooli
 
 
@@ -127,14 +128,17 @@ class ValpasAccessResolverSpec extends ValpasTestBase {
       oid = oppilaitosOid,
       nimi = Finnish("Oppilaitoksen nimi")
     ),
-    alkamispäivä = "2012-08-01",
-    päättymispäivä = None,
-    päättymispäiväMerkittyTulevaisuuteen = None,
-    tarkastelupäivänTila = Koodistokoodiviite("voimassa", "valpasopiskeluoikeudentila"),
-    tarkastelupäivänKoskiTila = Koodistokoodiviite("lasna", "koskiopiskeluoikeudentila"),
-    tarkastelupäivänKoskiTilanAlkamispäivä = "2012-08-01",
-    perusopetusPäättynytAiemminTaiLähitulevaisuudessa = false,
-    vuosiluokkiinSitomatonOpetus = false,
+    perusopetusTiedot = Some(ValpasOpiskeluoikeusPerusopetusLaajatTiedot(
+      alkamispäivä = "2012-08-01",
+      päättymispäivä = None,
+      päättymispäiväMerkittyTulevaisuuteen = None,
+      tarkastelupäivänTila = Koodistokoodiviite("voimassa", "valpasopiskeluoikeudentila"),
+      tarkastelupäivänKoskiTila = Koodistokoodiviite("lasna", "koskiopiskeluoikeudentila"),
+      tarkastelupäivänKoskiTilanAlkamispäivä = "2012-08-01",
+      päättynytAiemminTaiLähitulevaisuudessa = false,
+      vuosiluokkiinSitomatonOpetus = false,
+    )),
+    perusopetuksenJälkeinenTiedot = None,
     oppivelvollisuudenSuorittamiseenKelpaava = true,
     päätasonSuoritukset = Seq(
       ValpasPäätasonSuoritus(

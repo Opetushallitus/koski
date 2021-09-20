@@ -1,35 +1,23 @@
 import * as A from "fp-ts/lib/Array"
 import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
-import {
-  FutureSuccessIcon,
-  OpiskeluhistoriaTapahtumaIcon,
-  SuccessIcon,
-} from "../../../components/icons/Icon"
+import { OpiskeluhistoriaTapahtumaIcon } from "../../../components/icons/Icon"
 import {
   Column,
   DataTable,
   DataTableCountChangeEvent,
   Datum,
-  Value,
+  fromNullableValue,
 } from "../../../components/tables/DataTable"
-import { getLocalizedMaybe, t } from "../../../i18n/i18n"
+import { t } from "../../../i18n/i18n"
 import { getNäytettävätIlmoitukset } from "../../../state/apitypes/kuntailmoitus"
-import {
-  OpiskeluoikeusSuppeatTiedot,
-  voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus,
-} from "../../../state/apitypes/opiskeluoikeus"
 import { OppijaKuntailmoituksillaSuppeatTiedot } from "../../../state/apitypes/oppija"
 import { organisaatioNimi } from "../../../state/apitypes/organisaatiot"
-import {
-  isVoimassa,
-  isVoimassaTulevaisuudessa,
-} from "../../../state/apitypes/valpasopiskeluoikeudentila"
 import { useBasePath } from "../../../state/basePath"
 import { Oid } from "../../../state/common"
+import { perusopetuksenJälkeisetOpiskeluoikeustiedot } from "../../../state/opiskeluoikeustiedot"
 import { createOppijaPath } from "../../../state/paths"
-import { nonNull } from "../../../utils/arrays"
-import { formatDate, formatNullableDate } from "../../../utils/date"
+import { formatNullableDate } from "../../../utils/date"
 
 export type KuntailmoitusTableProps = {
   data: OppijaKuntailmoituksillaSuppeatTiedot[]
@@ -131,55 +119,11 @@ const ilmoitusToTableData = (basePath: string, organisaatioOid: string) => (
         value: henkilö.syntymäaika,
         display: formatNullableDate(henkilö.syntymäaika),
       },
-      opiskeluoikeustiedot(tiedot.oppija.opiskeluoikeudet),
+      fromNullableValue(
+        perusopetuksenJälkeisetOpiskeluoikeustiedot(
+          tiedot.oppija.opiskeluoikeudet
+        )
+      ),
     ],
   }))
-}
-
-// TODO: Copypaste HakutilanneTablesta - poista toisteisuus jos pysyy samankaltaisena
-const opiskeluoikeustiedot = (
-  opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
-): Value => {
-  const oos = opiskeluoikeudet.filter(
-    voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus
-  )
-
-  const toValue = (oo: OpiskeluoikeusSuppeatTiedot) => {
-    const kohde = [
-      organisaatioNimi(oo.oppilaitos),
-      getLocalizedMaybe(oo.tyyppi.nimi),
-    ]
-      .filter(nonNull)
-      .join(", ")
-
-    return isVoimassa(oo.tarkastelupäivänTila)
-      ? kohde
-      : t("opiskeluoikeudet__pvm_alkaen_kohde", {
-          päivämäärä: formatDate(oo.alkamispäivä),
-          kohde,
-        })
-  }
-
-  const icon = oos.some((oo) => isVoimassa(oo.tarkastelupäivänTila)) ? (
-    <SuccessIcon />
-  ) : oos.some((oo) => isVoimassaTulevaisuudessa(oo.tarkastelupäivänTila)) ? (
-    <FutureSuccessIcon />
-  ) : undefined
-
-  switch (oos.length) {
-    case 0:
-      return { value: "-" }
-    case 1:
-      return { value: toValue(oos[0]!!), icon }
-    default:
-      const filterValues = oos.map(toValue).filter(nonNull)
-      return {
-        value: t("opiskeluoikeudet__n_opiskeluoikeutta", {
-          lukumäärä: oos.length,
-        }),
-        filterValues,
-        tooltip: filterValues.join("\n"),
-        icon,
-      }
-  }
 }

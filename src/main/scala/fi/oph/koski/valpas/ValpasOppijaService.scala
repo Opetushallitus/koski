@@ -191,10 +191,14 @@ class ValpasOppijaService(
   ): Boolean = {
     val onEronnut =
       opiskeluoikeus.onSuorittamisValvottava &&
-      Seq("eronnut", "katsotaaneronneeksi", "peruutettu", "keskeytynyt").contains(opiskeluoikeus.tarkastelupäivänTila.koodiarvo)
+        opiskeluoikeus.perusopetuksenJälkeinenTiedot.map(_.tarkastelupäivänTila.koodiarvo)
+          .exists(Seq("eronnut", "katsotaaneronneeksi", "peruutettu", "keskeytynyt").contains)
 
     val onValmistunutNivelvaiheesta =
-      muutOppijanOpiskeluoikeudet.exists(oo => onNivelvaiheenOpiskeluoikeus(oo) && List("valmistunut", "hyvaksytystisuoritettu").contains(oo.tarkastelupäivänTila.koodiarvo))
+      muutOppijanOpiskeluoikeudet.exists(oo => onNivelvaiheenOpiskeluoikeus(oo) &&
+        oo.perusopetuksenJälkeinenTiedot.map(_.tarkastelupäivänTila.koodiarvo)
+          .exists(Seq("valmistunut", "hyvaksytystisuoritettu").contains)
+      )
 
     val onLasnaUudessaOpiskeluoikeudessa =
       sisältääVoimassaolevanToisenAsteenOpiskeluoikeuden(muutOppijanOpiskeluoikeudet) ||
@@ -206,7 +210,7 @@ class ValpasOppijaService(
   private def sisältääVoimassaolevanToisenAsteenOpiskeluoikeuden(
     opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot]
   ): Boolean =
-    opiskeluoikeudet.exists(oo => onToisenAsteenOpiskeluoikeus(oo) && oo.tarkastelupäivänTila.koodiarvo == "voimassa")
+    opiskeluoikeudet.exists(oo => onToisenAsteenOpiskeluoikeus(oo) && oo.perusopetuksenJälkeinenTiedot.map(_.tarkastelupäivänTila.koodiarvo).contains("voimassa"))
 
   private def onToisenAsteenOpiskeluoikeus(oo: ValpasOpiskeluoikeusLaajatTiedot): Boolean =
     !(onNivelvaiheenOpiskeluoikeus(oo) || onNuortenPerusopetuksenOpiskeluoikeus(oo))
@@ -214,7 +218,7 @@ class ValpasOppijaService(
   private def sisältääVoimassaolevanNivelvaiheenOpiskeluoikeuden(
     opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot]
   ): Boolean =
-  opiskeluoikeudet.exists(oo => onNivelvaiheenOpiskeluoikeus(oo) && oo.tarkastelupäivänTila.koodiarvo == "voimassa")
+  opiskeluoikeudet.exists(oo => onNivelvaiheenOpiskeluoikeus(oo) && oo.perusopetuksenJälkeinenTiedot.map(_.tarkastelupäivänTila.koodiarvo).contains("voimassa"))
 
   private def onNivelvaiheenOpiskeluoikeus(oo: ValpasOpiskeluoikeusLaajatTiedot): Boolean = {
     oo.tyyppi.koodiarvo match {
@@ -544,7 +548,7 @@ class ValpasOppijaService(
         // Jos yli 2 kk, ilmoitus on aktiivinen,
         // jos mikään ov-suorittamiseen kelpaava opiskeluoikeus ei ole voimassa
         case (kuntailmoitus, 0) =>
-          oppija.opiskeluoikeudet.forall(oo => oo.tarkastelupäivänTila.koodiarvo != "voimassa")
+          oppija.opiskeluoikeudet.forall(oo => !oo.isOpiskelu)
 
         // Muut kuin uusin ilmoitus ovat aina ei-aktiivisia
         case (kuntailmoitus, _) => false
@@ -629,7 +633,7 @@ class ValpasOppijaService(
       .addOpiskeluoikeusOnTehtyIlmoitusProperties(oppijat)
       .flatMap(oppija => {
         val opiskeluoikeudet = oppija.oppija.opiskeluoikeudet
-          .filter(oo => !oo.onTehtyIlmoitus.contains(true) || (säästäJosOpiskeluoikeusVoimassa && oo.tarkastelupäivänTila.koodiarvo == "voimassa"))
+          .filter(oo => !oo.onTehtyIlmoitus.contains(true) || (säästäJosOpiskeluoikeusVoimassa && oo.isOpiskelu))
         if (opiskeluoikeudet.nonEmpty) {
           Some(oppija.copy(oppija = oppija.oppija.copy(opiskeluoikeudet = opiskeluoikeudet)))
         } else {

@@ -22,6 +22,11 @@ import {
   sortKuntailmoitusLaajatTiedotLisätiedoilla,
 } from "../../state/apitypes/kuntailmoitus"
 import {
+  aiempienOpintojenAlkamispäivä,
+  myöhempienOpintojenPäättymispäivä,
+  myöhempienOpintojenTarkastelupäivänKoskiTila,
+  myöhempienOpintojenTarkastelupäivänTila,
+  möyhempienOpintojenKoskiTilanAlkamispäivä,
   OpiskeluoikeusLaajatTiedot,
   sortOpiskeluoikeusLaajatTiedot,
 } from "../../state/apitypes/opiskeluoikeus"
@@ -86,7 +91,7 @@ export const OppijanOpiskeluhistoria = (
           ),
         })),
         ...opiskeluoikeudet.map((oo, index) => ({
-          order: orderString("B", oo.alkamispäivä, index),
+          order: orderString("B", aiempienOpintojenAlkamispäivä(oo), index),
           child: (
             <OpiskeluhistoriaOpinto key={`oo-${index}`} opiskeluoikeus={oo} />
           ),
@@ -130,10 +135,14 @@ const OpiskeluhistoriaOpinto = ({
   const nimi = suorituksenTyyppiToKoulutustyyppi(
     opiskeluoikeus.tarkasteltavaPäätasonSuoritus.suorituksenTyyppi
   )
-  const range = yearRangeString(
-    opiskeluoikeus.alkamispäivä,
-    opiskeluoikeus.päättymispäivä
+
+  const alkamispäivä = aiempienOpintojenAlkamispäivä(opiskeluoikeus)
+  const päättymispäivä = myöhempienOpintojenPäättymispäivä(opiskeluoikeus)
+  const tarkastelupäivänTila = myöhempienOpintojenTarkastelupäivänTila(
+    opiskeluoikeus
   )
+
+  const range = yearRangeString(alkamispäivä, päättymispäivä)
 
   return (
     <IconSection icon={<OpiskeluIcon color="gray" />}>
@@ -141,7 +150,7 @@ const OpiskeluhistoriaOpinto = ({
         {nimi} {range}
       </IconSectionHeading>
       <InfoTable size="tighter">
-        {opiskeluoikeus.tarkastelupäivänTila && (
+        {tarkastelupäivänTila && (
           <InfoTableRow
             label={t("oppija__tila")}
             value={tilaString(opiskeluoikeus)}
@@ -159,20 +168,21 @@ const OpiskeluhistoriaOpinto = ({
             value={opiskeluoikeus.tarkasteltavaPäätasonSuoritus.ryhmä}
           />
         )}
-        {opiskeluoikeus.vuosiluokkiinSitomatonOpetus && (
-          <InfoTableRow
-            label={t("oppija__muuta")}
-            value={t("oppija__vuosiluokkiin_sitomaton_opetus")}
-          />
-        )}
+        {opiskeluoikeus.perusopetusTiedot !== undefined &&
+          opiskeluoikeus.perusopetusTiedot.vuosiluokkiinSitomatonOpetus && (
+            <InfoTableRow
+              label={t("oppija__muuta")}
+              value={t("oppija__vuosiluokkiin_sitomaton_opetus")}
+            />
+          )}
         <InfoTableRow
           label={t("oppija__opiskeluoikeuden_alkamispäivä")}
-          value={formatDate(opiskeluoikeus.alkamispäivä)}
+          value={formatDate(aiempienOpintojenAlkamispäivä(opiskeluoikeus))}
         />
-        {opiskeluoikeus.päättymispäivä && (
+        {päättymispäivä && (
           <InfoTableRow
             label={t("oppija__opiskeluoikeuden_päättymispäivä")}
-            value={formatDate(opiskeluoikeus.päättymispäivä)}
+            value={formatDate(päättymispäivä)}
           />
         )}
       </InfoTable>
@@ -262,11 +272,13 @@ const yearString = (date?: ISODate): string | undefined =>
   date && parseYear(date).toString()
 
 const tilaString = (opiskeluoikeus: OpiskeluoikeusLaajatTiedot): string => {
-  const valpasTila = opiskeluoikeus.tarkastelupäivänTila
-  const koskiTila = opiskeluoikeus.tarkastelupäivänKoskiTila
+  const valpasTila = myöhempienOpintojenTarkastelupäivänTila(opiskeluoikeus)
+  const koskiTila = myöhempienOpintojenTarkastelupäivänKoskiTila(opiskeluoikeus)
 
   if (valpasTila.koodiarvo === "voimassatulevaisuudessa") {
-    const alkamispäivä = formatDate(opiskeluoikeus.alkamispäivä)
+    const alkamispäivä = formatDate(
+      aiempienOpintojenAlkamispäivä(opiskeluoikeus)
+    )
     return t("oppija__tila_voimassatulevaisuudessa", {
       päivämäärä: alkamispäivä,
     })
@@ -275,7 +287,7 @@ const tilaString = (opiskeluoikeus: OpiskeluoikeusLaajatTiedot): string => {
   switch (koskiTila.koodiarvo) {
     case "valiaikaisestikeskeytynyt":
       const tarkastelujaksonAlku = formatDate(
-        opiskeluoikeus.tarkastelupäivänKoskiTilanAlkamispäivä
+        möyhempienOpintojenKoskiTilanAlkamispäivä(opiskeluoikeus)
       )
       return t("oppija__tila_valiaikaisesti_keskeytynyt", {
         päivämäärä: tarkastelujaksonAlku,

@@ -30,7 +30,7 @@ object ValpasKuntailmoitus {
   ): Boolean = {
     val saanutOpiskelupaikan = opiskeluoikeudet.exists(oo =>
       oo.oppivelvollisuudenSuorittamiseenKelpaava &&
-        (oo.tarkastelupäivänTila.koodiarvo == "voimassa" || oo.tarkastelupäivänTila.koodiarvo == "voimassatulevaisuudessa")
+        (oo.isOpiskelu || oo.isOpiskeluTulevaisuudessa)
     )
 
     val uudemmatIlmoitukset = ilmoitus.aikaleima match {
