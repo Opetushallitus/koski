@@ -11,17 +11,26 @@ object VirkailijaCredentials {
   def apply(serviceConfig: ServiceConfig): VirkailijaCredentials = {
     if (Environment.usesAwsSecretsManager) {
       VirkailijaCredentials.fromSecretsManager
-    }
-    else {
+    } else {
       VirkailijaCredentials(serviceConfig.username, serviceConfig.password)
     }
   }
-  def fromSecretsManager: VirkailijaCredentials = {
+
+  def apply(config: Config): VirkailijaCredentials = {
+    if (Environment.usesAwsSecretsManager) {
+      VirkailijaCredentials.fromSecretsManager
+    } else {
+      VirkailijaCredentials.fromConfig(config)
+    }
+  }
+
+  private def fromSecretsManager: VirkailijaCredentials = {
     val cachedSecretsClient = new SecretsManager
     val secretId = cachedSecretsClient.getSecretId("Opintopolku virkailija credentials", "OPINTOPOLKU_VIRKAILIJA_SECRET_ID")
     cachedSecretsClient.getStructuredSecret[VirkailijaCredentials](secretId)
   }
-  def fromConfig(config: Config): VirkailijaCredentials = {
+
+  private def fromConfig(config: Config): VirkailijaCredentials = {
     VirkailijaCredentials(
       config.getString("opintopolku.virkailija.username"),
       config.getString("opintopolku.virkailija.password")

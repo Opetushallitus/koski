@@ -89,11 +89,8 @@ trait HealthCheck extends Logging {
   }
 
   def casCheck: HttpStatus = {
-    val VirkailijaCredentials(username, password) = if (Environment.usesAwsSecretsManager) {
-      VirkailijaCredentials.fromSecretsManager
-    } else {
-      VirkailijaCredentials.fromConfig(application.config)
-    }
+    val VirkailijaCredentials(username, password) = VirkailijaCredentials(application.config)
+
     def authenticate = try {
       Some(application.directoryClient.authenticate(username, Password(password)))
     } catch {
