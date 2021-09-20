@@ -3,7 +3,7 @@ package fi.oph.koski.cas
 import cats.data.EitherT
 import cats.effect.IO
 import org.http4s.EntityDecoder.collectBinary
-import org.http4s.Status.Created
+import org.http4s.Status.{Created, Locked}
 import org.http4s.client._
 import org.http4s.{Response, Uri, _}
 import org.typelevel.ci.CIString
@@ -56,6 +56,11 @@ class CasClient(casBaseUrl: Uri, client: Client[IO], callerId: String) extends L
     FetchHelper.fetch[R](client, callerId, request, responseHandler)
   }
 
+  def authenticateVirkailija(user: CasUser): IO[Boolean] = {
+    TicketGrantingTicketClient.getTicketGrantingTicket(casBaseUrl, client, user, callerId)
+      .map(_tgtUrl => true) // Authentication succeeded if we received a tgtUrl
+  }
+
   /**
    *  Establishes session with the requested service by
    *
@@ -99,7 +104,7 @@ class CasClient(casBaseUrl: Uri, client: Client[IO], callerId: String) extends L
 
   private def getServiceTicket(params: CasParams, serviceUri: TGTUrl): IO[ServiceTicket] = {
     for {
-      tgt <- TicketGrantingTicketClient.getTicketGrantingTicket(casBaseUrl, client, params, callerId)
+      tgt <- TicketGrantingTicketClient.getTicketGrantingTicket(casBaseUrl, client, params.user, callerId)
       st <- ServiceTicketClient.getServiceTicketFromTgt(client, serviceUri, callerId)(tgt)
     } yield {
       st
@@ -205,9 +210,9 @@ private[cas] object TicketGrantingTicketClient extends Logging {
 
   private val tgtPattern = "(.*TGT-.*)".r
 
-  def getTicketGrantingTicket(casBaseUrl: Uri, client: Client[IO], params: CasParams, callerId: String): IO[TGTUrl] = {
+  def getTicketGrantingTicket(casBaseUrl: Uri, client: Client[IO], user: CasUser, callerId: String): IO[TGTUrl] = {
     val tgtUri: TGTUrl = casBaseUrl.addPath("v1/tickets")
-    val urlForm = UrlForm("username" -> params.user.username, "password" -> params.user.password)
+    val urlForm = UrlForm("username" -> user.username, "password" -> user.password)
     val request = Request[IO](Method.POST, tgtUri).withEntity(urlForm)
 
     def handler(response: Response[IO]): IO[TGTUrl] = {
@@ -219,15 +224,21 @@ private[cas] object TicketGrantingTicketClient extends Logging {
                 (pf: ParseFailure) => throw new CasClientException(pf.message),
                 (tgt) => tgt
               )
-            case Some(nontgturl) =>
-              throw new CasClientException(s"TGT decoding failed at ${tgtUri}: location header has wrong format $nontgturl")
+            case Some(nonTgtUrl) =>
+              throw new CasClientException(s"TGT decoding failed at ${tgtUri}: location header has wrong format $nonTgtUrl")
             case None =>
-              throw new CasClientException(s"TGT decoding failed at ${tgtUri}: No location header at")
+              throw new CasClientException(s"TGT decoding failed at ${tgtUri}: no location header")
           }
           IO.pure(found)
-        case resp: Response[IO] => resp.as[String].map { body =>
-          throw new CasClientException(s"TGT decoding failed at ${tgtUri}: invalid TGT creation status: ${resp.status.code}: $body")
-        }
+        case Locked(_) =>
+          throw new CasAuthenticationException(s"Access denied: username ${user.username} is locked")
+        case resp: Response[IO] => resp.as[String].map(body =>
+          if (body.contains("authentication_exceptions") || body.contains("error.authentication.credentials.bad")) {
+            throw new CasAuthenticationException(s"Access denied: bad credentials")
+          } else {
+            throw new CasClientException(s"TGT decoding failed at ${tgtUri}: invalid TGT creation status: ${resp.status.code}: $body")
+          }
+        )
       }
     }
     FetchHelper.fetch(client, callerId, request, handler)
@@ -275,3 +286,5 @@ object FetchHelper {
 }
 
 class CasClientException(message: String) extends RuntimeException(message)
+
+class CasAuthenticationException(message: String) extends CasClientException(message)
