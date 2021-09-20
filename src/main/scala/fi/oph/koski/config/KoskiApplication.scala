@@ -57,7 +57,7 @@ class KoskiApplication(
   lazy val casService = new CasService(config)
   lazy val organisaatioRepository = OrganisaatioRepository(config, koodistoViitePalvelu)
   lazy val organisaatioService = new OrganisaatioService(this)
-  lazy val directoryClient = DirectoryClient(config)
+  lazy val directoryClient = DirectoryClient(config, casService)
   lazy val ePerusteet = EPerusteetRepository.apply(config)
   lazy val tutkintoRepository = TutkintoRepository(ePerusteet, koodistoViitePalvelu)
   lazy val oppilaitosRepository = OppilaitosRepository(config, organisaatioRepository)

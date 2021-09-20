@@ -46,4 +46,14 @@ class CasService(config: Config) extends Logging {
       )
     })
   }
+
+  def authenticateVirkailija(username: String, wrappedPassword: Password): Boolean = {
+    try {
+      Http.runIO(casVirkailijaClient.authenticateVirkailija(CasUser(username, wrappedPassword.password)))
+    } catch {
+      case e: CasAuthenticationException =>
+        logger.warn(e.getMessage)
+        false
+    }
+  }
 }

@@ -1,8 +1,5 @@
 package fi.oph.koski.koskiuser
 
-import java.net.InetAddress
-import java.net.InetAddress.{getByName => inetAddress}
-
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
@@ -13,12 +10,16 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, lehtikuus
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot, Opetushallitus, OrganisaatioHierarkia}
 import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
 import fi.oph.koski.schema.OpiskeluoikeudenTyyppi._
+import fi.oph.koski.sso.CasService
 import fi.oph.koski.userdirectory.{DirectoryUser, OpintopolkuDirectoryClient}
 import org.json4s.DefaultFormats
 import org.json4s.jackson.Serialization.write
 import org.mockito.Mockito.{mock, when}
 import org.scalatest.{FreeSpec, Matchers, _}
 import org.scalatra.servlet.RichRequest
+
+import java.net.InetAddress
+import java.net.InetAddress.{getByName => inetAddress}
 
 class KoskiSpecificSessionSpec extends FreeSpec with Matchers with EitherValues with OptionValues with BeforeAndAfterAll {
   implicit val jsonDefaultFormats = DefaultFormats.preservingEmptyValues
@@ -28,11 +29,12 @@ class KoskiSpecificSessionSpec extends FreeSpec with Matchers with EitherValues 
       |opintopolku.virkailija.url = "http://localhost:9877"
       |opintopolku.virkailija.username = "foo"
       |opintopolku.virkailija.password = "bar"
+      |opintopolku.oppija.url = "http://localhost:9877"
     """.stripMargin)
 
   implicit val cacheManager = GlobalCacheManager
   private val wireMockServer = new WireMockServer(wireMockConfig().port(9877))
-  private val directoryClient = new OpintopolkuDirectoryClient(config.getString("opintopolku.virkailija.url"), config)
+  private val directoryClient = new OpintopolkuDirectoryClient(config, new CasService(config))
   private val käyttöoikeusRepository = new KäyttöoikeusRepository(MockOrganisaatioRepository, directoryClient)
 
   "KoskiSession" - {

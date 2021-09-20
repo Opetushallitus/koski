@@ -92,10 +92,11 @@ trait HealthCheck extends Logging {
     val VirkailijaCredentials(username, password) = VirkailijaCredentials(application.config)
 
     def authenticate = try {
-      Some(application.directoryClient.authenticate(username, Password(password)))
+      Some(application.casService.authenticateVirkailija(username, Password(password)))
     } catch {
-      case e: CasClientException => None
+      case _: CasClientException => None
     }
+
     get("cas", authenticate).flatMap(_.toRight(KoskiErrorCategory.internalError("CAS check failed"))) match {
       case Right(authOk) if authOk => HttpStatus.ok
       case Right(_) => KoskiErrorCategory.unauthorized.loginFail("Koski login failed")

@@ -5,6 +5,7 @@ import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import com.typesafe.config.ConfigFactory
+import fi.oph.koski.sso.CasService
 import org.json4s.DefaultFormats
 import org.json4s.jackson.Serialization.write
 import org.scalatest._
@@ -17,10 +18,11 @@ class OpintopolkuDirectoryClientSpec extends FreeSpec with Matchers with EitherV
       |opintopolku.virkailija.url = "http://localhost:9877"
       |opintopolku.virkailija.username = "foo"
       |opintopolku.virkailija.password = "bar"
+      |opintopolku.oppija.url = "http://localhost:9877"
     """.stripMargin)
 
   private val wireMockServer = new WireMockServer(wireMockConfig().port(9877))
-  private val opintopolkuDirectoryClient = new OpintopolkuDirectoryClient(config.getString("opintopolku.virkailija.url"), config)
+  private val opintopolkuDirectoryClient = new OpintopolkuDirectoryClient(config, new CasService(config))
 
   "OpintopolkuDirectoryClient" - {
     "login fails" - {
