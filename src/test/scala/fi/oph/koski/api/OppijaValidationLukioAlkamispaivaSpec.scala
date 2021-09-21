@@ -127,6 +127,18 @@ class OppijaValidationLukioAlkamispäiväSpec
           ))
         }
       }
+      "Sallitaan, jos on ulkomainen vaihto-opiskelija" in {
+        putOpiskeluoikeus(
+          defaultOpiskeluoikeus.copy(
+            tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))),
+            suoritukset = List(lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi),
+            lisätiedot = Some(LukionOpiskeluoikeudenLisätiedot(ulkomainenVaihtoopiskelija = true))
+          ),
+          KoskiSpecificMockOppijat.vuonna2004SyntynytUlkomainenVaihtoopiskelija
+        ) {
+          verifyResponseStatusOk()
+        }
+      }
     }
   }
 }

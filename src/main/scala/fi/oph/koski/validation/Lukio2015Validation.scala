@@ -21,7 +21,7 @@ object Lukio2015Validation {
         case Some(alkamispäivä) if alkamispäivä.isBefore(rajapäivä) =>
           HttpStatus.ok
         case Some(alkamispäivä)
-          if eiRajapäivääEdeltäviäMuitaOpiskeluoikeuksia(oppijanOid, opiskeluoikeus.oid, opiskeluoikeusRepository) =>
+          if eiRajapäivääEdeltäviäMuitaOpiskeluoikeuksia(oppijanOid, opiskeluoikeus.oid, opiskeluoikeusRepository) && !onUlkomainenVaihtoopiskelija(opiskeluoikeus) =>
             KoskiErrorCategory.badRequest.validation.rakenne.liianVanhaOpetussuunnitelma()
         case _ =>
           HttpStatus.ok
@@ -60,6 +60,13 @@ object Lukio2015Validation {
       )
 
     muutAlkamisajat.forall(!_.isBefore(rajapäivä))
+  }
+
+  private def onUlkomainenVaihtoopiskelija(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Boolean = {
+    opiskeluoikeus match {
+      case lukionOpiskeluoikeus: LukionOpiskeluoikeus => lukionOpiskeluoikeus.lisätiedot.exists(_.ulkomainenVaihtoopiskelija)
+      case _ => false
+    }
   }
 
   private val rajapäivä = date(2021, 8, 1)
