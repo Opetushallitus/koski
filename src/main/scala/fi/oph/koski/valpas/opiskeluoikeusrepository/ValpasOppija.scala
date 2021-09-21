@@ -164,20 +164,21 @@ object ValpasOpiskeluoikeusSuppeatTiedot {
 }
 
 trait ValpasOpiskeluoikeusPerusopetusTiedot extends ValpasOpiskeluoikeusTiedot {
-  def päättynytAiemminTaiLähitulevaisuudessa: Boolean
+  def valmistunutAiemminTaiLähitulevaisuudessa: Boolean
 
   def vuosiluokkiinSitomatonOpetus: Boolean
 }
 
 case class ValpasOpiskeluoikeusPerusopetusLaajatTiedot(
-  alkamispäivä: String,
+  alkamispäivä: Option[String],
   päättymispäivä: Option[String],
   päättymispäiväMerkittyTulevaisuuteen: Option[Boolean],
   tarkastelupäivänTila: Koodistokoodiviite,
   tarkastelupäivänKoskiTila: Koodistokoodiviite,
   tarkastelupäivänKoskiTilanAlkamispäivä: String,
-  päättynytAiemminTaiLähitulevaisuudessa: Boolean,
+  valmistunutAiemminTaiLähitulevaisuudessa: Boolean,
   vuosiluokkiinSitomatonOpetus: Boolean,
+  näytäMuunaPerusopetuksenJälkeisenäOpintona: Option[Boolean],
 ) extends ValpasOpiskeluoikeusPerusopetusTiedot
 
 object ValpasOpiskeluoikeusPerusopetusSuppeatTiedot {
@@ -188,20 +189,22 @@ object ValpasOpiskeluoikeusPerusopetusSuppeatTiedot {
       päättymispäiväMerkittyTulevaisuuteen = laajatTiedot.päättymispäiväMerkittyTulevaisuuteen,
       tarkastelupäivänTila = laajatTiedot.tarkastelupäivänTila,
       tarkastelupäivänKoskiTila = laajatTiedot.tarkastelupäivänKoskiTila,
-      päättynytAiemminTaiLähitulevaisuudessa = laajatTiedot.päättynytAiemminTaiLähitulevaisuudessa,
-      vuosiluokkiinSitomatonOpetus = laajatTiedot.vuosiluokkiinSitomatonOpetus
+      valmistunutAiemminTaiLähitulevaisuudessa = laajatTiedot.valmistunutAiemminTaiLähitulevaisuudessa,
+      vuosiluokkiinSitomatonOpetus = laajatTiedot.vuosiluokkiinSitomatonOpetus,
+      näytäMuunaPerusopetuksenJälkeisenäOpintona = laajatTiedot.näytäMuunaPerusopetuksenJälkeisenäOpintona,
     )
   }
 }
 
 case class ValpasOpiskeluoikeusPerusopetusSuppeatTiedot(
-  alkamispäivä: String,
+  alkamispäivä: Option[String],
   päättymispäivä: Option[String],
   päättymispäiväMerkittyTulevaisuuteen: Option[Boolean],
   tarkastelupäivänTila: Koodistokoodiviite,
   tarkastelupäivänKoskiTila: Koodistokoodiviite,
-  päättynytAiemminTaiLähitulevaisuudessa: Boolean,
+  valmistunutAiemminTaiLähitulevaisuudessa: Boolean,
   vuosiluokkiinSitomatonOpetus: Boolean,
+  näytäMuunaPerusopetuksenJälkeisenäOpintona: Option[Boolean],
 ) extends ValpasOpiskeluoikeusPerusopetusTiedot
 
 object ValpasOpiskeluoikeusPerusopetuksenJälkeinenSuppeatTiedot {
@@ -212,12 +215,13 @@ object ValpasOpiskeluoikeusPerusopetuksenJälkeinenSuppeatTiedot {
       päättymispäiväMerkittyTulevaisuuteen = laajatTiedot.päättymispäiväMerkittyTulevaisuuteen,
       tarkastelupäivänTila = laajatTiedot.tarkastelupäivänTila,
       tarkastelupäivänKoskiTila = laajatTiedot.tarkastelupäivänKoskiTila,
+      näytäMuunaPerusopetuksenJälkeisenäOpintona = laajatTiedot.näytäMuunaPerusopetuksenJälkeisenäOpintona,
     )
   }
 }
 
 trait ValpasOpiskeluoikeusTiedot {
-  def alkamispäivä: String
+  def alkamispäivä: Option[String]
 
   def päättymispäivä: Option[String]
 
@@ -228,6 +232,8 @@ trait ValpasOpiskeluoikeusTiedot {
 
   @KoodistoUri("koskiopiskeluoikeudentila")
   def tarkastelupäivänKoskiTila: Koodistokoodiviite
+
+  def näytäMuunaPerusopetuksenJälkeisenäOpintona: Option[Boolean]
 
   @SyntheticProperty
   def onVoimassaNytTaiTulevaisuudessa: Boolean = tarkastelupäivänTila.koodiarvo match {
@@ -245,20 +251,22 @@ trait ValpasOpiskeluoikeusTiedot {
 }
 
 case class ValpasOpiskeluoikeusPerusopetuksenJälkeinenLaajatTiedot(
-  alkamispäivä: String,
+  alkamispäivä: Option[String],
   päättymispäivä: Option[String],
   päättymispäiväMerkittyTulevaisuuteen: Option[Boolean],
   tarkastelupäivänTila: Koodistokoodiviite,
   tarkastelupäivänKoskiTila: Koodistokoodiviite,
-  tarkastelupäivänKoskiTilanAlkamispäivä: String
+  tarkastelupäivänKoskiTilanAlkamispäivä: String,
+  näytäMuunaPerusopetuksenJälkeisenäOpintona: Option[Boolean],
 ) extends ValpasOpiskeluoikeusTiedot
 
 case class ValpasOpiskeluoikeusPerusopetuksenJälkeinenSuppeatTiedot(
-  alkamispäivä: String,
+  alkamispäivä: Option[String],
   päättymispäivä: Option[String],
   päättymispäiväMerkittyTulevaisuuteen: Option[Boolean],
   tarkastelupäivänTila: Koodistokoodiviite,
   tarkastelupäivänKoskiTila: Koodistokoodiviite,
+  näytäMuunaPerusopetuksenJälkeisenäOpintona: Option[Boolean],
 ) extends ValpasOpiskeluoikeusTiedot
 
 

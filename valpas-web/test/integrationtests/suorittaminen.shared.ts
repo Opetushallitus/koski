@@ -51,6 +51,17 @@ export const stadinAmmattiopistoSuorittaminenTableContent = `
   Valma-opiskelija Valpas                                              | 19.1.2005  | VALMA                 | Läsnä          | Stadin ammatti- ja aikuisopisto                              | 1.9.2012 | –        | –                                                             | 19.1.2023 asti
     `
 
+export const internationalSchoolSuorittaminenTableHead = "Oppivelvolliset (7)"
+export const internationalSchoolSuorittaminenTableContent = `
+  Int-school-10-luokalla-ilman-alkamispäivää Valpas                                 | 14.3.2005  | International school | Läsnä | International School of Helsinki | –          | – | – | 14.3.2023 asti
+  Int-school-10-luokalta-aloittanut Valpas                                          | 9.6.2005   | International school | Läsnä | International School of Helsinki | 1.1.2021   | – | – | 9.6.2023 asti
+  Int-school-11-luokalta-aloittanut Valpas                                          | 5.4.2005   | International school | Läsnä | International School of Helsinki | 1.1.2021   | – | – | 5.4.2023 asti
+  Int-school-9-luokan-jälkeen-int-schoolin-10-luokalla-aloittanut Valpas            | 22.2.2005  | International school | Läsnä | International School of Helsinki | 1.8.2021   | – | – | 22.2.2023 asti
+  Int-school-9-luokan-jälkeen-int-schoolin-10-luokalla-lokakuussa-aloittanut Valpas | 8.4.2005   | International school | Läsnä | International School of Helsinki | 3.10.2021  | – | – | 8.4.2023 asti
+  Int-school-9-vahvistettu-lokakuussa Valpas                                        | 22.11.2005 | International school | Läsnä | International School of Helsinki | 15.10.2021 | – | – | 22.11.2023 asti
+  Int-school-yli-2kk-aiemmin-9-valmistunut-10-jatkanut Valpas                       | 11.11.2005 | International school | Läsnä | International School of Helsinki | 1.8.2021   | – | – | 11.11.2023 asti
+    `
+
 export const suorittaminenHetuhakuPath = createSuorittaminenHetuhakuPath(
   "/virkailija"
 )

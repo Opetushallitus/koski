@@ -251,7 +251,7 @@ const perusopetusSuoritettu = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
     const date = oo.perusopetusTiedot.päättymispäivä
     if (
       date !== undefined &&
-      oo.perusopetusTiedot.päättynytAiemminTaiLähitulevaisuudessa
+      oo.perusopetusTiedot.valmistunutAiemminTaiLähitulevaisuudessa
     ) {
       return oo.perusopetusTiedot.päättymispäiväMerkittyTulevaisuuteen
         ? {

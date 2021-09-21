@@ -1239,7 +1239,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
 
                   withClue("perusopetusTiedot") {
                     withClue("alkamispäivä") {
-                      opiskeluoikeus.perusopetusTiedot.map(_.alkamispäivä) shouldBe expectedData.perusopetusTiedot.flatMap(_ => expectedData.opiskeluoikeus.alkamispäivä.map(_.toString))
+                      opiskeluoikeus.perusopetusTiedot.flatMap(_.alkamispäivä) shouldBe expectedData.perusopetusTiedot.flatMap(_ => expectedData.opiskeluoikeus.alkamispäivä.map(_.toString))
                     }
                     withClue("päättymispäivä") {
                       opiskeluoikeus.perusopetusTiedot.flatMap(_.päättymispäivä) shouldBe expectedData.perusopetusTiedot.flatMap(_ => expectedData.opiskeluoikeus.päättymispäivä.map(_.toString))
@@ -1247,8 +1247,8 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
                     withClue("päättymispäiväMerkittyTulevaisuuteen") {
                       opiskeluoikeus.perusopetusTiedot.flatMap(_.päättymispäiväMerkittyTulevaisuuteen) shouldBe expectedData.perusopetusTiedot.flatMap(_ => expectedData.opiskeluoikeus.päättymispäivä.map(pp => pp.isAfter(defaultMockTarkastelupäivä)))
                     }
-                    withClue("päättynytAiemminTaiLähitulevaisuudessa") {
-                      opiskeluoikeus.perusopetusTiedot.map(_.päättynytAiemminTaiLähitulevaisuudessa) shouldBe expectedData.perusopetusTiedot.map(pt =>
+                    withClue("valmistunutAiemminTaiLähitulevaisuudessa") {
+                      opiskeluoikeus.perusopetusTiedot.map(_.valmistunutAiemminTaiLähitulevaisuudessa) shouldBe expectedData.perusopetusTiedot.map(pt =>
                         expectedData.opiskeluoikeus.tyyppi.koodiarvo == "perusopetus" &&
                           pt.tarkastelupäivänTila == "valmistunut" &&
                           pt.tarkastelupäivänKoskiTila == "valmistunut" &&
@@ -1259,7 +1259,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
 
                   withClue("perusopetuksenJälkeinenTiedot") {
                     withClue("alkamispäivä") {
-                      opiskeluoikeus.perusopetuksenJälkeinenTiedot.map(_.alkamispäivä) shouldBe expectedData.perusopetuksenJälkeinenTiedot.flatMap(_ => expectedData.opiskeluoikeus.alkamispäivä.map(_.toString))
+                      opiskeluoikeus.perusopetuksenJälkeinenTiedot.flatMap(_.alkamispäivä) shouldBe expectedData.perusopetuksenJälkeinenTiedot.flatMap(_ => expectedData.opiskeluoikeus.alkamispäivä.map(_.toString))
                     }
                     withClue("päättymispäivä") {
                       opiskeluoikeus.perusopetuksenJälkeinenTiedot.flatMap(_.päättymispäivä) shouldBe expectedData.perusopetuksenJälkeinenTiedot.flatMap(_ => expectedData.opiskeluoikeus.päättymispäivä.map(_.toString))
@@ -1351,6 +1351,16 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
           case p: PerusopetuksenVuosiluokanSuoritus => Some(p)
           case _ => None
         }).sortBy(s => s.alkamispäivä)(localDateOptionOrdering).reverse.headOption.map(r => r.luokka)
+      case oo: PerusopetuksenLisäopetuksenOpiskeluoikeus =>
+        oo.suoritukset.flatMap({
+          case p: PerusopetuksenLisäopetuksenSuoritus => Some(p)
+          case _ => None
+        }).sortBy(s => s.alkamispäivä)(localDateOptionOrdering).reverse.headOption.flatMap(r => r.luokka)
+      case oo: InternationalSchoolOpiskeluoikeus =>
+        oo.suoritukset.flatMap({
+          case p: InternationalSchoolVuosiluokanSuoritus => Some(p)
+          case _ => None
+        }).sortBy(s => s.alkamispäivä)(localDateOptionOrdering).reverse.headOption.flatMap(r => r.luokka)
       // Esim. lukiossa jne. voi olla monta päätason suoritusta, eikä mitään järkevää sorttausparametria päätasolla (paitsi mahdollisesti oleva vahvistus).
       // => oletetaan, että saadaan taulukossa viimeisenä olevan suorituksen ryhmä
       case oo: Any =>

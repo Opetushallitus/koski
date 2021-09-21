@@ -5,11 +5,11 @@ import { FutureSuccessIcon, SuccessIcon } from "../components/icons/Icon"
 import { Value } from "../components/tables/DataTable"
 import { getLocalizedMaybe, t } from "../i18n/i18n"
 import { nonNull } from "../utils/arrays"
-import { formatDate } from "../utils/date"
+import { formatDate, formatNullableDate } from "../utils/date"
 import {
   OpintotasonTiedot,
   OpiskeluoikeusSuppeatTiedot,
-  voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus,
+  voimassaolevaTaiTulevaPeruskoulunJälkeinenMuunaOpintonaNäytettäväOpiskeluoikeus,
 } from "./apitypes/opiskeluoikeus"
 import { organisaatioNimi } from "./apitypes/organisaatiot"
 import {
@@ -21,7 +21,7 @@ export const perusopetuksenJälkeisetOpiskeluoikeustiedot = (
   opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
 ): Value | null => {
   const oos = opiskeluoikeudet.filter(
-    voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus
+    voimassaolevaTaiTulevaPeruskoulunJälkeinenMuunaOpintonaNäytettäväOpiskeluoikeus
   )
 
   const toValue = (oo: OpiskeluoikeusSuppeatTiedot) => {
@@ -32,24 +32,28 @@ export const perusopetuksenJälkeisetOpiskeluoikeustiedot = (
       .filter(nonNull)
       .join(", ")
 
-    return isVoimassa(oo.perusopetuksenJälkeinenTiedot!.tarkastelupäivänTila)
+    return isVoimassa(oo.perusopetuksenJälkeinenTiedot!.tarkastelupäivänTila) ||
+      oo.perusopetuksenJälkeinenTiedot!.alkamispäivä === undefined
       ? kohde
       : t("opiskeluoikeudet__pvm_alkaen_kohde", {
-          päivämäärä: formatDate(
+          päivämäärä: formatNullableDate(
             oo.perusopetuksenJälkeinenTiedot!.alkamispäivä
           ),
           kohde,
         })
   }
 
-  const icon = oos.some((oo) =>
-    isVoimassa(oo.perusopetuksenJälkeinenTiedot!.tarkastelupäivänTila)
+  const icon = oos.some(
+    (oo) =>
+      isVoimassa(oo.perusopetuksenJälkeinenTiedot!.tarkastelupäivänTila) &&
+      oo.perusopetuksenJälkeinenTiedot!.alkamispäivä !== undefined
   ) ? (
     <SuccessIcon />
-  ) : oos.some((oo) =>
-      isVoimassaTulevaisuudessa(
-        oo.perusopetuksenJälkeinenTiedot!.tarkastelupäivänTila
-      )
+  ) : oos.some(
+      (oo) =>
+        isVoimassaTulevaisuudessa(
+          oo.perusopetuksenJälkeinenTiedot!.tarkastelupäivänTila
+        ) && oo.perusopetuksenJälkeinenTiedot!.alkamispäivä !== undefined
     ) ? (
     <FutureSuccessIcon />
   ) : undefined
@@ -94,7 +98,8 @@ export const perusopetuksenJälkeistäPreferoivatOpiskeluoikeustiedot = (
       .filter(nonNull)
       .join(", ")
 
-    return isVoimassa(ooTiedot[1].tarkastelupäivänTila)
+    return isVoimassa(ooTiedot[1].tarkastelupäivänTila) ||
+      ooTiedot[1].alkamispäivä === undefined
       ? kohde
       : t("opiskeluoikeudet__pvm_alkaen_kohde", {
           päivämäärä: formatDate(ooTiedot[1].alkamispäivä),

@@ -23,6 +23,7 @@ import {
 } from "../../state/apitypes/kuntailmoitus"
 import {
   aiempienOpintojenAlkamispäivä,
+  isValmistunutInternationalSchoolinPerusopetuksestaAiemminTaiLähitulevaisuudessa,
   myöhempienOpintojenPäättymispäivä,
   myöhempienOpintojenTarkastelupäivänKoskiTila,
   myöhempienOpintojenTarkastelupäivänTila,
@@ -179,6 +180,19 @@ const OpiskeluhistoriaOpinto = ({
           label={t("oppija__opiskeluoikeuden_alkamispäivä")}
           value={formatDate(aiempienOpintojenAlkamispäivä(opiskeluoikeus))}
         />
+
+        {isValmistunutInternationalSchoolinPerusopetuksestaAiemminTaiLähitulevaisuudessa(
+          opiskeluoikeus
+        ) && (
+          <InfoTableRow
+            label={t(
+              "oppija__international_school_perusopetuksen_vahvistuspäivä"
+            )}
+            value={formatDate(
+              opiskeluoikeus.perusopetusTiedot!.päättymispäivä!
+            )}
+          />
+        )}
         {päättymispäivä && (
           <InfoTableRow
             label={t("oppija__opiskeluoikeuden_päättymispäivä")}

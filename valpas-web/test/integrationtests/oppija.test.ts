@@ -244,6 +244,7 @@ describe("Oppijakohtainen näkymä", () => {
       Toimipiste: International School of Helsinki
       Ryhmä: 9B
       Opiskeluoikeuden alkamispäivä: 15.8.2004
+      Perusopetus suoritettu: 30.5.2021
     `)
   })
 

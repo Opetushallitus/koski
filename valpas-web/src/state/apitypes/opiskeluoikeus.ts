@@ -24,16 +24,17 @@ export type OpiskeluoikeusLaajatTiedot = {
 }
 
 export type OpintotasonTiedot = {
-  alkamispäivä: ISODate
+  alkamispäivä?: ISODate
   päättymispäivä?: ISODate
   päättymispäiväMerkittyTulevaisuuteen?: boolean
   tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
   tarkastelupäivänKoskiTila: KoskiOpiskeluoikeudenTila
+  näytäMuunaPerusopetuksenJälkeisenäOpintona?: boolean
 }
 
 export type PerusopetusLaajatTiedot = OpintotasonTiedot & {
   tarkastelupäivänKoskiTilanAlkamispäivä: ISODate
-  päättynytAiemminTaiLähitulevaisuudessa: boolean
+  valmistunutAiemminTaiLähitulevaisuudessa: boolean
   vuosiluokkiinSitomatonOpetus: boolean
 }
 
@@ -56,7 +57,7 @@ export type OpiskeluoikeusSuppeatTiedot = {
 }
 
 export type PerusopetusSuppeatTiedot = OpintotasonTiedot & {
-  päättynytAiemminTaiLähitulevaisuudessa: boolean
+  valmistunutAiemminTaiLähitulevaisuudessa: boolean
   vuosiluokkiinSitomatonOpetus: boolean
 }
 
@@ -119,6 +120,17 @@ export const isSuorittamisvalvottavaOpiskeluoikeus = (
 export const isNuortenPerusopetus = (oo: OpiskeluoikeusSuppeatTiedot) =>
   oo.tyyppi.koodiarvo === "perusopetus"
 
+export const isInternationalSchool = (oo: OpiskeluoikeusSuppeatTiedot) =>
+  oo.tyyppi.koodiarvo === "internationalschool"
+
+export const isValmistunutInternationalSchoolinPerusopetuksestaAiemminTaiLähitulevaisuudessa = (
+  oo: OpiskeluoikeusLaajatTiedot
+) =>
+  oo.tyyppi.koodiarvo == "internationalschool" &&
+  oo.perusopetusTiedot !== undefined &&
+  oo.perusopetusTiedot.valmistunutAiemminTaiLähitulevaisuudessa &&
+  oo.perusopetusTiedot.päättymispäivä !== undefined
+
 export const hakeutumisvalvottavatOpiskeluoikeudet = (
   organisaatioOid: Oid | undefined,
   opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
@@ -146,21 +158,26 @@ export const suorittamisvalvottavatOpiskeluoikeudet = (
     isSuorittamisvalvottavaOpiskeluoikeus(organisaatioOid)
   )
 
-export const voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus = (
+export const voimassaolevaTaiTulevaPeruskoulunJälkeinenMuunaOpintonaNäytettäväOpiskeluoikeus = (
   opiskeluoikeus: OpiskeluoikeusSuppeatTiedot
-): boolean =>
-  opiskeluoikeus.perusopetuksenJälkeinenTiedot !== undefined &&
-  (opiskeluoikeus.perusopetuksenJälkeinenTiedot.tarkastelupäivänTila
-    .koodiarvo === "voimassa" ||
-    opiskeluoikeus.perusopetuksenJälkeinenTiedot.tarkastelupäivänTila
-      .koodiarvo === "voimassatulevaisuudessa")
+): boolean => {
+  const tiedot = opiskeluoikeus.perusopetuksenJälkeinenTiedot
+  const tila = tiedot?.tarkastelupäivänTila.koodiarvo
+  const näytäMuuna = tiedot?.näytäMuunaPerusopetuksenJälkeisenäOpintona
+
+  return (
+    (tila === "voimassa" || tila === "voimassatulevaisuudessa") && !!näytäMuuna
+  )
+}
 
 export const oppijallaOnOpiskelupaikka = (
   opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
 ): boolean =>
   pipe(
     opiskeluoikeudet,
-    A.filter(voimassaolevaTaiTulevaPeruskoulunJälkeinenOpiskeluoikeus),
+    A.filter(
+      voimassaolevaTaiTulevaPeruskoulunJälkeinenMuunaOpintonaNäytettäväOpiskeluoikeus
+    ),
     A.isNonEmpty
   )
 
@@ -171,7 +188,7 @@ export const aiempienOpintojenAlkamispäivä = (
     opiskeluoikeus.perusopetusTiedot ||
     opiskeluoikeus.perusopetuksenJälkeinenTiedot
 
-  return tiedot!.alkamispäivä
+  return tiedot!.alkamispäivä!
 }
 
 export const myöhempienOpintojenPäättymispäivä = (

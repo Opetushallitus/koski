@@ -5,6 +5,7 @@ export const kulosaarenAlaAsteOid: Oid = "1.2.246.562.10.64353470871"
 export const aapajoenKouluOid: Oid = "1.2.246.562.10.26197302388"
 export const stadinAmmattiopistoOid: Oid = "1.2.246.562.10.52251087186"
 export const helsinginMedialukioOid: Oid = "1.2.246.562.10.70411521654"
+export const internationalSchoolOid: Oid = "1.2.246.562.10.67636414343"
 
 export const helsinginKaupunkiOid: Oid = "1.2.246.562.10.346830761110"
 export const tornionKaupunkiOid: Oid = "1.2.246.562.10.25412665926"

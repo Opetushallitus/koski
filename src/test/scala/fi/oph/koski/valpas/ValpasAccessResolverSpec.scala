@@ -129,14 +129,15 @@ class ValpasAccessResolverSpec extends ValpasTestBase {
       nimi = Finnish("Oppilaitoksen nimi")
     ),
     perusopetusTiedot = Some(ValpasOpiskeluoikeusPerusopetusLaajatTiedot(
-      alkamispäivä = "2012-08-01",
+      alkamispäivä = Some("2012-08-01"),
       päättymispäivä = None,
       päättymispäiväMerkittyTulevaisuuteen = None,
       tarkastelupäivänTila = Koodistokoodiviite("voimassa", "valpasopiskeluoikeudentila"),
       tarkastelupäivänKoskiTila = Koodistokoodiviite("lasna", "koskiopiskeluoikeudentila"),
       tarkastelupäivänKoskiTilanAlkamispäivä = "2012-08-01",
-      päättynytAiemminTaiLähitulevaisuudessa = false,
+      valmistunutAiemminTaiLähitulevaisuudessa = false,
       vuosiluokkiinSitomatonOpetus = false,
+      näytäMuunaPerusopetuksenJälkeisenäOpintona = Some(true),
     )),
     perusopetuksenJälkeinenTiedot = None,
     oppivelvollisuudenSuorittamiseenKelpaava = true,
