@@ -99,7 +99,17 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
 
   private def findOrCreate(validHetu: String) = {
     application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(validHetu, nimitiedot)
-      .orElse(nimitiedot.map(toUusiHenkilö(validHetu, _)).map(application.henkilöRepository.findOrCreate(_).left.map(s => new RuntimeException(s.errorString.mkString)).toTry.get))
+      .orElse(create(validHetu))
+  }
+
+  private def create(validHetu: String) = {
+    nimitiedot
+      .map(toUusiHenkilö(validHetu, _))
+      .map(application.henkilöRepository
+        .findOrCreate(_)
+        .left.map(s => new RuntimeException(s.errorString.mkString))
+        .toTry.get
+      )
   }
 
   private def toUusiHenkilö(validHetu: String, nimitiedot: Nimitiedot) = UusiHenkilö(

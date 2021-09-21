@@ -14,20 +14,23 @@ import fi.oph.koski.schema.Koodistokoodiviite
 import cats.syntax.parallel._
 
 case class OppijanumeroRekisteriClient(config: Config) {
-  def findOrCreate(createUserInfo: UusiOppijaHenkilö): IO[Either[HttpStatus, SuppeatOppijaHenkilöTiedot]] = oidServiceHttp.post(uri"/oppijanumerorekisteri-service/s2s/findOrCreateHenkiloPerustieto", createUserInfo)(json4sEncoderOf[UusiOppijaHenkilö]) {
-    case (x, data, _) if x <= 201 => Right(JsonSerializer.parse[OppijaNumerorekisteriPerustiedot](data, ignoreExtras = true))
-    case (400, error, _) => Left(KoskiErrorCategory.badRequest.validation.henkilötiedot.virheelliset(error))
-    case (status, text, uri) => throw HttpStatusException(status, text, uri)
-  }.flatMap {
-    case Right(o) => findSlaveOids(o.oidHenkilo).map(o.toSuppeaOppijaHenkilö).map(Right(_))
-    case Left(status) => IO.pure(status).map(Left(_))
-  }
+  def findOrCreate(createUserInfo: UusiOppijaHenkilö): IO[Either[HttpStatus, SuppeatOppijaHenkilöTiedot]] =
+    oidServiceHttp.post(uri"/oppijanumerorekisteri-service/s2s/findOrCreateHenkiloPerustieto", createUserInfo)(json4sEncoderOf[UusiOppijaHenkilö]) {
+      case (x, data, _) if x <= 201 => Right(JsonSerializer.parse[OppijaNumerorekisteriPerustiedot](data, ignoreExtras = true))
+      case (400, error, _) => Left(KoskiErrorCategory.badRequest.validation.henkilötiedot.virheelliset(error))
+      case (status, text, uri) => throw HttpStatusException(status, text, uri)
+    }.flatMap {
+      case Right(o) => findSlaveOids(o.oidHenkilo).map(o.toSuppeaOppijaHenkilö).map(Right(_))
+      case Left(status) => IO.pure(status).map(Left(_))
+    }
 
   private val oidServiceHttp = VirkailijaHttpClient(makeServiceConfig(config), "/oppijanumerorekisteri-service")
 
-  private def makeServiceConfig(config: Config) = ServiceConfig.apply(config, "authentication-service", "authentication-service.virkailija", "opintopolku.virkailija")
+  private def makeServiceConfig(config: Config) =
+    ServiceConfig.apply(config, "authentication-service", "authentication-service.virkailija", "opintopolku.virkailija")
 
-  private def henkilöByOid[T](oid: String) = oidServiceHttp.get[T](uri"/oppijanumerorekisteri-service/henkilo/$oid")(_)
+  private def henkilöByOid[T](oid: String) =
+    oidServiceHttp.get[T](uri"/oppijanumerorekisteri-service/henkilo/$oid")(_)
 
   def findKäyttäjäByOid(oid: String): IO[Option[KäyttäjäHenkilö]] = henkilöByOid(oid)(Http.parseJsonOptional[KäyttäjäHenkilö])
 
