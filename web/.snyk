@@ -1,17 +1,27 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.13.5
+version: v1.22.0
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
   SNYK-JS-NODEFETCH-674311:
-    - '*':
-      reason: vulnerable code not in use
-      expires: 2100-03-18T14:01:55.550Z
+    - '*': null
+    - reason: vulnerable code not in use
+    - expires: 2100-03-18T14:01:55.550Z
   SNYK-JS-UAPARSERJS-610226:
-    - '*':
-      reason: vulnerable code not in use
-      expires: 2100-03-18T14:01:55.550Z
-  npm:uglify-js:20151024:
-    - '*':
-      reason: vulnerable code not in use
-      expires: 2100-03-18T14:01:55.550Z
+    - '*': null
+    - reason: vulnerable code not in use
+    - expires: 2100-03-18T14:01:55.550Z
+  'npm:uglify-js:20151024':
+    - '*': null
+    - reason: vulnerable code not in use
+    - expires: 2100-03-18T14:01:55.550Z
+  SNYK-JS-ANSIREGEX-1583908:
+    - node-gyp > npmlog > gauge > strip-ansi > ansi-regex:
+        reason: ReDoS in development tools
+        expires: '2021-10-21T07:03:20.176Z'
+    - node-gyp > npmlog > gauge > string-width > strip-ansi > ansi-regex:
+        reason: ReDoS in development tools
+        expires: '2021-10-21T07:03:20.177Z'
+    - node-gyp > npmlog > gauge > wide-align > string-width > strip-ansi > ansi-regex:
+        reason: ReDoS in development tools
+        expires: '2021-10-21T07:03:20.177Z'
 patch: {}
