@@ -8,7 +8,9 @@ import fi.oph.koski.schema._
 class ValpasOpiskeluoikeusDatabaseFixtureCreator(application: KoskiApplication) extends DatabaseFixtureCreator(application, "opiskeluoikeus_valpas_fixture", "opiskeluoikeushistoria_valpas_fixture") {
   protected def oppijat = ValpasMockOppijat.defaultOppijat
 
-  protected lazy val invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = List()
+  protected lazy val invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = List(
+    (ValpasMockOppijat.intSchool10LuokallaIlmanAlkamispäivää, ValpasOpiskeluoikeusExampleData.intSchool9LuokaltaValmistunut2021ja10LuokallaIlmanAlkamispäivää),
+  )
 
   protected def defaultOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = List(
     (ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021, ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus),
@@ -157,6 +159,5 @@ class ValpasOpiskeluoikeusDatabaseFixtureCreator(application: KoskiApplication) 
     (ValpasMockOppijat.intSchool11LuokaltaAloittanut, ValpasOpiskeluoikeusExampleData.internationalSchool11LuokaltaAloittanut),
     (ValpasMockOppijat.intSchool8LuokanSyksyllä2021Aloittanut, ValpasOpiskeluoikeusExampleData.internationalSchool8LuokanSyksyllä2021Aloittanut),
     (ValpasMockOppijat.intSchool9LuokanSyksyllä2021Aloittanut, ValpasOpiskeluoikeusExampleData.internationalSchool9LuokanSyksyllä2021Aloittanut),
-    (ValpasMockOppijat.intSchool10LuokallaIlmanAlkamispäivää, ValpasOpiskeluoikeusExampleData.intSchool9LuokaltaValmistunut2021ja10LuokallaIlmanAlkamispäivää),
   )
 }

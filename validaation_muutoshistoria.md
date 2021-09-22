@@ -1,5 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 24.9.2021
+
+- International schoolin luokka-asteiden 10-12 suorituksille vaaditaan alkamispäivä, jotta voidaan päätellä, milloin
+toisen asteen opintoja vastaavat opinnot ovat alkaneet.
+
 ## 23.9.2021
 
 - Lukion aiemman kuin 2019 opetussuunnitelman käytön esto koskee nyt vain 2005 tai myöhemmin syntyneitä oppijoita

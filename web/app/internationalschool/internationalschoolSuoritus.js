@@ -1,11 +1,13 @@
+import {formatISODate} from '../date/date.js'
 
-export const makeSuoritus = (oppilaitos, grade, suorituskieli) => {
-  if (!oppilaitos || !grade || !suorituskieli) return null
+export const makeSuoritus = (oppilaitos, grade, alkamispäivä, suorituskieli) => {
+  if (!oppilaitos || !grade || !grade || !suorituskieli) return null
 
   return {
     suorituskieli : suorituskieli,
     koulutusmoduuli: mkKoulutusmoduuli(grade),
     toimipiste: oppilaitos,
+    alkamispäivä: formatISODate(alkamispäivä),
     tyyppi: {
       koodiarvo: suoritusTyyppi(grade),
       koodistoUri: 'suorituksentyyppi'
