@@ -2,9 +2,10 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.OppijaHenkilö
+import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
+import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot.oppivelvollisuudenUlkopuolisetKunnat
 import fi.oph.koski.schema.Henkilö
 import fi.oph.koski.validation.MaksuttomuusValidation
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasHenkilöLaajatTiedot, ValpasOppijaLaajatTiedot}
@@ -73,7 +74,7 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
     (asHenkilöhakuResult: (OppijaHenkilö) => Either[HttpStatus, ValpasHenkilöhakuResult], oid: String)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasHenkilöhakuResult] =
-    asSearchResult(asHenkilöhakuResult, henkilöRepository.findByOid(oid))
+    asSearchResult(asHenkilöhakuResult, henkilöRepository.findByOid(oid, findMasterIfSlaveOid = true))
 
   private def asSearchResult
     (asResult: (OppijaHenkilö) => Either[HttpStatus, ValpasHenkilöhakuResult], oppijaHenkilö: Option[OppijaHenkilö])
@@ -105,13 +106,27 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
           // Henkilö, jonka tiedot löytyvät, mutta jolla maksuttomuus on päättynyt esim. toiselta asteelta
           // valmistumiseen, ei ole enää maksuttomuuden piirissä:
           case Some(_) => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult()
-          case None => henkilöRepository.findByOid(henkilö.oid) match {
-            case Some(h) if h.kotikunta.isEmpty => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult()
+          case None => asLaajatOppijaHenkilöTiedot(henkilö) match {
+            case Some(h) if !h.turvakielto && ovlUlkopuolinenKunnanPerusteella(h) => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult()
             case _ => ValpasEiLöytynytHenkilöhakuResult()
           }
         })
     } else {
       Right(ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult())
+    }
+  }
+
+  private def asLaajatOppijaHenkilöTiedot(henkilö: OppijaHenkilö): Option[LaajatOppijaHenkilöTiedot] = {
+    henkilö match {
+      case h: LaajatOppijaHenkilöTiedot => Some(h)
+      case _ => henkilöRepository.findByOid(henkilö.oid, findMasterIfSlaveOid = true)
+    }
+  }
+
+  private def ovlUlkopuolinenKunnanPerusteella(henkilö: LaajatOppijaHenkilöTiedot): Boolean = {
+    henkilö.kotikunta match {
+      case Some(kotikunta) => oppivelvollisuudenUlkopuolisetKunnat.contains(kotikunta)
+      case _ => true
     }
   }
 
