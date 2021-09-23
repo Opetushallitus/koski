@@ -35,7 +35,7 @@ object Lukio2015Validation {
     oppijanSyntymäpäivä: Option[LocalDate],
     rajapäivät: ValpasRajapäivätService): Boolean = {
     oppijanSyntymäpäivä match {
-      case Some(syntymäpäivä) if !syntymäpäivä.isBefore(rajapäivät.lakiVoimassaVanhinSyntymäaika) => true
+      case Some(syntymäpäivä) if !syntymäpäivä.isBefore(rajapäivät.lakiVoimassaVanhinSyntymäaika.plusYears(1)) => true
       case _ => false
     }
   }

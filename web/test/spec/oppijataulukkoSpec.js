@@ -206,6 +206,7 @@ describe('Oppijataulukko', function() {
           'v, virheellisestiSiirrettyVieraskielinen',
           'Vuonna 2004 syntynyt, Peruskoulu suoritettu 2021',
           'Vuonna 2004 syntynyt, Peruskoulu suoritettu ennen 2021',
+          'Vuonna 2005 syntynyt, Peruskoulu suoritettu 2021',
           'Vuosiluokkalainen, Ville',
           'Ysiluokkalainen, Ylermi',
         ])
@@ -215,6 +216,7 @@ describe('Oppijataulukko', function() {
           expect(page.oppijataulukko.names()).to.deep.equal([
             'Ysiluokkalainen, Ylermi',
             'Vuosiluokkalainen, Ville',
+            'Vuonna 2005 syntynyt, Peruskoulu suoritettu 2021',
             'Vuonna 2004 syntynyt, Peruskoulu suoritettu ennen 2021',
             'Vuonna 2004 syntynyt, Peruskoulu suoritettu 2021',
             'v, virheellisestiSiirrettyVieraskielinen',
