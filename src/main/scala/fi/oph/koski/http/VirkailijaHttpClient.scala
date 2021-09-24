@@ -43,7 +43,7 @@ object VirkailijaCredentials {
 object VirkailijaHttpClient {
   private val DefaultSessionCookieName = "JSESSIONID"
 
-  private def defaultClient(serviceUrl: String): Client[IO] = Http.newClient(serviceUrl)
+  private def defaultClient(serviceUrl: String): Client[IO] = Http.retryingClient(serviceUrl)
 
   def apply(serviceConfig: ServiceConfig, serviceUrl: String): Http =
     apply(serviceConfig, serviceUrl, defaultClient(serviceUrl))

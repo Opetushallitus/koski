@@ -34,10 +34,9 @@ object Http extends Logging {
 
   private val maxHttpConnections = Pools.httpThreads
 
-  def newClient(name: String): Client[IO] = {
+  private def baseClient(name: String): Client[IO] = {
     logger.info(s"Creating new pooled http client with $maxHttpConnections max total connections for $name")
-
-    val client = BlazeClientBuilder[IO](ExecutionContext.fromExecutor(Pools.httpPool))
+    BlazeClientBuilder[IO](ExecutionContext.fromExecutor(Pools.httpPool))
       .withMaxTotalConnections(maxHttpConnections)
       .withMaxWaitQueueLimit(1024)
       .withConnectTimeout(20.seconds)
@@ -47,9 +46,9 @@ object Http extends Logging {
       .allocated
       .map(_._1)
       .unsafeRunSync()
-
-    withLoggedRetry(client)
   }
+
+  def retryingClient(name: String): Client[IO] = withLoggedRetry(baseClient(name))
 
   // This guys allows you to make URIs from your Strings as in uri"http://google.com/s=${searchTerm}"
   // Takes care of URI encoding the components. You can prevent encoding a part by wrapping into an Uri using this selfsame method.
@@ -150,7 +149,7 @@ object Http extends Logging {
     def formData: EntityEncoder[IO, String] = EntityEncoder.stringEncoder[IO].withContentType(`Content-Type`(MediaType.application.`x-www-form-urlencoded`))
   }
 
-  def apply(root: String, name: String): Http = Http(root, newClient(name))
+  def apply(root: String, name: String): Http = Http(root, retryingClient(name))
 
 }
 
