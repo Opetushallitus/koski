@@ -9,7 +9,11 @@ import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.language.higherKinds
 
 object RetryMiddleware {
-  private val backoffPolicy = RetryPolicy.exponentialBackoff(
+  type RetriableFilter[F[_]] = (Request[F], Either[Throwable, Response[F]]) => Boolean
+
+  def retryNonIdempotentRequests[F[_]]: RetriableFilter[F] = (_req, result) => RetryPolicy.recklesslyRetriable(result)
+
+  private val DefaultBackoffPolicy = RetryPolicy.exponentialBackoff(
     maxWait = 2.seconds,
     maxRetry = 5
   )
@@ -44,6 +48,10 @@ object RetryMiddleware {
   }
 
   def withLoggedRetry[F[_]](client: Client[F])(implicit F: Temporal[F]): Client[F] = {
-    Retry[F](loggingRetryPolicy(backoffPolicy, RetryPolicy.defaultRetriable))(client)
+    withLoggedRetry(client, RetryPolicy.defaultRetriable)
+  }
+
+  def withLoggedRetry[F[_]](client: Client[F], retriableFilter: RetriableFilter[F])(implicit F: Temporal[F]): Client[F] = {
+    Retry[F](loggingRetryPolicy(DefaultBackoffPolicy, retriableFilter))(client)
   }
 }

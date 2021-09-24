@@ -4,7 +4,7 @@ import cats.effect.IO
 import cats.effect.unsafe.{IORuntime, IORuntimeConfig}
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.http.Http.{Decode, ParameterizedUriWrapper, UriInterpolator}
-import fi.oph.koski.http.RetryMiddleware.withLoggedRetry
+import fi.oph.koski.http.RetryMiddleware.{retryNonIdempotentRequests, withLoggedRetry}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.LogUtils.maskSensitiveInformation
 import fi.oph.koski.log.{LoggerWithContext, Logging}
@@ -49,6 +49,8 @@ object Http extends Logging {
   }
 
   def retryingClient(name: String): Client[IO] = withLoggedRetry(baseClient(name))
+
+  def unsafeRetryingClient(name: String): Client[IO] = withLoggedRetry(baseClient(name), retryNonIdempotentRequests)
 
   // This guys allows you to make URIs from your Strings as in uri"http://google.com/s=${searchTerm}"
   // Takes care of URI encoding the components. You can prevent encoding a part by wrapping into an Uri using this selfsame method.
