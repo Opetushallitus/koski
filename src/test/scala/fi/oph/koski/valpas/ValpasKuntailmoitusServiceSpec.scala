@@ -351,7 +351,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
       kuntailmoitusService
         .haePohjatiedot(input)(defaultSession)
 
-    val kunnat = result.map(_.oppijat(0).yhteystiedot.map(_.kunta))
+    val kunnat = result.map(_.oppijat.head.yhteystiedot.map(_.kunta))
 
     kunnat should equal(Right(expectedKunnat))
   }
@@ -470,7 +470,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
           puhelinnumero = Some("0401122334"),
           email = Some(s"${oppija.kutsumanimi.toLowerCase}@gmail.com"),
           lähiosoite = Some("Esimerkkitie 10"),
-          postinumero = Some("00000"),
+          postinumero = Some("99999"),
           postitoimipaikka = Some("Helsinki"),
           maa = Some(Koodistokoodiviite("188", "maatjavaltiot2")) // Costa Rica
         ),

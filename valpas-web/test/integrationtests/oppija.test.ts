@@ -354,7 +354,7 @@ describe("Oppijakohtainen näkymä", () => {
       Ilmoitetut yhteystiedot
       keyboard_arrow_rightYhteystiedot – 9.4.2020
       Lähiosoite:	Esimerkkikatu 123
-      Postitoimipaikka:  00000 Helsinki
+      Postitoimipaikka:  99999 Helsinki
       Matkapuhelin:	0401234567
       Sähköposti:	Valpas.Oppivelvollinen-ysiluokka-kesken-keväällä-2021@gmail.com
       Lähde: Hakulomake – Yhteishaku 2021
@@ -364,7 +364,7 @@ describe("Oppijakohtainen näkymä", () => {
       Viralliset yhteystiedot
       keyboard_arrow_rightVTJ: Kotiosoite
       Lähiosoite:	Esimerkkitie 10
-      Postitoimipaikka:	00000 Helsinki
+      Postitoimipaikka:	99999 Helsinki
       Maa: Costa rica
       Puhelin:	0401122334
       Sähköposti:	valpas@gmail.com
@@ -392,7 +392,7 @@ describe("Oppijakohtainen näkymä", () => {
       Ilmoitetut yhteystiedot
       keyboard_arrow_rightYhteystiedot – 10.4.2020
       Lähiosoite:	Uudempi esimerkkikatu 987
-      Postitoimipaikka:  00000 Helsinki
+      Postitoimipaikka:  99999 Helsinki
       Matkapuhelin:	0401234567
       Sähköposti:	Valpas.LuokallejäänytYsiluokkalainen@gmail.com
       Lähde: Hakulomake – Yhteishaku 2021
@@ -406,7 +406,7 @@ describe("Oppijakohtainen näkymä", () => {
       Ilmoitetut yhteystiedot
       keyboard_arrow_rightYhteystiedot – 9.4.2020
       Lähiosoite:	Kungsgatan 123
-      Postitoimipaikka:  00000 STOCKHOLM
+      Postitoimipaikka:  99999 STOCKHOLM
       Maa: Ruotsi
       Matkapuhelin:	0401234567
       Sähköposti:	Oppivelvollisuuksia.Päällekkäisiä@gmail.com

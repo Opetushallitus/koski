@@ -174,7 +174,14 @@ class MockOpintopolkuHenkilöFacadeWithDBSupport(val db: DB) extends MockOpintop
     puhelinnumero = Some("0401122334"),
     matkapuhelinnumero = Some("0401122334"),
     katuosoite = Some("Esimerkkitie 10"),
-    kunta = henkilö.kotikunta.orElse(Some("Helsinki")),
+    kunta = henkilö.kotikunta match {
+      case Some("091") => Some("Helsinki")
+      case Some("179") => Some("Jyväskylä")
+      case Some("624") => Some("Pyhtää")
+      case Some("999") => Some("Ei tiedossa (kunta)")
+      case Some(x) => Some(s"Lisää koodi $x mockYhteystiedot-funktioon")
+      case _ => None
+    },
     postinumero = henkilö.kotikunta.map(_ => "99999").orElse(Some("00000")),
     kaupunki = henkilö.kotikunta,
     maa = Some("  Costa rica  "),

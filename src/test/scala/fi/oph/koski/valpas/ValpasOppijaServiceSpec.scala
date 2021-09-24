@@ -251,6 +251,10 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
         ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen, "valmistunut", "valmistunut", true, true, false)
       )
     ),
+    (
+      ValpasMockOppijat.turvakieltoOppijaTyhjälläKotikunnalla,
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", "lasna", true, true, false))
+    ),
   ).sortBy(item => (item._1.sukunimi.toLowerCase, item._1.etunimet.toLowerCase))
 
   // Jyväskylän normaalikoulusta löytyvät näytettävät hakeutumisvelvolliset aakkosjärjestyksessä, tutkittaessa syksyn rajapäivän jälkeen
@@ -368,6 +372,10 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
       List(
         ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", "lasna", true, true, false)
       )
+    ),
+    (
+      ValpasMockOppijat.turvakieltoOppijaTyhjälläKotikunnalla,
+      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, "voimassa", "lasna", true, true, false))
     ),
   ).sortBy(item => (item._1.sukunimi.toLowerCase, item._1.etunimet.toLowerCase))
 

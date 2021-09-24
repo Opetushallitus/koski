@@ -2,12 +2,19 @@ package fi.oph.koski.oppivelvollisuustieto
 
 import java.time.LocalDate
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.raportit.AhvenanmaanKunnat.ahvenanmaanKunnat
 import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import slick.jdbc.GetResult
 
 
 object Oppivelvollisuustiedot {
+    def oppivelvollisuudenUlkopuolisetKunnat = ahvenanmaanKunnat ++ List(
+      "198",  // Ei kotikuntaa Suomessa
+      "200",  // Ulkomaat
+      "",     // Virheellinen null
+    )
+
   def queryByOids(oids: Seq[String], db: RaportointiDatabase): Seq[Oppivelvollisuustieto] = {
     db.runDbSync(
       sql"select * from oppivelvollisuustiedot where oppija_oid = any($oids)".as[Oppivelvollisuustieto]
@@ -27,6 +34,9 @@ object Oppivelvollisuustiedot {
     val valpasLakiVoimassaPeruskoulustaValmistuneilla = valpasRajapäivätService.lakiVoimassaPeruskoulustaValmistuneillaAlku
     val oppivelvollisuusLoppuuIka = valpasRajapäivätService.oppivelvollisuusLoppuuIka
     val maksuttomuusLoppuuIka = valpasRajapäivätService.maksuttomuusLoppuuIka
+
+    val oppivelvollisuudenUlkopuolisetKunnatList = validatedUnboundCodeList(oppivelvollisuudenUlkopuolisetKunnat)
+
     sqlu"""
       create materialized view #${s.name}.oppivelvollisuustiedot as
         with
@@ -49,6 +59,10 @@ object Oppivelvollisuustiedot {
               from
                 #${s.name}.r_henkilo henkilo
               where syntymaaika >= '#$valpasLakiVoimassaVanhinSyntymäaika'::date
+                and (
+                  turvakielto = true
+                  or not (kotikunta is null or kotikunta = any(#$oppivelvollisuudenUlkopuolisetKunnatList))
+                )
                 and master_oid not in (
                                 select
                                   henkilo.master_oid
@@ -135,6 +149,14 @@ object Oppivelvollisuustiedot {
       oikeusMaksuttomaanKoulutukseenVoimassaAsti = row.getLocalDate("oikeusKoulutuksenMaksuttomuuteenVoimassaAsti")
     )
   )
+
+  private def validatedUnboundCodeList(list: Seq[String]): String = {
+    assert(list.forall(_.forall(Character.isDigit)), "Annettu kuntakoodilista sisälsi ei-numeerisia merkkejä")
+    val listString = list
+      .map(c => s""""$c"""")
+      .mkString(",")
+    s"'{$listString}'"
+  }
 }
 
 case class Oppivelvollisuustieto(
