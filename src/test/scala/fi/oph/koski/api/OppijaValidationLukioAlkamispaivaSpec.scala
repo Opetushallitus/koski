@@ -33,41 +33,41 @@ class OppijaValidationLukioAlkamispäiväSpec
     val aiempiAlkamispäivä = date(2021, 1, 1)
 
     "Lukion oppimäärässä" - {
-      "Sallitaan 2004 tai myöhemmin syntyneelle, jos on aiempi lukion opiskeluoikeus" in {
+      "Sallitaan 2005 tai myöhemmin syntyneelle, jos on aiempi lukion opiskeluoikeus" in {
 
         putOpiskeluoikeus(
           defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(aiempiAlkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))),
-          KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
+          KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
         ) {
           verifyResponseStatusOk()
         }
 
         putOpiskeluoikeus(
           defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))),
-          KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
+          KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
         ) {
           verifyResponseStatusOk()
         }
       }
-      "Sallitaan 2003 tai aiemmin syntyneelle, jos ei ole aiempia lukion opiskeluoikeuksia" in {
+      "Sallitaan 2004 tai aiemmin syntyneelle, jos ei ole aiempia lukion opiskeluoikeuksia" in {
         putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))))) {
           verifyResponseStatusOk()
         }
       }
-      "Ei sallita 2004 tai myöhemmin syntyneelle, jos ei ole aiempia lukion opiskeluoikeuksia" in {
+      "Ei sallita 2005 tai myöhemmin syntyneelle, jos ei ole aiempia lukion opiskeluoikeuksia" in {
         putOpiskeluoikeus(
           defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))),
-          KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
+          KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
         ) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.liianVanhaOpetussuunnitelma(
             "Uusi lukion opiskelija ei voi aloittaa vanhojen opetussuunnitelman perusteiden mukaisia opintoja 1.8.2021 tai myöhemmin. Käytä lukion opetussuunnitelman perusteen diaarinumeroa OPH-2263-2019. Jos tosiasiassa oppija on aloittanut vanhojen perusteiden mukaiset lukio-opinnot ennen 1.8.2021, häneltä puuttuu KOSKI-tietovarannosta tämä opiskeluoikeus"
           ))
         }
       }
-      "Ei sallita 2004 tai myöhemmin syntyneelle, jos ei ole aiempia lukion opiskeluoikeuksia, paitsi se, jota ollaan parhaillaan muokkaamassa" in {
+      "Ei sallita 2005 tai myöhemmin syntyneelle, jos ei ole aiempia lukion opiskeluoikeuksia, paitsi se, jota ollaan parhaillaan muokkaamassa" in {
         val luodunOpiskeluoikeudenOid = putOpiskeluoikeus(
           defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(aiempiAlkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))),
-          KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
+          KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
         ) {
           verifyResponseStatusOk()
           readPutOppijaResponse.opiskeluoikeudet.head.oid
@@ -78,7 +78,7 @@ class OppijaValidationLukioAlkamispäiväSpec
             oid = Some(luodunOpiskeluoikeudenOid),
             tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))
           ),
-          KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
+          KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
         ) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.liianVanhaOpetussuunnitelma(
             "Uusi lukion opiskelija ei voi aloittaa vanhojen opetussuunnitelman perusteiden mukaisia opintoja 1.8.2021 tai myöhemmin. Käytä lukion opetussuunnitelman perusteen diaarinumeroa OPH-2263-2019. Jos tosiasiassa oppija on aloittanut vanhojen perusteiden mukaiset lukio-opinnot ennen 1.8.2021, häneltä puuttuu KOSKI-tietovarannosta tämä opiskeluoikeus"
@@ -87,11 +87,11 @@ class OppijaValidationLukioAlkamispäiväSpec
       }
     }
     "Lukion oppiaineen oppimäärässä" - {
-      "Sallitaan 2004 tai myöhemmin syntyneelle, jos on aiempi lukion opiskeluoikeus" in {
+      "Sallitaan 2005 tai myöhemmin syntyneelle, jos on aiempi lukion opiskeluoikeus" in {
 
         putOpiskeluoikeus(
           defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(aiempiAlkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))),
-          KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
+          KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
         ) {
           verifyResponseStatusOk()
         }
@@ -101,12 +101,12 @@ class OppijaValidationLukioAlkamispäiväSpec
             tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))),
             suoritukset = List(lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi)
           ),
-          KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
+          KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
         ) {
           verifyResponseStatusOk()
         }
       }
-      "Sallitaan 2003 tai aiemmin syntyneelle, jos ei ole aiempia lukion opiskeluoikeuksia" in {
+      "Sallitaan 2004 tai aiemmin syntyneelle, jos ei ole aiempia lukion opiskeluoikeuksia" in {
         putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
           tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))),
           suoritukset = List(lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi)
@@ -114,13 +114,13 @@ class OppijaValidationLukioAlkamispäiväSpec
           verifyResponseStatusOk()
         }
       }
-      "Ei sallita 2004 tai myöhemmin syntyneelle, jos ei ole aiempia lukion opiskeluoikeuksia" in {
+      "Ei sallita 2005 tai myöhemmin syntyneelle, jos ei ole aiempia lukion opiskeluoikeuksia" in {
         putOpiskeluoikeus(
           defaultOpiskeluoikeus.copy(
             tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))),
             suoritukset = List(lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi)
           ),
-          KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
+          KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
         ) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.liianVanhaOpetussuunnitelma(
             "Uusi lukion opiskelija ei voi aloittaa vanhojen opetussuunnitelman perusteiden mukaisia opintoja 1.8.2021 tai myöhemmin. Käytä lukion opetussuunnitelman perusteen diaarinumeroa OPH-2263-2019. Jos tosiasiassa oppija on aloittanut vanhojen perusteiden mukaiset lukio-opinnot ennen 1.8.2021, häneltä puuttuu KOSKI-tietovarannosta tämä opiskeluoikeus"
@@ -134,7 +134,7 @@ class OppijaValidationLukioAlkamispäiväSpec
             suoritukset = List(lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi),
             lisätiedot = Some(LukionOpiskeluoikeudenLisätiedot(ulkomainenVaihtoopiskelija = true))
           ),
-          KoskiSpecificMockOppijat.vuonna2004SyntynytUlkomainenVaihtoopiskelija
+          KoskiSpecificMockOppijat.vuonna2005SyntynytUlkomainenVaihtoopiskelija
         ) {
           verifyResponseStatusOk()
         }

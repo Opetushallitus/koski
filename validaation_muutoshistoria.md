@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 23.9.2021
+
+- Lukion aiemman kuin 2019 opetussuunnitelman käytön esto koskee nyt vain 2005 tai myöhemmin syntyneitä oppijoita
+
 ## 22.9.2021
 
 - 8.9.2021 tehtyyn validaation kiristykseen tehty poikkeus
