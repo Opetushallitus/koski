@@ -2,19 +2,31 @@ package fi.oph.koski.raportit
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
-
-import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
+import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
+import fi.oph.koski.documentation.ExampleData.opiskeluoikeusLäsnä
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeudenTila, AmmatillinenOpiskeluoikeusjakso, Oppija}
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
-class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with OpiskeluoikeusTestMethodsAmmatillinen with BeforeAndAfterAll {
+class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with OpiskeluoikeusTestMethodsAmmatillinen with BeforeAndAfterAll  with DirtiesFixtures {
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
     reloadRaportointikanta
+  }
+
+  override protected def alterFixture(): Unit = {
+    putOppija(Oppija(KoskiSpecificMockOppijat.ammattilainen, List(AmmatillinenExampleData.opiskeluoikeus().copy(
+      suoritukset = List(AmmatillinenExampleData.ammatillisenTutkinnonOsittainenSuoritusKorotetuillaOsasuorituksilla()),
+      tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2016, 1, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)))),
+    )))) {
+      verifyResponseStatusOk()
+      reloadRaportointikanta
+    }
   }
 
   lazy val repository = AmmatillisenRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
@@ -35,11 +47,11 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
     "Tutkinnon osia voidaan rajata arviointipäivän perusteella" - {
       "Tutkinnon osat jotka arvioitu ennen aikaväliä, ei oteta mukaan raportille" in {
         val rows = testiHenkilöRaporttiRows(alku = date(2015, 1, 1), loppu = date(2015, 2, 2), osasuoritustenAikarajaus = true)
-        rows.map(_.suoritettujenOpintojenYhteislaajuus) should equal(List(20))
+        rows.map(_.suoritettujenOpintojenYhteislaajuus) should equal(List("20.0"))
       }
       "Tutkinnon osiat jotka arvioitu jälkeen aikavälin, ei oteta mukaan raportille" in {
         val rows = testiHenkilöRaporttiRows(alku = date(2014, 1, 1), loppu = date(2014, 12, 31), osasuoritustenAikarajaus = true)
-        rows.map(_.suoritettujenOpintojenYhteislaajuus) should equal(List(91))
+        rows.map(_.suoritettujenOpintojenYhteislaajuus) should equal(List("91.0"))
       }
     }
 
@@ -47,6 +59,18 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
       val rivit = testiHenkilöRaporttiRows(alku = date(2016, 1, 1), loppu = date(2016, 5, 30), osasuoritustenAikarajaus = false, hetu = KoskiSpecificMockOppijat.erikoisammattitutkinto.hetu.get)
 
       rivit.length should equal(0)
+    }
+
+    "Korotetut suoritukset" in {
+      val rivit = testiHenkilöRaporttiRows(alku = date(2016, 1, 1), loppu = date(2016, 5, 30), osasuoritustenAikarajaus = false, KoskiSpecificMockOppijat.ammattilainen.hetu.get)
+
+      rivit(0).suoritettujenOpintojenYhteislaajuus should equal("2.0 (2.0)")
+      rivit(0).valmiitAmmatillisetTutkinnonOsatLkm should equal("1 (1)")
+      rivit(0).näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm should equal ("1 (1)")
+      rivit(0).tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm should equal("1 (1)")
+      rivit(0).rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm should equal("1 (1)")
+      rivit(0).suoritetutAmmatillisetTutkinnonOsatYhteislaajuus should equal("2.0 (2.0)")
+      rivit(0).tunnustetutAmmatillisetTutkinnonOsatYhteislaajuus should equal("2.0 (2.0)")
     }
   }
 
@@ -76,27 +100,27 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
     viimeisinOpiskeluoikeudenTila = Some("valmistunut"),
     viimeisinOpiskeluoikeudenTilaAikajaksonLopussa = "lasna",
     opintojenRahoitukset = "1",
-    suoritettujenOpintojenYhteislaajuus = 111.0,
-    valmiitAmmatillisetTutkinnonOsatLkm = 3,
-    näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm = 1,
-    tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm = 2,
-    rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm = 1,
-    suoritetutAmmatillisetTutkinnonOsatYhteislaajuus = 89.0,
-    tunnustetutAmmatillisetTutkinnonOsatYhteislaajuus = 45.0,
-    valmiitYhteistenTutkinnonOsatLkm = 2,
-    pakollisetYhteistenTutkinnonOsienOsaalueidenLkm = 8,
-    valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm = 1,
-    tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm = 1,
-    rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm = 0,
-    tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm = 1,
-    rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm = 1,
-    suoritettujenYhteistenTutkinnonOsienYhteislaajuus = 23.0,
-    tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus = 9.0,
-    suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = 22.0,
-    pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = 20.0,
-    valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus = 3.0,
-    valmiitVapaaValintaisetTutkinnonOsatLkm = 0,
-    valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm = 0
+    suoritettujenOpintojenYhteislaajuus = "111.0",
+    valmiitAmmatillisetTutkinnonOsatLkm = "3",
+    näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm = "1",
+    tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm = "2",
+    rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm = "1",
+    suoritetutAmmatillisetTutkinnonOsatYhteislaajuus = "89.0",
+    tunnustetutAmmatillisetTutkinnonOsatYhteislaajuus = "45.0",
+    valmiitYhteistenTutkinnonOsatLkm = "2",
+    pakollisetYhteistenTutkinnonOsienOsaalueidenLkm = "8",
+    valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm = "1",
+    tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm = "1",
+    rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm = "0",
+    tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm = "1",
+    rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm = "1",
+    suoritettujenYhteistenTutkinnonOsienYhteislaajuus = "23.0",
+    tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus = "9.0",
+    suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = "22.0",
+    pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = "20.0",
+    valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus = "3.0",
+    valmiitVapaaValintaisetTutkinnonOsatLkm = "0",
+    valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm = "0"
   )
 
   private def testiHenkilöRaporttiRows(alku: LocalDate, loppu: LocalDate, osasuoritustenAikarajaus: Boolean, hetu:String = defaultTestiHenkilö.hetu.get) = {

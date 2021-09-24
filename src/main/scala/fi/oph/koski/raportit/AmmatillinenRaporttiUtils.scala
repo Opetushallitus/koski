@@ -110,4 +110,24 @@ object AmmatillinenRaporttiUtils {
     isAmmatillinenMuitaOpintoValmiuksiaTukeviaOpintoja,
     isAmmatillisenTutkinnonOsanOsaalue
   )
+
+  val korotettuEriVuonna: Seq[ROsasuoritusRow] => Seq[ROsasuoritusRow] = osasuoritukset => osasuoritukset.filter(_.korotettuEriVuonna)
+
+  def suorituksetJaKorotuksetLaajuuksina(suoritukset: Seq[ROsasuoritusRow]): String = {
+    val eriVuonnaKorotetut = korotettuEriVuonna(suoritukset)
+    if (eriVuonnaKorotetut.size > 0 ) {
+      s"${yhteislaajuus(suoritukset)} (${yhteislaajuus(eriVuonnaKorotetut)})"
+    } else {
+      s"${yhteislaajuus(suoritukset)}"
+    }
+  }
+
+  def suorituksetJaKorotuksetSuoritustenMäärässä(suoritukset: Seq[ROsasuoritusRow]): String = {
+    val eriVuonnaKorotetut = korotettuEriVuonna(suoritukset)
+    if (eriVuonnaKorotetut.size > 0 ) {
+      s"${suoritukset.size} (${eriVuonnaKorotetut.size})"
+    } else {
+      s"${suoritukset.size}"
+    }
+  }
 }

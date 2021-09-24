@@ -697,4 +697,108 @@ object AmmatillinenExampleData {
       näyttö = None,
       osasuoritukset = osasuoritukset
     )
+
+  def ammatillisenTutkinnonSuoritusKorotetuillaOsasuorituksilla() =
+    AmmatillisenTutkinnonSuoritus(
+      koulutusmoduuli = sosiaaliJaTerveysalanPerustutkinto,
+      suoritustapa = suoritustapaOps,
+      järjestämismuodot = Some(List(
+        Järjestämismuotojakso(date(2015, 1, 1), None, järjestämismuotoOppilaitos),
+      )),
+      suorituskieli = suomenKieli,
+      alkamispäivä = None,
+      toimipiste = stadinToimipiste,
+      vahvistus = vahvistus(date(2016, 1, 1), stadinAmmattiopisto, Some(helsinki)),
+      osasuoritukset = Some(List(
+        tutkinnonOsanSuoritus("100832", "Kasvun tukeminen ja ohjaus", ammatillisetTutkinnonOsat, hylätty, 2).copy(
+          arviointi = Some(List(
+            AmmatillinenArviointi(arvosana = hylätty, date(2015, 1, 1)),
+            AmmatillinenArviointi(arvosana = hyväksytty, date(2016, 1, 1))
+          )),
+          vahvistus = vahvistusValinnaisellaTittelillä(date(2016, 1, 1), stadinAmmattiopisto),
+          tunnustettu = Some(tunnustettu.copy(
+            rahoituksenPiirissä = true
+          )),
+          näyttö = Some(
+            näyttö(date(2016, 1, 1), "Muksulan päiväkodin ympäristövaikutusten arvioiminen ja ympäristön kunnostustöiden\ntekeminen sekä mittauksien tekeminen ja näytteiden ottaminen", "Muksulan päiväkoti, Kaarinan kunta", Some(näytönArviointi))
+          )
+        ),
+        tutkinnonOsanSuoritus("100833", "Hoito ja huolenpito", ammatillisetTutkinnonOsat, hylätty, laajuus = Some(2.0f), pakollinen = false).copy(
+          arviointi = Some(List(
+            AmmatillinenArviointi(arvosana = hylätty, date(2015, 1, 1)),
+            AmmatillinenArviointi(arvosana = hyväksytty, date(2016, 1, 1))
+          )),
+          vahvistus = vahvistusValinnaisellaTittelillä(date(2016, 1, 1), stadinAmmattiopisto),
+        ),
+        tutkinnonOsanSuoritus("100834", "Kuntoutumisen tukeminen", vapaavalintaisetTutkinnonOsat, hylätty, 2).copy(
+          arviointi = Some(List(
+            AmmatillinenArviointi(arvosana = hylätty, date(2015, 1, 1)),
+            AmmatillinenArviointi(arvosana = hyväksytty, date(2016, 1, 1))
+          )),
+          vahvistus = vahvistusValinnaisellaTittelillä(date(2016, 1, 1), stadinAmmattiopisto)
+        ),
+        tutkinnonOsanSuoritus("100835", "Asiakaspalvelu ja tietohallinta", yksilöllisestiLaajentavatTutkinnonOsat, hylätty, 2).copy(
+          arviointi = Some(List(
+            AmmatillinenArviointi(arvosana = hylätty, date(2015, 1, 1)),
+            AmmatillinenArviointi(arvosana = hyväksytty, date(2016, 1, 1))
+          )),
+          vahvistus = vahvistusValinnaisellaTittelillä(date(2016, 1, 1), stadinAmmattiopisto)
+        ),
+        yhteisenTutkinnonOsanSuoritus("101053", "Viestintä- ja vuorovaikutusosaaminen", k3, 10).copy(
+          osasuoritukset = Some(List(
+            YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"),
+              pakollinen = true,
+              kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"),
+              laajuus = Some(LaajuusOsaamispisteissä(5))),
+              arviointi = Some(List(
+                AmmatillinenArviointi(arvosana = hylätty, date(2015, 1, 1)),
+                AmmatillinenArviointi(arvosana = hyväksytty, date(2016, 1, 1))
+              ))),
+            YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"),
+              pakollinen = false,
+              kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"),
+              laajuus = Some(LaajuusOsaamispisteissä(5))),
+              arviointi = Some(List(
+                AmmatillinenArviointi(arvosana = hylätty, date(2015, 1, 1)),
+                AmmatillinenArviointi(arvosana = hyväksytty, date(2016, 1, 1))
+              )),
+              tunnustettu = Some(tunnustettu.copy(
+                rahoituksenPiirissä = true
+              ))),
+          )),
+          vahvistus = vahvistusValinnaisellaTittelillä(date(2016, 1, 1), stadinAmmattiopisto),
+          tunnustettu = Some(tunnustettu.copy(
+            rahoituksenPiirissä = true
+          ))
+        ))
+      )
+    )
+
+  def ammatillisenTutkinnonOsittainenSuoritusKorotetuillaOsasuorituksilla() =
+    AmmatillisenTutkinnonOsittainenSuoritus(
+      koulutusmoduuli = sosiaaliJaTerveysalanPerustutkinto,
+      suoritustapa = suoritustapaOps,
+      järjestämismuodot = Some(List(
+        Järjestämismuotojakso(date(2015, 1, 1), None, järjestämismuotoOppilaitos),
+      )),
+      suorituskieli = suomenKieli,
+      alkamispäivä = None,
+      toimipiste = stadinToimipiste,
+      vahvistus = vahvistus(date(2016, 1, 1), stadinAmmattiopisto, Some(helsinki)),
+      osasuoritukset = Some(List(
+        osittaisenTutkinnonTutkinnonOsanSuoritus(h2, ammatillisetTutkinnonOsat, "100001", "Audiovisuaalisen tuotannon toteuttaminen", 2).copy(
+          arviointi = Some(List(
+            AmmatillinenArviointi(arvosana = hylätty, date(2015, 1, 1)),
+            AmmatillinenArviointi(arvosana = hyväksytty, date(2016, 1, 1))
+          )),
+          vahvistus = vahvistusValinnaisellaTittelillä(date(2016, 1, 1), stadinAmmattiopisto),
+          tunnustettu = Some(tunnustettu.copy(
+            rahoituksenPiirissä = true
+          )),
+          näyttö = Some(
+            näyttö(date(2016, 1, 1), "Muksulan päiväkodin ympäristövaikutusten arvioiminen ja ympäristön kunnostustöiden\ntekeminen sekä mittauksien tekeminen ja näytteiden ottaminen", "Muksulan päiväkoti, Kaarinan kunta", Some(näytönArviointi))
+          )),
+        )
+      )
+    )
 }
