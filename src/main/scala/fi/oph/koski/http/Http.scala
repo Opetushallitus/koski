@@ -210,10 +210,6 @@ case class Http(root: String, client: Client[IO]) extends Logging {
     processRequest(request.withEntity(entity)(encode), uriTemplate = path.template)(decode)
   }
 
-  def post[ResultType](uri: ParameterizedUriWrapper, headers: Headers)(decode: Decode[ResultType]): IO[ResultType] = {
-    processRequest(Request(uri = uri.uri, method = Method.POST, headers = headers), uri.template)(decode)
-  }
-
   def put[I <: AnyRef, O <: Any](path: ParameterizedUriWrapper, entity: I)(encode: EntityEncoder[IO, I])(decode: Decode[O]): IO[O] = {
     val request: Request[IO] = Request(uri = path.uri, method = Method.PUT)
     processRequest(request.withEntity(entity)(encode), path.template)(decode)
