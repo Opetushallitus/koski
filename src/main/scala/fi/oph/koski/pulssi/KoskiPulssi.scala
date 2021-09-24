@@ -1,5 +1,6 @@
 package fi.oph.koski.pulssi
 
+import cats.effect.IO
 import fi.oph.koski.cache._
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.Http
@@ -9,6 +10,7 @@ import fi.oph.koski.tiedonsiirto.TiedonsiirtoTilasto
 import fi.oph.koski.userdirectory.KäyttöoikeusServiceClient
 
 import scala.concurrent.duration.DurationInt
+import cats.syntax.parallel._
 
 
 trait KoskiPulssi {
@@ -30,15 +32,13 @@ class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
   def oppijoidenMäärä: Int = perustiedotStats.henkilöCount.getOrElse(0)
   def käyttöoikeudet: KäyttöoikeusTilasto = {
     val ryhmät: Map[String, List[String]] = if (!application.fixtureCreator.shouldUseFixtures) {
-      import scalaz.concurrent.Task.gatherUnordered
       val client = KäyttöoikeusServiceClient(application.config)
 
-      Http.runTask(client.findKäyttöoikeusryhmät.flatMap { ryhmät =>
-        gatherUnordered(ryhmät
-          .map { ryhmä =>
+      Http.runIO(client.findKäyttöoikeusryhmät.flatMap { ryhmät =>
+        ryhmät
+          .parTraverse { ryhmä =>
             client.findKäyttöoikeusRyhmänHenkilöt(ryhmä.id).map(henkilöOids => (ryhmä.fi, henkilöOids))
           }
-        )
       }.map(_.toMap))
 
     } else {

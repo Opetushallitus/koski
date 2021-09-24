@@ -19,7 +19,7 @@ object AppConfig extends Logging {
     sys.env.get("ECS_CONTAINER_METADATA_URI_V4") match {
       case Some(metadataEndpoint) =>
         val http = Http(metadataEndpoint, "ecsMetadata")
-        runTask(http.get(uri"")(Http.parseJson[EcsMetadataResponse])).DockerId
+        runIO(http.get(uri"")(Http.parseJson[EcsMetadataResponse])).DockerId
       case None => "local"
     }
   }

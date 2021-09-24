@@ -1,13 +1,12 @@
 package fi.oph.koski.pulssi
 
+import cats.effect.IO
 import com.typesafe.config.Config
 import fi.oph.koski.http.Http
 import fi.oph.koski.http.Http._
 import fi.oph.koski.json.GenericJsonFormats
 import fi.oph.koski.json.JsonSerializer.extract
 import org.json4s.JValue
-
-import scalaz.concurrent.Task
 
 object PrometheusRepository {
   def apply(config: Config) = {
@@ -20,16 +19,16 @@ object PrometheusRepository {
 }
 
 class RemotePrometheusRepository(http: Http) extends PrometheusRepository {
-  override def query(query: String): Task[JValue] =
+  override def query(query: String): IO[JValue] =
     http.get(query.toUri)(Http.parseJson[JValue])
 }
 
 trait PrometheusRepository {
   implicit val formats = GenericJsonFormats.genericFormats
 
-  def query(query: String): Task[JValue]
+  def query(query: String): IO[JValue]
 
-  def koskiMetrics: KoskiMetriikka = runTask(for {
+  def koskiMetrics: KoskiMetriikka = runIO(for {
     ops <- monthlyOps
     koskiAvailability <- availability
     failedTransfers <- intMetric("koski_failed_data_transfers")
@@ -45,9 +44,9 @@ trait PrometheusRepository {
     applicationErrors
   ))
 
-  def koskiMonthlyOperations: List[Map[String, Any]] = runTask(monthlyOps)
+  def koskiMonthlyOperations: List[Map[String, Any]] = runIO(monthlyOps)
 
-  private def monthlyOps: Task[List[Map[String, Any]]] = metric("/api/v1/query?query=koski_monthly_operations")
+  private def monthlyOps: IO[List[Map[String, Any]]] = metric("/api/v1/query?query=koski_monthly_operations")
     .map(_.map { metric =>
       val operation = extract[String](metric \ "metric" \ "operation")
       val count = value(metric).map(_.toDouble.toInt).getOrElse(0)
@@ -60,7 +59,7 @@ trait PrometheusRepository {
     }.sortBy(_("nimi").toString)
   )
 
-  private def monthlyAlerts: Task[Map[String, Int]] = metric("/api/v1/query?query=koski_alerts").map(_.map { metric =>
+  private def monthlyAlerts: IO[Map[String, Int]] = metric("/api/v1/query?query=koski_alerts").map(_.map { metric =>
       val alert = extract[String](metric \ "metric" \ "alertname")
       val instance = extract[Option[String]](metric \ "metric" \ "instance").map(i => "@"+i).getOrElse("")
       val count = value(metric).map(_.toDouble.toInt).getOrElse(0)
@@ -68,15 +67,15 @@ trait PrometheusRepository {
     }.toMap
   )
 
-  private def availability: Task[Double] =
+  private def availability: IO[Double] =
     metric("/api/v1/query?query=koski_available_percent")
       .map(_.headOption.flatMap(value).map(_.toDouble).map(round(3)).getOrElse(100))
 
-  private def intMetric(metricName: String): Task[Int] =
+  private def intMetric(metricName: String): IO[Int] =
     metric(s"/api/v1/query?query=$metricName")
       .map(_.headOption.flatMap(value).map(_.toDouble.toInt).getOrElse(0))
 
-  private def metric(queryStr: String): Task[List[JValue]] =
+  private def metric(queryStr: String): IO[List[JValue]] =
     query(queryStr).map(result => extract[List[JValue]](result \ "data" \ "result"))
 
   private def value(metric: JValue): Option[String] =

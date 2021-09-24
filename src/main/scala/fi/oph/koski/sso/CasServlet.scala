@@ -1,36 +1,24 @@
 package fi.oph.koski.sso
 
-import java.net.URLEncoder.encode
-import java.nio.charset.StandardCharsets
-
-import fi.oph.koski.config.{KoskiApplication}
-import fi.oph.koski.http.{Http, KoskiErrorCategory, OpintopolkuCallerId}
+import fi.oph.koski.cas.CasLogout
+import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.json.JsonSerializer.writeWithRoot
 import fi.oph.koski.koskiuser.{AuthenticationUser, DirectoryClientLogin, KoskiSpecificAuthenticationSupport, UserLanguage}
 import fi.oph.koski.log.LogUserContext
-import fi.oph.koski.servlet.{NoCache, VirkailijaHtmlServlet}
-import fi.vm.sade.utils.cas.{CasClient, CasClientException, CasLogout}
-import fi.vm.sade.utils.cas.CasClient.{OppijaAttributes, Username}
-import fi.oph.koski.json.JsonSerializer.writeWithRoot
-import scalaz.concurrent.Task
 import fi.oph.koski.schema.{Nimitiedot, UusiHenkilö}
+import fi.oph.koski.servlet.{NoCache, VirkailijaHtmlServlet}
 import org.scalatra.{Cookie, CookieOptions}
 
-import scala.util.control.NonFatal
+import java.net.URLEncoder.encode
+import java.nio.charset.StandardCharsets
 
 /**
   *  This is where the user lands after a CAS login / logout
   */
 class CasServlet()(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with KoskiSpecificAuthenticationSupport with NoCache {
-  private val casVirkailijaClient = new CasClient(application.config.getString("opintopolku.virkailija.url") + "/cas", Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
-  private val casOppijaClient = new CasClient(application.config.getString("opintopolku.oppija.url") + "/cas-oppija", Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
   private val koskiSessions = application.koskiSessionRepository
-  private val mockUsernameForAllVirkailijaTickets = {
-    if (application.config.getString("opintopolku.virkailija.url") == "mock" && application.config.hasPath("mock.casClient.usernameForAllVirkailijaTickets")) {
-      Some(application.config.getString("mock.casClient.usernameForAllVirkailijaTickets"))
-    } else {
-      None
-    }
-  }
+  private val casService = application.casService
 
   protected def onSuccess: String = params.get("onSuccess").getOrElse("/omattiedot")
   protected def onFailure: String = params.get("onFailure").getOrElse("/virhesivu")
@@ -55,7 +43,11 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
       params.get("ticket") match {
         case Some(ticket) =>
           try {
-            val hetu = validateKansalainenServiceTicket(ticket)
+            val url = params.get("onSuccess") match {
+              case Some(onSuccessRedirectUrl) => casOppijaServiceUrl + "?onSuccess=" + onSuccessRedirectUrl
+              case None => casOppijaServiceUrl
+            }
+            val hetu = casService.validateKansalainenServiceTicket(url, ticket)
             findOrCreate(hetu) match {
               case Some(oppija) =>
                 val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
@@ -82,7 +74,7 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
     params.get("ticket") match {
       case Some(ticket) =>
         try {
-          val username = validateVirkailijaServiceTicket(ticket)
+          val username = casService.validateVirkailijaServiceTicket(casVirkailijaServiceUrl, ticket)
           DirectoryClientLogin.findUser(application.directoryClient, request, username) match {
             case Some(user) =>
               setUser(Right(user.copy(serviceTicket = Some(ticket))))
@@ -107,7 +99,17 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
 
   private def findOrCreate(validHetu: String) = {
     application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(validHetu, nimitiedot)
-      .orElse(nimitiedot.map(toUusiHenkilö(validHetu, _)).map(application.henkilöRepository.findOrCreate(_).left.map(s => new RuntimeException(s.errorString.mkString)).toTry.get))
+      .orElse(create(validHetu))
+  }
+
+  private def create(validHetu: String) = {
+    nimitiedot
+      .map(toUusiHenkilö(validHetu, _))
+      .map(application.henkilöRepository
+        .findOrCreate(_)
+        .left.map(s => new RuntimeException(s.errorString.mkString))
+        .toTry.get
+      )
   }
 
   private def toUusiHenkilö(validHetu: String, nimitiedot: Nimitiedot) = UusiHenkilö(
@@ -157,43 +159,5 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
       case None =>
         logger.warn("Got CAS logout POST without logoutRequest parameter")
     }
-  }
-
-  def validateKansalainenServiceTicket(ticket: String): String = {
-    val url = params.get("onSuccess") match {
-      case Some(onSuccessRedirectUrl) => casOppijaServiceUrl + "?onSuccess=" + onSuccessRedirectUrl
-      case None => casOppijaServiceUrl
-    }
-
-    val attrs: Either[Throwable, OppijaAttributes] = casOppijaClient.validateServiceTicket(url)(ticket, casOppijaClient.decodeOppijaAttributes).handleWith {
-      case NonFatal(t) => Task.fail(new CasClientException(s"Failed to validate service ticket $t"))
-    }.unsafePerformSyncAttemptFor(10000).toEither
-    logger.debug(s"attrs response: $attrs")
-    attrs match {
-      case Right(attrs) => {
-        val hetu = attrs("nationalIdentificationNumber")
-        hetu
-      }
-      case Left(t) => {
-        throw new CasClientException(s"Unable to process CAS Oppija login request, hetu cannot be resolved from ticket $ticket")
-      }
-    }
-  }
-
-  def validateVirkailijaServiceTicket(ticket: String): Username = {
-    mockUsernameForAllVirkailijaTickets.getOrElse({
-      val attrs: Either[Throwable, Username] = casVirkailijaClient.validateServiceTicket(casVirkailijaServiceUrl)(ticket, casVirkailijaClient.decodeVirkailijaUsername).handleWith {
-        case NonFatal(t) => Task.fail(new CasClientException(s"Failed to validate service ticket $t"))
-      }.unsafePerformSyncAttemptFor(10000).toEither
-      logger.debug(s"attrs response: $attrs")
-      attrs match {
-        case Right(attrs) => {
-          attrs
-        }
-        case Left(t) => {
-          throw new CasClientException(s"Unable to process CAS Virkailija login request, username cannot be resolved from ticket $ticket")
-        }
-      }
-    })
   }
 }

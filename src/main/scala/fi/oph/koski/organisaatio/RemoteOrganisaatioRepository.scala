@@ -19,7 +19,7 @@ class RemoteOrganisaatioRepository(http: Http, val koodisto: KoodistoViitePalvel
 
   private val nimetCache = KeyValueCache[String, List[OrganisaationNimihakuTulos]](
     RefreshingCache("OrganisaatioRepository.nimet", 12.hour, 15000),
-    oid => runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/${oid}/nimet")(Http.parseJson[List[OrganisaationNimihakuTulos]]))
+    oid => runIO(http.get(uri"/organisaatio-service/rest/organisaatio/v2/${oid}/nimet")(Http.parseJson[List[OrganisaationNimihakuTulos]]))
   )
 
   private val oppilaitosnumeroCache = KeyValueCache[String, Option[Oppilaitos]](
@@ -42,12 +42,12 @@ class RemoteOrganisaatioRepository(http: Http, val koodisto: KoodistoViitePalvel
 
   private def fetchSearch(searchTerm: String): OrganisaatioHakuTulos = {
     // Only for oppilaitosnumero search
-    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hae?aktiiviset=true&lakkautetut=true&searchStr=${searchTerm}")(Http.parseJson[OrganisaatioHakuTulos]))
+    runIO(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hae?aktiiviset=true&lakkautetut=true&searchStr=${searchTerm}")(Http.parseJson[OrganisaatioHakuTulos]))
   }
   private def fetchSearchHierarchy(searchTerm: String): OrganisaatioHakuTulos = {
     // Only for "root" user organisatiopicker UI -> no cache
 
-    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=true&searchStr=${searchTerm}")(Http.parseJson[OrganisaatioHakuTulos]))
+    runIO(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=true&searchStr=${searchTerm}")(Http.parseJson[OrganisaatioHakuTulos]))
   }
 
   override def getOrganisaationNimiHetkellä(oid: String, date: LocalDate) = {
@@ -68,7 +68,7 @@ class RemoteOrganisaatioRepository(http: Http, val koodisto: KoodistoViitePalvel
   }
 
   def fetchV3(oid: String): Option[OrganisaatioPalveluOrganisaatioV3] =
-    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v3/${oid}")(Http.parseJsonOptional[OrganisaatioPalveluOrganisaatioV3]))
+    runIO(http.get(uri"/organisaatio-service/rest/organisaatio/v3/${oid}")(Http.parseJsonOptional[OrganisaatioPalveluOrganisaatioV3]))
 
   private def extractSähköpostiVirheidenRaportointiin(org: OrganisaatioPalveluOrganisaatioV3): Option[SähköpostiVirheidenRaportointiin] = {
     val YhteystietojenTyyppiKoski = "1.2.246.562.5.79385887983"
@@ -92,7 +92,7 @@ class RemoteOrganisaatioRepository(http: Http, val koodisto: KoodistoViitePalvel
 
   private def uncachedFindAllHierarkiatRaw: List[OrganisaatioPalveluOrganisaatio] = {
     logger.info("Fetching organisaatiohierarkia")
-    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v4/${Opetushallitus.organisaatioOid}/jalkelaiset")(Http.parseJson[OrganisaatioHakuTulos])).organisaatiot
+    runIO(http.get(uri"/organisaatio-service/rest/organisaatio/v4/${Opetushallitus.organisaatioOid}/jalkelaiset")(Http.parseJson[OrganisaatioHakuTulos])).organisaatiot
   }
 }
 

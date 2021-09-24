@@ -118,7 +118,7 @@ object MockLocalizationRepository {
 
 class ReadOnlyRemoteLocalizationRepository(virkalijaRoot: String, localizationConfig: LocalizationConfig)(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService(localizationConfig) {
   private val http = Http(virkalijaRoot, "lokalisaatiopalvelu")
-  override def fetchLocalizations(): JValue = runTask(http.get(uri"/lokalisointi/cxf/rest/v1/localisation?category=${localizationConfig.localizationCategory}")(Http.parseJson[JValue]))
+  override def fetchLocalizations(): JValue = runIO(http.get(uri"/lokalisointi/cxf/rest/v1/localisation?category=${localizationConfig.localizationCategory}")(Http.parseJson[JValue]))
   override def createOrUpdate(localizations: List[UpdateLocalization]): Unit = ???
   def init {}
 }
@@ -126,11 +126,11 @@ class ReadOnlyRemoteLocalizationRepository(virkalijaRoot: String, localizationCo
 class RemoteLocalizationRepository(config: Config, localizationConfig: LocalizationConfig)(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService(localizationConfig) {
   private val http = VirkailijaHttpClient(ServiceConfig.apply(config, "localization", "opintopolku.virkailija"), "/lokalisointi")
 
-  override def fetchLocalizations(): JValue = runTask(http.get(uri"/lokalisointi/cxf/rest/v1/localisation?category=${localizationConfig.localizationCategory}")(Http.parseJson[JValue]))
+  override def fetchLocalizations(): JValue = runIO(http.get(uri"/lokalisointi/cxf/rest/v1/localisation?category=${localizationConfig.localizationCategory}")(Http.parseJson[JValue]))
 
   override def createOrUpdate(localizations: List[UpdateLocalization]): Unit = {
     cache.strategy.invalidateCache()
-    runTask(http.post(uri"/lokalisointi/cxf/rest/v1/localisation/update", localizations)(json4sEncoderOf[List[UpdateLocalization]])(Http.unitDecoder))
+    runIO(http.post(uri"/lokalisointi/cxf/rest/v1/localisation/update", localizations)(json4sEncoderOf[List[UpdateLocalization]])(Http.unitDecoder))
   }
 
   def init {

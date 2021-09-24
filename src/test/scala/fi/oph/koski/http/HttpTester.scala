@@ -3,6 +3,8 @@ package fi.oph.koski.http
 import fi.oph.koski.koskiuser.UserWithPassword
 import org.scalatra.test.HttpComponentsClient
 
+import java.util.Base64
+
 trait HttpTester extends HttpComponentsClient {
   type Headers = Map[String, String]
 
@@ -12,8 +14,13 @@ trait HttpTester extends HttpComponentsClient {
 
   def defaultUser: UserWithPassword
 
+  def basicAuthHeader(user: String, password: String): (String, String) = {
+    val auth: String = "Basic " + Base64.getEncoder.encodeToString((user + ":" + password).getBytes("UTF8"))
+    ("Authorization", auth)
+  }
+
   def authHeaders(user: UserWithPassword = defaultUser): Headers = {
-    Map(BasicAuthentication.basicAuthHeader(user.username, user.password))
+    Map(basicAuthHeader(user.username, user.password))
   }
 
   def authGet[A](uri: String, user: UserWithPassword = defaultUser, headers: Map[String, String] = Map.empty)(f: => A) = {

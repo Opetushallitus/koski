@@ -45,7 +45,7 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends DatabaseExecutionCont
   def createAction(opiskeluoikeusId: Int, versionumero: Int, kayttäjäOid: String, muutos: JValue): DBIOAction[Int, NoStream, Write] = {
     OpiskeluoikeusHistoria.map { row =>
       (row.opiskeluoikeusId, row.kayttajaOid, row.muutos, row.versionumero)
-    } +=(opiskeluoikeusId, kayttäjäOid, muutos, versionumero)
+    } += (opiskeluoikeusId, kayttäjäOid, muutos, versionumero)
   }
 
   private def findVersionAction(oid: String, version: Int)(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus], NoStream, Nothing] = {

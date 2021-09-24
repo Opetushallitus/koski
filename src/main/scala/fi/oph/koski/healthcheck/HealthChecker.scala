@@ -1,8 +1,9 @@
 package fi.oph.koski.healthcheck
 
-import java.util.concurrent.TimeoutException
+import cats.effect.IO
 import fi.oph.koski.cache.RefreshingCache.Params
 import fi.oph.koski.cache._
+import fi.oph.koski.cas.CasClientException
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.eperusteet.ERakenneOsa
@@ -15,10 +16,9 @@ import fi.oph.koski.organisaatio.{MockOrganisaatiot, RemoteOrganisaatioRepositor
 import fi.oph.koski.schema._
 import fi.oph.koski.userdirectory.Password
 import fi.oph.koski.util.Timing
-import fi.vm.sade.utils.cas.CasClientException
-import scalaz.concurrent.Task
 
-import scala.concurrent.duration.{Duration, DurationInt}
+import java.util.concurrent.TimeoutException
+import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.language.postfixOps
 
 trait HealthCheck extends Logging {
@@ -89,16 +89,14 @@ trait HealthCheck extends Logging {
   }
 
   def casCheck: HttpStatus = {
-    val VirkailijaCredentials(username, password) = if (Environment.usesAwsSecretsManager) {
-      VirkailijaCredentials.fromSecretsManager
-    } else {
-      VirkailijaCredentials.fromConfig(application.config)
-    }
+    val VirkailijaCredentials(username, password) = VirkailijaCredentials(application.config)
+
     def authenticate = try {
-      Some(application.directoryClient.authenticate(username, Password(password)))
+      Some(application.casService.authenticateVirkailija(username, Password(password)))
     } catch {
-      case e: CasClientException => None
+      case _: CasClientException => None
     }
+
     get("cas", authenticate).flatMap(_.toRight(KoskiErrorCategory.internalError("CAS check failed"))) match {
       case Right(authOk) if authOk => HttpStatus.ok
       case Right(_) => KoskiErrorCategory.unauthorized.loginFail("Koski login failed")
@@ -153,16 +151,21 @@ trait HealthCheck extends Logging {
     }
   }
 
-  private def get[T](key: String, f: => T, timeout: Duration = 5 seconds): Either[HttpStatus, T] = try {
-    Right(Task(f).unsafePerformSyncFor(timeout))
-  } catch {
-    case e: HttpStatusException =>
-      Left(HttpStatus(e.status, List(ErrorDetail(key, e.text))))
-    case e: TimeoutException =>
-      Left(HttpStatus(504, List(ErrorDetail(key, "timeout"))))
-    case e: Exception =>
-      logger.warn(e)("healthcheck failed")
-      Left(KoskiErrorCategory.internalError.subcategory(key, "healthcheck failed")())
+  private def get[T](key: String, f: => T, timeout: FiniteDuration = 5 seconds): Either[HttpStatus, T] = {
+    Http.runIO(
+      IO(f)
+        .map(Right(_))
+        .handleError {
+          case e: HttpStatusException =>
+            Left(HttpStatus(e.status, List(ErrorDetail(key, e.text))))
+          case e: TimeoutException =>
+            Left(HttpStatus(504, List(ErrorDetail(key, "timeout"))))
+          case e: Exception =>
+            logger.warn(e)("healthcheck failed")
+            Left(KoskiErrorCategory.internalError.subcategory(key, "healthcheck failed")())
+        },
+      timeout = timeout
+    )
   }
 
   private def assertTrue(key: String, f: => Boolean): HttpStatus = {

@@ -1,5 +1,6 @@
 package fi.oph.koski.http
 
+import cats.effect.IO
 import fi.oph.koski.log.LogUtils.maskSensitiveInformation
 import fi.oph.koski.log.Loggable
 import org.http4s.Request
@@ -10,13 +11,13 @@ import org.http4s.Request
 case class HttpStatusException(status: Int, text: String, method: String, uri: String) extends LoggableException(status + ": " + text + " when requesting " + method + " " + uri)
 
 object HttpStatusException {
-  def apply(status: Int, text: String, request: Request): HttpStatusException = HttpStatusException(status, text, request.method.toString, request.uri.toString)
+  def apply(status: Int, text: String, request: Request[IO]): HttpStatusException = HttpStatusException(status, text, request.method.toString, request.uri.toString)
 }
 
 case class HttpConnectionException(text: String, method: String, uri: String) extends LoggableException(text + " when requesting " + method + " " + uri)
 
 object HttpConnectionException {
-  def apply(text: String, request: Request): HttpConnectionException = HttpConnectionException(text, request.method.toString, request.uri.toString)
+  def apply(text: String, request: Request[IO]): HttpConnectionException = HttpConnectionException(text, request.method.toString, request.uri.toString)
 }
 
 abstract class LoggableException(msg: String) extends RuntimeException(msg) with Loggable {

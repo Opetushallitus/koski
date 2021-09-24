@@ -9,4 +9,3 @@ object RandomOpiskeluoikeusGetterScenario extends PerfTestScenario {
 object RandomOpiskeluoikeusGetter extends App {
   PerfTestRunner.executeTest(RandomOpiskeluoikeusGetterScenario)
 }
-

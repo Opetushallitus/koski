@@ -1,16 +1,17 @@
 package fi.oph.koski.henkilo
 
-import java.time.LocalDate
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration._
 import com.typesafe.config.ConfigFactory
+import fi.oph.koski.http.Http
 import fi.oph.koski.schema.Koodistokoodiviite
-import fi.oph.koski.schema.annotation.KoodistoUri
 import org.json4s.DefaultFormats
 import org.json4s.jackson.Serialization.write
 import org.scalatest._
+
+import java.time.LocalDate
 
 class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with EitherValues with OptionValues with BeforeAndAfterAll {
   implicit val jsonDefaultFormats = DefaultFormats.preservingEmptyValues
@@ -264,107 +265,107 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
   "OppijanumeroRekisteriClient" - {
 
     "perustaa uuden oppijahenkilön" in {
-      val result = mockClient.findOrCreate(UusiOppijaHenkilö(Some(hetu), "Mallikas", "Mikko Alfons", "Mikko")).unsafePerformSync
+      val result = Http.runIO(mockClient.findOrCreate(UusiOppijaHenkilö(Some(hetu), "Mallikas", "Mikko Alfons", "Mikko")))
       result.right.value should equal(expectedSuppeatOppijaHenkilötiedot)
     }
 
     "tunnistaa 400-vastauksen uutta oppijahenkilöä perustaessa" in {
-      val result = mockClient.findOrCreate(UusiOppijaHenkilö(Some(hetu), "", "Mikko Alfons", "Mikko")).unsafePerformSync
+      val result = Http.runIO(mockClient.findOrCreate(UusiOppijaHenkilö(Some(hetu), "", "Mikko Alfons", "Mikko")))
       result.left.value.statusCode should equal(400)
     }
 
     "palauttaa käyttäjähenkilön tiedot oid:n perusteella" in {
-      val result = mockClient.findKäyttäjäByOid(oid).unsafePerformSync
+      val result = Http.runIO(mockClient.findKäyttäjäByOid(oid))
       result.value should equal(expectedKäyttäjäHenkilö)
     }
 
     "palauttaa oppijahenkilön tiedot oid:n perusteella" in {
-      val result = mockClient.findOppijaByOid(oid).unsafePerformSync
+      val result = Http.runIO(mockClient.findOppijaByOid(oid))
       result.value should equal(expectedLaajatOppijaHenkilötiedot)
     }
 
     "palauttaa oppijahenkilön master-tiedot oid:n perusteella" in {
-      val result = mockClient.findMasterOppija(oid).unsafePerformSync
+      val result = Http.runIO(mockClient.findMasterOppija(oid))
       result.value should equal(expectedLaajatOppijaHenkilötiedot)
     }
 
     "palauttaa oppijahenkilön tiedot oid-listan perusteella" in {
-      val result = mockClient.findOppijatNoSlaveOids(List(oid)).unsafePerformSync
+      val result = Http.runIO(mockClient.findOppijatNoSlaveOids(List(oid)))
       result should contain only expectedSuppeatOppijaHenkilötiedot
     }
 
     "palauttaa muuttuneiden oppijahenkilön oid:t" in {
-      val result = mockClient.findChangedOppijaOids(1541163791, 0, 1).unsafePerformSync
+      val result = Http.runIO(mockClient.findChangedOppijaOids(1541163791, 0, 1))
       result should contain only (oid)
     }
 
     "palauttaa oppijahenkilön tiedot hetun perusteella" in {
-      val result = mockClient.findOppijaByHetu(hetu).unsafePerformSync
+      val result = Http.runIO(mockClient.findOppijaByHetu(hetu))
       result.value should equal(expectedLaajatOppijaHenkilötiedot)
     }
 
     "palauttaa oppijahenkilön tiedot hetu-listan perusteella" in {
-      val result = mockClient.findOppijatByHetusNoSlaveOids(List(hetu)).unsafePerformSync
+      val result = Http.runIO(mockClient.findOppijatByHetusNoSlaveOids(List(hetu)))
       result should contain only expectedSuppeatOppijaHenkilötiedot
     }
 
     "kutsumanimen puuttuessa käyttää ensimmäistä etunimeä kutsumanimenä" in {
       mockEndpoints(defaultHenkilöResponse + ("kutsumanimi" -> None))
-      val result = mockClient.findOppijaByHetu(hetu).unsafePerformSync
+      val result = Http.runIO(mockClient.findOppijaByHetu(hetu))
       result.value should equal(expectedLaajatOppijaHenkilötiedot)
     }
 
     "palauttaa listan slave oideista" in {
       mockEndpoints(slaveOidsResponseData = List(Map("oidHenkilo" -> slaveOid, "etunimet" -> "Paavo", "sukunimi" -> "Pesusieni", "modified" -> 1541163791)))
-      val result = mockClient.findSlaveOids(oid).unsafePerformSync
+      val result = Http.runIO(mockClient.findSlaveOids(oid))
       result should contain only slaveOid
     }
 
     "palauttaa listan slave oideista vaikka datasta puuttuu etunimet ja sukunimi" in {
       mockEndpoints(slaveOidsResponseData = List(Map("oidHenkilo" -> slaveOid, "etunimet" -> None, "sukunimi" -> None, "modified" -> 1541163791)))
-      val result = mockClient.findSlaveOids(oid).unsafePerformSync
+      val result = Http.runIO(mockClient.findSlaveOids(oid))
       result should contain only slaveOid
     }
 
     "palauttaa annetun kotikunnan jos kotikunta on asetettu" in {
       mockEndpoints(defaultHenkilöResponse + ("kotikunta" -> "091"))
-      val result = mockClient.findMasterOppija(oid).unsafePerformSync
+      val result = Http.runIO(mockClient.findMasterOppija(oid))
       result.value.kotikunta should equal(Some("091"))
     }
 
     "palauttaa kotikuntana None jos kotikunta on null" in {
       mockEndpoints(defaultHenkilöResponse + ("kotikunta" -> None))
-      val result = mockClient.findMasterOppija(oid).unsafePerformSync
+      val result = Http.runIO(mockClient.findMasterOppija(oid))
       result.value.kotikunta should equal(None)
     }
 
     "palauttaa kotikuntana None jos kotikunta ei ole määritelty" in {
       mockEndpoints(defaultHenkilöResponse - "kotikunta")
-      val result = mockClient.findMasterOppija(oid).unsafePerformSync
+      val result = Http.runIO(mockClient.findMasterOppija(oid))
       result.value.kotikunta should equal(None)
     }
 
     "palauttaa yksilöintitiedon mikäli asetettu" in {
       mockEndpoints(defaultHenkilöResponse + ("yksiloity" -> true, "yksiloityVTJ" -> true))
-      val result = mockClient.findMasterOppija(oid).unsafePerformSync
+      val result = Http.runIO(mockClient.findMasterOppija(oid))
       result.value.yksilöity should equal(true)
     }
 
     "palauttaa yksilöity false jos yksilöintitieto on null" in {
       mockEndpoints(defaultHenkilöResponse + ("yksiloity" -> None, "yksiloityVTJ" -> None))
-      val result = mockClient.findMasterOppija(oid).unsafePerformSync
+      val result = Http.runIO(mockClient.findMasterOppija(oid))
       result.value.yksilöity should equal(false)
     }
 
     "palauttaa yksilöity false jos yksilöintitietoa ei ole määritelty" in {
       mockEndpoints(defaultHenkilöResponse - ("yksiloity", "yksiloityVTJ"))
-      val result = mockClient.findMasterOppija(oid).unsafePerformSync
+      val result = Http.runIO(mockClient.findMasterOppija(oid))
       result.value.yksilöity should equal(false)
     }
 
     "deserialisoi oikean JSON-merkkijonon" in {
       mockEndpoints()
-      val result = mockClient.findOppijaByOid(deserializationTestOid).unsafePerformSync
+      val result = Http.runIO(mockClient.findOppijaByOid(deserializationTestOid))
       result.value.yhteystiedot should equal(expectedLaajatOppijaHenkilötiedot.yhteystiedot)
     }
   }

@@ -1,36 +1,92 @@
 package fi.oph.koski.http
 
-import java.net.URLEncoder
-
+import cats.effect.IO
+import cats.effect.unsafe.{IORuntime, IORuntimeConfig}
 import fi.oph.koski.executors.Pools
-import fi.oph.koski.http.Http.{Decode, ParameterizedUriWrapper}
+import fi.oph.koski.http.Http.{Decode, ParameterizedUriWrapper, UriInterpolator}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.LogUtils.maskSensitiveInformation
 import fi.oph.koski.log.{LoggerWithContext, Logging}
 import io.prometheus.client.{Counter, Summary}
 import org.http4s._
-import org.http4s.client.blaze.BlazeClientConfig
-import org.http4s.client.{Client, blaze}
+import org.http4s.blaze.client.BlazeClientBuilder
+import org.http4s.client.Client
+import org.http4s.client.middleware.{Retry, RetryPolicy}
 import org.http4s.headers.`Content-Type`
 import org.json4s.JValue
 import org.json4s.jackson.JsonMethods.parse
+import org.typelevel.ci.CIString
 
-import scala.concurrent.duration.{Duration, DurationInt}
+import java.net.URLEncoder
+import scala.concurrent.ExecutionContext
+import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.reflect.runtime.universe.TypeTag
 import scala.xml.Elem
-import scalaz.concurrent.Task
-import scalaz.stream.Process.Emit
-import scalaz.{-\/, \/-}
 
 object Http extends Logging {
-  private val maxHttpConnections = Pools.jettyThreads + Pools.httpThreads
-  def newClient(name: String, defaultConfig: BlazeClientConfig = BlazeClientConfig.defaultConfig): Client = {
+  private implicit val ioPool: IORuntime = IORuntime(
+    compute = Pools.globalExecutor,
+    blocking = Pools.httpExecutionContext,
+    scheduler = IORuntime.createDefaultScheduler()._1,
+    shutdown = () => (), // Will live forever
+    config = IORuntimeConfig()
+  )
+
+  private val maxHttpConnections = Pools.httpThreads
+
+  def newClient(name: String): Client[IO] = {
     logger.info(s"Creating new pooled http client with $maxHttpConnections max total connections for $name")
-    blaze.PooledHttp1Client(maxTotalConnections = maxHttpConnections, config = defaultConfig.copy(
-      requestTimeout = 10.minutes,
-      customExecutor = Some(Pools.httpPool),
-      responseHeaderTimeout = 30.seconds
-    ))
+
+    val client = BlazeClientBuilder[IO](ExecutionContext.fromExecutor(Pools.httpPool))
+      .withMaxTotalConnections(maxHttpConnections)
+      .withMaxWaitQueueLimit(1024)
+      .withConnectTimeout(20.seconds)
+      .withResponseHeaderTimeout(30.seconds)
+      .withRequestTimeout(1.minutes)
+      .withIdleTimeout(2.minutes)
+      .allocated
+      .map(_._1)
+      .unsafeRunSync()
+
+    withRetry(client)
+  }
+
+  private def withRetry(client: Client[IO]): Client[IO] = {
+    def failInfo(req: Request[IO], result: Either[Throwable, Response[IO]]): String = {
+      val reason = result match {
+        case Left(error) => s"threw ${error.toString}"
+        case Right(response) => s"status ${response.status.code}"
+      }
+      s"Request ${req.method} ${req.uri} failed ($reason)"
+    }
+
+    def loggingRetryPolicy(
+      backoff: Int => Option[FiniteDuration],
+      retriable: (Request[IO], Either[Throwable, Response[IO]]) => Boolean
+    ): RetryPolicy[IO] = { (req, result, retries) =>
+      if (retriable(req, result)) {
+        backoff(retries) match {
+          case Some(backoff) =>
+            HttpResponseLog.logger.warn(s"${failInfo(req, result)}: retrying (retry #$retries, waiting $backoff)")
+            Some(backoff)
+          case None =>
+            HttpResponseLog.logger.error(s"${failInfo(req, result)}: giving up after ${retries-1} retries")
+            None
+        }
+      } else {
+        if (!req.method.isIdempotent && RetryPolicy.isErrorOrRetriableStatus(result)) {
+          HttpResponseLog.logger.error(s"${failInfo(req, result)} but will not retry nonidempotent request")
+        }
+        None
+      }
+    }
+
+    val backoffPolicy = RetryPolicy.exponentialBackoff(
+      maxWait = 2.seconds,
+      maxRetry = 5
+    )
+
+    Retry[IO](loggingRetryPolicy(backoffPolicy, RetryPolicy.defaultRetriable))(client)
   }
 
   // This guys allows you to make URIs from your Strings as in uri"http://google.com/s=${searchTerm}"
@@ -69,32 +125,32 @@ object Http extends Logging {
   // Warning: does not do any URI encoding
   private def uriFromString(uri: String): Uri = {
     Uri.fromString(uri) match {
-      case \/-(result) => result
-      case -\/(failure) =>
+      case Right(result) => result
+      case Left(failure) =>
         throw new IllegalArgumentException("Cannot create URI: " + uri + ": " + failure)
     }
   }
 
-  def expectSuccess(status: Int, text: String, request: Request): Unit = (status, text) match {
+  def expectSuccess(status: Int, text: String, request: Request[IO]): Unit = (status, text) match {
     case (status, text) if status < 300 && status >= 200 =>
     case (status, text) => throw HttpStatusException(status, text, request)
   }
 
-  def parseJson[T : TypeTag](status: Int, text: String, request: Request): T = {
+  def parseJson[T : TypeTag](status: Int, text: String, request: Request[IO]): T = {
     (status, text) match {
       case (status, text) if (List(200, 201).contains(status)) => JsonSerializer.extract[T](parse(text), ignoreExtras = true)
       case (status, text) => throw HttpStatusException(status, text, request)
     }
   }
 
-  def parseJsonWithDeserialize[T : TypeTag](deserialize: JValue => T)(status: Int, text: String, request: Request): T = {
+  def parseJsonWithDeserialize[T : TypeTag](deserialize: JValue => T)(status: Int, text: String, request: Request[IO]): T = {
     (status, text) match {
       case (status, text) if (List(200, 201).contains(status)) => deserialize(parse(text))
       case (status, text) => throw HttpStatusException(status, text, request)
     }
   }
 
-  def parseXml(status: Int, text: String, request: Request) = {
+  def parseXml(status: Int, text: String, request: Request[IO]): Elem = {
     (status, text) match {
       case (200, text) => scala.xml.XML.loadString(text)
       case (status, text) => throw HttpStatusException(status, text, request)
@@ -102,18 +158,18 @@ object Http extends Logging {
   }
 
   /** Parses as JSON, returns None on 404 result */
-  def parseJsonOptional[T](status: Int, text: String, request: Request)(implicit mf : scala.reflect.Manifest[T]): Option[T] = (status, text) match {
+  def parseJsonOptional[T](status: Int, text: String, request: Request[IO])(implicit mf : Manifest[T]): Option[T] = (status, text) match {
     case (404, _) => None
     case (200, text) => Some(JsonSerializer.extract[T](parse(text), ignoreExtras = true))
     case (status, text) => throw HttpStatusException(status, text, request)
   }
 
-  def toString(status: Int, text: String, request: Request) = (status, text) match {
+  def toString(status: Int, text: String, request: Request[IO]): String = (status, text) match {
     case (200, text) => text
     case (status, text) => throw HttpStatusException(status, text, request)
   }
 
-  def statusCode(status: Int, text: String, request: Request) = (status, text) match {
+  def statusCode(status: Int, text: String, request: Request[IO]): Int = (status, text) match {
     case (code, _) => code
   }
 
@@ -122,67 +178,68 @@ object Http extends Logging {
     case _ =>
   }
 
-  // Http task runner: runs at most 2 minutes. We must avoid using the timeout-less run method, that may block forever.
-  def runTask[A](task: Task[A], timeout: Duration = 2.minutes): A = task.unsafePerformSyncFor(timeout)
+  def runIO[A](io: IO[A], timeout: FiniteDuration = 2.minutes): A = io.timeout(timeout).unsafeRunSync()
 
-  type Decode[ResultType] = (Int, String, Request) => ResultType
+  type Decode[ResultType] = (Int, String, Request[IO]) => ResultType
 
   object Encoders {
-    def xml: EntityEncoder[Elem] = EntityEncoder.stringEncoder(Charset.`UTF-8`).contramap[Elem](item => item.toString)
-      .withContentType(`Content-Type`(MediaType.`text/xml`))
-    def formData: EntityEncoder[String] = EntityEncoder.stringEncoder.withContentType(`Content-Type`(MediaType.`application/x-www-form-urlencoded`))
+    def xml: EntityEncoder[IO, Elem] = EntityEncoder.stringEncoder[IO](Charset.`UTF-8`).contramap[Elem](item => item.toString)
+      .withContentType(`Content-Type`(MediaType.text.`xml`))
+    def formData: EntityEncoder[IO, String] = EntityEncoder.stringEncoder[IO].withContentType(`Content-Type`(MediaType.application.`x-www-form-urlencoded`))
   }
 
   def apply(root: String, name: String): Http = Http(root, newClient(name))
 
 }
 
-case class Http(root: String, client: Client) extends Logging {
-  import fi.oph.koski.http.Http.UriInterpolator
+case class Http(root: String, client: Client[IO]) extends Logging {
   private val rootUri = Http.uriFromString(root)
 
-  def get[ResultType](uri: ParameterizedUriWrapper, headers: Headers = Headers.empty)(decode: Decode[ResultType]): Task[ResultType] = {
+  private val commonHeaders = Headers(Header.Raw(CIString("Caller-Id"), OpintopolkuCallerId.koski))
+
+  def get[ResultType](uri: ParameterizedUriWrapper, headers: Headers = Headers.empty)(decode: Decode[ResultType]): IO[ResultType] = {
     processRequest(Request(uri = uri.uri, headers = headers), uri.template)(decode)
   }
 
-  def head[ResultType](uri: ParameterizedUriWrapper, headers: Headers = Headers.empty)(decode: Decode[ResultType]): Task[ResultType] = {
+  def head[ResultType](uri: ParameterizedUriWrapper, headers: Headers = Headers.empty)(decode: Decode[ResultType]): IO[ResultType] = {
     processRequest(Request(uri = uri.uri, headers = headers, method = Method.HEAD), uri.template)(decode)
   }
 
-  def post[I <: AnyRef, O <: Any](path: ParameterizedUriWrapper, entity: I)(encode: EntityEncoder[I])(decode: Decode[O]): Task[O] = {
-    val request: Request = Request(uri = path.uri, method = Method.POST)
-    processRequest(requestTask = request.withBody(entity)(encode), uriTemplate = path.template)(decode)
+  def post[I <: AnyRef, O <: Any](path: ParameterizedUriWrapper, entity: I)(encode: EntityEncoder[IO, I])(decode: Decode[O]): IO[O] = {
+    val request: Request[IO] = Request(uri = path.uri, method = Method.POST)
+    processRequest(request.withEntity(entity)(encode), uriTemplate = path.template)(decode)
   }
 
-  def post[ResultType](uri: ParameterizedUriWrapper, headers: Headers)(decode: Decode[ResultType]): Task[ResultType] = {
-    processRequest(Request(uri = uri.uri, method = Method.POST, headers = headers), uri.template)(decode)
+  def put[I <: AnyRef, O <: Any](path: ParameterizedUriWrapper, entity: I)(encode: EntityEncoder[IO, I])(decode: Decode[O]): IO[O] = {
+    val request: Request[IO] = Request(uri = path.uri, method = Method.PUT)
+    processRequest(request.withEntity(entity)(encode), path.template)(decode)
   }
 
-  def put[I <: AnyRef, O <: Any](path: ParameterizedUriWrapper, entity: I)(encode: EntityEncoder[I])(decode: Decode[O]): Task[O] = {
-    val request: Request = Request(uri = path.uri, method = Method.PUT)
-    processRequest(request.withBody(entity)(encode), path.template)(decode)
-  }
+  private def processRequest[ResultType]
+    (request: Request[IO], uriTemplate: String)
+    (decoder: (Int, String, Request[IO]) => ResultType)
+  : IO[ResultType] = {
+    val fullRequest = request
+      .withUri(addRoot(request.uri))
+      .withHeaders(request.headers ++ commonHeaders)
 
-  private def processRequest[ResultType](requestTask: Task[Request], uriTemplate: String)(decode: Decode[ResultType]): Task[ResultType] = {
-    requestTask.flatMap(request => processRequest(request, uriTemplate)(decode))
-  }
+    val httpLogger = HttpResponseLog(fullRequest, root + uriTemplate)
 
-  private def processRequest[ResultType](request: Request, uriTemplate: String)(decoder: (Int, String, Request) => ResultType): Task[ResultType] = {
-    val requestWithFullPath: Request = request.withUri(addRoot(request.uri))
-    val logger = HttpResponseLog(requestWithFullPath, root + uriTemplate)
-    client.fetch(addCommonHeaders(requestWithFullPath)) { response =>
-      logger.log(response)
-      response.as[String].map { text => // Might be able to optimize by not turning into String here
-        decoder(response.status.code, text, request)
+    client
+      .run(fullRequest)
+      .use { response =>
+        httpLogger.log(response.status)
+        // TODO: Toteuta decoderit EntityDecoder-tyyppisinä
+        response.as[String].map(body => decoder(response.status.code, body, request))
       }
-    }.handleWith {
-      case e: HttpStatusException =>
-        logger.log(e)
-        throw e
-      case e: Exception =>
-        logger.log(e)
-        throw HttpConnectionException(e.getClass.getName + ": " + e.getMessage, requestWithFullPath)
-    }
+      .handleError {
+        case e: HttpStatusException =>
+          httpLogger.log(e)
+          throw e
+        case e: Exception =>
+          httpLogger.log(e)
+          throw HttpConnectionException(e.getClass.getName + ": " + e.getMessage, fullRequest)
+      }
   }
 
   private def addRoot(uri: Uri) = {
@@ -192,39 +249,36 @@ case class Http(root: String, client: Client) extends Logging {
       uri
     }
   }
-
-  private def addCommonHeaders(request: Request) = request.withHeaders(request.headers.put(
-    Header("Caller-Id", OpintopolkuCallerId.koski)
-  ))
 }
 
 protected object HttpResponseLog {
-  val logger = LoggerWithContext(classOf[Http])
+  val logger: LoggerWithContext = LoggerWithContext(classOf[Http])
 }
 
-protected case class HttpResponseLog(request: Request, uriTemplate: String) {
-  private val logFailedRequestBodiesForUrisContaining = "___none___"
+protected case class HttpResponseLog(request: Request[IO], uriTemplate: String) {
   private val started = System.currentTimeMillis
-  def elapsedMillis = System.currentTimeMillis - started
-  def log(response: Response) {
-    log(response.status.code.toString, response.status.code < 400)
-    HttpResponseMonitoring.record(request, uriTemplate, response.status.code, elapsedMillis)
+
+  private def elapsedMillis = System.currentTimeMillis - started
+
+  def log(responseStatus: Status) {
+    log(responseStatus.code.toString)
+    HttpResponseMonitoring.record(request, uriTemplate, responseStatus.code, elapsedMillis)
   }
+
   def log(e: HttpStatusException) {
-    log(e.status.toString, e.status < 400)
+    log(e.status.toString)
     HttpResponseMonitoring.record(request, uriTemplate, e.status, elapsedMillis)
   }
+
   def log(e: Exception) {
-    log(e.getClass.getSimpleName, false)
+    log(e.getClass.getSimpleName)
     HttpResponseMonitoring.record(request, uriTemplate, 500, elapsedMillis)
   }
-  private def log(status: String, ok: Boolean) {
-    val requestBody = (if (ok) { None } else { request.body match {
-      case Emit(seq) => seq.reduce(_ ++ _).decodeUtf8.right.toOption
-      case _ => None
-    }}).map("request body " + _).filter(_ => request.uri.toString.contains(logFailedRequestBodiesForUrisContaining)).getOrElse("")
 
-    HttpResponseLog.logger.debug(maskSensitiveInformation(s"${request.method} ${request.uri} status ${status} took ${elapsedMillis} ms ${requestBody}"))
+  private def log(status: String) {
+    HttpResponseLog.logger.debug(
+      maskSensitiveInformation(s"${request.method} ${request.uri} status ${status} took ${elapsedMillis} ms")
+    )
   }
 }
 
@@ -232,9 +286,9 @@ protected object HttpResponseMonitoring {
   private val statusCounter = Counter.build().name("fi_oph_koski_http_Http_status").help("Koski HTTP client response status").labelNames("service", "endpoint", "responseclass").register()
   private val durationDummary = Summary.build().name("fi_oph_koski_http_Http_duration").help("Koski HTTP client response duration").labelNames("service", "endpoint").register()
 
-  private val HttpServicePattern = """https?:\/\/([a-z0-9:\.-]+\/[a-z0-9\.-]+).*""".r
+  private val HttpServicePattern = """https?://([a-z0-9:.-]+/[a-z0-9.-]+).*""".r
 
-  def record(request: Request, uriTemplate: String, status: Int, durationMillis: Long) {
+  def record(request: Request[IO], uriTemplate: String, status: Int, durationMillis: Long) {
     val responseClass = status / 100 * 100 // 100, 200, 300, 400, 500
 
     val service = request.uri.toString match {
