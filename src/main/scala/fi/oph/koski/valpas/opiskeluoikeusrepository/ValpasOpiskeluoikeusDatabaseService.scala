@@ -146,11 +146,12 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   -- nivelvaiheeksi. Juteltu asiantuntijoiden kanssa 2021-06-17:
   -- (opiskeluoikeudentyyppi, päätason suorituksen tyyppi) on nivelvaiheen opiskeluoikeus, jos ja vain jos ne ovat:
   --
-  -- (aikuistenperusopetus, *)
+  -- (aikuistenperusopetus, aikuistenperusopetuksenoppimaaranalkuvaihe)
+  -- (aikuistenperusopetus, aikuistenperusopetuksenoppimaara)
   -- (ammatillinenkoulutus, telma/valma) , jos opiskeluoikeudessa ei ole mitään muuta kuin telmaa/valmaa
   --                                       päätason suorituksina
   -- (luva, *)
-  -- (perusopetukseenvalmistavaopetus, *)
+  -- (perusopetuksenlisaopetus, *)
   -- (vapaansivistystyonkoulutus, vstmaahanmuuttajienkotoutumiskoulutus)
   -- (vapaansivistystyonkoulutus, vstoppivelvollisillesuunnattukoulutus)
   -- (vapaansivistystyonkoulutus, vstlukutaitokoulutus)
