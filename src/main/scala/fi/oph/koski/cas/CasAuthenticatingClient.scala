@@ -15,6 +15,8 @@ import org.typelevel.ci.CIString
  */
 
 object CasAuthenticatingClient extends Logging {
+  private val DefaultSessionCookieName = "JSESSIONID"
+
   private val sessions: collection.mutable.Map[CasParams, SessionCookie] = collection.mutable.Map.empty
 
   def apply(
@@ -22,7 +24,7 @@ object CasAuthenticatingClient extends Logging {
     casParams: CasParams,
     serviceClient: Client[IO],
     clientCallerId: String,
-    sessionCookieName: String
+    sessionCookieName: String = DefaultSessionCookieName
   ): Client[IO] = {
     def openWithCasSession(request: Request[IO], hotswap: Hotswap[IO, Response[IO]]): IO[Response[IO]] = {
       getCasSession(casParams).flatMap(requestWithCasSession(request, hotswap, retry = true))
@@ -65,7 +67,7 @@ object CasAuthenticatingClient extends Logging {
 
     def refreshSession(params: CasParams): IO[SessionCookie] = {
       casClient.fetchCasSession(params, sessionCookieName).map { session =>
-        logger.debug("Storing new jsessionid for " + params)
+        logger.debug("Storing new session for " + params)
         synchronized(sessions.put(params, session))
         session
       }
