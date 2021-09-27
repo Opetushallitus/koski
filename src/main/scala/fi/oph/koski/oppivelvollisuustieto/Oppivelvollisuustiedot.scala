@@ -5,6 +5,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.raportit.AhvenanmaanKunnat.ahvenanmaanKunnat
 import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
+import org.postgresql.util.PSQLException
 import slick.jdbc.GetResult
 
 
@@ -14,6 +15,18 @@ object Oppivelvollisuustiedot {
       "200",  // Ulkomaat
       "",     // Virheellinen null
     )
+
+  def queryByOid(oid: String, db: RaportointiDatabase): Option[Oppivelvollisuustieto] = {
+    try {
+      db.runDbSync(
+        sql"select * from oppivelvollisuustiedot where oppija_oid = $oid".as[Oppivelvollisuustieto]
+      ).headOption
+    } catch {
+      // Tämä poikkeus syntyy tilanteessa, jossa oppivelvollisuustiedot-taulu ei ole vielä materialisoitu,
+      // mutta lokaalisti ajettaessa palvelimen käynnistyessä yritetään luoda mock-opiskeluoikeuksia.
+      case _: PSQLException => None
+    }
+  }
 
   def queryByOids(oids: Seq[String], db: RaportointiDatabase): Seq[Oppivelvollisuustieto] = {
     db.runDbSync(
