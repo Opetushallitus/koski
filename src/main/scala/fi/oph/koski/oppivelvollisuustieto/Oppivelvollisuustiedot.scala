@@ -1,12 +1,13 @@
 package fi.oph.koski.oppivelvollisuustieto
 
-import java.time.LocalDate
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.raportit.AhvenanmaanKunnat.ahvenanmaanKunnat
 import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import org.postgresql.util.PSQLException
 import slick.jdbc.GetResult
+
+import java.time.LocalDate
 
 
 object Oppivelvollisuustiedot {

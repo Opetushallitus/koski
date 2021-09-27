@@ -1,18 +1,18 @@
 package fi.oph.koski.oppivelvollisuustieto
 
-import java.time.LocalDate
-import java.time.LocalDate.{of => date}
-
-import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.AmmatillinenExampleData._
-import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
+import fi.oph.koski.documentation.AmmatillinenExampleData._
+import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeudenTila, AmmatillisenOpiskeluoikeudenLisätiedot, Henkilö, InternationalSchoolOpiskeluoikeudenTila, InternationalSchoolOpiskeluoikeusjakso, Maksuttomuus, OikeuttaMaksuttomuuteenPidennetty, Opiskeluoikeus}
+import fi.oph.koski.schema._
+import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
+
+import java.time.LocalDate
+import java.time.LocalDate.{of => date}
 
 class OppivelvollisuustietoSpec
   extends AnyFreeSpec
@@ -34,22 +34,22 @@ class OppivelvollisuustietoSpec
       "Slave oidilla perusopetuksen oppimäärä suoritettu ennen uuden oppivelvollisuuslain voimaantuloa -> ei rivejä" in {
         resetFixtures
         insert(master, lukionOppimäärä(vahvistus = None))
-        insert(slave1, ammatillinenTutkinto(vahvistus = None), perusopetuksenOppimäärä(Some(date(2020, 12, 31))))
-        insert(slave2, ammatillinenTutkinto(vahvistus = None), lukionOppimäärä(vahvistus = None))
+        insert(slave1, ammatillinenTutkinto(vahvistus = None, lisääMaksuttomuus = false), perusopetuksenOppimäärä(Some(date(2020, 12, 31))))
+        insert(slave2, ammatillinenTutkinto(vahvistus = None, lisääMaksuttomuus = false), lukionOppimäärä(vahvistus = None, lisääMaksuttomuus = false))
         reloadRaportointikanta
         queryTestioidit should equal(Nil)
       }
       "Master oidilla perusopetuksen oppimäärä suoritettu ennen uuden oppivelvollisuuslain voimaantuloa -> ei rivejä" in {
         resetFixtures
         insert(master, perusopetuksenOppimäärä(Some(date(2020, 12, 31))))
-        insert(slave1, ammatillinenTutkinto(vahvistus = None))
-        insert(slave2, ammatillinenTutkinto(vahvistus = None), lukionOppimäärä(vahvistus = None))
+        insert(slave1, ammatillinenTutkinto(vahvistus = None, lisääMaksuttomuus = false))
+        insert(slave2, ammatillinenTutkinto(vahvistus = None, lisääMaksuttomuus = false), lukionOppimäärä(vahvistus = None, lisääMaksuttomuus = false))
         reloadRaportointikanta
         queryTestioidit should equal(Nil)
       }
       "Henkilö on liian vanha" in {
         resetFixtures
-        insert(oppivelvollisuustietoLiianVanha, lukionOppimäärä(vahvistus = None))
+        insert(oppivelvollisuustietoLiianVanha, lukionOppimäärä(vahvistus = None, lisääMaksuttomuus = false))
         reloadRaportointikanta
         queryOids(oppivelvollisuustietoLiianVanha.oid) shouldBe(Nil)
       }
@@ -263,18 +263,34 @@ class OppivelvollisuustietoSpec
     }
   }
 
-  private def ammatillinenTutkinto(vahvistus: Option[LocalDate]): Opiskeluoikeus = {
-    defaultOpiskeluoikeus.copy(suoritukset = List(
-      autoalanPerustutkinnonSuoritus().copy(
-        vahvistus = vahvistus.flatMap(date => ExampleData.vahvistus(date, stadinAmmattiopisto, Some(helsinki))),
-        osasuoritukset = Some(AmmatillinenOldExamples.tutkinnonOsat)
-      )
-    ))
+  private def ammatillinenTutkinto(vahvistus: Option[LocalDate], lisääMaksuttomuus: Boolean = true): Opiskeluoikeus = {
+    defaultOpiskeluoikeus.copy(
+      suoritukset = List(
+        autoalanPerustutkinnonSuoritus().copy(
+          vahvistus = vahvistus.flatMap(date => ExampleData.vahvistus(date, stadinAmmattiopisto, Some(helsinki))),
+          osasuoritukset = Some(AmmatillinenOldExamples.tutkinnonOsat),
+        )
+      ),
+      lisätiedot = if (lisääMaksuttomuus) {
+        Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+          hojks = None,
+          maksuttomuus = maksuttomuustietoAlkamispäivästä(defaultOpiskeluoikeus.alkamispäivä)
+        ))
+      } else {
+        None
+      },
+    )
   }
 
-  private def internationalSchoolToinenAste(vahvistusGrade12: Option[LocalDate]): Opiskeluoikeus = {
+  private def internationalSchoolToinenAste(vahvistusGrade12: Option[LocalDate], lisääMaksuttomuus: Boolean = true): Opiskeluoikeus = {
     ExamplesInternationalSchool.opiskeluoikeus.copy(
-      lisätiedot = None,
+      lisätiedot = if (lisääMaksuttomuus) {
+        Some(InternationalSchoolOpiskeluoikeudenLisätiedot(
+          maksuttomuus = maksuttomuustietoAlkamispäivästä(ExamplesInternationalSchool.opiskeluoikeus.alkamispäivä)
+        ))
+      } else {
+        None
+      },
       tila = InternationalSchoolOpiskeluoikeudenTila(
         List(
           InternationalSchoolOpiskeluoikeusjakso(date(2004, 8, 15), LukioExampleData.opiskeluoikeusAktiivinen),
@@ -331,13 +347,23 @@ class OppivelvollisuustietoSpec
         oikeuttaMaksuttomuuteenPidennetty = maksuttomuudenPidennyksenJaksot)))
   }
 
-  private def lukionOppimäärä(vahvistus: Option[LocalDate]): Opiskeluoikeus = {
+  private def lukionOppimäärä(vahvistus: Option[LocalDate], lisääMaksuttomuus: Boolean = true): Opiskeluoikeus = {
     ExamplesLukio2019.aktiivinenOpiskeluoikeus
       .copy(
         oppilaitos = None,
-        suoritukset = List(ExamplesLukio2019.oppimääränSuoritus.copy(vahvistus = vahvistus.flatMap(vahvistusPaikkakunnalla(_))))
+        suoritukset = List(ExamplesLukio2019.oppimääränSuoritus.copy(vahvistus = vahvistus.flatMap(vahvistusPaikkakunnalla(_)))),
+        lisätiedot = if (lisääMaksuttomuus) {
+            Some(LukionOpiskeluoikeudenLisätiedot(
+              maksuttomuus = maksuttomuustietoAlkamispäivästä(ExamplesLukio2019.aktiivinenOpiskeluoikeus.alkamispäivä),
+            ))
+          } else {
+            None
+          }
       )
   }
+
+  def maksuttomuustietoAlkamispäivästä(alkamispäivä: Option[LocalDate]): Option[List[Maksuttomuus]] =
+    alkamispäivä.map(a => List(Maksuttomuus(alku = a, loppu = None, maksuton = true)))
 
   private def perusopetuksenOppimäärä(vahvistus: Option[LocalDate]): Opiskeluoikeus = {
     PerusopetusExampleData.opiskeluoikeus(
