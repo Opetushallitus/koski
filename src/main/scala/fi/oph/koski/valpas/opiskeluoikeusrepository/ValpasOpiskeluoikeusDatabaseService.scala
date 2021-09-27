@@ -762,6 +762,12 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
               (toisen_asteen_suorituksia.lukumaara IS NULL OR toisen_asteen_suorituksia.lukumaara = 0)
               AND (perusopetuksen_suorituksia.loytyi IS NOT TRUE)
             ) THEN r_opiskeluoikeus.alkamispaiva
+            -- Jos on pelkkiä toisen asteen suorituksia, mutta niille ei ole suorituksissa määritelty alkamispäivää, voidaan käyttää
+            -- fallbackinä koko opiskeluoikeuden alkamispäivää
+            WHEN (
+              (perusopetuksen_suorituksia.loytyi IS NOT TRUE)
+              AND (toisen_asteen_suorituksia.aikaisin_alkamispaiva IS NULL)
+            ) THEN r_opiskeluoikeus.alkamispaiva
             -- Muutoin käytetään toisen asteen suoritusten aikaisinta alkamispäivää (joka saattaa myös olla null, jos toisen asteen suorituksia ei ole siirretty tai
             -- niille ei ole siirretty alkamispäivää)
             ELSE toisen_asteen_suorituksia.aikaisin_alkamispaiva
