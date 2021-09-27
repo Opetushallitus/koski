@@ -115,11 +115,10 @@ class KoskiOppijaFacade(
     val maksuttomuusCheck = oppijaOid.map(_.verified).flatMap {
       case Some(henkilö) =>
         val henkilöMaster = henkilöRepository.findByOid(henkilö.oid, findMasterIfSlaveOid = true)
-        val syntymäaika = henkilöMaster.flatMap(_.syntymäaika)
         val validation = HttpStatus.fold(oppija.tallennettavatOpiskeluoikeudet.map(opiskeluoikeus => {
           globaaliValidator.validateOpiskeluoikeus(
             opiskeluoikeus,
-            syntymäaika,
+            henkilöMaster,
             henkilö.oid
           )
         }))
