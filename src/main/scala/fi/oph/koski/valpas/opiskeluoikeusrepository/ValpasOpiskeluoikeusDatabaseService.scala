@@ -28,18 +28,23 @@ case class ValpasOppijaRow(
   onOikeusValvoaKunnalla: Boolean
 )
 
+object HakeutumisvalvontaTieto extends Enumeration {
+  type HakeutumisvalvontaTieto = Value
+  val Perusopetus, Nivelvaihe, Kaikki = Value
+}
+
 class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends DatabaseConverters with Logging with Timing {
   private val db = application.raportointiDatabase
   private val rajapäivätService = application.valpasRajapäivätService
 
   def getOppija(oppijaOid: String, rajaaOVKelpoisiinOpiskeluoikeuksiin: Boolean = true): Option[ValpasOppijaRow] =
-    getOppijat(List(oppijaOid), None, rajaaOVKelpoisiinOpiskeluoikeuksiin).headOption
+    getOppijat(List(oppijaOid), None, rajaaOVKelpoisiinOpiskeluoikeuksiin, HakeutumisvalvontaTieto.Kaikki).headOption
 
   def getOppijat(oppijaOids: Seq[String]): Seq[ValpasOppijaRow] =
-    if (oppijaOids.nonEmpty) getOppijat(oppijaOids, None) else Seq.empty
+    if (oppijaOids.nonEmpty) getOppijat(oppijaOids, None, true, HakeutumisvalvontaTieto.Kaikki) else Seq.empty
 
-  def getOppijatByOppilaitos(oppilaitosOid: String): Seq[ValpasOppijaRow] =
-    getOppijat(Seq.empty, Some(Seq(oppilaitosOid)))
+  def getOppijatByOppilaitos(oppilaitosOid: String, hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value): Seq[ValpasOppijaRow] =
+    getOppijat(Seq.empty, Some(Seq(oppilaitosOid)), true, hakeutumisvalvontaTieto)
 
   private implicit def getResult: GetResult[ValpasOppijaRow] = GetResult(r => {
     ValpasOppijaRow(
@@ -69,6 +74,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     oppijaOids: Seq[String],
     oppilaitosOids: Option[Seq[String]],
     rajaaOVKelpoisiinOpiskeluoikeuksiin: Boolean = true,
+    hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value
   ): Seq[ValpasOppijaRow] = {
     val keväänValmistumisjaksoAlku = rajapäivätService.keväänValmistumisjaksoAlku
     val keväänValmistumisjaksoLoppu = rajapäivätService.keväänValmistumisjaksoLoppu
@@ -82,6 +88,9 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       case 1 => "getOppijatSingle"
       case _ => "getOppijatMultipleOids"
     }
+
+    val haePerusopetuksenHakeutumisvalvontatiedot = Seq(HakeutumisvalvontaTieto.Perusopetus, HakeutumisvalvontaTieto.Kaikki).contains(hakeutumisvalvontaTieto)
+    val haeNivelvaiheenHakeutusmisvalvontatiedot = Seq(HakeutumisvalvontaTieto.Nivelvaihe, HakeutumisvalvontaTieto.Kaikki).contains(hakeutumisvalvontaTieto)
 
     val nonEmptyOppijaOids = if (oppijaOids.nonEmpty) Some(oppijaOids) else None
 
@@ -180,9 +189,10 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
             OR $tarkastelupäivä BETWEEN jaksot ->> 'alku' AND jaksot ->> 'loppu'
       ) kotiopetusjaksoja
     WHERE
+      $haePerusopetuksenHakeutumisvalvontatiedot IS TRUE
       -- (0) henkilö on oppivelvollinen: hakeutumisvalvontaa ei voi suorittaa enää sen jälkeen kun henkilön
       -- oppivelvollisuus on päättynyt
-      ov_kelvollinen_opiskeluoikeus.henkilo_on_oppivelvollinen
+      AND ov_kelvollinen_opiskeluoikeus.henkilo_on_oppivelvollinen
       -- (1) oppijalla on peruskoulun opiskeluoikeus
       AND ov_kelvollinen_opiskeluoikeus.koulutusmuoto = 'perusopetus'
       AND (
@@ -288,9 +298,10 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         ON aikajakson_keskella.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
         AND $tarkastelupäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
     WHERE
+      $haePerusopetuksenHakeutumisvalvontatiedot IS TRUE
       -- (0) henkilö on oppivelvollinen: hakeutumisvalvontaa ei voi suorittaa enää sen jälkeen kun henkilön
       -- oppivelvollisuus on päättynyt
-      ov_kelvollinen_opiskeluoikeus.henkilo_on_oppivelvollinen
+      AND ov_kelvollinen_opiskeluoikeus.henkilo_on_oppivelvollinen
       -- (1) oppijalla on International schoolin opiskeluoikeus
       AND ov_kelvollinen_opiskeluoikeus.koulutusmuoto = 'internationalschool'
       AND (
