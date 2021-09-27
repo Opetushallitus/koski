@@ -29,12 +29,12 @@ export type OpintotasonTiedot = {
   päättymispäiväMerkittyTulevaisuuteen?: boolean
   tarkastelupäivänTila: ValpasOpiskeluoikeudenTila
   tarkastelupäivänKoskiTila: KoskiOpiskeluoikeudenTila
+  valmistunutAiemminTaiLähitulevaisuudessa: boolean
   näytäMuunaPerusopetuksenJälkeisenäOpintona?: boolean
 }
 
 export type PerusopetusLaajatTiedot = OpintotasonTiedot & {
   tarkastelupäivänKoskiTilanAlkamispäivä: ISODate
-  valmistunutAiemminTaiLähitulevaisuudessa: boolean
   vuosiluokkiinSitomatonOpetus: boolean
 }
 
@@ -57,7 +57,6 @@ export type OpiskeluoikeusSuppeatTiedot = {
 }
 
 export type PerusopetusSuppeatTiedot = OpintotasonTiedot & {
-  valmistunutAiemminTaiLähitulevaisuudessa: boolean
   vuosiluokkiinSitomatonOpetus: boolean
 }
 

@@ -506,9 +506,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     }
   }
 
-  // TODO: Huom! Tämä hajoaa, kun muiden oppilaitosten toiminnallisuus. Toistaiseksi hyväksytään vain oppilaitokset,
-  // joten tarkistetaan tämäkin vielä.
-  "Kuntailmoituksen tekeminen hakeutumisen valvojana oppijalle, joka opiskelee oppilaitoksessa nivelvaiheen opintoja, palauttaa virheen" in {
+  "Kuntailmoituksen voi tehdä hakeutumisen valvojana oppijalle, joka opiskelee oppilaitoksessa nivelvaiheen opintoja" in {
     val minimikuntailmoitusJyväskylänNivelvaiheisesta =
       teeMinimiKuntailmoitusInput(oppijaOid = ValpasMockOppijat.kulosaarenYsiluokkalainenJaJyväskylänNivelvaiheinen.oid)
 
@@ -516,15 +514,10 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
       body = minimikuntailmoitusJyväskylänNivelvaiheisesta,
       headers = authHeaders(ValpasMockUsers.valpasUseampiPeruskoulu) ++ jsonContent
     ) {
-      verifyResponseStatus(
-        403,
-        ValpasErrorCategory.forbidden.oppija("Käyttäjällä ei ole oikeuksia tehdä kuntailmoitusta annetusta oppijasta")
-      )
+      verifyResponseStatusOk()
     }
   }
 
-  // TODO: Huom! Tämä hajoaa, kun muiden oppilaitosten toiminnallisuus. Toistaiseksi hyväksytään vain oppilaitokset,
-  // joten tarkistetaan tämäkin vielä.
   "Kuntailmoituksen tekeminen hakeutumisen valvojana oppijalle, joka opiskelee oppilaitoksessa toisen vaiheen opintoja, palauttaa virheen" in {
     val minimikuntailmoitusJyväskylänLukiolaisesta =
       teeMinimiKuntailmoitusInput(oppijaOid = ValpasMockOppijat.kulosaarenYsiluokkalainenJaJyväskylänLukiolainen.oid)
