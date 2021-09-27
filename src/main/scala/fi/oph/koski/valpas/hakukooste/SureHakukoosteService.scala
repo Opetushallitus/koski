@@ -1,7 +1,7 @@
 package fi.oph.koski.valpas.hakukooste
 
 import com.typesafe.config.Config
-import fi.oph.koski.http.Http.{StringToUriConverter, parseJsonWithDeserialize}
+import fi.oph.koski.http.Http.{StringToUriConverter, parseJsonWithDeserialize, unsafeRetryingClient}
 import fi.oph.koski.http.{Http, HttpStatus, HttpStatusException, ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.log.Logging
@@ -15,7 +15,15 @@ import org.json4s.JValue
 class SureHakukoosteService(config: Config, validatingAndResolvingExtractor: ValidatingAndResolvingExtractor) extends ValpasHakukoosteService with Logging with Timing {
   private val baseUrl = "/suoritusrekisteri"
 
-  private val http = VirkailijaHttpClient(ServiceConfig.apply(config, "opintopolku.virkailija"), baseUrl)
+  private val http = {
+    // Suoritusterkisteriin POST-metodilla tehtävät kyselyt ovat oikeasti
+    // idempotentteja, joten niiden uudelleenyrittäminen on ok:
+    VirkailijaHttpClient(
+      ServiceConfig.apply(config, "opintopolku.virkailija"),
+      baseUrl,
+      unsafeRetryingClient(baseUrl)
+    )
+  }
 
   def getHakukoosteet
     (oppijaOids: Set[ValpasHenkilö.Oid], ainoastaanAktiivisetHaut: Boolean = false, errorClue: String = "")

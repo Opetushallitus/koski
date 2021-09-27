@@ -49,7 +49,7 @@ object MockYrtClient extends YtrClient {
 
 case class RemoteYtrClient(rootUrl: String, user: String, password: String) extends YtrClient {
   private val http = Http(rootUrl, ClientWithBasicAuthentication(
-    Http.newClient("ytr"),
+    Http.retryingClient("ytr"),
     username = user,
     password = password
   ))

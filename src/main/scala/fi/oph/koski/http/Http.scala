@@ -4,6 +4,7 @@ import cats.effect.IO
 import cats.effect.unsafe.{IORuntime, IORuntimeConfig}
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.http.Http.{Decode, ParameterizedUriWrapper, UriInterpolator}
+import fi.oph.koski.http.RetryMiddleware.{retryNonIdempotentRequests, withLoggedRetry}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.LogUtils.maskSensitiveInformation
 import fi.oph.koski.log.{LoggerWithContext, Logging}
@@ -11,7 +12,6 @@ import io.prometheus.client.{Counter, Summary}
 import org.http4s._
 import org.http4s.blaze.client.BlazeClientBuilder
 import org.http4s.client.Client
-import org.http4s.client.middleware.{Retry, RetryPolicy}
 import org.http4s.headers.`Content-Type`
 import org.json4s.JValue
 import org.json4s.jackson.JsonMethods.parse
@@ -34,10 +34,9 @@ object Http extends Logging {
 
   private val maxHttpConnections = Pools.httpThreads
 
-  def newClient(name: String): Client[IO] = {
+  private def baseClient(name: String): Client[IO] = {
     logger.info(s"Creating new pooled http client with $maxHttpConnections max total connections for $name")
-
-    val client = BlazeClientBuilder[IO](ExecutionContext.fromExecutor(Pools.httpPool))
+    BlazeClientBuilder[IO](ExecutionContext.fromExecutor(Pools.httpPool))
       .withMaxTotalConnections(maxHttpConnections)
       .withMaxWaitQueueLimit(1024)
       .withConnectTimeout(20.seconds)
@@ -47,47 +46,11 @@ object Http extends Logging {
       .allocated
       .map(_._1)
       .unsafeRunSync()
-
-    withRetry(client)
   }
 
-  private def withRetry(client: Client[IO]): Client[IO] = {
-    def failInfo(req: Request[IO], result: Either[Throwable, Response[IO]]): String = {
-      val reason = result match {
-        case Left(error) => s"threw ${error.toString}"
-        case Right(response) => s"status ${response.status.code}"
-      }
-      s"Request ${req.method} ${req.uri} failed ($reason)"
-    }
+  def retryingClient(name: String): Client[IO] = withLoggedRetry(baseClient(name))
 
-    def loggingRetryPolicy(
-      backoff: Int => Option[FiniteDuration],
-      retriable: (Request[IO], Either[Throwable, Response[IO]]) => Boolean
-    ): RetryPolicy[IO] = { (req, result, retries) =>
-      if (retriable(req, result)) {
-        backoff(retries) match {
-          case Some(backoff) =>
-            HttpResponseLog.logger.warn(s"${failInfo(req, result)}: retrying (retry #$retries, waiting $backoff)")
-            Some(backoff)
-          case None =>
-            HttpResponseLog.logger.error(s"${failInfo(req, result)}: giving up after ${retries-1} retries")
-            None
-        }
-      } else {
-        if (!req.method.isIdempotent && RetryPolicy.isErrorOrRetriableStatus(result)) {
-          HttpResponseLog.logger.error(s"${failInfo(req, result)} but will not retry nonidempotent request")
-        }
-        None
-      }
-    }
-
-    val backoffPolicy = RetryPolicy.exponentialBackoff(
-      maxWait = 2.seconds,
-      maxRetry = 5
-    )
-
-    Retry[IO](loggingRetryPolicy(backoffPolicy, RetryPolicy.defaultRetriable))(client)
-  }
+  def unsafeRetryingClient(name: String): Client[IO] = withLoggedRetry(baseClient(name), retryNonIdempotentRequests)
 
   // This guys allows you to make URIs from your Strings as in uri"http://google.com/s=${searchTerm}"
   // Takes care of URI encoding the components. You can prevent encoding a part by wrapping into an Uri using this selfsame method.
@@ -188,7 +151,7 @@ object Http extends Logging {
     def formData: EntityEncoder[IO, String] = EntityEncoder.stringEncoder[IO].withContentType(`Content-Type`(MediaType.application.`x-www-form-urlencoded`))
   }
 
-  def apply(root: String, name: String): Http = Http(root, newClient(name))
+  def apply(root: String, name: String): Http = Http(root, retryingClient(name))
 
 }
 

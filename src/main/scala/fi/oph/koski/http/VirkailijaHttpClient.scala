@@ -1,9 +1,11 @@
 package fi.oph.koski.http
 
+import cats.effect.IO
 import com.typesafe.config.Config
 import fi.oph.koski.cas.{CasAuthenticatingClient, CasClient, CasParams}
 import fi.oph.koski.config.{Environment, SecretsManager}
 import fi.oph.koski.log.NotLoggable
+import org.http4s.client.Client
 
 case class VirkailijaCredentials(username: String, password: String) extends NotLoggable
 
@@ -39,21 +41,35 @@ object VirkailijaCredentials {
 }
 
 object VirkailijaHttpClient {
-  def apply(serviceConfig: ServiceConfig, serviceUrl: String, sessionCookieName: String = "JSESSIONID"): Http = {
+  private val DefaultSessionCookieName = "JSESSIONID"
+
+  private def defaultClient(serviceUrl: String): Client[IO] = Http.retryingClient(serviceUrl)
+
+  def apply(serviceConfig: ServiceConfig, serviceUrl: String): Http =
+    apply(serviceConfig, serviceUrl, defaultClient(serviceUrl))
+
+  def apply(serviceConfig: ServiceConfig, serviceUrl: String, sessionCookieName: String): Http =
+    apply(serviceConfig, serviceUrl, defaultClient(serviceUrl), sessionCookieName)
+
+  def apply(
+    serviceConfig: ServiceConfig,
+    serviceUrl: String,
+    client: Client[IO],
+    sessionCookieName: String = DefaultSessionCookieName
+  ): Http = {
     val VirkailijaCredentials(username, password) = VirkailijaCredentials(serviceConfig)
-    val blazeClient = Http.newClient(serviceUrl)
     val casAuthenticatingClient = if (serviceConfig.useCas) {
-      val casClient = new CasClient(serviceConfig.virkailijaUrl + "/cas", blazeClient, OpintopolkuCallerId.koski)
+      val casClient = new CasClient(serviceConfig.virkailijaUrl + "/cas", client, OpintopolkuCallerId.koski)
       CasAuthenticatingClient(
         casClient,
         CasParams(serviceUrl, username, password),
-        blazeClient,
+        client,
         OpintopolkuCallerId.koski,
         sessionCookieName
       )
     } else {
       ClientWithBasicAuthentication(
-        blazeClient,
+        client,
         username,
         password
       )
