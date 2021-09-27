@@ -30,6 +30,7 @@ import {
 } from "./kuntailmoitus.shared"
 import {
   aapajoenKouluOid,
+  internationalSchoolOid,
   jyväskylänNormaalikouluOid,
   stadinAmmattiopistoOid,
 } from "./oids"
@@ -39,6 +40,8 @@ import {
   valitsimenOrganisaatiot,
 } from "./organisaatiovalitsin-helpers"
 import {
+  internationalSchoolSuorittaminenTableContent,
+  internationalSchoolSuorittaminenTableHead,
   jklNormaalikouluSuorittaminenTableContent,
   jklNormaalikouluSuorittaminenTableHead,
   stadinAmmattiopistoSuorittaminenTableContent,
@@ -62,6 +65,11 @@ const aapajokiSuorittaminenPath = createSuorittaminenPathWithOrg(
 const stadinAmmattiopistoSuorittaminenPath = createSuorittaminenPathWithOrg(
   "/virkailija",
   stadinAmmattiopistoOid
+)
+
+const internationalSchoolSuorittaminenPath = createSuorittaminenPathWithOrg(
+  "/virkailija",
+  internationalSchoolOid
 )
 
 const viikinNormaalikouluId = "1.2.246.562.10.81927839589"
@@ -113,6 +121,27 @@ describe("Suorittamisen valvonta -näkymä", () => {
     )
   })
 
+  it("Näyttää listan oppijoista International schoolin käyttäjälle", async () => {
+    await loginAs(suorittaminenListaPath, "valpas-int-school")
+    await urlIsEventually(pathToUrl(internationalSchoolSuorittaminenPath))
+
+    await goToLocation(internationalSchoolSuorittaminenPath)
+
+    await textEventuallyEquals(
+      ".card__header",
+      internationalSchoolSuorittaminenTableHead
+    )
+    await textEventuallyEquals(
+      ".tabnavigation__item--selected",
+      internationalSchoolSuorittaminenTableHead
+    )
+    await dataTableEventuallyEquals(
+      ".suorittaminen",
+      internationalSchoolSuorittaminenTableContent,
+      "|"
+    )
+  })
+
   it("Näyttää tyhjän listan virheittä, jos ei oppijoita", async () => {
     await loginAs(suorittaminenListaPath, "valpas-viikin-normaalikoulu-2-aste")
     await urlIsEventually(pathToUrl(viikinNormaalikouluSuorittaminenPath))
@@ -128,7 +157,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
 
     await selectOrganisaatio(1)
     await urlIsEventually(pathToUrl(suorittaminenListaJklPath))
-    await textEventuallyEquals(".card__header", "Oppivelvolliset (13)")
+    await textEventuallyEquals(".card__header", "Oppivelvolliset (14)")
   })
 
   it("Toimii koulutustoimijatason käyttäjällä", async () => {

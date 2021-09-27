@@ -12,6 +12,7 @@ object InternationalSchoolExampleData {
 
   def pypSuoritus(grade: String, aloitusPäivä: LocalDate, vahvistusPäivä: Option[LocalDate]): PYPVuosiluokanSuoritus = PYPVuosiluokanSuoritus(
     koulutusmoduuli = PYPLuokkaAste(tunniste = Koodistokoodiviite(grade, "internationalschoolluokkaaste")),
+    luokka = Some(s"${grade}A"),
     alkamispäivä = Some(aloitusPäivä),
     toimipiste = internationalSchoolOfHelsinki,
     vahvistus = vahvistusPäivä.flatMap(vahvistus),
@@ -20,6 +21,7 @@ object InternationalSchoolExampleData {
 
   def mypSuoritus(grade: Int, aloitusPäivä: LocalDate, vahvistusPäivä: Option[LocalDate]): MYPVuosiluokanSuoritus = MYPVuosiluokanSuoritus(
     koulutusmoduuli = MYPLuokkaAste(tunniste = Koodistokoodiviite(grade.toString, "internationalschoolluokkaaste")),
+    luokka = Some(s"${grade.toString}B"),
     alkamispäivä = Some(aloitusPäivä),
     toimipiste = internationalSchoolOfHelsinki,
     vahvistus = vahvistusPäivä.flatMap(vahvistus),
@@ -28,6 +30,7 @@ object InternationalSchoolExampleData {
 
   def diplomaSuoritus(grade: Int, aloitusPäivä: LocalDate, vahvistusPäivä: Option[LocalDate]): DiplomaVuosiluokanSuoritus = DiplomaVuosiluokanSuoritus(
     koulutusmoduuli = IBDiplomaLuokkaAste(tunniste = Koodistokoodiviite(grade.toString, "internationalschoolluokkaaste")),
+    luokka = Some(s"${grade.toString}C"),
     alkamispäivä = Some(aloitusPäivä),
     toimipiste = internationalSchoolOfHelsinki,
     vahvistus = vahvistusPäivä.flatMap(vahvistus),

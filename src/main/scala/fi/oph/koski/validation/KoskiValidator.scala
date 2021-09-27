@@ -567,9 +567,15 @@ class KoskiValidator(
     )
   }
 
-  private def validateAlkamispäivä(suoritus: Suoritus): HttpStatus = suoritus match {
-    case s: PerusopetuksenVuosiluokanSuoritus => HttpStatus.validate(s.alkamispäivä.isDefined)(KoskiErrorCategory.badRequest.validation.tila.alkamispäiväPuuttuu("Suoritukselle " + suorituksenTunniste(s) + " ei ole merkitty alkamispäivää"))
-    case _ => HttpStatus.ok
+  private def validateAlkamispäivä(suoritus: Suoritus): HttpStatus = {
+    lazy val virhe = KoskiErrorCategory.badRequest.validation.tila.alkamispäiväPuuttuu("Suoritukselle " + suorituksenTunniste(suoritus) + " ei ole merkitty alkamispäivää")
+
+    suoritus match {
+      case s: PerusopetuksenVuosiluokanSuoritus => HttpStatus.validate(s.alkamispäivä.isDefined)(virhe)
+      case s: DiplomaVuosiluokanSuoritus => HttpStatus.validate(s.alkamispäivä.isDefined)(virhe)
+      case s: MYPVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "10" => HttpStatus.validate(s.alkamispäivä.isDefined)(virhe)
+      case _ => HttpStatus.ok
+    }
   }
 
   private def validateToimipiste(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, suoritus: Suoritus)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): HttpStatus = suoritus match {

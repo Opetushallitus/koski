@@ -14,22 +14,24 @@ import {
   jyväskylänNormaalikouluOid,
 } from "../integrationtests/oids"
 
-export const jklNormaalikouluSuorittaminenTableHead = "Oppivelvolliset (14)"
+export const jklNormaalikouluSuorittaminenTableHead = "Oppivelvolliset (16)"
 export const jklNormaalikouluSuorittaminenTableContent = `
-  Jkl-Lukio-Kulosaarelainen Valpas          |  1.1.2004  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  1.8.2019  | –         | Kulosaaren ala-aste, Perusopetus             |  1.1.2022 asti
-  Jkl-Nivel-Kulosaarelainen Valpas          |  1.1.2004  | Perusopetuksen lisäopetus | Läsnä                   | Jyväskylän normaalikoulu | 15.8.2012  | –         | Kulosaaren ala-aste, Perusopetus             |  1.1.2022 asti
-  Kahdella-oppija-oidilla Valpas            | 15.2.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  1.8.2019  | –         | –                                            | 15.2.2023 asti
-  Kahdella-oppija-oidilla-ilmo Valpas       |  4.6.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  1.8.2019  | –         | –                                            |  4.6.2023 asti
-  Kahdella-oppija-oidilla-ilmo-2 Valpas     |  3.6.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  1.8.2019  | –         | –                                            |  3.6.2023 asti
-  Kaksois-tutkinnosta-valmistunut Valpas    | 26.9.2005  | Lukion oppimäärä          | Valmistunut             | Jyväskylän normaalikoulu |  1.8.2019  | 2.9.2021  | –                                            | 26.9.2023 asti
-  Lukio-opiskelija Valpas                   |  7.5.2004  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  1.8.2019  | –         | –                                            |  7.5.2022 asti
-  Lukio-opiskelija-valmistunut Valpas       | 27.11.2005 | Lukion oppimäärä          | Valmistunut             | Jyväskylän normaalikoulu |  1.8.2019  | 2.9.2021  | –                                            | 27.11.2023 asti
-  Lukio-väliaikaisesti-keskeytynyt Valpas   | 30.5.2004  | Lukion oppimäärä       | Väliaikaisesti keskeytynyt | Jyväskylän normaalikoulu |  1.8.2021  | –         | –                                            | 30.5.2022 asti
-  LukioVanhallaOpsilla Valpas               |  6.7.2004  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  3.3.2021  | –         | –                                            |  6.7.2022 asti
-  LukionAloittanut Valpas                   | 29.4.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu | 15.8.2021  | –         | –                                            | 29.4.2023 asti
-  LukionAloittanut-ilmo Valpas              | 11.4.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu | 15.8.2021  | –         | –                                            | 11.4.2023 asti
-  LukionAloittanutJaLopettanut-ilmo Valpas  |  5.4.2005  | Lukion oppimäärä          | warningEronnut          | Jyväskylän normaalikoulu | 15.8.2021  | 19.9.2021 | –                                            |  5.4.2023 asti
-  LukionLokakuussaAloittanut Valpas         | 18.4.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  3.10.2021 | –         | –                                            | 18.4.2023 asti
+  Int-school-9-luokan-jälkeen-lukion-aloittanut Valpas            | 12.5.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu | 15.8.2021  | –         | International School of Helsinki, International school | 12.5.2023 asti
+  Int-school-9-luokan-jälkeen-lukion-lokakuussa-aloittanut Valpas |  7.1.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu | 3.10.2021  | –         | International School of Helsinki, International school |  7.1.2023 asti
+  Jkl-Lukio-Kulosaarelainen Valpas                                |  1.1.2004  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  1.8.2019  | –         | Kulosaaren ala-aste, Perusopetus             |  1.1.2022 asti
+  Jkl-Nivel-Kulosaarelainen Valpas                                |  1.1.2004  | Perusopetuksen lisäopetus | Läsnä                   | Jyväskylän normaalikoulu | 15.8.2012  | –         | Kulosaaren ala-aste, Perusopetus             |  1.1.2022 asti
+  Kahdella-oppija-oidilla Valpas                                  | 15.2.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  1.8.2019  | –         | –                                            | 15.2.2023 asti
+  Kahdella-oppija-oidilla-ilmo Valpas                             |  4.6.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  1.8.2019  | –         | –                                            |  4.6.2023 asti
+  Kahdella-oppija-oidilla-ilmo-2 Valpas                           |  3.6.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  1.8.2019  | –         | –                                            |  3.6.2023 asti
+  Kaksois-tutkinnosta-valmistunut Valpas                          | 26.9.2005  | Lukion oppimäärä          | Valmistunut             | Jyväskylän normaalikoulu |  1.8.2019  | 2.9.2021  | –                                            | 26.9.2023 asti
+  Lukio-opiskelija Valpas                                         |  7.5.2004  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  1.8.2019  | –         | –                                            |  7.5.2022 asti
+  Lukio-opiskelija-valmistunut Valpas                             | 27.11.2005 | Lukion oppimäärä          | Valmistunut             | Jyväskylän normaalikoulu |  1.8.2019  | 2.9.2021  | –                                            | 27.11.2023 asti
+  Lukio-väliaikaisesti-keskeytynyt Valpas                         | 30.5.2004  | Lukion oppimäärä          | Väliaikaisesti keskeytynyt | Jyväskylän normaalikoulu |  1.8.2021 | –       | –                                            | 30.5.2022 asti
+  LukioVanhallaOpsilla Valpas                                     |  6.7.2004  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  3.3.2021  | –         | –                                            |  6.7.2022 asti
+  LukionAloittanut Valpas                                         | 29.4.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu | 15.8.2021  | –         | –                                            | 29.4.2023 asti
+  LukionAloittanut-ilmo Valpas                                    | 11.4.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu | 15.8.2021  | –         | –                                            | 11.4.2023 asti
+  LukionAloittanutJaLopettanut-ilmo Valpas                        |  5.4.2005  | Lukion oppimäärä          | warningEronnut          | Jyväskylän normaalikoulu | 15.8.2021  | 19.9.2021 | –                                            |  5.4.2023 asti
+  LukionLokakuussaAloittanut Valpas                               | 18.4.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  3.10.2021 | –         | –                                            | 18.4.2023 asti
     `
 
 export const stadinAmmattiopistoSuorittaminenTableHead = "Oppivelvolliset (12)"
@@ -47,6 +49,17 @@ export const stadinAmmattiopistoSuorittaminenTableContent = `
   Amis-useita-pts Valpas                                               | 28.5.2005  | Ammatillinen tutkinto | Läsnä          | Useita toimipisteitä                                         | 1.9.2012 | –        | –                                                             | 28.5.2023 asti
   Telma-opiskelija Valpas                                              | 2.8.2005   | TELMA                 | Läsnä          | Stadin ammatti- ja aikuisopisto                              | 1.9.2012 | –        | –                                                             | 2.8.2023 asti
   Valma-opiskelija Valpas                                              | 19.1.2005  | VALMA                 | Läsnä          | Stadin ammatti- ja aikuisopisto                              | 1.9.2012 | –        | –                                                             | 19.1.2023 asti
+    `
+
+export const internationalSchoolSuorittaminenTableHead = "Oppivelvolliset (7)"
+export const internationalSchoolSuorittaminenTableContent = `
+  Int-school-10-luokalla-ilman-alkamispäivää Valpas                                 | 14.3.2005  | International school | Läsnä | International School of Helsinki | –          | – | – | 14.3.2023 asti
+  Int-school-10-luokalta-aloittanut Valpas                                          | 9.6.2005   | International school | Läsnä | International School of Helsinki | 1.1.2021   | – | – | 9.6.2023 asti
+  Int-school-11-luokalta-aloittanut Valpas                                          | 5.4.2005   | International school | Läsnä | International School of Helsinki | 1.1.2021   | – | – | 5.4.2023 asti
+  Int-school-9-luokan-jälkeen-int-schoolin-10-luokalla-aloittanut Valpas            | 22.2.2005  | International school | Läsnä | International School of Helsinki | 1.8.2021   | – | – | 22.2.2023 asti
+  Int-school-9-luokan-jälkeen-int-schoolin-10-luokalla-lokakuussa-aloittanut Valpas | 8.4.2005   | International school | Läsnä | International School of Helsinki | 3.10.2021  | – | – | 8.4.2023 asti
+  Int-school-9-vahvistettu-lokakuussa Valpas                                        | 22.11.2005 | International school | Läsnä | International School of Helsinki | 15.10.2021 | – | – | 22.11.2023 asti
+  Int-school-yli-2kk-aiemmin-9-valmistunut-10-jatkanut Valpas                       | 11.11.2005 | International school | Läsnä | International School of Helsinki | 1.8.2021   | – | – | 11.11.2023 asti
     `
 
 export const suorittaminenHetuhakuPath = createSuorittaminenHetuhakuPath(

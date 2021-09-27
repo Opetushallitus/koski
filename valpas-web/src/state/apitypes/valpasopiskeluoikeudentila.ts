@@ -17,3 +17,6 @@ export const isVoimassa = (tila: ValpasOpiskeluoikeudenTila) =>
 
 export const isVoimassaTulevaisuudessa = (tila: ValpasOpiskeluoikeudenTila) =>
   tila.koodiarvo === "voimassatulevaisuudessa"
+
+export const isValmistunut = (tila: ValpasOpiskeluoikeudenTila) =>
+  tila.koodiarvo === "valmistunut"

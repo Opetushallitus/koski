@@ -25,6 +25,7 @@ describe('International school', function() {
       it('näyttää suorituksen tiedot', function () {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
           'Koulutus Grade 12 (IB Diploma)\n' +
+          'Luokka 12C\n' +
           'Alkamispäivä 15.8.2017\n' +
           'Oppilaitos / toimipiste International School of Helsinki\n' +
           'Suoritus valmis Vahvistus : 30.6.2018 Helsinki Reijo Reksi , rehtori'

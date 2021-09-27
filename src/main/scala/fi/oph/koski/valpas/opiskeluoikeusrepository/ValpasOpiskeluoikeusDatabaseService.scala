@@ -154,7 +154,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   -- (vapaansivistystyonkoulutus, vstmaahanmuuttajienkotoutumiskoulutus)
   -- (vapaansivistystyonkoulutus, vstoppivelvollisillesuunnattukoulutus)
   -- (vapaansivistystyonkoulutus, vstlukutaitokoulutus)
-  , hakeutumisvalvottava_opiskeluoikeus AS (
+  , hakeutumisvalvottava_peruskoulun_opiskeluoikeus AS (
     SELECT
       DISTINCT ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid,
       ov_kelvollinen_opiskeluoikeus.oppilaitos_oid,
@@ -274,6 +274,140 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         )
       )
   )
+  , hakeutumisvalvottava_international_schoolin_opiskeluoikeus AS (
+    SELECT
+      DISTINCT ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid,
+      ov_kelvollinen_opiskeluoikeus.oppilaitos_oid,
+      ov_kelvollinen_opiskeluoikeus.master_oid
+    FROM
+      ov_kelvollinen_opiskeluoikeus
+      JOIN r_paatason_suoritus
+        ON r_paatason_suoritus.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
+      LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella
+        ON aikajakson_keskella.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
+        AND $tarkastelupäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
+    WHERE
+      -- (0) henkilö on oppivelvollinen: hakeutumisvalvontaa ei voi suorittaa enää sen jälkeen kun henkilön
+      -- oppivelvollisuus on päättynyt
+      ov_kelvollinen_opiskeluoikeus.henkilo_on_oppivelvollinen
+      -- (1) oppijalla on International schoolin opiskeluoikeus
+      AND ov_kelvollinen_opiskeluoikeus.koulutusmuoto = 'internationalschool'
+      AND (
+        -- (B2.1) kyseisessä opiskeluoikeudessa on yhdeksännen luokan suoritus.
+        (
+          r_paatason_suoritus.koulutusmoduuli_koodiarvo = '9'
+        )
+        -- (B2.2) TAI oppija täyttää vähintään 17 vuotta tarkasteluvuonna ja hänellä on jokin international schoolin
+        -- perusopetuksen päätason suoritus: heidät näytetään luokka-asteesta
+        -- riippumatta, koska voivat lopettaa international schoolin ja siirtyä seuraavaan opetukseen, vaikka
+        -- olisivat esim. vasta 8. luokalla
+        OR (
+          ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna
+          AND (
+            r_paatason_suoritus.koulutusmoduuli_koodiarvo = '8'
+            OR r_paatason_suoritus.koulutusmoduuli_koodiarvo = '7'
+            OR r_paatason_suoritus.koulutusmoduuli_koodiarvo = '6'
+            OR r_paatason_suoritus.koulutusmoduuli_koodiarvo = '5'
+            OR r_paatason_suoritus.koulutusmoduuli_koodiarvo = '4'
+            OR r_paatason_suoritus.koulutusmoduuli_koodiarvo = '3'
+            OR r_paatason_suoritus.koulutusmoduuli_koodiarvo = '2'
+            OR r_paatason_suoritus.koulutusmoduuli_koodiarvo = '1'
+          )
+        )
+      )
+      AND (
+        -- (4.1) opiskeluoikeus ei ole eronnut tilassa tällä hetkellä
+        (
+          (aikajakson_keskella.tila IS NOT NULL
+            AND NOT aikajakson_keskella.tila = any('{eronnut, katsotaaneronneeksi, peruutettu, keskeytynyt}'))
+          OR (aikajakson_keskella.tila IS NULL
+            AND $tarkastelupäivä < ov_kelvollinen_opiskeluoikeus.alkamispaiva)
+          OR (aikajakson_keskella.tila IS NULL
+            AND $tarkastelupäivä > ov_kelvollinen_opiskeluoikeus.paattymispaiva
+            AND NOT ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu, keskeytynyt}'))
+        )
+        OR (
+        -- (4.2) TAI oppija täyttää vähintään 17 tarkasteluvuonna ja on eronnut tilassa
+          ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna
+          AND (
+            (aikajakson_keskella.tila IS NOT NULL
+              AND aikajakson_keskella.tila = any('{eronnut, katsotaaneronneeksi, keskeytynyt}'))
+            OR (aikajakson_keskella.tila IS NULL
+              AND $tarkastelupäivä > ov_kelvollinen_opiskeluoikeus.paattymispaiva
+              AND ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, keskeytynyt}'))
+          )
+        )
+      )
+      AND (
+        -- (B5a) opiskeluoikeus on läsnä tai väliaikaisesti keskeytynyt tai lomalla tällä hetkellä.
+        -- Huomaa, että tulevaisuuteen luotuja opiskeluoikeuksia ei tarkoituksella haluta näkyviin.
+        (
+          (aikajakson_keskella.tila IS NOT NULL
+            AND aikajakson_keskella.tila = any('{lasna, valiaikaisestikeskeytynyt, loma}'))
+          -- B5a.1 vasta syksyllä (1.8. tai myöhemmin) 9. luokan aloittavia ei näytetä ennen kevään viimeistä rajapäivää.
+          AND (
+            r_paatason_suoritus.data ->> 'alkamispäivä' <= $keväänValmistumisjaksoLoppu
+            OR $tarkastelupäivä > $keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
+          )
+        )
+        -- TAI:
+        OR (
+          -- (B5b.1) 9. luokka on tullut suoritetetuksi menneisyydessä
+          (
+            (
+              r_paatason_suoritus.vahvistus_paiva IS NOT NULL
+              AND $tarkastelupäivä >= r_paatason_suoritus.vahvistus_paiva
+              -- (B5b.2) ministeriön määrittelemä aikaraja ei ole kulunut umpeen henkilön 9. luokan suorittamisajasta.
+              AND (
+                (
+                  -- keväällä 9. luokan suorittanut ja tarkastellaan heille määrättyä rajapäivää aiemmin
+                  (r_paatason_suoritus.vahvistus_paiva
+                    BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
+                  AND $tarkastelupäivä <= $keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
+                )
+                OR (
+                  -- tai muuna aikana 9. luokan suorittanut ja tarkastellaan heille määrättyä rajapäivää aiemmin
+                  (r_paatason_suoritus.vahvistus_paiva
+                    NOT BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
+                  AND (r_paatason_suoritus.vahvistus_paiva >= $keväänUlkopuolellaValmistumisjaksoAlku)
+                )
+              )
+            )
+            -- (B5b.1.2) tai oppija täyttää tarkasteluvuonna vähintään 17 ja opiskeluoikeus on eronnut-tilassa
+            OR (
+              ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna
+              AND ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, keskeytynyt}')
+              -- (B5b.2) ministeriön määrittelemä aikaraja ei ole kulunut umpeen henkilön eroamisajasta.
+              AND (
+                (
+                  -- keväällä eronnut ja tarkastellaan heille määrättyä rajapäivää aiemmin
+                  (ov_kelvollinen_opiskeluoikeus.paattymispaiva
+                    BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
+                  AND $tarkastelupäivä <= $keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
+                )
+                OR (
+                  -- tai muuna aikana eronnut ja tarkastellaan heille määrättyä rajapäivää aiemmin
+                  (ov_kelvollinen_opiskeluoikeus.paattymispaiva
+                    NOT BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
+                  AND (ov_kelvollinen_opiskeluoikeus.paattymispaiva >= $keväänUlkopuolellaValmistumisjaksoAlku)
+                )
+              )
+            )
+          )
+        )
+      )
+  )
+  , hakeutumisvalvottava_opiskeluoikeus AS (
+    SELECT
+      *
+    FROM
+     hakeutumisvalvottava_peruskoulun_opiskeluoikeus
+    UNION ALL
+    SELECT
+      *
+    FROM
+     hakeutumisvalvottava_international_schoolin_opiskeluoikeus
+  )
   -- CTE: opiskeluoikeudet, joissa oppivelvollisuuden suorittamista oppilaitoksella on oikeus
   -- valvoa tällä hetkellä
   , suorittamisvalvottava_opiskeluoikeus AS (
@@ -286,12 +420,31 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella
         ON aikajakson_keskella.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
         AND $tarkastelupäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
+      LEFT JOIN LATERAL (
+        SELECT
+          TRUE AS loytyi
+        FROM
+          r_paatason_suoritus pts
+        WHERE
+          pts.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
+          AND (
+            (pts.suorituksen_tyyppi = 'internationalschoolmypvuosiluokka'
+              AND pts.koulutusmoduuli_koodiarvo = '10')
+            OR pts.suorituksen_tyyppi = 'internationalschooldiplomavuosiluokka'
+          )
+        LIMIT 1
+      ) AS international_school_toisen_asteen_suorituksia ON TRUE
     WHERE
       -- (0) henkilö on oppivelvollinen: suorittamisvalvontaa ei voi suorittaa enää sen jälkeen kun henkilön
       -- oppivelvollisuus on päättynyt
       ov_kelvollinen_opiskeluoikeus.henkilo_on_oppivelvollinen
       -- (1) oppijalla on muu kuin peruskoulun opetusoikeus
       AND ov_kelvollinen_opiskeluoikeus.koulutusmuoto <> 'perusopetus'
+      -- (1b) International school on suorittamisvalvottava vain, jos siinä on 10, 11 tai 12 luokan suoritus
+      AND (
+        ov_kelvollinen_opiskeluoikeus.koulutusmuoto <> 'internationalschool'
+        OR international_school_toisen_asteen_suorituksia.loytyi IS TRUE
+      )
       AND (
         -- (2a) opiskeluoikeus on läsnä tai väliaikaisesti keskeytynyt tai lomalla tällä hetkellä.
         -- Huomaa, että tulevaisuuteen luotuja opiskeluoikeuksia ei tarkoituksella haluta näkyviin.
@@ -303,7 +456,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         OR (
           -- (2b.1) opiskeluoikeus on päättynyt menneisyydessä eroamiseen. Valmistuneita ei pääsääntöisesti
           -- näytetä lainkaan toiselta asteelta valmistuminen tarkoittaa, että oppivelvollisuus päättyy
-          -- kokonaan, ja nivelvaiheen valmistuneiden käsittely tehdään hakeutumisen valvonnn kautta.
+          -- kokonaan, ja nivelvaiheen valmistuneiden käsittely tehdään hakeutumisen valvonnan kautta.
           ($tarkastelupäivä >= ov_kelvollinen_opiskeluoikeus.paattymispaiva)
           AND (ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu, keskeytynyt}'))
         )
@@ -425,36 +578,52 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       r_opiskeluoikeus.koulutusmuoto,
       r_opiskeluoikeus.oppilaitos_oid,
       r_opiskeluoikeus.oppilaitos_nimi,
+      r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
+      valittu_paatason_suoritus.data AS paatason_suoritukset,
       r_opiskeluoikeus.alkamispaiva,
       r_opiskeluoikeus.paattymispaiva,
-      r_opiskeluoikeus.paattymispaiva > $tarkastelupäivä AS paattymispaiva_merkitty_tulevaisuuteen,
-      r_opiskeluoikeus.viimeisin_tila,
       CASE
         WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
         WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
         ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
-      END tarkastelupäivän_tila,
-      CASE
-        -- Jos opiskeluoikeus on tulevaisuudessa, käytetään läsnä-tilaa toistaiseksi. Tätä tilannetta ei tällä hetkellä koskaan
-        -- Valppaassa näytetä, joten jos vaikka opiskeluoikeus alkaisikin muuten kuin läsnä-tilaisena, ei tämä aiheuta mitään
-        -- ongelmaa.
-        WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'lasna'
-        WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.viimeisin_tila
-        ELSE aikajakson_keskella.tila
-      END tarkastelupäivän_koski_tila,
-      CASE
-        WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN r_opiskeluoikeus.alkamispaiva
-        WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.paattymispaiva
-        ELSE aikajakson_keskella.tila_alkanut
-      END tarkastelupaivan_tilan_alkupaiva,
-      r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
-      (
-        r_opiskeluoikeus.viimeisin_tila = 'valmistunut'
-        AND coalesce(r_opiskeluoikeus.paattymispaiva < $perusopetussuorituksenNäyttämisenAikaraja, FALSE)
-      ) AS naytettava_perusopetuksen_suoritus,
-      coalesce((r_opiskeluoikeus.data -> 'lisätiedot' ->> 'vuosiluokkiinSitoutumatonOpetus')::boolean, FALSE)
-        AS vuosiluokkiin_sitomaton_opetus,
-      valittu_paatason_suoritus.data AS paatason_suoritukset
+      END tarkastelupaivan_tila,
+      jsonb_build_object(
+        'alkamispäivä', r_opiskeluoikeus.alkamispaiva,
+        'päättymispäivä', r_opiskeluoikeus.paattymispaiva,
+        'päättymispäiväMerkittyTulevaisuuteen', r_opiskeluoikeus.paattymispaiva > $tarkastelupäivä,
+        'tarkastelupäivänTila', jsonb_build_object(
+          'koodiarvo',
+            (CASE
+              WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
+              WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
+              ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
+            END),
+          'koodistoUri', 'valpasopiskeluoikeudentila'
+        ),
+        'tarkastelupäivänKoskiTila', jsonb_build_object(
+          'koodiarvo',
+            (CASE
+              -- Jos opiskeluoikeus on tulevaisuudessa, käytetään läsnä-tilaa toistaiseksi. Tätä tilannetta ei tällä hetkellä koskaan
+              -- Valppaassa näytetä, joten jos vaikka opiskeluoikeus alkaisikin muuten kuin läsnä-tilaisena, ei tämä aiheuta mitään
+              -- ongelmaa.
+              WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'lasna'
+              WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.viimeisin_tila
+              ELSE aikajakson_keskella.tila
+            END),
+          'koodistoUri', 'koskiopiskeluoikeudentila'
+        ),
+        'tarkastelupäivänKoskiTilanAlkamispäivä', (CASE
+          WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN r_opiskeluoikeus.alkamispaiva
+          WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.paattymispaiva
+          ELSE aikajakson_keskella.tila_alkanut
+        END),
+        'valmistunutAiemminTaiLähitulevaisuudessa', (
+          r_opiskeluoikeus.viimeisin_tila = 'valmistunut'
+          AND coalesce(r_opiskeluoikeus.paattymispaiva < $perusopetussuorituksenNäyttämisenAikaraja, FALSE)
+        ),
+        'vuosiluokkiinSitomatonOpetus', coalesce((r_opiskeluoikeus.data -> 'lisätiedot' ->> 'vuosiluokkiinSitoutumatonOpetus')::boolean, FALSE)
+      ) AS perusopetus_tiedot,
+      NULL::jsonb AS perusopetuksen_jalkeinen_tiedot
     FROM
       oppija_oid
       JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
@@ -505,45 +674,139 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         LIMIT 1
       ) AS valittu_paatason_suoritus
   )
-  -- CTE: Muut kuin peruskoulun opiskeluoikeudet
-  -- Pitää hakea erikseen, koska säännöt päätason suorituksen kenttien osalta ovat erilaiset, koska datat ovat erilaiset
-  , muu_opiskeluoikeus AS (
+  -- CTE: International schoolin opiskeluoikeudet
+  -- Pitää hakea erikseen, koska sisältää sekä perusopetuksen että sen jälkeisen koulutuksen tietoja
+  , international_schoolin_opiskeluoikeus AS (
     SELECT
       oppija_oid.master_oid,
       r_opiskeluoikeus.opiskeluoikeus_oid,
       r_opiskeluoikeus.koulutusmuoto,
       r_opiskeluoikeus.oppilaitos_oid,
       r_opiskeluoikeus.oppilaitos_nimi,
+      r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
+      kaikki_paatason_suoritukset.data AS paatason_suoritukset,
       r_opiskeluoikeus.alkamispaiva,
       r_opiskeluoikeus.paattymispaiva,
-      r_opiskeluoikeus.paattymispaiva > $tarkastelupäivä AS paattymispaiva_merkitty_tulevaisuuteen,
-      r_opiskeluoikeus.viimeisin_tila,
-      CASE
+      (CASE
         WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
         WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
         ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
-      END tarkastelupäivän_tila,
-      CASE
-        -- Jos opiskeluoikeus on tulevaisuudessa, käytetään läsnä-tilaa toistaiseksi. Tätä tilannetta ei tällä hetkellä koskaan
-        -- Valppaassa näytetä, joten jos vaikka opiskeluoikeus alkaisikin muuten kuin läsnä-tilaisena, ei tämä aiheuta mitään
-        -- ongelmaa.
-        WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'lasna'
-        WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.viimeisin_tila
-        ELSE aikajakson_keskella.tila
-      END tarkastelupäivän_koski_tila,
-      CASE
-        WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN r_opiskeluoikeus.alkamispaiva
-        WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.paattymispaiva
-        ELSE aikajakson_keskella.tila_alkanut
-      END tarkastelupaivan_tilan_alkupaiva,
-      r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
-      FALSE AS naytettava_perusopetuksen_suoritus,
-      FALSE AS vuosiluokkiin_sitomaton_opetus,
-      kaikki_paatason_suoritukset.data AS paatason_suoritukset
+      END) AS tarkastelupaivan_tila,
+      (CASE
+        WHEN perusopetuksen_suorituksia.loytyi IS TRUE THEN
+          (jsonb_build_object(
+            'alkamispäivä', r_opiskeluoikeus.alkamispaiva,
+            'päättymispäivä',
+              -- Jos perusopetuksen 9. luokka on vahvistettu, käytetään sitä. Jos sitä ei ole vahvistettu, ja on toisen asteen suorituksia,
+              -- ei päättymispäivää ole lainkaan. Jos taas toisen asteen suorituksia ei ole lainkaan, käytetään koko oo:n päättymispäivää.
+              CASE
+                WHEN ysiluokan_suoritus.vahvistus_paiva IS NOT NULL THEN ysiluokan_suoritus.vahvistus_paiva
+                WHEN toisen_asteen_suorituksia.lukumaara > 0 THEN NULL::date
+                ELSE r_opiskeluoikeus.paattymispaiva
+              END,
+            'päättymispäiväMerkittyTulevaisuuteen', (
+              CASE
+                WHEN ysiluokan_suoritus.vahvistus_paiva IS NOT NULL THEN ysiluokan_suoritus.vahvistus_paiva
+                WHEN toisen_asteen_suorituksia.lukumaara > 0 THEN NULL::date
+                ELSE r_opiskeluoikeus.paattymispaiva
+              END) > $tarkastelupäivä,
+            'tarkastelupäivänTila', jsonb_build_object(
+              'koodiarvo',
+                (CASE
+                  WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
+                  -- Jos ysiluokka on vahvistettu ja tutkitaan vahvistuspäivämäärän jälkeen, käytetään tilaa valmistunut:
+                  WHEN ysiluokan_suoritus.vahvistus_paiva IS NOT NULL AND ysiluokan_suoritus.vahvistus_paiva <= $tarkastelupäivä THEN 'valmistunut'
+                  -- Muuten käytetään opiskeluoikeuden tietoja:
+                  WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
+                  ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
+                END),
+              'koodistoUri', 'valpasopiskeluoikeudentila'
+            ),
+            'tarkastelupäivänKoskiTila', jsonb_build_object(
+              'koodiarvo',
+                (CASE
+                  -- Jos opiskeluoikeus on tulevaisuudessa, käytetään läsnä-tilaa toistaiseksi. Tätä tilannetta ei tällä hetkellä koskaan
+                  -- Valppaassa näytetä, joten jos vaikka opiskeluoikeus alkaisikin muuten kuin läsnä-tilaisena, ei tämä aiheuta mitään
+                  -- ongelmaa.
+                  WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'lasna'
+                  -- Jos ysiluokka on vahvistettu ja tutkitaan vahvistuspäivämäärän jälkeen, käytetään tilaa valmistunut:
+                  WHEN ysiluokan_suoritus.vahvistus_paiva IS NOT NULL AND ysiluokan_suoritus.vahvistus_paiva <= $tarkastelupäivä THEN 'valmistunut'
+                  -- Muuten käytetään opiskeluoikeuden tietoja:
+                  WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.viimeisin_tila
+                  ELSE aikajakson_keskella.tila
+                END),
+              'koodistoUri', 'koskiopiskeluoikeudentila'
+            ),
+            'tarkastelupäivänKoskiTilanAlkamispäivä',
+              (CASE
+                WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN r_opiskeluoikeus.alkamispaiva
+                -- Jos ysiluokka on vahvistettu ja tutkitaan vahvistuspäivämäärän jälkeen, käytetään vahvistuspäivää:
+                WHEN (ysiluokan_suoritus.vahvistus_paiva IS NOT NULL AND ysiluokan_suoritus.vahvistus_paiva <= $tarkastelupäivä) THEN ysiluokan_suoritus.vahvistus_paiva
+                -- Muuten käytetään opiskeluoikeuden tietoja:
+                WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.paattymispaiva
+                ELSE aikajakson_keskella.tila_alkanut
+              END),
+            'valmistunutAiemminTaiLähitulevaisuudessa', (
+              ysiluokan_suoritus.vahvistus_paiva IS NOT NULL
+              AND ysiluokan_suoritus.vahvistus_paiva < $perusopetussuorituksenNäyttämisenAikaraja
+            ),
+            'vuosiluokkiinSitomatonOpetus', FALSE
+          ))
+        ELSE NULL::jsonb
+      END) AS perusopetus_tiedot,
+      jsonb_build_object(
+        'alkamispäivä',
+          (CASE
+            -- Jos ei ole toisen asteen suorituksia, eikä perusopetuksen suorituksia, käytetään opiskeluoikeuden alkamispäivää
+            WHEN (
+              (toisen_asteen_suorituksia.lukumaara IS NULL OR toisen_asteen_suorituksia.lukumaara = 0)
+              AND (perusopetuksen_suorituksia.loytyi IS NOT TRUE)
+            ) THEN r_opiskeluoikeus.alkamispaiva
+            -- Muutoin käytetään toisen asteen suoritusten aikaisinta alkamispäivää (joka saattaa myös olla null, jos toisen asteen suorituksia ei ole siirretty tai
+            -- niille ei ole siirretty alkamispäivää)
+            ELSE toisen_asteen_suorituksia.aikaisin_alkamispaiva
+          END),
+        'päättymispäivä', r_opiskeluoikeus.paattymispaiva,
+        'päättymispäiväMerkittyTulevaisuuteen', r_opiskeluoikeus.paattymispaiva > $tarkastelupäivä,
+        'tarkastelupäivänTila', jsonb_build_object(
+          'koodiarvo',
+            (CASE
+              -- Jos toisen asteen alkamispäivä on määritelty, ja tutkitaan sitä aikaisemmin, käytetään voimassatulevaisuudessa:
+              WHEN toisen_asteen_suorituksia.aikaisin_alkamispaiva IS NOT NULL AND $tarkastelupäivä < toisen_asteen_suorituksia.aikaisin_alkamispaiva THEN 'voimassatulevaisuudessa'
+              -- Muuten käytetään opiskeluoikeuden tietoja:
+              WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
+              WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
+              ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
+            END),
+          'koodistoUri', 'valpasopiskeluoikeudentila'
+        ),
+        'tarkastelupäivänKoskiTila', jsonb_build_object(
+          'koodiarvo',
+            (CASE
+              -- Jos opiskeluoikeus on tulevaisuudessa, käytetään läsnä-tilaa toistaiseksi. Tätä tilannetta ei tällä hetkellä koskaan
+              -- Valppaassa näytetä, joten jos vaikka opiskeluoikeus alkaisikin muuten kuin läsnä-tilaisena, ei tämä aiheuta mitään
+              -- ongelmaa.
+              WHEN toisen_asteen_suorituksia.aikaisin_alkamispaiva IS NOT NULL AND $tarkastelupäivä < toisen_asteen_suorituksia.aikaisin_alkamispaiva THEN 'lasna'
+              WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'lasna'
+              WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.viimeisin_tila
+              ELSE aikajakson_keskella.tila
+            END),
+          'koodistoUri', 'koskiopiskeluoikeudentila'
+        ),
+        'tarkastelupäivänKoskiTilanAlkamispäivä', (CASE
+          WHEN toisen_asteen_suorituksia.aikaisin_alkamispaiva IS NOT NULL AND $tarkastelupäivä <= toisen_asteen_suorituksia.aikaisin_alkamispaiva THEN toisen_asteen_suorituksia.aikaisin_alkamispaiva
+          WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN r_opiskeluoikeus.alkamispaiva
+          WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.paattymispaiva
+          ELSE aikajakson_keskella.tila_alkanut
+        END),
+        -- Tarvitaan, jotta voidaan näyttää international schoolissa itsessään käytävät jatko-opinnot oikein hakeutumisvalvonnan näkymässä ainoastaan
+        -- silloin, kun niissä on oikeasti kirjattuja 10+ luokan suorituksia
+        'näytäMuunaPerusopetuksenJälkeisenäOpintona', (toisen_asteen_suorituksia.lukumaara > 0)
+      ) AS perusopetuksen_jalkeinen_tiedot
     FROM
       oppija_oid
       JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
-        AND r_opiskeluoikeus.koulutusmuoto <> 'perusopetus'
+        AND r_opiskeluoikeus.koulutusmuoto = 'internationalschool'
       LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella
         ON aikajakson_keskella.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
         AND $tarkastelupäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
@@ -564,7 +827,140 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
                 'fi', pts.toimipiste_nimi
               )
             ),
-            'ryhmä', pts.data->>'ryhmä'
+            'ryhmä', pts.data->>'luokka'
+          )
+          -- Haetaan päätason suoritukset vahvistus- tai arviointipäivien mukaisessa järjestyksessä.
+          -- Yleensä käytetään tässä järjestyksessä ensimmäistä, mutta tähän on poikkeus.
+          -- Teoriassa voisi tutkia päätason suorituksen osasuorituksiin kirjattuja päivämääriä, mutta se on aika
+          -- monimutkaista ja luultavasti myös hidasta.
+          ORDER BY
+            pts.vahvistus_paiva DESC NULLS FIRST,
+            pts.arviointi_paiva DESC NULLS FIRST
+        ) AS data
+        FROM r_paatason_suoritus pts
+        WHERE pts.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+        GROUP BY pts.opiskeluoikeus_oid
+      ) AS kaikki_paatason_suoritukset
+      -- Optimointi: PostgreSQL optimoi LEFT JOIN LATERAL ... ON TRUE :n huomattavasti paremmin kuin tavallisen LEFT JOINin
+      LEFT JOIN LATERAL (
+        SELECT
+          vahvistus_paiva
+        FROM
+          r_paatason_suoritus pts
+        WHERE
+          pts.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+          AND pts.suorituksen_tyyppi = 'internationalschoolmypvuosiluokka'
+          AND pts.koulutusmoduuli_koodiarvo = '9'
+      ) AS ysiluokan_suoritus ON TRUE
+      LEFT JOIN LATERAL (
+        SELECT
+          TRUE AS loytyi
+        FROM
+          r_paatason_suoritus pts
+        WHERE
+          pts.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+          AND (
+            (pts.suorituksen_tyyppi = 'internationalschoolpypvuosiluokka')
+            OR (
+              pts.suorituksen_tyyppi = 'internationalschoolmypvuosiluokka'
+              AND pts.koulutusmoduuli_koodiarvo <> '10'
+            )
+          )
+        LIMIT 1
+      ) AS perusopetuksen_suorituksia ON TRUE
+      CROSS JOIN LATERAL (
+        SELECT
+          COUNT(*) AS lukumaara,
+          MIN(pts.data->>'alkamispäivä')::date aikaisin_alkamispaiva
+        FROM
+          r_paatason_suoritus pts
+        WHERE
+          pts.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+          AND (
+            (pts.suorituksen_tyyppi = 'internationalschooldiplomavuosiluokka')
+            OR (pts.suorituksen_tyyppi = 'internationalschoolmypvuosiluokka'
+              AND pts.koulutusmoduuli_koodiarvo = '10')
+          )
+      ) AS toisen_asteen_suorituksia
+  )
+  -- CTE: Muut kuin peruskoulun opiskeluoikeudet
+  -- Pitää hakea erikseen, koska säännöt päätason suorituksen kenttien osalta ovat erilaiset, koska datat ovat erilaiset
+  , muu_opiskeluoikeus AS (
+    SELECT
+      oppija_oid.master_oid,
+      r_opiskeluoikeus.opiskeluoikeus_oid,
+      r_opiskeluoikeus.koulutusmuoto,
+      r_opiskeluoikeus.oppilaitos_oid,
+      r_opiskeluoikeus.oppilaitos_nimi,
+      r_opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava,
+      kaikki_paatason_suoritukset.data AS paatason_suoritukset,
+      r_opiskeluoikeus.alkamispaiva,
+      r_opiskeluoikeus.paattymispaiva,
+      CASE
+        WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
+        WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
+        ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
+      END tarkastelupaivan_tila,
+      NULL::jsonb AS perusopetus_tiedot,
+      jsonb_build_object(
+        'alkamispäivä', r_opiskeluoikeus.alkamispaiva,
+        'päättymispäivä', r_opiskeluoikeus.paattymispaiva,
+        'päättymispäiväMerkittyTulevaisuuteen', r_opiskeluoikeus.paattymispaiva > $tarkastelupäivä,
+        'tarkastelupäivänTila', jsonb_build_object(
+          'koodiarvo',
+            (CASE
+              WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
+              WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
+              ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
+            END),
+          'koodistoUri', 'valpasopiskeluoikeudentila'
+        ),
+        'tarkastelupäivänKoskiTila', jsonb_build_object(
+          'koodiarvo',
+            (CASE
+              -- Jos opiskeluoikeus on tulevaisuudessa, käytetään läsnä-tilaa toistaiseksi. Tätä tilannetta ei tällä hetkellä koskaan
+              -- Valppaassa näytetä, joten jos vaikka opiskeluoikeus alkaisikin muuten kuin läsnä-tilaisena, ei tämä aiheuta mitään
+              -- ongelmaa.
+              WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'lasna'
+              WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.viimeisin_tila
+              ELSE aikajakson_keskella.tila
+            END),
+          'koodistoUri', 'koskiopiskeluoikeudentila'
+        ),
+        'tarkastelupäivänKoskiTilanAlkamispäivä', (CASE
+          WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN r_opiskeluoikeus.alkamispaiva
+          WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.paattymispaiva
+          ELSE aikajakson_keskella.tila_alkanut
+        END),
+        'näytäMuunaPerusopetuksenJälkeisenäOpintona', TRUE
+      ) AS perusopetuksen_jalkeinen_tiedot
+    FROM
+      oppija_oid
+      JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
+        AND r_opiskeluoikeus.koulutusmuoto <> 'perusopetus'
+        AND r_opiskeluoikeus.koulutusmuoto <> 'internationalschool'
+      LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella
+        ON aikajakson_keskella.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+        AND $tarkastelupäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
+      LEFT JOIN valpastila valpastila_aikajakson_keskella
+        ON valpastila_aikajakson_keskella.koskiopiskeluoikeudentila = aikajakson_keskella.tila
+      LEFT JOIN valpastila valpastila_viimeisin
+        ON valpastila_viimeisin.koskiopiskeluoikeudentila = r_opiskeluoikeus.viimeisin_tila
+      CROSS JOIN LATERAL (
+        SELECT jsonb_agg(
+          jsonb_build_object(
+            'suorituksenTyyppi', jsonb_build_object(
+              'koodiarvo', pts.suorituksen_tyyppi,
+              'koodistoUri', 'suorituksentyyppi'
+            ),
+            'toimipiste', jsonb_build_object(
+              'oid', pts.toimipiste_oid,
+              'nimi', jsonb_build_object(
+                'fi', pts.toimipiste_nimi
+              )
+            ),
+            -- Osassa opiskeluoikeuksia kentän nimi on luokka eikä ryhmä
+            'ryhmä', coalesce(pts.data->>'ryhmä', pts.data->>'luokka')
           )
           -- Haetaan päätason suoritukset vahvistus- tai arviointipäivien mukaisessa järjestyksessä.
           -- Yleensä käytetään tässä järjestyksessä ensimmäistä, mutta tähän on poikkeus.
@@ -585,6 +981,11 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       *
     FROM
      peruskoulun_opiskeluoikeus
+    UNION ALL
+    SELECT
+      *
+    FROM
+      international_schoolin_opiskeluoikeus
     UNION ALL
     SELECT
       *
@@ -624,22 +1025,10 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
             'fi', opiskeluoikeus.oppilaitos_nimi
           )
         ),
-        'alkamispäivä', opiskeluoikeus.alkamispaiva,
-        'päättymispäivä', opiskeluoikeus.paattymispaiva,
-        'päättymispäiväMerkittyTulevaisuuteen', opiskeluoikeus.paattymispaiva_merkitty_tulevaisuuteen,
-        'tarkastelupäivänTila', jsonb_build_object(
-          'koodiarvo', opiskeluoikeus.tarkastelupäivän_tila,
-          'koodistoUri', 'valpasopiskeluoikeudentila'
-        ),
-        'tarkastelupäivänKoskiTila', jsonb_build_object(
-          'koodiarvo', opiskeluoikeus.tarkastelupäivän_koski_tila,
-          'koodistoUri', 'koskiopiskeluoikeudentila'
-        ),
-        'tarkastelupäivänTilanAlkamispäivä', tarkastelupaivan_tilan_alkupaiva,
-        'näytettäväPerusopetuksenSuoritus', opiskeluoikeus.naytettava_perusopetuksen_suoritus,
-        'vuosiluokkiinSitomatonOpetus', opiskeluoikeus.vuosiluokkiin_sitomaton_opetus,
         'oppivelvollisuudenSuorittamiseenKelpaava', opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE,
-        'päätasonSuoritukset', opiskeluoikeus.paatason_suoritukset
+        'päätasonSuoritukset', opiskeluoikeus.paatason_suoritukset,
+        'perusopetusTiedot', opiskeluoikeus.perusopetus_tiedot,
+        'perusopetuksenJälkeinenTiedot', opiskeluoikeus.perusopetuksen_jalkeinen_tiedot
       ) ORDER BY
         opiskeluoikeus.alkamispaiva DESC,
         -- Alkamispäivä varmaan riittäisi käyttöliitymälle, mutta lisätään muita kenttiä testien pitämiseksi
@@ -647,7 +1036,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         opiskeluoikeus.paattymispaiva DESC,
         opiskeluoikeus.koulutusmuoto,
         opiskeluoikeus.paatason_suoritukset->0->>'ryhmä' DESC NULLS LAST,
-        opiskeluoikeus.tarkastelupäivän_tila,
+        opiskeluoikeus.tarkastelupaivan_tila,
         opiskeluoikeus.oppilaitos_oid,
         opiskeluoikeus.paatason_suoritukset->0->'suorituksentyyppi'->>'koodiarvo',
         opiskeluoikeus.paatason_suoritukset->0->'toimipiste'->>'oid'

@@ -2,6 +2,7 @@ package fi.oph.koski.oppivelvollisuustieto
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
+
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
@@ -9,7 +10,7 @@ import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeudenTila, AmmatillisenOpiskeluoikeudenLisätiedot, Henkilö, Maksuttomuus, OikeuttaMaksuttomuuteenPidennetty, Opiskeluoikeus}
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeudenTila, AmmatillisenOpiskeluoikeudenLisätiedot, Henkilö, InternationalSchoolOpiskeluoikeudenTila, InternationalSchoolOpiskeluoikeusjakso, Maksuttomuus, OikeuttaMaksuttomuuteenPidennetty, Opiskeluoikeus}
 import org.scalatest.{FreeSpec, Matchers}
 
 class OppivelvollisuustietoSpec
@@ -57,7 +58,7 @@ class OppivelvollisuustietoSpec
         reloadRaportointikanta
         queryOids(oikeusOpiskelunMaksuttomuuteen.oid) shouldBe(Nil)
       }
-      "Henkilö on suorittanut international schoolin ysiluokan" in {
+      "Henkilö on suorittanut international schoolin ysiluokan ennen vuotta 2021" in {
         resetFixtures
         insert(oikeusOpiskelunMaksuttomuuteen, ExamplesInternationalSchool.opiskeluoikeus)
         reloadRaportointikanta
@@ -130,6 +131,83 @@ class OppivelvollisuustietoSpec
         }
       }
 
+      "Jos suorittaa vain international schoolia, käytetään päättymispäivänä päivää, joka lopettaa aikaisemmin oikeuden maksuttomuuteen tai oppivelvollisuuteen" - {
+        "Vahvistuspäivä päättää molemmat aikaisemmin" in {
+          resetFixtures
+          insert(master, internationalSchoolToinenAste(vahvistusGrade12 = Some(date(2021, 1, 1))))
+          insert(slave1, internationalSchoolToinenAste(vahvistusGrade12 = Some(date(2025, 1, 1))))
+          insert(slave2, internationalSchoolToinenAste(vahvistusGrade12 = None))
+          reloadRaportointikanta
+          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+        }
+      }
+
+      "Jos suorittaa international schoolia ja lukiota, käytetään päättymispäivän international schoolin vahvistuspäivää" - {
+        "Vahvistuspäivä päättää molemmat aikaisemmin" in {
+          resetFixtures
+          insert(master, internationalSchoolToinenAste(vahvistusGrade12 = Some(date(2021, 1, 1))))
+          insert(slave1, internationalSchoolToinenAste(vahvistusGrade12 = Some(date(2025, 1, 1))))
+          insert(slave2, lukionOppimäärä(vahvistus = None))
+          reloadRaportointikanta
+          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+        }
+      }
+
+      "Jos suorittaa international schoolia, lukiota ja ammattikoulua, käytetään päättymispäivän international schoolin vahvistuspäivää" - {
+        "Vahvistuspäivä päättää molemmat aikaisemmin" in {
+          resetFixtures
+          insert(master, internationalSchoolToinenAste(vahvistusGrade12 = Some(date(2021, 1, 1))))
+          insert(slave1, ammatillinenTutkinto(vahvistus = None))
+          insert(slave2, lukionOppimäärä(vahvistus = None))
+          reloadRaportointikanta
+          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+        }
+      }
+
+      "Jos on suorittanut IB-tutkinnon ja international schoolin, käytetään päättymispäivänä aiempaa vahvistuspäivää" - {
+        "Vahvistuspäivä päättää molemmat aikaisemmin" in {
+          resetFixtures
+          insert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 3, 3))))
+          insert(slave1, ibTutkinto(ibTutkinnonVahvistus = Some(date(2025, 1, 1))))
+          insert(slave2, internationalSchoolToinenAste(vahvistusGrade12 = Some(date(2021, 1, 1))))
+          reloadRaportointikanta
+          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+        }
+      }
+
+      "Jos suorittaa vain IB-tutkintoa, käytetään päättymispäivänä päivää, joka lopettaa aikaisemmin oikeuden maksuttomuuteen tai oppivelvollisuuteen" - {
+        "Vahvistuspäivä päättää molemmat aikaisemmin" in {
+          resetFixtures
+          insert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 1, 1))))
+          insert(slave1, ibTutkinto(ibTutkinnonVahvistus = Some(date(2025, 1, 1))))
+          insert(slave2, ibTutkinto(ibTutkinnonVahvistus = None))
+          reloadRaportointikanta
+          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+        }
+      }
+
+      "Jos suorittaa IB-tutkintoa ja lukiota, käytetään päättymispäivän IB-tutkinnon vahvistuspäivää" - {
+        "Vahvistuspäivä päättää molemmat aikaisemmin" in {
+          resetFixtures
+          insert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 1, 1))))
+          insert(slave1, ibTutkinto(ibTutkinnonVahvistus = Some(date(2025, 1, 1))))
+          insert(slave2, lukionOppimäärä(vahvistus = None))
+          reloadRaportointikanta
+          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+        }
+      }
+
+      "Jos suorittaa IB-tutkintoa, lukiota ja ammattikoulua, käytetään päättymispäivän IB-tutkinnon vahvistuspäivää" - {
+        "Vahvistuspäivä päättää molemmat aikaisemmin" in {
+          resetFixtures
+          insert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 1, 1))))
+          insert(slave1, ammatillinenTutkinto(vahvistus = None))
+          insert(slave2, lukionOppimäärä(vahvistus = None))
+          reloadRaportointikanta
+          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+        }
+      }
+
       "Ei ole vielä suorittamassa toisen asteen tutkintoa" - {
         "Käytetään syntymäaikaa" in {
           resetFixtures
@@ -191,6 +269,46 @@ class OppivelvollisuustietoSpec
         osasuoritukset = Some(AmmatillinenOldExamples.tutkinnonOsat)
       )
     ))
+  }
+
+  private def internationalSchoolToinenAste(vahvistusGrade12: Option[LocalDate]): Opiskeluoikeus = {
+    ExamplesInternationalSchool.opiskeluoikeus.copy(
+      lisätiedot = None,
+      tila = InternationalSchoolOpiskeluoikeudenTila(
+        List(
+          InternationalSchoolOpiskeluoikeusjakso(date(2004, 8, 15), LukioExampleData.opiskeluoikeusAktiivinen),
+        )
+      ),
+      suoritukset = List(
+        ExamplesInternationalSchool.gradeExplorer.copy(vahvistus = None),
+        ExamplesInternationalSchool.grade1.copy(vahvistus = None),
+        ExamplesInternationalSchool.grade2.copy(vahvistus = None),
+        ExamplesInternationalSchool.grade3.copy(vahvistus = None),
+        ExamplesInternationalSchool.grade4.copy(vahvistus = None),
+        ExamplesInternationalSchool.grade5.copy(vahvistus = None),
+        ExamplesInternationalSchool.grade6.copy(vahvistus = None),
+        ExamplesInternationalSchool.grade7.copy(vahvistus = None),
+        ExamplesInternationalSchool.grade8.copy(vahvistus = None),
+        ExamplesInternationalSchool.grade9.copy(vahvistus = None),
+        ExamplesInternationalSchool.grade10.copy(vahvistus = None),
+        ExamplesInternationalSchool.grade11.copy(vahvistus = None),
+        ExamplesInternationalSchool.grade12.copy(
+          vahvistus = vahvistusGrade12.flatMap(InternationalSchoolExampleData.vahvistus)
+        )
+      )
+    )
+  }
+
+  private def ibTutkinto(ibTutkinnonVahvistus: Option[LocalDate]): Opiskeluoikeus = {
+    ExamplesIB.aktiivinenOpiskeluoikeus.copy(
+      lisätiedot = None,
+      suoritukset = List(
+        ExamplesIB.preIBSuoritus,
+        ExamplesIB.ibTutkinnonSuoritus(predicted = false).copy(
+          vahvistus = ibTutkinnonVahvistus.flatMap(date => ExampleData.vahvistusPaikkakunnalla(päivä=date, org = YleissivistavakoulutusExampleData.ressunLukio, kunta = helsinki))
+        )
+      )
+    )
   }
 
   private def ammatillinenTutkintoMaksuttomuusJaksoilla(vahvistus: Option[LocalDate],

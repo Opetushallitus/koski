@@ -5,13 +5,13 @@ import {koodiarvoMatch, koodistoValues} from './koodisto'
 import {makeSuoritus} from '../internationalschool/internationalschoolSuoritus'
 import KoodistoDropdown from '../koodisto/KoodistoDropdown'
 
-export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom, without = []}) => {
+export default ({suoritusAtom, dateAtom, oppilaitosAtom, suorituskieliAtom, without = []}) => {
   const gradeAtom = Atom()
 
   koodistoValues('kieli/EN').onValue(kielet => suorituskieliAtom.set(kielet.find(koodiarvoMatch('EN'))))
 
   Bacon.combineWith(
-    oppilaitosAtom, gradeAtom, suorituskieliAtom,
+    oppilaitosAtom, gradeAtom, dateAtom, suorituskieliAtom,
     makeSuoritus
   ).onValue(suoritus => suoritusAtom.set(suoritus))
 
