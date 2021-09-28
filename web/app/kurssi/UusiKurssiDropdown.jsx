@@ -42,7 +42,7 @@ export const UusiKurssiDropdown = (
     }
   }
   const kaikkiKurssit = Bacon.combineWith(paikallisetKurssit, valtakunnallisetKurssit, (x,y) => x.concat(y))
-    .map(kurssit => kurssit.filter(kurssi => !käytössäolevatKoodiarvot.includes(modelData(kurssi, 'tunniste').koodiarvo)))
+    .map(kurssit => kurssit.filter(kurssi => isPaikallinen(kurssi) || !käytössäolevatKoodiarvot.includes(modelData(kurssi, 'tunniste').koodiarvo)))
     .map(R.sortBy(displayValue))
 
   let poistaPaikallinenKurssi = kurssi => {

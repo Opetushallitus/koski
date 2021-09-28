@@ -378,6 +378,20 @@ describe('Lukiokoulutus', function( ){
               })
             })
           })
+
+          describe('Paikallisen kurssin lisääminen', function () {
+            before(
+              editor.edit,
+              opinnot.oppiaineet.oppiaine('FI').lisääPaikallinenKurssi(),
+              opinnot.oppiaineet.oppiaine('FI').kurssi('PA').arvosana.selectValue('9'),
+              editor.saveChanges,
+              wait.until(page.isSavedLabelShown)
+            )
+
+            it('toimii', function () {
+              expect(extractAsText(S('.oppiaineet .FI'))).to.contain('PA')
+            })
+          })
         })
       })
 
