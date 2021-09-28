@@ -17,7 +17,8 @@ import {
 } from '../suoritus/SuoritustaulukkoCommon'
 import {numberToString} from '../util/format'
 
-const MAX_NESTED_LEVEL = 3
+const MAX_NESTED_LEVEL_VAPAATAVOITTEINEN = 3
+const MAX_NESTED_LEVEL_MUUT = 2
 
 export class VapaanSivistystyonSuoritustaulukko extends React.Component {
   render() {
@@ -25,8 +26,9 @@ export class VapaanSivistystyonSuoritustaulukko extends React.Component {
     const context = parentSuoritus.context
     const suoritukset = modelItems(suorituksetModel) || []
     const parentOneOf = (...classes) => classes.some(c => parentSuoritus.value.classes.includes(c))
+    const maxNestedLevel = parentOneOf('vapaansivistystyonvapaatavoitteisenkoulutuksensuoritus') ? MAX_NESTED_LEVEL_VAPAATAVOITTEINEN : MAX_NESTED_LEVEL_MUUT
 
-    if (suoritukset.length === 0 && !context.edit || nestedLevel >= MAX_NESTED_LEVEL || suorituksetModel === undefined) {
+    if (suoritukset.length === 0 && !context.edit || nestedLevel >= maxNestedLevel || suorituksetModel === undefined) {
       return null
     }
 

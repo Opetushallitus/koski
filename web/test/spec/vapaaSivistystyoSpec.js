@@ -202,7 +202,7 @@ describe('VST', function () {
           expect(extractAsText(S('.vst-osasuoritus'))).to.include('Paikallinen vapaan sivistystyön koulutuksen osasuoritus 5 op')
         })
 
-        describe('Osasuoritukselle voi lisätä osassuorituksen', function () {
+        describe('Osasuoritukselle voi lisätä osasuorituksen', function () {
           before(
             editor.edit,
             opinnot.avaaKaikki,
