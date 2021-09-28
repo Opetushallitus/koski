@@ -4,7 +4,7 @@ import cats.effect.IO
 import fi.oph.koski.cache.RefreshingCache.Params
 import fi.oph.koski.cache._
 import fi.oph.koski.cas.CasClientException
-import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.eperusteet.ERakenneOsa
 import fi.oph.koski.http._
@@ -27,7 +27,8 @@ trait HealthCheck extends Logging {
   private val oid = application.config.getString("healthcheck.oppija.oid")
   private val koodistoPalvelu = KoodistoPalvelu.withoutCache(application.config)
   private val ePerusteet = application.ePerusteet
-  private def healthcheckOppija: Either[HttpStatus, Oppija] = application.validator.validateAsJson(Oppija(OidHenkilö(oid), List(perustutkintoOpiskeluoikeusValmis())))
+  private def healthcheckOppija: Either[HttpStatus, Oppija] =
+    application.validator.validateAsJson(Oppija(OidHenkilö(oid), List(perustutkintoOpiskeluoikeusValmis())))
 
   def healthcheckWithExternalSystems: HttpStatus = {
     logger.debug("Performing healthcheck")
