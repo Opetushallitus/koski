@@ -15,7 +15,7 @@
     <slick.version>3.3.3</slick.version>
     <slick-pg.version>0.19.6</slick-pg.version>
     <scalatra.version>2.6.5</scalatra.version>
-    <http4s.version>0.23.3</http4s.version>
+    <http4s.version>0.23.4</http4s.version>
     <json4s.version>3.6.11</json4s.version>
     <awssdk.version>2.16.70</awssdk.version>
     <jetty.version>9.4.43.v20210629</jetty.version>
