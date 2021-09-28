@@ -1,22 +1,32 @@
 package fi.oph.koski.raportit
 
 import java.time.LocalDate.{of => date}
-
-import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
+import fi.oph.koski.documentation.ExampleData.opiskeluoikeusLäsnä
 import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample, ExampleData}
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.raportointikanta.{ROsasuoritusRow, RaportointikantaTestMethods}
 import fi.oph.koski.schema._
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
-class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with OpiskeluoikeusTestMethodsAmmatillinen with BeforeAndAfterAll {
+class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with OpiskeluoikeusTestMethodsAmmatillinen with BeforeAndAfterAll with DirtiesFixtures {
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
     reloadRaportointikanta
+  }
+
+  override protected def alterFixture(): Unit = {
+    putOppija(Oppija(KoskiSpecificMockOppijat.ammattilainen, List(AmmatillinenExampleData.opiskeluoikeus().copy(
+      suoritukset = List(AmmatillinenExampleData.ammatillisenTutkinnonSuoritusKorotetuillaOsasuorituksilla()),
+      tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2016, 1, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)))),
+    )))) {
+      verifyResponseStatusOk()
+      reloadRaportointikanta
+    }
   }
 
   lazy val repository = AmmatillisenRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
@@ -25,7 +35,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
     lazy val rivi = {
       reloadRaportointikanta
       val rows = testiHenkilöRaporttiRows(defaultRequest)
-      rows.length should equal(1)
+      rows.length should equal(2)
       rows.head
     }
 
@@ -46,83 +56,115 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
 
     "Laskenta" - {
       "Suorituksia yhteesä" in {
-        rivi.suoritettujenOpintojenYhteislaajuus should equal(180.0)
+        rivi.suoritettujenOpintojenYhteislaajuus should equal("180.0")
       }
       "Ammatilliset tutkinnon osat" - {
         "Valmiiden ammatillisten tutkinnon osien lukumäärä" in {
-          rivi.valmiitAmmatillisetTutkinnonOsatLkm should equal(6)
+          rivi.valmiitAmmatillisetTutkinnonOsatLkm should equal("6")
         }
         "Pakolliset ammatilliset tutkinnon osat" in {
-          rivi.pakollisetAmmatillisetTutkinnonOsatLkm should equal(6)
+          rivi.pakollisetAmmatillisetTutkinnonOsatLkm should equal("6")
         }
         "Valinnaiset ammatilliset tutkinnon osat" in {
-          rivi.valinnaisetAmmatillisetTutkinnonOsatLkm should equal(0)
+          rivi.valinnaisetAmmatillisetTutkinnonOsatLkm should equal("0")
         }
         "Näyttöjä ammatillisissa valmiissa tutkinnon osissa" in {
-          rivi.näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm should equal(3)
+          rivi.näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm should equal("3")
         }
         "Tunnustettuja ammatillisissa valmiissa tutkinnon osissa" in {
-          rivi.tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm should equal(0)
+          rivi.tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm should equal("0")
         }
         "Rahoituksen piirissä tunnustettuja ammatillisia tutkinnon osia" in {
-          rivi.rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm should equal(0)
+          rivi.rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm should equal("0")
         }
         "Suoritetut ammatilliset tutkinnon osat yhteislaajuus" in {
-          rivi.suoritetutAmmatillisetTutkinnonOsatYhteislaajuus should equal(135.0)
+          rivi.suoritetutAmmatillisetTutkinnonOsatYhteislaajuus should equal("135.0")
         }
         "Tunnustetut ammatilliset tutkinnon osat yhteislaajuus" in {
-          rivi.tunnustetutAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
+          rivi.tunnustetutAmmatillisetTutkinnonOsatYhteislaajuus should equal("0.0")
         }
         "Pakolliset ammatilliset tutkinnon osat yhteislaajuus" in {
-          rivi.pakollisetAmmatillisetTutkinnonOsatYhteislaajuus should equal(135.0)
+          rivi.pakollisetAmmatillisetTutkinnonOsatYhteislaajuus should equal("135.0")
         }
         "Valinnaiset ammatilliset tutkinnon osat yhteislaajuus" in {
-          rivi.valinnaisetAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
+          rivi.valinnaisetAmmatillisetTutkinnonOsatYhteislaajuus should equal("0.0")
         }
       }
       "Yhteiset tutkinnon osat" - {
         "Valmiit yhteiset tutkinnon osat lukumäärä" in {
-          rivi.valmiitYhteistenTutkinnonOsatLkm should equal(4)
+          rivi.valmiitYhteistenTutkinnonOsatLkm should equal("4")
         }
         "Pakollisten yhteisten tutkinnon osien osa-alueiden lukumäärä" in {
-          rivi.pakollisetYhteistenTutkinnonOsienOsaalueidenLkm should equal(8)
+          rivi.pakollisetYhteistenTutkinnonOsienOsaalueidenLkm should equal("8")
         }
         "Valinnaisten yhteisten tutkinnon osien osa-alueiden lukumäärä" in {
-          rivi.valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm should equal(1)
+          rivi.valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm should equal("1")
         }
         "Tunnustettuja yhteisten tutkinnon osan osa-alueita valmiista yhteisen tutkinnon osa-alueista" in {
-          rivi.tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm should equal(1)
+          rivi.tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm should equal("1")
         }
         "Rahoituksen piirissä tutkinnon osan osa-alueita valmiissa yhteisten tutkinnon osan osa-aluiesta" in {
-          rivi.rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm should equal(0)
+          rivi.rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm should equal("0")
         }
         "Tunnustettuja tutkinnon osia valmiista yhteisen tutkinnon osista" in {
-          rivi.tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm should equal(0)
+          rivi.tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm should equal("0")
         }
         "Rahoituksen piirissä tunnustetuista yhteisistä tutkinnon osista" in {
-          rivi.rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm should equal(0)
+          rivi.rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm should equal("0")
         }
         "Suoritettuja yhteisten tutkinnon osien yhteislaajuus" in {
-          rivi.suoritettujenYhteistenTutkinnonOsienYhteislaajuus should equal(35.0)
+          rivi.suoritettujenYhteistenTutkinnonOsienYhteislaajuus should equal("35.0")
         }
         "Suoritettujen yhteisten tutkinnon osien osa-alueiden yhteislaajuus" in {
-          rivi.suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal(35)
+          rivi.suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal("35.0")
         }
         "Tunnustettujen yhteisten tutkinnon osien osuus valmiista yhteisistä tutkinnon osista" in {
-          rivi.tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus should equal(0)
+          rivi.tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus should equal("0.0")
         }
         "Pakollisten yhteisten tutkinnon osioen osa-alueiden yhteislaajuus" in {
-          rivi.pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal(32)
+          rivi.pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal("32.0")
         }
         "Valinnaisten yhteisten tutkinnon osien osa-alueiden yhteislaajuus" in {
-          rivi.valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus should equal(3)
+          rivi.valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus should equal("3.0")
         }
       }
       "Valmiit vapaavalintaiset tutkinnon osat lukumäärä" in {
-        rivi.valmiitVapaaValintaisetTutkinnonOsatLkm should equal(1)
+        rivi.valmiitVapaaValintaisetTutkinnonOsatLkm should equal("1")
       }
       "Valmiit tutkintoa yksilöllisesti laajentavat tutkinnon osat lukumäärä" in {
-        rivi.valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm should equal(1)
+        rivi.valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm should equal("1")
+      }
+
+      "Korotetut suoritukset" in {
+        val rivit = testiHenkilöRaporttiRows(defaultRequest, KoskiSpecificMockOppijat.ammattilainen.hetu.get)
+
+        rivit.length should equal(2)
+
+        rivit(1).suoritettujenOpintojenYhteislaajuus should equal("18.0 (8.0)")
+        rivit(1).valmiitAmmatillisetTutkinnonOsatLkm should equal("2 (2)")
+        rivit(1).pakollisetAmmatillisetTutkinnonOsatLkm should equal("1 (1)")
+        rivit(1).valinnaisetAmmatillisetTutkinnonOsatLkm should equal("1 (1)")
+        rivit(1).näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm should equal ("1 (1)")
+        rivit(1).tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm should equal("1 (1)")
+        rivit(1).rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm should equal("1 (1)")
+        rivit(1).suoritetutAmmatillisetTutkinnonOsatYhteislaajuus should equal("4.0 (4.0)")
+        rivit(1).tunnustetutAmmatillisetTutkinnonOsatYhteislaajuus should equal("2.0 (2.0)")
+        rivit(1).pakollisetAmmatillisetTutkinnonOsatYhteislaajuus should equal("2.0 (2.0)")
+        rivit(1).valinnaisetAmmatillisetTutkinnonOsatYhteislaajuus should equal("2.0 (2.0)")
+        rivit(1).valmiitYhteistenTutkinnonOsatLkm should equal("1")
+        rivit(1).pakollisetYhteistenTutkinnonOsienOsaalueidenLkm should equal("1 (1)")
+        rivit(1).valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm should equal("1 (1)")
+        rivit(1).tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm should equal("1 (1)")
+        rivit(1).rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm should equal("1 (1)")
+        rivit(1).tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm should equal("1")
+        rivit(1).rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm should equal("1")
+        rivit(1).suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal("10.0 (10.0)")
+        rivit(1).tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus should equal("10.0")
+        rivit(1).suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal("10.0 (10.0)")
+        rivit(1).pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal("5.0 (5.0)")
+        rivit(1).valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus should equal("5.0 (5.0)")
+        rivit(1).valmiitVapaaValintaisetTutkinnonOsatLkm should equal("1 (1)")
+        rivit(1).valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm should equal("1 (1)")
       }
     }
 
@@ -144,34 +186,34 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
         rivit(0).opintojenRahoitukset should equal("1")
         rivit(0).ostettu should equal(false)
 
-        rivit(0).suoritettujenOpintojenYhteislaajuus should equal(0)
+        rivit(0).suoritettujenOpintojenYhteislaajuus should equal("0.0")
 
-        rivit(0).valmiitAmmatillisetTutkinnonOsatLkm should equal(0)
-        rivit(0).pakollisetAmmatillisetTutkinnonOsatLkm should equal(0)
-        rivit(0).valinnaisetAmmatillisetTutkinnonOsatLkm should equal(0)
-        rivit(0).näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm should equal(0)
-        rivit(0).tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm should equal(0)
-        rivit(0).rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm should equal(0)
-        rivit(0).suoritetutAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
-        rivit(0).tunnustetutAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
-        rivit(0).pakollisetAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
-        rivit(0).valinnaisetAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
+        rivit(0).valmiitAmmatillisetTutkinnonOsatLkm should equal("0")
+        rivit(0).pakollisetAmmatillisetTutkinnonOsatLkm should equal("0")
+        rivit(0).valinnaisetAmmatillisetTutkinnonOsatLkm should equal("0")
+        rivit(0).näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm should equal("0")
+        rivit(0).tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm should equal("0")
+        rivit(0).rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm should equal("0")
+        rivit(0).suoritetutAmmatillisetTutkinnonOsatYhteislaajuus should equal("0.0")
+        rivit(0).tunnustetutAmmatillisetTutkinnonOsatYhteislaajuus should equal("0.0")
+        rivit(0).pakollisetAmmatillisetTutkinnonOsatYhteislaajuus should equal("0.0")
+        rivit(0).valinnaisetAmmatillisetTutkinnonOsatYhteislaajuus should equal("0.0")
 
-        rivit(0).valmiitYhteistenTutkinnonOsatLkm should equal(0)
-        rivit(0).pakollisetYhteistenTutkinnonOsienOsaalueidenLkm should equal(0)
-        rivit(0).valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm should equal(0)
-        rivit(0).tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm should equal(0)
-        rivit(0).rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm should equal(0)
-        rivit(0).tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm should equal(0)
-        rivit(0).rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm should equal(0)
-        rivit(0).suoritettujenYhteistenTutkinnonOsienYhteislaajuus should equal(0)
-        rivit(0).tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus should equal(0)
-        rivit(0).suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal(0)
-        rivit(0).pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal(0)
-        rivit(0).valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus should equal(0)
+        rivit(0).valmiitYhteistenTutkinnonOsatLkm should equal("0")
+        rivit(0).pakollisetYhteistenTutkinnonOsienOsaalueidenLkm should equal("0")
+        rivit(0).valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm should equal("0")
+        rivit(0).tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm should equal("0")
+        rivit(0).rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm should equal("0")
+        rivit(0).tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm should equal("0")
+        rivit(0).rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm should equal("0")
+        rivit(0).suoritettujenYhteistenTutkinnonOsienYhteislaajuus should equal("0.0")
+        rivit(0).tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus should equal("0.0")
+        rivit(0).suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal("0.0")
+        rivit(0).pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal("0.0")
+        rivit(0).valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus should equal("0.0")
 
-        rivit(0).valmiitVapaaValintaisetTutkinnonOsatLkm should equal(0)
-        rivit(0).valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm should equal(0)
+        rivit(0).valmiitVapaaValintaisetTutkinnonOsatLkm should equal("0")
+        rivit(0).valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm should equal("0")
 
         rivit(1).opiskeluoikeudenAlkamispäivä should equal(Some(date(2012, 9, 1)))
         rivit(1).tutkinto should equal("357305")
@@ -185,34 +227,34 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
         rivit(1).opintojenRahoitukset should equal("1")
         rivit(1).ostettu should equal(false)
 
-        rivit(1).suoritettujenOpintojenYhteislaajuus should equal(0)
+        rivit(1).suoritettujenOpintojenYhteislaajuus should equal("0.0")
 
-        rivit(1).valmiitAmmatillisetTutkinnonOsatLkm should equal(5)
-        rivit(1).pakollisetAmmatillisetTutkinnonOsatLkm should equal(5)
-        rivit(1).valinnaisetAmmatillisetTutkinnonOsatLkm should equal(0)
-        rivit(1).näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm should equal(0)
-        rivit(1).tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm should equal(0)
-        rivit(1).rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm should equal(0)
-        rivit(1).suoritetutAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
-        rivit(1).tunnustetutAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
-        rivit(1).pakollisetAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
-        rivit(1).valinnaisetAmmatillisetTutkinnonOsatYhteislaajuus should equal(0)
+        rivit(1).valmiitAmmatillisetTutkinnonOsatLkm should equal("5")
+        rivit(1).pakollisetAmmatillisetTutkinnonOsatLkm should equal("5")
+        rivit(1).valinnaisetAmmatillisetTutkinnonOsatLkm should equal("0")
+        rivit(1).näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm should equal("0")
+        rivit(1).tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm should equal("0")
+        rivit(1).rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm should equal("0")
+        rivit(1).suoritetutAmmatillisetTutkinnonOsatYhteislaajuus should equal("0.0")
+        rivit(1).tunnustetutAmmatillisetTutkinnonOsatYhteislaajuus should equal("0.0")
+        rivit(1).pakollisetAmmatillisetTutkinnonOsatYhteislaajuus should equal("0.0")
+        rivit(1).valinnaisetAmmatillisetTutkinnonOsatYhteislaajuus should equal("0.0")
 
-        rivit(1).valmiitYhteistenTutkinnonOsatLkm should equal(0)
-        rivit(1).pakollisetYhteistenTutkinnonOsienOsaalueidenLkm should equal(0)
-        rivit(1).valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm should equal(0)
-        rivit(1).tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm should equal(0)
-        rivit(1).rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm should equal(0)
-        rivit(1).tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm should equal(0)
-        rivit(1).rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm should equal(0)
-        rivit(1).suoritettujenYhteistenTutkinnonOsienYhteislaajuus should equal(0)
-        rivit(1).tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus should equal(0)
-        rivit(1).suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal(0)
-        rivit(1).pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal(0)
-        rivit(1).valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus should equal(0)
+        rivit(1).valmiitYhteistenTutkinnonOsatLkm should equal("0")
+        rivit(1).pakollisetYhteistenTutkinnonOsienOsaalueidenLkm should equal("0")
+        rivit(1).valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm should equal("0")
+        rivit(1).tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm should equal("0")
+        rivit(1).rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm should equal("0")
+        rivit(1).tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm should equal("0")
+        rivit(1).rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm should equal("0")
+        rivit(1).suoritettujenYhteistenTutkinnonOsienYhteislaajuus should equal("0.0")
+        rivit(1).tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus should equal("0.0")
+        rivit(1).suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal("0.0")
+        rivit(1).pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal("0.0")
+        rivit(1).valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus should equal("0.0")
 
-        rivit(1).valmiitVapaaValintaisetTutkinnonOsatLkm should equal(0)
-        rivit(1).valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm should equal(0)
+        rivit(1).valmiitVapaaValintaisetTutkinnonOsatLkm should equal("0")
+        rivit(1).valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm should equal("0")
       }
 
       "Näytetään, vaikka pääsuoritus olisi sisältyvässä opiskeluoikeudessa" in {
@@ -257,7 +299,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
           aarnenRivit.length should equal(2)
           val stadinLinkitettyOpiskeluoikeus = aarnenRivit.find(_.linkitetynOpiskeluoikeudenOppilaitos == "Stadin ammatti- ja aikuisopisto")
           stadinLinkitettyOpiskeluoikeus shouldBe defined
-          stadinLinkitettyOpiskeluoikeus.get.suoritettujenOpintojenYhteislaajuus should equal(180.0)
+          stadinLinkitettyOpiskeluoikeus.get.suoritettujenOpintojenYhteislaajuus should equal("180.0")
         }
       }
       "Sisältävä opiskeluoikeus ei tule sisällytetyn opiskeluoikeuden oppilaitoksen raportille" in {
@@ -270,11 +312,11 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
     "Tutkinnon osia voidaan raja arviointipäivän perusteella" - {
       "Tutkinnon osat jotka arvioitu ennen aikaväliä, ei oteta mukaan raportille" in {
         val rows = testiHenkilöRaporttiRows(defaultRequest.copy(alku = date(2015, 1, 1), loppu = date(2015, 2, 2), osasuoritustenAikarajaus = true))
-        rows.map(_.suoritettujenOpintojenYhteislaajuus) should equal(List(40))
+        rows.map(_.suoritettujenOpintojenYhteislaajuus) should equal(List("40.0"))
       }
       "Tutkinnon osiat jotka arvioitu jälkeen aikavälin, ei oteta mukaan raportille" in {
         val rows = testiHenkilöRaporttiRows(defaultRequest.copy(alku = date(2014, 1, 1), loppu = date(2014, 12, 12), osasuoritustenAikarajaus = true))
-        rows.map(_.suoritettujenOpintojenYhteislaajuus) should equal(List(140))
+        rows.map(_.suoritettujenOpintojenYhteislaajuus) should equal(List("140.0"))
       }
     }
 
