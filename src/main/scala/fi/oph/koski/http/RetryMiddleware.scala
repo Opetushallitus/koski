@@ -33,7 +33,7 @@ object RetryMiddleware {
     if (retriable(req, result)) {
       backoff(retries) match {
         case Some(backoff) =>
-          HttpResponseLog.logger.warn(s"${failInfo(req, result)}: retrying (retry #$retries, waiting $backoff)")
+          HttpResponseLog.logger.info(s"${failInfo(req, result)}: retrying (retry #$retries, waiting $backoff)")
           Some(backoff)
         case None =>
           HttpResponseLog.logger.error(s"${failInfo(req, result)}: giving up after ${retries-1} retries")
