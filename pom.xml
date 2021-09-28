@@ -26,11 +26,10 @@
   </properties>
   <dependencies>
     <!-- OPH internal deps -->
-    <!--
     <dependency>
       <groupId>fi.vm.sade</groupId>
       <artifactId>scala-cas_2.12</artifactId>
-      <version>2.2.2-SNAPSHOT</version>
+      <version>3.0.0-SNAPSHOT</version>
       <exclusions>
         <exclusion>
           <groupId>org.http4s</groupId>
@@ -38,7 +37,6 @@
         </exclusion>
       </exclusions>
     </dependency>
-    -->
     <dependency>
       <groupId>com.github.Opetushallitus</groupId>
       <artifactId>auditlogger</artifactId>

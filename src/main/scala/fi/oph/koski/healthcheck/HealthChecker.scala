@@ -3,7 +3,6 @@ package fi.oph.koski.healthcheck
 import cats.effect.IO
 import fi.oph.koski.cache.RefreshingCache.Params
 import fi.oph.koski.cache._
-import fi.oph.koski.cas.CasClientException
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.eperusteet.ERakenneOsa
@@ -16,6 +15,7 @@ import fi.oph.koski.organisaatio.{MockOrganisaatiot, RemoteOrganisaatioRepositor
 import fi.oph.koski.schema._
 import fi.oph.koski.userdirectory.Password
 import fi.oph.koski.util.Timing
+import fi.vm.sade.utils.cas.CasClientException
 
 import java.util.concurrent.TimeoutException
 import scala.concurrent.duration.{DurationInt, FiniteDuration}

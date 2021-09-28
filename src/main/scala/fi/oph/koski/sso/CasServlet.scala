@@ -1,6 +1,5 @@
 package fi.oph.koski.sso
 
-import fi.oph.koski.cas.CasLogout
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer.writeWithRoot
@@ -8,6 +7,7 @@ import fi.oph.koski.koskiuser.{AuthenticationUser, DirectoryClientLogin, KoskiSp
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.schema.{Nimitiedot, UusiHenkilö}
 import fi.oph.koski.servlet.{NoCache, VirkailijaHtmlServlet}
+import fi.vm.sade.utils.cas.CasLogout
 import org.scalatra.{Cookie, CookieOptions}
 
 import java.net.URLEncoder.encode
