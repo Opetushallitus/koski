@@ -1300,7 +1300,7 @@ class ValpasOppijaServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
           withClue(s"index ${index}: ") {
             element match {
               case (Some(opiskeluoikeus), Some(expectedData)) =>
-                withClue(s"ValpasOpiskeluoikeus(${opiskeluoikeus.oid}/${opiskeluoikeus.oppilaitos.nimi.get("fi")}): ") {
+                withClue(s"ValpasOpiskeluoikeus(${opiskeluoikeus.oid}/${opiskeluoikeus.oppilaitos.nimi.get("fi")}/${opiskeluoikeus.tyyppi.koodiarvo}/${opiskeluoikeus.tarkasteltavaPäätasonSuoritus.map(_.suorituksenTyyppi.koodiarvo).getOrElse("None")}): ") {
                   validateOpiskeluoikeus(opiskeluoikeus, expectedData)
                 }
               case (None, Some(expectedData)) =>
