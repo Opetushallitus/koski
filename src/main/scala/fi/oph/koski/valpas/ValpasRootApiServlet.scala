@@ -8,7 +8,7 @@ import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.ChainingSyntax._
 import fi.oph.koski.valpas.db.ValpasSchema.OpiskeluoikeusLisätiedotKey
 import fi.oph.koski.valpas.log.ValpasAuditLog.{auditLogHenkilöHaku, auditLogOppijaKatsominen, auditLogOppilaitosKatsominen, auditLogOppivelvollisuudenKeskeytys}
-import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppilaitos
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{HakeutumisvalvontaTieto, ValpasOppilaitos}
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasrepository.UusiOppivelvollisuudenKeskeytys
 import fi.oph.koski.valpas.valpasuser.{RequiresValpasSession, ValpasRooli}
@@ -39,7 +39,15 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
   get("/oppijat/:organisaatio") {
     val oppilaitosOid: ValpasOppilaitos.Oid = params("organisaatio")
     renderEither(
-      oppijaService.getHakeutumisvalvottavatOppijatSuppeatTiedot(oppilaitosOid)
+      oppijaService.getHakeutumisvalvottavatOppijatSuppeatTiedot(oppilaitosOid, HakeutumisvalvontaTieto.Perusopetus)
+        .tap(_ => auditLogOppilaitosKatsominen(oppilaitosOid))
+    )
+  }
+
+  get("/oppijat-nivelvaihe/:organisaatio") {
+    val oppilaitosOid: ValpasOppilaitos.Oid = params("organisaatio")
+    renderEither(
+      oppijaService.getHakeutumisvalvottavatOppijatSuppeatTiedot(oppilaitosOid, HakeutumisvalvontaTieto.Nivelvaihe)
         .tap(_ => auditLogOppilaitosKatsominen(oppilaitosOid))
     )
   }

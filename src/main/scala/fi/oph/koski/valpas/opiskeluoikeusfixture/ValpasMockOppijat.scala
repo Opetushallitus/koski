@@ -115,6 +115,22 @@ object ValpasMockOppijat {
   val intSchool9LuokanSyksyllä2021Aloittanut = valpasOppijat.oppijaSyntymäaikaHetusta("Int-school-9-luokan-syksyllä-2021-aloittanut", "Valpas", "210805A187A", kotikunta = Some("091"))
   val intSchoolLokakuussaPerusopetuksenSuorittanut = valpasOppijat.oppijaSyntymäaikaHetusta("Int-school-9-vahvistettu-lokakuussa", "Valpas", "221105A467D", kotikunta = Some("091"))
   val intSchool10LuokallaIlmanAlkamispäivää = valpasOppijat.oppijaSyntymäaikaHetusta("Int-school-10-luokalla-ilman-alkamispäivää", "Valpas", "140305A455D", kotikunta = Some("091"))
+  val aikuistenPerusopetuksessa = valpasOppijat.oppijaSyntymäaikaHetusta("Aikuisten-perusopetuksessa", "Valpas", "020304A145D", kotikunta = Some("091"))
+  val aikuistenPerusopetuksessaSyksynRajapäivänJälkeenAloittava = valpasOppijat.oppijaSyntymäaikaHetusta("Aikuisten-perusopetuksessa-syksyn-rajapäivän-jälkeen", "Valpas", "250204A640D", kotikunta = Some("091"))
+  val aikuistenPerusopetuksessaPeruskoulustaValmistunut = valpasOppijat.oppijaSyntymäaikaHetusta("Aikuisten-perusopetuksesta-pk-valmistunut", "Valpas", "050304A177C", kotikunta = Some("091"))
+  val aikuistenPerusopetuksestaKeväänValmistujaksollaValmistunut = valpasOppijat.oppijaSyntymäaikaHetusta("Aikuisten-perusopetuksesta-keväällä-valmistunut", "Valpas", "070304A3464", kotikunta = Some("091"))
+  val aikuistenPerusopetuksestaEronnut = valpasOppijat.oppijaSyntymäaikaHetusta("Aikuisten-perusopetuksesta-eronnut", "Valpas", "040404A8818", kotikunta = Some("091"))
+  val aikuistenPerusopetuksestaYli2kkAiemminValmistunut = valpasOppijat.oppijaSyntymäaikaHetusta("Aikuisten-perusopetuksesta-yli-2kk-aiemmin-valmistunut", "Valpas", "300104A657C", kotikunta = Some("091"))
+  val aikuistenPerusopetuksestaAlle2kkAiemminValmistunut = valpasOppijat.oppijaSyntymäaikaHetusta("Aikuisten-perusopetuksesta-alle-2kk-aiemmin-valmistunut", "Valpas", "131004A1477", kotikunta = Some("091"))
+  val aikuistenPerusopetuksestaLähitulevaisuudessaValmistuva = valpasOppijat.oppijaSyntymäaikaHetusta("Aikuisten-perusopetuksesta-lähitulevaisuudessa-valmistuva", "Valpas", "220304A365D", kotikunta = Some("091"))
+  val aikuistenPerusopetuksestaTulevaisuudessaValmistuva = valpasOppijat.oppijaSyntymäaikaHetusta("Aikuisten-perusopetuksesta-tulevaisuudessa-valmistuva", "Valpas", "121104A0176", kotikunta = Some("091"))
+  val aikuistenPerusopetuksessaAineopiskelija = valpasOppijat.oppijaSyntymäaikaHetusta("Aikuisten-perusopetuksessa-aineopiskelija", "Valpas", "010604A727Y", kotikunta = Some("091"))
+  val luva = valpasOppijat.oppijaSyntymäaikaHetusta("Luva", "Valpas", "290404A725B", kotikunta = Some("091"))
+  val kymppiluokka = valpasOppijat.oppijaSyntymäaikaHetusta("Kymppi", "Valpas", "160404A8577", kotikunta = Some("091"))
+  val vstKops = valpasOppijat.oppijaSyntymäaikaHetusta("Vst-kops", "Valpas", "190504A564H", kotikunta = Some("091"))
+  val valma = valpasOppijat.oppijaSyntymäaikaHetusta("Valma", "Valpas", "090104A303D", kotikunta = Some("091"))
+  val telma = valpasOppijat.oppijaSyntymäaikaHetusta("Telma", "Valpas", "160304A7532", kotikunta = Some("091"))
+  val telmaJaAmis = valpasOppijat.oppijaSyntymäaikaHetusta("Telma-ja-amis", "Valpas", "030204A7935", kotikunta = Some("091"))
 
   // Kutsumanimi ja yhteystiedot haetaan oppijanumerorekisteristä Valpas-käyttäjälle, tallennetaan siksi käyttäjä myös "oppijana" mockeihin
   val käyttäjäValpasJklNormaalikoulu = valpasOppijat.oppija(

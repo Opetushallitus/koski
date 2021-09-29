@@ -1,9 +1,11 @@
 package fi.oph.koski.valpas.opiskeluoikeusfixture
 
+import java.time.LocalDate
+
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.LukioExampleData.{opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt}
 import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, perusopetuksenOppimääränSuoritus, perusopetuksenOppimääränSuoritusKesken, yhdeksännenLuokanSuoritus}
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste, oppilaitos}
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste, oppilaitos, ressunLukio}
 import fi.oph.koski.documentation._
 import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample, ExampleData, ExamplesEsiopetus, ExamplesInternationalSchool, ExamplesLukio2019, ExamplesPerusopetuksenLisaopetus, ExamplesTelma, ExamplesValma, InternationalSchoolExampleData, LukioExampleData, VapaaSivistystyöExample}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -229,6 +231,10 @@ object ValpasOpiskeluoikeusExampleData {
         )
       )
     )
+
+  def valmistunutYsiluokkalainenRessunLukio = valmistunutYsiluokkalainenToinenKoulu.copy(
+      oppilaitos = Some(oppilaitos(MockOrganisaatiot.ressunLukio))
+  )
 
   def luokallejäänytYsiluokkalainen = PerusopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
@@ -457,12 +463,58 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
+  def valmaRessussa = ammattikouluValmaOpiskeluoikeus.copy(
+    arvioituPäättymispäivä = Some(date(2022, 5, 31)),
+    oppilaitos = Some(ressunLukio),
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2021, 8, 8), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+    )),
+    suoritukset = List(
+      ExamplesValma.valmaKoulutuksenSuoritus.copy(
+        toimipiste = ressunLukio,
+        vahvistus = None
+      )
+    )
+  )
+
   def ammattikouluTelmaOpiskeluoikeus = ammattikouluValmistunutOpiskeluoikeus.copy(
     tila = AmmatillinenOpiskeluoikeudenTila(List(
       AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
     )),
     suoritukset = List(
       ExamplesTelma.telmaKoulutuksenSuoritus.copy(
+        vahvistus = None
+      )
+    )
+  )
+
+  def telmaRessussa = ammattikouluTelmaOpiskeluoikeus.copy(
+    arvioituPäättymispäivä = Some(date(2022, 5, 31)),
+    oppilaitos = Some(ressunLukio),
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2021, 8, 9), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+    )),
+    suoritukset = List(
+      ExamplesTelma.telmaKoulutuksenSuoritus.copy(
+        toimipiste = ressunLukio,
+        vahvistus = None
+      )
+    )
+  )
+
+  def telmaJaAmisRessussa = ammattikouluTelmaOpiskeluoikeus.copy(
+    arvioituPäättymispäivä = Some(date(2022, 5, 31)),
+    oppilaitos = Some(ressunLukio),
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2021, 8, 9), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+    )),
+    suoritukset = List(
+      ExamplesTelma.telmaKoulutuksenSuoritus.copy(
+        toimipiste = ressunLukio,
+        vahvistus = None
+      ),
+      AmmattitutkintoExample.ammatillisenTutkinnonSuoritus.copy(
+        toimipiste = ressunLukio,
         vahvistus = None
       )
     )
@@ -817,6 +869,16 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
+  def kymppiluokkaRessussa = kymppiluokkaAlkaaSyys2021.copy(
+    oppilaitos = Some(ressunLukio),
+    suoritukset = List(
+      ExamplesPerusopetuksenLisaopetus.lisäopetuksenSuoritus.copy(
+        toimipiste = ressunLukio,
+        vahvistus = None
+      )
+    )
+  )
+
   def valmaOpiskeluoikeusAlkaaOmniassaSyys2021 = ammattikouluValmistunutOpiskeluoikeus.copy(
     arvioituPäättymispäivä = Some(date(2023, 5, 31)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(
@@ -838,6 +900,14 @@ object ValpasOpiskeluoikeusExampleData {
   def vstAlkaaSyys2021 = VapaaSivistystyöExample.opiskeluoikeusKOPS.copy(
     lisätiedot = Some(VapaanSivistystyönOpiskeluoikeudenLisätiedot(
       maksuttomuus = Some(List(Maksuttomuus(alku = date(2021, 9, 1) , loppu = None, maksuton = true))),
+    ))
+  )
+
+  def vstKopsRessussa = vstAlkaaSyys2021.copy(
+    oppilaitos = Some(ressunLukio),
+    suoritukset = List(VapaaSivistystyöExample.suoritusKOPS.copy(
+      toimipiste = ressunLukio,
+      vahvistus = None
     ))
   )
 
@@ -1107,6 +1177,107 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
+  def aikuistenPerusopetuksessa: AikuistenPerusopetuksenOpiskeluoikeus =
+    aikuistenPerusopetuksessa(date(2021,8, 15), None)
+  def aikuistenPerusopetuksessaSyksynRajapäivänJälkeenAloittava: AikuistenPerusopetuksenOpiskeluoikeus =
+    aikuistenPerusopetuksessa(date(2021, 10, 1), None)
+  def aikuistenPerusopetuksestaKeväänValmistujaksollaValmistunut: AikuistenPerusopetuksenOpiskeluoikeus =
+    aikuistenPerusopetuksessa(date(2021,1, 1), Some(date(2021, 5, 29)))
+  def aikuistenPerusopetuksestaEronnut: AikuistenPerusopetuksenOpiskeluoikeus =
+    aikuistenPerusopetuksessa.copy(
+      tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
+        List(
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(
+            date(2021, 8, 15), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)
+          ),
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(
+            date(2021, 8, 30), opiskeluoikeusEronnut, Some(valtionosuusRahoitteinen)
+          ),
+        )
+      ),
+    )
+  def aikuistenPerusopetuksestaYli2kkAiemminValmistunut: AikuistenPerusopetuksenOpiskeluoikeus =
+    aikuistenPerusopetuksessa(
+      date(2021,1, 1), Some(date(2021, 7, 4))
+    )
+  def aikuistenPerusopetuksestaAlle2kkAiemminValmistunut: AikuistenPerusopetuksenOpiskeluoikeus =
+    aikuistenPerusopetuksessa(
+      date(2021,1, 1), Some(date(2021, 8, 10))
+    )
+  def aikuistenPerusopetuksestaLähitulevaisuudessaValmistuva: AikuistenPerusopetuksenOpiskeluoikeus =
+    aikuistenPerusopetuksessa(
+      date(2021,1, 1), Some(date(2021, 10, 1))
+    )
+  def aikuistenPerusopetuksestaTulevaisuudessaValmistuva: AikuistenPerusopetuksenOpiskeluoikeus =
+    aikuistenPerusopetuksessa(
+      date(2021,1, 1), Some(date(2021, 12, 10))
+    )
+  def aikuistenPerusopetuksessaAineopiskelija: AikuistenPerusopetuksenOpiskeluoikeus =
+    ExamplesAikuistenPerusopetus.oppiaineenOppimääräOpiskeluoikeus.copy(
+      oppilaitos = Some(ressunLukio),
+      tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
+        List(
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(
+            date(2021, 8, 15), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)
+          )
+        )
+      ),
+      suoritukset = List(
+        ExamplesAikuistenPerusopetus.oppiaineenOppimääränSuoritus(
+          ExamplesAikuistenPerusopetus.äidinkieli("AI1", diaarinumero = Some("19/011/2015"))
+        ).copy(
+          toimipiste = ressunLukio,
+          vahvistus = None
+        )
+      )
+    )
+  private def aikuistenPerusopetuksessa(
+    alkamispäivä: LocalDate,
+    valmistumispäivä: Option[LocalDate]
+  ): AikuistenPerusopetuksenOpiskeluoikeus =
+  {
+    val valmistunut: Option[AikuistenPerusopetuksenOpiskeluoikeusjakso] =
+      valmistumispäivä.map(vp =>
+        AikuistenPerusopetuksenOpiskeluoikeusjakso(vp, opiskeluoikeusValmistunut, Some(valtionosuusRahoitteinen))
+      )
 
+    val tilat: List[AikuistenPerusopetuksenOpiskeluoikeusjakso] = List(
+      AikuistenPerusopetuksenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))
+    ) ++ valmistunut.toList
 
+    ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen.copy(
+      oppilaitos = Some(ressunLukio),
+      tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
+        tilat
+      ),
+      suoritukset = List(
+        ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(
+          toimipiste = ressunLukio,
+          vahvistus = valmistumispäivä.flatMap(vp => vahvistusPaikkakunnalla(vp))
+        ),
+        ExamplesAikuistenPerusopetus.aikuistenPerusopetukseOppimääränSuoritus(
+          ExamplesAikuistenPerusopetus.aikuistenPerusopetus2017,
+          ExamplesAikuistenPerusopetus.oppiaineidenSuoritukset2017
+        ).copy(
+          toimipiste = ressunLukio,
+          vahvistus = valmistumispäivä.flatMap(vp => vahvistusPaikkakunnalla(vp))
+        )
+      )
+    )
+  }
+
+  def luva: LukioonValmistavanKoulutuksenOpiskeluoikeus = LukioonValmistavanKoulutuksenOpiskeluoikeus(
+    oppilaitos = Some(ressunLukio),
+    koulutustoimija = None,
+    tila = LukionOpiskeluoikeudenTila(List(
+      LukionOpiskeluoikeusjakso(
+        date(2021, 8, 15), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)
+      )
+    )),
+    suoritukset = List(ExamplesLukioonValmistavaKoulutus.lukioonValmistavanKoulutuksenSuoritus2019.copy(
+      toimipiste = ressunLukio,
+      vahvistus = None
+    )),
+    lisätiedot = None
+  )
 }

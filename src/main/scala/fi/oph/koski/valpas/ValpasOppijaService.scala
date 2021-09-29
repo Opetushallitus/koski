@@ -145,11 +145,14 @@ class ValpasOppijaService(
   )
 
   def getHakeutumisvalvottavatOppijatSuppeatTiedot
-    (oppilaitosOid: ValpasOppilaitos.Oid)
+    (oppilaitosOid: ValpasOppilaitos.Oid, hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value)
     (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =
-    getOppijatLaajatTiedotHakutilanteilla(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, oppilaitosOid)
-      .map(poistaKuntailmoitetutOpiskeluoikeudet(säästäJosOpiskeluoikeusVoimassa = false))
+    getHakeutumisvalvottavatOppijatLaajatTiedotHakutilanteilla(
+      ValpasRooli.OPPILAITOS_HAKEUTUMINEN,
+      oppilaitosOid,
+      hakeutumisvalvontaTieto
+    ).map(poistaKuntailmoitetutOpiskeluoikeudet(säästäJosOpiskeluoikeusVoimassa = false))
       .map(lisätiedotRepository.readForOppijat)
       .map(_.map(Function.tupled(OppijaHakutilanteillaSuppeatTiedot.apply)))
 
@@ -304,13 +307,13 @@ class ValpasOppijaService(
   private def oppilaitosOidErrorClue(oppilaitosOid: ValpasOppilaitos.Oid): String =
     s"oppilaitos: ${oppilaitosOid}"
 
-  private def getOppijatLaajatTiedotHakutilanteilla
-    (rooli: ValpasRooli.Role, oppilaitosOid: ValpasOppilaitos.Oid)
+  private def getHakeutumisvalvottavatOppijatLaajatTiedotHakutilanteilla
+    (rooli: ValpasRooli.Role, oppilaitosOid: ValpasOppilaitos.Oid, hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value)
     (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
     val errorClue = oppilaitosOidErrorClue(oppilaitosOid)
 
-    getOppijatLaajatTiedot(rooli, oppilaitosOid)
+    getOppijatLaajatTiedot(rooli, oppilaitosOid, hakeutumisvalvontaTieto)
       .map(fetchHautIlmanYhteystietoja(errorClue))
   }
 
@@ -318,18 +321,22 @@ class ValpasOppijaService(
     (rooli: ValpasRooli.Role, oppilaitosOid: ValpasOppilaitos.Oid)
     (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
-    getOppijatLaajatTiedot(rooli, oppilaitosOid)
+    getOppijatLaajatTiedot(rooli, oppilaitosOid, HakeutumisvalvontaTieto.Kaikki)
       .map(oppijat => oppijat.map(OppijaHakutilanteillaLaajatTiedot.apply))
   }
 
   private def getOppijatLaajatTiedot
-    (rooli: ValpasRooli.Role, oppilaitosOid: ValpasOppilaitos.Oid)
+    (
+      rooli: ValpasRooli.Role,
+      oppilaitosOid: ValpasOppilaitos.Oid,
+      hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value
+    )
     (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[ValpasOppijaLaajatTiedot]] = {
     val errorClue = oppilaitosOidErrorClue(oppilaitosOid)
 
     accessResolver.assertAccessToOrg(rooli, oppilaitosOid)
-      .map(_ => opiskeluoikeusDbService.getOppijatByOppilaitos(oppilaitosOid))
+      .map(_ => opiskeluoikeusDbService.getOppijatByOppilaitos(oppilaitosOid, hakeutumisvalvontaTieto))
       .flatMap(results => HttpStatus.foldEithers(results.map(asValpasOppijaLaajatTiedot)))
       .map(accessResolver.filterByOppijaAccess(rooli))
   }
@@ -341,7 +348,7 @@ class ValpasOppijaService(
     val errorClue = oppilaitosOidErrorClue(oppilaitosOid)
 
     accessResolver.assertAccessToOrg(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, oppilaitosOid)
-      .map(_ => opiskeluoikeusDbService.getOppijatByOppilaitos(oppilaitosOid))
+      .map(_ => opiskeluoikeusDbService.getOppijatByOppilaitos(oppilaitosOid, HakeutumisvalvontaTieto.Kaikki))
       .map(_.filter(oppijaRow => oppijaOids.contains(oppijaRow.oppijaOid)))
       .flatMap(results => HttpStatus.foldEithers(results.map(asValpasOppijaLaajatTiedot)))
       .map(accessResolver.filterByOppijaAccess(ValpasRooli.OPPILAITOS_HAKEUTUMINEN))
