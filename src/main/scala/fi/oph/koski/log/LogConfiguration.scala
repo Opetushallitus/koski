@@ -6,7 +6,7 @@ import java.io.File
 import java.net.URL
 
 object LogConfiguration {
-  private val LocalLog4jConfigPath = "src/main/resources/log4j.properties"
+  private val LocalLog4jConfigPath = "src/main/resources/log4j-local.properties"
 
   def configureLoggingWithFileWatch(): Unit = {
     val log4jConfig = Option(System.getProperty("log4j.configuration")) match {
