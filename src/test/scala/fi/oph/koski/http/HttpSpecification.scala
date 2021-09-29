@@ -1,5 +1,6 @@
 package fi.oph.koski.http
 
+import fi.oph.koski.TestEnvironment
 import fi.oph.koski.json.JsonSerializer
 import org.json4s.JValue
 import org.json4s.JsonAST.JString
@@ -10,7 +11,7 @@ import org.scalatest.matchers.should.Matchers
 
 import scala.util.matching.Regex
 
-trait HttpSpecification extends HttpTester with Assertions with Matchers {
+trait HttpSpecification extends HttpTester with TestEnvironment with Assertions with Matchers {
   def resetFixtures(): Unit = {
     post("fixtures/reset", Nil, authHeaders()) {
       verifyResponseStatus(200, Nil)

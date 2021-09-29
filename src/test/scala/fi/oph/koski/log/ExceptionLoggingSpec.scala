@@ -1,13 +1,14 @@
 package fi.oph.koski.log
 
+import fi.oph.koski.TestEnvironment
+
 import java.lang.reflect.{InvocationTargetException, UndeclaredThrowableException}
 import java.util.concurrent.ExecutionException
-
 import fi.oph.koski.http.HttpStatusException
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
-class ExceptionLoggingSpec extends AnyFreeSpec with Matchers {
+class ExceptionLoggingSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   val renderer: LoggableThrowableRenderer = new LoggableThrowableRenderer()
 
   "Loggable exceptions" - {

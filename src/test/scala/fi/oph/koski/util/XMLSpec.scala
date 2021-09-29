@@ -1,12 +1,13 @@
 package fi.oph.koski.util
 
+import fi.oph.koski.TestEnvironment
 import fi.oph.koski.util.XML.CommentedPCData
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
 import scala.xml.{Elem, NodeSeq, Text}
 
-class XMLSpec extends AnyFreeSpec with Matchers {
+class XMLSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   "CommentedPCData" in {
     val node =
       <script>

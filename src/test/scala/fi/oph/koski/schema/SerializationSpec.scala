@@ -1,5 +1,6 @@
 package fi.oph.koski.schema
 
+import fi.oph.koski.TestEnvironment
 import fi.oph.koski.documentation.{AmmatillinenExampleData, Examples}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.json.JsonSerializer
@@ -10,7 +11,7 @@ import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
-class SerializationSpec extends AnyFreeSpec with Matchers with Logging {
+class SerializationSpec extends AnyFreeSpec with TestEnvironment with Matchers with Logging {
   private implicit val context: ExtractionContext = strictDeserialization
   "Serialization / deserialization" - {
     "Tunnustaminen" in {

@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import com.typesafe.config.ConfigFactory
+import fi.oph.koski.TestEnvironment
 import fi.oph.koski.cache.GlobalCacheManager
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, lehtikuusentienToimipiste, oppilaitokset}
@@ -15,9 +16,9 @@ import fi.oph.koski.userdirectory.{DirectoryUser, OpintopolkuDirectoryClient}
 import org.json4s.DefaultFormats
 import org.json4s.jackson.Serialization.write
 import org.mockito.Mockito.{mock, when}
-import org.scalatest.{BeforeAndAfterAll, EitherValues, OptionValues}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
+import org.scalatest.{BeforeAndAfterAll, EitherValues, OptionValues}
 import org.scalatra.servlet.RichRequest
 
 import java.net.InetAddress
@@ -25,6 +26,7 @@ import java.net.InetAddress.{getByName => inetAddress}
 
 class KoskiSpecificSessionSpec
   extends AnyFreeSpec
+    with TestEnvironment
     with Matchers
     with EitherValues
     with OptionValues

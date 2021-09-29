@@ -2,7 +2,7 @@ package fi.oph.koski.versioning
 
 import java.io.File
 import java.time.LocalDate
-import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.{KoskiApplicationForTests, TestEnvironment}
 import fi.oph.koski.documentation.Example
 import fi.oph.koski.documentation.Examples.examples
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
@@ -21,7 +21,7 @@ import org.scalatest.matchers.should.Matchers
 /**
  * Tests that examples match saved JSON files.
  */
-class BackwardCompatibilitySpec extends AnyFreeSpec with Matchers with Logging with EnvVariables {
+class BackwardCompatibilitySpec extends AnyFreeSpec with TestEnvironment with Matchers with Logging with EnvVariables {
   private lazy val koskiValidator = KoskiApplicationForTests.validator
   private lazy val runningOnCI = optEnv("CI").isDefined
   private implicit val user: KoskiSpecificSession = KoskiSpecificSession.systemUser

@@ -3,7 +3,7 @@ package fi.oph.koski.organisaatio
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.{get, ok, urlPathEqualTo}
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
-import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.{KoskiApplicationForTests, TestEnvironment}
 import fi.oph.koski.cache.GlobalCacheManager
 import fi.oph.koski.http.Http
 import fi.oph.koski.json.JsonResources.readResource
@@ -16,7 +16,7 @@ import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
-class RemoteOrganisaatioRepositorySpec extends AnyFreeSpec with Matchers with BeforeAndAfterAll {
+class RemoteOrganisaatioRepositorySpec extends AnyFreeSpec with TestEnvironment with Matchers with BeforeAndAfterAll {
   implicit val jsonDefaultFormats = DefaultFormats.preservingEmptyValues
   implicit val cacheManager = GlobalCacheManager
 

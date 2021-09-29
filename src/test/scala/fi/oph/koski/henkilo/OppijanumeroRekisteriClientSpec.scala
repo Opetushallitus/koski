@@ -5,6 +5,7 @@ import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration._
 import com.typesafe.config.ConfigFactory
+import fi.oph.koski.TestEnvironment
 import fi.oph.koski.http.Http
 import fi.oph.koski.schema.Koodistokoodiviite
 import org.json4s.DefaultFormats
@@ -17,6 +18,7 @@ import java.time.LocalDate
 
 class OppijanumeroRekisteriClientSpec
   extends AnyFreeSpec
+    with TestEnvironment
     with Matchers
     with EitherValues
     with OptionValues

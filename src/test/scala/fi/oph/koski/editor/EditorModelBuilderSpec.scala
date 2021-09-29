@@ -1,5 +1,6 @@
 package fi.oph.koski.editor
 
+import fi.oph.koski.TestEnvironment
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{KäyttöoikeusRepository, MockUsers, Rooli}
@@ -8,7 +9,7 @@ import fi.oph.koski.schema.annotation.SensitiveData
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
-class EditorModelBuilderSpec extends AnyFreeSpec with Matchers {
+class EditorModelBuilderSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   val application = KoskiApplication.apply
   implicit val koodisto: KoodistoViitePalvelu = application.koodistoViitePalvelu
   implicit val localizations: LocalizationRepository = application.koskiLocalizationRepository

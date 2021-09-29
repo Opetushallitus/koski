@@ -5,6 +5,7 @@ import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import com.typesafe.config.ConfigFactory
+import fi.oph.koski.TestEnvironment
 import fi.oph.koski.sso.CasService
 import org.json4s.DefaultFormats
 import org.json4s.jackson.Serialization.write
@@ -14,6 +15,7 @@ import org.scalatest.matchers.should.Matchers
 
 class OpintopolkuDirectoryClientSpec
   extends AnyFreeSpec
+    with TestEnvironment
     with Matchers
     with EitherValues
     with OptionValues

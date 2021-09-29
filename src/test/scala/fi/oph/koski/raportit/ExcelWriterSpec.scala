@@ -1,21 +1,19 @@
 package fi.oph.koski.raportit
 
-import java.io.FileOutputStream
-
+import fi.oph.koski.TestEnvironment
+import org.apache.poi.EncryptedDocumentException
+import org.apache.poi.ss.usermodel._
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
-import org.apache.poi.ss.usermodel._
-import java.io.File
+
+import java.io.{File, FileOutputStream}
 import java.sql.Date
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
-
-import org.apache.poi.EncryptedDocumentException
-
 import scala.collection.JavaConverters._
 
 
-class ExcelWriterSpec extends AnyFreeSpec with Matchers {
+class ExcelWriterSpec extends AnyFreeSpec with TestEnvironment with Matchers {
 
   "ExcelWriter" - {
 

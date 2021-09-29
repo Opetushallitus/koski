@@ -1,19 +1,19 @@
 package fi.oph.koski.json
 
-import java.time.LocalDate
-
+import fi.oph.koski.TestEnvironment
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.PerusopetusExampleData.{oppiaine, suoritus}
-import fi.oph.koski.documentation.{ExamplesPerusopetuksenLisaopetus, PerusopetusExampleData, _}
+import fi.oph.koski.documentation._
 import fi.oph.koski.koskiuser.{KäyttöoikeusRepository, MockUsers}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
+import java.time.LocalDate
 import scala.reflect.runtime.universe.TypeTag
 
-class SensitiveDataFilterSpec extends AnyFreeSpec with Matchers {
+class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   private val application = KoskiApplication.apply
   private val käyttöoikeusRepository: KäyttöoikeusRepository = application.käyttöoikeusRepository
 

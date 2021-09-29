@@ -1,11 +1,12 @@
 package fi.oph.koski.cache
 
+import fi.oph.koski.TestEnvironment
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
 import scala.concurrent.duration.DurationInt
 
-class CachingProxySpec extends AnyFreeSpec with Matchers {
+class CachingProxySpec extends AnyFreeSpec with TestEnvironment with Matchers {
   "CachingProxy" - {
 
     "Calls underlying impl" in {

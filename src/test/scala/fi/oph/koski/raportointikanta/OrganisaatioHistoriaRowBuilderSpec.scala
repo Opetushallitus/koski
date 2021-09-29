@@ -1,8 +1,6 @@
 package fi.oph.koski.raportointikanta
 
-import java.sql.Date
-import java.time.LocalDate
-
+import fi.oph.koski.TestEnvironment
 import fi.oph.koski.documentation.PerusopetusExampleData.opiskeluoikeus
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{helsinginMedialukio, helsinki, kulosaarenAlaAste, ressunLukio, tornio}
 import fi.oph.koski.raportointikanta.OrganisaatioHistoriaRowBuilder.buildOrganisaatioHistoriaRows
@@ -10,7 +8,9 @@ import fi.oph.koski.schema.OpiskeluoikeudenOrganisaatiohistoria
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
-class OrganisaatioHistoriaRowBuilderSpec extends AnyFreeSpec with Matchers {
+import java.time.LocalDate
+
+class OrganisaatioHistoriaRowBuilderSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   private val opiskeluoikeusOidilla = opiskeluoikeus(suoritukset = List()).copy(oid = Some("1.2.246.562.15.00000000001"))
   private def opiskeluoikeusOrganisaatioHistorialla(historia: List[OpiskeluoikeudenOrganisaatiohistoria]) =
     opiskeluoikeusOidilla.copy(organisaatiohistoria = Some(historia))

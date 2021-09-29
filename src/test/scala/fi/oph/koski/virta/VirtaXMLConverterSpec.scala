@@ -1,5 +1,6 @@
 package fi.oph.koski.virta
 
+import fi.oph.koski.TestEnvironment
 import fi.oph.koski.documentation.ExampleData.{laajuusOpintopisteissä, laajuusOpintoviikoissa}
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizedStringImplicits._
@@ -13,7 +14,7 @@ import org.scalatest.matchers.should.Matchers
 import java.time.LocalDate
 import scala.xml.Elem
 
-class VirtaXMLConverterSpec extends AnyFreeSpec with Matchers with OptionValues {
+class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matchers with OptionValues {
 
   private val converter = VirtaXMLConverter(new MockOppilaitosRepository, MockKoodistoViitePalvelu, MockOrganisaatioRepository)
 

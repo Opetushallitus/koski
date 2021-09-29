@@ -1,19 +1,19 @@
 package fi.oph.koski.ytr
 
 import java.time.LocalDate
-
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration._
 import com.typesafe.config.ConfigFactory
+import fi.oph.koski.TestEnvironment
 import org.json4s.DefaultFormats
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.json4s.jackson.Serialization.write
 
-class YtrClientSpec extends AnyFreeSpec with Matchers with BeforeAndAfterAll {
+class YtrClientSpec extends AnyFreeSpec with TestEnvironment with Matchers with BeforeAndAfterAll {
   implicit val jsonDefaultFormats = DefaultFormats.preservingEmptyValues
 
   private val config = ConfigFactory.parseString(

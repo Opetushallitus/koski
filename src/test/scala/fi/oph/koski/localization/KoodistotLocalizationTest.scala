@@ -1,5 +1,6 @@
 package fi.oph.koski.localization
 
+import fi.oph.koski.TestEnvironment
 import fi.oph.koski.koodisto.{KoodistoKoodi, Koodistot, RemoteKoodistoPalvelu}
 import fi.oph.koski.schema.LocalizedString
 import org.scalatest.AppendedClues
@@ -9,7 +10,7 @@ import org.scalatest.matchers.should.Matchers
 /**
   * Tests that appropriate translations for koodisto "nimi" exists in the environment defined by the VIRKAILIJA_ROOT environment variable
   */
-class KoodistotLocalizationTest extends AnyFreeSpec with Matchers with AppendedClues {
+class KoodistotLocalizationTest extends AnyFreeSpec with TestEnvironment with Matchers with AppendedClues {
   "Kielistetyt koodiarvot" - {
     lazy val root = sys.env.getOrElse("VIRKAILIJA_ROOT", throw new RuntimeException("Environment variable VIRKAILIJA_ROOT missing"))
     lazy val koodistoPalvelu = new RemoteKoodistoPalvelu(root)

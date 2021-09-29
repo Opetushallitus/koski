@@ -4,6 +4,7 @@ import java.time.LocalDate
 import com.fasterxml.jackson.databind.JsonNode
 import com.github.fge.jackson.JsonLoader
 import com.github.fge.jsonschema.main.{JsonSchemaFactory, JsonValidator}
+import fi.oph.koski.TestEnvironment
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.Examples
 import fi.oph.koski.json.JsonSerializer
@@ -16,7 +17,7 @@ import org.scalatest.matchers.should.Matchers
 
 import scala.reflect.runtime.universe.TypeTag
 
-class KoskiOppijaExamplesValidationSpec extends AnyFreeSpec with Matchers {
+class KoskiOppijaExamplesValidationSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   private lazy val validator: JsonValidator = JsonSchemaFactory.byDefault.getValidator
   private lazy val schema: JsonNode =  JsonLoader.fromString(KoskiSchema.schemaJsonString)
 

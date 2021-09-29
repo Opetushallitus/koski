@@ -1,12 +1,13 @@
 package fi.oph.koski.schema
 
+import fi.oph.koski.TestEnvironment
+
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
-
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
-class JaksoSpec extends AnyFreeSpec with Matchers {
+class JaksoSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   "Jaksojen konjunktio" - {
     "Kun jakson 1 alku on ennen jakson 2 alkua" in {
       val jakso1 = J(date(2018, 5, 20), Some(date(2019, 6, 20)))

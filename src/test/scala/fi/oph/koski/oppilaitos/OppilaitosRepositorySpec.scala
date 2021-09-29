@@ -1,10 +1,10 @@
 package fi.oph.koski.oppilaitos
 
-import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.{KoskiApplicationForTests, TestEnvironment}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
-class OppilaitosRepositorySpec extends AnyFreeSpec with Matchers {
+class OppilaitosRepositorySpec extends AnyFreeSpec with TestEnvironment with Matchers {
   "Oppilaitoshaku oppilaitosnumerolla" in {
     KoskiApplicationForTests.oppilaitosRepository
       .findByOppilaitosnumero("01901")

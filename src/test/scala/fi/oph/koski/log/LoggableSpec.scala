@@ -1,10 +1,11 @@
 package fi.oph.koski.log
 
+import fi.oph.koski.TestEnvironment
 import fi.oph.koski.koodisto.KoodistoViite
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
-class LoggableSpec extends AnyFreeSpec with Matchers {
+class LoggableSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   "Loggable.describe" - {
     "Booleans" in {
       Loggable.describe(java.lang.Boolean.valueOf("true")) should equal("true")
