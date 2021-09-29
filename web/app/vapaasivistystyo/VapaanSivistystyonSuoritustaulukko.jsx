@@ -26,7 +26,7 @@ export class VapaanSivistystyonSuoritustaulukko extends React.Component {
     const context = parentSuoritus.context
     const suoritukset = modelItems(suorituksetModel) || []
     const parentOneOf = (...classes) => classes.some(c => parentSuoritus.value.classes.includes(c))
-    const maxNestedLevel = parentOneOf('vapaansivistystyonvapaatavoitteisenkoulutuksensuoritus') ? MAX_NESTED_LEVEL_VAPAATAVOITTEINEN : MAX_NESTED_LEVEL_MUUT
+    const maxNestedLevel = parentOneOf('vapaansivistystyonvapaatavoitteisenkoulutuksenosasuorituksensuoritus') ? MAX_NESTED_LEVEL_VAPAATAVOITTEINEN : MAX_NESTED_LEVEL_MUUT
 
     if (suoritukset.length === 0 && !context.edit || nestedLevel >= maxNestedLevel || suorituksetModel === undefined) {
       return null
