@@ -48,9 +48,10 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
 
   private val server = new Server(threadPool)
 
+  configureLogging()
+
   application.masterDatabase // <- force evaluation to make sure DB is up
 
-  configureLogging
   setupConnector
 
   private val handlers = new HandlerCollection()
@@ -90,7 +91,7 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
   }
 
   protected def configureLogging = {
-    LogConfiguration.configureLoggingWithFileWatch
+    LogConfiguration.configureLoggingWithFileWatch()
     val requestLog = new CustomRequestLog(new MaskedSlf4jRequestLogWriter, CustomRequestLog.NCSA_FORMAT)
     server.setRequestLog(requestLog)
   }

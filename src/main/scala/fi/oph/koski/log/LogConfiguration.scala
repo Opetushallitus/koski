@@ -1,20 +1,21 @@
 package fi.oph.koski.log
 
-import java.io.File
-import java.net.{MalformedURLException, URL}
-
 import org.apache.log4j.PropertyConfigurator
 
+import java.io.File
+import java.net.URL
+
 object LogConfiguration {
-  lazy val configureLoggingWithFileWatch: Unit = {
-    var prop = System.getProperty("log4j.configuration", "src/main/resources/log4j.properties");
-    val log4jConfig = try {
-      new URL(prop)
-    } catch {
-      case e: MalformedURLException => new URL("file://" + new File(prop).getCanonicalPath)
+  private val LocalLog4jConfigPath = "src/main/resources/log4j.properties"
+
+  def configureLoggingWithFileWatch(): Unit = {
+    val log4jConfig = Option(System.getProperty("log4j.configuration")) match {
+      case Some(log4jConfigPath) => new URL(log4jConfigPath)
+      case None => new URL("file://" + new File(LocalLog4jConfigPath).getCanonicalPath)
     }
-    if (log4jConfig.getProtocol().equalsIgnoreCase("file")) {
-      PropertyConfigurator.configureAndWatch(log4jConfig.getFile(), 1000);
+
+    if (log4jConfig.getProtocol.equalsIgnoreCase("file")) {
+      PropertyConfigurator.configureAndWatch(log4jConfig.getFile, 1000)
     }
   }
 }
