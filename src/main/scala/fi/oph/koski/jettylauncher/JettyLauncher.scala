@@ -33,7 +33,7 @@ object JettyLauncher extends App with Logging {
 
   try {
     val application = new KoskiApplication(config, new JMXCacheManager)
-    new JettyLauncher(globalPort, application).start.join
+    new JettyLauncher(globalPort, application).start().join()
   } catch {
     case e: Throwable =>
       logger.error(e)("Error in server startup")
@@ -42,6 +42,10 @@ object JettyLauncher extends App with Logging {
 }
 
 class JettyLauncher(val port: Int, val application: KoskiApplication) extends Logging {
+  val hostUrl: String = "http://localhost:" + port
+
+  val baseUrl: String = hostUrl + "/koski"
+
   private val config = application.config
 
   private val threadPool = new ManagedQueuedThreadPool(Pools.jettyThreads)
@@ -52,35 +56,32 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
 
   application.masterDatabase // <- force evaluation to make sure DB is up
 
-  setupConnector
+  setupConnector()
 
   private val handlers = new HandlerCollection()
   private val rootContext = new ServletContextHandler()
 
   server.setHandler(handlers)
 
-  setupKoskiApplicationContext
-  setupGzipForStaticResources
-  setupJMX
-  setupPrometheusMetrics
+  setupKoskiApplicationContext()
+  setupGzipForStaticResources()
+  setupJMX()
+  setupPrometheusMetrics()
   if (Environment.isLocalDevelopmentEnvironment(config) && config.hasPath("oppijaRaamitProxy")) {
-    setupOppijaRaamitProxy
+    setupOppijaRaamitProxy()
   }
   if (Environment.isLocalDevelopmentEnvironment(config) && config.hasPath("virkailijaRaamitProxy")) {
-    setupVirkailijaRaamitProxy
+    setupVirkailijaRaamitProxy()
   }
   handlers.addHandler(rootContext)
 
-  def start = {
+  def start(): Server = {
     server.start()
     logger.info(s"Running in port $port")
     server
   }
 
-  def hostUrl = "http://localhost:" + port
-  def baseUrl = hostUrl + "/koski"
-
-  private def setupConnector = {
+  private def setupConnector(): Unit = {
     val httpConfig = new HttpConfiguration()
     httpConfig.addCustomizer( new ForwardedRequestCustomizer() )
     val connectionFactory = new HttpConnectionFactory( httpConfig )
@@ -90,18 +91,18 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
     server.addConnector(connector)
   }
 
-  protected def configureLogging = {
+  private def configureLogging(): Unit = {
     LogConfiguration.configureLoggingWithFileWatch()
     val requestLog = new CustomRequestLog(new MaskedSlf4jRequestLogWriter, CustomRequestLog.NCSA_FORMAT)
     server.setRequestLog(requestLog)
   }
 
-  private def setupKoskiApplicationContext = {
+  private def setupKoskiApplicationContext(): Unit = {
     val context = new WebAppContext()
     context.setAttribute("koski.application", application)
     context.setParentLoaderPriority(true)
     context.setContextPath("/koski")
-    context.setResourceBase(resourceBase)
+    context.setResourceBase(verifyResourceBase())
     context.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false")
     if (Environment.isLocalDevelopmentEnvironment(config)) {
       // Avoid random SIGBUS errors when static files memory-mapped by Jetty (and being sent to client)
@@ -112,7 +113,7 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
     handlers.addHandler(context)
   }
 
-  private def resourceBase = {
+  private def verifyResourceBase(): String = {
     val base = System.getProperty("resourcebase", "./target/webapp")
     if (!Files.exists(Paths.get(base))) {
       throw new RuntimeException("WebApplication resource base: " + base + " does not exist.")
@@ -120,34 +121,34 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
     base
   }
 
-  private def setupGzipForStaticResources = {
+  private def setupGzipForStaticResources(): Unit = {
     val gzip = new GzipHandler
     gzip.setIncludedMimeTypes("text/css", "text/html", "application/javascript")
     gzip.setIncludedPaths("/koski/css/*", "/koski/external_css/*", "/koski/js/*", "/koski/json-schema-viewer/*")
-    gzip.setHandler(server.getHandler())
+    gzip.setHandler(server.getHandler)
     server.setHandler(gzip)
   }
 
-  private def setupJMX = {
-    val mbContainer = new MBeanContainer(ManagementFactory.getPlatformMBeanServer())
+  private def setupJMX(): Unit = {
+    val mbContainer = new MBeanContainer(ManagementFactory.getPlatformMBeanServer)
     server.addBean(mbContainer)
 
     val stats = new StatisticsHandler
-    stats.setHandler(server.getHandler())
+    stats.setHandler(server.getHandler)
     server.setHandler(stats)
   }
 
-  private def setupPrometheusMetrics = {
+  private def setupPrometheusMetrics(): Unit = {
     rootContext.addServlet(new ServletHolder(new MetricsServlet), "/metrics")
   }
 
-  private def setupOppijaRaamitProxy = {
+  private def setupOppijaRaamitProxy(): Unit = {
     val holder = rootContext.addServlet(classOf[HttpsSupportingTransparentProxyServlet], "/oppija-raamit/*")
     holder.setInitParameter("proxyTo", config.getString("oppijaRaamitProxy"))
     holder.setInitParameter("prefix", "/oppija-raamit")
   }
 
-  private def setupVirkailijaRaamitProxy = {
+  private def setupVirkailijaRaamitProxy(): Unit = {
     val holder = rootContext.addServlet(classOf[HttpsSupportingTransparentProxyServlet], "/virkailija-raamit/*")
     holder.setInitParameter("proxyTo", config.getString("virkailijaRaamitProxy"))
     holder.setInitParameter("prefix", "/virkailija-raamit")
@@ -164,7 +165,7 @@ trait QueuedThreadPoolMXBean {
 }
 
 class HttpsSupportingTransparentProxyServlet extends ProxyServlet.Transparent {
-  override protected def newHttpClient() = {
+  override protected def newHttpClient(): HttpClient = {
     new HttpClient(new SslContextFactory.Client)
   }
 }

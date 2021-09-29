@@ -15,7 +15,7 @@ object LocalJettyHttpSpec extends Logging {
 
   private lazy val jetty: JettyLauncher = externalJettyPort match {
     case None =>
-      SharedJetty.start
+      SharedJetty.start()
       SharedJetty
     case Some(port) =>
       logger.info(s"Using external jetty on port $port")
