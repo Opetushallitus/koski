@@ -10,7 +10,7 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const suoritustyyppiAtom = Atom()
   const perusteAtom = Atom()
 
-  const suoritustyypitP =  koodistoValues('suorituksentyyppi/vstoppivelvollisillesuunnattukoulutus,vstmaahanmuuttajienkotoutumiskoulutus,vstlukutaitokoulutus')
+  const suoritustyypitP =  koodistoValues('suorituksentyyppi/vstoppivelvollisillesuunnattukoulutus,vstmaahanmuuttajienkotoutumiskoulutus,vstlukutaitokoulutus,vstvapaatavoitteinenkoulutus')
 
   Bacon.combineWith(oppilaitosAtom, suoritustyyppiAtom, perusteAtom, suorituskieliAtom, makeSuoritus)
     .onValue(suoritus => suoritusAtom.set(suoritus))
@@ -67,6 +67,20 @@ const makeSuoritus = (oppilaitos, suoritustyyppi, peruste, suorituskieli) => {
               koodistoUri: 'koulutus'
             },
             perusteenDiaarinumero: peruste
+          },
+          toimipiste: oppilaitos,
+          tyyppi: suoritustyyppi
+        }
+      )
+    case 'vstvapaatavoitteinenkoulutus':
+      return (
+        {
+          suorituskieli : suorituskieli,
+          koulutusmoduuli: {
+            tunniste: {
+              koodiarvo: '099999',
+              koodistoUri: 'koulutus'
+            }
           },
           toimipiste: oppilaitos,
           tyyppi: suoritustyyppi

@@ -58,7 +58,8 @@ export const resolveOsasuorituksetEditor = (mdl) => {
   if (oneOf(
     'oppivelvollisillesuunnattuvapaansivistystyonkoulutuksensuoritus',
     'oppivelvollisillesuunnattumaahanmuuttajienkotoutumiskoulutuksensuoritus',
-    'vapaansivistystyonlukutaitokoulutuksensuoritus'
+    'vapaansivistystyonlukutaitokoulutuksensuoritus',
+    'vapaansivistystyonvapaatavoitteisenkoulutuksensuoritus'
   )) {
     return <VapaanSivistystyonSuoritustaulukko parentSuoritus={mdl} suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
   }

@@ -119,6 +119,7 @@ object SuorituksenTyyppi {
   val vstoppivelvollisillesuunnattukoulutus = apply("vstoppivelvollisillesuunnattukoulutus")
   val vstmaahanmuuttajienkotoutumiskoulutus = apply("vstmaahanmuuttajienkotoutumiskoulutus")
   val vstlukutaitokoulutus = apply("vstlukutaitokoulutus")
+  val vstvapaatavoitteinenkoulutus = apply("vstvapaatavoitteinenkoulutus")
   val luva = apply("luva")
 
   private def apply(koodiarvo: String): SuorituksenTyyppi =
