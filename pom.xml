@@ -11,7 +11,7 @@
     <name>fi.vm.sade</name>
   </organization>
   <properties>
-    <scala.version>2.12.13</scala.version>
+    <scala.version>2.12.15</scala.version>
     <slick.version>3.3.3</slick.version>
     <slick-pg.version>0.19.6</slick-pg.version>
     <scalatra.version>2.6.5</scalatra.version>
