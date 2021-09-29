@@ -29,6 +29,7 @@ object MitätöityOpiskeluoikeusLoader {
   private def loadBatch(db: RaportointiDatabase, batch: Seq[OpiskeluoikeusRow]) = {
     val (errors, outputRows) = batch.par.map(buildRow).seq.partition(_.isLeft)
     db.loadMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get))
+    db.updateStatusCount(StatusName, outputRows.size)
     errors.map(_.left.get)
   }
 

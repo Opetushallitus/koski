@@ -92,7 +92,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
     logger.info((tables.flatMap(_.schema.createStatements) ++ "\n").mkString(";\n"))
   }
 
-  def createOpiskeluoikeusIndexes: Unit = {
+  def createOpiskeluoikeusIndexes(): Unit = {
     runDbSync(RaportointiDatabaseSchema.createOpiskeluoikeusIndexes(schema), timeout = 120.minutes)
   }
 
@@ -100,7 +100,8 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
     logger.info("Creating materialized views")
     val started = System.currentTimeMillis
     setStatusLoadStarted("materialized_views")
-    runDbSync(DBIO.seq(
+
+    val views = Seq(
       PaallekkaisetOpiskeluoikeudet.createMaterializedView(schema),
       PaallekkaisetOpiskeluoikeudet.createIndex(schema),
       LukioOppimaaranKussikertymat.createMaterializedView(schema),
@@ -115,22 +116,19 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
       LukioOppiaineEriVuonnaKorotetutKurssit.createIndex(schema),
       Oppivelvollisuustiedot.createMaterializedView(schema, valpasRajapäivätService),
       Oppivelvollisuustiedot.createIndexes(schema)
-    ), timeout = 120.minutes)
+    )
+    runDbSync(DBIO.seq(views: _*), timeout = 120.minutes)
+    setStatusLoadCompletedAndCount("materialized_views", views.length)
+
     val duration = (System.currentTimeMillis - started) / 1000
-    setStatusLoadCompleted("materialized_views")
     logger.info(s"Materialized views created in $duration s")
   }
 
-  def createCustomFunctions: Unit = {
-    logger.info("Creating custom functions")
-    val started = System.currentTimeMillis
+  def createCustomFunctions(): Unit = {
     setStatusLoadStarted("custom_functions")
-    runDbSync(DBIO.seq(
-      RaportointiDatabaseCustomFunctions.vuodenViimeinenPäivämäärä(schema)
-    ), timeout = 120.minutes)
-    val duration = (System.currentTimeMillis - started) / 1000
-    setStatusLoadCompleted("custom_functions")
-    logger.info(s"Custom functions created in $duration s")
+    val customFunctions = Seq(RaportointiDatabaseCustomFunctions.vuodenViimeinenPäivämäärä(schema))
+    runDbSync(DBIO.seq(customFunctions: _*), timeout = 120.minutes)
+    setStatusLoadCompletedAndCount("custom_functions", customFunctions.length)
   }
 
   def loadOpiskeluoikeudet(opiskeluoikeudet: Seq[ROpiskeluoikeusRow]): Unit = {
