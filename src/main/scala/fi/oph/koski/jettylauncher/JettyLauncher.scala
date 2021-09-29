@@ -21,6 +21,8 @@ import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.eclipse.jetty.webapp.WebAppContext
 
 object JettyLauncher extends App with Logging {
+  LogConfiguration.configureLoggingWithFileWatch()
+
   private val globalPort = System.getProperty("koski.port", "7021").toInt
 
   private val config: Config = if (Environment.usesAwsAppConfig) {
@@ -92,7 +94,6 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
   }
 
   private def configureLogging(): Unit = {
-    LogConfiguration.configureLoggingWithFileWatch()
     val requestLog = new CustomRequestLog(new MaskedSlf4jRequestLogWriter, CustomRequestLog.NCSA_FORMAT)
     server.setRequestLog(requestLog)
   }
