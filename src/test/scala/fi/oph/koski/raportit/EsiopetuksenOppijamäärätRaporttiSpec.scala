@@ -1,17 +1,24 @@
 package fi.oph.koski.raportit
 
-import java.time.LocalDate.{of => localDate}
-
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.koskiuser.MockUsers.{helsinkiTallentaja, tornioTallentaja}
-import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession, MockUser, MockUsers}
+import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession, MockUsers}
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, jyväskylänNormaalikoulu, päiväkotiMajakka, päiväkotiTouhula, tornionKaupunki}
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, jyväskylänNormaalikoulu, päiväkotiTouhula, tornionKaupunki}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema.Organisaatio.Oid
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class EsiopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll {
+import java.time.LocalDate.{of => localDate}
+
+class EsiopetuksenOppijamäärätRaporttiSpec
+  extends AnyFreeSpec
+    with Matchers
+    with RaportointikantaTestMethods
+    with BeforeAndAfterAll {
+
   private val application = KoskiApplicationForTests
   private val raporttiBuilder = EsiopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
   private lazy val raportti =

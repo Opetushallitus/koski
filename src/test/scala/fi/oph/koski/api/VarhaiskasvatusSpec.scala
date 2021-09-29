@@ -9,9 +9,9 @@ import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.päiväkotiTarina
 import fi.oph.koski.schema.EsiopetuksenOpiskeluoikeus
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 
-class VarhaiskasvatusSpec extends FreeSpec with EsiopetusSpecification {
+class VarhaiskasvatusSpec extends AnyFreeSpec with EsiopetusSpecification {
   "Varhaiskasvatuksen järjestäjä koulutustoimija" - {
     "kun järjestämismuoto syötetty" - {
       "voi luoda, lukea, päivittää ja mitätöidä päiväkodissa järjestettävän esiopetuksen opiskeluoikeuden organisaatiohierarkiansa ulkopuolelta" in {

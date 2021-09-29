@@ -10,7 +10,7 @@ import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.jackson.JsonMethods
-import org.scalatest.Matchers
+import org.scalatest.matchers.should.Matchers
 
 trait OpiskeluoikeusTestMethods extends HttpSpecification with Matchers {
   private implicit val context: ExtractionContext = strictDeserialization

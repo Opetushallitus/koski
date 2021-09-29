@@ -1,14 +1,16 @@
 package fi.oph.koski.schedule
 
 import java.lang.System.currentTimeMillis
-
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.{MockOpintopolkuHenkilöFacade, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import org.json4s.jackson.JsonMethods.{parse => parseJson}
-import org.scalatest.{BeforeAndAfterEach, FreeSpec, Matchers}
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class UpdateHenkilotTaskSpec extends FreeSpec with Matchers with BeforeAndAfterEach {
+class UpdateHenkilotTaskSpec extends AnyFreeSpec with Matchers with BeforeAndAfterEach {
+
   lazy val application = KoskiApplicationForTests
   application.perustiedotIndexer.init()
 

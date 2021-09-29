@@ -7,11 +7,11 @@ import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesDIA
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema.{DIAOpiskeluoikeudenTila, DIAOpiskeluoikeusjakso, Koodistokoodiviite}
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
 
-class OppijaValidationDIASpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsDIA {
+class OppijaValidationDIASpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsDIA {
   "Laajuudet" - {
     """Lukukauden laajuusyksikkö muu kuin "vuosiviikkotuntia" -> HTTP 400""" in {
       val laajuudenYksikköKurssia = "4"

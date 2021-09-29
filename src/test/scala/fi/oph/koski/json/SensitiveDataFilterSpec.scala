@@ -8,11 +8,12 @@ import fi.oph.koski.documentation.{ExamplesPerusopetuksenLisaopetus, Perusopetus
 import fi.oph.koski.koskiuser.{KäyttöoikeusRepository, MockUsers}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import scala.reflect.runtime.universe.TypeTag
 
-class SensitiveDataFilterSpec extends FreeSpec with Matchers {
+class SensitiveDataFilterSpec extends AnyFreeSpec with Matchers {
   private val application = KoskiApplication.apply
   private val käyttöoikeusRepository: KäyttöoikeusRepository = application.käyttöoikeusRepository
 

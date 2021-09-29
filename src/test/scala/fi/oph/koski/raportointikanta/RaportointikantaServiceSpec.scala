@@ -2,7 +2,9 @@ package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.util.Wait
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 import rx.Scheduler.Worker
 import rx.functions.Action0
 import rx.lang.scala.{Scheduler => ScalaScheduler}
@@ -10,7 +12,8 @@ import rx.{Scheduler, Subscription}
 
 import java.util.concurrent.TimeUnit
 
-class RaportointikantaServiceSpec extends FreeSpec with Matchers with BeforeAndAfterAll with RaportointikantaTestMethods {
+class RaportointikantaServiceSpec extends AnyFreeSpec with Matchers with BeforeAndAfterAll with RaportointikantaTestMethods {
+
   override protected def beforeAll(): Unit = {
     super.beforeAll()
     tempRaportointiDb.dropAndCreateObjects

@@ -9,9 +9,10 @@ import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import org.scalatest.{BeforeAndAfterAll, FreeSpec}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.freespec.AnyFreeSpec
 
-class PaallekkaisetOpiskeluoikeudetSpec extends FreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll {
+class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll {
 
   override def defaultUser = MockUsers.helsinginKaupunkiPalvelukäyttäjä
 

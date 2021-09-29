@@ -1,9 +1,10 @@
 package fi.oph.koski.koskiuser
 
 import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class KaikilleOpiskeluoikeudenTyypeilleOnKayttooikeusSpec extends FreeSpec with Matchers {
+class KaikilleOpiskeluoikeudenTyypeilleOnKayttooikeusSpec extends AnyFreeSpec with Matchers {
   "Kaikille opiskeluoikeuden tyypeille on määritelty Koskessa rooli" in {
     OpiskeluoikeudenTyyppi.kaikkiTyypit.map(_.koodiarvo) should equal(Set(
       Rooli.AIKUISTENPERUSOPETUS,

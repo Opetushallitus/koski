@@ -8,9 +8,10 @@ import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, MockUsers}
 import fi.oph.koski.opiskeluoikeus.ValidationResult
 import fi.oph.koski.validation.KoskiValidator
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class OpiskeluoikeusValidationSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethods with KoskiHttpSpec {
+class OpiskeluoikeusValidationSpec extends AnyFreeSpec with Matchers with OpiskeluoikeusTestMethods with KoskiHttpSpec {
   implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
   override def defaultUser = MockUsers.paakayttaja
 

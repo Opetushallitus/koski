@@ -4,9 +4,10 @@ import java.lang.reflect.{InvocationTargetException, UndeclaredThrowableExceptio
 import java.util.concurrent.ExecutionException
 
 import fi.oph.koski.http.HttpStatusException
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class ExceptionLoggingSpec extends FreeSpec with Matchers {
+class ExceptionLoggingSpec extends AnyFreeSpec with Matchers {
   val renderer: LoggableThrowableRenderer = new LoggableThrowableRenderer()
 
   "Loggable exceptions" - {

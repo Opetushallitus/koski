@@ -9,11 +9,18 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import fi.oph.koski.schema._
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import java.time.LocalDate
 
-class KelaSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with Matchers with BeforeAndAfterAll {
+class KelaSpec
+  extends AnyFreeSpec
+    with KoskiHttpSpec
+    with OpiskeluoikeusTestMethodsAmmatillinen
+    with Matchers
+    with BeforeAndAfterAll {
 
   "Kelan yhden oppijan rajapinta" - {
     "Yhden oppijan hakeminen onnistuu ja tuottaa auditlog viestin" in {

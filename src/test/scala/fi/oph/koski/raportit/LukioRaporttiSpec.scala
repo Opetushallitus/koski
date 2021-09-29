@@ -9,13 +9,14 @@ import fi.oph.koski.raportit.lukio.{LukioRaportitRepository, LukioRaportti}
 import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}
 import fi.oph.koski.schema._
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import java.sql.Date
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with DirtiesFixtures with OpiskeluoikeusTestMethodsLukio2015 {
+class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaTestMethods with DirtiesFixtures with OpiskeluoikeusTestMethodsLukio2015 {
 
   override protected def alterFixture(): Unit = {
     lisääPäätasonSuorituksia(lukionAineopiskelijaAktiivinen, List(LukioExampleData.lukionOppiaineenOppimääränSuoritusA1Englanti, LukioExampleData.lukionOppiaineenOppimääränSuoritusPitkäMatematiikka))

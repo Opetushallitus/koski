@@ -7,9 +7,10 @@ import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.lukio.{LukioKurssikertymaAineopiskelijaRow, LukioKurssikertymaOppimaaraRow, LukioKurssinRahoitusmuotoRow, LukioMuutaKauttaRahoitetut, LukioOppiaineEriVuonnaKorotetutKurssit, LukioOppiaineEriVuonnaKorotetutKurssitRow, LukioOppiaineOpiskeluoikeudenUlkopuoliset, LukioOppiaineOpiskeluoikeudenUlkopuolisetRow, LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat, LukioRahoitusmuotoEiTiedossa}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import org.scalatest.{BeforeAndAfterAll, FreeSpec}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.freespec.AnyFreeSpec
 
-class LukioKurssikertymaRaporttiSpec extends FreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll {
+class LukioKurssikertymaRaporttiSpec extends AnyFreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll {
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()

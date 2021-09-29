@@ -5,11 +5,12 @@ import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.json4s._
 import org.json4s.jackson.Serialization.write
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import java.time.LocalDate
 
-class MyDataAPIProxyServletTest extends FreeSpec with KoskiHttpSpec with Matchers {
+class MyDataAPIProxyServletTest extends AnyFreeSpec with KoskiHttpSpec with Matchers {
 
   implicit val formats = DefaultFormats
 

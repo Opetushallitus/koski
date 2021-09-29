@@ -3,11 +3,11 @@ package fi.oph.koski.api
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema._
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 
 import scala.reflect.runtime.universe.TypeTag
 
-trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends FreeSpec with PutOpiskeluoikeusTestMethods[T] {
+trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends AnyFreeSpec with PutOpiskeluoikeusTestMethods[T] {
   def tag: TypeTag[T]
   "Tutkinnon perusteet" - {
     "Valideilla tiedoilla" - {

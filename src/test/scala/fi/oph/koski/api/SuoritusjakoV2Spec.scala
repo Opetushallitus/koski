@@ -12,11 +12,12 @@ import fi.oph.koski.schema._
 import fi.oph.koski.suoritusjako.{Suoritusjako, SuoritusjakoDeleteRequest, SuoritusjakoRequest, SuoritusjakoUpdateRequest}
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.jackson.JsonMethods
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import java.time.LocalDate
 
-class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with KoskiHttpSpec {
+class SuoritusjakoV2Spec extends AnyFreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with KoskiHttpSpec {
   "Voi jakaa koko opiskeluoikeuden" in {
     val oppija = KoskiSpecificMockOppijat.lukiolainen
     val oppimääränOpiskeluoikeus = getOpiskeluoikeudet(oppija.oid).collectFirst {

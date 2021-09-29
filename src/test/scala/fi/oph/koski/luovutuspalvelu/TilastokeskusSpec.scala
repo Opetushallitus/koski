@@ -10,12 +10,13 @@ import fi.oph.koski.koskiuser.{KäyttöoikeusViranomainen, MockUsers, Palveluroo
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 import java.time.LocalDate.{of => date}
 import java.time.format.DateTimeFormatter.ISO_INSTANT
 import java.time.{LocalDate, ZonedDateTime}
 
-class TilastokeskusSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with Matchers {
+class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with Matchers {
   import fi.oph.koski.util.DateOrdering._
   "Tilastokeskus-API" - {
     "Hakee oppijoiden tiedot" in {

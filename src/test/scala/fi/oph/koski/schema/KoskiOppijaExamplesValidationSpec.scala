@@ -11,11 +11,12 @@ import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import fi.oph.scalaschema.extraction.{EmptyString, RegExMismatch, ValidationError}
 import org.json4s.JsonAST.JString
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import scala.reflect.runtime.universe.TypeTag
 
-class KoskiOppijaExamplesValidationSpec extends FreeSpec with Matchers {
+class KoskiOppijaExamplesValidationSpec extends AnyFreeSpec with Matchers {
   private lazy val validator: JsonValidator = JsonSchemaFactory.byDefault.getValidator
   private lazy val schema: JsonNode =  JsonLoader.fromString(KoskiSchema.schemaJsonString)
 

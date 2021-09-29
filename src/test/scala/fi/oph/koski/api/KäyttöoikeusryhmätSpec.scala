@@ -15,12 +15,12 @@ import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
 import fi.oph.koski.{DatabaseTestMethods, DirtiesFixtures, KoskiHttpSpec}
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
 
 class KäyttöoikeusryhmätSpec
-  extends FreeSpec
+  extends AnyFreeSpec
     with KoskiHttpSpec
     with OpiskeluoikeusTestMethodsAmmatillinen
     with SearchTestMethods

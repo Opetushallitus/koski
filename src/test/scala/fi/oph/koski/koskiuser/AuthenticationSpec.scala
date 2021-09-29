@@ -4,9 +4,10 @@ import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.AuditLogTester
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class AuthenticationSpec extends FreeSpec with Matchers with KoskiHttpSpec {
+class AuthenticationSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec {
   "POST /login" - {
     "Valid credentials" in {
       post("user/login", JsonSerializer.writeWithRoot(Login("kalle", "kalle")), headers = jsonContent) {

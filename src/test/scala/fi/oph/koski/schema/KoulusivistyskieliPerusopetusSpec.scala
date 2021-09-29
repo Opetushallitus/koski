@@ -3,9 +3,9 @@ package fi.oph.koski.schema
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsPerusopetus
 import fi.oph.koski.documentation.PerusopetusExampleData._
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 
-class KoulusivistyskieliPerusopetusSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsPerusopetus {
+class KoulusivistyskieliPerusopetusSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsPerusopetus {
 
   "Koulusivistyskieli - Nuorten perusopetuksen oppimäärän suoritus" - {
 

@@ -9,9 +9,10 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{MockUser, MockUsers, UserWithPassword}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema._
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class MigriSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with Matchers with DirtiesFixtures {
+class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with Matchers with DirtiesFixtures {
 
   val user = MockUsers.luovutuspalveluKäyttäjä
 

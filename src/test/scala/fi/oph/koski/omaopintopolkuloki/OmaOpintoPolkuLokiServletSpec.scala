@@ -5,9 +5,10 @@ import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedo
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class OmaOpintoPolkuLokiServletSpec extends FreeSpec with Matchers with KoskiHttpSpec {
+class OmaOpintoPolkuLokiServletSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec {
   "AuditLogien näyttäminen kansalaiselle" - {
     "Katsoja voi kuulua useaan organisaatioon, logit ryhmitellään katsojan organisaatioiden perusteella" in {
       auditlogs(KoskiSpecificMockOppijat.amis).map(_.organizations.map(_.oid)) should contain theSameElementsAs(List(

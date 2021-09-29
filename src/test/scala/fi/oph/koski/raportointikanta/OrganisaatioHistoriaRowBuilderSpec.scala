@@ -7,9 +7,10 @@ import fi.oph.koski.documentation.PerusopetusExampleData.opiskeluoikeus
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{helsinginMedialukio, helsinki, kulosaarenAlaAste, ressunLukio, tornio}
 import fi.oph.koski.raportointikanta.OrganisaatioHistoriaRowBuilder.buildOrganisaatioHistoriaRows
 import fi.oph.koski.schema.OpiskeluoikeudenOrganisaatiohistoria
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class OrganisaatioHistoriaRowBuilderSpec extends FreeSpec with Matchers {
+class OrganisaatioHistoriaRowBuilderSpec extends AnyFreeSpec with Matchers {
   private val opiskeluoikeusOidilla = opiskeluoikeus(suoritukset = List()).copy(oid = Some("1.2.246.562.15.00000000001"))
   private def opiskeluoikeusOrganisaatioHistorialla(historia: List[OpiskeluoikeudenOrganisaatiohistoria]) =
     opiskeluoikeusOidilla.copy(organisaatiohistoria = Some(historia))

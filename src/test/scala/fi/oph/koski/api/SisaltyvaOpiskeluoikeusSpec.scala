@@ -12,11 +12,12 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot.{omnia, stadinAmmattiopisto}
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, OidOrganisaatio, Oppilaitos, SisältäväOpiskeluoikeus}
 import fi.oph.koski.util.Wait
 import fi.oph.koski.{DatabaseTestMethods, KoskiApplicationForTests, KoskiHttpSpec}
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import scala.language.reflectiveCalls
 
-class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with KoskiHttpSpec with DatabaseTestMethods {
+class SisältyväOpiskeluoikeusSpec extends AnyFreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with KoskiHttpSpec with DatabaseTestMethods {
   "Sisältyvä opiskeluoikeus" - {
     lazy val fixture = new {
       resetFixtures

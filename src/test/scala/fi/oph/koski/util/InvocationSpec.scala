@@ -1,9 +1,10 @@
 package fi.oph.koski.util
 
 import fi.oph.koski.log.NotLoggable
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class InvocationSpec extends FreeSpec with Matchers {
+class InvocationSpec extends AnyFreeSpec with Matchers {
   "Invocation.toString" in {
     Invocation(classOf[String].getMethods()(0), List("hello", List(1,2,3)), "some target object").toString should equal("equals(\"hello\", _)")
   }

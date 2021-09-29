@@ -2,9 +2,11 @@ package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import org.postgresql.util.PSQLException
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class RaportointikantaDbSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll {
+class RaportointikantaDbSpec extends AnyFreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll {
   "Drop and create public schema" in {
     dropsAndCreatesSchemaObjects(mainRaportointiDb)
   }

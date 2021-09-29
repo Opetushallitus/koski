@@ -9,14 +9,15 @@ import fi.oph.koski.raportit.aikuistenperusopetus._
 import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}
 import fi.oph.koski.schema._
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import java.sql.Date
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 class AikuistenPerusopetusRaporttiSpec
-  extends FreeSpec
+  extends AnyFreeSpec
     with Matchers
     with RaportointikantaTestMethods
     with DirtiesFixtures

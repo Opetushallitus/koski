@@ -4,11 +4,12 @@ import java.io.{InputStream, OutputStream}
 
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Streams
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import scala.sys.process._
 
-trait KoskiCommandLineSpec extends FreeSpec with Matchers with Logging {
+trait KoskiCommandLineSpec extends AnyFreeSpec with Matchers with Logging {
   def runTestCommand(description: String, command: Seq[String]): Unit = {
     logger.info(s"running $description")
 

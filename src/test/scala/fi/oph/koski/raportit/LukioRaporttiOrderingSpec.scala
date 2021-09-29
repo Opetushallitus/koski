@@ -1,8 +1,9 @@
 package fi.oph.koski.raportit
 
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class LukioRaporttiOrderingSpec extends FreeSpec with Matchers {
+class LukioRaporttiOrderingSpec extends AnyFreeSpec with Matchers {
 
   "Oppiaineiden järjestys" - {
     val paikallinenPitkäMatematiikka = YleissivistäväRaporttiOppiaineJaKurssit(YleissivistäväRaporttiOppiaine("Matematiikka, pitkä oppimäärä", "MA", true), Nil)

@@ -15,13 +15,21 @@ import fi.oph.koski.userdirectory.{DirectoryUser, OpintopolkuDirectoryClient}
 import org.json4s.DefaultFormats
 import org.json4s.jackson.Serialization.write
 import org.mockito.Mockito.{mock, when}
-import org.scalatest.{FreeSpec, Matchers, _}
+import org.scalatest.{BeforeAndAfterAll, EitherValues, OptionValues}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalatra.servlet.RichRequest
 
 import java.net.InetAddress
 import java.net.InetAddress.{getByName => inetAddress}
 
-class KoskiSpecificSessionSpec extends FreeSpec with Matchers with EitherValues with OptionValues with BeforeAndAfterAll {
+class KoskiSpecificSessionSpec
+  extends AnyFreeSpec
+    with Matchers
+    with EitherValues
+    with OptionValues
+    with BeforeAndAfterAll {
+
   implicit val jsonDefaultFormats = DefaultFormats.preservingEmptyValues
   private val config = ConfigFactory.parseString(
     """

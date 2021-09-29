@@ -2,12 +2,13 @@ package fi.oph.koski.localization
 
 import fi.oph.koski.cache.GlobalCacheManager
 import fi.oph.koski.valpas.localization.ValpasLocalizationConfig
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 /**
   * Tests that Swedish translations exist in the environment defined by the VIRKAILIJA_ROOT environment variable
   */
-class LocalizationLanguagesTest extends FreeSpec with Matchers {
+class LocalizationLanguagesTest extends AnyFreeSpec with Matchers {
   "Kielistetyt tekstit" - {
     implicit lazy val cacheManager = GlobalCacheManager
 

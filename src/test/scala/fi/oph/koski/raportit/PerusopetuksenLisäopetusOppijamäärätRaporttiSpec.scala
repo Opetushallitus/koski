@@ -5,11 +5,13 @@ import fi.oph.koski.koskiuser.KoskiMockUser
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import java.time.LocalDate.{of => date}
 
-class PerusopetuksenLisäopetusOppijamäärätRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll {
+class PerusopetuksenLisäopetusOppijamäärätRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll {
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()

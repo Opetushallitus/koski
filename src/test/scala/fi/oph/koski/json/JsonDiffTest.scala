@@ -5,9 +5,10 @@ import java.time.LocalDate
 import fi.oph.koski.koodisto.Koodisto
 import org.json4s.JsonAST.{JInt, JObject}
 import org.json4s.jackson.JsonMethods
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class JsonDiffTest extends FreeSpec with Matchers {
+class JsonDiffTest extends AnyFreeSpec with Matchers {
   "jsonDiff" in {
     val a = JObject("a" -> JInt(1), "b" -> JInt(2))
     val b = JObject("a" -> JInt(1), "b" -> JInt(3))

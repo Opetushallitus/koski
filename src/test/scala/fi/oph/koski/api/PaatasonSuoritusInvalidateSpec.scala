@@ -4,9 +4,10 @@ import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema.{PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus}
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class PaatasonSuoritusInvalidateSpec extends FreeSpec with Matchers with KoskiHttpSpec with PaatasonSuoritusTestMethods {
+class PaatasonSuoritusInvalidateSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec with PaatasonSuoritusTestMethods {
 
   "Päätason suorituksen poistaminen" - {
     "onnistuu" - {

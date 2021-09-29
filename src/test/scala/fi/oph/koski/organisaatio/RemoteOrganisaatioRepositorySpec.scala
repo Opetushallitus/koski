@@ -12,9 +12,11 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot.helsinginKaupunki
 import fi.oph.koski.organisaatio.Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA
 import org.json4s.DefaultFormats
 import org.json4s.jackson.Serialization.write
-import org.scalatest._
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class RemoteOrganisaatioRepositorySpec extends FreeSpec with Matchers with BeforeAndAfterAll {
+class RemoteOrganisaatioRepositorySpec extends AnyFreeSpec with Matchers with BeforeAndAfterAll {
   implicit val jsonDefaultFormats = DefaultFormats.preservingEmptyValues
   implicit val cacheManager = GlobalCacheManager
 

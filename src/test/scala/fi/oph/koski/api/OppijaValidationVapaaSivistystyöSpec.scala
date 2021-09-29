@@ -6,11 +6,11 @@ import fi.oph.koski.documentation.VapaaSivistystyöExample._
 import fi.oph.koski.documentation.VapaaSivistystyöExampleData._
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate.{of => date}
 
-class OppijaValidationVapaaSivistystyöSpec extends FreeSpec with PutOpiskeluoikeusTestMethods[VapaanSivistystyönOpiskeluoikeus] with KoskiHttpSpec {
+class OppijaValidationVapaaSivistystyöSpec extends AnyFreeSpec with PutOpiskeluoikeusTestMethods[VapaanSivistystyönOpiskeluoikeus] with KoskiHttpSpec {
   def tag = implicitly[reflect.runtime.universe.TypeTag[VapaanSivistystyönOpiskeluoikeus]]
 
   "KOPS" - {

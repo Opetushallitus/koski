@@ -3,9 +3,9 @@ package fi.oph.koski.api
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema._
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 
-trait MuuAmmatillinenSpecification[T <: AmmatillinenPäätasonSuoritus] extends FreeSpec with KoskiHttpSpec with MuuAmmatillinenTestMethods[T] {
+trait MuuAmmatillinenSpecification[T <: AmmatillinenPäätasonSuoritus] extends AnyFreeSpec with KoskiHttpSpec with MuuAmmatillinenTestMethods[T] {
   "Muu ammatillinen" - {
     "Validi opiskeluoikeus" in {
       putOpiskeluoikeus(defaultOpiskeluoikeus) {

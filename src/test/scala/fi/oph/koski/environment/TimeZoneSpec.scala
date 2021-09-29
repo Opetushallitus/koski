@@ -4,11 +4,12 @@ import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
 import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.json.JsonSerializer
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import java.util.TimeZone
 
-class TimeZoneSpec extends FreeSpec with Matchers with QueryMethods with KoskiHttpSpec {
+class TimeZoneSpec extends AnyFreeSpec with Matchers with QueryMethods with KoskiHttpSpec {
   protected val db = KoskiApplicationForTests.masterDatabase.db
 
   private val expectedTimeZone = "Europe/Helsinki"

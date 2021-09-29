@@ -1,6 +1,5 @@
 package fi.oph.koski.oppivelvollisuustieto
 
-import java.time.LocalDate
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -8,9 +7,13 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
 import fi.oph.koski.schema.HenkilöWithOid
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class OppivelvollisuustietoServletSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethods with Matchers with BeforeAndAfterAll {
+import java.time.LocalDate
+
+class OppivelvollisuustietoServletSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethods with Matchers with BeforeAndAfterAll {
 
   override def beforeAll = resetFixtures
 

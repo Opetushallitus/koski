@@ -13,10 +13,12 @@ import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, KoskiSpecificMockOppija
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema._
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 class PerusopetuksenVuosiluokkaRaporttiSpec
-  extends FreeSpec
+  extends AnyFreeSpec
     with Matchers
     with RaportointikantaTestMethods
     with OpiskeluoikeusTestMethodsPerusopetus

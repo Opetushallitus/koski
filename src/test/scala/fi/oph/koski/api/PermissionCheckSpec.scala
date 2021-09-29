@@ -8,9 +8,10 @@ import fi.oph.koski.permission.PermissionCheckResponse
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{Henkilö, Organisaatio}
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class PermissionCheckSpec extends FreeSpec with KoskiHttpSpec with Matchers {
+class PermissionCheckSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
 
   "Käyttöoikeustarkistus henkilo-ui:sta / kayttooikeus-service:ltä" - {
     "Käyttäjä samassa organisaatiossa kuin opiskeluoikeus" - {

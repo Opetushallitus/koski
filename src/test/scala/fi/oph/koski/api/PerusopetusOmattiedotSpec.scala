@@ -8,11 +8,11 @@ import fi.oph.koski.schema.{NuortenPerusopetuksenOppiaineenOppimääränSuoritus
 import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
 import org.json4s.jackson.JsonMethods
 import org.json4s.{DefaultFormats, JObject}
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
 
-class PerusopetusOmattiedotSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsPerusopetus with DirtiesFixtures {
+class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsPerusopetus with DirtiesFixtures {
   implicit val formats = DefaultFormats
   val suoritustenLukumäärä = PerusopetusExampleData.kaikkiAineet.get.length
 

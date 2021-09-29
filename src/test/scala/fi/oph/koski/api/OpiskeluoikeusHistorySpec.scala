@@ -13,12 +13,12 @@ import fi.oph.koski.schema.Opiskeluoikeus
 import fi.oph.koski.{DatabaseTestMethods, DirtiesFixtures, KoskiHttpSpec}
 import org.json4s.JsonAST.{JArray, JNothing}
 import org.json4s.jackson.JsonMethods
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.{LocalDate, LocalDateTime}
 
 class OpiskeluoikeusHistorySpec
-  extends FreeSpec
+  extends AnyFreeSpec
     with KoskiHttpSpec
     with OpiskeluoikeusTestMethodsAmmatillinen
     with HistoryTestMethods

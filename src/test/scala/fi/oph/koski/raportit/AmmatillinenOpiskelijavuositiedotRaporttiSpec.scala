@@ -1,8 +1,5 @@
 package fi.oph.koski.raportit
 
-import java.sql.Date
-import java.time.LocalDate
-
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -10,9 +7,19 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class AmmatillinenOpiskelijavuositiedotRaporttiSpec extends FreeSpec with RaportointikantaTestMethods with OpiskeluoikeusTestMethods with Matchers with BeforeAndAfterAll {
+import java.sql.Date
+import java.time.LocalDate
+
+class AmmatillinenOpiskelijavuositiedotRaporttiSpec
+  extends AnyFreeSpec
+    with RaportointikantaTestMethods
+    with OpiskeluoikeusTestMethods
+    with Matchers
+    with BeforeAndAfterAll {
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()

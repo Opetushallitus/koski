@@ -7,11 +7,11 @@ import fi.oph.koski.documentation.{AmmatillinenExampleData, ExamplesAikuistenPer
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-class MaksuttomuusSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillinen with KoskiHttpSpec {
+class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatillinen with KoskiHttpSpec {
 
   "Tiedon siirtäminen" - {
     lazy val opiskeluoikeus = alkamispäivällä(defaultOpiskeluoikeus, date(2021, 1, 1))

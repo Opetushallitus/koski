@@ -5,9 +5,10 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.opiskeluoikeus.ValidationResult
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class OppijaValidationApiSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethods with Matchers {
+class OppijaValidationApiSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethods with Matchers {
   override def defaultUser = MockUsers.paakayttaja
 
   "Validation of stored data using the validation API" - {

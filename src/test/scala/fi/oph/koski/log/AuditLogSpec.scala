@@ -5,11 +5,13 @@ import fi.oph.koski.koskiuser.MockUsers
 import fi.vm.sade.auditlog.Logger
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito._
-import org.scalatest.{Assertions, FreeSpec, Matchers}
+import org.scalatest.Assertions
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import scala.util.matching.Regex
 
-class AuditLogSpec extends FreeSpec with Assertions with Matchers {
+class AuditLogSpec extends AnyFreeSpec with Assertions with Matchers {
   private val loggerMock = mock(classOf[Logger])
   private val audit = new AuditLog(loggerMock)
   private lazy val käyttöoikeuspalvelu = KoskiApplicationForTests.käyttöoikeusRepository

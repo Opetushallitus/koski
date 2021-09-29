@@ -1,9 +1,10 @@
 package fi.oph.koski.virta
 
 import fi.oph.koski.KoskiApplicationForTests
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class RemoteVirtaClientSpec extends FreeSpec with Matchers {
+class RemoteVirtaClientSpec extends AnyFreeSpec with Matchers {
   private val client = RemoteVirtaClient(VirtaConfig.fromConfig(KoskiApplicationForTests.config))
 
   "RemoteVirtaClient" - {

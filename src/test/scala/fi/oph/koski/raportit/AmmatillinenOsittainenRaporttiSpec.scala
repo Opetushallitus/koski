@@ -1,18 +1,27 @@
 package fi.oph.koski.raportit
 
-import java.time.LocalDate
-import java.time.LocalDate.{of => date}
-import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
-import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
 import fi.oph.koski.documentation.ExampleData.opiskeluoikeusLäsnä
+import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeudenTila, AmmatillinenOpiskeluoikeusjakso, Oppija}
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with OpiskeluoikeusTestMethodsAmmatillinen with BeforeAndAfterAll  with DirtiesFixtures {
+import java.time.LocalDate
+import java.time.LocalDate.{of => date}
+
+class AmmatillinenOsittainenRaporttiSpec
+  extends AnyFreeSpec
+    with Matchers
+    with RaportointikantaTestMethods
+    with OpiskeluoikeusTestMethodsAmmatillinen
+    with BeforeAndAfterAll
+    with DirtiesFixtures {
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()

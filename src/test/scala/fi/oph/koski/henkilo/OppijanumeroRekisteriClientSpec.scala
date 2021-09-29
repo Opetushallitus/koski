@@ -9,11 +9,19 @@ import fi.oph.koski.http.Http
 import fi.oph.koski.schema.Koodistokoodiviite
 import org.json4s.DefaultFormats
 import org.json4s.jackson.Serialization.write
-import org.scalatest._
+import org.scalatest.{BeforeAndAfterAll, EitherValues, OptionValues}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import java.time.LocalDate
 
-class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with EitherValues with OptionValues with BeforeAndAfterAll {
+class OppijanumeroRekisteriClientSpec
+  extends AnyFreeSpec
+    with Matchers
+    with EitherValues
+    with OptionValues
+    with BeforeAndAfterAll {
+
   implicit val jsonDefaultFormats = DefaultFormats.preservingEmptyValues
 
   private val config = ConfigFactory.parseString(
@@ -266,7 +274,7 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
 
     "perustaa uuden oppijahenkilön" in {
       val result = Http.runIO(mockClient.findOrCreate(UusiOppijaHenkilö(Some(hetu), "Mallikas", "Mikko Alfons", "Mikko")))
-      result.right.value should equal(expectedSuppeatOppijaHenkilötiedot)
+      result.value should equal(expectedSuppeatOppijaHenkilötiedot)
     }
 
     "tunnistaa 400-vastauksen uutta oppijahenkilöä perustaessa" in {

@@ -4,9 +4,9 @@ import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsLukio2015
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.{ExampleData, YleissivistavakoulutusExampleData}
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 
-class KoulusivistyskieliLukioSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsLukio2015 {
+class KoulusivistyskieliLukioSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsLukio2015 {
 
   "Koulusivistyskieli - Lukion oppimäärän suoritus" - {
 

@@ -2,12 +2,13 @@ package fi.oph.koski.integrationtest
 
 import fi.oph.koski.api.{OpiskeluoikeusTestMethodsAmmatillinen, SearchTestMethods}
 import fi.oph.koski.schema.{OidHenkilö, TäydellisetHenkilötiedot, YlioppilastutkinnonOpiskeluoikeus}
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 // This test is run against the Koski application deployed in the KoskiDev test environment.
 // You need to provide environment variables KOSKI_USER, KOSKI_PASS
 // Optionally override base url using KOSKI_BASE_URL for testing against your local server.
-class OppijaIntegrationTest extends FreeSpec with Matchers with KoskidevHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods {
+class OppijaIntegrationTest extends AnyFreeSpec with Matchers with KoskidevHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods {
   val testOid = env("TEST_OID", "1.2.246.562.24.92333381381")
 
   "Oppijan henkilötiedot, kansalaisuus ja äidinkieli" taggedAs(KoskiDevEnvironment) in {

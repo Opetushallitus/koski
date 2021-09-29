@@ -8,10 +8,12 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration._
 import com.typesafe.config.ConfigFactory
 import org.json4s.DefaultFormats
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 import org.json4s.jackson.Serialization.write
 
-class YtrClientSpec extends FreeSpec with Matchers with BeforeAndAfterAll {
+class YtrClientSpec extends AnyFreeSpec with Matchers with BeforeAndAfterAll {
   implicit val jsonDefaultFormats = DefaultFormats.preservingEmptyValues
 
   private val config = ConfigFactory.parseString(

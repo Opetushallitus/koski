@@ -11,10 +11,11 @@ import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeudenTila, AmmatillisenOpiskeluoikeudenLisätiedot, Henkilö, InternationalSchoolOpiskeluoikeudenTila, InternationalSchoolOpiskeluoikeusjakso, Maksuttomuus, OikeuttaMaksuttomuuteenPidennetty, Opiskeluoikeus}
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 class OppivelvollisuustietoSpec
-  extends FreeSpec
+  extends AnyFreeSpec
     with KoskiHttpSpec
     with Matchers
     with OpiskeluoikeusTestMethodsAmmatillinen

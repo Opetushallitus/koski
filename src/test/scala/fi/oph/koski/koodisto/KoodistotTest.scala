@@ -1,8 +1,9 @@
 package fi.oph.koski.koodisto
 
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class KoodistotTest extends FreeSpec with Matchers {
+class KoodistotTest extends AnyFreeSpec with Matchers {
   "Koski-koodistojen mockdata löytyy, ja codesGroupUri on oikein" - {
     Koodistot.koskiKoodistot.foreach { koodistoUri =>
       koodistoUri in {

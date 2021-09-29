@@ -9,11 +9,12 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import fi.oph.koski.schema.{KorkeakoulunOpiskeluoikeudenLukuvuosimaksu, Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu, PerusopetuksenVuosiluokanSuoritus, TäydellisetHenkilötiedot, YlioppilastutkinnonOpiskeluoikeus}
 import fi.oph.koski.suoritusjako.{SuoritusIdentifier, Suoritusjako}
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import scala.collection.mutable
 
-class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matchers with OpiskeluoikeusTestMethodsAmmatillinen {
+class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Matchers with OpiskeluoikeusTestMethodsAmmatillinen {
   val secrets: mutable.Map[String, String] = mutable.Map()
 
   "Suoritusjaon lisääminen" - {

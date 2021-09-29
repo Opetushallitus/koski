@@ -9,7 +9,8 @@ import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import java.io.{File, PrintWriter}
 import java.sql.Timestamp
@@ -17,7 +18,7 @@ import java.time.LocalDate.{of => date}
 import scala.io.Source
 
 class ElaketurvakeskusSpec
-  extends FreeSpec
+  extends AnyFreeSpec
     with DirtiesFixtures
     with KoskiHttpSpec
     with Matchers

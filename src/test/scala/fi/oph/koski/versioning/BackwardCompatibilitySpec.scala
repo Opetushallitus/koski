@@ -15,12 +15,13 @@ import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.JValue
 import org.json4s.JsonAST.{JArray, JBool, JObject}
 import org.json4s.jackson.JsonMethods
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 /**
  * Tests that examples match saved JSON files.
  */
-class BackwardCompatibilitySpec extends FreeSpec with Matchers with Logging with EnvVariables {
+class BackwardCompatibilitySpec extends AnyFreeSpec with Matchers with Logging with EnvVariables {
   private lazy val koskiValidator = KoskiApplicationForTests.validator
   private lazy val runningOnCI = optEnv("CI").isDefined
   private implicit val user: KoskiSpecificSession = KoskiSpecificSession.systemUser

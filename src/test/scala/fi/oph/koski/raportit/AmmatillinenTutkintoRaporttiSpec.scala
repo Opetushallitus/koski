@@ -1,18 +1,27 @@
 package fi.oph.koski.raportit
 
-import java.time.LocalDate.{of => date}
-import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.documentation.ExampleData.opiskeluoikeusLäsnä
 import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample, ExampleData}
-import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.raportointikanta.{ROsasuoritusRow, RaportointikantaTestMethods}
 import fi.oph.koski.schema._
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with OpiskeluoikeusTestMethodsAmmatillinen with BeforeAndAfterAll with DirtiesFixtures {
+import java.time.LocalDate.{of => date}
+
+class AmmatillinenTutkintoRaporttiSpec
+  extends AnyFreeSpec
+    with Matchers
+    with RaportointikantaTestMethods
+    with OpiskeluoikeusTestMethodsAmmatillinen
+    with BeforeAndAfterAll
+    with DirtiesFixtures {
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()

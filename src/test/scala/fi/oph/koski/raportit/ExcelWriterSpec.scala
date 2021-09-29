@@ -2,7 +2,8 @@ package fi.oph.koski.raportit
 
 import java.io.FileOutputStream
 
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 import org.apache.poi.ss.usermodel._
 import java.io.File
 import java.sql.Date
@@ -14,7 +15,7 @@ import org.apache.poi.EncryptedDocumentException
 import scala.collection.JavaConverters._
 
 
-class ExcelWriterSpec extends FreeSpec with Matchers {
+class ExcelWriterSpec extends AnyFreeSpec with Matchers {
 
   "ExcelWriter" - {
 

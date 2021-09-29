@@ -4,9 +4,10 @@ import java.time.LocalDate
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.http.HttpStatus
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class MyDataRepositoryTest extends FreeSpec with Matchers {
+class MyDataRepositoryTest extends AnyFreeSpec with Matchers {
 
   val oid = "1.2.3.4.5" // student ID
   val memberId = "hsl"

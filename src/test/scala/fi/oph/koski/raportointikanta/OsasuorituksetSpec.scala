@@ -4,9 +4,11 @@ import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.schema.MahdollisestiTunnustettu
 import fi.oph.koski.schema.Opiskeluoikeus.Oid
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class OsasuorituksetSpec extends FreeSpec with Matchers with BeforeAndAfterAll with RaportointikantaTestMethods with OpiskeluoikeusTestMethods {
+class OsasuorituksetSpec extends AnyFreeSpec with Matchers with BeforeAndAfterAll with RaportointikantaTestMethods with OpiskeluoikeusTestMethods {
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()

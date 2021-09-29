@@ -6,9 +6,9 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.jackson.JsonMethods
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 
-class YtrKoesuoritusApiSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethods {
+class YtrKoesuoritusApiSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethods {
   private implicit val context: ExtractionContext = strictDeserialization
 
   private def readExams: List[ExamResponse] =

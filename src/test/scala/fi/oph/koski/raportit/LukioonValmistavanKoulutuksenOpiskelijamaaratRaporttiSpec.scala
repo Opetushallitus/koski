@@ -7,9 +7,10 @@ import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.lukio.LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiRow
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import org.scalatest.{BeforeAndAfterAll, FreeSpec}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.freespec.AnyFreeSpec
 
-class LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiSpec extends FreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll {
+class LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiSpec extends AnyFreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll {
 
   override def defaultUser = MockUsers.helsinginKaupunkiPalvelukäyttäjä
 

@@ -4,9 +4,10 @@ import fi.oph.koski.editor.EditorSchema
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.scalaschema._
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class KoskiSpecificSchemaLocalizationSpec extends FreeSpec with Matchers {
+class KoskiSpecificSchemaLocalizationSpec extends AnyFreeSpec with Matchers {
   "Koski schema texts" - {
     "Have default localizations" in {
       val newStuff: Set[(ClassSchema, String, String)] = findMissingLocalizedTextsInSchema

@@ -1,8 +1,9 @@
 package fi.oph.koski.organisaatio
 
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class OrganisaatioHierarkiaSpec extends FreeSpec with Matchers {
+class OrganisaatioHierarkiaSpec extends AnyFreeSpec with Matchers {
   "OrganisaatioHierarkia can be flattened" in {
     val pyhtäänHierarkia: List[OrganisaatioHierarkia] = MockOrganisaatioRepository.getOrganisaatioHierarkia(MockOrganisaatiot.pyhtäänKunta).toList
     val expectedOids = extractOids(pyhtäänHierarkia).distinct.sorted

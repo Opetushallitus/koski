@@ -5,13 +5,14 @@ import org.json4s.DefaultFormats
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.Http
 import fi.oph.koski.koodisto.RemoteKoodistoPalvelu
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 private case class EPerusteInfot(data: List[EPerusteInfo])
 private case class EPerusteInfo(id: Int)
 private case class EPerusteRakenneLocalization(tutkinnonOsat: Option[List[ETutkinnonOsa]])
 
-class EPerusteetLocalizationTest extends FreeSpec with Matchers {
+class EPerusteetLocalizationTest extends AnyFreeSpec with Matchers {
 
   private implicit val formats = DefaultFormats
   private lazy val root = sys.env.getOrElse("VIRKAILIJA_ROOT", throw new RuntimeException("Environment variable VIRKAILIJA_ROOT missing"))

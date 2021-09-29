@@ -1,8 +1,9 @@
 package fi.oph.koski.http
 
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class KoskiErrorCategorySpec extends FreeSpec with Matchers {
+class KoskiErrorCategorySpec extends AnyFreeSpec with Matchers {
   KoskiErrorCategory.children foreach { category =>
     testCategory(category.key, category)
   }

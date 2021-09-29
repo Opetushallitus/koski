@@ -15,13 +15,14 @@ import fi.oph.koski.{DatabaseTestMethods, DirtiesFixtures, KoskiApplicationForTe
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.JsonAST.{JBool, JObject}
 import org.json4s.jackson.JsonMethods
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import java.sql.{Date, Timestamp}
 import java.time.LocalDate
 
 class RaportointikantaSpec
-  extends FreeSpec
+  extends AnyFreeSpec
     with KoskiHttpSpec
     with Matchers
     with OpiskeluoikeusTestMethodsAmmatillinen

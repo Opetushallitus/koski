@@ -14,13 +14,14 @@ import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenAineop
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema._
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätSpec
-  extends FreeSpec
+  extends AnyFreeSpec
     with Matchers
     with RaportointikantaTestMethods
     with DirtiesFixtures

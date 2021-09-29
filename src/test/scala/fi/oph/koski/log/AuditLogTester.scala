@@ -5,7 +5,7 @@ import fi.vm.sade.auditlog.Audit
 import org.apache.log4j.Logger
 import org.json4s.JsonAST.JObject
 import org.json4s.jackson.JsonMethods.parse
-import org.scalatest.Matchers
+import org.scalatest.matchers.should.Matchers
 
 object AuditLogTester extends Matchers with LogTester {
   def verifyAuditLogMessage(params: Map[String, Any]): Unit = {

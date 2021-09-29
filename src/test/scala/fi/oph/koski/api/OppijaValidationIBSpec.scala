@@ -5,11 +5,11 @@ import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesIB._
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema._
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate.{of => date}
 
-class OppijaValidationIBSpec extends FreeSpec with KoskiHttpSpec with PutOpiskeluoikeusTestMethods[IBOpiskeluoikeus] {
+class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpiskeluoikeusTestMethods[IBOpiskeluoikeus] {
 
   def tag = implicitly[reflect.runtime.universe.TypeTag[IBOpiskeluoikeus]]
   override def defaultOpiskeluoikeus = opiskeluoikeus

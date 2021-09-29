@@ -10,12 +10,12 @@ import fi.oph.koski.http.ErrorMatcher.exact
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.localization.LocalizedStringImplicits.str2localized
 import fi.oph.koski.schema._
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-class OppijaValidationLukio2019Spec extends FreeSpec with PutOpiskeluoikeusTestMethods[LukionOpiskeluoikeus] with KoskiHttpSpec with OpiskeluoikeusTestMethodsLukio {
+class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTestMethods[LukionOpiskeluoikeus] with KoskiHttpSpec with OpiskeluoikeusTestMethodsLukio {
   "Laajuudet" - {
     "Oppiaineen laajuus" - {
       "Oppiaineen laajuus lasketaan moduuleiden ja paikallisten opintojaksojen laajuuksista" in {

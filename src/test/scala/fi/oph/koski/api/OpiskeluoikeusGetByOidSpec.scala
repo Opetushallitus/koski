@@ -7,9 +7,10 @@ import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.AmmatillinenOpiskeluoikeus
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with KoskiHttpSpec with OpiskeluoikeusTestMethods with OpiskeluoikeusTestMethodsAmmatillinen {
+class OpiskeluoikeusGetByOidSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec with OpiskeluoikeusTestMethods with OpiskeluoikeusTestMethodsAmmatillinen {
   "/api/opiskeluoikeus/:oid" - {
     "GET" - {
       "with valid oid" in {

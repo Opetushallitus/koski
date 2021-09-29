@@ -14,9 +14,9 @@ import fi.oph.koski.schema._
 import fi.oph.koski.tiedonsiirto._
 import fi.oph.koski.util.Wait
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests, KoskiHttpSpec}
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 
-class TiedonsiirtoSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with DirtiesFixtures {
+class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with DirtiesFixtures {
   private val tiedonsiirtoService = KoskiApplicationForTests.tiedonsiirtoService
 
   "Automaattinen tiedonsiirto" - {

@@ -6,12 +6,13 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.AmmatillinenOpiskeluoikeusjakso
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import java.time.LocalDate
 
 class OppijaGetByOidSpec
-  extends FreeSpec
+  extends AnyFreeSpec
     with Matchers
     with KoskiHttpSpec
     with OpiskeluoikeusTestMethods

@@ -5,9 +5,10 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.util.EnvVariables
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.remote.{DesiredCapabilities, RemoteWebDriver}
+import org.scalatest.Tag
 import org.scalatest.concurrent.{Signaler, TimeLimits}
+import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.time.{Seconds, Span}
-import org.scalatest.{FreeSpec, Tag}
 
 import java.net.URL
 import java.util.Date
@@ -71,7 +72,7 @@ class SafariTest extends BrowserstackMochaTest {
   *
   * To add more browsers, see https://www.browserstack.com/automate/junit
   */
-abstract class BrowserstackMochaTest extends FreeSpec with KoskiHttpSpec with EnvVariables with TimeLimits {
+abstract class BrowserstackMochaTest extends AnyFreeSpec with KoskiHttpSpec with EnvVariables with TimeLimits {
   lazy val USERNAME = requiredEnv("BROWSERSTACK_USERNAME")
   lazy val AUTOMATE_KEY = requiredEnv("BROWSERSTACK_AUTOMATE_KEY")
   lazy val URL: String = "https://" + USERNAME + ":" + AUTOMATE_KEY + "@hub-cloud.browserstack.com/wd/hub"

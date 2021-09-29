@@ -7,9 +7,10 @@ import java.util.concurrent.atomic.AtomicInteger
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.util.Wait
 import org.json4s.JValue
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class SchedulerSpec extends FreeSpec with Matchers {
+class SchedulerSpec extends AnyFreeSpec with Matchers {
   "Next fire time is on selected time next day" in {
     val nextFireTime = new FixedTimeOfDaySchedule(3, 10).nextFireTime().toLocalDateTime
     val expected = now.plusDays(1).withHour(3).withMinute(10)

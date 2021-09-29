@@ -2,9 +2,10 @@ package fi.oph.koski.localization
 
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema.{Finnish, LocalizedString}
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class LocalizedStringSpec extends FreeSpec with Matchers {
+class LocalizedStringSpec extends AnyFreeSpec with Matchers {
   "String concatenation" - {
     "With available translations" in {
       val x = Finnish("äks", en = Some("ex"))

@@ -6,9 +6,10 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers.omniaKatselija
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class OppijaSearchSpec extends FreeSpec with Matchers with SearchTestMethods with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
+class OppijaSearchSpec extends AnyFreeSpec with Matchers with SearchTestMethods with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
   "/api/henkilo/search" - {
     "Finds by name" in {
       resetFixtures

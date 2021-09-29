@@ -7,9 +7,10 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenHenkilötiedot, OpiskeluoikeudenOsittaisetTiedot, OpiskeluoikeudenPerustiedot}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class SerializationSpec extends FreeSpec with Matchers with Logging {
+class SerializationSpec extends AnyFreeSpec with Matchers with Logging {
   private implicit val context: ExtractionContext = strictDeserialization
   "Serialization / deserialization" - {
     "Tunnustaminen" in {

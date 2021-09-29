@@ -4,12 +4,13 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.servlet.InvalidRequestException
 import javax.servlet.http.HttpServletRequest
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import scala.collection.JavaConverters._
 
 
-class MyDataSupportTest extends FreeSpec with Matchers with MockFactory {
+class MyDataSupportTest extends AnyFreeSpec with Matchers with MockFactory {
 
   val memberId = "hsl"
   val lang = "fi"

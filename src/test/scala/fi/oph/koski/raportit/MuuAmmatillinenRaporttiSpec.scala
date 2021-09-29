@@ -7,12 +7,13 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.stadinAmmattiopisto
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import java.time.LocalDate
 
 class MuuAmmatillinenRaporttiSpec
-  extends FreeSpec
+  extends AnyFreeSpec
     with Matchers
     with RaportointikantaTestMethods
     with AmmatillinenRaporttiTestMethods

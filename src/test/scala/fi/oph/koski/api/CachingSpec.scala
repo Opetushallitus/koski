@@ -2,9 +2,10 @@ package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class CachingSpec extends FreeSpec with KoskiHttpSpec with Matchers {
+class CachingSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
   "API caching is disabled" - {
     "/oppija" in { verifyNoCache("api/oppija/" + KoskiSpecificMockOppijat.eero.oid)}
   }

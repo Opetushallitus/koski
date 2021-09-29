@@ -17,12 +17,12 @@ import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.schema._
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate.{of => date}
 import java.time.{LocalDate, LocalDateTime, ZoneId, ZonedDateTime}
 
-class OppijaUpdateSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
+class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
   val oppija = KoskiSpecificMockOppijat.tyhjä
 
   "Opiskeluoikeuden lisääminen" - {

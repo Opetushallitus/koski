@@ -2,10 +2,11 @@ package fi.oph.koski.koskiuser
 
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 
-class CookieSpec extends FreeSpec with Matchers with KoskiHttpSpec {
+class CookieSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec {
 
   "Huollettavien tietoja ei näytetä evästeissä" in {
     val headers = Map(

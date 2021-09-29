@@ -5,7 +5,8 @@ import org.json4s.JValue
 import org.json4s.JsonAST.JString
 import org.json4s.jackson.JsonMethods
 import org.json4s.jackson.JsonMethods.parse
-import org.scalatest.{Assertions, Matchers}
+import org.scalatest.Assertions
+import org.scalatest.matchers.should.Matchers
 
 import scala.util.matching.Regex
 

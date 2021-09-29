@@ -8,9 +8,17 @@ import com.typesafe.config.ConfigFactory
 import fi.oph.koski.sso.CasService
 import org.json4s.DefaultFormats
 import org.json4s.jackson.Serialization.write
-import org.scalatest._
+import org.scalatest.{BeforeAndAfterAll, EitherValues, OptionValues}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class OpintopolkuDirectoryClientSpec extends FreeSpec with Matchers with EitherValues with OptionValues with BeforeAndAfterAll {
+class OpintopolkuDirectoryClientSpec
+  extends AnyFreeSpec
+    with Matchers
+    with EitherValues
+    with OptionValues
+    with BeforeAndAfterAll {
+
   implicit val jsonDefaultFormats = DefaultFormats.preservingEmptyValues
   private val config = ConfigFactory.parseString(
     """

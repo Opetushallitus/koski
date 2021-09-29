@@ -5,9 +5,10 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers.paakayttaja
 import fi.oph.koski.schema.{YlioppilastutkinnonOpiskeluoikeus, YlioppilastutkinnonSuoritus}
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class YlioppilastutkintoSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsYlioppilastutkinto with KoskiHttpSpec with SearchTestMethods {
+class YlioppilastutkintoSpec extends AnyFreeSpec with Matchers with OpiskeluoikeusTestMethodsYlioppilastutkinto with KoskiHttpSpec with SearchTestMethods {
   "Ylioppilastutkinnot" - {
     "Lisättäessä/päivitettäessä" - {
       "palautetaan HTTP 501" in {

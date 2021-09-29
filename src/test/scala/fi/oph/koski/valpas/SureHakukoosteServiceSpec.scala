@@ -4,14 +4,15 @@ import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration._
 import com.typesafe.config.ConfigFactory
+import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, HakukoosteExampleData, ValpasHakukoosteService}
-import org.json4s.{DefaultFormats, Formats}
-import org.scalatest._
-import java.time.LocalDateTime
-
-import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
+import org.json4s.{DefaultFormats, Formats}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.{BeforeAndAfterAll, EitherValues}
+
+import java.time.LocalDateTime
 
 class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with EitherValues with BeforeAndAfterAll {
   implicit val jsonDefaultFormats: Formats = DefaultFormats.preservingEmptyValues
@@ -64,14 +65,14 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
     "toimii kun vastaus on tyhjä" in {
       val queryOids = Set("asdf")
       mockResponseForOids(queryOids)
-      val result = mockClient.getHakukoosteet(queryOids).right.value
+      val result = mockClient.getHakukoosteet(queryOids).value
       result.map(_.oppijaOid) should equal(List.empty)
     }
 
     "palauttaa hakukoostetiedot kun oid löytyy" in {
       val queryOids = Set(ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid)
       mockResponseForOids(queryOids)
-      val result = mockClient.getHakukoosteet(queryOids).right.value
+      val result = mockClient.getHakukoosteet(queryOids).value
       result.map(_.oppijaOid) should equal(queryOids.toList)
     }
 
@@ -81,7 +82,7 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
         WireMock.post(WireMock.urlPathEqualTo(sureHakukoosteUrl))
           .willReturn(WireMock.ok().withBody(SureHakukoosteServiceSpec.realResponse()))
       )
-      val result = mockClient.getHakukoosteet(queryOids).right.value.head
+      val result = mockClient.getHakukoosteet(queryOids).value.head
       result.oppijaOid should equal(queryOids.head)
       result.hakutapa.nimi.get.get("sv") should equal("Gemensam ansökan")
       result.hakuNimi.get("en") should startWith("Joint Application")

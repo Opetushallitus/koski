@@ -7,9 +7,9 @@ import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 
-class VarhaiskasvatusPerustiedotSpec extends FreeSpec with DirtiesFixtures with SearchTestMethods with EsiopetusSpecification {
+class VarhaiskasvatusPerustiedotSpec extends AnyFreeSpec with DirtiesFixtures with SearchTestMethods with EsiopetusSpecification {
 
   override protected def alterFixture(): Unit = tallennaOpiskeluoikeuksiaMajakkaan
 

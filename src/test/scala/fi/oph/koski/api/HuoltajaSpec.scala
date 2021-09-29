@@ -6,9 +6,9 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.AuditLogTester
 import org.json4s.jackson.JsonMethods
 import org.json4s.{DefaultFormats, JObject}
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 
-class HuoltajaSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsPerusopetus {
+class HuoltajaSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsPerusopetus {
   private implicit val formats = DefaultFormats
 
   "Huollettavan tietojen katselu" - {

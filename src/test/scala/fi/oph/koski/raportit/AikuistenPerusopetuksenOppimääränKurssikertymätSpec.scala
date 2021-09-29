@@ -1,13 +1,10 @@
 package fi.oph.koski.raportit
 
-import java.time.LocalDate
-import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, valtionosuusRahoitteinen}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetuksenAlkuvaiheenSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
-import fi.oph.koski.koskiuser.{KoskiMockUser, MockUser}
+import fi.oph.koski.koskiuser.KoskiMockUser
 import fi.oph.koski.koskiuser.MockUsers.paakayttaja
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -16,9 +13,20 @@ import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenOppim�
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.{Aikajakso, AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot, AikuistenPerusopetuksenOpiskeluoikeudenTila, AikuistenPerusopetuksenOpiskeluoikeus, AikuistenPerusopetuksenOpiskeluoikeusjakso, Oppilaitos, SisältäväOpiskeluoikeus}
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class AikuistenPerusopetuksenOppimääränKurssikertymätSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll with PutOpiskeluoikeusTestMethods[AikuistenPerusopetuksenOpiskeluoikeus] {
+import java.time.LocalDate
+import java.time.LocalDate.{of => date}
+
+class AikuistenPerusopetuksenOppimääränKurssikertymätSpec
+  extends AnyFreeSpec
+    with Matchers
+    with RaportointikantaTestMethods
+    with BeforeAndAfterAll
+    with PutOpiskeluoikeusTestMethods[AikuistenPerusopetuksenOpiskeluoikeus] {
+
   private val application = KoskiApplicationForTests
   private val raporttiBuilder = AikuistenPerusopetuksenOppimääränKurssikertymät(application.raportointiDatabase.db)
   private lazy val raportti =

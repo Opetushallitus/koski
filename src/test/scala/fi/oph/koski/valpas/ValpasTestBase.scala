@@ -3,9 +3,10 @@ package fi.oph.koski.valpas
 import fi.oph.koski.valpas.opiskeluoikeusfixture.FixtureUtil
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers, ValpasSession}
 import fi.oph.koski.{KoskiApplicationForTests, LocalJettyHttpSpec}
-import org.scalatest.{BeforeAndAfterAll, FreeSpec}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.freespec.AnyFreeSpec
 
-trait ValpasTestBase extends FreeSpec with LocalJettyHttpSpec with BeforeAndAfterAll {
+trait ValpasTestBase extends AnyFreeSpec with LocalJettyHttpSpec with BeforeAndAfterAll {
   override protected def beforeAll(): Unit = {
     super.beforeAll()
     FixtureUtil.resetMockData(KoskiApplicationForTests)

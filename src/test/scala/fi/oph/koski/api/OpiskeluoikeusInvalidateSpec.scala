@@ -3,9 +3,10 @@ package fi.oph.koski.api
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers.paakayttaja
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class OpiskeluoikeusInvalidateSpec extends FreeSpec with Matchers with KoskiHttpSpec with OpiskeluoikeusTestMethods {
+class OpiskeluoikeusInvalidateSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec with OpiskeluoikeusTestMethods {
   "Opiskeluoikeuksien mitätöiminen" in {
     val kaikkiOpiskeluoikeudet = koskeenTallennetutOpiskeluoikeudet.flatMap(_.oid)
     kaikkiOpiskeluoikeudet should not be empty

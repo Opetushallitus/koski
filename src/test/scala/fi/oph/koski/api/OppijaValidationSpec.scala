@@ -16,12 +16,12 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.schema._
 import org.json4s._
 import org.json4s.jackson.JsonMethods
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-class OppijaValidationSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
+class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
   "Opiskeluoikeuden lisääminen" - {
     "Valideilla tiedoilla" - {
       "palautetaan HTTP 200" in {

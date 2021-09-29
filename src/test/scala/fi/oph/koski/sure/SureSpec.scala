@@ -16,9 +16,10 @@ import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.JsonAST.{JArray, JBool}
 import org.json4s.jackson.JsonMethods
 import org.json4s.{DefaultFormats, JString, JValue}
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class SureSpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with DatabaseTestMethods with Matchers {
+class SureSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with DatabaseTestMethods with Matchers {
   private implicit val context: ExtractionContext = strictDeserialization
   private implicit val formats = DefaultFormats
 

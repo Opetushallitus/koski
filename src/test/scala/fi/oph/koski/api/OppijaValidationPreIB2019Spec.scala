@@ -22,11 +22,11 @@ import fi.oph.koski.http.ErrorMatcher.exact
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.localization.LocalizedStringImplicits.str2localized
 import fi.oph.koski.schema._
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate.{of => date}
 
-class OppijaValidationPreIB2019Spec extends FreeSpec with PutOpiskeluoikeusTestMethods[IBOpiskeluoikeus] with KoskiHttpSpec {
+class OppijaValidationPreIB2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTestMethods[IBOpiskeluoikeus] with KoskiHttpSpec {
   def tag = implicitly[reflect.runtime.universe.TypeTag[IBOpiskeluoikeus]]
 
   "Vanhaa ja uutta Pre-IB suoritusta ei sallita samassa opiskeluoikeudessa" in {

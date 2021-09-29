@@ -5,11 +5,12 @@ import fi.oph.koski.documentation.AmmatillinenExampleData.{hylätty, hyväksytty
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import org.json4s.jackson.JsonMethods.parse
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import java.time.LocalDate
 
-class ArviointiSpec extends FreeSpec with Matchers {
+class ArviointiSpec extends AnyFreeSpec with Matchers {
   "Yleissivistävä" - {
     "H" in {
       val arviointi = read[PerusopetuksenOppiaineenArviointi]("""{"arvosana":{"koodistoUri":"arviointiasteikkoyleissivistava","koodiarvo":"H"}}""")

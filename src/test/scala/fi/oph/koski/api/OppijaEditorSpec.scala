@@ -5,9 +5,10 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class OppijaEditorSpec extends FreeSpec with Matchers with KoskiHttpSpec with OpiskeluoikeusTestMethods {
+class OppijaEditorSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec with OpiskeluoikeusTestMethods {
 
   "GET /api/editor/:oid" - {
     "with valid oid" in {

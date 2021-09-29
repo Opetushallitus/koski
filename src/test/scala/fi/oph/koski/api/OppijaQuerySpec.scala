@@ -8,12 +8,13 @@ import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVas
 import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema._
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-class OppijaQuerySpec extends FreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with QueryTestMethods with Matchers {
+class OppijaQuerySpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with QueryTestMethods with Matchers {
   import fi.oph.koski.util.DateOrdering._
   val teija = KoskiSpecificMockOppijat.teija
   val eero = KoskiSpecificMockOppijat.eero

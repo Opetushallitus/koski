@@ -1,18 +1,19 @@
 package fi.oph.koski.virta
 
 import fi.oph.koski.documentation.ExampleData.{laajuusOpintopisteissä, laajuusOpintoviikoissa}
+import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
+import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.koski.oppilaitos.MockOppilaitosRepository
+import fi.oph.koski.organisaatio.MockOrganisaatioRepository
+import fi.oph.koski.schema._
+import org.scalatest.OptionValues
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
 import java.time.LocalDate
-import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
-import fi.oph.koski.oppilaitos.MockOppilaitosRepository
-import fi.oph.koski.schema._
-import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.organisaatio.MockOrganisaatioRepository
-import org.scalatest.{FreeSpec, Matchers, OptionValues}
-
 import scala.xml.Elem
 
-class VirtaXMLConverterSpec extends FreeSpec with Matchers with OptionValues {
+class VirtaXMLConverterSpec extends AnyFreeSpec with Matchers with OptionValues {
 
   private val converter = VirtaXMLConverter(new MockOppilaitosRepository, MockKoodistoViitePalvelu, MockOrganisaatioRepository)
 

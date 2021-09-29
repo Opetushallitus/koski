@@ -3,9 +3,11 @@ package fi.oph.koski.mydata
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession}
 import fi.oph.koski.log.{AuditLogTester, LogUserContext}
-import org.scalatest.{BeforeAndAfter, BeforeAndAfterAll, FreeSpec, Matchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.{BeforeAndAfter, BeforeAndAfterAll}
 
-class MyDataServiceTest extends FreeSpec with Matchers with BeforeAndAfterAll with BeforeAndAfter {
+class MyDataServiceTest extends AnyFreeSpec with Matchers with BeforeAndAfterAll with BeforeAndAfter {
 
   val oid = "1.2.3.4.5" // student ID
   val memberId = "hsl"
