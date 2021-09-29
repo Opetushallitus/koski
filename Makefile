@@ -51,7 +51,7 @@ build: logdir
 
 .PHONY: build-snapshot-image
 build-snapshot-image: build
-	docker build -t local-snapshot --build-arg KOSKI_VERSION=master-SNAPSHOT .
+	docker build -f docker-build/Dockerfile -t local-snapshot --build-arg KOSKI_VERSION=master-SNAPSHOT .
 
 .PHONY: front
 front: logdir
