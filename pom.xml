@@ -50,13 +50,7 @@
     <dependency>
       <groupId>com.github.Opetushallitus</groupId>
       <artifactId>scala-schema</artifactId>
-      <version>2.26.1_2.12</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.json4s</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
+      <version>2.26.3_2.12</version>
     </dependency>
     <!-- external deps -->
     <dependency>
