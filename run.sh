@@ -1,4 +1,5 @@
 ROOT=/home/koski
+cd $ROOT || exit 1
 
 JAVA_OPTS="\
 -Xms${JAVA_XMX:-1g} -Xmx${JAVA_XMX:-1g} \
@@ -18,6 +19,9 @@ JAVA_OPTS="\
 -Dresourcebase=. \
 "
 
-cd $ROOT
 JAR=$(ls WEB-INF/lib/koski*)
-java $JAVA_OPTS -javaagent:/usr/local/bin/jmx_prometheus_javaagent.jar=9101:/etc/jmx_exporter_config.yml -classpath "$JAR:WEB-INF/lib/*" "fi.oph.koski.jettylauncher.JettyLauncher"
+
+java $JAVA_OPTS \
+  -javaagent:/usr/local/bin/jmx_prometheus_javaagent.jar=9101:/etc/jmx_exporter_config.yml \
+  -classpath "$JAR:WEB-INF/lib/*" \
+  "fi.oph.koski.jettylauncher.JettyLauncher"
