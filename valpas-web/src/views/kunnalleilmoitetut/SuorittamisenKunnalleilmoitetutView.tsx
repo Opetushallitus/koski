@@ -45,6 +45,7 @@ export const SuorittamisenKunnalleIlmoitetutView = withRequiresSuorittamisenValv
           selectedOrganisaatio={props.match.params.organisaatioOid!}
         />
       }
+      linkCreator={createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg}
     />
   )
 )
