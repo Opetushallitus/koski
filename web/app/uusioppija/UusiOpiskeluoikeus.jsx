@@ -26,7 +26,7 @@ import UusiIBSuoritus from './UusiIBSuoritus'
 import UusiDIASuoritus from './UusiDIASuoritus'
 import {VARHAISKASVATUKSEN_TOIMIPAIKKA} from './esiopetuksenSuoritus'
 import UusiInternationalSchoolSuoritus from './UusiInternationalSchoolSuoritus'
-import {filterTilatByOpiskeluoikeudenTyyppi} from '../opiskeluoikeus/opiskeluoikeus'
+import {filterTilatByOpiskeluoikeudenJaSuorituksenTyyppi} from '../opiskeluoikeus/opiskeluoikeus'
 import {userP} from '../util/user'
 import Checkbox from '../components/Checkbox'
 import {autoFillRahoitusmuoto, opiskeluoikeudenTilaVaatiiRahoitusmuodon, defaultRahoitusmuotoP} from '../opiskeluoikeus/opintojenRahoitus'
@@ -59,8 +59,14 @@ export default ({opiskeluoikeusAtom}) => {
   const suorituskieletP = Http.cachedGet('/koski/api/editor/koodit/kieli').map(sortLanguages).map(values => values.map(v => v.data))
   suorituskieletP.onValue(kielet => suorituskieliAtom.set(kielet[0]))
   const rahoituksetP = koodistoValues('opintojenrahoitus').map(R.sortBy(R.compose(parseInt, R.prop('koodiarvo'))))
-  const opiskeluoikeudenTilatP = opiskeluoikeudentTilat(tyyppiAtom)
-  opiskeluoikeudenTilatP.onValue(tilat => tilaAtom.set(tilat.find(koodiarvoMatch('lasna'))))
+  const opiskeluoikeudenTilatP = opiskeluoikeudentTilat(tyyppiAtom, suoritusAtom)
+  opiskeluoikeudenTilatP.onValue(tilat => {
+    if (tilaAtom.get() && tilat.includes(tilaAtom.get())) {
+
+    } else {
+      tilaAtom.set(tilat.find(koodiarvoMatch('lasna')))
+    }
+  })
 
   const maksuttomuusTiedonVoiValitaP = Bacon.combineWith(dateAtom.map(checkAlkamispäivä), suoritusAtom.flatMap(checkSuoritus), R.and)
 
@@ -125,9 +131,9 @@ export default ({opiskeluoikeusAtom}) => {
   </div>)
 }
 
-const opiskeluoikeudentTilat = tyyppiAtom => {
-  const tilatP = koodistoValues('koskiopiskeluoikeudentila/lasna,valmistunut,eronnut,katsotaaneronneeksi,valiaikaisestikeskeytynyt,peruutettu,loma')
-  return tyyppiAtom.flatMap(tyyppi => tilatP.map(filterTilatByOpiskeluoikeudenTyyppi(tyyppi))).toProperty()
+const opiskeluoikeudentTilat = (tyyppiAtom, suoritusAtom) => {
+  const tilatP = koodistoValues('koskiopiskeluoikeudentila/lasna,valmistunut,eronnut,katsotaaneronneeksi,valiaikaisestikeskeytynyt,peruutettu,loma,hyvaksytystisuoritettu,keskeytynyt')
+  return suoritusAtom.flatMap(suoritusTyyppi => tilatP.map(filterTilatByOpiskeluoikeudenJaSuorituksenTyyppi(tyyppiAtom.get(), suoritusTyyppi))).toProperty()
 }
 
 const VarhaiskasvatuksenJärjestämismuotoPicker = ({varhaiskasvatusAtom, järjestämismuotoAtom}) => {
