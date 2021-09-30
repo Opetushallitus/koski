@@ -45,6 +45,7 @@ export const HakeutumisenKunnalleIlmoitetutView = withRequiresHakeutumisenValvon
           selectedOrganisaatio={props.match.params.organisaatioOid!}
         />
       }
+      linkCreator={createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg}
     />
   )
 )

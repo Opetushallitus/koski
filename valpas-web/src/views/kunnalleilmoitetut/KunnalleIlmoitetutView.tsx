@@ -16,6 +16,7 @@ import { NumberCounter } from "../../components/typography/Counter"
 import { ApiErrors } from "../../components/typography/error"
 import { t, T } from "../../i18n/i18n"
 import { useOrganisaatiotJaKäyttöoikeusroolit } from "../../state/accessRights"
+import { useBasePath } from "../../state/basePath"
 import { Kayttooikeusrooli, Oid } from "../../state/common"
 import { UseOppijatDataApi } from "../hakutilanne/useOppijatData"
 import { OppijaViewBackNavProps } from "../oppija/OppijaView"
@@ -29,9 +30,11 @@ export type KunnalleIlmoitetutViewProps = {
   backRefName: keyof OppijaViewBackNavProps
   storageName: string
   navigation?: React.ReactNode
+  linkCreator: (basePath: string, props: { organisaatioOid: Oid }) => string
 }
 
 export const KunnalleIlmoitetutView = (props: KunnalleIlmoitetutViewProps) => {
+  const basePath = useBasePath()
   const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
   const organisaatiot = useMemo(
     () =>
@@ -50,7 +53,7 @@ export const KunnalleIlmoitetutView = (props: KunnalleIlmoitetutViewProps) => {
   const history = useHistory()
   const changeOrganisaatio = (oid?: Oid) => {
     if (oid) {
-      history.push(oid)
+      history.push(props.linkCreator(basePath, { organisaatioOid: oid }))
     }
   }
 
