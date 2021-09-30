@@ -107,7 +107,7 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
           // valmistumiseen, ei ole enää maksuttomuuden piirissä:
           case Some(_) => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult()
           case None => asLaajatOppijaHenkilöTiedot(henkilö) match {
-            case Some(h) if h.laajennetunOppivelvollisuudenUlkopuolinenKunnanPerusteella => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult()
+            case Some(h) if !h.turvakielto && h.laajennetunOppivelvollisuudenUlkopuolinenKunnanPerusteella => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult()
             case _ => ValpasEiLöytynytHenkilöhakuResult()
           }
         })

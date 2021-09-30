@@ -37,10 +37,10 @@ case class LaajatOppijaHenkilöTiedot(
   def kaikkiOidit: List[String] = oid :: linkitetytOidit
 
   def laajennetunOppivelvollisuudenUlkopuolinenKunnanPerusteella: Boolean = {
-    !turvakielto && (kotikunta match {
+    kotikunta match {
       case Some(k) => oppivelvollisuudenUlkopuolisetKunnat.contains(k)
       case _ => true
-    })
+    }
   }
 }
 
