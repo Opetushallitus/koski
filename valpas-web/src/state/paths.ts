@@ -178,3 +178,22 @@ export const createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg = (
   basePath: string = "",
   params: { organisaatioOid: Oid }
 ) => `${basePath}/suorittaminen/ilmoitukset/${params.organisaatioOid}`
+
+// Nivelvaiheen hakeutumisvelvollisten seuranta
+
+export const nivelvaiheenHakutilannePathWithoutOrg = (basePath: string = "") =>
+  `${basePath}/hakutilanne/nivelvaihe`
+
+export const createNivelvaiheenHakutilannePathWithoutOrg = hakutilannePathWithoutOrg
+
+export const nivelvaiheenHakutilannePathWithOrg = (basePath: string = "") =>
+  `${basePath}/hakutilanne/:organisaatioOid/nivelvaihe`
+
+export const createNivelvaiheenHakutilannePathWithOrg = (
+  basePath: string = "",
+  params: { organisaatioOid: Oid }
+) => `${basePath}/hakutilanne/${params.organisaatioOid}/nivelvaihe`
+
+export type NivelvaiheenHakutilanneViewRouteProps = RouteComponentProps<{
+  organisaatioOid?: string
+}>
