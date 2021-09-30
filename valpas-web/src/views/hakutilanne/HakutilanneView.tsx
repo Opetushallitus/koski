@@ -1,5 +1,5 @@
 import bem from "bem-ts"
-import React, { useMemo, useState } from "react"
+import React, { useCallback, useMemo, useState } from "react"
 import { useHistory } from "react-router"
 import {
   Card,
@@ -87,11 +87,14 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
 
     const drawerRect = useBoundingClientRect()
 
-    const changeOrganisaatio = (oid?: Oid) => {
-      if (oid) {
-        history.push(oid)
-      }
-    }
+    const changeOrganisaatio = useCallback(
+      (oid?: Oid) => {
+        if (oid) {
+          history.push(oid)
+        }
+      },
+      [history]
+    )
 
     const selectedOppijat = useMemo(
       () =>
