@@ -209,6 +209,17 @@ class OppivelvollisuustietoSpec
         }
       }
 
+      "Jos on suorittanut DIA-tutkinnon, käytetään päättymispäivänä päivää, joka lopettaa aikaisemmin oikeuden maksuttomuuteen tai oppivelvollisuuteen" - {
+        "Vahvistuspäivä päättää molemmat aikaisemmin" in {
+          resetFixtures
+          insert(master, diaTutkinto(diaTutkinnonVahvistus = Some(date(2021, 1, 1))))
+          insert(slave1, diaTutkinto(diaTutkinnonVahvistus = Some(date(2025, 1, 1))))
+          insert(slave2, diaTutkinto(diaTutkinnonVahvistus = None))
+          reloadRaportointikanta
+          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+        }
+      }
+
       "Ei ole vielä suorittamassa toisen asteen tutkintoa" - {
         "Käytetään syntymäaikaa" in {
           resetFixtures
@@ -323,6 +334,29 @@ class OppivelvollisuustietoSpec
         ExamplesIB.preIBSuoritus,
         ExamplesIB.ibTutkinnonSuoritus(predicted = false).copy(
           vahvistus = ibTutkinnonVahvistus.flatMap(date => ExampleData.vahvistusPaikkakunnalla(päivä=date, org = YleissivistavakoulutusExampleData.ressunLukio, kunta = helsinki))
+        )
+      )
+    )
+  }
+
+  private def diaTutkinto(diaTutkinnonVahvistus: Option[LocalDate]): Opiskeluoikeus = {
+    ExamplesDIA.opiskeluoikeus.copy(
+      tila = DIAOpiskeluoikeudenTila(
+        List(
+          DIAOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen))
+        )
+      ),
+      lisätiedot = None,
+      suoritukset = List(
+        ExamplesDIA.diaValmistavanVaiheenSuoritus,
+        ExamplesDIA.diaTutkintovaiheenSuoritus(Some(870), Some(590), Some(280), Some(1.2F)).copy(
+          vahvistus = diaTutkinnonVahvistus.flatMap(date =>
+            ExampleData.vahvistusPaikkakunnalla(
+              päivä = date,
+              org = DIAExampleData.saksalainenKoulu,
+              kunta = helsinki
+            )
+          )
         )
       )
     )
