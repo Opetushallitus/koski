@@ -1,11 +1,21 @@
-import React, { useCallback, useMemo } from "react"
+import React, { useCallback, useMemo, useState } from "react"
 import { useHistory } from "react-router-dom"
+import { setMuuHaku } from "../../api/api"
+import {
+  Card,
+  CardHeader,
+  ConstrainedCardBody,
+} from "../../components/containers/cards"
 import { Page } from "../../components/containers/Page"
+import { Spinner } from "../../components/icons/Spinner"
 import {
   getOrganisaatiot,
   OrganisaatioValitsin,
 } from "../../components/shared/OrganisaatioValitsin"
-import { t } from "../../i18n/i18n"
+import { DataTableCountChangeEvent } from "../../components/tables/DataTable"
+import { NumberCounter } from "../../components/typography/Counter"
+import { ApiErrors } from "../../components/typography/error"
+import { T, t } from "../../i18n/i18n"
 import {
   useOrganisaatiotJaKäyttöoikeusroolit,
   withRequiresHakeutumisenValvonta,
@@ -19,6 +29,8 @@ import {
 import { ErrorView } from "../ErrorView"
 import { OrganisaatioAutoRedirect } from "../OrganisaatioAutoRedirect"
 import { HakutilanneNavigation } from "./HakutilanneNavigation"
+import { NivelvaiheenHakutilanneTable } from "./NivelvaiheenHakutilanneTable"
+import { useNivelvaiheenOppijatData } from "./useOppijatData"
 
 const organisaatioTyyppi = "OPPILAITOS"
 const organisaatioHakuRooli = "OPPILAITOS_HAKEUTUMINEN"
@@ -70,6 +82,14 @@ export const NivelvaiheenHakutilanneView = withRequiresHakeutumisenValvonta(
       [basePath, history]
     )
 
+    const { data, isLoading, errors } = useNivelvaiheenOppijatData(
+      organisaatioOid
+    )
+    const [counters, setCounters] = useState<DataTableCountChangeEvent>({
+      filteredRowCount: 0,
+      unfilteredRowCount: 0,
+    })
+
     return (
       <Page>
         <OrganisaatioValitsin
@@ -79,7 +99,33 @@ export const NivelvaiheenHakutilanneView = withRequiresHakeutumisenValvonta(
           label={t("Oppilaitos")}
           onChange={changeOrganisaatio}
         />
+
         <HakutilanneNavigation selectedOrganisaatio={organisaatioOid} />
+
+        <Card>
+          <CardHeader>
+            <T id="hakutilannenäkymä__otsikko" />
+            {data && (
+              <NumberCounter
+                value={counters.filteredRowCount}
+                max={counters.unfilteredRowCount}
+              />
+            )}
+          </CardHeader>{" "}
+          <ConstrainedCardBody>
+            {isLoading && <Spinner />}
+            {data && (
+              <NivelvaiheenHakutilanneTable
+                data={data}
+                organisaatioOid={organisaatioOid}
+                onCountChange={setCounters}
+                onSelect={() => {} /*setSelectedOppijaOids*/}
+                onSetMuuHaku={setMuuHaku}
+              />
+            )}
+            {errors !== undefined && <ApiErrors errors={errors} />}
+          </ConstrainedCardBody>
+        </Card>
       </Page>
     )
   }

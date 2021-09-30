@@ -3,13 +3,15 @@ import { useCallback } from "react"
 import {
   fetchHakeutumisvalvonnanKunnalleTehdytIlmoitukset,
   fetchHakeutumisvalvonnanKunnalleTehdytIlmoituksetCache,
+  fetchNivelvaiheenOppijat,
+  fetchNivelvaiheenOppijatCache,
   fetchOppijat,
   fetchOppijatCache,
   fetchSuorittamisvalvonnanKunnalleTehdytIlmoitukset,
   fetchSuorittamisvalvonnanKunnalleTehdytIlmoituksetCache,
   setMuuHaku,
 } from "../../api/api"
-import { ApiError } from "../../api/apiFetch"
+import { ApiError, ApiResponse } from "../../api/apiFetch"
 import {
   ApiMethodHook,
   useApiMethod,
@@ -17,6 +19,7 @@ import {
   useLocalDataCopy,
 } from "../../api/apiHooks"
 import { isError, isLoading } from "../../api/apiUtils"
+import { ApiCache } from "../../api/cache"
 import { OpiskeluoikeusSuppeatTiedot } from "../../state/apitypes/opiskeluoikeus"
 import {
   lisätietoMatches,
@@ -41,27 +44,41 @@ export type UseOppijatDataApiReload = {
   reload: () => void
 }
 
-export const useOppijatData = (
-  organisaatioOid?: Oid
-): UseOppijatDataApi & UseOppijatDataApiReload => {
+const oppijatFetchHook = (
+  fetchFn: (
+    organisaatioOid: Oid
+  ) => Promise<ApiResponse<OppijaHakutilanteillaSuppeatTiedot[]>>,
+  cache: ApiCache<
+    OppijaHakutilanteillaSuppeatTiedot[],
+    [organisaatioOid: string]
+  >
+) => (organisaatioOid?: Oid): UseOppijatDataApi & UseOppijatDataApiReload => {
   const oppijatFetch = useApiWithParams(
-    fetchOppijat,
+    fetchFn,
     organisaatioOid ? [organisaatioOid] : undefined,
-    fetchOppijatCache
+    // @ts-ignore
+    cache
   )
 
   const reload = useCallback(() => {
     if (organisaatioOid) {
-      fetchOppijatCache.clearAll()
+      cache.clearAll()
       oppijatFetch.call(organisaatioOid)
     }
   }, [oppijatFetch, organisaatioOid])
 
   return {
-    ...useOppijatDataAPI(organisaatioOid, oppijatFetch),
+    ...useOppijatDataAPI(organisaatioOid, oppijatFetch, cache),
     reload,
   }
 }
+
+export const useOppijatData = oppijatFetchHook(fetchOppijat, fetchOppijatCache)
+
+export const useNivelvaiheenOppijatData = oppijatFetchHook(
+  fetchNivelvaiheenOppijat,
+  fetchNivelvaiheenOppijatCache
+)
 
 export const useHakeutumisvalvonnanKunnalleTehdytIlmoitukset = (
   organisaatioOid?: Oid
@@ -72,7 +89,7 @@ export const useHakeutumisvalvonnanKunnalleTehdytIlmoitukset = (
     fetchHakeutumisvalvonnanKunnalleTehdytIlmoituksetCache
   )
 
-  return useOppijatDataAPI(organisaatioOid, oppijatFetch)
+  return useOppijatDataAPI(organisaatioOid, oppijatFetch, fetchOppijatCache)
 }
 
 export const useSuorittamisvalvonnanKunnalleTehdytIlmoitukset = (
@@ -84,12 +101,16 @@ export const useSuorittamisvalvonnanKunnalleTehdytIlmoitukset = (
     fetchSuorittamisvalvonnanKunnalleTehdytIlmoituksetCache
   )
 
-  return useOppijatDataAPI(organisaatioOid, oppijatFetch)
+  return useOppijatDataAPI(organisaatioOid, oppijatFetch, fetchOppijatCache)
 }
 
 const useOppijatDataAPI = (
   organisaatioOid: Oid | undefined,
   oppijatFetch: ApiMethodHook<
+    OppijaHakutilanteillaSuppeatTiedot[],
+    [organisaatioOid: string]
+  >,
+  cache: ApiCache<
     OppijaHakutilanteillaSuppeatTiedot[],
     [organisaatioOid: string]
   >
@@ -103,7 +124,7 @@ const useOppijatDataAPI = (
       opiskeluoikeus: OpiskeluoikeusSuppeatTiedot,
       value: boolean
     ) => {
-      fetchOppijatCache.clear([organisaatioOid!!])
+      cache.clear([organisaatioOid!!])
 
       const response = await saveMuuHakuState.call(
         oppijaOid,
@@ -139,7 +160,7 @@ const useOppijatDataAPI = (
         }
       }
     },
-    [localData, organisaatioOid, saveMuuHakuState, setLocalData]
+    [cache, localData, organisaatioOid, saveMuuHakuState, setLocalData]
   )
 
   return {

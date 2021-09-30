@@ -76,6 +76,20 @@ export const fetchOppijat = (organisaatioOid: Oid) =>
 export const fetchOppijatCache = createPreferLocalCache(fetchOppijat)
 
 /**
+ * Hae suppeat tiedot nivelvaiheen oppijoista
+ */
+export const fetchNivelvaiheenOppijat = (organisaatioOid: Oid) =>
+  handleExpiredSession(
+    apiGet<OppijaHakutilanteillaSuppeatTiedot[]>(
+      `valpas/api/oppijat-nivelvaihe/${organisaatioOid}`
+    )
+  )
+
+export const fetchNivelvaiheenOppijatCache = createPreferLocalCache(
+  fetchNivelvaiheenOppijat
+)
+
+/**
  * Hae hakeutumisvalvonnan kunnalle tekemät ilmoitukset
  */
 export const fetchHakeutumisvalvonnanKunnalleTehdytIlmoitukset = (
