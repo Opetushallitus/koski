@@ -71,7 +71,7 @@ export const createOppijaPath = (
     oppijaOid: Oid
     hakutilanneRef?: Oid
     hakutilanneIlmoitetutRef?: Oid
-    hakutilanenNivelvaiheRef?: Oid
+    hakutilanneNivelvaiheRef?: Oid
     kuntailmoitusRef?: Oid
     suorittaminenRef?: Oid
     prev?: string
@@ -185,7 +185,7 @@ export const createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg = (
 export const nivelvaiheenHakutilannePathWithoutOrg = (basePath: string = "") =>
   `${basePath}/hakutilanne/nivelvaihe`
 
-export const createNivelvaiheenHakutilannePathWithoutOrg = hakutilannePathWithoutOrg
+export const createNivelvaiheenHakutilannePathWithoutOrg = nivelvaiheenHakutilannePathWithoutOrg
 
 export const nivelvaiheenHakutilannePathWithOrg = (basePath: string = "") =>
   `${basePath}/hakutilanne/:organisaatioOid/nivelvaihe`
