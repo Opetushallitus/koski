@@ -957,7 +957,7 @@ class KoskiValidator(
   private def validateYhteisetTutkinnonOsat(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     def validateEiSamojaKoodeja(s: AmmatillisenTutkinnonSuoritus): HttpStatus = {
       if (suoritus.valmis) {
-        val yhteistenOsasuoritustenKoodit = s.osasuoritusLista.filter(o => o.arvioitu && AmmatillisenTutkinnonOsa.yhteisetTutkinnonOsat.contains(o.koulutusmoduuli.tunniste)).map(_.koulutusmoduuli.tunniste.koodiarvo)
+        val yhteistenOsasuoritustenKoodit = s.osasuoritusLista.filter(o => o.arvioitu && AmmatillisenTutkinnonOsa.muutYhteisetTutkinnonOsat.contains(o.koulutusmoduuli.tunniste)).map(_.koulutusmoduuli.tunniste.koodiarvo)
         HttpStatus.validate(
           yhteistenOsasuoritustenKoodit.distinct.size == yhteistenOsasuoritustenKoodit.size
         )(KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus(
@@ -969,7 +969,7 @@ class KoskiValidator(
 
     def validateYhteislaajuus(s: AmmatillisenTutkinnonSuoritus): HttpStatus = {
       if (s.valmis && s.suoritustapa.koodiarvo == "reformi") {
-        val yhteislaajuus = s.osasuoritusLista.filter(o => o.arvioitu && AmmatillisenTutkinnonOsa.yhteisetTutkinnonOsat.contains(o.koulutusmoduuli.tunniste))
+        val yhteislaajuus = s.osasuoritusLista.filter(o => o.arvioitu && (AmmatillisenTutkinnonOsa.muutYhteisetTutkinnonOsat  ::: AmmatillisenTutkinnonOsa.vainYhteislaajuusValidoitavatYhteisetOsat).contains(o.koulutusmoduuli.tunniste))
           .map(_.koulutusmoduuli).map(_.getLaajuus.map(_.arvo).getOrElse(0.0))
           .sum
         HttpStatus.validate(
@@ -981,7 +981,7 @@ class KoskiValidator(
 
     def validateOnOsaAlueita(s: AmmatillisenTutkinnonSuoritus): HttpStatus = {
       if (s.valmis && s.suoritustapa.koodiarvo == "reformi") {
-        val yhteisetOsaSuoritukset = s.osasuoritusLista.filter(o => o.arvioitu && AmmatillisenTutkinnonOsa.yhteisetTutkinnonOsat.contains(o.koulutusmoduuli.tunniste))
+        val yhteisetOsaSuoritukset = s.osasuoritusLista.filter(o => o.arvioitu && AmmatillisenTutkinnonOsa.muutYhteisetTutkinnonOsat.contains(o.koulutusmoduuli.tunniste))
 
         val osasuorituksettomatYhteisetSuoritukset = yhteisetOsaSuoritukset.filter(yht => {
           yht.osasuoritukset.getOrElse(List()).isEmpty
@@ -999,7 +999,7 @@ class KoskiValidator(
     }
 
     def validateYhteistenOsienLaajuus(s: AmmatillisenTutkinnonSuoritus): HttpStatus = {
-      val yhteisetOsaSuoritukset = s.osasuoritusLista.filter(o => o.arvioitu && AmmatillisenTutkinnonOsa.yhteisetTutkinnonOsat.contains(o.koulutusmoduuli.tunniste))
+      val yhteisetOsaSuoritukset = s.osasuoritusLista.filter(o => o.arvioitu && AmmatillisenTutkinnonOsa.muutYhteisetTutkinnonOsat.contains(o.koulutusmoduuli.tunniste))
 
       val mismatchingLaajuudet = yhteisetOsaSuoritukset.filter(yht => {
         val yläsuorituksenLaajuus = yht.koulutusmoduuli.getLaajuus.map(_.arvo).getOrElse(0.0)

@@ -20,6 +20,7 @@ object AmmatillinenExampleData {
   val autoalanTyönjohto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", "koulutus"), Some("40/011/2001"))
   val puuteollisuudenPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351741", "koulutus"), Some("OPH-2455-2017"))
   val sosiaaliJaTerveysalanPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("371101", "koulutus"), Some("79/011/2014"))
+  val tietoJaViestintäTekniikanPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("341101", "koulutus"), Some("OPH-1117-2019"))
   val virheellinenPuuteollisuudenPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351741", "koulutus"), Some("OPH-992455-2017"))
 
   val tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus = TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus(
@@ -42,6 +43,7 @@ object AmmatillinenExampleData {
   def autoalanPerustutkinnonSuoritusValma(toimipiste: OrganisaatioWithOid = stadinToimipiste): ValmaKoulutuksenSuoritus = valmaSuoritus(valmaKoulutus, toimipiste)
   def autoalanErikoisammattitutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(autoalanTyönjohto, toimipiste)
   def puuteollisuudenPerustutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(puuteollisuudenPerustutkinto, toimipiste)
+  def tietoJaViestintäTekniikanPerustutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(tietoJaViestintäTekniikanPerustutkinto, toimipiste)
   def virheellinenPuuteollisuudenPerustutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(virheellinenPuuteollisuudenPerustutkinto, toimipiste)
 
   def kiinteistösihteerinTutkinnonOsaaPienempiMuuAmmatillinenKokonaisuus(toimipiste: OrganisaatioWithOid = stadinToimipiste): TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus =

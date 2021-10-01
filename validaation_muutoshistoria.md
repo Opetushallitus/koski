@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## x.10.2021
+
+- Ammatillisen koulutuksen Yhteisille tutkinnon osille (YhteinenTutkinnonOsa-rakenne) sallitaan tunnisteen koodiarvoiksi myös '600001' ja '600002'
+
 ## 24.9.2021
 
 - International schoolin luokka-asteiden 10-12 suorituksille vaaditaan alkamispäivä, jotta voidaan päätellä, milloin
