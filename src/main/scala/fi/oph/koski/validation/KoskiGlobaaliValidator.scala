@@ -28,23 +28,27 @@ class KoskiGlobaaliValidator(
     oppijanSyntymäpäivä: Option[LocalDate],
     oppijanOid: String): HttpStatus =
   {
-    timed("validateOpiskeluoikeus")(
-      HttpStatus.fold(Seq(
-        MaksuttomuusValidation.checkOpiskeluoikeudenMaksuttomuus(
-          opiskeluoikeus,
-          oppijanSyntymäpäivä,
-          oppijanOid,
-          opiskeluoikeusRepository,
-          rajapäivät
-        ),
-        Lukio2015Validation.validateAlkamispäivä(
-          opiskeluoikeus,
-          oppijanSyntymäpäivä,
-          oppijanOid,
-          opiskeluoikeusRepository,
-          rajapäivät
-        )
-      ))
-    )
+    if (opiskeluoikeus.mitätöity) {
+      HttpStatus.ok
+    } else {
+      timed("validateOpiskeluoikeus")(
+        HttpStatus.fold(Seq(
+          MaksuttomuusValidation.checkOpiskeluoikeudenMaksuttomuus(
+            opiskeluoikeus,
+            oppijanSyntymäpäivä,
+            oppijanOid,
+            opiskeluoikeusRepository,
+            rajapäivät
+          ),
+          Lukio2015Validation.validateAlkamispäivä(
+            opiskeluoikeus,
+            oppijanSyntymäpäivä,
+            oppijanOid,
+            opiskeluoikeusRepository,
+            rajapäivät
+          )
+        ))
+      )
+    }
   }
 }
