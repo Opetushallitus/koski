@@ -27,8 +27,10 @@ import {
 } from "../../state/paths"
 import { ErrorView } from "../ErrorView"
 import { OrganisaatioAutoRedirect } from "../OrganisaatioAutoRedirect"
+import { HakutilanneDrawer } from "./HakutilanneDrawer"
 import { HakutilanneNavigation } from "./HakutilanneNavigation"
 import { NivelvaiheenHakutilanneTable } from "./NivelvaiheenHakutilanneTable"
+import { useOppijaSelect } from "./useOppijaSelect"
 import { useNivelvaiheenOppijatData } from "./useOppijatData"
 
 const organisaatioTyyppi = "OPPILAITOS"
@@ -67,6 +69,10 @@ export const NivelvaiheenHakutilanneView = withRequiresHakeutumisenValvonta(
     )
 
     const organisaatioOid = props.match.params.organisaatioOid!
+    const organisaatio = useMemo(
+      () => organisaatiot.find((o) => o.oid === organisaatioOid),
+      [organisaatioOid, organisaatiot]
+    )
 
     const changeOrganisaatio = useCallback(
       (oid?: Oid) => {
@@ -81,13 +87,20 @@ export const NivelvaiheenHakutilanneView = withRequiresHakeutumisenValvonta(
       [basePath, history]
     )
 
-    const { data, isLoading, errors, setMuuHaku } = useNivelvaiheenOppijatData(
-      organisaatioOid
-    )
+    const {
+      data,
+      isLoading,
+      errors,
+      setMuuHaku,
+      reload,
+    } = useNivelvaiheenOppijatData(organisaatioOid)
+
     const [counters, setCounters] = useState<DataTableCountChangeEvent>({
       filteredRowCount: 0,
       unfilteredRowCount: 0,
     })
+
+    const { setSelectedOppijaOids, selectedOppijat } = useOppijaSelect(data)
 
     return (
       <Page>
@@ -118,13 +131,20 @@ export const NivelvaiheenHakutilanneView = withRequiresHakeutumisenValvonta(
                 data={data}
                 organisaatioOid={organisaatioOid}
                 onCountChange={setCounters}
-                onSelect={() => {} /*setSelectedOppijaOids*/}
+                onSelect={setSelectedOppijaOids}
                 onSetMuuHaku={setMuuHaku}
               />
             )}
             {errors !== undefined && <ApiErrors errors={errors} />}
           </ConstrainedCardBody>
         </Card>
+        {organisaatio && (
+          <HakutilanneDrawer
+            selectedOppijat={selectedOppijat}
+            tekijäorganisaatio={organisaatio}
+            onKuntailmoituksetCreated={reload}
+          />
+        )}
       </Page>
     )
   }

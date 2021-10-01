@@ -26,13 +26,13 @@ import {
   HakutilanneViewRouteProps,
 } from "../../state/paths"
 import { useBoundingClientRect } from "../../state/useBoundingClientRect"
-import { nonNull } from "../../utils/arrays"
 import { ErrorView } from "../ErrorView"
 import { OrganisaatioAutoRedirect } from "../OrganisaatioAutoRedirect"
 import { HakutilanneDrawer } from "./HakutilanneDrawer"
 import { HakutilanneNavigation } from "./HakutilanneNavigation"
 import { HakutilanneTable } from "./HakutilanneTable"
 import "./HakutilanneView.less"
+import { useOppijaSelect } from "./useOppijaSelect"
 import { useOppijatData } from "./useOppijatData"
 
 const b = bem("hakutilanneview")
@@ -81,7 +81,6 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
       filteredRowCount: 0,
       unfilteredRowCount: 0,
     })
-    const [selectedOppijaOids, setSelectedOppijaOids] = useState<Oid[]>([])
 
     const organisaatio = organisaatiot.find((o) => o.oid === organisaatioOid)
 
@@ -96,15 +95,7 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
       [history]
     )
 
-    const selectedOppijat = useMemo(
-      () =>
-        data
-          ? selectedOppijaOids
-              .map((oid) => data.find((o) => o.oppija.henkilö.oid === oid))
-              .filter(nonNull)
-          : [],
-      [data, selectedOppijaOids]
-    )
+    const { setSelectedOppijaOids, selectedOppijat } = useOppijaSelect(data)
 
     return organisaatioOid ? (
       <Page className={b("view")}>
