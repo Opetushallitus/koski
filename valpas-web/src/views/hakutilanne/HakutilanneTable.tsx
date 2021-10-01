@@ -3,7 +3,6 @@ import * as A from "fp-ts/lib/Array"
 import { flow } from "fp-ts/lib/function"
 import * as string from "fp-ts/string"
 import React, { useMemo } from "react"
-import { ToggleSwitch } from "../../components/buttons/ToggleSwitch"
 import {
   Column,
   Datum,
@@ -21,7 +20,6 @@ import {
   OpiskeluoikeusSuppeatTiedot,
 } from "../../state/apitypes/opiskeluoikeus"
 import {
-  lisätietoMatches,
   OppijaHakutilanteillaSuppeatTiedot,
   OppijaSuppeatTiedot,
 } from "../../state/apitypes/oppija"
@@ -34,6 +32,7 @@ import {
   oppijanNimiValue,
 } from "../../utils/tableDataFormatters/commonFormatters"
 import { hakemuksenTilaValue } from "../../utils/tableDataFormatters/hakemuksentila"
+import { muuHakuSwitchValue } from "../../utils/tableDataFormatters/muuHaku"
 import { opiskelupaikanVastaanottotietoValue } from "../../utils/tableDataFormatters/opiskelupaikanVastaanotto"
 import { valintatilaValue } from "../../utils/tableDataFormatters/valintatila"
 import "./HakutilanneTable.less"
@@ -183,7 +182,7 @@ const oppijaToTableData = (
             oppija.oppija.opiskeluoikeudet
           )
         ),
-        muuHakuSwitch(oppija, opiskeluoikeus, onSetMuuHaku),
+        muuHakuSwitchValue(oppija, opiskeluoikeus, onSetMuuHaku),
       ],
     }
   })
@@ -253,31 +252,4 @@ const perusopetusSuoritettu = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
     }
   }
   return fromNullableValue(null, [t("Ei")])
-}
-
-const muuHakuSwitch = (
-  oppija: OppijaHakutilanteillaSuppeatTiedot,
-  opiskeluoikeus: OpiskeluoikeusSuppeatTiedot,
-  onSetMuuHaku: SetMuuHakuCallback
-): Value => {
-  const lisätiedot = oppija.lisätiedot.find(
-    lisätietoMatches(
-      oppija.oppija.henkilö.oid,
-      opiskeluoikeus.oid,
-      opiskeluoikeus.oppilaitos.oid
-    )
-  )
-  const muuHaku = lisätiedot?.muuHaku || false
-
-  return {
-    value: muuHaku ? t("Kyllä") : t("Ei"),
-    display: (
-      <ToggleSwitch
-        value={muuHaku}
-        onChanged={(state) =>
-          onSetMuuHaku(oppija.oppija.henkilö.oid, opiskeluoikeus, state)
-        }
-      />
-    ),
-  }
 }

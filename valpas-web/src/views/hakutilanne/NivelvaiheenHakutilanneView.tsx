@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react"
 import { useHistory } from "react-router-dom"
-import { setMuuHaku } from "../../api/api"
 import {
   Card,
   CardHeader,
@@ -82,7 +81,7 @@ export const NivelvaiheenHakutilanneView = withRequiresHakeutumisenValvonta(
       [basePath, history]
     )
 
-    const { data, isLoading, errors } = useNivelvaiheenOppijatData(
+    const { data, isLoading, errors, setMuuHaku } = useNivelvaiheenOppijatData(
       organisaatioOid
     )
     const [counters, setCounters] = useState<DataTableCountChangeEvent>({

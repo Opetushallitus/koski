@@ -26,6 +26,7 @@ import {
   oppijanNimiValue,
 } from "../../utils/tableDataFormatters/commonFormatters"
 import { hakemuksenTilaValue } from "../../utils/tableDataFormatters/hakemuksentila"
+import { muuHakuSwitchValue } from "../../utils/tableDataFormatters/muuHaku"
 import { opiskelupaikanVastaanottotietoValue } from "../../utils/tableDataFormatters/opiskelupaikanVastaanotto"
 import { valintatilaValue } from "../../utils/tableDataFormatters/valintatila"
 import { SetMuuHakuCallback } from "./HakutilanneTable"
@@ -95,8 +96,14 @@ export const NivelvaiheenHakutilanneTable = (
 
   const basePath = useBasePath()
   const data = useMemo(
-    () => dataToRows(props.data, props.organisaatioOid, basePath),
-    [basePath, props.data, props.organisaatioOid]
+    () =>
+      dataToRows(
+        props.data,
+        props.organisaatioOid,
+        basePath,
+        props.onSetMuuHaku
+      ),
+    [basePath, props.data, props.onSetMuuHaku, props.organisaatioOid]
   )
 
   const onSelect = useCallback(
@@ -121,12 +128,16 @@ export const NivelvaiheenHakutilanneTable = (
 const dataToRows = (
   data: OppijaHakutilanteillaSuppeatTiedot[],
   organisaatioOid: Oid,
-  basePath: string
-): Datum[] => A.chain(oppijatiedotToTableRow(organisaatioOid, basePath))(data)
-
-const oppijatiedotToTableRow = (organisaatioOid: Oid, basePath: string) => (
-  tiedot: OppijaHakutilanteillaSuppeatTiedot
+  basePath: string,
+  onSetMuuHaku: SetMuuHakuCallback
 ): Datum[] =>
+  A.chain(oppijatiedotToTableRow(organisaatioOid, basePath, onSetMuuHaku))(data)
+
+const oppijatiedotToTableRow = (
+  organisaatioOid: Oid,
+  basePath: string,
+  onSetMuuHaku: SetMuuHakuCallback
+) => (tiedot: OppijaHakutilanteillaSuppeatTiedot): Datum[] =>
   pipe(
     tiedot.oppija.opiskeluoikeudet,
     A.filter(isHakeutumisvalvottavaOpiskeluoikeus(organisaatioOid)),
@@ -144,7 +155,7 @@ const oppijatiedotToTableRow = (organisaatioOid: Oid, basePath: string) => (
         valintatilaValue(tiedot.hakutilanteet),
         opiskelupaikanVastaanottotietoValue(tiedot.hakutilanteet),
         toisenAsteenOpiskeluoikeudetValue(tiedot, oo),
-        nullableValue("TODO"),
+        muuHakuSwitchValue(tiedot, oo, onSetMuuHaku),
       ],
     }))
   )
