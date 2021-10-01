@@ -246,5 +246,18 @@
   "kunnalleilmoitetut_ilmoitettu_kunnalle": "Ilmoitettu kunnalle",
   "kunnalleilmoitetut_ilmoituksen_tekopäivä": "Ilmoituksen tekopäivä",
   "kunnalleilmoitetut_muu_haku": "Muu haku",
-  "kunnalleilmoitetut_muu_haku_tooltip": "Hakija on hakenut opintopolun ulkopuolella, esimerkiksi ulkomaille tai Ahvenanmaalle."
+  "kunnalleilmoitetut_muu_haku_tooltip": "Hakija on hakenut opintopolun ulkopuolella, esimerkiksi ulkomaille tai Ahvenanmaalle.",
+  "nivelvaihehakutilanne__taulu_nimi": "Nimi",
+  "nivelvaihehakutilanne__taulu_syntymäaika": "Syntymäaika",
+  "nivelvaihehakutilanne__taulu_koulutustyyppi": "Nivenvaiheen koulutus",
+  "nivelvaihehakutilanne__taulu_opinnot_alkaneet": "Opinnot alkaneet",
+  "nivelvaihehakutilanne__taulu_opinnot_päättyneet": "Opinnot päättyneet",
+  "nivelvaihehakutilanne__taulu_hakeutumisen_tila": "Hakeutumisen tilanne",
+  "nivelvaihehakutilanne__taulu_valintojen_tulokset": "Valintojen tulokset",
+  "nivelvaihehakutilanne__taulu_vastaanotettu_opiskelupaikka": "Vastaanotettu opiskelupaikka",
+  "nivelvaihehakutilanne__taulu_toisen_asteen_opiskeluoikeus": "2. asteen opiskeluoikeus",
+  "nivelvaihehakutilanne__taulu_toisen_asteen_opiskeluoikeus_tooltip": "Oppijalle luodut toisen asteen opiskeluoikeudet",
+  "nivelvaihehakutilanne__taulu_muu_haku": "Muu haku",
+  "nivelvaihehakutilanne__taulu_muu_haku_tooltip": "Voit halutessasi merkitä tähän jos hakija on hakenut opintopolun ulkopuolella, esimerkiksi ulkomaille tai Ahvenanmaalle. Tieto näkyy vain omalle organisaatiolle, sekä ilmoittaessa asuinkunnalle",
+  "nivelvaihehakutilanne__taulu_useita_opiskeluoikeuksia": "Useita opiskeluoikeuksia"
 }

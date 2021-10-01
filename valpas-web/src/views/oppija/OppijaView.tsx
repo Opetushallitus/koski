@@ -128,6 +128,7 @@ export const OppijaView = withRequiresJokinOikeus((props: OppijaViewProps) => {
 
 export type OppijaViewBackNavProps = {
   hakutilanneRef?: string
+  hakutilanneNivelvaiheRef?: string
   hakutilanneIlmoitetutRef?: string
   kuntailmoitusRef?: string
   suorittaminenRef?: string

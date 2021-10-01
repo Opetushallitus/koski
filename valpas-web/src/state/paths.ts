@@ -71,6 +71,7 @@ export const createOppijaPath = (
     oppijaOid: Oid
     hakutilanneRef?: Oid
     hakutilanneIlmoitetutRef?: Oid
+    hakutilanenNivelvaiheRef?: Oid
     kuntailmoitusRef?: Oid
     suorittaminenRef?: Oid
     prev?: string

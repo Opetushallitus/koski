@@ -5,6 +5,7 @@ import * as number from "fp-ts/lib/number"
 import * as O from "fp-ts/lib/Option"
 import * as Ord from "fp-ts/lib/Ord"
 import * as string from "fp-ts/lib/string"
+import * as NEA from "fp-ts/NonEmptyArray"
 import React, { useEffect, useMemo } from "react"
 // import { update } from "../../utils/arrays"
 import { FilterableValue, toFilterableString } from "../../utils/conversions"
@@ -38,7 +39,7 @@ export type DataTableCountChangeEvent = {
 }
 
 /** Represents a piece of table data - a row */
-export type DatumKey = string[]
+export type DatumKey = NEA.NonEmptyArray<string>
 export type Datum = {
   /** Unique identifier */
   key: DatumKey
