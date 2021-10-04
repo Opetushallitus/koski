@@ -20,6 +20,7 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, EitherValues, OptionValues}
 import org.scalatra.servlet.RichRequest
+import org.scalatra.util.MultiMapHeadView
 
 import java.net.InetAddress
 import java.net.InetAddress.{getByName => inetAddress}
@@ -181,7 +182,7 @@ class KoskiSpecificSessionSpec
     super.beforeAll()
     when(req.header("User-Agent")).thenReturn(Some("MockUserAgent/1.0"))
     when(req.header("HTTP_X_FORWARDED_FOR")).thenReturn(Some("10.1.2.3"))
-    when(req.cookies).thenReturn(Map[String, String]())
+    when(req.cookies).thenReturn(MultiMapHeadView.empty[String, String])
     wireMockServer.start()
     mockEndpoints
   }
