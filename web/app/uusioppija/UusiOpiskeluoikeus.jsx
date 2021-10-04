@@ -61,9 +61,8 @@ export default ({opiskeluoikeusAtom}) => {
   const rahoituksetP = koodistoValues('opintojenrahoitus').map(R.sortBy(R.compose(parseInt, R.prop('koodiarvo'))))
   const opiskeluoikeudenTilatP = opiskeluoikeudentTilat(tyyppiAtom, suoritusAtom)
   opiskeluoikeudenTilatP.onValue(tilat => {
-    if (tilaAtom.get() && tilat.includes(tilaAtom.get())) {
-
-    } else {
+    // ei aseteta tilaAtomia takaisin 'lasna'-tilaan jos tila on asetettu ja se löytyy mahdollisista opiskeluoikeuden tiloista
+    if (!tilaAtom.get() || !tilat.includes(tilaAtom.get())) {
       tilaAtom.set(tilat.find(koodiarvoMatch('lasna')))
     }
   })
