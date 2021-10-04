@@ -91,11 +91,11 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
   private def asMaksuttomuusHenkilöhakuResultIlmanOikeustarkistusta
     (henkilö: OppijaHenkilö)
   : Either[HttpStatus, ValpasHenkilöhakuResult] = {
+    val perusopetuksenAikavälit = opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(henkilö.oid)
     val onMahdollisestiLainPiirissä =
       MaksuttomuusValidation.eiOppivelvollisuudenLaajentamislainPiirissäSyyt(
         henkilö.syntymäaika,
-        henkilö.oid,
-        opiskeluoikeusRepository,
+        perusopetuksenAikavälit,
         rajapäivätService
       ).isEmpty
 
@@ -107,7 +107,7 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
           // valmistumiseen, ei ole enää maksuttomuuden piirissä:
           case Some(_) => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult()
           case None => asLaajatOppijaHenkilöTiedot(henkilö) match {
-            case Some(h) if !h.turvakielto && ovlUlkopuolinenKunnanPerusteella(h) => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult()
+            case Some(h) if !h.turvakielto && h.laajennetunOppivelvollisuudenUlkopuolinenKunnanPerusteella => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult()
             case _ => ValpasEiLöytynytHenkilöhakuResult()
           }
         })
@@ -120,13 +120,6 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
     henkilö match {
       case h: LaajatOppijaHenkilöTiedot => Some(h)
       case _ => henkilöRepository.findByOid(henkilö.oid, findMasterIfSlaveOid = true)
-    }
-  }
-
-  private def ovlUlkopuolinenKunnanPerusteella(henkilö: LaajatOppijaHenkilöTiedot): Boolean = {
-    henkilö.kotikunta match {
-      case Some(kotikunta) => oppivelvollisuudenUlkopuolisetKunnat.contains(kotikunta)
-      case _ => true
     }
   }
 

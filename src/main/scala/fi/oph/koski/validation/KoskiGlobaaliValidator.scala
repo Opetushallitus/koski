@@ -1,9 +1,11 @@
 package fi.oph.koski.validation
 
-import java.time.LocalDate
+import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 
+import java.time.LocalDate
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
+import fi.oph.koski.raportointikanta.RaportointiDatabase
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
@@ -20,22 +22,26 @@ import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 //
 class KoskiGlobaaliValidator(
   opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
-  rajapäivät: ValpasRajapäivätService
+  rajapäivät: ValpasRajapäivätService,
+  raportointikanta: RaportointiDatabase,
 ) extends Timing
 {
   def validateOpiskeluoikeus(
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
-    oppijanSyntymäpäivä: Option[LocalDate],
+    oppijanHenkilötiedot: Option[LaajatOppijaHenkilöTiedot],
     oppijanOid: String): HttpStatus =
   {
+    val oppijanSyntymäpäivä = oppijanHenkilötiedot.flatMap(_.syntymäaika)
+
     timed("validateOpiskeluoikeus")(
       HttpStatus.fold(Seq(
         MaksuttomuusValidation.checkOpiskeluoikeudenMaksuttomuus(
           opiskeluoikeus,
-          oppijanSyntymäpäivä,
+          oppijanHenkilötiedot,
           oppijanOid,
           opiskeluoikeusRepository,
-          rajapäivät
+          rajapäivät,
+          raportointikanta,
         ),
         Lukio2015Validation.validateAlkamispäivä(
           opiskeluoikeus,

@@ -136,11 +136,13 @@ class KoskiApplication(
   lazy val indexManager = new IndexManager(List(perustiedotIndexer.index, tiedonsiirtoService.index))
   lazy val globaaliValidator: KoskiGlobaaliValidator = new KoskiGlobaaliValidator(
     opiskeluoikeusRepository,
-    valpasRajapäivätService
+    valpasRajapäivätService,
+    raportointiDatabase,
   )
   lazy val globaaliValidatorV2: KoskiGlobaaliValidator = new KoskiGlobaaliValidator(
     opiskeluoikeusRepositoryV2,
-    valpasRajapäivätService
+    valpasRajapäivätService,
+    raportointiDatabase,
   )
 
   def init(): Future[Any] = {
