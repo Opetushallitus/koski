@@ -176,48 +176,66 @@ describe('VST', function () {
     })
   })
 
-  describe('Opiskeluoikeuden lisääminen vapaatavoitteiselle VST-koulutukselle', function () {
+  describe('Vapaatavoitteinen VST-koulutus', function () {
+    describe('Opiskeluoikeuden tilat', function () {
       before(
         prepareForNewOppija('kalle', '230872-7258'),
-        addOppija.enterValidDataVSTVapaatavoitteinen(),
-        addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Vapaan sivistystyön koulutus')
+        addOppija.selectOppilaitos('Varsinais-Suomen'),
+        addOppija.selectOpiskeluoikeudenTyyppi('Vapaan'),
+        addOppija.selectOppimäärä('Vapaan sivistystyön vapaatavoitteinen koulutus')
       )
 
-      it('toimii', function () {
-        expect(opinnot.getTutkinto()).to.equal('Vapaan sivistystyön koulutus')
-        expect(opinnot.getOppilaitos()).to.equal('Varsinais-Suomen kansanopisto')
+      it('Näytetään tilavaihtoehtoina Hyväksytysti suoritettu ja Keskeytynyt', function() {
+        expect(addOppija.opiskeluoikeudenTilat()).to.deep.equal([
+          'Hyväksytysti suoritettu',
+          'Keskeytynyt'
+        ])
       })
+    })
 
-      describe('Osasuorituksen voi lisätä', function () {
+    describe('Opiskeluoikeuden lisääminen', function () {
         before(
-          editor.edit,
-          vst.lisääPaikallinen('Paikallinen vapaan sivistystyön koulutuksen osasuoritus'),
-          function () {
-            return vst.selectOsasuoritus('Paikallinen vapaan sivistystyön koulutuksen osasuoritus')().property('laajuus').setValue(5)()
-          },
-          editor.saveChanges
+          prepareForNewOppija('kalle', '230872-7258'),
+          addOppija.enterValidDataVSTVapaatavoitteinen(),
+          addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Vapaan sivistystyön koulutus')
         )
 
         it('toimii', function () {
-          expect(extractAsText(S('.vst-osasuoritus'))).to.include('Paikallinen vapaan sivistystyön koulutuksen osasuoritus 5 op')
+          expect(opinnot.getTutkinto()).to.equal('Vapaan sivistystyön koulutus')
+          expect(opinnot.getOppilaitos()).to.equal('Varsinais-Suomen kansanopisto')
         })
 
-        describe('Osasuoritukselle voi lisätä osasuorituksen', function () {
+        describe('Osasuorituksen voi lisätä', function () {
           before(
             editor.edit,
-            opinnot.avaaKaikki,
+            vst.lisääPaikallinen('Paikallinen vapaan sivistystyön koulutuksen osasuoritus'),
             function () {
-              return vst.selectOsasuoritus('Paikallinen vapaan sivistystyön koulutuksen osasuoritus')().lisääPaikallinen('Osasuorituksen osasuoritus')()
+              return vst.selectOsasuoritus('Paikallinen vapaan sivistystyön koulutuksen osasuoritus')().property('laajuus').setValue(5)()
             },
-            function () {
-              return vst.selectOsasuoritus('Osasuorituksen osasuoritus')().property('laajuus').setValue(5)()
-            },
-            editor.saveChanges,
-            opinnot.avaaKaikki
+            editor.saveChanges
           )
 
           it('toimii', function () {
-            expect(extractAsText(S('.suoritus-taulukko'))).to.include('Osasuorituksen osasuoritus 5 op')
+            expect(extractAsText(S('.vst-osasuoritus'))).to.include('Paikallinen vapaan sivistystyön koulutuksen osasuoritus 5 op')
+          })
+
+          describe('Osasuoritukselle voi lisätä osasuorituksen', function () {
+            before(
+              editor.edit,
+              opinnot.avaaKaikki,
+              function () {
+                return vst.selectOsasuoritus('Paikallinen vapaan sivistystyön koulutuksen osasuoritus')().lisääPaikallinen('Osasuorituksen osasuoritus')()
+              },
+              function () {
+                return vst.selectOsasuoritus('Osasuorituksen osasuoritus')().property('laajuus').setValue(5)()
+              },
+              editor.saveChanges,
+              opinnot.avaaKaikki
+            )
+
+            it('toimii', function () {
+              expect(extractAsText(S('.suoritus-taulukko'))).to.include('Osasuorituksen osasuoritus 5 op')
+            })
           })
         })
       })

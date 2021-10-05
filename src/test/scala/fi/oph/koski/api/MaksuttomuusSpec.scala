@@ -3,11 +3,12 @@ package fi.oph.koski.api
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, vahvistusPaikkakunnalla}
 import fi.oph.koski.documentation.PerusopetusExampleData.perusopetuksenOppimääränSuoritus
-import fi.oph.koski.documentation.{AmmatillinenExampleData, ExamplesAikuistenPerusopetus, ExamplesInternationalSchool, LukioExampleData, PerusopetusExampleData}
+import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
 import org.scalatest.freespec.AnyFreeSpec
+
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
@@ -354,6 +355,62 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
         }
 
         resetFixtures()
+      }
+      "Pitää siirtää jos Valpas-lain piirissä, opiskeluoikeus aktiivinen, ammattikoulu, oppivelvollisuus ei ole päättynyt ja kotikunta Suomessa" in {
+        val alkamispäivä = date(2021, 1, 1)
+        val opiskeluoikeus = alkamispäivällä(defaultOpiskeluoikeus, alkamispäivä)
+        val oppija = KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
+
+        putOpiskeluoikeus(opiskeluoikeus, oppija) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tiedot koulutuksen maksuttomuudesta puuttuvat tästä opiskeluoikeudesta"))
+        }
+
+        putMaksuttomuus(
+          List(Maksuttomuus(alkamispäivä, None, true)),
+          oppija,
+          opiskeluoikeus
+        ) {
+          verifyResponseStatusOk()
+        }
+
+        resetFixtures()
+      }
+      "Pitää siirtää jos Valpas-lain piirissä, opiskeluoikeus aktiivinen, lukiokoulutus, oppivelvollisuus ei ole päättynyt ja kotikunta Suomessa" in {
+        val alkamispäivä = date(2021, 1, 1)
+        val opiskeluoikeus = LukioExampleData.alkamispäivällä(LukioExampleData.lukionOpiskeluoikeus(), alkamispäivä)
+        val oppija = KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
+
+        putOpiskeluoikeus(opiskeluoikeus, oppija) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tiedot koulutuksen maksuttomuudesta puuttuvat tästä opiskeluoikeudesta"))
+        }
+
+        putMaksuttomuus(
+          List(Maksuttomuus(alkamispäivä, None, true)),
+          oppija,
+          opiskeluoikeus
+        ) {
+          verifyResponseStatusOk()
+        }
+
+        resetFixtures()
+      }
+      "Ei tarvitse siirtää, jos kotikunta ei ole Suomessa" in {
+        val alkamispäivä = date(2021, 1, 1)
+        val opiskeluoikeus = LukioExampleData.alkamispäivällä(LukioExampleData.lukionOpiskeluoikeus(), alkamispäivä)
+        val oppija = KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021EiKotikuntaaSuomessa
+
+        putOpiskeluoikeus(opiskeluoikeus, oppija) {
+          verifyResponseStatusOk()
+        }
+      }
+      "Ei tarvitse siirtää, jos kotikunta Ahvenanmaalla" in {
+        val alkamispäivä = date(2021, 1, 1)
+        val opiskeluoikeus = LukioExampleData.alkamispäivällä(LukioExampleData.lukionOpiskeluoikeus(), alkamispäivä)
+        val oppija = KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021KotikuntaAhvenanmaalla
+
+        putOpiskeluoikeus(opiskeluoikeus, oppija) {
+          verifyResponseStatusOk()
+        }
       }
     }
   }
