@@ -66,6 +66,7 @@ export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, disabl
 
 const getKoodiarvo = t => t && t.data && t.data.koodiarvo
 const fetchTilat = model => EnumEditor.fetchAlternatives(model).map(alts => {
-  const tyyppi = modelData(model.context.opiskeluoikeus, 'tyyppi')
-  return filterTilatByOpiskeluoikeudenJaSuorituksenTyyppi(tyyppi, undefined, getKoodiarvo)(alts)
+  const opiskeluoikeudenTyyppi = modelData(model.context.opiskeluoikeus, 'tyyppi')
+  const suorituksenTyyppi = modelLookup(model.context.opiskeluoikeus, 'suoritukset.0.tyyppi').value.data
+  return filterTilatByOpiskeluoikeudenJaSuorituksenTyyppi(opiskeluoikeudenTyyppi, suorituksenTyyppi, getKoodiarvo)(alts)
 })

@@ -22,7 +22,7 @@ const filterByOpiskeluoikeudenTyyppi = (opiskeluoikeudenTyyppi, tilat, koodiarvo
 }
 
 const filterBySuorituksenTyyppi = (suorituksenTyyppi, tilat, koodiarvo) => {
-  switch (suorituksenTyyppi && suorituksenTyyppi.tyyppi && suorituksenTyyppi.tyyppi.koodiarvo) {
+  switch (suorituksenTyyppi && suorituksenTyyppi.koodiarvo) {
     case 'vstvapaatavoitteinenkoulutus': return tilat.filter(t => vapaatavoitteisenVapaanSivistystyönKoulutuksenTilat.includes(koodiarvo(t)))
     default: return tilat.filter(t => !vapaatavoitteisenVapaanSivistystyönKoulutuksenTilat.includes(koodiarvo(t)))
   }
