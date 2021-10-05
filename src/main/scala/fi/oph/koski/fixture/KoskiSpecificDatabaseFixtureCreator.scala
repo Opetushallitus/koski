@@ -51,6 +51,11 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
           ostopalveluOpiskeluoikeus.tila.opiskeluoikeusjaksot.map(j => j.copy(alku = j.alku.minusDays(1)))
         )
       ), hkiTallentaja)),
+      (KoskiSpecificMockOppijat.rikkinäinenOpiskeluoikeus, MaksuttomuusRaporttiFixtures.opiskeluoikeusAmmatillinenMaksuttomuuttaPidennetty.copy(
+        tyyppi = OpiskeluoikeudenTyyppi.ammatillinenkoulutus.copy(
+          nimi = Some(LocalizedString.finnish("Ammatillinen koulutus")) // Normaalisti validaattori täyttää nimen, nyt esitäytetään se itse
+        )
+      )),
     )
   }
 
