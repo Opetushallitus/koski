@@ -103,12 +103,14 @@ function AddOppijaPage() {
         oppilaitos: 'Varsinais-Suomen kansanopisto',
         oppimäärä: 'Vapaan sivistystyön vapaatavoitteinen koulutus',
         suorituskieli: 'suomi',
+        tila: 'Hyväksytysti suoritettu',
         alkamispäivä: '1.8.2021'
       })
       return function() {
         return api.enterData(params)()
           .then(api.selectOpiskeluoikeudenTyyppi('Vapaan sivistystyön koulutus'))
           .then(api.selectOppimäärä(params.oppimäärä))
+          .then(api.selectOpiskeluoikeudenTila(params.tila))
           .then(api.selectAloituspäivä(params.alkamispäivä))
       }
     },
@@ -260,6 +262,12 @@ function AddOppijaPage() {
     },
     selectAloituspäivä: function(date) {
       return pageApi.setInputValue('.aloituspaiva input', date)
+    },
+    selectOpiskeluoikeudenTila: function(tila) {
+      if (tila)
+        return selectFromDropdown('.opiskeluoikeudentila .dropdown', tila)
+      else
+        return function() {}
     },
     selectMaksuttomuus: function (index) {
       return function () {

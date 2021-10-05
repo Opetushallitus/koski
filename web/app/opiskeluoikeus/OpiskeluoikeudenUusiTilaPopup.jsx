@@ -14,7 +14,7 @@ import {Editor} from '../editor/Editor'
 import ModalDialog from '../editor/ModalDialog'
 import Text from '../i18n/Text'
 import {ift} from '../util/util'
-import {filterTilatByOpiskeluoikeudenTyyppi} from './opiskeluoikeus'
+import {filterTilatByOpiskeluoikeudenJaSuorituksenTyyppi} from './opiskeluoikeus'
 import {autoFillRahoitusmuoto, opiskeluoikeudenTilaVaatiiRahoitusmuodon, defaultRahoitusmuotoP} from './opintojenRahoitus'
 
 export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, disabloiValmistunut, tilaListModel, resultCallback}) => {
@@ -67,5 +67,5 @@ export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, disabl
 const getKoodiarvo = t => t && t.data && t.data.koodiarvo
 const fetchTilat = model => EnumEditor.fetchAlternatives(model).map(alts => {
   const tyyppi = modelData(model.context.opiskeluoikeus, 'tyyppi')
-  return filterTilatByOpiskeluoikeudenTyyppi(tyyppi, getKoodiarvo)(alts)
+  return filterTilatByOpiskeluoikeudenJaSuorituksenTyyppi(tyyppi, undefined, getKoodiarvo)(alts)
 })
