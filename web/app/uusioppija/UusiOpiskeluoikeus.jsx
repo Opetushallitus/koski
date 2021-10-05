@@ -132,7 +132,7 @@ export default ({opiskeluoikeusAtom}) => {
 
 const opiskeluoikeudentTilat = (tyyppiAtom, suoritusAtom) => {
   const tilatP = koodistoValues('koskiopiskeluoikeudentila/lasna,valmistunut,eronnut,katsotaaneronneeksi,valiaikaisestikeskeytynyt,peruutettu,loma,hyvaksytystisuoritettu,keskeytynyt')
-  return suoritusAtom.flatMap(suoritusTyyppi => tilatP.map(filterTilatByOpiskeluoikeudenJaSuorituksenTyyppi(tyyppiAtom.get(), suoritusTyyppi))).toProperty()
+  return suoritusAtom.flatMap(suoritusTyyppi => tilatP.map(filterTilatByOpiskeluoikeudenJaSuorituksenTyyppi(tyyppiAtom.get(), suoritusTyyppi ? suoritusTyyppi.tyyppi : undefined))).toProperty()
 }
 
 const VarhaiskasvatuksenJärjestämismuotoPicker = ({varhaiskasvatusAtom, järjestämismuotoAtom}) => {
