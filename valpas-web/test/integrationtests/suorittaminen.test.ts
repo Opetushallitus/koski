@@ -122,10 +122,6 @@ describe("Suorittamisen valvonta -näkymä", () => {
       ".card__header",
       internationalSchoolSuorittaminenTableHead
     )
-    await textEventuallyEquals(
-      ".tabnavigation__item--selected",
-      internationalSchoolSuorittaminenTableHead
-    )
     await dataTableEventuallyEquals(
       ".suorittaminen",
       internationalSchoolSuorittaminenTableContent,

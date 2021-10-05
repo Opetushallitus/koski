@@ -27,7 +27,6 @@ import {
   useOrganisaatiotJaKäyttöoikeusroolit,
   withRequiresSuorittamisenValvonta,
 } from "../../../state/accessRights"
-import { suorittamisvalvottaviaOpiskeluoikeuksiaCount } from "../../../state/apitypes/opiskeluoikeus"
 import { useBasePath } from "../../../state/basePath"
 import { Oid } from "../../../state/common"
 import { createSuorittaminenPathWithOrg } from "../../../state/paths"
@@ -113,16 +112,7 @@ export const SuorittaminenOppivelvollisetView = withRequiresSuorittamisenValvont
           label={t("Oppilaitos")}
           onChange={changeOrganisaatio}
         />
-        <SuorittaminenNavigation
-          selectedOrganisaatio={organisaatioOid}
-          oppivelvollisetCount={
-            isSuccess(fetch) &&
-            suorittamisvalvottaviaOpiskeluoikeuksiaCount(
-              organisaatioOid,
-              fetch.data
-            )
-          }
-        />
+        <SuorittaminenNavigation selectedOrganisaatio={organisaatioOid} />
         <Card>
           <CardHeader>
             <T id="suorittaminennäkymä__oppivelvolliset__otsikko" />
