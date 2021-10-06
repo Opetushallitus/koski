@@ -27,6 +27,8 @@ import {
   kuntailmoitusPathWithOrg,
   käyttöoikeusPath,
   maksuttomuusPath,
+  nivelvaiheenHakutilannePathWithOrg,
+  nivelvaiheenHakutilannePathWithoutOrg,
   oppijaPath,
   rootPath,
   suorittaminenHetuhakuPath,
@@ -46,6 +48,10 @@ import {
   HakutilanneView,
   HakutilanneViewWithoutOrgOid,
 } from "./hakutilanne/HakutilanneView"
+import {
+  NivelvaiheenHakutilanneView,
+  NivelvaiheenHakutilanneViewWithoutOrgOid,
+} from "./hakutilanne/NivelvaiheenHakutilanneView"
 import { HomeView } from "./HomeView"
 import {
   HakeutumisenKunnalleIlmoitetutView,
@@ -93,6 +99,16 @@ const VirkailijaRoutes = () => {
         />
         <Route
           exact
+          path={nivelvaiheenHakutilannePathWithoutOrg(basePath)}
+          render={(routeProps) => (
+            <NivelvaiheenHakutilanneViewWithoutOrgOid
+              redirectUserWithoutAccessTo={rootPath(basePath)}
+              {...routeProps}
+            />
+          )}
+        />
+        <Route
+          exact
           path={hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg(basePath)}
           render={(routeProps) => (
             <HakeutumisenKunnalleIlmoitetutViewWithoutOrgOid
@@ -106,6 +122,16 @@ const VirkailijaRoutes = () => {
           path={hakutilannePathWithOrg(basePath)}
           render={(routeProps) => (
             <HakutilanneView
+              redirectUserWithoutAccessTo={rootPath(basePath)}
+              {...routeProps}
+            />
+          )}
+        />
+        <Route
+          exact
+          path={nivelvaiheenHakutilannePathWithOrg(basePath)}
+          render={(routeProps) => (
+            <NivelvaiheenHakutilanneView
               redirectUserWithoutAccessTo={rootPath(basePath)}
               {...routeProps}
             />

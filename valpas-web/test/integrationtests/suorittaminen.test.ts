@@ -87,11 +87,6 @@ describe("Suorittamisen valvonta -näkymä", () => {
       ".card__header",
       stadinAmmattiopistoSuorittaminenTableHead
     )
-    await textEventuallyEquals(
-      ".tabnavigation__item--selected",
-      stadinAmmattiopistoSuorittaminenTableHead
-    )
-
     await dataTableEventuallyEquals(
       ".suorittaminen",
       stadinAmmattiopistoSuorittaminenTableContent,
@@ -110,10 +105,6 @@ describe("Suorittamisen valvonta -näkymä", () => {
       ".card__header",
       jklNormaalikouluSuorittaminenTableHead
     )
-    await textEventuallyEquals(
-      ".tabnavigation__item--selected",
-      jklNormaalikouluSuorittaminenTableHead
-    )
     await dataTableEventuallyEquals(
       ".suorittaminen",
       jklNormaalikouluSuorittaminenTableContent,
@@ -129,10 +120,6 @@ describe("Suorittamisen valvonta -näkymä", () => {
 
     await textEventuallyEquals(
       ".card__header",
-      internationalSchoolSuorittaminenTableHead
-    )
-    await textEventuallyEquals(
-      ".tabnavigation__item--selected",
       internationalSchoolSuorittaminenTableHead
     )
     await dataTableEventuallyEquals(
