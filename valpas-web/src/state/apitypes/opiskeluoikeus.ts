@@ -21,6 +21,7 @@ export type OpiskeluoikeusLaajatTiedot = {
   päätasonSuoritukset: PäätasonSuoritus[]
   tarkasteltavaPäätasonSuoritus: PäätasonSuoritus
   onTehtyIlmoitus?: boolean
+  maksuttomuus?: Maksuttomuus[]
 }
 
 export type OpintotasonTiedot = {
@@ -61,6 +62,12 @@ export type PerusopetusSuppeatTiedot = OpintotasonTiedot & {
 }
 
 export type PerusopetuksenJälkeinenSuppeatTiedot = OpintotasonTiedot
+
+export type Maksuttomuus = {
+  alku: ISODate
+  loppu?: ISODate
+  maksuton: boolean
+}
 
 type PäätasonSuoritus = {
   toimipiste: Toimipiste

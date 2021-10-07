@@ -2,7 +2,7 @@ package fi.oph.koski.valpas.opiskeluoikeusrepository
 
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema.annotation.KoodistoUri
-import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
+import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, Maksuttomuus}
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, Hakutoive, Harkinnanvaraisuus, Valintatila, Vastaanottotieto}
 import fi.oph.scalaschema.annotation.SyntheticProperty
 
@@ -145,6 +145,7 @@ case class ValpasOpiskeluoikeusLaajatTiedot(
   päätasonSuoritukset: Seq[ValpasPäätasonSuoritus],
   // Option, koska tämä tieto rikastetaan mukaan vain tietyissä tilanteissa
   onTehtyIlmoitus: Option[Boolean],
+  maksuttomuus: Option[Seq[Maksuttomuus]],
 ) extends ValpasOpiskeluoikeus
 
 object ValpasOpiskeluoikeusSuppeatTiedot {
