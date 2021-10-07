@@ -1,14 +1,8 @@
 import bem from "bem-ts"
 import * as A from "fp-ts/lib/Array"
-import { flow, pipe } from "fp-ts/lib/function"
-import { NonEmptyArray } from "fp-ts/lib/NonEmptyArray"
-import * as O from "fp-ts/lib/Option"
+import { flow } from "fp-ts/lib/function"
 import * as string from "fp-ts/string"
 import React, { useMemo } from "react"
-import { Link } from "react-router-dom"
-import { ToggleSwitch } from "../../components/buttons/ToggleSwitch"
-import { SuccessIcon, WarningIcon } from "../../components/icons/Icon"
-import { ExternalLink } from "../../components/navigation/ExternalLink"
 import {
   Column,
   Datum,
@@ -20,30 +14,27 @@ import {
   SelectableDataTable,
   SelectableDataTableProps,
 } from "../../components/tables/SelectableDataTable"
-import { getLocalizedMaybe, t, Translation } from "../../i18n/i18n"
-import { HakuSuppeatTiedot, selectByHakutoive } from "../../state/apitypes/haku"
-import {
-  isEiPaikkaa,
-  isHyväksytty,
-  isVarasijalla,
-  isVastaanotettu,
-  SuppeaHakutoive,
-} from "../../state/apitypes/hakutoive"
+import { t } from "../../i18n/i18n"
 import {
   hakeutumisvalvottavatOpiskeluoikeudet,
   OpiskeluoikeusSuppeatTiedot,
 } from "../../state/apitypes/opiskeluoikeus"
 import {
-  lisätietoMatches,
   OppijaHakutilanteillaSuppeatTiedot,
   OppijaSuppeatTiedot,
 } from "../../state/apitypes/oppija"
 import { useBasePath } from "../../state/basePath"
 import { Oid } from "../../state/common"
 import { perusopetuksenJälkeisetOpiskeluoikeustiedot } from "../../state/opiskeluoikeustiedot"
-import { createOppijaPath } from "../../state/paths"
-import { nonEmptyEvery } from "../../utils/arrays"
-import { formatDate, formatNullableDate } from "../../utils/date"
+import { formatDate } from "../../utils/date"
+import {
+  nullableDateValue,
+  oppijanNimiValue,
+} from "../../utils/tableDataFormatters/commonFormatters"
+import { hakemuksenTilaValue } from "../../utils/tableDataFormatters/hakemuksentila"
+import { muuHakuSwitchValue } from "../../utils/tableDataFormatters/muuHaku"
+import { opiskelupaikanVastaanottotietoValue } from "../../utils/tableDataFormatters/opiskelupaikanVastaanotto"
+import { valintatilaValue } from "../../utils/tableDataFormatters/valintatila"
 import "./HakutilanneTable.less"
 
 const b = bem("hakutilannetable")
@@ -179,38 +170,25 @@ const oppijaToTableData = (
     return {
       key: createHakutilanneKey(oppija.oppija, opiskeluoikeus),
       values: [
-        {
-          value: `${henkilö.sukunimi} ${henkilö.etunimet}`,
-          display: (
-            <Link
-              to={createOppijaPath(basePath, {
-                hakutilanneRef: organisaatioOid,
-                oppijaOid: henkilö.oid,
-              })}
-            >
-              {henkilö.sukunimi} {henkilö.etunimet}
-            </Link>
-          ),
-        },
-        {
-          value: henkilö.syntymäaika,
-          display: formatNullableDate(henkilö.syntymäaika),
-        },
+        oppijanNimi(henkilö, organisaatioOid, basePath),
+        nullableDateValue(henkilö.syntymäaika),
         ryhmä(opiskeluoikeus),
         perusopetusSuoritettu(opiskeluoikeus),
-        hakemuksenTila(oppija, basePath),
-        fromNullableValue(valintatila(oppija.hakutilanteet)),
-        fromNullableValue(vastaanottotieto(oppija.hakutilanteet)),
+        hakemuksenTilaValue(oppija, basePath),
+        valintatilaValue(oppija.hakutilanteet),
+        opiskelupaikanVastaanottotietoValue(oppija.hakutilanteet),
         fromNullableValue(
           perusopetuksenJälkeisetOpiskeluoikeustiedot(
             oppija.oppija.opiskeluoikeudet
           )
         ),
-        muuHakuSwitch(oppija, opiskeluoikeus, onSetMuuHaku),
+        muuHakuSwitchValue(oppija, opiskeluoikeus, onSetMuuHaku),
       ],
     }
   })
 }
+
+const oppijanNimi = oppijanNimiValue("hakutilanneRef")
 
 const ryhmä = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
   const ryhmä = oo.tarkasteltavaPäätasonSuoritus?.ryhmä
@@ -274,183 +252,4 @@ const perusopetusSuoritettu = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
     }
   }
   return fromNullableValue(null, [t("Ei")])
-}
-
-const hakemuksenTila = (
-  oppija: OppijaHakutilanteillaSuppeatTiedot,
-  basePath: string
-): Value => {
-  const { hakutilanteet, hakutilanneError } = oppija
-  const oppijaOid = oppija.oppija.henkilö.oid
-
-  const hakemuksenTilaValue = hakemuksenTilaT(
-    hakutilanteet.length,
-    hakutilanneError
-  )
-  return {
-    value: hakemuksenTilaValue,
-    display: hakemuksenTilaDisplay(
-      hakutilanteet,
-      hakemuksenTilaValue,
-      oppijaOid,
-      basePath
-    ),
-    tooltip: hakutilanteet.map(hakuTooltip).join("\n"),
-  }
-}
-
-const hakemuksenTilaT = (
-  hakemusCount: number,
-  hakutilanneError?: string
-): Translation => {
-  if (hakutilanneError) return t("oppija__hakuhistoria_virhe")
-  else if (hakemusCount == 0) return t("hakemuksentila__ei_hakemusta")
-  else if (hakemusCount == 1) return t("hakemuksentila__hakenut")
-  else return t("hakemuksentila__n_hakua", { lukumäärä: hakemusCount })
-}
-
-const hakemuksenTilaDisplay = (
-  hakutilanteet: HakuSuppeatTiedot[],
-  hakemuksenTilaValue: Translation,
-  oppijaOid: Oid,
-  basePath: string
-) =>
-  pipe(
-    A.head(hakutilanteet),
-    O.map((hakutilanne) =>
-      hakutilanteet.length == 1 ? (
-        <ExternalLink to={hakutilanne.hakemusUrl}>
-          {hakemuksenTilaValue}
-        </ExternalLink>
-      ) : (
-        <Link to={createOppijaPath(basePath, { oppijaOid })}>
-          {hakemuksenTilaValue}
-        </Link>
-      )
-    ),
-    O.toNullable
-  )
-
-const hakuTooltip = (haku: HakuSuppeatTiedot): string =>
-  t("hakemuksentila__tooltip", {
-    haku: getLocalizedMaybe(haku.hakuNimi) || "?",
-    muokkausPvm: formatNullableDate(haku.muokattu),
-  })
-
-const valintatila = (haut: HakuSuppeatTiedot[]): Value | null => {
-  const hyväksytytHakutoiveet = selectByHakutoive(haut, isHyväksytty)
-  if (A.isNonEmpty(hyväksytytHakutoiveet)) {
-    return hyväksyttyValintatila(hyväksytytHakutoiveet)
-  }
-
-  const [varasija] = selectByHakutoive(haut, isVarasijalla)
-  if (varasija) {
-    return {
-      value: t("valintatieto__varasija"),
-      display: t("valintatieto__varasija_hakukohde", {
-        hakukohde: getLocalizedMaybe(varasija.organisaatioNimi) || "?",
-      }),
-    }
-  }
-
-  if (
-    nonEmptyEvery(haut, (haku) => nonEmptyEvery(haku.hakutoiveet, isEiPaikkaa))
-  ) {
-    return {
-      value: t("valintatieto__ei_opiskelupaikkaa"),
-      icon: <WarningIcon />,
-    }
-  }
-
-  return null
-}
-
-const hyväksyttyValintatila = (
-  hyväksytytHakutoiveet: NonEmptyArray<SuppeaHakutoive>
-): Value => {
-  const buildHyväksyttyValue = (hakutoive: SuppeaHakutoive) => {
-    return {
-      value: t("valintatieto__hyväksytty", {
-        hakukohde: orderedHakukohde(
-          hakutoive.hakutoivenumero,
-          t("valintatieto__hakukohde_lc")
-        ),
-      }),
-      display: orderedHakukohde(
-        hakutoive.hakutoivenumero,
-        getLocalizedMaybe(hakutoive.organisaatioNimi) || "?"
-      ),
-    }
-  }
-
-  if (hyväksytytHakutoiveet.length === 1) {
-    return buildHyväksyttyValue(hyväksytytHakutoiveet[0])
-  }
-
-  return {
-    value: t("valintatieto__hyväksytty_n_hakutoivetta", {
-      lukumäärä: hyväksytytHakutoiveet.length,
-    }),
-    filterValues: hyväksytytHakutoiveet.map(
-      (hakutoive) => buildHyväksyttyValue(hakutoive).value
-    ),
-    tooltip: hyväksytytHakutoiveet
-      .map((ht) => buildHyväksyttyValue(ht).display)
-      .join("\n"),
-  }
-}
-
-const orderedHakukohde = (
-  hakutoivenumero: number | undefined,
-  hakukohde: string
-) => (hakutoivenumero ? `${hakutoivenumero}. ${hakukohde}` : hakukohde)
-
-const vastaanottotieto = (hakutilanteet: HakuSuppeatTiedot[]): Value | null => {
-  const vastaanotetut = selectByHakutoive(hakutilanteet, isVastaanotettu)
-  switch (vastaanotetut.length) {
-    case 0:
-      return null
-    case 1:
-      return {
-        value: getLocalizedMaybe(vastaanotetut[0]?.organisaatioNimi),
-        icon: <SuccessIcon />,
-      }
-    default:
-      return {
-        value: t("vastaanotettu__n_paikkaa", {
-          lukumäärä: vastaanotetut.length,
-        }),
-        tooltip: vastaanotetut
-          .map((vo) => getLocalizedMaybe(vo.organisaatioNimi))
-          .join("\n"),
-        icon: <SuccessIcon />,
-      }
-  }
-}
-
-const muuHakuSwitch = (
-  oppija: OppijaHakutilanteillaSuppeatTiedot,
-  opiskeluoikeus: OpiskeluoikeusSuppeatTiedot,
-  onSetMuuHaku: SetMuuHakuCallback
-): Value => {
-  const lisätiedot = oppija.lisätiedot.find(
-    lisätietoMatches(
-      oppija.oppija.henkilö.oid,
-      opiskeluoikeus.oid,
-      opiskeluoikeus.oppilaitos.oid
-    )
-  )
-  const muuHaku = lisätiedot?.muuHaku || false
-
-  return {
-    value: muuHaku ? t("Kyllä") : t("Ei"),
-    display: (
-      <ToggleSwitch
-        value={muuHaku}
-        onChanged={(state) =>
-          onSetMuuHaku(oppija.oppija.henkilö.oid, opiskeluoikeus, state)
-        }
-      />
-    ),
-  }
 }

@@ -1,6 +1,5 @@
-import bem from "bem-ts"
 import React, { useCallback, useMemo, useState } from "react"
-import { useHistory } from "react-router"
+import { useHistory } from "react-router-dom"
 import {
   Card,
   CardHeader,
@@ -15,40 +14,37 @@ import {
 import { DataTableCountChangeEvent } from "../../components/tables/DataTable"
 import { NumberCounter } from "../../components/typography/Counter"
 import { ApiErrors } from "../../components/typography/error"
-import { t, T } from "../../i18n/i18n"
+import { T, t } from "../../i18n/i18n"
 import {
   useOrganisaatiotJaKäyttöoikeusroolit,
   withRequiresHakeutumisenValvonta,
 } from "../../state/accessRights"
+import { useBasePath } from "../../state/basePath"
 import { Oid } from "../../state/common"
 import {
-  createHakutilannePathWithOrg,
-  HakutilanneViewRouteProps,
+  createNivelvaiheenHakutilannePathWithOrg,
+  NivelvaiheenHakutilanneViewRouteProps,
 } from "../../state/paths"
-import { useBoundingClientRect } from "../../state/useBoundingClientRect"
 import { ErrorView } from "../ErrorView"
 import { OrganisaatioAutoRedirect } from "../OrganisaatioAutoRedirect"
 import { HakutilanneDrawer } from "./HakutilanneDrawer"
 import { HakutilanneNavigation } from "./HakutilanneNavigation"
-import { HakutilanneTable } from "./HakutilanneTable"
-import "./HakutilanneView.less"
+import { NivelvaiheenHakutilanneTable } from "./NivelvaiheenHakutilanneTable"
 import { useOppijaSelect } from "./useOppijaSelect"
-import { useOppijatData } from "./useOppijatData"
-
-const b = bem("hakutilanneview")
+import { useNivelvaiheenOppijatData } from "./useOppijatData"
 
 const organisaatioTyyppi = "OPPILAITOS"
 const organisaatioHakuRooli = "OPPILAITOS_HAKEUTUMINEN"
 
-export type HakutilanneViewProps = HakutilanneViewRouteProps
+export type NivelvaiheenHakutilanneViewProps = NivelvaiheenHakutilanneViewRouteProps
 
-export const HakutilanneViewWithoutOrgOid = withRequiresHakeutumisenValvonta(
+export const NivelvaiheenHakutilanneViewWithoutOrgOid = withRequiresHakeutumisenValvonta(
   () => (
     <OrganisaatioAutoRedirect
       organisaatioHakuRooli={organisaatioHakuRooli}
       organisaatioTyyppi={organisaatioTyyppi}
       redirectTo={(basePath, organisaatioOid) =>
-        createHakutilannePathWithOrg(basePath, {
+        createNivelvaiheenHakutilannePathWithOrg(basePath, {
           organisaatioOid,
         })
       }
@@ -57,8 +53,9 @@ export const HakutilanneViewWithoutOrgOid = withRequiresHakeutumisenValvonta(
   )
 )
 
-export const HakutilanneView = withRequiresHakeutumisenValvonta(
-  (props: HakutilanneViewProps) => {
+export const NivelvaiheenHakutilanneView = withRequiresHakeutumisenValvonta(
+  (props: NivelvaiheenHakutilanneViewProps) => {
+    const basePath = useBasePath()
     const history = useHistory()
     const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
     const organisaatiot = useMemo(
@@ -72,33 +69,41 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
     )
 
     const organisaatioOid = props.match.params.organisaatioOid!
-
-    const { data, isLoading, errors, setMuuHaku, reload } = useOppijatData(
-      organisaatioOid
+    const organisaatio = useMemo(
+      () => organisaatiot.find((o) => o.oid === organisaatioOid),
+      [organisaatioOid, organisaatiot]
     )
+
+    const changeOrganisaatio = useCallback(
+      (oid?: Oid) => {
+        if (oid) {
+          history.push(
+            createNivelvaiheenHakutilannePathWithOrg(basePath, {
+              organisaatioOid: oid,
+            })
+          )
+        }
+      },
+      [basePath, history]
+    )
+
+    const {
+      data,
+      isLoading,
+      errors,
+      setMuuHaku,
+      reload,
+    } = useNivelvaiheenOppijatData(organisaatioOid)
 
     const [counters, setCounters] = useState<DataTableCountChangeEvent>({
       filteredRowCount: 0,
       unfilteredRowCount: 0,
     })
 
-    const organisaatio = organisaatiot.find((o) => o.oid === organisaatioOid)
-
-    const drawerRect = useBoundingClientRect()
-
-    const changeOrganisaatio = useCallback(
-      (oid?: Oid) => {
-        if (oid) {
-          history.push(oid)
-        }
-      },
-      [history]
-    )
-
     const { setSelectedOppijaOids, selectedOppijat } = useOppijaSelect(data)
 
-    return organisaatioOid ? (
-      <Page className={b("view")}>
+    return (
+      <Page>
         <OrganisaatioValitsin
           organisaatioTyyppi={organisaatioTyyppi}
           organisaatioHierarkia={organisaatiot}
@@ -106,7 +111,9 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
           label={t("Oppilaitos")}
           onChange={changeOrganisaatio}
         />
+
         <HakutilanneNavigation selectedOrganisaatio={organisaatioOid} />
+
         <Card>
           <CardHeader>
             <T id="hakutilannenäkymä__otsikko" />
@@ -116,11 +123,11 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
                 max={counters.unfilteredRowCount}
               />
             )}
-          </CardHeader>
-          <ConstrainedCardBody extraMargin={drawerRect.rect?.height}>
+          </CardHeader>{" "}
+          <ConstrainedCardBody>
             {isLoading && <Spinner />}
             {data && (
-              <HakutilanneTable
+              <NivelvaiheenHakutilanneTable
                 data={data}
                 organisaatioOid={organisaatioOid}
                 onCountChange={setCounters}
@@ -133,15 +140,12 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
         </Card>
         {organisaatio && (
           <HakutilanneDrawer
-            ref={drawerRect.ref}
             selectedOppijat={selectedOppijat}
             tekijäorganisaatio={organisaatio}
             onKuntailmoituksetCreated={reload}
           />
         )}
       </Page>
-    ) : (
-      <OrganisaatioMissingView />
     )
   }
 )

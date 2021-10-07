@@ -28,23 +28,28 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
     perusteetService.diaarinumerotBySuorituksenTyyppi(koodistokoodiviite)
   }
 
-  get("/tutkinnonosat/:diaari") {
+  get("/tutkinnonosat/*") {
     val ryhmä = params.get("tutkinnonOsanRyhmä")
+    val diaari = params("splat")
     renderEither[LisättävätTutkinnonOsat](for {
-      tutkinnonRakenne <- perusteenRakenne(failWhenNotFound = false)
-      ryhmänRakenne <- haeRakenne(ryhmä)
+      tutkinnonRakenne <- perusteenRakenne(diaari, None, failWhenNotFound = false)
+      ryhmänRakenne <- haeRakenne(diaari, ryhmä)
     } yield {
-      lisättävätTutkinnonOsat(ryhmä.map(toRyhmäkoodi), ryhmänRakenne, tutkinnonRakenne)
+      lisättävätTutkinnonOsat(ryhmä.map(toRyhmäkoodi), ryhmänRakenne, tutkinnonRakenne, diaari)
     })
   }
 
-  get("/tutkinnonosat/ryhmat/:diaari/:suoritustapa") {
-    val ryhmät: List[Koodistokoodiviite] = application.koodistoViitePalvelu.getKoodistoKoodiViitteet(application.koodistoPalvelu.getLatestVersionRequired("ammatillisentutkinnonosanryhma"))
-    perusteenRakenne(failWhenNotFound = false).map(filterRyhmät(ryhmät)).getOrElse(Nil)
+  get("/tutkinnonosat/ryhmat/*/:suoritustapa") {
+    val ryhmät = application.koodistoViitePalvelu.getKoodistoKoodiViitteet(
+      application.koodistoPalvelu.getLatestVersionRequired("ammatillisentutkinnonosanryhma")
+    )
+    val diaari = params("splat")
+    val suoritustapa = params.get("suoritustapa")
+    perusteenRakenne(diaari, suoritustapa, failWhenNotFound = false).map(filterRyhmät(ryhmät)).getOrElse(Nil)
   }
 
-  get("/peruste/:diaari/linkki") {
-    val diaari = params("diaari")
+  get("/peruste/*/linkki") {
+    val diaari = params("splat")
     val lang = UserLanguage.sanitizeLanguage(params.get("lang")).getOrElse("fi")
     renderEither[Map[String, String]](
       application.ePerusteet.findLinkToEperusteetWeb(diaari, lang)
@@ -53,19 +58,25 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
     )
   }
 
-  private def haeRakenne(ryhmä: Option[String]) =
-    ryhmä.map(r => perusteenRakenne()
+  private def haeRakenne(diaari: String, ryhmä: Option[String]) = {
+    ryhmä.map(r => perusteenRakenne(diaari, None)
       .map(_.flatMap(rakenneOsa => findRyhmä(toRyhmäkoodi(r), rakenneOsa))))
-      .getOrElse(perusteenRakenne(failWhenNotFound = false))
+      .getOrElse(perusteenRakenne(diaari, None, failWhenNotFound = false))
+  }
 
   private def toRyhmäkoodi(ryhmä: String): Koodistokoodiviite =
     application.koodistoViitePalvelu.validate("ammatillisentutkinnonosanryhma", ryhmä)
       .getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi(s"Tuntematon tutkinnon osan ryhmä: $ryhmä")))
 
-  private def lisättävätTutkinnonOsat(ryhmäkoodi: Option[Koodistokoodiviite], ryhmänRakenne: Iterable[RakenneOsa], tutkinto: Iterable[RakenneOsa]) = {
-    val diaari: String = params("diaari")
-
-    val määrittelemättömiä = (ryhmänRakenne.isEmpty || ryhmänRakenne.exists(_.sisältääMäärittelemättömiäOsia)) && ryhmäkoodi != yhteisetTutkinnonOsat
+  private def lisättävätTutkinnonOsat(
+    ryhmäkoodi: Option[Koodistokoodiviite],
+    ryhmänRakenne: Iterable[RakenneOsa],
+    tutkinto: Iterable[RakenneOsa],
+    diaari: String
+  ) = {
+    val määrittelemättömiä =
+      (ryhmänRakenne.isEmpty || ryhmänRakenne.exists(_.sisältääMäärittelemättömiäOsia)) &&
+        ryhmäkoodi != yhteisetTutkinnonOsat
     val voiLisätäTutkinnonOsanToisestaTutkinnosta = if (isTelma(diaari)) false else määrittelemättömiä
     val osat = (if (määrittelemättömiä) tutkinto else ryhmänRakenne).flatMap(tutkinnonOsienKoodit).toList.distinct // Jos sisältää määrittelemättömiä, haetaan tutkinnon osia koko tutkinnon rakenteesta tähän ryhmään.
 
@@ -88,33 +99,33 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
     }
   }
 
-  private def tutkinnonOsienKoodit(rakenne: Option[RakenneOsa]): List[Koodistokoodiviite] = rakenne.toList.flatMap(tutkinnonOsienKoodit)
-  private def tutkinnonOsienKoodit(rakenneOsa: RakenneOsa): List[Koodistokoodiviite] = rakenneOsa.tutkinnonOsat.map(_.tunniste).distinct.sortBy(_.nimi.map(_.get(lang)))
+  private def tutkinnonOsienKoodit(rakenneOsa: RakenneOsa): List[Koodistokoodiviite] =
+    rakenneOsa.tutkinnonOsat.map(_.tunniste).distinct.sortBy(_.nimi.map(_.get(lang)))
 
-  get("/suoritustavat/:diaari") {
-    val diaari = params("diaari")
+  get("/suoritustavat/*") {
+    val diaari = params("splat")
     renderEither[List[Koodistokoodiviite]](application.tutkintoRepository.findPerusteRakenne(diaari) match {
       case None => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Rakennetta ei löydy diaarinumerolla $diaari"))
       case Some(rakenne) => Right(rakenne.suoritustavat.map(_.suoritustapa))
     })
   }
 
-  get[Map[String, TutkinnonOsanLaajuus]]("/tutkinnonosaryhma/laajuus/:diaari/:suoritustapa/") {
+  get[Map[String, TutkinnonOsanLaajuus]]("/tutkinnonosaryhma/laajuus/*/:suoritustapa/") {
     Map.empty
   }
 
-  get("/tutkinnonosaryhma/laajuus/:diaari/:suoritustapa/:ryhmat") {
+  get("/tutkinnonosaryhma/laajuus/*/:suoritustapa/:ryhmat") {
     val ryhmät = params("ryhmat").split(',')
     val ryhmäkoodit: Array[Koodistokoodiviite] = ryhmät.map(ryhmä =>
       application.koodistoViitePalvelu.validate("ammatillisentutkinnonosanryhma", ryhmä)
         .getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi(s"Tuntematon tutkinnon osan ryhmä: $ryhmä")))
     )
 
-    val diaari = params("diaari")
-    val suoritustapa = params("suoritustapa")
+    val diaari = params("splat")
+    val suoritustapa = params.get("suoritustapa")
 
     val laajuudet: Either[HttpStatus, Seq[(String, TutkinnonOsanLaajuus)]] = HttpStatus.foldEithers(ryhmäkoodit.map(rk => {
-      perusteenRakenne().flatMap {
+      perusteenRakenne(diaari, suoritustapa).flatMap {
         case Nil => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Rakennetta ei löydy diaarinumerolla $diaari ja suoritustavalla $suoritustapa"))
         case List(osa) => Right(findRyhmä(rk, osa).map(_.tutkinnonRakenneLaajuus))
         case _ => Right(None)
@@ -124,10 +135,9 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
     renderEither[Map[String,TutkinnonOsanLaajuus]](laajuudet.map(_.toMap))
   }
 
-  private def perusteenRakenne(failWhenNotFound: Boolean = true): Either[HttpStatus, List[RakenneOsa]] = {
-    val diaari = params("diaari")
-    val suoritustapa = params.get("suoritustapa")
-
+  private def perusteenRakenne
+    (diaari: String, suoritustapa: Option[String], failWhenNotFound: Boolean = true)
+  : Either[HttpStatus, List[RakenneOsa]] = {
     val rakenne: Option[TutkintoRakenne] = application.tutkintoRepository.findPerusteRakenne(diaari)
     val rakenteenSuoritustavat = rakenne.toList.flatMap(_.suoritustavat)
     val suoritustavat = suoritustapa match {
@@ -136,8 +146,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
       case None =>
         rakenteenSuoritustavat
     }
-    val rakenteet: List[RakenneOsa] = suoritustavat.flatMap(_.rakenne)
-    rakenteet match {
+    suoritustavat.flatMap(_.rakenne) match {
       case Nil if failWhenNotFound =>
         Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Rakennetta ei löydy diaarinumerolla $diaari ja suoritustavalla $suoritustapa"))
       case rakenteet =>

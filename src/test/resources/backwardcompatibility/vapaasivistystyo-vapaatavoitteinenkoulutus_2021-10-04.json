@@ -19,11 +19,11 @@
     "arvioituPäättymispäivä" : "2022-05-31",
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
-        "alku" : "2021-09-01",
+        "alku" : "2022-05-31",
         "tila" : {
-          "koodiarvo" : "lasna",
+          "koodiarvo" : "hyvaksytystisuoritettu",
           "nimi" : {
-            "fi" : "Läsnä"
+            "fi" : "Hyväksytysti suoritettu"
           },
           "koodistoUri" : "koskiopiskeluoikeudentila",
           "koodistoVersio" : 1
@@ -226,6 +226,7 @@
       "koodiarvo" : "vapaansivistystyonkoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
-    "alkamispäivä" : "2021-09-01"
+    "alkamispäivä" : "2022-05-31",
+    "päättymispäivä" : "2022-05-31"
   } ]
 }

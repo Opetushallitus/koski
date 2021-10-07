@@ -27,6 +27,7 @@ import {
   createHakutilannePathWithOrg as createHakutilannePathWithOrg,
   createHakutilannePathWithoutOrg as createHakutilannePathWithoutOrg,
   createKuntailmoitusPathWithOrg,
+  createNivelvaiheenHakutilannePathWithOrg,
   createSuorittaminenPathWithOrg,
   createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg,
   OppijaViewRouteProps,
@@ -54,6 +55,7 @@ export const OppijaView = withRequiresJokinOikeus((props: OppijaViewProps) => {
     <Page id="oppija">
       <BackNav
         hakutilanneRef={searchQuery.hakutilanneRef}
+        hakutilanneNivelvaiheRef={searchQuery.hakutilanneNivelvaiheRef}
         hakutilanneIlmoitetutRef={searchQuery.hakutilanneIlmoitetutRef}
         kuntailmoitusRef={searchQuery.kuntailmoitusRef}
         suorittaminenRef={searchQuery.suorittaminenRef}
@@ -128,6 +130,7 @@ export const OppijaView = withRequiresJokinOikeus((props: OppijaViewProps) => {
 
 export type OppijaViewBackNavProps = {
   hakutilanneRef?: string
+  hakutilanneNivelvaiheRef?: string
   hakutilanneIlmoitetutRef?: string
   kuntailmoitusRef?: string
   suorittaminenRef?: string
@@ -144,6 +147,10 @@ const BackNav = (props: OppijaViewBackNavProps) => {
     } else if (props.hakutilanneRef) {
       return createHakutilannePathWithOrg("", {
         organisaatioOid: props.hakutilanneRef,
+      })
+    } else if (props.hakutilanneNivelvaiheRef) {
+      return createNivelvaiheenHakutilannePathWithOrg("", {
+        organisaatioOid: props.hakutilanneNivelvaiheRef,
       })
     } else if (props.hakutilanneIlmoitetutRef) {
       return createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg("", {

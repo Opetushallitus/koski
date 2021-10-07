@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db._
-import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilö, OppijaHenkilöWithMasterInfo, VerifiedHenkilöOid}
+import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat, OppijaHenkilö, OppijaHenkilöWithMasterInfo, VerifiedHenkilöOid}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenOsittaisetTiedot, OpiskeluoikeudenPerustiedot}
@@ -20,6 +20,7 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
   protected val validator = application.validator
   val db = application.masterDatabase.db
   implicit val accessType = AccessType.write
+  val raportointiDatabase = application.raportointiDatabase
 
   protected def validateOpiskeluoikeus[T: TypeTag](oo: T, session: KoskiSpecificSession = user): T =
     validator.extractAndValidateOpiskeluoikeus(JsonSerializer.serialize(oo))(session, AccessType.write) match {
@@ -82,7 +83,10 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
 
         val globaaliValidointiStatus = application.globaaliValidator.validateOpiskeluoikeus(
           oikeus,
-          henkilö.syntymäaika,
+          henkilö match {
+            case h: LaajatOppijaHenkilöTiedot => Some(h)
+            case _ => None
+          },
           henkilö.oid
         )
         if (!globaaliValidointiStatus.isOk) {

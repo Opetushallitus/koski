@@ -10,7 +10,7 @@ export default () => {
   return (
     <Page id="health-view">
       <Heading>Service status</Heading>
-      <p>
+      <p id="health-status">
         {isInitial(res) || isLoading(res)
           ? "Checking..."
           : isSuccess(res) && res.data == ""

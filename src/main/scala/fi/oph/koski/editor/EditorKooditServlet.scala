@@ -3,12 +3,10 @@ package fi.oph.koski.editor
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.http.KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi
-import fi.oph.koski.json.LegacyJsonSerialization
 import fi.oph.koski.koodisto.KoodistoViite
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.schema._
-import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
-import org.json4s.jackson.Serialization
+import fi.oph.koski.servlet.NoCache
 
 /**
   *  Endpoints for the Koski UI, related to koodistot/koodit, returns editor models
@@ -21,18 +19,18 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ed
     toKoodistoEnumValues(getKooditFromRequestParams())
   }
 
-  get[List[EnumValue]]("/osaamisalat/osaamisala/:diaari") {
-    val osaamisalat = application.tutkintoRepository.findPerusteRakenne(params("diaari"))
+  get[List[EnumValue]]("/osaamisalat/osaamisala/*") {
+    val diaari = params("splat")
+    val osaamisalat = application.tutkintoRepository.findPerusteRakenne(diaari)
       .map(_.osaamisalat)
       .getOrElse(koodistojenKoodit(koodistotByString("osaamisala")))
-
     toKoodistoEnumValues(osaamisalat)
   }
 
-  get[List[EnumValue]]("/koulutukset/koulutus/:diaari") {
-    val koulutukset = application.tutkintoRepository.findPerusteRakenne(params("diaari"))
+  get[List[EnumValue]]("/koulutukset/koulutus/*") {
+    val diaari = params("splat")
+    val koulutukset = application.tutkintoRepository.findPerusteRakenne(diaari)
       .map(_.koulutukset).toList.flatten
-
     toKoodistoEnumValues(koulutukset)
   }
 

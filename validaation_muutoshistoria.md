@@ -4,10 +4,20 @@
 
 - Ammatillisen koulutuksen Yhteisille tutkinnon osille (YhteinenTutkinnonOsa-rakenne) sallitaan tunnisteen koodiarvoiksi myös '600001' ja '600002'
 
+## 4.10.2021
+
+- Opiskeluoikeuden yhteydessä on siirrettävä maksuttomuustiedot, kun kaikki seuraavat ehdot täyttyvät:
+  - Oppija on syntynyt vuonna 2004 tai myöhemmin
+  - Oppija on KOSKI-datan mukaan suorittanut perusopetusta vuoden 2021 puolella
+  - Oppijalla on ONR:n tiedon mukaan kotikunta Suomessa
+  - Opiskeluoikeus on aktiivinen
+  - Opiskeluoikeus/päätason suoritus-kombinaatio kelpaa oppivelvollisuuden suorittamiseen
+  - Koski-tietojen mukaan näyttää, että oppijan oppivelvollisuus ei ole päättynyt ennen kuin opiskeluoikeus on alkanut
+
 ## 24.9.2021
 
 - International schoolin luokka-asteiden 10-12 suorituksille vaaditaan alkamispäivä, jotta voidaan päätellä, milloin
-toisen asteen opintoja vastaavat opinnot ovat alkaneet.
+  toisen asteen opintoja vastaavat opinnot ovat alkaneet.
 
 ## 23.9.2021
 

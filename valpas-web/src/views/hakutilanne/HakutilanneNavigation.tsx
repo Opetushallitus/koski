@@ -8,6 +8,7 @@ import { Oid } from "../../state/common"
 import {
   createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
   createHakutilannePathWithOrg,
+  createNivelvaiheenHakutilannePathWithOrg,
 } from "../../state/paths"
 
 export type HakutilanneNavigationProps = {
@@ -19,6 +20,12 @@ export const HakutilanneNavigation = (props: HakutilanneNavigationProps) => {
     {
       display: t("hakeutumisvelvollisetnavi__hakutilanne"),
       linkTo: createHakutilannePathWithOrg(undefined, {
+        organisaatioOid: props.selectedOrganisaatio,
+      }),
+    },
+    {
+      display: t("hakeutumisvelvollisetnavi__nivelvaihe"),
+      linkTo: createNivelvaiheenHakutilannePathWithOrg(undefined, {
         organisaatioOid: props.selectedOrganisaatio,
       }),
     },

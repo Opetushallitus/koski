@@ -127,7 +127,7 @@ object KoskiSpecificMockOppijat {
   val vapaaSivistystyöLukutaitoKotoutus = koskiSpecificOppijat.oppija("Vapaa-Sivistys", "Lukutaitokouluttautuja", "231158-467R")
   val vapaaSivistystyöVapaatavoitteinenKoulutus = koskiSpecificOppijat.oppija("Vapaa-Sivistys", "Vapaatavoitteinen-Kouluttautuja", "010917-156A")
   val oikeusOpiskelunMaksuttomuuteen = koskiSpecificOppijat.oppija("Oikeus", "Maksuttomuuteen", "010104A6094", syntymäaika = Some(LocalDate.of(2004, 12, 31)), kotikunta = Some("091"))
-  val eiOikeuttaMaksuttomuuteen = koskiSpecificOppijat.oppija("EiOikeutta", "Maksuttomuuteen", "311203A1454", syntymäaika = Some(LocalDate.of(2003, 12, 31)))
+  val eiOikeuttaMaksuttomuuteen = koskiSpecificOppijat.oppija("EiOikeutta", "Maksuttomuuteen", "311203A1454", syntymäaika = Some(LocalDate.of(2003, 12, 31)), kotikunta = Some("091"))
   val etk18vSyntynytKesäkuunEnsimmäisenäPäivänä = koskiSpecificOppijat.oppija("Nopea", "Nina", "010698-6646", syntymäaika = Some(LocalDate.of(1998, 6, 1)))
   val etk18vSyntynytToukokuunViimeisenäPäivänä = koskiSpecificOppijat.oppija("Nopea", "Noa", "310598-4959", syntymäaika = Some(LocalDate.of(1998, 5, 31)))
   val oppivelvollisuustietoLiianVanha = koskiSpecificOppijat.oppija("Oppivelvollisuustieto", "LiianVanha", "311203A245B", syntymäaika = Some(LocalDate.of(2003, 12, 31)), kotikunta = Some("091"))
@@ -136,12 +136,15 @@ object KoskiSpecificMockOppijat {
   val oppivelvollisuustietoSlave2 = koskiSpecificOppijat.addOppija(OppijaHenkilöWithMasterInfo(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.00000051492", sukunimi = "Oppivelvollisuustieto", etunimet = "Slave2", kutsumanimi = "Slave2", hetu = Some("260904A350B"), syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091")), Some(oppivelvollisuustietoMaster)))
   val maksuttomuuttaPidennetty1 = koskiSpecificOppijat.oppija("Pidennetty1", "Maksuttomuutta1", "190525-0401", syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091"))
   val maksuttomuuttaPidennetty2 = koskiSpecificOppijat.oppija("Pidennetty2", "Maksuttomuutta2", "220835-2325", syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091"))
-  val vuonna2004SyntynytPeruskouluValmis2021 = koskiSpecificOppijat.oppija("Vuonna 2004 syntynyt", "Peruskoulu suoritettu 2021", "010104A153D", syntymäaika = Some(LocalDate.of(2004, 1, 1)))
-  val vuonna2004SyntynytMuttaPeruskouluValmisEnnen2021 = koskiSpecificOppijat.oppija("Vuonna 2004 syntynyt", "Peruskoulu suoritettu ennen 2021", "010104A811M", syntymäaika = Some(LocalDate.of(2004, 1, 1)))
-  val vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa = koskiSpecificOppijat.oppija("Vuonna 2005 syntynyt", "Ei opiskeluoikeuksia fikstuurissa", "030705A5719", syntymäaika = Some(LocalDate.of(2005, 7, 3)))
+  val vuonna2004SyntynytPeruskouluValmis2021 = koskiSpecificOppijat.oppija("Vuonna 2004 syntynyt", "Peruskoulu suoritettu 2021", "010104A153D", syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091"))
+  val vuonna2004SyntynytMuttaPeruskouluValmisEnnen2021 = koskiSpecificOppijat.oppija("Vuonna 2004 syntynyt", "Peruskoulu suoritettu ennen 2021", "010104A811M", syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091"))
+  val vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa = koskiSpecificOppijat.oppija("Vuonna 2005 syntynyt", "Ei opiskeluoikeuksia fikstuurissa", "030705A5719", syntymäaika = Some(LocalDate.of(2005, 7, 3)), kotikunta = Some("091"))
   val nuoriHetuton = koskiSpecificOppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.99999999888", sukunimi = "Hetuton", etunimet = "Veeti", kutsumanimi = "Veeti", hetu = None, syntymäaika = Some(LocalDate.of(2004, 2, 24)), yksilöity = false))
   val vuonna2005SyntynytUlkomainenVaihtoopiskelija = koskiSpecificOppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.55599999333", sukunimi = "Vaihto-opiskelija", etunimet = "Valter", kutsumanimi = "Valter", hetu = None, syntymäaika = Some(LocalDate.of(2005, 2, 24))))
   val vuonna2005SyntynytPeruskouluValmis2021 = koskiSpecificOppijat.oppija("Vuonna 2005 syntynyt", "Peruskoulu suoritettu 2021", "251105A2755", syntymäaika = Some(LocalDate.of(2005, 1, 1)))
+  val rikkinäinenOpiskeluoikeus = koskiSpecificOppijat.oppija("Rikkinäinen", "Opiskeluoikeus", "140615-7608", syntymäaika = Some(LocalDate.of(2003, 12, 31)))
+  val vuonna2004SyntynytPeruskouluValmis2021EiKotikuntaaSuomessa = koskiSpecificOppijat.oppija("Vuonna 2004 syntynyt maastamuuttaja", "Peruskoulu suoritettu 2021", "030904A251A", syntymäaika = Some(LocalDate.of(2004, 1, 1)))
+  val vuonna2004SyntynytPeruskouluValmis2021KotikuntaAhvenanmaalla = koskiSpecificOppijat.oppija("Vuonna 2004 syntynyt ahvenanmaalle muuttanut", "Peruskoulu suoritettu 2021", "070504A773H", syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("478"))
 
   //Jos luot uuden oppijan voi hetun generoida täältä: http://www.lintukoto.net/muut/henkilotunnus/index.php
   //Huomaa, että hetun pitää olla oikean kaltainen

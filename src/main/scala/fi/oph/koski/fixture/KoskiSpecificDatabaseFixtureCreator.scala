@@ -51,6 +51,11 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
           ostopalveluOpiskeluoikeus.tila.opiskeluoikeusjaksot.map(j => j.copy(alku = j.alku.minusDays(1)))
         )
       ), hkiTallentaja)),
+      (KoskiSpecificMockOppijat.rikkinäinenOpiskeluoikeus, MaksuttomuusRaporttiFixtures.opiskeluoikeusAmmatillinenMaksuttomuuttaPidennetty.copy(
+        tyyppi = OpiskeluoikeudenTyyppi.ammatillinenkoulutus.copy(
+          nimi = Some(LocalizedString.finnish("Ammatillinen koulutus")) // Normaalisti validaattori täyttää nimen, nyt esitäytetään se itse
+        )
+      )),
     )
   }
 
@@ -162,6 +167,8 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021, MaksuttomuusRaporttiFixtures.peruskouluSuoritettu2021),
       (KoskiSpecificMockOppijat.vuonna2004SyntynytMuttaPeruskouluValmisEnnen2021, MaksuttomuusRaporttiFixtures.peruskouluSuoritettu2020),
       (KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021, MaksuttomuusRaporttiFixtures.peruskouluSuoritettu2021),
+      (KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021EiKotikuntaaSuomessa, MaksuttomuusRaporttiFixtures.peruskouluSuoritettu2021),
+      (KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021KotikuntaAhvenanmaalla, MaksuttomuusRaporttiFixtures.peruskouluSuoritettu2021),
     )
   }
 
