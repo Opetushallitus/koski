@@ -241,12 +241,15 @@ describe("Oppijakohtainen näkymä", () => {
       school
       Lukion oppimäärä 2021 –
       Tila: Läsnä
+      Maksuttomuus:
+      15.8.2021–16.8.2021 maksuton17.8.2021–18.8.2021 maksullinen19.8.2021– maksuton
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 15.8.2021
       school
       International school 2004 –
       Tila: Läsnä
+      Maksuttomuus: Ei
       Toimipiste: International School of Helsinki
       Ryhmä: 9B
       Opiskeluoikeuden alkamispäivä: 15.8.2004
@@ -346,6 +349,8 @@ describe("Oppijakohtainen näkymä", () => {
       school
       Lukion oppimäärä 2021 –
       Tila: Läsnä
+      Maksuttomuus:
+      15.8.2021–16.8.2021 maksullinen17.8.2021–18.8.2021 maksuton19.8.2021–
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 15.8.2021
@@ -374,6 +379,8 @@ describe("Oppijakohtainen näkymä", () => {
       school
       Lukion oppimäärä 2021 –
       Tila: Opiskeluoikeus alkaa 3.10.2021
+      Maksuttomuus:
+      3.10.2021– maksuton
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 3.10.2021
@@ -530,6 +537,7 @@ describe("Oppijakohtainen näkymä", () => {
       school
       Lukion oppimäärä 2019 –
       Tila: Läsnä
+      Maksuttomuus: Ei
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 1.8.2019
@@ -552,6 +560,7 @@ describe("Oppijakohtainen näkymä", () => {
       school
       Lukion oppimäärä 2019 –
       Tila: Läsnä
+      Maksuttomuus: Ei
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 1.8.2019
@@ -589,6 +598,7 @@ describe("Oppijakohtainen näkymä", () => {
       school
       Lukion oppimäärä 2019 –
       Tila: Läsnä
+      Maksuttomuus: Ei
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 1.8.2019
@@ -611,6 +621,7 @@ describe("Oppijakohtainen näkymä", () => {
       school
       Lukion oppimäärä 2019 –
       Tila: Läsnä
+      Maksuttomuus: Ei
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 1.8.2019
@@ -801,6 +812,7 @@ describe("Oppijakohtainen näkymä", () => {
       school
       Lukion oppimäärä 2021 –
       Tila:	Väliaikaisesti keskeytynyt 2.8.2021
+      Maksuttomuus: Ei
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä:	AH
       Opiskeluoikeuden alkamispäivä:	1.8.2021
@@ -816,6 +828,8 @@ describe("Oppijakohtainen näkymä", () => {
       school
       Ammatillinen tutkinto 2021 –
       Tila:	Loma
+      Maksuttomuus:
+      1.8.2021– maksuton
       Toimipiste: Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka
       Opiskeluoikeuden alkamispäivä:	1.8.2021
     `)
@@ -830,6 +844,7 @@ describe("Oppijakohtainen näkymä", () => {
       school
       VALMA 2012 –
       Tila:	Läsnä
+      Maksuttomuus: Ei
       Toimipiste:	Stadin ammatti- ja aikuisopisto
       Opiskeluoikeuden alkamispäivä:	1.9.2012
     `)

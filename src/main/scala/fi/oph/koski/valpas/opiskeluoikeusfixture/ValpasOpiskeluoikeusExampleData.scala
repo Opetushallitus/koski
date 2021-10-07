@@ -626,7 +626,11 @@ object ValpasOpiskeluoikeusExampleData {
 
 
   def lukionOpiskeluoikeusAlkaa2021Syksyllä(
-    maksuttomuus: Option[List[Maksuttomuus]] = Some(List(Maksuttomuus(alku = date(2021, 8, 15) , loppu = None, maksuton = true)))
+    maksuttomuus: Option[List[Maksuttomuus]] = Some(List(
+      Maksuttomuus(alku = date(2021, 8, 15), loppu = Some(date(2021, 8, 16)), maksuton = true),
+      Maksuttomuus(alku = date(2021, 8, 17), loppu = Some(date(2021, 8, 18)), maksuton = false),
+      Maksuttomuus(alku = date(2021, 8, 19), loppu = None, maksuton = true),
+    ))
   ) = {
     val oo = ExamplesLukio2019.aktiivinenOpiskeluoikeus
     val edellisetLisätiedot = oo.lisätiedot.getOrElse(LukionOpiskeluoikeudenLisätiedot())

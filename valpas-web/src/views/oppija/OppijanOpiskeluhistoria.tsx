@@ -23,11 +23,12 @@ import {
 } from "../../state/apitypes/kuntailmoitus"
 import {
   aiempienOpintojenAlkamispäivä,
+  isPerusopetuksenJälkeinenOpiskeluoikeus,
   isValmistunutInternationalSchoolinPerusopetuksestaAiemminTaiLähitulevaisuudessa,
+  myöhempienOpintojenKoskiTilanAlkamispäivä,
   myöhempienOpintojenPäättymispäivä,
   myöhempienOpintojenTarkastelupäivänKoskiTila,
   myöhempienOpintojenTarkastelupäivänTila,
-  möyhempienOpintojenKoskiTilanAlkamispäivä,
   OpiskeluoikeusLaajatTiedot,
   sortOpiskeluoikeusLaajatTiedot,
 } from "../../state/apitypes/opiskeluoikeus"
@@ -36,7 +37,7 @@ import { OppivelvollisuudenKeskeytys } from "../../state/apitypes/oppivelvollisu
 import { organisaatioNimi } from "../../state/apitypes/organisaatiot"
 import { suorituksenTyyppiToKoulutustyyppi } from "../../state/apitypes/suorituksentyyppi"
 import { ISODate } from "../../state/common"
-import { formatDate, parseYear } from "../../utils/date"
+import { formatDate, formatDateRange, parseYear } from "../../utils/date"
 import { pick } from "../../utils/objects"
 import { OppijaKuntailmoitus } from "./OppijaKuntailmoitus"
 import "./OppijanOpiskeluhistoria.less"
@@ -155,6 +156,12 @@ const OpiskeluhistoriaOpinto = ({
           <InfoTableRow
             label={t("oppija__tila")}
             value={tilaString(opiskeluoikeus)}
+          />
+        )}
+        {isPerusopetuksenJälkeinenOpiskeluoikeus(opiskeluoikeus) && (
+          <InfoTableRow
+            label={t("oppija__maksuttomuus")}
+            value={maksuttomuusValue(opiskeluoikeus)}
           />
         )}
         <InfoTableRow
@@ -301,7 +308,7 @@ const tilaString = (opiskeluoikeus: OpiskeluoikeusLaajatTiedot): string => {
   switch (koskiTila.koodiarvo) {
     case "valiaikaisestikeskeytynyt":
       const tarkastelujaksonAlku = formatDate(
-        möyhempienOpintojenKoskiTilanAlkamispäivä(opiskeluoikeus)
+        myöhempienOpintojenKoskiTilanAlkamispäivä(opiskeluoikeus)
       )
       return t("oppija__tila_valiaikaisesti_keskeytynyt", {
         päivämäärä: tarkastelujaksonAlku,
@@ -310,3 +317,21 @@ const tilaString = (opiskeluoikeus: OpiskeluoikeusLaajatTiedot): string => {
       return koodistonimi(koskiTila)
   }
 }
+
+const maksuttomuusValue = (opiskeluoikeus: OpiskeluoikeusLaajatTiedot) =>
+  opiskeluoikeus.maksuttomuus ? (
+    <ul>
+      {opiskeluoikeus.maksuttomuus.map(({ maksuton, alku, loppu }) =>
+        t(
+          maksuton
+            ? "oppija__maksuttomuus_maksuttomuusjakso_maksuton"
+            : "oppija__maksuttomuus_maksuttomuusjakso_ei_maksuton",
+          {
+            aikaväli: formatDateRange(alku, loppu),
+          }
+        )
+      )}
+    </ul>
+  ) : (
+    t("oppija__maksuttomuus_ei_siirretty")
+  )

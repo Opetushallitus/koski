@@ -227,7 +227,7 @@ export const myöhempienOpintojenTarkastelupäivänKoskiTila = (
   return tiedot!.tarkastelupäivänKoskiTila
 }
 
-export const möyhempienOpintojenKoskiTilanAlkamispäivä = (
+export const myöhempienOpintojenKoskiTilanAlkamispäivä = (
   opiskeluoikeus: OpiskeluoikeusLaajatTiedot
 ): ISODate => {
   const tiedot =
@@ -236,3 +236,7 @@ export const möyhempienOpintojenKoskiTilanAlkamispäivä = (
 
   return tiedot!.tarkastelupäivänKoskiTilanAlkamispäivä
 }
+
+export const isPerusopetuksenJälkeinenOpiskeluoikeus = (
+  opiskeluoikeus: OpiskeluoikeusLaajatTiedot
+): boolean => opiskeluoikeus.perusopetuksenJälkeinenTiedot !== undefined
