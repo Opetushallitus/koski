@@ -5,6 +5,7 @@ import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.Organisaatiotyyppi
+import fi.oph.koski.raportit.AhvenanmaanKunnat
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeusSuppeatTiedot, ValpasOppijaLaajatTiedot, ValpasOppilaitos}
@@ -120,7 +121,9 @@ class ValpasKuntailmoitusService(
   def haePohjatiedot(
     pohjatiedotInput: ValpasKuntailmoitusPohjatiedotInput
   )(implicit session: ValpasSession): Either[HttpStatus, ValpasKuntailmoitusPohjatiedot] = {
-    val kunnat = organisaatioService.aktiivisetKunnat()
+    val kunnat = organisaatioService
+      .aktiivisetKunnat()
+      .filterNot(AhvenanmaanKunnat.onAhvenanmaalainenKunta)
     val maat = haeMaat()
 
     for {

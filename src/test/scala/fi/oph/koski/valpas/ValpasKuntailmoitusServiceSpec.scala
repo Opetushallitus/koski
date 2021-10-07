@@ -4,6 +4,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.ExampleData
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
+import fi.oph.koski.raportit.AhvenanmaanKunnat
 import fi.oph.koski.schema.{Koodistokoodiviite, OidOrganisaatio, Oppilaitos}
 import fi.oph.koski.util.DateOrdering
 import fi.oph.koski.valpas.hakukooste.HakukoosteExampleData
@@ -196,7 +197,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
   }
 
   "Pohjatiedoissa palautetaan lista kunnista" in {
-    val expectedKunnat = KoskiApplicationForTests.organisaatioService.aktiivisetKunnat()
+    val expectedKunnat = KoskiApplicationForTests.organisaatioService.aktiivisetKunnat().filterNot(AhvenanmaanKunnat.onAhvenanmaalainenKunta)
 
     val input = ValpasKuntailmoitusPohjatiedotInput(
       tekijäOrganisaatio = Some(Oppilaitos(oid = MockOrganisaatiot.jyväskylänNormaalikoulu)),
