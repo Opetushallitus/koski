@@ -157,7 +157,7 @@ object VapaaSivistystyöExample {
   )
 
   lazy val suoritusVapaatavoitteinenKoulutus = VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(
-    toimipiste = OidOrganisaatio(MockOrganisaatiot.itäsuomenYliopisto),
+    toimipiste = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopisto),
     tyyppi = Koodistokoodiviite(koodiarvo = "vstvapaatavoitteinenkoulutus", koodistoUri = "suorituksentyyppi"),
     koulutusmoduuli = VapaanSivistystyönVapaatavoitteinenKoulutus(laajuus = Some(LaajuusOpintopisteissä(5))),
     vahvistus = vahvistus(päivä = date(2022, 5, 31)),
