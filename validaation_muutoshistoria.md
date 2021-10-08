@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## x.10.2021
+
+- Ammatillisen koulutuksen Yhteisille tutkinnon osille (YhteinenTutkinnonOsa-rakenne) sallitaan tunnisteen koodiarvoiksi myös '600001' ja '600002'
+
 ## 4.10.2021
 
 - Opiskeluoikeuden yhteydessä on siirrettävä maksuttomuustiedot, kun kaikki seuraavat ehdot täyttyvät:
