@@ -263,12 +263,12 @@ class OppivelvollisuustietoSpec
         queryResult should contain(Oppivelvollisuustieto(
           master.oid,
           oppivelvollisuusVoimassaAsti = date(2022, 1, 1),
-          oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2025, 1, 27)
+          oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2024, 12, 31)
         ))
         queryResult should contain(Oppivelvollisuustieto(
           slave1.oid,
           oppivelvollisuusVoimassaAsti = date(2022, 1, 1),
-          oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2025, 1, 27)
+          oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2024, 12, 31)
         ))
       }
     }
