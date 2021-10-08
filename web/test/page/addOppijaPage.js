@@ -104,7 +104,7 @@ function AddOppijaPage() {
         oppimäärä: 'Vapaan sivistystyön vapaatavoitteinen koulutus',
         suorituskieli: 'suomi',
         tila: 'Hyväksytysti suoritettu',
-        alkamispäivä: '1.8.2021'
+        alkamispäivä: new Date().getDate() + '.' + (1 + new Date().getMonth()) + '.' + new Date().getFullYear()
       })
       return function() {
         return api.enterData(params)()
