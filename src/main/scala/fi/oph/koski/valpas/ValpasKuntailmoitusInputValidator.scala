@@ -2,6 +2,7 @@ package fi.oph.koski.valpas
 
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.organisaatio.{OrganisaatioRepository, Organisaatiotyyppi}
+import fi.oph.koski.raportit.AhvenanmaanKunnat
 import fi.oph.koski.schema.{Oppilaitos, OrganisaatioWithOid, Toimipiste}
 import fi.oph.koski.userdirectory.{DirectoryClient, DirectoryUser}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
@@ -92,6 +93,10 @@ class ValpasKuntailmoitusInputValidator(
       case _: Oppilaitos => virheIlmoitus
       case _: Toimipiste => virheIlmoitus
       case o: OrganisaatioWithOid if !isAktiivinenKunta(o) => virheIlmoitus
+      case o: OrganisaatioWithOid if AhvenanmaanKunnat.onAhvenanmaalainenKunta(o) => Left(
+        ValpasErrorCategory.validation.kuntailmoituksenKohde(
+          s"Kuntailmoituksen kohde ${kuntailmoitusInput.kuntailmoitus.kunta.oid} on ahvenanmaalainen kunta"
+        ))
       case _ => Right(kuntailmoitusInput)
     }
   }

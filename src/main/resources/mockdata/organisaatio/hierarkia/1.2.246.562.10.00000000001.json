@@ -22717,6 +22717,32 @@
         "organisaatiotyyppi_09"
       ],
       "status": "PASSIIVINEN"
+    },
+    {
+      "oid": "1.2.246.562.10.58591019367",
+      "alkuPvm": 258760800000,
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "|1.2.246.562.10.00000000001|",
+      "ytunnus": "",
+      "toimipistekoodi": "",
+      "match": true,
+      "nimi": {
+        "fi": "Maarianhamina"
+      },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1",
+        "oppilaitoksenopetuskieli_2#1",
+        "oppilaitoksenopetuskieli_3#1"
+      ],
+      "kotipaikkaUri": "kunta_478",
+      "children": [],
+      "aliOrganisaatioMaara": 0,
+      "organisaatiotyypit": [
+        "organisaatiotyyppi_01",
+        "organisaatiotyyppi_07",
+        "organisaatiotyyppi_09"
+      ],
+      "status": "AKTIIVINEN"
     }
   ]
 }

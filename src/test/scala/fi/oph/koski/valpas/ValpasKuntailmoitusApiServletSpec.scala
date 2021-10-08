@@ -747,6 +747,19 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     }
   }
 
+  "Kuntailmoituksen tekeminen ahvenanmaalaiselle kunnalle ei onnistu" in {
+    val minimiKuntailmoitus = teeMinimiKuntailmoitusInput(kuntaOid = MockOrganisaatiot.maarianhamina)
+
+    post("/valpas/api/kuntailmoitus", body = minimiKuntailmoitus, headers = authHeaders() ++ jsonContent) {
+      verifyResponseStatus(
+        400,
+        ValpasErrorCategory.validation.kuntailmoituksenKohde(
+          s"Kuntailmoituksen kohde ${MockOrganisaatiot.maarianhamina} on ahvenanmaalainen kunta"
+        )
+      )
+    }
+  }
+
   private def teeMinimiKuntailmoitusInput(
     oppijaOid: String = ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid,
     tekijäOid: String = MockOrganisaatiot.jyväskylänNormaalikoulu,

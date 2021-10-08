@@ -1,5 +1,7 @@
 package fi.oph.koski.raportit
 
+import fi.oph.koski.schema.OrganisaatioWithOid
+
 object AhvenanmaanKunnat {
   val ahvenanmaanKunnat = List(
     "035",
@@ -19,4 +21,10 @@ object AhvenanmaanKunnat {
     "771",
     "941"
   )
+
+  def onAhvenanmaalainenKunta(o: OrganisaatioWithOid): Boolean =
+    o.kotipaikka match {
+      case Some(kotipaikka) => ahvenanmaanKunnat.contains(kotipaikka.koodiarvo)
+      case None => false
+    }
 }
