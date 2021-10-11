@@ -318,20 +318,36 @@ const tilaString = (opiskeluoikeus: OpiskeluoikeusLaajatTiedot): string => {
   }
 }
 
-const maksuttomuusValue = (opiskeluoikeus: OpiskeluoikeusLaajatTiedot) =>
-  opiskeluoikeus.maksuttomuus ? (
+const maksuttomuusValue = (opiskeluoikeus: OpiskeluoikeusLaajatTiedot) => {
+  const maksuttomuusRivit = (opiskeluoikeus.maksuttomuus || []).map(
+    ({ maksuton, alku, loppu }) =>
+      t(
+        maksuton
+          ? "oppija__maksuttomuus_maksuttomuusjakso_maksuton"
+          : "oppija__maksuttomuus_maksuttomuusjakso_ei_maksuton",
+        {
+          aikaväli: formatDateRange(alku, loppu),
+        }
+      )
+  )
+
+  const maksuttomuudenPidennysRivit = (
+    opiskeluoikeus.oikeuttaMaksuttomuuteenPidennetty || []
+  ).map(({ alku, loppu }) =>
+    t("oppija__oikeutta_maksuttomuuteen_pidennetty", {
+      aikaväli: formatDateRange(alku, loppu),
+    })
+  )
+
+  const rivit = [...maksuttomuudenPidennysRivit, ...maksuttomuusRivit]
+
+  return A.isNonEmpty(rivit) ? (
     <ul>
-      {opiskeluoikeus.maksuttomuus.map(({ maksuton, alku, loppu }) =>
-        t(
-          maksuton
-            ? "oppija__maksuttomuus_maksuttomuusjakso_maksuton"
-            : "oppija__maksuttomuus_maksuttomuusjakso_ei_maksuton",
-          {
-            aikaväli: formatDateRange(alku, loppu),
-          }
-        )
-      )}
+      {rivit.map((rivi, index) => (
+        <li key={index}>{rivi}</li>
+      ))}
     </ul>
   ) : (
     t("oppija__maksuttomuus_ei_siirretty")
   )
+}

@@ -93,6 +93,10 @@ const opiskeluoikeusIntSchoolPerusopetusPath = createOppijaPath("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000094",
 })
 
+const maksuttomuuttaPidennettyPath = createOppijaPath("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000127",
+})
+
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
 const secondaryHeadingEquals = (expected: string) =>
@@ -242,7 +246,9 @@ describe("Oppijakohtainen näkymä", () => {
       Lukion oppimäärä 2021 –
       Tila: Läsnä
       Maksuttomuus:
-      15.8.2021–16.8.2021 maksuton17.8.2021–18.8.2021 maksullinen19.8.2021– maksuton
+      15.8.2021–16.8.2021 maksuton
+      17.8.2021–18.8.2021 maksullinen
+      19.8.2021– maksuton
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 15.8.2021
@@ -350,7 +356,9 @@ describe("Oppijakohtainen näkymä", () => {
       Lukion oppimäärä 2021 –
       Tila: Läsnä
       Maksuttomuus:
-      15.8.2021–16.8.2021 maksullinen17.8.2021–18.8.2021 maksuton19.8.2021–
+      15.8.2021–16.8.2021 maksuton
+      17.8.2021–18.8.2021 maksullinen
+      19.8.2021– maksuton
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 15.8.2021
@@ -847,6 +855,22 @@ describe("Oppijakohtainen näkymä", () => {
       Maksuttomuus: Ei
       Toimipiste:	Stadin ammatti- ja aikuisopisto
       Opiskeluoikeuden alkamispäivä:	1.9.2012
+    `)
+  })
+
+  it("Näyttää maksuttomuuden pidennyksen", async () => {
+    await loginAs(maksuttomuuttaPidennettyPath, "valpas-monta")
+    await mainHeadingEquals("Maksuttomuutta-pidennetty Valpas (070604A200U)")
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000127")
+    await opiskeluhistoriaEquals(`
+      school
+      Ammatillinen tutkinto 2021 –
+      Tila:	Läsnä
+      Maksuttomuus:
+      Oikeutta maksuttomuuteen pidennetty 1.9.2021–31.12.2023
+      1.9.2021– maksuton
+      Toimipiste:	Omnia Koulutus, Arbetarinstitut
+      Opiskeluoikeuden alkamispäivä: 1.9.2021
     `)
   })
 })

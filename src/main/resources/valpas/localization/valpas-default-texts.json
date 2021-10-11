@@ -135,6 +135,7 @@
   "oppija__maksuttomuus": "Maksuttomuus",
   "oppija__maksuttomuus_maksuttomuusjakso_maksuton": "{{aikaväli}} maksuton",
   "oppija__maksuttomuus_maksuttomuusjakso_ei_maksuton": "{{aikaväli}} maksullinen",
+  "oppija__oikeutta_maksuttomuuteen_pidennetty": "Oikeutta maksuttomuuteen pidennetty {{aikaväli}}",
   "oppija__maksuttomuus_ei_siirretty": "Ei",
   "oppija__international_school_perusopetuksen_vahvistuspäivä": "Perusopetus suoritettu",
   "oppija__keskeytä_oppivelvollisuus": "Keskeytä oppivelvollisuus",

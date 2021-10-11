@@ -34,7 +34,7 @@ export const jklNormaalikouluSuorittaminenTableContent = `
   LukionLokakuussaAloittanut Valpas                               | 18.4.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  3.10.2021 | –         | –                                            | 18.4.2023 asti
     `
 
-export const stadinAmmattiopistoSuorittaminenTableHead = "Oppivelvolliset (13)"
+export const stadinAmmattiopistoSuorittaminenTableHead = "Oppivelvolliset (14)"
 
 export const stadinAmmattiopistoSuorittaminenTableContent = `
   Amis-eronnut Valpas                                                  | 1.8.2005   | Ammatillinen tutkinto | warningEronnut | Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka | 1.8.2021 | 2.9.2021 | –                                                             | 1.8.2023 asti
@@ -48,9 +48,10 @@ export const stadinAmmattiopistoSuorittaminenTableContent = `
   Amis-opiskelija Valpas                                               | 23.10.2005 | Ammatillinen tutkinto | Läsnä          | Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka | 1.9.2012 | –        | –                                                             | 23.10.2023 asti
   Amis-useita-pts Valpas                                               | 28.5.2005  | Ammatillinen tutkinto | Läsnä          | Useita toimipisteitä                                         | 1.9.2012 | –        | –                                                             | 28.5.2023 asti
   Kaksi-toisen-asteen-opiskelua Valpas                                 | 12.5.2004  | VALMA                 | Läsnä          | Stadin ammatti- ja aikuisopisto                              | 1.9.2012 | –        | Ressun lukio, Ammatillinen koulutus                           | 12.5.2022 asti
+  Maksuttomuutta-pidennetty Valpas                                     | 7.6.2004   | Ammatillinen tutkinto | Läsnä          | Omnia Koulutus, Arbetarinstitut                              | 1.9.2021 | –        | –                                                             | 7.6.2022 asti
   Telma-opiskelija Valpas                                              | 2.8.2005   | TELMA                 | Läsnä          | Stadin ammatti- ja aikuisopisto                              | 1.9.2012 | –        | –                                                             | 2.8.2023 asti
   Valma-opiskelija Valpas                                              | 19.1.2005  | VALMA                 | Läsnä          | Stadin ammatti- ja aikuisopisto                              | 1.9.2012 | –        | –                                                             | 19.1.2023 asti
-    `
+  `
 
 export const internationalSchoolSuorittaminenTableHead = "Oppivelvolliset (7)"
 export const internationalSchoolSuorittaminenTableContent = `
