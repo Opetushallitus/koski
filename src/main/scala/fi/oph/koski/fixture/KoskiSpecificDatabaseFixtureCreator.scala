@@ -169,6 +169,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021, MaksuttomuusRaporttiFixtures.peruskouluSuoritettu2021),
       (KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021EiKotikuntaaSuomessa, MaksuttomuusRaporttiFixtures.peruskouluSuoritettu2021),
       (KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021KotikuntaAhvenanmaalla, MaksuttomuusRaporttiFixtures.peruskouluSuoritettu2021),
+      (KoskiSpecificMockOppijat.vuonna2004SyntynytMuttaEronnutPeruskoulustaEnnen2021, MaksuttomuusRaporttiFixtures.peruskouluEronnut2020),
     )
   }
 

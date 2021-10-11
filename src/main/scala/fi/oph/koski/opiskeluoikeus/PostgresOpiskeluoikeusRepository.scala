@@ -205,6 +205,7 @@ class PostgresOpiskeluoikeusRepository(
         )
         select
           alkamispaiva,
+          paattymispaiva,
           ((suoritukset -> 'vahvistus' ->> 'päivä')::date) as vahvistuspaiva
         from opiskeluoikeus
         cross join jsonb_array_elements(data -> 'suoritukset') suoritukset
@@ -220,7 +221,8 @@ class PostgresOpiskeluoikeusRepository(
   private implicit def getPäivämääräväli: GetResult[Päivämääräväli] = GetResult(r => {
     Päivämääräväli(
       alku = r.getLocalDate("alkamispaiva"),
-      loppu = r.getLocalDateOption("vahvistuspaiva"),
+      päättymispäivä = r.getLocalDateOption("paattymispaiva"),
+      vahvistuspäivä = r.getLocalDateOption("vahvistuspaiva"),
     )
   })
 
@@ -373,5 +375,6 @@ class PostgresOpiskeluoikeusRepository(
 
 case class Päivämääräväli(
   alku: LocalDate,
-  loppu: Option[LocalDate],
+  päättymispäivä: Option[LocalDate],
+  vahvistuspäivä: Option[LocalDate],
 )

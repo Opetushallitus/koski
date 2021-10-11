@@ -68,9 +68,10 @@ object MaksuttomuusValidation {
     } else {
       // Päättele onko maksuttomuustiedot pakko siirtää
       val laajennetunOppivelvollisuudenPiirissä = eiLaajennettuOppivelvollinenSyyt.isEmpty
-      val ollutPeruskoulussaValpasLainAikana = perusopetuksenAikavälit.exists(_.loppu match {
-        case Some(loppu) if !loppu.isBefore(rajapäivät.lakiVoimassaPeruskoulustaValmistuneillaAlku) => true
-        case None => true
+      val ollutPeruskoulussaValpasLainAikana = perusopetuksenAikavälit.exists(p => (p.vahvistuspäivä, p.päättymispäivä) match {
+        case (Some(vahvistus), Some(_)) => !vahvistus.isBefore(rajapäivät.lakiVoimassaPeruskoulustaValmistuneillaAlku)
+        case (None, Some(päättymis)) => !päättymis.isBefore(rajapäivät.lakiVoimassaPeruskoulustaValmistuneillaAlku)
+        case _ => true
       })
       val oppijallaKotikuntaSuomessa = oppijanHenkilötiedot.exists(!_.laajennetunOppivelvollisuudenUlkopuolinenKunnanPerusteella)
       val opiskeluoikeusOnAktiivinen = opiskeluoikeus.päättymispäivä match {
@@ -119,7 +120,7 @@ object MaksuttomuusValidation {
 
 
     // Oppijalla on Koskessa valmistumismerkintä peruskoulusta (tai vastaavasta) 31.12.2020 tai aiemmin
-    val valmistunutPeruskoulustaEnnen2021 = perusopetuksenAikavälit.exists(p => p.loppu.exists(_.isBefore(lakiVoimassaPeruskoulustaValmistuneille)))
+    val valmistunutPeruskoulustaEnnen2021 = perusopetuksenAikavälit.exists(p => p.vahvistuspäivä.exists(_.isBefore(lakiVoimassaPeruskoulustaValmistuneille)))
 
     val oppijanIkäOikeuttaaMaksuttomuuden = oppijanSyntymäpäivä.exists(bd => !lakiVoimassaVanhinSyntymäaika.isAfter(bd))
 
