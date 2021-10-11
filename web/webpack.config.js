@@ -48,8 +48,10 @@ module.exports = {
           {
             loader: 'postcss-loader',
             options: {
-              plugins: function () {
-                return [autoprefixer('last 2 versions')]
+              postcssOptions: {
+                plugins: [
+                  ['postcss-preset-env', {}]
+                ]
               }
             }
           },
