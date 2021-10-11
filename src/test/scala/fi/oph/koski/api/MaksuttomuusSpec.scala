@@ -394,6 +394,24 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
 
         resetFixtures()
       }
+      "Ei tarvitse siirtää, jos peruskoulu loppunut ennen vuotta 2021" in {
+        val alkamispäivä = date(2021, 1, 1)
+        val opiskeluoikeus = LukioExampleData.alkamispäivällä(LukioExampleData.lukionOpiskeluoikeus(), alkamispäivä)
+        val oppija = KoskiSpecificMockOppijat.vuonna2004SyntynytMuttaPeruskouluValmisEnnen2021
+
+        putOpiskeluoikeus(opiskeluoikeus, oppija) {
+          verifyResponseStatusOk()
+        }
+      }
+      "Ei tarvitse siirtää, jos peruskoulu loppunut eroamiseen ennen vuotta 2021" in {
+        val alkamispäivä = date(2021, 1, 1)
+        val opiskeluoikeus = LukioExampleData.alkamispäivällä(LukioExampleData.lukionOpiskeluoikeus(), alkamispäivä)
+        val oppija = KoskiSpecificMockOppijat.vuonna2004SyntynytMuttaEronnutPeruskoulustaEnnen2021
+
+        putOpiskeluoikeus(opiskeluoikeus, oppija) {
+          verifyResponseStatusOk()
+        }
+      }
       "Ei tarvitse siirtää, jos kotikunta ei ole Suomessa" in {
         val alkamispäivä = date(2021, 1, 1)
         val opiskeluoikeus = LukioExampleData.alkamispäivällä(LukioExampleData.lukionOpiskeluoikeus(), alkamispäivä)
