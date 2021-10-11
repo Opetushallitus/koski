@@ -203,6 +203,47 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
     }
   }
 
+  "Historian kurssien konversiot kun perusteen diaarinumero '70/011/2015' (Aikuisten lukiokoulutuksen opetussuunnitelman perusteet)" - {
+    "Oppimäärä, perusteen diaarina '70/011/2015'" in {
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
+        vahvistus = None,
+        osasuoritukset = Some(List(suoritus(lukionOppiaine("HI", laajuus(2.0f), None)).copy(
+          osasuoritukset = Some(List(
+            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("HI2")),
+            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("HI3"))
+          ))
+        ))),
+        koulutusmoduuli = päättötodistusSuoritus.koulutusmoduuli.copy(
+          perusteenDiaarinumero = Some("70/011/2015")
+        )
+      )))
+      val result = putAndGetOpiskeluoikeus(oo)
+      result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI2").get.koulutusmoduuli.nimi.get("fi") should equal ("Itsenäisen Suomen historia")
+      result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI3").get.koulutusmoduuli.nimi.get("fi") should equal ("Kansainväliset suhteet")
+    }
+
+    "Aineopiskelija, perusteen diaarina '70/011/2015'" in {
+      val suoritus = ExamplesLukio.aineopiskelija.suoritukset.head.asInstanceOf[LukionOppiaineenOppimääränSuoritus2015]
+      val koulutusmoduuli = suoritus.koulutusmoduuli.asInstanceOf[LukionMuuValtakunnallinenOppiaine2015].copy(
+        perusteenDiaarinumero = Some("70/011/2015")
+      )
+      val oo = ExamplesLukio.aineopiskelija.copy(
+        suoritukset = List(suoritus.copy(
+          koulutusmoduuli = koulutusmoduuli
+        ))
+      )
+      val result = putAndGetOpiskeluoikeus(oo)
+      result.suoritukset.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI2").get.koulutusmoduuli.nimi.get("fi") should equal ("Itsenäisen Suomen historia")
+      result.suoritukset.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI3").get.koulutusmoduuli.nimi.get("fi") should equal ("Kansainväliset suhteet")
+    }
+
+    "Perusteen diaarinumerona jokin muu kuin '70/011/2015'; Konversiota ei tehdä" in {
+      val result = putAndGetOpiskeluoikeus(ExamplesLukio.aineopiskelija)
+      result.suoritukset.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI2").get.koulutusmoduuli.nimi.get("fi") should not equal ("Itsenäisen Suomen historia")
+      result.suoritukset.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI3").get.koulutusmoduuli.nimi.get("fi") should not equal ("Kansainväliset suhteet")
+    }
+  }
+
   "Äidinkielen omainen oppiaine" - {
     def verify[A](kieli: String)(expect: => A): A = {
       val oo = defaultOpiskeluoikeus.copy(
@@ -231,5 +272,10 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.deprekoituKielikoodi("Äidinkielen omaisen oppiaineen kieli tulee olla suomi tai ruotsi"))
       }
     }
+  }
+
+  private def putAndGetOpiskeluoikeus(oo: LukionOpiskeluoikeus): Opiskeluoikeus = putOpiskeluoikeus(oo) {
+    verifyResponseStatusOk()
+    getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
   }
 }

@@ -12,7 +12,10 @@ import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 
 object ExamplesLukio {
+
   def oppija(opiskeluoikeus: LukionOpiskeluoikeus) = Oppija(exampleHenkilö, List(opiskeluoikeus))
+
+  val aikuistenOpsinPerusteet2015 = "70/011/2015"
 
   lazy val erityisenKoulutustehtävänJakso = ErityisenKoulutustehtävänJakso(date(2012, 9, 1), Some(date(2013, 9, 1)), Koodistokoodiviite("103", Some("Kieliin painottuva koulutus"), "erityinenkoulutustehtava"))
   lazy val ulkomaanjakso = Ulkomaanjakso(date(2012, 9, 1), Some(date(2013, 9, 1)), ruotsi, "Harjoittelua ulkomailla")
