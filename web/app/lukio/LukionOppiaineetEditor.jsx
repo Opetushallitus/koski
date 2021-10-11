@@ -2,7 +2,7 @@ import React from 'react'
 import * as R from 'ramda'
 import {LukionOppiaineEditor} from './LukionOppiaineEditor'
 import {UusiLukionOppiaineDropdown} from './UusiLukionOppiaineDropdown'
-import {modelErrorMessages, modelItems, modelLookup, modelTitle} from '../editor/EditorModel'
+import {modelErrorMessages, modelItems, modelLookup, modelData} from '../editor/EditorModel'
 import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTableHead'
 import {t} from '../i18n/i18n'
 import {flatMapArray} from '../util/util'
@@ -48,7 +48,7 @@ export const LukionOppiaineetEditor = ({
   )
   const oppiaineetWithErrorRows = R.zip(oppiaineRows, errorRows)
   const laajuusyksikkö = (forceLaajuusOpintopisteinä && 'opintopistettä') ||
-    modelTitle(oppiaineet[0], 'koulutusmoduuli.laajuus.yksikkö') || 'kurssia'
+    modelData(oppiaineet[0], 'koulutusmoduuli.laajuus.yksikkö.nimi.fi') || 'kurssia'
 
   const arvosanaHeaderText = showKeskiarvo ? 'Arvosana (keskiarvo)' : 'Arvosana'
 

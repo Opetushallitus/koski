@@ -1557,5 +1557,6 @@
   "description:Vapaatavoitteisen vapaan sivistystyön koulutuksen tunnistetiedot": "Vapaatavoitteisen vapaan sivistystyön koulutuksen tunnistetiedot",
   "Vapaatavoitteisen vapaan sivistyön koulutuksen osasuoritus": "Vapaatavoitteisen vapaan sivistyön koulutuksen osasuoritus",
   "tooltip:Lasketaan automaattisesti tallentamisen jälkeen osasuoritusten...": "Lasketaan automaattisesti tallentamisen jälkeen osasuoritusten laajuuksista",
-  "tooltip:Opiskelija on suorittanut koko lukion...": "Opiskelija on suorittanut koko lukion oppimäärän ja saanut lukion päättötodistuksen"
+  "tooltip:Opiskelija on suorittanut koko lukion...": "Opiskelija on suorittanut koko lukion oppimäärän ja saanut lukion päättötodistuksen",
+  "Valinnaisena suoritetut lukion moduulit": "Valinnaisena suoritetut lukion moduulit"
 }
