@@ -1,5 +1,6 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const autoprefixer = require('autoprefixer')
+const ESLintPlugin = require('eslint-webpack-plugin')
 
 module.exports = {
   entry: {
@@ -36,15 +37,6 @@ module.exports = {
         }
       },
       {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        loader: 'eslint-loader',
-        options: {
-          failOnWarning: !!process.env.failOnWarning,
-          failOnError: true
-        }
-      },
-      {
         test: /\.less$/,
         use: [
           {
@@ -69,6 +61,10 @@ module.exports = {
     ]
   },
   plugins: [
+    new ESLintPlugin({
+      extensions: ['js', 'jsx'],
+      failOnWarning: true
+    }),
     new CopyWebpackPlugin(
       [
         {from: 'static'},
