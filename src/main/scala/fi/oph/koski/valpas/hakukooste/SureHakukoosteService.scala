@@ -2,7 +2,7 @@ package fi.oph.koski.valpas.hakukooste
 
 import com.typesafe.config.Config
 import fi.oph.koski.http.Http.{StringToUriConverter, parseJsonWithDeserialize, unsafeRetryingClient}
-import fi.oph.koski.http.{Http, HttpStatus, HttpStatusException, ServiceConfig, VirkailijaHttpClient}
+import fi.oph.koski.http.{Http, HttpException, HttpStatus, ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.lenientDeserialization
@@ -47,7 +47,7 @@ class SureHakukoosteService(config: Config, validatingAndResolvingExtractor: Val
       Http.runIO(
         http.post(s"$baseUrl/rest/v1/valpas/${queryParams}".toUri, oppijaOids.toSeq)(encoder)(decoder)
           .handleError {
-            case e: HttpStatusException =>
+            case e: HttpException =>
               logger.error(s"Bad response from Suoritusrekisteri for ${errorClue}: " + e.toString)
               Left(ValpasErrorCategory.unavailable.sure())
             case e: Exception =>
