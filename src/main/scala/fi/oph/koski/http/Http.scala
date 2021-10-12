@@ -18,6 +18,7 @@ import org.json4s.jackson.JsonMethods.parse
 import org.typelevel.ci.CIString
 
 import java.net.URLEncoder
+import java.util.concurrent.TimeoutException
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.reflect.runtime.universe.TypeTag
@@ -205,6 +206,9 @@ case class Http(root: String, client: Client[IO]) extends Logging {
         case e: HttpStatusException =>
           httpLogger.log(e)
           IO.raiseError(e)
+        case e: TimeoutException =>
+          httpLogger.log(e)
+          IO.raiseError(HttpStatusException(504, s"Connection timed out: ${e.getMessage}", request))
         case e: Exception =>
           httpLogger.log(e)
           IO.raiseError(HttpConnectionException(e.getClass.getName + ": " + e.getMessage, request))
