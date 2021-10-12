@@ -132,6 +132,7 @@ object ValpasMockOppijat {
   val telma = valpasOppijat.oppijaSyntymäaikaHetusta("Telma", "Valpas", "160304A7532", kotikunta = Some("091"))
   val telmaJaAmis = valpasOppijat.oppijaSyntymäaikaHetusta("Telma-ja-amis", "Valpas", "030204A7935", kotikunta = Some("091"))
   val kaksiToisenAsteenOpiskelua = valpasOppijat.oppijaSyntymäaikaHetusta("Kaksi-toisen-asteen-opiskelua", "Valpas", "120504A399N", kotikunta = Some("091"))
+  val kotiopetusMeneilläänVanhallaRakenteellaOppija = valpasOppijat.oppijaSyntymäaikaHetusta("Kotiopetus-meneillä-vanha-rakenne", "Valpas", "170205A776W", kotikunta = Some("091"))
 
   // Kutsumanimi ja yhteystiedot haetaan oppijanumerorekisteristä Valpas-käyttäjälle, tallennetaan siksi käyttäjä myös "oppijana" mockeihin
   val käyttäjäValpasJklNormaalikoulu = valpasOppijat.oppija(
