@@ -201,13 +201,13 @@ case class Http(root: String, client: Client[IO]) extends Logging {
         // TODO: Toteuta decoderit EntityDecoder-tyyppisinä?
         response.as[String].map(body => decoder(response.status.code, body, request))
       }
-      .handleError {
+      .handleErrorWith {
         case e: HttpStatusException =>
           httpLogger.log(e)
-          throw e
+          IO.raiseError(e)
         case e: Exception =>
           httpLogger.log(e)
-          throw HttpConnectionException(e.getClass.getName + ": " + e.getMessage, request)
+          IO.raiseError(HttpConnectionException(e.getClass.getName + ": " + e.getMessage, request))
       }
   }
 
