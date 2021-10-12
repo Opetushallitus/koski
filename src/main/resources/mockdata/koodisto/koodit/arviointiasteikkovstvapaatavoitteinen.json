@@ -1,49 +1,5 @@
 [
   {
-  "koodiUri": "arviointiasteikkovstvapaatavoitteinen_hylatty",
-  "koodiArvo": "Hylätty",
-  "metadata": [
-    {
-      "nimi": "Hylätty",
-      "lyhytNimi": "Hylätty",
-      "kieli": "FI"
-    },
-    {
-      "nimi": "Underkänd",
-      "lyhytNimi": "Underkänd",
-      "kieli": "SV"
-    },
-    {
-      "nimi": "Hylätty",
-      "lyhytNimi": "Hylätty",
-      "kieli": "EN"
-    }
-  ],
-  "versio": 1,
-  "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkovstvapaatavoitteinen_hyvaksytty",
-    "koodiArvo": "Hyväksytty",
-    "metadata": [
-      {
-        "nimi": "Hyväksytty",
-        "lyhytNimi": "Hyväksytty",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Godkänd",
-        "lyhytNimi": "Godkänd",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Hyväksytty",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  }, {
     "koodiUri": "arviointiasteikkovstvapaatavoitteinen_1",
     "koodiArvo": "1",
     "metadata": [

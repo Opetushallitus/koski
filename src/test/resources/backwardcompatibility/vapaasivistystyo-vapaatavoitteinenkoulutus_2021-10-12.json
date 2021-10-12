@@ -172,11 +172,11 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "Hyväksytty",
+            "koodiarvo" : "2",
             "koodistoUri" : "arviointiasteikkovstvapaatavoitteinen"
           },
           "päivä" : "2021-10-30",
-          "hyväksytty" : true
+          "hyväksytty" : false
         } ],
         "osasuoritukset" : [ {
           "koulutusmoduuli" : {
@@ -213,11 +213,11 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "Hyväksytty",
+              "koodiarvo" : "2",
               "koodistoUri" : "arviointiasteikkovstvapaatavoitteinen"
             },
             "päivä" : "2021-10-30",
-            "hyväksytty" : true
+            "hyväksytty" : false
           } ]
         } ]
       } ]
