@@ -132,7 +132,7 @@ object Http extends Logging {
     case (status, text) => throw HttpStatusException(status, text, request)
   }
 
-  def statusCode(status: Int, text: String, request: Request[IO]): Int = (status, text) match {
+  def statusCode(status: Int, text: String, _request: Request[IO]): Int = (status, text) match {
     case (code, _) => code
   }
 
@@ -182,17 +182,23 @@ case class Http(root: String, client: Client[IO]) extends Logging {
     (request: Request[IO], uriTemplate: String)
     (decoder: (Int, String, Request[IO]) => ResultType)
   : IO[ResultType] = {
-    val fullRequest = request
-      .withUri(addRoot(request.uri))
-      .withHeaders(request.headers ++ commonHeaders)
+    runRequest(uriTemplate, decoder)(
+      request
+        .withUri(addRoot(request.uri))
+        .withHeaders(request.headers ++ commonHeaders)
+    )
+  }
 
-    val httpLogger = HttpResponseLog(fullRequest, root + uriTemplate)
-
+  private def runRequest[ResultType]
+    (uriTemplate: String, decoder: (Int, String, Request[IO]) => ResultType)
+    (request: Request[IO])
+  : IO[ResultType] = {
+    val httpLogger = HttpResponseLog(request, root + uriTemplate)
     client
-      .run(fullRequest)
+      .run(request)
       .use { response =>
         httpLogger.log(response.status)
-        // TODO: Toteuta decoderit EntityDecoder-tyyppisinä
+        // TODO: Toteuta decoderit EntityDecoder-tyyppisinä?
         response.as[String].map(body => decoder(response.status.code, body, request))
       }
       .handleError {
@@ -201,7 +207,7 @@ case class Http(root: String, client: Client[IO]) extends Logging {
           throw e
         case e: Exception =>
           httpLogger.log(e)
-          throw HttpConnectionException(e.getClass.getName + ": " + e.getMessage, fullRequest)
+          throw HttpConnectionException(e.getClass.getName + ": " + e.getMessage, request)
       }
   }
 
