@@ -212,6 +212,14 @@ describe('VST', function () {
             function () {
               return vst.selectOsasuoritus('Paikallinen vapaan sivistystyön koulutuksen osasuoritus')().property('laajuus').setValue(5)()
             },
+            function () {
+              return vst.selectOsasuoritus('Paikallinen vapaan sivistystyön koulutuksen osasuoritus')().propertyBySelector('tr td.arvosana').selectValue('Hyväksytty')()
+            },
+            tilaJaVahvistus.merkitseValmiiksi,
+            tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).setValue('Lisää henkilö'),
+            tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).propertyBySelector('.nimi').setValue('Reijo Reksi'),
+            tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).propertyBySelector('.titteli').setValue('rehtori'),
+            tilaJaVahvistus.merkitseValmiiksiDialog.merkitseValmiiksi,
             editor.saveChanges
           )
 
@@ -228,6 +236,9 @@ describe('VST', function () {
               },
               function () {
                 return vst.selectOsasuoritus('Osasuorituksen osasuoritus')().property('laajuus').setValue(5)()
+              },
+              function () {
+                return vst.selectOsasuoritus('Osasuorituksen osasuoritus')().propertyBySelector('tr td.arvosana').selectValue('Hyväksytty')()
               },
               editor.saveChanges,
               opinnot.avaaKaikki

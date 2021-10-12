@@ -1,5 +1,6 @@
 package fi.oph.koski.validation
 
+import fi.oph.koski.documentation.VapaaSivistystyöExample.{opiskeluoikeusHyväksytystiSuoritettu, opiskeluoikeusKeskeytynyt}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.schema._
 
@@ -16,9 +17,10 @@ object VapaaSivistystyöValidation {
                 validateVapaanSivistystyönPäätasonKOPSSuorituksenOsaamiskokonaisuuksienLaajuudet(kops)
               ))
             }
-            case vapaa: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus if suoritus.vahvistettu => {
+            case vapaa: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus if vapaatavoitteinenKoulutusTuleeValidoida(opiskeluoikeus) => {
               HttpStatus.fold(List(
-                validateVapaaSivistystyöVapaatavoitteinenVahvistetunPäätasonOsaSuoritukset(vapaa)
+                validateVapaanSivistystyönVahvistus(vapaa, opiskeluoikeus),
+                validateVapaanSivistystyönVapaatavoitteisenPäätasonOsaSuoritukset(vapaa)
               ))
             }
             case _ => {
@@ -72,10 +74,28 @@ object VapaaSivistystyöValidation {
     }
   }
 
-  private def validateVapaaSivistystyöVapaatavoitteinenVahvistetunPäätasonOsaSuoritukset(suoritus: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus): HttpStatus = {
-    suoritus.osasuoritusLista.exists(_.arviointi.isEmpty) match {
-      case true => KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteisenKoulutuksenVahvistettuPäätasoArvioimattomillaOsasuorituksilla()
-      case false => HttpStatus.ok
+  private def validateVapaanSivistystyönVapaatavoitteisenPäätasonOsaSuoritukset(suoritus: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus): HttpStatus = {
+    suoritus.osasuoritusLista.exists(_.arviointi.nonEmpty) match {
+      case true => HttpStatus.ok
+      case false => KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteisenKoulutuksenPäätasonOsasuoritukset()
+    }
+  }
+
+  private def validateVapaanSivistystyönVahvistus(suoritus: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+    if (suoritus.vahvistettu && opiskeluoikeus.tila.opiskeluoikeusjaksot.exists(_.tila.koodiarvo == opiskeluoikeusKeskeytynyt.koodiarvo)) {
+      KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteeisenKoulutuksenVahvistus("Vahvistetulla vapaan sivistystyön vapaatavoitteisella koulutuksella ei voi olla päättävänä tilana 'Keskeytynyt'")
+    } else if (!suoritus.vahvistettu && opiskeluoikeus.tila.opiskeluoikeusjaksot.exists(_.tila.koodiarvo == opiskeluoikeusHyväksytystiSuoritettu.koodiarvo)) {
+      KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteeisenKoulutuksenVahvistus("Vahvistamattomalla vapaan sivistystyön vapaatavoitteisella koulutuksella ei voi olla päättävänä tilana 'Hyväksytysti suoritettu'")
+    } else {
+      HttpStatus.ok
+    }
+  }
+
+  private def vapaatavoitteinenKoulutusTuleeValidoida(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
+    if (opiskeluoikeus.versionumero.headOption.getOrElse(0) > 0 || opiskeluoikeus.lähdejärjestelmänId.nonEmpty) {
+      true
+    } else {
+      false
     }
   }
 

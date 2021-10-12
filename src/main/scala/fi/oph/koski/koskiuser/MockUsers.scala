@@ -34,6 +34,7 @@ object MockUsers {
   val stadinAmmattiopistoPääkäyttäjä = KoskiMockUser("stadinammattiopisto-admin", "stadinammattiopisto-admin", "1.2.246.562.24.99999999986", Set(oppilaitosPääkäyttäjä(MockOrganisaatiot.stadinAmmattiopisto)), "fi", List("koski-oppilaitos-pääkäyttäjä_1494486198456"))
   val stadinVastuukäyttäjä = KoskiMockUser("stadin-vastuu", "stadin-vastuu", "1.2.246.562.24.99999999996", Set(vastuukäyttäjä(helsinginKaupunki)))
   val stadinPääkäyttäjä = KoskiMockUser("stadin-pää", "stadin-pää", "1.2.246.562.24.99999999997", Set(oppilaitosPääkäyttäjä(helsinginKaupunki)), "fi", List("koski-oppilaitos-pääkäyttäjä_1494486198456"))
+  val varsinaisSuomiPalvelukäyttäjä = KoskiMockUser("varsinaissuomi-tallentaja", "varsinaissuomi-tallentaja", "1.2.246.562.24.99999966699", Set(oppilaitosPalvelukäyttäjä(varsinaisSuomenKansanopisto)))
 
   val helsinkiTallentaja = KoskiMockUser("hki-tallentaja", "hki-tallentaja", "1.2.246.562.24.99999999977", Set(oppilaitosTallentaja(helsinginKaupunki)))
   val tornioTallentaja = KoskiMockUser("tornio-tallentaja", "tornio-tallentaja", "1.2.246.562.24.99999999988", Set(oppilaitosTallentaja(tornionKaupunki)))
@@ -107,7 +108,8 @@ object MockUsers {
     tilastokeskusKäyttäjä,
     valviraKäyttäjä,
     esiopetusTallentaja,
-    oppivelvollisuutietoRajapinta
+    oppivelvollisuutietoRajapinta,
+    varsinaisSuomiPalvelukäyttäjä
   )
 }
 

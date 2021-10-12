@@ -1,7 +1,6 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusKatsotaanEronneeksi, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, vahvistus}
 import fi.oph.koski.documentation.VapaaSivistystyöExample._
 import fi.oph.koski.documentation.VapaaSivistystyöExampleData._
 import fi.oph.koski.http.KoskiErrorCategory
@@ -10,7 +9,7 @@ import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate.{of => date}
 
-class OppijaValidationVapaaSivistystyöSpec extends AnyFreeSpec with PutOpiskeluoikeusTestMethods[VapaanSivistystyönOpiskeluoikeus] with KoskiHttpSpec {
+class OppijaValidationVapaaSivistystyöMuutSpec extends AnyFreeSpec with PutOpiskeluoikeusTestMethods[VapaanSivistystyönOpiskeluoikeus] with KoskiHttpSpec {
   def tag = implicitly[reflect.runtime.universe.TypeTag[VapaanSivistystyönOpiskeluoikeus]]
 
   "KOPS" - {
@@ -165,92 +164,6 @@ class OppijaValidationVapaaSivistystyöSpec extends AnyFreeSpec with PutOpiskelu
       )
 
       putOpiskeluoikeus(opiskeluoikeus) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönOpiskeluoikeudellaVääräTila())
-      }
-    }
-  }
-
-  "Vapaatavoitteinen" - {
-    "Päätason suoritusta ei voida vahvistaa, jos osasuorituksia ei ole arvioitu" in {
-      val oo = VapaatavoitteinenOpiskeluoikeus.copy(suoritukset = List(suoritusVapaatavoitteinenKoulutus.copy(
-        osasuoritukset = Some(List(
-          vapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus.copy(
-            arviointi = None
-          )
-        ))
-      )))
-
-      putOpiskeluoikeus(oo) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteisenKoulutuksenVahvistettuPäätasoArvioimattomillaOsasuorituksilla())
-      }
-    }
-
-    "Opiskeluoikeuden tila voi olla 'hyvaksytystisuoritettu'" in {
-      val oo = VapaatavoitteinenOpiskeluoikeus.withTila(
-        VapaanSivistystyönOpiskeluoikeudenTila(
-          List(
-            VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusHyväksytystiSuoritettu)
-          )
-        )
-      )
-
-      putOpiskeluoikeus(oo) {
-        verifyResponseStatusOk()
-      }
-    }
-
-    "Opiskeluoikeuden tila voi olla 'keskeytynyt'" in {
-      val oo = VapaatavoitteinenOpiskeluoikeus.withTila(
-        VapaanSivistystyönOpiskeluoikeudenTila(
-          List(
-            VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusKeskeytynyt)
-          )
-        )
-      )
-
-      putOpiskeluoikeus(oo) {
-        verifyResponseStatusOk()
-      }
-    }
-
-    "Opiskeluoikeuden tila ei voi olla 'katsotaaneronneeksi'" in {
-      val oo = VapaatavoitteinenOpiskeluoikeus.withTila(
-        VapaanSivistystyönOpiskeluoikeudenTila(
-          List(
-            VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusKatsotaanEronneeksi)
-          )
-        )
-      )
-
-      putOpiskeluoikeus(oo) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönOpiskeluoikeudellaVääräTila())
-      }
-    }
-
-    "Opiskeluoikeuden tila ei voi olla 'valmistunut'" in {
-      val oo = VapaatavoitteinenOpiskeluoikeus.withTila(
-        VapaanSivistystyönOpiskeluoikeudenTila(
-          List(
-            VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusValmistunut)
-          )
-        )
-      )
-
-      putOpiskeluoikeus(oo) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönOpiskeluoikeudellaVääräTila())
-      }
-    }
-
-    "Opiskeluoikeuden tila ei voi olla 'lasna'" in {
-      val oo = VapaatavoitteinenOpiskeluoikeus.withTila(
-        VapaanSivistystyönOpiskeluoikeudenTila(
-          List(
-            VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusLäsnä)
-          )
-        )
-      )
-
-      putOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönOpiskeluoikeudellaVääräTila())
       }
     }
