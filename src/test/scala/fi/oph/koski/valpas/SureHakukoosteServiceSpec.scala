@@ -23,6 +23,7 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
       |opintopolku.virkailija.url = "http://localhost:9875"
       |opintopolku.virkailija.username = "foo"
       |opintopolku.virkailija.password = "bar"
+      |valpas.hakukoosteEnabled = true
     """.stripMargin)
 
   private val mockClient = ValpasHakukoosteService(config, KoskiApplicationForTests.validatingAndResolvingExtractor)
