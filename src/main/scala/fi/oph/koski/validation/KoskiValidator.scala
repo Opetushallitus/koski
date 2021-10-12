@@ -133,6 +133,7 @@ class KoskiValidator(
       .map(fillVieraatKielet)
       .map(clearVahvistukset)
       .map(_.withHistoria(None))
+      .map(KoodistopoikkeustenKonversiot.konvertoiKoodit)
   }
 
   private def fillPerusteenNimi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = oo match {
