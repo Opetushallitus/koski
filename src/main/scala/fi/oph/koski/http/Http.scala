@@ -244,7 +244,7 @@ protected case class HttpResponseLog(request: Request[IO], uriTemplate: String) 
   }
 
   def log(e: Exception) {
-    log(e.getClass.getSimpleName)
+    log(s"${e.getClass.getSimpleName}: ${e.getMessage}")
     HttpResponseMonitoring.record(request, uriTemplate, 500, elapsedMillis)
   }
 
