@@ -529,6 +529,16 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
         verifyResponseStatusOk()
       }
     }
+    "Saa olla S paikallisisssa oppiaineissa ja moduuleissaa, vaikka laajuus on yli 2" in {
+      putOpiskeluoikeus(aktiivinenOpiskeluoikeus.copy(suoritukset = List(vahvistamatonOppimääränSuoritus.copy(suorituskieli = suomenKieli, osasuoritukset = Some(List(
+        oppiaineenSuoritus(PaikallinenLukionOppiaine2019(PaikallinenKoodi("ITT", "Tanssi ja liike"), "Tanssi ja liike")).copy(arviointi = sanallinenLukionOppiaineenArviointi("S")).copy(osasuoritukset = Some(List(
+          paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("ITT234", "Tanssin taito", "Perinteiset suomalaiset tanssit, valssi jne").copy(laajuus = laajuus(50), pakollinen = false)).copy(arviointi = sanallinenArviointi("S")),
+          paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("ITT235", "Tanssin taito 2", "Uudemmat suomalaiset tanssit").copy(laajuus = laajuus(2))).copy(arviointi = sanallinenArviointi("S"))
+        )))
+      )))))) {
+        verifyResponseStatusOk()
+      }
+    }
     "Ei saa olla S, jos laajuus on yli 2 op" in {
       putOpiskeluoikeus(aktiivinenOpiskeluoikeus.copy(suoritukset = List(vahvistamatonOppimääränSuoritus.copy(suorituskieli = suomenKieli, osasuoritukset = Some(List(
         oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("KE")).copy(

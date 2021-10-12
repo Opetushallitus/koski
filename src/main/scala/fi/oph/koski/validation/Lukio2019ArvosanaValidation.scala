@@ -26,10 +26,11 @@ object Lukio2019ArvosanaValidation {
               HttpStatus.validate(k.laajuusArvo(0.0) <= 4.0) {
                 KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainSuppealle(s"Valinnaisen vieraan kielen oppiaineen ${suorituksenTunniste(oppiaine)} arvosanan pitää olla numero, jos oppiaineen laajuus on yli 4 op")
               }
-            case o: LukionOppiaine2019 =>
+            case o: LukionOppiaine2019 if !o.isInstanceOf[PaikallinenLukionOppiaine2019] =>
               HttpStatus.validate(o.laajuusArvo(0.0) <= 2.0) {
                 KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainSuppealle(s"Oppiaineen ${suorituksenTunniste(oppiaine)} arvosanan pitää olla numero, jos oppiaineen laajuus on yli 2 op")
               }
+            case _ => HttpStatus.ok
           }
         case "H" =>
           oppiaine.koulutusmoduuli match {
