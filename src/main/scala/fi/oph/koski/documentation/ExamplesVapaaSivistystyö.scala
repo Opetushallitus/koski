@@ -471,7 +471,7 @@ object VapaaSivistystyöExampleData {
     )
   }
 
-  def vapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi(arvosana:String = "Hyväksytty", päivä: LocalDate = date(2021, 10, 30)): VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi = {
+  def vapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi(arvosana:String = "2", päivä: LocalDate = date(2021, 10, 30)): VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi = {
     VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi(Koodistokoodiviite(arvosana, "arviointiasteikkovstvapaatavoitteinen"), päivä)
   }
 
