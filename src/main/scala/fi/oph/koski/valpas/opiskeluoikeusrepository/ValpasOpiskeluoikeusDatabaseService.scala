@@ -163,17 +163,33 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         ON aikajakson_keskella.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
         AND $tarkastelupäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
       -- Lasketaan voimassaolevien kotiopetusjaksojen määrä ehtoa varten
-      CROSS JOIN LATERAL (
+      LEFT JOIN LATERAL (
         SELECT
-          count(*) AS count
+          TRUE AS loytyi
         FROM
           jsonb_array_elements(
             ov_kelvollinen_opiskeluoikeus.data -> 'lisätiedot' -> 'kotiopetusjaksot'
           ) jaksot
         WHERE
-          jaksot ->> 'loppu' IS NULL
-            OR $tarkastelupäivä BETWEEN jaksot ->> 'alku' AND jaksot ->> 'loppu'
-      ) kotiopetusjaksoja
+          jaksot IS NOT NULL
+            AND (
+              jaksot ->> 'loppu' IS NULL
+              OR $tarkastelupäivä BETWEEN jaksot ->> 'alku' AND jaksot ->> 'loppu')
+        LIMIT 1
+      ) kotiopetusjaksoja ON TRUE
+      LEFT JOIN LATERAL (
+        SELECT
+          TRUE AS loytyi
+        FROM
+          to_jsonb(ov_kelvollinen_opiskeluoikeus.data -> 'lisätiedot' -> 'kotiopetus') jakso
+        WHERE
+          jakso IS NOT NULL
+            AND (
+              jakso ->> 'loppu' IS NULL
+              OR $tarkastelupäivä BETWEEN jakso ->> 'alku' AND jakso ->> 'loppu'
+            )
+        LIMIT 1
+      ) kotiopetus ON TRUE
     WHERE
       $haePerusopetuksenHakeutumisvalvontatiedot IS TRUE
       -- (0) henkilö on oppivelvollinen: hakeutumisvalvontaa ei voi suorittaa enää sen jälkeen kun henkilön
@@ -202,7 +218,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       -- (3a) valvojalla on oppilaitostason oppilaitosoikeus ja opiskeluoikeuden lisätiedoista ei löydy
       -- kotiopetusjaksoa, joka osuu tälle hetkelle
       -- TODO (3b): puuttuu, koska ei vielä ole selvää, miten kotiopetusoppilaat halutaan käsitellä
-      AND kotiopetusjaksoja.count = 0
+      AND kotiopetusjaksoja.loytyi IS NOT TRUE
+      AND kotiopetus.loytyi IS NOT TRUE
       AND (
         -- (4.1) opiskeluoikeus ei ole eronnut tilassa tällä hetkellä
         (

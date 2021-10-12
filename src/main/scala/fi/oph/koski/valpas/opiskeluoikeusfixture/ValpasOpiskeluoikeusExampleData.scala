@@ -741,6 +741,12 @@ object ValpasOpiskeluoikeusExampleData {
     ))
   )
 
+  def kotiopetusMeneilläänVanhallaRakenteellaOpiskeluoikeus = oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus.copy(
+    lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+      kotiopetus = Some(Aikajakso(alku = date(2020, 1, 1), loppu = None))
+    ))
+  )
+
   def kotiopetusMenneisyydessäOpiskeluoikeus = oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus.copy(
     lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
       kotiopetusjaksot = Some(List(
