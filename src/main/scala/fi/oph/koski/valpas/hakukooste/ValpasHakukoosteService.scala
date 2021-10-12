@@ -18,7 +18,13 @@ object ValpasHakukoosteService {
   def apply(config: Config, validatingAndResolvingExtractor: ValidatingAndResolvingExtractor): ValpasHakukoosteService = {
     config.getString("opintopolku.virkailija.url") match {
       case "mock" => new MockHakukoosteService()
-      case _ => new SureHakukoosteService(config, validatingAndResolvingExtractor)
+      case _ => {
+        if (config.getBoolean("valpas.hakukoosteEnabled")) {
+          new SureHakukoosteService(config, validatingAndResolvingExtractor)
+        } else {
+          new DisabledHakukoosteService()
+        }
+      }
     }
   }
 }
