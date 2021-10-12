@@ -1286,4 +1286,13 @@ object ValpasOpiskeluoikeusExampleData {
     )),
     lisätiedot = None
   )
+
+  def esiopetusValmistunutOpiskeluoikeus = ExamplesEsiopetus.opiskeluoikeus.copy(
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2010, 8, 13), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2011, 6, 3), opiskeluoikeusValmistunut)
+      )
+    ),
+  )
 }

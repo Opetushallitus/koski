@@ -184,6 +184,7 @@ object OpiskeluoikeusLoader extends Logging {
     o.tyyppi.koodiarvo match {
       case "perusopetus" => true
       case "internationalschool" => true
+      case "esiopetus" => true
       case _ => MaksuttomuusValidation.oppivelvollisuudenSuorittamiseenKelpaavaMuuKuinPeruskoulunOpiskeluoikeus(o)
     }
 

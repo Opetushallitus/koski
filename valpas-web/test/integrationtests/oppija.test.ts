@@ -142,6 +142,12 @@ describe("Oppijakohtainen näkymä", () => {
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: 9C
       Opiskeluoikeuden alkamispäivä: 15.8.2012
+      school
+      Esiopetuksen suoritus 2010 – 2011
+      Tila: Valmistunut
+      Toimipiste: Jyväskylän normaalikoulu
+      Opiskeluoikeuden alkamispäivä: 13.8.2010
+      Opiskeluoikeuden päättymispäivä: 3.6.2011
     `)
     await hautEquals(`
       list_alt
