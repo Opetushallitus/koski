@@ -33,7 +33,7 @@ class SureHakukoosteService(config: Config, validatingAndResolvingExtractor: Val
     def deserialize(parsedJson: JValue): Either[HttpStatus, Seq[Hakukooste]] =
       validatingAndResolvingExtractor.extract[Seq[Hakukooste]](lenientDeserialization)(parsedJson)
         .left.map(e => {
-          logger.error(s"Error deserializing JSON response from Suoritusrekisteri for ${errorClue}: " + e.toString)
+          logger.error(s"Error deserializing JSON response from Suoritusrekisteri for ${errorClue}: ${e.toString}")
           ValpasErrorCategory.badGateway.sure()
         }
       )
@@ -48,10 +48,10 @@ class SureHakukoosteService(config: Config, validatingAndResolvingExtractor: Val
         http.post(s"$baseUrl/rest/v1/valpas/${queryParams}".toUri, oppijaOids.toSeq)(encoder)(decoder)
           .handleError {
             case e: HttpException =>
-              logger.error(s"Bad response from Suoritusrekisteri for ${errorClue}: " + e.toString)
+              logger.error(s"Bad response from Suoritusrekisteri for ${errorClue}: ${e.toString}")
               Left(ValpasErrorCategory.unavailable.sure())
             case e: Exception =>
-              logger.error(s"Error fetching hakukoosteet for ${errorClue}: " + e.toString)
+              logger.error(s"Error fetching hakukoosteet for ${errorClue}: ${e.toString}")
               Left(ValpasErrorCategory.internalError())
           }
       )

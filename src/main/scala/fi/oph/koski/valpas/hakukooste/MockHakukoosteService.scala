@@ -27,6 +27,6 @@ class MockHakukoosteService extends ValpasHakukoosteService {
   private def getData(oppijaOids: Set[ValpasHenkilö.Oid], ainoastaanAktiivisetHaut: Boolean): Seq[Hakukooste] =
     HakukoosteExampleData.data.filter(entry =>
       oppijaOids.contains(entry.oppijaOid) &&
-      (!ainoastaanAktiivisetHaut || !entry.aktiivinenHaku.isDefined || entry.aktiivinenHaku.get)
+      (!ainoastaanAktiivisetHaut || entry.aktiivinenHaku.isEmpty || entry.aktiivinenHaku.get)
     )
 }
