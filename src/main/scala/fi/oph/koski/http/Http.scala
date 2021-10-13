@@ -181,7 +181,7 @@ case class Http(root: String, client: Client[IO]) extends Logging {
 
   private def processRequest[ResultType]
     (request: Request[IO], uriTemplate: String)
-    (decoder: (Int, String, Request[IO]) => ResultType)
+    (decoder: Decode[ResultType])
   : IO[ResultType] = {
     runRequest(uriTemplate, decoder)(
       request
@@ -191,7 +191,7 @@ case class Http(root: String, client: Client[IO]) extends Logging {
   }
 
   private def runRequest[ResultType]
-    (uriTemplate: String, decoder: (Int, String, Request[IO]) => ResultType)
+    (uriTemplate: String, decoder: Decode[ResultType])
     (request: Request[IO])
   : IO[ResultType] = {
     val httpLogger = HttpResponseLog(request, root + uriTemplate)
