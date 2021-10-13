@@ -26,7 +26,7 @@ class SureHakukoosteService(config: Config, validatingAndResolvingExtractor: Val
   }
 
   def getHakukoosteet
-    (oppijaOids: Set[ValpasHenkilö.Oid], ainoastaanAktiivisetHaut: Boolean = false, errorClue: String = "")
+    (oppijaOids: Set[ValpasHenkilö.Oid], ainoastaanAktiivisetHaut: Boolean, errorClue: String)
   : Either[HttpStatus, Seq[Hakukooste]] = {
     val encoder = json4sEncoderOf[Seq[ValpasHenkilö.Oid]]
 

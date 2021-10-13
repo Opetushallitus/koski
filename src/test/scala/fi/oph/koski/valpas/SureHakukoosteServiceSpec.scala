@@ -48,7 +48,7 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
         WireMock.post(WireMock.urlPathEqualTo(sureHakukoosteUrl))
           .willReturn(WireMock.status(500)))
 
-      val result = mockClient.getHakukoosteet(Set("asdf")).left.value
+      val result = mockClient.getHakukoosteet(Set("asdf"), ainoastaanAktiivisetHaut = false, "test").left.value
       result.statusCode should equal(503)
       result.errorString.get should startWith("Hakukoosteita ei juuri nyt saada haettua")
     }
@@ -58,7 +58,7 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
       mockResponseForOids(queryOids, hakukooste => hakukooste.copy(
         hakutoiveet = hakukooste.hakutoiveet.map(_.copy(valintatila = Some("kielletty arvo")))
       ))
-      val result = mockClient.getHakukoosteet(queryOids).left.value
+      val result = mockClient.getHakukoosteet(queryOids, ainoastaanAktiivisetHaut = false, "test").left.value
       result.statusCode should equal(502)
       result.errorString.get should startWith("Suoritusrekisterin palauttama hakukoostetieto oli viallinen")
     }
@@ -66,14 +66,14 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
     "toimii kun vastaus on tyhjä" in {
       val queryOids = Set("asdf")
       mockResponseForOids(queryOids)
-      val result = mockClient.getHakukoosteet(queryOids).value
+      val result = mockClient.getHakukoosteet(queryOids, ainoastaanAktiivisetHaut = false, "test").value
       result.map(_.oppijaOid) should equal(List.empty)
     }
 
     "palauttaa hakukoostetiedot kun oid löytyy" in {
       val queryOids = Set(ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid)
       mockResponseForOids(queryOids)
-      val result = mockClient.getHakukoosteet(queryOids).value
+      val result = mockClient.getHakukoosteet(queryOids, ainoastaanAktiivisetHaut = false, "test").value
       result.map(_.oppijaOid) should equal(queryOids.toList)
     }
 
@@ -83,7 +83,7 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
         WireMock.post(WireMock.urlPathEqualTo(sureHakukoosteUrl))
           .willReturn(WireMock.ok().withBody(SureHakukoosteServiceSpec.realResponse()))
       )
-      val result = mockClient.getHakukoosteet(queryOids).value.head
+      val result = mockClient.getHakukoosteet(queryOids, ainoastaanAktiivisetHaut = false, "test").value.head
       result.oppijaOid should equal(queryOids.head)
       result.hakutapa.nimi.get.get("sv") should equal("Gemensam ansökan")
       result.hakuNimi.get("en") should startWith("Joint Application")
@@ -97,7 +97,7 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
         WireMock.post(WireMock.urlPathEqualTo(sureHakukoosteUrl))
           .willReturn(WireMock.ok().withBody(SureHakukoosteServiceSpec.realResponse("01#1")))
       )
-      val result = mockClient.getHakukoosteet(queryOids).left.value
+      val result = mockClient.getHakukoosteet(queryOids, ainoastaanAktiivisetHaut = false, "test").left.value
       result.statusCode should equal(502)
       result.errorString.get should startWith("Suoritusrekisterin palauttama hakukoostetieto oli viallinen")
     }
