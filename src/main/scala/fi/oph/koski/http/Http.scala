@@ -22,6 +22,7 @@ import java.util.concurrent.TimeoutException
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.reflect.runtime.universe.TypeTag
+import scala.util.{Failure, Success, Try}
 import scala.xml.Elem
 
 object Http extends Logging {
@@ -199,8 +200,13 @@ case class Http(root: String, client: Client[IO]) extends Logging {
       .run(request)
       .use { response =>
         httpLogger.log(response.status)
-        // TODO: Toteuta decoderit EntityDecoder-tyyppisinä?
-        response.as[String].map(body => decoder(response.status.code, body, request))
+        response.as[String].map { body =>
+          // TODO: Toteuta decoderit EntityDecoder-tyyppisinä?
+          Try(decoder(response.status.code, body, request)) match {
+            case Success(value) => value
+            case Failure(e) => throw DecodeException(e, decoder.getClass.getName, request)
+          }
+        }
       }
       .handleErrorWith {
         case e: HttpException =>
