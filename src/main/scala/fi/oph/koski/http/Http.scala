@@ -203,7 +203,7 @@ case class Http(root: String, client: Client[IO]) extends Logging {
         response.as[String].map(body => decoder(response.status.code, body, request))
       }
       .handleErrorWith {
-        case e: HttpStatusException =>
+        case e: HttpException =>
           httpLogger.log(e)
           IO.raiseError(e)
         case e: TimeoutException =>
