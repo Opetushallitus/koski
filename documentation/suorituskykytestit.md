@@ -29,7 +29,7 @@ testiympäristöön 30.9. Tämän voi tehdä esimerkiksi seuraavasti:
 * Poista data suoraan Kosken tietokannasta seuraavalla sql:llä:
 
 ```sql
-delete from opiskeluoikeus where koulutusmuoto = 'perusopetus' and alkamispaiva = '2020-08-15' and paattymispaiva = '2021-06-04' and luokka ='9A' and versionumero = 1 and aikaleima > '2021-05-27';
+delete from opiskeluoikeus where koulutusmuoto = 'perusopetus' and alkamispaiva = '2021-08-15' and paattymispaiva = '2022-06-04' and luokka ='9A' and versionumero = 1 and aikaleima > '2021-10-10';
 ```
 
 * Päivitä opiskeluoikeuksiin lisättävät alkamis- ja loppumispäivämäärät
@@ -42,12 +42,12 @@ export KOSKI_USER="XXXXXX"
 export KOSKI_PASS="XXXXXX"
 export KOSKI_BASE_URL="https://koski.testiopintopolku.fi/koski"
 export VIRKAILIJA="https://virkailija.testiopintopolku.fi"
-export PERFTEST_ROUNDS=68280 # oidien määrä
+export PERFTEST_ROUNDS=68190 # oidien määrä tiedostossa valpas_qa_oppija_oidit.txt, käytä tarkkaa määrää
 export KOSKI_SERVER_COUNT=2
 export PERFTEST_THREADS=10
 export WARMUP_ROUNDS=0
-export KOSKI_VALPAS_ORGANISAATIOT_FILENAME="valpas_peruskoulujen_oidit_qa.txt"
-export KOSKI_VALPAS_OPPIJAOIDIT_FILENAME="valpas_haku_ja_valintatiedollisten_oppijoiden_oidit_qa.txt"
+export KOSKI_VALPAS_ORGANISAATIOT_FILENAME="valpas_qa_peruskoulujen_oidit.txt"
+export KOSKI_VALPAS_OPPIJAOIDIT_FILENAME="valpas_qa_oppija_oidit.txt"
 
 mvn test-compile
 mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasPeruskouluFromOidsOpiskeluoikeusInserter"
