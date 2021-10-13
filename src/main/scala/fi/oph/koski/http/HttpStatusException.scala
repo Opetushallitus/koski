@@ -24,12 +24,11 @@ object HttpConnectionException {
     HttpConnectionException(text, request.method.toString, request.uri.toString)
 }
 
-abstract class HttpException(msg: String) extends RuntimeException(msg) with Loggable {
+abstract class HttpException(msg: String) extends RuntimeException(LogUtils.maskSensitiveInformation(msg)) with Loggable {
+
   def this(msg: String, method: String, uri: String) = this(s"${msg} when requesting ${method} ${uri}")
 
   def this(msg: String, request: Request[IO]) = this(msg, request.method.toString(), request.uri.toString())
 
   override def logString: String = getMessage
-
-  override def getMessage: String = LogUtils.maskSensitiveInformation(super.getMessage)
 }
