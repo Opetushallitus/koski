@@ -20,10 +20,10 @@ import scala.concurrent.duration.DurationInt
 trait LocalizationRepository extends Logging {
   def localizations: Map[String, LocalizedString]
 
-  def get(key: String) = localizations.get(key).getOrElse{
+  def get(key: String): LocalizedString = localizations.getOrElse(key, {
     logger.error(s"Unknown localization key: $key")
     LocalizedString.unlocalized(key)
-  }
+  })
 
   def fetchLocalizations(): JValue
 
@@ -207,4 +207,8 @@ case class LocalizationServiceLocalization(
   value: String
 )
 
+class LocalizationReader(repository: LocalizationRepository, language: String) {
+  def get(key: String): String = repository.get(key).get(language)
 
+  def get(key: String, params: Map[String, String]): String = params.foldLeft(get(key))((acc, kv) => acc.replaceAll("{" + kv._1 + "}", kv._2))
+}
