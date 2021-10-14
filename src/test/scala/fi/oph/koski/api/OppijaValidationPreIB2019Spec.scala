@@ -5,19 +5,8 @@ import fi.oph.koski.documentation.ExampleData.{englanti, ruotsinKieli, suomenKie
 import fi.oph.koski.documentation.ExamplesIB.aktiivinenOpiskeluoikeus
 import fi.oph.koski.documentation.{ExamplesIB, Lukio2019ExampleData}
 import fi.oph.koski.documentation.IBExampleData._
-import fi.oph.koski.documentation.Lukio2019ExampleData.{
-  laajuus,
-  lukionKieli2019,
-  muuModuuliMuissaOpinnoissa,
-  muuModuuliOppiaineissa,
-  numeerinenArviointi,
-  numeerinenLukionOppiaineenArviointi,
-  paikallinenOpintojakso,
-  sanallinenArviointi,
-  sanallinenLukionOppiaineenArviointi,
-  vieraanKielenModuuliMuissaOpinnoissa,
-  vieraanKielenModuuliOppiaineissa
-}
+import fi.oph.koski.documentation.Lukio2019ExampleData.{laajuus, lukionKieli2019, muuModuuliMuissaOpinnoissa, muuModuuliOppiaineissa, numeerinenArviointi, numeerinenLukionOppiaineenArviointi, paikallinenOpintojakso, sanallinenArviointi, sanallinenLukionOppiaineenArviointi, vieraanKielenModuuliMuissaOpinnoissa, vieraanKielenModuuliOppiaineissa}
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
 import fi.oph.koski.http.ErrorMatcher.exact
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.localization.LocalizedStringImplicits.str2localized
@@ -160,7 +149,8 @@ class OppijaValidationPreIB2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
     }
 
     "Kaikki lukiodiplomimoduulit voi siirtää lukiodiplomeihin" in {
-      putOpiskeluoikeus(aktiivinenOpiskeluoikeus.copy(suoritukset = List(ExamplesIB.vahvistamatonPreIB2019Suoritus.copy(osasuoritukset = Some(List(
+      putOpiskeluoikeus(aktiivinenOpiskeluoikeus.copy(
+        suoritukset = List(ExamplesIB.vahvistamatonPreIB2019Suoritus.copy(osasuoritukset = Some(List(
         lukioDiplomienSuoritus().copy(osasuoritukset = Some(List(
           moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("KOLD1", 2.0f)).copy(arviointi = numeerinenArviointi(5)),
           moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("KULD2", 2.0f)).copy(arviointi = numeerinenArviointi(6)),
@@ -1081,6 +1071,17 @@ class OppijaValidationPreIB2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
           )
         )
       }
+    }
+  }
+
+  "Maksuttomuus" - {
+    "Sallitaan maksuttomuustiedot PreIB2019-suorituksissa" in {
+        putOpiskeluoikeus(aktiivinenOpiskeluoikeus.copy(
+            lisätiedot = Some(LukionOpiskeluoikeudenLisätiedot(maksuttomuus = Some(List(Maksuttomuus(alku = date(2021, 9, 1) , loppu = None, maksuton = true))))),
+            suoritukset = List(ExamplesIB.vahvistamatonPreIB2019Suoritus)),
+          henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+          verifyResponseStatusOk()
+        }
     }
   }
 
