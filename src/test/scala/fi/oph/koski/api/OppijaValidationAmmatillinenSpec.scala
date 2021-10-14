@@ -199,27 +199,6 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               }
             }
 
-            "Kun koulutusmoduulin koodi '600001' tai '600002', ei validoida tiketin TOR-982 mukaisesti muuta kuin yhteislaajuus" - {
-              val yhtSuoritukset = List(
-                yhteisenTutkinnonOsanSuoritus("600001", "Yhteiskunta- ja työelämäosaaminen", k3, 5).copy(
-                  osasuoritukset = None
-                ),
-                yhteisenTutkinnonOsanSuoritus("600002", "Viestintä- ja vuorovaikutusosaaminen", k3, 30).copy(
-                  osasuoritukset = Some(List(
-                    YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVTK", "ammatillisenoppiaineet"), Koodistokoodiviite("EN", "kielivalikoima"), pakollinen = true, Some(LaajuusOsaamispisteissä(15))), arviointi = Some(List(arviointiKiitettävä)))
-                  ))
-                ))
-              val reformiSuoritus = tietoJaViestintäTekniikanPerustutkinnonSuoritus().copy(suoritustapa = suoritustapaReformi,
-                osasuoritukset = Some(yhtSuoritukset))
-              val suoritus = reformiSuoritus.copy(
-                osaamisenHankkimistavat = Some(List(OsaamisenHankkimistapajakso(date(2018, 1, 1), None, osaamisenHankkimistapaOppilaitos))),
-                vahvistus = vahvistus(date(2018, 1, 1))
-              )
-              "Palautetaan HTTP 200" in (
-                putTutkintoSuoritus(suoritus)(verifyResponseStatusOk())
-                )
-            }
-
             "Samoja yhteisiä osuuksia" - {
               val yhtOsanSuoritus = yhtTutkinnonOsanSuoritus.copy(koulutusmoduuli = yhtTutkinnonOsanSuoritus.koulutusmoduuli.copy(laajuus = Some(LaajuusOsaamispisteissä(13.0))))
               val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = suoritustapaOps,
