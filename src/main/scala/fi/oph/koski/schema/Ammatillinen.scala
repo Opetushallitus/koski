@@ -662,10 +662,9 @@ sealed trait AmmatillisenTutkinnonOsa extends KoulutusmoduuliValinnainenLaajuus
 }
 
 object AmmatillisenTutkinnonOsa {
-  val reformiMuotoisenTutkinnonYhteisetOsat = List("400012", "400013", "400014").map(Koodistokoodiviite(_, "tutkinnonosat"))
+  val reformiMuotoisenTutkinnonYhteisetOsat = List("400012", "400013", "400014", "600001", "600002").map(Koodistokoodiviite(_, "tutkinnonosat"))
   val opsMuotoisenTutkinnonYhteisetOsat = List("101053", "101054", "101055", "101056").map(Koodistokoodiviite(_, "tutkinnonosat"))
-  val vainYhteislaajuusValidoitavatYhteisetOsat = List("600001", "600002").map(Koodistokoodiviite(_, "tutkinnonosat"))
-  val muutYhteisetTutkinnonOsat = reformiMuotoisenTutkinnonYhteisetOsat ::: opsMuotoisenTutkinnonYhteisetOsat
+  val yhteisetTutkinnonOsat = reformiMuotoisenTutkinnonYhteisetOsat ::: opsMuotoisenTutkinnonYhteisetOsat
 }
 
 trait ValtakunnallinenTutkinnonOsa extends AmmatillisenTutkinnonOsa
