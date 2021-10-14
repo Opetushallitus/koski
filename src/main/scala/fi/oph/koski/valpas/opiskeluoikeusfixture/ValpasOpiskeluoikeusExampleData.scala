@@ -834,14 +834,6 @@ object ValpasOpiskeluoikeusExampleData {
     oppilaitos = Some(kulosaarenAlaAste)
   )
 
-  def esiopetuksenOpiskeluoikeus = ExamplesEsiopetus.opiskeluoikeus.copy(
-    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
-      List(
-        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2012, 8, 15), opiskeluoikeusLäsnä)
-      )
-    )
-  )
-
   def valmistunutKymppiluokkalainen = ExamplesPerusopetuksenLisaopetus.lisäopetuksenOpiskeluoikeus.copy(
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
       List(
@@ -1285,6 +1277,14 @@ object ValpasOpiskeluoikeusExampleData {
       vahvistus = None
     )),
     lisätiedot = None
+  )
+
+  def esiopetusLäsnäOpiskeluoikeus = ExamplesEsiopetus.opiskeluoikeus.copy(
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 8, 13), opiskeluoikeusLäsnä),
+      )
+    ),
   )
 
   def esiopetusValmistunutOpiskeluoikeus = ExamplesEsiopetus.opiskeluoikeus.copy(
