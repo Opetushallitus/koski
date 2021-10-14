@@ -18,9 +18,11 @@ import org.json4s.jackson.JsonMethods.parse
 import org.typelevel.ci.CIString
 
 import java.net.URLEncoder
+import java.util.concurrent.TimeoutException
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.reflect.runtime.universe.TypeTag
+import scala.util.{Failure, Success, Try}
 import scala.xml.Elem
 
 object Http extends Logging {
@@ -132,7 +134,7 @@ object Http extends Logging {
     case (status, text) => throw HttpStatusException(status, text, request)
   }
 
-  def statusCode(status: Int, text: String, request: Request[IO]): Int = (status, text) match {
+  def statusCode(status: Int, text: String, _request: Request[IO]): Int = (status, text) match {
     case (code, _) => code
   }
 
@@ -180,28 +182,42 @@ case class Http(root: String, client: Client[IO]) extends Logging {
 
   private def processRequest[ResultType]
     (request: Request[IO], uriTemplate: String)
-    (decoder: (Int, String, Request[IO]) => ResultType)
+    (decoder: Decode[ResultType])
   : IO[ResultType] = {
-    val fullRequest = request
-      .withUri(addRoot(request.uri))
-      .withHeaders(request.headers ++ commonHeaders)
+    runRequest(uriTemplate, decoder)(
+      request
+        .withUri(addRoot(request.uri))
+        .withHeaders(request.headers ++ commonHeaders)
+    )
+  }
 
-    val httpLogger = HttpResponseLog(fullRequest, root + uriTemplate)
-
+  private def runRequest[ResultType]
+    (uriTemplate: String, decoder: Decode[ResultType])
+    (request: Request[IO])
+  : IO[ResultType] = {
+    val httpLogger = HttpResponseLog(request, root + uriTemplate)
     client
-      .run(fullRequest)
+      .run(request)
       .use { response =>
         httpLogger.log(response.status)
-        // TODO: Toteuta decoderit EntityDecoder-tyyppisinä
-        response.as[String].map(body => decoder(response.status.code, body, request))
+        response.as[String].map { body =>
+          // TODO: Toteuta decoderit EntityDecoder-tyyppisinä?
+          Try(decoder(response.status.code, body, request)) match {
+            case Success(value) => value
+            case Failure(e) => throw DecodeException(e, decoder.getClass.getName, request)
+          }
+        }
       }
-      .handleError {
-        case e: HttpStatusException =>
+      .handleErrorWith {
+        case e: HttpException =>
           httpLogger.log(e)
-          throw e
+          IO.raiseError(e)
+        case e: TimeoutException =>
+          httpLogger.log(e)
+          IO.raiseError(HttpStatusException(504, s"Connection timed out: ${e.getMessage}", request))
         case e: Exception =>
           httpLogger.log(e)
-          throw HttpConnectionException(e.getClass.getName + ": " + e.getMessage, fullRequest)
+          IO.raiseError(HttpConnectionException(e.getClass.getName + ": " + e.getMessage, request))
       }
   }
 
@@ -234,7 +250,7 @@ protected case class HttpResponseLog(request: Request[IO], uriTemplate: String) 
   }
 
   def log(e: Exception) {
-    log(e.getClass.getSimpleName)
+    log(s"${e.getClass.getSimpleName}: ${e.getMessage}")
     HttpResponseMonitoring.record(request, uriTemplate, 500, elapsedMillis)
   }
 

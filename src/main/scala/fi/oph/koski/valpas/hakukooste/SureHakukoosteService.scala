@@ -2,7 +2,7 @@ package fi.oph.koski.valpas.hakukooste
 
 import com.typesafe.config.Config
 import fi.oph.koski.http.Http.{StringToUriConverter, parseJsonWithDeserialize, unsafeRetryingClient}
-import fi.oph.koski.http.{Http, HttpStatus, HttpStatusException, ServiceConfig, VirkailijaHttpClient}
+import fi.oph.koski.http.{Http, HttpException, HttpStatus, ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.lenientDeserialization
@@ -26,14 +26,14 @@ class SureHakukoosteService(config: Config, validatingAndResolvingExtractor: Val
   }
 
   def getHakukoosteet
-    (oppijaOids: Set[ValpasHenkilö.Oid], ainoastaanAktiivisetHaut: Boolean = false, errorClue: String = "")
+    (oppijaOids: Set[ValpasHenkilö.Oid], ainoastaanAktiivisetHaut: Boolean, errorClue: String)
   : Either[HttpStatus, Seq[Hakukooste]] = {
     val encoder = json4sEncoderOf[Seq[ValpasHenkilö.Oid]]
 
     def deserialize(parsedJson: JValue): Either[HttpStatus, Seq[Hakukooste]] =
       validatingAndResolvingExtractor.extract[Seq[Hakukooste]](lenientDeserialization)(parsedJson)
         .left.map(e => {
-          logger.error(s"Error deserializing JSON response from Suoritusrekisteri for ${errorClue}: " + e.toString)
+          logger.error(s"Error deserializing JSON response from Suoritusrekisteri for ${errorClue}: ${e.toString}")
           ValpasErrorCategory.badGateway.sure()
         }
       )
@@ -47,11 +47,11 @@ class SureHakukoosteService(config: Config, validatingAndResolvingExtractor: Val
       Http.runIO(
         http.post(s"$baseUrl/rest/v1/valpas/${queryParams}".toUri, oppijaOids.toSeq)(encoder)(decoder)
           .handleError {
-            case e: HttpStatusException =>
-              logger.error(s"Bad response from Suoritusrekisteri for ${errorClue}: " + e.toString)
+            case e: HttpException =>
+              logger.error(s"Bad response from Suoritusrekisteri for ${errorClue}: ${e.toString}")
               Left(ValpasErrorCategory.unavailable.sure())
             case e: Exception =>
-              logger.error(s"Error fetching hakukoosteet for ${errorClue}: " + e.toString)
+              logger.error(s"Error fetching hakukoosteet for ${errorClue}: ${e.toString}")
               Left(ValpasErrorCategory.internalError())
           }
       )

@@ -9,9 +9,11 @@ import org.scalatra.servlet.RichRequest
 
 object RequestDescriber {
   def logSafeDescription(request: HttpServletRequest): String = {
-    val query: String = if (request.getQueryString == null) {""} else {"?" + request.getQueryString}
-    val requestDescription: String = request.getMethod + " " + request.getServletPath + query + " " + maskRequestBody(RichRequest(request))
-    requestDescription
+    val query: String = Option(request.getQueryString).map(q => "?" + q).getOrElse("")
+
+    val path: String = request.getServletPath + Option(request.getPathInfo).getOrElse("")
+
+    request.getMethod + " " + path + query + " " + maskRequestBody(RichRequest(request))
   }
 
   private def maskRequestBody(request: RichRequest) = {

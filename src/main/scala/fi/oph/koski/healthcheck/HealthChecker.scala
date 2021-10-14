@@ -17,7 +17,6 @@ import fi.oph.koski.userdirectory.Password
 import fi.oph.koski.util.Timing
 import fi.vm.sade.utils.cas.CasClientException
 
-import java.util.concurrent.TimeoutException
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.language.postfixOps
 
@@ -158,9 +157,7 @@ trait HealthCheck extends Logging {
         .map(Right(_))
         .handleError {
           case e: HttpStatusException =>
-            Left(HttpStatus(e.status, List(ErrorDetail(key, e.text))))
-          case e: TimeoutException =>
-            Left(HttpStatus(504, List(ErrorDetail(key, "timeout"))))
+            Left(HttpStatus(e.status, List(ErrorDetail(key, e.msg))))
           case e: Exception =>
             logger.warn(e)("healthcheck failed")
             Left(KoskiErrorCategory.internalError.subcategory(key, "healthcheck failed")())
