@@ -21,6 +21,8 @@ export type OpiskeluoikeusLaajatTiedot = {
   päätasonSuoritukset: PäätasonSuoritus[]
   tarkasteltavaPäätasonSuoritus: PäätasonSuoritus
   onTehtyIlmoitus?: boolean
+  maksuttomuus?: Maksuttomuus[]
+  oikeuttaMaksuttomuuteenPidennetty?: OikeuttaMaksuttomuuteenPidennetty[]
 }
 
 export type OpintotasonTiedot = {
@@ -61,6 +63,17 @@ export type PerusopetusSuppeatTiedot = OpintotasonTiedot & {
 }
 
 export type PerusopetuksenJälkeinenSuppeatTiedot = OpintotasonTiedot
+
+export type Maksuttomuus = {
+  alku: ISODate
+  loppu?: ISODate
+  maksuton: boolean
+}
+
+export type OikeuttaMaksuttomuuteenPidennetty = {
+  alku: ISODate
+  loppu: ISODate
+}
 
 type PäätasonSuoritus = {
   toimipiste: Toimipiste
@@ -220,7 +233,7 @@ export const myöhempienOpintojenTarkastelupäivänKoskiTila = (
   return tiedot!.tarkastelupäivänKoskiTila
 }
 
-export const möyhempienOpintojenKoskiTilanAlkamispäivä = (
+export const myöhempienOpintojenKoskiTilanAlkamispäivä = (
   opiskeluoikeus: OpiskeluoikeusLaajatTiedot
 ): ISODate => {
   const tiedot =
@@ -229,3 +242,9 @@ export const möyhempienOpintojenKoskiTilanAlkamispäivä = (
 
   return tiedot!.tarkastelupäivänKoskiTilanAlkamispäivä
 }
+
+export const isPerusopetuksenJälkeinenOpiskeluoikeus = (
+  opiskeluoikeus: OpiskeluoikeusLaajatTiedot
+): boolean =>
+  opiskeluoikeus.perusopetuksenJälkeinenTiedot !== undefined &&
+  opiskeluoikeus.tyyppi.koodiarvo !== "esiopetus"

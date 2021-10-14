@@ -152,5 +152,7 @@ class ValpasAccessResolverSpec extends ValpasTestBase {
       )
     ),
     onTehtyIlmoitus = None,
+    maksuttomuus = None,
+    oikeuttaMaksuttomuuteenPidennetty = None,
   )
 }

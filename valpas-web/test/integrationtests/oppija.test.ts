@@ -93,6 +93,10 @@ const opiskeluoikeusIntSchoolPerusopetusPath = createOppijaPath("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000094",
 })
 
+const maksuttomuuttaPidennettyPath = createOppijaPath("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000127",
+})
+
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
 const secondaryHeadingEquals = (expected: string) =>
@@ -241,12 +245,17 @@ describe("Oppijakohtainen näkymä", () => {
       school
       Lukion oppimäärä 2021 –
       Tila: Läsnä
+      Maksuttomuus:
+      15.8.2021–16.8.2021 maksuton
+      17.8.2021–18.8.2021 maksullinen
+      19.8.2021– maksuton
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 15.8.2021
       school
       International school 2004 –
       Tila: Läsnä
+      Maksuttomuus: Ei
       Toimipiste: International School of Helsinki
       Ryhmä: 9B
       Opiskeluoikeuden alkamispäivä: 15.8.2004
@@ -346,6 +355,10 @@ describe("Oppijakohtainen näkymä", () => {
       school
       Lukion oppimäärä 2021 –
       Tila: Läsnä
+      Maksuttomuus:
+      15.8.2021–16.8.2021 maksuton
+      17.8.2021–18.8.2021 maksullinen
+      19.8.2021– maksuton
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 15.8.2021
@@ -374,6 +387,8 @@ describe("Oppijakohtainen näkymä", () => {
       school
       Lukion oppimäärä 2021 –
       Tila: Opiskeluoikeus alkaa 3.10.2021
+      Maksuttomuus:
+      3.10.2021– maksuton
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 3.10.2021
@@ -530,6 +545,7 @@ describe("Oppijakohtainen näkymä", () => {
       school
       Lukion oppimäärä 2019 –
       Tila: Läsnä
+      Maksuttomuus: Ei
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 1.8.2019
@@ -552,6 +568,7 @@ describe("Oppijakohtainen näkymä", () => {
       school
       Lukion oppimäärä 2019 –
       Tila: Läsnä
+      Maksuttomuus: Ei
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 1.8.2019
@@ -589,6 +606,7 @@ describe("Oppijakohtainen näkymä", () => {
       school
       Lukion oppimäärä 2019 –
       Tila: Läsnä
+      Maksuttomuus: Ei
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 1.8.2019
@@ -611,6 +629,7 @@ describe("Oppijakohtainen näkymä", () => {
       school
       Lukion oppimäärä 2019 –
       Tila: Läsnä
+      Maksuttomuus: Ei
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä: AH
       Opiskeluoikeuden alkamispäivä: 1.8.2019
@@ -801,6 +820,7 @@ describe("Oppijakohtainen näkymä", () => {
       school
       Lukion oppimäärä 2021 –
       Tila:	Väliaikaisesti keskeytynyt 2.8.2021
+      Maksuttomuus: Ei
       Toimipiste: Jyväskylän normaalikoulu
       Ryhmä:	AH
       Opiskeluoikeuden alkamispäivä:	1.8.2021
@@ -816,6 +836,8 @@ describe("Oppijakohtainen näkymä", () => {
       school
       Ammatillinen tutkinto 2021 –
       Tila:	Loma
+      Maksuttomuus:
+      1.8.2021– maksuton
       Toimipiste: Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka
       Opiskeluoikeuden alkamispäivä:	1.8.2021
     `)
@@ -830,8 +852,25 @@ describe("Oppijakohtainen näkymä", () => {
       school
       VALMA 2012 –
       Tila:	Läsnä
+      Maksuttomuus: Ei
       Toimipiste:	Stadin ammatti- ja aikuisopisto
       Opiskeluoikeuden alkamispäivä:	1.9.2012
+    `)
+  })
+
+  it("Näyttää maksuttomuuden pidennyksen", async () => {
+    await loginAs(maksuttomuuttaPidennettyPath, "valpas-monta")
+    await mainHeadingEquals("Maksuttomuutta-pidennetty Valpas (070604A200U)")
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000127")
+    await opiskeluhistoriaEquals(`
+      school
+      Ammatillinen tutkinto 2021 –
+      Tila:	Läsnä
+      Maksuttomuus:
+      Oikeutta maksuttomuuteen pidennetty 1.9.2021–31.12.2023
+      1.9.2021– maksuton
+      Toimipiste:	Omnia Koulutus, Arbetarinstitut
+      Opiskeluoikeuden alkamispäivä: 1.9.2021
     `)
   })
 })

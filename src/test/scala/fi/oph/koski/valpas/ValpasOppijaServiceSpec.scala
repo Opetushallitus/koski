@@ -459,6 +459,12 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
         ExpectedData(ValpasOpiskeluoikeusExampleData.valmaRessussa, None, Some(ExpectedDataPerusopetuksenJälkeinenTiedot("voimassa", "lasna")), false, false, true),
         ExpectedData(ValpasOpiskeluoikeusExampleData.ammattikouluValmaOpiskeluoikeus, None, Some(ExpectedDataPerusopetuksenJälkeinenTiedot("voimassa", "lasna")), true, true, true)
       )
+    ),
+    (
+      ValpasMockOppijat.maksuttomuuttaPidennetty,
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.ammattikouluMaksuttomuuttaPidennetty, None, Some(ExpectedDataPerusopetuksenJälkeinenTiedot("voimassa", "lasna")), false, false, true),
+      )
     )
   ).sortBy(item => (item._1.sukunimi.toLowerCase, item._1.etunimet.toLowerCase))
 
