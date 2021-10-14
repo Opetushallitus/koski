@@ -48,12 +48,16 @@ object KoodistopoikkeustenKonversiot {
         suoritus.koulutusmoduuli match {
           case valtakunnallinen: ValtakunnallinenLukionKurssi2015 if suoritus.koulutusmoduuli.tunniste.koodiarvo == "HI2" => suoritus.copy(
               koulutusmoduuli = valtakunnallinen.copy(
-                tunniste = valtakunnallinen.tunniste.copy(nimi = Some(LocalizedString.finnish("Itsenäisen Suomen historia")))
+                tunniste = valtakunnallinen.tunniste.copy(nimi =
+                  Some(Finnish("Itsenäisen Suomen historia", Some("Det självständiga Finlands historia"))
+                ))
               )
             )
           case valtakunnallinen: ValtakunnallinenLukionKurssi2015 if suoritus.koulutusmoduuli.tunniste.koodiarvo == "HI3" => suoritus.copy(
             koulutusmoduuli = valtakunnallinen.copy(
-              tunniste = valtakunnallinen.tunniste.copy(nimi = Some(LocalizedString.finnish("Kansainväliset suhteet")))
+              tunniste = valtakunnallinen.tunniste.copy(nimi =
+                Some(Finnish("Kansainväliset suhteet", Some("Internationella relationer"))
+              ))
             )
           )
           case _ => suoritus

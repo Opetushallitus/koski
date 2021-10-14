@@ -220,6 +220,9 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
       val result = putAndGetOpiskeluoikeus(oo)
       result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI2").get.koulutusmoduuli.nimi.get("fi") should equal ("Itsenäisen Suomen historia")
       result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI3").get.koulutusmoduuli.nimi.get("fi") should equal ("Kansainväliset suhteet")
+
+      result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI2").get.koulutusmoduuli.nimi.get("sv") should equal ("Det självständiga Finlands historia")
+      result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI3").get.koulutusmoduuli.nimi.get("sv") should equal ("Internationella relationer")
     }
 
     "Aineopiskelija, perusteen diaarina '70/011/2015'" in {
@@ -235,12 +238,18 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
       val result = putAndGetOpiskeluoikeus(oo)
       result.suoritukset.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI2").get.koulutusmoduuli.nimi.get("fi") should equal ("Itsenäisen Suomen historia")
       result.suoritukset.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI3").get.koulutusmoduuli.nimi.get("fi") should equal ("Kansainväliset suhteet")
+
+      result.suoritukset.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI2").get.koulutusmoduuli.nimi.get("sv") should equal ("Det självständiga Finlands historia")
+      result.suoritukset.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI3").get.koulutusmoduuli.nimi.get("sv") should equal ("Internationella relationer")
     }
 
     "Perusteen diaarinumerona jokin muu kuin '70/011/2015'; Konversiota ei tehdä" in {
       val result = putAndGetOpiskeluoikeus(ExamplesLukio.aineopiskelija)
       result.suoritukset.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI2").get.koulutusmoduuli.nimi.get("fi") should not equal ("Itsenäisen Suomen historia")
       result.suoritukset.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI3").get.koulutusmoduuli.nimi.get("fi") should not equal ("Kansainväliset suhteet")
+
+      result.suoritukset.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI2").get.koulutusmoduuli.nimi.get("sv") should not equal ("Det självständiga Finlands historia")
+      result.suoritukset.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI3").get.koulutusmoduuli.nimi.get("sv") should not equal ("Internationella relationer")
     }
   }
 
