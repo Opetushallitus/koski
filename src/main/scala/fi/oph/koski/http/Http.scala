@@ -162,12 +162,12 @@ case class Http(root: String, client: Client[IO]) extends Logging {
 
   private val commonHeaders = Headers(Header.Raw(CIString("Caller-Id"), OpintopolkuCallerId.koski))
 
-  def get[ResultType](uri: ParameterizedUriWrapper, headers: Headers = Headers.empty)(decode: Decode[ResultType]): IO[ResultType] = {
-    processRequest(Request(uri = uri.uri, headers = headers), uri.template)(decode)
+  def get[ResultType](uri: ParameterizedUriWrapper)(decode: Decode[ResultType]): IO[ResultType] = {
+    processRequest(Request(uri = uri.uri), uri.template)(decode)
   }
 
-  def head[ResultType](uri: ParameterizedUriWrapper, headers: Headers = Headers.empty)(decode: Decode[ResultType]): IO[ResultType] = {
-    processRequest(Request(uri = uri.uri, headers = headers, method = Method.HEAD), uri.template)(decode)
+  def head[ResultType](uri: ParameterizedUriWrapper)(decode: Decode[ResultType]): IO[ResultType] = {
+    processRequest(Request(uri = uri.uri, method = Method.HEAD), uri.template)(decode)
   }
 
   def post[I <: AnyRef, O <: Any](path: ParameterizedUriWrapper, entity: I)(encode: EntityEncoder[IO, I])(decode: Decode[O]): IO[O] = {
