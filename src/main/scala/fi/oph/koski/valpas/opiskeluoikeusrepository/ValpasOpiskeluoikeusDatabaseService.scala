@@ -566,8 +566,9 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       -- (0) henkilö on oppivelvollinen: suorittamisvalvontaa ei voi suorittaa enää sen jälkeen kun henkilön
       -- oppivelvollisuus on päättynyt
       ov_kelvollinen_opiskeluoikeus.henkilo_on_oppivelvollinen
-      -- (1) oppijalla on muu kuin peruskoulun opetusoikeus
+      -- (1) oppijalla on muu kuin peruskoulun opetusoikeus tai esiopetus
       AND ov_kelvollinen_opiskeluoikeus.koulutusmuoto <> 'perusopetus'
+      AND ov_kelvollinen_opiskeluoikeus.koulutusmuoto <> 'esiopetus'
       -- (1b) International school on suorittamisvalvottava vain, jos siinä on 10, 11 tai 12 luokan suoritus
       AND (
         ov_kelvollinen_opiskeluoikeus.koulutusmuoto <> 'internationalschool'

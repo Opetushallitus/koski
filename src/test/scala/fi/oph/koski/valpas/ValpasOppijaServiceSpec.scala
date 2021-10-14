@@ -31,7 +31,10 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
   private val hakeutumisvelvolliset = List(
     (
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
-      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, Some(ExpectedDataPerusopetusTiedot("voimassa", "lasna")), None, true, true, false))
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, Some(ExpectedDataPerusopetusTiedot("voimassa", "lasna")), None, true, true, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.esiopetusValmistunutOpiskeluoikeus, None, Some(ExpectedDataPerusopetuksenJälkeinenTiedot("valmistunut", "valmistunut")), false, true, false),
+      )
     ),
     (
       ValpasMockOppijat.päällekkäisiäOpiskeluoikeuksia,
@@ -247,7 +250,10 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
   private val hakeutumisvelvollisetRajapäivänJälkeen = List(
     (
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
-      List(ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, Some(ExpectedDataPerusopetusTiedot("voimassa", "lasna")), None, true, true, false))
+      List(
+        ExpectedData(ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus, Some(ExpectedDataPerusopetusTiedot("voimassa", "lasna")), None, true, true, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.esiopetusValmistunutOpiskeluoikeus, None, Some(ExpectedDataPerusopetuksenJälkeinenTiedot("valmistunut", "valmistunut")), false, true, false),
+      )
     ),
     (
       ValpasMockOppijat.päällekkäisiäOpiskeluoikeuksia,
