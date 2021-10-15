@@ -126,7 +126,10 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
 
   def createCustomFunctions(): Unit = {
     setStatusLoadStarted("custom_functions")
-    val customFunctions = Seq(RaportointiDatabaseCustomFunctions.vuodenViimeinenPäivämäärä(schema))
+    val customFunctions = Seq(
+      RaportointiDatabaseCustomFunctions.vuodenViimeinenPäivämäärä(schema),
+      RaportointiDatabaseCustomFunctions.vuodenEnsimmäinenPäivämäärä(schema),
+    )
     runDbSync(DBIO.seq(customFunctions: _*), timeout = 120.minutes)
     setStatusLoadCompletedAndCount("custom_functions", customFunctions.length)
   }
