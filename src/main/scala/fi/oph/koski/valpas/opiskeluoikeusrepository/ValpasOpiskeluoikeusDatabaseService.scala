@@ -28,6 +28,14 @@ case class ValpasOppijaRow(
   onOikeusValvoaKunnalla: Boolean
 )
 
+case class ValpasOppivelvollisuustiedotRow(
+  oppijaOid: String,
+  kaikkiOppijaOidit: Seq[ValpasHenkilö.Oid],
+  hetu: Option[String],
+  oppivelvollisuusVoimassaAsti: LocalDate,
+  oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate
+)
+
 object HakeutumisvalvontaTieto extends Enumeration {
   type HakeutumisvalvontaTieto = Value
   val Perusopetus, Nivelvaihe, Kaikki = Value
@@ -1223,5 +1231,53 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     oppija.etunimet
     """)).as[ValpasOppijaRow])
     }
+  }
+
+  def getOppivelvollisuusTiedot(hetu: String): Seq[ValpasOppivelvollisuustiedotRow] = {
+
+    implicit def getResult: GetResult[ValpasOppivelvollisuustiedotRow] = GetResult(r => {
+      ValpasOppivelvollisuustiedotRow(
+        oppijaOid = r.rs.getString("master_oid"),
+        kaikkiOppijaOidit = r.getArray("kaikkiOppijaOidit").toSeq,
+        hetu = Some(r.rs.getString("hetu")),
+        oppivelvollisuusVoimassaAsti = r.getLocalDate("oppivelvollisuusvoimassaasti"),
+        oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = r.getLocalDate("oikeuskoulutuksenmaksuttomuuteenvoimassaasti"),
+      )
+    })
+
+    db.runDbSync(SQLHelpers.concatMany(
+      Some(
+        sql"""
+  WITH
+    pyydetty_oppija AS (
+      SELECT
+        DISTINCT r_henkilo.master_oid,
+        r_henkilo.hetu
+      FROM
+        r_henkilo
+      WHERE
+        r_henkilo.hetu = $hetu
+    )
+  SELECT
+    pyydetty_oppija.master_oid,
+    pyydetty_oppija.hetu,
+    oppivelvollisuustiedot.oppivelvollisuusvoimassaasti,
+    oppivelvollisuustiedot.oikeuskoulutuksenmaksuttomuuteenvoimassaasti,
+    -- Kaikki henkilön oidit tarvitaan oppivelvollisuuden keskeytysten kyselyä varten
+    array_agg(DISTINCT kaikki_henkilot.oppija_oid) AS kaikkiOppijaOidit
+  FROM
+    oppivelvollisuustiedot
+    JOIN
+      pyydetty_oppija ON pyydetty_oppija.master_oid = oppivelvollisuustiedot.oppija_oid
+    JOIN
+      r_henkilo kaikki_henkilot ON kaikki_henkilot.master_oid = pyydetty_oppija.master_oid
+  GROUP BY
+    pyydetty_oppija.master_oid,
+    pyydetty_oppija.hetu,
+    oppivelvollisuustiedot.oppivelvollisuusvoimassaasti,
+    oppivelvollisuustiedot.oikeuskoulutuksenmaksuttomuuteenvoimassaasti
+        """
+      )
+    ).as[ValpasOppivelvollisuustiedotRow])
   }
 }
