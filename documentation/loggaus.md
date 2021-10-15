@@ -9,7 +9,7 @@ tiedostoihin, joista ne kopioidaan Filebeat-agentin ja Logstashin avulla keskite
 on konfiguroitu niin, että keskeiset logattavat kentät parsitaan logitiedostoista omiin kenttiinsä Elasticsearcissa, jolloin
 logien katselu ja tietojen haku on mahdollisimman helppoa.
 
-## Audit-loggaus `koski-audit.log`
+## Audit-loggaus `oma-opintopolku-audit-loki`
 
 Kaikki tärkeät tapahtumat kirjataan Audit-logiin, jonka avulla voidaan selvittää, kuka on katsellut tai muuttanut
 oppijan tietoja. Logattaviin tapahtumiin sisältyy
@@ -38,7 +38,9 @@ Lisäksi kerätään seuraavat tiedot aina, kun mahdollista
 - Opiskeluoikeuden versio
 - Hakuehto
 
-Audit-logi tuotetaan kullakin sovelluspalvelininstanssilla paikalliseen tiedostoon `koski-audit.log`.
+Audit-logit siirtyvät Cloudwatchin lokiryhmään `oma-opintopolku-audit-loki`. Tämän lisäksi ne siirretään
+[oma-opintopolku-loki](https://github.com/Opetushallitus/oma-opintopolku-loki) palveluun, joka tuottaaa kansalaiselle
+"kuka katsoi tietojani" näkymän.
 
 Esimerkkirivi:
 
