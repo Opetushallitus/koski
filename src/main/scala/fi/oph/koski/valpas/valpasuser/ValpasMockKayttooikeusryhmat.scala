@@ -1,6 +1,6 @@
 package fi.oph.koski.valpas.valpasuser
 
-import fi.oph.koski.koskiuser.{Käyttöoikeus, KäyttöoikeusGlobal, KäyttöoikeusOrg}
+import fi.oph.koski.koskiuser.{Käyttöoikeus, KäyttöoikeusGlobal, KäyttöoikeusOrg, KäyttöoikeusViranomainen}
 import fi.oph.koski.schema.OidOrganisaatio
 
 object ValpasMockKäyttöoikeusryhmät {
@@ -30,6 +30,8 @@ object ValpasMockKäyttöoikeusryhmät {
   def hakeutuminenPääkäyttäjä: Set[Käyttöoikeus] = Set(KäyttöoikeusGlobal(List(
     ValpasPalvelurooli(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)
   )))
+
+  def kelaLuovutuspalveluKäyttäjä: Set[Käyttöoikeus] = Set(KäyttöoikeusViranomainen(List(ValpasPalvelurooli(ValpasRooli.KELA))))
 
   private def oppilaitosHakeutuminenKäyttäjä(organisaatioOid: String) = organisaatioKäyttäjä(organisaatioOid, ValpasRooli.OPPILAITOS_HAKEUTUMINEN)
 

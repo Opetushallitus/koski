@@ -30,6 +30,8 @@ class ValpasSession(
     requiredRoles.subsetOf(käyttäjänGlobaalitValpasOikeudet)
   }
 
+  def hasKelaAccess: Boolean = !globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).intersect(Set(Palvelurooli("VALPAS", ValpasRooli.KELA))).isEmpty
+
   protected def kaikkiKäyttöoikeudet: Set[Käyttöoikeus] = käyttöoikeudet
 
   // Sessio luodaan aina uudestaan jokaisessa API-kutsussa, joten käyttöoikeudet voi tallentaa lazy val:iin eikä hakea ja filteröida aina uudestaan
