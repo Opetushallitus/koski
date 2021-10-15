@@ -28,6 +28,7 @@ abstract class Session(val user: AuthenticationUser, val lang: String, val clien
 
   lazy val globalKäyttöoikeudet: Set[KäyttöoikeusGlobal] = kaikkiKäyttöoikeudet.collect { case k: KäyttöoikeusGlobal => k}
   lazy val orgKäyttöoikeudet: Set[KäyttöoikeusOrg] = kaikkiKäyttöoikeudet.collect { case k : KäyttöoikeusOrg => k}
+  lazy val globalViranomaisKäyttöoikeudet: Set[KäyttöoikeusViranomainen] = kaikkiKäyttöoikeudet.collect { case k: KäyttöoikeusViranomainen => k}
 
   def varhaiskasvatusKoulutustoimijat: Set[Oid]
   def hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess: Boolean
@@ -50,7 +51,6 @@ class KoskiSpecificSession(
   lazy val varhaiskasvatusKäyttöoikeudet: Set[KäyttöoikeusVarhaiskasvatusToimipiste] = käyttöoikeudet.collect { case k: KäyttöoikeusVarhaiskasvatusToimipiste => k }
   lazy val varhaiskasvatusKoulutustoimijat: Set[Oid] = varhaiskasvatusKäyttöoikeudet.map(_.koulutustoimija.oid)
   lazy val hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess: Boolean = varhaiskasvatusKäyttöoikeudet.nonEmpty
-  lazy val globalViranomaisKäyttöoikeudet: Set[KäyttöoikeusViranomainen] = käyttöoikeudet.collect { case k: KäyttöoikeusViranomainen => k}
   lazy val allowedOpiskeluoikeusTyypit: Set[String] = käyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
   lazy val hasKoulutusmuotoRestrictions: Boolean = allowedOpiskeluoikeusTyypit != OpiskeluoikeudenTyyppi.kaikkiTyypit.map(_.koodiarvo)
   lazy val kaikkiKäyttöoikeudet: Set[Käyttöoikeus] = käyttöoikeudet
