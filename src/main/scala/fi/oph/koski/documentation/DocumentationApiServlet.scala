@@ -9,6 +9,7 @@ import fi.oph.koski.migri.MigriSchema
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.valvira.ValviraSchema
+import fi.oph.koski.valpas.kela.ValpasKelaSchema
 
 import scala.reflect.runtime.{universe => ru}
 
@@ -46,6 +47,10 @@ class DocumentationApiServlet extends KoskiSpecificApiServlet with Unauthenticat
 
   get("/kela-oppija-schema.json") {
     KelaSchema.schemaJson
+  }
+
+  get("/valpas-kela-oppija-schema.json") {
+    ValpasKelaSchema.schemaJson
   }
 
   get("/migri-oppija-schema.json") {
