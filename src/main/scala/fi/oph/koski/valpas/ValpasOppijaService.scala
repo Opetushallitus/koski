@@ -139,7 +139,7 @@ class ValpasOppijaService(
 
   private val validatingAndResolvingExtractor = application.validatingAndResolvingExtractor
 
-  private val roolitJoilleHaetaanKaikistaOVLPiirinOppijoista = Seq(
+  private val roolitJoilleHaetaanKaikistaOVLPiirinOppijoista: Seq[ValpasRooli.Role] = Seq(
     ValpasRooli.OPPILAITOS_MAKSUTTOMUUS,
     ValpasRooli.KUNTA,
   )
@@ -417,6 +417,19 @@ class ValpasOppijaService(
       .map(withOikeusTehdäKuntailmoitus)
   }
 
+  def getOppijalista
+    (oppijaOids: Seq[ValpasHenkilö.Oid])
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
+    HttpStatus.foldEithers(
+      opiskeluoikeusDbService.getOppijat(oppijaOids, rajaaOVKelpoisiinOpiskeluoikeuksiin = false)
+      .map(asValpasOppijaLaajatTiedot)
+    )
+      .flatMap(os => HttpStatus.foldEithers(os.map(o => accessResolver.withOppijaAccess(o))))
+      .map(_.map(asEmptyOppijaHakutilanteillaLaajatTiedot)) // Huom! Ei haeta hakutietoja, halutaan vain vaihtaa tyyppi fetchOppivelvollisuudenKeskeytykset-kutsua varten
+      .map(_.map(fetchOppivelvollisuudenKeskeytykset))
+  }
+
   def getOppijaLaajatTiedotYhteystiedoilla
     (oppijaOid: ValpasHenkilö.Oid, rooli: Option[ValpasRooli.Role] = None)
     (implicit session: ValpasSession)
@@ -487,6 +500,10 @@ class ValpasOppijaService(
   private def fetchHakuYhteystiedoilla(oppija: ValpasOppijaLaajatTiedot): OppijaHakutilanteillaLaajatTiedot = {
     val hakukoosteet = hakukoosteService.getYhteishakujenHakukoosteet(oppijaOids = Set(oppija.henkilö.oid), ainoastaanAktiivisetHaut = false, errorClue = s"oppija:${oppija.henkilö.oid}")
     OppijaHakutilanteillaLaajatTiedot.apply(oppija = oppija, yhteystietoryhmänNimi = localizationRepository.get("oppija__yhteystiedot"), haut = hakukoosteet)
+  }
+
+  private def asEmptyOppijaHakutilanteillaLaajatTiedot(oppija: ValpasOppijaLaajatTiedot): OppijaHakutilanteillaLaajatTiedot = {
+    OppijaHakutilanteillaLaajatTiedot.apply(oppija = oppija, yhteystietoryhmänNimi = localizationRepository.get("oppija__yhteystiedot"), haut = Right(Seq.empty))
   }
 
   private def fetchHautIlmanYhteystietoja(errorClue: String)(oppijat: Seq[ValpasOppijaLaajatTiedot]): Seq[OppijaHakutilanteillaLaajatTiedot] =

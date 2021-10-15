@@ -8,12 +8,12 @@ import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.{JsonResources, JsonSerializer}
 import fi.oph.koski.localization.LocalizationRepository.parseLocalizations
-import fi.oph.koski.schema.LocalizedString.sanitize
 import fi.oph.koski.localization.MockLocalizationRepository.readLocalLocalizations
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.LocalizedString.sanitize
 import fi.oph.koski.schema.{Finnish, LocalizedString}
-
 import org.json4s._
+
 import scala.collection.immutable
 import scala.concurrent.duration.DurationInt
 
@@ -206,9 +206,3 @@ case class LocalizationServiceLocalization(
   key: String,
   value: String
 )
-
-class LocalizationReader(repository: LocalizationRepository, language: String) {
-  def get(key: String): String = repository.get(key).get(language)
-
-  def get(key: String, params: Map[String, String]): String = params.foldLeft(get(key))((acc, kv) => acc.replaceAll("{" + kv._1 + "}", kv._2))
-}
