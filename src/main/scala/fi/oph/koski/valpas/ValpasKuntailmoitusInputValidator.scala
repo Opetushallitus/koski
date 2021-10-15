@@ -27,7 +27,7 @@ class ValpasKuntailmoitusInputValidator(
     kuntailmoitusInput: ValpasKuntailmoitusLaajatTiedotJaOppijaOid
   ): Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
     if (valpasRajapäivätService.tarkastelupäivä.isBefore(valpasRajapäivätService.ilmoitustenEnsimmäinenTallennuspäivä)) {
-      Left(ValpasErrorCategory.validation.kuntailmoituksenIlmoituspäivä())
+      Left(ValpasErrorCategory.badRequest.validation.kuntailmoituksenIlmoituspäivä())
     } else {
       Right(kuntailmoitusInput)
     }
@@ -38,7 +38,7 @@ class ValpasKuntailmoitusInputValidator(
     kuntailmoitusInput.kuntailmoitus.tekijä.henkilö match {
       case Some(henkilö) => henkilö.oid match {
         case Some(oid) if oid != user.oid =>
-          Left(ValpasErrorCategory.validation.kuntailmoituksenTekijä("Kuntailmoitusta ei voi tehdä toisen henkilön oidilla"))
+          Left(ValpasErrorCategory.badRequest.validation.kuntailmoituksenTekijä("Kuntailmoitusta ei voi tehdä toisen henkilön oidilla"))
         case _ => Right(kuntailmoitusInput)
       }
       case None => Right(kuntailmoitusInput)
@@ -84,7 +84,7 @@ class ValpasKuntailmoitusInputValidator(
   private def validateKunta(kuntailmoitusInput: ValpasKuntailmoitusLaajatTiedotJaOppijaOid)
   : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
     val virheIlmoitus = Left(
-      ValpasErrorCategory.validation.kuntailmoituksenKohde(
+      ValpasErrorCategory.badRequest.validation.kuntailmoituksenKohde(
         s"Kuntailmoituksen kohde ${kuntailmoitusInput.kuntailmoitus.kunta.oid} ei ole aktiivinen kunta"
       ))
 
@@ -94,7 +94,7 @@ class ValpasKuntailmoitusInputValidator(
       case _: Toimipiste => virheIlmoitus
       case o: OrganisaatioWithOid if !isAktiivinenKunta(o) => virheIlmoitus
       case o: OrganisaatioWithOid if AhvenanmaanKunnat.onAhvenanmaalainenKunta(o) => Left(
-        ValpasErrorCategory.validation.kuntailmoituksenKohde(
+        ValpasErrorCategory.badRequest.validation.kuntailmoituksenKohde(
           s"Kuntailmoituksen kohde ${kuntailmoitusInput.kuntailmoitus.kunta.oid} on ahvenanmaalainen kunta"
         ))
       case _ => Right(kuntailmoitusInput)

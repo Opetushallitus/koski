@@ -33,7 +33,7 @@ class ValpasKuntailmoitusService(
     val sallitutRoolit = kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio match {
       case o: OrganisaatioWithOid if isAktiivinenKunta(o) => Right(Seq(ValpasRooli.KUNTA))
       case _: Oppilaitos => Right(Seq(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, ValpasRooli.OPPILAITOS_SUORITTAMINEN))
-      case o: Any => Left(ValpasErrorCategory.validation.kuntailmoituksenTekijä(
+      case o: Any => Left(ValpasErrorCategory.badRequest.validation.kuntailmoituksenTekijä(
         s"Organisaatio ${o.oid} ei voi olla kuntailmoituksen tekijä (organisaation tyyppi ei ole sallittu)"
       ))
     }

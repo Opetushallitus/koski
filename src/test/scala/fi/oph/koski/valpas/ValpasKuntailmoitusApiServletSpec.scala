@@ -160,7 +160,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     val kuntailmoitusInput = teeKuntailmoitusInputKaikillaTiedoilla()
 
     post("/valpas/api/kuntailmoitus", body = kuntailmoitusInput, headers = authHeaders() ++ jsonContent) {
-      verifyResponseStatus(400, ValpasErrorCategory.validation.kuntailmoituksenIlmoituspäivä())
+      verifyResponseStatus(400, ValpasErrorCategory.badRequest.validation.kuntailmoituksenIlmoituspäivä())
     }
   }
 
@@ -269,7 +269,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     ) {
       verifyResponseStatus(
         400,
-        ValpasErrorCategory.validation.kuntailmoituksenKohde(
+        ValpasErrorCategory.badRequest.validation.kuntailmoituksenKohde(
           s"Kuntailmoituksen kohde ${MockOrganisaatiot.jyväskylänNormaalikoulu} ei ole aktiivinen kunta"
         )
       )
@@ -286,7 +286,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     ) {
       verifyResponseStatus(
         400,
-        ValpasErrorCategory.validation.kuntailmoituksenKohde(
+        ValpasErrorCategory.badRequest.validation.kuntailmoituksenKohde(
           s"Kuntailmoituksen kohde ${MockOrganisaatiot.lakkautettuKunta} ei ole aktiivinen kunta"
         )
       )
@@ -328,7 +328,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     ) {
       verifyResponseStatus(
         400,
-        ValpasErrorCategory.validation.kuntailmoituksenTekijä(
+        ValpasErrorCategory.badRequest.validation.kuntailmoituksenTekijä(
           s"Organisaatio ${MockOrganisaatiot.lehtikuusentienToimipiste} ei voi olla kuntailmoituksen tekijä (organisaation tyyppi ei ole sallittu)"
         )
       )
@@ -344,7 +344,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     ) {
       verifyResponseStatus(
         400,
-        ValpasErrorCategory.validation.kuntailmoituksenTekijä(
+        ValpasErrorCategory.badRequest.validation.kuntailmoituksenTekijä(
           s"Organisaatio ${MockOrganisaatiot.lakkautettuKunta} ei voi olla kuntailmoituksen tekijä (organisaation tyyppi ei ole sallittu)"
         )
       )
@@ -378,7 +378,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     ) {
       verifyResponseStatus(
         400,
-        ValpasErrorCategory.validation.kuntailmoituksenTekijä("Kuntailmoitusta ei voi tehdä toisen henkilön oidilla")
+        ValpasErrorCategory.badRequest.validation.kuntailmoituksenTekijä("Kuntailmoitusta ei voi tehdä toisen henkilön oidilla")
       )
     }
   }
@@ -753,7 +753,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     post("/valpas/api/kuntailmoitus", body = minimiKuntailmoitus, headers = authHeaders() ++ jsonContent) {
       verifyResponseStatus(
         400,
-        ValpasErrorCategory.validation.kuntailmoituksenKohde(
+        ValpasErrorCategory.badRequest.validation.kuntailmoituksenKohde(
           s"Kuntailmoituksen kohde ${MockOrganisaatiot.maarianhamina} on ahvenanmaalainen kunta"
         )
       )

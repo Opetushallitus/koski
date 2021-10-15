@@ -60,7 +60,7 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
     } else if (Henkilö.isValidHenkilöOid(query)) {
       searchByOppijaOid(asHenkilöhakuResult, query)
     } else {
-      Left(ValpasErrorCategory.validation.epävalidiHenkilöhakutermi())
+      Left(ValpasErrorCategory.badRequest.validation.epävalidiHenkilöhakutermi())
     }
   }
 
