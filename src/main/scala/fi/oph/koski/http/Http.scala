@@ -162,23 +162,37 @@ case class Http(root: String, client: Client[IO]) extends Logging {
 
   private val commonHeaders = Headers(Header.Raw(CIString("Caller-Id"), OpintopolkuCallerId.koski))
 
-  def get[ResultType](uri: ParameterizedUriWrapper)(decode: Decode[ResultType]): IO[ResultType] = {
-    processRequest(Request(uri = uri.uri), uri.template)(decode)
-  }
+  private def get(uri: Uri): Request[IO] = Request(uri = uri)
 
-  def head[ResultType](uri: ParameterizedUriWrapper)(decode: Decode[ResultType]): IO[ResultType] = {
-    processRequest(Request(uri = uri.uri, method = Method.HEAD), uri.template)(decode)
-  }
+  def get[ResultType]
+    (uri: ParameterizedUriWrapper)
+    (decode: Decode[ResultType])
+  : IO[ResultType] = processRequest(get(uri.uri), uri.template)(decode)
 
-  def post[I <: AnyRef, O <: Any](path: ParameterizedUriWrapper, entity: I)(encode: EntityEncoder[IO, I])(decode: Decode[O]): IO[O] = {
-    val request: Request[IO] = Request(uri = path.uri, method = Method.POST)
-    processRequest(request.withEntity(entity)(encode), uriTemplate = path.template)(decode)
-  }
+  private def head(uri: Uri): Request[IO] = Request(uri = uri, method = Method.HEAD)
 
-  def put[I <: AnyRef, O <: Any](path: ParameterizedUriWrapper, entity: I)(encode: EntityEncoder[IO, I])(decode: Decode[O]): IO[O] = {
-    val request: Request[IO] = Request(uri = path.uri, method = Method.PUT)
-    processRequest(request.withEntity(entity)(encode), path.template)(decode)
-  }
+  def head[ResultType]
+    (uri: ParameterizedUriWrapper)
+    (decode: Decode[ResultType])
+  : IO[ResultType] = processRequest(head(uri.uri), uri.template)(decode)
+
+  private def post[I <: AnyRef, O <: Any](uri: Uri, entity: I, encode: EntityEncoder[IO, I]): Request[IO] =
+    Request(uri = uri, method = Method.POST).withEntity(entity)(encode)
+
+  def post[I <: AnyRef, O <: Any]
+    (uri: ParameterizedUriWrapper, entity: I)
+    (encode: EntityEncoder[IO, I])
+    (decode: Decode[O])
+  : IO[O] = processRequest(post(uri.uri, entity, encode), uriTemplate = uri.template)(decode)
+
+  private def put[I <: AnyRef, O <: Any](uri: Uri, entity: I, encode: EntityEncoder[IO, I]): Request[IO] =
+    Request(uri = uri, method = Method.PUT).withEntity(entity)(encode)
+
+  def put[I <: AnyRef, O <: Any]
+    (uri: ParameterizedUriWrapper, entity: I)
+    (encode: EntityEncoder[IO, I])
+    (decode: Decode[O])
+  : IO[O] = processRequest(put(uri.uri, entity, encode), uri.template)(decode)
 
   private def processRequest[ResultType]
     (request: Request[IO], uriTemplate: String)
