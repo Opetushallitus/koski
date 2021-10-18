@@ -143,7 +143,7 @@ object Http extends Logging {
     case _ =>
   }
 
-  def runIO[A](io: IO[A], timeout: FiniteDuration = 2.minutes): A = io.timeout(timeout).unsafeRunSync()
+  def runIO[A](io: IO[A]): A = io.unsafeRunSync()
 
   type Decode[ResultType] = (Int, String, Request[IO]) => ResultType
 
@@ -158,6 +158,8 @@ object Http extends Logging {
 }
 
 case class Http(root: String, client: Client[IO]) extends Logging {
+  private val DefaultTimeout = 2.minutes
+
   private val rootUri = Http.uriFromString(root)
 
   private val commonHeaders = Headers(Header.Raw(CIString("Caller-Id"), OpintopolkuCallerId.koski))
@@ -165,40 +167,40 @@ case class Http(root: String, client: Client[IO]) extends Logging {
   private def get(uri: Uri): Request[IO] = Request(uri = uri)
 
   def get[ResultType]
-    (uri: ParameterizedUriWrapper)
+    (uri: ParameterizedUriWrapper, timeout: FiniteDuration = DefaultTimeout)
     (decode: Decode[ResultType])
-  : IO[ResultType] = processRequest(get(uri.uri), uri.template)(decode)
+  : IO[ResultType] = processRequest(get(uri.uri), uri.template, timeout)(decode)
 
   private def head(uri: Uri): Request[IO] = Request(uri = uri, method = Method.HEAD)
 
   def head[ResultType]
-    (uri: ParameterizedUriWrapper)
+    (uri: ParameterizedUriWrapper, timeout: FiniteDuration = DefaultTimeout)
     (decode: Decode[ResultType])
-  : IO[ResultType] = processRequest(head(uri.uri), uri.template)(decode)
+  : IO[ResultType] = processRequest(head(uri.uri), uri.template, timeout)(decode)
 
   private def post[I <: AnyRef, O <: Any](uri: Uri, entity: I, encode: EntityEncoder[IO, I]): Request[IO] =
     Request(uri = uri, method = Method.POST).withEntity(entity)(encode)
 
   def post[I <: AnyRef, O <: Any]
-    (uri: ParameterizedUriWrapper, entity: I)
+    (uri: ParameterizedUriWrapper, entity: I, timeout: FiniteDuration = DefaultTimeout)
     (encode: EntityEncoder[IO, I])
     (decode: Decode[O])
-  : IO[O] = processRequest(post(uri.uri, entity, encode), uriTemplate = uri.template)(decode)
+  : IO[O] = processRequest(post(uri.uri, entity, encode), uriTemplate = uri.template, timeout)(decode)
 
   private def put[I <: AnyRef, O <: Any](uri: Uri, entity: I, encode: EntityEncoder[IO, I]): Request[IO] =
     Request(uri = uri, method = Method.PUT).withEntity(entity)(encode)
 
   def put[I <: AnyRef, O <: Any]
-    (uri: ParameterizedUriWrapper, entity: I)
+    (uri: ParameterizedUriWrapper, entity: I, timeout: FiniteDuration = DefaultTimeout)
     (encode: EntityEncoder[IO, I])
     (decode: Decode[O])
-  : IO[O] = processRequest(put(uri.uri, entity, encode), uri.template)(decode)
+  : IO[O] = processRequest(put(uri.uri, entity, encode), uri.template, timeout)(decode)
 
   private def processRequest[ResultType]
-    (request: Request[IO], uriTemplate: String)
+    (request: Request[IO], uriTemplate: String, timeout: FiniteDuration)
     (decoder: Decode[ResultType])
   : IO[ResultType] = {
-    runRequest(uriTemplate, decoder)(
+    runRequest(uriTemplate, decoder, timeout)(
       request
         .withUri(addRoot(request.uri))
         .withHeaders(request.headers ++ commonHeaders)
@@ -206,7 +208,7 @@ case class Http(root: String, client: Client[IO]) extends Logging {
   }
 
   private def runRequest[ResultType]
-    (uriTemplate: String, decoder: Decode[ResultType])
+    (uriTemplate: String, decoder: Decode[ResultType], timeout: FiniteDuration)
     (request: Request[IO])
   : IO[ResultType] = {
     val httpLogger = HttpResponseLog(request, root + uriTemplate)
@@ -222,6 +224,7 @@ case class Http(root: String, client: Client[IO]) extends Logging {
           }
         }
       }
+      .timeout(timeout)
       .handleErrorWith {
         case e: HttpException =>
           IO(httpLogger.log(e))

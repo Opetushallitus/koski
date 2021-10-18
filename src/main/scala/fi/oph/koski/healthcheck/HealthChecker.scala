@@ -154,6 +154,7 @@ trait HealthCheck extends Logging {
   private def get[T](key: String, f: => T, timeout: FiniteDuration = 5 seconds): Either[HttpStatus, T] = {
     Http.runIO(
       IO(f)
+        .timeout(timeout)
         .map(Right(_))
         .handleError {
           case e: HttpStatusException =>
@@ -161,8 +162,7 @@ trait HealthCheck extends Logging {
           case e: Exception =>
             logger.warn(e)("healthcheck failed")
             Left(KoskiErrorCategory.internalError.subcategory(key, "healthcheck failed")())
-        },
-      timeout = timeout
+        }
     )
   }
 
