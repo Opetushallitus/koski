@@ -36,23 +36,29 @@ object Http extends Logging {
 
   private val maxHttpConnections = Pools.httpThreads
 
-  private def baseClient(name: String): Client[IO] = {
+  type ClientConfigFn = BlazeClientBuilder[IO] => BlazeClientBuilder[IO]
+
+  private def baseClient(name: String, configFn: ClientConfigFn): Client[IO] = {
     logger.info(s"Creating new pooled http client with $maxHttpConnections max total connections for $name")
-    BlazeClientBuilder[IO](ExecutionContext.fromExecutor(Pools.httpPool))
+    val builder = BlazeClientBuilder[IO](ExecutionContext.fromExecutor(Pools.httpPool))
       .withMaxTotalConnections(maxHttpConnections)
       .withMaxWaitQueueLimit(1024)
       .withConnectTimeout(10.seconds)
       .withResponseHeaderTimeout(15.seconds)
       .withRequestTimeout(1.minutes)
       .withIdleTimeout(2.minutes)
+
+    configFn(builder)
       .allocated
       .map(_._1)
       .unsafeRunSync()
   }
 
-  def retryingClient(name: String): Client[IO] = withLoggedRetry(baseClient(name))
+  def retryingClient(name: String, configFn: ClientConfigFn = identity): Client[IO] =
+    withLoggedRetry(baseClient(name, configFn))
 
-  def unsafeRetryingClient(name: String): Client[IO] = withLoggedRetry(baseClient(name), retryNonIdempotentRequests)
+  def unsafeRetryingClient(name: String, configFn: ClientConfigFn = identity): Client[IO] =
+    withLoggedRetry(baseClient(name, configFn), retryNonIdempotentRequests)
 
   // This guys allows you to make URIs from your Strings as in uri"http://google.com/s=${searchTerm}"
   // Takes care of URI encoding the components. You can prevent encoding a part by wrapping into an Uri using this selfsame method.
