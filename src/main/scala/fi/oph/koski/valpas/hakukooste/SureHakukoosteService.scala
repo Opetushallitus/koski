@@ -12,7 +12,15 @@ import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö
 import org.json4s.JValue
 
-class SureHakukoosteService(config: Config, validatingAndResolvingExtractor: ValidatingAndResolvingExtractor) extends ValpasHakukoosteService with Logging with Timing {
+import scala.concurrent.duration.DurationInt
+
+class SureHakukoosteService(
+  config: Config,
+  validatingAndResolvingExtractor: ValidatingAndResolvingExtractor
+) extends ValpasHakukoosteService
+  with Logging
+  with Timing {
+
   private val baseUrl = "/suoritusrekisteri"
 
   private val http = {

@@ -8,7 +8,7 @@ import org.http4s.Request
  *  Thrown when an external service returns an unexpected HTTP status code.
  */
 case class HttpStatusException(status: Int, msg: String, method: String, uri: String)
-  extends HttpException(status + ": " + msg + " when requesting " + method + " " + uri)
+  extends HttpException(status + ": " + msg, method, uri)
 
 object HttpStatusException {
   def apply(status: Int, text: String, request: Request[IO]): HttpStatusException =

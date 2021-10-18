@@ -10,7 +10,6 @@ import org.scalatra._
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
 import scala.reflect.runtime.{universe => ru}
-import scala.util.Try
 import scala.xml.Elem
 
 trait BaseServlet extends ScalatraServlet with Logging {
