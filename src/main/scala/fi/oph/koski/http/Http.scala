@@ -224,14 +224,14 @@ case class Http(root: String, client: Client[IO]) extends Logging {
       }
       .handleErrorWith {
         case e: HttpException =>
-          httpLogger.log(e)
-          IO.raiseError(e)
+          IO(httpLogger.log(e))
+            .flatMap(_ => IO.raiseError(e))
         case e: TimeoutException =>
-          httpLogger.log(e)
-          IO.raiseError(HttpStatusException(504, s"Connection timed out: ${e.getMessage}", request))
+          IO(httpLogger.log(e))
+            .flatMap(_ => IO.raiseError(HttpStatusException(504, s"Connection timed out: ${e.getMessage}", request)))
         case e: Exception =>
-          httpLogger.log(e)
-          IO.raiseError(HttpConnectionException(e.getClass.getName + ": " + e.getMessage, request))
+          IO(httpLogger.log(e))
+            .flatMap(_ => IO.raiseError(HttpConnectionException(e.getClass.getName + ": " + e.getMessage, request)))
       }
   }
 
