@@ -726,7 +726,6 @@
               <verbose>false</verbose>
               <failOnViolation>true</failOnViolation>
               <includeTestSourceDirectory>true</includeTestSourceDirectory>
-              <failOnWarning>false</failOnWarning>
               <sourceDirectory>${basedir}/src/main/scala</sourceDirectory>
               <testSourceDirectory>${basedir}/src/test/scala</testSourceDirectory>
               <configLocation>${basedir}/scalastyle_config.xml</configLocation>
