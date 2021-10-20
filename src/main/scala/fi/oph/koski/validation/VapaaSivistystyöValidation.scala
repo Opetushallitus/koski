@@ -75,9 +75,10 @@ object VapaaSivistystyöValidation {
   }
 
   private def validateVapaanSivistystyönVapaatavoitteisenPäätasonOsaSuoritukset(suoritus: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus): HttpStatus = {
-    suoritus.osasuoritusLista.exists(_.arviointi.nonEmpty) match {
-      case true => HttpStatus.ok
-      case false => KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteisenKoulutuksenPäätasonOsasuoritukset()
+    if (suoritus.osasuoritusLista.exists(_.arviointi.nonEmpty)) {
+      HttpStatus.ok
+    } else {
+      KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteisenKoulutuksenPäätasonOsasuoritukset()
     }
   }
 
@@ -91,13 +92,8 @@ object VapaaSivistystyöValidation {
     }
   }
 
-  private def vapaatavoitteinenKoulutusTuleeValidoida(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
-    if (opiskeluoikeus.versionumero.headOption.getOrElse(0) > 0 || opiskeluoikeus.lähdejärjestelmänId.nonEmpty) {
-      true
-    } else {
-      false
-    }
-  }
+  private def vapaatavoitteinenKoulutusTuleeValidoida(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) =
+    opiskeluoikeus.versionumero.getOrElse(0) > 0 || opiskeluoikeus.lähdejärjestelmänId.nonEmpty
 
   private def suorituksenTunniste(suoritus: Suoritus): KoodiViite = {
     suoritus.koulutusmoduuli.tunniste
