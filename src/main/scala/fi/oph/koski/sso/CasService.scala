@@ -32,8 +32,9 @@ class CasService(config: Config) extends Logging {
 
   def validateKansalainenServiceTicket(url: String, ticket: String): String = {
     val oppijaAttributes = Http.runIO(
-      casOppijaClient.validateServiceTicketWithOppijaAttributes(url)(ticket),
-      timeout = 10.seconds
+      casOppijaClient
+        .validateServiceTicketWithOppijaAttributes(url)(ticket)
+        .timeout(10.seconds)
     )
     oppijaAttributes("nationalIdentificationNumber")
   }
@@ -41,8 +42,9 @@ class CasService(config: Config) extends Logging {
   def validateVirkailijaServiceTicket(url: String, ticket: String): Username = {
     mockUsernameForAllVirkailijaTickets.getOrElse({
       Http.runIO(
-        casVirkailijaClient.validateServiceTicketWithVirkailijaUsername(url)(ticket),
-        timeout = 10.seconds
+        casVirkailijaClient
+          .validateServiceTicketWithVirkailijaUsername(url)(ticket)
+          .timeout(10.seconds)
       )
     })
   }

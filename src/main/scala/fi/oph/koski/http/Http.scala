@@ -36,23 +36,29 @@ object Http extends Logging {
 
   private val maxHttpConnections = Pools.httpThreads
 
-  private def baseClient(name: String): Client[IO] = {
+  type ClientConfigFn = BlazeClientBuilder[IO] => BlazeClientBuilder[IO]
+
+  private def baseClient(name: String, configFn: ClientConfigFn): Client[IO] = {
     logger.info(s"Creating new pooled http client with $maxHttpConnections max total connections for $name")
-    BlazeClientBuilder[IO](ExecutionContext.fromExecutor(Pools.httpPool))
+    val builder = BlazeClientBuilder[IO](ExecutionContext.fromExecutor(Pools.httpPool))
       .withMaxTotalConnections(maxHttpConnections)
       .withMaxWaitQueueLimit(1024)
-      .withConnectTimeout(20.seconds)
-      .withResponseHeaderTimeout(30.seconds)
+      .withConnectTimeout(10.seconds)
+      .withResponseHeaderTimeout(15.seconds)
       .withRequestTimeout(1.minutes)
       .withIdleTimeout(2.minutes)
+
+    configFn(builder)
       .allocated
       .map(_._1)
       .unsafeRunSync()
   }
 
-  def retryingClient(name: String): Client[IO] = withLoggedRetry(baseClient(name))
+  def retryingClient(name: String, configFn: ClientConfigFn = identity): Client[IO] =
+    withLoggedRetry(baseClient(name, configFn))
 
-  def unsafeRetryingClient(name: String): Client[IO] = withLoggedRetry(baseClient(name), retryNonIdempotentRequests)
+  def unsafeRetryingClient(name: String, configFn: ClientConfigFn = identity): Client[IO] =
+    withLoggedRetry(baseClient(name, configFn), retryNonIdempotentRequests)
 
   // This guys allows you to make URIs from your Strings as in uri"http://google.com/s=${searchTerm}"
   // Takes care of URI encoding the components. You can prevent encoding a part by wrapping into an Uri using this selfsame method.
@@ -143,7 +149,7 @@ object Http extends Logging {
     case _ =>
   }
 
-  def runIO[A](io: IO[A], timeout: FiniteDuration = 2.minutes): A = io.timeout(timeout).unsafeRunSync()
+  def runIO[A](io: IO[A]): A = io.unsafeRunSync()
 
   type Decode[ResultType] = (Int, String, Request[IO]) => ResultType
 
@@ -158,33 +164,49 @@ object Http extends Logging {
 }
 
 case class Http(root: String, client: Client[IO]) extends Logging {
+  private val DefaultTimeout = 2.minutes
+
   private val rootUri = Http.uriFromString(root)
 
   private val commonHeaders = Headers(Header.Raw(CIString("Caller-Id"), OpintopolkuCallerId.koski))
 
-  def get[ResultType](uri: ParameterizedUriWrapper, headers: Headers = Headers.empty)(decode: Decode[ResultType]): IO[ResultType] = {
-    processRequest(Request(uri = uri.uri, headers = headers), uri.template)(decode)
-  }
+  private def get(uri: Uri): Request[IO] = Request(uri = uri)
 
-  def head[ResultType](uri: ParameterizedUriWrapper, headers: Headers = Headers.empty)(decode: Decode[ResultType]): IO[ResultType] = {
-    processRequest(Request(uri = uri.uri, headers = headers, method = Method.HEAD), uri.template)(decode)
-  }
+  def get[ResultType]
+    (uri: ParameterizedUriWrapper, timeout: FiniteDuration = DefaultTimeout)
+    (decode: Decode[ResultType])
+  : IO[ResultType] = processRequest(get(uri.uri), uri.template, timeout)(decode)
 
-  def post[I <: AnyRef, O <: Any](path: ParameterizedUriWrapper, entity: I)(encode: EntityEncoder[IO, I])(decode: Decode[O]): IO[O] = {
-    val request: Request[IO] = Request(uri = path.uri, method = Method.POST)
-    processRequest(request.withEntity(entity)(encode), uriTemplate = path.template)(decode)
-  }
+  private def head(uri: Uri): Request[IO] = Request(uri = uri, method = Method.HEAD)
 
-  def put[I <: AnyRef, O <: Any](path: ParameterizedUriWrapper, entity: I)(encode: EntityEncoder[IO, I])(decode: Decode[O]): IO[O] = {
-    val request: Request[IO] = Request(uri = path.uri, method = Method.PUT)
-    processRequest(request.withEntity(entity)(encode), path.template)(decode)
-  }
+  def head[ResultType]
+    (uri: ParameterizedUriWrapper, timeout: FiniteDuration = DefaultTimeout)
+    (decode: Decode[ResultType])
+  : IO[ResultType] = processRequest(head(uri.uri), uri.template, timeout)(decode)
+
+  private def post[I <: AnyRef, O <: Any](uri: Uri, entity: I, encode: EntityEncoder[IO, I]): Request[IO] =
+    Request(uri = uri, method = Method.POST).withEntity(entity)(encode)
+
+  def post[I <: AnyRef, O <: Any]
+    (uri: ParameterizedUriWrapper, entity: I, timeout: FiniteDuration = DefaultTimeout)
+    (encode: EntityEncoder[IO, I])
+    (decode: Decode[O])
+  : IO[O] = processRequest(post(uri.uri, entity, encode), uriTemplate = uri.template, timeout)(decode)
+
+  private def put[I <: AnyRef, O <: Any](uri: Uri, entity: I, encode: EntityEncoder[IO, I]): Request[IO] =
+    Request(uri = uri, method = Method.PUT).withEntity(entity)(encode)
+
+  def put[I <: AnyRef, O <: Any]
+    (uri: ParameterizedUriWrapper, entity: I, timeout: FiniteDuration = DefaultTimeout)
+    (encode: EntityEncoder[IO, I])
+    (decode: Decode[O])
+  : IO[O] = processRequest(put(uri.uri, entity, encode), uri.template, timeout)(decode)
 
   private def processRequest[ResultType]
-    (request: Request[IO], uriTemplate: String)
+    (request: Request[IO], uriTemplate: String, timeout: FiniteDuration)
     (decoder: Decode[ResultType])
   : IO[ResultType] = {
-    runRequest(uriTemplate, decoder)(
+    runRequest(uriTemplate, decoder, timeout)(
       request
         .withUri(addRoot(request.uri))
         .withHeaders(request.headers ++ commonHeaders)
@@ -192,7 +214,7 @@ case class Http(root: String, client: Client[IO]) extends Logging {
   }
 
   private def runRequest[ResultType]
-    (uriTemplate: String, decoder: Decode[ResultType])
+    (uriTemplate: String, decoder: Decode[ResultType], timeout: FiniteDuration)
     (request: Request[IO])
   : IO[ResultType] = {
     val httpLogger = HttpResponseLog(request, root + uriTemplate)
@@ -208,16 +230,17 @@ case class Http(root: String, client: Client[IO]) extends Logging {
           }
         }
       }
+      .timeout(timeout)
       .handleErrorWith {
         case e: HttpException =>
-          httpLogger.log(e)
-          IO.raiseError(e)
+          IO(httpLogger.log(e))
+            .flatMap(_ => IO.raiseError(e))
         case e: TimeoutException =>
-          httpLogger.log(e)
-          IO.raiseError(HttpStatusException(504, s"Connection timed out: ${e.getMessage}", request))
+          IO(httpLogger.log(e))
+            .flatMap(_ => IO.raiseError(HttpStatusException(504, s"Connection timed out: ${e.getMessage}", request)))
         case e: Exception =>
-          httpLogger.log(e)
-          IO.raiseError(HttpConnectionException(e.getClass.getName + ": " + e.getMessage, request))
+          IO(httpLogger.log(e))
+            .flatMap(_ => IO.raiseError(HttpConnectionException(e.getClass.getName + ": " + e.getMessage, request)))
       }
   }
 

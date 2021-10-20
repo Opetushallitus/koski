@@ -26,6 +26,7 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
       |opintopolku.virkailija.username = "foo"
       |opintopolku.virkailija.password = "bar"
       |valpas.hakukoosteEnabled = true
+      |valpas.hakukoosteTimeoutSeconds = 2
     """.stripMargin)
 
   private val mockClient = ValpasHakukoosteService(config, KoskiApplicationForTests.validatingAndResolvingExtractor)
@@ -71,6 +72,17 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
           .willReturn(aResponse().withFault(Fault.MALFORMED_RESPONSE_CHUNK)))
 
       val result = mockClient.getHakukoosteet(Set("asdf"), ainoastaanAktiivisetHaut = false, "test").left.value
+      result.statusCode should equal(503)
+      result.errorString.get should startWith("Hakukoosteita ei juuri nyt saada haettua")
+    }
+
+    "toimii kun vastauksessa kestää liian kauan" in {
+      wireMockServer.stubFor(
+        WireMock.post(WireMock.urlPathEqualTo(sureHakukoosteUrl))
+          .willReturn(aResponse().withFixedDelay(10000)))
+
+      val result = mockClient.getHakukoosteet(Set("asdf"), ainoastaanAktiivisetHaut = false, "test").left.value
+
       result.statusCode should equal(503)
       result.errorString.get should startWith("Hakukoosteita ei juuri nyt saada haettua")
     }

@@ -12,16 +12,33 @@ import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö
 import org.json4s.JValue
 
-class SureHakukoosteService(config: Config, validatingAndResolvingExtractor: ValidatingAndResolvingExtractor) extends ValpasHakukoosteService with Logging with Timing {
+import scala.concurrent.duration.DurationInt
+
+class SureHakukoosteService(
+  config: Config,
+  validatingAndResolvingExtractor: ValidatingAndResolvingExtractor
+) extends ValpasHakukoosteService
+  with Logging
+  with Timing {
+
   private val baseUrl = "/suoritusrekisteri"
 
+  private val totalTimeout = config.getInt("valpas.hakukoosteTimeoutSeconds").seconds
+
   private val http = {
-    // Suoritusterkisteriin POST-metodilla tehtävät kyselyt ovat oikeasti
-    // idempotentteja, joten niiden uudelleenyrittäminen on ok:
+    // Suoritusterkisteriin POST-metodilla tehtävät kyselyt ovat oikeasti idempotentteja,
+    // joten niiden uudelleenyrittäminen on ok: siksi unsafeRetryingClient.
+    val client = unsafeRetryingClient(
+      baseUrl, clientBuilder => clientBuilder
+        .withConnectTimeout(totalTimeout / 3)
+        .withResponseHeaderTimeout(totalTimeout / 3 + 1.second)
+        .withRequestTimeout(totalTimeout)
+    )
+
     VirkailijaHttpClient(
       ServiceConfig.apply(config, "opintopolku.virkailija"),
       baseUrl,
-      unsafeRetryingClient(baseUrl)
+      client
     )
   }
 
@@ -45,7 +62,11 @@ class SureHakukoosteService(config: Config, validatingAndResolvingExtractor: Val
 
     timed(timedBlockname, 10) {
       Http.runIO(
-        http.post(s"$baseUrl/rest/v1/valpas/${queryParams}".toUri, oppijaOids.toSeq)(encoder)(decoder)
+        http.post(
+          s"$baseUrl/rest/v1/valpas/${queryParams}".toUri,
+          oppijaOids.toSeq,
+          timeout = totalTimeout
+        )(encoder)(decoder)
           .handleError {
             case e: HttpException =>
               logger.error(s"Bad response from Suoritusrekisteri for ${errorClue}: ${e.toString}")

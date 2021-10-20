@@ -85,7 +85,7 @@ class ElasticSearchIndex(
   def isOnline: Boolean = indexExists(currentIndexName)
 
   private def indexExists(indexName: String): Boolean = {
-    Http.runIO(http.head(uri"/$indexName")(Http.statusCode), timeout = 5.seconds) match {
+    Http.runIO(http.head(uri"/$indexName", timeout = 5.seconds)(Http.statusCode)) match {
       case 200 => true
       case 404 => false
       case statusCode: Int => throw new RuntimeException("Unexpected status code from elasticsearch: " + statusCode)
