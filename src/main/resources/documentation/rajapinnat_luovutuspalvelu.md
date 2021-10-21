@@ -466,3 +466,43 @@ Esimerkkivastaus
 
 Palautettavan JSON-rakenteen tietomallin dokumentaatio on
 <a href="/koski/json-schema-viewer/?schema=valpas-kela-oppija-schema.json">täällä</a>.
+
+## /koski/valpas/api/luovutuspalvelu/kela/hetut
+
+Esimerkkipyyntö
+
+    POST /koski/valpas/api/luovutuspalvelu/kela/hetut HTTP/1.1
+    Content-Type: application/json
+
+    {
+      "hetut": ["181005A1560", "...", "..."]
+    }
+
+Esimerkkivastaus
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+
+    [
+      {
+        "henkilö": {
+          "oid": "1.2.246.562.24.123456789",
+           "hetu": "181005A1560",
+          ...
+        },
+        "oppivelvollisuudenKeskeytykset": [
+          {
+            "uuid": "0b457498-7392-48aa-821e-45234f853588",
+            ...
+          },
+          {
+            "uuid": "4f7c49b7-8f29-4b0a-85cf-9d2318c205b8",
+            ...
+          }
+        ]
+      },
+      ...
+    ]
+
+Palautettavan JSON-rakenteen tietomallin dokumentaatio on
+<a href="/koski/json-schema-viewer/?schema=valpas-kela-oppija-schema.json">täällä</a>.

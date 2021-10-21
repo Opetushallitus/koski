@@ -1233,7 +1233,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     }
   }
 
-  def getOppivelvollisuusTiedot(hetu: String): Seq[ValpasOppivelvollisuustiedotRow] = {
+  def getOppivelvollisuusTiedot(hetut: Seq[String]): Seq[ValpasOppivelvollisuustiedotRow] = {
 
     implicit def getResult: GetResult[ValpasOppivelvollisuustiedotRow] = GetResult(r => {
       ValpasOppivelvollisuustiedotRow(
@@ -1256,7 +1256,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       FROM
         r_henkilo
       WHERE
-        r_henkilo.hetu = $hetu
+        r_henkilo.hetu = any($hetut)
     )
   SELECT
     pyydetty_oppija.master_oid,

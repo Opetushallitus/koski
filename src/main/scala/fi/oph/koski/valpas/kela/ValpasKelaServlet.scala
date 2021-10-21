@@ -18,11 +18,30 @@ class ValpasKelaServlet(implicit val application: KoskiApplication) extends Valp
 
   post("/hetu") {
     withJsonBody { json =>
-      val hetu = ValpasKelaRequest.parse(json)
-      val oppija = hetu.flatMap(valpasKelaService.findValpasKelaOppijaByHetu(_))
-        .tap(o => auditLogOppivelvollisuusrekisteriLuovutus(o.henkilö.oid))
+      val response = ValpasKelaRequest.parse(json)
+        .flatMap(hetu => valpasKelaService.findValpasKelaOppijatByHetut(Seq(hetu)))
+        .tap(_.map(o => auditLogOppivelvollisuusrekisteriLuovutus(o.henkilö.oid)))
+        .map(_.headOption)
+        .flatMap(
+          _.toRight(ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(
+            "Oppijaa (hetu) ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."
+          ))
+        )
 
-      renderEither[ValpasKelaOppija](oppija)
+      renderEither[ValpasKelaOppija](response)
+    }()
+  }
+
+  post("/hetut") {
+    withJsonBody { json =>
+      ValpasKelaRequest.parseBulk(json) match {
+        case Right(hetut) =>
+          val oppijat = valpasKelaService.findValpasKelaOppijatByHetut(hetut)
+            .tap(_.map(o => auditLogOppivelvollisuusrekisteriLuovutus(o.henkilö.oid)))
+          renderEither[Seq[ValpasKelaOppija]](oppijat)
+        case Left(status) =>
+          haltWithStatus(status)
+      }
     }()
   }
 }
@@ -45,4 +64,4 @@ object ValpasKelaRequest {
 }
 
 case class ValpasKelaRequest(hetu: String)
-case class ValpasKelaBulkRequest(hetut: List[String])
+case class ValpasKelaBulkRequest(hetut: Seq[String])
