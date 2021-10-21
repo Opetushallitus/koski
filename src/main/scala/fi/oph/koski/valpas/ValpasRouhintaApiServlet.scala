@@ -6,11 +6,13 @@ import fi.oph.koski.koskiuser.UserLanguage.sanitizeLanguage
 import fi.oph.koski.raportit.{ExcelWriter, OppilaitosRaporttiResponse}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.servlet.NoCache
+import fi.oph.koski.valpas.log.ValpasAuditLog.auditLogRouhintahakuHetulistalla
 import fi.oph.koski.valpas.rouhinta.{HeturouhinnanTulos, ValpasRouhintaService}
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
 import org.json4s.JValue
 import org.scalatra.{Cookie, CookieOptions}
+import fi.oph.koski.util.ChainingSyntax._
 
 class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with RequiresValpasSession {
   private val rouhinta = new ValpasRouhintaService(application)
@@ -21,9 +23,11 @@ class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) exten
         .flatMap(input => {
           if (jsonRequested) {
             rouhinta.haeHetulistanPerusteella(input.hetut)
+              .tap(_ => auditLogRouhintahakuHetulistalla(input.hetut))
           } else {
             val language = input.lang.orElse(langFromCookie).getOrElse("fi")
             rouhinta.haeHetulistanPerusteellaExcel(input.hetut, language, input.password)
+              .tap(_ => auditLogRouhintahakuHetulistalla(input.hetut))
           }
         })
       renderResult(result)

@@ -1,6 +1,7 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.valpas.log.{ValpasAuditLogMessageField, ValpasOperation}
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import org.scalatest.BeforeAndAfterEach
 
@@ -36,6 +37,14 @@ class ValpasRouhintaApiServletSpec extends ValpasTestBase with BeforeAndAfterEac
   "Hetuhaku hylkää pelkillä maksuttomuudenvalvonnan oikeuksilla" in {
     doHetuQuery(ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä) {
       verifyResponseStatus(403, ValpasErrorCategory.forbidden.toiminto())
+    }
+  }
+
+  "Hetuhaku jättää merkinnän auditlokiin" in {
+    doHetuQuery(ValpasMockUsers.valpasHelsinki) {
+      AuditLogTester.verifyAuditLogMessage(Map(
+        "operation" -> ValpasOperation.VALPAS_ROUHINTA_HETUHAKU.toString,
+        "target" -> Map(ValpasAuditLogMessageField.hakulause.toString -> "161004A404E")))
     }
   }
 
