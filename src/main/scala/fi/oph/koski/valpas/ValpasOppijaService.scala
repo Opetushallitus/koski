@@ -127,7 +127,7 @@ class ValpasOppijaService(
   application: KoskiApplication
 ) extends Logging with Timing {
   private val hakukoosteService = ValpasHakukoosteService(application.config, application.validatingAndResolvingExtractor)
-  private val opiskeluoikeusDbService = new ValpasOpiskeluoikeusDatabaseService(application)
+  private val opiskeluoikeusDbService = application.valpasOpiskeluoikeusDatabaseService
   private val ovKeskeytysService = new OppivelvollisuudenKeskeytysService(application)
   private val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
   private val localizationRepository = application.valpasLocalizationRepository

@@ -261,6 +261,13 @@ object ValpasMockUsers {
       peruskoulunKäyttäjä(aapajoenKoulu)
   )
 
+  val valpasKela = ValpasMockUser(
+    "käyttäjä",
+    "valpas-kela",
+    "1.2.246.562.24.12312394638",
+    kelaLuovutuspalveluKäyttäjä
+  )
+
   def users: List[ValpasMockUser] = {
     if (mockUsersEnabled) {
       List(
@@ -295,7 +302,8 @@ object ValpasMockUsers {
         valpasNivelvaiheenKäyttäjä,
         valpasIntSchool,
         valpasIntSchoolJklHki,
-        valpasMonta
+        valpasMonta,
+        valpasKela
       )
     } else {
       List()

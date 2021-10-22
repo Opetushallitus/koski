@@ -2,7 +2,7 @@
 
 Tällä sivulla kuvataan rajapinnat, joilla tietyille viranomaisille voidaan luovuttaa tietoja Koskesta.
 
-Rajapinnat ovat REST-tyyppisiä, ja dataformaattina on JSON. 
+Rajapinnat ovat REST-tyyppisiä, ja dataformaattina on JSON.
 
 Kutsut käyttävät REST-tyylistä poiketen POST-metodia, koska pyyntöjen URLit päätyvät helposti
 erilaisiin lokeihin (esim. kuormantasaimet, virheilmoitukset), ja näihin lokeihin ei haluta henkilötunnuksia.
@@ -37,12 +37,12 @@ Esimerkkipyyntö:
 Pyynnön kenttien kuvaukset:
 
  * `v` - rajapinnan versionumero, tässä aina 1.
- * `hetu` - haettava henkilötunnus. 
- * `opiskeluoikeudentyypit` - lista opiskeluoikeuden tyyppejä, joista kutsuja on kiinnostunut. 
+ * `hetu` - haettava henkilötunnus.
+ * `opiskeluoikeudentyypit` - lista opiskeluoikeuden tyyppejä, joista kutsuja on kiinnostunut.
     Sallitut arvot löytyvät [opiskeluoikeudentyyppi](/koski/dokumentaatio/koodisto/opiskeluoikeudentyyppi/latest) koodistosta.
     Tällä hetkellä arvot `korkeakoulutus` ja `ylioppilastutkinto` aiheuttavat ylimääräisen kutsun taustarekisteriin
     (Virta ja Ylioppilastutkintorekisteri), joten niitä tulee käyttää vain jos tiedot todella tarvitaan.
-     
+
 Vastaus, kun henkilö löytyy:
 <a name="vastaukset"></a>
 
@@ -77,7 +77,7 @@ Vastaus, kun henkilöä ei löydy, tai henkilö löytyy mutta hänelle ei löydy
 
     HTTP/1.1 404 Not Found
     Content-Type: application/json
-    
+
     [
       {
         "key": "notFound.oppijaaEiLöydyTaiEiOikeuksia",
@@ -85,10 +85,10 @@ Vastaus, kun henkilöä ei löydy, tai henkilö löytyy mutta hänelle ei löydy
       }
     ]
 
-Muut vastaukset ovat virheitä, ja käsitellään HTTP-tilakoodin perusteella. 
+Muut vastaukset ovat virheitä, ja käsitellään HTTP-tilakoodin perusteella.
 Tilakoodit 400-499 tarkoittavat virheellistä pyyntöä (jolloin uudelleen yrittäminen ei välttämättä auta),
 ja tilakoodit 500-599 tarkoittavat useimmiten väliaikaista virhettä (jolloin pyyntöä kannattaa yrittää myöhemmin uudelleen).
-Useimmissa tapauksissa vastauksen body:stä löytyy tarkempi virhekoodi tai -viesti, josta on apua kehittäjille virheen 
+Useimmissa tapauksissa vastauksen body:stä löytyy tarkempi virhekoodi tai -viesti, josta on apua kehittäjille virheen
 syyn selvittämisessä.
 
 Erityisesti voidaan mainita seuraavat virheet:
@@ -157,8 +157,8 @@ Paluuviesti on sama kuin pyynnössä `/koski/api/luovutuspalvelu/hetu` [ks. yll�
 Tällä kutsulla haetaan usean (max. 1000 kpl) henkilön tiedot henkilötunnusten perusteella.
 
 Tällä kutsulla ei voi hakea `korkeakoulutus`- tai `ylioppilastutkinto`-tyyppisiä opiskeluoikeuksia,
-koska ne vaatisivat erilliset taustajärjestelmäkutsut (Virta / Ylioppilastutkintorekisteri) jokaiselle 
-henkilötunnukselle. 
+koska ne vaatisivat erilliset taustajärjestelmäkutsut (Virta / Ylioppilastutkintorekisteri) jokaiselle
+henkilötunnukselle.
 
 Esimerkkipyyntö:
 
@@ -380,15 +380,15 @@ Esimerkkivastaus
         ...
       ]
     }
-    
+
 
 ## /koski/api/luovutuspalvelu/kela/hetut
 
 Tällä kutsulla haetaan usean (max. 1000 kpl) henkilön tiedot henkilötunnusten perusteella.
 
 Tällä kutsulla ei voi hakea `ylioppilastutkinto`-tyyppisiä opiskeluoikeuksia,
-koska ne vaatisivat erilliset taustajärjestelmäkutsut (Ylioppilastutkintorekisteri) jokaiselle 
-henkilötunnukselle. 
+koska ne vaatisivat erilliset taustajärjestelmäkutsut (Ylioppilastutkintorekisteri) jokaiselle
+henkilötunnukselle.
 
 Esimerkkipyyntö
 
@@ -429,3 +429,40 @@ Esimerkkivastaus
 
 Palautettavan JSON-rakenteen tietomallin dokumentaatio on
 <a href="/koski/json-schema-viewer/?schema=kela-oppija-schema.json">täällä</a>.
+
+## /koski/valpas/api/luovutuspalvelu/kela/hetu
+
+Esimerkkipyyntö
+
+    POST /koski/valpas/api/luovutuspalvelu/kela/hetu HTTP/1.1
+    Content-Type: application/json
+
+    {
+      "hetu": "180859-914S"
+    }
+
+Esimerkkivastaus
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+
+    {
+      "henkilö": {
+        "oid": "1.2.246.562.24.123456789",
+        "hetu": "181005A1560",
+        ...
+      },
+      "oppivelvollisuudenKeskeytykset": [
+        {
+          "uuid": "0b457498-7392-48aa-821e-45234f853588",
+          ...
+        },
+        {
+          "uuid": "4f7c49b7-8f29-4b0a-85cf-9d2318c205b8",
+          ...
+        }
+      ]
+    }
+
+Palautettavan JSON-rakenteen tietomallin dokumentaatio on
+<a href="/koski/json-schema-viewer/?schema=valpas-kela-oppija-schema.json">täällä</a>.

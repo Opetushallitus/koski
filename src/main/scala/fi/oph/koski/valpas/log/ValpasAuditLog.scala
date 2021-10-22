@@ -82,6 +82,15 @@ object ValpasAuditLog {
       )
     ))
   }
+
+  def auditLogOppivelvollisuusrekisteriLuovutus(oppijaOid: ValpasHenkilö.Oid)(implicit session: ValpasSession): Unit = {
+    val message = ValpasAuditLogMessage(
+      ValpasOperation.OPPIVELVOLLISUUSREKISTERI_LUOVUTUS,
+      session,
+      Map(ValpasAuditLogMessageField.oppijaHenkilöOid -> oppijaOid)
+    )
+    AuditLog.log(message)
+  }
 }
 
 object ValpasAuditLogMessage {
@@ -108,7 +117,8 @@ object ValpasOperation extends Enumeration {
       VALPAS_KUNNAT_OPPIJAT_KATSOMINEN,
       VALPAS_OPPIJA_KUNTAILMOITUS,
       VALPAS_OPPIJA_HAKU,
-      VALPAS_OPPIVELVOLLISUUDEN_KESKEYTYS = Value
+      VALPAS_OPPIVELVOLLISUUDEN_KESKEYTYS,
+      OPPIVELVOLLISUUSREKISTERI_LUOVUTUS = Value
 }
 
 private class ValpasAuditLogOperation(op: ValpasOperation) extends AuditLogOperation(op)
