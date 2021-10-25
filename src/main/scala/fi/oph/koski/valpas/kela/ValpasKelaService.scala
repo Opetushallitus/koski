@@ -3,21 +3,42 @@ package fi.oph.koski.valpas.kela
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log._
+import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.db.ValpasSchema.OppivelvollisuudenKeskeytysRow
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppivelvollisuustiedotRow
 
-class ValpasKelaService(application: KoskiApplication) extends Logging {
-  def findValpasKelaOppijaByHetu(hetu: String): Either[HttpStatus, ValpasKelaOppija] = {
-    application.valpasOpiskeluoikeusDatabaseService.getOppivelvollisuusTiedot(hetu)
-      .headOption
-      .map(asValpasKelaOppijaWithOppivelvollisuudenKeskeytykset)
-      .toRight(notFound("(hetu)"))
+class ValpasKelaService(application: KoskiApplication) extends Logging with Timing {
+  def findValpasKelaOppijatByHetut(hetut: Seq[String]): Either[HttpStatus, Seq[ValpasKelaOppija]] = {
+
+    val timedBlockName = hetut.length match {
+      case 1 => "findValpasKelaOppijatByHetut1"
+      case n if n <= 100 => "findValpasKelaOppijatByHetut2To100"
+      case n if n <= 500 => "findValpasKelaOppijatByHetut101To500"
+      case _ => "findValpasKelaOppijatByHetut501To1000"
+    }
+
+    timed(timedBlockName, 10) {
+      val oppivelvollisuusTiedot = application.valpasOpiskeluoikeusDatabaseService.getOppivelvollisuusTiedot(hetut)
+      Right(asValpasKelaOppijatWithOppivelvollisuudenKeskeytykset(oppivelvollisuusTiedot))
+    }
   }
 
-  private def asValpasKelaOppijaWithOppivelvollisuudenKeskeytykset(oppija: ValpasOppivelvollisuustiedotRow): ValpasKelaOppija = {
-    val keskeytykset = application.valpasOppivelvollisuudenKeskeytysRepository.getKeskeytykset(oppija.kaikkiOppijaOidit)
-    asValpasKelaOppija(oppija, keskeytykset)
+  private def asValpasKelaOppijatWithOppivelvollisuudenKeskeytykset(oppijat: Seq[ValpasOppivelvollisuustiedotRow]): Seq[ValpasKelaOppija] = {
+    val keskeytykset: Map[String, Seq[OppivelvollisuudenKeskeytysRow]] =
+      application.valpasOppivelvollisuudenKeskeytysRepository
+        .getKeskeytykset(oppijat.flatMap(_.kaikkiOppijaOidit))
+        .groupBy(_.oppijaOid)
+        .withDefaultValue(Seq.empty)
+
+    oppijat.map(oppija => {
+      val oppijanKeskeytykset =
+        oppija.kaikkiOppijaOidit
+          .map(keskeytykset)
+          .flatten
+
+      asValpasKelaOppija(oppija, oppijanKeskeytykset)
+    })
   }
 
   private def asValpasKelaOppija(
@@ -44,9 +65,5 @@ class ValpasKelaService(application: KoskiApplication) extends Logging {
     loppu = keskeytys.loppu,
     luotu = keskeytys.luotu,
     peruttu = keskeytys.peruttu
-  )
-
-  private def notFound(tunniste: String): HttpStatus = ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(
-    "Oppijaa " + tunniste + " ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."
   )
 }

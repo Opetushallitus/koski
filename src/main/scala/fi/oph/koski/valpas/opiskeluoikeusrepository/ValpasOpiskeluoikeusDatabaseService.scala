@@ -630,6 +630,12 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         AS suorittamisvalvottava_opiskeluoikeus_oids,
       r_henkilo.turvakielto,
       r_henkilo.aidinkieli,
+      -- Tässä haetaan oppijan slave-oidit muista tietokannoista tehtäviä kyselyitä varten. Tämä ei ole täydellinen lista:
+      -- käsittelemättä jäävät oidit, jotka ovat vain masterin linkitetyt_oidit sarakkeessa. Tämä ei kuitenkaan haittaa, koska
+      -- Valppaassa ei tällä hetkellä ole mahdollista luoda keskeytyksiä tai kuntailmoituksia kuin hetullisille oppijoille, ja
+      -- hetulliset oppijat eivät koskaan voi olla slave-oppijoita. Käytännössä koko käsittelyn voisi oletettavasti purkaa, mutta
+      -- ennen kuin sen tekee, pitäisi tarkistaa tietokannoista, ettei tällaisia tapauksia ole. Valpas kuitenkin näytti n. syyskuuhun
+      -- 2021 asti myös hetuttomia oppijoita.
       array_agg(DISTINCT kaikki_henkilot.oppija_oid) AS kaikkiOppijaOidit,
       oppivelvollisuustiedot.oppivelvollisuusvoimassaasti AS oppivelvollisuus_voimassa_asti,
       oppivelvollisuustiedot.oikeuskoulutuksenmaksuttomuuteenvoimassaasti
@@ -1233,7 +1239,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     }
   }
 
-  def getOppivelvollisuusTiedot(hetu: String): Seq[ValpasOppivelvollisuustiedotRow] = {
+  def getOppivelvollisuusTiedot(hetut: Seq[String]): Seq[ValpasOppivelvollisuustiedotRow] = {
 
     implicit def getResult: GetResult[ValpasOppivelvollisuustiedotRow] = GetResult(r => {
       ValpasOppivelvollisuustiedotRow(
@@ -1256,14 +1262,19 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       FROM
         r_henkilo
       WHERE
-        r_henkilo.hetu = $hetu
+        r_henkilo.hetu = any($hetut)
     )
   SELECT
     pyydetty_oppija.master_oid,
     pyydetty_oppija.hetu,
     oppivelvollisuustiedot.oppivelvollisuusvoimassaasti,
     oppivelvollisuustiedot.oikeuskoulutuksenmaksuttomuuteenvoimassaasti,
-    -- Kaikki henkilön oidit tarvitaan oppivelvollisuuden keskeytysten kyselyä varten
+    -- Tässä haetaan oppijan slave-oidit muista tietokannoista tehtäviä kyselyitä varten. Tämä ei ole täydellinen lista:
+    -- käsittelemättä jäävät oidit, jotka ovat vain masterin linkitetyt_oidit sarakkeessa. Tämä ei kuitenkaan haittaa, koska
+    -- Valppaassa ei tällä hetkellä ole mahdollista luoda keskeytyksiä tai kuntailmoituksia kuin hetullisille oppijoille, ja
+    -- hetulliset oppijat eivät koskaan voi olla slave-oppijoita. Käytännössä koko käsittelyn voisi oletettavasti purkaa, mutta
+    -- ennen kuin sen tekee, pitäisi tarkistaa tietokannoista, ettei tällaisia tapauksia ole. Valpas kuitenkin näytti n. syyskuuhun
+    -- 2021 asti myös hetuttomia oppijoita.
     array_agg(DISTINCT kaikki_henkilot.oppija_oid) AS kaikkiOppijaOidit
   FROM
     oppivelvollisuustiedot
