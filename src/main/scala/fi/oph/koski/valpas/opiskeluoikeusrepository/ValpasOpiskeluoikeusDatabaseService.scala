@@ -1291,4 +1291,37 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       )
     ).as[ValpasOppivelvollisuustiedotRow])
   }
+
+  def haeOppijatHetuilla(hetut: Seq[String]): Seq[HetuMasterOid] = {
+    db.runDbSync(sql"""
+      SELECT
+        r_henkilo.master_oid as master_oid,
+        r_henkilo.hetu as hetu,
+        r_henkilo.syntymaaika as syntymaaika,
+        COALESCE(${rajapäivätService.tarkastelupäivä} BETWEEN oppivelvollisuustiedot.oppivelvollisuusvoimassaalkaen AND oppivelvollisuustiedot.oppivelvollisuusvoimassaasti, false) as oppivelvollisuus_voimassa
+      FROM r_henkilo
+      LEFT JOIN oppivelvollisuustiedot ON (r_henkilo.master_oid = oppivelvollisuustiedot.oppija_oid)
+      WHERE
+        r_henkilo.hetu = any($hetut)
+      """.as[HetuMasterOid])
+  }
 }
+
+case class HetuMasterOid(
+  hetu: String,
+  syntymäaika: Option[LocalDate],
+  masterOid: ValpasHenkilö.Oid,
+  oppivelvollisuusVoimassa: Boolean,
+)
+
+object HetuMasterOid {
+  implicit def getResult: GetResult[HetuMasterOid] = GetResult(r => {
+    HetuMasterOid(
+      hetu = r.rs.getString("hetu"),
+      syntymäaika = r.getLocalDateOption("syntymaaika"),
+      masterOid = r.rs.getString("master_oid"),
+      oppivelvollisuusVoimassa = r.rs.getBoolean("oppivelvollisuus_voimassa"),
+    )
+  })
+}
+
