@@ -1,0 +1,1 @@
+-- Poistettiin Java-koodi, joka generoi opiskeluoikeudet, koska sitä ei enää tarvita ja siitä muodostuu turha riippuvuus Java kääntäjään
