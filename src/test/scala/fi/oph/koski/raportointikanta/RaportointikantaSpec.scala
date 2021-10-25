@@ -453,6 +453,18 @@ class RaportointikantaSpec
         ps.toimipisteOid should equal(AmmatillinenExampleData.stadinToimipiste.oid)
         ps.toimipisteNimi should equal(AmmatillinenExampleData.stadinToimipiste.nimi.get.get("fi"))
       }
+
+      "Päätason suorituksella on alkamispäivä" in {
+        val suoritus = ammatillinenOpiskeluoikeus.suoritukset.head.asInstanceOf[AmmatillisenTutkinnonSuoritus].copy(
+          osasuoritukset = None,
+          alkamispäivä = Some(LocalDate.of(2016, 1, 1))
+        )
+        val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(
+          suoritukset = List(suoritus)
+        )
+        val (ps, _, _, _) = OpiskeluoikeusLoader.buildSuoritusRows(oid, None, opiskeluoikeus.oppilaitos.get, opiskeluoikeus.suoritukset.head, JObject(), 1)
+        ps.alkamispäivä.get should equal(Date.valueOf("2016-1-1"))
+      }
     }
   }
 
