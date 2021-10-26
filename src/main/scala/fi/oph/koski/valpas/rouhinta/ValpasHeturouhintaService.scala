@@ -5,12 +5,12 @@ import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.henkilo.{Hetu, OppijaHenkilö}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{Finnish, Koodistokoodiviite, LocalizedString}
+import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.util.Timing
-import fi.oph.koski.valpas.{OppijaHakutilanteillaLaajatTiedot, ValpasErrorCategory}
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOpiskeluoikeusLaajatTiedot}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOpiskeluoikeusLaajatTiedot, ValpasOpiskeluoikeusTiedot}
 import fi.oph.koski.valpas.valpasrepository.ValpasOppivelvollisuudenKeskeytys
 import fi.oph.koski.valpas.valpasuser.ValpasSession
+import fi.oph.koski.valpas.{OppijaHakutilanteillaLaajatTiedot, ValpasErrorCategory}
 
 import java.time.LocalDate
 
@@ -91,29 +91,15 @@ case class RouhintaOppivelvollinen(
   sukunimi: String,
   syntymäaika: Option[LocalDate],
   hetu: Option[String],
-  viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus: Option[RouhintaOppivelvollisuus],
+  viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus: Option[RouhintaOpiskeluoikeus],
   oppivelvollisuudenKeskeytys: Seq[ValpasOppivelvollisuudenKeskeytys],
-)
-
-case class RouhintaOppivelvollisuus(
-  suorituksenTyyppi: Koodistokoodiviite,
-  päättymispäivä: Option[String],
-  viimeisinTila: Koodistokoodiviite,
-  toimipiste: LocalizedString,
 )
 
 object RouhintaOppivelvollinen {
   def apply(tiedot: OppijaHakutilanteillaLaajatTiedot): RouhintaOppivelvollinen = {
-    val oo = tiedot.oppija.opiskeluoikeudet
+    val oos = tiedot.oppija.opiskeluoikeudet
       .filter(_.oppivelvollisuudenSuorittamiseenKelpaava)
-      .sortBy(oo => Seq(
-        oo.perusopetusTiedot.flatMap(_.päättymispäivä),
-        oo.perusopetuksenJälkeinenTiedot.flatMap(_.päättymispäivä),
-        oo.perusopetusTiedot.flatMap(_.alkamispäivä),
-        oo.perusopetuksenJälkeinenTiedot.flatMap(_.alkamispäivä),
-      ).flatten.headOption.getOrElse("9999-99-99")
-      )
-      .lastOption
+      .flatMap(oo => RouhintaOpiskeluoikeus.apply(oo))
 
     RouhintaOppivelvollinen(
       oppijanumero = tiedot.oppija.henkilö.oid,
@@ -121,7 +107,7 @@ object RouhintaOppivelvollinen {
       sukunimi = tiedot.oppija.henkilö.sukunimi,
       syntymäaika = tiedot.oppija.henkilö.syntymäaika,
       hetu = tiedot.oppija.henkilö.hetu,
-      viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus = oo.flatMap(RouhintaOppivelvollisuus.apply),
+      viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus = oos.sorted.lastOption,
       oppivelvollisuudenKeskeytys = tiedot.oppivelvollisuudenKeskeytykset.filter(_.voimassa)
     )
   }
@@ -137,23 +123,50 @@ object RouhintaOppivelvollinen {
   )
 }
 
-object RouhintaOppivelvollisuus {
-  def apply(oo: ValpasOpiskeluoikeusLaajatTiedot): Option[RouhintaOppivelvollisuus] = {
+case class RouhintaOpiskeluoikeus(
+  suorituksenTyyppi: Koodistokoodiviite,
+  päättymispäivä: Option[String],
+  viimeisinTila: Koodistokoodiviite,
+  toimipiste: LocalizedString,
+) extends Ordered[RouhintaOpiskeluoikeus] {
+  override def compare(that: RouhintaOpiskeluoikeus): Int =
+    OrderedOpiskeluoikeusTiedot.compareDates(päättymispäivä, that.päättymispäivä)
+}
+
+object RouhintaOpiskeluoikeus {
+  def apply(oo: ValpasOpiskeluoikeusLaajatTiedot): Option[RouhintaOpiskeluoikeus] = {
     oo.tarkasteltavaPäätasonSuoritus.flatMap(päätasonSuoritus => {
-      ((oo.perusopetusTiedot, oo.perusopetuksenJälkeinenTiedot) match {
-        case (Some(o), None) => Some((o.päättymispäivä, o.tarkastelupäivänKoskiTila))
-        case (None, Some(o)) => Some((o.päättymispäivä, o.tarkastelupäivänKoskiTila))
-        case _ => None
-      }).map(tila => {
-        RouhintaOppivelvollisuus(
+      Seq(
+        oo.perusopetusTiedot.map(t => OrderedOpiskeluoikeusTiedot(t)),
+        oo.perusopetuksenJälkeinenTiedot.map(t => OrderedOpiskeluoikeusTiedot(t)),
+      )
+        .flatten
+        .sorted
+        .lastOption
+        .map(viimeisinTila => RouhintaOpiskeluoikeus(
           suorituksenTyyppi = päätasonSuoritus.suorituksenTyyppi,
-          päättymispäivä = tila._1,
-          viimeisinTila = tila._2,
-          toimipiste = oo.tarkasteltavaPäätasonSuoritus.map(_.toimipiste.nimi).getOrElse(Finnish("???")),
-        )
-      })
+          päättymispäivä = viimeisinTila.tiedot.päättymispäivä,
+          viimeisinTila = viimeisinTila.tiedot.tarkastelupäivänKoskiTila,
+          toimipiste = päätasonSuoritus.toimipiste.nimi,
+        ))
     })
   }
+}
+
+case class OrderedOpiskeluoikeusTiedot(
+  tiedot: ValpasOpiskeluoikeusTiedot
+) extends Ordered[OrderedOpiskeluoikeusTiedot] {
+  override def compare(that: OrderedOpiskeluoikeusTiedot): Int =
+    if (tiedot.päättymispäivä != that.tiedot.päättymispäivä) {
+      OrderedOpiskeluoikeusTiedot.compareDates(tiedot.päättymispäivä, that.tiedot.päättymispäivä)
+    } else {
+      OrderedOpiskeluoikeusTiedot.compareDates(tiedot.alkamispäivä, that.tiedot.alkamispäivä)
+    }
+}
+
+object OrderedOpiskeluoikeusTiedot {
+  def compareDates(a: Option[String], b: Option[String]): Int =
+    a.getOrElse("9999-99-99").compare(b.getOrElse("9999-99-99"))
 }
 
 case class RouhintaPelkkäHetu(
