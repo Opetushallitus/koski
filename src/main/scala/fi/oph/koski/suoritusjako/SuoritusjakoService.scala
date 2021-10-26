@@ -126,6 +126,8 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
   private def isMatchingSuoritus(opiskeluoikeus: Opiskeluoikeus, suoritus: PäätasonSuoritus, suoritusId: SuoritusIdentifier): Boolean = {
     def checkKoulutusmoduulinTunniste(suoritusId: SuoritusIdentifier) = {
       if (suoritusId.suorituksenTyyppi == "korkeakoulunopintojakso") {
+        // Korkeakoulun opintojakso on päätason suoritus, mutta jaettaessa jaetaan samalla kaikki "kelluvat"
+        // opintojaksot (ei siis spesifillä koulutusmoduulin tunnisteella juuri tiettyä opintojaksoa).
         suoritusId.koulutusmoduulinTunniste == ""
       } else {
         suoritus.koulutusmoduuli.tunniste.koodiarvo == suoritusId.koulutusmoduulinTunniste

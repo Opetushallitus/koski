@@ -17,6 +17,8 @@ export default (opiskeluoikeus, suoritus) => {
   id.lähdejärjestelmänId = modelData(opiskeluoikeus, 'lähdejärjestelmänId.id')
   id.oppilaitosOid = modelData(opiskeluoikeus, 'oppilaitos.oid')
   id.suorituksenTyyppi = modelData(suoritus, 'tyyppi.koodiarvo')
+  // Korkeakoulun opintojakso on päätason suoritus, mutta jaettaessa jaetaan samalla kaikki "kelluvat"
+  // opintojaksot (ei siis spesifillä koulutusmoduulin tunnisteella juuri tiettyä opintojaksoa).
   id.koulutusmoduulinTunniste = suorituksenTyyppi(suoritus) === 'korkeakoulunopintojakso'
     ? ''
     : modelData(suoritus, 'koulutusmoduuli.tunniste.koodiarvo')
