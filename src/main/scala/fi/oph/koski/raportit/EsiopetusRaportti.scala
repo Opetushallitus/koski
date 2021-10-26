@@ -67,7 +67,7 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
       koulutustoimija_nimi,
       oppilaitos_nimi,
       toimipiste_nimi,
-      alkamispaiva,
+      r_opiskeluoikeus.alkamispaiva,
       viimeisin_tila,
       aikajakso.tila,
       r_paatason_suoritus.koulutusmoduuli_koodiarvo,
