@@ -287,5 +287,9 @@
   "rouhinta_ov_keskeytys_comment": "Voimassa oleva oppivelvollisuuden suorittamisen keskeytys",
   "rouhinta_ei_päättynyt": "Ei päättynyt",
   "rouhinta_ei_opiskeluoikeutta": "Ei kelpaavaa opiskeluoikeutta",
-  "rouhunta_tieto_puuttuu": "Puuttuu"
+  "rouhunta_tieto_puuttuu": "Puuttuu",
+  "rouhinta_hae_usealla_hetulla": "Hae usealla hetulla",
+  "rouhinta_tiedoston_salasana": "Salasana",
+  "rouhinta_lataa_raportti": "Lataa raportti ({{lukumäärä}} henkilötunnusta)",
+  "tiedoston_lataus_epäonnistui": "Tiedoston lataus epäonnistui"
 }

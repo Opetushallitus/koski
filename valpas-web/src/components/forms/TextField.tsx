@@ -45,3 +45,27 @@ export const TextField = (props: TextFieldProps) => (
     {props.children}
   </InputContainer>
 )
+
+export const TextAreaField = (props: TextFieldProps) => (
+  <InputContainer
+    bemBase="textfield"
+    label={props.label}
+    icon={props.icon}
+    error={props.error}
+    required={props.required}
+  >
+    <textarea
+      id={props.id}
+      className={b("input", {
+        error: Boolean(props.error),
+      })}
+      value={props.value}
+      placeholder={props.placeholder}
+      onChange={(event) => props.onChange?.(event.target.value)}
+      onBlur={props.onBlur}
+      disabled={props.disabled || !props.onChange}
+      data-testid={props.testId}
+    />
+    {props.children}
+  </InputContainer>
+)

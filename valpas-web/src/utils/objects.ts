@@ -1,4 +1,5 @@
 import * as A from "fp-ts/Array"
+import * as O from "fp-ts/Option"
 
 export type ObjectEntry<T> = [string, T]
 
@@ -40,3 +41,11 @@ export const pluck = <T extends object, K extends keyof T>(key: K) => (
 
 export const pick = <T extends object, K extends keyof T>(key: K) =>
   A.map<T, T[K]>(pluck(key))
+
+export const parseJson = <T>(json: string): O.Option<T> => {
+  try {
+    return O.some(JSON.parse(json))
+  } catch (_e) {
+    return O.none
+  }
+}

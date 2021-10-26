@@ -1,0 +1,30 @@
+@import "../../../style/colors.less";
+@import "../../../style/typography.less";
+
+.kuntahetulista {
+  .textfield__input {
+    min-height: 8rem;
+  }
+}
+
+.kuntahetulista__password {
+  display: inline-block;
+
+  background: @color-blue-lighten-4;
+  padding: 1rem;
+  margin-bottom: 1rem;
+
+  .kuntahetulista__passwordvalue {
+    font-weight: @font-weight-bold;
+  }
+
+  .kuntahetulista__passwordcopy {
+    margin-left: 1em;
+    color: @color-blue;
+    cursor: pointer;
+
+    &:hover {
+      color: @color-blue-lighten-1;
+    }
+  }
+}

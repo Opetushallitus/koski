@@ -12,6 +12,7 @@ import { isFeatureFlagEnabled } from "../../../state/featureFlags"
 import { createKunnanHetuhakuPath } from "../../../state/paths"
 import { OppijaSearch } from "../../../views/oppijasearch/OppijaSearch"
 import { KuntaNavigation } from "../KuntaNavigation"
+import { KuntaHetulistahaku } from "./KuntaHetulistahaku"
 
 export const KuntaHetuhaku = withRequiresKuntavalvonta(() => {
   const search = useApiMethod(fetchHenkilöhakuKunta, fetchHenkilöhakuKuntaCache)
@@ -28,7 +29,7 @@ export const KuntaHetuhaku = withRequiresKuntavalvonta(() => {
         onQuery={search.call}
         prevPath={createKunnanHetuhakuPath()}
       />
-      {isFeatureFlagEnabled("rouhinta") && <div>Rouhinta-feature käytössä</div>}
+      {isFeatureFlagEnabled("rouhinta") && <KuntaHetulistahaku />}
     </Page>
   )
 })

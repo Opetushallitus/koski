@@ -26,6 +26,8 @@ export type ApiFailure = {
 
 export type ApiResponse<T> = E.Either<ApiFailure, ApiSuccess<T>>
 
+export type JsonRequestInit = Omit<RequestInit, "body"> & { body: any }
+
 const apiFetch = async <T>(
   input: RequestInfo,
   init?: RequestInit
@@ -62,9 +64,7 @@ const apiFetch = async <T>(
   }
 }
 
-type JsonRequestInit = Omit<RequestInit, "body"> & { body: any }
-
-const enrichRequest = (
+export const enrichJsonRequest = (
   method: string,
   init?: JsonRequestInit
 ): JsonRequestInit => ({
@@ -81,19 +81,23 @@ const enrichRequest = (
 export const apiGet = async <T>(
   input: RequestInfo,
   init?: JsonRequestInit
-): Promise<ApiResponse<T>> => apiFetch<T>(input, enrichRequest("GET", init))
+): Promise<ApiResponse<T>> => apiFetch<T>(input, enrichJsonRequest("GET", init))
 
 export const apiPost = async <T>(
   input: RequestInfo,
   init?: JsonRequestInit
-): Promise<ApiResponse<T>> => apiFetch<T>(input, enrichRequest("POST", init))
+): Promise<ApiResponse<T>> =>
+  apiFetch<T>(input, enrichJsonRequest("POST", init))
 
 export const apiPut = async <T>(
   input: RequestInfo,
   init?: JsonRequestInit
-): Promise<ApiResponse<T>> => apiFetch<T>(input, enrichRequest("PUT", init))
+): Promise<ApiResponse<T>> => apiFetch<T>(input, enrichJsonRequest("PUT", init))
 
-const prependUrl = (baseUrl: string, request: RequestInfo): RequestInfo =>
+export const prependUrl = (
+  baseUrl: string,
+  request: RequestInfo
+): RequestInfo =>
   typeof request === "string"
     ? baseUrl + "/" + request
     : {
