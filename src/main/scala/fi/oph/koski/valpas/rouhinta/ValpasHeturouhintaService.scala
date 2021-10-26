@@ -7,7 +7,7 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Finnish, Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.util.Timing
-import fi.oph.koski.valpas.OppijaHakutilanteillaLaajatTiedot
+import fi.oph.koski.valpas.{OppijaHakutilanteillaLaajatTiedot, ValpasErrorCategory}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOpiskeluoikeusLaajatTiedot}
 import fi.oph.koski.valpas.valpasrepository.ValpasOppivelvollisuudenKeskeytys
 import fi.oph.koski.valpas.valpasuser.ValpasSession
@@ -19,27 +19,31 @@ class ValpasHeturouhintaService(application: KoskiApplication) extends DatabaseC
   private val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
   private val oppijaService = application.valpasOppijaService
 
+  private val maxHetuCount = application.config.getInt("valpas.rouhintaMaxHetuCount")
+
   def haeHetulistanPerusteella
     (hetut: Seq[String])
     (implicit session: ValpasSession)
   : Either[HttpStatus, HeturouhinnanTulos] = {
-    val (validitHetut, virheellisetHetut) = hetut.partition(hetu => Hetu.validate(hetu, acceptSynthetic = false).isRight)
-    val oppijatKoskessa = oppijaService.getOppijaOiditHetuillaIlmanOikeustarkastusta(validitHetut)
-    val koskestaLöytymättömätHetut = validitHetut.diff(oppijatKoskessa.map(_.hetu))
+    cleanedHetuList(hetut).flatMap(hetut => {
+      val (validitHetut, virheellisetHetut) = hetut.partition(hetu => Hetu.validate(hetu, acceptSynthetic = false).isRight)
+      val oppijatKoskessa = oppijaService.getOppijaOiditHetuillaIlmanOikeustarkastusta(validitHetut)
+      val koskestaLöytymättömätHetut = validitHetut.diff(oppijatKoskessa.map(_.hetu))
 
-    val (oppijatJotkaOnrissaMuttaEiKoskessa, oppijanumerorekisterinUlkopuolisetHetut) = haeOppijanumerorekisteristä(koskestaLöytymättömätHetut)
+      val (oppijatJotkaOnrissaMuttaEiKoskessa, oppijanumerorekisterinUlkopuolisetHetut) = haeOppijanumerorekisteristä(koskestaLöytymättömätHetut)
 
-    val (oppivelvollisetOnrissa, oppivelvollisuudenUlkopuolisetOnrissa) = oppijatJotkaOnrissaMuttaEiKoskessa.partition(onOppivelvollinen)
-    val (oppivelvollisetKoskessa, oppivelvollisuudenUlkopuolisetKoskessa) = oppijatKoskessa.partition(_.oppivelvollisuusVoimassa)
+      val (oppivelvollisetOnrissa, oppivelvollisuudenUlkopuolisetOnrissa) = oppijatJotkaOnrissaMuttaEiKoskessa.partition(onOppivelvollinen)
+      val (oppivelvollisetKoskessa, oppivelvollisuudenUlkopuolisetKoskessa) = oppijatKoskessa.partition(_.oppivelvollisuusVoimassa)
 
-    oppijaService
-      .getOppijalista(oppivelvollisetKoskessa.map(_.masterOid))
-      .map(oppivelvollisetKoskessa => HeturouhinnanTulos(
-        oppivelvolliset = oppivelvollisetKoskessa.map(RouhintaOppivelvollinen.apply) ++ oppivelvollisetOnrissa.map(RouhintaOppivelvollinen.apply),
-        oppijanumerorekisterinUlkopuoliset = oppijanumerorekisterinUlkopuolisetHetut.map(RouhintaPelkkäHetu),
-        oppivelvollisuudenUlkopuoliset = (oppivelvollisuudenUlkopuolisetKoskessa.map(_.hetu) ++ oppivelvollisuudenUlkopuolisetOnrissa.flatMap(_.hetu)).map(RouhintaPelkkäHetu),
-        virheellisetHetut = virheellisetHetut.map(RouhintaPelkkäHetu),
-      ))
+      oppijaService
+        .getOppijalista(oppivelvollisetKoskessa.map(_.masterOid))
+        .map(oppivelvollisetKoskessa => HeturouhinnanTulos(
+          oppivelvolliset = oppivelvollisetKoskessa.map(RouhintaOppivelvollinen.apply) ++ oppivelvollisetOnrissa.map(RouhintaOppivelvollinen.apply),
+          oppijanumerorekisterinUlkopuoliset = oppijanumerorekisterinUlkopuolisetHetut.map(RouhintaPelkkäHetu),
+          oppivelvollisuudenUlkopuoliset = (oppivelvollisuudenUlkopuolisetKoskessa.map(_.hetu) ++ oppivelvollisuudenUlkopuolisetOnrissa.flatMap(_.hetu)).map(RouhintaPelkkäHetu),
+          virheellisetHetut = virheellisetHetut.map(RouhintaPelkkäHetu),
+        ))
+    })
   }
 
   private def haeOppijanumerorekisteristä(hetut: Seq[String]): (Seq[OppijaHenkilö], Seq[String]) = {
@@ -61,6 +65,15 @@ class ValpasHeturouhintaService(application: KoskiApplication) extends DatabaseC
         !oppivelvollisuusAlkaa.isAfter(rajapäivätService.tarkastelupäivä) && oppivelvollisuusLoppuu.isAfter(rajapäivätService.tarkastelupäivä)
       }
       case None => false
+    }
+  }
+
+  private def cleanedHetuList(hetut: Seq[String]): Either[HttpStatus, Seq[String]] = {
+    val list = hetut.map(_.trim).filter(_.nonEmpty)
+    if (list.length > maxHetuCount) {
+      Left(ValpasErrorCategory.badRequest.requestTooLarge(s"Kyselyssä oli liian monta hetua (${list.length} / $maxHetuCount)"))
+    } else {
+      Right(list)
     }
   }
 }
