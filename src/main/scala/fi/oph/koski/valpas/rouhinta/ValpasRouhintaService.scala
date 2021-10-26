@@ -7,10 +7,13 @@ import fi.oph.koski.raportit.{DataSheet, OppilaitosRaporttiResponse, WorkbookSet
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.koski.valpas.{ValpasAccessResolver, ValpasErrorCategory}
 
+import java.time.format.DateTimeFormatter
+
 class ValpasRouhintaService(application: KoskiApplication) {
   private val heturouhinta = new ValpasHeturouhintaService(application)
   private val localization = application.valpasLocalizationRepository
   private val accessResolver = new ValpasAccessResolver
+  private val rajapäivät = application.valpasRajapäivätService
 
   def haeHetulistanPerusteella
   (hetut: Seq[String])
@@ -32,7 +35,7 @@ class ValpasRouhintaService(application: KoskiApplication) {
       .map(ValpasHeturouhintaSheets(_, t).build())
       .map(asOppilaitosRaporttiResponse(
         title = t.get("rouhinta_hetulista_otsikko"),
-        filename = t.get("rouhinta_hetulista_tiedostonimi"),
+        filename = t.get("rouhinta_hetulista_tiedostonimi", Map("pvm" -> rajapäivät.tarkastelupäivä.format(DateTimeFormatter.ISO_DATE))),
         password = password,
       ))
   }

@@ -266,7 +266,7 @@
   "nivelvaihehakutilanne__taulu_muu_haku_tooltip": "Voit halutessasi merkitä tähän jos hakija on hakenut opintopolun ulkopuolella, esimerkiksi ulkomaille tai Ahvenanmaalle. Tieto näkyy vain omalle organisaatiolle, sekä ilmoittaessa asuinkunnalle",
   "nivelvaihehakutilanne__taulu_useita_opiskeluoikeuksia": "Useita opiskeluoikeuksia",
   "rouhinta_hetulista_otsikko": "Oppijoiden haku henkiötunnuksen perusteella",
-  "rouhinta_hetulista_tiedostonimi": "oppijahaku_hetulista.xlsx",
+  "rouhinta_hetulista_tiedostonimi": "oppijahaku-hetulista-{{pvm}}.xlsx",
   "rouhinta_tab_oppivelvolliset": "Oppivelvolliset",
   "rouhinta_tab_onr_ulkopuoliset": "Ei oppijanumerorekisterissä",
   "rouhinta_tab_ovl_ulkopuoliset": "Ei oppivelvollinen",
