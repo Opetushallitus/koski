@@ -45,7 +45,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
 
     "Raportin sarakkeet" in {
       val rows = raportti.filter(_.oppilaitosNimi.equals("Jyväskylän normaalikoulu"))
-      rows.length should be(5)
+      rows.length should be(4)
       rows.toList should equal(List(
         PerusopetuksenOppijamäärätRaporttiRow(
           oppilaitosNimi = "Jyväskylän normaalikoulu",
@@ -71,7 +71,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
           organisaatioOid = "1.2.246.562.10.14613773812",
           opetuskieli = "suomi",
           vuosiluokka = "7",
-          oppilaita = 9,
+          oppilaita = 2,
           vieraskielisiä = 1,
           pidennettyOppivelvollisuusJaVaikeastiVammainen = 1,
           pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen = 1,
@@ -90,7 +90,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
           organisaatioOid = "1.2.246.562.10.14613773812",
           opetuskieli = "suomi",
           vuosiluokka = "8",
-          oppilaita = 11,
+          oppilaita = 1,
           vieraskielisiä = 0,
           pidennettyOppivelvollisuusJaVaikeastiVammainen = 1,
           pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen = 0,
@@ -108,27 +108,8 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
           oppilaitosNimi = "Jyväskylän normaalikoulu",
           organisaatioOid = "1.2.246.562.10.14613773812",
           opetuskieli = "suomi",
-          vuosiluokka = "9",
-          oppilaita = 9,
-          vieraskielisiä = 0,
-          pidennettyOppivelvollisuusJaVaikeastiVammainen = 0,
-          pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen = 0,
-          virheellisestiSiirretytVaikeastiVammaiset = 0,
-          virheellisestiSiirretytMuutKuinVaikeimminVammaiset = 0,
-          erityiselläTuella = 0,
-          majoitusetu = 0,
-          kuljetusetu = 0,
-          sisäoppilaitosmainenMajoitus = 0,
-          koulukoti = 0,
-          joustavaPerusopetus = 0,
-          kotiopetus = 0
-        ),
-        PerusopetuksenOppijamäärätRaporttiRow(
-          oppilaitosNimi = "Jyväskylän normaalikoulu",
-          organisaatioOid = "1.2.246.562.10.14613773812",
-          opetuskieli = "suomi",
           vuosiluokka = "Kaikki vuosiluokat yhteensä",
-          oppilaita = 31,
+          oppilaita = 5,
           vieraskielisiä = 1,
           pidennettyOppivelvollisuusJaVaikeastiVammainen = 2,
           pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen = 1,

@@ -80,6 +80,7 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
         and oh.loppu >= $date
         and oo.koulutusmuoto = 'perusopetus'
         and (pts.vahvistus_paiva is null or pts.vahvistus_paiva > $date)
+        and pts.alkamispaiva <= $date
         and pts.koulutusmoduuli_koodiarvo in ('1', '2', '3', '4', '5', '6', '7', '8', '9')
         and aikajakso.alku <= $date
         and aikajakso.loppu >= $date
