@@ -24,6 +24,7 @@ import {Korkeakoulusuoritukset} from '../virta/Korkeakoulusuoritukset'
 import {OpiskeluoikeudenTila} from '../omattiedot/fragments/OpiskeluoikeudenTila'
 import {ArrayEditor} from '../editor/ArrayEditor'
 import {modelEmpty} from '../editor/EditorModel'
+import Http from '../util/http'
 
 export const excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot', 'synteettinen']
 
@@ -119,6 +120,8 @@ const OpiskeluoikeudenId = ({opiskeluoikeus}) => {
   return opiskeluoikeusOid ? <span className="id"><Text name="Opiskeluoikeuden oid"/>{': '}<span className="value" onClick={selectAllText}>{opiskeluoikeusOid}</span></span> : null
 }
 
+const opiskeluoikeusOid = "moi"
+
 export const OpiskeluoikeudenVoimassaoloaika = ({opiskeluoikeus}) => {
   let päättymispäiväProperty = (modelData(opiskeluoikeus, 'arvioituPäättymispäivä') && !modelData(opiskeluoikeus, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
   return (<div className="alku-loppu opiskeluoikeuden-voimassaoloaika">
@@ -128,6 +131,16 @@ export const OpiskeluoikeudenVoimassaoloaika = ({opiskeluoikeus}) => {
     <span className="päättymispäivä"><Editor model={addContext(opiskeluoikeus, {edit: false})} path={päättymispäiväProperty} /></span>
     {' '}
     {päättymispäiväProperty == 'arvioituPäättymispäivä' && <Text name="(arvioitu)"/>}
+
+
+    <span className="suostumuksen peruuttaminen">
+        <a className="nimi" onClick={ (e) => {
+          Http.post(`/koski/api/opiskeluoikeus/${opiskeluoikeusOid}/peruutasuostumus`)}}>
+          peruuta suostumus
+      </a>
+    </span>
+
+
   </div>)
 }
 

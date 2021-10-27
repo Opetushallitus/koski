@@ -22,8 +22,9 @@ import slick.dbio.DBIOAction.sequence
 import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.{DBIOAction, NoStream}
 import slick.jdbc.GetResult
-import java.sql.SQLException
-import java.time.LocalDate
+
+import java.sql.{SQLException, Timestamp}
+import java.time.{Instant, LocalDate}
 
 class PostgresOpiskeluoikeusRepository(
   val db: DB,
@@ -138,6 +139,20 @@ class PostgresOpiskeluoikeusRepository(
       Left(KoskiErrorCategory.badRequest("Uutta opiskeluoikeutta luotaessa ei hyväksytä arvoja oid-kenttään"))
     } else {
       createOrUpdateWithRetry
+    }
+  }
+
+  val eiPoistettujaRivejä = 0
+  def deleteOpiskeluoikeus(oid: String)(implicit user: KoskiSpecificSession): HttpStatus = {
+    val opiskeluoikeudet = findKansalaisenOpiskeluoikeudet(List(user.oid))
+
+    opiskeluoikeudet.exists(_.oid.getOrElse("") == oid) match {
+      case true =>
+        runDbSync(OpiskeluOikeudet.filter(_.oid === oid).delete) match {
+          case `eiPoistettujaRivejä` => KoskiErrorCategory.internalError(s"Virhe poistettaessa opiskeluoikeutta $oid")
+          case _ => HttpStatus.ok
+        }
+      case false => KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia()
     }
   }
 

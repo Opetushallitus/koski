@@ -4,6 +4,7 @@ import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, MockOpintopolkuHenkilöFacade, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.localization.MockLocalizationRepository
 import fi.oph.koski.log.Logging
+import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.util.{Timing, Wait}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasOpiskeluoikeusFixtureState
 
@@ -27,6 +28,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
       fixtureState.resetFixtures
       application.koskiLocalizationRepository.asInstanceOf[MockLocalizationRepository].reset
       application.tiedonsiirtoService.index.deleteAll()
+      application.suostumuksenPeruutusService.deleteAll()
 
       if (reloadRaportointikanta) {
         raportointikantaService.loadRaportointikanta(force = true)
