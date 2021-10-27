@@ -79,11 +79,13 @@ trait BaseServlet extends ScalatraServlet with Logging {
       renderObject(x)
   }: RenderPipeline) orElse super.renderPipeline
 
-  private def haltWithInternalError(e: Throwable): Nothing = try {
-    logger.error(e)("Error while processing request " + logSafeDescription(request))
+  private def haltWithInternalError(e: Throwable): Nothing = {
+    try {
+      logger.error(e)("Error while processing request " + logSafeDescription(request))
+    } catch {
+      case e: Throwable => println(s"Logging failed: $e")
+    }
     haltWithStatus(KoskiErrorCategory.internalError())
-  } catch {
-    case _: Throwable => halt(500, "Unknown internal error")
   }
 
   def renderOption[T: ru.TypeTag](errorCategory: ErrorCategory)(result: Option[T]): Unit = {
