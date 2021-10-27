@@ -46,6 +46,9 @@ object Oppivelvollisuustiedot {
   def createMaterializedView(s: Schema, valpasRajapäivätService: ValpasRajapäivätService)= {
     val valpasLakiVoimassaVanhinSyntymäaika = valpasRajapäivätService.lakiVoimassaVanhinSyntymäaika
     val valpasLakiVoimassaPeruskoulustaValmistuneilla = valpasRajapäivätService.lakiVoimassaPeruskoulustaValmistuneillaAlku
+    val oppivelvollisuusAlkaaIka = valpasRajapäivätService.oppivelvollisuusAlkaaIka.toInt
+    val oppivelvollisuusAlkaaKuukausi = valpasRajapäivätService.oppivelvollisuusAlkaaPäivämäärä.getMonthValue
+    val oppivelvollisuusAlkaaPäivä = valpasRajapäivätService.oppivelvollisuusAlkaaPäivämäärä.getDayOfMonth
     val oppivelvollisuusLoppuuIka = valpasRajapäivätService.oppivelvollisuusLoppuuIka
     val maksuttomuusLoppuuIka = valpasRajapäivätService.maksuttomuusLoppuuIka
 
@@ -169,6 +172,13 @@ object Oppivelvollisuustiedot {
 
         select
           oppivelvolliset_henkilot.oppija_oid,
+
+          make_date(
+            (extract(year from syntymaaika::date) + #$oppivelvollisuusAlkaaIka)::integer,
+            #$oppivelvollisuusAlkaaKuukausi,
+            #$oppivelvollisuusAlkaaPäivä
+          ) AS oppivelvollisuusVoimassaAlkaen,
+
           case
             when suorittaa_ammattitutkintoa and suorittaa_lukionoppimaaraa then least(dia_tutkinnon_vahvistuspaiva, ib_tutkinnon_vahvistuspaiva, international_schoolin_toisen_asteen_vahvistus_paiva, (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year')::date)
             when suorittaa_ammattitutkintoa then least(dia_tutkinnon_vahvistuspaiva, ib_tutkinnon_vahvistuspaiva, international_schoolin_toisen_asteen_vahvistus_paiva, ammattitutkinnon_vahvistus_paiva, (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year')::date)

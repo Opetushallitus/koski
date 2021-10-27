@@ -46,13 +46,13 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   private val rajapäivätService = application.valpasRajapäivätService
 
   def getOppija(oppijaOid: String, rajaaOVKelpoisiinOpiskeluoikeuksiin: Boolean = true): Option[ValpasOppijaRow] =
-    getOppijat(List(oppijaOid), None, rajaaOVKelpoisiinOpiskeluoikeuksiin, HakeutumisvalvontaTieto.Kaikki).headOption
+    queryOppijat(List(oppijaOid), None, rajaaOVKelpoisiinOpiskeluoikeuksiin, HakeutumisvalvontaTieto.Kaikki).headOption
 
-  def getOppijat(oppijaOids: Seq[String]): Seq[ValpasOppijaRow] =
-    if (oppijaOids.nonEmpty) getOppijat(oppijaOids, None, true, HakeutumisvalvontaTieto.Kaikki) else Seq.empty
+  def getOppijat(oppijaOids: Seq[String], rajaaOVKelpoisiinOpiskeluoikeuksiin: Boolean = true): Seq[ValpasOppijaRow] =
+    if (oppijaOids.nonEmpty) queryOppijat(oppijaOids, None, rajaaOVKelpoisiinOpiskeluoikeuksiin, HakeutumisvalvontaTieto.Kaikki) else Seq.empty
 
   def getOppijatByOppilaitos(oppilaitosOid: String, hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value): Seq[ValpasOppijaRow] =
-    getOppijat(Seq.empty, Some(Seq(oppilaitosOid)), true, hakeutumisvalvontaTieto)
+    queryOppijat(Seq.empty, Some(Seq(oppilaitosOid)), true, hakeutumisvalvontaTieto)
 
   private implicit def getResult: GetResult[ValpasOppijaRow] = GetResult(r => {
     ValpasOppijaRow(
@@ -74,7 +74,11 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     )
   })
 
-  private def getOppijat(
+  // Huom: Luotetaan siihen, että käyttäjällä on oikeudet nimenomaan annettuihin oppilaitoksiin!
+  // Huom2: Tämä toimii vain peruskoulun hakeutumisen valvojille (ei esim. 10-luokille tai toisen asteen näkymiin yms.)
+  // Huom3: Tämä ei filteröi opiskeluoikeuksia sen mukaan, minkä tiedot kuuluisi näyttää listanäkymässä, jos samalla oppijalla on useita opiskeluoikeuksia.
+  //        Valinta voidaan jättää joko Scalalle, käyttöliitymälle tai tehdä toinen query, joka tekee valinnan SQL:ssä.
+  private def queryOppijat(
     oppijaOids: Seq[String],
     oppilaitosOids: Option[Seq[String]],
     rajaaOVKelpoisiinOpiskeluoikeuksiin: Boolean = true,
@@ -1287,4 +1291,37 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       )
     ).as[ValpasOppivelvollisuustiedotRow])
   }
+
+  def haeOppijatHetuilla(hetut: Seq[String]): Seq[HetuMasterOid] = {
+    db.runDbSync(sql"""
+      SELECT
+        r_henkilo.master_oid as master_oid,
+        r_henkilo.hetu as hetu,
+        r_henkilo.syntymaaika as syntymaaika,
+        COALESCE(${rajapäivätService.tarkastelupäivä} BETWEEN oppivelvollisuustiedot.oppivelvollisuusvoimassaalkaen AND oppivelvollisuustiedot.oppivelvollisuusvoimassaasti, false) as oppivelvollisuus_voimassa
+      FROM r_henkilo
+      LEFT JOIN oppivelvollisuustiedot ON (r_henkilo.master_oid = oppivelvollisuustiedot.oppija_oid)
+      WHERE
+        r_henkilo.hetu = any($hetut)
+      """.as[HetuMasterOid])
+  }
 }
+
+case class HetuMasterOid(
+  hetu: String,
+  syntymäaika: Option[LocalDate],
+  masterOid: ValpasHenkilö.Oid,
+  oppivelvollisuusVoimassa: Boolean,
+)
+
+object HetuMasterOid {
+  implicit def getResult: GetResult[HetuMasterOid] = GetResult(r => {
+    HetuMasterOid(
+      hetu = r.rs.getString("hetu"),
+      syntymäaika = r.getLocalDateOption("syntymaaika"),
+      masterOid = r.rs.getString("master_oid"),
+      oppivelvollisuusVoimassa = r.rs.getBoolean("oppivelvollisuus_voimassa"),
+    )
+  })
+}
+

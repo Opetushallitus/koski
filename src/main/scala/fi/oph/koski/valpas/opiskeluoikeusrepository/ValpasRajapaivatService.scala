@@ -10,6 +10,9 @@ trait ValpasRajapäivätService extends Logging {
   def tarkastelupäivä: LocalDate
 
   def lakiVoimassaVanhinSyntymäaika: LocalDate
+  def oppivelvollisuusAlkaaIka: Integer
+  def oppivelvollisuusAlkaaPäivämäärä: LocalDate
+  def oppivelvollisuusAlkaa(syntymäpäivä: LocalDate): LocalDate
   def oppivelvollisuusLoppuuIka: Integer
   def maksuttomuusLoppuuIka: Integer
   def ilmoitustenEnsimmäinenTallennuspäivä: LocalDate
@@ -28,6 +31,8 @@ trait ValpasRajapäivätService extends Logging {
 object ValpasRajapäivätService {
   val UseMockPath = "valpas.rajapäivät.useMock"
   val LakiVoimassaVanhinSyntymäaikaPath = "valpas.rajapäivät.lakiVoimassaVanhinSyntymäaika"
+  val OppivelvollisuusAlkaaIkaPath = "valpas.rajapäivät.oppivelvollisuusAlkaaIkä"
+  val OppivelvollisuusAlkaaPäivämääräPath = "valpas.rajapäivät.oppivelvollisuusAlkaaPäivämäärä"
   val OppivelvollisuusLoppuuIkaPath = "valpas.rajapäivät.oppivelvollisuusLoppuuIkä"
   val MaksuttomuusLoppuuIkaPath = "valpas.rajapäivät.maksuttomuusLoppuuIkä"
   val LakiVoimassaPeruskoulustaValmistuneillaAlkuPath = "valpas.rajapäivät.lakiVoimassaPeruskoulustaValmistuneillaAlku"
@@ -75,6 +80,9 @@ class MockValpasRajapäivätService(defaultService: ConfigValpasRajapäivätServ
   }
 
   def lakiVoimassaVanhinSyntymäaika: LocalDate = defaultService.lakiVoimassaVanhinSyntymäaika
+  def oppivelvollisuusAlkaaIka: Integer = defaultService.oppivelvollisuusAlkaaIka
+  def oppivelvollisuusAlkaaPäivämäärä: LocalDate = defaultService.oppivelvollisuusAlkaaPäivämäärä
+  def oppivelvollisuusAlkaa(syntymäpäivä: LocalDate): LocalDate = defaultService.oppivelvollisuusAlkaa(syntymäpäivä)
   def oppivelvollisuusLoppuuIka: Integer = defaultService.oppivelvollisuusLoppuuIka
   def maksuttomuusLoppuuIka: Integer = defaultService.maksuttomuusLoppuuIka
   def ilmoitustenEnsimmäinenTallennuspäivä: LocalDate = defaultService.ilmoitustenEnsimmäinenTallennuspäivä
@@ -110,6 +118,11 @@ class ConfigValpasRajapäivätService(config: Config) extends ValpasRajapäivät
 
   val lakiVoimassaVanhinSyntymäaika: LocalDate =
     LocalDate.parse(config.getString(ValpasRajapäivätService.LakiVoimassaVanhinSyntymäaikaPath))
+
+  val oppivelvollisuusAlkaaIka: Integer = config.getInt(ValpasRajapäivätService.OppivelvollisuusAlkaaIkaPath)
+  val oppivelvollisuusAlkaaPäivämäärä: LocalDate = LocalDate.parse(config.getString(ValpasRajapäivätService.OppivelvollisuusAlkaaPäivämääräPath))
+  def oppivelvollisuusAlkaa(syntymäpäivä: LocalDate): LocalDate =
+    oppivelvollisuusAlkaaPäivämäärä.withYear(syntymäpäivä.getYear + oppivelvollisuusAlkaaIka)
 
   val oppivelvollisuusLoppuuIka: Integer = config.getInt(ValpasRajapäivätService.OppivelvollisuusLoppuuIkaPath)
   val maksuttomuusLoppuuIka: Integer = config.getInt(ValpasRajapäivätService.MaksuttomuusLoppuuIkaPath)

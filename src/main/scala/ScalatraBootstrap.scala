@@ -1,7 +1,6 @@
 import fi.oph.koski.cache.CacheServlet
 import fi.oph.koski.config.{KoskiApplication, RunMode}
 import fi.oph.koski.documentation.{DocumentationApiServlet, DocumentationServlet, KoodistoServlet}
-import fi.oph.koski.util.Timing
 import fi.oph.koski.editor.{EditorKooditServlet, EditorServlet}
 import fi.oph.koski.elasticsearch.ElasticSearchServlet
 import fi.oph.koski.etk.ElaketurvakeskusServlet
@@ -35,14 +34,15 @@ import fi.oph.koski.suoritusjako.{SuoritusjakoServlet, SuoritusjakoServletV2}
 import fi.oph.koski.sure.SureServlet
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
 import fi.oph.koski.tutkinto.TutkinnonPerusteetServlet
-import fi.oph.koski.util.Futures
+import fi.oph.koski.util.{Futures, Timing}
 import fi.oph.koski.valpas.kela.ValpasKelaServlet
-import fi.oph.koski.valpas.{ValpasBootstrapServlet, ValpasKuntailmoitusApiServlet, ValpasRootApiServlet, ValpasTestApiServlet}
 import fi.oph.koski.valpas.valpasuser.ValpasLogoutServlet
+import fi.oph.koski.valpas._
 import fi.oph.koski.valvira.ValviraServlet
 import fi.oph.koski.ytr.{YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
-import javax.servlet.ServletContext
 import org.scalatra._
+
+import javax.servlet.ServletContext
 
 class ScalatraBootstrap extends LifeCycle with Logging with Timing {
   override def init(context: ServletContext): Unit = try {
@@ -129,7 +129,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     mount("/valpas/api", new ValpasRootApiServlet)
     mount("/valpas/api/kuntailmoitus", new ValpasKuntailmoitusApiServlet)
     mount("/valpas/api/luovutuspalvelu/kela", new ValpasKelaServlet)
-
+    mount("/valpas/api/rouhinta", new ValpasRouhintaApiServlet)
     mount("/valpas/logout", new ValpasLogoutServlet)
     if (!SSOConfig(application.config).isCasSsoUsed) {
       mount("/valpas/login", new LocalLoginServlet)

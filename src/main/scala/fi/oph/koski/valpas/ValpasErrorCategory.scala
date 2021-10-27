@@ -13,6 +13,7 @@ object ValpasErrorCategory {
       val jsonSchema = subcategory("jsonSchema", "JSON-schema -validointi epäonnistui. Paluuviestin sisällä virheilmoitukset JSON-muodossa.")
     }
     val validation = new Validation
+    val requestTooLarge = subcategory("requestTooLarge", "Liian suuri kysely")
   }
 
   object forbidden extends ErrorCategory("forbidden", 403, "Käyttäjällä ei ole oikeuksia tietoihin") {
