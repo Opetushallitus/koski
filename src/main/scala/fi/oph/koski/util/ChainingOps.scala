@@ -9,6 +9,8 @@ object ChainingSyntax {
   implicit final def chainingOps[A](a: A): ChainingOps[A] = new ChainingOps(a)
 
   implicit final def eitherChainingOps[S, T](e: Either[S, T]): EitherChainingOps[S, T] = new EitherChainingOps(e)
+
+  implicit final def stringOps(s: String): StringChainingOps = new StringChainingOps(s)
 }
 
 final class ChainingOps[A](private val self: A) extends AnyVal {
@@ -23,4 +25,21 @@ final class EitherChainingOps[S, T](private val self: Either[S, T]) extends AnyV
     self.foreach(f)
     self
   }
+}
+
+final class StringChainingOps(private val self: String) extends AnyVal {
+  def autowrap(width: Int): String =
+    self
+      .split("\\s+")
+      .foldLeft(Seq(Seq.empty[String]))((acc, word) => {
+        val init :+ last = acc
+        val newLastRow = last :+ word
+        if (newLastRow.mkString(" ").length > width) {
+          acc :+ Seq(word)
+        } else {
+          init :+ newLastRow
+        }
+      })
+      .map(_.mkString(" "))
+      .mkString("\n")
 }

@@ -4,8 +4,10 @@ import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{Column, DataSheet}
 import fi.oph.koski.schema.Koodistokoodiviite
+import fi.oph.koski.util.ChainingSyntax.stringOps
 import fi.oph.koski.util.Futures
 
+import scala.::
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 
@@ -81,8 +83,14 @@ object OppivelvollinenRow {
     "etunimet" -> Column(t.get("rouhinta_etunimet")),
     "oppijaOid" -> Column(t.get("rouhinta_oppijanumero")),
     "hetu" -> Column(t.get("rouhinta_hetu")),
-    "ooPäättymispäivä" -> Column(t.get("rouhinta_oo_päättymispäivä"), comment = Some(t.get("rouhinta_oo_päättymispäivä_comment"))),
-    "ooViimeisinTila" -> Column(t.get("rouhinta_viimeisin_tila"), comment = Some(t.get("rouhinta_viimeisin_tila_comment"))),
+    "ooPäättymispäivä" -> Column(
+      t.get("rouhinta_oo_päättymispäivä").autowrap(40),
+      comment = Some(t.get("rouhinta_oo_päättymispäivä_comment"))
+    ),
+    "ooViimeisinTila" -> Column(
+      t.get("rouhinta_viimeisin_tila").autowrap(40),
+      comment = Some(t.get("rouhinta_viimeisin_tila_comment"))
+    ),
     "ooKoulutusmuoto" -> Column(t.get("rouhinta_koulutusmuoto"), comment = Some(t.get("rouhinta_koulutusmuoto_comment"))),
     "ooToimipiste" -> Column(t.get("rouhinta_toimipiste"), comment = Some(t.get("rouhinta_toimipiste_comment"))),
     "keskeytys" -> Column(t.get("rouhinta_ov_keskeytys"), comment = Some(t.get("rouhinta_ov_keskeytys_comment"))),
