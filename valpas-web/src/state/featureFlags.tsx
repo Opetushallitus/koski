@@ -31,7 +31,7 @@ export const FeatureFlagEnabler = (props: FeatureFlagEnablerProps) => {
 }
 
 export const isFeatureFlagEnabled = (feature: Feature) =>
-  (runningLocally ||
+  (runningLocally() ||
     window.localStorage.getItem(featureFlags[feature]) ===
       featureFlagEnabledValue) &&
   !disabledFeatures.includes(feature)
