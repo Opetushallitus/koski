@@ -3,6 +3,7 @@ package fi.oph.koski.valpas.rouhinta
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{Column, DataSheet}
+import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.util.Futures
 
 import scala.concurrent.Future
@@ -95,13 +96,27 @@ object OppivelvollinenRow {
         case None => t.get("rouhinta_ei_opiskeluoikeutta")
       },
       ooViimeisinTila = oo.map(_.viimeisinTila).map(t.fromKoodiviite("rouhunta_tieto_puuttuu")),
-      ooKoulutusmuoto = oo.map(_.suorituksenTyyppi).map(t.fromKoodiviite("rouhunta_tieto_puuttuu")),
+      ooKoulutusmuoto = oo.map(o => suorituksenTyyppiToKoulutustyyppi(o.suorituksenTyyppi, t)),
       ooToimipiste = oo.map(_.toimipiste).map(t.from),
       keskeytys = tiedot.oppivelvollisuudenKeskeytys
         .map(keskeytys => t.format(keskeytys.alku) + " - " + keskeytys.loppu.map(t.format).getOrElse(""))
         .map(_.trim)
         .mkString(", "),
     )
+  }
+
+  def suorituksenTyyppiToKoulutustyyppi(tyyppi: Koodistokoodiviite, t: LocalizationReader): String = {
+    tyyppi.koodiarvo match {
+      case "valma" => t.get("koulutustyyppi_valma")
+      case "telma" => t.get("koulutustyyppi_telma")
+      case "vst" => t.get("koulutustyyppi_vst")
+      case s: String if s.startsWith("ib") || s.startsWith("preib") => t.get("koulutustyyppi_ib")
+      case s: String if s.startsWith("internationalschool") => t.get("koulutustyyppi_internationalschool")
+      case s: String if s.startsWith("dia") => t.get("koulutustyyppi_dia")
+      case "perusopetuksenvuosiluokka" => t.get("koulutustyyppi_perusopetus")
+      case s: String if s.startsWith("aikuistenperusopetuksen") => t.get("koulutustyyppi_aikuistenperusopetus")
+      case _ => tyyppi.nimi.map(t.from).getOrElse(tyyppi.koodiarvo)
+    }
   }
 }
 
