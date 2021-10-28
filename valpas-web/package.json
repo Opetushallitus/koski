@@ -39,6 +39,7 @@
     "@parcel/transformer-less": "^2.0.0",
     "@testing-library/react": "^11.2.3",
     "@testing-library/user-event": "^13.1.8",
+    "@types/downloadjs": "^1.4.2",
     "@types/jest": "^26.0.20",
     "@types/jest-expect-message": "^1.0.3",
     "@types/js-cookie": "^2.2.6",
@@ -76,7 +77,9 @@
   },
   "dependencies": {
     "bem-ts": "^0.11.7",
+    "copy-to-clipboard": "^3.3.1",
     "date-fns": "^2.16.1",
+    "downloadjs": "^1.4.7",
     "fp-ts": "^2.10.0-rc.3",
     "react": "^17.0.1",
     "react-date-picker": "^8.2.0",

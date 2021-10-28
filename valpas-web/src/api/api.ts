@@ -9,6 +9,7 @@ import {
   OppijaKuntailmoituksillaSuppeatTiedot,
 } from "../state/apitypes/oppija"
 import { UusiOppivelvollisuudenKeskeytys } from "../state/apitypes/oppivelvollisuudenkeskeytys"
+import { HetuhakuInput } from "../state/apitypes/rouhinta"
 import {
   Hetu,
   Oid,
@@ -17,8 +18,12 @@ import {
 } from "../state/common"
 import { queryPath } from "../state/paths"
 import { tapLeftP } from "../utils/either"
+import { apiPostDownload } from "./apiDownload"
 import { ApiFailure, apiGet, apiPost, apiPut } from "./apiFetch"
 import { createLocalThenApiCache, createPreferLocalCache } from "./cache"
+
+const SPREADSHEET_CONTENT_TYPE =
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 
 export const healthCheck = async () =>
   apiGet<string>("api/healthcheck/internal")
@@ -180,6 +185,19 @@ export const fetchHenkilöhakuKunta = (query: Oid | Hetu) =>
 export const fetchHenkilöhakuKuntaCache = createLocalThenApiCache(
   fetchHenkilöhakuKunta
 )
+
+/**
+ * Kunnan rouhinta hetulistalla
+ */
+export const downloadRouhintaHetuilla = (query: HetuhakuInput) =>
+  handleExpiredSession(
+    apiPostDownload("hetuhaku.xlsx", "valpas/api/rouhinta/hetut", {
+      body: query,
+      headers: {
+        accept: SPREADSHEET_CONTENT_TYPE,
+      },
+    })
+  )
 
 /**
  * Kuntailmoituksen pohjatietojen haku

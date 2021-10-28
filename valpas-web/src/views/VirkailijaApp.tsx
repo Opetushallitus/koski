@@ -16,6 +16,7 @@ import {
   storeLoginReturnUrl,
 } from "../state/auth"
 import { BasePathProvider, useBasePath } from "../state/basePath"
+import { FeatureFlagEnabler } from "../state/featureFlags"
 import {
   createHakutilannePathWithoutOrg,
   hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
@@ -86,6 +87,12 @@ const VirkailijaRoutes = () => {
       <Switch>
         <Route exact path={`${basePath}/pilotti2021`}>
           <Redirect to={createHakutilannePathWithoutOrg(basePath)} />
+        </Route>
+        <Route exact path={`${basePath}/rouhinta`}>
+          <FeatureFlagEnabler
+            features={["rouhinta"]}
+            redirectTo={createHakutilannePathWithoutOrg(basePath)}
+          />
         </Route>
         <Route
           exact
