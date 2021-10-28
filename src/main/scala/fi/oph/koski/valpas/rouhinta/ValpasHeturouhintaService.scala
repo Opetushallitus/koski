@@ -37,12 +37,19 @@ class ValpasHeturouhintaService(application: KoskiApplication) extends DatabaseC
 
       oppijaService
         .getOppijalista(oppivelvollisetKoskessa.map(_.masterOid))
-        .map(oppivelvollisetKoskessa => HeturouhinnanTulos(
-          oppivelvolliset = oppivelvollisetKoskessa.map(RouhintaOppivelvollinen.apply) ++ oppivelvollisetOnrissa.map(RouhintaOppivelvollinen.apply),
-          oppijanumerorekisterinUlkopuoliset = oppijanumerorekisterinUlkopuolisetHetut.map(RouhintaPelkkäHetu),
-          oppivelvollisuudenUlkopuoliset = (oppivelvollisuudenUlkopuolisetKoskessa.map(_.hetu) ++ oppivelvollisuudenUlkopuolisetOnrissa.flatMap(_.hetu)).map(RouhintaPelkkäHetu),
-          virheellisetHetut = virheellisetHetut.map(RouhintaPelkkäHetu),
-        ))
+        .map(oppivelvollisetKoskessa => {
+          val (suorittavat, eiSuorittavat) =
+            (oppivelvollisetKoskessa.map(RouhintaOppivelvollinen.apply) ++ oppivelvollisetOnrissa.map(RouhintaOppivelvollinen.apply))
+              .partition(_.suorittaaOppivelvollisuutta)
+
+          HeturouhinnanTulos(
+            eiOppivelvollisuuttaSuorittavat = eiSuorittavat,
+            oppivelvollisuuttaSuorittavat = suorittavat.flatMap(_.hetu).map(RouhintaPelkkäHetu),
+            oppijanumerorekisterinUlkopuoliset = oppijanumerorekisterinUlkopuolisetHetut.map(RouhintaPelkkäHetu),
+            oppivelvollisuudenUlkopuoliset = (oppivelvollisuudenUlkopuolisetKoskessa.map(_.hetu) ++ oppivelvollisuudenUlkopuolisetOnrissa.flatMap(_.hetu)).map(RouhintaPelkkäHetu),
+            virheellisetHetut = virheellisetHetut.map(RouhintaPelkkäHetu),
+          )
+        })
     })
   }
 
@@ -79,7 +86,8 @@ class ValpasHeturouhintaService(application: KoskiApplication) extends DatabaseC
 }
 
 case class HeturouhinnanTulos(
-  oppivelvolliset: Seq[RouhintaOppivelvollinen],
+  eiOppivelvollisuuttaSuorittavat: Seq[RouhintaOppivelvollinen],
+  oppivelvollisuuttaSuorittavat: Seq[RouhintaPelkkäHetu],
   oppijanumerorekisterinUlkopuoliset: Seq[RouhintaPelkkäHetu],
   oppivelvollisuudenUlkopuoliset: Seq[RouhintaPelkkäHetu],
   virheellisetHetut: Seq[RouhintaPelkkäHetu],
@@ -93,7 +101,11 @@ case class RouhintaOppivelvollinen(
   hetu: Option[String],
   viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus: Option[RouhintaOpiskeluoikeus],
   oppivelvollisuudenKeskeytys: Seq[ValpasOppivelvollisuudenKeskeytys],
-)
+) {
+  def suorittaaOppivelvollisuutta: Boolean =
+    viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus.exists(_.viimeisinTila.koodiarvo == "lasna")
+
+}
 
 object RouhintaOppivelvollinen {
   def apply(tiedot: OppijaHakutilanteillaLaajatTiedot): RouhintaOppivelvollinen = {

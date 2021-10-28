@@ -12,12 +12,14 @@ import scala.concurrent.duration.DurationInt
 case class ValpasHeturouhintaSheets(data: HeturouhinnanTulos, t: LocalizationReader) extends GlobalExecutionContext {
   def build(): Seq[DataSheet] = {
     val future = for {
-      oppivelvolliset <- oppivelvollisetDataSheet(data.oppivelvolliset)
+      eiOppivelvollisuuttaSuorittavat <- eiOppivelvollisuuttaSuorittavatDataSheet(data.eiOppivelvollisuuttaSuorittavat)
+      oppivelvollisuuttaSuorittavat <- oppivelvollisuuttaSuorittavatDataSheet(data.oppivelvollisuuttaSuorittavat)
       onrUlkopuoliset <- oppijanumerorekisterinUlkopuolisetDataSheet(data.oppijanumerorekisterinUlkopuoliset)
       ovlUlkopuoliset <- oppivelvollisuudenUlkopuolisetDataSheet(data.oppivelvollisuudenUlkopuoliset)
       virheelliset    <- virheellisetHetutDataSheet(data.virheellisetHetut)
     } yield Seq(
-      oppivelvolliset,
+      eiOppivelvollisuuttaSuorittavat,
+      oppivelvollisuuttaSuorittavat,
       onrUlkopuoliset,
       ovlUlkopuoliset,
       virheelliset,
@@ -26,15 +28,18 @@ case class ValpasHeturouhintaSheets(data: HeturouhinnanTulos, t: LocalizationRea
     Futures.await(future, atMost = 1.minutes)
   }
 
-  private def oppivelvollisetDataSheet(löytyneet: Seq[RouhintaOppivelvollinen]): Future[DataSheet] = {
+  private def eiOppivelvollisuuttaSuorittavatDataSheet(löytyneet: Seq[RouhintaOppivelvollinen]): Future[DataSheet] = {
     Future {
       DataSheet(
-        title = t.get("rouhinta_tab_oppivelvolliset"),
+        title = t.get("rouhinta_tab_ei_oppivelvollisuutta_suorittavat"),
         rows = löytyneet.map(OppivelvollinenRow.apply(t)),
         columnSettings = OppivelvollinenRow.columnSettings(t),
       )
     }
   }
+
+  private def oppivelvollisuuttaSuorittavatDataSheet =
+    pelkkäHetuDataSheet("rouhinta_tab_oppivelvollisuutta_suorittavat")(_)
 
   private def oppijanumerorekisterinUlkopuolisetDataSheet =
     pelkkäHetuDataSheet("rouhinta_tab_onr_ulkopuoliset")(_)

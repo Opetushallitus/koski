@@ -15,21 +15,13 @@ class ValpasRouhintaSpec extends ValpasTestBase with BeforeAndAfterAll {
     FixtureUtil.resetMockData(KoskiApplicationForTests)
   }
 
-  val oppivelvollisetOppijat = List(
+  val eiOppivelvollisuuttaSuorittavatOppijat = List(
     HetuhakuExpectedData(
       oppija = ValpasMockOppijat.aikuistenPerusopetuksestaEronnut,
       ooPäättymispäivä = "30.8.2021",
       ooViimeisinTila = Some("Eronnut"),
       ooKoulutusmuoto = Some("Aikuisten perusopetus"),
       ooToimipiste = Some("Ressun lukio"),
-      keskeytys = None,
-    ),
-    HetuhakuExpectedData(
-      oppija = ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
-      ooPäättymispäivä = t.get("rouhinta_ei_päättynyt"),
-      ooViimeisinTila = Some("Läsnä"),
-      ooKoulutusmuoto = Some("Perusopetus"),
-      ooToimipiste = Some("Jyväskylän normaalikoulu"),
       keskeytys = None,
     ),
     HetuhakuExpectedData(
@@ -41,22 +33,6 @@ class ValpasRouhintaSpec extends ValpasTestBase with BeforeAndAfterAll {
       keskeytys = None,
     ),
     HetuhakuExpectedData(
-      oppija = ValpasMockOppijat.oppivelvollisuusKeskeytetty,
-      ooPäättymispäivä = t.get("rouhinta_ei_päättynyt"),
-      ooViimeisinTila = Some("Läsnä"),
-      ooKoulutusmuoto = Some("Perusopetus"),
-      ooToimipiste = Some("Jyväskylän normaalikoulu"),
-      keskeytys = Some("1.3.2021 - 30.9.2021"),
-    ),
-    HetuhakuExpectedData(
-      oppija = ValpasMockOppijat.oppivelvollisuusKeskeytettyToistaiseksi,
-      ooPäättymispäivä = t.get("rouhinta_ei_päättynyt"),
-      ooViimeisinTila = Some("Läsnä"),
-      ooKoulutusmuoto = Some("Perusopetus"),
-      ooToimipiste = Some("Jyväskylän normaalikoulu"),
-      keskeytys = Some("1.1.2021 -"),
-    ),
-    HetuhakuExpectedData(
       oppija = ValpasMockOppijat.eiKoskessaOppivelvollinen,
       ooPäättymispäivä = t.get("rouhinta_ei_opiskeluoikeutta"),
       ooViimeisinTila = None,
@@ -64,6 +40,12 @@ class ValpasRouhintaSpec extends ValpasTestBase with BeforeAndAfterAll {
       ooToimipiste = None,
       keskeytys = None,
     ),
+    // TODO: Lisää uusi testioppija, joka ei suorita ja jolla oppivelvollisuuden keskeytys
+  )
+
+  val oppivelvollisuuttaSuorittavienHetut = List(
+    ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.hetu.get,
+    ValpasMockOppijat.oppivelvollisuusKeskeytettyToistaiseksi.hetu.get,
   )
 
   val oppivelvollisuudenUlkopuolistenHetut = List(
@@ -83,41 +65,44 @@ class ValpasRouhintaSpec extends ValpasTestBase with BeforeAndAfterAll {
     "Hetulistalla" - {
       "Oppivelvolliset" - {
         "Sisältää oikeat hetut" in {
-          expectOppivelvollisetPropsMatch(
+          expectEiOppivelvollisuuttaSuorittavatPropsMatch(
             actual => actual.hetu,
             expected => expected.oppija.hetu,
           )
         }
         "Päättymispäivä" in {
-          expectOppivelvollisetPropsMatch(
+          expectEiOppivelvollisuuttaSuorittavatPropsMatch(
             actual => actual.ooPäättymispäivä,
             expected => expected.ooPäättymispäivä,
           )
         }
         "Viimeisin tila" in {
-          expectOppivelvollisetPropsMatch(
+          expectEiOppivelvollisuuttaSuorittavatPropsMatch(
             actual => actual.ooViimeisinTila,
             expected => expected.ooViimeisinTila,
           )
         }
         "Koulutusmuoto" in {
-          expectOppivelvollisetPropsMatch(
+          expectEiOppivelvollisuuttaSuorittavatPropsMatch(
             actual => actual.ooKoulutusmuoto,
             expected => expected.ooKoulutusmuoto,
           )
         }
         "Toimipiste/oppilaitos" in {
-          expectOppivelvollisetPropsMatch(
+          expectEiOppivelvollisuuttaSuorittavatPropsMatch(
             actual => actual.ooToimipiste,
             expected => expected.ooToimipiste,
           )
         }
         "Oppivelvollisuuden keskeytys" in {
-          expectOppivelvollisetPropsMatch(
+          expectEiOppivelvollisuuttaSuorittavatPropsMatch(
             actual => actual.keskeytys,
             expected => expected.keskeytys.getOrElse(""),
           )
         }
+      }
+      "Oppivelvollisuutta suorittavat sisältää oikeat hetut" in {
+        oppivelvollisuuttaSuorittavat.map(_.hetu) should contain theSameElementsAs oppivelvollisuuttaSuorittavienHetut
       }
       "Oppivelvollisuuden ulkopuoliset sisältää oikeat hetut" in {
         oppivelvollisuudenUlkopuoliset.map(_.hetu) should contain theSameElementsAs oppivelvollisuudenUlkopuolistenHetut
@@ -133,23 +118,25 @@ class ValpasRouhintaSpec extends ValpasTestBase with BeforeAndAfterAll {
 
   lazy val hetuhaku = loadHetuhaku
 
-  def expectOppivelvollisetPropsMatch[T](f: OppivelvollinenRow => T, g: HetuhakuExpectedData => T): Assertion = {
-    oppivelvolliset.map(o => (
+  def expectEiOppivelvollisuuttaSuorittavatPropsMatch[T](f: OppivelvollinenRow => T, g: HetuhakuExpectedData => T): Assertion = {
+    eiOppivelvollisuuttaSuorittavat.map(o => (
       o.oppijaOid,
       f(o),
-    )) should contain theSameElementsAs oppivelvollisetOppijat.map(o => (
+    )) should contain theSameElementsAs eiOppivelvollisuuttaSuorittavatOppijat.map(o => (
       o.oppija.oid,
       g(o),
     ))
   }
 
-  lazy val oppivelvollisetHetut = oppivelvollisetOppijat.map(_.oppija.hetu.get)
+  lazy val eiOppivelvollisuuttaSuorittavienHetut = eiOppivelvollisuuttaSuorittavatOppijat.map(_.oppija.hetu.get)
 
-  lazy val oppivelvolliset = hetuhaku.collectFirst {
-    case d: DataSheet if d.title == t.get("rouhinta_tab_oppivelvolliset") => d.rows.collect {
+  lazy val eiOppivelvollisuuttaSuorittavat = hetuhaku.collectFirst {
+    case d: DataSheet if d.title == t.get("rouhinta_tab_ei_oppivelvollisuutta_suorittavat") => d.rows.collect {
       case r: OppivelvollinenRow => r
     }
   }.get
+
+  lazy val oppivelvollisuuttaSuorittavat = pelkkäHetuRows("rouhinta_tab_oppivelvollisuutta_suorittavat")
 
   lazy val oppivelvollisuudenUlkopuoliset = pelkkäHetuRows("rouhinta_tab_ovl_ulkopuoliset")
 
@@ -162,7 +149,8 @@ class ValpasRouhintaSpec extends ValpasTestBase with BeforeAndAfterAll {
   private def loadHetuhaku() = {
     new ValpasRouhintaService(KoskiApplicationForTests)
       .haeHetulistanPerusteellaExcel(
-        hetut = oppivelvollisetHetut ++
+        hetut = eiOppivelvollisuuttaSuorittavienHetut ++
+          oppivelvollisuuttaSuorittavienHetut ++
           oppivelvollisuudenUlkopuolistenHetut ++
           oppijanumerorekisterinUlkopuolisetHetut ++
           virheellisetHetut,
