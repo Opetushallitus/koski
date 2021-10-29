@@ -240,7 +240,8 @@ Koski-sovellus ajaa migraatiot automaattisesti käynnistyessään.
 ### Elasticsearch-hakuindeksien hallinta
 
 Elasticsearch-hakuindeksejä voidaan hallita Kosken API:n kautta. API sallii
-kutsut ainoastaan localhostista.
+kutsut ainoastaan localhostista, joten pilviympäristöjen hallintaa varten on
+palvelimille konfiguroitava pääsy SSH:lla.
 
 API tarjoaa seuraavat toiminnot:
 
