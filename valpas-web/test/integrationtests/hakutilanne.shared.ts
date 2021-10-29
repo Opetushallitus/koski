@@ -5,7 +5,7 @@ import {
   expectElementEventuallyVisible,
 } from "../integrationtests-env/browser/content"
 
-export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia oppijoita (35)"
+export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia oppijoita (36)"
 export const jklNormaalikouluTableContent = `
   Epäonninen Valpas                                       | 30.10.2005  | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Eroaja-myöhemmin Valpas                                 | 29.9.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
@@ -31,6 +31,7 @@ export const jklNormaalikouluTableContent = `
   Oppivelvollinen-hetullinen Valpas                       | 3.1.2005    | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas   | 22.11.2005  | 9C | –          | Hakenut open_in_new  | 2. Helsingin medialukio     | doneHelsingin medialukio  | –                                                                          |
   Oppivelvollinen-ysiluokka-kesken-vsop Valpas            | 24.3.2005   | vsop 9C | –     | Ei hakemusta         | –                           | –                         | –                                                                          |
+  Oppivelvollisuus-keskeytetty-ei-opiskele Valpas         | 1.10.2005   | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
   Oppivelvollisuus-keskeytetty-määräajaksi Valpas         | 18.10.2005  | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Oppivelvollisuus-keskeytetty-toistaiseksi Valpas        | 15.9.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Päällekkäisiä Oppivelvollisuuksia                       | 6.6.2005    | 9B | –          | Hakenut open_in_new  | Hyväksytty (2 hakukohdetta) | doneOmnia                 | –                                                                          |
