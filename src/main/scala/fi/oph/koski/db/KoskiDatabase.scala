@@ -18,8 +18,4 @@ class KoskiDatabase(protected val config: DatabaseConfig, isReplica: Boolean) ex
   override protected lazy val dbSizeQuery = KoskiTables.OpiskeluOikeudet.length.result
 
   val isLocal: Boolean = config.isLocal
-
-  if (config.isLocal && !isReplica) {
-    new PostgresRunner("postgresql/data", "postgresql/postgresql.conf", config.port).start
-  }
 }

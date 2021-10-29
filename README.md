@@ -78,7 +78,7 @@ Valppaan testikäyttäjistä on tietoa Valppaan käyttöliittymän [README.md:ss
 Nämä ovat keskeiset Koski-järjestelmässä käytettävät teknologiat. Lista kuvaa järjestelmän nykytilaa ja muuttuu matkan varrella
 tarpeen mukaan.
 
-- PostgreSQL 12.3 -tietokanta
+- PostgreSQL 12.5 -tietokanta
 - Elasticsearch 7.9 -hakuindeksi
 - Palvelinteknologiat
   - Scala 2.12 -ohjelmointikieli ja -kääntäjä
@@ -145,7 +145,7 @@ make run
 
 Avaa selaimessa [http://localhost:7021/koski/virkailija](http://localhost:7021/koski/virkailija). Selaimeen avautuu login-sivu, josta pääset eteenpäin käyttäjätunnuksella "kalle". Salasana on sama kuin käyttäjätunnus.
 
-Näin ajettuna sovellus käyttää paikallista PostgreSQL-kantaa ja Elasticsearch-indeksiä, jotka se myös itse käynnistää. Sovellus ei myöskään käytä mitään ulkoisia palveluja. Sillä on siis turvallista leikkiä.
+Näin ajettuna sovellus käyttää paikallista PostgreSQL-kantaa ja Elasticsearch-hakuindeksiä, jotka voi käynnistää docker-composella. Sovellus ei myöskään käytä mitään ulkoisia palveluja. Sillä on siis turvallista leikkiä.
 
 Paikallisesti ajettaessa Jetty lataa resurssit hakemistosta `target/webapp`, jonka sisältö luodaan webpack-buildilla ([webpack.config.js](web/webpack.config.js)). Webpack-build muun muassa kopioi staattisia resursseja paikoilleen
 hakemistosta [`web/`](web/) ja sen alihakemistoista.
@@ -171,44 +171,22 @@ Ottaaksesi käyttöön ulkoiset integraatiot, kuten Oppijanumerorekisterin, voit
 
 Tällä asetuksella käytetään tiedostoa `src/main/resources/qa.conf`. Tämä tiedosto ei ole versionhallinnassa, koska se sisältää ei-julkista tietoa.
 
-### Paikallinen PostgreSQL-tietokanta
 
-Kehityskäyttöön tarvitaan paikallinen PostgreSQL-tietokanta. Koski-sovellus luo paikallisen kannan, skeeman ja käyttäjän automaattisesti ja käynnistää myös tarvittavan PostgreSQL-serveriprosessin.
+### Kehitysympäristön tietokannat
 
-Paikallisen kannan konfiguraatio on tiedostossa [postgresql/postgresql.conf] ja tietokannan datahakemisto on [postgresql/data].
+Kehityskäyttöön tarvitaan PostgreSQL-tietokanta ja Elasticsearch-hakuindeksi.
 
-Jos haluat pitää Postgresin käynnissä erikseen, voit käynnistää sen komentoriviltä komennolla
-
-``` shell
-make postgres
-```
-
-PostgreSQL jää pyörimään konsoliin ja voit sammuttaa sen painamalla Ctrl-C.
-
-Käynnistyessään Koski-sovellus huomaa, jos tietokanta on jo käynnissä, eikä siinä tapauksessa yritä käynnistää sitä.
-
-Kehityksessä käytetään kahta kantaa: `koski` jota käytetään normaalisti ja `koskitest` jota käytetään automaattisissa testeissä (tämä kanta tyhjennetään aina testiajon alussa). Molemmat kannat sisältävät `koski` -skeeman, ja sijaitsevat fyysisesti samassa datahakemistossa.
-
-### Paikallinen Elasticsearch-kanta
-
-Koski-sovellus käynnistää paikallisen Elasticseach-serverin käynnistyessään, jos serveriä ei löydy portista 9200.
-
-Jos haluat pitää Elasticsearching käynnissä erikseen, voit käynnistää sen komentoriviltä komennolla
-
-``` shell
-make elastic
-```
-
-Paikallisen kannan datat tulevat hakemistoon `elastic-data`.
-
-### PostgresSQL ja Elasticsearch Dockerilla käynnistettynä
-
-PostgresSQL:n ja Elasticsearchin voi vaihtoehtoisesti asentaa ja ajaa Dockerilla. Aja komentoriviltä komento
-
+Kehitystietokannat käynnistetään docker-composella. Tämän voi tehdä seuraavalla
+komennolla:
 
 ``` shell
 make docker-dbs
 ```
+
+Kehityksessä käytetään kolmea kantaa: `koski`, `valpas` ja `raportointikanta`.
+Näiden lisäksi automaattisissa testeissä käytetään vastaavia `koski_test`,
+`valpas_test` ja `raportointikanta_test` kantoja, jotka tyhjennetään aina
+testiajon alussa.
 
 ### SQL-yhteys paikalliseen kantaan
 
@@ -216,7 +194,7 @@ Jos haluat tarkastella paikallisen kehityskannan tilaa SQL-työkalulla, se onnis
 
 ``` shell
 psql -h localhost koski oph
-psql -h localhost koskitest oph
+psql -h localhost koski_test oph
 ```
 
 Peruskomennot:

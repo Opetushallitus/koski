@@ -15,10 +15,9 @@ help:
 	@echo "make front	- Build front end"
 	@echo "make test	- Run unit tests"
 	@echo "make run	- Run previously built application in local environment"
-	@echo "make postgres	- Run local postgres server"
+	@echo "make docker-dbs	- Start databases with docker-compose"
 	@echo "make watch	- Watch for changes in webapp files"
 	@echo "make clean	- Remove generated build data"
-	@echo "make purge	- Remove all local data, including postgresql and elasticsearch databases"
 	@echo "make dist version=<version> - Build and deploy application to artifactory"
 
 .PHONY: logdir
@@ -29,18 +28,6 @@ logdir:
 clean:
 	mvn clean
 	rm -fr web/target
-
-.PHONY: clean-db
-clean-db:
-	rm -fr elasticsearch/data
-	rm -fr postgresql/data
-
-.PHONY: purge
-purge:
-	mvn clean
-	rm -fr web/target
-	rm -fr elasticsearch/data
-	rm -fr postgresql/data
 
 ### Building the application
 
@@ -116,17 +103,6 @@ run:
 
 docker-dbs:
 	${DOCKER_COMPOSE} up ${DOCKER_COMPOSE_OPTS}
-
-postgres:
-	postgres --config_file=postgresql/postgresql.conf -D postgresql/data
-
-.PHONY: postgres-clean
-postgres-clean:
-	rm postgresql/data/postmaster.pid 2> /dev/null||true
-
-.PHONY: elastic
-elastic:
-	elasticsearch -E path.conf=elasticsearch -E path.data=elasticsearch/data -E path.logs=elasticsearch/log
 
 ### Code checks
 

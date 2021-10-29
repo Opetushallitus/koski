@@ -12,16 +12,10 @@ case class ElasticSearch(config: Config) extends Logging {
     case Some(host) => ElasticSearchConfig(host, "https", 443)
     case _ => ElasticSearchConfig(config.getString("elasticsearch.host"), config.getString("elasticsearch.protocol"), config.getInt("elasticsearch.port"))
   }
+
   private val url = s"$protocol://$host:$port"
 
-  val http = Http(url, "elasticsearch")
-
-  val init_ = synchronized {
-    if (host == "localhost") {
-      new ElasticSearchRunner("./elasticsearch", port, port + 100).start
-    }
-    logger.info(s"Using elasticsearch at $host:$port")
-  }
+  val http: Http = Http(url, "elasticsearch")
 }
 
 object ElasticSearch {
