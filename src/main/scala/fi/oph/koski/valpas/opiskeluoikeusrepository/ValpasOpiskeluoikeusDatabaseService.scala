@@ -1309,6 +1309,25 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         r_henkilo.hetu = any($hetut)
       """.as[HetuMasterOid])
   }
+
+  def haeOppivelvollisetKotikunnalla(kunta: String): Seq[HetuMasterOid] = {
+    val tarkastelupäivä = rajapäivätService.tarkastelupäivä
+
+    db.runDbSync(sql"""
+      SELECT
+        r_henkilo.master_oid AS master_oid,
+        r_henkilo.hetu AS hetu,
+        r_henkilo.syntymaaika AS syntymaaika,
+        TRUE as oppivelvollisuus_voimassa
+      FROM
+        r_henkilo
+        JOIN oppivelvollisuustiedot
+          ON (r_henkilo.master_oid = oppivelvollisuustiedot.oppija_oid)
+            AND ($tarkastelupäivä BETWEEN oppivelvollisuustiedot.oppivelvollisuusvoimassaalkaen AND oppivelvollisuustiedot.oppivelvollisuusvoimassaasti)
+      WHERE
+        r_henkilo.kotikunta = $kunta
+      """.as[HetuMasterOid])
+  }
 }
 
 case class HetuMasterOid(

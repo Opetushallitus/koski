@@ -448,6 +448,10 @@ class ValpasOppijaService(
     opiskeluoikeusDbService.haeOppijatHetuilla(hetut)
   }
 
+  def getOppivelvollisetKotikunnallaIlmanOikeustarkastusta(kunta: String): Seq[HetuMasterOid] = {
+    opiskeluoikeusDbService.haeOppivelvollisetKotikunnalla(kunta)
+  }
+
   def addOppivelvollisuudenKeskeytys
     (keskeytys: UusiOppivelvollisuudenKeskeytys)
     (implicit session: ValpasSession)
