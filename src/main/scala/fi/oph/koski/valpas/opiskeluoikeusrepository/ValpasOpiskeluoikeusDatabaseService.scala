@@ -94,7 +94,11 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     val timedBlockname = oppijaOids.size match {
       case 0 => "getOppijatMultiple"
       case 1 => "getOppijatSingle"
-      case _ => "getOppijatMultipleOids"
+      case n if n <= 1000 => "getOppijatMultipleOids2To1000"
+      case n if n <= 10000 => "getOppijatMultipleOids1001To10000"
+      case n if n <= 50000 => "getOppijatMultipleOids10001To50000"
+      case n if n <= 100000 => "getOppijatMultipleOids50000To100000"
+      case _ => "getOppijatMultipleOidsOver100000"
     }
 
     val haePerusopetuksenHakeutumisvalvontatiedot = Seq(HakeutumisvalvontaTieto.Perusopetus, HakeutumisvalvontaTieto.Kaikki).contains(hakeutumisvalvontaTieto)
