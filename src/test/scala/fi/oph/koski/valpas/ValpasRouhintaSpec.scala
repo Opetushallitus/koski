@@ -40,7 +40,14 @@ class ValpasRouhintaSpec extends ValpasTestBase with BeforeAndAfterAll {
       ooToimipiste = None,
       keskeytys = None,
     ),
-    // TODO: Lisää uusi testioppija, joka ei suorita ja jolla oppivelvollisuuden keskeytys
+    HetuhakuExpectedData(
+      oppija = ValpasMockOppijat.oppivelvollisuusKeskeytettyEiOpiskele,
+      ooPäättymispäivä = "30.5.2021",
+      ooViimeisinTila = Some("Valmistunut"),
+      ooKoulutusmuoto = Some("Perusopetus"),
+      ooToimipiste = Some("Jyväskylän normaalikoulu"),
+      keskeytys = Some("1.6.2021 -"),
+    ),
   )
 
   val oppivelvollisuuttaSuorittavienHetut = List(
