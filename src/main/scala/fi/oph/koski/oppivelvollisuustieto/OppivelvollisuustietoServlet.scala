@@ -45,15 +45,5 @@ class OppivelvollisuustietoServlet(implicit val application: KoskiApplication) e
   private def queryByOids(oids: Seq[String]): Either[HttpStatus, Seq[Oppivelvollisuustieto]] = {
     Right(Oppivelvollisuustiedot.queryByOids(oids, application.raportointiDatabase))
   }
-
-  private def mockResponseForTestingPurposes(oids: Seq[Oid]): Either[HttpStatus, Seq[Oppivelvollisuustieto]] = {
-    Right(oids.map(oid =>
-      Oppivelvollisuustieto(
-        oid,
-        oppivelvollisuusVoimassaAsti = LocalDate.of(2021, 8, 1),
-        oikeusMaksuttomaanKoulutukseenVoimassaAsti = LocalDate.of(2021, 8, 1)
-      )
-    ))
-  }
 }
 
