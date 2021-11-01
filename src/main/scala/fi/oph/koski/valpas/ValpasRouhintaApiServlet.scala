@@ -2,12 +2,13 @@ package fi.oph.koski.valpas
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.koodisto.Kunta
 import fi.oph.koski.koskiuser.UserLanguage.sanitizeLanguage
-import fi.oph.koski.raportit.{ExcelWriter, OppilaitosRaporttiResponse}
+import fi.oph.koski.raportit.{AhvenanmaanKunnat, ExcelWriter, OppilaitosRaporttiResponse}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.servlet.NoCache
-import fi.oph.koski.valpas.log.ValpasAuditLog.auditLogRouhintahakuHetulistalla
-import fi.oph.koski.valpas.rouhinta.{HeturouhinnanTulos, ValpasRouhintaService}
+import fi.oph.koski.valpas.log.ValpasAuditLog.{auditLogRouhintahakuHetulistalla, auditLogRouhintahakuKunnalla}
+import fi.oph.koski.valpas.rouhinta.{HeturouhinnanTulos, KuntarouhinnanTulos, ValpasRouhintaService}
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
 import org.json4s.JValue
@@ -16,6 +17,7 @@ import fi.oph.koski.util.ChainingSyntax._
 
 class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with RequiresValpasSession {
   private val rouhinta = new ValpasRouhintaService(application)
+  private val koodistoPalvelu = application.koodistoPalvelu
 
   post("/hetut") {
     withJsonBody { (body: JValue) =>
@@ -34,16 +36,47 @@ class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) exten
     } (parseErrorHandler = haltWithStatus)
   }
 
+  post("/kunta") {
+    withJsonBody { (body: JValue) =>
+      val result = extractAndValidateKuntakoodi(body)
+        .flatMap(input => {
+          // TODO: Excel
+          rouhinta.haeKunnanPerusteella(input.kunta)
+            .tap(_ => auditLogRouhintahakuKunnalla(input.kunta))
+        })
+      renderResult(result)
+    } (parseErrorHandler = haltWithStatus)
+
+  }
+
   private def jsonRequested = request.header("accept").contains("application/json")
 
   private def extractHetuList(input: JValue) =
     application.validatingAndResolvingExtractor.extract[HetuhakuInput](strictDeserialization)(input)
+
+  private def extractAndValidateKuntakoodi(input: JValue) = {
+    application.validatingAndResolvingExtractor.extract[KuntaInput](strictDeserialization)(input)
+      .flatMap(validateKuntakoodi)
+  }
+
+  private def validateKuntakoodi(input: KuntaInput): Either[HttpStatus, KuntaInput] = {
+    if (
+      Kunta.kuntaExists(input.kunta, koodistoPalvelu) &&
+      !AhvenanmaanKunnat.onAhvenanmaalainenKunta(input.kunta) &&
+      !Kunta.onPuuttuvaKunta(input.kunta)
+    ) {
+      Right(input)
+    } else {
+      Left(ValpasErrorCategory.badRequest(s"Kunta ${input.kunta} ei ole koodistopalvelun tuntema manner-Suomen kunta"))
+    }
+  }
 
   private def renderResult(result: Either[HttpStatus, Any]): Unit = {
     result match {
       case Right(r) => r match {
         case r: OppilaitosRaporttiResponse => writeExcel(r)
         case r: HeturouhinnanTulos => renderObject(r)
+        case r: KuntarouhinnanTulos => renderObject(r)
         case _ => haltWithStatus(ValpasErrorCategory.internalError())
       }
       case Left(e) => haltWithStatus(e)
@@ -66,6 +99,12 @@ class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) exten
 
 case class HetuhakuInput(
   hetut: List[String],
+  lang: Option[String],
+  password: Option[String],
+)
+
+case class KuntaInput(
+  kunta: String,
   lang: Option[String],
   password: Option[String],
 )

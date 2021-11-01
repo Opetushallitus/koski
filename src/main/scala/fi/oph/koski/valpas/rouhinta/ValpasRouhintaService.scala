@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter
 
 class ValpasRouhintaService(application: KoskiApplication) {
   private val heturouhinta = new ValpasHeturouhintaService(application)
+  private val kuntarouhinta = new ValpasKuntarouhintaService(application)
   private val localization = application.valpasLocalizationRepository
   private val accessResolver = new ValpasAccessResolver
   private val rajapäivät = application.valpasRajapäivätService
@@ -38,6 +39,17 @@ class ValpasRouhintaService(application: KoskiApplication) {
         filename = t.get("rouhinta_hetulista_tiedostonimi", Map("pvm" -> rajapäivät.tarkastelupäivä.format(DateTimeFormatter.ISO_DATE))),
         password = password,
       ))
+  }
+
+  def haeKunnanPerusteella
+    (kunta: String)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, KuntarouhinnanTulos] = {
+    if (accessResolver.accessToKuntaOrg(kunta)) {
+      kuntarouhinta.haeKunnanPerusteella(kunta)
+    } else {
+      Left(ValpasErrorCategory.forbidden.toiminto())
+    }
   }
 
   private def asOppilaitosRaporttiResponse(title: String, filename: String, password: Option[String])(sheets: Seq[DataSheet]) = {

@@ -183,6 +183,14 @@ class ValpasAccessResolver {
     (implicit session: ValpasSession)
   : Boolean = onGlobaaliOikeus(rooli) || organisaatioOids.intersect(oppilaitosOrganisaatioOids(rooli)).nonEmpty
 
+  def accessToKuntaOrg
+    (kotipaikkaKoodiarvo: String)
+    (implicit session: ValpasSession)
+  : Boolean = {
+    val rooli = ValpasRooli.KUNTA
+    onGlobaaliOikeus(rooli) || valpasOrganisaatiot(rooli).exists(_.kotipaikka.exists(_.koodiarvo == kotipaikkaKoodiarvo))
+  }
+
   def accessToAnyOrg(
     rooli: ValpasRooli.Role
   )(
