@@ -180,10 +180,10 @@ object Oppivelvollisuustiedot {
           ) AS oppivelvollisuusVoimassaAlkaen,
 
           case
-            when suorittaa_ammattitutkintoa and suorittaa_lukionoppimaaraa then least(dia_tutkinnon_vahvistuspaiva, ib_tutkinnon_vahvistuspaiva, international_schoolin_toisen_asteen_vahvistus_paiva, (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year')::date)
-            when suorittaa_ammattitutkintoa then least(dia_tutkinnon_vahvistuspaiva, ib_tutkinnon_vahvistuspaiva, international_schoolin_toisen_asteen_vahvistus_paiva, ammattitutkinnon_vahvistus_paiva, (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year')::date)
-            when suorittaa_lukionoppimaaraa then least(dia_tutkinnon_vahvistuspaiva, ib_tutkinnon_vahvistuspaiva, international_schoolin_toisen_asteen_vahvistus_paiva, (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year')::date)
-            else least(dia_tutkinnon_vahvistuspaiva, ib_tutkinnon_vahvistuspaiva, international_schoolin_toisen_asteen_vahvistus_paiva, (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year')::date)
+            when suorittaa_ammattitutkintoa and suorittaa_lukionoppimaaraa then least(dia_tutkinnon_vahvistuspaiva, ib_tutkinnon_vahvistuspaiva, international_schoolin_toisen_asteen_vahvistus_paiva, (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
+            when suorittaa_ammattitutkintoa then least(dia_tutkinnon_vahvistuspaiva, ib_tutkinnon_vahvistuspaiva, international_schoolin_toisen_asteen_vahvistus_paiva, ammattitutkinnon_vahvistus_paiva, (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
+            when suorittaa_lukionoppimaaraa then least(dia_tutkinnon_vahvistuspaiva, ib_tutkinnon_vahvistuspaiva, international_schoolin_toisen_asteen_vahvistus_paiva, (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
+            else least(dia_tutkinnon_vahvistuspaiva, ib_tutkinnon_vahvistuspaiva, international_schoolin_toisen_asteen_vahvistus_paiva, (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
           end
             oppivelvollisuusVoimassaAsti,
 

@@ -35,7 +35,7 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
           val response = JsonSerializer.parse[ValpasKelaOppija](body)
           response.henkilö.hetu should equal(oppija.hetu)
           response.henkilö.oid should equal(oppija.oid)
-          response.henkilö.oppivelvollisuusVoimassaAsti should equal(date(2023, 11, 22))
+          response.henkilö.oppivelvollisuusVoimassaAsti should equal(date(2023, 11, 21))
           response.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(Some(date(2025, 12, 31)))
           response.oppivelvollisuudenKeskeytykset should be(Seq.empty)
         }
@@ -61,7 +61,7 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
           val response = JsonSerializer.parse[ValpasKelaOppija](body)
           response.henkilö.hetu should equal(oppija.hetu)
           response.henkilö.oid should equal(oppija.oid)
-          response.henkilö.oppivelvollisuusVoimassaAsti should equal(date(2023, 10, 18))
+          response.henkilö.oppivelvollisuusVoimassaAsti should equal(date(2023, 10, 17))
           response.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(Some(date(2025, 12, 31)))
 
           response.oppivelvollisuudenKeskeytykset.length should be(expectedKeskeytykset.length)
@@ -99,7 +99,7 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
           val response = JsonSerializer.parse[ValpasKelaOppija](body)
           response.henkilö.hetu should equal(oppija.hetu)
           response.henkilö.oid should equal(oppija.oid)
-          response.henkilö.oppivelvollisuusVoimassaAsti should equal(date(2023, 9, 15))
+          response.henkilö.oppivelvollisuusVoimassaAsti should equal(date(2023, 9, 14))
           response.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(Some(date(2025, 12, 31)))
 
           response.oppivelvollisuudenKeskeytykset.length should be(expectedKeskeytykset.length)
@@ -192,9 +192,9 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
         val hetut = oppijat.map(_.hetu.get) ++ Seq(puuttuvaHetu, eiOppivelvollinenHetu)
 
         val expectedOppivelvollisuusVoimassaAsti = Seq(
-          date(2023, 11, 22),
-          date(2023, 10, 18),
-          date(2023, 9, 15)
+          date(2023, 11, 21),
+          date(2023, 10, 17),
+          date(2023, 9, 14)
         )
 
         val expectedOikeusKoulutuksenMaksuttomuuteenVoimassaAsti =

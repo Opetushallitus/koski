@@ -75,7 +75,7 @@ class OppivelvollisuustietoSpec
           insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2020, 1, 1))))
           insert(slave2, lukionOppimäärä(vahvistus = None))
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2022, 1, 1), maksuttomuus = date(2024, 12, 31))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
         }
         "Lukion oppimaaralla vahvistus" in {
           resetFixtures
@@ -83,7 +83,7 @@ class OppivelvollisuustietoSpec
           insert(slave1, ammatillinenTutkinto(vahvistus = None))
           insert(slave2, lukionOppimäärä(vahvistus = Some(date(2019, 1, 1))))
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2022, 1, 1), maksuttomuus = date(2024, 12, 31))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
         }
         "Molemmilla vahvistus" in {
           resetFixtures
@@ -91,7 +91,7 @@ class OppivelvollisuustietoSpec
           insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2020, 1, 1))))
           insert(slave2, lukionOppimäärä(vahvistus = Some(date(2019, 1, 1))))
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2022, 1, 1), maksuttomuus = date(2024, 12, 31))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
         }
       }
       "Jos suorittaa vain lukion oppimäärää, käytetään aina syntymäaikaa päättymispäivien päättelyssä" - {
@@ -101,7 +101,7 @@ class OppivelvollisuustietoSpec
           insert(slave1, lukionOppimäärä(vahvistus = Some(date(2019, 1, 1))))
           insert(slave2, lukionOppimäärä(vahvistus = Some(date(2020, 1, 1))))
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2022, 1, 1), maksuttomuus = date(2024, 12, 31))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
         }
       }
 
@@ -112,7 +112,7 @@ class OppivelvollisuustietoSpec
           insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2023, 1, 1))))
           insert(slave2, ammatillinenTutkinto(vahvistus = Some(date(2024, 1, 1))))
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2022, 1, 1), maksuttomuus = date(2023, 1, 1))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2023, 1, 1))
         }
         "Syntymäaika päättää molemmat aikaisemmin" in {
           resetFixtures
@@ -120,7 +120,7 @@ class OppivelvollisuustietoSpec
           insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2025, 1, 1))))
           insert(slave2, ammatillinenTutkinto(vahvistus = Some(date(2024, 12, 31))))
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2022, 1, 1), maksuttomuus = date(2024, 12, 31))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
         }
         "Vahvistuspäivä päättää molemmat aikaisemmin" in {
           resetFixtures
@@ -228,7 +228,7 @@ class OppivelvollisuustietoSpec
           queryOids(oikeusOpiskelunMaksuttomuuteen.oid) should equal(List(
             Oppivelvollisuustieto(
               oikeusOpiskelunMaksuttomuuteen.oid,
-              oppivelvollisuusVoimassaAsti = date(2022, 12, 31),
+              oppivelvollisuusVoimassaAsti = date(2022, 12, 30),
               oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2024, 12, 31)
             )
           ))
@@ -262,12 +262,12 @@ class OppivelvollisuustietoSpec
         val queryResult = queryOids(List(master.oid, slave1.oid))
         queryResult should contain(Oppivelvollisuustieto(
           master.oid,
-          oppivelvollisuusVoimassaAsti = date(2022, 1, 1),
+          oppivelvollisuusVoimassaAsti = date(2021, 12, 31),
           oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2024, 12, 31)
         ))
         queryResult should contain(Oppivelvollisuustieto(
           slave1.oid,
-          oppivelvollisuusVoimassaAsti = date(2022, 1, 1),
+          oppivelvollisuusVoimassaAsti = date(2021, 12, 31),
           oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2024, 12, 31)
         ))
       }

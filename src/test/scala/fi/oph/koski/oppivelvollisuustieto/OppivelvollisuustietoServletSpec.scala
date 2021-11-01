@@ -37,8 +37,16 @@ class OppivelvollisuustietoServletSpec extends AnyFreeSpec with KoskiHttpSpec wi
       val eiKuuluMaksuttomuudenPiiriinOid = KoskiSpecificMockOppijat.lukiolainen.oid
 
       val expectedResult = List(
-        Oppivelvollisuustieto(KoskiSpecificMockOppijat.maksuttomuuttaPidennetty1.oid, LocalDate.of(2022, 1, 1), LocalDate.of(2024, 12, 31)),
-        Oppivelvollisuustieto(KoskiSpecificMockOppijat.maksuttomuuttaPidennetty2.oid, LocalDate.of(2022, 1, 1), LocalDate.of(2024, 12, 31))
+        Oppivelvollisuustieto(
+          oid = KoskiSpecificMockOppijat.maksuttomuuttaPidennetty1.oid,
+          oppivelvollisuusVoimassaAsti = LocalDate.of(2021, 12, 31),
+          oikeusMaksuttomaanKoulutukseenVoimassaAsti = LocalDate.of(2024, 12, 31),
+        ),
+        Oppivelvollisuustieto(
+          oid = KoskiSpecificMockOppijat.maksuttomuuttaPidennetty2.oid,
+          oppivelvollisuusVoimassaAsti = LocalDate.of(2021, 12, 31),
+          oikeusMaksuttomaanKoulutukseenVoimassaAsti = LocalDate.of(2024, 12, 31),
+        )
       )
 
       val oids = List(
