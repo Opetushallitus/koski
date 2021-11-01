@@ -2,8 +2,8 @@ import React from "react"
 import { t } from "../../i18n/i18n"
 import { withRequiresSuorittamisenValvonta } from "../../state/accessRights"
 import {
-  createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg,
-  KunnalleIlmoitetutViewRouteProps,
+  OrganisaatioOidRouteProps,
+  suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg,
 } from "../../state/paths"
 import { ErrorView } from "../ErrorView"
 import { useSuorittamisvalvonnanKunnalleTehdytIlmoitukset } from "../hakutilanne/useOppijatData"
@@ -20,7 +20,7 @@ export const SuorittamisenKunnalleIlmoitetutViewWithoutOrgOid = withRequiresSuor
       organisaatioHakuRooli={organisaatioHakuRooli}
       organisaatioTyyppi={organisaatioTyyppi}
       redirectTo={(basePath, organisaatioOid) =>
-        createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg(basePath, {
+        suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg.href(basePath, {
           organisaatioOid,
         })
       }
@@ -29,7 +29,7 @@ export const SuorittamisenKunnalleIlmoitetutViewWithoutOrgOid = withRequiresSuor
   )
 )
 
-export type SuorittamisenKunnalleIlmoitetutViewProps = KunnalleIlmoitetutViewRouteProps
+export type SuorittamisenKunnalleIlmoitetutViewProps = OrganisaatioOidRouteProps
 
 export const SuorittamisenKunnalleIlmoitetutView = withRequiresSuorittamisenValvonta(
   (props: SuorittamisenKunnalleIlmoitetutViewProps) => (
@@ -45,7 +45,7 @@ export const SuorittamisenKunnalleIlmoitetutView = withRequiresSuorittamisenValv
           selectedOrganisaatio={props.match.params.organisaatioOid!}
         />
       }
-      linkCreator={createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg}
+      linkCreator={suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg.href}
     />
   )
 )

@@ -9,7 +9,7 @@ import { getLocalizedMaybe, t, Translation } from "../../i18n/i18n"
 import { HakuSuppeatTiedot } from "../../state/apitypes/haku"
 import { OppijaHakutilanteillaSuppeatTiedot } from "../../state/apitypes/oppija"
 import { Oid } from "../../state/common"
-import { createOppijaPath } from "../../state/paths"
+import { oppijaPath } from "../../state/paths"
 import { formatNullableDate } from "../date"
 
 export const hakemuksenTilaValue = (
@@ -59,7 +59,7 @@ const hakemuksenTilaDisplay = (
           {hakemuksenTilaValue}
         </ExternalLink>
       ) : (
-        <Link to={createOppijaPath(basePath, { oppijaOid })}>
+        <Link to={oppijaPath.href(basePath, { oppijaOid })}>
           {hakemuksenTilaValue}
         </Link>
       )

@@ -1,8 +1,8 @@
 import {
-  createKunnanHetuhakuPath,
-  createMaksuttomuusPath,
-  createOppijaPath,
-  createSuorittaminenHetuhakuPath,
+  kunnanHetuhakuPath,
+  maksuttomuusPath,
+  oppijaPath,
+  suorittaminenHetuhakuPath,
 } from "../../src/state/paths"
 import {
   clickElement,
@@ -26,9 +26,9 @@ describe("Oppijahaku", () => {
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
       "Löytyi: Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas (221105A3023)",
-      createOppijaPath("/virkailija", {
+      oppijaPath.href("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000001",
-        prev: createMaksuttomuusPath(),
+        prev: maksuttomuusPath.href(),
       }),
       "maksuttomuusoppijasearch"
     )
@@ -43,9 +43,9 @@ describe("Oppijahaku", () => {
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
       "Löytyi: Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas (221105A3023)",
-      createOppijaPath("/virkailija", {
+      oppijaPath.href("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000001",
-        prev: createMaksuttomuusPath(),
+        prev: maksuttomuusPath.href(),
       }),
       "maksuttomuusoppijasearch"
     )
@@ -57,9 +57,9 @@ describe("Oppijahaku", () => {
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
       "Löytyi: Lukio-opiskelija Valpas (070504A717P)",
-      createOppijaPath("/virkailija", {
+      oppijaPath.href("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000004",
-        prev: createMaksuttomuusPath(),
+        prev: maksuttomuusPath.href(),
       }),
       "maksuttomuusoppijasearch"
     )
@@ -68,16 +68,16 @@ describe("Oppijahaku", () => {
   it("Suorittaminen: Haku löytää henkilötunnuksen perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on vain suorittamisoikeus, ja linkkaa detaljisivulle", async () => {
     await hakuLogin(
       "valpas-pelkkä-suorittaminen",
-      createSuorittaminenHetuhakuPath("/virkailija"),
+      suorittaminenHetuhakuPath.href("/virkailija"),
       "article#suorittaminenhetuhaku"
     )
     await fillQueryField("070504A717P")
     await submit()
     await expectResultToBe(
       "Löytyi: Lukio-opiskelija Valpas (070504A717P)",
-      createOppijaPath("/virkailija", {
+      oppijaPath.href("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000004",
-        prev: createSuorittaminenHetuhakuPath(),
+        prev: suorittaminenHetuhakuPath.href(),
       })
     )
   })
@@ -85,16 +85,16 @@ describe("Oppijahaku", () => {
   it("Kunta: Haku löytää henkilötunnuksen perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on vain kuntaoikeus, ja linkkaa detaljisivulle", async () => {
     await hakuLogin(
       "valpas-helsinki",
-      createKunnanHetuhakuPath("/virkailija"),
+      kunnanHetuhakuPath.href("/virkailija"),
       "article#kuntahetuhaku"
     )
     await fillQueryField("070504A717P")
     await submit()
     await expectResultToBe(
       "Löytyi: Lukio-opiskelija Valpas (070504A717P)",
-      createOppijaPath("/virkailija", {
+      oppijaPath.href("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000004",
-        prev: createKunnanHetuhakuPath(),
+        prev: kunnanHetuhakuPath.href(),
       })
     )
   })
@@ -108,9 +108,9 @@ describe("Oppijahaku", () => {
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
       "Löytyi: Lukio-opiskelija Valpas (070504A717P)",
-      createOppijaPath("/virkailija", {
+      oppijaPath.href("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000004",
-        prev: createMaksuttomuusPath(),
+        prev: maksuttomuusPath.href(),
       }),
       "maksuttomuusoppijasearch"
     )
@@ -119,16 +119,16 @@ describe("Oppijahaku", () => {
   it("Suorittaminen: Haku löytää oppijanumeron perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on vain suorittamisoikeus, ja linkkaa detaljisivulle", async () => {
     await hakuLogin(
       "valpas-pelkkä-suorittaminen",
-      createSuorittaminenHetuhakuPath("/virkailija"),
+      suorittaminenHetuhakuPath.href("/virkailija"),
       "article#suorittaminenhetuhaku"
     )
     await fillQueryField("1.2.246.562.24.00000000004")
     await submit()
     await expectResultToBe(
       "Löytyi: Lukio-opiskelija Valpas (070504A717P)",
-      createOppijaPath("/virkailija", {
+      oppijaPath.href("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000004",
-        prev: createSuorittaminenHetuhakuPath(),
+        prev: suorittaminenHetuhakuPath.href(),
       })
     )
   })
@@ -136,16 +136,16 @@ describe("Oppijahaku", () => {
   it("Kunta: Haku löytää oppijanumeron perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on vain kuntaoikeus, ja linkkaa detaljisivulle", async () => {
     await hakuLogin(
       "valpas-helsinki",
-      createKunnanHetuhakuPath("/virkailija"),
+      kunnanHetuhakuPath.href("/virkailija"),
       "article#kuntahetuhaku"
     )
     await fillQueryField("1.2.246.562.24.00000000004")
     await submit()
     await expectResultToBe(
       "Löytyi: Lukio-opiskelija Valpas (070504A717P)",
-      createOppijaPath("/virkailija", {
+      oppijaPath.href("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000004",
-        prev: createKunnanHetuhakuPath(),
+        prev: kunnanHetuhakuPath.href(),
       })
     )
   })
@@ -186,7 +186,7 @@ describe("Oppijahaku", () => {
   it("Suorittaminen: Haku kertoo ettei oppijaa löydy, jos oppijan tietoja ei löydy rekistereistä", async () => {
     await hakuLogin(
       "valpas-pelkkä-suorittaminen",
-      createSuorittaminenHetuhakuPath("/virkailija"),
+      suorittaminenHetuhakuPath.href("/virkailija"),
       "article#suorittaminenhetuhaku"
     )
     await fillQueryField("040392-530U")
@@ -199,7 +199,7 @@ describe("Oppijahaku", () => {
   it("Kunta: Haku kertoo ettei oppijaa löydy, jos oppijan tietoja ei löydy rekistereistä", async () => {
     await hakuLogin(
       "valpas-helsinki",
-      createKunnanHetuhakuPath("/virkailija"),
+      kunnanHetuhakuPath.href("/virkailija"),
       "article#kuntahetuhaku"
     )
     await fillQueryField("040392-530U")
@@ -231,7 +231,7 @@ describe("Oppijahaku", () => {
     )
     await hakuLogin(
       "valpas-pelkkä-suorittaminen",
-      createSuorittaminenHetuhakuPath("/virkailija"),
+      suorittaminenHetuhakuPath.href("/virkailija"),
       "article#suorittaminenhetuhaku"
     )
     await fillQueryField("180304A082P")
@@ -245,7 +245,7 @@ describe("Oppijahaku", () => {
     allowNetworkError("api/henkilohaku/kunta/180304A082P", "403 (Forbidden)")
     await hakuLogin(
       "valpas-helsinki",
-      createKunnanHetuhakuPath("/virkailija"),
+      kunnanHetuhakuPath.href("/virkailija"),
       "article#kuntahetuhaku"
     )
     await fillQueryField("180304A082P")
@@ -309,9 +309,9 @@ describe("Oppijahaku", () => {
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
       "Löytyi: Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas (061005A671V)",
-      createOppijaPath("/virkailija", {
+      oppijaPath.href("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000058",
-        prev: createMaksuttomuusPath(),
+        prev: maksuttomuusPath.href(),
       }),
       "maksuttomuusoppijasearch"
     )
@@ -323,9 +323,9 @@ describe("Oppijahaku", () => {
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
       "Löytyi: Inter-valmistunut-9-2021 Valpas (200405A780K)",
-      createOppijaPath("/virkailija", {
+      oppijaPath.href("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000080",
-        prev: createMaksuttomuusPath(),
+        prev: maksuttomuusPath.href(),
       }),
       "maksuttomuusoppijasearch"
     )
@@ -338,9 +338,9 @@ describe("Oppijahaku", () => {
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
       "Löytyi: Hetuton Valpas",
-      createOppijaPath("/virkailija", {
+      oppijaPath.href("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000059",
-        prev: createMaksuttomuusPath(),
+        prev: maksuttomuusPath.href(),
       }),
       "maksuttomuusoppijasearch"
     )
@@ -354,9 +354,9 @@ describe("Oppijahaku", () => {
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
       "Löytyi: Oppivelvollinen-hetullinen Valpas (030105A7507)",
-      createOppijaPath("/virkailija", {
+      oppijaPath.href("/virkailija", {
         oppijaOid: oppijaMasterOid,
-        prev: createMaksuttomuusPath(),
+        prev: maksuttomuusPath.href(),
       }),
       "maksuttomuusoppijasearch"
     )
@@ -365,16 +365,16 @@ describe("Oppijahaku", () => {
   it("Kunta: Haku löytää oppijan, vaikka hänellä ei ole oppivelvollisuuden suorittamiseen kelpaavia opintoja", async () => {
     await hakuLogin(
       "valpas-helsinki",
-      createKunnanHetuhakuPath("/virkailija"),
+      kunnanHetuhakuPath.href("/virkailija"),
       "article#kuntahetuhaku"
     )
     await fillQueryField("061005A671V") // Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas
     await submit()
     await expectResultToBe(
       "Löytyi: Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas (061005A671V)",
-      createOppijaPath("/virkailija", {
+      oppijaPath.href("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000058",
-        prev: createKunnanHetuhakuPath(),
+        prev: kunnanHetuhakuPath.href(),
       })
     )
   })
@@ -393,7 +393,7 @@ describe("Oppijahaku", () => {
 
 const hakuLogin = async (
   user: string = "valpas-jkl-normaali",
-  path: string = createMaksuttomuusPath("/virkailija"),
+  path: string = maksuttomuusPath.href("/virkailija"),
   selector: string = "article#maksuttomuus"
 ) => {
   await loginAs(path, user)

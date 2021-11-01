@@ -8,7 +8,7 @@ import { Page } from "../../../components/containers/Page"
 import { DummyOrganisaatioValitsin } from "../../../components/shared/OrganisaatioValitsin"
 import { t, T } from "../../../i18n/i18n"
 import { withRequiresSuorittamisenValvonta } from "../../../state/accessRights"
-import { createSuorittaminenHetuhakuPath } from "../../../state/paths"
+import { suorittaminenHetuhakuPath } from "../../../state/paths"
 import { OppijaSearch } from "../../../views/oppijasearch/OppijaSearch"
 import { SuorittaminenNavigation } from "../SuorittaminenNavigation"
 
@@ -31,7 +31,7 @@ export const SuorittaminenHetuhaku = withRequiresSuorittamisenValvonta(() => {
       <OppijaSearch
         searchState={search}
         onQuery={search.call}
-        prevPath={createSuorittaminenHetuhakuPath()}
+        prevPath={suorittaminenHetuhakuPath.href()}
       />
     </Page>
   )

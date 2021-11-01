@@ -1,9 +1,8 @@
 import { Oid } from "../../src/state/common"
 import {
-  createSuorittaminenHetuhakuPath,
-  createSuorittaminenPath,
-  createSuorittaminenPathWithOrg,
-  createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg,
+  suorittaminenPath,
+  suorittaminenPathWithOrg,
+  suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg,
 } from "../../src/state/paths"
 import {
   clickElement,
@@ -64,22 +63,19 @@ export const internationalSchoolSuorittaminenTableContent = `
   Int-school-yli-2kk-aiemmin-9-valmistunut-10-jatkanut Valpas                       | 11.11.2005 | International school | Läsnä | International School of Helsinki | 1.8.2021   | – | – | 11.11.2023 asti
     `
 
-export const suorittaminenHetuhakuPath = createSuorittaminenHetuhakuPath(
-  "/virkailija"
-)
-export const suorittaminenListaPath = createSuorittaminenPath("/virkailija")
+export const suorittaminenListaPath = suorittaminenPath.href("/virkailija")
 
-export const suorittaminenListaJklPath = createSuorittaminenPathWithOrg(
+export const suorittaminenListaJklPath = suorittaminenPathWithOrg.href(
   "/virkailija",
   jyväskylänNormaalikouluOid
 )
 
-export const suorittaminenListaHkiPath = createSuorittaminenPathWithOrg(
+export const suorittaminenListaHkiPath = suorittaminenPathWithOrg.href(
   "/virkailija",
   helsinginMedialukioOid
 )
 
-export const suorittaminenKuntailmoitusListaJklPath = createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg(
+export const suorittaminenKuntailmoitusListaJklPath = suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg.href(
   "/virkailija",
   { organisaatioOid: jyväskylänNormaalikouluOid }
 )

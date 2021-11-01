@@ -18,7 +18,6 @@ import {
 import { BasePathProvider, useBasePath } from "../state/basePath"
 import { FeatureFlagEnabler } from "../state/featureFlags"
 import {
-  createHakutilannePathWithoutOrg,
   hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
   hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg,
   hakutilannePathWithOrg,
@@ -86,159 +85,171 @@ const VirkailijaRoutes = () => {
     <KäyttöoikeusroolitProvider value={organisaatiotJaKayttooikeusroolit.data}>
       <Switch>
         <Route exact path={`${basePath}/pilotti2021`}>
-          <Redirect to={createHakutilannePathWithoutOrg(basePath)} />
+          <Redirect to={hakutilannePathWithoutOrg.href(basePath)} />
         </Route>
         <Route exact path={`${basePath}/rouhinta`}>
           <FeatureFlagEnabler
             features={["rouhinta"]}
-            redirectTo={createHakutilannePathWithoutOrg(basePath)}
+            redirectTo={hakutilannePathWithoutOrg.href(basePath)}
           />
         </Route>
         <Route
           exact
-          path={hakutilannePathWithoutOrg(basePath)}
+          path={hakutilannePathWithoutOrg.route(basePath)}
           render={(routeProps) => (
             <HakutilanneViewWithoutOrgOid
-              redirectUserWithoutAccessTo={rootPath(basePath)}
+              redirectUserWithoutAccessTo={rootPath.href(basePath)}
               {...routeProps}
             />
           )}
         />
         <Route
           exact
-          path={nivelvaiheenHakutilannePathWithoutOrg(basePath)}
+          path={nivelvaiheenHakutilannePathWithoutOrg.route(basePath)}
           render={(routeProps) => (
             <NivelvaiheenHakutilanneViewWithoutOrgOid
-              redirectUserWithoutAccessTo={rootPath(basePath)}
+              redirectUserWithoutAccessTo={rootPath.route(basePath)}
               {...routeProps}
             />
           )}
         />
         <Route
           exact
-          path={hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg(basePath)}
+          path={hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg.route(
+            basePath
+          )}
           render={(routeProps) => (
             <HakeutumisenKunnalleIlmoitetutViewWithoutOrgOid
-              redirectUserWithoutAccessTo={rootPath(basePath)}
+              redirectUserWithoutAccessTo={rootPath.href(basePath)}
               {...routeProps}
             />
           )}
         />
         <Route
           exact
-          path={hakutilannePathWithOrg(basePath)}
+          path={hakutilannePathWithOrg.route(basePath)}
           render={(routeProps) => (
             <HakutilanneView
-              redirectUserWithoutAccessTo={rootPath(basePath)}
+              redirectUserWithoutAccessTo={rootPath.href(basePath)}
               {...routeProps}
             />
           )}
         />
         <Route
           exact
-          path={nivelvaiheenHakutilannePathWithOrg(basePath)}
+          path={nivelvaiheenHakutilannePathWithOrg.route(basePath)}
           render={(routeProps) => (
             <NivelvaiheenHakutilanneView
-              redirectUserWithoutAccessTo={rootPath(basePath)}
+              redirectUserWithoutAccessTo={rootPath.href(basePath)}
               {...routeProps}
             />
           )}
         />
         <Route
           exact
-          path={hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg(basePath)}
+          path={hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg.route(
+            basePath
+          )}
           render={(routeProps) => (
             <HakeutumisenKunnalleIlmoitetutView
-              redirectUserWithoutAccessTo={rootPath(basePath)}
+              redirectUserWithoutAccessTo={rootPath.href(basePath)}
               {...routeProps}
             />
           )}
         />
         <Route
           exact
-          path={oppijaPath(basePath)}
+          path={oppijaPath.route(basePath)}
           render={(routeProps) => (
             <OppijaView
-              redirectUserWithoutAccessTo={rootPath(basePath)}
+              redirectUserWithoutAccessTo={rootPath.href(basePath)}
               {...routeProps}
             />
           )}
         />
         <Route
           exact
-          path={suorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg(basePath)}
+          path={suorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg.route(
+            basePath
+          )}
           render={(routeProps) => (
             <SuorittamisenKunnalleIlmoitetutViewWithoutOrgOid
-              redirectUserWithoutAccessTo={rootPath(basePath)}
+              redirectUserWithoutAccessTo={rootPath.href(basePath)}
               {...routeProps}
             />
           )}
         />
         <Route
           exact
-          path={suorittaminenPath(basePath)}
+          path={suorittaminenPath.route(basePath)}
           render={(routeProps) => (
             <SuorittaminenOppivelvollisetViewWithoutOrgOid
-              redirectUserWithoutAccessTo={rootPath(basePath)}
+              redirectUserWithoutAccessTo={rootPath.href(basePath)}
               {...routeProps}
             />
           )}
         />
         <Route
           exact
-          path={suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg(basePath)}
+          path={suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg.route(
+            basePath
+          )}
           render={(routeProps) => (
             <SuorittamisenKunnalleIlmoitetutView
-              redirectUserWithoutAccessTo={rootPath(basePath)}
+              redirectUserWithoutAccessTo={rootPath.href(basePath)}
               {...routeProps}
             />
           )}
         />
         <Route
           exact
-          path={suorittaminenPathWithOrg(basePath)}
+          path={suorittaminenPathWithOrg.route(basePath)}
           render={(routeProps) => (
             <SuorittaminenOppivelvollisetView
-              redirectUserWithoutAccessTo={rootPath(basePath)}
+              redirectUserWithoutAccessTo={rootPath.href(basePath)}
               {...routeProps}
             />
           )}
         />
-        <Route exact path={suorittaminenHetuhakuPath(basePath)}>
+        <Route exact path={suorittaminenHetuhakuPath.route(basePath)}>
           <SuorittaminenHetuhaku
-            redirectUserWithoutAccessTo={rootPath(basePath)}
+            redirectUserWithoutAccessTo={rootPath.href(basePath)}
           />
         </Route>
-        <Route exact path={maksuttomuusPath(basePath)}>
-          <MaksuttomuusView redirectUserWithoutAccessTo={rootPath(basePath)} />
+        <Route exact path={maksuttomuusPath.route(basePath)}>
+          <MaksuttomuusView
+            redirectUserWithoutAccessTo={rootPath.href(basePath)}
+          />
         </Route>
         <Route
           exact
-          path={kuntailmoitusPath(basePath)}
+          path={kuntailmoitusPath.route(basePath)}
           render={(routeProps) => (
             <KuntailmoitusViewWithoutOrgOid
-              redirectUserWithoutAccessTo={rootPath(basePath)}
+              redirectUserWithoutAccessTo={rootPath.href(basePath)}
               {...routeProps}
             />
           )}
         />
         <Route
           exact
-          path={kuntailmoitusPathWithOrg(basePath)}
+          path={kuntailmoitusPathWithOrg.route(basePath)}
           render={(routeProps) => (
             <KuntailmoitusView
-              redirectUserWithoutAccessTo={rootPath(basePath)}
+              redirectUserWithoutAccessTo={rootPath.href(basePath)}
               {...routeProps}
             />
           )}
         />
-        <Route exact path={kunnanHetuhakuPath(basePath)}>
-          <KuntaHetuhaku redirectUserWithoutAccessTo={rootPath(basePath)} />
+        <Route exact path={kunnanHetuhakuPath.route(basePath)}>
+          <KuntaHetuhaku
+            redirectUserWithoutAccessTo={rootPath.href(basePath)}
+          />
         </Route>
-        <Route exact path={käyttöoikeusPath(basePath)}>
+        <Route exact path={käyttöoikeusPath.route(basePath)}>
           <AccessRightsView />
         </Route>
-        <Route exact path={rootPath(basePath)}>
+        <Route exact path={rootPath.route(basePath)}>
           <HomeView />
         </Route>
         <Route component={NotFoundView} />

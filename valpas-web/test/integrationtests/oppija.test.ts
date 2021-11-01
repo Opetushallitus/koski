@@ -1,4 +1,4 @@
-import { createOppijaPath } from "../../src/state/paths"
+import { oppijaPath } from "../../src/state/paths"
 import { formatDate, today } from "../../src/utils/date"
 import {
   clickElement,
@@ -13,87 +13,84 @@ import {
 } from "../integrationtests-env/browser/fail-on-console"
 import { loginAs, resetMockData } from "../integrationtests-env/browser/reset"
 
-const ysiluokkaKeskenKeväälläPath = createOppijaPath("/virkailija", {
+const ysiluokkaKeskenKeväälläPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000001",
 })
-const päällekkäisiäOppivelvollisuuksiaPath = createOppijaPath("/virkailija", {
+const päällekkäisiäOppivelvollisuuksiaPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000003",
 })
-const ysiluokkaValmisKeväälläPath = createOppijaPath("/virkailija", {
+const ysiluokkaValmisKeväälläPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000011",
 })
-const lukionAloittanutPath = createOppijaPath("/virkailija", {
+const lukionAloittanutPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000015",
 })
-const lukionLokakuussaAloittanutPath = createOppijaPath("/virkailija", {
+const lukionLokakuussaAloittanutPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000016",
 })
-const kahdellaOppijaOidillaPath = createOppijaPath("/virkailija", {
+const kahdellaOppijaOidillaPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000017",
 })
-const turvakiellollinenOppijaPath = createOppijaPath("/virkailija", {
+const turvakiellollinenOppijaPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000024",
 })
-const epäonninenOppijaPath = createOppijaPath("/virkailija", {
+const epäonninenOppijaPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000028",
 })
-const montaHakuaJoistaYksiPäättynytOppijaPath = createOppijaPath(
-  "/virkailija",
-  {
-    oppijaOid: "1.2.246.562.24.00000000009",
-  }
-)
-const lukionAineopinnotAloittanutPath = createOppijaPath("/virkailija", {
+const montaHakuaJoistaYksiPäättynytOppijaPath = oppijaPath.href("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000009",
+})
+const lukionAineopinnotAloittanutPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000033",
 })
-const lukioOpiskelijaPath = createOppijaPath("/virkailija", {
+const lukioOpiskelijaPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000004",
 })
-const vsopPath = createOppijaPath("/virkailija", {
+const vsopPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000046",
 })
-const oppivelvollisuusKeskeytettyMääräajaksiPath = createOppijaPath(
+const oppivelvollisuusKeskeytettyMääräajaksiPath = oppijaPath.href(
   "/virkailija",
   {
     oppijaOid: "1.2.246.562.24.00000000056",
   }
 )
-const oppivelvollisuusKeskeytettyToistaiseksiPath = createOppijaPath(
+const oppivelvollisuusKeskeytettyToistaiseksiPath = oppijaPath.href(
   "/virkailija",
   {
     oppijaOid: "1.2.246.562.24.00000000057",
   }
 )
-const eiOppivelvollisuudenSuorittamiseenKelpaaviaOpiskeluoikeuksiaPath = createOppijaPath(
+const eiOppivelvollisuudenSuorittamiseenKelpaaviaOpiskeluoikeuksiaPath = oppijaPath.href(
   "/virkailija",
   {
     oppijaOid: "1.2.246.562.24.00000000058",
   }
 )
-const hetutonPath = createOppijaPath("/virkailija", {
+const hetutonPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000059",
 })
 
-const opiskeluoikeusKeskeytettyMääräajaksiPath = createOppijaPath(
+const opiskeluoikeusKeskeytettyMääräajaksiPath = oppijaPath.href(
   "/virkailija",
   {
     oppijaOid: "1.2.246.562.24.00000000077",
   }
 )
 
-const opiskeluoikeusLomaPath = createOppijaPath("/virkailija", {
+const opiskeluoikeusLomaPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000078",
 })
 
-const opiskeluoikeusValmaPath = createOppijaPath("/virkailija", {
+const opiskeluoikeusValmaPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000062",
 })
 
-const opiskeluoikeusIntSchoolPerusopetusPath = createOppijaPath("/virkailija", {
+const opiskeluoikeusIntSchoolPerusopetusPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000094",
 })
 
-const maksuttomuuttaPidennettyPath = createOppijaPath("/virkailija", {
+const maksuttomuuttaPidennettyPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000127",
 })
 

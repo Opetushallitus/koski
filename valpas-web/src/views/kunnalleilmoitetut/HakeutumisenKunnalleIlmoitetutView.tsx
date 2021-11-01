@@ -2,8 +2,8 @@ import React from "react"
 import { t } from "../../i18n/i18n"
 import { withRequiresHakeutumisenValvonta } from "../../state/accessRights"
 import {
-  createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
-  KunnalleIlmoitetutViewRouteProps,
+  hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
+  OrganisaatioOidRouteProps,
 } from "../../state/paths"
 import { ErrorView } from "../ErrorView"
 import { HakutilanneNavigation } from "../hakutilanne/HakutilanneNavigation"
@@ -20,7 +20,7 @@ export const HakeutumisenKunnalleIlmoitetutViewWithoutOrgOid = withRequiresHakeu
       organisaatioHakuRooli={organisaatioHakuRooli}
       organisaatioTyyppi={organisaatioTyyppi}
       redirectTo={(basePath, organisaatioOid) =>
-        createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg(basePath, {
+        hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg.href(basePath, {
           organisaatioOid,
         })
       }
@@ -29,7 +29,7 @@ export const HakeutumisenKunnalleIlmoitetutViewWithoutOrgOid = withRequiresHakeu
   )
 )
 
-export type HakeutumisenKunnalleIlmoitetutViewProps = KunnalleIlmoitetutViewRouteProps
+export type HakeutumisenKunnalleIlmoitetutViewProps = OrganisaatioOidRouteProps
 
 export const HakeutumisenKunnalleIlmoitetutView = withRequiresHakeutumisenValvonta(
   (props: HakeutumisenKunnalleIlmoitetutViewProps) => (
@@ -45,7 +45,7 @@ export const HakeutumisenKunnalleIlmoitetutView = withRequiresHakeutumisenValvon
           selectedOrganisaatio={props.match.params.organisaatioOid!}
         />
       }
-      linkCreator={createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg}
+      linkCreator={hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg.href}
     />
   )
 )

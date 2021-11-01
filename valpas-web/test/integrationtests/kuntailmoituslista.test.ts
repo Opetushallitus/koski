@@ -1,8 +1,8 @@
 import { Oid } from "../../src/state/common"
 import {
-  createKuntailmoitusPath,
-  createKuntailmoitusPathWithOrg,
-  createOppijaPath,
+  kuntailmoitusPath,
+  kuntailmoitusPathWithOrg,
+  oppijaPath,
 } from "../../src/state/paths"
 import {
   clickElement,
@@ -32,7 +32,7 @@ const openOppijaView = async (oppijaOid: Oid) => {
   await clickElement(selector)
 }
 
-const rootPath = createKuntailmoitusPath("/virkailija")
+const rootPath = kuntailmoitusPath.href("/virkailija")
 
 const ilmoitustitle = (
   näkyviäIlmoituksia: number,
@@ -55,7 +55,7 @@ describe("Kunnan listanäkymä", () => {
     await loginAs(rootPath, "valpas-useita-kuntia", false, "2021-12-01")
     await urlIsEventually(
       pathToUrl(
-        createKuntailmoitusPathWithOrg("/virkailija", helsinginKaupunkiOid)
+        kuntailmoitusPathWithOrg.href("/virkailija", helsinginKaupunkiOid)
       )
     )
     await textEventuallyEquals(".card__header", ilmoitustitle(1, 0))
@@ -72,14 +72,14 @@ describe("Kunnan listanäkymä", () => {
     await selectOrganisaatio(0)
     await urlIsEventually(
       pathToUrl(
-        createKuntailmoitusPathWithOrg("/virkailija", helsinginKaupunkiOid)
+        kuntailmoitusPathWithOrg.href("/virkailija", helsinginKaupunkiOid)
       )
     )
     await textEventuallyEquals(".card__header", ilmoitustitle(0, 1))
 
     await selectOrganisaatio(1)
     await urlIsEventually(
-      pathToUrl(createKuntailmoitusPathWithOrg("/virkailija", pyhtäänKuntaOid))
+      pathToUrl(kuntailmoitusPathWithOrg.href("/virkailija", pyhtäänKuntaOid))
     )
     await textEventuallyEquals(".card__header", ilmoitustitle(4, 3))
   })
@@ -91,13 +91,13 @@ describe("Kunnan listanäkymä", () => {
 
     await selectOrganisaatio(1)
     await urlIsEventually(
-      pathToUrl(createKuntailmoitusPathWithOrg("/virkailija", pyhtäänKuntaOid))
+      pathToUrl(kuntailmoitusPathWithOrg.href("/virkailija", pyhtäänKuntaOid))
     )
 
     await openOppijaView(pyhtäänOppijaOid)
     await urlIsEventually(
       pathToUrl(
-        createOppijaPath("/virkailija", {
+        oppijaPath.href("/virkailija", {
           oppijaOid: pyhtäänOppijaOid,
           kuntailmoitusRef: pyhtäänKuntaOid,
         })
@@ -106,7 +106,7 @@ describe("Kunnan listanäkymä", () => {
 
     await clickElement(".oppijaview__backbutton a")
     await urlIsEventually(
-      createKuntailmoitusPathWithOrg("/virkailija", pyhtäänKuntaOid)
+      kuntailmoitusPathWithOrg.href("/virkailija", pyhtäänKuntaOid)
     )
   })
 
@@ -128,7 +128,7 @@ describe("Kunnan listanäkymä", () => {
 
     await selectOrganisaatio(1)
     await urlIsEventually(
-      pathToUrl(createKuntailmoitusPathWithOrg("/virkailija", pyhtäänKuntaOid))
+      pathToUrl(kuntailmoitusPathWithOrg.href("/virkailija", pyhtäänKuntaOid))
     )
 
     await textEventuallyEquals(".card__header", ilmoitustitle(4, 3))

@@ -9,10 +9,10 @@ import {
 } from "../state/accessRights"
 import { useBasePath } from "../state/basePath"
 import {
-  createHakutilannePathWithoutOrg,
-  createKuntailmoitusPath,
-  createMaksuttomuusPath,
-  createSuorittaminenPath,
+  hakutilannePathWithoutOrg,
+  kuntailmoitusPath,
+  maksuttomuusPath,
+  suorittaminenPath,
 } from "../state/paths"
 import { AccessRightsView } from "./AccessRightsView"
 
@@ -26,19 +26,19 @@ const useRedirectPath = (): string | null => {
   const roles = useKäyttöoikeusroolit()
 
   if (kuntavalvontaAllowed(roles)) {
-    return createKuntailmoitusPath(basePath)
+    return kuntailmoitusPath.href(basePath)
   }
 
   if (hakeutumisenValvontaAllowed(roles)) {
-    return createHakutilannePathWithoutOrg(basePath)
+    return hakutilannePathWithoutOrg.href(basePath)
   }
 
   if (maksuttomuudenValvontaAllowed(roles)) {
-    return createMaksuttomuusPath(basePath)
+    return maksuttomuusPath.href(basePath)
   }
 
   if (suorittamisenValvontaAllowed(roles)) {
-    return createSuorittaminenPath(basePath)
+    return suorittaminenPath.route(basePath)
   }
 
   return null

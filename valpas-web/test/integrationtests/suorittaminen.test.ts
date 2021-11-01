@@ -1,5 +1,5 @@
 import { Oid } from "../../src/state/common"
-import { createSuorittaminenPathWithOrg } from "../../src/state/paths"
+import { suorittaminenPathWithOrg } from "../../src/state/paths"
 import {
   clickElement,
   expectElementEventuallyNotVisible,
@@ -52,28 +52,28 @@ import {
   suorittaminenListaPath,
 } from "./suorittaminen.shared"
 
-const jklSuorittaminenPath = createSuorittaminenPathWithOrg(
+const jklSuorittaminenPath = suorittaminenPathWithOrg.href(
   "/virkailija",
   jyväskylänNormaalikouluOid
 )
 
-const aapajokiSuorittaminenPath = createSuorittaminenPathWithOrg(
+const aapajokiSuorittaminenPath = suorittaminenPathWithOrg.href(
   "/virkailija",
   aapajoenKouluOid
 )
 
-const stadinAmmattiopistoSuorittaminenPath = createSuorittaminenPathWithOrg(
+const stadinAmmattiopistoSuorittaminenPath = suorittaminenPathWithOrg.href(
   "/virkailija",
   stadinAmmattiopistoOid
 )
 
-const internationalSchoolSuorittaminenPath = createSuorittaminenPathWithOrg(
+const internationalSchoolSuorittaminenPath = suorittaminenPathWithOrg.href(
   "/virkailija",
   internationalSchoolOid
 )
 
 const viikinNormaalikouluId = "1.2.246.562.10.81927839589"
-const viikinNormaalikouluSuorittaminenPath = createSuorittaminenPathWithOrg(
+const viikinNormaalikouluSuorittaminenPath = suorittaminenPathWithOrg.href(
   "/virkailija",
   viikinNormaalikouluId
 )

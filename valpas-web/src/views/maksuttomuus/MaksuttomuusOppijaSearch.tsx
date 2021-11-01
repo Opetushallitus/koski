@@ -20,7 +20,7 @@ import {
   expectValidHetu,
   expectValidOid,
 } from "../../state/formValidators"
-import { createOppijaPath } from "../../state/paths"
+import { oppijaPath } from "../../state/paths"
 import { FormValidators, useFormState } from "../../state/useFormState"
 import "./MaksuttomuusOppijaSearch.less"
 
@@ -151,7 +151,7 @@ const MaksuttomuusOppijaSearchMatchResult = (
       {": "}
       <Link
         className={b("resultlink")}
-        to={createOppijaPath(basePath, {
+        to={oppijaPath.href(basePath, {
           oppijaOid: result.oid,
           prev: props.prevPath,
         })}

@@ -23,15 +23,16 @@ import { HenkilöLaajatTiedot } from "../../state/apitypes/henkilo"
 import { isAktiivinenKuntailmoitus } from "../../state/apitypes/kuntailmoitus"
 import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import {
-  createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
-  createHakutilannePathWithOrg as createHakutilannePathWithOrg,
-  createHakutilannePathWithoutOrg as createHakutilannePathWithoutOrg,
-  createKuntailmoitusPathWithOrg,
-  createNivelvaiheenHakutilannePathWithOrg,
-  createSuorittaminenPathWithOrg,
-  createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg,
+  hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
+  hakutilannePathWithOrg,
+  hakutilannePathWithoutOrg,
+  kuntailmoitusPathWithOrg,
+  nivelvaiheenHakutilannePathWithOrg,
+  OppijaPathBackRefs,
   OppijaViewRouteProps,
   parseQueryFromProps as parseSearchQueryFromProps,
+  suorittaminenPathWithOrg,
+  suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg,
 } from "../../state/paths"
 import { plainComponent } from "../../utils/plaincomponent"
 import { OppijaKuntailmoitus } from "./OppijaKuntailmoitus"
@@ -61,7 +62,7 @@ export const OppijaView = withRequiresJokinOikeus((props: OppijaViewProps) => {
         suorittaminenRef={searchQuery.suorittaminenRef}
         suorittaminenIlmoitetutRef={searchQuery.suorittaminenIlmoitetutRef}
         oppija={isSuccess(oppija) ? oppija.data : undefined}
-        prevPage={searchQuery.prev}
+        prev={searchQuery.prev}
       />
       <OppijaHeadings oppija={oppija} oid={queryOid} />
 
@@ -129,45 +130,38 @@ export const OppijaView = withRequiresJokinOikeus((props: OppijaViewProps) => {
 })
 
 export type OppijaViewBackNavProps = {
-  hakutilanneRef?: string
-  hakutilanneNivelvaiheRef?: string
-  hakutilanneIlmoitetutRef?: string
-  kuntailmoitusRef?: string
-  suorittaminenRef?: string
-  suorittaminenIlmoitetutRef?: string
   oppija?: OppijaHakutilanteillaLaajatTiedot
-  prevPage?: string
-}
+} & OppijaPathBackRefs
 
 const BackNav = (props: OppijaViewBackNavProps) => {
   const targetPath = () => {
     const fallback = props.oppija?.oppija.hakeutumisvalvovatOppilaitokset[0]
-    if (props.prevPage) {
-      return props.prevPage
+    if (props.prev) {
+      return props.prev
     } else if (props.hakutilanneRef) {
-      return createHakutilannePathWithOrg("", {
+      return hakutilannePathWithOrg.href(null, {
         organisaatioOid: props.hakutilanneRef,
       })
     } else if (props.hakutilanneNivelvaiheRef) {
-      return createNivelvaiheenHakutilannePathWithOrg("", {
+      return nivelvaiheenHakutilannePathWithOrg.href(null, {
         organisaatioOid: props.hakutilanneNivelvaiheRef,
       })
     } else if (props.hakutilanneIlmoitetutRef) {
-      return createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg("", {
+      return hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg.href(null, {
         organisaatioOid: props.hakutilanneIlmoitetutRef,
       })
     } else if (props.kuntailmoitusRef) {
-      return createKuntailmoitusPathWithOrg("", props.kuntailmoitusRef)
+      return kuntailmoitusPathWithOrg.href(null, props.kuntailmoitusRef)
     } else if (props.suorittaminenRef) {
-      return createSuorittaminenPathWithOrg("", props.suorittaminenRef)
+      return suorittaminenPathWithOrg.href(null, props.suorittaminenRef)
     } else if (props.suorittaminenIlmoitetutRef) {
-      return createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg("", {
+      return suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg.href(null, {
         organisaatioOid: props.suorittaminenIlmoitetutRef,
       })
     } else if (fallback) {
-      return createHakutilannePathWithOrg("", { organisaatioOid: fallback })
+      return hakutilannePathWithOrg.href(null, { organisaatioOid: fallback })
     } else {
-      return createHakutilannePathWithoutOrg("")
+      return hakutilannePathWithoutOrg.href()
     }
   }
 

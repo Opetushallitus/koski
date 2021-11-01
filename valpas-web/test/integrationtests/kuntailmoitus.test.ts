@@ -1,7 +1,8 @@
 import { NonEmptyArray } from "fp-ts/lib/NonEmptyArray"
 import {
-  createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
-  createOppijaPath,
+  hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
+  oppijaPath,
+  suorittaminenHetuhakuPath,
 } from "../../src/state/paths"
 import {
   clickElement,
@@ -33,7 +34,6 @@ import {
   täytäJaLähetäLomake,
 } from "./kuntailmoitus.shared"
 import { jyväskylänNormaalikouluOid } from "./oids"
-import { suorittaminenHetuhakuPath } from "./suorittaminen.shared"
 
 const opo: Tekijä = {
   nimi: "käyttäjä valpas-jkl-normaali",
@@ -239,7 +239,7 @@ describe("Kuntailmoituksen tekeminen", () => {
 
   it("happy path suorittamisen valvojana", async () => {
     await loginAs(
-      suorittaminenHetuhakuPath,
+      suorittaminenHetuhakuPath.href("/virkailija"),
       "valpas-pelkkä-suorittaminen",
       true
     )
@@ -250,7 +250,11 @@ describe("Kuntailmoituksen tekeminen", () => {
   })
 
   it("happy path hakeutumisen ja suorittamisen valvojana", async () => {
-    await loginAs(suorittaminenHetuhakuPath, "valpas-nivelvaihe", true)
+    await loginAs(
+      suorittaminenHetuhakuPath.href("/virkailija"),
+      "valpas-nivelvaihe",
+      true
+    )
     await teeKuntailmoitusOppijanäkymistä(
       nivelvaiheenValvojanOppijat,
       nivelvaiheenValvoja
@@ -306,7 +310,7 @@ const teeKuntailmoitusHakutilannenäkymästä = async (
 
   // Tarkista että oppijat ovat ilmestyneet "kunnalle tehdyt ilmoitukset" -tauluun
   for (const oppija of oppijat) {
-    const ilmotuksetPath = createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg(
+    const ilmotuksetPath = hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg.href(
       "/virkailija",
       {
         organisaatioOid: tekijä.organisaatioOid,
@@ -319,12 +323,12 @@ const teeKuntailmoitusHakutilannenäkymästä = async (
 
   // Tarkista oppijakohtaisista näkymistä, että ilmoituksen tiedot ovat siellä
   for (const oppija of oppijat) {
-    const oppijaPath = createOppijaPath("/virkailija", {
+    const path = oppijaPath.href("/virkailija", {
       oppijaOid: oppija.oid,
       hakutilanneRef: jyväskylänNormaalikouluOid,
     })
-    await goToLocation(oppijaPath)
-    await urlIsEventually(pathToUrl(oppijaPath))
+    await goToLocation(path)
+    await urlIsEventually(pathToUrl(path))
     expect(await getIlmoitusData()).toEqual(oppija.expected)
   }
 }

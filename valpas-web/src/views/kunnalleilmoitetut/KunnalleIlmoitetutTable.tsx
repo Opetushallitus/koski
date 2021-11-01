@@ -13,7 +13,7 @@ import { KuntailmoitusSuppeatTiedot } from "../../state/apitypes/kuntailmoitus"
 import { OppijaHakutilanteillaSuppeatTiedot } from "../../state/apitypes/oppija"
 import { useBasePath } from "../../state/basePath"
 import { Oid } from "../../state/common"
-import { createOppijaPath } from "../../state/paths"
+import { oppijaPath } from "../../state/paths"
 import { formatNullableDate } from "../../utils/date"
 import { OppijaViewBackNavProps } from "../oppija/OppijaView"
 
@@ -100,7 +100,7 @@ const oppijanNimi = (
   backRefName: keyof OppijaViewBackNavProps
 ): Value => {
   const value = `${oppija.oppija.henkilö.sukunimi} ${oppija.oppija.henkilö.etunimet}`
-  const linkTo = createOppijaPath(basePath, {
+  const linkTo = oppijaPath.href(basePath, {
     oppijaOid: oppija.oppija.henkilö.oid,
     [backRefName]: organisaatioOid,
   })

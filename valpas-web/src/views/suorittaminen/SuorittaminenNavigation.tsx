@@ -8,11 +8,11 @@ import { t } from "../../i18n/i18n"
 import { suorittamisenValvontaAllowed } from "../../state/accessRights"
 import { Oid } from "../../state/common"
 import {
-  createSuorittaminenHetuhakuPath,
-  createSuorittaminenPath,
-  createSuorittaminenPathWithOrg,
-  createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg,
-  createSuorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg,
+  suorittaminenHetuhakuPath,
+  suorittaminenPath,
+  suorittaminenPathWithOrg,
+  suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg,
+  suorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg,
 } from "../../state/paths"
 
 export type SuorittaminenNavigationProps = {
@@ -26,20 +26,20 @@ export const SuorittaminenNavigation = (
     {
       display: t("suorittaminen_nav__oppivelvolliset"),
       linkTo: props.selectedOrganisaatio
-        ? createSuorittaminenPathWithOrg("", props.selectedOrganisaatio)
-        : createSuorittaminenPath(),
+        ? suorittaminenPathWithOrg.href(null, props.selectedOrganisaatio)
+        : suorittaminenPath.href(),
     },
     {
       display: t("suorittaminen_nav__kunnalle_tehdyt_ilmoitukset"),
       linkTo: props.selectedOrganisaatio
-        ? createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg("", {
+        ? suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg.href(null, {
             organisaatioOid: props.selectedOrganisaatio,
           })
-        : createSuorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg(),
+        : suorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg.href(),
     },
     {
       display: t("suorittaminen_nav__hae_hetulla"),
-      linkTo: createSuorittaminenHetuhakuPath(),
+      linkTo: suorittaminenHetuhakuPath.href(),
     },
   ]
 

@@ -14,10 +14,10 @@ import {
   useKäyttöoikeusroolit,
 } from "../../state/accessRights"
 import {
-  createHakutilannePathWithoutOrg,
-  createKuntailmoitusPath,
-  createMaksuttomuusPath,
-  createSuorittaminenPath,
+  hakutilannePathWithoutOrg,
+  kuntailmoitusPath,
+  maksuttomuusPath,
+  suorittaminenPath,
 } from "../../state/paths"
 
 type NavOption = MainNavigationItem & { visibleToRoles: AccessGuard }
@@ -29,22 +29,22 @@ export const VirkailijaMainNavigation = () => {
     () => [
       {
         display: t("ylänavi__kuntailmoitukset"),
-        linkTo: createKuntailmoitusPath(),
+        linkTo: kuntailmoitusPath.href(),
         visibleToRoles: kuntavalvontaAllowed,
       },
       {
         display: t("ylänavi__hakeutumisvelvolliset"),
-        linkTo: createHakutilannePathWithoutOrg(),
+        linkTo: hakutilannePathWithoutOrg.href(),
         visibleToRoles: hakeutumisenValvontaAllowed,
       },
       {
         display: t("ylänavi__oppivelvollisuuden_suorittaminen"),
-        linkTo: createSuorittaminenPath(),
+        linkTo: suorittaminenPath.href(),
         visibleToRoles: suorittamisenValvontaAllowed,
       },
       {
         display: t("ylänavi__maksuttomuusoikeuden_arviointi"),
-        linkTo: createMaksuttomuusPath(),
+        linkTo: maksuttomuusPath.href(),
         visibleToRoles: maksuttomuudenValvontaAllowed,
       },
     ],

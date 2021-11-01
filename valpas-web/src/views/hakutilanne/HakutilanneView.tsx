@@ -22,8 +22,8 @@ import {
 } from "../../state/accessRights"
 import { Oid } from "../../state/common"
 import {
-  createHakutilannePathWithOrg,
-  HakutilanneViewRouteProps,
+  hakutilannePathWithOrg,
+  OrganisaatioOidRouteProps,
 } from "../../state/paths"
 import { useBoundingClientRect } from "../../state/useBoundingClientRect"
 import { ErrorView } from "../ErrorView"
@@ -40,7 +40,7 @@ const b = bem("hakutilanneview")
 const organisaatioTyyppi = "OPPILAITOS"
 const organisaatioHakuRooli = "OPPILAITOS_HAKEUTUMINEN"
 
-export type HakutilanneViewProps = HakutilanneViewRouteProps
+export type HakutilanneViewProps = OrganisaatioOidRouteProps
 
 export const HakutilanneViewWithoutOrgOid = withRequiresHakeutumisenValvonta(
   () => (
@@ -48,7 +48,7 @@ export const HakutilanneViewWithoutOrgOid = withRequiresHakeutumisenValvonta(
       organisaatioHakuRooli={organisaatioHakuRooli}
       organisaatioTyyppi={organisaatioTyyppi}
       redirectTo={(basePath, organisaatioOid) =>
-        createHakutilannePathWithOrg(basePath, {
+        hakutilannePathWithOrg.href(basePath, {
           organisaatioOid,
         })
       }
