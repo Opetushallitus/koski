@@ -22,4 +22,9 @@ object Kunta extends Logging {
       case None => None
     }
   }
+
+  def kuntaExists(koodi: String, koodistoPalvelu: KoodistoPalvelu): Boolean = {
+    val koodistoKoodit = koodistoPalvelu.getKoodistoKoodit(koodistoPalvelu.getLatestVersionRequired("kunta"))
+    koodistoKoodit.find(_.koodiArvo == koodi).isDefined
+  }
 }
