@@ -24,7 +24,10 @@ object AhvenanmaanKunnat {
 
   def onAhvenanmaalainenKunta(o: OrganisaatioWithOid): Boolean =
     o.kotipaikka match {
-      case Some(kotipaikka) => ahvenanmaanKunnat.contains(kotipaikka.koodiarvo)
+      case Some(kotipaikka) => onAhvenanmaalainenKunta(kotipaikka.koodiarvo)
       case None => false
     }
+
+  def onAhvenanmaalainenKunta(koodiarvo: String): Boolean =
+    ahvenanmaanKunnat.contains(koodiarvo)
 }
