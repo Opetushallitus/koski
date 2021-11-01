@@ -104,6 +104,19 @@ object ValpasAuditLog {
       )
     ))
   }
+
+  def auditLogRouhintahakuKunnalla
+    (kunta: String)
+    (implicit session: ValpasSession)
+  : Unit = {
+    AuditLog.log(ValpasAuditLogMessage(
+      ValpasOperation.VALPAS_ROUHINTA_KUNTA,
+      session,
+      Map(
+        ValpasAuditLogMessageField.hakulause -> kunta,
+      )
+    ))
+  }
 }
 
 object ValpasAuditLogMessage {
@@ -132,7 +145,8 @@ object ValpasOperation extends Enumeration {
       VALPAS_OPPIJA_HAKU,
       VALPAS_OPPIVELVOLLISUUDEN_KESKEYTYS,
       OPPIVELVOLLISUUSREKISTERI_LUOVUTUS,
-      VALPAS_ROUHINTA_HETUHAKU = Value
+      VALPAS_ROUHINTA_HETUHAKU,
+      VALPAS_ROUHINTA_KUNTA = Value
 }
 
 private class ValpasAuditLogOperation(op: ValpasOperation) extends AuditLogOperation(op)
