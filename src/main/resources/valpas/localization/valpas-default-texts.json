@@ -267,6 +267,8 @@
   "nivelvaihehakutilanne__taulu_useita_opiskeluoikeuksia": "Useita opiskeluoikeuksia",
   "rouhinta_hetulista_otsikko": "Oppijoiden haku henkiötunnuksen perusteella",
   "rouhinta_hetulista_tiedostonimi": "oppijahaku-hetulista-{{pvm}}.xlsx",
+  "rouhinta_kunta_otsikko": "Oppijoiden haku kotikunnan perusteella",
+  "rouhinta_kunta_tiedostonimi": "oppijahaku-kunta-{{pvm}}.xlsx",
   "rouhinta_tab_ei_oppivelvollisuutta_suorittavat": "Ei oppivel. suorittavat",
   "rouhinta_tab_oppivelvollisuutta_suorittavat": "Oppivelvollisuutta suorittavat",
   "rouhinta_tab_onr_ulkopuoliset": "Ei löydy Opintopolusta",

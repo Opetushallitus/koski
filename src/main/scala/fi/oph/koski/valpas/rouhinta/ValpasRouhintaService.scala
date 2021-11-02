@@ -52,6 +52,20 @@ class ValpasRouhintaService(application: KoskiApplication) {
     }
   }
 
+  def haeKunnanPerusteellaExcel
+    (kunta: String, language: String, password: Option[String])
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, OppilaitosRaporttiResponse] = {
+    val t = new LocalizationReader(localization, language)
+    haeKunnanPerusteella(kunta)
+      .map(ValpasKuntarouhintaSheets(_, t).build())
+      .map(asOppilaitosRaporttiResponse(
+        title = t.get("rouhinta_kunta_otsikko"),
+        filename = t.get("rouhinta_kunta_tiedostonimi", Map("pvm" -> rajapäivät.tarkastelupäivä.format(DateTimeFormatter.ISO_DATE))),
+        password = password,
+      ))
+  }
+
   private def asOppilaitosRaporttiResponse(title: String, filename: String, password: Option[String])(sheets: Seq[DataSheet]) = {
     OppilaitosRaporttiResponse(
       sheets = sheets,

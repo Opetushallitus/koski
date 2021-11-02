@@ -40,9 +40,14 @@ class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) exten
     withJsonBody { (body: JValue) =>
       val result = extractAndValidateKuntakoodi(body)
         .flatMap(input => {
-          // TODO: Excel
-          rouhinta.haeKunnanPerusteella(input.kunta)
-            .tap(_ => auditLogRouhintahakuKunnalla(input.kunta))
+          if (jsonRequested) {
+            rouhinta.haeKunnanPerusteella(input.kunta)
+              .tap(_ => auditLogRouhintahakuKunnalla(input.kunta))
+          } else {
+            val language = input.lang.orElse(langFromCookie).getOrElse("fi")
+            rouhinta.haeKunnanPerusteellaExcel(input.kunta, language, input.password)
+              .tap(_ => auditLogRouhintahakuKunnalla(input.kunta))
+          }
         })
       renderResult(result)
     } (parseErrorHandler = haltWithStatus)
