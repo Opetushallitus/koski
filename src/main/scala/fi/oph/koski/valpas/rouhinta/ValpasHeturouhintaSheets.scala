@@ -27,7 +27,7 @@ case class ValpasHeturouhintaSheets(data: HeturouhinnanTulos, t: LocalizationRea
     Futures.await(future, atMost = 1.minutes)
   }
 
-  private def eiOppivelvollisuuttaSuorittavatDataSheet(löytyneet: Seq[RouhintaOppivelvollinen]): Future[DataSheet] = {
+  private def eiOppivelvollisuuttaSuorittavatDataSheet(löytyneet: Seq[ValpasRouhintaOppivelvollinen]): Future[DataSheet] = {
     Future {
       DataSheet(
         title = t.get("rouhinta_tab_ei_oppivelvollisuutta_suorittavat"),

@@ -38,7 +38,7 @@ object ValpasRouhintaOppivelvollinenSheetRow {
     "keskeytys" -> Column(t.get("rouhinta_ov_keskeytys"), comment = Some(t.get("rouhinta_ov_keskeytys_comment"))),
   )
 
-  def apply(t: LocalizationReader)(tiedot: RouhintaOppivelvollinen): ValpasRouhintaOppivelvollinenSheetRow = {
+  def apply(t: LocalizationReader)(tiedot: ValpasRouhintaOppivelvollinen): ValpasRouhintaOppivelvollinenSheetRow = {
     val oo = tiedot.viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus
 
     ValpasRouhintaOppivelvollinenSheetRow(
