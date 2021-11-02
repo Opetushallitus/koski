@@ -5,7 +5,7 @@ import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.DataSheet
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
-import fi.oph.koski.valpas.rouhinta.{OppivelvollinenRow, PelkkäHetuRow, ValpasRouhintaService}
+import fi.oph.koski.valpas.rouhinta.{ValpasRouhintaOppivelvollinenSheetRow, ValpasRouhintaPelkkäHetuSheetRow, ValpasRouhintaService}
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 import org.scalatest.{Assertion, BeforeAndAfterAll}
 
@@ -125,7 +125,7 @@ class ValpasRouhintaSpec extends ValpasTestBase with BeforeAndAfterAll {
 
   lazy val hetuhaku = loadHetuhaku
 
-  def expectEiOppivelvollisuuttaSuorittavatPropsMatch[T](f: OppivelvollinenRow => T, g: HetuhakuExpectedData => T): Assertion = {
+  def expectEiOppivelvollisuuttaSuorittavatPropsMatch[T](f: ValpasRouhintaOppivelvollinenSheetRow => T, g: HetuhakuExpectedData => T): Assertion = {
     eiOppivelvollisuuttaSuorittavat.map(o => (
       o.oppijaOid,
       f(o),
@@ -139,7 +139,7 @@ class ValpasRouhintaSpec extends ValpasTestBase with BeforeAndAfterAll {
 
   lazy val eiOppivelvollisuuttaSuorittavat = hetuhaku.collectFirst {
     case d: DataSheet if d.title == t.get("rouhinta_tab_ei_oppivelvollisuutta_suorittavat") => d.rows.collect {
-      case r: OppivelvollinenRow => r
+      case r: ValpasRouhintaOppivelvollinenSheetRow => r
     }
   }.get
 
@@ -170,9 +170,9 @@ class ValpasRouhintaSpec extends ValpasTestBase with BeforeAndAfterAll {
       )
   }
 
-  private def pelkkäHetuRows(titleKey: String): Seq[PelkkäHetuRow] = hetuhaku.collectFirst {
+  private def pelkkäHetuRows(titleKey: String): Seq[ValpasRouhintaPelkkäHetuSheetRow] = hetuhaku.collectFirst {
     case d: DataSheet if d.title == t.get(titleKey) => d.rows.collect {
-      case r: PelkkäHetuRow => r
+      case r: ValpasRouhintaPelkkäHetuSheetRow => r
     }
   }.get
 
