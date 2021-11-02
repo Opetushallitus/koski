@@ -1,5 +1,8 @@
 import React, { useCallback, useMemo } from "react"
 import { useHistory } from "react-router-dom"
+import { fetchKuntarouhinta, fetchKuntarouhintaCache } from "../../../api/api"
+import { useApiWithParams } from "../../../api/apiHooks"
+import { isSuccess } from "../../../api/apiUtils"
 import { Page } from "../../../components/containers/Page"
 import {
   getOrganisaatiot,
@@ -10,6 +13,8 @@ import {
   useOrganisaatiotJaKäyttöoikeusroolit,
   withRequiresKuntavalvonta,
 } from "../../../state/accessRights"
+import { KuntarouhintaInput } from "../../../state/apitypes/rouhinta"
+import { useBasePath } from "../../../state/basePath"
 import { Oid } from "../../../state/common"
 import {
   kuntarouhintaPathWithOid,
@@ -52,13 +57,41 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
     )
 
     const history = useHistory()
+    const basePath = useBasePath()
     const changeOrganisaatio = useCallback(
       (oid?: Oid) => {
         if (oid) {
-          history.push(oid)
+          history.push(
+            kuntarouhintaPathWithOid.href(basePath, { organisaatioOid: oid })
+          )
         }
       },
-      [history]
+      [basePath, history]
+    )
+
+    const kuntakoodi = useMemo(
+      () =>
+        organisaatiot.find((o) => o.oid === organisaatioOid)?.kotipaikka
+          ?.koodiarvo,
+      [organisaatiot, organisaatioOid]
+    )
+
+    const rouhintaQuery: [query: KuntarouhintaInput] | undefined = useMemo(
+      () =>
+        kuntakoodi
+          ? [
+              {
+                kunta: kuntakoodi,
+              },
+            ]
+          : undefined,
+      [kuntakoodi]
+    )
+
+    const rouhintaFetch = useApiWithParams(
+      fetchKuntarouhinta,
+      rouhintaQuery,
+      fetchKuntarouhintaCache
     )
 
     return (
@@ -71,7 +104,12 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
           onChange={changeOrganisaatio}
         />
         <KuntaNavigation selectedOrganisaatio={organisaatioOid} />
-        TODO: Rouhinta {organisaatioOid}
+        <p>TODO: Rouhinta {organisaatioOid}</p>
+        <p>
+          {isSuccess(rouhintaFetch)
+            ? `${rouhintaFetch.data.eiOppivelvollisuuttaSuorittavat.length} tulosta`
+            : "Tietoja ei ladattu"}
+        </p>
       </Page>
     )
   }

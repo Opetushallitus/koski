@@ -9,7 +9,11 @@ import {
   OppijaKuntailmoituksillaSuppeatTiedot,
 } from "../state/apitypes/oppija"
 import { UusiOppivelvollisuudenKeskeytys } from "../state/apitypes/oppivelvollisuudenkeskeytys"
-import { HetuhakuInput } from "../state/apitypes/rouhinta"
+import {
+  HetuhakuInput,
+  KuntarouhinnanTulos,
+  KuntarouhintaInput,
+} from "../state/apitypes/rouhinta"
 import {
   Hetu,
   Oid,
@@ -192,6 +196,33 @@ export const fetchHenkilöhakuKuntaCache = createLocalThenApiCache(
 export const downloadRouhintaHetuilla = (query: HetuhakuInput) =>
   handleExpiredSession(
     apiPostDownload("hetuhaku.xlsx", "valpas/api/rouhinta/hetut", {
+      body: query,
+      headers: {
+        accept: SPREADSHEET_CONTENT_TYPE,
+      },
+    })
+  )
+
+/**
+ * Kunnan rouhintalista (json)
+ */
+export const fetchKuntarouhinta = (query: KuntarouhintaInput) =>
+  handleExpiredSession(
+    apiPost<KuntarouhinnanTulos>("valpas/api/rouhinta/kunta", {
+      body: query,
+    })
+  )
+
+export const fetchKuntarouhintaCache = createPreferLocalCache(
+  fetchKuntarouhinta
+)
+
+/**
+ * Kunnan rouhintalista (spreadsheet)
+ */
+export const downloadKuntarouhinta = (query: KuntarouhintaInput) =>
+  handleExpiredSession(
+    apiPostDownload("kuntahaku.xlsx", "valpas/api/rouhinta/kunta", {
       body: query,
       headers: {
         accept: SPREADSHEET_CONTENT_TYPE,

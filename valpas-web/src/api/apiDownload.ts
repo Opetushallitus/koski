@@ -20,7 +20,7 @@ export const apiPostDownload = async (
 ): Promise<ApiResponse<Blob>> => {
   const response = await fetch(
     prependUrl("/koski", input),
-    enrichJsonRequest("POST", init)
+    enrichJsonRequest("POST", "*/*", init)
   )
   const data = await response.blob()
 
