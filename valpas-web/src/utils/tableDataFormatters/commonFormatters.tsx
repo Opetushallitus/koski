@@ -7,7 +7,7 @@ import {
   suorituksenTyyppiToKoulutustyyppi,
 } from "../../state/apitypes/suorituksentyyppi"
 import { ISODate, Oid } from "../../state/common"
-import { createOppijaPath } from "../../state/paths"
+import { oppijaPath } from "../../state/paths"
 import { OppijaViewBackNavProps } from "../../views/oppija/OppijaView"
 import { FilterableValue } from "../conversions"
 import { formatNullableDate } from "../date"
@@ -34,7 +34,7 @@ export const oppijanNimiValue = (urlBackRef: keyof OppijaViewBackNavProps) => (
   basePath: string
 ): Value => {
   const value = `${henkilö.sukunimi} ${henkilö.etunimet}`
-  const linkTo = createOppijaPath(basePath, {
+  const linkTo = oppijaPath.href(basePath, {
     oppijaOid: henkilö.oid,
     [urlBackRef]: organisaatioOid,
   })

@@ -1,7 +1,4 @@
-import {
-  createHakutilannePathWithOrg,
-  createOppijaPath,
-} from "../../src/state/paths"
+import { hakutilannePathWithOrg, oppijaPath } from "../../src/state/paths"
 import {
   clickElement,
   expectElementEventuallyVisible,
@@ -72,20 +69,20 @@ const aapajaoenKouluTableContent = `
   KahdenKoulunYsi-ilmo Valpas                             | 21.11.2004  | 9C | 29.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
 `
 
-const jklHakutilannePath = createHakutilannePathWithOrg("/virkailija", {
+const jklHakutilannePath = hakutilannePathWithOrg.href("/virkailija", {
   organisaatioOid: jyväskylänNormaalikouluOid,
 })
-const kulosaariHakutilannePath = createHakutilannePathWithOrg("/virkailija", {
+const kulosaariHakutilannePath = hakutilannePathWithOrg.href("/virkailija", {
   organisaatioOid: kulosaarenAlaAsteOid,
 })
-const aapajoenKouluHakutilannePath = createHakutilannePathWithOrg(
+const aapajoenKouluHakutilannePath = hakutilannePathWithOrg.href(
   "/virkailija",
   {
     organisaatioOid: aapajoenKouluOid,
   }
 )
 
-const internationalSchoolHakutilannePath = createHakutilannePathWithOrg(
+const internationalSchoolHakutilannePath = hakutilannePathWithOrg.href(
   "/virkailija",
   {
     organisaatioOid: internationalSchoolOid,
@@ -95,7 +92,7 @@ const internationalSchoolHakutilannePath = createHakutilannePathWithOrg(
 const kulosaarenOppijaOid = "1.2.246.562.24.00000000029"
 const viikinNormaalikouluOid = "1.2.246.562.10.81927839589"
 
-const viikinNormaalikouluHakutilannePath = createHakutilannePathWithOrg(
+const viikinNormaalikouluHakutilannePath = hakutilannePathWithOrg.href(
   "/virkailija",
   {
     organisaatioOid: viikinNormaalikouluOid,
@@ -199,7 +196,7 @@ describe("Hakutilannenäkymä", () => {
     await openOppijaView(kulosaarenOppijaOid)
     await urlIsEventually(
       pathToUrl(
-        createOppijaPath("/virkailija", {
+        oppijaPath.href("/virkailija", {
           oppijaOid: kulosaarenOppijaOid,
           hakutilanneRef: kulosaarenAlaAsteOid,
         })
@@ -234,7 +231,7 @@ describe("Hakutilannenäkymä", () => {
 
   it("Oppijasivulta, jolta puuttuu organisaatioreferenssi, ohjataan oikean organisaation hakutilannenäkymään", async () => {
     await loginAs(
-      createOppijaPath("/virkailija", {
+      oppijaPath.href("/virkailija", {
         oppijaOid: kulosaarenOppijaOid,
       }),
       "valpas-useampi-peruskoulu"

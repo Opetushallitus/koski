@@ -22,8 +22,8 @@ import {
 import { useBasePath } from "../../state/basePath"
 import { Oid } from "../../state/common"
 import {
-  createNivelvaiheenHakutilannePathWithOrg,
-  NivelvaiheenHakutilanneViewRouteProps,
+  nivelvaiheenHakutilannePathWithOrg,
+  OrganisaatioOidRouteProps,
 } from "../../state/paths"
 import { ErrorView } from "../ErrorView"
 import { OrganisaatioAutoRedirect } from "../OrganisaatioAutoRedirect"
@@ -36,7 +36,7 @@ import { useNivelvaiheenOppijatData } from "./useOppijatData"
 const organisaatioTyyppi = "OPPILAITOS"
 const organisaatioHakuRooli = "OPPILAITOS_HAKEUTUMINEN"
 
-export type NivelvaiheenHakutilanneViewProps = NivelvaiheenHakutilanneViewRouteProps
+export type NivelvaiheenHakutilanneViewProps = OrganisaatioOidRouteProps
 
 export const NivelvaiheenHakutilanneViewWithoutOrgOid = withRequiresHakeutumisenValvonta(
   () => (
@@ -44,7 +44,7 @@ export const NivelvaiheenHakutilanneViewWithoutOrgOid = withRequiresHakeutumisen
       organisaatioHakuRooli={organisaatioHakuRooli}
       organisaatioTyyppi={organisaatioTyyppi}
       redirectTo={(basePath, organisaatioOid) =>
-        createNivelvaiheenHakutilannePathWithOrg(basePath, {
+        nivelvaiheenHakutilannePathWithOrg.href(basePath, {
           organisaatioOid,
         })
       }
@@ -78,7 +78,7 @@ export const NivelvaiheenHakutilanneView = withRequiresHakeutumisenValvonta(
       (oid?: Oid) => {
         if (oid) {
           history.push(
-            createNivelvaiheenHakutilannePathWithOrg(basePath, {
+            nivelvaiheenHakutilannePathWithOrg.href(basePath, {
               organisaatioOid: oid,
             })
           )

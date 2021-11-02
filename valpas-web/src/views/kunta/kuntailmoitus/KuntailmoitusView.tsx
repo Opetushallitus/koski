@@ -34,7 +34,7 @@ import { getNäytettävätIlmoitukset } from "../../../state/apitypes/kuntailmoi
 import { OppijaKuntailmoituksillaSuppeatTiedot } from "../../../state/apitypes/oppija"
 import { useBasePath } from "../../../state/basePath"
 import { Oid } from "../../../state/common"
-import { createKuntailmoitusPathWithOrg } from "../../../state/paths"
+import { kuntailmoitusPathWithOrg } from "../../../state/paths"
 import { ErrorView } from "../../ErrorView"
 import { KuntaNavigation } from "../KuntaNavigation"
 import { KuntailmoitusTable } from "./KuntailmoitusTable"
@@ -64,7 +64,7 @@ export const KuntailmoitusViewWithoutOrgOid = withRequiresKuntavalvonta(() => {
   )
   return storedOrFallbackOrg ? (
     <Redirect
-      to={createKuntailmoitusPathWithOrg(basePath, storedOrFallbackOrg)}
+      to={kuntailmoitusPathWithOrg.href(basePath, storedOrFallbackOrg)}
     />
   ) : (
     <OrganisaatioMissingView />

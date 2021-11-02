@@ -1,8 +1,5 @@
 import fetch from "node-fetch"
-import {
-  createHakutilannePathWithOrg,
-  createOppijaPath,
-} from "../../src/state/paths"
+import { hakutilannePathWithOrg, oppijaPath } from "../../src/state/paths"
 import {
   clickElement,
   expectElementEventuallyVisible,
@@ -56,17 +53,17 @@ describe("Login / Logout / kirjautuminen", () => {
   })
 
   it("Käyttäjä on kirjautumisen jälkeen osoitteessa, jonne hän alunperin yritti", async () => {
-    const oppijaPath = createOppijaPath("/virkailija", {
+    const path = oppijaPath.href("/virkailija", {
       oppijaOid: "1.2.246.562.24.00000000001",
     })
-    await loginAs(oppijaPath, "valpas-jkl-normaali")
-    await urlIsEventually(pathToUrl(oppijaPath))
+    await loginAs(path, "valpas-jkl-normaali")
+    await urlIsEventually(pathToUrl(path))
   })
 
   it("Session vanheneminen vie käyttäjän kirjautumiseen", async () => {
     const organisaatioOid = "1.2.246.562.10.14613773812"
     await loginAs(
-      createHakutilannePathWithOrg("/virkailija", { organisaatioOid }),
+      hakutilannePathWithOrg.href("/virkailija", { organisaatioOid }),
       "valpas-jkl-normaali"
     )
 

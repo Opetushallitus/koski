@@ -1,6 +1,6 @@
 import { RouteComponentProps } from "react-router"
 import { nonNull } from "../utils/arrays"
-import { fromEntries, isEntry } from "../utils/objects"
+import { fromEntries, isEmptyObject, isEntry } from "../utils/objects"
 import { Oid } from "./common"
 
 export type QueryParams = Record<
@@ -34,167 +34,135 @@ export const parseQueryFromProps = (
     : {}
 }
 
+const declarePath = <A extends any[] = never[]>(
+  route: string,
+  mapParams: (...args: A) => object = () => ({})
+) => {
+  const getRoute = (basePath: string = "") => `${basePath}/${route}`
+  return {
+    route: getRoute,
+    href: (basePath?: string | null, ...args: A) => {
+      const params = mapParams(...args)
+      const [url, query] = Object.entries(params).reduce(
+        ([url, query], [key, value]) => {
+          const paramPlace = `:${key}`
+          return url.includes(paramPlace)
+            ? [url.replace(paramPlace, value), query]
+            : [url, { ...query, [key]: value }]
+        },
+        [getRoute(basePath || ""), {} as QueryParams]
+      )
+      return isEmptyObject(query) ? url : queryPath(url, query)
+    },
+  }
+}
+
+const passParamsThru = <T extends object>() => (params: T): T => params
+
+export type OrganisaatioOidProps = { organisaatioOid: Oid }
+export type OrganisaatioOidRouteProps = RouteComponentProps<
+  Partial<OrganisaatioOidProps>
+>
+
 // Etusivu
 
-export const rootPath = (basePath: string = "") => `${basePath}/`
+export const rootPath = declarePath("")
 
 // Hakutilannenäkymä
 
-export const hakutilannePathWithoutOrg = (basePath: string = "") =>
-  `${basePath}/hakutilanne`
+export const hakutilannePathWithoutOrg = declarePath("hakutilanne")
 
-export const createHakutilannePathWithoutOrg = hakutilannePathWithoutOrg
-
-export const hakutilannePathWithOrg = (basePath: string = "") =>
-  `${basePath}/hakutilanne/:organisaatioOid`
-
-export const createHakutilannePathWithOrg = (
-  basePath: string = "",
-  params: { organisaatioOid: Oid }
-) => `${basePath}/hakutilanne/${params.organisaatioOid}`
-
-export type HakutilanneViewRouteProps = RouteComponentProps<{
-  organisaatioOid?: string
-}>
+export const hakutilannePathWithOrg = declarePath(
+  "hakutilanne/:organisaatioOid",
+  passParamsThru<OrganisaatioOidProps>()
+)
 
 // Oppijakohtainen näkymä
 
-export const oppijaPath = (basePath: string = "") =>
-  `${basePath}/oppija/:oppijaOid`
+export type OppijaPathProps = {
+  oppijaOid: Oid
+} & OppijaPathBackRefs
 
-export const createOppijaPath = (
-  basePath: string = "",
-  {
-    oppijaOid,
-    ...params
-  }: {
-    oppijaOid: Oid
-    hakutilanneRef?: Oid
-    hakutilanneIlmoitetutRef?: Oid
-    hakutilanneNivelvaiheRef?: Oid
-    kuntailmoitusRef?: Oid
-    suorittaminenRef?: Oid
-    prev?: string
-  }
-) => queryPath(`${basePath}/oppija/${oppijaOid}`, params as QueryParams)
+export type OppijaPathBackRefs = {
+  hakutilanneRef?: string
+  hakutilanneNivelvaiheRef?: string
+  hakutilanneIlmoitetutRef?: string
+  kuntailmoitusRef?: string
+  suorittaminenRef?: string
+  suorittaminenIlmoitetutRef?: string
+  prev?: string
+}
 
-export type OppijaViewRouteProps = RouteComponentProps<{
-  oppijaOid?: string
-}>
+export type OppijaViewRouteProps = RouteComponentProps<Partial<OppijaPathProps>>
+
+export const oppijaPath = declarePath(
+  "oppija/:oppijaOid",
+  passParamsThru<OppijaPathProps>()
+)
 
 // Suorittamisnäkymä
-export const suorittaminenPath = (basePath: string = "") =>
-  `${basePath}/suorittaminen`
 
-export const createSuorittaminenPath = suorittaminenPath
+export const suorittaminenPath = declarePath("suorittaminen")
 
-export const suorittaminenPathWithOrg = (basePath: string = "") =>
-  `${suorittaminenPath(basePath)}/organisaatio/:organisaatioOid`
-
-export const createSuorittaminenPathWithOrg = (
-  basePath: string = "",
-  organisaatioOid: Oid
-) => `${suorittaminenPath(basePath)}/organisaatio/${organisaatioOid}`
+export const suorittaminenPathWithOrg = declarePath(
+  "suorittaminen/organisaatio/:organisaatioOid",
+  (organisaatioOid: Oid) => ({ organisaatioOid })
+)
 
 // Suorittamisen hakunäkymä
-export const suorittaminenHetuhakuPath = (basePath: string = "") =>
-  `${suorittaminenPath(basePath)}/haku`
 
-export const createSuorittaminenHetuhakuPath = suorittaminenHetuhakuPath
+export const suorittaminenHetuhakuPath = declarePath("suorittaminen/haku")
 
 // Maksuttomuusnäkymä
 
-export const maksuttomuusPath = (basePath: string = "") =>
-  `${basePath}/maksuttomuus`
-
-export const createMaksuttomuusPath = maksuttomuusPath
+export const maksuttomuusPath = declarePath("maksuttomuus")
 
 // Käyttöoikeusnäkymä
 
-export const käyttöoikeusPath = (basePath: string = "") =>
-  `${basePath}/kayttooikeudet`
-
-export const createKäyttöoikeusPath = käyttöoikeusPath
+export const käyttöoikeusPath = declarePath("kayttooikeudet")
 
 // Kuntanäkymien juuri
 
-export const kuntaRootPath = (basePath: string = "") =>
-  `${basePath}/kuntailmoitukset`
+export const kuntailmoitusPath = declarePath("kuntailmoitukset")
 
-// Kuntailmoitusnäkymä
-
-export const kuntailmoitusPath = kuntaRootPath
-
-export const createKuntailmoitusPath = kuntailmoitusPath
-
-export const kuntailmoitusPathWithOrg = (basePath: string = "") =>
-  `${kuntailmoitusPath(basePath)}/organisaatio/:organisaatioOid`
-
-export const createKuntailmoitusPathWithOrg = (
-  basePath: string = "",
-  organisaatioOid: Oid
-) => `${kuntailmoitusPath(basePath)}/organisaatio/${organisaatioOid}`
+export const kuntailmoitusPathWithOrg = declarePath(
+  "kuntailmoitukset/organisaatio/:organisaatioOid",
+  (organisaatioOid: Oid) => ({ organisaatioOid })
+)
 
 // Kuntakäyttäjän hakunäkymä
 
-export const kunnanHetuhakuPath = (basePath: string = "") =>
-  `${kuntaRootPath(basePath)}/haku`
-
-export const createKunnanHetuhakuPath = kunnanHetuhakuPath
+export const kunnanHetuhakuPath = declarePath("kuntailmoitukset/haku")
 
 // Hakeutumisvalvonnan 'kunnalle tehdyt ilmoitukset' -näkymä
 
-export const hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg = (
-  basePath: string = ""
-) => `${basePath}/hakutilanne/ilmoitetut`
+export const hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg = declarePath(
+  "hakutilanne/ilmoitetut"
+)
 
-export const createHakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg = hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg
-
-export const hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg = (
-  basePath: string = ""
-) => `${basePath}/hakutilanne/:organisaatioOid/ilmoitetut`
-
-export const createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg = (
-  basePath: string = "",
-  params: { organisaatioOid: Oid }
-) => `${basePath}/hakutilanne/${params.organisaatioOid}/ilmoitetut`
-
-export type KunnalleIlmoitetutViewRouteProps = RouteComponentProps<{
-  organisaatioOid?: string
-}>
+export const hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg = declarePath(
+  "hakutilanne/:organisaatioOid/ilmoitetut",
+  passParamsThru<OrganisaatioOidProps>()
+)
 
 // Suorittamisvalvonnan 'kunnalle tehdyt ilmoitukset' -näkymä
 
-export const suorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg = (
-  basePath: string = ""
-) => `${basePath}/suorittaminen/ilmoitukset`
+export const suorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg = declarePath(
+  "suorittaminen/ilmoitukset"
+)
 
-export const createSuorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg = suorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg
-
-export const suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg = (
-  basePath: string = ""
-) => `${basePath}/suorittaminen/ilmoitukset/:organisaatioOid`
-
-export const createSuorittamisvalvonnanKunnalleIlmoitetutPathWithOrg = (
-  basePath: string = "",
-  params: { organisaatioOid: Oid }
-) => `${basePath}/suorittaminen/ilmoitukset/${params.organisaatioOid}`
+export const suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg = declarePath(
+  "suorittaminen/ilmoitukset/:organisaatioOid",
+  passParamsThru<OrganisaatioOidProps>()
+)
 
 // Nivelvaiheen hakeutumisvelvollisten seuranta
 
-export const nivelvaiheenHakutilannePathWithoutOrg = (basePath: string = "") =>
-  `${basePath}/hakutilanne/nivelvaihe`
+export const nivelvaiheenHakutilannePathWithoutOrg = declarePath(
+  "hakutilanne/nivelvaihe"
+)
 
-export const createNivelvaiheenHakutilannePathWithoutOrg = nivelvaiheenHakutilannePathWithoutOrg
-
-export const nivelvaiheenHakutilannePathWithOrg = (basePath: string = "") =>
-  `${basePath}/hakutilanne/:organisaatioOid/nivelvaihe`
-
-export const createNivelvaiheenHakutilannePathWithOrg = (
-  basePath: string = "",
-  params: { organisaatioOid: Oid }
-) => `${basePath}/hakutilanne/${params.organisaatioOid}/nivelvaihe`
-
-export type NivelvaiheenHakutilanneViewRouteProps = RouteComponentProps<{
-  organisaatioOid?: string
-}>
+export const nivelvaiheenHakutilannePathWithOrg = declarePath(
+  "hakutilanne/:organisaatioOid/nivelvaihe",
+  passParamsThru<OrganisaatioOidProps>()
+)

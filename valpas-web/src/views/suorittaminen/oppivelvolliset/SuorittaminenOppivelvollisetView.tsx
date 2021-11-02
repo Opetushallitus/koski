@@ -29,7 +29,7 @@ import {
 } from "../../../state/accessRights"
 import { useBasePath } from "../../../state/basePath"
 import { Oid } from "../../../state/common"
-import { createSuorittaminenPathWithOrg } from "../../../state/paths"
+import { suorittaminenPathWithOrg } from "../../../state/paths"
 import { SuorittaminenOppivelvollisetTable } from "../../../views/suorittaminen/oppivelvolliset/SuorittaminenOppivelvollisetTable"
 import { SuorittaminenNavigation } from "../../../views/suorittaminen/SuorittaminenNavigation"
 import { ErrorView } from "../../ErrorView"
@@ -57,7 +57,7 @@ export const SuorittaminenOppivelvollisetViewWithoutOrgOid = withRequiresSuoritt
     )
     return storedOrFallbackOrg ? (
       <Redirect
-        to={createSuorittaminenPathWithOrg(basePath, storedOrFallbackOrg)}
+        to={suorittaminenPathWithOrg.href(basePath, storedOrFallbackOrg)}
       />
     ) : (
       <OrganisaatioMissingView />

@@ -1,7 +1,7 @@
 import { NonEmptyArray } from "fp-ts/lib/NonEmptyArray"
 import { By, WebElement } from "selenium-webdriver"
 import { Oid } from "../../src/state/common"
-import { createOppijaPath } from "../../src/state/paths"
+import { oppijaPath } from "../../src/state/paths"
 import { fromEntries, objectEntry } from "../../src/utils/objects"
 import {
   clickElement,
@@ -100,13 +100,13 @@ export const teeKuntailmoitusOppijanäkymistä = async (
   for (const oppija of oppijat) {
     // Tee ilmoitus oppijakohtaisesta näkymästä käsin, ja tarkista, että uuden ilmoituksen tiedot ilmestyvät näkyviin
     await goToLocation(
-      createOppijaPath("/virkailija", {
+      oppijaPath.href("/virkailija", {
         oppijaOid: oppija.oid,
       })
     )
     await urlIsEventually(
       pathToUrl(
-        createOppijaPath("/virkailija", {
+        oppijaPath.href("/virkailija", {
           oppijaOid: oppija.oid,
         })
       )

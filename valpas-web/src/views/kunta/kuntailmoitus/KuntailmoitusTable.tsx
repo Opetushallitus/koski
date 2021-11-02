@@ -16,7 +16,7 @@ import { organisaatioNimi } from "../../../state/apitypes/organisaatiot"
 import { useBasePath } from "../../../state/basePath"
 import { Oid } from "../../../state/common"
 import { perusopetuksenJälkeisetOpiskeluoikeustiedot } from "../../../state/opiskeluoikeustiedot"
-import { createOppijaPath } from "../../../state/paths"
+import { oppijaPath } from "../../../state/paths"
 import { formatNullableDate } from "../../../utils/date"
 
 export type KuntailmoitusTableProps = {
@@ -96,7 +96,7 @@ const ilmoitusToTableData = (basePath: string, organisaatioOid: string) => (
         value: `${henkilö.sukunimi} ${henkilö.etunimet}`,
         display: (
           <Link
-            to={createOppijaPath(basePath, {
+            to={oppijaPath.href(basePath, {
               kuntailmoitusRef: organisaatioOid,
               oppijaOid: henkilö.oid,
             })}

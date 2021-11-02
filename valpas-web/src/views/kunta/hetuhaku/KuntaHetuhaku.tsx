@@ -9,7 +9,7 @@ import { DummyOrganisaatioValitsin } from "../../../components/shared/Organisaat
 import { t } from "../../../i18n/i18n"
 import { withRequiresKuntavalvonta } from "../../../state/accessRights"
 import { isFeatureFlagEnabled } from "../../../state/featureFlags"
-import { createKunnanHetuhakuPath } from "../../../state/paths"
+import { kunnanHetuhakuPath } from "../../../state/paths"
 import { OppijaSearch } from "../../../views/oppijasearch/OppijaSearch"
 import { KuntaNavigation } from "../KuntaNavigation"
 import { KuntaHetulistahaku } from "./KuntaHetulistahaku"
@@ -27,7 +27,7 @@ export const KuntaHetuhaku = withRequiresKuntavalvonta(() => {
       <OppijaSearch
         searchState={search}
         onQuery={search.call}
-        prevPath={createKunnanHetuhakuPath()}
+        prevPath={kunnanHetuhakuPath.href()}
       />
       {isFeatureFlagEnabled("rouhinta") && <KuntaHetulistahaku />}
     </Page>

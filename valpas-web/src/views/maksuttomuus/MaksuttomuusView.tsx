@@ -6,7 +6,7 @@ import {
 import { useApiMethod } from "../../api/apiHooks"
 import { Page } from "../../components/containers/Page"
 import { withRequiresMaksuttomuudenValvonta } from "../../state/accessRights"
-import { createMaksuttomuusPath } from "../../state/paths"
+import { maksuttomuusPath } from "../../state/paths"
 import { MaksuttomuusOppijaSearch } from "./MaksuttomuusOppijaSearch"
 
 export const MaksuttomuusView = withRequiresMaksuttomuudenValvonta(() => {
@@ -20,7 +20,7 @@ export const MaksuttomuusView = withRequiresMaksuttomuudenValvonta(() => {
       <MaksuttomuusOppijaSearch
         searchState={search}
         onQuery={search.call}
-        prevPath={createMaksuttomuusPath()}
+        prevPath={maksuttomuusPath.href()}
       />
     </Page>
   )

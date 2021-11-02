@@ -6,9 +6,9 @@ import {
 import { t } from "../../i18n/i18n"
 import { Oid } from "../../state/common"
 import {
-  createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
-  createHakutilannePathWithOrg,
-  createNivelvaiheenHakutilannePathWithOrg,
+  hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
+  hakutilannePathWithOrg,
+  nivelvaiheenHakutilannePathWithOrg,
 } from "../../state/paths"
 
 export type HakutilanneNavigationProps = {
@@ -19,24 +19,21 @@ export const HakutilanneNavigation = (props: HakutilanneNavigationProps) => {
   const navOptions: TabNavigationItem[] = [
     {
       display: t("hakeutumisvelvollisetnavi__hakutilanne"),
-      linkTo: createHakutilannePathWithOrg(undefined, {
+      linkTo: hakutilannePathWithOrg.href(null, {
         organisaatioOid: props.selectedOrganisaatio,
       }),
     },
     {
       display: t("hakeutumisvelvollisetnavi__nivelvaihe"),
-      linkTo: createNivelvaiheenHakutilannePathWithOrg(undefined, {
+      linkTo: nivelvaiheenHakutilannePathWithOrg.href(null, {
         organisaatioOid: props.selectedOrganisaatio,
       }),
     },
     {
       display: t("hakeutumisvelvollisetnavi__kunnalle_tehdyt_ilmoitukset"),
-      linkTo: createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg(
-        undefined,
-        {
-          organisaatioOid: props.selectedOrganisaatio,
-        }
-      ),
+      linkTo: hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg.href(null, {
+        organisaatioOid: props.selectedOrganisaatio,
+      }),
     },
   ]
 

@@ -1,8 +1,8 @@
 import { NonEmptyArray } from "fp-ts/lib/NonEmptyArray"
 import {
-  createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
-  createNivelvaiheenHakutilannePathWithOrg,
-  createOppijaPath,
+  hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
+  nivelvaiheenHakutilannePathWithOrg,
+  oppijaPath,
 } from "../../src/state/paths"
 import {
   clickElement,
@@ -32,7 +32,7 @@ import {
 import { ressunLukioTableContent_syyskuu2021 } from "./nivelvaihehakutilanne.shared"
 import { jyväskylänNormaalikouluOid, ressunLukioOid } from "./oids"
 
-const ressunLukioHakutilannePath = createNivelvaiheenHakutilannePathWithOrg(
+const ressunLukioHakutilannePath = nivelvaiheenHakutilannePathWithOrg.href(
   "/virkailija",
   {
     organisaatioOid: ressunLukioOid,
@@ -125,7 +125,7 @@ const teeKuntailmoitusHakutilannenäkymästä = async (
 
   // Tarkista että oppijat ovat ilmestyneet "kunnalle tehdyt ilmoitukset" -tauluun
   for (const oppija of oppijat) {
-    const ilmotuksetPath = createHakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg(
+    const ilmotuksetPath = hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg.href(
       "/virkailija",
       {
         organisaatioOid: tekijä.organisaatioOid,
@@ -138,12 +138,12 @@ const teeKuntailmoitusHakutilannenäkymästä = async (
 
   // Tarkista oppijakohtaisista näkymistä, että ilmoituksen tiedot ovat siellä
   for (const oppija of oppijat) {
-    const oppijaPath = createOppijaPath("/virkailija", {
+    const path = oppijaPath.href("/virkailija", {
       oppijaOid: oppija.oid,
       hakutilanneRef: jyväskylänNormaalikouluOid,
     })
-    await goToLocation(oppijaPath)
-    await urlIsEventually(pathToUrl(oppijaPath))
+    await goToLocation(path)
+    await urlIsEventually(pathToUrl(path))
     expect(await getIlmoitusData()).toEqual(oppija.expected)
   }
 }

@@ -8,9 +8,9 @@ import { t } from "../../i18n/i18n"
 import { kuntavalvontaAllowed } from "../../state/accessRights"
 import { Oid } from "../../state/common"
 import {
-  createKunnanHetuhakuPath,
-  createKuntailmoitusPath,
-  createKuntailmoitusPathWithOrg,
+  kunnanHetuhakuPath,
+  kuntailmoitusPath,
+  kuntailmoitusPathWithOrg,
 } from "../../state/paths"
 
 export type KuntaNavigationProps = {
@@ -22,12 +22,12 @@ export const KuntaNavigation = (props: KuntaNavigationProps) => {
     {
       display: t("kuntailmoitus_nav__ilmoitetut"),
       linkTo: props.selectedOrganisaatio
-        ? createKuntailmoitusPathWithOrg("", props.selectedOrganisaatio)
-        : createKuntailmoitusPath(),
+        ? kuntailmoitusPathWithOrg.href("", props.selectedOrganisaatio)
+        : kuntailmoitusPath.href(),
     },
     {
       display: t("kuntailmoitus_nav__hae_hetulla"),
-      linkTo: createKunnanHetuhakuPath(),
+      linkTo: kunnanHetuhakuPath.href(),
     },
   ]
 

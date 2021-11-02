@@ -1,7 +1,7 @@
 import {
-  createNivelvaiheenHakutilannePathWithOrg,
-  createNivelvaiheenHakutilannePathWithoutOrg,
-  createOppijaPath,
+  nivelvaiheenHakutilannePathWithOrg,
+  nivelvaiheenHakutilannePathWithoutOrg,
+  oppijaPath,
 } from "../../src/state/paths"
 import {
   clickElement,
@@ -35,25 +35,25 @@ import {
 } from "./oids"
 import { selectOrganisaatioByNimi } from "./organisaatiovalitsin-helpers"
 
-const nivelvaiheenHakutilannePath = createNivelvaiheenHakutilannePathWithoutOrg(
+const nivelvaiheenHakutilannePath = nivelvaiheenHakutilannePathWithoutOrg.href(
   "/virkailija"
 )
 
-const ressunLukioHakutilannePath = createNivelvaiheenHakutilannePathWithOrg(
+const ressunLukioHakutilannePath = nivelvaiheenHakutilannePathWithOrg.href(
   "/virkailija",
   {
     organisaatioOid: ressunLukioOid,
   }
 )
 
-const aapajoenKouluHakutilannePath = createNivelvaiheenHakutilannePathWithOrg(
+const aapajoenKouluHakutilannePath = nivelvaiheenHakutilannePathWithOrg.href(
   "/virkailija",
   {
     organisaatioOid: aapajoenKouluOid,
   }
 )
 
-const internationalSchoolHakutilannePath = createNivelvaiheenHakutilannePathWithOrg(
+const internationalSchoolHakutilannePath = nivelvaiheenHakutilannePathWithOrg.href(
   "/virkailija",
   {
     organisaatioOid: internationalSchoolOid,
@@ -168,7 +168,7 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
     await openOppijaView(oppijaOid)
     await urlIsEventually(
       pathToUrl(
-        createOppijaPath("/virkailija", {
+        oppijaPath.href("/virkailija", {
           oppijaOid: oppijaOid,
           hakutilanneNivelvaiheRef: ressunLukioOid,
         })

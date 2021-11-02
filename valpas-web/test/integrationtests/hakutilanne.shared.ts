@@ -1,5 +1,5 @@
 import { Oid } from "../../src/state/common"
-import { createHakutilannePathWithoutOrg } from "../../src/state/paths"
+import { hakutilannePathWithoutOrg } from "../../src/state/paths"
 import {
   clickElement,
   expectElementEventuallyVisible,
@@ -63,7 +63,7 @@ export const internationalSchoolTableContent = `
   Oppivelvollinen-int-school-kesken-keväällä-2021 Valpas                            | 18.2.2005  | 9B  | –                   | Ei hakemusta | – | – | –                                                                                        |
 `
 
-export const hakutilannePath = createHakutilannePathWithoutOrg("/virkailija")
+export const hakutilannePath = hakutilannePathWithoutOrg.href("/virkailija")
 
 export const oppijaRowSelector = (oppijaOid: Oid) =>
   `.hakutilanne .table__row[data-row*="${oppijaOid}"] td:first-child a`

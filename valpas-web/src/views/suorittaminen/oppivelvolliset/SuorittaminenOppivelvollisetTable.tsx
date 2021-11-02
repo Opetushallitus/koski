@@ -35,7 +35,7 @@ import {
 import { useBasePath } from "../../../state/basePath"
 import { ISODate, Oid } from "../../../state/common"
 import { perusopetuksenJälkeistäPreferoivatOpiskeluoikeustiedot } from "../../../state/opiskeluoikeustiedot"
-import { createOppijaPath } from "../../../state/paths"
+import { oppijaPath } from "../../../state/paths"
 import { formatDate, formatNullableDate } from "../../../utils/date"
 
 export type SuorittaminenOppivelvollisetTableProps = {
@@ -146,7 +146,7 @@ const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
           value: `${henkilö.sukunimi} ${henkilö.etunimet}${opiskeluoikeus.onTehtyIlmoitus}`,
           display: (
             <Link
-              to={createOppijaPath(basePath, {
+              to={oppijaPath.href(basePath, {
                 suorittaminenRef: organisaatioOid,
                 oppijaOid: henkilö.oid,
               })}
