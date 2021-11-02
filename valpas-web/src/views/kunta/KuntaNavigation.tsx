@@ -11,6 +11,8 @@ import {
   kunnanHetuhakuPath,
   kuntailmoitusPath,
   kuntailmoitusPathWithOrg,
+  kuntarouhintaPathWithOid,
+  kuntarouhintaPathWithoutOid,
 } from "../../state/paths"
 
 export type KuntaNavigationProps = {
@@ -18,12 +20,19 @@ export type KuntaNavigationProps = {
 }
 
 export const KuntaNavigation = (props: KuntaNavigationProps) => {
+  const organisaatioOid = props.selectedOrganisaatio
   const navOptions: TabNavigationItem[] = [
     {
       display: t("kuntailmoitus_nav__ilmoitetut"),
-      linkTo: props.selectedOrganisaatio
-        ? kuntailmoitusPathWithOrg.href("", props.selectedOrganisaatio)
+      linkTo: organisaatioOid
+        ? kuntailmoitusPathWithOrg.href(null, organisaatioOid)
         : kuntailmoitusPath.href(),
+    },
+    {
+      display: t("kuntailmoitus_nav__automaattinen_tarkistus"),
+      linkTo: organisaatioOid
+        ? kuntarouhintaPathWithOid.href(null, { organisaatioOid })
+        : kuntarouhintaPathWithoutOid.href(),
     },
     {
       display: t("kuntailmoitus_nav__hae_hetulla"),

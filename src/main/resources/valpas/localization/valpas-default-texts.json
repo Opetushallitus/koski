@@ -192,6 +192,7 @@
   "oppijahaku__suorittaminen_väliaikainen_viesti": "Oppivelvollisuuden suorittamisen valvojana voit hakea yksittäisen oppijan tiedot tällä lomakkeella.",
   "oppijahaku__organisaatiovalitsin_ei_käytössä": "Haku kohdistuu kaikkiin organisaatioihin",
   "kuntailmoitus_nav__ilmoitetut": "Ilmoitetut",
+  "kuntailmoitus_nav__automaattinen_tarkistus": "Automaattinen tarkistus",
   "kuntailmoitus_nav__hae_hetulla": "Hae hetulla",
   "kuntailmoitusnäkymä__ilmoitetut__otsikko": "Ilmoitetut oppivelvolliset ilman opiskelupaikkaa",
   "kuntailmoitusnäkymä__ei_ilmoituksia": "Ei ilmoituksia",

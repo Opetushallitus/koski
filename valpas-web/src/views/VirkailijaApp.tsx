@@ -25,6 +25,8 @@ import {
   kunnanHetuhakuPath,
   kuntailmoitusPath,
   kuntailmoitusPathWithOrg,
+  kuntarouhintaPathWithOid,
+  kuntarouhintaPathWithoutOid,
   käyttöoikeusPath,
   maksuttomuusPath,
   nivelvaiheenHakutilannePathWithOrg,
@@ -66,6 +68,10 @@ import {
   KuntailmoitusView,
   KuntailmoitusViewWithoutOrgOid,
 } from "./kunta/kuntailmoitus/KuntailmoitusView"
+import {
+  KuntarouhintaView,
+  KuntarouhintaViewWithoutOrg,
+} from "./kunta/kuntarouhinta/KuntarouhintaView"
 import { MaksuttomuusView } from "./maksuttomuus/MaksuttomuusView"
 import { OppijaView } from "./oppija/OppijaView"
 import { Raamit } from "./Raamit"
@@ -243,6 +249,21 @@ const VirkailijaRoutes = () => {
         />
         <Route exact path={kunnanHetuhakuPath.route(basePath)}>
           <KuntaHetuhaku
+            redirectUserWithoutAccessTo={rootPath.href(basePath)}
+          />
+        </Route>
+        <Route
+          exact
+          path={kuntarouhintaPathWithOid.route(basePath)}
+          render={(routeProps) => (
+            <KuntarouhintaView
+              redirectUserWithoutAccessTo={rootPath.href(basePath)}
+              {...routeProps}
+            />
+          )}
+        ></Route>
+        <Route exact path={kuntarouhintaPathWithoutOid.route(basePath)}>
+          <KuntarouhintaViewWithoutOrg
             redirectUserWithoutAccessTo={rootPath.href(basePath)}
           />
         </Route>

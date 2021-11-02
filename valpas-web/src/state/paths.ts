@@ -121,13 +121,24 @@ export const maksuttomuusPath = declarePath("maksuttomuus")
 
 export const käyttöoikeusPath = declarePath("kayttooikeudet")
 
-// Kuntanäkymien juuri
+// Kuntailmoitukset
 
 export const kuntailmoitusPath = declarePath("kuntailmoitukset")
 
 export const kuntailmoitusPathWithOrg = declarePath(
   "kuntailmoitukset/organisaatio/:organisaatioOid",
   (organisaatioOid: Oid) => ({ organisaatioOid })
+)
+
+// Kunnan automaattinen tarkastus eli rouhinta
+
+export const kuntarouhintaPathWithoutOid = declarePath(
+  "kuntailmoitukset/automaattinen-tarkastus"
+)
+
+export const kuntarouhintaPathWithOid = declarePath(
+  "kuntailmoitukset/automaattinen-tarkastus/:organisaatioOid",
+  passParamsThru<OrganisaatioOidProps>()
 )
 
 // Kuntakäyttäjän hakunäkymä
