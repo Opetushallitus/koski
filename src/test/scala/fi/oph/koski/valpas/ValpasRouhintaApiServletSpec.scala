@@ -10,42 +10,46 @@ class ValpasRouhintaApiServletSpec extends ValpasTestBase with BeforeAndAfterEac
     AuditLogTester.clearMessages
   }
 
-  "Hetuhaku toimii pääkäyttäjänä" in {
-    doHetuQuery(ValpasMockUsers.valpasOphPääkäyttäjä) {
-      verifyResponseStatusOk()
-    }
-  }
+  "Hetuhaku" - {
 
-  "Hetuhaku toimii kuntakäyttäjänä" in {
-    doHetuQuery(ValpasMockUsers.valpasHelsinki) {
-      verifyResponseStatusOk()
+    "toimii pääkäyttäjänä" in {
+      doHetuQuery(ValpasMockUsers.valpasOphPääkäyttäjä) {
+        verifyResponseStatusOk()
+      }
     }
-  }
 
-  "Hetuhaku hylkää pelkillä hakeutumisenvalvonnan oikeuksilla" in {
-    doHetuQuery(ValpasMockUsers.valpasHelsinkiPeruskoulu) {
-      verifyResponseStatus(403, ValpasErrorCategory.forbidden.toiminto())
+    "toimii kuntakäyttäjänä" in {
+      doHetuQuery(ValpasMockUsers.valpasHelsinki) {
+        verifyResponseStatusOk()
+      }
     }
-  }
 
-  "Hetuhaku hylkää pelkillä suorittamisenvalvonnan oikeuksilla" in {
-    doHetuQuery(ValpasMockUsers.valpasPelkkäSuorittaminenkäyttäjäAmmattikoulu) {
-      verifyResponseStatus(403, ValpasErrorCategory.forbidden.toiminto())
+    "hylkää pelkillä hakeutumisenvalvonnan oikeuksilla" in {
+      doHetuQuery(ValpasMockUsers.valpasHelsinkiPeruskoulu) {
+        verifyResponseStatus(403, ValpasErrorCategory.forbidden.toiminto())
+      }
     }
-  }
 
-  "Hetuhaku hylkää pelkillä maksuttomuudenvalvonnan oikeuksilla" in {
-    doHetuQuery(ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä) {
-      verifyResponseStatus(403, ValpasErrorCategory.forbidden.toiminto())
+    "hylkää pelkillä suorittamisenvalvonnan oikeuksilla" in {
+      doHetuQuery(ValpasMockUsers.valpasPelkkäSuorittaminenkäyttäjäAmmattikoulu) {
+        verifyResponseStatus(403, ValpasErrorCategory.forbidden.toiminto())
+      }
     }
-  }
 
-  "Hetuhaku jättää merkinnän auditlokiin" in {
-    doHetuQuery(ValpasMockUsers.valpasHelsinki) {
-      AuditLogTester.verifyAuditLogMessage(Map(
-        "operation" -> ValpasOperation.VALPAS_ROUHINTA_HETUHAKU.toString,
-        "target" -> Map(ValpasAuditLogMessageField.hakulause.toString -> "161004A404E")))
+    "hylkää pelkillä maksuttomuudenvalvonnan oikeuksilla" in {
+      doHetuQuery(ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä) {
+        verifyResponseStatus(403, ValpasErrorCategory.forbidden.toiminto())
+      }
     }
+
+    "jättää merkinnän auditlokiin" in {
+      doHetuQuery(ValpasMockUsers.valpasHelsinki) {
+        AuditLogTester.verifyAuditLogMessage(Map(
+          "operation" -> ValpasOperation.VALPAS_ROUHINTA_HETUHAKU.toString,
+          "target" -> Map(ValpasAuditLogMessageField.hakulause.toString -> "161004A404E")))
+      }
+    }
+
   }
 
   private def doHetuQuery(user: ValpasMockUser)(f: => Unit) = {
