@@ -53,6 +53,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
   def vacuumAnalyze(): Unit = {
     logger.info("Starting VACUUM ANALYZE in RaportointiDatabase")
     db.run(sqlu"VACUUM ANALYZE")
+    logger.info("Finished VACUUM ANALYZE in RaportointiDatabase")
   }
 
   def moveTo(newSchema: Schema): Unit = {
