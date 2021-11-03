@@ -27,6 +27,7 @@ import {
   hakutilannePathWithOrg,
   hakutilannePathWithoutOrg,
   kuntailmoitusPathWithOrg,
+  kuntarouhintaPathWithOid,
   nivelvaiheenHakutilannePathWithOrg,
   OppijaPathBackRefs,
   OppijaViewRouteProps,
@@ -55,14 +56,8 @@ export const OppijaView = withRequiresJokinOikeus((props: OppijaViewProps) => {
   return (
     <Page id="oppija">
       <BackNav
-        hakutilanneRef={searchQuery.hakutilanneRef}
-        hakutilanneNivelvaiheRef={searchQuery.hakutilanneNivelvaiheRef}
-        hakutilanneIlmoitetutRef={searchQuery.hakutilanneIlmoitetutRef}
-        kuntailmoitusRef={searchQuery.kuntailmoitusRef}
-        suorittaminenRef={searchQuery.suorittaminenRef}
-        suorittaminenIlmoitetutRef={searchQuery.suorittaminenIlmoitetutRef}
         oppija={isSuccess(oppija) ? oppija.data : undefined}
-        prev={searchQuery.prev}
+        {...searchQuery}
       />
       <OppijaHeadings oppija={oppija} oid={queryOid} />
 
@@ -157,6 +152,10 @@ const BackNav = (props: OppijaViewBackNavProps) => {
     } else if (props.suorittaminenIlmoitetutRef) {
       return suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg.href(null, {
         organisaatioOid: props.suorittaminenIlmoitetutRef,
+      })
+    } else if (props.kuntaRef) {
+      return kuntarouhintaPathWithOid.href(null, {
+        organisaatioOid: props.kuntaRef,
       })
     } else if (fallback) {
       return hakutilannePathWithOrg.href(null, { organisaatioOid: fallback })

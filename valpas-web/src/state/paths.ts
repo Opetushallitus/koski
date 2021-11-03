@@ -90,6 +90,7 @@ export type OppijaPathBackRefs = {
   kuntailmoitusRef?: string
   suorittaminenRef?: string
   suorittaminenIlmoitetutRef?: string
+  kuntaRef?: string
   prev?: string
 }
 
