@@ -2,13 +2,21 @@ import React, { useCallback, useMemo } from "react"
 import { useHistory } from "react-router-dom"
 import { fetchKuntarouhinta, fetchKuntarouhintaCache } from "../../../api/api"
 import { useApiWithParams } from "../../../api/apiHooks"
-import { isSuccess } from "../../../api/apiUtils"
+import { isError, isLoading, isSuccess } from "../../../api/apiUtils"
+import {
+  Card,
+  CardHeader,
+  ConstrainedCardBody,
+} from "../../../components/containers/cards"
 import { Page } from "../../../components/containers/Page"
+import { Spinner } from "../../../components/icons/Spinner"
 import {
   getOrganisaatiot,
   OrganisaatioValitsin,
 } from "../../../components/shared/OrganisaatioValitsin"
-import { t } from "../../../i18n/i18n"
+import { Counter } from "../../../components/typography/Counter"
+import { ApiErrors } from "../../../components/typography/error"
+import { getLanguage, getLocalized, T, t } from "../../../i18n/i18n"
 import {
   useOrganisaatiotJaKäyttöoikeusroolit,
   withRequiresKuntavalvonta,
@@ -23,6 +31,7 @@ import {
 import { ErrorView } from "../../ErrorView"
 import { OrganisaatioAutoRedirect } from "../../OrganisaatioAutoRedirect"
 import { KuntaNavigation } from "../KuntaNavigation"
+import { KuntarouhintaTable } from "./KuntarouhintaTable"
 
 const organisaatioTyyppi = "KUNTA"
 const organisaatioHakuRooli = "KUNTA"
@@ -69,23 +78,22 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
       [basePath, history]
     )
 
-    const kuntakoodi = useMemo(
-      () =>
-        organisaatiot.find((o) => o.oid === organisaatioOid)?.kotipaikka
-          ?.koodiarvo,
+    const kunta = useMemo(
+      () => organisaatiot.find((o) => o.oid === organisaatioOid)?.kotipaikka,
       [organisaatiot, organisaatioOid]
     )
 
     const rouhintaQuery: [query: KuntarouhintaInput] | undefined = useMemo(
       () =>
-        kuntakoodi
+        kunta?.koodiarvo
           ? [
               {
-                kunta: kuntakoodi,
+                kunta: kunta.koodiarvo,
+                lang: getLanguage(),
               },
             ]
           : undefined,
-      [kuntakoodi]
+      [kunta]
     )
 
     const rouhintaFetch = useApiWithParams(
@@ -104,12 +112,29 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
           onChange={changeOrganisaatio}
         />
         <KuntaNavigation selectedOrganisaatio={organisaatioOid} />
-        <p>TODO: Rouhinta {organisaatioOid}</p>
-        <p>
-          {isSuccess(rouhintaFetch)
-            ? `${rouhintaFetch.data.eiOppivelvollisuuttaSuorittavat.length} tulosta`
-            : "Tietoja ei ladattu"}
-        </p>
+        <Card>
+          <CardHeader>
+            {kunta?.nimi && `${getLocalized(kunta.nimi)}: `}
+            <T id="rouhinta_taulukon_otsikko" />
+            {isSuccess(rouhintaFetch) && (
+              <Counter>
+                {rouhintaFetch.data.eiOppivelvollisuuttaSuorittavat.length}
+              </Counter>
+            )}
+          </CardHeader>
+          <ConstrainedCardBody>
+            {isLoading(rouhintaFetch) && <Spinner />}
+            {isSuccess(rouhintaFetch) && (
+              <KuntarouhintaTable
+                data={rouhintaFetch.data}
+                organisaatioOid={organisaatioOid}
+              />
+            )}
+            {isError(rouhintaFetch) && (
+              <ApiErrors errors={rouhintaFetch.errors} />
+            )}
+          </ConstrainedCardBody>
+        </Card>
       </Page>
     )
   }

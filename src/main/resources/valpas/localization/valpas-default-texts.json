@@ -295,5 +295,8 @@
   "rouhinta_hae_usealla_hetulla": "Hae usealla hetulla",
   "rouhinta_tiedoston_salasana": "Salasana",
   "rouhinta_lataa_raportti": "Lataa raportti ({{lukumäärä}} henkilötunnusta)",
+  "rouhinta_nimi": "Nimi",
+  "rouhinta_syntymäpäivä": "Syntymäpäivä",
+  "rouhinta_taulukon_otsikko": "Oppivelvolliset ilman opiskelupaikkaa",
   "tiedoston_lataus_epäonnistui": "Tiedoston lataus epäonnistui"
 }
