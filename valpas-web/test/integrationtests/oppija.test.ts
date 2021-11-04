@@ -131,7 +131,7 @@ describe("Oppijakohtainen näkymä", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000001")
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:	22.11.2023 asti
+      Oppivelvollisuus:	21.11.2023 asti
       Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
       Tee ilmoitus valvontavastuusta
       info_outline
@@ -209,7 +209,7 @@ describe("Oppijakohtainen näkymä", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000011")
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Ei opiskelupaikkaa
-      Oppivelvollisuus:	19.6.2023 asti
+      Oppivelvollisuus:	18.6.2023 asti
       Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
       Tee ilmoitus valvontavastuusta
       info_outline
@@ -233,7 +233,7 @@ describe("Oppijakohtainen näkymä", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000094")
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:	12.5.2023 asti
+      Oppivelvollisuus:	11.5.2023 asti
       Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
       Tee ilmoitus valvontavastuusta
       info_outline
@@ -316,7 +316,7 @@ describe("Oppijakohtainen näkymä", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000003")
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:	6.6.2023 asti
+      Oppivelvollisuus:	5.6.2023 asti
       Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
       Tee ilmoitus valvontavastuusta
       info_outline
@@ -343,7 +343,7 @@ describe("Oppijakohtainen näkymä", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000015")
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:	29.4.2023 asti
+      Oppivelvollisuus:	28.4.2023 asti
       Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
       Tee ilmoitus valvontavastuusta
       info_outline
@@ -375,7 +375,7 @@ describe("Oppijakohtainen näkymä", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000016")
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Ei opiskelupaikkaa
-      Oppivelvollisuus:	18.4.2023 asti
+      Oppivelvollisuus:	17.4.2023 asti
       Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
       Tee ilmoitus valvontavastuusta
       info_outline
@@ -535,7 +535,7 @@ describe("Oppijakohtainen näkymä", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000004")
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:	7.5.2022 asti
+      Oppivelvollisuus:	6.5.2022 asti
       Oikeus opintojen maksuttomuuteen: 31.12.2024 asti
     `)
     await opiskeluhistoriaEquals(`
@@ -558,7 +558,7 @@ describe("Oppijakohtainen näkymä", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000004")
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:	7.5.2022 asti
+      Oppivelvollisuus:	6.5.2022 asti
       Oikeus opintojen maksuttomuuteen: 31.12.2024 asti
     `)
     await opiskeluhistoriaEquals(`
@@ -593,7 +593,7 @@ describe("Oppijakohtainen näkymä", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000004")
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus: 7.5.2022 asti
+      Oppivelvollisuus: 6.5.2022 asti
       Oikeus opintojen maksuttomuuteen: 31.12.2024 asti
       Keskeytä oppivelvollisuus
       Tee ilmoitus valvontavastuusta
@@ -617,7 +617,7 @@ describe("Oppijakohtainen näkymä", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000004")
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:	7.5.2022 asti
+      Oppivelvollisuus:	6.5.2022 asti
       Oikeus opintojen maksuttomuuteen: 31.12.2024 asti
       Tee ilmoitus valvontavastuusta
       info_outline
@@ -687,7 +687,7 @@ describe("Oppijakohtainen näkymä", () => {
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
       Oppivelvollisuus:
-        18.10.2023 asti
+        17.10.2023 asti
         Keskeytetty 1.3.2021 – 30.9.2021
       Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
       Tee ilmoitus valvontavastuusta
@@ -751,7 +751,7 @@ describe("Oppijakohtainen näkymä", () => {
     )
     await oppivelvollisuustiedotEquals(`
       Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus: 18.10.2023 asti
+      Oppivelvollisuus: 17.10.2023 asti
       Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
       Tee ilmoitus valvontavastuusta
       info_outline
