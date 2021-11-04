@@ -66,11 +66,15 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
       EventBridgeEvent(tietokantaUpload, Map("event" -> "start-upload", "uploadTarget" -> "lampi-valpas")),
       EventBridgeEvent(tietokantaUpload, Map("event" -> "start-upload", "uploadTarget" -> "csc"))
     )
+    logger.info("Successfully sent start-upload events.")
   }
 
   def putLoadTimeMetric(): Unit = {
     (raportointiDatabase.status.startedTime, raportointiDatabase.status.completionTime) match {
-      case (Some(started), Some(completed)) => cloudWatchMetrics.putRaportointikantaLoadtime(started, completed)
+      case (Some(started), Some(completed)) => {
+        cloudWatchMetrics.putRaportointikantaLoadtime(started, completed)
+        logger.info("Successfully sent load time data to Cloudwatch Metrics.")
+      }
       case _ => logger.info("Cannot put raportointikanta load time metric: load start or end time missing (probably never loaded yet?)")
     }
   }
@@ -122,6 +126,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
 
   private def shutdown = {
     LogManager.shutdown()
+    Thread.sleep(60000) //Varmistetaan, että kaikki logit ehtivät varmasti siirtyä Cloudwatchiin ennen sulkemista.
     sys.exit()
   }
 }
