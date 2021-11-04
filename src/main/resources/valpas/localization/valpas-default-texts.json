@@ -301,5 +301,6 @@
   "rouhinta_kuntahaku_latausohje": "Kuntakohtaisten tietojen lataaminen on tavallista hitaampi toiminto. Voit hakea tiedot näytettäväksi joko selaimessa tai ladata ne tietokoneellesi tiedostona.",
   "rouhinta_btn_näytä_selaimessa": "Näytä selaimessa",
   "rouhinta_btn_lataa_tiedosto": "Lataa tiedosto (.xlsx)",
-  "tiedoston_lataus_epäonnistui": "Tiedoston lataus epäonnistui"
+  "tiedoston_lataus_epäonnistui": "Tiedoston lataus epäonnistui",
+  "btn_kopioi_leikepöydälle": "Kopioi leikepöydälle"
 }
