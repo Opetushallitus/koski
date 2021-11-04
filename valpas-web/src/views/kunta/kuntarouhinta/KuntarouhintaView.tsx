@@ -1,3 +1,4 @@
+import bem from "bem-ts"
 import React, { useCallback, useMemo } from "react"
 import {
   downloadKuntarouhinta,
@@ -43,6 +44,9 @@ import { ErrorView } from "../../ErrorView"
 import { OrganisaatioAutoRedirect } from "../../OrganisaatioAutoRedirect"
 import { KuntaNavigation } from "../KuntaNavigation"
 import { KuntarouhintaTable } from "./KuntarouhintaTable"
+import "./KuntarouhintaView.less"
+
+const b = bem("kuntarouhintaview")
 
 const organisaatioTyyppi = "KUNTA"
 const organisaatioHakuRooli = "KUNTA"
@@ -133,28 +137,45 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
             password={password}
           />
         ) : (
-          <Card>
-            <CardHeader>
-              {kunta?.nimi && `${getLocalized(kunta.nimi)}: `}
-              <T id="rouhinta_taulukon_otsikko" />
-              {isSuccess(rouhintaFetch) && (
-                <Counter>
-                  {rouhintaFetch.data.eiOppivelvollisuuttaSuorittavat.length}
-                </Counter>
-              )}
-            </CardHeader>
-            <ConstrainedCardBody>
-              {isError(rouhintaDownload) && (
-                <ApiErrors errors={rouhintaDownload.errors} />
-              )}
-              {rouhintaData && (
-                <KuntarouhintaTable
-                  data={rouhintaData}
-                  organisaatioOid={organisaatioOid}
-                />
-              )}
-            </ConstrainedCardBody>
-          </Card>
+          <>
+            <Card>
+              <CardHeader className={b("cardheader")}>
+                <div>
+                  {kunta?.nimi && `${getLocalized(kunta.nimi)}: `}
+                  <T id="rouhinta_taulukon_otsikko" />
+                  {isSuccess(rouhintaFetch) && (
+                    <Counter>
+                      {
+                        rouhintaFetch.data.eiOppivelvollisuuttaSuorittavat
+                          .length
+                      }
+                    </Counter>
+                  )}
+                </div>
+                <div>
+                  {isInitial(rouhintaDownload) || isError(rouhintaDownload) ? (
+                    <RaisedButton onClick={downloadData}>
+                      <T id="rouhinta_btn_lataa_tiedosto" />
+                    </RaisedButton>
+                  ) : (
+                    <Password>{password}</Password>
+                  )}
+                  {isLoading(rouhintaDownload) && <Spinner />}
+                </div>
+              </CardHeader>
+              <ConstrainedCardBody>
+                {isError(rouhintaDownload) && (
+                  <ApiErrors errors={rouhintaDownload.errors} />
+                )}
+                {rouhintaData && (
+                  <KuntarouhintaTable
+                    data={rouhintaData}
+                    organisaatioOid={organisaatioOid}
+                  />
+                )}
+              </ConstrainedCardBody>
+            </Card>
+          </>
         )}
       </Page>
     )
