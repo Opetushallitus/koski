@@ -5,13 +5,12 @@ import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.henkilo.{Hetu, OppijaHenkilö}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
-import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 import fi.oph.koski.valpas.ValpasErrorCategory
 
 import java.time.LocalDate
 
-class ValpasHeturouhintaService(application: KoskiApplication) extends DatabaseConverters with Logging with Timing {
+class ValpasHeturouhintaService(application: KoskiApplication) extends DatabaseConverters with Logging with ValpasRouhintaTiming {
   private val rajapäivätService = application.valpasRajapäivätService
   private val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
   private val oppijaService = application.valpasOppijaService
@@ -23,40 +22,46 @@ class ValpasHeturouhintaService(application: KoskiApplication) extends DatabaseC
     (implicit session: ValpasSession)
   : Either[HttpStatus, HeturouhinnanTulos] = {
     cleanedHetuList(hetut).flatMap(hetut => {
-      val (validitHetut, virheellisetHetut) = hetut.partition(hetu => Hetu.validate(hetu, acceptSynthetic = false).isRight)
-      val oppijatKoskessa = oppijaService.getOppijaOiditHetuillaIlmanOikeustarkastusta(validitHetut)
-      val koskestaLöytymättömätHetut = validitHetut.diff(oppijatKoskessa.map(_.hetu))
 
-      val (oppijatJotkaOnrissaMuttaEiKoskessa, oppijanumerorekisterinUlkopuolisetHetut) = haeOppijanumerorekisteristä(koskestaLöytymättömätHetut)
+      rouhintaTimed("haeHetulistanPerusteella", hetut.size) {
+        val (validitHetut, virheellisetHetut) = hetut.partition(hetu => Hetu.validate(hetu, acceptSynthetic = false).isRight)
+        val oppijatKoskessa = oppijaService.getOppijaOiditHetuillaIlmanOikeustarkastusta(validitHetut)
+        val koskestaLöytymättömätHetut = validitHetut.diff(oppijatKoskessa.map(_.hetu))
 
-      val (oppivelvollisetOnrissa, oppivelvollisuudenUlkopuolisetOnrissa) = oppijatJotkaOnrissaMuttaEiKoskessa.partition(onOppivelvollinen)
-      val (oppivelvollisetKoskessa, oppivelvollisuudenUlkopuolisetKoskessa) = oppijatKoskessa.partition(_.oppivelvollisuusVoimassa)
+        val (oppijatJotkaOnrissaMuttaEiKoskessa, oppijanumerorekisterinUlkopuolisetHetut) = haeOppijanumerorekisteristä(koskestaLöytymättömätHetut)
 
-      oppijaService
-        .getOppijalista(oppivelvollisetKoskessa.map(_.masterOid))
-        .map(oppivelvollisetKoskessa => {
-          val (suorittavat, eiSuorittavat) =
-            (oppivelvollisetKoskessa.map(ValpasRouhintaOppivelvollinen.apply) ++ oppivelvollisetOnrissa.map(ValpasRouhintaOppivelvollinen.apply))
-              .partition(_.suorittaaOppivelvollisuutta)
+        val (oppivelvollisetOnrissa, oppivelvollisuudenUlkopuolisetOnrissa) = oppijatJotkaOnrissaMuttaEiKoskessa.partition(onOppivelvollinen)
+        val (oppivelvollisetKoskessa, oppivelvollisuudenUlkopuolisetKoskessa) = oppijatKoskessa.partition(_.oppivelvollisuusVoimassa)
 
-          HeturouhinnanTulos(
-            eiOppivelvollisuuttaSuorittavat = eiSuorittavat,
-            oppivelvollisuuttaSuorittavat = suorittavat.flatMap(_.hetu).map(RouhintaPelkkäHetu),
-            oppijanumerorekisterinUlkopuoliset = oppijanumerorekisterinUlkopuolisetHetut.map(RouhintaPelkkäHetu),
-            oppivelvollisuudenUlkopuoliset = (oppivelvollisuudenUlkopuolisetKoskessa.map(_.hetu) ++ oppivelvollisuudenUlkopuolisetOnrissa.flatMap(_.hetu)).map(RouhintaPelkkäHetu),
-            virheellisetHetut = virheellisetHetut.map(RouhintaPelkkäHetu),
-          )
-        })
+        oppijaService
+          .getOppijalista(oppivelvollisetKoskessa.map(_.masterOid))
+          .map(oppivelvollisetKoskessa => {
+            val (suorittavat, eiSuorittavat) =
+              (oppivelvollisetKoskessa.map(ValpasRouhintaOppivelvollinen.apply) ++ oppivelvollisetOnrissa.map(ValpasRouhintaOppivelvollinen.apply))
+                .partition(_.suorittaaOppivelvollisuutta)
+
+            HeturouhinnanTulos(
+              eiOppivelvollisuuttaSuorittavat = eiSuorittavat,
+              oppivelvollisuuttaSuorittavat = suorittavat.flatMap(_.hetu).map(RouhintaPelkkäHetu),
+              oppijanumerorekisterinUlkopuoliset = oppijanumerorekisterinUlkopuolisetHetut.map(RouhintaPelkkäHetu),
+              oppivelvollisuudenUlkopuoliset = (oppivelvollisuudenUlkopuolisetKoskessa.map(_.hetu) ++ oppivelvollisuudenUlkopuolisetOnrissa.flatMap(_.hetu)).map(RouhintaPelkkäHetu),
+              virheellisetHetut = virheellisetHetut.map(RouhintaPelkkäHetu),
+            )
+          })
+      }
     })
+
   }
 
   private def haeOppijanumerorekisteristä(hetut: Seq[String]): (Seq[OppijaHenkilö], Seq[String]) = {
-    val oppijat = oppijanumerorekisteri.findOppijatByHetusNoSlaveOids(hetut)
-    val hetutRekisterissä = oppijat.flatMap(_.hetu)
-    (
-      oppijat,
-      hetut.filterNot(hetutRekisterissä.contains)
-    )
+    rouhintaTimed("haeOppijanumerorekisteristä", hetut.size) {
+      val oppijat = oppijanumerorekisteri.findOppijatByHetusNoSlaveOids(hetut)
+      val hetutRekisterissä = oppijat.flatMap(_.hetu)
+      (
+        oppijat,
+        hetut.filterNot(hetutRekisterissä.contains)
+      )
+    }
   }
 
   private def onOppivelvollinen(oppija: OppijaHenkilö): Boolean = onOppivelvollinen(oppija.syntymäaika)

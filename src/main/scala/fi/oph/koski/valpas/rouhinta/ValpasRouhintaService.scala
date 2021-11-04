@@ -6,10 +6,9 @@ import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{DataSheet, OppilaitosRaporttiResponse, WorkbookSettings}
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.koski.valpas.{ValpasAccessResolver, ValpasErrorCategory}
-
 import java.time.format.DateTimeFormatter
 
-class ValpasRouhintaService(application: KoskiApplication) {
+class ValpasRouhintaService(application: KoskiApplication) extends ValpasRouhintaTiming {
   private val heturouhinta = new ValpasHeturouhintaService(application)
   private val kuntarouhinta = new ValpasKuntarouhintaService(application)
   private val localization = application.valpasLocalizationRepository
@@ -31,14 +30,8 @@ class ValpasRouhintaService(application: KoskiApplication) {
     (hetut: Seq[String], language: String, password: Option[String])
     (implicit session: ValpasSession)
   : Either[HttpStatus, OppilaitosRaporttiResponse] = {
-    val t = new LocalizationReader(localization, language)
     haeHetulistanPerusteella(hetut)
-      .map(ValpasHeturouhintaSheets(_, t).build())
-      .map(asOppilaitosRaporttiResponse(
-        title = t.get("rouhinta_hetulista_otsikko"),
-        filename = t.get("rouhinta_hetulista_tiedostonimi", Map("pvm" -> rajapäivät.tarkastelupäivä.format(DateTimeFormatter.ISO_DATE))),
-        password = password,
-      ))
+      .map(asHeturouhintaExcelResponse(language, password, hetut.size))
   }
 
   def haeKunnanPerusteella
@@ -58,12 +51,37 @@ class ValpasRouhintaService(application: KoskiApplication) {
   : Either[HttpStatus, OppilaitosRaporttiResponse] = {
     val t = new LocalizationReader(localization, language)
     haeKunnanPerusteella(kunta)
-      .map(ValpasKuntarouhintaSheets(_, t).build())
-      .map(asOppilaitosRaporttiResponse(
+      .map(asKuntarouhintaExcelResponse(language, password))
+  }
+
+  private def asHeturouhintaExcelResponse
+    (language: String, password: Option[String], inputSize: Int)
+    (tulos: HeturouhinnanTulos) =
+  {
+    rouhintaTimed("asExcelResponse", inputSize) {
+      val t = new LocalizationReader(localization, language)
+      val sheets = ValpasHeturouhintaSheets(tulos, t).build()
+      asOppilaitosRaporttiResponse(
+        title = t.get("rouhinta_hetulista_otsikko"),
+        filename = t.get("rouhinta_hetulista_tiedostonimi", Map("pvm" -> rajapäivät.tarkastelupäivä.format(DateTimeFormatter.ISO_DATE))),
+        password = password,
+      )(sheets)
+    }
+  }
+
+  private def asKuntarouhintaExcelResponse
+    (language: String, password: Option[String])
+    (tulos: KuntarouhinnanTulos) =
+  {
+    rouhintaTimed("asExcelResponse", tulos.eiOppivelvollisuuttaSuorittavat.size) {
+      val t = new LocalizationReader(localization, language)
+      val sheets = ValpasKuntarouhintaSheets(tulos, t).build()
+      asOppilaitosRaporttiResponse(
         title = t.get("rouhinta_kunta_otsikko"),
         filename = t.get("rouhinta_kunta_tiedostonimi", Map("pvm" -> rajapäivät.tarkastelupäivä.format(DateTimeFormatter.ISO_DATE))),
         password = password,
-      ))
+      )(sheets)
+    }
   }
 
   private def asOppilaitosRaporttiResponse(title: String, filename: String, password: Option[String])(sheets: Seq[DataSheet]) = {
