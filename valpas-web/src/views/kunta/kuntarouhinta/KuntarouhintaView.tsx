@@ -1,15 +1,26 @@
-import React, { useMemo } from "react"
-import { fetchKuntarouhinta, fetchKuntarouhintaCache } from "../../../api/api"
-import { useApiMethod, useCacheWithParams } from "../../../api/apiHooks"
-import { isError, isLoading, isSuccess } from "../../../api/apiUtils"
+import React, { useCallback, useMemo } from "react"
+import {
+  downloadKuntarouhinta,
+  fetchKuntarouhinta,
+  fetchKuntarouhintaCache,
+} from "../../../api/api"
+import {
+  ApiMethodHook,
+  useApiMethod,
+  useCacheWithParams,
+} from "../../../api/apiHooks"
+import { isError, isInitial, isLoading, isSuccess } from "../../../api/apiUtils"
+import { ButtonGroup } from "../../../components/buttons/ButtonGroup"
 import { RaisedButton } from "../../../components/buttons/RaisedButton"
 import {
   Card,
+  CardBody,
   CardHeader,
   ConstrainedCardBody,
 } from "../../../components/containers/cards"
 import { Page } from "../../../components/containers/Page"
 import { Spinner } from "../../../components/icons/Spinner"
+import { Password } from "../../../components/Password"
 import {
   getOrganisaatiot,
   OrganisaatioValitsin,
@@ -22,6 +33,7 @@ import {
   withRequiresKuntavalvonta,
 } from "../../../state/accessRights"
 import { KuntarouhintaInput } from "../../../state/apitypes/rouhinta"
+import { usePassword } from "../../../state/password"
 import {
   kuntarouhintaPathWithOid,
   OrganisaatioOidRouteProps,
@@ -87,11 +99,19 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
       rouhintaQuery
     )
 
-    const runQuery = () => {
+    const fetchTableData = useCallback(() => {
       if (kunta?.koodiarvo) {
         rouhintaFetch.call(createQuery(kunta.koodiarvo))
       }
-    }
+    }, [kunta?.koodiarvo, rouhintaFetch])
+
+    const password = usePassword()
+    const rouhintaDownload = useApiMethod(downloadKuntarouhinta)
+    const downloadData = useCallback(() => {
+      if (kunta?.koodiarvo) {
+        rouhintaDownload.call(createQuery(kunta.koodiarvo, password))
+      }
+    }, [kunta?.koodiarvo, password, rouhintaDownload])
 
     return (
       <Page>
@@ -103,55 +123,83 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
           onChange={changeOrganisaatio}
         />
         <KuntaNavigation selectedOrganisaatio={organisaatioOid} />
-        <Card>
-          <CardHeader>
-            {kunta?.nimi && `${getLocalized(kunta.nimi)}: `}
-            <T id="rouhinta_taulukon_otsikko" />
-            {isSuccess(rouhintaFetch) && (
-              <Counter>
-                {rouhintaFetch.data.eiOppivelvollisuuttaSuorittavat.length}
-              </Counter>
-            )}
-          </CardHeader>
-          <ConstrainedCardBody>
-            {!rouhintaData && (
-              <FetchDataButton
-                isLoading={isLoading(rouhintaFetch)}
-                onClick={runQuery}
-              />
-            )}
-            {isLoading(rouhintaFetch) && <Spinner />}
-            {rouhintaData && (
-              <KuntarouhintaTable
-                data={rouhintaData}
-                organisaatioOid={organisaatioOid}
-              />
-            )}
-            {isError(rouhintaFetch) && (
-              <ApiErrors errors={rouhintaFetch.errors} />
-            )}
-          </ConstrainedCardBody>
-        </Card>
+
+        {!rouhintaData ? (
+          <FetchDataButton
+            rouhintaFetch={rouhintaFetch}
+            rouhintaDownload={rouhintaDownload}
+            onFetchClick={fetchTableData}
+            onDownloadClick={downloadData}
+            password={password}
+          />
+        ) : (
+          <Card>
+            <CardHeader>
+              {kunta?.nimi && `${getLocalized(kunta.nimi)}: `}
+              <T id="rouhinta_taulukon_otsikko" />
+              {isSuccess(rouhintaFetch) && (
+                <Counter>
+                  {rouhintaFetch.data.eiOppivelvollisuuttaSuorittavat.length}
+                </Counter>
+              )}
+            </CardHeader>
+            <ConstrainedCardBody>
+              {isError(rouhintaDownload) && (
+                <ApiErrors errors={rouhintaDownload.errors} />
+              )}
+              {rouhintaData && (
+                <KuntarouhintaTable
+                  data={rouhintaData}
+                  organisaatioOid={organisaatioOid}
+                />
+              )}
+            </ConstrainedCardBody>
+          </Card>
+        )}
       </Page>
     )
   }
 )
 
 type FetchDataButtonProps = {
-  isLoading: boolean
-  onClick: () => void
+  rouhintaFetch: ApiMethodHook<any, any>
+  rouhintaDownload: ApiMethodHook<any, any>
+  onFetchClick: () => void
+  onDownloadClick: () => void
+  password: string
 }
 
-const FetchDataButton = (props: FetchDataButtonProps) => (
-  <div>
-    <p>
-      <T id="rouhinta_kuntahaku_latausohje" />
-    </p>
-    <RaisedButton onClick={props.onClick} disabled={props.isLoading}>
-      <T id="rouhinta_btn_näytä_selaimessa" />
-    </RaisedButton>
-  </div>
-)
+const FetchDataButton = (props: FetchDataButtonProps) => {
+  const loading =
+    isLoading(props.rouhintaFetch) || isLoading(props.rouhintaDownload)
+  return (
+    <Card>
+      <CardBody>
+        <p>
+          <T id="rouhinta_kuntahaku_latausohje" />
+        </p>
+        <ButtonGroup>
+          <RaisedButton onClick={props.onFetchClick} disabled={loading}>
+            <T id="rouhinta_btn_näytä_selaimessa" />
+          </RaisedButton>
+          <RaisedButton onClick={props.onDownloadClick} disabled={loading}>
+            <T id="rouhinta_btn_lataa_tiedosto" />
+          </RaisedButton>
+        </ButtonGroup>
+        {!isInitial(props.rouhintaDownload) && (
+          <Password>{props.password}</Password>
+        )}
+        {loading && <Spinner />}
+        {isError(props.rouhintaFetch) && (
+          <ApiErrors errors={props.rouhintaFetch.errors} />
+        )}
+        {isError(props.rouhintaDownload) && (
+          <ApiErrors errors={props.rouhintaDownload.errors} />
+        )}
+      </CardBody>
+    </Card>
+  )
+}
 
 const OrganisaatioMissingView = () => (
   <ErrorView
@@ -160,6 +208,10 @@ const OrganisaatioMissingView = () => (
   />
 )
 
-const createQuery = (kuntakoodi: string): KuntarouhintaInput => ({
+const createQuery = (
+  kuntakoodi: string,
+  password?: string
+): KuntarouhintaInput => ({
   kunta: kuntakoodi,
+  password,
 })
