@@ -34,10 +34,15 @@ export const parseQueryFromProps = (
     : {}
 }
 
+export type PathDeclaration<A extends any[]> = {
+  route(basePath?: string): string
+  href(basePath?: string | null, ...args: A): string
+}
+
 const declarePath = <A extends any[] = never[]>(
   route: string,
   mapParams: (...args: A) => object = () => ({})
-) => {
+): PathDeclaration<A> => {
   const getRoute = (basePath: string = "") => `${basePath}/${route}`
   return {
     route: getRoute,
