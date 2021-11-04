@@ -298,5 +298,8 @@
   "rouhinta_nimi": "Nimi",
   "rouhinta_syntymäpäivä": "Syntymäpäivä",
   "rouhinta_taulukon_otsikko": "Oppivelvolliset ilman opiskelupaikkaa",
+  "rouhinta_kuntahaku_latausohje": "Kuntakohtaisten tietojen lataaminen on tavallista hitaampi toiminto. Voit hakea tiedot näytettäväksi joko selaimessa tai ladata ne tietokoneellesi tiedostona.",
+  "rouhinta_btn_näytä_selaimessa": "Näytä selaimessa",
+  "rouhinta_btn_lataa_tiedosto": "Lataa tiedosto (.xlsx)",
   "tiedoston_lataus_epäonnistui": "Tiedoston lataus epäonnistui"
 }

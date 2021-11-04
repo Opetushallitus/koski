@@ -1,8 +1,8 @@
-import React, { useCallback, useMemo } from "react"
-import { useHistory } from "react-router-dom"
+import React, { useMemo } from "react"
 import { fetchKuntarouhinta, fetchKuntarouhintaCache } from "../../../api/api"
-import { useApiWithParams } from "../../../api/apiHooks"
+import { useApiMethod, useCacheWithParams } from "../../../api/apiHooks"
 import { isError, isLoading, isSuccess } from "../../../api/apiUtils"
+import { RaisedButton } from "../../../components/buttons/RaisedButton"
 import {
   Card,
   CardHeader,
@@ -16,18 +16,17 @@ import {
 } from "../../../components/shared/OrganisaatioValitsin"
 import { Counter } from "../../../components/typography/Counter"
 import { ApiErrors } from "../../../components/typography/error"
-import { getLanguage, getLocalized, T, t } from "../../../i18n/i18n"
+import { getLocalized, T, t } from "../../../i18n/i18n"
 import {
   useOrganisaatiotJaKäyttöoikeusroolit,
   withRequiresKuntavalvonta,
 } from "../../../state/accessRights"
 import { KuntarouhintaInput } from "../../../state/apitypes/rouhinta"
-import { useBasePath } from "../../../state/basePath"
-import { Oid } from "../../../state/common"
 import {
   kuntarouhintaPathWithOid,
   OrganisaatioOidRouteProps,
 } from "../../../state/paths"
+import { useRedirectToOrganisaatio } from "../../../state/useRedirect"
 import { ErrorView } from "../../ErrorView"
 import { OrganisaatioAutoRedirect } from "../../OrganisaatioAutoRedirect"
 import { KuntaNavigation } from "../KuntaNavigation"
@@ -65,17 +64,8 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
       [organisaatiotJaKäyttöoikeusroolit]
     )
 
-    const history = useHistory()
-    const basePath = useBasePath()
-    const changeOrganisaatio = useCallback(
-      (oid?: Oid) => {
-        if (oid) {
-          history.push(
-            kuntarouhintaPathWithOid.href(basePath, { organisaatioOid: oid })
-          )
-        }
-      },
-      [basePath, history]
+    const changeOrganisaatio = useRedirectToOrganisaatio(
+      kuntarouhintaPathWithOid
     )
 
     const kunta = useMemo(
@@ -83,24 +73,25 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
       [organisaatiot, organisaatioOid]
     )
 
-    const rouhintaQuery: [query: KuntarouhintaInput] | undefined = useMemo(
-      () =>
-        kunta?.koodiarvo
-          ? [
-              {
-                kunta: kunta.koodiarvo,
-                lang: getLanguage(),
-              },
-            ]
-          : undefined,
+    const rouhintaQuery: [KuntarouhintaInput] | undefined = useMemo(
+      () => kunta && [createQuery(kunta.koodiarvo)],
       [kunta]
     )
 
-    const rouhintaFetch = useApiWithParams(
+    const rouhintaFetch = useApiMethod(
       fetchKuntarouhinta,
-      rouhintaQuery,
       fetchKuntarouhintaCache
     )
+    const rouhintaData = useCacheWithParams(
+      fetchKuntarouhintaCache,
+      rouhintaQuery
+    )
+
+    const runQuery = () => {
+      if (kunta?.koodiarvo) {
+        rouhintaFetch.call(createQuery(kunta.koodiarvo))
+      }
+    }
 
     return (
       <Page>
@@ -123,10 +114,16 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
             )}
           </CardHeader>
           <ConstrainedCardBody>
+            {!rouhintaData && (
+              <FetchDataButton
+                isLoading={isLoading(rouhintaFetch)}
+                onClick={runQuery}
+              />
+            )}
             {isLoading(rouhintaFetch) && <Spinner />}
-            {isSuccess(rouhintaFetch) && (
+            {rouhintaData && (
               <KuntarouhintaTable
-                data={rouhintaFetch.data}
+                data={rouhintaData}
                 organisaatioOid={organisaatioOid}
               />
             )}
@@ -140,9 +137,29 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
   }
 )
 
+type FetchDataButtonProps = {
+  isLoading: boolean
+  onClick: () => void
+}
+
+const FetchDataButton = (props: FetchDataButtonProps) => (
+  <div>
+    <p>
+      <T id="rouhinta_kuntahaku_latausohje" />
+    </p>
+    <RaisedButton onClick={props.onClick} disabled={props.isLoading}>
+      <T id="rouhinta_btn_näytä_selaimessa" />
+    </RaisedButton>
+  </div>
+)
+
 const OrganisaatioMissingView = () => (
   <ErrorView
     title={t("hakutilanne__ei_oikeuksia_title")}
     message={t("hakutilanne__ei_oikeuksia_teksti")}
   />
 )
+
+const createQuery = (kuntakoodi: string): KuntarouhintaInput => ({
+  kunta: kuntakoodi,
+})
