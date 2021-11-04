@@ -185,6 +185,16 @@ object KoskiTables {
     def * = (username, ip) <> (OppilaitosIPOsoiteRow.tupled, OppilaitosIPOsoiteRow.unapply)
   }
 
+  class PoistettuOpiskeluoikeusTable(tag: Tag) extends Table[PoistettuOpiskeluoikeusRow] (tag, "poistettu_opiskeluoikeus") {
+    val oid = column[String]("oid", O.PrimaryKey)
+    val päättymispäivä = column[Option[Date]]("paattymispaiva")
+    val lähdejärjestelmäKoodi = column[Option[String]]("lahdejarjestelma_koodi")
+    val lähdejärjestelmäId = column[Option[String]]("lahdejarjestelma_id")
+    val aikaleima = column[Timestamp]("aikaleima")
+
+    def * = (oid, päättymispäivä, lähdejärjestelmäKoodi, lähdejärjestelmäId, aikaleima) <> (PoistettuOpiskeluoikeusRow.tupled, PoistettuOpiskeluoikeusRow.unapply)
+  }
+
   val Preferences = TableQuery[PreferencesTable]
 
   val SuoritusJako = TableQuery[SuoritusjakoTable]
@@ -204,6 +214,8 @@ object KoskiTables {
   val OppilaitosIPOsoite = TableQuery[OppilaitosIPOsoiteTable]
 
   val OpiskeluoikeusHistoria = TableQuery[OpiskeluoikeusHistoryTable]
+
+  val PoistetutOpiskeluoikeudet = TableQuery[PoistettuOpiskeluoikeusTable]
 
   def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiSpecificSession): Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq] = {
     val query = if (user.hasGlobalReadAccess || user.hasGlobalKoulutusmuotoReadAccess) {
@@ -287,3 +299,5 @@ case class SuoritusjakoRowV2(secret: String, oppijaOid: String, data: JValue, vo
 case class MyDataJakoRow(asiakas: String, oppijaOid: String, voimassaAsti: Date, aikaleima: Timestamp)
 
 case class OidVersionTimestamp(oid: String, versionumero: Int, aikaleima: LocalDateTime)
+
+case class PoistettuOpiskeluoikeusRow(oid: String, päättymispäivä: Option[Date], lähdejärjestelmäKoodi: Option[String], lähdejärjestelmäId: Option[String], aikaleima: Timestamp)

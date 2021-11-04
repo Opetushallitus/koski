@@ -248,3 +248,5 @@ trait Laajuudellinen extends Suoritus {
 trait ErityisopetuksellinenPäätasonSuoritus extends PäätasonSuoritus {
   def sisältääOsaAikaisenErityisopetuksen: Boolean
 }
+
+trait SuostumusPeruttavissaOpiskeluoikeudelta extends PäätasonSuoritus

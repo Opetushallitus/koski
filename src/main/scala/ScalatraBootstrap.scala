@@ -31,6 +31,7 @@ import fi.oph.koski.raportointikanta.{RaportointikantaService, RaportointikantaS
 import fi.oph.koski.servlet._
 import fi.oph.koski.sso.{CasServlet, LocalLoginServlet, SSOConfig}
 import fi.oph.koski.suoritusjako.{SuoritusjakoServlet, SuoritusjakoServletV2}
+import fi.oph.koski.suostumus.SuostumuksenPeruutusServlet
 import fi.oph.koski.sure.SureServlet
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
 import fi.oph.koski.tutkinto.TutkinnonPerusteetServlet
@@ -40,9 +41,9 @@ import fi.oph.koski.valpas.valpasuser.ValpasLogoutServlet
 import fi.oph.koski.valpas._
 import fi.oph.koski.valvira.ValviraServlet
 import fi.oph.koski.ytr.{YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
-import org.scalatra._
 
 import javax.servlet.ServletContext
+import org.scalatra._
 
 class ScalatraBootstrap extends LifeCycle with Logging with Timing {
   override def init(context: ServletContext): Unit = try {
@@ -89,6 +90,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     mount("/api/opiskeluoikeus/perustiedot", new OpiskeluoikeudenPerustiedotServlet)
     mount("/api/opiskeluoikeus/validate", new OpiskeluoikeusValidationServlet)
     mount("/api/opiskeluoikeus/historia", new KoskiHistoryServlet)
+    mount("/api/opiskeluoikeus/suostumuksenperuutus", new SuostumuksenPeruutusServlet)
     mount("/api/oppija", new OppijaServlet)
     mount("/api/v2/oppija", new OppijaServletV2)
     mount("/api/oppilaitos", new OppilaitosServlet)

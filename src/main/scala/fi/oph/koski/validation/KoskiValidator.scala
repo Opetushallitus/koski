@@ -16,6 +16,7 @@ import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.Opiskeluoikeus.{koulutustoimijaTraversal, oppilaitosTraversal, toimipisteetTraversal}
 import fi.oph.koski.schema.{VapaanSivistystyönPäätasonSuoritus, _}
+import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.tutkinto.Koulutustyyppi._
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.util.Timing
@@ -34,6 +35,7 @@ class KoskiValidator(
   henkilöRepository: HenkilöRepository,
   ePerusteet: EPerusteetRepository,
   validatingAndResolvingExtractor: ValidatingAndResolvingExtractor,
+  suostumuksenPeruutusService: SuostumuksenPeruutusService,
   config: Config
 ) extends Timing {
 
@@ -110,7 +112,8 @@ class KoskiValidator(
               NuortenPerusopetuksenOpiskeluoikeusValidation.validateNuortenPerusopetuksenOpiskeluoikeus(opiskeluoikeus),
               TiedonSiirrostaPuuttuvatSuorituksetValidation.validateEiSamaaAlkamispaivaa(opiskeluoikeus, koskiOpiskeluoikeudet),
               HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, Nil))),
-              TilanAsettaminenKunVahvistettuSuoritusValidation.validateOpiskeluoikeus(opiskeluoikeus)
+              TilanAsettaminenKunVahvistettuSuoritusValidation.validateOpiskeluoikeus(opiskeluoikeus),
+              SuostumuksenPeruutusValidaatiot.validateSuostumuksenPeruutus(opiskeluoikeus, suostumuksenPeruutusService)
             )
           } match {
           case HttpStatus.ok => Right(opiskeluoikeus)

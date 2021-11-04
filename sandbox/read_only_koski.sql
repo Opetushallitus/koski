@@ -9,4 +9,5 @@ revoke insert, update, delete, truncate on preferences from oph;
 revoke insert, update, delete, truncate on schema_version from oph;
 revoke insert, update, delete, truncate on suoritusjako from oph;
 revoke insert, update, delete, truncate on suoritusjako_v2 from oph;
+revoke insert, update, delete, truncate on poistettu_opiskeluoikeus from oph;
 ALTER ROLE oph NOSUPERUSER CREATEDB CREATEROLE INHERIT LOGIN;

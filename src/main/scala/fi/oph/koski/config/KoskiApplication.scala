@@ -27,6 +27,7 @@ import fi.oph.koski.raportointikanta.{Public, RaportointiDatabase, Raportointika
 import fi.oph.koski.schedule.{KoskiScheduledTasks, PerustiedotSyncScheduler}
 import fi.oph.koski.sso.{CasService, KoskiSessionRepository}
 import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoRepositoryV2, SuoritusjakoService, SuoritusjakoServiceV2}
+import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.userdirectory.DirectoryClient
@@ -97,6 +98,7 @@ class KoskiApplication(
     henkilöRepository,
     ePerusteet,
     validatingAndResolvingExtractor,
+    suostumuksenPeruutusService,
     config
   )
   lazy val elasticSearch = ElasticSearch(config)
@@ -137,6 +139,7 @@ class KoskiApplication(
   lazy val oidGenerator = OidGenerator(config)
   lazy val hetu = new Hetu(config.getBoolean("acceptSyntheticHetus"))
   lazy val indexManager = new IndexManager(List(perustiedotIndexer.index, tiedonsiirtoService.index))
+  lazy val suostumuksenPeruutusService = SuostumuksenPeruutusService(this)
   lazy val globaaliValidator: KoskiGlobaaliValidator = new KoskiGlobaaliValidator(
     opiskeluoikeusRepository,
     valpasRajapäivätService,

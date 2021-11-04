@@ -174,6 +174,16 @@ Will retry soon."""
     index.deleteByQuery(query, refresh)
   }
 
+  def deleteByIds(ids: List[Int], refresh: Boolean): Int = {
+    val query: JValue = toJValue(Map(
+      "query" -> Map(
+        "bool" -> Map(
+          "should" -> Map(
+            "terms" -> Map(
+              "id" -> ids))))))
+    index.deleteByQuery(query, refresh)
+  }
+
   private def indexAllDocuments() = {
     logger.info("Start indexing all perustiedot documents")
     val bufferSize = 100
