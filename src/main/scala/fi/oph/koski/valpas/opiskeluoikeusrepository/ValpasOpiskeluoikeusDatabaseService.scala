@@ -94,7 +94,11 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     val timedBlockname = oppijaOids.size match {
       case 0 => "getOppijatMultiple"
       case 1 => "getOppijatSingle"
-      case _ => "getOppijatMultipleOids"
+      case n if n <= 1000 => "getOppijatMultipleOids2To1000"
+      case n if n <= 10000 => "getOppijatMultipleOids1001To10000"
+      case n if n <= 50000 => "getOppijatMultipleOids10001To50000"
+      case n if n <= 100000 => "getOppijatMultipleOids50000To100000"
+      case _ => "getOppijatMultipleOidsOver100000"
     }
 
     val haePerusopetuksenHakeutumisvalvontatiedot = Seq(HakeutumisvalvontaTieto.Perusopetus, HakeutumisvalvontaTieto.Kaikki).contains(hakeutumisvalvontaTieto)
@@ -1303,6 +1307,25 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       LEFT JOIN oppivelvollisuustiedot ON (r_henkilo.master_oid = oppivelvollisuustiedot.oppija_oid)
       WHERE
         r_henkilo.hetu = any($hetut)
+      """.as[HetuMasterOid])
+  }
+
+  def haeOppivelvollisetKotikunnalla(kunta: String): Seq[HetuMasterOid] = {
+    val tarkastelupäivä = rajapäivätService.tarkastelupäivä
+
+    db.runDbSync(sql"""
+      SELECT
+        r_henkilo.master_oid AS master_oid,
+        r_henkilo.hetu AS hetu,
+        r_henkilo.syntymaaika AS syntymaaika,
+        TRUE as oppivelvollisuus_voimassa
+      FROM
+        r_henkilo
+        JOIN oppivelvollisuustiedot
+          ON (r_henkilo.master_oid = oppivelvollisuustiedot.oppija_oid)
+            AND ($tarkastelupäivä BETWEEN oppivelvollisuustiedot.oppivelvollisuusvoimassaalkaen AND oppivelvollisuustiedot.oppivelvollisuusvoimassaasti)
+      WHERE
+        r_henkilo.kotikunta = $kunta
       """.as[HetuMasterOid])
   }
 }

@@ -22,4 +22,14 @@ object Kunta extends Logging {
       case None => None
     }
   }
+
+  def kuntaExists(koodi: String, koodistoPalvelu: KoodistoPalvelu): Boolean = {
+    val koodistoKoodit = koodistoPalvelu.getKoodistoKoodit(koodistoPalvelu.getLatestVersionRequired("kunta"))
+    koodistoKoodit.find(_.koodiArvo == koodi).isDefined
+  }
+
+  // Kuntakoodit, jotka indikoivat puuttuvaa tietoa tai esim. ulkomailla-asumista
+  def onPuuttuvaKunta(koodi: String): Boolean = {
+    Set("198", "199", "200", "999").contains(koodi)
+  }
 }
