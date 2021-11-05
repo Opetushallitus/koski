@@ -22,7 +22,12 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
         val secret = SuoritusjakoSecret.generateNew
         val suoritusjako = suoritusjakoRepository.create(secret, oppijaOid, suoritusIds)
         AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS, koskiSession, Map(oppijaHenkiloOid -> oppijaOid)))
-        opiskeluoikeudet.map(oo => oppijaFacade.merkitseSuoritusjakoTehdyksi(oo.oid.get))
+        // Kaikkia opiskeluoikeuksia ei talleteta Koskeen, jolloin niillä ei välttämättä ole oidia.
+        // Ei yritetä merkata sellaisille opiskeluoikeuksille suoritusjakoa tehdyksi.
+        opiskeluoikeudet.map(_.oid match {
+          case Some(oid) => oppijaFacade.merkitseSuoritusjakoTehdyksi(oid)
+          case None =>
+        })
         suoritusjako
     }
   }

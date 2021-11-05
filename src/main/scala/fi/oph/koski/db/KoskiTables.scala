@@ -84,7 +84,7 @@ object KoskiTables {
        opiskeluoikeus.getOppilaitos.oid,
        opiskeluoikeus.mitätöity,
        Date.valueOf(opiskeluoikeus.alkamispäivä.get),
-       opiskeluoikeus.päättymispäivä.map(Date.valueOf)),
+       opiskeluoikeus.päättymispäivä.map(Date.valueOf))
     }
   }
 
