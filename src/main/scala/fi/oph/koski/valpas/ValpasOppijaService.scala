@@ -13,6 +13,7 @@ import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.db.ValpasSchema.{OpiskeluoikeusLisätiedotKey, OpiskeluoikeusLisätiedotRow, OppivelvollisuudenKeskeytysRow}
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, ValpasHakukoosteService}
 import fi.oph.koski.valpas.opiskeluoikeusrepository._
+import fi.oph.koski.valpas.rouhinta.ValpasRouhintaTiming
 import fi.oph.koski.valpas.valpasrepository._
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystiedot
@@ -125,7 +126,7 @@ case class OppijaKuntailmoituksillaSuppeatTiedot (
 
 class ValpasOppijaService(
   application: KoskiApplication
-) extends Logging with Timing {
+) extends Logging with ValpasRouhintaTiming {
   private val hakukoosteService = ValpasHakukoosteService(application.config, application.validatingAndResolvingExtractor)
   private val opiskeluoikeusDbService = application.valpasOpiskeluoikeusDatabaseService
   private val ovKeskeytysService = new OppivelvollisuudenKeskeytysService(application)
@@ -421,13 +422,22 @@ class ValpasOppijaService(
     (oppijaOids: Seq[ValpasHenkilö.Oid])
     (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
-    HttpStatus.foldEithers(
-      opiskeluoikeusDbService.getOppijat(oppijaOids, rajaaOVKelpoisiinOpiskeluoikeuksiin = false)
-      .map(asValpasOppijaLaajatTiedot)
-    )
-      .flatMap(os => HttpStatus.foldEithers(os.map(o => accessResolver.withOppijaAccess(o))))
-      .map(_.map(asEmptyOppijaHakutilanteillaLaajatTiedot)) // Huom! Ei haeta hakutietoja, halutaan vain vaihtaa tyyppi fetchOppivelvollisuudenKeskeytykset-kutsua varten
-      .map(_.map(fetchOppivelvollisuudenKeskeytykset))
+    rouhintaTimed("getOppijalista", oppijaOids.size) {
+      HttpStatus.foldEithers({
+        val oppijat = opiskeluoikeusDbService.getOppijat(oppijaOids, rajaaOVKelpoisiinOpiskeluoikeuksiin = false)
+
+        rouhintaTimed("getOppijalista:asValpasOppijaLaajatTiedot", oppijat.size) {
+          oppijat.map(asValpasOppijaLaajatTiedot)
+        }
+      })
+        .flatMap(os => HttpStatus.foldEithers({
+          rouhintaTimed("getOppijalista:accessResolver", os.size) {
+            os.map(o => accessResolver.withOppijaAccess(o))
+          }
+        }))
+        .map(asEmptyOppijaHakutilanteillaLaajatTiedot) // Huom! Ei haeta hakutietoja, halutaan vain vaihtaa tyyppi fetchOppivelvollisuudenKeskeytykset-kutsua varten
+        .map(fetchOppivelvollisuudenKeskeytykset)
+    }
   }
 
   def getOppijaLaajatTiedotYhteystiedoilla
@@ -510,6 +520,12 @@ class ValpasOppijaService(
     OppijaHakutilanteillaLaajatTiedot.apply(oppija = oppija, yhteystietoryhmänNimi = localizationRepository.get("oppija__yhteystiedot"), haut = hakukoosteet)
   }
 
+  private def asEmptyOppijaHakutilanteillaLaajatTiedot(oppijat: Seq[ValpasOppijaLaajatTiedot]): Seq[OppijaHakutilanteillaLaajatTiedot] = {
+    rouhintaTimed("asEmptyOppijaHakutilanteillaLaajatTiedot", oppijat.size) {
+      oppijat.map(asEmptyOppijaHakutilanteillaLaajatTiedot)
+    }
+  }
+
   private def asEmptyOppijaHakutilanteillaLaajatTiedot(oppija: ValpasOppijaLaajatTiedot): OppijaHakutilanteillaLaajatTiedot = {
     OppijaHakutilanteillaLaajatTiedot.apply(oppija = oppija, yhteystietoryhmänNimi = localizationRepository.get("oppija__yhteystiedot"), haut = Right(Seq.empty))
   }
@@ -588,6 +604,15 @@ class ValpasOppijaService(
 
       ValpasKuntailmoitusLaajatTiedotLisätiedoilla(kuntailmoitusWithIndex._1, aktiivinen)
     })
+  }
+
+
+  private def fetchOppivelvollisuudenKeskeytykset(
+    oppijat: Seq[OppijaHakutilanteillaLaajatTiedot]
+  ): Seq[OppijaHakutilanteillaLaajatTiedot] = {
+    rouhintaTimed("fetchOppivelvollisuudenKeskeytykset", oppijat.size) {
+      oppijat.map(fetchOppivelvollisuudenKeskeytykset)
+    }
   }
 
   private def fetchOppivelvollisuudenKeskeytykset(
