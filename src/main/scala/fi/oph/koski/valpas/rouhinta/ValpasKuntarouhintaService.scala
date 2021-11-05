@@ -20,14 +20,15 @@ class ValpasKuntarouhintaService(application: KoskiApplication) extends Database
       oppijaService
         .getOppijalista(oppivelvollisetKoskessa.map(_.masterOid))
         .map(oppivelvollisetKoskessa => {
-          val eiSuorittavat =
-            oppivelvollisetKoskessa
-              .map(ValpasRouhintaOppivelvollinen.apply)
-              .filterNot(_.suorittaaOppivelvollisuutta)
-
-          KuntarouhinnanTulos(
-            eiOppivelvollisuuttaSuorittavat = eiSuorittavat,
-          )
+          rouhintaTimed("haeKunnanPerusteella:KuntarouhinnanTulos", oppivelvollisetKoskessa.size) {
+            val eiSuorittavat =
+              oppivelvollisetKoskessa
+                .map(ValpasRouhintaOppivelvollinen.apply)
+                .filterNot(_.suorittaaOppivelvollisuutta)
+            KuntarouhinnanTulos(
+              eiOppivelvollisuuttaSuorittavat = eiSuorittavat,
+            )
+          }
         })
     }
   }
