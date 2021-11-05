@@ -87,7 +87,9 @@ export const KuntarouhintaTable = (props: KuntarouhintaTableProps) => {
     [basePath, props.data, props.organisaatioOid]
   )
 
-  return <DataTable columns={columns} data={data} />
+  return (
+    <DataTable className="kuntarouhintatable" columns={columns} data={data} />
+  )
 }
 
 const kuntarouhinnanTulosToTableData = (

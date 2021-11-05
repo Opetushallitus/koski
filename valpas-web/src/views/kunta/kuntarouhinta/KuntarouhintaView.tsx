@@ -129,7 +129,7 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
         <KuntaNavigation selectedOrganisaatio={organisaatioOid} />
 
         {!rouhintaData ? (
-          <FetchDataButton
+          <FetchDataConfirmation
             rouhintaFetch={rouhintaFetch}
             rouhintaDownload={rouhintaDownload}
             onFetchClick={fetchTableData}
@@ -140,7 +140,7 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
           <>
             <Card>
               <CardHeader className={b("cardheader")}>
-                <div>
+                <div className={b("cardheaderlabel")}>
                   {kunta?.nimi && `${getLocalized(kunta.nimi)}: `}
                   <T id="rouhinta_taulukon_otsikko" />
                   {isSuccess(rouhintaFetch) && (
@@ -190,17 +190,21 @@ type FetchDataButtonProps = {
   password: string
 }
 
-const FetchDataButton = (props: FetchDataButtonProps) => {
+const FetchDataConfirmation = (props: FetchDataButtonProps) => {
   const loading =
     isLoading(props.rouhintaFetch) || isLoading(props.rouhintaDownload)
   return (
-    <Card>
+    <Card id="rouhinta-fetch-confirm-dialog">
       <CardBody>
         <p>
           <T id="rouhinta_kuntahaku_latausohje" />
         </p>
         <ButtonGroup>
-          <RaisedButton onClick={props.onFetchClick} disabled={loading}>
+          <RaisedButton
+            id="confirm-rouhinta-fetch-btn"
+            onClick={props.onFetchClick}
+            disabled={loading}
+          >
             <T id="rouhinta_btn_näytä_selaimessa" />
           </RaisedButton>
           <RaisedButton onClick={props.onDownloadClick} disabled={loading}>

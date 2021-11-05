@@ -74,3 +74,6 @@ export const toggleTableSort = async (selector: string, nthColumn: number) => {
   const label = await $(labelSelector)
   await label.click()
 }
+
+export const getExpectedRowCount = (displayValues: string) =>
+  displayValues.split("\n").filter((row) => row.trim().length > 0).length
