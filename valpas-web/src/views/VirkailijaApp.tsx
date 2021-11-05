@@ -16,7 +16,7 @@ import {
   storeLoginReturnUrl,
 } from "../state/auth"
 import { BasePathProvider, useBasePath } from "../state/basePath"
-import { FeatureFlagEnabler } from "../state/featureFlags"
+import { FeatureFlagEnabler, isFeatureFlagEnabled } from "../state/featureFlags"
 import {
   hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
   hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg,
@@ -96,6 +96,12 @@ const VirkailijaRoutes = () => {
         <Route exact path={`${basePath}/rouhinta`}>
           <FeatureFlagEnabler
             features={["rouhinta"]}
+            redirectTo={hakutilannePathWithoutOrg.href(basePath)}
+          />
+        </Route>
+        <Route exact path={`${basePath}/kuntarouhinta`}>
+          <FeatureFlagEnabler
+            features={["kuntarouhinta"]}
             redirectTo={hakutilannePathWithoutOrg.href(basePath)}
           />
         </Route>
@@ -252,21 +258,25 @@ const VirkailijaRoutes = () => {
             redirectUserWithoutAccessTo={rootPath.href(basePath)}
           />
         </Route>
-        <Route
-          exact
-          path={kuntarouhintaPathWithOid.route(basePath)}
-          render={(routeProps) => (
-            <KuntarouhintaView
+        {isFeatureFlagEnabled("kuntarouhinta") && (
+          <Route
+            exact
+            path={kuntarouhintaPathWithOid.route(basePath)}
+            render={(routeProps) => (
+              <KuntarouhintaView
+                redirectUserWithoutAccessTo={rootPath.href(basePath)}
+                {...routeProps}
+              />
+            )}
+          ></Route>
+        )}
+        {isFeatureFlagEnabled("kuntarouhinta") && (
+          <Route exact path={kuntarouhintaPathWithoutOid.route(basePath)}>
+            <KuntarouhintaViewWithoutOrg
               redirectUserWithoutAccessTo={rootPath.href(basePath)}
-              {...routeProps}
             />
-          )}
-        ></Route>
-        <Route exact path={kuntarouhintaPathWithoutOid.route(basePath)}>
-          <KuntarouhintaViewWithoutOrg
-            redirectUserWithoutAccessTo={rootPath.href(basePath)}
-          />
-        </Route>
+          </Route>
+        )}
         <Route exact path={käyttöoikeusPath.route(basePath)}>
           <AccessRightsView />
         </Route>
