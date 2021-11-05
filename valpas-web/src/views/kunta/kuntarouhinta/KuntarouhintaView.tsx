@@ -154,11 +154,16 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
                 </div>
                 <div>
                   {isInitial(rouhintaDownload) || isError(rouhintaDownload) ? (
-                    <RaisedButton onClick={downloadData}>
+                    <RaisedButton
+                      id="rouhinta-table-download-btn"
+                      onClick={downloadData}
+                    >
                       <T id="rouhinta_btn_lataa_tiedosto" />
                     </RaisedButton>
                   ) : (
-                    <Password>{password}</Password>
+                    <Password className={b("tablepassword")}>
+                      {password}
+                    </Password>
                   )}
                   {isLoading(rouhintaDownload) && <Spinner />}
                 </div>
@@ -207,12 +212,16 @@ const FetchDataConfirmation = (props: FetchDataButtonProps) => {
           >
             <T id="rouhinta_btn_näytä_selaimessa" />
           </RaisedButton>
-          <RaisedButton onClick={props.onDownloadClick} disabled={loading}>
+          <RaisedButton
+            id="confirm-rouhinta-download-btn"
+            onClick={props.onDownloadClick}
+            disabled={loading}
+          >
             <T id="rouhinta_btn_lataa_tiedosto" />
           </RaisedButton>
         </ButtonGroup>
         {!isInitial(props.rouhintaDownload) && (
-          <Password>{props.password}</Password>
+          <Password className={b("confirmpassword")}>{props.password}</Password>
         )}
         {loading && <Spinner />}
         {isError(props.rouhintaFetch) && (

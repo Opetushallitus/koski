@@ -37,3 +37,4 @@ valpas-web/dist
 valpas-web/node/
 valpas-web/.parcel-cache/
 valpas-web/.last-build
+valpas-web/test/download/

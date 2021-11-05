@@ -1,6 +1,7 @@
 import { kuntarouhintaPathWithOid } from "../../src/state/paths"
 import {
   clickElement,
+  expectElementEventuallyNotVisible,
   expectElementEventuallyVisible,
   textEventuallyEquals,
 } from "../integrationtests-env/browser/content"
@@ -9,6 +10,10 @@ import {
   dataTableEventuallyEquals,
   getExpectedRowCount,
 } from "../integrationtests-env/browser/datatable"
+import {
+  cleanupDownloads,
+  expectDownloadExists,
+} from "../integrationtests-env/browser/downloads"
 import { loginAs } from "../integrationtests-env/browser/reset"
 import { pyhtäänKuntaOid } from "./oids"
 import { selectOrganisaatioByNimi } from "./organisaatiovalitsin-helpers"
@@ -66,6 +71,39 @@ describe("Kuntarouhinta", () => {
       await clickNavTab(2)
 
       await expectPyhtääTableContents()
+    })
+  })
+
+  describe("Kuntarouhinnan tietojen lataaminen tiedostona", () => {
+    beforeAll(cleanupDownloads)
+
+    it("Tietojen lataus vahvistusdialogista", async () => {
+      await loginAs(pyhtäänKuntarouhintaPath, "valpas-monta")
+
+      await expectDataFetchConfirmDialogVisible()
+      await clickElement("#confirm-rouhinta-download-btn")
+
+      await expectElementEventuallyVisible(
+        ".kuntarouhintaview__confirmpassword"
+      )
+      await expectElementEventuallyNotVisible(".spinner")
+
+      await expectDownloadExists("oppijahaku-kunta-2021-09-05.xlsx")
+    })
+
+    it("Tietojen lataus taulukosta", async () => {
+      await loginAs(pyhtäänKuntarouhintaPath, "valpas-monta")
+      await urlIsEventually(pyhtäänKuntarouhintaPath)
+
+      await confirmDataFetch()
+      await expectPyhtääCardHeader()
+
+      await clickElement("#rouhinta-table-download-btn")
+
+      await expectElementEventuallyVisible(".kuntarouhintaview__tablepassword")
+      await expectElementEventuallyNotVisible(".spinner")
+
+      await expectDownloadExists("oppijahaku-kunta-2021-09-05.xlsx")
     })
   })
 })
