@@ -5,20 +5,20 @@ import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.valpas.opiskeluoikeusrepository.HetuMasterOid
-import fi.oph.koski.valpas.valpasuser.ValpasSession
 
 class ValpasKuntarouhintaService(application: KoskiApplication) extends DatabaseConverters with Logging with ValpasRouhintaTiming {
   private val oppijaService = application.valpasOppijaService
 
-  def haeKunnanPerusteella
+  def haeKunnanPerusteellaIlmanOikeustarkastusta
     (kunta: String)
-    (implicit session: ValpasSession)
   : Either[HttpStatus, KuntarouhinnanTulos] = {
     val oppivelvollisetKoskessa = getOppivelvollisetKotikunnalla(kunta)
 
     rouhintaTimed("haeKunnanPerusteella", oppivelvollisetKoskessa.size) {
       oppijaService
-        .getOppijalista(oppivelvollisetKoskessa.map(_.masterOid))
+        // Kunnan käyttäjällä on aina oikeudet kaikkiin oppijoihin, joilla on oppivelvollisuus voimassa, joten
+        // käyttöoikeustarkistusta ei tarvitse tehdä
+        .getOppijalistaIlmanOikeustarkastusta(oppivelvollisetKoskessa.map(_.masterOid))
         .map(oppivelvollisetKoskessa => {
           rouhintaTimed("haeKunnanPerusteella:KuntarouhinnanTulos", oppivelvollisetKoskessa.size) {
             val eiSuorittavat =

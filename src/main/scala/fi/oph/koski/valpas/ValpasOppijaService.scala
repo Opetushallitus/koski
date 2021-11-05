@@ -418,9 +418,8 @@ class ValpasOppijaService(
       .map(withOikeusTehdäKuntailmoitus)
   }
 
-  def getOppijalista
+  def getOppijalistaIlmanOikeustarkastusta
     (oppijaOids: Seq[ValpasHenkilö.Oid])
-    (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
     rouhintaTimed("getOppijalista", oppijaOids.size) {
       HttpStatus.foldEithers({
@@ -430,11 +429,6 @@ class ValpasOppijaService(
           oppijat.map(asValpasOppijaLaajatTiedot)
         }
       })
-        .flatMap(os => HttpStatus.foldEithers({
-          rouhintaTimed("getOppijalista:accessResolver", os.size) {
-            os.map(o => accessResolver.withOppijaAccess(o))
-          }
-        }))
         .map(asEmptyOppijaHakutilanteillaLaajatTiedot) // Huom! Ei haeta hakutietoja, halutaan vain vaihtaa tyyppi fetchOppivelvollisuudenKeskeytykset-kutsua varten
         .map(fetchOppivelvollisuudenKeskeytykset)
     }
