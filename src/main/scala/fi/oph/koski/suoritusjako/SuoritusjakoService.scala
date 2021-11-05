@@ -1,8 +1,9 @@
 package fi.oph.koski.suoritusjako
 
 
-import java.time.LocalDate
+import fi.oph.koski.db.KoskiTables
 
+import java.time.LocalDate
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession
@@ -15,12 +16,15 @@ import fi.oph.koski.util.WithWarnings
 
 class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppijaFacade: KoskiOppijaFacade) extends Logging {
   def put(oppijaOid: String, suoritusIds: List[SuoritusIdentifier])(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, Suoritusjako] = {
-    assertSuorituksetExist(oppijaOid, suoritusIds).toLeft(SuoritusjakoSecret.generateNew)
-      .flatMap { secret =>
+    assertSuorituksetExist(oppijaOid, suoritusIds) match {
+      case Left(status) => Left(status)
+      case Right(opiskeluoikeudet) =>
+        val secret = SuoritusjakoSecret.generateNew
         val suoritusjako = suoritusjakoRepository.create(secret, oppijaOid, suoritusIds)
         AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS, koskiSession, Map(oppijaHenkiloOid -> oppijaOid)))
+        opiskeluoikeudet.map(oo => oppijaFacade.merkitseSuoritusjakoTehdyksi(oo.oid.get))
         suoritusjako
-      }
+    }
   }
 
   def delete(oppijaOid: String, secret: String): HttpStatus = {
@@ -58,20 +62,20 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
     }
   }
 
-  private def assertSuorituksetExist(oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Option[HttpStatus] = {
+  private def assertSuorituksetExist(oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Either[HttpStatus, Seq[Opiskeluoikeus]] = {
     oppijaFacade.findOppija(oppijaOid)(KoskiSpecificSession.systemUser).map { oppijaWithWarnings =>
       oppijaWithWarnings.map { oppija =>
         suoritusIds.map(suoritusId =>
-          oppija.opiskeluoikeudet.exists(oo =>
+          oppija.opiskeluoikeudet.find(oo =>
             oo.suoritukset.exists(isMatchingSuoritus(oo, _, suoritusId))
           )
         )
       }
     } match {
-      case Right(WithWarnings(matches, _)) if matches.isEmpty => Some(KoskiErrorCategory.badRequest.format())
-      case Right(WithWarnings(matches, _)) if matches.exists(!_) => Some(KoskiErrorCategory.notFound.suoritustaEiLöydy())
-      case Right(_) => None
-      case Left(status) => Some(status)
+      case Right(WithWarnings(matches, _)) if matches.isEmpty => Left(KoskiErrorCategory.badRequest.format())
+      case Right(WithWarnings(matches, _)) if matches.exists(_.isEmpty) => Left(KoskiErrorCategory.notFound.suoritustaEiLöydy())
+      case Right(WithWarnings(matches, _)) => Right(matches.flatten)
+      case Left(status) => Left(status)
     }
   }
 

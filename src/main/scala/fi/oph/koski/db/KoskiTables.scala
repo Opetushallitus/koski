@@ -28,8 +28,9 @@ object KoskiTables {
     val koulutusmuoto = column[String]("koulutusmuoto")
     val alkamispäivä = column[Date]("alkamispaiva")
     val päättymispäivä = column[Option[Date]]("paattymispaiva")
+    val suoritusjakoTehty = column[Boolean]("suoritusjako_tehty")
 
-    def * = (id, oid, versionumero, aikaleima, oppijaOid, oppilaitosOid, koulutustoimijaOid, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä) <> (OpiskeluoikeusRow.tupled, OpiskeluoikeusRow.unapply)
+    def * = (id, oid, versionumero, aikaleima, oppijaOid, oppilaitosOid, koulutustoimijaOid, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä, suoritusjakoTehty) <> (OpiskeluoikeusRow.tupled, OpiskeluoikeusRow.unapply)
     def updateableFields = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, oppilaitosOid, mitätöity, alkamispäivä, päättymispäivä)
   }
 
@@ -56,7 +57,8 @@ object KoskiTables {
         opiskeluoikeus.mitätöity,
         opiskeluoikeus.tyyppi.koodiarvo,
         Date.valueOf(opiskeluoikeus.alkamispäivä.get),
-        opiskeluoikeus.päättymispäivä.map(Date.valueOf)
+        opiskeluoikeus.päättymispäivä.map(Date.valueOf),
+        false
       )
     }
 
@@ -82,7 +84,7 @@ object KoskiTables {
        opiskeluoikeus.getOppilaitos.oid,
        opiskeluoikeus.mitätöity,
        Date.valueOf(opiskeluoikeus.alkamispäivä.get),
-       opiskeluoikeus.päättymispäivä.map(Date.valueOf))
+       opiskeluoikeus.päättymispäivä.map(Date.valueOf)),
     }
   }
 
@@ -255,7 +257,8 @@ case class OpiskeluoikeusRow(id: Int,
   mitätöity: Boolean,
   koulutusmuoto: String,
   alkamispäivä: Date,
-  päättymispäivä: Option[Date]
+  päättymispäivä: Option[Date],
+  suoritusjakoTehty: Boolean
 ) {
   def toOpiskeluoikeus: Either[List[ValidationError], KoskeenTallennettavaOpiskeluoikeus] = {
     KoskiTables.OpiskeluoikeusTable.readAsOpiskeluoikeus(data, oid, versionumero, aikaleima)

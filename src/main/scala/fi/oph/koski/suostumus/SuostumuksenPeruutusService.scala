@@ -68,7 +68,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
   }
 
   def suostumusPeruttavissa(oo: Opiskeluoikeus, henkilö: HenkilönTunnisteet)(implicit user: KoskiSpecificSession) =
-    suorituksetPerutettavaaTyyppiä(oo) && !suoritusjakoTehty(oo, henkilö)
+    suorituksetPerutettavaaTyyppiä(oo) && !suoritusjakoTehty(oo)
 
   def suorituksetPerutettavaaTyyppiä(oo: Opiskeluoikeus) = {
     val muitaPäätasonSuorituksiaKuinPeruttavissaOlevia = oo.suoritukset.exists {
@@ -78,16 +78,8 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
     !muitaPäätasonSuorituksiaKuinPeruttavissaOlevia
   }
 
-  private def suoritusjakoTehty(oo: Opiskeluoikeus, henkilö: HenkilönTunnisteet)(implicit user: KoskiSpecificSession) = {
-    val suoritusjaot = application.suoritusjakoService.getAll(henkilö.oid).map(jako => {
-      application.suoritusjakoService.get(jako.secret)(KoskiSpecificSession.systemUser).right.get.get // Oletetaan, että suoritusjaon saa aina haettua kun 'secret' on olemassa
-      }
-    )
-
-    suoritusjaot.exists(_.opiskeluoikeudet.exists(suoritusjakoOo => {
-        oo.tyyppi == suoritusjakoOo.tyyppi && oo.alkamispäivä == suoritusjakoOo.alkamispäivä && oo.getOppilaitos.oid == suoritusjakoOo.getOppilaitos.oid
-      }
-    ))
+  private def suoritusjakoTehty(oo: Opiskeluoikeus)(implicit user: KoskiSpecificSession) = {
+    application.opiskeluoikeusRepository.suoritusjakoTehty(oo.oid.get)
   }
 
   // Kutsutaan vain fixtureita resetoitaessa

@@ -105,4 +105,10 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
 
   def deleteOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession) =
     main.deleteOpiskeluoikeus(opiskeluoikeusOid)
+
+  def merkitseSuoritusjakoTehdyksi(opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession) =
+    main.merkitseSuoritusjakoTehdyksi(opiskeluoikeusOid)
+
+  def suoritusjakoTehty(opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession): Boolean =
+    main.suoritusjakoTehty(opiskeluoikeusOid)
 }

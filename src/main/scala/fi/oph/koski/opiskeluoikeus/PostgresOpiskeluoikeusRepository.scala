@@ -156,6 +156,17 @@ class PostgresOpiskeluoikeusRepository(
     }
   }
 
+  def merkitseSuoritusjakoTehdyksi(oid: String)(implicit user: KoskiSpecificSession): HttpStatus = {
+    runDbSync(KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.suoritusjakoTehty).update(true)) match {
+      case 0 => throw new RuntimeException(s"Oppija not found: $oid")
+      case _ => HttpStatus.ok
+    }
+  }
+
+  def suoritusjakoTehty(oid: String)(implicit user: KoskiSpecificSession): Boolean = {
+    runDbSync(KoskiTables.OpiskeluOikeudet.filter(rivi => rivi.oid === oid && rivi.suoritusjakoTehty === true).result).nonEmpty
+  }
+
   private def findByOppijaOidsAction(oids: List[String])(implicit user: KoskiSpecificSession): dbio.DBIOAction[Seq[OpiskeluoikeusRow], NoStream, Read] = {
     OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid inSetBind oids).result
   }
