@@ -130,7 +130,6 @@ class ValpasOppijaService(
   private val hakukoosteService = ValpasHakukoosteService(application.config, application.validatingAndResolvingExtractor)
   private val opiskeluoikeusDbService = application.valpasOpiskeluoikeusDatabaseService
   private val ovKeskeytysService = new OppivelvollisuudenKeskeytysService(application)
-  private val ovKeskeytysRepository = application.valpasOppivelvollisuudenKeskeytysRepository
   private val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
   private val localizationRepository = application.valpasLocalizationRepository
   private val koodistoviitepalvelu = application.koodistoViitePalvelu
@@ -601,22 +600,12 @@ class ValpasOppijaService(
     })
   }
 
+
   private def fetchOppivelvollisuudenKeskeytykset(
     oppijat: Seq[OppijaHakutilanteillaLaajatTiedot]
   ): Seq[OppijaHakutilanteillaLaajatTiedot] = {
     rouhintaTimed("fetchOppivelvollisuudenKeskeytykset", oppijat.size) {
-      val keskeytykset: Map[String, Seq[OppivelvollisuudenKeskeytysRow]] =
-        ovKeskeytysRepository
-          .getKeskeytykset(oppijat.flatMap(_.oppija.henkilö.kaikkiOidit.toSeq))
-          .groupBy(_.oppijaOid)
-          .withDefaultValue(Seq.empty)
-
-      oppijat.map(oppija => oppija.copy(
-        oppivelvollisuudenKeskeytykset =
-          oppija.oppija.henkilö.kaikkiOidit.toSeq
-            .flatMap(keskeytykset)
-            .map(ValpasOppivelvollisuudenKeskeytys.apply(rajapäivätService.tarkastelupäivä))
-      ))
+      oppijat.map(fetchOppivelvollisuudenKeskeytykset)
     }
   }
 
