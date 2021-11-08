@@ -5,7 +5,6 @@ import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.henkilo.{Hetu, OppijaHenkilö}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
-import fi.oph.koski.valpas.valpasuser.ValpasSession
 import fi.oph.koski.valpas.ValpasErrorCategory
 
 import java.time.LocalDate
@@ -17,9 +16,8 @@ class ValpasHeturouhintaService(application: KoskiApplication) extends DatabaseC
 
   private val maxHetuCount = application.config.getInt("valpas.rouhintaMaxHetuCount")
 
-  def haeHetulistanPerusteella
+  def haeHetulistanPerusteellaIlmanOikeustarkastusta
     (hetut: Seq[String])
-    (implicit session: ValpasSession)
   : Either[HttpStatus, HeturouhinnanTulos] = {
     cleanedHetuList(hetut).flatMap(hetut => {
 
@@ -34,7 +32,9 @@ class ValpasHeturouhintaService(application: KoskiApplication) extends DatabaseC
         val (oppivelvollisetKoskessa, oppivelvollisuudenUlkopuolisetKoskessa) = oppijatKoskessa.partition(_.oppivelvollisuusVoimassa)
 
         oppijaService
-          .getOppijalista(oppivelvollisetKoskessa.map(_.masterOid))
+          // Kunnan käyttäjällä on aina oikeudet kaikkiin oppijoihin, joilla on oppivelvollisuus voimassa, joten
+          // käyttöoikeustarkistusta ei tarvitse tehdä
+          .getOppijalistaIlmanOikeustarkastusta(oppivelvollisetKoskessa.map(_.masterOid))
           .map(oppivelvollisetKoskessa => {
             val (suorittavat, eiSuorittavat) =
               (oppivelvollisetKoskessa.map(ValpasRouhintaOppivelvollinen.apply) ++ oppivelvollisetOnrissa.map(ValpasRouhintaOppivelvollinen.apply))

@@ -20,7 +20,7 @@ class ValpasRouhintaService(application: KoskiApplication) extends ValpasRouhint
   (implicit session: ValpasSession)
   : Either[HttpStatus, HeturouhinnanTulos] = {
     if (accessResolver.accessToAnyOrg(ValpasRooli.KUNTA)) {
-      heturouhinta.haeHetulistanPerusteella(hetut)
+      heturouhinta.haeHetulistanPerusteellaIlmanOikeustarkastusta(hetut)
     } else {
       Left(ValpasErrorCategory.forbidden.toiminto())
     }
@@ -39,7 +39,7 @@ class ValpasRouhintaService(application: KoskiApplication) extends ValpasRouhint
     (implicit session: ValpasSession)
   : Either[HttpStatus, KuntarouhinnanTulos] = {
     if (accessResolver.accessToKuntaOrg(kunta)) {
-      kuntarouhinta.haeKunnanPerusteella(kunta)
+      kuntarouhinta.haeKunnanPerusteellaIlmanOikeustarkastusta(kunta)
     } else {
       Left(ValpasErrorCategory.forbidden.toiminto())
     }

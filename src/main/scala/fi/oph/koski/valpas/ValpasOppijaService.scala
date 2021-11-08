@@ -130,6 +130,7 @@ class ValpasOppijaService(
   private val hakukoosteService = ValpasHakukoosteService(application.config, application.validatingAndResolvingExtractor)
   private val opiskeluoikeusDbService = application.valpasOpiskeluoikeusDatabaseService
   private val ovKeskeytysService = new OppivelvollisuudenKeskeytysService(application)
+  private val ovKeskeytysRepository = application.valpasOppivelvollisuudenKeskeytysRepository
   private val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
   private val localizationRepository = application.valpasLocalizationRepository
   private val koodistoviitepalvelu = application.koodistoViitePalvelu
@@ -418,9 +419,8 @@ class ValpasOppijaService(
       .map(withOikeusTehdäKuntailmoitus)
   }
 
-  def getOppijalista
+  def getOppijalistaIlmanOikeustarkastusta
     (oppijaOids: Seq[ValpasHenkilö.Oid])
-    (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
     rouhintaTimed("getOppijalista", oppijaOids.size) {
       HttpStatus.foldEithers({
@@ -430,11 +430,6 @@ class ValpasOppijaService(
           oppijat.map(asValpasOppijaLaajatTiedot)
         }
       })
-        .flatMap(os => HttpStatus.foldEithers({
-          rouhintaTimed("getOppijalista:accessResolver", os.size) {
-            os.map(o => accessResolver.withOppijaAccess(o))
-          }
-        }))
         .map(asEmptyOppijaHakutilanteillaLaajatTiedot) // Huom! Ei haeta hakutietoja, halutaan vain vaihtaa tyyppi fetchOppivelvollisuudenKeskeytykset-kutsua varten
         .map(fetchOppivelvollisuudenKeskeytykset)
     }
@@ -606,12 +601,22 @@ class ValpasOppijaService(
     })
   }
 
-
   private def fetchOppivelvollisuudenKeskeytykset(
     oppijat: Seq[OppijaHakutilanteillaLaajatTiedot]
   ): Seq[OppijaHakutilanteillaLaajatTiedot] = {
     rouhintaTimed("fetchOppivelvollisuudenKeskeytykset", oppijat.size) {
-      oppijat.map(fetchOppivelvollisuudenKeskeytykset)
+      val keskeytykset: Map[String, Seq[OppivelvollisuudenKeskeytysRow]] =
+        ovKeskeytysRepository
+          .getKeskeytykset(oppijat.flatMap(_.oppija.henkilö.kaikkiOidit.toSeq))
+          .groupBy(_.oppijaOid)
+          .withDefaultValue(Seq.empty)
+
+      oppijat.map(oppija => oppija.copy(
+        oppivelvollisuudenKeskeytykset =
+          oppija.oppija.henkilö.kaikkiOidit.toSeq
+            .flatMap(keskeytykset)
+            .map(ValpasOppivelvollisuudenKeskeytys.apply(rajapäivätService.tarkastelupäivä))
+      ))
     }
   }
 
