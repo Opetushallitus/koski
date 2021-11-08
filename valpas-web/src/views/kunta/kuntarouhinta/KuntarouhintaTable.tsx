@@ -2,7 +2,11 @@ import * as A from "fp-ts/Array"
 import { flow, pipe } from "fp-ts/lib/function"
 import * as O from "fp-ts/Option"
 import React, { useMemo } from "react"
-import { DataTable, Datum, Value } from "../../../components/tables/DataTable"
+import {
+  Datum,
+  PaginatedDataTable,
+  Value,
+} from "../../../components/tables/DataTable"
 import { Column } from "../../../components/tables/useDataTableState"
 import {
   getLocalizedMaybe,
@@ -28,6 +32,8 @@ import {
   nullableValue,
   oppijanNimiValue,
 } from "../../../utils/tableDataFormatters/commonFormatters"
+
+const PAGINATION_SIZE = 500
 
 export type KuntarouhintaTableProps = {
   data: KuntarouhinnanTulos
@@ -88,7 +94,12 @@ export const KuntarouhintaTable = (props: KuntarouhintaTableProps) => {
   )
 
   return (
-    <DataTable className="kuntarouhintatable" columns={columns} data={data} />
+    <PaginatedDataTable
+      className="kuntarouhintatable"
+      columns={columns}
+      data={data}
+      paginationSize={PAGINATION_SIZE}
+    />
   )
 }
 

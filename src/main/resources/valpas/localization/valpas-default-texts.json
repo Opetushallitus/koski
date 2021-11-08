@@ -302,5 +302,6 @@
   "rouhinta_btn_näytä_selaimessa": "Näytä selaimessa",
   "rouhinta_btn_lataa_tiedosto": "Lataa tiedosto (.xlsx)",
   "tiedoston_lataus_epäonnistui": "Tiedoston lataus epäonnistui",
-  "btn_kopioi_leikepöydälle": "Kopioi leikepöydälle"
+  "btn_kopioi_leikepöydälle": "Kopioi leikepöydälle",
+  "btn_näytä_lisää": "Näytä lisää"
 }
