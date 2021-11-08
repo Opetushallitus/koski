@@ -18,13 +18,13 @@ case class ValpasRouhintaOppivelvollinen(
   oppivelvollisuudenKeskeytys: Seq[ValpasOppivelvollisuudenKeskeytys],
 ) {
   def suorittaaOppivelvollisuutta: Boolean =
-    viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus.exists(_.viimeisinTila.koodiarvo == "lasna")
+    viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus.exists(_.viimeisinValpasTila.koodiarvo == "voimassa")
 }
 
 object ValpasRouhintaOppivelvollinen {
   def apply(tiedot: OppijaHakutilanteillaLaajatTiedot): ValpasRouhintaOppivelvollinen = {
     val oos = tiedot.oppija.opiskeluoikeudet
-      .filter(_.oppivelvollisuudenSuorittamiseenKelpaava)
+      .filter(oo => oo.oppivelvollisuudenSuorittamiseenKelpaava && !oo.isOpiskeluTulevaisuudessa)
       .flatMap(oo => RouhintaOpiskeluoikeus.apply(oo))
 
     ValpasRouhintaOppivelvollinen(
@@ -52,6 +52,7 @@ object ValpasRouhintaOppivelvollinen {
 case class RouhintaOpiskeluoikeus(
   suorituksenTyyppi: Koodistokoodiviite,
   päättymispäivä: Option[String],
+  viimeisinValpasTila: Koodistokoodiviite,
   viimeisinTila: Koodistokoodiviite,
   toimipiste: LocalizedString,
 ) extends Ordered[RouhintaOpiskeluoikeus] {
@@ -72,6 +73,7 @@ object RouhintaOpiskeluoikeus {
         .map(viimeisinTila => RouhintaOpiskeluoikeus(
           suorituksenTyyppi = päätasonSuoritus.suorituksenTyyppi,
           päättymispäivä = viimeisinTila.tiedot.päättymispäivä,
+          viimeisinValpasTila = viimeisinTila.tiedot.tarkastelupäivänTila,
           viimeisinTila = viimeisinTila.tiedot.tarkastelupäivänKoskiTila,
           toimipiste = päätasonSuoritus.toimipiste.nimi,
         ))
