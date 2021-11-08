@@ -7,10 +7,8 @@ import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{LocalizedString, Organisaatio}
-import fi.oph.koski.util.ChainingSyntax.chainingOps
 import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
-import fi.oph.koski.util.Timing
-import fi.oph.koski.valpas.db.ValpasSchema.{OpiskeluoikeusLisätiedotKey, OpiskeluoikeusLisätiedotRow, OppivelvollisuudenKeskeytysRow}
+import fi.oph.koski.valpas.db.ValpasSchema.{OpiskeluoikeusLisätiedotKey, OpiskeluoikeusLisätiedotRow}
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, ValpasHakukoosteService}
 import fi.oph.koski.valpas.opiskeluoikeusrepository._
 import fi.oph.koski.valpas.rouhinta.ValpasRouhintaTiming
@@ -430,7 +428,6 @@ class ValpasOppijaService(
         }
       })
         .map(asEmptyOppijaHakutilanteillaLaajatTiedot) // Huom! Ei haeta hakutietoja, halutaan vain vaihtaa tyyppi fetchOppivelvollisuudenKeskeytykset-kutsua varten
-        .map(fetchOppivelvollisuudenKeskeytykset)
     }
   }
 
@@ -598,15 +595,6 @@ class ValpasOppijaService(
 
       ValpasKuntailmoitusLaajatTiedotLisätiedoilla(kuntailmoitusWithIndex._1, aktiivinen)
     })
-  }
-
-
-  private def fetchOppivelvollisuudenKeskeytykset(
-    oppijat: Seq[OppijaHakutilanteillaLaajatTiedot]
-  ): Seq[OppijaHakutilanteillaLaajatTiedot] = {
-    rouhintaTimed("fetchOppivelvollisuudenKeskeytykset", oppijat.size) {
-      oppijat.map(fetchOppivelvollisuudenKeskeytykset)
-    }
   }
 
   private def fetchOppivelvollisuudenKeskeytykset(

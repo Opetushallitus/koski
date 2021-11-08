@@ -10,6 +10,7 @@ import fi.oph.koski.valpas.valpasrepository.ValpasOppivelvollisuudenKeskeytys
 
 case class ValpasRouhintaOppivelvollinen(
   oppijanumero: ValpasHenkilö.Oid,
+  kaikkiOidit: Option[Seq[ValpasHenkilö.Oid]],
   etunimet: String,
   sukunimi: String,
   syntymäaika: Option[LocalDate],
@@ -29,6 +30,7 @@ object ValpasRouhintaOppivelvollinen {
 
     ValpasRouhintaOppivelvollinen(
       oppijanumero = tiedot.oppija.henkilö.oid,
+      kaikkiOidit = Some(tiedot.oppija.henkilö.kaikkiOidit.toSeq),
       etunimet = tiedot.oppija.henkilö.etunimet,
       sukunimi = tiedot.oppija.henkilö.sukunimi,
       syntymäaika = tiedot.oppija.henkilö.syntymäaika,
@@ -40,6 +42,7 @@ object ValpasRouhintaOppivelvollinen {
 
   def apply(henkilö: OppijaHenkilö): ValpasRouhintaOppivelvollinen = ValpasRouhintaOppivelvollinen(
     oppijanumero = henkilö.oid,
+    kaikkiOidit = None,
     etunimet = henkilö.etunimet,
     sukunimi = henkilö.sukunimi,
     syntymäaika = henkilö.syntymäaika,

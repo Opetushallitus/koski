@@ -6,8 +6,13 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.valpas.opiskeluoikeusrepository.HetuMasterOid
 
-class ValpasKuntarouhintaService(application: KoskiApplication) extends DatabaseConverters with Logging with ValpasRouhintaTiming {
+class ValpasKuntarouhintaService(application: KoskiApplication)
+  extends ValpasRouhintaTiming
+    with DatabaseConverters
+    with Logging
+{
   private val oppijaService = application.valpasOppijaService
+  private val rouhintaOvKeskeytyksetService = application.valpasRouhintaOppivelvollisuudenKeskeytysService
 
   def haeKunnanPerusteellaIlmanOikeustarkastusta
     (kunta: String)
@@ -25,8 +30,12 @@ class ValpasKuntarouhintaService(application: KoskiApplication) extends Database
               oppivelvollisetKoskessa
                 .map(ValpasRouhintaOppivelvollinen.apply)
                 .filterNot(_.suorittaaOppivelvollisuutta)
+
+            val eiSuorittavatKeskeytyksillä =
+              rouhintaOvKeskeytyksetService.fetchOppivelvollisuudenKeskeytykset(eiSuorittavat)
+
             KuntarouhinnanTulos(
-              eiOppivelvollisuuttaSuorittavat = eiSuorittavat,
+              eiOppivelvollisuuttaSuorittavat = eiSuorittavatKeskeytyksillä,
             )
           }
         })
