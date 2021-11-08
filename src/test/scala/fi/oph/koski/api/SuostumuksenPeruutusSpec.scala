@@ -4,13 +4,11 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
-import fi.oph.koski.documentation.VapaaSivistystyöExample.{opiskeluoikeusKOPS, opiskeluoikeusVapaatavoitteinen}
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.documentation.VapaaSivistystyöExample.{opiskeluoikeusVapaatavoitteinen}
 import fi.oph.koski.koskiuser.MockUsers
-import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoTallentaja, varsinaisSuomiPalvelukäyttäjä}
+import fi.oph.koski.koskiuser.MockUsers.{varsinaisSuomiPalvelukäyttäjä}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.VapaanSivistystyönOpiskeluoikeus
-import fi.oph.koski.suoritusjako.Suoritusjako
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 

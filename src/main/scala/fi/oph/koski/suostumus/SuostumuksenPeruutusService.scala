@@ -37,6 +37,8 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
             val opiskeluoikeudenId = runDbSync(KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.id).result).head
             val lisäysResult = runDbSync(KoskiTables.PoistetutOpiskeluoikeudet.insertOrUpdate(PoistettuOpiskeluoikeusRow(
               oid,
+              oo.oppilaitos.map(_.nimi.map(_.get("fi"))).flatten,
+              oo.oppilaitos.map(_.oid),
               oo.päättymispäivä.map(Date.valueOf),
               oo.lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
               oo.lähdejärjestelmänId.map(_.id).flatten,
