@@ -7,7 +7,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjeste
 import fi.oph.koski.documentation.VapaaSivistystyöExample.{opiskeluoikeusKOPS, opiskeluoikeusVapaatavoitteinen}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers
-import fi.oph.koski.koskiuser.MockUsers.varsinaisSuomiPalvelukäyttäjä
+import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoTallentaja, varsinaisSuomiPalvelukäyttäjä}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.VapaanSivistystyönOpiskeluoikeus
 import fi.oph.koski.suoritusjako.Suoritusjako
@@ -16,7 +16,7 @@ import org.scalatest.matchers.should.Matchers
 
 import java.time.LocalDate
 
-class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with OpiskeluoikeusTestMethods with KoskiHttpSpec with PutOpiskeluoikeusTestMethods[VapaanSivistystyönOpiskeluoikeus] with SuoritusjakoTestMethods {
+class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with OpiskeluoikeusTestMethods with KoskiHttpSpec with PutOpiskeluoikeusTestMethods[VapaanSivistystyönOpiskeluoikeus] with SuoritusjakoTestMethods with SearchTestMethods {
   def tag = implicitly[reflect.runtime.universe.TypeTag[VapaanSivistystyönOpiskeluoikeus]]
   override def defaultOpiskeluoikeus: VapaanSivistystyönOpiskeluoikeus = opiskeluoikeusVapaatavoitteinen
 
@@ -27,12 +27,19 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
   val teijaOpiskeluoikeusOid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.teija.oid).head.oid.get
 
   "Kun suostumus voidaan peruuttaa" - {
+    val opiskeluoikeuksiaEnnenPerumistaElasticsearchissa = searchForPerustiedot(Map("toimipiste" -> defaultOpiskeluoikeus.oppilaitos.get.oid), varsinaisSuomiPalvelukäyttäjä).length
+
     "Kansalainen voi peruuttaa oman suostumuksensa" in {
       val loginHeaders = kansalainenLoginHeaders(vapaatavoitteinenHetu)
 
       post(s"/api/opiskeluoikeus/suostumuksenperuutus/$vapaatavoitteinenOpiskeluoikeusOid", headers = loginHeaders) {
         verifyResponseStatusOk()
       }
+    }
+
+    "Opiskeluoikeus on poistunut Elasticsearchista" in {
+      val opiskeluoikeuksia = searchForPerustiedot(Map("toimipiste" -> defaultOpiskeluoikeus.oppilaitos.get.oid), varsinaisSuomiPalvelukäyttäjä).length
+      opiskeluoikeuksia should equal (opiskeluoikeuksiaEnnenPerumistaElasticsearchissa-1)
     }
 
     "Suostumuksen perumisen jälkeen pääkäyttäjä näkee peruutetun suostumuksen" in {
