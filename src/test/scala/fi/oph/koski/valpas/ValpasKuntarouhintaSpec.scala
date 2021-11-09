@@ -2,21 +2,18 @@ package fi.oph.koski.valpas
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
 import fi.oph.koski.valpas.rouhinta.ValpasRouhintaService
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 
-class ValpasKuntarouhintaSpec extends ValpasRouhintaTestBase {
-
-  override protected def beforeAll(): Unit = {
-    FixtureUtil.resetMockData(KoskiApplicationForTests, date(2021, 5, 20))
-  }
+object ValpasKuntarouhintaSpec {
+  val tarkastelupäivä = date(2021, 5, 20)
 
   val kunta = "624" // Pyhtää
 
-  val eiOppivelvollisuuttaSuorittavatOppijat = List(
+  def eiOppivelvollisuuttaSuorittavatOppijat(t: LocalizationReader) = List(
     RouhintaExpectedData(
       oppija = ValpasMockOppijat.aikuistenPerusopetuksessa,
       ooPäättymispäivä = t.get("rouhinta_ei_opiskeluoikeutta"),
@@ -58,6 +55,15 @@ class ValpasKuntarouhintaSpec extends ValpasRouhintaTestBase {
       keskeytys = None,
     ),
   )
+}
+
+class ValpasKuntarouhintaSpec extends ValpasRouhintaTestBase {
+
+  override protected def beforeAll(): Unit = {
+    FixtureUtil.resetMockData(KoskiApplicationForTests, ValpasKuntarouhintaSpec.tarkastelupäivä)
+  }
+
+  val eiOppivelvollisuuttaSuorittavatOppijat = ValpasKuntarouhintaSpec.eiOppivelvollisuuttaSuorittavatOppijat(t)
 
   "Rouhinta" - {
     "Kunnalla" - {
@@ -107,13 +113,13 @@ class ValpasKuntarouhintaSpec extends ValpasRouhintaTestBase {
   private def loadKuntahaku() = {
     new ValpasRouhintaService(KoskiApplicationForTests)
       .haeKunnanPerusteellaExcel(
-        kunta = kunta,
+        kunta = ValpasKuntarouhintaSpec.kunta,
         language = "fi",
         password = Some("hunter2")
       )(session(ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu))
       .fold(
         error => fail(s"Haku Kunnalla epäonnistui: $error"),
-        result => result.sheets
+        result => result.response.sheets
       )
   }
 }

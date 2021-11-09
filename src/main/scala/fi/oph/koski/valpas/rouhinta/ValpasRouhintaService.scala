@@ -49,7 +49,7 @@ class ValpasRouhintaService(application: KoskiApplication) extends ValpasRouhint
   def haeKunnanPerusteellaExcel
     (kunta: String, language: String, password: Option[String])
     (implicit session: ValpasSession)
-  : Either[HttpStatus, OppilaitosRaporttiResponse] = {
+  : Either[HttpStatus, KuntarouhinnanExcelTulos] = {
     val t = new LocalizationReader(localization, language)
     haeKunnanPerusteella(kunta)
       .map(asKuntarouhintaExcelResponse(language, password))
@@ -78,11 +78,12 @@ class ValpasRouhintaService(application: KoskiApplication) extends ValpasRouhint
     rouhintaTimed("asExcelResponse", tulos.eiOppivelvollisuuttaSuorittavat.size) {
       val t = new LocalizationReader(localization, language)
       val sheets = ValpasKuntarouhintaSheets(tulos, t).build()
-      asOppilaitosRaporttiResponse(
+      val response = asOppilaitosRaporttiResponse(
         title = t.get("rouhinta_kunta_otsikko"),
         filename = t.get("rouhinta_kunta_tiedostonimi", Map("pvm" -> rajapäivät.tarkastelupäivä.format(DateTimeFormatter.ISO_DATE))),
         password = password,
       )(sheets)
+      KuntarouhinnanExcelTulos(tulos, response)
     }
   }
 
@@ -98,5 +99,10 @@ class ValpasRouhintaService(application: KoskiApplication) extends ValpasRouhint
 
 case class HeturouhinnanExcelTulos(
   data: HeturouhinnanTulos,
+  response: OppilaitosRaporttiResponse,
+)
+
+case class KuntarouhinnanExcelTulos(
+  data: KuntarouhinnanTulos,
   response: OppilaitosRaporttiResponse,
 )

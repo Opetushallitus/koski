@@ -108,7 +108,7 @@ object ValpasAuditLog {
   }
 
   def auditLogRouhintahakuKunnalla
-    (kunta: String)
+    (kunta: String, palautetutOppijaOidit: Seq[String])
     (implicit session: ValpasSession)
   : Unit = {
     AuditLog.log(ValpasAuditLogMessage(
@@ -116,6 +116,7 @@ object ValpasAuditLog {
       session,
       Map(
         ValpasAuditLogMessageField.hakulause -> kunta,
+        ValpasAuditLogMessageField.oppijaHenkilöOidList -> palautetutOppijaOidit.mkString(" "),
       )
     ))
   }
