@@ -143,7 +143,7 @@ class ValpasHeturouhintaSpec extends ValpasRouhintaTestBase {
       )(session(ValpasMockUsers.valpasHelsinki))
       .fold(
         error => fail(s"Haku hetulistalla epäonnistui: $error"),
-        result => result.sheets
+        result => result.response.sheets
       )
   }
 

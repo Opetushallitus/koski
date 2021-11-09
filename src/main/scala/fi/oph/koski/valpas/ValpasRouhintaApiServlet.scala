@@ -25,11 +25,14 @@ class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) exten
         .flatMap(input => {
           if (jsonRequested) {
             rouhinta.haeHetulistanPerusteella(input.hetut)
-              .tap(_ => auditLogRouhintahakuHetulistalla(input.hetut))
+              .tap(tulos => auditLogRouhintahakuHetulistalla(input.hetut, tulos.palautetutOppijaOidit))
           } else {
             val language = input.lang.orElse(langFromCookie).getOrElse("fi")
             rouhinta.haeHetulistanPerusteellaExcel(input.hetut, language, input.password)
-              .tap(_ => auditLogRouhintahakuHetulistalla(input.hetut))
+              .map(tulos => {
+                auditLogRouhintahakuHetulistalla(input.hetut, tulos.data.palautetutOppijaOidit)
+                tulos.response
+              })
           }
         })
       renderResult(result)

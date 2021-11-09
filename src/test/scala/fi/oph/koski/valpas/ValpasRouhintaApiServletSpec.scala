@@ -47,7 +47,11 @@ class ValpasRouhintaApiServletSpec extends ValpasTestBase with BeforeAndAfterEac
       doHetuQuery(ValpasMockUsers.valpasHelsinki) {
         AuditLogTester.verifyAuditLogMessage(Map(
           "operation" -> ValpasOperation.VALPAS_ROUHINTA_HETUHAKU.toString,
-          "target" -> Map(ValpasAuditLogMessageField.hakulause.toString -> "161004A404E")))
+          "target" -> Map(
+            ValpasAuditLogMessageField.hakulause.toString -> "161004A404E, 011005A115P, 110405A6951",
+            ValpasAuditLogMessageField.oppijaHenkilöOidList.toString -> "1.2.246.562.24.00000000130 1.2.246.562.24.00000000075"
+          ),
+        ))
       }
     }
 
@@ -123,7 +127,7 @@ class ValpasRouhintaApiServletSpec extends ValpasTestBase with BeforeAndAfterEac
     val hetuQuery =
       """
       {
-        "hetut": ["161004A404E"],
+        "hetut": ["161004A404E", "011005A115P", "110405A6951"],
         "password": "hunter2",
         "lang": "fi"
       }
