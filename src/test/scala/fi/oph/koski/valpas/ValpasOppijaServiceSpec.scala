@@ -401,7 +401,7 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
       ValpasMockOppijat.amisEronnutEiUuttaOpiskeluoikeutta,
       List(
         ExpectedData(ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus, None, Some(ExpectedDataPerusopetuksenJälkeinenTiedot("eronnut", "eronnut")), false, false, true),
-        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenSaksalainenKoulu, Some(ExpectedDataPerusopetusTiedot("valmistunut", "valmistunut")), None, false, false, false),
+        ExpectedData(ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenSaksalainenKouluVäliaikaisestiKeskeytynytToukokuussa, Some(ExpectedDataPerusopetusTiedot("valmistunut", "valmistunut")), None, false, false, false),
       ),
     ),
     (

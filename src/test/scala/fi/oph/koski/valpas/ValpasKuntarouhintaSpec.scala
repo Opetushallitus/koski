@@ -14,9 +14,17 @@ class ValpasKuntarouhintaSpec extends ValpasRouhintaTestBase {
     FixtureUtil.resetMockData(KoskiApplicationForTests, date(2021, 5, 20))
   }
 
-  val kunta = "091" // Helsinki
+  val kunta = "624" // Pyhtää
 
   val eiOppivelvollisuuttaSuorittavatOppijat = List(
+    RouhintaExpectedData(
+      oppija = ValpasMockOppijat.aikuistenPerusopetuksessa,
+      ooPäättymispäivä = t.get("rouhinta_ei_opiskeluoikeutta"),
+      ooViimeisinTila = None,
+      ooKoulutusmuoto = None,
+      ooToimipiste = None,
+      keskeytys = None,
+    ),
     RouhintaExpectedData(
       oppija = ValpasMockOppijat.aikuistenPerusopetuksessaAineopiskelija,
       ooPäättymispäivä = t.get("rouhinta_ei_opiskeluoikeutta"),
@@ -42,32 +50,8 @@ class ValpasKuntarouhintaSpec extends ValpasRouhintaTestBase {
       keskeytys = None,
     ),
     RouhintaExpectedData(
-      oppija = ValpasMockOppijat.eronnutMaaliskuussa17VuottaTäyttäväKasiluokkalainen,
-      ooPäättymispäivä = "3.3.2021",
-      ooViimeisinTila = Some("Eronnut"),
-      ooKoulutusmuoto = Some("Perusopetus"),
-      ooToimipiste = Some("Jyväskylän normaalikoulu"),
-      keskeytys = None,
-    ),
-    RouhintaExpectedData(
-      oppija = ValpasMockOppijat.intSchool9LuokaltaKeskenEronnutOppija,
-      ooPäättymispäivä = "1.1.2021",
-      ooViimeisinTila = Some("Eronnut"),
-      ooKoulutusmuoto = Some("International school"),
-      ooToimipiste = Some("International School of Helsinki"),
-      keskeytys = None,
-    ),
-    RouhintaExpectedData(
       oppija = ValpasMockOppijat.intSchool9LuokaltaValmistumisenJälkeenEronnutOppija,
       ooPäättymispäivä = "1.1.2021",
-      ooViimeisinTila = Some("Eronnut"),
-      ooKoulutusmuoto = Some("International school"),
-      ooToimipiste = Some("International School of Helsinki"),
-      keskeytys = None,
-    ),
-    RouhintaExpectedData(
-      oppija = ValpasMockOppijat.intSchoolistaEronnutMaaliskuussa17VuottaTäyttäväKasiluokkalainen,
-      ooPäättymispäivä = "3.3.2021",
       ooViimeisinTila = Some("Eronnut"),
       ooKoulutusmuoto = Some("International school"),
       ooToimipiste = Some("International School of Helsinki"),
@@ -126,7 +110,7 @@ class ValpasKuntarouhintaSpec extends ValpasRouhintaTestBase {
         kunta = kunta,
         language = "fi",
         password = Some("hunter2")
-      )(session(ValpasMockUsers.valpasHelsinki))
+      )(session(ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu))
       .fold(
         error => fail(s"Haku Kunnalla epäonnistui: $error"),
         result => result.sheets

@@ -9,10 +9,15 @@ import fi.oph.koski.valpas.ValpasErrorCategory
 
 import java.time.LocalDate
 
-class ValpasHeturouhintaService(application: KoskiApplication) extends DatabaseConverters with Logging with ValpasRouhintaTiming {
+class ValpasHeturouhintaService(application: KoskiApplication)
+  extends ValpasRouhintaTiming
+    with DatabaseConverters
+    with Logging
+{
   private val rajapäivätService = application.valpasRajapäivätService
   private val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
   private val oppijaService = application.valpasOppijaService
+  private val rouhintaOvKeskeytyksetService = application.valpasRouhintaOppivelvollisuudenKeskeytysService
 
   private val maxHetuCount = application.config.getInt("valpas.rouhintaMaxHetuCount")
 
@@ -36,12 +41,18 @@ class ValpasHeturouhintaService(application: KoskiApplication) extends DatabaseC
           // käyttöoikeustarkistusta ei tarvitse tehdä
           .getOppijalistaIlmanOikeustarkastusta(oppivelvollisetKoskessa.map(_.masterOid))
           .map(oppivelvollisetKoskessa => {
-            val (suorittavat, eiSuorittavat) =
-              (oppivelvollisetKoskessa.map(ValpasRouhintaOppivelvollinen.apply) ++ oppivelvollisetOnrissa.map(ValpasRouhintaOppivelvollinen.apply))
-                .partition(_.suorittaaOppivelvollisuutta)
+            val (suorittavatKoski, eiSuorittavatKoski) =
+              oppivelvollisetKoskessa.map(ValpasRouhintaOppivelvollinen.apply).partition(_.suorittaaOppivelvollisuutta)
+
+            val eiSuorittavatOnr =
+              oppivelvollisetOnrissa.map(ValpasRouhintaOppivelvollinen.apply)
+
+            val suorittavat = suorittavatKoski
+            val eiSuorittavatKeskeytyksillä =
+              rouhintaOvKeskeytyksetService.fetchOppivelvollisuudenKeskeytykset(eiSuorittavatKoski) ++ eiSuorittavatOnr
 
             HeturouhinnanTulos(
-              eiOppivelvollisuuttaSuorittavat = eiSuorittavat,
+              eiOppivelvollisuuttaSuorittavat = eiSuorittavatKeskeytyksillä,
               oppivelvollisuuttaSuorittavat = suorittavat.flatMap(_.hetu).map(RouhintaPelkkäHetu),
               oppijanumerorekisterinUlkopuoliset = oppijanumerorekisterinUlkopuolisetHetut.map(RouhintaPelkkäHetu),
               oppivelvollisuudenUlkopuoliset = (oppivelvollisuudenUlkopuolisetKoskessa.map(_.hetu) ++ oppivelvollisuudenUlkopuolisetOnrissa.flatMap(_.hetu)).map(RouhintaPelkkäHetu),

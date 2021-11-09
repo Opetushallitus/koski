@@ -127,7 +127,18 @@ object ValpasOpiskeluoikeusExampleData {
     )
 
   def valmistunutYsiluokkalainenSaksalainenKoulu = valmistunutYsiluokkalainen.copy(
-    oppilaitos = Some(oppilaitos(MockOrganisaatiot.saksalainenKoulu))
+    oppilaitos = Some(oppilaitos(MockOrganisaatiot.saksalainenKoulu)),
+  )
+
+  def valmistunutYsiluokkalainenSaksalainenKouluVäliaikaisestiKeskeytynytToukokuussa = valmistunutYsiluokkalainenSaksalainenKoulu.copy(
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2012, 8, 15), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 5, 10), opiskeluoikeusValiaikaisestiKeskeytynyt),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 5, 21), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 5, 30), opiskeluoikeusValmistunut)
+      )
+    )
   )
 
   def valmistunutKasiluokkalainen = PerusopetuksenOpiskeluoikeus(

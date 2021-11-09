@@ -10,6 +10,7 @@ import fi.oph.koski.valpas.valpasrepository.ValpasOppivelvollisuudenKeskeytys
 
 case class ValpasRouhintaOppivelvollinen(
   oppijanumero: ValpasHenkilö.Oid,
+  kaikkiOidit: Option[Seq[ValpasHenkilö.Oid]],
   etunimet: String,
   sukunimi: String,
   syntymäaika: Option[LocalDate],
@@ -18,17 +19,18 @@ case class ValpasRouhintaOppivelvollinen(
   oppivelvollisuudenKeskeytys: Seq[ValpasOppivelvollisuudenKeskeytys],
 ) {
   def suorittaaOppivelvollisuutta: Boolean =
-    viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus.exists(_.viimeisinTila.koodiarvo == "lasna")
+    viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus.exists(_.viimeisinValpasTila.koodiarvo == "voimassa")
 }
 
 object ValpasRouhintaOppivelvollinen {
   def apply(tiedot: OppijaHakutilanteillaLaajatTiedot): ValpasRouhintaOppivelvollinen = {
     val oos = tiedot.oppija.opiskeluoikeudet
-      .filter(_.oppivelvollisuudenSuorittamiseenKelpaava)
+      .filter(oo => oo.oppivelvollisuudenSuorittamiseenKelpaava && !oo.isOpiskeluTulevaisuudessa)
       .flatMap(oo => RouhintaOpiskeluoikeus.apply(oo))
 
     ValpasRouhintaOppivelvollinen(
       oppijanumero = tiedot.oppija.henkilö.oid,
+      kaikkiOidit = Some(tiedot.oppija.henkilö.kaikkiOidit.toSeq),
       etunimet = tiedot.oppija.henkilö.etunimet,
       sukunimi = tiedot.oppija.henkilö.sukunimi,
       syntymäaika = tiedot.oppija.henkilö.syntymäaika,
@@ -40,6 +42,7 @@ object ValpasRouhintaOppivelvollinen {
 
   def apply(henkilö: OppijaHenkilö): ValpasRouhintaOppivelvollinen = ValpasRouhintaOppivelvollinen(
     oppijanumero = henkilö.oid,
+    kaikkiOidit = None,
     etunimet = henkilö.etunimet,
     sukunimi = henkilö.sukunimi,
     syntymäaika = henkilö.syntymäaika,
@@ -52,6 +55,7 @@ object ValpasRouhintaOppivelvollinen {
 case class RouhintaOpiskeluoikeus(
   suorituksenTyyppi: Koodistokoodiviite,
   päättymispäivä: Option[String],
+  viimeisinValpasTila: Koodistokoodiviite,
   viimeisinTila: Koodistokoodiviite,
   toimipiste: LocalizedString,
 ) extends Ordered[RouhintaOpiskeluoikeus] {
@@ -72,6 +76,7 @@ object RouhintaOpiskeluoikeus {
         .map(viimeisinTila => RouhintaOpiskeluoikeus(
           suorituksenTyyppi = päätasonSuoritus.suorituksenTyyppi,
           päättymispäivä = viimeisinTila.tiedot.päättymispäivä,
+          viimeisinValpasTila = viimeisinTila.tiedot.tarkastelupäivänTila,
           viimeisinTila = viimeisinTila.tiedot.tarkastelupäivänKoskiTila,
           toimipiste = päätasonSuoritus.toimipiste.nimi,
         ))
