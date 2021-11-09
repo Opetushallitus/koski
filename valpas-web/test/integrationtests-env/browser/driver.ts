@@ -1,6 +1,7 @@
 import "chromedriver"
 import { Builder, WebDriver } from "selenium-webdriver"
 import chrome from "selenium-webdriver/chrome"
+import { downloadDir } from "./downloads"
 import {
   expectCleanConsoleLogs,
   resetTestSpecificNetworkErrors,
@@ -39,7 +40,11 @@ const buildBrowserStackDriver = async (): Promise<WebDriver | undefined> =>
   global.__driver__ && global.__driver__()
 
 const buildChromeDriver = async (): Promise<WebDriver> => {
-  const options = new chrome.Options().windowSize({ width: 1920, height: 1920 })
+  const options = new chrome.Options()
+    .windowSize({ width: 1920, height: 1920 })
+    .setUserPreferences({
+      "download.default_directory": downloadDir,
+    })
   if (!process.env.SHOW_BROWSER) {
     options.headless()
   }

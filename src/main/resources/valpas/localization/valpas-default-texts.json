@@ -192,6 +192,7 @@
   "oppijahaku__suorittaminen_väliaikainen_viesti": "Oppivelvollisuuden suorittamisen valvojana voit hakea yksittäisen oppijan tiedot tällä lomakkeella.",
   "oppijahaku__organisaatiovalitsin_ei_käytössä": "Haku kohdistuu kaikkiin organisaatioihin",
   "kuntailmoitus_nav__ilmoitetut": "Ilmoitetut",
+  "kuntailmoitus_nav__automaattinen_tarkistus": "Automaattinen tarkistus",
   "kuntailmoitus_nav__hae_hetulla": "Hae hetulla",
   "kuntailmoitusnäkymä__ilmoitetut__otsikko": "Ilmoitetut oppivelvolliset ilman opiskelupaikkaa",
   "kuntailmoitusnäkymä__ei_ilmoituksia": "Ei ilmoituksia",
@@ -294,5 +295,13 @@
   "rouhinta_hae_usealla_hetulla": "Hae usealla hetulla",
   "rouhinta_tiedoston_salasana": "Salasana",
   "rouhinta_lataa_raportti": "Lataa raportti ({{lukumäärä}} henkilötunnusta)",
-  "tiedoston_lataus_epäonnistui": "Tiedoston lataus epäonnistui"
+  "rouhinta_nimi": "Nimi",
+  "rouhinta_syntymäpäivä": "Syntymäpäivä",
+  "rouhinta_taulukon_otsikko": "Oppivelvolliset ilman opiskelupaikkaa",
+  "rouhinta_kuntahaku_latausohje": "Kuntakohtaisten tietojen lataaminen on tavallista hitaampi toiminto. Voit hakea tiedot näytettäväksi joko selaimessa tai ladata ne tietokoneellesi tiedostona.",
+  "rouhinta_btn_näytä_selaimessa": "Näytä selaimessa",
+  "rouhinta_btn_lataa_tiedosto": "Lataa tiedosto (.xlsx)",
+  "tiedoston_lataus_epäonnistui": "Tiedoston lataus epäonnistui",
+  "btn_kopioi_leikepöydälle": "Kopioi leikepöydälle",
+  "btn_näytä_lisää": "Näytä lisää"
 }

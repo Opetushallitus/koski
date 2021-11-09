@@ -6,9 +6,17 @@ import * as O from "fp-ts/lib/Option"
 import * as Ord from "fp-ts/lib/Ord"
 import * as string from "fp-ts/lib/string"
 import * as NEA from "fp-ts/NonEmptyArray"
-import React, { useEffect, useMemo } from "react"
+import React, {
+  CSSProperties,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react"
+import { T } from "../../i18n/i18n"
 // import { update } from "../../utils/arrays"
 import { FilterableValue, toFilterableString } from "../../utils/conversions"
+import { RaisedButton } from "../buttons/RaisedButton"
 import { ArrowDropDownIcon, ArrowDropUpIcon } from "../icons/Icon"
 import { InfoTooltip } from "../tooltip/InfoTooltip"
 import { dataFilterUsesValueList, DataTableFilter } from "./DataTableFilter"
@@ -16,6 +24,7 @@ import { Data, HeaderCell, Row, Table, TableBody, TableHeader } from "./Table"
 import "./Table.less"
 import {
   Column,
+  DataTableState,
   setFilters,
   sortByColumn,
   useDataTableState,
@@ -80,14 +89,171 @@ export const fromNullable = (
   })
 
 export const DataTable = (props: DataTableProps) => {
-  const [state, setState] = useDataTableState(props.storageName, props.columns)
+  const { columns, sortedData, ...headerProps } = useTableData(props)
 
-  // TODO: Datan muljuttamiset voisi myöhemmin siirtää omaan hookkiinsa
+  return (
+    <Table className={props.className}>
+      <DataTableHeader columns={columns} {...headerProps} />
+      <TableBody>
+        {sortedData.map((datum) => (
+          <DataRow
+            key={keyToString(datum.key)}
+            datum={datum}
+            columns={columns}
+          />
+        ))}
+      </TableBody>
+    </Table>
+  )
+}
+
+export type PaginatedDataTableProps = DataTableProps & {
+  paginationSize: number
+}
+
+export const PaginatedDataTable = (props: PaginatedDataTableProps) => {
+  const { columns, sortedData, ...headerProps } = useTableData(props)
+
+  const [visibleCount, setVisibleCount] = useState(props.paginationSize)
+  const showMore = useCallback(
+    () => setVisibleCount(visibleCount + props.paginationSize),
+    [visibleCount, props.paginationSize]
+  )
+  useEffect(() => setVisibleCount(props.paginationSize), [
+    sortedData,
+    props.paginationSize,
+  ])
+
+  const shownData = useMemo(() => sortedData.slice(0, visibleCount), [
+    sortedData,
+    visibleCount,
+  ])
+
+  return (
+    <Table className={props.className}>
+      <DataTableHeader columns={columns} {...headerProps} />
+      <TableBody>
+        {shownData.map((datum) => (
+          <DataRow
+            key={keyToString(datum.key)}
+            datum={datum}
+            columns={columns}
+          />
+        ))}
+        {shownData.length < sortedData.length ? (
+          <Row>
+            <td className={b("showmore")} colSpan={columns.length}>
+              <RaisedButton onClick={showMore}>
+                <T id="btn_näytä_lisää" />
+              </RaisedButton>
+            </td>
+          </Row>
+        ) : null}
+      </TableBody>
+    </Table>
+  )
+}
+
+type DataTableHeaderProps = {
+  columns: Column[]
+  tableState: DataTableState
+  setTableState: React.Dispatch<React.SetStateAction<DataTableState>>
+  containsFilters: boolean
+  optionsForFilters: string[][]
+}
+
+const DataTableHeader = (props: DataTableHeaderProps) => (
+  <TableHeader>
+    {/* Label row */}
+    <Row>
+      {props.columns.map((col, index) => (
+        <HeaderCell
+          key={index}
+          size={col.size}
+          indicatorSpace={!!col.indicatorSpace}
+          onClick={() => props.setTableState(sortByColumn(index))}
+          className={b("label")}
+        >
+          <div className={b("labelcontent")}>
+            <div className={b("labeltext")} title={col.label}>
+              {col.label}
+            </div>
+            <SortIndicator
+              visible={props.tableState.sort.columnIndex === index}
+              ascending={props.tableState.sort.ascending}
+            />
+            {col.tooltip && <InfoTooltip>{col.tooltip}</InfoTooltip>}
+          </div>
+        </HeaderCell>
+      ))}
+    </Row>
+
+    {/* Filter row */}
+    {props.containsFilters && (
+      <Row>
+        {props.columns.map((col, index) => (
+          <HeaderCell
+            key={index}
+            indicatorSpace={!!col.indicatorSpace}
+            className={b("filter")}
+          >
+            {col.filter && (
+              <DataTableFilter
+                type={col.filter}
+                values={props.optionsForFilters[index] || []}
+                initialValue={props.tableState.filters[index]?.value}
+                onChange={(filter, value) =>
+                  pipe(
+                    props.tableState.filters,
+                    A.updateAt(index, { fn: filter, value }),
+                    O.map((filters) => props.setTableState(setFilters(filters)))
+                  )
+                }
+              />
+            )}
+          </HeaderCell>
+        ))}
+      </Row>
+    )}
+  </TableHeader>
+)
+
+type DataRowProps = {
+  datum?: Datum
+  columns: Column[]
+  style?: CSSProperties
+}
+
+const DataRow = ({ datum, columns, style }: DataRowProps) =>
+  datum ? (
+    <Row data-row={datum.key} style={style}>
+      {datum.values.map((value, index) => {
+        const column = columns[index]
+        return (
+          <Data
+            key={index}
+            icon={value.icon}
+            size={column?.size}
+            indicatorSpace={!!column?.indicatorSpace}
+            title={value.tooltip || value.value?.toString()}
+          >
+            {value.display || value.value}
+          </Data>
+        )
+      })}
+    </Row>
+  ) : null
+
+const useTableData = (props: DataTableProps) => {
+  const [tableState, setTableState] = useDataTableState(
+    props.storageName,
+    props.columns
+  )
 
   const filteredData = useMemo(
     () =>
       props.data.filter((datum) =>
-        state.filters.every(
+        tableState.filters.every(
           (filter, index) =>
             !filter?.fn ||
             (datum.values[index]?.filterValues
@@ -97,16 +263,16 @@ export const DataTable = (props: DataTableProps) => {
               : filter.fn?.(toFilterableString(datum.values[index]?.value)))
         )
       ),
-    [state.filters, props.data]
+    [tableState.filters, props.data]
   )
 
   const sortedData = useMemo(() => {
-    const compare = compareDatum(state.sort.columnIndex)
+    const compare = compareDatum(tableState.sort.columnIndex)
     const ordDatum = Ord.fromCompare(
-      state.sort.ascending ? compare : flip(compare)
+      tableState.sort.ascending ? compare : flip(compare)
     )
     return A.sortBy([ordDatum])(filteredData)
-  }, [state.sort.columnIndex, state.sort.ascending, filteredData])
+  }, [tableState.sort.columnIndex, tableState.sort.ascending, filteredData])
 
   useEmitCountChanges(props.data, sortedData, props.onCountChange)
 
@@ -125,82 +291,23 @@ export const DataTable = (props: DataTableProps) => {
       : column
   )
 
-  return (
-    <Table className={props.className}>
-      <TableHeader>
-        {/* Label row */}
-        <Row>
-          {columns.map((col, index) => (
-            <HeaderCell
-              key={index}
-              size={col.size}
-              indicatorSpace={!!col.indicatorSpace}
-              onClick={() => setState(sortByColumn(index))}
-              className={b("label")}
-            >
-              <div className={b("labelcontent")}>
-                <div className={b("labeltext")} title={col.label}>
-                  {col.label}
-                </div>
-                <SortIndicator
-                  visible={state.sort.columnIndex === index}
-                  ascending={state.sort.ascending}
-                />
-                {col.tooltip && <InfoTooltip>{col.tooltip}</InfoTooltip>}
-              </div>
-            </HeaderCell>
-          ))}
-        </Row>
-
-        {/* Filter row */}
-        {containsFilters && (
-          <Row>
-            {columns.map((col, index) => (
-              <HeaderCell
-                key={index}
-                indicatorSpace={!!col.indicatorSpace}
-                className={b("filter")}
-              >
-                {col.filter && (
-                  <DataTableFilter
-                    type={col.filter}
-                    values={optionsForFilters[index] || []}
-                    initialValue={state.filters[index]?.value}
-                    onChange={(filter, value) =>
-                      pipe(
-                        state.filters,
-                        A.updateAt(index, { fn: filter, value }),
-                        O.map((filters) => setState(setFilters(filters)))
-                      )
-                    }
-                  />
-                )}
-              </HeaderCell>
-            ))}
-          </Row>
-        )}
-      </TableHeader>
-      <TableBody>
-        {sortedData.map((datum) => (
-          <Row key={keyToString(datum.key)} data-row={datum.key}>
-            {datum.values.map((value, index) => {
-              const column = columns[index]
-              return (
-                <Data
-                  key={index}
-                  icon={value.icon}
-                  size={column?.size}
-                  indicatorSpace={!!column?.indicatorSpace}
-                  title={value.tooltip || value.value?.toString()}
-                >
-                  {value.display || value.value}
-                </Data>
-              )
-            })}
-          </Row>
-        ))}
-      </TableBody>
-    </Table>
+  return useMemo(
+    () => ({
+      columns,
+      sortedData,
+      tableState,
+      setTableState,
+      optionsForFilters,
+      containsFilters,
+    }),
+    [
+      columns,
+      containsFilters,
+      optionsForFilters,
+      setTableState,
+      sortedData,
+      tableState,
+    ]
   )
 }
 

@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import { Redirect } from "react-router-dom"
 import { runningLocally } from "../utils/environment"
 
-export type Feature = "rouhinta"
+export type Feature = "rouhinta" | "kuntarouhinta"
 
 const disabledFeatures: string[] = window.location.search
   .split("&")
@@ -13,6 +13,7 @@ const disabledFeatures: string[] = window.location.search
 
 export const featureFlags: Record<Feature, string> = {
   rouhinta: "rouhinta",
+  kuntarouhinta: "kuntarouhinta",
 }
 
 const featureFlagEnabledValue = "enabled"

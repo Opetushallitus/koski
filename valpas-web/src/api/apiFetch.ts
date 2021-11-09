@@ -66,12 +66,14 @@ const apiFetch = async <T>(
 
 export const enrichJsonRequest = (
   method: string,
+  accept: string,
   init?: JsonRequestInit
 ): JsonRequestInit => ({
   credentials: "include",
   method,
   ...init,
   headers: {
+    Accept: accept,
     "Content-Type": "application/json",
     ...init?.headers,
   },
@@ -81,18 +83,20 @@ export const enrichJsonRequest = (
 export const apiGet = async <T>(
   input: RequestInfo,
   init?: JsonRequestInit
-): Promise<ApiResponse<T>> => apiFetch<T>(input, enrichJsonRequest("GET", init))
+): Promise<ApiResponse<T>> =>
+  apiFetch<T>(input, enrichJsonRequest("GET", "application/json", init))
 
 export const apiPost = async <T>(
   input: RequestInfo,
   init?: JsonRequestInit
 ): Promise<ApiResponse<T>> =>
-  apiFetch<T>(input, enrichJsonRequest("POST", init))
+  apiFetch<T>(input, enrichJsonRequest("POST", "application/json", init))
 
 export const apiPut = async <T>(
   input: RequestInfo,
   init?: JsonRequestInit
-): Promise<ApiResponse<T>> => apiFetch<T>(input, enrichJsonRequest("PUT", init))
+): Promise<ApiResponse<T>> =>
+  apiFetch<T>(input, enrichJsonRequest("PUT", "application/json", init))
 
 export const prependUrl = (
   baseUrl: string,

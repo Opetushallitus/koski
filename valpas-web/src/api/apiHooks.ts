@@ -11,6 +11,7 @@ import {
   useState,
 } from "react"
 import { useSafeState } from "../state/useSafeState"
+import { pluck } from "../utils/objects"
 import { ApiFailure, ApiResponse, ApiSuccess } from "./apiFetch"
 import { isSuccess, isSuccessAndFinished } from "./apiUtils"
 import { ApiCache } from "./cache"
@@ -53,6 +54,34 @@ export const useApiWithParams = <T, P extends any[]>(
     }
   }, [JSON.stringify(params)]) // eslint-disable-line react-hooks/exhaustive-deps
   return api
+}
+
+/**
+ * Get data from cache without ever triggering API calls.
+ * The data is updated on both cache content and parameter changes.
+ */
+export const useCacheWithParams = <T, P extends any[]>(
+  cache: ApiCache<T, P>,
+  params?: P
+) => {
+  const [cacheChangeTrigger, setChangeTrigger] = useState(Symbol())
+
+  useEffect(() => {
+    return cache.addChangeListener(() => {
+      setChangeTrigger(Symbol())
+    })
+  }, [cache])
+
+  return useMemo(
+    () =>
+      pipe(
+        O.fromNullable(params),
+        O.chain(cache.get),
+        O.map(pluck("data")),
+        O.getOrElseW(() => null)
+      ),
+    [cache.get, params, cacheChangeTrigger] // eslint-disable-line react-hooks/exhaustive-deps
+  )
 }
 
 /**

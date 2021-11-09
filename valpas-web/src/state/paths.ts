@@ -34,10 +34,15 @@ export const parseQueryFromProps = (
     : {}
 }
 
+export type PathDeclaration<A extends any[]> = {
+  route(basePath?: string): string
+  href(basePath?: string | null, ...args: A): string
+}
+
 const declarePath = <A extends any[] = never[]>(
   route: string,
   mapParams: (...args: A) => object = () => ({})
-) => {
+): PathDeclaration<A> => {
   const getRoute = (basePath: string = "") => `${basePath}/${route}`
   return {
     route: getRoute,
@@ -90,6 +95,7 @@ export type OppijaPathBackRefs = {
   kuntailmoitusRef?: string
   suorittaminenRef?: string
   suorittaminenIlmoitetutRef?: string
+  kuntaRef?: string
   prev?: string
 }
 
@@ -121,13 +127,24 @@ export const maksuttomuusPath = declarePath("maksuttomuus")
 
 export const käyttöoikeusPath = declarePath("kayttooikeudet")
 
-// Kuntanäkymien juuri
+// Kuntailmoitukset
 
 export const kuntailmoitusPath = declarePath("kuntailmoitukset")
 
 export const kuntailmoitusPathWithOrg = declarePath(
   "kuntailmoitukset/organisaatio/:organisaatioOid",
   (organisaatioOid: Oid) => ({ organisaatioOid })
+)
+
+// Kunnan automaattinen tarkastus eli rouhinta
+
+export const kuntarouhintaPathWithoutOid = declarePath(
+  "kuntailmoitukset/automaattinen-tarkastus"
+)
+
+export const kuntarouhintaPathWithOid = declarePath(
+  "kuntailmoitukset/automaattinen-tarkastus/:organisaatioOid",
+  passParamsThru<OrganisaatioOidProps>()
 )
 
 // Kuntakäyttäjän hakunäkymä

@@ -13,7 +13,7 @@ import {
 import { KuntailmoituksenOppijanYhteystiedot } from "../../state/apitypes/kuntailmoituspohjatiedot"
 import { organisaatioNimi } from "../../state/apitypes/organisaatiot"
 import { ISODateTime } from "../../state/common"
-import { joinToString, nonNull } from "../../utils/arrays"
+import { nonNull, nullableJoinToString } from "../../utils/arrays"
 import { formatDate } from "../../utils/date"
 import { plainComponent } from "../../utils/plaincomponent"
 import "./OppijaKuntailmoitus.less"
@@ -110,7 +110,7 @@ type IlmoituksenTekijäProps = {
 
 const IlmoituksenTekijä = (props: IlmoituksenTekijäProps) => {
   const rows = [
-    joinToString([
+    nullableJoinToString(" ")([
       props.tekijä.henkilö?.sukunimi,
       props.tekijä.henkilö?.etunimet,
     ]),
@@ -146,7 +146,7 @@ const TiedotOppijasta = (props: TiedotOppijastaProps) => {
         },
         {
           label: t("oppija__postitoimipaikka"),
-          value: joinToString([
+          value: nullableJoinToString(" ")([
             props.yhteystiedot.postinumero,
             props.yhteystiedot.postitoimipaikka,
           ]),

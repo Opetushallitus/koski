@@ -18,27 +18,33 @@ export const apiPostDownload = async (
   input: RequestInfo,
   init?: JsonRequestInit
 ): Promise<ApiResponse<Blob>> => {
-  const response = await fetch(
-    prependUrl("/koski", input),
-    enrichJsonRequest("POST", init)
-  )
-  const data = await response.blob()
-
-  if (response.status < 400) {
-    download(
-      data,
-      parseFilename(response.headers.get("content-disposition")) ||
-        defaultFilename,
-      response.headers.get("content-type") || "application/octet-stream"
+  try {
+    const response = await fetch(
+      prependUrl("/koski", input),
+      enrichJsonRequest("POST", "*/*", init)
     )
-    return E.right({
-      status: response.status,
-      data,
-    })
-  } else {
+    const data = await response.blob()
+
+    if (response.status < 400) {
+      download(
+        data,
+        parseFilename(response.headers.get("content-disposition")) ||
+          defaultFilename,
+        response.headers.get("content-type") || "application/octet-stream"
+      )
+      return E.right({
+        status: response.status,
+        data,
+      })
+    } else {
+      return E.left({
+        status: response.status,
+        errors: await parseDownloadError(data),
+      })
+    }
+  } catch (e: any) {
     return E.left({
-      status: response.status,
-      errors: await parseDownloadError(data),
+      errors: parseErrors(e),
     })
   }
 }
