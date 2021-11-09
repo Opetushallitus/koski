@@ -1,5 +1,5 @@
 import { Key, WebElement } from "selenium-webdriver"
-import { attributeEventuallyEquals } from "./content"
+import { attributeEventuallyEquals, textEventuallyEquals } from "./content"
 import { $, $$ } from "./core"
 import { driver } from "./driver"
 import { shortTimeout } from "./timeouts"
@@ -33,6 +33,29 @@ export const clearTextInputElement = async (
     await driver.executeScript((element: any) => element.select(), element)
     await element.sendKeys(Key.BACK_SPACE)
     expect(await element.getAttribute("value")).toEqual("")
+  }, timeout)
+
+export const setTextArea = async (selector: string, value: string) => {
+  await clearTextInput(selector)
+
+  const element = await $(selector)
+  await element.sendKeys(value)
+
+  await textEventuallyEquals(selector, value)
+}
+
+export const clearTextArea = async (selector: string, timeout = shortTimeout) =>
+  clearTextAreaElement(await $(selector), timeout)
+
+export const clearTextAreaElement = async (
+  element: WebElement,
+  timeout = shortTimeout
+) =>
+  // Pitää tehdä silmukassa, koska tämä ei aina toimi, välillä BACK_SPACE poistaa vain viimeisen merkin
+  eventually(async () => {
+    await driver.executeScript((element: any) => element.select(), element)
+    await element.sendKeys(Key.BACK_SPACE)
+    expect(await element.getText()).toEqual("")
   }, timeout)
 
 export const dropdownSelect = async (selector: string, index: number) => {
