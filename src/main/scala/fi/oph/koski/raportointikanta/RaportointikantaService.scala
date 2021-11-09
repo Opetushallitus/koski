@@ -20,8 +20,6 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
       logger.info("Raportointikanta already loading, do nothing")
       false
     } else {
-      loadDatabase.dropAndCreateObjects
-      startLoading(scheduler, onEnd)
       logger.info(s"Started loading raportointikanta (force: $force)")
       true
     }
