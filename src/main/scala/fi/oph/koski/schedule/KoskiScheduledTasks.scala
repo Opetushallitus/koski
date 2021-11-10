@@ -12,7 +12,6 @@ class KoskiScheduledTasks(application: KoskiApplication) {
     application.tiedonsiirtoService
   )
   val purgeOldSessions: Option[Scheduler] = new PurgeOldSessionsTask(application).scheduler
-  val sendRaportointikantaLoadTime: Option[Scheduler] = new SendRaportointikantaLoadTimeToCloudwatch(application).scheduler
   def init {}
 }
 
