@@ -11,7 +11,12 @@ export type ExternalLinkProps = {
 }
 
 export const ExternalLink = (props: ExternalLinkProps) => (
-  <a href={props.to} target="_blank" className="externallink">
+  <a
+    href={props.to}
+    target="_blank"
+    className="externallink"
+    rel="noopener noreferrer"
+  >
     {props.children} <OpenInNewIcon inline className={b("icon")} />
   </a>
 )

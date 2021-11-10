@@ -220,8 +220,8 @@ export class Oppija extends React.Component {
               {modelData(henkilö, 'turvakielto') && <span title={t('Henkilöllä on turvakielto')} className="turvakielto"/>}
               <a href={`/koski/api/oppija/${modelData(henkilö, 'oid')}/opintotiedot-json`}>{'JSON'}</a>
               {showHenkilöUiLink.map(show => show && <HenkilöUiLink henkilö={henkilö} yksilöity={modelData(oppija, 'yksilöity')} />)}
-              {showVirtaXmlLink.map(show => show && <a href={`/koski/api/oppija/${modelData(henkilö, 'oid')}/virta-opintotiedot-xml`} target='_blank'>{'Virta XML'}</a>)}
-              {showSureLink.map(show => show && <a href={`/suoritusrekisteri/#/opiskelijat?henkilo=${modelData(henkilö, 'oid')}`} target='_blank'>{'Suoritusrekisteri'}</a>)}
+              {showVirtaXmlLink.map(show => show && <a href={`/koski/api/oppija/${modelData(henkilö, 'oid')}/virta-opintotiedot-xml`} target='_blank' rel="noopener noreferrer">{'Virta XML'}</a>)}
+              {showSureLink.map(show => show && <a href={`/suoritusrekisteri/#/opiskelijat?henkilo=${modelData(henkilö, 'oid')}`} target='_blank' rel="noopener noreferrer">{'Suoritusrekisteri'}</a>)}
             </h2>
             <div className="oppijanumero">{t('Oppijanumero')}{`: ${modelData(henkilö, 'oid')}`}</div>
             {
@@ -239,7 +239,7 @@ export class Oppija extends React.Component {
 }
 
 const HenkilöUiLink = ({henkilö, yksilöity}) => {
-  return (<a href={`/henkilo-ui/oppija/${modelData(henkilö, 'oid')}?permissionCheckService=KOSKI`} target='_blank' title={t('OppijanumerorekisteriLinkTooltip')} className='oppijanumerorekisteri-link'>
+  return (<a href={`/henkilo-ui/oppija/${modelData(henkilö, 'oid')}?permissionCheckService=KOSKI`} target='_blank' title={t('OppijanumerorekisteriLinkTooltip')} className='oppijanumerorekisteri-link' rel="noopener noreferrer">
     <Text name='Oppijanumerorekisteri'/>
     {!yksilöity && <Text className='yksilöimätön' name='Oppijaa ei ole yksilöity. Tee yksilöinti oppijanumerorekisterissä'/>}
   </a>)

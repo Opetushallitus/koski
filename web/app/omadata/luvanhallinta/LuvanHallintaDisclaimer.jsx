@@ -8,7 +8,7 @@ export const LuvanHallintaDisclaimer = () => (
     <p>
       {'*'}
       <Text name='Koskee vain opintotietoja --prefix'/>
-      <a className='kayttoluvat-external-link' href={t('tietosuojaseloste-link')} target='_blank'>
+      <a className='kayttoluvat-external-link' href={t('tietosuojaseloste-link')} target='_blank' rel="noopener noreferrer">
         <ExternalLinkIcon/>
         <Text name='Koskee vain opintotietoja --link-title'/>
       </a>
