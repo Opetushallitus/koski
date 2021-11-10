@@ -28,7 +28,7 @@ import {
 } from "../../../components/shared/OrganisaatioValitsin"
 import { Counter } from "../../../components/typography/Counter"
 import { ApiErrors } from "../../../components/typography/error"
-import { getLocalized, T, t } from "../../../i18n/i18n"
+import { getLocalized, T, t, TParagraphs } from "../../../i18n/i18n"
 import {
   useOrganisaatiotJaKäyttöoikeusroolit,
   withRequiresKuntavalvonta,
@@ -42,6 +42,7 @@ import {
 import { useRedirectToOrganisaatio } from "../../../state/useRedirect"
 import { ErrorView } from "../../ErrorView"
 import { OrganisaatioAutoRedirect } from "../../OrganisaatioAutoRedirect"
+import { Rouhintaohje } from "../hetuhaku/Rouhintaohje"
 import { KuntaNavigation } from "../KuntaNavigation"
 import { KuntarouhintaTable } from "./KuntarouhintaTable"
 import "./KuntarouhintaView.less"
@@ -127,6 +128,9 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
           onChange={changeOrganisaatio}
         />
         <KuntaNavigation selectedOrganisaatio={organisaatioOid} />
+        <Rouhintaohje className={b("ohje")}>
+          <TParagraphs id="rouhinta_kuntahaku_ohje" />
+        </Rouhintaohje>
 
         {!rouhintaData ? (
           <FetchDataConfirmation

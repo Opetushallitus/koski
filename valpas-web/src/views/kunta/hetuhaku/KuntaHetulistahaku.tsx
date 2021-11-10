@@ -10,10 +10,12 @@ import { TextAreaField } from "../../../components/forms/TextField"
 import { Spinner } from "../../../components/icons/Spinner"
 import { Password } from "../../../components/Password"
 import { ApiErrors } from "../../../components/typography/error"
-import { T, t, useLanguage } from "../../../i18n/i18n"
+import { TertiaryHeading } from "../../../components/typography/headings"
+import { T, TParagraphs, useLanguage } from "../../../i18n/i18n"
 import { parseHetulikes } from "../../../state/hetu"
 import { usePassword } from "../../../state/password"
 import "./KuntaHetulistahaku.less"
+import { Rouhintaohje } from "./Rouhintaohje"
 
 const b = bem("kuntahetulista")
 
@@ -34,11 +36,13 @@ export const KuntaHetulistahaku = () => {
 
   return (
     <Form className={b()}>
-      <TextAreaField
-        label={t("rouhinta_hae_usealla_hetulla")}
-        value={hetus.fieldValue}
-        onChange={hetus.set}
-      />
+      <TertiaryHeading>
+        <T id="rouhinta_hae_usealla_hetulla" />
+      </TertiaryHeading>
+      <Rouhintaohje className={b("ohje")}>
+        <TParagraphs id="rouhinta_hetuhaku_ohje" />
+      </Rouhintaohje>
+      <TextAreaField value={hetus.fieldValue} onChange={hetus.set} />
       <div>
         <Password>{password}</Password>
       </div>
