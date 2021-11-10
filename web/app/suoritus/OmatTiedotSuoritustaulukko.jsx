@@ -83,7 +83,7 @@ const YtrArvosanaColumn = (parentSuoritus) => {
 
 const KoesuoritusLink = ({copyOfExamPaper, kokeenNimi, parentSuoritus}) =>
   copyOfExamPaper
-    ? (<a className='text-button-small' target='_blank' href={`/koski/koesuoritus/${copyOfExamPaper}${parentSuoritus.context.huollettava ? '?huollettava=' + parentSuoritus.context.oppijaOid : ''}`}>
+    ? (<a className='text-button-small' target='_blank' href={`/koski/koesuoritus/${copyOfExamPaper}${parentSuoritus.context.huollettava ? '?huollettava=' + parentSuoritus.context.oppijaOid : ''}`} rel="noopener noreferrer">
         <Text className='show-koesuoritus-text' name='Näytä koesuoritus' aria-label={t(kokeenNimi) + '. ' + t('Näytä koesuoritus')}/>
       </a>)
     : null

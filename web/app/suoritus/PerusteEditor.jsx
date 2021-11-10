@@ -26,6 +26,6 @@ PerusteEditor.handlesOptional= () => true
 const perusteLinkki = (peruste, perusteEditor) => {
   const map404 = { errorMapper: (e) => e.httpStatus === 404 ? Bacon.never() : Bacon.Error(e) }
   return Http.cachedGet(`/koski/api/tutkinnonperusteet/peruste/${encodeURIComponent(peruste)}/linkki?lang=${encodeURIComponent(lang)}`, map404).map('.url').map(linkki =>
-    <a target="_blank" href={linkki}>{perusteEditor}</a>
+    <a target="_blank" href={linkki} rel="noopener noreferrer">{perusteEditor}</a>
   ).startWith(perusteEditor)
 }

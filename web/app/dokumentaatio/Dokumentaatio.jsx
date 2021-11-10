@@ -19,7 +19,7 @@ const JsonExample = ({category, example}) => {
   return (
     <li className="example-item">
       <a className="example-link" onClick={() => expandedA.modify(v => !v)}>{example.description}</a>
-      <a className="example-as-json" href={example.link} target="_blank">{'lataa JSON'}</a>
+      <a className="example-as-json" href={example.link} target="_blank" rel="noopener noreferrer">{'lataa JSON'}</a>
       {expandedA.flatMap(v => v
         ? Http.cachedGet('/koski/api/documentation/categoryExamples/'+category+'/'+example.name+'/table.html').map(c => <JsonExampleTable contents={c}/>)
         : null
@@ -98,7 +98,7 @@ export const dokumentaatioKoodistotP = () => dokumentaatioContentP('/koski/dokum
     content: (<div>
       <div dangerouslySetInnerHTML={{__html: htmlSections.koodistot}}></div>
       <ul>
-        {koodistot.map(koodistoUri => <li><a href={'/koski/dokumentaatio/koodisto/' + koodistoUri + '/latest'} target='_blank'>{koodistoUri}</a></li>)}
+        {koodistot.map(koodistoUri => <li><a href={'/koski/dokumentaatio/koodisto/' + koodistoUri + '/latest'} target='_blank' rel="noopener noreferrer">{koodistoUri}</a></li>)}
       </ul>
     </div>),
     title: 'Dokumentaatio - Koodistot'

@@ -179,7 +179,7 @@
     })(jQuery);
 
     function schemaName() {
-      var nameInParams = window.location.search.match(new RegExp('(?:[\?\&]schema=)([^&]+)'))
+      var nameInParams = window.location.search.match(new RegExp('(?:[?&]schema=)([^&]+)'))
       var schemaName
       if (nameInParams) {
         schemaName = nameInParams[1]

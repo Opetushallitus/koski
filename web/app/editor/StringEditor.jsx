@@ -20,7 +20,7 @@ export const StringEditor = ({model, placeholder, autoFocus}) => {
 
 let splitToRows = (data) => data.replace(/\r\n*/g, '\n').split('\n').map((line, k) => <span key={k}>{k > 0 ? <br/> : null}{line}</span>)
 
-const buildRegex = model => new RegExp(model.regularExpression.replace(/\\/g, '\\'))
+const buildRegex = model => new RegExp(model.regularExpression)
 
 StringEditor.handlesOptional = () => true
 StringEditor.isEmpty = m => !modelData(m)
