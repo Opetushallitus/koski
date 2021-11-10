@@ -4,9 +4,9 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
-import fi.oph.koski.documentation.VapaaSivistystyöExample.{opiskeluoikeusVapaatavoitteinen}
-import fi.oph.koski.koskiuser.MockUsers
-import fi.oph.koski.koskiuser.MockUsers.{varsinaisSuomiPalvelukäyttäjä}
+import fi.oph.koski.documentation.VapaaSivistystyöExample.opiskeluoikeusVapaatavoitteinen
+import fi.oph.koski.koskiuser.{MockUsers}
+import fi.oph.koski.koskiuser.MockUsers.varsinaisSuomiPalvelukäyttäjä
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.VapaanSivistystyönOpiskeluoikeus
 import org.scalatest.freespec.AnyFreeSpec
@@ -27,11 +27,14 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
   "Kun suostumus voidaan peruuttaa" - {
     val opiskeluoikeuksiaEnnenPerumistaElasticsearchissa = searchForPerustiedot(Map("toimipiste" -> defaultOpiskeluoikeus.oppilaitos.get.oid), varsinaisSuomiPalvelukäyttäjä).length
 
-    "Kansalainen voi peruuttaa oman suostumuksensa" in {
-      val loginHeaders = kansalainenLoginHeaders(vapaatavoitteinenHetu)
+    val loginHeaders = kansalainenLoginHeaders(vapaatavoitteinenHetu)
+    post(s"/api/opiskeluoikeus/suostumuksenperuutus/$vapaatavoitteinenOpiskeluoikeusOid", headers = loginHeaders) {
+      verifyResponseStatusOk()
+    }
 
-      post(s"/api/opiskeluoikeus/suostumuksenperuutus/$vapaatavoitteinenOpiskeluoikeusOid", headers = loginHeaders) {
-        verifyResponseStatusOk()
+    "Opiskeluoikeus on poistunut" in {
+      authGet("api/opiskeluoikeus/" + vapaatavoitteinenOpiskeluoikeusOid, defaultUser) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
       }
     }
 
@@ -85,8 +88,8 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
       val loginHeaders = kansalainenLoginHeaders(teijaHetu)
 
       post(s"/api/opiskeluoikeus/suostumuksenperuutus/$vapaatavoitteinenOpiskeluoikeusOid", headers = loginHeaders) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeusEiSopivaSuostumuksenPerumisele(
-          s"Opiskeluoikeuden $vapaatavoitteinenOpiskeluoikeusOid annettu suostumus ei ole peruttavissa. Joko opiskeluoikeudesta on tehty suoritusjako,viranomainen on katsonut opiskeluoikeuden tietoja tai opiskeluoikeus on tyyppiä, jonka kohdalla annettua suostumusta ei voida perua."))
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeusEiSopivaSuostumuksenPerumiselle(
+          s"Opiskeluoikeuden $vapaatavoitteinenOpiskeluoikeusOid annettu suostumus ei ole peruttavissa. Joko opiskeluoikeudesta on tehty suoritusjako, viranomainen on käyttänyt opiskeluoikeuden tietoja päätöksenteossa tai opiskeluoikeus on tyyppiä, jonka kohdalla annettua suostumusta ei voida perua."))
       }
     }
 
@@ -94,8 +97,8 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
       val loginHeaders = kansalainenLoginHeaders(teijaHetu)
 
       post(s"/api/opiskeluoikeus/suostumuksenperuutus/$teijaOpiskeluoikeusOid", headers = loginHeaders) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeusEiSopivaSuostumuksenPerumisele(
-          s"Opiskeluoikeuden $teijaOpiskeluoikeusOid annettu suostumus ei ole peruttavissa. Joko opiskeluoikeudesta on tehty suoritusjako,viranomainen on katsonut opiskeluoikeuden tietoja tai opiskeluoikeus on tyyppiä, jonka kohdalla annettua suostumusta ei voida perua."))
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeusEiSopivaSuostumuksenPerumiselle(
+          s"Opiskeluoikeuden $teijaOpiskeluoikeusOid annettu suostumus ei ole peruttavissa. Joko opiskeluoikeudesta on tehty suoritusjako, viranomainen on käyttänyt opiskeluoikeuden tietoja päätöksenteossa tai opiskeluoikeus on tyyppiä, jonka kohdalla annettua suostumusta ei voida perua."))
       }
     }
 
@@ -119,8 +122,8 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
 
       val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus.oid).head.oid.get
       post(s"/api/opiskeluoikeus/suostumuksenperuutus/$oid", headers = loginHeaders) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeusEiSopivaSuostumuksenPerumisele(
-          s"Opiskeluoikeuden $oid annettu suostumus ei ole peruttavissa. Joko opiskeluoikeudesta on tehty suoritusjako,viranomainen on katsonut opiskeluoikeuden tietoja tai opiskeluoikeus on tyyppiä, jonka kohdalla annettua suostumusta ei voida perua."))
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeusEiSopivaSuostumuksenPerumiselle(
+          s"Opiskeluoikeuden $oid annettu suostumus ei ole peruttavissa. Joko opiskeluoikeudesta on tehty suoritusjako, viranomainen on käyttänyt opiskeluoikeuden tietoja päätöksenteossa tai opiskeluoikeus on tyyppiä, jonka kohdalla annettua suostumusta ei voida perua."))
       }
     }
   }

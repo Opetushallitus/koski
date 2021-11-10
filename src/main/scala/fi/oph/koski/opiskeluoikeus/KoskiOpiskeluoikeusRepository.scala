@@ -28,7 +28,6 @@ trait KoskiOpiskeluoikeusRepository {
     oppijaOid: String,
     muutettavanOpiskeluoikeudenOid: Option[String]
   ): Seq[LocalDate]
-  def deleteOpiskeluoikeus(oid: String)(implicit user: KoskiSpecificSession): HttpStatus
   def merkitseSuoritusjakoTehdyksi(oid: String)(implicit user: KoskiSpecificSession): HttpStatus
   def suoritusjakoTehty(oid: String)(implicit user: KoskiSpecificSession): Boolean
 }

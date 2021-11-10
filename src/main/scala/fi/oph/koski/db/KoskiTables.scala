@@ -28,7 +28,7 @@ object KoskiTables {
     val koulutusmuoto = column[String]("koulutusmuoto")
     val alkamispäivä = column[Date]("alkamispaiva")
     val päättymispäivä = column[Option[Date]]("paattymispaiva")
-    val suoritusjakoTehty = column[Boolean]("suoritusjako_tehty")
+    val suoritusjakoTehty = column[Boolean]("suoritusjako_tehty_2021_11_15_jalkeen")
 
     def * = (id, oid, versionumero, aikaleima, oppijaOid, oppilaitosOid, koulutustoimijaOid, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä, suoritusjakoTehty) <> (OpiskeluoikeusRow.tupled, OpiskeluoikeusRow.unapply)
     def updateableFields = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, oppilaitosOid, mitätöity, alkamispäivä, päättymispäivä)

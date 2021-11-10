@@ -2,11 +2,13 @@ package fi.oph.koski.suostumus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{KoskiTables, PoistettuOpiskeluoikeusRow, QueryMethods}
-import fi.oph.koski.henkilo.{HenkilönTunnisteet}
+import fi.oph.koski.henkilo.HenkilönTunnisteet
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Opiskeluoikeus, SuostumusPeruttavissaOpiskeluoikeudelta}
+import slick.dbio
+import slick.dbio.Effect.Write
 
 import java.sql.{Date, Timestamp}
 import java.time.Instant
@@ -33,40 +35,37 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
           suostumusPeruttavissa(_, henkilö)
         ).find (_.oid.getOrElse("") == oid) match {
           case Some(oo) =>
-            val timestamp = Timestamp.from(Instant.now())
             val opiskeluoikeudenId = runDbSync(KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.id).result).head
-            val lisäysResult = runDbSync(KoskiTables.PoistetutOpiskeluoikeudet.insertOrUpdate(PoistettuOpiskeluoikeusRow(
-              oid,
-              oo.oppilaitos.map(_.nimi.map(_.get("fi"))).flatten,
-              oo.oppilaitos.map(_.oid),
-              oo.päättymispäivä.map(Date.valueOf),
-              oo.lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
-              oo.lähdejärjestelmänId.map(_.id).flatten,
-              timestamp
-            )))
-            lisäysResult match {
-              case `eiLisättyjäRivejä` =>
-                logger.error(s"Virhe lisättäessä opiskeluoikeutta $oid poistettujen opiskeluoikeuksien tauluun")
-                KoskiErrorCategory.internalError.apply("Virhe lisättäessä opiskeluoikeutta poistettujen opiskeluoikeuksien tauluun")
-              case _ =>
-                opiskeluoikeusRepository.deleteOpiskeluoikeus(oid)(user) match {
-                  case HttpStatus.ok =>
-                    perustiedotIndexer.deleteByIds(List(opiskeluoikeudenId), true)
-                    HttpStatus.ok
-                  case _ =>
-                    // Pyritään poistamaan äsken lisätty opiskeluoikeus poistettujen taulusta,
-                    // jos opiskeluoikeutta ei voitu poistaa Kosken opiskeluoikeuksien taulusta.
-                    logger.error(s"Virhe poistettaessa opiskeluoikeutta $oid")
-                    runDbSync(KoskiTables.PoistetutOpiskeluoikeudet.filter(_.oid === oid).delete)
-                    KoskiErrorCategory.internalError.apply("Opiskeluoikeutta ei voitu poistaa")
-                }
-            }
+            runDbSync(DBIO.seq(
+              opiskeluoikeudenPoistonQuery(oid),
+              poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(oo)
+            ).transactionally)
+            perustiedotIndexer.deleteByIds(List(opiskeluoikeudenId), true)
+            HttpStatus.ok
           case None =>
-            KoskiErrorCategory.forbidden.opiskeluoikeusEiSopivaSuostumuksenPerumisele(s"Opiskeluoikeuden $oid annettu suostumus ei ole peruttavissa. Joko opiskeluoikeudesta on tehty suoritusjako," +
-              s"viranomainen on katsonut opiskeluoikeuden tietoja tai opiskeluoikeus on tyyppiä, jonka kohdalla annettua suostumusta ei voida perua.")
+            KoskiErrorCategory.forbidden.opiskeluoikeusEiSopivaSuostumuksenPerumiselle(s"Opiskeluoikeuden $oid annettu suostumus ei ole peruttavissa. Joko opiskeluoikeudesta on tehty suoritusjako, " +
+              s"viranomainen on käyttänyt opiskeluoikeuden tietoja päätöksenteossa tai opiskeluoikeus on tyyppiä, jonka kohdalla annettua suostumusta ei voida perua.")
         }
       case None => KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia()
     }
+  }
+
+  def opiskeluoikeudenPoistonQuery(oid: String)(implicit user: KoskiSpecificSession): dbio.DBIOAction[Int, NoStream, Write] = {
+    KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).delete
+  }
+
+  def poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSpecificSession): dbio.DBIOAction[Int, NoStream, Write] = {
+    val timestamp = Timestamp.from(Instant.now())
+
+    KoskiTables.PoistetutOpiskeluoikeudet.insertOrUpdate(PoistettuOpiskeluoikeusRow(
+      opiskeluoikeus.oid.get,
+      opiskeluoikeus.oppilaitos.map(_.nimi.map(_.get("fi"))).flatten,
+      opiskeluoikeus.oppilaitos.map(_.oid),
+      opiskeluoikeus.päättymispäivä.map(Date.valueOf),
+      opiskeluoikeus.lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
+      opiskeluoikeus.lähdejärjestelmänId.map(_.id).flatten,
+      timestamp
+    ))
   }
 
   def suostumusPeruttavissa(oo: Opiskeluoikeus, henkilö: HenkilönTunnisteet)(implicit user: KoskiSpecificSession) =
@@ -81,7 +80,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
   }
 
   private def suoritusjakoTehty(oo: Opiskeluoikeus)(implicit user: KoskiSpecificSession) = {
-    application.opiskeluoikeusRepository.suoritusjakoTehty(oo.oid.get)
+    opiskeluoikeusRepository.suoritusjakoTehty(oo.oid.get)
   }
 
   // Kutsutaan vain fixtureita resetoitaessa

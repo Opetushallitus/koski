@@ -16,7 +16,7 @@ import fi.oph.koski.util.WithWarnings
 
 class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppijaFacade: KoskiOppijaFacade) extends Logging {
   def put(oppijaOid: String, suoritusIds: List[SuoritusIdentifier])(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, Suoritusjako] = {
-    assertSuorituksetExist(oppijaOid, suoritusIds) match {
+    getOpiskeluoikeudetSuoritusIdentifierinMukaan(oppijaOid, suoritusIds) match {
       case Left(status) => Left(status)
       case Right(opiskeluoikeudet) =>
         val secret = SuoritusjakoSecret.generateNew
@@ -25,8 +25,8 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
         // Kaikkia opiskeluoikeuksia ei talleteta Koskeen, jolloin niillä ei välttämättä ole oidia.
         // Ei yritetä merkata sellaisille opiskeluoikeuksille suoritusjakoa tehdyksi.
         opiskeluoikeudet.map(_.oid match {
-          case Some(oid) => oppijaFacade.merkitseSuoritusjakoTehdyksi(oid)
-          case None =>
+          case Some(oid) if suoritusjako.isRight => oppijaFacade.merkitseSuoritusjakoTehdyksi(oid)
+          case _ =>
         })
         suoritusjako
     }
@@ -67,7 +67,7 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
     }
   }
 
-  private def assertSuorituksetExist(oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Either[HttpStatus, Seq[Opiskeluoikeus]] = {
+  private def getOpiskeluoikeudetSuoritusIdentifierinMukaan(oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Either[HttpStatus, Seq[Opiskeluoikeus]] = {
     oppijaFacade.findOppija(oppijaOid)(KoskiSpecificSession.systemUser).map { oppijaWithWarnings =>
       oppijaWithWarnings.map { oppija =>
         suoritusIds.map(suoritusId =>

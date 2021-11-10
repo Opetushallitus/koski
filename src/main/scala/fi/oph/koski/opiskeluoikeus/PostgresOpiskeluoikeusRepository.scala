@@ -142,20 +142,6 @@ class PostgresOpiskeluoikeusRepository(
     }
   }
 
-  val eiPoistettujaRivejä = 0
-  def deleteOpiskeluoikeus(oid: String)(implicit user: KoskiSpecificSession): HttpStatus = {
-    val opiskeluoikeudet = findKansalaisenOpiskeluoikeudet(List(user.oid))
-
-    opiskeluoikeudet.exists(_.oid.getOrElse("") == oid) match {
-      case true =>
-        runDbSync(OpiskeluOikeudet.filter(_.oid === oid).delete) match {
-          case `eiPoistettujaRivejä` => KoskiErrorCategory.internalError(s"Virhe poistettaessa opiskeluoikeutta $oid")
-          case _ => HttpStatus.ok
-        }
-      case false => KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia()
-    }
-  }
-
   def merkitseSuoritusjakoTehdyksi(oid: String)(implicit user: KoskiSpecificSession): HttpStatus = {
     runDbSync(KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.suoritusjakoTehty).update(true)) match {
       case 0 => throw new RuntimeException(s"Oppija not found: $oid")
