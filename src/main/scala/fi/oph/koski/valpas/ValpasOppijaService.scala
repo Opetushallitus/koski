@@ -258,7 +258,7 @@ class ValpasOppijaService(
     oppija.copy(oppivelvollisuudenKeskeytykset = oppija.oppivelvollisuudenKeskeytykset.filter(_.voimassa))
 
   def getKunnanOppijatSuppeatTiedot
-    (kuntaOid: Organisaatio.Oid, haeAktiiviset: Boolean)
+    (kuntaOid: Organisaatio.Oid)
     (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[OppijaKuntailmoituksillaSuppeatTiedot]] = {
     accessResolver.assertAccessToOrg(ValpasRooli.KUNTA, kuntaOid)
@@ -294,7 +294,6 @@ class ValpasOppijaService(
         OppijaKuntailmoituksillaSuppeatTiedot(
           oppija = ValpasOppijaSuppeatTiedot(oppija),
           kuntailmoitukset = kuntailmoitukset
-            .filter(_.aktiivinen == haeAktiiviset)
             .map(ValpasKuntailmoitusSuppeatTiedot.apply)
         )
       }))
