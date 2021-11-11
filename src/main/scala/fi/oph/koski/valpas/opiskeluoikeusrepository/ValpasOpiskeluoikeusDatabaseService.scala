@@ -1328,6 +1328,17 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         r_henkilo.kotikunta = $kunta
       """.as[HetuMasterOid])
   }
+
+
+  def haeTunnettujenOppijoidenOidit(oppijaOidit: Seq[ValpasHenkilö.Oid]): Seq[OidResult] = {
+    db.runDbSync(sql"""
+      SELECT
+        r_henkilo.oppija_oid AS oppijaOid
+      FROM r_henkilo
+      WHERE
+        r_henkilo.oppija_oid = any($oppijaOidit)
+      """.as[OidResult])
+  }
 }
 
 case class HetuMasterOid(
@@ -1336,6 +1347,18 @@ case class HetuMasterOid(
   masterOid: ValpasHenkilö.Oid,
   oppivelvollisuusVoimassa: Boolean,
 )
+
+case class OidResult(
+  oppijaOid: ValpasHenkilö.Oid
+)
+
+object OidResult {
+  implicit def getReslt: GetResult[OidResult] = GetResult(r => {
+    OidResult(
+      oppijaOid = r.rs.getString("oppijaOid")
+    )
+  })
+}
 
 object HetuMasterOid {
   implicit def getResult: GetResult[HetuMasterOid] = GetResult(r => {

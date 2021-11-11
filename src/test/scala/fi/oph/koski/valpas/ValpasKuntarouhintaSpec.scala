@@ -54,6 +54,14 @@ object ValpasKuntarouhintaSpec {
       ooToimipiste = Some("International School of Helsinki"),
       keskeytys = None,
     ),
+    RouhintaExpectedData(
+      oppija = ValpasMockOppijat.opiskeluoikeudetonOppivelvollisuusikäinenOppija,
+      ooPäättymispäivä = t.get("rouhinta_ei_opiskeluoikeutta"),
+      ooViimeisinTila = None,
+      ooKoulutusmuoto = None,
+      ooToimipiste = None,
+      keskeytys = None,
+    ),
   )
 }
 

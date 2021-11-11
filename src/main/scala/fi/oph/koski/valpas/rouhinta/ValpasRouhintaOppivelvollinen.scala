@@ -2,7 +2,7 @@ package fi.oph.koski.valpas.rouhinta
 
 import java.time.LocalDate
 
-import fi.oph.koski.henkilo.OppijaHenkilö
+import fi.oph.koski.henkilo.{OppijaHenkilö, OppijaNumerorekisteriKuntarouhintaOppija}
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.valpas.OppijaHakutilanteillaLaajatTiedot
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOpiskeluoikeusLaajatTiedot, ValpasOpiskeluoikeusTiedot}
@@ -17,6 +17,7 @@ case class ValpasRouhintaOppivelvollinen(
   hetu: Option[String],
   viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus: Option[RouhintaOpiskeluoikeus],
   oppivelvollisuudenKeskeytys: Seq[ValpasOppivelvollisuudenKeskeytys],
+  vainOppijanumerorekisterissä: Boolean
 ) {
   def suorittaaOppivelvollisuutta: Boolean =
     viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus.exists(_.viimeisinValpasTila.koodiarvo == "voimassa")
@@ -36,7 +37,22 @@ object ValpasRouhintaOppivelvollinen {
       syntymäaika = tiedot.oppija.henkilö.syntymäaika,
       hetu = tiedot.oppija.henkilö.hetu,
       viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus = oos.sorted.lastOption,
-      oppivelvollisuudenKeskeytys = tiedot.oppivelvollisuudenKeskeytykset.filter(_.voimassa)
+      oppivelvollisuudenKeskeytys = tiedot.oppivelvollisuudenKeskeytykset.filter(_.voimassa),
+      vainOppijanumerorekisterissä = false
+    )
+  }
+
+  def apply(tiedot: OppijaNumerorekisteriKuntarouhintaOppija): ValpasRouhintaOppivelvollinen = {
+    ValpasRouhintaOppivelvollinen(
+      oppijanumero = tiedot.oidHenkilo,
+      kaikkiOidit = Some(Seq(tiedot.oidHenkilo)),
+      etunimet = tiedot.etunimet,
+      sukunimi = tiedot.sukunimi,
+      syntymäaika = Some(LocalDate.parse(tiedot.syntymaaika)),
+      hetu = tiedot.hetu,
+      viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus = None,
+      oppivelvollisuudenKeskeytys = Seq.empty,
+      vainOppijanumerorekisterissä = true
     )
   }
 
@@ -49,6 +65,7 @@ object ValpasRouhintaOppivelvollinen {
     hetu = henkilö.hetu,
     viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus = None,
     oppivelvollisuudenKeskeytys = Nil,
+    vainOppijanumerorekisterissä = true
   )
 }
 

@@ -25,6 +25,8 @@ trait ValpasRajapäivätService extends Logging {
   def keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä: LocalDate
   def perusopetussuorituksenNäyttämisenAikaraja: LocalDate
 
+  def aikaisinMahdollinenOppivelvollisenSyntymäaika(tarkastelupäivä: LocalDate = tarkastelupäivä): LocalDate
+
   def kuntailmoitusAktiivisuusKuukausina: Long
 }
 
@@ -111,6 +113,11 @@ class MockValpasRajapäivätService(defaultService: ConfigValpasRajapäivätServ
 
   def kuntailmoitusAktiivisuusKuukausina: Long =
     defaultService.kuntailmoitusAktiivisuusKuukausina
+
+  def aikaisinMahdollinenOppivelvollisenSyntymäaika(tarkastelupäivä: LocalDate): LocalDate = {
+    defaultService.aikaisinMahdollinenOppivelvollisenSyntymäaika(tarkastelupäivä)
+  }
+
 }
 
 class ConfigValpasRajapäivätService(config: Config) extends ValpasRajapäivätService {
@@ -162,6 +169,20 @@ class ConfigValpasRajapäivätService(config: Config) extends ValpasRajapäivät
 
   def perusopetussuorituksenNäyttämisenAikaraja: LocalDate =
     tarkastelupäivä.plusDays(tulevaisuuteenMerkitynPerusopetuksenSuorituksenAikaikkunaPäivinä)
+
+  def aikaisinMahdollinenOppivelvollisenSyntymäaika(tarkastelupäivä: LocalDate): LocalDate = {
+    val aikaisinNykyhetkenJaIänPerusteella =
+      date(
+      tarkastelupäivä.minusYears(oppivelvollisuusLoppuuIka.toLong).getYear,
+      1,
+      1)
+
+    if (aikaisinNykyhetkenJaIänPerusteella.isBefore(lakiVoimassaVanhinSyntymäaika)) {
+      lakiVoimassaVanhinSyntymäaika
+    } else {
+      aikaisinNykyhetkenJaIänPerusteella
+    }
+  }
 
   val tulevaisuuteenMerkitynPerusopetuksenSuorituksenAikaikkunaPäivinä: Long =
     config.getLong(ValpasRajapäivätService.tulevaisuuteenMerkitynPerusopetuksenSuorituksenAikaikkunaPäivinäPath)
