@@ -7,8 +7,7 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Henkilö
 import fi.oph.koski.valpas.ValpasErrorCategory
-
-import java.time.LocalDate
+import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
 
 class ValpasHeturouhintaService(application: KoskiApplication)
   extends ValpasRouhintaTiming
@@ -34,7 +33,7 @@ class ValpasHeturouhintaService(application: KoskiApplication)
 
         val (oppijatJotkaOnrissaMuttaEiKoskessa, oppijanumerorekisterinUlkopuolisetHetut) = haeOppijanumerorekisteristä(koskestaLöytymättömätHetut)
 
-        val (oppivelvollisetOnrissa, oppivelvollisuudenUlkopuolisetOnrissa) = oppijatJotkaOnrissaMuttaEiKoskessa.partition(onOppivelvollinen)
+        val (oppivelvollisetOnrissa, oppivelvollisuudenUlkopuolisetOnrissa) = oppijatJotkaOnrissaMuttaEiKoskessa.partition(onOppivelvollinenPelkänIänPerusteella)
         val (oppivelvollisetKoskessa, oppivelvollisuudenUlkopuolisetKoskessa) = oppijatKoskessa.partition(_.oppivelvollisuusVoimassa)
 
         oppijaService
@@ -76,18 +75,8 @@ class ValpasHeturouhintaService(application: KoskiApplication)
     }
   }
 
-  private def onOppivelvollinen(oppija: OppijaHenkilö): Boolean = onOppivelvollinen(oppija.syntymäaika)
-
-  private def onOppivelvollinen(syntymäaika: Option[LocalDate]): Boolean = {
-    syntymäaika match {
-      case Some(syntymäaika) => {
-        val oppivelvollisuusAlkaa = rajapäivätService.oppivelvollisuusAlkaa(syntymäaika)
-        val oppivelvollisuusLoppuu = syntymäaika.plusYears(rajapäivätService.oppivelvollisuusLoppuuIka.toLong)
-        !oppivelvollisuusAlkaa.isAfter(rajapäivätService.tarkastelupäivä) && oppivelvollisuusLoppuu.isAfter(rajapäivätService.tarkastelupäivä)
-      }
-      case None => false
-    }
-  }
+  private def onOppivelvollinenPelkänIänPerusteella(oppija: OppijaHenkilö): Boolean =
+    Oppivelvollisuustiedot.onOppivelvollinenPelkänIänPerusteella(oppija.syntymäaika, rajapäivätService)
 
   private def cleanedHetuList(hetut: Seq[String]): Either[HttpStatus, Seq[String]] = {
     val list = hetut.map(_.trim).filter(_.nonEmpty)

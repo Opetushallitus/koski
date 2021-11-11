@@ -228,6 +228,17 @@ object Oppivelvollisuustiedot {
           )"""
   }
 
+  def onOppivelvollinenPelkänIänPerusteella(syntymäaika: Option[LocalDate], valpasRajapäivätService: ValpasRajapäivätService): Boolean = {
+    syntymäaika match {
+      case Some(syntymäaika) => {
+        val oppivelvollisuusAlkaa = valpasRajapäivätService.oppivelvollisuusAlkaa(syntymäaika)
+        val oppivelvollisuusLoppuu = syntymäaika.plusYears(valpasRajapäivätService.oppivelvollisuusLoppuuIka.toLong)
+        !oppivelvollisuusAlkaa.isAfter(valpasRajapäivätService.tarkastelupäivä) && oppivelvollisuusLoppuu.isAfter(valpasRajapäivätService.tarkastelupäivä)
+      }
+      case None => false
+    }
+  }
+
   implicit private val oppivelvollisuustietoGetResult: GetResult[Oppivelvollisuustieto] = GetResult(row =>
     Oppivelvollisuustieto(
       oid = row.rs.getString("oppija_oid"),
