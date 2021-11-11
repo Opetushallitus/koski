@@ -575,25 +575,11 @@ class ValpasOppijaService(
   )(
     kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot]
   ): Seq[ValpasKuntailmoitusLaajatTiedotLisätiedoilla] = {
-    kuntailmoitukset.zipWithIndex.map(kuntailmoitusWithIndex => {
-      val aktiivinen = kuntailmoitusWithIndex match {
-
-        // Alle 2 kk vanha ilmoitus on aina aktiivinen
-        case (kuntailmoitus, 0) if !rajapäivätService.tarkastelupäivä.isAfter(
-          kuntailmoitus.aikaleima.get.toLocalDate.plusMonths(rajapäivätService.kuntailmoitusAktiivisuusKuukausina)
-        ) => true
-
-        // Jos yli 2 kk, ilmoitus on aktiivinen,
-        // jos mikään ov-suorittamiseen kelpaava opiskeluoikeus ei ole voimassa
-        case (kuntailmoitus, 0) =>
-          oppija.opiskeluoikeudet.forall(oo => !oo.isOpiskelu)
-
-        // Muut kuin uusin ilmoitus ovat aina ei-aktiivisia
-        case (kuntailmoitus, _) => false
-      }
-
-      ValpasKuntailmoitusLaajatTiedotLisätiedoilla(kuntailmoitusWithIndex._1, aktiivinen)
-    })
+    kuntailmoitukset.zipWithIndex.map { case (kuntailmoitus, index) =>
+      // Viimeisin kuntailmoitus on aktiivinen jos mikään ov-suorittamiseen kelpaava opiskeluoikeus ei ole voimassa
+      val aktiivinen = (index == 0) && oppija.opiskeluoikeudet.forall(oo => !oo.isOpiskelu)
+      ValpasKuntailmoitusLaajatTiedotLisätiedoilla(kuntailmoitus, aktiivinen)
+    }
   }
 
   private def fetchOppivelvollisuudenKeskeytykset(
