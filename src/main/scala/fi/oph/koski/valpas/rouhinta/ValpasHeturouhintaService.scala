@@ -5,6 +5,7 @@ import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.henkilo.{Hetu, OppijaHenkilö}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.Henkilö
 import fi.oph.koski.valpas.ValpasErrorCategory
 
 import java.time.LocalDate
@@ -104,7 +105,9 @@ case class HeturouhinnanTulos(
   oppijanumerorekisterinUlkopuoliset: Seq[RouhintaPelkkäHetu],
   oppivelvollisuudenUlkopuoliset: Seq[RouhintaPelkkäHetu],
   virheellisetHetut: Seq[RouhintaPelkkäHetu],
-)
+) {
+  def palautetutOppijaOidit: Seq[Henkilö.Oid] = eiOppivelvollisuuttaSuorittavat.map(_.oppijanumero)
+}
 
 case class RouhintaPelkkäHetu(
   hetu: String,

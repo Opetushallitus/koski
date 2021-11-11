@@ -5,6 +5,7 @@ import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.valpas.opiskeluoikeusrepository.HetuMasterOid
+import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö.Oid
 
 class ValpasKuntarouhintaService(application: KoskiApplication)
   extends ValpasRouhintaTiming
@@ -51,4 +52,6 @@ class ValpasKuntarouhintaService(application: KoskiApplication)
 
 case class KuntarouhinnanTulos(
   eiOppivelvollisuuttaSuorittavat: Seq[ValpasRouhintaOppivelvollinen],
-)
+) {
+  def palautetutOppijaOidit: Seq[Oid] = eiOppivelvollisuuttaSuorittavat.map(_.oppijanumero)
+}

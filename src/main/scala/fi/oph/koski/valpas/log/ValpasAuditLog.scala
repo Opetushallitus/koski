@@ -5,6 +5,7 @@ import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.valpas.{ValpasHenkilöhakuResult, ValpasLöytyiHenkilöhakuResult}
 import fi.oph.koski.valpas.log.ValpasOperation.ValpasOperation
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasHenkilöLaajatTiedot, ValpasOppilaitos}
+import fi.oph.koski.valpas.rouhinta.HeturouhinnanTulos
 import fi.oph.koski.valpas.valpasrepository.{UusiOppivelvollisuudenKeskeytys, ValpasKuntailmoitusLaajatTiedotJaOppijaOid}
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
@@ -93,7 +94,7 @@ object ValpasAuditLog {
   }
 
   def auditLogRouhintahakuHetulistalla
-    (hetut: Seq[String])
+    (hetut: Seq[String], palautetutOppijaOidit: Seq[String])
     (implicit session: ValpasSession)
   : Unit = {
     AuditLog.log(ValpasAuditLogMessage(
@@ -101,12 +102,13 @@ object ValpasAuditLog {
       session,
       Map(
         ValpasAuditLogMessageField.hakulause -> hetut.mkString(", "),
+        ValpasAuditLogMessageField.oppijaHenkilöOidList -> palautetutOppijaOidit.mkString(" "),
       )
     ))
   }
 
   def auditLogRouhintahakuKunnalla
-    (kunta: String)
+    (kunta: String, palautetutOppijaOidit: Seq[String])
     (implicit session: ValpasSession)
   : Unit = {
     AuditLog.log(ValpasAuditLogMessage(
@@ -114,6 +116,7 @@ object ValpasAuditLog {
       session,
       Map(
         ValpasAuditLogMessageField.hakulause -> kunta,
+        ValpasAuditLogMessageField.oppijaHenkilöOidList -> palautetutOppijaOidit.mkString(" "),
       )
     ))
   }
@@ -128,6 +131,7 @@ object ValpasAuditLogMessage {
 object ValpasAuditLogMessageField extends Enumeration {
   type ValpasAuditLogMessageField = Value
   val oppijaHenkilöOid,
+      oppijaHenkilöOidList,
       juuriOrganisaatio,
       ilmoittajaHenkilöOid,
       ilmoittajaOrganisaatioOid,

@@ -1,12 +1,19 @@
 package fi.oph.koski.valpas
 
+import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.raportit.AhvenanmaanKunnat
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessageField, ValpasOperation}
+import fi.oph.koski.valpas.opiskeluoikeusfixture.FixtureUtil
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import org.scalatest.BeforeAndAfterEach
 
 class ValpasRouhintaApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
+  override protected def beforeAll(): Unit = {
+    FixtureUtil.resetMockData(KoskiApplicationForTests, ValpasKuntarouhintaSpec.tarkastelupäivä)
+  }
+
   override protected def beforeEach() {
     AuditLogTester.clearMessages
   }
@@ -47,7 +54,11 @@ class ValpasRouhintaApiServletSpec extends ValpasTestBase with BeforeAndAfterEac
       doHetuQuery(ValpasMockUsers.valpasHelsinki) {
         AuditLogTester.verifyAuditLogMessage(Map(
           "operation" -> ValpasOperation.VALPAS_ROUHINTA_HETUHAKU.toString,
-          "target" -> Map(ValpasAuditLogMessageField.hakulause.toString -> "161004A404E")))
+          "target" -> Map(
+            ValpasAuditLogMessageField.hakulause.toString -> "161004A404E, 011005A115P, 110405A6951",
+            ValpasAuditLogMessageField.oppijaHenkilöOidList.toString -> "1.2.246.562.24.00000000075"
+          ),
+        ))
       }
     }
 
@@ -110,10 +121,17 @@ class ValpasRouhintaApiServletSpec extends ValpasTestBase with BeforeAndAfterEac
     }
 
     "jättää merkinnän auditlokiin" in {
-      doKuntaQuery(ValpasMockUsers.valpasHelsinki) {
+      doKuntaQuery(ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu, ValpasKuntarouhintaSpec.kunta) {
         AuditLogTester.verifyAuditLogMessage(Map(
           "operation" -> ValpasOperation.VALPAS_ROUHINTA_KUNTA.toString,
-          "target" -> Map(ValpasAuditLogMessageField.hakulause.toString -> "091")))
+          "target" -> Map(
+            ValpasAuditLogMessageField.hakulause.toString -> ValpasKuntarouhintaSpec.kunta,
+            ValpasAuditLogMessageField.oppijaHenkilöOidList.toString ->
+              ValpasKuntarouhintaSpec.eiOppivelvollisuuttaSuorittavatOppijat(t)
+                .map(_.oppija.oid)
+                .mkString(" ")
+          ),
+        ))
       }
     }
 
@@ -123,7 +141,7 @@ class ValpasRouhintaApiServletSpec extends ValpasTestBase with BeforeAndAfterEac
     val hetuQuery =
       """
       {
-        "hetut": ["161004A404E"],
+        "hetut": ["161004A404E", "011005A115P", "110405A6951"],
         "password": "hunter2",
         "lang": "fi"
       }
@@ -149,4 +167,5 @@ class ValpasRouhintaApiServletSpec extends ValpasTestBase with BeforeAndAfterEac
     }
   }
 
+  private lazy val t = new LocalizationReader(KoskiApplicationForTests.valpasLocalizationRepository, "fi")
 }
