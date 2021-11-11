@@ -25,10 +25,10 @@ class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication)
   private lazy val kuntailmoitusService = application.valpasKuntailmoitusService
   private lazy val oppijaService = application.valpasOppijaService
 
-  get("/oppijat/:kuntaOid/aktiiviset") {
+  get("/oppijat/:kuntaOid") {
     val kuntaOid: Organisaatio.Oid = params("kuntaOid")
     renderEither(
-      oppijaService.getKunnanOppijatSuppeatTiedot(kuntaOid, true)
+      oppijaService.getKunnanOppijatSuppeatTiedot(kuntaOid)
         .tap(_ => auditLogKuntaKatsominen(kuntaOid))
     )
   }

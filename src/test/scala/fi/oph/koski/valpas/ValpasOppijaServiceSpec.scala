@@ -1026,34 +1026,35 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
     ) shouldBe false
   }
 
-  "Kuntailmoitusten hakeminen kunnalle: palauttaa oikeat oppijat, case #1" in {
-    rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(date(2021,8,30))
+  "Kuntailmoitukset" - {
+    "Kuntailmoitusten hakeminen kunnalle: palauttaa oikeat oppijat, case #1" in {
+      rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(date(2021, 8, 30))
 
-    validateKunnanIlmoitetutOppijat(
-      organisaatioOid = MockOrganisaatiot.helsinginKaupunki,
-      aktiiviset = true,
-      user = ValpasMockUsers.valpasHelsinki
-    )(Seq(
-      ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia
-    ))
-  }
+      validateKunnanIlmoitetutOppijat(
+        organisaatioOid = MockOrganisaatiot.helsinginKaupunki,
+        user = ValpasMockUsers.valpasHelsinki
+      )(Seq(
+        ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia
+      ))
+    }
 
-  "Kuntailmoitusten hakeminen kunnalle: palauttaa oikeat oppijat, case #2" in {
-    rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(date(2021,8,30))
+    "Kuntailmoitusten hakeminen kunnalle: palauttaa oikeat oppijat, case #2" in {
+      rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(date(2021, 8, 30))
 
-    validateKunnanIlmoitetutOppijat(
-      organisaatioOid = MockOrganisaatiot.pyhtäänKunta,
-      aktiiviset = true,
-      user = ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu
-    )(Seq(
-      ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia,
-      ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster,
-      ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster2,
-      ValpasMockOppijat.kahdenKoulunYsiluokkalainenJollaIlmoitus,
-      ValpasMockOppijat.kasiinAstiToisessaKoulussaOllutJollaIlmoitus,
-      ValpasMockOppijat.valmistunutYsiluokkalainenJollaIlmoitus,
-      ValpasMockOppijat.ilmoituksenLisätiedotPoistettu,
-    ))
+      validateKunnanIlmoitetutOppijat(
+        organisaatioOid = MockOrganisaatiot.pyhtäänKunta,
+        user = ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu
+      )(Seq(
+        ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia,
+        ValpasMockOppijat.lukionAloittanutJollaVanhaIlmoitus,
+        ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster,
+        ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster2,
+        ValpasMockOppijat.kahdenKoulunYsiluokkalainenJollaIlmoitus,
+        ValpasMockOppijat.kasiinAstiToisessaKoulussaOllutJollaIlmoitus,
+        ValpasMockOppijat.valmistunutYsiluokkalainenJollaIlmoitus,
+        ValpasMockOppijat.ilmoituksenLisätiedotPoistettu,
+      ))
+    }
   }
 
   "Oppijalle, jonka kuntailmoituksista on poistettu lisätiedot, palautuu kuntailmoitukset vajailla tiedoilla" in {

@@ -272,7 +272,7 @@ export const createKuntailmoitus = (
 export const fetchKuntailmoitukset = (kuntaOid: Oid) =>
   handleExpiredSession(
     apiGet<OppijaKuntailmoituksillaSuppeatTiedot[]>(
-      `valpas/api/kuntailmoitus/oppijat/${kuntaOid}/aktiiviset`
+      `valpas/api/kuntailmoitus/oppijat/${kuntaOid}`
     )
   )
 
