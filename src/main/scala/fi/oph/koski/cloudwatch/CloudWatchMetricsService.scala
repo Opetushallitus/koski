@@ -20,36 +20,51 @@ object CloudWatchMetricsService {
 }
 
 trait CloudWatchMetricsService {
-  def putRaportointikantaLoadtime(start: Timestamp, end: Timestamp): Unit
+  def putRaportointikantaLoadtime(start: Timestamp, end: Timestamp, lastUpdated: Timestamp): Unit
 
   protected def durationInSeconds(start: Timestamp, end: Timestamp): Double = (end.getTime - start.getTime) / 1000.0
 }
 
 class MockCloudWatchMetricsService extends CloudWatchMetricsService with Logging {
-  def putRaportointikantaLoadtime(start: Timestamp, end: Timestamp): Unit = {
+  def putRaportointikantaLoadtime(start: Timestamp, end: Timestamp, lastUpdated: Timestamp): Unit = {
     val seconds = durationInSeconds(start, end)
-    logger.debug(s"Mocking cloudwatch metric: raportointikanta loading took $seconds seconds")
+    logger.debug(s"Mocking cloudwatch metric: raportointikanta loading took $seconds seconds. Last updated : $lastUpdated")
   }
 }
 
 class AwsCloudWatchMetricsService extends CloudWatchMetricsService {
   private val client = CloudWatchClient.builder().build()
 
-  def putRaportointikantaLoadtime(start: Timestamp, end: Timestamp): Unit = {
+  def putRaportointikantaLoadtime(start: Timestamp, end: Timestamp, lastUpdated: Timestamp): Unit = {
     val namespace = "RaportointikantaLoader"
 
-    val dimension = Dimension.builder()
+    val dimensionLoadTime = Dimension.builder()
       .name("LOAD_TIMES")
       .value("TIME")
       .build()
 
-    val metric = MetricDatum.builder()
+    val metricLoadTime = MetricDatum.builder()
       .metricName("RAPORTOINTIKANTALOADER_LOAD_TIME")
       .unit(StandardUnit.SECONDS)
       .value(durationInSeconds(start, end))
-      .dimensions(dimension)
+      .dimensions(dimensionLoadTime)
       .build()
 
-    client.putMetricData(PutMetricDataRequest.builder().metricData(metric).namespace(namespace).build())
+    client.putMetricData(PutMetricDataRequest.builder().metricData(metricLoadTime).namespace(namespace).build())
+
+
+    val dimensionUpdatedLast = Dimension.builder()
+      .name("UPDATED_LAST")
+      .value("TIME")
+      .build()
+
+    val metricUpdatedLast = MetricDatum.builder()
+      .metricName("RAPORTOINTIKANTALOADER_UPDATED_LAST")
+      .unit(StandardUnit.SECONDS)
+      .value(durationInSeconds(lastUpdated, new Timestamp(System.currentTimeMillis())))
+      .dimensions(dimensionUpdatedLast)
+      .build()
+
+    client.putMetricData(PutMetricDataRequest.builder().metricData(metricUpdatedLast).namespace(namespace).build())
   }
 }
