@@ -5,7 +5,8 @@ import fi.oph.koski.db.{KoskiTables, PoistettuOpiskeluoikeusRow, QueryMethods}
 import fi.oph.koski.henkilo.HenkilönTunnisteet
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.log.Logging
+import fi.oph.koski.log.KoskiOperation.LOGIN
+import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiAuditLogMessageField, KoskiOperation, Logging}
 import fi.oph.koski.schema.{Opiskeluoikeus, SuostumusPeruttavissaOpiskeluoikeudelta}
 import slick.dbio
 import slick.dbio.Effect.Write
@@ -33,7 +34,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
         val opiskeluoikeudet = opiskeluoikeusRepository.findByCurrentUser(henkilö)(user).get
         opiskeluoikeudet.filter(
           suostumusPeruttavissa(_)
-        ).find (_.oid.getOrElse("") == oid) match {
+        ).find (_.oid.contains(oid)) match {
           case Some(oo) =>
             val opiskeluoikeudenId = runDbSync(KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.id).result).head
             runDbSync(DBIO.seq(
@@ -68,7 +69,8 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
     ))
   }
 
-  def suoritusjakoTekemättäWithAccessCheck(oid: String)(implicit user: KoskiSpecificSession): HttpStatus =
+  def suoritusjakoTekemättäWithAccessCheck(oid: String)(implicit user: KoskiSpecificSession): HttpStatus = {
+    AuditLog.log(KoskiAuditLogMessage(KoskiOperation.OPISKELUOIKEUS_SUORITUSJAKO_TEKEMÄTTÄ_KYSELY, user, Map(KoskiAuditLogMessageField.opiskeluoikeusOid -> oid)))
     henkilöRepository.findByOid(user.oid) match {
       case Some(henkilö) =>
         opiskeluoikeusRepository.findByCurrentUser(henkilö)(user).get.exists(oo =>
@@ -78,11 +80,12 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
         }
       case None => KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia()
     }
+  }
 
   def suostumusPeruttavissa(oo: Opiskeluoikeus)(implicit user: KoskiSpecificSession) =
-    suorituksetPerutettavaaTyyppiä(oo) && !suoritusjakoTehty(oo)
+    suorituksetPeruutettavaaTyyppiä(oo) && !suoritusjakoTehty(oo)
 
-  def suorituksetPerutettavaaTyyppiä(oo: Opiskeluoikeus) = {
+  def suorituksetPeruutettavaaTyyppiä(oo: Opiskeluoikeus) = {
     val muitaPäätasonSuorituksiaKuinPeruttavissaOlevia = oo.suoritukset.exists {
       case _: SuostumusPeruttavissaOpiskeluoikeudelta => false
       case _ => true

@@ -6,7 +6,7 @@ import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 
 object SuostumuksenPeruutusValidaatiot {
   def validateSuostumuksenPeruutus(oo: KoskeenTallennettavaOpiskeluoikeus, suostumusService: SuostumuksenPeruutusService): HttpStatus = {
-    suostumusService.suorituksetPerutettavaaTyyppiä(oo) match {
+    suostumusService.suorituksetPeruutettavaaTyyppiä(oo) match {
       case true => validateLähdejärjestelmäId(oo, suostumusService)
       case false => HttpStatus.ok
     }
