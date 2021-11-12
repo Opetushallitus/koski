@@ -21,6 +21,13 @@ class SuostumuksenPeruutusServlet(implicit val application: KoskiApplication)
     )
   }
 
+  post("/suoritusjakoTekemättä/:oid") {
+    requireKansalainen
+    renderStatus(
+      application.suostumuksenPeruutusService.suoritusjakoTekemättäWithAccessCheck(getStringParam("oid"))(session)
+    )
+  }
+
   get("/") {
     if (session.hasGlobalReadAccess) {
       renderObject(

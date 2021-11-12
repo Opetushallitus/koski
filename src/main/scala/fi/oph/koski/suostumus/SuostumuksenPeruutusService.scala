@@ -32,7 +32,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
       case Some(henkilö) =>
         val opiskeluoikeudet = opiskeluoikeusRepository.findByCurrentUser(henkilö)(user).get
         opiskeluoikeudet.filter(
-          suostumusPeruttavissa(_, henkilö)
+          suostumusPeruttavissa(_)
         ).find (_.oid.getOrElse("") == oid) match {
           case Some(oo) =>
             val opiskeluoikeudenId = runDbSync(KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.id).result).head
@@ -68,7 +68,18 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
     ))
   }
 
-  def suostumusPeruttavissa(oo: Opiskeluoikeus, henkilö: HenkilönTunnisteet)(implicit user: KoskiSpecificSession) =
+  def suoritusjakoTekemättäWithAccessCheck(oid: String)(implicit user: KoskiSpecificSession): HttpStatus =
+    henkilöRepository.findByOid(user.oid) match {
+      case Some(henkilö) =>
+        opiskeluoikeusRepository.findByCurrentUser(henkilö)(user).get.exists(oo =>
+          oo.oid.get == oid && !suoritusjakoTehty(oo)) match {
+          case true => HttpStatus.ok
+          case false => KoskiErrorCategory.forbidden.opiskeluoikeusEiSopivaSuostumuksenPerumiselle(s"Opiskeluoikeuden $oid annettu suostumus ei ole peruttavissa. Suorituksesta on tehty suoritusjako.")
+        }
+      case None => KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia()
+    }
+
+  def suostumusPeruttavissa(oo: Opiskeluoikeus)(implicit user: KoskiSpecificSession) =
     suorituksetPerutettavaaTyyppiä(oo) && !suoritusjakoTehty(oo)
 
   def suorituksetPerutettavaaTyyppiä(oo: Opiskeluoikeus) = {

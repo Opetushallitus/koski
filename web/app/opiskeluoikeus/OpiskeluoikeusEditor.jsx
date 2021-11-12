@@ -24,7 +24,6 @@ import {Korkeakoulusuoritukset} from '../virta/Korkeakoulusuoritukset'
 import {OpiskeluoikeudenTila} from '../omattiedot/fragments/OpiskeluoikeudenTila'
 import {ArrayEditor} from '../editor/ArrayEditor'
 import {modelEmpty} from '../editor/EditorModel'
-//import Http from '../util/http'
 
 export const excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot', 'synteettinen']
 
@@ -71,6 +70,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
 
 const OpiskeluoikeudenTiedot = ({opiskeluoikeus, editLink, alkuChangeBus}) => (
   <div className="opiskeluoikeuden-tiedot">
+
     {editLink}
     {
       modelData(opiskeluoikeus, 'alkamispäivä') && <OpiskeluoikeudenVoimassaoloaika opiskeluoikeus={opiskeluoikeus}/>
@@ -122,7 +122,6 @@ const OpiskeluoikeudenId = ({opiskeluoikeus}) => {
 
 export const OpiskeluoikeudenVoimassaoloaika = ({opiskeluoikeus}) => {
   let päättymispäiväProperty = (modelData(opiskeluoikeus, 'arvioituPäättymispäivä') && !modelData(opiskeluoikeus, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
-  //const opiskeluoikeusOid = modelData(opiskeluoikeus, 'oid')
   return (<div className="alku-loppu opiskeluoikeuden-voimassaoloaika">
     <Text name="Opiskeluoikeuden voimassaoloaika"/>{': '}
     <span className="alkamispäivä"><Editor model={addContext(opiskeluoikeus, {edit: false})} path="alkamispäivä"/></span>
@@ -130,13 +129,6 @@ export const OpiskeluoikeudenVoimassaoloaika = ({opiskeluoikeus}) => {
     <span className="päättymispäivä"><Editor model={addContext(opiskeluoikeus, {edit: false})} path={päättymispäiväProperty} /></span>
     {' '}
     {päättymispäiväProperty == 'arvioituPäättymispäivä' && <Text name="(arvioitu)"/>}
-    {/* TODO: Suostumuksen perumisen käli
-    <span className="suostumuksen peruuttaminen">
-        <a className="nimi" onClick={ (e) => {
-          Http.post(`/koski/api/opiskeluoikeus/suostumuksenperuutus/${opiskeluoikeusOid}`).map(() => result => console.log(result))}}>
-          peruuta suostumus
-      </a>
-    </span>*/}
   </div>)
 }
 
