@@ -69,6 +69,15 @@ export const t = (id: TranslationId, params?: ParamsMap): Translation => {
   return tRecursive(getLanguage(), id, params)
 }
 
+export const tParagraphs = (
+  id: TranslationId,
+  params?: ParamsMap
+): Translation[] =>
+  t(id, params)
+    .split("\n")
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0)
+
 const replaceParams = (source: string, params: ParamsMap): string =>
   Object.entries(params).reduce(
     (str, [key, value]) => str.replace(`{{${key}}}`, value.toString()),
@@ -81,6 +90,14 @@ export type LocalizedTextProps = {
 }
 
 export const T = (props: LocalizedTextProps) => <>{t(props.id, props.params)}</>
+
+export const TParagraphs = (props: LocalizedTextProps) => (
+  <>
+    {tParagraphs(props.id, props.params).map((text, index) => (
+      <p key={index}>{text}</p>
+    ))}
+  </>
+)
 
 export const getLocalized = (localizedString: LocalizedString): string =>
   localizedString[getLanguage()] ||
