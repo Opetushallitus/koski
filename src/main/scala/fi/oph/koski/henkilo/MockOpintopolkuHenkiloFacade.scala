@@ -1,5 +1,8 @@
 package fi.oph.koski.henkilo
 
+import java.time.LocalDate
+import java.time.LocalDate.{of => date}
+
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.KoskiTables.OpiskeluOikeudetWithAccessCheck
@@ -86,6 +89,42 @@ class MockOpintopolkuHenkilöFacade extends OpintopolkuHenkilöFacade with Loggi
   override def findChangedOppijaOids(since: Long, offset: Int, amount: Int): List[Oid] = synchronized {
     alkuperäisetOppijat.diff(oppijat.getOppijat).map(_.henkilö.oid)
   }
+
+  override def findByVarhaisinSyntymäaikaAndKotikunta(syntymäaika: String, kunta: String, page: Int)
+  : OppijaNumerorekisteriKuntarouhintatiedot = synchronized {
+    val pageSize = 3
+
+    val varhaisinSyntymäaika = LocalDate.parse(syntymäaika)
+
+    val kaikkiOppijat = oppijat.getOppijat
+      .filter(_.henkilö.syntymäaika match {
+        case Some(syntymäaika) => !syntymäaika.isBefore(varhaisinSyntymäaika)
+        case None => false
+      })
+      .filter(_.henkilö match {
+        case h: LaajatOppijaHenkilöTiedot => h.kotikunta.contains(kunta)
+        case _ => false
+      })
+      .sortBy(_.henkilö.oid)
+
+    val pageOppijat = kaikkiOppijat.slice((page - 1) * pageSize, page * pageSize)
+
+    OppijaNumerorekisteriKuntarouhintatiedot(
+      first = page == 1,
+      last = kaikkiOppijat.size <= page * pageSize,
+      number = page,
+      numberOfElements = pageOppijat.size,
+      size = pageSize,
+      results = pageOppijat.map(o => OppijaNumerorekisteriKuntarouhintaOppija(
+        oidHenkilo = o.henkilö.oid,
+        hetu = o.henkilö.hetu,
+        syntymaaika = o.henkilö.syntymäaika.get.toString,
+        sukunimi = o.henkilö.sukunimi,
+        etunimet = o.henkilö.etunimet,
+        kutsumanimi = o.henkilö.kutsumanimi
+      ))
+    )
+    }
 
   def findOppijatByHetusNoSlaveOids(hetus: Seq[String]): Seq[OppijaHenkilö] = synchronized {
     hetus.flatMap(findOppijaByHetu)

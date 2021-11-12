@@ -40,6 +40,9 @@ case class OppijanumeroRekisteriClient(config: Config) {
   def findChangedOppijaOids(since: Long, offset: Int, amount: Int): IO[List[Oid]] =
     oidServiceHttp.get(uri"/oppijanumerorekisteri-service/s2s/changedSince/$since?offset=$offset&amount=$amount")(Http.parseJson[List[String]])
 
+  def findByVarhaisinSyntymäaikaAndKotikunta(syntymäaika: String, kunta: String, page: Int): IO[OppijaNumerorekisteriKuntarouhintatiedot] =
+    oidServiceHttp.get(uri"/oppijanumerorekisteri-service/s2s/henkilo/list/$kunta/$syntymäaika?page=$page")(Http.parseJson[OppijaNumerorekisteriKuntarouhintatiedot])
+
   def findOppijaByOid(oid: Oid): IO[Option[LaajatOppijaHenkilöTiedot]] =
     henkilöByOid(oid)(Http.parseJsonOptional[OppijaNumerorekisteriOppija])
       .map(_.toSeq).flatMap(withSlaveOids(_).map(_.headOption))
@@ -178,4 +181,22 @@ case class OppijaNumerorekisteriYhteystiedotRyhma(
 case class OppijaNumerorekisteriYhteystieto(
   yhteystietoArvo: Option[String],
   yhteystietoTyyppi: String
+)
+
+case class OppijaNumerorekisteriKuntarouhintatiedot(
+  first: Boolean,
+  last: Boolean,
+  number: Int,
+  numberOfElements: Int,
+  size: Int,
+  results: Seq[OppijaNumerorekisteriKuntarouhintaOppija]
+)
+
+case class OppijaNumerorekisteriKuntarouhintaOppija(
+  oidHenkilo: String,
+  hetu: Option[String],
+  syntymaaika: String,
+  sukunimi: String,
+  etunimet: String,
+  kutsumanimi: String,
 )

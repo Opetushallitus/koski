@@ -16,6 +16,7 @@ trait OpintopolkuHenkilöFacade {
   def findOppijaByHetu(hetu: String): Option[LaajatOppijaHenkilöTiedot]
   def findOppijatNoSlaveOids(oids: Seq[String]): Seq[OppijaHenkilö]
   def findChangedOppijaOids(since: Long, offset: Int, amount: Int): List[Oid]
+  def findByVarhaisinSyntymäaikaAndKotikunta(syntymäaika: String, kunta: String, page: Int): OppijaNumerorekisteriKuntarouhintatiedot
   def findMasterOppija(oid: String): Option[LaajatOppijaHenkilöTiedot]
   def findMasterOppijat(oids: List[String]): Map[String, LaajatOppijaHenkilöTiedot]
   def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö]
@@ -57,6 +58,10 @@ class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroR
 
   def findChangedOppijaOids(since: Long, offset: Int, amount: Int): List[Oid] =
     runIO(oppijanumeroRekisteriClient.findChangedOppijaOids(since, offset, amount))
+
+  def findByVarhaisinSyntymäaikaAndKotikunta(syntymäaika: String, kunta: String, page: Int)
+  : OppijaNumerorekisteriKuntarouhintatiedot =
+    runIO(oppijanumeroRekisteriClient.findByVarhaisinSyntymäaikaAndKotikunta(syntymäaika, kunta, page))
 
   def findOppijaByHetu(hetu: String): Option[LaajatOppijaHenkilöTiedot] =
     runIO(oppijanumeroRekisteriClient.findOppijaByHetu(hetu))
