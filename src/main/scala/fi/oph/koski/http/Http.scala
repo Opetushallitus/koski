@@ -43,8 +43,8 @@ object Http extends Logging {
     val builder = BlazeClientBuilder[IO](ExecutionContext.fromExecutor(Pools.httpPool))
       .withMaxTotalConnections(maxHttpConnections)
       .withMaxWaitQueueLimit(1024)
-      .withConnectTimeout(10.seconds)
-      .withResponseHeaderTimeout(15.seconds)
+      .withConnectTimeout(15.seconds)
+      .withResponseHeaderTimeout(30.seconds)
       .withRequestTimeout(1.minutes)
       .withIdleTimeout(2.minutes)
 
