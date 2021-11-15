@@ -16,6 +16,8 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
   def tag = implicitly[reflect.runtime.universe.TypeTag[VapaanSivistystyönOpiskeluoikeus]]
 
   "Vapaatavoitteinen" - {
+    resetFixtures()
+
     "Opiskeluoikeuden tila" - {
       "Opiskeluoikeuden tila ei voi olla 'katsotaaneronneeksi'" in {
         val oo = VapaatavoitteinenOpiskeluoikeus.withTila(

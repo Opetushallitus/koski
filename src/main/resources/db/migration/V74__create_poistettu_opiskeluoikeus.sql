@@ -1,7 +1,7 @@
 CREATE TABLE poistettu_opiskeluoikeus (
   oid TEXT NOT NULL,
   oppilaitos_nimi TEXT,
-  oppilaitos_oids TEXT,
+  oppilaitos_oid TEXT,
   paattymispaiva DATE,
   lahdejarjestelma_koodi TEXT,
   lahdejarjestelma_id TEXT,
