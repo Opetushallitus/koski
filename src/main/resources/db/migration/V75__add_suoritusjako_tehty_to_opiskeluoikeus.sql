@@ -1,9 +1,9 @@
 ALTER TABLE opiskeluoikeus
-  ADD IF NOT EXISTS suoritusjako_tehty_2021_11_15_jalkeen BOOLEAN;
+  ADD IF NOT EXISTS suoritusjako_tehty_rajapaivan_jalkeen BOOLEAN;
 
 UPDATE opiskeluoikeus
-SET suoritusjako_tehty_2021_11_15_jalkeen = false
-WHERE suoritusjako_tehty_2021_11_15_jalkeen IS NULL;
+SET suoritusjako_tehty_rajapaivan_jalkeen = false
+WHERE suoritusjako_tehty_rajapaivan_jalkeen IS NULL;
 
-CREATE INDEX IF NOT EXISTS opiskeluoikeus_suoritusjako_tehty_2021_11_15_jalkeen_idx
-  ON opiskeluoikeus (suoritusjako_tehty_2021_11_15_jalkeen);
+CREATE INDEX IF NOT EXISTS suoritusjako_tehty_rajapaivan_jalkeen
+  ON opiskeluoikeus (suoritusjako_tehty_rajapaivan_jalkeen);

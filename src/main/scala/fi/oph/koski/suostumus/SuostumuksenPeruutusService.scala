@@ -52,11 +52,11 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
     }
   }
 
-  def opiskeluoikeudenPoistonQuery(oid: String)(implicit user: KoskiSpecificSession): dbio.DBIOAction[Int, NoStream, Write] = {
+  private def opiskeluoikeudenPoistonQuery(oid: String)(implicit user: KoskiSpecificSession): dbio.DBIOAction[Int, NoStream, Write] = {
     KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).delete
   }
 
-  def poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSpecificSession): dbio.DBIOAction[Int, NoStream, Write] = {
+  private def poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSpecificSession): dbio.DBIOAction[Int, NoStream, Write] = {
     val timestamp = Timestamp.from(Instant.now())
 
     KoskiTables.PoistetutOpiskeluoikeudet.insertOrUpdate(PoistettuOpiskeluoikeusRow(
@@ -83,7 +83,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
     }
   }
 
-  def suostumusPeruttavissa(oo: Opiskeluoikeus)(implicit user: KoskiSpecificSession) =
+  private def suostumusPeruttavissa(oo: Opiskeluoikeus)(implicit user: KoskiSpecificSession) =
     suorituksetPeruutettavaaTyyppiä(oo) && !suoritusjakoTehty(oo)
 
   def suorituksetPeruutettavaaTyyppiä(oo: Opiskeluoikeus) = {
@@ -100,6 +100,10 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
 
   // Kutsutaan vain fixtureita resetoitaessa
   def deleteAll() = {
-    runDbSync(KoskiTables.PoistetutOpiskeluoikeudet.delete)
+    if (application.config.getString("opintopolku.virkailija.url") == "mock") {
+      runDbSync(KoskiTables.PoistetutOpiskeluoikeudet.delete)
+    } else {
+      throw new RuntimeException("Peruutettujen suostumusten taulua ei voi tyhjentää tuotantotilassa")
+    }
   }
 }
