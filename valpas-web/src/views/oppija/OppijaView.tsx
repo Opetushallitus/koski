@@ -1,6 +1,10 @@
 import bem from "bem-ts"
+import * as A from "fp-ts/Array"
 import { isEmpty } from "fp-ts/lib/Array"
-import React from "react"
+import { pipe } from "fp-ts/lib/function"
+import * as O from "fp-ts/Option"
+import * as string from "fp-ts/string"
+import React, { useMemo } from "react"
 import { fetchOppija, fetchOppijaCache } from "../../api/api"
 import { ApiMethodState, useApiWithParams } from "../../api/apiHooks"
 import { isSuccess, mapError, mapLoading, mapSuccess } from "../../api/apiUtils"
@@ -129,8 +133,14 @@ export type OppijaViewBackNavProps = {
 } & OppijaPathBackRefs
 
 const BackNav = (props: OppijaViewBackNavProps) => {
-  const targetPath = () => {
-    const fallback = props.oppija?.oppija.hakeutumisvalvovatOppilaitokset[0]
+  const targetPath = useMemo(() => {
+    const fallback = pipe(
+      O.fromNullable(props.oppija?.oppija.hakeutumisvalvovatOppilaitokset),
+      O.map(A.sort(string.Ord)),
+      O.chain(A.head),
+      O.toNullable
+    )
+
     if (props.prev) {
       return props.prev
     } else if (props.hakutilanneRef) {
@@ -162,11 +172,11 @@ const BackNav = (props: OppijaViewBackNavProps) => {
     } else {
       return hakutilannePathWithoutOrg.href()
     }
-  }
+  }, [props])
 
   return (
     <div className={b("backbutton")}>
-      <FlatLink to={targetPath()}>
+      <FlatLink to={targetPath}>
         <BackIcon />
         <ButtonLabel>
           <T id="oppija__takaisin" />
