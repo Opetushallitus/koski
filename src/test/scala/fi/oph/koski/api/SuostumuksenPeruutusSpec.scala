@@ -12,8 +12,8 @@ import fi.oph.koski.schema.VapaanSivistystyönOpiskeluoikeus
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
-import java.net.InetAddress.{getByName => inetAddress}
 
+import java.net.InetAddress.{getByName => inetAddress}
 import java.time.LocalDate
 
 class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with OpiskeluoikeusTestMethods with KoskiHttpSpec with PutOpiskeluoikeusTestMethods[VapaanSivistystyönOpiskeluoikeus] with SuoritusjakoTestMethods with SearchTestMethods with BeforeAndAfterAll {
@@ -91,6 +91,18 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
       putOpiskeluoikeus(oo, henkilö = KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus, headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.suostumusPeruttu())
       }
+    }
+
+    "Opiskeluoikeuden historiatiedot poistuvat" in {
+      resetFixtures()
+      val virkailijaSession: KoskiSpecificSession = MockUsers.kalle.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository)
+
+      // Ennen perumista
+      KoskiApplicationForTests.historyRepository.findByOpiskeluoikeusOid(vapaatavoitteinenOpiskeluoikeusOid)(virkailijaSession).get.length should equal (1)
+
+      post(s"/api/opiskeluoikeus/suostumuksenperuutus/$vapaatavoitteinenOpiskeluoikeusOid", headers = kansalainenLoginHeaders(vapaatavoitteinenHetu)) {}
+      // Perumisen jälkeen
+      KoskiApplicationForTests.historyRepository.findByOpiskeluoikeusOid(vapaatavoitteinenOpiskeluoikeusOid)(virkailijaSession) should equal (None)
     }
   }
 

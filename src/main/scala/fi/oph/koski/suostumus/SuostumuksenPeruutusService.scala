@@ -39,7 +39,8 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
             val opiskeluoikeudenId = runDbSync(KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.id).result).head
             runDbSync(DBIO.seq(
               opiskeluoikeudenPoistonQuery(oid),
-              poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(oo)
+              poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(oo),
+              opiskeluoikeudenHistorianPoistonQuery(opiskeluoikeudenId)
             ).transactionally)
             perustiedotIndexer.deleteByIds(List(opiskeluoikeudenId), true)
             AuditLog.log(KoskiAuditLogMessage(KoskiOperation.KANSALAINEN_SUOSTUMUS_PERUMINEN, user, Map(KoskiAuditLogMessageField.opiskeluoikeusOid -> oid)))
@@ -52,11 +53,15 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
     }
   }
 
-  private def opiskeluoikeudenPoistonQuery(oid: String)(implicit user: KoskiSpecificSession): dbio.DBIOAction[Int, NoStream, Write] = {
+  private def opiskeluoikeudenPoistonQuery(oid: String): dbio.DBIOAction[Int, NoStream, Write] = {
     KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).delete
   }
 
-  private def poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSpecificSession): dbio.DBIOAction[Int, NoStream, Write] = {
+  private def opiskeluoikeudenHistorianPoistonQuery(id: Int): dbio.DBIOAction[Int, NoStream, Write] = {
+    KoskiTables.OpiskeluoikeusHistoria.filter(_.opiskeluoikeusId === id).delete
+  }
+
+  private def poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(opiskeluoikeus: Opiskeluoikeus): dbio.DBIOAction[Int, NoStream, Write] = {
     val timestamp = Timestamp.from(Instant.now())
 
     KoskiTables.PoistetutOpiskeluoikeudet.insertOrUpdate(PoistettuOpiskeluoikeusRow(
