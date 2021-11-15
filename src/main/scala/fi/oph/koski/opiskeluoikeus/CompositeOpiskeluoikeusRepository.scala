@@ -106,6 +106,6 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
   def merkitseSuoritusjakoTehdyksi(opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession) =
     main.merkitseSuoritusjakoTehdyksi(opiskeluoikeusOid)
 
-  def suoritusjakoTehty(opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession): Boolean =
+  def suoritusjakoTehty(opiskeluoikeusOid: String): Boolean =
     main.suoritusjakoTehty(opiskeluoikeusOid)
 }

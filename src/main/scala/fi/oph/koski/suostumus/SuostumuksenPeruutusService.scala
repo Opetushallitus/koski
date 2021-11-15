@@ -99,7 +99,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
     !muitaPäätasonSuorituksiaKuinPeruttavissaOlevia
   }
 
-  private def suoritusjakoTehty(oo: Opiskeluoikeus)(implicit user: KoskiSpecificSession) = {
+  private def suoritusjakoTehty(oo: Opiskeluoikeus) = {
     opiskeluoikeusRepository.suoritusjakoTehty(oo.oid.get)
   }
 

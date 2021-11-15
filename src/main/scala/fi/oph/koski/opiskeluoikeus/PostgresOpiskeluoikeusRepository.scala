@@ -149,7 +149,7 @@ class PostgresOpiskeluoikeusRepository(
     }
   }
 
-  def suoritusjakoTehty(oid: String)(implicit user: KoskiSpecificSession): Boolean = {
+  def suoritusjakoTehty(oid: String): Boolean = {
     runDbSync(KoskiTables.OpiskeluOikeudet.filter(rivi => rivi.oid === oid && rivi.suoritusjakoTehty === true).result).nonEmpty
   }
 
