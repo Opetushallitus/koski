@@ -42,6 +42,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
               poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(oo)
             ).transactionally)
             perustiedotIndexer.deleteByIds(List(opiskeluoikeudenId), true)
+            AuditLog.log(KoskiAuditLogMessage(KoskiOperation.KANSALAINEN_SUOSTUMUS_PERUMINEN, user, Map(KoskiAuditLogMessageField.opiskeluoikeusOid -> oid)))
             HttpStatus.ok
           case None =>
             KoskiErrorCategory.forbidden.opiskeluoikeusEiSopivaSuostumuksenPerumiselle(s"Opiskeluoikeuden $oid annettu suostumus ei ole peruttavissa. Joko opiskeluoikeudesta on tehty suoritusjako, " +
@@ -70,7 +71,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
   }
 
   def suoritusjakoTekemättäWithAccessCheck(oid: String)(implicit user: KoskiSpecificSession): HttpStatus = {
-    AuditLog.log(KoskiAuditLogMessage(KoskiOperation.OPISKELUOIKEUS_SUORITUSJAKO_TEKEMÄTTÄ_KYSELY, user, Map(KoskiAuditLogMessageField.opiskeluoikeusOid -> oid)))
+    AuditLog.log(KoskiAuditLogMessage(KoskiOperation.KANSALAINEN_SUORITUSJAKO_TEKEMÄTTÄ_KATSOMINEN, user, Map(KoskiAuditLogMessageField.opiskeluoikeusOid -> oid)))
     henkilöRepository.findByOid(user.oid) match {
       case Some(henkilö) =>
         opiskeluoikeusRepository.findByCurrentUser(henkilö)(user).get.exists(oo =>
