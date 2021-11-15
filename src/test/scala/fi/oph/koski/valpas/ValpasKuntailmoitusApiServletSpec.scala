@@ -650,7 +650,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
 
   "Oppijoiden hakeminen kuntailmoitus-apin kautta jättää auditlogimerkinnän" in {
     get(
-      uri = s"/valpas/api/kuntailmoitus/oppijat/${MockOrganisaatiot.helsinginKaupunki}/aktiiviset",
+      uri = s"/valpas/api/kuntailmoitus/oppijat/${MockOrganisaatiot.helsinginKaupunki}",
       headers = authHeaders(ValpasMockUsers.valpasHelsinki)
     ) {
       verifyResponseStatusOk()
@@ -666,7 +666,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
 
   "Oppijoiden hakeminen kuntailmoitus-apin kautta väärästä organisaatiosta palauttaa virheen" in {
     get(
-      uri = s"/valpas/api/kuntailmoitus/oppijat/${MockOrganisaatiot.pyhtäänKunta}/aktiiviset",
+      uri = s"/valpas/api/kuntailmoitus/oppijat/${MockOrganisaatiot.pyhtäänKunta}",
       headers = authHeaders(ValpasMockUsers.valpasHelsinki)
     ) {
       verifyResponseStatus(
@@ -678,7 +678,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
 
   "Oppijoiden hakeminen kuntailmoitus-apin kautta ilman kuntaoikeuksia palauttaa virheen" in {
     get(
-      uri = s"/valpas/api/kuntailmoitus/oppijat/${MockOrganisaatiot.helsinginKaupunki}/aktiiviset",
+      uri = s"/valpas/api/kuntailmoitus/oppijat/${MockOrganisaatiot.helsinginKaupunki}",
       headers = authHeaders(ValpasMockUsers.valpasHelsinkiPeruskoulu)
     ) {
       verifyResponseStatus(
