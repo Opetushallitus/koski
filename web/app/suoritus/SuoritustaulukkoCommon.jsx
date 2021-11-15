@@ -142,7 +142,7 @@ export const ExpandAllRows = ({allExpandedP, toggleExpandAll}) => (
 
 export const SuoritusColumn = {
   shouldShow : () => true,
-  renderHeader: ({suoritusTitle}) => <td key="suoritus" className="suoritus">{suoritusTitle}</td>,
+  renderHeader: ({suoritusTitle}) => <td key="suoritus" className="suoritus"><Text name={suoritusTitle}/></td>,
   renderData: ({model, showTila, onExpand, hasProperties, expanded}) => {
     let koulutusmoduuli = modelLookup(model, 'koulutusmoduuli')
     let titleAsExpandLink = hasProperties && (!osanOsa(koulutusmoduuli) || !model.context.edit)

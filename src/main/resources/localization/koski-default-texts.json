@@ -1558,5 +1558,17 @@
   "Vapaatavoitteisen vapaan sivistyön koulutuksen osasuoritus": "Vapaatavoitteisen vapaan sivistyön koulutuksen osasuoritus",
   "tooltip:Lasketaan automaattisesti tallentamisen jälkeen osasuoritusten...": "Lasketaan automaattisesti tallentamisen jälkeen osasuoritusten laajuuksista",
   "tooltip:Opiskelija on suorittanut koko lukion...": "Opiskelija on suorittanut koko lukion oppimäärän ja saanut lukion päättötodistuksen",
-  "Valinnaisena suoritetut lukion moduulit": "Valinnaisena suoritetut lukion moduulit"
+  "Valinnaisena suoritetut lukion moduulit": "Valinnaisena suoritetut lukion moduulit",
+  "Lisää kokonaisuus": "Lisää kokonaisuus",
+  "Osaamiskokonaisuus": "Osaamiskokonaisuus",
+  "Lisää osaamiskokonaisuus": "Lisää osaamiskokonaisuus",
+  "Lisää suuntautumisopinto": "Lisää suuntautumisopinto",
+  "Lisää muualla suoritettu opinto": "Lisää muualla suoritettu opinto",
+  "Lisää paikallinen opintokokonaisuus": "Lisää paikallinen opintokokonaisuus",
+  "Paikallisen opintokokonaisuuden lisäys": "Paikallisen opintokokonaisuuden lisäys",
+  "Opintokokonaisuuden nimi": "Opintokokonaisuuden nimi",
+  "Valinnaisen opintosuorituksen lisäys": "Valinnaisen opintosuorituksen lisäys",
+  "Lisää työelämäjakso": "Lisää työelämäjakso",
+  "Lisää työelämä- ja yhteiskuntataidon opintokokonaisuus": "Lisää työelämä- ja yhteiskuntataidon opintokokonaisuus",
+  "Työelämäjakson lisäys": "Työelämäjakson lisäys"
 }
