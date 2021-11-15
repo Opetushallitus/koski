@@ -1,385 +1,573 @@
 function AddOppijaPage() {
-  function form() { return S('form.uusi-oppija') }
-  function button() { return form().find('button') }
-  function modalButton() { return form().find('button.vahvista') }
-  function selectedOppilaitos() { return form().find('.oppilaitos .selected') }
-  function selectedTutkinto() { return form().find('.tutkinto .selected') }
-  var pageApi = Page(form)
+  function form() {
+    return S("form.uusi-oppija");
+  }
+  function button() {
+    return form().find("button");
+  }
+  function modalButton() {
+    return form().find("button.vahvista");
+  }
+  function selectedOppilaitos() {
+    return form().find(".oppilaitos .selected");
+  }
+  function selectedTutkinto() {
+    return form().find(".tutkinto .selected");
+  }
+  var pageApi = Page(form);
   var api = {
-    addNewOppija: function(username, hetu, oppijaData) {
-      return function() {
+    addNewOppija: function (username, hetu, oppijaData) {
+      return function () {
         return prepareForNewOppija(username, hetu)()
           .then(api.enterValidDataAmmatillinen(oppijaData))
-          .then(api.submitAndExpectSuccess(hetu, (oppijaData || {}).tutkinto))
-        }
+          .then(api.submitAndExpectSuccess(hetu, (oppijaData || {}).tutkinto));
+      };
     },
-    isVisible: function() {
-      return isElementVisible(form()) && isNotLoading()
+    isVisible: function () {
+      return isElementVisible(form()) && isNotLoading();
     },
-    isEnabled: function() {
-      return button().is(":visible") && !button().is(':disabled')
+    isEnabled: function () {
+      return button().is(":visible") && !button().is(":disabled");
     },
     isModalButtonEnabled: function () {
-      return modalButton().is(":visible") && !modalButton().is(':disabled')
+      return modalButton().is(":visible") && !modalButton().is(":disabled");
     },
-    tutkintoIsEnabled: function() {
-      return S('.tutkinto input').is(':visible') && !S('.tutkinto input').is(':disabled')
+    tutkintoIsEnabled: function () {
+      return (
+        S(".tutkinto input").is(":visible") &&
+        !S(".tutkinto input").is(":disabled")
+      );
     },
-    rahoitusIsVisible: function() {
-      return isElementVisible(S('.opintojenrahoitus'))
+    rahoitusIsVisible: function () {
+      return isElementVisible(S(".opintojenrahoitus"));
     },
-    enterValidDataInternationalSchool: function(params) {
-      params = _.merge({  oppilaitos: 'International School of Helsinki', grade: 'Grade explorer', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus', alkamispäivä: '1.1.2018'}, {}, params)
-      return function() {
-        return api.enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('International school'))
-          .then(api.selectFromDropdown('.international-school-grade .dropdown', params.grade))
+    enterValidDataInternationalSchool: function (params) {
+      params = _.merge(
+        {
+          oppilaitos: "International School of Helsinki",
+          grade: "Grade explorer",
+          opintojenRahoitus: "Valtionosuusrahoitteinen koulutus",
+          alkamispäivä: "1.1.2018",
+        },
+        {},
+        params
+      );
+      return function () {
+        return api
+          .enterData(params)()
+          .then(api.selectOpiskeluoikeudenTyyppi("International school"))
+          .then(
+            api.selectFromDropdown(
+              ".international-school-grade .dropdown",
+              params.grade
+            )
+          )
           .then(api.selectAloituspäivä(params.alkamispäivä))
           .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
-          .then(wait.forAjax)
-      }
+          .then(wait.forAjax);
+      };
     },
-    enterValidDataPerusopetus: function(params) {
-      params = _.merge({  oppilaitos: 'Jyväskylän normaalikoulu', alkamispäivä: '1.1.2018'}, {}, params)
-      return function() {
-        return api.enterData(params)()
+    enterValidDataPerusopetus: function (params) {
+      params = _.merge(
+        { oppilaitos: "Jyväskylän normaalikoulu", alkamispäivä: "1.1.2018" },
+        {},
+        params
+      );
+      return function () {
+        return api
+          .enterData(params)()
           .then(api.selectAloituspäivä(params.alkamispäivä))
-          .then(wait.forAjax)
-      }
+          .then(wait.forAjax);
+      };
     },
-    enterValidDataEsiopetus: function(params) {
-      params = _.merge({  oppilaitos: 'Jyväskylän normaalikoulu' }, {}, params)
-      return function() {
-        return api.enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('Esiopetus'))
-      }
+    enterValidDataEsiopetus: function (params) {
+      params = _.merge({ oppilaitos: "Jyväskylän normaalikoulu" }, {}, params);
+      return function () {
+        return api
+          .enterData(params)()
+          .then(api.selectOpiskeluoikeudenTyyppi("Esiopetus"));
+      };
     },
-    enterValidDataPäiväkodinEsiopetus: function(params) {
-      params = _.merge({  oppilaitos: 'PK Vironniemi' }, {}, params)
-      return function() {
-        return api.enterData(params)()
-      }
+    enterValidDataPäiväkodinEsiopetus: function (params) {
+      params = _.merge({ oppilaitos: "PK Vironniemi" }, {}, params);
+      return function () {
+        return api.enterData(params)();
+      };
     },
-    enterHenkilötiedot: function(params) {
-      params = _.merge({ etunimet: 'Tero', kutsumanimi: 'Tero', sukunimi: 'Tyhjä'}, {}, params)
-      return function() {
-        return pageApi.setInputValue('.etunimet input', params.etunimet)()
-          .then(pageApi.setInputValue('.kutsumanimi input[disabled], .kutsumanimi .dropdown', params.kutsumanimi))
-          .then(pageApi.setInputValue('.sukunimi input', params.sukunimi))
-      }
+    enterHenkilötiedot: function (params) {
+      params = _.merge(
+        { etunimet: "Tero", kutsumanimi: "Tero", sukunimi: "Tyhjä" },
+        {},
+        params
+      );
+      return function () {
+        return pageApi
+          .setInputValue(".etunimet input", params.etunimet)()
+          .then(
+            pageApi.setInputValue(
+              ".kutsumanimi input[disabled], .kutsumanimi .dropdown",
+              params.kutsumanimi
+            )
+          )
+          .then(pageApi.setInputValue(".sukunimi input", params.sukunimi));
+      };
     },
-    enterValidDataVSTKOPS: function(params) {
+    enterValidDataVSTKOPS: function (params) {
       params = _.merge({
-        oppilaitos: 'Varsinais-Suomen kansanopisto',
-        oppimäärä: 'Oppivelvollisille suunnattu vapaan sivistystyön koulutus',
-        suorituskieli: 'suomi',
-        alkamispäivä: '1.8.2021'
-      })
-      return function() {
-        return api.enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('Vapaan sivistystyön koulutus'))
+        oppilaitos: "Varsinais-Suomen kansanopisto",
+        oppimäärä: "Oppivelvollisille suunnattu vapaan sivistystyön koulutus",
+        suorituskieli: "suomi",
+        alkamispäivä: "1.8.2021",
+      });
+      return function () {
+        return api
+          .enterData(params)()
+          .then(
+            api.selectOpiskeluoikeudenTyyppi("Vapaan sivistystyön koulutus")
+          )
           .then(api.selectOppimäärä(params.oppimäärä))
           .then(api.selectAloituspäivä(params.alkamispäivä))
-          .then(api.selectMaksuttomuus(0))
-      }
+          .then(api.selectMaksuttomuus(0));
+      };
     },
-    enterValidDataVSTLukutaito: function(params) {
+    enterValidDataVSTLukutaito: function (params) {
       params = _.merge({
-        oppilaitos: 'Varsinais-Suomen kansanopisto',
-        oppimäärä: 'Vapaan sivistystyön lukutaitokoulutus',
-        suorituskieli: 'suomi',
-        alkamispäivä: '1.8.2021'
-      })
-      return function() {
-        return api.enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('Vapaan sivistystyön koulutus'))
+        oppilaitos: "Varsinais-Suomen kansanopisto",
+        oppimäärä: "Vapaan sivistystyön lukutaitokoulutus",
+        suorituskieli: "suomi",
+        alkamispäivä: "1.8.2021",
+      });
+      return function () {
+        return api
+          .enterData(params)()
+          .then(
+            api.selectOpiskeluoikeudenTyyppi("Vapaan sivistystyön koulutus")
+          )
           .then(api.selectOppimäärä(params.oppimäärä))
           .then(api.selectAloituspäivä(params.alkamispäivä))
-          .then(api.selectMaksuttomuus(0))
-      }
+          .then(api.selectMaksuttomuus(0));
+      };
     },
-    enterValidDataVSTVapaatavoitteinen: function(params) {
+    enterValidDataVSTVapaatavoitteinen: function (params) {
       params = _.merge({
-        oppilaitos: 'Varsinais-Suomen kansanopisto',
-        oppimäärä: 'Vapaan sivistystyön vapaatavoitteinen koulutus',
-        suorituskieli: 'suomi',
-        tila: 'Hyväksytysti suoritettu',
-        alkamispäivä: new Date().getDate() + '.' + (1 + new Date().getMonth()) + '.' + new Date().getFullYear()
-      })
-      return function() {
-        return api.enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('Vapaan sivistystyön koulutus'))
+        oppilaitos: "Varsinais-Suomen kansanopisto",
+        oppimäärä: "Vapaan sivistystyön vapaatavoitteinen koulutus",
+        suorituskieli: "suomi",
+        tila: "Hyväksytysti suoritettu",
+        alkamispäivä:
+          new Date().getDate() +
+          "." +
+          (1 + new Date().getMonth()) +
+          "." +
+          new Date().getFullYear(),
+      });
+      return function () {
+        return api
+          .enterData(params)()
+          .then(
+            api.selectOpiskeluoikeudenTyyppi("Vapaan sivistystyön koulutus")
+          )
           .then(api.selectOppimäärä(params.oppimäärä))
           .then(api.selectOpiskeluoikeudenTila(params.tila))
-          .then(api.selectAloituspäivä(params.alkamispäivä))
-      }
+          .then(api.selectAloituspäivä(params.alkamispäivä));
+      };
     },
-    enterValidDataAmmatillinen: function(params) {
-      params = _.merge({  oppilaitos: 'Stadin', tutkinto: 'Autoalan perust', suoritustapa: 'Ammatillinen perustutkinto', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus', alkamispäivä: '1.1.2018' }, {}, params)
-      return function() {
-        return api.enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'))
+    enterValidDataAmmatillinen: function (params) {
+      params = _.merge(
+        {
+          oppilaitos: "Stadin",
+          tutkinto: "Autoalan perust",
+          suoritustapa: "Ammatillinen perustutkinto",
+          opintojenRahoitus: "Valtionosuusrahoitteinen koulutus",
+          alkamispäivä: "1.1.2018",
+        },
+        {},
+        params
+      );
+      return function () {
+        return api
+          .enterData(params)()
+          .then(api.selectOpiskeluoikeudenTyyppi("Ammatillinen koulutus"))
           .then(api.selectTutkinto(params.tutkinto))
           .then(api.selectSuoritustapa(params.suoritustapa))
           .then(api.selectAloituspäivä(params.alkamispäivä))
-          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
-      }
+          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus));
+      };
     },
-    enterValidDataMuuAmmatillinen: function(params) {
-      params = _.merge({  oppilaitos: 'Stadin', oppimäärä: 'Muun ammatillisen koulutuksen suoritus', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus'}, {}, params)
-      return function() {
-        return api.enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'))
+    enterValidDataMuuAmmatillinen: function (params) {
+      params = _.merge(
+        {
+          oppilaitos: "Stadin",
+          oppimäärä: "Muun ammatillisen koulutuksen suoritus",
+          opintojenRahoitus: "Valtionosuusrahoitteinen koulutus",
+        },
+        {},
+        params
+      );
+      return function () {
+        return api
+          .enterData(params)()
+          .then(api.selectOpiskeluoikeudenTyyppi("Ammatillinen koulutus"))
           .then(api.selectOppimäärä(params.oppimäärä))
-          .then(function() {
+          .then(function () {
             if (params.koulutusmoduuli) {
-              return api.selectKoulutusmoduuli(params.koulutusmoduuli)()
+              return api.selectKoulutusmoduuli(params.koulutusmoduuli)();
             }
           })
-          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
-      }
+          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus));
+      };
     },
-    enterValidDataLukio: function(params) {
-      params = _.merge({ oppilaitos: 'Ressun', oppimäärä: 'Lukion oppimäärä', peruste: '60/011/2015', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus', alkamispäivä: '1.1.2018' }, {}, params)
-      return function() {
-        return api.enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('Lukiokoulutus'))
+    enterValidDataLukio: function (params) {
+      params = _.merge(
+        {
+          oppilaitos: "Ressun",
+          oppimäärä: "Lukion oppimäärä",
+          peruste: "60/011/2015",
+          opintojenRahoitus: "Valtionosuusrahoitteinen koulutus",
+          alkamispäivä: "1.1.2018",
+        },
+        {},
+        params
+      );
+      return function () {
+        return api
+          .enterData(params)()
+          .then(api.selectOpiskeluoikeudenTyyppi("Lukiokoulutus"))
           .then(api.selectOppimäärä(params.oppimäärä))
           .then(api.selectPeruste(params.peruste))
           .then(api.selectAloituspäivä(params.alkamispäivä))
-          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
-      }
+          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus));
+      };
     },
-    enterValidDataLuva: function(params) {
-      params = _.merge({ oppilaitos: 'Ressun', peruste: '56/011/2015', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus', alkamispäivä: '1.1.2018' }, {}, params)
-      return function() {
-        return api.enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('Lukioon valmistava koulutus (LUVA)'))
+    enterValidDataLuva: function (params) {
+      params = _.merge(
+        {
+          oppilaitos: "Ressun",
+          peruste: "56/011/2015",
+          opintojenRahoitus: "Valtionosuusrahoitteinen koulutus",
+          alkamispäivä: "1.1.2018",
+        },
+        {},
+        params
+      );
+      return function () {
+        return api
+          .enterData(params)()
+          .then(
+            api.selectOpiskeluoikeudenTyyppi(
+              "Lukioon valmistava koulutus (LUVA)"
+            )
+          )
           .then(api.selectAloituspäivä(params.alkamispäivä))
-          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
-      }
+          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus));
+      };
     },
-    enterValidDataIB: function(params) {
-      params = _.merge({ oppilaitos: 'Ressun', oppimäärä: 'IB-tutkinto', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus', alkamispäivä: '1.1.2018' }, {}, params)
-      return function() {
-        return api.enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('IB-tutkinto'))
+    enterValidDataIB: function (params) {
+      params = _.merge(
+        {
+          oppilaitos: "Ressun",
+          oppimäärä: "IB-tutkinto",
+          opintojenRahoitus: "Valtionosuusrahoitteinen koulutus",
+          alkamispäivä: "1.1.2018",
+        },
+        {},
+        params
+      );
+      return function () {
+        return api
+          .enterData(params)()
+          .then(api.selectOpiskeluoikeudenTyyppi("IB-tutkinto"))
           .then(api.selectOppimäärä(params.oppimäärä))
           .then(api.selectAloituspäivä(params.alkamispäivä))
-          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
-      }
+          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus));
+      };
     },
-    enterValidDataPreIB: function(params) {
-      params = _.merge({ oppilaitos: 'Ressun', oppimäärä: 'Pre-IB', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus', alkamispäivä: '1.1.2018' }, {}, params)
-      return function() {
-        return api.enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('IB-tutkinto'))
+    enterValidDataPreIB: function (params) {
+      params = _.merge(
+        {
+          oppilaitos: "Ressun",
+          oppimäärä: "Pre-IB",
+          opintojenRahoitus: "Valtionosuusrahoitteinen koulutus",
+          alkamispäivä: "1.1.2018",
+        },
+        {},
+        params
+      );
+      return function () {
+        return api
+          .enterData(params)()
+          .then(api.selectOpiskeluoikeudenTyyppi("IB-tutkinto"))
           .then(api.selectOppimäärä(params.oppimäärä))
           .then(api.selectAloituspäivä(params.alkamispäivä))
-          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
-      }
+          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus));
+      };
     },
-    enterValidDataDIA: function(params) {
-      params = _.merge({ oppilaitos: 'Helsingin', oppimäärä: 'DIA-tutkinto', alkamispäivä: '1.1.2018' }, {}, params)
-      return function() {
-        return api.enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('DIA-tutkinto'))
+    enterValidDataDIA: function (params) {
+      params = _.merge(
+        {
+          oppilaitos: "Helsingin",
+          oppimäärä: "DIA-tutkinto",
+          alkamispäivä: "1.1.2018",
+        },
+        {},
+        params
+      );
+      return function () {
+        return api
+          .enterData(params)()
+          .then(api.selectOpiskeluoikeudenTyyppi("DIA-tutkinto"))
           .then(api.selectOppimäärä(params.oppimäärä))
           .then(api.selectAloituspäivä(params.alkamispäivä))
-          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
-      }
+          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus));
+      };
     },
-    enterValidDataDIAValmistavaVaihe: function(params) {
-      params = _.merge({ oppilaitos: 'Helsingin', oppimäärä: 'Valmistava DIA-vaihe', alkamispäivä: '1.1.2018' }, {}, params)
-      return function() {
-        return api.enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('DIA-tutkinto'))
+    enterValidDataDIAValmistavaVaihe: function (params) {
+      params = _.merge(
+        {
+          oppilaitos: "Helsingin",
+          oppimäärä: "Valmistava DIA-vaihe",
+          alkamispäivä: "1.1.2018",
+        },
+        {},
+        params
+      );
+      return function () {
+        return api
+          .enterData(params)()
+          .then(api.selectOpiskeluoikeudenTyyppi("DIA-tutkinto"))
           .then(api.selectOppimäärä(params.oppimäärä))
           .then(api.selectAloituspäivä(params.alkamispäivä))
-          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
-      }
+          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus));
+      };
     },
-    enterPaikallinenKoulutusmoduuliData: function(params) {
-      params = _.merge({
-        nimi: 'Varaston täyttäminen',
-        koodi: 'vrs-t-2019-k',
-        kuvaus: 'Opiskelija osaa tehdä tilauksen vakiotoimittajilta sekä menettelytavat palavien ja vaarallisten aineiden varastoinnissa'
-      }, {}, params)
+    enterPaikallinenKoulutusmoduuliData: function (params) {
+      params = _.merge(
+        {
+          nimi: "Varaston täyttäminen",
+          koodi: "vrs-t-2019-k",
+          kuvaus:
+            "Opiskelija osaa tehdä tilauksen vakiotoimittajilta sekä menettelytavat palavien ja vaarallisten aineiden varastoinnissa",
+        },
+        {},
+        params
+      );
 
-      return function() {
-        return pageApi.setInputValue('.koulutusmoduuli .nimi input', params.nimi)()
-          .then(pageApi.setInputValue('.koulutusmoduuli .koodiarvo input', params.koodi))
-          .then(pageApi.setInputValue('.koulutusmoduuli .kuvaus textarea', params.kuvaus))
-      }
+      return function () {
+        return pageApi
+          .setInputValue(".koulutusmoduuli .nimi input", params.nimi)()
+          .then(
+            pageApi.setInputValue(
+              ".koulutusmoduuli .koodiarvo input",
+              params.koodi
+            )
+          )
+          .then(
+            pageApi.setInputValue(
+              ".koulutusmoduuli .kuvaus textarea",
+              params.kuvaus
+            )
+          );
+      };
     },
-    enterAmmatilliseenTehtäväänvalmistava: function(ammatilliseentehtäväänvalmistavakoulutus) {
-      return selectFromDropdown('.ammatilliseentehtäväänvalmistavakoulutus .dropdown', ammatilliseentehtäväänvalmistavakoulutus)
+    enterAmmatilliseenTehtäväänvalmistava: function (
+      ammatilliseentehtäväänvalmistavakoulutus
+    ) {
+      return selectFromDropdown(
+        ".ammatilliseentehtäväänvalmistavakoulutus .dropdown",
+        ammatilliseentehtäväänvalmistavakoulutus
+      );
     },
-    enterData: function(params) {
-      return function() {
-        return api.enterHenkilötiedot(params)()
+    enterData: function (params) {
+      return function () {
+        return api
+          .enterHenkilötiedot(params)()
           .then(api.selectOppilaitos(params.oppilaitos))
-          .then(function() {
+          .then(function () {
             if (params.suorituskieli) {
-              return api.selectSuorituskieli(params.suorituskieli)()
+              return api.selectSuorituskieli(params.suorituskieli)();
             }
           })
           .then(function () {
             if (params.opintojenRahoitus) {
-              return api.selectOpintojenRahoitus(params.opintojenRahoitus)
+              return api.selectOpintojenRahoitus(params.opintojenRahoitus);
             }
-          })
-      }
+          });
+      };
     },
-    enterTutkinto: function(name) {
-      return function() {
-        return pageApi.setInputValue('.tutkinto input', name)()
-      }
+    enterTutkinto: function (name) {
+      return function () {
+        return pageApi.setInputValue(".tutkinto input", name)();
+      };
     },
-    enterOppilaitos: function(name) {
-      return OrganisaatioHaku(form).enter(name)
+    enterOppilaitos: function (name) {
+      return OrganisaatioHaku(form).enter(name);
     },
-    selectOppilaitos: function(name) {
-      return OrganisaatioHaku(form).select(name)
+    selectOppilaitos: function (name) {
+      return OrganisaatioHaku(form).select(name);
     },
     oppilaitokset: OrganisaatioHaku(form).oppilaitokset,
     toimipisteet: OrganisaatioHaku(form).toimipisteet,
     oppilaitos: OrganisaatioHaku(form).oppilaitos,
-    selectTutkinto: function(name) {
-      if (!name) { return wait.forAjax }
-      return function() {
-        return wait.until(pageApi.getInput('.tutkinto input').isVisible)()
-            .then(pageApi.setInputValue('.tutkinto input', name))
-            .then(wait.until(function() { return isElementVisible(selectedTutkinto()) }))
-            .then(click(selectedTutkinto))
+    selectTutkinto: function (name) {
+      if (!name) {
+        return wait.forAjax;
       }
+      return function () {
+        return wait
+          .until(pageApi.getInput(".tutkinto input").isVisible)()
+          .then(pageApi.setInputValue(".tutkinto input", name))
+          .then(
+            wait.until(function () {
+              return isElementVisible(selectedTutkinto());
+            })
+          )
+          .then(click(selectedTutkinto));
+      };
     },
-    selectSuoritustapa: function(suoritustapa) {
+    selectSuoritustapa: function (suoritustapa) {
       if (suoritustapa)
-        return selectFromDropdown('.suoritustapa .dropdown', suoritustapa)
-      else
-        return function() {}
+        return selectFromDropdown(".suoritustapa .dropdown", suoritustapa);
+      else return function () {};
     },
-    selectAloituspäivä: function(date) {
-      return pageApi.setInputValue('.aloituspaiva input', date)
+    selectAloituspäivä: function (date) {
+      return pageApi.setInputValue(".aloituspaiva input", date);
     },
-    selectOpiskeluoikeudenTila: function(tila) {
+    selectOpiskeluoikeudenTila: function (tila) {
       if (tila)
-        return selectFromDropdown('.opiskeluoikeudentila .dropdown', tila)
-      else
-        return function() {}
+        return selectFromDropdown(".opiskeluoikeudentila .dropdown", tila);
+      else return function () {};
     },
     selectMaksuttomuus: function (index) {
       return function () {
-        return click(S('.radio-option-container')[index])()
-      }
+        return click(S(".radio-option-container")[index])();
+      };
     },
-    henkilötiedot: function() {
-      return ['.etunimet input', '.kutsumanimi input[disabled], .kutsumanimi .dropdown', '.sukunimi input'].map(function(selector) {
-        return pageApi.getInputValue(selector)
-      })
+    henkilötiedot: function () {
+      return [
+        ".etunimet input",
+        ".kutsumanimi input[disabled], .kutsumanimi .dropdown",
+        ".sukunimi input",
+      ].map(function (selector) {
+        return pageApi.getInputValue(selector);
+      });
     },
-    hetu: function() {
-      return extractAsText(S('.hetu .value'))
+    hetu: function () {
+      return extractAsText(S(".hetu .value"));
     },
-    submit: function() {
+    submit: function () {
       if (!api.isEnabled()) {
-        throw new Error('Button not enabled')
+        throw new Error("Button not enabled");
       }
-      return click(button)()
+      return click(button)();
     },
-    submitModal: function() {
+    submitModal: function () {
       if (!api.isModalButtonEnabled()) {
-        throw new Error('Button not enabled')
+        throw new Error("Button not enabled");
       }
-      return click(modalButton)()
+      return click(modalButton)();
     },
-    submitAndExpectSuccess: function(oppija, tutkinto) {
-      tutkinto = tutkinto || "Autoalan perustutkinto"
-      return function() {
-        return wait.until(api.isEnabled)()
+    submitAndExpectSuccess: function (oppija, tutkinto) {
+      tutkinto = tutkinto || "Autoalan perustutkinto";
+      var timeoutMs = 15000;
+      return function () {
+        return wait
+          .until(api.isEnabled)()
           .then(api.submit)
-          .then(wait.until(function() {
-            return KoskiPage().getSelectedOppija().indexOf(oppija) >= 0 &&
-              OpinnotPage().suoritusOnValittu(0, tutkinto)
-          }))
-      }
+          .then(
+            wait.until(function () {
+              return (
+                KoskiPage().getSelectedOppija().indexOf(oppija) >= 0 &&
+                OpinnotPage().suoritusOnValittu(0, tutkinto)
+              );
+            }, timeoutMs)
+          );
+      };
     },
-    submitAndExpectSuccessModal: function(oppija, tutkinto) {
-      tutkinto = tutkinto || "Autoalan perustutkinto"
-      return function() {
-        return wait.until(api.isModalButtonEnabled)()
+    submitAndExpectSuccessModal: function (oppija, tutkinto) {
+      tutkinto = tutkinto || "Autoalan perustutkinto";
+      return function () {
+        var timeoutMs = 15000;
+        return wait
+          .until(api.isModalButtonEnabled)()
           .then(api.submitModal)
-          .then(wait.until(function() {
-            return KoskiPage().getSelectedOppija().indexOf(oppija) >= 0 &&
-              OpinnotPage().suoritusOnValittu(0, tutkinto)
-          }))
-      }
+          .then(
+            wait.until(function () {
+              return (
+                KoskiPage().getSelectedOppija().indexOf(oppija) >= 0 &&
+                OpinnotPage().suoritusOnValittu(0, tutkinto)
+              );
+            }, timeoutMs)
+          );
+      };
     },
-    isErrorShown: function(field) {
-      return function() {
-        return isElementVisible(form().find('.error-messages .' + field))
-      }
+    isErrorShown: function (field) {
+      return function () {
+        return isElementVisible(form().find(".error-messages ." + field));
+      };
     },
-    opiskeluoikeudenTyypit: function() {
-      return pageApi.getInputOptions('.opiskeluoikeudentyyppi .dropdown')
+    opiskeluoikeudenTyypit: function () {
+      return pageApi.getInputOptions(".opiskeluoikeudentyyppi .dropdown");
     },
-    opiskeluoikeudenTyyppi: function() {
-      return pageApi.getInputValue('.opiskeluoikeudentyyppi input')
+    opiskeluoikeudenTyyppi: function () {
+      return pageApi.getInputValue(".opiskeluoikeudentyyppi input");
     },
-    selectOpiskeluoikeudenTyyppi: function(tyyppi) {
-      return pageApi.setInputValue('.opiskeluoikeudentyyppi .dropdown', tyyppi)
+    selectOpiskeluoikeudenTyyppi: function (tyyppi) {
+      return pageApi.setInputValue(".opiskeluoikeudentyyppi .dropdown", tyyppi);
     },
-    oppimäärät: function() {
-      return pageApi.getInputOptions('.oppimaara .dropdown')
+    oppimäärät: function () {
+      return pageApi.getInputOptions(".oppimaara .dropdown");
     },
-    oppiaineet : function() {
-      return pageApi.getInputOptions('.oppiaine .dropdown')
+    oppiaineet: function () {
+      return pageApi.getInputOptions(".oppiaine .dropdown");
     },
-    selectOppimäärä: function(oppimäärä) {
-      return selectFromDropdown('.oppimaara .dropdown', oppimäärä)
+    selectOppimäärä: function (oppimäärä) {
+      return selectFromDropdown(".oppimaara .dropdown", oppimäärä);
     },
-    selectOppiaine: function(oppiaine) {
-      return selectFromDropdown('.oppiaine .dropdown', oppiaine)
+    selectOppiaine: function (oppiaine) {
+      return selectFromDropdown(".oppiaine .dropdown", oppiaine);
     },
-    selectSuorituskieli: function(kieli) {
-      return selectFromDropdown('.suorituskieli .dropdown', kieli)
+    selectSuorituskieli: function (kieli) {
+      return selectFromDropdown(".suorituskieli .dropdown", kieli);
     },
-    opintojenRahoitukset: function() {
-      return pageApi.getInputOptions('.opintojenrahoitus .dropdown')
+    opintojenRahoitukset: function () {
+      return pageApi.getInputOptions(".opintojenrahoitus .dropdown");
     },
-    selectOpintojenRahoitus: function(rahoitus) {
+    selectOpintojenRahoitus: function (rahoitus) {
       return rahoitus
-        ? selectFromDropdown('.opintojenrahoitus .dropdown', rahoitus)
-        : function() {}
+        ? selectFromDropdown(".opintojenrahoitus .dropdown", rahoitus)
+        : function () {};
     },
-    opiskeluoikeudenTilat: function() {
-      return pageApi.getInputOptions('.opiskeluoikeudentila .dropdown')
+    opiskeluoikeudenTilat: function () {
+      return pageApi.getInputOptions(".opiskeluoikeudentila .dropdown");
     },
-    selectPeruste: function(peruste) {
-      return selectFromDropdown('.peruste .dropdown', peruste)
+    selectPeruste: function (peruste) {
+      return selectFromDropdown(".peruste .dropdown", peruste);
     },
-    selectKieli: function(kieli) {
-      return selectFromDropdown('.kieli .dropdown', kieli)
+    selectKieli: function (kieli) {
+      return selectFromDropdown(".kieli .dropdown", kieli);
     },
-    selectKoulutusmoduuli: function(koulutusmoduuli) {
-      return selectFromDropdown('.koulutusmoduuli .dropdown', koulutusmoduuli)
+    selectKoulutusmoduuli: function (koulutusmoduuli) {
+      return selectFromDropdown(".koulutusmoduuli .dropdown", koulutusmoduuli);
     },
-    goBack: click(findSingle('h1 a')),
+    goBack: click(findSingle("h1 a")),
     selectFromDropdown: selectFromDropdown,
-    selectVarhaiskasvatusOrganisaationUlkopuolelta: function(checked) {
-      return pageApi.setInputValue('#varhaiskasvatus-checkbox', checked)
+    selectVarhaiskasvatusOrganisaationUlkopuolelta: function (checked) {
+      return pageApi.setInputValue("#varhaiskasvatus-checkbox", checked);
     },
-    selectJärjestämismuoto: function(järjestämismuoto) {
-      return selectFromDropdown('#varhaiskasvatus-jarjestamismuoto .dropdown', järjestämismuoto)
-    }
-  }
+    selectJärjestämismuoto: function (järjestämismuoto) {
+      return selectFromDropdown(
+        "#varhaiskasvatus-jarjestamismuoto .dropdown",
+        järjestämismuoto
+      );
+    },
+  };
   function selectFromDropdown(selector, value, exact) {
     return function () {
-      return wait.until(pageApi.getInput(selector).isVisible)().then(wait.forAjax).then(
-        pageApi.setInputValue(selector, value)
-      )
-    }
+      return wait
+        .until(pageApi.getInput(selector).isVisible)()
+        .then(wait.forAjax)
+        .then(pageApi.setInputValue(selector, value));
+    };
   }
-  return api
+  return api;
 }
