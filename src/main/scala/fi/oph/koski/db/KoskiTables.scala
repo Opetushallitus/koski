@@ -28,8 +28,9 @@ object KoskiTables {
     val koulutusmuoto = column[String]("koulutusmuoto")
     val alkamispäivä = column[Date]("alkamispaiva")
     val päättymispäivä = column[Option[Date]]("paattymispaiva")
+    val suoritusjakoTehty = column[Boolean]("suoritusjako_tehty_rajapaivan_jalkeen") // Rajapäivä marraskuu 2021
 
-    def * = (id, oid, versionumero, aikaleima, oppijaOid, oppilaitosOid, koulutustoimijaOid, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä) <> (OpiskeluoikeusRow.tupled, OpiskeluoikeusRow.unapply)
+    def * = (id, oid, versionumero, aikaleima, oppijaOid, oppilaitosOid, koulutustoimijaOid, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä, suoritusjakoTehty) <> (OpiskeluoikeusRow.tupled, OpiskeluoikeusRow.unapply)
     def updateableFields = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, oppilaitosOid, mitätöity, alkamispäivä, päättymispäivä)
   }
 
@@ -56,7 +57,8 @@ object KoskiTables {
         opiskeluoikeus.mitätöity,
         opiskeluoikeus.tyyppi.koodiarvo,
         Date.valueOf(opiskeluoikeus.alkamispäivä.get),
-        opiskeluoikeus.päättymispäivä.map(Date.valueOf)
+        opiskeluoikeus.päättymispäivä.map(Date.valueOf),
+        false
       )
     }
 
@@ -185,6 +187,18 @@ object KoskiTables {
     def * = (username, ip) <> (OppilaitosIPOsoiteRow.tupled, OppilaitosIPOsoiteRow.unapply)
   }
 
+  class PoistettuOpiskeluoikeusTable(tag: Tag) extends Table[PoistettuOpiskeluoikeusRow] (tag, "poistettu_opiskeluoikeus") {
+    val oid = column[String]("oid", O.PrimaryKey)
+    val oppilaitos_nimi = column[Option[String]]("oppilaitos_nimi")
+    val oppilaitos_oid = column[Option[String]]("oppilaitos_oid")
+    val päättymispäivä = column[Option[Date]]("paattymispaiva")
+    val lähdejärjestelmäKoodi = column[Option[String]]("lahdejarjestelma_koodi")
+    val lähdejärjestelmäId = column[Option[String]]("lahdejarjestelma_id")
+    val aikaleima = column[Timestamp]("aikaleima")
+
+    def * = (oid, oppilaitos_nimi, oppilaitos_oid, päättymispäivä, lähdejärjestelmäKoodi, lähdejärjestelmäId, aikaleima) <> (PoistettuOpiskeluoikeusRow.tupled, PoistettuOpiskeluoikeusRow.unapply)
+  }
+
   val Preferences = TableQuery[PreferencesTable]
 
   val SuoritusJako = TableQuery[SuoritusjakoTable]
@@ -204,6 +218,8 @@ object KoskiTables {
   val OppilaitosIPOsoite = TableQuery[OppilaitosIPOsoiteTable]
 
   val OpiskeluoikeusHistoria = TableQuery[OpiskeluoikeusHistoryTable]
+
+  val PoistetutOpiskeluoikeudet = TableQuery[PoistettuOpiskeluoikeusTable]
 
   def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiSpecificSession): Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq] = {
     val query = if (user.hasGlobalReadAccess || user.hasGlobalKoulutusmuotoReadAccess) {
@@ -243,7 +259,8 @@ case class OpiskeluoikeusRow(id: Int,
   mitätöity: Boolean,
   koulutusmuoto: String,
   alkamispäivä: Date,
-  päättymispäivä: Option[Date]
+  päättymispäivä: Option[Date],
+  suoritusjakoTehty: Boolean
 ) {
   def toOpiskeluoikeus: Either[List[ValidationError], KoskeenTallennettavaOpiskeluoikeus] = {
     KoskiTables.OpiskeluoikeusTable.readAsOpiskeluoikeus(data, oid, versionumero, aikaleima)
@@ -287,3 +304,11 @@ case class SuoritusjakoRowV2(secret: String, oppijaOid: String, data: JValue, vo
 case class MyDataJakoRow(asiakas: String, oppijaOid: String, voimassaAsti: Date, aikaleima: Timestamp)
 
 case class OidVersionTimestamp(oid: String, versionumero: Int, aikaleima: LocalDateTime)
+
+case class PoistettuOpiskeluoikeusRow(oid: String,
+                                      oppilaitosNimi: Option[String],
+                                      oppilaitosOid: Option[String],
+                                      päättymispäivä: Option[Date],
+                                      lähdejärjestelmäKoodi: Option[String],
+                                      lähdejärjestelmäId: Option[String],
+                                      aikaleima: Timestamp)

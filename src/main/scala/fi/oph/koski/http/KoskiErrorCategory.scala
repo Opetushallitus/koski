@@ -206,6 +206,8 @@ object KoskiErrorCategory {
     val kiellettyKäyttöoikeus = subcategory("kiellettyKäyttöoikeus", "Ei sallittu näillä käyttöoikeuksilla")
     val liianMontaSuoritusjakoa = subcategory("liianMontaSuoritusjakoa", "Käyttäjällä on jo maksimimäärä suoritusjakoja")
     val forbiddenXRoadHeader = subcategory("vainSallittuKumppani", "X-ROAD-MEMBER:llä ei ole lupaa hakea opiskelijan tietoja")
+    val suostumusPeruttu = subcategory("suostumusPeruttu", "Siirretyn opiskeluoikeuden tallentamisen suostumus on aikaisemmin peruttu. Samaa opiskeluoikeutta ei voi siirtää uudestaan")
+    val opiskeluoikeusEiSopivaSuostumuksenPerumiselle = subcategory("opiskeluoikeusEiSopivaSuostumuksenPerumisele", "OmaData kumppania ei löydy")
   }
 
   object notFound extends ErrorCategory("notFound", 404, "Not found") {

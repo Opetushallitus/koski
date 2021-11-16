@@ -93,6 +93,7 @@ class OpiskeluoikeusValidationSpec extends AnyFreeSpec with Matchers with Opiske
       KoskiApplicationForTests.henkilöRepository,
       KoskiApplicationForTests.ePerusteet,
       KoskiApplicationForTests.validatingAndResolvingExtractor,
+      KoskiApplicationForTests.suostumuksenPeruutusService,
       config
     )
   }

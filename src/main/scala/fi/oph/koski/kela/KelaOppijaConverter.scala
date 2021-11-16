@@ -48,6 +48,8 @@ object KelaOppijaConverter extends Logging {
          _: schema.PerusopetukseenValmistavanOpetuksenOpiskeluoikeus |
          _: schema.PerusopetuksenLisäopetuksenOpiskeluoikeus |
          _: schema.AikuistenPerusopetuksenOpiskeluoikeus => Some(opiskeluoikeus)
+    // Vapaatavoitteisen koulutuksen kohdalla täytyisi ottaa huomioon
+    // suostumuksen peruminen jos Kelalle halutaan antaa tieto ko. suorituksesta.
     case o: schema.VapaanSivistystyönOpiskeluoikeus => {
       val suoritukset = o.suoritukset.collect {
         case s: schema.OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus => s

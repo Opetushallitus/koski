@@ -70,6 +70,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
 
 const OpiskeluoikeudenTiedot = ({opiskeluoikeus, editLink, alkuChangeBus}) => (
   <div className="opiskeluoikeuden-tiedot">
+
     {editLink}
     {
       modelData(opiskeluoikeus, 'alkamispäivä') && <OpiskeluoikeudenVoimassaoloaika opiskeluoikeus={opiskeluoikeus}/>

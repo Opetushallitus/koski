@@ -18,7 +18,9 @@ import Text from '../i18n/Text'
 import {Editor} from '../editor/Editor'
 import {suorituksenTyyppi, suoritusTitle} from '../suoritus/Suoritus'
 import {focusWithoutScrolling} from '../util/util'
-
+import {SuostumuksenPeruutusPopup} from './SuostumuksenPeruutusPopup'
+import Atom from 'bacon.atom'
+import Http from '../util/http'
 
 export class OmatTiedotOpiskeluoikeus extends React.Component {
   componentDidMount() {
@@ -30,8 +32,15 @@ export class OmatTiedotOpiskeluoikeus extends React.Component {
     const mdl = addContext(model, {opiskeluoikeus: model})
     const isSyntheticOpiskeluoikeus = !!modelData(mdl, 'synteettinen')
 
+    const suostumusPeruutettavaaTyyppiä = modelLookup(mdl, 'suoritukset.0')
+      ? modelLookup(mdl, 'suoritukset.0').value.classes.includes('suostumusperuttavissaopiskeluoikeudelta')
+        ? true
+        : false
+      : false
+
     return (
-      <div className="opiskeluoikeus">
+      <div className='opiskeluoikeus'>
+        {suostumusPeruutettavaaTyyppiä && <OpiskeluoikeudenSuostumuksenPeruminen opiskeluoikeus={mdl}/>}
         <div className='opiskeluoikeus-content' ref={elm => this.opiskeluoikeusContent = elm} tabIndex="-1">
           {!isSyntheticOpiskeluoikeus &&
           <OpiskeluoikeudenTiedot
@@ -42,6 +51,47 @@ export class OmatTiedotOpiskeluoikeus extends React.Component {
       </div>
     )
   }
+}
+
+const OpiskeluoikeudenSuostumuksenPeruminen = ({opiskeluoikeus}) => {
+  const peruuttamassaSuostumustaAtom = Atom(false)
+  const suostumuksenPerumisenInfoAtom = Atom(false)
+  const suoritusjakoTehty = Atom(true)
+
+  const opiskeluoikeusOid = modelData(opiskeluoikeus, 'oid')
+  Http.post(`/koski/api/opiskeluoikeus/suostumuksenperuutus/suoritusjakoTehty/${opiskeluoikeusOid}`, {})
+    .onValue((v) => suoritusjakoTehty.modify(() => v.tehty))
+
+  return (
+    <div className='suostumuksen-peruuttaminen'>
+      <b><Text className='bold' name='Tämän opiskeluoikeuden tiedot näytetään antamasi suostumuksen perusteella.'/></b>
+      <span className='infobox'>
+        <span className='info-icon'
+          onClick={() => suostumuksenPerumisenInfoAtom.modify(x => !x)}
+          onMouseEnter={() => suostumuksenPerumisenInfoAtom.modify(() => true)}
+          onMouseLeave={() => suostumuksenPerumisenInfoAtom.modify(() => false)}/>
+      </span>
+      {
+        suoritusjakoTehty.map(v => !v && <a className='peru-suostumus-linkki' onClick={() => peruuttamassaSuostumustaAtom.modify(x => !x)}>{'Peruuta suostumus'}</a>)
+      }
+      {
+        peruuttamassaSuostumustaAtom.map(peruuttamassa => peruuttamassa &&
+          <SuostumuksenPeruutusPopup opiskeluoikeusOid={opiskeluoikeusOid} onDismiss={() => peruuttamassaSuostumustaAtom.modify(x => !x)}/>)
+      }
+      {
+        suostumuksenPerumisenInfoAtom.map(info => info && (
+          <div className={'suostumuksen-perumisen-info modal'} role='dialog' aria-modal={true} aria-describedby='modal-main-content'>
+            <div className='modal-content'>
+              <div className='modal-main-content'>
+                <Text name='tooltip:Suostumuksen selitys'/>
+              </div>
+            </div>
+          </div>
+          )
+        )
+      }
+    </div>
+  )
 }
 
 const OpiskeluoikeudenTiedot = ({opiskeluoikeus}) => {

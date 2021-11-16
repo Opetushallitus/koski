@@ -22,8 +22,9 @@ import slick.dbio.DBIOAction.sequence
 import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.{DBIOAction, NoStream}
 import slick.jdbc.GetResult
-import java.sql.SQLException
-import java.time.LocalDate
+
+import java.sql.{SQLException, Timestamp}
+import java.time.{Instant, LocalDate}
 
 class PostgresOpiskeluoikeusRepository(
   val db: DB,
@@ -139,6 +140,17 @@ class PostgresOpiskeluoikeusRepository(
     } else {
       createOrUpdateWithRetry
     }
+  }
+
+  def merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta(oid: String): HttpStatus = {
+    runDbSync(KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.suoritusjakoTehty).update(true)) match {
+      case 0 => throw new RuntimeException(s"Oppija not found: $oid")
+      case _ => HttpStatus.ok
+    }
+  }
+
+  def suoritusjakoTehtyIlmanKäyttöoikeudenTarkastusta(oid: String): Boolean = {
+    runDbSync(KoskiTables.OpiskeluOikeudet.filter(rivi => rivi.oid === oid && rivi.suoritusjakoTehty === true).result).nonEmpty
   }
 
   private def findByOppijaOidsAction(oids: List[String])(implicit user: KoskiSpecificSession): dbio.DBIOAction[Seq[OpiskeluoikeusRow], NoStream, Read] = {
