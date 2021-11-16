@@ -6,8 +6,8 @@ import fi.oph.koski.koskiuser.{KoskiSpecificAuthenticationSupport, KoskiSpecific
 import fi.oph.koski.log.KoskiAuditLogMessageField.{apply => _}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
-import org.json4s.JsonAST.JString
-import org.json4s.{JField, JObject}
+import org.json4s.JsonAST.{JBool, JObject, JString}
+import org.json4s.{JField}
 
 class SuostumuksenPeruutusServlet(implicit val application: KoskiApplication)
   extends KoskiSpecificApiServlet with KoskiSpecificAuthenticationSupport with Logging with NoCache {
@@ -21,11 +21,13 @@ class SuostumuksenPeruutusServlet(implicit val application: KoskiApplication)
     )
   }
 
-  post("/suoritusjakoTekemättä/:oid") {
+  post("/suoritusjakoTehty/:oid") {
     requireKansalainen
-    renderStatus(
-      application.suostumuksenPeruutusService.suoritusjakoTekemättäWithAccessCheck(getStringParam("oid"))(session)
-    )
+    if (application.suostumuksenPeruutusService.suoritusjakoTekemättäWithAccessCheck(getStringParam("oid"))(session).isOk) {
+      renderObject(JObject("tehty" -> JBool(false)))
+    } else {
+      renderObject(JObject("tehty" -> JBool(true)))
+    }
   }
 
   get("/") {

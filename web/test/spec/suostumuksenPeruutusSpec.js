@@ -52,7 +52,7 @@ describe('Suostumuksen peruutus', function () {
     })
   })
 
-  describe('Koulutuksen suostumuksen voi perua', function () {
+  describe('Koulutuksen suostumusta ei voi perua', function () {
     describe('Kun opiskeluoikeus ei ole peruttavaa tyyppiä', function () {
       before(authentication.login(),
         resetFixtures,

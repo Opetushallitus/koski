@@ -20,6 +20,7 @@ import {suorituksenTyyppi, suoritusTitle} from '../suoritus/Suoritus'
 import {focusWithoutScrolling} from '../util/util'
 import {SuostumuksenPeruutusPopup} from './SuostumuksenPeruutusPopup'
 import Atom from 'bacon.atom'
+import Http from '../util/http'
 
 export class OmatTiedotOpiskeluoikeus extends React.Component {
   componentDidMount() {
@@ -55,14 +56,11 @@ export class OmatTiedotOpiskeluoikeus extends React.Component {
 const OpiskeluoikeudenSuostumuksenPeruminen = ({opiskeluoikeus}) => {
   const peruuttamassaSuostumustaAtom = Atom(false)
   const suostumuksenPerumisenInfoAtom = Atom(false)
-  const suoritusjakoTekemättä = Atom(false)
+  const suoritusjakoTehty = Atom(true)
 
   const opiskeluoikeusOid = modelData(opiskeluoikeus, 'oid')
-  fetch(`/koski/api/opiskeluoikeus/suostumuksenperuutus/suoritusjakoTekemättä/${opiskeluoikeusOid}`, {
-    method: 'POST'
-  }).then(res => {
-    res.status == 200 ? suoritusjakoTekemättä.modify(() => true) : suoritusjakoTekemättä.modify(() => false)
-  })
+  Http.post(`/koski/api/opiskeluoikeus/suostumuksenperuutus/suoritusjakoTehty/${opiskeluoikeusOid}`, {})
+    .onValue((v) => suoritusjakoTehty.modify(() => v.tehty))
 
   return (
     <div className='suostumuksen-peruuttaminen'>
@@ -74,7 +72,7 @@ const OpiskeluoikeudenSuostumuksenPeruminen = ({opiskeluoikeus}) => {
           onMouseLeave={() => suostumuksenPerumisenInfoAtom.modify(() => false)}/>
       </span>
       {
-        suoritusjakoTekemättä.map(v => v && <a className='peru-suostumus-linkki' onClick={() => peruuttamassaSuostumustaAtom.modify(x => !x)}>{'Peruuta suostumus'}</a>)
+        suoritusjakoTehty.map(v => !v && <a className='peru-suostumus-linkki' onClick={() => peruuttamassaSuostumustaAtom.modify(x => !x)}>{'Peruuta suostumus'}</a>)
       }
       {
         peruuttamassaSuostumustaAtom.map(peruuttamassa => peruuttamassa &&
