@@ -1,8 +1,10 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.documentation.{ExampleData, LukioExampleData}
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesIB._
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema._
 import org.scalatest.freespec.AnyFreeSpec
@@ -96,6 +98,24 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
         putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = tila)) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta valmistunut puuttuu rahoitusmuoto"))
         }
+      }
+    }
+
+    "Maksuttomuustieto sallitaan" - {
+      "Arvosana S" - {
+        "Palautetaan HTTP/200" in {
+          val opiskeluoikeus = opiskeluoikeusIBTutkinnollaWithCASArvosana("S").copy(
+            lisätiedot = Some(LukionOpiskeluoikeudenLisätiedot(maksuttomuus = Some(List(Maksuttomuus(alku = date(2021, 8, 1) , loppu = None, maksuton = true))))),
+              tila = LukionOpiskeluoikeudenTila(
+              List(
+                LukionOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)),
+                LukionOpiskeluoikeusjakso(date(2022, 6, 4), LukioExampleData.opiskeluoikeusPäättynyt, Some(ExampleData.valtionosuusRahoitteinen))
+              )
+            )
+          )
+          putOpiskeluoikeus(opiskeluoikeus, henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+            verifyResponseStatusOk()
+          }}
       }
     }
   }
