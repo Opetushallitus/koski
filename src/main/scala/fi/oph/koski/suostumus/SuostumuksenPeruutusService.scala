@@ -100,7 +100,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
   }
 
   private def suoritusjakoTehty(oo: Opiskeluoikeus) = {
-    opiskeluoikeusRepository.suoritusjakoTehty(oo.oid.get)
+    opiskeluoikeusRepository.suoritusjakoTehtyIlmanKäyttöoikeudenTarkastusta(oo.oid.get)
   }
 
   // Kutsutaan vain fixtureita resetoitaessa

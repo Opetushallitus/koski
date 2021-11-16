@@ -142,14 +142,14 @@ class PostgresOpiskeluoikeusRepository(
     }
   }
 
-  def merkitseSuoritusjakoTehdyksi(oid: String)(implicit user: KoskiSpecificSession): HttpStatus = {
+  def merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta(oid: String): HttpStatus = {
     runDbSync(KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.suoritusjakoTehty).update(true)) match {
       case 0 => throw new RuntimeException(s"Oppija not found: $oid")
       case _ => HttpStatus.ok
     }
   }
 
-  def suoritusjakoTehty(oid: String): Boolean = {
+  def suoritusjakoTehtyIlmanKäyttöoikeudenTarkastusta(oid: String): Boolean = {
     runDbSync(KoskiTables.OpiskeluOikeudet.filter(rivi => rivi.oid === oid && rivi.suoritusjakoTehty === true).result).nonEmpty
   }
 

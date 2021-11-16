@@ -25,7 +25,7 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
         // Kaikkia opiskeluoikeuksia ei talleteta Koskeen, jolloin niillä ei välttämättä ole oidia.
         // Ei yritetä merkata sellaisille opiskeluoikeuksille suoritusjakoa tehdyksi.
         opiskeluoikeudet.map(_.oid match {
-          case Some(oid) if suoritusjako.isRight => oppijaFacade.merkitseSuoritusjakoTehdyksi(oid)
+          case Some(oid) if suoritusjako.isRight => oppijaFacade.merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta(oid)
           case _ =>
         })
         suoritusjako

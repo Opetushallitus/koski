@@ -103,9 +103,9 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
   def getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, List[Oid]] =
     main.getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid)
 
-  def merkitseSuoritusjakoTehdyksi(opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession) =
-    main.merkitseSuoritusjakoTehdyksi(opiskeluoikeusOid)
+  def merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta(opiskeluoikeusOid: String) =
+    main.merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta(opiskeluoikeusOid)
 
-  def suoritusjakoTehty(opiskeluoikeusOid: String): Boolean =
-    main.suoritusjakoTehty(opiskeluoikeusOid)
+  def suoritusjakoTehtyIlmanKäyttöoikeudenTarkastusta(opiskeluoikeusOid: String): Boolean =
+    main.suoritusjakoTehtyIlmanKäyttöoikeudenTarkastusta(opiskeluoikeusOid)
 }

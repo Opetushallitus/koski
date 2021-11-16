@@ -366,8 +366,8 @@ class KoskiOppijaFacade(
 
   private lazy val mitätöity = Koodistokoodiviite("mitatoity", koodistoUri = "koskiopiskeluoikeudentila")
 
-  def merkitseSuoritusjakoTehdyksi(opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession): HttpStatus = {
-    opiskeluoikeusRepository.merkitseSuoritusjakoTehdyksi(opiskeluoikeusOid)
+  def merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta(opiskeluoikeusOid: String): HttpStatus = {
+    opiskeluoikeusRepository.merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta(opiskeluoikeusOid)
   }
 }
 
