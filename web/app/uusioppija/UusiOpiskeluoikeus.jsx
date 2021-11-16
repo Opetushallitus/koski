@@ -186,10 +186,10 @@ const Oppilaitos = ({showVarhaiskasvatusToimipisteetP, oppilaitosAtom, organisaa
   </label>)
 }
 
-const Suorituskieli = ({suorituskieliAtom, suorituskieletP}) => <KoodistoDropdown className="suorituskieli" title="Suorituskieli" selected={suorituskieliAtom} options={suorituskieletP}/>
+const Suorituskieli = ({suorituskieliAtom, suorituskieletP}) => <KoodistoDropdown className="suorituskieli" title={t('Suorituskieli')} selected={suorituskieliAtom} options={suorituskieletP}/>
 const OpiskeluoikeudenTyyppi = ({opiskeluoikeudenTyyppiAtom, opiskeluoikeustyypitP}) => (<KoodistoDropdown
   className="opiskeluoikeudentyyppi"
-  title="Opiskeluoikeus"
+  title={t('Opiskeluoikeus')}
   options={opiskeluoikeustyypitP}
   selected={opiskeluoikeudenTyyppiAtom}
 />)
@@ -203,7 +203,7 @@ const Aloituspäivä = ({dateAtom}) => {
 const OpiskeluoikeudenTila = ({tilaAtom, opiskeluoikeudenTilatP}) => {
   return (<KoodistoDropdown
     className="opiskeluoikeudentila"
-    title="Opiskeluoikeuden tila"
+    title={t('Opiskeluoikeuden tila')}
     options={opiskeluoikeudenTilatP}
     selected={tilaAtom}/>)
 }
