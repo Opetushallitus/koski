@@ -16,7 +16,7 @@ case class PreIBSuoritus2015(
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("preiboppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("preiboppimaara", koodistoUri = "suorituksentyyppi")
-) extends IBPäätasonSuoritus
+) extends IBPäätasonSuoritus with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
 
 @Title("Pre-IB-koulutus")
 @Description("Pre-IB-koulutuksen tunnistetiedot")
