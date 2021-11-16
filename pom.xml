@@ -325,12 +325,12 @@
       <version>${scalatra.version}</version>
       <scope>test</scope>
     </dependency>
-      <dependency>
-          <groupId>org.seleniumhq.selenium</groupId>
-          <artifactId>selenium-api</artifactId>
-          <version>3.141.59</version>
-          <scope>test</scope>
-      </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-api</artifactId>
+      <version>3.141.59</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.scalamock</groupId>
       <artifactId>scalamock_2.12</artifactId>
@@ -580,7 +580,9 @@
   <profiles>
     <profile>
       <id>default</id>
-      <activation><activeByDefault>true</activeByDefault></activation>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -787,9 +789,6 @@
           <plugin>
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest-maven-plugin</artifactId>
-            <configuration>
-              <wildcardSuites>fi.oph.koski.valpas.jest</wildcardSuites>
-            </configuration>
           </plugin>
         </plugins>
       </build>

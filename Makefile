@@ -144,9 +144,13 @@ reset-raportointikanta:
 
 ### Valpas
 
-.PHONY: valpas-fronttest
-valpas-fronttest:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pvalpasfronttest
+.PHONY: valpas-fronttest-1
+valpas-fronttest-1:
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec1"
+
+.PHONY: valpas-fronttest-2
+valpas-fronttest-2:
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec2"
 
 ### Dist
 
