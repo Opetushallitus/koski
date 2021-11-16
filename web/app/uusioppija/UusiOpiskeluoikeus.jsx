@@ -176,7 +176,7 @@ const Oppilaitos = ({showVarhaiskasvatusToimipisteetP, oppilaitosAtom, organisaa
             }}
             shouldShowOrg={org => !org.organisaatiotyypit.some(tyyppi => tyyppi === 'TOIMIPISTE')}
             canSelectOrg={(org) => org.organisaatiotyypit.some(ot => selectableOrgTypes.includes(ot))}
-            clearText="tyhjennä"
+            clearText={t('tyhjennä')}
             noSelectionText="Valitse..."
             orgTypesToShow={show ? 'vainVarhaiskasvatusToimipisteet' : 'vainOmatOrganisaatiot'}
           />
