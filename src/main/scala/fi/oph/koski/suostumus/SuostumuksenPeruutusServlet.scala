@@ -37,7 +37,9 @@ class SuostumuksenPeruutusServlet(implicit val application: KoskiApplication)
           JObject(
             JField("Opiskeluoikeuden oid", JString(peruttuOo.oid)),
             JField("Opiskeluoikeuden päättymispäivä", JString(peruttuOo.päättymispäivä.getOrElse("").toString)),
-            JField("Suostumus peruttu", JString(peruttuOo.aikaleima.toString))
+            JField("Suostumus peruttu", JString(peruttuOo.aikaleima.toString)),
+            JField("Oppilaitoksesn oid", JString(peruttuOo.oppilaitosOid.toString)),
+            JField("Oppilaitoksen nimi", JString(peruttuOo.oppilaitosNimi.toString)),
           )
         )
       )
