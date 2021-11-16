@@ -5,6 +5,7 @@ import Peruste from './Peruste'
 import Suoritustyyppi from './Suoritustyyppi'
 import {koodistoValues} from './koodisto'
 import {ift} from '../util/util'
+import {t} from '../i18n/i18n'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const suoritustyyppiAtom = Atom()
@@ -17,7 +18,7 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
 
   return (
     <div>
-      <Suoritustyyppi suoritustyyppiAtom={suoritustyyppiAtom} suoritustyypitP={suoritustyypitP} title="Suoritustyyppi"/>
+      <Suoritustyyppi suoritustyyppiAtom={suoritustyyppiAtom} suoritustyypitP={suoritustyypitP} title={t('Suoritustyyppi')}/>
       {ift(suoritustyyppiAtom,
         <Peruste {...{suoritusTyyppiP: suoritustyyppiAtom, perusteAtom}} />
       )}
