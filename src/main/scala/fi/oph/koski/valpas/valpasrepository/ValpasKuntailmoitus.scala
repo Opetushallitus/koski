@@ -62,15 +62,20 @@ case class ValpasKuntailmoitusSuppeatTiedot(
   // tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa.
   hakenutMuualle: Option[Boolean],
   // Option, koska relevantti kenttä vain haettaessa ilmoituksia tietylle kunnalle
-  onUudempiaIlmoituksiaMuihinKuntiin: Option[Boolean]
+  onUudempiaIlmoituksiaMuihinKuntiin: Option[Boolean],
+  aktiivinen: Option[Boolean],
 ) extends ValpasKuntailmoitus
 
 object ValpasKuntailmoitusSuppeatTiedot {
   def apply(laajatTiedot: ValpasKuntailmoitusLaajatTiedotLisätiedoilla): ValpasKuntailmoitusSuppeatTiedot = {
-    ValpasKuntailmoitusSuppeatTiedot(laajatTiedot.kuntailmoitus)
+    ValpasKuntailmoitusSuppeatTiedot(laajatTiedot.kuntailmoitus, Some(laajatTiedot.aktiivinen))
   }
 
   def apply(laajatTiedot: ValpasKuntailmoitusLaajatTiedot): ValpasKuntailmoitusSuppeatTiedot = {
+    ValpasKuntailmoitusSuppeatTiedot(laajatTiedot, None)
+  }
+
+  def apply(laajatTiedot: ValpasKuntailmoitusLaajatTiedot, aktiivinen: Option[Boolean]): ValpasKuntailmoitusSuppeatTiedot = {
     ValpasKuntailmoitusSuppeatTiedot(
       id = laajatTiedot.id,
       tekijä = ValpasKuntailmoituksenTekijäSuppeatTiedot(laajatTiedot.tekijä),
@@ -78,6 +83,7 @@ object ValpasKuntailmoitusSuppeatTiedot {
       aikaleima = laajatTiedot.aikaleima,
       hakenutMuualle = laajatTiedot.hakenutMuualle,
       onUudempiaIlmoituksiaMuihinKuntiin = laajatTiedot.onUudempiaIlmoituksiaMuihinKuntiin,
+      aktiivinen = aktiivinen,
     )
   }
 }
