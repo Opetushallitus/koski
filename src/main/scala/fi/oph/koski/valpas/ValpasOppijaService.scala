@@ -575,25 +575,32 @@ class ValpasOppijaService(
   )(
     kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot]
   ): Seq[ValpasKuntailmoitusLaajatTiedotLisätiedoilla] = {
-    kuntailmoitukset.zipWithIndex.map(kuntailmoitusWithIndex => {
-      val aktiivinen = kuntailmoitusWithIndex match {
-
-        // Alle 2 kk vanha ilmoitus on aina aktiivinen
-        case (kuntailmoitus, 0) if !rajapäivätService.tarkastelupäivä.isAfter(
-          kuntailmoitus.aikaleima.get.toLocalDate.plusMonths(rajapäivätService.kuntailmoitusAktiivisuusKuukausina)
-        ) => true
-
-        // Jos yli 2 kk, ilmoitus on aktiivinen,
-        // jos mikään ov-suorittamiseen kelpaava opiskeluoikeus ei ole voimassa
-        case (kuntailmoitus, 0) =>
+    kuntailmoitukset.zipWithIndex.map { case (kuntailmoitus, index) =>
+      val ilmoituksentekopäivä = kuntailmoitus.aikaleima.get.toLocalDate
+      val aktiivinen = {
+        // 1. Ei uusin kuntailmoitus oppijasta --> passiivinen
+        if (index > 0) {
+          false
+        }
+        // 2. Voimassaoleva ovl-kelpoinen opiskeluoikeus alkanut kuntailmoituksen tekemisen jälkeen --> passiivinen
+        else if (oppija.opiskeluoikeudet.exists(oo => oo.isOpiskelu && oo.alkamispäivä.exists(_.isAfter(ilmoituksentekopäivä)))) {
+          false
+        }
+        // 3. Ilmoituksen teosta alle 2kk (vaikka olisikin voimassaoleva opiskeluoikeus) --> aktiivinen
+        // Tällä säännöllä napataan kiinni tilanteet, joissa Valppaan ja Kosken tiedot opiskeluoikeuden voimassaolosta eivät ole
+        // synkassa tai oppijasta on tehty ilmoitus, mutta oppijan eroamisen merkitseminen on jäänyt tekemättä
+        // ja sen takia olisi vaara että kuntailmoitus hautautuisi käyttöliittymässä.
+        else if (!rajapäivätService.tarkastelupäivä.isAfter(ilmoituksentekopäivä.plusMonths(rajapäivätService.kuntailmoitusAktiivisuusKuukausina))) {
+          true
+        }
+        // 4. Aktiivinen jos oppijalla ei ole oppivelvollisuuden suorittamiseen kelpaavaa opiskeluoikeutta
+        else {
           oppija.opiskeluoikeudet.forall(oo => !oo.isOpiskelu)
-
-        // Muut kuin uusin ilmoitus ovat aina ei-aktiivisia
-        case (kuntailmoitus, _) => false
+        }
       }
 
-      ValpasKuntailmoitusLaajatTiedotLisätiedoilla(kuntailmoitusWithIndex._1, aktiivinen)
-    })
+      ValpasKuntailmoitusLaajatTiedotLisätiedoilla(kuntailmoitus, aktiivinen)
+    }
   }
 
   private def fetchOppivelvollisuudenKeskeytykset(

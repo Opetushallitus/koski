@@ -706,7 +706,7 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
     validateKuntailmoitukset(oppija, Seq(expectedIlmoitus))
   }
 
-  "kuntailmoitukset: aktiivinen jos on ilmoituksen tekemisen jälkeen alkanut ov-suorittamiseen kelpaava opiskeluoikeus ja on kulunut 2 kk tai alle" in {
+  "kuntailmoitukset: passiivinen jos on ilmoituksen tekemisen jälkeen alkanut ov-suorittamiseen kelpaava opiskeluoikeus ja on kulunut 2 kk tai alle" in {
     val ilmoituksenTekopäivä = date(2021,7,15)
     val tarkastelupäivä = ilmoituksenTekopäivä.plusMonths(rajapäivätService.kuntailmoitusAktiivisuusKuukausina)
 
@@ -723,7 +723,7 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
 
     val expectedIlmoitus = ValpasKuntailmoitusLaajatTiedotLisätiedoilla(
       täydennäAikaleimallaJaOrganisaatiotiedoilla(ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla, ilmoituksenTekopäivä.atStartOfDay),
-      true
+      false
     )
 
     validateKuntailmoitukset(oppija, Seq(expectedIlmoitus))
