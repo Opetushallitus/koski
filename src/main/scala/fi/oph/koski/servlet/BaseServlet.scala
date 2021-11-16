@@ -75,8 +75,10 @@ trait BaseServlet extends ScalatraServlet with Logging {
       renderHtml(e)
     case e: Throwable =>
       haltWithInternalError(e)
-    case x: AnyRef =>
-      renderObject(x)
+    case s: String =>
+      haltWithInternalError(new RuntimeException(s"Unexpected string returned to render pipeline: $s"))
+    case o: Any =>
+      haltWithInternalError(new RuntimeException(s"Unexpected object returned to render pipeline: ${o.toString}"))
   }: RenderPipeline) orElse super.renderPipeline
 
   private def haltWithInternalError(e: Throwable): Nothing = {

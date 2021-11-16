@@ -43,15 +43,14 @@ trait ValpasOppijaServiceTestBase extends ValpasTestBase {
 
   protected def validateKunnanIlmoitetutOppijat(
     organisaatioOid: Oid,
-    aktiiviset: Boolean,
     user: ValpasMockUser
   )(expectedOppijat: Seq[LaajatOppijaHenkilöTiedot]) = {
-    val result = getKunnanIlmoitetutOppijat(organisaatioOid, aktiiviset, user)
+    val result = getKunnanIlmoitetutOppijat(organisaatioOid, user)
     result.map(_.map(_.oppija.henkilö.oid).sorted) shouldBe Right(expectedOppijat.map(_.oid).sorted)
   }
 
-  private def getKunnanIlmoitetutOppijat(organisaatioOid: Oid, aktiiviset: Boolean, user: ValpasMockUser) = {
-    oppijaService.getKunnanOppijatSuppeatTiedot(organisaatioOid, aktiiviset)(session(user))
+  private def getKunnanIlmoitetutOppijat(organisaatioOid: Oid, user: ValpasMockUser) = {
+    oppijaService.getKunnanOppijatSuppeatTiedot(organisaatioOid)(session(user))
   }
 
   protected def canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(oppija: LaajatOppijaHenkilöTiedot, user: ValpasMockUser): Boolean =

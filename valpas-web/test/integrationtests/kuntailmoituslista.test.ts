@@ -58,7 +58,7 @@ describe("Kunnan listanäkymä", () => {
         kuntailmoitusPathWithOrg.href("/virkailija", helsinginKaupunkiOid)
       )
     )
-    await textEventuallyEquals(".card__header", ilmoitustitle(1, 0))
+    await textEventuallyEquals(".card__header", ilmoitustitle(1, 1))
     await dataTableEventuallyEquals(
       ".kuntailmoitus",
       hkiTableContent_20211201,
@@ -75,13 +75,13 @@ describe("Kunnan listanäkymä", () => {
         kuntailmoitusPathWithOrg.href("/virkailija", helsinginKaupunkiOid)
       )
     )
-    await textEventuallyEquals(".card__header", ilmoitustitle(0, 1))
+    await textEventuallyEquals(".card__header", ilmoitustitle(0, 2))
 
     await selectOrganisaatio(1)
     await urlIsEventually(
       pathToUrl(kuntailmoitusPathWithOrg.href("/virkailija", pyhtäänKuntaOid))
     )
-    await textEventuallyEquals(".card__header", ilmoitustitle(4, 3))
+    await textEventuallyEquals(".card__header", ilmoitustitle(4, 6))
   })
 
   it("Käyminen oppijakohtaisessa näkymässä ei hukkaa valittua organisaatiota", async () => {
@@ -131,7 +131,7 @@ describe("Kunnan listanäkymä", () => {
       pathToUrl(kuntailmoitusPathWithOrg.href("/virkailija", pyhtäänKuntaOid))
     )
 
-    await textEventuallyEquals(".card__header", ilmoitustitle(4, 3))
+    await textEventuallyEquals(".card__header", ilmoitustitle(4, 6))
     await dataTableEventuallyEquals(".kuntailmoitus", pyhtääTableContent, "|")
 
     await clickElement('[data-testid="arkistoidutcb"]')
