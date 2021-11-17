@@ -10,11 +10,6 @@ import java.time.{LocalDate, LocalDateTime}
 import org.json4s.JValue
 import fi.oph.scalaschema.{AnyOfSchema, ClassSchema, SchemaToJson}
 
-object ValpasInternalSchema {
-  lazy val laajaSchemaJson: JValue = SchemaToJson.toJsonSchema(KoskiSchema.createSchema(classOf[ValpasOppijaLaajatTiedot]).asInstanceOf[ClassSchema])
-  lazy val suppeaSchemaJson: JValue = SchemaToJson.toJsonSchema(KoskiSchema.createSchema(classOf[ValpasOppijaSuppeatTiedot]).asInstanceOf[ClassSchema])
-}
-
 trait ValpasOppija {
   def henkilö: ValpasHenkilö
 

@@ -8,9 +8,9 @@ import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.migri.MigriSchema
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
+import fi.oph.koski.valpas.ValpasInternalSchema
 import fi.oph.koski.valvira.ValviraSchema
 import fi.oph.koski.valpas.kela.ValpasKelaSchema
-import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasInternalSchema
 
 import scala.reflect.runtime.{universe => ru}
 
@@ -60,6 +60,10 @@ class DocumentationApiServlet extends KoskiSpecificApiServlet with Unauthenticat
 
   get("/valpas-internal-suppea-schema.json") {
     ValpasInternalSchema.suppeaSchemaJson
+  }
+
+  get("/valpas-internal-kunta-suppea-schema.json") {
+    ValpasInternalSchema.kuntaSuppeaSchemaJson
   }
 
   get("/migri-oppija-schema.json") {
