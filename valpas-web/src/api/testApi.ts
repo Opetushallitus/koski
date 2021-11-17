@@ -1,4 +1,5 @@
 import { ISODate } from "../state/common"
+import { queryPath } from "../state/paths"
 import { apiGet } from "./apiFetch"
 
 export type FixtureState = {
@@ -9,9 +10,17 @@ export type FixtureState = {
 export const resetMockData = () =>
   apiGet<FixtureState>("valpas/test/reset-mock-data")
 
-export const resetMockDataToDate = (tarkastelupäivä: string) => () =>
+export const resetMockDataToDate = (
+  tarkastelupäivä: string,
+  force: boolean
+) => () =>
   apiGet<FixtureState>(
-    "valpas/test/reset-mock-data/" + (tarkastelupäivä || "2021-09-01")
+    queryPath(
+      "valpas/test/reset-mock-data/" + (tarkastelupäivä || "2021-09-01"),
+      {
+        force: force ? "true" : null,
+      }
+    )
   )
 
 export const clearMockData = () =>

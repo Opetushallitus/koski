@@ -10,12 +10,12 @@ import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätServic
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 
 class StatefulFixtureUtil(application: KoskiApplication) {
-  def resetMockData(tarkastelupäivä: LocalDate = DefaultTarkastelupäivä): FixtureState = {
+  def resetMockData(tarkastelupäivä: LocalDate = DefaultTarkastelupäivä, force: Boolean = false): FixtureState = {
     val state = FixtureState(application)
     FixtureUtil.resetMockData(
       application,
       tarkastelupäivä,
-      resetKoskiFixtures = state.requiresFullResetFor(tarkastelupäivä)
+      resetKoskiFixtures = force || state.requiresFullResetFor(tarkastelupäivä)
     )
   }
 

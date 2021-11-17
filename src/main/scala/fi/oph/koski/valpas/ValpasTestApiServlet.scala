@@ -23,11 +23,13 @@ class ValpasTestApiServlet(implicit val application: KoskiApplication) extends V
 
   get("/reset-mock-data/:paiva") {
     val tarkastelupäivä = getLocalDateParam("paiva")
-    fixtureReset.resetMockData(tarkastelupäivä)
+    val force = getOptionalStringParam("force").isDefined
+    fixtureReset.resetMockData(tarkastelupäivä, force)
   }
 
   get("/reset-mock-data") {
-    fixtureReset.resetMockData()
+    val force = getOptionalStringParam("force").isDefined
+    fixtureReset.resetMockData(force = force)
   }
 
   get("/clear-mock-data") {
