@@ -2,11 +2,18 @@ package fi.oph.koski.valpas.opiskeluoikeusrepository
 
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema.annotation.KoodistoUri
-import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, Maksuttomuus, OikeuttaMaksuttomuuteenPidennetty}
+import fi.oph.koski.schema.{Koodistokoodiviite, KoskiSchema, LocalizedString, Maksuttomuus, OikeuttaMaksuttomuuteenPidennetty}
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, Hakutoive, Harkinnanvaraisuus, Valintatila, Vastaanottotieto}
 import fi.oph.scalaschema.annotation.SyntheticProperty
-
 import java.time.{LocalDate, LocalDateTime}
+
+import org.json4s.JValue
+import fi.oph.scalaschema.{AnyOfSchema, ClassSchema, SchemaToJson}
+
+object ValpasInternalSchema {
+  lazy val laajaSchemaJson: JValue = SchemaToJson.toJsonSchema(KoskiSchema.createSchema(classOf[ValpasOppijaLaajatTiedot]).asInstanceOf[ClassSchema])
+  lazy val suppeaSchemaJson: JValue = SchemaToJson.toJsonSchema(KoskiSchema.createSchema(classOf[ValpasOppijaSuppeatTiedot]).asInstanceOf[ClassSchema])
+}
 
 trait ValpasOppija {
   def henkilö: ValpasHenkilö
