@@ -131,6 +131,17 @@ trait ValpasOpiskeluoikeus {
       case _ => päätasonSuoritukset.headOption
     }
   }
+
+  def alkamispäivä: Option[LocalDate] = {
+    Seq(
+      perusopetusTiedot.flatMap(_.alkamispäivä),
+      perusopetuksenJälkeinenTiedot.flatMap(_.alkamispäivä),
+    )
+      .flatten
+      .sorted
+      .headOption
+      .map(LocalDate.parse)
+  }
 }
 
 case class ValpasOpiskeluoikeusLaajatTiedot(
