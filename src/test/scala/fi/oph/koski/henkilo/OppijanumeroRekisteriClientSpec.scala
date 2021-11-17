@@ -309,6 +309,12 @@ class OppijanumeroRekisteriClientSpec
       result should contain only (oid)
     }
 
+    "palauttaa sivutetut oppijat syntymäajan ja kotikunnan perusteella" in {
+      // Helsinki 091
+      val result = Http.runIO(mockClient.findByVarhaisinSyntymäaikaAndKotikunta("2005-01-01", "091", 1))
+      result.results should be(Seq.empty)
+    }
+
     "palauttaa oppijahenkilön tiedot hetun perusteella" in {
       val result = Http.runIO(mockClient.findOppijaByHetu(hetu))
       result.value should equal(expectedLaajatOppijaHenkilötiedot)
@@ -386,6 +392,7 @@ class OppijanumeroRekisteriClientSpec
     val oidUrl = s"/oppijanumerorekisteri-service/henkilo/${oid}"
     val masterOidUrl = s"/oppijanumerorekisteri-service/henkilo/${oid}/master"
     val changedSinceUrl = "/oppijanumerorekisteri-service/s2s/changedSince/([1-9]*)"
+    val listUrl = "/oppijanumerorekisteri-service/s2s/henkilo/list/091/2005-01-01"
     val perustiedotUrl = "/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList"
     val yhteystiedotUrl = "/oppijanumerorekisteri-service/s2s/henkilo/yhteystiedot"
     val slaveOidsUrl = s"/oppijanumerorekisteri-service/henkilo/${oid}/slaves"
@@ -421,6 +428,20 @@ class OppijanumeroRekisteriClientSpec
     wireMockServer.stubFor(
       WireMock.get(urlPathMatching(changedSinceUrl))
         .willReturn(ok().withBody(write(List(oid)))))
+
+    wireMockServer.stubFor(
+      WireMock.get(urlPathMatching(listUrl))
+        .willReturn(ok().withBody(write(
+          OppijaNumerorekisteriKuntarouhintatiedot(
+            first = true,
+            last = true,
+            number = 1,
+            numberOfElements = 0,
+            size = 10,
+            results = Seq.empty
+          )
+        )))
+    )
 
     wireMockServer.stubFor(
       WireMock.post(urlPathEqualTo(perustiedotUrl))

@@ -27,6 +27,7 @@ export type RouhintaOppivelvollinen = {
   hetu?: string
   viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus?: RouhintaOpiskeluoikeus
   oppivelvollisuudenKeskeytys: OppivelvollisuudenKeskeytys[]
+  vainOppijanumerorekisterissä: boolean
 }
 
 export type RouhintaOpiskeluoikeus = {
