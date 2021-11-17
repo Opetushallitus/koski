@@ -5,6 +5,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.RaportointiDatabaseConfig
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
+import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import org.apache.log4j.LogManager
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler}
@@ -38,7 +39,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     // Ensure that nobody uses koskiSession implicitely
     implicit val systemUser = KoskiSpecificSession.systemUser
     MitätöityOpiskeluoikeusLoader.load(application.opiskeluoikeusQueryRepository, systemUser, db).concatEager(
-      OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, systemUser, db)
+      OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, systemUser, db, rajapäivät = application.valpasRajapäivätService)
     )
   }
 

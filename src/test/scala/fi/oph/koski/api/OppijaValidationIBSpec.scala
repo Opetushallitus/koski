@@ -101,12 +101,27 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
       }
     }
 
-    "Maksuttomuustieto sallitaan" - {
-      "Arvosana S" - {
+    "Maksuttomuustieto" - {
+      "Kun opiskeluoikeus alkanut 1.8.2021 jälkeen" - {
         "Palautetaan HTTP/200" in {
-          val opiskeluoikeus = opiskeluoikeusIBTutkinnollaWithCASArvosana("S").copy(
+          val opiskeluoikeus = defaultOpiskeluoikeus.copy(
             lisätiedot = Some(LukionOpiskeluoikeudenLisätiedot(maksuttomuus = Some(List(Maksuttomuus(alku = date(2021, 8, 1) , loppu = None, maksuton = true))))),
               tila = LukionOpiskeluoikeudenTila(
+              List(
+                LukionOpiskeluoikeusjakso(date(2021, 8, 1), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)),
+                LukionOpiskeluoikeusjakso(date(2022, 6, 4), LukioExampleData.opiskeluoikeusPäättynyt, Some(ExampleData.valtionosuusRahoitteinen))
+              )
+            )
+          )
+          putOpiskeluoikeus(opiskeluoikeus, henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+            verifyResponseStatusOk()
+          }}
+      }
+      "Kun opiskeluoikeus alkanut ennen 1.8.2021" - {
+        "Palautetaan HTTP/500" in {
+          val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+            lisätiedot = Some(LukionOpiskeluoikeudenLisätiedot(maksuttomuus = Some(List(Maksuttomuus(alku = date(2021, 7, 30) , loppu = None, maksuton = true))))),
+            tila = LukionOpiskeluoikeudenTila(
               List(
                 LukionOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)),
                 LukionOpiskeluoikeusjakso(date(2022, 6, 4), LukioExampleData.opiskeluoikeusPäättynyt, Some(ExampleData.valtionosuusRahoitteinen))
@@ -114,7 +129,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
             )
           )
           putOpiskeluoikeus(opiskeluoikeus, henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
-            verifyResponseStatusOk()
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä koulutus ei siirrettyjen tietojen perusteella kelpaa oppivelvollisuuden suorittamiseen (tarkista, että koulutuskoodi, käytetyn opetussuunnitelman perusteen diaarinumero, suorituksen tyyppi ja/tai suoritustapa ovat oikein)."))
           }}
       }
     }

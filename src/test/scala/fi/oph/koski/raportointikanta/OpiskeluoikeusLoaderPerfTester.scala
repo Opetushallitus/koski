@@ -9,7 +9,7 @@ object OpiskeluoikeusLoaderPerfTester extends App {
 
   def doIt: Unit = {
     implicit val systemUser = KoskiSpecificSession.systemUser
-    val loadResults = OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, systemUser, application.raportointiDatabase)
+    val loadResults = OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, systemUser, application.raportointiDatabase, rajapäivät = application.valpasRajapäivätService)
     loadResults.toBlocking.foreach(lr => println(s"${lr}"))
   }
 
