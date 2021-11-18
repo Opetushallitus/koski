@@ -69,19 +69,19 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     logger.info("Successfully sent start-upload events.")
   }
 
-  def putLoadTimeMetric(): Unit = {
-    (raportointiDatabase.status.startedTime, raportointiDatabase.status.completionTime, raportointiDatabase.status.lastUpdate) match {
-      case (Some(started), Some(completed), Some(lastUpdated)) => {
-        cloudWatchMetrics.putRaportointikantaLoadtime(started, completed, lastUpdated)
+  def putLoadTimeMetric(succeeded: Option[Boolean]): Unit = {
+    (raportointiDatabase.status.startedTime, raportointiDatabase.status.completionTime) match {
+      case (Some(started), Some(completed)) => {
+        cloudWatchMetrics.putRaportointikantaLoadtime(started, completed, succeeded)
         logger.info("Successfully sent load time data to Cloudwatch Metrics.")
       }
-      case _ => logger.info("Cannot put raportointikanta load time metric: load start, end and/or updated time missing (probably never loaded yet?)")
+      case _ => logger.info("Cannot put raportointikanta load time metric: load start or end time missing (probably never loaded yet?)")
     }
   }
 
   private def startLoading(scheduler: Scheduler, onEnd: () => Unit) = {
     logger.info(s"Start loading raportointikanta into ${loadDatabase.schema.name}")
-    putLoadTimeMetric() // To store metric more often, Cloudwatch metric does not support missing data more than 24 hours
+    putLoadTimeMetric(None) // To store metric more often, Cloudwatch metric does not support missing data more than 24 hours
     loadOpiskeluoikeudet(loadDatabase)
       .subscribeOn(scheduler)
       .subscribe(
@@ -92,12 +92,12 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
           try {
             loadRestAndSwap()
             putUploadEvents()
-            putLoadTimeMetric()
+            putLoadTimeMetric(Option(true))
             onEnd()
           } catch {
             case e: Throwable => {
               logger.error(e)(e.toString)
-              putLoadTimeMetric()
+              putLoadTimeMetric(Option(false))
               onEnd()
             }
           }

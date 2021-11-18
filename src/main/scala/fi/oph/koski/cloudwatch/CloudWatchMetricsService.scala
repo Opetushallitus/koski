@@ -20,22 +20,22 @@ object CloudWatchMetricsService {
 }
 
 trait CloudWatchMetricsService {
-  def putRaportointikantaLoadtime(start: Timestamp, end: Timestamp, lastUpdated: Timestamp): Unit
+  def putRaportointikantaLoadtime(start: Timestamp, end: Timestamp, succeeded: Option[Boolean]): Unit
 
   protected def durationInSeconds(start: Timestamp, end: Timestamp): Double = (end.getTime - start.getTime) / 1000.0
 }
 
 class MockCloudWatchMetricsService extends CloudWatchMetricsService with Logging {
-  def putRaportointikantaLoadtime(start: Timestamp, end: Timestamp, lastUpdated: Timestamp): Unit = {
+  def putRaportointikantaLoadtime(start: Timestamp, end: Timestamp, succeeded: Option[Boolean]): Unit = {
     val seconds = durationInSeconds(start, end)
-    logger.debug(s"Mocking cloudwatch metric: raportointikanta loading took $seconds seconds. Last updated : $lastUpdated")
+    logger.debug(s"Mocking cloudwatch metric: raportointikanta loading took $seconds seconds. Succeeded: ${succeeded.getOrElse("None")}")
   }
 }
 
-class AwsCloudWatchMetricsService extends CloudWatchMetricsService {
+class AwsCloudWatchMetricsService extends CloudWatchMetricsService with Logging {
   private val client = CloudWatchClient.builder().build()
 
-  def putRaportointikantaLoadtime(start: Timestamp, end: Timestamp, lastUpdated: Timestamp): Unit = {
+  def putRaportointikantaLoadtime(start: Timestamp, end: Timestamp, succeeded: Option[Boolean]): Unit = {
     val namespace = "RaportointikantaLoader"
 
     val dimensionLoadTime = Dimension.builder()
@@ -52,19 +52,28 @@ class AwsCloudWatchMetricsService extends CloudWatchMetricsService {
 
     client.putMetricData(PutMetricDataRequest.builder().metricData(metricLoadTime).namespace(namespace).build())
 
+    succeeded.map(succeeded =>  {
 
-    val dimensionUpdatedLast = Dimension.builder()
-      .name("UPDATED_LAST")
-      .value("TIME")
-      .build()
+      val dimensionSucceededCounter = Dimension.builder()
+        .name("SUCCEEDED_COUNT")
+        .value("COUNT")
+        .build()
 
-    val metricUpdatedLast = MetricDatum.builder()
-      .metricName("RAPORTOINTIKANTALOADER_UPDATED_LAST")
-      .unit(StandardUnit.SECONDS)
-      .value(durationInSeconds(lastUpdated, new Timestamp(System.currentTimeMillis())))
-      .dimensions(dimensionUpdatedLast)
-      .build()
+      val successCount =  if(succeeded) {
+        1.0
+      } else {
+        0.0
+      }
+      logger.info(s"Sending success counter with value: $successCount")
 
-    client.putMetricData(PutMetricDataRequest.builder().metricData(metricUpdatedLast).namespace(namespace).build())
+      val metricSuccessCount = MetricDatum.builder()
+        .metricName("RAPORTOINTIKANTALOADER_SUCCESS_COUNT")
+        .unit(StandardUnit.COUNT)
+        .value(successCount)
+        .dimensions(dimensionSucceededCounter)
+        .build()
+
+      client.putMetricData(PutMetricDataRequest.builder().metricData(metricSuccessCount).namespace(namespace).build())
+    })
   }
 }
