@@ -189,6 +189,7 @@ object KoskiTables {
 
   class PoistettuOpiskeluoikeusTable(tag: Tag) extends Table[PoistettuOpiskeluoikeusRow] (tag, "poistettu_opiskeluoikeus") {
     val oid = column[String]("oid", O.PrimaryKey)
+    val oppija_oid = column[String]("oppija_oid")
     val oppilaitos_nimi = column[Option[String]]("oppilaitos_nimi")
     val oppilaitos_oid = column[Option[String]]("oppilaitos_oid")
     val päättymispäivä = column[Option[Date]]("paattymispaiva")
@@ -196,7 +197,7 @@ object KoskiTables {
     val lähdejärjestelmäId = column[Option[String]]("lahdejarjestelma_id")
     val aikaleima = column[Timestamp]("aikaleima")
 
-    def * = (oid, oppilaitos_nimi, oppilaitos_oid, päättymispäivä, lähdejärjestelmäKoodi, lähdejärjestelmäId, aikaleima) <> (PoistettuOpiskeluoikeusRow.tupled, PoistettuOpiskeluoikeusRow.unapply)
+    def * = (oid, oppija_oid, oppilaitos_nimi, oppilaitos_oid, päättymispäivä, lähdejärjestelmäKoodi, lähdejärjestelmäId, aikaleima) <> (PoistettuOpiskeluoikeusRow.tupled, PoistettuOpiskeluoikeusRow.unapply)
   }
 
   val Preferences = TableQuery[PreferencesTable]
@@ -306,6 +307,7 @@ case class MyDataJakoRow(asiakas: String, oppijaOid: String, voimassaAsti: Date,
 case class OidVersionTimestamp(oid: String, versionumero: Int, aikaleima: LocalDateTime)
 
 case class PoistettuOpiskeluoikeusRow(oid: String,
+                                      oppijaOid: String,
                                       oppilaitosNimi: Option[String],
                                       oppilaitosOid: Option[String],
                                       päättymispäivä: Option[Date],

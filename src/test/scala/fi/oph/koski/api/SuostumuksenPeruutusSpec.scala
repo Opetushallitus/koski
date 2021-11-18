@@ -21,7 +21,8 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
   override def defaultOpiskeluoikeus: VapaanSivistystyönOpiskeluoikeus = opiskeluoikeusVapaatavoitteinen
 
   val vapaatavoitteinenHetu = KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus.hetu.get
-  val vapaatavoitteinenOpiskeluoikeusOid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus.oid).head.oid.get
+  val vapaatavoitteinenOpiskeluoikeus = getOpiskeluoikeudet(KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus.oid).head
+  val vapaatavoitteinenOpiskeluoikeusOid = vapaatavoitteinenOpiskeluoikeus.oid.get
 
   val teijaHetu= KoskiSpecificMockOppijat.teija.hetu.get
   val teijaOpiskeluoikeusOid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.teija.oid).head.oid.get
@@ -53,8 +54,11 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
 
       get(s"/api/opiskeluoikeus/suostumuksenperuutus", headers = loginHeaders) {
         verifyResponseStatusOk()
+        body should include (KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus.oid)
         body should include (LocalDate.now.toString)
         body should include (vapaatavoitteinenOpiskeluoikeusOid)
+        body should include (vapaatavoitteinenOpiskeluoikeus.oppilaitos.get.oid)
+        body should include (vapaatavoitteinenOpiskeluoikeus.oppilaitos.get.nimi.get.get("fi"))
       }
     }
 

@@ -2,7 +2,7 @@ package fi.oph.koski.suostumus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{KoskiTables, PoistettuOpiskeluoikeusRow, QueryMethods}
-import fi.oph.koski.henkilo.HenkilönTunnisteet
+import fi.oph.koski.henkilo.{HenkilönTunnisteet, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.KoskiOperation.LOGIN
@@ -39,7 +39,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
             val opiskeluoikeudenId = runDbSync(KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.id).result).head
             runDbSync(DBIO.seq(
               opiskeluoikeudenPoistonQuery(oid),
-              poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(oo),
+              poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(oo, henkilö),
               opiskeluoikeudenHistorianPoistonQuery(opiskeluoikeudenId)
             ).transactionally)
             perustiedotIndexer.deleteByIds(List(opiskeluoikeudenId), true)
@@ -61,11 +61,12 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
     KoskiTables.OpiskeluoikeusHistoria.filter(_.opiskeluoikeusId === id).delete
   }
 
-  private def poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(opiskeluoikeus: Opiskeluoikeus): dbio.DBIOAction[Int, NoStream, Write] = {
+  private def poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(opiskeluoikeus: Opiskeluoikeus, oppija: LaajatOppijaHenkilöTiedot): dbio.DBIOAction[Int, NoStream, Write] = {
     val timestamp = Timestamp.from(Instant.now())
 
     KoskiTables.PoistetutOpiskeluoikeudet.insertOrUpdate(PoistettuOpiskeluoikeusRow(
       opiskeluoikeus.oid.get,
+      oppija.oid,
       opiskeluoikeus.oppilaitos.map(_.nimi.map(_.get("fi"))).flatten,
       opiskeluoikeus.oppilaitos.map(_.oid),
       opiskeluoikeus.päättymispäivä.map(Date.valueOf),
