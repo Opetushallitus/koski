@@ -43,6 +43,7 @@ export default ({ user }: LocalRaamitProps) => {
 
 const TestApiButtons = () => {
   const [state, setState] = useState<FixtureState | null>(null)
+  const [force, setForce] = useState(false)
   const current = useApiOnce(getMockStatus)
   useEffect(() => {
     mapSuccess(current, setState)
@@ -60,7 +61,7 @@ const TestApiButtons = () => {
       <>
         <Fixture>{state.fixture}</Fixture>
         <TestApiButton
-          fetchFunc={resetMockDataToDate(state.tarkastelupäivä)}
+          fetchFunc={resetMockDataToDate(state.tarkastelupäivä, force)}
           id={"resetMockData"}
           title={"Use Valpas mock data"}
           onStateUpdated={() => current.call()}
@@ -70,6 +71,14 @@ const TestApiButtons = () => {
           onChange={setTarkastelupäivä}
           id={"tarkastelupäivä"}
         />
+        <label>
+          <input
+            type="checkbox"
+            checked={force}
+            onChange={(event) => setForce(event.target.checked)}
+          />
+          Full reset
+        </label>
         {state.fixture === "VALPAS" && (
           <TestApiButton
             fetchFunc={clearMockData}

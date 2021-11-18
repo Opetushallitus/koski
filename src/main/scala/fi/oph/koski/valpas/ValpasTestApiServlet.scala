@@ -4,10 +4,12 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.servlet.NoCache
-import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureState, FixtureUtil}
+import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureState, FixtureUtil, StatefulFixtureUtil}
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 
 class ValpasTestApiServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with Unauthenticated {
+  private val fixtureReset = new StatefulFixtureUtil(application)
+
   before() {
     // Tämä on ylimääräinen varmistus: tämän servletin ei koskaan pitäisi päätyä ajoon kuin mock-moodissa
     application.config.getString("opintopolku.virkailija.url") match {
@@ -21,15 +23,17 @@ class ValpasTestApiServlet(implicit val application: KoskiApplication) extends V
 
   get("/reset-mock-data/:paiva") {
     val tarkastelupäivä = getLocalDateParam("paiva")
-    FixtureUtil.resetMockData(application, tarkastelupäivä)
+    val force = getOptionalStringParam("force").isDefined
+    fixtureReset.resetMockData(tarkastelupäivä, force)
   }
 
   get("/reset-mock-data") {
-    FixtureUtil.resetMockData(application)
+    val force = getOptionalStringParam("force").isDefined
+    fixtureReset.resetMockData(force = force)
   }
 
   get("/clear-mock-data") {
-    FixtureUtil.clearMockData(application)
+    fixtureReset.clearMockData()
   }
 
   get("/current-mock-status") {
