@@ -32,18 +32,23 @@ class SuostumuksenPeruutusServlet(implicit val application: KoskiApplication)
 
   get("/") {
     if (session.hasGlobalReadAccess) {
-      renderObject(
-        application.suostumuksenPeruutusService.listaaPerututSuostumukset().map(peruttuOo =>
-          JObject(
-            JField("Opiskeluoikeuden oid", JString(peruttuOo.oid)),
-            JField("Oppijan oid", JString(peruttuOo.oppijaOid)),
-            JField("Opiskeluoikeuden päättymispäivä", JString(peruttuOo.päättymispäivä.getOrElse("").toString)),
-            JField("Suostumus peruttu", JString(peruttuOo.aikaleima.toString)),
-            JField("Oppilaitoksesn oid", JString(peruttuOo.oppilaitosOid.getOrElse(""))),
-            JField("Oppilaitoksen nimi", JString(peruttuOo.oppilaitosNimi.getOrElse(""))),
+      val peruutetutSuostumukset = application.suostumuksenPeruutusService.listaaPerututSuostumukset()
+      if (peruutetutSuostumukset.nonEmpty) {
+        renderObject(
+          peruutetutSuostumukset.map(peruttuOo =>
+            JObject(
+              JField("Opiskeluoikeuden oid", JString(peruttuOo.oid)),
+              JField("Oppijan oid", JString(peruttuOo.oppijaOid)),
+              JField("Opiskeluoikeuden päättymispäivä", JString(peruttuOo.päättymispäivä.getOrElse("").toString)),
+              JField("Suostumus peruttu", JString(peruttuOo.aikaleima.toString)),
+              JField("Oppilaitoksen oid", JString(peruttuOo.oppilaitosOid.getOrElse(""))),
+              JField("Oppilaitoksen nimi", JString(peruttuOo.oppilaitosNimi.getOrElse(""))),
+            )
           )
         )
-      )
+      } else {
+        renderObject(JObject())
+      }
     } else {
       KoskiErrorCategory.forbidden.vainVirkailija()
     }
