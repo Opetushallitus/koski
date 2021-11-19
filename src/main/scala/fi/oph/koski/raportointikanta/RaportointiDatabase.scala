@@ -14,6 +14,7 @@ import fi.oph.koski.raportit.lukio.{LukioOppiaineEriVuonnaKorotetutKurssit, Luki
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.util.DateOrdering.{ascedingSqlTimestampOrdering, sqlDateOrdering}
+import fi.oph.koski.util.Retry
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import fi.oph.scalaschema.annotation.SyntheticProperty
 import org.postgresql.util.PSQLException
@@ -66,12 +67,16 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
   }
 
   def dropPublicAndMoveTempToPublic: Unit = {
-    runDbSync(DBIO.seq(
-      RaportointiDatabaseSchema.dropSchema(Public),
-      RaportointiDatabaseSchema.moveSchema(Temp, Public),
-      RaportointiDatabaseSchema.createRolesIfNotExists,
-      RaportointiDatabaseSchema.grantPermissions(Public)
-    ).transactionally)
+    // Raportointikannan swappaaminen saattaa epäonnistua timeouttiin, jos esim. käyttäjä on juuri ajamassa
+    // hidasta raporttia. Parempi yrittää uudestaan, eikä lopettaa monen tunnin operaatiota vain tästä syystä.
+    Retry.retryWithInterval(5, 30000) {
+      runDbSync(DBIO.seq(
+          RaportointiDatabaseSchema.dropSchema(Public),
+          RaportointiDatabaseSchema.moveSchema(Temp, Public),
+          RaportointiDatabaseSchema.createRolesIfNotExists,
+          RaportointiDatabaseSchema.grantPermissions(Public)
+        ).transactionally)
+      }
     logger.info("RaportointiDatabase schema swapped")
   }
 
