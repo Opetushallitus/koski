@@ -574,9 +574,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       -- (0) henkilö on oppivelvollinen: suorittamisvalvontaa ei voi suorittaa enää sen jälkeen kun henkilön
       -- oppivelvollisuus on päättynyt
       ov_kelvollinen_opiskeluoikeus.henkilo_on_oppivelvollinen
-      -- (1) oppijalla on muu kuin peruskoulun opetusoikeus tai esiopetus
-      AND ov_kelvollinen_opiskeluoikeus.koulutusmuoto <> 'perusopetus'
-      AND ov_kelvollinen_opiskeluoikeus.koulutusmuoto <> 'esiopetus'
+      -- (1) oppijalla on muu kuin peruskoulun opetusoikeus, esiopetus tai perusopetukseen valmistava opetus
+      AND ov_kelvollinen_opiskeluoikeus.koulutusmuoto NOT IN ('perusopetus', 'esiopetus', 'perusopetukseenvalmistavaopetus')
       -- (1b) International school on suorittamisvalvottava vain, jos siinä on 10, 11 tai 12 luokan suoritus
       AND (
         ov_kelvollinen_opiskeluoikeus.koulutusmuoto <> 'internationalschool'
@@ -1192,10 +1191,10 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         'päätasonSuoritukset', opiskeluoikeus.paatason_suoritukset,
         'perusopetusTiedot', opiskeluoikeus.perusopetus_tiedot,
         'perusopetuksenJälkeinenTiedot', (CASE
-          WHEN opiskeluoikeus.koulutusmuoto NOT IN ('esiopetus') THEN opiskeluoikeus.muu_kuin_perusopetus_tiedot
+          WHEN opiskeluoikeus.koulutusmuoto NOT IN ('esiopetus', 'perusopetukseenvalmistavaopetus') THEN opiskeluoikeus.muu_kuin_perusopetus_tiedot
           ELSE NULL::jsonb END),
         'muuOpetusTiedot', (CASE
-          WHEN opiskeluoikeus.koulutusmuoto IN ('esiopetus') THEN opiskeluoikeus.muu_kuin_perusopetus_tiedot
+          WHEN opiskeluoikeus.koulutusmuoto IN ('esiopetus', 'perusopetukseenvalmistavaopetus') THEN opiskeluoikeus.muu_kuin_perusopetus_tiedot
           ELSE NULL::jsonb END),
         'maksuttomuus', opiskeluoikeus.maksuttomuus,
         'oikeuttaMaksuttomuuteenPidennetty', opiskeluoikeus.oikeutta_maksuttomuuteen_pidennetty
