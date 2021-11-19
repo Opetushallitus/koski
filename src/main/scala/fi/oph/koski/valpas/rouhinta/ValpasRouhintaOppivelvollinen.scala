@@ -83,11 +83,8 @@ case class RouhintaOpiskeluoikeus(
 object RouhintaOpiskeluoikeus {
   def apply(oo: ValpasOpiskeluoikeusLaajatTiedot): Option[RouhintaOpiskeluoikeus] = {
     oo.tarkasteltavaPäätasonSuoritus.flatMap(päätasonSuoritus => {
-      Seq(
-        oo.perusopetusTiedot.map(t => OrderedOpiskeluoikeusTiedot(t)),
-        oo.perusopetuksenJälkeinenTiedot.map(t => OrderedOpiskeluoikeusTiedot(t)),
-      )
-        .flatten
+      oo.opiskeluoikeustiedot
+        .map(OrderedOpiskeluoikeusTiedot.apply)
         .sorted
         .lastOption
         .map(viimeisinTila => RouhintaOpiskeluoikeus(

@@ -17,6 +17,7 @@ export type OpiskeluoikeusLaajatTiedot = {
   oppilaitos: Oppilaitos
   perusopetusTiedot?: PerusopetusLaajatTiedot
   perusopetuksenJälkeinenTiedot?: PerusopetuksenJälkeinenLaajatTiedot
+  muuOpetusTiedot?: MuuOpetusLaajatTiedot
   päätasonSuoritukset: PäätasonSuoritus[]
   tarkasteltavaPäätasonSuoritus: PäätasonSuoritus
   onTehtyIlmoitus?: boolean
@@ -34,14 +35,17 @@ export type OpintotasonTiedot = {
   näytäMuunaPerusopetuksenJälkeisenäOpintona?: boolean
 }
 
-export type PerusopetusLaajatTiedot = OpintotasonTiedot & {
+export type LaajatOpintotasonTiedot = OpintotasonTiedot & {
   tarkastelupäivänKoskiTilanAlkamispäivä: ISODate
+}
+
+export type PerusopetusLaajatTiedot = LaajatOpintotasonTiedot & {
   vuosiluokkiinSitomatonOpetus: boolean
 }
 
-export type PerusopetuksenJälkeinenLaajatTiedot = OpintotasonTiedot & {
-  tarkastelupäivänKoskiTilanAlkamispäivä: ISODate
-}
+export type PerusopetuksenJälkeinenLaajatTiedot = LaajatOpintotasonTiedot
+
+export type MuuOpetusLaajatTiedot = LaajatOpintotasonTiedot
 
 export type OpiskeluoikeusSuppeatTiedot = {
   oid: Oid
@@ -51,6 +55,7 @@ export type OpiskeluoikeusSuppeatTiedot = {
   oppilaitos: Oppilaitos
   perusopetusTiedot?: PerusopetusSuppeatTiedot
   perusopetuksenJälkeinenTiedot?: PerusopetuksenJälkeinenSuppeatTiedot
+  muuOpetusTiedot?: MuuOpetusSuppeatTiedot
   muuHaku?: boolean
   päätasonSuoritukset: PäätasonSuoritus[]
   tarkasteltavaPäätasonSuoritus?: PäätasonSuoritus
@@ -62,6 +67,8 @@ export type PerusopetusSuppeatTiedot = OpintotasonTiedot & {
 }
 
 export type PerusopetuksenJälkeinenSuppeatTiedot = OpintotasonTiedot
+
+export type MuuOpetusSuppeatTiedot = OpintotasonTiedot
 
 export type Maksuttomuus = {
   alku: ISODate
@@ -181,58 +188,43 @@ export const voimassaolevaTaiTulevaPeruskoulunJälkeinenMuunaOpintonaNäytettäv
   )
 }
 
+export const aiempiOpinto = (
+  opiskeluoikeus: OpiskeluoikeusLaajatTiedot
+): LaajatOpintotasonTiedot =>
+  opiskeluoikeus.muuOpetusTiedot ||
+  opiskeluoikeus.perusopetusTiedot ||
+  opiskeluoikeus.perusopetuksenJälkeinenTiedot!
+
+export const myöhempiOpinto = (
+  opiskeluoikeus: OpiskeluoikeusLaajatTiedot
+): LaajatOpintotasonTiedot =>
+  opiskeluoikeus.perusopetuksenJälkeinenTiedot ||
+  opiskeluoikeus.perusopetusTiedot ||
+  opiskeluoikeus.muuOpetusTiedot!
+
 export const aiempienOpintojenAlkamispäivä = (
   opiskeluoikeus: OpiskeluoikeusLaajatTiedot
-): ISODate => {
-  const tiedot =
-    opiskeluoikeus.perusopetusTiedot ||
-    opiskeluoikeus.perusopetuksenJälkeinenTiedot
-
-  return tiedot!.alkamispäivä!
-}
+): ISODate => aiempiOpinto(opiskeluoikeus).alkamispäivä!
 
 export const myöhempienOpintojenPäättymispäivä = (
   opiskeluoikeus: OpiskeluoikeusLaajatTiedot
-): ISODate | undefined => {
-  const tiedot =
-    opiskeluoikeus.perusopetuksenJälkeinenTiedot ||
-    opiskeluoikeus.perusopetusTiedot
-
-  return tiedot!.päättymispäivä
-}
+): ISODate | undefined => myöhempiOpinto(opiskeluoikeus).päättymispäivä
 
 export const myöhempienOpintojenTarkastelupäivänTila = (
   opiskeluoikeus: OpiskeluoikeusLaajatTiedot
-): ValpasOpiskeluoikeudenTila => {
-  const tiedot =
-    opiskeluoikeus.perusopetuksenJälkeinenTiedot ||
-    opiskeluoikeus.perusopetusTiedot
-
-  return tiedot!.tarkastelupäivänTila
-}
+): ValpasOpiskeluoikeudenTila =>
+  myöhempiOpinto(opiskeluoikeus).tarkastelupäivänTila
 
 export const myöhempienOpintojenTarkastelupäivänKoskiTila = (
   opiskeluoikeus: OpiskeluoikeusLaajatTiedot
-): KoskiOpiskeluoikeudenTila => {
-  const tiedot =
-    opiskeluoikeus.perusopetuksenJälkeinenTiedot ||
-    opiskeluoikeus.perusopetusTiedot
-
-  return tiedot!.tarkastelupäivänKoskiTila
-}
+): KoskiOpiskeluoikeudenTila =>
+  myöhempiOpinto(opiskeluoikeus).tarkastelupäivänKoskiTila
 
 export const myöhempienOpintojenKoskiTilanAlkamispäivä = (
   opiskeluoikeus: OpiskeluoikeusLaajatTiedot
-): ISODate => {
-  const tiedot =
-    opiskeluoikeus.perusopetuksenJälkeinenTiedot ||
-    opiskeluoikeus.perusopetusTiedot
-
-  return tiedot!.tarkastelupäivänKoskiTilanAlkamispäivä
-}
+): ISODate =>
+  myöhempiOpinto(opiskeluoikeus).tarkastelupäivänKoskiTilanAlkamispäivä
 
 export const isPerusopetuksenJälkeinenOpiskeluoikeus = (
   opiskeluoikeus: OpiskeluoikeusLaajatTiedot
-): boolean =>
-  opiskeluoikeus.perusopetuksenJälkeinenTiedot !== undefined &&
-  opiskeluoikeus.tyyppi.koodiarvo !== "esiopetus"
+): boolean => opiskeluoikeus.perusopetuksenJälkeinenTiedot !== undefined

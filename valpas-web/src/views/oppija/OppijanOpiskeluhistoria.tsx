@@ -176,13 +176,12 @@ const OpiskeluhistoriaOpinto = ({
             value={opiskeluoikeus.tarkasteltavaPäätasonSuoritus.ryhmä}
           />
         )}
-        {opiskeluoikeus.perusopetusTiedot !== undefined &&
-          opiskeluoikeus.perusopetusTiedot.vuosiluokkiinSitomatonOpetus && (
-            <InfoTableRow
-              label={t("oppija__muuta")}
-              value={t("oppija__vuosiluokkiin_sitomaton_opetus")}
-            />
-          )}
+        {opiskeluoikeus.perusopetusTiedot?.vuosiluokkiinSitomatonOpetus && (
+          <InfoTableRow
+            label={t("oppija__muuta")}
+            value={t("oppija__vuosiluokkiin_sitomaton_opetus")}
+          />
+        )}
         <InfoTableRow
           label={t("oppija__opiskeluoikeuden_alkamispäivä")}
           value={formatDate(aiempienOpintojenAlkamispäivä(opiskeluoikeus))}

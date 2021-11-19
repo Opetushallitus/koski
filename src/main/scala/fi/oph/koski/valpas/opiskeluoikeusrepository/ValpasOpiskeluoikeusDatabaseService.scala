@@ -766,7 +766,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         ),
         'vuosiluokkiinSitomatonOpetus', coalesce((r_opiskeluoikeus.data -> 'lisätiedot' ->> 'vuosiluokkiinSitoutumatonOpetus')::boolean, FALSE)
       ) AS perusopetus_tiedot,
-      NULL::jsonb AS perusopetuksen_jalkeinen_tiedot,
+      NULL::jsonb AS muu_kuin_perusopetus_tiedot,
       r_opiskeluoikeus.data -> 'lisätiedot' -> 'maksuttomuus' AS maksuttomuus,
       r_opiskeluoikeus.data -> 'lisätiedot' -> 'oikeuttaMaksuttomuuteenPidennetty' AS oikeutta_maksuttomuuteen_pidennetty
     FROM
@@ -957,7 +957,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         -- Tarvitaan, jotta voidaan näyttää international schoolissa itsessään käytävät jatko-opinnot oikein hakeutumisvalvonnan näkymässä ainoastaan
         -- silloin, kun niissä on oikeasti kirjattuja 10+ luokan suorituksia
         'näytäMuunaPerusopetuksenJälkeisenäOpintona', (toisen_asteen_suorituksia.lukumaara > 0)
-      ) AS perusopetuksen_jalkeinen_tiedot,
+      ) AS muu_kuin_perusopetus_tiedot,
       r_opiskeluoikeus.data -> 'lisätiedot' -> 'maksuttomuus' AS maksuttomuus,
       r_opiskeluoikeus.data -> 'lisätiedot' -> 'oikeuttaMaksuttomuuteenPidennetty' AS oikeutta_maksuttomuuteen_pidennetty
     FROM
@@ -1094,7 +1094,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           AND coalesce(r_opiskeluoikeus.paattymispaiva < $hakeutusmivalvottavanSuorituksenNäyttämisenAikaraja, FALSE)
         ),
         'näytäMuunaPerusopetuksenJälkeisenäOpintona', TRUE
-      ) AS perusopetuksen_jalkeinen_tiedot,
+      ) AS muu_kuin_perusopetus_tiedot,
       r_opiskeluoikeus.data -> 'lisätiedot' -> 'maksuttomuus' AS maksuttomuus,
       r_opiskeluoikeus.data -> 'lisätiedot' -> 'oikeuttaMaksuttomuuteenPidennetty' AS oikeutta_maksuttomuuteen_pidennetty
     FROM
@@ -1191,7 +1191,12 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         'oppivelvollisuudenSuorittamiseenKelpaava', opiskeluoikeus.oppivelvollisuuden_suorittamiseen_kelpaava IS TRUE,
         'päätasonSuoritukset', opiskeluoikeus.paatason_suoritukset,
         'perusopetusTiedot', opiskeluoikeus.perusopetus_tiedot,
-        'perusopetuksenJälkeinenTiedot', opiskeluoikeus.perusopetuksen_jalkeinen_tiedot,
+        'perusopetuksenJälkeinenTiedot', (CASE
+          WHEN opiskeluoikeus.koulutusmuoto NOT IN ('esiopetus') THEN opiskeluoikeus.muu_kuin_perusopetus_tiedot
+          ELSE NULL::jsonb END),
+        'muuOpetusTiedot', (CASE
+          WHEN opiskeluoikeus.koulutusmuoto IN ('esiopetus') THEN opiskeluoikeus.muu_kuin_perusopetus_tiedot
+          ELSE NULL::jsonb END),
         'maksuttomuus', opiskeluoikeus.maksuttomuus,
         'oikeuttaMaksuttomuuteenPidennetty', opiskeluoikeus.oikeutta_maksuttomuuteen_pidennetty
       ) ORDER BY
