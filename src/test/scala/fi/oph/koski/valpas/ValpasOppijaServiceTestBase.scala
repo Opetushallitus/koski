@@ -24,13 +24,19 @@ case class ExpectedDataPerusopetuksenJälkeinenTiedot(
   tarkastelupäivänKoskiTila: String
 )
 
+case class ExpectedDataMuuOpetusTiedot(
+  tarkastelupäivänTila: String,
+  tarkastelupäivänKoskiTila: String
+)
+
 case class ExpectedData(
   opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
-  perusopetusTiedot: Option[ExpectedDataPerusopetusTiedot],
-  perusopetuksenJälkeinenTiedot: Option[ExpectedDataPerusopetuksenJälkeinenTiedot],
   onHakeutumisValvottavaOpiskeluoikeus: Boolean,
   onHakeutumisvalvovaOppilaitos: Boolean,
   onSuorittamisvalvovaOppilaitos: Boolean,
+  perusopetusTiedot: Option[ExpectedDataPerusopetusTiedot] = None,
+  perusopetuksenJälkeinenTiedot: Option[ExpectedDataPerusopetuksenJälkeinenTiedot] = None,
+  muuOpetusTiedot: Option[ExpectedDataMuuOpetusTiedot] = None,
 )
 
 trait ValpasOppijaServiceTestBase extends ValpasTestBase {
