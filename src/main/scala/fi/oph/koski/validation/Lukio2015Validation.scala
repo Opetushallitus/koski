@@ -2,13 +2,25 @@ package fi.oph.koski.validation
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
-import fi.oph.koski.schema.{Henkilö, KoskeenTallennettavaOpiskeluoikeus, LukionOpiskeluoikeus}
+import fi.oph.koski.schema.{Henkilö, KoskeenTallennettavaOpiskeluoikeus, LukionOpiskeluoikeus, LukionOppiaineenOppimääränSuoritus2015}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 
 object Lukio2015Validation {
+  def validateOppimääräSuoritettu(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+    opiskeluoikeus match {
+      case lukio: LukionOpiskeluoikeus if lukio.oppimääräSuoritettu.getOrElse(false) =>
+        val aineopinnot = lukio.suoritukset.filter(_.isInstanceOf[LukionOppiaineenOppimääränSuoritus2015])
+        if (aineopinnot.isEmpty || aineopinnot.exists(_.vahvistettu)) {
+          HttpStatus.ok
+        } else {
+          KoskiErrorCategory.badRequest.validation.rakenne.oppimääräSuoritettuIlmanVahvistettuaOppiaineenOppimäärää()
+        }
+      case _ => HttpStatus.ok
+    }
+  }
+
   def validateAlkamispäivä(
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     oppijanSyntymäpäivä: Option[LocalDate],

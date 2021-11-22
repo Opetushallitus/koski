@@ -113,7 +113,8 @@ class KoskiValidator(
               TiedonSiirrostaPuuttuvatSuorituksetValidation.validateEiSamaaAlkamispaivaa(opiskeluoikeus, koskiOpiskeluoikeudet),
               HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, Nil))),
               TilanAsettaminenKunVahvistettuSuoritusValidation.validateOpiskeluoikeus(opiskeluoikeus),
-              SuostumuksenPeruutusValidaatiot.validateSuostumuksenPeruutus(opiskeluoikeus, suostumuksenPeruutusService)
+              SuostumuksenPeruutusValidaatiot.validateSuostumuksenPeruutus(opiskeluoikeus, suostumuksenPeruutusService),
+              Lukio2015Validation.validateOppimääräSuoritettu(opiskeluoikeus)
             )
           } match {
           case HttpStatus.ok => Right(opiskeluoikeus)
@@ -137,6 +138,7 @@ class KoskiValidator(
       .map(clearVahvistukset)
       .map(_.withHistoria(None))
       .map(KoodistopoikkeustenKonversiot.konvertoiKoodit)
+      .map(fillLukionOppimääräSuoritettu)
   }
 
   private def fillPerusteenNimi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = oo match {
@@ -190,6 +192,19 @@ class KoskiValidator(
       case s@(_: LukionPäätasonSuoritus2019 | _: PreIBSuoritus2019) => Lukio2019VieraatKieletValidation.fillVieraatKielet(s)
       case s: Any => s
     })
+
+  private def fillLukionOppimääräSuoritettu(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
+    oo match {
+      case lukio: LukionOpiskeluoikeus =>
+        lukio.suoritukset.head match {
+          case oppimäärällinen: Oppimäärällinen if oppimäärällinen.vahvistettu => lukio.copy(
+            oppimääräSuoritettu = Some(true)
+          )
+          case _ => oo
+        }
+      case _ => oo
+    }
+  }
 
   private def clearVahvistukset(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus =
     oo.withSuoritukset(oo.suoritukset.map {
@@ -542,6 +557,7 @@ class KoskiValidator(
         :: Lukio2019OsasuoritusValidation.validate(suoritus, parent)
         :: Lukio2019VieraatKieletValidation.validate(suoritus, parent)
         :: Lukio2019ArvosanaValidation.validateOsasuoritus(suoritus)
+        :: LukionYhteisetValidaatiot.validateLukionPäätasonSuoritus(suoritus)
         :: LukioonValmistavanKoulutuksenValidaatiot.validateLukioonValmistava2019(suoritus)
         :: VapaaSivistystyöValidation.validateVapaanSivistystyönPäätasonSuoritus(suoritus, opiskeluoikeus)
         :: HttpStatus.validate(!suoritus.isInstanceOf[PäätasonSuoritus])(validateDuplicates(suoritus.osasuoritukset.toList.flatten))
@@ -631,11 +647,16 @@ class KoskiValidator(
   }
 
   private def validateStatus(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+    val rinnastettavissaVahvistettuun = opiskeluoikeus match {
+      case oo: LukionOpiskeluoikeus => oo.isOppimääräSuoritettu
+      case _ => false
+    }
+
     if (suoritus.vahvistettu && suoritus.arviointiPuuttuu) {
       KoskiErrorCategory.badRequest.validation.tila.vahvistusIlmanArviointia("Suorituksella " + suorituksenTunniste(suoritus) + " on vahvistus, vaikka arviointi puuttuu")
     } else {
       suoritus match {
-        case s if s.kesken => HttpStatus.ok
+        case _ if suoritus.kesken && !rinnastettavissaVahvistettuun => HttpStatus.ok
         case _: Välisuoritus => HttpStatus.ok // Välisuoritus on statukseltaan aina "valmis" -> ei validoida niiden sisältämien osasuoritusten statusta
         case p: KoskeenTallennettavaPäätasonSuoritus =>
           validatePäätasonSuorituksenStatus(opiskeluoikeus, p).onSuccess(validateLinkitettyTaiSisältääOsasuorituksia(opiskeluoikeus, p))
@@ -730,9 +751,9 @@ class KoskiValidator(
     case s: PerusopetuksenOppimääränSuoritus =>
       KoskiErrorCategory.badRequest.validation.tila.oppiaineetPuuttuvat("Suorituksella ei ole osasuorituksena yhtään oppiainetta, vaikka sillä on vahvistus")
     case s: LukionOppimääränSuoritus2019 if s.oppimäärä.koodiarvo == "nuortenops" =>
-      KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(suoritus)} on merkitty valmiiksi, mutta sillä ei ole 150 op osasuorituksia, joista vähintään 20 op valinnaisia, tai opiskeluoikeudelta puuttuu linkitys")
+      KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(suoritus)} on merkitty valmiiksi tai opiskeluoikeuden tiedoissa oppimäärä on merkitty suoritetuksi, mutta sillä ei ole 150 op osasuorituksia, joista vähintään 20 op valinnaisia, tai opiskeluoikeudelta puuttuu linkitys")
     case s: LukionOppimääränSuoritus2019 if s.oppimäärä.koodiarvo == "aikuistenops" =>
-      KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(suoritus)} on merkitty valmiiksi, mutta sillä ei ole 88 op osasuorituksia, tai opiskeluoikeudelta puuttuu linkitys")
+      KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(suoritus)} on merkitty valmiiksi tai opiskeluoikeuden tiedoissa oppimäärä on merkitty suoritetuksi, mutta sillä ei ole 88 op osasuorituksia, tai opiskeluoikeudelta puuttuu linkitys")
     case s =>
       KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(s)} on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai opiskeluoikeudelta puuttuu linkitys")
   }

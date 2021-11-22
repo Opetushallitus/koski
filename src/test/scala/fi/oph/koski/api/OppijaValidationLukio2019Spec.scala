@@ -1650,6 +1650,59 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
     }
   }
 
+  "oppimääräSuoritettu-kenttä" - {
+    "Täytetään automaattisesti 'true'ksi kun oppimäärän suoritus vahvistettu" in {
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus))
+      val opiskeluoikeus: LukionOpiskeluoikeus = putAndGetOpiskeluoikeus(oo).asInstanceOf[LukionOpiskeluoikeus]
+
+      opiskeluoikeus.oppimääräSuoritettu.get should equal (true)
+    }
+
+    "Ei täytetä automaattisesti, jos oppimäärän suoritusta ei ole vahvistettu" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = LukionOpiskeluoikeudenTila(List(
+          LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+        )),
+        suoritukset = List(oppimääränSuoritus.copy(
+          vahvistus = None
+      )))
+      val opiskeluoikeus: LukionOpiskeluoikeus = putAndGetOpiskeluoikeus(oo).asInstanceOf[LukionOpiskeluoikeus]
+
+      opiskeluoikeus.oppimääräSuoritettu.isDefined should equal (false)
+    }
+
+    "Jos nuorten oppimäärän suoritus sisältää alle 150 op, oppimäärää ei voi merkitä suoritetuksi" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        oppimääräSuoritettu = Some(true),
+        tila = LukionOpiskeluoikeudenTila(List(
+          LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+        )),
+        suoritukset = List(oppimääränSuoritus.copy(
+          osasuoritukset = Some(oppiainesuorituksetEiRiitäValmistumiseen),
+          vahvistus = None
+        )))
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400,
+          KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(
+            s"Suoritus koulutus/309902 on merkitty valmiiksi, mutta sillä ei ole 150 op osasuorituksia, joista vähintään 20 op valinnaisia, tai opiskeluoikeudelta puuttuu linkitys"
+          )
+        )
+      }
+    }
+  }
+
+  "Oppiaineen oppimäärän suorituksen lukionOppimääräSuoritettu-kenttä deprekoitu, eikä sitä saa enää siirtää" in {
+    val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(
+      lukionOppimääräSuoritettu = Some(true)
+    )))
+    putOpiskeluoikeus(oo) {
+      verifyResponseStatus(400,
+        KoskiErrorCategory.badRequest.validation.rakenne.deprekoituLukionAineopintojenPäätasonSuorituksenKenttä()
+      )
+    }
+  }
+
   private def putAndGetOpiskeluoikeus(oo: LukionOpiskeluoikeus): Opiskeluoikeus = putOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)

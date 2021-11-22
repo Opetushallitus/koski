@@ -22,7 +22,8 @@ case class LukionOpiskeluoikeus(
   suoritukset: List[LukionPäätasonSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.lukiokoulutus,
-  organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None
+  organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None,
+  oppimääräSuoritettu: Option[Boolean] = None
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   @Description("Opiskelijan opiskeluoikeuden päättymispäivä joko koko lukiokoulutuksen oppimäärätavoitteisessa koulutuksessa tai oppiaineen oppimäärätavoitteisessa koulutuksessa")
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
@@ -33,6 +34,14 @@ case class LukionOpiskeluoikeus(
     case _:LukionPäätasonSuoritus2015 => true
     case _ => false
   })
+
+  def isOppimääräSuoritettu = oppimääräSuoritettu.getOrElse(false)
+
+    /*suoritukset.exists {
+    case oppimäärä2019: LukionOppimääränSuoritus2019 => oppimäärä2019.vahvistettu || oppimääräSuoritettu.getOrElse(false)
+    case oppiaine2019: LukionOppiaineidenOppimäärienSuoritus2019 => oppiaine2019.vahvistettu || oppimääräSuoritettu.getOrElse(false)
+    case muu => muu.vahvistettu
+  }*/
 }
 
 @Description("Lukion opiskeluoikeuden lisätiedot")

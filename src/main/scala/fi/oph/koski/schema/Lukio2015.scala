@@ -43,7 +43,9 @@ case class LukionOppiaineenOppimääränSuoritus2015(
   @Description("Merkitään, jos lukion oppimäärä on tullut suoritetuksi aineopintoina.")
   @Tooltip("Opiskelija on suorittanut koko lukion oppimäärän ja saanut lukion päättötodistuksen")
   @DefaultValue(false)
-  lukionOppimääräSuoritettu: Boolean = false,
+  @Deprecated("Käytä opiskeluoikeuden kenttää 'oppimääräSuoritettu'")
+  @Hidden
+  lukionOppimääräSuoritettu: Option[Boolean] = None,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
   @Title("Kurssit")
   override val osasuoritukset: Option[List[LukionKurssinSuoritus2015]],

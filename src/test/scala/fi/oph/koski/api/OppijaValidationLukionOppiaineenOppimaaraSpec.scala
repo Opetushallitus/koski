@@ -43,4 +43,46 @@ class OppijaValidationLukionOppiaineenOppimaaraSpec extends TutkinnonPerusteetTe
       }
     }
   }
+
+  "oppimääräSuoritettu-kenttä" - {
+    "Ei voi olla true, jos ei ole vahvistettuja päätason suorituksia" in {
+      val oo = opiskeluoikeusWithPerusteenDiaarinumero(Some("60/011/2015")).copy(
+        oppimääräSuoritettu = Some(true)
+      )
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.oppimääräSuoritettuIlmanVahvistettuaOppiaineenOppimäärää())
+      }
+    }
+
+    "Voi olla false, jos ei ole vahvistettuja päätason suorituksia" in {
+      val oo = opiskeluoikeusWithPerusteenDiaarinumero(Some("60/011/2015")).copy(
+        oppimääräSuoritettu = Some(false)
+      )
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Voi olla true, jos on vahvistettuja päätason suorituksia" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        oppimääräSuoritettu = Some(true),
+        suoritukset = List(
+          LukionOppiaineenOppimääränSuoritus2015(
+            koulutusmoduuli = LukionMuuValtakunnallinenOppiaine2015(Koodistokoodiviite("HI", "koskioppiaineetyleissivistava"), perusteenDiaarinumero = Some("60/011/2015")),
+            suorituskieli = suomenKieli,
+            toimipiste = jyväskylänNormaalikoulu,
+            osasuoritukset = None,
+            arviointi = LukioExampleData.arviointi("9"),
+            vahvistus = Some(HenkilövahvistusPaikkakunnalla(date(2016, 6, 4), jyväskylä, jyväskylänNormaalikoulu, List(Organisaatiohenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
+          )
+        )
+      )
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
+  }
 }

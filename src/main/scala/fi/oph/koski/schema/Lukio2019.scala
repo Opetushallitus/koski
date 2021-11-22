@@ -61,7 +61,9 @@ case class LukionOppiaineidenOppimäärienSuoritus2019(
   suorituskieli: Koodistokoodiviite,
   @Description("Merkitään, jos lukion oppimäärä on tullut suoritetuksi aineopintoina.")
   @DefaultValue(false)
-  lukionOppimääräSuoritettu: Boolean = false,
+  @Deprecated("Käytä opiskeluoikeuden kenttää 'oppimääräSuoritettu'")
+  @Hidden
+  lukionOppimääräSuoritettu: Option[Boolean] = None,
   puhviKoe: Option[PuhviKoe2019] = None,
   @Description("Arvioituun lukion kielioppiainesuoritukseen liittyen tulee aineopintosuorituksen päätasolta löytyä suullisen kielitaidon kokeen suoritus niistä kielistä, joissa on suoritettu suullisen kielitaidon kokeen sisältävä valtakunnallinen moduuli. Nämä moduulit ovat ENA8, FIM8, FINA8, FINB16, RUA8, RUB16, RUÄ8, SMA8 ja VKA8.")
   suullisenKielitaidonKokeet: Option[List[SuullisenKielitaidonKoe2019]] = None,
