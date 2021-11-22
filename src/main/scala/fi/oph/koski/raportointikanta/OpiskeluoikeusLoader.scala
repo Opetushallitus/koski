@@ -8,6 +8,7 @@ import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.raportointikanta.LoaderUtils.{convertKoodisto, convertLocalizedString}
 import fi.oph.koski.schema._
 import fi.oph.koski.validation.MaksuttomuusValidation
+import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import org.json4s.JValue
 import rx.lang.scala.{Observable, Subscriber}
 
@@ -25,12 +26,13 @@ object OpiskeluoikeusLoader extends Logging {
     opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService,
     systemUser: KoskiSpecificSession,
     db: RaportointiDatabase,
-    batchSize: Int = DefaultBatchSize
+    batchSize: Int = DefaultBatchSize,
+    rajapäivät: ValpasRajapäivätService
   ): Observable[LoadResult] = {
     db.setStatusLoadStarted(statusName)
     val result = opiskeluoikeusQueryRepository.mapKaikkiOpiskeluoikeudetSivuittain(batchSize, systemUser) { batch =>
       if (batch.nonEmpty) {
-        loadBatch(db, batch)
+        loadBatch(db, batch, rajapäivät)
       } else {
         // Last batch processed; finalize
         createIndexes(db)
@@ -41,8 +43,8 @@ object OpiskeluoikeusLoader extends Logging {
     result.doOnEach(progressLogger)
   }
 
-  private def loadBatch(db: RaportointiDatabase, batch: Seq[OpiskeluoikeusRow]) = {
-    val (errors, outputRows) = batch.par.map(buildRow).seq.partition(_.isLeft)
+  private def loadBatch(db: RaportointiDatabase, batch: Seq[OpiskeluoikeusRow], rajapäivät: ValpasRajapäivätService) = {
+    val (errors, outputRows) = batch.par.map(row => buildRow(row, rajapäivät)).seq.partition(_.isLeft)
     db.loadOpiskeluoikeudet(outputRows.map(_.right.get.rOpiskeluoikeusRow))
     db.loadOrganisaatioHistoria(outputRows.flatMap(_.right.get.organisaatioHistoriaRows))
     val aikajaksoRows = outputRows.flatMap(_.right.get.rOpiskeluoikeusAikajaksoRows)
@@ -120,10 +122,10 @@ object OpiskeluoikeusLoader extends Logging {
 
   type AikajaksoRows = (Seq[ROpiskeluoikeusAikajaksoRow], Seq[EsiopetusOpiskeluoikeusAikajaksoRow])
 
-  private def buildRow(inputRow: OpiskeluoikeusRow): Either[LoadErrorResult, OutputRows] = {
+  private def buildRow(inputRow: OpiskeluoikeusRow, rajapäivät: ValpasRajapäivätService): Either[LoadErrorResult, OutputRows] = {
     Try {
       val oo = inputRow.toOpiskeluoikeusUnsafe
-      val ooRow = buildROpiskeluoikeusRow(inputRow.oppijaOid, inputRow.aikaleima, oo, inputRow.data)
+      val ooRow = buildROpiskeluoikeusRow(inputRow.oppijaOid, inputRow.aikaleima, oo, inputRow.data, rajapäivät)
       val aikajaksoRows: AikajaksoRows = buildAikajaksoRows(inputRow.oid, oo)
       val suoritusRows: SuoritusRows = oo.suoritukset.zipWithIndex.map {
         case (ps, i) => buildSuoritusRows(
@@ -150,7 +152,7 @@ object OpiskeluoikeusLoader extends Logging {
 
   private val fieldsToExcludeFromOpiskeluoikeusJson = Set("oid", "versionumero", "aikaleima", "oppilaitos", "koulutustoimija", "suoritukset", "tyyppi", "alkamispäivä", "päättymispäivä")
 
-  private def buildROpiskeluoikeusRow(oppijaOid: String, aikaleima: Timestamp, o: KoskeenTallennettavaOpiskeluoikeus, data: JValue) =
+  private def buildROpiskeluoikeusRow(oppijaOid: String, aikaleima: Timestamp, o: KoskeenTallennettavaOpiskeluoikeus, data: JValue, rajapäivät: ValpasRajapäivätService) =
     ROpiskeluoikeusRow(
       opiskeluoikeusOid = o.oid.get,
       versionumero = o.versionumero.get,
@@ -176,16 +178,16 @@ object OpiskeluoikeusLoader extends Logging {
       lähdejärjestelmäKoodiarvo = o.lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
       lähdejärjestelmäId = o.lähdejärjestelmänId.flatMap(_.id),
       luokka = o.luokka,
-      oppivelvollisuudenSuorittamiseenKelpaava = oppivelvollisuudenSuorittamiseenKelpaava(o),
+      oppivelvollisuudenSuorittamiseenKelpaava = oppivelvollisuudenSuorittamiseenKelpaava(o, rajapäivät),
       data = JsonManipulation.removeFields(data, fieldsToExcludeFromOpiskeluoikeusJson)
     )
 
-  private def oppivelvollisuudenSuorittamiseenKelpaava(o: KoskeenTallennettavaOpiskeluoikeus): Boolean =
+  private def oppivelvollisuudenSuorittamiseenKelpaava(o: KoskeenTallennettavaOpiskeluoikeus, rajapäivät: ValpasRajapäivätService): Boolean =
     o.tyyppi.koodiarvo match {
       case "perusopetus" => true
       case "internationalschool" => true
       case "esiopetus" => true
-      case _ => MaksuttomuusValidation.oppivelvollisuudenSuorittamiseenKelpaavaMuuKuinPeruskoulunOpiskeluoikeus(o)
+      case _ => MaksuttomuusValidation.oppivelvollisuudenSuorittamiseenKelpaavaMuuKuinPeruskoulunOpiskeluoikeus(o, rajapäivät)
     }
 
   private def buildAikajaksoRows(opiskeluoikeusOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): AikajaksoRows = {

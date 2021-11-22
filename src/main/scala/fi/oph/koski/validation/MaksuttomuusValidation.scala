@@ -28,7 +28,7 @@ object MaksuttomuusValidation {
     val maksuttomuudenPidennysSiirretty = opiskeluoikeus.lisätiedot.collect { case l : MaksuttomuusTieto => l.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.length > 0 }.getOrElse(false)
 
     // Peruskoulun jälkeinen koulutus on uuden lain mukaiseksi peruskoulun jälkeiseksi oppivelvollisuuskoulutukseksi kelpaavaa
-    val koulutusOppivelvollisuuskoulutukseksiKelpaavaa = oppivelvollisuudenSuorittamiseenKelpaavaMuuKuinPeruskoulunOpiskeluoikeus(opiskeluoikeus)
+    val koulutusOppivelvollisuuskoulutukseksiKelpaavaa = oppivelvollisuudenSuorittamiseenKelpaavaMuuKuinPeruskoulunOpiskeluoikeus(opiskeluoikeus, rajapäivät)
 
     // Maksuttomuutta ei voi olla opiskeluoikeudessa, joka alkaa myöhemmin kuin vuonna, jolloin oppija täyttää 20 vuotta
     val opiskeluoikeusAlkanutHenkilönOllessaLiianVanha = (oppijanSyntymäpäivä.map(_.getYear), opiskeluoikeus.alkamispäivä.map(_.getYear)) match {
@@ -101,12 +101,22 @@ object MaksuttomuusValidation {
   }
 
   // Huom! Valpas käyttää myös tätä funktiota!
-  def oppivelvollisuudenSuorittamiseenKelpaavaMuuKuinPeruskoulunOpiskeluoikeus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Boolean =
+  def oppivelvollisuudenSuorittamiseenKelpaavaMuuKuinPeruskoulunOpiskeluoikeus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, rajapäivät: ValpasRajapäivätService): Boolean =
     opiskeluoikeus.suoritukset.collectFirst {
       case myp: MYPVuosiluokanSuoritus
         if InternationalSchoolOpiskeluoikeus.onLukiotaVastaavaInternationalSchoolinSuoritus(myp.tyyppi.koodiarvo, myp.koulutusmoduuli.tunniste.koodiarvo) => myp
-      case s: SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta => s
+      case ib: IBPäätasonSuoritus if sopivaIBSuoritus(opiskeluoikeus, rajapäivät) => ib
+      case s: SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta if !s.isInstanceOf[IBPäätasonSuoritus] => s
     }.isDefined
+  private def sopivaIBSuoritus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, rajapäivät: ValpasRajapäivätService): Boolean = {
+    // IB2015 suorituksesn tapauksessa opiskeluoikeuden tulee olla alkanut rajapäivän jälkeen
+    !opiskeluoikeus.suoritukset.exists {
+      case _: PreIBSuoritus2015 => opiskeluoikeus.alkamispäivä.exists(_.isBefore(rajapäivät.ilmoitustenEnsimmäinenTallennuspäivä))
+      case _ => false
+    }
+  }
+
+  //     : PreIBSuoritus2015 if !preIB2015.alkamispäivä.exists(_.isAfter(rajapäivät.ilmoitustenEnsimmäinenTallennuspäivä.minusDays(1))) => {
 
   // Huom! Valpas käyttää myös tätä funktiota!
   def eiOppivelvollisuudenLaajentamislainPiirissäSyyt(
