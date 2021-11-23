@@ -7,20 +7,6 @@ import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystietojenAlkuperä
 import java.time.LocalDateTime
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeus, ValpasOpiskeluoikeusLaajatTiedot, ValpasOppijaLaajatTiedot, ValpasRajapäivätService}
 
-// TODO: Turha trait? Poista?
-trait ValpasKuntailmoitus {
-  def id: Option[String] // TODO: Scala-schemasta puuttuu UUID-tuki :(
-  def tekijä: ValpasKuntailmoituksenTekijä
-  def kunta: OrganisaatioWithOid // Koska suuri osa kunnista on koulutustoimijoita, on niille vaikea luoda omaa tyyppiä.
-                                 // Validointi, että tähän voi tallentaa vain kunta-tyyppisen organisaation, tehdään erikseen.
-  def aikaleima: Option[LocalDateTime]
-}
-
-// TODO: Turha trait? Poista?
-trait ValpasKuntailmoituksenTekijä {
-  def organisaatio: OrganisaatioWithOid // Tekijä voi olla joko kunta tai oppilaitos. Validointi, että on jompikumpi, tehdään erikseen.
-}
-
 case class ValpasKuntailmoitusSuppeatTiedot(
   oppijaOid: Option[String],
   id: Option[String], // Oikeasti UUID - scala-schemasta puuttuu tuki UUID-tyypille
@@ -33,7 +19,7 @@ case class ValpasKuntailmoitusSuppeatTiedot(
   // Option, koska relevantti kenttä vain haettaessa ilmoituksia tietylle kunnalle
   onUudempiaIlmoituksiaMuihinKuntiin: Option[Boolean],
   aktiivinen: Option[Boolean],
-) extends ValpasKuntailmoitus
+)
 
 object ValpasKuntailmoitusSuppeatTiedot {
   def apply(laajatTiedot: ValpasKuntailmoitusLaajatTiedot): ValpasKuntailmoitusSuppeatTiedot = {
@@ -77,7 +63,7 @@ case class ValpasKuntailmoitusLaajatTiedot(
 
   aktiivinen: Option[Boolean]
 
-) extends ValpasKuntailmoitus {
+) {
   def withOppijaOid(oppijaOid: String): ValpasKuntailmoitusLaajatTiedot =
     this.copy(oppijaOid = Some(oppijaOid))
 
@@ -87,7 +73,7 @@ case class ValpasKuntailmoitusLaajatTiedot(
 
 case class ValpasKuntailmoituksenTekijäSuppeatTiedot(
   organisaatio: OrganisaatioWithOid
-) extends ValpasKuntailmoituksenTekijä
+)
 
 object ValpasKuntailmoituksenTekijäSuppeatTiedot {
   def apply(laajatTiedot: ValpasKuntailmoituksenTekijäLaajatTiedot): ValpasKuntailmoituksenTekijäSuppeatTiedot = {
@@ -98,7 +84,7 @@ object ValpasKuntailmoituksenTekijäSuppeatTiedot {
 case class ValpasKuntailmoituksenTekijäLaajatTiedot(
   organisaatio: OrganisaatioWithOid,
   henkilö: Option[ValpasKuntailmoituksenTekijäHenkilö], // Option, koska tämä on oppivelvollisuurekisterin ulkopuolista lisädataa eikä välttämättä tallessa tietokannassa vaikka muuta ilmoituksen tiedot olisivatkin
-) extends ValpasKuntailmoituksenTekijä
+)
 
 case class ValpasKuntailmoituksenTekijäHenkilö(
   oid: Option[ValpasKuntailmoituksenTekijäHenkilö.Oid], // Option, koska create-operaatiossa bäkkäri lukee tekijän oidin sessiosta
