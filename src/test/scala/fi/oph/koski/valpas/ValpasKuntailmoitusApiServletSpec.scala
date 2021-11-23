@@ -859,9 +859,9 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     oppilaitosOid: ValpasOppilaitos.Oid
   ) : Either[HttpStatus, Set[ValpasOpiskeluoikeus.Oid]] =
   {
-    val oppijaService = KoskiApplicationForTests.valpasOppijaService
+    val oppijaLaajatTiedotService = KoskiApplicationForTests.valpasOppijaLaajatTiedotService
 
-    val oppija = oppijaService.getOppijaLaajatTiedot(oppijaOid)(defaultSession)
+    val oppija = oppijaLaajatTiedotService.getOppijaLaajatTiedot(oppijaOid)(defaultSession)
 
     oppija.map(_.opiskeluoikeudet.filter(_.oppilaitos.oid == oppilaitosOid).map(_.oid)).map(_.toSet)
   }

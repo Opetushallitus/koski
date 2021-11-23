@@ -9,7 +9,7 @@ import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.{InternationalSchoolOpiskeluoikeus, InternationalSchoolVuosiluokanSuoritus, KoskeenTallennettavaOpiskeluoikeus, PerusopetuksenLisäopetuksenOpiskeluoikeus, PerusopetuksenLisäopetuksenSuoritus, PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus, Ryhmällinen}
 import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService.defaultMockTarkastelupäivä
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot, ValpasOppijaSuppeatTiedot}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot}
 import fi.oph.koski.valpas.valpasrepository.ValpasKuntailmoitusLaajatTiedot
 import fi.oph.koski.valpas.valpasuser.ValpasMockUser
 
@@ -40,7 +40,8 @@ case class ExpectedData(
 )
 
 trait ValpasOppijaServiceTestBase extends ValpasTestBase {
-  protected val oppijaService = KoskiApplicationForTests.valpasOppijaService
+  protected val oppijaLaajatTiedotService = KoskiApplicationForTests.valpasOppijaLaajatTiedotService
+  protected val oppijaSuppeatTiedotService = KoskiApplicationForTests.valpasOppijaSuppeatTiedotService
   protected val rajapäivätService = KoskiApplicationForTests.valpasRajapäivätService
   protected val oppilaitos = MockOrganisaatiot.jyväskylänNormaalikoulu
   protected val amisOppilaitos = MockOrganisaatiot.stadinAmmattiopisto
@@ -56,11 +57,11 @@ trait ValpasOppijaServiceTestBase extends ValpasTestBase {
   }
 
   private def getKunnanIlmoitetutOppijat(organisaatioOid: Oid, user: ValpasMockUser) = {
-    oppijaService.getKunnanOppijatSuppeatTiedot(organisaatioOid)(session(user))
+    oppijaSuppeatTiedotService.getKunnanOppijatSuppeatTiedot(organisaatioOid)(session(user))
   }
 
   protected def canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(oppija: LaajatOppijaHenkilöTiedot, user: ValpasMockUser): Boolean =
-    oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(oppija.oid)(session(user)).isRight
+    oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(oppija.oid)(session(user)).isRight
 
   protected def validateOppijaLaajatTiedot(
     oppija: ValpasOppijaLaajatTiedot,

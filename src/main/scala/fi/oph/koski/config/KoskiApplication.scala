@@ -32,7 +32,7 @@ import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.userdirectory.DirectoryClient
 import fi.oph.koski.validation.{KoskiGlobaaliValidator, KoskiValidator, ValidatingAndResolvingExtractor}
-import fi.oph.koski.valpas.{ValpasKuntailmoitusService, ValpasOppijaSearchService, ValpasOppijaService}
+import fi.oph.koski.valpas.{ValpasKuntailmoitusService, ValpasOppijaSearchService, ValpasOppijaService, ValpasOppijaSuppeatTiedotService}
 import fi.oph.koski.valpas.db.ValpasDatabase
 import fi.oph.koski.valpas.localization.ValpasLocalizationConfig
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeusDatabaseService, ValpasRajapäivätService}
@@ -126,7 +126,8 @@ class KoskiApplication(
   lazy val koskiLocalizationRepository = LocalizationRepository(config, new KoskiLocalizationConfig)
   lazy val valpasLocalizationRepository = LocalizationRepository(config, new ValpasLocalizationConfig)
   lazy val valpasRajapäivätService = ValpasRajapäivätService(config)
-  lazy val valpasOppijaService = new ValpasOppijaService(this)
+  lazy val valpasOppijaLaajatTiedotService = new ValpasOppijaService(this)
+  lazy val valpasOppijaSuppeatTiedotService = new ValpasOppijaSuppeatTiedotService(valpasOppijaLaajatTiedotService)
   lazy val valpasOppijaSearchService = new ValpasOppijaSearchService(this)
   lazy val valpasKuntailmoitusRepository = new ValpasKuntailmoitusRepository(
     valpasDatabase, validatingAndResolvingExtractor, valpasRajapäivätService, config

@@ -23,10 +23,22 @@ case class OppijaHakutilanteillaLaajatTiedot(
   yhteystiedot: Seq[ValpasYhteystiedot],
   kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot],
   oppivelvollisuudenKeskeytykset: Seq[ValpasOppivelvollisuudenKeskeytys],
-  onOikeusTehdäKuntailmoitus: Option[Boolean]
+  onOikeusTehdäKuntailmoitus: Option[Boolean],
+  lisätiedot: Seq[OpiskeluoikeusLisätiedot],
 ) {
   def validate(koodistoviitepalvelu: KoodistoViitePalvelu): OppijaHakutilanteillaLaajatTiedot =
     this.copy(hakutilanteet = hakutilanteet.map(_.validate(koodistoviitepalvelu)))
+
+  def withLisätiedot(lisätiedot: Seq[OpiskeluoikeusLisätiedotRow]): OppijaHakutilanteillaLaajatTiedot = {
+    this.copy(
+      lisätiedot = lisätiedot.map(l => OpiskeluoikeusLisätiedot(
+        oppijaOid = l.oppijaOid,
+        opiskeluoikeusOid = l.opiskeluoikeusOid,
+        oppilaitosOid = l.oppilaitosOid,
+        muuHaku = l.muuHaku
+      ))
+    )
+  }
 }
 
 object OppijaHakutilanteillaLaajatTiedot {
@@ -39,7 +51,21 @@ object OppijaHakutilanteillaLaajatTiedot {
       yhteystiedot = haut.map(uusimmatIlmoitetutYhteystiedot(yhteystietoryhmänNimi)).getOrElse(Seq.empty),
       kuntailmoitukset = Seq.empty,
       oppivelvollisuudenKeskeytykset = Seq.empty,
-      onOikeusTehdäKuntailmoitus = None
+      onOikeusTehdäKuntailmoitus = None,
+      lisätiedot = Seq.empty
+    )
+  }
+
+  def apply(oppija: ValpasOppijaLaajatTiedot, kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot]): OppijaHakutilanteillaLaajatTiedot = {
+    OppijaHakutilanteillaLaajatTiedot(
+      oppija = oppija,
+      hakutilanteet = Seq.empty,
+      hakutilanneError = None,
+      yhteystiedot = Seq.empty,
+      kuntailmoitukset = kuntailmoitukset,
+      oppivelvollisuudenKeskeytykset = Seq.empty,
+      onOikeusTehdäKuntailmoitus = None,
+      lisätiedot = Seq.empty
     )
   }
 
@@ -51,7 +77,8 @@ object OppijaHakutilanteillaLaajatTiedot {
       yhteystiedot = Seq.empty,
       kuntailmoitukset = Seq.empty,
       oppivelvollisuudenKeskeytykset = Seq.empty,
-      onOikeusTehdäKuntailmoitus = None
+      onOikeusTehdäKuntailmoitus = None,
+      lisätiedot = Seq.empty
     )
   }
 
@@ -70,51 +97,6 @@ case class OpiskeluoikeusLisätiedot(
   opiskeluoikeusOid: ValpasOpiskeluoikeus.Oid,
   oppilaitosOid: ValpasOppilaitos.Oid,
   muuHaku: Boolean
-)
-
-case class OppijaHakutilanteillaSuppeatTiedot(
-  oppija: ValpasOppijaSuppeatTiedot,
-  hakutilanteet: Seq[ValpasHakutilanneSuppeatTiedot],
-  hakutilanneError: Option[String],
-  kuntailmoitukset: Seq[ValpasKuntailmoitusSuppeatTiedot],
-  oppivelvollisuudenKeskeytykset: Seq[ValpasOppivelvollisuudenKeskeytys],
-  lisätiedot: Seq[OpiskeluoikeusLisätiedot],
-)
-
-object OppijaHakutilanteillaSuppeatTiedot {
-  def apply(laajatTiedot: OppijaHakutilanteillaLaajatTiedot)
-  : OppijaHakutilanteillaSuppeatTiedot = {
-    OppijaHakutilanteillaSuppeatTiedot(
-      oppija = ValpasOppijaSuppeatTiedot(laajatTiedot.oppija),
-      hakutilanteet = laajatTiedot.hakutilanteet.map(ValpasHakutilanneSuppeatTiedot.apply),
-      hakutilanneError = laajatTiedot.hakutilanneError,
-      kuntailmoitukset = laajatTiedot.kuntailmoitukset.map(ValpasKuntailmoitusSuppeatTiedot.apply),
-      oppivelvollisuudenKeskeytykset = laajatTiedot.oppivelvollisuudenKeskeytykset,
-      lisätiedot = Seq.empty
-    )
-  }
-
-  def apply(laajatTiedot: OppijaHakutilanteillaLaajatTiedot, lisätiedot: Seq[OpiskeluoikeusLisätiedotRow])
-  : OppijaHakutilanteillaSuppeatTiedot = {
-    OppijaHakutilanteillaSuppeatTiedot(
-      oppija = ValpasOppijaSuppeatTiedot(laajatTiedot.oppija),
-      hakutilanteet = laajatTiedot.hakutilanteet.map(ValpasHakutilanneSuppeatTiedot.apply),
-      hakutilanneError = laajatTiedot.hakutilanneError,
-      kuntailmoitukset = laajatTiedot.kuntailmoitukset.map(ValpasKuntailmoitusSuppeatTiedot.apply),
-      oppivelvollisuudenKeskeytykset = laajatTiedot.oppivelvollisuudenKeskeytykset,
-      lisätiedot = lisätiedot.map(l => OpiskeluoikeusLisätiedot(
-        oppijaOid = l.oppijaOid,
-        opiskeluoikeusOid = l.opiskeluoikeusOid,
-        oppilaitosOid = l.oppilaitosOid,
-        muuHaku = l.muuHaku
-      )),
-    )
-  }
-}
-
-case class OppijaKuntailmoituksillaSuppeatTiedot (
-  oppija: ValpasOppijaSuppeatTiedot,
-  kuntailmoitukset: Seq[ValpasKuntailmoitusSuppeatTiedot],
 )
 
 class ValpasOppijaService(
@@ -138,29 +120,28 @@ class ValpasOppijaService(
     ValpasRooli.KUNTA,
   )
 
-  def getHakeutumisvalvottavatOppijatSuppeatTiedot
+  def getHakeutumisvalvottavatOppijatLaajatTiedot
     (oppilaitosOid: ValpasOppilaitos.Oid, hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value)
     (implicit session: ValpasSession)
-  : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =
+  : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] =
     getHakeutumisvalvottavatOppijatLaajatTiedotHakutilanteilla(
       ValpasRooli.OPPILAITOS_HAKEUTUMINEN,
       oppilaitosOid,
       hakeutumisvalvontaTieto
     ).map(poistaKuntailmoitetutOpiskeluoikeudet(säästäJosOpiskeluoikeusVoimassa = false))
       .map(lisätiedotRepository.readForOppijat)
-      .map(_.map(Function.tupled(OppijaHakutilanteillaSuppeatTiedot.apply)))
+      .map(_.map(oppijaLisätiedotTuple => oppijaLisätiedotTuple._1.withLisätiedot(oppijaLisätiedotTuple._2)))
 
-  def getSuorittamisvalvottavatOppijatSuppeatTiedot
+  def getSuorittamisvalvottavatOppijatLaajatTiedot
     (oppilaitosOid: ValpasOppilaitos.Oid)
     (implicit session: ValpasSession)
-  : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =
+  : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] =
     getOppijatLaajatTiedotIlmanHakutilanteita(ValpasRooli.OPPILAITOS_SUORITTAMINEN, oppilaitosOid)
       .map(_.map(poistaEronneetOpiskeluoikeudetJoillaUusiKelpaavaOpiskelupaikka))
       .map(poistaKuntailmoitetutOpiskeluoikeudet(säästäJosOpiskeluoikeusVoimassa = true))
       // poista oppijat, joille ei eronneiden poiston jälkeen jäänyt jäljelle yhtään suorittamisvalvottavia opiskeluoikeuksia
       .map(_.filter(onSuorittamisvalvottaviaOpiskeluoikeuksia))
       .map(_.map(fetchOppivelvollisuudenKeskeytykset))
-      .map(_.map(OppijaHakutilanteillaSuppeatTiedot.apply))
       .map(_.map(poistaMuutKuinVoimassaolevatKeskeytykset))
 
   private def poistaEronneetOpiskeluoikeudetJoillaUusiKelpaavaOpiskelupaikka(
@@ -248,14 +229,14 @@ class ValpasOppijaService(
     oppija.oppija.opiskeluoikeudet.exists(_.onSuorittamisValvottava)
 
   private def poistaMuutKuinVoimassaolevatKeskeytykset(
-    oppija: OppijaHakutilanteillaSuppeatTiedot
-  ): OppijaHakutilanteillaSuppeatTiedot =
+    oppija: OppijaHakutilanteillaLaajatTiedot
+  ): OppijaHakutilanteillaLaajatTiedot =
     oppija.copy(oppivelvollisuudenKeskeytykset = oppija.oppivelvollisuudenKeskeytykset.filter(_.voimassa))
 
-  def getKunnanOppijatSuppeatTiedot
+  def getKunnanOppijatLaajatTiedot
     (kuntaOid: Organisaatio.Oid)
     (implicit session: ValpasSession)
-  : Either[HttpStatus, Seq[OppijaKuntailmoituksillaSuppeatTiedot]] = {
+  : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
     accessResolver.assertAccessToOrg(ValpasRooli.KUNTA, kuntaOid)
       // Haetaan kuntailmoitukset Seq[ValpasKuntailmoitusLaajatTiedot]
       .flatMap(_ => application.valpasKuntailmoitusService.getKuntailmoituksetKunnalleIlmanKäyttöoikeustarkistusta(kuntaOid))
@@ -280,16 +261,15 @@ class ValpasOppijaService(
       // Ryhmitellään henkilöiden master-oidien perusteella Seq[Seq[(ValpasOppijaLaajatTiedot, ValpasKuntailmoitusLaajatTiedot)]]
       .map(_.groupBy(_._1.henkilö.oid).values.toSeq)
 
-      // Kääräistään tuplelistat muotoon Seq[OppijaKuntailmoituksillaSuppeatTiedot]
+      // Kääräistään tuplelistat muotoon Seq[OppijaHakutilanteillaLaajatTiedot]
       .map(_.map(oppijaJaKuntailmoitusTuples => {
         val oppija = oppijaJaKuntailmoitusTuples.head._1
         val kuntailmoituksetLaajatTiedot = oppijaJaKuntailmoitusTuples.map(_._2)
         val kuntailmoitukset = lisääAktiivisuustiedot(oppija)(kuntailmoituksetLaajatTiedot)
 
-        OppijaKuntailmoituksillaSuppeatTiedot(
-          oppija = ValpasOppijaSuppeatTiedot(oppija),
+        OppijaHakutilanteillaLaajatTiedot(
+          oppija = oppija,
           kuntailmoitukset = kuntailmoitukset
-            .map(ValpasKuntailmoitusSuppeatTiedot.apply)
         )
       }))
 
@@ -624,24 +604,12 @@ class ValpasOppijaService(
     )
   }
 
-  def getHakeutumisenvalvonnanKunnalleTehdytIlmoitukset
-    (oppilaitosOid: ValpasOppilaitos.Oid)
-    (implicit session: ValpasSession)
-  : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =
-    getOppilaitoksenKunnalleTekemätIlmoitukset(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, oppilaitosOid)
-
-  def getSuorittamisvalvonnanKunnalleTehdytIlmoitukset
-    (oppilaitosOid: ValpasOppilaitos.Oid)
-    (implicit session: ValpasSession)
-  : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =
-    getOppilaitoksenKunnalleTekemätIlmoitukset(ValpasRooli.OPPILAITOS_SUORITTAMINEN, oppilaitosOid)
-
-  private def getOppilaitoksenKunnalleTekemätIlmoitukset(
+  def getOppilaitoksenKunnalleTekemätIlmoituksetLaajatTiedot(
     rooli: ValpasRooli.Role,
     oppilaitosOid: ValpasOppilaitos.Oid
   )(
     implicit session: ValpasSession
-  ) : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] = {
+  ) : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
     application.valpasKuntailmoitusService.getOppilaitoksenTekemätIlmoituksetIlmanKäyttöoikeustarkistusta(oppilaitosOid)
       .map(ilmoitukset => {
         val oppijaOids = ilmoitukset.map(_.oppijaOid.get)
@@ -652,13 +620,14 @@ class ValpasOppijaService(
           .filterByOppijaAccess(rooli)(oppijat)
           .map(OppijaHakutilanteillaLaajatTiedot.apply)
         val oppijatLisätiedoilla = lisätiedotRepository.readForOppijat(oppijatJoihinKatseluoikeus)
-        val oppijatSuppeatTiedot = oppijatLisätiedoilla.map(Function.tupled(OppijaHakutilanteillaSuppeatTiedot.apply))
+        val oppijatLaajatTiedot = oppijatLisätiedoilla.map(oppijaLisätiedotTuple =>
+          oppijaLisätiedotTuple._1.withLisätiedot(oppijaLisätiedotTuple._2)
+        )
 
         // Lisää kuntailmoitukset oppijan tietoihin
-        oppijatSuppeatTiedot.map(oppija => oppija.copy(
+        oppijatLaajatTiedot.map(oppija => oppija.copy(
           kuntailmoitukset = ilmoitukset
             .filter(ilmoitus => oppija.oppija.henkilö.kaikkiOidit.contains(ilmoitus.oppijaOid.get))
-            .map(ValpasKuntailmoitusSuppeatTiedot.apply)
         ))
       })
   }

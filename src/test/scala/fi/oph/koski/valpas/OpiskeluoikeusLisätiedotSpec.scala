@@ -10,7 +10,7 @@ import org.scalatest.BeforeAndAfterAll
 
 class OpiskeluoikeusLisätiedotSpec extends ValpasTestBase with BeforeAndAfterAll {
   private val repository = KoskiApplicationForTests.valpasOpiskeluoikeusLisätiedotRepository
-  private val oppijaService = KoskiApplicationForTests.valpasOppijaService
+  private val oppijaLaajatTiedotService = KoskiApplicationForTests.valpasOppijaLaajatTiedotService
 
   override def afterAll(): Unit = {
     repository.truncate() // Clean up database
@@ -28,7 +28,7 @@ class OpiskeluoikeusLisätiedotSpec extends ValpasTestBase with BeforeAndAfterAl
 
   private lazy val oppijaLaajatTiedot = {
     val oppija = ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster
-    oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(oppija.oid)(defaultSession).right.get
+    oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(oppija.oid)(defaultSession).right.get
   }
 
   private lazy val vainViimeinenOpiskeluoikeus = oppijaLaajatTiedot.copy(

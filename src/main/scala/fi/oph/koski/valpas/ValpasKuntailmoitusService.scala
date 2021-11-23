@@ -8,7 +8,7 @@ import fi.oph.koski.organisaatio.Organisaatiotyyppi
 import fi.oph.koski.raportit.AhvenanmaanKunnat
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeusSuppeatTiedot, ValpasOppijaLaajatTiedot, ValpasOppilaitos}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOppijaLaajatTiedot, ValpasOppilaitos}
 import fi.oph.koski.valpas.valpasrepository._
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.koski.valpas.yhteystiedot.{ValpasYhteystiedot, ValpasYhteystietoHakemukselta, ValpasYhteystietoOppijanumerorekisteristä}
@@ -18,7 +18,7 @@ class ValpasKuntailmoitusService(
 ) extends Logging with Timing {
   private val accessResolver = new ValpasAccessResolver
   private val repository = application.valpasKuntailmoitusRepository
-  private val oppijaService = application.valpasOppijaService
+  private val oppijaLaajatTiedotService = application.valpasOppijaLaajatTiedotService
   private val directoryClient = application.directoryClient
   private val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
   private val koodistoViitePalvelu = application.koodistoViitePalvelu
@@ -48,7 +48,7 @@ class ValpasKuntailmoitusService(
           .map(_ => ValpasErrorCategory.forbidden.organisaatio(
             "Käyttäjällä ei ole oikeutta tehdä kuntailmoitusta annetun organisaation nimissä"
           ))
-      o <- oppijaService.getOppijaLaajatTiedot(kaikkiKäyttäjänRoolitOrganisaatiolle, kuntailmoitusInput.oppijaOid.get)
+      o <- oppijaLaajatTiedotService.getOppijaLaajatTiedot(kaikkiKäyttäjänRoolitOrganisaatiolle, kuntailmoitusInput.oppijaOid.get)
       _ <-
         accessResolver.withOppijaAccessAsOrganisaatio(sallitutRoolitOrganisaatiolle, organisaatioOid)(o)
           .left
@@ -214,7 +214,7 @@ class ValpasKuntailmoitusService(
   private def haeOppilaitoksenOppijat(
     oppilaitosOid: ValpasOppilaitos.Oid, oppijaOidit: Seq[String]
   )(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
-    oppijaService.getOppijatLaajatTiedotYhteystiedoilla(oppilaitosOid, oppijaOidit)
+    oppijaLaajatTiedotService.getOppijatLaajatTiedotYhteystiedoilla(oppilaitosOid, oppijaOidit)
   }
 
   private def haeYksittäisetOppijat(
@@ -223,7 +223,7 @@ class ValpasKuntailmoitusService(
     // Tämä hakeminen aiheuttaa monta SQL-queryä. Tätä voisi optimoida, mutta käytännössä tähän metodiin ei toistaiseksi
     // koskaan päädytä kuin yhden oppijan näkymästä, koska listanäkymässä ilmoituksia tehtäessä tekijän
     // oppilaitos on aina tiedossa.
-    HttpStatus.foldEithers(oppijaOidit.map(oppijaOid => oppijaService.getOppijaLaajatTiedotYhteystiedoilla(oppijaOid)).toSeq)
+    HttpStatus.foldEithers(oppijaOidit.map(oppijaOid => oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoilla(oppijaOid)).toSeq)
   }
 
   private def tarkistaOikeudetJaJärjestäOppijat(

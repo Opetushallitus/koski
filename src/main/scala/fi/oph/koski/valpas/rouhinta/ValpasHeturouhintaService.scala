@@ -16,7 +16,7 @@ class ValpasHeturouhintaService(application: KoskiApplication)
 {
   private val rajapäivätService = application.valpasRajapäivätService
   private val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
-  private val oppijaService = application.valpasOppijaService
+  private val oppijaLaajatTiedotService = application.valpasOppijaLaajatTiedotService
   private val rouhintaOvKeskeytyksetService = application.valpasRouhintaOppivelvollisuudenKeskeytysService
 
   private val maxHetuCount = application.config.getInt("valpas.rouhintaMaxHetuCount")
@@ -28,7 +28,7 @@ class ValpasHeturouhintaService(application: KoskiApplication)
 
       rouhintaTimed("haeHetulistanPerusteella", hetut.size) {
         val (validitHetut, virheellisetHetut) = hetut.partition(hetu => Hetu.validate(hetu, acceptSynthetic = false).isRight)
-        val oppijatKoskessa = oppijaService.getOppijaOiditHetuillaIlmanOikeustarkastusta(validitHetut)
+        val oppijatKoskessa = oppijaLaajatTiedotService.getOppijaOiditHetuillaIlmanOikeustarkastusta(validitHetut)
         val koskestaLöytymättömätHetut = validitHetut.diff(oppijatKoskessa.map(_.hetu))
 
         val (oppijatJotkaOnrissaMuttaEiKoskessa, oppijanumerorekisterinUlkopuolisetHetut) = haeOppijanumerorekisteristä(koskestaLöytymättömätHetut)
@@ -36,7 +36,7 @@ class ValpasHeturouhintaService(application: KoskiApplication)
         val (oppivelvollisetOnrissa, oppivelvollisuudenUlkopuolisetOnrissa) = oppijatJotkaOnrissaMuttaEiKoskessa.partition(onOppivelvollinenPelkänIänPerusteella)
         val (oppivelvollisetKoskessa, oppivelvollisuudenUlkopuolisetKoskessa) = oppijatKoskessa.partition(_.oppivelvollisuusVoimassa)
 
-        oppijaService
+        oppijaLaajatTiedotService
           // Kunnan käyttäjällä on aina oikeudet kaikkiin oppijoihin, joilla on oppivelvollisuus voimassa, joten
           // käyttöoikeustarkistusta ei tarvitse tehdä
           .getOppijalistaIlmanOikeustarkastusta(oppivelvollisetKoskessa.map(_.masterOid))

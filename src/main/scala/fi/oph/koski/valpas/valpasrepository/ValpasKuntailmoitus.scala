@@ -7,35 +7,6 @@ import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystietojenAlkuperä
 import java.time.LocalDateTime
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeus, ValpasOpiskeluoikeusLaajatTiedot, ValpasOppijaLaajatTiedot, ValpasRajapäivätService}
 
-case class ValpasKuntailmoitusSuppeatTiedot(
-  oppijaOid: Option[String],
-  id: Option[String], // Oikeasti UUID - scala-schemasta puuttuu tuki UUID-tyypille
-  tekijä: ValpasKuntailmoituksenTekijäSuppeatTiedot,
-  kunta: OrganisaatioWithOid,
-  aikaleima: Option[LocalDateTime],
-  // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn ilmoituksen tiedoista,
-  // tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa.
-  hakenutMuualle: Option[Boolean],
-  // Option, koska relevantti kenttä vain haettaessa ilmoituksia tietylle kunnalle
-  onUudempiaIlmoituksiaMuihinKuntiin: Option[Boolean],
-  aktiivinen: Option[Boolean],
-)
-
-object ValpasKuntailmoitusSuppeatTiedot {
-  def apply(laajatTiedot: ValpasKuntailmoitusLaajatTiedot): ValpasKuntailmoitusSuppeatTiedot = {
-    ValpasKuntailmoitusSuppeatTiedot(
-      oppijaOid = laajatTiedot.oppijaOid,
-      id = laajatTiedot.id,
-      tekijä = ValpasKuntailmoituksenTekijäSuppeatTiedot(laajatTiedot.tekijä),
-      kunta = laajatTiedot.kunta,
-      aikaleima = laajatTiedot.aikaleima,
-      hakenutMuualle = laajatTiedot.hakenutMuualle,
-      onUudempiaIlmoituksiaMuihinKuntiin = laajatTiedot.onUudempiaIlmoituksiaMuihinKuntiin,
-      aktiivinen = laajatTiedot.aktiivinen,
-    )
-  }
-}
-
 case class ValpasKuntailmoitusLaajatTiedot(
   oppijaOid: Option[String],
   id: Option[String], // Oikeasti UUID - scala-schemasta puuttuu tuki UUID-tyypille
@@ -69,16 +40,6 @@ case class ValpasKuntailmoitusLaajatTiedot(
 
   def withAktiivinen(aktiivinen: Boolean): ValpasKuntailmoitusLaajatTiedot =
     this.copy(aktiivinen = Some(aktiivinen))
-}
-
-case class ValpasKuntailmoituksenTekijäSuppeatTiedot(
-  organisaatio: OrganisaatioWithOid
-)
-
-object ValpasKuntailmoituksenTekijäSuppeatTiedot {
-  def apply(laajatTiedot: ValpasKuntailmoituksenTekijäLaajatTiedot): ValpasKuntailmoituksenTekijäSuppeatTiedot = {
-    ValpasKuntailmoituksenTekijäSuppeatTiedot(laajatTiedot.organisaatio)
-  }
 }
 
 case class ValpasKuntailmoituksenTekijäLaajatTiedot(
