@@ -21,34 +21,6 @@ trait ValpasKuntailmoitus {
   def aikaleima: Option[LocalDateTime]
 }
 
-object ValpasKuntailmoitus {
-  def automaattisestiArkistoitava(
-    opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot],
-    kaikkiIlmoitukset: Seq[ValpasKuntailmoitus],
-  )(
-    ilmoitus: ValpasKuntailmoitus
-  ): Boolean = {
-    val saanutOpiskelupaikan = opiskeluoikeudet.exists(oo =>
-      oo.oppivelvollisuudenSuorittamiseenKelpaava &&
-        (oo.isOpiskelu || oo.isOpiskeluTulevaisuudessa)
-    )
-
-    val uudemmatIlmoitukset = ilmoitus.aikaleima match {
-      case None => Seq.empty
-      case Some(käsiteltäväAikaleima) => {
-        kaikkiIlmoitukset.filter(_.aikaleima match {
-          case None => false
-          case Some(aikaleima) => aikaleima.isAfter(käsiteltäväAikaleima)
-        })
-      }
-    }
-
-    val asuinkuntaVaihtunut = uudemmatIlmoitukset.exists(_.kunta.oid != ilmoitus.kunta.oid)
-
-    saanutOpiskelupaikan || asuinkuntaVaihtunut
-  }
-}
-
 trait ValpasKuntailmoituksenTekijä {
   def organisaatio: OrganisaatioWithOid // Tekijä voi olla joko kunta tai oppilaitos. Validointi, että on jompikumpi, tehdään erikseen.
 }
