@@ -16,8 +16,11 @@ export type KuntailmoitusLaajatTiedot = {
   hakenutMuualle?: boolean
 }
 
-export type KuntailmoitusLaajatTiedotLisätiedoilla = {
-  kuntailmoitus: KuntailmoitusLaajatTiedot
+export type KuntailmoitusLaajatTiedotOppijaOidilla = KuntailmoitusLaajatTiedot & {
+  oppijaOid: Oid
+}
+
+export type KuntailmoitusLaajatTiedotLisätiedoilla = KuntailmoitusLaajatTiedot & {
   aktiivinen: boolean
 }
 
@@ -72,7 +75,7 @@ export const isAktiivinenKuntailmoitus = (
 
 export const aikaleimaOrd = Ord.contramap(
   (kuntailmoitus: KuntailmoitusLaajatTiedotLisätiedoilla) =>
-    kuntailmoitus.kuntailmoitus.aikaleima || "0000-00-00"
+    kuntailmoitus.aikaleima || "0000-00-00"
 )(string.Ord)
 
 export const sortKuntailmoitusLaajatTiedotLisätiedoilla = A.sort(

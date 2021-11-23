@@ -26,11 +26,11 @@ class ValpasKuntailmoitusService(
   private val organisaatioRepository = application.organisaatioRepository
 
   def createKuntailmoitus(
-    kuntailmoitusInput: ValpasKuntailmoitusLaajatTiedotJaOppijaOid
-  )(implicit session: ValpasSession): Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
-    val organisaatioOid = kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio.oid
+    kuntailmoitusInput: ValpasKuntailmoitusLaajatTiedot
+  )(implicit session: ValpasSession): Either[HttpStatus, ValpasKuntailmoitusLaajatTiedot] = {
+    val organisaatioOid = kuntailmoitusInput.tekijä.organisaatio.oid
 
-    val sallitutRoolit = kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio match {
+    val sallitutRoolit = kuntailmoitusInput.tekijä.organisaatio match {
       case o: OrganisaatioWithOid if isAktiivinenKunta(o) => Right(Seq(ValpasRooli.KUNTA))
       case _: Oppilaitos => Right(Seq(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, ValpasRooli.OPPILAITOS_SUORITTAMINEN))
       case o: Any => Left(ValpasErrorCategory.badRequest.validation.kuntailmoituksenTekijä(
@@ -48,14 +48,14 @@ class ValpasKuntailmoitusService(
           .map(_ => ValpasErrorCategory.forbidden.organisaatio(
             "Käyttäjällä ei ole oikeutta tehdä kuntailmoitusta annetun organisaation nimissä"
           ))
-      o <- oppijaService.getOppijaLaajatTiedot(kaikkiKäyttäjänRoolitOrganisaatiolle, kuntailmoitusInput.oppijaOid)
+      o <- oppijaService.getOppijaLaajatTiedot(kaikkiKäyttäjänRoolitOrganisaatiolle, kuntailmoitusInput.oppijaOid.get)
       _ <-
         accessResolver.withOppijaAccessAsOrganisaatio(sallitutRoolitOrganisaatiolle, organisaatioOid)(o)
           .left
           .map(_ => ValpasErrorCategory.forbidden.oppija(
             "Käyttäjällä ei ole oikeuksia tehdä kuntailmoitusta annetusta oppijasta"
           ))
-      kontekstiOpiskeluoikeudet = o.opiskeluoikeudet.filter(_.oppilaitos.oid == kuntailmoitusInput.kuntailmoitus.tekijä.organisaatio.oid).map(_.oid)
+      kontekstiOpiskeluoikeudet = o.opiskeluoikeudet.filter(_.oppilaitos.oid == kuntailmoitusInput.tekijä.organisaatio.oid).map(_.oid)
       result <- repository.create(kuntailmoitusInput, kontekstiOpiskeluoikeudet)
     } yield result
   }
@@ -70,13 +70,13 @@ class ValpasKuntailmoitusService(
 
   def getKuntailmoituksetKunnalleIlmanKäyttöoikeustarkistusta
     (kuntaOid: Organisaatio.Oid)
-  : Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]] = {
+  : Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedot]] = {
     repository.queryByKunta(kuntaOid)
   }
 
   def getOppilaitoksenTekemätIlmoituksetIlmanKäyttöoikeustarkistusta
     (organisaatioOid: Organisaatio.Oid)
-  : Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]] = {
+  : Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedot]] = {
     repository.queryByTekijäOrganisaatio(organisaatioOid)
   }
 

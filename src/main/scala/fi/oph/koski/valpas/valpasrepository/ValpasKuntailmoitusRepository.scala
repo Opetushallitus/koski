@@ -35,34 +35,34 @@ class ValpasKuntailmoitusRepository(
     deserializer.extract[IlmoitusLisätiedotData](strictDeserialization)(data)
 
   private def toDbRows(
-    data: ValpasKuntailmoitusLaajatTiedotJaOppijaOid,
+    data: ValpasKuntailmoitusLaajatTiedot,
     kontekstiOpiskeluoikeudet: Seq[ValpasOpiskeluoikeus.Oid]
   )(
     tekijäHenkilöOid: String
   ) : Either[HttpStatus, (IlmoitusRow, IlmoitusLisätiedotRow, Seq[IlmoitusOpiskeluoikeusKontekstiRow])] = {
     for {
-      tekijäHenkilö <- data.kuntailmoitus.tekijä.henkilö.toRight(
+      tekijäHenkilö <- data.tekijä.henkilö.toRight(
         ValpasErrorCategory.internalError("Tekijähenkilö puuttuu")
       )
-      oppijaY <- data.kuntailmoitus.oppijanYhteystiedot.toRight(
+      oppijaY <- data.oppijanYhteystiedot.toRight(
         ValpasErrorCategory.internalError("Oppijan yhteystiedot puuttuvat")
       )
-      hakenutMuualle <- data.kuntailmoitus.hakenutMuualle.toRight(
+      hakenutMuualle <- data.hakenutMuualle.toRight(
         ValpasErrorCategory.internalError("'Hakenut ulkomaille' puuttuu")
       )
     } yield {
       val ilmoitus = IlmoitusRow(
         luotu = valpasRajapäivätService.tarkastelupäivä.atTime(LocalTime.now()),
-        oppijaOid = data.oppijaOid,
-        kuntaOid = data.kuntailmoitus.kunta.oid,
-        tekijäOrganisaatioOid = data.kuntailmoitus.tekijä.organisaatio.oid,
+        oppijaOid = data.oppijaOid.get,
+        kuntaOid = data.kunta.oid,
+        tekijäOrganisaatioOid = data.tekijä.organisaatio.oid,
         tekijäOid = tekijäHenkilöOid
       )
       val lisätiedot = IlmoitusLisätiedotRow(
         ilmoitusUuid = ilmoitus.uuid,
         data = serialize(
           IlmoitusLisätiedotData(
-            yhteydenottokieli = data.kuntailmoitus.yhteydenottokieli.map(_.koodiarvo),
+            yhteydenottokieli = data.yhteydenottokieli.map(_.koodiarvo),
             oppijaYhteystiedot = OppijaYhteystiedotData(
               puhelin = oppijaY.puhelinnumero,
               sähköposti = oppijaY.email,
@@ -78,8 +78,8 @@ class ValpasKuntailmoitusRepository(
               puhelin = tekijäHenkilö.puhelinnumero,
               sähköposti = tekijäHenkilö.email
             ),
-            tekijäOrganisaatio = data.kuntailmoitus.tekijä.organisaatio,
-            kunta = data.kuntailmoitus.kunta,
+            tekijäOrganisaatio = data.tekijä.organisaatio,
+            kunta = data.kunta,
             hakenutMuualle = hakenutMuualle
           )
         )
@@ -95,7 +95,7 @@ class ValpasKuntailmoitusRepository(
   }
 
   private def fromDbRows(il: IlmoitusRow, lisätiedotRow: Option[IlmoitusLisätiedotRow])
-  : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
+  : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedot] = {
     lisätiedotRow match {
       case Some(lisätiedot) => fromDbRows(il, lisätiedot)
       case None => Right(fromDbRows(il))
@@ -103,71 +103,69 @@ class ValpasKuntailmoitusRepository(
   }
 
   private def fromDbRows(il: IlmoitusRow, lisätiedotRow: IlmoitusLisätiedotRow)
-  : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
+  : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedot] = {
     for {
       li <- deserialize(lisätiedotRow.data)
-    } yield ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
-      oppijaOid = il.oppijaOid,
-      kuntailmoitus = ValpasKuntailmoitusLaajatTiedot(
-        id = Some(il.uuid.toString),
-        kunta = li.kunta,
-        aikaleima = Some(il.luotu),
-        tekijä = ValpasKuntailmoituksenTekijäLaajatTiedot(
-          organisaatio = li.tekijäOrganisaatio,
-          henkilö = Some(ValpasKuntailmoituksenTekijäHenkilö(
-            oid = Some(il.tekijäOid),
-            etunimet = li.tekijäYhteystiedot.etunimet,
-            sukunimi = li.tekijäYhteystiedot.sukunimi,
-            kutsumanimi = li.tekijäYhteystiedot.kutsumanimi,
-            email = li.tekijäYhteystiedot.sähköposti,
-            puhelinnumero = li.tekijäYhteystiedot.puhelin
-          ))
-        ),
-        yhteydenottokieli = li.yhteydenottokieli.map(koodiarvo => Koodistokoodiviite(koodiarvo, "kieli")),
-        oppijanYhteystiedot = Some(ValpasKuntailmoituksenOppijanYhteystiedot(
-          puhelinnumero = li.oppijaYhteystiedot.puhelin,
-          email = li.oppijaYhteystiedot.sähköposti,
-          lähiosoite = li.oppijaYhteystiedot.lähiosoite,
-          postinumero = li.oppijaYhteystiedot.postinumero,
-          postitoimipaikka = li.oppijaYhteystiedot.postitoimipaikka,
-          maa = li.oppijaYhteystiedot.maa
-        )),
-        hakenutMuualle = Some(li.hakenutMuualle),
-        onUudempiaIlmoituksiaMuihinKuntiin = None,
-      )
+    } yield ValpasKuntailmoitusLaajatTiedot(
+      oppijaOid = Some(il.oppijaOid),
+      id = Some(il.uuid.toString),
+      kunta = li.kunta,
+      aikaleima = Some(il.luotu),
+      tekijä = ValpasKuntailmoituksenTekijäLaajatTiedot(
+        organisaatio = li.tekijäOrganisaatio,
+        henkilö = Some(ValpasKuntailmoituksenTekijäHenkilö(
+          oid = Some(il.tekijäOid),
+          etunimet = li.tekijäYhteystiedot.etunimet,
+          sukunimi = li.tekijäYhteystiedot.sukunimi,
+          kutsumanimi = li.tekijäYhteystiedot.kutsumanimi,
+          email = li.tekijäYhteystiedot.sähköposti,
+          puhelinnumero = li.tekijäYhteystiedot.puhelin
+        ))
+      ),
+      yhteydenottokieli = li.yhteydenottokieli.map(koodiarvo => Koodistokoodiviite(koodiarvo, "kieli")),
+      oppijanYhteystiedot = Some(ValpasKuntailmoituksenOppijanYhteystiedot(
+        puhelinnumero = li.oppijaYhteystiedot.puhelin,
+        email = li.oppijaYhteystiedot.sähköposti,
+        lähiosoite = li.oppijaYhteystiedot.lähiosoite,
+        postinumero = li.oppijaYhteystiedot.postinumero,
+        postitoimipaikka = li.oppijaYhteystiedot.postitoimipaikka,
+        maa = li.oppijaYhteystiedot.maa
+      )),
+      hakenutMuualle = Some(li.hakenutMuualle),
+      onUudempiaIlmoituksiaMuihinKuntiin = None,
+      aktiivinen = None
     )
   }
 
   private def fromDbRows(il: IlmoitusRow)
-  : ValpasKuntailmoitusLaajatTiedotJaOppijaOid = {
-    ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
-      oppijaOid = il.oppijaOid,
-      kuntailmoitus = ValpasKuntailmoitusLaajatTiedot(
-        id = Some(il.uuid.toString),
-        kunta = OidOrganisaatio(oid = il.kuntaOid),
-        aikaleima = Some(il.luotu),
-        tekijä = ValpasKuntailmoituksenTekijäLaajatTiedot(
-          organisaatio = OidOrganisaatio(oid = il.tekijäOrganisaatioOid),
-          henkilö = Some(ValpasKuntailmoituksenTekijäHenkilö(
-            oid = Some(il.tekijäOid),
-            etunimet = None,
-            sukunimi = None,
-            kutsumanimi = None,
-            email = None,
-            puhelinnumero = None
-          ))
-        ),
-        yhteydenottokieli = None,
-        oppijanYhteystiedot = None,
-        hakenutMuualle = None,
-        onUudempiaIlmoituksiaMuihinKuntiin = None,
-      )
+  : ValpasKuntailmoitusLaajatTiedot = {
+    ValpasKuntailmoitusLaajatTiedot(
+      oppijaOid = Some(il.oppijaOid),
+      id = Some(il.uuid.toString),
+      kunta = OidOrganisaatio(oid = il.kuntaOid),
+      aikaleima = Some(il.luotu),
+      tekijä = ValpasKuntailmoituksenTekijäLaajatTiedot(
+        organisaatio = OidOrganisaatio(oid = il.tekijäOrganisaatioOid),
+        henkilö = Some(ValpasKuntailmoituksenTekijäHenkilö(
+          oid = Some(il.tekijäOid),
+          etunimet = None,
+          sukunimi = None,
+          kutsumanimi = None,
+          email = None,
+          puhelinnumero = None
+        ))
+      ),
+      yhteydenottokieli = None,
+      oppijanYhteystiedot = None,
+      hakenutMuualle = None,
+      onUudempiaIlmoituksiaMuihinKuntiin = None,
+      aktiivinen = None
     )
   }
 
-  def create(model: ValpasKuntailmoitusLaajatTiedotJaOppijaOid, kontekstiOpiskeluoikeudet: Seq[ValpasOpiskeluoikeus.Oid])
-  : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
-    model.kuntailmoitus.tekijä.henkilö
+  def create(model: ValpasKuntailmoitusLaajatTiedot, kontekstiOpiskeluoikeudet: Seq[ValpasOpiskeluoikeus.Oid])
+  : Either[HttpStatus, ValpasKuntailmoitusLaajatTiedot] = {
+    model.tekijä.henkilö
       .toRight(ValpasErrorCategory.internalError("tekijä puuttuu"))
       .flatMap(_.oid.toRight(ValpasErrorCategory.internalError("tekijän oid puuttuu")))
       .flatMap(toDbRows(model, kontekstiOpiskeluoikeudet))
@@ -183,22 +181,21 @@ class ValpasKuntailmoitusRepository(
 
   def queryOppijat(oppijaOids: Set[String]): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedot]] = {
     query(_.oppijaOid inSetBind oppijaOids)
-      .map(_.map(_.kuntailmoitus))
   }
 
-  def queryByKunta(kuntaOid: Organisaatio.Oid): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]] = {
+  def queryByKunta(kuntaOid: Organisaatio.Oid): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedot]] = {
     query(_.kuntaOid === kuntaOid)
       .map(withUudempiIlmoitusToiseenKuntaan)
   }
 
-  def queryByTekijäOrganisaatio(organisaatioOid: Organisaatio.Oid): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]] = {
+  def queryByTekijäOrganisaatio(organisaatioOid: Organisaatio.Oid): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedot]] = {
     query(_.tekijäOrganisaatioOid === organisaatioOid)
   }
 
   private def query[T <: slick.lifted.Rep[_]]
     (filterFn: (IlmoitusTable) => T)
     (implicit wt: slick.lifted.CanBeQueryCondition[T])
-  : Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]] = {
+  : Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedot]] = {
     HttpStatus.foldEithers(
       runDbSync(
         Ilmoitukset
@@ -218,17 +215,15 @@ class ValpasKuntailmoitusRepository(
       .map(_.opiskeluoikeusOid)
   }
 
-  private def withUudempiIlmoitusToiseenKuntaan(ilmoitukset: Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]): Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid] = {
-    val ids = ilmoitukset.map(_.kuntailmoitus.id).collect { case Some(id) => id }
+  private def withUudempiIlmoitusToiseenKuntaan(ilmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot]): Seq[ValpasKuntailmoitusLaajatTiedot] = {
+    val ids = ilmoitukset.map(_.id).collect { case Some(id) => id }
 
     val ilmoituksiaMuualle = queryUudempiaIlmoituksiaMuualla(ids)
 
     ilmoitukset.map(i => i.copy(
-      kuntailmoitus = i.kuntailmoitus.copy(
         onUudempiaIlmoituksiaMuihinKuntiin = ilmoituksiaMuualle
-          .find(muu => i.kuntailmoitus.id.contains(muu.uuid))
+          .find(muu => i.id.contains(muu.uuid))
           .map(_.uudempiaIlmoituksiaMuualle)
-      )
     ))
   }
 

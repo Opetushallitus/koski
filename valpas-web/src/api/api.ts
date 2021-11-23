@@ -1,6 +1,6 @@
 import { LocalizationMap } from "../i18n/i18n"
 import { HenkilöhakuResult } from "../state/apitypes/henkilohaku"
-import { KuntailmoitusLaajatTiedot } from "../state/apitypes/kuntailmoitus"
+import { KuntailmoitusLaajatTiedotOppijaOidilla } from "../state/apitypes/kuntailmoitus"
 import { KuntailmoitusPohjatiedot } from "../state/apitypes/kuntailmoituspohjatiedot"
 import { OpiskeluoikeusSuppeatTiedot } from "../state/apitypes/opiskeluoikeus"
 import {
@@ -254,15 +254,11 @@ export const fetchKuntailmoituksenPohjatiedot = (
  * Kuntailmoituksen tallennus
  */
 export const createKuntailmoitus = (
-  oppijaOid: Oid,
-  kuntailmoitus: KuntailmoitusLaajatTiedot
+  kuntailmoitus: KuntailmoitusLaajatTiedotOppijaOidilla
 ) =>
   handleExpiredSession(
     apiPost<void>("valpas/api/kuntailmoitus", {
-      body: {
-        oppijaOid,
-        kuntailmoitus,
-      },
+      body: kuntailmoitus,
     })
   )
 

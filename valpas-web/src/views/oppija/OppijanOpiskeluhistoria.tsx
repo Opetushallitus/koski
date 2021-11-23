@@ -84,7 +84,7 @@ export const OppijanOpiskeluhistoria = (
     return pipe(
       [
         ...ilmoitukset.map((ilmoitus, index) => ({
-          order: orderString("A", ilmoitus.kuntailmoitus.aikaleima, index),
+          order: orderString("A", ilmoitus.aikaleima, index),
           child: (
             <OpiskeluhistoriaIlmoitus
               key={`i-${index}`}
@@ -222,21 +222,19 @@ const OpiskeluhistoriaIlmoitus = ({
       <T id="oppija__ilmoitushistoria_otsikko" />
     </IconSectionHeading>
     <InfoTable size="tighter">
-      {kuntailmoitus.kuntailmoitus.aikaleima && (
+      {kuntailmoitus.aikaleima && (
         <InfoTableRow
           label={t("oppija__ilmoitushistoria_päivämäärä")}
-          value={formatDate(kuntailmoitus.kuntailmoitus.aikaleima)}
+          value={formatDate(kuntailmoitus.aikaleima)}
         />
       )}
       <InfoTableRow
         label={t("oppija__ilmoitushistoria_ilmoittaja")}
-        value={organisaatioNimi(
-          kuntailmoitus.kuntailmoitus.tekijä.organisaatio
-        )}
+        value={organisaatioNimi(kuntailmoitus.tekijä.organisaatio)}
       />
       <InfoTableRow
         label={t("oppija__ilmoitushistoria_kohde")}
-        value={organisaatioNimi(kuntailmoitus.kuntailmoitus.kunta)}
+        value={organisaatioNimi(kuntailmoitus.kunta)}
       />
       <InfoTableRow value={<IlmoitusLink kuntailmoitus={kuntailmoitus} />} />
     </InfoTable>

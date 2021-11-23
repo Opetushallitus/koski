@@ -21,18 +21,13 @@ case class OppijaHakutilanteillaLaajatTiedot(
   hakutilanteet: Seq[ValpasHakutilanneLaajatTiedot],
   hakutilanneError: Option[String],
   yhteystiedot: Seq[ValpasYhteystiedot],
-  kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedotLisätiedoilla],
+  kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot],
   oppivelvollisuudenKeskeytykset: Seq[ValpasOppivelvollisuudenKeskeytys],
   onOikeusTehdäKuntailmoitus: Option[Boolean]
 ) {
   def validate(koodistoviitepalvelu: KoodistoViitePalvelu): OppijaHakutilanteillaLaajatTiedot =
     this.copy(hakutilanteet = hakutilanteet.map(_.validate(koodistoviitepalvelu)))
 }
-
-case class ValpasKuntailmoitusLaajatTiedotLisätiedoilla(
-  kuntailmoitus: ValpasKuntailmoitusLaajatTiedot,
-  aktiivinen: Boolean
-)
 
 object OppijaHakutilanteillaLaajatTiedot {
   def apply(oppija: ValpasOppijaLaajatTiedot, yhteystietoryhmänNimi: LocalizedString, haut: Either[HttpStatus, Seq[Hakukooste]]): OppijaHakutilanteillaLaajatTiedot = {
@@ -262,15 +257,15 @@ class ValpasOppijaService(
     (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[OppijaKuntailmoituksillaSuppeatTiedot]] = {
     accessResolver.assertAccessToOrg(ValpasRooli.KUNTA, kuntaOid)
-      // Haetaan kuntailmoitukset Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid]
+      // Haetaan kuntailmoitukset Seq[ValpasKuntailmoitusLaajatTiedot]
       .flatMap(_ => application.valpasKuntailmoitusService.getKuntailmoituksetKunnalleIlmanKäyttöoikeustarkistusta(kuntaOid))
 
-      // Haetaan kaikki oppijat, (Seq[ValpasKuntailmoitusLaajatTiedotJaOppijaOid], Seq[ValpasOppijaLaajatTiedot])
+      // Haetaan kaikki oppijat, (Seq[ValpasKuntailmoitusLaajatTiedot], Seq[ValpasOppijaLaajatTiedot])
       .map(kuntailmoitukset => (
         kuntailmoitukset,
         accessResolver.filterByOppijaAccess(ValpasRooli.KUNTA)(
           opiskeluoikeusDbService
-            .getOppijat(kuntailmoitukset.map(_.oppijaOid).distinct)
+            .getOppijat(kuntailmoitukset.map(_.oppijaOid.get).distinct)
             .flatMap(asValpasOppijaLaajatTiedot(_).toOption)
         )
       ))
@@ -278,8 +273,8 @@ class ValpasOppijaService(
       // Yhdistetään kuntailmoitukset ja oppijat Seq[(ValpasOppijaLaajatTiedot, ValpasKuntailmoitusLaajatTiedot)]
       .map(kuntailmoituksetOppijat => kuntailmoituksetOppijat._1.flatMap(ilmoitus =>
         kuntailmoituksetOppijat._2
-          .find(oppija => oppija.henkilö.kaikkiOidit.contains(ilmoitus.oppijaOid))
-          .map(oppija => (oppija, ilmoitus.kuntailmoitus)
+          .find(oppija => oppija.henkilö.kaikkiOidit.contains(ilmoitus.oppijaOid.get))
+          .map(oppija => (oppija, ilmoitus)
       )))
 
       // Ryhmitellään henkilöiden master-oidien perusteella Seq[Seq[(ValpasOppijaLaajatTiedot, ValpasKuntailmoitusLaajatTiedot)]]
@@ -563,7 +558,7 @@ class ValpasOppijaService(
 
   private def fetchKuntailmoitukset(
     oppija: ValpasOppijaLaajatTiedot
-  )(implicit session: ValpasSession): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedotLisätiedoilla]] = {
+  )(implicit session: ValpasSession): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedot]] = {
     timed("fetchKuntailmoitukset", 10) {
       application.valpasKuntailmoitusService.getKuntailmoitukset(oppija)
         .map(lisääAktiivisuustiedot(oppija))
@@ -574,7 +569,7 @@ class ValpasOppijaService(
     oppija: ValpasOppijaLaajatTiedot
   )(
     kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot]
-  ): Seq[ValpasKuntailmoitusLaajatTiedotLisätiedoilla] = {
+  ): Seq[ValpasKuntailmoitusLaajatTiedot] = {
     kuntailmoitukset.zipWithIndex.map { case (kuntailmoitus, index) =>
       val ilmoituksentekopäivä = kuntailmoitus.aikaleima.get.toLocalDate
       val aktiivinen = {
@@ -599,7 +594,7 @@ class ValpasOppijaService(
         }
       }
 
-      ValpasKuntailmoitusLaajatTiedotLisätiedoilla(kuntailmoitus, aktiivinen)
+      kuntailmoitus.copy(aktiivinen = Some(aktiivinen))
     }
   }
 
@@ -649,7 +644,7 @@ class ValpasOppijaService(
   ) : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] = {
     application.valpasKuntailmoitusService.getOppilaitoksenTekemätIlmoituksetIlmanKäyttöoikeustarkistusta(oppilaitosOid)
       .map(ilmoitukset => {
-        val oppijaOids = ilmoitukset.map(_.oppijaOid)
+        val oppijaOids = ilmoitukset.map(_.oppijaOid.get)
         val oppijat = opiskeluoikeusDbService
           .getOppijat(oppijaOids)
           .flatMap(asValpasOppijaLaajatTiedot(_).toOption)
@@ -662,8 +657,7 @@ class ValpasOppijaService(
         // Lisää kuntailmoitukset oppijan tietoihin
         oppijatSuppeatTiedot.map(oppija => oppija.copy(
           kuntailmoitukset = ilmoitukset
-            .filter(ilmoitus => oppija.oppija.henkilö.kaikkiOidit.contains(ilmoitus.oppijaOid))
-            .map(_.kuntailmoitus)
+            .filter(ilmoitus => oppija.oppija.henkilö.kaikkiOidit.contains(ilmoitus.oppijaOid.get))
             .map(ValpasKuntailmoitusSuppeatTiedot.apply)
         ))
       })

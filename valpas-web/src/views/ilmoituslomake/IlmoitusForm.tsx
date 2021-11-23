@@ -26,7 +26,7 @@ import { Kieli, Maa } from "../../state/apitypes/koodistot"
 import {
   KuntailmoituksenTekijäLaajatTiedot,
   KuntailmoitusKunta,
-  KuntailmoitusLaajatTiedot,
+  KuntailmoitusLaajatTiedotOppijaOidilla,
 } from "../../state/apitypes/kuntailmoitus"
 import {
   OppijanPohjatiedot,
@@ -99,13 +99,15 @@ const validators: FormValidators<IlmoitusFormValues> = {
 
 const toKuntailmoitusLaajatTiedot = (
   form: IlmoitusFormValues,
+  oppijaOid: Oid,
   tekijä: KuntailmoituksenTekijäLaajatTiedot,
   kunnat: KuntailmoitusKunta[]
-): KuntailmoitusLaajatTiedot | null => {
+): KuntailmoitusLaajatTiedotOppijaOidilla | null => {
   const kunta = kunnat.find((k) => k.oid === form.asuinkunta)
 
   return nonNull(kunta)
     ? {
+        oppijaOid,
         kunta,
         tekijä: {
           organisaatio: trimOrganisaatio(tekijä.organisaatio),
@@ -170,12 +172,13 @@ export const IlmoitusForm = withScroll((props: IlmoitusFormProps) => {
   const submit = form.submitCallback(async (formData) => {
     const kuntailmoitus = toKuntailmoitusLaajatTiedot(
       formData,
+      props.oppijaTiedot.oid,
       props.tekijä,
       props.kunnat
     )
 
     if (kuntailmoitus) {
-      await send.call(props.oppijaTiedot.oid, kuntailmoitus)
+      await send.call(kuntailmoitus)
     }
   })
 

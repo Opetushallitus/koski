@@ -6,7 +6,7 @@ import fi.oph.koski.valpas.{ValpasHenkilöhakuResult, ValpasLöytyiHenkilöhakuR
 import fi.oph.koski.valpas.log.ValpasOperation.ValpasOperation
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasHenkilöLaajatTiedot, ValpasOppilaitos}
 import fi.oph.koski.valpas.rouhinta.HeturouhinnanTulos
-import fi.oph.koski.valpas.valpasrepository.{UusiOppivelvollisuudenKeskeytys, ValpasKuntailmoitusLaajatTiedotJaOppijaOid}
+import fi.oph.koski.valpas.valpasrepository.{UusiOppivelvollisuudenKeskeytys, ValpasKuntailmoitusLaajatTiedot}
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
 object ValpasAuditLog {
@@ -38,16 +38,16 @@ object ValpasAuditLog {
   }
 
   def auditLogOppijaKuntailmoitus
-    (ilmoitus: ValpasKuntailmoitusLaajatTiedotJaOppijaOid)(implicit session: ValpasSession)
+    (ilmoitus: ValpasKuntailmoitusLaajatTiedot)(implicit session: ValpasSession)
   : Unit = {
     AuditLog.log(ValpasAuditLogMessage(
       ValpasOperation.VALPAS_OPPIJA_KUNTAILMOITUS,
       session,
       Map(
-        ValpasAuditLogMessageField.oppijaHenkilöOid -> ilmoitus.oppijaOid,
-        ValpasAuditLogMessageField.ilmoittajaHenkilöOid -> ilmoitus.kuntailmoitus.tekijä.henkilö.map(_.oid.toString).getOrElse(""),
-        ValpasAuditLogMessageField.ilmoittajaOrganisaatioOid -> ilmoitus.kuntailmoitus.tekijä.organisaatio.oid,
-        ValpasAuditLogMessageField.kohdeOrganisaatioOid -> ilmoitus.kuntailmoitus.kunta.oid
+        ValpasAuditLogMessageField.oppijaHenkilöOid -> ilmoitus.oppijaOid.get,
+        ValpasAuditLogMessageField.ilmoittajaHenkilöOid -> ilmoitus.tekijä.henkilö.map(_.oid.toString).getOrElse(""),
+        ValpasAuditLogMessageField.ilmoittajaOrganisaatioOid -> ilmoitus.tekijä.organisaatio.oid,
+        ValpasAuditLogMessageField.kohdeOrganisaatioOid -> ilmoitus.kunta.oid
       )
     ))
   }

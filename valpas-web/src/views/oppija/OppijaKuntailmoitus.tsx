@@ -25,13 +25,13 @@ export type OppijaKuntailmoitusProps = {
 }
 
 export const OppijaKuntailmoitus = (props: OppijaKuntailmoitusProps) => {
-  const { kuntailmoitus, aktiivinen } = props.kuntailmoitus
+  const kuntailmoitus = props.kuntailmoitus
 
   return (
     <Frame>
       <KuntailmoitusHeader
         aikaleima={kuntailmoitus.aikaleima}
-        aktiivinen={aktiivinen}
+        aktiivinen={kuntailmoitus.aktiivinen}
       />
       <Body>
         <ColumnsContainer>
