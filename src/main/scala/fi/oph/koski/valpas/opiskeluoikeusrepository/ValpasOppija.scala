@@ -5,7 +5,6 @@ import fi.oph.koski.schema.annotation.KoodistoUri
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, Maksuttomuus, OikeuttaMaksuttomuuteenPidennetty}
 import fi.oph.koski.valpas.hakukooste._
 import fi.oph.scalaschema.annotation.SyntheticProperty
-
 import java.time.{LocalDate, LocalDateTime}
 
 trait ValpasOppija {
@@ -28,7 +27,11 @@ case class ValpasOppijaLaajatTiedot(
   oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate,
   onOikeusValvoaMaksuttomuutta: Boolean,
   onOikeusValvoaKunnalla: Boolean
-) extends ValpasOppija
+) extends ValpasOppija {
+  def suorittaaOppivelvollisuutta: Boolean = {
+    opiskeluoikeudet.exists(oo => oo.oppivelvollisuudenSuorittamiseenKelpaava && oo.isOpiskelu)
+  }
+}
 
 object ValpasHenkilö {
   type Oid = String
@@ -103,12 +106,35 @@ trait ValpasOpiskeluoikeus {
       .headOption
       .map(LocalDate.parse)
 
+  def viimeisimmätOpiskeluoikeustiedot: Option[ValpasOpiskeluoikeusTiedot] =
+    opiskeluoikeustiedot
+      .map(OrderedOpiskeluoikeusTiedot.apply)
+      .sorted
+      .lastOption
+      .map(_.tiedot)
+
   def opiskeluoikeustiedot: Seq[ValpasOpiskeluoikeusTiedot] =
     Seq(
       perusopetusTiedot,
       perusopetuksenJälkeinenTiedot,
       muuOpetusTiedot,
     ).flatten
+}
+
+case class OrderedOpiskeluoikeusTiedot(
+  tiedot: ValpasOpiskeluoikeusTiedot
+) extends Ordered[OrderedOpiskeluoikeusTiedot] {
+  override def compare(that: OrderedOpiskeluoikeusTiedot): Int =
+    if (tiedot.päättymispäivä != that.tiedot.päättymispäivä) {
+      OrderedOpiskeluoikeusTiedot.compareDates(tiedot.päättymispäivä, that.tiedot.päättymispäivä)
+    } else {
+      OrderedOpiskeluoikeusTiedot.compareDates(tiedot.alkamispäivä, that.tiedot.alkamispäivä)
+    }
+}
+
+object OrderedOpiskeluoikeusTiedot {
+  def compareDates(a: Option[String], b: Option[String]): Int =
+    a.getOrElse("9999-99-99").compare(b.getOrElse("9999-99-99"))
 }
 
 case class ValpasOpiskeluoikeusLaajatTiedot(

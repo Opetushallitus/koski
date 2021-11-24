@@ -41,8 +41,11 @@ class ValpasHeturouhintaService(application: KoskiApplication)
           // käyttöoikeustarkistusta ei tarvitse tehdä
           .getOppijalistaIlmanOikeustarkastusta(oppivelvollisetKoskessa.map(_.masterOid))
           .map(oppivelvollisetKoskessa => {
-            val (suorittavatKoski, eiSuorittavatKoski) =
-              oppivelvollisetKoskessa.map(ValpasRouhintaOppivelvollinen.apply).partition(_.suorittaaOppivelvollisuutta)
+            val (suorittavatKoskiLaajatTiedot, eiSuorittavatKoskiLaajatTiedot) =
+              oppivelvollisetKoskessa.partition(_.oppija.suorittaaOppivelvollisuutta)
+
+            val suorittavatKoski = suorittavatKoskiLaajatTiedot.map(ValpasRouhintaOppivelvollinen.apply)
+            val eiSuorittavatKoski = eiSuorittavatKoskiLaajatTiedot.map(ValpasRouhintaOppivelvollinen.apply)
 
             val eiSuorittavatOnr =
               oppivelvollisetOnrissa.map(ValpasRouhintaOppivelvollinen.apply)

@@ -131,8 +131,8 @@ class ValpasKuntarouhintaService(application: KoskiApplication)
           rouhintaTimed("haeKunnanPerusteella:KuntarouhinnanTulos", oppivelvollisetKoskessa.size) {
             val eiSuorittavat =
               oppivelvollisetKoskessa
+                .filterNot(_.oppija.suorittaaOppivelvollisuutta)
                 .map(ValpasRouhintaOppivelvollinen.apply)
-                .filterNot(_.suorittaaOppivelvollisuutta)
 
             val eiSuorittavatKeskeytyksillä =
               rouhintaOvKeskeytyksetService.fetchOppivelvollisuudenKeskeytykset(eiSuorittavat)
