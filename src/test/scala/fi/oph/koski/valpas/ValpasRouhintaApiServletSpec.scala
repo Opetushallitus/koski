@@ -56,7 +56,7 @@ class ValpasRouhintaApiServletSpec extends ValpasTestBase with BeforeAndAfterEac
           "operation" -> ValpasOperation.VALPAS_ROUHINTA_HETUHAKU.toString,
           "target" -> Map(
             ValpasAuditLogMessageField.hakulause.toString -> "161004A404E, 011005A115P, 110405A6951",
-            ValpasAuditLogMessageField.oppijaHenkilöOidList.toString -> "1.2.246.562.24.00000000075"
+            ValpasAuditLogMessageField.oppijaHenkilöOidList.toString -> "1.2.246.562.24.00000000130 1.2.246.562.24.00000000075"
           ),
         ))
       }

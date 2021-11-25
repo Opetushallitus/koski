@@ -1689,7 +1689,8 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
         organisaatioOid = MockOrganisaatiot.helsinginKaupunki,
         user = ValpasMockUsers.valpasHelsinki
       )(Seq(
-        ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia
+        ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia,
+        ValpasMockOppijat.oppivelvollisuusKeskeytettyEiOpiskele
       ))
     }
 
@@ -1708,6 +1709,7 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
         ValpasMockOppijat.kasiinAstiToisessaKoulussaOllutJollaIlmoitus,
         ValpasMockOppijat.valmistunutYsiluokkalainenJollaIlmoitus,
         ValpasMockOppijat.ilmoituksenLisätiedotPoistettu,
+        ValpasMockOppijat.oppivelvollisuusKeskeytettyEiOpiskele
       ))
     }
   }

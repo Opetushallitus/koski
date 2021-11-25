@@ -1,3 +1,4 @@
+import { Oid } from "../../src/state/common"
 import { kuntarouhintaPathWithOid } from "../../src/state/paths"
 import {
   clickElement,
@@ -17,20 +18,19 @@ import {
 import { loginAs } from "../integrationtests-env/browser/reset"
 import { pyhtäänKuntaOid } from "./oids"
 import { selectOrganisaatioByNimi } from "./organisaatiovalitsin-helpers"
-import {Oid} from "../../src/state/common";
 
 const pyhtäänKuntarouhintaPath = kuntarouhintaPathWithOid.href("/virkailija", {
   organisaatioOid: pyhtäänKuntaOid,
 })
 
 const pyhtäänKuntarouhintaTableContents = `
-  Aikuisten-perusopetuksessa-aineopiskelija Valpas                        | 1.6.2004  | 1.2.246.562.24.00000000117  | 010604A727Y | Oppijalla ei ole oppivelvollisuuden suorittamiseen kelpaavaa opiskeluoikeutta | –           | –                     | –                                                             | –
-  Amis-eronnut Valpas                                                     | 1.8.2005  | 1.2.246.562.24.00000000064  | 010805A852V | 2.9.2021                                                                      | Eronnut     | Ammatillinen tutkinto | Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka  | –
-  Ei-opiskeluoikeuksia-oppivelvollisuusikäinen Valpas                     | 11.4.2005 | 1.2.246.562.24.00000000075  | 110405A6951 | Oppijalla ei ole oppivelvollisuuden suorittamiseen kelpaavaa opiskeluoikeutta | –           | –                     | –                                                             | –
-  Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas | 6.10.2005 | 1.2.246.562.24.00000000058  | 061005A671V | Oppijalla ei ole oppivelvollisuuden suorittamiseen kelpaavaa opiskeluoikeutta | –           | –                     | –                                                             | –
-  Eroaja-aiemmin Valpas                                                   | 24.9.2005 | 1.2.246.562.24.00000000008  | 240905A0078 | 1.1.2021                                                                      | Eronnut     | Perusopetus           | Jyväskylän normaalikoulu                                      | –
-  Int-school-9-luokalta-valmistumisen-jälkeen-eronnut-aiemmin Valpas      | 17.4.2005 | 1.2.246.562.24.00000000091  | 170405A683H | 1.1.2021                                                                      | Eronnut     | International school  | International School of Helsinki                              | –
-  Oppivelvollisuus-keskeytetty-ei-opiskele Valpas                         | 1.10.2005 | 1.2.246.562.24.00000000130  | 011005A115P | 30.5.2021                                                                     | Valmistunut | Perusopetus           | Jyväskylän normaalikoulu                                      | 1.6.2021–
+  Aikuisten-perusopetuksessa-aineopiskelija Valpas                        | 1.6.2004  | 1.2.246.562.24.00000000117  | 010604A727Y | Oppijalla ei ole oppivelvollisuuden suorittamiseen kelpaavaa opiskeluoikeutta | –           | –                     | –                                                             | –          | –      | –
+  Amis-eronnut Valpas                                                     | 1.8.2005  | 1.2.246.562.24.00000000064  | 010805A852V | 2.9.2021                                                                      | Eronnut     | Ammatillinen tutkinto | Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka  | –          | –      | –
+  Ei-opiskeluoikeuksia-oppivelvollisuusikäinen Valpas                     | 11.4.2005 | 1.2.246.562.24.00000000075  | 110405A6951 | Oppijalla ei ole oppivelvollisuuden suorittamiseen kelpaavaa opiskeluoikeutta | –           | –                     | –                                                             | –          | –      | –
+  Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas | 6.10.2005 | 1.2.246.562.24.00000000058  | 061005A671V | Oppijalla ei ole oppivelvollisuuden suorittamiseen kelpaavaa opiskeluoikeutta | –           | –                     | –                                                             | –          | –      | –
+  Eroaja-aiemmin Valpas                                                   | 24.9.2005 | 1.2.246.562.24.00000000008  | 240905A0078 | 1.1.2021                                                                      | Eronnut     | Perusopetus           | Jyväskylän normaalikoulu                                      | –          | –      | –
+  Int-school-9-luokalta-valmistumisen-jälkeen-eronnut-aiemmin Valpas      | 17.4.2005 | 1.2.246.562.24.00000000091  | 170405A683H | 1.1.2021                                                                      | Eronnut     | International school  | International School of Helsinki                              | –          | –      | –
+  Oppivelvollisuus-keskeytetty-ei-opiskele Valpas                         | 1.10.2005 | 1.2.246.562.24.00000000130  | 011005A115P | 15.5.2021                                                                     | Valmistunut | Perusopetus           | Jyväskylän normaalikoulu                                      | 16.5.2021– | Pyhtää | 20.5.2021
 `
 
 const vainOnrOppija = "1.2.246.562.24.00000000075"

@@ -534,6 +534,27 @@ class ValpasOppijaService(
     }
   }
 
+  def withKuntailmoituksetIlmanKäyttöoikeustarkistusta(
+    oppijaTiedot: Seq[OppijaHakutilanteillaLaajatTiedot]
+  ): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
+    application.valpasKuntailmoitusService.getKuntailmoituksetIlmanKäyttöoikeustarkistusta(oppijaTiedot.map(_.oppija))
+      .map(kuntailmoitukset =>
+        oppijaTiedot.map(oppijaTieto => {
+          val oppijanIlmoitukset = kuntailmoitukset.filter(
+            // Tietokannassa ei voi olla kuntailmoituksia ilman oppijaOid:ia, joten oppijaOid:n olemassaoloa ei tässä
+            // erikseen tarkisteta, vaan keskeytys ja sen seurauksena tuleva 500-virhe on ok, jos oppijaOid on None.
+            ilmoitus => oppijaTieto.oppija.henkilö.kaikkiOidit.contains(ilmoitus.oppijaOid.get)
+          )
+          val oppijanIlmoituksetAktiivisuustiedoilla =
+            lisääAktiivisuustiedot(oppijaTieto.oppija)(oppijanIlmoitukset)
+
+          oppijaTieto.copy(
+            kuntailmoitukset = oppijanIlmoituksetAktiivisuustiedoilla
+          )
+        })
+      )
+  }
+
   private def withKuntailmoitukset(
     o: OppijaHakutilanteillaLaajatTiedot
   )(implicit session: ValpasSession): Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] =

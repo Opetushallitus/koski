@@ -40,27 +40,32 @@ class ValpasHeturouhintaService(application: KoskiApplication)
           // Kunnan käyttäjällä on aina oikeudet kaikkiin oppijoihin, joilla on oppivelvollisuus voimassa, joten
           // käyttöoikeustarkistusta ei tarvitse tehdä
           .getOppijalistaIlmanOikeustarkastusta(oppivelvollisetKoskessa.map(_.masterOid))
-          .map(oppivelvollisetKoskessa => {
+          .flatMap(oppivelvollisetKoskessa => {
             val (suorittavatKoskiLaajatTiedot, eiSuorittavatKoskiLaajatTiedot) =
               oppivelvollisetKoskessa.partition(_.oppija.suorittaaOppivelvollisuutta)
 
             val suorittavatKoski = suorittavatKoskiLaajatTiedot.map(ValpasRouhintaOppivelvollinen.apply)
-            val eiSuorittavatKoski = eiSuorittavatKoskiLaajatTiedot.map(ValpasRouhintaOppivelvollinen.apply)
 
             val eiSuorittavatOnr =
               oppivelvollisetOnrissa.map(ValpasRouhintaOppivelvollinen.apply)
 
             val suorittavat = suorittavatKoski
-            val eiSuorittavatKeskeytyksillä =
-              rouhintaOvKeskeytyksetService.fetchOppivelvollisuudenKeskeytykset(eiSuorittavatKoski) ++ eiSuorittavatOnr
 
-            HeturouhinnanTulos(
-              eiOppivelvollisuuttaSuorittavat = eiSuorittavatKeskeytyksillä,
-              oppivelvollisuuttaSuorittavat = suorittavat.flatMap(_.hetu).map(RouhintaPelkkäHetu),
-              oppijanumerorekisterinUlkopuoliset = oppijanumerorekisterinUlkopuolisetHetut.map(RouhintaPelkkäHetu),
-              oppivelvollisuudenUlkopuoliset = (oppivelvollisuudenUlkopuolisetKoskessa.map(_.hetu) ++ oppivelvollisuudenUlkopuolisetOnrissa.flatMap(_.hetu)).map(RouhintaPelkkäHetu),
-              virheellisetHetut = virheellisetHetut.map(RouhintaPelkkäHetu),
-            )
+            oppijaLaajatTiedotService.withKuntailmoituksetIlmanKäyttöoikeustarkistusta(eiSuorittavatKoskiLaajatTiedot)
+              .map(_.map(ValpasRouhintaOppivelvollinen.apply))
+              .map(eiSuorittavatKuntailmoituksilla => {
+
+                val eiSuorittavatKuntailmoituksillaJaKeskeytyksillä =
+                  rouhintaOvKeskeytyksetService.fetchOppivelvollisuudenKeskeytykset(eiSuorittavatKuntailmoituksilla) ++ eiSuorittavatOnr
+
+                HeturouhinnanTulos(
+                  eiOppivelvollisuuttaSuorittavat = eiSuorittavatKuntailmoituksillaJaKeskeytyksillä,
+                  oppivelvollisuuttaSuorittavat = suorittavat.flatMap(_.hetu).map(RouhintaPelkkäHetu),
+                  oppijanumerorekisterinUlkopuoliset = oppijanumerorekisterinUlkopuolisetHetut.map(RouhintaPelkkäHetu),
+                  oppivelvollisuudenUlkopuoliset = (oppivelvollisuudenUlkopuolisetKoskessa.map(_.hetu) ++ oppivelvollisuudenUlkopuolisetOnrissa.flatMap(_.hetu)).map(RouhintaPelkkäHetu),
+                  virheellisetHetut = virheellisetHetut.map(RouhintaPelkkäHetu),
+                )
+              })
           })
       }
     })

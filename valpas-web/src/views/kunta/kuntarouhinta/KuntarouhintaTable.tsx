@@ -13,6 +13,7 @@ import {
   koodiviiteToShortString,
   t,
 } from "../../../i18n/i18n"
+import { KuntailmoitusSuppeatTiedot } from "../../../state/apitypes/kuntailmoitus"
 import { OppivelvollisuudenKeskeytys } from "../../../state/apitypes/oppivelvollisuudenkeskeytys"
 import {
   KuntarouhinnanTulos,
@@ -22,7 +23,7 @@ import {
 import { useBasePath } from "../../../state/basePath"
 import { Oid } from "../../../state/common"
 import { nullableJoinToString } from "../../../utils/arrays"
-import { formatDateRange } from "../../../utils/date"
+import { formatDateRange, formatNullableDate } from "../../../utils/date"
 import { pluck } from "../../../utils/objects"
 import {
   dateValue,
@@ -78,6 +79,14 @@ export const KuntarouhintaTable = (props: KuntarouhintaTableProps) => {
         label: t("rouhinta_ov_keskeytys"),
         tooltip: t("rouhinta_ov_keskeytys_comment"),
       },
+      {
+        label: t("rouhinta_kuntailmoitus_kohde"),
+        tooltip: t("rouhinta_kuntailmoitus_kohde_comment"),
+      },
+      {
+        label: t("rouhinta_kuntailmoitus_pvm"),
+        tooltip: t("rouhinta_kuntailmoitus_pvm_comment"),
+      },
     ],
     []
   )
@@ -132,6 +141,9 @@ const oppijaToTableData = (organisaatioOid: Oid, basePath: string) => (
       nullableValue(getLocalizedMaybe(oo?.toimipiste)),
       // Oppivelvollisuuden keskeytys
       oppivelvollisuudenKeskeytysValue(oppija.oppivelvollisuudenKeskeytys),
+      // Aktiivisen kuntailmoituksen kohde ja päivämäärä
+      ilmoitettuKunnalleKotipaikka(oppija.aktiivinenKuntailmoitus),
+      ilmoituksenTekopäivä(oppija.aktiivinenKuntailmoitus),
     ],
   }
 }
@@ -182,3 +194,18 @@ const oppivelvollisuudenKeskeytysValue = (
     nullableJoinToString(", "),
     nullableValue
   )
+
+const ilmoitettuKunnalleKotipaikka = (
+  ilmoitus?: KuntailmoitusSuppeatTiedot
+): Value => ({
+  value: ilmoitus
+    ? getLocalizedMaybe(ilmoitus.kunta.kotipaikka?.nimi) || ilmoitus.kunta.oid
+    : "–",
+})
+
+const ilmoituksenTekopäivä = (
+  ilmoitus?: KuntailmoitusSuppeatTiedot
+): Value => ({
+  value: ilmoitus ? ilmoitus.aikaleima : "–",
+  display: ilmoitus ? formatNullableDate(ilmoitus.aikaleima) : undefined,
+})

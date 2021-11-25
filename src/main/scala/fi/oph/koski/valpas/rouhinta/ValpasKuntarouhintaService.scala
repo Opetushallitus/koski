@@ -127,17 +127,15 @@ class ValpasKuntarouhintaService(application: KoskiApplication)
         // Kunnan käyttäjällä on aina oikeudet kaikkiin oppijoihin, joilla on oppivelvollisuus voimassa, joten
         // käyttöoikeustarkistusta ei tarvitse tehdä
         .getOppijalistaIlmanOikeustarkastusta(oppivelvollisetKoskessa)
-        .map(oppivelvollisetKoskessa => {
+        .flatMap(oppivelvollisetKoskessa => {
           rouhintaTimed("haeKunnanPerusteella:KuntarouhinnanTulos", oppivelvollisetKoskessa.size) {
             val eiSuorittavat =
               oppivelvollisetKoskessa
                 .filterNot(_.oppija.suorittaaOppivelvollisuutta)
-                .map(ValpasRouhintaOppivelvollinen.apply)
 
-            val eiSuorittavatKeskeytyksillä =
-              rouhintaOvKeskeytyksetService.fetchOppivelvollisuudenKeskeytykset(eiSuorittavat)
-
-            eiSuorittavatKeskeytyksillä
+            oppijaLaajatTiedotService.withKuntailmoituksetIlmanKäyttöoikeustarkistusta(eiSuorittavat)
+              .map(_.map(ValpasRouhintaOppivelvollinen.apply))
+              .map(oppijat => rouhintaOvKeskeytyksetService.fetchOppivelvollisuudenKeskeytykset(oppijat))
           }
         })
     }

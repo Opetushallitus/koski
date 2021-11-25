@@ -20,6 +20,8 @@ class ValpasHeturouhintaSpec extends ValpasRouhintaTestBase {
       ooKoulutusmuoto = Some("Aikuisten perusopetus"),
       ooToimipiste = Some("Ressun lukio"),
       keskeytys = None,
+      kuntailmoitusKohde = None,
+      kuntailmoitusPvm = None,
     ),
     RouhintaExpectedData(
       oppija = ValpasMockOppijat.eiOppivelvollisuudenSuorittamiseenKelpaaviaOpiskeluoikeuksia,
@@ -28,6 +30,8 @@ class ValpasHeturouhintaSpec extends ValpasRouhintaTestBase {
       ooKoulutusmuoto = None,
       ooToimipiste = None,
       keskeytys = None,
+      kuntailmoitusKohde = None,
+      kuntailmoitusPvm = None,
     ),
     RouhintaExpectedData(
       oppija = ValpasMockOppijat.eiKoskessaOppivelvollinen,
@@ -36,14 +40,18 @@ class ValpasHeturouhintaSpec extends ValpasRouhintaTestBase {
       ooKoulutusmuoto = None,
       ooToimipiste = None,
       keskeytys = None,
+      kuntailmoitusKohde = None,
+      kuntailmoitusPvm = None,
     ),
     RouhintaExpectedData(
       oppija = ValpasMockOppijat.oppivelvollisuusKeskeytettyEiOpiskele,
-      ooPäättymispäivä = "30.5.2021",
+      ooPäättymispäivä = "15.5.2021",
       ooViimeisinTila = Some("Valmistunut"),
       ooKoulutusmuoto = Some("Perusopetus"),
       ooToimipiste = Some("Jyväskylän normaalikoulu"),
-      keskeytys = Some("1.6.2021 -"),
+      keskeytys = Some("16.5.2021 -"),
+      kuntailmoitusKohde = Some("Pyhtää"),
+      kuntailmoitusPvm = Some("20.5.2021"),
     ),
   )
 
@@ -102,6 +110,18 @@ class ValpasHeturouhintaSpec extends ValpasRouhintaTestBase {
           expectEiOppivelvollisuuttaSuorittavatPropsMatch(
             actual => actual.keskeytys,
             expected => expected.keskeytys.getOrElse(""),
+          )
+        }
+        "Kuntailmoitus kohde" in {
+          expectEiOppivelvollisuuttaSuorittavatPropsMatch(
+            actual => actual.kuntailmoitusKohde,
+            expected => expected.kuntailmoitusKohde
+          )
+        }
+        "Kuntailmoitus pvm" in {
+          expectEiOppivelvollisuuttaSuorittavatPropsMatch(
+            actual => actual.kuntailmoitusPvm,
+            expected => expected.kuntailmoitusPvm
           )
         }
       }

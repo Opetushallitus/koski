@@ -71,6 +71,13 @@ class ValpasKuntailmoitusService(
       .map(_.map(karsiHenkilötiedotJosEiOikeuksia))
   }
 
+  def getKuntailmoituksetIlmanKäyttöoikeustarkistusta
+    (oppijat: Seq[ValpasOppijaLaajatTiedot])
+  : Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedot]] = {
+    val kaikkiOidit = oppijat.flatMap(_.henkilö.kaikkiOidit).toSet
+    repository.queryOppijat(kaikkiOidit)
+  }
+
   def getKuntailmoituksetKunnalleIlmanKäyttöoikeustarkistusta
     (kuntaOid: Organisaatio.Oid)
   : Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedot]] = {

@@ -15,6 +15,8 @@ case class ValpasRouhintaOppivelvollinenSheetRow(
   ooKoulutusmuoto: Option[String],
   ooToimipiste: Option[String],
   keskeytys: String,
+  kuntailmoitusKohde: Option[String],
+  kuntailmoitusPvm: Option[String]
 ) {
   def toSeq: Seq[Any] = this.productIterator.toList
 }
@@ -36,10 +38,19 @@ object ValpasRouhintaOppivelvollinenSheetRow {
     "ooKoulutusmuoto" -> Column(t.get("rouhinta_koulutusmuoto"), comment = Some(t.get("rouhinta_koulutusmuoto_comment"))),
     "ooToimipiste" -> Column(t.get("rouhinta_toimipiste"), comment = Some(t.get("rouhinta_toimipiste_comment"))),
     "keskeytys" -> Column(t.get("rouhinta_ov_keskeytys"), comment = Some(t.get("rouhinta_ov_keskeytys_comment"))),
+    "kuntailmoitusKohde" -> Column(t.get("rouhinta_kuntailmoitus_kohde"), comment = Some(t.get("rouhinta_kuntailmoitus_kohde_comment"))),
+    "kuntailmoitusPvm" -> Column(t.get("rouhinta_kuntailmoitus_pvm"), comment = Some(t.get("rouhinta_kuntailmoitus_pvm_comment"))),
   )
 
   def apply(t: LocalizationReader)(tiedot: ValpasRouhintaOppivelvollinen): ValpasRouhintaOppivelvollinenSheetRow = {
     val oo = tiedot.viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus
+
+    val kuntailmoitusKohde =
+      tiedot.aktiivinenKuntailmoitus
+        .flatMap(_.kunta.kotipaikka.map(kp => t.fromKoodiviite("rouhunta_tieto_puuttuu")(kp)))
+    val kuntailmoitusPvm =
+      tiedot.aktiivinenKuntailmoitus
+        .flatMap(_.aikaleima.map(al => t.format(al.toLocalDate)))
 
     ValpasRouhintaOppivelvollinenSheetRow(
       sukunimi = tiedot.sukunimi,
@@ -57,6 +68,8 @@ object ValpasRouhintaOppivelvollinenSheetRow {
         .map(keskeytys => t.format(keskeytys.alku) + " - " + keskeytys.loppu.map(t.format).getOrElse(""))
         .map(_.trim)
         .mkString(", "),
+      kuntailmoitusKohde = kuntailmoitusKohde,
+      kuntailmoitusPvm = kuntailmoitusPvm
     )
   }
 

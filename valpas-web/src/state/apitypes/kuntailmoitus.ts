@@ -32,7 +32,7 @@ export type KuntailmoituksenTekijäLaajatTiedot = {
 export type KuntailmoitusSuppeatTiedot = {
   id?: string
   tekijä: KuntailmoituksenTekijäSuppeatTiedot
-  kunta: Organisaatio
+  kunta: KuntailmoitusKunta
   aikaleima?: ISODateTime
   hakenutMuualle?: boolean
   onUudempiaIlmoituksiaMuihinKuntiin?: boolean

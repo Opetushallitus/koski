@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.henkilo.{OppijaHenkilö, OppijaNumerorekisteriKuntarouhintaOppija}
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
-import fi.oph.koski.valpas.OppijaHakutilanteillaLaajatTiedot
+import fi.oph.koski.valpas.{OppijaHakutilanteillaLaajatTiedot, ValpasKuntailmoitusSuppeatTiedot}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{OrderedOpiskeluoikeusTiedot, ValpasHenkilö, ValpasOpiskeluoikeusLaajatTiedot, ValpasOpiskeluoikeusTiedot}
 import fi.oph.koski.valpas.valpasrepository.ValpasOppivelvollisuudenKeskeytys
 
@@ -17,7 +17,8 @@ case class ValpasRouhintaOppivelvollinen(
   hetu: Option[String],
   viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus: Option[RouhintaOpiskeluoikeus],
   oppivelvollisuudenKeskeytys: Seq[ValpasOppivelvollisuudenKeskeytys],
-  vainOppijanumerorekisterissä: Boolean
+  vainOppijanumerorekisterissä: Boolean,
+  aktiivinenKuntailmoitus: Option[ValpasKuntailmoitusSuppeatTiedot]
 )
 
 object ValpasRouhintaOppivelvollinen {
@@ -25,6 +26,10 @@ object ValpasRouhintaOppivelvollinen {
     val oos = tiedot.oppija.opiskeluoikeudet
       .filter(oo => oo.oppivelvollisuudenSuorittamiseenKelpaava && !oo.isOpiskeluTulevaisuudessa)
       .flatMap(oo => RouhintaOpiskeluoikeus.apply(oo))
+
+    val aktiivinenKuntailmoitus =
+      tiedot.kuntailmoitukset.find(_.aktiivinen.contains(true))
+        .map(ValpasKuntailmoitusSuppeatTiedot.apply)
 
     ValpasRouhintaOppivelvollinen(
       oppijanumero = tiedot.oppija.henkilö.oid,
@@ -35,7 +40,8 @@ object ValpasRouhintaOppivelvollinen {
       hetu = tiedot.oppija.henkilö.hetu,
       viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus = oos.sorted.lastOption,
       oppivelvollisuudenKeskeytys = tiedot.oppivelvollisuudenKeskeytykset.filter(_.voimassa),
-      vainOppijanumerorekisterissä = false
+      vainOppijanumerorekisterissä = false,
+      aktiivinenKuntailmoitus = aktiivinenKuntailmoitus
     )
   }
 
@@ -49,7 +55,8 @@ object ValpasRouhintaOppivelvollinen {
       hetu = tiedot.hetu,
       viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus = None,
       oppivelvollisuudenKeskeytys = Seq.empty,
-      vainOppijanumerorekisterissä = true
+      vainOppijanumerorekisterissä = true,
+      aktiivinenKuntailmoitus = None
     )
   }
 
@@ -62,7 +69,8 @@ object ValpasRouhintaOppivelvollinen {
     hetu = henkilö.hetu,
     viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus = None,
     oppivelvollisuudenKeskeytys = Nil,
-    vainOppijanumerorekisterissä = true
+    vainOppijanumerorekisterissä = true,
+    aktiivinenKuntailmoitus = None
   )
 }
 

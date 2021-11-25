@@ -1,5 +1,6 @@
 import { ISODate, Language, LocalizedString, Oid } from "../common"
 import { KoodistoKoodiviite } from "./koodistot"
+import { KuntailmoitusSuppeatTiedot } from "./kuntailmoitus"
 import { OppivelvollisuudenKeskeytys } from "./oppivelvollisuudenkeskeytys"
 import { Suorituksentyyppi } from "./suorituksentyyppi"
 
@@ -28,6 +29,7 @@ export type RouhintaOppivelvollinen = {
   viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus?: RouhintaOpiskeluoikeus
   oppivelvollisuudenKeskeytys: OppivelvollisuudenKeskeytys[]
   vainOppijanumerorekisterissä: boolean
+  aktiivinenKuntailmoitus?: KuntailmoitusSuppeatTiedot
 }
 
 export type RouhintaOpiskeluoikeus = {
