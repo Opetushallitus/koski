@@ -140,6 +140,7 @@ class ValpasAccessResolverSpec extends ValpasTestBase {
       näytäMuunaPerusopetuksenJälkeisenäOpintona = Some(true),
     )),
     perusopetuksenJälkeinenTiedot = None,
+    muuOpetusTiedot = None,
     oppivelvollisuudenSuorittamiseenKelpaava = true,
     päätasonSuoritukset = Seq(
       ValpasPäätasonSuoritus(

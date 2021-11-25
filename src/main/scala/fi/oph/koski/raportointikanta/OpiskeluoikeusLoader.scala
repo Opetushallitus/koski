@@ -187,6 +187,7 @@ object OpiskeluoikeusLoader extends Logging {
       case "perusopetus" => true
       case "internationalschool" => true
       case "esiopetus" => true
+      case "perusopetukseenvalmistavaopetus" => true
       case _ => MaksuttomuusValidation.oppivelvollisuudenSuorittamiseenKelpaavaMuuKuinPeruskoulunOpiskeluoikeus(o, rajapäivät)
     }
 

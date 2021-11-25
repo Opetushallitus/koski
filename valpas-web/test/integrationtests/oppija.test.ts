@@ -94,6 +94,10 @@ const maksuttomuuttaPidennettyPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000127",
 })
 
+const perusopetukseenValmistautuvaPath = oppijaPath.href("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000131",
+})
+
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
 const secondaryHeadingEquals = (expected: string) =>
@@ -868,6 +872,21 @@ describe("Oppijakohtainen näkymä", () => {
       1.9.2021– maksuton
       Toimipiste:	Omnia Koulutus, Arbetarinstitut
       Opiskeluoikeuden alkamispäivä: 1.9.2021
+    `)
+  })
+
+  it("Näyttää perusopetukseen valmistavan opetuksen opiskeluhistoriassa", async () => {
+    await loginAs(perusopetukseenValmistautuvaPath, "valpas-jkl-normaali", true)
+    await mainHeadingEquals(
+      "Perusopetukseen-valmistautuva Valpas (151011A1403)"
+    )
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000131")
+    await opiskeluhistoriaEquals(`
+      school
+      Perusopetukseen valmistava opetus 2021 –
+      Tila: Läsnä
+      Toimipiste: Jyväskylän normaalikoulu
+      Opiskeluoikeuden alkamispäivä: 1.5.2021
     `)
   })
 })
