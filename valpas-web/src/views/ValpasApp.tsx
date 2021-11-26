@@ -5,11 +5,11 @@ import {
   RouteComponentProps,
   Switch,
 } from "react-router-dom"
-import { NotFoundView } from "../views/ErrorView"
 import HealthView from "../views/HealthView"
 
 export const ValpasApp = () => {
   const VirkailijaApp = React.lazy(() => import("./VirkailijaApp"))
+  const OppijaApp = React.lazy(() => import("./OppijaApp"))
 
   return (
     <Router basename={process.env.PUBLIC_URL}>
@@ -23,7 +23,13 @@ export const ValpasApp = () => {
             </React.Suspense>
           )}
         />
-        <Route component={NotFoundView} />
+        <Route
+          render={({ match: { path } }: RouteComponentProps) => (
+            <React.Suspense fallback={<></>}>
+              <OppijaApp basePath={path} />
+            </React.Suspense>
+          )}
+        />
       </Switch>
     </Router>
   )

@@ -4,7 +4,6 @@ const express = require("express")
 const STATIC_RESPONSE_APP_PORT = 10101
 const REDIRECTS = {
   "/": "/valpas/virkailija",
-  "/valpas": "/valpas/virkailija",
 }
 
 module.exports = function (app) {
