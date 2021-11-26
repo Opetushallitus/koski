@@ -78,6 +78,7 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](row.opiskeluoikeus.data \ "lähdejärjestelmänId")
     val lisätiedot = JsonSerializer.extract[Option[LukionOpiskeluoikeudenLisätiedot]](row.opiskeluoikeus.data \ "lisätiedot")
     val lukionKurssit = row.osasuoritukset.filter(_.suorituksenTyyppi == "lukionkurssi")
+    val oppimääräSuoritettu = JsonSerializer.extract[Option[Boolean]](row.opiskeluoikeus.data \ "oppimääräSuoritettu")
 
     LukioRaporttiKaikkiOppiaineetVälilehtiRow(
      muut = LukioRaporttiOppiaineetVälilehtiMuut(
@@ -100,6 +101,7 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
        suorituksenTyyppi = row.päätasonSuoritus.suorituksenTyyppi,
        suorituksenTila = row.päätasonSuoritus.vahvistusPäivä.fold("kesken")(_ => "valmis"),
        suorituksenVahvistuspäivä = row.päätasonSuoritus.vahvistusPäivä.map(_.toLocalDate),
+       oppimääräSuoritettu = oppimääräSuoritettu.getOrElse(false),
        läsnäolopäiviä_aikajakson_aikana = row.aikajaksot.filter(_.tila == "lasna").map(j => Aikajakso(j.alku.toLocalDate, Some(j.loppu.toLocalDate))).map(lengthInDaysInDateRange(_, alku, loppu)).sum,
        rahoitukset = row.aikajaksot.flatMap(_.opintojenRahoitus).mkString(","),
        rahoitusmuodotOk = rahoitusmuodotOk(row),
@@ -193,6 +195,7 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
       CompactColumn("Suorituksen tyyppi", comment = Some("Onko kyseessä koko lukion oppimäärän suoritus (\"lukionoppimaara\") vai aineopintosuoritus (\"lukionoppiaineenoppimaara\").")),
       CompactColumn("Suorituksen tila", comment = Some("Onko kyseinen päätason suoritus (lukion oppimäärä tai oppiaineen oppimäärä) \"kesken\" vai \"valmis\".")),
       CompactColumn("Suorituksen vahvistuspäivä", comment = Some("Päätason suorituksen (lukion oppimäärä tai oppiaineen oppimäärä) vahvistuspäivä. Vain \"valmis\"-tilaisilla suorituksilla on tässä kentässä jokin päivämäärä.")),
+      CompactColumn("Oppimäärä suoritettu", comment = Some("Tieto siitä, onko lukion oppimäärän suorittamiseen vaadittavat opinnot suoritettu. Jos lukion oppimäärän suoritus on vahvistettu, lukion oppimäärän suorittamiseen vaadittavat opinnot tulkitaan automaattisesti suoritetuksi, jolloin tähän kenttään tallennetaan automaattisesti arvo 'true'.")),
       CompactColumn("Läsnäolopäiviä aikajakson aikana", comment = Some("Kuinka monta kalenteripäivää opiskelija on ollut raportin tulostusparametreissa määriteltynä aikajaksona \"Läsnä\"-tilassa KOSKI-palvelussa.")),
       CompactColumn("Rahoitukset", comment = Some("Rahoituskoodit aikajärjestyksessä, joita opiskeluoikeuden läsnäolojaksoille on siirretty. Rahoituskoodien nimiarvot koodistossa https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest")),
       CompactColumn("Läsnä/valmistunut-rahoitusmuodot syötetty", comment = Some("Sarake kertoo, onko opiskeluoikeuden kaikille läsnä- ja valmistunut-jaksoille syötetty rahoitustieto")),
@@ -246,6 +249,7 @@ case class LukioRaporttiOppiaineetVälilehtiMuut(
   suorituksenTyyppi: String,
   suorituksenTila: String,
   suorituksenVahvistuspäivä: Option[LocalDate],
+  oppimääräSuoritettu: Boolean,
   läsnäolopäiviä_aikajakson_aikana: Int,
   rahoitukset: String,
   rahoitusmuodotOk: Boolean,
