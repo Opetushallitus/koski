@@ -106,7 +106,6 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.muuAmmatillinenKokonaisuuksilla, MuunAmmatillisenKoulutuksenExample.muuAmmatillinenKoulutusKokonaisuuksillaOpiskeluoikeus),
       (KoskiSpecificMockOppijat.ammatilliseenTetäväänValmistavaMuuAmmatillinen, MuunAmmatillisenKoulutuksenExample.ammatilliseenTehtäväänValmistavaKoulutusOpiskeluoikeus),
       (KoskiSpecificMockOppijat.amis, AmmatillinenExampleData.perustutkintoOpiskeluoikeusKesken()),
-      (KoskiSpecificMockOppijat.liiketalous, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 331101, diaariNumero = "59/011/2014")),
       (KoskiSpecificMockOppijat.valma, ExamplesValma.valmaTodistus.tallennettavatOpiskeluoikeudet.head),
       (KoskiSpecificMockOppijat.telma, ExamplesTelma.telmaTodistus.tallennettavatOpiskeluoikeudet.head),
       (KoskiSpecificMockOppijat.ylioppilasLukiolainen, ExamplesLukio.päättötodistus()),

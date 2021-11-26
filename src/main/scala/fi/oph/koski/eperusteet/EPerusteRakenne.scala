@@ -2,12 +2,15 @@ package fi.oph.koski.eperusteet
 
 import fi.oph.scalaschema.annotation.Discriminator
 
+import java.time.{Instant, LocalDate, ZoneId, ZonedDateTime}
+
 
 case class EPerusteRakenne(
   id: Long,
   nimi: Map[String, String],
   diaarinumero: String,
   koulutustyyppi: String,
+  voimassaoloLoppuu: Option[String],
   koulutukset: List[EPerusteKoulutus],
   suoritustavat: Option[List[ESuoritustapa]],
   tutkinnonOsat: Option[List[ETutkinnonOsa]],
@@ -15,6 +18,12 @@ case class EPerusteRakenne(
   lukiokoulutus: Option[ELukiokoulutus]
 ) {
   def toEPeruste: EPeruste = EPeruste(id, nimi, diaarinumero, koulutukset)
+  def päättynyt(vertailupäivämäärä: LocalDate = LocalDate.now()) = voimassaoloLoppuuLocalDate match {
+    case Some(loppupäivämäärä) => vertailupäivämäärä.isAfter(loppupäivämäärä)
+    case None => false
+  }
+  def voimassaoloLoppuuLocalDate = voimassaoloLoppuu.map(ms =>
+    ZonedDateTime.ofInstant(Instant.ofEpochMilli(ms.toLong), ZoneId.systemDefault()).toLocalDate())
 }
 
 
