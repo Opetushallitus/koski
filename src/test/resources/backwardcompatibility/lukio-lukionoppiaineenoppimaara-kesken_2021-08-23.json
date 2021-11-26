@@ -182,7 +182,6 @@
         },
         "koodistoUri" : "kieli"
       },
-      "lukionOppimääräSuoritettu" : false,
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -437,7 +436,6 @@
         },
         "koodistoUri" : "kieli"
       },
-      "lukionOppimääräSuoritettu" : false,
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -526,7 +524,6 @@
         },
         "koodistoUri" : "kieli"
       },
-      "lukionOppimääräSuoritettu" : false,
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
