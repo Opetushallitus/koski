@@ -20,6 +20,7 @@ describe('Lukiokoulutus', function( ){
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 8.6.2016\n' +
           'Tila 8.6.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
           '1.9.2012 Läsnä (valtionosuusrahoitteinen koulutus)\n' +
+          'Oppimäärä suoritettu kyllä\n' +
           'Lisätiedot\n' +
           'Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa Pikkuvanha yksilö\n' +
           'Erityisen koulutustehtävän jaksot 1.9.2012 — 1.9.2013 Tehtävä Kieliin painottuva koulutus\n' +

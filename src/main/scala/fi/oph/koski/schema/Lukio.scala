@@ -36,12 +36,6 @@ case class LukionOpiskeluoikeus(
   })
 
   def isOppimääräSuoritettu = oppimääräSuoritettu.getOrElse(false)
-
-    /*suoritukset.exists {
-    case oppimäärä2019: LukionOppimääränSuoritus2019 => oppimäärä2019.vahvistettu || oppimääräSuoritettu.getOrElse(false)
-    case oppiaine2019: LukionOppiaineidenOppimäärienSuoritus2019 => oppiaine2019.vahvistettu || oppimääräSuoritettu.getOrElse(false)
-    case muu => muu.vahvistettu
-  }*/
 }
 
 @Description("Lukion opiskeluoikeuden lisätiedot")

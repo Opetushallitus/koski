@@ -1579,5 +1579,7 @@
   "Lisää työelämä- ja yhteiskuntataidon opintokokonaisuus": "Lisää työelämä- ja yhteiskuntataidon opintokokonaisuus",
   "Työelämäjakson lisäys": "Työelämäjakson lisäys",
   "Opiskeluoikeuden tila": "Opiskeluoikeuden tila",
-  "Suoritustyyppi": "Suoritustyyppi"
+  "Suoritustyyppi": "Suoritustyyppi",
+  "deprecated:Käytä opiskeluoikeuden kenttää 'oppimääräSuoritettu'" : "Käytä opiskeluoikeuden kenttää 'oppimääräSuoritettu'",
+  "Oppimäärä suoritettu" : "Oppimäärä suoritettu"
 }
