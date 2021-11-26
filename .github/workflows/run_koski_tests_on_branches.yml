@@ -357,6 +357,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
+      - name: Install and verify Jest
+        run: make install-and-verify-valpas-jest-deps
+
       - name: Configure sysctl limits for Elasticsearch
         run: |
           sudo swapoff -a
@@ -406,6 +409,9 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+
+      - name: Install and verify Jest
+        run: make install-and-verify-valpas-jest-deps
 
       - name: Configure sysctl limits for Elasticsearch
         run: |

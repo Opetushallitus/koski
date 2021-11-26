@@ -1,9 +1,13 @@
 require("dotenv")
 const { spawn } = require("child_process")
 
-module.exports = async () => {
-  global.__PARCEL_SERVE_PROCESS__ = await serve()
-}
+const runWithServer = process.env.RUN_WITHOUT_SERVER === undefined
+
+module.exports = runWithServer
+  ? async () => {
+      global.__PARCEL_SERVE_PROCESS__ = await serve()
+    }
+  : () => {}
 
 /*
  * TODO:

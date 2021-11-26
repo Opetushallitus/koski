@@ -144,6 +144,10 @@ reset-raportointikanta:
 
 ### Valpas
 
+.PHONY: install-and-verify-valpas-jest-deps
+install-and-verify-valpas-jest-deps:
+	./scripts/install-and-verify-valpas-jest-deps.sh
+
 .PHONY: valpas-fronttest-1
 valpas-fronttest-1:
 	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec1"
