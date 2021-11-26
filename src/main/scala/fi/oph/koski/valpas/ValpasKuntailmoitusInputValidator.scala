@@ -17,10 +17,20 @@ class ValpasKuntailmoitusInputValidator(
 
   def validateKuntailmoitusInput(kuntailmoitusInput: ValpasKuntailmoitusLaajatTiedot)
                                 (implicit user: ValpasSession): Either[HttpStatus, ValpasKuntailmoitusLaajatTiedot] = {
-    validateIlmoituspäivä(kuntailmoitusInput)
+    validateOppijaOid(kuntailmoitusInput)
+      .flatMap(validateIlmoituspäivä)
       .flatMap(validateTekijänOid)
       .flatMap(validateKunta)
       .flatMap(fillTekijänHenkilöTiedot)
+  }
+
+  private def validateOppijaOid(
+    kuntailmoitusInput: ValpasKuntailmoitusLaajatTiedot
+  ): Either[HttpStatus, ValpasKuntailmoitusLaajatTiedot] = {
+    kuntailmoitusInput.oppijaOid match {
+      case Some(_) => Right(kuntailmoitusInput)
+      case _ => Left(ValpasErrorCategory.badRequest.validation.kuntailmoituksenOppijaOid())
+    }
   }
 
   private def validateIlmoituspäivä(

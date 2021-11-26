@@ -50,10 +50,13 @@ class ValpasKuntailmoitusRepository(
       hakenutMuualle <- data.hakenutMuualle.toRight(
         ValpasErrorCategory.internalError("'Hakenut ulkomaille' puuttuu")
       )
+      oppijaOid <- data.oppijaOid.toRight(
+        ValpasErrorCategory.internalError("Oppijan oid puuttuu")
+      )
     } yield {
       val ilmoitus = IlmoitusRow(
         luotu = valpasRajapäivätService.tarkastelupäivä.atTime(LocalTime.now()),
-        oppijaOid = data.oppijaOid.get,
+        oppijaOid = oppijaOid,
         kuntaOid = data.kunta.oid,
         tekijäOrganisaatioOid = data.tekijä.organisaatio.oid,
         tekijäOid = tekijäHenkilöOid

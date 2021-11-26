@@ -48,7 +48,10 @@ class ValpasKuntailmoitusService(
           .map(_ => ValpasErrorCategory.forbidden.organisaatio(
             "Käyttäjällä ei ole oikeutta tehdä kuntailmoitusta annetun organisaation nimissä"
           ))
-      o <- oppijaLaajatTiedotService.getOppijaLaajatTiedot(kaikkiKäyttäjänRoolitOrganisaatiolle, kuntailmoitusInput.oppijaOid.get)
+      oppijaOid <- kuntailmoitusInput.oppijaOid.toRight(
+        ValpasErrorCategory.internalError("oppijaOid puuttuu")
+      )
+      o <- oppijaLaajatTiedotService.getOppijaLaajatTiedot(kaikkiKäyttäjänRoolitOrganisaatiolle, oppijaOid)
       _ <-
         accessResolver.withOppijaAccessAsOrganisaatio(sallitutRoolitOrganisaatiolle, organisaatioOid)(o)
           .left

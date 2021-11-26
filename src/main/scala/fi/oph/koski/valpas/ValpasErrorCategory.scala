@@ -6,6 +6,7 @@ object ValpasErrorCategory {
 
   object badRequest extends ErrorCategory("badRequest", 400, "Epäkelpo syöte") {
     class Validation extends ErrorCategory(badRequest, "validation", "Syötteen validointi epäonnistui.") {
+      val kuntailmoituksenOppijaOid = subcategory("kuntailmoituksenOppijaOid", "Kuntailmoituksen oppijan validointi epäonnistui.")
       val kuntailmoituksenKohde = subcategory("kuntailmoituksenKohde", "Kuntailmoituksen kohteen validointi epäonnistui.")
       val kuntailmoituksenTekijä = subcategory("kuntailmoituksenTekijä", "Kuntailmoituksen tekijän validointi epäonnistui.")
       val kuntailmoituksenIlmoituspäivä = subcategory("kuntailmoituksenIlmoituspäivä", "Kuntailmoituksia ei voi tehdä ennen lain voimaantuloa 1.8.2021")

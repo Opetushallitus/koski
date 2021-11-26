@@ -44,6 +44,8 @@ object ValpasAuditLog {
       ValpasOperation.VALPAS_OPPIJA_KUNTAILMOITUS,
       session,
       Map(
+        // oppijaOid:in olemassaolo on varmistettu validoinneissa jo aiemmin. Jos näin pitkälle on päästy ilman, niin
+        // 500-erroriin johtava keskeytys get:n käytöstä on ok tapa käsitellä virhe.
         ValpasAuditLogMessageField.oppijaHenkilöOid -> ilmoitus.oppijaOid.get,
         ValpasAuditLogMessageField.ilmoittajaHenkilöOid -> ilmoitus.tekijä.henkilö.map(_.oid.toString).getOrElse(""),
         ValpasAuditLogMessageField.ilmoittajaOrganisaatioOid -> ilmoitus.tekijä.organisaatio.oid,

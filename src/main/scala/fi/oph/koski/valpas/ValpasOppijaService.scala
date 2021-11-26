@@ -246,6 +246,8 @@ class ValpasOppijaService(
         kuntailmoitukset,
         accessResolver.filterByOppijaAccess(ValpasRooli.KUNTA)(
           opiskeluoikeusDbService
+            // Tietokannassa ei voi olla kuntailmoituksia ilman oppijaOid:ia, joten oppijaOid:n olemassaoloa ei tässä
+            // erikseen tarkisteta, vaan keskeytys ja sen seurauksena tuleva 500-virhe on ok, jos oppijaOid on None.
             .getOppijat(kuntailmoitukset.map(_.oppijaOid.get).distinct)
             .flatMap(asValpasOppijaLaajatTiedot(_).toOption)
         )
@@ -254,6 +256,8 @@ class ValpasOppijaService(
       // Yhdistetään kuntailmoitukset ja oppijat Seq[(ValpasOppijaLaajatTiedot, ValpasKuntailmoitusLaajatTiedot)]
       .map(kuntailmoituksetOppijat => kuntailmoituksetOppijat._1.flatMap(ilmoitus =>
         kuntailmoituksetOppijat._2
+          // Tietokannassa ei voi olla kuntailmoituksia ilman oppijaOid:ia, joten oppijaOid:n olemassaoloa ei tässä
+          // erikseen tarkisteta, vaan keskeytys ja sen seurauksena tuleva 500-virhe on ok, jos oppijaOid on None.
           .find(oppija => oppija.henkilö.kaikkiOidit.contains(ilmoitus.oppijaOid.get))
           .map(oppija => (oppija, ilmoitus)
       )))
@@ -612,6 +616,8 @@ class ValpasOppijaService(
   ) : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
     application.valpasKuntailmoitusService.getOppilaitoksenTekemätIlmoituksetIlmanKäyttöoikeustarkistusta(oppilaitosOid)
       .map(ilmoitukset => {
+        // Tietokannassa ei voi olla kuntailmoituksia ilman oppijaOid:ia, joten oppijaOid:n olemassaoloa ei tässä
+        // erikseen tarkisteta, vaan keskeytys ja sen seurauksena tuleva 500-virhe on ok, jos oppijaOid on None.
         val oppijaOids = ilmoitukset.map(_.oppijaOid.get)
         val oppijat = opiskeluoikeusDbService
           .getOppijat(oppijaOids)
@@ -627,6 +633,8 @@ class ValpasOppijaService(
         // Lisää kuntailmoitukset oppijan tietoihin
         oppijatLaajatTiedot.map(oppija => oppija.copy(
           kuntailmoitukset = ilmoitukset
+            // Tietokannassa ei voi olla kuntailmoituksia ilman oppijaOid:ia, joten oppijaOid:n olemassaoloa ei tässä
+            // erikseen tarkisteta, vaan keskeytys ja sen seurauksena tuleva 500-virhe on ok, jos oppijaOid on None.
             .filter(ilmoitus => oppija.oppija.henkilö.kaikkiOidit.contains(ilmoitus.oppijaOid.get))
         ))
       })
