@@ -19,6 +19,8 @@ npm install
 ## Kehitys
 
 - `npm start` kääntää lähdekoodin, jää kuuntelemaan muutoksia ja käynnistää web-palvelimen osoitteeseen http://localhost:1234/
+  - Virkailijan näkymä: http://localhost:1234/valpas/virkailija
+  - Oppijan näkymä: http://localhost:1234/valpas
 - `npm test` ajaa kaikki testit
   - `npm run test:unit` ajaa vain
   - `npm run test:integration` ajaa vain integraatiotestit (polun `test/integrationtests` alla olevat testit, jotka vaativan backendin)
