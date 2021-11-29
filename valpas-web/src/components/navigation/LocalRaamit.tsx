@@ -9,14 +9,10 @@ import {
   getMockStatus,
   resetMockDataToDate,
 } from "../../api/testApi"
-import {
-  getLanguage,
-  Language,
-  setLanguage,
-  supportedLanguages,
-  T,
-} from "../../i18n/i18n"
+import { getLanguage, setLanguage, T } from "../../i18n/i18n"
+import { supportedLanguages } from "../../state/apitypes/appConfiguration"
 import { CurrentUser } from "../../state/auth"
+import { Language } from "../../state/common"
 import { joinClassNames } from "../../utils/classnames"
 import "./LocalRaamit.less"
 
