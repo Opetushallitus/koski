@@ -1100,7 +1100,41 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
           perusopetuksenJälkeinenTiedot = Some(ExpectedDataPerusopetuksenJälkeinenTiedot("voimassa", "lasna")),
         ),
       )
-    )
+    ),
+    (
+      ValpasMockOppijat.amisEronnutUusiKelpaamatonOpiskeluoikeusPerusopetukseenValmistavassa,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.perusopetukseenValmistavanOpetuksenOpiskeluoikeusAlkaaSyys2021,
+          onHakeutumisValvottavaOpiskeluoikeus = false,
+          onHakeutumisvalvovaOppilaitos = false,
+          onSuorittamisvalvovaOppilaitos = false,
+          muuOpetusTiedot = Some(ExpectedDataMuuOpetusTiedot("voimassa", "lasna")),
+        ),
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = false,
+          onHakeutumisvalvovaOppilaitos = false,
+          onSuorittamisvalvovaOppilaitos = true,
+          perusopetuksenJälkeinenTiedot = Some(ExpectedDataPerusopetuksenJälkeinenTiedot("eronnut", "eronnut")),
+        ),
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenSaksalainenKoulu,
+          onHakeutumisValvottavaOpiskeluoikeus = false,
+          onHakeutumisvalvovaOppilaitos = false,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("valmistunut", "valmistunut")),
+        ),
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.valmistunutKymppiluokkalainen,
+          onHakeutumisValvottavaOpiskeluoikeus = false,
+          onHakeutumisvalvovaOppilaitos = false,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetuksenJälkeinenTiedot = Some(ExpectedDataPerusopetuksenJälkeinenTiedot("valmistunut", "valmistunut")),
+        ),
+      ),
+    ),
+
   ).sortBy(item => (item._1.sukunimi.toLowerCase, item._1.etunimet.toLowerCase))
 
   "getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla palauttaa vain annetun oppijanumeron mukaisen oppijan" in {

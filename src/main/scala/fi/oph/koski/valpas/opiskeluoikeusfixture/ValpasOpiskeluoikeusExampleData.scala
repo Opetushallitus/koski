@@ -1345,6 +1345,12 @@ object ValpasOpiskeluoikeusExampleData {
     ),
   )
 
+  def perusopetukseenValmistavanOpetuksenOpiskeluoikeusAlkaaSyys2021 = perusopetukseenValmistavanOpetuksenOpiskeluoikeus.copy(
+    tila = PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila(List(
+      PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(date(2021, 9, 1), opiskeluoikeusLäsnä),
+    )),
+  )
+
   def perusopetukseenValmistavanOpetuksenOpiskeluoikeus = ExamplesPerusopetukseenValmistavaOpetus.perusopetukseenValmistavaOpiskeluoikeus.copy(
     tila = PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila(List(
       PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(date(2021, 5, 1), opiskeluoikeusLäsnä),

@@ -190,8 +190,22 @@ class ValpasOppijaService(
   ): Boolean =
     opiskeluoikeudet.exists(oo => onToisenAsteenOpiskeluoikeus(oo) && oo.perusopetuksenJälkeinenTiedot.map(_.tarkastelupäivänTila.koodiarvo).contains("voimassa"))
 
-  private def onToisenAsteenOpiskeluoikeus(oo: ValpasOpiskeluoikeusLaajatTiedot): Boolean =
-    !(onNivelvaiheenOpiskeluoikeus(oo) || onNuortenPerusopetuksenOpiskeluoikeus(oo))
+  private def onToisenAsteenOpiskeluoikeus(oo: ValpasOpiskeluoikeusLaajatTiedot): Boolean = {
+    oo.tyyppi.koodiarvo match {
+      // Ammatillinen opiskeluoikeus: On toista astetta, jos ei ole nivelvaihetta
+      case "ammatillinenkoulutus"
+        if !onNivelvaiheenOpiskeluoikeus(oo) => true
+      case "diatutkinto" => true
+      case "ibtutkinto"  => true
+      // International school on toista astetta, jos siinä on luokka-asteen 10+ suoritus. Tämä on tarkistettu jo SQL:ssä,
+      // joten tässä riittää tutkia, onko perusopetuksen jälkeisiä tietoja määritelty.
+      case "internationalschool" if oo.perusopetuksenJälkeinenTiedot.isDefined => true
+      // Lukiokoulutus on toista astetta, jos siinä ei ole pelkkiä aineopintoja:
+      case "lukiokoulutus"
+        if oo.päätasonSuoritukset.exists(pts => pts.suorituksenTyyppi.koodiarvo == "lukionoppimaara") => true
+      case _ => false
+    }
+  }
 
   private def sisältääVoimassaolevanNivelvaiheenOpiskeluoikeuden(
     opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot]
