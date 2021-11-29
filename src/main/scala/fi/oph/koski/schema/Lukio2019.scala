@@ -48,6 +48,7 @@ case class LukionOppimääränSuoritus2019(
   with SuoritettavissaErityisenäTutkintona2019
   with Oppimäärällinen
   with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+  with LukionOppimääränSuoritus
 
 @Title("Lukion oppiaineiden oppimäärien suoritus 2019")
 @Description("Lukion oppiaineiden oppimäärien suoritustiedot 2019")

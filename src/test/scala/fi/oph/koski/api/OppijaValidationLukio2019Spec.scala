@@ -1658,6 +1658,15 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
       opiskeluoikeus.oppimääräSuoritettu.get should equal (true)
     }
 
+    "Ei täytetä automaattisesti 'true'ksi kun kyseessä oppiaineen oppimäärä" in {
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(
+        vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15))
+      )))
+      val opiskeluoikeus: LukionOpiskeluoikeus = putAndGetOpiskeluoikeus(oo).asInstanceOf[LukionOpiskeluoikeus]
+
+      opiskeluoikeus.oppimääräSuoritettu should equal (None)
+    }
+
     "Ei täytetä automaattisesti, jos oppimäärän suoritusta ei ole vahvistettu" in {
       val oo = defaultOpiskeluoikeus.copy(
         tila = LukionOpiskeluoikeudenTila(List(

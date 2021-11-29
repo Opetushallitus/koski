@@ -136,3 +136,5 @@ trait LukionOppiaine extends Koulutusmoduuli with Valinnaisuus with Diaarinumero
 }
 
 trait LukionÄidinkieliJaKirjallisuus extends LukionOppiaine with Äidinkieli
+
+trait LukionOppimääränSuoritus

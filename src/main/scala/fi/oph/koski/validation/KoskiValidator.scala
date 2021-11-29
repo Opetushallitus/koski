@@ -197,7 +197,7 @@ class KoskiValidator(
     oo match {
       case lukio: LukionOpiskeluoikeus =>
         lukio.suoritukset.head match {
-          case oppimäärällinen: Oppimäärällinen if oppimäärällinen.vahvistettu => lukio.copy(
+          case suoritus: LukionOppimääränSuoritus if suoritus.vahvistettu => lukio.copy(
             oppimääräSuoritettu = Some(true)
           )
           case _ => oo
