@@ -1,26 +1,15 @@
 import Cookie from "js-cookie"
 import React, { useMemo } from "react"
+import {
+  supportedLanguages,
+  Translation,
+  TranslationId,
+} from "../state/apitypes/appConfiguration"
 import { KoodistoKoodiviite } from "../state/apitypes/koodistot"
-import { LocalizedString } from "../state/common"
+import { Language, LocalizedString } from "../state/common"
 import { logWarning } from "../utils/log"
 
-export type TranslationId = string
-export type Translation = string
-
-export const supportedLanguages = ["fi", "sv", "en"] as const
-
-export type Language = typeof supportedLanguages[number]
-
-type LanguageRecord = Record<Language, Translation>
-
-export type LocalizationMap = Record<TranslationId, LanguageRecord>
-
 type ParamsMap = Record<string, string | number>
-declare global {
-  interface Window {
-    valpasLocalizationMap?: LocalizationMap
-  }
-}
 
 const getString = (id: TranslationId) =>
   (window.valpasLocalizationMap || {})[id]
