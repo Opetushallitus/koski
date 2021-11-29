@@ -13,4 +13,5 @@ export type AppConfiguration = {
   valpasLocalizationMap: LocalizationMap
   environment: string
   opintopolkuVirkailijaUrl: string
+  opintopolkuOppijaUrl: string
 }
