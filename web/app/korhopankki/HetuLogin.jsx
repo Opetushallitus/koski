@@ -7,7 +7,7 @@ import {t} from '../i18n/i18n'
 import Input from '../components/Input'
 import Cookie from 'js-cookie'
 
-const HetuLogin = ( { loginUrl = '/koski/cas/oppija', redirectUrl = '/koski/omattiedot' } ) => {
+const HetuLogin = ( { loginUrl = '/koski/cas/oppija', redirectUrl = null } ) => {
   const state = Atom({hetu: null, cn: null, FirstName: null, givenName: null, sn: null, lang: null})
 
   const valid = state.map(({hetu}) => {
@@ -45,10 +45,12 @@ const HetuLogin = ( { loginUrl = '/koski/cas/oppija', redirectUrl = '/koski/omat
     if (x.resp.headers && x.resp.headers.map && x.resp.headers.map['x-virhesivu']) {
       // For PhantomJS - the fetch polyfill doesn't set "x.redirected"
       document.location = '/koski/virhesivu'
+    } else if (redirectUrl) {
+      document.location = redirectUrl
     } else if (x.resp.redirected) {
       document.location = x.resp.url
     } else {
-      document.location = redirectUrl
+      document.location = '/koski/omattiedot'
     }
   })
 
