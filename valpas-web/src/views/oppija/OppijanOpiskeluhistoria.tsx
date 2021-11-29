@@ -19,6 +19,7 @@ import { getLocalizedMaybe, T, t, useLanguage } from "../../i18n/i18n"
 import { KoodistoKoodiviite } from "../../state/apitypes/koodistot"
 import {
   KuntailmoitusLaajatTiedotLisätiedoilla,
+  kuntaKotipaikka,
   sortKuntailmoitusLaajatTiedotLisätiedoilla,
 } from "../../state/apitypes/kuntailmoitus"
 import {
@@ -234,7 +235,7 @@ const OpiskeluhistoriaIlmoitus = ({
       />
       <InfoTableRow
         label={t("oppija__ilmoitushistoria_kohde")}
-        value={organisaatioNimi(kuntailmoitus.kunta)}
+        value={kuntaKotipaikka(kuntailmoitus.kunta)}
       />
       <InfoTableRow value={<IlmoitusLink kuntailmoitus={kuntailmoitus} />} />
     </InfoTable>

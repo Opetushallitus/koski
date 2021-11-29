@@ -54,7 +54,7 @@ const teeOppijat = (tekijä: Tekijä): NonEmptyArray<Oppija> => [
       "Aikuisten-perusopetuksesta-alle-2kk-aiemmin-valmistunut Valpas (131004A1477)",
     prefill: 0,
     expected: {
-      kohde: "Helsingin kaupunki",
+      kohde: "Helsinki",
       tekijä: [
         tekijä.nimi,
         tekijä.email,
