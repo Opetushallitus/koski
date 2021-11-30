@@ -10,6 +10,8 @@ import java.time.LocalDate
 
 import fi.oph.koski.util.Timing
 
+import scala.concurrent.duration.DurationInt
+
 case class ValpasOppijaRow(
   oppijaOid: String,
   kaikkiOppijaOidit: Seq[ValpasHenkilö.Oid],
@@ -103,7 +105,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     val nonEmptyOppijaOids = if (oppijaOids.nonEmpty) Some(oppijaOids) else None
 
     timed(timedBlockname, 10) {
-      db.runDbSync(SQLHelpers.concatMany(
+      db.runDbSync(timeout = 3.minutes, a = SQLHelpers.concatMany(
         Some(
           sql"""
   WITH
