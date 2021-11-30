@@ -1579,5 +1579,8 @@
   "Lisää työelämä- ja yhteiskuntataidon opintokokonaisuus": "Lisää työelämä- ja yhteiskuntataidon opintokokonaisuus",
   "Työelämäjakson lisäys": "Työelämäjakson lisäys",
   "Opiskeluoikeuden tila": "Opiskeluoikeuden tila",
-  "Suoritustyyppi": "Suoritustyyppi"
+  "Suoritustyyppi": "Suoritustyyppi",
+  "deprecated:Käytä opiskeluoikeuden kenttää 'oppimääräSuoritettu'" : "Käytä opiskeluoikeuden kenttää 'oppimääräSuoritettu'",
+  "Oppimäärä suoritettu" : "Oppimäärä suoritettu",
+  "description:Tieto siitä, onko lukion oppimäärän..." : "Tieto siitä, onko lukion oppimäärän suorittamiseen vaadittavat opinnot suoritettu. Jos lukion oppimäärän suoritus on vahvistettu, lukion oppimäärän suorittamiseen vaadittavat opinnot tulkitaan automaattisesti suoritetuksi, jolloin tähän kenttään tallennetaan automaattisesti arvo 'true'."
 }

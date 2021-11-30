@@ -19,7 +19,8 @@ describe('Lukiokoulutus2019', function( ){
       it('näyttää opiskeluoikeuden tiedot', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 1.8.2019 — 15.5.2020\n' +
           'Tila 15.5.2020 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
-          '1.8.2019 Läsnä (valtionosuusrahoitteinen koulutus)'
+          '1.8.2019 Läsnä (valtionosuusrahoitteinen koulutus)\n' +
+           'Oppimäärä suoritettu kyllä'
         )
       })
 

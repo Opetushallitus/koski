@@ -114,7 +114,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
         putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(osasuoritukset = Some(oppiainesuorituksetEiRiitäValmistumiseen))))) {
           verifyResponseStatus(400,
             KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(
-              s"Suoritus koulutus/309902 on merkitty valmiiksi, mutta sillä ei ole 150 op osasuorituksia, joista vähintään 20 op valinnaisia, tai opiskeluoikeudelta puuttuu linkitys"
+              s"Suoritus koulutus/309902 on merkitty valmiiksi tai opiskeluoikeuden tiedoissa oppimäärä on merkitty suoritetuksi, mutta sillä ei ole 150 op osasuorituksia, joista vähintään 20 op valinnaisia, tai opiskeluoikeudelta puuttuu linkitys"
             )
           )
         }
@@ -131,7 +131,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
         putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(osasuoritukset = Some(osasuoritukset))))) {
           verifyResponseStatus(400,
             KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(
-              s"Suoritus koulutus/309902 on merkitty valmiiksi, mutta sillä ei ole 150 op osasuorituksia, joista vähintään 20 op valinnaisia, tai opiskeluoikeudelta puuttuu linkitys"
+              s"Suoritus koulutus/309902 on merkitty valmiiksi tai opiskeluoikeuden tiedoissa oppimäärä on merkitty suoritetuksi, mutta sillä ei ole 150 op osasuorituksia, joista vähintään 20 op valinnaisia, tai opiskeluoikeudelta puuttuu linkitys"
             )
           )
         }
@@ -167,7 +167,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
         )))) {
           verifyResponseStatus(400,
             KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(
-              s"Suoritus koulutus/309902 on merkitty valmiiksi, mutta sillä ei ole 88 op osasuorituksia, tai opiskeluoikeudelta puuttuu linkitys"
+              s"Suoritus koulutus/309902 on merkitty valmiiksi tai opiskeluoikeuden tiedoissa oppimäärä on merkitty suoritetuksi, mutta sillä ei ole 88 op osasuorituksia, tai opiskeluoikeudelta puuttuu linkitys"
             )
           )
         }
@@ -1647,6 +1647,68 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
           )
         )
       }
+    }
+  }
+
+  "oppimääräSuoritettu-kenttä" - {
+    "Täytetään automaattisesti 'true'ksi kun oppimäärän suoritus vahvistettu" in {
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus))
+      val opiskeluoikeus: LukionOpiskeluoikeus = putAndGetOpiskeluoikeus(oo).asInstanceOf[LukionOpiskeluoikeus]
+
+      opiskeluoikeus.oppimääräSuoritettu.get should equal (true)
+    }
+
+    "Ei täytetä automaattisesti 'true'ksi kun kyseessä oppiaineen oppimäärä" in {
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(
+        vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15))
+      )))
+      val opiskeluoikeus: LukionOpiskeluoikeus = putAndGetOpiskeluoikeus(oo).asInstanceOf[LukionOpiskeluoikeus]
+
+      opiskeluoikeus.oppimääräSuoritettu should equal (None)
+    }
+
+    "Ei täytetä automaattisesti, jos oppimäärän suoritusta ei ole vahvistettu" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = LukionOpiskeluoikeudenTila(List(
+          LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+        )),
+        suoritukset = List(oppimääränSuoritus.copy(
+          vahvistus = None
+      )))
+      val opiskeluoikeus: LukionOpiskeluoikeus = putAndGetOpiskeluoikeus(oo).asInstanceOf[LukionOpiskeluoikeus]
+
+      opiskeluoikeus.oppimääräSuoritettu.isDefined should equal (false)
+    }
+
+    "Jos nuorten oppimäärän suoritus sisältää alle 150 op, oppimäärää ei voi merkitä suoritetuksi" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        oppimääräSuoritettu = Some(true),
+        tila = LukionOpiskeluoikeudenTila(List(
+          LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+        )),
+        suoritukset = List(oppimääränSuoritus.copy(
+          osasuoritukset = Some(oppiainesuorituksetEiRiitäValmistumiseen),
+          vahvistus = None
+        )))
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400,
+          KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(
+            s"Suoritus koulutus/309902 on merkitty valmiiksi tai opiskeluoikeuden tiedoissa oppimäärä on merkitty suoritetuksi, mutta sillä ei ole 150 op osasuorituksia, joista vähintään 20 op valinnaisia, tai opiskeluoikeudelta puuttuu linkitys"
+          )
+        )
+      }
+    }
+  }
+
+  "Oppiaineen oppimäärän suorituksen lukionOppimääräSuoritettu-kenttä deprekoitu, eikä sitä saa enää siirtää" in {
+    val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(
+      lukionOppimääräSuoritettu = Some(true)
+    )))
+    putOpiskeluoikeus(oo) {
+      verifyResponseStatus(400,
+        KoskiErrorCategory.badRequest.validation.rakenne.deprekoituLukionAineopintojenPäätasonSuorituksenKenttä()
+      )
     }
   }
 
