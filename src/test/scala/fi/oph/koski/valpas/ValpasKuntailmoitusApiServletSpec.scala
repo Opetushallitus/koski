@@ -110,21 +110,19 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
       s"""
          |{
          |  "oppijaOid": "${ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid}",
-         |  "kuntailmoitus" : {
-         |    "tekijä" : {
-         |      "organisaatio" : {
-         |        "oid" : "${MockOrganisaatiot.jyväskylänNormaalikoulu}"
-         |      }
-         |    },
-         |    "kunta" : {
-         |      "oid" : "${MockOrganisaatiot.helsinginKaupunki}"
-         |    },
-         |    "oppijanYhteystiedot" : {},
-         |    "hakenutMuualle" : false,
-         |    "yhteydenottokieli" : {
-         |      "koodiarvo" : "SV",
-         |      "koodistoUri" : "kieli"
+         |  "tekijä" : {
+         |    "organisaatio" : {
+         |      "oid" : "${MockOrganisaatiot.jyväskylänNormaalikoulu}"
          |    }
+         |  },
+         |  "kunta" : {
+         |    "oid" : "${MockOrganisaatiot.helsinginKaupunki}"
+         |  },
+         |  "oppijanYhteystiedot" : {},
+         |  "hakenutMuualle" : false,
+         |  "yhteydenottokieli" : {
+         |    "koodiarvo" : "SV",
+         |    "koodistoUri" : "kieli"
          |  }
          |}
          |""".stripMargin
@@ -181,11 +179,9 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
       s"""
         |{
         |  "oppijaOid": "${ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid}",
-        |  "kuntailmoitus" : {
-        |    "tekijä" : {
-        |      "organisaatio" : {
-        |        "oid" : "${MockOrganisaatiot.jyväskylänNormaalikoulu}"
-        |      }
+        |  "tekijä" : {
+        |    "organisaatio" : {
+        |      "oid" : "${MockOrganisaatiot.jyväskylänNormaalikoulu}"
         |    }
         |  }
         |}
@@ -194,7 +190,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     post("/valpas/api/kuntailmoitus", body = minimikuntailmoitusIlmanKuntaa, headers = authHeaders() ++ jsonContent) {
       verifyResponseStatus(
         400,
-        ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*kuntailmoitus.kunta.*missingProperty.*".r)
+        ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*kunta.*missingProperty.*".r)
       )
     }
   }
@@ -204,16 +200,14 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
       s"""
          |{
          |  "oppijaOid": "${ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid}",
-         |  "kuntailmoitus" : {
-         |    "id": 100,
-         |    "tekijä" : {
-         |      "organisaatio" : {
-         |        "oid" : "${MockOrganisaatiot.jyväskylänNormaalikoulu}"
-         |      }
-         |    },
-         |    "kunta" : {
-         |      "oid" : "${MockOrganisaatiot.helsinginKaupunki}"
+         |  "id": 100,
+         |  "tekijä" : {
+         |    "organisaatio" : {
+         |      "oid" : "${MockOrganisaatiot.jyväskylänNormaalikoulu}"
          |    }
+         |  },
+         |  "kunta" : {
+         |    "oid" : "${MockOrganisaatiot.helsinginKaupunki}"
          |  }
          |}
          |""".stripMargin
@@ -356,18 +350,16 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
       s"""
          |{
          |  "oppijaOid": "${ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid}",
-         |  "kuntailmoitus" : {
-         |    "tekijä" : {
-         |      "organisaatio" : {
-         |        "oid" : "${MockOrganisaatiot.jyväskylänNormaalikoulu}"
-         |      },
-         |      "henkilö" : {
-         |        "oid" : "${ValpasMockUsers.valpasOphPääkäyttäjä.oid}"
-         |      }
+         |  "tekijä" : {
+         |    "organisaatio" : {
+         |      "oid" : "${MockOrganisaatiot.jyväskylänNormaalikoulu}"
          |    },
-         |    "kunta" : {
-         |      "oid" : "${MockOrganisaatiot.helsinginKaupunki}"
+         |    "henkilö" : {
+         |      "oid" : "${ValpasMockUsers.valpasOphPääkäyttäjä.oid}"
          |    }
+         |  },
+         |  "kunta" : {
+         |    "oid" : "${MockOrganisaatiot.helsinginKaupunki}"
          |  }
          |}
          |""".stripMargin
@@ -388,19 +380,17 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
       s"""
          |{
          |  "oppijaOid": "${ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid}",
-         |  "kuntailmoitus" : {
-         |    "tekijä" : {
-         |      "organisaatio" : {
-         |        "oid" : "${MockOrganisaatiot.jyväskylänNormaalikoulu}"
-         |      }
-         |    },
-         |    "kunta" : {
-         |      "oid" : "${MockOrganisaatiot.helsinginKaupunki}"
-         |    },
-         |    "yhteydenottokieli" : {
-         |      "koodiarvo" : "EN",
-         |      "koodistoUri" : "kieli"
+         |  "tekijä" : {
+         |    "organisaatio" : {
+         |      "oid" : "${MockOrganisaatiot.jyväskylänNormaalikoulu}"
          |    }
+         |  },
+         |  "kunta" : {
+         |    "oid" : "${MockOrganisaatiot.helsinginKaupunki}"
+         |  },
+         |  "yhteydenottokieli" : {
+         |    "koodiarvo" : "EN",
+         |    "koodistoUri" : "kieli"
          |  }
          |}
          |""".stripMargin
@@ -412,7 +402,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
         400,
         ErrorMatcher.regex(
           KoskiErrorCategory.badRequest.validation.jsonSchema,
-          ".*kuntailmoitus.yhteydenottokieli.koodiarvo.*enumValueMismatch.*".r
+          ".*yhteydenottokieli.koodiarvo.*enumValueMismatch.*".r
         )
       )
     }
@@ -768,18 +758,16 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     s"""
        |{
        |  "oppijaOid": "${oppijaOid}",
-       |  "kuntailmoitus" : {
-       |    "tekijä" : {
-       |      "organisaatio" : {
-       |        "oid" : "${tekijäOid}"
-       |      }
-       |    },
-       |    "kunta" : {
-       |      "oid" : "${kuntaOid}"
-       |    },
-       |    "oppijanYhteystiedot" : {},
-       |    "hakenutMuualle" : false
-       |  }
+       |  "tekijä" : {
+       |    "organisaatio" : {
+       |      "oid" : "${tekijäOid}"
+       |    }
+       |  },
+       |  "kunta" : {
+       |    "oid" : "${kuntaOid}"
+       |  },
+       |  "oppijanYhteystiedot" : {},
+       |  "hakenutMuualle" : false
        |}
        |""".stripMargin
 
@@ -796,25 +784,23 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     s"""
        |{
        |  "oppijaOid": "${oppijaOid}",
-       |  "kuntailmoitus" : {
-       |    "tekijä" : {
-       |      "organisaatio" : {
-       |        "oid" : "${tekijäOid}"
-       |      },
-       |      "henkilö" : {
-       |        "etunimet" : "${etunimet}",
-       |        "sukunimi" : "${sukunimi}",
-       |        "kutsumanimi" : "${kutsumanimi}",
-       |        "email" : "${tekijäEmail}",
-       |        "puhelinnumero" : "${tekijäPuhelinnumero}"
-       |      }
+       |  "tekijä" : {
+       |    "organisaatio" : {
+       |      "oid" : "${tekijäOid}"
        |    },
-       |    "kunta" : {
-       |      "oid" : "${kuntaOid}"
-       |    },
-       |    "oppijanYhteystiedot" : {},
-       |    "hakenutMuualle" : false
-       |  }
+       |    "henkilö" : {
+       |      "etunimet" : "${etunimet}",
+       |      "sukunimi" : "${sukunimi}",
+       |      "kutsumanimi" : "${kutsumanimi}",
+       |      "email" : "${tekijäEmail}",
+       |      "puhelinnumero" : "${tekijäPuhelinnumero}"
+       |    }
+       |  },
+       |  "kunta" : {
+       |    "oid" : "${kuntaOid}"
+       |  },
+       |  "oppijanYhteystiedot" : {},
+       |  "hakenutMuualle" : false
        |}
        |""".stripMargin
 
@@ -832,39 +818,37 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     s"""
        |{
        |  "oppijaOid": "${oppijaOid}",
-       |  "kuntailmoitus" : {
-       |    "tekijä" : {
-       |      "organisaatio" : {
-       |        "oid" : "${tekijäOid}"
-       |      },
-       |      "henkilö" : {
-       |        "etunimet" : "${etunimet}",
-       |        "sukunimi" : "${sukunimi}",
-       |        "kutsumanimi" : "${kutsumanimi}",
-       |        "email": "${tekijäEmail}",
-       |        "puhelinnumero" : "${tekijäPuhelinnumero}"
-       |      }
+       |  "tekijä" : {
+       |    "organisaatio" : {
+       |      "oid" : "${tekijäOid}"
        |    },
-       |    "kunta" : {
-       |      "oid" : "${kuntaOid}"
-       |    },
-       |    "yhteydenottokieli" : {
-       |      "koodiarvo" : "FI",
-       |      "koodistoUri" : "kieli"
-       |    },
-       |    "oppijanYhteystiedot" : {
-       |      "puhelinnumero" : "040 1234 567",
-       |      "email" : "oppija.email@test.com",
-       |      "lähiosoite" : "Metsäkatu 1 C 10",
-       |      "postinumero" : "00100",
-       |      "postitoimipaikka" : "Helsinki",
-       |      "maa" : {
-       |        "koodiarvo" : "246",
-       |        "koodistoUri" : "maatjavaltiot2"
-       |      }
-       |    },
-       |    "hakenutMuualle": false
-       |  }
+       |    "henkilö" : {
+       |      "etunimet" : "${etunimet}",
+       |      "sukunimi" : "${sukunimi}",
+       |      "kutsumanimi" : "${kutsumanimi}",
+       |      "email": "${tekijäEmail}",
+       |      "puhelinnumero" : "${tekijäPuhelinnumero}"
+       |    }
+       |  },
+       |  "kunta" : {
+       |    "oid" : "${kuntaOid}"
+       |  },
+       |  "yhteydenottokieli" : {
+       |    "koodiarvo" : "FI",
+       |    "koodistoUri" : "kieli"
+       |  },
+       |  "oppijanYhteystiedot" : {
+       |    "puhelinnumero" : "040 1234 567",
+       |    "email" : "oppija.email@test.com",
+       |    "lähiosoite" : "Metsäkatu 1 C 10",
+       |    "postinumero" : "00100",
+       |    "postitoimipaikka" : "Helsinki",
+       |    "maa" : {
+       |      "koodiarvo" : "246",
+       |      "koodistoUri" : "maatjavaltiot2"
+       |    }
+       |  },
+       |  "hakenutMuualle": false
        |}
        |""".stripMargin
 
@@ -875,9 +859,9 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     oppilaitosOid: ValpasOppilaitos.Oid
   ) : Either[HttpStatus, Set[ValpasOpiskeluoikeus.Oid]] =
   {
-    val oppijaService = KoskiApplicationForTests.valpasOppijaService
+    val oppijaLaajatTiedotService = KoskiApplicationForTests.valpasOppijaLaajatTiedotService
 
-    val oppija = oppijaService.getOppijaLaajatTiedot(oppijaOid)(defaultSession)
+    val oppija = oppijaLaajatTiedotService.getOppijaLaajatTiedot(oppijaOid)(defaultSession)
 
     oppija.map(_.opiskeluoikeudet.filter(_.oppilaitos.oid == oppilaitosOid).map(_.oid)).map(_.toSet)
   }

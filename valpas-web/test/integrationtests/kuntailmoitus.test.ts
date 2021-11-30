@@ -83,7 +83,7 @@ const teeOppijat = (tekijä: Tekijä): NonEmptyArray<Oppija> => [
       "Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas (221105A3023)",
     prefill: 0,
     expected: {
-      kohde: "Helsingin kaupunki",
+      kohde: "Helsinki",
       tekijä: [
         tekijä.nimi,
         tekijä.email,
@@ -108,7 +108,7 @@ const teeOppijat = (tekijä: Tekijä): NonEmptyArray<Oppija> => [
       katuosoite: "Esimerkkikatu 1234",
     },
     expected: {
-      kohde: "Pyhtään kunta",
+      kohde: "Pyhtää",
       tekijä: [
         tekijä.nimi,
         tekijä.email,
@@ -130,7 +130,7 @@ const teeOppijat = (tekijä: Tekijä): NonEmptyArray<Oppija> => [
       asuinkunta: "Pyhtää",
     },
     expected: {
-      kohde: "Pyhtään kunta",
+      kohde: "Pyhtää",
       tekijä: [
         tekijä.nimi,
         tekijä.email,
@@ -155,7 +155,7 @@ const suorittamisenValvojanOppijat: NonEmptyArray<Oppija> = [
     title: "Lukio-opiskelija Valpas (070504A717P)",
     prefill: 0,
     expected: {
-      kohde: "Helsingin kaupunki",
+      kohde: "Helsinki",
       tekijä: [
         "käyttäjä valpas-pelkkä-suorittaminen",
         suorittamisenValvoja.email,
@@ -178,7 +178,7 @@ const nivelvaiheenValvojanOppijat: NonEmptyArray<Oppija> = [
     title: "Lukio-opiskelija Valpas (070504A717P)",
     prefill: 0,
     expected: {
-      kohde: "Helsingin kaupunki",
+      kohde: "Helsinki",
       tekijä: [
         "käyttäjä valpas-nivelvaihe",
         nivelvaiheenValvoja.email,

@@ -5,90 +5,10 @@ import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
 import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystietojenAlkuperä
 
 import java.time.LocalDateTime
-import fi.oph.koski.valpas.ValpasKuntailmoitusLaajatTiedotLisätiedoilla
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeus, ValpasOpiskeluoikeusLaajatTiedot, ValpasOppijaLaajatTiedot, ValpasRajapäivätService}
 
-case class ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
-  oppijaOid: String,
-  kuntailmoitus: ValpasKuntailmoitusLaajatTiedot
-)
-
-trait ValpasKuntailmoitus {
-  def id: Option[String] // TODO: Scala-schemasta puuttuu UUID-tuki :(
-  def tekijä: ValpasKuntailmoituksenTekijä
-  def kunta: OrganisaatioWithOid // Koska suuri osa kunnista on koulutustoimijoita, on niille vaikea luoda omaa tyyppiä.
-                                 // Validointi, että tähän voi tallentaa vain kunta-tyyppisen organisaation, tehdään erikseen.
-  def aikaleima: Option[LocalDateTime]
-}
-
-object ValpasKuntailmoitus {
-  def automaattisestiArkistoitava(
-    opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot],
-    kaikkiIlmoitukset: Seq[ValpasKuntailmoitus],
-  )(
-    ilmoitus: ValpasKuntailmoitus
-  ): Boolean = {
-    val saanutOpiskelupaikan = opiskeluoikeudet.exists(oo =>
-      oo.oppivelvollisuudenSuorittamiseenKelpaava &&
-        (oo.isOpiskelu || oo.isOpiskeluTulevaisuudessa)
-    )
-
-    val uudemmatIlmoitukset = ilmoitus.aikaleima match {
-      case None => Seq.empty
-      case Some(käsiteltäväAikaleima) => {
-        kaikkiIlmoitukset.filter(_.aikaleima match {
-          case None => false
-          case Some(aikaleima) => aikaleima.isAfter(käsiteltäväAikaleima)
-        })
-      }
-    }
-
-    val asuinkuntaVaihtunut = uudemmatIlmoitukset.exists(_.kunta.oid != ilmoitus.kunta.oid)
-
-    saanutOpiskelupaikan || asuinkuntaVaihtunut
-  }
-}
-
-trait ValpasKuntailmoituksenTekijä {
-  def organisaatio: OrganisaatioWithOid // Tekijä voi olla joko kunta tai oppilaitos. Validointi, että on jompikumpi, tehdään erikseen.
-}
-
-case class ValpasKuntailmoitusSuppeatTiedot(
-  id: Option[String], // Oikeasti UUID - scala-schemasta puuttuu tuki UUID-tyypille
-  tekijä: ValpasKuntailmoituksenTekijäSuppeatTiedot,
-  kunta: OrganisaatioWithOid,
-  aikaleima: Option[LocalDateTime],
-  // Option, koska riippuen käyttöoikeuksista käyttäjä voi saada nähdä vain osan tietyn ilmoituksen tiedoista,
-  // tai tätä ei ole enää tallessa, koska on oppivelvollisuusrekisterin ulkopuolista dataa.
-  hakenutMuualle: Option[Boolean],
-  // Option, koska relevantti kenttä vain haettaessa ilmoituksia tietylle kunnalle
-  onUudempiaIlmoituksiaMuihinKuntiin: Option[Boolean],
-  aktiivinen: Option[Boolean],
-) extends ValpasKuntailmoitus
-
-object ValpasKuntailmoitusSuppeatTiedot {
-  def apply(laajatTiedot: ValpasKuntailmoitusLaajatTiedotLisätiedoilla): ValpasKuntailmoitusSuppeatTiedot = {
-    ValpasKuntailmoitusSuppeatTiedot(laajatTiedot.kuntailmoitus, Some(laajatTiedot.aktiivinen))
-  }
-
-  def apply(laajatTiedot: ValpasKuntailmoitusLaajatTiedot): ValpasKuntailmoitusSuppeatTiedot = {
-    ValpasKuntailmoitusSuppeatTiedot(laajatTiedot, None)
-  }
-
-  def apply(laajatTiedot: ValpasKuntailmoitusLaajatTiedot, aktiivinen: Option[Boolean]): ValpasKuntailmoitusSuppeatTiedot = {
-    ValpasKuntailmoitusSuppeatTiedot(
-      id = laajatTiedot.id,
-      tekijä = ValpasKuntailmoituksenTekijäSuppeatTiedot(laajatTiedot.tekijä),
-      kunta = laajatTiedot.kunta,
-      aikaleima = laajatTiedot.aikaleima,
-      hakenutMuualle = laajatTiedot.hakenutMuualle,
-      onUudempiaIlmoituksiaMuihinKuntiin = laajatTiedot.onUudempiaIlmoituksiaMuihinKuntiin,
-      aktiivinen = aktiivinen,
-    )
-  }
-}
-
 case class ValpasKuntailmoitusLaajatTiedot(
+  oppijaOid: Option[String],
   id: Option[String], // Oikeasti UUID - scala-schemasta puuttuu tuki UUID-tyypille
   kunta: OrganisaatioWithOid,
   aikaleima: Option[LocalDateTime], // Option, koska create-operaatiossa bäkkäri täyttää ilmoitusajan
@@ -110,23 +30,22 @@ case class ValpasKuntailmoitusLaajatTiedot(
   hakenutMuualle: Option[Boolean],
 
   // Option, koska relevantti kenttä vain haettaessa ilmoituksia tietylle kunnalle
-  onUudempiaIlmoituksiaMuihinKuntiin: Option[Boolean]
-) extends ValpasKuntailmoitus
+  onUudempiaIlmoituksiaMuihinKuntiin: Option[Boolean],
 
-case class ValpasKuntailmoituksenTekijäSuppeatTiedot(
-  organisaatio: OrganisaatioWithOid
-) extends ValpasKuntailmoituksenTekijä
+  aktiivinen: Option[Boolean]
 
-object ValpasKuntailmoituksenTekijäSuppeatTiedot {
-  def apply(laajatTiedot: ValpasKuntailmoituksenTekijäLaajatTiedot): ValpasKuntailmoituksenTekijäSuppeatTiedot = {
-    ValpasKuntailmoituksenTekijäSuppeatTiedot(laajatTiedot.organisaatio)
-  }
+) {
+  def withOppijaOid(oppijaOid: String): ValpasKuntailmoitusLaajatTiedot =
+    this.copy(oppijaOid = Some(oppijaOid))
+
+  def withAktiivinen(aktiivinen: Boolean): ValpasKuntailmoitusLaajatTiedot =
+    this.copy(aktiivinen = Some(aktiivinen))
 }
 
 case class ValpasKuntailmoituksenTekijäLaajatTiedot(
   organisaatio: OrganisaatioWithOid,
   henkilö: Option[ValpasKuntailmoituksenTekijäHenkilö], // Option, koska tämä on oppivelvollisuurekisterin ulkopuolista lisädataa eikä välttämättä tallessa tietokannassa vaikka muuta ilmoituksen tiedot olisivatkin
-) extends ValpasKuntailmoituksenTekijä
+)
 
 case class ValpasKuntailmoituksenTekijäHenkilö(
   oid: Option[ValpasKuntailmoituksenTekijäHenkilö.Oid], // Option, koska create-operaatiossa bäkkäri lukee tekijän oidin sessiosta

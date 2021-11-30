@@ -8,7 +8,7 @@ import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.ChainingSyntax._
 import fi.oph.koski.valpas.log.ValpasAuditLog.{auditLogKuntaKatsominen, auditLogOppijaKatsominen, auditLogOppijaKuntailmoitus}
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
-import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusLaajatTiedotJaOppijaOid, ValpasKuntailmoitusPohjatiedot, ValpasKuntailmoitusPohjatiedotInput}
+import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusPohjatiedot, ValpasKuntailmoitusPohjatiedotInput}
 import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
 import org.json4s._
 
@@ -23,12 +23,12 @@ class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication)
     application.directoryClient
   )
   private lazy val kuntailmoitusService = application.valpasKuntailmoitusService
-  private lazy val oppijaService = application.valpasOppijaService
+  private lazy val oppijaSuppeatTiedotService = application.valpasOppijaSuppeatTiedotService
 
   get("/oppijat/:kuntaOid") {
     val kuntaOid: Organisaatio.Oid = params("kuntaOid")
     renderEither(
-      oppijaService.getKunnanOppijatSuppeatTiedot(kuntaOid)
+      oppijaSuppeatTiedotService.getKunnanOppijatSuppeatTiedot(kuntaOid)
         .tap(_ => auditLogKuntaKatsominen(kuntaOid))
     )
   }
@@ -39,17 +39,16 @@ class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication)
         extractAndValidateKuntailmoitus(kuntailmoitusInputJson)
           .flatMap(kuntailmoitusService.createKuntailmoitus)
           .tap(auditLogOppijaKuntailmoitus)
-          .map(_.kuntailmoitus)
       renderEither[ValpasKuntailmoitusLaajatTiedot](result)
     }(parseErrorHandler = handleUnparseableJson)
   }
 
   private def extractAndValidateKuntailmoitus(kuntailmoitusInputJson: JValue) = {
     application.validatingAndResolvingExtractor
-      .extract[ValpasKuntailmoitusLaajatTiedotJaOppijaOid](strictDeserialization)(kuntailmoitusInputJson)
+      .extract[ValpasKuntailmoitusLaajatTiedot](strictDeserialization)(kuntailmoitusInputJson)
       .flatMap(kuntailmoitusInput =>
         Either.cond(
-          kuntailmoitusInput.kuntailmoitus.id.isEmpty,
+          kuntailmoitusInput.id.isEmpty,
           kuntailmoitusInput,
           ValpasErrorCategory.notImplemented.kuntailmoituksenMuokkaus()
         )

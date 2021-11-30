@@ -5,7 +5,6 @@ import fi.oph.koski.schema.annotation.KoodistoUri
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, Maksuttomuus, OikeuttaMaksuttomuuteenPidennetty}
 import fi.oph.koski.valpas.hakukooste._
 import fi.oph.scalaschema.annotation.SyntheticProperty
-
 import java.time.{LocalDate, LocalDateTime}
 
 trait ValpasOppija {
@@ -28,23 +27,11 @@ case class ValpasOppijaLaajatTiedot(
   oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate,
   onOikeusValvoaMaksuttomuutta: Boolean,
   onOikeusValvoaKunnalla: Boolean
-) extends ValpasOppija
-
-object ValpasOppijaSuppeatTiedot {
-  def apply(laajatTiedot: ValpasOppijaLaajatTiedot): ValpasOppijaSuppeatTiedot = {
-    ValpasOppijaSuppeatTiedot(
-      ValpasHenkilöSuppeatTiedot(laajatTiedot.henkilö),
-      laajatTiedot.opiskeluoikeudet.map(ValpasOpiskeluoikeusSuppeatTiedot.apply),
-      laajatTiedot.oppivelvollisuusVoimassaAsti
-    )
+) extends ValpasOppija {
+  def suorittaaOppivelvollisuutta: Boolean = {
+    opiskeluoikeudet.exists(oo => oo.oppivelvollisuudenSuorittamiseenKelpaava && oo.isOpiskelu)
   }
 }
-
-case class ValpasOppijaSuppeatTiedot(
-  henkilö: ValpasHenkilöSuppeatTiedot,
-  opiskeluoikeudet: Seq[ValpasOpiskeluoikeusSuppeatTiedot],
-  oppivelvollisuusVoimassaAsti: LocalDate
-) extends ValpasOppija
 
 object ValpasHenkilö {
   type Oid = String
@@ -66,26 +53,6 @@ case class ValpasHenkilöLaajatTiedot(
   sukunimi: String,
   turvakielto: Boolean,
   äidinkieli: Option[String]
-) extends ValpasHenkilö
-
-object ValpasHenkilöSuppeatTiedot {
-  def apply(laajatTiedot: ValpasHenkilöLaajatTiedot): ValpasHenkilöSuppeatTiedot = {
-    ValpasHenkilöSuppeatTiedot(
-      laajatTiedot.oid,
-      laajatTiedot.kaikkiOidit,
-      laajatTiedot.syntymäaika,
-      laajatTiedot.etunimet,
-      laajatTiedot.sukunimi
-    )
-  }
-}
-
-case class ValpasHenkilöSuppeatTiedot(
-  oid: ValpasHenkilö.Oid,
-  kaikkiOidit: Set[ValpasHenkilö.Oid],
-  syntymäaika: Option[LocalDate],
-  etunimet: String,
-  sukunimi: String
 ) extends ValpasHenkilö
 
 object ValpasOpiskeluoikeus {
@@ -139,12 +106,35 @@ trait ValpasOpiskeluoikeus {
       .headOption
       .map(LocalDate.parse)
 
+  def viimeisimmätOpiskeluoikeustiedot: Option[ValpasOpiskeluoikeusTiedot] =
+    opiskeluoikeustiedot
+      .map(OrderedOpiskeluoikeusTiedot.apply)
+      .sorted
+      .lastOption
+      .map(_.tiedot)
+
   def opiskeluoikeustiedot: Seq[ValpasOpiskeluoikeusTiedot] =
     Seq(
       perusopetusTiedot,
       perusopetuksenJälkeinenTiedot,
       muuOpetusTiedot,
     ).flatten
+}
+
+case class OrderedOpiskeluoikeusTiedot(
+  tiedot: ValpasOpiskeluoikeusTiedot
+) extends Ordered[OrderedOpiskeluoikeusTiedot] {
+  override def compare(that: OrderedOpiskeluoikeusTiedot): Int =
+    if (tiedot.päättymispäivä != that.tiedot.päättymispäivä) {
+      OrderedOpiskeluoikeusTiedot.compareDates(tiedot.päättymispäivä, that.tiedot.päättymispäivä)
+    } else {
+      OrderedOpiskeluoikeusTiedot.compareDates(tiedot.alkamispäivä, that.tiedot.alkamispäivä)
+    }
+}
+
+object OrderedOpiskeluoikeusTiedot {
+  def compareDates(a: Option[String], b: Option[String]): Int =
+    a.getOrElse("9999-99-99").compare(b.getOrElse("9999-99-99"))
 }
 
 case class ValpasOpiskeluoikeusLaajatTiedot(
@@ -164,23 +154,6 @@ case class ValpasOpiskeluoikeusLaajatTiedot(
   oikeuttaMaksuttomuuteenPidennetty: Option[Seq[OikeuttaMaksuttomuuteenPidennetty]],
 ) extends ValpasOpiskeluoikeus
 
-object ValpasOpiskeluoikeusSuppeatTiedot {
-  def apply(laajatTiedot: ValpasOpiskeluoikeusLaajatTiedot): ValpasOpiskeluoikeusSuppeatTiedot = {
-    ValpasOpiskeluoikeusSuppeatTiedot(
-      oid = laajatTiedot.oid,
-      onHakeutumisValvottava = laajatTiedot.onHakeutumisValvottava,
-      onSuorittamisValvottava = laajatTiedot.onSuorittamisValvottava,
-      tyyppi = laajatTiedot.tyyppi,
-      oppilaitos = laajatTiedot.oppilaitos,
-      perusopetusTiedot = laajatTiedot.perusopetusTiedot.map(ValpasOpiskeluoikeusPerusopetusSuppeatTiedot.apply),
-      perusopetuksenJälkeinenTiedot = laajatTiedot.perusopetuksenJälkeinenTiedot.map(ValpasOpiskeluoikeusPerusopetuksenJälkeinenSuppeatTiedot.apply),
-      muuOpetusTiedot = laajatTiedot.muuOpetusTiedot.map(ValpasOpiskeluoikeusMuuOpetusSuppeatTiedot.apply),
-      päätasonSuoritukset = laajatTiedot.päätasonSuoritukset,
-      onTehtyIlmoitus = laajatTiedot.onTehtyIlmoitus,
-    )
-  }
-}
-
 trait ValpasOpiskeluoikeusPerusopetusTiedot extends ValpasOpiskeluoikeusTiedot {
 
   def vuosiluokkiinSitomatonOpetus: Boolean
@@ -197,60 +170,6 @@ case class ValpasOpiskeluoikeusPerusopetusLaajatTiedot(
   vuosiluokkiinSitomatonOpetus: Boolean,
   näytäMuunaPerusopetuksenJälkeisenäOpintona: Option[Boolean],
 ) extends ValpasOpiskeluoikeusPerusopetusTiedot
-
-object ValpasOpiskeluoikeusPerusopetusSuppeatTiedot {
-  def apply(laajatTiedot: ValpasOpiskeluoikeusPerusopetusLaajatTiedot): ValpasOpiskeluoikeusPerusopetusSuppeatTiedot = {
-    ValpasOpiskeluoikeusPerusopetusSuppeatTiedot(
-      alkamispäivä = laajatTiedot.alkamispäivä,
-      päättymispäivä = laajatTiedot.päättymispäivä,
-      päättymispäiväMerkittyTulevaisuuteen = laajatTiedot.päättymispäiväMerkittyTulevaisuuteen,
-      tarkastelupäivänTila = laajatTiedot.tarkastelupäivänTila,
-      tarkastelupäivänKoskiTila = laajatTiedot.tarkastelupäivänKoskiTila,
-      valmistunutAiemminTaiLähitulevaisuudessa = laajatTiedot.valmistunutAiemminTaiLähitulevaisuudessa,
-      vuosiluokkiinSitomatonOpetus = laajatTiedot.vuosiluokkiinSitomatonOpetus,
-      näytäMuunaPerusopetuksenJälkeisenäOpintona = laajatTiedot.näytäMuunaPerusopetuksenJälkeisenäOpintona,
-    )
-  }
-}
-
-case class ValpasOpiskeluoikeusPerusopetusSuppeatTiedot(
-  alkamispäivä: Option[String],
-  päättymispäivä: Option[String],
-  päättymispäiväMerkittyTulevaisuuteen: Option[Boolean],
-  tarkastelupäivänTila: Koodistokoodiviite,
-  tarkastelupäivänKoskiTila: Koodistokoodiviite,
-  valmistunutAiemminTaiLähitulevaisuudessa: Boolean,
-  vuosiluokkiinSitomatonOpetus: Boolean,
-  näytäMuunaPerusopetuksenJälkeisenäOpintona: Option[Boolean],
-) extends ValpasOpiskeluoikeusPerusopetusTiedot
-
-object ValpasOpiskeluoikeusPerusopetuksenJälkeinenSuppeatTiedot {
-  def apply(laajatTiedot: ValpasOpiskeluoikeusPerusopetuksenJälkeinenLaajatTiedot): ValpasOpiskeluoikeusPerusopetuksenJälkeinenSuppeatTiedot = {
-    ValpasOpiskeluoikeusPerusopetuksenJälkeinenSuppeatTiedot(
-      alkamispäivä = laajatTiedot.alkamispäivä,
-      päättymispäivä = laajatTiedot.päättymispäivä,
-      päättymispäiväMerkittyTulevaisuuteen = laajatTiedot.päättymispäiväMerkittyTulevaisuuteen,
-      tarkastelupäivänTila = laajatTiedot.tarkastelupäivänTila,
-      tarkastelupäivänKoskiTila = laajatTiedot.tarkastelupäivänKoskiTila,
-      valmistunutAiemminTaiLähitulevaisuudessa = laajatTiedot.valmistunutAiemminTaiLähitulevaisuudessa,
-      näytäMuunaPerusopetuksenJälkeisenäOpintona = laajatTiedot.näytäMuunaPerusopetuksenJälkeisenäOpintona,
-    )
-  }
-}
-
-object ValpasOpiskeluoikeusMuuOpetusSuppeatTiedot {
-  def apply(laajatTiedot: ValpasOpiskeluoikeusMuuOpetusLaajatTiedot): ValpasOpiskeluoikeusMuuOpetusSuppeatTiedot = {
-    ValpasOpiskeluoikeusMuuOpetusSuppeatTiedot(
-      alkamispäivä = laajatTiedot.alkamispäivä,
-      päättymispäivä = laajatTiedot.päättymispäivä,
-      päättymispäiväMerkittyTulevaisuuteen = laajatTiedot.päättymispäiväMerkittyTulevaisuuteen,
-      tarkastelupäivänTila = laajatTiedot.tarkastelupäivänTila,
-      tarkastelupäivänKoskiTila = laajatTiedot.tarkastelupäivänKoskiTila,
-      valmistunutAiemminTaiLähitulevaisuudessa = laajatTiedot.valmistunutAiemminTaiLähitulevaisuudessa,
-      näytäMuunaPerusopetuksenJälkeisenäOpintona = laajatTiedot.näytäMuunaPerusopetuksenJälkeisenäOpintona,
-    )
-  }
-}
 
 trait ValpasOpiskeluoikeusTiedot {
   def alkamispäivä: Option[String]
@@ -295,16 +214,6 @@ case class ValpasOpiskeluoikeusPerusopetuksenJälkeinenLaajatTiedot(
   näytäMuunaPerusopetuksenJälkeisenäOpintona: Option[Boolean],
 ) extends ValpasOpiskeluoikeusTiedot
 
-case class ValpasOpiskeluoikeusPerusopetuksenJälkeinenSuppeatTiedot(
-  alkamispäivä: Option[String],
-  päättymispäivä: Option[String],
-  päättymispäiväMerkittyTulevaisuuteen: Option[Boolean],
-  tarkastelupäivänTila: Koodistokoodiviite,
-  tarkastelupäivänKoskiTila: Koodistokoodiviite,
-  valmistunutAiemminTaiLähitulevaisuudessa: Boolean,
-  näytäMuunaPerusopetuksenJälkeisenäOpintona: Option[Boolean],
-) extends ValpasOpiskeluoikeusTiedot
-
 case class ValpasOpiskeluoikeusMuuOpetusLaajatTiedot(
   alkamispäivä: Option[String],
   päättymispäivä: Option[String],
@@ -315,30 +224,6 @@ case class ValpasOpiskeluoikeusMuuOpetusLaajatTiedot(
   valmistunutAiemminTaiLähitulevaisuudessa: Boolean,
   näytäMuunaPerusopetuksenJälkeisenäOpintona: Option[Boolean],
 ) extends ValpasOpiskeluoikeusTiedot
-
-case class ValpasOpiskeluoikeusMuuOpetusSuppeatTiedot(
-  alkamispäivä: Option[String],
-  päättymispäivä: Option[String],
-  päättymispäiväMerkittyTulevaisuuteen: Option[Boolean],
-  tarkastelupäivänTila: Koodistokoodiviite,
-  tarkastelupäivänKoskiTila: Koodistokoodiviite,
-  valmistunutAiemminTaiLähitulevaisuudessa: Boolean,
-  näytäMuunaPerusopetuksenJälkeisenäOpintona: Option[Boolean],
-) extends ValpasOpiskeluoikeusTiedot
-
-case class ValpasOpiskeluoikeusSuppeatTiedot(
-  oid: ValpasOpiskeluoikeus.Oid,
-  onHakeutumisValvottava: Boolean,
-  onSuorittamisValvottava: Boolean,
-  tyyppi: Koodistokoodiviite,
-  oppilaitos: ValpasOppilaitos,
-  perusopetusTiedot: Option[ValpasOpiskeluoikeusPerusopetusSuppeatTiedot],
-  perusopetuksenJälkeinenTiedot: Option[ValpasOpiskeluoikeusPerusopetuksenJälkeinenSuppeatTiedot],
-  muuOpetusTiedot: Option[ValpasOpiskeluoikeusMuuOpetusSuppeatTiedot],
-  päätasonSuoritukset: Seq[ValpasPäätasonSuoritus],
-  // Option, koska tämä tieto rikastetaan mukaan vain tietyissä tilanteissa
-  onTehtyIlmoitus: Option[Boolean],
-) extends ValpasOpiskeluoikeus
 
 case class ValpasPäätasonSuoritus(
   toimipiste: ValpasToimipiste,
@@ -406,30 +291,6 @@ case class ValpasHakutilanneLaajatTiedot(
     this.copy(hakutoiveet = hakutoiveet.map(_.validate(koodistoviitepalvelu)))
 }
 
-object ValpasHakutilanneSuppeatTiedot {
-  def apply(laajatTiedot: ValpasHakutilanneLaajatTiedot): ValpasHakutilanneSuppeatTiedot = {
-    ValpasHakutilanneSuppeatTiedot(
-      laajatTiedot.hakuOid,
-      laajatTiedot.hakuNimi,
-      laajatTiedot.hakemusOid,
-      laajatTiedot.hakemusUrl,
-      laajatTiedot.aktiivinenHaku,
-      laajatTiedot.hakutoiveet.map(ValpasSuppeaHakutoive.apply),
-      laajatTiedot.muokattu,
-    )
-  }
-}
-
-case class ValpasHakutilanneSuppeatTiedot(
-  hakuOid: String,
-  hakuNimi: Option[LocalizedString],
-  hakemusOid: String,
-  hakemusUrl: String,
-  aktiivinenHaku: Boolean,
-  hakutoiveet: Seq[ValpasSuppeaHakutoive],
-  muokattu: Option[LocalDateTime],
-) extends ValpasHakutilanne
-
 object ValpasHakutoive {
   type KoulutusOid = String
 
@@ -466,21 +327,3 @@ case class ValpasHakutoive(
   def validate(koodistoviitepalvelu: KoodistoViitePalvelu): ValpasHakutoive =
     this.copy(valintatila = valintatila.flatMap(koodistoviitepalvelu.validate))
 }
-
-object ValpasSuppeaHakutoive {
-  def apply(hakutoive: ValpasHakutoive): ValpasSuppeaHakutoive = ValpasSuppeaHakutoive(
-    organisaatioNimi = hakutoive.organisaatioNimi,
-    hakutoivenumero = hakutoive.hakutoivenumero,
-    valintatila = hakutoive.valintatila,
-    vastaanottotieto = hakutoive.vastaanottotieto,
-  )
-}
-
-case class ValpasSuppeaHakutoive(
-  organisaatioNimi: Option[LocalizedString],
-  hakutoivenumero: Option[Int],
-  @KoodistoUri("valpashaunvalintatila")
-  valintatila: Option[Koodistokoodiviite],
-  @KoodistoUri("valpasvastaanottotieto")
-  vastaanottotieto: Option[Koodistokoodiviite],
-)

@@ -9,7 +9,7 @@ import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.{InternationalSchoolOpiskeluoikeus, InternationalSchoolVuosiluokanSuoritus, KoskeenTallennettavaOpiskeluoikeus, PerusopetuksenLisäopetuksenOpiskeluoikeus, PerusopetuksenLisäopetuksenSuoritus, PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus, Ryhmällinen}
 import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService.defaultMockTarkastelupäivä
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot, ValpasOppijaSuppeatTiedot}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot}
 import fi.oph.koski.valpas.valpasrepository.ValpasKuntailmoitusLaajatTiedot
 import fi.oph.koski.valpas.valpasuser.ValpasMockUser
 
@@ -40,7 +40,8 @@ case class ExpectedData(
 )
 
 trait ValpasOppijaServiceTestBase extends ValpasTestBase {
-  protected val oppijaService = KoskiApplicationForTests.valpasOppijaService
+  protected val oppijaLaajatTiedotService = KoskiApplicationForTests.valpasOppijaLaajatTiedotService
+  protected val oppijaSuppeatTiedotService = KoskiApplicationForTests.valpasOppijaSuppeatTiedotService
   protected val rajapäivätService = KoskiApplicationForTests.valpasRajapäivätService
   protected val oppilaitos = MockOrganisaatiot.jyväskylänNormaalikoulu
   protected val amisOppilaitos = MockOrganisaatiot.stadinAmmattiopisto
@@ -56,11 +57,11 @@ trait ValpasOppijaServiceTestBase extends ValpasTestBase {
   }
 
   private def getKunnanIlmoitetutOppijat(organisaatioOid: Oid, user: ValpasMockUser) = {
-    oppijaService.getKunnanOppijatSuppeatTiedot(organisaatioOid)(session(user))
+    oppijaSuppeatTiedotService.getKunnanOppijatSuppeatTiedot(organisaatioOid)(session(user))
   }
 
   protected def canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(oppija: LaajatOppijaHenkilöTiedot, user: ValpasMockUser): Boolean =
-    oppijaService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(oppija.oid)(session(user)).isRight
+    oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(oppija.oid)(session(user)).isRight
 
   protected def validateOppijaLaajatTiedot(
     oppija: ValpasOppijaLaajatTiedot,
@@ -290,7 +291,7 @@ trait ValpasOppijaServiceTestBase extends ValpasTestBase {
       ))
     )
 
-  protected def validateKuntailmoitukset(oppija: OppijaHakutilanteillaLaajatTiedot, expectedIlmoitukset: Seq[ValpasKuntailmoitusLaajatTiedotLisätiedoilla]) = {
+  protected def validateKuntailmoitukset(oppija: OppijaHakutilanteillaLaajatTiedot, expectedIlmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot]) = {
     def clueMerkkijono(kuntailmoitus: ValpasKuntailmoitusLaajatTiedot): String =
       s"${kuntailmoitus.tekijä.organisaatio.nimi.get.get("fi")}=>${kuntailmoitus.kunta.kotipaikka.get.nimi.get.get("fi")}"
 
@@ -302,9 +303,9 @@ trait ValpasOppijaServiceTestBase extends ValpasTestBase {
         withClue(s"index ${index}: ") {
           element match {
             case (Some(kuntailmoitusLisätiedoilla), Some(expectedData)) => {
-              val clue = makeClue("ValpasKuntailmoitusLaajatTiedotLisätiedoilla", Seq(
-                s"${kuntailmoitusLisätiedoilla.kuntailmoitus.id}",
-                clueMerkkijono(kuntailmoitusLisätiedoilla.kuntailmoitus)
+              val clue = makeClue("ValpasKuntailmoitusLaajatTiedot", Seq(
+                s"${kuntailmoitusLisätiedoilla.id}",
+                clueMerkkijono(kuntailmoitusLisätiedoilla)
               ))
 
               withClue(clue) {
@@ -312,29 +313,29 @@ trait ValpasOppijaServiceTestBase extends ValpasTestBase {
                   kuntailmoitusLisätiedoilla.aktiivinen should equal(expectedData.aktiivinen)
                 }
                 withClue("kunta") {
-                  kuntailmoitusLisätiedoilla.kuntailmoitus.kunta should equal(expectedData.kuntailmoitus.kunta)
+                  kuntailmoitusLisätiedoilla.kunta should equal(expectedData.kunta)
                 }
                 withClue("aikaleiman päivämäärä") {
-                  kuntailmoitusLisätiedoilla.kuntailmoitus.aikaleima.map(_.toLocalDate) should equal(expectedData.kuntailmoitus.aikaleima.map(_.toLocalDate))
+                  kuntailmoitusLisätiedoilla.aikaleima.map(_.toLocalDate) should equal(expectedData.aikaleima.map(_.toLocalDate))
                 }
                 withClue("tekijä") {
-                  kuntailmoitusLisätiedoilla.kuntailmoitus.tekijä should equal(expectedData.kuntailmoitus.tekijä)
+                  kuntailmoitusLisätiedoilla.tekijä should equal(expectedData.tekijä)
                 }
                 withClue("yhteydenottokieli") {
-                  kuntailmoitusLisätiedoilla.kuntailmoitus.yhteydenottokieli should equal(expectedData.kuntailmoitus.yhteydenottokieli)
+                  kuntailmoitusLisätiedoilla.yhteydenottokieli should equal(expectedData.yhteydenottokieli)
                 }
                 withClue("oppijanYhteystiedot") {
-                  kuntailmoitusLisätiedoilla.kuntailmoitus.oppijanYhteystiedot should equal(expectedData.kuntailmoitus.oppijanYhteystiedot)
+                  kuntailmoitusLisätiedoilla.oppijanYhteystiedot should equal(expectedData.oppijanYhteystiedot)
                 }
                 withClue("hakenutMuualle") {
-                  kuntailmoitusLisätiedoilla.kuntailmoitus.hakenutMuualle should equal(expectedData.kuntailmoitus.hakenutMuualle)
+                  kuntailmoitusLisätiedoilla.hakenutMuualle should equal(expectedData.hakenutMuualle)
                 }
               }
             }
             case (None, Some(expectedData)) =>
-              fail(s"Ilmoitus puuttuu: oppija.oid:${oppija.oppija.henkilö.oid} oppija.hetu:${oppija.oppija.henkilö.hetu} ilmoitus:${clueMerkkijono(expectedData.kuntailmoitus)}")
+              fail(s"Ilmoitus puuttuu: oppija.oid:${oppija.oppija.henkilö.oid} oppija.hetu:${oppija.oppija.henkilö.hetu} ilmoitus:${clueMerkkijono(expectedData)}")
             case (Some(kuntailmoitusLisätiedoilla), None) =>
-              fail(s"Saatiin ylimääräinen ilmoitus: oppija.oid:${oppija.oppija.henkilö.oid} oppija.hetu:${oppija.oppija.henkilö.hetu} ilmoitus:${clueMerkkijono(kuntailmoitusLisätiedoilla.kuntailmoitus)}")
+              fail(s"Saatiin ylimääräinen ilmoitus: oppija.oid:${oppija.oppija.henkilö.oid} oppija.hetu:${oppija.oppija.henkilö.hetu} ilmoitus:${clueMerkkijono(kuntailmoitusLisätiedoilla)}")
             case _ =>
               fail("Internal error")
           }

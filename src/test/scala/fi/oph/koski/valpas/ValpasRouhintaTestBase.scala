@@ -41,4 +41,6 @@ case class RouhintaExpectedData(
   ooKoulutusmuoto: Option[String],
   ooToimipiste: Option[String],
   keskeytys: Option[String],
+  kuntailmoitusKohde: Option[String],
+  kuntailmoitusPvm: Option[String]
 )

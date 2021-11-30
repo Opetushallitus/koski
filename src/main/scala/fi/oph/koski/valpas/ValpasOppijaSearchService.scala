@@ -17,7 +17,7 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
   private val henkilöRepository = application.henkilöRepository
   private val hetuValidator = application.hetu
   private val accessResolver = new ValpasAccessResolver
-  private val oppijaService = application.valpasOppijaService
+  private val oppijaLaajatTiedotService = application.valpasOppijaLaajatTiedotService
   private val opiskeluoikeusRepository = application.opiskeluoikeusRepository
   private val rajapäivätService = application.valpasRajapäivätService
 
@@ -100,7 +100,7 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
       ).isEmpty
 
     if (onMahdollisestiLainPiirissä) {
-      oppijaService.getOppijaLaajatTiedotIlmanOikeustarkastusta(henkilö.oid)
+      oppijaLaajatTiedotService.getOppijaLaajatTiedotIlmanOikeustarkastusta(henkilö.oid)
         .map({
           case Some(o) if o.onOikeusValvoaMaksuttomuutta => ValpasLöytyiHenkilöhakuResult(o)
           // Henkilö, jonka tiedot löytyvät, mutta jolla maksuttomuus on päättynyt esim. toiselta asteelta
@@ -128,7 +128,7 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
     (henkilö: OppijaHenkilö)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasLöytyiHenkilöhakuResult] = {
-    oppijaService.getOppijaLaajatTiedot(rooli, henkilö.oid)
+    oppijaLaajatTiedotService.getOppijaLaajatTiedot(rooli, henkilö.oid)
       .map(ValpasLöytyiHenkilöhakuResult.apply)
   }
 }

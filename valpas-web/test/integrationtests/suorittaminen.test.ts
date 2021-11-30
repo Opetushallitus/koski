@@ -269,7 +269,7 @@ const teeKuntailmoitus = async (oppijaOid: Oid, nimi: string, hetu: string) => {
     title: `${nimi} (${hetu})`,
     prefill: 0,
     expected: {
-      kohde: "Helsingin kaupunki",
+      kohde: "Helsinki",
       tekijä: [
         tekijä.nimi,
         tekijä.email,

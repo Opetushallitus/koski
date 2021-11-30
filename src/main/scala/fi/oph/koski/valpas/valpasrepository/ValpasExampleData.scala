@@ -11,7 +11,7 @@ import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import java.time.{LocalDate, LocalDateTime}
 
 case class ValpasKuntailmoitusFixture(
-  kuntailmoitus: ValpasKuntailmoitusLaajatTiedotJaOppijaOid,
+  kuntailmoitus: ValpasKuntailmoitusLaajatTiedot,
   aikaleimaOverride: Option[LocalDate] = None
 )
 
@@ -19,64 +19,83 @@ object ValpasExampleData {
   val foo: (String, Int) = ("a", 1)
 
   def ilmoitukset: Seq[ValpasKuntailmoitusFixture] = Seq(
-    ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
-      oppijaOid = ValpasMockOppijat.valmistunutYsiluokkalainenJollaIlmoitus.oid,
-      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla
-    )),
-    ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
-      oppijaOid = ValpasMockOppijat.kasiinAstiToisessaKoulussaOllutJollaIlmoitus.oid,
-      kuntailmoitus = oppilaitoksenIlmoitusMinimitiedoilla
-    )),
-    ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
-      oppijaOid =  ValpasMockOppijat.kahdenKoulunYsiluokkalainenJollaIlmoitus.oid,
-      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla
-    )),
-    ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
-      oppijaOid =  ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster.oid,
-      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla
-    )),
-      ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
-      oppijaOid =  ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusKolmas.oid,
-      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoillaAapajoenPeruskoulusta
-    )),
-    ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
-      oppijaOid =  ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusToinen2.oid,
-      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla
-    )),
-    ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
-      oppijaOid =  ValpasMockOppijat.lukionAloittanutJollaVanhaIlmoitus.oid,
-      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla
+    ValpasKuntailmoitusFixture(
+      oppilaitoksenIlmoitusKaikillaTiedoilla.withOppijaOid(
+        ValpasMockOppijat.valmistunutYsiluokkalainenJollaIlmoitus.oid
+      )
     ),
+    ValpasKuntailmoitusFixture(
+      oppilaitoksenIlmoitusMinimitiedoilla.withOppijaOid(
+        ValpasMockOppijat.kasiinAstiToisessaKoulussaOllutJollaIlmoitus.oid
+      )
+    ),
+    ValpasKuntailmoitusFixture(
+      oppilaitoksenIlmoitusKaikillaTiedoilla.withOppijaOid(
+        ValpasMockOppijat.kahdenKoulunYsiluokkalainenJollaIlmoitus.oid
+      )
+    ),
+    ValpasKuntailmoitusFixture(
+      oppilaitoksenIlmoitusKaikillaTiedoilla.withOppijaOid(
+        ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster.oid
+      )
+    ),
+    ValpasKuntailmoitusFixture(
+      oppilaitoksenIlmoitusKaikillaTiedoillaAapajoenPeruskoulusta.withOppijaOid(
+        ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusKolmas.oid
+      )
+    ),
+    ValpasKuntailmoitusFixture(
+      oppilaitoksenIlmoitusKaikillaTiedoilla.withOppijaOid(
+        ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusToinen2.oid
+      )
+    ),
+    ValpasKuntailmoitusFixture(
+      oppilaitoksenIlmoitusKaikillaTiedoilla.withOppijaOid(
+        ValpasMockOppijat.lukionAloittanutJollaVanhaIlmoitus.oid
+      ),
       Some(date(2021, 6, 15))
     ),
-    ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
-      oppijaOid =  ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia.oid,
-      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla
-    ),
+    ValpasKuntailmoitusFixture(
+      oppilaitoksenIlmoitusKaikillaTiedoilla.withOppijaOid(
+        ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia.oid
+      ),
       Some(date(2021, 6, 15))
     ),
-    ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
-      oppijaOid =  ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia.oid,
-      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla.copy(kunta = helsinginKaupunki)
-    ),
+    ValpasKuntailmoitusFixture(
+      oppilaitoksenIlmoitusKaikillaTiedoilla.copy(kunta = helsinginKaupunki).withOppijaOid(
+        ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia.oid
+      ),
       Some(date(2021, 9, 15))
     ),
-    ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
-      oppijaOid =  ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia.oid,
-      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla
-    ),
+    ValpasKuntailmoitusFixture(
+      oppilaitoksenIlmoitusKaikillaTiedoilla.withOppijaOid(
+        ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia.oid
+      ),
       Some(date(2021, 9, 20))
     ),
-    ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
-      oppijaOid =  ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia.oid,
-      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla.copy(kunta = helsinginKaupunki)
-    ),
+    ValpasKuntailmoitusFixture(
+      oppilaitoksenIlmoitusKaikillaTiedoilla.copy(kunta = helsinginKaupunki).withOppijaOid(
+        ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia.oid
+      ),
       Some(date(2021, 11, 30))
     ),
-    ValpasKuntailmoitusFixture(ValpasKuntailmoitusLaajatTiedotJaOppijaOid(
-      oppijaOid =  ValpasMockOppijat.ilmoituksenLisätiedotPoistettu.oid,
-      kuntailmoitus = oppilaitoksenIlmoitusKaikillaTiedoilla,
-    ))
+    ValpasKuntailmoitusFixture(
+      oppilaitoksenIlmoitusKaikillaTiedoilla.withOppijaOid(
+        ValpasMockOppijat.ilmoituksenLisätiedotPoistettu.oid
+      )
+    ),
+    ValpasKuntailmoitusFixture(
+      oppilaitoksenIlmoitusKaikillaTiedoilla.withOppijaOid(
+        ValpasMockOppijat.oppivelvollisuusKeskeytettyEiOpiskele.oid
+      ),
+      Some(date(2021,5, 20))
+    ),
+    ValpasKuntailmoitusFixture(
+      oppilaitoksenIlmoitusKaikillaTiedoilla.copy(kunta = helsinginKaupunki).withOppijaOid(
+        ValpasMockOppijat.oppivelvollisuusKeskeytettyEiOpiskele.oid
+      ),
+      Some(date(2021,5, 19))
+    ),
   )
 
   def ilmoitustenLisätietojenPoistot = Seq(
@@ -84,6 +103,7 @@ object ValpasExampleData {
   )
 
   def ilmoitus = ValpasKuntailmoitusLaajatTiedot(
+    oppijaOid = None,
     id = None,
     kunta = pyhtäänKunta,
     aikaleima = Some(LocalDateTime.of(2021, 8, 15, 8, 0)),
@@ -102,6 +122,7 @@ object ValpasExampleData {
     )),
     hakenutMuualle = Some(false),
     onUudempiaIlmoituksiaMuihinKuntiin = None,
+    aktiivinen = None
   )
 
   def oppivelvollisuudenKeskeytykset: Seq[OppivelvollisuudenKeskeytysRow] = Seq(
@@ -147,7 +168,7 @@ object ValpasExampleData {
     ),
     OppivelvollisuudenKeskeytysRow(
       oppijaOid = ValpasMockOppijat.oppivelvollisuusKeskeytettyEiOpiskele.oid,
-      alku = date(2021, 6, 1),
+      alku = date(2021, 5, 16),
       loppu = None,
       luotu = LocalDateTime.of(2021, 1, 1, 12, 30),
       tekijäOid = ValpasMockUsers.valpasHelsinki.oid,
@@ -165,6 +186,7 @@ object ValpasExampleData {
     )
 
   def oppilaitoksenIlmoitusMinimitiedoilla = ValpasKuntailmoitusLaajatTiedot(
+    oppijaOid = None,
     id = None,
     kunta = OidOrganisaatio(
       oid = MockOrganisaatiot.pyhtäänKunta,
@@ -197,6 +219,7 @@ object ValpasExampleData {
     )),
     hakenutMuualle = Some(false),
     onUudempiaIlmoituksiaMuihinKuntiin = None,
+    aktiivinen = None
   )
 
   lazy val suomi = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli"))

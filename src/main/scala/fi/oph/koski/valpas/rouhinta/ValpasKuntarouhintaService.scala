@@ -21,7 +21,7 @@ class ValpasKuntarouhintaService(application: KoskiApplication)
     with Logging
     with GlobalExecutionContext
 {
-  private val oppijaService = application.valpasOppijaService
+  private val oppijaLaajatTiedotService = application.valpasOppijaLaajatTiedotService
   private val rouhintaOvKeskeytyksetService = application.valpasRouhintaOppivelvollisuudenKeskeytysService
 
   def haeKunnanPerusteellaIlmanOikeustarkastusta
@@ -123,21 +123,19 @@ class ValpasKuntarouhintaService(application: KoskiApplication)
     val oppivelvollisetKoskessa = getOppivelvollisetKotikunnalla(kunta)
 
     rouhintaTimed("haeKunnanPerusteellaKoskesta", oppivelvollisetKoskessa.size) {
-      oppijaService
+      oppijaLaajatTiedotService
         // Kunnan käyttäjällä on aina oikeudet kaikkiin oppijoihin, joilla on oppivelvollisuus voimassa, joten
         // käyttöoikeustarkistusta ei tarvitse tehdä
         .getOppijalistaIlmanOikeustarkastusta(oppivelvollisetKoskessa)
-        .map(oppivelvollisetKoskessa => {
+        .flatMap(oppivelvollisetKoskessa => {
           rouhintaTimed("haeKunnanPerusteella:KuntarouhinnanTulos", oppivelvollisetKoskessa.size) {
             val eiSuorittavat =
               oppivelvollisetKoskessa
-                .map(ValpasRouhintaOppivelvollinen.apply)
-                .filterNot(_.suorittaaOppivelvollisuutta)
+                .filterNot(_.oppija.suorittaaOppivelvollisuutta)
 
-            val eiSuorittavatKeskeytyksillä =
-              rouhintaOvKeskeytyksetService.fetchOppivelvollisuudenKeskeytykset(eiSuorittavat)
-
-            eiSuorittavatKeskeytyksillä
+            oppijaLaajatTiedotService.withKuntailmoituksetIlmanKäyttöoikeustarkistusta(eiSuorittavat)
+              .map(_.map(ValpasRouhintaOppivelvollinen.apply))
+              .map(oppijat => rouhintaOvKeskeytyksetService.fetchOppivelvollisuudenKeskeytykset(oppijat))
           }
         })
     }
@@ -145,7 +143,7 @@ class ValpasKuntarouhintaService(application: KoskiApplication)
 
   private def getOppivelvollisetKotikunnalla(kunta: String): Seq[ValpasHenkilö.Oid] = {
     timed("getOppivelvollisetKotikunnalla") {
-      oppijaService.getOppivelvollisetKotikunnallaIlmanOikeustarkastusta(kunta).map(_.masterOid)
+      oppijaLaajatTiedotService.getOppivelvollisetKotikunnallaIlmanOikeustarkastusta(kunta).map(_.masterOid)
     }
   }
 }

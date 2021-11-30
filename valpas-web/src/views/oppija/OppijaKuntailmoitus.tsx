@@ -9,6 +9,7 @@ import { getLocalizedMaybe, T, t } from "../../i18n/i18n"
 import {
   KuntailmoituksenTekijäLaajatTiedot,
   KuntailmoitusLaajatTiedotLisätiedoilla,
+  kuntaKotipaikka,
 } from "../../state/apitypes/kuntailmoitus"
 import { KuntailmoituksenOppijanYhteystiedot } from "../../state/apitypes/kuntailmoituspohjatiedot"
 import { organisaatioNimi } from "../../state/apitypes/organisaatiot"
@@ -25,13 +26,13 @@ export type OppijaKuntailmoitusProps = {
 }
 
 export const OppijaKuntailmoitus = (props: OppijaKuntailmoitusProps) => {
-  const { kuntailmoitus, aktiivinen } = props.kuntailmoitus
+  const kuntailmoitus = props.kuntailmoitus
 
   return (
     <Frame>
       <KuntailmoitusHeader
         aikaleima={kuntailmoitus.aikaleima}
-        aktiivinen={aktiivinen}
+        aktiivinen={kuntailmoitus.aktiivinen}
       />
       <Body>
         <ColumnsContainer>
@@ -43,7 +44,7 @@ export const OppijaKuntailmoitus = (props: OppijaKuntailmoitusProps) => {
               label={t("oppija__ilmoituksen_kohde")}
               testId="kohde"
             >
-              {organisaatioNimi(kuntailmoitus.kunta)}
+              {kuntaKotipaikka(kuntailmoitus.kunta)}
             </KuntailmoitusSection>
             <IlmoituksenTekijä tekijä={kuntailmoitus.tekijä} />
           </Column>

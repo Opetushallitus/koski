@@ -1,6 +1,7 @@
 import * as A from "fp-ts/Array"
 import * as Ord from "fp-ts/Ord"
 import * as string from "fp-ts/string"
+import { getLocalizedMaybe } from "../../i18n/i18n"
 import { ISODateTime, Oid } from "../common"
 import { Kieli, Kunta, Maa } from "./koodistot"
 import { OppijaKuntailmoituksillaSuppeatTiedot } from "./oppija"
@@ -8,7 +9,7 @@ import { Organisaatio } from "./organisaatiot"
 
 export type KuntailmoitusLaajatTiedot = {
   id?: string
-  kunta: Organisaatio
+  kunta: KuntailmoitusKunta
   aikaleima?: ISODateTime
   tekijä: KuntailmoituksenTekijäLaajatTiedot
   yhteydenottokieli?: Kieli
@@ -16,8 +17,11 @@ export type KuntailmoitusLaajatTiedot = {
   hakenutMuualle?: boolean
 }
 
-export type KuntailmoitusLaajatTiedotLisätiedoilla = {
-  kuntailmoitus: KuntailmoitusLaajatTiedot
+export type KuntailmoitusLaajatTiedotOppijaOidilla = KuntailmoitusLaajatTiedot & {
+  oppijaOid: Oid
+}
+
+export type KuntailmoitusLaajatTiedotLisätiedoilla = KuntailmoitusLaajatTiedot & {
   aktiivinen: boolean
 }
 
@@ -29,7 +33,7 @@ export type KuntailmoituksenTekijäLaajatTiedot = {
 export type KuntailmoitusSuppeatTiedot = {
   id?: string
   tekijä: KuntailmoituksenTekijäSuppeatTiedot
-  kunta: Organisaatio
+  kunta: KuntailmoitusKunta
   aikaleima?: ISODateTime
   hakenutMuualle?: boolean
   onUudempiaIlmoituksiaMuihinKuntiin?: boolean
@@ -72,7 +76,7 @@ export const isAktiivinenKuntailmoitus = (
 
 export const aikaleimaOrd = Ord.contramap(
   (kuntailmoitus: KuntailmoitusLaajatTiedotLisätiedoilla) =>
-    kuntailmoitus.kuntailmoitus.aikaleima || "0000-00-00"
+    kuntailmoitus.aikaleima || "0000-00-00"
 )(string.Ord)
 
 export const sortKuntailmoitusLaajatTiedotLisätiedoilla = A.sort(
@@ -85,3 +89,6 @@ export const getNäytettävätIlmoitukset = (
   tiedot.kuntailmoitukset.filter(
     (i) => i.aktiivinen && !i.onUudempiaIlmoituksiaMuihinKuntiin
   )
+
+export const kuntaKotipaikka = (kunta: KuntailmoitusKunta): string =>
+  getLocalizedMaybe(kunta.kotipaikka?.nimi) || kunta.oid

@@ -21,6 +21,8 @@ object ValpasKuntarouhintaSpec {
       ooKoulutusmuoto = None,
       ooToimipiste = None,
       keskeytys = None,
+      kuntailmoitusKohde = None,
+      kuntailmoitusPvm = None,
     ),
     RouhintaExpectedData(
       oppija = ValpasMockOppijat.aikuistenPerusopetuksessaAineopiskelija,
@@ -29,6 +31,8 @@ object ValpasKuntarouhintaSpec {
       ooKoulutusmuoto = None,
       ooToimipiste = None,
       keskeytys = None,
+      kuntailmoitusKohde = None,
+      kuntailmoitusPvm = None,
     ),
     RouhintaExpectedData(
       oppija = ValpasMockOppijat.eiOppivelvollisuudenSuorittamiseenKelpaaviaOpiskeluoikeuksia,
@@ -37,6 +41,8 @@ object ValpasKuntarouhintaSpec {
       ooKoulutusmuoto = None,
       ooToimipiste = None,
       keskeytys = None,
+      kuntailmoitusKohde = None,
+      kuntailmoitusPvm = None,
     ),
     RouhintaExpectedData(
       oppija = ValpasMockOppijat.eronnutOppija,
@@ -45,6 +51,8 @@ object ValpasKuntarouhintaSpec {
       ooKoulutusmuoto = Some("Perusopetus"),
       ooToimipiste = Some("Jyväskylän normaalikoulu"),
       keskeytys = None,
+      kuntailmoitusKohde = None,
+      kuntailmoitusPvm = None,
     ),
     RouhintaExpectedData(
       oppija = ValpasMockOppijat.intSchool9LuokaltaValmistumisenJälkeenEronnutOppija,
@@ -53,6 +61,18 @@ object ValpasKuntarouhintaSpec {
       ooKoulutusmuoto = Some("International school"),
       ooToimipiste = Some("International School of Helsinki"),
       keskeytys = None,
+      kuntailmoitusKohde = None,
+      kuntailmoitusPvm = None,
+    ),
+    RouhintaExpectedData(
+      oppija = ValpasMockOppijat.oppivelvollisuusKeskeytettyEiOpiskele,
+      ooPäättymispäivä = "15.5.2021",
+      ooViimeisinTila = Some("Valmistunut"),
+      ooKoulutusmuoto = Some("Perusopetus"),
+      ooToimipiste = Some("Jyväskylän normaalikoulu"),
+      keskeytys = Some("16.5.2021 -"),
+      kuntailmoitusKohde = Some("Pyhtää"),
+      kuntailmoitusPvm = Some("20.5.2021"),
     ),
     RouhintaExpectedData(
       oppija = ValpasMockOppijat.opiskeluoikeudetonOppivelvollisuusikäinenOppija,
@@ -61,6 +81,8 @@ object ValpasKuntarouhintaSpec {
       ooKoulutusmuoto = None,
       ooToimipiste = None,
       keskeytys = None,
+      kuntailmoitusKohde = None,
+      kuntailmoitusPvm = None,
     ),
   )
 }
@@ -110,6 +132,18 @@ class ValpasKuntarouhintaSpec extends ValpasRouhintaTestBase {
           expectEiOppivelvollisuuttaSuorittavatPropsMatch(
             actual => actual.keskeytys,
             expected => expected.keskeytys.getOrElse(""),
+          )
+        }
+        "Kuntailmoitus kohde" in {
+          expectEiOppivelvollisuuttaSuorittavatPropsMatch(
+            actual => actual.kuntailmoitusKohde,
+            expected => expected.kuntailmoitusKohde
+          )
+        }
+        "Kuntailmoitus pvm" in {
+          expectEiOppivelvollisuuttaSuorittavatPropsMatch(
+            actual => actual.kuntailmoitusPvm,
+            expected => expected.kuntailmoitusPvm
           )
         }
       }
