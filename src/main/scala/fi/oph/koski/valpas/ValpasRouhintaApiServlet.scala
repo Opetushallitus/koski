@@ -2,7 +2,7 @@ package fi.oph.koski.valpas
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koodisto.Kunta
+import fi.oph.koski.koodisto.{KoodistoCreator, Kunta}
 import fi.oph.koski.koskiuser.UserLanguage.sanitizeLanguage
 import fi.oph.koski.raportit.{AhvenanmaanKunnat, ExcelWriter, OppilaitosRaporttiResponse}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
@@ -20,44 +20,53 @@ class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) exten
   private val koodistoPalvelu = application.koodistoPalvelu
 
   post("/hetut") {
-    withJsonBody { (body: JValue) =>
-      val result = extractHetuList(body)
-        .flatMap(input => {
-          if (jsonRequested) {
-            rouhinta.haeHetulistanPerusteella(input.hetut)
-              .tap(tulos => auditLogRouhintahakuHetulistalla(input.hetut, tulos.palautetutOppijaOidit))
-          } else {
-            val language = input.lang.orElse(langFromCookie).getOrElse("fi")
-            rouhinta.haeHetulistanPerusteellaExcel(input.hetut, language, input.password)
-              .map(tulos => {
-                auditLogRouhintahakuHetulistalla(input.hetut, tulos.data.palautetutOppijaOidit)
-                tulos.response
-              })
-          }
-        })
-      renderResult(result)
-    } (parseErrorHandler = haltWithStatus)
+    // Pikafiksi: disabloi ominaisuus tuotantoympäristössä toistaiseksi ongelmien selvittelyn ajaksi
+    if (application.config.getString("opintopolku.virkailija.url") != "https://virkailija.opintopolku.fi") {
+      withJsonBody { (body: JValue) =>
+        val result = extractHetuList(body)
+          .flatMap(input => {
+            if (jsonRequested) {
+              rouhinta.haeHetulistanPerusteella(input.hetut)
+                .tap(tulos => auditLogRouhintahakuHetulistalla(input.hetut, tulos.palautetutOppijaOidit))
+            } else {
+              val language = input.lang.orElse(langFromCookie).getOrElse("fi")
+              rouhinta.haeHetulistanPerusteellaExcel(input.hetut, language, input.password)
+                .map(tulos => {
+                  auditLogRouhintahakuHetulistalla(input.hetut, tulos.data.palautetutOppijaOidit)
+                  tulos.response
+                })
+            }
+          })
+        renderResult(result)
+      } (parseErrorHandler = haltWithStatus)
+    } else {
+      haltWithStatus(ValpasErrorCategory.unavailable("Toiminnallisuus on toistaiseksi pois käytöstä"))
+    }
   }
 
   post("/kunta") {
-    withJsonBody { (body: JValue) =>
-      val result = extractAndValidateKuntakoodi(body)
-        .flatMap(input => {
-          if (jsonRequested) {
-            rouhinta.haeKunnanPerusteella(input.kunta)
-              .tap(tulos => auditLogRouhintahakuKunnalla(input.kunta, tulos.palautetutOppijaOidit))
-          } else {
-            val language = input.lang.orElse(langFromCookie).getOrElse("fi")
-            rouhinta.haeKunnanPerusteellaExcel(input.kunta, language, input.password)
-              .map(tulos => {
-                auditLogRouhintahakuKunnalla(input.kunta, tulos.data.palautetutOppijaOidit)
-                tulos.response
-              })
-          }
-        })
-      renderResult(result)
-    } (parseErrorHandler = haltWithStatus)
-
+    // Pikafiksi: disabloi ominaisuus tuotantoympäristössä toistaiseksi ongelmien selvittelyn ajaksi
+    if (application.config.getString("opintopolku.virkailija.url") != "https://virkailija.opintopolku.fi") {
+      withJsonBody { (body: JValue) =>
+        val result = extractAndValidateKuntakoodi(body)
+          .flatMap(input => {
+            if (jsonRequested) {
+              rouhinta.haeKunnanPerusteella(input.kunta)
+                .tap(tulos => auditLogRouhintahakuKunnalla(input.kunta, tulos.palautetutOppijaOidit))
+            } else {
+              val language = input.lang.orElse(langFromCookie).getOrElse("fi")
+              rouhinta.haeKunnanPerusteellaExcel(input.kunta, language, input.password)
+                .map(tulos => {
+                  auditLogRouhintahakuKunnalla(input.kunta, tulos.data.palautetutOppijaOidit)
+                  tulos.response
+                })
+            }
+          })
+        renderResult(result)
+      }(parseErrorHandler = haltWithStatus)
+    } else {
+      haltWithStatus(ValpasErrorCategory.unavailable("Toiminnallisuus on toistaiseksi pois käytöstä"))
+    }
   }
 
   private def jsonRequested = request.header("accept").contains("application/json")
