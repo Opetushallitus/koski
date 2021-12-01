@@ -47,6 +47,13 @@ class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) exten
   post("/kunta") {
     // Pikafiksi: disabloi ominaisuus tuotantoympäristössä toistaiseksi ongelmien selvittelyn ajaksi
     if (application.config.getString("opintopolku.virkailija.url") != "https://virkailija.opintopolku.fi") {
+
+      for( length <- 5000 to 500000 by 5000){
+        val prefix = s"${length} "
+        val msg = "A " * ((length - prefix.length)/2)
+        logger.info(s"${prefix} ${msg}")
+      }
+
       withJsonBody { (body: JValue) =>
         val result = extractAndValidateKuntakoodi(body)
           .flatMap(input => {
