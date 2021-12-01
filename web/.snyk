@@ -24,4 +24,8 @@ ignore:
     - node-gyp > npmlog > gauge > wide-align > string-width > strip-ansi > ansi-regex:
         reason: ReDoS in development tools
         expires: '2021-10-21T07:03:20.177Z'
+  SNYK-JS-RAMDA-1582370:
+    - ramda:
+        reason: Ei korjausta olemassa
+        expires: '2021-12-31T06:38:48.085Z'
 patch: {}
