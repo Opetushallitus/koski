@@ -48,7 +48,7 @@ class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) exten
     // Pikafiksi: disabloi ominaisuus tuotantoympäristössä toistaiseksi ongelmien selvittelyn ajaksi
     if (application.config.getString("opintopolku.virkailija.url") != "https://virkailija.opintopolku.fi") {
 
-      for( length <- 5000 to 500000 by 5000){
+      for( length <- 15000 to 50000 by 1000){
         val prefix = s"${length} "
         val msg = "A " * ((length - prefix.length)/2)
         logger.info(s"${prefix} ${msg}")
