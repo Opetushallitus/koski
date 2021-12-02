@@ -21,6 +21,13 @@ export const Raamit = (props: RaamitProps) => {
   )
 }
 
+export const KansalainenRaamit = (props: RaamitProps) => {
+  const localRaamitEnabled = runningLocally() && !process.env.OPPIJA_RAAMIT_HOST
+  return localRaamitEnabled ? (
+    <LocalRaamit kansalainen user={props.user} />
+  ) : null
+}
+
 const VirkailijaRaamitLoader = () => {
   useEffect(loadExternalRaamitScript, [])
   return null
