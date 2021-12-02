@@ -1,22 +1,22 @@
 package fi.oph.koski.sso
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.schema.{Nimitiedot, UusiHenkilö}
 import org.scalatra.servlet.ServletApiImplicits.enrichRequest
 
 import java.nio.charset.StandardCharsets
 import javax.servlet.http.HttpServletRequest
 
-class CasOppijaCreationService(application: KoskiApplication) {
+class CasOppijaCreationService(henkilöRepository: HenkilöRepository) {
   def findOrCreate(request: HttpServletRequest, validHetu: String) =
-    application.henkilöRepository
+    henkilöRepository
       .findByHetuOrCreateIfInYtrOrVirta(validHetu, nimitiedot(request))
       .orElse(create(request, validHetu))
 
   def create(request: HttpServletRequest, validHetu: String) =
     nimitiedot(request)
       .map(toUusiHenkilö(validHetu, _))
-      .map(application.henkilöRepository
+      .map(henkilöRepository
         .findOrCreate(_)
         .left.map(s => new RuntimeException(s.errorString.mkString))
         .toTry.get

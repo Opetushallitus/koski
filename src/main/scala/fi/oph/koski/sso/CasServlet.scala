@@ -17,7 +17,7 @@ import java.net.URLEncoder.encode
 class CasServlet()(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with KoskiSpecificAuthenticationSupport with NoCache {
   private val koskiSessions = application.koskiSessionRepository
   private val casService = application.casService
-  private val oppijaCreation = new CasOppijaCreationService(application)
+  private val oppijaCreation = application.casOppijaCreationService
 
   protected def onSuccess: String = params.get("onSuccess").getOrElse("/omattiedot")
   protected def onFailure: String = params.get("onFailure").getOrElse("/virhesivu")
