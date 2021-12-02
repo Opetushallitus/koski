@@ -332,6 +332,7 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   @Tooltip("Keskiarvoon sisältyy mukautettuja arvosanoja")
   @OnlyWhen("suoritustapa/koodiarvo","reformi")
   @OnlyWhen("suoritustapa/koodiarvo","ops")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   keskiarvoSisältääMukautettujaArvosanoja: Option[Boolean] = None
 ) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus
   with Järjestämismuodollinen

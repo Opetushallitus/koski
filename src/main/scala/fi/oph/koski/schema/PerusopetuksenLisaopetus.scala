@@ -114,7 +114,6 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   vaikeastiVammainen: Option[List[Aikajakso]] = None,
   @Description("Oppilaalla on majoitusetu (alku- ja loppupäivämäärä). Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, jos oppilaalla on majoitusetu (alku- ja loppupäivämäärät). Rahoituksen laskennassa käytettävä tieto.")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   majoitusetu: Option[Aikajakso] = None,
   @Description("Oppilaalla on kuljetusetu (alku- ja loppupäivämäärät).")
   @Tooltip("Tieto siitä, jos oppilaalla on kuljetusetu (alku- ja loppupäivämäärät).")
@@ -197,6 +196,7 @@ trait PerusopetuksenLisäopetuksenAlisuoritus extends Suoritus with Mahdollisest
 case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
   koulutusmoduuli: NuortenPerusopetuksenOppiaine,
   @DefaultValue(false)
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   yksilöllistettyOppimäärä: Boolean = false,
   @Description("Jos opiskelijan lisäopetuksessa saama uusi arvosana perusopetuksen yhteisissä tai valinnaisissa oppiaineissa on korkeampi kuin perusopetuksen päättöarvosana, se merkitään tähän")
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
@@ -208,6 +208,7 @@ case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
 ) extends PerusopetuksenLisäopetuksenAlisuoritus with PerusopetuksenOppiaineenSuoritus with Vahvistukseton with Yksilöllistettävä with MahdollisestiSuorituskielellinen
 
 @Description("Perusopetuksen toiminta-alueen suoritus osana perusopetuksen lisäopetusta")
+@SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
 case class PerusopetuksenLisäopetuksenToiminta_AlueenSuoritus(
   @Title("Toiminta-alue")
   koulutusmoduuli: PerusopetuksenToiminta_Alue,
