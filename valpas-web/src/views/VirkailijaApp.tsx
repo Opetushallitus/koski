@@ -7,15 +7,14 @@ import { LoadingModal } from "../components/icons/Spinner"
 import { t } from "../i18n/i18n"
 import { KäyttöoikeusroolitProvider } from "../state/accessRights"
 import {
-  CurrentUser,
-  getCurrentUser,
-  getLogin,
+  getCurrentVirkailijaUser,
+  getVirkailijaLogin,
   hasValpasAccess,
   isLoggedIn,
-  redirectToLoginReturnUrl,
   storeLoginReturnUrl,
 } from "../state/auth"
 import { BasePathProvider, useBasePath } from "../state/basePath"
+import { useUserLogin } from "../state/login"
 import {
   hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
   hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg,
@@ -277,10 +276,10 @@ const Login = () => {
     storeLoginReturnUrl(location.href)
   }, [])
 
-  const config = getLogin()
+  const login = getVirkailijaLogin()
 
-  if (config.type === "external") {
-    config.redirectToVirkailijaLogin()
+  if (login.type === "external") {
+    login.redirectToExternalLogin()
     return null
   }
 
@@ -297,22 +296,9 @@ type VirkailijaAppProps = {
 }
 
 const VirkailijaApp = ({ basePath }: VirkailijaAppProps) => {
-  const [user, setUser] = React.useState<CurrentUser | null>(null)
-  React.useEffect(() => {
-    ;(async () => {
-      setUser(await getCurrentUser())
-    })()
-  }, [])
+  const user = useUserLogin(getCurrentVirkailijaUser)
 
-  if (!user) {
-    return <LoadingModal />
-  }
-
-  if (isLoggedIn(user) && redirectToLoginReturnUrl()) {
-    return <LoadingModal />
-  }
-
-  return (
+  return user ? (
     <BasePathProvider value={basePath}>
       <Raamit user={user} />
       {isLoggedIn(user) ? (
@@ -330,6 +316,8 @@ const VirkailijaApp = ({ basePath }: VirkailijaAppProps) => {
         <Login />
       )}
     </BasePathProvider>
+  ) : (
+    <LoadingModal />
   )
 }
 

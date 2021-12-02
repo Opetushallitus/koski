@@ -9,7 +9,7 @@ import HealthView from "../views/HealthView"
 
 export const ValpasApp = () => {
   const VirkailijaApp = React.lazy(() => import("./VirkailijaApp"))
-  const OppijaApp = React.lazy(() => import("./OppijaApp"))
+  const KansalainenApp = React.lazy(() => import("./KansalainenApp"))
 
   return (
     <Router basename={process.env.PUBLIC_URL}>
@@ -24,9 +24,10 @@ export const ValpasApp = () => {
           )}
         />
         <Route
+          path="/"
           render={({ match: { path } }: RouteComponentProps) => (
             <React.Suspense fallback={<></>}>
-              <OppijaApp basePath={path} />
+              <KansalainenApp basePath={path} />
             </React.Suspense>
           )}
         />

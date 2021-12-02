@@ -53,7 +53,10 @@ export const fetchLogin = async (username: string, password: string) =>
 /**
  * Hae kirjautuneen käyttäjän tiedot
  */
-export const fetchCurrentUser = async () => apiGet<User>("valpas/api/user")
+export const fetchCurrentVirkailijaUser = async () =>
+  apiGet<User>("valpas/api/user")
+export const fetchCurrentKansalainenUser = async () =>
+  apiGet<User>("valpas/api/kansalainen/user")
 
 /**
  * Hae lista organisaatioista käyttöoikeuksien kanssa
