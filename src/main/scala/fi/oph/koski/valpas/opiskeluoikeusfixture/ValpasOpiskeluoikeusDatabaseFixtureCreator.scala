@@ -188,6 +188,6 @@ class ValpasOpiskeluoikeusDatabaseFixtureCreator(application: KoskiApplication) 
     (ValpasMockOppijat.amisEronnutUusiKelpaamatonOpiskeluoikeusPerusopetukseenValmistavassa, ValpasOpiskeluoikeusExampleData.valmistunutKymppiluokkalainen),
     (ValpasMockOppijat.amisEronnutUusiKelpaamatonOpiskeluoikeusPerusopetukseenValmistavassa, ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus),
     (ValpasMockOppijat.amisEronnutUusiKelpaamatonOpiskeluoikeusPerusopetukseenValmistavassa, ValpasOpiskeluoikeusExampleData.perusopetukseenValmistavanOpetuksenOpiskeluoikeusAlkaaSyys2021),
-
+    (ValpasMockOppijat.casIntegraationTestaus, ValpasOpiskeluoikeusExampleData.esiopetusValmistunutOpiskeluoikeus),
   )
 }
