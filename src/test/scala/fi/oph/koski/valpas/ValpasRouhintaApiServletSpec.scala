@@ -52,13 +52,27 @@ class ValpasRouhintaApiServletSpec extends ValpasTestBase with BeforeAndAfterEac
 
     "jättää merkinnän auditlokiin" in {
       doHetuQuery(ValpasMockUsers.valpasHelsinki) {
-        AuditLogTester.verifyAuditLogMessage(Map(
+        val logMessages = AuditLogTester.getLogMessages
+        logMessages.length should equal(2)
+
+        AuditLogTester.verifyAuditLogMessage(logMessages(0), Map(
           "operation" -> ValpasOperation.VALPAS_ROUHINTA_HETUHAKU.toString,
           "target" -> Map(
             ValpasAuditLogMessageField.hakulause.toString -> "161004A404E, 011005A115P, 110405A6951",
-            ValpasAuditLogMessageField.oppijaHenkilöOidList.toString -> "1.2.246.562.24.00000000130 1.2.246.562.24.00000000075"
+            ValpasAuditLogMessageField.sivu.toString -> "1",
+            ValpasAuditLogMessageField.sivuLukumäärä.toString -> "2",
+
           ),
         ))
+        AuditLogTester.verifyAuditLogMessage(logMessages(1), Map(
+          "operation" -> ValpasOperation.VALPAS_ROUHINTA_HETUHAKU.toString,
+          "target" -> Map(
+            ValpasAuditLogMessageField.oppijaHenkilöOidList.toString -> "1.2.246.562.24.00000000130 1.2.246.562.24.00000000075",
+            ValpasAuditLogMessageField.sivu.toString -> "2",
+            ValpasAuditLogMessageField.sivuLukumäärä.toString -> "2",
+          ),
+        ))
+
       }
     }
 
@@ -129,7 +143,9 @@ class ValpasRouhintaApiServletSpec extends ValpasTestBase with BeforeAndAfterEac
             ValpasAuditLogMessageField.oppijaHenkilöOidList.toString ->
               ValpasKuntarouhintaSpec.eiOppivelvollisuuttaSuorittavatOppijat(t)
                 .map(_.oppija.oid)
-                .mkString(" ")
+                .mkString(" "),
+            ValpasAuditLogMessageField.sivu.toString -> "1",
+            ValpasAuditLogMessageField.sivuLukumäärä.toString -> "1",
           ),
         ))
       }
