@@ -95,32 +95,69 @@ object ValpasAuditLog {
     AuditLog.log(message)
   }
 
+  // Logeilla on 16kB maksimikoko tällä hetkellä, joten logientry on jaettava. Käytännössä jokaiseen entryyn tulee
+  // datan lisäksi myös 0.5-1kB muuta dataa.
+  private val hetujaEnintäänAuditlogEntryssä = 1000
+  private val oidejaEnintäänAuditlogEntryssä = 500
+
   def auditLogRouhintahakuHetulistalla
     (hetut: Seq[String], palautetutOppijaOidit: Seq[String])
     (implicit session: ValpasSession)
   : Unit = {
-    AuditLog.log(ValpasAuditLogMessage(
-      ValpasOperation.VALPAS_ROUHINTA_HETUHAKU,
-      session,
-      Map(
-        ValpasAuditLogMessageField.hakulause -> hetut.mkString(", "),
-        ValpasAuditLogMessageField.oppijaHenkilöOidList -> palautetutOppijaOidit.mkString(" "),
-      )
-    ))
+
+    val hetuSivut = hetut.grouped(hetujaEnintäänAuditlogEntryssä).toList
+    val palautetutOppijaOiditSivut = palautetutOppijaOidit.grouped(oidejaEnintäänAuditlogEntryssä).toList
+
+    val sivuLukumäärä = hetuSivut.length + palautetutOppijaOiditSivut.length
+
+    hetuSivut.zip(Stream.from(1)).foreach {
+      case (hetut, sivu) =>
+        AuditLog.log(ValpasAuditLogMessage(
+          ValpasOperation.VALPAS_ROUHINTA_HETUHAKU,
+          session,
+          Map(
+            ValpasAuditLogMessageField.hakulause -> hetut.mkString(", "),
+            ValpasAuditLogMessageField.sivu -> s"${sivu}",
+            ValpasAuditLogMessageField.sivuLukumäärä -> s"${sivuLukumäärä}"
+          )
+        ))
+    }
+
+    palautetutOppijaOiditSivut.zip(Stream.from(hetuSivut.length + 1)).foreach {
+      case (oidit, sivu) =>
+        AuditLog.log(ValpasAuditLogMessage(
+          ValpasOperation.VALPAS_ROUHINTA_HETUHAKU,
+          session,
+          Map(
+            ValpasAuditLogMessageField.oppijaHenkilöOidList -> oidit.mkString(" "),
+            ValpasAuditLogMessageField.sivu -> s"${sivu}",
+            ValpasAuditLogMessageField.sivuLukumäärä -> s"${sivuLukumäärä}"
+          )
+        ))
+    }
   }
 
   def auditLogRouhintahakuKunnalla
     (kunta: String, palautetutOppijaOidit: Seq[String])
     (implicit session: ValpasSession)
   : Unit = {
-    AuditLog.log(ValpasAuditLogMessage(
-      ValpasOperation.VALPAS_ROUHINTA_KUNTA,
-      session,
-      Map(
-        ValpasAuditLogMessageField.hakulause -> kunta,
-        ValpasAuditLogMessageField.oppijaHenkilöOidList -> palautetutOppijaOidit.mkString(" "),
-      )
-    ))
+
+    val palautetutOppijaOiditSivut = palautetutOppijaOidit.grouped(oidejaEnintäänAuditlogEntryssä).toList
+    val sivuLukumäärä = palautetutOppijaOiditSivut.length
+
+    palautetutOppijaOiditSivut.zip(Stream.from(1)).foreach {
+      case (oidit, sivu) =>
+        AuditLog.log(ValpasAuditLogMessage(
+          ValpasOperation.VALPAS_ROUHINTA_KUNTA,
+          session,
+          Map(
+            ValpasAuditLogMessageField.hakulause -> kunta,
+            ValpasAuditLogMessageField.oppijaHenkilöOidList -> palautetutOppijaOidit.mkString(" "),
+            ValpasAuditLogMessageField.sivu -> s"${sivu}",
+            ValpasAuditLogMessageField.sivuLukumäärä -> s"${sivuLukumäärä}"
+          )
+        ))
+    }
   }
 }
 
@@ -139,7 +176,9 @@ object ValpasAuditLogMessageField extends Enumeration {
       ilmoittajaOrganisaatioOid,
       kohdeOrganisaatioOid,
       hakulause,
-      hakutulosOppijaOid = Value
+      hakutulosOppijaOid,
+      sivu,
+      sivuLukumäärä = Value
 }
 
 object ValpasOperation extends Enumeration {
