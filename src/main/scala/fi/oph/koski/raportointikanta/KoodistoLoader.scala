@@ -12,7 +12,8 @@ object KoodistoLoader extends Logging {
     "kunta",
     "suorituksentyyppi",
     "oppilaitoksenopetuskieli",
-    "opintojenlaajuusyksikko"
+    "opintojenlaajuusyksikko",
+    "kieli"
   )
   private val name = "koodistot"
 
