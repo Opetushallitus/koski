@@ -39,11 +39,12 @@ export type PathDeclaration<A extends any[]> = {
   href(basePath?: string | null, ...args: A): string
 }
 
-const declarePath = <A extends any[] = never[]>(
+export const declarePath = <A extends any[] = never[]>(
   route: string,
   mapParams: (...args: A) => object = () => ({})
 ): PathDeclaration<A> => {
-  const getRoute = (basePath: string = "") => `${basePath}/${route}`
+  const getRoute = (basePath: string = "") =>
+    `${basePath}/${route}`.replace(/\/\//g, "/")
   return {
     route: getRoute,
     href: (basePath?: string | null, ...args: A) => {
