@@ -1,0 +1,1679 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Header/>
+  <SOAP-ENV:Body>
+    <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
+      <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
+        <virta:Opiskelija avain="hlo-130767778">
+          <virta:Henkilotunnus>100295-026D</virta:Henkilotunnus>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus avain="opinoik-135604452" opiskelijaAvain="hlo-130767778">
+              <virta:AlkuPvm>2020-04-10</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-08-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2020-04-10</virta:AlkuPvm>
+                <virta:LoppuPvm>2020-08-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Avoimen yliopiston opinnot">
+                <virta:AlkuPvm>2020-04-10</virta:AlkuPvm>
+                <virta:LoppuPvm>2020-08-31</virta:LoppuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Avoimen yliopiston opinnot, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="sv">Studier vid Öppna universitetet, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="en">Open University Studies, Avoimen yliopiston opinnot</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">3</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="opinoik-143292580" opiskelijaAvain="hlo-130767778">
+              <virta:AlkuPvm>2021-05-10</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-08-16</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2021-05-10</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-08-16</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Avoimen yliopiston opinnot">
+                <virta:AlkuPvm>2021-05-10</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-08-16</virta:LoppuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Avoimen yliopiston opinnot, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="sv">Studier vid Öppna universitetet, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="en">Open University Studies, Avoimen yliopiston opinnot</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">5</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="hy-avoin-ew-sr-B9F06" opiskelijaAvain="hlo-130767778">
+              <virta:AlkuPvm>2021-05-03</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-12-30</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2021-05-03</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-12-30</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Avoimen yliopiston opinnot">
+                <virta:AlkuPvm>2021-05-03</virta:AlkuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Avoimen yliopiston opinnot, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="sv">Studier vid Öppna universitetet, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="en">Open University Studies, Avoimen yliopiston opinnot</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">3</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="opinoik-135531384" opiskelijaAvain="hlo-130767778">
+              <virta:AlkuPvm>2020-03-25</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-09-01</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2020-03-25</virta:AlkuPvm>
+                <virta:LoppuPvm>2020-09-01</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Avoimen yliopiston opinnot">
+                <virta:AlkuPvm>2020-03-25</virta:AlkuPvm>
+                <virta:LoppuPvm>2020-09-01</virta:LoppuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Avoimen yliopiston opinnot, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="sv">Studier vid Öppna universitetet, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="en">Open University Studies, Avoimen yliopiston opinnot</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">4</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="opinoik-142990733" opiskelijaAvain="hlo-130767778">
+              <virta:AlkuPvm>2021-04-17</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-12-15</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2021-04-17</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-12-15</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Avoimen yliopiston opinnot">
+                <virta:AlkuPvm>2021-04-17</virta:AlkuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Avoimen yliopiston opinnot, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="sv">Studier vid Öppna universitetet, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="en">Open University Studies, Avoimen yliopiston opinnot</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">3</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="opinoik-135531381" opiskelijaAvain="hlo-130767778">
+              <virta:AlkuPvm>2020-03-25</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-02-28</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2020-03-25</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-02-28</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Avoimen yliopiston opinnot">
+                <virta:AlkuPvm>2020-03-25</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-02-28</virta:LoppuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Avoimen yliopiston opinnot, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="sv">Studier vid Öppna universitetet, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="en">Open University Studies, Avoimen yliopiston opinnot</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">6</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="opinoik-130767779_PHASE2" opiskelijaAvain="hlo-130767778">
+              <virta:AlkuPvm>2019-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2026-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2019-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2026-07-31</virta:LoppuPvm>
+                <virta:Koodi>2</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>4</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Taloustieteen kandiohjelma ja maisteriohjelma (3v + 2v)">
+                <virta:AlkuPvm>2019-08-01</virta:AlkuPvm>
+                <virta:Koulutuskoodi>733102</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Taloustieteen kandiohjelma ja maisteriohjelma (3v + 2v)</virta:Nimi>
+                <virta:Nimi kieli="sv">Kandidatprogrammet i ekonomi och magisterprogram (3 år + 2 år)</virta:Nimi>
+                <virta:Nimi kieli="en">Bachelor's Programme in Economics and Master's Programme (3 years + 2 years)</virta:Nimi>
+              </virta:Jakso>
+              <virta:Laajuus>
+                <virta:Opintopiste>120</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="opinoik-136517700" opiskelijaAvain="hlo-130767778">
+              <virta:AlkuPvm>2020-06-20</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-12-30</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2020-06-20</virta:AlkuPvm>
+                <virta:LoppuPvm>2020-12-30</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Avoimen yliopiston opinnot">
+                <virta:AlkuPvm>2020-06-20</virta:AlkuPvm>
+                <virta:LoppuPvm>2020-12-30</virta:LoppuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Avoimen yliopiston opinnot, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="sv">Studier vid Öppna universitetet, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="en">Open University Studies, Avoimen yliopiston opinnot</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">5</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="opinoik-135531387" opiskelijaAvain="hlo-130767778">
+              <virta:AlkuPvm>2020-03-25</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-02-28</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2020-03-25</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-02-28</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Avoimen yliopiston opinnot">
+                <virta:AlkuPvm>2020-03-25</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-02-28</virta:LoppuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Avoimen yliopiston opinnot, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="sv">Studier vid Öppna universitetet, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="en">Open University Studies, Avoimen yliopiston opinnot</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">6</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="opinoik-142770632" opiskelijaAvain="hlo-130767778">
+              <virta:AlkuPvm>2021-03-19</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-09-01</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2021-03-19</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-09-01</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Avoimen yliopiston opinnot">
+                <virta:AlkuPvm>2021-03-19</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-09-01</virta:LoppuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Avoimen yliopiston opinnot, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="sv">Studier vid Öppna universitetet, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="en">Open University Studies, Avoimen yliopiston opinnot</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">3</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="opinoik-135531386" opiskelijaAvain="hlo-130767778">
+              <virta:AlkuPvm>2020-03-25</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-10-15</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2020-03-25</virta:AlkuPvm>
+                <virta:LoppuPvm>2020-10-15</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Avoimen yliopiston opinnot">
+                <virta:AlkuPvm>2020-03-25</virta:AlkuPvm>
+                <virta:LoppuPvm>2020-10-15</virta:LoppuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Avoimen yliopiston opinnot, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="sv">Studier vid Öppna universitetet, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="en">Open University Studies, Avoimen yliopiston opinnot</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">4</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="opinoik-136831207" opiskelijaAvain="hlo-130767778">
+              <virta:AlkuPvm>2020-07-04</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-10-10</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2020-07-04</virta:AlkuPvm>
+                <virta:LoppuPvm>2020-10-10</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Avoimen yliopiston opinnot">
+                <virta:AlkuPvm>2020-07-04</virta:AlkuPvm>
+                <virta:LoppuPvm>2020-10-10</virta:LoppuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Avoimen yliopiston opinnot, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="sv">Studier vid Öppna universitetet, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="en">Open University Studies, Avoimen yliopiston opinnot</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">4</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="opinoik-136947948" opiskelijaAvain="hlo-130767778">
+              <virta:AlkuPvm>2020-07-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-08-02</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2020-07-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2020-08-02</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Avoimen yliopiston opinnot">
+                <virta:AlkuPvm>2020-07-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2020-08-02</virta:LoppuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Avoimen yliopiston opinnot, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="sv">Studier vid Öppna universitetet, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="en">Open University Studies, Avoimen yliopiston opinnot</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">4</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="opinoik-130767779_PHASE1" opiskelijaAvain="hlo-130767778">
+              <virta:AlkuPvm>2019-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2026-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2019-08-01</virta:AlkuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>2</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Taloustieteen kandiohjelma ja maisteriohjelma (3v + 2v)">
+                <virta:AlkuPvm>2019-08-01</virta:AlkuPvm>
+                <virta:Koulutuskoodi>633102</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Taloustieteen kandiohjelma ja maisteriohjelma (3v + 2v), Taloustieteen kandiohjelma</virta:Nimi>
+                <virta:Nimi kieli="sv">Kandidatprogrammet i ekonomi och magisterprogram (3 år + 2 år), Kandidatprogrammet i ekonomi</virta:Nimi>
+                <virta:Nimi kieli="en">Bachelor's Programme in Economics and Master's Programme (3 years + 2 years), Bachelor's Programme in Economics</virta:Nimi>
+              </virta:Jakso>
+              <virta:Ensisijaisuus>
+                <virta:AlkuPvm>2019-08-01</virta:AlkuPvm>
+              </virta:Ensisijaisuus>
+              <virta:Liittyvyys liittyvaOpiskeluoikeusAvain="opinoik-130767779_PHASE2"/>
+              <virta:Laajuus>
+                <virta:Opintopiste>180</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="opinoik-142666202" opiskelijaAvain="hlo-130767778">
+              <virta:AlkuPvm>2021-03-19</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-12-30</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2021-03-19</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-12-30</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Avoimen yliopiston opinnot">
+                <virta:AlkuPvm>2021-03-19</virta:AlkuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Avoimen yliopiston opinnot, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="sv">Studier vid Öppna universitetet, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="en">Open University Studies, Avoimen yliopiston opinnot</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">6</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="opinoik-134170465" opiskelijaAvain="hlo-130767778">
+              <virta:AlkuPvm>2019-11-30</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-10-29</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2019-11-30</virta:AlkuPvm>
+                <virta:LoppuPvm>2020-10-29</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Avoimen yliopiston opinnot">
+                <virta:AlkuPvm>2019-11-30</virta:AlkuPvm>
+                <virta:LoppuPvm>2020-10-29</virta:LoppuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Avoimen yliopiston opinnot, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="sv">Studier vid Öppna universitetet, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="en">Open University Studies, Avoimen yliopiston opinnot</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">6</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="hy-avoin-ew-sr-BB03A" opiskelijaAvain="hlo-130767778">
+              <virta:AlkuPvm>2021-06-21</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-09-29</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2021-06-21</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-09-29</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Avoimen yliopiston opinnot">
+                <virta:AlkuPvm>2021-06-21</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-09-29</virta:LoppuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Avoimen yliopiston opinnot, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="sv">Studier vid Öppna universitetet, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="en">Open University Studies, Avoimen yliopiston opinnot</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">3</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="hy-avoin-ew-sr-BB666" opiskelijaAvain="hlo-130767778">
+              <virta:AlkuPvm>2021-06-25</virta:AlkuPvm>
+              <virta:LoppuPvm>2022-03-25</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2021-06-25</virta:AlkuPvm>
+                <virta:LoppuPvm>2022-03-25</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Avoimen yliopiston opinnot">
+                <virta:AlkuPvm>2021-06-25</virta:AlkuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Avoimen yliopiston opinnot, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="sv">Studier vid Öppna universitetet, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="en">Open University Studies, Avoimen yliopiston opinnot</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">3</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="opinoik-135530850" opiskelijaAvain="hlo-130767778">
+              <virta:AlkuPvm>2020-03-20</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-12-30</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2020-03-20</virta:AlkuPvm>
+                <virta:LoppuPvm>2020-12-30</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Avoimen yliopiston opinnot">
+                <virta:AlkuPvm>2020-03-20</virta:AlkuPvm>
+                <virta:LoppuPvm>2020-12-30</virta:LoppuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Avoimen yliopiston opinnot, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="sv">Studier vid Öppna universitetet, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="en">Open University Studies, Avoimen yliopiston opinnot</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">6</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:LukukausiIlmoittautumiset>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-135531381">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-06-20</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2021-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-06-20</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2021-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-136831207">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2019-06-24</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-136947948">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2019-06-24</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-135531381">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2019-06-24</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-135531381">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-06-20</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-135530850">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2019-06-24</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-136517700">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-06-20</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2019-06-24</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2019-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2019-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-135604452">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-06-20</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-134170465">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-06-20</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-136947948">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-06-20</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-134170465">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2019-06-24</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-135531384">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2019-06-24</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-06-20</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2021-08-03</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2022-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2022-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-135531386">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-06-20</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2021-08-03</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2021-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-136517700">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2019-06-24</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-142990733">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-06-20</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2021-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-142770632">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-06-20</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2021-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-134170465">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2019-06-24</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2019-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2019-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>4</virta:Tila>
+              <virta:IlmoittautumisPvm>2021-11-23</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2023-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2023-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>false</virta:YlioppilaskuntaJasen>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2019-06-24</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-135530850">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-06-20</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-136831207">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-06-20</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-143292580">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-06-20</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2021-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-135604452">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2019-06-24</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-135531387">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-06-20</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2021-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-142666202">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-06-20</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2021-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>4</virta:Tila>
+              <virta:IlmoittautumisPvm>2021-11-23</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2022-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2022-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>false</virta:YlioppilaskuntaJasen>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-135531384">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-06-20</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-135531387">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2019-06-24</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-135531387">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-06-20</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-135531386">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2019-06-24</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+          </virta:LukukausiIlmoittautumiset>
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus avain="ATTAINMENT-opinto-135533316" koulutusmoduulitunniste="COURSE-UNIT-CU-119419340-2020-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-134170465">
+              <virta:SuoritusPvm>2020-09-04</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+                <virta:Opintoviikko>0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Avoin yo: Todennäköisyyslaskenta I</virta:Nimi>
+              <virta:Nimi kieli="en">Open uni: Probability I</virta:Nimi>
+              <virta:Nimi kieli="sv">Öppna uni: Sannolikhetslära I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">6</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="ATTAINMENT-opinto-140443468" koulutusmoduulitunniste="COURSE-UNIT-CU-117375607-2020-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:SuoritusPvm>2021-04-06</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+                <virta:Opintoviikko>0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>1</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Integraalilaskenta</virta:Nimi>
+              <virta:Nimi kieli="en">Integral Calculus</virta:Nimi>
+              <virta:Nimi kieli="sv">Integral kalkyl</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">6</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="ATTAINMENT-opinto-131930086" koulutusmoduulitunniste="COURSE-UNIT-CU-118158212-2019-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:SuoritusPvm>2019-10-23</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+                <virta:Opintoviikko>0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">TA1 Taloustieteen perusteet</virta:Nimi>
+              <virta:Nimi kieli="en">TA1 Basics in Economics</virta:Nimi>
+              <virta:Nimi kieli="sv">TA1 Grunderna i ekonomi</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">4</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="ATTAINMENT-opinto-135188371" koulutusmoduulitunniste="COURSE-UNIT-CU-124037274-2019-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:SuoritusPvm>2020-04-23</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+                <virta:Opintoviikko>0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">TA5 Makrotaloustieteen erikoiskurssi 5</virta:Nimi>
+              <virta:Nimi kieli="en">TA5 Special Course in Macroeconomics 5</virta:Nimi>
+              <virta:Nimi kieli="sv">TA5 Specialkurs i makroekonomi 5</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">4</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="ATTAINMENT-opinto-137339851" koulutusmoduulitunniste="COURSE-UNIT-CU-118844507-2020-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:SuoritusPvm>2020-11-16</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+                <virta:Opintoviikko>0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>1</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">TA3a Mikrotaloustiede I</virta:Nimi>
+              <virta:Nimi kieli="en">TA3a Microeconomics I</virta:Nimi>
+              <virta:Nimi kieli="sv">TA3a Mikroekonomi I</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">4</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus
+              avain="ATTAINMENT-otm-b607af7e-92c7-41b8-9b88-f5652a7095ee" koulutusmoduulitunniste="COURSE-UNIT-CU-120049522-2020-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="hy-avoin-ew-sr-B9F06">
+              <virta:SuoritusPvm>2021-09-28</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>1</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:ToinenKotimainen>TT</virta:ToinenKotimainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Avoin yo: Toisen kotimaisen kielen kirjallinen taito, ruotsi (CEFR B1)</virta:Nimi>
+              <virta:Nimi kieli="en">Open uni: Written Skills in the Second National Language, Swedish (CEFR B1)</virta:Nimi>
+              <virta:Nimi kieli="sv">Öppna uni: Skriftlig färdighet i andra inhemska språket, svensk (CEFR B1)</virta:Nimi>
+              <virta:Kieli>sv</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">3</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="ATTAINMENT-otm-1545cb68-9f84-4758-8708-2356319fa10b">
+                <virta:Opintopiste>1</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus
+              avain="ATTAINMENT-otm-dfcbdf67-fbc7-4c56-a552-a96fa9105e9d" koulutusmoduulitunniste="ASSESSMENT-ITEM-AI-118845153-default-teaching-participation" opiskelijaAvain="hlo-130767778">
+              <virta:SuoritusPvm>2021-05-10</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>1</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>3</virta:Laji>
+              <virta:Nimi kieli="fi">TA3c Peliteoria, Osallistuminen opetukseen</virta:Nimi>
+              <virta:Nimi kieli="en">TA3c Game Theory, Participation in teaching</virta:Nimi>
+              <virta:Nimi kieli="sv">TA3c Spelteori, Deltagande i undervisningen</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="ATTAINMENT-opinto-131934995" koulutusmoduulitunniste="COURSE-UNIT-CU-117375413-2019-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:SuoritusPvm>2019-10-18</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+                <virta:Opintoviikko>0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>1</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Raja-arvot</virta:Nimi>
+              <virta:Nimi kieli="en">Limits</virta:Nimi>
+              <virta:Nimi kieli="sv">Gränsvärden</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">6</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="ATTAINMENT-opinto-139189562" koulutusmoduulitunniste="COURSE-UNIT-CU-122081589-2020-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:SuoritusPvm>2020-10-16</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+                <virta:Opintoviikko>0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Opiskelijatuutorointi</virta:Nimi>
+              <virta:Nimi kieli="en">Tutoring for Students</virta:Nimi>
+              <virta:Nimi kieli="sv">Studenttutorverksamhet</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">4</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="ATTAINMENT-opinto-132681684" koulutusmoduulitunniste="COURSE-UNIT-CU-118844400-2019-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:SuoritusPvm>2019-12-03</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+                <virta:Opintoviikko>0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">TA2 Asiantuntijataidot</virta:Nimi>
+              <virta:Nimi kieli="en">TA2 Professional skills</virta:Nimi>
+              <virta:Nimi kieli="sv">TA2 Expertis</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">4</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="ATTAINMENT-opinto-133969088" koulutusmoduulitunniste="COURSE-UNIT-CU-118158379-2019-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:SuoritusPvm>2020-04-02</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+                <virta:Opintoviikko>0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">TA4a Makrotaloustiede I</virta:Nimi>
+              <virta:Nimi kieli="en">TA4a Macroeconomics I</virta:Nimi>
+              <virta:Nimi kieli="sv">TA4a Makroekonomi I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">4</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus
+              avain="ATTAINMENT-otm-538854c1-8a85-453a-9ae1-a6c17007c384" koulutusmoduulitunniste="COURSE-UNIT-CU-120116162-2020-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="hy-avoin-ew-sr-BB03A">
+              <virta:SuoritusPvm>2021-08-27</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Academic and Professional Communication in English 1 &amp; 2 (CEFR B2)</virta:Nimi>
+              <virta:Nimi kieli="en">Academic and Professional Communication in English 1 &amp; 2 (CEFR B2)</virta:Nimi>
+              <virta:Nimi kieli="sv">Academic and Professional Communication in English 1 &amp; 2 (CEFR B2)</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">3</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="ATTAINMENT-otm-f9fcfe3e-ee0b-49df-ab6f-85ba81066506">
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="ATTAINMENT-otm-d17344d5-4cc4-4179-a153-f0f8afbb436c" koulutusmoduulitunniste="COURSE-UNIT-CU-118845167-2020-08-01" opiskelijaAvain="hlo-130767778">
+              <virta:SuoritusPvm>2021-05-14</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">TA4c Talouskasvu</virta:Nimi>
+              <virta:Nimi kieli="en">TA4c Economic growth</virta:Nimi>
+              <virta:Nimi kieli="sv">TA4c Ekonomisk tillväxt</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">4</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="ATTAINMENT-otm-a717660e-fd2a-47bd-abb2-4053751faa36">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus
+              avain="ATTAINMENT-otm-05d13f70-12b3-480e-9130-06cb819f40a4" koulutusmoduulitunniste="ASSESSMENT-ITEM-AI-118845407-default-teaching-participation" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:SuoritusPvm>2021-10-27</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>3</virta:Laji>
+              <virta:Nimi kieli="fi">TA7a Ekonometria I, Osallistuminen opetukseen</virta:Nimi>
+              <virta:Nimi kieli="en">TA7a Econometrics I, Participation in teaching</virta:Nimi>
+              <virta:Nimi kieli="sv">TA7a Ekonometri I, Deltagande i undervisningen</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="ATTAINMENT-opinto-136948286" koulutusmoduulitunniste="COURSE-UNIT-CU-135389894-2020-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-134170465">
+              <virta:SuoritusPvm>2020-08-01</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+                <virta:Opintoviikko>0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Avoin yo: TA5 Makrotaloustieteen erikoiskurssi 3</virta:Nimi>
+              <virta:Nimi kieli="en">Open uni: TA5 Macroeconomics 3</virta:Nimi>
+              <virta:Nimi kieli="sv">Öppna uni: TA5 Kurs i macroekonomi 3</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">4</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+              <virta:JulkinenLisatieto kieli="fi">Talouskriisit (ECOK-256/YMV-T515)</virta:JulkinenLisatieto>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="ATTAINMENT-otm-44db410e-63ff-4144-b26f-4493b615e75f" koulutusmoduulitunniste="COURSE-UNIT-CU-118845153-2020-08-01" opiskelijaAvain="hlo-130767778">
+              <virta:SuoritusPvm>2021-05-10</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>1</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">TA3c Peliteoria</virta:Nimi>
+              <virta:Nimi kieli="en">TA3c Game Theory</virta:Nimi>
+              <virta:Nimi kieli="sv">TA3c Spelteori</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">4</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="ATTAINMENT-otm-dfcbdf67-fbc7-4c56-a552-a96fa9105e9d">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="ATTAINMENT-opinto-135765937" koulutusmoduulitunniste="COURSE-UNIT-CU-119324820-2019-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:SuoritusPvm>2020-04-21</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+                <virta:Opintoviikko>0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">TA5 Julkisen talouden erikoiskurssi 1</virta:Nimi>
+              <virta:Nimi kieli="en">TA5 Special Course in General Government Finances 1</virta:Nimi>
+              <virta:Nimi kieli="sv">TA5 Specialkurs i den offentliga ekonomin 1</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">4</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="ATTAINMENT-opinto-135604713" koulutusmoduulitunniste="COURSE-UNIT-CU-120058576-2017-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-134170465">
+              <virta:SuoritusPvm>2020-07-07</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+                <virta:Opintoviikko>0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Avoin yo: Akateemiset tekstitaidot (suomi)</virta:Nimi>
+              <virta:Nimi kieli="en">Open uni: Academic Writing (Finnish)</virta:Nimi>
+              <virta:Nimi kieli="sv">Öppna uni: Akademiskt skrivande (finska)</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">3</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus
+              avain="ATTAINMENT-otm-8254770f-4e72-4325-af36-fc639217abf3" koulutusmoduulitunniste="COURSE-UNIT-CU-120053471-2020-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-142990733">
+              <virta:SuoritusPvm>2021-08-31</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:ToinenKotimainen>TT</virta:ToinenKotimainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Avoin yo: Toisen kotimaisen kielen suullinen taito, ruotsi (CEFR B1)</virta:Nimi>
+              <virta:Nimi kieli="en">Open uni: Oral Skills in the Second National Language, Swedish (CEFR B1)</virta:Nimi>
+              <virta:Nimi kieli="sv">Öppna uni: Muntlig färdighet i andra inhemska språket, svensk (CEFR B1)</virta:Nimi>
+              <virta:Kieli>sv</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">3</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="ATTAINMENT-otm-51efd7d5-f94d-433f-89d0-8f82a668eac4">
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus
+              avain="ATTAINMENT-otm-b1081c7e-a535-4b67-b4da-260679390afe" koulutusmoduulitunniste="COURSE-UNIT-CU-118845407-2021-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:SuoritusPvm>2021-10-27</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">TA7a Ekonometria I</virta:Nimi>
+              <virta:Nimi kieli="en">TA7a Econometrics I</virta:Nimi>
+              <virta:Nimi kieli="sv">TA7a Ekonometri I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">4</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="ATTAINMENT-otm-05d13f70-12b3-480e-9130-06cb819f40a4">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="ATTAINMENT-opinto-139005915" koulutusmoduulitunniste="COURSE-UNIT-CU-117375487-2020-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:SuoritusPvm>2020-12-10</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+                <virta:Opintoviikko>0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>1</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Differentiaalilaskenta</virta:Nimi>
+              <virta:Nimi kieli="en">Differential Calculus</virta:Nimi>
+              <virta:Nimi kieli="sv">Differentialkalkyl</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">6</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus
+              avain="ATTAINMENT-otm-1545cb68-9f84-4758-8708-2356319fa10b" koulutusmoduulitunniste="ASSESSMENT-ITEM-AI-120049522-default-teaching-participation" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="hy-avoin-ew-sr-B9F06">
+              <virta:SuoritusPvm>2021-09-28</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>1</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:ToinenKotimainen>TT</virta:ToinenKotimainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>3</virta:Laji>
+              <virta:Nimi kieli="fi">Avoin yo: Toisen kotimaisen kielen kirjallinen taito, ruotsi (CEFR B1), Avoin yo: Osallistuminen opetukseen</virta:Nimi>
+              <virta:Nimi kieli="en">Open uni: Written Skills in the Second National Language, Swedish (CEFR B1), Open uni: Participation in teaching</virta:Nimi>
+              <virta:Nimi kieli="sv">Öppna uni: Skriftlig färdighet i andra inhemska språket, svensk (CEFR B1), Öppna uni: Deltagande i undervisningen</virta:Nimi>
+              <virta:Kieli>sv</virta:Kieli>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="ATTAINMENT-opinto-133933083" koulutusmoduulitunniste="COURSE-UNIT-CU-119324971-2019-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:SuoritusPvm>2020-03-05</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+                <virta:Opintoviikko>0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">TA5 Rahoituksen taloustieteen erikoiskurssi 1</virta:Nimi>
+              <virta:Nimi kieli="en">TA5 Special course in financial economy 1</virta:Nimi>
+              <virta:Nimi kieli="sv">TA5 Specialkurs i finansiell ekonomi 1</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">4</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="ATTAINMENT-opinto-140529190" koulutusmoduulitunniste="COURSE-UNIT-CU-120059411-2020-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-135530850">
+              <virta:SuoritusPvm>2020-12-05</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+                <virta:Opintoviikko>0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Avoin yo: Johdatus oikeustieteeseen</virta:Nimi>
+              <virta:Nimi kieli="en">Open uni: Introduction to Jurisprudence</virta:Nimi>
+              <virta:Nimi kieli="sv">Öppna uni: Introduktion till juridiken</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="ATTAINMENT-opinto-134170617" koulutusmoduulitunniste="COURSE-UNIT-CU-119654280-2018-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-134170465">
+              <virta:SuoritusPvm>2020-05-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+                <virta:Opintoviikko>0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Avoin yo: Johdatus yliopistomatematiikkaan</virta:Nimi>
+              <virta:Nimi kieli="en">Open uni: Introduction to University mathematics</virta:Nimi>
+              <virta:Nimi kieli="sv">Öppna uni: Inledning till universitetsmatematik</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">6</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus
+              avain="ATTAINMENT-otm-51efd7d5-f94d-433f-89d0-8f82a668eac4" koulutusmoduulitunniste="ASSESSMENT-ITEM-AI-120053471-default-teaching-participation" opiskelijaAvain="hlo-130767778">
+              <virta:SuoritusPvm>2021-08-31</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:ToinenKotimainen>TT</virta:ToinenKotimainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>3</virta:Laji>
+              <virta:Nimi kieli="fi">Avoin yo: Toisen kotimaisen kielen suullinen taito, ruotsi (CEFR B1), Avoin yo: Osallistuminen opetukseen</virta:Nimi>
+              <virta:Nimi kieli="en">Open uni: Oral Skills in the Second National Language, Swedish (CEFR B1), Open uni: Participation in teaching</virta:Nimi>
+              <virta:Nimi kieli="sv">Öppna uni: Muntlig färdighet i andra inhemska språket, svensk (CEFR B1), Öppna uni: Deltagande i undervisningen</virta:Nimi>
+              <virta:Kieli>sv</virta:Kieli>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus
+              avain="ATTAINMENT-otm-a717660e-fd2a-47bd-abb2-4053751faa36" koulutusmoduulitunniste="ASSESSMENT-ITEM-AI-118845167-default-teaching-participation" opiskelijaAvain="hlo-130767778">
+              <virta:SuoritusPvm>2021-05-14</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>3</virta:Laji>
+              <virta:Nimi kieli="fi">TA4c Talouskasvu, Osallistuminen opetukseen</virta:Nimi>
+              <virta:Nimi kieli="en">TA4c Economic growth, Participation in teaching</virta:Nimi>
+              <virta:Nimi kieli="sv">TA4c Ekonomisk tillväxt, Deltagande i undervisningen</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus
+              avain="ATTAINMENT-otm-f9fcfe3e-ee0b-49df-ab6f-85ba81066506" koulutusmoduulitunniste="ASSESSMENT-ITEM-AI-120116162-default-teaching-participation" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="hy-avoin-ew-sr-BB03A">
+              <virta:SuoritusPvm>2021-08-27</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>3</virta:Laji>
+              <virta:Nimi kieli="fi">Academic and Professional Communication in English 1 &amp; 2 (CEFR B2), Avoin yo: Osallistuminen opetukseen</virta:Nimi>
+              <virta:Nimi kieli="en">Academic and Professional Communication in English 1 &amp; 2 (CEFR B2), Open uni: Participation in teaching</virta:Nimi>
+              <virta:Nimi kieli="sv">Academic and Professional Communication in English 1 &amp; 2 (CEFR B2), Öppna uni: Deltagande i undervisningen</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="ATTAINMENT-opinto-134878444" koulutusmoduulitunniste="COURSE-UNIT-CU-119324936-2019-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:SuoritusPvm>2020-05-07</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+                <virta:Opintoviikko>0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">TA5 Työn taloustieteen erikoiskurssi</virta:Nimi>
+              <virta:Nimi kieli="en">TA5 Special Course in Labour Economics</virta:Nimi>
+              <virta:Nimi kieli="sv">TA5 Specialkurs i arbetsekonomi</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">4</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="ATTAINMENT-opinto-134878432" koulutusmoduulitunniste="COURSE-UNIT-CU-119330075-2019-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:SuoritusPvm>2020-05-06</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+                <virta:Opintoviikko>0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">TA4b Makrotaloustiede II</virta:Nimi>
+              <virta:Nimi kieli="en">TA4b Macroeconomics II</virta:Nimi>
+              <virta:Nimi kieli="sv">TA4b Makroekonomi II</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">4</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="ATTAINMENT-opinto-132681640" koulutusmoduulitunniste="COURSE-UNIT-CU-117375394-2019-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-130767779_PHASE1">
+              <virta:SuoritusPvm>2019-12-17</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+                <virta:Opintoviikko>0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Lineaarialgebra ja matriisilaskenta I</virta:Nimi>
+              <virta:Nimi kieli="en">Linear algebra and matrices I</virta:Nimi>
+              <virta:Nimi kieli="sv">Linear algebra och matrisräkning I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">6</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="ATTAINMENT-opinto-135533260" koulutusmoduulitunniste="COURSE-UNIT-CU-120073964-2020-08-01" opiskelijaAvain="hlo-130767778" opiskeluoikeusAvain="opinoik-134170465">
+              <virta:SuoritusPvm>2020-09-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+                <virta:Opintoviikko>0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Avoin yo: Tilastotiede tutuksi ja R I</virta:Nimi>
+              <virta:Nimi kieli="en">Open uni: Basics of statistics and R I</virta:Nimi>
+              <virta:Nimi kieli="sv">Öppna uni: Statistik och R-programvara I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">6</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+        </virta:Opiskelija>
+        <virta:Opiskelija avain="HLO-1142444112">
+          <virta:Henkilotunnus>100295-026D</virta:Henkilotunnus>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus avain="otm-d96ddf72-8a56-4ad1-bbc3-6f61fa0c7659" opiskelijaAvain="HLO-1142444112">
+              <virta:AlkuPvm>2021-08-28</virta:AlkuPvm>
+              <virta:LoppuPvm>2022-10-07</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2021-08-28</virta:AlkuPvm>
+                <virta:LoppuPvm>2022-10-07</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>01914</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Avoimen yliopiston opinnot (kauppa, hallinto ja oikeustieteet)">
+                <virta:AlkuPvm>2021-08-28</virta:AlkuPvm>
+                <virta:Koulutuskunta>049</virta:Koulutuskunta>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Avoimen yliopiston opinnot (kauppa, hallinto ja oikeustieteet), Avoimen yliopiston opinnot (kauppa, hallinto ja oikeustieteet)</virta:Nimi>
+                <virta:Nimi kieli="sv">Öppna universitetet (handel, administration och juridik), Öppna universitetet (handel, administration och juridik)</virta:Nimi>
+                <virta:Nimi kieli="en">Open University (Business, Administration and law), Open University (Business, Administration and law)</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">5</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="OPINOIK-1142444177" opiskelijaAvain="HLO-1142444112">
+              <virta:AlkuPvm>2020-02-25</virta:AlkuPvm>
+              <virta:LoppuPvm>2022-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2020-02-25</virta:AlkuPvm>
+                <virta:LoppuPvm>2022-07-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>01914</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Avoimen yliopiston opinnot">
+                <virta:AlkuPvm>2020-02-25</virta:AlkuPvm>
+                <virta:Koulutuskoodi>999999</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>049</virta:Koulutuskunta>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Avoimen yliopiston opinnot, Avoimen yliopiston opinnot</virta:Nimi>
+                <virta:Nimi kieli="sv">Studier vid Öppna universitetet, Studier vid öppna universitetet</virta:Nimi>
+                <virta:Nimi kieli="en">Open University studies, Separately specified courses (Open University)</virta:Nimi>
+              </virta:Jakso>
+              <virta:Ensisijaisuus>
+                <virta:AlkuPvm>2020-02-26</virta:AlkuPvm>
+              </virta:Ensisijaisuus>
+              <virta:Koulutusala versio="ohjausala">5</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:LukukausiIlmoittautumiset>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="HLO-1142444112" opiskeluoikeusAvain="OPINOIK-1142444177">
+              <virta:Myontaja>01914</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+          </virta:LukukausiIlmoittautumiset>
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus
+              avain="ATTAINMENT-OPINTO-1149032846" koulutusmoduulitunniste="COURSE-UNIT-OPINKOHD-1013758775-20160801" opiskelijaAvain="HLO-1142444112" opiskeluoikeusAvain="OPINOIK-1142444177">
+              <virta:SuoritusPvm>2021-04-28</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01914</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Rahoituksen perusteet</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to Finance</virta:Nimi>
+              <virta:Nimi kieli="sv">Rahoituksen perusteet</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus
+              avain="ATTAINMENT-OPINTO-1144915852" koulutusmoduulitunniste="COURSE-UNIT-OPINKOHD-1013758776-20160801" opiskelijaAvain="HLO-1142444112" opiskeluoikeusAvain="OPINOIK-1142444177">
+              <virta:SuoritusPvm>2020-11-24</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01914</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Taloustieteen perusteet</virta:Nimi>
+              <virta:Nimi kieli="en">Principles of Economics</virta:Nimi>
+              <virta:Nimi kieli="sv">Taloustieteen perusteet</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus
+              avain="ATTAINMENT-OPINTO-1148070159" koulutusmoduulitunniste="COURSE-UNIT-OPINKOHD-1013758774-20150801" opiskelijaAvain="HLO-1142444112" opiskeluoikeusAvain="OPINOIK-1142444177">
+              <virta:SuoritusPvm>2021-02-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01914</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Markkinoinnin perusteet</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to Marketing Management</virta:Nimi>
+              <virta:Nimi kieli="sv">Markkinoinnin perusteet</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus
+              avain="ATTAINMENT-OPINTO-1145211475" koulutusmoduulitunniste="COURSE-UNIT-OPINKOHD-1013758770-20160801" opiskelijaAvain="HLO-1142444112" opiskeluoikeusAvain="OPINOIK-1142444177">
+              <virta:SuoritusPvm>2020-12-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01914</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Johtamisen perusteet</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to Management</virta:Nimi>
+              <virta:Nimi kieli="sv">Johtamisen perusteet</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus
+              avain="ATTAINMENT-OPINTO-1146455741" koulutusmoduulitunniste="COURSE-UNIT-OPINKOHD-1127852903-20160801" opiskelijaAvain="HLO-1142444112" opiskeluoikeusAvain="OPINOIK-1142444177">
+              <virta:SuoritusPvm>2021-03-25</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>1</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01914</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Taulukkolaskenta ja analytiikka</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to Business Analytics</virta:Nimi>
+              <virta:Nimi kieli="sv">Taulukkolaskenta ja analytiikka</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus
+              avain="ATTAINMENT-OPINTO-1146454121" koulutusmoduulitunniste="COURSE-UNIT-OPINKOHD-1145827537-20200801" opiskelijaAvain="HLO-1142444112" opiskeluoikeusAvain="OPINOIK-1142444177">
+              <virta:SuoritusPvm>2021-02-24</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01914</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Työelämän viestintä- ja vuorovaikutustaidot</virta:Nimi>
+              <virta:Nimi kieli="en">Communication and Interaction Skills in Business</virta:Nimi>
+              <virta:Nimi kieli="sv">Työelämän viestintä- ja vuorovaikutustaidot</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus
+              avain="ATTAINMENT-OPINTO-1144915795" koulutusmoduulitunniste="COURSE-UNIT-OPINKOHD-1116576091-20160801" opiskelijaAvain="HLO-1142444112" opiskeluoikeusAvain="OPINOIK-1142444177">
+              <virta:SuoritusPvm>2021-01-12</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01914</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Tuotantotalouden perusteet</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to Operations Management</virta:Nimi>
+              <virta:Nimi kieli="sv">Tuotantotalouden perusteet</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus
+              avain="ATTAINMENT-OPINTO-1148467313" koulutusmoduulitunniste="COURSE-UNIT-OPINKOHD-1113091993-20200801" opiskelijaAvain="HLO-1142444112" opiskeluoikeusAvain="OPINOIK-1142444177">
+              <virta:SuoritusPvm>2021-04-15</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01914</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Yritysjuridiikan perusteet</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to Business Law</virta:Nimi>
+              <virta:Nimi kieli="sv">Yritysjuridiikan perusteet</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus
+              avain="ATTAINMENT-OPINTO-1149320149" koulutusmoduulitunniste="COURSE-UNIT-OPINKOHD-1117705178-20140101" opiskelijaAvain="HLO-1142444112" opiskeluoikeusAvain="OPINOIK-1142444177">
+              <virta:SuoritusPvm>2021-05-04</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>1</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01914</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Tilastotieteen perusteet</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to Statistics</virta:Nimi>
+              <virta:Nimi kieli="sv">Tilastotieteen perusteet</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+        </virta:Opiskelija>
+        <virta:Opiskelija avain="179419">
+          <virta:Henkilotunnus>100295-026D</virta:Henkilotunnus>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus avain="68392962" opiskelijaAvain="179419">
+              <virta:AlkuPvm>2020-03-23</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-07-01</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2020-03-23</virta:AlkuPvm>
+                <virta:LoppuPvm>2020-07-01</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2020-07-02</virta:AlkuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>10089</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="9990 Avoimen yliopiston opintoja">
+                <virta:AlkuPvm>2020-03-23</virta:AlkuPvm>
+                <virta:LoppuPvm>2020-07-01</virta:LoppuPvm>
+                <virta:Koulutuskunta>999</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">4</virta:Koulutusala>
+              <virta:Laajuus>
+                <virta:Opintopiste>0</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:LukukausiIlmoittautumiset>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="179419" opiskeluoikeusAvain="68392962">
+              <virta:Myontaja>10089</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+          </virta:LukukausiIlmoittautumiset>
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus avain="ATTAINMENT-opinto-135533316" koulutusmoduulitunniste="COURSE-UNIT-CU-119419340" opiskelijaAvain="179419" opiskeluoikeusAvain="68392962">
+              <virta:SuoritusPvm>2020-07-01</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+                <virta:Opintoviikko>0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10089</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Avoin yo: Epätodennäköisyyslaskenta I</virta:Nimi>
+              <virta:Nimi kieli="en">Open uni: Unprobability I</virta:Nimi>
+              <virta:Nimi kieli="sv">Öppna uni: Osannolikhetslära I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">6</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+        </virta:Opiskelija>
+      </virta:Virta>
+    </virtaluku:OpiskelijanKaikkiTiedotResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
