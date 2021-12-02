@@ -152,7 +152,7 @@ object ValpasAuditLog {
           session,
           Map(
             ValpasAuditLogMessageField.hakulause -> kunta,
-            ValpasAuditLogMessageField.oppijaHenkilöOidList -> palautetutOppijaOidit.mkString(" "),
+            ValpasAuditLogMessageField.oppijaHenkilöOidList -> oidit.mkString(" "),
             ValpasAuditLogMessageField.sivu -> s"${sivu}",
             ValpasAuditLogMessageField.sivuLukumäärä -> s"${sivuLukumäärä}"
           )
