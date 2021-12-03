@@ -44,7 +44,7 @@ describe('Koulutuksen koodi poistettu ePerusteista', function () {
 
       it('Koodiarvo päivitetään automaattisesti', function () {
         expect(suorituksenKoulutusKenttä()).to.equalIgnoreNewlines(
-          'Koulutus Autoalan perustutkinto 351301 39/011/2014'
+          'Koulutus Tieto- ja viestintätekniikan perustutkinto, koulutusvientikokeilu 341101 OPH-1117-2019'
         )
       })
     })

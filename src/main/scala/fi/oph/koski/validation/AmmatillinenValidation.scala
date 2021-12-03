@@ -19,7 +19,7 @@ object AmmatillinenValidation {
           validateUseaPäätasonSuoritus(ammatillinen),
           vanhaOpiskeluoikeus match {
             case Some(vanha) if vanha.isInstanceOf[AmmatillinenOpiskeluoikeus] =>
-              validateTutkintokoodinTaiSuoritustavanMuutos(ammatillinen, vanha.asInstanceOf[AmmatillinenOpiskeluoikeus])
+              validateTutkintokoodinTaiSuoritustavanMuutos(ammatillinen, vanha.asInstanceOf[AmmatillinenOpiskeluoikeus], ePerusteet)
             case _ => HttpStatus.ok
           })
       case _ => HttpStatus.ok
@@ -49,12 +49,13 @@ object AmmatillinenValidation {
   }
 
   private def validateTutkintokoodinTaiSuoritustavanMuutos(uusiOpiskeluoikeus: AmmatillinenOpiskeluoikeus,
-                                                           vanhaOpiskeluoikeus: AmmatillinenOpiskeluoikeus): HttpStatus = {
+                                                           vanhaOpiskeluoikeus: AmmatillinenOpiskeluoikeus,
+                                                           ePerusteet: EPerusteetRepository): HttpStatus = {
     val vanhanSuoritustavat = suoritustavat(vanhaOpiskeluoikeus)
     val uudenSuoritustavat = suoritustavat(uusiOpiskeluoikeus)
 
-    val vanhanTutkintokoodit = tutkintokoodit(vanhaOpiskeluoikeus)
-    val uudenTutkintokoodit = tutkintokoodit(uusiOpiskeluoikeus)
+    val vanhanTutkintokoodit = tutkintokooditPoislukienPerusteestaLöytymättömät(vanhaOpiskeluoikeus, ePerusteet)
+    val uudenTutkintokoodit = tutkintokooditPoislukienPerusteestaLöytymättömät(uusiOpiskeluoikeus, ePerusteet)
 
     val suoritustapaLöytyy = vanhanSuoritustavat.count(tapa => uudenSuoritustavat.contains(tapa)) == vanhanSuoritustavat.length
     val tutkintokoodiLöytyy = vanhanTutkintokoodit.count(koodi => uudenTutkintokoodit.contains(koodi)) == vanhanTutkintokoodit.length
@@ -72,8 +73,18 @@ object AmmatillinenValidation {
     }
   }
 
-  private def tutkintokoodit(oo: AmmatillinenOpiskeluoikeus): List[String] = {
-    oo.suoritukset.map(_.koulutusmoduuli.tunniste.koodiarvo)
+  private def tutkintokooditPoislukienPerusteestaLöytymättömät(oo: AmmatillinenOpiskeluoikeus, ePerusteet: EPerusteetRepository): List[String] = {
+    oo.suoritukset.filter(suoritus =>
+      suoritus.koulutusmoduuli match {
+        case diaarillinen: DiaarinumerollinenKoulutus =>
+          diaarillinen.perusteenDiaarinumero.flatMap(diaari => ePerusteet.findRakenne(diaari)) match {
+            case Some(rakenne) =>
+              rakenne.koulutukset.exists(_.koulutuskoodiArvo == diaarillinen.tunniste.koodiarvo)
+            case _ => true
+          }
+        case _ => true
+      }
+    ).map(_.koulutusmoduuli.tunniste.koodiarvo)
   }
 
   private def validatePerusteVoimassa(opiskeluoikeus: AmmatillinenOpiskeluoikeus, ePerusteet: EPerusteetRepository, config: Config): HttpStatus = {

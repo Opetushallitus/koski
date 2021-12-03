@@ -520,21 +520,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         }
 
         "Sallitaan kaksi päätason suoritusta, kun yhdistelmänä 'ammatillinentutkinto', jossa suoritustapa näyttö, ja 'nayttotutkintoonvalmistavakoulutus'" in {
-          val näyttötutkinnonSuoritus = AmmatillisenTutkinnonSuoritus(
-            koulutusmoduuli = sosiaaliJaTerveysalanPerustutkinto,
-            suoritustapa = suoritustapaNäyttö,
-            suorituskieli = suomenKieli,
-            toimipiste = stadinToimipiste,
-          )
-          val näyttötutkintoonValmistavaSuoritus = AmmattitutkintoExample.näyttötutkintoonValmistavanKoulutuksenSuoritus.copy(alkamispäivä = Some(date(2015, 1, 1)), vahvistus = None)
-
-
-          val opiskeluoikeus = AmmatillinenExampleData.sosiaaliJaTerveysalaOpiskeluoikeus().copy(
-            tila = AmmatillinenOpiskeluoikeudenTila(List(
-              AmmatillinenOpiskeluoikeusjakso(date(2015, 1, 1), ExampleData.opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
-            )),
-            suoritukset = List(näyttötutkinnonSuoritus, näyttötutkintoonValmistavaSuoritus)
-          )
+          val opiskeluoikeus = ammatillinenOpiskeluoikeusNäyttötutkinnonJaNäyttöönValmistavanSuorituksilla()
 
           putOpiskeluoikeus(opiskeluoikeus) {
             verifyResponseStatusOk()

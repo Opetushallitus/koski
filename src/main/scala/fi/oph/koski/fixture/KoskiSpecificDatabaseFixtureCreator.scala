@@ -1,6 +1,7 @@
 package fi.oph.koski.fixture
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.documentation.AmmatillinenExampleData.{stadinToimipiste, tietoJaViestintäTekniikanPerustutkinnonSuoritus}
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusMitätöity, suomenKieli}
 import fi.oph.koski.documentation.ExamplesEsiopetus.{ostopalveluOpiskeluoikeus, päiväkotisuoritus}
 import fi.oph.koski.documentation.ExamplesPerusopetus.ysinOpiskeluoikeusKesken
@@ -19,7 +20,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
   protected def oppijat = KoskiSpecificMockOppijat.defaultOppijat
 
   protected lazy val invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
-    val validOpiskeluoikeus: AmmatillinenOpiskeluoikeus = validateOpiskeluoikeus(AmmatillinenExampleData.opiskeluoikeus())
+    val validOpiskeluoikeus: AmmatillinenOpiskeluoikeus = validateOpiskeluoikeus(AmmatillinenExampleData.opiskeluoikeus(tutkinto = tietoJaViestintäTekniikanPerustutkinnonSuoritus(stadinToimipiste)))
     val opiskeluoikeusJostaTunnisteenKoodiarvoPoistettu = validOpiskeluoikeus.copy(
       suoritukset = validOpiskeluoikeus.suoritukset.map(s => {
         val tutkinnonSuoritus = s.asInstanceOf[AmmatillisenTutkinnonSuoritus]
