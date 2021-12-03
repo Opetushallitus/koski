@@ -36,7 +36,7 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ed
         case Right(suoritusjako) =>
           renderObject(suoritusjako)
         case Left(status) =>
-          logger.warn(s"Suoritusjaon luonti epäonnistui: oppija: ${user.oid}, suoritukset: ${suoritusIds.getOrElse(Nil).mkString}: ${status.errorString.mkString}")
+          logger.error(s"Suoritusjaon luonti epäonnistui: oppija: ${user.oid}, suoritukset: ${suoritusIds.getOrElse(Nil).mkString}: ${status.errorString.mkString}")
           renderStatus(status)
       }
     })()

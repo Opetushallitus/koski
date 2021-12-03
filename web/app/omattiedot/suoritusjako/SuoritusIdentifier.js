@@ -1,5 +1,5 @@
 import {modelData} from '../../editor/EditorModel'
-import {suorituksenTyyppi} from '../../suoritus/Suoritus'
+import {isOpintojakso} from '../../opiskeluoikeus/OpiskeluoikeusEditor'
 
 const suoritusIdProto = {
   lähdejärjestelmänId: undefined,
@@ -17,7 +17,9 @@ export default (opiskeluoikeus, suoritus) => {
   id.lähdejärjestelmänId = modelData(opiskeluoikeus, 'lähdejärjestelmänId.id')
   id.oppilaitosOid = modelData(opiskeluoikeus, 'oppilaitos.oid')
   id.suorituksenTyyppi = modelData(suoritus, 'tyyppi.koodiarvo')
-  id.koulutusmoduulinTunniste = suorituksenTyyppi(suoritus) === 'korkeakoulunopintojakso'
+  // Korkeakoulun opintojakso on päätason suoritus, mutta jaettaessa jaetaan samalla kaikki "kelluvat"
+  // opintojaksot (ei siis spesifillä koulutusmoduulin tunnisteella juuri tiettyä opintojaksoa).
+  id.koulutusmoduulinTunniste = isOpintojakso(suoritus)
     ? ''
     : modelData(suoritus, 'koulutusmoduuli.tunniste.koodiarvo')
 

@@ -190,10 +190,32 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     ) :: muutSuoritukset
   }
 
-  private def addMuuKorkeakoulunSuoritus(tila: KorkeakoulunOpiskeluoikeudenTila, suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node) = {
+  private def sisällytäOpintojaksotOsasuorituksina(virtaOpiskeluoikeudenTyyppi: Koodistokoodiviite): Boolean = {
+    Seq(
+      "8", // Kotimainen opiskelijaliikkuvuus
+      "13" // Avoimen opinnot
+    ).contains(virtaOpiskeluoikeudenTyyppi.koodiarvo)
+  }
+
+  private def addMuuKorkeakoulunSuoritus(
+    tila: KorkeakoulunOpiskeluoikeudenTila,
+    suoritukset: List[KorkeakouluSuoritus],
+    opiskeluoikeusNode: Node
+  ): List[KorkeakouluSuoritus] = {
+    val virtaOpiskeluoikeudenTyyppi = opiskeluoikeudenTyyppi(opiskeluoikeusNode)
+
+    val (päätasonSuoritukset, osasuoritukset) = if (sisällytäOpintojaksotOsasuorituksina(virtaOpiskeluoikeudenTyyppi)) {
+      val (opintojaksot, muut) = suoritukset.foldRight((List.empty[KorkeakoulunOpintojaksonSuoritus], List.empty[KorkeakouluSuoritus])) {
+        case (jakso: KorkeakoulunOpintojaksonSuoritus, (jaksot, muut)) => (jakso :: jaksot, muut)
+        case (muu, (jaksot, muut)) => (jaksot, muu :: muut)
+      }
+      (muut, if (opintojaksot.isEmpty) None else Some(opintojaksot))
+    } else {
+      (suoritukset, None)
+    }
+
     val vahvistusPäivä = tila.opiskeluoikeusjaksot.lastOption.filter(_.tila.koodiarvo == "3").map(_.alku)
-    optionalOppilaitos(opiskeluoikeusNode, vahvistusPäivä).map { org =>
-      val virtaOpiskeluoikeudenTyyppi = opiskeluoikeudenTyyppi(opiskeluoikeusNode)
+    val muuKorkeakoulunSuoritus = optionalOppilaitos(opiskeluoikeusNode, vahvistusPäivä).map { org =>
       val nimi = Some((opiskeluoikeusNode \\ "@koulutusmoduulitunniste").text.stripPrefix("#").stripSuffix("/").trim)
         .filter(_.nonEmpty).map(finnish).getOrElse(virtaOpiskeluoikeudenTyyppi.description)
       MuuKorkeakoulunSuoritus(
@@ -204,10 +226,11 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         ),
         vahvistus = päivämääräVahvistus(vahvistusPäivä, org),
         suorituskieli = None,
-        osasuoritukset = None,
+        osasuoritukset = osasuoritukset,
         toimipiste = org
       )
-    }.toList ++ suoritukset
+    }
+    muuKorkeakoulunSuoritus.toList ++ päätasonSuoritukset
   }
 
   private def päivämääräVahvistus(vahvistusPäivä: Option[LocalDate], organisaatio: Organisaatio): Option[Päivämäärävahvistus] =
