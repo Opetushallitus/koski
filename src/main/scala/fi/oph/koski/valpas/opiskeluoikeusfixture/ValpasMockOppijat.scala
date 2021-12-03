@@ -130,7 +130,6 @@ object ValpasMockOppijat {
   val vstKops = valpasOppijat.oppijaSyntymäaikaHetusta("Vst-kops", "Valpas", "190504A564H", kotikunta = Some("091"))
   val valma = valpasOppijat.oppijaSyntymäaikaHetusta("Valma", "Valpas", "090104A303D", kotikunta = Some("091"))
   val telma = valpasOppijat.oppijaSyntymäaikaHetusta("Telma", "Valpas", "160304A7532", kotikunta = Some("091"))
-  val telmaJaAmis = valpasOppijat.oppijaSyntymäaikaHetusta("Telma-ja-amis", "Valpas", "030204A7935", kotikunta = Some("091"))
   val kaksiToisenAsteenOpiskelua = valpasOppijat.oppijaSyntymäaikaHetusta("Kaksi-toisen-asteen-opiskelua", "Valpas", "120504A399N", kotikunta = Some("091"))
   val kotiopetusMeneilläänVanhallaRakenteellaOppija = valpasOppijat.oppijaSyntymäaikaHetusta("Kotiopetus-meneillä-vanha-rakenne", "Valpas", "170205A776W", kotikunta = Some("091"))
   val esikoululainen = valpasOppijat.oppijaSyntymäaikaHetusta("Esikoululainen", "Valpas", hetu="270615A6481", kotikunta = Some("091"))
