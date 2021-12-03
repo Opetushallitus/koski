@@ -96,6 +96,11 @@ object ValpasExampleData {
       ),
       Some(date(2021,5, 19))
     ),
+    ValpasKuntailmoitusFixture(
+      oppilaitoksenIlmoitusKaikillaTiedoilla.copy(kunta = pyhtäänKunta).withOppijaOid(
+        ValpasMockOppijat.turvakieltoOppija.oid
+      )
+    )
   )
 
   def ilmoitustenLisätietojenPoistot = Seq(

@@ -1735,6 +1735,7 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
         organisaatioOid = MockOrganisaatiot.pyhtäänKunta,
         user = ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu
       )(Seq(
+        ValpasMockOppijat.turvakieltoOppija,
         ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia,
         ValpasMockOppijat.lukionAloittanutJollaVanhaIlmoitus,
         ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster,

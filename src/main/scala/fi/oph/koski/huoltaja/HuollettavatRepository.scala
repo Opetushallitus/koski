@@ -5,6 +5,7 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{eskari, faija, faijaFeilaa
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
 import fi.oph.koski.log.Logging
+import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockHuollettavatRepository
 
 
 trait HuollettavatRepository {
@@ -40,16 +41,22 @@ class RemoteHuollettavatRepository(val http: Http) extends HuollettavatRepositor
 
 class MockHuollettavatRepository extends HuollettavatRepository {
   override def getHuollettavat(huoltajaHetu: String): Either[HttpStatus, List[VtjHuollettavaHenkilö]] = {
-    if (faija.hetu.contains(huoltajaHetu)) {
-      Right(List(
-        VtjHuollettavaHenkilö(eskari.etunimet, eskari.sukunimi, eskari.hetu.get),
-        VtjHuollettavaHenkilö(ylioppilasLukiolainen.etunimet, ylioppilasLukiolainen.sukunimi, ylioppilasLukiolainen.hetu.get),
-        VtjHuollettavaHenkilö("Olli", "Oiditon", "060488-681S")
-      ))
-    } else if (faijaFeilaa.hetu.contains(huoltajaHetu)) {
-      Left(KoskiErrorCategory.unavailable.huollettavat())
-    } else {
-      Right(Nil)
+    ValpasMockHuollettavatRepository.getHuollettavat(huoltajaHetu) match {
+      case Some(l) =>
+        Right(l)
+
+      case None =>
+        if (faija.hetu.contains(huoltajaHetu)) {
+          Right(List(
+            VtjHuollettavaHenkilö(eskari.etunimet, eskari.sukunimi, eskari.hetu.get),
+            VtjHuollettavaHenkilö(ylioppilasLukiolainen.etunimet, ylioppilasLukiolainen.sukunimi, ylioppilasLukiolainen.hetu.get),
+            VtjHuollettavaHenkilö("Olli", "Oiditon", "060488-681S")
+          ))
+        } else if (faijaFeilaa.hetu.contains(huoltajaHetu)) {
+          Left(KoskiErrorCategory.unavailable.huollettavat())
+        } else {
+          Right(Nil)
+        }
     }
   }
 }

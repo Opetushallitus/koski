@@ -82,7 +82,8 @@ export const pyhtääTableContent = `
   Kahdella-oppija-oidilla-ilmo-2 Valpas           | 5.9.2021  | Jyväskylän normaalikoulu    | 3.6.2005    | doneJyväskylän normaalikoulu, Lukiokoulutus
   KahdenKoulunYsi-ilmo Valpas	                    | 5.9.2021  | Jyväskylän normaalikoulu    | 21.11.2004  | –
   KasiinAstiToisessaKoulussaOllut-ilmo Valpas   	| 5.9.2021  | Jyväskylän normaalikoulu    | 2.5.2005    | –
-  Oppivelvollisuus-keskeytetty-ei-opiskele Valpas | 20.5.2021 | Jyväskylän normaalikoulu    | 1.10.2005  | –
+  Oppivelvollisuus-keskeytetty-ei-opiskele Valpas | 20.5.2021 | Jyväskylän normaalikoulu    | 1.10.2005   | –
+  Turvakielto Valpas                              | 5.9.2021  | Jyväskylän normaalikoulu    | 29.9.2004   | –
   Ysiluokka-valmis-keväällä-2021-ilmo Valpas      | 5.9.2021  | Jyväskylän normaalikoulu    | 26.8.2005   | –
 `
 
@@ -97,6 +98,7 @@ export const pyhtääTableContent_kaikkiIlmoitukset = `
   scheduleLukionAloittanutJaLopettanut-ilmo Valpas  | 20.9.2021 | Jyväskylän normaalikoulu    | 5.4.2005    | doneJyväskylän normaalikoulu, Lukiokoulutus
   scheduleLukionAloittanutJaLopettanut-ilmo Valpas  | 15.6.2021 | Jyväskylän normaalikoulu    | 5.4.2005    | doneJyväskylän normaalikoulu, Lukiokoulutus
   Oppivelvollisuus-keskeytetty-ei-opiskele Valpas   | 20.5.2021 | Jyväskylän normaalikoulu    | 1.10.2005   | –
+  Turvakielto Valpas                                | 5.9.2021  | Jyväskylän normaalikoulu    | 29.9.2004   | –
   Ysiluokka-valmis-keväällä-2021-ilmo Valpas        | 5.9.2021  | Jyväskylän normaalikoulu    | 26.8.2005   | –
 `
 
