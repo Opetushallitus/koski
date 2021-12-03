@@ -10,7 +10,13 @@ import org.slf4j.{LoggerFactory, Logger => SLogger}
 import java.net.InetAddress
 
 class AuditLogger(logger: SLogger) extends Logger {
-  override def log(msg: String): Unit = logger.info(msg)
+  override def log(msg: String): Unit = {
+    if (msg.length > LogConfiguration.logMessageMaxLength) {
+      throw new RuntimeException(s"Audit log message payload exceeds ${LogConfiguration.logMessageMaxLength} characters")
+    }
+
+    logger.info(msg)
+  }
 }
 
 object AuditLog extends AuditLog(new AuditLogger(LoggerFactory.getLogger(classOf[Audit].getName))) {
