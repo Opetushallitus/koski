@@ -40,6 +40,12 @@ case class ValpasKuntailmoitusLaajatTiedot(
 
   def withAktiivinen(aktiivinen: Boolean): ValpasKuntailmoitusLaajatTiedot =
     this.copy(aktiivinen = Some(aktiivinen))
+
+  def withoutOppijanYhteystiedot: ValpasKuntailmoitusLaajatTiedot =
+    this.copy(oppijanYhteystiedot = None)
+
+  def withoutTekijänHenkilötiedot: ValpasKuntailmoitusLaajatTiedot =
+    this.copy(tekijä = tekijä.copy(henkilö = None))
 }
 
 case class ValpasKuntailmoituksenTekijäLaajatTiedot(

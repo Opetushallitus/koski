@@ -1,5 +1,6 @@
 import { AppConfiguration } from "../state/apitypes/appConfiguration"
 import { HenkilöhakuResult } from "../state/apitypes/henkilohaku"
+import { KansalaisnäkymänTiedot } from "../state/apitypes/kansalainen"
 import { KuntailmoitusLaajatTiedotOppijaOidilla } from "../state/apitypes/kuntailmoitus"
 import { KuntailmoitusPohjatiedot } from "../state/apitypes/kuntailmoituspohjatiedot"
 import { OpiskeluoikeusSuppeatTiedot } from "../state/apitypes/opiskeluoikeus"
@@ -307,6 +308,14 @@ export const createOppivelvollisuudenKeskeytys = (
 ) =>
   handleExpiredSession(
     apiPost<void>("valpas/api/oppija/ovkeskeytys", { body: keskeytys })
+  )
+
+/**
+ * Kansalaisen omien ja huollettavien tietojen hakeminen
+ */
+export const fetchOmatJaHuollettavienTiedot = () =>
+  handleExpiredSession(
+    apiGet<KansalaisnäkymänTiedot>("valpas/api/kansalainen/tiedot")
   )
 
 // Virhetilanteiden hallinta

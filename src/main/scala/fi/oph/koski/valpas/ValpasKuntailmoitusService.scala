@@ -71,6 +71,12 @@ class ValpasKuntailmoitusService(
       .map(_.map(karsiHenkilötiedotJosEiOikeuksia))
   }
 
+  def getKuntailmoituksetIlmanKäyttöoikeustarkistusta(
+    oppija: ValpasOppijaLaajatTiedot
+  ): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedot]] = {
+    repository.queryOppijat(oppija.henkilö.kaikkiOidit)
+  }
+
   def getKuntailmoituksetIlmanKäyttöoikeustarkistusta
     (oppijat: Seq[ValpasOppijaLaajatTiedot])
   : Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedot]] = {

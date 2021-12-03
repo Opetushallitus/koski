@@ -28,6 +28,7 @@ object ValpasErrorCategory {
 
   object notFound extends ErrorCategory("notFound", 404, "Not found") {
     val oppijaaEiLöydyTaiEiOikeuksia = subcategory("oppijaaEiLöydyTaiEiOikeuksia", "Oppijaa ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun.")
+    val oppijaEiOppivelvollisuuslainPiirissä = subcategory("oppijaaEiLöydy", "Oppijaa ei löydy, koska hän ei ole oppivelvollisuuslain piirissä.")
   }
 
   object internalError extends ErrorCategory("internalError", 500, "Palvelinvirhe")
