@@ -32,7 +32,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
 
     val validRakenteessaMontaKoulutuskoodiaOpiskeluoikeus: AmmatillinenOpiskeluoikeus = validateOpiskeluoikeus(AmmatillinenExampleData.puuteollisuusOpiskeluoikeusKesken())
     val rakenteessaMontaKoulutuskoodiaOpiskeluoikeusJostaTunnisteenKoodiarvoPoistettu = validRakenteessaMontaKoulutuskoodiaOpiskeluoikeus.copy(
-      suoritukset = validOpiskeluoikeus.suoritukset.map(s => {
+      suoritukset = validRakenteessaMontaKoulutuskoodiaOpiskeluoikeus.suoritukset.map(s => {
         val tutkinnonSuoritus = s.asInstanceOf[AmmatillisenTutkinnonSuoritus]
         tutkinnonSuoritus.copy(koulutusmoduuli = tutkinnonSuoritus.koulutusmoduuli.copy(
           tutkinnonSuoritus.koulutusmoduuli.tunniste.copy(koodiarvo = "12345")

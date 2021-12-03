@@ -61,7 +61,7 @@ describe('Koulutuksen koodi poistettu ePerusteista', function () {
     describe('Katselutilassa', function () {
       it('Näytetään valittu', function () {
         expect(suorituksenKoulutusKenttä()).to.equalIgnoreNewlines(
-          'Koulutus 12345 12345 OPH-2455-2017'
+          'Koulutus Puuteollisuuden perustutkinto 12345 OPH-2455-2017'
         )
       })
     })
