@@ -1,7 +1,7 @@
 package fi.oph.koski.fixture
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.documentation.AmmatillinenExampleData.{stadinToimipiste, tietoJaViestintäTekniikanPerustutkinnonSuoritus}
+import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillinenTutkintoSuoritus, puuteollisuudenPerustutkinnonSuoritus, puuteollisuudenPerustutkinto, stadinToimipiste, tietoJaViestintäTekniikanPerustutkinnonSuoritus}
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusMitätöity, suomenKieli}
 import fi.oph.koski.documentation.ExamplesEsiopetus.{ostopalveluOpiskeluoikeus, päiväkotisuoritus}
 import fi.oph.koski.documentation.ExamplesPerusopetus.ysinOpiskeluoikeusKesken
@@ -57,6 +57,11 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
           nimi = Some(LocalizedString.finnish("Ammatillinen koulutus")) // Normaalisti validaattori täyttää nimen, nyt esitäytetään se itse
         )
       )),
+      (KoskiSpecificMockOppijat.montaKoulutuskoodiaAmis, AmmatillinenExampleData.puuteollisuusOpiskeluoikeusKesken().copy(
+        suoritukset = List(ammatillinenTutkintoSuoritus(puuteollisuudenPerustutkinto.copy(
+          tunniste = Koodistokoodiviite("12345", "koulutus")
+        ), stadinToimipiste))
+      ))
     )
   }
 
@@ -129,7 +134,6 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.turvakielto, ExamplesLukio.päättötodistus()),
       (KoskiSpecificMockOppijat.erkkiEiperusteissa, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 334117, diaariNumero = "22/011/2004")),
       (KoskiSpecificMockOppijat.internationalschool, ExamplesInternationalSchool.opiskeluoikeus),
-      (KoskiSpecificMockOppijat.montaKoulutuskoodiaAmis, AmmatillinenExampleData.puuteollisuusOpiskeluoikeusKesken()),
       (KoskiSpecificMockOppijat.valviraaKiinnostavaTutkinto, AmmatillinenExampleData.sosiaaliJaTerveysalaOpiskeluoikeus()),
       (KoskiSpecificMockOppijat.valviraaKiinnostavaTutkintoKesken, AmmatillinenExampleData.sosiaaliJaTerveysalaOpiskeluoikeusKesken()),
       (KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia, ExamplesEsiopetus.esioppilas.tallennettavatOpiskeluoikeudet.head),

@@ -884,7 +884,7 @@ describe('Omat tiedot', function() {
           wait.until(korhopankki.isReady),
           korhopankki.login('200994-834A'),
           wait.until(omattiedot.isVisible),
-          SuoritusjakoPage().avaaOpiskeluoikeus('Autoalan perustutkinto (2016—, läsnä)')
+          SuoritusjakoPage().avaaOpiskeluoikeus('Tieto- ja viestintätekniikan perustutkinto, koulutusvientikokeilu (2016—, läsnä)')
         )
 
         it('ei näytetä', function () {
