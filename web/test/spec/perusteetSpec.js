@@ -24,10 +24,10 @@ describe('EPerusteet', function() {
 
   describe('Tutkinnon nimi', function() {
     describe('haetaan e-perusteista', function () {
-      before(page.openPage, page.oppijaHaku.searchAndSelect('200994-834A'), opinnot.valitseSuoritus(undefined, 'Autoalan perustutkinto'))
+      before(page.openPage, page.oppijaHaku.searchAndSelect('200994-834A'), opinnot.valitseSuoritus(undefined, 'Tieto- ja viestintätekniikan perustutkinto, koulutusvientikokeilu'))
       var koulutus = opinnot.opiskeluoikeusEditor().property('koulutusmoduuli')
       it('toimii', function() {
-        expect(koulutus.getText()).to.equal('Koulutus Autoalan perustutkinto 351301 39/011/2014')
+        expect(koulutus.getText()).to.equal('Koulutus Tieto- ja viestintätekniikan perustutkinto, koulutusvientikokeilu 341101 OPH-1117-2019')
       })
     })
   })

@@ -29,6 +29,17 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
         ))
       })
     )
+
+    val validRakenteessaMontaKoulutuskoodiaOpiskeluoikeus: AmmatillinenOpiskeluoikeus = validateOpiskeluoikeus(AmmatillinenExampleData.puuteollisuusOpiskeluoikeusKesken())
+    val rakenteessaMontaKoulutuskoodiaOpiskeluoikeusJostaTunnisteenKoodiarvoPoistettu = validRakenteessaMontaKoulutuskoodiaOpiskeluoikeus.copy(
+      suoritukset = validOpiskeluoikeus.suoritukset.map(s => {
+        val tutkinnonSuoritus = s.asInstanceOf[AmmatillisenTutkinnonSuoritus]
+        tutkinnonSuoritus.copy(koulutusmoduuli = tutkinnonSuoritus.koulutusmoduuli.copy(
+          tutkinnonSuoritus.koulutusmoduuli.tunniste.copy(koodiarvo = "12345")
+        ))
+      })
+    )
+
     val hkiTallentaja = MockUsers.helsinkiTallentaja.toKoskiSpecificSession(application.käyttöoikeusRepository)
     List(
       (KoskiSpecificMockOppijat.organisaatioHistoria, validOpiskeluoikeus.copy(organisaatiohistoria = Some(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria))),
@@ -57,11 +68,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
           nimi = Some(LocalizedString.finnish("Ammatillinen koulutus")) // Normaalisti validaattori täyttää nimen, nyt esitäytetään se itse
         )
       )),
-      (KoskiSpecificMockOppijat.montaKoulutuskoodiaAmis, AmmatillinenExampleData.puuteollisuusOpiskeluoikeusKesken().copy(
-        suoritukset = List(ammatillinenTutkintoSuoritus(puuteollisuudenPerustutkinto.copy(
-          tunniste = Koodistokoodiviite("12345", "koulutus")
-        ), stadinToimipiste))
-      ))
+      (KoskiSpecificMockOppijat.montaKoulutuskoodiaAmis, rakenteessaMontaKoulutuskoodiaOpiskeluoikeusJostaTunnisteenKoodiarvoPoistettu)
     )
   }
 
