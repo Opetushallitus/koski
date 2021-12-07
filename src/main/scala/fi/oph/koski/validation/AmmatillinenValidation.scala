@@ -17,11 +17,18 @@ object AmmatillinenValidation {
         HttpStatus.fold(
           validatePerusteVoimassa(ammatillinen, ePerusteet, config),
           validateUseaPäätasonSuoritus(ammatillinen),
-          vanhaOpiskeluoikeus match {
-            case Some(vanha) if vanha.isInstanceOf[AmmatillinenOpiskeluoikeus] =>
-              validateTutkintokoodinTaiSuoritustavanMuutos(ammatillinen, vanha.asInstanceOf[AmmatillinenOpiskeluoikeus], ePerusteet)
-            case _ => HttpStatus.ok
-          })
+          validateVanhanOpiskeluoikeudenTapaukset(ammatillinen, vanhaOpiskeluoikeus, ePerusteet)
+        )
+      case _ => HttpStatus.ok
+    }
+  }
+
+  private def validateVanhanOpiskeluoikeudenTapaukset(opiskeluoikeus: AmmatillinenOpiskeluoikeus,
+                                                      vanhaOpiskeluoikeus: Option[KoskeenTallennettavaOpiskeluoikeus],
+                                                      ePerusteet: EPerusteetRepository): HttpStatus = {
+    vanhaOpiskeluoikeus match {
+      case Some(vanha: AmmatillinenOpiskeluoikeus) =>
+        validateTutkintokoodinTaiSuoritustavanMuutos(opiskeluoikeus, vanha, ePerusteet)
       case _ => HttpStatus.ok
     }
   }
@@ -31,8 +38,7 @@ object AmmatillinenValidation {
       case 1 => HttpStatus.ok
       case 2 =>
         val näyttötutkintoLöytyy = opiskeluoikeus.suoritukset.exists {
-          case osittainen: AmmatillisenTutkinnonOsittainenSuoritus if osittainen.suoritustapa.koodiarvo == "naytto" => true
-          case kokonainen: AmmatillisenTutkinnonSuoritus if kokonainen.suoritustapa.koodiarvo == "naytto" => true
+          case tutkintoSuoritus: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus if tutkintoSuoritus.suoritustapa.koodiarvo == "naytto" => true
           case _ => false
         }
         val näyttöönValmistavaLöytyy = opiskeluoikeus.suoritukset.exists {
@@ -95,7 +101,7 @@ object AmmatillinenValidation {
         case diaarillinen: DiaarinumerollinenKoulutus if diaarillinen.perusteenDiaarinumero.isDefined =>
           ePerusteet.findRakenne(diaarillinen.perusteenDiaarinumero.get) match {
             case Some(peruste) =>
-              if (peruste.päättynyt()) {
+              if (peruste.voimassaoloLoppunut()) {
                 KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt()
               } else {
                 HttpStatus.ok

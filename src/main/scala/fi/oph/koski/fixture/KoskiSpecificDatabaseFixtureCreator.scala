@@ -22,22 +22,22 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
   protected lazy val invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
     val validOpiskeluoikeus: AmmatillinenOpiskeluoikeus = validateOpiskeluoikeus(AmmatillinenExampleData.opiskeluoikeus(tutkinto = tietoJaViestintäTekniikanPerustutkinnonSuoritus(stadinToimipiste)))
     val opiskeluoikeusJostaTunnisteenKoodiarvoPoistettu = validOpiskeluoikeus.copy(
-      suoritukset = validOpiskeluoikeus.suoritukset.map(s => {
-        val tutkinnonSuoritus = s.asInstanceOf[AmmatillisenTutkinnonSuoritus]
-        tutkinnonSuoritus.copy(koulutusmoduuli = tutkinnonSuoritus.koulutusmoduuli.copy(
+      suoritukset = validOpiskeluoikeus.suoritukset.map{
+        case tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus => tutkinnonSuoritus.copy(koulutusmoduuli = tutkinnonSuoritus.koulutusmoduuli.copy(
           tutkinnonSuoritus.koulutusmoduuli.tunniste.copy(koodiarvo = "123456")
         ))
-      })
+        case _ => throw new InternalError("Tällä ammatillisella opiskeluoikeudella ei pitäisi olla muita kuin ammatillisen tutkinnon suoritukssia")
+      }
     )
 
     val validRakenteessaMontaKoulutuskoodiaOpiskeluoikeus: AmmatillinenOpiskeluoikeus = validateOpiskeluoikeus(AmmatillinenExampleData.puuteollisuusOpiskeluoikeusKesken())
     val rakenteessaMontaKoulutuskoodiaOpiskeluoikeusJostaTunnisteenKoodiarvoPoistettu = validRakenteessaMontaKoulutuskoodiaOpiskeluoikeus.copy(
-      suoritukset = validRakenteessaMontaKoulutuskoodiaOpiskeluoikeus.suoritukset.map(s => {
-        val tutkinnonSuoritus = s.asInstanceOf[AmmatillisenTutkinnonSuoritus]
-        tutkinnonSuoritus.copy(koulutusmoduuli = tutkinnonSuoritus.koulutusmoduuli.copy(
+      suoritukset = validRakenteessaMontaKoulutuskoodiaOpiskeluoikeus.suoritukset.map{
+        case tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus => tutkinnonSuoritus.copy(koulutusmoduuli = tutkinnonSuoritus.koulutusmoduuli.copy(
           tutkinnonSuoritus.koulutusmoduuli.tunniste.copy(koodiarvo = "12345")
         ))
-      })
+        case _ => throw new InternalError("Tällä ammatillisella opiskeluoikeudella ei pitäisi olla muita kuin ammatillisen tutkinnon suoritukssia")
+      }
     )
 
     val hkiTallentaja = MockUsers.helsinkiTallentaja.toKoskiSpecificSession(application.käyttöoikeusRepository)

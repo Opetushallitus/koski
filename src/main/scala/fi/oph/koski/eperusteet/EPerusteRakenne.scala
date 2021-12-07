@@ -18,7 +18,7 @@ case class EPerusteRakenne(
   lukiokoulutus: Option[ELukiokoulutus]
 ) {
   def toEPeruste: EPeruste = EPeruste(id, nimi, diaarinumero, koulutukset)
-  def päättynyt(vertailupäivämäärä: LocalDate = LocalDate.now()) = voimassaoloLoppuuLocalDate match {
+  def voimassaoloLoppunut(vertailupäivämäärä: LocalDate = LocalDate.now()) = voimassaoloLoppuuLocalDate match {
     case Some(loppupäivämäärä) => vertailupäivämäärä.isAfter(loppupäivämäärä)
     case None => false
   }
