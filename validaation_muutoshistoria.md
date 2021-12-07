@@ -1,6 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
-## x.10.2021
+## 3.12.2021
+
+- Pääsuoritustasoinen `lukionOppimääräSuoritettu`-kenttä deprekoitu eikä sitä saa enää siirtää. Kentän korvannut opiskeluoikeustason kenttä `oppimääräSuoritettu`
+
+## 14.10.2021
 
 - Ammatillisen koulutuksen Yhteisille tutkinnon osille (YhteinenTutkinnonOsa-rakenne) sallitaan tunnisteen koodiarvoiksi myös '600001' ja '600002'
 
