@@ -55,6 +55,7 @@ export const OppijaKuntailmoitus = (props: OppijaKuntailmoitusProps) => {
             <TiedotOppijasta
               yhteystiedot={kuntailmoitus.oppijanYhteystiedot}
               hakenutMuualle={kuntailmoitus.hakenutMuualle}
+              tietojaKarsittu={kuntailmoitus.tietojaKarsittu}
             />
           </Column>
         </ColumnsContainer>
@@ -135,6 +136,7 @@ const IlmoituksenTekijä = (props: IlmoituksenTekijäProps) => {
 type TiedotOppijastaProps = {
   yhteystiedot?: KuntailmoituksenOppijanYhteystiedot
   hakenutMuualle?: boolean
+  tietojaKarsittu?: boolean
 }
 
 const TiedotOppijasta = (props: TiedotOppijastaProps) => {
@@ -179,9 +181,12 @@ const TiedotOppijasta = (props: TiedotOppijastaProps) => {
   return (
     <KuntailmoitusSection testId="oppija">
       <InfoTable size="tighter">
-        {!props.yhteystiedot && (
-          <TiedotOppijastaError textId="oppija__tiedot_näkyvät_vain_vastaanottajalle_ja_lähettäjälle" />
-        )}
+        {!props.yhteystiedot &&
+          (props.tietojaKarsittu ? (
+            <TiedotOppijastaError textId="oppija__tiedot_näkyvät_vain_vastaanottajalle_ja_lähettäjälle" />
+          ) : (
+            <TiedotOppijastaError textId="oppija__lisätiedot_poistettu" />
+          ))}
         {props.yhteystiedot && isEmpty(rows) && (
           <TiedotOppijastaError textId="oppija__ei_tietoja_ilmotuksella" />
         )}

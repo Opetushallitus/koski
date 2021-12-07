@@ -15,6 +15,9 @@ export type KuntailmoitusLaajatTiedot = {
   yhteydenottokieli?: Kieli
   oppijanYhteystiedot?: KuntailmoituksenOppijanYhteystiedot
   hakenutMuualle?: boolean
+  onUudempiaIlmoituksiaMuihinKuntiin?: boolean
+  aktiivinen?: boolean
+  tietojaKarsittu?: boolean
 }
 
 export type KuntailmoitusLaajatTiedotOppijaOidilla = KuntailmoitusLaajatTiedot & {

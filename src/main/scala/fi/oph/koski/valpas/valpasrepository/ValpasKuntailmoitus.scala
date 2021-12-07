@@ -32,7 +32,10 @@ case class ValpasKuntailmoitusLaajatTiedot(
   // Option, koska relevantti kenttä vain haettaessa ilmoituksia tietylle kunnalle
   onUudempiaIlmoituksiaMuihinKuntiin: Option[Boolean],
 
-  aktiivinen: Option[Boolean]
+  aktiivinen: Option[Boolean],
+
+  // Tietoja ilmoituksen näytettävistä tiedoista on karsittu käyttöoikeuksien perusteella
+  tietojaKarsittu: Option[Boolean] = None,
 
 ) {
   def withOppijaOid(oppijaOid: String): ValpasKuntailmoitusLaajatTiedot =
@@ -40,12 +43,6 @@ case class ValpasKuntailmoitusLaajatTiedot(
 
   def withAktiivinen(aktiivinen: Boolean): ValpasKuntailmoitusLaajatTiedot =
     this.copy(aktiivinen = Some(aktiivinen))
-
-  def withoutOppijanYhteystiedot: ValpasKuntailmoitusLaajatTiedot =
-    this.copy(oppijanYhteystiedot = None)
-
-  def withoutTekijänHenkilötiedot: ValpasKuntailmoitusLaajatTiedot =
-    this.copy(tekijä = tekijä.copy(henkilö = None))
 }
 
 case class ValpasKuntailmoituksenTekijäLaajatTiedot(

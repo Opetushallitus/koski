@@ -129,7 +129,8 @@ class ValpasKuntailmoitusService(
         ),
         yhteydenottokieli = None,
         oppijanYhteystiedot = None,
-        hakenutMuualle = None
+        hakenutMuualle = None,
+        tietojaKarsittu = Some(true),
       )
     }
   }
