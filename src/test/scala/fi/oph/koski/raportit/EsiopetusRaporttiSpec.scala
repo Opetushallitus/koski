@@ -45,11 +45,14 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
         r.toimipisteNimi should equal(Some("Jyväskylän normaalikoulu"))
 
         r.opiskeluoikeudenAlkamispäivä should equal(localDate(2006, 8, 13))
+        r.opiskeluoikeudenPäättymispäivä should equal(Some(localDate(2007, 6, 3)))
         r.opiskeluoikeudenViimeisinTila should equal("valmistunut")
         r.opiskeluoikeudenTilaRaportinTarkasteluajankohtana should equal("lasna")
         r.koulutuskoodi should equal("001101")
         r.koulutus should equal("Peruskoulun esiopetus")
         r.suorituksenVahvistuspäivä should equal(Some(localDate(2007, 6, 3)))
+        r.perusteenDiaarinumero should equal (Some("102/011/2014"))
+        r.suorituskieli should equal (Some("suomi"))
 
         r.yksilöity should equal(true)
         r.oppijaOid should equal(KoskiSpecificMockOppijat.eskari.oid)
@@ -62,7 +65,6 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
         r.pidennettyOppivelvollisuus should equal(false)
         r.tukimuodot should equal(Some("1"))
         r.erityisenTuenPäätös should equal(false)
-        r.erityisenTuenPäätösToteutuspaikka should equal(None)
         r.vammainen should equal(false)
         r.vaikeastiVammainen should equal(false)
         r.majoitusetu should equal(false)
