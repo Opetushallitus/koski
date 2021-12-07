@@ -536,6 +536,24 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
+  def telmaJaAmisRessussa = ammattikouluTelmaOpiskeluoikeus.copy(
+    arvioituPäättymispäivä = Some(date(2022, 5, 31)),
+    oppilaitos = Some(ressunLukio),
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2021, 8, 9), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+    )),
+    suoritukset = List(
+      ExamplesTelma.telmaKoulutuksenSuoritus.copy(
+        toimipiste = ressunLukio,
+        vahvistus = None
+      ),
+      AmmattitutkintoExample.ammatillisenTutkinnonSuoritus.copy(
+        toimipiste = ressunLukio,
+        vahvistus = None
+      )
+    )
+  )
+
   def ammattikouluValmistunutOpiskeluoikeus = AmmattitutkintoExample.opiskeluoikeus.copy(
     tila = AmmatillinenOpiskeluoikeudenTila(List(
       AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
