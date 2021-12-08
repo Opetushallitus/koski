@@ -682,7 +682,7 @@ class KoskiValidator(
   }
 
   private def validateLinkitettyTaiSisältääOsasuorituksia(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, suoritus: KoskeenTallennettavaPäätasonSuoritus) = {
-    if (osasuorituksetKunnossa(suoritus) || ostettuOpiskeluoikeusValmisEnnenVuotta2019(opiskeluoikeus)) {
+    if (osasuorituksetKunnossa(suoritus, opiskeluoikeus) || ostettuOpiskeluoikeusValmisEnnenVuotta2019(opiskeluoikeus)) {
       HttpStatus.ok
     } else if (opiskeluoikeus.oid.isDefined && opiskeluoikeus.oppilaitos.isDefined) {
       validateLinkitysTehty(opiskeluoikeus.oid.get, opiskeluoikeus.oppilaitos.get.oid, suoritus)
@@ -691,7 +691,7 @@ class KoskiValidator(
     }
   }
 
-  private def osasuorituksetKunnossa(suoritus: PäätasonSuoritus) = suoritus match {
+  private def osasuorituksetKunnossa(suoritus: PäätasonSuoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = suoritus match {
     case _: EsiopetuksenSuoritus |
          _: MuunAmmatillisenKoulutuksenSuoritus |
          _: OppiaineenSuoritus |
@@ -702,10 +702,12 @@ class KoskiValidator(
     case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "9" || s.jääLuokalle => true
     case s: LukionOppimääränSuoritus2019
     => osasuorituksetKunnossaLukio2019(s)
+    case s: LukionOppiaineidenOppimäärienSuoritus2019 if opiskeluoikeus.asInstanceOf[LukionOpiskeluoikeus].oppimääräSuoritettu.getOrElse(false)
+    => osasuorituksetKunnossaLukio2019(s)
     case s => s.osasuoritusLista.nonEmpty
   }
 
-  private def osasuorituksetKunnossaLukio2019(suoritus: LukionOppimääränSuoritus2019) = {
+  private def osasuorituksetKunnossaLukio2019(suoritus: LukionPäätasonSuoritus2019) = {
     (sisältääErityisenTutkinnonSuorittamisen(suoritus), suoritus.oppimäärä.koodiarvo) match {
       case (false, "nuortenops") => lukio2019TarpeeksiOsasuorituksia(suoritus.osasuoritukset.getOrElse(List()), 150, 20)
       case (false, "aikuistenops") => lukio2019TarpeeksiOsasuorituksia(suoritus.osasuoritukset.getOrElse(List()), 88, 0)
@@ -713,12 +715,15 @@ class KoskiValidator(
     }
   }
 
-  private def sisältääErityisenTutkinnonSuorittamisen(suoritus: LukionOppimääränSuoritus2019) = {
-    suoritus.suoritettuErityisenäTutkintona ||
-      suoritus.osasuoritukset.exists(_.exists({
-        case os: LukionOppiaineenSuoritus2019 if os.suoritettuErityisenäTutkintona => true
-        case _ => false
-      }))
+  private def sisältääErityisenTutkinnonSuorittamisen(suoritus: LukionPäätasonSuoritus2019) = {
+    suoritus match {
+      case s: LukionOppimääränSuoritus2019 => s.suoritettuErityisenäTutkintona ||
+        suoritus.osasuoritukset.exists(_.exists({
+          case os: LukionOppiaineenSuoritus2019 if os.suoritettuErityisenäTutkintona => true
+          case _ => false
+        }))
+      case _ => false
+    }
   }
 
   private def lukio2019TarpeeksiOsasuorituksia(osasuoritukset: List[LukionOppimääränOsasuoritus2019], minimiLaajuus: Double, minimiValinnaistenLaajuus: Double): Boolean = {
