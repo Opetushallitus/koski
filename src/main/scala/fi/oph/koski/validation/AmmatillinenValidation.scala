@@ -63,6 +63,9 @@ object AmmatillinenValidation {
     val vanhanTutkintokoodit = tutkintokooditPoislukienPerusteestaLöytymättömät(vanhaOpiskeluoikeus, ePerusteet)
     val uudenTutkintokoodit = tutkintokooditPoislukienPerusteestaLöytymättömät(uusiOpiskeluoikeus, ePerusteet)
 
+    // Pieni oikominen; jos tutkintokoodeja olisi kolmesta tai useammasta päätason suorituksesta, tämä ei välttämättä
+    // nappaisi kaikkia muutoksia. Mutta päätason suorituksia ei pitäisi voida olla kahta enempää, eikä samantyyppisiä
+    // päätason suorituksia yhtä enempää.
     val suoritustapaLöytyy = vanhanSuoritustavat.count(tapa => uudenSuoritustavat.contains(tapa)) == vanhanSuoritustavat.length
     val tutkintokoodiLöytyy = vanhanTutkintokoodit.count(koodi => uudenTutkintokoodit.contains(koodi)) == vanhanTutkintokoodit.length
 

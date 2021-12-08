@@ -86,6 +86,8 @@ class KoskiValidator(
   }
 
   private def validateOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus, henkilö: Option[Henkilö])(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = {
+    // Huom, tämä rikkonee transaktionaalisuuden. On teoriassa mahdollista, että vanhan opiskeluoikeuden haun ja uuden
+    // opiskeluoikeuden tietokantaan tallentamisen välissä siirrettäisiin toinen versio samasta opiskeluoikeudesta.
     val tallennettuOpiskeluoikeus = opiskeluoikeus.oid.flatMap(opiskeluoikeudenOid =>
       koskiOpiskeluoikeudet.findByOid(opiskeluoikeudenOid)(KoskiSpecificSession.systemUser).map(_.toOpiskeluoikeusUnsafe).toOption
     )
