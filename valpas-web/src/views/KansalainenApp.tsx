@@ -4,6 +4,7 @@ import { LoadingModal } from "../components/icons/Spinner"
 import { getCurrentKansalainenUser, hasValpasAccess } from "../state/auth"
 import { BasePathProvider, useBasePath } from "../state/basePath"
 import { User } from "../state/common"
+import { KansalainenContextProvider } from "../state/kansalainenContext"
 import {
   kansalainenEiOpintopolussaPath,
   kansalainenLoginVirhePath,
@@ -16,7 +17,7 @@ import {
   KansalainenLoginErrorView,
 } from "./kansalainen/kansalainenErrors"
 import { KansalainenLandingView } from "./kansalainen/KansalainenLandingView"
-import { KansalainenOmatTiedotView } from "./kansalainen/KansalainenOmatTiedotView"
+import { KansalainenOmatJaHuollettavienTiedotView } from "./kansalainen/tiedot/KansalainenOmatJaHuollettavienTiedotView"
 import { KansalainenRaamit } from "./Raamit"
 
 const PublicKansalainenRoutes = () => {
@@ -51,7 +52,7 @@ const ProtectedKansalainenRoutes = (props: ProtectedOppijaRoutesProps) => {
         <Redirect to={kansalainenOmatTiedotPath.href(basePath)} />
       </Route>
       <Route exact path={kansalainenOmatTiedotPath.route(basePath)}>
-        <KansalainenOmatTiedotView user={props.user} />
+        <KansalainenOmatJaHuollettavienTiedotView user={props.user} />
       </Route>
       <Route>
         <NotFoundView />
@@ -68,12 +69,14 @@ export const KansalainenApp = (props: KansalainenAppProps) => {
   const user = useUserLogin(getCurrentKansalainenUser)
   return user ? (
     <BasePathProvider value={props.basePath}>
-      <KansalainenRaamit user={user} />
-      {hasValpasAccess(user) ? (
-        <ProtectedKansalainenRoutes user={user} />
-      ) : (
-        <PublicKansalainenRoutes />
-      )}
+      <KansalainenContextProvider>
+        <KansalainenRaamit user={user} />
+        {hasValpasAccess(user) ? (
+          <ProtectedKansalainenRoutes user={user} />
+        ) : (
+          <PublicKansalainenRoutes />
+        )}
+      </KansalainenContextProvider>
     </BasePathProvider>
   ) : (
     <LoadingModal />

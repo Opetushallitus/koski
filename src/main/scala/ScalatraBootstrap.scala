@@ -39,6 +39,7 @@ import fi.oph.koski.util.{Futures, Timing}
 import fi.oph.koski.valpas.kela.ValpasKelaServlet
 import fi.oph.koski.valpas.valpasuser.ValpasLogoutServlet
 import fi.oph.koski.valpas._
+import fi.oph.koski.valpas.kansalainen.ValpasKansalainenApiServlet
 import fi.oph.koski.valpas.sso.ValpasOppijaCasServlet
 import fi.oph.koski.valvira.ValviraServlet
 import fi.oph.koski.ytr.{YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}

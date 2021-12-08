@@ -4,6 +4,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 import "regenerator-runtime/runtime"
 import { fetchAppConfiguration } from "./api/api"
+import { getLanguage } from "./i18n/i18n"
 import { AppConfiguration } from "./state/apitypes/appConfiguration"
 import { enableFeature, Feature } from "./state/featureFlags"
 import "./style/index.less"
@@ -26,6 +27,7 @@ const loadWindowProperties = async (): Promise<void> =>
   )
 
 async function main() {
+  document.documentElement.lang = getLanguage()
   await loadWindowProperties()
   ReactDOM.render(<ValpasApp />, document.getElementById("app"))
 }

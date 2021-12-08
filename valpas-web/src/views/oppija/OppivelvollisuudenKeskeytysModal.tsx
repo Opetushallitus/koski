@@ -25,7 +25,7 @@ import {
   kuntavalvontaAllowed,
   useOrganisaatiotOfRole,
 } from "../../state/accessRights"
-import { OppijaLaajatTiedot } from "../../state/apitypes/oppija"
+import { HenkilöLaajatTiedot } from "../../state/apitypes/henkilo"
 import { Organisaatio } from "../../state/apitypes/organisaatiot"
 import { ISODate, Oid } from "../../state/common"
 import { today } from "../../utils/date"
@@ -34,7 +34,7 @@ import "./OppivelvollisuudenKeskeytysModal.less"
 const b = bem("ovkeskeytys")
 
 export type OppivelvollisuudenKeskeytysModalProps = {
-  oppija: OppijaLaajatTiedot
+  henkilö: HenkilöLaajatTiedot
   onClose: () => void
   onSubmit: () => void
 }
@@ -48,10 +48,10 @@ export const OppivelvollisuudenKeskeytysModal = (
     (form: OppivelvollisuudenKeskeytysFormValues) => {
       create.call({
         ...form,
-        oppijaOid: props.oppija.henkilö.oid,
+        oppijaOid: props.henkilö.oid,
       })
     },
-    [create, props.oppija.henkilö.oid]
+    [create, props.henkilö.oid]
   )
 
   useOnApiSuccess(create, props.onSubmit)
@@ -59,8 +59,8 @@ export const OppivelvollisuudenKeskeytysModal = (
   return (
     <Modal title={t("ovkeskeytys__otsikko")} onClose={props.onClose}>
       <SecondaryHeading>
-        {props.oppija.henkilö.sukunimi} {props.oppija.henkilö.etunimet}
-        {props.oppija.henkilö.hetu && ` (${props.oppija.henkilö.hetu})`}
+        {props.henkilö.sukunimi} {props.henkilö.etunimet}
+        {props.henkilö.hetu && ` (${props.henkilö.hetu})`}
       </SecondaryHeading>
       <OppivelvollisuudenKeskeytysForm
         organisaatiot={organisaatiot}

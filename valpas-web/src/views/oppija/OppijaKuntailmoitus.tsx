@@ -8,7 +8,6 @@ import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import { getLocalizedMaybe, T, t } from "../../i18n/i18n"
 import {
   KuntailmoituksenTekijäLaajatTiedot,
-  KuntailmoitusLaajatTiedotLisätiedoilla,
   kuntaKotipaikka,
 } from "../../state/apitypes/kuntailmoitus"
 import { KuntailmoituksenOppijanYhteystiedot } from "../../state/apitypes/kuntailmoituspohjatiedot"
@@ -18,15 +17,20 @@ import { nonNull, nullableJoinToString } from "../../utils/arrays"
 import { formatDate } from "../../utils/date"
 import { plainComponent } from "../../utils/plaincomponent"
 import "./OppijaKuntailmoitus.less"
+import {
+  isTurvakiellollinenKuntailmoitus,
+  MinimiOppijaKuntailmoitus,
+} from "./typeIntersections"
 
 const b = bem("kuntailmoitus")
 
 export type OppijaKuntailmoitusProps = {
-  kuntailmoitus: KuntailmoitusLaajatTiedotLisätiedoilla
+  kuntailmoitus: MinimiOppijaKuntailmoitus
 }
 
 export const OppijaKuntailmoitus = (props: OppijaKuntailmoitusProps) => {
   const kuntailmoitus = props.kuntailmoitus
+  const turvakielto = isTurvakiellollinenKuntailmoitus(kuntailmoitus)
 
   return (
     <Frame>
@@ -35,30 +39,40 @@ export const OppijaKuntailmoitus = (props: OppijaKuntailmoitusProps) => {
         aktiivinen={kuntailmoitus.aktiivinen}
       />
       <Body>
-        <ColumnsContainer>
-          <Column size={4}>
-            <ColumnHeading>
-              <T id="oppija__perustiedot" />
-            </ColumnHeading>
-            <KuntailmoitusSection
-              label={t("oppija__ilmoituksen_kohde")}
-              testId="kohde"
-            >
-              {kuntaKotipaikka(kuntailmoitus.kunta)}
-            </KuntailmoitusSection>
-            <IlmoituksenTekijä tekijä={kuntailmoitus.tekijä} />
-          </Column>
-          <Column size={8}>
-            <ColumnHeading>
-              <T id="oppija__tiedot_oppilaasta" />
-            </ColumnHeading>
-            <TiedotOppijasta
-              yhteystiedot={kuntailmoitus.oppijanYhteystiedot}
-              hakenutMuualle={kuntailmoitus.hakenutMuualle}
-              tietojaKarsittu={kuntailmoitus.tietojaKarsittu}
-            />
-          </Column>
-        </ColumnsContainer>
+        {turvakielto ? (
+          <NoDataMessage>
+            <T id="oppija__tiedot_näkyvät_vain_vastaanottajalle_ja_lähettäjälle" />
+          </NoDataMessage>
+        ) : (
+          <ColumnsContainer>
+            <Column size={4}>
+              <ColumnHeading>
+                <T id="oppija__perustiedot" />
+              </ColumnHeading>
+              {kuntailmoitus.kunta && (
+                <KuntailmoitusSection
+                  label={t("oppija__ilmoituksen_kohde")}
+                  testId="kohde"
+                >
+                  {kuntaKotipaikka(kuntailmoitus.kunta)}
+                </KuntailmoitusSection>
+              )}
+              {kuntailmoitus.tekijä && (
+                <IlmoituksenTekijä tekijä={kuntailmoitus.tekijä} />
+              )}
+            </Column>
+            <Column size={8}>
+              <ColumnHeading>
+                <T id="oppija__tiedot_oppilaasta" />
+              </ColumnHeading>
+              <TiedotOppijasta
+                yhteystiedot={kuntailmoitus.oppijanYhteystiedot}
+                hakenutMuualle={kuntailmoitus.hakenutMuualle}
+                tietojaKarsittu={kuntailmoitus.tietojaKarsittu}
+              />
+            </Column>
+          </ColumnsContainer>
+        )}
       </Body>
     </Frame>
   )

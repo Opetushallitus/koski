@@ -5,6 +5,7 @@ import fi.oph.koski.schema.annotation.KoodistoUri
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, Maksuttomuus, OikeuttaMaksuttomuuteenPidennetty}
 import fi.oph.koski.valpas.hakukooste._
 import fi.oph.scalaschema.annotation.SyntheticProperty
+
 import java.time.{LocalDate, LocalDateTime}
 
 trait ValpasOppija {
@@ -183,6 +184,8 @@ trait ValpasOpiskeluoikeusTiedot {
 
   @KoodistoUri("koskiopiskeluoikeudentila")
   def tarkastelupäivänKoskiTila: Koodistokoodiviite
+
+  def tarkastelupäivänKoskiTilanAlkamispäivä: String
 
   def valmistunutAiemminTaiLähitulevaisuudessa: Boolean
 

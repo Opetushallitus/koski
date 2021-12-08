@@ -1,4 +1,4 @@
-package fi.oph.koski.valpas
+package fi.oph.koski.valpas.kansalainen
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.servlet.NoCache

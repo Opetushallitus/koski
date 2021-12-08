@@ -36,8 +36,8 @@ export type OppijaLaajatTiedot = {
   henkilö: HenkilöLaajatTiedot
   opiskeluoikeudet: OpiskeluoikeusLaajatTiedot[]
   opiskelee: boolean
-  oppivelvollisuusVoimassaAsti?: ISODate
-  oikeusKoulutuksenMaksuttomuuteenVoimassaAsti?: ISODate
+  oppivelvollisuusVoimassaAsti: ISODate
+  oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: ISODate
   hakeutumisvalvovatOppilaitokset: Oid[]
 }
 

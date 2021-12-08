@@ -27,8 +27,8 @@ class HuoltajaServiceVtj(config: Config, henkilöRepository: HenkilöRepository)
 
   private def oiditHuollettaville(vtj: VtjHuollettavaHenkilö) = {
     henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(vtj.hetu)
-      .map(h => Huollettava(h.etunimet, h.sukunimi, Some(h.oid)))
-      .orElse(Some(Huollettava(vtj.etunimet, vtj.sukunimi, oid = None)))
+      .map(h => Huollettava(h.etunimet, h.sukunimi, Some(h.oid), h.hetu))
+      .orElse(Some(Huollettava(vtj.etunimet, vtj.sukunimi, oid = None, Some(vtj.hetu))))
   }
 }
 
@@ -38,4 +38,9 @@ case class HuollettavienHakuEpäonnistui(status: HttpStatus) extends Huollettava
 
 case class HuollettavienHakuOnnistui(huollettavat: List[Huollettava]) extends HuollettavatSearchResult
 
-case class Huollettava(etunimet: String, sukunimi: String, oid: Option[String])
+case class Huollettava(
+  etunimet: String,
+  sukunimi: String,
+  oid: Option[String],
+  hetu: Option[String],
+)

@@ -12,6 +12,7 @@ import fi.oph.koski.util.ChainingSyntax.chainingOps
 import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
 import fi.oph.koski.valpas.db.ValpasSchema.{OpiskeluoikeusLisätiedotKey, OpiskeluoikeusLisätiedotRow}
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, ValpasHakukoosteService}
+import fi.oph.koski.valpas.kansalainen.{KansalainenOppijaIlmanTietoja, KansalainenOppijatiedot, KansalaisnäkymänTiedot}
 import fi.oph.koski.valpas.opiskeluoikeusrepository._
 import fi.oph.koski.valpas.rouhinta.ValpasRouhintaTiming
 import fi.oph.koski.valpas.valpasrepository._
@@ -41,17 +42,6 @@ case class OppijaHakutilanteillaLaajatTiedot(
       ))
     )
   }
-
-  def withoutOppijanYhteystiedot: OppijaHakutilanteillaLaajatTiedot =
-    this.copy(
-      yhteystiedot = Seq.empty,
-      kuntailmoitukset = kuntailmoitukset.map(_.withoutOppijanYhteystiedot)
-    )
-
-  def withoutKansalaiselleNäyttämättömätTiedot: OppijaHakutilanteillaLaajatTiedot =
-    this.copy(
-      kuntailmoitukset = kuntailmoitukset.map(_.withoutTekijänHenkilötiedot)
-    )
 }
 
 object OppijaHakutilanteillaLaajatTiedot {
@@ -722,7 +712,7 @@ class ValpasOppijaService(
     val huollettavat = session.user.huollettavat.toList.flatMap {
       case r: HuollettavienHakuOnnistui => r.huollettavat
         .map(o => {
-          def fallback = KansalainenIlmanTietoja(nimi = s"${o.sukunimi} ${o.etunimet}")
+          def fallback = KansalainenOppijaIlmanTietoja(nimi = s"${o.sukunimi} ${o.etunimet}", hetu = o.hetu)
           o.oid
             .toRight(fallback)
             .map(oid => getKansalaisenTiedotIlmanKäyttöoikeustarkastusta(oppijaOid = oid, piilotaTurvakieltoaineisto = true))
@@ -741,38 +731,21 @@ class ValpasOppijaService(
   private def getKansalaisenTiedotIlmanKäyttöoikeustarkastusta(
     oppijaOid: ValpasHenkilö.Oid,
     piilotaTurvakieltoaineisto: Boolean = false
-  ): Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] = {
-    def eiYhteystietoja(o: OppijaHakutilanteillaLaajatTiedot): Boolean = piilotaTurvakieltoaineisto && o.oppija.henkilö.turvakielto
+  ): Either[HttpStatus, KansalainenOppijatiedot] = {
+    def yhteystiedotHaettava(o: OppijaHakutilanteillaLaajatTiedot): Boolean = !piilotaTurvakieltoaineisto || !o.oppija.henkilö.turvakielto
+    def turvakiellonAlainenTietoPoistettava(o: KansalainenOppijatiedot): Boolean = piilotaTurvakieltoaineisto && o.oppija.henkilö.turvakielto
 
     opiskeluoikeusDbService
       .getOppija(oppijaOid, rajaaOVKelpoisiinOpiskeluoikeuksiin = false)
       .toRight(ValpasErrorCategory.notFound.oppijaEiOppivelvollisuuslainPiirissä())
       .flatMap(asValpasOppijaLaajatTiedot)
       .map(fetchHakuYhteystiedoilla)
-      .flatMap(o => if (eiYhteystietoja(o)) Right(o) else withVirallisetYhteystiedot(o))
+      .flatMap(o => if (yhteystiedotHaettava(o)) withVirallisetYhteystiedot(o) else Right(o) )
       .map(_.validate(koodistoviitepalvelu))
       .map(fetchOppivelvollisuudenKeskeytykset)
       .flatMap(withKuntailmoituksetIlmanKäyttöoikeustarkastusta)
-      .map(o => if (eiYhteystietoja(o)) poistaOppijanYhteystiedot(o) else o)
-      .map(_.withoutKansalaiselleNäyttämättömätTiedot)
-  }
-
-  private def poistaOppijanYhteystiedot(oppija: OppijaHakutilanteillaLaajatTiedot): OppijaHakutilanteillaLaajatTiedot = {
-    oppija.copy(
-      yhteystiedot = Seq.empty,
-      kuntailmoitukset = oppija.kuntailmoitukset.map(k => k.copy(
-        oppijanYhteystiedot = None,
-      ))
-    )
+      .map(KansalainenOppijatiedot.apply)
+      .map(o => if (turvakiellonAlainenTietoPoistettava(o)) o.poistaTurvakiellonAlaisetTiedot else o)
   }
 }
 
-case class KansalaisnäkymänTiedot(
-  omatTiedot: Option[OppijaHakutilanteillaLaajatTiedot],
-  huollettavat: Seq[OppijaHakutilanteillaLaajatTiedot],
-  huollettavatIlmanTietoja: Seq[KansalainenIlmanTietoja],
-)
-
-case class KansalainenIlmanTietoja(
-  nimi: String,
-)
