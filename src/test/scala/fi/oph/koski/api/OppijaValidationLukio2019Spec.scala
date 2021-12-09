@@ -1699,6 +1699,58 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
         )
       }
     }
+
+    "Jos aikuisten oppimäärän suoritus sisältää alle 88 op, oppimäärää ei voi merkitä suoritetuksi" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        oppimääräSuoritettu = Some(true),
+        tila = LukionOpiskeluoikeudenTila(List(
+          LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+        )),
+        suoritukset = List(oppimääränSuoritus.copy(
+          koulutusmoduuli = LukionOppimäärä(perusteenDiaarinumero = ExamplesLukio2019.lops2019AikuistenPerusteenDiaarinumero),
+          oppimäärä = LukioExampleData.aikuistenOpetussuunnitelma,
+          osasuoritukset = Some(oppiainesuorituksetEiRiitäValmistumiseen),
+          vahvistus = None
+        )))
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400,
+          KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(
+            s"Suoritus koulutus/309902 on merkitty valmiiksi tai opiskeluoikeuden tiedoissa oppimäärä on merkitty suoritetuksi, mutta sillä ei ole 88 op osasuorituksia, tai opiskeluoikeudelta puuttuu linkitys"
+          )
+        )
+      }
+    }
+
+    "Jos nuorten oppiaineiden oppimäärän suoritus sisältää alle 150 op, oppimäärää ei voi merkitä suoritetuksi" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        oppimääräSuoritettu = Some(true),
+        suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(
+          osasuoritukset = Some(oppiainesuorituksetEiRiitäValmistumiseen),
+          vahvistus = None
+      )))
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400,
+          KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(
+            s"Suorituksen lukionaineopinnot () opiskeluoikeuden tiedoissa oppimäärä on merkitty suoritetuksi, mutta sillä ei ole 150 op osasuorituksia, joista vähintään 20 op valinnaisia, tai opiskeluoikeudelta puuttuu linkitys"
+          )
+        )
+      }
+    }
+
+    "Jos nuorten oppiaineiden oppimäärän suoritus sisältää riittävästi opintopisteitä, oppimäärän voi merkitä suoritetuksi" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        oppimääräSuoritettu = Some(true),
+        suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(
+          osasuoritukset = Some(oppiainesuorituksetRiittääValmistumiseenNuorilla),
+          vahvistus = None
+        )))
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
   }
 
   "Oppiaineen oppimäärän suorituksen lukionOppimääräSuoritettu-kenttä deprekoitu, eikä sitä saa enää siirtää" in {
