@@ -17,7 +17,10 @@ trait Logging {
   }
 }
 
-case class LoggerWithContext(logger: Logger, context: Option[LogUserContext]) {
+case class LoggerWithContext(
+  logger: Logger,
+  context: Option[LogUserContext]
+) {
   def debug(msg: => String) = logger.debug(fmt(msg))
   def info(msg: => String) = logger.info(fmt(msg))
   def warn(msg: => String) = logger.warn(fmt(msg))
@@ -27,12 +30,24 @@ case class LoggerWithContext(logger: Logger, context: Option[LogUserContext]) {
 
   def withUserContext(context: LogUserContext) = this.copy(context = Some(context))
 
-  private def fmt(msg: => String) = context match {
-    case Some(ctx) => ctx.userOption match {
-      case Some(user) => s"${user.username}(${user.oid})@${ctx.clientIp} " + msg
-      case None =>  ctx.clientIp + " " + msg
+  private def fmt(msg: => String) = {
+    val cutMsg = cutToMaxLength(msg)
+
+    context match {
+      case Some(ctx) => ctx.userOption match {
+        case Some(user) => s"${user.username}(${user.oid})@${ctx.clientIp} " + cutMsg
+        case None =>  ctx.clientIp + " " + cutMsg
+      }
+      case None => cutMsg
     }
-    case None => msg
+  }
+
+  private def cutToMaxLength(msg: => String) = {
+    if (msg.length > LogConfiguration.logMessageMaxLength) {
+      msg.take(LogConfiguration.logMessageMaxLength - 3) + "..."
+    } else {
+      msg
+    }
   }
 }
 
