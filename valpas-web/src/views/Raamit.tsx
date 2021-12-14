@@ -25,11 +25,18 @@ export const KansalainenRaamit = (props: RaamitProps) => {
   const localRaamitEnabled = runningLocally() && !process.env.OPPIJA_RAAMIT_HOST
   return localRaamitEnabled ? (
     <LocalRaamit kansalainen user={props.user} />
-  ) : null
+  ) : (
+    <OppijaRaamitLoader />
+  )
 }
 
 const VirkailijaRaamitLoader = () => {
-  useEffect(loadExternalRaamitScript, [])
+  useEffect(loadExternalVirkailijaRaamitScript, [])
+  return null
+}
+
+const OppijaRaamitLoader = () => {
+  useEffect(loadExternalOppijaRaamitScript, [])
   return null
 }
 
@@ -39,11 +46,19 @@ const LocalRaamit = React.lazy(
 
 let externalRaamitLoadInitiated = false
 
-const loadExternalRaamitScript = () => {
+const loadExternalRaamitScript = (source: string) => () => {
   if (!externalRaamitLoadInitiated) {
     externalRaamitLoadInitiated = true
     const script = document.createElement("script")
-    script.src = "/virkailija-raamit/apply-raamit.js"
+    script.id = "apply-raamit"
+    script.src = source
     document.head.appendChild(script)
   }
 }
+
+const loadExternalVirkailijaRaamitScript = loadExternalRaamitScript(
+  "/virkailija-raamit/apply-raamit.js"
+)
+const loadExternalOppijaRaamitScript = loadExternalRaamitScript(
+  "/oppija-raamit/js/apply-raamit.js"
+)
