@@ -2,6 +2,8 @@ package fi.oph.koski.valpas.kansalainen
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.servlet.NoCache
+import fi.oph.koski.util.ChainingSyntax.chainingOps
+import fi.oph.koski.valpas.log.ValpasAuditLog.auditLogKansalainenOmatTiedot
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasuser.RequiresValpasKansalainenSession
 
@@ -14,6 +16,6 @@ class ValpasKansalainenApiServlet(implicit val application: KoskiApplication) ex
 
   get("/tiedot") {
     oppijaService.getKansalaisnäkymänTiedot()
-    // TODO: Lisää audit-logitus
+      .tap(auditLogKansalainenOmatTiedot)
   }
 }

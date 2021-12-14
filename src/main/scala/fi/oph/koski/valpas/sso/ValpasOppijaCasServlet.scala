@@ -1,6 +1,7 @@
 package fi.oph.koski.valpas.sso
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{AuthenticationUser, UserLanguage}
 import fi.oph.koski.log.LogUserContext
@@ -20,21 +21,23 @@ class ValpasOppijaCasServlet(implicit val application: KoskiApplication) extends
   def eiTietojaOpintopolussaSivu: String = valpasRoot + "/eitietoja"
 
   get("/oppija") {
+    if (isTestEnvironment) {
+      processLoginForTests()
+    } else {
+      processCasLogin()
+    }
+  }
+
+  private def isTestEnvironment: Boolean = application.config.getString("login.security") == "mock"
+
+  private def processCasLogin() = {
     params.get("ticket") match {
       case Some(ticket) =>
         try {
           val hetu = casService.validateKansalainenServiceTicket(casValpasOppijaServiceUrl, ticket)
           oppijaCreation.findOrCreate(request, hetu) match {
             case Some(oppija) =>
-              val huollettavat = huoltajaServiceVtj.getHuollettavat(hetu)
-              val user = AuthenticationUser(
-                oid = oppija.oid,
-                username = oppija.oid,
-                name = s"${oppija.etunimet} ${oppija.sukunimi}",
-                serviceTicket = Some(ticket),
-                kansalainen = true,
-                huollettavat = Some(huollettavat),
-              )
+              val user = toAuthenticationUser(oppija, hetu, Some(ticket))
               koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
               UserLanguage.setLanguageCookie(UserLanguage.getLanguageFromLDAP(user, directoryClient), response)
               setUser(Right(user))
@@ -53,5 +56,32 @@ class ValpasOppijaCasServlet(implicit val application: KoskiApplication) extends
         logger.warn("Oppija login ticket is missing")
         redirect(virhesivu)
     }
+  }
+
+  private def processLoginForTests() = {
+    request.header("hetu") match {
+      case Some(hetu) =>
+        oppijaCreation.findOrCreate(request, hetu) match {
+          case Some(oppija) =>
+            val user = toAuthenticationUser(oppija, hetu, None)
+            val mockAuthUser = localLogin(user, Some(langFromCookie.getOrElse("fi")))
+            setUser(Right(mockAuthUser))
+            redirectAfterLogin
+          case None => redirect(virhesivu)
+        }
+      case None => redirect(virhesivu)
+    }
+  }
+
+  private def toAuthenticationUser(oppija: OppijaHenkilö, hetu: String, serviceTicket: Option[String]): AuthenticationUser = {
+    val huollettavat = huoltajaServiceVtj.getHuollettavat(hetu)
+    AuthenticationUser(
+      oid = oppija.oid,
+      username = oppija.oid,
+      name = s"${oppija.etunimet} ${oppija.sukunimi}",
+      serviceTicket = serviceTicket,
+      kansalainen = true,
+      huollettavat = Some(huollettavat),
+    )
   }
 }

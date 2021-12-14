@@ -22,4 +22,12 @@ trait ValpasTestBase extends AnyFreeSpec with LocalJettyHttpSpec with BeforeAndA
   protected def session(user: ValpasMockUser): ValpasSession = user.toValpasSession(KoskiApplicationForTests.käyttöoikeusRepository)
 
   protected val defaultSession: ValpasSession = session(defaultUser)
+
+  override def kansalainenLoginHeaders(hetu: String): List[(String, String)] = {
+    get("cas/valpas/oppija", headers = List("hetu" -> hetu, "security" -> "mock")) {
+      verifyResponseStatusOk(302)
+      val cookie = response.headers("Set-Cookie").find(x => x.startsWith("koskiOppija")).get
+      List("Cookie" -> cookie)
+    }
+  }
 }
