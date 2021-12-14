@@ -388,7 +388,7 @@ describe('Ammatillinen koulutus', function() {
         var lisääSuoritus = opinnot.lisääSuoritusDialog
         before(
           prepareForNewOppija('kalle', '230872-7258'),
-          addOppija.enterValidDataAmmatillinen({suorituskieli: 'ruotsi'}),
+          addOppija.enterValidDataAmmatillinen({suorituskieli: 'ruotsi', suoritustapa: 'Näyttö'}),
           addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Autoalan perustutkinto'),
           editor.edit,
           lisääSuoritus.open('lisää näyttötutkintoon valmistavan koulutuksen suoritus')

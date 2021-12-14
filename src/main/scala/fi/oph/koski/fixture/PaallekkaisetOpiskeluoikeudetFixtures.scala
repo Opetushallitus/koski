@@ -1,10 +1,12 @@
 package fi.oph.koski.fixture
 
-import java.time.LocalDate.{of => date}
+import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillisetTutkinnonOsat, hyväksytty, järjestämismuotoOppilaitos, järjestämismuotoOppisopimus, sosiaaliJaTerveysalanPerustutkinto, stadinAmmattiopisto, stadinToimipiste, suoritustapaNäyttö, tutkinnonOsanSuoritus}
+import fi.oph.koski.documentation.ExampleData.{helsinki, suomenKieli, vahvistus}
 
+import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample, ExampleData}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeudenTila, AmmatillinenOpiskeluoikeusjakso, Oppilaitos}
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeudenTila, AmmatillinenOpiskeluoikeusjakso, AmmatillisenTutkinnonSuoritus, Järjestämismuotojakso, Oppilaitos}
 
 object PaallekkaisetOpiskeluoikeudetFixtures {
 
@@ -30,9 +32,19 @@ object PaallekkaisetOpiskeluoikeudetFixtures {
     )),
     suoritukset = List(
       AmmattitutkintoExample.näyttötutkintoonValmistavanKoulutuksenSuoritus.copy(alkamispäivä = Some(date(2020, 10, 10)), vahvistus = None),
-      AmmatillinenExampleData.ympäristöalanPerustutkintoValmis().copy(
-        alkamispäivä = Some(date(2020, 10, 10)),
-        vahvistus = None
+      AmmatillisenTutkinnonSuoritus(
+        koulutusmoduuli = sosiaaliJaTerveysalanPerustutkinto,
+        suoritustapa = suoritustapaNäyttö,
+        suorituskieli = suomenKieli,
+        alkamispäivä = None,
+        toimipiste = stadinToimipiste,
+        vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, Some(helsinki)),
+        osasuoritukset = Some(List(
+          tutkinnonOsanSuoritus("100832", "Kasvun tukeminen ja ohjaus", ammatillisetTutkinnonOsat, hyväksytty),
+          tutkinnonOsanSuoritus("100833", "Hoito ja huolenpito", ammatillisetTutkinnonOsat, hyväksytty),
+          tutkinnonOsanSuoritus("100834", "Kuntoutumisen tukeminen", ammatillisetTutkinnonOsat, hyväksytty),
+          tutkinnonOsanSuoritus("100840", "Lasten ja nuorten hoito ja kasvatus", ammatillisetTutkinnonOsat, hyväksytty)
+        ))
       )
     ),
     arvioituPäättymispäivä = None

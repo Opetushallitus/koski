@@ -124,6 +124,7 @@ object KoskiErrorCategory {
         val liianVanhaOpetussuunnitelma = subcategory("liianVanhaOpetussuunnitelma", "Uusi lukion opiskelija ei voi aloittaa vanhojen opetussuunnitelman perusteiden mukaisia opintoja 1.8.2021 tai myöhemmin. Käytä lukion opetussuunnitelman perusteen diaarinumeroa OPH-2263-2019. Jos tosiasiassa oppija on aloittanut vanhojen perusteiden mukaiset lukio-opinnot ennen 1.8.2021, häneltä puuttuu KOSKI-tietovarannosta tämä opiskeluoikeus")
         val oppimääräSuoritettuIlmanVahvistettuaOppiaineenOppimäärää = subcategory("oppimääräSuoritettuIlmanVahvistettuaOppiaineenOppimäärää", "Opiskeluoikeuden tiedoissa on oppimäärä merkitty suoritetuksi, mutta opiskeluoikeudella ei ole vahvistettuja oppiaineen oppimäärän suorituksia")
         val deprekoituLukionAineopintojenPäätasonSuorituksenKenttä = subcategory("deprekoituLukionAineopintojenPäätasonSuorituksenKenttä", "Lukion oppiaineen oppimäärän suorituksen mukana siirretty kenttä 'lukionOppimääräSuoritettu' on deprekoitu, eikä sitä tule enää käyttää. Korvaavana kenttänä toimii lukion opiskeluoikeuden kenttä 'oppimääräSuoritettu'")
+        val perusteenVoimassaoloPäättynyt = subcategory("perusteenVoimassaoloPäättynyt", "Tutkinnon perusteen voimassaolo on päättynyt. Aktiivisen opiskeluoikeuden tutkinnon rakenteen tulee olla voimassa.")
       }
       val rakenne = new Rakenne
 
@@ -169,6 +170,12 @@ object KoskiErrorCategory {
         val epäsopivaArvosana = subcategory("epäsopivaArvosana", "Arvosanaa ei ole sallittu suoritukselle")
       }
       val arviointi = new Arviointi
+
+      class Ammatillinen extends ErrorCategory(Validation.this, "ammatillinen", "Ammatilliseen opiskeluoikeuteen liittyvä validointivirhe") {
+        val muutettuSuoritustapaaTaiTutkintokoodia = subcategory("muutettuSuoritustapaaTaiTutkintokoodia", "Ammatillisessa opiskeluoikeudessa, jossa päätason suorituksena on ammatillisen tutkintokoulutuksen suoritus, ei voi vaihtaa suoritettavan tutkintokoulutuksen tutkintokoodia tai suoritustapaa. Jos on vahingossa luotu ammatillisen tutkintokoulutuksen opiskeluoikeus väärällä tutkintokoodilla tai suoritustavalla, väärän tutkintokoodin tai suoritustavan sisältävä opiskeluoikeus on ensin mitätöitävä, ja sitten on luotava uusi opiskeluoikeus oikeilla tiedoilla.")
+        val useampiPäätasonSuoritus = subcategory("useampiPäätasonSuoritus", "Ammatillinen opiskeluoikeus, jossa päätason suorituksena on ammatillisen tutkintokoulutuksen suoritus, ei voi sisältää useampaa kuin yhtä päätason suoritusta, ellei kyseessä ole opiskeluoikeus, jossa suoritetaan ns. vanhamallista näyttötutkintoa ja siihen liittyvää näyttötutkintoon valmistavaa koulutusta.")
+      }
+      val ammatillinen = new Ammatillinen
 
       class OsaAikainenErityisopetus extends ErrorCategory(
         Validation.this,

@@ -10,6 +10,7 @@ class ValpasOpiskeluoikeusDatabaseFixtureCreator(application: KoskiApplication) 
 
   protected lazy val invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = List(
     (ValpasMockOppijat.intSchool10LuokallaIlmanAlkamispäivää, ValpasOpiskeluoikeusExampleData.intSchool9LuokaltaValmistunut2021ja10LuokallaIlmanAlkamispäivää),
+    (ValpasMockOppijat.telmaJaAmis, ValpasOpiskeluoikeusExampleData.telmaJaAmisRessussa),
   )
 
   protected def defaultOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = List(
@@ -177,7 +178,6 @@ class ValpasOpiskeluoikeusDatabaseFixtureCreator(application: KoskiApplication) 
     (ValpasMockOppijat.vstKops, ValpasOpiskeluoikeusExampleData.vstKopsRessussa),
     (ValpasMockOppijat.valma, ValpasOpiskeluoikeusExampleData.valmaRessussa),
     (ValpasMockOppijat.telma, ValpasOpiskeluoikeusExampleData.telmaRessussa),
-    (ValpasMockOppijat.telmaJaAmis, ValpasOpiskeluoikeusExampleData.telmaJaAmisRessussa),
     (ValpasMockOppijat.kaksiToisenAsteenOpiskelua, ValpasOpiskeluoikeusExampleData.valmaRessussa),
     (ValpasMockOppijat.kaksiToisenAsteenOpiskelua, ValpasOpiskeluoikeusExampleData.ammattikouluValmaOpiskeluoikeus),
     (ValpasMockOppijat.esikoululainen, ValpasOpiskeluoikeusExampleData.esiopetusLäsnäOpiskeluoikeus),

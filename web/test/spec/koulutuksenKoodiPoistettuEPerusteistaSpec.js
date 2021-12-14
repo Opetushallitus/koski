@@ -34,7 +34,7 @@ describe('Koulutuksen koodi poistettu ePerusteista', function () {
     describe('Ennen muokkaamista', function () {
       it('Näytetään vanha koodi', function () {
         expect(suorituksenKoulutusKenttä()).to.equalIgnoreNewlines(
-          'Koulutus Autoalan perustutkinto 123456 39/011/2014'
+          'Koulutus Tieto- ja viestintätekniikan perustutkinto, koulutusvientikokeilu 123456 OPH-1117-2019'
         )
       })
     })
@@ -44,7 +44,7 @@ describe('Koulutuksen koodi poistettu ePerusteista', function () {
 
       it('Koodiarvo päivitetään automaattisesti', function () {
         expect(suorituksenKoulutusKenttä()).to.equalIgnoreNewlines(
-          'Koulutus Autoalan perustutkinto 351301 39/011/2014'
+          'Koulutus Tieto- ja viestintätekniikan perustutkinto, koulutusvientikokeilu 341101 OPH-1117-2019'
         )
       })
     })
@@ -61,7 +61,7 @@ describe('Koulutuksen koodi poistettu ePerusteista', function () {
     describe('Katselutilassa', function () {
       it('Näytetään valittu', function () {
         expect(suorituksenKoulutusKenttä()).to.equalIgnoreNewlines(
-          'Koulutus Puuteollisuuden perustutkinto 351741 OPH-2455-2017'
+          'Koulutus Puuteollisuuden perustutkinto 12345 OPH-2455-2017'
         )
       })
     })
@@ -72,7 +72,7 @@ describe('Koulutuksen koodi poistettu ePerusteista', function () {
       describe('Näytetään vaihtehdot', function () {
         it('toimii', function () {
           expect(vaihtoehdot()).to.equalIgnoreNewlines(
-            '351741\n' +
+            '12345\n' +
             '351741\n' +
             '451741'
           )

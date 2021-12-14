@@ -53,10 +53,7 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
             opiskeluoikeus.getOppilaitos.oid should equal(MockOrganisaatiot.stadinAmmattiopisto)
           }
           "Suorituksilta löytyy toimipisteitä, joilla sama oppilaitos -> Täytetään oppilaitos" in {
-            val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus.copy(
-              oppilaitos = None,
-              suoritukset = List(autoalanPerustutkinnonSuoritus(stadinToimipiste), autoalanPerustutkinnonSuoritus(stadinAmmattiopisto))
-            ))
+            val opiskeluoikeus = createOpiskeluoikeus(oppija, ammatillinenOpiskeluoikeusNäyttötutkinnonJaNäyttöönValmistavanSuorituksilla())
             opiskeluoikeus.getOppilaitos.oid should equal(MockOrganisaatiot.stadinAmmattiopisto)
           }
           "Suorituksilta löytyy toimipisteet, joilla eri oppilaitos -> FAIL" in {
@@ -78,13 +75,13 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
         "Ilman nimeä -> haetaan nimi" in {
           val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus)
           val suoritus = opiskeluoikeus.suoritukset(0).asInstanceOf[AmmatillisenTutkinnonSuoritus]
-          suoritus.koulutusmoduuli.tunniste.nimi.get.get("fi") should equal("Autoalan perustutkinto")
-          suoritus.koulutusmoduuli.tunniste.nimi.get.get("sv") should equal("Grundexamen inom bilbranschen")
+          suoritus.koulutusmoduuli.tunniste.nimi.get.get("fi") should equal("Sosiaali- ja terveysalan perustutkinto")
+          suoritus.koulutusmoduuli.tunniste.nimi.get.get("sv") should equal("Grundexamen inom social- och hälsovårdsbranschen")
         }
         "Väärällä nimellä -> korvataan nimi" in {
           val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus().copy(koulutusmoduuli = autoalanPerustutkinnonSuoritus().koulutusmoduuli.copy(tunniste = Koodistokoodiviite(koodiarvo = "351301", nimi=Some(LocalizedString.finnish("Läppätutkinto")), koodistoUri = "koulutus"))))))
 
-          opiskeluoikeus.suoritukset(0).asInstanceOf[AmmatillisenTutkinnonSuoritus].koulutusmoduuli.tunniste.nimi.get.get("fi") should equal("Autoalan perustutkinto")
+          opiskeluoikeus.suoritukset(0).asInstanceOf[AmmatillisenTutkinnonSuoritus].koulutusmoduuli.tunniste.nimi.get.get("fi") should equal("Sosiaali- ja terveysalan perustutkinto")
         }
       }
       "Koulutustyyppi" - {
@@ -325,19 +322,6 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
     }
 
     "Jos valmis päätason suoritus on poistunut" - {
-      "Ammatillisessa aiemmin tallennettua suoritusta ei säilytetä" in {
-        resetFixtures
-        val vanhaValmisSuoritus = valmis(ammatillinenTutkintoSuoritus(autoalanPerustutkinto)).copy(osasuoritukset = Some(List(muunAmmatillisenTutkinnonOsanSuoritus)))
-        val vanhaKeskeneräinenSuoritus = ammatillinenTutkintoSuoritus(puutarhuri)
-        val uusiSuoritus = ammatillinenTutkintoSuoritus(parturikampaaja)
-        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(vanhaValmisSuoritus, vanhaKeskeneräinenSuoritus))
-        def poistaSuoritukset(oo: AmmatillinenOpiskeluoikeus) = oo.copy(suoritukset = List(uusiSuoritus))
-        verifyChange(original = oo, change = poistaSuoritukset) {
-          verifyResponseStatusOk()
-          val result: AmmatillinenOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija).asInstanceOf[AmmatillinenOpiskeluoikeus]
-          result.suoritukset.map(_.koulutusmoduuli.tunniste.koodiarvo) should equal(List(uusiSuoritus.koulutusmoduuli.tunniste.koodiarvo))
-        }
-      }
       "lukionoppiaineenoppimaara:n suorituksia ei säilytetä" in {
         resetFixtures
         val vanhaValmisSuoritus = LukioExampleData.lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi

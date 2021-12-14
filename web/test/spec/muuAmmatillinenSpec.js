@@ -95,24 +95,7 @@ describe('Muu ammatillinen koulutus', function() {
 
     describe('Tietojen muuttaminen', function() {
       before(page.openPage, page.oppijaHaku.searchAndSelect('130320-899Y'))
-      describe('Koulutusmoduulin tietojen muokkaaminen', function() {
-        before(
-          editor.edit,
-          editor.propertyBySelector('.koulutusmoduuli .nimi').setValue('Lentokonemekaniikon peruskoulutus'),
-          editor.propertyBySelector('.koulutusmoduuli .koodiarvo').setValue('LKP'),
-          editor.propertyBySelector('.koulutusmoduuli .laajuus .arvo').setValue(24),
-          editor.propertyBySelector('.koulutusmoduuli .laajuudenyksikko').setValue('opintopistettä'),
-          editor.saveChangesAndWaitForSuccess
-        )
-
-        it('tietojen muokkaaminen onnistunut', function() {
-          expect(editor.propertyBySelector('.koulutusmoduuli .nimi').getValue()).to.equal('Lentokonemekaniikon peruskoulutus')
-          expect(editor.propertyBySelector('.koulutusmoduuli .koodiarvo').getValue()).to.equal('LKP')
-          expect(editor.propertyBySelector('.koulutusmoduuli .laajuus .arvo').getValue()).to.equal('24')
-          expect(editor.propertyBySelector('.koulutusmoduuli .laajuudenyksikko').getText()).to.equal('op')
-        })
-      })
-
+      
       describe('Täydentää tutkintoa', function() {
         before(
           editor.edit,

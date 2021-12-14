@@ -1,7 +1,7 @@
 package fi.oph.koski.validation
 
 import java.lang.Character.isDigit
-import java.time.LocalDate
+import java.time.{Instant, LocalDate, ZoneId}
 import com.typesafe.config.Config
 import fi.oph.koski.documentation.ExamplesEsiopetus.päiväkodinEsiopetuksenTunniste
 import fi.oph.koski.eperusteet.EPerusteetRepository
@@ -40,7 +40,9 @@ class KoskiValidator(
 ) extends Timing {
 
   def validateAsJson(oppija: Oppija)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
-    val serialized = timed("Oppija serialization", 500) {JsonSerializer.serialize(oppija)}
+    val serialized = timed("Oppija serialization", 500) {
+      JsonSerializer.serialize(oppija)
+    }
     extractAndValidateOppija(serialized)
   }
 
@@ -83,50 +85,58 @@ class KoskiValidator(
     }
   }
 
-  private def validateOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus, henkilö: Option[Henkilö])(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = opiskeluoikeus match {
-    case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus =>
-      updateFields(opiskeluoikeus).right.flatMap { opiskeluoikeus =>
-        (validateAccess(opiskeluoikeus)
-          .onSuccess {
-            validateLähdejärjestelmä(opiskeluoikeus)
+  private def validateOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus, henkilö: Option[Henkilö])(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = {
+    // Huom, tämä rikkonee transaktionaalisuuden. On teoriassa mahdollista, että vanhan opiskeluoikeuden haun ja uuden
+    // opiskeluoikeuden tietokantaan tallentamisen välissä siirrettäisiin toinen versio samasta opiskeluoikeudesta.
+    val tallennettuOpiskeluoikeus = opiskeluoikeus.oid.flatMap(opiskeluoikeudenOid =>
+      koskiOpiskeluoikeudet.findByOid(opiskeluoikeudenOid)(KoskiSpecificSession.systemUser).map(_.toOpiskeluoikeusUnsafe).toOption
+    )
+
+    opiskeluoikeus match {
+      case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus =>
+        updateFields(opiskeluoikeus).right.flatMap { opiskeluoikeus =>
+          (validateAccess(opiskeluoikeus)
+            .onSuccess {
+              validateLähdejärjestelmä(opiskeluoikeus)
+            }
+            .onSuccess {
+              validatePäätasonSuoritukset(opiskeluoikeus)
+            }
+            .onSuccess {
+              HttpStatus.fold(opiskeluoikeus.suoritukset.map(TutkintoRakenneValidator(tutkintoRepository, koodistoPalvelu).validate(_,
+                opiskeluoikeus.tila.opiskeluoikeusjaksot.find(_.tila.koodiarvo == "lasna").map(_.alku))))
+            })
+            .onSuccess {
+              HttpStatus.fold(
+                päätasonSuoritusTyypitEnabled(opiskeluoikeus),
+                päätasonSuoritusLuokatEnabled(opiskeluoikeus),
+                osasuoritusTyypitEnabled(opiskeluoikeus),
+                validateOpintojenrahoitus(opiskeluoikeus),
+                validateSisältyvyys(henkilö, opiskeluoikeus),
+                validatePäivämäärät(opiskeluoikeus),
+                validatePäätasonSuoritustenStatus(opiskeluoikeus),
+                validateOpiskeluoikeudenLisätiedot(opiskeluoikeus),
+                validateOsaAikainenErityisopetus(opiskeluoikeus),
+                validateOppilaitoksenMuutos(opiskeluoikeus, tallennettuOpiskeluoikeus),
+                NuortenPerusopetuksenOpiskeluoikeusValidation.validateNuortenPerusopetuksenOpiskeluoikeus(opiskeluoikeus),
+                TiedonSiirrostaPuuttuvatSuorituksetValidation.validateEiSamaaAlkamispaivaa(opiskeluoikeus, koskiOpiskeluoikeudet),
+                HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, Nil))),
+                TilanAsettaminenKunVahvistettuSuoritusValidation.validateOpiskeluoikeus(opiskeluoikeus),
+                SuostumuksenPeruutusValidaatiot.validateSuostumuksenPeruutus(opiskeluoikeus, suostumuksenPeruutusService),
+                Lukio2015Validation.validateOppimääräSuoritettu(opiskeluoikeus),
+                AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(opiskeluoikeus, tallennettuOpiskeluoikeus, ePerusteet, config)
+              )
+            } match {
+            case HttpStatus.ok => Right(opiskeluoikeus)
+            case status =>
+              Left(status)
           }
-          .onSuccess {
-            validatePäätasonSuoritukset(opiskeluoikeus)
-          }
-          .onSuccess {
-            HttpStatus.fold(opiskeluoikeus.suoritukset.map(TutkintoRakenneValidator(tutkintoRepository, koodistoPalvelu).validate(_,
-              opiskeluoikeus.tila.opiskeluoikeusjaksot.find(_.tila.koodiarvo == "lasna").map(_.alku))))
-          })
-          .onSuccess {
-            HttpStatus.fold(
-              päätasonSuoritusTyypitEnabled(opiskeluoikeus),
-              päätasonSuoritusLuokatEnabled(opiskeluoikeus),
-              osasuoritusTyypitEnabled(opiskeluoikeus),
-              validateOpintojenrahoitus(opiskeluoikeus),
-              validateSisältyvyys(henkilö, opiskeluoikeus),
-              validatePäivämäärät(opiskeluoikeus),
-              validatePäätasonSuoritustenStatus(opiskeluoikeus),
-              validateOpiskeluoikeudenLisätiedot(opiskeluoikeus),
-              validateOsaAikainenErityisopetus(opiskeluoikeus),
-              validateOppilaitoksenMuutos(opiskeluoikeus),
-              NuortenPerusopetuksenOpiskeluoikeusValidation.validateNuortenPerusopetuksenOpiskeluoikeus(opiskeluoikeus),
-              TiedonSiirrostaPuuttuvatSuorituksetValidation.validateEiSamaaAlkamispaivaa(opiskeluoikeus, koskiOpiskeluoikeudet),
-              HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, Nil))),
-              TilanAsettaminenKunVahvistettuSuoritusValidation.validateOpiskeluoikeus(opiskeluoikeus),
-              SuostumuksenPeruutusValidaatiot.validateSuostumuksenPeruutus(opiskeluoikeus, suostumuksenPeruutusService),
-              Lukio2015Validation.validateOppimääräSuoritettu(opiskeluoikeus)
-            )
-          } match {
-          case HttpStatus.ok => Right(opiskeluoikeus)
-          case status =>
-            Left(status)
         }
-      }
 
-    case _ if accessType == AccessType.write => Left(KoskiErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ja ylioppilastutkintojen tietoja ei voi päivittää Koski-järjestelmässä"))
-    case _ => Right(opiskeluoikeus)
+      case _ if accessType == AccessType.write => Left(KoskiErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ja ylioppilastutkintojen tietoja ei voi päivittää Koski-järjestelmässä"))
+      case _ => Right(opiskeluoikeus)
+    }
   }
-
 
   private def updateFields(oo: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSpecificSession): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
     fillMissingOrganisations(oo)
@@ -1148,31 +1158,28 @@ class KoskiValidator(
     }
   }
 
-  private def validateOppilaitoksenMuutos(uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
-    val validaatioAstuuVoimaan = LocalDate.parse(config.getString("oppilaitoksenMuutosValidaatioAstuuVoimaan"))
+  private def validateOppilaitoksenMuutos(uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, vanhaOpiskeluoikeus: Option[KoskeenTallennettavaOpiskeluoikeus]): HttpStatus = {
+    val validaatioAstuuVoimaan = LocalDate.parse(config.getString("validaatiot.oppilaitoksenMuutosValidaatioAstuuVoimaan"))
     if (LocalDate.now.isBefore(validaatioAstuuVoimaan)) {
       HttpStatus.ok
     } else {
-      uusiOpiskeluoikeus.oid.map(opiskeluoikeudenOid =>
-        koskiOpiskeluoikeudet.findByOid(opiskeluoikeudenOid)(KoskiSpecificSession.systemUser).map(_.toOpiskeluoikeusUnsafe).toOption match {
-          case Some(vanhaOpiskeluoikeus) => {
-            val uusiOppilaitos = uusiOpiskeluoikeus.oppilaitos.map(_.oid)
-            val vanhaOppilaitos = vanhaOpiskeluoikeus.oppilaitos.map(_.oid)
-            val koulutustoimijaPysynytSamana = uusiOpiskeluoikeus.koulutustoimija.map(_.oid).exists(uusiOid => vanhaOpiskeluoikeus.koulutustoimija.map(_.oid).contains(uusiOid))
-            val vanhaAktiivinen = vanhaOppilaitos.flatMap(oid => organisaatioRepository.getOrganisaatioHierarkia(oid).map(_.aktiivinen)).getOrElse(false)
-            val uusiAktiivinen = uusiOppilaitos.flatMap(oid => organisaatioRepository.getOrganisaatioHierarkia(oid).map(_.aktiivinen)).getOrElse(false)
-            val uusiOrganisaatioLöytyyOrganisaatioHistoriasta = vanhaOpiskeluoikeus.organisaatiohistoria.exists(_.exists(_.oppilaitos.exists(x => uusiOppilaitos.contains(x.oid))))
-            val oppilaitoksenVaihtoSallittu = uusiOrganisaatioLöytyyOrganisaatioHistoriasta || (!vanhaAktiivinen && uusiAktiivinen)
+      vanhaOpiskeluoikeus match {
+        case Some(vanhaOpiskeluoikeus) =>
+          val uusiOppilaitos = uusiOpiskeluoikeus.oppilaitos.map(_.oid)
+          val vanhaOppilaitos = vanhaOpiskeluoikeus.oppilaitos.map(_.oid)
+          val koulutustoimijaPysynytSamana = uusiOpiskeluoikeus.koulutustoimija.map(_.oid).exists(uusiOid => vanhaOpiskeluoikeus.koulutustoimija.map(_.oid).contains(uusiOid))
+          val vanhaAktiivinen = vanhaOppilaitos.flatMap(oid => organisaatioRepository.getOrganisaatioHierarkia(oid).map(_.aktiivinen)).getOrElse(false)
+          val uusiAktiivinen = uusiOppilaitos.flatMap(oid => organisaatioRepository.getOrganisaatioHierarkia(oid).map(_.aktiivinen)).getOrElse(false)
+          val uusiOrganisaatioLöytyyOrganisaatioHistoriasta = vanhaOpiskeluoikeus.organisaatiohistoria.exists(_.exists(_.oppilaitos.exists(x => uusiOppilaitos.contains(x.oid))))
+          val oppilaitoksenVaihtoSallittu = uusiOrganisaatioLöytyyOrganisaatioHistoriasta || (!vanhaAktiivinen && uusiAktiivinen)
 
-            if (koulutustoimijaPysynytSamana && uusiOppilaitos != vanhaOppilaitos) {
-              HttpStatus.validate(oppilaitoksenVaihtoSallittu) { KoskiErrorCategory.badRequest.validation.organisaatio.oppilaitoksenVaihto()}
-            } else {
-              HttpStatus.ok
-            }
+          if (koulutustoimijaPysynytSamana && uusiOppilaitos != vanhaOppilaitos) {
+            HttpStatus.validate(oppilaitoksenVaihtoSallittu) { KoskiErrorCategory.badRequest.validation.organisaatio.oppilaitoksenVaihto()}
+          } else {
+            HttpStatus.ok
           }
-          case None => HttpStatus.ok
-        }
-      ).getOrElse(HttpStatus.ok)
+        case None => HttpStatus.ok
+      }
     }
   }
 }

@@ -131,7 +131,6 @@ describe('Oppijataulukko', function() {
           'Kurssikertyma, Eronnut Aineopiskelija',
           'Kurssikertyma, Oppimaara',
           'Kurssikertyma, Valmistunut Aineopiskelija',
-          'Liiketalous, Lilli',
           'Luva, Aikuisten',
           'Luva, Nuorten',
           'Markkanen-Fagerström, Eéro Jorma-Petteri',
@@ -139,7 +138,7 @@ describe('Oppijataulukko', function() {
           'Tekijä, Teija',
           'Tiedonsiirto, Tiina'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('13')
+        expect(page.opiskeluoikeudeTotal()).to.equal('12')
       })
     })
 

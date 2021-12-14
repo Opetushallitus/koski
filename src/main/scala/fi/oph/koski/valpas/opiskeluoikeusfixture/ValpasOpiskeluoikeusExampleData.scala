@@ -937,10 +937,7 @@ object ValpasOpiskeluoikeusExampleData {
       hojks = None
     )),
     suoritukset = List(
-      ExamplesValma.valmaKoulutuksenSuoritus.copy(vahvistus = None),
-      AmmattitutkintoExample.ammatillisenTutkinnonSuoritus.copy(
-        vahvistus = None
-      )
+      ExamplesValma.valmaKoulutuksenSuoritus.copy(vahvistus = None)
     )
   )
 

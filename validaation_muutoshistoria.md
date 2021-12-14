@@ -1,5 +1,14 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 1.1.2022
+
+- Ammatilliselle opiskeluoikeudelle ei voi siirtää suoritusta, jonka rakenteen peruste on vanhentunut.
+
+## x.12.2021
+
+- Ammatilliselle opiskeluoikeudelle ei voi siirtää kahta päätason suoritusta, ellei toinen ole tyyppiä `AmmatillisenTutkinnonOsittainenTaiKokoSuoritus`, suoritustapana `nayttö`, ja toinen suoritus `NäyttöTutkintoonValmistavaKoulutus`
+- Ammatillisen opiskeluoikeuden päätason suoritusten tutkintokoodia (koulutusmoduuli.tunniste.koodiarvo) ja suoritustapaa ei voi vaihtaa suorituksen luonnin jälkeen.
+
 ## 3.12.2021
 
 - Pääsuoritustasoinen `lukionOppimääräSuoritettu`-kenttä deprekoitu eikä sitä saa enää siirtää. Kentän korvannut opiskeluoikeustason kenttä `oppimääräSuoritettu`

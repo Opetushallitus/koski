@@ -1,6 +1,7 @@
 package fi.oph.koski.fixture
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillinenTutkintoSuoritus, puuteollisuudenPerustutkinnonSuoritus, puuteollisuudenPerustutkinto, stadinToimipiste, tietoJaViestintäTekniikanPerustutkinnonSuoritus}
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusMitätöity, suomenKieli}
 import fi.oph.koski.documentation.ExamplesEsiopetus.{ostopalveluOpiskeluoikeus, päiväkotisuoritus}
 import fi.oph.koski.documentation.ExamplesPerusopetus.ysinOpiskeluoikeusKesken
@@ -19,15 +20,26 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
   protected def oppijat = KoskiSpecificMockOppijat.defaultOppijat
 
   protected lazy val invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
-    val validOpiskeluoikeus: AmmatillinenOpiskeluoikeus = validateOpiskeluoikeus(AmmatillinenExampleData.opiskeluoikeus())
+    val validOpiskeluoikeus: AmmatillinenOpiskeluoikeus = validateOpiskeluoikeus(AmmatillinenExampleData.opiskeluoikeus(tutkinto = tietoJaViestintäTekniikanPerustutkinnonSuoritus(stadinToimipiste)))
     val opiskeluoikeusJostaTunnisteenKoodiarvoPoistettu = validOpiskeluoikeus.copy(
-      suoritukset = validOpiskeluoikeus.suoritukset.map(s => {
-        val tutkinnonSuoritus = s.asInstanceOf[AmmatillisenTutkinnonSuoritus]
-        tutkinnonSuoritus.copy(koulutusmoduuli = tutkinnonSuoritus.koulutusmoduuli.copy(
+      suoritukset = validOpiskeluoikeus.suoritukset.map{
+        case tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus => tutkinnonSuoritus.copy(koulutusmoduuli = tutkinnonSuoritus.koulutusmoduuli.copy(
           tutkinnonSuoritus.koulutusmoduuli.tunniste.copy(koodiarvo = "123456")
         ))
-      })
+        case _ => throw new InternalError("Tällä ammatillisella opiskeluoikeudella ei pitäisi olla muita kuin ammatillisen tutkinnon suoritukssia")
+      }
     )
+
+    val validRakenteessaMontaKoulutuskoodiaOpiskeluoikeus: AmmatillinenOpiskeluoikeus = validateOpiskeluoikeus(AmmatillinenExampleData.puuteollisuusOpiskeluoikeusKesken())
+    val rakenteessaMontaKoulutuskoodiaOpiskeluoikeusJostaTunnisteenKoodiarvoPoistettu = validRakenteessaMontaKoulutuskoodiaOpiskeluoikeus.copy(
+      suoritukset = validRakenteessaMontaKoulutuskoodiaOpiskeluoikeus.suoritukset.map{
+        case tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus => tutkinnonSuoritus.copy(koulutusmoduuli = tutkinnonSuoritus.koulutusmoduuli.copy(
+          tutkinnonSuoritus.koulutusmoduuli.tunniste.copy(koodiarvo = "12345")
+        ))
+        case _ => throw new InternalError("Tällä ammatillisella opiskeluoikeudella ei pitäisi olla muita kuin ammatillisen tutkinnon suoritukssia")
+      }
+    )
+
     val hkiTallentaja = MockUsers.helsinkiTallentaja.toKoskiSpecificSession(application.käyttöoikeusRepository)
     List(
       (KoskiSpecificMockOppijat.organisaatioHistoria, validOpiskeluoikeus.copy(organisaatiohistoria = Some(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria))),
@@ -56,6 +68,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
           nimi = Some(LocalizedString.finnish("Ammatillinen koulutus")) // Normaalisti validaattori täyttää nimen, nyt esitäytetään se itse
         )
       )),
+      (KoskiSpecificMockOppijat.montaKoulutuskoodiaAmis, rakenteessaMontaKoulutuskoodiaOpiskeluoikeusJostaTunnisteenKoodiarvoPoistettu)
     )
   }
 
@@ -106,7 +119,6 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.muuAmmatillinenKokonaisuuksilla, MuunAmmatillisenKoulutuksenExample.muuAmmatillinenKoulutusKokonaisuuksillaOpiskeluoikeus),
       (KoskiSpecificMockOppijat.ammatilliseenTetäväänValmistavaMuuAmmatillinen, MuunAmmatillisenKoulutuksenExample.ammatilliseenTehtäväänValmistavaKoulutusOpiskeluoikeus),
       (KoskiSpecificMockOppijat.amis, AmmatillinenExampleData.perustutkintoOpiskeluoikeusKesken()),
-      (KoskiSpecificMockOppijat.liiketalous, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 331101, diaariNumero = "59/011/2014")),
       (KoskiSpecificMockOppijat.valma, ExamplesValma.valmaTodistus.tallennettavatOpiskeluoikeudet.head),
       (KoskiSpecificMockOppijat.telma, ExamplesTelma.telmaTodistus.tallennettavatOpiskeluoikeudet.head),
       (KoskiSpecificMockOppijat.ylioppilasLukiolainen, ExamplesLukio.päättötodistus()),
@@ -129,7 +141,6 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.turvakielto, ExamplesLukio.päättötodistus()),
       (KoskiSpecificMockOppijat.erkkiEiperusteissa, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 334117, diaariNumero = "22/011/2004")),
       (KoskiSpecificMockOppijat.internationalschool, ExamplesInternationalSchool.opiskeluoikeus),
-      (KoskiSpecificMockOppijat.montaKoulutuskoodiaAmis, AmmatillinenExampleData.puuteollisuusOpiskeluoikeusKesken()),
       (KoskiSpecificMockOppijat.valviraaKiinnostavaTutkinto, AmmatillinenExampleData.sosiaaliJaTerveysalaOpiskeluoikeus()),
       (KoskiSpecificMockOppijat.valviraaKiinnostavaTutkintoKesken, AmmatillinenExampleData.sosiaaliJaTerveysalaOpiskeluoikeusKesken()),
       (KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia, ExamplesEsiopetus.esioppilas.tallennettavatOpiskeluoikeudet.head),

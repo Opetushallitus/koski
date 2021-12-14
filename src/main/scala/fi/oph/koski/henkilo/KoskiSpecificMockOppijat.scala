@@ -39,7 +39,6 @@ object KoskiSpecificMockOppijat {
   val ammatilliseenTetäväänValmistavaMuuAmmatillinen = koskiSpecificOppijat.oppija("Tehtävään-Valmistava", "Tauno", "050192-777U")
   val erkkiEiperusteissa = koskiSpecificOppijat.oppija("Eiperusteissa", "Erkki", "201137-361Y")
   val amis = koskiSpecificOppijat.oppija("Amis", "Antti", "211097-402L")
-  val liiketalous = koskiSpecificOppijat.oppija("Liiketalous", "Lilli", "160525-780Y")
   val dippainssi = koskiSpecificOppijat.oppija("Dippainssi", "Dilbert", "100869-192W")
   val korkeakoululainen = koskiSpecificOppijat.oppija("Korkeakoululainen", "Kikka", "150113-4146")
   val amkValmistunut = koskiSpecificOppijat.oppija("Amis", "Valmis", "250686-102E", vanhaHetu = Some("250686-6493"))

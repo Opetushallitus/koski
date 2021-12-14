@@ -803,4 +803,21 @@ object AmmatillinenExampleData {
         )
       )
     )
+
+  def ammatillinenOpiskeluoikeusNäyttötutkinnonJaNäyttöönValmistavanSuorituksilla() = {
+    val näyttötutkinnonSuoritus = AmmatillisenTutkinnonSuoritus(
+      koulutusmoduuli = sosiaaliJaTerveysalanPerustutkinto,
+      suoritustapa = suoritustapaNäyttö,
+      suorituskieli = suomenKieli,
+      toimipiste = stadinToimipiste,
+    )
+    val näyttötutkintoonValmistavaSuoritus = AmmattitutkintoExample.näyttötutkintoonValmistavanKoulutuksenSuoritus.copy(alkamispäivä = Some(date(2015, 1, 1)), vahvistus = None)
+
+    AmmatillinenExampleData.sosiaaliJaTerveysalaOpiskeluoikeus().copy(
+      tila = AmmatillinenOpiskeluoikeudenTila(List(
+        AmmatillinenOpiskeluoikeusjakso(date(2015, 1, 1), ExampleData.opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+      )),
+      suoritukset = List(näyttötutkinnonSuoritus, näyttötutkintoonValmistavaSuoritus)
+    )
+  }
 }

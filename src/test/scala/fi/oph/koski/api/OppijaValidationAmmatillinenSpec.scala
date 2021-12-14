@@ -1,16 +1,21 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.KoskiHttpSpec
+import com.typesafe.config.Config
+import com.typesafe.config.ConfigValueFactory.fromAnyRef
+import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.AmmatillinenOldExamples.muunAmmatillisenTutkinnonOsanSuoritus
 import fi.oph.koski.documentation.AmmatillinenReforminMukainenPerustutkintoExample.{jatkoOpintovalmiuksiaTukevienOpintojenSuoritus, korkeakouluopintoSuoritus}
 import fi.oph.koski.documentation.ExampleData.{helsinki, _}
-import fi.oph.koski.documentation.{AmmattitutkintoExample, ExampleData, ExamplesValma}
+import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample, ExampleData, ExamplesValma}
+import fi.oph.koski.fixture.AmmatillinenOpiskeluoikeusTestData
 import fi.oph.koski.http.{ErrorMatcher, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
+import fi.oph.koski.validation.KoskiValidator
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
@@ -502,6 +507,108 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           }
         }
       }
+
+      "Useampi päätason suoritus" - {
+        "Ei sallita kahta päätason suoritusta tyyppiä 'ammatillinentutkinto'" in {
+          val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+            suoritukset = List(autoalanPerustutkinnonSuoritus(), autoalanErikoisammattitutkinnonSuoritus())
+          )
+
+          putOpiskeluoikeus(opiskeluoikeus) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.useampiPäätasonSuoritus())
+          }
+        }
+
+        "Sallitaan kaksi päätason suoritusta, kun yhdistelmänä 'ammatillinentutkinto', jossa suoritustapa näyttö, ja 'nayttotutkintoonvalmistavakoulutus'" in {
+          val opiskeluoikeus = ammatillinenOpiskeluoikeusNäyttötutkinnonJaNäyttöönValmistavanSuorituksilla()
+
+          putOpiskeluoikeus(opiskeluoikeus) {
+            verifyResponseStatusOk()
+          }
+        }
+      }
+
+      "Tutkintokoodin ja suoritustavan vaihtaminen" - {
+        "Tutkintokoodia ei voi vaihtaa opiskeluoikeuden luonnin jälkeen" in {
+          val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+            suoritukset = List(autoalanPerustutkinnonSuoritus().copy(
+              koulutusmoduuli = autoalanPerustutkinto.copy(
+                tunniste = Koodistokoodiviite("351301", "koulutus")
+              )
+            ))
+          )
+          val tallennettuna = putAndGetOpiskeluoikeus(opiskeluoikeus).withSuoritukset(
+            List(autoalanPerustutkinnonSuoritus().copy(
+              koulutusmoduuli = autoalanPerustutkinto.copy(
+                tunniste = Koodistokoodiviite("357305", "koulutus")
+              )
+            ))
+          )
+
+          putOpiskeluoikeus(tallennettuna) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.muutettuSuoritustapaaTaiTutkintokoodia())
+          }
+        }
+
+        "Suoritustapaa ei voi vaihtaa opiskeluoikeuden luonnin jälkeen" in {
+          val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+            suoritukset = List(autoalanPerustutkinnonSuoritus().copy(
+              suoritustapa = suoritustapaNäyttö
+            ))
+          )
+          val tallennettuna = putAndGetOpiskeluoikeus(opiskeluoikeus).withSuoritukset(
+            List(autoalanPerustutkinnonSuoritus().copy(
+              suoritustapa = suoritustapaOps
+            ))
+          )
+
+          putOpiskeluoikeus(tallennettuna) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.muutettuSuoritustapaaTaiTutkintokoodia())
+          }
+        }
+
+        "'nayttotutkintoonvalmistavakoulutus'-tyypin koulutukselle voidaan lissätä kaveriksi 'ammatillinentutkinto' ja tätä ei lasketa suoritustavan/tutkintokoodin muuttamiseksi" in {
+          val näyttötutkinnonSuoritus = AmmatillisenTutkinnonSuoritus(
+            koulutusmoduuli = sosiaaliJaTerveysalanPerustutkinto,
+            suoritustapa = suoritustapaNäyttö,
+            suorituskieli = suomenKieli,
+            toimipiste = stadinToimipiste,
+          )
+          val näyttötutkintoonValmistavaSuoritus = AmmattitutkintoExample.näyttötutkintoonValmistavanKoulutuksenSuoritus.copy(alkamispäivä = Some(date(2015, 1, 1)), vahvistus = None)
+
+
+          val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+            suoritukset = List(näyttötutkintoonValmistavaSuoritus)
+          )
+          val tallennettuna = putAndGetOpiskeluoikeus(opiskeluoikeus).withSuoritukset(
+            List(näyttötutkinnonSuoritus, näyttötutkintoonValmistavaSuoritus)
+          )
+
+          putOpiskeluoikeus(tallennettuna) {
+            verifyResponseStatusOk()
+          }
+        }
+      }
+
+      "Vanhentunut tutkinnon rakenne" - {
+        "Ei sallita siirtoa, jos eperusteissa rakenteen voimassaolo on päättynyt kun validaatio on voimassa" in {
+          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 331101, diaariNumero = "59/011/2014")
+          implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+          implicit val accessType = AccessType.write
+          val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
+          val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan", fromAnyRef(LocalDate.now().toString))
+          mockKoskiValidator(config).validateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt())
+        }
+
+        "Sallitaan siirto, kun validaatio ei vielä voimassa" in {
+          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 331101, diaariNumero = "59/011/2014")
+          implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+          implicit val accessType = AccessType.write
+          val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
+          val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan", fromAnyRef(LocalDate.now().plusDays(1).toString))
+          mockKoskiValidator(config).validateAsJson(oppija).isRight should equal (true)
+        }
+      }
     }
 
     "Tutkinnon tila ja arviointi" - {
@@ -882,6 +989,25 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))
 
     putOppija(makeOppija(henkilö, List(JsonSerializer.serializeWithRoot(opiskeluoikeus))), headers)(f)
+  }
+
+  private def putAndGetOpiskeluoikeus(oo: AmmatillinenOpiskeluoikeus): Opiskeluoikeus = putOpiskeluoikeus(oo) {
+    verifyResponseStatusOk()
+    getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
+  }
+
+  private def mockKoskiValidator(config: Config) = {
+    new KoskiValidator(
+      KoskiApplicationForTests.tutkintoRepository,
+      KoskiApplicationForTests.koodistoViitePalvelu,
+      KoskiApplicationForTests.organisaatioRepository,
+      KoskiApplicationForTests.possu,
+      KoskiApplicationForTests.henkilöRepository,
+      KoskiApplicationForTests.ePerusteet,
+      KoskiApplicationForTests.validatingAndResolvingExtractor,
+      KoskiApplicationForTests.suostumuksenPeruutusService,
+      config
+    )
   }
 
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus().copy(koulutusmoduuli = autoalanPerustutkinnonSuoritus().koulutusmoduuli.copy(perusteenDiaarinumero = diaari))))
