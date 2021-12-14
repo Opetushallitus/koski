@@ -35,7 +35,7 @@ object MitätöityOpiskeluoikeusLoader {
 
   private def buildRow(raw: OpiskeluoikeusRow): Either[LoadErrorResult, RMitätöityOpiskeluoikeusRow] = {
     for {
-      oo <- raw.toOpiskeluoikeus.left.map(e => LoadErrorResult(raw.oid, e.toString()))
+      oo <- raw.toOpiskeluoikeus(KoskiSpecificSession.systemUser).left.map(e => LoadErrorResult(raw.oid, e.toString()))
       mitätöityPvm <- oo.mitätöintiPäivä.toRight(LoadErrorResult(raw.oid, "Mitätöintipäivämäärän haku epäonnistui"))
     } yield RMitätöityOpiskeluoikeusRow(
         opiskeluoikeusOid = raw.oid,

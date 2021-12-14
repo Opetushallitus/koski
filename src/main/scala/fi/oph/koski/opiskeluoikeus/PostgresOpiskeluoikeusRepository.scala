@@ -62,7 +62,7 @@ class PostgresOpiskeluoikeusRepository(
     findKansalaisenOpiskeluoikeudet(oids)
   }
 
-  private def findKansalaisenOpiskeluoikeudet(oids: List[String]) = {
+  private def findKansalaisenOpiskeluoikeudet(oids: List[String])(implicit user: KoskiSpecificSession) = {
     val query = OpiskeluOikeudet
       .filterNot(_.mitätöity)
       .filter(_.oppijaOid inSetBind oids)

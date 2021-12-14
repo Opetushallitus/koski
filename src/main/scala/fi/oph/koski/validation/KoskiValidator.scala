@@ -1173,23 +1173,25 @@ class KoskiValidator(
     if (LocalDate.now.isBefore(validaatioAstuuVoimaan)) {
       HttpStatus.ok
     } else {
-      vanhaOpiskeluoikeus match {
-        case Some(vanhaOpiskeluoikeus) =>
-          val uusiOppilaitos = uusiOpiskeluoikeus.oppilaitos.map(_.oid)
-          val vanhaOppilaitos = vanhaOpiskeluoikeus.oppilaitos.map(_.oid)
-          val koulutustoimijaPysynytSamana = uusiOpiskeluoikeus.koulutustoimija.map(_.oid).exists(uusiOid => vanhaOpiskeluoikeus.koulutustoimija.map(_.oid).contains(uusiOid))
-          val vanhaAktiivinen = vanhaOppilaitos.flatMap(oid => organisaatioRepository.getOrganisaatioHierarkia(oid).map(_.aktiivinen)).getOrElse(false)
-          val uusiAktiivinen = uusiOppilaitos.flatMap(oid => organisaatioRepository.getOrganisaatioHierarkia(oid).map(_.aktiivinen)).getOrElse(false)
-          val uusiOrganisaatioLöytyyOrganisaatioHistoriasta = vanhaOpiskeluoikeus.organisaatiohistoria.exists(_.exists(_.oppilaitos.exists(x => uusiOppilaitos.contains(x.oid))))
-          val oppilaitoksenVaihtoSallittu = uusiOrganisaatioLöytyyOrganisaatioHistoriasta || (!vanhaAktiivinen && uusiAktiivinen)
+      uusiOpiskeluoikeus.oid.map(opiskeluoikeudenOid =>
+        koskiOpiskeluoikeudet.findByOid(opiskeluoikeudenOid)(KoskiSpecificSession.systemUser).map(_.toOpiskeluoikeusUnsafe(KoskiSpecificSession.systemUser)).toOption match {
+          case Some(vanhaOpiskeluoikeus) =>
+            val uusiOppilaitos = uusiOpiskeluoikeus.oppilaitos.map(_.oid)
+            val vanhaOppilaitos = vanhaOpiskeluoikeus.oppilaitos.map(_.oid)
+            val koulutustoimijaPysynytSamana = uusiOpiskeluoikeus.koulutustoimija.map(_.oid).exists(uusiOid => vanhaOpiskeluoikeus.koulutustoimija.map(_.oid).contains(uusiOid))
+            val vanhaAktiivinen = vanhaOppilaitos.flatMap(oid => organisaatioRepository.getOrganisaatioHierarkia(oid).map(_.aktiivinen)).getOrElse(false)
+            val uusiAktiivinen = uusiOppilaitos.flatMap(oid => organisaatioRepository.getOrganisaatioHierarkia(oid).map(_.aktiivinen)).getOrElse(false)
+            val uusiOrganisaatioLöytyyOrganisaatioHistoriasta = vanhaOpiskeluoikeus.organisaatiohistoria.exists(_.exists(_.oppilaitos.exists(x => uusiOppilaitos.contains(x.oid))))
+            val oppilaitoksenVaihtoSallittu = uusiOrganisaatioLöytyyOrganisaatioHistoriasta || (!vanhaAktiivinen && uusiAktiivinen)
 
-          if (koulutustoimijaPysynytSamana && uusiOppilaitos != vanhaOppilaitos) {
-            HttpStatus.validate(oppilaitoksenVaihtoSallittu) { KoskiErrorCategory.badRequest.validation.organisaatio.oppilaitoksenVaihto()}
-          } else {
-            HttpStatus.ok
-          }
-        case None => HttpStatus.ok
-      }
+            if (koulutustoimijaPysynytSamana && uusiOppilaitos != vanhaOppilaitos) {
+              HttpStatus.validate(oppilaitoksenVaihtoSallittu) { KoskiErrorCategory.badRequest.validation.organisaatio.oppilaitoksenVaihto()}
+            } else {
+              HttpStatus.ok
+            }
+          case None => HttpStatus.ok
+        }
+      ).getOrElse(HttpStatus.ok)
     }
   }
 }

@@ -124,7 +124,7 @@ object OpiskeluoikeusLoader extends Logging {
 
   private def buildRow(inputRow: OpiskeluoikeusRow, rajapäivät: ValpasRajapäivätService): Either[LoadErrorResult, OutputRows] = {
     Try {
-      val oo = inputRow.toOpiskeluoikeusUnsafe
+      val oo = inputRow.toOpiskeluoikeusUnsafe(KoskiSpecificSession.systemUser)
       val ooRow = buildROpiskeluoikeusRow(inputRow.oppijaOid, inputRow.aikaleima, oo, inputRow.data, rajapäivät)
       val aikajaksoRows: AikajaksoRows = buildAikajaksoRows(inputRow.oid, oo)
       val suoritusRows: SuoritusRows = oo.suoritukset.zipWithIndex.map {

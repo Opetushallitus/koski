@@ -1,9 +1,12 @@
 package fi.oph.koski.json
 
-import fi.oph.koski.TestEnvironment
+import fi.oph.koski.{KoskiHttpSpec, TestEnvironment}
+import fi.oph.koski.api.{OpiskeluoikeusTestMethods, PutOpiskeluoikeusTestMethods}
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.documentation.AmmatillinenExampleData.{k3, lisätietoOsaamistavoitteet, yhteisenTutkinnonOsanSuoritus}
 import fi.oph.koski.documentation.PerusopetusExampleData.{oppiaine, suoritus}
 import fi.oph.koski.documentation._
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.koskiuser.{KäyttöoikeusRepository, MockUsers}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
@@ -13,9 +16,12 @@ import org.scalatest.matchers.should.Matchers
 import java.time.LocalDate
 import scala.reflect.runtime.universe.TypeTag
 
-class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matchers {
+class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matchers with OpiskeluoikeusTestMethods with KoskiHttpSpec {
   private val application = KoskiApplication.apply
   private val käyttöoikeusRepository: KäyttöoikeusRepository = application.käyttöoikeusRepository
+
+  val ammatillinenPiilotettavaLisätieto = yhteisenTutkinnonOsanSuoritus("101054", "Matemaattis-luonnontieteellinen osaaminen", k3, 9).copy(
+    lisätiedot = Some(List(lisätietoOsaamistavoitteet)))
 
   "Käyttäjä jolla ei ole luottamuksellisia oikeuksia ei näe mitään arkaluontoisia tietoja" in {
     implicit val eiLuottumuksellisiaOikeuksia = MockUsers.evira.toKoskiSpecificSession(käyttöoikeusRepository)
@@ -34,6 +40,9 @@ class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matc
     roundtrip[NuortenPerusopetuksenUskonto](nuortenUskonto).uskonnonOppimäärä should equal(None)
     roundtrip[AikuistenPerusopetuksenUskonto](aikuistenUskonto).uskonnonOppimäärä should equal(None)
     roundtrip[LukionUskonto2015](lukionUskonto).uskonnonOppimäärä should equal(None)
+
+    val ammatillinenJossaVoisiOllaMukautettujaArvosanoja = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ammatillisenOsittainenRapsa.oid, MockUsers.evira)
+    existsLisätietoMukautetustaArvioinnista(ammatillinenJossaVoisiOllaMukautettujaArvosanoja) should equal (false)
   }
 
   "Käyttäjä jolla on kaikki luottamuksellisten tietojen oikeudet näkee kaikki arkaluontoiset tiedot" in {
@@ -53,6 +62,9 @@ class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matc
     roundtrip[NuortenPerusopetuksenUskonto](nuortenUskonto) should equal(nuortenUskonto)
     roundtrip[AikuistenPerusopetuksenUskonto](aikuistenUskonto) should equal(aikuistenUskonto)
     roundtrip[LukionUskonto2015](lukionUskonto) should equal(lukionUskonto)
+
+    val ammatillinenJossaVoisiOllaMukautettujaArvosanoja = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ammatillisenOsittainenRapsa.oid, MockUsers.paakayttaja)
+    existsLisätietoMukautetustaArvioinnista(ammatillinenJossaVoisiOllaMukautettujaArvosanoja) should equal (true)
   }
 
   "Käyttäjä jolla on uusi kaikkiin luottamuksellisiin tietoihin oikeuttava käyttöoikeus näkee kaikki arkaluontoiset tiedot" in {
@@ -207,4 +219,19 @@ class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matc
 
   private def roundtrip[T: TypeTag](input: T)(implicit user: SensitiveDataAllowed): T =
     JsonSerializer.extract[T](JsonSerializer.serialize(input))
+
+  def existsLisätietoMukautetustaArvioinnista(oo: Opiskeluoikeus) = {
+    oo.suoritukset.exists(
+      _.osasuoritusLista.exists{
+        case lisätiedollinen: AmmatillisenTutkinnonOsanLisätiedollinen =>
+          lisätiedollinen.lisätiedot.toList.flatten.exists(_.tunniste.koodiarvo == "mukautettu") ||
+            lisätiedollinen.osasuoritukset.toList.flatten.exists{
+              case lisätiedollinen: AmmatillisenTutkinnonOsanLisätiedollinen =>
+                lisätiedollinen.lisätiedot.toList.flatten.exists(_.tunniste.koodiarvo == "mukautettu")
+              case _ => false
+            }
+        case _ => false
+      }
+    )
+  }
 }

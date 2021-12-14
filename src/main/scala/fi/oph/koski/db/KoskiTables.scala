@@ -4,9 +4,10 @@ import java.sql.{Date, Timestamp}
 import java.time.LocalDateTime
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.json.JsonManipulation.removeFields
-import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
+import fi.oph.koski.json.{SensitiveDataAllowed, SensitiveDataFilterSpecialCases}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, Rooli}
 import fi.oph.koski.schema.KoskiSchema.skipSyntheticProperties
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{TutkinnonOsanSuoritus, _}
 import fi.oph.scalaschema.extraction.ValidationError
 import fi.oph.scalaschema.{Serializer, _}
 import org.json4s._
@@ -263,12 +264,17 @@ case class OpiskeluoikeusRow(id: Int,
   päättymispäivä: Option[Date],
   suoritusjakoTehty: Boolean
 ) {
-  def toOpiskeluoikeus: Either[List[ValidationError], KoskeenTallennettavaOpiskeluoikeus] = {
-    KoskiTables.OpiskeluoikeusTable.readAsOpiskeluoikeus(data, oid, versionumero, aikaleima)
+
+  def toOpiskeluoikeus(implicit user: SensitiveDataAllowed): Either[List[ValidationError], KoskeenTallennettavaOpiskeluoikeus] = {
+    KoskiTables.OpiskeluoikeusTable.readAsOpiskeluoikeus(data, oid, versionumero, aikaleima) match {
+      case Right(oo: KoskeenTallennettavaOpiskeluoikeus) =>
+        Right(SensitiveDataFilterSpecialCases.filterSpecialCases(oo))
+      case Left(left) => Left(left)
+    }
   }
 
-  def toOpiskeluoikeusUnsafe: KoskeenTallennettavaOpiskeluoikeus = {
-    toOpiskeluoikeus match {
+  def toOpiskeluoikeusUnsafe(implicit user: SensitiveDataAllowed): KoskeenTallennettavaOpiskeluoikeus = {
+    toOpiskeluoikeus(user) match {
       case Right(oo) => oo
       case Left(errors) =>
         throw new MappingException(s"Error deserializing opiskeluoikeus ${oid} for oppija ${oppijaOid}: ${errors}")
