@@ -8,7 +8,6 @@ import { Page } from "../../../components/containers/Page"
 import { DummyOrganisaatioValitsin } from "../../../components/shared/OrganisaatioValitsin"
 import { t } from "../../../i18n/i18n"
 import { withRequiresKuntavalvonta } from "../../../state/accessRights"
-import { isFeatureFlagEnabled } from "../../../state/featureFlags"
 import { kunnanHetuhakuPath } from "../../../state/paths"
 import { OppijaSearch } from "../../../views/oppijasearch/OppijaSearch"
 import { KuntaNavigation } from "../KuntaNavigation"
@@ -29,7 +28,7 @@ export const KuntaHetuhaku = withRequiresKuntavalvonta(() => {
         onQuery={search.call}
         prevPath={kunnanHetuhakuPath.href()}
       />
-      {isFeatureFlagEnabled("rouhinta") && <KuntaHetulistahaku />}
+      <KuntaHetulistahaku />
     </Page>
   )
 })

@@ -7,7 +7,6 @@ import {
 import { t } from "../../i18n/i18n"
 import { kuntavalvontaAllowed } from "../../state/accessRights"
 import { Oid } from "../../state/common"
-import { isFeatureFlagEnabled } from "../../state/featureFlags"
 import {
   kunnanHetuhakuPath,
   kuntailmoitusPath,
@@ -30,14 +29,12 @@ export const KuntaNavigation = (props: KuntaNavigationProps) => {
         ? kuntailmoitusPathWithOrg.href(null, organisaatioOid)
         : kuntailmoitusPath.href(),
     },
-    isFeatureFlagEnabled("kuntarouhinta")
-      ? {
-          display: t("kuntailmoitus_nav__automaattinen_tarkistus"),
-          linkTo: organisaatioOid
-            ? kuntarouhintaPathWithOid.href(null, { organisaatioOid })
-            : kuntarouhintaPathWithoutOid.href(),
-        }
-      : null,
+    {
+      display: t("kuntailmoitus_nav__automaattinen_tarkistus"),
+      linkTo: organisaatioOid
+        ? kuntarouhintaPathWithOid.href(null, { organisaatioOid })
+        : kuntarouhintaPathWithoutOid.href(),
+    },
     {
       display: t("kuntailmoitus_nav__hae_hetulla"),
       linkTo: kunnanHetuhakuPath.href(),
