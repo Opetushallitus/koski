@@ -2,11 +2,12 @@ import bem from "bem-ts"
 import React, {
   MouseEvent,
   useCallback,
-  useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react"
 import { createPortal } from "react-dom"
+import { onKbEscape } from "../../utils/events"
 import { Caret, CaretDirection } from "../icons/Caret"
 import { InfoIcon } from "../icons/Icon"
 import "./InfoTooltip.less"
@@ -14,7 +15,7 @@ import "./InfoTooltip.less"
 const b = bem("infotooltip")
 
 export type InfoTooltipProps = {
-  children: React.ReactNode
+  content: string
 }
 
 type TooltipAlign = "left" | "right"
@@ -29,7 +30,7 @@ export const InfoTooltip = (props: InfoTooltipProps) => {
   const [direction, setDirection] = useState<CaretDirection>("down")
   const [align, setAlign] = useState<TooltipAlign>("right")
   const [position, setPosition] = useState<Position>({ top: 0, left: 0 })
-  const iconRef = useRef<HTMLSpanElement>(null)
+  const iconRef = useRef<HTMLDivElement>(null)
 
   const updateDirection = useCallback(() => {
     if (iconRef.current) {
@@ -55,28 +56,22 @@ export const InfoTooltip = (props: InfoTooltipProps) => {
     [isOpen, setOpen, updateDirection]
   )
 
-  useEffect(() => {
-    const hide = () => setOpen(false)
-    const parents = getParents(iconRef.current)
-
-    parents.forEach((parent) =>
-      parent.addEventListener("scroll", updateDirection)
-    )
-    window.addEventListener("click", hide)
-
-    return () => {
-      parents.forEach((parent) =>
-        parent.removeEventListener("scroll", updateDirection)
-      )
-      window.removeEventListener("click", hide)
-    }
-  }, [updateDirection, iconRef])
+  const hide = useCallback(() => setOpen(false), [])
+  const content = useMemo(() => props.content.split("\n"), [props.content])
 
   return (
-    <span className={b()} onClick={toggle}>
-      <span className={b("iconwrapper")} ref={iconRef}>
+    <span className={b()} aria-label={content.join(" ")}>
+      <div
+        className={b("iconwrapper")}
+        ref={iconRef}
+        tabIndex={0}
+        onClick={toggle}
+        onBlur={hide}
+        onKeyDown={onKbEscape(hide)}
+        aria-hidden="true"
+      >
         <InfoIcon />
-      </span>
+      </div>
       {isOpen &&
         createPortal(
           <InfoTooltipPopup
@@ -84,7 +79,9 @@ export const InfoTooltip = (props: InfoTooltipProps) => {
             align={align}
             position={position}
           >
-            {props.children}
+            {content.map((text, index) => (
+              <p key={index}>{text}</p>
+            ))}
           </InfoTooltipPopup>,
           document.getElementById("app")!!
         )}
@@ -100,9 +97,9 @@ export type InfoTooltipPopupProps = {
 }
 
 const InfoTooltipPopup = (props: InfoTooltipPopupProps) => (
-  <div className={b("popupcontainer")} style={props.position}>
-    <div className={b("popup", [props.direction, props.align])} aria-hidden>
-      <div className={b("icon")}>
+  <div className={b("popupcontainer")} style={props.position} tabIndex={0}>
+    <div className={b("popup", [props.direction, props.align])}>
+      <div className={b("icon")} aria-hidden="true">
         <InfoIcon />
       </div>
       <div className={b("content")}>{props.children}</div>

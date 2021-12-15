@@ -102,13 +102,11 @@ export const OppijanOppivelvollisuustiedot = (
                   >
                     <T id="oppija__tee_ilmoitus_valvontavastuusta" />
                   </RaisedButton>
-                  <InfoTooltip>
-                    {t("oppija__tee_ilmoitus_valvontavastuusta_tooltip")
-                      .split("\n")
-                      .map((substring, i) => (
-                        <p key={`${i}`}>{substring}</p>
-                      ))}
-                  </InfoTooltip>
+                  <InfoTooltip
+                    content={t(
+                      "oppija__tee_ilmoitus_valvontavastuusta_tooltip"
+                    )}
+                  />
                 </div>
                 {mapLoading(pohjatiedot, () => (
                   <Spinner />

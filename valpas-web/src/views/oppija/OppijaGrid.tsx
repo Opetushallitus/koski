@@ -9,7 +9,7 @@ import {
 import { Column, ColumnsContainer } from "../../components/containers/Columns"
 import { SuccessCircleIcon } from "../../components/icons/Icon"
 import { InfoTooltip } from "../../components/tooltip/InfoTooltip"
-import { T } from "../../i18n/i18n"
+import { t, T } from "../../i18n/i18n"
 import { HakuLaajatTiedot } from "../../state/apitypes/haku"
 import { HenkilöLaajatTiedot } from "../../state/apitypes/henkilo"
 import {
@@ -116,9 +116,7 @@ const Grid = (props: GridProps) => (
         <BorderlessCard id="yhteystiedot">
           <CardHeader>
             <T id="oppija__yhteystiedot_otsikko" />
-            <InfoTooltip>
-              <T id="oppija__yhteystiedot_tooltip" />
-            </InfoTooltip>
+            <InfoTooltip content={t("oppija__yhteystiedot_tooltip")} />
           </CardHeader>
           <CardBody>
             <OppijanYhteystiedot
