@@ -30,6 +30,7 @@ import { suorituksenTyyppiToKoulutustyyppi } from "../../state/apitypes/suorituk
 import { ValpasOpiskeluoikeudenTila } from "../../state/apitypes/valpasopiskeluoikeudentila"
 import { ISODate, Language } from "../../state/common"
 import { formatDate, formatDateRange, parseYear } from "../../utils/date"
+import { withoutDefaultAction } from "../../utils/events"
 import { pick } from "../../utils/objects"
 import { OppijaKuntailmoitus } from "./OppijaKuntailmoitus"
 import "./OppijanOpiskeluhistoria.less"
@@ -273,9 +274,13 @@ const IlmoitusLink = (props: OpiskeluhistoriaIlmoitusProps) => {
 
   return (
     <>
-      <div className={b("lisatiedot")} onClick={() => setModalVisibility(true)}>
+      <a
+        href="#"
+        className={b("lisatiedot")}
+        onClick={withoutDefaultAction(() => setModalVisibility(true))}
+      >
         <T id="oppija__ilmoitushistoria_lisätiedot" />
-      </div>
+      </a>
       {modalVisible && (
         <Modal onClose={() => setModalVisibility(false)} closeOnBackgroundClick>
           <OppijaKuntailmoitus kuntailmoitus={props.kuntailmoitus} />
