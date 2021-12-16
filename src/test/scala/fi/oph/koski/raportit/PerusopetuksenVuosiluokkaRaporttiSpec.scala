@@ -337,7 +337,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     kuljetusetu = false,
     kotiopetus = false,
     ulkomailla = false,
-    perusopetuksenAloittamistaLykatty = true,
+    perusopetuksenAloittamistaLykatty = false,
     aloittanutEnnenOppivelvollisuutta = false,
     pidennettyOppivelvollisuus = true,
     tehostetunTuenPaatos = true,
@@ -493,7 +493,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
   )
 
   private val perusopetuksenOpiskeluoikeudenLisätiedot = PerusopetuksenOpiskeluoikeudenLisätiedot(
-    perusopetuksenAloittamistaLykätty = true,
+    perusopetuksenAloittamistaLykätty = None,
     pidennettyOppivelvollisuus = Some(voimassaolevaAikajakso),
     tukimuodot = tukimuodot,
     erityisenTuenPäätös = Some(erityisenTuenPäätös),

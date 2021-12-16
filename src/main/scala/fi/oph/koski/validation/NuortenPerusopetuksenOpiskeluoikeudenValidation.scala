@@ -1,7 +1,8 @@
 package fi.oph.koski.validation
 
+import fi.oph.koski.documentation.OsaAikainenErityisopetusExampleData.tehostetunTuenPäätösIlmanOsaAikaistaErityisopetusta
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.schema.{NuortenPerusopetuksenOppiaineenOppimääränSuoritus, NuortenPerusopetuksenOppimääränSuoritus, Opiskeluoikeus, PerusopetuksenOpiskeluoikeus}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, NuortenPerusopetuksenOppiaineenOppimääränSuoritus, NuortenPerusopetuksenOppimääränSuoritus, Opiskeluoikeus, PerusopetuksenOpiskeluoikeus}
 
 object NuortenPerusopetuksenOpiskeluoikeusValidation {
   def validateNuortenPerusopetuksenOpiskeluoikeus(oo: Opiskeluoikeus) = {
@@ -21,6 +22,20 @@ object NuortenPerusopetuksenOpiskeluoikeusValidation {
       }
     } else {
       HttpStatus.ok
+    }
+  }
+
+  def filterDeprekoidutKentät(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
+    oo match {
+      case perus: PerusopetuksenOpiskeluoikeus =>
+        val filtteröityLisätieto = perus.lisätiedot.map(lisätieto => {
+          lisätieto.copy(
+            perusopetuksenAloittamistaLykätty = None,
+            tehostetunTuenPäätökset = None
+          )
+        })
+        perus.withLisätiedot(filtteröityLisätieto)
+      case _ => oo
     }
   }
 }

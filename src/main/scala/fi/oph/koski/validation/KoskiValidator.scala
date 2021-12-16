@@ -149,6 +149,7 @@ class KoskiValidator(
       .map(_.withHistoria(None))
       .map(KoodistopoikkeustenKonversiot.konvertoiKoodit)
       .map(fillLukionOppimääräSuoritettu)
+      .map(NuortenPerusopetuksenOpiskeluoikeusValidation.filterDeprekoidutKentät)
   }
 
   private def fillPerusteenNimi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = oo match {
