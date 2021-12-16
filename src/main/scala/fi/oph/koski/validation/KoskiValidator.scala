@@ -667,7 +667,8 @@ class KoskiValidator(
     } else {
       suoritus match {
         case _ if suoritus.kesken && !rinnastettavissaVahvistettuun => HttpStatus.ok
-        case _: Välisuoritus => HttpStatus.ok // Välisuoritus on statukseltaan aina "valmis" -> ei validoida niiden sisältämien osasuoritusten statusta
+        case _: Välisuoritus if !rinnastettavissaVahvistettuun =>
+          HttpStatus.ok // Välisuoritus on statukseltaan aina "valmis" -> ei validoida niiden sisältämien osasuoritusten statusta
         case p: KoskeenTallennettavaPäätasonSuoritus =>
           validatePäätasonSuorituksenStatus(opiskeluoikeus, p).onSuccess(validateLinkitettyTaiSisältääOsasuorituksia(opiskeluoikeus, p))
         case s => validateValmiinSuorituksenStatus(s)
@@ -692,7 +693,7 @@ class KoskiValidator(
   }
 
   private def validateLinkitettyTaiSisältääOsasuorituksia(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, suoritus: KoskeenTallennettavaPäätasonSuoritus) = {
-    if (osasuorituksetKunnossa(suoritus) || ostettuOpiskeluoikeusValmisEnnenVuotta2019(opiskeluoikeus)) {
+    if (osasuorituksetKunnossa(suoritus, opiskeluoikeus) || ostettuOpiskeluoikeusValmisEnnenVuotta2019(opiskeluoikeus)) {
       HttpStatus.ok
     } else if (opiskeluoikeus.oid.isDefined && opiskeluoikeus.oppilaitos.isDefined) {
       validateLinkitysTehty(opiskeluoikeus.oid.get, opiskeluoikeus.oppilaitos.get.oid, suoritus)
@@ -701,21 +702,22 @@ class KoskiValidator(
     }
   }
 
-  private def osasuorituksetKunnossa(suoritus: PäätasonSuoritus) = suoritus match {
-    case _: EsiopetuksenSuoritus |
-         _: MuunAmmatillisenKoulutuksenSuoritus |
-         _: OppiaineenSuoritus |
-         _: OppiaineenOppimääränSuoritus |
-         _: NäyttötutkintoonValmistavanKoulutuksenSuoritus |
-         _: LukionOppiaineidenOppimäärienSuoritus2019
-    => true
-    case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "9" || s.jääLuokalle => true
-    case s: LukionOppimääränSuoritus2019
-    => osasuorituksetKunnossaLukio2019(s)
-    case s => s.osasuoritusLista.nonEmpty
-  }
+  private def osasuorituksetKunnossa(suoritus: PäätasonSuoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = suoritus match {
+      case _: EsiopetuksenSuoritus |
+           _: MuunAmmatillisenKoulutuksenSuoritus |
+           _: OppiaineenSuoritus |
+           _: OppiaineenOppimääränSuoritus |
+           _: NäyttötutkintoonValmistavanKoulutuksenSuoritus
+      => true
+      case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "9" || s.jääLuokalle => true
+      case s: LukionOppimääränSuoritus2019
+      => osasuorituksetKunnossaLukio2019(s)
+      case s: LukionOppiaineidenOppimäärienSuoritus2019 if opiskeluoikeus.asInstanceOf[LukionOpiskeluoikeus].oppimääräSuoritettu.getOrElse(false)
+      => osasuorituksetKunnossaLukio2019(s)
+      case s => s.osasuoritusLista.nonEmpty
+    }
 
-  private def osasuorituksetKunnossaLukio2019(suoritus: LukionOppimääränSuoritus2019) = {
+  private def osasuorituksetKunnossaLukio2019(suoritus: LukionPäätasonSuoritus2019) = {
     (sisältääErityisenTutkinnonSuorittamisen(suoritus), suoritus.oppimäärä.koodiarvo) match {
       case (false, "nuortenops") => lukio2019TarpeeksiOsasuorituksia(suoritus.osasuoritukset.getOrElse(List()), 150, 20)
       case (false, "aikuistenops") => lukio2019TarpeeksiOsasuorituksia(suoritus.osasuoritukset.getOrElse(List()), 88, 0)
@@ -723,12 +725,15 @@ class KoskiValidator(
     }
   }
 
-  private def sisältääErityisenTutkinnonSuorittamisen(suoritus: LukionOppimääränSuoritus2019) = {
-    suoritus.suoritettuErityisenäTutkintona ||
-      suoritus.osasuoritukset.exists(_.exists({
-        case os: LukionOppiaineenSuoritus2019 if os.suoritettuErityisenäTutkintona => true
-        case _ => false
-      }))
+  private def sisältääErityisenTutkinnonSuorittamisen(suoritus: LukionPäätasonSuoritus2019) = {
+    suoritus match {
+      case s: LukionOppimääränSuoritus2019 => s.suoritettuErityisenäTutkintona ||
+        suoritus.osasuoritukset.exists(_.exists({
+          case os: LukionOppiaineenSuoritus2019 if os.suoritettuErityisenäTutkintona => true
+          case _ => false
+        }))
+      case _ => false
+    }
   }
 
   private def lukio2019TarpeeksiOsasuorituksia(osasuoritukset: List[LukionOppimääränOsasuoritus2019], minimiLaajuus: Double, minimiValinnaistenLaajuus: Double): Boolean = {
@@ -764,6 +769,10 @@ class KoskiValidator(
       KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(suoritus)} on merkitty valmiiksi tai opiskeluoikeuden tiedoissa oppimäärä on merkitty suoritetuksi, mutta sillä ei ole 150 op osasuorituksia, joista vähintään 20 op valinnaisia, tai opiskeluoikeudelta puuttuu linkitys")
     case s: LukionOppimääränSuoritus2019 if s.oppimäärä.koodiarvo == "aikuistenops" =>
       KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(suoritus)} on merkitty valmiiksi tai opiskeluoikeuden tiedoissa oppimäärä on merkitty suoritetuksi, mutta sillä ei ole 88 op osasuorituksia, tai opiskeluoikeudelta puuttuu linkitys")
+    case s: LukionOppiaineidenOppimäärienSuoritus2019 if s.oppimäärä.koodiarvo == "nuortenops" =>
+      KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suorituksen ${suorituksenTunniste(suoritus)} opiskeluoikeuden tiedoissa oppimäärä on merkitty suoritetuksi, mutta sillä ei ole 150 op osasuorituksia, joista vähintään 20 op valinnaisia, tai opiskeluoikeudelta puuttuu linkitys")
+    case s: LukionOppiaineidenOppimäärienSuoritus2019 if s.oppimäärä.koodiarvo == "aikuistenops" =>
+      KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suorituksen ${suorituksenTunniste(suoritus)} opiskeluoikeuden tiedoissa oppimäärä on merkitty suoritetuksi, mutta sillä ei ole 88 op osasuorituksia, tai opiskeluoikeudelta puuttuu linkitys")
     case s =>
       KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(s)} on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai opiskeluoikeudelta puuttuu linkitys")
   }
