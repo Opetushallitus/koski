@@ -126,6 +126,108 @@ const turvakieltoVaroitusNotVisible = () =>
 const expectEiKuntailmoituksiaNotVisible = () =>
   expectElementNotVisible(".oppijaview__eiilmoituksia")
 
+const rivi = (label: string, value?: string) =>
+  value ? [label + ":", value] : []
+
+const oppivelvollisuustiedot = (p: {
+  opiskelutilanne: string
+  oppivelvollisuus: string
+  oppivelvollisuudenKeskeytykset?: string[]
+  maksuttomuusoikeus: string
+  kuntailmoitusBtn?: true
+  oppivelvollisuudenKeskeytysBtn?: true
+}) =>
+  [
+    ...rivi("Opiskelutilanne", p.opiskelutilanne),
+    ...rivi("Oppivelvollisuus", p.oppivelvollisuus),
+    ...(p.oppivelvollisuudenKeskeytykset || []).map((d) => `Keskeytetty ${d}`),
+    ...rivi("Oikeus opintojen maksuttomuuteen", p.maksuttomuusoikeus),
+    ...(p.oppivelvollisuudenKeskeytysBtn ? ["Keskeytä oppivelvollisuus"] : []),
+    ...(p.kuntailmoitusBtn
+      ? ["Tee ilmoitus valvontavastuusta", "info_outline"]
+      : []),
+  ].join("\n")
+
+const historiaOpintoikeus = (p: {
+  otsikko: string
+  tila: string
+  maksuttomuus?: string[]
+  toimipiste: string
+  ryhmä?: string
+  vuosiluokkiinSitomatonOpetus?: boolean
+  alkamispäivä: string
+  päättymispäivä?: string
+  perusopetusSuoritettu?: string
+}) =>
+  [
+    "school",
+    p.otsikko,
+    ...rivi("Tila", p.tila),
+    ...rivi("Maksuttomuus", p.maksuttomuus?.join("\n")),
+    ...rivi("Toimipiste", p.toimipiste),
+    ...rivi("Ryhmä", p.ryhmä),
+    ...rivi(
+      "Muuta",
+      p.vuosiluokkiinSitomatonOpetus
+        ? "Vuosiluokkiin sitomaton opetus"
+        : undefined
+    ),
+    ...rivi("Opiskeluoikeuden alkamispäivä", p.alkamispäivä),
+    ...rivi("Opiskeluoikeuden päättymispäivä", p.päättymispäivä),
+    ...rivi("Perusopetus suoritettu", p.perusopetusSuoritettu),
+  ].join("\n")
+
+const historiaOppivelvollisuudenKeskeytys = (range: string) =>
+  ["schedule", "Oppivelvollisuus", `Keskeytetty ${range}`].join("\n")
+
+const historiaOppivelvollisuudenKeskeytysToistaiseksi = (
+  alkamispäivä: string
+) =>
+  [
+    "schedule",
+    "Oppivelvollisuus",
+    `Keskeytetty toistaiseksi ${alkamispäivä} alkaen`,
+  ].join("\n")
+
+const ilmoitetutYhteystiedot = (p: {
+  pvm: string
+  lähiosoite?: string
+  postitoimipaikka?: string
+  maa?: string
+  matkapuhelin?: string
+  sähköposti?: string
+  lähde?: string
+}) =>
+  [
+    "Ilmoitetut yhteystiedot",
+    `keyboard_arrow_rightYhteystiedot – ${p.pvm}`,
+    ...rivi("Lähiosoite", p.lähiosoite),
+    ...rivi("Postitoimipaikka", p.postitoimipaikka),
+    ...rivi("Maa", p.maa),
+    ...rivi("Matkapuhelin", p.matkapuhelin),
+    ...rivi("Sähköposti", p.sähköposti),
+    ...(p.lähde ? [`Lähde: ${p.lähde}`] : []),
+  ].join("\n")
+
+const virallisetYhteystiedot = (p: {
+  lähiosoite?: string
+  postitoimipaikka?: string
+  maa?: string
+  puhelin?: string
+  sähköposti?: string
+}) =>
+  [
+    "Viralliset yhteystiedot",
+    "keyboard_arrow_rightVTJ: Kotiosoite",
+    ...rivi("Lähiosoite", p.lähiosoite),
+    ...rivi("Postitoimipaikka", p.postitoimipaikka),
+    ...rivi("Maa", p.maa),
+    ...rivi("Puhelin", p.puhelin),
+    ...rivi("Sähköposti", p.sähköposti),
+  ].join("\n")
+
+const merge = (...items: string[]) => items.join("\n")
+
 describe("Oppijakohtainen näkymä", () => {
   it("Näyttää oppijan tiedot, johon käyttäjällä on lukuoikeus", async () => {
     await loginAs(ysiluokkaKeskenKeväälläPath, "valpas-jkl-normaali", true)
@@ -133,27 +235,32 @@ describe("Oppijakohtainen näkymä", () => {
       "Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas (221105A3023)"
     )
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000001")
-    await oppivelvollisuustiedotEquals(`
-      Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:	21.11.2023 asti
-      Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
-      Tee ilmoitus valvontavastuusta
-      info_outline
-    `)
-    await opiskeluhistoriaEquals(`
-      school
-      Perusopetus 2012 –
-      Tila: Läsnä
-      Toimipiste: Jyväskylän normaalikoulu
-      Ryhmä: 9C
-      Opiskeluoikeuden alkamispäivä: 15.8.2012
-      school
-      Esiopetuksen suoritus 2010 – 2011
-      Tila: Valmistunut
-      Toimipiste: Jyväskylän normaalikoulu
-      Opiskeluoikeuden alkamispäivä: 13.8.2010
-      Opiskeluoikeuden päättymispäivä: 3.6.2011
-    `)
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Opiskelemassa",
+        oppivelvollisuus: "21.11.2023 asti",
+        maksuttomuusoikeus: "31.12.2025 asti",
+        kuntailmoitusBtn: true,
+      })
+    )
+    await opiskeluhistoriaEquals(
+      merge(
+        historiaOpintoikeus({
+          otsikko: "Perusopetus 2012 –",
+          tila: "Läsnä",
+          toimipiste: "Jyväskylän normaalikoulu",
+          ryhmä: "9C",
+          alkamispäivä: "15.8.2012",
+        }),
+        historiaOpintoikeus({
+          otsikko: "Esiopetuksen suoritus 2010 – 2011",
+          tila: "Valmistunut",
+          toimipiste: "Jyväskylän normaalikoulu",
+          alkamispäivä: "13.8.2010",
+          päättymispäivä: "3.6.2011",
+        })
+      )
+    )
     await hautEquals(`
       list_alt
       Yhteishaku 2021 Hakenut open_in_new
@@ -211,22 +318,26 @@ describe("Oppijakohtainen näkymä", () => {
       "Ysiluokka-valmis-keväällä-2021 Valpas (190605A006K)"
     )
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000011")
-    await oppivelvollisuustiedotEquals(`
-      Opiskelutilanne:	Ei opiskelupaikkaa
-      Oppivelvollisuus:	18.6.2023 asti
-      Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
-      Tee ilmoitus valvontavastuusta
-      info_outline
-    `)
-    await opiskeluhistoriaEquals(`
-      school
-      Perusopetus 2012 – 2021
-      Tila: Valmistunut
-      Toimipiste: Jyväskylän normaalikoulu
-      Ryhmä: 9C
-      Opiskeluoikeuden alkamispäivä: 15.8.2012
-      Opiskeluoikeuden päättymispäivä: 30.5.2021
-    `)
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Ei opiskelupaikkaa",
+        oppivelvollisuus: "18.6.2023 asti",
+        maksuttomuusoikeus: "31.12.2025 asti",
+        kuntailmoitusBtn: true,
+      })
+    )
+    await opiskeluhistoriaEquals(
+      merge(
+        historiaOpintoikeus({
+          otsikko: "Perusopetus 2012 – 2021",
+          tila: "Valmistunut",
+          toimipiste: "Jyväskylän normaalikoulu",
+          ryhmä: "9C",
+          alkamispäivä: "15.8.2012",
+          päättymispäivä: "30.5.2021",
+        })
+      )
+    )
   })
 
   it("Näyttää oppijan tiedot int schoolissa olevalle ysiluokkalaiselle", async () => {
@@ -235,33 +346,39 @@ describe("Oppijakohtainen näkymä", () => {
       "Int-school-9-luokan-jälkeen-lukion-aloittanut Valpas (120505A3434)"
     )
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000094")
-    await oppivelvollisuustiedotEquals(`
-      Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:	11.5.2023 asti
-      Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
-      Tee ilmoitus valvontavastuusta
-      info_outline
-    `)
-    await opiskeluhistoriaEquals(`
-      school
-      Lukion oppimäärä 2021 –
-      Tila: Läsnä
-      Maksuttomuus:
-      15.8.2021–16.8.2021 maksuton
-      17.8.2021–18.8.2021 maksullinen
-      19.8.2021– maksuton
-      Toimipiste: Jyväskylän normaalikoulu
-      Ryhmä: AH
-      Opiskeluoikeuden alkamispäivä: 15.8.2021
-      school
-      International school 2004 –
-      Tila: Läsnä
-      Maksuttomuus: Ei
-      Toimipiste: International School of Helsinki
-      Ryhmä: 9B
-      Opiskeluoikeuden alkamispäivä: 15.8.2004
-      Perusopetus suoritettu: 30.5.2021
-    `)
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Opiskelemassa",
+        oppivelvollisuus: "11.5.2023 asti",
+        maksuttomuusoikeus: "31.12.2025 asti",
+        kuntailmoitusBtn: true,
+      })
+    )
+    await opiskeluhistoriaEquals(
+      merge(
+        historiaOpintoikeus({
+          otsikko: "Lukion oppimäärä 2021 –",
+          tila: "Läsnä",
+          maksuttomuus: [
+            "15.8.2021–16.8.2021 maksuton",
+            "17.8.2021–18.8.2021 maksullinen",
+            "19.8.2021– maksuton",
+          ],
+          toimipiste: "Jyväskylän normaalikoulu",
+          ryhmä: "AH",
+          alkamispäivä: "15.8.2021",
+        }),
+        historiaOpintoikeus({
+          otsikko: "International school 2004 –",
+          tila: "Läsnä",
+          maksuttomuus: ["Ei"],
+          toimipiste: "International School of Helsinki",
+          ryhmä: "9B",
+          alkamispäivä: "15.8.2004",
+          perusopetusSuoritettu: "30.5.2021",
+        })
+      )
+    )
   })
 
   it("Näyttää oppijan vsop-tiedon", async () => {
@@ -269,16 +386,17 @@ describe("Oppijakohtainen näkymä", () => {
     await mainHeadingEquals(
       "Ysiluokka-valmis-keväällä-2021-vsop Valpas (190705A575R)"
     )
-    await opiskeluhistoriaEquals(`
-      school
-      Perusopetus 2012 – 2021
-      Tila: Valmistunut
-      Toimipiste: Jyväskylän normaalikoulu
-      Ryhmä: 9C
-      Muuta: Vuosiluokkiin sitomaton opetus
-      Opiskeluoikeuden alkamispäivä: 15.8.2012
-      Opiskeluoikeuden päättymispäivä: 30.5.2021
-    `)
+    await opiskeluhistoriaEquals(
+      historiaOpintoikeus({
+        otsikko: "Perusopetus 2012 – 2021",
+        tila: "Valmistunut",
+        toimipiste: "Jyväskylän normaalikoulu",
+        ryhmä: "9C",
+        vuosiluokkiinSitomatonOpetus: true,
+        alkamispäivä: "15.8.2012",
+        päättymispäivä: "30.5.2021",
+      })
+    )
   })
 
   it("Näyttää oppijan muut tiedot vaikka hakukoostekysely epäonnistuu", async () => {
@@ -318,122 +436,137 @@ describe("Oppijakohtainen näkymä", () => {
     await loginAs(päällekkäisiäOppivelvollisuuksiaPath, "valpas-jkl-normaali")
     await mainHeadingEquals("Päällekkäisiä Oppivelvollisuuksia (060605A083N)")
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000003")
-    await oppivelvollisuustiedotEquals(`
-      Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:	5.6.2023 asti
-      Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
-      Tee ilmoitus valvontavastuusta
-      info_outline
-    `)
-    await opiskeluhistoriaEquals(`
-      school
-      Perusopetus 2012 –
-      Tila: Läsnä
-      Toimipiste: Jyväskylän normaalikoulu
-      Ryhmä: 9B
-      Opiskeluoikeuden alkamispäivä: 15.8.2012
-      school
-      Perusopetus 2012 –
-      Tila: Läsnä
-      Toimipiste: Kulosaaren ala-aste
-      Ryhmä: 8A
-      Opiskeluoikeuden alkamispäivä: 15.8.2012
-    `)
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Opiskelemassa",
+        oppivelvollisuus: "5.6.2023 asti",
+        maksuttomuusoikeus: "31.12.2025 asti",
+        kuntailmoitusBtn: true,
+      })
+    )
+    await opiskeluhistoriaEquals(
+      merge(
+        historiaOpintoikeus({
+          otsikko: "Perusopetus 2012 –",
+          tila: "Läsnä",
+          toimipiste: "Jyväskylän normaalikoulu",
+          ryhmä: "9B",
+          alkamispäivä: "15.8.2012",
+        }),
+        historiaOpintoikeus({
+          otsikko: "Perusopetus 2012 –",
+          tila: "Läsnä",
+          toimipiste: "Kulosaaren ala-aste",
+          ryhmä: "8A",
+          alkamispäivä: "15.8.2012",
+        })
+      )
+    )
   })
 
   it("Näyttää oppijalta, jolla on useampia peräkkäisiä opiskeluoikeuksia kaikki opiskeluoikeudet", async () => {
     await loginAs(lukionAloittanutPath, "valpas-jkl-normaali")
     await mainHeadingEquals("LukionAloittanut Valpas (290405A871A)")
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000015")
-    await oppivelvollisuustiedotEquals(`
-      Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:	28.4.2023 asti
-      Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
-      Tee ilmoitus valvontavastuusta
-      info_outline
-    `)
-    await opiskeluhistoriaEquals(`
-      school
-      Lukion oppimäärä 2021 –
-      Tila: Läsnä
-      Maksuttomuus:
-      15.8.2021–16.8.2021 maksuton
-      17.8.2021–18.8.2021 maksullinen
-      19.8.2021– maksuton
-      Toimipiste: Jyväskylän normaalikoulu
-      Ryhmä: AH
-      Opiskeluoikeuden alkamispäivä: 15.8.2021
-      school
-      Perusopetus 2012 – 2021
-      Tila: Valmistunut
-      Toimipiste: Jyväskylän normaalikoulu
-      Ryhmä: 9C
-      Opiskeluoikeuden alkamispäivä: 15.8.2012
-      Opiskeluoikeuden päättymispäivä: 30.5.2021
-    `)
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Opiskelemassa",
+        oppivelvollisuus: "28.4.2023 asti",
+        maksuttomuusoikeus: "31.12.2025 asti",
+        kuntailmoitusBtn: true,
+      })
+    )
+    await opiskeluhistoriaEquals(
+      merge(
+        historiaOpintoikeus({
+          otsikko: "Lukion oppimäärä 2021 –",
+          tila: "Läsnä",
+          maksuttomuus: [
+            "15.8.2021–16.8.2021 maksuton",
+            "17.8.2021–18.8.2021 maksullinen",
+            "19.8.2021– maksuton",
+          ],
+          toimipiste: "Jyväskylän normaalikoulu",
+          ryhmä: "AH",
+          alkamispäivä: "15.8.2021",
+        }),
+        historiaOpintoikeus({
+          otsikko: "Perusopetus 2012 – 2021",
+          tila: "Valmistunut",
+          toimipiste: "Jyväskylän normaalikoulu",
+          ryhmä: "9C",
+          alkamispäivä: "15.8.2012",
+          päättymispäivä: "30.5.2021",
+        })
+      )
+    )
   })
 
   it("Näyttää oppijalta, jolla opiskeluoikeus alkaa tulevaisuudessa oikeat tiedot", async () => {
     await loginAs(lukionLokakuussaAloittanutPath, "valpas-jkl-normaali")
     await mainHeadingEquals("LukionLokakuussaAloittanut Valpas (180405A819J)")
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000016")
-    await oppivelvollisuustiedotEquals(`
-      Opiskelutilanne:	Ei opiskelupaikkaa
-      Oppivelvollisuus:	17.4.2023 asti
-      Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
-      Tee ilmoitus valvontavastuusta
-      info_outline
-    `)
-    await opiskeluhistoriaEquals(`
-      school
-      Lukion oppimäärä 2021 –
-      Tila: Opiskeluoikeus alkaa 3.10.2021
-      Maksuttomuus:
-      3.10.2021– maksuton
-      Toimipiste: Jyväskylän normaalikoulu
-      Ryhmä: AH
-      Opiskeluoikeuden alkamispäivä: 3.10.2021
-      school
-      Perusopetus 2012 – 2021
-      Tila: Valmistunut
-      Toimipiste: Jyväskylän normaalikoulu
-      Ryhmä: 9C
-      Opiskeluoikeuden alkamispäivä: 15.8.2012
-      Opiskeluoikeuden päättymispäivä: 30.5.2021
-    `)
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Ei opiskelupaikkaa",
+        oppivelvollisuus: "17.4.2023 asti",
+        maksuttomuusoikeus: "31.12.2025 asti",
+        kuntailmoitusBtn: true,
+      })
+    )
+    await opiskeluhistoriaEquals(
+      merge(
+        historiaOpintoikeus({
+          otsikko: "Lukion oppimäärä 2021 –",
+          tila: "Opiskeluoikeus alkaa 3.10.2021",
+          maksuttomuus: ["3.10.2021– maksuton"],
+          toimipiste: "Jyväskylän normaalikoulu",
+          ryhmä: "AH",
+          alkamispäivä: "3.10.2021",
+        }),
+        historiaOpintoikeus({
+          otsikko: "Perusopetus 2012 – 2021",
+          tila: "Valmistunut",
+          toimipiste: "Jyväskylän normaalikoulu",
+          ryhmä: "9C",
+          alkamispäivä: "15.8.2012",
+          päättymispäivä: "30.5.2021",
+        })
+      )
+    )
   })
 
   it("Näyttää oppijan yhteystiedot ilman turvakieltovaroitusta", async () => {
     await loginAs(ysiluokkaKeskenKeväälläPath, "valpas-jkl-normaali")
 
-    await ilmoitetutYhteystiedotEquals(`
-      Ilmoitetut yhteystiedot
-      keyboard_arrow_rightYhteystiedot – 9.4.2020
-      Lähiosoite:	Esimerkkikatu 123
-      Postitoimipaikka:  99999 Helsinki
-      Matkapuhelin:	0401234567
-      Sähköposti:	Valpas.Oppivelvollinen-ysiluokka-kesken-keväällä-2021@gmail.com
-      Lähde: Hakulomake – Yhteishaku 2021
-    `)
+    const pvm = "9.4.2020"
+    await ilmoitetutYhteystiedotEquals(
+      ilmoitetutYhteystiedot({
+        pvm,
+        lähiosoite: "Esimerkkikatu 123",
+        postitoimipaikka: "99999 Helsinki",
+        matkapuhelin: "0401234567",
+        sähköposti:
+          "Valpas.Oppivelvollinen-ysiluokka-kesken-keväällä-2021@gmail.com",
+        lähde: "Hakulomake – Yhteishaku 2021",
+      })
+    )
 
-    await virallisetYhteystiedotEquals(`
-      Viralliset yhteystiedot
-      keyboard_arrow_rightVTJ: Kotiosoite
-      Lähiosoite:	Esimerkkitie 10
-      Postitoimipaikka:	99999 Helsinki
-      Maa: Costa rica
-      Puhelin:	0401122334
-      Sähköposti:	valpas@gmail.com
-    `)
+    await virallisetYhteystiedotEquals(
+      virallisetYhteystiedot({
+        lähiosoite: "Esimerkkitie 10",
+        postitoimipaikka: "99999 Helsinki",
+        maa: "Costa rica",
+        puhelin: "0401122334",
+        sähköposti: "valpas@gmail.com",
+      })
+    )
 
     // Klikkaukset kääntävät näkyvät ja piilotetut arvot päinvastaiseen tilaan
     const labels = await $$("#yhteystiedot .accordion__label")
     await Promise.all(labels.map((label) => label.click()))
 
-    await ilmoitetutYhteystiedotEquals(`
-      Ilmoitetut yhteystiedot
-      keyboard_arrow_rightYhteystiedot – 9.4.2020
-    `)
+    await ilmoitetutYhteystiedotEquals(ilmoitetutYhteystiedot({ pvm }))
 
     await turvakieltoVaroitusNotVisible()
   })
@@ -444,30 +577,32 @@ describe("Oppijakohtainen näkymä", () => {
       "valpas-jkl-normaali"
     )
 
-    await ilmoitetutYhteystiedotEquals(`
-      Ilmoitetut yhteystiedot
-      keyboard_arrow_rightYhteystiedot – 10.4.2020
-      Lähiosoite:	Uudempi esimerkkikatu 987
-      Postitoimipaikka:  99999 Helsinki
-      Matkapuhelin:	0401234567
-      Sähköposti:	Valpas.LuokallejäänytYsiluokkalainen@gmail.com
-      Lähde: Hakulomake – Yhteishaku 2021
-    `)
+    await ilmoitetutYhteystiedotEquals(
+      ilmoitetutYhteystiedot({
+        pvm: "10.4.2020",
+        lähiosoite: "Uudempi esimerkkikatu 987",
+        postitoimipaikka: "99999 Helsinki",
+        matkapuhelin: "0401234567",
+        sähköposti: "Valpas.LuokallejäänytYsiluokkalainen@gmail.com",
+        lähde: "Hakulomake – Yhteishaku 2021",
+      })
+    )
   })
 
   it("Näyttää oppijalta ruotsissa olevan ilmotukselta tulevan osoitteen", async () => {
     await loginAs(päällekkäisiäOppivelvollisuuksiaPath, "valpas-jkl-normaali")
 
-    await ilmoitetutYhteystiedotEquals(`
-      Ilmoitetut yhteystiedot
-      keyboard_arrow_rightYhteystiedot – 9.4.2020
-      Lähiosoite:	Kungsgatan 123
-      Postitoimipaikka:  99999 STOCKHOLM
-      Maa: Ruotsi
-      Matkapuhelin:	0401234567
-      Sähköposti:	Oppivelvollisuuksia.Päällekkäisiä@gmail.com
-      Lähde: Hakulomake – Yhteishaku 2021
-    `)
+    await ilmoitetutYhteystiedotEquals(
+      ilmoitetutYhteystiedot({
+        pvm: "9.4.2020",
+        lähiosoite: "Kungsgatan 123",
+        postitoimipaikka: "99999 STOCKHOLM",
+        maa: "Ruotsi",
+        matkapuhelin: "0401234567",
+        sähköposti: "Oppivelvollisuuksia.Päällekkäisiä@gmail.com",
+        lähde: "Hakulomake – Yhteishaku 2021",
+      })
+    )
   })
 
   it("Yhteystietoja ei näytetä, jos oppijalla on turvakielto", async () => {
@@ -521,15 +656,16 @@ describe("Oppijakohtainen näkymä", () => {
   it("Oppivelvollisuuden suorittamiseen kelpaamattomia opintoja ei näytetä", async () => {
     await loginAs(lukionAineopinnotAloittanutPath, "valpas-jkl-normaali")
     await mainHeadingEquals("LukionAineopinnotAloittanut Valpas (040305A559A)")
-    await opiskeluhistoriaEquals(`
-      school
-      Perusopetus 2012 – 2021
-      Tila: Valmistunut
-      Toimipiste: Jyväskylän normaalikoulu
-      Ryhmä: 9C
-      Opiskeluoikeuden alkamispäivä: 15.8.2012
-      Opiskeluoikeuden päättymispäivä: 30.5.2021
-    `)
+    await opiskeluhistoriaEquals(
+      historiaOpintoikeus({
+        otsikko: "Perusopetus 2012 – 2021",
+        tila: "Valmistunut",
+        toimipiste: "Jyväskylän normaalikoulu",
+        ryhmä: "9C",
+        alkamispäivä: "15.8.2012",
+        päättymispäivä: "30.5.2021",
+      })
+    )
   })
 
   it("Näyttää detaljisivun maksuttomuuskäyttäjälle lukio-oppijasta", async () => {
@@ -537,20 +673,23 @@ describe("Oppijakohtainen näkymä", () => {
 
     await mainHeadingEquals("Lukio-opiskelija Valpas (070504A717P)")
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000004")
-    await oppivelvollisuustiedotEquals(`
-      Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:	6.5.2022 asti
-      Oikeus opintojen maksuttomuuteen: 31.12.2024 asti
-    `)
-    await opiskeluhistoriaEquals(`
-      school
-      Lukion oppimäärä 2019 –
-      Tila: Läsnä
-      Maksuttomuus: Ei
-      Toimipiste: Jyväskylän normaalikoulu
-      Ryhmä: AH
-      Opiskeluoikeuden alkamispäivä: 1.8.2019
-    `)
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Opiskelemassa",
+        oppivelvollisuus: "6.5.2022 asti",
+        maksuttomuusoikeus: "31.12.2024 asti",
+      })
+    )
+    await opiskeluhistoriaEquals(
+      historiaOpintoikeus({
+        otsikko: "Lukion oppimäärä 2019 –",
+        tila: "Läsnä",
+        maksuttomuus: ["Ei"],
+        toimipiste: "Jyväskylän normaalikoulu",
+        ryhmä: "AH",
+        alkamispäivä: "1.8.2019",
+      })
+    )
   })
 
   it("Näyttää detaljisivun maksuttomuuskäyttäjälle lukio-oppijasta oppivelvollisuuden päättymisen jälkeenkin", async () => {
@@ -560,20 +699,23 @@ describe("Oppijakohtainen näkymä", () => {
 
     await mainHeadingEquals("Lukio-opiskelija Valpas (070504A717P)")
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000004")
-    await oppivelvollisuustiedotEquals(`
-      Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:	6.5.2022 asti
-      Oikeus opintojen maksuttomuuteen: 31.12.2024 asti
-    `)
-    await opiskeluhistoriaEquals(`
-      school
-      Lukion oppimäärä 2019 –
-      Tila: Läsnä
-      Maksuttomuus: Ei
-      Toimipiste: Jyväskylän normaalikoulu
-      Ryhmä: AH
-      Opiskeluoikeuden alkamispäivä: 1.8.2019
-    `)
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Opiskelemassa",
+        oppivelvollisuus: "6.5.2022 asti",
+        maksuttomuusoikeus: "31.12.2024 asti",
+      })
+    )
+    await opiskeluhistoriaEquals(
+      historiaOpintoikeus({
+        otsikko: "Lukion oppimäärä 2019 –",
+        tila: "Läsnä",
+        maksuttomuus: ["Ei"],
+        toimipiste: "Jyväskylän normaalikoulu",
+        ryhmä: "AH",
+        alkamispäivä: "1.8.2019",
+      })
+    )
   })
 
   it("Ei näytä detaljisivua maksuttomuuskäyttäjälle maksuttomuuden päättymisen jälkeen", async () => {
@@ -595,23 +737,25 @@ describe("Oppijakohtainen näkymä", () => {
 
     await mainHeadingEquals("Lukio-opiskelija Valpas (070504A717P)")
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000004")
-    await oppivelvollisuustiedotEquals(`
-      Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus: 6.5.2022 asti
-      Oikeus opintojen maksuttomuuteen: 31.12.2024 asti
-      Keskeytä oppivelvollisuus
-      Tee ilmoitus valvontavastuusta
-      info_outline
-    `)
-    await opiskeluhistoriaEquals(`
-      school
-      Lukion oppimäärä 2019 –
-      Tila: Läsnä
-      Maksuttomuus: Ei
-      Toimipiste: Jyväskylän normaalikoulu
-      Ryhmä: AH
-      Opiskeluoikeuden alkamispäivä: 1.8.2019
-    `)
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Opiskelemassa",
+        oppivelvollisuus: "6.5.2022 asti",
+        maksuttomuusoikeus: "31.12.2024 asti",
+        kuntailmoitusBtn: true,
+        oppivelvollisuudenKeskeytysBtn: true,
+      })
+    )
+    await opiskeluhistoriaEquals(
+      historiaOpintoikeus({
+        otsikko: "Lukion oppimäärä 2019 –",
+        tila: "Läsnä",
+        maksuttomuus: ["Ei"],
+        toimipiste: "Jyväskylän normaalikoulu",
+        ryhmä: "AH",
+        alkamispäivä: "1.8.2019",
+      })
+    )
   })
 
   it("Näyttää detaljisivun suorittamisen valvojalle lukio-oppijasta", async () => {
@@ -619,22 +763,24 @@ describe("Oppijakohtainen näkymä", () => {
 
     await mainHeadingEquals("Lukio-opiskelija Valpas (070504A717P)")
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000004")
-    await oppivelvollisuustiedotEquals(`
-      Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:	6.5.2022 asti
-      Oikeus opintojen maksuttomuuteen: 31.12.2024 asti
-      Tee ilmoitus valvontavastuusta
-      info_outline
-    `)
-    await opiskeluhistoriaEquals(`
-      school
-      Lukion oppimäärä 2019 –
-      Tila: Läsnä
-      Maksuttomuus: Ei
-      Toimipiste: Jyväskylän normaalikoulu
-      Ryhmä: AH
-      Opiskeluoikeuden alkamispäivä: 1.8.2019
-    `)
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Opiskelemassa",
+        oppivelvollisuus: "6.5.2022 asti",
+        maksuttomuusoikeus: "31.12.2024 asti",
+        kuntailmoitusBtn: true,
+      })
+    )
+    await opiskeluhistoriaEquals(
+      historiaOpintoikeus({
+        otsikko: "Lukion oppimäärä 2019 –",
+        tila: "Läsnä",
+        maksuttomuus: ["Ei"],
+        toimipiste: "Jyväskylän normaalikoulu",
+        ryhmä: "AH",
+        alkamispäivä: "1.8.2019",
+      })
+    )
   })
 
   it("Näyttää detaljisivun maksuttomuuden oppijasta, jolla ei ole oppivelvollisuuden suorittamiseen kelpaavaa opiskeluoikeutta", async () => {
@@ -688,29 +834,28 @@ describe("Oppijakohtainen näkymä", () => {
     await mainHeadingEquals(
       "Oppivelvollisuus-keskeytetty-määräajaksi Valpas (181005A1560)"
     )
-    await oppivelvollisuustiedotEquals(`
-      Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus:
-        17.10.2023 asti
-        Keskeytetty 1.3.2021 – 30.9.2021
-      Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
-      Tee ilmoitus valvontavastuusta
-      info_outline
-    `)
-    await opiskeluhistoriaEquals(`
-      schedule
-      Oppivelvollisuus
-      Keskeytetty 1.3.2021 – 30.9.2021
-      schedule
-      Oppivelvollisuus
-      Keskeytetty 1.1.2020 – 30.1.2020
-      school
-      Perusopetus 2012 –
-      Tila: Läsnä
-      Toimipiste: Jyväskylän normaalikoulu
-      Ryhmä:	9C
-      Opiskeluoikeuden alkamispäivä: 15.8.2012
-    `)
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Opiskelemassa",
+        oppivelvollisuus: "17.10.2023 asti",
+        oppivelvollisuudenKeskeytykset: ["1.3.2021 – 30.9.2021"],
+        maksuttomuusoikeus: "31.12.2025 asti",
+        kuntailmoitusBtn: true,
+      })
+    )
+    await opiskeluhistoriaEquals(
+      merge(
+        historiaOppivelvollisuudenKeskeytys("1.3.2021 – 30.9.2021"),
+        historiaOppivelvollisuudenKeskeytys("1.1.2020 – 30.1.2020"),
+        historiaOpintoikeus({
+          otsikko: "Perusopetus 2012 –",
+          tila: "Läsnä",
+          toimipiste: "Jyväskylän normaalikoulu",
+          ryhmä: "9C",
+          alkamispäivä: "15.8.2012",
+        })
+      )
+    )
   })
 
   it("Näyttää oppijan oppivelvollisuuden keskeytyksen toistaiseksi", async () => {
@@ -721,24 +866,26 @@ describe("Oppijakohtainen näkymä", () => {
     await mainHeadingEquals(
       "Oppivelvollisuus-keskeytetty-toistaiseksi Valpas (150905A1823)"
     )
-    await oppivelvollisuustiedotEquals(`
-      Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus: Keskeytetty toistaiseksi 1.1.2021 alkaen
-      Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
-      Tee ilmoitus valvontavastuusta
-      info_outline
-    `)
-    await opiskeluhistoriaEquals(`
-      schedule
-      Oppivelvollisuus
-      Keskeytetty toistaiseksi 1.1.2021 alkaen
-      school
-      Perusopetus 2012 –
-      Tila: Läsnä
-      Toimipiste: Jyväskylän normaalikoulu
-      Ryhmä:	9C
-      Opiskeluoikeuden alkamispäivä: 15.8.2012
-    `)
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Opiskelemassa",
+        oppivelvollisuus: "Keskeytetty toistaiseksi 1.1.2021 alkaen",
+        maksuttomuusoikeus: "31.12.2025 asti",
+        kuntailmoitusBtn: true,
+      })
+    )
+    await opiskeluhistoriaEquals(
+      merge(
+        historiaOppivelvollisuudenKeskeytysToistaiseksi("1.1.2021"),
+        historiaOpintoikeus({
+          otsikko: "Perusopetus 2012 –",
+          tila: "Läsnä",
+          toimipiste: "Jyväskylän normaalikoulu",
+          ryhmä: "9C",
+          alkamispäivä: "15.8.2012",
+        })
+      )
+    )
   })
 
   it("Näyttää oppijan oppivelvollisuuden umpeutuneen määräaikaisen keskeytyksen oikein", async () => {
@@ -753,27 +900,27 @@ describe("Oppijakohtainen näkymä", () => {
     await mainHeadingEquals(
       "Oppivelvollisuus-keskeytetty-määräajaksi Valpas (181005A1560)"
     )
-    await oppivelvollisuustiedotEquals(`
-      Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus: 17.10.2023 asti
-      Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
-      Tee ilmoitus valvontavastuusta
-      info_outline
-    `)
-    await opiskeluhistoriaEquals(`
-      schedule
-      Oppivelvollisuus
-      Keskeytetty 1.3.2021 – 30.9.2021
-      schedule
-      Oppivelvollisuus
-      Keskeytetty 1.1.2020 – 30.1.2020
-      school
-      Perusopetus 2012 –
-      Tila: Läsnä
-      Toimipiste: Jyväskylän normaalikoulu
-      Ryhmä:	9C
-      Opiskeluoikeuden alkamispäivä: 15.8.2012
-    `)
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Opiskelemassa",
+        oppivelvollisuus: "17.10.2023 asti",
+        maksuttomuusoikeus: "31.12.2025 asti",
+        kuntailmoitusBtn: true,
+      })
+    )
+    await opiskeluhistoriaEquals(
+      merge(
+        historiaOppivelvollisuudenKeskeytys("1.3.2021 – 30.9.2021"),
+        historiaOppivelvollisuudenKeskeytys("1.1.2020 – 30.1.2020"),
+        historiaOpintoikeus({
+          otsikko: "Perusopetus 2012 –",
+          tila: "Läsnä",
+          toimipiste: "Jyväskylän normaalikoulu",
+          ryhmä: "9C",
+          alkamispäivä: "15.8.2012",
+        })
+      )
+    )
   })
 
   it("Oppivelvollisuuden keskeytys toimii oikein", async () => {
@@ -799,14 +946,17 @@ describe("Oppijakohtainen näkymä", () => {
     await clickElement(".ovkeskeytys__option:nth-child(2) .checkbox__labeltext")
     await clickElement("#ovkeskeytys-submit")
 
-    await oppivelvollisuustiedotEquals(`
-      Opiskelutilanne:	Opiskelemassa
-      Oppivelvollisuus: Keskeytetty toistaiseksi ${formatDate(today())} alkaen
-      Oikeus opintojen maksuttomuuteen: 31.12.2025 asti
-      Keskeytä oppivelvollisuus
-      Tee ilmoitus valvontavastuusta
-      info_outline
-    `)
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Opiskelemassa",
+        oppivelvollisuus: `Keskeytetty toistaiseksi ${formatDate(
+          today()
+        )} alkaen`,
+        maksuttomuusoikeus: "31.12.2025 asti",
+        oppivelvollisuudenKeskeytysBtn: true,
+        kuntailmoitusBtn: true,
+      })
+    )
   })
 
   it("Näytä väliaikaisesti keskeytynyt opiskeluoikeus", async () => {
@@ -817,15 +967,16 @@ describe("Oppijakohtainen näkymä", () => {
 
     await resetMockData("2021-08-15")
 
-    await opiskeluhistoriaEquals(`
-      school
-      Lukion oppimäärä 2021 –
-      Tila:	Väliaikaisesti keskeytynyt 2.8.2021
-      Maksuttomuus: Ei
-      Toimipiste: Jyväskylän normaalikoulu
-      Ryhmä:	AH
-      Opiskeluoikeuden alkamispäivä:	1.8.2021
-    `)
+    await opiskeluhistoriaEquals(
+      historiaOpintoikeus({
+        otsikko: "Lukion oppimäärä 2021 –",
+        tila: "Väliaikaisesti keskeytynyt 2.8.2021",
+        maksuttomuus: ["Ei"],
+        toimipiste: "Jyväskylän normaalikoulu",
+        ryhmä: "AH",
+        alkamispäivä: "1.8.2021",
+      })
+    )
   })
 
   it("Näytä lomailevan ammattikoululaisen opiskeluoikeus", async () => {
@@ -833,15 +984,16 @@ describe("Oppijakohtainen näkymä", () => {
 
     await resetMockData("2021-08-15")
 
-    await opiskeluhistoriaEquals(`
-      school
-      Ammatillinen tutkinto 2021 –
-      Tila:	Loma
-      Maksuttomuus:
-      1.8.2021– maksuton
-      Toimipiste: Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka
-      Opiskeluoikeuden alkamispäivä:	1.8.2021
-    `)
+    await opiskeluhistoriaEquals(
+      historiaOpintoikeus({
+        otsikko: "Ammatillinen tutkinto 2021 –",
+        tila: "Loma",
+        maksuttomuus: ["1.8.2021– maksuton"],
+        toimipiste:
+          "Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka",
+        alkamispäivä: "1.8.2021",
+      })
+    )
   })
 
   it("Näytä koulutustyyppi oikein", async () => {
@@ -849,30 +1001,33 @@ describe("Oppijakohtainen näkymä", () => {
 
     await resetMockData("2021-08-15")
 
-    await opiskeluhistoriaEquals(`
-      school
-      VALMA 2012 –
-      Tila:	Läsnä
-      Maksuttomuus: Ei
-      Toimipiste:	Stadin ammatti- ja aikuisopisto
-      Opiskeluoikeuden alkamispäivä:	1.9.2012
-    `)
+    await opiskeluhistoriaEquals(
+      historiaOpintoikeus({
+        otsikko: "VALMA 2012 –",
+        tila: "Läsnä",
+        maksuttomuus: ["Ei"],
+        toimipiste: "Stadin ammatti- ja aikuisopisto",
+        alkamispäivä: "1.9.2012",
+      })
+    )
   })
 
   it("Näyttää maksuttomuuden pidennyksen", async () => {
     await loginAs(maksuttomuuttaPidennettyPath, "valpas-monta")
     await mainHeadingEquals("Maksuttomuutta-pidennetty Valpas (070604A200U)")
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000127")
-    await opiskeluhistoriaEquals(`
-      school
-      Ammatillinen tutkinto 2021 –
-      Tila:	Läsnä
-      Maksuttomuus:
-      Oikeutta maksuttomuuteen pidennetty 1.9.2021–31.12.2023
-      1.9.2021– maksuton
-      Toimipiste:	Omnia Koulutus, Arbetarinstitut
-      Opiskeluoikeuden alkamispäivä: 1.9.2021
-    `)
+    await opiskeluhistoriaEquals(
+      historiaOpintoikeus({
+        otsikko: "Ammatillinen tutkinto 2021 –",
+        tila: "Läsnä",
+        maksuttomuus: [
+          "Oikeutta maksuttomuuteen pidennetty 1.9.2021–31.12.2023",
+          "1.9.2021– maksuton",
+        ],
+        toimipiste: "Omnia Koulutus, Arbetarinstitut",
+        alkamispäivä: "1.9.2021",
+      })
+    )
   })
 
   it("Näyttää perusopetukseen valmistavan opetuksen opiskeluhistoriassa", async () => {
@@ -881,12 +1036,13 @@ describe("Oppijakohtainen näkymä", () => {
       "Perusopetukseen-valmistautuva Valpas (151011A1403)"
     )
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000131")
-    await opiskeluhistoriaEquals(`
-      school
-      Perusopetukseen valmistava opetus 2021 –
-      Tila: Läsnä
-      Toimipiste: Jyväskylän normaalikoulu
-      Opiskeluoikeuden alkamispäivä: 1.5.2021
-    `)
+    await opiskeluhistoriaEquals(
+      historiaOpintoikeus({
+        otsikko: "Perusopetukseen valmistava opetus 2021 –",
+        tila: "Läsnä",
+        toimipiste: "Jyväskylän normaalikoulu",
+        alkamispäivä: "1.5.2021",
+      })
+    )
   })
 })
