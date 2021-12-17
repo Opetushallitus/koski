@@ -96,6 +96,7 @@ case class LukionOppiaineidenOppimäärätKoodi2019(
   koodiarvo: String = "lukionaineopinnot"
 ) extends PaikallinenKoodiviite {
   override def nimi: LocalizedString = LocalizedString.empty
+  override def toString = s"$koodiarvo"
 }
 
 trait LukionOppimääränOsasuoritus2019 extends LukionOppimääränPäätasonOsasuoritus with OpintopistelaajuuksienYhteislaskennallinenSuoritus {
