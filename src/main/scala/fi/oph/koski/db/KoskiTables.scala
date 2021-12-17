@@ -4,10 +4,10 @@ import java.sql.{Date, Timestamp}
 import java.time.LocalDateTime
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.json.JsonManipulation.removeFields
-import fi.oph.koski.json.{SensitiveDataAllowed, SensitiveDataFilterSpecialCases}
+import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, Rooli}
 import fi.oph.koski.schema.KoskiSchema.skipSyntheticProperties
-import fi.oph.koski.schema.{TutkinnonOsanSuoritus, _}
+import fi.oph.koski.schema.{FilterNonAnnotationableSensitiveData, TutkinnonOsanSuoritus, _}
 import fi.oph.scalaschema.extraction.ValidationError
 import fi.oph.scalaschema.{Serializer, _}
 import org.json4s._
@@ -268,7 +268,7 @@ case class OpiskeluoikeusRow(id: Int,
   def toOpiskeluoikeus(implicit user: SensitiveDataAllowed): Either[List[ValidationError], KoskeenTallennettavaOpiskeluoikeus] = {
     KoskiTables.OpiskeluoikeusTable.readAsOpiskeluoikeus(data, oid, versionumero, aikaleima) match {
       case Right(oo: KoskeenTallennettavaOpiskeluoikeus) =>
-        Right(SensitiveDataFilterSpecialCases.filterSpecialCases(oo))
+        Right(FilterNonAnnotationableSensitiveData.filter(oo))
       case Left(left) => Left(left)
     }
   }

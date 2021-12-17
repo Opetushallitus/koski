@@ -354,6 +354,9 @@ trait AmmatillisenTutkinnonOsittainenTaiKokoSuoritus extends AmmatillinenPääta
   def suoritustapa: Koodistokoodiviite
 }
 
+// Tätä traittia käytetään auttamaan lisätiedollisten osasuoritusten tunnistamista.
+// Ammatillisessa opiskeluoikeudessa joudutaan tietosuojasyistä filtteröimään
+// tietynlaiset lisätiedot pois. Katso FilterNonAnnotationableSensitiveData
 trait AmmatillisenTutkinnonOsanLisätiedollinen extends Suoritus {
   @Tooltip("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa. Sisältää lisätiedon tyypin sekä vapaamuotoisen kuvauksen.")
   @ComplexObject
@@ -472,8 +475,7 @@ case class OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpint
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
 ) extends JatkoOpintovalmiuksiaTukevienOpintojenSuoritus
   with OsittaisenAmmatillisenTutkinnonOsanSuoritus {
-  override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus =
-    shapeless.lens[OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus].field[Option[List[AmmatillisenTutkinnonOsanLisätieto]]]("lisätiedot").set(this)(lisätiedot)
+  override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus = this
 }
 
 @Description("Korkeakouluopintoja")
@@ -488,8 +490,7 @@ case class OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
 ) extends KorkeakouluopintoSuoritus
   with OsittaisenAmmatillisenTutkinnonOsanSuoritus {
-  override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus =
-    shapeless.lens[OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus].field[Option[List[AmmatillisenTutkinnonOsanLisätieto]]]("lisätiedot").set(this)(lisätiedot)
+  override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus = this
 }
 
 
@@ -557,8 +558,7 @@ case class AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuorit
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
 ) extends JatkoOpintovalmiuksiaTukevienOpintojenSuoritus
   with AmmatillisenTutkinnonOsanSuoritus {
-  override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus =
-    shapeless.lens[AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus].field[Option[List[AmmatillisenTutkinnonOsanLisätieto]]]("lisätiedot").set(this)(lisätiedot)
+  override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus = this
 }
 
 @Description("Korkeakouluopintoja")
@@ -573,8 +573,7 @@ case class AmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
 ) extends KorkeakouluopintoSuoritus
   with AmmatillisenTutkinnonOsanSuoritus {
-  override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): AmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus =
-    shapeless.lens[AmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus].field[Option[List[AmmatillisenTutkinnonOsanLisätieto]]]("lisätiedot").set(this)(lisätiedot)
+  override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): AmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus = this
 }
 
 trait JatkoOpintovalmiuksiaTukevienOpintojenSuoritus extends ValinnanMahdollisuus
@@ -792,6 +791,8 @@ case class MuidenOpintovalmiuksiaTukevienOpintojenSuoritus(
   with AmmatillisenTutkinnonOsanLisätiedollinen {
   override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): MuidenOpintovalmiuksiaTukevienOpintojenSuoritus =
     shapeless.lens[MuidenOpintovalmiuksiaTukevienOpintojenSuoritus].field[Option[List[AmmatillisenTutkinnonOsanLisätieto]]]("lisätiedot").set(this)(lisätiedot)
+  override def osasuoritusLista: List[Suoritus] = List()
+  override def withOsasuoritukset(oss: Option[List[Suoritus]]): Suoritus = this
 }
 
 @Title("Lukion oppiaineen tai lukion kurssin suoritus")
