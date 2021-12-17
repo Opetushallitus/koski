@@ -500,17 +500,6 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         )
       }
     }
-
-    "Opiskeluoikeudella on tehostetun tuen päätös osa-aikaisesta erityisopetuksesta, muttei tietoa suorituksessa -> HTTP 400" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(lisätiedot = perusopetuksenOpiskeluoikeudenLisätiedotJoissaOsaAikainenErityisopetusTehostetunTuenPäätöksessä,
-        suoritukset = List(yhdeksännenLuokanSuoritus.copy(osaAikainenErityisopetus = false), kahdeksannenLuokanSuoritus.copy(osaAikainenErityisopetus = false))
-      )) {
-        verifyResponseStatus(400,
-          KoskiErrorCategory.badRequest.validation.osaAikainenErityisopetus.kirjausPuuttuuSuorituksesta(
-            "Jos osa-aikaisesta erityisopetuksesta on päätös opiskeluoikeuden lisätiedoissa, se pitää kirjata myös vuosiluokan suoritukseen")
-        )
-      }
-    }
   }
 
   "Äidinkielen omainen oppiaine" - {
