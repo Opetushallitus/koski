@@ -3,7 +3,7 @@ import chrome from "selenium-webdriver/chrome"
 
 describe("Testiympäristön oikeellisuus", () => {
   it("Chromedriver on ajantasainen (päivitä uusin valpas-web -kansiossa: npm i -D chromedriver@latest)", async () => {
-    jest.setTimeout(15000)
+    jest.setTimeout(30000)
 
     const options = new chrome.Options().headless()
     const builder = new Builder().forBrowser("chrome").setChromeOptions(options)

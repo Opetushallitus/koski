@@ -1,6 +1,6 @@
 package fi.oph.koski.valpas
 
-import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessageField, ValpasOperation}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
@@ -54,6 +54,32 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
       }
     }
   }
+
+  "Hetu ei päädy lokiin - kunta" in {
+    testHetunMaskausAccessLogissa(getHenkilöhakuKuntaUrl(ValpasMockOppijat.lukionAloittanut.hetu.get))
+  }
+
+  "Hetu ei päädy lokiin - maksuttomuus" in {
+    testHetunMaskausAccessLogissa(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.lukionAloittanut.hetu.get))
+  }
+
+  "Hetu ei päädy lokiin - suorittaminen" in {
+    testHetunMaskausAccessLogissa(getHenkilöhakuSuorittaminenUrl(ValpasMockOppijat.lukionAloittanut.hetu.get))
+  }
+
+  private def testHetunMaskausAccessLogissa(url: String) = {
+    AccessLogTester.clearMessages
+    val maskedHetu = "******-****"
+    authGet(url, ValpasMockUsers.valpasMonta) {
+      verifyResponseStatusOk()
+      Thread.sleep(200) // wait for logging to catch up (there seems to be a slight delay)
+      AccessLogTester.getLogMessages.lastOption.get.getMessage.toString should include(maskedHetu)
+    }
+  }
+
+  private def getHenkilöhakuKuntaUrl(hetu: String) = s"/valpas/api/henkilohaku/kunta/$hetu"
+  private def getHenkilöhakuMaksuttomuusUrl(hetu: String) = s"/valpas/api/henkilohaku/maksuttomuus/$hetu"
+  private def getHenkilöhakuSuorittaminenUrl(hetu: String) = s"/valpas/api/henkilohaku/suorittaminen/$hetu"
 
   def getOppijaUrl(oppijaOid: String) = s"/valpas/api/oppija/$oppijaOid"
 
