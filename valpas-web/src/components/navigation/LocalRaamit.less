@@ -145,3 +145,30 @@
     }
   }
 }
+
+.localraamit--kansalainen {
+  @oppija-color: #3a7a10;
+  @oppija-color-lighten: lighten(@oppija-color, 10);
+
+  background: @oppija-color;
+
+  .localraamit__testapibutton {
+    background: @oppija-color;
+  }
+
+  .localraamit__testapistate {
+    color: #fff;
+  }
+
+  .localraamit__userinfo {
+    .localraamit__languagebutton,
+    .localraamit__logoutbutton {
+      background: @oppija-color;
+    }
+    .localraamit__languagebutton.localraamit__currentlanguage,
+    .localraamit__languagebutton:hover,
+    .localraamit__logoutbutton:hover {
+      background: @oppija-color-lighten;
+    }
+  }
+}

@@ -13,6 +13,7 @@ class ValpasBootstrapServlet(implicit val application: KoskiApplication) extends
       valpasLocalizationMap = application.valpasLocalizationRepository.localizations,
       environment = Environment.currentEnvironment(application.config),
       opintopolkuVirkailijaUrl = application.config.getString("opintopolku.virkailija.url"),
+      opintopolkuOppijaUrl = application.config.getString("opintopolku.oppija.url"),
     )
   }
 }
@@ -21,4 +22,5 @@ case class WindowProperties(
   valpasLocalizationMap: Map[String, LocalizedString],
   environment: String,
   opintopolkuVirkailijaUrl: String,
+  opintopolkuOppijaUrl: String,
 )

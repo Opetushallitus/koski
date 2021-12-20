@@ -39,6 +39,7 @@ import fi.oph.koski.util.{Futures, Timing}
 import fi.oph.koski.valpas.kela.ValpasKelaServlet
 import fi.oph.koski.valpas.valpasuser.ValpasLogoutServlet
 import fi.oph.koski.valpas._
+import fi.oph.koski.valpas.sso.ValpasOppijaCasServlet
 import fi.oph.koski.valvira.ValviraServlet
 import fi.oph.koski.ytr.{YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
 
@@ -125,6 +126,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     mount("/user/logout", new KoskiSpecificLogoutServlet)
     mount("/user/redirect", new LogoutRedirectServlet)
     mount("/cas", new CasServlet)
+    mount("/cas/valpas", new ValpasOppijaCasServlet)
     mount("/cache", new CacheServlet)
 
     mount("/valpas/localization", new ValpasBootstrapServlet)
@@ -132,6 +134,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     mount("/valpas/api/kuntailmoitus", new ValpasKuntailmoitusApiServlet)
     mount("/valpas/api/luovutuspalvelu/kela", new ValpasKelaServlet)
     mount("/valpas/api/rouhinta", new ValpasRouhintaApiServlet)
+    mount("/valpas/api/kansalainen", new ValpasKansalainenApiServlet)
     mount("/valpas/logout", new ValpasLogoutServlet)
     if (!SSOConfig(application.config).isCasSsoUsed) {
       mount("/valpas/login", new LocalLoginServlet)

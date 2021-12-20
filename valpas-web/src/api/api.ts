@@ -1,4 +1,4 @@
-import { LocalizationMap } from "../i18n/i18n"
+import { AppConfiguration } from "../state/apitypes/appConfiguration"
 import { HenkilöhakuResult } from "../state/apitypes/henkilohaku"
 import { KuntailmoitusLaajatTiedotOppijaOidilla } from "../state/apitypes/kuntailmoitus"
 import { KuntailmoitusPohjatiedot } from "../state/apitypes/kuntailmoituspohjatiedot"
@@ -35,12 +35,9 @@ export const healthCheck = async () =>
 /**
  * Window properties
  */
-export const fetchWindowProperties = () =>
-  apiGet<{
-    valpasLocalizationMap: LocalizationMap
-    environment: string
-    opintopolkuVirkailijaUrl: string
-  }>("valpas/localization/window-properties")
+
+export const fetchAppConfiguration = () =>
+  apiGet<AppConfiguration>("valpas/localization/window-properties")
 
 /**
  * Login
@@ -56,7 +53,10 @@ export const fetchLogin = async (username: string, password: string) =>
 /**
  * Hae kirjautuneen käyttäjän tiedot
  */
-export const fetchCurrentUser = async () => apiGet<User>("valpas/api/user")
+export const fetchCurrentVirkailijaUser = async () =>
+  apiGet<User>("valpas/api/user")
+export const fetchCurrentKansalainenUser = async () =>
+  apiGet<User>("valpas/api/kansalainen/user")
 
 /**
  * Hae lista organisaatioista käyttöoikeuksien kanssa
