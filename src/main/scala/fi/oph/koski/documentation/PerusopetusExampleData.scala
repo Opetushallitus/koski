@@ -208,7 +208,7 @@ object PerusopetusExampleData {
     toimipiste = kulosaarenAlaAste,
     suorituskieli = suomenKieli,
     osasuoritukset = kaikkiAineet,
-    osaAikainenErityisopetus = true,
+    osaAikainenErityisopetus = None,
     vahvistus = vahvistusPaikkakunnalla(date(2013, 5, 30))
   )
 

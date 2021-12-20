@@ -264,7 +264,7 @@ case class PerusopetuksenVuosiluokanSuoritus(
   @Title("Osa-aikainen erityisopetus lukuvuoden aikana")
   @Deprecated("Tätä kenttää ei toistaiseksi käytetä.")
   @Hidden
-  osaAikainenErityisopetus: Boolean = false,
+  osaAikainenErityisopetus: Option[Boolean] = None,
   @Description("Tieto siitä, että oppilas jää luokalle")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @DefaultValue(false)
@@ -281,7 +281,7 @@ case class PerusopetuksenVuosiluokanSuoritus(
   @Tooltip("Perusopetuksen vuosiluokkatodistuksen liitetieto (liitteenä annettu arvio käyttäytymisestä tai työskentelystä).")
   liitetiedot: Option[List[PerusopetuksenVuosiluokanSuorituksenLiite]] = None
 ) extends PerusopetuksenPäätasonSuoritus with Todistus with Arvioinniton with ErityisopetuksellinenPäätasonSuoritus {
-  def sisältääOsaAikaisenErityisopetuksen: Boolean = osaAikainenErityisopetus
+  def sisältääOsaAikaisenErityisopetuksen: Boolean = osaAikainenErityisopetus.getOrElse(false)
 }
 
 trait PerusopetuksenOppimääränSuoritus extends Suoritus with Todistus with Arvioinniton with SuoritustavallinenPerusopetuksenSuoritus {

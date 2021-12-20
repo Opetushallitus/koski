@@ -2,7 +2,7 @@ package fi.oph.koski.validation
 
 import fi.oph.koski.documentation.OsaAikainenErityisopetusExampleData.tehostetunTuenPäätösIlmanOsaAikaistaErityisopetusta
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, NuortenPerusopetuksenOppiaineenOppimääränSuoritus, NuortenPerusopetuksenOppimääränSuoritus, Opiskeluoikeus, PerusopetuksenOpiskeluoikeus}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, NuortenPerusopetuksenOppiaineenOppimääränSuoritus, NuortenPerusopetuksenOppimääränSuoritus, Opiskeluoikeus, PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus}
 
 object NuortenPerusopetuksenOpiskeluoikeusValidation {
   def validateNuortenPerusopetuksenOpiskeluoikeus(oo: Opiskeluoikeus) = {
@@ -34,7 +34,16 @@ object NuortenPerusopetuksenOpiskeluoikeusValidation {
             tehostetunTuenPäätökset = None
           )
         })
-        perus.withLisätiedot(filtteröityLisätieto)
+
+        val filtteröidytSuoritukset = perus.suoritukset.map {
+          case vuosiluokka: PerusopetuksenVuosiluokanSuoritus =>
+            vuosiluokka.copy(
+              osaAikainenErityisopetus = None
+            )
+          case muu: Any => muu
+        }
+
+        perus.withLisätiedot(filtteröityLisätieto).withSuoritukset(filtteröidytSuoritukset)
       case _ => oo
     }
   }
