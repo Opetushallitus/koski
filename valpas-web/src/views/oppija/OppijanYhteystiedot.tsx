@@ -102,6 +102,7 @@ const YhteystietoAccordion = <T extends YhteystietojenAlkuperä>(
 ) =>
   isNonEmpty(props.yhteystiedot) ? (
     <Accordion
+      accordionId="yhteystiedot"
       items={props.yhteystiedot.map((yhteystiedot) => ({
         label: props.label(yhteystiedot),
         render: () => <Yhteystietolista yhteystiedot={yhteystiedot} />,

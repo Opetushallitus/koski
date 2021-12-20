@@ -32,6 +32,7 @@ const testLabels = Object.keys(testContent)
 const createAccordion = (items: Record<string, string>) =>
   render(
     <Accordion
+      accordionId="test"
       items={Object.entries(items).map(([label, content]) => ({
         label,
         render: () => content,

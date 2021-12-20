@@ -563,7 +563,7 @@ describe("Oppijakohtainen näkymä", () => {
     )
 
     // Klikkaukset kääntävät näkyvät ja piilotetut arvot päinvastaiseen tilaan
-    const labels = await $$("#yhteystiedot .accordion__label")
+    const labels = await $$("#yhteystiedot .accordion__trigger")
     await Promise.all(labels.map((label) => label.click()))
 
     await ilmoitetutYhteystiedotEquals(ilmoitetutYhteystiedot({ pvm }))

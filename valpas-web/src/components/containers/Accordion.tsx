@@ -1,5 +1,5 @@
 import bem from "bem-ts"
-import React, { useState } from "react"
+import React, { useCallback, useState } from "react"
 import { nonNull, toggleItemExistence } from "../../utils/arrays"
 import { CaretRightIcon } from "../icons/Icon"
 import "./Accordion.less"
@@ -7,6 +7,7 @@ import "./Accordion.less"
 const b = bem("accordion")
 
 export type AccordionProps = {
+  accordionId: string
   items: Array<AccordionItem | null | undefined>
 }
 
@@ -18,43 +19,66 @@ export type AccordionItem = {
 export const Accordion = (props: AccordionProps) => {
   const [openItems, setOpenItems] = useState<number[]>([0])
 
-  const onClickItem = (index: number) => () => {
-    setOpenItems(toggleItemExistence(openItems, index))
-  }
+  const onClickItem = useCallback(
+    (index: number) => () => {
+      setOpenItems(toggleItemExistence(openItems, index))
+    },
+    [openItems]
+  )
 
   return (
-    <ul className={b()}>
+    <section className={b()}>
       {props.items.filter(nonNull).map((item, index) => (
         <AccordionItem
           key={index}
+          itemId={`${props.accordionId}-${index}`}
           label={item.label}
           onClick={onClickItem(index)}
-          open={openItems.includes(index)}
+          isOpen={openItems.includes(index)}
         >
           {item.render()}
         </AccordionItem>
       ))}
-    </ul>
+    </section>
   )
 }
 
-type AccordionItemProps = React.HTMLAttributes<HTMLElement> & {
+type AccordionItemProps = {
+  itemId: string
   label: string
-  open: boolean
+  isOpen: boolean
+  onClick: () => void
+  children: React.ReactNode
 }
 
-const AccordionItem = ({
-  label,
-  onClick,
-  children,
-  open,
-  ...rest
-}: AccordionItemProps) => (
-  <li {...rest} className={b("item", { open })}>
-    <h4 className={b("label")} onClick={onClick}>
-      <CaretRightIcon inline />
-      {label}
-    </h4>
-    <div className={b("content")}>{children}</div>
-  </li>
-)
+const AccordionItem = (props: AccordionItemProps) => {
+  const triggerId = `${props.itemId}-trigger`
+  const regionId = `${props.itemId}-region`
+
+  return (
+    <>
+      <h4 className={b("label")}>
+        <button
+          id={triggerId}
+          aria-expanded={props.isOpen ? "true" : "false"}
+          aria-controls={regionId}
+          className={b("trigger")}
+          onClick={props.onClick}
+        >
+          <CaretRightIcon inline />
+          {props.label}
+        </button>
+      </h4>
+
+      <div
+        id={regionId}
+        role="region"
+        aria-labelledby={triggerId}
+        className={b("region", { open: props.isOpen })}
+        aria-hidden={props.isOpen ? undefined : "true"}
+      >
+        {props.children}
+      </div>
+    </>
+  )
+}
