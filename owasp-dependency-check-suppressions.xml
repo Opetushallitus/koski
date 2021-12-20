@@ -50,7 +50,7 @@
     <packageUrl regex="true">^pkg:npm/lodash@.*$</packageUrl>
     <vulnerabilityName>CVE-2020-28500</vulnerabilityName>
   </suppress>
-  <suppress until="2021-12-01Z">
+  <suppress until="2022-01-01Z">
     <notes><![CDATA[file name: lodash:4.17.20. Dev dependency.]]></notes>
     <packageUrl regex="true">^pkg:npm/lodash@.*$</packageUrl>
     <vulnerabilityName>CVE-2021-23337</vulnerabilityName>
@@ -59,5 +59,10 @@
     <notes><![CDATA[file name: netty-transport-4.1.66.Final.jar. Maven dependency, not in production.]]></notes>
     <packageUrl regex="true">^pkg:maven/io\.netty/netty\-.*$</packageUrl>
     <cpe>cpe:/a:netty:netty</cpe>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[file name: log4j-1.2.17.jar. JMSAppender not used in Koski.]]></notes>
+    <packageUrl regex="true">^pkg:maven/log4j/log4j@.*$</packageUrl>
+    <vulnerabilityName>CVE-2021-4104</vulnerabilityName>
   </suppress>
 </suppressions>
