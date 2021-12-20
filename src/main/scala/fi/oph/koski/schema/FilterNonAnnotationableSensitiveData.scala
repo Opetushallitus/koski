@@ -15,6 +15,10 @@ object FilterNonAnnotationableSensitiveData {
     oo match {
       case oo: AmmatillinenOpiskeluoikeus =>
         filterAmmatillinen(oo)
+      case oo: PerusopetuksenOpiskeluoikeus =>
+        filterPerusopetus(oo)
+      case oo: PerusopetuksenLisäopetus =>
+        filterPerusopetus(oo)
       case _ => oo
     }
   }
@@ -52,5 +56,18 @@ object FilterNonAnnotationableSensitiveData {
         lisätiedollinen.withLisätiedot(lisätiedot).withOsasuoritukset(alaosasusoritukset)
       case osasuoritus => osasuoritus
     }
+  }
+
+  private def filterPerusopetus(oo: KoskeenTallennettavaOpiskeluoikeus)(implicit user: SensitiveDataAllowed): KoskeenTallennettavaOpiskeluoikeus = {
+    oo.withSuoritukset(
+      oo.suoritukset.map(suoritus =>
+        suoritus.withOsasuoritukset(
+          Some(suoritus.osasuoritusLista.filter{
+            case _: PerusopetuksenToiminta_AlueenSuoritus => user.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+            case _ => false
+          })
+        )
+      )
+    )
   }
 }

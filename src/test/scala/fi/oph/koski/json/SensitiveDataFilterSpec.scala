@@ -1,7 +1,7 @@
 package fi.oph.koski.json
 
 import fi.oph.koski.{KoskiHttpSpec, TestEnvironment}
-import fi.oph.koski.api.{OpiskeluoikeusTestMethods, PutOpiskeluoikeusTestMethods}
+import fi.oph.koski.api.{OpiskeluoikeusTestMethods}
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.AmmatillinenExampleData.{k3, lisätietoOsaamistavoitteet, yhteisenTutkinnonOsanSuoritus}
 import fi.oph.koski.documentation.PerusopetusExampleData.{oppiaine, suoritus}
@@ -43,6 +43,12 @@ class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matc
 
     val ammatillinenJossaVoisiOllaMukautettujaArvosanoja = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ammatillisenOsittainenRapsa.oid, MockUsers.evira)
     existsLisätietoMukautetustaArvioinnista(ammatillinenJossaVoisiOllaMukautettujaArvosanoja) should equal (false)
+
+    val perusopetuksenOpiskeluoikeusJossaVoisiOllaToimintaAlueenSuoritus = lastOpiskeluoikeus(KoskiSpecificMockOppijat.toimintaAlueittainOpiskelija.oid, MockUsers.evira)
+    perusopetuksenOpiskeluoikeusJossaVoisiOllaToimintaAlueenSuoritus.suoritukset.exists(_.osasuoritusLista.exists{
+      case _: PerusopetuksenToiminta_AlueenSuoritus => true
+      case _ => false
+    }) should equal (false)
   }
 
   "Käyttäjä jolla on kaikki luottamuksellisten tietojen oikeudet näkee kaikki arkaluontoiset tiedot" in {
@@ -65,6 +71,12 @@ class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matc
 
     val ammatillinenJossaVoisiOllaMukautettujaArvosanoja = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ammatillisenOsittainenRapsa.oid, MockUsers.paakayttaja)
     existsLisätietoMukautetustaArvioinnista(ammatillinenJossaVoisiOllaMukautettujaArvosanoja) should equal (true)
+
+    val perusopetuksenOpiskeluoikeusJossaVoisiOllaToimintaAlueenSuoritus = lastOpiskeluoikeus(KoskiSpecificMockOppijat.toimintaAlueittainOpiskelija.oid, MockUsers.paakayttaja)
+    perusopetuksenOpiskeluoikeusJossaVoisiOllaToimintaAlueenSuoritus.suoritukset.exists(_.osasuoritusLista.exists{
+      case _: PerusopetuksenToiminta_AlueenSuoritus => true
+      case _ => false
+    }) should equal (true)
   }
 
   "Käyttäjä jolla on uusi kaikkiin luottamuksellisiin tietoihin oikeuttava käyttöoikeus näkee kaikki arkaluontoiset tiedot" in {
