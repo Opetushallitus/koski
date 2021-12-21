@@ -12,6 +12,7 @@ import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.Koodistokoodiviite
 
 import cats.syntax.parallel._
+import scala.concurrent.duration.DurationInt
 
 case class OppijanumeroRekisteriClient(config: Config) {
   def findOrCreate(createUserInfo: UusiOppijaHenkilö): IO[Either[HttpStatus, SuppeatOppijaHenkilöTiedot]] =
@@ -24,7 +25,28 @@ case class OppijanumeroRekisteriClient(config: Config) {
       case Left(status) => IO.pure(status).map(Left(_))
     }
 
-  private val oidServiceHttp = VirkailijaHttpClient(makeServiceConfig(config), "/oppijanumerorekisteri-service")
+  private val baseUrl = "/oppijanumerorekisteri-service"
+  private val totalTimeout = 1.minutes
+
+  private val oidServiceHttp = VirkailijaHttpClient(makeServiceConfig(config), baseUrl)
+
+  private val postRetryingOidServiceHttp = {
+    // Osa POST-metodilla ONR:ään tehtävistä kyselyistä on oikeasti idempotentteja,
+    // joten niiden uudelleenyrittäminen on ok: siksi unsafeRetryingClient. Tällä saadaan
+    // esim. raportointoinkannan generointi jatkamaan, vaikka onr-yhteys hetken pätkisikin.
+    val client = unsafeRetryingClient(
+      baseUrl, clientBuilder => clientBuilder
+        .withConnectTimeout(totalTimeout / 3)
+        .withResponseHeaderTimeout(totalTimeout / 3 + 1.second)
+        .withRequestTimeout(totalTimeout)
+    )
+
+    VirkailijaHttpClient(
+      makeServiceConfig(config),
+      baseUrl,
+      client
+    )
+  }
 
   private def makeServiceConfig(config: Config) =
     ServiceConfig.apply(config, "authentication-service", "authentication-service.virkailija", "opintopolku.virkailija")
@@ -56,18 +78,18 @@ case class OppijanumeroRekisteriClient(config: Config) {
       .flatMap(withSlaveOids(_).map(_.headOption))
 
   def findMasterOppijat(oids: List[String]): IO[Map[String, LaajatOppijaHenkilöTiedot]] =
-    oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/masterHenkilosByOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[Map[String, OppijaNumerorekisteriOppija]])
+    postRetryingOidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/masterHenkilosByOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[Map[String, OppijaNumerorekisteriOppija]])
     .map(_.mapValues(_.toOppijaHenkilö(Nil)))
 
   def findOppijatByHetusNoSlaveOids(hetus: Seq[String]): IO[List[SuppeatOppijaHenkilöTiedot]] =
-    oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloHetuList", hetus)(json4sEncoderOf[Seq[String]])(Http.parseJson[List[OppijaNumerorekisteriPerustiedot]])
+    postRetryingOidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloHetuList", hetus)(json4sEncoderOf[Seq[String]])(Http.parseJson[List[OppijaNumerorekisteriPerustiedot]])
       .map(_.map(_.toSuppeaOppijaHenkilö(Nil)))
 
   def findSlaveOids(masterOid: String): IO[List[String]] =
     oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/$masterOid/slaves")(Http.parseJson[List[OppijaNumerorekisteriSlave]]).map(_.map(_.oidHenkilo))
 
   private def findOnrOppijatByOids(oids: Seq[Oid]): IO[List[OppijaNumerorekisteriPerustiedot]] =
-    oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList", oids)(json4sEncoderOf[Seq[String]])(Http.parseJson[List[OppijaNumerorekisteriPerustiedot]])
+    postRetryingOidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList", oids)(json4sEncoderOf[Seq[String]])(Http.parseJson[List[OppijaNumerorekisteriPerustiedot]])
 
   private def withSlaveOids(onrOppijat: Iterable[OppijaNumerorekisteriOppija]): IO[List[LaajatOppijaHenkilöTiedot]] =
     onrOppijat.toList.parTraverse(complementWithSlaveOids)
