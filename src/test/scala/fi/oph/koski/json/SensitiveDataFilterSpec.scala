@@ -1,7 +1,7 @@
 package fi.oph.koski.json
 
 import fi.oph.koski.{KoskiHttpSpec, TestEnvironment}
-import fi.oph.koski.api.{OpiskeluoikeusTestMethods}
+import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.AmmatillinenExampleData.{k3, lisätietoOsaamistavoitteet, yhteisenTutkinnonOsanSuoritus}
 import fi.oph.koski.documentation.PerusopetusExampleData.{oppiaine, suoritus}
@@ -49,6 +49,12 @@ class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matc
       case _: PerusopetuksenToiminta_AlueenSuoritus => true
       case _ => false
     }) should equal (false)
+
+    // Tarkistetaan, että vain toiminta-alueen osasuoritukset jää pois
+    val perusopetuksenOpiskeluoikeusMuillaOsasuorituksilla = getOpiskeluoikeudet(KoskiSpecificMockOppijat.koululainen.oid, MockUsers.evira).find(
+      _.tyyppi.koodiarvo == OpiskeluoikeudenTyyppi.perusopetus.koodiarvo
+    ).get
+    perusopetuksenOpiskeluoikeusMuillaOsasuorituksilla.suoritukset.head.osasuoritusLista.length should equal (17)
   }
 
   "Käyttäjä jolla on kaikki luottamuksellisten tietojen oikeudet näkee kaikki arkaluontoiset tiedot" in {

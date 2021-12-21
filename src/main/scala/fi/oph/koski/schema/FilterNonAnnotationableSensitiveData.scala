@@ -64,7 +64,7 @@ object FilterNonAnnotationableSensitiveData {
         suoritus.withOsasuoritukset(
           Some(suoritus.osasuoritusLista.filter{
             case _: PerusopetuksenToiminta_AlueenSuoritus => user.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-            case _ => false
+            case _ => true
           })
         )
       )
