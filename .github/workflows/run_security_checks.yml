@@ -43,10 +43,10 @@ jobs:
           make owasp
 
       - name: Archive OWASP results
-          uses: actions/upload-artifact@v2
-          with:
-            name: owasp-report
-            path: target/dependency-check-report.html
+        uses: actions/upload-artifact@v2
+        with:
+          name: owasp-report
+          path: target/dependency-check-report.html
 
       - name: Run snyk
         env:
