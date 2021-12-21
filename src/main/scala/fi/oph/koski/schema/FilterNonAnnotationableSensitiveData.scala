@@ -61,12 +61,16 @@ object FilterNonAnnotationableSensitiveData {
   private def filterPerusopetus(oo: KoskeenTallennettavaOpiskeluoikeus)(implicit user: SensitiveDataAllowed): KoskeenTallennettavaOpiskeluoikeus = {
     oo.withSuoritukset(
       oo.suoritukset.map(suoritus =>
-        suoritus.withOsasuoritukset(
-          Some(suoritus.osasuoritusLista.filter{
-            case _: PerusopetuksenToiminta_AlueenSuoritus => user.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-            case _ => true
-          })
-        )
+        if (suoritus.osasuoritusLista.nonEmpty) {
+          suoritus.withOsasuoritukset(
+            Some(suoritus.osasuoritusLista.filter{
+              case _: PerusopetuksenToiminta_AlueenSuoritus => user.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+              case _ => true
+            })
+          ) }
+        else {
+          suoritus
+        }
       )
     )
   }

@@ -475,7 +475,12 @@ case class OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpint
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
 ) extends JatkoOpintovalmiuksiaTukevienOpintojenSuoritus
   with OsittaisenAmmatillisenTutkinnonOsanSuoritus {
-  override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus = this
+  override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus = {
+    if (lisätiedot.toList.flatten.nonEmpty) {
+      throw new InternalError("withLisätiedot-metodia, joka palauttaa objektin muokkaamatta sitä, kutsuttiin listalla lisätietoja")
+    }
+    this
+  }
 }
 
 @Description("Korkeakouluopintoja")
@@ -490,7 +495,12 @@ case class OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
 ) extends KorkeakouluopintoSuoritus
   with OsittaisenAmmatillisenTutkinnonOsanSuoritus {
-  override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus = this
+  override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus = {
+    if (lisätiedot.toList.flatten.nonEmpty) {
+      throw new InternalError("withLisätiedot-metodia, joka palauttaa objektin muokkaamatta sitä, kutsuttiin listalla lisätietoja")
+    }
+    this
+  }
 }
 
 
@@ -558,7 +568,12 @@ case class AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuorit
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
 ) extends JatkoOpintovalmiuksiaTukevienOpintojenSuoritus
   with AmmatillisenTutkinnonOsanSuoritus {
-  override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus = this
+  override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus = {
+    if (lisätiedot.toList.flatten.nonEmpty) {
+      throw new InternalError("withLisätiedot-metodia, joka palauttaa objektin muokkaamatta sitä, kutsuttiin listalla lisätietoja")
+    }
+    this
+  }
 }
 
 @Description("Korkeakouluopintoja")
@@ -573,7 +588,12 @@ case class AmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
 ) extends KorkeakouluopintoSuoritus
   with AmmatillisenTutkinnonOsanSuoritus {
-  override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): AmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus = this
+  override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): AmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus = {
+    if (lisätiedot.toList.flatten.nonEmpty) {
+      throw new InternalError("withLisätiedot-metodia, joka palauttaa objektin muokkaamatta sitä, kutsuttiin listalla lisätietoja")
+    }
+    this
+  }
 }
 
 trait JatkoOpintovalmiuksiaTukevienOpintojenSuoritus extends ValinnanMahdollisuus
@@ -771,7 +791,12 @@ case class AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
   override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus =
     shapeless.lens[AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus].field[Option[List[AmmatillisenTutkinnonOsanLisätieto]]]("lisätiedot").set(this)(lisätiedot)
   override def osasuoritusLista: List[Suoritus] = List()
-  override def withOsasuoritukset(oss: Option[List[Suoritus]]): Suoritus = this
+  override def withOsasuoritukset(oss: Option[List[Suoritus]]): Suoritus = {
+    if (oss.toList.flatten.nonEmpty) {
+      throw new InternalError("withOsasuoritukset-metodia, joka palauttaa objektin muokkaamatta sitä, kutsuttiin listalla osasuorituksia")
+    }
+    this
+  }
 }
 
 case class MuidenOpintovalmiuksiaTukevienOpintojenSuoritus(
@@ -792,7 +817,12 @@ case class MuidenOpintovalmiuksiaTukevienOpintojenSuoritus(
   override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): MuidenOpintovalmiuksiaTukevienOpintojenSuoritus =
     shapeless.lens[MuidenOpintovalmiuksiaTukevienOpintojenSuoritus].field[Option[List[AmmatillisenTutkinnonOsanLisätieto]]]("lisätiedot").set(this)(lisätiedot)
   override def osasuoritusLista: List[Suoritus] = List()
-  override def withOsasuoritukset(oss: Option[List[Suoritus]]): Suoritus = this
+  override def withOsasuoritukset(oss: Option[List[Suoritus]]): Suoritus = {
+    if (oss.toList.flatten.nonEmpty) {
+      throw new InternalError("withOsasuoritukset-metodia, joka palauttaa objektin muokkaamatta sitä, kutsuttiin listalla osasuorituksia")
+    }
+    this
+  }
 }
 
 @Title("Lukion oppiaineen tai lukion kurssin suoritus")
@@ -814,7 +844,12 @@ case class LukioOpintojenSuoritus(
   override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): LukioOpintojenSuoritus =
     shapeless.lens[LukioOpintojenSuoritus].field[Option[List[AmmatillisenTutkinnonOsanLisätieto]]]("lisätiedot").set(this)(lisätiedot)
   override def osasuoritusLista: List[Suoritus] = List()
-  override def withOsasuoritukset(oss: Option[List[Suoritus]]): Suoritus = this
+  override def withOsasuoritukset(oss: Option[List[Suoritus]]): Suoritus = {
+    if (oss.toList.flatten.nonEmpty) {
+      throw new InternalError("withOsasuoritukset-metodia, joka palauttaa objektin muokkaamatta sitä, kutsuttiin listalla osasuorituksia")
+    }
+    this
+  }
 }
 
 trait YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus
@@ -857,7 +892,12 @@ case class KorkeakouluopintojenSuoritus(
   override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): KorkeakouluopintojenSuoritus =
     shapeless.lens[KorkeakouluopintojenSuoritus].field[Option[List[AmmatillisenTutkinnonOsanLisätieto]]]("lisätiedot").set(this)(lisätiedot)
   override def osasuoritusLista: List[Suoritus] = List()
-  override def withOsasuoritukset(oss: Option[List[Suoritus]]): Suoritus = this
+  override def withOsasuoritukset(oss: Option[List[Suoritus]]): Suoritus = {
+    if (oss.toList.flatten.nonEmpty) {
+      throw new InternalError("withOsasuoritukset-metodia, joka palauttaa objektin muokkaamatta sitä, kutsuttiin listalla osasuorituksia")
+    }
+    this
+  }
 }
 
 @Title("Yhteisen tutkinnon osan osa-alueen suoritus")
@@ -890,7 +930,12 @@ case class YhteisenTutkinnonOsanOsaAlueenSuoritus(
   override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): YhteisenTutkinnonOsanOsaAlueenSuoritus =
     shapeless.lens[YhteisenTutkinnonOsanOsaAlueenSuoritus].field[Option[List[AmmatillisenTutkinnonOsanLisätieto]]]("lisätiedot").set(this)(lisätiedot)
   override def osasuoritusLista: List[Suoritus] = List()
-  override def withOsasuoritukset(oss: Option[List[Suoritus]]): Suoritus = this
+  override def withOsasuoritukset(oss: Option[List[Suoritus]]): Suoritus = {
+    if (oss.toList.flatten.nonEmpty) {
+      throw new InternalError("withOsasuoritukset-metodia, joka palauttaa objektin muokkaamatta sitä, kutsuttiin listalla osasuorituksia")
+    }
+    this
+  }
 }
 
 @Description("Korkeakouluopintojen tunnistetiedot")
@@ -1252,7 +1297,12 @@ case class ValmaKoulutuksenOsanSuoritus(
   override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): ValmaKoulutuksenOsanSuoritus =
     shapeless.lens[ValmaKoulutuksenOsanSuoritus].field[Option[List[AmmatillisenTutkinnonOsanLisätieto]]]("lisätiedot").set(this)(lisätiedot)
   override def osasuoritusLista: List[Suoritus] = List()
-  override def withOsasuoritukset(oss: Option[List[Suoritus]]): Suoritus = this
+  override def withOsasuoritukset(oss: Option[List[Suoritus]]): Suoritus = {
+    if (oss.toList.flatten.nonEmpty) {
+      throw new InternalError("withOsasuoritukset-metodia, joka palauttaa objektin muokkaamatta sitä, kutsuttiin listalla osasuorituksia")
+    }
+    this
+  }
 }
 
 @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen (VALMA) tunnistetiedot")
@@ -1335,7 +1385,12 @@ case class TelmaKoulutuksenOsanSuoritus(
   override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): TelmaKoulutuksenOsanSuoritus =
     shapeless.lens[TelmaKoulutuksenOsanSuoritus].field[Option[List[AmmatillisenTutkinnonOsanLisätieto]]]("lisätiedot").set(this)(lisätiedot)
   override def osasuoritusLista: List[Suoritus] = List()
-  override def withOsasuoritukset(oss: Option[List[Suoritus]]): Suoritus = this
+  override def withOsasuoritukset(oss: Option[List[Suoritus]]): Suoritus = {
+    if (oss.toList.flatten.nonEmpty) {
+      throw new InternalError("withOsasuoritukset-metodia, joka palauttaa objektin muokkaamatta sitä, kutsuttiin listalla osasuorituksia")
+    }
+    this
+  }
 }
 
 @Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen (TELMA) tunnistetiedot")
