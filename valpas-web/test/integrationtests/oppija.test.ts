@@ -2,8 +2,6 @@ import { oppijaPath } from "../../src/state/paths"
 import { formatDate, today } from "../../src/utils/date"
 import {
   clickElement,
-  contentEventuallyEquals,
-  expectElementNotVisible,
   textEventuallyEquals,
 } from "../integrationtests-env/browser/content"
 import { $$, goToLocation } from "../integrationtests-env/browser/core"
@@ -12,6 +10,23 @@ import {
   FORBIDDEN,
 } from "../integrationtests-env/browser/fail-on-console"
 import { loginAs, resetMockData } from "../integrationtests-env/browser/reset"
+import {
+  expectEiKuntailmoituksiaNotVisible,
+  hautEquals,
+  historiaOpintoOikeus,
+  historiaOppivelvollisuudenKeskeytys,
+  historiaOppivelvollisuudenKeskeytysToistaiseksi,
+  ilmoitetutYhteystiedot,
+  ilmoitetutYhteystiedotEquals,
+  merge,
+  opiskeluhistoriaEquals,
+  oppivelvollisuustiedot,
+  oppivelvollisuustiedotEquals,
+  turvakieltoVaroitusEquals,
+  turvakieltoVaroitusNotVisible,
+  virallisetYhteystiedot,
+  virallisetYhteystiedotEquals,
+} from "./oppija.shared"
 
 const ysiluokkaKeskenKeväälläPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000001",
@@ -102,131 +117,6 @@ const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
 const secondaryHeadingEquals = (expected: string) =>
   textEventuallyEquals(".oppijaview__secondaryheading", expected)
-const cardBodyEquals = (id: string, innerSelector?: string) => (
-  expected: string
-) =>
-  contentEventuallyEquals(
-    `#${id} .card__body ${innerSelector || ""}`.trim(),
-    expected
-  )
-const oppivelvollisuustiedotEquals = cardBodyEquals(
-  "oppivelvollisuustiedot",
-  ".infotable"
-)
-const opiskeluhistoriaEquals = cardBodyEquals("opiskeluhistoria")
-const hautEquals = cardBodyEquals("haut")
-const ilmoitetutYhteystiedotEquals = (expected: string) =>
-  contentEventuallyEquals("#ilmoitetut-yhteystiedot", expected)
-const virallisetYhteystiedotEquals = (expected: string) =>
-  contentEventuallyEquals("#viralliset-yhteystiedot", expected)
-const turvakieltoVaroitusEquals = (expected: string) =>
-  contentEventuallyEquals("#turvakielto-varoitus", expected)
-const turvakieltoVaroitusNotVisible = () =>
-  expectElementNotVisible("#turvakielto-varoitus")
-const expectEiKuntailmoituksiaNotVisible = () =>
-  expectElementNotVisible(".oppijaview__eiilmoituksia")
-
-const rivi = (label: string, value?: string) =>
-  value ? [label + ":", value] : []
-
-const oppivelvollisuustiedot = (p: {
-  opiskelutilanne: string
-  oppivelvollisuus: string
-  oppivelvollisuudenKeskeytykset?: string[]
-  maksuttomuusoikeus: string
-  kuntailmoitusBtn?: true
-  oppivelvollisuudenKeskeytysBtn?: true
-}) =>
-  [
-    ...rivi("Opiskelutilanne", p.opiskelutilanne),
-    ...rivi("Oppivelvollisuus", p.oppivelvollisuus),
-    ...(p.oppivelvollisuudenKeskeytykset || []).map((d) => `Keskeytetty ${d}`),
-    ...rivi("Oikeus opintojen maksuttomuuteen", p.maksuttomuusoikeus),
-    ...(p.oppivelvollisuudenKeskeytysBtn ? ["Keskeytä oppivelvollisuus"] : []),
-    ...(p.kuntailmoitusBtn
-      ? ["Tee ilmoitus valvontavastuusta", "info_outline"]
-      : []),
-  ].join("\n")
-
-const historiaOpintoikeus = (p: {
-  otsikko: string
-  tila: string
-  maksuttomuus?: string[]
-  toimipiste: string
-  ryhmä?: string
-  vuosiluokkiinSitomatonOpetus?: boolean
-  alkamispäivä: string
-  päättymispäivä?: string
-  perusopetusSuoritettu?: string
-}) =>
-  [
-    "school",
-    p.otsikko,
-    ...rivi("Tila", p.tila),
-    ...rivi("Maksuttomuus", p.maksuttomuus?.join("\n")),
-    ...rivi("Toimipiste", p.toimipiste),
-    ...rivi("Ryhmä", p.ryhmä),
-    ...rivi(
-      "Muuta",
-      p.vuosiluokkiinSitomatonOpetus
-        ? "Vuosiluokkiin sitomaton opetus"
-        : undefined
-    ),
-    ...rivi("Opiskeluoikeuden alkamispäivä", p.alkamispäivä),
-    ...rivi("Opiskeluoikeuden päättymispäivä", p.päättymispäivä),
-    ...rivi("Perusopetus suoritettu", p.perusopetusSuoritettu),
-  ].join("\n")
-
-const historiaOppivelvollisuudenKeskeytys = (range: string) =>
-  ["schedule", "Oppivelvollisuus", `Keskeytetty ${range}`].join("\n")
-
-const historiaOppivelvollisuudenKeskeytysToistaiseksi = (
-  alkamispäivä: string
-) =>
-  [
-    "schedule",
-    "Oppivelvollisuus",
-    `Keskeytetty toistaiseksi ${alkamispäivä} alkaen`,
-  ].join("\n")
-
-const ilmoitetutYhteystiedot = (p: {
-  pvm: string
-  lähiosoite?: string
-  postitoimipaikka?: string
-  maa?: string
-  matkapuhelin?: string
-  sähköposti?: string
-  lähde?: string
-}) =>
-  [
-    "Ilmoitetut yhteystiedot",
-    `keyboard_arrow_rightYhteystiedot – ${p.pvm}`,
-    ...rivi("Lähiosoite", p.lähiosoite),
-    ...rivi("Postitoimipaikka", p.postitoimipaikka),
-    ...rivi("Maa", p.maa),
-    ...rivi("Matkapuhelin", p.matkapuhelin),
-    ...rivi("Sähköposti", p.sähköposti),
-    ...(p.lähde ? [`Lähde: ${p.lähde}`] : []),
-  ].join("\n")
-
-const virallisetYhteystiedot = (p: {
-  lähiosoite?: string
-  postitoimipaikka?: string
-  maa?: string
-  puhelin?: string
-  sähköposti?: string
-}) =>
-  [
-    "Viralliset yhteystiedot",
-    "keyboard_arrow_rightVTJ: Kotiosoite",
-    ...rivi("Lähiosoite", p.lähiosoite),
-    ...rivi("Postitoimipaikka", p.postitoimipaikka),
-    ...rivi("Maa", p.maa),
-    ...rivi("Puhelin", p.puhelin),
-    ...rivi("Sähköposti", p.sähköposti),
-  ].join("\n")
-
-const merge = (...items: string[]) => items.join("\n")
 
 describe("Oppijakohtainen näkymä", () => {
   it("Näyttää oppijan tiedot, johon käyttäjällä on lukuoikeus", async () => {
@@ -245,14 +135,14 @@ describe("Oppijakohtainen näkymä", () => {
     )
     await opiskeluhistoriaEquals(
       merge(
-        historiaOpintoikeus({
+        historiaOpintoOikeus({
           otsikko: "Perusopetus 2012 –",
           tila: "Läsnä",
           toimipiste: "Jyväskylän normaalikoulu",
           ryhmä: "9C",
           alkamispäivä: "15.8.2012",
         }),
-        historiaOpintoikeus({
+        historiaOpintoOikeus({
           otsikko: "Esiopetuksen suoritus 2010 – 2011",
           tila: "Valmistunut",
           toimipiste: "Jyväskylän normaalikoulu",
@@ -328,7 +218,7 @@ describe("Oppijakohtainen näkymä", () => {
     )
     await opiskeluhistoriaEquals(
       merge(
-        historiaOpintoikeus({
+        historiaOpintoOikeus({
           otsikko: "Perusopetus 2012 – 2021",
           tila: "Valmistunut",
           toimipiste: "Jyväskylän normaalikoulu",
@@ -356,7 +246,7 @@ describe("Oppijakohtainen näkymä", () => {
     )
     await opiskeluhistoriaEquals(
       merge(
-        historiaOpintoikeus({
+        historiaOpintoOikeus({
           otsikko: "Lukion oppimäärä 2021 –",
           tila: "Läsnä",
           maksuttomuus: [
@@ -368,7 +258,7 @@ describe("Oppijakohtainen näkymä", () => {
           ryhmä: "AH",
           alkamispäivä: "15.8.2021",
         }),
-        historiaOpintoikeus({
+        historiaOpintoOikeus({
           otsikko: "International school 2004 –",
           tila: "Läsnä",
           maksuttomuus: ["Ei"],
@@ -387,7 +277,7 @@ describe("Oppijakohtainen näkymä", () => {
       "Ysiluokka-valmis-keväällä-2021-vsop Valpas (190705A575R)"
     )
     await opiskeluhistoriaEquals(
-      historiaOpintoikeus({
+      historiaOpintoOikeus({
         otsikko: "Perusopetus 2012 – 2021",
         tila: "Valmistunut",
         toimipiste: "Jyväskylän normaalikoulu",
@@ -446,14 +336,14 @@ describe("Oppijakohtainen näkymä", () => {
     )
     await opiskeluhistoriaEquals(
       merge(
-        historiaOpintoikeus({
+        historiaOpintoOikeus({
           otsikko: "Perusopetus 2012 –",
           tila: "Läsnä",
           toimipiste: "Jyväskylän normaalikoulu",
           ryhmä: "9B",
           alkamispäivä: "15.8.2012",
         }),
-        historiaOpintoikeus({
+        historiaOpintoOikeus({
           otsikko: "Perusopetus 2012 –",
           tila: "Läsnä",
           toimipiste: "Kulosaaren ala-aste",
@@ -478,7 +368,7 @@ describe("Oppijakohtainen näkymä", () => {
     )
     await opiskeluhistoriaEquals(
       merge(
-        historiaOpintoikeus({
+        historiaOpintoOikeus({
           otsikko: "Lukion oppimäärä 2021 –",
           tila: "Läsnä",
           maksuttomuus: [
@@ -490,7 +380,7 @@ describe("Oppijakohtainen näkymä", () => {
           ryhmä: "AH",
           alkamispäivä: "15.8.2021",
         }),
-        historiaOpintoikeus({
+        historiaOpintoOikeus({
           otsikko: "Perusopetus 2012 – 2021",
           tila: "Valmistunut",
           toimipiste: "Jyväskylän normaalikoulu",
@@ -516,7 +406,7 @@ describe("Oppijakohtainen näkymä", () => {
     )
     await opiskeluhistoriaEquals(
       merge(
-        historiaOpintoikeus({
+        historiaOpintoOikeus({
           otsikko: "Lukion oppimäärä 2021 –",
           tila: "Opiskeluoikeus alkaa 3.10.2021",
           maksuttomuus: ["3.10.2021– maksuton"],
@@ -524,7 +414,7 @@ describe("Oppijakohtainen näkymä", () => {
           ryhmä: "AH",
           alkamispäivä: "3.10.2021",
         }),
-        historiaOpintoikeus({
+        historiaOpintoOikeus({
           otsikko: "Perusopetus 2012 – 2021",
           tila: "Valmistunut",
           toimipiste: "Jyväskylän normaalikoulu",
@@ -657,7 +547,7 @@ describe("Oppijakohtainen näkymä", () => {
     await loginAs(lukionAineopinnotAloittanutPath, "valpas-jkl-normaali")
     await mainHeadingEquals("LukionAineopinnotAloittanut Valpas (040305A559A)")
     await opiskeluhistoriaEquals(
-      historiaOpintoikeus({
+      historiaOpintoOikeus({
         otsikko: "Perusopetus 2012 – 2021",
         tila: "Valmistunut",
         toimipiste: "Jyväskylän normaalikoulu",
@@ -681,7 +571,7 @@ describe("Oppijakohtainen näkymä", () => {
       })
     )
     await opiskeluhistoriaEquals(
-      historiaOpintoikeus({
+      historiaOpintoOikeus({
         otsikko: "Lukion oppimäärä 2019 –",
         tila: "Läsnä",
         maksuttomuus: ["Ei"],
@@ -707,7 +597,7 @@ describe("Oppijakohtainen näkymä", () => {
       })
     )
     await opiskeluhistoriaEquals(
-      historiaOpintoikeus({
+      historiaOpintoOikeus({
         otsikko: "Lukion oppimäärä 2019 –",
         tila: "Läsnä",
         maksuttomuus: ["Ei"],
@@ -747,7 +637,7 @@ describe("Oppijakohtainen näkymä", () => {
       })
     )
     await opiskeluhistoriaEquals(
-      historiaOpintoikeus({
+      historiaOpintoOikeus({
         otsikko: "Lukion oppimäärä 2019 –",
         tila: "Läsnä",
         maksuttomuus: ["Ei"],
@@ -772,7 +662,7 @@ describe("Oppijakohtainen näkymä", () => {
       })
     )
     await opiskeluhistoriaEquals(
-      historiaOpintoikeus({
+      historiaOpintoOikeus({
         otsikko: "Lukion oppimäärä 2019 –",
         tila: "Läsnä",
         maksuttomuus: ["Ei"],
@@ -847,7 +737,7 @@ describe("Oppijakohtainen näkymä", () => {
       merge(
         historiaOppivelvollisuudenKeskeytys("1.3.2021 – 30.9.2021"),
         historiaOppivelvollisuudenKeskeytys("1.1.2020 – 30.1.2020"),
-        historiaOpintoikeus({
+        historiaOpintoOikeus({
           otsikko: "Perusopetus 2012 –",
           tila: "Läsnä",
           toimipiste: "Jyväskylän normaalikoulu",
@@ -877,7 +767,7 @@ describe("Oppijakohtainen näkymä", () => {
     await opiskeluhistoriaEquals(
       merge(
         historiaOppivelvollisuudenKeskeytysToistaiseksi("1.1.2021"),
-        historiaOpintoikeus({
+        historiaOpintoOikeus({
           otsikko: "Perusopetus 2012 –",
           tila: "Läsnä",
           toimipiste: "Jyväskylän normaalikoulu",
@@ -912,7 +802,7 @@ describe("Oppijakohtainen näkymä", () => {
       merge(
         historiaOppivelvollisuudenKeskeytys("1.3.2021 – 30.9.2021"),
         historiaOppivelvollisuudenKeskeytys("1.1.2020 – 30.1.2020"),
-        historiaOpintoikeus({
+        historiaOpintoOikeus({
           otsikko: "Perusopetus 2012 –",
           tila: "Läsnä",
           toimipiste: "Jyväskylän normaalikoulu",
@@ -968,7 +858,7 @@ describe("Oppijakohtainen näkymä", () => {
     await resetMockData("2021-08-15")
 
     await opiskeluhistoriaEquals(
-      historiaOpintoikeus({
+      historiaOpintoOikeus({
         otsikko: "Lukion oppimäärä 2021 –",
         tila: "Väliaikaisesti keskeytynyt 2.8.2021",
         maksuttomuus: ["Ei"],
@@ -985,7 +875,7 @@ describe("Oppijakohtainen näkymä", () => {
     await resetMockData("2021-08-15")
 
     await opiskeluhistoriaEquals(
-      historiaOpintoikeus({
+      historiaOpintoOikeus({
         otsikko: "Ammatillinen tutkinto 2021 –",
         tila: "Loma",
         maksuttomuus: ["1.8.2021– maksuton"],
@@ -1002,7 +892,7 @@ describe("Oppijakohtainen näkymä", () => {
     await resetMockData("2021-08-15")
 
     await opiskeluhistoriaEquals(
-      historiaOpintoikeus({
+      historiaOpintoOikeus({
         otsikko: "VALMA 2012 –",
         tila: "Läsnä",
         maksuttomuus: ["Ei"],
@@ -1017,7 +907,7 @@ describe("Oppijakohtainen näkymä", () => {
     await mainHeadingEquals("Maksuttomuutta-pidennetty Valpas (070604A200U)")
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000127")
     await opiskeluhistoriaEquals(
-      historiaOpintoikeus({
+      historiaOpintoOikeus({
         otsikko: "Ammatillinen tutkinto 2021 –",
         tila: "Läsnä",
         maksuttomuus: [
@@ -1037,7 +927,7 @@ describe("Oppijakohtainen näkymä", () => {
     )
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000131")
     await opiskeluhistoriaEquals(
-      historiaOpintoikeus({
+      historiaOpintoOikeus({
         otsikko: "Perusopetukseen valmistava opetus 2021 –",
         tila: "Läsnä",
         toimipiste: "Jyväskylän normaalikoulu",
