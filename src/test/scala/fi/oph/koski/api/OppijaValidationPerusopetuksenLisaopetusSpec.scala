@@ -37,29 +37,9 @@ class OppijaValidationPerusopetuksenLisäopetusSpec extends TutkinnonPerusteetTe
       }
     }
 
-    "Opiskeluoikeudella on erityisen tuen päätös osa-aikaisesta erityisopetuksesta ja tieto suorituksessa -> HTTP 200" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
-        lisätiedot = perusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedotJoissaOsaAikainenErityisopetusErityisenTuenPäätöksessä,
-        suoritukset = List(defaultLisäopetuksenSuoritus.copy(osaAikainenErityisopetus = true))
-      )) {
-        verifyResponseStatusOk()
-      }
-    }
-
     "Opiskeluoikeudella on erityisen tuen päätös osa-aikaisesta erityisopetuksesta, muttei tietoa suorituksessa -> HTTP 400" in {
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
         lisätiedot = perusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedotJoissaOsaAikainenErityisopetusErityisenTuenPäätöksessä
-      )) {
-        verifyResponseStatus(400,
-          KoskiErrorCategory.badRequest.validation.osaAikainenErityisopetus.kirjausPuuttuuSuorituksesta(
-            "Jos osa-aikaisesta erityisopetuksesta on päätös opiskeluoikeuden lisätiedoissa, se pitää kirjata myös suoritukseen")
-        )
-      }
-    }
-
-    "Opiskeluoikeudella on tehostetun tuen päätös osa-aikaisesta erityisopetuksesta, muttei tietoa suorituksessa -> HTTP 400" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
-        lisätiedot = perusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedotJoissaOsaAikainenErityisopetusTehostetunTuenPäätöksessä
       )) {
         verifyResponseStatus(400,
           KoskiErrorCategory.badRequest.validation.osaAikainenErityisopetus.kirjausPuuttuuSuorituksesta(
@@ -79,4 +59,37 @@ class OppijaValidationPerusopetuksenLisäopetusSpec extends TutkinnonPerusteetTe
       verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaEronnutTaiKatsotaanEronneeksiVaikkaVahvistettuPäätasonSuoritus())
     }
   }
+
+  "Deprekoituja kenttiä, jotka tiputetaan siirrossa pois" - {
+    "Lisätiedon kenttiä perusopetuksenAloittamistaLykatty ja erityisenTuenPäätökset ei oteta vastaan siirrossa" in {
+      val oo = defaultOpiskeluoikeus.withLisätiedot(
+        Some(PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
+          perusopetuksenAloittamistaLykätty = Some(true),
+          tehostetunTuenPäätökset = Some(List(tehostetunTuenPäätösIlmanOsaAikaistaErityisopetusta))
+        )
+        ))
+
+      val tallennettuna = putAndGetOpiskeluoikeus(oo)
+
+      tallennettuna.lisätiedot.get.perusopetuksenAloittamistaLykätty should equal (None)
+      tallennettuna.lisätiedot.get.tehostetunTuenPäätökset should equal (None)
+    }
+
+    "Vuosiluokan suorituksen kenttää ei oteta vastaan siirrossa" in {
+      val oo = defaultOpiskeluoikeus.withSuoritukset(
+        List(defaultLisäopetuksenSuoritus.copy(
+          osaAikainenErityisopetus = Some(true)
+        ))
+      )
+
+      val tallennettuna = putAndGetOpiskeluoikeus(oo)
+
+      tallennettuna.suoritukset.head.osaAikainenErityisopetus should equal (None)
+    }
+  }
+
+  private def putAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): PerusopetuksenLisäopetuksenOpiskeluoikeus = putOpiskeluoikeus(oo) {
+    verifyResponseStatusOk()
+    getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
+  }.asInstanceOf[PerusopetuksenLisäopetuksenOpiskeluoikeus]
 }

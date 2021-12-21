@@ -50,7 +50,7 @@ object ExamplesPerusopetuksenLisaopetus {
     toimipiste = jyväskylänNormaalikoulu,
     vahvistus = vahvistusPaikkakunnalla(),
     suorituskieli = suomenKieli,
-    osaAikainenErityisopetus = true,
+    osaAikainenErityisopetus = Some(true),
     osasuoritukset = Some(
       List(
         toimintaAlueenSuoritus("1"),
