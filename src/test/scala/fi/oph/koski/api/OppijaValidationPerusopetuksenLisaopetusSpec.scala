@@ -75,7 +75,7 @@ class OppijaValidationPerusopetuksenLisäopetusSpec extends TutkinnonPerusteetTe
       tallennettuna.lisätiedot.get.tehostetunTuenPäätökset should equal (None)
     }
 
-    "Vuosiluokan suorituksen kenttää ei oteta vastaan siirrossa" in {
+    "Suorituksen kenttää osaAikainenErityisopetus ei oteta vastaan siirrossa - kenttä riippuu tehostetunTuenPäätöksestä" in {
       val oo = defaultOpiskeluoikeus.withSuoritukset(
         List(defaultLisäopetuksenSuoritus.copy(
           osaAikainenErityisopetus = Some(true)

@@ -2,7 +2,7 @@ package fi.oph.koski.validation
 
 import fi.oph.koski.documentation.OsaAikainenErityisopetusExampleData.tehostetunTuenPäätösIlmanOsaAikaistaErityisopetusta
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, NuortenPerusopetuksenOppiaineenOppimääränSuoritus, NuortenPerusopetuksenOppimääränSuoritus, Opiskeluoikeus, PerusopetuksenLisäopetuksenOpiskeluoikeus, PerusopetuksenLisäopetuksenSuoritus, PerusopetuksenLisäopetus, PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus}
+import fi.oph.koski.schema.{AikuistenPerusopetuksenOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, NuortenPerusopetuksenOppiaineenOppimääränSuoritus, NuortenPerusopetuksenOppimääränSuoritus, Opiskeluoikeus, PerusopetuksenLisäopetuksenOpiskeluoikeus, PerusopetuksenLisäopetuksenSuoritus, PerusopetuksenLisäopetus, PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus}
 
 object PerusopetuksenOpiskeluoikeusValidation {
   def validatePerusopetuksenOpiskeluoikeus(oo: Opiskeluoikeus) = {
@@ -31,6 +31,8 @@ object PerusopetuksenOpiskeluoikeusValidation {
         filterNuortenOpiskeluoikeudenKentät(perus)
       case lisä: PerusopetuksenLisäopetuksenOpiskeluoikeus =>
         filterLisäopetukseenOpiskeluoikeudenKentät(lisä)
+      case aikuis: AikuistenPerusopetuksenOpiskeluoikeus =>
+        filterAikuistenOpiskeluoikeudenKentät(aikuis)
       case _ => oo
     }
   }
@@ -68,6 +70,16 @@ object PerusopetuksenOpiskeluoikeusValidation {
       )
     )
     lisä.withLisätiedot(filtteröityLisätieto).withSuoritukset(filtteröidytSuoritukset)
+  }
+
+  def filterAikuistenOpiskeluoikeudenKentät(aikuinen: AikuistenPerusopetuksenOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
+    val filtteröityLisätieto = aikuinen.lisätiedot.map(lisätieto => {
+      lisätieto.copy(
+        tehostetunTuenPäätökset = None
+      )
+    })
+
+    aikuinen.withLisätiedot(filtteröityLisätieto)
   }
 }
 
