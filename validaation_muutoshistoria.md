@@ -4,7 +4,7 @@
 
 - Ammatilliselle opiskeluoikeudelle ei voi siirtää suoritusta, jonka rakenteen peruste on vanhentunut.
 
-## x.12.2021
+## 13.12.2021
 
 - Ammatilliselle opiskeluoikeudelle ei voi siirtää kahta päätason suoritusta, ellei toinen ole tyyppiä `AmmatillisenTutkinnonOsittainenTaiKokoSuoritus`, suoritustapana `nayttö`, ja toinen suoritus `NäyttöTutkintoonValmistavaKoulutus`
 - Ammatillisen opiskeluoikeuden päätason suoritusten tutkintokoodia (koulutusmoduuli.tunniste.koodiarvo) ja suoritustapaa ei voi vaihtaa suorituksen luonnin jälkeen.
