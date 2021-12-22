@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## x.12.2021
+- Perusopetuksen (aikuiset, nuoret ja lukio) ja perusopetuksen lisäopetuksen kenttää "tehostetunTuenPäätökset" ei enää oteta siirroissa vastaan; tieto tiputetaan pois ilman virhettä/varoitusta
+- Perusopetuksen (nuoret) ja perusopetuksen lisäopetuksen kenttää "perusopetuksenAloittamistaLykätty"  ei enää oteta siirroissa vastaan; tieto tiputetaan pois ilman virhettä/varoitusta
+
 ## 1.1.2022
 
 - Ammatilliselle opiskeluoikeudelle ei voi siirtää suoritusta, jonka rakenteen peruste on vanhentunut.
