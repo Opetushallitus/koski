@@ -1,7 +1,6 @@
 package fi.oph.koski.luovutuspalvelu
 
 import java.time.LocalDate
-
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
@@ -11,12 +10,15 @@ import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresTilastokeskus}
 import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
 import fi.oph.koski.log._
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.NotSuorituksenTyyppi
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter, QueryOppijaHenkilö}
 import fi.oph.koski.schema.Henkilö.Oid
+import fi.oph.koski.schema.SuorituksenTyyppi.vstvapaatavoitteinenkoulutus
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache, ObservableSupport}
 import fi.oph.koski.util.SortOrder.Ascending
 import fi.oph.koski.util.{Pagination, PaginationSettings, QueryPagination, Retry}
+
 import javax.servlet.http.HttpServletRequest
 import org.json4s.JValue
 import org.scalatra.MultiParams
@@ -42,11 +44,13 @@ class TilastokeskusServlet(implicit val application: KoskiApplication) extends K
 case class TilastokeskusQueryContext(request: HttpServletRequest)(implicit koskiSession: KoskiSpecificSession, application: KoskiApplication) extends Logging {
   val pagination = QueryPagination(50)
 
+  val exclusionFilters = List(NotSuorituksenTyyppi(vstvapaatavoitteinenkoulutus))
+
   def queryLaajoillaHenkilöTiedoilla(params: MultiParams, paginationSettings: Option[PaginationSettings]): Either[HttpStatus, Observable[JValue]] = {
     logger(koskiSession).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
     OpiskeluoikeusQueryFilter.parse(params)(application.koodistoViitePalvelu, application.organisaatioService, koskiSession).map { filters =>
       AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_HAKU, koskiSession, Map(hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(params))))
-      query(filters, paginationSettings)
+      query(filters ::: exclusionFilters, paginationSettings)
     }.map {
       _.map(x => (laajatHenkilötiedotToTilastokeskusHenkilötiedot(x._1), x._2))
        .map(tuple => JsonSerializer.serialize(TilastokeskusOppija(tuple._1, tuple._2.map(_.toOpiskeluoikeusUnsafe))))

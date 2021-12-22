@@ -26,6 +26,7 @@ object OpiskeluoikeusQueryFilter {
   case class OpiskeluoikeudenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
   case class OneOfOpiskeluoikeudenTyypit(opiskeluoikeudenTyypit: List[OpiskeluoikeudenTyyppi]) extends OpiskeluoikeusQueryFilter
   case class SuorituksenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
+  case class NotSuorituksenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
   case class OpiskeluoikeudenTila(tila: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
   case class Tutkintohaku(hakusana: String) extends OpiskeluoikeusQueryFilter
   case class Toimipiste(toimipiste: List[OrganisaatioWithOid]) extends OpiskeluoikeusQueryFilter
@@ -97,7 +98,7 @@ private object OpiskeluoikeusQueryFilterParser extends Logging {
       case (p, v +: _) if p == "muuttunutEnnen" => dateTimeParam((p, v)).right.map(MuuttunutEnnen)
       case (p, v +: _) if p == "muuttunutJälkeen" => dateTimeParam((p, v)).right.map(MuuttunutJälkeen)
       case (p, _) => Left(KoskiErrorCategory.badRequest.queryParam.unknown("Unsupported query parameter: " + p))
-      // IdHaku, OppijaOidHaku, OneOfOpiskeluoikeudenTyypit missing from here (intentionally)
+      // IdHaku, OppijaOidHaku, OneOfOpiskeluoikeudenTyypit, NotSuorituksenTyyppi missing from here (intentionally)
     }.toList
 
     queryFilters.partition(_.isLeft) match {
