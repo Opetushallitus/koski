@@ -1,3 +1,11 @@
+## x.12.2021
+- Sensitiiviseksi merkitty seuraavat:
+"alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy"
+"yksilöllistettyOppimäärä"
+Ammatillisen osasuorituksen lisätieto kun koodiarvona "mukautettu"
+"keskiarvoSisältääMukautettujaArvosanoja"
+"PerusopetuksenToiminta_AlueenSuoritus"
+
 ## 8.9.2021
 - Lukion aiemman kuin 2019 opetussuunnitelman perusteiden mukaisiin opintoihin saa siirtää maksuttomuustiedon, jos
 opiskeluoikeus on alkanut 1.1.2021 tai myöhemmin.
