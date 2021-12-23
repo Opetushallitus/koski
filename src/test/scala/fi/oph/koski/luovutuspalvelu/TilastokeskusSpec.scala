@@ -143,6 +143,20 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
         oppijat.head.henkilö.oid should equal(KoskiSpecificMockOppijat.eero.oid)
       }
     }
+
+    "Ei palauta sellaisia vapaan sivistystyön opiskeluoikeuksia, joissa suorituksen tyyppinä vapaatavoitteinen koulutus" in {
+      val kaikkiOppijat = performQuery()
+
+      val vapaatavoitteinen = kaikkiOppijat.find(
+        _.opiskeluoikeudet.exists(
+          _.suoritukset.exists(
+            _.tyyppi.koodiarvo == "vstvapaatavoitteinenkoulutus"
+          )
+        )
+      )
+
+      vapaatavoitteinen should equal (None)
+    }
   }
 
   private lazy val kaikkiOppijat = koskeenTallennetutOppijat.flatMap {
@@ -150,7 +164,8 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
       (h.oid, h.sukunimi, h.etunimet, linkitettyOid.get(h.oid).toList, List(opiskeluoikeusOid))
     }
     case _ => Nil
-  }
+  }.filter(_._1 != KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus.oid) // Filtteröidään vapaan sivistystyön vapaatavoitteista koulutusta käyvä kaveri pois,
+                                                                                           // katso TilastokeskusServlet / exclusionFilters
 
   private def expectedPage(pageSize: Int, pageNumber: Int) = {
     kaikkiOppijat.slice(pageNumber * pageSize, pageNumber * pageSize + pageSize)
