@@ -2,11 +2,11 @@ package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.AmmatillinenExampleData._
-import fi.oph.koski.documentation.AmmatillinenOldExamples.muunAmmatillisenTutkinnonOsanSuoritus
-import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo, opiskeluoikeusLäsnä, valtionosuusRahoitteinen}
+import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo, opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, valtionosuusRahoitteinen}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
+import fi.oph.koski.documentation.ExamplesEsiopetus.{peruskoulunEsiopetuksenTunniste, päiväkodinEsiopetuksenTunniste, suoritus}
 import fi.oph.koski.documentation.PerusopetusExampleData.perusopetuksenOppimääränSuoritus
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste}
 import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.koululainen
@@ -517,6 +517,37 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
         val muutos = ensimmäinenOpiskeluoikeus.withOppilaitos(Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto))
         putOppija(Oppija(oppija, List(muutos))) {
           verifyResponseStatusOk()
+        }
+      }
+      "Siirron esto koskee myös lähdejärjestelmällistä siirtoa" in {
+        resetFixtures
+
+        val opiskeluoikeus = ExamplesEsiopetus.opiskeluoikeus.copy(
+          lähdejärjestelmänId = Some(LähdejärjestelmäId(Some("654321"), lähdeWinnova)),
+          oppilaitos = Some(Oppilaitos(YleissivistavakoulutusExampleData.päiväkotiVironniemi.oid)),
+          koulutustoimija = Some(YleissivistavakoulutusExampleData.helsinki),
+          suoritukset = List(
+            suoritus(perusteenDiaarinumero = "102/011/2014",
+              tunniste = päiväkodinEsiopetuksenTunniste,
+              toimipiste = Oppilaitos(YleissivistavakoulutusExampleData.päiväkotiVironniemi.oid))),
+        )
+        putOppija(Oppija(oppija, List(opiskeluoikeus)), headers = authHeaders(paakayttaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+
+        val ensimmäinenOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija).asInstanceOf[EsiopetuksenOpiskeluoikeus]
+        val muutos = ensimmäinenOpiskeluoikeus.copy(
+          lähdejärjestelmänId = Some(LähdejärjestelmäId(Some("654321"), lähdeWinnova)),
+          oid = None,
+          oppilaitos = Some(Oppilaitos(YleissivistavakoulutusExampleData.kulosaarenAlaAste.oid)),
+          suoritukset = List(
+            suoritus(perusteenDiaarinumero = "102/011/2014",
+              tunniste = päiväkodinEsiopetuksenTunniste,
+              toimipiste = Oppilaitos(YleissivistavakoulutusExampleData.kulosaarenAlaAste.oid))),
+        )
+
+        putOppija(Oppija(oppija, List(muutos)), headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.oppilaitoksenVaihto())
         }
       }
     }

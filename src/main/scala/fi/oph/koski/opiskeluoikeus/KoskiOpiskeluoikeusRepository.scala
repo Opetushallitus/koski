@@ -12,6 +12,7 @@ import org.json4s.JValue
 
 trait KoskiOpiskeluoikeusRepository {
   def findByOid(oid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, OpiskeluoikeusRow]
+  def findByLähdejärjestelmäId(id: LähdejärjestelmäId)(implicit user: KoskiSpecificSession): Either[HttpStatus, OpiskeluoikeusRow]
   def getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, List[Henkilö.Oid]]
   def createOrUpdate(
     oppijaOid: PossiblyUnverifiedHenkilöOid,

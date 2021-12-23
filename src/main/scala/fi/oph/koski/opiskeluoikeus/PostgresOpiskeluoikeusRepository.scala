@@ -74,6 +74,13 @@ class PostgresOpiskeluoikeusRepository(
     withExistenceCheck(runDbSync(OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid).result))
   }
 
+  override def findByLähdejärjestelmäId(id: LähdejärjestelmäId)(implicit user: KoskiSpecificSession): Either[HttpStatus, OpiskeluoikeusRow] = {
+    withExistenceCheck(runDbSync(OpiskeluOikeudetWithAccessCheck.filter(v => {
+      v.data.+>("lähdejärjestelmänId")+>>"id" === id.id.getOrElse("") &&
+      v.data.+>("lähdejärjestelmänId")+>"lähdejärjestelmä"+>>"koodiarvo" === id.lähdejärjestelmä.koodiarvo}
+    ).result))
+  }
+
   override def getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, List[Oid]] = withOidCheck(opiskeluoikeusOid) {
     withExistenceCheck(runDbSync(OpiskeluOikeudetWithAccessCheck
       .filter(_.oid === opiskeluoikeusOid)
