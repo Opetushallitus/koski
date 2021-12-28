@@ -15,16 +15,16 @@ Kosken kanssa tässä samassa git-repositoriossa on myös Valpas-palvelun toteut
 
 Keskeiset entiteetit, ja järjestelmät, joihin nämä tallennetaan.
 
-| käsite         | selite                                       | tunniste         | tallennuspaikka        |
-|----------------|----------------------------------------------|------------------|------------------------|
-| Koodisto       | Kooditus objekteille, esim tutkintonimikkeet | id (tekstiä)     | Koodistopalvelu        |
-| Koodi          | Yksittäisen objektin koodi koodistossa       | id (tekstiä)     | Koodistopalvelu        |
-| Oppija         | Opiskelija, oppilas.                         | henkilöOid       | Henkilöpalvelu         |
-| Organisaatio   | Oppilaitos, kunta, eri rooleissa             | organisaatioOid  | Organisaatiopalvelu    |
-| Opiskeluoikeus | Oppijan suhde oppilaitokseen ja suoritettavaan tutkintoon (tutkinto, oppija, oppilaitos, voimassaoloaika, läsnäolotiedot...) | id (numeerinen)  | Koski        |
-| Peruste        | Tutkinnon tai tutkinnon osan peruste         | diaarinumero     | ePerusteet             |
-| Suoritus       | Oppijan suoritus (tutkinto, oppija, oppilaitos, aika...) | id (numeerinen)  | Koski        |
-| Tutkinto       | Tutkinnon kuvaus (tutkintotunnus, nimi...)   | tutkintotunnus   | Koodisto               |
+| käsite         | selite                                                                                                                       | tunniste        | tallennuspaikka     |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------- | --------------- | ------------------- |
+| Koodisto       | Kooditus objekteille, esim tutkintonimikkeet                                                                                 | id (tekstiä)    | Koodistopalvelu     |
+| Koodi          | Yksittäisen objektin koodi koodistossa                                                                                       | id (tekstiä)    | Koodistopalvelu     |
+| Oppija         | Opiskelija, oppilas.                                                                                                         | henkilöOid      | Henkilöpalvelu      |
+| Organisaatio   | Oppilaitos, kunta, eri rooleissa                                                                                             | organisaatioOid | Organisaatiopalvelu |
+| Opiskeluoikeus | Oppijan suhde oppilaitokseen ja suoritettavaan tutkintoon (tutkinto, oppija, oppilaitos, voimassaoloaika, läsnäolotiedot...) | id (numeerinen) | Koski               |
+| Peruste        | Tutkinnon tai tutkinnon osan peruste                                                                                         | diaarinumero    | ePerusteet          |
+| Suoritus       | Oppijan suoritus (tutkinto, oppija, oppilaitos, aika...)                                                                     | id (numeerinen) | Koski               |
+| Tutkinto       | Tutkinnon kuvaus (tutkintotunnus, nimi...)                                                                                   | tutkintotunnus  | Koodisto            |
 
 ## Käyttäjän kirjautuminen ja käyttöoikeudet
 
@@ -36,9 +36,9 @@ B Kosken REST-rajapintoja käytettäessä HTTP-pyynnössä on HTTP Basic Authent
 Käyttäjä kuuluu käyttöoikeusryhmiin, joiden kautta hänelle määräytyvät hänen käyttöoikeutensa (roolit) Koskessa.
 Käyttäjän käyttöoikeudet haetaan Opintopolun käyttöoikeuspalvelusta. Käyttöoikeudet muodostuvat kolmesta osasta:
 
-* Sovellus: joko KOSKI, LOKALISOINTI tai VALPAS,
-* Rooli: kertoo käyttäjäoikeustyypin, ja
-* Oid: organisaation oid-tunniste.
+- Sovellus: joko KOSKI, LOKALISOINTI tai VALPAS,
+- Rooli: kertoo käyttäjäoikeustyypin, ja
+- Oid: organisaation oid-tunniste.
 
 Esimerkki arvosta:
 
@@ -48,26 +48,26 @@ Tämä määrittää Kosken käyttäjälle luku- ja kirjoitusoikeuden organisaat
 
 Tuetut yhdistelmät sovellus, rooli ja oid -parametreille:
 
-sovellus | rooli | oid | selite
----|---|---|---
-KOSKI | READ | (organisaation oid) | Organisaatiokohtainen lukuoikeus
-KOSKI | READ_UPDATE | (organisaation oid) | Organisaatiokohtainen luku- ja kirjoitusoikeus. Kirjoittamiseen tarvitaan aina myös alla oleve LUOTTAMUKSELLINEN-rooli.
-KOSKI | LUOTTAMUKSELLINEN | (organisaation oid) | Oikeus katsella luottamukselliseksi määriteltyjä tietoja (ks. @SensitiveData -annotaatio). Tämä rooli vaaditaan aina myös tiedon kirjoittamiseen.
-KOSKI | TIEDONSIIRRON_MITATOINTI | (organisaation oid) | Oikeus mitätöidä myös tiedonsiirron kautta siirrettyjä tietoja (käsin syötettyjen tietojen mitätöintiin riitää READ_UPDATE).
-KOSKI | TIEDONSIIRTO | (organisaation oid) | Organisaatiokohtainen Kosken API:n palvelukäyttö
-KOSKI | OPHKATSELIJA | (OPH:n organisaation oid) | Globaali lukuoikeus kaikkiin organisaatioihin, jos _oid_ on OPH:n organisaation oid
-KOSKI | OPHPAAKAYTTAJA | (OPH:n organisaation oid) | Globaali luku- ja kirjoitusoikeus kaikkiin organisaatioihin, jos _oid_ on OPH:n organisaation oid
-KOSKI | GLOBAALI_LUKU_PERUSOPETUS | (Viranomaisen organisaation oid) | Globaali lukuoikeus kaikkien organisaatioiden perusopetuksen opiskeluoikeuksiin
-KOSKI | GLOBAALI_LUKU_TOINEN_ASTE | (Viranomaisen organisaation oid) | Globaali lukuoikeus kaikkien organisaatioiden toisen asteen opiskeluoikeuksiin
-KOSKI | GLOBAALI_LUKU_KORKEAKOULU | (Viranomaisen organisaation oid) | Globaali lukuoikeus kaikkien organisaatioiden korkeakoulutuksen opiskeluoikeuksiin
-LOKALISOINTI | CRUD | (OPH:n organisaation oid) | Lokalisointitekstien lukeminen ja muuttaminen Kosken API:n kautta, jos _oid_ on OPH:n organisaation oid
-VALPAS | OPPILAITOS_HAKEUTUMINEN | (koulutustoimijan tai oppilaitoksen oid) | Oikeus valvoa oppilaitoksen oppijoiden hakeutumista jatko-opintoihin peruskoulun tai nivelvaiheen opintojen jälkeen ja tehdä tarvittaessa ilmoituksia kunnalle
-VALPAS | OPPILAITOS_HAKEUTUMINEN | (OPH:n organisaation oid) | Oikeus valvoa kaikkien oppilaitosten peruskoulun ja nivelvaiheen oppijoiden hakeutumista
-VALPAS | OPPILAITOS_SUORITTAMINEN | (koulutustoimijan tai oppilaitoksen oid) | Oikeus valvoa oppilaitoksen oppijoiden oppivelvollisuuden suorittamista nivelvaiheen ja toisen asteen opinnoissa ja tehdä tarvittaessa ilmoituksia kunnalle
-VALPAS | OPPILAITOS_SUORITTAMINEN | (OPH:n organisaation oid) | Oikeus valvoa kaikkien oppilaitosten oppijoiden oppivelvollisuuden suorittamista
-VALPAS | OPPILAITOS_MAKSUTTOMUUS | (organisaation oid) | Oikeus hakea tiedot sen päättämiseen, saako oppija suorittaa peruskoulun jälkeisiä opintoja maksuttomasti vai ei
-VALPAS | KUNTA | (kuntaorganisaation oid) | Oikeus valvoa oppivelvollisia oppijoita oppilaitosten tekemien ilmoitusten tai oppijan henkilötunnuksen tai oppijanumeron perusteella ja hallita oppivelvollisuuden keskeytystietoja
-VALPAS | KUNTA | (OPH:n organisaation oid) | Kunnan oikeudet kaikkiin kuntiin.
+| sovellus     | rooli                     | oid                                      | selite                                                                                                                                                                               |
+| ------------ | ------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| KOSKI        | READ                      | (organisaation oid)                      | Organisaatiokohtainen lukuoikeus                                                                                                                                                     |
+| KOSKI        | READ_UPDATE               | (organisaation oid)                      | Organisaatiokohtainen luku- ja kirjoitusoikeus. Kirjoittamiseen tarvitaan aina myös alla oleve LUOTTAMUKSELLINEN-rooli.                                                              |
+| KOSKI        | LUOTTAMUKSELLINEN         | (organisaation oid)                      | Oikeus katsella luottamukselliseksi määriteltyjä tietoja (ks. @SensitiveData -annotaatio). Tämä rooli vaaditaan aina myös tiedon kirjoittamiseen.                                    |
+| KOSKI        | TIEDONSIIRRON_MITATOINTI  | (organisaation oid)                      | Oikeus mitätöidä myös tiedonsiirron kautta siirrettyjä tietoja (käsin syötettyjen tietojen mitätöintiin riitää READ_UPDATE).                                                         |
+| KOSKI        | TIEDONSIIRTO              | (organisaation oid)                      | Organisaatiokohtainen Kosken API:n palvelukäyttö                                                                                                                                     |
+| KOSKI        | OPHKATSELIJA              | (OPH:n organisaation oid)                | Globaali lukuoikeus kaikkiin organisaatioihin, jos _oid_ on OPH:n organisaation oid                                                                                                  |
+| KOSKI        | OPHPAAKAYTTAJA            | (OPH:n organisaation oid)                | Globaali luku- ja kirjoitusoikeus kaikkiin organisaatioihin, jos _oid_ on OPH:n organisaation oid                                                                                    |
+| KOSKI        | GLOBAALI_LUKU_PERUSOPETUS | (Viranomaisen organisaation oid)         | Globaali lukuoikeus kaikkien organisaatioiden perusopetuksen opiskeluoikeuksiin                                                                                                      |
+| KOSKI        | GLOBAALI_LUKU_TOINEN_ASTE | (Viranomaisen organisaation oid)         | Globaali lukuoikeus kaikkien organisaatioiden toisen asteen opiskeluoikeuksiin                                                                                                       |
+| KOSKI        | GLOBAALI_LUKU_KORKEAKOULU | (Viranomaisen organisaation oid)         | Globaali lukuoikeus kaikkien organisaatioiden korkeakoulutuksen opiskeluoikeuksiin                                                                                                   |
+| LOKALISOINTI | CRUD                      | (OPH:n organisaation oid)                | Lokalisointitekstien lukeminen ja muuttaminen Kosken API:n kautta, jos _oid_ on OPH:n organisaation oid                                                                              |
+| VALPAS       | OPPILAITOS_HAKEUTUMINEN   | (koulutustoimijan tai oppilaitoksen oid) | Oikeus valvoa oppilaitoksen oppijoiden hakeutumista jatko-opintoihin peruskoulun tai nivelvaiheen opintojen jälkeen ja tehdä tarvittaessa ilmoituksia kunnalle                       |
+| VALPAS       | OPPILAITOS_HAKEUTUMINEN   | (OPH:n organisaation oid)                | Oikeus valvoa kaikkien oppilaitosten peruskoulun ja nivelvaiheen oppijoiden hakeutumista                                                                                             |
+| VALPAS       | OPPILAITOS_SUORITTAMINEN  | (koulutustoimijan tai oppilaitoksen oid) | Oikeus valvoa oppilaitoksen oppijoiden oppivelvollisuuden suorittamista nivelvaiheen ja toisen asteen opinnoissa ja tehdä tarvittaessa ilmoituksia kunnalle                          |
+| VALPAS       | OPPILAITOS_SUORITTAMINEN  | (OPH:n organisaation oid)                | Oikeus valvoa kaikkien oppilaitosten oppijoiden oppivelvollisuuden suorittamista                                                                                                     |
+| VALPAS       | OPPILAITOS_MAKSUTTOMUUS   | (organisaation oid)                      | Oikeus hakea tiedot sen päättämiseen, saako oppija suorittaa peruskoulun jälkeisiä opintoja maksuttomasti vai ei                                                                     |
+| VALPAS       | KUNTA                     | (kuntaorganisaation oid)                 | Oikeus valvoa oppivelvollisia oppijoita oppilaitosten tekemien ilmoitusten tai oppijan henkilötunnuksen tai oppijanumeron perusteella ja hallita oppivelvollisuuden keskeytystietoja |
+| VALPAS       | KUNTA                     | (OPH:n organisaation oid)                | Kunnan oikeudet kaikkiin kuntiin.                                                                                                                                                    |
 
 Lähdekoodissa [MockUsers](src/main/scala/fi/oph/koski/koskiuser/MockUsers.scala) on käyttäjät testitarkoituksia varten. Koski-palvelu käyttää niitä, jos Koski on käynnistetty konfiguraatiolla `opintopolku.virkailija.url = "mock"` (katso [Konfigurointi](#konfigurointi)). Tätä voi käyttää ajaessa Koskea lokaalisti.
 
@@ -104,7 +104,7 @@ Minimissään tarvitset nämä:
 - Git (osx, linux sisältää tämän, komentorivillä `git`)
 - GNU Make (osx, linux sisältää tämän, komentorivillä `make`)
 - Java 8 (osx: `brew tap adoptopenjdk/openjdk`
-               `brew cask install adoptopenjdk8`)
+  `brew cask install adoptopenjdk8`)
 - Maven 3 (osx: `brew install maven`)
 - Node.js (`.nvmrc`-tiedoston mukainen versio)
 - Docker PostgreSQL:n ja Elasticsearchin ajamiseen konteissa
@@ -116,19 +116,19 @@ Kosken buildiin kuuluu frontin buildaus (npm ja webpack) ja serverin buildaus Ma
 
 Buildaa koko systeemi
 
-``` shell
+```shell
 make build
 ```
 
 Buildaa frontti, ja päivitä automaattisesti kun tiedostoja muokataan:
 
-``` shell
+```shell
 make watch
 ```
 
 Staattinen analyysi ([ScalaStyle](http://www.scalastyle.org/) ja [ESLint](http://eslint.org/)):
 
-``` shell
+```shell
 make lint
 ```
 
@@ -138,7 +138,7 @@ Kosken versioitu paketti tehdään kopioimalla versionhallinnassa olevat tiedost
 
 Aja JettyLauncher-luokka IDEAsta/Eclipsestä, tai käynnistä Koski vaihtoehtoisesti komentoriviltä
 
-``` shell
+```shell
 make build
 make run
 ```
@@ -155,7 +155,7 @@ Tietyt polut ohjataan palvelemaan etusivun sisältö, ks. [ScalatraBootstrap](sr
 
 Raporttien käyttö paikallisesti tarvitsee raportointikannan. Sen saa luotua komentoriviltä
 
-``` shell
+```shell
 make reset-raportointikanta
 ```
 
@@ -171,7 +171,6 @@ Ottaaksesi käyttöön ulkoiset integraatiot, kuten Oppijanumerorekisterin, voit
 
 Tällä asetuksella käytetään tiedostoa `src/main/resources/qa.conf`. Tämä tiedosto ei ole versionhallinnassa, koska se sisältää ei-julkista tietoa.
 
-
 ### Kehitysympäristön tietokannat
 
 Kehityskäyttöön tarvitaan PostgreSQL-tietokanta ja Elasticsearch-hakuindeksi.
@@ -179,7 +178,7 @@ Kehityskäyttöön tarvitaan PostgreSQL-tietokanta ja Elasticsearch-hakuindeksi.
 Kehitystietokannat käynnistetään docker-composella. Tämän voi tehdä seuraavalla
 komennolla:
 
-``` shell
+```shell
 make docker-dbs
 ```
 
@@ -192,19 +191,19 @@ testiajon alussa.
 
 Jos haluat tarkastella paikallisen kehityskannan tilaa SQL-työkalulla, se onnistuu esimerkiksi Postgren omalla komentorivityökalulla `psql`:
 
-``` shell
+```shell
 psql -h localhost koski oph
 psql -h localhost koski_test oph
 ```
 
 Peruskomennot:
 
-* `\dt` - listaa taulut
-* `\q` - poistu psql:stä
+- `\dt` - listaa taulut
+- `\q` - poistu psql:stä
 
 Näytä arviointi-taulun koko sisältö:
 
-``` sql
+```sql
 select * from arviointi;
 ```
 
@@ -214,7 +213,6 @@ Tietokannan rakenne luodaan ja päivitetään Flywayn migraatioskripteillä, jot
 
 Koski-sovellus ajaa migraatiot automaattisesti käynnistyessään.
 
-
 ### Elasticsearch-hakuindeksien hallinta
 
 Elasticsearch-hakuindeksejä voidaan hallita Kosken API:n kautta. API sallii
@@ -223,11 +221,10 @@ palvelimille konfiguroitava pääsy SSH:lla.
 
 API tarjoaa seuraavat toiminnot:
 
-* Indeksin luonti versioidulla nimellä koodissa määritellyn mappingin ja asetusten pohjalta
-* Luku- ja kirjoitusaliasten luonti tai siirto indeksiversiosta toiseen
-* Reindeksointi haluttujen versioiden välillä
-* Indeksin koko sisällön uudelleenlataus lähdedatasta (reload)
-
+- Indeksin luonti versioidulla nimellä koodissa määritellyn mappingin ja asetusten pohjalta
+- Luku- ja kirjoitusaliasten luonti tai siirto indeksiversiosta toiseen
+- Reindeksointi haluttujen versioiden välillä
+- Indeksin koko sisällön uudelleenlataus lähdedatasta (reload)
 
 #### Curl-esimerkkejä
 
@@ -258,12 +255,11 @@ ja `/_cat/aliases?v` apit voivat olla avuksi:
 
     curl 'https://vpc-koski-elasticsearch-me2iad5ogsn4dchkttci6ytgfy.eu-west-1.es.amazonaws.com/_cat/indices?v'
 
-
 ### Testit
 
 Buildaa ja aja kaikki testit
 
-``` shell
+```shell
 make test
 ```
 
@@ -271,7 +267,7 @@ Kun applikaatio pyörii paikallisesti (katso ohjeet yllä), voi Mocha-testit aja
 
 Mocha-testit voi ajaa myös nopeasti komentoriviltä:
 
-``` shell
+```shell
 make fronttest
 ```
 
@@ -304,7 +300,7 @@ Koski merkitsee tapahtumia erillisiin logitiedostoihin:
 
 Kaikkien logien tapahtumat siirretään testiympäristön palvelimilta Filebeat-agentilla Elasticsearch -tietokantaan, josta ne ovat katseltavissa Kibana-käyttöliittymän avulla.
 
-Loggaus on konfiguroitu tiedostolla `log4j.properties`, joka määrittää loggauksen kehitysympäristössä (tuotanto- ja kehitysympäristöjen lokitus määritellään toisessa repositoriossa sijaitsevilla konfiguraatiotiedostoilla). Tämän konfiguraatiotiedoston avulla määritellään esimerkiksi se, mitä logataan mihin tiedostoon. Kuten konfiguraatiotiedostosta ilmenee, tapahtuu access-loggaus ohjaamalla Jettyn `RequestLog`-luokan logitus `koski-access.log` -tiedostoon. Vastaavasti `fi.vm.sade.auditlog.Audit`-luokan loggaus ohjataan tiedostoon `koski-audit.log`, `fi.oph.koski.tiedonsiirto.IPTracking`-luokan loggaus tiedostoon `koski-ip-tracking.log` ja `fi.oph.koski.util.Timer` -luokan loggaus tiedostoon `koski-performance.log`. Kaikki muut logit menevät tiedostoon `koski.log`.
+Loggaus on konfiguroitu tiedostolla `log4j2.xml`, joka määrittää loggauksen kehitysympäristössä (tuotanto- ja kehitysympäristöjen lokitus määritellään `docker-build` -kansiossa konfiguraatiotiedostoilla). Tämän konfiguraatiotiedoston avulla määritellään esimerkiksi se, mitä logataan mihin tiedostoon. Kuten konfiguraatiotiedostosta ilmenee, tapahtuu access-loggaus ohjaamalla Jettyn `RequestLog`-luokan logitus `koski-access.log` -tiedostoon. Vastaavasti `fi.vm.sade.auditlog.Audit`-luokan loggaus ohjataan tiedostoon `koski-audit.log`, `fi.oph.koski.tiedonsiirto.IPTracking`-luokan loggaus tiedostoon `koski-ip-tracking.log` ja `fi.oph.koski.util.Timer` -luokan loggaus tiedostoon `koski-performance.log`. Kaikki muut logit menevät tiedostoon `koski.log`.
 
 Koski-sovelluskoodissa audit-loggaus tehdään `AuditLog`-luokan kautta ja sovellusloggaus käyttäen `Logging`-luokkaa, jolta sovelluskoodi saa käyttöönsä loggerin, joka automaattisesti liittää logiviesteihin käyttäjä- ja IP-osoitetiedot.
 
@@ -312,32 +308,32 @@ Koski-sovelluskoodissa audit-loggaus tehdään `AuditLog`-luokan kautta ja sovel
 
 ### OPH:n palvelut
 
-Kuvaus | URL | Muuta
---------|-----|-------
-Koski | [hallinta-ui](https://virkailija.opintopolku.fi/koski/) [api][koski-api] [pulssi-ui](https://koski.opintopolku.fi/koski/pulssi) |
-Valpas | [palvelukuvaus](https://wiki.eduuni.fi/display/OPHPALV/Valpas-palvelu) [käyttöliittymä](https://virkailija.opintopolku.fi/valpas/virkailija/) [UI-toteutus](valpas-web/README.md) | Kosken yhteyteen toteutettu oppivelvollisuuden valvontapalvelu.
-CAS | [palvelukortti](https://wiki.eduuni.fi/display/ophpolku/Rajapintojen+autentikaatio) | Käyttäjän autentikointi Koskeen ja muihin OPH:n palveluihin.
-Lokalisointipalvelu | [palvelukortti](https://wiki.eduuni.fi/display/ophpolku/Lokalisointipalvelu) | Palveluiden käyttöliittymien käännöksien hallinta.
-ePerusteet | [palvelukortti](https://wiki.eduuni.fi/display/OPHPALV/ePerusteet) [api][eperusteet-api] [api-dokumentaatio](https://wiki.eduuni.fi/display/ophpolku/ePerusteet+julkiset+rajapinnat) [ui](https://eperusteet.opintopolku.fi/) | ePerusteet-palvelu
-Suoritusrekisteri | [palvelukortti](https://wiki.eduuni.fi/display/ophpolku/SURE-suoritustiedot) [api](https://virkailija.testiopintopolku.fi/suoritusrekisteri/swagger/index.html#/Valpas-resource) | Suoritusrekisteri, jonka kautta Valpas hakee tietoja opiskelijahauista ja valinnoista
+| Kuvaus              | URL                                                                                                                                                                                                                           | Muuta                                                                                 |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Koski               | [hallinta-ui](https://virkailija.opintopolku.fi/koski/) [api][koski-api] [pulssi-ui](https://koski.opintopolku.fi/koski/pulssi)                                                                                               |
+| Valpas              | [palvelukuvaus](https://wiki.eduuni.fi/display/OPHPALV/Valpas-palvelu) [käyttöliittymä](https://virkailija.opintopolku.fi/valpas/virkailija/) [UI-toteutus](valpas-web/README.md)                                             | Kosken yhteyteen toteutettu oppivelvollisuuden valvontapalvelu.                       |
+| CAS                 | [palvelukortti](https://wiki.eduuni.fi/display/ophpolku/Rajapintojen+autentikaatio)                                                                                                                                           | Käyttäjän autentikointi Koskeen ja muihin OPH:n palveluihin.                          |
+| Lokalisointipalvelu | [palvelukortti](https://wiki.eduuni.fi/display/ophpolku/Lokalisointipalvelu)                                                                                                                                                  | Palveluiden käyttöliittymien käännöksien hallinta.                                    |
+| ePerusteet          | [palvelukortti](https://wiki.eduuni.fi/display/OPHPALV/ePerusteet) [api][eperusteet-api] [api-dokumentaatio](https://wiki.eduuni.fi/display/ophpolku/ePerusteet+julkiset+rajapinnat) [ui](https://eperusteet.opintopolku.fi/) | ePerusteet-palvelu                                                                    |
+| Suoritusrekisteri   | [palvelukortti](https://wiki.eduuni.fi/display/ophpolku/SURE-suoritustiedot) [api](https://virkailija.testiopintopolku.fi/suoritusrekisteri/swagger/index.html#/Valpas-resource)                                              | Suoritusrekisteri, jonka kautta Valpas hakee tietoja opiskelijahauista ja valinnoista |
 
 ### OPH:n yleiskäyttöiset palvelut
 
 Yleiskäyttöisten palveluiden dokumentaatio löytyy [OPH yleiskäyttöiset palvelut](https://wiki.eduuni.fi/pages/viewpage.action?pageId=190612676) wikisivulta, minkä kautta löytyvät myös API-linkit.
 
-Kuvaus | Muuta
--------|-------
-Oppijanumerorekisteri | Oppijan haku oid:lla tai hetulla. Uuden oppijan luonti.
-Käyttöoikeuspalvelu | Käyttäjän käyttöoikeusryhmien haku.
-Organisaatiopalvelu | Organisaation tai -hierarkian haku.
-Koodistopalvelu | Koodien ja metatietojen haku ja luonti.
+| Kuvaus                | Muuta                                                   |
+| --------------------- | ------------------------------------------------------- |
+| Oppijanumerorekisteri | Oppijan haku oid:lla tai hetulla. Uuden oppijan luonti. |
+| Käyttöoikeuspalvelu   | Käyttäjän käyttöoikeusryhmien haku.                     |
+| Organisaatiopalvelu   | Organisaation tai -hierarkian haku.                     |
+| Koodistopalvelu       | Koodien ja metatietojen haku ja luonti.                 |
 
 ### Kolmansien osapuolten palvelut
 
-Kuvaus | URL | Yhteystiedot
----|---|---
-CSC Virta | [kuvaus][virta-description] [api-dokumentaatio][virta-api] | virta@csc.fi, [Flowdock](https://www.flowdock.com/app/cybercom/tor-virta)
-Ylioppilastutkintorekisteri (YTR) | | 0295 338 200, lautakunta@ylioppilastutkinto.fi, [henkilökunta](https://www.ylioppilastutkinto.fi/yhteystiedot/kanslian-henkilokunta)
+| Kuvaus                            | URL                                                        | Yhteystiedot                                                                                                                         |
+| --------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| CSC Virta                         | [kuvaus][virta-description] [api-dokumentaatio][virta-api] | virta@csc.fi, [Flowdock](https://www.flowdock.com/app/cybercom/tor-virta)                                                            |
+| Ylioppilastutkintorekisteri (YTR) |                                                            | 0295 338 200, lautakunta@ylioppilastutkinto.fi, [henkilökunta](https://www.ylioppilastutkinto.fi/yhteystiedot/kanslian-henkilokunta) |
 
 ## Testiympäristö
 
@@ -361,7 +357,6 @@ järjestelmiin. Pilviympäristössä käytössä on [AWS:n AppConfig](https://eu
 
 Kehityskäytössä voit käyttää erilaisia asetuksia tekemällä asetustiedostoja, kuten vaikkapa `src/main/resources/koskidev.conf` (ei versionhallinnassa, koska sisältää luottamuksellista tietoa) ja antaa käytettävän tiedoston nimi käynnistysparametrina, esim. `-Dconfig.resource=koskidev.conf`. Valmiita asetustiedostoja voi pyytää kehitystiimiltä.
 
-
 ### Oppijanumerorekisteri, organisaatiopalvelu ja käyttöoikeuspalvelu
 
 Koski ei tallenna henkilötietoja omaan tietokantaansa, vaan hakee ja tallentaa ne Opintopolun [oppijanumerorekisteriin](https://wiki.eduuni.fi/display/OPHPALV/Oppijanumerorekisteri) ([toteutus](src/main/scala/fi/oph/koski/henkilo/AuthenticationServiceClient.scala)).
@@ -372,7 +367,7 @@ Käyttäjä voi nähdä vain ne opinto-oikeudet, jotka liittyvät oppilaitokseen
 
 Esimerkki [organisaatiohierarkian](https://virkailija.testiopintopolku.fi/organisaatio-service/swagger/index.html#!/organisaatiov2/searchOrganisaatioHierarkia) hakemisesta:
 
-``` shell
+```shell
 curl -X GET --header 'Accept: application/json' 'https://virkailija.testiopintopolku.fi/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&suunnitellut=true&lakkautetut=false&oid=1.2.246.562.10.50822930082'
 ```
 

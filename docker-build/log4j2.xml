@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration name="Koski" status="INFO" packages="io.prometheus.client.log4j2, fi.oph.koski.log">
+  <!--
+
+    Loggers
+
+  -->
+  <Loggers>
+    <!-- Root logger -->
+    <Root level="INFO">
+      <AppenderRef ref="Console"/>
+      <AppenderRef ref="Prometheus" />
+    </Root>
+    <!-- Access log -->
+    <Logger name="org.eclipse.jetty.server.RequestLog" level="INFO" additivity="false">
+      <AppenderRef ref="AccessLog" />
+    </Logger>
+    <!-- Audit log -->
+    <Logger name="fi.vm.sade.auditlog.Audit" level="INFO" additivity="false">
+      <AppenderRef ref="AuditLog" />
+    </Logger>
+    <!-- Performance log -->
+    <Logger name="fi.oph.koski.util.Timer" level="INFO" additivity="false">
+      <AppenderRef ref="PerformanceLog" />
+    </Logger>
+    <!-- HTTP client log-->
+    <Logger name="fi.oph.koski.http.Http" level="DEBUG" additivity="false">
+      <AppenderRef ref="HttpClientLog" />
+    </Logger>
+    <!-- IP tracking log -->
+    <Logger name="fi.oph.koski.tiedonsiirto.IPTracking" level="INFO" additivity="false">
+      <AppenderRef ref="IpTrackingLog" />
+    </Logger>
+    <!-- Suppress unwanted logging -->
+    <Logger name="org.reflections" level="WARN" />
+    <Logger name="org.eclipse.jetty.webapp" level="WARN" />
+    <Logger name="org.eclipse.jetty.server.handler" level="WARN" />
+    <Logger name="org.scalatra.servlet" level="WARN" />
+    <Logger name="org.eclipse.jetty.server.session" level="WARN" />
+    <Logger name="org.eclipse.jetty.server.HttpChannel" level="ERROR" />
+  </Loggers>
+  <!--
+
+    Appenders
+
+  -->
+  <Appenders>
+    <!-- Console -->
+    <Console name="Console">
+      <JsonTemplateLayout eventTemplateUri="classpath:LogstashJsonEventLayoutV1.json">
+        <EventTemplateAdditionalField key="log_type" value="app" />
+      </JsonTemplateLayout>
+    </Console>
+    <!-- Prometheus -->
+    <Prometheus name="Prometheus" />
+    <!-- Access log -->
+    <Console name="AccessLog">
+      <JsonTemplateLayout eventTemplateUri="classpath:LogstashJsonEventLayoutV1.json">
+        <EventTemplateAdditionalField key="log_type" value="access" />
+      </JsonTemplateLayout>
+    </Console>
+    <!-- Audit log -->
+    <Console name="AuditLog">
+      <PatternLayout pattern="%m%n" />
+    </Console>
+    <!-- Performance log -->
+    <Console name="PerformanceLog">
+      <JsonTemplateLayout eventTemplateUri="classpath:LogstashJsonEventLayoutV1.json">
+        <EventTemplateAdditionalField key="log_type" value="performance" />
+      </JsonTemplateLayout>
+    </Console>
+    <!-- HTTP client log -->
+    <Console name="HttpClientLog">
+      <JsonTemplateLayout eventTemplateUri="classpath:LogstashJsonEventLayoutV1.json">
+        <EventTemplateAdditionalField key="log_type" value="httpclient" />
+      </JsonTemplateLayout>
+    </Console>
+    <!-- IP tracking log -->
+    <Console name="IpTrackingLog">
+      <JsonTemplateLayout eventTemplateUri="classpath:LogstashJsonEventLayoutV1.json">
+        <EventTemplateAdditionalField key="log_type" value="iptracking" />
+      </JsonTemplateLayout>
+    </Console>
+  </Appenders>
+</Configuration>
