@@ -118,7 +118,7 @@ class KoskiValidator(
                 validateOpiskeluoikeudenLisätiedot(opiskeluoikeus),
                 validateOsaAikainenErityisopetus(opiskeluoikeus),
                 validateOppilaitoksenMuutos(opiskeluoikeus, tallennettuOpiskeluoikeus),
-                NuortenPerusopetuksenOpiskeluoikeusValidation.validateNuortenPerusopetuksenOpiskeluoikeus(opiskeluoikeus),
+                PerusopetuksenOpiskeluoikeusValidation.validatePerusopetuksenOpiskeluoikeus(opiskeluoikeus),
                 TiedonSiirrostaPuuttuvatSuorituksetValidation.validateEiSamaaAlkamispaivaa(opiskeluoikeus, koskiOpiskeluoikeudet),
                 HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, Nil))),
                 TilanAsettaminenKunVahvistettuSuoritusValidation.validateOpiskeluoikeus(opiskeluoikeus),
@@ -149,6 +149,7 @@ class KoskiValidator(
       .map(_.withHistoria(None))
       .map(KoodistopoikkeustenKonversiot.konvertoiKoodit)
       .map(fillLukionOppimääräSuoritettu)
+      .map(PerusopetuksenOpiskeluoikeusValidation.filterDeprekoidutKentät)
   }
 
   private def fillPerusteenNimi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = oo match {

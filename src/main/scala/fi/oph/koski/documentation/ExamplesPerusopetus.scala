@@ -118,7 +118,7 @@ object ExamplesPerusopetus {
       lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
         erityisenTuenPäätös = Some(erityisenTuenPäätös),
         erityisenTuenPäätökset = Some(List(erityisenTuenPäätös)),
-        perusopetuksenAloittamistaLykätty = true,
+        perusopetuksenAloittamistaLykätty = None,
         aloittanutEnnenOppivelvollisuutta = false,
         pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
         tukimuodot = Some(List(osaAikainenErityisopetus)),

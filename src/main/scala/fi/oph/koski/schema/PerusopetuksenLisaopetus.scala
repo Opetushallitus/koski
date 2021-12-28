@@ -39,7 +39,8 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @OksaUri("tmpOKSAID242", "koulunkäynnin aloittamisen lykkääminen")
   @DefaultValue(false)
-  perusopetuksenAloittamistaLykätty: Boolean = false,
+  @Deprecated("Tietoa ei tule siirtää Koskeen.")
+  perusopetuksenAloittamistaLykätty: Option[Boolean] = None,
   @Description("Perusopetuksen aloituksen aikaistaminen (true/false). Oppilas aloittanut perusopetuksen ennen oppivelvollisuusikää.")
   @Tooltip("Perusopetuksen aloitusta aikaistettu, eli oppilas aloittanut peruskoulun ennen oppivelvollisuusikää.")
   @DefaultValue(false)
@@ -71,6 +72,7 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   @Deprecated("Käytä korvaavaa kenttää Tehostetun tuen päätökset")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  @Deprecated("Tietoa ei tule siirtää Koskeen.")
   tehostetunTuenPäätös: Option[TehostetunTuenPäätös] = None,
   @Description("Tehostetun tuen päätös. Lista alku-loppu päivämääräpareja.")
   @Tooltip("Mahdollisen tehostetun tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja.")
@@ -166,7 +168,7 @@ case class PerusopetuksenLisäopetuksenSuoritus(
   @Title("Osa-aikainen erityisopetus perusopetuksen lisäopetuksen aikana")
   @Deprecated("Tätä kenttää ei toistaiseksi käytetä.")
   @Hidden
-  osaAikainenErityisopetus: Boolean = false,
+  osaAikainenErityisopetus: Option[Boolean] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[PerusopetuksenLisäopetuksenAlisuoritus]],
@@ -183,7 +185,7 @@ case class PerusopetuksenLisäopetuksenSuoritus(
   with Suorituskielellinen
   with ErityisopetuksellinenPäätasonSuoritus
   with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta {
-  def sisältääOsaAikaisenErityisopetuksen: Boolean = osaAikainenErityisopetus
+  def sisältääOsaAikaisenErityisopetuksen: Boolean = osaAikainenErityisopetus.getOrElse(false)
 }
 
 trait PerusopetuksenLisäopetuksenAlisuoritus extends Suoritus with MahdollisestiSuorituskielellinen {

@@ -204,7 +204,6 @@ describe('Perusopetus', function() {
             'Tila 4.6.2016 Valmistunut\n' +
             '15.8.2008 Läsnä\n' +
             'Lisätiedot\n' +
-            'Perusopetuksen aloittamista lykätty kyllä\n' +
             'Pidennetty oppivelvollisuus 15.8.2008 — 4.6.2016\n' +
             'Tukimuodot Osa-aikainen erityisopetus\n' +
             'Erityisen tuen päätös 15.8.2008 — 4.6.2016\n' +
@@ -213,8 +212,6 @@ describe('Perusopetus', function() {
             'Erityisen tuen päätökset 15.8.2008 — 4.6.2016\n' +
             'Opiskelee toiminta-alueittain kyllä\n' +
             'Opiskelee erityisryhmässä kyllä\n' +
-            'Tehostetun tuen päätökset 15.8.2008 — 4.6.2016\n' +
-            'Tukimuodot Tukiopetus\n' +
             'Joustava perusopetus 15.8.2008 — 4.6.2016\n' +
             'Kotiopetusjaksot 15.8.2008 — 4.6.2016\n' +
             '14.7.2017 — 18.10.2017\n' +
@@ -1085,26 +1082,26 @@ describe('Perusopetus', function() {
 
       describe('Opiskeluoikeuden lisätiedot', function() {
         before(page.oppijaHaku.selectOppija('220109-784L'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'))
-        before(editor.edit, opinnot.expandAll, editor.property('perusopetuksenAloittamistaLykätty').setValue(true), editor.saveChanges, wait.until(page.isSavedLabelShown))
+        before(editor.edit, opinnot.expandAll, editor.property('vuosiluokkiinSitoutumatonOpetus').setValue(true), editor.saveChanges, wait.until(page.isSavedLabelShown))
         describe('Lisätietojen lisäys', function() {
           it('Toimii', function() {
-            expect(editor.property('perusopetuksenAloittamistaLykätty').getValue()).to.equal('kyllä')
+            expect(editor.property('vuosiluokkiinSitoutumatonOpetus').getValue()).to.equal('kyllä')
           })
         })
 
         describe('Kun lisätiedot piilotetaan ja näytetään uudestaan', function() {
           before(opinnot.collapseAll, opinnot.expandAll)
           it('Toimii', function() {
-            expect(editor.property('perusopetuksenAloittamistaLykätty').getValue()).to.equal('kyllä')
+            expect(editor.property('vuosiluokkiinSitoutumatonOpetus').getValue()).to.equal('kyllä')
           })
         })
 
         describe('Kun lisätiedot piilotetaan, siirrytään muokkaukseen, avataan lisätiedot, poistutaan muokkauksesta', function() {
           before(opinnot.collapseAll, editor.edit, opinnot.expandAll, editor.cancelChanges)
           it('Toimii', function() {
-            expect(editor.property('perusopetuksenAloittamistaLykätty').getValue()).to.equal('kyllä')
+            expect(editor.property('vuosiluokkiinSitoutumatonOpetus').getValue()).to.equal('kyllä')
           })
-          after(editor.edit, opinnot.expandAll, editor.property('perusopetuksenAloittamistaLykätty').setValue(false), editor.saveChanges)
+          after(editor.edit, opinnot.expandAll, editor.property('vuosiluokkiinSitoutumatonOpetus').setValue(false), editor.saveChanges)
         })
 
         describe('Erityisen tuen päätös', function() {

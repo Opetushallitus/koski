@@ -3,6 +3,7 @@ package fi.oph.koski.api
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetuksenAlkuvaiheenSuoritus, oppiaineidenSuoritukset2015, oppiaineidenSuoritukset2017}
+import fi.oph.koski.documentation.OsaAikainenErityisopetusExampleData.tehostetunTuenPäätösIlmanOsaAikaistaErityisopetusta
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.http._
 import fi.oph.koski.schema._
@@ -214,4 +215,23 @@ class OppijaValidationAikuistenPerusopetusSpec
       verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaEronnutTaiKatsotaanEronneeksiVaikkaVahvistettuPäätasonSuoritus())
     }
   }
+
+  "Deprekoituja kenttiä, jotka tiputetaan siirrossa pois" - {
+    "Lisätiedon kenttää erityisenTuenPäätökset ei oteta vastaan siirrossa" in {
+      val oo = defaultOpiskeluoikeus.withLisätiedot(
+        Some(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
+          tehostetunTuenPäätökset = Some(List(Aikajakso(LocalDate.now(), None))
+        ))
+      ))
+
+      val tallennettuna = putAndGetOpiskeluoikeus(oo)
+
+      tallennettuna.lisätiedot.get.tehostetunTuenPäätökset should equal (None)
+    }
+  }
+
+  private def putAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): AikuistenPerusopetuksenOpiskeluoikeus = putOpiskeluoikeus(oo) {
+    verifyResponseStatusOk()
+    getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
+  }.asInstanceOf[AikuistenPerusopetuksenOpiskeluoikeus]
 }
