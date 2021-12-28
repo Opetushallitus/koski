@@ -81,6 +81,11 @@ trait Suoritus {
     import mojave._
     shapeless.lens[Suoritus].field[Koulutusmoduuli]("koulutusmoduuli").set(this)(km)
   }
+
+  def withOsasuoritukset(oss: Option[List[Suoritus]]): Suoritus = {
+    import mojave._
+    shapeless.lens[Suoritus].field[Option[List[Suoritus]]]("osasuoritukset").set(this)(oss)
+  }
 }
 
 object Suoritus {
@@ -197,7 +202,7 @@ trait PäätasonSuoritus extends Suoritus {
   override def tarvitseeVahvistuksen = true
   def mutuallyExclusivePäätasoVahvistukseton = {}
 
-  final def withOsasuoritukset(oss: Option[List[Suoritus]]): PäätasonSuoritus = {
+  override final def withOsasuoritukset(oss: Option[List[Suoritus]]): PäätasonSuoritus = {
     import mojave._
     shapeless.lens[PäätasonSuoritus].field[Option[List[Suoritus]]]("osasuoritukset").set(this)(oss)
   }

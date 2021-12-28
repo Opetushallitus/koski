@@ -51,7 +51,7 @@ class LuovutuspalveluService(application: KoskiApplication) {
   private def opiskeluoikeusTyyppiQueryFilters(opiskeluoikeusTyypit: List[String]): OneOfOpiskeluoikeudenTyypit =
     OneOfOpiskeluoikeudenTyypit(opiskeluoikeusTyypit.map(t => OpiskeluoikeusQueryFilter.OpiskeluoikeudenTyyppi(Koodistokoodiviite(t, "opiskeluoikeudentyyppi"))))
 
-  private def buildResponse(oppija: Oppija, req: LuovutuspalveluRequest): Either[HttpStatus, LuovutuspalveluResponseV1] = {
+  private def buildResponse(oppija: Oppija, req: LuovutuspalveluRequest)(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, LuovutuspalveluResponseV1] = {
     val palautettavatOpiskeluoikeudet = oppija.opiskeluoikeudet.filter(oo => req.opiskeluoikeudenTyypit.contains(oo.tyyppi.koodiarvo))
     if (palautettavatOpiskeluoikeudet.isEmpty) {
       Left(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
@@ -60,7 +60,7 @@ class LuovutuspalveluService(application: KoskiApplication) {
     }
   }
 
-  private def buildResponse(h: OppijaHenkilö, oo: List[OpiskeluoikeusRow]): LuovutuspalveluResponseV1 =
+  private def buildResponse(h: OppijaHenkilö, oo: List[OpiskeluoikeusRow])(implicit koskiSession: KoskiSpecificSession): LuovutuspalveluResponseV1 =
     LuovutuspalveluResponseV1(
       LuovutuspalveluHenkilöV1(h.oid, h.hetu, h.syntymäaika, h.turvakielto),
       oo.map(_.toOpiskeluoikeusUnsafe))

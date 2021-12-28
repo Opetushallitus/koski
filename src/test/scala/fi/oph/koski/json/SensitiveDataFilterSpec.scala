@@ -1,9 +1,12 @@
 package fi.oph.koski.json
 
-import fi.oph.koski.TestEnvironment
+import fi.oph.koski.{KoskiHttpSpec, TestEnvironment}
+import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.documentation.AmmatillinenExampleData.{k3, lisätietoOsaamistavoitteet, yhteisenTutkinnonOsanSuoritus}
 import fi.oph.koski.documentation.PerusopetusExampleData.{oppiaine, suoritus}
 import fi.oph.koski.documentation._
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.koskiuser.{KäyttöoikeusRepository, MockUsers}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
@@ -13,19 +16,22 @@ import org.scalatest.matchers.should.Matchers
 import java.time.LocalDate
 import scala.reflect.runtime.universe.TypeTag
 
-class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matchers {
+class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matchers with OpiskeluoikeusTestMethods with KoskiHttpSpec {
   private val application = KoskiApplication.apply
   private val käyttöoikeusRepository: KäyttöoikeusRepository = application.käyttöoikeusRepository
+
+  val ammatillinenPiilotettavaLisätieto = yhteisenTutkinnonOsanSuoritus("101054", "Matemaattis-luonnontieteellinen osaaminen", k3, 9).copy(
+    lisätiedot = Some(List(lisätietoOsaamistavoitteet)))
 
   "Käyttäjä jolla ei ole luottamuksellisia oikeuksia ei näe mitään arkaluontoisia tietoja" in {
     implicit val eiLuottumuksellisiaOikeuksia = MockUsers.evira.toKoskiSpecificSession(käyttöoikeusRepository)
     roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(None,None,None,None,None,false,None,None,None,None,None))
     roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(AmmatillisenOpiskeluoikeudenLisätiedot(false,None,None,None,None,None,None,None,None,None,None,None,false,None,false))
-    roundtrip[DIAOpiskeluoikeudenLisätiedot](diaOpiskeluoikeudenLisätiedot).pidennettyPäättymispäivä should equal(false)
-    roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(EsiopetuksenOpiskeluoikeudenLisätiedot(None,None,None))
-    roundtrip[LukionOpiskeluoikeudenLisätiedot](lukionOpiskeluoikeudenLisätiedot) should equal(LukionOpiskeluoikeudenLisätiedot(false,false,None,false,None,None,false,None))
-    roundtrip[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot](lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot) should equal(LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(false,false,None,false,None))
-    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(PerusopetuksenOpiskeluoikeudenLisätiedot(None,false,None,None,None,None,None,None,None,None,None,None,None,false,None,None,None,None,None,None,None))
+    roundtrip[DIAOpiskeluoikeudenLisätiedot](diaOpiskeluoikeudenLisätiedot).pidennettyPäättymispäivä should equal(true)
+    roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(EsiopetuksenOpiskeluoikeudenLisätiedot(None,None,None,None,None,None,Some(aikajakso)))
+    roundtrip[LukionOpiskeluoikeudenLisätiedot](lukionOpiskeluoikeudenLisätiedot) should equal(LukionOpiskeluoikeudenLisätiedot(true,false,None,true,None,None,false,None,None,None))
+    roundtrip[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot](lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot) should equal(LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(true,false,None,false,None))
+    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(PerusopetuksenOpiskeluoikeudenLisätiedot(None,false,None,None,None,None,None,None,None,None,None,None,None,false,None,None,Some(aikajakso),None,None,None,None))
     roundtrip[PerusopetuksenVuosiluokanSuoritus](perusopetuksenVuosiluokanSuoritus).jääLuokalle should equal(false)
     roundtrip[SanallinenPerusopetuksenOppiaineenArviointi](sanallinenPerusopetuksenOppiaineenArviointi).kuvaus should equal(None)
     roundtrip[PerusopetuksenKäyttäytymisenArviointi](perusopetuksenKäyttäytymisenArviointi).kuvaus should equal(None)
@@ -34,6 +40,21 @@ class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matc
     roundtrip[NuortenPerusopetuksenUskonto](nuortenUskonto).uskonnonOppimäärä should equal(None)
     roundtrip[AikuistenPerusopetuksenUskonto](aikuistenUskonto).uskonnonOppimäärä should equal(None)
     roundtrip[LukionUskonto2015](lukionUskonto).uskonnonOppimäärä should equal(None)
+
+    val ammatillinenJossaVoisiOllaMukautettujaArvosanoja = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ammatillisenOsittainenRapsa.oid, MockUsers.evira)
+    existsLisätietoMukautetustaArvioinnista(ammatillinenJossaVoisiOllaMukautettujaArvosanoja) should equal (false)
+
+    val perusopetuksenOpiskeluoikeusJossaVoisiOllaToimintaAlueenSuoritus = lastOpiskeluoikeus(KoskiSpecificMockOppijat.toimintaAlueittainOpiskelija.oid, MockUsers.evira)
+    perusopetuksenOpiskeluoikeusJossaVoisiOllaToimintaAlueenSuoritus.suoritukset.exists(_.osasuoritusLista.exists{
+      case _: PerusopetuksenToiminta_AlueenSuoritus => true
+      case _ => false
+    }) should equal (false)
+
+    // Tarkistetaan, että vain toiminta-alueen osasuoritukset jää pois
+    val perusopetuksenOpiskeluoikeusMuillaOsasuorituksilla = getOpiskeluoikeudet(KoskiSpecificMockOppijat.koululainen.oid, MockUsers.evira).find(
+      _.tyyppi.koodiarvo == OpiskeluoikeudenTyyppi.perusopetus.koodiarvo
+    ).get
+    perusopetuksenOpiskeluoikeusMuillaOsasuorituksilla.suoritukset.head.osasuoritusLista.length should equal (17)
   }
 
   "Käyttäjä jolla on kaikki luottamuksellisten tietojen oikeudet näkee kaikki arkaluontoiset tiedot" in {
@@ -53,6 +74,15 @@ class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matc
     roundtrip[NuortenPerusopetuksenUskonto](nuortenUskonto) should equal(nuortenUskonto)
     roundtrip[AikuistenPerusopetuksenUskonto](aikuistenUskonto) should equal(aikuistenUskonto)
     roundtrip[LukionUskonto2015](lukionUskonto) should equal(lukionUskonto)
+
+    val ammatillinenJossaVoisiOllaMukautettujaArvosanoja = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ammatillisenOsittainenRapsa.oid, MockUsers.paakayttaja)
+    existsLisätietoMukautetustaArvioinnista(ammatillinenJossaVoisiOllaMukautettujaArvosanoja) should equal (true)
+
+    val perusopetuksenOpiskeluoikeusJossaVoisiOllaToimintaAlueenSuoritus = lastOpiskeluoikeus(KoskiSpecificMockOppijat.toimintaAlueittainOpiskelija.oid, MockUsers.paakayttaja)
+    perusopetuksenOpiskeluoikeusJossaVoisiOllaToimintaAlueenSuoritus.suoritukset.exists(_.osasuoritusLista.exists{
+      case _: PerusopetuksenToiminta_AlueenSuoritus => true
+      case _ => false
+    }) should equal (true)
   }
 
   "Käyttäjä jolla on uusi kaikkiin luottamuksellisiin tietoihin oikeuttava käyttöoikeus näkee kaikki arkaluontoiset tiedot" in {
@@ -78,11 +108,11 @@ class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matc
     implicit val suppeatOikeudet = MockUsers.kelaSuppeatOikeudet.toKoskiSpecificSession(käyttöoikeusRepository)
     roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(None,None,None,None,None,false,None,None,None,Some(aikajakso),aikajaksot))
     roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(AmmatillisenOpiskeluoikeudenLisätiedot(true,None,aikajaksot,aikajaksot,None,None,None,None,None,None,None,None,false,aikajaksot,false))
-    roundtrip[DIAOpiskeluoikeudenLisätiedot](diaOpiskeluoikeudenLisätiedot).pidennettyPäättymispäivä should equal(false)
-    roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(EsiopetuksenOpiskeluoikeudenLisätiedot(None, None, None))
-    roundtrip[LukionOpiskeluoikeudenLisätiedot](lukionOpiskeluoikeudenLisätiedot) should equal(LukionOpiskeluoikeudenLisätiedot(false,false,None,true,None,None,true,aikajaksot))
-    roundtrip[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot](lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot) should equal(LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(false,false,None,true,aikajaksot))
-    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(PerusopetuksenOpiskeluoikeudenLisätiedot(None,false,None,None,None,None,None,None,None,None,None,None,None,false,None,None,None,None,Some(aikajakso),aikajaksot,None))
+    roundtrip[DIAOpiskeluoikeudenLisätiedot](diaOpiskeluoikeudenLisätiedot).pidennettyPäättymispäivä should equal(true)
+    roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(EsiopetuksenOpiskeluoikeudenLisätiedot(None,None,None,None,None,None,Some(aikajakso)))
+    roundtrip[LukionOpiskeluoikeudenLisätiedot](lukionOpiskeluoikeudenLisätiedot) should equal(LukionOpiskeluoikeudenLisätiedot(true,false,None,true,None,None,true,aikajaksot))
+    roundtrip[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot](lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot) should equal(LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(true,false,None,true,aikajaksot))
+    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(PerusopetuksenOpiskeluoikeudenLisätiedot(None,false,None,None,None,None,None,None,None,None,None,None,None,false,None,None,Some(aikajakso),None,Some(aikajakso),aikajaksot,None))
     roundtrip[PerusopetuksenVuosiluokanSuoritus](perusopetuksenVuosiluokanSuoritus).jääLuokalle should equal(false)
     roundtrip[SanallinenPerusopetuksenOppiaineenArviointi](sanallinenPerusopetuksenOppiaineenArviointi).kuvaus should equal(None)
     roundtrip[PerusopetuksenKäyttäytymisenArviointi](perusopetuksenKäyttäytymisenArviointi).kuvaus should equal(None)
@@ -97,11 +127,11 @@ class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matc
     implicit val laajatOikeudet = MockUsers.kelaLaajatOikeudet.toKoskiSpecificSession(käyttöoikeusRepository)
     roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot.copy(vuosiluokkiinSitoutumatonOpetus = false, vammainen = None, vaikeastiVammainen = None, tukimuodot = None))
     roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(ammatillisenOpiskeluoikeudenLisätiedot.copy(vaikeastiVammainen = None, vammainenJaAvustaja = None))
-    roundtrip[DIAOpiskeluoikeudenLisätiedot](diaOpiskeluoikeudenLisätiedot).pidennettyPäättymispäivä should equal(false)
-    roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(esiopetuksenOpiskeluoikeudenLisätiedot.copy(pidennettyOppivelvollisuus = None, majoitusetu = None, kuljetusetu = None, tukimuodot = None, erityisenTuenPäätös = Some(erityisenTuenPäätös.copy(toteutuspaikka = None)), erityisenTuenPäätökset = Some(List(erityisenTuenPäätös.copy(toteutuspaikka = None)))))
-    roundtrip[LukionOpiskeluoikeudenLisätiedot](lukionOpiskeluoikeudenLisätiedot) should equal(lukionOpiskeluoikeudenLisätiedot.copy(pidennettyPäättymispäivä = false))
-    roundtrip[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot](lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot) should equal(lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot.copy(pidennettyPäättymispäivä = false))
-    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(PerusopetuksenOpiskeluoikeudenLisätiedot(None,false,None,None,Some(erityisenTuenPäätös.copy(toteutuspaikka = None)),Some(List(erityisenTuenPäätös.copy(toteutuspaikka = None))),Some(tehostetunTuenPäätös),Some(List(tehostetunTuenPäätös)),Some(aikajakso),None,None,None,None,false,None,None,None,None,Some(aikajakso),aikajaksot,aikajaksot))
+    roundtrip[DIAOpiskeluoikeudenLisätiedot](diaOpiskeluoikeudenLisätiedot).pidennettyPäättymispäivä should equal(true)
+    roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(esiopetuksenOpiskeluoikeudenLisätiedot.copy(pidennettyOppivelvollisuus = None, majoitusetu = Some(aikajakso), kuljetusetu = None, tukimuodot = None, erityisenTuenPäätös = Some(erityisenTuenPäätös.copy(toteutuspaikka = None)), erityisenTuenPäätökset = Some(List(erityisenTuenPäätös.copy(toteutuspaikka = None)))))
+    roundtrip[LukionOpiskeluoikeudenLisätiedot](lukionOpiskeluoikeudenLisätiedot) should equal(lukionOpiskeluoikeudenLisätiedot.copy(pidennettyPäättymispäivä = true))
+    roundtrip[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot](lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot) should equal(lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot.copy(pidennettyPäättymispäivä = true))
+    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(PerusopetuksenOpiskeluoikeudenLisätiedot(None,false,None,None,Some(erityisenTuenPäätös.copy(toteutuspaikka = None)),Some(List(erityisenTuenPäätös.copy(toteutuspaikka = None))),Some(tehostetunTuenPäätös),Some(List(tehostetunTuenPäätös)),Some(aikajakso),None,None,None,None,false,None,None,Some(aikajakso),None,Some(aikajakso),aikajaksot,aikajaksot))
     roundtrip[PerusopetuksenVuosiluokanSuoritus](perusopetuksenVuosiluokanSuoritus).jääLuokalle should equal(false)
     roundtrip[SanallinenPerusopetuksenOppiaineenArviointi](sanallinenPerusopetuksenOppiaineenArviointi).kuvaus should equal(None)
     roundtrip[PerusopetuksenKäyttäytymisenArviointi](perusopetuksenKäyttäytymisenArviointi).kuvaus should equal(None)
@@ -207,4 +237,19 @@ class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matc
 
   private def roundtrip[T: TypeTag](input: T)(implicit user: SensitiveDataAllowed): T =
     JsonSerializer.extract[T](JsonSerializer.serialize(input))
+
+  def existsLisätietoMukautetustaArvioinnista(oo: Opiskeluoikeus) = {
+    oo.suoritukset.exists(
+      _.osasuoritusLista.exists{
+        case lisätiedollinen: AmmatillisenTutkinnonOsanLisätiedollinen =>
+          lisätiedollinen.lisätiedot.toList.flatten.exists(_.tunniste.koodiarvo == "mukautettu") ||
+            lisätiedollinen.osasuoritukset.toList.flatten.exists{
+              case lisätiedollinen: AmmatillisenTutkinnonOsanLisätiedollinen =>
+                lisätiedollinen.lisätiedot.toList.flatten.exists(_.tunniste.koodiarvo == "mukautettu")
+              case _ => false
+            }
+        case _ => false
+      }
+    )
+  }
 }

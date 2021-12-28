@@ -55,7 +55,7 @@ trait PreIBLukionOsasuoritus2019 extends PreIBSuorituksenOsasuoritus2019 {
     osasuoritukset.toList.flatten
   }
 
-  final def withOsasuoritukset(oss: Option[List[Suoritus]]): PreIBLukionOsasuoritus2019 = {
+  override final def withOsasuoritukset(oss: Option[List[Suoritus]]): PreIBLukionOsasuoritus2019 = {
     import mojave._
     shapeless.lens[PreIBLukionOsasuoritus2019].field[Option[List[Suoritus]]]("osasuoritukset").set(this)(oss)
   }

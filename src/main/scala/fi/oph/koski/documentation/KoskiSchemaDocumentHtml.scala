@@ -178,7 +178,7 @@ object KoskiSchemaDocumentHtml {
   }
 
   private def sensitiveDataHtml(metadata: List[Metadata]): List[Elem] = metadata.collect {
-    case s: SensitiveData => <div class="sensitive">Arkaluontoinen tieto.</div>
+    case s: SensitiveData => <div class="sensitive">Erityinen henkilötieto + salassa pidettävä tieto.</div>
   }
 
   private def deprecatedHtml(metadata: List[Metadata], includeMessage: Boolean = false): List[Elem] = metadata.collect {

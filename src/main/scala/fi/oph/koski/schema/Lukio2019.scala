@@ -107,7 +107,7 @@ trait LukionOppimääränOsasuoritus2019 extends LukionOppimääränPäätasonOs
     osasuoritukset.toList.flatten
   }
 
-  final def withOsasuoritukset(oss: Option[List[Suoritus]]): LukionOppimääränOsasuoritus2019 = {
+  override final def withOsasuoritukset(oss: Option[List[Suoritus]]): LukionOppimääränOsasuoritus2019 = {
     import mojave._
     shapeless.lens[LukionOppimääränOsasuoritus2019].field[Option[List[Suoritus]]]("osasuoritukset").set(this)(oss)
   }

@@ -18,7 +18,7 @@ case class SensitiveDataFilter(user: SensitiveDataAllowed) {
 
   def rowSerializer: ((Henkilö, immutable.Seq[OpiskeluoikeusRow])) => JValue = {
     def ser(tuple: (Henkilö, immutable.Seq[OpiskeluoikeusRow])) = {
-      JsonSerializer.serialize(Oppija(tuple._1, tuple._2.map(_.toOpiskeluoikeusUnsafe)))
+      JsonSerializer.serialize(Oppija(tuple._1, tuple._2.map(_.toOpiskeluoikeusUnsafe(user))))
     }
     ser
   }

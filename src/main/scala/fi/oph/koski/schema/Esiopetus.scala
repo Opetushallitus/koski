@@ -72,7 +72,6 @@ case class EsiopetuksenOpiskeluoikeudenLisätiedot(
   vaikeastiVammainen: Option[List[Aikajakso]] = None,
   @Description("Oppilaalla on majoitusetu (alku- ja loppupäivämäärä). Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, jos oppilaalla on majoitusetu (alku- ja loppupäivämäärät). Rahoituksen laskennassa käytettävä tieto.")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   majoitusetu: Option[Aikajakso] = None,
   @Description("Oppilaalla on kuljetusetu (alku- ja loppupäivämäärät).")
   @Tooltip("Tieto siitä, jos oppilaalla on kuljetusetu (alku- ja loppupäivämäärät).")

@@ -210,7 +210,6 @@ case class PaikallinenLukioonValmistavanKoulutuksenKurssi(
 
 case class LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
   @Description("Opiskeluajan pidennetty päättymispäivä (true/false). Lukiokoulutukseen valmistavan koulutuksen oppimäärä tulee suorittaa yhdessä vuodessa, jollei sairauden tai muun erityisen syyn vuoksi myönnetä suoritusaikaan pidennystä. (lukiolaki 21.8.1998/629 24 §)")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @DefaultValue(false)
   pidennettyPäättymispäivä: Boolean = false,
   @Description("Opiskelija on ulkomainen vaihto-opiskelija Suomessa (true/false). Rahoituksen laskennassa hyödynnettävä tieto.")
