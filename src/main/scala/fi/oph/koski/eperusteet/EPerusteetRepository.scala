@@ -18,8 +18,20 @@ trait EPerusteetRepository {
   def findLinkToEperusteetWeb(diaariNumero: String, lang: String): Option[String] = {
     val linkLang = if (webLanguages.contains(lang)) lang else webLanguages.head
     findPerusteenYksilöintitiedot(diaariNumero)
-      .map(peruste => s"$webBaseUrl/#/${linkLang}/kooste/${peruste.id}")
+      .map(peruste => {
+        val betaEperusteKategoria = betaEperusteenTarvitsevatDiaarinumerot.find(
+          _._2.contains(diaariNumero))
+        if (betaEperusteKategoria.nonEmpty) {
+          s"$webBaseUrl/beta/#/${linkLang}/${betaEperusteKategoria.get._1}/${peruste.id}"
+        } else {
+          s"$webBaseUrl/#/${linkLang}/kooste/${peruste.id}"
+        }
+      })
   }
+
+  protected val betaEperusteenTarvitsevatDiaarinumerot = Map(
+    "vapaasivistystyo" -> List("OPH-58-2021", "OPH-2984-2017", "1/011/2012", "OPH-123-2021"),
+    "lukiokoulutus" -> List("OPH-2267-2019", "OPH-4958-2020", "OPH-2263-2019"))
 
   protected val webLanguages = List("fi", "sv")
 
