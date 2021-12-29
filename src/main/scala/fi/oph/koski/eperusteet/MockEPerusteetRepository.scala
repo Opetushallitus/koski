@@ -18,6 +18,7 @@ object MockEPerusteetRepository extends EPerusteetRepository {
     "rakenne-puutarhatalouden-perustutkinto",
     "rakenne-automekaanikon-erikoisammattitutkinto",
     "rakenne-liiketalouden-perustutkinto",
+    "rakenne-liiketalouden-perustutkinto-paattymistesti",
     "rakenne-puuteollisuuden-perustutkinto",
     "rakenne-virheellinen-puuteollisuuden-perustutkinto",
     "rakenne-valma",
