@@ -20,7 +20,6 @@ trait Logging {
 case class LoggerWithContext(
   logger: Logger,
   context: Option[LogUserContext],
-  extraFormatter: String => String
 ) {
   def debug(msg: => String) = logger.debug(fmt(msg))
   def info(msg: => String) = logger.info(fmt(msg))
@@ -31,7 +30,7 @@ case class LoggerWithContext(
 
   def withUserContext(context: LogUserContext) = this.copy(context = Some(context))
 
-  private def fmt(msg: => String) = extraFormatter({
+  private def fmt(msg: => String) = {
     val cutMsg = cutToMaxLength(msg)
 
     context match {
@@ -41,7 +40,7 @@ case class LoggerWithContext(
       }
       case None => cutMsg
     }
-  })
+  }
 
   private def cutToMaxLength(msg: => String) = {
     if (msg.length > LogConfiguration.logMessageMaxLength) {
@@ -53,5 +52,5 @@ case class LoggerWithContext(
 }
 
 object LoggerWithContext {
-  def apply(klass: Class[_], context: Option[LogUserContext] = None): LoggerWithContext = LoggerWithContext(getLogger(klass), context, LogUtils.maskSensitiveInformation)
+  def apply(klass: Class[_], context: Option[LogUserContext] = None): LoggerWithContext = LoggerWithContext(getLogger(klass), context)
 }

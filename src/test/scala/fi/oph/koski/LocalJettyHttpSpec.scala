@@ -28,9 +28,6 @@ object LocalJettyHttpSpec extends Logging {
     if (!running) {
       running = true
       jetty // Evaluate to start jetty
-      AuditLogTester.setup
-      AccessLogTester.setup
-      RootLogTester.setup
     }
   }
 

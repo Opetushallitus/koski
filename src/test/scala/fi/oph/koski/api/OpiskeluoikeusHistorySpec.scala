@@ -147,7 +147,7 @@ class OpiskeluoikeusHistorySpec
           verifyResponseStatusOk()
         }
 
-        RootLogTester.getLogMessages.map(_.getMessage.toString).find(_.startsWith("Virhe")).get should equal(s"""
+        RootLogTester.getLogMessages.find(_.startsWith("Virhe")).get should equal(s"""
            |Virhe opiskeluoikeushistoriarivin tuottamisessa opiskeluoikeudelle ${opiskeluoikeus.oid}/${opiskeluoikeus.versionumero + 1}: [ {
            |  "op" : "copy",
            |  "path" : "/suoritukset/0/osasuoritukset/-",
@@ -175,7 +175,7 @@ class OpiskeluoikeusHistorySpec
           verifyResponseStatusOk()
         }
 
-        val logString = RootLogTester.getLogMessages.map(_.getMessage.toString).find(_.startsWith("Virhe opiskeluoikeushistorian validoinnissa")).get
+        val logString = RootLogTester.getLogMessages.find(_.startsWith("Virhe opiskeluoikeushistorian validoinnissa")).get
         logString should equal(s"Virhe opiskeluoikeushistorian validoinnissa: Opiskeluoikeuden ${opiskeluoikeus.oid} historiaversion patch 4 epäonnistui")
       }
     }

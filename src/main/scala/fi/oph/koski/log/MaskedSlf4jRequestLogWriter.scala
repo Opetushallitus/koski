@@ -1,7 +1,6 @@
 package fi.oph.koski.log
 
 import java.io.IOException
-
 import org.eclipse.jetty.server.Slf4jRequestLogWriter
 
 class MaskedSlf4jRequestLogWriter extends Slf4jRequestLogWriter {

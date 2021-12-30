@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration name="localKoski" status="INFO" packages="fi.oph.koski.log">
+  <!--
+
+    Loggers
+
+  -->
+  <Loggers>
+    <!-- Root logger -->
+    <Root level="INFO">
+      <AppenderRef ref="Root"/>
+      <AppenderRef ref="Console" />
+    </Root>
+    <!-- Access log -->
+    <Logger name="org.eclipse.jetty.server.RequestLog" level="INFO" additivity="false">
+      <AppenderRef ref="Access" />
+    </Logger>
+    <!-- Audit log -->
+    <Logger name="fi.vm.sade.auditlog.Audit" level="INFO" additivity="false">
+      <AppenderRef ref="Audit" />
+    </Logger>
+    <!-- Log tests -->
+    <Logger name="fi.oph.koski.log.LogMaskingPatternConverterSpec" level="INFO" additivity="false">
+      <AppenderRef ref="PluginTest" />
+      <AppenderRef ref="PluginTestJSON" />
+      <AppenderRef ref="PluginTestMasked" />
+      <AppenderRef ref="PluginTestMaskedJSON" />
+    </Logger>
+  </Loggers>
+  <!--
+
+    Appenders
+
+  -->
+  <Appenders>
+    <Console name="Console">
+      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1} - %cm%n"/>
+    </Console>
+    <!--
+      Stubien nimet pitää olla samat, kuin mitä käytetään testihelppereissä (kts. LogTester.appenderName).
+      Käytä patternina %cm, jos haluat hetujen filtteröinnin - muussa tapauksessa %m.
+    -->
+    <Stub name="Root">
+      <PatternLayout pattern="%cm" />
+    </Stub>
+    <Stub name="Access">
+      <PatternLayout pattern="%cm" />
+    </Stub>
+    <Stub name="Audit">
+      <PatternLayout pattern="%m" />
+    </Stub>
+    <Stub name="PluginTest">
+      <PatternLayout pattern="%m" />
+    </Stub>
+    <Stub name="PluginTest">
+      <PatternLayout pattern="%m" />
+    </Stub>
+    <Stub name="PluginTestJSON">
+      <JsonTemplateLayout eventTemplateUri="classpath:LogstashJsonEventLayoutV1.json" />
+    </Stub>
+    <Stub name="PluginTestMasked">
+      <PatternLayout pattern="%cm" />
+    </Stub>
+    <Stub name="PluginTestMaskedJSON">
+      <JsonTemplateLayout eventTemplateUri="classpath:MaskedLogstashJsonEventLayoutV1.json" />
+    </Stub>
+  </Appenders>
+</Configuration>
