@@ -59,9 +59,9 @@ case class LukionOpiskeluoikeudenLisätiedot(
   @Description("Rahoituksen laskennassa käytettävä tieto.")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
   @Description("Tieto onko oppijalla maksuton majoitus. Rahoituksen laskennassa käytettävä tieto.")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   @DefaultValue(false)
-  oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
+  @RedundantData
+  oikeusMaksuttomaanAsuntolapaikkaan: Option[Boolean] = None,
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   @Description("Onko opiskelija sisöoppilaitosmaisessa majoituksessa. Rahoituksen laskennassa käytettävä tieto.")
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None,
@@ -73,6 +73,7 @@ case class LukionOpiskeluoikeudenLisätiedot(
   with SisäoppilaitosmainenMajoitus
   with UlkomainenVaihtoopiskelija
   with MaksuttomuusTieto
+  with OikeusmaksuttomaanAsuntolapaikkaanBooleanina
 
 trait LukionPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen
 

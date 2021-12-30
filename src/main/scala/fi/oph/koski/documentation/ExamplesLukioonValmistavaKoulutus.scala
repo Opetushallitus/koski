@@ -104,7 +104,7 @@ object ExamplesLukioonValmistavaKoulutus {
       pidennettyPäättymispäivä = true,
       ulkomainenVaihtoopiskelija = false,
       ulkomaanjaksot = Some(List(Ulkomaanjakso(date(2012, 9, 1), Some(date(2013, 9, 1)), ruotsi, "Harjoittelua ulkomailla"))),
-      oikeusMaksuttomaanAsuntolapaikkaan = true,
+      oikeusMaksuttomaanAsuntolapaikkaan = None,
       sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2013, 9, 1), Some(date(2013, 12, 12)))))
     ))
   )

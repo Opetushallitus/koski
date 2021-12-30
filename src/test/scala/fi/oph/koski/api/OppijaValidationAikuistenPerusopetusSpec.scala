@@ -228,6 +228,19 @@ class OppijaValidationAikuistenPerusopetusSpec
 
       tallennettuna.lisätiedot.get.tehostetunTuenPäätökset should equal (None)
     }
+
+    "Lisätiedon kenttää oikeusMaksuttomaanAsuntolapaikkaan ei oteta vastaan siirrossa" in {
+      val oo = defaultOpiskeluoikeus.withLisätiedot(
+        Some(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
+          oikeusMaksuttomaanAsuntolapaikkaan = Some(Aikajakso(LocalDate.now(), None))
+          )
+        )
+      )
+
+      val tallennettuna = putAndGetOpiskeluoikeus(oo)
+
+      tallennettuna.lisätiedot.get.oikeusMaksuttomaanAsuntolapaikkaan should equal (None)
+    }
   }
 
   private def putAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): AikuistenPerusopetuksenOpiskeluoikeus = putOpiskeluoikeus(oo) {

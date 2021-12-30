@@ -156,7 +156,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   kuljetusetu: Option[Aikajakso] = None,
   @Description("Oppilaalla on oikeus maksuttomaan asuntolapaikkaan (alku- ja loppupäivämäärät).")
   @Tooltip("Tieto siitä, jos oppilaalla on oikeus maksuttomaan asuntolapaikkaan (alku- ja loppupäivämäärät).")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  @RedundantData
   oikeusMaksuttomaanAsuntolapaikkaan: Option[Aikajakso] = None,
   @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen sisäoppilaitosmuotoisen majoituksen aloituspäivä ja loppupäivä. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
@@ -168,7 +168,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   koulukoti: Option[List[Aikajakso]] = None
 ) extends TukimuodollisetLisätiedot
   with SisäoppilaitosmainenMajoitus
-  with OikeusmaksuttomaanAsuntolapaikkaan
+  with OikeusmaksuttomaanAsuntolapaikkaanAikajaksona
   with Majoitusetuinen
   with Kuljetusetuinen
   with Kotiopetuksellinen

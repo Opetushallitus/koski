@@ -219,8 +219,8 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
   @Description("Tieto onko oppijalla maksuton asuntolapaikka. Rahoituksen laskennassa hyödynnettävä tieto.")
   @DefaultValue(false)
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
+  @RedundantData
+  oikeusMaksuttomaanAsuntolapaikkaan: Option[Boolean] = None,
   @Description("Tieto onko oppija sisäoppilaitosmaisessa majoituksessa. Rahoituksen laskennassa hyödynnettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None,
@@ -231,3 +231,4 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
   with SisäoppilaitosmainenMajoitus
   with UlkomainenVaihtoopiskelija
   with MaksuttomuusTieto
+  with OikeusmaksuttomaanAsuntolapaikkaanBooleanina

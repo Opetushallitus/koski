@@ -1,9 +1,8 @@
 package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
-
 import fi.oph.koski.koskiuser.Rooli
-import fi.oph.koski.schema.annotation.{Deprecated, Hidden, KoodistoKoodiarvo, KoodistoUri, OksaUri, SensitiveData, Tooltip}
+import fi.oph.koski.schema.annotation.{Deprecated, Hidden, KoodistoKoodiarvo, KoodistoUri, OksaUri, RedundantData, SensitiveData, Tooltip}
 import fi.oph.koski.schema.TukimuodollisetLisätiedot.tukimuodoissaOsaAikainenErityisopetus
 import fi.oph.scalaschema.annotation._
 
@@ -121,7 +120,7 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   kuljetusetu: Option[Aikajakso] = None,
   @Description("Oppilaalla on oikeus maksuttomaan asuntolapaikkaan (alku- ja loppupäivämäärät).")
   @Tooltip("Tieto siitä, jos oppilaalla on oikeus maksuttomaan asuntolapaikkaan (alku- ja loppupäivämäärät).")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  @RedundantData
   oikeusMaksuttomaanAsuntolapaikkaan: Option[Aikajakso] = None,
   @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen sisäoppilaitosmuotoisen majoituksen aloituspäivä ja loppupäivä. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
@@ -135,7 +134,7 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None
 ) extends TukimuodollisetLisätiedot
   with SisäoppilaitosmainenMajoitus
-  with OikeusmaksuttomaanAsuntolapaikkaan
+  with OikeusmaksuttomaanAsuntolapaikkaanAikajaksona
   with Majoitusetuinen
   with Kuljetusetuinen
   with Kotiopetuksellinen
