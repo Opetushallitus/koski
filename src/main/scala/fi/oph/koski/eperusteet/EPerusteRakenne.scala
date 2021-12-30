@@ -11,6 +11,7 @@ case class EPerusteRakenne(
   diaarinumero: String,
   koulutustyyppi: String,
   voimassaoloLoppuu: Option[String],
+  siirtymaPaattyy: Option[String],
   koulutukset: List[EPerusteKoulutus],
   suoritustavat: Option[List[ESuoritustapa]],
   tutkinnonOsat: Option[List[ETutkinnonOsa]],
@@ -24,6 +25,19 @@ case class EPerusteRakenne(
   }
   def voimassaoloLoppuuLocalDate = voimassaoloLoppuu.map(ms =>
     ZonedDateTime.ofInstant(Instant.ofEpochMilli(ms.toLong), ZoneId.systemDefault()).toLocalDate())
+
+  def siirtymäPäättynyt(vertailupäivämäärä: LocalDate = LocalDate.now()) = siirtymäPäättyyLocalDate match {
+    case Some(päättymispäivämäärä) => vertailupäivämäärä.isAfter(päättymispäivämäärä)
+    case None => false
+  }
+  def siirtymäPäättyyLocalDate = siirtymaPaattyy.map(ms =>
+    ZonedDateTime.ofInstant(Instant.ofEpochMilli(ms.toLong), ZoneId.systemDefault()).toLocalDate())
+
+  def siirtymäTaiVoimassaoloPäättynyt(vertailupäivämäärä: LocalDate = LocalDate.now()) = if (siirtymaPaattyy.isDefined) {
+    siirtymäPäättynyt(vertailupäivämäärä)
+  } else {
+    voimassaoloLoppunut(vertailupäivämäärä)
+  }
 }
 
 

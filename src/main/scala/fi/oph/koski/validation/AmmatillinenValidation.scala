@@ -104,7 +104,7 @@ object AmmatillinenValidation {
         case diaarillinen: DiaarinumerollinenKoulutus if diaarillinen.perusteenDiaarinumero.isDefined =>
           ePerusteet.findRakenne(diaarillinen.perusteenDiaarinumero.get) match {
             case Some(peruste) =>
-              if (peruste.voimassaoloLoppunut()) {
+              if (peruste.siirtymäTaiVoimassaoloPäättynyt()) {
                 KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt()
               } else {
                 HttpStatus.ok
