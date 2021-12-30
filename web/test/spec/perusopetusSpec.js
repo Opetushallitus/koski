@@ -222,7 +222,6 @@ describe('Perusopetus', function() {
             'Vaikeimmin kehitysvammainen 14.8.2010 —\n' +
             'Majoitusetu 15.8.2008 — 4.6.2016\n' +
             'Kuljetusetu 15.8.2008 — 4.6.2016\n' +
-            'Oikeus maksuttomaan asuntolapaikkaan 15.8.2008 — 4.6.2016\n' +
             'Sisäoppilaitosmainen majoitus 1.9.2012 — 1.9.2013\n' +
             'Koulukoti 1.9.2013 — 1.9.2014')
         })
