@@ -2,8 +2,8 @@ package fi.oph.koski.validation
 
 import fi.oph.koski.schema.{AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot, KoskeenTallennettavaOpiskeluoikeus, OikeusmaksuttomaanAsuntolapaikkaanAikajaksona, OikeusmaksuttomaanAsuntolapaikkaanBooleanina}
 
-object DeprekoitujenKenttienPudotus {
-  def dropDeprekoidutKentät(oo: KoskeenTallennettavaOpiskeluoikeus) = {
+object RedundantinDatanPudotus {
+  def dropRedundantData(oo: KoskeenTallennettavaOpiskeluoikeus) = {
     handleOpiskeluoikeudenLisätiedot(oo)
   }
 
@@ -22,14 +22,7 @@ object DeprekoitujenKenttienPudotus {
   def handleAikuistenPerusopetus(oo: KoskeenTallennettavaOpiskeluoikeus) = {
     oo.lisätiedot match {
       case Some(lisätiedot: AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) => oo.withLisätiedot(
-        Some(lisätiedot.copy(
-          tukimuodot = None,
-          tehostetunTuenPäätökset = None,
-          tehostetunTuenPäätös = None,
-          vuosiluokkiinSitoutumatonOpetus = None,
-          vammainen = None,
-          vaikeastiVammainen = None
-        ))
+        Some(lisätiedot.withoutRedundantData)
       )
       case _ => oo
     }

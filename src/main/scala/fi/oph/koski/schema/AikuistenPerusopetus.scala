@@ -93,7 +93,18 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   with Majoitusetuinen
   with Vammainen
   with VaikeastiVammainen
-  with MaksuttomuusTieto
+  with MaksuttomuusTieto {
+  def withoutRedundantData: AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot = {
+    this.copy(
+      tukimuodot = None,
+      tehostetunTuenPäätökset = None,
+      tehostetunTuenPäätös = None,
+      vuosiluokkiinSitoutumatonOpetus = None,
+      vammainen = None,
+      vaikeastiVammainen = None
+    )
+  }
+}
 
 trait AikuistenPerusopetuksenPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with MonikielinenSuoritus with Suorituskielellinen
 
