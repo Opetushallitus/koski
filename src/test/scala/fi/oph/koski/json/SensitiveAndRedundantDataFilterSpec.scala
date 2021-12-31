@@ -25,7 +25,7 @@ class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironme
 
   "Käyttäjä jolla ei ole luottamuksellisia oikeuksia ei näe mitään arkaluontoisia tietoja" in {
     implicit val eiLuottumuksellisiaOikeuksia = MockUsers.evira.toKoskiSpecificSession(käyttöoikeusRepository)
-    roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(None,None,None,None,None,false,None,None,None,None,None))
+    roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(None,None,None,None,None,None,None,None,None,None,None))
     roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(AmmatillisenOpiskeluoikeudenLisätiedot(None,None,None,None,None,None,None,None,None,None,None,None,false,None,false))
     roundtrip[DIAOpiskeluoikeudenLisätiedot](diaOpiskeluoikeudenLisätiedot).pidennettyPäättymispäivä should equal(true)
     roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(EsiopetuksenOpiskeluoikeudenLisätiedot(None,None,None,None,None,None,Some(aikajakso)))
@@ -59,7 +59,7 @@ class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironme
 
   "Käyttäjä jolla on kaikki luottamuksellisten tietojen oikeudet näkee kaikki arkaluontoiset tiedot" in {
     implicit val kaikkiOikeudet = MockUsers.paakayttaja.toKoskiSpecificSession(käyttöoikeusRepository)
-    roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot.copy(oikeusMaksuttomaanAsuntolapaikkaan = None))
+    roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(None,None,None,None,None,None,None,None,None,None,aikajaksot,None,None))
     roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(ammatillisenOpiskeluoikeudenLisätiedot.copy(oikeusMaksuttomaanAsuntolapaikkaan = None))
     roundtrip[DIAOpiskeluoikeudenLisätiedot](diaOpiskeluoikeudenLisätiedot) should equal(diaOpiskeluoikeudenLisätiedot)
     roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(esiopetuksenOpiskeluoikeudenLisätiedot)
@@ -87,7 +87,7 @@ class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironme
 
   "Käyttäjä jolla on uusi kaikkiin luottamuksellisiin tietoihin oikeuttava käyttöoikeus näkee kaikki arkaluontoiset tiedot" in {
     implicit val kaikkiOikeudet = MockUsers.luovutuspalveluKäyttäjäArkaluontoinen.toKoskiSpecificSession(käyttöoikeusRepository)
-    roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot.copy(oikeusMaksuttomaanAsuntolapaikkaan = None))
+    roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(None,None,None,None,None,None,None,None,None,None,aikajaksot,None,None))
     roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(ammatillisenOpiskeluoikeudenLisätiedot.copy(oikeusMaksuttomaanAsuntolapaikkaan = None))
     roundtrip[DIAOpiskeluoikeudenLisätiedot](diaOpiskeluoikeudenLisätiedot) should equal(diaOpiskeluoikeudenLisätiedot)
     roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(esiopetuksenOpiskeluoikeudenLisätiedot)
@@ -106,7 +106,7 @@ class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironme
 
   "Käyttäjä jolla on suppeat luottamuksellisten tietojen oikeudet näkee suppeiden oikeuksien mukaiset arkaluontoiset tiedot" in {
     implicit val suppeatOikeudet = MockUsers.kelaSuppeatOikeudet.toKoskiSpecificSession(käyttöoikeusRepository)
-    roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(None,None,None,None,None,false,None,None,None,None,aikajaksot))
+    roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(None,None,None,None,None,None,None,None,None,None,aikajaksot))
     roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(AmmatillisenOpiskeluoikeudenLisätiedot(None,None,aikajaksot,aikajaksot,None,None,None,None,None,None,None,None,false,aikajaksot,false))
     roundtrip[DIAOpiskeluoikeudenLisätiedot](diaOpiskeluoikeudenLisätiedot).pidennettyPäättymispäivä should equal(true)
     roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(EsiopetuksenOpiskeluoikeudenLisätiedot(None,None,None,None,None,None,Some(aikajakso)))
@@ -125,7 +125,7 @@ class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironme
 
   "Käyttäjä jolla on laajat luottamuksellisten tietojen oikeudet näkee laajojen oikeuksien mukaiset arkaluontoiset tiedot" in {
     implicit val laajatOikeudet = MockUsers.kelaLaajatOikeudet.toKoskiSpecificSession(käyttöoikeusRepository)
-    roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot.copy(vuosiluokkiinSitoutumatonOpetus = false, vammainen = None, vaikeastiVammainen = None, tukimuodot = None, oikeusMaksuttomaanAsuntolapaikkaan = None))
+    roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(None,None,None,None,None,None,None,None,None,None,aikajaksot,None,None))
     roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(ammatillisenOpiskeluoikeudenLisätiedot.copy(vaikeastiVammainen = None, vammainenJaAvustaja = None, oikeusMaksuttomaanAsuntolapaikkaan = None))
     roundtrip[DIAOpiskeluoikeudenLisätiedot](diaOpiskeluoikeudenLisätiedot).pidennettyPäättymispäivä should equal(true)
     roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(esiopetuksenOpiskeluoikeudenLisätiedot.copy(pidennettyOppivelvollisuus = None, majoitusetu = Some(aikajakso), kuljetusetu = None, tukimuodot = None, erityisenTuenPäätös = Some(erityisenTuenPäätös.copy(toteutuspaikka = None)), erityisenTuenPäätökset = Some(List(erityisenTuenPäätös.copy(toteutuspaikka = None)))))
@@ -151,7 +151,7 @@ class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironme
     tukimuodot = tukimuodot,
     tehostetunTuenPäätökset = aikajaksot,
     tehostetunTuenPäätös = Some(aikajakso),
-    vuosiluokkiinSitoutumatonOpetus = true,
+    vuosiluokkiinSitoutumatonOpetus = Some(true),
     vammainen = aikajaksot,
     vaikeastiVammainen = aikajaksot,
     oikeusMaksuttomaanAsuntolapaikkaan = Some(aikajakso),

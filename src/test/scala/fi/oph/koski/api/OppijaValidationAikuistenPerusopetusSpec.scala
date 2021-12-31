@@ -1,8 +1,9 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus
+import fi.oph.koski.documentation.{ExamplesAikuistenPerusopetus, ExamplesPerusopetus}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetuksenAlkuvaiheenSuoritus, oppiaineidenSuoritukset2015, oppiaineidenSuoritukset2017}
+import fi.oph.koski.documentation.ExamplesEsiopetus.osaAikainenErityisopetus
 import fi.oph.koski.documentation.OsaAikainenErityisopetusExampleData.tehostetunTuenPäätösIlmanOsaAikaistaErityisopetusta
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.http._
@@ -217,28 +218,26 @@ class OppijaValidationAikuistenPerusopetusSpec
   }
 
   "Deprekoituja kenttiä, jotka tiputetaan siirrossa pois" - {
-    "Lisätiedon kenttää erityisenTuenPäätökset ei oteta vastaan siirrossa" in {
+    "Lisätiedon kenttiä tukimuodot, tehostetunTuenPäätös, tehostetunTuenPäätökset, vuosiluokkiinSitoutumatonOpetus, vammainen, vaikeastiVammainen ja oikeusMaksuttomaanAsuntolapaikkaan ei oteta vastaan siirrossa" in {
       val oo = defaultOpiskeluoikeus.withLisätiedot(
         Some(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
-          tehostetunTuenPäätökset = Some(List(Aikajakso(LocalDate.now(), None))
-        ))
-      ))
-
-      val tallennettuna = putAndGetOpiskeluoikeus(oo)
-
-      tallennettuna.lisätiedot.get.tehostetunTuenPäätökset should equal (None)
-    }
-
-    "Lisätiedon kenttää oikeusMaksuttomaanAsuntolapaikkaan ei oteta vastaan siirrossa" in {
-      val oo = defaultOpiskeluoikeus.withLisätiedot(
-        Some(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
+          tukimuodot = Some(List(osaAikainenErityisopetus)),
+          tehostetunTuenPäätös = Some(Aikajakso(LocalDate.now(), None)),
+          tehostetunTuenPäätökset = Some(List(Aikajakso(LocalDate.now(), None))),
+          vuosiluokkiinSitoutumatonOpetus = Some(true),
+          vammainen = Some(List(Aikajakso(LocalDate.now(), None))),
+          vaikeastiVammainen = Some(List(Aikajakso(LocalDate.now(), None))),
           oikeusMaksuttomaanAsuntolapaikkaan = Some(Aikajakso(LocalDate.now(), None))
-          )
-        )
-      )
+      )))
 
       val tallennettuna = putAndGetOpiskeluoikeus(oo)
 
+      tallennettuna.lisätiedot.get.tukimuodot should equal (None)
+      tallennettuna.lisätiedot.get.tehostetunTuenPäätös should equal (None)
+      tallennettuna.lisätiedot.get.tehostetunTuenPäätökset should equal (None)
+      tallennettuna.lisätiedot.get.vuosiluokkiinSitoutumatonOpetus should equal (None)
+      tallennettuna.lisätiedot.get.vammainen should equal (None)
+      tallennettuna.lisätiedot.get.vaikeastiVammainen should equal (None)
       tallennettuna.lisätiedot.get.oikeusMaksuttomaanAsuntolapaikkaan should equal (None)
     }
   }
