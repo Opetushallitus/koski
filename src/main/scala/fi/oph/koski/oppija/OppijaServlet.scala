@@ -3,7 +3,7 @@ package fi.oph.koski.oppija
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.SensitiveDataFilter
+import fi.oph.koski.json.SensitiveAndRedundantDataFilter
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueries
@@ -60,7 +60,7 @@ class OppijaServlet(implicit val application: KoskiApplication)
   }
 
   get("/") {
-    val serializer = SensitiveDataFilter(session).rowSerializer
+    val serializer = SensitiveAndRedundantDataFilter(session).rowSerializer
 
     val oppijat = performOpiskeluoikeudetQueryLaajoillaHenkilötiedoilla.map(observable => observable
       .map(x => (application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(x._1), x._2))

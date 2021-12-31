@@ -16,7 +16,7 @@ import org.scalatest.matchers.should.Matchers
 import java.time.LocalDate
 import scala.reflect.runtime.universe.TypeTag
 
-class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matchers with OpiskeluoikeusTestMethods with KoskiHttpSpec {
+class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matchers with OpiskeluoikeusTestMethods with KoskiHttpSpec {
   private val application = KoskiApplication.apply
   private val käyttöoikeusRepository: KäyttöoikeusRepository = application.käyttöoikeusRepository
 

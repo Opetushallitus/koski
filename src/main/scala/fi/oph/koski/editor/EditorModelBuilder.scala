@@ -5,7 +5,7 @@ import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.editor.ClassFinder.{forName, forSchema}
 import fi.oph.koski.editor.EditorModelBuilder._
 import fi.oph.koski.editor.MetadataToModel.classesFromMetadata
-import fi.oph.koski.json.{JsonSerializer, SensitiveDataFilter}
+import fi.oph.koski.json.{JsonSerializer, SensitiveAndRedundantDataFilter}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.localization._
@@ -242,10 +242,10 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
       throw new RuntimeException("None value not allowed for ClassSchema")
     }
     val objectContext = newContext(obj)
-    val sensitiveDataFilter = SensitiveDataFilter(context.user)
+    val sensitiveDataFilter = SensitiveAndRedundantDataFilter(context.user)
 
     val properties: List[EditorProperty] = schema.properties
-      .filter(p => !sensitiveDataFilter.sensitiveHidden(p.metadata))
+      .filter(p => !sensitiveDataFilter.shouldHideField(p.metadata))
       .map(property => createModelProperty(obj, objectContext, property))
 
     val objectTitle = obj match {
@@ -281,7 +281,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     if (property.metadata.contains(ComplexObject())) props += ("complexObject" -> JBool(true))
     if (property.metadata.contains(Tabular())) props += ("tabular" -> JBool(true))
     if (!readOnly) props += ("editable" -> JBool(true))
-    if (SensitiveDataFilter(context.user).sensitiveHidden(property.metadata)) props += ("sensitiveHidden" -> JBool(true))
+    if (SensitiveAndRedundantDataFilter(context.user).shouldHideField(property.metadata)) props += ("sensitiveHidden" -> JBool(true))
     if (!onlyWhen.isEmpty) props +=("onlyWhen" -> JArray(onlyWhen))
     KoskiSpecificSchemaLocalization.deprecated(property)
       .map { case (key, _) => context.localizationRepository.get(key).get(context.user.lang) }
