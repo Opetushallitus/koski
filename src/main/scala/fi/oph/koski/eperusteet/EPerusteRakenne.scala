@@ -4,6 +4,9 @@ import fi.oph.scalaschema.annotation.Discriminator
 
 import java.time.{Instant, LocalDate, ZoneId, ZonedDateTime}
 
+case class EPerusteRakenteet(
+  data: List[EPerusteRakenne]
+)
 
 case class EPerusteRakenne(
   id: Long,
@@ -16,7 +19,9 @@ case class EPerusteRakenne(
   suoritustavat: Option[List[ESuoritustapa]],
   tutkinnonOsat: Option[List[ETutkinnonOsa]],
   osaamisalat: List[EOsaamisala],
-  lukiokoulutus: Option[ELukiokoulutus]
+  lukiokoulutus: Option[ELukiokoulutus],
+  luotu: Option[Long],
+  muokattu: Option[Long]
 ) {
   def toEPeruste: EPeruste = EPeruste(id, nimi, diaarinumero, koulutukset)
   def voimassaoloLoppunut(vertailupäivämäärä: LocalDate = LocalDate.now()) = voimassaoloLoppuuLocalDate match {

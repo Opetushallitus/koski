@@ -13,6 +13,8 @@ trait EPerusteetRepository {
 
   def findRakenne(diaariNumero: String): Option[EPerusteRakenne]
 
+  def findUusinRakenne(diaarinumero: String): Option[EPerusteRakenne]
+
   def findPerusteenYksilöintitiedot(diaariNumero: String): Option[EPerusteTunniste]
 
   def findLinkToEperusteetWeb(diaariNumero: String, lang: String): Option[String] = {
