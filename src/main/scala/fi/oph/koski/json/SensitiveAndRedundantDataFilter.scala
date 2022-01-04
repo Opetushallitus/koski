@@ -23,7 +23,8 @@ case class SensitiveAndRedundantDataFilter(user: SensitiveDataAllowed) {
     ser
   }
 
-  def shouldHideField(metadata: List[Metadata]): Boolean = metadata.exists {
+  def shouldHideField(metadata: List[Metadata]): Boolean =
+    metadata.exists {
     case SensitiveData(allowedRoles) => !user.sensitiveDataAllowed(allowedRoles)
     case RedundantData() => true
     case _ => false

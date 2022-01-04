@@ -215,7 +215,10 @@ Huom: toiminta-alue arviointeineen on kuvattu oppiaineen suorituksessa.""")
   @Title("Erityisopetuksen toteutuspaikka")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @Deprecated("Tätä kenttää ei toistaiseksi käytetä.")
+  @RedundantData
   toteutuspaikka: Option[Koodistokoodiviite] = None,
+  @Deprecated("Tätä kenttää ei toistaiseksi käytetä.")
+  @RedundantData
   tukimuodot: Option[List[Koodistokoodiviite]] = None
 ) extends MahdollisestiAlkupäivällinenJakso with Tukimuodollinen
 

@@ -62,16 +62,19 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   @DefaultValue(false)
   @Title("Vuosiluokkiin sitomaton opetus")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @Deprecated("Kenttä ei ole käytössä")
   @RedundantData
   vuosiluokkiinSitoutumatonOpetus: Option[Boolean] = None,
   @Description("Onko oppija muu kuin vaikeimmin kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, onko oppija muu kuin vaikeimmin kehitysvammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @Deprecated("Kenttä ei ole käytössä")
   @RedundantData
   vammainen: Option[List[Aikajakso]] = None,
   @Description("Onko oppija vaikeasti kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, onko oppija vaikeasti kehitysvammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @Deprecated("Kenttä ei ole käytössä")
   @RedundantData
   vaikeastiVammainen: Option[List[Aikajakso]] = None,
   @Description("Opiskelijalla on majoitusetu. Rahoituksen laskennassa käytettävä tieto.")
@@ -79,6 +82,7 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   majoitusetu: Option[Aikajakso] = None,
   @Description("Opiskelijalla on oikeus maksuttomaan asuntolapaikkaan. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, jos opiskelijalla on oikeus maksuttomaan asuntolapaikkaan (alku- ja loppupäivämäärät).")
+  @Deprecated("Kenttä ei ole käytössä")
   @RedundantData
   oikeusMaksuttomaanAsuntolapaikkaan: Option[Aikajakso] = None,
   @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
@@ -93,18 +97,7 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   with Majoitusetuinen
   with Vammainen
   with VaikeastiVammainen
-  with MaksuttomuusTieto {
-  def withoutRedundantData: AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot = {
-    this.copy(
-      tukimuodot = None,
-      tehostetunTuenPäätökset = None,
-      tehostetunTuenPäätös = None,
-      vuosiluokkiinSitoutumatonOpetus = None,
-      vammainen = None,
-      vaikeastiVammainen = None
-    )
-  }
-}
+  with MaksuttomuusTieto
 
 trait AikuistenPerusopetuksenPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with MonikielinenSuoritus with Suorituskielellinen
 

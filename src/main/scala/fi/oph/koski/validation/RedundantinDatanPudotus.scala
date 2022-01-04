@@ -18,13 +18,4 @@ object RedundantinDatanPudotus {
       oo
     }
   }
-
-  def handleAikuistenPerusopetus(oo: KoskeenTallennettavaOpiskeluoikeus) = {
-    oo.lisätiedot match {
-      case Some(lisätiedot: AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) => oo.withLisätiedot(
-        Some(lisätiedot.withoutRedundantData)
-      )
-      case _ => oo
-    }
-  }
 }

@@ -1,14 +1,16 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.db.KoskiTables.OpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.{ExamplesAikuistenPerusopetus, ExamplesPerusopetus}
+import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetuksenAlkuvaiheenSuoritus, oppiaineidenSuoritukset2015, oppiaineidenSuoritukset2017}
 import fi.oph.koski.documentation.ExamplesEsiopetus.osaAikainenErityisopetus
-import fi.oph.koski.documentation.OsaAikainenErityisopetusExampleData.tehostetunTuenPäätösIlmanOsaAikaistaErityisopetusta
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.http._
+import fi.oph.koski.koskiuser.KoskiSpecificSession.systemUser
 import fi.oph.koski.schema._
-import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
+import fi.oph.koski.{DatabaseTestMethods, DirtiesFixtures, KoskiHttpSpec}
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
@@ -17,7 +19,8 @@ class OppijaValidationAikuistenPerusopetusSpec
   extends TutkinnonPerusteetTest[AikuistenPerusopetuksenOpiskeluoikeus]
     with KoskiHttpSpec
     with DirtiesFixtures
-    with OpiskeluoikeusTestMethodsAikuistenPerusopetus {
+    with OpiskeluoikeusTestMethodsAikuistenPerusopetus
+    with DatabaseTestMethods {
 
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = AikuistenPerusopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
@@ -227,7 +230,8 @@ class OppijaValidationAikuistenPerusopetusSpec
           vuosiluokkiinSitoutumatonOpetus = Some(true),
           vammainen = Some(List(Aikajakso(LocalDate.now(), None))),
           vaikeastiVammainen = Some(List(Aikajakso(LocalDate.now(), None))),
-          oikeusMaksuttomaanAsuntolapaikkaan = Some(Aikajakso(LocalDate.now(), None))
+          oikeusMaksuttomaanAsuntolapaikkaan = Some(Aikajakso(LocalDate.now(), None)),
+          sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(LocalDate.now(), None)))
       )))
 
       val tallennettuna = putAndGetOpiskeluoikeus(oo)
@@ -239,6 +243,16 @@ class OppijaValidationAikuistenPerusopetusSpec
       tallennettuna.lisätiedot.get.vammainen should equal (None)
       tallennettuna.lisätiedot.get.vaikeastiVammainen should equal (None)
       tallennettuna.lisätiedot.get.oikeusMaksuttomaanAsuntolapaikkaan should equal (None)
+
+      val tietokannasta = opiskeluoikeusTietokannasta(tallennettuna.oid.get)
+      (tietokannasta.data \\ "lisätiedot").toString.contains("sisäoppilaitosmainenMajoitus") should equal (true)
+      (tietokannasta.data \\ "lisätiedot").toString.contains("tukimuodot") should equal (false)
+      (tietokannasta.data \\ "lisätiedot").toString.contains("tehostetunTuenPäätös") should equal (false)
+      (tietokannasta.data \\ "lisätiedot").toString.contains("tehostetunTuenPäätökset") should equal (false)
+      (tietokannasta.data \\ "lisätiedot").toString.contains("vuosiluokkiinSitoutumatonOpetus") should equal (false)
+      (tietokannasta.data \\ "lisätiedot").toString.contains("vammainen") should equal (false)
+      (tietokannasta.data \\ "lisätiedot").toString.contains("vaikeastiVammainen") should equal (false)
+      (tietokannasta.data \\ "lisätiedot").toString.contains("oikeusMaksuttomaanAsuntolapaikkaan") should equal (false)
     }
   }
 
@@ -246,4 +260,7 @@ class OppijaValidationAikuistenPerusopetusSpec
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
   }.asInstanceOf[AikuistenPerusopetuksenOpiskeluoikeus]
+
+  private def opiskeluoikeusTietokannasta(opiskeluoikeusOid: String) =
+    runDbSync(OpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oid === opiskeluoikeusOid).map(o => o).result).head
 }

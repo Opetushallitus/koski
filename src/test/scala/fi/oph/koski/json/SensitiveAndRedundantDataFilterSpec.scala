@@ -62,10 +62,10 @@ class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironme
     roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(None,None,None,None,None,None,None,None,None,None,aikajaksot,None,None))
     roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(ammatillisenOpiskeluoikeudenLisätiedot.copy(oikeusMaksuttomaanAsuntolapaikkaan = None))
     roundtrip[DIAOpiskeluoikeudenLisätiedot](diaOpiskeluoikeudenLisätiedot) should equal(diaOpiskeluoikeudenLisätiedot)
-    roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(esiopetuksenOpiskeluoikeudenLisätiedot)
+    roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(esiopetuksenOpiskeluoikeudenLisätiedotIlmanRedundanttejaKenttiä)
     roundtrip[LukionOpiskeluoikeudenLisätiedot](lukionOpiskeluoikeudenLisätiedot) should equal(lukionOpiskeluoikeudenLisätiedot.copy(oikeusMaksuttomaanAsuntolapaikkaan = None))
     roundtrip[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot](lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot) should equal(lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot.copy(oikeusMaksuttomaanAsuntolapaikkaan = None))
-    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(perusopetuksenOpiskeluoikeudenLisätiedot.copy(oikeusMaksuttomaanAsuntolapaikkaan = None))
+    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(perusopetuksenOpiskeluoikeudenLisätiedotIlmanRedundanttejaKenttiä)
     roundtrip[PerusopetuksenVuosiluokanSuoritus](perusopetuksenVuosiluokanSuoritus) should equal(perusopetuksenVuosiluokanSuoritus)
     roundtrip[SanallinenPerusopetuksenOppiaineenArviointi](sanallinenPerusopetuksenOppiaineenArviointi) should equal(sanallinenPerusopetuksenOppiaineenArviointi)
     roundtrip[PerusopetuksenKäyttäytymisenArviointi](perusopetuksenKäyttäytymisenArviointi) should equal(perusopetuksenKäyttäytymisenArviointi)
@@ -90,10 +90,10 @@ class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironme
     roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(None,None,None,None,None,None,None,None,None,None,aikajaksot,None,None))
     roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(ammatillisenOpiskeluoikeudenLisätiedot.copy(oikeusMaksuttomaanAsuntolapaikkaan = None))
     roundtrip[DIAOpiskeluoikeudenLisätiedot](diaOpiskeluoikeudenLisätiedot) should equal(diaOpiskeluoikeudenLisätiedot)
-    roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(esiopetuksenOpiskeluoikeudenLisätiedot)
+    roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(esiopetuksenOpiskeluoikeudenLisätiedotIlmanRedundanttejaKenttiä)
     roundtrip[LukionOpiskeluoikeudenLisätiedot](lukionOpiskeluoikeudenLisätiedot) should equal(lukionOpiskeluoikeudenLisätiedot.copy(oikeusMaksuttomaanAsuntolapaikkaan = None))
     roundtrip[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot](lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot) should equal(lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot.copy(oikeusMaksuttomaanAsuntolapaikkaan = None))
-    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(perusopetuksenOpiskeluoikeudenLisätiedot.copy(oikeusMaksuttomaanAsuntolapaikkaan = None))
+    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(perusopetuksenOpiskeluoikeudenLisätiedotIlmanRedundanttejaKenttiä)
     roundtrip[PerusopetuksenVuosiluokanSuoritus](perusopetuksenVuosiluokanSuoritus) should equal(perusopetuksenVuosiluokanSuoritus)
     roundtrip[SanallinenPerusopetuksenOppiaineenArviointi](sanallinenPerusopetuksenOppiaineenArviointi) should equal(sanallinenPerusopetuksenOppiaineenArviointi)
     roundtrip[PerusopetuksenKäyttäytymisenArviointi](perusopetuksenKäyttäytymisenArviointi) should equal(perusopetuksenKäyttäytymisenArviointi)
@@ -186,6 +186,17 @@ class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironme
     kuljetusetu = Some(aikajakso),
     tukimuodot = tukimuodot
   )
+  private val esiopetuksenOpiskeluoikeudenLisätiedotIlmanRedundanttejaKenttiä = esiopetuksenOpiskeluoikeudenLisätiedot.copy(
+    erityisenTuenPäätös = Some(esiopetuksenOpiskeluoikeudenLisätiedot.erityisenTuenPäätös.head.copy(
+      tukimuodot = None,
+      toteutuspaikka = None
+    )),
+    erityisenTuenPäätökset = Some(List(esiopetuksenOpiskeluoikeudenLisätiedot.erityisenTuenPäätökset.head.head.copy(
+      tukimuodot = None,
+      toteutuspaikka = None
+    ))),
+    tukimuodot = None
+  )
 
   private val lukionOpiskeluoikeudenLisätiedot = LukionOpiskeluoikeudenLisätiedot(
     pidennettyPäättymispäivä = true,
@@ -217,6 +228,17 @@ class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironme
     oikeusMaksuttomaanAsuntolapaikkaan = Some(aikajakso),
     sisäoppilaitosmainenMajoitus = aikajaksot,
     koulukoti = aikajaksot
+  )
+  private val perusopetuksenOpiskeluoikeudenLisätiedotIlmanRedundanttejaKenttiä = perusopetuksenOpiskeluoikeudenLisätiedot.copy(
+    erityisenTuenPäätös = Some(esiopetuksenOpiskeluoikeudenLisätiedot.erityisenTuenPäätös.head.copy(
+      tukimuodot = None,
+      toteutuspaikka = None
+    )),
+    erityisenTuenPäätökset = Some(List(esiopetuksenOpiskeluoikeudenLisätiedot.erityisenTuenPäätökset.head.head.copy(
+      tukimuodot = None,
+      toteutuspaikka = None
+    ))),
+    oikeusMaksuttomaanAsuntolapaikkaan = None
   )
 
   private val perusopetuksenVuosiluokanSuoritus = PerusopetusExampleData.yhdeksännenLuokanSuoritus.copy(jääLuokalle = true)

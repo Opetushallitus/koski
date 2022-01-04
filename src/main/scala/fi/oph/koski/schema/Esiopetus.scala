@@ -50,6 +50,7 @@ case class EsiopetuksenOpiskeluoikeudenLisätiedot(
   @Tooltip("Oppilaan saamat laissa säädetyt tukimuodot. Voi olla useita.")
   @Deprecated("Käytä korvaavia kenttiä Erityisen tuen päätökset ja Osa-aikainen erityisopetus lukuvuoden aikana")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @RedundantData
   tukimuodot: Option[List[Koodistokoodiviite]] = None,
   @Description("Erityisen tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen erityisen tuen päätöksen alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")

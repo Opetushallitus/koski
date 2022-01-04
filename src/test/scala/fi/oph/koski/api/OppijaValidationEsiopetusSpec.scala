@@ -1,6 +1,9 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä}
+import fi.oph.koski.documentation.ExamplesEsiopetus.osaAikainenErityisopetus
+import fi.oph.koski.documentation.ExamplesPerusopetus.{erityisenTuenPäätös, osaAikainenErityisopetus}
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.kulosaarenAlaAste
 import fi.oph.koski.documentation.{ExamplesEsiopetus, OsaAikainenErityisopetusExampleData, YleissivistavakoulutusExampleData}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
@@ -90,4 +93,28 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
       }
     }
   }
+
+  "Deprekoituja kenttiä, jotka tiputetaan siirrossa pois" - {
+    "Lisätiedon kenttiä tukimuodot ja erityisenTuenPäätökseen kenttiä tukimuodot ja toteutuspaikka ei oteta vastaan siirrossa" in {
+      val oo = defaultOpiskeluoikeus.withLisätiedot(
+        Some(EsiopetuksenOpiskeluoikeudenLisätiedot(
+          tukimuodot = Some(List(ExamplesEsiopetus.osaAikainenErityisopetus)),
+          erityisenTuenPäätökset = Some(List(erityisenTuenPäätös.copy(
+            tukimuodot = Some(List(ExamplesEsiopetus.osaAikainenErityisopetus)),
+            toteutuspaikka = kulosaarenAlaAste.oppilaitosnumero
+          )))
+        )))
+
+      val tallennettuna = putAndGetOpiskeluoikeus(oo)
+
+      tallennettuna.lisätiedot.get.tukimuodot should equal (None)
+      tallennettuna.lisätiedot.get.erityisenTuenPäätökset.head.head.tukimuodot should equal (None)
+      tallennettuna.lisätiedot.get.erityisenTuenPäätökset.head.head.toteutuspaikka should equal (None)
+    }
+  }
+
+  private def putAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): EsiopetuksenOpiskeluoikeus = putOpiskeluoikeus(oo) {
+    verifyResponseStatusOk()
+    getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
+  }.asInstanceOf[EsiopetuksenOpiskeluoikeus]
 }
