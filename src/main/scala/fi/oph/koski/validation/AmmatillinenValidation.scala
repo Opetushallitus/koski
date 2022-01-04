@@ -102,7 +102,7 @@ object AmmatillinenValidation {
     if (!opiskeluoikeus.tila.opiskeluoikeusjaksot.exists(_.opiskeluoikeusPäättynyt) && LocalDate.now().isAfter(validaatioViimeinenPäiväEnnenVoimassaoloa)) {
       opiskeluoikeus.suoritukset.head.koulutusmoduuli match {
         case diaarillinen: DiaarinumerollinenKoulutus if diaarillinen.perusteenDiaarinumero.isDefined =>
-          ePerusteet.findRakenne(diaarillinen.perusteenDiaarinumero.get) match {
+          ePerusteet.findUusinRakenne(diaarillinen.perusteenDiaarinumero.get) match {
             case Some(peruste) =>
               if (peruste.siirtymäTaiVoimassaoloPäättynyt()) {
                 KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt()

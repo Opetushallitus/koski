@@ -1,17 +1,17 @@
 {
-  "id" : 1718939,
+  "id" : 1718932,
   "globalVersion" : {
     "aikaleima" : 1513688323153
   },
   "nimi" : {
-    "fi" : "Liiketalouden perustutkinto - päättymisajan testi",
+    "fi" : "Liiketalouden perustutkinto",
     "sv" : "Grundexamen inom företagsekonomi",
     "_id" : "289703"
   },
   "koulutustyyppi" : "koulutustyyppi_1",
   "koulutukset" : [ {
     "nimi" : {
-      "fi" : "Liiketalouden perustutkinto - päättymisajan testi",
+      "fi" : "Liiketalouden perustutkinto",
       "sv" : "Grundexamen inom företagsekonomi",
       "en" : "Business, Administration, VQ",
       "_id" : "287185"
@@ -42,13 +42,13 @@
       "_id" : "2335469"
     }
   } ],
-  "diaarinumero" : "1000/011/2014",
+  "diaarinumero" : "59/011/2014",
   "voimassaoloAlkaa" : 1469998800000,
-  "siirtymaPaattyy" : null,
+  "siirtymaPaattyy" : 1532984400000,
   "voimassaoloLoppuu" : 1532984400000,
   "paatospvm" : 1414447200000,
-  "luotu" : 1466002817813,
-  "muokattu" : 1513688323153,
+  "luotu" : 2466002817813,
+  "muokattu" : 2513688323153,
   "tila" : "valmis",
   "tyyppi" : "normaali",
   "koulutusvienti" : false,

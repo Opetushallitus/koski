@@ -16,8 +16,10 @@ object MockEPerusteetRepository extends EPerusteetRepository {
     "rakenne-aikuisten-lukio-2019",
     "rakenne-hiusalan-perustutkinto",
     "rakenne-puutarhatalouden-perustutkinto",
-    "rakenne-automekaanikon-erikoisammattitutkinto",
-    "rakenne-liiketalouden-perustutkinto",
+    "rakenne-automekaanikon-erikoisammattitutkinto-vanhempi",
+    "rakenne-automekaanikon-erikoisammattitutkinto-uudempi",
+    "rakenne-liiketalouden-perustutkinto-vanhempi",
+    "rakenne-liiketalouden-perustutkinto-uudempi",
     "rakenne-liiketalouden-perustutkinto-paattymistesti",
     "rakenne-puuteollisuuden-perustutkinto",
     "rakenne-virheellinen-puuteollisuuden-perustutkinto",
@@ -49,6 +51,15 @@ object MockEPerusteetRepository extends EPerusteetRepository {
       rakenteet.find(_.diaarinumero == "39/011/2014").map(_.copy(koulutukset = Nil))
     } else {
       rakenteet.find(_.diaarinumero == diaariNumero)
+    }
+  }
+
+  def findUusinRakenne(diaarinumero: String): Option[EPerusteRakenne] = {
+    val diaarinMukaan = rakenteet.filter(_.diaarinumero == diaarinumero)
+    if (diaarinMukaan.nonEmpty) {
+      Some(diaarinMukaan.maxBy(_.luotu))
+    } else {
+      None
     }
   }
 

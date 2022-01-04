@@ -32,6 +32,19 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
       .map(e => runIO(http.get(uri"/api/perusteet/${e.id}/kaikki")(Http.parseJson[EPerusteRakenne])))
   }
 
+  def findRakenteet(diaarinumero: String): List[EPerusteRakenne] = {
+    runIO(http.get(uri"/api/perusteet?diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteRakenteet])).data
+  }
+
+  def findUusinRakenne(diaarinumero: String): Option[EPerusteRakenne] = {
+    val rakenteet = findRakenteet(diaarinumero)
+    if (rakenteet.nonEmpty) {
+      Some(rakenteet.maxBy(_.luotu))
+    } else {
+      None
+    }
+  }
+
   def findPerusteenYksilöintitiedot(diaariNumero: String): Option[EPerusteTunniste] = yksilöintitiedotCache(diaariNumero)
 
   private val yksilöintitiedotCache = KeyValueCache[String, Option[EPerusteTunniste]](
