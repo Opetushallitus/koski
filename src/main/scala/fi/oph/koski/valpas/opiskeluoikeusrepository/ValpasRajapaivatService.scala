@@ -17,12 +17,12 @@ trait ValpasRajapäivätService extends Logging {
   def maksuttomuusLoppuuIka: Integer
   def ilmoitustenEnsimmäinenTallennuspäivä: LocalDate
   def lakiVoimassaPeruskoulustaValmistuneillaAlku: LocalDate
-  def keväänValmistumisjaksoAlku: LocalDate
-  def keväänValmistumisjaksoLoppu: LocalDate
-  def keväänValmistumisjaksollaValmistuneidenOppivelvollisuudenSuorittamisenTarkistuspäivä: LocalDate
+  def keväänValmistumisjaksoAlku(tarkastelupäivä: LocalDate = tarkastelupäivä): LocalDate
+  def keväänValmistumisjaksoLoppu(tarkastelupäivä: LocalDate = tarkastelupäivä): LocalDate
+  def keväänValmistumisjaksollaValmistuneidenOppivelvollisuudenSuorittamisenTarkistuspäivä(tarkastelupäivä: LocalDate = tarkastelupäivä): LocalDate
   def keväänUlkopuolellaValmistumisjaksoAlku(tarkastelupäivä: LocalDate = tarkastelupäivä): LocalDate
 
-  def keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä: LocalDate
+  def keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä(tarkastelupäivä: LocalDate = tarkastelupäivä): LocalDate
   def perusopetussuorituksenNäyttämisenAikaraja: LocalDate
 
   def aikaisinMahdollinenOppivelvollisenSyntymäaika(tarkastelupäivä: LocalDate = tarkastelupäivä): LocalDate
@@ -78,7 +78,7 @@ class MockValpasRajapäivätService(defaultService: ConfigValpasRajapäivätServ
   }
   def tarkastelupäivä: LocalDate = mockTarkastelupäivä match {
     case Some(päivä) => päivä
-    case _ => defaultService.tarkastelupäivä
+    case _ => defaultMockTarkastelupäivä
   }
 
   def lakiVoimassaVanhinSyntymäaika: LocalDate = defaultService.lakiVoimassaVanhinSyntymäaika
@@ -89,13 +89,13 @@ class MockValpasRajapäivätService(defaultService: ConfigValpasRajapäivätServ
   def maksuttomuusLoppuuIka: Integer = defaultService.maksuttomuusLoppuuIka
   def ilmoitustenEnsimmäinenTallennuspäivä: LocalDate = defaultService.ilmoitustenEnsimmäinenTallennuspäivä
   def lakiVoimassaPeruskoulustaValmistuneillaAlku: LocalDate = defaultService.lakiVoimassaPeruskoulustaValmistuneillaAlku
-  def keväänValmistumisjaksoAlku: LocalDate = defaultService.keväänValmistumisjaksoAlku
-  def keväänValmistumisjaksoLoppu: LocalDate =
+  def keväänValmistumisjaksoAlku(tarkastelupäivä: LocalDate): LocalDate = defaultService.keväänValmistumisjaksoAlku(tarkastelupäivä)
+  def keväänValmistumisjaksoLoppu(tarkastelupäivä: LocalDate): LocalDate =
     defaultService.konfiguraatioOletuksenaEdellinenVuosi(
       ValpasRajapäivätService.keväänValmistumisjaksoLoppuPath,
       tarkastelupäivä.getYear
     )
-  def keväänValmistumisjaksollaValmistuneidenOppivelvollisuudenSuorittamisenTarkistuspäivä: LocalDate =
+  def keväänValmistumisjaksollaValmistuneidenOppivelvollisuudenSuorittamisenTarkistuspäivä(tarkastelupäivä: LocalDate): LocalDate =
     defaultService.konfiguraatioOletuksenaEdellinenVuosi(
       ValpasRajapäivätService.keväänValmistumisjaksollaValmistuneidenOppivelvollisuudenSuorittamisenTarkistuspäiväPath,
       tarkastelupäivä.getYear
@@ -104,8 +104,8 @@ class MockValpasRajapäivätService(defaultService: ConfigValpasRajapäivätServ
   def keväänUlkopuolellaValmistumisjaksoAlku(tarkastelupäivä: LocalDate): LocalDate =
     defaultService.keväänUlkopuolellaValmistumisjaksoAlku(tarkastelupäivä)
 
-  def keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä: LocalDate = {
-    defaultService.keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
+  def keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä(tarkastelupäivä: LocalDate): LocalDate = {
+    defaultService.keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä(tarkastelupäivä)
   }
 
   def perusopetussuorituksenNäyttämisenAikaraja: LocalDate =
@@ -141,7 +141,7 @@ class ConfigValpasRajapäivätService(config: Config) extends ValpasRajapäivät
   val lakiVoimassaPeruskoulustaValmistuneillaAlku: LocalDate =
     LocalDate.parse(config.getString(ValpasRajapäivätService.LakiVoimassaPeruskoulustaValmistuneillaAlkuPath))
 
-  val keväänValmistumisjaksoLoppu: LocalDate = konfiguraatioOletuksenaEdellinenVuosi(
+  def keväänValmistumisjaksoLoppu(tarkastelupäivä: LocalDate): LocalDate = konfiguraatioOletuksenaEdellinenVuosi(
     ValpasRajapäivätService.keväänValmistumisjaksoLoppuPath,
     tarkastelupäivä.getYear
   )
@@ -149,9 +149,9 @@ class ConfigValpasRajapäivätService(config: Config) extends ValpasRajapäivät
   private val keväänValmistumisjaksoPituusPäivinä: Long =
     config.getLong(ValpasRajapäivätService.KeväänValmistumisjaksoPituusPäivinäPath)
 
-  val keväänValmistumisjaksoAlku: LocalDate = keväänValmistumisjaksoLoppu.minusDays(keväänValmistumisjaksoPituusPäivinä)
+  def keväänValmistumisjaksoAlku(tarkastelupäivä: LocalDate): LocalDate = keväänValmistumisjaksoLoppu(tarkastelupäivä).minusDays(keväänValmistumisjaksoPituusPäivinä)
 
-  val keväänValmistumisjaksollaValmistuneidenOppivelvollisuudenSuorittamisenTarkistuspäivä: LocalDate =
+  def keväänValmistumisjaksollaValmistuneidenOppivelvollisuudenSuorittamisenTarkistuspäivä(tarkastelupäivä: LocalDate): LocalDate =
     konfiguraatioOletuksenaEdellinenVuosi(
       ValpasRajapäivätService.keväänValmistumisjaksollaValmistuneidenOppivelvollisuudenSuorittamisenTarkistuspäiväPath,
       tarkastelupäivä.getYear
@@ -160,9 +160,9 @@ class ConfigValpasRajapäivätService(config: Config) extends ValpasRajapäivät
   def keväänUlkopuolellaValmistumisjaksoAlku(tarkastelupäivä: LocalDate): LocalDate =
     tarkastelupäivä.minusMonths(2)
 
-  def keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä: LocalDate =
+  def keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä(tarkastelupäivä: LocalDate): LocalDate =
     LocalDate.parse(config.getString(ValpasRajapäivätService.KeväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäiväPath))
-      .withYear(keväänValmistumisjaksollaValmistuneidenOppivelvollisuudenSuorittamisenTarkistuspäivä.getYear)
+      .withYear(keväänValmistumisjaksollaValmistuneidenOppivelvollisuudenSuorittamisenTarkistuspäivä(tarkastelupäivä).getYear)
 
   def konfiguraatioOletuksenaEdellinenVuosi(configPathVuodesta: Int => String, tarkasteluvuosi: Int) =
     OletuksenaEdellinenVuosiKonfiguraattori(2021, config, (msg: String) => logger.error(msg), configPathVuodesta).hae(tarkasteluvuosi)
