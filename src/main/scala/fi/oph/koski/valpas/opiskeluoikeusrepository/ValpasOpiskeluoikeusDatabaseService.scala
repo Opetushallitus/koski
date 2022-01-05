@@ -82,11 +82,11 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     rajaaOVKelpoisiinOpiskeluoikeuksiin: Boolean = true,
     hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value
   ): Seq[ValpasOppijaRow] = {
-    val keväänValmistumisjaksoAlku = rajapäivätService.keväänValmistumisjaksoAlku
-    val keväänValmistumisjaksoLoppu = rajapäivätService.keväänValmistumisjaksoLoppu
+    val keväänValmistumisjaksoAlku = rajapäivätService.keväänValmistumisjaksoAlku()
+    val keväänValmistumisjaksoLoppu = rajapäivätService.keväänValmistumisjaksoLoppu()
     val keväänUlkopuolellaValmistumisjaksoAlku = rajapäivätService.keväänUlkopuolellaValmistumisjaksoAlku()
     val tarkastelupäivä = rajapäivätService.tarkastelupäivä
-    val keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä = rajapäivätService.keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
+    val keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä = rajapäivätService.keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä()
     val hakeutusmivalvottavanSuorituksenNäyttämisenAikaraja = rajapäivätService.perusopetussuorituksenNäyttämisenAikaraja
 
     val timedBlockname = oppijaOids.size match {
