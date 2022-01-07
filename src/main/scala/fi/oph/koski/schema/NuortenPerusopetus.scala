@@ -24,7 +24,7 @@ case class PerusopetuksenOpiskeluoikeus(
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.perusopetus.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.perusopetus,
   organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None
-) extends KoskeenTallennettavaOpiskeluoikeus with TukimuodollinenOpiskeluoikeus {
+) extends KoskeenTallennettavaOpiskeluoikeus {
   @Description("Oppijan oppimäärän päättymispäivä")
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
@@ -166,18 +166,13 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Tooltip("Tieto siitä, jos oppija on koulukotikorotuksen piirissä (aloituspäivä ja loppupäivä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   koulukoti: Option[List[Aikajakso]] = None
-) extends TukimuodollisetLisätiedot
-  with SisäoppilaitosmainenMajoitus
+) extends SisäoppilaitosmainenMajoitus
   with OikeusmaksuttomaanAsuntolapaikkaanAikajaksona
   with Majoitusetuinen
   with Kuljetusetuinen
   with Kotiopetuksellinen
   with Vammainen
-  with VaikeastiVammainen {
-  override def sisältääOsaAikaisenErityisopetuksen: Boolean =
-    tukimuodoissaOsaAikainenErityisopetus(tehostetunTuenPäätökset) ||
-      tukimuodoissaOsaAikainenErityisopetus(erityisenTuenPäätökset)
-}
+  with VaikeastiVammainen
 
 trait Tukimuodollinen {
   @KoodistoUri("perusopetuksentukimuoto")

@@ -5,10 +5,6 @@ import fi.oph.scalaschema.annotation.{Description, Title}
 
 trait OpiskeluoikeudenLisätiedot
 
-trait TukimuodollisetLisätiedot extends OpiskeluoikeudenLisätiedot {
-  def sisältääOsaAikaisenErityisopetuksen: Boolean
-}
-
 object TukimuodollisetLisätiedot {
   def tukimuodoissaOsaAikainenErityisopetus(t: Option[List[Tukimuodollinen]]) = {
     val tukimuodot = t.getOrElse(List()).flatMap(_.tukimuotoLista)

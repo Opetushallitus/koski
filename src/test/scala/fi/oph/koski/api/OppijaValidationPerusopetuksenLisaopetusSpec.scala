@@ -37,17 +37,6 @@ class OppijaValidationPerusopetuksenLisäopetusSpec extends TutkinnonPerusteetTe
         verifyResponseStatusOk()
       }
     }
-
-    "Opiskeluoikeudella on erityisen tuen päätös osa-aikaisesta erityisopetuksesta, muttei tietoa suorituksessa -> HTTP 400" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
-        lisätiedot = perusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedotJoissaOsaAikainenErityisopetusErityisenTuenPäätöksessä
-      )) {
-        verifyResponseStatus(400,
-          KoskiErrorCategory.badRequest.validation.osaAikainenErityisopetus.kirjausPuuttuuSuorituksesta(
-            "Jos osa-aikaisesta erityisopetuksesta on päätös opiskeluoikeuden lisätiedoissa, se pitää kirjata myös suoritukseen")
-        )
-      }
-    }
   }
 
   "Kun suorituksen tila 'vahvistettu', opiskeluoikeuden tila ei voi olla 'eronnut' tai 'katsotaan eronneeksi'" in {

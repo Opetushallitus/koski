@@ -116,7 +116,6 @@ class KoskiValidator(
                 validatePäivämäärät(opiskeluoikeus),
                 validatePäätasonSuoritustenStatus(opiskeluoikeus),
                 validateOpiskeluoikeudenLisätiedot(opiskeluoikeus),
-                validateOsaAikainenErityisopetus(opiskeluoikeus),
                 validateOppilaitoksenMuutos(opiskeluoikeus, tallennettuOpiskeluoikeus),
                 PerusopetuksenOpiskeluoikeusValidation.validatePerusopetuksenOpiskeluoikeus(opiskeluoikeus),
                 TiedonSiirrostaPuuttuvatSuorituksetValidation.validateEiSamaaAlkamispaivaa(opiskeluoikeus, koskiOpiskeluoikeudet),
@@ -520,24 +519,6 @@ class KoskiValidator(
       case Some(e) => HttpStatus.fold(e.map(_.tehtävä).map(validateKoodiarvo))
       case _ => HttpStatus.ok
     }
-  }
-
-  private def validateOsaAikainenErityisopetus(oo: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = oo match {
-    case t: TukimuodollinenOpiskeluoikeus => {
-      val lt = t.lisätiedotSisältääOsaAikaisenErityisopetuksen
-      val s = t.suoritusSisältääOsaAikaisenErityisopetuksen
-
-      val ehkäVuosiluokan = if (t.isInstanceOf[PerusopetuksenOpiskeluoikeus]) "vuosiluokan " else ""
-
-      if (lt && !s) {
-        KoskiErrorCategory.badRequest.validation.osaAikainenErityisopetus.kirjausPuuttuuSuorituksesta(
-          s"Jos osa-aikaisesta erityisopetuksesta on päätös opiskeluoikeuden lisätiedoissa, se pitää kirjata myös ${ehkäVuosiluokan}suoritukseen"
-        )
-      } else {
-        HttpStatus.ok
-      }
-    }
-    case _ => HttpStatus.ok
   }
 
   private lazy val osaAikainenErityisopetusKoodistokoodiviite =

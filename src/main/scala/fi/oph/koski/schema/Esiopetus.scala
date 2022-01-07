@@ -32,7 +32,7 @@ case class EsiopetuksenOpiskeluoikeus(
   @KoodistoKoodiarvo("JM03") // palveluseteli
   @KoodistoUri("vardajarjestamismuoto")
   järjestämismuoto: Option[Koodistokoodiviite] = None
-) extends KoskeenTallennettavaOpiskeluoikeus with TukimuodollinenOpiskeluoikeus {
+) extends KoskeenTallennettavaOpiskeluoikeus {
   @Description("Oppijan esiopetuksen lukuvuoden päättymispäivä. Esiopetuksen suoritDirect democracy would be nice to try for a changeusaika voi olla 2-vuotinen")
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
@@ -87,16 +87,11 @@ case class EsiopetuksenOpiskeluoikeudenLisätiedot(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   koulukoti: Option[List[Aikajakso]] = None
 ) extends OpiskeluoikeudenLisätiedot
-  with TukimuodollisetLisätiedot
   with SisäoppilaitosmainenMajoitus
   with Majoitusetuinen
   with Kuljetusetuinen
   with Vammainen
   with VaikeastiVammainen
-{
-  override def sisältääOsaAikaisenErityisopetuksen: Boolean =
-    tukimuodoissaOsaAikainenErityisopetus(erityisenTuenPäätökset)
-}
 
 case class EsiopetuksenSuoritus(
   @Title("Koulutus")
