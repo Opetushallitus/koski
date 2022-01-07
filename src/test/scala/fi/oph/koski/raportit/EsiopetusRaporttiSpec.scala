@@ -63,7 +63,6 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
 
       "Opiskeluoikeuden lisätiedot" in {
         r.pidennettyOppivelvollisuus should equal(false)
-        r.tukimuodot should equal(Some("1"))
         r.erityisenTuenPäätös should equal(false)
         r.vammainen should equal(false)
         r.vaikeastiVammainen should equal(false)

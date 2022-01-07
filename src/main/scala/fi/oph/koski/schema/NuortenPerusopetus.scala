@@ -74,7 +74,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @OksaUri("tmpOKSAID242", "koulunkäynnin aloittamisen lykkääminen")
   @DefaultValue(false)
-  @Deprecated("Tietoa ei tule siirtää Koskeen.")
+  @Deprecated("Kenttä ei ole käytössä")
   perusopetuksenAloittamistaLykätty: Option[Boolean] = None,
   @Description("Perusopetuksen aloituksen aikaistaminen (true/false). Oppilas aloittanut perusopetuksen ennen oppivelvollisuusikää.")
   @Tooltip("Perusopetuksen aloitusta aikaistettu, eli oppilas aloittanut peruskoulun ennen oppivelvollisuusikää.")
@@ -114,7 +114,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Tooltip("Mahdollisen tehostetun tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja.")
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  @Deprecated("Tietoa ei tule siirtää Koskeen.")
+  @Deprecated("Kenttä ei ole käytössä")
   @RedundantData
   tehostetunTuenPäätökset: Option[List[TehostetunTuenPäätös]] = None,
   @Description("Opiskelu joustavassa perusopetuksessa (JOPO) alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole joustavassa perusopetuksessa. Rahoituksen laskennassa käytettävä tieto.")

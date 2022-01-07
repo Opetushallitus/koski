@@ -1583,5 +1583,5 @@
   "deprecated:Käytä opiskeluoikeuden kenttää 'oppimääräSuoritettu'" : "Käytä opiskeluoikeuden kenttää 'oppimääräSuoritettu'",
   "Oppimäärä suoritettu" : "Oppimäärä suoritettu",
   "description:Tieto siitä, onko lukion oppimäärän..." : "Tieto siitä, onko lukion oppimäärän suorittamiseen vaadittavat opinnot suoritettu. Jos lukion oppimäärän suoritus on vahvistettu, lukion oppimäärän suorittamiseen vaadittavat opinnot tulkitaan automaattisesti suoritetuksi, jolloin tähän kenttään tallennetaan automaattisesti arvo 'true'.",
-  "deprecated:Tietoa ei tule siirtää Koskeen." : "Tietoa ei tule siirtää Koskeen."
+  "deprecated:Kenttä ei ole käytössä" : "Kenttä ei ole käytössä"
 }

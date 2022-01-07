@@ -47,7 +47,7 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   @Tooltip("Mahdollisen tehostetun tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja.")
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  @Deprecated("Tietoa ei tule siirtää Koskeen.")
+  @Deprecated("Kenttä ei ole käytössä")
   @RedundantData
   tehostetunTuenPäätökset: Option[List[Aikajakso]] = None,
   @Description("Opiskelu ulkomailla alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla.")

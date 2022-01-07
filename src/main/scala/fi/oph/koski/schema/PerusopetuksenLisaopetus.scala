@@ -38,12 +38,12 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @OksaUri("tmpOKSAID242", "koulunkäynnin aloittamisen lykkääminen")
   @DefaultValue(false)
-  @Deprecated("Tietoa ei tule siirtää Koskeen.")
+  @Deprecated("Kenttä ei ole käytössä")
   perusopetuksenAloittamistaLykätty: Option[Boolean] = None,
   @Description("Perusopetuksen aloituksen aikaistaminen (true/false). Oppilas aloittanut perusopetuksen ennen oppivelvollisuusikää.")
   @Tooltip("Perusopetuksen aloitusta aikaistettu, eli oppilas aloittanut peruskoulun ennen oppivelvollisuusikää.")
   @DefaultValue(false)
-  @Deprecated("Kenttää ei käytetä.")
+  @Deprecated("Kenttä ei ole käytössä")
   @RedundantData
   aloittanutEnnenOppivelvollisuutta: Option[Boolean] = None,
   @Description("Pidennetty oppivelvollisuus alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että oppilaalla ei ole pidennettyä oppivelvollisuutta. Rahoituksen laskennassa käytettävä tieto.")
@@ -86,7 +86,7 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   @Tooltip("Mahdollisen joustavan perusopetuksen (JOPO) alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
   @OksaUri("tmpOKSAID453", "joustava perusopetus")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  @Deprecated("Kenttää ei käytetä.")
+  @Deprecated("Kenttä ei ole käytössä")
   @RedundantData
   joustavaPerusopetus: Option[Aikajakso] = None,
   @Description("Tieto opiskelusta kotiopetuksessa huoltajan päätöksestä alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole kotiopetuksessa. Rahoituksen laskennassa käytettävä tieto.")
@@ -108,7 +108,7 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @DefaultValue(false)
   @Title("Vuosiluokkiin sitomaton opetus")
-  @Deprecated("Kenttää ei käytetä.")
+  @Deprecated("Kenttä ei ole käytössä")
   @RedundantData
   vuosiluokkiinSitoutumatonOpetus: Option[Boolean] = None,
   @Description("Onko oppija muu kuin vaikeimmin kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
