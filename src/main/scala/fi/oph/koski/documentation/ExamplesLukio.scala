@@ -31,8 +31,6 @@ object ExamplesLukio {
       lisätiedot = Some(LukionOpiskeluoikeudenLisätiedot(
         pidennettyPäättymispäivä = false,
         ulkomainenVaihtoopiskelija = false,
-        alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy = Some("Pikkuvanha yksilö"),
-        yksityisopiskelija = None,
         erityisenKoulutustehtävänJaksot = Some(List(erityisenKoulutustehtävänJakso)),
         ulkomaanjaksot = Some(List(ulkomaanjakso)),
         oikeusMaksuttomaanAsuntolapaikkaan = None,
