@@ -131,7 +131,7 @@ class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironme
     roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(esiopetuksenOpiskeluoikeudenLisätiedot.copy(pidennettyOppivelvollisuus = None, majoitusetu = Some(aikajakso), kuljetusetu = None, tukimuodot = None, erityisenTuenPäätös = Some(erityisenTuenPäätös.copy(toteutuspaikka = None)), erityisenTuenPäätökset = Some(List(erityisenTuenPäätös.copy(toteutuspaikka = None)))))
     roundtrip[LukionOpiskeluoikeudenLisätiedot](lukionOpiskeluoikeudenLisätiedot) should equal(lukionOpiskeluoikeudenLisätiedotIlmanRedundanttejaKenttiä.copy(pidennettyPäättymispäivä = true, oikeusMaksuttomaanAsuntolapaikkaan = None))
     roundtrip[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot](lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot) should equal(lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot.copy(pidennettyPäättymispäivä = true, oikeusMaksuttomaanAsuntolapaikkaan = None))
-    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(PerusopetuksenOpiskeluoikeudenLisätiedot(None,false,None,None,Some(erityisenTuenPäätös.copy(toteutuspaikka = None)),Some(List(erityisenTuenPäätös.copy(toteutuspaikka = None))),Some(tehostetunTuenPäätös),Some(List(tehostetunTuenPäätös)),Some(aikajakso),None,None,None,None,false,None,None,Some(aikajakso),None,None,aikajaksot,aikajaksot))
+    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(PerusopetuksenOpiskeluoikeudenLisätiedot(None,false,None,None,Some(erityisenTuenPäätös.copy(toteutuspaikka = None)),Some(List(erityisenTuenPäätös.copy(toteutuspaikka = None))),None,None,Some(aikajakso),None,None,None,None,false,None,None,Some(aikajakso),None,None,aikajaksot,aikajaksot))
     roundtrip[PerusopetuksenVuosiluokanSuoritus](perusopetuksenVuosiluokanSuoritus).jääLuokalle should equal(false)
     roundtrip[SanallinenPerusopetuksenOppiaineenArviointi](sanallinenPerusopetuksenOppiaineenArviointi).kuvaus should equal(None)
     roundtrip[PerusopetuksenKäyttäytymisenArviointi](perusopetuksenKäyttäytymisenArviointi).kuvaus should equal(None)
@@ -246,7 +246,10 @@ class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironme
       tukimuodot = None,
       toteutuspaikka = None
     ))),
-    oikeusMaksuttomaanAsuntolapaikkaan = None
+    oikeusMaksuttomaanAsuntolapaikkaan = None,
+    tehostetunTuenPäätös = None,
+    tehostetunTuenPäätökset = None,
+    tukimuodot = None
   )
 
   private val perusopetuksenVuosiluokanSuoritus = PerusopetusExampleData.yhdeksännenLuokanSuoritus.copy(jääLuokalle = true)

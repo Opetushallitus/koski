@@ -90,6 +90,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Tooltip("Oppilaan saamat laissa säädetyt tukimuodot. Voi olla useita.")
   @Deprecated("Käytä korvaavia kenttiä Erityisen tuen päätökset, Osa-aikainen erityisopetus lukuvuoden aikana ja Osa-aikainen erityisopetus perusopetuksen lisäopetuksen aikana")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @RedundantData
   tukimuodot: Option[List[Koodistokoodiviite]] = None,
   @Description("Erityisen tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen erityisen tuen päätöksen alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
@@ -107,12 +108,14 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   @Deprecated("Käytä korvaavaa kenttää Tehostetun tuen päätökset")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  @RedundantData
   tehostetunTuenPäätös: Option[TehostetunTuenPäätös] = None,
   @Description("Tehostetun tuen päätös. Lista alku-loppu päivämääräpareja.")
   @Tooltip("Mahdollisen tehostetun tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja.")
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   @Deprecated("Tietoa ei tule siirtää Koskeen.")
+  @RedundantData
   tehostetunTuenPäätökset: Option[List[TehostetunTuenPäätös]] = None,
   @Description("Opiskelu joustavassa perusopetuksessa (JOPO) alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole joustavassa perusopetuksessa. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen joustavan perusopetuksen (JOPO) alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
