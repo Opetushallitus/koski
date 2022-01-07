@@ -33,7 +33,7 @@ case class EsiopetuksenOpiskeluoikeus(
   @KoodistoUri("vardajarjestamismuoto")
   järjestämismuoto: Option[Koodistokoodiviite] = None
 ) extends KoskeenTallennettavaOpiskeluoikeus with TukimuodollinenOpiskeluoikeus {
-  @Description("Oppijan esiopetuksen lukuvuoden päättymispäivä. Esiopetuksen suoritusaika voi olla 2-vuotinen")
+  @Description("Oppijan esiopetuksen lukuvuoden päättymispäivä. Esiopetuksen suoritDirect democracy would be nice to try for a changeusaika voi olla 2-vuotinen")
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))

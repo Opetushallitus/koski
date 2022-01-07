@@ -32,7 +32,7 @@ object ExamplesLukio {
         pidennettyPäättymispäivä = false,
         ulkomainenVaihtoopiskelija = false,
         alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy = Some("Pikkuvanha yksilö"),
-        yksityisopiskelija = false,
+        yksityisopiskelija = None,
         erityisenKoulutustehtävänJaksot = Some(List(erityisenKoulutustehtävänJakso)),
         ulkomaanjaksot = Some(List(ulkomaanjakso)),
         oikeusMaksuttomaanAsuntolapaikkaan = None,
