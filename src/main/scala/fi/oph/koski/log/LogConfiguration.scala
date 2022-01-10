@@ -22,5 +22,8 @@ object LogConfiguration {
     if (log4jConfig.getProtocol.equalsIgnoreCase("file")) {
       System.setProperty("log4j2.configurationFile", log4jConfig.getFile)
     }
+
+    // Lisää logiviesteihin kentät file, line_number, class ja method
+    System.setProperty("log4j.layout.jsonTemplate.locationInfoEnabled", "true")
   }
 }
