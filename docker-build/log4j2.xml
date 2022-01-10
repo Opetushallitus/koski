@@ -9,27 +9,27 @@
     <!-- Root logger -->
     <Root level="INFO">
       <AppenderRef ref="Console"/>
-      <AppenderRef ref="Prometheus" />
+      <AppenderRef ref="prometheus" />
     </Root>
     <!-- Access log -->
     <Logger name="org.eclipse.jetty.server.RequestLog" level="INFO" additivity="false">
-      <AppenderRef ref="AccessLog" />
+      <AppenderRef ref="access" />
     </Logger>
     <!-- Audit log -->
     <Logger name="fi.vm.sade.auditlog.Audit" level="INFO" additivity="false">
-      <AppenderRef ref="AuditLog" />
+      <AppenderRef ref="AUDIT" />
     </Logger>
     <!-- Performance log -->
     <Logger name="fi.oph.koski.util.Timer" level="INFO" additivity="false">
-      <AppenderRef ref="PerformanceLog" />
+      <AppenderRef ref="performance" />
     </Logger>
     <!-- HTTP client log-->
     <Logger name="fi.oph.koski.http.Http" level="DEBUG" additivity="false">
-      <AppenderRef ref="HttpClientLog" />
+      <AppenderRef ref="httpclient" />
     </Logger>
     <!-- IP tracking log -->
     <Logger name="fi.oph.koski.tiedonsiirto.IPTracking" level="INFO" additivity="false">
-      <AppenderRef ref="IpTrackingLog" />
+      <AppenderRef ref="iptracking" />
     </Logger>
     <!-- Suppress unwanted logging -->
     <Logger name="org.reflections" level="WARN" />
@@ -52,31 +52,31 @@
       </JsonTemplateLayout>
     </Console>
     <!-- Prometheus -->
-    <Prometheus name="Prometheus" />
+    <Prometheus name="prometheus" />
     <!-- Access log -->
-    <Console name="AccessLog">
+    <Console name="access">
       <JsonTemplateLayout eventTemplateUri="classpath:MaskedLogstashJsonEventLayoutV1.json">
         <EventTemplateAdditionalField key="log_type" value="access" />
       </JsonTemplateLayout>
     </Console>
     <!-- Audit log -->
-    <Console name="AuditLog">
+    <Console name="AUDIT">
       <PatternLayout pattern="%m%n" />
     </Console>
     <!-- Performance log -->
-    <Console name="PerformanceLog">
+    <Console name="performance">
       <JsonTemplateLayout eventTemplateUri="classpath:MaskedLogstashJsonEventLayoutV1.json">
         <EventTemplateAdditionalField key="log_type" value="performance" />
       </JsonTemplateLayout>
     </Console>
     <!-- HTTP client log -->
-    <Console name="HttpClientLog">
+    <Console name="httpclient">
       <JsonTemplateLayout eventTemplateUri="classpath:MaskedLogstashJsonEventLayoutV1.json">
         <EventTemplateAdditionalField key="log_type" value="httpclient" />
       </JsonTemplateLayout>
     </Console>
     <!-- IP tracking log -->
-    <Console name="IpTrackingLog">
+    <Console name="iptracking">
       <JsonTemplateLayout eventTemplateUri="classpath:MaskedLogstashJsonEventLayoutV1.json">
         <EventTemplateAdditionalField key="log_type" value="iptracking" />
       </JsonTemplateLayout>
