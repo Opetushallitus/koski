@@ -1,13 +1,9 @@
 import fs from "fs/promises"
-import { By, Condition, until, WebElement } from "selenium-webdriver"
+import { By, until, WebElement } from "selenium-webdriver"
 import { Feature } from "../../../src/state/featureFlags"
 import { driver } from "./driver"
 import { defaultSleepTime, defaultTimeout, shortTimeout } from "./timeouts"
 import { eventually, sleep } from "./utils"
-
-const wait = async <T>(condition: Condition<T>, timeout: number) => {
-  return await driver.wait(async (d) => condition.fn(d), timeout)
-}
 
 export const goToLocation = async (path: string) => {
   await driver.get(
@@ -49,8 +45,11 @@ export const pathToApiUrl = (path: string) =>
 
 export const $ = async (selector: string, timeout = shortTimeout) => {
   try {
-    const el = await wait(until.elementLocated(By.css(selector)), timeout)
-    return await wait(until.elementIsVisible(el), timeout)
+    const el = await driver.wait(
+      until.elementLocated(By.css(selector)),
+      timeout
+    )
+    return await driver.wait(until.elementIsVisible(el), timeout)
   } catch (_err) {
     throw new Error(`Could not find a visible element by "${selector}"`)
   }
@@ -58,7 +57,7 @@ export const $ = async (selector: string, timeout = shortTimeout) => {
 
 export const $$ = async (selector: string, timeout = shortTimeout) => {
   try {
-    return await wait(until.elementsLocated(By.css(selector)), timeout)
+    return await driver.wait(until.elementsLocated(By.css(selector)), timeout)
   } catch (_err) {
     throw new Error(`Could not find elements by "${selector}"`)
   }
