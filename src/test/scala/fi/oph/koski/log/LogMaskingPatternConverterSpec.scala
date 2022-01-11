@@ -29,15 +29,27 @@ class LogMaskingPatternConverterSpec extends AnyFreeSpec with TestEnvironment wi
         latestMaskedJsonMessage should equal(s"Hetu: ${HETU_MASK}")
       }
     }
+    "Virheiden käsittely" - {
+      "Näyttää poikkeuksen" in {
+        val error = new RuntimeException("foobar")
+        logger.error(error)("Virhe")
+        val exception = latestJsonException
+        exception("exception_class") should equal("java.lang.RuntimeException")
+        exception("exception_message") should equal("foobar")
+        exception("stacktrace") should startWith("java.lang.RuntimeException: foobar\n\tat fi.oph.koski.log.LogMaskingPatternConverterSpec.$anonfun$new")
+        exception("stacktrace").count(_ == '\n') should equal(1)
+      }
+    }
   }
 
   private def latestOriginalMessage = StubLogs.getLogs("PluginTest").last
   private def latestMaskedMessage = StubLogs.getLogs("PluginTestMasked").last
-  private def latestJsonMessage = latestJSONMessage("PluginTestJSON")
-  private def latestMaskedJsonMessage = latestJSONMessage("PluginTestMaskedJSON")
-  private def latestJSONMessage(appenderName: String) = {
+  private def latestJsonMessage = latestJsonProperty("PluginTestJSON", "message").toString
+  private def latestMaskedJsonMessage = latestJsonProperty("PluginTestMaskedJSON", "message").toString
+  private def latestJsonException: Map[String, String] = latestJsonProperty("PluginTestMaskedJSON", "exception").asInstanceOf[Map[String, String]]
+  private def latestJsonProperty(appenderName: String, property: String) = {
     parse(StubLogs.getLogs(appenderName).last) match {
-      case o: JObject => o.values("message").toString
+      case o: JObject => o.values(property)
       case o: Any => o.toString
     }
   }

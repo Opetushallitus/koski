@@ -13,11 +13,8 @@
       "stringified": true
     },
     "stacktrace": {
-      "$resolver": "exception",
-      "field": "stackTrace",
-      "stackTrace": {
-        "stringified": true
-      }
+      "$resolver": "pattern",
+      "pattern": "%ex{2}"
     }
   },
   "line_number": {
