@@ -1535,7 +1535,7 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
   "Peruskoulun hakeutumisen valvoja saa haettua 17 vuotta tänä vuonna täyttävän oman oppilaitoksen oppijan tiedot rajapäivään asti" in {
     rajapäivätService.asInstanceOf[MockValpasRajapäivätService]
       .asetaMockTarkastelupäivä(
-        rajapäivätService.keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä()
+        rajapäivätService.keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
       )
 
     canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
@@ -1547,7 +1547,7 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
   "Peruskoulun hakeutumisen valvoja saa haettua 17 vuotta tänä vuonna täyttävän oman oppilaitoksen oppijan tiedot rajapäivän jälkeen" in {
     rajapäivätService.asInstanceOf[MockValpasRajapäivätService]
       .asetaMockTarkastelupäivä(
-        rajapäivätService.keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä().plusDays(1)
+        rajapäivätService.keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä.plusDays(1)
       )
 
     canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
