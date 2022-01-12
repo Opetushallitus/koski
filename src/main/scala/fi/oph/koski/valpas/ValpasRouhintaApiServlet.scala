@@ -18,6 +18,7 @@ import fi.oph.koski.util.ChainingSyntax._
 class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with RequiresValpasSession {
   private val rouhinta = new ValpasRouhintaService(application)
   private val koodistoPalvelu = application.koodistoPalvelu
+  private val organisaatiot = application.organisaatioService
 
   post("/hetut") {
     withJsonBody { (body: JValue) =>
@@ -47,8 +48,8 @@ class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) exten
             rouhinta.haeKunnanPerusteella(input.kunta)
               .tap(tulos => auditLogRouhintahakuKunnalla(input.kunta, tulos.palautetutOppijaOidit))
           } else {
-            val language = input.lang.orElse(langFromCookie).getOrElse("fi")
-            rouhinta.haeKunnanPerusteellaExcel(input.kunta, language, input.password)
+            val language = input.original.lang.orElse(langFromCookie).getOrElse("fi")
+            rouhinta.haeKunnanPerusteellaExcel(input.kunta, language, input.original.password)
               .map(tulos => {
                 auditLogRouhintahakuKunnalla(input.kunta, tulos.data.palautetutOppijaOidit)
                 tulos.response
@@ -70,17 +71,21 @@ class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) exten
       .flatMap(validateKuntakoodi)
   }
 
-  private def validateKuntakoodi(input: KuntaInput): Either[HttpStatus, KuntaInput] = {
-    if (
-      Kunta.kuntaExists(input.kunta, koodistoPalvelu) &&
-      !AhvenanmaanKunnat.onAhvenanmaalainenKunta(input.kunta) &&
-      !Kunta.onPuuttuvaKunta(input.kunta)
-    ) {
-      Right(input)
-    } else {
-      Left(ValpasErrorCategory.badRequest(s"Kunta ${input.kunta} ei ole koodistopalvelun tuntema manner-Suomen kunta"))
-    }
-  }
+  private def validateKuntakoodi(input: KuntaInput): Either[HttpStatus, ValidatedKuntaInput] =
+    organisaatiot
+      .haeKuntakoodi(input.kuntaOid)
+      .flatMap(kuntakoodi => {
+        if (
+          Kunta.kuntaExists(kuntakoodi, koodistoPalvelu) &&
+          !AhvenanmaanKunnat.onAhvenanmaalainenKunta(kuntakoodi) &&
+          !Kunta.onPuuttuvaKunta(kuntakoodi)
+        ) {
+          Some(ValidatedKuntaInput(original = input, kunta = kuntakoodi))
+        } else {
+          None
+        }
+      })
+      .toRight(ValpasErrorCategory.badRequest(s"Kunta ${input.kuntaOid} ei ole koodistopalvelun tuntema manner-Suomen kunta"))
 
   private def renderResult(result: Either[HttpStatus, Any]): Unit = {
     result match {
@@ -115,7 +120,12 @@ case class HetuhakuInput(
 )
 
 case class KuntaInput(
-  kunta: String,
+  kuntaOid: String,
   lang: Option[String],
   password: Option[String],
+)
+
+case class ValidatedKuntaInput(
+  original: KuntaInput,
+  kunta: String
 )
