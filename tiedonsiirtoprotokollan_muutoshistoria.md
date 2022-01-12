@@ -1,3 +1,41 @@
+## 13.1.2022
+- Seuraavat kentät on merkätty redundanteiksi. Nämä kentät tiputetaan hiljaisesti pois siirroissa, eikä niitä sisällytetä Koskesta saataviin tietoihin:
+  - Kaikkien opiskeluoikeuksien lisätiedoissa:
+    - oikeusMaksuttomaanAsuntolapaikkaan
+  - Aikuisten perusopetuksen opiskeluoikeuden lisätiedot:
+    - tukimuodot
+    - tehostetunTuenPäätös
+    - tehostetunTuenPäätökset
+    - vuosiluokkiinSitoutumatonOpetus
+    - vammainen
+    - vaikeastiVammainen
+  - Esiopetuksen opiskeluoikeuden lisätiedot:
+    - tukimuodot
+    - Erityisen tuen päätösten alla:
+      - toteutuspaikka
+      - tukimuodot
+  - IB-tutkinnon opiskeluoikeuden lisätiedot:
+    - alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy
+    - yksityisopiskelija
+  - Lukion opiskeluoikeuden lisätiedot
+    - alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy
+    - yksityisopiskelija
+  - Perusopetuksen lisäopetuksen opiskeluoikeuden lisätiedot
+    - aloittanutEnnenOppivelvollisuutta
+    - tukimuodot
+    - tehostetunTuenPäätös
+    - vuosiluokkiinSitoutumatonOpetus
+    - joustavaPerusopetus
+    - Erityisen tuen päätösten alla:
+      - toteutuspaikka
+      - tukimuodot
+  - Perusopetuksen opiskeluoikeuden lisätiedot
+    - tukimuodot
+    - tehostetunTuenPäätös
+    - Erityisen tuen päätösten alla:
+      - toteutuspaikka
+      - tukimuodot
+
 ## x.12.2021
 - Sensitiiviseksi merkitty seuraavat:
 "alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy"
