@@ -101,7 +101,7 @@ class ValpasKuntarouhintaService(application: KoskiApplication)
   }
 
   private lazy val varhaisinSyntymäaika =
-    application.valpasRajapäivätService.aikaisinMahdollinenOppivelvollisenSyntymäaika()
+    application.valpasRajapäivätService.aikaisinMahdollinenOppivelvollisenSyntymäaika
 
   private def poistaKoskenTuntematOppijat
     (oppijat: Seq[OppijaNumerorekisteriKuntarouhintaOppija])
