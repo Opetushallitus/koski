@@ -1,5 +1,6 @@
 package fi.oph.koski.valpas
 
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessageField, ValpasOperation}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
@@ -8,6 +9,27 @@ import org.scalatest.BeforeAndAfterEach
 class ValpasKansalainenApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
   override protected def beforeEach() {
     AuditLogTester.clearMessages
+  }
+
+  "Käyttöoikeuksien tarkastus" - {
+    "Tietoja ei saa haettua ilman kirjautumista" in {
+      get(getOmatTiedotUrl) {
+        verifyResponseStatus(401, KoskiErrorCategory.unauthorized.notAuthenticated())
+      }
+    }
+
+    "Tiedot saa haettua kirjautuneena kansalaisena" in {
+      val kansalainen = ValpasMockOppijat.lukioOpiskelija
+      get(getOmatTiedotUrl, headers = kansalainenLoginHeaders(kansalainen.hetu.get)) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Tietoja ei saa haettua kirjautuneena virkailijana" in {
+      get(getOmatTiedotUrl, headers = authHeaders()) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
+      }
+    }
   }
 
   "Kansalaisen omien tietojen hakeminen tuottaa audit-logimerkinnän" in {
