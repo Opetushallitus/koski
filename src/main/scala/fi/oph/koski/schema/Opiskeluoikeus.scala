@@ -140,14 +140,6 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
     shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[Option[OpiskeluoikeudenLisätiedot]]("lisätiedot").set(this)(lisätiedot)
 }
 
-trait TukimuodollinenOpiskeluoikeus extends Opiskeluoikeus {
-  def lisätiedot: Option[TukimuodollisetLisätiedot]
-  def lisätiedotSisältääOsaAikaisenErityisopetuksen: Boolean = lisätiedot.exists(_.sisältääOsaAikaisenErityisopetuksen)
-  def suoritusSisältääOsaAikaisenErityisopetuksen: Boolean =
-    suoritukset.collect { case s: ErityisopetuksellinenPäätasonSuoritus => s }.exists(_.sisältääOsaAikaisenErityisopetuksen)
-}
-
-
 @Description("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden tiedot. Nämä tiedot kertovat, että kyseessä on ns. ulkopuolisen sopimuskumppanin suoritustieto, joka liittyy päävastuullisen koulutuksen järjestäjän luomaan opiskeluoikeuteen. Ks. tarkemmin https://confluence.csc.fi/pages/viewpage.action?pageId=70627182")
 @Tooltip("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden tiedot. Nämä tiedot kertovat, että kyseessä on ns. ulkopuolisen sopimuskumppanin suoritustieto, joka liittyy päävastuullisen koulutuksen järjestäjän luomaan opiskeluoikeuteen. Ks. tarkemmin ohjeet ja käyttötapaukset [usein kysyttyjen kysymysten](https://confluence.csc.fi/pages/viewpage.action?pageId=72811652) kohdasta Milloin ja miten käytetään linkitystä eri organisaatioissa olevien opintosuoritusten välillä KOSKI-palvelussa?")
 case class SisältäväOpiskeluoikeus(

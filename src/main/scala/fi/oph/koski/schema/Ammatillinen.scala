@@ -56,8 +56,8 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @Description("Onko opiskelijalla oikeus maksuttomaan asuntolapaikkaan (true / false)")
   @Tooltip("Valitse valintaruutu, jos opiskelijalla on oikeus maksuttomaan asuntolapaikkaan.")
   @DefaultValue(false)
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
+  @RedundantData
+  oikeusMaksuttomaanAsuntolapaikkaan: Option[Boolean] = None,
   @Description("Koulutuksen tarjoajan majoitus, huoneeseen muuttopäivä ja lähtöpäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Koulutuksen järjestäjän tarjoama(t) majoitusjakso(t). Huoneeseen muuttopäivä ja lähtöpäivä. Rahoituksen laskennassa käytettävä tieto.")
   majoitus: Option[List[Aikajakso]] = None,
@@ -116,6 +116,7 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   with SisäoppilaitosmainenMajoitus
   with VaikeastiVammainen
   with MaksuttomuusTieto
+  with OikeusmaksuttomaanAsuntolapaikkaanBooleanina
 
 @Title("Osa-aikaisuusjakso")
 @Description("Osa-aikaisuusjakson kesto ja suuruus")

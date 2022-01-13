@@ -34,18 +34,23 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("Opiskelijan saamat laissa säädetyt tukimuodot.")
   @Tooltip("Opiskelijan saamat laissa säädetyt tukimuodot (avustajapalvelut, erityiset apuvälineet, osa-aikainen erityisopetus, tukiopetus ja/tai tulkitsemispalvelut).")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @Deprecated("Kenttä ei ole käytössä")
+  @RedundantData
   tukimuodot: Option[List[Koodistokoodiviite]] = None,
   @Description("Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty.")
   @Description("Mahdollisen tehostetun tuen päätös päätöksen alkamis- ja päättymispäivät.")
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   @Deprecated("Käytä korvaavaa kenttää Tehostetun tuen päätökset")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  @Deprecated("Kenttä ei ole käytössä")
+  @RedundantData
   tehostetunTuenPäätös: Option[Aikajakso] = None,
   @Description("Tehostetun tuen päätös. Lista alku-loppu päivämääräpareja.")
   @Tooltip("Mahdollisen tehostetun tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja.")
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  @Deprecated("Tietoa ei tule siirtää Koskeen.")
+  @Deprecated("Kenttä ei ole käytössä")
+  @RedundantData
   tehostetunTuenPäätökset: Option[List[Aikajakso]] = None,
   @Description("Opiskelu ulkomailla alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla.")
   @Tooltip("Tieto opiskelusta ulkomailla alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.")
@@ -59,21 +64,28 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   @DefaultValue(false)
   @Title("Vuosiluokkiin sitomaton opetus")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
-  vuosiluokkiinSitoutumatonOpetus: Boolean = false,
+  @Deprecated("Kenttä ei ole käytössä")
+  @RedundantData
+  vuosiluokkiinSitoutumatonOpetus: Option[Boolean] = None,
   @Description("Onko oppija muu kuin vaikeimmin kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, onko oppija muu kuin vaikeimmin kehitysvammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @Deprecated("Kenttä ei ole käytössä")
+  @RedundantData
   vammainen: Option[List[Aikajakso]] = None,
   @Description("Onko oppija vaikeasti kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, onko oppija vaikeasti kehitysvammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @Deprecated("Kenttä ei ole käytössä")
+  @RedundantData
   vaikeastiVammainen: Option[List[Aikajakso]] = None,
   @Description("Opiskelijalla on majoitusetu. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, jos opiskelijalla on majoitusetu (alku- ja loppupäivämäärät). Rahoituksen laskennassa käytettävä tieto.")
   majoitusetu: Option[Aikajakso] = None,
   @Description("Opiskelijalla on oikeus maksuttomaan asuntolapaikkaan. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, jos opiskelijalla on oikeus maksuttomaan asuntolapaikkaan (alku- ja loppupäivämäärät).")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  @Deprecated("Kenttä ei ole käytössä")
+  @RedundantData
   oikeusMaksuttomaanAsuntolapaikkaan: Option[Aikajakso] = None,
   @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
   @Tooltip("Mahdollisen sisäoppilaitosmuotoisen majoituksen aloituspäivä ja loppupäivä. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
@@ -83,7 +95,7 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None
 ) extends OpiskeluoikeudenLisätiedot
   with SisäoppilaitosmainenMajoitus
-  with OikeusmaksuttomaanAsuntolapaikkaan
+  with OikeusmaksuttomaanAsuntolapaikkaanAikajaksona
   with Majoitusetuinen
   with Vammainen
   with VaikeastiVammainen

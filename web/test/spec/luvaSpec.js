@@ -25,7 +25,6 @@ describe('Lukioon valmistava koulutus', function() {
         'Lisätiedot\n' +
         'Pidennetty päättymispäivä kyllä\n' +
         'Ulkomaanjaksot 1.9.2012 — 1.9.2013 Maa Ruotsi Kuvaus Harjoittelua ulkomailla\n' +
-        'Oikeus maksuttomaan asuntolapaikkaan kyllä\n' +
         'Sisäoppilaitosmainen majoitus 1.9.2013 — 12.12.2013')
     })
 

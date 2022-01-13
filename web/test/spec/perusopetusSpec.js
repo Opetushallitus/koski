@@ -205,7 +205,6 @@ describe('Perusopetus', function() {
             '15.8.2008 Läsnä\n' +
             'Lisätiedot\n' +
             'Pidennetty oppivelvollisuus 15.8.2008 — 4.6.2016\n' +
-            'Tukimuodot Osa-aikainen erityisopetus\n' +
             'Erityisen tuen päätös 15.8.2008 — 4.6.2016\n' +
             'Opiskelee toiminta-alueittain kyllä\n' +
             'Opiskelee erityisryhmässä kyllä\n' +
@@ -222,7 +221,6 @@ describe('Perusopetus', function() {
             'Vaikeimmin kehitysvammainen 14.8.2010 —\n' +
             'Majoitusetu 15.8.2008 — 4.6.2016\n' +
             'Kuljetusetu 15.8.2008 — 4.6.2016\n' +
-            'Oikeus maksuttomaan asuntolapaikkaan 15.8.2008 — 4.6.2016\n' +
             'Sisäoppilaitosmainen majoitus 1.9.2012 — 1.9.2013\n' +
             'Koulukoti 1.9.2013 — 1.9.2014')
         })
@@ -3125,9 +3123,7 @@ describe('Perusopetus', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
           'Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
           'Tila 4.6.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
-          '15.8.2008 Läsnä (valtionosuusrahoitteinen koulutus)\n' +
-          'Lisätiedot\n' +
-          'Vaikeimmin kehitysvammainen 6.6.2014 —')
+          '15.8.2008 Läsnä (valtionosuusrahoitteinen koulutus)')
       })
 
       it('näyttää suorituksen tiedot', function() {

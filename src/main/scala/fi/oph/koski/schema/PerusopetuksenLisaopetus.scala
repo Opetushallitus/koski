@@ -1,9 +1,8 @@
 package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
-
 import fi.oph.koski.koskiuser.Rooli
-import fi.oph.koski.schema.annotation.{Deprecated, Hidden, KoodistoKoodiarvo, KoodistoUri, OksaUri, SensitiveData, Tooltip}
+import fi.oph.koski.schema.annotation.{Deprecated, Hidden, KoodistoKoodiarvo, KoodistoUri, OksaUri, RedundantData, SensitiveData, Tooltip}
 import fi.oph.koski.schema.TukimuodollisetLisätiedot.tukimuodoissaOsaAikainenErityisopetus
 import fi.oph.scalaschema.annotation._
 
@@ -25,7 +24,7 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeus(
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.perusopetuksenlisaopetus.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.perusopetuksenlisaopetus,
   organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None
-) extends KoskeenTallennettavaOpiskeluoikeus with TukimuodollinenOpiskeluoikeus {
+) extends KoskeenTallennettavaOpiskeluoikeus {
   @Description("Oppijan oppimäärän päättymispäivä")
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
@@ -39,12 +38,14 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @OksaUri("tmpOKSAID242", "koulunkäynnin aloittamisen lykkääminen")
   @DefaultValue(false)
-  @Deprecated("Tietoa ei tule siirtää Koskeen.")
+  @Deprecated("Kenttä ei ole käytössä")
   perusopetuksenAloittamistaLykätty: Option[Boolean] = None,
   @Description("Perusopetuksen aloituksen aikaistaminen (true/false). Oppilas aloittanut perusopetuksen ennen oppivelvollisuusikää.")
   @Tooltip("Perusopetuksen aloitusta aikaistettu, eli oppilas aloittanut peruskoulun ennen oppivelvollisuusikää.")
   @DefaultValue(false)
-  aloittanutEnnenOppivelvollisuutta: Boolean = false,
+  @Deprecated("Kenttä ei ole käytössä")
+  @RedundantData
+  aloittanutEnnenOppivelvollisuutta: Option[Boolean] = None,
   @Description("Pidennetty oppivelvollisuus alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että oppilaalla ei ole pidennettyä oppivelvollisuutta. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen pidennetyn oppivelvollisuuden alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
@@ -55,6 +56,7 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   @Tooltip("Oppilaan saamat laissa säädetyt tukimuodot. Voi olla useita.")
   @Deprecated("Käytä korvaavia kenttiä Erityisen tuen päätökset, Osa-aikainen erityisopetus lukuvuoden aikana ja Osa-aikainen erityisopetus perusopetuksen lisäopetuksen aikana")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @RedundantData
   tukimuodot: Option[List[Koodistokoodiviite]] = None,
   @Description("Erityisen tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen erityisen tuen päätöksen alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
@@ -72,17 +74,21 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   @Deprecated("Käytä korvaavaa kenttää Tehostetun tuen päätökset")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  @Deprecated("Tietoa ei tule siirtää Koskeen.")
+  @RedundantData
   tehostetunTuenPäätös: Option[TehostetunTuenPäätös] = None,
   @Description("Tehostetun tuen päätös. Lista alku-loppu päivämääräpareja.")
   @Tooltip("Mahdollisen tehostetun tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja.")
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  @Deprecated("Kenttä ei ole käytössä")
+  @RedundantData
   tehostetunTuenPäätökset: Option[List[TehostetunTuenPäätös]] = None,
   @Description("Opiskelu joustavassa perusopetuksessa (JOPO) alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole joustavassa perusopetuksessa. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen joustavan perusopetuksen (JOPO) alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
   @OksaUri("tmpOKSAID453", "joustava perusopetus")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  @Deprecated("Kenttä ei ole käytössä")
+  @RedundantData
   joustavaPerusopetus: Option[Aikajakso] = None,
   @Description("Tieto opiskelusta kotiopetuksessa huoltajan päätöksestä alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole kotiopetuksessa. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto mahdollisesta opiskelusta kotiopetuksessa huoltajan päätöksestä alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.")
@@ -103,7 +109,9 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @DefaultValue(false)
   @Title("Vuosiluokkiin sitomaton opetus")
-  vuosiluokkiinSitoutumatonOpetus: Boolean = false,
+  @Deprecated("Kenttä ei ole käytössä")
+  @RedundantData
+  vuosiluokkiinSitoutumatonOpetus: Option[Boolean] = None,
   @Description("Onko oppija muu kuin vaikeimmin kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, onko oppija muu kuin vaikeimmin kehitysvammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
@@ -121,7 +129,8 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   kuljetusetu: Option[Aikajakso] = None,
   @Description("Oppilaalla on oikeus maksuttomaan asuntolapaikkaan (alku- ja loppupäivämäärät).")
   @Tooltip("Tieto siitä, jos oppilaalla on oikeus maksuttomaan asuntolapaikkaan (alku- ja loppupäivämäärät).")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  @Deprecated("Kenttä ei ole käytössä")
+  @RedundantData
   oikeusMaksuttomaanAsuntolapaikkaan: Option[Aikajakso] = None,
   @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen sisäoppilaitosmuotoisen majoituksen aloituspäivä ja loppupäivä. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
@@ -133,19 +142,14 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   koulukoti: Option[List[Aikajakso]] = None,
   maksuttomuus: Option[List[Maksuttomuus]] = None,
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None
-) extends TukimuodollisetLisätiedot
-  with SisäoppilaitosmainenMajoitus
-  with OikeusmaksuttomaanAsuntolapaikkaan
+) extends SisäoppilaitosmainenMajoitus
+  with OikeusmaksuttomaanAsuntolapaikkaanAikajaksona
   with Majoitusetuinen
   with Kuljetusetuinen
   with Kotiopetuksellinen
   with Vammainen
   with VaikeastiVammainen
-  with MaksuttomuusTieto {
-  override def sisältääOsaAikaisenErityisopetuksen: Boolean =
-    tukimuodoissaOsaAikainenErityisopetus(tehostetunTuenPäätökset) ||
-      tukimuodoissaOsaAikainenErityisopetus(erityisenTuenPäätökset)
-}
+  with MaksuttomuusTieto
 
 @Description("Perusopetuksen lisäopetuksen suoritustiedot")
 case class PerusopetuksenLisäopetuksenSuoritus(

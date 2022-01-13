@@ -312,7 +312,7 @@ object AmmatillinenExampleData {
     hojks = Some(Hojks(
       opetusryhmä = Koodistokoodiviite("1", Some("Yleinen opetusryhmä"), "opetusryhma")
     )),
-    oikeusMaksuttomaanAsuntolapaikkaan = true,
+    oikeusMaksuttomaanAsuntolapaikkaan = None,
     ulkomaanjaksot = Some(List(Ulkomaanjakso(date(2012, 9, 1), Some(date(2013, 9, 1)), ruotsi, "Harjoittelua ulkomailla"))),
     vaikeastiVammainen = Some(List(Aikajakso(date(2012, 9, 1), Some(date(2013, 9, 1))))),
     vammainenJaAvustaja = Some(List(Aikajakso(date(2012, 9, 1), Some(date(2013, 9, 1))))),

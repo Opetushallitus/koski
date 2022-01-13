@@ -81,7 +81,6 @@ case class OpiskeluoikeudenLisätiedot(
   opiskeluvalmiuksiaTukevatOpinnot: Option[List[schema.OpiskeluvalmiuksiaTukevienOpintojenJakso]],
   vankilaopetuksessa: Option[List[schema.Aikajakso]],
   ulkomainenVaihtoopiskelija: Option[Boolean],
-  yksityisopiskelija: Option[Boolean],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   koulukoti: Option[List[schema.Aikajakso]],
   majoitusetu: Option[schema.Aikajakso],

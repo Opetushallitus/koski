@@ -33,6 +33,9 @@ case class Example(text: String) extends RepresentationalMetadata
 
 case class SensitiveData(roles: Set[Role]) extends RepresentationalMetadata
 
+/* Handled similarly to SensitiveData, but fully omitted in serialization */
+case class RedundantData() extends RepresentationalMetadata
+
 case class Tooltip(text: String) extends RepresentationalMetadata
 
 /* Numeric field should be rendered using this scale */

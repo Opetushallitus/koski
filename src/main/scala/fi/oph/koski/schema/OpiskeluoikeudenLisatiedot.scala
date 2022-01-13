@@ -5,10 +5,6 @@ import fi.oph.scalaschema.annotation.{Description, Title}
 
 trait OpiskeluoikeudenLisätiedot
 
-trait TukimuodollisetLisätiedot extends OpiskeluoikeudenLisätiedot {
-  def sisältääOsaAikaisenErityisopetuksen: Boolean
-}
-
 object TukimuodollisetLisätiedot {
   def tukimuodoissaOsaAikainenErityisopetus(t: Option[List[Tukimuodollinen]]) = {
     val tukimuodot = t.getOrElse(List()).flatMap(_.tukimuotoLista)
@@ -27,8 +23,20 @@ trait SisäoppilaitosmainenMajoitus {
   def sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]]
 }
 
-trait OikeusmaksuttomaanAsuntolapaikkaan {
+trait OikeusmaksuttomaanAsuntolapaikkaanAikajaksona extends OpiskeluoikeudenLisätiedot {
   def oikeusMaksuttomaanAsuntolapaikkaan: Option[Aikajakso]
+
+  import mojave._
+  def withOikeusMaksuttomaanAsuntolapaikkaan(maksuttomuus: Option[Aikajakso]): OikeusmaksuttomaanAsuntolapaikkaanAikajaksona =
+    shapeless.lens[OikeusmaksuttomaanAsuntolapaikkaanAikajaksona].field[Option[Aikajakso]]("oikeusMaksuttomaanAsuntolapaikkaan").set(this)(maksuttomuus)
+}
+
+trait OikeusmaksuttomaanAsuntolapaikkaanBooleanina extends OpiskeluoikeudenLisätiedot {
+  def oikeusMaksuttomaanAsuntolapaikkaan: Option[Boolean]
+
+  import mojave._
+  def withOikeusMaksuttomaanAsuntolapaikkaan(maksuttomuus: Option[Boolean]): OikeusmaksuttomaanAsuntolapaikkaanBooleanina =
+    shapeless.lens[OikeusmaksuttomaanAsuntolapaikkaanBooleanina].field[Option[Boolean]]("oikeusMaksuttomaanAsuntolapaikkaan").set(this)(maksuttomuus)
 }
 
 trait UlkomainenVaihtoopiskelija {

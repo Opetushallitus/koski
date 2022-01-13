@@ -32,7 +32,7 @@ case class EsiopetuksenOpiskeluoikeus(
   @KoodistoKoodiarvo("JM03") // palveluseteli
   @KoodistoUri("vardajarjestamismuoto")
   järjestämismuoto: Option[Koodistokoodiviite] = None
-) extends KoskeenTallennettavaOpiskeluoikeus with TukimuodollinenOpiskeluoikeus {
+) extends KoskeenTallennettavaOpiskeluoikeus {
   @Description("Oppijan esiopetuksen lukuvuoden päättymispäivä. Esiopetuksen suoritusaika voi olla 2-vuotinen")
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
@@ -50,6 +50,7 @@ case class EsiopetuksenOpiskeluoikeudenLisätiedot(
   @Tooltip("Oppilaan saamat laissa säädetyt tukimuodot. Voi olla useita.")
   @Deprecated("Käytä korvaavia kenttiä Erityisen tuen päätökset ja Osa-aikainen erityisopetus lukuvuoden aikana")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @RedundantData
   tukimuodot: Option[List[Koodistokoodiviite]] = None,
   @Description("Erityisen tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen erityisen tuen päätöksen alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
@@ -86,16 +87,11 @@ case class EsiopetuksenOpiskeluoikeudenLisätiedot(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   koulukoti: Option[List[Aikajakso]] = None
 ) extends OpiskeluoikeudenLisätiedot
-  with TukimuodollisetLisätiedot
   with SisäoppilaitosmainenMajoitus
   with Majoitusetuinen
   with Kuljetusetuinen
   with Vammainen
   with VaikeastiVammainen
-{
-  override def sisältääOsaAikaisenErityisopetuksen: Boolean =
-    tukimuodoissaOsaAikainenErityisopetus(erityisenTuenPäätökset)
-}
 
 case class EsiopetuksenSuoritus(
   @Title("Koulutus")

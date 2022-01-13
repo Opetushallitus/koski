@@ -283,6 +283,21 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
     }
   }
 
+  "Deprekoituja kenttiä, jotka tiputetaan siirrossa pois" - {
+    "Lisätiedon kenttiä yksityisopiskelija ja alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy ei oteta vastaan siirrossa" in {
+      val oo = defaultOpiskeluoikeus.withLisätiedot(
+        Some(LukionOpiskeluoikeudenLisätiedot(
+          yksityisopiskelija = Some(true),
+          alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy = Some(LocalizedString.finnish("Testisyy"))
+        )))
+
+      val tallennettuna = putAndGetOpiskeluoikeus(oo.asInstanceOf[LukionOpiskeluoikeus]).asInstanceOf[LukionOpiskeluoikeus]
+
+      tallennettuna.lisätiedot.get.yksityisopiskelija should equal (None)
+      tallennettuna.lisätiedot.get.alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy should equal (None)
+    }
+  }
+
   private def putAndGetOpiskeluoikeus(oo: LukionOpiskeluoikeus): Opiskeluoikeus = putOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)

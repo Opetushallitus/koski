@@ -2,6 +2,7 @@ package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä}
+import fi.oph.koski.documentation.ExamplesEsiopetus.osaAikainenErityisopetus
 import fi.oph.koski.documentation.ExamplesPerusopetuksenLisaopetus
 import fi.oph.koski.documentation.ExamplesPerusopetuksenLisaopetus.lisäopetuksenSuoritus
 import fi.oph.koski.documentation.OsaAikainenErityisopetusExampleData._
@@ -36,17 +37,6 @@ class OppijaValidationPerusopetuksenLisäopetusSpec extends TutkinnonPerusteetTe
         verifyResponseStatusOk()
       }
     }
-
-    "Opiskeluoikeudella on erityisen tuen päätös osa-aikaisesta erityisopetuksesta, muttei tietoa suorituksessa -> HTTP 400" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
-        lisätiedot = perusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedotJoissaOsaAikainenErityisopetusErityisenTuenPäätöksessä
-      )) {
-        verifyResponseStatus(400,
-          KoskiErrorCategory.badRequest.validation.osaAikainenErityisopetus.kirjausPuuttuuSuorituksesta(
-            "Jos osa-aikaisesta erityisopetuksesta on päätös opiskeluoikeuden lisätiedoissa, se pitää kirjata myös suoritukseen")
-        )
-      }
-    }
   }
 
   "Kun suorituksen tila 'vahvistettu', opiskeluoikeuden tila ei voi olla 'eronnut' tai 'katsotaan eronneeksi'" in {
@@ -61,18 +51,29 @@ class OppijaValidationPerusopetuksenLisäopetusSpec extends TutkinnonPerusteetTe
   }
 
   "Deprekoituja kenttiä, jotka tiputetaan siirrossa pois" - {
-    "Lisätiedon kenttiä perusopetuksenAloittamistaLykatty ja erityisenTuenPäätökset ei oteta vastaan siirrossa" in {
+    "Lisätiedon kenttiä perusopetuksenAloittamistaLykatty, aloittanut ennen oppivelvollisuutta, tukimuodot," +
+      "tehostetun tuen päätös, vuosiluokkiin sitoutumaton opetus ja joustava perusopetus ei oteta vastaan siirrossa" in {
       val oo = defaultOpiskeluoikeus.withLisätiedot(
         Some(PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
           perusopetuksenAloittamistaLykätty = Some(true),
-          tehostetunTuenPäätökset = Some(List(tehostetunTuenPäätösIlmanOsaAikaistaErityisopetusta))
+          aloittanutEnnenOppivelvollisuutta = Some(true),
+          tukimuodot = Some(List(osaAikainenErityisopetus)),
+          tehostetunTuenPäätös = Some(tehostetunTuenPäätösIlmanOsaAikaistaErityisopetusta),
+          tehostetunTuenPäätökset = Some(List(tehostetunTuenPäätösIlmanOsaAikaistaErityisopetusta)),
+          vuosiluokkiinSitoutumatonOpetus = Some(true),
+          joustavaPerusopetus = Some(Aikajakso(LocalDate.of(2010, 8, 14), None))
         )
         ))
 
       val tallennettuna = putAndGetOpiskeluoikeus(oo)
 
       tallennettuna.lisätiedot.get.perusopetuksenAloittamistaLykätty should equal (None)
+      tallennettuna.lisätiedot.get.aloittanutEnnenOppivelvollisuutta should equal (None)
+      tallennettuna.lisätiedot.get.tukimuodot should equal (None)
+      tallennettuna.lisätiedot.get.tehostetunTuenPäätös should equal (None)
       tallennettuna.lisätiedot.get.tehostetunTuenPäätökset should equal (None)
+      tallennettuna.lisätiedot.get.vuosiluokkiinSitoutumatonOpetus should equal (None)
+      tallennettuna.lisätiedot.get.joustavaPerusopetus should equal (None)
     }
 
     "Suorituksen kenttää osaAikainenErityisopetus ei oteta vastaan siirrossa - kenttä riippuu tehostetunTuenPäätöksestä" in {

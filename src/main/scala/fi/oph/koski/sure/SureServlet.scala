@@ -7,7 +7,7 @@ import java.time.format.DateTimeParseException
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.{JsonSerializer, SensitiveDataFilter}
+import fi.oph.koski.json.{JsonSerializer, SensitiveAndRedundantDataFilter}
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.OppijaOidHaku
@@ -38,7 +38,7 @@ class SureServlet(implicit val application: KoskiApplication)
       }
       oids.map(HenkilöOid.validateHenkilöOid).collectFirst { case Left(status) => status } match {
         case None =>
-          val serialize = SensitiveDataFilter(session).rowSerializer
+          val serialize = SensitiveAndRedundantDataFilter(session).rowSerializer
           val observable = OpiskeluoikeusQueryContext(request)(session, application).queryWithoutHenkilötiedotRaw(
             List(OppijaOidHaku(oids)), None, "oids=" + oids.take(2).mkString(",") + ",...(" + oids.size + ")"
           )

@@ -163,10 +163,6 @@ object KelaOppijaConverter extends Logging {
         case x: schema.DIAOpiskeluoikeudenLisätiedot => Some(x.ulkomainenVaihtoopiskelija)
         case _ => None
       },
-      yksityisopiskelija = lisatiedot match {
-        case x: schema.LukionOpiskeluoikeudenLisätiedot => Some(x.yksityisopiskelija)
-        case _ => None
-      },
       koulukoti = lisatiedot match {
         case x: schema.PerusopetuksenOpiskeluoikeudenLisätiedot => x.koulukoti
         case x: schema.PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot => x.koulukoti

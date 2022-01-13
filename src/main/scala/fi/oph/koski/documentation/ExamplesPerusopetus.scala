@@ -121,8 +121,6 @@ object ExamplesPerusopetus {
         perusopetuksenAloittamistaLykätty = None,
         aloittanutEnnenOppivelvollisuutta = false,
         pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
-        tukimuodot = Some(List(osaAikainenErityisopetus)),
-        tehostetunTuenPäätökset = Some(List(tehostetunTuenPäätös)),
         joustavaPerusopetus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
         kotiopetusjaksot = Some(List(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4))), Aikajakso(date(2017, 7, 14), Some(date(2017, 10, 18))))),
         ulkomaanjaksot = Some(List(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4))), Aikajakso(date(2018, 9, 16), Some(date(2019, 10, 2))))),
@@ -131,7 +129,6 @@ object ExamplesPerusopetus {
         vaikeastiVammainen = Some(List(Aikajakso(date(2010, 8, 14), None))),
         majoitusetu = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
         kuljetusetu = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
-        oikeusMaksuttomaanAsuntolapaikkaan = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
         sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2012, 9, 1), Some(date(2013, 9, 1))))),
         koulukoti = Some(List(Aikajakso(date(2013, 9, 1), Some(date(2014, 9, 1)))))
       ))

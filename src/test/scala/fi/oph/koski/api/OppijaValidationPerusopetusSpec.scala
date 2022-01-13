@@ -2,6 +2,7 @@ package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, vahvistusPaikkakunnalla}
+import fi.oph.koski.documentation.ExamplesEsiopetus.osaAikainenErityisopetus
 import fi.oph.koski.documentation.ExamplesPerusopetus.erityisenTuenPäätös
 import fi.oph.koski.documentation.OsaAikainenErityisopetusExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData.{suoritus, _}
@@ -463,30 +464,6 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         verifyResponseStatusOk()
       }
     }
-
-    "Opiskeluoikeudella on erityisen tuen päätös osa-aikaisesta erityisopetuksesta, mutta suorituksissa ei yhtään vuosiluokan suoritusta -> HTTP 400" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
-        lisätiedot = perusopetuksenOpiskeluoikeudenLisätiedotJoissaOsaAikainenErityisopetusErityisenTuenPäätöksessä,
-        suoritukset = List(päättötodistusSuoritus)
-      )) {
-        verifyResponseStatus(400,
-          KoskiErrorCategory.badRequest.validation.osaAikainenErityisopetus.kirjausPuuttuuSuorituksesta(
-            "Jos osa-aikaisesta erityisopetuksesta on päätös opiskeluoikeuden lisätiedoissa, se pitää kirjata myös vuosiluokan suoritukseen")
-        )
-      }
-    }
-
-    "Opiskeluoikeudella on erityisen tuen päätös osa-aikaisesta erityisopetuksesta, muttei tietoa suorituksessa -> HTTP 400" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
-        lisätiedot = perusopetuksenOpiskeluoikeudenLisätiedotJoissaOsaAikainenErityisopetusErityisenTuenPäätöksessä,
-        suoritukset = List(yhdeksännenLuokanSuoritus.copy(osaAikainenErityisopetus = None), kahdeksannenLuokanSuoritus.copy(osaAikainenErityisopetus = Some(false)))
-      )) {
-        verifyResponseStatus(400,
-          KoskiErrorCategory.badRequest.validation.osaAikainenErityisopetus.kirjausPuuttuuSuorituksesta(
-            "Jos osa-aikaisesta erityisopetuksesta on päätös opiskeluoikeuden lisätiedoissa, se pitää kirjata myös vuosiluokan suoritukseen")
-        )
-      }
-    }
   }
 
   "Äidinkielen omainen oppiaine" - {
@@ -521,18 +498,22 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
   }
 
   "Deprekoituja kenttiä, jotka tiputetaan siirrossa pois" - {
-    "Lisätiedon kenttiä perusopetuksenAloittamistaLykatty ja erityisenTuenPäätökset ei oteta vastaan siirrossa" in {
+    "Lisätiedon kenttiä perusopetuksenAloittamistaLykatty, tehostetunTuenPäätös, tehostetunTuenPäätökset ja tukimuodot ei oteta vastaan siirrossa" in {
       val oo = defaultOpiskeluoikeus.withLisätiedot(
         Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
           perusopetuksenAloittamistaLykätty = Some(true),
-          tehostetunTuenPäätökset = Some(List(tehostetunTuenPäätösIlmanOsaAikaistaErityisopetusta))
+          tehostetunTuenPäätös = Some(tehostetunTuenPäätösIlmanOsaAikaistaErityisopetusta),
+          tehostetunTuenPäätökset = Some(List(tehostetunTuenPäätösIlmanOsaAikaistaErityisopetusta)),
+          tukimuodot = Some(List(osaAikainenErityisopetus))
         )
       ))
 
       val tallennettuna = putAndGetOpiskeluoikeus(oo)
 
       tallennettuna.lisätiedot.get.perusopetuksenAloittamistaLykätty should equal (None)
+      tallennettuna.lisätiedot.get.tehostetunTuenPäätös should equal (None)
       tallennettuna.lisätiedot.get.tehostetunTuenPäätökset should equal (None)
+      tallennettuna.lisätiedot.get.tukimuodot should equal (None)
     }
 
     "Vuosiluokan suorituksen kenttää osaAikainenErityisopetus ei oteta vastaan siirrossa - kenttä riippuu tehosteTuenPäätöksestä" in {

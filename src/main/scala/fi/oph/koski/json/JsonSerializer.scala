@@ -33,11 +33,11 @@ object JsonSerializer {
   }
 
   def serialize[T: TypeTag](obj: T)(implicit user: SensitiveDataAllowed): JValue = {
-    Serializer.serialize(obj, SensitiveDataFilter(user).serializationContext)
+    Serializer.serialize(obj, SensitiveAndRedundantDataFilter(user).serializationContext)
   }
 
   def serialize(obj: Any, schema: Schema)(implicit user: SensitiveDataAllowed): JValue = {
-    Serializer.serialize(obj, schema, SensitiveDataFilter(user).serializationContext)
+    Serializer.serialize(obj, schema, SensitiveAndRedundantDataFilter(user).serializationContext)
   }
 
   def parse[T: TypeTag](j: String, ignoreExtras: Boolean = false): T = {

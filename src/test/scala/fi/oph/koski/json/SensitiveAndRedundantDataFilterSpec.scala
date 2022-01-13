@@ -16,7 +16,7 @@ import org.scalatest.matchers.should.Matchers
 import java.time.LocalDate
 import scala.reflect.runtime.universe.TypeTag
 
-class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matchers with OpiskeluoikeusTestMethods with KoskiHttpSpec {
+class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matchers with OpiskeluoikeusTestMethods with KoskiHttpSpec {
   private val application = KoskiApplication.apply
   private val käyttöoikeusRepository: KäyttöoikeusRepository = application.käyttöoikeusRepository
 
@@ -25,13 +25,13 @@ class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matc
 
   "Käyttäjä jolla ei ole luottamuksellisia oikeuksia ei näe mitään arkaluontoisia tietoja" in {
     implicit val eiLuottumuksellisiaOikeuksia = MockUsers.evira.toKoskiSpecificSession(käyttöoikeusRepository)
-    roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(None,None,None,None,None,false,None,None,None,None,None))
-    roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(AmmatillisenOpiskeluoikeudenLisätiedot(false,None,None,None,None,None,None,None,None,None,None,None,false,None,false))
+    roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot())
+    roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(AmmatillisenOpiskeluoikeudenLisätiedot(hojks = None))
     roundtrip[DIAOpiskeluoikeudenLisätiedot](diaOpiskeluoikeudenLisätiedot).pidennettyPäättymispäivä should equal(true)
-    roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(EsiopetuksenOpiskeluoikeudenLisätiedot(None,None,None,None,None,None,Some(aikajakso)))
-    roundtrip[LukionOpiskeluoikeudenLisätiedot](lukionOpiskeluoikeudenLisätiedot) should equal(LukionOpiskeluoikeudenLisätiedot(true,false,None,true,None,None,false,None,None,None))
-    roundtrip[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot](lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot) should equal(LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(true,false,None,false,None))
-    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(PerusopetuksenOpiskeluoikeudenLisätiedot(None,false,None,None,None,None,None,None,None,None,None,None,None,false,None,None,Some(aikajakso),None,None,None,None))
+    roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(EsiopetuksenOpiskeluoikeudenLisätiedot(majoitusetu = Some(aikajakso)))
+    roundtrip[LukionOpiskeluoikeudenLisätiedot](lukionOpiskeluoikeudenLisätiedot) should equal(LukionOpiskeluoikeudenLisätiedot(pidennettyPäättymispäivä=true))
+    roundtrip[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot](lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot) should equal(LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(pidennettyPäättymispäivä=true))
+    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(PerusopetuksenOpiskeluoikeudenLisätiedot(majoitusetu = Some(aikajakso)))
     roundtrip[PerusopetuksenVuosiluokanSuoritus](perusopetuksenVuosiluokanSuoritus).jääLuokalle should equal(false)
     roundtrip[SanallinenPerusopetuksenOppiaineenArviointi](sanallinenPerusopetuksenOppiaineenArviointi).kuvaus should equal(None)
     roundtrip[PerusopetuksenKäyttäytymisenArviointi](perusopetuksenKäyttäytymisenArviointi).kuvaus should equal(None)
@@ -59,13 +59,13 @@ class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matc
 
   "Käyttäjä jolla on kaikki luottamuksellisten tietojen oikeudet näkee kaikki arkaluontoiset tiedot" in {
     implicit val kaikkiOikeudet = MockUsers.paakayttaja.toKoskiSpecificSession(käyttöoikeusRepository)
-    roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot)
-    roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(ammatillisenOpiskeluoikeudenLisätiedot)
+    roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(sisäoppilaitosmainenMajoitus = aikajaksot))
+    roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(ammatillisenOpiskeluoikeudenLisätiedot.copy(oikeusMaksuttomaanAsuntolapaikkaan = None))
     roundtrip[DIAOpiskeluoikeudenLisätiedot](diaOpiskeluoikeudenLisätiedot) should equal(diaOpiskeluoikeudenLisätiedot)
-    roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(esiopetuksenOpiskeluoikeudenLisätiedot)
-    roundtrip[LukionOpiskeluoikeudenLisätiedot](lukionOpiskeluoikeudenLisätiedot) should equal(lukionOpiskeluoikeudenLisätiedot)
-    roundtrip[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot](lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot) should equal(lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot)
-    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(perusopetuksenOpiskeluoikeudenLisätiedot)
+    roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(esiopetuksenOpiskeluoikeudenLisätiedotIlmanRedundanttejaKenttiä)
+    roundtrip[LukionOpiskeluoikeudenLisätiedot](lukionOpiskeluoikeudenLisätiedot) should equal(lukionOpiskeluoikeudenLisätiedotIlmanRedundanttejaKenttiä.copy(oikeusMaksuttomaanAsuntolapaikkaan = None))
+    roundtrip[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot](lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot) should equal(lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot.copy(oikeusMaksuttomaanAsuntolapaikkaan = None))
+    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(perusopetuksenOpiskeluoikeudenLisätiedotIlmanRedundanttejaKenttiä)
     roundtrip[PerusopetuksenVuosiluokanSuoritus](perusopetuksenVuosiluokanSuoritus) should equal(perusopetuksenVuosiluokanSuoritus)
     roundtrip[SanallinenPerusopetuksenOppiaineenArviointi](sanallinenPerusopetuksenOppiaineenArviointi) should equal(sanallinenPerusopetuksenOppiaineenArviointi)
     roundtrip[PerusopetuksenKäyttäytymisenArviointi](perusopetuksenKäyttäytymisenArviointi) should equal(perusopetuksenKäyttäytymisenArviointi)
@@ -87,13 +87,13 @@ class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matc
 
   "Käyttäjä jolla on uusi kaikkiin luottamuksellisiin tietoihin oikeuttava käyttöoikeus näkee kaikki arkaluontoiset tiedot" in {
     implicit val kaikkiOikeudet = MockUsers.luovutuspalveluKäyttäjäArkaluontoinen.toKoskiSpecificSession(käyttöoikeusRepository)
-    roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot)
-    roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(ammatillisenOpiskeluoikeudenLisätiedot)
+    roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(sisäoppilaitosmainenMajoitus = aikajaksot))
+    roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(ammatillisenOpiskeluoikeudenLisätiedot.copy(oikeusMaksuttomaanAsuntolapaikkaan = None))
     roundtrip[DIAOpiskeluoikeudenLisätiedot](diaOpiskeluoikeudenLisätiedot) should equal(diaOpiskeluoikeudenLisätiedot)
-    roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(esiopetuksenOpiskeluoikeudenLisätiedot)
-    roundtrip[LukionOpiskeluoikeudenLisätiedot](lukionOpiskeluoikeudenLisätiedot) should equal(lukionOpiskeluoikeudenLisätiedot)
-    roundtrip[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot](lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot) should equal(lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot)
-    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(perusopetuksenOpiskeluoikeudenLisätiedot)
+    roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(esiopetuksenOpiskeluoikeudenLisätiedotIlmanRedundanttejaKenttiä)
+    roundtrip[LukionOpiskeluoikeudenLisätiedot](lukionOpiskeluoikeudenLisätiedot) should equal(lukionOpiskeluoikeudenLisätiedotIlmanRedundanttejaKenttiä.copy(oikeusMaksuttomaanAsuntolapaikkaan = None))
+    roundtrip[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot](lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot) should equal(lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot.copy(oikeusMaksuttomaanAsuntolapaikkaan = None))
+    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(perusopetuksenOpiskeluoikeudenLisätiedotIlmanRedundanttejaKenttiä)
     roundtrip[PerusopetuksenVuosiluokanSuoritus](perusopetuksenVuosiluokanSuoritus) should equal(perusopetuksenVuosiluokanSuoritus)
     roundtrip[SanallinenPerusopetuksenOppiaineenArviointi](sanallinenPerusopetuksenOppiaineenArviointi) should equal(sanallinenPerusopetuksenOppiaineenArviointi)
     roundtrip[PerusopetuksenKäyttäytymisenArviointi](perusopetuksenKäyttäytymisenArviointi) should equal(perusopetuksenKäyttäytymisenArviointi)
@@ -106,13 +106,13 @@ class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matc
 
   "Käyttäjä jolla on suppeat luottamuksellisten tietojen oikeudet näkee suppeiden oikeuksien mukaiset arkaluontoiset tiedot" in {
     implicit val suppeatOikeudet = MockUsers.kelaSuppeatOikeudet.toKoskiSpecificSession(käyttöoikeusRepository)
-    roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(None,None,None,None,None,false,None,None,None,Some(aikajakso),aikajaksot))
-    roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(AmmatillisenOpiskeluoikeudenLisätiedot(true,None,aikajaksot,aikajaksot,None,None,None,None,None,None,None,None,false,aikajaksot,false))
+    roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(sisäoppilaitosmainenMajoitus = aikajaksot))
+    roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(AmmatillisenOpiskeluoikeudenLisätiedot(sisäoppilaitosmainenMajoitus=aikajaksot,vaativanErityisenTuenYhteydessäJärjestettäväMajoitus=aikajaksot,vankilaopetuksessa=aikajaksot, hojks=None))
     roundtrip[DIAOpiskeluoikeudenLisätiedot](diaOpiskeluoikeudenLisätiedot).pidennettyPäättymispäivä should equal(true)
-    roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(EsiopetuksenOpiskeluoikeudenLisätiedot(None,None,None,None,None,None,Some(aikajakso)))
-    roundtrip[LukionOpiskeluoikeudenLisätiedot](lukionOpiskeluoikeudenLisätiedot) should equal(LukionOpiskeluoikeudenLisätiedot(true,false,None,true,None,None,true,aikajaksot))
-    roundtrip[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot](lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot) should equal(LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(true,false,None,true,aikajaksot))
-    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(PerusopetuksenOpiskeluoikeudenLisätiedot(None,false,None,None,None,None,None,None,None,None,None,None,None,false,None,None,Some(aikajakso),None,Some(aikajakso),aikajaksot,None))
+    roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(EsiopetuksenOpiskeluoikeudenLisätiedot(majoitusetu=Some(aikajakso)))
+    roundtrip[LukionOpiskeluoikeudenLisätiedot](lukionOpiskeluoikeudenLisätiedot) should equal(LukionOpiskeluoikeudenLisätiedot(pidennettyPäättymispäivä=true, sisäoppilaitosmainenMajoitus=aikajaksot))
+    roundtrip[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot](lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot) should equal(LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(pidennettyPäättymispäivä = true, sisäoppilaitosmainenMajoitus=aikajaksot))
+    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(PerusopetuksenOpiskeluoikeudenLisätiedot(majoitusetu = Some(aikajakso),sisäoppilaitosmainenMajoitus=aikajaksot))
     roundtrip[PerusopetuksenVuosiluokanSuoritus](perusopetuksenVuosiluokanSuoritus).jääLuokalle should equal(false)
     roundtrip[SanallinenPerusopetuksenOppiaineenArviointi](sanallinenPerusopetuksenOppiaineenArviointi).kuvaus should equal(None)
     roundtrip[PerusopetuksenKäyttäytymisenArviointi](perusopetuksenKäyttäytymisenArviointi).kuvaus should equal(None)
@@ -125,13 +125,13 @@ class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matc
 
   "Käyttäjä jolla on laajat luottamuksellisten tietojen oikeudet näkee laajojen oikeuksien mukaiset arkaluontoiset tiedot" in {
     implicit val laajatOikeudet = MockUsers.kelaLaajatOikeudet.toKoskiSpecificSession(käyttöoikeusRepository)
-    roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot.copy(vuosiluokkiinSitoutumatonOpetus = false, vammainen = None, vaikeastiVammainen = None, tukimuodot = None))
-    roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(ammatillisenOpiskeluoikeudenLisätiedot.copy(vaikeastiVammainen = None, vammainenJaAvustaja = None))
+    roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(sisäoppilaitosmainenMajoitus = aikajaksot))
+    roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(ammatillisenOpiskeluoikeudenLisätiedot.copy(vaikeastiVammainen = None, vammainenJaAvustaja = None, oikeusMaksuttomaanAsuntolapaikkaan = None))
     roundtrip[DIAOpiskeluoikeudenLisätiedot](diaOpiskeluoikeudenLisätiedot).pidennettyPäättymispäivä should equal(true)
     roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(esiopetuksenOpiskeluoikeudenLisätiedot.copy(pidennettyOppivelvollisuus = None, majoitusetu = Some(aikajakso), kuljetusetu = None, tukimuodot = None, erityisenTuenPäätös = Some(erityisenTuenPäätös.copy(toteutuspaikka = None)), erityisenTuenPäätökset = Some(List(erityisenTuenPäätös.copy(toteutuspaikka = None)))))
-    roundtrip[LukionOpiskeluoikeudenLisätiedot](lukionOpiskeluoikeudenLisätiedot) should equal(lukionOpiskeluoikeudenLisätiedot.copy(pidennettyPäättymispäivä = true))
-    roundtrip[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot](lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot) should equal(lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot.copy(pidennettyPäättymispäivä = true))
-    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(PerusopetuksenOpiskeluoikeudenLisätiedot(None,false,None,None,Some(erityisenTuenPäätös.copy(toteutuspaikka = None)),Some(List(erityisenTuenPäätös.copy(toteutuspaikka = None))),Some(tehostetunTuenPäätös),Some(List(tehostetunTuenPäätös)),Some(aikajakso),None,None,None,None,false,None,None,Some(aikajakso),None,Some(aikajakso),aikajaksot,aikajaksot))
+    roundtrip[LukionOpiskeluoikeudenLisätiedot](lukionOpiskeluoikeudenLisätiedot) should equal(lukionOpiskeluoikeudenLisätiedotIlmanRedundanttejaKenttiä.copy(pidennettyPäättymispäivä = true, oikeusMaksuttomaanAsuntolapaikkaan = None))
+    roundtrip[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot](lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot) should equal(lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot.copy(pidennettyPäättymispäivä = true, oikeusMaksuttomaanAsuntolapaikkaan = None))
+    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(perusopetuksenOpiskeluoikeudenLisätiedotIlmanRedundanttejaKenttiä.copy(pidennettyOppivelvollisuus = None, vuosiluokkiinSitoutumatonOpetus = false, vammainen = None, vaikeastiVammainen = None, kuljetusetu = None))
     roundtrip[PerusopetuksenVuosiluokanSuoritus](perusopetuksenVuosiluokanSuoritus).jääLuokalle should equal(false)
     roundtrip[SanallinenPerusopetuksenOppiaineenArviointi](sanallinenPerusopetuksenOppiaineenArviointi).kuvaus should equal(None)
     roundtrip[PerusopetuksenKäyttäytymisenArviointi](perusopetuksenKäyttäytymisenArviointi).kuvaus should equal(None)
@@ -151,7 +151,7 @@ class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matc
     tukimuodot = tukimuodot,
     tehostetunTuenPäätökset = aikajaksot,
     tehostetunTuenPäätös = Some(aikajakso),
-    vuosiluokkiinSitoutumatonOpetus = true,
+    vuosiluokkiinSitoutumatonOpetus = Some(true),
     vammainen = aikajaksot,
     vaikeastiVammainen = aikajaksot,
     oikeusMaksuttomaanAsuntolapaikkaan = Some(aikajakso),
@@ -159,7 +159,7 @@ class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matc
   )
 
   private val ammatillisenOpiskeluoikeudenLisätiedot = AmmatillisenOpiskeluoikeudenLisätiedot(
-    oikeusMaksuttomaanAsuntolapaikkaan = true,
+    oikeusMaksuttomaanAsuntolapaikkaan = Some(true),
     sisäoppilaitosmainenMajoitus = aikajaksot,
     vaativanErityisenTuenYhteydessäJärjestettäväMajoitus = aikajaksot,
     erityinenTuki = aikajaksot,
@@ -186,17 +186,36 @@ class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matc
     kuljetusetu = Some(aikajakso),
     tukimuodot = tukimuodot
   )
+  private val esiopetuksenOpiskeluoikeudenLisätiedotIlmanRedundanttejaKenttiä = esiopetuksenOpiskeluoikeudenLisätiedot.copy(
+    erityisenTuenPäätös = Some(esiopetuksenOpiskeluoikeudenLisätiedot.erityisenTuenPäätös.head.copy(
+      tukimuodot = None,
+      toteutuspaikka = None
+    )),
+    erityisenTuenPäätökset = Some(List(esiopetuksenOpiskeluoikeudenLisätiedot.erityisenTuenPäätökset.head.head.copy(
+      tukimuodot = None,
+      toteutuspaikka = None
+    ))),
+    tukimuodot = None
+  )
 
   private val lukionOpiskeluoikeudenLisätiedot = LukionOpiskeluoikeudenLisätiedot(
+    alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy = Some(LocalizedString.finnish("Testisyy")),
     pidennettyPäättymispäivä = true,
-    yksityisopiskelija = true,
-    oikeusMaksuttomaanAsuntolapaikkaan = true,
+    yksityisopiskelija = Some(true),
+    oikeusMaksuttomaanAsuntolapaikkaan = Some(true),
+    sisäoppilaitosmainenMajoitus = aikajaksot
+  )
+  private val lukionOpiskeluoikeudenLisätiedotIlmanRedundanttejaKenttiä = LukionOpiskeluoikeudenLisätiedot(
+    alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy = None,
+    pidennettyPäättymispäivä = true,
+    yksityisopiskelija = None,
+    oikeusMaksuttomaanAsuntolapaikkaan = Some(true),
     sisäoppilaitosmainenMajoitus = aikajaksot
   )
 
   private val lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot = LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
     pidennettyPäättymispäivä = true,
-    oikeusMaksuttomaanAsuntolapaikkaan = true,
+    oikeusMaksuttomaanAsuntolapaikkaan = Some(true),
     sisäoppilaitosmainenMajoitus = aikajaksot
   )
 
@@ -217,6 +236,20 @@ class SensitiveDataFilterSpec extends AnyFreeSpec with TestEnvironment with Matc
     oikeusMaksuttomaanAsuntolapaikkaan = Some(aikajakso),
     sisäoppilaitosmainenMajoitus = aikajaksot,
     koulukoti = aikajaksot
+  )
+  private val perusopetuksenOpiskeluoikeudenLisätiedotIlmanRedundanttejaKenttiä = perusopetuksenOpiskeluoikeudenLisätiedot.copy(
+    erityisenTuenPäätös = Some(esiopetuksenOpiskeluoikeudenLisätiedot.erityisenTuenPäätös.head.copy(
+      tukimuodot = None,
+      toteutuspaikka = None
+    )),
+    erityisenTuenPäätökset = Some(List(esiopetuksenOpiskeluoikeudenLisätiedot.erityisenTuenPäätökset.head.head.copy(
+      tukimuodot = None,
+      toteutuspaikka = None
+    ))),
+    oikeusMaksuttomaanAsuntolapaikkaan = None,
+    tehostetunTuenPäätös = None,
+    tehostetunTuenPäätökset = None,
+    tukimuodot = None
   )
 
   private val perusopetuksenVuosiluokanSuoritus = PerusopetusExampleData.yhdeksännenLuokanSuoritus.copy(jääLuokalle = true)

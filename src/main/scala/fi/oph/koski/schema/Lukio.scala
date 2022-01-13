@@ -51,17 +51,21 @@ case class LukionOpiskeluoikeudenLisätiedot(
   @Description("Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei opiskelija opiskele aikuisten lukiokoulutuksessa alle 18-vuotiaana")
   @Title("Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @Deprecated("Kenttä ei ole käytössä")
+  @RedundantData
   alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy: Option[LocalizedString] = None,
   @Description("Yksityisopiskelija aikuisten lukiokoulutuksessa (true/false). Rahoituksen laskennassa käytettävä tieto.")
   @DefaultValue(false)
-  yksityisopiskelija: Boolean = false,
+  @Deprecated("Kenttä ei ole käytössä")
+  @RedundantData
+  yksityisopiskelija: Option[Boolean] = None,
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
   @Description("Rahoituksen laskennassa käytettävä tieto.")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
   @Description("Tieto onko oppijalla maksuton majoitus. Rahoituksen laskennassa käytettävä tieto.")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   @DefaultValue(false)
-  oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
+  @RedundantData
+  oikeusMaksuttomaanAsuntolapaikkaan: Option[Boolean] = None,
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   @Description("Onko opiskelija sisöoppilaitosmaisessa majoituksessa. Rahoituksen laskennassa käytettävä tieto.")
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None,
@@ -73,6 +77,7 @@ case class LukionOpiskeluoikeudenLisätiedot(
   with SisäoppilaitosmainenMajoitus
   with UlkomainenVaihtoopiskelija
   with MaksuttomuusTieto
+  with OikeusmaksuttomaanAsuntolapaikkaanBooleanina
 
 trait LukionPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen
 

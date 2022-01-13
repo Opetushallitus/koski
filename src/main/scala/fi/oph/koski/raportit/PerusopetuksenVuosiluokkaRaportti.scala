@@ -95,18 +95,14 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
       perusopetuksenAloittamistaLykatty = opiskeluoikeudenLisätiedot.exists(_.perusopetuksenAloittamistaLykätty.getOrElse(false)),
       aloittanutEnnenOppivelvollisuutta = opiskeluoikeudenLisätiedot.exists(_.aloittanutEnnenOppivelvollisuutta),
       pidennettyOppivelvollisuus = opiskeluoikeudenLisätiedot.exists(_.pidennettyOppivelvollisuus.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))),
-      tehostetunTuenPaatos = opiskeluoikeudenLisätiedot.exists(oo => oneOfAikajaksoistaVoimassaHakuPaivalla(oo.tehostetunTuenPäätös, oo.tehostetunTuenPäätökset, hakupaiva)),
       joustavaPerusopetus = opiskeluoikeudenLisätiedot.exists(_.joustavaPerusopetus.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))),
       vuosiluokkiinSitoutumatonOpetus = opiskeluoikeudenLisätiedot.exists(_.vuosiluokkiinSitoutumatonOpetus),
       vammainen = opiskeluoikeudenLisätiedot.exists(_.vammainen.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
       vaikeastiVammainen = opiskeluoikeudenLisätiedot.exists(_.vaikeastiVammainen.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
-      oikeusMaksuttomaanAsuntolapaikkaan = opiskeluoikeudenLisätiedot.flatMap(_.oikeusMaksuttomaanAsuntolapaikkaan.map(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))).getOrElse(false),
       sisäoppilaitosmainenMajoitus = opiskeluoikeudenLisätiedot.exists(_.sisäoppilaitosmainenMajoitus.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
       koulukoti = opiskeluoikeudenLisätiedot.exists(_.koulukoti.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
       erityisenTuenPaatosVoimassa = voimassaOlevatErityisenTuenPäätökset.size > 0,
       erityisenTuenPaatosToimialueittain = voimassaOlevatErityisenTuenPäätökset.exists(_.opiskeleeToimintaAlueittain),
-      erityisenTuenPaatosToteutuspaikat = voimassaOlevatErityisenTuenPäätökset.flatMap(_.toteutuspaikka.map(_.koodiarvo)).sorted.map(eritysopetuksentoteutuspaikkaKoodisto.getOrElse(_, "")).mkString(","),
-      tukimuodot = tukimuodot(opiskeluoikeudenLisätiedot)
     )
   }
 
@@ -239,14 +235,6 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     "5"	->"kognitiiviset taidot"
   )
 
-  val eritysopetuksentoteutuspaikkaKoodisto = Map(
-    "1" -> "Opetus on kokonaan erityisryhmissä tai -luokassa",
-    "2" -> "Opetuksesta 1-19 % on yleisopetuksen ryhmissä",
-    "3"	-> "Opetuksesta 20-49 % on yleisopetuksen ryhmissä",
-    "4"	-> "Opetuksesta 50-79 % on yleisopetuksen ryhmissä",
-    "5"	-> "Opetuksesta 80-100 % on yleisopetuksen ryhmissä"
-  )
-
  private def combineErityisenTuenPäätökset(erityisenTuenPäätös: Option[ErityisenTuenPäätös], erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]]) = {
    erityisenTuenPäätös.toList ++ erityisenTuenPäätökset.toList.flatten
  }
@@ -257,14 +245,6 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
       case (Some(alku), _) => !alku.isAfter(paiva)
       case _ => false
     }
-  }
-
-  private def tukimuodot(lisätiedot: Option[PerusopetuksenOpiskeluoikeudenLisätiedot]) = {
-    lisätiedot
-      .flatMap(_.tukimuodot)
-      .map(_.flatMap(_.nimi.map(_.get("fi"))))
-      .map(_.mkString(","))
-      .getOrElse("")
   }
 
   def title(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String = "TITLE TODO"
@@ -356,18 +336,14 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     "perusopetuksenAloittamistaLykatty" -> compactLisätiedotColumn("Perusopetuksen aloittamista lykätty"),
     "aloittanutEnnenOppivelvollisuutta" -> compactLisätiedotColumn("Aloittanut ennen oppivelvollisuutta"),
     "pidennettyOppivelvollisuus" -> compactLisätiedotColumn("Pidennetty oppivelvollisuus"),
-    "tehostetunTuenPaatos" -> CompactColumn("Tehostetun tuen jakso voimassa", comment = Some("Sarakkeessa arvo \"kyllä\" jos opiskeluoikeudella on voimassa oleva tehostetun tuen jakso raportin tulostukseen valittuna päivämääränä.")),
     "joustavaPerusopetus" -> compactLisätiedotColumn("Joustava perusopetus"),
     "vuosiluokkiinSitoutumatonOpetus" -> compactLisätiedotColumn("Vuosiluokkiin sitomaton opetus"),
     "vammainen" -> compactLisätiedotColumn("Vammainen"),
     "vaikeastiVammainen" -> compactLisätiedotColumn("Vaikeimmin kehitysvammainen"),
-    "oikeusMaksuttomaanAsuntolapaikkaan" -> compactLisätiedotColumn("Oikeus maksuttomaan asuntolapaikkaan"),
     "sisäoppilaitosmainenMajoitus" -> compactLisätiedotColumn("Sisäoppilaitosmainen majoitus"),
     "koulukoti" -> compactLisätiedotColumn("Koulukoti"),
     "erityisenTuenPaatosVoimassa" -> CompactColumn("Erityisen tuen jakso voimassa", comment = Some("Sarakkeessa arvo \"kyllä\" jos opiskeluoikeudella on voimassa oleva erityisen tuen jakso raportin tulostukseen valittuna päivämääränä.")),
-    "erityisenTuenPaatosToimialueittain" -> compactLisätiedotColumn("Opiskelee toimialueittain"),
-    "erityisenTuenPaatosToteutuspaikat" -> compactLisätiedotColumn("Erityisen tuen päätöksen toteutuspaikka"),
-    "tukimuodot" -> compactLisätiedotColumn("Tukimuodot")
+    "erityisenTuenPaatosToimialueittain" -> compactLisätiedotColumn("Opiskelee toimialueittain")
   )
 }
 
@@ -435,16 +411,12 @@ private[raportit] case class PerusopetusRow(
   perusopetuksenAloittamistaLykatty: Boolean,
   aloittanutEnnenOppivelvollisuutta: Boolean,
   pidennettyOppivelvollisuus: Boolean,
-  tehostetunTuenPaatos: Boolean,
   joustavaPerusopetus: Boolean,
   vuosiluokkiinSitoutumatonOpetus: Boolean,
   vammainen: Boolean,
   vaikeastiVammainen: Boolean,
-  oikeusMaksuttomaanAsuntolapaikkaan: Boolean,
   sisäoppilaitosmainenMajoitus: Boolean,
   koulukoti: Boolean,
   erityisenTuenPaatosVoimassa: Boolean,
-  erityisenTuenPaatosToimialueittain: Boolean,
-  erityisenTuenPaatosToteutuspaikat: String,
-  tukimuodot: String
+  erityisenTuenPaatosToimialueittain: Boolean
 )
