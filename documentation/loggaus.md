@@ -1,13 +1,24 @@
 # Koski-loggaus
 
-Koski-tietojen muutoksista ja katselusta logataan tapahtuma Kosken audit-logiin. Lisäksi Koski tallennetaan
-erillisiin logeihin mm. performanssi- ja diagnostiikkadataa. Kaikki logit kerätään keskitettyyn Elasticsearch
--tietokantaan, josta logitapahtumia voi seurata Kibana-käyttöliittymän avulla.
+Koski-tietojen muutoksista ja katselusta logataan tapahtuma Kosken audit-lokiin. Lisäksi Koski tallennetaan
+erillisiin lokeihin mm. performanssi- ja diagnostiikkadataa.
 
-Loggaus tapahtuu slf4j-loggauskehyksellä, joka on konfiguroitu käyttämään log4j:tä. Kaikki loggaus tehdään paikallisiin
-tiedostoihin, joista ne kopioidaan Filebeat-agentin ja Logstashin avulla keskitettyyn Elasticsearch-logikantaan. Filebeat
-on konfiguroitu niin, että keskeiset logattavat kentät parsitaan logitiedostoista omiin kenttiinsä Elasticsearcissa, jolloin
-logien katselu ja tietojen haku on mahdollisimman helppoa.
+Loggaus tapahtuu slf4j-loggauskehyksellä, joka on konfiguroitu käyttämään log4j2:tä.
+
+Tuotanto- ja testiympäristöissä docker-kontainerin rinnalla ajetaan Fluent Bitiä, joka parsii, filtteröi ja ohjaa Kosken stdoutiin
+tulostamat logirivit FireLensin kautta AWS CloudWatchiin oikeisiin lokiryhmiin.
+
+Paikallisesti kehittäessä logit kirjoitetaan `/logs`-kansiossa oleviin tiedostoihin. Tiedostoja ei kirjoiteta tuotanto- eikä
+testiympäristöissä. Tiedostot olivat aikanaan tapa lokien välittämiseen Koskesta eteenpäin, mutta nykyään ne ovat käytössä
+vain kehitystyön helpottamiseksi diagnoosi- ja debug-apuna.
+
+<img src="./loggaus.svg" />
+
+## Konfiguraatiot
+
+- Tuotanto- ja testiympäristöt: `/docker-build/log4j2.xml`
+- Paikallinen kehitys: `/src/main/resources/log4j2-local.xml`
+- Testit: `/src/main/resources/log4j2-test.xml`
 
 ## Audit-loggaus `oma-opintopolku-audit-loki`
 
