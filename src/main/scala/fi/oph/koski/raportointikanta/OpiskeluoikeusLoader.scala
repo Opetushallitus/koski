@@ -44,6 +44,8 @@ object OpiskeluoikeusLoader extends Logging {
   }
 
   private def loadBatch(db: RaportointiDatabase, batch: Seq[OpiskeluoikeusRow], rajapäivät: ValpasRajapäivätService) = {
+    val loadBatchStartTime = System.nanoTime()
+
     val (errors, outputRows) = batch.par.map(row => buildRow(row, rajapäivät)).seq.partition(_.isLeft)
     db.loadOpiskeluoikeudet(outputRows.map(_.right.get.rOpiskeluoikeusRow))
     db.loadOrganisaatioHistoria(outputRows.flatMap(_.right.get.organisaatioHistoriaRows))
@@ -61,7 +63,13 @@ object OpiskeluoikeusLoader extends Logging {
     db.loadTOPKSAmmatillinenRaportointi(topksAmmatillinenRaportointiRows)
     db.setLastUpdate(statusName)
     db.updateStatusCount(statusName, outputRows.size)
-    errors.map(_.left.get) :+ LoadProgressResult(outputRows.size, päätasonSuoritusRows.size + osasuoritusRows.size)
+    val result = errors.map(_.left.get) :+ LoadProgressResult(outputRows.size, päätasonSuoritusRows.size + osasuoritusRows.size)
+
+    val loadBatchDuration: Long = (System.nanoTime() - loadBatchStartTime) / 1000000
+    val toOpiskeluoikeusUnsafeDuration: Long = outputRows.map(_.right.get.toOpiskeluoikeusUnsafeDuration).sum / 1000000
+    logger.info(s"Batchin käsittely kesti ${loadBatchDuration} ms, jossa toOpiskeluOikeusUnsafe ${toOpiskeluoikeusUnsafeDuration} ms.")
+
+    result
   }
 
   private def progressLogger: Subscriber[LoadResult] = new Subscriber[LoadResult] {
@@ -124,7 +132,9 @@ object OpiskeluoikeusLoader extends Logging {
 
   private def buildRow(inputRow: OpiskeluoikeusRow, rajapäivät: ValpasRajapäivätService): Either[LoadErrorResult, OutputRows] = {
     Try {
+      val toOpiskeluoikeusUnsafeStartTime = System.nanoTime()
       val oo = inputRow.toOpiskeluoikeusUnsafe(KoskiSpecificSession.systemUser)
+      val toOpiskeluoikeusUnsafeDuration = System.nanoTime() - toOpiskeluoikeusUnsafeStartTime
       val ooRow = buildROpiskeluoikeusRow(inputRow.oppijaOid, inputRow.aikaleima, oo, inputRow.data, rajapäivät)
       val aikajaksoRows: AikajaksoRows = buildAikajaksoRows(inputRow.oid, oo)
       val suoritusRows: SuoritusRows = oo.suoritukset.zipWithIndex.map {
@@ -146,6 +156,7 @@ object OpiskeluoikeusLoader extends Logging {
         rOsasuoritusRows = suoritusRows.flatMap(_._2),
         muuAmmatillinenOsasuoritusRaportointiRows = suoritusRows.flatMap(_._3),
         topksAmmatillinenRaportointiRows = suoritusRows.flatMap(_._4),
+        toOpiskeluoikeusUnsafeDuration = toOpiskeluoikeusUnsafeDuration
       )
     }.toEither.left.map(t => LoadErrorResult(inputRow.oid, t.toString))
   }
@@ -371,4 +382,5 @@ case class OutputRows(
   rOsasuoritusRows: Seq[ROsasuoritusRow],
   muuAmmatillinenOsasuoritusRaportointiRows: Seq[MuuAmmatillinenOsasuoritusRaportointiRow],
   topksAmmatillinenRaportointiRows: Seq[TOPKSAmmatillinenRaportointiRow],
+  toOpiskeluoikeusUnsafeDuration: Long = 0
 )
