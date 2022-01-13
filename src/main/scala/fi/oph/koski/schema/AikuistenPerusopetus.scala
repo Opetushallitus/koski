@@ -34,6 +34,7 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("Opiskelijan saamat laissa säädetyt tukimuodot.")
   @Tooltip("Opiskelijan saamat laissa säädetyt tukimuodot (avustajapalvelut, erityiset apuvälineet, osa-aikainen erityisopetus, tukiopetus ja/tai tulkitsemispalvelut).")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @Deprecated("Kenttä ei ole käytössä")
   @RedundantData
   tukimuodot: Option[List[Koodistokoodiviite]] = None,
   @Description("Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty.")
@@ -41,6 +42,7 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   @Deprecated("Käytä korvaavaa kenttää Tehostetun tuen päätökset")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  @Deprecated("Kenttä ei ole käytössä")
   @RedundantData
   tehostetunTuenPäätös: Option[Aikajakso] = None,
   @Description("Tehostetun tuen päätös. Lista alku-loppu päivämääräpareja.")
