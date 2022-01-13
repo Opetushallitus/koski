@@ -142,6 +142,12 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
         oppijat.length should equal(1)
         oppijat.head.henkilö.oid should equal(KoskiSpecificMockOppijat.eero.oid)
       }
+
+      "suorituksen tyyppi" in {
+        resetFixtures
+        val opiskeluoikeudet = performQuery("?v=1&suorituksenTyyppi=ammatillinentutkinto").map(_.opiskeluoikeudet).flatten
+        opiskeluoikeudet.length should equal (opiskeluoikeudet.filter(_.suoritukset.exists(_.tyyppi.koodiarvo == "ammatillinentutkinto")).length)
+      }
     }
 
     "Ei palauta sellaisia vapaan sivistystyön opiskeluoikeuksia, joissa suorituksen tyyppinä vapaatavoitteinen koulutus" in {
