@@ -78,7 +78,7 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
       post(s"/api/opiskeluoikeus/suostumuksenperuutus/$vapaatavoitteinenOpiskeluoikeusOid", headers = kansalainenLoginHeaders(vapaatavoitteinenHetu)) {}
 
       val oo = defaultOpiskeluoikeus.copy(
-        lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId),
+        lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId("win-32041")),
         oid = None,
         versionumero = None
       )

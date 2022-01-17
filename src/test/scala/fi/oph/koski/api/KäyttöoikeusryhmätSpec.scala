@@ -396,7 +396,7 @@ class KäyttöoikeusryhmätSpec
     suoritukset = List(autoalanPerustutkinnonSuoritus().copy(toimipiste = Oppilaitos(MockOrganisaatiot.omnia)))
   )
 
-  private val opiskeluoikeusLähdejärjestelmästäOmnia = opiskeluoikeusOmnia.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
+  private val opiskeluoikeusLähdejärjestelmästäOmnia = opiskeluoikeusOmnia.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId("omnia-309945")))
 
   private def haeOpiskeluoikeudetHetulla(hetu: String, käyttäjä: UserWithPassword) = searchForHenkilötiedot(hetu).map(_.oid).flatMap { oid =>
     getOpiskeluoikeudet(oid, käyttäjä)

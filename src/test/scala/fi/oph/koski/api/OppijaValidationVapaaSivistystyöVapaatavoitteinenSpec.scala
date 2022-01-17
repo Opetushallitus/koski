@@ -65,7 +65,7 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
     "Suoritukset" - {
       "Kun mukana lähdejärjestelmäId, validoidaan" - {
         val lähdejärjestelmällinen = VapaatavoitteinenOpiskeluoikeus.copy(
-          lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId)
+          lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId("win-423082"))
         )
 
         "Jos päätason suoritus vahvistettu, tilan tulee olla 'Hyväksytysti suoritettu'" in {

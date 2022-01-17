@@ -14,7 +14,7 @@ object TiedonsiirtoFixtureDataInserter extends App {
 
 object TiedonsiirtoFixtureDataInserterScenario extends FixtureDataInserterScenario {
   lazy val omnia = Oppilaitos(MockOrganisaatiot.omnia)
-  lazy val omniaOpiskeluoikeus: AmmatillinenOpiskeluoikeus = AmmatillinenExampleData.opiskeluoikeus(omnia, AmmatillinenExampleData.autoalanPerustutkinnonSuoritus(omnia)).copy(lähdejärjestelmänId = Some(AmmatillinenExampleData.winnovaLähdejärjestelmäId))
+  lazy val omniaOpiskeluoikeus: AmmatillinenOpiskeluoikeus = AmmatillinenExampleData.opiskeluoikeus(omnia, AmmatillinenExampleData.autoalanPerustutkinnonSuoritus(omnia)).copy(lähdejärjestelmänId = Some(AmmatillinenExampleData.winnovaLähdejärjestelmäId("win-69102")))
   lazy val opiskeluoikeudet = List.fill(3)(List(omniaOpiskeluoikeus, ExamplesTiedonsiirto.failingOpiskeluoikeus)).flatten
   def opiskeluoikeudet(x: Int) = Random.shuffle(opiskeluoikeudet)
   override def defaultUser = MockUsers.omniaPalvelukäyttäjä

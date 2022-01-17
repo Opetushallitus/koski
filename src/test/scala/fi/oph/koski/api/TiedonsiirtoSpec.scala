@@ -105,7 +105,7 @@ class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
   }
 
   "Tiedonsiirtolokin katsominen" - {
-    val stadinOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
+    val stadinOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId("win-304ir3")))
     "hierarkiassa ylempänä oleva käyttäjä voi katsoa hierarkiasssa alempana olevan käyttäjän luomia rivejä" in {
       resetFixtures
       putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
@@ -197,7 +197,7 @@ class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
   }
 
   "Virheellisten tiedonsiirtojen poistaminen" - {
-    val stadinOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
+    val stadinOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId("win-9534")))
 
     "onnistuu omille virheellisille tiedonsiirtoriveille" in {
       resetFixtures

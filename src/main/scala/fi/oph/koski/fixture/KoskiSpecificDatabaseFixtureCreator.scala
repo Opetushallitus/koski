@@ -210,7 +210,7 @@ object AmmatillinenOpiskeluoikeusTestData {
   }
 
   lazy val lähdejärjestelmällinenOpiskeluoikeus: AmmatillinenOpiskeluoikeus =
-    opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto).copy(lähdejärjestelmänId = Some(AmmatillinenExampleData.winnovaLähdejärjestelmäId))
+    opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto).copy(lähdejärjestelmänId = Some(AmmatillinenExampleData.winnovaLähdejärjestelmäId("l-050504")))
 
   lazy val mitätöityOpiskeluoikeus: AmmatillinenOpiskeluoikeus = {
     val baseOo = opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)
@@ -224,7 +224,7 @@ object AmmatillinenOpiskeluoikeusTestData {
 object PerusopetuksenOpiskeluoikeusTestData {
   lazy val lähdejärjestelmällinenOpiskeluoikeus: PerusopetuksenOpiskeluoikeus =
     PerusopetusExampleData.päättötodistusOpiskeluoikeus(oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto, None, None)).copy(
-      lähdejärjestelmänId = Some(AmmatillinenExampleData.primusLähdejärjestelmäId)
+      lähdejärjestelmänId = Some(AmmatillinenExampleData.primusLähdejärjestelmäId("l-0303032"))
     )
 
   lazy val mitätöityOpiskeluoikeus: PerusopetuksenOpiskeluoikeus =
