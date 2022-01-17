@@ -88,15 +88,7 @@ class KoskiValidator(
   private def validateOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus, henkilö: Option[Henkilö])(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = {
     // Huom, tämä rikkonee transaktionaalisuuden. On teoriassa mahdollista, että vanhan opiskeluoikeuden haun ja uuden
     // opiskeluoikeuden tietokantaan tallentamisen välissä siirrettäisiin toinen versio samasta opiskeluoikeudesta.
-    val tallennettuOpiskeluoikeus = if (opiskeluoikeus.oid.isDefined) {
-      opiskeluoikeus.oid.flatMap(opiskeluoikeudenOid =>
-        koskiOpiskeluoikeudet.findByOid(opiskeluoikeudenOid)(KoskiSpecificSession.systemUser).map(_.toOpiskeluoikeusUnsafe).toOption
-      )
-    } else {
-      opiskeluoikeus.lähdejärjestelmänId.flatMap(lähdejärjestelmäId =>
-        koskiOpiskeluoikeudet.findByLähdejärjestelmäId(lähdejärjestelmäId)(KoskiSpecificSession.systemUser).map(_.toOpiskeluoikeusUnsafe).toOption
-      )
-    }
+    val tallennettuOpiskeluoikeus = getTallennettuOpiskeluoikeus(opiskeluoikeus)
 
     opiskeluoikeus match {
       case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus =>
@@ -140,6 +132,18 @@ class KoskiValidator(
 
       case _ if accessType == AccessType.write => Left(KoskiErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ja ylioppilastutkintojen tietoja ei voi päivittää Koski-järjestelmässä"))
       case _ => Right(opiskeluoikeus)
+    }
+  }
+
+  private def getTallennettuOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSpecificSession) = {
+    if (opiskeluoikeus.oid.isDefined) {
+      opiskeluoikeus.oid.flatMap(opiskeluoikeudenOid =>
+        koskiOpiskeluoikeudet.findByOid(opiskeluoikeudenOid)(KoskiSpecificSession.systemUser).map(_.toOpiskeluoikeusUnsafe).toOption
+      )
+    } else {
+      opiskeluoikeus.lähdejärjestelmänId.flatMap(lähdejärjestelmäId =>
+        koskiOpiskeluoikeudet.findByLähdejärjestelmäId(lähdejärjestelmäId)(KoskiSpecificSession.systemUser).map(_.toOpiskeluoikeusUnsafe).toOption
+      )
     }
   }
 
