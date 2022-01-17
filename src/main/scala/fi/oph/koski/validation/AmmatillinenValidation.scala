@@ -25,20 +25,22 @@ object AmmatillinenValidation {
     opiskeluoikeus.suoritukset.length match {
       case 1 => HttpStatus.ok
       case 2 =>
-        val näyttötutkintoLöytyy = opiskeluoikeus.suoritukset.exists {
-          case tutkintoSuoritus: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus if tutkintoSuoritus.suoritustapa.koodiarvo == "naytto" => true
-          case _ => false
-        }
-        val näyttöönValmistavaLöytyy = opiskeluoikeus.suoritukset.exists {
-          case _: NäyttötutkintoonValmistavanKoulutuksenSuoritus => true
-          case _ => false
-        }
-        if (näyttötutkintoLöytyy && näyttöönValmistavaLöytyy) {
+        if (näyttötutkintoJaNäyttöönValmistavaLöytyvät(opiskeluoikeus)) {
           HttpStatus.ok
         } else {
           KoskiErrorCategory.badRequest.validation.ammatillinen.useampiPäätasonSuoritus()
         }
       case _ => KoskiErrorCategory.badRequest.validation.ammatillinen.useampiPäätasonSuoritus()
+    }
+  }
+
+  private def näyttötutkintoJaNäyttöönValmistavaLöytyvät(opiskeluoikeus: AmmatillinenOpiskeluoikeus) = {
+    opiskeluoikeus.suoritukset.exists {
+      case tutkintoSuoritus: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus if tutkintoSuoritus.suoritustapa.koodiarvo == "naytto" => true
+      case _ => false
+    } && opiskeluoikeus.suoritukset.exists {
+      case _: NäyttötutkintoonValmistavanKoulutuksenSuoritus => true
+      case _ => false
     }
   }
 
@@ -95,7 +97,9 @@ object AmmatillinenValidation {
     val suoritustapaLöytyy = vanhanSuoritustavat.count(tapa => uudenSuoritustavat.contains(tapa)) == vanhanSuoritustavat.length
     val tutkintokoodiLöytyy = vanhanTutkintokoodit.count(koodi => uudenTutkintokoodit.contains(koodi)) == vanhanTutkintokoodit.length
 
-    if (suoritustapaLöytyy && tutkintokoodiLöytyy) {
+    val salliNäytönJaValmistavanPoikkeusPoistettaessaSuoritusta = näyttötutkintoJaNäyttöönValmistavaLöytyvät(vanhaOpiskeluoikeus)
+
+    if (suoritustapaLöytyy && (tutkintokoodiLöytyy || salliNäytönJaValmistavanPoikkeusPoistettaessaSuoritusta)) {
       HttpStatus.ok
     } else {
       KoskiErrorCategory.badRequest.validation.ammatillinen.muutettuSuoritustapaaTaiTutkintokoodia()

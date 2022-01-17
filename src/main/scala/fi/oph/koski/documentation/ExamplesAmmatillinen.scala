@@ -228,7 +228,7 @@ object AmmatillinenPerustutkintoExample {
     ))
   )
 
-  lazy val tunnustettuPaikallinenTutkinnonOsa = Oppija(exampleHenkilö, List(tunnustettuPaikallinenTutkinnonOsaOpiskeluoikeus))
+  lazy val tunnustettuPaikallinenTutkinnonOsa = Oppija(exampleHenkilö.copy(hetu = "250266-497T"), List(tunnustettuPaikallinenTutkinnonOsaOpiskeluoikeus))
 }
 
 object AmmatillinenReforminMukainenPerustutkintoExample {
@@ -335,7 +335,7 @@ object AmmatillinenReforminMukainenPerustutkintoExample {
   )
 
   lazy val example = Oppija(
-    exampleHenkilö,
+    exampleHenkilö.copy(hetu = "020882-577H"),
     List(opiskeluoikeus)
   )
 }
@@ -344,6 +344,7 @@ object AmmatillinenOldExamples {
   lazy val uusi: Oppija = oppija()
 
   lazy val oppisopimus = oppija(
+    henkilö = exampleHenkilö.copy(hetu = "160586-873P"),
     opiskeluoikeus = opiskeluoikeus(
       oppilaitos = stadinAmmattiopisto,
       tutkinto = AmmatillisenTutkinnonSuoritus(
@@ -363,9 +364,11 @@ object AmmatillinenOldExamples {
     )))
   )
 
-  lazy val paikallinen = oppija(opiskeluoikeus = opiskeluoikeus(
-    tutkinto = autoalanPerustutkinnonSuoritus().copy(suoritustapa = suoritustapaNäyttö),
-    osat = Some(List(paikallisenOsanSuoritus))
+  lazy val paikallinen = oppija(
+    henkilö = exampleHenkilö.copy(hetu = "170694-385F"),
+    opiskeluoikeus = opiskeluoikeus(
+      tutkinto = autoalanPerustutkinnonSuoritus().copy(suoritustapa = suoritustapaNäyttö),
+      osat = Some(List(paikallisenOsanSuoritus))
   ))
 
   lazy val mukautettu = oppija(opiskeluoikeus = opiskeluoikeus(
@@ -400,15 +403,17 @@ object AmmatillinenOldExamples {
     tutkinnonOsanRyhmä = yksilöllisestiLaajentavatTutkinnonOsat
   )
 
-  lazy val tutkinnonOsaToisestaTutkinnosta = oppija(opiskeluoikeus = opiskeluoikeus(
-    tutkinto = AmmatillisenTutkinnonSuoritus(
-      koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
-      suoritustapa = suoritustapaNäyttö,
-      järjestämismuodot = None,
-      toimipiste = stadinToimipiste,
-      suorituskieli = suomenKieli
-    ),
-    osat = Some(List(muunAmmatillisenTutkinnonOsanSuoritus))
+  lazy val tutkinnonOsaToisestaTutkinnosta = oppija(
+    henkilö = exampleHenkilö.copy(hetu = "240550-475R"),
+    opiskeluoikeus = opiskeluoikeus(
+      tutkinto = AmmatillisenTutkinnonSuoritus(
+        koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
+        suoritustapa = suoritustapaNäyttö,
+        järjestämismuodot = None,
+        toimipiste = stadinToimipiste,
+        suorituskieli = suomenKieli
+      ),
+      osat = Some(List(muunAmmatillisenTutkinnonOsanSuoritus))
   ))
 
   lazy val ops = Oppija(
@@ -472,7 +477,7 @@ object AmmatillinenOldExamples {
       )))
 
   lazy val full = Oppija(
-    Henkilö.withOid("1.2.246.562.24.00000000001"),
+    Henkilö.withOid("1.2.246.562.24.00000000010"),
     List(
       AmmatillinenOpiskeluoikeus(
         arvioituPäättymispäivä = Some(date(2015, 5, 31)),
