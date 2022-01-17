@@ -73,7 +73,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
         "Valtakunnallinen tutkinnonosa" - {
           "Tutkinnon osa ja arviointi ok" - {
-            "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus, tutkinnonSuoritustapaNäyttönä) (verifyResponseStatusOk()))
+            "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus, tutkinnonSuoritustapaOps) (verifyResponseStatusOk()))
           }
 
           "Tutkinnon osa ei kuulu tutkintorakenteeseen" - {
@@ -82,9 +82,9 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                 verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa tutkinnonosat/104052 ei löydy tutkintorakenteesta perusteelle 39/011/2014 - suoritustapa naytto"))))
             }
             "Vapaavalintaiset tutkinnon osat" - {
-              "palautetaan HTTP 400" in (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(
+              "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(
                   koulutusmoduuli = johtaminenJaHenkilöstönKehittäminen, tutkinnonOsanRyhmä = vapaavalintaisetTutkinnonOsat
-                ), tutkinnonSuoritustapaNäyttönä)(
+                ), tutkinnonSuoritustapaOps)(
                 verifyResponseStatusOk()))
             }
           }
@@ -122,7 +122,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               "Palautetaan HTTP 200" in (
                 putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(osasuoritukset = Some(List(
                   osanOsa, osanOsa
-                ))), tutkinnonSuoritustapaNäyttönä) (verifyResponseStatusOk())
+                ))), tutkinnonSuoritustapaOps) (verifyResponseStatusOk())
               )
             }
           }
@@ -239,7 +239,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         "Paikallinen tutkinnonosa" - {
           "Tutkinnon osa ja arviointi ok" - {
             val suoritus = paikallinenTutkinnonOsaSuoritus.copy(tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat)
-            "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä) (verifyResponseStatusOk()))
+            "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaOps) (verifyResponseStatusOk()))
           }
 
           "Laajuus negatiivinen" - {
@@ -267,7 +267,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               tutkinto = Some(autoalanPerustutkintoUusiPeruste),
               koulutusmoduuli = tutkinnonOsaUudestaPerusteesta
             )
-            "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(
+            "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaOps)(
               verifyResponseStatusOk()))
           }
         }
@@ -282,7 +282,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
           "Kun tutkinto löytyy ja osa kuuluu sen rakenteeseen" - {
             val suoritus = osanSuoritusToisestaTutkinnosta(autoalanTyönjohdonErikoisammattitutkinto, johtaminenJaHenkilöstönKehittäminen)
-            "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(
+            "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaOps)(
               verifyResponseStatusOk()))
           }
 
@@ -294,7 +294,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
           "Kun osa ei kuulu annetun tutkinnon rakenteeseen" - {
             val suoritus = osanSuoritusToisestaTutkinnosta(parturikampaaja, johtaminenJaHenkilöstönKehittäminen)
-            "palautetaan HTTP 200 (ei validoida rakennetta tässä)" in (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(
+            "palautetaan HTTP 200 (ei validoida rakennetta tässä)" in (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaOps)(
               verifyResponseStatusOk()))
           }
 
@@ -336,7 +336,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
           "Löydetyssä rakenteessa ei ole yhtään koulutusta"  - {
             val suoritus =  autoalanPerustutkinnonSuoritus().copy(koulutusmoduuli = autoalanPerustutkinto.copy(perusteenDiaarinumero = Some("mock-empty-koulutukset")))
-            "palautetaan HTTP 200" in (putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))))(
+            "palautetaan HTTP 200" in (putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus)), defaultHenkilö.copy(hetu = "120950-0351")))(
               verifyResponseStatusOk()
             )
           }
@@ -348,7 +348,9 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             tutkinnonOsaSuoritus.copy(arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
           }
 
-          def put(suoritus: AmmatillisenTutkinnonOsanSuoritus)(f: => Unit) = putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(f)
+          def tilanHenkilö = defaultHenkilö.copy(hetu = "240252-7302")
+
+          def put(suoritus: AmmatillisenTutkinnonOsanSuoritus)(f: => Unit) = putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä, tilanHenkilö)(f)
           def putOsasuoritukset(suoritukset: List[AmmatillisenTutkinnonOsanSuoritus])(f: => Unit) = putTutkinnonOsaSuoritukset(suoritukset, tutkinnonSuoritustapaNäyttönä)(f)
 
           "Arviointi ja vahvistus puuttuu" - {
@@ -478,7 +480,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               "Opiskeluoikeus valmis ennen vuotta 2019" - {
                 val valmisTila = AmmatillinenOpiskeluoikeusjakso(date(2018, 12, 31), ExampleData.opiskeluoikeusValmistunut, Some(valtionosuusRahoitteinen))
                 val valmisOpiskeluoikeus = tyhjilläOsasuorituksilla.copy(tila = AmmatillinenOpiskeluoikeudenTila(tyhjilläOsasuorituksilla.tila.opiskeluoikeusjaksot :+ valmisTila), ostettu = true)
-                "palautetaan HTTP 200" in (putOpiskeluoikeus(valmisOpiskeluoikeus)(
+                "palautetaan HTTP 200" in (putOpiskeluoikeus(valmisOpiskeluoikeus, defaultHenkilö.copy(hetu = "150435-0429"))(
                   verifyResponseStatusOk()))
               }
 
@@ -514,7 +516,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             suoritukset = List(autoalanPerustutkinnonSuoritus(), autoalanErikoisammattitutkinnonSuoritus())
           )
 
-          putOpiskeluoikeus(opiskeluoikeus) {
+          putOpiskeluoikeus(opiskeluoikeus, defaultHenkilö.copy(hetu = "160337-625E")) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.useampiPäätasonSuoritus())
           }
         }
@@ -530,6 +532,8 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
       "Tutkintokoodin ja suoritustavan vaihtaminen" - {
         "Tutkintokoodia ei voi vaihtaa opiskeluoikeuden luonnin jälkeen" in {
+          val opiskelija = defaultHenkilö.copy(hetu = "270550-879P")
+
           val opiskeluoikeus = defaultOpiskeluoikeus.copy(
             suoritukset = List(autoalanPerustutkinnonSuoritus().copy(
               koulutusmoduuli = autoalanPerustutkinto.copy(
@@ -537,7 +541,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               )
             ))
           )
-          val tallennettuna = putAndGetOpiskeluoikeus(opiskeluoikeus).withSuoritukset(
+          val tallennettuna = putAndGetOpiskeluoikeus(opiskeluoikeus, opiskelija).withSuoritukset(
             List(autoalanPerustutkinnonSuoritus().copy(
               koulutusmoduuli = autoalanPerustutkinto.copy(
                 tunniste = Koodistokoodiviite("357305", "koulutus")
@@ -545,29 +549,33 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             ))
           )
 
-          putOpiskeluoikeus(tallennettuna) {
+          putOpiskeluoikeus(tallennettuna, opiskelija) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.muutettuSuoritustapaaTaiTutkintokoodia())
           }
         }
 
         "Suoritustapaa ei voi vaihtaa opiskeluoikeuden luonnin jälkeen" in {
+          val opiskelija = defaultHenkilö.copy(hetu = "170794-450C")
+
           val opiskeluoikeus = defaultOpiskeluoikeus.copy(
             suoritukset = List(autoalanPerustutkinnonSuoritus().copy(
               suoritustapa = suoritustapaNäyttö
             ))
           )
-          val tallennettuna = putAndGetOpiskeluoikeus(opiskeluoikeus).withSuoritukset(
+          val tallennettuna = putAndGetOpiskeluoikeus(opiskeluoikeus, henkilö = opiskelija).withSuoritukset(
             List(autoalanPerustutkinnonSuoritus().copy(
               suoritustapa = suoritustapaOps
             ))
           )
 
-          putOpiskeluoikeus(tallennettuna) {
+          putOpiskeluoikeus(tallennettuna, henkilö = opiskelija) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.muutettuSuoritustapaaTaiTutkintokoodia())
           }
         }
 
-        "'nayttotutkintoonvalmistavakoulutus'-tyypin koulutukselle voidaan lissätä kaveriksi 'ammatillinentutkinto' ja tätä ei lasketa suoritustavan/tutkintokoodin muuttamiseksi" in {
+        "'nayttotutkintoonvalmistavakoulutus'-tyypin koulutukselle voidaan lisätä kaveriksi 'ammatillinentutkinto' ja tätä ei lasketa suoritustavan/tutkintokoodin muuttamiseksi" in {
+          val opiskelija = defaultHenkilö.copy(hetu = "010914-406L")
+
           val näyttötutkinnonSuoritus = AmmatillisenTutkinnonSuoritus(
             koulutusmoduuli = sosiaaliJaTerveysalanPerustutkinto,
             suoritustapa = suoritustapaNäyttö,
@@ -580,11 +588,11 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           val opiskeluoikeus = defaultOpiskeluoikeus.copy(
             suoritukset = List(näyttötutkintoonValmistavaSuoritus)
           )
-          val tallennettuna = putAndGetOpiskeluoikeus(opiskeluoikeus).withSuoritukset(
+          val tallennettuna = putAndGetOpiskeluoikeus(opiskeluoikeus, henkilö = opiskelija).withSuoritukset(
             List(näyttötutkinnonSuoritus, näyttötutkintoonValmistavaSuoritus)
           )
 
-          putOpiskeluoikeus(tallennettuna) {
+          putOpiskeluoikeus(tallennettuna, henkilö = opiskelija) {
             verifyResponseStatusOk()
           }
         }
@@ -722,49 +730,53 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     }
 
     "Ammatillinen perustutkinto näyttönä" - {
+      val opiskelija = defaultHenkilö.copy(hetu = "030301-403L")
+
       "Tutkinnonosan ryhmä on määritetty" - {
         val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaNäyttönä, osasuoritukset = Some(List(tutkinnonOsaSuoritus)))
-        "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatusOk()))
+        "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus, opiskelija)(verifyResponseStatusOk()))
       }
 
       "Tutkinnonosan ryhmää ei ole määritetty" - {
         val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaNäyttönä, osasuoritukset = Some(List(tutkinnonOsaSuoritus.copy(tutkinnonOsanRyhmä = None))))
-        "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatusOk()))
+        "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus, opiskelija)(verifyResponseStatusOk()))
       }
 
       "Syötetään osaamisen hankkimistapa" - {
         val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaNäyttönä, osaamisenHankkimistavat = Some(List(OsaamisenHankkimistapajakso(date(2018,1,1), None, osaamisenHankkimistapaOppilaitos))))
-        "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatusOk()))
+        "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus, opiskelija)(verifyResponseStatusOk()))
       }
 
       "Syötetään koulutussopimus" - {
         val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaNäyttönä, koulutussopimukset = Some(List(koulutussopimusjakso)))
-        "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatusOk()))
+        "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus, opiskelija)(verifyResponseStatusOk()))
       }
 
       "Yritetty antaa keskiarvo" - {
         val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaNäyttönä, osasuoritukset = Some(List(tutkinnonOsaSuoritus)), keskiarvo = Option(2.1f))
-        "palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*onlyWhenMismatch.*".r))))
+        "palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus, opiskelija)(verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*onlyWhenMismatch.*".r))))
       }
 
       "suoritus.vahvistus.päivä > päättymispäivä" - {
         val suoritus = autoalanPerustutkinnonSuoritus().copy(vahvistus = vahvistus(date(2017, 5, 31)), suoritustapa = suoritustapaNäyttö, osasuoritukset = Some(List(muunAmmatillisenTutkinnonOsanSuoritus)))
-        "palautetaan HTTP 200" in putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2016, 5, 31)).copy(suoritukset = List(suoritus)))(
+        "palautetaan HTTP 200" in putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2016, 5, 31)).copy(suoritukset = List(suoritus)), opiskelija)(
           verifyResponseStatusOk()
         )
       }
     }
 
     "Reformin mukainen tutkinto" - {
+      val opiskelija = defaultHenkilö.copy(hetu = "090373-474B")
+
       def reformiSuoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaReformi)
       "Syötetään osaamisen hankkimistapa" - {
         val suoritus = reformiSuoritus.copy(osaamisenHankkimistavat = Some(List(OsaamisenHankkimistapajakso(date(2018,1,1), None, osaamisenHankkimistapaOppilaitos))))
-        "palautetaan HTTP 200" in putTutkintoSuoritus(suoritus)(verifyResponseStatusOk())
+        "palautetaan HTTP 200" in putTutkintoSuoritus(suoritus, opiskelija)(verifyResponseStatusOk())
       }
 
       "Syötetään koulutussopimus" - {
         val suoritus = reformiSuoritus.copy(koulutussopimukset = Some(List(koulutussopimusjakso)))
-        "palautetaan HTTP 200" in putTutkintoSuoritus(suoritus)(verifyResponseStatusOk())
+        "palautetaan HTTP 200" in putTutkintoSuoritus(suoritus, opiskelija)(verifyResponseStatusOk())
       }
 
       "Osasuoritukset vanhojen perusteiden mukaan (siirtymäaika 2018)" - {
@@ -774,7 +786,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         )
         def oppija(alkamispäivä: LocalDate, suoritus: AmmatillisenTutkinnonSuoritus) = {
           val opiskeluoikeus = makeOpiskeluoikeus(alkamispäivä).copy(suoritukset = List(suoritus))
-          makeOppija(defaultHenkilö, List(JsonSerializer.serializeWithRoot(opiskeluoikeus)))
+          makeOppija(opiskelija, List(JsonSerializer.serializeWithRoot(opiskeluoikeus)))
         }
 
         "Alkamispäivä 2018, rakenne validi" - {
@@ -796,7 +808,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           val suoritusIlmanArviointeja = korkeakouluopintoSuoritus.copy(osasuoritukset = korkeakouluopintoSuoritus.osasuoritukset.map(_.map(_.copy(arviointi = None))))
           putTutkintoSuoritus(reformiSuoritus.copy(
             osasuoritukset = Some(List(suoritusIlmanArviointeja))
-          ))(verifyResponseStatusOk())
+          ), opiskelija)(verifyResponseStatusOk())
         }
       }
 
@@ -805,7 +817,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           val suoritusIlmanArviointeja = jatkoOpintovalmiuksiaTukevienOpintojenSuoritus.copy(osasuoritukset = jatkoOpintovalmiuksiaTukevienOpintojenSuoritus.osasuoritukset.map(_.collect  { case l: LukioOpintojenSuoritus => l.copy(arviointi = None) }))
           putTutkintoSuoritus(reformiSuoritus.copy(
             osasuoritukset = Some(List(suoritusIlmanArviointeja))
-          ))(verifyResponseStatusOk())
+          ), opiskelija)(verifyResponseStatusOk())
         }
       }
     }
@@ -968,8 +980,8 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     arviointi = Some(List(arviointiHyväksytty))
   )
 
-  def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: AmmatillisenTutkinnonOsanSuoritus, tutkinnonSuoritustapa: Koodistokoodiviite)(f: => A) = {
-    putTutkintoSuoritus(withTutkinnonOsaSuoritus(tutkinnonOsaSuoritus, tutkinnonSuoritustapa))(f)
+  def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: AmmatillisenTutkinnonOsanSuoritus, tutkinnonSuoritustapa: Koodistokoodiviite, henkilö: Henkilö = defaultHenkilö)(f: => A) = {
+    putTutkintoSuoritus(withTutkinnonOsaSuoritus(tutkinnonOsaSuoritus, tutkinnonSuoritustapa), henkilö)(f)
   }
 
   def putTutkinnonOsaSuoritukset[A](tutkinnonOsaSuoritukset: List[AmmatillisenTutkinnonOsanSuoritus], tutkinnonSuoritustapa: Koodistokoodiviite)(f: => A) = {
@@ -1000,7 +1012,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     putOppija(makeOppija(henkilö, List(JsonSerializer.serializeWithRoot(opiskeluoikeus))), headers)(f)
   }
 
-  private def putAndGetOpiskeluoikeus(oo: AmmatillinenOpiskeluoikeus): Opiskeluoikeus = putOpiskeluoikeus(oo) {
+  private def putAndGetOpiskeluoikeus(oo: AmmatillinenOpiskeluoikeus, henkilö: Henkilö = defaultHenkilö): Opiskeluoikeus = putOpiskeluoikeus(oo, henkilö) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
   }

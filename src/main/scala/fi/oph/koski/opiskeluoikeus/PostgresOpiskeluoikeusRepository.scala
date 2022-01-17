@@ -3,18 +3,18 @@ package fi.oph.koski.opiskeluoikeus
 import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db._
+import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.henkilo._
 import fi.oph.koski.history.{JsonPatchException, OpiskeluoikeusHistory, OpiskeluoikeusHistoryRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonDiff.jsonDiff
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusChangeValidator.validateOpiskeluoikeusChange
+import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedot, PerustiedotSyncRepository}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
 import fi.oph.koski.schema._
-import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import org.json4s.jackson.JsonMethods
 import org.json4s.{JArray, JObject, JString, JValue}
 import slick.dbio
@@ -33,8 +33,11 @@ class PostgresOpiskeluoikeusRepository(
   oidGenerator: OidGenerator,
   henkilöRepository: OpintopolkuHenkilöRepository,
   perustiedotSyncRepository: PerustiedotSyncRepository,
-  valpasRajapäivätService: ValpasRajapäivätService
+  organisaatioRepository: OrganisaatioRepository,
+  ePerusteet: EPerusteetRepository
 ) extends KoskiOpiskeluoikeusRepository with DatabaseExecutionContext with QueryMethods with Logging {
+  lazy val validator = new OpiskeluoikeusChangeValidator(organisaatioRepository, ePerusteet)
+
   override def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSpecificSession): List[A] = {
     val queryOppijaOids = sequence(oppijat.map { o =>
       findByOppijaOidsAction(o.oid :: o.linkitetytOidit).map(opiskeluoikeusOids => (o.oid, opiskeluoikeusOids))
@@ -72,16 +75,6 @@ class PostgresOpiskeluoikeusRepository(
 
   override def findByOid(oid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, OpiskeluoikeusRow] = withOidCheck(oid) {
     withExistenceCheck(runDbSync(OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid).result))
-  }
-
-  override def findByLähdejärjestelmäId(id: LähdejärjestelmäId)(implicit user: KoskiSpecificSession): Either[HttpStatus, OpiskeluoikeusRow] = {
-    id.id match {
-      case Some(ooIdLähdejärjestelmässä) => withExistenceCheck(runDbSync(OpiskeluOikeudetWithAccessCheck.filter(v => {
-          v.data.+>("lähdejärjestelmänId")+>>"id" === ooIdLähdejärjestelmässä &&
-          v.data.+>("lähdejärjestelmänId")+>"lähdejärjestelmä"+>>"koodiarvo" === id.lähdejärjestelmä.koodiarvo}
-      ).result))
-      case None => Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
-    }
   }
 
   override def getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, List[Oid]] = withOidCheck(opiskeluoikeusOid) {
@@ -352,7 +345,7 @@ class PostgresOpiskeluoikeusRepository(
 
         val tallennettavaOpiskeluoikeus =  OpiskeluoikeusChangeMigrator.migrate(vanhaOpiskeluoikeus, uusiOpiskeluoikeus, allowDeleteCompletedSuoritukset)
 
-        validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, tallennettavaOpiskeluoikeus) match {
+        validator.validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, tallennettavaOpiskeluoikeus) match {
           case HttpStatus.ok =>
             val updatedValues@(newData, _, _, _, _, _, _, _, _, _) = KoskiTables.OpiskeluoikeusTable.updatedFieldValues(tallennettavaOpiskeluoikeus, nextVersionumero)
             val diff: JArray = jsonDiff(oldRow.data, newData)
