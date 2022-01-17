@@ -5,14 +5,14 @@ import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmatillinenPerustut
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, Oppija, Oppilaitos, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, LähdejärjestelmäId, Oppija, Oppilaitos, TäydellisetHenkilötiedot}
 
 object ExamplesTiedonsiirto {
   val opiskeluoikeus: AmmatillinenOpiskeluoikeus = AmmatillinenExampleData.opiskeluoikeus().copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
   val failingOpiskeluoikeus: AmmatillinenOpiskeluoikeus = opiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.aaltoYliopisto)))
   val epävalidiHenkilö: LaajatOppijaHenkilöTiedot = KoskiSpecificMockOppijat.tiedonsiirto.copy(hetu = Some("epävalidiHetu"))
   val failingTutkinnonosaOpiskeluoikeus: AmmatillinenOpiskeluoikeus = AmmatillinenPerustutkintoExample.osittainenPerustutkintoOpiskeluoikeus.copy(
-    lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId)
+    lähdejärjestelmänId = Some(LähdejärjestelmäId(Some("75489301"), lähdeWinnova))
   )
 
   val examples: List[Example] = List(
